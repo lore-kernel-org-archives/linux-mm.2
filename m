@@ -1,89 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E83606A32D
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 19:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0876606A333
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 20:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UMYdlrws
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=K1lUGFZH
 Received: by kanga.kvack.org (Postfix)
-	id 8C4576B00EF; Tue, 10 Nov 2026 14:33:10 -0500 (EST)
+	id A79C46B00EF; Tue, 10 Nov 2026 15:19:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89BEC6B05B0; Tue, 10 Nov 2026 14:33:10 -0500 (EST)
+	id A513B6B05B0; Tue, 10 Nov 2026 15:19:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D99E6B05B1; Tue, 10 Nov 2026 14:33:10 -0500 (EST)
+	id 9674A6B05B1; Tue, 10 Nov 2026 15:19:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5755A6B00EF
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:33:10 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DCB59140565
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 19:33:09 +0000 (UTC)
-X-FDA: 85420207698.25.986DEF2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3883618000A
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 19:33:08 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UMYdlrws;
-	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794339188;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NhXriI+DeJQWEBDJX8tiUAimmV8NOGhWTEqPg+S9eXE=;
-	b=BhY4VY77UVGeU1UbpQuFUNmfLQN/IbskxfXcQ5bFYOvFx0rIddmaPaAMStfF55bBxJ9rXN
-	QpxoBLvTnRvnvc+N5EJ+TNMaUDXqJSBXWsoGP54qr1Qb5fgzBte4W20yAWBut0QxmuWcZJ
-	B+zZbQFqrqxKH3mUZa1qxJnlloBaug4=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7221F6B00EF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:19:44 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 01BDA1C4388
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:19:43 +0000 (UTC)
+X-FDA: 85420325088.23.693D359
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 148661C0009
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:19:41 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=K1lUGFZH;
+	spf=pass (imf18.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794339188;
-	b=3wNRI2Hdeg8aAiQaxOLVu5yOcEyqfS4P6bYBXDuwoNXqOmu722jgKRc6bdzAMpQNB/xXpE
-	JVupEKJxbdntxyREEK/oPW6DxthPThYB4rqK0pM6puf5Xu7xVV89mNm6M/veXFku2Q34Ja
-	mZSLqNJ1VMZaCCMqKhqG2pv87L5jxbU=
+	t=1794341982;
+	b=PfD8o+EtKm06iHF6po9/Tp1hvmAeKLZLVpPSKHpzbPnP7toj8xTlHclkmYpFKiUCAIQ4DI
+	39W1ll/LfW9jAH8Y6ViWzU5bMoF2j20rBH5ptwPXSNxHhy0O3sm0TkrdEIoP23372CE1hF
+	Fezx6HNMQquipr+P3I51P89DHXtree8=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UMYdlrws;
-	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B4E0E63B42;
-	Tue, 10 Nov 2026 19:33:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20FDD1F0089F;
-	Tue, 10 Nov 2026 19:33:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794339187;
-	bh=NhXriI+DeJQWEBDJX8tiUAimmV8NOGhWTEqPg+S9eXE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UMYdlrwsjqsMhAIX4rj8c2yXl5KEbZYNPDIHsDDQb60XGZ972TrQO/1FDDznVLutA
-	 SSMNyK45jLCetNV3ePfOaPTXb55M7hJ0fqCiZVkZ/sgqtczUxHI094EYmt+9uE+K+7
-	 Lbpbkzar3gssNK6Y8dP0PMA2UwotLHleFaUmBiAKfj5PmisA/JlmOb8njdC1Whra4G
-	 zl+LmamQkumd/TGOasz7mtEbgeVld+uvsTVCC3sXajHT/mnSPou39tMySGfE1P1LU0
-	 g7nF3PPsARw5v511r0S+0pnUfXeoNNFytsZYHgzqhJJAflaHUncnVapTkPEM5K7gtX
-	 jn9XHrhYUeDOg==
-Message-ID: <sashiko-outbox-207664@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 5/7] sched/numa: scan PID-inactive VMAs for promotion
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?R3JlZ29yeSBQcmljZSAoTWV0YSk=?= <gourry@gourry.net>, linux-mm@kvack.org
-Cc: kernel-team@meta.com, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, mgorman@techsingularity.net, mingo@kernel.org, vschneid@redhat.com, kprateek.nayak@amd.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev, kas@kernel.org, joshua.hahnjy@gmail.com, rakie.kim@sk.com, ying.huang@linux.alibaba.com, matthew.brost@intel.com, byungchul@sk.com, apopple@nvidia.com, jannh@google.com, pfalcato@suse.de, hannes@cmpxchg.org, osalvador@suse.de, raghavendra.kt@amd.com
-In-Reply-To: <20261110150446.2452975-6-gourry@gourry.net>
-References: <20261110150446.2452975-1-gourry@gourry.net>
- <20261110150446.2452975-6-gourry@gourry.net>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 10 Nov 2026 19:33:04 +0000
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3883618000A
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: imymapsi5e7q71k9uipbjs6gmgomciik
+	imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=K1lUGFZH;
+	spf=pass (imf18.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794341982;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Rqy05NhlUV5BjanU34c5iOE+GBzU8rBDGQIQzRYoUdc=;
+	b=i0hUxd7sQGxBQGKMUD9jDb0KFwG5KYgslwwSZwMp9JoSKaR54mA1nGTD1iQ2IBJgPF+6Sh
+	IfwTlv+ITUbhxEHVAsovrm7BlJButm9lVupxemGtW4/orypcGS4HEszOmijGm3RUrDOxCI
+	hPbDJsPHjaD1M4geqqatxfQ1DNiS3DA=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AD0591477;
+	Tue, 10 Nov 2026 12:19:37 -0800 (PST)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C22FA3F85F;
+	Tue, 10 Nov 2026 12:19:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794341980; bh=YcUtf8s3nEe4c07U3pzR0x25fAU/uZ4ZSOAodtFGIC4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=K1lUGFZHGwG996BA9mqSWjm7RkxTjcA7UKIzyNKKoscn95BhhfZEQevkP0Ts6799j
+	 prdxvNx6p3ReV9oKcpz1q/0x7bK/EGQhE0O92mz9H5+v6yV2aZOAW9f/eyGD2SsAJD
+	 AAUHLa6OpYFXKbl5a9W1rpf3d9isIhoWnNuuE05Y=
+Date: Tue, 10 Nov 2026 20:19:36 +0000
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Rik van Riel <riel@surriel.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Yuan-Hao Hsu <aa9736195201@gmail.com>
+Subject: Re: [PATCH v3 5/6] mm: gup: introduce gup_unshared_pages()
+Message-ID: <avN8WISVUF7u4bXl@e129823.arm.com>
+References: <20261109-refactor_gup_fast-v3-0-2aaef02df0e1@arm.com>
+ <20261109-refactor_gup_fast-v3-5-2aaef02df0e1@arm.com>
+ <7627c0d90188b581e7740bf8d17c8dd07b460f89.camel@surriel.com>
+ <avLqwIWHa5CAbHO2@e129823.arm.com>
+ <aa227fea-d22b-4c0f-bd11-bf9ec36b0767@kernel.org>
+ <699499e46ace0875fd0f32052399e665c8209ea9.camel@surriel.com>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <699499e46ace0875fd0f32052399e665c8209ea9.camel@surriel.com>
+X-Stat-Signature: pjepdurusmfxrimu6tt1s6q113gpy7wt
+X-Rspamd-Queue-Id: 148661C0009
 X-Rspam-User: 
-X-HE-Tag: 1794339188-591319
-X-HE-Meta: U2FsdGVkX1+6wTsRu0p6+lKJZ8Nee+aIZyjB/feI6671dXHaQXzYRnsJTJBbJzAvUaWNLER1Xm2Fdbhu4+TIPShDFdA+Kcac1K55G94Rhs/7k26qzO9nEyElE5tQmGLxYIytZL8ZFNcFV/lUxuyaOYIyT3QKW3m7noPe3SZpEOsK7s4i+d59uLD2C/5HAnRsQ+RgS5O/cJHmPrfWskvwqxWn6JG0Dvb9kMDrZglhTf/tYopnNLJu//ACphw/4PgX0deArLdszdMZPWox3bHDHZjd7fepYGWR+JLls+HnyXTfxOxgh6jludJuWi98MPXA3uBJEDqZ+cxEOoMXhIfvR5FmHml2TBDedH38TPAyikvcv4vPcDy95MLZbkTIhpfCURfssCMQHcYo0WQqTnD6Z6+rmGTm9XTcQIIQZNjrgm17CXp2S+/Qx0sxuw0YHGEBE/qwckjgdWPrHbdGNFyQR+aVNgAiJne59IOsyHBzFdwHvch8O1m/KkWTZBIm0OwK31igPk9mnLjJzdXylhm1WK8OyFFe59APVzK36LTHAweeIgJK36r2FfPw4morJYPL7tmKMkUkhmnhbGyK8aQWlC/POxcoSwRtJhnaZ0vVKVbEMX39PykFoPfzUWIBnhrrRnBLd82rBErEuAas9O/V2S+QqSZ1I0mOOif5m1yybV2aX1dAi7ytt7yx6Qd8ngoA9iTEvtd6IvOeIrPrPWvmV1Rkqyho2Izxas4MAJx/lWgGyyHP8JsBkw+gpVVaqvY+5zfEp9G4JqRfevcrLBU2dxRpd5hM4PAZqFsScShH5SWPRwKm+C4/wstl9aBOsM6L+Liq634FCmZt+db+lBHkHuM+9TNA6Nrcy0RfD+diOO1hOC/37LgTPKaxgwdHj7z6labrGt58aQcOqfY8frj7qd9YT7CjSzlmOUmZabSt0Bw2s/paLkVy/fhnKQQn1kAHUzI4FY0x5WK28az5+ZB
- ZZLzwLb+
- lrC86xdyQrUAcMiKQnjaY7G22ZtDKr9k/ZnI5lnsdtSTiScQU+BjogsjMeeBXWQeTPRI+ieNVQHcnqPcgUl8Qsehzjs6cLR2RGxPd5lf8QeXoLZ6jV/qps76EQqEaJeFQPrvDR7L3mfGHKkCSWZz5YDdKOILeMOC67rX1GKrhQeVuyqMfkAW7GRdjXa7FSD0adew59GgC1PG/LKdedmVy4byAdXIeeMUutsRfb64WGOkctfsw+pkSPtVQRsSoYoEcBzBxU1uagytCL02GT9tMYAyLwdwctncSD3QC5yZxgciY2TuY256+95Daqv1+pK7vjBbdCKNvCMMuUbBLTXbeb8J4kGub2KR94m2hXtRA9HJ2kIyaDTDkozLDjWglv2L/CUoEyTBZSil+9vWnecgbXHbqxff5FvkU0RLo0XnXcroh0zLmjyf01iYQiQFES1hwy3/nMzZ8HC2AoevsQUgszAFboY8N8tcxLuuk0wYPbRGZYe4+QJLeHrg28AzZNGpIf7pnZG40xeE4mD68e9D1z2stEVQqTqCtMl2xRxh8VV3xC9YoT62U3AY/KD6JeW+TPFTZ83N53MsJLLqH3mzf0UT3Up5pZDA8zA6GviONDx5K9SbYAPpEueLvmpnxP6Ds3FSoLTrn+ykxDG6ezIBSzVP0hILNVWfV+ofkLUprY/wr71r5RSIItqTKN4dqvMomihaJvOblckpXg+KOJEXPv1fSVL3gavR0BcV/6VxeihCu5LM=
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794341981-912704
+X-HE-Meta: U2FsdGVkX19XtvdXw7bWzdcWVb+M9BHFuEavGP7SSlYPi7QZeSpheO2OmG0m2ElgTAqsh+kahWmQxbm5Hrf1r+tn1UImrh8me0itygRYmDlejTMJJURZXldlhFkF4jH5DxWfIabFU8e2odeQEqpKXe36u+KQz34U7H3ZdntURDVWV1kVtOumJdo/R6ZTFweCpyNnnkxOv5vNKbQ1PcroxW79XlQYBaL2jmZI/l7JTc+t48okW39HmWsUq0+C4QhBIhcBzhYJtDGgZ+CTSSJU0Zw27iYNqbKPO6Vk19AB+8KcslYFVsXeah/TS8rzjhRE+qzcmG6rKJ2ObOKq/OJFPsxjLlnQnRQCCmoUAo6jmpVn2qvYk4dOAg6dqWTfNpIs4yndAP7BPOfm24wpMYrb+/mIdknl6E6RfBhpXmjZyid/A+KXAyv6dnJyiyKLk8a60Asn003PdPqnu8P1I2uTuFoQtTiFQ+RGdCTBabzZ7qjsRwR4dydprLM/OxCWldo45MGyA8wA4SnMg2jsgCs17gesXfgH4tIzf6SbAeId+HDiSbAu+EtAks08P3X5I1r82n1MmWufGkA7mL48tzzLpCDMb5rHhTJIAvcYGPcTPAhvBU0DHaKGf34prBYhHjpM8bcL8wP7irKQxYouJt7J/Jnk2OIBLxfTAe7CfyYVBvMXfNF2OjD1rnn+KGRT4ykTTQ74OU2chLi6B3+37pX3N9gxCL2Lg+gC5keSsWkPFMtMgdXLsPQ2hoiZp6rjKeh+OR8M+s6zDAJQg84suvQV/Tdr6l3YOTckOajFrG0IbHUmjv096e5H4ZF9uKdjNtznFgC0UuSKx/iyGM10hMEg4YR6x6lBXd/g3eMTbGUjQ0g6vSfe5SuzWD98kDLqoVKV4rdoYcqwVqrR3FAR2cYeTlbL45wFP+4U5j15xRzgT4dA3w7+VgSl/Z+zU6+bAqG3TMyO0uOcbFlGdjdFC+k
+ zadrazWR
+ EKy2oR7IOGIS2mYw5BOvL7Wvzps8FjufqpxdEBLP2mUVeqbaEVgA1f9ThrEauTlYSySQIg+wn6Rd0MZajSGh8xUqsczx5KsW0FCytSbQiBI85dmfSXfSgWLUClo5AXery0+EZhcxpuC96NkcvdhHsyz2D6EXJ5yFr/rZp4bEnxwkI7Abvz7HEuP4VAmm52bu8aTgGTu6QNlpF5+9Grjnm1FW85S+XUAFqaO8pt2pAypIVYf5Vq562H/zU/4mR/IeJ5WhnjFsqPVOnRRreskOJAChwv6v/wR/RsuTD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,85 +104,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] sched/numa: skipped VMA scan completion update in
-  task_numa_work()
---
+On Tue, Nov 10, 2026 at 02:21:18PM -0500, Rik van Riel wrote:
+> On Tue, 2026-11-10 at 14:04 +0100, David Hildenbrand (Arm) wrote:
+> > On 11/10/26 10:58, Yeoreum Yun wrote:
+> > > Hi Rik,
+> > > 
+> > > > On Mon, 2026-11-09 at 12:32 +0000, Yeoreum Yun wrote:
+> > > > > This is preparatory patch to make gup_fast_pte_range()
+> > > > > batchable.
+> > > > > 
+> > > > > Introduce gup_unshared_pages() to count consecutive pages
+> > > > > within a
+> > > > > folio
+> > > > > that do not require unsharing, and use it to implement
+> > > > > gup_must_unshare().
+> > > > > 
+> > > > Could gup_exclusive_pages() be a better name?
+> > > 
+> > > Yes. This seems much better for me. I'll change it in next-spin.
+> > 
+> > Not quite the right semantics. For pagecache folios we simply don't
+> > need
+> > unsharing in MAP_SHARED VMAs. That does not imply that these are
+> > exclusive.
+> > 
+> > So it's all about "number of pages that don't need unsharing".
+> > 
+> gup_no_unshare_len() ?
+> 
+> a little awkward sounding, but it describes
+> what it's doing?
 
-commit f65331bdcd950c59eb449c304cff02b0db3d6e66
-Author: Gregory Price (Meta) <gourry@gourry.net>
+Hmm, Wouldn't this name be semantically much the same as keeping
+the existing gup_unshared_page(), since both essentially convey that
+no unsharing is required from GUP's perspective?
 
-sched/numa: scan PID-inactive VMAs for promotion
+Anyway, naming is always NP-hard problem :\
 
-This commit allows memory tiering to scan PID-inactive VMAs with
-promotion-only scans when placement sampling is not due, and tracks the
-last completed placement scan sequence separately from promotion-only
-scans.
 
-> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> index 778ba0ed34fe8..279bf12b74b64 100644
-> --- a/kernel/sched/fair.c
-> +++ b/kernel/sched/fair.c
-[ ... ]
-> @@ -4506,8 +4519,14 @@ static void task_numa_work(struct callback_head *w=
-ork)
->  			cond_resched();
->  		} while (end !=3D vma->vm_end);
-> =20
-> -		/* VMA scan is complete, do not scan until next sequence. */
-> +		/*
-> +		 * VMA scan is complete, do not scan until next sequence.
-> +		 * A promotion-only scan did not cover top-tier folios, so it
-> +		 * does not count towards the placement-scan starvation check.
-> +		 */
->  		vma->numab_state->prev_scan_seq =3D mm->numa_scan_seq;
-> +		if (placement_scan)
-> +			vma->numab_state->prev_placement_scan_seq =3D mm->numa_scan_seq;
->  		vma->numab_state->promo_only =3D false;
-
-[Severity: Medium]
-Can task_numa_work() skip updating prev_placement_scan_seq, prev_scan_seq
-and promo_only when the final chunk of a VMA exhausts the scan budget?
-
-Inside the loop right above this block, task_numa_work() jumps to out when
-pages <=3D 0 || virtpages <=3D 0 before checking while (end !=3D vma->vm_en=
-d):
-
-kernel/sched/fair.c:task_numa_work() {
-	...
-			if (nr_pte_updates)
-				pages -=3D (end - start) >> PAGE_SHIFT;
-			virtpages -=3D (end - start) >> PAGE_SHIFT;
-
-			start =3D end;
-			if (pages <=3D 0 || virtpages <=3D 0)
-				goto out;
-
-			cond_resched();
-		} while (end !=3D vma->vm_end);
-	...
-out:
-	if (vma)
-		mm->numa_scan_offset =3D start;
-	...
-}
-
-When a VMA's size (or remaining unscanned range) is an exact multiple of
-sysctl_numa_balancing_scan_size, the last chunk reaches end =3D=3D vma->vm_=
-end
-with pages <=3D 0 and jumps to out.  That sets mm->numa_scan_offset to
-vma->vm_end, so the next task_numa_work() call moves on to the next VMA
-without ever running the completion block for the finished VMA.
-
-Because prev_placement_scan_seq is never updated on such a VMA,
-vma_needs_placement_scan() permanently returns true once mm->numa_scan_seq
-passes prev_placement_scan_seq + get_nr_threads(current), preventing
-promotion-only scans on PID-inactive VMAs.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110150446.2452=
-975-1-gourry@gourry.net?part=3D5
+-- 
+Sincerely,
+Yeoreum Yun
 
