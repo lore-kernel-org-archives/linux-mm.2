@@ -1,98 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C41606D4F2
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 21:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6249606A326
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 21:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OT1LM/Xd
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RU2cjMWh
 Received: by kanga.kvack.org (Postfix)
-	id C16FD6B05B1; Tue, 10 Nov 2026 16:56:54 -0500 (EST)
+	id D2B206B00EF; Tue, 10 Nov 2026 16:58:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC8426B05B9; Tue, 10 Nov 2026 16:56:54 -0500 (EST)
+	id CDB976B05B0; Tue, 10 Nov 2026 16:58:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE1016B05BA; Tue, 10 Nov 2026 16:56:54 -0500 (EST)
+	id C1B556B05BA; Tue, 10 Nov 2026 16:58:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C3116B05B1
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:56:54 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3400C140128
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 21:56:54 +0000 (UTC)
-X-FDA: 85420569948.08.7381A0A
+	by kanga.kvack.org (Postfix) with ESMTP id 9D9366B00EF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:58:08 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E52A2140128
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 21:58:07 +0000 (UTC)
+X-FDA: 85420573014.29.83E2981
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 98F2814000C
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 21:56:52 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OT1LM/Xd";
+	by imf03.hostedemail.com (Postfix) with ESMTP id 565062000A
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 21:58:06 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RU2cjMWh;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794347886;
+	b=JGeCbNvAh1FXjfNXbxRraaBhD5975+knazLtfHSVhFgMtfzRVZwrn/PFGSDaFAfoFFMo3m
+	PE+ezuTPpr26K62ztxAsUv2dIK7uyRv0zmxPO7M9TOyzhPCpxvKmM3EBN14TUUFg6YEo74
+	3a9mON9SPEs0jfk72z7sSpD8k66B7So=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794347812;
+	s=arc-20220608; t=1794347886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2ZDErYEQzOGJUjtDBXVtItn62hZcw22wk/hmpMTwW8s=;
-	b=au/pwwC3wkhzdsL6h+F1XAE0qdtHer1KYv7Jx/wrThdAuT7pw9Sf+sElGfq0CTkZS2GUPt
-	cezv+a8QBTQu31xRUoluwT6NB+aZOVg4MR60+hnlJKiCeu9KBh1sga/zoXuDc/M6nhG1AY
-	QMugCI+ZVmahrC3dK3uhpEJyfzGD7PY=
+	bh=kCLtDsSduJN5lzJAUixPHHYwKmpqQ8jqEr8sEL58PF4=;
+	b=NIZs9hAFJU5Haeh5ioAzZe/05Rd7DDPhpnzplJgsjZEA5xzHobogGdsBJyhjwJ2za4rG6d
+	Vc3Oe18ICEIGyGsx33Uw9HsIhk8SEVXbsVwrKTyntu/Ao/yYfBDgd2cCyCvko/VLM9Cci/
+	qsVqvq2L7qKig9aFeB7bhP0MRS+M3yQ=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OT1LM/Xd";
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RU2cjMWh;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794347812;
-	b=L23efi8UYCkHE9hU3wMtrtHkLmuZWY9OEh+imCrJrZOq8+bqtpbAjZHmtGEuW7Z/CoTSlp
-	nOvv+IDKfpXSrsJViKph8cGhDbSmCbWogCUxsXGlKV8YTkDxa/gMmZdGVh9qBC6lA5gyXr
-	mRL4NWR5b/U196stO35TYI/aEJQUs1o=
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DC23F637F5;
-	Tue, 10 Nov 2026 21:56:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C96A1F008A2;
-	Tue, 10 Nov 2026 21:56:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DC28160546;
+	Tue, 10 Nov 2026 21:58:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35C91F0089F;
+	Tue, 10 Nov 2026 21:58:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794347810;
-	bh=2ZDErYEQzOGJUjtDBXVtItn62hZcw22wk/hmpMTwW8s=;
+	s=k20260515; t=1794347885;
+	bh=kCLtDsSduJN5lzJAUixPHHYwKmpqQ8jqEr8sEL58PF4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OT1LM/XddW8RQD5eAmU8fBGOFbAM8/CnJEQs3885Wa0JF4KqnzpeNdym5//nw/qmO
-	 iSIXz2DK4b5upf83EDFMcSmu0R158tcCDKFJPJc+nb5CZdciue++Ti2l4+7JB3cJcZ
-	 ofKUHpSYZzgbI/fZlqfADzqczaOi6d9z3Y/zO6lUhjFut4nTY/Mo51uO4It6fBxl4w
-	 kteuhsecwTnXgVw0wlXvii87uhXMhUgsuU0E2MSi8RSzt1K2+xoj6E83ckzwcRg4rF
-	 Ht/S7BOo0R3XlqC9Z0pGpdIAMmq9jRNZQqamTSsu2Lll7rHCO7Qg9kxjiih6PwTNRR
-	 88zmVF8rr0Lbw==
-Date: Tue, 10 Nov 2026 22:56:45 +0100
+	b=RU2cjMWhLWTMYaymg1ZzNblHwkcH4bTSYnInlSJSLxQsbLjC6we9+twDh/aNKBpa4
+	 ZOKhki2iaWRw0swT0pifRUi3rxOXErfR7rClmPQEWk31ubc+5+qXPLLxH13EM0akS6
+	 0ZWYESXcdj7/o5BNONbMOR2vOWEz13IA8pdcE75+hgsg7BgI5AeW2dRxttIvda4X6j
+	 J+6ShQT7+OblzOw2TgJHbu68zmtNalFHLGuAc4d8x00CSXbWGAs9iRbgDbZMC8z7LO
+	 YGPMXyraW5fb57oy5qxA1F0oSNcFfbE9f48qSfbZOj8UrmeiMqncEm2Hj0LIvZK+0g
+	 FMQPrk4s2OT9Q==
+Date: Tue, 10 Nov 2026 22:58:00 +0100
 From: Christian Brauner <brauner@kernel.org>
-To: Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
-	sashiko-reviews@lists.linux.dev
+To: sashiko-reviews@lists.linux.dev
 Cc: Jan Kara <jack@suse.com>, Al Viro <viro@zeniv.linux.org.uk>, 
 	linux-ext4@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, 
-	linux-mtd@lists.infradead.org, Karl Mehltretter <kmehltretter@gmail.com>, dsterba@suse.cz, 
-	tytso@mit.edu, Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
-	Joseph Qi <joseph.qi@linux.alibaba.com>
-Subject: Re: [PATCH v2 06/34] nilfs2: don't set SB_RDONLY after filesystem
- errors
-Message-ID: <20261110-deformation-knabe-geltung-3bb7600eaead@brauner>
+	linux-mtd@lists.infradead.org, dsterba@suse.cz, tytso@mit.edu, Mark Fasheh <mark@fasheh.com>, 
+	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>
+Subject: Re: [PATCH v2 02/34] ecryptfs: fall back to a read-only lower file
+Message-ID: <20261110-eliminieren-raubbau-gibts-97763ee773d7@brauner>
 References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
- <20261029-work-fs-sb_rdonly-v2-6-2f44f64f0b66@kernel.org>
- <sashiko-outbox-191225@kernel.org>
- <CAKFNMombDWkJ=m+CjMy7qnd_yy-vZ9c-EE7R95HKKkcy-M0+SQ@mail.gmail.com>
+ <20261029-work-fs-sb_rdonly-v2-2-2f44f64f0b66@kernel.org>
+ <sashiko-outbox-191221@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAKFNMombDWkJ=m+CjMy7qnd_yy-vZ9c-EE7R95HKKkcy-M0+SQ@mail.gmail.com>
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 98F2814000C
+In-Reply-To: <sashiko-outbox-191221@kernel.org>
+X-Rspamd-Queue-Id: 565062000A
+X-Rspamd-Server: rspam12
+X-Stat-Signature: gs7j3pmu8zef8kg4kgittk1pjetd9qrr
+X-Rspam-User:
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: mkmgadrnc8jnx9rxz4xuw1tmt3j4scr8
-X-HE-Tag: 1794347812-588670
-X-HE-Meta: U2FsdGVkX18c8+RChHKxT70g5GC89c4yAg1i+U3ZQ7CXtLI2w0tFmMMsiG8TgoH/8y0CnZcUZETKtmXYmT8KsyzSDneMm14ERAvgB2zkewTWjdltvjg4I53thCB0IDGyQmYTiZdQh0wc/3L7TrNPlOWkd9ccz8UnGDUAtOuaasaVwKfWU7wZYJvLPEXmox2hCruvktiHSBnFXKCogvwrBVJNdta7fKLPWP9HHbgQrl6vkCtuHTr/Hfs/7vYRTIN8GegN+SRe7D/tD0MA+/KojaUVkhLsVJggJa1vV91ScVNkRECcyAq+aBmLn993XN79ECYw/e7nY/EgI7HqZPVgp5CBbZ+WzpYOGIJcuxgctHJYWdFuQ8+e0QmXlOxLnKqO/lZF84QBTVA9PSaecObA3EJfisxVeiaOEJjp4mons8wpstQMnfKNqFRvOomf/ToEWpbjhgFYyZzZTc/tRvI3BQWQU+9o5OkfR0Ja42wQK9xD0YLZTszT6gm5NmpYMd97i46aXQlaWPkCTI2NLx5PrR0F1fCAfdSXVrlvV8C3aDI/RtC96znl2NQabK2lEYgkcsol3HjoU2nL6q/Bzl8n4NskWP8y7Dhi5JdBWRr+9Dlk+IrQP8qK+LhG9T/CSm9neXBX6lPdvWNKBSOL3Jk1TT5kqjj8RtJSCWLp4SWio9xyqdlyhjH1LgMX0x5pkljGk7rccVYQ+Ivd6J1ptHuRRf/PkrXZJ2/MhfoqNvUk++VhgRgmmQYdgXdJMJbmITEWzwh29wE6qJOIo0YiDdongyPVtry14hHa8LzA8CIy9f+93sd1aX18tjFaboOyLNUC/OYiaknsxcgNO3dlm09jcJKc9zjF4ycRXO53W9ZoF2HxJpozfrUR8OFfuHrFtZCCHIJxJmSguQOlluPqo5ZlatBEJLuwzDE/sNy/NySFpsYU61R6Of5h5fT3RwpV8DTu9p5bjo2ZyKfaU20ze3S
- d6IpI4K3
- dpbQgQR+x+yOrp35uaLS2d9rvlmO+zUX+Lo3ec7EiqAp8Ki1l5e8aXW0IxjxoXV92N/AN6+eZ0xVCRH8G/xely835du5fdcOG+t1G8yG9dQ8zV3cfbPD4dbK0OIoPZPpN2Hu3F64BCC3aPvj7Z6aDP1DS3VagQ3hrhoYWmRHuO4+KHDR8uBV29C+aDIPuGUd2OEO4VsOTLk1Bt+A8LyfauxRo62xWwjQK/q3LH3pmjzWgUgYcpyA/8x8+OYReYb1UC/zSisKQZwOrjnfga77BiZLcLhMikNzTSUFmhpvQKKB5IvLgLPgaywE0MdxyQ/10n8VpfLaBO2ft0GLWGNjWDT6JzXAttLZOmNMH/BX8X3uyPjvzpsqQMb4VaVWxGhkL+gpOazDFCvlfwtYBzZWnCUmGdC32kM8sye+AAz36GVKMU7w=
+X-HE-Tag: 1794347886-746466
+X-HE-Meta: U2FsdGVkX18BY1Je60IwmcA8wUpUtyIwjljpqK49Kh8WEW230oFHhVf+P/YZ/DhRWr0CT8TQZGdjwwvluu0RaIJGTqnRglBJ8iK3LnDWcLkwRfONZVts/dEsgt/HIamh3cwyIV9ZyJNqwhkFpWcQw9+bCWCyB9fbLzFbbh+iTTBff9R6nuuGWzXLqfWFaqGNcskL57jAJ2gApilKcb/+097KGrehb6fNrbaa47giJb68pOqqKwenPZQizC7NCp1DvSa5bl89QG2xnSUtTpA4wcyjbW/ddFT++fADR1eJ5WddnpNxe58dSG2hByAyPdpTByor8BWTdcqGqKkwBRbFzOHHXRhDfZlJYLu1e+eOnGc7Ac2BlO1uIm2dKOAlMgxSuCI/bx7U9V9CYZt6EGYF0kyvSnaiskpCfxadGNiJ8EU2HERsZvulk1FaWErzKWUcMcduUJXb710oP5dDyVEq7IHcbE+JgfEV0c8gvhAuUnEJd7VrQV4CRA43somUV1WuY0lY6wKohymcRkulCcBCPnSIUgbrz7cqJr390aBvQAkVH5dSlMpLJqIT4Ll45VvszKOivUvjK+K0oqgJcHKHQzUIspihSY4mzwbu1J/813kHt0vHt4CsrB5DcFPLGokBe+FZUT8aSNwm+5aEUsHAhbKSNTvN7f/JWfwlpTQfzoRO+DmStRcmf8mmrzJ4Cg4B1rwpzKIFe42of8b92QuEMb2aWYvRPEJVFIlJllQpuWU8IYl4fEwRSt5KixrfJ0pZ87L0RBVD5U+IdJWKtF+q/ralHncXctdupSoE3tK/mbLpopqe1scOLFdKkBzqd9vRW94ZcBlptI4atlOyIIeFjagTMfin5PRTevpKgS/XmiwYA8y09Ys0m+Z1z2M/+oDNLRX92HyAYBk7k4jioYb5oprQsYuLSusiFeD+xxADQhnG2udSZjABjum2PZ2OWCBGThEMpORJvs7ZmwWkNZC
+ P+U4c/72
+ 7/CNtdNdQ8xYyoVwh9KWACCPUjEypidesxY6uUFHGEpYRl8oYve7Vb0wNfzTqoB5qRPuyBQr6QkQgOnaIR5KWlXZPhN1Umx7nnDVH//RBkxD524wgPq6krCVRHWXOVCFv8ho6NmBMxI+NABsAQ08BZJcIBpjK4jocFjTbNyzMUJiZ9Qy2ne9FLhRyTfWpo+AG+kwUpnaZT2eG6iwIDgKNJ8r5joxTgopfSt9ROGR+Oxp5ul4XyxomcVj0IJbeazge/AA0HMrXYGILXWggamgX/ujO2F6Q0beFs2g+9U4s+C7DI2Sb1rs4j/EPX8324l2o1Nw5dzW20QEk9CII20BPoFaTOSx7YxTsx5AF09kNK9ItYpAsMFrbLgBNS0j3b2YfpGW5lhsRiXbLDZcV2aJQq9lwe7ouxCSC7pmxks0mxKPRfIb+UaBywccDMYus17ZAKWiDp4/InzVr3SIcVJ/uiI9vZs8P9km41OjG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,50 +97,13 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 04, 2026 at 02:32:10AM +0900, Ryusuke Konishi wrote:
-> Sashiko's point here has a valid aspect.
->
-> This inconsistency can be resolved by inserting the following handling
-> logic if sb_emergency_ro(s) is true:
->
->        } else if (!ctx->cno) {
->                 if (nilfs_tree_is_busy(s->s_root)) {
->                         if (sb_emergency_ro(s)) {
->                                 if (!(fc->sb_flags & SB_RDONLY)) {
->                                         err = -EROFS;
->                                         goto failed_super;
->                                 } else {
->                                         s->s_flags |= SB_RDONLY;
->                                 }
+On Fri, Oct 30, 2026 at 04:09:48PM +0000, sashiko-bot@kernel.org wrote:
+> Because both flags remain set from the failed initialization, does the second
+> open short-circuit metadata validation and succeed on the uninitialized empty
+> file (and if the lower mount is later remounted read-write, allow writes using
+> an in-memory key whose header was never written to disk)?
 
-Meh, I'd not set SB_RDONLY there. Because it changes the read-only state
-outside of reconfigure_super() which is precisely what this series gets
-rid of.
+Pre-existing.
 
-The superblock can be frozen at that point, e.g., when the error hit
-while it was frozen, and then thaw_super() leaves s_writers locked again:
-
-  mount /dev/sda /mnt
-  fsfreeze -f /mnt
-  <error>                       -> sb_set_emergency_ro()
-  mount -o ro /dev/sda /mnt2    -> SB_RDONLY on the frozen superblock
-  fsfreeze -u /mnt              -> s_writers stay locked
-
-It also turns the superblock read-only underneath the existing
-read-write mount without sb_prepare_remount_readonly().
-
-The busy-tree branch does what get_tree_bdev() does for every other
-block device filesystem. A second read-only mount fails with EBUSY and a
-second read-write mount gets the superblock and every write fails with
-EROFS. That's what ext4 does since commit d3476f3dad4a ("ext4: don't set
-SB_RDONLY after filesystem errors").
-
-If we want the second read-only mount to work I think we should do it
-for get_tree_bdev() and nilfs2 alike and treat the emergency state as
-read-only in the comparison without touching s_flags:
-
-	if ((bool)(fc->sb_flags & SB_RDONLY) !=
-	    (sb_rdonly(s) || sb_emergency_ro(s))) {
-
-But I'd do that on top.
+-- 
 
