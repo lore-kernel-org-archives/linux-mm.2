@@ -1,76 +1,76 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B050C60A5BDA
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 11:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A82A3606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 11:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=BjSRiFmh
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=iyixgFAg
 Received: by kanga.kvack.org (Postfix)
-	id F1E666B05C5; Tue, 10 Nov 2026 06:47:10 -0500 (EST)
+	id C85E36B05C4; Tue, 10 Nov 2026 06:47:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF73B6B05C6; Tue, 10 Nov 2026 06:47:10 -0500 (EST)
+	id C36EF6B05C5; Tue, 10 Nov 2026 06:47:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE4C86B05C7; Tue, 10 Nov 2026 06:47:10 -0500 (EST)
+	id B4D8A6B05C6; Tue, 10 Nov 2026 06:47:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B7F846B05C5
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 06:47:10 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5263EA0680
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:47:10 +0000 (UTC)
-X-FDA: 85419033420.18.955944C
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 996866B05C4
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 06:47:09 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2CEEC120534
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:47:09 +0000 (UTC)
+X-FDA: 85419033378.14.D863C32
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 778BCA000D
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:47:08 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=BjSRiFmh;
-	spf=pass (imf15.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 52ACB40004
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:47:07 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=iyixgFAg;
+	spf=pass (imf07.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794311228;
-	b=SNdFM5MJBFDobvffGXlX/NAwCLc6ljH9fZG+3PU+rA6jG4DC4iLrRvrOJqrlP9klJLLHbT
-	oeRJDgW5h0XEAxvImw6Btokl9ddxK1xhWMoQs02EnmIbSPfZkuzk1dk0zshJzxB0Tnb2QQ
-	3wVRbylyzhRS8/XSYlck+JFH8V2vb+0=
+	t=1794311227;
+	b=MscUjdecD7QJASDKWaB1rVfYaojo/9NlCCjcuqAh+bPCzNSD8crbuA2zRAfyydTKBBhEG3
+	Y2djWRwhkkvzlTdr93Lu38wZrsc01PVpua3Kd2rxIutcnLa1vO5lmtzLW9D7sFuEXO3opC
+	bBrRYfrbdNcWd+kcipxWygoAngJiPDo=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=BjSRiFmh;
-	spf=pass (imf15.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=iyixgFAg;
+	spf=pass (imf07.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794311228;
+	s=arc-20220608; t=1794311227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hFN8Efe0ZyMi3/7epxVojqOnqpr05jI2UzOY/RNMMn4=;
-	b=GioPuNefZyq4Ysg21BsKxz+QqXbJMWGvWEtope8xdzq7ls/J1ACO6kUMMjn+rkkZr74Nwf
-	R6nxBlvfpbNwo7hHMlalRolmQdhBt5hXlko956ujTqBiCD7xP/Cr6rQIc8wRNUxIpAUOsI
-	NZM9rfyZ6Fb0FSBkSZA2lzf+ygTeet8=
+	bh=TMjTt/yM65LJnfLBEkqU4HceoGuAe/XUxe0Ej6UzqFs=;
+	b=2BbB9o7OypZZd8o2lPAzdNR5gLO7X6OEhvOAp/QOiuK7y6MPKn/0Z7yzU5CE7ZkaP3cnqV
+	A3nmzcN2nL4UhQpKZnBlR7BFVqJ6vw6giZe5EymnIQ3IEDGAM30cwyFjliJttyOW/ZD9rS
+	WrPftuNx35h4gt0SL4v0pYULH1AqGsU=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description;
-	bh=hFN8Efe0ZyMi3/7epxVojqOnqpr05jI2UzOY/RNMMn4=; b=BjSRiFmhygykO7PXhCPSjJ9BYr
-	T8tNdiHctE/fNPWcPLjd/96AkqxNU6ReoCqcAO7sbaU8DlE9WymOB11O8N9ltLIDqetVFLsMvVRWl
-	/4agiD2KKw36XY6BXaGsmTEezUhDhyIk9dflXl9h7uK8PZFvqjZWoHgu9ZOaaWDpnVTLKJYrs12PT
-	vlL52FevuAbhRP5U4b6L2lw5U8l1kHRcbHmRDR/uv4KGKu/UcYE3KZ1MqZVxBE5cAIqIiEQ55lqtG
-	mdUYvjy1r7lNZ/VchSEOoNxId+ozpg+nubxOud+ZFhfOFD/rCJyzR4V1UShY8nkm9xNqqpRpyTMH4
-	boIRKo5Q==;
+	bh=TMjTt/yM65LJnfLBEkqU4HceoGuAe/XUxe0Ej6UzqFs=; b=iyixgFAg9qREIYke8njMawXuIx
+	m+6DM4Uqz9vuRKRMNTS0WtEuw7lwrRzO+dqy61GCeyqhy/5nfW/VPdGm+Q9QyBvuQGWkMSkMK7lPI
+	MGk/hYTjmx9FbtzL9vBmtflZ6A1gUpXHjVEp/jB3Na/Q4SqPsQe2m+a/oZ/sRsfzEVunoXZSzi5+o
+	pmLhZuxFG16tl6QgFE9g5fn/7IfTQYgAAee5GlO/OWWUy6qbfBFppcHComW9Sb11YqYo6l3AMb0hO
+	61bPtWO+VfG30QK+x/Ewx8Usbm/VHCYUwt2AZWKncW5rYsxbB9rbccgIA2dXwP5XiQvhfjCnXWzZG
+	nPDYeeqw==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1xQkJN-00CNSz-0D;
-	Tue, 10 Nov 2026 11:46:49 +0000
+	id 1xQkJH-00CNSq-33;
+	Tue, 10 Nov 2026 11:46:44 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Tue, 10 Nov 2026 03:39:28 -0800
-Subject: [PATCH v2 2/4] writeback: name the bdi in the slow writeback
- report
+Date: Tue, 10 Nov 2026 03:39:27 -0800
+Subject: [PATCH v2 1/4] writeback: add the missing newline to the slow
+ writeback report
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-writeback_stall_report-v2-2-9e0ed75074ca@debian.org>
+Message-Id: <20261110-writeback_stall_report-v2-1-9e0ed75074ca@debian.org>
 References: <20261110-writeback_stall_report-v2-0-9e0ed75074ca@debian.org>
 In-Reply-To: <20261110-writeback_stall_report-v2-0-9e0ed75074ca@debian.org>
 To: Alexander Viro <viro@zeniv.linux.org.uk>, 
@@ -85,37 +85,38 @@ To: Alexander Viro <viro@zeniv.linux.org.uk>,
  Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>
 Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org, cgroups@vger.kernel.org, 
- Breno Leitao <leitao@debian.org>, kernel-team@meta.com
+ Breno Leitao <leitao@debian.org>, kernel-team@meta.com, 
+ stable@vger.kernel.org
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5458; i=leitao@debian.org;
- h=from:subject:message-id; bh=PkvGbMkIVWW50tZgDleH6tDuM9JtcVvOQSQLHiupoRI=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq8wQY7Km2qT9G5oWqhkGeOJ0iet/oqcMqKB3GX
- tSt3uEcCieJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCavMEGAAKCRA1o5Of/Hh3
- bZliEACaCQoV3P5pNnXcAk7Vk2hH6lUDDtyHOB0Bdofa8Dpd6zWsB8fL/SYkymfLlRxkY7oKlhy
- Rcd3SQt12Pz83HF7mzkwGab1hfB87Cc5w3fuCSmB2QEhU3dKlfZTq6D9ie3hvlQtkK0N3aDjS2b
- wZaHfaoR41JWYQY1ZJOKuOxv2EQCME39EZNeUQLzRs2kDGK7yBlZ7tbMwhlgM28o/VV52+W8mGX
- SD3UUnu8zCRZ7UfNztfeBImsjYKeLP6FQzNelczWbf/uiaI0vdxlMHOaMOXG/9yZm5F7tI0giv1
- xMIqql/+Y3GkVgLfFcmNqieMaHXP7pAnNZ6849B7KrkoceRLFsrpLw3LN+fy/UUl+BQgBnlHPhs
- 2qyfNToSAJDzQ4+0h24z0AxqO6PoEXS1UPPyB0RJnCqNBemvWw/7ukgP0Asr3CnnDGIEAuesBRV
- bmMou6FWfM1pYYWWJrWMkESt8dW1qO68qqBkRV5uV+0QfqYQxTxARb3lhhwu4tkzD+bq9U+eOqM
- FCb5wi70O4UViaTzTsXDRmepTSsPfzdSvmpw/1vCHsyeLMChOFtBDKHVmKeFbQ1XRD7kmNYm2d6
- C/6LS5wKGKfpsymIUs4vQ2BkMZ2yubK4FOdRgcKSGC8x7zv+XCkKedjzE9k71uLLuHc5RLEbejh
- fjc0DeDMxvct4wQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1238; i=leitao@debian.org;
+ h=from:subject:message-id; bh=NeGmKN3thvdahCzcgtVy86L0XUPUwXecQRMKsZHaZVs=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq8wQYn+tO0/VLlCpKrWAiFk/NDyAXlM8rdRiIY
+ 5NVV3z7jQmJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCavMEGAAKCRA1o5Of/Hh3
+ bWPjD/4+JCpUjzQC7+wpcfuUqpIQ257Du7Kdozk0zxWRhZyLexwAvUq8MrMgAjj9pnefRjX9WH3
+ bWh8IdLz/x6p/emum/ddOOCpq3hS+yUpA/Nw95efr5YI8+ZvmnfA5ktJxMMv2sJz1oBmluexzFA
+ nZeObq4sZfp5rXLA19Y7xnISHT2sbijtsVazm1m3J7obgvMW0MIgiKIfHB2pMEVOlxBa3i3lZQb
+ SDnuQUj2GQHnRCUUSsvmSqF6vhFkp0dRey95qurL+iKwKPt9kIF5u0vXJEHWNQzLwUYEluPPYLJ
+ McvMXURJb8e/B92meu65MID8Dl/2R/RkF3Qs0lUq97w9oqZzyUcGYzftDhvC/hOzGh/+mG7OWGm
+ J7Z0jhZWaMpZe/VP7J8D+XYMv5uhZrw96OUGkxSc1Rr3hkq0EauSRPUszKGN/MmEJgIQ6lLqsrp
+ OPVBX9zrFualqhV/iPBqMe2OpO5kM/4zZKY/FAz1VVs8WP6YrSrrCyLFblXa1cNheJiSgM0XGfi
+ q+AAV7axQ6aiP1c9HaHF9cv8T5jhlpXvsFsiuBZNUQ/a3RevfIE300XwXtpANw7qu4lhGMipzqS
+ 8xT3Ci+znxzd8wA7nVV3xaEj+NHOdyfyPQ1QvQKO++VKHpyrwJfguFsWJpBK4+xXUaAfqZ53tx2
+ GZBW8VwocVvy/9Q==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
-X-Stat-Signature: zw5uau936kwa7iizk9zpuia86w7zxxr6
+X-Stat-Signature: sywj3r8sq4sbwhfszidkx6y3h8zxtfwi
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 778BCA000D
+X-Rspamd-Queue-Id: 52ACB40004
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794311228-128033
-X-HE-Meta: U2FsdGVkX1/Vufgz7IU4ovTsFzfIxAlezde3PDW4DcEz6El4WFhFCU/B+9v0+CkaxAd/6mN1KxgJm3X4LJp+1Yhe0aGv5zvTpUuTGwwWIKy59Stg+xMVrirXXGHQ4XbyS+UmFK8AA9z7uT0bLTTdhYkM3eTwJe47GK4ZkBURD0nraGEfVfvskKEdbE/+Tt4/5MaiYdFFGeAxFIVJ1KsQo6rYfRzrZk7MiDJBMCoj95pkmTVm6kdbY4XeFkMYB6S+F3uU4SuxADrDMvObtU1oYpY4cwxk/N2aGyGg4qc7h+IEUlyRgB13e8gtiM2HV7qVf0WHLNy9YE70t39uenVX1xhUmbG+EKqgo3BGhz9Rgt1QQx0aJUED4Nm7sSpM9/5YbgwuJXxQp7SGCJIST4LFo/L/CXkCKqMNNDiUkulrk/QR/OlPj3dAbtB7RGY8QaghPFoREB2q98v2VfAVNhLKrpkx55/qtq7SG3AuPnQUdhCrz0Mn8nJ4QldebhqJk01j10k9qzYwTB1S/7/pV5zTf2omF3ElnIerziXj+mhjaE1EVIf9kK0lqDBnlgDfhMPS225RNqMVQON1Ac3PNNblLAgfkfG+fVF1utxgI3jaLR8YUaleGuMcggS2VWQGWF7vtNEc91NyHBYoBR7XgH0Rj4KwOYAZ+N9nglLCrzOJmB8NK/GtmR8sJ+/py0pQVKcdlLm5rVUztJrKYdubviSxPUDVdEiMcB0ZIFZLgjdEI4Mw1Hobs4T+SxjTBNBnOw4c0rWmSix8ylqrOjqN/+K5Qad7k6GkMjm8zo+Ae/6vbHXOnxGi/t8a86TbR4fp4fw5mH9zHPh4jw02yNZep8GCx90DaoAoE76mhRDYNQmNseqqbFNkLw+TTDMMk1vFK7h/k9/TG/ovsmwwWNQPhyI1TrWqENPR5U4+8mT92rezTjW0wmQjOuglrk00Jim0F6m5ldOnH9rVG3ToVkOp8e6
- qJS4dkRA
- Rn0LGhnnmJliDVhdwqs88pA1qtVF/U56HqVU6gh9EqvQD4VZ+A/qs1xOLuVx6PbDV3ywJTzL9ddGeU6LMx3SjjBxPhWSpKvh3cb5fXMZQzYCjhmlo0mSVyPnsLx6zF7/bAs6l6qBvd66lRHIiDyJjhvkU3q/xl0TQPxQOjvUvJlXv97SD92mVWc0AiphLief5nXC1UVcyWgbe35tIq+4e+tJaGh9cW6Bydd2Z7x5hXkhO+AWyUvjsOKsDa71ylN6W3L/t9SWcch6EKwDrCT2nIrF+hwpiA4v7xlt8
+X-HE-Tag: 1794311227-692316
+X-HE-Meta: U2FsdGVkX1+a7hTsjZrJSROARN9UCaV+4kNWdY2/MZea5Pn0O6UE0HtyTcmDQdenYNcsHI64+WGnRfLyp+QRBF+1nK9cmaILZYDj+m9ZqPLx1f558Ua3m5NapSlfVzBosh9Gx9EyENi6Yq8YbT2/bJSKLYLr4359sl4hXXCZjX/dJSeR85AtSnlOrITVkhK+qVqo4I7qHeHu6qeTe+tB/CnopFq3aWV4cgxGLzOP0/ImKLzKdIuB/UaMTVA6I7NF6cE3Cvvg7LNgxKLuz0iZ69pnThNxT8TjsbWHs6rl+0edo0THee1flUyKcfomB1eKvjp6ll7vrbm5W854pJRVYtfcjgCk1XlwULw6NmXc2IP0bODNBgGZQKZ/hiIy7d93zBMpjhoKduMo6kFYQTXWXlWQGEGDxixFt6fuF6K9abK0l9vapR9oHE4i+OBALsCNHeMRK6R+0ubQx2hpzsYDEJSaYfaEPqIezk20s7o8PTL1f4gMKA3MYmdnlL9QkLo2laRtszOpu89sJphSSDz9ImBRrtexBHU7VZd1bz5m47N0od31qOCmaR2uO+PUqbo5sDL/Rw/K6YYxNaNCPSxdIaYmtN/1h1vLaaiLoIcouIYUPvRDQp1ckrreiEd7AyBuUP5VUtcRLZrRRK61vvCiubx8seHfmti0DVv2nyu5lmjj0sAxf2nua26wmiUKwGXxWJsKpXBzDEVhKgEjsAVecvwrdWLtsmGEmKH/RMs7G7JUAbKl1qCwDVA6BabzO1veYIlkF+WfMCcO18F4XcM2qz5ITNSMf2UmKovu4XiPopIKvIq1Uz0/QlJxc+8te+m7aBwYKkUnZhcKSNbFd0WKF2t/BTgt6V1IBuhQLO9iXP/R3hnXyxPIeIiPNykuUb8MdiNjmYgxFeijL5VunfblZ7UUYUPlRGiAa9HFYLZQjUt+9F8ghb5dakOzYY4FTzEhl6bhTABnZkDNJI9xzaO
+ lqiugTlz
+ 8+yuL13LSRUqHx4MiLeWUdbl7lvkDmxbtYQR0Ew2i/GvLgYaErned+d1IbnNlXv0cffyl39iM/2rNgaG79kbJFdleo72/F5HtMetDgnCyr8sPm9yCPj4mQrsEkpJGPEKkr3BJa19MLb1sHFknv7qYwyX9apZ8QkLyjfD5DPCCmHTmPH/HD4ry+rVptuh9dolr7Tk+rQkGMY+XK/YJEiI2M/nbrscC8yhoESax43JMiZ0S0lMCbKQn+Qpu0Kx5CWLdUNCkPPuYPHK7P1nfyK2744XBhReev0i/0d1QRW+UHkV+R7cxA8bA/pabfQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,135 +125,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The slow writeback report names the waiting task and how long it has
-waited, but not what it is waiting on. On a machine with several
-filesystems there is no way to tell which device is slow.
+wb_wait_for_completion_cb() reports a writeback wait that exceeds
+hung_task_timeout_secs with a pr_info() that has no trailing newline.
+printk() keeps such a record open for a continuation and does not
+finalize it, so dmesg, the consoles and netconsole only see the report
+once the next message is logged.
 
-Pass the bdi to wb_wait_for_completion() and add its name to the
-report, together with the number of work items still outstanding. A
-sync issues one work item per cgroup wb with dirty inodes, so the count
-also shows whether a single cgroup is holding up the others.
+Terminate the message with a newline.
 
-wb_wait_for_completion() took the bdi until commit 5b9cce4c7eb0
-("writeback: Generalize and expose wb_completion") made it usable for
-the memcg foreign flushes. memcg tracks those by bdi id only and passes
-NULL, which bdi_dev_name() prints as "(unknown)".
-
-A sync of files dirtied from two cgroups, on a throttled null_blk
-device, now reports:
-
-  [   10.043698] INFO: The task sync:276 has been waiting for writeback completion for more than 7 seconds (bdi 252:0, work items left: 2).
-
+Fixes: d6e621590764 ("writeback: Add logging for slow writeback (exceeds sysctl_hung_task_timeout_secs)")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- fs/fs-writeback.c           | 20 ++++++++++++--------
- include/linux/backing-dev.h |  3 ++-
- mm/memcontrol.c             |  2 +-
- 3 files changed, 15 insertions(+), 10 deletions(-)
+ fs/fs-writeback.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index 01a00d7542b371..c5e9e5c0d506a9 100644
+index 15260cf2a29b09..01a00d7542b371 100644
 --- a/fs/fs-writeback.c
 +++ b/fs/fs-writeback.c
-@@ -196,7 +196,8 @@ static void wb_queue_work(struct bdi_writeback *wb,
- 	spin_unlock_irq(&wb->work_lock);
- }
- 
--static bool wb_wait_for_completion_cb(struct wb_completion *done)
-+static bool wb_wait_for_completion_cb(struct wb_completion *done,
-+				      struct backing_dev_info *bdi)
- {
- 	unsigned long timeout = sysctl_hung_task_timeout_secs;
- 	unsigned long waited_secs = (jiffies - done->wait_start) / HZ;
-@@ -204,8 +205,9 @@ static bool wb_wait_for_completion_cb(struct wb_completion *done)
+@@ -204,7 +204,7 @@ static bool wb_wait_for_completion_cb(struct wb_completion *done)
  	done->progress_stamp = jiffies;
  	if (timeout && (waited_secs > timeout))
  		pr_info("INFO: The task %s:%d has been waiting for writeback "
--			"completion for more than %lu seconds.\n",
--			current->comm, current->pid, waited_secs);
-+			"completion for more than %lu seconds (bdi %s, work items left: %d).\n",
-+			current->comm, current->pid, waited_secs,
-+			bdi_dev_name(bdi), atomic_read(&done->cnt));
+-			"completion for more than %lu seconds.",
++			"completion for more than %lu seconds.\n",
+ 			current->comm, current->pid, waited_secs);
  
  	return !atomic_read(&done->cnt);
- }
-@@ -213,6 +215,7 @@ static bool wb_wait_for_completion_cb(struct wb_completion *done)
- /**
-  * wb_wait_for_completion - wait for completion of bdi_writeback_works
-  * @done: target wb_completion
-+ * @bdi: bdi work items were issued to, NULL for the memcg foreign flushes
-  *
-  * Wait for one or more work items issued to @bdi with their ->done field
-  * set to @done, which should have been initialized with
-@@ -220,11 +223,12 @@ static bool wb_wait_for_completion_cb(struct wb_completion *done)
-  * are completed.  Work items which are waited upon aren't freed
-  * automatically on completion.
-  */
--void wb_wait_for_completion(struct wb_completion *done)
-+void wb_wait_for_completion(struct wb_completion *done,
-+			    struct backing_dev_info *bdi)
- {
- 	done->wait_start = jiffies;
- 	atomic_dec(&done->cnt);		/* put down the initial count */
--	wait_event(*done->waitq, wb_wait_for_completion_cb(done));
-+	wait_event(*done->waitq, wb_wait_for_completion_cb(done, bdi));
- }
- 
- #ifdef CONFIG_CGROUP_WRITEBACK
-@@ -1164,7 +1168,7 @@ static void bdi_split_work_to_wbs(struct backing_dev_info *bdi,
- 		last_wb = wb;
- 
- 		rcu_read_unlock();
--		wb_wait_for_completion(&fallback_work_done);
-+		wb_wait_for_completion(&fallback_work_done, bdi);
- 		goto restart;
- 	}
- 	rcu_read_unlock();
-@@ -2972,7 +2976,7 @@ static void __writeback_inodes_sb_nr(struct super_block *sb, unsigned long nr,
- 	WARN_ON(!rwsem_is_locked(&sb->s_umount));
- 
- 	bdi_split_work_to_wbs(sb->s_bdi, &work, skip_if_busy);
--	wb_wait_for_completion(&done);
-+	wb_wait_for_completion(&done, bdi);
- }
- 
- /**
-@@ -3069,7 +3073,7 @@ void sync_inodes_sb(struct super_block *sb)
- 	/* protect against inode wb switch, see inode_switch_wbs_work_fn() */
- 	bdi_down_write_wb_switch_rwsem(bdi);
- 	bdi_split_work_to_wbs(bdi, &work, false);
--	wb_wait_for_completion(&done);
-+	wb_wait_for_completion(&done, bdi);
- 	bdi_up_write_wb_switch_rwsem(bdi);
- 
- 	wait_sb_inodes(sb);
-diff --git a/include/linux/backing-dev.h b/include/linux/backing-dev.h
-index c2284466e7aa66..808d939d2ca7f9 100644
---- a/include/linux/backing-dev.h
-+++ b/include/linux/backing-dev.h
-@@ -39,7 +39,8 @@ struct backing_dev_info *bdi_alloc(int node_id);
- void wb_start_background_writeback(struct bdi_writeback *wb);
- void wb_workfn(struct work_struct *work);
- 
--void wb_wait_for_completion(struct wb_completion *done);
-+void wb_wait_for_completion(struct wb_completion *done,
-+			    struct backing_dev_info *bdi);
- 
- extern spinlock_t bdi_lock;
- extern struct list_head bdi_list;
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index ac6c43ea8c5a6d..df462d279a655e 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -4525,7 +4525,7 @@ static void mem_cgroup_css_free(struct cgroup_subsys_state *css)
- 
- #ifdef CONFIG_CGROUP_WRITEBACK
- 	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++)
--		wb_wait_for_completion(&memcg->cgwb_frn[i].done);
-+		wb_wait_for_completion(&memcg->cgwb_frn[i].done, NULL);
- #endif
- 	if (cgroup_subsys_on_dfl(memory_cgrp_subsys) && !cgroup_memory_nosocket)
- 		static_branch_dec(&memcg_sockets_enabled_key);
 
 -- 
 2.53.0-Meta
