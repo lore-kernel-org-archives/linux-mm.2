@@ -1,107 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7749D60A2600
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 01:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53972606A32E
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 01:34:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=e3rPUk5L
 Received: by kanga.kvack.org (Postfix)
-	id 5F9C36B00EF; Mon,  9 Nov 2026 20:29:17 -0500 (EST)
+	id 3E0876B00EF; Mon,  9 Nov 2026 20:34:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5838E6B05B0; Mon,  9 Nov 2026 20:29:17 -0500 (EST)
+	id 3926E6B05B0; Mon,  9 Nov 2026 20:34:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 429C26B05B1; Mon,  9 Nov 2026 20:29:17 -0500 (EST)
+	id 2825F6B05B6; Mon,  9 Nov 2026 20:34:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 10E156B00EF
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 20:29:17 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 81291A83CA
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:29:16 +0000 (UTC)
-X-FDA: 85417476312.27.B89B201
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by imf07.hostedemail.com (Postfix) with ESMTP id BAB9140002
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:29:12 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn
+	by kanga.kvack.org (Postfix) with ESMTP id EB3C56B00EF
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 20:34:49 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5FDB0140827
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:34:49 +0000 (UTC)
+X-FDA: 85417490298.11.3DD99CF
+Received: from mta0.migadu.com (out-112.mta0.migadu.com [91.218.175.112])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3A4331C0005
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:34:46 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=e3rPUk5L;
+	spf=pass (imf18.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.112 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794274154;
-	b=gFR/+IHA5iowbt3GVa9sjsQXk43BpkzjqUJhAbGDX5NHppCipIJOj8uKe7YjCfitRXRZmZ
-	TeU4hkahIeJLSkUn06qXy9OuMm8H6bkEfSRh++TF4D4FUcGSVkKjtyVVtuvP6D1984Vui8
-	pxz9wJrcZBRt/imHt7FC38OQT11GsX8=
+	t=1794274487;
+	b=NJSaZVuryMTeMvfc1Sh+js/t6lpVkdAw+4dag2CSaGjb+sXm7fyPRCUi0QQ9+Ssm5WE2YR
+	9V1zEcO9rL+P11lobllX0oZyFeDJHkUH5cso7NTlv/e9F31IZFrdYOQoecQVyp3Y67S6nW
+	0XxXTVgNNTIAC8SeSISGN2YW4eIA3+Q=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=e3rPUk5L;
+	spf=pass (imf18.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.112 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794274154;
+	s=arc-20220608; t=1794274487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aVUk5KNfoVM/ifJWEbEfsYize+Uhc5V1gasZQZSUIGY=;
-	b=U5Nq8H7tH7WYZlYiiNHyMnhoJs2eb195/4PYEpK6UhaiV9U7bNaku3sFM+S0hAyJYydqId
-	+JwsccecAUugf0grPaNETlqA0fOhtaLiFosHnBVqtqlmSEOz8PJTgZvDSxiGAoKueKOxNH
-	57x9+++l+18FasotD0tifwMNtL9GRBE=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn
-Received: from loongson.cn (unknown [123.138.236.242])
-	by gateway (Coremail) with SMTP id _____8BxbdJic_JqYQQeAA--.22802S3;
-	Tue, 10 Nov 2026 09:29:06 +0800 (CST)
-Received: from [127.0.0.1] (unknown [123.138.236.242])
-	by front1 (Coremail) with SMTP id qMiowJDxTs9gc_Jq7l0zAA--.39359S2;
-	Tue, 10 Nov 2026 09:29:05 +0800 (CST)
-Subject: Re: [PATCH v2] mm/slub: Genericize x86-specific cmpxchg16b comment
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>
-Cc: linux-mm@kvack.org, loongarch@lists.linux.dev, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20261109035906.10857-1-yangtiezhu@loongson.cn>
- <DMQW32TTNOPX.24GN6Q7VI6QJR@gmail.com>
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-Message-ID: <145c23ea-bc4d-b235-c822-df94b00a647a@loongson.cn>
-Date: Tue, 10 Nov 2026 09:29:04 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mokQoEIcfGB/Z/vjqUY62jcJF6mYDAaM4ddLv+h/SLY=;
+	b=w3CKLqMltzwiFWOKqpAXbklPrSvjrmrFdMAnKcpJjfwRHR5/9AzS1NopKZ6wJ5GvF3rwr/
+	HpcCA78R6tZH8vy0YCRCXW35R+QFmhPFioFSobXH1ZPcGI1TPT6edFFXGY5xba3NHiU4yW
+	/lPWD0ugmyeLtIjfFRC2hbx+fJedxfw=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=+CVoqE5ZB+NLoPvHg5KqhaCiBL96mDZaZ9g+LiiiVRw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794274484; v=1; x=1794879284;
+ b=e3rPUk5LBsgmimyOy8skpozEtHUoQOutbtXA9TzeXUZUSvfztLKgH5mRGn6ssOXUbO9+5d1y
+ BmPqVaSdwSHmHpbLMYEuVEpQucHa3jHQSMfny+2YvgTNzFQA4c6B0JehZakiTywzu0+EIA966+r
+ /nURuxXHQnCai6wEcOdV7awQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id c7e84b47a2292ca9;
+	Tue, 10 Nov 2026 01:34:43 +0000
+X-Mizu-Trace-ID: c7e84b47a2292ca9
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 10 Nov 2026 09:34:31 +0800
+From: "Xu Xin (vivo)" <xu.xin@linux.dev>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: g@dgvxl46587.localhost.localdomain,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Lorenzo Stoakes <lstoakes@gmail.com>,
+	"Liam R . Howlett" <liam.howlett@oracle.com>, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, Huan Yang <link@vivo.com>,
+	Wang Xiao <xiao.wang@vivo.com>
+Subject: Re: [PATCH resend] ksm: add merge_only_zero_pages to merge only
+ empty anonymous pages
+Message-ID: <avJ0p8ZfjZc9EewW@dgvxl46587.localhost.localdomain>
+References: <20261106034841.233085-1-xu.xin@linux.dev>
+ <899b1b2b-4f6c-45e2-abd6-a333ac77b23b@kernel.org>
+ <avEkWyGoKsVlCCRG@dgvxl46587.localhost.localdomain>
+ <3e126b7a-d7d9-4a8c-9c83-b6fbf5bf1539@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <DMQW32TTNOPX.24GN6Q7VI6QJR@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:qMiowJDxTs9gc_Jq7l0zAA--.39359S2
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBj9xXoWruryxJF1kWr43AFykXF43urX_yoWfGFb_Cw
-	n8GF1vkw18XFnayF10kF12vryUuws2qrs7ZrZ8JFyYy34kt3s5CFs5Cr4fGr15XFsayrs3
-	Kw4DXF9xZFZxCosvyTuYvTs0mTUanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvT
-	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
-	cSsGvfJTRUUUbxxYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
-	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
-	w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
-	WUJVW8JwA2z4x0Y4vEx4A2jsIE14v26r4j6F4UM28EF7xvwVC2z280aVCY1x0267AKxVW8
-	JVW8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
-	xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v2
-	6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
-	vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
-	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
-	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
-	xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
-	1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU7_MaUUUU
-	U
-X-Rspamd-Queue-Id: BAB9140002
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 9c3uhg3momaqho6dx5dz57n5e53s1qrr
-X-Rspam-User:
-X-Spam-Status: No, score=-7.0 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3e126b7a-d7d9-4a8c-9c83-b6fbf5bf1539@kernel.org>
+X-Stat-Signature: juc1s7jfddx8ogry3h173b55nnf4u1gj
+X-Rspamd-Queue-Id: 3A4331C0005
+X-Rspam-User: 
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794274152-391111
-X-HE-Meta: U2FsdGVkX18jSni/QmiqW4XbJcOS7XwnjtN2llH891RLDFWgPdF5UPTlD9H3025FjkjOIvvcjvN+t0Bu1WYTn4EdP7Cav9M5jbR5GOeHC7ZqEqBEO/H8HTNL3vg3H1a9WsIedL/A2e/+y5vQRuFOqT6vRoQUJcYY4Wz98qYkopjJpIiRjpqTTpaj/WWv3MULwnqKgPt3M7qxvclfjfEnmAJ244tDj0M8QBCbDIZduDBssUlrIYIefehOTnCYtfNgxlXSYm2m6hRmtbzCrvq7Xg24cj+IgTMer7/Tro6c14I4Yvpucvdsy8QKkrxxzyUZAJU6uPqfZHb3+wkrViBgLJLbAdQPU2chpe73OcsBSUi/XW71Mip9JkWnhU5FxNXT9CbPC5lgMclIo5oMWDM/fO8hcTIDGeuMQSBmQcMD89O8WjgBfCaOSlHGXbkJaMDtL1WHJY0Te8XgiInmzYlrbcx9miNaYZjoucBgK86pklPk3tqnsrKQQkEDT/yrOgJP5FeS39u/aUrEFcDyJ3xMBIVyykhZ1Ij9RFsqbLstDpZWSXL3RfxrOr1MX5Gr1szD1wRUFcQVcDRXXqCX19rE3GEfiatAlSMmfbImyM75BEufTLoO4GpTWJqd4KoopQ+0LUjJ7cm8ZgxpIN6pcNwUtaJE/1h2zSdHh/l4j29cA/TAcoXRwyqWkcKVSYgUglMQFOor74vdGK11uD3eV0uqqSp0zcwwowd3B/1p0BVN8+53iP+r1YZ3A/XIT4YSPFfvcqnnekWvVucRRpjdDfSmH4GT7MziMo6vECKbsI1Dimq4HP6mvX98lz8adyEJEzdEbfAg4RVMhC/yi1N8ms2Hg/f6oNSWxiAkQxlNRTIOWgEXYKbNbFZfTwlAozMiT8dNsH9tP7ASBSgiUBGjue8WxUVDhR9YijvAOrbtjBh2MBndHo7GxNBKffa6hs8cPOa+zxyhirPRJARuWxQwAzQ
- BxYGhkb9
- G4g3dr4M8ny2Y0IcIMId7+JHOoPnea/Dy5P74ldaveRqI/LJ2hbVqZ8TGAYrYuhOTrCiiu8FOAor9gXhBxGKAgMvBbUQMELUV3iwjPxcy+C82fShZGOM7N1Suyxz/EiFY+zTui6G4Yuh4R2N6sIW8ebOhQAkAT7BlYqXQRXqOv6sUqpJ/SJizds2SJwXYE2ZBWE+bL9xweEZbVKo=
+X-HE-Tag: 1794274486-451867
+X-HE-Meta: U2FsdGVkX1+liz9X2IEbMH+HuvzAvXymm8Xphj4ENO8HN8OAvVzYrF95os4TBKNj7dri1ILSD2mordLWxTCJV2bvaLHtFY+Om1WkQJo1bITYi3SKVNcMWgx+hF6dN+6bqBaCG4eEAVUwljGBdnBBhkJ0dQ07429pQGipBhVJs4I7u9GQYlfIqBhGgoWczfy7uuAiaW4kpbekg2fO5eJ6JCq6uP7FP0G6n27bxlbKQ+ou80fIyeA6+KRADcz5w1wEX2POQlGeEuhf/y4/3HHcZSnsVCQydQr/9iT3X/cAY7HNnuLFB5nrPUdC6jJbprejjB4Ydaprk01EA3QGpsSdNUQStBXkqZRnNtbXLjLR0UE8Md+J04XEI9QS7s9c0NVMLNjnoLcz+nrKmlq+Mk7kGYZyCvok4VmzYXr2pn++S5vljA0b0jIli/rEtaT/Jgt/2vqStuAzq7jLnJpYlgXakTgxz4wShciPk9+zQuZrV7xw+NZadANz590f99jRAKcNETpFLSlYv7ArfA3KXPdsJeVbKdlezURFd1zwgIUpQoHiVYV/QSCtBQnHLovxdXBvv+xWlGtJYvi4DYDAi961SnmO5SDI9BMOIUPOtZasQW6yA2zW0uCJ/41OThLEyCjJ+SowHi8C1No2I/ppgmX3mbfUvgwoY6t2uI2VZipqFPktHGX1JiqwxGInwv6yc8qbGK9x8Wfzcwpc+Pn4yVNXiuVxj1aeiEsThFQcgMpHIDtwXXXT586gfm0BOtgy7R/+D3iqyncsOwlQd8r/bEKPoaQwYGJZ5mnQwin3Vm+CBdtseVZ7t7V8S8UklrI0I+0i/rkJjzkt74nQq8y9PnoFOXZypWRxuzkOHKfdkvXIzCte18dS96tcpyoFgdB80wwq6J5bNLD//zwhzdMb12l5aaMVQl2SBKA6070Cg0FEohG3to+OgYlhAFeUyv/L2K7P+rx/2RW4/X/9YA4+Vk+
+ Y9VxZiPA
+ CcG9c+T307nokszt3fqsImjw/sPlh3/OBpBVKDbAdLgYPrJm8zxM75osaxtJaoJSZcFc6ryfEIpNnMX8TCitTJczs/DYiAap3chYIehJn8AhAgW0V9ZjIw+l+v3Xyz/4EumNpZjEc92upYJAaT+mWxDpU0tTXMQdw0PVoh+shLJ1UMSSKrXY6j2LaUokLbt6kF2z5GM1Po9XXoAmnShSPu2gHRm/xwwDw9pweOgP+ELk8HhQqB5Te8YiVemEx/UgRRlIfxHKi18STmeTpGkkxy4hTa26XhkLR3oIDeOAivciFGyhSGd3i9YF6VQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,28 +103,108 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/10/26 2:25 AM, Alexei Starovoitov wrote:
-> On Sun, Nov 08, 2026 at 07:59 PM Tiezhu Yang <yangtiezhu@loongson.cn> wrote:
->> atomic primitive is satisfied by different hardware implementations:
->> (1) arm64: satisfies it via LSE atomics ('casp' instruction)
-> [...]
->> Update the comment to "double-width atomic cmpxchg", which provides the
->> following advantages:
->> (1) Accurately describes the cross-platform hardware invariant.
+On Mon, Nov 09, 2026 at 06:41:39PM +0100, David Hildenbrand (Arm) wrote:
+> On 11/9/26 02:39, Xu Xin (vivo) wrote:
+> > On Sat, Nov 07, 2026 at 07:28:50PM +0100, David Hildenbrand (Arm) wrote:
+> >> On 11/6/26 04:48, xu.xin@linux.dev wrote:
+> >>> From: "Xu Xin (vivo)" <xu.xin@linux.dev>
+> >>>
+> >>> Add a new sysfs attribute, /sys/kernel/mm/ksm/merge_only_zero_pages,
+> >>> which, when enabled, makes ksmd merge only empty (zeroed) anonymous
+> >>> pages with the kernel zero page and skip the stable and unstable trees
+> >>> entirely for pages that carry data.
+> >>>
+> >>> The attribute requires use_zero_pages to be 1, and the two are kept
+> >>> consistent by symmetric constraints: it cannot be enabled while
+> >>> use_zero_pages is 0 (-EINVAL), and use_zero_pages cannot be turned
+> >>> off while it is active (-EBUSY). The new attribute can be changed at
+> >>> any time and is only effective for pages merged after the change.
+> >>>
+> >>> Benefits in three aspects
+> >>> =========================
+> >>> - Memory saving:
+> >>>   On memory-constrained systems such as Android and embedded devices,
+> >>>   zero-filled anonymous pages are the largest source of duplicate
+> >>>   anonymous memory. They are produced by userspace allocators: the
+> >>>   zeroing of freshly allocated Java objects and buffers in the ART heap
+> >>>   (new byte[]/int[], Bitmap buffers), calloc/memset in native code, and
+> >>>   preallocated media buffers. Merging them with the kernel zero page
+> >>>   frees a significant amount of physical memory, which matters as DRAM
+> >>>   costs keep rising. With this enabled, we measured 100MB–300MB saving
+> >>>   tested with several popular applications on aarch64 (Android).
+> >>>
+> >>> - CPU overhead reduction:
+> >>>   Merging only zero pages also reduces the overhead of ksmd. A page that
+> >>>   is not merged with the zero page carries data and can never be merged
+> >>>   with the zero page, so there is no point in searching the stable tree
+> >>>   or inserting it into the unstable tree for it. Skipping those tree
+> >>>   operations for data-bearing pages reduces both the CPU time and the
+> >>>   rhashtable memory footprint of ksmd, which makes zero page merging
+> >>>   practical on low-resource devices where full KSM scanning would be too
+> >>>   expensive.
+> >>>
+> >>> - Security:
+> >>>   Finally, this shrinks the KSM side-channel attack surface: only zero
+> >>>   pages are ever merged, so the sharing status of data-bearing pages is
+> >>>   no longer observable through KSM timing side channels.
+> >>
+> >> Lol. Did you come up with that or an LLM :)
+> > 
+> > Ha, fair question :) This came from our own investigation. We were looking
+> > into whether KSM can actually provide benefits on Android phones, and this
+> > observation came from real-world application workloads. To be fully honest:
+> > I did use an LLM to help polish the English wording of the commit description,
+> > but I carefully rechecked and verified every sentence myself..
 > 
-> You ignored Hao's point about shorter commit logs.
+> The reason why I ask is that this effectively disables most deduplication where
+> KSM was originally invented for: VMs running the same kernels, libaries,
+> executables etc.
 
-If the following shorter commit message is preferred:
+Yes, it closes the original scenarios like KVM, so I wrote a Note to say that in
+commit description and Documentations. But it opens up some new application scenarios
+ — scenarios with high security and low cpu-consuming requirements, where merging
+zero pages alone can already bring benefits.
 
-   mm/slub: Genericize x86-specific cmpxchg16b comment
+> 
+> So yeah, disabling most deduplication shrinks side-channels ... by disabling the
+> core functionality of KSM, to dedupicate pages with the same content :)
+> 
+> > 
+> >>
+> >>>
+> >>> Note
+> >>> =====
+> >>> - Suitable for Android, embedded and low-memory devices, where zero-page
+> >>>   deduplication is wanted but full KSM scanning is too costly, and reduced
+> >>>   KSM side-channel exposure is desired. Many handset vendors may prefer
+> >>>   this knob, which can be used as a default fallback policy.
+> >>>
+> >>> - Not suitable for server and virtualization workloads containing many
+> >>>   non-zero duplicate pages, where vanilla KSM provides better memory
+> >>>   savings.
+> >>
+> >> I proposed something similar when I was still at RH. My concern back then was
+> >> that we don't want/need all of the stable/unstable trees.
+> >>
+> >> IIUC that's all still in place in your implementation, right?
+> > 
+> > We still keep the stable/unstable tree data structures, but zero-page merging
+> > does not participate in the stable/unstable tree search path. One more reason
+> > for keeping them is that merge_only_zero_page is designed as a dynamic knob
+> > that can be toggled at runtime, so when it is disabled KSM can fall back to
+> > the traditional full KSM behavior.
+> 
+> 
+> What's the memory overhead from keeping these datastructures in the
+> merge_only_zero_page-only path?
 
-   In __kmalloc_nolock_noprof(), update the comment from x86-specific
-   "cmpxchg16b" to generic "double-width atomic cmpxchg".
+In the merge_only_zero_page-only path of current implementation, the main memory
+overhead comes from the ksm_rmap_items for non-zero pages, RB trees of stable and
+unstable, and mm_slots.
 
-I will wait for a while for more feedback from mm maintainers and send
-v3 if necessary.
-
-Thanks,
-Tiezhu
+If the allocation of rmap_item can be avoided (following Tu Jinjiang’s idea), then
+only the stable_tree and unstable_tree remain, which are basically empty, and these
+overheads become so low that they are negligible. The mm_slots are essential so can't
+be avoid, but won't take up much memory.
 
 
