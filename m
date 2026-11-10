@@ -1,138 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9635560A260D
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 21:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE72606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 21:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=H09R9nUh
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=o1CTBC5V
 Received: by kanga.kvack.org (Postfix)
-	id B71116B05C2; Tue, 10 Nov 2026 16:09:56 -0500 (EST)
+	id E75046B00EF; Tue, 10 Nov 2026 16:25:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFB376B05C7; Tue, 10 Nov 2026 16:09:56 -0500 (EST)
+	id E25716B05B0; Tue, 10 Nov 2026 16:25:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C2A46B05C8; Tue, 10 Nov 2026 16:09:56 -0500 (EST)
+	id D13AC6B05B1; Tue, 10 Nov 2026 16:25:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B0F56B05C2
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:09:56 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A1D236B00EF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:25:35 -0500 (EST)
 Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 61A6CC0124
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 21:09:55 +0000 (UTC)
-X-FDA: 85420451550.19.4AB00C8
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 2285720008
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 21:09:52 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=H09R9nUh;
-	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2D8EC160130
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 21:25:35 +0000 (UTC)
+X-FDA: 85420491030.19.278B11F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 4C966A000C
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 21:25:33 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o1CTBC5V;
+	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794344993;
+	s=arc-20220608; t=1794345933;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7cECixYNr0OovLH4QYoKXkxOvB4WVLsH4r6Oh+9diE0=;
-	b=utM3v4VQIsYYBAWwVFY73d/FlrTNQhpvwVj44ryV+Uw540GH/cV5PMvVUi8Xba2jTYJMsr
-	CCR64m03GX66/Hg4+VDx+ew0+kpWJZV2vXjEHlZn8xxjgHWccg7JE25a8e9VmAg7BGzgyo
-	vx+uoI7KQxBRtcd0AugSAQnv/gmy6AI=
+	bh=y0gm0TGoxut+75ypiNOEVMsTMwXFowvyRq5zMv35qXg=;
+	b=XDCkKmb/bIU3Kclie/0EQc916GCMK+wHpyFDdugk1URgcPxx2+k36qHx/Sdjjwow1YyxAH
+	ixQg1HVDJSEXIdqCNxXoTpYAUKIrQGU1P+oqw6l+GMhPiJCjJk/wqn4JmqcABtFW2x3N8m
+	HBWM2kN1N0nAHqWceyr1ZAvhkOWfoX0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794344993;
-	b=7Fawif/Xx+ArScua8ujpaEKvb8Xe2+Qxr7MC6IDLo6hhiF8qoi4q/a4uG0hNljnPuowL7S
-	IjYDEy5zjxfExCZMQMahotN3j35Y+zc7Ut27oW5Jw573tcRk1VQJxne4PxhCKav7PhCm57
-	x6cVzVu17TpRMnXmGfHH0jnJIHRnmN0=
+	t=1794345933;
+	b=nHmwxAppc3YXdLIhvqCnBZr8y2BvKdpxbau/f1CFtplR6mK6MD7nvSw2U8+9W1oESo2oQs
+	kqXz2ZdT3LkN2zIkKpJdPHsdvHoyuznEbraYTjHPPxLD1nooK6l6Ny8XVnllt/6YNe6kf+
+	Fi/mi3uhvjewONO600vczvY6kiSieb8=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=H09R9nUh;
-	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-49318428d98so1361995f8f.1
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:09:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1794344991; x=1794949791; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7cECixYNr0OovLH4QYoKXkxOvB4WVLsH4r6Oh+9diE0=;
-        b=H09R9nUhuXaNdXr9W90rKPu7P0rlDKBRNdoXFaFU4+O0flkZr7789Zz7UvHM0shhwA
-         BoZYXcw/Rwq58WXkaDanMQnjkvMISPUzwXzMHubRykTHY7UCU6GNtRBgp9L8StblcUWL
-         ua88rdMnuv2gPi1jAS5qcWNZtFs1hIXUzsIUnvQz5DTgGaNIjLacGYVJliGBU9HZzQ4s
-         eXo8jtXFcNOovsQdB2WD6iUsc/+1e+ZDLKLSpm77mmINQgdeEuggLEvmhnA4wWl5gdqM
-         oyS9lac8Pn3ubHP3Nqpx76taXPQHyeycfxelzMyWH1BrY7eDWiYzbJCAqa31CjtH973U
-         D0mA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794344991; x=1794949791;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7cECixYNr0OovLH4QYoKXkxOvB4WVLsH4r6Oh+9diE0=;
-        b=uNNzIR5233llfKWLmxbvRie2pbKCtScBmSX69a5aQIMfeQzRX60zu29WJd41IH45eS
-         VqbDWN50gGgvy/JfcpO7Cn8qqnoO3HkRfcmFfaDETREO0xXayJJ5ADauY2wnYBArNKJx
-         ZRaut+d39PvfjmanimexHFfYN8jLWNVuBAzrwKLqSiKu7WTHFr68tfVePUYBrcexVDA2
-         h9OZ+H18vU+oNDEDKkLQ6TFd0qAcIJdht6QsQbMHKBSYBDS+El6bGZR6nbyjm9SNKudH
-         Afx6dtf0cjKYZtZaZpy3C94sUczCvmh/JBjznpxNzvy+HdRGJZcao1ZoeBsFfq/WwD4h
-         zaww==
-X-Forwarded-Encrypted: i=1; AL+hErFhBc8OqLjWCK9npHrNbAzbLoGq8IQ0pxEYR3ssabQpmz3gVihBuXkiTxQSMpx2YKsGMZxxjm7yqQ==@kvack.org
-X-Gm-Message-State: APuU4Z+XUsKzjwsaMbQh9CWRc25AlQyHapWny7hatNKGawc0FHgmCp1P
-	ADxdPdzmN7ACdjwaqNZgTRerwIlz9yiseS+I2rMv37gBZL6+8sZGyBoUxTUPKwWhipA=
-X-Gm-Gg: AYBFou3+OhOIWHzcq3UvMrnswik9LEl/auLDZdCFVYRPLoMHKMBVttYz5kQLSnyfqd6
-	d+f6URb+xAHxs+6XlXHRlmcFjUkgBuxm2YrNKU5DPl4UCw4Qdq1NW6qPS4hk3K2cXWLuITyyez0
-	PtAF6wbH25L8xdkxLXdrfHvsTaAdoHrNGJ1CC8zTL/598IgUKr8V4kPX6nPSmOOLUzaIQtSEEFa
-	OHot+wLLuw6rNdwZ4oOmqBESIWjzNQV0cqj5sD3ZyMyMS77BuGbn/Ql2nTmbYi+W1M27MzFoHzs
-	LmiXdv2TPhUevb6mpRkBtby586f9m75uv5YynZdGqOPx3HaRcLhWrgri3W8SwWL5QY4m1ZfzgH9
-	JZHs0m788/RROwR7DZzn6ecEnOZ6MEATmlkRM5JyzB+Hi9i8eADYDFHREx6lrfX4kkg5XVQ5HKD
-	m5tnC4CJn2MXZ1GpDPyxDbdoXR6fwQqSxvP68Vt22NfHMkOh8XvlMkFAUtbGKAXM2k6Pj552qMj
-	lf7BuQrkwP9mxMHge8ar7MuRsWEBxf8kvQofUl05F6tMeKwVYWrVbnOUeIVEiytLlyCG6jh8rtR
-	EGXHf8ToMfZ7xR1d7WjrtoG8p0gV7OMm4C9TRNIzqpk=
-X-Received: by 2002:a05:6000:3103:b0:493:e0db:b520 with SMTP id ffacd0b85a97d-499c38baf87mr327184f8f.8.1794344991489;
-        Tue, 10 Nov 2026 13:09:51 -0800 (PST)
-Received: from localhost (109-81-94-245.rct.o2.cz. [109.81.94.245])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4984e26f8e3sm6223895f8f.1.2026.11.10.13.09.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 13:09:51 -0800 (PST)
-Date: Tue, 10 Nov 2026 22:09:49 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Fang Xieyan <fangxy@xiaopeng.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
-	Hugh Dickins <hughd@google.com>, Carlos Maiolino <cem@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Kairui Song <kasong@tencent.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-xfs@vger.kernel.org, Liu Chao <liuc63@xiaopeng.com>
-Subject: Re: [RFC PATCH 3/3] mm: enable filesystem page-cache large folios
- without THP
-Message-ID: <avOIHeOpjryn5DVd@tiehlicka>
-References: <20261110035205.3036-1-fangxy@xiaopeng.com>
- <20261110035205.3036-4-fangxy@xiaopeng.com>
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o1CTBC5V;
+	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CB7826339A
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 21:25:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D071F00923
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 21:25:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794345932;
+	bh=y0gm0TGoxut+75ypiNOEVMsTMwXFowvyRq5zMv35qXg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=o1CTBC5VQhREW4/n9g1IdTTVaaakAGNQqdYf0hhDAnN04rdPDTtRV8bYQ8UPfo43T
+	 5uBuMI3o2+ykYO1/ork2Q4x1AwAB9G8mtxKQ7BRfuG5Xi1HJg/auU9PtK3fHXE4p9a
+	 uhQhXLShQ2boZwCPOuYHQ8dJ/tY8XPb+xeYraxeaQtgEqPotudzrSrHPgsb/OQNJUq
+	 XqCetp7TDwQqbLoa2EQAwg2SkK/IX8fq5l+IdjmMK4nt0XgSTH5hm/T4Hqsm/qPGev
+	 5CfRQ4ficivHYLLF8/Bt+i7LA91fQ+V2D9+D8IyqsTSxqxMNdLT/qOQbUQE7Gy98Ef
+	 m05PkPSQ4gUgw==
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-93f259cdc86so222403985a.3
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:25:32 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErHfjP9lwPItSTpPnTxmTZFgMJRbi2xBR7YiTaaZ0q5xFGre+CMigV7xfNeEWh0QHfs7ZoPEjOmq3A==@kvack.org
+X-Gm-Message-State: APuU4Z/u0Rhh3VR0kD1h7rZz+Kh8fq3aXS1ndkc+dlnU//aW+OfBkgkW
+	CpWlHID3UAsH7us2qY0GKIXk2G7G/P/GY6iTsbxzrKQKRuf23ys/D+tseT23so/kUUGAslNNNKj
+	Ae8lsBbIp4CulEcewm4ZnUuXlLjI9Al0=
+X-Received: by 2002:a05:620a:1d08:b0:93e:e425:22b3 with SMTP id
+ af79cd13be357-947b00d6dc9mr39116285a.82.1794345931716; Tue, 10 Nov 2026
+ 13:25:31 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261110035205.3036-4-fangxy@xiaopeng.com>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 5t1iekiwz3qjwwutjybhdtkp7fo4m1jx
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 2285720008
+References: <20261110202025.25736-1-baohua@kernel.org> <20261110202025.25736-6-baohua@kernel.org>
+ <sashiko-outbox-207742@kernel.org>
+In-Reply-To: <sashiko-outbox-207742@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 11 Nov 2026 05:25:20 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xREpXsexDfepfpM0MOX9iepBe7-fr-WuGAV=da0w2eyg@mail.gmail.com>
+X-Gm-Features: AclHuK9NqIDdOADDWra6OtrXoYnbTURFVTVsaxnZwIx1C_wxpmnfiMYIQg1pKQw
+Message-ID: <CAGsJ_4xREpXsexDfepfpM0MOX9iepBe7-fr-WuGAV=da0w2eyg@mail.gmail.com>
+Subject: Re: [PATCH v6 05/15] mm/mglru: skip zones above reclaim_idx instead
+ of rotating them
+To: sashiko-reviews@lists.linux.dev
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, axelrasmussen@google.com, 
+	baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, hannes@cmpxchg.org, 
+	hui.zhu@linux.dev, kasong@tencent.com, kunwu.chan@gmail.com, 
+	liam@infradead.org, lianux.mm@gmail.com, liuxiang.277@bytedance.com, 
+	lyugaofei@xiaomi.com, mhocko@kernel.org, mhocko@suse.com, qi.zheng@linux.dev, 
+	ridong.chen@linux.dev, rppt@kernel.org, ryncsn@gmail.com, 
+	shakeel.butt@linux.dev, surenb@google.com, wangzicheng@honor.com, 
+	weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com, 
+	zhuhui@kylinos.cn, sidchintamaneni@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4C966A000C
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: 8uoswrtyfzj7wkox1onn1979iftihfhp
 X-Rspam-User: 
-X-HE-Tag: 1794344992-674066
-X-HE-Meta: U2FsdGVkX1+EhRLqDRJlnHQ8cXc5UXKaUmBl+8iDiGrtQ90qHQYEmXYtrampfmBRQ0N+SRSD09cLFEiWnLbTkmyhbROrbGI71p+jfZUt7HTBFy8h8AK6VL3JAQbvJtwzBF4+TjNKEv+Gw/I1Gx2yDuW9Fi6XWUdud3ebFUNWvhQsHSS+5p1K7BgwkltOYVEUngYDJ9l3xg2EWQI7klQZg2D23xkDxpGfnZAIunq90fd80R/R40vL0RxRalSAdL57DTu9WG+eUWQ6KEJGHNtb0JLdIBeIfs+qrSsvhQnGIfkpRkLoLRyBwLWwiXj26dCP6iaEwdtPLi1wukFst8eL3rsVf4abctIgmUQJ8yiNH9Ul3qm49ZQBUA+vWFoyIiek3W6QKlBCJtL9qcBz8uUR1fd44RmYLrUF9sXAqP/hVL+FAlbulGq9BhudGAyO2Es/d5cufRQHFBA3sLq3+6f7iYpIpDl1jTv+6UbC+sk694uG5VEWZzrrmA0+hJwIrDW1RDK/81RSP9NHz8RsiyGEViANAwNqo8dcp62vgi7hXpY5Fa3+2Z8rFWrewTHGbAzLnUyQBkng8rPtGCxN8LOsPGpx7C4tl4z1bC5iuQRIKJCogrS+pnvMYmOZqOOSbqR9zBhq0VwPmh0XN4zC8IECN4ys+7nzPrYV78BEzxxs0X3NZ9LUmXuR8v5bKag8KTng24SmB1jwYklXRp4ktRmNXa14BL8JM0dMlrC9b/N9t1JEoSeYV//XNFvqqMjY+8aAokDC1DQepeENKiRt0uQEE5zFoj8VHWkbetItTBWC0Vjcu7OD4ipVn9YpTIErTZdssVtIV7X61GLXtqHkGZDC0c/RrB9YrIdYyCXYDPKg38KAbsVsNJw2BeOyqhKNWX2jGkOk95uO2A4V7evOd+/reMkJHlgOD51Jg8Vochu+AB+v8gTA6sPhOXSJG4V13wppyq1GefeUlG7J+BlTBVF
- m6Cgpm0h
- xQdXp6DCsPJTFf4nDNVZop4gFBsKkpp+JCZZdGRcTnqdRmxqGZ6xO421pHZWSHECxYvTqOpdSIXPp3yyq6tNLtQqv0sRkudrgdUVpL195eVYazWRXi4r5TMmEq8cjY7Nq41Hj3d2pEQgtFLlNWGHzdmXRV2p8g3O2xSNmw9BVZIiBllj9CmzCD7MIA20iYONV+hYLkb0DkkKBhGmq+2rMjOvkD+W8CUK7PQtYb12rSSmutj6n0NvJdGVK66Bksaf7Ylq7I6+fvSPoPP72ock/LA024ZbYiWQN4RDoxLbzSZ6/wdCQ5dSNricHDCZA3nvAVo3672DQqdsUWYz1W0M4hsbaIp3SFN2Xnwlnn1DPodxATtuj5RX42PvWVGVdtnoDWlhqYvETjGuDwUlbjxwzrkOV8sG3/TtWsIS2
+X-HE-Tag: 1794345933-503589
+X-HE-Meta: U2FsdGVkX18mEwqZsztU4jtrBZBV3IPRQktHi5mVXQVKhPBK1pUcSj0PPQfgjyG9BSGwKVzIZ1tfApNiGbeerO1aVoQBlO8mb0lzLaj3ki95KYG4mJdlDPa/WzZEx2rLSfkxcDJ2Oi51MOL+GG6VTo8JzQXYxWuFDz8nBZf1fpxV4qoPSFnOI1ctqPiSVqBsS27FYVhLfXdO5S1jUxCU+8URZjWFAr5+AlJg5wcrCnZVBmnjnkxD1EH5tYnMfaJB5fWdQDZ9GhD+FkYRRainblsxuS5d5IQQeP2omKR5yf4Emza/qDSaMSPjetyd+Xf7qes/Q1+ZK3HEMSKztWOcJRmmb+cJnfo3rakB/dpfb/q9Ch/dWkjjs1NplaYGYOYKQP0YD5FdQzcGtTzZ7ftnTWLLIq5K6a6Mv8BkYETpzqwISz/E+MyZPciNV8ZwqXCU78VIExv8II8Yd7MIhhZRzC2pqmL2gZRWcSjJw/opgpyVIfM9tWx649W9sTAbuOeTLskff7jgGSTJrQadq3tuDCRia8qhkL00zSJcO4FOKqRGbGmah6rHY8WqNaupgGuSwH6I9GBCtvdK3Ky6U4CqbFi33l2Z/e+pGUsqAEIW9umh8ZwuNr9PZr/n5F+T8xsGMHUG9ilGXo/0gYsrMUa+xUo/4tyD0rsQgSUTZY46t3vhJHEF/jDEgoWnihK4qKD6ssgYKmAXueisRXXKDKXAuMtzkvQbgPExNav7rtcGAFJdVmu9lWTp8skiFuHJhw4S0hd5tSlNSC4o4cEfQoReWvWlb3VigvP44/XBanf097qqvkO57QjBmBDT1PLbSM0ZRFWMI5pjZgZTrNEuXIMQ8NYs1N8M5G/rVBrKuvRS3vThThKL+NV0bM03fTIuO6t4HXGyuCoBoqppXvEoSAUKyWifupa0cDK+BmTAMThLp5ebsrwdX9HJiV7LI28uINYE+Xay9/GFeCok47lg2U3
+ r+m7h6x7
+ fiqy+RGr80z4E28VmGo0Lox60rpThagk2LjNx+XXWaBikQHJ1orgP9FXlL7S5Y5KVHl264XBWHAykrc4CNFw+jhg4eqiIAbh2zlqDL5U6lb953//5rnltwocnIH1vBfBmc9Xlif/RFhEx2r7kjRSt2q1wdkKtFn75z1Q+OhUVPfF7AYl/mbrGC9ofdCec44Qb47zRRMUWP1RTbY6nue5+NJGyeXYtcA1Htea/voRmMKhXrqyaNEZlTuIpmV8074b7ETAmtUXaN9AW3jkf3pV2D+QxuyNarwtAesSWVx+HFFZYWBuesQDzdJzEErTI/I1fJ0mI37znJZAKyPb4pZcVU4o8s8Ukgc5W8x+ww8WkZGhrD82u89unb0WAsH6WNDE5+FavvnJdR1LQF2KRsYXhWWczCibzRQLdxapll5Pdhg/oeJwVjDofxYX/cFP6AwD572tCIdTN/H2Uo0ugz6vXy7HfSFQbgeDmVF97kRbTi5eZmdbSZkIkJbOmcifPXTzFFWE7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,206 +114,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue 10-11-26 11:52:05, Fang Xieyan wrote:
-> Ten filesystems already opt in to file-backed large folios by calling
-> mapping_set_large_folios() or mapping_set_folio_order_range() from their
-> inode setup, unconditionally.  Every accessor that reports those orders
-> is nevertheless compiled out when CONFIG_TRANSPARENT_HUGEPAGE is
-> disabled, so the opt-in silently has no effect today.
+On Wed, Nov 11, 2026 at 4:56=E2=80=AFAM <sashiko-bot@kernel.org> wrote:
+>
+> Thank you for your contribution! Sashiko AI review found no new issues
+> in this patch, but noticed 1 related pre-existing issue it does not
+> introduce:
+> - [Medium] mm: inconsistent PGSCAN stat accounting in scan_folios() [1]
+> --
+>
+> commit 91b0962145533fb9dabae36c077150538170ace0
+> Author: Kairui Song <kasong@tencent.com>
+>
+> mm/mglru: skip zones above reclaim_idx instead of rotating them
+>
+> This commit restricts scan_folios() and lruvec_populated_min_seq() to zon=
+es
+> up to sc->reclaim_idx rather than rotating folios in ineligible zones to =
+a
+> younger generation.
+>
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index db0a8a3e88872..6b16706779744 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+>
+> [ ... ]
+> >                       list_splice(&moved, head);
+> > -                     __count_zid_vm_events(PGSCAN_SKIP, zone, skipped_=
+zone);
+> > +                     __count_zid_vm_events(PGSCAN_SKIP, zone_idx, skip=
+ped_zone);
+> >                       skipped +=3D skipped_zone;
+> >               }
+> >
+>
+> [Severity: Medium]
+> This problem wasn't introduced by this patch, but should scan_folios() pa=
+ss
+> scanned rather than isolated to mod_lruvec_state() for PGSCAN_KSWAPD and
+> PGSCAN_ANON + type [1]?
+>
+> mm/vmscan.c:scan_folios() {
+>         ...
+>         item =3D PGSCAN_KSWAPD + reclaimer_offset(sc);
+>         mod_lruvec_state(lruvec, item, isolated);
+>         mod_lruvec_state(lruvec, PGREFILL, sorted);
+>         mod_lruvec_state(lruvec, PGSCAN_ANON + type, isolated);
+>         ...
+> }
+>
+> Folios that are promoted via sort_folio() or skipped are counted in
+> scanned, but passing isolated here omits them from the PGSCAN vmstat
+> counters and underreports the scan rate compared to the classic LRU path.
 
-The reason for disabling THP on RT configs (as introduced by
-554b0f3ca6f4) was:
-:  There are potential non-deterministic delays to an RT thread if a
-:  critical memory region is not THP-aligned and a non-RT buffer is
-:  located in the same hugepage-aligned region. It's also possible for an
-:  unrelated thread to migrate pages belonging to an RT task incurring
-:  unexpected page faults due to memory defragmentation even if
-:  khugepaged is disabled.
+If this is unrelated to the patch, could you please avoid
+reporting it?
 
-How is the same prevented for the page cache? If the reasoning above is
-not generally applicable then would it make more sense to make the
-conflict less strict?
- 
-> Gate the page cache order accessors on CONFIG_LARGE_FOLIO in addition to
-> CONFIG_TRANSPARENT_HUGEPAGE.  Both conditions are still spelled out even
-> though CONFIG_LARGE_FOLIO defaults to y when TRANSPARENT_HUGEPAGE is
-> enabled, so that file-backed large folios do not silently disappear if
-> that default is ever relaxed.
-> 
-> PREFERRED_MAX_PAGECACHE_ORDER is left as it is.  Deriving it from
-> CONFIG_PGTABLE_HAS_HUGE_LEAVES would let HUGETLB_PAGE raise the ceiling
-> on its own, to HPAGE_PMD_ORDER capped by MAX_XAS_ORDER.  On arm64 with
-> 64K base pages that works out to order 11, a 128M folio, eight times
-> what an LF-only build advertises today; the figure is arithmetic, not a
-> measurement.  Without THP such folios cannot be PMD-mapped, so keeping
-> the existing order-8 limit avoids substantially increasing the maximum
-> page-cache allocation size without an established use case.
-> 
-> CONFIG_LARGE_FOLIO no longer only builds the split machinery, so its
-> Kconfig help text is updated to match.  The default also carries a
-> comment recording why THP must keep pulling this option in:
-> mm/folio_split.o is built from CONFIG_LARGE_FOLIO, while huge_memory.o,
-> built for THP, calls into it.  XFS also gates mounting
-> block sizes larger than the page size on
-> mapping_max_folio_size_supported(), which means large-block-size XFS
-> cannot be mounted at all when CONFIG_LARGE_FOLIO is disabled; the
-> rejection now points at the missing option instead of only reporting the
-> block size as unsupported.
-> 
-> shmem keeps its THP dependency.  shmem_alloc_and_add_folio() forces
-> orders to zero without THP, so the mapping is only opened large-folio
-> capable when CONFIG_TRANSPARENT_HUGEPAGE is enabled.  Advertising the
-> larger order while allocating order 0 would not be cosmetic:
-> generic_perform_write() sizes its write chunk from
-> mapping_max_folio_size() and passes that length to ->write_begin()
-> before clamping it to folio_size(), while shmem_write_begin() rejects
-> pos + len > i_size outright for F_SEAL_GROW.  A cross-EOF write would
-> then fail as a whole instead of being partially satisfied up to i_size.
-> THP=y kernels already behave that way; the point is not to spread that
-> behaviour to a configuration which gains no large folios from it.
-> Enabling shmem's large folios -- allocation, swap and split alike -- is
-> left to a separate series.
-> 
-> The stale comment on mapping_large_folio_support() is updated to match:
-> large folios are now gated on CONFIG_LARGE_FOLIO rather than on THP, and
-> CONFIG_LARGE_FOLIO is a default rather than a select from THP.
-> 
-> With CONFIG_TRANSPARENT_HUGEPAGE enabled the generated code is unchanged.
-> Without it, file-backed large folios become reachable for the first time.
-> 
-> Reviewed-by: Liu Chao <liuc63@xiaopeng.com>
-> Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
-> ---
->  fs/xfs/xfs_super.c      |  2 ++
->  include/linux/pagemap.h | 17 +++++++++++------
->  mm/Kconfig              | 15 +++++++++++----
->  mm/shmem.c              | 11 ++++++++++-
->  4 files changed, 34 insertions(+), 11 deletions(-)
-> 
-> diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
-> index 5a06132aa..29548faec 100644
-> --- a/fs/xfs/xfs_super.c
-> +++ b/fs/xfs/xfs_super.c
-> @@ -1864,6 +1864,8 @@ xfs_fs_fill_super(
->  			xfs_warn(mp,
->  "block size (%u bytes) not supported; Only block size (%zu) or less is supported",
->  				mp->m_sb.sb_blocksize, max_folio_size);
-> +			if (!IS_ENABLED(CONFIG_LARGE_FOLIO))
-> +				xfs_warn(mp, "CONFIG_LARGE_FOLIO is not set");
->  			error = -ENOSYS;
->  			goto out_free_sb;
->  		}
-> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index 73af18a37..2102733c1 100644
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -393,7 +393,8 @@ static inline void mapping_set_gfp_mask(struct address_space *m, gfp_t mask)
->   */
->  static inline size_t mapping_max_folio_size_supported(void)
->  {
-> -	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
-> +	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) ||
-> +	    IS_ENABLED(CONFIG_LARGE_FOLIO))
->  		return 1U << (PAGE_SHIFT + MAX_PAGECACHE_ORDER);
->  	return PAGE_SIZE;
->  }
-> @@ -418,7 +419,8 @@ static inline void mapping_set_folio_order_range(struct address_space *mapping,
->  						 unsigned int min,
->  						 unsigned int max)
->  {
-> -	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
-> +	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
-> +	    !IS_ENABLED(CONFIG_LARGE_FOLIO))
->  		return;
->  
->  	if (min > MAX_PAGECACHE_ORDER)
-> @@ -459,7 +461,8 @@ static inline void mapping_set_large_folios(struct address_space *mapping)
->  static inline unsigned int
->  mapping_max_folio_order(const struct address_space *mapping)
->  {
-> -	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
-> +	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
-> +	    !IS_ENABLED(CONFIG_LARGE_FOLIO))
->  		return 0;
->  	return (mapping->flags & AS_FOLIO_ORDER_MAX_MASK) >> AS_FOLIO_ORDER_MAX;
->  }
-> @@ -467,7 +470,8 @@ mapping_max_folio_order(const struct address_space *mapping)
->  static inline unsigned int
->  mapping_min_folio_order(const struct address_space *mapping)
->  {
-> -	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
-> +	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
-> +	    !IS_ENABLED(CONFIG_LARGE_FOLIO))
->  		return 0;
->  	return (mapping->flags & AS_FOLIO_ORDER_MIN_MASK) >> AS_FOLIO_ORDER_MIN;
->  }
-> @@ -500,8 +504,9 @@ static inline pgoff_t mapping_align_index(const struct address_space *mapping,
->  }
->  
->  /*
-> - * Large folio support currently depends on THP.  These dependencies are
-> - * being worked on but are not yet fixed.
-> + * Large folio support is opt-in per mapping and requires CONFIG_LARGE_FOLIO.
-> + * It does not depend on THP; CONFIG_LARGE_FOLIO defaults to y when
-> + * CONFIG_TRANSPARENT_HUGEPAGE is enabled.
->   */
->  static inline bool mapping_large_folio_support(const struct address_space *mapping)
->  {
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 9f97ad698..7bbed71af 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -831,13 +831,20 @@ config LARGE_FOLIO
->  	bool "Large folio support for the page cache (without THP)" if !TRANSPARENT_HUGEPAGE
->  	depends on MMU
->  	select XARRAY_MULTI
-> +	# Keep LARGE_FOLIO enabled whenever THP is enabled:
-> +	# huge_memory.o is built for TRANSPARENT_HUGEPAGE and calls into
-> +	# folio_split.o, which is built for LARGE_FOLIO.
->  	default y if TRANSPARENT_HUGEPAGE
->  	default n
->  	help
-> -	  Build the folio split implementation for page-cache large folios
-> -	  even when transparent hugepages are disabled.  Transparent
-> -	  hugepages imply this option; this option alone does not enable
-> -	  large folio allocation, it only makes splitting them possible.
-> +	  Enable page-cache large folios even when transparent hugepages
-> +	  are disabled.  This option defaults to y when transparent
-> +	  hugepages are enabled.
-> +
-> +	  With this option enabled, filesystems that opt in per mapping get
-> +	  large folios in the page cache, and those folios can be split.
-> +	  Without it, page-cache folios stay order-0 even when a filesystem
-> +	  asks for a larger order.
->  
->  menuconfig TRANSPARENT_HUGEPAGE
->  	bool "Transparent Hugepage Support"
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 4686875a3..399c8c9f1 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -3327,7 +3327,16 @@ static struct inode *__shmem_get_inode(const struct mnt_idmap *idmap,
->  	cache_no_acl(inode);
->  	if (sbinfo->noswap)
->  		mapping_set_unevictable(inode->i_mapping);
-> -	mapping_set_large_folios(inode->i_mapping);
-> +	/*
-> +	 * shmem large folios currently depend on THP:
-> +	 * shmem_alloc_and_add_folio() forces order 0 without it, and
-> +	 * advertising a larger mapping size makes
-> +	 * generic_perform_write() pass a length that shmem_write_begin()
-> +	 * rejects wholesale for F_SEAL_GROW before the folio size is
-> +	 * known.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
-> +		mapping_set_large_folios(inode->i_mapping);
->  
->  	switch (mode & S_IFMT) {
->  	default:
-> -- 
-> 2.50.1
+I also think this is a false positive. MGLRU uses
+sort_folio() to lazily promote or protect folios, avoiding
+unnecessary isolation. We don't want to count those
+folios as scanned.
 
--- 
-Michal Hocko
-SUSE Labs
+CLRU has no such concept, so nr_scanned is roughly equal
+to the number of isolated folios, except in some special
+cases, such as folio_zonenum(folio) > sc->reclaim_idx or
+!sc->may_unmap && folio_mapped(folio).
+
+>
+> [1] https://sashiko.dev/#/bug/linux-ebd28175-5aad-4454-b9f3-a9510e3c4655
+>
+> --
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110202025.25=
+736-1-baohua@kernel.org?part=3D5
+
+Thanks,
+Barry
 
