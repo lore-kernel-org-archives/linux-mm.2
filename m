@@ -1,120 +1,227 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A7060A260B
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 17:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0590606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 17:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Bmkgb8Wb
+	dkim=pass (2048-bit key) header.d=wisc.edu header.i=@wisc.edu header.a=rsa-sha256 header.s=pps1 header.b=zXgqWMXt;
+	dkim=pass (2048-bit key, unprotected) header.d=wisc.edu header.i=@wisc.edu header.a=rsa-sha256 header.s=selector1 header.b=V7KBHmGL
 Received: by kanga.kvack.org (Postfix)
-	id 3E0B26B05B0; Tue, 10 Nov 2026 12:28:20 -0500 (EST)
+	id E3C5D6B05CD; Tue, 10 Nov 2026 12:32:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B8116B05B4; Tue, 10 Nov 2026 12:28:20 -0500 (EST)
+	id DD29F6B05CE; Tue, 10 Nov 2026 12:32:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CF276B05C6; Tue, 10 Nov 2026 12:28:20 -0500 (EST)
+	id C9ACC6B05CF; Tue, 10 Nov 2026 12:32:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F3FD26B05B0
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:28:19 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 85F1A809F9
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:28:19 +0000 (UTC)
-X-FDA: 85419893118.26.6EA3605
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
-	by imf08.hostedemail.com (Postfix) with ESMTP id CACA8160003
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:28:17 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=Bmkgb8Wb;
-	spf=pass (imf08.hostedemail.com: domain of 3L1TzagkKCAQxevyrwelyksskpi.gsqpmry1-qqozego.svk@flex--tarunsahu.bounces.google.com designates 209.85.218.70 as permitted sender) smtp.mailfrom=3L1TzagkKCAQxevyrwelyksskpi.gsqpmry1-qqozego.svk@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794331697;
+	by kanga.kvack.org (Postfix) with ESMTP id A8D546B05CD
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:32:37 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 52FFF80A0E
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:32:37 +0000 (UTC)
+X-FDA: 85419903954.19.B5A0422
+Received: from mx0a-007b0c01.pphosted.com (mx0a-007b0c01.pphosted.com [205.220.165.71])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7FD5C1C0008
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:32:33 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=wisc.edu header.s=pps1 header.b=zXgqWMXt;
+	dkim=pass header.d=wisc.edu header.s=selector1 header.b=V7KBHmGL;
+	spf=pass (imf21.hostedemail.com: domain of san55@wisc.edu designates 205.220.165.71 as permitted sender) smtp.mailfrom=san55@wisc.edu;
+	dmarc=pass (policy=quarantine) header.from=wisc.edu;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794331953;
+	b=3aeQiObUI4v2EfOt8FwiYjMFfzXtZbU6/lgCV8dFjJ6p9uY7z0ElA7Ii+k2for+lUZIm/0
+	sSjCGKg5OhJ1LbuOxeN3KVTaYeiW9aAfFdat4gp5uIKQbSav6UlirHIbBdfNR2Y7DV11GA
+	fnf+qW6lsRqAtNB9NcuMYCK7UwyYFus=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=wisc.edu header.s=pps1 header.b=zXgqWMXt;
+	dkim=pass header.d=wisc.edu header.s=selector1 header.b=V7KBHmGL;
+	spf=pass (imf21.hostedemail.com: domain of san55@wisc.edu designates 205.220.165.71 as permitted sender) smtp.mailfrom=san55@wisc.edu;
+	dmarc=pass (policy=quarantine) header.from=wisc.edu;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794331953;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+yZhs6ZDC6QJyZznmfCr4E8e0ia6+c834e+dfc1J9VY=;
-	b=MOd6Vxv8oCEvR49zjcRwOBx2ub+7AsusREE3wSgoo4K9NhybPcZR0yv7xswRkuHo7PhGh6
-	YHWvacJYN5F3cqeabd7hxIb1DKTg8G41JMe6QJbjPV+6/h3tqytbHf9/SWLrVp9K3X1/m8
-	m9oA8vU0mzg+77a6xSEjH6xdM1Tf6FQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794331697;
-	b=78dGLxRQDYBN1Ll3c2gYJKj1Vp5GvtVhxzLgLMv97I7Ibj61tJ53OTfp1ltd7yjwWc25RJ
-	whpZU0PzEgLOcn8AJaye0bmd1WEpYiKt0nHUnry/Bopjuqn9WXipSYYAUkjcE6n4syyKKu
-	WGOpXEi0jzS27CWX7d5rJLRI/Lxl9S0=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=Bmkgb8Wb;
-	spf=pass (imf08.hostedemail.com: domain of 3L1TzagkKCAQxevyrwelyksskpi.gsqpmry1-qqozego.svk@flex--tarunsahu.bounces.google.com designates 209.85.218.70 as permitted sender) smtp.mailfrom=3L1TzagkKCAQxevyrwelyksskpi.gsqpmry1-qqozego.svk@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c4163a5400eso49360466b.1
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:28:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794331696; x=1794936496; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+yZhs6ZDC6QJyZznmfCr4E8e0ia6+c834e+dfc1J9VY=;
-        b=Bmkgb8Wb2le8Ts+6frfMk6CAQJm3Ct6XyLWQRHVCGy1Kr+sMPkL59/fYlTkFj/p7GO
-         tk+4+tSapJndupYlINaWrZVAKSDzeniT1Jt4bmjb6PeOSOtWJAjUGaSNDMUOo/WhL1Ne
-         ymBofd6YvF6Z4cyzc8b2pYp2+Jg9PgQ6h5mp03Xk+y8SoMtr0ieuoecHTVesqiJ5n2L1
-         Nor4JmkuHowAtzSQD0VqBB0eovuj9Q5VCMj+vbNrlNmcOd8TEuYbiKfYHzbMIyA1VB8V
-         PdgDe8PjZBfjaoP9wvALp8ztdYq3UrhA/ybIfmV2T9X88TZdeZLkjO77E+vC/iR/HKMu
-         aNug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794331696; x=1794936496;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+yZhs6ZDC6QJyZznmfCr4E8e0ia6+c834e+dfc1J9VY=;
-        b=J25CFHipZOnk/GpkEtnEcPkW/wglGlQ+C7CX8MkfSx0GiwIsOr5vehADU+OCqILS7T
-         iVQSLeqSrhBn2Pciemjj9R14GEP2aNgnjHGo0d7IxoYTFVO0izMANflyMXjbkaqFBYnh
-         2Ege481xoWv/3TvRNioQX8qtlE5ptbMRnItc52jjFGpUFx6B4/r5MXi9N1tP9FwrXerA
-         TG3u4kJtC8oizF9+lDl1IjKsp+0nS0qwR0FDXL/syUxONJ6HinLSUQ0sSywAR2iK0b7m
-         E7iM/jeVYxDPEF40jwCAImKQ14y6W8TXbdqBVXaFQ6hhAKc/4ZYereLN3cOQcAowgfYo
-         9VkA==
-X-Forwarded-Encrypted: i=1; AL+hErEiBnV1+HhW7ObKYJJpCBqEJyJQBAmPganK9MxGuseW3A08BP7aN9L0ZzyCz3iw9/7RnoacdEwPYQ==@kvack.org
-X-Gm-Message-State: APuU4Z+1bQbur9wB1c5fDrgObVle95QLmn7SbUWTjjKG+2V06cNS1t3U
-	kDewg/ci4lTFOnWaWM5rIHzK5ApHHayVcipQtZ8oXEMCIb36ohAqOV11MQIjtxIzYa0b9VbkM7x
-	c1p/cRFvKAg+vRDDGdg==
-X-Received: from ejrk24.prod.google.com ([2002:a17:906:6818:b0:c46:7e9b:6a1c])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:906:dc91:b0:c41:1781:a2af with SMTP id a640c23a62f3a-c506338c761mr23579166b.9.1794331695882;
- Tue, 10 Nov 2026 09:28:15 -0800 (PST)
-Date: Tue, 10 Nov 2026 17:28:14 +0000
-In-Reply-To: <DMRJQ42LR1D3.1GZKU9EX48KZU@soleen.com>
+	bh=Ik3shvaSZVonXHJ91BHi6cMWPo+KtP7KpAQHlyQoMTM=;
+	b=418vpjyXCt9vVAnvAWGn2CiytrWguHYii4ILtsUyb9FRLnBjkJOINOjT7Nf8pXGaZxeHxJ
+	x/90uPFZi/jQPtCcI+4v7SLMwOazq9bB3CXBwgOzjR+zPVXXecRMD3apsF0z7wD9TvswQ4
+	0+EYQmzClEE+9NAZJG68aTQe+1S9d6E=
+Received: from pps.filterd (m0316039.ppops.net [127.0.0.1])
+	by mx0a-007b0c01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AAEvR7w1248014;
+	Tue, 10 Nov 2026 11:32:20 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wisc.edu; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pps1; bh=Ik3sh
+	vaSZVonXHJ91BHi6cMWPo+KtP7KpAQHlyQoMTM=; b=zXgqWMXttltaAI1+/DhXy
+	OUbVLFqii/D71kb+LRP1Y5TmX9uwFvMi1yBHByQRsFvKA/wOSPXNRGjtg/RWNYtP
+	GDDwr/KezImGeUZ4daf/AWiWKHrtCebWimj3Whon2RKFfMv5OnZYm+eFGN8IOULC
+	kLAdUDnxCKOAJUFGN0j8Xuyqeygnfw2YsU+I+54oNKpJlJ0cwsDqjDwkI5M1kbXd
+	dlOeNfbvY5OUVk7mLu8DqW0gwl60KYg8Uuoo4yWWQiGZaikm0EwDvXUnpVui37ki
+	B5ji231NTEnFpxF1HQieBzQFoKiKx4anrncZsUiKIuGb8b/8W4XIYgPB3QmnK+w4
+	w==
+Received: from sn4pr0501cu005.outbound.protection.outlook.com (mail-southcentralusazon11011002.outbound.protection.outlook.com [40.93.194.2])
+	by mx0a-007b0c01.pphosted.com (PPS) with ESMTPS id 4hv4xx21fx-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 10 Nov 2026 11:32:19 -0600 (CST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mmEULTGW2v1cbGJmjT6tMq9Kh51BtlDTyTkGHmu1Qa6G5Iqjdz64BOjKYbJ/aNXcPyd0yEkHMrLB3A4kbYOzFEn1LH5YxJl074ZyWdSOUA1K+FiYeAA3b+mCWk9lmrpO1uYP5pjAou+Pt5mTTIbYNpqTyqd1nqBpiENk/M7OoZMqavK+Cd1hdNCyH0ePwltQwgceKldodtzj3CCFM9lnqkOcuQ2gU7SjS6ZjtHzPmjQne6QGHJdSFX5Zva3URkR2qzcnPcCxpe5qSO+SZz2Yuq/9bQ+U6xcifcJg9P5h8Ny0whWUEtHl02MYTMEria5FpsEClWxEBm76islUXJqhfA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ik3shvaSZVonXHJ91BHi6cMWPo+KtP7KpAQHlyQoMTM=;
+ b=Q50N7G3QHSgPGFXeWkHlZ7mTVyNQQ3VnKA7jKg3RkvWStrI+Jrm34bTUoq6rYo9n5fzfNrhoeBn4wdvuU5Hh7jEvgXvXx3DYnGoZzL3jGTL8CHdfp1Y/j4kba8tRAMye/YK0+Ig9ArmRI+awG6TdeJVA74T/yCovvBS9LEFh1qYv9XKzbVWjFdqDV8e9qaEhr+8t4mIsq0U2ODLyhpTxJ4IE0bHtQw1HeERF2arrJiKbEnjMy10Qg1NbwvtZgbP2t3+gN/5268Fb0NfYQJaLk2mtyaq4AwO+HXkuuFhtX4nZ02Xi+ty4EdpZcfeRnEL/6IOPE20Ykf7n27T4zTwT4g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=wisc.edu; dmarc=pass action=none header.from=wisc.edu;
+ dkim=pass header.d=wisc.edu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wisc.edu; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ik3shvaSZVonXHJ91BHi6cMWPo+KtP7KpAQHlyQoMTM=;
+ b=V7KBHmGLCox3JsSy7lyOdT/kGNw/iVFDUW9hDemFzmzucc+QYlH70Gzfq6TWWqWNUFaPWMRmu5s3NCtXLWe0Kaiq5VZXhLdHAg+wVRm4+ybEeftT+HTqULFzHr/gJhdHANv9HhYGRQ2OqlEWrEN4fZ1jpNicH9jOtlgV7rUx73iqc73EF7NUWeBrfcmwhWOmNzN/6BqCjmz/U47ESruAE2nVCxf+FPqjwuDpRgDuF5jPY/2UBiR4tXluKbQF5+gUxsb1JAN4A/7/kO+8HZSK5CzRUffgODL2aFmwMqxDfW/QuiKukGDdpNRni+qGc1L/OoQOpx5MO/lM7zVYh684tQ==
+Received: from MN2PR06MB6639.namprd06.prod.outlook.com (2603:10b6:208:20a::22)
+ by CH2PPF9A54CA1B3.namprd06.prod.outlook.com (2603:10b6:61f:fc00::4ee) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Tue, 10 Nov
+ 2026 17:32:17 +0000
+Received: from MN2PR06MB6639.namprd06.prod.outlook.com
+ ([fe80::c7c1:6e17:5f9d:1245]) by MN2PR06MB6639.namprd06.prod.outlook.com
+ ([fe80::c7c1:6e17:5f9d:1245%4]) with mapi id 15.21.0615.007; Tue, 10 Nov 2026
+ 17:32:17 +0000
+From: Seunghyun An <san55@wisc.edu>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+        Andrew Morton
+	<akpm@linux-foundation.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        "Liam R.
+ Howlett" <liam@infradead.org>,
+        Vlastimil Babka <vbabka@kernel.org>,
+        Shakeel
+ Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
+        Pedro Falcato
+	<pfalcato@suse.de>, Lance Yang <lance.yang@linux.dev>,
+        "David Hildenbrand
+ (Arm)" <david@kernel.org>,
+        "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+CC: "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] mm/vma: predicate vma_assert_stabilised() on
+ CONFIG_DEBUG_VM
+Thread-Topic: [PATCH] mm/vma: predicate vma_assert_stabilised() on
+ CONFIG_DEBUG_VM
+Thread-Index: AQHdcSWzotCHaF9rK02pQ1Q2O6oOobcnkJA6
+Date: Tue, 10 Nov 2026 17:32:17 +0000
+Message-ID:
+ <MN2PR06MB6639D846B30A3357B01BC61DD2722@MN2PR06MB6639.namprd06.prod.outlook.com>
+References: <20261110-vma-fixup-debug-asserts-v1-1-0b2e0680cd7e@kernel.org>
+In-Reply-To: <20261110-vma-fixup-debug-asserts-v1-1-0b2e0680cd7e@kernel.org>
+Accept-Language: en-US, ko-KR
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN2PR06MB6639:EE_|CH2PPF9A54CA1B3:EE_
+x-ms-office365-filtering-correlation-id: 909fdee1-96e0-413d-c91f-08df3f509102
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|786006|23010399003|7416014|376014|1800799024|366016|261026140227099003|261022075727099003|261026121527099003|261028144727099003|261022105027099003|10067099003|11063799006|56012099006|38070700021|921020|22082099003|18002099003;
+x-microsoft-antispam-message-info:
+ 0Z8FLFlOsCK16GNYpTbNkKYUxbHGJqCF7Ir/wd8KtJSNkzUsFhO9t01Wd5US2dglBM9rkgLjh/7AR5Dr9AdOcWtrcdWFwAreyuMLQ038f8iwrg5Wn5nbpXhirjkM+sVAv61EL3T6DYkJvJbXSV30TmnfOuYes8ALpObRN2b91CYOknjAvkb+X+/DdpBDEm/0it9/PjKgnRB6khhbRgAY5wP3dJj+QGv9soJ2sy3RBcCW/ogt9lwkiUFY3wSKRM5Qh2C3tNVaIWV1N4jQ6yZa0q7GYhW9nopwoXhcJrDUebqyhzMOoIl41xS6YkJgvfXjAAJ45PHubkKxh3IHj87jmW3rFaRRsPeITw3j/jrsA5ac3Xr1z85UCKxKAZY0be5WO5aY+OdVpTpG8uKOkrWrr5UddpniXaNCR1/i6NuJmXAqyG0psflilMqZAXIR/QdPezQ1NY1uj9wMGvNKzWIBoTrmBDYz6J8iX4wi5cBri9SYjv0DmwNiFJQC3n4z9pCm7VZMl4M5GYbkAxErnP89trWoQgcPZbSaduIrvkxwEOC9Qr48aCO1Hl/fs7Lu9B5r3ouVLbQRlfj9obi3Tfpc6RX3hv2bMQzvw8BAEHUFHFRllWG4Zh8UODt8+gsIEs0wyy9S3mvQ1pHqN+fs4CCkGtfMY+FunWqW00AoCPHodshwidItYRhV1wYmtAGc9eAvRIPCzWZQTcvbbc+agTnMP/NnvkLXyCnvUFUwwEdPBh4=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR06MB6639.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(786006)(23010399003)(7416014)(376014)(1800799024)(366016)(261026140227099003)(261022075727099003)(261026121527099003)(261028144727099003)(261022105027099003)(10067099003)(11063799006)(56012099006)(38070700021)(921020)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?4PAE/C587mKIP3bzMlRlzFnpd1RtsfLmPuYmn4y2ZL0KGJXRGXQSlpvyr3V7?=
+ =?us-ascii?Q?nG6ZZzXXfVYrK38FP7vqsYbWBQywkFbF0bMcVfYyvoJyEwOwcdyrH2FeQ4Ah?=
+ =?us-ascii?Q?qpsUMKdwHDIKWSb7yWYLpY+EpDuWG58l1TVsf8iA8BtkrVzcztkoxdWB1oK+?=
+ =?us-ascii?Q?ApzN/hmtmH+cisn91vjrfy9NgyW1gukRCOQsBcdCPw4p+q8fPwBUnpzoKmxw?=
+ =?us-ascii?Q?6V53WCsv23Yx89kQWOGuOpQ6O9SyvjF3zO7VU0+dmWUB4gimt3fgnIDFca0z?=
+ =?us-ascii?Q?2qSqMcbCEOEa9YkXemzMza915oJATg8pvBi/4ri6CciF5hf0eL6h56iRkOQ5?=
+ =?us-ascii?Q?Exd1BvEbljb+vIglEp2Zqjvzk+gqKD7L0h5vWjjErQBDOpBX4qfe1gAzNAfi?=
+ =?us-ascii?Q?TV58etwq2TWgQ4JPUFpgy1lhLOyefmTaMlJy4Ga1oDqaLDAZksXiGR4Y0HMv?=
+ =?us-ascii?Q?WYa0qjQ1XJNJqulvmBLV6hxsvFiP+C2J8PDRkd0szo/Gj0FedLQKxCP/3Dtn?=
+ =?us-ascii?Q?wnNqECi3hcqWf/9cjsixMR6yd4kg0vrUk5MDpR3aIxpv+AtiLlhQ3XjCvRro?=
+ =?us-ascii?Q?wYG1fAPY4KPyVTbKyHXUcUzH+7lY+GGkby3mIfjdYYlUF4ZW69WGwYyAW/BU?=
+ =?us-ascii?Q?zwbR6p/YrKTcv8ylUt/OOs6RR7Dse3Frmnwgq0jLcPBBeuECcWUlhrp7UQU5?=
+ =?us-ascii?Q?27p2Yboko4ybb7/uaAndIvK4ucWY3NgeUleamK021yGF3H0SZFkLXRVnwdZ8?=
+ =?us-ascii?Q?fvHuTuVb4zWORpOR0JY9Mu9BDgnS3euN6Fqj36FkTCINwbJVoJzUIvBVoVUW?=
+ =?us-ascii?Q?isDl3k7t4h6EPr1VAEHL3nnaIk4YpEQdmQegudJAArKkC203vwSdhfdDF1Qo?=
+ =?us-ascii?Q?OtE5UuMk+rD6EX4SDKvMmIZNTdi0zJtsmdOVChbmqqPvQanLMfIFuA5eiFzh?=
+ =?us-ascii?Q?eaMuu6ClAKa1rXHdH8WTTHtTbi+vAGQG/LH9QF/jeXgaJClpEPj5Y2brPj0b?=
+ =?us-ascii?Q?4Y7wQLihhKXMFfdB7dqlr/DHPqEG6dpEZWIhgJBwvP7XSFm7gULaoMI3ZMcG?=
+ =?us-ascii?Q?5qtAIYmqWCkNc0Muzlao7HzHLkWW4EjenQ8+LjrGeApmR1Dj3ErGtcc6U1Oc?=
+ =?us-ascii?Q?zRnK56gQCapnEfXIpgJYIJ/1seegLMvuMH7sJaSvO6HkmXN6ycUSOw6TKu6m?=
+ =?us-ascii?Q?nDB/xbkybGOVc0t57xP28Gj1aWIoBuee/O+hGWdUD1QcJd9RaB/FYMA6tpjf?=
+ =?us-ascii?Q?DbmHiY8fIa6Bnogm9JdXGPaNnXv24Wxeog/uotF5+CqcNOZi3S5dmuWj27+E?=
+ =?us-ascii?Q?GF2Tcw+BobPJVcFj+Q6kgGMI1E9z+2QgXGlHQQ2dP1BwwmvIeYYlxLFqgHhy?=
+ =?us-ascii?Q?pyJAmFqSUhV+DAYcWDR7uENYHf0hBwb76Qeu1HJV3gCQWb/JetzZm5h0RmZl?=
+ =?us-ascii?Q?4M4EfFBxm7t9uksTefawVRBp05OmI2KHMKxRlh1OqSgDm09LzfvMSk3fINKP?=
+ =?us-ascii?Q?GaXn6AzYUWOcDX9Jh25cl4KGkahHdxQLNhDdQqaqUQvxVveyXdPgeMgAB7xm?=
+ =?us-ascii?Q?Ubfq0ytFNTwQ3pogLl/owBJ3WdwdcRHCuRtGJ+2pcOkf1HQA1vCn9sP1CwrE?=
+ =?us-ascii?Q?z1BRCPg4FRIUXEo1QubEprtVPiINzRp8XOJ5xh0YQW+nfw1hXpOVmlOv/Qcf?=
+ =?us-ascii?Q?iCbY1yStm3Z69wkEvfBqaZP4SGwu/poS1l08F+LHkb5j3+d2?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261110050202.529473-1-tarunsahu@google.com> <20261110050202.529473-2-tarunsahu@google.com>
- <DMRJQ42LR1D3.1GZKU9EX48KZU@soleen.com>
-Message-ID: <9huzbj7wtx3l.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH v4 01/19] liveupdate, kho: Remove __packed from KHO, LUO
- and memfd ABI structures
-From: tarunsahu@google.com
-To: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, 
-	maz@kernel.org, will@kernel.org, David Matlack <dmatlack@google.com>, 
-	Alexander Graf <graf@amazon.com>, seanjc@google.com, jgg@nvidia.com, loganodell@google.com, 
-	arnd@arndb.de, dwmw2@infradead.org, baolu.lu@linux.intel.com, 
-	Bjorn Helgaas <bhelgaas@google.com>, oupton@kernel.org, alex@shazbot.org, 
-	gle.com@google.com, pbonzini@redhat.com, 
-	Andrew Morton <akpm@linux-foundation.org>, kevin.tian@intel.com, joro@8bytes.org
-Cc: kvmarm@lists.linux.dev, linux-pci@vger.kernel.org, 
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, kvm@vger.kernel.org, 
-	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	skhawaja@google.com, sagis@google.com, linux-arch@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: fq6t7kcuerih9upmkd1ikcgtm8gz1qxs
-X-Rspamd-Queue-Id: CACA8160003
+MIME-Version: 1.0
+X-Exchange-RoutingPolicyChecked:
+	kt9USqyP0XGKonjBR7QDYJcKy4eBHi+IqBFfvHTAbbcI1aCCB/OJk+sime2d2TvDIXwGCwYKD74W6pMJiX4FI9ZPECnZ/1cdOjz0EqzZ5TDvrH+B1R9VZX7498+ShSQeL8Dv7Rr7+G63PffY16FkskuQY9zHqx5BuWMUCH7Ujv5b7E8OwQX3Z5xUfDZ0B+qRZA1lx0kI9zXN12sJoqm/8TCoCygYW+fOeDKaxhj8wAT64hv69I1IWMVUrmreZ4SkfJ/bIm/EUJWJMjHH+CKxCxVNnwlZu3olZ1QcPnHARraeUAM+xvdnuKH+LdwrnEkhmDFWE5KJmgVfcXDUgQ3sHg==
+X-OriginatorOrg: wisc.edu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR06MB6639.namprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 909fdee1-96e0-413d-c91f-08df3f509102
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Nov 2026 17:32:17.2270
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 2ca68321-0eda-4908-88b2-424a8cb4b0f9
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: k6w77dplre2wzEKS3GOFpr5MuR468R2z/6fA95i7AWJkUEednU5LtJzppKemBZLM
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PPF9A54CA1B3
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEwMDA2OSBTYWx0ZWRfX1AH69df31ToU
+ sgoDRrBP9EOU6cYZtQqf6HjtZDqQgv4xGJzosYUXjzUx5Tu58LFGHa9znSlRizxIJxCEyuEfMyl
+ xoCzSUKeqHD879dnAjYz94NLTobBWGI=
+X-Proofpoint-GUID: V4VqHWodDigLUFg2GHDEhBQlgXv6DrKT
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEwMDA2OSBTYWx0ZWRfX1PLcjvRubEko
+ z/AdUxBjFWhZPU+LWojYyvRCpl15pYqgxkn1Wk3K/2NKhYUm7WqDmqy+Rct7aQ193YKm2uAovPS
+ /cnRH2Qi4pZoTJ6eQJR8acFKQEsduRXhwGNL7l8dNAj2Tt51YkbrHp54AFM5It2TZdMAbRNXrgG
+ Aj0kJFE41VUfegxG9Dt25r53fPGC9yATBYa2Ny6Wsgjv3HfIlfQDh6Gt4ge03zL8/gFCeWz6Qdw
+ WdJ/DYopqkJ1CIhE7J9v+qXAO26Kwvuz2ViZiw3TLnYntz2Qbhv+m0gNC2eqF+V51jPzVubyoKP
+ w/s9jgTCrrvu8+CJrybORGstDJMvJoQCyRDXkK+V7nv/ypiIYlwt14JK7AZ0pviNwXg5ssLIDk1
+ lU4ircAv9UssLaM0oGK3g1hSzp07BDDDWf8wcxcQeaISiiVaUZdSuWhBrEokvrKh6lcQocFrBeG
+ V5x8SarRjn1Iob7kRIw==
+X-Authority-Analysis: v=2.4 cv=bdT+w+PB c=1 sm=1 tr=0 ts=6af35523 cx=c_pps
+ a=QA4htdGqYz999Ta5EyqdmA==:117 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=zJRp6_cAMcgA:10 a=x7bEGLp0ZPQA:10 a=U-hppK1rdbEA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=ZyELlZqCvD1aXIDzc3I-:22 a=eq2kN7DOR4gdPMKheIxe:22
+ a=VCcXySyvJroUtO-_WyQA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: V4VqHWodDigLUFg2GHDEhBQlgXv6DrKT
+X-Wisc_ValidFrom: true
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-10_05,2026-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 suspectscore=0 spamscore=0 clxscore=1011 phishscore=0
+ adultscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611100069
+X-Stat-Signature: a36t5j9gfs1i8ng89nkmfk8axc9cdxca
+X-Rspamd-Queue-Id: 7FD5C1C0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794331697-82572
-X-HE-Meta: U2FsdGVkX19UDswyCp3vDPSbCo6yIItROoQFQ4RxpdsNVusKz7WEuqsg+TbkNBjKdtBrcQi8R+/VmnLq4n1GFF9nbNbEM1PmWWa/96AZX3xUHTXLzhaS0nk+NF52EK7dmG9yIjHqVn+g+bEIHRdqSHXaz/mRqgF5fxUjvlxpzTReWkyi03ra6Yq1oxZg4BHciCVxrpdaXjF7gej5dkxoxyJbnzJh9nxgo7EvNxp0PnuDv2j7nElRnKIqdQEA7FjqRx5CUSFACpvSBz5D3S9AuxemigPSHXhB5+GErKtwxzBlYq/6CnOo/mdHbEBIgiJHb+lWdTSV3jaUddGDe5l+ixyszX2JhG7lwQdevu0Xd7VuolFKVMNyfhJDZmhPipPiYCwtQFo8lsULd9W8xymOxADBnEWkxbuYBNrrUFPF4e+b4KNHfrAs4VSPP3jkRiAiHa5p1n3GtCvzxBVV8FlVQrrFZoJSPdNOH36W4VelLMIut/VaSy+S5Y2OhGnx6oX+ewQZFGgEUTu4XQYLdDiHQ4KBYxh7Vb5phUSuQqhJrgHk/zf5G2wepPnfRanh343vuzv5msoMLTH6Dm7hEsDjhZOmVMIZg55Z5qsFLOSiCAXPRcp1ErosbBmHHHdfCxeFT9wgbixbOAC8QCCTnzqZAz2nCzo1E8epPq2G6sczWn2shRs6nF5YfSPwVDW7VCSrLYCkacJICConnjVV0MGAGsIWhd8b+vCm2ktWDuMvPMcxYteoP0CBh8cUBSi4CqzY3FC/nDyHrt4gKX3JWhN8V+uYvxUrN7FRqzTxKSW1ryCgG5xB4VRr06qR2F5koHHdIVh2L2qHh/7xoJeUWZpdE48nyqYq0VRX2i9n0BhsJmu0sq/gifki2RRymlHiFs3izVD6Z/LjXQQcmcY3vYLLG6MQE7pVR2pEuYFe/eEXlHTxKnzRjUsbyfCh8YFnp7zWlmdoSauLf8KyusHfbxT
- C8exaW0o
- dDTQuGC4gdt2iuhf0na8LsAbzMZr227oKWiPVDQzZP1gZO+CaLt/4hgxwWJP1w5lTRb+nwy6wEKINvDCl3AUyor/NFJMJSAbbm3VOnfDWK4Kl4hKFXYVwMZG6pQike2hoqNxAwCMf59VNHYibWCiMBNtmSjhBonUlWFgGr7qZEmfnJPLMp9wIQ8oE7y1MiwEOMKLHYISVSiKf2jI7aLFJSbvXNxRpOll1J4j1p4Y3Pt2B8aOdEYJ5Uc97dNJGzP1heqy+jgmcP1YhEe0avBlVUvZ9MC/Tzr6pa9zYSVJZBvad8vgJrp69hAYU6A26vxvbILcJ5BMGa7RmpGIWSFDLB1AdwW5z8+cmltvFaJyaJ2oZdtsvn6NztfOLEbdqv5SdoQ87saH9z11RUgh3SeuEDwZeysSA/aaSlr+y3LkSGsLq+dnRdxHTlHQoz92ErjjqrY8jGCDuzuQE8xb7Ioxu1Q97SwyIRbyOyU9bP4e9jTCH8n493ttasXr2LVpsjkSTNdt+22llutXYGXMoECxNF84XCnuEvvlM2nM3YhwK3MC5SZFcoi4Xv3VR3UPk0p/4jLtiWkcrs0aLF6zhIKhXAMzYdk5jzseeihwlge9MBPqwLd8+7GBnO++XOCc/vaTt9tEABwC7lmOoa4AomUAhoDEB2vMnNgX7WusODWxpwP4toH8DvugdPKA88oz2oltmFMd1
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794331953-54649
+X-HE-Meta: U2FsdGVkX180MMirTw1oNvqRYtJ2kxjza8Bz0GCMiwItVoMzHleBjFae1fmp9dmtXmxSRcs6SSVoYY9Jce7uYFDjsoy0G4HcaI4yOe2ydo9FwgUZpkmTprnR6PkM5tSgQl6WbhEDSEqWKfjB/B7uGm1s65s9CCVHRKxU3qWQ+0ErjKQVJg9ILwz3B8NMWSOEIsmQD0U0AawpLgAKZ+KXdqkfeFrmBDsOdhgZoAX6eLIq39IMD69bVnlOHRqnWVT9ABzEyZLZQu3wke2JYSzUdJzTqr4QV0ECx86RkZ84knHfRHXVwOD68qXGm/do59ooYCifp6yqYMwEXdGxLh9HT3aTQhiEbisBA0GPKK5vsk7BOcSOjlPppLxYZC6pr64iOgpJPqI8HglAkDKH6wVJVRO6yKrL8abM7z8u0SOLYCZ5rq690I8K6SU9Wtr05wvs9lF4+7/C8t8iUFjXVSNZi3k/w3r97xi7BfP3ft1kKs9C6dDSk2rSwDsUytfwwsPIBIEtzH98B7rtaZgwfmX7QL9xEYFgfB7b+VzmsafZ49Lm9E3V/zeL2p5nT76qMs5o6s3yzhrMFppFCrEuun23bp8jhCFlXwPOBPX90sfSFRx1IgvSFU+2LDO2/fopOwwyJCmx7sTAQCRC34d2KwX7nu2tmxuF6IOKIv4HaeNkyDfQr13ivSooPd+HodeZxO9ArbeioezbXnT4L0+JHC2xChjNZeUHeqAILbrJlTJxc+2sJwh6hdaXSdwv+XAVtPqKbi95fiIMDIClov3IvVs8QBycB1PLcAH7dNXAimSzOr9FgBiHSQYD77ADr2IkCiPNgPC5X2gaF5SrSMgM1B/1Kl2oaFGO6Bh6KU0lwU+H0/Gu212UYOTpYPHMfriBxgzbt3wY2ueQdzDERcHsZBsU0u/cBTdGu0CeE2AR6qDEMmW+yvyxPtLQaqMxmgNt/VXZY1GUvekrbWYEA5OZls9
+ q91ATS3x
+ bMmNaJdtjdVTLXcK7tC0lurRMylZej/zFx4OUmos5VmLVkiQiDNRMFbcxlAphGJIi77EoTlq6/PjWvEXMGwe6hl16XTWmmS82qUfkWD2xMk48LYYP2pP+b6KCwJ7B+hTimHXv4VXtL6ned1ZdBBL9c74zznkgm6PZ0mGxS6Z7ZPZkJI8bTpJilgdUXRZqSMb+RbhPXH73BVJJ/Qi+yg0KniHwpLb8CZrvpLfreK4jP7QexvQJDjxz0BgI2EguSQJ7/YVjjFIoclOyqER4li28VWwFuh46YkvltDza2+965k9eK4crvhwsy6DO5kRw8cMtH6/8033CPWUv6gLMvDq9HWLFtlqVw3T0ZEI3zi8doeCcMKcI0XT0lXP54lbW0XtnXCx96Dc21mvOejHUCuLTxqcNY6WNinLoRXT3wKRuFV9btVJoHIl0s8tkdkpNJZJbvAsTgTKnPZOr8tunKcorWVfsfOYToh8Pg7kQHv6qX+u18gO10vQusMCIFZJZmVo1fGuYXxnv3Iq9LZHJIWvovmRRxh/GezwMSRGjjl24gInIMMC4miBU1soqbu7/k2s6O2RdlO8JieEnOEXiK6UGWvAJeQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,223 +230,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-"Pasha Tatashin" <pasha.tatashin@soleen.com> writes:
-
-> On Tue Nov 10, 2026 at 12:01 AM EST, Tarun Sahu wrote:
->> All structures in include/linux/kho/abi/block.h (struct
->> kho_block_header_ser), include/linux/kho/abi/luo.h (struct luo_ser,
->> struct luo_file_ser, struct luo_file_set_ser, struct luo_session_ser,
->> struct luo_flb_header_ser, struct luo_flb_ser) and
->> include/linux/kho/abi/memfd.h (struct memfd_luo_folio_ser, struct
->> memfd_luo_ser) have naturally aligned fields on 64-bit architectures,
->> with no padding holes between fields or tail padding. Assert both the
->> structure size and 8-byte alignment under CONFIG_64BIT at compile time.
->> Any future unaligned field addition should come with reserved field to
->> keep the structure aligned.
->
-> Just state:
->
-> Remove __packed, as it may break natural alignment. Instead, ensure that 
-> all padding holes are explicitly covered by reserved or similar fields, 
-> as is already done for KHO/LUO serialized data, so no functional changes 
-> are intended by this change.
-
-This look good. I will update it. Thanks.
-
->
->>
->> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
->> ---
->>  include/linux/kho/abi/block.h | 10 +++++++--
->>  include/linux/kho/abi/luo.h   | 38 +++++++++++++++++++++++++++++------
->>  include/linux/kho/abi/memfd.h | 16 ++++++++++++---
->>  3 files changed, 53 insertions(+), 11 deletions(-)
->>
->> diff --git a/include/linux/kho/abi/block.h b/include/linux/kho/abi/block.h
->> index d06d64b963be..36bdbaf9b3b8 100644
->> --- a/include/linux/kho/abi/block.h
->> +++ b/include/linux/kho/abi/block.h
->> @@ -12,7 +12,7 @@
->>   * pre-update kernel to a post-update kernel.
->>   *
->>   * This interface is a contract. Any modification to the structure fields,
->> - * compatible strings, or the layout of the `__packed` serialization
->> + * compatible strings, or the layout of the serialization
->>   * structures defined here constitutes a breaking change. Such changes require
->>   * incrementing the version number in the `KHO_FDT_COMPATIBLE` string to
->>   * prevent a new kernel from misinterpreting data from an old kernel.
->> @@ -26,6 +26,8 @@
->>  #define _LINUX_KHO_ABI_BLOCK_H
->>  
->>  #include <asm/page.h>
->> +#include <linux/build_bug.h>
->> +#include <linux/kconfig.h>
->>  #include <linux/types.h>
->>  
->>  /**
->> @@ -49,6 +51,10 @@
->>  struct kho_block_header_ser {
->>  	u64 next;
->>  	u64 count;
->> -} __packed;
->> +};
->> +
->> +static_assert(sizeof(struct kho_block_header_ser) == 16);
->> +static_assert(!IS_ENABLED(CONFIG_64BIT) ||
->> +	      __alignof__(struct kho_block_header_ser) == 8);
->>  
->>  #endif /* _LINUX_KHO_ABI_BLOCK_H */
->> diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
->> index 288076de6d4a..721949374fa1 100644
->> --- a/include/linux/kho/abi/luo.h
->> +++ b/include/linux/kho/abi/luo.h
->> @@ -58,6 +58,8 @@
->>  #define _LINUX_KHO_ABI_LUO_H
->>  
->>  #include <linux/align.h>
->> +#include <linux/build_bug.h>
->> +#include <linux/kconfig.h>
->>  #include <linux/kho/abi/block.h>
->>  #include <uapi/linux/liveupdate.h>
->>  
->> @@ -82,7 +84,11 @@ struct luo_ser {
->>  	u64 liveupdate_num;
->>  	u64 sessions_pa;
->>  	u64 flbs_pa;
->> -} __packed;
->> +};
->> +
->> +static_assert(sizeof(struct luo_ser) == 32);
->> +static_assert(!IS_ENABLED(CONFIG_64BIT) ||
->> +	      __alignof__(struct luo_ser) == 8);
->
-> Please remove the two assertions above throughout this patch, as they 
-> are replaced later in the series. In general, introducing add -> remove 
-> -> add churn across a patch series is discouraged, as it indicates a 
-> lack of planning.
-
-Got it. Will remove it.
-
-~Tarun
-
->
->>  
->>  #define LIVEUPDATE_HNDL_COMPAT_LENGTH	48
->>  
->> @@ -98,7 +104,11 @@ struct luo_file_ser {
->>  	char compatible[LIVEUPDATE_HNDL_COMPAT_LENGTH];
->>  	u64 data;
->>  	u64 token;
->> -} __packed;
->> +};
->> +
->> +static_assert(sizeof(struct luo_file_ser) == 64);
->> +static_assert(!IS_ENABLED(CONFIG_64BIT) ||
->> +	      __alignof__(struct luo_file_ser) == 8);
->>  
->>  /**
->>   * struct luo_file_set_ser - Represents the serialized metadata for file set
->> @@ -113,7 +123,11 @@ struct luo_file_ser {
->>  struct luo_file_set_ser {
->>  	u64 files;
->>  	u64 count;
->> -} __packed;
->> +};
->> +
->> +static_assert(sizeof(struct luo_file_set_ser) == 16);
->> +static_assert(!IS_ENABLED(CONFIG_64BIT) ||
->> +	      __alignof__(struct luo_file_set_ser) == 8);
->>  
->>  /**
->>   * struct luo_session_ser - Represents the serialized metadata for a LUO session.
->> @@ -131,7 +145,11 @@ struct luo_file_set_ser {
->>  struct luo_session_ser {
->>  	char name[LIVEUPDATE_SESSION_NAME_LENGTH];
->>  	struct luo_file_set_ser file_set_ser;
->> -} __packed;
->> +};
->> +
->> +static_assert(sizeof(struct luo_session_ser) == 80);
->> +static_assert(!IS_ENABLED(CONFIG_64BIT) ||
->> +	      __alignof__(struct luo_session_ser) == 8);
->>  
->>  /* The max size is set so it can be reliably used during in serialization */
->>  #define LIVEUPDATE_FLB_COMPAT_LENGTH	48
->> @@ -152,7 +170,11 @@ struct luo_session_ser {
->>  struct luo_flb_header_ser {
->>  	u64 pgcnt;
->>  	u64 count;
->> -} __packed;
->> +};
->> +
->> +static_assert(sizeof(struct luo_flb_header_ser) == 16);
->> +static_assert(!IS_ENABLED(CONFIG_64BIT) ||
->> +	      __alignof__(struct luo_flb_header_ser) == 8);
->>  
->>  /**
->>   * struct luo_flb_ser - Represents the serialized state of a single FLB object.
->> @@ -175,7 +197,11 @@ struct luo_flb_ser {
->>  	char name[LIVEUPDATE_FLB_COMPAT_LENGTH];
->>  	u64 data;
->>  	u64 count;
->> -} __packed;
->> +};
->> +
->> +static_assert(sizeof(struct luo_flb_ser) == 64);
->> +static_assert(!IS_ENABLED(CONFIG_64BIT) ||
->> +	      __alignof__(struct luo_flb_ser) == 8);
->>  
->>  /* Kernel Live Update Test ABI */
->>  #ifdef CONFIG_LIVEUPDATE_TEST
->> diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.h
->> index 08b10fea2afc..376a724a1d8c 100644
->> --- a/include/linux/kho/abi/memfd.h
->> +++ b/include/linux/kho/abi/memfd.h
->> @@ -11,6 +11,8 @@
->>  #ifndef _LINUX_KHO_ABI_MEMFD_H
->>  #define _LINUX_KHO_ABI_MEMFD_H
->>  
->> +#include <linux/build_bug.h>
->> +#include <linux/kconfig.h>
->>  #include <linux/types.h>
->>  #include <linux/kho/abi/kexec_handover.h>
->>  
->> @@ -20,7 +22,7 @@
->>   * memfd uses the ABI defined below for preserving its state across a kexec
->>   * reboot using the LUO.
->>   *
->> - * The state is serialized into a packed structure `struct memfd_luo_ser`
->> + * The state is serialized into `struct memfd_luo_ser`
->>   * which is handed over to the next kernel via the KHO mechanism.
->>   *
->>   * This interface is a contract. Any modification to the structure layout
->> @@ -54,7 +56,11 @@ struct memfd_luo_folio_ser {
->>  	u64 pfn:52;
->>  	u64 flags:12;
->>  	u64 index;
->> -} __packed;
->> +};
->> +
->> +static_assert(sizeof(struct memfd_luo_folio_ser) == 16);
->> +static_assert(!IS_ENABLED(CONFIG_64BIT) ||
->> +	      __alignof__(struct memfd_luo_folio_ser) == 8);
->>  
->>  /*
->>   * The set of seals this version supports preserving. If support for any new
->> @@ -85,7 +91,11 @@ struct memfd_luo_ser {
->>  	u32 flags;
->>  	u64 nr_folios;
->>  	struct kho_vmalloc folios;
->> -} __packed;
->> +};
->> +
->> +static_assert(sizeof(struct memfd_luo_ser) == 48);
->> +static_assert(!IS_ENABLED(CONFIG_64BIT) ||
->> +	      __alignof__(struct memfd_luo_ser) == 8);
->>  
->>  /* The compatibility string for memfd file handler */
->>  #define MEMFD_LUO_FH_COMPATIBLE	"memfd-v2"
->
-> -- 
-> Pasha
+On Tue, Nov 10, 2026 at 03:10:40PM +0000, Lorenzo Stoakes (ARM) wrote:=0A=
+> I introduced commit 17fd82c3abe0 ("mm/vma: add and use=0A=
+> vma_assert_stabilised()") with the intent of picking up programmatic bugs=
+=0A=
+=0A=
+Tested on an AMD EPYC 9634 (84 cores, 12 CCDs), CONFIG_DEBUG_VM=3Dn.=0A=
+Applied on d48723711bae; base and patched were measured on the same day.=0A=
+Throughput figures are in faults/s; JVM pretouch time is in ms.=0A=
+=0A=
+                              base      patched=0A=
+  shared-VMA faults, 7 CCDs   1.776M    1.917M   +7.9%=0A=
+  shared-VMA faults, 12 CCDs  2.303M    2.431M   +5.6%=0A=
+  pft, 7 CCDs                 1.910M    2.126M  +11.3%=0A=
+  pft, 84 cores               4.201M    5.028M  +19.7%=0A=
+  JVM G1 pretouch (32G)       1877 ms   1672 ms -10.9%=0A=
+=0A=
+Tested-by: Seunghyun An <san55@wisc.edu>=0A=
+=0A=
+As a follow-up, I also checked whether avoiding the __vm_anon_pgoff_hi=0A=
+read in __folio_set_anon() provides any further benefit. For comparison,=0A=
+I tested my earlier patch 1 on top, which computes the index from=0A=
+vm_pgoff for anonymous VMAs and avoids that read:=0A=
+=0A=
+                              this patch  + patch 1=0A=
+  shared-VMA faults, 12 CCDs  2.431M      2.941M   +21%=0A=
+  pft, 12 CCDs                2.434M      3.474M   +43%=0A=
+=0A=
+With pft on 12 CCDs, this patch alone is essentially unchanged from=0A=
+base (2.442M faults/s). The additional improvement with patch 1 suggests=0A=
+that avoiding the __vm_anon_pgoff_hi read may be worth investigating on=0A=
+CPUs with high coherency costs between L3 cache domains.=0A=
+=0A=
+Happy to run anything you'd like to try.=0A=
+=0A=
+Thanks,=0A=
+Seunghyun=0A=
 
