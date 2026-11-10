@@ -1,68 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E5E606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 23:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E18D606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 23:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CK5iaMJw
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AUWrK6df
 Received: by kanga.kvack.org (Postfix)
-	id 01C566B05B5; Tue, 10 Nov 2026 18:12:13 -0500 (EST)
+	id 9E0626B05B6; Tue, 10 Nov 2026 18:12:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE82D6B05B6; Tue, 10 Nov 2026 18:12:12 -0500 (EST)
+	id 991A46B05B7; Tue, 10 Nov 2026 18:12:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E24F86B05B7; Tue, 10 Nov 2026 18:12:12 -0500 (EST)
+	id 8CF076B05B8; Tue, 10 Nov 2026 18:12:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AB28D6B05B5
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 18:12:12 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2D7384018E
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4ACBA6B05B6
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 18:12:14 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C3D481C233C
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:12:13 +0000 (UTC)
+X-FDA: 85420759746.20.65B8C96
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 378B140008
 	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:12:12 +0000 (UTC)
-X-FDA: 85420759704.09.45D8F2E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 77F03140006
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:12:10 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CK5iaMJw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AUWrK6df;
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794352330;
+	s=arc-20220608; t=1794352332;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yd1y30xfWxyUxzfaX1AjVyu+enrOCVVNhLXX5wRV5Wk=;
-	b=Ld2lhUyqYHmEe/dV41Xho4fk5ClGtv3vSPSJnbLSAqzx6jDpeqxKoMZ867lSqSvXFo+4o5
-	zJFxcX4LTDhEIoS6XsGbe2aSzz+fWS4U/1fO500Z3SwDgMc+cidADvqY2f7qUvk75oprtQ
-	cQN3gPGcFOEvGPgVcPrW98UbbBJ7LuA=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CK5iaMJw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	bh=IVx1yQsKvU5ZterbW3J1SqxcKgcswUapfB2Vj+hfm4Y=;
+	b=1QlT4zR52VR+4CXYi18kh057y1o8iolmraS7Q02doXPT22Lw0ABxHPiFnSWStHmldXtWZS
+	sCObgBdJ/NatstR4Ev8jtg1yCL9vJ0gno5CU3yiL0WcjfUQSA35l3ZpIu7MFQtd0KypQGh
+	ggDkatPVKe+2SAaBCAB9RYbGjWepAYU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794352330;
-	b=BNGRf1ZXxzf9AzD1K54CZ/o0/QZD5CwShXXrEtUcPX71X1Brt2A5yMRVWYbZeyX0SENjaQ
-	vRgmPd5xbAlNhyUcWWlCV+QEkhqHicCRjpI37U5t1EXhpTM0gxH1spk6RB1f9/BQ/CZlnZ
-	Olyt9YEIKDM1dMV7XJrbyf/BLAuJyAE=
+	t=1794352332;
+	b=aD40GTsKnjCCMqec9Ph9PHBvggtNwLOzu0VjeocvPvT0ryR50xNUedT/yRTTVHx50S++at
+	TweqKevT4tugmXOdRBUrJFXHgfuGs5HO8wp3nqLSINpCLkUidP46kRKJyV7MnfSWdFl79c
+	V5w57wFG+yT/kms3jIDd8Vh26vKnWT4=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AUWrK6df;
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BCE1D4234C;
-	Tue, 10 Nov 2026 23:12:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC0D1F0093C;
-	Tue, 10 Nov 2026 23:12:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C309B61DC2;
+	Tue, 10 Nov 2026 23:12:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A4F1F0093C;
+	Tue, 10 Nov 2026 23:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794352329;
-	bh=Yd1y30xfWxyUxzfaX1AjVyu+enrOCVVNhLXX5wRV5Wk=;
+	s=k20260515; t=1794352331;
+	bh=IVx1yQsKvU5ZterbW3J1SqxcKgcswUapfB2Vj+hfm4Y=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CK5iaMJwQw5JkDqkxG9sNvSX07O+dXHVW7E2kV9R7Yw0EslayAZurMgL9/69QteyB
-	 K+3dQrdnq4kcgOEAGT9yOmcj95qcA/OAeQwcgJkJ0XB1sMVL5+CzciipqLruVCJ2Kc
-	 /TGuaNiZekbp33+3rvi627gc0wIDKb9L0PPw90OiKlq+nzIPHXQoGLmV+1MpnL3c9h
-	 LUp71tBlaVF9pGU4VcBsv14an+UpgCv+dIIdelT62RqUt050RVfZ/eIkrNTcQWrXdG
-	 8kcwsCPPlbjZKmgKpzVoSkzBvWnLplB+SdADlRlPzaKthBfNmSr78KZtl4d25Z3zts
-	 TwtYk/EP7+NTw==
-Message-ID: <sashiko-outbox-207859@kernel.org>
+	b=AUWrK6dfqIGN258S1zFF2yi9cHs5GJ9KROWwSFl0T/qWrFNYHpqX3kYvDoVR8O0m8
+	 TRDRVJYwtwTkguCNQfaLyPISOcrlfhk/092PuK4qnmG89xAtjhkXCd0tjEXZJVUYUa
+	 l0UpA9hPe00mY5qXO3nEmimIvFogkalQpreb5CgF1JZmiMVbFldzWY1gvJLYh007D8
+	 L4WgfjsqaJuOxOPZMFWk7YX5PnE7FklbenXdxAq9DPRjMmXrJM9CGazpdfHnNIiy8y
+	 zk7bR5lMGwfgX+CmutBIq7VtHAHskQyOERHlqfb+06C/v+1hpt6Y0uKkrbIiYb4T5k
+	 wsI8CIxH2386g==
+Message-ID: <sashiko-outbox-207862@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v2 04/25] iommu/dma: Add PISA block allocation
+Subject: Re: [RFC PATCH v2 07/25] iommu/dma: Release PISA domain mappings on
+ domain teardown
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Luigi Rizzo" <lrizzo@google.com>, "Luigi Rizzo" <rizzo.unipi@gmail.com>, "Joerg
  Roedel" <joro@8bytes.org>, "Will Deacon" <will@kernel.org>, "Robin Murphy" <robin.murphy@arm.com>, "Christoph
@@ -78,24 +79,24 @@ Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <raf
  de Bruijn" <willemb@google.com>, "Kuniyuki Iwashima" <kuniyu@google.com>, "Joshua
  Washington" <joshwash@google.com>, "Harshitha Ramamurthy" <hramamurthy@google.com>, "Alexander
  Lobakin" <aleksander.lobakin@intel.com>, linux-mm@kvack.org
-In-Reply-To: <20261109182533.3594984-5-lrizzo@google.com>
+In-Reply-To: <20261109182533.3594984-8-lrizzo@google.com>
 References: <20261003212241.3432303-1-lrizzo@google.com>
- <20261109182533.3594984-5-lrizzo@google.com>
+ <20261109182533.3594984-8-lrizzo@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 10 Nov 2026 23:12:07 +0000
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 77F03140006
+Date: Tue, 10 Nov 2026 23:12:09 +0000
+X-Rspamd-Server: rspam06
+X-Stat-Signature: mmiwhtxbss8438rx8eh7s46ajexyonjf
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: dafnngmccest3ujtwuomkobo391c1frm
-X-HE-Tag: 1794352330-718909
-X-HE-Meta: U2FsdGVkX19T5HfJy/ZSJ06FeYIvMkH4CPLBQiX/EhFmHt6Y7wSluzBtykqyyG4Q6EKDuxHTZ8kflhEJKjv3/rTYVOAB5YtKY0uAkjNeK5Gql94QvhXaz4SaqavPeXSdYeFDU291DMx0pCBsfUHJL5Paw02TiKto4gj8NfRwdOFGLI0tpFXcjvrPkJAlWU3n2juBqwI5Af75Gbq6EFsetX2xEy4Kc+XK+ygpI3uWg9DYdNywNVWunTjo0+OxCeuSDeAlsdG5t/59zw50ocXlNoLByoCS8lIQyr0icI8QEj6A+Tz0Of82O7cxNZUsnCrHZ+k/dkdf11JIQPloey06HRcG4k63+P7uT+zD6YzPPnQmZZH6aqklRHTaGHXDL2YDipwAcc1Tpt6UL+sqD85gZ3XKoGEF09g0DbcDLMoV0GW6VzfwgvjutdQsUPi8oDuZSm8hUCDFBgB+jQqhWFAlk82nobc5Qr8LVWC3lfUXQ5NVHnurJixCI4w3dXHvUUbNFehZZuEZd2T8itl6sepEaPyhRgopIK3A46+CBblq9qWH6wzXdEbKl/nXcj/hlquaaD5MAA+ZTPteQJJQ10FPnk2Im5IbJBzfAHLZ4WHlXkLIrpuidce8sytWri94WUdIL8cIbbxGX3e5aMCwWlLxzcuOUmd1/ZAk33yEnnQvTkv0UmInsgL6Y7jqUyp+zW7hep92KNtu3NrOCyB/X5SrKavpbtzIzuQBwsdVhJLmrJDIUmkZj8E/7J6Eu/8HNuasHojkjH6+y4YU/Nd+KlFZoEp+l7oyDyw0WtK+ohZIcytrLD7VRj6ekLgN1J0XIU2KXNUD8bW3f3+nwmMPUcxZLAJX5GhfHDdFgS4md0G4GOhpLm5MkTozgyzZbbc4lgVwMvYVhQxGe5bTSf904fLoio1Bpb+NqBF/U71hLCEWEVyGTfA9lPfsuCSgCmQ955i5dNmRnKx1ZJHoJaK+oGS
- gpw8RLOs
- VWazEFk8CJ6AiH/gnhr4iwzqzlHzhoPxpbSTkhPmBoqPJHKepwrH1aSRUO6x5S7hHaOklqYXULYvdshZF/YTjcXknV7Y+GEApRAG3cB9tvtR0RPIA+XInchXCx3s0v6wIFUex6A7eyb1qC+dT3MzaqsfqF0kpXHAdFeN7iCjQiRiGh+YNSC0QYluLdXdIJZi0IPpqlXyLCXEaFpR5wu62qHb2OrwlISV6dXX7MKKhvyXT9JseCym83sDhhXtgA92JfUNT8GwtGC8ACY0sQIo4A5HaiLgivkbaq2nIGvyZ4f+7oxnYfGGTXzfC6A4hdGoqHuZhfYttu+Ep9xhZPTCCUz0in5vverJ5PdrjBz16Dtph3pI9jobFsOdmlIRHFcfo7AYKB6dN7iDhTjZxJAycmFB4qvGtARvDVZr2cfx3imghMeWTHD4k156YlJxasTfDp4Nh3VNiVsmlGSBcfzcahTg4mVPBQlfo2866MIIxaKsOcmLieDh3D9hRD1QjUEV0ygzrQi9jGTiuADun+lK3um8tPTR3VxXZ3DQ9UdoZwWOVG/2hRSokeBHNJzC44YmqokMy7ucr/bqcIwTBE9Im0EG5PQPbt3Y284im2Iav6SlaylI5NY0JKuSrWo7Yu7zPMWMv6sHoja13qvxcK/u3qLH4DFdr8jGaJnd8
+X-Rspamd-Queue-Id: 378B140008
+X-Rspam-User: 
+X-HE-Tag: 1794352332-776203
+X-HE-Meta: U2FsdGVkX1+Y+iylsUy/6Z24hd4YvLP70YObN9QNhsujcxavSDbIaDo0DVynwgMRscxvQdcTq1ce10ztnl/ptQW1J9aKDIYOeC8jlk0t2do1E2VbpUU+PWc/1F9X5auta/J5OdYVvGvQ3JTGsfNiDV7Mb5baFjaBCxYKVmJ9xpYmAhuyD7Q3LPEUWvWeNl1VhDPPRAdcOwHUjF0sqGXmbaFwoE7nHZtreUxIP4uCYS8AWDL5gOQUfFYuusV/vfzhug3q+yba8Dg+lv6C5I7G7Qn663Yu1LS25iz2CnNMeZiXI5YgH1xTaehHnif2K+mZXT8Xal7dGueGaw2DKbYj6GEW9QWp1iakTBSXkytH7WpYhx2naR10TGDH6UFN7H6xNAySrMaX5t/cM81T4qFRzFzlqEWpSaCVFfVaqqo06VFXlfswgf4sklwMSDa7Sil4d8XH2x0/AJYOgs5NnG0KUrOLGt935xgtji+FPEwnFD7O8YJCvxuVd1UTbz8RODVs1XmGsFonCt/DeEiATPFv3+bm46iNjFxvJ5p7w28O254yqcb9XCwNaJ9AWh9SEaePabn9Zc97V8+dvdcU4zTEGZdQE2/po6yKn/yiXxhX/lVpcVWoYxpHaTfcqEDJSeiDi2BomRJEU83zE2nTYXNtMehTq6k2XUJc53b05IYaHd+eA67k4QaKwGTnfKP5mhOFT5bDdm2lX6KEJ5vzQoXf15KrA2Gw7duF0CiSfG0wzJnDpnq751YjZw2xGzVNMm89EQ3VXj0kNyCy4ysuqtEaReg8py2bDYHbG1khSE8rJcWGZotp/arg9eaFoVoZiGUCg9SDWuwbe2a4S5QnR99pDq7qH3KYzlDyaoaBK4rFf2+SeglQGyi57drhn8wDqdgkWRKr+z+pdnHUI+6vZkXmONtI6UxOK1rIHFwraBBkiMNMoDkPrEV5giqhzkMnlQ3s2OMe9ExERa+ttlzDNTk
+ CKJZB6G0
+ 1eVw293xQH+xUbgPcNqfAGrYW4EFFesFtV91pBAL1AuwA3TJ3gYa7juNP34c7FYMak6zjZsAj6d9nUwRdQC5VSwtcLhIQROaWZg5DCcbnJHJBLQvMYQOpADXmivHa/SJFEiMAQ0llIsP3FWfw2m4RweOlhHfx4NDrZMTD98m0wC57ASu5WpncDQJi/ZYRmiUFMrwwl0QPRYQQJE/3kAS3qtHxmMtc+N+7UnxESMOY6ZqB+rszhXoC+tWu0WkjnbudcHUGkBh4sInPl9264hoaZP5wRzZ1DZaRH+gBwjOKDcFcKgtFp/mkze07z/RX8wkD9GzrUIYerWaF1FaBjm6GZ6QDDzeXOcZLhm/UBZ9WW74KABBQLNgwpv/A8dIecRqhjtdwN1j+4349GXOiI+iaqTLk7vTuZOEZTxqaSL6tF0FQ8qkijzoVwBGZUfERYXIg5jjstNaVp7DTGYXaUa1OMAmZ7hWBWL1ElDSd8gMXotksqlqdpx24X3A3eyeVZqEv7fTwhtOpxV0YLpeBEcx0w+LX0l0iagB3QW7lNdinF1qR01jWT/Yiy6XYtt8qtyoDST7o2KEcJd3PPMKXJtXr5QDa48SFKKpCrZ113n5UJd5HWqQ080o47etiVfbse418zolKkFKQ5aReMRvSLpjWlLYQjAFL/jM52zJw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,186 +106,221 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issues to consider:
-- [Medium] mm: page_alloc: PISA hooks bypass gfp_allowed_mask and
-  current_gfp_context()
-- [Medium] iommu/dma: reclaim lock inversion on pisa_meta_mutex in PISA
-  page allocation
-- [Low] iommu/pisa: KUnit test_alloc_and_recycle() fails when
-  SKB_FRAG_PAGE_ORDER is 0
+- [Medium] iommu/dma: list and RCU corruption in pisa_domain_quiesce()
+  on quarantine
+- [Medium] iommu/dma: data race on meta->flags in pisa_quarantine_meta()
+  and release
+- [Medium] iommu/dma: build failure in pisa_domain_quiesce() due to
+  static symbols
+- [Medium] iommu/dma: missing struct pisa_meta declaration in
+  pisa-priv.h stubs
 --
 
-commit c88623dbd052fba1d3099d39b6d0533caf0d54a7
+commit 72b9f4d8d1b40452a8315c8a6e6bdaec17fbdb98
 Author: Luigi Rizzo <lrizzo@google.com>
 
-iommu/dma: Add PISA block allocation
+iommu/dma: Release PISA domain mappings on domain teardown
 
-This commit adds PISA block allocation and compound page splitting, along
-with __GFP_PISA_RO and __GFP_PISA_RW flags hooked into the page allocator.
+This commit adds pisa_domain_release() and pisa_domain_quiesce() to unmap
+active PISA pages and release or quiesce domain mappings when an IOMMU
+domain is torn down or its last DMA API user detaches, quarantining and
+leaking any 2MB page whose iommu_unmap() fails.
 
-> diff --git a/drivers/iommu/pisa-alloc.c b/drivers/iommu/pisa-alloc.c
-> index cf559ee86d6f9..1f1b99023094c 100644
-> --- a/drivers/iommu/pisa-alloc.c
-> +++ b/drivers/iommu/pisa-alloc.c
+> diff --git a/drivers/iommu/pisa-map.c b/drivers/iommu/pisa-map.c
+> index 2e8d635dec34c..2ba977bb68734 100644
+> --- a/drivers/iommu/pisa-map.c
+> +++ b/drivers/iommu/pisa-map.c
+
 [ ... ]
-> +/* Obtain and split a new PISA page on @nid into blocks of @order. */
-> +static struct pisa_meta *pisa_alloc_split_page(unsigned int order, gfp_t=
- gfp, int nid)
+
+> +/* Report a short IOMMU unmap and mark @meta quarantined so it is never =
+reused. */
+> +static void pisa_quarantine_meta(struct pisa_meta *meta, struct iommu_do=
+main *domain,
+> +				 int idx, dma_addr_t iova, size_t unmapped)
 > +{
-> +	bool can_block =3D gfpflags_allow_blocking(gfp), clean;
-> +	unsigned int bpp =3D PISA_BLOCKS(order);
-> +	struct pisa_meta *meta;
-> +	struct page *page;
+> +	pr_err_ratelimited("pisa: unmap of IOVA %pad in domain %p (index %d) re=
+turned %zu, quarantining PISA page\n",
+> +			   &iova, domain, idx, unmapped);
+> +	WRITE_ONCE(meta->flags, meta->flags | PISA_QUARANTINED);
+> +}
+
+[ ... ]
+
+> +static unsigned int pisa_unmap_domain_locked(struct pisa_meta *meta,
+> +					     struct iommu_domain *domain,
+> +					     int idx, dma_addr_t base,
+> +					     struct iommu_iotlb_gather *gather)
+> +{
+> +	dma_addr_t iova =3D base + pisa_meta_win_offset(meta);
+> +	size_t unmapped;
 > +
-> +	/* __GFP_DMA/__GFP_DMA32 were already declined by pisa_alloc_bulk(). */
-> +	meta =3D pisa_reservoir_pop(nid, gfp & ~__GFP_ZERO, &clean);
+> +	if (!test_and_clear_bit(idx, meta->domains_mapped))
+> +		return 0;
+> +
+> +	unmapped =3D iommu_unmap_fast(domain, iova, PISA_SIZE, gather);
+> +	if (unlikely(unmapped !=3D PISA_SIZE))
+> +		pisa_quarantine_meta(meta, domain, idx, iova, unmapped);
+> +	return 1;
+> +}
 
 [Severity: Medium]
-Can a GFP_NOFS or GFP_NOIO allocation invert lock ordering on
-pisa_meta_mutex when the reservoir misses?
+Can concurrent updates to meta->flags in pisa_quarantine_meta() and
+pisa_release_page() clobber each other?
 
-pisa_meta_init() and pisa_meta_memory_cb() hold pisa_meta_mutex across
-GFP_KERNEL allocations, establishing pisa_meta_mutex -> fs_reclaim.  Here,
-GFP_NOFS and GFP_NOIO still have __GFP_DIRECT_RECLAIM set, so
-pisa_reservoir_pop() -> __pisa_page_alloc() calls pisa_meta_ensure_pfn()
-with can_block =3D=3D true while the caller holds filesystem or I/O locks:
+pisa_unmap_domain_locked() clears idx in meta->domains_mapped before
+calling iommu_unmap_fast() and pisa_quarantine_meta(), so a concurrent
+pisa_release_page() -> pisa_unmap_all() can see bit idx already cleared
+and proceed to update meta->flags without synchronization:
 
-drivers/iommu/pisa-meta.c:pisa_meta_ensure_pfn() {
-    ...
-	if (can_block && !pisa_meta_pte((unsigned long)pisa_meta_array + (idx << P=
-AGE_SHIFT))) {
-		int err;
+CPU0                                  CPU1
+pisa_domain_quiesce()                 pisa_release_page()
+  pisa_unmap_domain_locked()
+    test_and_clear_bit(idx, ...)
+                                        pisa_unmap_all()
+                                        flags =3D meta->flags
+    iommu_unmap_fast() [short unmap]
+    pisa_quarantine_meta()
+      meta->flags |=3D PISA_QUARANTINED
+                                        meta->flags =3D flags & ~PISA_ACTIVE
+                                          <-- drops PISA_QUARANTINED
 
-		mutex_lock(&pisa_meta_mutex);
-		err =3D pisa_meta_prealloc(pisa_meta_array, pisa_meta_nframes, pfn, pfn +=
- 1);
-		mutex_unlock(&pisa_meta_mutex);
-    ...
-}
+When PISA_QUARANTINED is lost, pisa_release_page_rcu() frees the IOVA slot
+and returns the still-mapped 2MB page to the buddy allocator.  With the
+opposite interleaving, pisa_quarantine_meta() restores PISA_ACTIVE on the
+retired page.
 
-CPU0                              CPU1
-----                              ----
-lock(fs_lock)
-                                  mutex_lock(&pisa_meta_mutex)
-                                  apply_to_page_range()
-                                    /* fs_reclaim */
-                                    lock(fs_lock)
-pisa_alloc_split_page(GFP_NOFS)
-  ...
-    pisa_meta_ensure_pfn(..., true)
-      mutex_lock(&pisa_meta_mutex)
-
- *** DEADLOCK ***
-
-[ ... ]
-
-> diff --git a/drivers/iommu/pisa-kunit.c b/drivers/iommu/pisa-kunit.c
-> index 079f6220e742a..bdc52e6497b05 100644
-> --- a/drivers/iommu/pisa-kunit.c
-> +++ b/drivers/iommu/pisa-kunit.c
-> @@ -87,9 +90,78 @@ static void test_meta_active_toggle(struct kunit *test)
-> =20
->  static void test_alloc_and_recycle(struct kunit *test)
->  {
-> -	KUNIT_EXPECT_NULL(test, pisa_create(NUMA_NO_NODE, 0, DMA_NONE));
-> -	KUNIT_EXPECT_NULL(test, pisa_create(NUMA_NO_NODE, PISA_ORDER + 1, DMA_B=
-IDIRECTIONAL));
-> +	const struct {
-> +		unsigned int order;
-> +		bool ro;
-> +	} cases[] =3D {
-> +		{ 0, false },
-> +		{ 2, true },
-> +		{ SKB_FRAG_PAGE_ORDER, true },
-> +	};
-> +	struct page *p1, *p2, *bulk[3];
-> +	struct pisa_alloc *pa;
-> +	unsigned int i;
+> +/*
+> + * Unmap all PISA leaf PTEs from a domain whose last DMA API user detach=
+ed,
+> + * keeping its window and domain index so mappings are re-installed on d=
+emand.
+> + */
+> +void pisa_domain_quiesce(struct iommu_domain *domain)
+> +{
+> +	struct iommu_iotlb_gather gather;
+> +	struct pisa_window *win;
+> +	unsigned int slot, done =3D 0;
+> +	bool release =3D false;
+> +	dma_addr_t base;
+> +	int idx;
 > +
-> +	KUNIT_EXPECT_NULL(test, pisa_create(first_memory_node, 0, DMA_NONE));
-> +	KUNIT_EXPECT_NULL(test, pisa_create(first_memory_node, PISA_ORDER + 1,
-> +					    DMA_BIDIRECTIONAL));
-> +	KUNIT_EXPECT_NULL(test, pisa_node_pa(first_memory_node, 1, false));
-> +	KUNIT_EXPECT_NULL(test, pisa_node_pa(first_memory_node, 0, true));
-
-[Severity: Low]
-Doesn't this KUNIT_EXPECT_NULL(test, pisa_node_pa(first_memory_node, 0,
-true)) check fail on arm64 with CONFIG_ARM64_64K_PAGES=3Dy?
-
-With 64KB pages, SKB_FRAG_PAGE_ORDER is get_order(32768) =3D=3D 0, so
-pisa_init() populates pisa_nodes[nid].pa[true][0] for the
-{ SKB_FRAG_PAGE_ORDER, true } entry that this test also asserts is
-non-NULL in the loop below.
-
-[ ... ]
-
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 48df87a19d312..b8e1f0fcb3f41 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-[ ... ]
-> @@ -5223,6 +5246,14 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, i=
-nt preferred_nid,
->  	while (nr_populated < nr_pages && page_array[nr_populated])
->  		nr_populated++;
-> =20
-> +	if (unlikely(gfp & __GFP_PISA_RO)) {
-> +		nr_populated =3D pisa_alloc_pages_bulk(gfp, 0, preferred_nid, nodemask,
-> +						     nr_pages, page_array, false);
-> +		gfp &=3D ~__GFP_PISA_RW;
-> +		if (nr_populated =3D=3D nr_pages)
-> +			goto out;
+> +	if (!static_branch_unlikely(&pisa_key))
+> +		return;
+> +	win =3D pisa_dma_window(domain);
+> +	/* Pairs with smp_store_release() in pisa_window_assign(). */
+> +	base =3D win ? smp_load_acquire(&win->base) : 0;
+> +	if (!base)
+> +		return;
+> +	idx =3D win->domain_idx - PISA_IDX_FIRST;
+> +
+> +	iommu_iotlb_gather_init(&gather);
+> +	/* Keep call_rcu()-freed pages from reaching the buddy allocator before=
+ IOTLB sync. */
+> +	rcu_read_lock();
+> +	for_each_set_bit(slot, pisa_slot_bitmap, pisa_nr_slots) {
+> +		struct pisa_meta *meta =3D READ_ONCE(pisa_slot2meta[slot]);
+> +		struct pisa_alloc *pa;
+> +		unsigned long flags;
+> +
+> +		if (!meta || !test_bit(idx, meta->domains_mapped))
+> +			continue;
+> +		done +=3D pisa_unmap_domain_locked(meta, domain, idx, base, &gather);
+> +		if (likely(!(meta->flags & PISA_QUARANTINED)))
+> +			continue;
+> +		pa =3D READ_ONCE(meta->pa);
+> +		if (!pa)
+> +			continue;
+> +		spin_lock_irqsave(&pa->lock, flags);
+> +		if (meta->pa =3D=3D pa) {
+> +			if (meta->on_list =3D=3D PISA_LIST_IDLE_CLEAN ||
+> +			    meta->on_list =3D=3D PISA_LIST_IDLE_DIRTY)
+> +				pa->num_idle_pages--;
+> +			release |=3D pisa_place_meta(meta);
+> +		}
+> +		spin_unlock_irqrestore(&pa->lock, flags);
 > +	}
 > +
->  	/* No pages requested? */
->  	if (unlikely(nr_pages <=3D 0))
->  		goto out;
-> @@ -5457,6 +5488,13 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp=
-, unsigned int order,
->  		fastpath_alloc_flags |=3D ALLOC_WMARK_LOW;
->  	}
-> =20
-> +	if (unlikely(gfp & __GFP_PISA_RO)) {
-> +		page =3D pisa_alloc_pages(gfp, order, preferred_nid, nodemask);
-> +		if (page)
-> +			return page;
-> +		gfp &=3D ~__GFP_PISA_RW;
-> +	}
-> +
->  	gfp &=3D gfp_allowed_mask;
->  	/*
->  	 * Apply scoped allocation constraints. This is mainly about GFP_NOFS
+> +	if (done)
+> +		iommu_iotlb_sync(domain, &gather);
+> +	rcu_read_unlock();
+> +	if (release)
+> +		pisa_schedule_reclaim();
 
 [Severity: Medium]
-Should both PISA hooks run only after gfp &=3D gfp_allowed_mask and
-gfp =3D current_gfp_context(gfp)?
+Does pisa-map.o fail to build at this commit because PISA_LIST_IDLE_CLEAN,
+PISA_LIST_IDLE_DIRTY, pisa_place_meta(), and pisa_schedule_reclaim() are
+still static or local to drivers/iommu/pisa-alloc.c?
 
-Callers inside a memalloc_nofs_save() or memalloc_noio_save() scope (or
-during system suspend when pm_restrict_gfp_mask() clears __GFP_IO |
-__GFP_FS in gfp_allowed_mask) pass GFP_KERNEL | __GFP_PISA_* and rely on
-the page allocator to strip __GFP_FS and __GFP_IO.  Passing the raw gfp
-into pisa_alloc_pages_bulk() and pisa_alloc_pages() lets
-__pisa_page_alloc() see (__GFP_FS | __GFP_IO) still set:
+Those declarations are only moved to drivers/iommu/pisa-priv.h in a later
+patch in the series, commit "block, mm, iommu/dma: Support PISA for disk
+I/O and scrub migration", which breaks bisection when CONFIG_PISA and
+CONFIG_IOMMU_DMA are enabled.
 
-drivers/iommu/pisa-node.c:__pisa_page_alloc() {
-	if (unlikely(!static_branch_unlikely(&pisa_key))) {
-		if (!can_block || (gfp & (__GFP_FS | __GFP_IO)) !=3D (__GFP_FS | __GFP_IO=
-) ||
-		    pisa_meta_init())
-			return ERR_PTR(-EAGAIN);
-	}
-    ...
-	if (can_block)
-		memflags =3D pisa_memalloc_save(gfp);
-}
+[Severity: Medium]
+Can pisa_domain_quiesce() call pisa_place_meta() on an idle page that has
+already been detached from pa for release, corrupting pisa_free_list or
+meta->rcu?
 
-As a result, __pisa_page_alloc() can invoke pisa_meta_init() inside a
-NOFS, NOIO, or suspend context, and pisa_memalloc_save(gfp) fails to set
-PF_MEMALLOC_NOIO | PF_MEMALLOC_NOFS when gfp_allowed_mask has restricted
-I/O or filesystem reclaim.
+When an idle page (avail =3D=3D bpp) is detached onto pisa_free_list or
+queued with call_rcu(), meta->pa remains non-NULL until
+pisa_release_page_rcu() runs after the grace period, and its slot stays
+set in pisa_slot_bitmap.  If pisa_domain_quiesce() sees PISA_QUARANTINED
+on that page, meta->pa =3D=3D pa is still true and pisa_place_meta() runs
+llist_add(&meta->llnode, &pisa_free_list) on it:
+
+CPU0                                  CPU1
+pisa_reclaim_work_fn()                pisa_domain_quiesce()
+  ...                                   rcu_read_lock()
+  pisa_release_page(meta)
+    call_rcu(&meta->rcu, ...)
+                                        pisa_unmap_domain_locked()
+                                          pisa_quarantine_meta()
+                                        spin_lock_irqsave(&pa->lock, ...)
+                                        if (meta->pa =3D=3D pa)
+                                          pisa_place_meta(meta)
+                                            llist_add(&meta->llnode,
+                                                      &pisa_free_list)
+                                              <-- overwrites live meta->rcu
+
+Because meta->llnode and meta->rcu share an anonymous union, adding
+meta->llnode to pisa_free_list overwrites the active RCU head (or creates
+a cycle in pisa_free_list if pisa_reclaim_work_fn() has not popped it
+yet), and a second pisa_release_page() after meta->pa is cleared to NULL
+hits the !meta->pa branch and frees the quarantined 2MB page to the buddy
+allocator.
+
+In addition, pisa_shrink_list() moves idle pages onto pisa_shrink_scan()'s
+local release_list and decrements pa->num_idle_pages without setting
+meta->on_list to PISA_LIST_NONE, so pisa_domain_quiesce() will also
+decrement pa->num_idle_pages a second time and run list_del_init() on
+meta->list while pisa_shrink_scan() walks release_list unlocked.
+
+> diff --git a/drivers/iommu/pisa-priv.h b/drivers/iommu/pisa-priv.h
+> index 3ef6e51402ceb..f97f69a13d1a9 100644
+> --- a/drivers/iommu/pisa-priv.h
+> +++ b/drivers/iommu/pisa-priv.h
+
+[ ... ]
+
+>  #define pisa_nr_slots 0U
+>  static inline void pisa_slots_init(void) {}
+>  static inline int pisa_slot_alloc(struct pisa_meta *meta) { return 0; }
+>  static inline void pisa_slot_free(unsigned int slot) {}
+> +static inline int pisa_unmap_all(struct pisa_meta *meta) { return 0; }
+
+[Severity: Medium]
+Does including pisa-priv.h in drivers/iommu/iommu.c trigger a
+-Wvisibility warning on struct pisa_meta when CONFIG_PISA is disabled?
+
+struct pisa_meta is only declared inside #ifdef CONFIG_PISA, so when
+CONFIG_PISA=3Dn the parameter lists of pisa_slot_alloc() and
+pisa_unmap_all() declare a local struct pisa_meta type, failing the build
+under CONFIG_WERROR=3Dy.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109182533.3594=
-984-1-lrizzo@google.com?part=3D4
+984-1-lrizzo@google.com?part=3D7
 
