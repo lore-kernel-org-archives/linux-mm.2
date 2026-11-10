@@ -1,102 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 960C5606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 08:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B015606A32A
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 08:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E2rOEA41
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=q02sPx7B
 Received: by kanga.kvack.org (Postfix)
-	id 9FFE36B05B1; Tue, 10 Nov 2026 03:47:52 -0500 (EST)
+	id 17E3E6B05B2; Tue, 10 Nov 2026 03:52:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D7366B05B2; Tue, 10 Nov 2026 03:47:52 -0500 (EST)
+	id 108266B05B3; Tue, 10 Nov 2026 03:52:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 914546B05B3; Tue, 10 Nov 2026 03:47:52 -0500 (EST)
+	id F11A06B05B4; Tue, 10 Nov 2026 03:52:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 692C36B05B1
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 03:47:52 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E353280706
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:47:51 +0000 (UTC)
-X-FDA: 85418581542.07.A219C57
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4DF2D140002
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:47:50 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E2rOEA41;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CB5C66B05B2
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 03:52:31 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5C6DF1608AE
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:52:31 +0000 (UTC)
+X-FDA: 85418593302.14.D1ACE12
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	by imf19.hostedemail.com (Postfix) with ESMTP id AD2581A0005
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:52:29 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=q02sPx7B;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of adrianhuang0701@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=adrianhuang0701@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794300470;
+	s=arc-20220608; t=1794300749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=971CVAco0wRsepZ2O+DuyJQLTFxXmiUWfADT6vKykDg=;
-	b=VGY6gTsrHovXziE/mHAm8aXaFwXMSLW1cbVb+NpWJbSDZjeSVI5PShyS0DcJY/ayZ2jjtl
-	2mrJLdTgc7oDIXW6B9pbvb1lCjTQqVpBQgF2fB4R80N5vQv7KKAeuvpjXxDc29tMoUYXYm
-	Ya25QyWMgjoxE6vQ8pnZLjekvSKH6H8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794300470;
-	b=JaszlBhUgjORHOqO9T0zDnX/hiOE0JLgeXrNIOo8pmCr5dOsPslxeTSvc6Tf2QXaOwuO0d
-	vlqGPQvC7RUGoRTvsiXEcTOuv7gcSOU+TQQ+/OHYGYjxDeAAkW3Yh4hQG7dJTxTEi0hzcL
-	+Ezkw35LG6FR9aBSuJVzw6qhw1Em5Js=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=xfIJPZ8iDuwMd4fEVUhcFpuLjx5VOiQMHuJ+5IFm8uE=;
+	b=vE+wB9V7jznYViH8lVsueN1jvUTDsF9qz9JFNvYjKiGhjktSCb21U/cS3I1WMomQEDTLhM
+	BM7puwLPgzYuYPlQcNJlzuFfNyP2ohIhYMfbmgh1vPLDI6TE0RaVQ/8P3DGRt2WAEKW+vs
+	hoxkyWYpJZQeKsuFmrQ/ueocTDKcGdY=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E2rOEA41;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1C87B631A3;
-	Tue, 10 Nov 2026 08:47:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B911F008A1;
-	Tue, 10 Nov 2026 08:47:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794300468;
-	bh=971CVAco0wRsepZ2O+DuyJQLTFxXmiUWfADT6vKykDg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=E2rOEA417uw2D2zqDfgokpjiUXSld29mrsEuVXHxP9GLTFMBlE9QpzHB6cYJTRj/s
-	 bNb9RuSh51wCZosf6cEmHsHb6r69dXLTOsubsj2wByaWqCyXZUHjmBKEw6LaYFbXfo
-	 tOTCOlCqR3rDCMMlaykpekQZGQflPc8CBcScbJuftXTOg43KZQzuE6dJ9pYq2BHlsc
-	 E13UUPMqzYhMiYC3vMc84UcC6JglBm/DDXTSCvJyPCXIVwgjYBXJuZB+eFqVYzkZk4
-	 BmfdxZ6u5kOCqxW439hUAZML7ys1hMaZACoMClSmusSg0Z35PJoD2xdz7m/LBLHBsf
-	 L5ZzCcDj9+wBw==
-Date: Tue, 10 Nov 2026 10:47:35 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Wandun <chenwandun1@gmail.com>
-Cc: robh@kernel.org, baoquan.he@linux.dev, m.szyprowski@samsung.com,
-	catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com,
-	chenhuacai@kernel.org, kernel@xen0n.name, pjw@kernel.org,
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
-	tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-	saravanak@kernel.org, akpm@linux-foundation.org,
-	pasha.tatashin@soleen.com, pratyush@kernel.org,
-	ruirui.yang@linux.dev, robin.murphy@arm.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
-	devicetree@vger.kernel.org, kexec@lists.infradead.org,
-	linux-mm@kvack.org, iommu@lists.linux.dev
-Subject: Re: [PATCH v9 0/8] kdump: reduce vmcore size and capture time
-Message-ID: <avLaJxIrrnMQngO9@kernel.org>
-References: <20261021083011.2170525-1-chenwandun1@gmail.com>
- <7773d026-4aef-4169-866a-71ec9a91da21@gmail.com>
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=q02sPx7B;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of adrianhuang0701@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=adrianhuang0701@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794300749;
+	b=1vM3ZPFcPPnod5o0zVq5AxGP3iCeGHLCKb11lXo/jtJEY5pqfcq3LIalX7kn5ujAZAgwmo
+	olPq/3OsoQktqz8NYLBu8oY354mSjVDGiOJE0WAd+/3ml2AQb1mgMdLuPaRLjjSdRo27E0
+	sQcz7hRImb/SrQQXKLb4Vg6s3p78uK8=
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-3700ed8dbe3so2577789eec.0
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:52:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794300748; x=1794905548; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xfIJPZ8iDuwMd4fEVUhcFpuLjx5VOiQMHuJ+5IFm8uE=;
+        b=q02sPx7BtyWatpW/96aHwhzhcjh6ZGl91x1zQOOz0AoSerVCKhj6otE7h0iZyZw1c7
+         nVesdynOMhZDOujQVH3F/IaKwT7IpVpcbXW6AkPkK9AARF+nb+vs4WMPGWMmO8uTHF04
+         TJS6Ny/vcMdZ+k6quE/+YfBZy9GJPbEqFsMokTmgCsc3N087BFpycVxOh1DAwg3F3InD
+         eWYk2j1MnTBQBWHhQvM2edhUd4Q+d4dHkuEZs/idCfwM1+fQWHY1nMeDGwyKEVXLGBd1
+         Shfo8d3C90FO7iKKFhgu1ge735uBQr6RFDDPOyOWaZKqfXan5qdY+OY8r+caUaVQy0lv
+         lYig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794300748; x=1794905548;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xfIJPZ8iDuwMd4fEVUhcFpuLjx5VOiQMHuJ+5IFm8uE=;
+        b=y6A7liRsN54uoQKbnTPlQ2iZQvZITvJi1GAJ9Fq/i1QsXEL6ny1puIim1nrD/5IuZh
+         49vQrOtT0sB5PoG+B6vMaAmNWDnWon4ZWuirde8WviEIZCG3UA277vUfQOhwXrKMuif2
+         i7uBv3qq0kfS2GE5QfrhP5ZlaiQxyg36YUnrnmjpriJKqImyCBZhHz9PQFMkWXRoufop
+         yzKsw4B+WmstL8UsxkhDwGyTwsN+HWZGHtk8MPWmSQL//3crRXK26eXOiNE8vp2CIssI
+         K8i5FewJYxFoe3rMVXc2SQ2k2aGnKI19mef70v+wtkpL+jxGDnDhZLbupK76zijdIZY+
+         3Skw==
+X-Forwarded-Encrypted: i=1; AL+hErFic4VPb8EXbgHIkZyyK1/ndWSTsT4Bz58QC5qMPeGgaYbyHcaDnpGj5CvSzFI6/IeHnQ/uUZddYw==@kvack.org
+X-Gm-Message-State: APuU4Z/ow7jxTt650XITvWD4ILLzKG/dC5sFAKBKbZEdw/Mz/WBRjR02
+	EB08yIScBNyexwmmNmp+myI8P5YMBLEz0BvMZq/41ogBnTnyOgdxCq+M
+X-Gm-Gg: AYBFou3gNNkKv+gDea4wWjMZDvZqXwcdxQ5McKmuJtEMSjLAW94hpH06rI+qVBI2k+v
+	Myq9W3JzLBNZfsiqY7neMwmzNQOnsrFSSeH/MvzTrelpui3jck8mEWgBoLrJ3IicKtXHkNdQWBT
+	Zv/u4MI1JJaVMfWOSO6b6koLPVV9XG/McFm78ZubDfRk/wbfENNwzn2OaK4S/nT4P8WKm2MGp9g
+	Q3qaqJkrdXig3uyrUew6fRYyYSG7X5iymczYpqgwfPhaxV2YhKH0lKgLMxb92rONdya25eF2BRg
+	/cy/X1hwB40MHr2cv2rpeZ+4IzGOodGywSnzGLKK/geSudGDB6fAR+Ah3v5L5vz6N41iDS6FA+e
+	87cuL2z5LDMAmdny4DRQw+omuBEzCk38dmjRw6VShcpWEiUsHQWfuov/x2TqDBeh5FwENpevRo1
+	/vdZXIIWAEgJKT9t7Gcd/YMP+reRVTA0FO7zsck+nO5YLXHcc21RuVP+NEcVAO/M/He1/UEtbgS
+	rnbauH4SMzeauJnsqZ70YBUxs7svAicIviF112bokrR40Bf4P6INSxk+Qejwy0HaJ2UWbirl5fr
+	9+NlqYzIdfCuz4QJ8SQ/BtU3kqrkwwcWKrHRJahXp2bGaG7SKNPIkWfOhuuItUviPf8d4nCyWQf
+	w1CDw/LiZ47AtMmzsECbgBbeRHjpkjOgSc0Ems5G6Ksu1Iag=
+X-Received: by 2002:a05:7300:f48f:b0:351:2958:1740 with SMTP id 5a478bee46e88-3751fc35f80mr2396611eec.37.1794300747995;
+        Tue, 10 Nov 2026 00:52:27 -0800 (PST)
+Received: from AHUANG12-3ZHH9X.lenovo.com (static-ip-10-78-56-61.rev.dyxnet.com. [61.56.78.10])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-375215d8889sm5590830eec.27.2026.11.10.00.52.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2026 00:52:27 -0800 (PST)
+From: "Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com>
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	ahuang12@lenovo.com,
+	"Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com>
+Subject: [PATCH 1/1] mm/damon/core: simplify minimum watermark wait time calculation
+Date: Tue, 10 Nov 2026 16:51:32 +0800
+Message-Id: <20261110085132.1023-1-adrianhuang0701@gmail.com>
+X-Mailer: git-send-email 2.25.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7773d026-4aef-4169-866a-71ec9a91da21@gmail.com>
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: z7kdd838ze65cjijn8b9e76js1tbhake
-X-Rspamd-Queue-Id: 4DF2D140002
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1794300470-268326
-X-HE-Meta: U2FsdGVkX1/cccGKTpshqDMO3oukfPTSvolfVlY0QHr6CNyuleTCd89sdTm/slZOIkVkedSnU7lW3qyOYc5EIPFeEY4nYan+JCjdj+rMkDJL4t7B8Mq/MTY5JKUT9wzk9rRHBEUwfLCL5+SJxx2kO2d7Z/P7nhuaurZFiHv1GIAx7h2ijjqB4H/NfrquEpLTP0ehRs4yolTapQqI1cjilcGCoPor12kTJe9EzfIRprtfxEdlFN7eLVEZIuoOlwDVFETVZPtcmfD8e3GY10b0xaaH8JBKEMogqgpaNhs3p7N/JTBcLmnjvv1wJOwLjuSFsTZpfLRtU8uUV2CrPCs/qUeR2lSDNw12MownH0sFaNZDT0sX1BzqDmAQjux8raBdrS4QPcqQVyk702pjUuvjYOEk1Hr9qyMNHwsR/ERxmKEXC+CtH5Upy8wLsyzEduKHV3iO9GPLcW9DT/+kBx1wlubzsymCvL5X+ao6TaQFV3FZq30thgJltjUHEcnnQr4vJwIIjWhaUFabVd8TFi3HVYV9hDpZazwm8b8MCC1WxIUNK6JbevMe+EUIreUmqvjMqZXJsr0es0wiE5Fmfi8irA8RT2zYswH4xjgn3dAm/2cxITjsRxTKGOe8xedrUxpmdsyO4DxoR0rAzCW+OqO04rkLYQS4IAm5gZt48Ou6+VydXQHFLZmMIegQCpHCE37YF/VzLV7YYxi9bxl95nPPFum4aOU4nmijJziOYABwyimoAvS5NqGXLd0XlrzfqWY0aIv4FJrd1jGhY9ysaDd8+sqVfaDev05jKuUDJt89ghaw/80rwbmh8MmuxESs3O/RZJqAsY7RnqfdhK20tdpxVYFbFzS5EDj236rUATR7cD/fEjoT86aAEK8aDg46MUHV0xR1gl/79iVMJ4IOI6mxZFGVbqWGK75QqpaFQl53NQEevE7vfA9B+F/0pdZw9+mt/OBG6hNoh0K31cIE7Y/
- SS69z70H
- DThhJVmvUSV0N2VTgbGO37TOcv98liTqSwgCsC/0/VYRqUyMzf/lYMNk5DIk0m2M5pgkS313i484yyIpX2tUpFl1hFWWpA9L+9ThOSuMdu0eqyXk/ajdV3huLUELAg1igbUDP0CkYRKzQkQzeZee1RLf0aodCA7j+dbPisa25XU1JuTJ2vl3OTu8LyxAtl+5encCplvajp6yIGnbuRn/g6y7J+F9QgDC3QZ4MYbsh43O7HdrxjcRZXMrRIWnCZU3e4F+DMQmkZnsmFqvIwEVaxdRHQ2UtGW8e66vJQBfFvaUwsDqaWHqGXaoKVO9dJQYEWUJUWjeAgaNOd0r4e8zfS3QR+jU2M/2Y8O1SOKxeAjUUFEe5vBfvrzirTbvTYmjAYtlGmfLG3lFh/13abbvR3wnrdpWnOZB0gwG0
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: AD2581A0005
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: ktnm8uwt4uadf53aew7ptx4xodxjdyc1
+X-HE-Tag: 1794300749-733294
+X-HE-Meta: U2FsdGVkX184f5h37p61tuG/8KM9SgggP+u7CS8NNoaCApqVfsWoZNKHAfyoAPI7KBgs17fIDyO6SBIvl+jS8/H0lSdl9nbtNcA7r1ykrCca4OZ5KHy2zF/l5xoaBBSibmJSyC9RZGufEdG5hE5CQRhVBosIhhebx6q+DDbPy8kSCDbEU/GYKotF/gCr6f8+u2xrCBO+RR3Yew8ERNv+u7RrSf0Xl3PfvpUd3XhlgflbHQ5XBkX/KhY0iIdxollJiidQAlHd0YK46IXv0Bb+fAgjwiQRow/3bAdQyXfKwyRljNWuA0yNY3Vckqv/XPVatvZM7ruyWZ2X1TWeVZtpgFmfs9ZjjMzgfRZ+P9lJjyzMvbsoJFit2XTYrk8FqE2XmaVRkWJQyDr+QW6LBpgrZ6EcwlW6xMKdgkx4tT8hmIVAZA+gTuMBU+X3feCBY0AcgH5Wx+8/c9nt0InlO7q/j7eDRqmyis1sIasQ7KyfCAgsj/Dvsf356FOFmE8tAO5VsRqVjxMPnNjFkxGIVzKt4wV84UKo3IB06PdItME1UITeHqzzzRGoqodaFXe4vMHNFN9vlRzxQUpZNJSxooETzhSjtDrZy5EyUc4lL6zXfouGxMdjs6skYlM4uglda4qIx3C9Nh5XWR5VVWby9AFTs0z8zkDGGsT5Z/nV5bW6UPaSc5yDWF0Jrp9uqy4WT2pjIGVSz9mTuLTWpib3uSvXJp94foF5GK8wkVvu/f5VFfx7oHB4vtLeQeDtI5p00EGgO6NTdyrmYbNEWtN2kl9VV41RwsLEaS55RjVImUbF0jO73gvyK5qWZlbDbRoroU3j9jD7nzBENg5mxHTrT/81rPcgUBmv0Hfol8OLTCyqlBBjE69qB4CfXVWWH6DQ2MtiGjgGlhR52onTaTpWvHPZ3QqL+RjJg4tEg1ZKHosdyPwfGNCSJpNrNBU5SseCPP3jOY6YDtRo76W/HOa2u/f
+ 0nxB41e9
+ 4IdB2HjyAUk0Ouj8Do5SxKBGvHX9AM8Prt0vtEmrIXa2i+T/SzzEffYJXWfF5rYroUMPh5liJMqj+oqif9epZZiUp/5RciRoilSybb1NUk0eDBDsH8k60njwg10HXbXLfdI+rDCLRTFBVMmke4lCzHK7pHGXR0f9ZKkt8qkZxGKhhW6H9CLlqSILutVrlluwdJ1O6ecgALYiTqw8GUQ26Tr2ez8mz/DEHS/sMS8rFJdHoY6hjRtEr++cVpeyWgjmmd2yxiuilOFndlo8ZOt3BgTSHaIdS2XFYOJ5huREacIphBKIWk/9bfsltWaSYonDGX/lIPvElycPHR6+I8yWNFvaX9WLcIMTs5yK6CgxxNC2BMfH+21LENfetJOBXadfWzCK1VdBv9A/IzYq8Q5vbcF/UXQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,165 +125,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Wandun,
+The minimum watermark wait time calculation uses an additional boolean
+variable, init_wait_time, to determine whether min_wait_time has been
+initialized.
 
-On Mon, Nov 09, 2026 at 08:23:16PM +0800, Wandun wrote:
-> 
-> On 10/21/26 16:30, Wandun Chen wrote:
-> > From: Wandun Chen <chenwandun@lixiang.com>
-> > 
-> > On SoCs that carve out large firmware-owned reserved memory (GPU,
-> > camera ISP, ...), kdump currently dumps those carveouts as part of
-> > system RAM even though their contents are firmware state that is not
-> > useful for kernel crash analysis.
-> > 
-> > ACPI systems already filter reserved memory out of the vmcore through
-> > their existing path: firmware reports those carveouts as unusable in
-> > the EFI memory map, they get MEMBLOCK_NOMAP set in memblock.memory
-> > (is_usable_memory(), efi-init.c), and the ELF header builder has
-> > always skipped nomap regions; only DT-based systems currently fail
-> > to filter these regions, which is what this series addresses.
-> > 
-> > This series introduces a MEMBLOCK_NODUMP flag (suggested by Rob) in
-> > memblock to filter reserved memory on DT-based architectures. A new
-> > flag is needed because MEMBLOCK_NOMAP can only express regions without
-> > a linear mapping, while MEMBLOCK_NODUMP can filter regions that are
-> > linearly mapped. Reserved regions are marked MEMBLOCK_NODUMP by default
-> > so kdump omits them; reusable CMA regions are different because their
-> > pages are handed back to the buddy allocator and may carry crash-relevant
-> > data.
-> > 
-> > Since the reserved memory regions are filtered out, the vmcore is
-> > smaller in size and faster to produce.
-> > 
-> > The series is based on linux-next and is organized as follows:
-> > 
-> > Patches 1-3: Preparation and bugfixes: switch riscv crash_mem to
-> >              memblock, fold the duplicated per-arch memblock walks
-> >              into the weak defaults, and serialize crash header
-> >              preparation against memory hotplug.
-> > Patches 4-7: NODUMP infrastructure: switch crash_core to
-> >              for_each_mem_region(), introduce the MEMBLOCK_NODUMP
-> >              flag, add a dumpable flag to struct reserved_mem, and
-> >              mark /reserved-memory entries with MEMBLOCK_NODUMP.
-> > Patch 8:     Skip MEMBLOCK_NODUMP regions when building the vmcore
-> >              ELF header.
-> 
-> Hi all,
-> 
-> A gentle ping on this series.
-> 
-> I'd appreciate any further feedback, particularly on the
-> MEMBLOCK_NODUMP discussion and the issues raised in the Sashiko
-> review.
+Simplify the logic by using list_is_first() to identify the first
+scheme and initialize min_wait_time accordingly. Subsequent schemes
+update min_wait_time only when their waiting intervals are shorter.
 
-I'm fine with MEMBLOCK_NODUMP.
-The issue Sashiko raised about bound check against cmem->max_nr_ranges
-seems valid. 
+This removes the unnecessary boolean variable while preserving the
+existing behavior, including the case where no schemes are configured.
 
-I didn't check the reserved mem one.
+Signed-off-by: Adrian Huang (Lenovo) <adrianhuang0701@gmail.com>
+---
+ mm/damon/core.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index d36823f4d092..93ec684a113c 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -3985,14 +3985,12 @@ static int kdamond_wait_activation(struct damon_ctx *ctx)
  
-> Please let me know if there are any other concerns or suggestions
-> before I prepare the next revision.
-
-I believe that should be rebased to account for reserved memory changes.
-The riscv change from resources to memblock needs an Ack from riscv
-maintainers.
-
-And with all that I can take the next version via kexec tree.
+ 	while (!kdamond_need_stop(ctx)) {
+ 		unsigned long min_wait_time = 0;
+-		bool init_wait_time = false;
  
-> Thanks,
-> Wandun
-> 
-> > 
-> > v8 --> v9:
-> > 1. Patch 7: Avoid a potential boot panic on SH when NODUMP marking requires
-> >    memblock resizing before it is allowed, found by Sashiko in [1]. SH supports
-> >    neither CONFIG_KEXEC_FILE nor CONFIG_CRASH_HOTPLUG, so skip marking when
-> >    both are disabled.
-> > 
-> > v6 --> v8 (v7 mainly tried to fix the initrd issue on release in v6,
-> > that approach is superseded here):
-> > 1. Stop marking /memreserve/ regions with NODUMP. v6 marked
-> >    /memreserve/ regions with NODUMP. But a bootloader may specify
-> >    a /memreserve/ entry for memory that the kernel later frees
-> >    (e.g. the initrd), and those pages would then be wrongly
-> >    filtered out of the vmcore after being reused as normal memory.
-> >    The v7 fix (clearing the flag in free_reserved_area()) caused
-> >    a lockless runtime mutation of memblock.memory [2]. Better solutions
-> >    exist but need extra preparation, so temporarily dropped the patch
-> >    that introduced the problem to keep this series simple in v8.
-> > 2. Fix a build failure in patch 2 with both ARCH_KEEP_MEMBLOCK and
-> >    MEMORY_HOTPLUG are unset. There the memblock arrays live in
-> >    .init.data, and the weak defaults referencing them create section
-> >    mismatches, which turn into build errors when SECTION_MISMATCH_WARN_ONLY
-> >    is also unset.
-> > 3. RISCV recently gained crash hotplug support, so adapt its handler
-> >    like x86 in patch 3: use __crash_prepare_headers() instead of
-> >    crash_prepare_headers() to avoid self-deadlock.
-> > 4. Update the cover letter per review feedback: describe how ACPI
-> >    systems filter reserved memory and why a new flag is needed
-> >    instead of reusing NOMAP.
-> > 
-> > v6 --> v7:
-> > 1. Fix a stale MEMBLOCK_NODUMP flag issue [3]. Memory reserved and
-> >    marked as NODUMP may later be freed (the initrd, for example),
-> >    so the NODUMP flag must be cleared accordingly. Since the fix is
-> >    part of the NODUMP infrastructure introduced by patch 5, it has
-> >    been folded into that patch.
-> > 2. Drop the "generic" related description in the cover letter.
-> > 3. Collect the Acked-by and Reviewed-by tags received during the v6
-> >    review (thanks to Baoquan, Mike, Rob and Marek). Patch 5 is the
-> >    only one without a tag, as its Reviewed-by was dropped when the
-> >    fix was folded in.
-> > 4. Drop patch 1 of v6, which has been merged separately.
-> > 
-> > 
-> > v5 --> v6:
-> > 1. Serialize crash header preparation against memory hotplug to avoid
-> >    out-of-bounds or use-after-free issues.
-> > 2. MEMBLOCK_NODUMP marking is now done after memblock allows resizing,
-> >    avoiding a panic from too few regions before resize is permitted.
-> > 3. Reordered the patches, put pre-existing bugfixes earlier in the series.
-> > 
-> > [1] https://sashiko.dev/#/patchset/20261016061549.4181390-1-chenwandun1@gmail.com?part=7
-> > [2] https://lore.kernel.org/lkml/20260922090252.B01541F000FF@smtp.kernel.org/
-> > [3] https://sashiko.dev/#/message/20260917220750.GA4013814-robh%40kernel.org
-> > 
-> > v5: https://lore.kernel.org/lkml/20260806093519.2907771-1-chenwandun1@gmail.com/
-> > v4: https://lore.kernel.org/lkml/20260630074715.4126796-1-chenwandun1@gmail.com/
-> > 
-> > Wandun Chen (8):
-> >   riscv: build crash_mem ranges from memblock instead of resource tree
-> >   crash_core: fold duplicated memblock arch hooks into the weak default
-> >   crash_core: serialize crash header preparation against hotplug
-> >   crash_core: replace for_each_mem_range() with for_each_mem_region()
-> >   memblock: introduce MEMBLOCK_NODUMP flag
-> >   of: reserved_mem: add dumpable flag to opt-in vmcore
-> >   of: reserved_mem: mark /reserved-memory entries with MEMBLOCK_NODUMP
-> >   crash_core: skip MEMBLOCK_NODUMP regions when building vmcore ELF
-> >     header
-> > 
-> >  arch/arm64/kernel/machine_kexec_file.c     | 29 ------------
-> >  arch/loongarch/kernel/machine_kexec_file.c | 27 -----------
-> >  arch/riscv/Kconfig                         |  2 +-
-> >  arch/riscv/kernel/crash.c                  |  2 +-
-> >  arch/riscv/kernel/machine_kexec_file.c     | 33 --------------
-> >  arch/x86/kernel/crash.c                    |  2 +-
-> >  drivers/of/fdt.c                           |  1 +
-> >  drivers/of/of_private.h                    |  1 +
-> >  drivers/of/of_reserved_mem.c               | 18 ++++++++
-> >  include/linux/crash_core.h                 |  2 +
-> >  include/linux/memblock.h                   |  9 ++++
-> >  include/linux/of_reserved_mem.h            |  1 +
-> >  kernel/crash_core.c                        | 53 +++++++++++++++++++++-
-> >  kernel/dma/contiguous.c                    |  1 +
-> >  mm/memblock.c                              | 16 +++++++
-> >  15 files changed, 103 insertions(+), 94 deletions(-)
-> > 
-> 
-
+ 		damon_for_each_scheme(s, ctx) {
+ 			wait_time = damos_wmark_wait_us(s);
+-			if (!init_wait_time || wait_time < min_wait_time) {
+-				init_wait_time = true;
++			if (list_is_first(&s->list, &ctx->schemes) ||
++			    wait_time < min_wait_time)
+ 				min_wait_time = wait_time;
+-			}
+ 		}
+ 		if (!min_wait_time)
+ 			return 0;
 -- 
-Sincerely yours,
-Mike.
+2.43.0
+
 
