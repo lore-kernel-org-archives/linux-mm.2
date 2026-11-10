@@ -1,135 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE136606BAC5
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BEAF606A204
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JH2Mkk8y
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NiJHgmnD
 Received: by kanga.kvack.org (Postfix)
-	id CD0726B05B6; Tue, 10 Nov 2026 11:39:37 -0500 (EST)
+	id 8B23E6B05B8; Tue, 10 Nov 2026 11:39:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C81536B05B7; Tue, 10 Nov 2026 11:39:37 -0500 (EST)
+	id 862E66B05B9; Tue, 10 Nov 2026 11:39:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B49416B05B8; Tue, 10 Nov 2026 11:39:37 -0500 (EST)
+	id 79FDB6B05BA; Tue, 10 Nov 2026 11:39:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8607A6B05B6
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:39:37 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2AA29C0921
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:39:37 +0000 (UTC)
-X-FDA: 85419770394.03.EA7E6A6
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 45A78A0003
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:39:35 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=JH2Mkk8y;
-	spf=pass (imf25.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5AD9C6B05B8
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:39:59 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 77340A09BC
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:39:58 +0000 (UTC)
+X-FDA: 85419771276.08.A715C8A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C30D64000F
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:39:56 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NiJHgmnD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794328775;
+	s=arc-20220608; t=1794328796;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KprtAoIZUPQy03e7SCEXrO4BhVdW6Lml6VdK8wkVG2w=;
-	b=vdz+IlO0KpdvkHMPH01CFc8Pk1kIwof0IH+hDO4jDR4+jsONfuE8oZutA/IQh/xpycIrx0
-	p8RwDMokF0l762BhURm57LwDEXtmCNBMz3MnKfKi5cOyqYE1LfYIzYWeK5SzVm38yy1GZR
-	WaF2376AGnNzbT7YsOh5LcwcUPMvXDk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794328775;
-	b=urOhw/J6NYtSjMo9GN1tG4s3BPikR968+xTOo2ajdhGxrGQp+tcfxj/PIwYBUBI0FIfPM9
-	ujGQkmmjssp9oAgVa78B2ATgqllKz9OyEJSoYoMh0hmmo37G5KBcaCf5cZhOU8bOZqcsv2
-	yDenvbUVWQ85zr0S9Z0SSqEsKPivvC8=
+	bh=V3wQUDCbz5WGhoG/NeGMkM84FaWuj5GPriNi9gVRFwY=;
+	b=JmFNoMyEVgien81o1K3QBCMLtfluklpSootPCNbCCpFNymO8HH/Pt77GxeNqYMRdgxnJFb
+	uxHy9F5XLSX2W+7NxdW/vRZPd2NZW0Vxd9c2eW4ImrS02IcquSEsu5zv/5KTVpX0wJUs1E
+	YsNrtJ0OSNBLnNTBpYU94hQv8Voy/iw=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=JH2Mkk8y;
-	spf=pass (imf25.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3b0d0b80fb9so1364225a91.1
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:39:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794328774; x=1794933574; darn=kvack.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=KprtAoIZUPQy03e7SCEXrO4BhVdW6Lml6VdK8wkVG2w=;
-        b=JH2Mkk8yK1xwBl6fazIbKifgOyu7RYWrKjMJwjptzJqbFspCUJL4ygKdzJPXgt/1RL
-         7mjj15HtdaGRLL8t4fAWkKPFPO2laz3vGT3qPAcMhAI6TSnTyGHayoQrnicvxuNkGlL8
-         18BdO//GvLL5w7OD0uCXiEFmOtX90EJEqo3rnHhi0zIKNJjf8LKC98bYFk6p2CCsm/QF
-         RXoNAKGy/ELpEs/AEBo6S/BpNcnkHCuJJIpL5oFpI6hNKq1hS2FufReANk0+3F/eGs66
-         PwVmlFb1cyBuXhHF+M/lp8K6qmSeiD1jBIMP9u/nsxgB8sOpJgSniOdIUBcEOe91h1r4
-         0gDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794328774; x=1794933574;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KprtAoIZUPQy03e7SCEXrO4BhVdW6Lml6VdK8wkVG2w=;
-        b=tX2rfsHJJBtDo5p5acOS71h5FV+3sgPfGXwP1SrOPRw08iVK5HiVxBVaalJHbFaUnU
-         iUnUdZszXltN3ohKVaZqfDKi5/K5SyMi2HqQtsMYaga0w9MSVPTojpfLHFtxo+fXoV2l
-         MOpigaFSUKoVoBsDufKYBJjuctAZFWvQ0zHoc9ICd0K5h1Hms0nc7Qty6d2McsyYZiCS
-         vr/ckijsEwvpfEGUlnI03iWy4xag6/enApxkyXNOTcQ2wSTxqH9rH6buc4cybqBk4XP7
-         hPWAnn1m8rEQmxhlz4Oy+jr5raLTyNvRP7pIzw/Wrha237yg0EnJ8EtIFsD1+isA0YCc
-         YZkg==
-X-Forwarded-Encrypted: i=1; AL+hErGlFDBEpQ5SGFJmCvr9uHvaO4LIXzhsdSeuVorxZKNNswREM4LxzL2EL+Gajj8wgUDlDzipzw1dDg==@kvack.org
-X-Gm-Message-State: APuU4Z9nj0Kk7bMTQDc7bzvYI1jQg9Zs8mDVcrsb1nXwIOc1iJ4Q2QxT
-	WFw2s/YFRRtiQjlg7nOyx8ueHbCRBEBf8wlmJhJ5sTcvgwHNXPqwN8gIFEL/lHARXQ==
-X-Gm-Gg: AYBFou1/ujHaLAtBN5N3moGuVK8r1pdNXxUsM3QfR1AOZKjJ59XGVXilHI9SYNTflnn
-	ZEIiqhrGN3l+yS1h6DvvjIWSkgnXO3oI7pTn7kGqjGlOX56sec5lI6aISxHN6vhu7RCFkZ/sVkS
-	yLKsNUejNOZXFu6s2WgkhVqD7ZpsOnw9mfOdInd+RnxtCCu0yLXOX40nsC02XXOu7NOwesy5Zf3
-	iM4eSkStoGZSdrSON7ygoNrj2ERIx7Vgvss6bd1bA94bQtQrLKJEBvoTdFxPFD2PCTczGe2IsMe
-	B3tRKlyBzC3AJKldAoRMWXp019XyDE02eJKgUkS65G5cJsEzn1Vm9ZIphtzIz5Sjmbs1ZywxFBP
-	E+W41vDEskdHdeveUWNseR+uWLokIBotALcGAK2zrUKk7l9aFRnhOOYfCEkpBT0xOzKv3E0XA+q
-	X60McTWKYY8vvGMH/zBoNUmG/o4SiGQs1VzfIBLw0s8dtKOhqK2EOh3mg+BU61R1EvQa9JCTSKq
-	M9r1IG+3rn8nhuoV2+MgfpyPb6myMArr/SdptVub28rQ/pqaZPldk6VdE/sbf+wddSsYsTqqYsn
-	/uek3tRlcLdTCZnqY2OGI+oGZ4LFDSgTqAEYAA9+T3C0VLmDES8ZGlFpJYRqFWj3
-X-Received: by 2002:a17:90a:d444:b0:3ac:9d83:8861 with SMTP id 98e67ed59e1d1-3b166e3c924mr3152630a91.67.1794328773194;
-        Tue, 10 Nov 2026 08:39:33 -0800 (PST)
-Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b168a8de09sm2418499a91.0.2026.11.10.08.39.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Nov 2026 08:39:31 -0800 (PST)
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NiJHgmnD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794328796;
+	b=jyvxvRg+5AlhSR/prOfuGyB9op2ee1yONNP3CuSpfTanB99M8IDmpGczbjdg2oEOU0rv1R
+	AQWYt84DqXWscKJi+teePUyN7g5mJX0AMGn/1Kt2HxgXkbDpI4jkIvAK0qEWTvi1OwNsu7
+	EFFzB8dtDlrbnaYmsWOP3/Tq5U8JvGQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1E95140759;
+	Tue, 10 Nov 2026 16:39:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 776DE1F0089F;
+	Tue, 10 Nov 2026 16:39:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794328796;
+	bh=V3wQUDCbz5WGhoG/NeGMkM84FaWuj5GPriNi9gVRFwY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=NiJHgmnDww74FAeFIsbv4+tq/EeqvYG+bZKAr4d7/8YSmGKoSpdpPG46ETzA2ilqj
+	 BHJSMVjnk/ffP59J5e5O7zGbra0IqtWpvbgdixT1oxlc1Tze8jUeTqK7xtlaWgzhK0
+	 nlhUfVr5HUKmeVQG0WLvjudr7aFN5fIFomHIFhNjZr1Vv7rcUejmTvJPYIhWKqSBu1
+	 hKrv+R/btHRAOY/cmSi7m8uxPaCRBPILRcWeXcMhyhuIwXzLy1sVnsYy0ThUI4qTEU
+	 Gd3UM5JJowmSARk8hKzP4SdkuwFWhn2G7rSCLtMwRgMSEOjgFZRqGZlszEgEfhu7Fl
+	 gfQ2UurT2EyKw==
+Date: Tue, 10 Nov 2026 16:39:49 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Lance Yang <lance.yang@linux.dev>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Seunghyun An <san55@wisc.edu>
+Subject: Re: [PATCH] mm/vma: predicate vma_assert_stabilised() on
+ CONFIG_DEBUG_VM
+Message-ID: <avNIEdpUbihHULcm@gremlin>
+References: <20261110-vma-fixup-debug-asserts-v1-1-0b2e0680cd7e@kernel.org>
+ <avNAgtDzM0MYevV8@gremlin>
+ <avNDjxZ9jeYiwdVh@gremlin>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Nov 2026 16:39:31 +0000
-Message-Id: <DMROGPTP93G4.13PA42UFKZJNJ@google.com>
-Cc: <kvmarm@lists.linux.dev>, <linux-pci@vger.kernel.org>, "Pratyush Yadav"
- <pratyush@kernel.org>, <kexec@lists.infradead.org>, <kvm@vger.kernel.org>,
- <iommu@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
- <skhawaja@google.com>, <sagis@google.com>, <linux-arch@vger.kernel.org>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 15/19] PCI: liveupdate: Add feature header to struct
- pci_ser
-From: "David Matlack" <dmatlack@google.com>
-To: "Tarun Sahu" <tarunsahu@google.com>, "Pasha Tatashin"
- <pasha.tatashin@soleen.com>, "Mike Rapoport" <rppt@kernel.org>,
- <robin.murphy@arm.com>, <maz@kernel.org>, <will@kernel.org>, "David
- Matlack" <dmatlack@google.com>, "Alexander Graf" <graf@amazon.com>,
- <seanjc@google.com>, <jgg@nvidia.com>, <loganodell@google.com>,
- <arnd@arndb.de>, <dwmw2@infradead.org>, <baolu.lu@linux.intel.com>, "Bjorn
- Helgaas" <bhelgaas@google.com>, <oupton@kernel.org>, <alex@shazbot.org>,
- <gle.com@google.com>, <pbonzini@redhat.com>, "Andrew Morton"
- <akpm@linux-foundation.org>, <kevin.tian@intel.com>, <joro@8bytes.org>
-X-Mailer: aerc 0.21.0
-References: <20261110050202.529473-1-tarunsahu@google.com>
- <20261110050202.529473-16-tarunsahu@google.com>
-In-Reply-To: <20261110050202.529473-16-tarunsahu@google.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 45A78A0003
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: ymhijcsw7jgzo9ku79yzy69f1fbqbtsx
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <avNDjxZ9jeYiwdVh@gremlin>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C30D64000F
+X-Stat-Signature: 7br1ubw1q71r4yhqxxs8zbmtnhusef5g
 X-Rspam-User: 
-X-HE-Tag: 1794328775-417477
-X-HE-Meta: U2FsdGVkX1/+srPsDUn/hhNkMnosF9rBDkkfqgd2vAjy0ybBy5unIetKXoI2OO4ERqcQkDsdgAl+VC2RgWVI9e5oZt4E0IJ8azITDrPCnMwLUwh0o1fXbSuwEYbSOWrw75qNHklQly5TFXUFo7wRI19lcuzKNjngjt3NsZnDYOlILjxRU45K9USXgPEzrVDjvvabtdWlGAHUVyRbmcmQzYPx9qEcrXcuTab5rq6T3zoKoAd+uVUtTPh9xALdSieBQny0j6KmGj0AsCDvikHZP8noctNKPP74P7X5Rq3vP/6rUS3JcMzCpVJyZWI242kI7sTNHzWsJ9humL4OkdzqgpY6wvk6SiQDOKO1RJJQDK17lQVCjhMpjlef8Yq6OKJeDocEzjnehCZPoYhwT5vzqTqimHoozUncb4i2vVSI8HjhKo/iFM69HpZRdjHEVqJE6tErmR5Wx5fLXmMrlUxhB2Ok8xrmGH6+BKdKISkP0G1+uYbVyIx1BEUpxkcnVN8Jn7y+VU18Kvb0cTW+iWsfUcC+0lkSFYyL2TJS5JfhwpqHIi/iF4rECATYcRQzqrKaPa0hoI9jSIbALJZsTwO8vryqT07YgQT4wDTowBYMdwLyTf6/m5x4gYEUZZ4C2S/w+7ZNtnd/PHF1wp5r53NNQ0PVJy3dfXilaWy/j35CoauD7bnO2z+RfUTXJ2vMmIjnLjfs6l817vt7PSEOCnzD5EW6nO3gUwWuHKywtHC6zYpj+gZt7MDDQb/HsVeBB54Fci+vAyK04GA2DOQcA78tUFNLxlQjwjWSZuSbRfDDLLZRCShjDT/htToVEjRUK40FoPY9t2zGXVZRCEgrfSXQnI1SAqzxdrhARb7EXLIdvxwWo7t8uSVllsI/lP5IrCs/u7ICQkgklZCGkXsJAxz8KLydJo0RsGENXBrPlJ3J3z52+jQpR1no4FfZcrtM3d0UzPQD3R0SHSKJLfSC6is
- usgku+C8
- rx1G4H9j85FIuJlK6WijppBpTSIOVS/yBFK8sBsqr3ibuodq2KSCn/Pbw6k2luQc+OO+5ZwM46xiXce05IBCFf25e65nLIcG6IwGMI910d6hTS0pl1zTWw3xvR5aGJ7jnXu/K+Rax8+GMXJV0mzyyZpMXAU1cJisWgHBCH+Y+kUEPBGY4wSjkDovrBtco8NqrPjCguUsKeXzKSFX3lrI+0yQ9o8GHzibN6RIiRYyPnr0EuhyvUCoHvnjtD4HqDxDUzSlQN5elNCqickRNdIlwU+IMi7BWJCuT6FSdavthsk6Kp/bbN/qnLd9uqnGFvtj7lEfleuOkWU+gFV5nxYA81Cf6fHxt06Nwuw27qkC+5Q4Nbn/uSnZ7t+zGgWix22iOa9GbmmUA5tTEMWKFO19InlnZjuIRiIvuED2o1FVm1T7xya+upPTGxOIWSLmNk4V//2P+
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794328796-931157
+X-HE-Meta: U2FsdGVkX19xaszixHCdr6ZmBwHh9Z9RY8vGz3lnQ8ToZjHvvnWaWHDHk9EyxtuzB8tPh3D5cSXv8ms62DhqLMuIUWDUzEqgILsFvwUL5ePJfZxRT2DPEdSgk+F3gppMaPthdCV10clU0MSC7IrhYrH+Xfh1fw8vWZHywfTvp7ApDtRL0OrKAInWnZljAVCTefODYFfuixCV7Ei6BUEBko402KioCdO1IzWDVN9jf4b0t6KPN7g0yXyDGDiLVc3Xf3EioXJtrXMBO1CQy4b7JgVb2Uex0NMLhGb8puFIgPvBtybEQZR/n021Yn7EZdt9D4hJ0cdUC9aQdOvrpnJLPMywOcgs2A8sElVHaJToGSwfE2AXPQiDLfP9wcObnFIICZrrhvRuvfYo/QgCEL1FPRISIceRwBJDwclvMAZ2HYvb0COAnwUBb+Dl0NFhdJ7hUTPHW+HnyZpUQaQPhWP7+agyy8BYzRJhVZcqprLJsHGO7cKA7OzbaIE1TqLJ4iGue5cLRJ6K0glsHKmteZB2+Qe/mFmjS47Zxt7is3TBnO1njFuJHVBAHHndkdvpzs3jDaOVyibDaf7bxYarO3bNSk2sSFCjMdmgD85t2VLZWwy73xbAp2VKKkBZ/Z0PNoApDROKVq5CFVOzmiO2bHzxvi9Xy9IMhUk+wA6xSYgU5bcg4ukyB5DFFdGMedO+fOWl4Dk4vsT/Pa/Vzx/0KHcLybhtCQ2A5r3mojoHD2icToeKF11jDw/f3RDvYwiKxSb11+skjt8+K0Kdw5aT0F3ZIDzrFsyhd74Ys1MdWoF4dlXQaDRV9fLbqlKjhn3xjJF7rEZMZePuVwIaZZonAvSgmIu4YjfB6yugny2XRl9cKPZFhonzf4qwT2eYB4U2pkAE9s3fbOXMwGYbKxC08CMsfSBcg8CVShXGzgDE1wvMT9coAwhTTK3uZrlS68pQEa3HYbEiN9Ga0JbucaAokGm
+ dFEDPip1
+ zbYuxY8j2IwXVhGRSL3yI0OVWP9jn1PWRMsstXS94HIn9eCs4lWQfx9MYLug3JHmmb3c9Pdq24byMGX2XSPoFo+PDoUEorIaDKEgBPmNguQYnm9Q+FD+NIHM7YT2wy6hgLvoDVL9ueawm+cZ4JV4n9ft9PtFrTuSJ1BjtYm5G3Pw3GHnCPcpPxHpTtOTghtyc3SBlCiFdE98xwL0gv15NLBuWzPCTx4QH2Nwo8U26zZ3eirfc+mqQXtgPc7X2rvjNW2l8E6g6MXzE6pOn/hfPdv4iUDskKc8Az3krQNGUo4BO7u8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,75 +101,78 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue Nov 10, 2026 at 5:01 AM UTC, Tarun Sahu wrote:
-> PCI_SER_REQUIRED_FLAGS_SUPPORTED. Remove dev_ser_size and
-> PCI_DEV_SER_MIN_SIZE so restoration derives the struct pci_dev_ser stride
-> from the KHO block header entry_size. Drop __packed from struct pci_ser
+On Tue, Nov 10, 2026 at 04:18:35PM +0000, Lorenzo Stoakes (ARM) wrote:
+> On Tue, Nov 10, 2026 at 04:07:48PM +0000, Lorenzo Stoakes (ARM) wrote:
+> > Andrew - could you update as below?
+> >
+> > Thanks!
+> >
+> > On Tue, Nov 10, 2026 at 03:10:40PM +0000, Lorenzo Stoakes (ARM) wrote:
+> > [ ... ]
+> > > diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+> > > index 9ccbbcbd7aca..9c3a9c6525c1 100644
+> > > --- a/include/linux/mmap_lock.h
+> > > +++ b/include/linux/mmap_lock.h
+> > [ ... ]
+> > >  /**
+> > >   * vma_assert_stabilised() - assert that this VMA cannot be changed from
+> > >   * underneath us either by having a VMA or mmap lock held.
+> > > @@ -418,9 +423,18 @@ static inline void vma_assert_locked(const struct vm_area_struct *vma)
+> > >   *
+> > >   * With lockdep disabled we may sometimes race with other threads acquiring the
+> > >   * mmap read lock simultaneous with our VMA read lock.
+> > > + *
+> > > + * Assert only if CONFIG_DEBUG_VM is set.
+>
+> Also this should say:
+>
+> 'Assert only if CONFIG_DEBUG_VM or CONFIG_LOCKDEP is set.'
+>
+> > >   */
+> > >  static inline void vma_assert_stabilised(const struct vm_area_struct *vma)
+> > >  {
+> > > +	if (!IS_ENABLED(CONFIG_DEBUG_VM))
+> >
+> > Actually I think this should be:
+> >
+> > 	if (!IS_ENABLED(CONFIG_DEBUG_VM) || !IS_ENABLED(CONFIG_LOCKDEP))
+>
+> Sorry this should be...
+>
+> 	if (!IS_ENABLED(CONFIG_DEBUG_VM) && !IS_ENABLED(CONFIG_LOCKDEP))
+>
+> (I have a bit of a fever today, can you tell? :P)
+>
+> Thanks!
 
-Taking the stride from the block header is good, but dropping
-PCI_DEV_SER_MIN_SIZE removes the only check that incoming entries are
-large enough to hold the fields this kernel reads.
-kho_block_set_restore() only rejects an entry_size of 0, so
-pci_flb_retrieve() will now read past the end of entries smaller than
-offsetofend(struct pci_dev_ser, refcount) instead of panicking. Please
-keep an equivalent check against the incoming entry size.
+OK OK actually. Sorry. The change isn't required, it's fine :P
 
-> from the KHO block header entry_size. Drop __packed from struct pci_ser
-> and struct pci_dev_ser, adding an explicit u32 reserved field to struct
-> pci_ser for 8-byte alignment, and bump PCI_LUO_FLB_COMPATIBLE from pci to
+Please leave the patch as it is.
 
-Please move this to patch 1, which drops __packed from the other ABI
-structs.
+If !CONFIG_DEBUG_VM but CONFIG_LOCKDEP we don't actually assert anything.
 
-> pci_ser for 8-byte alignment, and bump PCI_LUO_FLB_COMPATIBLE from pci to
-> pci-v2.
+Since this:
 
-The PCI Live Update ABI hasn't been in a release yet, so maybe we don't
-need a version bump?
+	if (IS_ENABLED(CONFIG_LOCKDEP)) {
+		if (lockdep_is_held(&vma->vm_mm->mmap_lock))
+			return;
+	}
 
-[...]
+Is the only thing that would run in the functino and early-exit if the condition
+is hit.
 
-> - *  * The size of each struct pci_dev_ser is recorded in
-> - *    ``pci_ser.dev_ser_size`` and is never smaller than
-> - *    ``PCI_DEV_SER_MIN_SIZE``. The next kernel ignores any fields beyon=
-d the
-> - *    ones it knows about, and must handle entries that are smaller than=
- its
-> - *    own struct pci_dev_ser.
-> + * Preserved devices are serialized as struct pci_dev_ser entries stored=
- in
-> + * a KHO block set. The block header records the entry size, allowing th=
-e
-> + * next kernel to step through entries using the source kernel's stride
-> + * even if fields are added in later versions.
+Then it defers to vma_assert_locked() which then reaches:
 
-Please keep the rules for extending struct pci_dev_ser. I'd say
-something like: fields appended to struct pci_dev_ser must be gated by
-a feature in struct pci_ser's header, entries are never smaller than
-PCI_DEV_SER_MIN_SIZE, and the next kernel must not read fields beyond
-the incoming entry size.
+	if (IS_ENABLED(CONFIG_LOCKDEP)) {
+		if (!lock_is_held(__vma_lockdep_map(vma)))
+			vma_assert_write_locked(vma);
+		return;
+	}
 
-[...]
+And vma_assert_write_locked() uses VM_WARN_ON_ONCE_VMA().
 
->  struct pci_flb_outgoing {
-> -	struct pci_ser *ser;
-> +	DECLARE_KHO_SER_HDR(pci_ser, *fhdr);
->  	struct kho_block_set block_set;
->  };
+(flu vaccine on sunday, seems to have impacted my brain :P)
 
-I'd keep the ser pointer here (and in struct pci_flb_incoming) and add
-the header pointer alongside it. The header is only needed to free the
-allocation and for args->data, and keeping ser avoids sprinkling
-kho_ser_payload(outgoing->fhdr, pci_ser)-> throughout the file.
-
-Also, please call it header rather than fhdr, here and throughout the
-series. fhdr isn't obvious to someone reading this code for the first
-time, whereas header is very obvious and clear.
-
-[...]
-
-> + * @reserved: Reserved for alignment.
-
-Please document that this must be zero, so it can be used by a future
-feature.
+--
+Cheers, Lorenzo
 
