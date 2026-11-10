@@ -1,136 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC03560A2639
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 15:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C13BE60A2614
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 15:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=LgpdDc68
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yvBOtpHE
 Received: by kanga.kvack.org (Postfix)
-	id EF48E6B00EF; Tue, 10 Nov 2026 10:12:27 -0500 (EST)
+	id A5D006B05B0; Tue, 10 Nov 2026 10:14:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E772A6B05B1; Tue, 10 Nov 2026 10:12:27 -0500 (EST)
+	id A0E2C6B05B1; Tue, 10 Nov 2026 10:14:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D66066B05B9; Tue, 10 Nov 2026 10:12:27 -0500 (EST)
+	id 8FC1B6B05B2; Tue, 10 Nov 2026 10:14:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B4E796B00EF
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:12:27 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 580EDA095E
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:12:27 +0000 (UTC)
-X-FDA: 85419550734.16.75D1C28
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4916AC0005
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:12:25 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=LgpdDc68;
-	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E5886B05B0
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:14:13 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DA417C08F4
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:14:12 +0000 (UTC)
+X-FDA: 85419555144.06.A926D0D
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 2200D18000A
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:14:10 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=yvBOtpHE;
+	spf=pass (imf24.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794323545;
-	b=Q79kN+tkF7FwI2MmcV/buEvH8EuYzRF2UJL9NZVDGOUIx9Fxvb4FFnfkykwbynGs92P9ju
-	xSIc3aPCRMzO1MOecDOR5RmmT5bIb/y0mjpYugMJzUBUXwy9bzXnXWlze9uf6Gyif/So/s
-	F/bQvzLds/HFleNq2RyhB8eRN3YPKWQ=
+	t=1794323651;
+	b=2OWFue8t/ZYJKlP/1/s5TdytODtd9WVFjE2899OQsoW1lszEpOMlXZ2XXEBmPMeDAOZqCv
+	5/QHuKHp5UG58tUNStI8SS2574Agk2afTfrHwscF1zkYXoYII1yZ+9dQRb5ewuKxhux1or
+	2w0Lkyk8vmZACd7k5YnStrwo3acB9x4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=LgpdDc68;
-	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=yvBOtpHE;
+	spf=pass (imf24.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794323545;
+	s=arc-20220608; t=1794323651;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KpEwWty65XIKqwE7JeJ6p16oyvStp8N2eZzOQMIZadI=;
-	b=8MsyKUu7jZPUCaxfIgpgKgUur/6Hrac+mgYAPkipLFq3No0UQEEKaTUkHdUJEzXbsVmsPA
-	gUQVKoQbEcsieBgJ67r2jGjD84Wj3DLojCqxQco8ODoe3AQBt8V4skGxtdo9OONx5OnTw6
-	dGDCdlxbSibfPSqNhfZMN3SKZqYV0PQ=
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-5eafaeb8684so673007e0c.3
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:12:25 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=PTKAikpOW4Bp9RpuUyN+Xdo5TM7yPMjwYf3IanAnUzs=;
+	b=SnVaVkGuEYaOoRGK0RNVpk143G8y4TsQgrOB3xsI+AJyH7G7xPlRCn613k7Uh9S8Q8ka8T
+	yInILtqs04gYcYW2L88lDWq+dQA7rhIwi3Wpr4aHb7is1wg9ht1yCNiVSk2dHb+9iBTXkv
+	8RIjbqj2kFP/PtPNFBqnx5jZkCpUXnQ=
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-67be7b9abc8so1808023d50.0
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:14:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1794323544; x=1794928344; darn=kvack.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=KpEwWty65XIKqwE7JeJ6p16oyvStp8N2eZzOQMIZadI=;
-        b=LgpdDc68V38v25H+7qXHABbjAvcJxHtQu80KZjrCydlz0hWgF8SaSUy0AtZQLHp/6h
-         Kny/oOPwcStbkoLQSsFMfHirIbKZRupliTslet3Krw/7t9kEAVf96fNd88eujuhdEQ7D
-         uhsVMmkwcnT0u0O3Hdhz7BDuHN7nVhy7mVfdGuz01DpwjVicT2328+6SGvKnwJ9BsMjC
-         dsrnDVouV+7NL9P+yxDEXv3Y5mCFh1b9GDkw03KlBSRSktIBFt7hY6D9tpvub6NDDSFO
-         1/QF2Er5fRkzRLVrJWggAHENMaF1JQBeYP4YL5rmqIKX4nbeTyNqb40gjeOsXuJOoYlk
-         7uhw==
+        d=gmail.com; s=20260707; t=1794323650; x=1794928450; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=PTKAikpOW4Bp9RpuUyN+Xdo5TM7yPMjwYf3IanAnUzs=;
+        b=yvBOtpHEYSfavM8pxnB2o1NWghW9NzHzjtlqItB/GFdhrucQvqMkItk9+Up3mO6wf1
+         fgSc0/bQQSxgR1Tm/4pSYCWxMaj86ZWIzhzQIZlQRIZ7XwFiddA1ycZZJ9kT49oGMYqB
+         9FIk8PXAyfJqs31/KZMkPIQDTr2IakHAO6A8BJZ08OE0+6TqHckPBvPrIRB/YaZQaj7H
+         HwGlL927ttoXWhT04NdCghZ4pK7m6X0Hfr/Ce9/11XeijKjyG+l3ptBOSCU4ER9xYZkH
+         FUoyo1lEgSUekF4DcrpNJ9eAJS/VhnDn9lqJP1FRVLMbCpt+b48zfs+krrtCjxfkbnLH
+         kyIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794323544; x=1794928344;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KpEwWty65XIKqwE7JeJ6p16oyvStp8N2eZzOQMIZadI=;
-        b=OXGCPnUVw30+nXYzzO5jaU/YpDT9Pq8U2A2Rf+zYZIteLquX/njfOtPdugXQUYC6oi
-         8xagqQozae3FsKrKgjN0rbch1bgdavrs1gZitgS+MYQLjYUdeh3e/qMOU6uczWyEV2CZ
-         /i3uQ21m3ke6lIqBcy1d/26fBJV1AKfcZolvgstZR5EWf6hpWYQMIci3jJ++D5f1kip7
-         R/vFCuW1Kon58KwViP0/A+25ZGXE2D4dMESu5wCoZBqGVL6sSEjrz43MDa1+IGf8LP/I
-         LwIZtOI0NrLzK9SRGZm3J5lmkVxK0IIbUkRQg7t3c968mWIneQ1Ah3sl4ySZr9HUkmTw
-         neUQ==
-X-Forwarded-Encrypted: i=1; AL+hErEnekWnwVVlXX2qZBN+Iu6/GGi2uGfHpI2v4cOSb/kjPV0wSsn2AcQPmIqARYmsTsl7R5O9Jl/Pxg==@kvack.org
-X-Gm-Message-State: APuU4Z+J7Sifll5P/IfSEZGZ52qS9cwc/MTQz6RSdNzF5/7wrlREPFiV
-	rL623RUk+baho8ae6+2dw7rVFUiBrC0tk4ZA4Eqq4Y3qXdYH2Uouj5qyFvMucyMM1rE=
-X-Gm-Gg: AYBFou1wUXfMRSHIXiGfbEn/TpQlbG5fJ1ofj34wfberTa+p5W6+N/3nq+mDqEsWssm
-	zQanCdnYTSOgRSCtXY2LRQC2KV7sa0ehiFI/HoU22PjsYVqoUfsbRQxR09LQlgrwqEF9WKn7SjB
-	C4wLXK1XCrD/52xfP2gsdHW+jg2Nn6twSzhDomZ6wmCLm4Ht4r/tR/vgnL0R/r46AuKua7lQOaP
-	rHiSPWQ9l69TzvWSf6sqJQC2gaqDHw6eR91Z5FFy8xhpykkfddrz8sPcdJqUb1xGkrbM9ubZtw0
-	4G0OiWPweSD/ev/kWgOXAQ+b8BsN3QkYUBrntzx1ULLMtukBtVPZ+PvfWW0wzMyMOGe4GrDBPPL
-	PxBuIACfPGJsc+IbGTxq72lXCv05P4Hir80ulTOlFEsD9ISf73TwJAcT7Hzl4C8WPyjJUlr+FT0
-	Y50h2k8dFmiesdaPXY0U7nLtW3ddD4E4e1ehS9W+Qo8FpcdbmiZxLjBmh+dTv22KdGwdgU2WD2I
-	hf19NTuzOLPMUQI+TM9k7ZBAAwz3tMnWoUpImnfPpvP5MmjrqqzkX0zYKfKU1Mz2q+kAbN7Ea5T
-	oEIVDhbnl+RLvy7d1mEmlLQyk9/5Nz87zH3ATzb0yCws2TDHj4u8MsPTYCeb8YN8UYCfYL8dSra
-	v4JJEbaiTZU2mZ9Yx+wSuFtj3Teqn
-X-Received: by 2002:a05:6122:5313:b0:5ea:a0f0:192f with SMTP id 71dfb90a1353d-5ee0d0cd07bmr947867e0c.10.1794323544266;
-        Tue, 10 Nov 2026 07:12:24 -0800 (PST)
-Received: from localhost (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ee0c45a110sm2039560e0c.2.2026.11.10.07.12.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Nov 2026 07:12:23 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794323650; x=1794928450;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=PTKAikpOW4Bp9RpuUyN+Xdo5TM7yPMjwYf3IanAnUzs=;
+        b=pMx1ZZFK39eys0B6qtwe9aBD0SmvHod46TBd+cYUDw9mT1wGWNgoourK++Zu4y6bWf
+         1IHONgqS8M5C2vK9KnbA2CgARnTYeMVg9cR6kWckd/inVlnirixMnUKhTlnz11Hpqws6
+         oQktRxQiZQkw9zYYOLqFVjxDHpzyT3ppyj5crPMdoiky3XotgY61yCaiIjRVWlcotRTM
+         kkKM0OdMZTMo/WBcJBeHeZf4zL2/QRXU3CvE9zZnqdssJuXzwzA5uvXI5NbQLDMVHERl
+         4Juu9Si8xnQTc1T9P8n5BZj1/rF1DejoWBapub27S/y5mu3yRByJmOH2JzdB0uDpmEkw
+         eZyg==
+X-Gm-Message-State: APuU4Z9JdlX5fgco3jhrXHHyaRr2hVGYglb3DyP4YmwGOULSUu/skyb9
+	542qnnXbYDLeMBaV5wzD3YK0PwTdfnJknWCtE4cnaK36D189IZPLDkKaBe6rHAIk
+X-Gm-Gg: AYBFou1/nN6wkVbcbNzzbniH0W04hyHbsdx/cvj6CPHAXU2iZnKLoZVVhRjcH41agz8
+	IEAOsfuSYHMZzL0DCiEcuqtCRpxpqPjLJMGxBeWfpkJiMS1pOKCEgDi9ZGVYdmykNSzGVjWnDon
+	BB+kedL/OUKyzloH05D9fXJRf3YhEq4m7q9gB+xn75dwZx2zWitH07xpLp3DCoPsqV5BiiTOF5r
+	PZH+/eGmgG1OLW+B8ROpONPjAoYOSGnsSk7M3t5ITn4vJXEHChv3cEBjSmcNao99q0XMaJ5xfT8
+	pnuNFxVKiDmF3zv7MFvMr+A+nNOnrzGsmP++WO+yyHeohEm4Mg1WpVQsJ1LuRnSZ+YwTKXC6Nwx
+	5y9CplqnAwNmIxHeP5du2p+Y2hfGFE8i0YTkx8/0ldqOHDso1i80ln7RXPqYDM83vGqKt9Bvdzp
+	Pj6n7KJdNVfHx6x7E41EEcX2iy8V3KXF1dTVvJSDQu2Umrn0U0EUOsL5dh+5qiqtGJmE0BaL2HP
+	czE/cooYqLhdjmEuCYkH4YOS3Arc7j2gfIoqfVfqc0mi9c5g7GkNwwYzaz3F6t2qmymgQf92OuT
+	0S5NScLlOrC8GlFZcnqJ9LbAMeY32UUFUvAKtimcgABGk367+h91sV9ZCW3TMqQHlF3QT0SdaXD
+	9RqkYGsA4B0umRx37wMiuXd7XRXcr2yxSGgY031U8ruwz/1j1Gxzi+cizBFk=
+X-Received: by 2002:a05:690e:488d:20b0:67c:17fb:eca8 with SMTP id 956f58d0204a3-67c56751129mr1182083d50.32.1794323649911;
+        Tue, 10 Nov 2026 07:14:09 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:4d::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67c5860c429sm2138674d50.0.2026.11.10.07.14.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2026 07:14:08 -0800 (PST)
+From: Nhat Pham <nphamcs@gmail.com>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	hannes@cmpxchg.org,
+	david@kernel.org,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	ljs@kernel.org,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	baoquan.he@linux.dev,
+	baolin.wang@linux.alibaba.com,
+	willy@infradead.org,
+	brauner@kernel.org,
+	linux-kernel@vger.kernel.org,
+	chrisl@kernel.org,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	youngjun.park@lge.com,
+	ryncsn@gmail.com,
+	sashiko-bot@kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2 0/3] mm: fix swapcache writeout and cluster table races
+Date: Tue, 10 Nov 2026 07:14:04 -0800
+Message-ID: <20261110151407.789960-1-nphamcs@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Nov 2026 10:12:22 -0500
-Message-Id: <DMRMLZSZ0LAZ.D4P70QWX0IHB@soleen.com>
-Cc: <kvmarm@lists.linux.dev>, <linux-pci@vger.kernel.org>, "Pratyush Yadav"
- <pratyush@kernel.org>, <kexec@lists.infradead.org>, <kvm@vger.kernel.org>,
- <iommu@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
- <skhawaja@google.com>, <sagis@google.com>, <linux-arch@vger.kernel.org>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 05/19] kho: Add feature header for fine-grained ABI
- compatibility
-From: "Pasha Tatashin" <pasha.tatashin@soleen.com>
-To: "Tarun Sahu" <tarunsahu@google.com>, "Pasha Tatashin"
- <pasha.tatashin@soleen.com>, "Mike Rapoport" <rppt@kernel.org>,
- <robin.murphy@arm.com>, <maz@kernel.org>, <will@kernel.org>, "David
- Matlack" <dmatlack@google.com>, "Alexander Graf" <graf@amazon.com>,
- <seanjc@google.com>, <jgg@nvidia.com>, <loganodell@google.com>,
- <arnd@arndb.de>, <dwmw2@infradead.org>, <baolu.lu@linux.intel.com>, "Bjorn
- Helgaas" <bhelgaas@google.com>, <oupton@kernel.org>, <alex@shazbot.org>,
- <gle.com@google.com>, <pbonzini@redhat.com>, "Andrew Morton"
- <akpm@linux-foundation.org>, <kevin.tian@intel.com>, <joro@8bytes.org>
-X-Mailer: aerc 0.22.0-39-g5d7784875be2
-References: <20261110050202.529473-1-tarunsahu@google.com>
- <20261110050202.529473-6-tarunsahu@google.com>
-In-Reply-To: <20261110050202.529473-6-tarunsahu@google.com>
-X-Stat-Signature: pem945swzyrxgicrs95eyq6bow4id7hg
-X-Rspamd-Queue-Id: 4916AC0005
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ggha9dm6my8wz9tiwab8mgpipjuaedqd
+X-Rspamd-Queue-Id: 2200D18000A
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794323545-966805
-X-HE-Meta: U2FsdGVkX191sirjISVV4d4VoOS0zl1gFm8nNC/fXaT4tV/iAbfEl6a0F1YXiZpSa17gpoQBKjxZtr/g8PY0j6lpdE/QATqnPXd4qg0AO7kuso0N7eGPcHR0TlPdIJgj4QlY0LeJZRlyf1qjKTfn8oguk/y9r7X1cuhTLEnLNJCTb9PoxMoYYoPkWkZzdcOfuJRlZ4pK3Ar+U8zYrWGmlsgoT+364Hw9hhyroJJsQED8FmsY6rDL2F6fKRz311CNQ39r1laP3OGMJrfslUxMb82WgyjkvKGBrD6opWsJQMI5zDNACZFfOHnw0rLp7mSSJk79H5/lfIzibz/jVUdZ1IAZR/RkPdJQQCEEYUxwVkoofsbBpiPYwputYtHvQLSsEwAblkPJV2qvZeoIwIIR/HWhljvvF3DcW4WNgKZj8n+Onrq6zLE52v459+9uIekudncTgFLkMx+LcgCFruCsfFnyjz3fRvSjyn+QGny4TfZAqDfT0c6NkE9h+YuR+J7uPY8kQKoT0exhUlZUjugcOth/hSd8WoLV3x7okzNvYoxhc1PC+DcKFkhgZA9kUtv1j/cpNb/oD58M8iqvIIyZxNNQ9XBJ5R7mYgouxjQjtWlIR1cF4jRt7hfTdhSaYDSqbAb1czVKbesyiBBe50IszR5mwShNQTfv/EDj/6hvoOKiaUMMFXjIYX3dDlGvBuYejX/NPYONoRNchsx0WBeeQocl78ZiQHlrrZ5sz2seWKkRx75vqVvTYPJ6tozLwXmb0Zr4vuWWRCvyvOkqfwBq0eR3I9I5dxUzoW5BIfks2HSFdYNtiXnL6s++dOsAagGX6vnKKOeqrMlpm16EapnPzcWbT1vF7GYYWq01SkMNTQ8zlHktFwUZg/ZGk9FdPC+G5AzaueeBttzAF+Dy9KtbnVYVsk0wPCokFRXv7YzmEcBFAssXWXueTUfKrNUukYRF7G2bW5ivfTtVj/EKVJi
- FYcnrPuE
- x0D6ljPrE3fsjO8n7ohc6kokE0c63WKA6dV/cgcdCagCjsVLSmrpB73BNUyNitXpCe8fvpPpzDgKc3gMeNHgQNTNY3fnEziC5CfTrlCQym5wFuwa8zpje9nH/0VlWyJvYYYPVb2GonsfGXA6WXPfrAmq0uYrfnl4XyzbEugo0hUle5Tv08icWTA0fZu3GbgtKbsEt8ZyVfoEwjX034bkwiK4DrjUKOSeQAgdx/whYFVP2K7i6WBpjFag3j5yrEPwPvMe97UnvOqhHYdsvKrf1UQz09jzsiarZzqc8WVn88qOJeO/FfJw9gt/XelTLYyamACTsPPN1LfrvfXl+Dvhd0T20HH76IbvbSHst
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794323650-139854
+X-HE-Meta: U2FsdGVkX18S2ZEoRxatrHMOq2h8z8hfiK622jCGoFPfwkBlXGCvOIfjux+e9pAInDPMJOtiil7XtE0ARIxRr+GbLf7nDYpyzsUVJ8SVpsMePJwvtIOBVYS+gxm2zZ4tHPVzqMhux953ewMycWPQR+NLdAFBKOzI+gyPSbEySYm9/f9xM9PZLQhNXrfqFyHmZLTfX61jU/AGxE58ojc055TQ2KTIsfVC4ygCUtBjQO1gDrOYdZ51VPyYjLrc6S3MUP4bZl/vgm6Cw9vsc7nr9uCIbaO6peUdnR4ORN/poObVYtwOjCKMA0rgVxwPEwgUlg6v6dx1Atn4u1rP/dMSP95QWtGExEm8Hz183S0xaonQijQnqXBQS1ovRn4UcyhbFLnmAwvkor0ro4JXtfyapWcjuJ8iu2NW7pI59fLReNJDYbSS2qJRWozjjFbrxhBcgb1S6SoDXkMujs+FY/8vSG0fzpPaN6CqaPcC1ylG13vtjl9xG+lK6SYAC3sUvYmW9onU96ADxwgnN+Us2xYQEDnx7EiRq//vz7uUpAlBE8pTUit8dGcbWsjxJKqvHUPmLrq2svZ+o+BKKRGEjWXU4d9M8IuHGLT0LVka4A8gZvL6tZWlrOo7AuHbKQ6cibm+g9eHq3QIn6zlYoKMvUhxk1sqvhWrIDph+S4H4AVGeeQwbEwEHLyI0PmAPAL7njMGbQv5n32Qy/jmBwcuLBrkGIpHw8ccX34FXlR3AJN34xesOgAJ9HAE35b1eaK5QXnsw+Qg5Yp/YXJs6g8Q1KBw0hh6RMXd5dab6G5sGRyuEioelqCNq26GhZKwCtCnPFjmdOu9j+Waxv5/gvGy9zQZqzYM6XVnU6TfaJtTVILSIAx6bwpZDLM5JI2/J/CPdltC2YBdk+g00G98YfQfa0CO37EFC+eidtiC3zrHnlnGW14NE4bZqIv7x2olzfg4v/7AQQo8oard3f4A/oud+Yg
+ SOaOsYRD
+ DBriAVd8WAPbAten4OYQthGLlWC79UMFHKXCbH7YRTxWM7PGEcfFYV+LfL/4vVYe9P/pNu9noWUW2UR3ltsLDlXYiqI3q71MQ/LPXmuI3bB1fPiZZrEpdxeMx8eEB8r7e67tNG+jT6qAFiUbZDVEQ+yoUlKIXspZ8E7s3sys5ToBS1zbcm5EfiKlAYzSOw2K6es/Z5yu7uPg3D/CNEtwTNhqGA0lV6VAdHgOSHW6W7iYoILS+KZJNCc89XYa2RPxnSyn38q+F3u444AF0Pk57CG701wlEOsw9n6TJOpghfyrwLZStXVs3XWgSr/1wzozXEGddIMvCRPvJsPe/e4L79xL0/YZHtDbbWyfIyVXu2lKkHfe7ZxKMHI7IFd2zsNTofAH2woss8DuLZwk27qjO+xM2PsIkITiUtEny6OiVPcYPExp8jU4ZZSCBJ12RI3NLduf4ZyGo9ZW+j5tQMRYXQreHOUXf7p+F8oByqWUWajmSv0Lyc1Yjx/t5j2EDcVnesIUlMIoRtcrd8JE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,55 +142,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue Nov 10, 2026 at 12:01 AM EST, Tarun Sahu wrote:
+Reviews of vswap and v1 of this series found bugs in existing swap code.
+Allow swapcache writeout without anon mappings, publish cluster tables
+with the allocator locks held, and leave tableless clusters to the
+allocator.
 
-> +/**
-> + * DECLARE_KHO_SER - Register a serialized payload structure with KHO.
-> + * @name:         Structure tag name (e.g. luo_ser).
-> + * @payload_size: Compile-time expected size of struct @name in bytes.
-> + * @nr_required:  Total number of defined required features.
-> + * @nr_optional:  Total number of defined optional features.
-> + *
-> + * Size and 8-byte alignment are asserted under CONFIG_64BIT: KHO and LU=
-O are
-> + * 64-bit only, while !CONFIG_KEXEC_HANDOVER stubs pull ABI headers into
-> + * 32-bit builds where u64 has 4-byte or 2-byte alignment.
-> + */
-> +#define DECLARE_KHO_SER(name, payload_size, nr_required, nr_optional)	\
-> +	static_assert(!IS_ENABLED(CONFIG_64BIT) ||			\
-> +		      sizeof(struct name) =3D=3D (payload_size),		\
-> +		      "struct " #name " size mismatch");		\
-> +	static_assert(!IS_ENABLED(CONFIG_64BIT) ||			\
-> +		      __alignof__(struct name) =3D=3D 8,			\
-> +		      "struct " #name " must be 8-byte aligned");	\
-> +	extern struct kho_ser_hdr __kho_ser_hdr_##name;			\
+Changes in v2:
+- Rebase onto the current mm-unstable tree.
+- Use Suggested-by for Kairui in patch 2, as he requested.
+- Add patch 3 to prevent stale tableless-cluster relocation, addressing
+  both scenarios in Sashiko's review.
 
-Remove this extern.
+v1: https://lore.kernel.org/all/20261106160432.2552507-1-nphamcs@gmail.com/
 
-> +	enum {								\
-> +		__KHO_SER_SIZE_##name =3D (payload_size),			\
-> +		__KHO_SER_NR_REQUIRED_##name =3D (nr_required),		\
-> +		__KHO_SER_NR_OPTIONAL_##name =3D (nr_optional),		\
-> +	}
-> +
-> +/**
-> + * DECLARE_KHO_SER_HDR - Declare a feature header variable, field, or pa=
-rameter.
-> + * @name: Structure tag name registered with DECLARE_KHO_SER().
-> + * @decl: Declarator (e.g. *fhdr, **out_fhdr, or * inside DECLARE_KHOSER=
-_PTR).
-> + *
-> + * Declares @decl with type struct kho_ser_hdr while checking at compile=
- time
-> + * that @name was registered with DECLARE_KHO_SER(), documenting which
-> + * serialized payload structure a feature header pointer belongs to.
-> + */
-> +#define DECLARE_KHO_SER_HDR(name, decl)	typeof(__kho_ser_hdr_##name) dec=
-l
+Nhat Pham (3):
+  mm: vmscan: allow writeout of swapcache folios without anon mappings
+  mm/swap: publish cluster tables after reacquiring allocator locks
+  mm/swap: skip relocation of tableless clusters
 
-Remove DECLARE_KHO_SER_HDR, use kho_ser_hdr directly.
+ mm/swapfile.c | 113 ++++++++++++++++++++++++++++++++++++--------------
+ mm/vmscan.c   |   3 +-
+ 2 files changed, 83 insertions(+), 33 deletions(-)
 
---=20
-Pasha
+
+base-commit: b024a51b0184b1efb6f55b11aaf7b15a490a6307
+-- 
+2.53.0-Meta
 
 
