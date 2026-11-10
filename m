@@ -1,99 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4E4606A33F
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 09:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F4E60A6F6B
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 10:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=kf1SQrmK
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FkxRLQKe
 Received: by kanga.kvack.org (Postfix)
-	id E580A6B05B7; Tue, 10 Nov 2026 04:58:34 -0500 (EST)
+	id DEEE56B05B9; Tue, 10 Nov 2026 05:05:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E09756B05B8; Tue, 10 Nov 2026 04:58:34 -0500 (EST)
+	id DC74A6B05BA; Tue, 10 Nov 2026 05:05:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1EDF6B05B9; Tue, 10 Nov 2026 04:58:34 -0500 (EST)
+	id D045A6B05BB; Tue, 10 Nov 2026 05:05:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A99ED6B05B7
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 04:58:34 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 15CC51C402D
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:58:32 +0000 (UTC)
-X-FDA: 85418759664.06.484C8FB
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5F86040004
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:58:30 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=kf1SQrmK;
-	spf=pass (imf04.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FE136B05B9
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:05:32 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 80A461A0552
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:05:30 +0000 (UTC)
+X-FDA: 85418777220.26.D27636E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E14A420003
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:05:28 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FkxRLQKe;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794305129;
+	b=xXzytpXPGlMmMg3Xwbo07W6FuIosOZdSqop6srxgjWiQeYlqtGLTzCsnW31JdTCOZWvbpL
+	iDAeeATS4JxaxiI2EcosB7mETt4DDnlTt5c4KOFEiEPCc0V3+hSicS+7ZxbgIPWMLj7ATG
+	mZDcqx2+OMLorJsRDBlUwsiVKiA3a0w=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FkxRLQKe;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794304710;
+	s=arc-20220608; t=1794305129;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TlKmrMqubWGcutwYU1eLJxZAztftwteeVflHLwgBZxU=;
-	b=ECVDPXNmdWX6s3HrFRQAhO8u9zoENmJ7GH2l1UnQ2jgqwnBGCxIJ7eEKLDPMHpwelomgs9
-	E6rjwgOSThiMzqsxccw2Kpp0GNRzSMlkCa9e066/m5URypQTW9Wq6BpNMl+8r9scTCC7y/
-	fHkehFAFG574bM/GW8RVK010Gy7e3b8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794304710;
-	b=MH8+bJQpVtDo0dcO1uy9FGmSRy8Ef5ikbtBYlUE9jYh3AKaeqdrwpQw1VUOUGy4IroD85y
-	j3oPUdvL9bU0rbiB205HmLX7ht6XCMQsUDRo1tLei8qjGIkreP64IVta/ajcAewHNciDXv
-	QEXXybO+tRLSRrsLQ8eNTTiGvOGbuxY=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=kf1SQrmK;
-	spf=pass (imf04.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2EAD41516;
-	Tue, 10 Nov 2026 01:58:26 -0800 (PST)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 470B33F882;
-	Tue, 10 Nov 2026 01:58:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794304709; bh=fl+3iIkJlZcywl1c+YGvuOIqwpFdKU76MjeZXGMEd7Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kf1SQrmK1e0qc+QMHXjVSFZ+A5DZQ4BHKBMeWJR15j6j07DccroldNhyH+PwOr29/
-	 75Ygl0XwQ8NuPANvbjMf40w1fDrvHwqV6kDFd9SkKHB+xEPzKCJBPfif5DMBglkVBV
-	 q2BUtTcJqx1EkMpzURaTmwnXyUMMS8UuKX1rBcV4=
-Date: Tue, 10 Nov 2026 09:58:24 +0000
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Rik van Riel <riel@surriel.com>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Yuan-Hao Hsu <aa9736195201@gmail.com>
-Subject: Re: [PATCH v3 5/6] mm: gup: introduce gup_unshared_pages()
-Message-ID: <avLqwIWHa5CAbHO2@e129823.arm.com>
-References: <20261109-refactor_gup_fast-v3-0-2aaef02df0e1@arm.com>
- <20261109-refactor_gup_fast-v3-5-2aaef02df0e1@arm.com>
- <7627c0d90188b581e7740bf8d17c8dd07b460f89.camel@surriel.com>
+	bh=n7JHToNvmvovrxsCT+NsYxHL5scA7i94JGOHZjSN1bs=;
+	b=h4gLSu473OBMJZY70MpBueDfJAIN4Pa5vvHXarM2g/ke9n3b9pM0G4e9fs4BDysQAR/CRc
+	5n55l8HKDae+IrFGtKg7eFMzRb5o2F3iAeoPqSPcKRU+uzcHZKOruAvX3VG69jluHW6Zj/
+	WUwxBJW/RQ4TsdYd+sD6wcLz59tlDIg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5D6196385B;
+	Tue, 10 Nov 2026 10:05:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD241F008A4;
+	Tue, 10 Nov 2026 10:05:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794305128;
+	bh=n7JHToNvmvovrxsCT+NsYxHL5scA7i94JGOHZjSN1bs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FkxRLQKe2exp2p0YBuRQCorQW8fK+JO16bZr31sSfbbg66nXkxqHsgponQcdBK0jX
+	 DavDBSPy277+yZXKBuTxwIBFw44WRdpUQ63FuWtJJLKGi7WUV5STiwvF1mgjz+D+s9
+	 2R3Zw5dfR3kp3fgXtxCypQsKsIjuRwRiI2Q5KT525LpWnU9ICcu+uzDOiLYFpvxkAU
+	 vtn+DgLDVhMLMXx3dM1BGJ6IVMrSmMzlUlOag0e4HVtvDX8dhJHzkpfejT26Pf9LSJ
+	 odI8MM+xQgHW8NPsi+f9yRInvQzSygij6hL4uFUzd9HXeq1XBPygQHUrwSKyNM524Q
+	 LhEEWntTWrKqw==
+Date: Tue, 10 Nov 2026 10:05:20 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "Xu Xin (vivo)" <xu.xin@linux.dev>
+Cc: akpm@linux-foundation.org, chengming.zhou@linux.dev, corbet@lwn.net, 
+	david@kernel.org, link@vivo.com, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	odys.yuan@gmail.com, rppt@kernel.org, surenb@google.com, tujinjiang@huawei.com, 
+	vbabka@kernel.org, xiao.wang@vivo.com
+Subject: Re: [PATCH 2/4] ksm: skip rmap_item allocation for non-zero pages
+ under only_merge_zero_pages
+Message-ID: <avLrHrnpP3tuXXPZ@gremlin>
+References: <20261110074312.219847-1-xu.xin@linux.dev>
+ <20261110074451.220524-1-xu.xin@linux.dev>
+ <20261110074451.220524-2-xu.xin@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7627c0d90188b581e7740bf8d17c8dd07b460f89.camel@surriel.com>
-X-Stat-Signature: a4ui7rqyosiztqs95tm4e9goagifkfpz
-X-Rspamd-Queue-Id: 5F86040004
+In-Reply-To: <20261110074451.220524-2-xu.xin@linux.dev>
+X-Stat-Signature: xqczb8fir9xb68z7mwwa35wmocedqqup
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794304710-180289
-X-HE-Meta: U2FsdGVkX19oI1KdDrVeFW8lVy9FsJa0mPRwg5GwNnzbBQzm8mKP9DARFiUACUQ3HgquOtu3jY7LgLjYanmoaAq3VjPXv5D6MTHDLDKFWldPL3IP6uGqVm+UjwxU+U0/5grDeCHqXYiKT9/YW7rrkwF66Y3DCL534a5JASABpkwJNrwIkrpRqFyjyylmHTvv5D6fyhjkNabK1Z0PqatRXCUhgmZJ0IXej5YrRZNjlnTB7zd5RuVyXUhlu9Xt1EXFQlWpYdxWmOrkK4EwA093ogQB2mKEUhfLVFmvRplnOdGT+2ZMWOIOKa/qLjQ2FhOWB0vUwMNHq073UrV4zb+JyCHoMEEmHdft3laSM73G3Kaz0l+FkVBZrf9pkSXcs3IvHX8kyyQci9t0+xsePcyzhej6YcSflbv1hAb3F88p9g6FLV3bR628Fo4SyJkqpwPVOcEYGpZ/0R/n+SOeoURRf+gs1zstCyGKcklByxwCGZc+lvxVGSD7DYDMd6YURwdWp/rTS12jBe/JX1Li1MUyewRchm+MGNm19s6lVgY6sDd0excUMEv3Ylv65pPp2Og/dlaHofU0pHZcZYd1OLBeBkWG7KbE15vR4fB86gsxEuTM2aJnictjkpFwuoJ6SyJKeERpI6J8tKc3Ud0hZHxkorP+IXPkCoKak56kcJGXeLbZSw60FRREq4t9rs/iAQvOYpsnsy3zqm4QZ0lOglbJoRRlH4gUEwB9LD6lM9uB+JZ3LXz9E/tMFMMC+eVCxEDow7kjp9xNE2HFPtmsUDQidDLDGjN8y2/hpkjWd7bdv3pv8ST8w7YACUGVrmPJ0MQ/sRyWaEy+32/AsmjCzkEVXmWGNXESaWJ3gRkXtpFykT4l3RMftHE16A8P+m1yGA46BVCSzcT21BwCfey3HECgS8LWOUjH1tcnwLv8fLRmiOt6Y06FrPcjknNbUJoValET1UNsXNzaJz+9JMH776x
- GU0/HhFF
- rIPgu8Zglwoz1d2QioKs3ohNVyv1Z1t6I4u3QpLmKgSBDgGUx1yOcuN0FmmvPYHTEhpljHKcBrtJGPQPNF6ZfV9yleGUI84l9ts1ssC03wXIVsbs8BB0r4XR78PJYEcn7YCha5aAT0TPVvCt5PKlX5MFV1VKfMR5LwPdCSZMLraaNXLhs5dZikn7U7hfTrLWCTsrRVWUaM+N9QvJ6xTMh7SixRUrpI8iQsSHWVLe/X+TzXBFh/VGCAZ5qC4yQjcFCI42KCoY+kfvqNDsnBnZX1B19x3wEqHd70Ly3aeAB6tufLP2cuH2az3cstZ7Us5x9A3g+nrjqAAAixgG/SggiC0bHg23qtXJBJb1TIifezPpEs8oMKmcOqey00q613CKT7uF4sRMWVIzHZif80kIgnFs711vxfHUaBuhI1V5d1tIATe8=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E14A420003
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794305128-114190
+X-HE-Meta: U2FsdGVkX1/Fz8Mu1eURyyIASMpuV8Q73t7Kr+d7NlmcnpUBD8CNIZMzy1VwIXN4WlMJF5GQNEYynhk6SIT0FjBTRaYUhAHWgZ0HheoC1P+ZyZRJ9bMHtvvQKUPIEIdSx5D4q/X6bWrnUhDgp694qMNE8tXkKihV0PJE0SFX+VLZKv0woE/WEC4nn7BG9DT+7w3Ri6LPJ5QJQi9Kq6SjoncItsNLqswXPwMGkILGU6omqWZBWZiqaj+NNogx9LfAFDtDDP/FiRf3d6RxicZXK+BGkpNdBPIbyRXyTJ1zu0jdLzFJ524E1qrZX3IZnNq4S0zBX9xE2fdXUHjo0MasMEuHxoZE55qnBrxh/ROkIUM/o0oBx4Imefb0WnODHEESxIeBZ7D7ouGVJqucHgBQ1DsuBrtUNlbRzNyhmm39us5fUuvzyjr7M0vfusUt11sdGqYe86p3TKP7Hzie7J+MNl1mUvkyP+ZQJr6iX017cNRsnM2Br0LREJFWiZ1dGi/NMqcPqcJNL0U8kYPOjIR0tt0BXvqXQVgu/YhLOGvIdc0kor/Jj74qena2BwC4VsPKk4COY0EoTqtznWl0eekVm839V7EzS1FiPZFe7SNJ5FghQky44j8mVHTPgH8aKN0wEp473PO1ZvnmUVaouiDoPxUt8sYV+Zov6Vsow+iSlv4jbGJIAG+JcW1jhV6S+bbx94u1B2WvZK13Abqaawxtll1TtmR1dGhGdYMvVugqAQhG8Z2RTAjGIx9KLpHFapRNzzdemqD4ptHGrzxop6Hr9QpJUn3ElgO4n4FbB9viCGKt3cDat0z2owZaNyMR8LYnrUkgf46IpFtgNAqwEwnp55Gc9BoDUBNF0k+eMVEvZvo5wSOdAR7szn0Ia4V28gwDkDm06dCthIhhLQzyznOnMHGKIvqzvRdWx+ovLcs8gLIU4Tf2qJUvS3OjgZMg97G25jYunwY/yMEQ4EZcAB9
+ RrqlBvLG
+ 0HSRPEu4OsnKbqeTgz1JdujB7bLbKEnoOxpshFOuEq83dCCTxhP6JPnSnUmjjjuW667YFPCnx+jqaXVhic2BRBEK79FYeYGeZCHQbmn4tkHeOhmwygv7DR9kNL/gt8OUFZ3GNruZY8gK8rfJEfVeQnYB+VQAisFzjljSZXBKtdyDT3LboltH1Zl+PmFs7xOCi/kfyF/UlJDRf8HQM6juv7Y7P05xnjJHknSiJvhMq/BnhhR+b/jCMf5aWVZbkHtigvOmcw5jqzR2rcsGe/lGP5wdHpUZ8XNlixHtdJwas9KHwdViEAPdmGYSFUbwS7VquCHZqvTWyGLEhakHkFolIOKBOKuwJrf2SHNdDmS4O5LGBiiHFSD1hZ2wHQDmICeQy9U7bsUKaPyVPyKeoEjL9F8vf1w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,45 +99,204 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Rik,
+On Tue, Nov 10, 2026 at 03:44:49PM +0800, Xu Xin (vivo) wrote:
+> When only_merge_zero_pages is enabled, ksmd only ever merges empty
+> (zeroed) anonymous pages with the kernel zero page. A page that carries
+> data can never be merged, yet the current code still allocates an
+> rmap_item for it in scan_get_next_rmap_item() before cmp_and_merge_page()
+> decides to skip it.
+>
+> On workloads with a large amount of non-mergeable anonymous memory this
+> is a real cost: every scanned non-zero page pays for an rmap_item
+> allocation, and the rmap_items accumulate in the per-mm pending list.
+> For example, a MySQL instance with hundreds of gigabytes of anonymous
+> memory (mostly buffer pool pages that cannot be merged) ends up with
+> ksmd creating rmap_item metadata for each candidate page; the metadata
+> overhead can wipe out any gain from the zero-page merging and even turn
+> the net benefit negative.
+>
+> Add should_skip_non_zero_page(), called in scan_get_next_rmap_item() before
+> get_next_rmap_item(), which, when only_merge_zero_pages is enabled,
+> checks whether the candidate page is all zeros. A non-zero page is
+> skipped entirely: no rmap_item is allocated for it, and any stale
+> pending rmap_items below it are freed (as get_next_rmap_item() would).
+> The page is reported back to ksm_do_scan() as ERR_PTR(-EAGAIN), which
+> counts it as scanned and continues, so the pages_to_scan budget is
+> preserved.
+>
+> The all-zero check (pages_identical() against the kernel zero page) reads
+> the whole page. For a non-zero page this is a net win: the extra page read
+> is cheaper than the rmap_item allocation and the stable/unstable tree
+> operations it would otherwise trigger.
+>
+> A page that is zero now but is written before cmp_and_merge_page() runs
+> is still handled correctly, because the checksum-based decision in
+> cmp_and_merge_page() (added by the previous patch) is the authoritative
+> one.
+>
 
-> On Mon, 2026-11-09 at 12:32 +0000, Yeoreum Yun wrote:
-> > This is preparatory patch to make gup_fast_pte_range() batchable.
-> > 
-> > Introduce gup_unshared_pages() to count consecutive pages within a
-> > folio
-> > that do not require unsharing, and use it to implement
-> > gup_must_unshare().
-> > 
-> Could gup_exclusive_pages() be a better name?
+Please re-write this in your own words.
 
-Yes. This seems much better for me. I'll change it in next-spin.
+It's rambling on and never gets to the point of _what this patch does and
+why_.
 
-> 
-> The code all looks good, though.
+I'm not interested in reading a novel to understand the code :)
 
-Thanks!
+It seems very LLM generated, LLMs are _terrible_ at writing commit messages
+and commits, please re-write all of that.
 
-> 
-> > Also add a folio argument to gup_must_unshare() so callers can reuse
-> > an
-> > existing folio and avoid the compound_head() call implicit in
-> > PageAnon().
-> 
-> Does that count as a functional change? ;)
+> Signed-off-by: Xu Xin (vivo) <xu.xin@linux.dev>
+> Co-developed-by: Jinjiang Tu <tujinjiang@huawei.com>
+> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
 
-Right. I think it would be better to remove below sentence.
-> 
-> > 
-> > There is no functional change.
-> > 
-> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> 
-> Reviewed-by: Rik van Riel <riel@surriel.com>
+Why are this and the other patches in-reply-to 1/4? That's not how you send
+a series in mm.
 
-Thanks! :)
+> ---
+>  mm/ksm.c | 82 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 82 insertions(+)
+>
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index 49f3728a3d03..e641c37ee096 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -2535,6 +2535,69 @@ static bool should_skip_rmap_item(struct folio *folio,
+>  	return true;
+>  }
+>
+> +/*
+> + * Determines whether a candidate page should be skipped entirely when
+> + * only_merge_zero_pages is enabled, before an rmap_item is allocated for
+> + * it.
+> + *
+> + * A page that is not all zeros carries data and can never be merged with
+> + * the kernel zero page, so there is no point in allocating an rmap_item
+> + * for it. Skipping it here avoids the rmap_item metadata cost that full
+> + * KSM would otherwise pay for every non-mergeable page.
+> + *
+> + * @rmap_list: head of the per-mm pending rmap_item list
+> + * @addr:      address of the candidate page
+> + * @folio:     folio containing the candidate page
+> + * @page:      the candidate page
+> + *
+> + * Returns true if the page should be skipped (and any stale pending
+> + * rmap_items below @addr are freed), false if it should be processed.
+> + */
 
--- 
-Sincerely,
-Yeoreum Yun
+This is a really weird mix of kdoc style + not kdoc style while not being a
+kdoc, for a static function?
+
+> +static bool should_skip_non_zero_page(struct ksm_rmap_item **rmap_list,
+> +			     unsigned long addr, struct folio *folio,
+> +			     struct page *page)
+> +{
+> +	struct ksm_rmap_item *rmap_item;
+> +
+> +	if (!ksm_only_merge_zero_pages)
+> +		return false;
+> +
+> +	/*
+> +	 * Pages already merged by KSM are handled by cmp_and_merge_page();
+> +	 * do not skip them here.
+> +	 */
+> +	if (folio_test_ksm(folio))
+> +		return false;
+> +
+> +	/*
+> +	 * An all-zero page is exactly what we want to merge with the kernel
+> +	 * zero page; process it.
+> +	 */
+> +	if (pages_identical(page, ZERO_PAGE(0)))
+> +		return false;
+> +
+> +	/*
+> +	 * The page carries data: free any pending rmap_items that are below
+> +	 * it (they are stale, as get_next_rmap_item() would), and skip it so
+> +	 * no rmap_item is allocated for it.
+> +	 *
+> +	 * Compare the masked address, unlike get_next_rmap_item() which
+> +	 * compares the raw rmap_item->address (which may carry the
+> +	 * UNSTABLE/STABLE_FLAG bits). That is intentional: a pending
+> +	 * rmap_item at the same address as a non-zero page is stale and must
+> +	 * be freed here, not returned for processing.
+> +	 */
+
+We don't need a prose version of the code, and it reads like AI slop, we
+don't want AI slop comments, thanks.
+
+> +	while (*rmap_list) {
+> +		rmap_item = *rmap_list;
+
+Why is rmap_item function-scoped when it could be block-scoped here...
+
+> +		if ((rmap_item->address & PAGE_MASK) > addr)
+> +			break;
+> +		*rmap_list = rmap_item->rmap_list;
+> +		remove_rmap_item_from_tree(rmap_item);
+> +		free_rmap_item(rmap_item);
+> +	}
+
+This code is very ugly.
+
+Newline...
+
+> +	return true;
+
+
+> +}
+> +
+>  struct ksm_next_page_arg {
+>  	struct folio *folio;
+>  	struct page *page;
+> @@ -2737,6 +2800,16 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+>  			if (tmp_page) {
+>  				flush_anon_page(vma, tmp_page, ksm_scan.address);
+>  				flush_dcache_page(tmp_page);
+> +
+> +				if (should_skip_non_zero_page(ksm_scan.rmap_list,
+> +						     ksm_scan.address, folio,
+> +						     tmp_page)) {
+> +					folio_put(folio);
+> +					ksm_scan.address += PAGE_SIZE;
+> +					mmap_read_unlock(mm);
+> +					return ERR_PTR(-EAGAIN);
+> +				}
+> +
+
+I don't love just shoving more logic into an already massive function. No
+to this.
+
+At some point technical debt has to be paid, clean up this code first please.
+
+>  				rmap_item = get_next_rmap_item(mm_slot,
+>  					ksm_scan.rmap_list, ksm_scan.address);
+>  				if (rmap_item) {
+> @@ -2839,6 +2912,15 @@ static void ksm_do_scan(unsigned int scan_npages)
+>  		rmap_item = scan_get_next_rmap_item(&page);
+>  		if (!rmap_item)
+>  			return;
+> +		if (rmap_item == ERR_PTR(-EAGAIN)) {
+> +			/*
+> +			 * A non-zero page was skipped under
+> +			 * only_merge_zero_pages: it was examined but not
+> +			 * merged, so count it as scanned and keep going.
+> +			 */
+
+Similarly schloppy.
+
+> +			ksm_pages_scanned++;
+> +			continue;
+> +		}
+>  		cmp_and_merge_page(page, rmap_item);
+>  		put_page(page);
+>  		ksm_pages_scanned++;
+> --
+> 2.34.1
+>
+
+All in all adding far too much complexity in a cycle which is
+fix-focused...
+
+--
+Cheers, Lorenzo
 
