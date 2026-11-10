@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B95A606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 11:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C291606A33D
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 11:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HRA702GZ
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=FOUp/N77
 Received: by kanga.kvack.org (Postfix)
-	id 46B296B05B7; Tue, 10 Nov 2026 06:24:47 -0500 (EST)
+	id 61BAF6B05B9; Tue, 10 Nov 2026 06:24:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35CDC6B05B8; Tue, 10 Nov 2026 06:24:47 -0500 (EST)
+	id 5F38A6B05BA; Tue, 10 Nov 2026 06:24:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1864B6B05B9; Tue, 10 Nov 2026 06:24:47 -0500 (EST)
+	id 509276B05BB; Tue, 10 Nov 2026 06:24:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E08046B05B7
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 06:24:46 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 632B6C04FF
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:24:46 +0000 (UTC)
-X-FDA: 85418976972.17.D2AD791
-Received: from mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 75307140003
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:24:44 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HRA702GZ;
+	by kanga.kvack.org (Postfix) with ESMTP id 2F37F6B05B9
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 06:24:57 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 288C3C0294
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:24:56 +0000 (UTC)
+X-FDA: 85418977392.09.3E087B3
+Received: from mta1.migadu.com (out-121.mta1.migadu.com [95.215.58.121])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 4345C1C0006
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:24:54 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="FOUp/N77";
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+	spf=pass (imf21.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.121 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794309894;
+	b=fvKz+GPqfvQD3qdmkit5Q86emOy080zb/9FZSf5XlErhvfwdH/V3pSsjVIQDgcmIckBVG5
+	GBCBCGGmIz9xP5KCOqOWsrUbhw2hV98BKOVV9zyTid835c1zLGLNGJcazo/FBSX0U4k3G9
+	Tv9+FAKNp84rSbw/20JTewt1vd9/P6Q=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794309884;
+	s=arc-20220608; t=1794309894;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xc/2Ec+isrnw7gxi44tzolJqOLCV74Dq//tFYw2pc30=;
-	b=7thjGbxZ3n70i9FIAdvhsvXWxMTflaoIZT4VlbWs6giwrJzf4e+dy0MsVxIroAksHpEJgr
-	fP3Dv64ImLVyA7EvkpEZt5dGo4Sxwk43H6UeMmgqwdqCwmlldatKZHix8BlR5WFSQowEtv
-	jL/3RYYOqL5s9z2DP/fFrUHv9zq3ePI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794309884;
-	b=ndwuRfHLsHbWKDd64ydPjJKbVPaFwTUj5jMGqaPi9NEm1/mLTaIyxD17utkNzocfXjcDRX
-	XOuWtzKbSkcAu6reHEZ2IQwHz/vFmf+Hx24LWK49B1vjBrjwAWFjIJEvh8jbTIJ4GT15k1
-	3eBm5LZYszaqUjxaZXsnZTDso4QhSuQ=
+	bh=Ndl0Xjf9nTZN6dKbs+SZ1IK92guKL0Ouhq0SwgbwTp8=;
+	b=1WOR25NiiAVcqULSHMsYlhB8Aamfb/qoBzhqxtYaqKIbPXtp/H/kM58t5jQuu/p6wPKlhn
+	SYaRaxkYixrE1XYKYQ1nVlCGtSb/U0JMdBrF74/DaKvzNL5IOrlw5g+q6SXAforb5OTSJ+
+	AFwcJbUFNsfyYSlEHT21Ctn+VPmZtf0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HRA702GZ;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="FOUp/N77";
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+	spf=pass (imf21.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.121 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=kYvyfDK0ROE4CNDauI9kgGxJwtog7X2zxAx8KX+EfBM=;
+DKIM-Signature: a=rsa-sha256; bh=NOOAGkQRj9IyYCtkbJXvFPbThNHcQSekySmu8iG/sgo=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794309883; v=1; x=1794914683;
- b=HRA702GZnLe6rctJhDQuM+ozDS99Y6I83jb7m2Te53GS/hs2+bFIZ2s+2cVGJMwAK/Owan6N
- 20o+OdmwXDveZmtlleLBldslCBbxqEGAILLWaDa9vd4MwMVxUAOiLKuGQOVdjKeCgfTjK8eDDjO
- cJ9wglN3lckVV9nThG0g6dh8=
+ t=1794309893; v=1; x=1794914693;
+ b=FOUp/N775T8HB1hrcplQ0CeKr3bk3RhBac/S4RA5QGQd9Luyh8bToPK4/wxTk4aE/pchYVWj
+ itkGnzCv5Ca1AzYXCk26qg+xpyLxiTu8P4VEhtgINfoSQB30mTMvRLGEhL3UIekXHKoje+KA9mN
+ nb4lw/5o/9she7ISxhSPtqMI=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 6c351c2373b5f8e3;
-	Tue, 10 Nov 2026 11:24:42 +0000
-X-Mizu-Trace-ID: 6c351c2373b5f8e3
+Received: by smtp.migadu.com with ESMTPS id a353589fd710b990;
+	Tue, 10 Nov 2026 11:24:52 +0000
+X-Mizu-Trace-ID: a353589fd710b990
 X-Migadu-Flow: FLOW_OUT
 From: Hao Ge <hao.ge@linux.dev>
 To: Uladzislau Rezki <urezki@gmail.com>,
@@ -79,28 +79,29 @@ Cc: linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org,
 	kasan-dev@googlegroups.com,
 	linux-mm@kvack.org,
-	Hao Ge <hao.ge@linux.dev>
-Subject: [PATCH v4 3/9] mm/vmalloc: BUG_ON() on an unaligned range in vmap_range_noflush()
-Date: Tue, 10 Nov 2026 19:25:40 +0800
-Message-Id: <20261110112546.261415-4-hao.ge@linux.dev>
+	Hao Ge <hao.ge@linux.dev>,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: [PATCH v4 4/9] mm/vmalloc: BUG_ON() on an unaligned range in vmap_pages_range_noflush_walk()
+Date: Tue, 10 Nov 2026 19:25:41 +0800
+Message-Id: <20261110112546.261415-5-hao.ge@linux.dev>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20261110112546.261415-1-hao.ge@linux.dev>
 References: <20261110112546.261415-1-hao.ge@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 79n6sncmdo75g8g5jaj71rreazfr4r9k
-X-Rspam-User: 
+X-Rspamd-Queue-Id: 4345C1C0006
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 9yjo5e888h5tyuj89a6p8i1op45xtbab
+X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 75307140003
-X-HE-Tag: 1794309884-321138
-X-HE-Meta: U2FsdGVkX19Ri2wk/1Al9hvf827XUcDcRztsB7iCzIe5MUTzCGnxIxZz0bfUNC+gIOoctN+SqIDLUBP4f8XQKrwLl1WhZ4RQSiPrY6Ts0AYPjEv9gFtz0imAXi45IUIpxCIdYDGL+s4NwZIEBgFCK2XjmUU1s7ZO/Mh9xE1tdptLwiK2O/dtfSkZqf+9o/oV/DQ3dysS2HEbwf87YlHrhrT+GbtfjAEAWRSmDFvQcxn7527qwtcSZ5D1SDL+nm/aK/au4tOZhsJ4Waq/YaiNT602PxGZGKF9getxBNGQ+twlAedrlMIIDKhMXdwKqIW1y8lPvh3iOLevWh2jTIYq11hZEy6MhrqjXOTNy7+wRttU/eIrTNqwwDQZDWbh4TTrZyWt5DEwGvuJmz/6nAxR3vfMKlcNu3AxJC66pHnipEkGsePdphQjHefmHL56dyPlpSE5Knmhcc3+TUA1mDoH9OlutPAgpTWuknEwrYPGiZtc5EztGLggzJuzKl+NRSbnc/2qxGIDJzpvJAGMwP+zhG2Xx82IBqb3NxIursOa53zaS62J7YdAeNLjpnbOlhyOJwB2ufc+jPePAUEIau1kFiGyeAdeJsfMYR4NokNqNq/o60OLU6uXIIX9W5zDusoO3s21ktMHBRBq7Gmd74YN5YhFpEyeYD3S+WvBk9pN5wDHVfLIcPQdOxSswZkM7ikOj+GueSxjoiU78RVOsrktSWVp26cs6983WEmllM4onMjGU2dS+IIMgldwCgiriV6sixxWLbLEOWrdBqX0yG+eXAj6eZmcokPv5g/5aDsMKfm8XxPmWJ7Da+VC9Cum2JwRElOgTQNxY3CBJHVGF750OGh08paraC/oqB6qZ7EJmNLQT9DuQY2NjSpWnYutxa2KoUxT3LdiR/3/BNYrxDA661Kny/LvdbnTiiOXgM+vFhEB4cKLZQfjkJJ+PV43+snc2sVG4LRagaeRvZKZXgK
- jJ43FkqT
- k+ZKYXdkiwJQ9L/ER4HN4SbBuQRsyUy+kRAhscAR0Fzv6abqtxWxvmmJoB27iVXkDWVAr+CkRofpWdvmgXmAswScqY7hxRyAfKJFWgZCv2gYNVZ+CH0geDAN0EwFEIidRFpilOzoSM0tCuB/+kET+70kVFt7SAgbOMvSQHU14AK8YWVO9eTURyV1EDZkrBJ1LGreNA8kplGW7d3/Rutw0925ZBtdgXDmaftrtGAWuD/O5SZ9ZHtu4E7T8223vU1afC04AZ5KXhVIHYeR4XqXDSklm73HAOINcfhkgi0JUkSPXAFO5utGzC2L4vVCp1Wd7Vv1Fu1Iy603FxCN0uwB3tKoF25BPIcOmXFfN
+X-HE-Tag: 1794309894-584782
+X-HE-Meta: U2FsdGVkX19fqkiBl+NybQVclcuaABMv6yWiHyYBoHcMjWPn3nLktPdABY4wD+cP1zBkaDAtQ71ykSS81Yggy0XuwA0/5S9fV1A8QbHMociJVGeVpe1hkW2dzMXU521ARDVkN+a3U+J2vUpvj+9vr/Skcpc+83ha3uTSqQGxsbGqiwf/aG1Azp0fhKyln55taLIg3k0MJpeazHPQjmflPpY2g3XkZZMzKYjX4VnZy9rUzTp29BXvao/UZwND7aU32d5V1wiZvtgmRTico7b71sVNszvzR82YCTseBMoJ91Pr1VUybH3Oh4Exr3SSTqhUn8WB2s0igwIzYs9LJ0SxeZtznF5XuzxBs7W5jXd0SXYehDLifTve9Rp3lj6tXDHB2X8AGGG9zdYRk1OTvw8GO75IpOXKd89m4zcH/idMYBrLMO3OwNtFujIMkKZUBrx6Y6DEWGEeMAxxqn0lBcGg2cGL3Y9CtxZ1X/wKhJMWtLQYtDOvxMXC1/GDCvjDToUpOYtcf7pT4w2SxRa2hqAt32DquQjNkZh8CTUkkCg8Fi01DIC29n95dzfNwZFQnmLa2RW0gPpgt6FWHnt7G8MTQVrZhX9szbK6nH5GcrL0ft0/tCzGq9FinsLr5bG28pMJlXJfCZEVFjHCA9yX8AWfQBJR7SJy0KfXvvnKTYh45NnGqaldQi4Be6GinAs0orwm5hpef4O88U3iISgsiBWA44xgOKTwarTdre5CZOuL1ObdsJ77vfIwORk05/iIiB4GsMalzxhaDo1d8GDBbxD8fied5KzZbJkCMhvAfMn8LXwLUhdmonjANPboCGBOiHt9N//UTy972nC27b7lTPv8aUTitImkUkRtaCq6a2AKs6dxyKG5tk9etx5pV41uj2ClbT8X00PY2h8y85OzsKYbrBJI6oYB2unkqBxrJ1Ua6s5NtEalwl0s91JzW3/jBtTaFMSBNbNHjlZIVTo0Lma
+ YsEvZagm
+ YX9XeWtCByaa8kNEaMrMELX4OcxN4MeFRY1UTbzTMRjS8iJJ53ZUnfzcMScw/EFLg+zbtlGiSsBxQg5vv33A3+Yc/lsFm2GqkKwDmP2c4Hc5dP+b1kX4j/OVuypo8XXhqQ6rRoMULhnVN2mEvg6sPVzr7Ctq8mXQEqpqYAW+SIHXoSo4JQL2EstJuLp+rLB0UivhvMoWf9CoyRu8RisxtNJaSM9fgWYuJBIfk++h2dtC5Js2y1jVCXJPXDgdTBpmC6MOYIXdMUSc2mUzbf7xMpCBKeNgUCodneNFFlNqnIPb/RXot7hfCXfXurFbN/zuDHwFyQD89TXx8SH3v6eSc96jDvsLIceuitKNQ7GpzqRB3wpBvNSOYeQEUw/KeW0jgdhuQkzkRtbxhZIjI68rMoAU4GdV9TY9d5E1emNmAZDe/+ZUn6jElyN8xcY7ZeU4EH9ae89QG+inrF8cThvGDJzc+3ohInhuOm6YziHGE0WbX39aQa/KwjEhdsTv4LuMANF5t7uK3aQZlw4s0hkCBG3OpYcaqj4MJP6NnAKuUvh97tE8PHYQ0TC/jlkpSGNo/DjLfKE5DAz2Npm0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,47 +110,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-commit a739e6b557af ("mm: vmalloc: WARN_ON if mapping size is not
-PAGE_SIZE aligned") put the check in vmap_pte_range(), which is too
-late, because the upper levels may already have installed page
-tables for a range that is rejected anyway.
+The pte loop of vmap_pages_pte_range() maps whole pages and stops
+only when addr lands exactly on end.  An unaligned end lets addr
+jump over it and the loop keeps mapping into whatever follows the
+range.  An unaligned start maps the page below the range with its
+first pte.  That corruption is impossible to debug afterwards, so
+bug out on addr and end at the entry of
+vmap_pages_range_noflush_walk().
 
-The pte loop maps whole pages and stops only when addr lands
-exactly on end.  An unaligned end lets addr jump over it and the
-loop keeps mapping past the range.  An unaligned start maps the
-page below the range and usually misses end too.  Such a range is
-never a legitimate request, and the corruption it leaves behind is
-hard to attribute to the caller afterwards, so bug out on addr and
-end at the entry of vmap_range_noflush() and drop the check from
-vmap_pte_range().
-
+Reported-by: Sashiko <sashiko-bot@kernel.org>
 Signed-off-by: Hao Ge <hao.ge@linux.dev>
 ---
- mm/vmalloc.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ mm/vmalloc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 093b8d5f7b0e..27f2674a5556 100644
+index 27f2674a5556..86fbb1d2b27a 100644
 --- a/mm/vmalloc.c
 +++ b/mm/vmalloc.c
-@@ -125,9 +125,6 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
- 	unsigned long size;
- 	unsigned int nr_pages;
+@@ -698,6 +698,8 @@ static int vmap_pages_range_noflush_walk(unsigned long addr, unsigned long end,
+ 	pgtbl_mod_mask mask = 0;
  
--	if (WARN_ON_ONCE(!PAGE_ALIGNED(end - addr)))
--		return -EINVAL;
--
- 	pfn = phys_addr >> PAGE_SHIFT;
- 	pte = pte_alloc_kernel_track(pmd, addr, mask);
- 	if (!pte)
-@@ -347,6 +344,7 @@ static int vmap_range_noflush(unsigned long addr, unsigned long end,
- 	 */
- 	might_sleep();
  	BUG_ON(addr >= end);
 +	BUG_ON(!PAGE_ALIGNED(addr) || !PAGE_ALIGNED(end));
- 
- 	start = addr;
++
  	pgd = pgd_offset_k(addr);
+ 	do {
+ 		next = pgd_addr_end(addr, end);
 -- 
 2.25.1
 
