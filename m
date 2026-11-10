@@ -1,126 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F747606A334
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 12:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64D4606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 12:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BpmD5XgM
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EJlizn0t
 Received: by kanga.kvack.org (Postfix)
-	id 42C096B05B7; Tue, 10 Nov 2026 07:32:32 -0500 (EST)
+	id C49706B05B1; Tue, 10 Nov 2026 07:33:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DBF66B05B8; Tue, 10 Nov 2026 07:32:32 -0500 (EST)
+	id C1A0E6B05B9; Tue, 10 Nov 2026 07:33:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CA1B6B05B9; Tue, 10 Nov 2026 07:32:32 -0500 (EST)
+	id B30A46B05BA; Tue, 10 Nov 2026 07:33:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 063056B05B7
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:32:31 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8DC8140223
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:32:31 +0000 (UTC)
-X-FDA: 85419147702.18.E49E1A3
-Received: from mail-pj2-f7.google.com (mail-pj2-f7.google.com [74.125.227.135])
-	by imf08.hostedemail.com (Postfix) with ESMTP id BB0B5160011
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:32:29 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=BpmD5XgM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.135 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794313949;
-	b=i8pqyeA3VcrBRPycDtole+L6zVC4N4WGlkZ2+e51oJhZAyI9bFnbJQCP2x981xXHaeNf0z
-	nVWYI+qhgPp6SCkKT41zArFKIb1qx04B12QNAXqZKxEjCELcrT3i04Ekm55dhRjxBR0teY
-	eEoAaQvdf5pmcFLVOAZBdeOVZuZvv9E=
+	by kanga.kvack.org (Postfix) with ESMTP id 918EC6B05B1
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:33:04 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 325D71A039C
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:33:04 +0000 (UTC)
+X-FDA: 85419149088.08.4AE272D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 78A9E4000A
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:33:02 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EJlizn0t;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794313949;
+	s=arc-20220608; t=1794313982;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=lmxqKZZVg8hW4bTmhQL70087cSnpYuyKRLOfUsTG3fY=;
-	b=lGQueQZndDhfg4GnqG0qvmx2pwneDUHw/kOELvKaLyXupF5I42qxvDbpe4h5UTH1Dvzvm2
-	4Frenb6UPbV/IFMJD7rlbi7BFdtbILV8NBSZC2FV3h4eVdzxZSLNtAV4DfdP5t9AxW33AZ
-	B+0RgxXCNNhlgyKxwXzxxV33lieUHu0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FZ5FFlHQL7j8baPJSvGmXmKdOgI4vorQKtT9ZrZsiwc=;
+	b=yifJai1GrW0Jb4M5I8gZ8JqfrRpOVMioZLnbRr3oOlA8l9jMihyRnjToP84/Bz43EjDFvc
+	sJn9/91GquXO54q+ngsUz4fuGIOnzc5WjIE43QC0MlVlwq92nyKn3W9U81Iyjmw5b3o/jN
+	BwqHQPjTvWIPPBBiYJii3FAFWWLLxlQ=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=BpmD5XgM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.135 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
-Received: by mail-pj2-f7.google.com with SMTP id d9443c01a7336-2ed14ad20b8so9617775ad.0
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 04:32:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794313948; x=1794918748; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lmxqKZZVg8hW4bTmhQL70087cSnpYuyKRLOfUsTG3fY=;
-        b=BpmD5XgMCpHwG1VUWORp0vvaAjOSzZfTDUdDBbCt51t51CvaZCaiUZKsWOhtTnLgtR
-         +HY9dAGc/EjEuW4gXbeRaC3FomHAzQwAVfulgELMBjjMTr8iZpXpCCoh250eYMYRWROQ
-         sudRHuT6725DvuhPXVffxUodbCljYLe71NbUSX9ixdOYGiOMThBIUGHlO9wC29Wb7nZC
-         FB2cevw13JtZ/rWqL05uL50UQSNqln/78lH1mjbPsD+4RZH3VuHNqYEAAvWydNSGJ6kd
-         SsjUEpJR0PKTJl0PmZxJj1qkXEqDKwmnCzzNUUCdtdu923kioVt5uz24gWvdWmSHQnv4
-         l+zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794313948; x=1794918748;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lmxqKZZVg8hW4bTmhQL70087cSnpYuyKRLOfUsTG3fY=;
-        b=ZSmdWsMoWh2sEPyt9+GHUEhSZ6VTMFPwYDRFkukLhfeDY/h7JKecSRqt07jwgGuyEk
-         dW3uoyBPxl+El6NoQf8DZHS3+P8bvgA6t9mgN3JSzlCM+6Sao/mQtSTJ/YOw+z2YfoL0
-         WtC9I4TycZXGDLwFbg4kr0n1CDceO7d8O58mmZmu354LfaVPePmwD8oAo0xuAVBkpSxr
-         8FJ+XZMbEQPaqsdunuWo8PVG0B8HCR29d4TnhYptFSys1AiVPqWiUurTTptFSDLuSjss
-         o4JK3RptGaGfrNbT5bvVc+P0ZRyrs02sXPOHVCwROi4FtcOl+XUrWM2e6tYGdT+/Bl30
-         T3gA==
-X-Forwarded-Encrypted: i=1; AL+hErGkayamzrAzn4ZC/9zWM6h4Uab+w1f4e14hMTqEKDOTszNY1RkwLpLTK05vFD41Y6HNILkmmf/L2Q==@kvack.org
-X-Gm-Message-State: APuU4Z+4XEc6aEC38HDGjgqvqA7EiPztXKeGuEGhjP21sy3jGnEqfFmA
-	gnj+/1dy1DH29FtbqWWar+ICmBa3kCdS8clSaQmCho2+zEUOckdDI11V
-X-Gm-Gg: AYBFou3UNyWSRugMok5WybUm6Dy1Do+IGvi/hEN7fBiGGChUpv+obLcXw/3xHo506Oj
-	KKBtzgYk323YxNsUbX+Lnk/g8tl6dRct7J4mkNe9wWzYDEjQoyDxPYMr7UA5w8+kNvmfPrsoi87
-	neWkovh+WczupBL5ToI/TKf4cOCeQS1guIXkiVpq8G6/TePz7b/nM5d7/BGaazJa2NizTHcKJ7h
-	rd0wa+CbdltS+GDyN6tRulPCxuM2BaSc364AXlzk6P4RWa+V9u7hieRQO55jeldHSL4Em8K9ZOx
-	v3O95BuLo6ba3WOuwT0oMUx+w5fmLvxB4Uqp4TWzNLolJUAQrBI0+Ewq898spd/vl1gCWn+BtxL
-	pWD+Bmuty+12EAybTPKu6GzRzAVoATficoo6k4MZLPyUmEjM3iOeGO6FymJX59ygAmPKyvoyGfn
-	XdIGQtS4c3BaVDDQjj4UvSiinNBHlg/nhNzlBulaFGm4V8k/7AFZ5MgFUIOhHIO9bH1nxLWAWaD
-	RxDj+GF10Ld4dwRQqkfw2J7eNUw0pisVJJz3zC3hh5Doz0JI23LtJqoSR1P9CU6rTL0ick4cr6U
-	BP5jCl+kkyn2aTZpCMtj5xtUQuARgDodUiICKNchpg==
-X-Received: by 2002:a05:6a21:3d8c:b0:3de:79fe:13f with SMTP id adf61e73a8af0-3f18efad460mr1762586637.38.1794313948383;
-        Tue, 10 Nov 2026 04:32:28 -0800 (PST)
-Received: from intel.company.local ([122.11.210.25])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baa506bca4sm815282b3a.0.2026.11.10.04.32.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 04:32:27 -0800 (PST)
-From: Wandun Chen <chenwandun1@gmail.com>
-To: david@kernel.org,
-	hughd@google.com,
-	akpm@linux-foundation.org
-Cc: ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] mm/migrate: improve mlock tracking for PTE-mapped large folios
-Date: Tue, 10 Nov 2026 20:32:18 +0800
-Message-ID: <20261110123218.1579490-1-chenwandun1@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EJlizn0t;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794313982;
+	b=6h8Mfcck+oX4ByDEhLIolINKih7mChS2s7SU96tlthLnbaNhFsrufIvmaagjhBuJqwMGl9
+	M3bClA6q8hL1ElS9QYrHFBO5amyxk28K5rwtoaYHEnJE6/pQbs2lyj/7oMFAS4WKOxGh7k
+	0uOuyTM5FEbTXXnyUqYEszb4j39zM9k=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C116847110;
+	Tue, 10 Nov 2026 12:33:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F831F0089F;
+	Tue, 10 Nov 2026 12:32:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794313981;
+	bh=FZ5FFlHQL7j8baPJSvGmXmKdOgI4vorQKtT9ZrZsiwc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=EJlizn0tvmKilnMc/pUeIZZjk8kEV89QnhAodf4KFZQQHaD+DuDwKF8hmXqcXvj0z
+	 NAay+rOC4ofaKPXwHMQhMxk0FyBvoLzf6daJ6d/7HIsF+EadDvJPz3eyK90Cu0VZV6
+	 vMQhFF3jHmYPoapUcz8g8xD4ve6Zmsc9VNzo+4RgHv1hxX6948qg3+zjgbbnlBmBLa
+	 3pHkBJ2mF7pOWlTxnV5BGnB1BcvluU5E5UvXAGged1MDaDE98uhh6j8AoOxlnQ7Aye
+	 yV+lsMlQ1cmiFeHeUHD+W9400zgPIp6TQtZnyTg5hSiGHxU7y3P0edqOvsqnRKDm/f
+	 5Vo41jFuG3Pgg==
+From: David Hildenbrand <david@kernel.org>
+To: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>, 
+ Shivank Garg <shivankg@amd.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20261109-clear-flush-young-notify-v1-1-b37fbafa2686@amd.com>
+References: <20261109-clear-flush-young-notify-v1-1-b37fbafa2686@amd.com>
+Subject: Re: [PATCH] mm: remove unused clear_flush_young_ptes_notify()
+Message-Id: <179431397811.3951.2634081114462730604.b4-ty@b4>
+Date: Tue, 10 Nov 2026 13:32:58 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BB0B5160011
-X-Rspamd-Server: rspam12
-X-Stat-Signature: xgjw91u384ymghzyfh7e44qr3nja7da1
-X-Rspam-User:
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794313949-160054
-X-HE-Meta: U2FsdGVkX1/wqx5dqi01J0S/lkd/dd2q++U/VTwSqccYcYutIL3qkO0QTX/8Qy4yVuoN5LrgGP/DUjxdVHN+eGo2n0iav3FZj6VALtJ6F/0E6s8RItiPQ30ALIMJZKk3/cw0kYaBGTm/g9b/RwtvI/O31ufe13pdWEsQxPAOSrXrFlC5mqY1rlW7DqdnBcsI8vdM9W468lzY48SVPzx6wDCryk+TG78Y6ugi4iNKaEf97O3uZ2LKrw4u2E/3FeWolZlFEoECIYJ3V3a+MRYb+ja3iCr8DFcSmKe9EA5pfU1I8YZPdhz7co/5LCBQ1yCMzADiUcdOgQ1gqUpFXMtpo6L6OZwW9NOXdTguq6BKr2E6Ss3j1aVPm770OJV397OVVGNbDMmMJTuGNmb+xseihgrtS7eDMZL/L/xVwm69mUkNijzRcvBM8rtr3zxYuagY+XGaux1zT8qhxCrgmLpIvUEt8TdYQPnFat6WkilMz9AnBR7LmgdMulchDPwCn0JLVrhnaioSIHGVZO97xjLGdquniLE/ybv1LbKcSF1KkXat40qa/Cgg7fxis9yhytaeNqTv7B1A+3w0l5FKR9T6C4/Cx4quHA09tfR3L0gD3nt2tOeroR5FIm6SeS+5xp7kLwF95/1XPv0wdchrsI5RLXLjlMTnyoG5ZDGEga5tKsLKteDXb5gaG6o75XLS4EvKu2n0TB8IZHURziNjI/JfEm5v8w+b4ByfiiOuuVloDbH99OSr2oWqEsoMTu8IVqErwxnLfTgL+T/CjmIn96iuzKVEWlkEii0mQY22O8NH5sDku4mHXVDihIfU+oYMQXUinorDwasdoynpUvJXjYK39RV3wpWLat1FRJPEkw0O2H96J+tFqNWQvjhjixBK6qMJ5YKzZ4dwx+YHJ9gCzNtY5iTikQP7gjMOaZWbQEd2q5ODdMqKIrvFdAHA4RwqvI23uw6i/x+4/PkfwgIecaU
- 9IqBF/bc
- UNM67iNOk1V1V7dz4+MRLKq6DDYccBPSxlYbY24BD3zxu2EqygwpN4PZX3xuL1T7sROydAtLBFlTelMV3wOm76hLxRyC7uXPkNgfqSMxjQVENk8CwL33hjS+bcZEQRMMUYH9U6xbCMDJcl454VZnf2/8Mj20QqxBOLhaO8ZCsao9HN86VMTJqfVsWRrQNdeADYubAFl7G1lC+w+fETdsYK5UaiOdaOOPPtFj/CD5ci5gEkI2o5k8ExocpAFF+luFS9AEvVUPflP+YXLfgmPMb79PQLswlKfiQWkvH6Co1F/gJPigyJcbcSZ7GB3pOA1u9tjgsZJKdaJP5ThoO1qnz9MOicFKzA1MGtXbddU6TsLAJ59tXGviIWHSfXYU3pnfvd8tJ+auEQSlmnR99945TqmEwKVbLhOyT5pWrinBrrKr3ELiJnR20lUOKOkbhM8e6S55uvn4/ZqQvkI2/elM00kUatTvhns3iEL/zc92O8fumKhRPGP6XGso1P+5MGgWzYCrWCWec6OZq4VYlGq2gMliWU29808dhTUPrY6gvknf8YUo2lJkwQwnI3mGJ6l1rMjknWu62LyCiH+HIzKR5KbFRn2S4yaD485/wDOC4nGvACA97j8CH4cIDdy3rfVRKEXMVcrwZSfApZTsby9KH79zTDOutGUuE1iDjbLe6VKM7J5Y=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16.0
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 78A9E4000A
+X-Stat-Signature: eydz67inr4kk8u4ahhen68f7jjrjwsm1
+X-Rspam-User: 
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794313982-610097
+X-HE-Meta: U2FsdGVkX18ykgJVIkGJ/amWKkqDou0R/z5Y8shi9QepoyDb6ygJ19WbyJaAyKoW7Oi883FOlFQZU/jyzXyPA74FfWluorlmb7rqbPho1D4f6JJUQMr88Xdbtewte9dbtvLCIj6u5H4OuZAPUsSWUh/ccHr+cEtXf57LiSzpX3evVo06wOIjLQ+KAYBMTE2DnHnA8ovclMq+70kNBNqpu4ocOlFvdcLNzXZTwUp7z725rVAxE2WEaxcu0vehchiy7uDKfekCa9jMTYyrzKehuNYsSyFaw88f9w6JdDJDgDBOlKXZdhFxVo1GSg71Rc/vlTm3Cza8yD86z5MvmqmNTue0P7XASMscCsNdJHf95qGTP/lUhwOi8cSfuH60+q+AfMybAeqB1cJW0sS3ouSFV/05b8TlFcLQYnhkQtsV7OxIc0jClnmJqb24JnNqNwPmruvINC23wQVIp2Dk2HA2JOIPlG4cxqAO08Xna4xu5botGwtTyY8y8kBxwqxXkP2i4yqY5qgUREU90ofjpn/NJkVjLsWq9+5422nNi8QNHEhfRPEwIpfa0x8hxsqCN+CPTF/ofUcGQrU5RkBY5TcjbR8Z03O8ux4F8ywUK2r7V8Q17dQEFwuLT7SulDw+vr4/AMf8LhthQkQ4R98EA9VbKoyEMoDHbLbLuzRgCgTJXd90f4iKJaYiwp+rNa80b+5tfQfV4r3dPkXuI0WASFNi0HNRhwTDqKqxpH8XNqDuUo6JOqts4LF41E5vaeq5IEzQe3kbx8S9rHJuk199vZfAz0Tx39n9zw1ojLlNQQQFa3v8qe7f3KyM08Z+58Zvr2P7vn5I2kDpPWg70MchFSArGBqGI4xTm0X1bdVeEdFv9w7QqLXtQWPuUT50HVehyGt74q25190o27WUCyiQ9eC5zZCEFelz5UKenw/ATbf3fRT36SoHwqt+HvC9Haa/7ck4TpZPqvNO+dFLZ8TJdD7
+ BRe0poQ+
+ 5KHqIV3PNzp4pXw01qa57hOU760hfEDsR94tJcJOO+EJtiZMs6Jo+kgZ5AWdopDkU0ZDC2PkA/xswgugLzClzFsONnlZejG/+evmE5QloTdVrEZ2tO3fUkXhFsF3e1rvRR4SF3+oJfE6Im/9p467+Vb4ba03xVpYkmp6i6Z+JVLRId2vdvqUCHSZ3gVEJ6MqAdMUqbrYJanBTvCJEJMeoHtv18PzFoL8J2MzmKG+nEqLut4GWp5mwMjwisWStu9bpa/Ipk5lrlyS5tl98MACkKiKkVUVcYKF4U6ez
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,57 +98,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Wandun Chen <chenwandun@lixiang.com>
+On Mon, 09 Nov 2026 18:41:55 +0000, Shivank Garg wrote:
+> clear_flush_young_ptes_notify()'s last user was removed in
+> commit f3c493d2f42b ("mm/rmap: handle device-exclusive entries in
+> folio_referenced_one()"), which open-codes clear_flush_young_ptes()
+> and mmu_notifier_clear_flush_young() in folio_referenced_one().
+> 
+> Remove both the CONFIG_MMU_NOTIFIER definition and the
+> !CONFIG_MMU_NOTIFIER alias.
+> 
+> [...]
 
-Commit ab521b4142aa ("mm/rmap: improve mlock tracking for large folios")
-mlocks a large folio when all its pages are added in one rmap operation.
-However, when a PTE-mapped large folio is migrated, remove_migration_pte()
-restores PTEs individually, passing nr_pages = 1 to the rmap helpers. As a
-result, PG_mlocked is not set on the destination folio.
+Applied, thanks!
 
-Reclaim can restore mlock in try_to_unmap(), but Mlocked in /proc/meminfo
-remains undercounted until that scan occurs.
+tree: mm/core.git
+branch: core-7.5.misc
 
-Restore mlock once the full mapping has been restored in a locked VMA
-under one page table lock, rather than waiting for try_to_unmap() to
-restore the mlock state.
+Applied patches will appear soon in mm-next, followed by linux-next.
 
-Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
----
- mm/migrate.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+Please report any outstanding bugs that were missed during review, so we
+can either drop the patch series or decide how to fix it up.
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 94033c222e04..140e291d4587 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -353,6 +353,7 @@ static bool remove_migration_pte(struct folio *folio,
- {
- 	struct rmap_walk_arg *rmap_walk_arg = arg;
- 	DEFINE_FOLIO_VMA_WALK(pvmw, rmap_walk_arg->folio, vma, addr, PVMW_SYNC | PVMW_MIGRATION);
-+	unsigned long nr_ptes = 0;
- 
- 	while (page_vma_mapped_walk(&pvmw)) {
- 		rmap_t rmap_flags = RMAP_NONE;
-@@ -446,9 +447,16 @@ static bool remove_migration_pte(struct folio *folio,
- 			else
- 				folio_add_file_rmap_pte(folio, new, vma);
- 			set_pte_at(vma->vm_mm, pvmw.address, pvmw.pte, pte);
-+
-+			nr_ptes++;
- 		}
--		if (READ_ONCE(vma->vm_flags) & VM_LOCKED)
-+		if (READ_ONCE(vma->vm_flags) & VM_LOCKED) {
-+			if (folio_test_large(folio) &&
-+			    nr_ptes == folio_nr_pages(folio) &&
-+			    !(pvmw.flags & PVMW_PGTABLE_CROSSED))
-+				mlock_vma_folio(folio, vma);
- 			mlock_drain_local();
-+		}
- 
- 		trace_remove_migration_pte(pvmw.address, pte_val(pte),
- 					   compound_order(new));
+It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
+though the patches have already been applied. If possible, patch trailers
+will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. Further, this is not a guarantee that the
+patches will go upstream. If in doubt, please check the listed branch.
+
+[1/1] mm: remove unused clear_flush_young_ptes_notify()
+      https://git.kernel.org/mm/core/c/c6d408f2
+
 -- 
-2.43.0
+Cheers,
+
+David
 
 
