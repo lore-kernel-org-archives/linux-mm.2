@@ -1,104 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4BC606A326
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 12:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAFCD60A261A
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 12:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=nNTMQvVV
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=cleAenUy;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=ICAGaDTX;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=tbbT67pL;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=nKlZx/FD
 Received: by kanga.kvack.org (Postfix)
-	id EA8316B05B2; Tue, 10 Nov 2026 07:26:55 -0500 (EST)
+	id CFBCF6B05B4; Tue, 10 Nov 2026 07:28:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E80326B05B3; Tue, 10 Nov 2026 07:26:55 -0500 (EST)
+	id CAF026B05B5; Tue, 10 Nov 2026 07:28:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D961D6B05B4; Tue, 10 Nov 2026 07:26:55 -0500 (EST)
+	id BC4796B05B6; Tue, 10 Nov 2026 07:28:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A19F86B05B2
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:26:55 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A3231A85B9
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:26:54 +0000 (UTC)
-X-FDA: 85419133548.23.9E78A37
-Received: from mta1.migadu.com (out-38.mta1.migadu.com [95.215.58.38])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 4C813C0005
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:26:52 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nNTMQvVV;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.38 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 887D66B05B4
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:28:00 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 810A9A8486
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:27:59 +0000 (UTC)
+X-FDA: 85419136278.27.29F8C0E
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 24B771C0005
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:27:56 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cleAenUy;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ICAGaDTX;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tbbT67pL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="nKlZx/FD";
+	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794313612;
+	s=arc-20220608; t=1794313677;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=28sGp94tB7+IhB+9l8EsVNP6ycTUbA9Myz4BYRq9KRQ=;
-	b=WFzbxhNO6r8n17UuX3zyiAw+tMm6wK0iTbZurlJpN8VvcqKw/vV4Z+6rkaxpS4kPvITuIE
-	qwKgx6I4JnE0avQSEOFLvnU5U3+ni2n6cAqtPWj13o9QgP4xybVQ33q1oDzwHNmpEnFKvS
-	qFhbrp0vtJqJ2XVwRUAnIrSJZKJRUNc=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nNTMQvVV;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.38 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+	bh=ODg2UFDqxMR4SMBKAdSOXIf/FKBdj9ahq9IsfjbokI0=;
+	b=WAVrMO4L/oX9vPimVZXEzBSbpYzV5GwYDgvGmhBoiJfA5KXmcwDR2QyjlEe/64VkrvK0X3
+	kShmAvJ9GrYUoo+6eqg0mEa26XPEquXxJMDhXx3LrsivB2nizcOhJ07wRyGHhVAYyjJXvh
+	Ai5OGCU7TByq0ZFq9PReFRaWGq9UUpQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794313612;
-	b=Obb7sRqniHShVNQYCLdUH+HQzdo8grR+e7kZj3XwEKuVOijf8YsU5OHQZuv2dxq0LqQkjl
-	9xxxF1fyjZO4D7Myz/eUctEb/CxKc64QDlIdmSq4t+bAkpkSP3YFSubrADpW/IBEdG+tO7
-	1r0zGy8mYBLlIbEEr0tAydgWIh4MVnk=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=NCdTdpmEhDXCpYswlDrvsbAlShAGzLjABHUDQP5sSb0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794313610; v=1; x=1794918410;
- b=nNTMQvVVeAC1i8sMsLB+5AuP2lG1OvGYeMqJVvCmO6SPtecc/lBQtR5V4LIlzFQVnTNM0Gqg
- FesuNJUQAdp5Ox6Dg874N2rEpRQNUywOXcTw4giN1HEdkqGjSRrzBq5W7SEnPPzDf71iUAqB+Gq
- cjR6XazRuoFObP9EEclN38as=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 554be337fc97911a;
-	Tue, 10 Nov 2026 12:26:50 +0000
-X-Mizu-Trace-ID: 554be337fc97911a
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <f416f84a-03de-49fd-ab67-d86ed4dec633@linux.dev>
-Date: Tue, 10 Nov 2026 20:28:10 +0800
+	t=1794313677;
+	b=oqoxhWz32Zms6Z4jYh0gqUOLbAUyc1gqfam7puMRCTz9KojZM489RJWGwOHiCniPdDnTOc
+	v04ygEGUC/FcKEc1/a3fbV2FcCkmsTFkcPaFQqLS8IEn1ChenVRq8qRP60K9hAsI7SNP8B
+	tA7CzD7uLkfys8xoKt/C5asX0QQ7A60=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cleAenUy;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ICAGaDTX;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tbbT67pL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="nKlZx/FD";
+	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 37BE61F461;
+	Tue, 10 Nov 2026 12:27:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794313675; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ODg2UFDqxMR4SMBKAdSOXIf/FKBdj9ahq9IsfjbokI0=;
+	b=cleAenUyu82p7GD2IkbdhyP20bEeHiv9MCWGsm0Aiv/f8LEImD1EvWdBTTdO9JhtisjXHR
+	ExxdXPXAeV8I+EnWyEpZiiorURtwH2Wm4odZQtTfPPreXAa67LmxZ1HmvN9E3BM7QNtDcU
+	4KeMJBseUJizkUTYAQLMFuz3T3EOtBI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794313675;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ODg2UFDqxMR4SMBKAdSOXIf/FKBdj9ahq9IsfjbokI0=;
+	b=ICAGaDTXmuJrmJVNM+1/WwP4pezIcgwixY/McCKZSI7w0N2Fyl80B71aqLiIo0zpyBKBbr
+	jXzswycp8CRKgmDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794313674; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ODg2UFDqxMR4SMBKAdSOXIf/FKBdj9ahq9IsfjbokI0=;
+	b=tbbT67pLRwGjbhPH67eiBvLFjHHgj9x2wstTb9NBa9OaUxb37D7EZAkGnDI14lQO6x7v5E
+	fyUNB0q5BkqRx+7qHhfpoALjnq2e6piJEK/U+4PaTMI1QhVIgyyPNKVx/yJNRXaq9+In+Z
+	FgKHeymPfWh+iDjotDpzeRlK2dmWcko=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794313674;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ODg2UFDqxMR4SMBKAdSOXIf/FKBdj9ahq9IsfjbokI0=;
+	b=nKlZx/FDPCcSP2B+uAAFIXqbyoTZqWoQrwC//XF2bdGeUsQy78M9To25spcjkF10avjXfa
+	d4YharWvNjkfutDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 05DAC1339F;
+	Tue, 10 Nov 2026 12:27:54 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id h7E8M8kN82oVJwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 10 Nov 2026 12:27:54 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id 7C0D2224C5; Tue, 10 Nov 2026 13:27:53 +0100 (CET)
+Date: Tue, 10 Nov 2026 13:27:53 +0100
+From: Jan Kara <jack@suse.cz>
+To: Andrea Righi <arighi@nvidia.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Quan Liu <qualiu@nvidia.com>, 
+	Lee Trager <ltrager@nvidia.com>, Seth Forshee <sforshee@nvidia.com>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] pipe: Prefer mempolicy node for metadata allocations
+Message-ID: <hbkxlhc5y2jkvuov5o2kjgpisx2pavuo3ad4c4ydixeic7vaq6@mpzzfmhjvtof>
+References: <20261110065219.894219-1-arighi@nvidia.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/9] mm/vmalloc: BUG_ON() on an unaligned range in
- vmap_range_noflush()
-To: Uladzislau Rezki <urezki@gmail.com>, Dev Jain <dev.jain@arm.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Dmitry Vyukov <dvyukov@google.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, Tejun Heo <tj@kernel.org>,
- Shrikanth Hegde <sshegde@linux.ibm.com>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dennis Zhou <dennis@kernel.org>, Christoph Lameter <cl@gentwo.org>
-References: <20261110112546.261415-1-hao.ge@linux.dev>
- <20261110112546.261415-4-hao.ge@linux.dev>
-Content-Language: en-US
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <20261110112546.261415-4-hao.ge@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4C813C0005
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261110065219.894219-1-arighi@nvidia.com>
+X-Spam-Level: 
+X-Spam-Score: -12.80
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 963ticom48gpdwp8gmbww93a4iy89g6s
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: th6qi3ywy6k8dwbk9hk13dxy9c4wkm9k
-X-HE-Tag: 1794313612-970990
-X-HE-Meta: U2FsdGVkX1+QO9GR/2RDazcQJikjsey3h/o3LHM12bwP30w6yIt8tXQN6BqzT+9VgFMlkpweNZIFRn3QhfMCjmqKKurv00DTUkTr6TsUAXNvDNm9B3sKjLrabJDr7lCpuupSKoj5BwykxPvlFumiSRZV67ZSenuNw1RrQsfg/jl88rjNeI2VW63IXnotI0ii3jIUpRTljhLcTL5itJ2Xot+42X4f0cvVJoxUFf1y+k8GzHRPqelAen+5UuxcRAPmLq961jddD1VlCJvEXvDHRbytO0uMittUHjMi/vKlDhMMjCJ5WSXlWDFXgaRBW6kbbV5CQaGNf4/6uVz9iWBSles7SdCADC2kmUjE/w9p/jn2pfqz/xYE+2qfx/waaCIbQtnmNo7CiTVFFavW4O2snpMiJ6JE9riI/97ZVCTPZxDwzlSvtl3MotprKUaiX54Uk8c+3oo+R8iayu1TeLtAjQ4TtAqnKe9Y9JxbZFzwzczJSAhe2rZJaf+ySRvNdSROF7carrAOc40YEFrfXNrv9oAHwiXsUazYSp9rx/jL8V92v7nV0sH6IpYRZIjqgtPXJyjCUMscgBnyqBxWnOrp2o/FAIZD6HfgY4W3WDUEoDC54agdLgdJSvyLo2lTUee5NYRcky6t0S5h7ub/+xGIDxIBY4FRjaLzG7r9waP1NrREZuSg4qar9grCU69ne7tDUpRAitdwJkgpNKKjQtg95Qk7KD/sGdY6eOio6lmelSE8k1qFYTDhJi85H+w7521oJbTGqmh/GxXaMA7I+bRBurOYgC0q3Gfilg7siXF0qEbdj76B2WK+bNMjk121O/0UniioMfEwFlFlFLB5d79sRX8jXNr7pLwc0DTdvQn/oprDwsMWOqdH+wB7E611KeE2GeTDwqtflT0KmSu/EiLhZrgAoZKUwD1ktCPwBBPNu+idcITj20VxSoLIXu4gX+KlreQHBJSE4zAG6DYD1dO
- TPQ3Q8Bf
- l8+ikY/Sc5DBHR5rjM3puIktEC/b1tl2HR6R4VgzZrYvBcbW+e+zMTnz3akSuEJSLGRXxsRgq6D8NUpjX4iV2OGzR39JmovoEmP3nQKKz/93zrKzROimHL9MbmHHg4H9rfBkhgsCZ8pNbtnPQyom/4ga2z/RWgz2kVYZiFx/X+T7moQK4BDXK9JUu/VJU1+zx+dLhjOj1LaM9H+Hx1Fx47Co80CYDvDbVaYSrg3Y19GE1jHLo3bRLUA9MkFI/yv20/zcZmDKpjpwvU9R0UkcwFTe5ETGARjk0YCMFB7VGUDiwazx6xZbaT+FqbijP231EwgbCl71SHsqbQDEgaky4E4UCKgl+2gT0Tl5gf3Cw/EarJlJvuTQXLQVwFwIluYBnT4v6gsZ6PCkYMVANX1PFZ0mWcA==
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 24B771C0005
+X-Rspam-User: 
+X-HE-Tag: 1794313676-402910
+X-HE-Meta: U2FsdGVkX1/u97e9ARB3jgFI6jMJHQzTlDuO50za5ToxFigHNLfXR6iLr4ReO9/ynjGJx3vrFWqG3DJdenUzALOH6TseoepK6Mnz75scRsdTIsuHDbb718FSfehmxoz5uKZnLpMNMeyOaleOL+wsbJPxUuOHEd76vii0jh/g8z+LgCrMV87ag9lMQJ1soEI9LJX+9f0hQRPs5CGXwjiyOOkoIqrSaNf1iydHYmTxuuZPwVgy1lzF9za+h0sIAsKXnPfbNMMFb91ZCYtcS6wtb6TFpag9s0uzFxxPywaP5ZyR3dyqX4DMp1o4cVvLo1qdbTEw7ceevw3hnMUSo+PUFXz3DjRGFhiRReaBXEyl9QfPouQESNRzBpeGFpwE4g/2Y/Q939QsUrgn9MbMx3jeApfD4DZcW2s1DtlPI3R2cme7YqoBf8JnN5Clutpx8zqeJjycNfmD5tTGmT7W9ujclTl4w9ctWj5KqeOBvEOQgRenpKeNTYdnrFrmESyJjzV2MqxA056wmlAzyNwdSewRqQi4QXuEQ3ymUB43WUf1bEVjGUDk1qbJdmQd01+ioWhpi7nBR+EzwO6jL+Fb2mWbBnna6cisO0WzmSIOUQrW/WcuyKqXn9nnbGLtI/Y/Tc880d4V76tX5UlBCnenYHIV8UxugT9u76g+jzqsjx3ZVGQsRyJ4w8i7oXRBTIaWGx20WjgGW6jyFgtYXmbsdiVs/QAEiH9/ib61NfR+U7w5h9qSorWpD6K6XJYyMmI8HxrbLniMXXUbxYMFnIAkVzZrDa0fL9/zEp06yQcOrdsx17Y3lCA2Fe77aUKPR6tnAMwP5WXj0JveDS/8jF9SEQbZOp9a4n20uHqsgDGrxtCBypIHgmzlH4l6OcC2AbsKLsaEqPrmzu3FpgRtORuZvEHMYfsznoi8El2Q2tvGdWLSDoT3xmlJ1B0JwXRWXq3IPozt0YsKMVbxV9gi+eqdoz+
+ Fx1tLLUz
+ f0Q1D0B6DftflM/V/IkVZtRLj/PiOxRgkwN9d7MWHMppbxkIvvLQyb7/Nm3dxqCMqNlWJTmgl4Vx3kT0pofMYPjCAOcMqg02UQuE2GVy9xxiWt0yWj2lpVe0bgKyFDmAkA2P2wo0upqEXxJ4W5m7ZPYhaisHukCjRjKVXPThQgZ919JuWQko0Xz+6F122OSx6c0bdSLOxunOW9JLuVjHeRfhyzX7/aw9JhzhkVdjnCP4br6SQDiNvTzYefsmvvJBh4YNXP23LkRTb1e+09iHtZqdMGr+6zUgoJSnr2NpEg0iAbr2FTSTpC0MFRMvbOBxZMSAY52fgYeffWyGImiXVSbPsj8oiMtCb4srvuECZ9I/+IQI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,114 +141,146 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-
-On 2026/11/10 19:25, Hao Ge wrote:
-> commit a739e6b557af ("mm: vmalloc: WARN_ON if mapping size is not
-> PAGE_SIZE aligned") put the check in vmap_pte_range(), which is too
-> late, because the upper levels may already have installed page
-> tables for a range that is rejected anyway.
+On Tue 10-11-26 07:52:19, Andrea Righi wrote:
+> Generic slab allocations can reuse partial slabs from another NUMA node,
+> even when a pipe workload is bound to one node. Pipe metadata is shared
+> between senders and receivers and accessed throughout the pipe lifetime.
+> Reusing remote metadata can therefore make an IPC workload pay remote
+> access and coherence costs on every exchange.
 > 
-> The pte loop maps whole pages and stops only when addr lands
-> exactly on end.  An unaligned end lets addr jump over it and the
-> loop keeps mapping past the range.  An unaligned start maps the
-> page below the range and usually misses end too.  Such a range is
-> never a legitimate request, and the corruption it leaves behind is
-> hard to attribute to the caller afterwards, so bug out on addr and
-> end at the entry of vmap_range_noflush() and drop the check from
-> vmap_pte_range().
+> The target use case is a workload that binds its workers and memory to
+> one NUMA node with numactl. The policy node is then a useful placement
+> hint for shared pipe metadata.
 > 
-> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+> Allocate pipe_inode_info and its descriptor array on the node selected
+> by the caller's memory policy. Apply the same preference when replacing
+> slab-sized descriptor arrays during ring resizing. An explicit node lets
+> SLUB try local allocations before reusing remote partial slabs.
+> 
+> For descriptor arrays larger than KMALLOC_MAX_CACHE_SIZE, pass
+> NUMA_NO_NODE to keep the policy-aware page allocation path. An explicit
+> node would otherwise lose the MPOL_BIND nodemask on fallback. Select the
+> policy node only for slab-sized arrays, avoiding an extra advance of an
+> interleave policy for large allocations.
+> 
+> Moving a pipe's users to another node doesn't migrate its existing
+> metadata, so migration can still result in remote accesses regardless of
+> this change. Generic allocations may reuse remote partial slabs, making
+> initial placement dependent on allocator state. In contrast, preferring
+> the policy node leverages the workload's placement hint to improve
+> locality when users remain on the intended node.
+> 
+> Testing has been performed on a dual-socket NVIDIA Vera system, covering
+> hackbench, pipe transfers, pipe creation and resizing, pipe_bench, and
+> targeted stress tests.
+> 
+> The primary hackbench reproducer is:
+> 
+>   $ numactl --physcpubind=0-87 --membind=0 \
+>       hackbench -P -p -g 10 -f 20 -s 100 -l 100000
+> 
+> Results (over 10 measured runs per case):
+> 
+>               avg       stdev
+>    before     9.811s    0.130s
+>    after      5.770s    0.058s
+> 
+> Before this change, allocations could reuse remote pipe metadata. With
+> this change, both pipe objects and descriptor arrays are allocated on
+> the requested node, improving locality and reducing hackbench runtime by
+> approximately 41%.
+> 
+> Reported-by: Quan Liu <qualiu@nvidia.com>
+> Signed-off-by: Andrea Righi <arighi@nvidia.com>
+
+To me this makes sense so feel free to add:
+
+Acked-by: Jan Kara <jack@suse.cz>
+
+But IMHO it deserves a look from MM guys since this is more of an MM thing
+than a filesystem one... Added to CC.
+
+								Honza
+
 > ---
->  mm/vmalloc.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+>  fs/pipe.c | 26 ++++++++++++++++++++++----
+>  1 file changed, 22 insertions(+), 4 deletions(-)
 > 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 093b8d5f7b0e..27f2674a5556 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -125,9 +125,6 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
->  	unsigned long size;
->  	unsigned int nr_pages;
+> diff --git a/fs/pipe.c b/fs/pipe.c
+> index 4fa69192e6fba..2a8f9e9f70f84 100644
+> --- a/fs/pipe.c
+> +++ b/fs/pipe.c
+> @@ -24,6 +24,7 @@
+>  #include <linux/syscalls.h>
+>  #include <linux/fcntl.h>
+>  #include <linux/memcontrol.h>
+> +#include <linux/mempolicy.h>
+>  #include <linux/watch_queue.h>
+>  #include <linux/sysctl.h>
+>  #include <linux/sort.h>
+> @@ -874,6 +875,16 @@ bool pipe_is_unprivileged_user(void)
+>  	return !capable(CAP_SYS_RESOURCE) && !capable(CAP_SYS_ADMIN);
+>  }
 >  
-> -	if (WARN_ON_ONCE(!PAGE_ALIGNED(end - addr)))
-> -		return -EINVAL;
-> -
->  	pfn = phys_addr >> PAGE_SHIFT;
->  	pte = pte_alloc_kernel_track(pmd, addr, mask);
->  	if (!pte)
-> @@ -347,6 +344,7 @@ static int vmap_range_noflush(unsigned long addr, unsigned long end,
->  	 */
->  	might_sleep();
->  	BUG_ON(addr >= end);
-> +	BUG_ON(!PAGE_ALIGNED(addr) || !PAGE_ALIGNED(end));
-
-I know BUG_ON() is ugly and it was not my first choice either, but I
-have not figured out a better way to handle __vunmap_range_noflush().
-
-If an unaligned range is passed to it, the pte loop may clear PTEs
-adjacent to the range. Say a caller passes [3, 12) while [0, 3)
-belongs to somebody else. The loop operates on whole pages, so it
-starts at the page containing 3 and clears [0, 3) with it. That
-silently corrupts a live mapping, and the corruption is not detected
-until the owner touches the page. Bugs like that are nearly
-impossible to debug afterwards.
-
-It is not feasible for __vunmap_range_noflush() to just return an
-invalid-argument error upfront. Its job is to clear PTEs, and an
-early return leaves the residual PTEs behind.
-
-I also thought about warning and returning -EINVAL on the map side
-and keeping BUG_ON() only in __vunmap_range_noflush(), but the
-rollback kills that idea.
-
-int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
-                pgprot_t prot, struct page **pages, unsigned int page_shift,
-                gfp_t gfp_mask)
-{
-        int err;
-
-        if (WARN_ON_ONCE(page_shift < PAGE_SHIFT))
-                return -EINVAL;
-
-        if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC))
-                page_shift = PAGE_SHIFT;
-
-        err = vmap_pages_range_noflush_walk(addr, end, prot, pages, page_shift);
-
-        /* Undo the PTEs installed before the failure. */
-        if (err)
-                __vunmap_range_noflush(addr, end,
-                                       gfpflags_allow_blocking(gfp_mask));
-
-        return err;
-}
-
-If the walk WARNs and returns -EINVAL for a bad range, the undo
-above passes that same range to __vunmap_range_noflush(), and we
-BUG right after the WARN. vmap_page_range() runs into the same
-thing on its error path.
-
-So the map side cannot warn while the unmap side BUGs, the rollback
-drags the rejected range into the unmap anyway. And the unmap side
-cannot warn and skip either, that leaves the stale PTEs.
-
-Also, these checks are the last line of defense. All in-tree callers
-pass page aligned, non-empty ranges, and I am not aware of anyone ever
-hitting this line. So for correct code the BUG_ON never fires at all,
-no user will ever see it. The only one who can trip it is the developer
-who just passed the bad range, and for him a stack trace right at the
-spot is much better than chasing a silent corruption afterwards.
-
-I settled on BUG_ON here. It may not be an ideal solution, but if anyone
-has a better idea or alternative approach, please let me know.
-I would greatly appreciate it.
-
-Thanks
-Best Regards
-Hao
-
+> +/* Prefer the policy node over remote partial slabs, retaining fallback. */
+> +static int pipe_slab_node(void)
+> +{
+> +#ifdef CONFIG_NUMA
+> +	return mempolicy_slab_node();
+> +#else
+> +	return NUMA_NO_NODE;
+> +#endif
+> +}
+> +
+>  struct pipe_inode_info *alloc_pipe_info(void)
+>  {
+>  	struct pipe_inode_info *pipe;
+> @@ -881,8 +892,9 @@ struct pipe_inode_info *alloc_pipe_info(void)
+>  	struct user_struct *user = get_current_user();
+>  	unsigned long user_bufs;
+>  	unsigned int max_size = READ_ONCE(pipe_max_size);
+> +	int node = pipe_slab_node();
 >  
->  	start = addr;
->  	pgd = pgd_offset_k(addr);
+> -	pipe = kzalloc_obj(struct pipe_inode_info, GFP_KERNEL_ACCOUNT);
+> +	pipe = kzalloc_node(sizeof(*pipe), GFP_KERNEL_ACCOUNT, node);
+>  	if (pipe == NULL)
+>  		goto out_free_uid;
+>  
+> @@ -899,8 +911,8 @@ struct pipe_inode_info *alloc_pipe_info(void)
+>  	if (too_many_pipe_buffers_hard(user_bufs) && pipe_is_unprivileged_user())
+>  		goto out_revert_acct;
+>  
+> -	pipe->bufs = kzalloc_objs(struct pipe_buffer, pipe_bufs,
+> -				  GFP_KERNEL_ACCOUNT);
+> +	pipe->bufs = kcalloc_node(pipe_bufs, sizeof(*pipe->bufs),
+> +				  GFP_KERNEL_ACCOUNT, node);
+>  
+>  	if (pipe->bufs) {
+>  		init_waitqueue_head(&pipe->rd_wait);
+> @@ -1375,12 +1387,18 @@ int pipe_resize_ring(struct pipe_inode_info *pipe, unsigned int nr_slots)
+>  {
+>  	struct pipe_buffer *bufs;
+>  	unsigned int head, tail, mask, n;
+> +	int node = NUMA_NO_NODE;
+>  
+>  	/* nr_slots larger than limits of pipe->{head,tail} */
+>  	if (unlikely(nr_slots > (pipe_index_t)-1u))
+>  		return -EINVAL;
+>  
+> -	bufs = kzalloc_objs(*bufs, nr_slots, GFP_KERNEL_ACCOUNT | __GFP_NOWARN);
+> +	/* Keep the policy nodemask for allocations that bypass slab caches. */
+> +	if (nr_slots <= KMALLOC_MAX_CACHE_SIZE / sizeof(*bufs))
+> +		node = pipe_slab_node();
+> +
+> +	bufs = kcalloc_node(nr_slots, sizeof(*bufs),
+> +			    GFP_KERNEL_ACCOUNT | __GFP_NOWARN, node);
+>  	if (unlikely(!bufs))
+>  		return -ENOMEM;
+>  
+> -- 
+> 2.56.0
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
