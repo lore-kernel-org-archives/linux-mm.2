@@ -1,90 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C5FA606A321
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 02:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9444A606A331
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 02:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IOGLKWu6
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=MHi7lakr
 Received: by kanga.kvack.org (Postfix)
-	id 1F5816B05B3; Mon,  9 Nov 2026 21:23:51 -0500 (EST)
+	id A3D0C6B05B5; Mon,  9 Nov 2026 21:29:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A64B6B05B4; Mon,  9 Nov 2026 21:23:51 -0500 (EST)
+	id 9EEA66B05B6; Mon,  9 Nov 2026 21:29:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C3436B05B5; Mon,  9 Nov 2026 21:23:51 -0500 (EST)
+	id 905206B05B7; Mon,  9 Nov 2026 21:29:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D7DE76B05B3
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 21:23:50 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6C2CAA036E
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:23:50 +0000 (UTC)
-X-FDA: 85417613820.19.78B96C6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id D34EB140003
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:23:48 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IOGLKWu6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EBF76B05B5
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 21:29:31 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 01BF54060D
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:29:30 +0000 (UTC)
+X-FDA: 85417628142.17.D345864
+Received: from mta0.migadu.com (out-210.mta0.migadu.com [91.218.175.210])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D1EB2A0002
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:29:28 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MHi7lakr;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.210 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794277428;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794277769;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A+lzFeOLtG99Ghw9rX8G9p1QUCxnDj5eZlO4QzFSIas=;
-	b=we80cwOXVbO/9eJ8UlhGzkKIbksoWHVGdTLb/phykxF2wqhLAnaOCSPGX9yTxp6vB9pyN/
-	S2athUwEOiCZXKdeYBDkGO5mFBUjUz9DN7q5mNTlTiWWsyNHRdszDHzEA4RWZDlJXzQpuB
-	xPwFdcyTjCJgygEJq55CjVLsAXS0C7k=
+	bh=HlBsGgt5fdLLxh9YoMRteCkZdpeZNQ5ocKkLttwq/cs=;
+	b=P8Swm1N45WlG3T10MTJboDyV0/nkaB9GfXZ0f/rN9i5MXiuVgj6q8pYs9qDC6ym9aNhYYH
+	ZpvAEkvbNPlnk/EJ0Vp9Q4J5zc46naVHaSEN+Z67Idj5WeFfHVyXmt9M1s8FizpE5j0nij
+	6dhVixtvTLXf+f/BTGOQjvyeTygzj5I=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IOGLKWu6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MHi7lakr;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.210 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794277428;
-	b=6/HPvoUO9gvOliOoHHSjaNU0x3LcnRAw0AMjG/n8z1+BOIemSS6e4rS8gaKr9Wr47QBJiM
-	4cyYuifaOvYrplCypvWGI5wVl3sJpOJuytbxEWa4/IgWQDdwrgJbvcyCueyxIralHS2Jz1
-	QQgSzpEIR33IRLr8Tu4vs5OPtZIfvTU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3477C61264;
-	Tue, 10 Nov 2026 02:23:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA141F008A1;
-	Tue, 10 Nov 2026 02:23:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794277428;
-	bh=A+lzFeOLtG99Ghw9rX8G9p1QUCxnDj5eZlO4QzFSIas=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=IOGLKWu6U2jlr8eViXU1gCgBZA8adj0frtLiodU/busKR5eEm5s6yfDZntS5oxw6c
-	 NTfF9gLWvfACN3wq8trUkbz5JkiasKDhu92o9cmXGRd2kHKWedzv84gLjkectZajP1
-	 TGMINjX+nnRDMcp8Z9RUAnmT88gYhyBvqtZTmPZOPyuhdfU+//TY0AttNs6DIZJ0fd
-	 ocCkl5A3JKkRdJd8WOskeeu2B4AY3n1bGDOxFhOTY7KBvjjIMnT/soj4hny6bpfSNH
-	 cHdA+8LpZNYZH3jerZnhS3V+OSgnJpCVH2KMfP2H53J/ZwxcVATC4effDDlfdIm72L
-	 IST5UC/5nfBtA==
-Message-ID: <sashiko-outbox-206041@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/4] mm: memcg: read root lruvec stats from the node
- counters
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Joanne Koong" <joannelkoong@gmail.com>, akpm@linux-foundation.org
-Cc: yosry@kernel.org, shakeel.butt@linux.dev, hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, muchun.song@linux.dev, nphamcs@gmail.com, chengming.zhou@linux.dev, sj@kernel.org, david@kernel.org, ljs@kernel.org, linux-mm@kvack.org, damon@lists.linux.dev, tj@kernel.org, mkoutny@suse.com
-In-Reply-To: <20261110015321.611093-3-joannelkoong@gmail.com>
-References: <20261110015321.611093-1-joannelkoong@gmail.com>
- <20261110015321.611093-3-joannelkoong@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 10 Nov 2026 02:23:46 +0000
+	t=1794277769;
+	b=6xIZeJA3Zao2Mz/0o/gP2LOQ9yI9C1D+fYBSmhBAP2FD0gxPtAd1QJg+CtOIgYHOL46d8W
+	4uF9PaIhy6G84ZAFcpeUjMUZeT89xjlkpwVZIBVShYUUa9crFJ5jkWUTUFgqeVug60z8gr
+	eUEsNbOKnbjoB98xbcOq6xXKK06lmP0=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=nJ1jpM7lqQ282X/00v7kNslXHVmvQXR6WNDc0r1eHOM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794277767; v=1; x=1794882567;
+ b=MHi7lakrdBFbW0z4ZHt/a+z1o57vugjPvSGPMIUlI7HJGy5rqZo1+kOjkLByKq+jmJfoywDL
+ Elmnz+9VkimY4PMFGuNZOyrMkHWuXHimn6V7ghaPJM3Gwgl6mcjyV08ABl4jyH+AnRe/904Z/KU
+ 2UtK4p+ZcZUoWMhxf9rzkjAU=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id 532814c464d3ffcb;
+	Tue, 10 Nov 2026 02:29:27 +0000
+X-Mizu-Trace-ID: 532814c464d3ffcb
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 10 Nov 2026 10:29:22 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Lance Yang <lance.yang@linux.dev>,
+	Ridong Chen <ridong.chen@linux.dev>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] MAINTAINERS: MEMORY MANAGEMENT - MGLRU (MULTI-GEN
+ LRU) update
+Message-ID: <avKBgtWHe93uea_t@fedora>
+References: <20261109-maintainers_mglru-v1-0-c25e6de60bcc@kernel.org>
+ <20261109-maintainers_mglru-v1-1-c25e6de60bcc@kernel.org>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261109-maintainers_mglru-v1-1-c25e6de60bcc@kernel.org>
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D34EB140003
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: k11wti69zimjge6hhwap13ar7ekwsd3s
-X-HE-Tag: 1794277428-841237
-X-HE-Meta: U2FsdGVkX18obAvQb1fB1P2ib2j+ELeIMaS7gj+1DDoRPMDFwAl7GViw2ZE71P2XvWwmpzKrmJNPBTe4LYPMZBQaaDAQA1We8gyBdYJKf34/RC7NMhOD3jsmYa50+7wi3CnpGibMcNg1G70AzupBVmZNzoyKnZQUzyrR6xJANNfjpIlkFJAIN8bFwSLhEmI3uuFCLAjrpqi6MC3Lldfcda0SGeVGHxypGY+FNjfiRd/5d4+P8donuxNJJCnVgtwoE8VAaqTTKile1sUA1jZko3ogat251jB1mrI0OOF4R/wXH3ghMY3vpL7YTE6Ci1Rzebg4y7LbuZsemoBsZtmKZu7QYo/yI9JHBQBD7pf/rEhJ+wj6UyUCN2KqJjHWtbi6u7Afo54LqRjFbbE5si4BDOnuYUfGOmOhZz9ixqp0DxBYhIVfjQcVD5U9X6jPlirGIumfnPIkxhYj9krOUOWMPKl0mg/wfx6ZpgSemVIr2cHMA2pk8WJDQinAqBFZE9uB7DzbxH6HZui7FccjCO397IaeinsPjmVadEiP6/Omi+dMkQdmMo+UYbkncUrnWdf51QZn1ZyO5Hbu4nUpyOAcr2Rk73u/FyKW0lXckRrTT0vFLYUsbBJz8j/DFeJl8/hVCkNQ0v9Ujz2vHxzca4lkNtzyrENpJ3Z/VV9em81lD53RommbwkRaSH5Rrpyf5/g3Z8N0+RV2NkvMOCUzO53eY5P3JqIaa0iHrnxpn1+WFfaJB5KQl6w+85mRTMPsywJXTqY58x+OU1Ar5hEfuaYrEupNo7bHoejblIh+1BRSgln9SHtoBuRpr6yjyuqi2SZY9av9RrsSMWXtI6fVmxEqBwDHkVZB14Lr7hwEUxH1ah7mLsU5CVTrzA99h/WlNF0z7thCwCf+lq4cYh/ELF8pV71Z7aNPy8SwFD0gDn6nhgfi2zy3Mx+q0RQUZ0TxGxoLhakWZrm6DhThGJ9WVox
- Rt8l4hdq
- Qp+9diO6EdDGng3Dl8fnJYi+jsFsnllsZSkgCXn2nLYXjmbd8vyJsDUJs5zAtFxJOp517NsG0whmUpqNv5lhJnunkGHMox48BNGM/C+FsHbybME5KhxxU+k/6OvaqwM/FLlGbeU2UQjGwrLLXqpnY0Jhnw61ZQjG1aDPDl0X6Jqjq/IfsJF+PtkyvHLZatTz3DJ3LFaMF0sJjlQXYtUecHQUzuPvheG+wMCJzNfIPA1NyzYC4+hsKOTV4BR8YYsf4mFc8fzibDSVVJfBDSIn8oRFKf4kqrkX0YXNxWd6ho+d3XDueZEQHd93EnB7RjFVXiCbwIXu7CoGjmdz2wu3cxOrHDG/BifSOzyNH6eJzEXdtnQ8W2Zs6TAbZvowvhEV2kntwtAmerdEwn9rvICNMoJ6hcgG9FH84JvApi+gekiOo9tme0pBO/07vTj3JpsakL/rIUFWYYwt8vy/KCjI4YyOb5vvuDQmOrz0EElHbe0CEnru1+3rxlkO1sbMLhZ4+N74hetD9Gzjjvm0WsMaP3MaRmDKQVpU65Ck7QOcfF+ivjgtzifOyktlHgiRX7rzYpjb48Xru+dSvTipsungmSHWhhw==
+X-Rspamd-Queue-Id: D1EB2A0002
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: gf3fgjgjr7yd9eodo64sumekq8etgthu
+X-HE-Tag: 1794277768-938706
+X-HE-Meta: U2FsdGVkX1/T+uaox1dqpGh2zEPWkM1yMd1KSvUQHZ8cDd+fVh+keNxRNHosGn00eRlV2AJe7udZe2Mkwimt1qVq4KLhC/hVfZm4SHFZZ7TxUOf173Igyxe2MF0nq49sEeTu7zH0wge49TBtkqxwhfngc2eQenE7h/E04aEQ7HKe52XVrYVcV2186cKT1fyagnPy7kIdPOfWue6onz6VC51rk9JAcnFbM94C5wxOhHe5r+bnOrlbbts+jlajnycegd59IM91ZP3DE+3SVJnOKt+YG+aXnfwmZ/7Y29uG8QY/absKxJHdJ7CBNAosmyn9lP7xLgypStmi+7LUBlkc3B6B/5fb9JSckUWxN6vgUB5KpH4ZPog2zU14sfqdSklyKtO+Fqpe92WHqNdYBL+4Ryktj0gaWbNuQFvkf+vtlWXrxk8YRsBabo2Jn9Rtn7rxWLJc4p9OgIYWHycI7AQDYQ58HyB1D1AiNkNDF533zB0vr1+gJ7DrNbNHu+pRFit33y/ncz95yzN4cPmP6NiN7Wewwt4W/59MgPp4rAH7Jp7t+HcjuERJaF/TFS2dasAzs17Zb+RVqckHvu2ruPFv8y/C5N2ADWqdiKKMgHw3IeESaTNms5qbRlKY/wHPHGxd9N01D/s1D2Mf/rjLOfNmiAda96yj9oQab8/i7mlcFwi/oKlbgxSuROCTQ1cspdgRY67l6NPgRP2/Phu5SrZci5tLfo5Ohb7CAsNwuYRrnmdjS7UTNoDO9rt39eYT9j7Hx0fdOuT/k2+BNzc3r+V6ocRMY9vEGaZ14J8w/aEcxiC6BDHVngOeEkRyzMO1YTFk2alKfKf7FXmGXDi6vklQaVR8jyEpeYNU0MHDDgyXLE4SBzed8ShvQ/JtLSpsJ+8gQ2f0UtAoY7fWlx9c+A7sr1O7sGKNJcw6nANV24jl9c6pO/zuP88/IVyrq0u9TPud/wX2baPNSHVJbGj/hz3
+ c4I2AWVY
+ I7M6p3iUl7s5/A32yHdU3saUijCGGCYLEG+Xorj3nnREJJ44/QgrjLXq/pmIDCnooe/lgr4U3jshR2lIMbtYTkJGwqkIrGQPK9j2uJN0vousX8McNv7LB3Bg068dYv3s8mvhugP0qr2GG8eWxhIryYXMKw294pj2H43ZcDV6JCLaifmErzl9XDm7UuTl2hgAnwMJ94LQTld1HwIT6d3Diiz99PQlDMkEmZ37ILQMCSTf0Hu+tdv1Y0v+5PSBtJTCJY+ETVGh+39MRhuPIeDGmeY3WAcPam3ddW2jb7y5GdLYouKObQI9TzkHuh6NbPbrH697JNhNgEYlLBm+OQx00zdyNa884LUZcO2ruVfnQ0y11Ix967EQOAtLMJaJrbjXAx2vWsI9j6gyvwOw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,93 +103,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] mm: memcg: node_stat_includes_unaccounted() omits file and
-  writeback stats
---
+On 11/09/26 at 07:31pm, David Hildenbrand (Arm) wrote:
+> MGLRU is currently the only MM component without a dedicated component
+> maintainer. Fortunately, Kairui and Barry have been actively
+> contributing to MGLRU and have volunteered to take on more responsibility
+> by officially taking care of it.
+> 
+> Given that Kairui is already an established MM component maintainer in
+> a related MM component (SWAP), add him as an MGLRU maintainer right away.
+> 
+> For Barry, the idea is to transition him towards a component maintainer
+> role over the coming months, starting by moving him to the top of the
+> reviewer list.
+> 
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  MAINTAINERS | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-commit d2ba314724a8ba015e3bf2a30f155f1beba25a8c
-Author: Joanne Koong <joannelkoong@gmail.com>
+Well deserved, congrats to both.
 
-mm: memcg: read root lruvec stats from the node counters
+Reviewed-by: Baoquan He <baoquan.he@linux.dev>
 
-This commit changes lruvec_page_state() and lruvec_page_state_monotonic()
-to read per-node vmstat counters instead of rstat values for the root
-memcg when querying stats that only track memory charged to a memcg.
-
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 1ebc9330aeae5..2575bf2ba0ea6 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-
-[ ... ]
-
-> @@ -504,13 +511,52 @@ struct lruvec_stats {
->  	long state_pending[NR_MEMCG_NODE_STAT_ITEMS];
->  };
-> =20
-> +/*
-> + * Whether the node counter for @idx can also count memory that isn't ch=
-arged
-> + * to a memcg (eg kernel memory that isn't accounted). For these stats, =
-the
-> + * node counter can be larger than the root memcg's value, so the root m=
-emcg
-> + * has to read its rstat value instead.
-> + */
-> +static bool node_stat_includes_unaccounted(enum node_stat_item idx)
-> +{
-> +	switch (idx) {
-> +	case NR_SLAB_RECLAIMABLE_B:
-> +	case NR_SLAB_UNRECLAIMABLE_B:
-> +	case WORKINGSET_NODERECLAIM:
-> +	case NR_VMALLOC:
-> +	case NR_KERNEL_STACK_KB:
-> +	case NR_PAGETABLE:
-> +	case NR_SECONDARY_PAGETABLE:
-> +#ifdef CONFIG_HUGETLB_PAGE
-> +	case NR_HUGETLB:
-> +#endif
-> +		return true;
-> +	default:
-> +		return false;
-> +	}
-> +}
-
-[Severity: Medium]
-Should node_stat_includes_unaccounted() also include NR_FILE_PAGES,
-NR_FILE_MAPPED, and NR_WRITEBACK?
-
-For NR_FILE_PAGES, swapcache operations such as __swap_cache_add_folio(),
-__swap_cache_del_folio(), and __swap_cache_alloc() update NR_FILE_PAGES
-only in the node counter while accounting swapcache in the lruvec under
-NR_SWAPCACHE:
-
-mm/swap_state.c:__swap_cache_add_folio() {
-	...
-	node_stat_mod_folio(folio, NR_FILE_PAGES, nr_pages);
-	lruvec_stat_mod_folio(folio, NR_SWAPCACHE, nr_pages);
-	...
-}
-
-Reading node_page_state(pgdat, NR_FILE_PAGES) for the root lruvec
-therefore includes all swapcache pages, which inflates the "file" counter
-in the root cgroup's memory.numa_stat (double-counting swapcache alongside
-"swapcached") and causes it to diverge from memory.stat even after a
-flush.
-
-Similarly, __folio_mod_stat() -> lruvec_stat_mod_folio() updates the node
-NR_FILE_MAPPED counter without updating memcg rstat whenever an uncharged
-folio (folio_memcg(folio) =3D=3D NULL, such as a driver mapping or a
-root-cgroup __GFP_ACCOUNT kernel folio) is mapped into userspace, and
-nfs_folio_mark_unstable() and nfs_folio_clear_commit() update
-NR_WRITEBACK only in the node counter for unstable NFS pages awaiting
-server COMMIT.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110015321.6110=
-93-1-joannelkoong@gmail.com?part=3D2
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 222b7fc2c3aa..e7ac319a570c 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -17635,10 +17635,10 @@ K:	(?i:vmemmap)
+>  
+>  MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)
+>  M:	Andrew Morton <akpm@linux-foundation.org>
+> -R:	Kairui Song <kasong@tencent.com>
+> +M:	Kairui Song <kasong@tencent.com>
+> +R:	Barry Song <baohua@kernel.org>
+>  R:	Qi Zheng <qi.zheng@linux.dev>
+>  R:	Shakeel Butt <shakeel.butt@linux.dev>
+> -R:	Barry Song <baohua@kernel.org>
+>  R:	Axel Rasmussen <axelrasmussen@google.com>
+>  R:	Yuanchu Xie <yuanchu@google.com>
+>  R:	Wei Xu <weixugc@google.com>
+> 
+> -- 
+> 2.43.0
+> 
 
