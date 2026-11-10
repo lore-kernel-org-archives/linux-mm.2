@@ -1,146 +1,166 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 536AE606A325
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 03:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90CDC60A2605
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 03:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=oYm3bLyz
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=s3vcb4kv
 Received: by kanga.kvack.org (Postfix)
-	id 0ED4D6B05BA; Mon,  9 Nov 2026 22:30:27 -0500 (EST)
+	id 911396B05B2; Mon,  9 Nov 2026 22:37:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C51B6B05BB; Mon,  9 Nov 2026 22:30:27 -0500 (EST)
+	id 89B686B05B7; Mon,  9 Nov 2026 22:37:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF6396B05BC; Mon,  9 Nov 2026 22:30:26 -0500 (EST)
+	id 73B0B6B05BC; Mon,  9 Nov 2026 22:37:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B93836B05BA
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 22:30:26 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 37666140863
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 03:30:26 +0000 (UTC)
-X-FDA: 85417781652.19.96530D9
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 55AB8180004
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 03:30:24 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=oYm3bLyz;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794281424;
-	b=wnAFTQSxUJk6NWDIN0Pllc6a/Lbk+UPu/d02uw/b0Rqu5BLKJYmvvTGfmBThzYhSIjk6+D
-	5W7Qkwojbylfn6ceHelmy3cWV/2Gy30vYvow1HceBRKIAnw2Myg1Ee0Akp0kM6D+UcLFyH
-	/QCWWl1xlBzLuxBhQK+VxWVzrIk+XCE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794281424;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4221E6B05B2
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 22:37:25 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C737512087B
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 03:37:24 +0000 (UTC)
+X-FDA: 85417799208.12.BA396A2
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010031.outbound.protection.outlook.com [40.93.198.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D1439180002
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 03:37:21 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=s3vcb4kv;
+	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 40.93.198.31 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794281842;
+	b=0cu0oWsRoiGACUhZKHNWDSbm3RtH8Qdde/06JtH5xlP58SUwBNmBHaCL1584574EeYfNBe
+	7xy5i8r5WhIv15clAa7KUWrUMU5KqWvjXI7b3KjS5NgBi2m4gdtgsDzLOoCLl7oV977NwS
+	w+BvZtVRSByDbZt9GrvyTw7j3P9DP6g=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=s3vcb4kv;
+	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 40.93.198.31 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794281842;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gxdjfkE2u6hMgUrERKs9IK41dx8VvemjPSvlkCJqFUU=;
-	b=WC1+I67rys5TQAZX+XCA2781R54utStGJD1JCayjT+ggEiACHSUjmlim7ghwM4C9frvf+k
-	kObvFzdNGJLkYNl0hpTio4LSPLjjmhyqDFR/dXXLX9LFTYRsygKaxL82C6Iwb9wYZm/xvQ
-	HXPyW80IcZjxjyZ/Reg2ZprdO7dZH2E=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=oYm3bLyz;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8b6399ebb41so1400822b3a.0
-        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 19:30:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794281423; x=1794886223; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gxdjfkE2u6hMgUrERKs9IK41dx8VvemjPSvlkCJqFUU=;
-        b=oYm3bLyz+Xf3crCXqnznUloacUY2WLsdOgHodC9IHsWJ1OQMRLQ7YWQH50CCZKGoqb
-         aqv7qS1RfVIMpX1opcxbAm5MEWXxVIyfuih630P6hCaLL5JgO83Ed5skk0na/tS7rzm9
-         zrPX14irmIW/6S/gjzsHbxSKKcXIoQcf2aHL3DXyE8kFC3QAETlePVrRFhNQSX8QWxGI
-         ipqryoUtECZgfcXJbJxk7MICO1kIxWdpX/0ZU6CQVQWJbWB+tr7vupFriNGGWfVPlz9o
-         7AE9OZLcc4eYJ/vwICMe0FahLiq49l1lQSunicH8NsV8axj6dHFZGj0KVBMQI0UX4r22
-         vvxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794281423; x=1794886223;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gxdjfkE2u6hMgUrERKs9IK41dx8VvemjPSvlkCJqFUU=;
-        b=ZGpDYw5bq34p7oH4L7XGlwYK6Ws5rJ1x07WFJBaWf8rVOQpMwsxjEabcjjAOnNVqER
-         a6m+JEJuMYMh3iHEMUckfobSorstFPKjZBEop2DF6aKcLjH0WcVXBsFuW8AQgQc+nJlQ
-         9qpq845Nsju2GNr5zH/PCeHebsMn8n05g4F2hgmfdXV1/VYhNY+EoBzZm1LnihZhkdR7
-         S8Syn0XFX3qvzEVG9aC7CO09cu7cw6WBOLEsayMz+CV4hDphsMYRaoiXzLBg2usTO5du
-         juYM63SRtIX3VCJmO50MbTpXSv2UteryS29evEjoG0USCbMUNuejMd6MxV/v3+G6gAI5
-         RWCw==
-X-Forwarded-Encrypted: i=1; AL+hErEdcA68opX/nBcU7ldkPzmPRtdxkHKveGQPo/kVflMNxssw21iUSQ/OAPea6XYdcsie20glawppaQ==@kvack.org
-X-Gm-Message-State: APuU4Z+HPV+sKg0FMKIQdqfK5uadRTAU8da9Vjdb2+n1B6jYSK+8hn8j
-	5JdZlBoLv9Il6qzCn//bqVMU96sWhyJvBAQxsZ0hxfmHFpsHTHARnmBr
-X-Gm-Gg: AYBFou1MdH7WJkaK+M1uW8xffhHBvGmItw3Ov8rB7Vxn0x/0gWPdJthBxo8yzRUthT0
-	3VH+syUn0d+suDV48DVuh2nfeSi+MRJyoSR/SlLtOCOI3wYE8msTijeRaxVknpcSIdFA7kEIEwi
-	DC3AMkFdlDX+XIPUMBdqKC3WIVRO0mKW9Nv5V52q3gQ/ZnXZcS9JnKe068/EfQAMsRMTK7g6ZF4
-	kZiDn/10/oIPr2Yya44hVV/Bk7Nyr2dEbT237q7Z4Rs2jzJZPqmBMSaeHiTQwvNmEIUA0df6IZo
-	fEFJo0VAicK5+qgGTAZyBlB4cd74Yn+NB9LzFUKiPQfXu5UfzJAm/kcNro2rHgG3asCdyLax+A8
-	rUHYWppdJVY6I/uhInQ/n1rZyGyitQfdVkozWddXemxdMGP0QyeIbvNl5K9yWgkasHPxL0Er5Th
-	MSp1QS+qJsYX7dX/49ijUI8ufnTB7oCPQ0r7iycVCu5jSSUF+mV/idgCIRj4oDD/LPGSdp1xgnV
-	tMGCe3szlbsGDPaMjGKS9mqWNGYLzQTjRzWg716FJTtbQH5JEXOQadqM21v8kIRYsufIqeV1UnE
-	5Y5GUnyY1OIm0cis/WtRJ0gye841Nl3ikh9itFTavY793th6xLkhAb2/3DaFl4Fux2C1pDliSfi
-	uWXYPQuKqcIlGLBKH+7ODNdm4
-X-Received: by 2002:a05:6a21:2013:b0:3e2:a9cc:3ece with SMTP id adf61e73a8af0-3f18e8c5cb6mr1040170637.23.1794281423096;
-        Mon, 09 Nov 2026 19:30:23 -0800 (PST)
-Received: from localhost.localdomain ([240e:46d:1d00:5ed4:58d0:d294:d44c:6ae8])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baab21835fsm336973b3a.42.2026.11.09.19.30.11
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 09 Nov 2026 19:30:22 -0800 (PST)
-From: Yafang Shao <laoar.shao@gmail.com>
-To: ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	gourry@gourry.net,
-	tj@kernel.org,
-	hannes@cmpxchg.org,
-	mkoutny@suse.com,
-	shakeel.butt@linux.dev,
-	roman.gushchin@linux.dev,
-	yu.c.chen@intel.com,
-	zhao1.liu@intel.com,
-	tim.c.chen@linux.intel.com,
-	lizhe.67@bytedance.com,
-	ziy@nvidia.com,
-	mgorman@suse.de
-Cc: bpf@vger.kernel.org,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yafang Shao <laoar.shao@gmail.com>
-Subject: [RFC PATCH bpf-next v4 4/4] selftests/bpf: add tests for the numab kfuncs
-Date: Tue, 10 Nov 2026 11:29:13 +0800
-Message-ID: <20261110032913.71974-5-laoar.shao@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	bh=WkkM/R5qWbfTISU6pj4CyXD/2ii2VVA9oJ6sQdXNT50=;
+	b=PxbvIyJvyXhLG/UUH4Afl6zvYEPIy0iJGePLWuP8AIQfbtYN9tCtPAodD/nzAiU55wuFig
+	o01AGt+XfUF5ND2edMcAkbWNrKWbY3xeM675xnHYZOHZsU+tk8cGVjea8+RkDJwkFxDoAi
+	D7lLEO58IplksUxAbZO7j1YeYl7GUqk=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cSod3yjXBebeic/hqd9Qi646naT0LqCGcz0Wpjzpi2p7JsVM0weujbbnwHkqQXlXwgeDATPfSEIXnaCM4ThEA3YvxSkiB2v7U70RYowo3xvLTswjgliKM1nwV/SiIluSH87+wEHHXPkRufpRYOKpVKq/ZmQIDbox8lXi1oW+6LMrTqTjvg6B2Y0xWW17JX+pbs6d3SXgvZ8igRXwPSu/9Dvz/cTuJld24PP0W1ISbl1dBmQoMpS+gUTCkaIMofZEqAvm9LwgIgdM3fiVOt3VzC4OhxjinUKEGvOQtQQwed/GdvZrd2XNeomiyrgVd794gwCUitj4wmX0y5CDIe1b7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WkkM/R5qWbfTISU6pj4CyXD/2ii2VVA9oJ6sQdXNT50=;
+ b=mJkUtY4w+/25qbG29aZiqAzNwFoEk/MDqdsydvBENZ1LXDvLuhbJH1x/eRXI27eRYf78Rb/Cbzs/U9nXLYYVayVPOhYF6iBkb3H7M/p5HUBshf6r1M+ySQqqi4n9xqnwjeLAcGHv+u1YyRm8PqZ0GKgDX8+v3vDwkhGLVtl3wnjNA1LgiOKoQfBAH1prX6lADCVnnBnUm25l0XF/8YdEUcUIfM/M7fYYHSPmfyO2XTFODEBDUGS7tl2m2hnfOLRoUdHulkDeGqmc9zJ4gDBOnoSSIMrNa79KBw80oGZOCwblZa7i1s0SxZGVvAIBAxUk0e+csPbmPfxsDL8QmGsOPg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WkkM/R5qWbfTISU6pj4CyXD/2ii2VVA9oJ6sQdXNT50=;
+ b=s3vcb4kvJlRC1Aomk6n6SmCmj6r6ugMNtl37g2C3Y/9YpxXj/J6ePIB4mwSD1+7S0nqhdtBX2mbbW7Y7UNmj9BInuudR22n9xYtuKJbDg6IudngMPDBlCxN7ip1I0v6fRrOIMqDsrhVtoNPNQEKag65o8WyTrr1NQq2vjbZlui2igPqIfAAwsknaKEdYCDJ6V0gfeRFiENB9JUAaaeMXHbQuGQ6wsH8iye0EncwJnPnp4DRAaF7voIxg6vbNANxFayqOUKR6MFd4+uSggt+1OqDIoCVzw+VLuLsSgZkp15L+sk4xluPsZE/kHdN2B2Ie/yW9si+wgCqGRmEcfbV2aA==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by PH7PR12MB6977.namprd12.prod.outlook.com (2603:10b6:510:1b7::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Tue, 10 Nov
+ 2026 03:35:12 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0592.010; Tue, 10 Nov 2026
+ 03:35:12 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Yafang Shao <laoar.shao@gmail.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>
+Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+ eddyz87@gmail.com, memxor@gmail.com, mingo@redhat.com, peterz@infradead.org,
+ juri.lelli@redhat.com, vincent.guittot@linaro.org, akpm@linux-foundation.org,
+ david@kernel.org, gourry@gourry.net, tj@kernel.org, hannes@cmpxchg.org,
+ mkoutny@suse.com, shakeel.butt@linux.dev, roman.gushchin@linux.dev,
+ yu.c.chen@intel.com, zhao1.liu@intel.com, tim.c.chen@linux.intel.com,
+ lizhe.67@bytedance.com, mgorman@suse.de, bpf@vger.kernel.org,
+ linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH bpf-next v4 0/4] BPF-based per-cgroup NUMA balancing
+ mode selection
+Date: Mon, 09 Nov 2026 22:35:10 -0500
+X-Mailer: MailMate (3.0r7038)
+Message-ID: <8D6452ED-CB2A-4D08-863E-039A9D0DA453@nvidia.com>
 In-Reply-To: <20261110032913.71974-1-laoar.shao@gmail.com>
 References: <20261110032913.71974-1-laoar.shao@gmail.com>
+Content-Type: text/plain
+X-MS-Reactions: disallow
+X-ClientProxiedBy: MN0P223CA0030.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:208:52b::33) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 55AB8180004
-X-Rspamd-Server: rspam12
-X-Stat-Signature: jy66819sxyc1u1ewj3sdytgr9484ec77
-X-Rspam-User:
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|PH7PR12MB6977:EE_
+X-MS-Office365-Filtering-Correlation-Id: 87b6f453-739f-4e7e-4266-08df3edba0b2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|366016|22082099003|18092099006|18002099003|6133799003|10067099003|3023799007|5023799004|11063799006|261028144727099003|261026121527099003|261102123227099003|261022075727099003|261022105027099003|56012099006|261021123027099003|261021121427099003|261026140227099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info:
+	MZygwOPh19Gj/cgBwW/hyB8COVqsWbOvYZCeo2EKVlaSxoGkZ8DaFylJUNmRJKXJv3QSSdv256ynhaDr3LpI9cUzUcJyomnyq4rCuv+9y9KYt65uRx2plEpRbWB02WV6UkT08P+lbKOD0v1LPbXkmHwaalxVVQNuwbHh/1V7seUzGDinshXRWMEbsVMf8ag/u6QmXL4I2wZuwoouXge5QKqEHhQ4jdpUWBVRaWAwr6ca31kNlSu2hY2vbIvjn2odGlMKfBw/caHLm6fj92hQ1dmlwYqKGmMg2/TGWxLfloD7vZBi20L/fv1iNB9HJcC+4E82CN2tKD3pb1AAJf+RV0/T6EbzKRb2V+jPlvNpxz8LsQlGiZUaH4DbbNGBAFX6pabH4LdSnggKg+Alx4w4BsMXDA+pAWFKa255p4vEirbGNHP0WdXI8Y4ux9A+iPDPSn7c/8nlm3xx4GD6sx45u3UUgGCdqCET0V508axlELnHGAdHvNyXP6ahRlSEE9v0x7Hz7zKlJbz0ToLd1MGMIT68aFL1sXtJeyetHNTQU+Y8g9nfGXPig6wDxEKiKkRWnh+yzX13lExUGlx2Q68VThzIic+AeWbuuoUBVyZvj4DkXVmQ+nbwD3NsJR5pwF8CURZ0PbPofVws7rWYjH3C/ZIKPi037pi5e3ES00SC/qc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(366016)(22082099003)(18092099006)(18002099003)(6133799003)(10067099003)(3023799007)(5023799004)(11063799006)(261028144727099003)(261026121527099003)(261102123227099003)(261022075727099003)(261022105027099003)(56012099006)(261021123027099003)(261021121427099003)(261026140227099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?k7rQ+DqWBAhqc6NVV2UYOl7xz0N8/Fo7T6JaJL+OmEQ/+MGW8fKU0UNrL6EH?=
+ =?us-ascii?Q?OuhzXOhSKgqxfii0KpDvYwjxoNOUJlcQ6XYp7SkljAXth8u04dnZZglM8VHV?=
+ =?us-ascii?Q?tEh6GXk2XAASorHjbdrQQISr8UM3u9oDpOphUKkZm9WVVnjl4e7aXIXaq1KD?=
+ =?us-ascii?Q?GbPURd4lgrd5Qm/QzVaLGSSzdfMYoRuv7O8LGsZzhSvlcIHv4nhCF65Wfba4?=
+ =?us-ascii?Q?pnLFPVQDjXtZ71PaH+ST2ArFuRSw8nnK3n6dy+/qNIhrgrSFmFcGAUJCuevj?=
+ =?us-ascii?Q?Ghr6Pq0CfysxUJwp+eE+CUxIrxY4xqGGVUuieILLlQ+wqYIaC1HP8zRbXxhI?=
+ =?us-ascii?Q?fPaE0GiTX2CnGD9T5TvZbzMsLYhK+rFSfHH/uckH1zfeSk1AykubQVryJ9jd?=
+ =?us-ascii?Q?oDLKt6BO3PLg0OI6PhcazF77PhUITHEoIe2AG6xE0t3itpub4BvWsYSQ510Y?=
+ =?us-ascii?Q?Pvj/+5L5F1/opQFFsfO0cayNs/GCwWdx6gxPOyyaRB3wMOb5K3uicJoS/ZTg?=
+ =?us-ascii?Q?RJ6vtV+1cNWt038J8GLs0FYomVT+aN4mOjI2n009B9pyJP2Kwn7+07zdvo2J?=
+ =?us-ascii?Q?WZ32sXcUKMeudOpdXDZPG8ItjeVhG2YPuASdcGbG7cdlcLw13U6CtSi3/+qf?=
+ =?us-ascii?Q?uDiKTqSMZplh36V+n0atbxmQSfxK2z3OfZelVGTXx8cwJa0ojk4X6N7GqD5p?=
+ =?us-ascii?Q?2CcNcDqEROkOf/8kt/k7xTOB7ud+Nm9yY12iMNJ/Lx7Y5WnchO6ePzuSGsxl?=
+ =?us-ascii?Q?krsUo116YFxijDCFJasxRTK0EHOUa+tHiGvqNIGm2M6q/PTHMKcgLkY9dbYY?=
+ =?us-ascii?Q?j+47YYWpoxWbMwfS7zNmwUBRSSntI2tt/6ARL6JgqFXaqcxFEKmR4OCGqEMY?=
+ =?us-ascii?Q?/Mi0RWFxgvA7MmuX4Evf5ptzyIrbtbtHKpD7ywxB+RoTjzd5OkR5NYBGYCMG?=
+ =?us-ascii?Q?KHM48DedD9yEcVGvOLHgCwzmNEML7HswcCi3FoJtH7CqV14JE5scWHY0eZBW?=
+ =?us-ascii?Q?NYWviFqpOx2NadvANS/bFPWIQAcozup0+Y9DD/rpndJdW8Gm+FzU3UuGuC5n?=
+ =?us-ascii?Q?87aCQd2HLlQFRvivPaPerRGXoAqhKW78pbaUy52EOiTBlpzv9/wsG5bqvtTU?=
+ =?us-ascii?Q?zZE4gvYIQn67KIVuTRNI4QUCpYlCyh4iblyl94nVv+iEaO34q8+KDoYZmwDl?=
+ =?us-ascii?Q?nmtchjpBfiJwr5norlw5m2BTOAlHkWE4x03QVHBGSMlkmcl2csQ8OR5fN5g1?=
+ =?us-ascii?Q?O97w3KseC556biCv7Bs/yg+noXBJ2tWHR1NQ0XHX97+gbRJiOyijC92jNa67?=
+ =?us-ascii?Q?wp0zo8hRWUPHBUgPc43ald1cZxi8oUIBts5rG0SwbCxvZjhtpHEV96oaCAfz?=
+ =?us-ascii?Q?ZVZXvoZ4PDzt6QNrT4JstyjSX59xzkTraksYRU6XnNOiPqP7hlVQAsxAj/bH?=
+ =?us-ascii?Q?T7KP//PZfn8oLyiX6CmcMAH4WxWacXjIIcKi/Lq3X8FtvYxIAVu89WqTe6e6?=
+ =?us-ascii?Q?1bjUGql9ornR/BElA5ehl88ABJ7K9th1Un2sbcVcdZDOD8X0/biW5meUS3x5?=
+ =?us-ascii?Q?O1e+TkZP3nzfQ7oX3zwj9ubP4YSFA8tmM/oZ2siEledpin5M5i59PdmztRo+?=
+ =?us-ascii?Q?zNsHBkkt5BPLYW4spqF9uGl1w3+zwTJOgWdV5AIyz4RKP5zIkZ6FTdaZcVJ2?=
+ =?us-ascii?Q?siWnbB5g6QMlP75vQ6dzYh19Jzm2IxfnQj3OdhzJ4FoPqAhs?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 87b6f453-739f-4e7e-4266-08df3edba0b2
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2026 03:35:12.5890
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: l/Lt6Pn9+Uy95WGwAGhbRRY7l757nTBqGkQt5YDFZOchwx3VLlsfgrFtj5Pw0jIM
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6977
+X-Stat-Signature: bqnp3tkxhbkq7frew8b3so3863teu5dx
+X-Rspamd-Queue-Id: D1439180002
+X-Rspam-User: 
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794281424-162012
-X-HE-Meta: U2FsdGVkX1+ib8X3vl2cptatkkxjdRoE2dM6RgGHGkODVDTMF5xVcmPhlppCYR7p5vTeVhlMsVDZKvj/XtcXQx+J+lo69TFygvR6Rk8IW1drdC260e/vuV8ddaYf0FD7NnL2P5ynA1OwxFCtaWF3ZBsTtUQ1Zedox4rfu4SZCuHsjbhf8D+5/Vf1ago5QHRmhnlX8Dearug/+Bz8NJP3BegjaolpT70XonqVptt2RgBiZILzwbWNIAlM+ZV/X1WykGX9HPd1onNKDn/2SfTmR1sfMJwkbhtG0KKLQFAIFBb+ivvsNMeVzvepfxIlme38fNk9T1BzEEmDExuA/vTff5yWFJTvkPxCzcBWq7QQDpiLUPgSh1CQlq0RQjHCNNov9YjN2eurVlbIAu7lpTVsmYW/yGaRMYvQvVthqFWcNjO2zT4DA6KXKmtzTdcumvFlJ6FlzHAkAazU2M3zIvrzhM6OWl/1lKfiWFo6Df2/R9iZ5hdhhwCfAz3fX0JwnzJPw1slSwrqGroXS7Q2Sjqn14q7r04fnFJ3ruXOyLUux1MaoUgUsB1wkrMYAV8I+me3gXeYEbURFseAVdvsMH/t0dHH5LknDRwTAYsrlXJoBF32BFEfBGiv2Psc09bBUobcVQl4E3JkRFa+AL2CWn6cAF73X3WQ6phAXihEbgNUdAKrCWY4k2jZrkxm8dnFCZGTmOnNuKFSvySfh75dM2j2aOahLwCqS9S+MGOzk9kLx69/X0Ytyljz7KPAsdF7MUt4eDajLJcpi4Or+2W5a4+1F54vClRNGBRVTzHeWpR8NQGbkdKoTU9rZ1J30UE0Q0BCwDQIQkPkYdPJ4VhG55esPQAUw5dGN3ayBSQLilf3Qy7BXvmni2/te5O1WUjNkxtQ4IR8XfbhE+D4uavUz3S+5rBtK80ON8Dmb6NlpurRLGI/UEbddj4KCTiG9UpYPTXLTXJQtrT4OpGIuJIE775
- zvk5WSoI
- sSWoLOr+7AxDRzZHNi9SXeLWeUBcgDUxhQmKpfEXPyIvpyQUvfJZsAKUcdka8qGpwvzJaZuH/bn2PGJUPJlqsj85U+jXzdgnm44PeGj2xc4rX7ldoMwgoJFBlyUkct3JUkl/4f0nonXL9cLpHZcsCtFds9LAG3PkmtQi2v32lokGyqtZbuaOWQ3f56vER4J3vmr9t7EYa7ODzx5P8F7qFvqeebWhstOnBEIEXqapkeaGQyjxkslltKYnexkFe9hus3tS1W2R/HoDDKulKvJ2j4Nq0qXChhF1xkwBUcs6nS1vcq2WLaytBmwS36wNk47KObvpKMqw7xUNSHflNe9RBrtAtNUz6QjnA4wXbDjWi2ZZrKzrnIRtk/V6XbhjIdLNGSxohPft9xXGH6usS9nFwBkTCtIqU0qj4BHMIW9naHGXkGldLP35fpxpopDmjysPMekedXCIOIqqzNp3ZpYUjufWcG0H7+VVqEFs4RfLefPt/l4JRwkcZQPRfjx+q1MwQdyw3YsmkLDWIGHAQvkwr0wKIXbdx9dMuLz6+3aVe5hk0AmxFQY8Uehdz9nauPPpKr8hgXPJ3AOfbQPjQpoHD3bKI+va2cqRqAiZruI0MosErGkc=
+X-HE-Tag: 1794281841-627234
+X-HE-Meta: U2FsdGVkX19SqW31/MIabxPkIOT6aNLUR5zxv189YkITTwlhYCmiM3PSHXdAU4ZQndaBhnewU1Xm1+jSaRnbOlmmXqAL5JrZaCK3XTsidhGK0mPopuuTwnBEUShLebvFzPIil2ctEzP0VDhI9xA3imCHi4m6I58Yf23PvZwCEraZOByDQV/pfsSKaRVW8zQOPVxjAq/nr0F62E2b/JwaFAaKLkr2/Tvq+17/inkTZaGZxoqjYGDt5RjR7aCUU5VKXeYqxg1do+8lv8Mi3JwLdaLPcmN0C0kdmQoduffeJMXHmoC4BQ0BIImKF/mdZxaYr+OzQ8WkEh141JDxHj5e5Rc+trp8qgDISDGrZ/HuYsQx9gnayZxi18GgKRsaaMZsxSn881Vsrm+pMiajfFHbEhciv74azpc1M2C5DgfzD0eYM4SLIyoVWKUh4q8q4kYK5gGF7NkaAiXO/gZdTSW3xufIS0ytexDXwjbw1HIX5trzGHRzt+34Wzaxuy9ElYgTUVp6orXx98hy+iP/wxdQ36xq1zIN226i1WEKqU3gnS1kTyVHSPXdjShSKJ86QaH5HtoJpAv6QU5gBbez+932L7PkgT9z7qbGWE9rNCqLNKua23RowDeqp5lXPdroz2KoIiw2+Bie9t5g2w5lK08N+gsNP6gtHDZYa9El9Z+eJJtBHeZThs5k6GCW2aIbvVT+noaXGNJi8wDI3f+Er9uWphQu1SX1/3Km/S//00o6XFgK0iyYDFuiPs/qHxL5eVT9thlxmW+LdpyWtrvdV/E07z1u+7BGjLj2xlHxEpXuagNm4k76kkBT6Oh2VX5RfR2LLOAArlyTAy54Q3qgHatd2xvxz0r54kqu8+HFBKXFSRTk2By/9QUGTu3MvjZOezgJQdf6JK15/MnZmIi5vjVgmp5UBi+J53A4kPfpjuxnZ2/29hP4TSipkVoQP0P4bWEPSu8JG4PWx96eXAYGGl0
+ tR/VY2O0
+ lrQAOyXj1fr6365Mldk1u+Hn5e295fSy8Frqi3uxfIz0Sfof0HAzJQxKiX+j9B3dPIszi4I4PW+TSgkdJk+afbSLbBsr2WkPYTd63NCg8FZHOo7eN6kw2KVxkGInJTSl6TTm9gNDUa4WMXTwkZR6Xke/QTZ0ZbwyNP/2Ry4CrhGCt4+AKzpU3nvECQTIuiy483zE8dSnLLXSPc8OErPS2hfkURjip23mhrW00iDKmDW9ReNi0yEMK7jk4sNOUeSnoqlt8BbzsKNVrc7zkDprp0YBiO2yZlSUDPQmWHJeVVRpIQTxkGpGGGYLfWgWqPa9q5LOlx5to7d52oXLsiQ6TxBCe0UOjvm3rF1IS0rHshOu+MZSeQU3wM+QF++mmzHX0LGIjzWwqRmCQ6QTBMaDZAohxpqSPmq41XhGA76aoO+JbFmTCo1pLKPoXXwvqdpDIlVMdWSVIVmHWHJLWEKxoWSBD3rB47manP9JetCtVkRIqanlqau4XLI2RbQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,363 +169,421 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Exercise the bpf_numab_set_mode() and bpf_numab_get_mode() kfuncs
-through BPF_PROG_TYPE_SYSCALL programs: the set/get roundtrip, the
-mode domain (NUMAB_FOLLOW_SYSTEM and the NUMA_BALANCING_* bitmasks
-accepted, anything else rejected with -EINVAL), unknown cgroup ids
-rejected with -ENOENT, and the hierarchy combination the memcg walk
-produces (inheritance, OR-ing, and an opt-out winning over every
-request in the chain). Also verify the memory-controller requirement:
-setting on a cgroup without a memcg is rejected with -EOPNOTSUPP,
-while bpf_numab_get_mode() resolves it to the nearest ancestor memcg.
++Ying, who did a lot of work on NUMA balancing
 
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
----
- tools/testing/selftests/bpf/config            |   2 +
- .../selftests/bpf/prog_tests/bpf_numab.c      | 273 ++++++++++++++++++
- tools/testing/selftests/bpf/progs/bpf_numab.c |  32 ++
- 3 files changed, 307 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/bpf_numab.c
- create mode 100644 tools/testing/selftests/bpf/progs/bpf_numab.c
+On 9 Nov 2026, at 22:29, Yafang Shao wrote:
 
-diff --git a/tools/testing/selftests/bpf/config b/tools/testing/selftests/bpf/config
-index 49dfe939467c..e56c8872e51a 100644
---- a/tools/testing/selftests/bpf/config
-+++ b/tools/testing/selftests/bpf/config
-@@ -7,6 +7,7 @@ CONFIG_BPF_JIT=y
- CONFIG_BPF_KPROBE_OVERRIDE=y
- CONFIG_BPF_LIRC_MODE2=y
- CONFIG_BPF_LSM=y
-+CONFIG_BPF_NUMAB=y
- CONFIG_BPF_STREAM_PARSER=y
- CONFIG_BPF_SYSCALL=y
- # CONFIG_BPF_UNPRIV_DEFAULT_OFF is not set
-@@ -78,6 +79,7 @@ CONFIG_NET_CLS_FLOWER=y
- CONFIG_NET_CLS_MATCHALL=y
- CONFIG_NET_FOU=y
- CONFIG_NET_FOU_IP_TUNNELS=y
-+CONFIG_NUMA_BALANCING=y
- CONFIG_NET_IPGRE=y
- CONFIG_NET_IPGRE_DEMUX=y
- CONFIG_NET_IPIP=y
-diff --git a/tools/testing/selftests/bpf/prog_tests/bpf_numab.c b/tools/testing/selftests/bpf/prog_tests/bpf_numab.c
-new file mode 100644
-index 000000000000..6fb6a4d9f291
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/bpf_numab.c
-@@ -0,0 +1,273 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <test_progs.h>
-+#include "cgroup_helpers.h"
-+#include "bpf_numab.skel.h"
-+
-+#define CGROUP_PATH	"/bpf_numab"
-+#define CHILD_PATH	CGROUP_PATH "/child"
-+#define HIER_PATH	"/bpf_numab_hier"
-+#define HIER_CHILD_PATH	HIER_PATH "/child"
-+#define NOMEM_PATH	"/bpf_numab_nomem"
-+#define NOMEM_CHILD_PATH NOMEM_PATH "/child"
-+
-+/* The per-cgroup request domain, mirroring the kernel constants. */
-+#define NUMAB_FOLLOW_SYSTEM	(-1)
-+#define NUMAB_DISABLED		0
-+#define NUMAB_NORMAL		1
-+#define NUMAB_TIERING		2
-+#define NUMAB_NORMAL_TIERING	3
-+
-+static int numab_set(struct bpf_numab *skel, u64 cgid,
-+		     long mode)
-+{
-+	LIBBPF_OPTS(bpf_test_run_opts, opts);
-+	int ret;
-+
-+	skel->bss->set_cgid = cgid;
-+	skel->bss->set_mode = mode;
-+	ret = bpf_prog_test_run_opts(bpf_program__fd(skel->progs.numab_set),
-+				     &opts);
-+	if (!ASSERT_OK(ret, "set run"))
-+		return -1;
-+	return skel->bss->set_ret;
-+}
-+
-+static long numab_get(struct bpf_numab *skel, u64 cgid)
-+{
-+	LIBBPF_OPTS(bpf_test_run_opts, opts);
-+	int ret;
-+
-+	skel->bss->get_cgid = cgid;
-+	ret = bpf_prog_test_run_opts(bpf_program__fd(skel->progs.numab_get),
-+				     &opts);
-+	if (!ASSERT_OK(ret, "get run"))
-+		return -EIO;
-+	return skel->bss->get_mode;
-+}
-+
-+static void test_set_get(void)
-+{
-+	struct bpf_numab *skel;
-+	int cgroup_fd;
-+	u64 cgid;
-+
-+	cgroup_fd = test__join_cgroup(CGROUP_PATH);
-+	if (!ASSERT_GE(cgroup_fd, 0, "join_cgroup"))
-+		return;
-+
-+	skel = bpf_numab__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		goto cleanup;
-+
-+	cgid = get_cgroup_id(CGROUP_PATH);
-+	if (!ASSERT_GT(cgid, 0, "get_cgroup_id"))
-+		goto cleanup;
-+
-+	ASSERT_EQ(numab_set(skel, cgid, NUMAB_NORMAL), 0, "set normal");
-+	ASSERT_EQ(numab_get(skel, cgid), NUMAB_NORMAL, "get normal");
-+
-+	ASSERT_EQ(numab_set(skel, cgid, NUMAB_TIERING), 0, "set tiering");
-+	ASSERT_EQ(numab_get(skel, cgid), NUMAB_TIERING, "get tiering");
-+
-+	ASSERT_EQ(numab_set(skel, cgid, NUMAB_NORMAL_TIERING), 0, "set both");
-+	ASSERT_EQ(numab_get(skel, cgid), NUMAB_NORMAL_TIERING, "get both");
-+
-+	ASSERT_EQ(numab_set(skel, cgid, NUMAB_DISABLED), 0, "set disabled");
-+	ASSERT_EQ(numab_get(skel, cgid), NUMAB_DISABLED, "get disabled");
-+
-+	/* Back to the system setting. */
-+	ASSERT_EQ(numab_set(skel, cgid, NUMAB_FOLLOW_SYSTEM), 0, "unset");
-+	ASSERT_EQ(numab_get(skel, cgid), NUMAB_FOLLOW_SYSTEM, "get unset");
-+
-+cleanup:
-+	bpf_numab__destroy(skel);
-+	close(cgroup_fd);
-+}
-+
-+static void test_invalid_mode(void)
-+{
-+	struct bpf_numab *skel;
-+	int cgroup_fd;
-+	u64 cgid;
-+
-+	cgroup_fd = test__join_cgroup(CGROUP_PATH);
-+	if (!ASSERT_GE(cgroup_fd, 0, "join_cgroup"))
-+		return;
-+
-+	skel = bpf_numab__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		goto cleanup;
-+
-+	cgid = get_cgroup_id(CGROUP_PATH);
-+	if (!ASSERT_GT(cgid, 0, "get_cgroup_id"))
-+		goto cleanup;
-+
-+	ASSERT_EQ(numab_set(skel, cgid, -2), -EINVAL, "set below domain");
-+	ASSERT_EQ(numab_set(skel, cgid, 4), -EINVAL, "set above domain");
-+	ASSERT_EQ(numab_set(skel, cgid, 0x1000), -EINVAL, "set far above");
-+
-+	/* The rejected requests must not have stuck. */
-+	ASSERT_EQ(numab_get(skel, cgid), NUMAB_FOLLOW_SYSTEM, "get unchanged");
-+
-+cleanup:
-+	bpf_numab__destroy(skel);
-+	close(cgroup_fd);
-+}
-+
-+static void test_bad_cgid(void)
-+{
-+	struct bpf_numab *skel;
-+
-+	skel = bpf_numab__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		return;
-+
-+	ASSERT_EQ(numab_set(skel, 0, NUMAB_NORMAL), -ENOENT, "set cgid 0");
-+	ASSERT_EQ(numab_get(skel, 0), -ENOENT, "get cgid 0");
-+	ASSERT_EQ(numab_set(skel, 0xdeadbeef, NUMAB_NORMAL), -ENOENT,
-+		  "set bad cgid");
-+	ASSERT_EQ(numab_get(skel, 0xdeadbeef), -ENOENT, "get bad cgid");
-+
-+	bpf_numab__destroy(skel);
-+}
-+
-+static void test_hierarchy(void)
-+{
-+	u64 parent_cgid, child_cgid;
-+	int runner_fd, parent_fd, child_fd;
-+	struct bpf_numab *skel;
-+
-+	runner_fd = test__join_cgroup("/bpf_numab_runner");
-+	if (!ASSERT_GE(runner_fd, 0, "join_runner_cgroup"))
-+		return;
-+
-+	parent_fd = create_and_get_cgroup(HIER_PATH);
-+	if (!ASSERT_GE(parent_fd, 0, "create_parent_cgroup"))
-+		goto cleanup_runner;
-+
-+	if (!ASSERT_OK(enable_controllers(HIER_PATH, "memory"),
-+		       "enable_memory_controller"))
-+		goto cleanup_parent;
-+
-+	child_fd = create_and_get_cgroup(HIER_CHILD_PATH);
-+	if (!ASSERT_GE(child_fd, 0, "create_child_cgroup"))
-+		goto cleanup_parent;
-+
-+	skel = bpf_numab__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		goto cleanup;
-+
-+	parent_cgid = get_cgroup_id(HIER_PATH);
-+	child_cgid = get_cgroup_id(HIER_CHILD_PATH);
-+	if (!ASSERT_GT(parent_cgid, 0, "get_parent_cgid") ||
-+	    !ASSERT_GT(child_cgid, 0, "get_child_cgid"))
-+		goto cleanup;
-+
-+	/* The child inherits an ancestor's request untouched. */
-+	ASSERT_EQ(numab_set(skel, parent_cgid, NUMAB_TIERING), 0,
-+		  "set parent tiering");
-+	ASSERT_EQ(numab_get(skel, child_cgid), NUMAB_TIERING,
-+		  "child inherits");
-+
-+	/* A request ORs with the ancestor's; NORMAL does not undo TIERING. */
-+	ASSERT_EQ(numab_set(skel, child_cgid, NUMAB_NORMAL), 0,
-+		  "set child normal");
-+	ASSERT_EQ(numab_get(skel, child_cgid), NUMAB_NORMAL_TIERING,
-+		  "or both");
-+
-+	/* The child's own opt-out wins. */
-+	ASSERT_EQ(numab_set(skel, child_cgid, NUMAB_DISABLED), 0,
-+		  "set child disabled");
-+	ASSERT_EQ(numab_get(skel, child_cgid), NUMAB_DISABLED,
-+		  "own opt-out wins");
-+
-+	/* So does an ancestor's: a task is never forced into balancing. */
-+	ASSERT_EQ(numab_set(skel, child_cgid, NUMAB_TIERING), 0,
-+		  "set child tiering");
-+	ASSERT_EQ(numab_set(skel, parent_cgid, NUMAB_DISABLED), 0,
-+		  "set parent disabled");
-+	ASSERT_EQ(numab_get(skel, child_cgid), NUMAB_DISABLED,
-+		  "ancestor opt-out wins");
-+
-+	/* Unsetting the parent re-exposes the child's own request. */
-+	ASSERT_EQ(numab_set(skel, parent_cgid, NUMAB_FOLLOW_SYSTEM), 0,
-+		  "unset parent");
-+	ASSERT_EQ(numab_get(skel, child_cgid), NUMAB_TIERING,
-+		  "child request again");
-+
-+	/* Unsetting the child leaves the chain with no request. */
-+	ASSERT_EQ(numab_set(skel, child_cgid, NUMAB_FOLLOW_SYSTEM), 0,
-+		  "unset child");
-+	ASSERT_EQ(numab_get(skel, child_cgid), NUMAB_FOLLOW_SYSTEM,
-+		  "no request");
-+
-+cleanup:
-+	bpf_numab__destroy(skel);
-+	close(child_fd);
-+	remove_cgroup(HIER_CHILD_PATH);
-+cleanup_parent:
-+	close(parent_fd);
-+	remove_cgroup(HIER_PATH);
-+cleanup_runner:
-+	close(runner_fd);
-+}
-+
-+static void test_no_memcg(void)
-+{
-+	struct bpf_numab *skel;
-+	int parent_fd, child_fd;
-+	u64 parent_cgid, child_cgid;
-+
-+	parent_fd = test__join_cgroup(NOMEM_PATH);
-+	if (!ASSERT_GE(parent_fd, 0, "join_nomem_parent"))
-+		return;
-+
-+	child_fd = create_and_get_cgroup(NOMEM_CHILD_PATH);
-+	if (!ASSERT_GE(child_fd, 0, "create_nomem_child"))
-+		goto cleanup_parent;
-+
-+	skel = bpf_numab__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		goto cleanup;
-+
-+	parent_cgid = get_cgroup_id(NOMEM_PATH);
-+	child_cgid = get_cgroup_id(NOMEM_CHILD_PATH);
-+	if (!ASSERT_GT(parent_cgid, 0, "get_nomem_parent_cgid") ||
-+	    !ASSERT_GT(child_cgid, 0, "get_nomem_child_cgid"))
-+		goto cleanup;
-+
-+	/*
-+	 * The parent has a memcg; the child was created without enabling
-+	 * the memory controller in the parent's subtree, so it has none.
-+	 */
-+	ASSERT_EQ(numab_set(skel, parent_cgid, NUMAB_NORMAL), 0,
-+		  "set parent normal");
-+	ASSERT_EQ(numab_get(skel, child_cgid), NUMAB_NORMAL,
-+		  "child resolves to parent memcg");
-+	ASSERT_EQ(numab_set(skel, child_cgid, NUMAB_TIERING), -EOPNOTSUPP,
-+		  "child set rejected");
-+	ASSERT_EQ(numab_get(skel, child_cgid), NUMAB_NORMAL,
-+		  "child get unchanged");
-+
-+cleanup:
-+	bpf_numab__destroy(skel);
-+	close(child_fd);
-+	remove_cgroup(NOMEM_CHILD_PATH);
-+cleanup_parent:
-+	close(parent_fd);
-+}
-+
-+void test_bpf_numab(void)
-+{
-+	if (test__start_subtest("set_get"))
-+		test_set_get();
-+	if (test__start_subtest("invalid_mode"))
-+		test_invalid_mode();
-+	if (test__start_subtest("bad_cgid"))
-+		test_bad_cgid();
-+	if (test__start_subtest("hierarchy"))
-+		test_hierarchy();
-+	if (test__start_subtest("no_memcg"))
-+		test_no_memcg();
-+}
-diff --git a/tools/testing/selftests/bpf/progs/bpf_numab.c b/tools/testing/selftests/bpf/progs/bpf_numab.c
-new file mode 100644
-index 000000000000..25da97bce82f
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/bpf_numab.c
-@@ -0,0 +1,32 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <vmlinux.h>
-+#include <bpf/bpf_helpers.h>
-+
-+/* Inputs, set from userspace before each run. */
-+u64 set_cgid;
-+long set_mode;
-+u64 get_cgid;
-+
-+/* Results, read back after each run. */
-+long set_ret;
-+long get_mode;
-+
-+extern int bpf_numab_set_mode(u64 cgid, enum numab_mode mode) __ksym;
-+extern s64 bpf_numab_get_mode(u64 cgid) __ksym;
-+
-+SEC("syscall")
-+int numab_set(void *ctx)
-+{
-+	set_ret = bpf_numab_set_mode(set_cgid, (enum numab_mode)set_mode);
-+	return 0;
-+}
-+
-+SEC("syscall")
-+int numab_get(void *ctx)
-+{
-+	get_mode = bpf_numab_get_mode(get_cgid);
-+	return 0;
-+}
-+
-+char _license[] SEC("license") = "GPL";
--- 
-2.52.0
+> Problem
+> =======
+>
+> In our large fleet of Kubernetes-managed servers, NUMA balancing has
+> historically been disabled globally on each server. With the growing
+> deployment of multi-socket AMD EPYC servers, cross-NUMA access has become
+> a critical performance issue, which led us to reconsider enabling NUMA
+> balancing.
+>
+> kernel.numa_balancing is a single system-wide sysctl. Latency-sensitive
+> workloads want NUMA balancing disabled, while NUMA-aware workloads want it
+> enabled. No single global setting serves both.
+>
+> Design
+> ======
+>
+> Core structure
+> ~~~~~~~~~~~~~~
+>
+> This series follows Tejun's suggestion to store the existing NUMA
+> balancing mode bits in the cgroup's memcg and expose them through BPF
+> kfuncs.
+>
+> A new field, mem_cgroup::numab_mode, holds the per-cgroup NUMA balancing
+> setting. Two kfuncs are added to set and read it:
+>
+>   bpf_numab_set_mode(): set the mode for a specific memory cgroup. The
+>                         update is rejected with -EOPNOTSUPP if the cgroup
+>                         has no visible, online memcg. Valid
+>                         values are the NUMAB_* mode enum and
+>                         NUMAB_FOLLOW_SYSTEM (-1); NUMAB_FOLLOW_SYSTEM
+>                         uses the global sysctl state.
+>
+>   bpf_numab_get_mode(): return the combined task-side request of the
+>                         cgroup's effective memcg and of all its ancestors.
+>                         NUMAB_FOLLOW_SYSTEM is returned when no request is
+>                         present. A cgroup without a memcg resolves to its
+>                         nearest ancestor memcg. The following section
+>                         describes how the request is combined across the
+>                         hierarchy.
+>
+> Both kfuncs are registered for BPF_PROG_TYPE_SYSCALL. bpf_numab_set_mode()
+> is KF_SLEEPABLE because it takes the mode mutex and the jump-label locks;
+> bpf_numab_get_mode() does not sleep. The mode values are exposed as a BTF
+> enum, so a BPF program can use NUMAB_FOLLOW_SYSTEM and the NUMAB_* mode
+> names without hardcoding private integers.
+>
+> Effective mode semantics
+> ~~~~~~~~~~~~~~~~~~~~~~~~
+>
+> In the current implementation, a memory cgroup can be set to the
+> following modes:
+>
+>   NUMAB_FOLLOW_SYSTEM (-1):   use the global sysctl state
+>   NUMAB_DISABLED (0):         disabled
+>   NUMAB_NORMAL (0x1):         normal mode
+>   NUMAB_TIERING (0x2):        tiering mode
+>   NUMAB_NORMAL_TIERING (0x3): normal mode plus memory tiering
+>
+> The diagrams below assume that each cgroup shown has its own memcg. A
+> cgroup without one resolves to its nearest ancestor memcg, as described
+> in Storage of numab_mode.
+>
+> Except for the sentinel and the opt-out described below, the effective
+> mode is the OR of this memcg's mode and that of all its ancestors.
+>
+> - An opt-out wins for the task side and binds the subtree
+>
+>   A DISABLED mode anywhere in the cgroup's ancestry opts the cgroup's
+>   tasks out entirely. Given:
+>                      Pods (normal)
+>                      /
+>           Pod-A (disabled)
+>           /           \
+>    cgroup-A1(normal)   cgroup-A2(tiering)
+>
+>   The effective task-side mode for tasks(*) in cgroup-A1 and cgroup-A2
+>   is:
+>
+>                      Pods (normal)
+>                      /
+>           Pod-A (disabled)
+>           /           \
+>    cgroup-A1(disabled)   cgroup-A2(disabled)
+>
+>   (*) The folio side is described below.
+>
+> - NUMAB_FOLLOW_SYSTEM is skipped
+>
+>   Given:
+>
+>                      Pods (normal)
+>                      /
+>           Pod-A (-1)
+>           /           \
+>    cgroup-A1(none)   cgroup-A2(none)
+>
+>   The effective mode for tasks in cgroup-A1 and cgroup-A2 is:
+>
+>                      Pods (normal)
+>                      /
+>           Pod-A (normal)
+>           /           \
+>    cgroup-A1(normal)   cgroup-A2(normal)
+>
+> - For all other modes, the effective value is the OR of this memcg's
+>   mode and that of its ancestors
+>
+>   Given:
+>
+>                      Pods (normal)
+>                      /
+>           Pod-A (-1)
+>           /           \
+>    cgroup-A1(none)   cgroup-A2(tiering)
+>
+>   The effective mode for tasks in cgroup-A1 and cgroup-A2 is:
+>
+>                      Pods (normal)
+>                      /
+>           Pod-A (-1)
+>           /           \
+>    cgroup-A1(normal)   cgroup-A2(normal|tiering)
+>
+> - The rationale behind these semantics
+>
+>   The cgroup hierarchy semantics invoked here are those of resource
+>   limits: an ancestor's limit binds every descendant. That is the right
+>   semantics for limits: a limit partitions a shared, finite resource,
+>   and what a descendant consumes comes out of its ancestors' pool, so an
+>   ancestor's limit must bind every level below it.
+>
+>   A policy request is a different kind of control: it is a preference
+>   about how the kernel should treat the workload, not a quantity drawn
+>   from a parent's pool. Expressing it consumes nothing, so the limit
+>   semantics does not carry over; the question is only how the preferences
+>   of several levels should combine.
+>
+>   We chose the additive interpretation: a descendant may ask for more on
+>   top of what its ancestors asked for, while an opt-out at any level
+>   still wins: DISABLED anywhere in the ancestry caps the whole subtree.
+>
+> Task and folio keying
+> ~~~~~~~~~~~~~~~~~~~~~
+>
+> The NUMA balancing knob is consulted at some callsites with only a folio
+> and no task, and at others with only a task and no folio.
+>
+> - Task only
+>
+>   kernel/sched/fair.c: task_numa_fault()
+>   kernel/sched/fair.c: update_scan_period()
+>   kernel/sched/fair.c: migrate_degrades_locality()
+>   kernel/sched/fair.c: exceed_llc_capacity()
+>   kernel/sched/fair.c: get_pref_llc()
+>   kernel/sched/fair.c: get_scan_cpumasks()
+>
+> - Task and folio
+>
+>   kernel/sched/fair.c: should_numa_migrate_memory()
+>
+> - Folio only
+>
+>   mm/memory-tiers.c: folio_use_access_time()
+>   mm/mempolicy.c: folio_can_map_prot_numa()
+>   mm/migrate.c: folio_migrate_flags()
+>   mm/migrate.c: migrate_misplaced_folio_prepare()
+>   mm/migrate.c: migrate_misplaced_folio()
+>
+> Therefore, the helpers are split by side:
+>
+>   folio_numab_effective_mode()
+>   folio_numab_in_*_mode()
+>   task_numab_enabled()
+>   task_numab_get_modes()
+>
+> Another concern is how to handle callsites that have both a task and a
+> folio. The following anchor resolves it. Both the user fault path and the
+> kswapd demotion path reach folio_migrate_flags():
+>
+> kswapd demotion (no task):
+>
+>   kswapd
+>   + shrink_folio_list
+>     + demote_folio_list
+>       + migrate_pages
+>         + folio_migrate_flags
+>           + folio_numab_in_tiering_mode
+>
+> Fault path (user task):
+>
+>   do_numa_page
+>   + mpol_misplaced
+>     + should_numa_migrate_memory(task-m, folio-n) (A)
+>       + task or folio?
+>   + migrate_misplaced_folio_prepare(folio-n)
+>   + migrate_misplaced_folio(folio-n)
+>     + migrate_pages
+>       + folio_migrate_flags(folio-n) (B)
+>         + folio_numab_in_tiering_mode
+>
+> folio_migrate_flags() must key on the folio, since kswapd has no task to
+> consult. In the user fault path, both should_numa_migrate_memory() and
+> folio_numab_in_tiering_mode() are called. Since both refer to the same
+> folio in this context, keying on the folio at B but not at A would be
+> inconsistent. The rule is therefore simple: if a folio is available, key
+> on the folio; otherwise, key on the task. This also keeps the keying
+> robust to future refactoring: if either folio-keyed function is ever
+> reached by a kernel thread, the answer does not change.
+>
+> Storage of numab_mode
+> ~~~~~~~~~~~~~~~~~~~~~
+>
+> Some cgroups do not have the memory controller enabled:
+>
+> Given:
+>           Pods (+memory)
+>           /
+>        Pod-A ()
+>         /
+>       cgroup-A1 ()
+>
+> cgroup-A1 has no memcg. Given the task/folio split, where should the
+> mode for such a cgroup live?
+>
+> - If the mode were stored in struct cgroup and setting it on cgroup-A1
+>   were allowed, tasks in cgroup-A1 would use cgroup-A1's request while
+>   its folios would use Pod-A's memcg request, which is inconsistent.
+>
+> - Storing the mode in struct mem_cgroup avoids that: cgroup-A1 cannot be
+>   set, and both its tasks and its folios resolve to the same ancestor
+>   memcg (Pod-A).
+>
+> For consistency, the mode is stored in mem_cgroup, setting it on a
+> cgroup without the memory controller enabled is rejected with
+> -EOPNOTSUPP, and both task and folio lookups resolve a cgroup without a
+> memcg to its nearest ancestor memcg. A request is effective only while
+> its memcg is visible and online. Disabling the memory controller or
+> offlining the memcg clears the request, and lookups skip such a memcg, so
+> a pinned memcg cannot keep applying a stale request. A re-enabled memcg
+> starts transparent.
+>
+> Shared memory semantics
+> ~~~~~~~~~~~~~~~~~~~~~~~
+>
+> With the mode stored in the memcg, the longstanding shared-memory
+> problem in memcg has to be addressed for per-memcg NUMA balancing as
+> well.
+>
+> Given:
+>
+>     cgroup-A     cgroup-B
+>            \       | (charge)
+>            Memory_shared_by_cgroup-A_and_cgroup-B
+>
+> A choice is required when the NUMA modes of cgroup-A and cgroup-B
+> differ. Since the folio-side lookup starts at the folio's memcg, a task
+> in cgroup-A operating on this shared memory uses cgroup-B's folio-side
+> mode. If DISABLED were applied to memory, cgroup-B's DISABLED would
+> prevent cgroup-A from promoting the shared page. We avoid that by making
+> DISABLED task-side only.
+>
+> In our experience, NUMA balancing is mostly disabled to avoid the
+> potential latency spikes it can cause. The intent of disabling it for
+> cgroup-B is to avoid latency spikes for tasks in cgroup-B; it does not
+> matter whether tasks in other cgroups perform NUMA balancing. We
+> therefore disable the task side only, not the memory side: DISABLED
+> applies to tasks, not to memory.
+>
+> Demotion is global reclaim, not a per-cgroup balancing request.
+> DISABLED only opts the cgroup's tasks out of NUMA balancing; it must
+> not become a memory-side reclaim veto, or a cgroup could keep cold
+> pages in the fast tier, leaving less fast-tier capacity for other
+> cgroups' hot pages and defeating promotion for those pages.
+>
+> So, in the end, DISABLED is a task-side property and does not gate
+> memory-side operations.
+>
+> Shared fast tier
+> ~~~~~~~~~~~~~~~~
+>
+> A promotion competes for capacity in the shared fast tier, but it
+> cannot consume more memory than the cgroup may already consume: it moves
+> the cgroup's own folios, within its own memory limit, from the slow tier
+> to the fast tier. Each contributor's own limit bounds its footprint,
+> but the fast tier is still a shared resource; demotion is the global
+> release valve that keeps cold pages from occupying it indefinitely.
+>
+> So a child can still enable tiering mode if its ancestor has only set
+> normal.
+>
+> Given:
+>
+>                      Pod (normal)
+>                      /        \
+>           cgroup-A (none)  cgroup-B (tiering)
+>
+> the effective mode is:
+>
+>                       Pod (normal)
+>                      /        \
+>           cgroup-A (normal)  cgroup-B (normal|tiering)
+>
+> What an ancestor cannot do now is cap only tiering while leaving normal
+> balancing available below. If that targeted cap is wanted, the natural
+> extension is a negative request: NO_TIERING would propagate down the
+> tree like the positive requests and mask TIERING out of the effective
+> mode. It would cap promotion, not demotion; demotion remains global
+> reclaim. With:
+>
+>                   Pod (normal | no_tiering)
+>                      /            \
+>             cgroup-A (none)   cgroup-B (tiering)
+>
+> the effective modes would be:
+>
+>                       Pod (normal)
+>                      /            \
+>             cgroup-A (normal)  cgroup-B (normal)
+>
+> For this version, I would keep the modes minimal and add NO_TIERING as a
+> follow-up once there is a real user for it.
+>
+> Cost
+> ====
+>
+> On the task side, an ancestor can opt out the whole subtree with
+> DISABLED, but cannot cap only tiering while leaving normal balancing
+> available below. On the memory side there is no opt-out at all:
+> DISABLED is task-side only, so a descendant's TIERING request is enough
+> to enable promotion for its own memory, and promotion is the mode that
+> consumes the shared fast tier.
+>
+> The per-cgroup override was measured with schbench, 384 workers, on a
+> two-node 384-core machine. In that configuration, a cgroup mode put the
+> cgroup at the throughput of the equivalent system-wide setting, within a
+> fraction of a percent. This is a throughput measurement, not a
+> microbenchmark of the scan path: while the static key is on, a folio
+> lookup is O(cgroup depth), and callers that need more than one bit now
+> share a single lookup. An effective-mode cache may be worthwhile for
+> very deep hierarchies; that is left for follow-up measurements.
+>
+> Limitations
+> ===========
+>
+> The mode is per-memcg, not per-task. A cgroup without its own memcg
+> cannot be set; its tasks and folios resolve to the nearest ancestor
+> memcg. If multiple tasks in a single cgroup need different modes, place
+> them in separate child cgroups with the memory controller enabled.
+>
+> For threaded cgroups, the mode must be set on the nearest domain
+> ancestor that has the memory controller enabled, because the memory
+> controller is not threaded.
+>
+> Changelog
+> =========
+>
+> RFC v3 -> RFC v4:
+> - Store numab_mode in mem_cgroup instead of struct cgroup
+> - Refine the commit log
+>
+> RFC v3: https://lwn.net/Articles/1101442/
+>
+> RFC v2 -> RFC v3:
+> - Replace the struct_ops interface with two kfuncs, following Tejun's
+>   suggestion.
+> - Improve function naming and simplify the code (David)
+>
+> RFC v2: https://lwn.net/Articles/1099962/
+>
+> RFC v1 -> RFC v2:
+> - v1 keyed the hook on the memory cgroup and temporarily embedded the
+>   cgroup id into the struct_ops value, because cgroup struct_ops support
+>   was still under development.
+> - v2 attaches through the cgroup struct_ops support that has since landed
+>   in bpf-next, keys the task side on the task's cgroup and the memory side
+>   on the folio's memcg, and adds the memory-tiering mode alongside enable
+>   and disable.
+>
+> RFC v1: https://lwn.net/Articles/1054030/
+>
+> Yafang Shao (4):
+>   sched: add helpers for numa balancing
+>   sched: sample NUMA balancing mode once per path
+>   sched: add BPF-based per-cgroup NUMA balancing mode selection
+>   selftests/bpf: add tests for the numab kfuncs
+>
+>  include/linux/memcontrol.h                    |   6 +
+>  include/linux/sched/numa_balancing.h          | 144 +++++++++
+>  init/Kconfig                                  |  23 ++
+>  kernel/sched/bpf_numab.c                      | 261 +++++++++++++++++
+>  kernel/sched/build_policy.c                   |   4 +
+>  kernel/sched/fair.c                           |  99 +++++--
+>  kernel/sched/sched.h                          |   1 -
+>  mm/memcontrol.c                               |  14 +
+>  mm/memory-tiers.c                             |   9 +-
+>  mm/mempolicy.c                                |   9 +-
+>  mm/migrate.c                                  |   9 +-
+>  mm/vmscan.c                                   |   6 +-
+>  tools/testing/selftests/bpf/config            |   2 +
+>  .../selftests/bpf/prog_tests/bpf_numab.c      | 273 ++++++++++++++++++
+>  tools/testing/selftests/bpf/progs/bpf_numab.c |  32 ++
+>  15 files changed, 844 insertions(+), 48 deletions(-)
+>  create mode 100644 kernel/sched/bpf_numab.c
+>  create mode 100644 tools/testing/selftests/bpf/prog_tests/bpf_numab.c
+>  create mode 100644 tools/testing/selftests/bpf/progs/bpf_numab.c
+>
+> -- 
+> 2.52.0
 
+
+Best Regards,
+Yan, Zi
 
