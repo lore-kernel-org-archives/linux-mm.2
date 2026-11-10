@@ -1,135 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 079F7606A332
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 17:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CACB606A320
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 17:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=CRxphTxS
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZQBitt5s
 Received: by kanga.kvack.org (Postfix)
-	id F01EB6B05BF; Tue, 10 Nov 2026 12:03:54 -0500 (EST)
+	id 142726B05C1; Tue, 10 Nov 2026 12:05:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EABD36B05C0; Tue, 10 Nov 2026 12:03:54 -0500 (EST)
+	id 119ED6B05C2; Tue, 10 Nov 2026 12:05:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC45E6B05C1; Tue, 10 Nov 2026 12:03:54 -0500 (EST)
+	id 02FD66B05C3; Tue, 10 Nov 2026 12:05:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A97B56B05BF
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:03:54 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3AD9E809F2
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:03:54 +0000 (UTC)
-X-FDA: 85419831588.03.511FD4D
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4086040006
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:03:52 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=CRxphTxS;
-	spf=pass (imf07.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794330232;
-	b=u9AMXacMG24dgvrCQvPZtBoaGIb5wu3rPI63q2+4gN/a6oyZ+WTwS3if8Ye8j5ZQosE00p
-	LR/8qsRnAteRhc8ibZ1RvDbHHLCPwWvqfuoiM67XJh3mcKx5pIBt74BbBjq6s+qA225OCy
-	b3VYgC1fc+HU3cHrNZrMrx0yw9samTk=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=CRxphTxS;
-	spf=pass (imf07.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CD6FE6B05C1
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:05:09 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 60BD7160997
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:05:09 +0000 (UTC)
+X-FDA: 85419834738.02.6B60309
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8EB1A40007
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:05:07 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZQBitt5s;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794330232;
+	s=arc-20220608; t=1794330307;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vqBeli1UK7UsB0colEXax3/fZJsEEio4CkgX2Fv7UF4=;
-	b=Qq/bisfwVQRWWMdDQ31GoABgscMmJMJewZDUsrYXm38mljJtHW2zRO6jTCm33L/jPD6TAg
-	0SYP17BNKGv4jR6Ms6U3UT6Wb0AEDfSvAE0a98HTiO8hIo2WKaNYPUjV7KlP9eaNHe2uKr
-	sQ2iqj4+37bFYQz3SMITFx3EF1RSCs0=
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-cc751eddf25so1173980a12.3
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:03:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794330231; x=1794935031; darn=kvack.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=vqBeli1UK7UsB0colEXax3/fZJsEEio4CkgX2Fv7UF4=;
-        b=CRxphTxSKht68usCMZOdpMMSvK0IK3OEXh/+KtZSogHPUcbsK2QteWM4vdCUEZRgEF
-         f2DhRtHm9AvFQY4UKp+yAGfTKjy3lrevEUSGjcO0xpSGipKz9VcQdpnStH7KNu6OANTN
-         4Ol/Mb149JHR4y3keKeqsru6zR4iZU0SlCzVaqr+B2PakDPJRspsFmuSxsZbH2C5Qn5H
-         IHa++/r5CpvBkofK1EYM0jsXZaQpBuZK2Cxn/fhj2x288sCeAwS5hfpObW2rrVfOmQAe
-         MGibWeNaCHvUdRx/MscfGQ4l4FIsqNkiYTr6sed47TdIqt+KWUxDZaOhxi/1rKvlk2ZW
-         tr6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794330231; x=1794935031;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vqBeli1UK7UsB0colEXax3/fZJsEEio4CkgX2Fv7UF4=;
-        b=KW+F23WBcL71pLGbk/QW8pJzP0fqgUL3fhCtj1hf4oaFlUkR0LD1lyzp7X0Mv5c+4X
-         87KhLscaGT2CHhORBstEVmXqFQTTS3Y0dwtX2Wa4jRQ8qE0DHjRUq2QrJRq7DbCR64b0
-         cXzD0wbh0xS7ejcv+Wxmtb3R24ULq8nIrGPWfvdhVEvM79d+GBrqGoiv2fzVXWzW5oZO
-         9ofhadGlvuIM5j4uX+0wPMEvka/lNmiHCSIUUKF7MqgnC3xG3fro12BZYgZjeZYMo9nD
-         0GSSNC1OWSpZstWbjucHy/uTiJNRpV9sWt3ukxSLVbJp1Y8typdV9JKPwNh9ZZMpHQkq
-         zHhQ==
-X-Forwarded-Encrypted: i=1; AL+hErGIeb2AB2sMHKyy1+/bNhchA37PbcVyOdIMas0kMrOUee7uQQy+Q2/qVvfcf3DLt7WvQw+TH2vEmA==@kvack.org
-X-Gm-Message-State: APuU4Z9WHOnQ6qQgfatD1QW/7fkRicE37mundENB068t2gYHkiezix6N
-	iRw5km0Zwe8o76Qw/MtSkMzJkF7nrvKYczl85fm1dqaa92IYkL7wXn5c4BHOTumCBQ==
-X-Gm-Gg: AYBFou2WNITvp9cVKYB0WMEXnlqFnl/ZwqBup7xL9Qk1L8Zrpvf954A7/AKZl2iLlme
-	QWacckzo9L71NeOqHi09YxVnkLdRI4uMHa+yh/OM9/7fLc8JeVxF9xaAzrEvbnGCSg4Mg6qvpeg
-	xyVNS7JZfAI7mKAmeHnLjgYm4FE7kQzTM1kPX2xVMdW6PmIbsyN7lvemxqFnNRNt328NCAv8ac0
-	x8eVbdziAMAG4iwPNw9FAJ9ZNTjYtKz+m7KEInRcJHw4yd29tNa//BaoSGdrrFLTXaNxVvFFvAV
-	506gVCkXYMrNlkyxmJKpBim+BnKcLA5C1CnCmBTTYunLkhg3leMy9uH94PRsZUZfvFfN0/44gkV
-	NSbDjHglZ2qw/S8HMw/CgxpuastUqRM+vzQSxVIv67zSO11YLPtMGCWOqGkdehMuRgiUnT92KzM
-	LpvxByqTcTjt4MbFJzZSTRSZZY7IxEwj9lrerm/3fXNQ6uK/Pp1N7uasHv0pVyyh5/ZRIyAkwIX
-	R26HXTJSdBYHmeMrl73Au19JBiP3m64d9B2DjQbnuPbfXZqMr451TgHJNgdkPTPF/WlaXFOWTRR
-	bNYYCxwrVzZKCnO1W90wvVvJx6opcnmkwEurD0aj5rs8RI1pnmWj4LUAOl0OZIof
-X-Received: by 2002:a17:90b:524d:b0:3a6:e901:e79b with SMTP id 98e67ed59e1d1-3b166cc14bamr3213232a91.15.1794330230055;
-        Tue, 10 Nov 2026 09:03:50 -0800 (PST)
-Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b17db85a9bsm514293a91.14.2026.11.10.09.03.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Nov 2026 09:03:48 -0800 (PST)
+	bh=w5OK7L+XHYDyvpdUN7iinyt/hLzBrVtJ/Mqo1j/GW2Q=;
+	b=BrzPeNXhiKqU0x8/ywAZXVD4NsMLuYWAu1mcUPXAG4puIEfLr2Z5aWlK86KtMukuhd8wmh
+	KoRW5+c5sgIO7OqcKISz30FyQnm3EJVHAlvySTxoz92qS/qDKSOvzFpKdwGxQvWduALcRa
+	4kOWGvJulxq+cQJRurTZjX+SLI51mxE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZQBitt5s;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794330307;
+	b=l6aLu58/pFNEOjqlrxGU68lbAqYe6Kgni3zW8xAgxsgDm3YiEKfyjE0xJvoVFPvh/yaqjT
+	owVgIeRduMXC907yCrKXyDBn7toC5StOWRF7fEN6LvGGOK/VpfvYOKh7FyXYVa3NwcQOAd
+	AaeFphDoe4E7YcRfXqwU5Ays8QhDCxs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 00C00612A5;
+	Tue, 10 Nov 2026 17:05:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D84E61F0089F;
+	Tue, 10 Nov 2026 17:05:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794330306;
+	bh=w5OK7L+XHYDyvpdUN7iinyt/hLzBrVtJ/Mqo1j/GW2Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZQBitt5sjfK1x5mRbZ5LvBWqcEfWKKg2fwb/9fJFUVZkbWg9OQRzlp6S2u+Vof+wP
+	 yRDyF9oMqKClI3QjvNbIpy03NMhhwC3N+yQyPoWKlDZg8FyzuCqcdje4b621f/LaIt
+	 KBo3XKV3N3JS1l9RGDkIq6PkP2RjNNvMeeLWZOjEnH7QAn0fRENuEsp066FRlpsWUI
+	 UQJnQyHwWbWJsYL4UffzXtXZnhlhctdCgLELWIgk0E6NWXTkC1uffkngQJ/E3dhj6p
+	 kfEcs1Mxu1lSXXD8cZfC+0/xc4IR4kwOrpWCkBGGRjv1NiITlmwzRBMOndSt/0Tlkb
+	 2FKVndk9ce78g==
+Date: Tue, 10 Nov 2026 17:05:00 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Subject: Re: [PATCH v2 3/3] mm/khugepaged: release contended mmap read lock
+ after scanning enough VMAs
+Message-ID: <avNOl0O5C9KW5R_3@gremlin>
+References: <20261105-khugepaged-latency-fix-v2-0-4384bbfe4606@kernel.org>
+ <20261105-khugepaged-latency-fix-v2-3-4384bbfe4606@kernel.org>
+ <sashiko-outbox-202266@kernel.org>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Nov 2026 17:03:48 +0000
-Message-Id: <DMROZB8DPEWD.W2BFC7JIBVZP@google.com>
-Cc: <kvmarm@lists.linux.dev>, <linux-pci@vger.kernel.org>, "Pratyush Yadav"
- <pratyush@kernel.org>, <kexec@lists.infradead.org>, <kvm@vger.kernel.org>,
- <iommu@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
- <skhawaja@google.com>, <sagis@google.com>, <linux-arch@vger.kernel.org>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 02/19] kho: block: Record the entry size in the block
- header
-From: "David Matlack" <dmatlack@google.com>
-To: "Tarun Sahu" <tarunsahu@google.com>, "Pasha Tatashin"
- <pasha.tatashin@soleen.com>, "Mike Rapoport" <rppt@kernel.org>,
- <robin.murphy@arm.com>, <maz@kernel.org>, <will@kernel.org>, "David
- Matlack" <dmatlack@google.com>, "Alexander Graf" <graf@amazon.com>,
- <seanjc@google.com>, <jgg@nvidia.com>, <loganodell@google.com>,
- <arnd@arndb.de>, <dwmw2@infradead.org>, <baolu.lu@linux.intel.com>, "Bjorn
- Helgaas" <bhelgaas@google.com>, <oupton@kernel.org>, <alex@shazbot.org>,
- <gle.com@google.com>, <pbonzini@redhat.com>, "Andrew Morton"
- <akpm@linux-foundation.org>, <kevin.tian@intel.com>, <joro@8bytes.org>
-X-Mailer: aerc 0.21.0
-References: <20261110050202.529473-1-tarunsahu@google.com>
- <20261110050202.529473-3-tarunsahu@google.com>
-In-Reply-To: <20261110050202.529473-3-tarunsahu@google.com>
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4086040006
-X-Stat-Signature: uommwgmzsiqn3owof6trx75tppqfc8yj
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <sashiko-outbox-202266@kernel.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 8EB1A40007
+X-Stat-Signature: u38shsj1irykc3fudiqeipwc18xsxadq
 X-Rspam-User: 
-X-HE-Tag: 1794330232-848013
-X-HE-Meta: U2FsdGVkX18GTNEWkedLM5/xnwVdUNE8yNt7Bik9d4X6moF3rE9b3R+Si+HRk2OL5PGvaGWqRZ1JJahp1zdatd86+invU/fXcncHrYC+5rXBd+PyCjtSSzX55QBVOQA0k6xVNGqmHURsBOa/0sVArTqJ//Y2qE/kymyb5FuVziCDx0lqJg0/VT/uBq9LcOE0tsNknj9eYHqX+1m745ZW/JBr6b2lyXurSUXTAqadbLjbWzKaX6t4EDojG1NFa/NlIoQ0MAU4PFXZBahM0AG0qSAz8QkajyhM4oW/lWqhP3l2DnC+ESgYFCPiAsa6cklYmjrncmWA6IPhMft4GUzaLXbcPjZN5udRoUzVu2VavjL4TLqCMMlBw7XM+0pgyljX2MHyFKLxa/4tLv+HZVQ41hcvTcMbHr3e1FZgsQPgU9LpSENltjuhw6OssT53EAxCCS6GjKf4cOBh7t17ThlsxXwTLB73YsmopeSJs95xFl1jJsZzK4J3EPl4ibU7phrb5oqHQP2eRx4KR+b0UtDMx1dEyktL4UnQL4rvl0Cxt7uwiOLQYVcpCWpK90IP7EVtwLQyWYVLgQMOwGZR4CAl3A6gVRnj05+e8Helena2MCEOxchRC0Ut978/eOXdUI5naBwKTRL5z6Yzt5ziThawGMKxup9DQ6d05rgXF+76pN6S5ri7CzC1gsPR/WXK4hSE3SyFEa1aM9VOVR8+88wXnU7rsU+K9Lo9N6PjLiywaE64Cxtll/BGirU8G9WTIO9H09dBc9vn7cIC9b3P7KLV7ePIKvkyafrUawR9wFvHsGDkc1qVa2RPfL9RwanqcHFQCU2NK58HWEGd0qdra+Kz0/ClYoO2oXmbpUf/1NI4YNTb/j2R3Zqibw38pppSXYpOn9MkSfxdOCNRvLxzMWEgmZ008dgeYfqQxUjcjISlI29e1tLVZofxmdEX4zlz3aSoBWsYNRsl3sGl+gVpR7E
- HilEckAR
- 3YxU6DjTFGJGiaomQtxei9iA3jSXzHf0AhYe3MTaYUN1suJeaM+fWUagzuX4H9od6gQjDxac3iHaO1odl2B94T3qvLLjAVKki9PKK9FIaW3lbagO+CpGQdRpyK0y6USwwxsS4pwh1rgxZnJ8mi7ycYo2eMBD5tPtJCQJ6tmbWp3NJc/6LNWpMoXCY258zQ/b4xPq2MutelPYOMdIbXhnoa073bHJhgx/nkXub15hub4iMNW7s3jCHVp5oWT/ccqranz8xxTF5Fz60mrYDvtu6taNfNQjOcLVUpj6B9WG1ZHfKE/g4HJ7UmAOxi6/8zreus7JSYjJMeUL9X/o3S1CwsltbfAdv7VbxaDakSmyph8iyQeqd+2OMrANGyTlQhV5UoSmN5LlGCT5Rvm5+3185/j5dyA==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794330307-488860
+X-HE-Meta: U2FsdGVkX1+Jl+XQV4U70Y0ND/Vze757OJj1q+0FZLrFSpXGsjxKTwtZkf5j4nIvaVxwPu4aJPQoJWQKYKbRw4sBZ+LMvDGnOAkeGYC7w5viTGLq/30ltOPi3zpR24YIpJ3aek+v3d01Cxp+EHBFDM/IXtpdWU8ME6LWPJU+TJ/QY9UHpkSrZlgFTD4T05LTME38XETPnbGIn2cnThwB4QftmmWJYgFV3cby1fn3MyktEmvC1Fsqek7s1JxsuT7gV4pl/jEfiPt+cQIIYnu79QvlqA8xkCEaiw1xeXNrjTm6lpLtj1AKXbTBZTdl7zdgRoL8PyhleGdGwr03x6t3og0R+SGtrGAHL1uG/MVhZFZKM/b9ea78cKoMHBIEKflAnOXlWY4Juu4jcxuJZ90bMvZhYuLesjk+nfVTlpCpa67SUmR2pukAjboAnhTgmZd9fUR3dsWYa1xkFgfw7REmwAk3j67JFwmLdxcDtxoFoDj1FXfjJ/veieIDc3SBwg9BTB+yd2G/esZfPU2AIpsZE9CM9UefMgusEAHOtTgAhBTL24KDhTp/JuhJCDuaWNdWd41sRdJirtRZ7Yvh+2yYHOMWYwCQt1fxlXarZVd/bgfrFbzuVUSg7pd8/fTkOb+/8v0eYsm2cpZy2C5RF7baeNovlptxOdSxGPbfvVaRtL9wrc9PptAd9hPjnTqLe29rtmCbsojVYRKMl4iBSrSVRyb/R5jjI0v/nXumu+RWhX5xkf7If4IlzFcRLC83KfBrEZaE2v9cS1AuQkTsU+goANOxGh72yA+8aRxaT08c8eRX1Jnyodd5LgPM16o4KbBN7DSI4Dj1ocWUs50dsFJWSmDyi/IMWmgcTBPenb78j1+3MFcwjD4+fM2hZVUEtEZy96xdSmbI7G0xfxWmrcFgeHrVXlNlJ6Uoc0tGmbNYK83RBU7BXJMeFytkujSONCspRTrmxwhiBOscTt9Okod
+ gTXvmhOk
+ 8TSqsja/MmX5IeczjpOBE466zePZ9KG5wgeNIGTA+Nqa0Sl8ciwnUK2Z7cTm+PlHL8/JBZTHso9/EgXaJRSlu3IWu2M0vrCEoIM7DbGtu3px1a4iF8OFwQJFFFnlPOtTcKdPMDeYyVGbyUO+IG3Uhe6OxKzxqPA8YAayIRMKP0kmMNrht+t31z0wWSUJ/bSj+tsTjMwYcJ70EER6hvKkdm2+nOjXaY4BZ+4iB5ickLXXxSmJYOSRc2i/Y9lZTZT30VqgZG6zsqhHeP1xtLOn7ieMWXitnEMDLcOIiVmiaRTcYh5zmwENmZWYaxEHBV3wKYfJY82tLqH+54TG9Jw3+BPAvMjv2HgYO+yWvwcuSTnRehU4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,44 +102,196 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue Nov 10, 2026 at 5:01 AM UTC, Tarun Sahu wrote:
-> Add an entry_size field to struct kho_block_header_ser. On the outgoing
-> side, record bs->entry_size into every block header during allocation.
-> During restoration, derive the entry stride directly from the block
-> header instead of relying on caller-supplied dimensions. The
-> kho_block_set_init() interface remains unchanged. A zero entry size,
+On Fri, Nov 06, 2026 at 08:58:05PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issues to consider:
+> - [High] mm/khugepaged: lack of forward progress in
+>   collapse_scan_mm_slot()
+> - [Medium] mm/khugepaged: sub-PMD mTHP VMAs bypass cursor advance and
+>   overflow check
+> --
+>
+> commit 9bc41c7859cdd4759479e883a9c557ea64a1a2c7
+> Author: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>
+> mm/khugepaged: release contended mmap read lock after scanning enough VMAs
+>
+> This commit periodically checks whether mmap_lock is contended in
+> collapse_scan_mm_slot() after scanning a batch of VMAs, dropping and
+> re-acquiring the read lock and resetting the VMA iterator to
+> mm_slot->address. It also checks for unsigned long overflow when aligning
+> vma->vm_end for ineligible VMAs.
+>
+> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > index 216c4b8d28c40..eaa01dae5a030 100644
+> > --- a/mm/khugepaged.c
+> > +++ b/mm/khugepaged.c
+> > @@ -66,6 +66,12 @@ static DEFINE_READ_MOSTLY_HASHTABLE(mm_slots_hash, MM_SLOTS_HASH_BITS);
+> >
+> >  static struct kmem_cache *mm_slot_cache __ro_after_init;
+> >
+> > +/*
+> > + * The number of VMAs to walk before checking for, and relieving, mmap lock
+> > + * contention, as a function of the pages_to_scan budget.
+> > + */
+> > +#define KHUGEPAGED_MAX_VMA_SCAN_BATCH(pages_to_scan) ((pages_to_scan) / 4)
+> > +
+> >  /**
+> >   * struct khugepaged_mm_slot - khugepaged information per mm that is being scanned
+> >   * @slot: hash lookup from mm to mm_slot
+> > @@ -2910,6 +2916,7 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
+> >  	struct mm_struct *mm;
+> >  	struct vm_area_struct *vma;
+> >  	unsigned int progress_prev = cc->progress;
+> > +	unsigned int nr_vmas_batch = 0;
+> >
+> >  	lockdep_assert_held(&khugepaged_mm_lock);
+> >  	*result = SCAN_FAIL;
+> > @@ -2942,15 +2949,35 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
+> >  	for_each_vma(vmi, vma) {
+> >  		unsigned long hstart, hend;
+> >
+> > +		/* Relieve mmap lock contention after walking a batch of VMAs. */
+> > +		if (nr_vmas_batch++ >= KHUGEPAGED_MAX_VMA_SCAN_BATCH(progress_max)) {
+> > +			nr_vmas_batch = 0;
+> > +			if (mmap_lock_is_contended(mm)) {
+> > +				mmap_read_unlock(mm);
+> > +				cond_resched();
+> > +				mmap_read_lock(mm);
+> > +				vma_iter_set(&vmi, mm_slot->address);
+> > +				continue;
+> > +			}
+> > +		}
+>
+> [Severity: High]
+> Can collapse_scan_mm_slot() fail to make forward progress here when
+> mmap_lock is contended?
+>
+> In pages_to_scan_store(), khugepaged_pages_to_scan can be set to any positive
+> value:
+>
+> mm/khugepaged.c:pages_to_scan_store() {
+> 	err = kstrtouint(buf, 10, &pages);
+> 	if (err || !pages)
+> 		return -EINVAL;
+>
+> 	khugepaged_pages_to_scan = pages;
+> }
+>
+> When khugepaged_pages_to_scan (passed as progress_max) is 1, 2, or 3,
+> KHUGEPAGED_MAX_VMA_SCAN_BATCH(progress_max) evaluates to 0. Because the batch
+> check runs at the top of the for_each_vma() loop before
+> collapse_test_exit_or_disable(mm) or any VMA handling, nr_vmas_batch++ >= 0
+> triggers on the first VMA before any VMA is scanned. If mmap_lock_is_contended()
+> is true, it resets nr_vmas_batch to 0, drops and re-acquires mmap_read_lock(mm),
+> rewinds vmi to the unchanged mm_slot->address, and executes continue without
+> advancing mm_slot->address, incrementing cc->progress, or checking
+> collapse_test_exit_or_disable(mm).
+>
+> Even when progress_max >= 4, for an eligible VMA whose vm_end is not aligned
+> to HPAGE_PMD_SIZE:
+>
+> mm/khugepaged.c:collapse_scan_mm_slot() {
+> 		hstart = ALIGN(vma->vm_start, HPAGE_PMD_SIZE);
+> 		hend = ALIGN_DOWN(vma->vm_end, HPAGE_PMD_SIZE);
+> 		if (mm_slot->address > hend) {
+> 			cc->progress++;
+> 			continue;
+> 		}
+> 		if (mm_slot->address < hstart)
+> 			mm_slot->address = hstart;
+> 		...
+> 		while (mm_slot->address < hend) {
+> 			...
+> 			mm_slot->address += HPAGE_PMD_SIZE;
+> 			...
+> 		}
+> }
+>
+> Once the inner loop finishes (or if hstart == hend), mm_slot->address is left
+> at hend, which is less than vma->vm_end and still lies inside that VMA. If the
+> batch contention check triggers at the start of the next VMA (for example when
+> progress_max is 4..7 so the batch threshold is 1), vma_iter_set(&vmi,
+> mm_slot->address) rewinds the iterator back to the previous VMA where
+> mm_slot->address == hend, which then does no work and neither advances
+> mm_slot->address nor increments cc->progress.
+>
+> > +
+> >  		cond_resched();
+> >  		if (unlikely(collapse_test_exit_or_disable(mm))) {
+> >  			cc->progress++;
+> >  			break;
+> >  		}
+> >  		if (!collapse_possible_orders(vma, vma->vm_flags, TVA_KHUGEPAGED)) {
+> > -			/* Unable to collapse, skip to the next candidate. */
+> > -			mm_slot->address = ALIGN(vma->vm_end, HPAGE_PMD_SIZE);
+> > +			const unsigned long next =
+> > +				ALIGN(vma->vm_end, HPAGE_PMD_SIZE);
+> > +
+> >  			cc->progress++;
+> > +			/* Check for overflow. */
+> > +			if (unlikely(next < vma->vm_end)) {
+> > +				vma = NULL;
+> > +				break;
+> > +			}
+> > +			/* Unable to collapse, skip to the next candidate. */
+> > +			mm_slot->address = next;
+> >  			continue;
+> >  		}
+> >  		hstart = ALIGN(vma->vm_start, HPAGE_PMD_SIZE);
+>
 
-Since the entry size now comes from the block headers, incoming block
-sets should not take an entry size at all. I pointed this out on the
-PCI patch (16/19) as well. As is, every incoming path still calls
-kho_block_set_init() with this kernel's (outgoing) entry size, which
-kho_block_set_restore() then silently overwrites. That makes the
-callers (e.g. pci_flb_retrieve() and the LUO session/file restore
-paths) read as if they iterate incoming entries with the outgoing entry
-size. kho_block_set_restore() should initialize the block set itself
-from the incoming block headers, and the incoming paths should drop the
-kho_block_set_init() call.
+This is already addressed in newer revision.
 
-Please also add an accessor for the entry size, e.g.
-kho_block_set_entry_size(). Users of the block set need it to check that
-incoming entries are large enough for the fields they read, and that
-the fields of a feature are within the entry.
+> [Severity: Medium]
+> As reported by Sashiko on v1 [1], what happens if an anonymous VMA does not
+> span a full PMD (so hstart >= hend), but sub-PMD anonymous mTHP orders are
+> enabled?
+>
+> In collapse_possible_orders(), anonymous VMAs are checked against
+> THP_ORDERS_ALL_ANON:
+>
+> mm/khugepaged.c:collapse_possible_orders() {
+> 	if ((tva_flags == TVA_KHUGEPAGED) && vma_is_anonymous(vma))
+> 		orders = THP_ORDERS_ALL_ANON;
+> 	else
+> 		orders = BIT(HPAGE_PMD_ORDER);
+>
+> 	return thp_vma_allowable_orders(vma, vm_flags, tva_flags, orders);
+> }
+>
+> A faulted-in anonymous VMA that is smaller than HPAGE_PMD_SIZE (or does not
+> span a full PMD) will return non-zero from collapse_possible_orders() when a
+> sub-PMD order is enabled, skipping the !collapse_possible_orders() block:
+>
+> 1. If the VMA starts at or straddles a PMD boundary (so hstart == hend), it
+>    sets mm_slot->address = hstart (< vma->vm_end), skips the inner while
+>    (mm_slot->address < hend) loop without incrementing cc->progress, and
+>    leaves mm_slot->address inside the VMA, so vma_iter_set(&vmi,
+>    mm_slot->address) will rewind back to this VMA on contention.
+>
+> 2. On architectures where user mappings can reach the top incomplete PMD range
+>    above ULONG_MAX - HPAGE_PMD_SIZE + 1 (such as 64-bit s390 where TASK_SIZE
+>    is -PAGE_SIZE), a sub-PMD anonymous VMA with vm_start > ULONG_MAX -
+>    HPAGE_PMD_SIZE + 1 bypasses the next < vma->vm_end overflow check above.
+>    Then hstart = ALIGN(vma->vm_start, HPAGE_PMD_SIZE) wraps to 0 while hend =
+>    ALIGN_DOWN(vma->vm_end, HPAGE_PMD_SIZE) is ULONG_MAX - HPAGE_PMD_SIZE + 1,
+>    causing the while (mm_slot->address < hend) loop to run from address 0 with
+>    the wrong VMA and rewind mm_slot->address.
+>
+> Should the hstart >= hend case also advance mm_slot->address to
+> ALIGN(vma->vm_end, HPAGE_PMD_SIZE) with the overflow check before computing
+> hstart?
 
-[...]
+This seems liek a pre-existing issue. Are they being snuck in by not being
+flagged as such now? ;)
 
-> + * Each block header also records the size of its entries. A newer kerne=
-l may
-> + * append fields to an entry, so the kernel that writes a block and the =
-kernel
-> + * that reads it can use different entry sizes. The reader steps through=
- the
-> + * entries with the recorded size, so every entry is found, and it does =
-not read
-> + * beyond the recorded size of an entry.
+>
+> [1] https://lore.kernel.org/r/20261103-khugepaged-latency-fix-v1-5-a07ab16ac860@kernel.org
+>
+> --
+> Sashiko AI review · https://sashiko.dev/#/patchset/20261105-khugepaged-latency-fix-v2-0-4384bbfe4606@kernel.org?part=3
 
-KHO blocks can't guarantee the last part. The iterator returns a void *
-that the caller casts to its own struct, so it is up to the caller to
-not read fields beyond the entry size. Please document that callers must
-check the entry size before accessing fields that may not be present.
-
+--
+Cheers, Lorenzo
 
