@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA982606A336
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 05:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9BF606A325
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 05:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=fU4+0THl
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=G9FU9+1/
 Received: by kanga.kvack.org (Postfix)
-	id 265796B05CA; Tue, 10 Nov 2026 00:02:28 -0500 (EST)
+	id 920E46B05CB; Tue, 10 Nov 2026 00:02:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 215076B05CB; Tue, 10 Nov 2026 00:02:28 -0500 (EST)
+	id 8CBF26B05CD; Tue, 10 Nov 2026 00:02:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B54D6B05CD; Tue, 10 Nov 2026 00:02:27 -0500 (EST)
+	id 793C76B05CE; Tue, 10 Nov 2026 00:02:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CE87F6B05CA
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:02:27 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 67347A84A6
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:02:27 +0000 (UTC)
-X-FDA: 85418013534.14.840818A
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A76B440002
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:02:25 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=fU4+0THl;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of 3YKXyagkKCNMIzGJCHz6J5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--tarunsahu.bounces.google.com designates 209.85.208.71 as permitted sender) smtp.mailfrom=3YKXyagkKCNMIzGJCHz6J5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--tarunsahu.bounces.google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 45C056B05CB
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:02:29 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CFA43A85D6
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:02:28 +0000 (UTC)
+X-FDA: 85418013576.06.F56138B
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 17B1B1C0005
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:02:26 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b="G9FU9+1/";
+	spf=pass (imf20.hostedemail.com: domain of 3YKXyagkKCNMIzGJCHz6J5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--tarunsahu.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=3YKXyagkKCNMIzGJCHz6J5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794286947;
+	b=ASL5g+KcA34hZddzJRj7pldfk1qo7XvMxeywxdnqJfUEGPo8wXXj7HSTwRnzvGdcItX+yN
+	eef445+fnPCtJBMtuFW7QTSgV1qwyMrRUaFSDOgjznkAXcM/FwGo4REc5QcUhZHJGNfwjN
+	EsFozNQz8zUMF+1yE72PtkX3fuKGK4A=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b="G9FU9+1/";
+	spf=pass (imf20.hostedemail.com: domain of 3YKXyagkKCNMIzGJCHz6J5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--tarunsahu.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=3YKXyagkKCNMIzGJCHz6J5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794286945;
+	s=arc-20220608; t=1794286947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CgBCpjKfzBqNZpJUjcpaoZF5kynIHAd0/p/NXGzkOjc=;
-	b=A+sW99fWPs39qE0+BuBJZRMLcYroCtXHB+S9zrOCccDph0fNwzDFCKn8oL/ZFbqps+NylD
-	KVHaXADVG39OW7qIWupgTYFTZakZsEZ7EZdkPpbTk7QWF6ARvzEZ5kvbneVmfOEBgLoE2j
-	7YxOfrTMZs8HxKRkktbE1MteZfZ8nU0=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=fU4+0THl;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of 3YKXyagkKCNMIzGJCHz6J5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--tarunsahu.bounces.google.com designates 209.85.208.71 as permitted sender) smtp.mailfrom=3YKXyagkKCNMIzGJCHz6J5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--tarunsahu.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794286945;
-	b=IzxzxS1UhwneaiTT8cNSf3SqAq1qKDsjDIUkY3JzbFEi9JU1aGYBeunNruVE3EWzLIgLoM
-	UcvTkWDr99bTXdap7jRTtBclPsVFg50dz4HjPwE8/JjfU8RsC8kJhvULAi4W3E6QT2XXWv
-	7lYhv7SKiaHWZIK+HNEbpAt5blYk2iI=
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-6b76329afcdso43494a12.2
-        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 21:02:25 -0800 (PST)
+	bh=hS6VkHJCMMhJIKk9BuX59tEknsJKMmzlEArInOfp3hI=;
+	b=Vu1YEK72lrU1GSaO3eDV23OEqUbCSVy2U2w5kADsbfY2gw4rkiXSz/GqjBd22W3USD1f/Y
+	3Iz3RfL2l761185TGvsKTbJ4jph4SLn6BgNs/V7OD6SWe+Pddro9H9kZUH1MdrG1Szvt3j
+	wv3riS2BTS4G0RPhWNOE5xKcaKhCnj4=
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6b5e0ce4132so1260301a12.3
+        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 21:02:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794286944; x=1794891744; darn=kvack.org;
+        d=google.com; s=20260707; t=1794286946; x=1794891746; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=CgBCpjKfzBqNZpJUjcpaoZF5kynIHAd0/p/NXGzkOjc=;
-        b=fU4+0THlJbMe5BvYH+JqKQv3Xk7k8jnMnrcBP/eoUBpYEpTCPWmojKuhu7c59JpoRA
-         1uzhCgn9OgIibZc3Fr/Q4apU30c29N/QtpBxOm6a0Gg6H1lRTzdb58k2LvpotebcU2nT
-         699bfWJwkzd2+WWafFPFtRYELGVGBz6Kp79TouM837nGfGveOpOAgr+mDLumkwjrBzvv
-         QbruaWw2O/2hEDMUVGmJ1l+xNEZLubcO1M7gaKQwz7pVS0lqLY8npJ+INujz8dK5v1TB
-         fEwq/h8qEDlIfpkTzbNw8K+rIMkr7kh9yaEmInlr8GROyPq0CxhhZhQqGZX7jpkGJ5U3
-         2VUA==
+        bh=hS6VkHJCMMhJIKk9BuX59tEknsJKMmzlEArInOfp3hI=;
+        b=G9FU9+1/apNK6tZVZNAY/DCCa9/KdN83xOBaMzD4xpzY4+FyRTos4eoZ1gXvS7Jcgr
+         2k36B8Daepn3oKKz3qrqfg3Xo9zFt+bI2qqIb1IE9Jh1EUpNoescZtCBkXQuLRe4WKKn
+         azBUPYQp6WKemyMwoSjspUF2wjv0NgsJBZlAe9dtpZurqxTjEbrHfH2v9nm/grDRZsoi
+         8T/kS+SyKMZDwUBnJeeXxIO+QWK5PjPvAefeZqnZ1hWW3Gz2P7dXnwxy29k4N8vhQfr0
+         /vEa0rK9nNZhqxNdi2wa2rzl4ecPBZcK06vZ6g7pHku6XyGxDDXZmfuppNcDHvHd1PkJ
+         Lduw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794286944; x=1794891744;
+        d=1e100.net; s=20260707; t=1794286946; x=1794891746;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=CgBCpjKfzBqNZpJUjcpaoZF5kynIHAd0/p/NXGzkOjc=;
-        b=vB7+/9+yiblm7fJuZyMqxIIQBzRZVT7Q0fs/NkyHsVQbUQf1BtiJD5A42OGlP1fq59
-         Bfj7GMAZ0mcWBhsg/6juaE+j45iEc6+W+jyFTgNDTPzbx57fNjTB3wJBUptlhNiVd6hK
-         1HZpzx9RnpyqbCKHVLD0HM2wOrFTn4YybHzaUbzQZJJTWuGbqci1iba18E7Rf/On7Cqw
-         un/tPKiF264doRdw6HZgCVhsZT3RI+FyHt+ahEgRYDx4ixGyI00JNmpWx5CLbLKD21VN
-         +LpHic8CWirCuXfyruz1M7k+tUm3V5fpLtiPZv3FkQ3NiHiE8kQ0ClqivJ/TSvoGltqz
-         gDkw==
-X-Forwarded-Encrypted: i=1; AL+hErH7lx2wjOcmOiJ7/pSvclR8yOjNGGWEERMOoeIIBNqIcEatADJmsm3nCaLk+ccw4sVQzHVF0cWTdA==@kvack.org
-X-Gm-Message-State: APuU4Z9Q4VjhuwMEUX6IeJaEAqwK8SEh0FEnW9FlcCwTg7aWJF4kBCiq
-	O9tqsSbp1+RpF2zy0vA+vD/UHddmgESvqfRRqtVOwe8YhF5hsyP6cDoUDYTsgCevEUlhjRHlPcP
-	xtj83Om3ZZvEQsoDp8A==
-X-Received: from edtj4.prod.google.com ([2002:aa7:ca44:0:b0:6b7:3b3e:5148])
+        bh=hS6VkHJCMMhJIKk9BuX59tEknsJKMmzlEArInOfp3hI=;
+        b=iU2EdDZGL6g/0m0iAvCkXHRFnqanYX0e0Zcqy34RGaO0CxH+v+4bzrfq+v4s0usN9B
+         ZIql/FFhSiJYSklyg24FUuL3CqJEquu3GMf3IKab0hMoLX+RjCj+LeiwPBn8wo9AwJv+
+         oE343HxL7mpIQoVq1X4MX4CK3FXID9To+lH4IzPRm4iBiE7T2yhT2+zaarne97CYH6jD
+         J1dbw4X02bIKonKw0hl+MHFYnmwtMpRghQDJ3kcrqIHhooEy0V1iYlINaoVVHms8EOeT
+         MiTF8LtV7Z6mwUS1rGVzN7HydIqq/c0ogtAhJwUzRgom0o+JKrRUwPWUq5xNeovAdosn
+         rnsA==
+X-Forwarded-Encrypted: i=1; AL+hErHvPVgLyL1pIrcgh/qL/OJ3x1F/iOUl8T7WV3GpmmgbrqGbcMTmjQxjbqJEFbJbkCn6WA22VrYF2Q==@kvack.org
+X-Gm-Message-State: APuU4Z9D1FPrib6WxpWu7kvvtFUiDQxZPRiYGHC/dIX8b6TVpNKDvtDC
+	Hb8kyI/o+vBQEA2H5AGMb0O3xtGa1BxeIKW6ZH0e9s4t0dZxfTPeOsDG4tQjjtjNKMJjrGrm8iR
+	F8S3LPjbSoHJ/DmMKjA==
+X-Received: from edqu26.prod.google.com ([2002:aa7:d89a:0:b0:6b7:37e3:4968])
  (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:aa7:d496:0:b0:6ac:934e:a9ca with SMTP id 4fb4d7f45d1cf-6b755626f5fmr907953a12.0.1794286944079;
+ 2002:a05:6402:2422:b0:6b7:dc8:c824 with SMTP id 4fb4d7f45d1cf-6b756b08c35mr1192059a12.42.1794286944980;
  Mon, 09 Nov 2026 21:02:24 -0800 (PST)
-Date: Tue, 10 Nov 2026 05:02:00 +0000
+Date: Tue, 10 Nov 2026 05:02:01 +0000
 In-Reply-To: <20261110050202.529473-1-tarunsahu@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261110050202.529473-1-tarunsahu@google.com>
 X-Mailer: git-send-email 2.56.0.506.g506a7eabc5-goog
-Message-ID: <20261110050202.529473-18-tarunsahu@google.com>
-Subject: [PATCH v4 17/19] mm: memfd_luo: Add feature header to struct memfd_luo_ser
+Message-ID: <20261110050202.529473-19-tarunsahu@google.com>
+Subject: [PATCH v4 18/19] mm: memfd_luo: Add feature header to struct memfd_luo_folio_ser
 From: Tarun Sahu <tarunsahu@google.com>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, 
 	maz@kernel.org, will@kernel.org, David Matlack <dmatlack@google.com>, 
@@ -102,19 +102,19 @@ Cc: kvmarm@lists.linux.dev, linux-pci@vger.kernel.org,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	Tarun Sahu <tarunsahu@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A76B440002
-X-Stat-Signature: cfmhcg78rstz6jxgsx3qgzqhsqiceftt
+X-Stat-Signature: hdybd4s7uss4cqgfi5iq6eywbhsje8cn
+X-Rspamd-Queue-Id: 17B1B1C0005
 X-Rspam-User: 
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=unavailable
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794286945-225601
-X-HE-Meta: U2FsdGVkX18G7MNudcxsCZojHfhvetrlIiixA+Vyh6hlYZa3jbqmaQMAwGZWR4ZE10RONaP/i2agiMsxxIP98v7GTGCf5zFWoJIBD+hh+tvBdudAwcMRzdp4Vgmw/slYRV/nZ5Uqlbccu0ICZmvO9i/3VvicDVj99n+CIYKylQPcWhh3h7ljuAqhIVzl5w5Caiillu0Ths+1pWnWRHKDSq0ld/ji1O55Wtkhps2qGTbRJMgWOXhcbrB2SpSYKQDimgdTyB4ro0N8J0T2g0TKDNzIK2r7vxEJQvJFfF0FHuKJ2cJNrEgY6zjgO8xAhy/il/lyCRw3l91c5riT+OEy/JU4FxL1gDDTjKZZd5OHydP2OAbzR6+EcgTx1ETu+SYb0cQSCVaieSd0Qa7ochryhs8jsl0Qhkk3nd7JuJPpyd+6Q60zbgAGZUjreU78/b7aJRI52MbutHc7qWd0boUNZcn5MM4Z0kNmcrOZTgWnQNKzUtKbqQ3Xvx7+vfTk8qnFficS4v9HohD9A9RCnUv78UUXoUQyLh6WpmJ37DWCpQYRQBYOHVgHXT08tU7mlcJAk3DtlxJGtXRv/tiHBKM27FdFhMza1NuxnoXVlabAHa8KvYHhi5uBUiXhWWMPKMRFoL6X08CcKXvxfCoT1QQh6fI7r+vdfDFmoZIEaTSIeYBgQ8JGi5AQRtLNptxa3l1uN82wLXxOYcLUmgb6u+PAKxZC02NUXJpofqGHe9D7w6xxzC37R64wdButsarnwPidnmepgWKRDhtIaRRZ7zF2kFbsdRi8Vpfo2LJA4fUWdeVkOEIi7wz537k3cByJyPo3/ZXewxbEVxrd7B6FgS/3AKNfI61ReTQ9Y/n3+xismutdYVy607g7GrKJAk7ZA96js5L6XY1ThYWmso0Gn7VrbzcaK+CUincSqq5zW74wBbVwn70xu6hqMLwlE4dAUfHccxZch/WgbNRBnJJNr3o
- +hiB9xEC
- B+7D/Kj+lTmOuylHcTiNFHU2CusEGXuVASyARVUMHFXBJCIIKHRIqThWh3Wq17InFpmfchzImVcyJbXO9BeIKXIeoa9d+yPs9FpIny5q+02GU3jK17+Q05W26Jjyn5nhftZn9s5+WQp8xgEgatLQlsrfl/CvbZAcUEcBdyS5s55sl1WXdtCOAImgNwiqYskHk5U4Vhahj5S8tugGwvLLxDGFOY1zD3l9WUNqxZ4zakhpoRb6riKKw4Ef+AI1HEVGjPaZyvMginy3rcvVF4JY/Z+c1sVFXRGOVHexxvEqWeEnx9lM+BVjdN0bUl6isSPcLuAbyvVtDs5tLoQgvBXZ3+HxLWEx0C16FAq/W8cFHw6v9uE49CwdWsY2EyLQpv7+AQmQdQGgW8fZIhnvvukkyywVwViBr4wwIlJcuPBYZfcqf81TaUEThVMkgAcIFG4SQvIOKw63E3NRPkS+J1JF9KxJIALUd2Jbc+KGcmrNjTfsr+mhcESjoSXaA21ohFT8VniNGzTWN6KP049p2+MCFA/z/0AMWialrSdeaVNOfZ+7JfmN6tqzaTWQJlSSF5xJGgpGSE7cFrxARId/rTm5sTuk1Afy/iHlzJgI2aiQSexRqf6KPQmwtqDhVO2IfwUYXoqZJeDKTRt3mm+JoWQWq2TeH6g==
+X-HE-Tag: 1794286946-907824
+X-HE-Meta: U2FsdGVkX1/2KZ6U+lJ/DZkqN7oX0hvTT0rgLhiRR5r4z9K5gUW2qg+vZUyjE7GY9iZu48Knghg+4gcksDa99+FhDiVnqoE56qZsLpAURSu2JOfSbibjLBI/H2hAdAG8EA7t4q3i2EQk1lpwwBKiPQhmZWtT4ONZaoMlmI3uWItJy/ahqVyRcTyLdPVm5/FqCjKyvlkM4gyZoH7ujS7OH+D9sdvok2aJJkWLG7e3vuFJ/JvDMQtviRwfPnh52SKqvs3RCqmFLks2xysAecNgOpsnNiG7t7aISTog8bPMMQH8GCBEvPpio0sXpeOAf5206c5R6Hv+nwtjze4uGLAJqC8kcneTesAv4SzhBPHlApvrNnBBODB3pgWJTxtqCdZWDfRrlh+x3Bp/nLZaNPF1MHIsauvHNRCFfGzIehqhOrYjidIdK/zeKp7ri+3D9OJ3kjQ/bcx74z6DrbR5x6l1pQtP8JiKW+r9iUdSWdXyRjXhH7nHtE3wEqN+VdkF3Rr7VHHgEjWIW3GEXN7vV4DLypxPhKoZ59s7p1J+1Y9eoiZOFsoatzEbbkrPSexrew1NlrtIsrgetXmLXCL7biK2O7MDvyhxE0G1rj7EZZgU1NrUR+cheoCakC0oujnAqqvgqFnovHdAHCU2av0j6HVRKEfNzac41JKkxDdTeymgsR0eptNoCzwo0FfWZhXgGHCZzWmIj6ZVsChMQaJt69BOAc19ouQEsZ11BTEAwThikbfQU5YQ2Y7bOMvImzpYG77kxLHXEyMSIxEg1uLl/5K7nJvfWJ0aLSLRjF//XPSNbh1wCpSE4ZkB6sTI9h/eYCm/bRuiPcqhFcz1MiXO3Hiol/sBBv3t7PQGrMEioWSHb5sUovYJLiHNepmBwvIloFJzZY9WhcnrHqZebjd674SQUp4CpG03W+HA3YnaP5FUfynyP5jVyckd7YGZa3zc0fSo4rVKz6Gk8U0X6Wn3ttd
+ KVwTqVTD
+ CyRO+xbdL6vlgkTDDDlXVC0iTpwq95h5L13khTCJFioHvL0YrENcjtTkCUlvQSQSm78rgcHq2jkk74jnBT6N1pcdNDJ+bfYjzEgzBe8WCYJ/jKexS22dZ930uBq7uQWkM5liS9gh5j0/AGtemSGdNtXg/a3zPJ4/rQB8d3tMRCES1lW70zrahOG+ax3kmt3+UXh5fmFAc6jEsQDtghg683r7BV3VujJIAleFmPiQ9ZlA3Sz+kiEZfiVX87T2dkUdiAkgo/ooCZ039dGzwasCYdOUgxyl2cN5Xhxkx7v7xkmjlZHLbYgQMHxRVLaSAcJPjCj6WheOAbD4+LwSMCHWRodlYeUFbnon5xf7leQen2/fiAPivwRugCP5etpDRR7vcEpeaSqJO/EkJk6KTdhyUJAzVun9Yc9yyA4673gW0E2KuiHxTuWLmqhU5RCtIi4CtPu2PSxzMrx5J0RYVMZpPN/lYkmNlUz1loodjbZXvfifSzqrYJqnJtPj7SqHot51ciBEeJSCS0dhLmVX+3pXM3nVvT5kfmhNXGQmCja505wicAtsZ7IkkKAJ1IZy14lxOxPza0rhA8qEIPGlxB8eyJEbZ2AJ27TPv10ouTAvc7W7UI4g4GT8HLA96bs9B4OpFQgIVvoFsHoHldoifbUX4JC1wQA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,236 +123,238 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Precede struct memfd_luo_ser with struct kho_ser_hdr using
-DECLARE_KHO_SER. Later memfd features can be appended under new
-feature indices without breaking compatibility between adjacent kernels.
+Precede each serialized folio entry in the preserved memfd folio array
+with struct kho_ser_hdr via DECLARE_KHO_SER so future per-folio memfd
+features can append fields to struct memfd_luo_folio_ser without breaking
+compatibility between adjacent kernels.
 
-Allocate both the memfd_luo_ser feature header and the kho_vmalloc
-feature header in the same preserved folio. On restore and retrieve,
-validate incoming required features before accessing payload fields.
+Allocate the preserved folio array using kho_ser_size(memfd_luo_folio_ser)
+per entry and initialize each entry feature header in
+memfd_luo_preserve_folios(). On the incoming path in
+memfd_luo_discard_folios() and memfd_luo_retrieve_folios(), validate each
+entry feature header with kho_ser_validate() and advance between entries
+using fhdr->size so entries written with a different feature layout are
+traversed accurately.
 
 Signed-off-by: Tarun Sahu <tarunsahu@google.com>
 ---
- include/linux/kho/abi/memfd.h |  7 ++--
- mm/memfd_luo.c                | 67 ++++++++++++++++++++++++-----------
- 2 files changed, 51 insertions(+), 23 deletions(-)
+ include/linux/kho/abi/memfd.h |  6 ++--
+ mm/memfd_luo.c                | 66 +++++++++++++++++++++++++----------
+ 2 files changed, 51 insertions(+), 21 deletions(-)
 
 diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.h
-index b0597c438973..27f8880ee593 100644
+index 27f8880ee593..1aad47ce7322 100644
 --- a/include/linux/kho/abi/memfd.h
 +++ b/include/linux/kho/abi/memfd.h
-@@ -83,6 +83,8 @@ static_assert(!IS_ENABLED(CONFIG_64BIT) ||
-  * @nr_folios:   Number of folios in the folios array.
-  * @folios_fhdr: Pointer to KHO vmalloc descriptor for the array of
-  *               struct memfd_luo_folio_ser.
+@@ -51,6 +51,8 @@
+  * @pfn:       The page frame number of the folio.
+  * @flags:     Flags to describe the state of the folio.
+  * @index:     The page offset (pgoff_t) of the folio within the original file.
 + *
 + * Preceded by &struct kho_ser_hdr.
   */
- struct memfd_luo_ser {
- 	u64 pos;
-@@ -93,9 +95,8 @@ struct memfd_luo_ser {
- 	DECLARE_KHOSER_PTR(folios_fhdr, DECLARE_KHO_SER_HDR(kho_vmalloc, *));
+ struct memfd_luo_folio_ser {
+ 	u64 pfn:52;
+@@ -58,9 +60,7 @@ struct memfd_luo_folio_ser {
+ 	u64 index;
  };
  
--static_assert(sizeof(struct memfd_luo_ser) == 40);
+-static_assert(sizeof(struct memfd_luo_folio_ser) == 16);
 -static_assert(!IS_ENABLED(CONFIG_64BIT) ||
--	      __alignof__(struct memfd_luo_ser) == 8);
-+/* Register memfd_luo_ser with KHO serialization accessors */
-+DECLARE_KHO_SER(memfd_luo_ser, 40, 0, 0);
+-	      __alignof__(struct memfd_luo_folio_ser) == 8);
++DECLARE_KHO_SER(memfd_luo_folio_ser, 16, 0, 0);
  
- /* The compatibility string for memfd file handler */
- #define MEMFD_LUO_FH_COMPATIBLE	"memfd-v3"
+ /*
+  * The set of seals this version supports preserving. If support for any new
 diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-index 74c1ff5877c3..94510f73a606 100644
+index 94510f73a606..c00daa8a508e 100644
 --- a/mm/memfd_luo.c
 +++ b/mm/memfd_luo.c
-@@ -256,16 +256,21 @@ static void memfd_luo_unpreserve_folios(DECLARE_KHO_SER_HDR(kho_vmalloc, *folios
+@@ -86,10 +86,10 @@
  
- static size_t memfd_luo_ser_size(void)
+ static int memfd_luo_preserve_folios(struct file *file,
+ 				     struct memfd_luo_ser *ser,
+-				     struct memfd_luo_folio_ser **out_folios_ser)
++				     DECLARE_KHO_SER_HDR(memfd_luo_folio_ser, **out_folios_ser))
  {
--	return sizeof(struct memfd_luo_ser) + kho_ser_size(kho_vmalloc);
-+	return kho_ser_size(memfd_luo_ser) + kho_ser_size(kho_vmalloc);
+ 	struct inode *inode = file_inode(file);
+-	struct memfd_luo_folio_ser *folios_ser;
++	DECLARE_KHO_SER_HDR(memfd_luo_folio_ser, *folios_ser);
+ 	unsigned int max_folios;
+ 	long i, size, nr_pinned;
+ 	struct folio **folios;
+@@ -138,14 +138,16 @@ static int memfd_luo_preserve_folios(struct file *file,
+ 	}
+ 	nr_folios = nr_pinned;
+ 
+-	folios_ser = vcalloc(nr_folios, sizeof(*folios_ser));
++	folios_ser = vcalloc(nr_folios, kho_ser_size(memfd_luo_folio_ser));
+ 	if (!folios_ser) {
+ 		err = -ENOMEM;
+ 		goto err_unpin;
+ 	}
+ 
+ 	for (i = 0; i < nr_folios; i++) {
+-		struct memfd_luo_folio_ser *pfolio = &folios_ser[i];
++		DECLARE_KHO_SER_HDR(memfd_luo_folio_ser, *fhdr) =
++			(void *)folios_ser + i * kho_ser_size(memfd_luo_folio_ser);
++		struct memfd_luo_folio_ser *pfolio;
+ 		struct folio *folio = folios[i];
+ 
+ 		err = kho_preserve_folio(folio);
+@@ -195,6 +197,8 @@ static int memfd_luo_preserve_folios(struct file *file,
+ 
+ 		folio_unlock(folio);
+ 
++		kho_ser_init(fhdr, memfd_luo_folio_ser);
++		pfolio = kho_ser_payload(fhdr, memfd_luo_folio_ser);
+ 		pfolio->pfn = folio_pfn(folio);
+ 		pfolio->flags = MEMFD_LUO_FOLIO_DIRTY | MEMFD_LUO_FOLIO_UPTODATE;
+ 		pfolio->index = folio->index;
+@@ -228,7 +232,7 @@ static int memfd_luo_preserve_folios(struct file *file,
  }
  
--static struct memfd_luo_ser *memfd_luo_ser_init(void *mem)
-+static struct memfd_luo_ser *
-+memfd_luo_ser_init(DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr))
+ static void memfd_luo_unpreserve_folios(DECLARE_KHO_SER_HDR(kho_vmalloc, *folios_fhdr),
+-					struct memfd_luo_folio_ser *folios_ser,
++					const DECLARE_KHO_SER_HDR(memfd_luo_folio_ser, *folios_ser),
+ 					u64 nr_folios)
  {
- 	DECLARE_KHO_SER_HDR(kho_vmalloc, *folios_fhdr);
--	struct memfd_luo_ser *ser = mem;
-+	struct memfd_luo_ser *ser;
-+
-+	kho_ser_init(fhdr, memfd_luo_ser);
-+	folios_fhdr = (void *)fhdr + kho_ser_size(memfd_luo_ser);
+ 	long i;
+@@ -239,7 +243,10 @@ static void memfd_luo_unpreserve_folios(DECLARE_KHO_SER_HDR(kho_vmalloc, *folios
+ 	kho_unpreserve_vmalloc(folios_fhdr);
  
--	folios_fhdr = mem + sizeof(struct memfd_luo_ser);
-+	ser = kho_ser_payload(fhdr, memfd_luo_ser);
- 	KHOSER_STORE_PTR(ser->folios_fhdr, folios_fhdr);
-+
- 	return ser;
- }
+ 	for (i = 0; i < nr_folios; i++) {
+-		const struct memfd_luo_folio_ser *pfolio = &folios_ser[i];
++		const DECLARE_KHO_SER_HDR(memfd_luo_folio_ser, *fhdr) =
++			(const void *)folios_ser + i * kho_ser_size(memfd_luo_folio_ser);
++		const struct memfd_luo_folio_ser *pfolio =
++			kho_ser_payload(fhdr, memfd_luo_folio_ser);
+ 		struct folio *folio;
  
-@@ -273,6 +278,7 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
+ 		if (!pfolio->pfn)
+@@ -277,7 +284,7 @@ memfd_luo_ser_init(DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr))
+ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
  {
  	struct inode *inode = file_inode(args->file);
- 	struct memfd_luo_folio_ser *folios_ser;
-+	DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr);
+-	struct memfd_luo_folio_ser *folios_ser;
++	DECLARE_KHO_SER_HDR(memfd_luo_folio_ser, *folios_ser);
+ 	DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr);
  	struct memfd_luo_ser *ser;
  	int err = 0, seals;
- 	u64 inode_size;
-@@ -304,12 +310,12 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
- 	}
- 
- 	/* Allocate the main serialization structure in preserved memory */
--	ser = kho_alloc_preserve(memfd_luo_ser_size());
--	if (IS_ERR(ser)) {
--		err = PTR_ERR(ser);
-+	fhdr = kho_alloc_preserve(memfd_luo_ser_size());
-+	if (IS_ERR(fhdr)) {
-+		err = PTR_ERR(fhdr);
- 		goto err_unlock;
- 	}
--	ser = memfd_luo_ser_init(ser);
-+	ser = memfd_luo_ser_init(fhdr);
- 
- 	ser->pos = args->file->f_pos;
- 	ser->size = inode_size;
-@@ -323,12 +329,12 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
- 	inode_unlock(inode);
- 
- 	args->private_data = folios_ser;
--	args->serialized_data = virt_to_phys(ser);
-+	args->serialized_data = virt_to_phys(fhdr);
- 
- 	return 0;
- 
- err_free_ser:
--	kho_unpreserve_free(ser);
-+	kho_unpreserve_free(fhdr);
- err_unlock:
- 	shmem_freeze(inode, false);
- 	inode_unlock(inode);
-@@ -337,12 +343,14 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
- 
- static int memfd_luo_freeze(struct liveupdate_file_op_args *args)
- {
-+	DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr);
- 	struct memfd_luo_ser *ser;
- 
- 	if (WARN_ON_ONCE(!args->serialized_data))
- 		return -EINVAL;
- 
--	ser = phys_to_virt(args->serialized_data);
-+	fhdr = phys_to_virt(args->serialized_data);
-+	ser = kho_ser_payload(fhdr, memfd_luo_ser);
- 
- 	/*
- 	 * The pos might have changed since prepare. Everything else stays the
-@@ -356,6 +364,7 @@ static int memfd_luo_freeze(struct liveupdate_file_op_args *args)
- static void memfd_luo_unpreserve(struct liveupdate_file_op_args *args)
- {
- 	struct inode *inode = file_inode(args->file);
-+	DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr);
- 	struct memfd_luo_ser *ser;
- 
- 	if (WARN_ON_ONCE(!args->serialized_data))
-@@ -364,13 +373,14 @@ static void memfd_luo_unpreserve(struct liveupdate_file_op_args *args)
- 	inode_lock(inode);
- 	shmem_freeze(inode, false);
- 
--	ser = phys_to_virt(args->serialized_data);
-+	fhdr = phys_to_virt(args->serialized_data);
-+	ser = kho_ser_payload(fhdr, memfd_luo_ser);
- 
- 	memfd_luo_unpreserve_folios(KHOSER_LOAD_PTR(ser->folios_fhdr),
- 				    args->private_data,
- 				    ser->nr_folios);
- 
--	kho_unpreserve_free(ser);
-+	kho_unpreserve_free(fhdr);
+@@ -384,16 +391,23 @@ static void memfd_luo_unpreserve(struct liveupdate_file_op_args *args)
  	inode_unlock(inode);
  }
  
-@@ -402,6 +412,7 @@ static void memfd_luo_discard_folios(const struct memfd_luo_folio_ser *folios_se
+-static void memfd_luo_discard_folios(const struct memfd_luo_folio_ser *folios_ser,
++static void memfd_luo_discard_folios(const DECLARE_KHO_SER_HDR(memfd_luo_folio_ser, *folios_ser),
+ 				     u64 nr_folios)
+ {
++	const DECLARE_KHO_SER_HDR(memfd_luo_folio_ser, *fhdr) = folios_ser;
+ 	u64 i;
+ 
+-	for (i = 0; i < nr_folios; i++) {
+-		const struct memfd_luo_folio_ser *pfolio = &folios_ser[i];
++	for (i = 0; i < nr_folios; i++, fhdr = (const void *)fhdr + fhdr->size) {
++		const struct memfd_luo_folio_ser *pfolio;
+ 		struct folio *folio;
+ 		phys_addr_t phys;
+ 
++		if (kho_ser_validate(fhdr, memfd_luo_folio_ser)) {
++			pr_warn("invalid folio feature header, folios not discarded\n");
++			return;
++		}
++
++		pfolio = kho_ser_payload(fhdr, memfd_luo_folio_ser);
+ 		if (!pfolio->pfn)
+ 			continue;
+ 
+@@ -411,7 +425,7 @@ static void memfd_luo_discard_folios(const struct memfd_luo_folio_ser *folios_se
+ 
  static void memfd_luo_finish(struct liveupdate_file_op_args *args)
  {
- 	struct memfd_luo_folio_ser *folios_ser;
-+	DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr);
+-	struct memfd_luo_folio_ser *folios_ser;
++	DECLARE_KHO_SER_HDR(memfd_luo_folio_ser, *folios_ser);
+ 	DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr);
  	struct memfd_luo_ser *ser;
  
- 	/*
-@@ -412,10 +423,16 @@ static void memfd_luo_finish(struct liveupdate_file_op_args *args)
- 	if (args->retrieve_status)
- 		return;
- 
--	ser = phys_to_virt(args->serialized_data);
--	if (!ser)
-+	if (WARN_ON_ONCE(!args->serialized_data))
- 		return;
- 
-+	fhdr = phys_to_virt(args->serialized_data);
-+	if (kho_ser_validate(fhdr, memfd_luo_ser)) {
-+		pr_warn("invalid feature header, folios not discarded\n");
-+		goto out;
-+	}
-+
-+	ser = kho_ser_payload(fhdr, memfd_luo_ser);
- 	if (ser->nr_folios) {
- 		folios_ser = kho_restore_vmalloc(KHOSER_LOAD_PTR(ser->folios_fhdr));
- 		if (!folios_ser)
-@@ -426,7 +443,7 @@ static void memfd_luo_finish(struct liveupdate_file_op_args *args)
- 	}
- 
- out:
--	kho_restore_free(ser);
-+	kho_restore_free(fhdr);
+@@ -447,9 +461,10 @@ static void memfd_luo_finish(struct liveupdate_file_op_args *args)
  }
  
  static int memfd_luo_retrieve_folios(struct file *file,
-@@ -533,14 +550,24 @@ static int memfd_luo_retrieve_folios(struct file *file,
+-				     struct memfd_luo_folio_ser *folios_ser,
++				     const DECLARE_KHO_SER_HDR(memfd_luo_folio_ser, *folios_ser),
+ 				     u64 nr_folios)
+ {
++	const DECLARE_KHO_SER_HDR(memfd_luo_folio_ser, *fhdr) = folios_ser;
+ 	struct inode *inode = file_inode(file);
+ 	struct address_space *mapping = inode->i_mapping;
+ 	struct folio *folio;
+@@ -457,12 +472,20 @@ static int memfd_luo_retrieve_folios(struct file *file,
+ 	int err = -EIO;
+ 	long i;
+ 
+-	for (i = 0; i < nr_folios; i++) {
+-		const struct memfd_luo_folio_ser *pfolio = &folios_ser[i];
++	for (i = 0; i < nr_folios; i++, fhdr = (const void *)fhdr + fhdr->size) {
++		const struct memfd_luo_folio_ser *pfolio;
+ 		phys_addr_t phys;
+ 		u64 index;
+ 		int flags;
+ 
++		err = kho_ser_validate(fhdr, memfd_luo_folio_ser);
++		if (err) {
++			pr_err("memfd_luo_folio_ser feature validation failed: %pe\n",
++			       ERR_PTR(err));
++			goto put_folios;
++		}
++
++		pfolio = kho_ser_payload(fhdr, memfd_luo_folio_ser);
+ 		if (!pfolio->pfn)
+ 			continue;
+ 
+@@ -472,7 +495,7 @@ static int memfd_luo_retrieve_folios(struct file *file,
+ 			pr_err("Unable to restore folio at physical address: %llx\n",
+ 			       phys);
+ 			err = -EIO;
+-			goto put_folios;
++			goto next_put_folios;
+ 		}
+ 		index = pfolio->index;
+ 		flags = pfolio->flags;
+@@ -524,15 +547,22 @@ static int memfd_luo_retrieve_folios(struct file *file,
+ unlock_folio:
+ 	folio_unlock(folio);
+ 	folio_put(folio);
++next_put_folios:
++	i++;
++	fhdr = (const void *)fhdr + fhdr->size;
+ put_folios:
+ 	/*
+ 	 * Note: don't free the folios already added to the file. They will be
+ 	 * freed when the file is freed. Free the ones not added yet here.
+ 	 */
+-	for (long j = i + 1; j < nr_folios; j++) {
+-		const struct memfd_luo_folio_ser *pfolio = &folios_ser[j];
++	for (; i < nr_folios; i++, fhdr = (const void *)fhdr + fhdr->size) {
++		const struct memfd_luo_folio_ser *pfolio;
+ 		phys_addr_t phys;
+ 
++		if (kho_ser_validate(fhdr, memfd_luo_folio_ser))
++			break;
++
++		pfolio = kho_ser_payload(fhdr, memfd_luo_folio_ser);
+ 		if (!pfolio->pfn)
+ 			continue;
+ 
+@@ -549,7 +579,7 @@ static int memfd_luo_retrieve_folios(struct file *file,
+ 
  static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
  {
- 	struct memfd_luo_folio_ser *folios_ser;
-+	DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr);
+-	struct memfd_luo_folio_ser *folios_ser;
++	DECLARE_KHO_SER_HDR(memfd_luo_folio_ser, *folios_ser);
+ 	DECLARE_KHO_SER_HDR(memfd_luo_ser, *fhdr);
  	struct memfd_luo_ser *ser;
  	struct file *file;
- 	int err;
- 
--	ser = phys_to_virt(args->serialized_data);
--	if (!ser)
-+	if (WARN_ON_ONCE(!args->serialized_data))
- 		return -EINVAL;
- 
-+	fhdr = phys_to_virt(args->serialized_data);
-+	err = kho_ser_validate(fhdr, memfd_luo_ser);
-+	if (err) {
-+		pr_err("memfd_luo_ser feature validation failed: %pe\n",
-+		       ERR_PTR(err));
-+		goto free_ser;
-+	}
-+
-+	ser = kho_ser_payload(fhdr, memfd_luo_ser);
-+
- 	/* Make sure the file only has seals supported by this version. */
- 	if (ser->seals & ~MEMFD_LUO_ALL_SEALS) {
- 		err = -EOPNOTSUPP;
-@@ -581,14 +608,14 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
- 	}
- 
- 	args->file = file;
--	kho_restore_free(ser);
-+	kho_restore_free(fhdr);
- 
- 	return 0;
- 
- put_file:
- 	fput(file);
- free_ser:
--	kho_restore_free(ser);
-+	kho_restore_free(fhdr);
- 	return err;
- }
- 
 -- 
 2.56.0.506.g506a7eabc5-goog
 
