@@ -1,90 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0754A606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 05:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 386F6606A32E
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 05:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=onyVj77v
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OEG0XvHL
 Received: by kanga.kvack.org (Postfix)
-	id A98BB6B05BC; Tue, 10 Nov 2026 00:58:05 -0500 (EST)
+	id DFA776B05C4; Tue, 10 Nov 2026 00:58:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A216D6B05C4; Tue, 10 Nov 2026 00:58:05 -0500 (EST)
+	id DCB436B05CB; Tue, 10 Nov 2026 00:58:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95E276B05CB; Tue, 10 Nov 2026 00:58:05 -0500 (EST)
+	id CB9E86B05CC; Tue, 10 Nov 2026 00:58:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 782966B05BC
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:58:05 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 235BD14087F
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:58:05 +0000 (UTC)
-X-FDA: 85418153730.10.C1D134C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 87A211C0004
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:58:03 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=onyVj77v;
-	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AAE076B05C4
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:58:06 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4677FA08E4
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:58:06 +0000 (UTC)
+X-FDA: 85418153772.21.3F6917E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id AD4A11A0006
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:58:04 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OEG0XvHL;
+	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794290284;
+	b=5g2UAdYgBaWHQAwJdfXG7Zn5U7XLny7/k4bxtxGMJ/DWs9qnm6lbo1Rj49X0Pgt7NeE5d9
+	7sPS4On8yoeGhup5gpWq2swJ5Q/F+jQLmcuUTlKQxDuBQQmDDhenuRSTWrllWE1jODVJOc
+	uCARTYSMAW83Y4ew8K6Zb5H4vpvd4H8=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OEG0XvHL;
+	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794290283;
+	s=arc-20220608; t=1794290284;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ftN8clTyx7M0uKnbE5qzzg/XNyWcJ/PQXvDRxAVfxQ0=;
-	b=2eskWmKrASNGUpOh15mILW6G0c8ZmhxJwstpcpwzqfNFJ1YkTCwTE0KRFrPcRDy0UFS5yA
-	J0KoJkPgnT8R4jjmWj8g3YlplReq01qVQrwdarv8Ga4mvG5VwNXuKVScePb+pDMhR1TKlr
-	aa90X6pmKP+j/BjD05CIIGsdoL/jm+c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794290283;
-	b=OYNQmhd0BZF34gc6vvzXmYkzvf56YBGniQOXiYksTgwpc8sEVc4bQUwwgZ3e+wTfg21hsR
-	Y1FtP0bfS96QsWSnAxx0AjI8go0EYPjWIzebF8Qj/27fKWfWi20v+dzv/umCBcXgKBq3V9
-	fyK7gkySaneyGr18DcDAGijtWLmiS+E=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=onyVj77v;
-	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=WbYzdrnzzIoTF6klOJuhwjCo4xeNklc3rzjESHYyhtM=;
+	b=UGd9JH2Gi25I2qW39bvG0VWyEluYZSouNM9JfZQTR6NVkPhwMeIISt3UUjPhpSQQGts+7q
+	AZeSauOilki90FlliE6LW5t6ZtK6LCFtigIu/Nu5ihIyV5ulHCl7mH19PwCJowb46agfsh
+	vuaDeVbNTLOLfhdG1lpFeq7nI2p4Lkk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DC74446974;
-	Tue, 10 Nov 2026 05:58:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 068D01F008A1;
-	Tue, 10 Nov 2026 05:58:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4B70361CE9;
+	Tue, 10 Nov 2026 05:58:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D5B1F0089F;
+	Tue, 10 Nov 2026 05:58:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794290282;
-	bh=ftN8clTyx7M0uKnbE5qzzg/XNyWcJ/PQXvDRxAVfxQ0=;
+	s=k20260515; t=1794290284;
+	bh=WbYzdrnzzIoTF6klOJuhwjCo4xeNklc3rzjESHYyhtM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=onyVj77veORD7XJ0xbFeeWnlI832hoPOrLcxxgeAsT9EWPPWtirMDUaLCqV/WOUXy
-	 /AL0RDTLO5YZ/as/eaayO43S4/50SI9QP0I46ZJ/HVB1dvRbrQWQ8ZvOhZChl1VDLM
-	 pKtQFd8rzLzixHXcgyrc8jccCBndMUF9r789WRBx/LVYdQvUYNn8BNVC/GjszQm86/
-	 sCfC+IemK+/EtkhfjmNDoi9KgRA3+UduJryKOFBGbzVuUF8ilimMxmBJg6OUWnjBVR
-	 cMv61Bd7Y5mpqZd6G6CMcCgDosLv1ius8v1DcQj71xTn82YGsto9gBbECD8Ji1GRJI
-	 taQ8nx/wK0h6g==
-Message-ID: <sashiko-outbox-206368@kernel.org>
+	b=OEG0XvHLa5w/b3Ea4AxYP1T88+5eKeW34uHUGo630Ycj+F6mADSQPqzCLKt/Xx65S
+	 gfBpWz6G+F22Wyi5LBmxN7FD87FPaFI1QmRQGx4E2Tkb1p7QySb2TNWCjCJpmXHWEe
+	 SrJ9pWcD+BICF6UzxClqIZkItl1ofjUwvrDI8cjSvoZpCIUixS2uwYJnzkVg6lvQ+b
+	 Pe0oBqN1lI1dHQtB9yrIBMa4V30vXUQZFRHdDzZG5dk2cEzboYejCcVKh58Ucx2PNP
+	 A2TTW6r4OOsVTfPAMcfe6BIKwt59n2OmU2Z9zvzNp2oZjlFyBu635OwBEXBZZAY5Iv
+	 joa2pH4XQYrcA==
+Message-ID: <sashiko-outbox-206371@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 09/19] mm, swap: use a stable id for xswap devices
+Subject: Re: [PATCH v5 12/19] mm, swap: let swapoff destroy xswap devices by
+ name
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Baoquan He" <baoquan.he@linux.dev>, linux-mm@kvack.org
 Cc: akpm@linux-foundation.org, david@kernel.org, chrisl@kernel.org, kasong@tencent.com, nphamcs@gmail.com, baohua@kernel.org, youngjun.park@lge.com, corbet@lwn.net, hannes@cmpxchg.org, chengming.zhou@linux.dev, kunwu.chan@gmail.com, klarasmodin@gmail.com, "Baoquan
  He" <hebaoquan@kylinos.cn>
-In-Reply-To: <20261109055455.536925-10-baoquan.he@linux.dev>
+In-Reply-To: <20261109055455.536925-13-baoquan.he@linux.dev>
 References: <20261109055455.536925-1-baoquan.he@linux.dev>
- <20261109055455.536925-10-baoquan.he@linux.dev>
+ <20261109055455.536925-13-baoquan.he@linux.dev>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 10 Nov 2026 05:58:01 +0000
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ti7pmgxq7xogqsekatm4x47xbw97im1b
+Date: Tue, 10 Nov 2026 05:58:02 +0000
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 87A211C0004
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: AD4A11A0006
+X-Stat-Signature: 9btzit333nmgpzsaeonnjkyrabf6h3xp
 X-Rspam-User: 
-X-HE-Tag: 1794290283-213390
-X-HE-Meta: U2FsdGVkX1+yTqKBPza7qVFp3izjeQXP7VgTPvDbAWaHli1sMIQ+Yd+AQjD2iAMPOyd9C1nIubEQqlnRNJbUBiFsXKJRFn2oVNc0lD1PxJqpWn8SdefCYNhmYOCpwob2J8VfaRyaIDn5rIbmk4a5m/WnphVakHvbCwVU1ccN6y8ZmWIkfDhoUy+BmeEhBHq5ytj12i133sG5h6yDHlLpbE5b26ZUv+jUOKLJ3Z96HoiJMM+sWKuPX7gEQs1EYmYbkRN3TGkIf97eRWRSIHrq3NMUMarvOpU+ft++FUY7exK2i8V3Dx1fVhOWkgVnTqBXmPmbVK3O7WECs+lw01bOt6yNo3FaxKQxRAZ+YB+xRVuzETwqQ/EhyVjR81IqK/RNjj+c1Tq1Kh7lyRJMAIM4d95M5lF9Lsh2CxPSzVdbOlvDbXFoaeChKylwR+zHFyEBaueTH1BUk5znQ0GiYc0fzvvnjU9h5HwkJcfon+DrcMUCu8ZQavUmph+EvQYYCj6xxCwgZQll6as/2KgF5kTrIOGMoaqBqZdhhOhqcULHn58KU5OEF4S6FQsgLwoquatOMt8yp1plmCkXJtyRCwSyOdo5dFgGbqB2gELsKRDS+vpxfEAQ8s7QIhGRhAZncPYBB1WFygLjT6kYTjaMJm5uwTl/Sw5WfMdsjLjEa7Dikb2dhRpEri4JjpMKXcgKxqgMdlD0ciqXedewhyCrYZ5TtEQeSX5rlwU7vNcfNQCO8kTu9cPBFiyUGK39XMF1LwEsVnNZIkWANAQgRkYrkY3acs5bCK8NkBj0GmYZ7vEq75GOQ42YD2GucYH3NwTeUbGQve1v8AYzDiVTWMJZtHm4ZD2ueSZumpIqdbpqQOHnMex1B9IO9Vf+CSBM2EwLonooVuYRDzccs0FSdQ0G1XVb5q7eja3oFyWu3I6K573xUzlai02uRNBYIhO9v0fZ01YtcuoVnmzDbpVO+KvIFtj
- 3P8XTSVN
- tLU5ZVb3w+nIeGGa31CxzQoAjLSApkQuhlRTQcxwR0A0sIoFK6/3pcf9eXVV5EjbSCPfccNTRkdi/mfQr1B01FbxENP0e4aufIs5SI1QvyDgKkVLvLS7h8lAT7pu/GzDiCTfiA23HAeVlRth7jQRp1W556LLbhfDsRw0v2otHA63CX1EjjhPvXXOkpicYO5s//2ydjCpGhOi4unDS5c0xOIc1zbSm9gXz8AOurzMMpIX3gKSPck1Mvl47VNK9u3ghXKHlKilunrAWIZS6FjZBkwW/IOsVKQv0cErYRvotmgiy1mA+IebJlcgyPOroEnRkPxgYLpJb6fo38Fd9R97DsRhylnx1fY7YtLLLpVWbc+i8FwSdtlPZCwYY6KMw809EQa5wm7n0gpRa9AXitDCjd0/BZ2gJMsPcjJ/og0ugwgH5mq2UqRCuyHTTCCfe8/J3zsoZmzQONz6LX1zUzleZHkwLQTk08ayhwm5fTpq/kl4h7dg6RuHJkLRfHR4haBDtuunkkGUoFsaJyianAduubkNErKnqXZVbU+fdbjFlY/NRoh5Nytl8gbXzdma0WcxWFMQ/pBZ88HELladf7Y22h2rZfyZb9BnOmn06zWHRMZ3x0biSpHsLWkiMcsoA6RBa+Xhd/pgh4GHvmg8=
+X-HE-Tag: 1794290284-830735
+X-HE-Meta: U2FsdGVkX19iU3ztpPjd4BjwXdD1QfzEIHjtquSFhdw0yQv8/JhSXqcplBk2v2HdfaLszM7k99sEPngAbem/09nTKC1xLg2zn6oza5Q3fk++FgagcAMb3eGmFcejSJmG57SlMEXpkdNW69BOPL7gfPM3D6hBiJdHRt5EmINuLpiU1iIEUZL3PsYbShoB2L/BRz4ZSlXA96CBVXZfbijxSi1pqkw+s24Axb9lU4X3Exjg1UpnpBlSB6owOkOuK3FpZvBXZVhKB0wvOZqEgc7E7uMmwXWCz9zGIsOjBGKZbK4Qd62CKKNr9DIHzNiwg21FxRfFXMo13ZX1eANHVhrzTBjvhXYJ9VUO8G4eQXuiEkU9OFhRauku2X8XrqnwiFqbfePNkUpyvQI4DTAdL7ovEzmnlqigEoTnALM+kMMekNjTWD6TLIdZYmVS/31nc383r7HuYrkKxI1r1Y9SYZAl5hQMo1Nzub/m5LrloH/FNui6nB+QtHWpMF9QtCeaIVak6VLGeiHwS+A258+4xIHu3RPUHrbwmCHyxQJlo4RGzGFOODr8kucY6Ms579dXNy6hs+52yCIvzjsnOm2BO98ijDX05+mul5kb4EC6LByWEWDQxTgxlL6IVv+H7AWjiJizD6cC/R+TtQ7LDvV1xRear8lbDRudDZM74yoWImGKQmdDGEKojAk1LG2J4lQJKdj0av849fedUBx4YF/RPLUKue7ULhy+QtdH8UqozAJTRzxwet1uUUsB84OC5/CbGT9DcdTscRVdy2rXqLKimBc8HgPobFBr3qeLJHCA4XHehPNPSboWTwLX8SD+qqfTC9iIOck1+YAz7GghWDVgbkq5Dd5mEs/isvXQE0FEyz3gx8vWxQm8E0hxHIwtsUmkXFo9xIxiT+OGSHFlHp2f/Knv8T3vRzx3TvnfLC4Blsx8N6ZYVKVbFYN7PRQrDDMvWUXbBYUdHKpfzWe6qztuecM
+ VAxGE9g9
+ XkOJaA3Krsna+4mCrRbNz0bnV7i61Un1ZtE6l+mMwaWyaZtXmfWyv/SYnZ1avAOpZJ2DWRzAU3itPYZCfsVNj2r6Ii3x4S1qVZ4I+YkTDPK1fcU8SAzsILgL2knlV8xYSKqMRjje3Ds3kwmLPlgq8oMa8fMFXCTwgsi14JKYiGViQCIb0Cj+unCG8PD+rNxYgTDN0jvRcWhnoOiypNF0u0VHM1+Zmo4wHdgC2G3D9n9GlFK6wKSWt4RYdlvkENbrKcqkN8SslqvUmNw8q3y3BS6f5pyFuFz/Z88udSYmxV9Ca93CP2WD+Vrc/sWkJBsX++aN+VqsuhpSeEOT6hiQMwiS4eMvrwCIyU291SavKU/zH/YxcN9z2uF1NBmnyt1HBtuqkVOSkuqiWFeJUl0KDzDqB+AxCAZnWKfYD5dcCcvqm2QsKW/S9tWEdDAbxNXHQcgnaenOfnrwlskOJDvcOxufg1pv+/MWM2GtBhZNzKCckzVdxbtQ7q+hqns4DRMEOoTRpRp+Tx04jDWE4Oo+6nE1IWdfQW/ZAjrcDOJ/V7unPRGl5UO1MVnP8a5hMMXaipojOQ8rHiRuqbAcJ7kh5EjHgG9qaqqDpBaBzv6aSWmDXlP5/zBpXN/9pX8yu6fxebrnCuITrbIB9iPU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,45 +97,56 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Low] mm: commit message claim about swap type in dmesg contradicts
-  xswap_create()
+- [High] mm, swap: ERR_PTR(-ENOENT) dereference in sys_swapoff() on
+  empty path
 --
 
-commit 46956dad40c329833b6eaa3cc452fe974e0d5929
+commit ae71026877d501dba7d03d0b98df83479aa3a6b8
 Author: Baoquan He <hebaoquan@kylinos.cn>
 
-mm, swap: use a stable id for xswap devices
+mm, swap: let swapoff destroy xswap devices by name
 
-This commit assigns a monotonic 64-bit xswap_id to each xswap device for
-use in /proc/swaps, debugfs, and xswap_destroy() instead of the reusable
-swap type.
+This commit teaches swapoff() to fall back to destroying an xswap device
+when file_open_name() fails with -ENOENT and the name matches
+"xswap<digits>".
 
 > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 35c8aac1e25d2..44b54118d10a5 100644
+> index cb53f9415de8f..7b1d16226b7bb 100644
 > --- a/mm/swapfile.c
 > +++ b/mm/swapfile.c
 
 [ ... ]
 
-> @@ -4316,8 +4328,8 @@ static int xswap_create(int prio)
->  	si->list.prio =3D -si->prio;
->  	si->avail_list.prio =3D -si->prio;
->  	enable_swap_info(si);
-> -	pr_info("xswap: adding extendable swap type %d (prio %d, %lu pages)\n",
-> -		si->type, prio, si->pages);
-> +	pr_info("xswap: adding extendable swap device xswap%llu (prio %d, %lu p=
-ages)\n",
-> +		(unsigned long long)si->xswap_id, prio, si->pages);
->  	mutex_unlock(&swapon_mutex);
->  	atomic_inc(&proc_poll_event);
->  	wake_up_interruptible(&proc_poll_wait);
+> @@ -3513,8 +3520,21 @@ SYSCALL_DEFINE1(swapoff, const char __user *, spec=
+ialfile)
+> =20
+>  	CLASS(filename, pathname)(specialfile);
+>  	victim =3D file_open_name(pathname, O_RDWR|O_LARGEFILE, 0);
+> -	if (IS_ERR(victim))
+> -		return PTR_ERR(victim);
+> +	if (IS_ERR(victim)) {
+> +		/*
+> +		 * An xswap device has no file, so /proc/swaps shows a name
+> +		 * that cannot be opened. Accept it here so swapoff -a works.
+> +		 * Only a missing name is taken for a device; a real file or
+> +		 * directory that failed for another reason must not match.
+> +		 */
+> +		if (PTR_ERR(victim) !=3D -ENOENT)
+> +			return PTR_ERR(victim);
+> +
+> +		err =3D xswap_destroy_by_name(pathname->name);
 
-[Severity: Low]
-Is the commit message statement that "The swap type is still used inside
-the kernel and in dmesg" accurate?  Here xswap_create() switches the dmesg
-output from si->type to si->xswap_id.
+[Severity: High]
+Can this dereference an error pointer in pathname->name when specialfile
+is an empty string?
+
+When specialfile is "", getname() returns ERR_PTR(-ENOENT) in pathname,
+and file_open_name() -> do_file_open() returns ERR_CAST(pathname) in
+victim.  Because PTR_ERR(victim) is -ENOENT, swapoff() then evaluates
+pathname->name without checking IS_ERR(pathname) and faults on
+ERR_PTR(-ENOENT).
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109055455.5369=
-25-1-baoquan.he@linux.dev?part=3D9
+25-1-baoquan.he@linux.dev?part=3D12
 
