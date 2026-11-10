@@ -1,76 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A82A3606A321
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 11:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EDE3606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 11:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=iyixgFAg
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=EqAZ6bR2
 Received: by kanga.kvack.org (Postfix)
-	id C85E36B05C4; Tue, 10 Nov 2026 06:47:09 -0500 (EST)
+	id 8B5196B05C6; Tue, 10 Nov 2026 06:47:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C36EF6B05C5; Tue, 10 Nov 2026 06:47:09 -0500 (EST)
+	id 86D3A6B05C7; Tue, 10 Nov 2026 06:47:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4D8A6B05C6; Tue, 10 Nov 2026 06:47:09 -0500 (EST)
+	id 691A46B05C8; Tue, 10 Nov 2026 06:47:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 996866B05C4
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 06:47:09 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2CEEC120534
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 35CE36B05C6
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 06:47:11 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DB533A858F
 	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:47:09 +0000 (UTC)
-X-FDA: 85419033378.14.D863C32
+X-FDA: 85419033378.24.1890424
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 52ACB40004
+	by imf24.hostedemail.com (Postfix) with ESMTP id 0D13618000A
 	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:47:07 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=iyixgFAg;
-	spf=pass (imf07.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794311227;
-	b=MscUjdecD7QJASDKWaB1rVfYaojo/9NlCCjcuqAh+bPCzNSD8crbuA2zRAfyydTKBBhEG3
-	Y2djWRwhkkvzlTdr93Lu38wZrsc01PVpua3Kd2rxIutcnLa1vO5lmtzLW9D7sFuEXO3opC
-	bBrRYfrbdNcWd+kcipxWygoAngJiPDo=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=iyixgFAg;
-	spf=pass (imf07.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=EqAZ6bR2;
+	spf=pass (imf24.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794311227;
+	s=arc-20220608; t=1794311228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TMjTt/yM65LJnfLBEkqU4HceoGuAe/XUxe0Ej6UzqFs=;
-	b=2BbB9o7OypZZd8o2lPAzdNR5gLO7X6OEhvOAp/QOiuK7y6MPKn/0Z7yzU5CE7ZkaP3cnqV
-	A3nmzcN2nL4UhQpKZnBlR7BFVqJ6vw6giZe5EymnIQ3IEDGAM30cwyFjliJttyOW/ZD9rS
-	WrPftuNx35h4gt0SL4v0pYULH1AqGsU=
+	bh=gRVW2SlXZrQJCF/A0kq7pS5b8flQ/Sh7jAI5q7A4ms4=;
+	b=6QN9QZf+rqnSlEyMb+N+lejnKX3m+GSMV8pFPveo3Yn6DpsfpxRdagyyLaYKrJ6jAcLUTl
+	sP6MTTisipvTCjOTyIIAwvJevrfhc1SWfQ/GI64gGUBsQcY1RXY/RLFke4U89HGFy9pBVu
+	ZRauOuPedTHn+hKSBp0tY9svxxD21Uc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794311228;
+	b=m3N+Kw5pnrS5NlISHOn6uafddPCxodWtK96vbYOA1+K06MNts0uwsOCCQ/Jl8+yFpiY9M5
+	deCRBlmC/Qhnu+KEvmcKWKt1QH6lpTVdaFGsU55qVOJEaEZXAfeRvmeemUKcygNYQE4xZh
+	zxL3lggbBeiS+VWmIjLqiRk6IPpKeS4=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=EqAZ6bR2;
+	spf=pass (imf24.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description;
-	bh=TMjTt/yM65LJnfLBEkqU4HceoGuAe/XUxe0Ej6UzqFs=; b=iyixgFAg9qREIYke8njMawXuIx
-	m+6DM4Uqz9vuRKRMNTS0WtEuw7lwrRzO+dqy61GCeyqhy/5nfW/VPdGm+Q9QyBvuQGWkMSkMK7lPI
-	MGk/hYTjmx9FbtzL9vBmtflZ6A1gUpXHjVEp/jB3Na/Q4SqPsQe2m+a/oZ/sRsfzEVunoXZSzi5+o
-	pmLhZuxFG16tl6QgFE9g5fn/7IfTQYgAAee5GlO/OWWUy6qbfBFppcHComW9Sb11YqYo6l3AMb0hO
-	61bPtWO+VfG30QK+x/Ewx8Usbm/VHCYUwt2AZWKncW5rYsxbB9rbccgIA2dXwP5XiQvhfjCnXWzZG
-	nPDYeeqw==;
+	bh=gRVW2SlXZrQJCF/A0kq7pS5b8flQ/Sh7jAI5q7A4ms4=; b=EqAZ6bR2kjWZmkur3br2mPpRhS
+	2JP2wKrtXb402ZPLJlwHk3CCE3gzUDouicoZk9sekNwOabrgL1jw4R75fMkmGeLPKB2atHPN9y4Y+
+	v4DhAzYggMrnFKCFfStatDp5v2wqf9e7bcaCVQIy9VS3c6S4VUy3CfGqCn7FqWLpYgPrtOfV2WmuJ
+	Sv/NfeQzZq5o9oo+ooVIXDs2TyzucOQypasuYjEc51IBubfNI25MF3qluglyLu8yLlA25N/doqRWt
+	1b/SyI0r57W9EzzzRzY3lJ72vSvubdpY2P6vAsNbn0KY7eVqgqR+QHxOFsPFaqIWns9NRc6mE87AH
+	cZSchDGg==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1xQkJH-00CNSq-33;
-	Tue, 10 Nov 2026 11:46:44 +0000
+	id 1xQkJS-00CNTa-2O;
+	Tue, 10 Nov 2026 11:46:55 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Tue, 10 Nov 2026 03:39:27 -0800
-Subject: [PATCH v2 1/4] writeback: add the missing newline to the slow
- writeback report
+Date: Tue, 10 Nov 2026 03:39:29 -0800
+Subject: [PATCH v2 3/4] writeback: log the end of a slow writeback wait
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-writeback_stall_report-v2-1-9e0ed75074ca@debian.org>
+Message-Id: <20261110-writeback_stall_report-v2-3-9e0ed75074ca@debian.org>
 References: <20261110-writeback_stall_report-v2-0-9e0ed75074ca@debian.org>
 In-Reply-To: <20261110-writeback_stall_report-v2-0-9e0ed75074ca@debian.org>
 To: Alexander Viro <viro@zeniv.linux.org.uk>, 
@@ -85,38 +84,37 @@ To: Alexander Viro <viro@zeniv.linux.org.uk>,
  Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>
 Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org, cgroups@vger.kernel.org, 
- Breno Leitao <leitao@debian.org>, kernel-team@meta.com, 
- stable@vger.kernel.org
+ Breno Leitao <leitao@debian.org>, kernel-team@meta.com
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1238; i=leitao@debian.org;
- h=from:subject:message-id; bh=NeGmKN3thvdahCzcgtVy86L0XUPUwXecQRMKsZHaZVs=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq8wQYn+tO0/VLlCpKrWAiFk/NDyAXlM8rdRiIY
- 5NVV3z7jQmJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCavMEGAAKCRA1o5Of/Hh3
- bWPjD/4+JCpUjzQC7+wpcfuUqpIQ257Du7Kdozk0zxWRhZyLexwAvUq8MrMgAjj9pnefRjX9WH3
- bWh8IdLz/x6p/emum/ddOOCpq3hS+yUpA/Nw95efr5YI8+ZvmnfA5ktJxMMv2sJz1oBmluexzFA
- nZeObq4sZfp5rXLA19Y7xnISHT2sbijtsVazm1m3J7obgvMW0MIgiKIfHB2pMEVOlxBa3i3lZQb
- SDnuQUj2GQHnRCUUSsvmSqF6vhFkp0dRey95qurL+iKwKPt9kIF5u0vXJEHWNQzLwUYEluPPYLJ
- McvMXURJb8e/B92meu65MID8Dl/2R/RkF3Qs0lUq97w9oqZzyUcGYzftDhvC/hOzGh/+mG7OWGm
- J7Z0jhZWaMpZe/VP7J8D+XYMv5uhZrw96OUGkxSc1Rr3hkq0EauSRPUszKGN/MmEJgIQ6lLqsrp
- OPVBX9zrFualqhV/iPBqMe2OpO5kM/4zZKY/FAz1VVs8WP6YrSrrCyLFblXa1cNheJiSgM0XGfi
- q+AAV7axQ6aiP1c9HaHF9cv8T5jhlpXvsFsiuBZNUQ/a3RevfIE300XwXtpANw7qu4lhGMipzqS
- 8xT3Ci+znxzd8wA7nVV3xaEj+NHOdyfyPQ1QvQKO++VKHpyrwJfguFsWJpBK4+xXUaAfqZ53tx2
- GZBW8VwocVvy/9Q==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2451; i=leitao@debian.org;
+ h=from:subject:message-id; bh=u2qEqJa97IMYQjXULEzv1cq2WuUThXMDMARYrLe/reE=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq8wQYnbNvAsZXal8d97AAOhUXQdWcdYAtPVoqf
+ ThjeRURiG+JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCavMEGAAKCRA1o5Of/Hh3
+ bWa8D/0Q8o7HtSBw541Vvwgp2xYsXuYm7Xe9cEoo452XKnUFKjgfFRwYCTsua/Gq/sgxlgGF+Cq
+ QOfmimWUKd1DYxOycjuKFQQ6HC61zgJX5+Q9xOEyHk1Q0+ff5suDwfUHQnp70yn3Lq8N2oGImyv
+ 32IjgGegUnsc/l/rYHnLDltFYVirWl2HMBviA4A76E9ouwWg7xAx5pS0ZFfwAsbxF/MqCy57Erc
+ +ZfWJvaNxIMXKWX0pBTUpszVcjqHv/OYiyAbY36nLDRgBLqztr2TLgsxcwlEsakKS9gCKL6mTtb
+ EIC9tgR84X6W2/V0RxxDLb3Pu2NOMiQcQ0p/pA3uYu1a2LWQFsPFW+nIh/iAIby8aml0cca8w27
+ eHZ3YO1hATrFmzPBFWXj5nKh7X+j2FBgLGLTjcaE8j54Iuc2kMzlP9z6RY6+82tFyeDxG7i2ctg
+ B/C06UYRYGBoYOXjAzjl2OIQu3UiaBgI4zZGkxkYVIvkZgD+Yv3zgOAhVMJAPOJIyysHe++yK+4
+ L0HPoUprEbXv8i3s9rOdOYeliWgwXJ2ST5ix0KfVxqZTRqX2xqhnVZsf+V17azLTjMxkz60tSmS
+ jf4la6GMq+tUhO3lBcQ/vTLkUEDK4zBMvUnC4rbXw3vfLzZJAkk+M9RFdcOvtDxLH7sbT660upR
+ H8m2pgEYyG/IJ/w==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
-X-Stat-Signature: sywj3r8sq4sbwhfszidkx6y3h8zxtfwi
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 52ACB40004
+X-Rspamd-Server: rspam06
+X-Stat-Signature: kdz3iwn97mdxu7x3r5kog6869znru8cf
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794311227-692316
-X-HE-Meta: U2FsdGVkX1+a7hTsjZrJSROARN9UCaV+4kNWdY2/MZea5Pn0O6UE0HtyTcmDQdenYNcsHI64+WGnRfLyp+QRBF+1nK9cmaILZYDj+m9ZqPLx1f558Ua3m5NapSlfVzBosh9Gx9EyENi6Yq8YbT2/bJSKLYLr4359sl4hXXCZjX/dJSeR85AtSnlOrITVkhK+qVqo4I7qHeHu6qeTe+tB/CnopFq3aWV4cgxGLzOP0/ImKLzKdIuB/UaMTVA6I7NF6cE3Cvvg7LNgxKLuz0iZ69pnThNxT8TjsbWHs6rl+0edo0THee1flUyKcfomB1eKvjp6ll7vrbm5W854pJRVYtfcjgCk1XlwULw6NmXc2IP0bODNBgGZQKZ/hiIy7d93zBMpjhoKduMo6kFYQTXWXlWQGEGDxixFt6fuF6K9abK0l9vapR9oHE4i+OBALsCNHeMRK6R+0ubQx2hpzsYDEJSaYfaEPqIezk20s7o8PTL1f4gMKA3MYmdnlL9QkLo2laRtszOpu89sJphSSDz9ImBRrtexBHU7VZd1bz5m47N0od31qOCmaR2uO+PUqbo5sDL/Rw/K6YYxNaNCPSxdIaYmtN/1h1vLaaiLoIcouIYUPvRDQp1ckrreiEd7AyBuUP5VUtcRLZrRRK61vvCiubx8seHfmti0DVv2nyu5lmjj0sAxf2nua26wmiUKwGXxWJsKpXBzDEVhKgEjsAVecvwrdWLtsmGEmKH/RMs7G7JUAbKl1qCwDVA6BabzO1veYIlkF+WfMCcO18F4XcM2qz5ITNSMf2UmKovu4XiPopIKvIq1Uz0/QlJxc+8te+m7aBwYKkUnZhcKSNbFd0WKF2t/BTgt6V1IBuhQLO9iXP/R3hnXyxPIeIiPNykuUb8MdiNjmYgxFeijL5VunfblZ7UUYUPlRGiAa9HFYLZQjUt+9F8ghb5dakOzYY4FTzEhl6bhTABnZkDNJI9xzaO
- lqiugTlz
- 8+yuL13LSRUqHx4MiLeWUdbl7lvkDmxbtYQR0Ew2i/GvLgYaErned+d1IbnNlXv0cffyl39iM/2rNgaG79kbJFdleo72/F5HtMetDgnCyr8sPm9yCPj4mQrsEkpJGPEKkr3BJa19MLb1sHFknv7qYwyX9apZ8QkLyjfD5DPCCmHTmPH/HD4ry+rVptuh9dolr7Tk+rQkGMY+XK/YJEiI2M/nbrscC8yhoESax43JMiZ0S0lMCbKQn+Qpu0Kx5CWLdUNCkPPuYPHK7P1nfyK2744XBhReev0i/0d1QRW+UHkV+R7cxA8bA/pabfQ==
+X-Rspamd-Queue-Id: 0D13618000A
+X-Rspam-User: 
+X-HE-Tag: 1794311227-921683
+X-HE-Meta: U2FsdGVkX1/pbeL4NaOCV3KDiNPNDQqELciNTz3p87xuvtOnt6nCoYDjSLDAI2Rq/7pXj9wKHdrfhoDsZSbWk4zDunakTwK5iSMjiAMsadWveNFvbMnIZbOY6m2LWfQAWm45e91kCKKxUqNYVmcdd8VQqvByAlpsV8a4Xny52Qc7o1RQXchSrx8C2Xe6HFzRpxk3SJCpqR345VSLrOSAVj2/d2g2oSDeWeFbYfpDd/aCEegRlBAIFWRGD8aRB4gHYiQcK9WHZuUF3usxOzvCnua1boFAk7f5I9TNZAfiep2sRqb7kQd3QRYo1ORLIgGej7CJzWz6byIMAqPCwhYDmH9+yaFKeLODdvwHhe4/lwDTEs30267g66beyHXQyyg+fKXE0fNs8Qgv5rXt/E0dsfX1SpsRsDSaY1vRvxT7xvPJKcaUMTIHeGqtWqEefGN0TmXkGiOUA5uGAiaan/KnL7kPHUkBQTORL3usIxJr8nd8zDNj36oLnrjj360fbwHcoELyxdoY4MqcjWP44ftwCFb29xg32QQ5apZAqjWNv/dJz/Q89eKIg26iSN79hxpZcCAMct3JcksVWV9G7LQE1jFXPaRGJIAjP6PGuRusvL0wSTA4OfrEXsos1NV7Yekrl/gPs+9dYXRzvV1XBqRQbILIfaYFgkOcTZ8f+RcR+yoEUTTTDou2Uq9Ifog5/tZyz5pnJ1l3Q5xhsdgtKTbk+ccIIW22QtRGfIS/ods9GWtpHrW8yYTibiRIzTRNCKyZnYS7u9jIzgrz22XPZNKikHvYyfaRZkvypk61Y7VsLw9yK4ttmN4t/fnEjzASDc0TB9suxFCtOKoAK0El4KphXlPdWYoGdgksaBuUv6qv3W26CVZXDYXUvu4V0OL7bRmE9D+XEnGyWev7OBKRo/z+uAoCtLm36DFIxA9hoPjLOpb+dWM4LgSIAn2QcUKbDxGUt6jmwaOOxikPxxFDvoP
+ 0FDoi2E5
+ Os4wtMMo51LBiYZIAjsaqVRhY85gp2q1COo9DPL3um4Oh+bVJWLMwzD30xMEqAIhj9ha2vJokFngCUIc2rB+4kssM93Y0pHdK8WzhzGvytmsgiiMHIJTq56oKmwRWJoEOjqL679PrXaCMlcQlK8paLeMjbxraTl0D18peSPotvTf7PpudvRHxSYayg2GFe83EVvDFoVeE3kTcEo2AeznxKHAXFGgR/RtlQplFx6n2SrEhtXQQhDwdLD4Nz654UVmaEnPPhpcqWQbY8+kTPbptB8N6n12Fts3datOD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,35 +123,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-wb_wait_for_completion_cb() reports a writeback wait that exceeds
-hung_task_timeout_secs with a pr_info() that has no trailing newline.
-printk() keeps such a record open for a continuation and does not
-finalize it, so dmesg, the consoles and netconsole only see the report
-once the next message is logged.
+A slow writeback wait ends with one more "has been waiting" report,
+printed by the wakeup that sees the last work item complete:
 
-Terminate the message with a newline.
+  [   31.763963] INFO: The task sync:276 has been waiting for writeback completion for more than 29 seconds (bdi 252:0, work items left: 0).
 
-Fixes: d6e621590764 ("writeback: Add logging for slow writeback (exceeds sysctl_hung_task_timeout_secs)")
-Cc: stable@vger.kernel.org
+That line reads as if the task were still waiting. To tell a slow
+writeback from a stuck one, the reader has to notice that the reports
+stopped, which is easy to miss in a busy log.
+
+Report only while work items are outstanding, and log how long the wait
+took once it is over:
+
+  [   31.807879] The task sync:275 waited 29 seconds for writeback completion on bdi 252:0
+
 Reviewed-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- fs/fs-writeback.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/fs-writeback.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
 diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index 15260cf2a29b09..01a00d7542b371 100644
+index c5e9e5c0d506a9..e2da4781b5e00b 100644
 --- a/fs/fs-writeback.c
 +++ b/fs/fs-writeback.c
-@@ -204,7 +204,7 @@ static bool wb_wait_for_completion_cb(struct wb_completion *done)
- 	done->progress_stamp = jiffies;
- 	if (timeout && (waited_secs > timeout))
- 		pr_info("INFO: The task %s:%d has been waiting for writeback "
--			"completion for more than %lu seconds.",
-+			"completion for more than %lu seconds.\n",
- 			current->comm, current->pid, waited_secs);
+@@ -201,15 +201,16 @@ static bool wb_wait_for_completion_cb(struct wb_completion *done,
+ {
+ 	unsigned long timeout = sysctl_hung_task_timeout_secs;
+ 	unsigned long waited_secs = (jiffies - done->wait_start) / HZ;
++	int left = atomic_read(&done->cnt);
  
- 	return !atomic_read(&done->cnt);
+ 	done->progress_stamp = jiffies;
+-	if (timeout && (waited_secs > timeout))
++	if (left && timeout && (waited_secs > timeout))
+ 		pr_info("INFO: The task %s:%d has been waiting for writeback "
+ 			"completion for more than %lu seconds (bdi %s, work items left: %d).\n",
+ 			current->comm, current->pid, waited_secs,
+-			bdi_dev_name(bdi), atomic_read(&done->cnt));
++			bdi_dev_name(bdi), left);
+ 
+-	return !atomic_read(&done->cnt);
++	return !left;
+ }
+ 
+ /**
+@@ -226,9 +227,18 @@ static bool wb_wait_for_completion_cb(struct wb_completion *done,
+ void wb_wait_for_completion(struct wb_completion *done,
+ 			    struct backing_dev_info *bdi)
+ {
++	unsigned long timeout, waited;
++
+ 	done->wait_start = jiffies;
+ 	atomic_dec(&done->cnt);		/* put down the initial count */
+ 	wait_event(*done->waitq, wb_wait_for_completion_cb(done, bdi));
++
++	timeout = sysctl_hung_task_timeout_secs;
++	waited = jiffies - done->wait_start;
++	if (timeout && waited > timeout * HZ)
++		pr_info("The task %s:%d waited %lu seconds for writeback completion on bdi %s\n",
++			current->comm, current->pid, waited / HZ,
++			bdi_dev_name(bdi));
+ }
+ 
+ #ifdef CONFIG_CGROUP_WRITEBACK
 
 -- 
 2.53.0-Meta
