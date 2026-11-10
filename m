@@ -1,100 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9650F606A33E
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 01:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8260B606A90D
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 01:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IdgWz5xe
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=FLjc4Oba
 Received: by kanga.kvack.org (Postfix)
-	id A9CB36B05B5; Mon,  9 Nov 2026 20:37:01 -0500 (EST)
+	id 944EB6B05B1; Mon,  9 Nov 2026 20:41:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A745D6B05B6; Mon,  9 Nov 2026 20:37:01 -0500 (EST)
+	id 91C8D6B05B2; Mon,  9 Nov 2026 20:41:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 990736B05B7; Mon,  9 Nov 2026 20:37:01 -0500 (EST)
+	id 85B556B05B3; Mon,  9 Nov 2026 20:41:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 747EF6B05B5
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 20:37:01 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0CCDDA08C2
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:37:01 +0000 (UTC)
-X-FDA: 85417495842.07.3E4655B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6F310140003
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:36:59 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IdgWz5xe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 614226B05B1
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 20:41:28 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C079B1A046C
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:41:27 +0000 (UTC)
+X-FDA: 85417507014.04.B07333D
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+	by imf14.hostedemail.com (Postfix) with ESMTP id CA086100005
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:41:24 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FLjc4Oba;
+	spf=pass (imf14.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794274619;
+	s=arc-20220608; t=1794274886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FQbRhh+GNMjRVzFPOt1jBxmudTlDGq1Egh6Ph41W0P0=;
-	b=VJP7orPt9RD8f4h57BLgKHd44xcHoDAtTgYaw+rKsfzF1vwlDaWCGh3QjbKT3TckCjQSyM
-	m1JW3yl59Vzow3utIju5lWXzvMZtnq9DZ1ZOdMdgv44ZUV4CgDJiZkwiXck7RnRm+8WeeY
-	X4vUwgPi67J+vCDKZuweiO13+tHn5ow=
+	bh=YLtBIHtJK3uVpZ/8u5q8GXEFGNvOwwfb36TDfvtujpA=;
+	b=SJAEcU2l8WpqmZ6Ck95AzmQhAWLERX1TOSMUUa/QyDSp39GaRQJWJgGpn3LyclksWgGHxJ
+	c2a/J1PnO+BoWUHPwqjepCx+L+FzCGyN5YfvzvnwuoFMZQYHx9Atc+ie96CGwoP35GzZ9F
+	xMR7XHoLaFWTQiCLZbpNp9IPnJMenbI=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IdgWz5xe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FLjc4Oba;
+	spf=pass (imf14.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794274619;
-	b=EyX07Uvbt1pMnSlKE5IMvy1M6dFCiGeNiGCwN5pgJwgOfrDRXmJob6HIC8AgC8NcaH05DG
-	ThnMFDHMFHkYATE6LWmzrhFeLcyctzncWcwJs0MIO3TDBAIVX3zXZjYuuua0Pk5NHa0iBo
-	ohGP4nFNK5ocaXbvtQjlNVHTmE/6vy4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9664C457F7;
-	Tue, 10 Nov 2026 01:36:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F39361F0089F;
-	Tue, 10 Nov 2026 01:36:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794274618;
-	bh=FQbRhh+GNMjRVzFPOt1jBxmudTlDGq1Egh6Ph41W0P0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IdgWz5xedYv0YMzMAFuy66/+S83z3FE0Dopuxd0yDm+NTsqKhiKQRrT2Iyhyf9FOS
-	 IQNvv6LvKWjp2fVyXYh9WxeZfa9QhpqPgbi5CPDJAhxHlxjnIlaTAVBdz9kWULYzLh
-	 1FpcFNA1E7gtETP3GwlG0xXNu6Voow6ibUrA6QH513mn561bxqdioIewr9F95134FL
-	 xMGi6uvfZAf7MOiKcgDmkRG+IeFWoLMcnjzBF7ufW4KlGxHI6S13L/ub/aPm97JKjj
-	 DOtbFFahPUAY2FGgEZTZNMVc9T+ftiPr7HzihEJ/Dg/ANInaKFINuNL38/RsZGc74O
-	 eKn0ygDXQ0x1g==
-From: SJ Park <sj@kernel.org>
-To: Sarthak Sharma <sarthak.sharma@arm.com>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH] tools/mm: add page_owner_filter to .gitignore
-Date: Mon,  9 Nov 2026 17:36:50 -0800
-Message-ID: <20261110013651.107001-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261109110139.216653-1-sarthak.sharma@arm.com>
-References: 
+	t=1794274886;
+	b=fpXHtCjJnNyPeimp7nCtLLwcQ2gRbW5CUYH7B0bcdJhOdr9VZnH/kcJ1zCKT69VUBjlI2j
+	Vg4FwadmffTy5bYhlr1npA4gsvuJm81PIVldFhkGJHdtGNiYTauuAQ69nVpmJMWTtHngA6
+	uW8X6+nW18jQlQ3bI7Bab/uVpSSZ1io=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1794274881; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=YLtBIHtJK3uVpZ/8u5q8GXEFGNvOwwfb36TDfvtujpA=;
+	b=FLjc4ObaE3ZtOifcFaf3hWuNU41TlC6b5hau+zMEw/AKGwIfJ4pde1KlsbCYj55CXG4uFj0hXklfv0jNN8YU/gtrM3IwOo9g9AJ8AtwAP9J2FknUdcKyhI6E9R2gzLJwVR5vVdGgBqqI8S+f3gfKtINxzIdZRVnVlP/5thh3Rew=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R271e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=19;SR=0;TI=SMTPD_---0XETU7Hc_1794274879;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0XETU7Hc_1794274879 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 10 Nov 2026 09:41:19 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Zhiteng Qiu <qiuzhiteng@hygon.cn>
+Cc: David Hildenbrand <david@kernel.org>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Zi Yan <ziy@nvidia.com>,  Matthew Brost
+ <matthew.brost@intel.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>,
+  Byungchul Park <byungchul@sk.com>,  Gregory Price <gourry@gourry.net>,
+  Alistair Popple <apopple@nvidia.com>,  Xin Hao <xhao@linux.alibaba.com>,
+  Dave Hansen <dave.hansen@linux.intel.com>,  Yuan Zhong
+ <zhongyuan@hygon.cn>,  Shifei Ge <geshifei@hygon.cn>,  Jianyong Wu
+ <wujianyong@hygon.cn>,  Shijie Huang <huangsj@hygon.cn>,  Yibin Liu
+ <liuyibin@hygon.cn>,  Fengyu Wang <wangfengyu@hygon.cn>,
+  <linux-mm@kvack.org>,  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3] mm/migrate: don't batch the TLB flush when there is
+ nothing to batch
+In-Reply-To: <20261110001816.2186986-1-qiuzhiteng@hygon.cn> (Zhiteng Qiu's
+	message of "Tue, 10 Nov 2026 00:18:16 +0800")
+References: <20261106041628.1177963-1-qiuzhiteng@hygon.cn>
+	<20261107143456.1590658-1-qiuzhiteng@hygon.cn>
+	<20261109122915.2150586-1-qiuzhiteng@hygon.cn>
+	<ef12d685-d111-4a6f-b72a-77bbd1369548@kernel.org>
+	<20261110001816.2186986-1-qiuzhiteng@hygon.cn>
+Date: Tue, 10 Nov 2026 09:41:18 +0800
+Message-ID: <8733t9v4xt.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=ascii
+X-Stat-Signature: bj3r1c1xus4hmqiob4jk3gk6s6zufnsg
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6F310140003
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: pwgtm54e8efgaroznpc6x8uq8udf5oo6
-X-HE-Tag: 1794274619-915086
-X-HE-Meta: U2FsdGVkX1+Dp9KUjsMZ0qei9c19A79qArx1f3aRDya7NU71IN0sEZrt5CzduHtXI9YC/aDku+5OVkSDFJ6qgQeSltL4Urtz9xy5zv3mwaWnd9YUtZidgGyWyfFVgfR7SNRZs0ALRZBfKm51b7HEe8x4i7jrDcaJ/GbVCtSYlPcDrfeI8SQFePeGZTFc8dyl/rCeOcEvgKKpAiOV2MFUGjpnJCSahq/w9wj9GC5aWKyFed4uHLCrwUMqAh0M1fLxOAuheCcpmGgw92eblPoCi3qQv9aeY1CvDaV84B6fRT5UrI4KPUNFyjc/yiuaN5nl8evuuU4mR7hjpBskSBOY7hE91tP3hH834AeR3kF1Lhg8raXyv+YtKlt3N/uNnWFVF40op5WXdmPzeeeCUwLlxB3vi8WUsrRIDxKCR+vq6p0bSCFJlN+1KttVgLQCt6Y9yFDbWXJhXJtTTyGS+uM4E2CdcYPtLXTbIErW9yD6IQjnNDlYS7pSgauAPfADYv+PD1lHvpEHVNnOFH6R6w4Ex7IsElYZJw9mVVjQJgjxCMXVk92XQ4+4OTNoBxM8x908Jen+fh5YXrYyeVE8CuInxk8LNmCdUhBDt7V8HKhw4/fpDurJy7WSPbY2XprO9BvD9ZxFMpUJpH6rbaRTOEz4rqB63nOv46uRPCHn6btbpZ6pcB7FbQy9QnlyKIZ7Wig56YgCjICgb2si8U62Bvxh0FXR9WlIsUJvroMnZ7uwt+OUNuWbWmZmZekYiHrcCwgyrCsyffj12hcOghQn3QPELS4pW/VmfX9aiM0/BrpNobHXK7eAjDEpltHb5Ui6iaFmE6EGeHyOmd2aF+iw/mKpwLdq0BEdBq79zlw3L4QYh/tN1rT6Gor8bGSfLqk1PRKXxdOXVRGqQFl1uGeo7va3KqwQ2LLXRvSH8rxgaLRYaRJHfJ7sfUs19x2DvUFwGo7Wv/mp46gpszk0dLpYyrE
- tVdkoKOo
- B+dwCk3f6MIwZ0Tu62qdVS7BFlvdjS0wrY6CZoviQUgP6pqjjC6uR4YEm3fLYJqdq3BWqqXgi2ZReut+RM3CuYcebBR++RMqsQHsBRDt/98DQ2EA1v6BhHWGKb4tURBjD7PdpMPML0A+rlGRlRRnK5s5H2RVDJxJwgkxKMWdNhtSn2yqZb99P8rCfvq3SXhSVd9hc3VSTytqMVHmOXfLMa5G+qxGv5ejyiVO+59dqU91JZqJZgFq+JRlLTYNhMODbz7Qg9GE1tDEmSJlZTJBuUPg4Vv4Vl4imJy4JmeVp9Zm5vkBp+NU/ej6HwEAfrU6voz1Tf4UrX/Fv3Istvoa87o21ODfZzbtC+Tyc2zMRjphMxIjqoPuILoRjlwwe/J7RC1PlDEX/lJqCSRBV+NgCUX671OsjsEiYPBZ5lBHegMZVsaZ8He2fB8oFGwN1Yc8Aaz3CpJiIhKDVGdfDB6rtljkadNaLZusFt8/QNKqMelZAeQM=
+X-Spam-Status: No, score=-14.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=no autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: CA086100005
+X-HE-Tag: 1794274884-76834
+X-HE-Meta: U2FsdGVkX19/z95TdkXCSjrr/gxSlgJzd8RUH6jO8oTmz7wz0s84Gp0wn1ifNP0EF4pYqKtt7harrlei9g0yAkZcWpf/oi8ExdS6Dj0TBh8C97GrKWYIk2PIGHS0VtLonQxr4Pa8La0o/aoPKcfF3sQO5GtRHfK6f0d8cwv+Tfq17/FvK65T10CqOQVusuMET4MfhjvI3eLdccFzF5L4Sni0eikzux8oFjaSA6dz52hYOiLWwMqb2z8nZHJAhd9zE28RGsP03UCpxIPbVgrLQwzkGz4a5cn0Qt/NFrg7HjFtwF4LMRedEmhUnBUKKbJKmsAlBjp/SEFJ2o+sxjx7F+oHivO+NQIYgtiDzPBa9tK3QRCftTivrX3XnICuovRf6zau7XNnVPqYYcXtRkKVRQFcl9Y50xCCB+yHXgVb4QH3L1kBx6WHnS2nPmjG5k7+jS+3dgFUuguynNwDXBLUZyVOrdFcEcTjMLWsq9UswGq343FvpUEjqHF8wWiLgEFZwVywvwi0l8ukpTzKjfcwuEjLnjlJwqg+UIAzX3KhGkeeosE0Pw/Iqa/fyN3AN2NC2B2TNXiek/Y0MYoZfGwnnBGNBKtnM9dYq9Yarfh8oEMgRRB+FIsqIjBmp/hQNzbxaGOTWQR91t81e6dLAXGd3rNdE2KiiD9A0kQIvr7cpOCs0rq3DS2jl/Qw+WDlWUyxzANq3Th2SHBKt/5UXsgIrmv7b/JNq4CC1cJWci1bz5Es0SSf6ex2mnFZ7F+o/GDNncDIaVnR6dOIKoa4H1WbdNbx6HGjXKlcwgUrkpjBgDirEr1WyQvRpcHQVAr0AcX8bskxx1Mlm4ol1ytnlTap0F/8BwCHUP9EwQ1VEXPJNirNllYdZ50H9dncE7i80mTSPakaWvuvsr46UqXTM5W+PLksE0veXIq53mp8Mg5xlK96vZopddoexT6W7kUXejIwPQLvi1rvsN60EFwuFei
+ FltllNki
+ LfHjIqI2cFI/DjSsUmQDziq0sMG1TnQw/xQb/R1WLWupLAV51Kth6vUezuKOhXzMIbqDBt8oooRGb3MCJzTEqCkgNm5+UxJo5FjrB9FIdBQ2OP96KeZXYbRNS+vKtOwu8qb0Q2kMazjXxSa2jriF+Ke2vezT0kTU9fIa1ZEEI/aU3OmGsew+Ml6pWvFrgvIZVReaQaaKuGThuYBQOiCUMp4qGfS3WgAv8owTY/xMvwgTA0TC9P6zodJGOT4UsjcDrvDFqYzFWUQ6NFjbojjYc6oSRfHZ/8phBDXCI3ZmvP5ojRNPo/ngd7Y1C+xEQmMdq+Lq30QiApbkzHpbBDnpapq3gzlbvIcxZluzB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,35 +102,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hello Sarthak,
+Zhiteng Qiu <qiuzhiteng@hygon.cn> writes:
 
+> On 11/9/26 14:07, David Hildenbrand (Arm) wrote:
 
-I found you forgot Cc-ing below people who are recommended by
-get_maintainer.pl.  I Cc-ed them.
+[snip]
 
-- David Hildenbrand <david@kernel.org>
-- Lorenzo Stoakes <ljs@kernel.org>
-- "Liam R. Howlett" <liam@infradead.org>
-- Vlastimil Babka <vbabka@kernel.org>
-- Mike Rapoport <rppt@kernel.org>
-- Suren Baghdasaryan <surenb@google.com>
-- Michal Hocko <mhocko@suse.com>
+>> I am not quite happy about the folio_mapcount() check, though: as soon as we
+>> optimize try_to_unmap() to batch better for large folios, it would be just plain
+>> wrong.
+>
+> That makes sense. A large folio's mapcount alone would not tell us
+> how many separate flushes are needed once its PTEs can be handled
+> in a batch.
+>
+> Would it make sense to restrict the optimization to a single,
+> singly mapped small folio and keep batching for all large folios,
+> as in the scope of v2? The changelog performance numbers were
+> measured with the v2 check. Or do you have a different direction
+> in mind?
 
-On Mon,  9 Nov 2026 16:31:39 +0530 Sarthak Sharma <sarthak.sharma@arm.com> wrote:
+If there's any behavior change, please rerun the test to verify.  It's
+fine to reuse the result data if they are similar enough.
 
-> Add the missing page_owner_filter to .gitignore in
-> tools/mm.
+>
+> Moving the check to the caller would read the mapcount before
+> locking the folio. My understanding is that a concurrent change
+> could only affect which flush path is chosen, and both paths are
+> correct. Please let me know if I'm missing a concurrency concern.
+>
+> Ying, since you suggested using folio_mapcount(), would you be
+> comfortable with limiting the optimization to small folios?
 
-Makes sense to me.
+I'm OK with it.  Thanks to David for pointing out that folio_mapcount()
+isn't good here because we will optimize large folio tlb flushes.
 
-> 
-> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+[snip]
 
-Reviewed-by: SJ Park <sj@kernel.org>
-
-
-Thanks,
-SJ
-
-[...]
+---
+Best Regards,
+Huang, Ying
 
