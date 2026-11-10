@@ -1,95 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70452606DF5E
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 07:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24975606A337
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 08:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Bt11K0DF
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=LwS+QNeN
 Received: by kanga.kvack.org (Postfix)
-	id 883E36B05C1; Tue, 10 Nov 2026 02:51:08 -0500 (EST)
+	id 4270E6B05C3; Tue, 10 Nov 2026 03:00:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 834CD6B05C2; Tue, 10 Nov 2026 02:51:08 -0500 (EST)
+	id 3FF3E6B05C4; Tue, 10 Nov 2026 03:00:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74A476B05C3; Tue, 10 Nov 2026 02:51:08 -0500 (EST)
+	id 33BB86B05C5; Tue, 10 Nov 2026 03:00:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F2C96B05C1
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:51:08 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D4D93A085C
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:51:07 +0000 (UTC)
-X-FDA: 85418438574.25.A80DF1C
-Received: from mta1.migadu.com (out-229.mta1.migadu.com [95.215.58.229])
-	by imf17.hostedemail.com (Postfix) with ESMTP id AE16440006
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:51:05 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 116406B05C3
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 03:00:21 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9632A16087B
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:00:20 +0000 (UTC)
+X-FDA: 85418461800.09.00719B7
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 15F324000B
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:00:16 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Bt11K0DF;
-	spf=pass (imf17.hostedemail.com: domain of atish.patra@linux.dev designates 95.215.58.229 as permitted sender) smtp.mailfrom=atish.patra@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LwS+QNeN;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794297618;
+	b=6GgplxWAzDXtmc0ZRSn5v7TK7Be8/T0dJiolpL+4zmVh8THaSekKOC7mGqtg6rNzAMoFGS
+	pCnvNMEAIpAQ4JuVhAuncurO1jyVfbq+I/Q6eGKNR6TZ9NT+pVeony2QABB7B5cjCQLmMp
+	NZ1urqybROkGXotkh7ukERENGcwyN8U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794297066;
+	s=arc-20220608; t=1794297618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oCAnq9Ydyn9pzFtWZAL2uoxXAv5DcpFwU0HVA55B7zc=;
-	b=Et4zsVV2SE4jITGNzYRsxI9K52mARArlE7bguO7xg7VmZiaXjlxmoh6PIw9EGTX5eczEa+
-	uzLBC5t0FEnXawJAYAez1b3BtVGwubvDhY6Q4Vxpx4gHY3p1IY7JUX9YMU7Sp6NhadxkGg
-	XrZMhi3TAb0mnE8KvaKyXgtDwUh7TJk=
+	bh=iokOrYjLzZi4SS+ZT28oEpEsRqVw5VPLDVu//2xytMk=;
+	b=NfJWOJGaqL4J/JGomyoCecKbv10UvwqL9vOIMI22ve/m/utvWjaNfU5gEwR5tuzKPKlftb
+	GQOOFBMhFVFtNZcn0Y/0OcR4NUqOr6X94nR4XSPPeik7P7+qlNH/T5sh9pKiSziZFIE+7Y
+	EHEVTJeoLl646buEmuag5MJ0qCKujM8=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Bt11K0DF;
-	spf=pass (imf17.hostedemail.com: domain of atish.patra@linux.dev designates 95.215.58.229 as permitted sender) smtp.mailfrom=atish.patra@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794297066;
-	b=QPw1wcPYTdMkRXzG6HN0IUE4ezXNKWVMtL7x4DDyDkId+KxpAMsuc4UwwJ9wjtVRvxArTv
-	MBsIC7wfKgVYy/a0D12+iCjO4jJayCIG2Bv6ZMAHVlc6+cgmg0PpDZX4Iw+yJil8u8joTV
-	q5+1SEukBa26JG2LtQ7TVjItuw1x7E8=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=VEYHcJJXdTr+sSu/VkSL5rhEFuBwOC/PnaSfhFDxgH4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794297064; v=1; x=1794901864;
- b=Bt11K0DFsGKbjUzn/HQN5vSqRNQbCITQzMqgzZSVPTK8Ks7/8ZCi1hZYj1vCJlS1KNqzmK8h
- OnM+Gmbeo3EQyaa0Oy2n0daXlzBnGKD1O6EN2UuNgZywnsbzN9SrVCZBp0/kkowynQkgbfCxr9b
- bZoVt616m4e1laAF5GMWGFnQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id d983afd97fe96bab;
-	Tue, 10 Nov 2026 07:51:04 +0000
-X-Mizu-Trace-ID: d983afd97fe96bab
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <9c767bbc-3189-429b-b008-021306426b7e@linux.dev>
-Date: Mon, 9 Nov 2026 23:50:58 -0800
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LwS+QNeN;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1794297613; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=iokOrYjLzZi4SS+ZT28oEpEsRqVw5VPLDVu//2xytMk=;
+	b=LwS+QNeN7vBKSQk1CDFDh5qAwkSAumleLsRF3/5NpY+KQ8Ee/3dPXAjA4RmvbH/NtEXY4VzZJD/m+thsluuvHzRXbxonf+86Mw4uDD6fKmNjxFC2eWwhAIIiXw3uYR2uhqaEhodGwn1GsyGJx039ChPccin6ALVvfM3HsqbCa5I=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XEUewHH_1794297610;
+Received: from 30.74.144.136(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XEUewHH_1794297610 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 10 Nov 2026 16:00:12 +0800
+Message-ID: <98a97122-5927-4d72-a2ce-f5b5cec98ec0@linux.alibaba.com>
+Date: Tue, 10 Nov 2026 16:00:10 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/Kconfig: enable ROX cache in execmem when
- STRICT_KERNEL_RWX is set
-To: Mike Rapoport <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>
-Cc: Borislav Petkov <bp@alien8.de>, Dan Moulding <dan@danm.net>,
- Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
-References: <20250716075410.82578-1-rppt@kernel.org>
-Content-Language: en-US
-From: Atish Patra <atish.patra@linux.dev>
-In-Reply-To: <20250716075410.82578-1-rppt@kernel.org>
+Subject: Re: [PATCH v4 1/4] mm/huge_memory: scale thp_underused() to the folio
+ size
+To: Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org,
+ david@kernel.org, ljs@kernel.org
+Cc: baohua@kernel.org, usama.arif@linux.dev, hannes@cmpxchg.org,
+ kas@kernel.org, alex@ghiti.fr, ziy@nvidia.com, liam@infradead.org,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ lance.yang@linux.dev, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, willy@infradead.org, linux-mm@kvack.org
+References: <20261103212004.1356327-1-joannelkoong@gmail.com>
+ <20261103212004.1356327-2-joannelkoong@gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20261103212004.1356327-2-joannelkoong@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: oes83eco4qohudwo5xmkfsiz197dhoj9
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: 15F324000B
+X-Rspamd-Server: rspam12
+X-Stat-Signature: aqkczxkk3s5j6swcpbqyz9ptqsfnjkrt
+X-Rspam-User:
+X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Queue-Id: AE16440006
-X-HE-Tag: 1794297065-63565
-X-HE-Meta: U2FsdGVkX19QJnRir80CoGJO0V4VqJHmlc1pbpYzVk6Qc1LQURkyMXGYezWuZgg/6gVLLheYArZcde+LUN+48EIsnjNBS4uTOImPxR6JzHJZKmElyZMrplyeupnsZcaiGobiCFcQamDijsnD07ELxrrbAzi+maprC/OTQPC97UhlbLiLNW1eYue01HcDmG3N+fz7hxX6L1ElaYAjnJlq8SkThTaLnx7fJ04UFs8EDy7m/2C57XevhgrzBeBFwG25AwfKLCr0CQAyKMilBwmnuc2D8APJaD6emrL9pMA0GGMK63qj4YZsZfdJX+Gwc+5rWb186DB6rImeSlw2AlZF63cyVfenwMG3IiTLyMyJvs26k5de00aUnUJiEjxUPwqsh7ZlIue4B3JLVRlFrp2aix21iM/APTBqe67MVsRCA7Vy6Iy/IDRgmEtEKGCJ4Y7CaDm78ER7UCYwfDmNGXOtFifdOxboaNma1wwHAjaKl9ikktIsNu8PZc29Or2sQ0jugcWuekb9OEt1rAfQWs2d1eVNI/D91t7T6xEVl/BupgcYcyk+jKIGR0ZTcf6D/WPubwK0/AR/UKPmb2gLkLA9A1kHvT9Z8knpl9lD8Kw2GIulTQC4ozWXYm9bJ2Fs8th00Dl8ANlOwd7+c1+zLr8OWJPAIpwAl+an66naGgu/dRGygAP2hVIH2pulB5m6cbiyyp9pVr+wooZv2M1yMXQQV4u6h8nUD3neMtxhyLJJRgPTEQLraLdroo4IJCfrIgHLPp4YPE3/XKJ14A6DK8bZqGVQTokA6d3a90U5ota1uDI817NFef5sG6KEdug6CuuISU8nkNmVsMfQAL3QRh2Ik8CZKTEF7ONYt1ZO0GFfn4KfkRBffLT/GxOvt4fIEe6TmqerXRIhq62FMd1qFw5kLzlSsmgJTGzX88FEKik/6xISWaXURmmaf0n2bWaAqRRVz52c8c/zPGtdBQ2CzQr
- T1LM/DKO
- Ifmz9RS5LX4TqlNQTYA05ETPfoSL4tbZXvc1xe6pAa8xZbT+kkXoXfbd37tSUZTUegdKHYmDiDULxv30ITXGJg6MJi06wk5LodPwVrGec3EZUtmC04RHbDvBXin1B2yQyserM8X6lU1hi/dsVbKnKGHGBpbh52xjQJqtBjPwI4YvAKyYtT1PYE+DUICgWh/THSy8qag2krmoqYpMY/3kAeJoZEm14GzLO31hX4HM3fLM+UwwvYC35SMtMFy/OVmQK3Xt8JRyCvl8NPhw2Z2O8IiZIzDxpG79i0IARjBRjXUQJlP/mdkY7e5GcQ4fnXN5N9SPvqG47ffalxl0jEz+OMzTGC+fszSWAVhIkDveJWkpUan6v46F3RwL+bTxpiXFJJDaFBkhA2AlBNtEXtnR72R/URL4O3bgSsDD/BfEH0CdrCSIV2o/O8j4GjAtqXFd69em9iNf80OWowlo0GG5rx8pPlg==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794297616-789177
+X-HE-Meta: U2FsdGVkX18uw7VXl++VQ7/vV9dbOznIgfHgj2fJh4ANSJt4Ge3BpoT//ZtQx9FzIkZ6Dlrp5wtHzLWYZ1vw0PvSDeqe3yNYtkIZmGT4T4gB7TngC/H2UefJdw1BKCGlY3FKKhNgo7Oi6TdJnt46n7NeNT6vVQbUXyXwMfEkd47wBATB6Zh/WduIdgWyp1Zvsz8Q/zku2CugevmQ9F0QajE4mWW8qlYsFjleotrJqa8J0rLJFTtCQblKfTAcN6MEuFLHAquHWq2WD0h0iTj3cnwy+Xvs/lt0llojbeh8VoA6xAegp6+5hSDvMouwBxbsMRuNpJ0sZ4JTC7jiaic5YuXm+UlxEjXoUAjhewuqpYMxAHYFltO2PfsLr/gwo6i7032jpeYc1L3LoBhQzRS8H+vdweDrOQgVAWWV3bewMIpEluejWbqe3uhcZ6Kw4Dgkpp18qnwqcX+aiYk6CR1JHdDMrUfBWFgH1OmTUSuCM9JrZV7JNU8yzgJkMHFdga8E499qiLk+KgwJR02xzl2I465zEbdoFJjDMXFyJz6kmbU9bkEfBhZiD9LkfQXJ9FUa+/qQ8xD8n66RjcAZarwTbhltzTn2TnFct4BKPVM9tHGYWiqaW4M79bEh0R/+/5H2ZWC8rEoSA7IZiHtVQyji9LjRTggBC+ILZn3NUKIaZ3U0Z6Y1vxZwwxNqo12wDMZzDsCRbyu6Xg//Sv2clDznLpLMZg3g6zcZa5M4zqMtZFPwGY+5ZRvjyjFHgfVGRkKO0mxjlr6XYTIF6Cfa1YG3vfxTy+1J4c81rOJDSGxBcL6BR3jdtZuKJDKxF7ZxntCya/f1E/NgjN5WHUxFuG/OZmkWpgki/UNAx8uq42+fv6CHuKytqrwrhUmOwac6k8PfN+WK/a0Zsd/pQHmGMt5Vt6YmUynCdhfpawZXIjEB0JBF9H6gZhXOPCI0H9zeqL/4T0ABsdZqjVDzZxFnNqn
+ WlHA82J3
+ qXqim+y9MiFZN4xBTNbklW/u9yGJJ379gBlxLcNQSWYO2M205WSneKT8VBtkq+9KbwhL/J/9fkMa6ig5Usa3539d3rlz6+RptfN8EhlPM9k5rbeHH4ndJ0BO44HRdC16txUlRKP4pBpbJFTKwULXNvUZCjJH7bNN4W+fFupcqzny2dclChKRfV+s0YNPJ/BhLU4925rlfTXzXY7NKv7Z2qGWPAQG4/hnyvZk7SFvEVPZ/lVx/q0IjgFrn4CHhLcZUiwVxGEVn9McOOTy2FxSzqaJMhEV1K4gBA46k0damx9Kd98XKwNPiSPtbPeg+zcQHChJROu4xSr98TxHEt63CKZZNJVmEpxhyRUUMIiYyewaYNq/+41y4yU3hnkNyPRF7M2+n2v9Saoe21DlR5vtdd79oXXLouJbBjQKk8ywr5MzSlOrhaLSOSj7NcnAxt5YsxEqW4ksMAMPNskNjigX6k5PUKCD8sLn3aTmF43aLiHAq6nSVDi3sMkZJajmYuoNzARuEnn7Ml66jq8Q70ISlom12lQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,62 +97,37 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 
-On 7/16/25 12:54 AM, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->
-> Dan Moulding reported that kernel configured without modules produces
-> "Found insecure W+X mapping at address 0xffffffffc0247000" warining:
->
-> [    6.022847] ------------[ cut here ]------------
-> [    6.023020] x86/mm: Found insecure W+X mapping at address 0xffffffffc0247000
-> [    6.023200] WARNING: CPU: 5 PID: 1 at arch/x86/mm/dump_pagetables.c:246 note_page+0x6ec/0x790
-> [    6.023381] CPU: 5 UID: 0 PID: 1 Comm: swapper/0 Tainted: G                T   6.16.0-rc6 #1 PREEMPT
-> [    6.023558] Tainted: [T]=RANDSTRUCT
-> ...
-> [    6.031153] x86/mm: Checked W+X mappings: FAILED, 10 W+X pages found.
->
-> The 10 W+X pages are the pages allocated for ITS thunks. With
-> CONFIG_MODULES disabled, CONFIG_STRICT_MODULE_RWX does not exist and ROX
-> cache in execmem is not enabled so execmem_restore_rox() becomes an empty
-> stub.
->
-> Enabling ROX cache when CONFIG_STRICT_KERNEL_RWX is set solves the issue and
-> makes ITS thunks memory properly protected.
->
-> It also ensures that memory containing ITS thunks is mapped with 2M pages
-> for kernels compiled without modules.
->
-> Reported-by: Dan Moulding <dan@danm.net>
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+On 11/4/26 5:20 AM, Joanne Koong wrote:
+> thp_underused() decides whether a large folio on the deferred split list
+> is underused and should be split so that its zero-filled subpages can be
+> reclaimed.
+> 
+> Today it only ever runs on PMD-sized folios, so it assumes that the
+> folio has HPAGE_PMD_NR pages and compares the zero-filled page count
+> directly against khugepaged_max_ptes_none. A later patch will queue
+> anonymous mTHP folios onto the deferred split list as well, at which
+> point that assumption will no longer hold.
+> 
+> Make thp_underused() folio-size-aware, and scale
+> khugepaged_max_ptes_none proportionally to the number of pages in the
+> folio (eg every folio tolerates the same fraction of zero-filled pages
+> the user configured for a PMD-sized folio).
+> 
+> khugepaged deliberately doesn't scale intermediate values when
+> collapsing to mTHP orders (to avoid the memory footprint creeping up
+> through repeated collapses), but if/when collapse later gains support
+> for intermediate values, a folio that khugepaged collapses won't then be
+> split right back by the shrinker (and vice versa) since both collapse
+> and split would use the same threshold for a given folio size.
+> 
+> There is no functional change for PMD-sized folios, as for those,
+> nr_pages is HPAGE_PMD_NR.
+> 
+> Suggested-by: Usama Arif <usama.arif@linux.dev>
+> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
 > ---
->   arch/x86/Kconfig | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 8bed9030ad47..d6d8050683ae 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -89,7 +89,7 @@ config X86
->   	select ARCH_HAS_DMA_OPS			if GART_IOMMU || XEN
->   	select ARCH_HAS_EARLY_DEBUG		if KGDB
->   	select ARCH_HAS_ELF_RANDOMIZE
-> -	select ARCH_HAS_EXECMEM_ROX		if X86_64 && STRICT_MODULE_RWX
-> +	select ARCH_HAS_EXECMEM_ROX		if X86_64 && (STRICT_KERNEL_RWX || STRICT_MODULE_RWX)
->   	select ARCH_HAS_FAST_MULTIPLIER
->   	select ARCH_HAS_FORTIFY_SOURCE
->   	select ARCH_HAS_GCOV_PROFILE_ALL
->
-> base-commit: 347e9f5043c89695b01e66b3ed111755afcf1911
 
-We recently hit this issue after changing CONFIG_MODULES from y to n in 
-our guest kernels.
-Did this patch slip through the cracks last year ?
-
-Could we get it merged?
-
-I have verified the fix on 7.4-rc1 in a KVM guest running on an Intel 
-Cooper Lake host.
-
-Tested-by: Atish Patra <atishp@meta.com>
-
+Make sense to me.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
