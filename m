@@ -1,97 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF16606A33C
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 15:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1C660A3817
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 15:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EvQQp3du
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cu1z7Gwa
 Received: by kanga.kvack.org (Postfix)
-	id 40F4A6B05CA; Tue, 10 Nov 2026 10:07:10 -0500 (EST)
+	id 304E36B05B3; Tue, 10 Nov 2026 10:08:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E6016B05D4; Tue, 10 Nov 2026 10:07:10 -0500 (EST)
+	id 2AE1D6B05C3; Tue, 10 Nov 2026 10:08:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FBB06B05D5; Tue, 10 Nov 2026 10:07:10 -0500 (EST)
+	id 1C4BA6B05D6; Tue, 10 Nov 2026 10:08:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 033CE6B05CA
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:07:09 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8C3F71C4267
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:07:08 +0000 (UTC)
-X-FDA: 85419537336.23.89558A4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id AEDB2120019
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:07:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EvQQp3du;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id ED5E06B05B3
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:08:01 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0D61A0965
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:08:00 +0000 (UTC)
+X-FDA: 85419539520.04.1AC0A10
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf27.hostedemail.com (Postfix) with ESMTP id D717940017
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:07:58 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=cu1z7Gwa;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of kaylovefoss@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=kaylovefoss@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794323227;
-	b=WQ+aUAI7NKkZDgcr2gauFDrES+MyQPbAesK3To9rywT9Y4Y2QKShByA+ohwZjzP1RyRM+S
-	WIRjO+GNIBO9xV9pMxCpdRPxAVvNO7R1qQ+wUqon1BnINhHgkRSUIf4YIz1+ERo4++IOzf
-	rjROYA+cMyj0V5HTE7yqH9yke0VZGAY=
+	t=1794323279;
+	b=DQz0qsAAggWf53u2VYs2I8KBq39btay9v/bQZdxifmizhxhwsaxyp+zBPDsI9J1xC7dTMJ
+	UXoYmSblV9B40kh/RUdt2R/JK9wdsNfWi5gow5Qprui18AxuxUt/Ggw2c1cgNKQf5TB2Jw
+	wJHcU7OURPGJCGCZlirOoUmvJxuHRfg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794323227;
+	s=arc-20220608; t=1794323279;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3fnjfujQ/pzlwEGTHqO6MVLdM4zSJpqzQo1FTTutvu0=;
-	b=MkTpVv4NSy2Nmxp/n+snyWKYx1UlpZfqN29D5GdmMEayKs6KFx4oiWoQ6GwGR0iOuaHfeg
-	Y2RAiheUFRfdL34UOez90v8F84XOUkW/nWYQ9x4c11sgs+9xZfQgdLo5RJazZNZgOt+Zi2
-	MzuS28e/XvbyAZXAbDjxRn8ibY3KlLo=
+	bh=JtM9UtzYhAWCxTCfoBKbcmHIR3U4Wq7tzdw7gboBY64=;
+	b=hMiTdRTQS82NEyYpNzu+OqcC58jH/AK7Bihl+rzd3c9ubp6rSEhBCmuZRm/XLBuuDmaLBf
+	plQOS5FajnjaF1mR9EW/1KpedwLg6i0zyJrfgi2Z1p6+xFNPTT1xB/0L4rhm/kg4Eb0JqT
+	WgolC0/ZexppMfNAtUp1l5QW59DtEIY=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EvQQp3du;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EA29B417DF;
-	Tue, 10 Nov 2026 15:07:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097EE1F0089F;
-	Tue, 10 Nov 2026 15:07:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794323225;
-	bh=3fnjfujQ/pzlwEGTHqO6MVLdM4zSJpqzQo1FTTutvu0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EvQQp3duvHQl6jDz5kOlsTmP08H/wuHF5yTsADpur58rOhzYTHwx/0MyO8PkLd6Cx
-	 NEYAMPMQy18BPZperR1LssjjyHjqm72z9DYiLM1M0y8Qyzry60CcYsbcCS3KIsaJBB
-	 MJIkmJ9YDXFgAVaCl7MrfZVnmC20DZHNW2uHbx+l0AYzBXSAgD7yBhpSk311ewXeCZ
-	 lEw8M0EhNlQoBsSZ5kcQhsfGZUxMnCtAegkOfqDsthAkHA9kN1Tio4G3VhU3UMbzzY
-	 6nChIB7vKDdkXv0mTBCq/YRroxhgr+FQVaTYkjSY1HgWZgViqY8sucXoN4B7mx7ttN
-	 rDGdYdpEscetQ==
-Date: Tue, 10 Nov 2026 15:06:58 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Shivank Garg <shivankg@amd.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Ankur Arora <ankur.a.arora@oracle.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Peter Zijlstra <peterz@infradead.org>, Borislav Petkov <bp@alien8.de>, Bharata B Rao <bharata@amd.com>, 
-	Hrushikesh Salunke <hsalunke@amd.com>, K Prateek Nayak <kprateek.nayak@amd.com>, x86@kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm/memory: drop PROCESS_PAGES_NON_PREEMPT_BATCH
-Message-ID: <avMxawZfHRAqgKA4@gremlin>
-References: <20261109-clear-pages-batch-v3-1-6693efe18dff@amd.com>
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=cu1z7Gwa;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of kaylovefoss@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=kaylovefoss@gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2e977109392so12284615ad.0
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:07:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794323277; x=1794928077; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JtM9UtzYhAWCxTCfoBKbcmHIR3U4Wq7tzdw7gboBY64=;
+        b=cu1z7Gwa2PE62hwL8qemIDNV1bPJVhMIFCrBXBhm4pfrHszxSLEGvQws5sfb/HPlK1
+         R/bVMwZReDF5fmEyIgBlOkPxQMC/ZmMy16IZQ/sTbmWZ8frAcgaUt4ku64j1m+FI8D+a
+         nETfMicb1uB7iINFzjUOL7q3WKATYNC2dql2vzuepMaiKjl5bxKzAioEUiVJ+ZYzzGNu
+         MKvrChzTKJUgswAcpaZEskHovc1xC0TnF/jI/axRhRqS8bvsQW0pvMnWM5GKhZaph5+K
+         9LKD1CwjLWYW6OB+uDgx22D3weqqLFw1FC5yKma1g4D2Vc+GUDYl/hA1Kywyz1VcuxJx
+         P/CQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794323277; x=1794928077;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JtM9UtzYhAWCxTCfoBKbcmHIR3U4Wq7tzdw7gboBY64=;
+        b=C8zcKNDqDEQzBclBn4kwIjfRZmMo7QkMkn9KFEppy6uXiyi/uwLxicxEP0CYXx5bQK
+         AyVJsMdUq4cMOLBYWxuyX4eEtTz44WjLLBKXIGIkiFnppefml/0x5oCSGxBLT35wV+XW
+         RRKlujdBVxTGbtF4XLFyYBtAwzOmegzhV38SY9wqqappUDINKpmKNN/secUXzGkmM8Hz
+         dwPn9If/bwK7YzJnch8VKcSaTdgVbjuqfsxD/p8CnKVshuYwPXVuEX76l/6FQlQp6N2J
+         ojSmlYS9pFi8FoqZkC3CzX3UTAZXM/USL/nGdXsbOPNzpe4XfrDt5whewCXuvD5HWbmK
+         qq3g==
+X-Forwarded-Encrypted: i=1; AL+hErH+R2yQbZywli3yKZ11/QmxZTm2PTYNt9PX6/0BH87MMN+pSGTkFq8FzRml0Jpux9BoWGxDX7zEpQ==@kvack.org
+X-Gm-Message-State: APuU4Z9H1xiMRLumOVdCNhoDrtohvaNBL4BDGdKdT7SJHJW2a5+cHhR8
+	cIf8BTKPaCNfiMz6+AbYtQjsgd1+zoN6DMXh6zbnN6VdrsPOcLCHyWcm
+X-Gm-Gg: AYBFou01Fv71b7jYrtPgp/FyhZrxEqKFfaOdWxmk9n6uHfRbDGXFZAOGPqW4MF6a/8Z
+	BwSyBvz8jJxv8BZkZl2F2NghoS8a9vxdjubCEkSlfHNdtkMflRvxLmNyFogYry4OsC1oTNDdrxU
+	Y80gGTweVw/ZBq6EaGtr89tbhneGw8KkAmYD45tpHANIKrCOnamCS8k4aQHxYOYzyAZ3B/E3axP
+	Lbr/0mmCZax8ZggrqrMX3DN7T9MN8aWDILCej2e7SgAGTHERoSYhPyNUFtDYYxDc+ojWI6/4i24
+	GCbnrxOlyjM92YBU5B0WBMIdSYYqlR913xF9KDAEa8HT8ObX+oXBijvxe1MGKkg2ru/pGnHS35w
+	uFiPDj6W2ozexybKbQ3XL9FYUkIaYCI1j54CWc/XzT9b3G7MYolN+wZBSwmpPRD29yUAHQfnkqc
+	yZRqnrhzSSOEkXqOKcFd2AJBw+QFQzPTIJltBG0qVwn0Ji5qWPxQyIb1+OgM/iTJ2Gr/NnDr63a
+	ch0Tu2V4cPPWD3zyPWyYjai0B7g/lvwd/eL/DFfUJ/yag/sW3SLVGn7QFOtAwkYH/CoelK7Igmm
+	UxF4kl0gIjSve+4wYeoG7EyvsiVZhSEeUB01bwkDr1Bqd/n/rRX2lmNH5Bn9CSVIqRrVuXXD0F0
+	ZLi8nbC+w30I=
+X-Received: by 2002:a17:902:d481:b0:2ed:1ef3:9ec with SMTP id d9443c01a7336-2edb9172a2dmr26826345ad.14.1794323276968;
+        Tue, 10 Nov 2026 07:07:56 -0800 (PST)
+Received: from [192.168.2.6] ([27.75.101.24])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2edb6d78dbcsm10397575ad.27.2026.11.10.07.07.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Nov 2026 07:07:56 -0800 (PST)
+Message-ID: <71f76e5e-ce24-4a71-863a-169ad262c510@gmail.com>
+Date: Tue, 10 Nov 2026 22:07:46 +0700
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261109-clear-pages-batch-v3-1-6693efe18dff@amd.com>
-X-Rspamd-Queue-Id: AEDB2120019
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 36/41] nvmet: refuse files on pseudo filesystems as
+ namespace backing files
+To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
+Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>,
+ Josef Bacik <josef@toxicpanda.com>, Christoph Hellwig <hch@lst.de>,
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org,
+ target-devel@vger.kernel.org, driver-core@lists.linux.dev,
+ linux-mm@kvack.org, bpf@vger.kernel.org,
+ linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
+ apparmor@lists.ubuntu.com, linux-nfs@vger.kernel.org,
+ netdev@vger.kernel.org, fuse-devel@lists.linux.dev,
+ linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org,
+ ocfs2-devel@lists.linux.dev, linux-s390@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org,
+ Amir Goldstein <amir73il@gmail.com>, linux-erofs@lists.ozlabs.org,
+ linux-kselftest@vger.kernel.org
+References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
+ <20261110-work-loop-pseudo-v1-36-4c998976c6c7@kernel.org>
+Content-Language: en-US
+From: Bui Nguyen Nhu Quynh <kaylovefoss@gmail.com>
+In-Reply-To: <20261110-work-loop-pseudo-v1-36-4c998976c6c7@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: D717940017
 X-Rspamd-Server: rspam12
-X-Stat-Signature: pjewuzoc5x5793dfsmpzynjmg8yfmwwm
+X-Stat-Signature: 39htq8hdbom89xci5q9hcrbedwb9m69j
 X-Rspam-User:
-X-Spam-Status: No, score=-20.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794323226-562971
-X-HE-Meta: U2FsdGVkX1+QWdY5n5i72Uv2S9enKl+lZVNaD41TZ99h0islXkNFn8D5PljEncFiOgDYlzsBm/3UH1IMoD2fkWqQsFNHuwlXgh8G/FftIjtI3pAi2UGoYLotGlV7NbPFhcDPjble4LgkdO1UlUHRDbS713rGMrAmlN9eyAgEBs+AsL+D2e0QPtFAaEi4Jcj3oNMXiM/VukAwNz/rNBLJ0YS4ogYi2qWRdrEFIWNIW1VNJBwPSksiFYyX6WCHnWRnhZ9D5aWQDoxApVLkp369a+dUfjJpolF5DAfwl2RMV8eXk4yp2SvgCZQK7oOzzX7kfTKPwnnJbS+L6UCZXmUhPsXxgt6m6QM2LWcJN0w2+97DWmT+MTkWB4/muBSTndjXgLJayPkOw/CmLNuRIDizf3sy/u+2K6wO8ijDR8cUUymcW72gHOfRmIxwyNjiCLG4q5NrFY8efl6IMWXz+9HziEzuXBUdfkJgeO4z8xrNkXxVGY0U1sfSKoQbvIKUTx4R0fTSlYwTgRamFb45QsyW81FSOs96+FQhnSAXz25/JqOwpl7G1kDl2jTCE9moTgnXWu21iHrO1KjvN/dGvx/QkHzNDkkkYkk48eCdELjO8ENg0JRA/V8Wh9n10uR+V1SO0hf8l/Ycc/QCz5KAQd/VD673IfUeAfadxQhevRwWsepoq5tOqgQfHotiVrgtY95Oz6Ux1qidRztIr4k3icYXr3R5+fogh+s69GM/NnPK00/H2SJDj5duLTZrS3bVurdlezV/+v8SrKElCmTUd+LLc38tl1GnQsMJfiOBWEr0psJh8gnXUh/SlvEweXC5Orhwq8p6W0OoLBcCBWZPxs69BXiBImRfpi12s+UPKvnmM/cDo3ddmgeopw3X9mgWgflRTdO1/gX4S0tCrQjdzQrPG8Qzpw9s6f70Eg4ZavbqYchnsbtjG/R702JdJGq9yoQJkl3kSqdgvBeT/Lqm8PB
- qsO85ReX
- /e6E9lmKm+NP0MWZuYsCaoEkaG23idCSeM0jVaR5nHnwV1AczMxI+AOAMA5x1In8DpXrv/n+QosSjukP15odrsDGGkWMYjKP2xSYwIxFzMa4dVcaIuVdQJlKYVOICbqhmfQrZZK8I7CWvWrB4Gy7akRVGxyoXvsiPTRtctid7d3CKtjdY0IEQvaijDFjNml8DCCDLU/tizdu3h1tOJxGVS/0F107DhvIy/tiU1BFYDS3r66V1QuEbl7et0dQppVHVbeJXLUbYot4u11mMBnydegtcDpskSqkgTzvsRpEloKbNfQ4Jt6Q/Dsg8nLgnkMggU2S751Fh5cGOrbWlr3/h0nVgYip21t0/sHtrPf6ZTQNX+H26v73yc8/UAzrtNYlt0YINw61mWwqOft5dRFOloAqjJfLQFveFUUVraq09JVt+bpA4ZqNNRX3KPja8IDxOcPyhzHVYn2YhmvyhYEj7JeBIv/72C36zBmKAqdUeifaI7Nq4gte4VQ+pfw==
+X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794323278-674464
+X-HE-Meta: U2FsdGVkX18idMvgNproyPiJKUJ0D7jnt7XcFBT3KTL1vlghy+NEF+w37ffyhmKxZOsOkgY9EvDSDxA+NSTLahhyHqjZHW07csp+gTINWuZQWa1BsYUomMToSRILQiBRd1XK2NwTtmLp/77RK552MO9t7K1QhaYpVhjMPqH5leOIHgmjVqiwy6LdVxrZgXT0pDUYOCAeR51g5qngLSb7ltnO+pxd3RfzGTmfo14irwRW4+NehCWuor6ZCfvaPTeO2zbytz8LXimRipQToq6xESZaUeKtZDR5d7j9veosBVutGaCbZoTBj/DJKBZY49JLHedKCmlrGJJ43exLOpFlBCE4s3L/zitu1aCr9NBuLGN4MJTW/MFz03FA7O68CgdplRfXUXyb+KWys/vMI+eV7YXbpOQ8NfPgvz80CuGFQ26OWTjYf1MfJ6cDPVzkm871IOYRrWJUzkQJR2YbPKZh01RpcS6V/MXw/1STp1DPGAps3g//QETMs8j/6nK9lx+d1dafx80TKXnBUE0IsyhkQhrU7kcyK6Uh64UEM7IVHO7rQBCgZuYHDiN6YeaAUI4pHp5hlAevKxzWQlvrrIvnqbbHATczW+QrXmh6ooqljkkyD2sKnVFbqx9TrQHKn4+DXmjzqiawiv519MLq6LQE7dlv6rN69Es02BVHgMfgxNe/BcbJ8ZL3KCwwSYn0IQKZ5NciYnwEn+c5S9Lq48faOEQcEmTK4f9IjA3br6cgYJ0ySc6GIMkIVG20jlY4d6KcRddg5CgEPu1AzRFY2mFMRoc5c/p05mk42fkAdzncmt/0thr/i0LXzSukC0UIetfQH8Uu1mf/fVf2xbrbBauUnFXJTfuZjffePAtapGkjY92o7Zi49dYH2qefV00zF8K5ruJwdcNhDWzHmkDW1vzhIaxS9t+ioD8aebau5xdrUDbr6VxHYEL2RSbQXDvNKp8dlRp6IfEkKDfnzteuvNX
+ mUKXfQCU
+ 3XfRTf1pEoxOMVQnzF7XDlFP9U6Y5C6AlqsBdulPsXJXsUdMYeS4HXLG+wB9046hsu0wg6KSlOmknl+x5OJUcyFnU4JDgOfcM5jn/nIxb4yWpBzlIhoLJhPFMJihiWKDNdKfV1fUw8EnUiUOuw/eEs6/z+OxRML+P12Y8Jah62NWZwgyDsJF8r5SoHxFDWUnhzjXNlp8xLMCBUhUE8dyhEp6tIIeAimLiJMp8g/ScMixe3hiblSxMnAhUwe8n8zNSUCB2lL84jiiEkeNDaH8TQIAovbKmu+uSgswSZi9zCncS+0km6WEfwtwqAzZ78wv3MqflTYJwX7an5Bcs//bHUZWtbg/EwIZHGgVqS6nO6RFYxmnZ9NwtVcQTPyeWV5MyBh5dmu/n7ertpFnXnytqImunAQ/obqPnmogn/ol77vDjsFk3InQMKWUYekkNQgbiUPUdi3+5L3d5hbehmAUwfBmD6LQL/R6HSb1QsVm6S8jlJoUJwVC7dreVNGonjhRB9UcgLysfjbOSBbbSJSPzN4cejyFY5FJjhANNE+in8NmSHYAbckOYACWuAx5qV3DKMAk37H58PJhGs1Yj2WK5VoaSHMssQOm/VnlwRQMl4cSZ8Jw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,173 +144,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 09, 2026 at 07:15:51PM +0000, Shivank Garg wrote:
-> clear_contig_highpages() clears the whole range at once under
-> preemptible models. Otherwise it clears PROCESS_PAGES_NON_PREEMPT_BATCH
-> pages at a time, with a cond_resched() in between. The batch is 32MB if
-> the architecture defines clear_pages(), and one page otherwise.
->
-> Since commit 7dadeaa6e851 ("sched: Further restrict the preemption
-> modes"), architectures that support lazy preemption only offer the
-> full, lazy and RT preemption models, also with PREEMPT_DYNAMIC. x86 is
-> one of them, and it is the only architecture that defines
-> clear_pages(). So the 32MB batch is never used: whenever
-> clear_contig_highpages() runs under a cooperative model, the batch is
-> one page.
->
-> Make that explicit. Clear the whole range when CONFIG_PREEMPTION is
-> set, and one page at a time with cond_resched() in between otherwise.
-> Drop PROCESS_PAGES_NON_PREEMPT_BATCH, which has no other users.
->
-> PREEMPT_DYNAMIC kernels also have CONFIG_PREEMPTION set, and
-> cond_resched() does nothing on any of these kernels. So a build-time
-> CONFIG_PREEMPTION check is enough, and preempt_model_preemptible() is
-> not needed.
->
-> No functional change intended.
->
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-
-Nice cleanup! LGTM so:
-
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
+On 11/10/2026 4:14 PM, Christian Brauner wrote:
+> The file backend takes any path that isn't a block device. With
+> buffered_io=1 that includes files on procfs or sysfs which then get read
+> and written by a kernel worker on behalf of the host. Refuse files on
+> pseudo filesystems just like loop does.
+> 
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 > ---
-> This came up in review of the copy_mc_highpages() series [1]. Pedro
-> pointed out that most architecture run with full or lazy preempt, so mm
-> does not need to check the preemption model at runtime or batch the copy
-> for cond_resched(), and a simple per-page fallback is enough for
-> non-preemptible models.
-> David suggested doing the same for the zeroing path, and this patch
-> does that.
->
-> [1] https://lore.kernel.org/all/20261019-batpagecopy-v2-1-d75e7d0dfaae@amd.com
-> ---
-> Changes in v3:
-> - Use clear_user_highpage() in the per-page loop (Pedro).
-> - rebase on mm/core.git/for-next.
-> - Link to v2: https://lore.kernel.org/r/20261109-clear-pages-batch-v2-1-2e62c4f84f94@amd.com
->
-> Changes in v2:
-> - Rebased on mm/linux.git/for-next, and drop RFC tag.
-> - Link to v1: https://lore.kernel.org/r/20261022-clear-pages-batch-v1-1-13d3bd0b876e@amd.com
-> ---
->  include/linux/mm.h | 28 +---------------------------
->  mm/memory.c        | 29 ++++++++++++++++-------------
->  2 files changed, 17 insertions(+), 40 deletions(-)
->
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index e6da76fbe8e8..8d14e45fcf24 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -5250,7 +5250,7 @@ static inline void clear_page_guard(struct zone *zone, struct page *page,
->   *
->   * When running under preemptible models this is not a problem. Under
->   * cooperatively scheduled models, however, the caller is expected to
-> - * limit @npages to no more than PROCESS_PAGES_NON_PREEMPT_BATCH.
-> + * clear one page at a time and call cond_resched() in between.
->   */
->  static inline void clear_pages(void *addr, unsigned int npages)
->  {
-> @@ -5261,32 +5261,6 @@ static inline void clear_pages(void *addr, unsigned int npages)
->  }
->  #endif
->
-> -#ifndef PROCESS_PAGES_NON_PREEMPT_BATCH
-> -#ifdef clear_pages
-> -/*
-> - * The architecture defines clear_pages(), and we assume that it is
-> - * generally "fast". So choose a batch size large enough to allow the processor
-> - * headroom for optimizing the operation and yet small enough that we see
-> - * reasonable preemption latency for when this optimization is not possible
-> - * (ex. slow microarchitectures, memory bandwidth saturation.)
-> - *
-> - * With a value of 32MB and assuming a memory bandwidth of ~10GBps, this should
-> - * result in worst case preemption latency of around 3ms when clearing pages.
-> - *
-> - * (See comment above clear_pages() for why preemption latency is a concern
-> - * here.)
-> - */
-> -#define PROCESS_PAGES_NON_PREEMPT_BATCH		(SZ_32M >> PAGE_SHIFT)
-> -#else /* !clear_pages */
-> -/*
-> - * The architecture does not provide a clear_pages() implementation. Assume
-> - * that clear_page() -- which clear_pages() will fallback to -- is relatively
-> - * slow and choose a small value for PROCESS_PAGES_NON_PREEMPT_BATCH.
-> - */
-> -#define PROCESS_PAGES_NON_PREEMPT_BATCH		1
-> -#endif
-> -#endif
-> -
-
-Nice to remove this :)
-
->  #ifdef __HAVE_ARCH_GATE_AREA
->  extern struct vm_area_struct *get_gate_vma(struct mm_struct *mm);
->  extern int in_gate_area_no_mm(unsigned long addr);
-> diff --git a/mm/memory.c b/mm/memory.c
-> index c9d64170e47a..fcc7ea2a00d1 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -7650,27 +7650,30 @@ static inline int process_huge_page(
->  }
->
->  static void clear_contig_highpages(struct page *page, unsigned long addr,
-> -				   unsigned int nr_pages)
-> +		unsigned int nr_pages)
->  {
-> -	unsigned int i, count;
-> +	unsigned int i;
-> +
-> +	might_sleep();
-> +
->  	/*
->  	 * When clearing we want to operate on the largest extent possible to
->  	 * allow for architecture specific extent based optimizations.
->  	 *
-> -	 * However, since clear_user_highpages() (and primitives clear_user_pages(),
-> -	 * clear_pages()), do not call cond_resched(), limit the unit size when
-> -	 * running under non-preemptible scheduling models.
-> +	 * clear_user_highpages() (and primitives clear_user_pages(),
-> +	 * clear_pages()) do not call cond_resched(). That is fine on
-> +	 * preemptible kernels, where the scheduler can preempt the clearing
-> +	 * at any point, so clear the whole range at once. Otherwise, clear
-> +	 * one page at a time and reschedule in between.
->  	 */
-> -	const unsigned int unit = preempt_model_preemptible() ?
-> -				   nr_pages : PROCESS_PAGES_NON_PREEMPT_BATCH;
-> -
-> -	might_sleep();
-> +	if (IS_ENABLED(CONFIG_PREEMPTION)) {
-> +		clear_user_highpages(page, addr, nr_pages);
-> +		return;
-> +	}
->
-> -	for (i = 0; i < nr_pages; i += count) {
-> +	for (i = 0; i < nr_pages; i++) {
->  		cond_resched();
-> -
-> -		count = min(unit, nr_pages - i);
-> -		clear_user_highpages(page + i, addr + i * PAGE_SIZE, count);
-> +		clear_user_highpage(page + i, addr + i * PAGE_SIZE);
+>  drivers/nvme/target/io-cmd-file.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/nvme/target/io-cmd-file.c b/drivers/nvme/target/io-cmd-file.c
+> index dfa8aa46188c..71c69bac5394 100644
+> --- a/drivers/nvme/target/io-cmd-file.c
+> +++ b/drivers/nvme/target/io-cmd-file.c
+> @@ -52,6 +52,11 @@ int nvmet_file_ns_enable(struct nvmet_ns *ns)
+>  		goto err;
 >  	}
+>  
+> +	if (file_is_pseudo(ns->file)) {
+> +		ret = -EINVAL;
+> +		goto err;
+> +	}
+> +
+>  	nvmet_file_ns_revalidate(ns);
+>  
+>  	/*
+> 
 
-Very lovely :)
+I noticed patch 41/41 doesn't include a test for nvmet. Would it make
+sense to add one with buffered_io=1? The test would need a pseudo file
+that can be opened with O_RDWR and supports both read_iter and
+write_iter. Otherwise, it could pass without ever reaching the new
+file_is_pseudo() check.
 
->  }
->
->
-> ---
-> base-commit: 2683df3b7eac1d91380194955ad0c9751454610c
-> change-id: 20261021-clear-pages-batch-77f72ef808e4
->
-> Best regards,
-> --
-> Shivank Garg <shivankg@amd.com>
->
-
---
-Cheers, Lorenzo
+Thanks.
 
