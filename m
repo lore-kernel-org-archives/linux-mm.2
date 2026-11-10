@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFABF60A261E
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 20:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7528A60A6F7E
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 20:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UxXWpp96
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lzJ5L0xf
 Received: by kanga.kvack.org (Postfix)
-	id B1FBB6B05B2; Tue, 10 Nov 2026 15:20:45 -0500 (EST)
+	id 8F4AD6B05B4; Tue, 10 Nov 2026 15:20:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA1066B05B3; Tue, 10 Nov 2026 15:20:45 -0500 (EST)
+	id 8CCCD6B05B5; Tue, 10 Nov 2026 15:20:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B78E6B05B4; Tue, 10 Nov 2026 15:20:45 -0500 (EST)
+	id 7BC1B6B05B6; Tue, 10 Nov 2026 15:20:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 708586B05B2
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:20:45 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0B0FEA0B0A
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:20:39 +0000 (UTC)
-X-FDA: 85420327398.30.FC2F140
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5E25680006
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:20:37 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UxXWpp96;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F4F76B05B4
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:20:50 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 52269160A99
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:20:48 +0000 (UTC)
+X-FDA: 85420327776.27.FC78BCA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id BB84D1C0004
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:20:46 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lzJ5L0xf;
+	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794342046;
+	b=e7uQyLQer+M0lE0DEtaWEGytFmV/X/QtxKqhJh1hUwMVACSfrXMLB4T20vli8MYdeDkRzo
+	0fQpcATi+9WHJOZs4XOwDOOb+QCfbqCCBHcEWOCFa8jqlaKlIS7RPO/x8Wa4ONn6iq92TH
+	p3Ilts+jfpoaCaxH7dRPAsg8QCMyB7s=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lzJ5L0xf;
+	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794342037;
+	s=arc-20220608; t=1794342046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=HGHMI3Nx0h6Lh52y7eI24JzQXy85XaR4p0stT74UYFg=;
-	b=ZZ9dQzVBqFcYmYVJZJj3JM2f69hUyzbu2I3Mzif98a2jPZTN/x7EXF4hNEi83vTDdC+L4L
-	DWYc5DLK0db28vAOAPqhtem+lPbE1PzMupl2Ks2fWulD5ZIwYjx9Qfh/hj1cbchNXxHoiY
-	mDx750nxbwo2De1pNZeAyLBQOGvp79s=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UxXWpp96;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794342037;
-	b=nuUttU6/HnMd3rQ5VRXO1pSZ+k4GKpUXySoOLSGTRjnOf2BdvSmLzluax2vu9KvvaMM6JU
-	X5yYyj6HSVZj3yIAPffrbKq+9rD0X2oVSppc7qZxCSch6v0zaU2cUXm2XwviGaImNj3BpK
-	exo2JCxAgbMg8DqPhJ99PPl7wkQx7vw=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=swxfRysumHKmdMmk09THVTvxU/XqkcT5rR3pmvabELc=;
+	b=TZYwJfo9njzv8XFKNWrqv3coQ3nTyW5EsrV2eVFuJ3EgNXyQnAb0KRUISd3oB9Y9VAAA1i
+	PquNK2TckmvD4zG71DhjlzVqjbkwd7zb0Nj6NYubnqS8OMXIHq8P9fbbZwmfywa6GBT7pY
+	bXAcFX83edC+S5RrgRfJCs7ZUcBl6/U=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A7612469CD;
-	Tue, 10 Nov 2026 20:20:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE3EB1F008A1;
-	Tue, 10 Nov 2026 20:20:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2B6DF634AC;
+	Tue, 10 Nov 2026 20:20:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B2771F00902;
+	Tue, 10 Nov 2026 20:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794342035;
-	bh=HGHMI3Nx0h6Lh52y7eI24JzQXy85XaR4p0stT74UYFg=;
-	h=From:To:Cc:Subject:Date;
-	b=UxXWpp966az3XWO29pH4Q+roZVRThHYA2/Tao0GwSWbdkwc7/jL9Da3aUVo58Y0B4
-	 p7e0X992VeUGG+M2yTD57RquvLM64rnIehDRy6C39oQ58adZ/Z1DxlBodlTj1oOoG8
-	 KNFAj78s4zYYB3h5elSxcxgDwpQ4Rr7dL/magEz2khgzZnMRfC3ppsszOaz2GCgOKF
-	 UDKByDz5nY5rD+gWeswqcMx0J40It4c24YSgHbZdGIQ70niQD7NKfuYKq5LbEMUq/C
-	 J6IOswUSEvHe1hP3sm+yvCt5HZZex6vsFcyCsdn/3n383IaTezsRjkUBr/hVqsKYlC
-	 RZog/9eV1umWg==
+	s=k20260515; t=1794342045;
+	bh=swxfRysumHKmdMmk09THVTvxU/XqkcT5rR3pmvabELc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=lzJ5L0xf3Xola7GZGpU9ZPgjlw/jA9OU75CboafEf0+1r8BIgz1X83g5gWkzhb336
+	 rFtcYxYzIO0D/cZkSNookZ1Vg93wEGs5+Vnub7RzSpPZASRKeqR164NakAGZ0AxXAg
+	 qV/r/Pal45z89NHrrGFm5UrkD5gORPkjIdPaXVbk9OY78qizzVBU8vW8C/reqOa54w
+	 liR5fLibokHg9WzNjprd11XfezWAI0izO7OetM+G8Kp6o4eBTDDVVBNtLQKy8jN5mk
+	 jEA6Bp2niQYfuRKdqEA7UqXCBzJdNGARWM80kO1r+oFkY1VwclTQRjxFD9kRITqWV7
+	 xUj/BoeYmhrEA==
 From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 To: akpm@linux-foundation.org,
 	linux-mm@kvack.org
@@ -89,27 +89,28 @@ Cc: axelrasmussen@google.com,
 	zhangbo56@xiaomi.com,
 	zhuhui@kylinos.cn,
 	sidchintamaneni@gmail.com,
-	"Barry Song (Xiaomi)" <baohua@kernel.org>
-Subject: [PATCH v6 00/15] mm: mglru: fix swappiness behavior
-Date: Wed, 11 Nov 2026 04:20:10 +0800
-Message-Id: <20261110202025.25736-1-baohua@kernel.org>
+	Barry Song <baohua@kernel.org>
+Subject: [PATCH v6 02/15] mm/mglru: extract lruvec_populated_min_seq() helper
+Date: Wed, 11 Nov 2026 04:20:12 +0800
+Message-Id: <20261110202025.25736-3-baohua@kernel.org>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20261110202025.25736-1-baohua@kernel.org>
+References: <20261110202025.25736-1-baohua@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5E25680006
-X-Stat-Signature: wnd7rzbqzh11ysu51rxqctzqfjtshiie
+X-Stat-Signature: cxnz7pbtowhcmcuf4edrtmfwwgs7sc39
 X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BB84D1C0004
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794342037-577220
-X-HE-Meta: U2FsdGVkX19lLSe8F578WUsQF9z6ZZZDK4SbYPs4ov/PUMqRLL7N/MmOJNBWgCAMF2gcZNZQvQ2fEvqjnBRuKdQxpYPrIJkEaWtX+cndtfhCSavCl1PkKm0a+/u4Lm+QbtkR3HBqX8ju/fHBgcpaEtQi7OblRNMP9MsHQ8tLKIk8sCaCNXzepIL68i3V95REeTwRmOcH4ualef0G5aKfzekDYvh7bIuKHZDZ7dOsCJ6PMcnNOfcyy43xRVine9ec03kjGB6/rD1yrfKQHYgeHbLSOLuHXWIC7fEpS01hyyzk0LpDink3vnBHcy5p0DotonYMOR3bxK8IBsYA9M098wBKTwnNY4iTyWA9v8V04xot7aYwID11N1oU8QXY1TnttNbJW0K+3QaxOlTrr2GWmgf9YquKv1HVASZkVjeBSQ79GFY/dGaz1tBZWVsFlTiANnIxCf8PRyAFp3XodAVNYx1JTUSVGmr1LI0XAEzKNHik6q/N2ewUv6XPq8cGfiZLk0Pz0/FZsGRBSSHT+6/mN024uKgv/WgL6cgwVk0jwrr7EEziaAt5bwdfXsDBBTk4LHpnSgo6PG9SJ43WqWgMY8JuWj8p0zrUsmNsM5h3TkRAF+8WMMvc8+jERQJ+X9Jf4vamzua8V816ToSIgRG8IPeCBeTGC6C+i+7ZDkPeSrAZcwPyas4XUl3JbbYVtmh6LIj/04bioVgt4lSXxgavhqC8unp2EP1NS+EH+KSB10ORDnIsKrmwK7H02iSSTCxvYyga9vf127gVc96T+YfCgK9ILQfRAiWGOAAtHVOskJDJjjbvfniKr6kRyhfaWetOvoeNsaQqDESTBtXH3aKzygmRDJCvTcaTj735lmWDgZqsSja2aWtfEfuW00Fadthl+m5wLBejV+Lw9OksLpSgwky60eyiH9i9hVR7e9wFQBNx5x9bomS0O0dp2TQmQ+l+JI1zkh0ILxm3oEEd476
- dCtBhqIT
- P+sojO3O6qz59N+XCN+iBbyL6VpxPlT774NuHIkj4BBw8KCXI6fGhDmpLUCjRtRRo2bURyIpnHX1M+QDGPhm8UO1wQlm8hP35phDrjfpDMu9biASuVZsGcgGH7J8VGl2EZuRf+8+5kSmdRX0IuRKDnNgybSEj58QIeG7IQW8zTFD162S/pFZj089UbyIh7FyNjvAj10ip47yTOGHUc8wfEfwaaJah+7EpUyv5J/Uf5GLUlNM6T5YhBVgWiczjn0d3/szxueJFqB1HeBUJgsLoh7VyRka7/cK7QpnuUQ+8jVFFMecAMeUm/268Cc8MgaA0Q/wQ3iHIVjb5jh00UUKFGyuqvomMW9qRqDkFMiVaVPkdgLOYV4PeUtRAbWyBZVJVPPXkTrMRVocEUPjeS4eztPKbBNZeiZ5YX3im1HkalFrfm4s6FGenkK0jWGGXrjfgUT45
+X-HE-Tag: 1794342046-871716
+X-HE-Meta: U2FsdGVkX1/Uc4nBEMiaToDHCwmd4VuPGCNMH0/5QCCxJFDdKqdVwp+kwTLpGXVP020TUI0rsQ3ZIDJhVCmP8tQdp/dUy5xfjQ5m/y7kfq9HWHPp3WF1qUCldz97tAsS7Yda3cUwBTyrw6HNmjB3UGHxIxINnRMRkeyLL1HVdgIw210WCKrjWl/svJSW+MjwYOb0egn5CFhAEO6K8cH0MEuKWCfRHOPey62fdy1PeVzriz3g1qTPvbOr9KwvxpZ/P1QIxMF0kE1j76/zaCxWji43pRdlKL4Ms/NPP2ZTLqZBARayXhLyJHWqdt074GiOMwBCQQjuw7qaeKzER523SDUFR0MbJbKM1sdM+3GasBqeNjkXHS4D1DqbJ/5DWKU0SzgziZh8CydaMiy0je9GbXmhgE4mzzyBquqJydOTtlo1OcYafNmjZJ54zn7rJVR1BPp9j4Lq664i2NjEyhOGBcpPs5GDaN9quUDIphnJtU4aevcbkB414YLe09sKnnq5Ag9qObGohEi1wAWcZ7Gzl3INt3C15v8vemCcfjuVanEWD2Nnwre1I8MaTrihsUcuTMSAt9zH3O9o5/uE2TeSU9SiFPJFWHQb6AKPuh93JTyfoUnENzTEe0O8nW4mM6FTF8fsiOONP7vSeIPdPP1ZCAR60kYyEO51DwCY8gdR3J8RTd00a4F1KGrszipLYPaQcuneWN8b2ygcMlVytt81N+kaYGeplaUZYvzYxoydK0NWpAbOYiZHbLJSjG5vA9wSp4x2pq1EJ8C0miqvBom8Y4rhLNuqZBPTMv8+hN8Dx+MlK2vJYwg//boKRo+j/dO8KLgbzTlGquIsB4UFtGQvHLNJQ7cgWu8VUxck0qX8Y/yGW/U+KwMSpCqUXDbFg5dNm0gzw8p08GLUqpVyjOtLGqZK/BA73OM3oTjOoLUC57JOjFWfBqLtI6XKcBriX+JOYVBL+7/RFXZwNkVynSj
+ 8JAlC0A9
+ C+08N643Eu3CkYE9amkdwIbdmKkCppqO2dAE7BLyUHqFe6vF4kzvlJOwZIZto/qeIfhO5MOqBRJBwU3XoEmAzIrMC5azmhf+2s6kWPE5MX4Izv1exqI2TDSCthmEuthrXmINlYvGi73r1nOWqF0GPL9labdrHhmP+1XqxOmPsXiywd9RwMJrfsol+zwLyzi340YixM9SvQxSSyfbItB83lylZVDXF2vOgCNwWsXFnf/pzZZkiGYz7FCofM/I6CHdV8M0zkgsFoOREVxvWq8O5Tco2e7ia07xCXwGtJf8CcWDRf8nNBjrqr5kjfFJX1QTCdEBlnveguIaaYyEyWdbRqdvs5jv1qsDA7fxTSzTHaLuBix3z5Kg6NEsKCKjIFHf1WRYryB4WVHfLAwtEDdCCrfhujA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,201 +119,87 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Classic LRU respects swappiness, while MGLRU only weakly
-honors it when selecting the scan type. The fallback logic
-can easily override the bias established by
-get_type_to_scan(). As a result, swappiness has a much
-smaller overall impact when changing from 1 to 200, as
-shown by the data presented later in this cover letter.
+From: Kairui Song <kasong@tencent.com>
 
-In this patchset, patches 1-8 from Kairui introduce a model that uses
-refaults to determine nr_to_scan[] for both file and anon in MGLRU.
-For each reclaim operation, we calculate how many file and anon
-folios to scan, similar to CLRU, rather than relying on
-get_type_to_scan() and fallback mechanisms to decide what to
-reclaim, which have proven rather unreliable in honoring swappiness.
-This model also allows scanning and reclaiming from the two youngest
-generations, including the youngest generation itself. This can help
-resolve OOM situations[1] and reduce the need for aging.
+The search for the oldest populated generation of a type, previously
+embedded in try_to_inc_min_seq(), is extracted into the new
+lruvec_populated_min_seq() helper. It returns the oldest populated seq
+of a given type, bounded by the given max_seq so the search never goes
+beyond it.
 
-As Kairui mentioned, the OOM reproducer was demonstrated
-previously [2], and that series was merged in v7 [3].
+No functional change.
 
-The problem was largely alleviated as described, but not
-completely fixed. Under higher memory pressure, the system
-could still hit OOM. Before this series, Kairui could still
-reproduce OOM after hundreds of iterations. With the fixing
-patch in this series applied, the problem no longer occurs.
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
+---
+ mm/vmscan.c | 43 +++++++++++++++++++++++++++++--------------
+ 1 file changed, 29 insertions(+), 14 deletions(-)
 
-Patch 9 from Barry fixes a cold/hot inversion exacerbated by patches
-1–8 (which also exists in mainline) and improves reclaim efficiency.
-
-Patches 10-14 from Gaofei and Barry optimize aging based on folio
-distribution imbalance and improve reclaim behavior at extreme
-swappiness values such as 1 and 200.
-
-Patch 15 from Bo Zhang addresses the GFP_NOIO issue in MGLRU.
-After the patchset, the results track CLRU across the full swappiness
-range (see table below), with more file scanning at low swappiness
-and more anon scanning at high swappiness.
-
-After the patchset, the results track CLRU across the full swappiness
-range (see table below), with more file scanning at low swappiness
-and more anon scanning at high swappiness.
-
-pgsteal_file
-swappiness   CLRU          MGLRU         MGLRU+patches
-1            6,620,680     745,968       7,200,993
-36           807,807       508,974       536,154
-71           553,144       417,700       430,877
-106          402,880       402,474       360,526
-141          240,293       337,797       305,636
-176          187,682       330,045       229,553
-200          0             343,949       0
-
-pgsteal_anon
-swappiness   CLRU          MGLRU         MGLRU+patches
-1            4,436,199     2,671,934     5,362,520
-36           2,858,117     3,032,747     2,743,947
-71           3,042,392     2,827,735     3,204,163
-106          3,292,622     3,184,314     3,150,825
-141          3,612,869     2,999,000     3,489,850
-176          3,827,154     3,134,127     3,708,769
-200          13,825,283    3,269,753     14,403,938
-
-pgscan_file
-swappiness   CLRU          MGLRU         MGLRU+patches
-1            11,853,625    877,311       14,766,000
-36           1,016,826     582,783       617,127
-71           662,823       474,772       478,840
-106          496,374       451,285       377,093
-141          277,109       382,604       322,931
-176          206,261       372,059       233,651
-200          0             393,608       0
-
-pgscan_anon
-swappiness   CLRU          MGLRU         MGLRU+patches
-1            20,804,386    5,847,747     7,501,764
-36           17,830,330    6,740,075     6,197,057
-71           18,357,293    6,126,194     7,074,152
-106          19,938,920    6,431,355     7,555,448
-141          19,609,579    5,997,762     9,211,098
-176          21,612,749    6,071,032     11,058,694
-200          44,776,474    6,544,125     29,993,141
-
-refault_file
-swappiness   CLRU          MGLRU         MGLRU+patches
-1            6,523,070     667,302       7,122,634
-36           722,110       431,585       459,100
-71           477,062       340,241       352,834
-106          327,610       324,747       283,673
-141          161,827       265,959       230,350
-176          115,551       258,515       162,880
-200          0             268,049       0
-
-refault_anon
-swappiness   CLRU          MGLRU         MGLRU+patches
-1            867,728       552,829       1,408,397
-36           419,635       657,745       555,600
-71           536,299       611,345       701,640
-106          580,742       693,689       692,630
-141          706,151       639,850       817,103
-176          706,499       685,086       893,704
-200          4,693,850     733,273       5,462,849
-
-With a normal swappiness setting (without extreme bias), I
-see almost no noticeable performance difference between
-the two versions.
-For example, with `swappiness=60`, the average results
-over 5 rounds are:
-
-metric          W/o patch     W/ patch
-real            1m49.273s     1m49.269s
-user            25m33.186s    25m33.695s
-sys             3m41.851s     3m40.779s
-
-[1] https://github.com/ryncsn/emm-test-project/tree/master/file-anon-mix-pressure
-[2] https://lore.kernel.org/all/20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com/
-[3] https://lore.kernel.org/linux-mm/20260428-mglru-reclaim-v7-0-02fabb92dc43@tencent.com/
-
-v6:
-* rebase on top of mm-new(a lot of conflicts due to recent active mglru
-  developments);
-* only count eligible zones below sc->reclaim_idx for
-  lruvec_evictable_size() and lru_gen_imbalanced();
-* GFP_NOIO further fixing by Bo Zhang, exclude unreclaimable type
-  in lruvec_evictable_size().
-* Add Kunwu's reviewed-by, thanks!
-* RFC v5 link:
- https://lore.kernel.org/linux-mm/20261022220203.91911-1-baohua@kernel.org/
-RFC v5:
-* Remove the aging optimizations, which have been merged - thanks for Baolin,
-  Baoqun, Lian Wang, Kairui, Kunwu, Ridong reviewing on this;
-* Add Kairui's model for determining nr_to_scan[] for both types.
-* Fix cold/hot inversion for rejected folios - Barry.
-* Improve and clean up imbalanced aging, and optimize extreme
-  swappiness values of 1 and 200 - Gaofei, Barry.
-* Address the GFP_NOIO issue in MGLRU - Bo Zhang.
-* RFC v4 link:
- https://lore.kernel.org/linux-mm/20260812121658.69965-1-baohua@kernel.org/
-RFC v4:
-* Clean up isolate_folios() based on Baolin's feedback. Thanks!
-* Further improve isolate_folios() and scan_folios(), including
-  handling of exhausted reclaim types.
-* Add fixes and performance improvements to inc_min_seq(),
-  and reduce lock contention.
-* Improve the handling of imbalanced aging and remaining
-  generation-based aging.
-*  RFC v3 link:
- https://lore.kernel.org/linux-mm/20260731083843.37811-1-baohua@kernel.org/
-RFC v3:
- - Added Ridong's patch of improving isolate_folios() readability;
- - for lru_gen_imbalanced(), apply some suggestions from Zicheng
-   and Kairui, considering lruvec size and use macro;
- - drop "mm: mglru: only fall back when reclaim is running at high
-   priority"
- - mitigate aging for balanced swappiess value(near middle 100)
-   as swappiness bias is less a concern for them; but slightly
-   increased aging overhead might not be good.
- *  RFC v2 link:
-   https://lore.kernel.org/linux-mm/20260726122123.7614-1-baohua@kernel.org/
-RFC v2:
- - Quickly address a few issues raised in the Sashiko comments so
-   reviewers can ignore v1 and review a cleaner version instead.
-   https://sashiko.dev/#/patchset/20260726012946.18684-1-baohua@kernel.org
-   Thanks, Sashiko!
-
-Barry Song (Xiaomi) (4):
-  mm/mglru: Avoid placing rejected folios below populated gen
-  mm/mglru: Restrict eviction accounting to eligible zones
-  mm/mglru: Reduce LRU lock contention by shrinking folio batches in
-    inc_min_seq
-  mm/mglru: Make swappiness=1 file reclaim more aggressive
-
-Bo Zhang (1):
-  mm/mglru: Avoid scan anon while swapcache is low for GFP_NOIO
-    allocation
-
-Kairui Song (8):
-  mm/mglru: report evictable sizes per type
-  mm/mglru: extract lruvec_populated_min_seq() helper
-  mm/mglru: reclaim from the oldest populated gen
-  mm/mglru: lift the forced protection of reclaimer
-  mm/mglru: skip zones above reclaim_idx instead of rotating them
-  mm/mglru: return for unavailable anon reclaim earlier
-  mm/mglru: balance anon and file scan budget by refault rate
-  mm/mglru: lift youngest gen protection for higher priority
-
-lyugaofei (2):
-  mm/mglru: Run aging when pages are rare outside the youngest gen
-  mm/mglru: Avoid prolonged anon reclaim with swappiness=200
-
- include/linux/mm_inline.h |  22 +-
- mm/trace_vmscan.h         |   4 +-
- mm/vmscan.c               | 472 +++++++++++++++++++++++++-------------
- mm/vmscan.h               |   5 +-
- 4 files changed, 334 insertions(+), 169 deletions(-)
-
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index acc4efccda2f..4ac80968e634 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -3991,30 +3991,45 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
+ 	return true;
+ }
+ 
++/* Similar to lruvec_evictable_size, return the oldest populated seq of the type */
++static unsigned long lruvec_populated_min_seq(struct lruvec *lruvec, int type,
++					      unsigned long max_seq)
++{
++	int gen, zone;
++	unsigned long min_seq;
++	struct lru_gen_folio *lrugen = &lruvec->lrugen;
++
++	lockdep_assert_held(&lruvec->lru_lock);
++
++	min_seq = READ_ONCE(lrugen->min_seq[type]);
++	while (min_seq <= max_seq) {
++		gen = lru_gen_from_seq(min_seq);
++		for (zone = 0; zone < MAX_NR_ZONES; zone++) {
++			if (!list_empty(&lrugen->folios[gen][type][zone]))
++				return min_seq;
++		}
++		min_seq++;
++	}
++
++	return max_seq;
++}
++
+ static void try_to_inc_min_seq(struct lruvec *lruvec, int swappiness)
+ {
+-	int gen, type, zone;
++	int type;
+ 	bool seq_inc_flag = false;
+ 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+ 	DEFINE_MIN_SEQ(lruvec);
++	unsigned long seq;
+ 
+ 	VM_WARN_ON_ONCE(!seq_is_valid(lruvec));
+ 
+-	/* find the oldest populated generation */
++	/* Requires at least MIN_NR_GENS gens for basic functionality */
++	seq = lrugen->max_seq - MIN_NR_GENS;
+ 	for_each_evictable_type(type, swappiness) {
+-		while (min_seq[type] + MIN_NR_GENS <= lrugen->max_seq) {
+-			gen = lru_gen_from_seq(min_seq[type]);
+-
+-			for (zone = 0; zone < MAX_NR_ZONES; zone++) {
+-				if (!list_empty(&lrugen->folios[gen][type][zone]))
+-					goto next;
+-			}
+-
+-			min_seq[type]++;
++		min_seq[type] = lruvec_populated_min_seq(lruvec, type, seq + 1);
++		if (min_seq[type] > lrugen->min_seq[type])
+ 			seq_inc_flag = true;
+-		}
+-next:
+-		;
+ 	}
+ 
+ 	/*
 -- 
 2.34.1
 
