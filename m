@@ -1,135 +1,118 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D75606A320
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 19:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E026B606A33D
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 19:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SwhjvWDy
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bglyxXwZ
 Received: by kanga.kvack.org (Postfix)
-	id E57CB6B00EF; Tue, 10 Nov 2026 14:02:21 -0500 (EST)
+	id A6CD76B05B1; Tue, 10 Nov 2026 14:09:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE09A6B05B0; Tue, 10 Nov 2026 14:02:21 -0500 (EST)
+	id A1D836B05B2; Tue, 10 Nov 2026 14:09:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF71C6B05B1; Tue, 10 Nov 2026 14:02:21 -0500 (EST)
+	id 90C226B05B3; Tue, 10 Nov 2026 14:09:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AA4B86B00EF
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:02:21 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 343F2160A3C
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 19:02:21 +0000 (UTC)
-X-FDA: 85420130082.04.0255BFD
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1F9D214001F
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 19:02:18 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=SwhjvWDy;
-	spf=pass (imf23.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=vipinsh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794337339;
-	b=GNbrYDO6cFkBilDgDfmR5jnNbl1lOn868RULEBW2cgZ76Rry4s/lBjjKL4+5AdRqwaobhG
-	wtzHTIrZof4FcI0P/Uuwv8gX9XrbLQJMMHR0a+6bANlONWou+lo9KHBke0NWUjpmyeHCLf
-	VMwnkgHOb542HtbA4yCe55OGL8fTQD4=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=SwhjvWDy;
-	spf=pass (imf23.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=vipinsh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C3B16B05B1
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:09:26 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 125BB140A1C
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 19:09:26 +0000 (UTC)
+X-FDA: 85420147932.14.EEA6FED
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 1E115A0006
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 19:09:24 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bglyxXwZ;
+	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794337339;
+	s=arc-20220608; t=1794337764;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Rc92iNBDR3TpfE1Wb0FPlqB33KW4gheFc7Efbj9D4zA=;
-	b=y0xzTFv0kZhz72X2S0I8SQl7Z41fDYBaF6nnZMuMb9ovmvONCQwi5uXavkOl0/zumVSpZD
-	1V7D2FLe4ck1b1EiED2zMAuGNzk8+BtpLp3CNROLEm5W3qEbLbbL6/tS/uFBUvvuKyZZTD
-	Qx8WLsQeejbac8iRlx7RGQkJZgKgMUI=
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ed3f563739so6795ad.0
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:02:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794337338; x=1794942138; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Rc92iNBDR3TpfE1Wb0FPlqB33KW4gheFc7Efbj9D4zA=;
-        b=SwhjvWDyOiFPbPADK3RApRw4MLD+Nyl+w1zK2t+qeCM3/VJ8dYsTz0hiwriINYV9b/
-         4jBFER4u84Y11VrsDWbugu19Uqxeu9Z440btzPD/5kTG0PRjGLaGnLicWiOLFREFW7R9
-         RB1C5ZWgClQX8013r+uMZN0QRlN4myqke93O7eCqUTHVgCA1/85ggUDGNJq0rQLD4js7
-         i1dzSX2QAZznApdHLYoS+O0d1spKAP7fDe1KCL9miIcITEq9fxlzwk2AGiREhLhfjPVE
-         DiV+uA7PfZEEqdgl2u0a9FZkbUkSfrRYKm0RqJTnawwpUQQaukMbb5kReLzMA5kqdsUh
-         NIfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794337338; x=1794942138;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Rc92iNBDR3TpfE1Wb0FPlqB33KW4gheFc7Efbj9D4zA=;
-        b=0lXg7z/iUxjDnM/GsJlUtvQRTq3ADUtEmzoYGCPn64Iaf3nvoHREFkk62Ihat8hgEf
-         I1MWZ/YV5+Hgd0CQ/bxoglIkNU/RZfgVD8iJvqZX0ahuPqkFUHjaMlRaIKhxn3rHbXyb
-         /fRMo3XXQ4wHIYUk8YFCsR97DFjUKR8Z87BdYcFPVvEvM0b8ZZCgq9giuGfuWjLqS5u0
-         bfH7QtIrUrFTpqfWxaJjbeaXx5a1SGE6vRymXKr0IUAyTvCpTPzQF+xb68eKJB+EDa6L
-         rfGhaRLmAOUM+btFqPpXf1tYREkDEbX6TjHerOh8Hu9EATkZNn7/guG9V1nsOJJ+J+Yk
-         Ji0Q==
-X-Forwarded-Encrypted: i=1; AL+hErEwrF8y6W2bIq/cdaJRd9wjttszz9VzUM73MKfi8W0RAvl/FZNyRdBCcOA8b+oOIUg8nzMl5nxb4A==@kvack.org
-X-Gm-Message-State: APuU4Z+LcIAepFn8S9F2lFi+cG0wiXo0X1MMAPsNHva1mV3UjFJU+ZI/
-	qPBPmqGTX9c3gIr4m7kPSoK+FRkvdXXIJc3ylVOsIn/NHR/ebv2NLm/NGtfpJfuIag==
-X-Gm-Gg: AYBFou1M7zlr6Sw7ENYW7EbJu3oSTTSuO1+JJrA5Wzx4srswECy1t1FWWLlrB9sPinX
-	meCse7aJe8TaT98qj80srLjX+BSTUy1ztB05DKY2H4C6yI9xAVapUP2MUpw/91TbFOa3HjMhESa
-	ORCB1BDyjyNTxSVdrhsNy8rvFjOCWG/Xr4sLZAu/QwKp6bdzillBt53R+oUnLIHiku8aBtkdajC
-	+P9JbYAdC7UKJbpc2pLXyMzE0Go0nk0eOf4aB60mQa+UwMkDBu6+qmjjh2gBp/1kGhs0loQTfSH
-	a4RbaPrKbqA52XcUmvcTN6K3gtX3HsKBhJSySbkdzWJNfT1haCehkDfmMH8n+A+CbLKwG91iCxy
-	+yFE4ljIBBLJ1C+8Ir/P989bRUwP5niwGZBCfLCnFJ9I2e+TBBZgb7ajnNXGZQ2+3w1mtp6l7Uw
-	I6pUajfIaW5nGuZ8sNuEX2l8Ee3V1uDuGqPIurZTFki4r5hRm2jBYKTmKj5EofQMvPMHFXc5BxI
-	KXFuGY8nnZNp1M4dYVtcRi7L355LY+fhfT1N6zUZ/Pu5O29mUqsJAlXpEWv1pUpODeXx8Hzn0G1
-	JB04wSZoKP0Sl6+c5EASjtmMueYoBAVJ+iU3yPbhs2NXJqcP00WuynNnsjm25dNh
-X-Received: by 2002:a17:903:1b44:b0:2d5:db38:8010 with SMTP id d9443c01a7336-2edba3e2a10mr5113665ad.15.1794337336971;
-        Tue, 10 Nov 2026 11:02:16 -0800 (PST)
-Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b17db31cafsm914394a91.3.2026.11.10.11.02.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 11:02:15 -0800 (PST)
-Date: Tue, 10 Nov 2026 11:02:11 -0800
-From: Vipin Sharma <vipinsh@google.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org, ajayachandra@nvidia.com, 
-	alex@shazbot.org, amastro@fb.com, ankita@nvidia.com, apopple@nvidia.com, 
-	bhelgaas@google.com, chrisl@kernel.org, christian.koenig@amd.com, corbet@lwn.net, 
-	dmatlack@google.com, graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com, 
-	jgg@ziepe.ca, jrhilke@google.com, julianr@linux.ibm.com, kees@kernel.org, 
-	kevin.tian@intel.com, leon@kernel.org, leonro@nvidia.com, lukas@wunner.de, 
-	mattev@meta.com, michal.winiarski@intel.com, parav@nvidia.com, 
-	pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org, rananta@google.com, 
-	rdunlap@infradead.org, rientjes@google.com, rodrigo.vivi@intel.com, rppt@kernel.org, 
-	saeedm@nvidia.com, schnelle@linux.ibm.com, skhan@linuxfoundation.org, 
-	vivek.kasireddy@intel.com, witu@nvidia.com, yanjun.zhu@linux.dev, yi.l.liu@intel.com
-Subject: Re: [PATCH v6 04/27] vfio/pci: Register a file handler with Live
- Update Orchestrator
-Message-ID: <20261110185305.GC519525.vipinsh@google.com>
-References: <20261102153656.1431701-1-vipinsh@google.com>
- <20261102153656.1431701-5-vipinsh@google.com>
- <au5T7qouVfxJSDmr@google.com>
+	bh=W+WHa4Tx0FQeM/03RDwXEAIwHC3edRmTKXzFoRa1jD8=;
+	b=Fv0MlKNjiC03XL7HZVnRH1dCBjN/0cSyN8iifAeaARxAKWzsz03xxlmtTuZAnJfE68Cf89
+	60rYE4FTy4u4QNL01wjYGfrMueOfvTZ1HyNbUO6ZRHzyDLRlIujQB61OVzk+1N4lqeeKAc
+	QBPUZzRDs5W1pv+AxPFnPj2jbPMABUo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794337764;
+	b=i66vxFptGuVmLos7ZC1WNCwni4gw5EI3552WL0xfcpGXoH7daBZeIfglkVw6TUW2P8kKu9
+	WNmSJ00sI3+WWXuDZeAxVn+OhCyT7wWnOS79LFigUDaliHrx08CpBZqcSR5zPERt1XOj24
+	zUlVxJu0UKCZ5J13qlLR4sGRw8fu9RY=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bglyxXwZ;
+	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 59B5C43E78
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 19:09:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CED11F008A4
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 19:09:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794337763;
+	bh=W+WHa4Tx0FQeM/03RDwXEAIwHC3edRmTKXzFoRa1jD8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=bglyxXwZhyuRgmFOeALSHNg3i9G+F+dEGWc+WpFP+/s37zzIxn5NO9E9jL+3R63Bm
+	 kC1t66ugxjCC+DGJdyggcyEpur2diPQ2cj/2niEY3bXp18Xyde4N4SgtjypFHg07RX
+	 nNt9IB1Pyo5UXtnxiwwuo/pGQaooKaOqZl+S5l9vCcBYowdJ7i8choGB0ABE8fDRAO
+	 IDslbNOGPosKnbAT3VDamaJEjrl/9QWADByJR3PXYNI1smQYdKt4aqNCQDtxHZdAjz
+	 RdhLsM6qzgydo3C6wdZv5aCI5+0Dxakipha9SAanffrY51SlJjsoX6VnWKJFlLWFHE
+	 bP6lWSDmVlV+w==
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-93e515769d3so234712685a.3
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:09:23 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErHvBpmxJm2HLp+fUffyIYomODtI7gkZ1RlEhQsEnlbLXBAAe1aowL1s5BNxmJ95ZmZA2opsycEy8g==@kvack.org
+X-Gm-Message-State: APuU4Z9YXTdSKubYFTGDhgYmRPGPQeHaofWOsjhViDn9lbpIppefY7nO
+	lspIkz+Cso+uf0rxpZzOG4q8cx/tNSy+fkQQbGQbzognomgzEwzG39/CAA7w+YuURm5frOioSEl
+	taOhNAJpVthXodbRRGVN43KagwCk1f3Y=
+X-Received: by 2002:a05:620a:2984:b0:93f:623a:adfe with SMTP id
+ af79cd13be357-9479f326c45mr594443385a.58.1794337762570; Tue, 10 Nov 2026
+ 11:09:22 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <au5T7qouVfxJSDmr@google.com>
-X-Stat-Signature: 1t5mk49owysfj1r196kp6ujwyogr83jn
-X-Rspamd-Queue-Id: 1F9D214001F
+References: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
+In-Reply-To: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 11 Nov 2026 03:09:11 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wPJ_QtogRWti7S_w2pLjp5OtiO_yMK3xPDUsbKb7vcpQ@mail.gmail.com>
+X-Gm-Features: AclHuK-DC-lJkNatH4VO2rw16n-NSlpOLDxaxjxsORriFsDN1xlQXsk_TPJhSYE
+Message-ID: <CAGsJ_4wPJ_QtogRWti7S_w2pLjp5OtiO_yMK3xPDUsbKb7vcpQ@mail.gmail.com>
+Subject: Re: [PATCH 0/4] MAINTAINERS: remove my reviewerships, add CREDITS
+ entry for THP
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Uladzislau Rezki <urezki@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: iy9otp1gy6unfbwrdnrdmr35yca7t1yd
+X-Rspamd-Queue-Id: 1E115A0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794337338-750503
-X-HE-Meta: U2FsdGVkX1/xVqWA6UG9r8rwkFUIbOTnKzwW9KaA3HILaANYEHklnI4S8EZJStLIFmQN5rdYZarHTkeIyXjetRCbkw+rqdHcTDnij4+UmIJ84oLqfH6gIDr5J0nrkAfkFoL0LugVKdfMS4lpOyags8+bzwi0AbZS/LipV+Fb6z/gdCcTvgX8HEOuj6GPebn+E4Bi9Sc0XKmaqI6QBCTVTE6RithdOqqlXx4LGmvPgnBZ+a0HatuPuPu/AB9EjFFJeiahs//Gla3emYb/BCBR1NWan+z1q/sIBV9aMPGYbLcOgeG0y7StvOsfuNoVzWG8Lu77L70R/W2eLaY2fgU83Xx5trOYR0557hvV60Oc6biLF7kfZiObZYp/v2gr/88UQvvtFRvNxvZ1/iIBs6dN9ozj0oRtT+bSC9yH20RggV2ozgVzenR7c0hXcevTec/pM51xnrK7egpCaUw9plhwCxWMaPLzpX17SVk78HoHOGtN0PEY3kIJxTwXFm/+2I0rsbek837qM8VNVK2XUAwBv6zEorQAj+TZ+Ouqu4Xtv+iyfcACPuTCt/xhu02Ps9vJ2+N+OR9dovWV87dpWJtBaJSHoehsH17B1a3uj5pVf0MyYQa9NCaSoU289MDdfwUO30e1YUfhAhvTfYfR/o7BvI87qsI839DQSJ+pnq10elL1T+ldZOXLQJXUOrpHw28w5MD8B8ogIMN547R9cLxZHzkEqUD30LYpuo/zeGpyKT1cFli+K2yibF9AHKN86fS7xAf10L6x/OynRgDyAKDu1P8TDK+pib2UH4rcqgOTQpz5ckORLwJPDFNILRpd1GypArWvqL/guLhBBMKMt0GmBSuhY5bS/paG5E4NmCiJgzH85jDlH0e/t66chHuxO2dXx5mYtVwV/XIl3pmkdTdebVgXxE6dpnAtVJWeTGct5TNt83WIfwRiv4XkRKeKZdM8QrwUp3jL79Y1rqpSGlt
- 9hCAJDbQ
- PBIhh9tVNAJib2CzMxtQegZ/TnXn+k4YluBC3w5fIox3pu46DgzUtIlO86hKBZ2ANnTrKZWWqomArkTRuJ1lhYP9VAknBM+ZMOVzJekW3sk6VD/9n53tsXJiL9+X033AiUrMS1gfXvvgLoOmmF0gJHV6LrbeCDCZbGjAkW3jaUxerjl31Nh6vVjkSpaxNzendcCcLXcuKSmrs8VMPsxk+NU85QHnn9CvLVb6O5oSVqADoYNIpNqM3LG5kh84Oji3mmpzMNihLXODt4hkdQTm4DSwot+ila36QLzcs7sqWS2EG3OUj92ADW5TKXnVxukMTNhDWwr41xg8bxcoaMt0wnzPDUh6k/2gKn3p9
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794337763-540104
+X-HE-Meta: U2FsdGVkX18lY9R8l7p1BOMLA8bYVEj5gn61wBXrsq+ICwBWgL9PZG+hj1B8uzAsBqwDarNn5tfFHy1BP6syojCCk6p76nhynEdnljNOj4FpCrrWn1BH262jDIWLHpScxf0P4jEO27GnqVDPEEv+lI8vCnBPA+mTuNmTPNI/yQngDYIfr/z1h2hCnWXwPYmQchlkKxy+aoM/UUj/bTmFB5Wdcg62JaPQTZiGvD8Ok43jfFBVeE+VjCyxTbwC6GSlxPzEpqmy80HeViLh7io4TDmaC1BUoNcVNZNE8VG9+/LbrA3GS3lg2IGxcuXe+hyAHPcdRHT5kj+hYOgxx/5JJbkT7l0ayhBFoVukIH+wpDvrz8++c9mNFO8tdVY0b+hOUMfX1VPg+8Brvzj5CEnYlUvUQ6wZv4a4baRqfK9OkTs5EZQkcfsrFl4wwkH0BfyexI2gMTMPrTDFV8KuwH0RdAyrbzVas8CVkHuanFL7RTmDnuyoRLed7G6/t5ula/AwTfcPhN9ZakU2nseXE/xqmlkPuCIcaW//8k3bwwE13KSdtb/v94rHzAj0E+v9EVTqGCR1gpsVfKumvrujf/Y3xqLDT1uRFmObn+Mk2Zo43hyggnQdVl11sq2xJJhrd0Gj3QDG3BnEfB63YJwlDf8MWbIp1lItMYehjoriqE+ErfokRDOts/HEjZ+XouKLmlfgAmlvMSWPOM76EGciX7Ssv1NZDtqwwrQE6groYJ8rGt0zHcRBmMuYj4OMzmjaaQL0AvWOnLGZo51H0yZedwMZ/3gQh6+PT/o14EcyZpcqsRrX1qTPglZpC8fzsfbg77qaPo4/+DVWysN/VZpZEIROjUWQb+/igaMTg7tR+S5lkDbtnw7OJSxr3lR/52UHynJMw7l8bLIly0coUS2gT5Rw5KkI9z7UzbBYcGPT0j9RpnQljvL8aU6piucNqYb8VElqgbGh6J6ttox103tBx9y
+ /rRZKpcB
+ adOFJJ8L55urH0iSNweEh7tgAJjE9LtTbbuFTOo5kRRD0H8WoZxI2D81r4jExe/GdrTvfhODfHtR6qpxYyWak5EtZh6Bb8mVXnuwrjnFox7l2nAdazmiKDPmkI6/r1bbOsoRpRpXKFyXdUSK9pEH+2h8q1wDdh9OGhx0IuQhTJeoCV1RFmStvK+dbVr6uMmcbiU8W1Gxu4tv8ByivgfaRYmbhRZwGT03HP7BT8LjrLw2iLVTsDC377aMqZOIWUF71ci554nuPBllvmqEzFeIsfz6vGkgzRqoAk3/fYe0dc++5Jj4GmK1L8vGBxg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,66 +121,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 06, 2026 at 10:29:06PM +0000, Samiullah Khawaja wrote:
-> On Mon, Nov 02, 2026 at 07:36:33AM -0800, Vipin Sharma wrote:
-> > Register a live update file handler for vfio-pci device files. Add stub
-> > implementations of all required callbacks so that registration does not
-> > fail. Register it with both live update framework and PCI subsystem.
-> > 
-> > This file handler will be extended in subsequent commits to enable a
-> > device bound to vfio-pci to run without interruption while the host is
-> > going through a kexec Live Update.
-> > 
-> > Put this support behind a new Kconfig VFIO_PCI_LIVEUPDATE. Initial
-> > support is added for no-iommu model vfio-pci devices.
-> > 
-> > Co-developed-by: David Matlack <dmatlack@google.com>
-> > Signed-off-by: David Matlack <dmatlack@google.com>
-> > Signed-off-by: Vipin Sharma <vipinsh@google.com>
-> > ---
-> > MAINTAINERS                            |  1 +
-> > drivers/vfio/pci/Kconfig               | 11 ++++
-> > drivers/vfio/pci/Makefile              |  1 +
-> > drivers/vfio/pci/vfio_pci.c            | 11 +++-
-> > drivers/vfio/pci/vfio_pci_liveupdate.c | 75 ++++++++++++++++++++++++++
-> > drivers/vfio/pci/vfio_pci_priv.h       | 14 +++++
-> > include/linux/kho/abi/vfio_pci.h       | 28 ++++++++++
-> > 7 files changed, 140 insertions(+), 1 deletion(-)
-> > create mode 100644 drivers/vfio/pci/vfio_pci_liveupdate.c
-> > create mode 100644 include/linux/kho/abi/vfio_pci.h
-> > 
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 5d1b58271989..167aa9d66ce8 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -28662,6 +28662,7 @@ F:	Documentation/ABI/testing/debugfs-vfio
-> > F:	Documentation/ABI/testing/sysfs-devices-vfio-dev
-> > F:	Documentation/driver-api/vfio.rst
-> > F:	drivers/vfio/
-> > +F:	include/linux/kho/abi/vfio_pci.h
-> > F:	include/linux/vfio.h
-> > F:	include/linux/vfio_pci_core.h
-> > F:	include/uapi/linux/vfio.h
-> > diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
-> > index 296bf01e185e..e8285ad93a69 100644
-> > --- a/drivers/vfio/pci/Kconfig
-> > +++ b/drivers/vfio/pci/Kconfig
-> > @@ -42,6 +42,17 @@ config VFIO_PCI_IGD
-> > 	  and LPC bridge config space.
-> > 
-> > 	  To enable Intel IGD assignment through vfio-pci, say Y.
-> > +
-> > +config VFIO_PCI_LIVEUPDATE
-> > +	bool "VFIO PCI support for Live Update in no-iommu mode"
-> > +	depends on PCI_LIVEUPDATE && VFIO_NOIOMMU
-> 
-> Can we handle this dependency in code instead of doing through
-> configs? Are there any build dependencies on noiommu?
+On Tue, Nov 10, 2026 at 8:03=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.o=
+rg> wrote:
+>
+> Given the current throughput in the kernel resulting from AI-generated
+> series, I unfortunately lack the bandwidth to generally be able to offer
+> review except in those areas I maintain.
+>
+> I have separated the patches into areas maintained by David, Andrew, and
+> Alice + Danilo, so each can take the patches relevant to the subsystems,
+> for convenience.
+>
+> Apologies for doing this, but given the current trends I'd like to do
+> something to make my inbox a little more manageable :)
+>
+> Also add a CREDITS entry for THP, as, since Zi's rightful and well-earned
+> appointment as co-maintainer there, I have no fear of needing to step in
+> there, and so would like to record my time in that role.
+>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+> Lorenzo Stoakes (ARM) (4):
+>       MAINTAINERS: Remove myself from MM core reviewership
+>       MAINTAINERS: Remove myself from MM misc, reclaim reviewership
+>       MAINTAINERS: Remove myself from MM rust reviewerships
+>       CREDITS: add entry for THP maintenance
+>
 
-I can remove it but then by itself VFIO series will enable LIVEUPDATE
-irrespective of VFIO_NOIOMMU and it will just fail when someone tries to
-enable it. So, kconfig looks cleaner to me.
+Thanks so much for all your hard work across so many areas,
+especially in THP/mTHP.
 
-Can your series modify this kconfig and add (VFIO_NOIOMMU ||
-IOMMU_LIVEUPDATE)? Will that work for you?
+Acked-by: Barry Song <baohua@kernel.org>
+
+>  CREDITS     | 6 ++++++
+>  MAINTAINERS | 5 -----
+>  2 files changed, 6 insertions(+), 5 deletions(-)
+> ---
+> base-commit: b3dfbde62cf1981c4638939c159dfd087b7a72e9
+> change-id: 20261110-drop-reviewerships-264c745b11b5
+>
+> Cheers,
+> --
+> Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>
+
+Thanks,
+Barry
 
