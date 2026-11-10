@@ -1,103 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42412606A9CB
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E5F606A9E2
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y8UyGd/R
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JrJzy7hf
 Received: by kanga.kvack.org (Postfix)
-	id 6B1B46B05B5; Tue, 10 Nov 2026 11:57:58 -0500 (EST)
+	id 490CE6B05B7; Tue, 10 Nov 2026 11:58:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 663E26B05B6; Tue, 10 Nov 2026 11:57:58 -0500 (EST)
+	id 41F586B05B8; Tue, 10 Nov 2026 11:58:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 551FF6B05B7; Tue, 10 Nov 2026 11:57:58 -0500 (EST)
+	id 2B9C26B05B9; Tue, 10 Nov 2026 11:58:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3087B6B05B5
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:57:58 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2E088C0995
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:57:57 +0000 (UTC)
-X-FDA: 85419816594.05.EB5AD1F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 6BA01C0004
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:57:55 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Y8UyGd/R";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F2ACF6B05B7
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:58:00 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9026B1A09EB
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:58:00 +0000 (UTC)
+X-FDA: 85419816720.11.BB1021A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id EB3D140004
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:57:58 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JrJzy7hf;
+	spf=pass (imf12.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794329875;
+	s=arc-20220608; t=1794329879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t/rX53MCK+F8+8pu8v3hRh+esRHjUU6DuquJwjMhAJg=;
-	b=pu5nRkjIJMHPHWyqJGnPNXaDGUV/0yxAnPEB59ZCTKfuYn63nmedCUe3D3n8LqOs/1Ewih
-	zGOINPBSSxFWAWlKkuVNvJEvJIkSwGiwTGZLppI+Eu8PmG8ZGnfnSGoqR+iJIErXm2cdSw
-	zrz9mfx2IfsP4qTRq2IK+BRW69XmJzs=
+	bh=he0nLvBGCDN8uqNcjTTM0VHtxOcySMAUdvuWZ5SeqT8=;
+	b=zDIafqGjxkckoASgrlv5jJvWTjt/y/DPVYR13AyXX8JNbOTMk4p47Bu79DnIKbhh+iRBRK
+	19TRlGsfvBqTc+uxnjr/VNXTiNivqtcro375jZhzYmP3Tqq0TDP0W7/jPKKki/WjayNea/
+	V3tXxaVrZlVTKc7FeCFA3HYuhBxbZns=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794329875;
-	b=ofDIJicgVTZMv1NDBA089MalKdZCUy3mTpwQtfIqyJxOM+qSTATHr0v+sD9vNXnGxCwF4I
-	AtLLzCrlNLWrpCbnLWMaTRGkKGTqbB/YbT8pLGSArKCaWFGA4PS1whXBJGsDrqAaVexfk7
-	zAkYrnIcPLGeB+XWCP0hCuowVMMfrPc=
+	t=1794329879;
+	b=DXXgJHIXASzdkS7LvzkS9lW42ESTbX5UH30Cvr9CtE7x8BP31gZwAMa7YhVjvfm8Ws/3RD
+	v6Z+yNPtIJaAfIOsoZTnBCmBmN2yuxBZMmMuLw/EXLp6JOJkAc4UNmF3+Va55bncwitE7h
+	fo++ZQi0zDUy3M0tjbESx6A99dwm8Dw=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Y8UyGd/R";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JrJzy7hf;
+	spf=pass (imf12.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A104B471F0;
-	Tue, 10 Nov 2026 16:57:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606831F008A2;
-	Tue, 10 Nov 2026 16:57:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 791B963A86;
+	Tue, 10 Nov 2026 16:57:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE40D1F008A6;
+	Tue, 10 Nov 2026 16:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794329874;
-	bh=t/rX53MCK+F8+8pu8v3hRh+esRHjUU6DuquJwjMhAJg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Y8UyGd/RTtTu5gM1mnagjLUP0I72SAKepXsCoEMeT94G0dJnrd0OWgdg34KVjNs+q
-	 R5DDn/Oij8+gq7+RktimQ79fuvMP0Kn2CoBkLW8olGlVzk5zEhdGVr9K9WmwfUer5h
-	 W9h9ONcrKEB/xPKLuLZh6PqjIqvcvZHrsUyFLkxLYGo64uHKmNxVeks9WeDdFwMsq4
-	 LLBlOhOLGAHBMiVlIjGC6vxBqu086+SVY1bkwTCVS2jdKOtn/ugf6zO2I6CQZuMCa6
-	 w2fpOZp+qM/Exhqh7nYO8i1oKtixt22KYgrn5TCOM7gKmDO3ZGZcErlC4UGCnf2EB2
-	 qq/trWYbHdvcg==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 10 Nov 2026 16:57:43 +0000
-Subject: [PATCH 1/3] mm: only assert mmap locks if CONFIG_DEBUG_VM or
- lockdep is set
+	s=k20260515; t=1794329878;
+	bh=he0nLvBGCDN8uqNcjTTM0VHtxOcySMAUdvuWZ5SeqT8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=JrJzy7hfvYhnswLWixpqtp3vtRIm615A8irbRopyLbtLZhLpctLfiWiJExN8odzXq
+	 Ox6jFSj1mIc9nbGMGB7xtcyqCaCDtOnVHMGj4dsGzou1lJgcNnOcazLMncEKBvHb2j
+	 dKQI+UgsjSTlxKTfBh5+1K4D9aEhGc8a5Ha1FQqUSxyZQMb7A9jc1V726myR1T5qqj
+	 V4vfUgOb9Qw/WChXpJbLULMTypa6qlIr/ByOspZkkQz+aHng+8tT28XQTzpoRcPzR+
+	 qlCmnF8KXwMCBCknw8xFdv+6LfJTQQ00ikIpG4oTbAHMkT2+/ZwioYZCsFENxjLLhb
+	 9rxEjA8fkYOTg==
+Date: Tue, 10 Nov 2026 16:57:56 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, 
+	Minchan Kim <minchan@kernel.org>, Richard Chang <richardycc@google.com>, 
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 09/11] zsmalloc: embed struct zs_handle into zram and
+ zswap entries
+Message-ID: <avNMwoleXeYGz2CT@google.com>
+References: <20261110054836.1515030-1-senozhatsky@chromium.org>
+ <20261110054836.1515030-10-senozhatsky@chromium.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-tame-vma-asserts-v1-1-be293ff499a7@kernel.org>
-References: <20261110-tame-vma-asserts-v1-0-be293ff499a7@kernel.org>
-In-Reply-To: <20261110-tame-vma-asserts-v1-0-be293ff499a7@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Suren Baghdasaryan <surenb@google.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Shakeel Butt <shakeel.butt@linux.dev>
-Cc: ljs@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1695; i=ljs@kernel.org;
- h=from:subject:message-id; bh=vjPP3edYWn/6OBXj1HiySy0Qa49t43GUAeNl0TkpuQc=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLI++/JwFS9umXOT5wFPuuEHteqQcKdkFb/0PHGDeq5O3
- pS6N5kdpSwMYlwMsmKKLM+/iO8PEgmb13nB3w1mDisTyBAGLk4BmMjVTob/EcL2Vi+m7isUm/nl
- 8T7to3dbrqe7rJjcOqtFpLV99mJhHYZ/er1rnub/3f/tsu+8vM2n1yZdOvBOyGblnbd+Yjk6HN0
- ufAA=
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Stat-Signature: p4jetjdfcfjr4dx6qmdjr5amnru4k53h
-X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261110054836.1515030-10-senozhatsky@chromium.org>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: EB3D140004
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6BA01C0004
-X-HE-Tag: 1794329875-47986
-X-HE-Meta: U2FsdGVkX1/y0GsYf3zEp0oJJgbODsuQXBYdIFquNyMiyxkTYcvmnKIRmR9P1EOCzXp+48KNEMWFVd68v2D3RhzHUNHu3n6acsNAxpZYvdMj+RjmNYNkGpp9TwynBdoprQsIgB1jjnjKJIGU0yVVaYZsLvtijFTyVnUiS3V3mP5jIX2Ddvc0TjRSCk2+Yy3fy0kzbBsvVgS6vQdVotePfgWjdY7P1Xvk7+se/nrmndmvTAyBxgWSNpW8aAU7LSZB5lMPglbKEXIl6bgqljk+A0CJJ6yiQ5AsWzi6GsGy5VJf1d9OZQ46nthFFpOPMl823+MlPtkItC1tL8izw4pCx7NOzyKY9tX/iVmph8n+lRL/weQMwNAjdbTuS73QhjOcwyR1bLHC+PZILGwc9nn2g/356okZ+goznCTw3Fv4o76NjUGNeZqZlPsH16eDvpEouGn1HSwoKzbNg0uDxbu9lYQRsxHKeHGTSJBWwsbWk1Q/yE5PZk+TSDLElRzM9ZitdiO8sBi35tkjYtvLMQBtnx1DDzTVxtDJuOKGDcIcEvSKvluVGhXZeStQKYyq5B09rVv2h2tA3Ewl9qKP67CCMNt9a+de0V4CPdl0zhlVrlRv2VcEl27O5RB4MUyYo8M+N/sl8IX6aBlbVirHuhVhIIrDze8l4TaeX2Mz4ME5YFwE01nTIOwPcdPdq2t4+F3HSsoFQ/DCRc82CBsJt2mydUpAd3OHJEejQGpNAuZeBbWbop3dYTUUvvw8wiLo8xLUuPUmT1ubARUO8q/wxsrwGqhDFCBlZsx0Ue4bj+nO/GmRw86CSgurBsNwdB4ibsh7wvqSeMy+UXDOXtzUW/Oyv8yMn60dHheKD7IYGdI9gE2HaaEl4p12p6PVUL3xZMkpqFo+M8gynrhjkdCLmCkCWuRZO7qPEEBCKnUIPD0/4GFgHp/xKejBO+/re6LgsfbaFRQUU1+Hn4ydKHXiuj+
- oFtD55dF
- WL9+kAbZJ1ospjknC4vh/gq6x+aPsIqvr0CrsMzrQRart37TwyeqGxvVBMSWIclztxxmqIP7XsN5NH0fEfbsCEe/crq/un98D6TVpJfYQQavr03fUaWXss1287Ce5tQ1F3QSc9YAiwAVk91T4whHeA1zOrIyqLB4m7sRkPNJinE/rHqyMWvAqWQhh0kPKR30yhplnZHve5Q3mRthrlwIcmqT4jGOWYew5imnfpemyaQKeAvHKNpHG0AwzKWrLgFUv2kk8ERo9Gd+iVDkvmEgI91yQeA32m6P/47CE
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 83etnqpkzet86rdkypfzfc96r6a86o6z
+X-Rspam-User: 
+X-HE-Tag: 1794329878-260312
+X-HE-Meta: U2FsdGVkX18dnmaGl/CuY8BfA6EdgF0jnAxIAn36Lw+zCSzfxz0mFL2JOu3n+/2DKZVs+lGogpdjdrG8YdxaJRRgzWFx3SYm6xAJ4grPGXoPWdnG3fpz3ZE+G/qKgHxkGjMyxiBxNXzgiyRj5w2eqbVs4OvN+D4WeFwPQtI8Ac1d3oPY63eejgM02P/UrFCWk7SYtCIkh497tUt7Qdww0x4H4Ti0lD9E06WpTyjUtje6BEC2eFJSOSxCHCLqxtdMnMrZ6HyEU6qNBiskkIm2KlN+LBkYfm0z5ccBAeGFlmvhtEz9yQ61c6qk7ZtZruIgoRLKIb1nR9U8cKijz6yhF6xtMuftI69H2zwrtA9C6OhznkgKeNlO8lo4A1jJ2yq7VnSy4fPC2gN2hkjxa4ilm7SwA0QZ1pxOryAwbc8/ufKGZsIUNGMJrsioFjwtKINgzlZHgn7+FMHg9sVDu4YIpeHNX8/ioJg/0PZFPoXcz7XYMPpAsk0e6ZsnHJ3SGiW707goNV9KSZ290CYPXsRTzBs3cynZT9SpdjbJFd0C4nFHFNg1mvOldNMPk3HKVkhfzOy/ofdQ5CcwuqUHtB539HuB2M5vHbbKSWpCOuPrpRW13kwUrFFOjkCrIW+WDJTzCm60ooa3piYauEG7ita4LTw07XTUhDQZoD3D1sGov3gZrw9RaQf4CjTnOT90p0LFDBiU6fJNgobAISgFu275Hr5pJYzly5UayD/CgvDp3ZPsZpozT0XZLbkmXkH2sYY1hTn4I5+WM5hg7VPa2yj2BFryTqgdRkGpt6dht1vccokwglbDldaghDHAeJ3pXxo2Z5ZTdEkRluHw1neuWKZwbmo1gWepRVBI9jpy39iEIK4G2kugNDHXcHArewk3dLzYpr9lYPjr/ZrjyeMoGx0eGJxl45ZY2uFVUzrMi/h1zagfC+wpo0NZKM6SjIBLINTQU65WNOZoWIbZ0b3B0Mp
+ SO+BAh0g
+ jjKyzeCGHwMwkq53oNire2gQNehlrX1Ty20cg7nh2DLVXwxQsFz5zuDwV3m9qiQPJiM9KEgMYDRT7/gCRqus+2+H2uPUdFRb4PY3K0jFf67bx6dM5EMyX4/Q4oqhi8DbvjxW2s8IzMA2aVdGrLOm2e++ByKcwWYIfJCyqcf7p3YW8JvD6+e5uAUqucZTb53fxSfr4OE5EThI5e0GScvhIXRsP5soXkAeIp6eTETCe9N+QlczDMNFdqco4S2XeUjkAnsB8WIxLhFbDoIzVO46UHQmKhSjfyMoDzryjnwdv2xc1ukBXZRjKgpuK2/rhi2g2t2rCTQ9NMiLbEvqoM2/r8jcb4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,51 +98,125 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-For a long while we have asserted the mmap lock being held regardless of
-whether or not the kernel is a debug build or not.
+On Tue, Nov 10, 2026 at 02:48:14PM +0900, Sergey Senozhatsky wrote:
+> zsmalloc allocates an object from handle_cachep for every stored
+> object, just to have a stable address which compaction and page
+> migration can update when the object moves.  Both zram and zswap
+> already have per-entry structures that hold the handle, so we basically
+> keep a pointer to a pointer, which costs 8 bytes per stored object,
+> slab alloc/free on every store and free, and one more memory load on
+> every access.
+> 
+> Make struct zs_handle public and embed it into zram_table_entry and
+> zswap_entry (their sizes don't change), so that zsmalloc writes object
+> location directly there, and remove handle_cachep.  zs_malloc() now
+> takes a handle pointer and returns an error code, zs_free() resets the
+> handle.
+> 
+> Since compaction and migration update the handle in place, it must be
+> naturally aligned, must not be on the stack (zs_malloc() warns about
+> both), must not be copied, and must stay allocated until zs_free() or
+> zs_rebind_handle().  zram recompression allocates a new object before
+> it frees the old one, so it uses zram->recomp_handle, protected by
+> ->dev_lock, and zs_rebind_handle() moves the new object to the slot
+> handle.  zram recompression is the only user of zs_rebind_handle().
+> 
+> This saves 8 bytes per stored page, e.g. 2MB per 1GB of swapped out
+> 4K pages.  Since handle is per-entry the memory savings scale.
+> 
+> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> ---
+>  Documentation/admin-guide/mm/slab.rst |   2 +-
+>  Documentation/mm/zsmalloc.rst         |  18 ++--
+>  drivers/block/zram/zram_drv.c         |  70 ++++++-------
+>  drivers/block/zram/zram_drv.h         |   6 +-
+>  include/linux/zsmalloc.h              |  29 +++++-
+>  mm/zsmalloc.c                         | 144 ++++++++++++++++----------
+>  mm/zswap.c                            |  22 ++--
+>  7 files changed, 177 insertions(+), 114 deletions(-)
 
-In general, given that these have been added as programmatic asserts that
-nobody did something stupid, production kernels are simply wasting their
-time checking for this.
+zsmalloc and zswap bits LGTM with a small nit below:
 
-It also means there is a two tier system - where some programmatic
-asserts (e.g. VM_WARN_ON_ONCE()-checked conditions) are only checked for if
-CONFIG_DEBUG_VM is enabled, whereas others are checked unconditionally.
+Reviewed-by: Yosry Ahmed <yosry@kernel.org>
 
-If we genuinely want to unconditionally check for the mmap lock being held
-at runtime, then that should be made clear in the code doing it.
+[..]
+>  
+>  /*
+> - * Pairs with READ_ONCE() in handle_to_obj(): zs_free() may read the
+> - * handle locklessly, so prevent store tearing here.
+> + * Pairs with READ_ONCE() in handle_to_obj() and zs_handle_is_allocated():
+> + * zs_free(), zs_rebind_handle(), and zs_handle_is_allocated() may read
+> + * the handle locklessly, so prevent store tearing here.
+>   */
+>  static void record_obj(struct zs_handle *handle, unsigned long obj)
+>  {
+> @@ -1307,31 +1292,37 @@ static unsigned long obj_malloc(struct zs_pool *pool,
+>  /**
+>   * zs_malloc - Allocate block of given size from pool.
+>   * @pool: pool to allocate from
+> + * @handle: handle to store allocated object in
+>   * @size: size of block to allocate
+>   * @gfp: gfp flags when allocating object
+>   * @nid: The preferred node id to allocate new zspage (if needed)
+>   *
+> - * On success, handle to the allocated object is returned,
+> - * otherwise an ERR_PTR().
+>   * Allocation requests with size > ZS_MAX_ALLOC_SIZE will fail.
+> + * zsmalloc keeps a back-pointer to @handle and updates it asynchronously
+> + * when the object moves, so @handle must be unsigned-long aligned, must
+> + * not be on the stack or modified/copied by the caller, and must remain
+> + * allocated until zs_free() or zs_rebind_handle().
+> + *
+> + * Return: 0 on success, negative error code otherwise.
+>   */
+> -struct zs_handle *zs_malloc(struct zs_pool *pool, size_t size, gfp_t gfp,
+> -			    const int nid)
+> +int zs_malloc(struct zs_pool *pool, struct zs_handle *handle, size_t size,
+> +	      gfp_t gfp, const int nid)
+>  {
+> -	struct zs_handle *handle;
+>  	struct size_class *class;
+>  	int newfg;
+>  	struct zspage *zspage;
+>  
+> +	if (WARN_ON_ONCE(!IS_ALIGNED((unsigned long)handle,
+> +				     __alignof__(unsigned long)) ||
+> +			 object_is_on_stack(handle) ||
+> +			 zs_handle_is_allocated(handle)))
 
-Regardless, if CONFIG_LOCKDEP is enabled, ensure that the lockdep
-assertions are performed.
+Nit: Put this in a helper to reuse in zs_rebind_handle().
 
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
- include/linux/mmap_lock.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-index 9c3a9c6525c1..9367430ee53c 100644
---- a/include/linux/mmap_lock.h
-+++ b/include/linux/mmap_lock.h
-@@ -75,12 +75,14 @@ static inline void __mmap_lock_trace_released(struct mm_struct *mm, bool write)
- 
- static inline void mmap_assert_locked(const struct mm_struct *mm)
- {
--	rwsem_assert_held(&mm->mmap_lock);
-+	if (IS_ENABLED(CONFIG_DEBUG_VM) || IS_ENABLED(CONFIG_LOCKDEP))
-+		rwsem_assert_held(&mm->mmap_lock);
- }
- 
- static inline void mmap_assert_write_locked(const struct mm_struct *mm)
- {
--	rwsem_assert_held_write(&mm->mmap_lock);
-+	if (IS_ENABLED(CONFIG_DEBUG_VM) || IS_ENABLED(CONFIG_LOCKDEP))
-+		rwsem_assert_held_write(&mm->mmap_lock);
- }
- 
- #ifdef CONFIG_LOCKDEP
-
--- 
-2.56.0
-
+> +		return -EINVAL;
+> +
+[..]  
+> +/**
+> + * zs_rebind_handle() - Rebind an allocated object to a new handle.
+> + * @pool: pool the object belongs to
+> + * @dst: unallocated destination handle (must not be on the stack)
+> + * @src: source handle that currently owns the object
+> + *
+> + * Rebinds the object from @src to @dst, updating the object header so
+> + * compaction and page migration update @dst instead of @src, and resets
+> + * @src.
+> + */
+> +void zs_rebind_handle(struct zs_pool *pool, struct zs_handle *dst,
+> +		      struct zs_handle *src)
+> +{
+> +	struct size_class *class;
+> +	struct zspage *zspage;
+> +	struct zpdesc *zpdesc;
+> +	struct link_free *link;
+> +	unsigned int obj_idx;
+> +	unsigned long obj;
+> +	unsigned long off;
+> +	void *vaddr;
+> +
+> +	/* Should never happen; bail out rather than corrupting handles */
+> +	if (WARN_ON_ONCE(!IS_ALIGNED((unsigned long)dst,
+> +				     __alignof__(unsigned long)) ||
+> +			 object_is_on_stack(dst) ||
+> +			 zs_handle_is_allocated(dst) ||
+> +			 !zs_handle_is_allocated(src)))
+> +		return;
+[..]
 
