@@ -1,96 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C28B606A339
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EDAB606A32D
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kGmKf3wz
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l0OBpzVC
 Received: by kanga.kvack.org (Postfix)
-	id BD0E46B05B9; Tue, 10 Nov 2026 11:07:58 -0500 (EST)
+	id 806EF6B05B1; Tue, 10 Nov 2026 11:10:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B81C66B05D4; Tue, 10 Nov 2026 11:07:58 -0500 (EST)
+	id 7DD066B05BE; Tue, 10 Nov 2026 11:10:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A97886B05D5; Tue, 10 Nov 2026 11:07:58 -0500 (EST)
+	id 71B736B05D7; Tue, 10 Nov 2026 11:10:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9108F6B05B9
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:07:58 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2F43EA09A7
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:07:58 +0000 (UTC)
-X-FDA: 85419690636.28.5F22726
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 78862A0005
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:07:56 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kGmKf3wz;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 534A26B05B1
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:10:46 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CDE10120958
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:10:45 +0000 (UTC)
+X-FDA: 85419697650.19.6DA177E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3A806180003
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:10:44 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l0OBpzVC;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794326876;
+	s=arc-20220608; t=1794327044;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rr13xWGGj4cOXcLlAfFPEFlHdCgyfIdPwKJSNmQ6jxY=;
-	b=bRwjupUEpLJnLro0qDhaWRC9z8azXqRi0EKazuGtJ6LWKo49pFAjY44dhEkTaLz8g73cX9
-	H620e7GI7oyl1VpoprPCd/yTVXKNRJRtVVmg8Ua5sjFHME0OCKkt/XLQq/mq8w6O6I1p2y
-	Ad1/MkiFFdDNV76xoYJzs8Vuv3clP0w=
+	bh=cZL1GthlzVtU2QKypsvLAA1E2TIUdiH1wSAT/Ld8YiY=;
+	b=mLL4Vh8Pw87WtCGvUkKBL6xRmWklFgnYIgD7/tsB/typvPsc00etl+zzJBzOrgVUSf2WI6
+	OMwKDRsYjJZafY5EvsxE2GfQnm4ccEJFwchtvgGpQFW2VZ9qz2Dk5y4ooZw1XYIic/4K8J
+	P/l87MKWqH6U2wBxpUcB0QmGuyhm3RE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794326876;
-	b=NraLtVqH+RD10Ch5JJpHklet0oYanng7mQYUmuKOzTIRiJMwxl1mt8BYSlQsEiQkdPneva
-	aiECvE4pP0GeIyluMiKBfCI18yc7Hq+uSJUx9o3JykXtvD+kvLBJkXyW8mYLIGC2mByHFX
-	0Rwbo5Y9SIxQtJsiuiW9h9GixNCmCOA=
+	t=1794327044;
+	b=nTGoVEIsJaAP0kXMWtRPvn3rb0y/ZRPDpC6KbcFaDYWTDeDs7fjX369x5UwtD1/9e/ttMY
+	sRgkPluMEwE1RUZWH9GlbWkgAVOj7oNuzi1LlblW5rSL/iwHAJDOzY/erz/U+QfVYtQYpq
+	tJ+IzR2ja1fJwKUPziRLtyJyNreWyIY=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kGmKf3wz;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l0OBpzVC;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A06B5405CA;
-	Tue, 10 Nov 2026 16:07:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6FF81F008A1;
-	Tue, 10 Nov 2026 16:07:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8C53C63A1B;
+	Tue, 10 Nov 2026 16:10:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864431F008A1;
+	Tue, 10 Nov 2026 16:10:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794326875;
-	bh=rr13xWGGj4cOXcLlAfFPEFlHdCgyfIdPwKJSNmQ6jxY=;
+	s=k20260515; t=1794327043;
+	bh=cZL1GthlzVtU2QKypsvLAA1E2TIUdiH1wSAT/Ld8YiY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kGmKf3wzt805VYWVqW+MBTOqTcI2w/6HR9x6GkPSmTCdbAUjCe7+Z3P5pTARCwOga
-	 Bk/dTss4NZSdI1RYw+3X+W/fa9/HuDdOEs7s7J6YRjnbDqezTif77ZVL5IL2pdZ6E/
-	 JYGDJ5RpojShPsM7QTag6v84N8sVFsAEBmUT8JduC4F/4x7lmfdZ3eCs9cmZOi3373
-	 JYCVRas0ydcZWDZHfCEFev3VVz2haiC4hxXFIhFgDr2PKcHX54IJYC8dnkHAw6vWkA
-	 Vq3CLVtBmSl9if5/PlhFrSYaT/6R1K6SJvphYSU4WkRjAGgGJYgH2QYU7JhC2xyJgn
-	 puVlfPI9XQP+A==
-Date: Tue, 10 Nov 2026 16:07:48 +0000
+	b=l0OBpzVCZZWsZt2XAltyVbrbIzt5LGZb+Zels/WrgDajA7VfcwELTAKXHG0z6bsIy
+	 EUVRe8qhbce+Y5D1s8r0lqE2ppx/pGp5vaWion6pjrOZnXOzyE5X031rJ27g+360LP
+	 GCp32fWpsvktlMh1Wj7KCZ2FVT4KcxntUkPxc3C8mC83LNapHektuVVqCPiP1m0fFs
+	 54Jxud/lxeNt8ejpg3FF5lCWK4FzMQc5QZ0RG4Uz83nDrLxHyVzsfDD1ajMdl9T3Eh
+	 VP4wxU1bhehp+KZQRCJwImI2v0N00C7XCt7I3BtUeyCM6qg9ETYzjyZpunzWDYmTPF
+	 uVz6ALmwcFVdA==
+Date: Tue, 10 Nov 2026 16:10:38 +0000
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
-	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Lance Yang <lance.yang@linux.dev>, "David Hildenbrand (Arm)" <david@kernel.org>, 
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Seunghyun An <san55@wisc.edu>
-Subject: Re: [PATCH] mm/vma: predicate vma_assert_stabilised() on
- CONFIG_DEBUG_VM
-Message-ID: <avNAgtDzM0MYevV8@gremlin>
-References: <20261110-vma-fixup-debug-asserts-v1-1-0b2e0680cd7e@kernel.org>
+To: Sarthak Sharma <sarthak.sharma@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Zhen Ni <zhen.ni@easystack.cn>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] tools/mm: add page_owner_filter to .gitignore
+Message-ID: <avNBw8RTBOoEL9Vg@gremlin>
+References: <20261109110139.216653-1-sarthak.sharma@arm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261110-vma-fixup-debug-asserts-v1-1-0b2e0680cd7e@kernel.org>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: i7s3cj68bj3d3ytjpse8a7dc3rxheqak
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+In-Reply-To: <20261109110139.216653-1-sarthak.sharma@arm.com>
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 78862A0005
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 5jmcfmsufqpfm3tuigk7oryfdxduptds
+X-Rspamd-Queue-Id: 3A806180003
 X-Rspam-User: 
-X-HE-Tag: 1794326876-145043
-X-HE-Meta: U2FsdGVkX18kC1ID2RbIborG7D+x1PN0KbBpm49sHE7+fIf4XMtCEe2iVJyPxErkaaT36xWft74KinCnFA5G+sspuyNEiNlUNuSOSmaQsL4xSxZBMwWhZ44iEiTl6nofbhqsJlRzLdTNps2oPBtqim5v6HG4BpBPLEjfLMhV1Tek1SrRNajIJ3tTqcrmj5CelZYWM4CTRPS96XXhAvh7YvaN+mph7F16LfjTq7uc98zmB80tgd5cBngxQ1fDz8ag5PXh5J6frBKxeKyY/ov6ZVYzwAciYrEJyPq+ddusRb31n/YTAlRomqUsoZFLVTqZ5dFGjjMaYoHr/8GIIBVL1Q2zOuZQelWzzHZIf/rgaspAkjg3WgEiMLMa7E9AqdjP7Q4pj1juwY/EIFlQCfo7SviuF8nuKI+eCs0M/aJTAZ7H6LtZdVjGxd/hOcm3ld9zLXEYWNmBETrTxMfcLEdlmDzrvKdo/m/nOmQmuvaeckEPvwVObojHOMDV2rTZK9lRauYzXy28ocJCv9rk9CKH6xklT/TFmxO3hnFaQuoQ0D+RZaqjnhATD+DakoHcMCiLeFmq6Ol82+R0hWxKvO6+Zx/FVpTemV+MwCBw0EjzU9kJgJDZ8ElAB78GfWtv1Z+oZizB3ZojBgdtNl7uJpyMH1c2Kt1lHKOI4+6j7KLn+hYiAiZQrfaP4AXtmmM2K9p9hCCvNTQv98xlNV1JxXcQ8LiRMlVEjCQGE0dqIG3s6N51vDd1pNVlERRK1bSZNnDtAmdXv0CQpGsnBbvoHvhvcX+ckEbUujb0fJrCLcPj/T6TJLUGr7ZcLmJF7UbcJofimlxJ4NySmyUptTE7arFlT6n+vvl96GdSJaQWSbFZ31bP+J4ISRn07BmBFxf5MIyV1RsfU8QlkBwvXKLs67cr8z8b1aLSklr2zXq+abLJuz77Znx5/nasLE5aM3PpNdGcLleA3ApcJlstHMqQube
- Ap5mP5AA
- X0zzDjo4rs1u/pnSHsHw67NJG5HJCiZC1O2eV9ArxX2wEpOGTcouNEWPz4vhuKlK86q+EharqQb6xTw4w+FMdfLYuAXK9797i95PeSyPCvfQcnGseqIHaG8hLGJgOvdKAVOjffsGHaHXcuVsKCQPnfGdFRv96WAHWLdqApuIZNLwfkb59h4rgKDlCUXS6wy5YjnOAFYO6nWfJ9sroB4s0HwG/81ApENnTn+dLeX1awlFG9oucxlyCA18x91c0LIqrymgYy/3Fm05tqjJ5RAd3R8OyVp8QSFrSy6svAS49iZ5NTr4=
+X-HE-Tag: 1794327044-762842
+X-HE-Meta: U2FsdGVkX19a+yyauSekLYPrhfmz7G6VldPR4pxXEY+Um5eZbGulnFyBFF/j1iRjUMWT5juzg/LSmNIKP2ZuI9gC/nYjfPEHuiY+dlKigDeCAOKLW4xAW/CSs6HdYmk5OdJYlRY0UvT5VX7jAdfXPK2gkS23/gxqs4ujaDx9nWmxaTfOA8+HJXT6DKt9J4/PF+LQY62wU4AREUlfLm0VsJtF2gIGGiUwT28v+dyHxKjlwkCjNdZQbuF+zF9pV50XWxB2bb8BM+ZBcBxv0VvWbGW5xMkf6PsfCbKXiBdtUy1DoR2SwPEHwG95+0+hTwo6nTyZh+FkxUb7xe9MjJM8vfdJWVcAyiDewJb8ajGW28G8djnaC3pobHiiUj9cbTWY1zpw5ZH5THaBvwCbPmTAZVYxwNlCbHDOEiHDg5XMD1ucnQ0HwLb/7TemZ7ozH+rErnyRD5k7RLU4169uY0zFA3A9eAbDL0QeFYjrF/U0R2eXmizPmpRL6k9P1K/vDXueweaiZ9fRSebfmtHO4VZKhv8PxttvlMvMVH6a5o7WuER8LbxDoOjtRmmEjojiC+fjLRUaZeKdOkZtJGOV8E5T+kOczXSZeJznl+QJkdrhQewxjWLx4m77/sA97ifu2tlBaIU0JXmnIiqP/hsIvgs4TZNqG/bXo/ev77k0eiqHi2i/Zx+pQQTCTH3ebkQeTxoKFWq3qTRRPG8qSTleuKqdEuG7eyxb8pjScXcovvoRv+zogGTLhZkoxeXXppvBV881gZdwIQBvfxi+cVta15yxfno+gBmQXtBufOQQ7B3p87NoE4KESbuoIkCfXY7eCEMriS8lTfFKGlpEHOWV/cN3VW4IbnQdqy9YWq1RIud/B1nKuHFS993V8ic0Jx+fP/2Q5pp49xpwo9+wV+enamgVhRg7NVpmB52zzXj8+fbLeYsCtlpE9Mi959LcolZEiuMtiiZ1rKEVBq5gWujGMrL
+ J3nfNSJ1
+ 6Mv2M2cHdBu56VhGTba26bkggAJDpI/CpD8CZ4ejwk21vd2kHJVYPtKT5JW3Dk7BTfZLZ10Jy11HMt3MnzV9CRK1zjmy2l95Qtefln9OJHwGWpCcD6BloCiU0XwELKd1rPckIsjln6VFLfBrRKrmmgG8T0IikzpAVokk1zlAMhyZgLVh2Eo3c6DbqJ5qulDNXotXRKuZYaubLnKQINE0rtudQC1krIpEDWvRPXi5HYKL/jTeBMRSRNMPptpWP/KTW/ytle5IPazprorWoFqvMh7ppN8UM14em2ruWESocbkcPOXsUQZsW+MDllsLSe3JgF0h+tmn17hhin1HIoV8/LiWB+jtmN2Px08Zegyrq4kMEl1k4WYOGXEv6lGwZi7i2RuQD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,39 +93,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Andrew - could you update as below?
+On Mon, Nov 09, 2026 at 04:31:39PM +0530, Sarthak Sharma wrote:
+> Add the missing page_owner_filter to .gitignore in
+> tools/mm.
+>
+> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
 
-Thanks!
+LGTM, so:
 
-On Tue, Nov 10, 2026 at 03:10:40PM +0000, Lorenzo Stoakes (ARM) wrote:
-[ ... ]
-> diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-> index 9ccbbcbd7aca..9c3a9c6525c1 100644
-> --- a/include/linux/mmap_lock.h
-> +++ b/include/linux/mmap_lock.h
-[ ... ]
->  /**
->   * vma_assert_stabilised() - assert that this VMA cannot be changed from
->   * underneath us either by having a VMA or mmap lock held.
-> @@ -418,9 +423,18 @@ static inline void vma_assert_locked(const struct vm_area_struct *vma)
->   *
->   * With lockdep disabled we may sometimes race with other threads acquiring the
->   * mmap read lock simultaneous with our VMA read lock.
-> + *
-> + * Assert only if CONFIG_DEBUG_VM is set.
->   */
->  static inline void vma_assert_stabilised(const struct vm_area_struct *vma)
->  {
-> +	if (!IS_ENABLED(CONFIG_DEBUG_VM))
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Actually I think this should be:
-
-	if (!IS_ENABLED(CONFIG_DEBUG_VM) || !IS_ENABLED(CONFIG_LOCKDEP))
-
-So we keep the lockdep asserts going regardless if lockdep is enabled (you'd
-expect most users to enable both together but still :)
-
-> +		return;
+> ---
+>  tools/mm/.gitignore | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/tools/mm/.gitignore b/tools/mm/.gitignore
+> index b4ac68a08e1a..2d08f713b664 100644
+> --- a/tools/mm/.gitignore
+> +++ b/tools/mm/.gitignore
+> @@ -2,6 +2,7 @@
+>  slabinfo
+>  page-types
+>  page_owner_sort
+> +page_owner_filter
+>  thp_swap_allocator_test
+>  gup_bench
+>  memory-failure/hwpoison-panic
+> --
+> 2.53.0
+>
+>
+>
 
 --
 Cheers, Lorenzo
