@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC7A60A380B
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0A360A381C
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eAIMgtL4
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fij9A7Cs
 Received: by kanga.kvack.org (Postfix)
-	id 9306B6B05C9; Tue, 10 Nov 2026 11:03:04 -0500 (EST)
+	id 9CCB66B05CB; Tue, 10 Nov 2026 11:03:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 908816B05CA; Tue, 10 Nov 2026 11:03:04 -0500 (EST)
+	id 97EF66B05CC; Tue, 10 Nov 2026 11:03:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F6266B05CB; Tue, 10 Nov 2026 11:03:04 -0500 (EST)
+	id 846A36B05CD; Tue, 10 Nov 2026 11:03:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5723B6B05C9
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:03:04 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D7A911A04EA
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:03:03 +0000 (UTC)
-X-FDA: 85419678246.10.ED3083A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 24D711C0012
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:03:01 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eAIMgtL4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A2606B05CB
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:03:07 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 55C3E140953
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:03:06 +0000 (UTC)
+X-FDA: 85419678372.16.65F3C65
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 56096C0010
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:03:04 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fij9A7Cs;
+	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794326584;
+	b=p9UPxYoyvzEDklPQfaG6Hid8/ZQJdvwArDqsratSZgwlr6cerif3G5PS7vAgzrNVlq2bJB
+	pfE1ArHHxRWrzJb7zSDK6zJWkcSUrImIksYeD6Bj+L5e7RDt+EB+qMheY4KVAkzNi1Q4QM
+	UDmvi2lOYgMbyj5n09CKjtnqjSYzCmQ=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fij9A7Cs;
+	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794326582;
+	s=arc-20220608; t=1794326584;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L3ReZaQQPjZmOU8RS8gqDiZ2wF6279PSfrVyb8lEiVU=;
-	b=0l1VOPyP3ueDk0Xq6G9xf2+3quGYU/1/pGso3dyLcPVIfjWTRSTSWG5SKAfoXgPoQ4dEaG
-	3aFDbp/6ww3qHCqzW5FrMLpFOM6VIvX+VCCiSw8yYjq6iSq5tGj/htxb9IxeP0W0W+GzlR
-	cknqmYWiDx4gzo2X2UpTR+RPm7jz/yM=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eAIMgtL4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794326582;
-	b=FHUrhwhZwJ2qxXyizieOfaUHUyUytVUx4pVrrYGXAF2qY7SypvyuV4QFiyp4PE/D+fbyzj
-	JmHdVgL2+1mhg4bCTPworEGehP9DsKYkvH/r0WmaKmobjt5BD2KR5jhB+IDjlKJK7bm+Rz
-	K6B9JqZg1OLSzpupwJDps3GXOC6sO5w=
+	bh=Z6ZGGbGpSoM/+UHOllYnr/FP0VqeEb/suB8w92bzgOY=;
+	b=uvGPPE+DcbfKevEoUPg0fTSdaLopiqEghPMd2eOTbv/oYkto9hQiSMAvAEvDFMRQnsx62/
+	/R28Z1QvMRUbaRTAhxF6a4E+ykC2u99pmXG9IAGO9wacbe5rWOjA2CJLuAu/hejqEDbdF/
+	78q+zMi3C9YHJ2Z8bad6RxpTF7Hwl7I=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8C16163A53;
+	by sea.source.kernel.org (Postfix) with ESMTP id 80F4D414F8;
+	Tue, 10 Nov 2026 16:03:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3C911F0089F;
 	Tue, 10 Nov 2026 16:03:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E6C31F0089F;
-	Tue, 10 Nov 2026 16:02:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794326581;
-	bh=L3ReZaQQPjZmOU8RS8gqDiZ2wF6279PSfrVyb8lEiVU=;
+	s=k20260515; t=1794326583;
+	bh=Z6ZGGbGpSoM/+UHOllYnr/FP0VqeEb/suB8w92bzgOY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eAIMgtL40ZxXpvZ4N3hHS2+eMpvpadtKGz5u1GnfQmIoWlk0nndC7Smmv18fl95tP
-	 odpptSt4nPL33hrGDtblkDf3GmOKxZpucou/cB9lShoF58AL3vJ3azWO7eN8pp9HxO
-	 DS/UJx+DSXBxnbnxs6AeZ94wixk3t7SQbHrDzJKrGje3tKDajHWQ3suzOK7cK+9F83
-	 3qhVe+um5MkEe5SVl2PIf3eKF+MIs7NGRJqeiA8unaU4hJtqkT91l6v6zK3mctFmND
-	 V9v9FevTUi/GGPv7UANNqMi3sGmPvL1dM3qPtK+9Keh30R2SMpzlleG/uBtbeS8DVW
-	 KrdgUGOLexXIQ==
-Message-ID: <sashiko-outbox-207335@kernel.org>
+	b=fij9A7CskjoNLPyepSzbrScEY7bbbH+eg1vmeCQXYsrFWcfGnmQh8IVsxeTrZsy74
+	 XoSOCF3rAlsathE//UXf8I1JunjgxcJOIYG+w/Dez9iGJjRWEIwbxn28fJImR3ksMo
+	 qynCqQ4qsPv4GLVewV7KXatVshPgacUpRcBPTVNjAfgyrgLFqhBTOkz/bXgQs2NgjL
+	 voCJ8jSFEHnpTGZvmKWjiTzRaVifUdMVZd40xy7RLJoUzxIE6bxZeCOsG3ACFomnAa
+	 KQzgnlOCDSnw57kxa+PEyaHuglyYniMmVWTPFq5qFdPqGTetePwYx0lWkjSgmIr14v
+	 aM+6OtLBK0yHg==
+Message-ID: <sashiko-outbox-207336@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v10 21/22] arm64: mm: Map kernel image alias of
- init_pg_dir read-only
+Subject: Re: [PATCH RFC v10 22/22] mm: Add basic tests for
+ kpkeys_hardened_pgtables
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Kevin Brodsky" <kevin.brodsky@arm.com>
 Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Ard Biesheuvel" <ardb+git@google.com>, "Andy
@@ -81,24 +81,24 @@ Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Ard Biesheuvel" <ardb+git@goog
  Babka" <vbabka@kernel.org>, "Will Deacon" <will@kernel.org>, "Yang Shi" <yang@os.amperecomputing.com>, "Yeoreum
  Yun" <yeoreum.yun@arm.com>, linux-mm@kvack.org, x86@kernel.org, "Ira Weiny" <iweiny@kernel.org>, "Lorenzo
  Stoakes" <ljs@kernel.org>, "Thomas Gleixner" <tglx@kernel.org>
-In-Reply-To: <20261109-kpkeys-v10-21-aa6c4d9603bc@arm.com>
+In-Reply-To: <20261109-kpkeys-v10-22-aa6c4d9603bc@arm.com>
 References: <20261109-kpkeys-v10-0-aa6c4d9603bc@arm.com>
- <20261109-kpkeys-v10-21-aa6c4d9603bc@arm.com>
+ <20261109-kpkeys-v10-22-aa6c4d9603bc@arm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 10 Nov 2026 16:02:59 +0000
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 24D711C0012
+Date: Tue, 10 Nov 2026 16:03:01 +0000
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: b1extrrzo69eafgsaxw5cgt9ki3rspiy
-X-HE-Tag: 1794326581-149788
-X-HE-Meta: U2FsdGVkX1/EPAcvUzL/HN68dJMWoBoOCbhOUhjIZU3Wncnx7Vri1/gKnLVqHlmCl9POan5T2vt3iSgQb7qv6ezZwKMxMj5HXiTg2EcL0XFgkALEEJ9jiZyLrGW8t7lWWu7dFV18lcV3dEKp7zkhjWYnb/1NuIAtjLiRUrSPNgDR7QsxNMkCo90PvY7TX3gjWGoLrAxXrAqW+CmRqQnGYYouCj3aGLfGXTinWSK0FXX4auhlwDkY+/qWqjiwswqKa/AipzqR31yH8EaL+ToRBx7yL+dDlL+gYVm3RvnK85yk9MHAhtye63OlUOb6X6HYOPN4korvecL185bx+uuU8mRDRY2CEHCEZqZMNyWL9Ofkr2fKeVUH6Txn/AgyKAMkpRkc64gfq5/ddFCm8Lin6AiO20LrEqyDXwQ1TA69PkuynH/HDLLcAac+Vo5jB9lwKD9Egx3peq1AZhGrGOJ6GfzUl9RcRTPcB17TMb5FhXyzaTV6h3lBnKzWyV56o5/YjYWh6pwItMyvOf3mz4nxy9vUT82hLdhJbQOfcpET/uUhekE23UdWLwsZnqt699OKklzUp7GAQZwRngKMrgW15s3hJnk5fskJzBNh8as/IrqAOGbTF7xdeOyY3B2xq6+1zxB63vs1H8zrG9XRvkr8VCh/yD0KNYX7aprMVp5XYh8OyajJbs0aZemubDwAV+6oid+YzkhfA0QR+3uWMO9+Wq0c10S2i17JSTSwX7jhc1Tl7R6+SUUAzS3EHJyNkXFoexwzJaipzHzOqklKAHs3+5h/oe5kx8uU4JuDxTD534tGG9PnaKU/4MZca0SIqqnwjsNSaThDWg4PV57xpMEsVrN4N9wW+xiTIyrljfwcQfmGsHbwqs0mBMY2G+rFX+OORCxCofjb98+vZrVzMXtzUP+M99zHwHjDnsrhSXujkugdjYVdrFoR315I25SFp6XR64GO+O63OqOkRzIzG6R
- NW3voRtt
- wVxwkWRw9lOKqqVVDPoQpJOTQo56FqTEG8oKkkKRsLqHKYohm4DbWLPhU82H3mKO9z2dJoEWXixMq2x8jFckbeCUcPhUa22WVXwnqJZhBwd43QrR2tPMbuQ3r7ofxShhoR2p5YoqdzCrbHVA6Pl4kMfTHvAhd2deYi2WznQkMOasrCBDIJftlSr8Sgh+s3O6L18VROfGmZluzDR5jrcpEG+JQlT3DaFlASEa+KSJNdwYpf9Dljoib2FCM+SE5pwY5VEYGT9cyJBADrN0CTS/RR3Ld4BlNMPJSpAGwq/W+A4K/gFrL6sitTWY8E8c2z/Zaqiz69ui5nu4HVnlsWnqNymJnnX4l7MHMRGUinGlx2KrjGX5BRV41+sR5ccPKOXBVhA3G2sEv+a16nZhA30rubWU+/JabQnyfXTP0x/Enqr54s1c4edkQDg33/8NioLbt72Mk9A2pCSFLk2LgfilkfuF3irF6JIZJjoRWuM1sntwKicDSG9N+64v4dzflE1mhxVPvdRwN3HoIMT6g5CEeSNM34PBq7kTZiGnBX5rTDXyBT1WMX0If4sxwwOSGchnRwakFbUGyeBRpPHfcBIvnFk8Ir+FBeDzGlwPA8RqfWyMvmPx9Cf4FiGft6jpKgYHsWAVmwzS2o43YOzdsi/eMgq8gPNeK+uYbeP4oA00zTaotwPjTHmVpelS7I0dzwPvsdXjjg8E5bhMg/n0c3FyVyeeMBB9WiT2o15CmFufVAy+m/kO6gkvtvf2yd2g8syHLlCHMACR2IebzYemo/h17LnHNwQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 56096C0010
+X-Stat-Signature: xk8jnnenbdopqx5cztasbw5f1ax3iru7
+X-Rspam-User: 
+X-HE-Tag: 1794326584-119993
+X-HE-Meta: U2FsdGVkX19grie8dsljWPKT09bJElkhYU0OQCsPn1I+jFdMkA5wNlttse/YvHOjWb++VmY++oUFx/pCos8UXWTuq6DQ6gBF/UM14X2nNweqD5kfa0R4i4O6UvjBdr9C8sF3tp38Dp26YP1ZA50B5tsNjhrrdqLnoNXeX4m2ZMbmwqxia0jp4iiIuTe0Wb5ntmWu8WkJPfo9V90ljTvXo+VXS2HrYj+KVY11sfG+sXm8aO7eYwvjj0WSLFbSt3hqAwVaegJVDysLq8ArXNCy+PL/MkKP/x2050DPt7dJeGlp967MOg4qANmab+MDIQaL1KcnRl3g+cTj39DE9q/FDr9RUD+Nlb5OGHc5GNlUx78iamvvCP4nqRVGkGuewfMkzq5rvmX9b5dVE57ImuWoxDLcMWbnA8Jl9a9Xj8yQmmlfIJkmvWL7bm5RibKL8osnmH+3RdhEQf/o3waq6BD+Fh7vbhECGLAnXOtBoAlg5Rtt8t94yc1699NMIOktYJ4F762vg6ocD43pZw6hehcZgx+tJkHsEusBgI5cVXu4FxgTsKA4lpLNjUzd0MAVCu8j5j8m0Jmss3EAqW7JnSR7Nz0KKga2Mkj90TaylrfuUchIzRO6NXzxz1YWutD1LxBLWyTEysYMnHsDu+kPzf244S7PnoXpshB+tda2+To2zLi1Vcj3Clbt0ZKVEgQbiTpTnoIRs9UMfyZecJD/696Rioawa25IJQ+S9IgCBKZGiwTMHh4HMpg8CMayfhxFXlvNG+h6Frwxr/NHgNhCvIJpgmUo0PoWuY+EtkkV3CueG5H+wzn2ea+uSmPBJODEqt4XN+JSNg5SyhkLlCAh8FY+ljG/7U8YTJrhRQve2fwRxGwd1mXQgFijxTKp7jPbbiqoHgrhecitv7PcP8L7I85ic0LzxtxedlyD7xmLC1VG7ilTB5yWCtw09BXwzU/YpCDZ3bqPcRzhcxVQ1T6VwDh
+ 2NAdiQW+
+ kAL6emrsC41KhKvAB2rvJsDdbwdwGyw+vYny7PuMfIgCG86tScLTAL97UiWSQdp3YkvXxlHrIcVKhuw3xug6CuABy0Wkqbf3a/OiD5H+1sQEXS88ZtpkvMYGdy9+GR8x+9N/GGQpRMEjao/DY50ATup6AQS6qaMkP8IR/g/xBS6FLY+SqaBy2ZlsiK08pKu2v0ZlYtP+qV7hGjCIGt90PS1uDe3anKCrQm3o2WV9lia+QPz9TRsPdxsG05wUKhep8uImP0gv2k7+pOlghd81eTPE8m01DKi6zEn/GvgAzQ7Bg7fDR8yKXazRSoOyBbnGWXSlutCq83fqDP9iWXydhlx9+jgP67vS2xdvfsPwfLV33tcDUOM5ZHn8yPVA1ob2Ydz0//l8ey5CyLWMTKtWq1g4aPPUS1mSeYoamZlkvyc1/GECH9Nf8TijdUkWCLUtkLMS3+MbSDClz6wGHqPyAjnV1Qf/OkVfvARtE9zWZhOW8xhf9JjSZImOtlVbQqzLM+mYF64omBL8okTeZZ9jqPcwOs7OjS6GQhOo6AQOdLHxXiVyylfSaKhV+ruTeqS3/V3hnjnRrdBxQoFGvfTi3TWMgjgJ/crNl8YnXZaPVWuzeJ7eI75g6lZ6fhM8aWnpwHi4LrJFoP1SPYHuezrG4J2pPq8E/+WrCfK6trK9ZQp9l9q33NQkA8iwxwlqFxNF3xosSeuRMN6DvX7Zoa/ZBH9oaz1AfuCd9GhlTk/YsJ7eAIE9el4tOTdqNYofY0prju6JX8wZySQWbsmjEyte+yfFGfA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,74 +110,79 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [High] arm64: mm: init_pg_dir split in map_kernel() overflows
-  INIT_DIR_SIZE
+- [Medium] mm: missing folded PUD and PMD checks in
+  kpkeys_hardened_pgtables KUnit tests
 --
 
-commit 3e7fce4327f018b992b775d63738a09b4b86a015
+commit 2fe47b9a3fc12c652abdd8342ffe143ffdaeb477
 Author: Kevin Brodsky <kevin.brodsky@arm.com>
 
-arm64: mm: Map kernel image alias of init_pg_dir read-only
+mm: Add basic tests for kpkeys_hardened_pgtables
 
-This commit splits the early mapping of [init_pg_dir, init_pg_end) from
-[_data, _end) in map_kernel() and remaps the kernel image alias of
-init_pg_dir read-only in mark_rodata_ro().
+This commit adds built-in KUnit tests for kpkeys_hardened_pgtables that
+verify direct writes to kernel and user page table entries fail with
+-EFAULT.
 
+> diff --git a/mm/tests/kpkeys_hardened_pgtables_kunit.c b/mm/tests/kpkeys_=
+hardened_pgtables_kunit.c
+> new file mode 100644
+> index 0000000000000..b6e1eba0d9b99
+> --- /dev/null
+> +++ b/mm/tests/kpkeys_hardened_pgtables_kunit.c
 [ ... ]
+> +	p4dp =3D p4d_offset(pgdp, addr);
+> +	KUNIT_ASSERT_NOT_NULL_MSG(test, p4dp, "Failed to get P4D");
+> +	if (!mm_p4d_folded(&init_mm))
+> +		write_pgtable(p4d, p4dp);
+> +
+> +	pudp =3D pud_offset(p4dp, addr);
+> +	KUNIT_ASSERT_NOT_NULL_MSG(test, pudp, "Failed to get PUD");
+> +	if (!mm_pud_folded(&init_mm))
+> +		write_pgtable(pud, pudp);
+> +
+> +	pmdp =3D pmd_offset(pudp, addr);
+> +	KUNIT_ASSERT_NOT_NULL_MSG(test, pmdp, "Failed to get PMD");
+> +	write_pgtable(pmd, pmdp);
+> +
+> +	ptep =3D pte_offset_kernel(pmdp, addr);
+> +	KUNIT_ASSERT_NOT_NULL_MSG(test, ptep, "Failed to get PTE");
+> +	write_pgtable(pte, ptep);
+> +}
+> +
+> +/* Worth checking since the kernel image is mapped with static page tabl=
+es */
+> +static void write_kernel_image_pud(struct kunit *test)
+> +{
+> +	pud_t *pudp;
+> +
+> +	if (!kpkeys_supported())
+> +		kunit_skip(test, "kpkeys are not supported");
+> +
+> +	/* The kernel is probably block-mapped, check the PUD to be safe */
+> +	pudp =3D pud_off_k((unsigned long)&init_mm);
+> +	KUNIT_ASSERT_NOT_NULL_MSG(test, pudp, "Failed to get PUD");
+> +
+> +	write_pgtable(pud, pudp);
+> +}
 
-> diff --git a/arch/arm64/kernel/pi/map_kernel.c b/arch/arm64/kernel/pi/map=
-_kernel.c
-> index fb44cbdd2f292..81ca3e98f0f7b 100644
-> --- a/arch/arm64/kernel/pi/map_kernel.c
-> +++ b/arch/arm64/kernel/pi/map_kernel.c
-> @@ -92,8 +92,13 @@ static void __init map_kernel(u64 kaslr_offset, u64 va=
-_offset, int root_level)
->  		    __inittext_end, prot, false, root_level);
->  	map_segment(init_pg_dir, &pgdp, va_offset, __initdata_begin,
->  		    __initdata_end, data_prot, false, root_level);
-> -	map_segment(init_pg_dir, &pgdp, va_offset, _data, _end, data_prot,
-> -		    true, root_level);
-> +	map_segment(init_pg_dir, &pgdp, va_offset, _data, init_pg_dir,
-> +		    data_prot, true, root_level);
-> +	/* Map init_pg_dir separately as we will remap it read-only later on */
-> +	map_segment(init_pg_dir, &pgdp, va_offset, init_pg_dir, init_pg_end,
-> +		    data_prot, true, root_level);
-> +	map_segment(init_pg_dir, &pgdp, va_offset, init_pg_end, _end,
-> +		    data_prot, true, root_level);
->  	dsb(ishst);
-> =20
->  	idmap_cpu_replace_ttbr1((phys_addr_t)init_pg_dir);
+[Severity: Medium]
+Will write_kernel_image_pud() fail on configurations where the PUD level is
+folded (such as 3-level page tables on arm64, or 16K pages with 52-bit VA
+without FEAT_LPA2)?
 
-[Severity: High]
-Can splitting [_data, _end) at init_pg_dir and init_pg_end cause pgdp to
-overflow INIT_DIR_SIZE on CONFIG_ARM64_4K_PAGES kernels?
+When mm_pud_folded(&init_mm) is true, pud_off_k() resolves to an entry in
+swapper_pg_dir, which is not protected by kpkeys_hardened_pgtables and is
+still writable when built-in KUnit tests run before mark_rodata_ro(), so
+copy_to_kernel_nofault() succeeds instead of returning -EFAULT.
 
-With 4K pages, map_range() uses 2MB PMD block mappings where possible and
-allocates a PTE table from pgdp whenever a segment boundary falls inside a
-2MB block.  EARLY_SEGMENT_EXTRA_PAGES only reserves PTE tables for
-KERNEL_SEGMENT_COUNT plus the [_text, _stext) split added in
-4d8e74ad4585 ("arm64: Reserve an extra page for early kernel mapping"):
-
-arch/arm64/include/asm/kernel-pgtable.h:
-/*
- * KERNEL_SEGMENT_COUNT counts the permanent kernel VMAs. The early mapping
- * has one additional split, [_text, _stext). Reserve one more page for the
- * SWAPPER_BLOCK_SIZE-unaligned boundaries.
- */
-#define EARLY_SEGMENT_EXTRA_PAGES (KERNEL_SEGMENT_COUNT + 2)
-
-When _data lies in an earlier 2MB block and a 2MB boundary falls between
-init_pg_dir and _end, splitting [init_pg_dir, init_pg_end) out of
-[_data, _end) forces map_range() to allocate an extra PTE table for the
-2MB block containing init_pg_dir.  That advances pgdp past __pi_init_pg_end
-into the adjacent early_init_stack page, corrupting the active early boot
-stack and placing the new PTE table outside the [__pi_init_pg_dir,
-__pi_init_pg_end) range that mark_rodata_ro() remaps read-only.
-
-EARLY_SEGMENT_EXTRA_PAGES should be increased to account for the extra
-split.
+Similarly, on 2-level page table configurations where mm_pmd_folded() is
+true, the unguarded PMD writes in write_direct_map_pgtables() and
+write_vmemmap_pmd() resolve into swapper_pg_dir, and pmd_off() in
+write_user_pmd() resolves into current->mm->pgd (which is slab-allocated
+from pgd_cache rather than kpkeys_pgtable_alloc() when PGD_SIZE !=3D
+PAGE_SIZE).
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109-kpkeys-v10=
--0-aa6c4d9603bc@arm.com?part=3D21
+-0-aa6c4d9603bc@arm.com?part=3D22
 
