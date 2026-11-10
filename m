@@ -1,67 +1,67 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24975606A337
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 08:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5590860A2609
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 08:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=LwS+QNeN
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=dvLlwk6S
 Received: by kanga.kvack.org (Postfix)
-	id 4270E6B05C3; Tue, 10 Nov 2026 03:00:21 -0500 (EST)
+	id 747846B05B6; Tue, 10 Nov 2026 03:10:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FF3E6B05C4; Tue, 10 Nov 2026 03:00:21 -0500 (EST)
+	id 6F7426B05BA; Tue, 10 Nov 2026 03:10:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33BB86B05C5; Tue, 10 Nov 2026 03:00:21 -0500 (EST)
+	id 60DE06B05BC; Tue, 10 Nov 2026 03:10:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 116406B05C3
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 03:00:21 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9632A16087B
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:00:20 +0000 (UTC)
-X-FDA: 85418461800.09.00719B7
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 15F324000B
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:00:16 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LwS+QNeN;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794297618;
-	b=6GgplxWAzDXtmc0ZRSn5v7TK7Be8/T0dJiolpL+4zmVh8THaSekKOC7mGqtg6rNzAMoFGS
-	pCnvNMEAIpAQ4JuVhAuncurO1jyVfbq+I/Q6eGKNR6TZ9NT+pVeony2QABB7B5cjCQLmMp
-	NZ1urqybROkGXotkh7ukERENGcwyN8U=
+	by kanga.kvack.org (Postfix) with ESMTP id 3D5746B05B6
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 03:10:10 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C812916089D
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:10:09 +0000 (UTC)
+X-FDA: 85418486538.05.E8A1A4C
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
+	by imf01.hostedemail.com (Postfix) with ESMTP id C253140008
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:10:06 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dvLlwk6S;
+	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794297618;
+	s=arc-20220608; t=1794298208;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iokOrYjLzZi4SS+ZT28oEpEsRqVw5VPLDVu//2xytMk=;
-	b=NfJWOJGaqL4J/JGomyoCecKbv10UvwqL9vOIMI22ve/m/utvWjaNfU5gEwR5tuzKPKlftb
-	GQOOFBMhFVFtNZcn0Y/0OcR4NUqOr6X94nR4XSPPeik7P7+qlNH/T5sh9pKiSziZFIE+7Y
-	EHEVTJeoLl646buEmuag5MJ0qCKujM8=
+	bh=/OJddKysfTCMoM1JumLxNU2s3B4sz13xeOizo47/Ze0=;
+	b=T99dPyb24qgf4siznfWR5qSNnhmzroUVZxc/LzUwjXhxtaVaWq9XorKqpwUlqgPnKpKZZp
+	lsAnNUgB/5or0Obo3eFgBTtMQS97q6tTLptTh9v+BC20ZJXAZJpxhjyZXxE+ILq6dRnyXs
+	5Xw61IUBGa89pXC2SchEW6UPxCkEZ2E=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LwS+QNeN;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dvLlwk6S;
+	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794298208;
+	b=aiFlmR5oLEOk3fdgtFE/mPowlRbJW9OSpCFyQhxInnxtxNlgfHS0GymDxVV6HjcfH+JAzD
+	jW06iq9ciT0uhQfgIU+zGDOz6UhMKIqLrql7cBfrqUxLDlAhPuCKOHFKm8Cs1mOWfoJSiJ
+	vHVlu4pOnnZGJ5ooA4Dz8dnp9l8Qg6k=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1794297613; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=iokOrYjLzZi4SS+ZT28oEpEsRqVw5VPLDVu//2xytMk=;
-	b=LwS+QNeN7vBKSQk1CDFDh5qAwkSAumleLsRF3/5NpY+KQ8Ee/3dPXAjA4RmvbH/NtEXY4VzZJD/m+thsluuvHzRXbxonf+86Mw4uDD6fKmNjxFC2eWwhAIIiXw3uYR2uhqaEhodGwn1GsyGJx039ChPccin6ALVvfM3HsqbCa5I=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XEUewHH_1794297610;
-Received: from 30.74.144.136(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XEUewHH_1794297610 cluster:ay36)
+	t=1794298204; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=/OJddKysfTCMoM1JumLxNU2s3B4sz13xeOizo47/Ze0=;
+	b=dvLlwk6SNiAg97265CrLKooKjy9AO6o/1kBi6OM0DCb+OqPcHOHI1Nt9IjBCNCMPEFk82BctLJy7EjjAcFea2i+OrwLjhYI2OkqFroiryR1uN+xMsn/eqfxF5PejjxagUoAuHGbMEsD188Rg+jHHqtyONIX/L6RaNkAHgtd3FO8=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XEUXxmG_1794298201;
+Received: from 30.74.144.136(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XEUXxmG_1794298201 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Tue, 10 Nov 2026 16:00:12 +0800
-Message-ID: <98a97122-5927-4d72-a2ce-f5b5cec98ec0@linux.alibaba.com>
-Date: Tue, 10 Nov 2026 16:00:10 +0800
+          Tue, 10 Nov 2026 16:10:02 +0800
+Message-ID: <e154e1b6-fe5e-4945-ba6d-34ea5b2e5946@linux.alibaba.com>
+Date: Tue, 10 Nov 2026 16:10:00 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/4] mm/huge_memory: scale thp_underused() to the folio
- size
+Subject: Re: [PATCH v4 3/4] mm/huge_memory: add a per-order counter for
+ underused splits
 To: Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org,
  david@kernel.org, ljs@kernel.org
 Cc: baohua@kernel.org, usama.arif@linux.dev, hannes@cmpxchg.org,
@@ -70,24 +70,24 @@ Cc: baohua@kernel.org, usama.arif@linux.dev, hannes@cmpxchg.org,
  lance.yang@linux.dev, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
  mhocko@suse.com, willy@infradead.org, linux-mm@kvack.org
 References: <20261103212004.1356327-1-joannelkoong@gmail.com>
- <20261103212004.1356327-2-joannelkoong@gmail.com>
+ <20261103212004.1356327-4-joannelkoong@gmail.com>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20261103212004.1356327-2-joannelkoong@gmail.com>
+In-Reply-To: <20261103212004.1356327-4-joannelkoong@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 15F324000B
-X-Rspamd-Server: rspam12
-X-Stat-Signature: aqkczxkk3s5j6swcpbqyz9ptqsfnjkrt
-X-Rspam-User:
+X-Stat-Signature: 5yyo9jw4hkyakdspk9go9rd91axjz6g6
+X-Rspamd-Server: rspam01
+X-Rspam-User: 
 X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794297616-789177
-X-HE-Meta: U2FsdGVkX18uw7VXl++VQ7/vV9dbOznIgfHgj2fJh4ANSJt4Ge3BpoT//ZtQx9FzIkZ6Dlrp5wtHzLWYZ1vw0PvSDeqe3yNYtkIZmGT4T4gB7TngC/H2UefJdw1BKCGlY3FKKhNgo7Oi6TdJnt46n7NeNT6vVQbUXyXwMfEkd47wBATB6Zh/WduIdgWyp1Zvsz8Q/zku2CugevmQ9F0QajE4mWW8qlYsFjleotrJqa8J0rLJFTtCQblKfTAcN6MEuFLHAquHWq2WD0h0iTj3cnwy+Xvs/lt0llojbeh8VoA6xAegp6+5hSDvMouwBxbsMRuNpJ0sZ4JTC7jiaic5YuXm+UlxEjXoUAjhewuqpYMxAHYFltO2PfsLr/gwo6i7032jpeYc1L3LoBhQzRS8H+vdweDrOQgVAWWV3bewMIpEluejWbqe3uhcZ6Kw4Dgkpp18qnwqcX+aiYk6CR1JHdDMrUfBWFgH1OmTUSuCM9JrZV7JNU8yzgJkMHFdga8E499qiLk+KgwJR02xzl2I465zEbdoFJjDMXFyJz6kmbU9bkEfBhZiD9LkfQXJ9FUa+/qQ8xD8n66RjcAZarwTbhltzTn2TnFct4BKPVM9tHGYWiqaW4M79bEh0R/+/5H2ZWC8rEoSA7IZiHtVQyji9LjRTggBC+ILZn3NUKIaZ3U0Z6Y1vxZwwxNqo12wDMZzDsCRbyu6Xg//Sv2clDznLpLMZg3g6zcZa5M4zqMtZFPwGY+5ZRvjyjFHgfVGRkKO0mxjlr6XYTIF6Cfa1YG3vfxTy+1J4c81rOJDSGxBcL6BR3jdtZuKJDKxF7ZxntCya/f1E/NgjN5WHUxFuG/OZmkWpgki/UNAx8uq42+fv6CHuKytqrwrhUmOwac6k8PfN+WK/a0Zsd/pQHmGMt5Vt6YmUynCdhfpawZXIjEB0JBF9H6gZhXOPCI0H9zeqL/4T0ABsdZqjVDzZxFnNqn
- WlHA82J3
- qXqim+y9MiFZN4xBTNbklW/u9yGJJ379gBlxLcNQSWYO2M205WSneKT8VBtkq+9KbwhL/J/9fkMa6ig5Usa3539d3rlz6+RptfN8EhlPM9k5rbeHH4ndJ0BO44HRdC16txUlRKP4pBpbJFTKwULXNvUZCjJH7bNN4W+fFupcqzny2dclChKRfV+s0YNPJ/BhLU4925rlfTXzXY7NKv7Z2qGWPAQG4/hnyvZk7SFvEVPZ/lVx/q0IjgFrn4CHhLcZUiwVxGEVn9McOOTy2FxSzqaJMhEV1K4gBA46k0damx9Kd98XKwNPiSPtbPeg+zcQHChJROu4xSr98TxHEt63CKZZNJVmEpxhyRUUMIiYyewaYNq/+41y4yU3hnkNyPRF7M2+n2v9Saoe21DlR5vtdd79oXXLouJbBjQKk8ywr5MzSlOrhaLSOSj7NcnAxt5YsxEqW4ksMAMPNskNjigX6k5PUKCD8sLn3aTmF43aLiHAq6nSVDi3sMkZJajmYuoNzARuEnn7Ml66jq8Q70ISlom12lQ==
+X-Rspamd-Queue-Id: C253140008
+X-HE-Tag: 1794298206-700366
+X-HE-Meta: U2FsdGVkX1/r+RocKdc5fgC0IHwJTR5BD7xlKnTFVsnBuM0h2oNFIZ6RN/NR7YmYfsU0fWIHCq9nqQHhfirVcrto0uSCOy8CKuZ8EXwZp6mq/B9JgzbcAkYJpFMRH8+FzhB1AshjMPe/2pZAgvOFCii0qOEb1DhmAMcmauxcaJKLh9CrlCQgAowy3BhQdb2nZHJB3z9ADe/4e8C/9sh2Bo5WBk/Pyr9HwhmyFPvFYAafrIthlS9whHr5NqxWDAydHJIXAd+G5bZCVA8zjTqIO4FDZV3w/xtnQJoRmJY8wS9/ZGWgBP5UpSBxx/asoqxX6YwGOlOGa1euJTFnZZlRpRWsZRdO5zCtlc3X1e+GXOpJWyOAQyQ4A7LMcQENQmFeRcmFPGYirGFqypTXHVypHVy+zGiFh6maJyZUyjxlZ9mvos0O4dFkZFTNswCzRO6auW8jHvuUC5jO6sDABMKUvFtLjcK3w1oAHJcS4yx5JQwQx+4oFPywH3Vq/d2najwTv7NBjHxeT8bGNS8XdUBOape2YuyGr8M260EDnUN2VsmqFF+bAYomC533agDwdNVleKUwa+yVzenp2AzELeLMtDSMwuDkAzcV3HWhgRloEQRtuuG6jsRe5UEDrAZGvoQZkJy0qltZ5HQzagNgsR3+xI9FewJZum3/cfib6H3aN8X9fdTjFqyiTmKouPaFmHDdxDCmSz3xP+JcO5plbWrSlPcY4L+FsZeM7fJZHb/5jTP1Xbu35HJjajbCxKBLMfU+sQNvMadVsAupNpQyTdRYPQpi13F2VpT9GnkZKO3h3Cb6pR609eBWPE2mh1titaYrrJfIUD4cQEm4NS1z5/bDgA1DhZbtS4htLPsLeYEZeu7KfKqGtPfzqoapCqTgqdpwU7VMtKd02aSmHH2OByOMAC3sn9qHl/tLYJfKxGfIfVqJ0Nfy4YyaFFzOaJKS/OOV0xEuSht+OfVt06jj9xX
+ L0vhu5uq
+ WIes+QpxAYw5bFSwnt8At0jth7+x79NCwjpZQsyaoRhdNatWQMNxaXlz1yn6wKNQk8i8NpyCvJxD/zn0eYdnbnuoyGBZrmW3bBYKNESUz9w0E+9PNqa+9txKOahVzY2JBPvpLjkxhNHWeEtWgB4syXxAecHbh6BiYoIUuGrESVLU9t1red2gjaTMI1u8s6uOQpDk2IUynJJR+cN8+sNZwGoIw/v/KRE8sYyh87nZck2loOsgLFRRY5BtLs/4SiLGKhne5xLdKNGqH5j3XCvNGFAoc3onA/GVa+/9Kp/y3Y92WyKpaKdVKuf7NG16JjYdqFDKpeGZAXEUrsoQeaD97LPvfFwvzPPmvdgEes9dlNv13pG2/Ibrg9JjZ2fTckrlwssz86X/NPgOYuuQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,35 +99,32 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 On 11/4/26 5:20 AM, Joanne Koong wrote:
-> thp_underused() decides whether a large folio on the deferred split list
-> is underused and should be split so that its zero-filled subpages can be
-> reclaimed.
+> thp_underused_split_page counts every folio that the deferred split
+> shrinker splits for being underused. Today that is only ever a
+> PMD-sized folio, but a later patch queues anonymous mTHP folios for
+> underused splitting too, at which point this counter would start
+> counting mTHP splits as well.
 > 
-> Today it only ever runs on PMD-sized folios, so it assumes that the
-> folio has HPAGE_PMD_NR pages and compares the zero-filled page count
-> directly against khugepaged_max_ptes_none. A later patch will queue
-> anonymous mTHP folios onto the deferred split list as well, at which
-> point that assumption will no longer hold.
+> thp_underused_split_page could then end up larger than thp_split_page,
+> and there would be no per-order count of underused splits. That doesn't
+> match how the other THP split stats work. In /proc/vmstat,
+> thp_split_page and thp_deferred_split_page only count PMD-sized folios.
+> Splits of every size, PMD included, are counted per order in the split
+> and split_deferred stats under hugepages-<size>/stats/.
 > 
-> Make thp_underused() folio-size-aware, and scale
-> khugepaged_max_ptes_none proportionally to the number of pages in the
-> folio (eg every folio tolerates the same fraction of zero-filled pages
-> the user configured for a PMD-sized folio).
+> Do the same for underused splits. Only count PMD-sized folios in
+> thp_underused_split_page, and add a per-order split_underused stat that
+> counts underused splits of every size. The folio's order has to be read
+> before splitting it, since the folio is no longer large once the split
+> succeeds.
 > 
-> khugepaged deliberately doesn't scale intermediate values when
-> collapsing to mTHP orders (to avoid the memory footprint creeping up
-> through repeated collapses), but if/when collapse later gains support
-> for intermediate values, a folio that khugepaged collapses won't then be
-> split right back by the shrinker (and vice versa) since both collapse
-> and split would use the same threshold for a given folio size.
+> There is no functional change to thp_underused_split_page yet, as only
+> PMD-sized folios are split for being underused today.
 > 
-> There is no functional change for PMD-sized folios, as for those,
-> nr_pages is HPAGE_PMD_NR.
-> 
-> Suggested-by: Usama Arif <usama.arif@linux.dev>
+> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
 > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
 > ---
 
-Make sense to me.
+LGTM.
 Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
