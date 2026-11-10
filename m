@@ -1,108 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD746606A332
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 00:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38816606A331
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 00:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Cb11HATF
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=gINnAD2O
 Received: by kanga.kvack.org (Postfix)
-	id D313D6B00EF; Mon,  9 Nov 2026 19:11:37 -0500 (EST)
+	id 111026B05B1; Mon,  9 Nov 2026 19:23:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D08CB6B05B0; Mon,  9 Nov 2026 19:11:37 -0500 (EST)
+	id 0C2DA6B05B2; Mon,  9 Nov 2026 19:23:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C21D56B05B1; Mon,  9 Nov 2026 19:11:37 -0500 (EST)
+	id EF3BD6B05B3; Mon,  9 Nov 2026 19:23:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F22A6B00EF
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 19:11:37 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9D0C21207A3
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:11:36 +0000 (UTC)
-X-FDA: 85417280592.06.D528007
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CE0CE6B05B1
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 19:23:31 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3863BA8598
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:23:31 +0000 (UTC)
+X-FDA: 85417310622.30.89B06AC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E2BC18000A
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:11:34 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cb11HATF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of "SRS0=JkFz=I7=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=JkFz=I7=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794269495;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wECulbhH+/PYIsAouc/0+vQU/WPYaJWlZhevaQ1pdgA=;
-	b=QNXPk6Qbg1l7C28co10gWada/E7AAbFruY7GngP6Xt7Hhf0aS2kAZbEP5HJoHnTUhIsAWA
-	pYZdj4mqyKsRkE1TqFwMxbHRFj8A5bs/4M91sUOT5rU1+hYhwNlXH6Gu0AGi81Vwls/9eN
-	ZVGpoXNhepQ1F9aQOW7tdEIdNy3MKxI=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cb11HATF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of "SRS0=JkFz=I7=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=JkFz=I7=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6F6EF1C0006
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:23:29 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gINnAD2O;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794269495;
-	b=zn2q9NKludAHw1B94Rt0nnhxLd01uKKtVJa8ptFqVQAF6i+/WFhqcuFMh4osm9cGPlEcyz
-	maEnLMTNszpIpOcbBvFAC5oHtFE1Lay+Di7zWvGwkh5GPibsvAjKXEkRsNcjJ4oZWRDQLQ
-	qyTK4cyp72MBKTvlSmxqyVfcPSe1Lsg=
+	t=1794270209;
+	b=G7Cs94bVcdaWPXvX7Z2x+E+Cfn39mUAK0tExFmtK2VwtCwF/A4qOk2bBbJadF291+wpKLF
+	dpMFFP1bj66SUy8gJT6sgBKwl/qcSbud7iD5+xuCzaMl/brPN+nA49VY3aSxEeSD8skr1z
+	UnP6xyQhCOrgEBfUuy2SChosfUdSzIc=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gINnAD2O;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794270209;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Or/iwEJV3s6/OZb+G94Yla/RPMj3Q8ZsEYH3A6tdUpY=;
+	b=Hgj/A0YZ3nWLrx+jbsTvymUijjEwBwMeZSsO7WkYl0I/PIw18hvQ7pAxQjiVfPXjQ/vF7g
+	KmUGBa7umKta+JiT2RVeiql3oQD5xJudDW3VZsAsj7j7MK8TfloYvFgmChkhd7Zznm2/4z
+	08+Bt6smIs3tXVmt4oYdEajEXrCNXKg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5678361380;
-	Tue, 10 Nov 2026 00:11:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A81B1F0089F;
-	Tue, 10 Nov 2026 00:11:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794269494;
-	bh=wECulbhH+/PYIsAouc/0+vQU/WPYaJWlZhevaQ1pdgA=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=Cb11HATF1t1c/JnWLzbX6q9oYoGbypkpkFMthwSuWR+x8rBlzHhwryRtY2/TCQ/am
-	 PWNp6x3m4Dawulyjak75YF9ctzy8tE5ve6hU8Z1Q2XmQt/TVE7lSteiqVyLNjaG0mc
-	 3uwDwEtOPUoZW/uL2/Wp95gOWl764BeFa/DG2TgVNnJ0mbA0ERGtLPVRieIDR/V64I
-	 yD8JNl2r5ZhHb4sZr4VSqWOhEJR4Ci/YHinqAVFTT+DjkmHIqbRwN3QWkil4rZ8BGv
-	 mz/swpIZRaSnYXiz7cfBUTin63uzSNtQnNEk5D6WywfoIY7bXy1BGupJyiDfUmeF+N
-	 qQpbh8OflLx+w==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id BEE6CCE0C97; Mon,  9 Nov 2026 16:11:33 -0800 (PST)
-Date: Mon, 9 Nov 2026 16:11:33 -0800
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Boqun Feng <boqun@kernel.org>, Uladzislau Rezki <urezki@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang@linux.dev>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>, rcu@vger.kernel.org,
-	kasan-dev@googlegroups.com, linux-mm@kvack.org
-Subject: Re: [PATCH v2 4/5] kasan: Avoid an unrelated RCU warning in the
- callback test
-Message-ID: <c333cb25-d007-4a0c-a8d8-86187c67d747@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20261109000243.3936824-1-joelagnelf@nvidia.com>
- <20261109000243.3936824-5-joelagnelf@nvidia.com>
+	by tor.source.kernel.org (Postfix) with ESMTP id ED04361142;
+	Tue, 10 Nov 2026 00:23:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AFEF1F008A2;
+	Tue, 10 Nov 2026 00:23:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1794270208;
+	bh=Or/iwEJV3s6/OZb+G94Yla/RPMj3Q8ZsEYH3A6tdUpY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=gINnAD2O6rE5FAzCv2/fDxSlenMynl3hkBpwj6TR7CLiVWp0H7UZwY8fxSgt7o+j6
+	 NsuZro4PlPsnIG7yIZu7YGjdNXd8v9jI7dVMBfQMkEkycWL7Ky72sR8RpznLOLG5PY
+	 eeZTWRwZcOu7MeeO/st4JcoP4f34QlO1yPrnKGZE=
+Date: Mon, 9 Nov 2026 16:23:27 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kaitao Cheng <kaitao.cheng@linux.dev>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Mani Tofigh <mt4022@columbia.edu>, Zi Yan
+ <ziy@nvidia.com>, Mike Kravetz <mike.kravetz@oracle.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Miaohe Lin <linmiaohe@huawei.com>, Naoya
+ Horiguchi <nao.horiguchi@gmail.com>, Frank van der Linden
+ <fvdl@google.com>, Chris Down <chris@chrisdown.name>, Joshua Hahn
+ <joshua.hahnjy@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, Kaitao Cheng
+ <chengkaitao@kylinos.cn>
+Subject: Re: [PATCH v3 0/4] Subject: [PATCH v3 0/4] mm/hugetlb: Fix CMA
+ parsing, flags and usage accounting
+Message-Id: <20261109162327.f1477705ec4374b5a243068d@linux-foundation.org>
+In-Reply-To: <20261106100521.30099-1-kaitao.cheng@linux.dev>
+References: <20261106100521.30099-1-kaitao.cheng@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261109000243.3936824-5-joelagnelf@nvidia.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6F6EF1C0006
+X-Stat-Signature: nwin8qco6wu15wjmb83au7d6jcfw4ab6
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E2BC18000A
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 35xyjpbrshx9wneqbynxea64mdki967u
-X-HE-Tag: 1794269494-844297
-X-HE-Meta: U2FsdGVkX19yK8HscxU+H17qTlOsFQV3S5kvo6+MjYd1WpWsfFSsppHZJ9tvIyBlDdyNDVr3mvCOAgXH8HcQ+WCIVboV3DElOpAfjWPatw4ru/jBbofpfimvdAtDLRZ4dTNRiR2XvZNRj6pLWQN9iA+7Umng/aptfDnSWPen8Ics/R+LlvDhZd7FK+s5StRIouACHvszSXLkitV+d96KySBCe4kMLTNh19HM2Jx7Gd+dmqd/9LIxBKakfivS36QJWyD7eXnW5VbSixxV0kSZuu0HtFDjlMP0E/UqcJBZxyQJLfpYHUt32MWrzIb83BOFBDEgHDmxAmSWGcMD73n6IvlTeyYRYwdMDTYF/OSPVt+R3iX6HzoHZFr2ABm8PDxP52rUEVcDOK69dHMAEWk+C8yHOgRXPKyg/rvIvhtG3WlRHfGEi27/0LM9P3JdieO7hkpq1W5auEBFf4S8xaxiamehnL083wLimTVQhk7MAhMj7wDYM586GXC2zuU6F43cuGltd7tYxmIg+cbuWZ73RWzemFJNpTzdKBnXOk7hRMMXTHH1dAIHFTjxEWOeymevwICqr0c1ZDdge1nhZihThoDOa0k4PIhLeRKF7hG8i+XDrZu80uPh8Z/1rMiYTKUxDBxVaQYpjINGyyuuZ+ud2sbCJyIhF/fNiZfApxumlkBFmjkwJPAr6D/DHqThJKcB0yRFgDBCakOX85kIIPz1xs7IWOblQ7hLUgQS4ybLZFERRH1rfYsHzdvlg2Me2tWpdM/3cSXLtdHjvv1vNQEukIJsCvsOsGTjwkWkG2SylXVFZLLeQbuQxxIX05otBsjH0Y8G+7RAIP1QGWWWNzuAQOUb3dKYshKX4sTRLPNBXJgzJWtwI+3C2ly+mwGlj6eWyaB7+OwJV/9rM+JmB1l2I9g6Lm4gpS1H/noEpkUT6osS7/rDRr5AK/yC0FYHxpvna+GbZUVz1VB8PZs0ym/
- QuP/9UzO
- WyQqGPKCqgSh8j+Tz3/st4WYiy5IaZ4J8RM9XpzkaeoOGpx0SvGf6nJE6DV6Fl/+ViIOW4HkZspthGMdBYaXWZuFT6fm4YatJYaMQVQGRCaqAumVWxY7b5JZBbEBB1nwMN9kWOvVm1/3kMoUB+aaWk3/WGbNdOBqKlfiq2LEVVXqKoCOEOfahPBsyDmXcEZDtukTnrzgPxZq2A5NcSgtLsgjIRs6GNttIE1l6Xh6zuDQQzmBfjztirV2CpBu8jsC7OlM7w79ldYtGxoJzhkxyuK0hzRQGnYnJaiZNvmOxdpTguNYtfPEvDklwUFntzgvUnASraYjCHSKsNq/AqhiUM8PF3146FB5W50hfPFCrMQLMIclG3LTORcgA2qsdtGXP87zN8qGg8f/gbILDItjG0l3e5Ch9162MURD3pVGuhyHii8tvcexl7I6zJsOhZ1fINPdcfME5Ew6Tlk1sc3/V/eWGolCSfwk24HiGbc2IrgU52cGpm7t62oQ8+l7CEq4IocsZxyh8p9hsQX4ozlAxNowfwZZAQ9Q0wD8ES8+TkJoL25+v4gIIEkNQOEc5YbQOP/4HUwEEcpkpAWYGqA3z/SaL5QZBSOWi02txew3QCA/uwOrG7GUzCEuKtyFlV7u8KL0+rO9ry0m690EoAaKtUopw8FzRoeA4me/xZcJjo/9NxhweuaHizI2qyvcW8VCiLFkvpCH8uTnQsIdls5fCsfos5Il1s8rVIVMa7hwbAIVrBorb53NyXBPYas0XBN5ijuzGhZc5YepbbTo=
+X-HE-Tag: 1794270209-452581
+X-HE-Meta: U2FsdGVkX1/SdyOwbET3SZ48GpYGxovdqS3zOeMSe/tU+iyZeSuBfokfMu/HwA6dqlCOaM1snjUVkHXcxBPU0u6bI8u8q6FVm2Qsr45HqsNpQLwOteNH3AF6YkWOJhvUa62K0XQtEouaJPZbPRlO55V0iZpjmGPOH1XcqqFqSLugho6vxkutr3yLxfY67EZxKfp36KwkpdCRse3RZ1/R0SZY2Rj5g7S8OXlKFiU1JNEf7OoWoTwlAMudRTIySQm8IJhOpP4KZg9m1rQVS0sVeM5bz9cewumCw1Vf3c/yJHD90UZEDIDV61AJ9SQuDx4ZrTIFz2wCF5Ck7vyMnJlbz4UvmKVfMNX6lvzs9J+CEmvxyK0vVVGNcE1GOS8MY9Vqr88AdFhcpFh29h5eZglSxp2kkxAyCflG4LrZ1W5OmYI98tkALRvR0zRhuiRt9sFPauJ3zvpxiwagiNE2dctvHPsKHalHoInoqUC0L7a2BoV3ejzaRH1T670jv1hkqWWwEvYEVKmRP2IBHsCmUOksIrajLqJ1W7slblmHLy7QROsJZajUog3eKdAob3/HLSuwf1ut5XQyZm+eL69CNBv8YEsVfeU49NLEi3tuCPWvEtg7ZF/O7sr11BO0u8Vay48eqFYGB1P3ajPcIgPFa7ukFCwVEOUoh79l2kOedNzgGtKPXf4p18dPSqV6XfS39rmkNsy2U3VneHawWaBDMSqDNhau5yzQ9V5+5YXD7CsFXMpFoGfFrJMgrP+FAwsUzE27Wz++9hCEoMUKkxt9i846G0mj2zAl8cwqz9Ccn6RZzKHlIhWryQn5CUm2zOQ2kd3NN1+Dhi3YE09AOFaoWT1aBJ+VrYkMevFRj/DmRcWt9Wl70qjfl9LU95B5+iLAEzADSviRQptA1ua1IzP9A421d4S2Diqwegwn1iAt489K0imus16or1AwoQ+D9afKCu2+sNZyke/ClrBFG+pbnGQ
+ IlFaKjGP
+ w9z4UcwMC2O1GH+bHLGfKTsYuNrRC8tBKA+xO26aDk4XzCLSNYtqfGw9lmDv4hdT8CKLAzHFS/9aotdBQ2kxHODIWhqdcFdalXM48YyBWhrFfe8emKdvGDgx7JRVf4GGz4ig7P5bBZ/waaVCu4YHawN5gcDYCU7v9qku7BFGyNOa0/JYmhZ/2L+QKSj33QYQUj59buM5RtnKpZ/CLtY97yf6jzoqqCMK88+c9MOD4OpKgsINU/MVSzwAPFw8n83nfYvMuekkcuAnSAkNnPtYahDJKUuMlCmeeLa6uCW1iCsZU5B0bpL5ZjL6mGX7ZMlGYYlQQtkDmHnHsumM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,47 +103,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 08, 2026 at 07:02:40PM -0500, Joel Fernandes wrote:
-> rcu_uaf() passes a false protection condition to
-> rcu_dereference_protected(), which produces a suspicious-RCU-usage
-> warning before the intended KASAN failure occurs.
-> 
-> The pointer refers to a fresh allocation that has not been published to
-> readers. State that protection condition explicitly, leaving the intended
-> tests intact.
-> 
-> Test:
-> Built with CONFIG_KASAN_KUNIT_TEST=m
-> Booted Qemu guest (8 CPUs), ran modprobe kasan_test filtered to kasan.*rcu_uaf*
-> 
-> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+On Fri,  6 Nov 2026 18:05:17 +0800 Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
 
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+> From: Kaitao Cheng <chengkaitao@kylinos.cn>
+> 
+> This series fixes three independent HugeTLB issues reported by Sashiko
+> and includes a follow-up cleanup of NR_HUGETLB accounting.
 
-And yes, the second argument to rcu_dereference_protected() is a boolean,
-not a pointer.  Good catch!
+Thanks, I've updated mm.git's mm-unstable branch to this version.
 
-> ---
->  mm/kasan/kasan_test_c.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> Changes in v3:
+> - Retain patch 3/3 from v1.
+> - Fix code alignment.
 > 
-> diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
-> index b9e167ed5be3..4e23765d722c 100644
-> --- a/mm/kasan/kasan_test_c.c
-> +++ b/mm/kasan/kasan_test_c.c
-> @@ -967,8 +967,9 @@ static void rcu_uaf(struct kunit *test)
->  	ptr = kmalloc_obj(struct kasan_rcu_info);
->  	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr);
->  
-> +	/* The freshly allocated object has not been published to readers. */
->  	global_rcu_ptr = rcu_dereference_protected(
-> -				(struct kasan_rcu_info __rcu *)ptr, NULL);
-> +				(struct kasan_rcu_info __rcu *)ptr, true);
->  
->  	KUNIT_EXPECT_KASAN_FAIL_READ(test,
->  			call_rcu(&global_rcu_ptr->rcu, rcu_uaf_reclaim);
-> -- 
-> 2.54.0
-> 
-> 
+
+Here's how v3 altered mm.git:
+
+ mm/hugetlb.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+--- a/mm/hugetlb.c~b
++++ a/mm/hugetlb.c
+@@ -1450,9 +1450,9 @@ void add_hugetlb_folio(struct hstate *h,
+ 
+ 	/* Callers must clear transient flags before returning to the pool. */
+ 	VM_WARN_ON_ONCE_FOLIO((unsigned long)folio->private &
+-			     ~(BIT(HPG_vmemmap_optimized) |
+-			       BIT(HPG_raw_hwp_unreliable) |
+-			       BIT(HPG_cma)), folio);
++			      ~(BIT(HPG_vmemmap_optimized) |
++				BIT(HPG_raw_hwp_unreliable) |
++				BIT(HPG_cma)), folio);
+ 
+ 	INIT_LIST_HEAD(&folio->lru);
+ 	h->nr_huge_pages++;
+_
+
 
