@@ -1,96 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 811EB606A931
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 09:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD4E606D59C
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 09:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ESB/PjWK
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IKmf+e1g
 Received: by kanga.kvack.org (Postfix)
-	id A00D96B05B0; Tue, 10 Nov 2026 04:24:45 -0500 (EST)
+	id B44B06B05B2; Tue, 10 Nov 2026 04:33:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D11D6B05B2; Tue, 10 Nov 2026 04:24:45 -0500 (EST)
+	id AF4E46B05C1; Tue, 10 Nov 2026 04:33:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EA616B05F6; Tue, 10 Nov 2026 04:24:45 -0500 (EST)
+	id 9E6646B05C2; Tue, 10 Nov 2026 04:33:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 678606B05B0
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 04:24:45 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id ED128120323
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:24:44 +0000 (UTC)
-X-FDA: 85418674488.30.CED09C0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5B191140009
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:24:43 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ESB/PjWK";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794302683;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=anLdELyja2Hy69l1U4K5GC3KSWyOsZhor6+5I7MJPrQ=;
-	b=I9maD2xmrQBoQqEI46PXJ2I8Gzu+HPkjtKzHQ3JUSt7qMaRghraatTsubAPOADMggPyXdG
-	4DU8thcqRd1oda1QGXSSfarZMHUZGUFe819ROQJm1Ty1QHsiUbIaafm9QfR/N0TvspLtWU
-	4EoUq3w7xJbYRD+esOhto/12nwiv/Yo=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A8C16B05B2
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 04:33:41 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 05D26A0363
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:33:41 +0000 (UTC)
+X-FDA: 85418697042.05.2F5830B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6934240006
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:33:39 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IKmf+e1g;
+	spf=pass (imf17.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794302683;
-	b=vw8cTC4XoNRR2Ytx+Cz5JZfBsxbT3T7+BRwh0dl3njk9ocSvLtsZeYRoxnpBrz1iS+hQ7x
-	xugzBPjUF6Tw0zB25/xNSyzO6zDp1nUuY1q/4dlY9nF+Povhh3zg/uaQwHX2jrbH9HI6DG
-	HkQT/ntLWyrKVbkWIkvwTzE/bQ4/qng=
+	t=1794303219;
+	b=hcsr9IpT+e0YFIUeP+YRMQO2YwZDkdR2rLefReLDdqY04SR0gPb5o1a6VZutz4Nqs9oaIE
+	+LwlpkEez7t/s2INWIMaEhjgC7hcInjxUqJMWprQi/m/Y7EqpklE8DOmrrYEEu5gZM+Lob
+	Ke9Hv1Gr3pP6bzonRUy7Kw+0Ib1OTnE=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ESB/PjWK";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IKmf+e1g;
+	spf=pass (imf17.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794303219;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bww7nw5bSwEPBt04rDt0/bI4su6VmPuV17HzMgP1WVA=;
+	b=3WtdEAcWLbhuCJpJkQ1n048qMzAkXWqW4nCysDukr+HIx0iJ2646mJW96luql2wbMR8a1J
+	lbNXJyHGd+q/9qHzDzqRgZd0r5Zg3QYKId1mRVdZDtxk7z1Gxf9grnTxi8eFUgm872prDY
+	600TR5DyOAnB+TPutvsZvwxW75xG/O0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DF896637F8;
-	Tue, 10 Nov 2026 09:24:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C931F008BC;
-	Tue, 10 Nov 2026 09:24:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8FB194487E;
+	Tue, 10 Nov 2026 09:33:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C081F0089F;
+	Tue, 10 Nov 2026 09:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794302682;
-	bh=anLdELyja2Hy69l1U4K5GC3KSWyOsZhor6+5I7MJPrQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ESB/PjWK+7S4hjQjB/73o85ozUTxNGJcqR0TnfzJKkNnd6UYrv4E7xJSc1bKO//Hn
-	 rkf4+WQvzyZf42O1qbYbMhUlmgr1W5deOzJJmZ5KUMYJKnnpWtoXVYXj+dtdZtyPoS
-	 xxrS1xZ9mP2EWgJcmiidxffyNNuo5GynD31uah5rmQUQHROrdjeqVIc3FwWbOt/y4s
-	 iE2aCm5GxutXvK/N4gExiTkv5wRs7xrv9DSKusBdgzQawHVWyUg7snClrfR+QAU+ip
-	 DJKYBZLvhsxN84M2YjXVI0YTj3dOCOF3l3zhtRrYrZmu6uDkut5NaVFPbagJucH2mt
-	 RrlQ9HWeLrLTw==
-Date: Tue, 10 Nov 2026 11:24:35 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Chen Pei <cp0613@linux.alibaba.com>, pjw@kernel.org, palmer@dabbelt.com,
-	alex@ghiti.fr, pratyush@kernel.org, graf@amazon.com,
-	shuah@kernel.org, guoren@kernel.org,
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-	kexec@lists.infradead.org
-Subject: Re: [PATCH v3 2/4] riscv: Add support for kexec handover (KHO)
-Message-ID: <avLi0_mYXatBWmpL@kernel.org>
-References: <20261106071459.2003-1-cp0613@linux.alibaba.com>
- <20261106071459.2003-3-cp0613@linux.alibaba.com>
- <179415145358.358073.165272378597657083.b4-review@b4>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <179415145358.358073.165272378597657083.b4-review@b4>
-X-Stat-Signature: pth9u7swk37jpygwagnjtd85etyudazn
+	s=k20260515; t=1794303218;
+	bh=bww7nw5bSwEPBt04rDt0/bI4su6VmPuV17HzMgP1WVA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=IKmf+e1gFKkj418fSwF/WvpYdm5kRAazs7jwnCLr8UBX0mWUP8DQEFBBBEZlbkXZ1
+	 XI4prTk7TROigxS8fxK3H7nyiNmObFLtBmkCA0ke0HXW7pt9dEt/aaSRLKtzC4egpf
+	 OEHRA7RgND8FIgqLmipqQVPz2GNvvRJE2PgE7T/NOFf640AwOp8vZiaRQth92bBap0
+	 HKEfy9pnSL5/wTdbiAfkWabIrGIRQRAr+uE+2HXR6t6FbfBJFofcbxlw42H4vOVzXk
+	 w77kmjm4jAJg1fdzTMQ0RDczx8gBsj6Uaq5LnRuUkl/WYcX9JduP6Rs8JOjO15ilQh
+	 USFa7wOu4MpQw==
+Message-ID: <sashiko-outbox-206765@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RFC 37/41] target: fileio: refuse files on pseudo
+ filesystems as backing files
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Christian Brauner" <brauner@kernel.org>
+Cc: "Jann Horn" <jannh@google.com>, "Chris Mason" <mason@kernel.org>, "Josef
+ Bacik" <josef@toxicpanda.com>, "Christoph Hellwig" <hch@lst.de>, linux-nvme@lists.infradead.org, "Alexander
+ Viro" <viro@zeniv.linux.org.uk>, "Jan Kara" <jack@suse.cz>, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org, linux-security-module@vger.kernel.org, selinux@vger.kernel.org, apparmor@lists.ubuntu.com, linux-efi@vger.kernel.org, linux-s390@vger.kernel.org, linux-usb@vger.kernel.org, "Amir
+ Goldstein" <amir73il@gmail.com>, "Chuck Lever" <cel@kernel.org>, "Jeff
+ Layton" <jlayton@kernel.org>, "Anna Schumaker" <anna@kernel.org>, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>, "Mark
+ Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>, "Joseph Qi" <joseph.qi@linux.alibaba.com>
+In-Reply-To: <20261110-work-loop-pseudo-v1-37-4c998976c6c7@kernel.org>
+References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
+ <20261110-work-loop-pseudo-v1-37-4c998976c6c7@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 10 Nov 2026 09:33:35 +0000
+X-Stat-Signature: 3dkudjup65sse5a91j74p44ogmzr9uno
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6934240006
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5B191140009
-X-HE-Tag: 1794302683-339147
-X-HE-Meta: U2FsdGVkX1/5k/Rvao0eRDfX604JJ0DeTOPuACJpzac6+vLNAWkHE7pVmwqRGFXJhJRnsPn+lTPeDqR8rvHkNq4odCeru0yKkmK8IcywrLDuB0CCUrqj/JjgL57BWsZeoR8tcIadiK2m+l8Yb2TYTF1KHz1kvb25gKGypAOAkrcrZ0PFNFsSKuohYqzr/Z302sxR6Ju3sP8UzRHYflRp8YW6lQGhCR6REGo2JxKW5iqiJjd3Zc8YnXi3poKWACWIn7EXAiFQoidPD8Ybcr7iXa8oFFBh1KPpdP1C6Ct+/5VMldW4YQ8fRV/FTzLeO1G/O+Sehle8MYtRqDnyhofhyAKf7j12lifZ2SuBgKcTsVO53iswvJCI/vpjonErmHEwWH1uYEj68+7bdaCZ/6S6ERIKPIGb1C5a8istlEhc7hQtKj1az+9xeIu1iB2fjcd9UFcHZC0UOGkPVHyDcmuxQsHojEcKCIifB+mAjn3l2wPVLeRRBLEnSouK+GQ1SYn17m2WuKVTtKKlAqZlPUI2xRF4mxfm4bGAzvDN749WhXDWNcQ6RtKXFOy1r3LLZA//uRw9PLEAjtcRFNCaQRHFtOKsrRml73PeuUzUVmweuT8LWg1ax8A+/VYO48EJr5evFAUTOQg08APXqJBPKHsLVuOZjlXZXOb9ossVqpnpHm3x8TJIHydJoUyTeJXN0M32boexm2w76y5g/b9ayLblxnLIbL7rKGRT2LnE/TnQh6pAn1BareaOVO7EF88K6g+xFiSuMtI9nnYWZ5xkbfYbjp/SEiTURd+YWOYTqV3yWPrabEVfPgnvqavO52AkUnqXLI3n0QpCpp/3c94BfgtiKXdZiwd0p+Zg9kh+aPG6Dn11Y7/Y07h0z5JSocBkOLTxynXAAz8voFuCfnvvE7Jb+dYo1UEBN97+SOusZDl8ynTwsVOVUUtd8JqTh2EnnRi0iO5Cg5rw+9vsnQyyrjZ
- j/Z4GcX3
- gm1esSorKyXeZRa0gCcnsFDlv+Sag2sDYA/6x46mJCMxv4I6AXj+AImLh9gvaZfIfpTuy/4zRE9KtxUjAUMUTrGsiq7Qiv6eezef/uviJ1AMzhdReNnGcNQvquT2VCcp1l2lmWO700i9rxqBEi0MJ4ewx6m6pWBYYpwUXdoepS9mWSHjv+46IKX7aBYeBjTXpERM20gJUuaTC7oWPWOFwVBo73KJeaiLRwb2B1rhEe8fPzn3f8d5ondwisVBzD8DaqylRhC/b2E1gzgKOoY+3wWakD5D8ob0hsR9acQsZna6xLBFg3cbotOhaSHBRU9UQdwD79Wd1pM69H6qX/iZnM7s6iuWokLzanzdWxyoXIxX7wSXBYlgfiNIy2nLUrLtjgo4I
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-HE-Tag: 1794303219-250217
+X-HE-Meta: U2FsdGVkX1+lv2KvG5D6cnPIIa+O+QPB2CU4zT3+XiVeb7Nl1b0vUWEP9APIRc/eihTKiwfxmbjKxv+5e+eRdaqCLZZVNnZVUrphHjtlqSNIR8+cin3vI06gShptnoTZjaxVqPgRUZZLl9UErvuNny4U/FacbRsIwV04LZv1QctbY/GfHkIIe2PhsZQjpnL2WSh/VtNW3O13GXHmoVrh0AcmTBJGvg7QmDO0eWr9XuFPavG2sI7tDe43KQMrcAxmH+nPvPkUjP5RMpCBlHqTkbbCswWTTaGrXFQDgo4MqiFzhT+v8ETxw5GBMNxUyZ0D5i88XCJCMsq18/sFQ1PVTsqrPtCr6dzu74ThNUD8Ph86ErZgaO31qjo78rIdfwhctQAUvywi39rxEXhCevcB/+Qpt2qxL8n8V5yRnah6hTMqGJ6oG2cEkyJ8Z4UfcRkN7PnmfalWE6bTbXx84ttFbfgQLxW+fEC8bNupMAdgePPV6IXEmhABfv0Y4AHV88fNb3WwY+lx/hSx/jPL2XW3NmAced19+lPiUutxFk0RGD/a1iNMvLfXRH5jVYQhGTE9bZX9JUlY35FzOaOLVNlZVpHX1aDotLWWu/KH+iyWFnX/RLptnqsrlUN4htE9gHolhrPj0zc6EvF20FuJOl7peRd9PGY5SwuXPaQ2MN07CQE6rp0Diw96VKQt+xSxNHEoSGIikQ2t0a6j14qZQW8KniptskNkNWaTNaw1rsy/D5gyoPDZfI+rTmEAoXf6O/nPi6lrcpS02GFW6fJ6i81VXTcVXyQHNcAIIJ/nfRGgw8c3LYuYuhVkMCU9OvwICWn46+Ml1f/97HCogtCqzGTlL74ANimQzXxoVsa9jJxOkcShfjp6U2oVn4tNAWqpi+ptbTbloUJK5Vg5UYfJODdQYD/T4HtLEBPPMzzJosRFN8nBXruIcZdfLl+qq4seCcbU8vOylGiWcFeTcc+ja3S
+ 94AGKeKh
+ mPOrWUafgHEDDncCSvg4ILpO4k1f/4yirn8Dhndhj3VHVGEQB3QtJnKQsh834m0sQKlkX0aqJEOjA2m+laB8zdigN6nN0Fbn26JYD67hr4+bub0Tb4dFvwC4Ix6RHIooH37ZJqRVumTliySdpfa5ql+cG+N+j/l5omij5K0svnMhepW2gC07zqw9pAcCJZHr8mB6mnidQlhivt9LnDCir0DuxlAJxUJxv8sjVhMUeGzwvEWZqsX9L1+kZNV045RnzR+IJ8igm3LRWVnUh/nfGzgEaUNPFqgNGti/o4irsedOj2cx5vRfgUJXBdEjmh3b3HqLmYgx+/gi6dzTjACCops3zkgdQdlT7l/+IIHObUGiOEz/KhgMo/c8e0ngF14utXljxPW3sFeF9YTXBt6vW1OjwdVozG7IeUpryH8e+88iWHnAeTKhD6rvmH8TswUCVDgKANxC33KIzTRaj06yeQ5VLwCPapGBsAo4dvltuLEkyRvp1joWdgp3RDIrqRR+TNhO0Wtzcq6B1i8EY+Dszt8gfah0gzZhHCchybYsmbT13IXcF9ciejjz2DvivJ9+D3KEml7bzULsMmpNYemYhE9kN9Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,52 +99,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Sun, Nov 08, 2026 at 10:24:13AM -0500, Pasha Tatashin wrote:
-> > The generic handover paths are already in place on RISC-V: the outgoing
-> > kernel publishes the handover FDT and the bootmem list in /chosen of the
-> > DTB built by of_kexec_alloc_and_setup_fdt(), and the incoming kernel
-> > picks both up while scanning that node. Only the architecture symbol is
-> > missing.
-> > 
-> > Set it to 64BIT && MMU: ARCH_SUPPORTS_KEXEC_FILE is already 64BIT only,
-> > and KEXEC_HANDOVER selects CMA, which depends on MMU.
-> > 
-> > Signed-off-by: Chen Pei <cp0613@linux.alibaba.com>
-> >
-> > diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> > index e7891a2a89da..a5c56252ff44 100644
-> > --- a/arch/riscv/Kconfig
-> > +++ b/arch/riscv/Kconfig
-> > @@ -1125,6 +1125,9 @@ config ARCH_SELECTS_KEXEC_FILE
-> >  config ARCH_SUPPORTS_KEXEC_PURGATORY
-> >  	def_bool ARCH_SUPPORTS_KEXEC_FILE
-> >  
-> > +config ARCH_SUPPORTS_KEXEC_HANDOVER
-> > +	def_bool 64BIT && MMU
-> > +
-> >  config ARCH_SUPPORTS_CRASH_DUMP
-> >  	def_bool y
-> 
-> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com> 
-> 
-> But pre-reqs. should be applied prior taking this series:
-> 
-> 1. https://lore.kernel.org/all/20261023054518.3258350-1-gthelen@google.com
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] target: fileio: missing file_is_pseudo() check in
+  fd_init_prot()
+--
 
-I'm planning to send it to Linus this week.
+commit 4e15db58376b542897dd4203d7acdfd99df1aec4
+Author: Christian Brauner <brauner@kernel.org>
 
-> 2. https://lore.kernel.org/all/20261104-kho-bootmem-sizing-v2-0-b0d1a834780f@kernel.org
+target: fileio: refuse files on pseudo filesystems as backing files
 
-This is easy if we take it via liveupdate tree :) 
+This commit rejects files on pseudo filesystems in fd_configure_device() so
+that SCSI initiators cannot read or write kernel interfaces such as procfs
+or sysfs with kernel credentials.
 
-@ricsv folks, how do you prefer to play it?
+> diff --git a/drivers/target/target_core_file.c b/drivers/target/target_co=
+re_file.c
+> index a5391e57e9aa5..7a3cf63dc979b 100644
+> --- a/drivers/target/target_core_file.c
+> +++ b/drivers/target/target_core_file.c
+> @@ -152,6 +152,13 @@ static int fd_configure_device(struct se_device *dev)
+>  		goto fail;
+>  	}
+> =20
+> +	if (file_is_pseudo(file)) {
+> +		pr_err("FILEIO: %s is on a pseudo filesystem\n",
+> +		       fd_dev->fd_dev_name);
+> +		ret =3D -EINVAL;
+> +		goto fail;
+> +	}
 
-> -- 
-> Pasha
-> 
+[Severity: Medium]
+Should fd_init_prot() also check file_is_pseudo() (and ->read_iter /
+->write_iter) when opening fd_dev->fd_prot_file?
 
--- 
-Sincerely yours,
-Mike.
+When DIF protection is enabled via pi_prot_type_store(), fd_init_prot()
+opens "%s.protection" by pathname without these checks.  If that path is a
+symlink or bind mount to a procfs or sysfs file, fd_execute_rw_buffered() ->
+fd_do_rw() will still read and write it with kernel worker credentials.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110-work-loop-=
+pseudo-v1-0-4c998976c6c7@kernel.org?part=3D37
 
