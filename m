@@ -1,107 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD55B60A2603
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 17:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD30606A325
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 17:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OovIHZa3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MdpJFCRO
 Received: by kanga.kvack.org (Postfix)
-	id 04DB36B05C5; Tue, 10 Nov 2026 12:19:38 -0500 (EST)
+	id 02F2D6B05C9; Tue, 10 Nov 2026 12:23:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3FCC6B05C6; Tue, 10 Nov 2026 12:19:37 -0500 (EST)
+	id F1FC06B05CA; Tue, 10 Nov 2026 12:23:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2B826B05C7; Tue, 10 Nov 2026 12:19:37 -0500 (EST)
+	id E36186B05CB; Tue, 10 Nov 2026 12:23:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B66116B05C5
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:19:37 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 43F041409EE
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:19:37 +0000 (UTC)
-X-FDA: 85419871194.11.A48A145
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 65FEC18000E
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:19:35 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OovIHZa3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BEF0C6B05C9
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:23:04 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 53A461C445A
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:23:04 +0000 (UTC)
+X-FDA: 85419879888.13.65F75CA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id B44FD1C0005
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:23:02 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MdpJFCRO;
+	spf=pass (imf18.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794331175;
+	s=arc-20220608; t=1794331382;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KFrBAQI4dIm/fP3ro/XqhmpHfLGZgz+aDz0WQQ1iWt4=;
-	b=vb7/iLIXVZBoyN23Nj50efReLAEElZuPY7UdTLwcZKWlB8HXA8man6F5t6TY6u549qflII
-	EegElzRP3sHoTrUeZcrTnXNeLZmdqKaUl3mUxqJ6nH4g4gn1Xbeji3JjF6+8AT8qbIkVQI
-	XoSG06efDiMtb/Id1vLGz25getGgQt4=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OovIHZa3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=qU/YBwcBTSW09tcoeJ7GijBACLV9An/e2EuN4/Zc9Sg=;
+	b=NxJ36gV5M3PiBHVnTW15IEXOQXWK23pLLGij4HWL1PWROesqhP9Vyim8/JSn0H1plK56EL
+	uooLVTsD6zKJ5Up+Ij7rAxdjK8xneOTn+/9zhhICYxciZXRxFXBNPpBxen79AYOmUKAg4+
+	anhn08feUrGJ7mOh+hHuGWWPFQqMWrk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794331175;
-	b=1u5MCRGR7OFH4wObPF4UIfY9LVeU80SAycCtM9Y94BeEOv8XnwVOwUxjJDSrqR+hI6Kykl
-	+lmLHaXy33tF31LMpWsbsExDKluXaRBgqWKCduM/8I3psgdHAuh79pr0wp+VqbbQ9WcqXA
-	7GrSnToqIjfpwVYozavlOwL67yVXQg4=
+	t=1794331382;
+	b=QYVrs9WmoUGa3cZKC9fJJO0OZ5dBrv7G8yP8wbCYCzUaTHXlXLOqV/udy4YgjAI8NF+cws
+	w7nhxLTftI1guKimd2hYWGQ1g9gfso85XMHEV5rPfm14wJIcWJ/G1DTohcRUuCQXngMY/L
+	k3kvx60f9FZHPeX9VKc+kAYl1480xm4=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MdpJFCRO;
+	spf=pass (imf18.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A8A2140F7E;
-	Tue, 10 Nov 2026 17:19:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEBBF1F0089F;
-	Tue, 10 Nov 2026 17:19:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 39DBD63227;
+	Tue, 10 Nov 2026 17:23:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC5E1F0089F;
+	Tue, 10 Nov 2026 17:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794331174;
-	bh=KFrBAQI4dIm/fP3ro/XqhmpHfLGZgz+aDz0WQQ1iWt4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=OovIHZa3P7XGNFcuOtc9v4pvh1X4IidT9UiIpEQNMPNShZLqJRZLcslYhiieRMeGa
-	 I3GVMyyox1TGLLEHeVvRbPwbdZp96PbI1kbgYhgDjMAcmpkrWYXwcw9ei8wPvJloem
-	 Y4BzjUsCkU5mhvc4i7md/MaP4Noq6wuHmqd8IkK8VyrRnu4qShhW4HMRLo8oj0XPc4
-	 02cgY3EsknZOVNUQ92+gwHgnZPH/+tgv1ZpTLO+OiAT0cpVVIXp5kgN0X7SoVhQe0H
-	 8cmG+zn7sPo4HOjmAq0ktxpUuk2llP+vnTQUVON7GM2eR/ncoMijuIzUnL9odkLvxE
-	 NgPWs82P0dxng==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 10 Nov 2026 17:19:13 +0000
-Subject: [PATCH v3 3/3] mm/khugepaged: release contended mmap read lock
- after scanning enough VMAs
+	s=k20260515; t=1794331381;
+	bh=qU/YBwcBTSW09tcoeJ7GijBACLV9An/e2EuN4/Zc9Sg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MdpJFCROGyBYcN7mWJ2h78QRBDr/Fl/ZsKQlWVpd8pwT/yq01ngNExJ8X15QOrwsR
+	 sk7rL5FOYp6lPcx+x7fPzofmSxgGVAAFFGCEFCaP56Ah/LP7eSEf3RX1TCMtNt798T
+	 mExzsrT7iYw6hTvC27mzgrufj/d1QZhxdsOsBdcR2H15L2qEIivVxUj8ZXVLcRxPdP
+	 lJ4Aw4IpoOBm6O9FTWQ/Bfr5ALMiZqvLhRXCXfc1ikWYB5vTiTmmTHV9fmRfW6j6ZH
+	 QkD3b+xn5qIF5y56iQP2D++WMSIAkzp6r/hjK81fRf5EEf+2rFl6PzUScHmIke0Jl/
+	 4oDe2DIyKoqLA==
+Date: Tue, 10 Nov 2026 12:23:00 -0500
+From: Mike Snitzer <snitzer@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+	linux-mm@kvack.org, Christian Brauner <brauner@kernel.org>,
+	linux-fsdevel@vger.kernel.org
+Cc: Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
+	linux-nfs@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
+Subject: MM/iomap review of this v10 patchset is needed please [was: Re:
+ [PATCH v10 7/7] NFSD: drop a shared boundary page only once both WRITEs have
+ written it]
+Message-ID: <avNS9HrDV8TbDTqH@kernel.org>
+References: <20261103211754.35352-1-snitzer@kernel.org>
+ <20261103211754.35352-8-snitzer@kernel.org>
+ <20261104091543.GA31130@lst.de>
+ <autk-osSQ8l2LKz1@kernel.org>
+ <20261105075935.GA18069@lst.de>
+ <29851456-2e7c-48a7-bf00-11a1f1a35024@app.fastmail.com>
+ <au0H_TZCp1Snf_5U@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-khugepaged-latency-fix-v3-3-6eea743cf9a3@kernel.org>
-References: <20261110-khugepaged-latency-fix-v3-0-6eea743cf9a3@kernel.org>
-In-Reply-To: <20261110-khugepaged-latency-fix-v3-0-6eea743cf9a3@kernel.org>
-To: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3442; i=ljs@kernel.org;
- h=from:subject:message-id; bh=ckbCh9orwtsZv4mAlUI9tJN6KMn95OOQcVZzcKqPlhw=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLI+B4keLg0QF968ozFY+mzChkmtB+YKftN3Yw15KKwh6
- 7+zs6u8o5SFQYyLQVZMkeX5F/H9QSJh8zov+LvBzGFlAhnCwMUpABPxrmb4X9x3/dTurd6Pjvzu
- Ej1oeq5p2pLPf+RTQzzS3U/dbDjcYMPIsGNurzzz878TMjQfduf/vSpu0WPQkGkzbze7ye/LF99
- NZQYA
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 65FEC18000E
-X-Stat-Signature: 4w8oetijbj34rwgm58niwtgadtk5jbut
-X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <au0H_TZCp1Snf_5U@kernel.org>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: os5ci1kwwje7cbznr15b87ktzz1p3a7d
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794331175-935358
-X-HE-Meta: U2FsdGVkX18YV6hUnSSA9fTNDMwXRzFD59HLJcVmwMc9XX4xVBD/Z6Cfh3eIbn2a8bHHBERAeKX3N5J1G+pjqpAS3tFHlU9b7KGDjmTSn2JTTb5k6/BNv6FgluG4YLLql4/krve/m51eGpINjIM0gFhhS8CHmOl6a95a83BheeUhoyyJn8De4PzDhsmXBeuP7n3YLh3qbFpdyOqtzECPkqogWKmT4hMOG4Lsu2x/Hyi1xjctVy78VvrdA9kKOv5N3pSkCUT/rWGW/suA/havmL6ev/BBgk7/CKDmUGGlkD2Uv7hX6YnGra465ihYeprqjTda2jYQEdzEKANucbbgBkBYVsI0aMdiwSy8SJ21b022KFXjIpWO2GTwYnyZ30l56FDqp9sgGhVny1Kt/bcC94tqJoJioLaM6Lj8i9pDNKQdaXO8cHeXqmZNkfAXuBe8P55DraEq+9XbDOgr8Bf3iKG8N43WQs9zek9o12mKH1yT7Xwnczs+TbmfRHBBvUgGcDh9iJ+ZXMS1wbxRnur+C4DcNdW4XN+OydF4j5qEkHFn8En0Ly6LkNbh0zczPwf+CnGz5NualoMGMfncyfAiSwuDcS2ST//4td522XwNwpCxKC1uYqYLeymfFXIzV1bj00DY8CqhaSJOatdi0TNlTfBw+xLJtvkLMiqtajkAI8I1AHUol5lQzHbJe13uZkG5bsamcAx0imw1BMaNCO2ASgZYYJzDcm9gbBigsYKdQSEJS7Q+2OubmbzQtFffH4b9t+K9vmT7bC3AiyphUrus6CBj1xDXloXT1VxBm3958L36tNki0Q4Cej2NTePKShkqGlGAGchSc4XAD5Ph8v1wEbigPET8ufVFLl//McqqzAiVj18rQ4dT0/LH0dYKgMnFwtArgYQA+QrW+w2uH3HuP7SWHRleeJy0epC/dyYTktAUEwI4IYdgNef9KAddNbPZbxWKvRhSCPQZ1zzsMYH
- R2rAkLUT
- rN1vZrcApYi8L60eXYbyv1Cj9SJo9ARNYoIBJRlnvOgpOLSySfMQ8ek21HXh4o1GfgK/r4gfr8BLwWpNHHSU7TdqS49d8457flx9cuFu9/pb8PkWC+LNMEf97V/9zi7RFR8sC8WfS2014iVeDOOzn+mDeDz7abvfMnePz5VgGv7cyzlc/GP1on8nYICA2AdUMbRTl+dwBquQVnuEFt/ib/1dYimXQ+mPadpP4u3YLxgJnoxVUpHnLTfdCRg==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: B44FD1C0005
+X-Rspam-User: 
+X-HE-Tag: 1794331382-871753
+X-HE-Meta: U2FsdGVkX19rRDOniA0Wnq/35WVysuVQ2xlVBV/YAkdhFJ1uh40tZH3hTUt+OQZnZm7IV9K/fA7beiBPknFtcaCqJhCSRkVReI6Z4m2p/fjxWrVXu5+mhm3M4SWWBdKzzPx0tmnXlyp9C7bC4K2r1CixLVJyWCLhP1jXZ7T1pMnBGecY4MjOiVuYryrmdZ3GM7B1ch1c72gZb0yc0amPFiYHOCNSFFDDOyD3Qpyk+ohx/xU7hDsnfwzIEmmIyHZE5r61du4pgW30u1b7U6PoFN+eXpRN0LmdaPQjev2venF8olfzWB44RXo7OdYcqiKNpduMvxBdp+cDS8DoHxjTd4npag/IuqcZQXCdycucczhN8ZWhmUu9uL9GGScetH43prFbIp/HXQlJKYCBJhHeTQh1q+klJbe/xwtPszi1SppIJDaHNpAUPWiQG8rWs5fvpIkFWgKe37RnV7i/a4juuFxhmS41wbjbSyvArxYKcZs1uERbVGLISX3NFiAlOBMnf7qJssfpwXTXPztCQ6A4wZMzNnOehP3QhsW9xLhVYAWrqkOQ6nNM5pA4n3QGdEG1nlJbtUBoPxmXNLbax9F+0qwssPX8DHe9xUtAlSYmWwEhJcmjnnyRsE/LrLUP2gVXFLmlwJQHgJm2dPx3Jin/I+XdupjQ4YET2Rh0x5e8dlWfNit+xyOvKEg8a16l9GKwXK88OcXZy7Ol4HZ444VDYABe92SrQRyfNUC3LhWxu5TH325GAgzGwlUs5TzIDvr6kDX0yWC/BLFji89IXC6pkGLHx+x+az2/HL/OOD9OjUz1hZRaD2MSLa2yb+J0uGs/M3V0MN+XQRyPVvzvsX+cdaLvyvcURnHtDSsgN2pUGqpVFoIhRowZA9hmKqlGIuFUJPf0gfmUT70UEHRkEHrTcnx+2HZ8cKvd0cRmLfQVdzQu0fBsHKozxkx4rB2Ro9mit4M2nnfzqKc1erPUTX5
+ fxSS6f8e
+ NYKaw/wMY4ABQ7LhCDiXPA4U7LJsz4/jMi08/scNXA4KKFGyfQ6B3XdCns4XLw5VJ3CO0pgMqBaD8MwmdmV4+X1Mn7adtV/Ag5j4pBg4d7w1zNmM9f0m2QzUSR40SupHA3YZnw6hnkbXAFtQRX6ilSQSY+USi8wpM0OSet9DFcccv6ALJ/Vig4ycahpZPumvnWlt16WkwCL/d9BhZteihvjK+hpnZLPAP/3GqH/7foghIxR16Yohva3ECE9/7Lpd/rlofnj+yjXSMXe8qCUcpmGiPjA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,94 +103,39 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-khugepaged walks an mm's VMAs under the mmap read lock in
-collapse_scan_mm_slot(), checking for ineligible VMAs first, and skipping
-them if encountered.
+[Cc: trimmed given To: refocused to required audience]
 
-It charges cc->progress 1 page against the /sys/.../pages_to_scan budget
-when these are encountered, however only checking this budget once an
-eligible PMD-spanning VMA is encountered.
+On Thu, Nov 05, 2026 at 05:49:33PM -0500, Mike Snitzer wrote:
+> 
+> I suspect MM engineers have just been busy with the merge window.
+> Hopefully Willy and/or Jens will give v10 the courtesy of fair review?
 
-It can therefore hold the mmap read lock for a long time if there are a
-large number of ineligible VMAs present in an mm, over which time no mmap
-write locks (and thus no VMA write locks) can be acquired.
+I checked with Jens to see if he'd have time to review v10 but he is
+unable due to his attention being needed elsewhere.
 
-Address this by checking whether the mmap lock is contended after 1-10
-ms (depending on CONFIG_HZ), i.e. the granularity of jiffies. This is a
-long time for a lock to be held, so is a reasonable compromise for
-determining when best to do this.
+So Willy, Jan, Christian: can you please coordinate on reviewing this
+v10 submission with consideration for 7.5?
 
-Skipping an ineligible VMA costs ~100 ns on tested hardware (x86 server),
-so a batch of 1024 bounds the lock hold to ~100 us without expensive
-high-grained timer checks.
+Probably worth me restating this note from the cover-letter:
+https://lore.kernel.org/linux-nfs/20261103211754.35352-1-snitzer@kernel.org/
 
-This scales for large numbers of VMAs, and tests with ~1M ineligible VMAs
-reduced the maximum mmap read lock hold time from ~93ms to ~110us.
+"Merging: Chuck suggested taking the series through the mm tree.  1/7 to
+6/7 apply cleanly to each of these mm branches:
 
-This was also observed to reduce mmap_lock stalls in concurrent threads of
-a similar duration. Note that a reader re-acquiring the lock can currently
-steal it from a writer that is queued but not yet running, so the full
-benefit to writers depends on the linked rwsem change.
+  mm-unstable  0ea6dc8c4a21 ("fs/proc/task_mmu: fix lost maps entries above 2^63")
+  mm-new       74d73ffcffe0 ("riscv: mm: fix concurrency in mark_new_valid_map()")
+  mm-stable    6628e7d4c6b2 ("Linux 7.4-rc1")
 
-Local measurements indicated no change for ordinary use cases, so this is
-all upside.
+7/7 needs the NFSD direct-mode changes that are in cel/nfsd-testing.
+The whole series applies to cel/nfsd-testing at 693afd3ce9ae ("NFSD:
+Defer the PUTFH export security flavor check"), where each patch builds
+with W=1 with no warnings.  So 7/7 could follow in the nfsd tree once
+the mm part is merged."
 
-This work came out of investigations into mmap stalls when getting latency
-numbers for an unrelated patch series.
+(and I have just revalidated that patches 1-6 still apply cleanly to
+the latest mm trees listed above, with commits 93d7a816a2df,
+488f62a72b8e and fa4ad798f6f6 respectively)
 
-Link: https://lore.kernel.org/all/20261105-rwsem-dont-steal-from-queued-writer-v1-1-275e070f426f@kernel.org/
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
- mm/khugepaged.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
-
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 7d1414a9b2a5..59bbef61f104 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -66,6 +66,13 @@ static DEFINE_READ_MOSTLY_HASHTABLE(mm_slots_hash, MM_SLOTS_HASH_BITS);
- 
- static struct kmem_cache *mm_slot_cache __ro_after_init;
- 
-+/*
-+ * The number of VMAs to walk before checking for, and relieving, mmap lock
-+ * contention. This bounds the maximum mmap read lock to an estimated ~100 -
-+ * 300us depending on hardware.
-+ */
-+#define KHUGEPAGED_MAX_VMA_SCAN_BATCH 1024
-+
- /**
-  * struct khugepaged_mm_slot - khugepaged information per mm that is being scanned
-  * @slot: hash lookup from mm to mm_slot
-@@ -2910,6 +2917,7 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
- 	struct mm_struct *mm;
- 	struct vm_area_struct *vma;
- 	unsigned int progress_prev = cc->progress;
-+	unsigned int nr_vmas_batch = 0;
- 
- 	lockdep_assert_held(&khugepaged_mm_lock);
- 	*result = SCAN_FAIL;
-@@ -2942,6 +2950,18 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
- 	for_each_vma(vmi, vma) {
- 		unsigned long hstart, hend;
- 
-+		/* Relieve mmap lock contention after walking a batch of VMAs. */
-+		if (nr_vmas_batch++ >= KHUGEPAGED_MAX_VMA_SCAN_BATCH) {
-+			nr_vmas_batch = 0;
-+			if (mmap_lock_is_contended(mm)) {
-+				mmap_read_unlock(mm);
-+				cond_resched();
-+				mmap_read_lock(mm);
-+				vma_iter_set(&vmi, mm_slot->address);
-+				continue;
-+			}
-+		}
-+
- 		cond_resched();
- 		if (unlikely(collapse_test_exit_or_disable(mm))) {
- 			cc->progress++;
-
--- 
-2.56.0
-
+Thanks,
+Mike
 
