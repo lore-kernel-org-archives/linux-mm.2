@@ -1,125 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9958560A2603
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 18:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06828606A327
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 18:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=aBbioC2n
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=a9W1rheL
 Received: by kanga.kvack.org (Postfix)
-	id AE5696B05B7; Tue, 10 Nov 2026 13:30:02 -0500 (EST)
+	id 303E06B05B5; Tue, 10 Nov 2026 13:36:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A95D76B05B8; Tue, 10 Nov 2026 13:30:02 -0500 (EST)
+	id 2DB016B05B6; Tue, 10 Nov 2026 13:36:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 984836B05B9; Tue, 10 Nov 2026 13:30:02 -0500 (EST)
+	id 218776B05B9; Tue, 10 Nov 2026 13:36:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F7B86B05B7
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:30:02 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 07D6FC0A06
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 18:30:02 +0000 (UTC)
-X-FDA: 85420048644.04.A09C26E
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2E21720011
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 18:30:00 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=aBbioC2n;
-	spf=pass (imf13.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 063EE6B05B5
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:36:46 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9330D140A37
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 18:36:46 +0000 (UTC)
+X-FDA: 85420065612.02.DA04A8F
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf03.hostedemail.com (Postfix) with ESMTP id B5DB52000B
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 18:36:44 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=a9W1rheL;
+	spf=pass (imf03.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=skhawaja@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794335400;
+	s=arc-20220608; t=1794335804;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h/fDqdjeF2qNLQi3iaEH9vKqxnzXslPVSp3ugOVQ8hM=;
-	b=M4rTmBPGsYh1/TpcUPf3oV0+wcjoFXPDPp74FF2EZn2xe2xsrVKfFaelHOzDVFSN/VZiwD
-	W/FkSO4onlYErqrmr7ux/rIZTe8nC/pIt17LBuBJrnVT/C2miTo96hgQJynOxGHz96IaYV
-	ExllBnvBrDUSzKQK5n/uuEbeP4Vyk0o=
+	bh=nq8v7VJ5VqpFS97EP72RtDwjUZHtXRoVpvPyoM9R8Ys=;
+	b=NHsNFLmgfh3X2H/jgmk6CJipDtW70VSkS+1r6c6wZwTs7UtGzstD6UeUfj5T5tR9n50eu6
+	Bwyd6m12hE4QpoPap3idLed/8oMe61ruulqXJn8bY/SPV18RHMpo+qNb7l2NT/1jqtjS2N
+	sBthcQFe+1EAZYG1paSk11O/bWTcLf0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794335400;
-	b=O3srtreEFOldakIpwHORIY/6lQaez1HFg9PavPgEIxdGPCGN3HUORTLobEkSW3tEdVBTKA
-	lfkE3XvjiEq5WYJWQnSkOice29fm1csyhv8Z7fJDqVqs2ToOln40GzvGWkT6GycACtaOGY
-	/21GxzJDV3IgEznNR9I9/NOwwfY6P4E=
+	t=1794335804;
+	b=x8I7z+EUDmYLUyWoeoDE/3bjX26elL8uncMamaL17dyhynScRoH5Usfk731d5geANO+3Pf
+	FQu35+FtRC9avPNCVbHXSlivuvdsz+LcHEpBeGnnmw0m9TwlHAbLMWAPYX9uKyuSIZVUf2
+	rf1nDj/58Tk2kxIFOE9b3+Es5h8xXkI=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=aBbioC2n;
-	spf=pass (imf13.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=a9W1rheL;
+	spf=pass (imf03.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=skhawaja@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ed3f563739so3465ad.0
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:29:59 -0800 (PST)
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2e9f6a16afcso3335ad.1
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:36:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794335399; x=1794940199; darn=kvack.org;
+        d=google.com; s=20260707; t=1794335803; x=1794940603; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=h/fDqdjeF2qNLQi3iaEH9vKqxnzXslPVSp3ugOVQ8hM=;
-        b=aBbioC2nLhBc+D3X4m3yW6N+pKSLeLFar1nqPYW1Z/QfP7Gs0Jag0rVFTBaF4VgQY8
-         hN44CIEkwPNg/RrpUaYjOfXQcBSL9WpAhtNi6YtxoJgG8YdzTgzNwoMSgYrlImGpqNFx
-         9VN14XouleVqQjsrgFwV1LkUPm6b9bURnm/3oa8SeDthFIYkNvi9v84adK4+jbUacMGZ
-         tdCX7n6y4SGucnMEWIKygQadRE7MhCTmcgPATMrWBdGDWZT1m0eIz8KiZ1v2kw8qIalg
-         tenWAZlZ85KqVDI9LM2gCxQRjcL+7W4xLwKuUpVVhvDxkRrqKcWVCtzMNYyvh/NmoqQo
-         QtQQ==
+        bh=nq8v7VJ5VqpFS97EP72RtDwjUZHtXRoVpvPyoM9R8Ys=;
+        b=a9W1rheLIRaT6G45Fox1Fq91vZI/+LuPBx7GfnLwimx3y0d8pwlE0noNCGeLA/Htre
+         blBZ1e3KmWsY6MugK6Cv5QtvNlsKKbl3dJthim9HSofpWerZ/QCp5RKMrE9ZY9y7kCkM
+         SPciEFfE8Its0MyTJEtETRgO22R9QyNnM/WkObVBWsoq0Ye9X8H4dGznxRp/UbUW++x9
+         FlB7a9vAjPaepZIf8n3CwoOCfX/p/a+YRDqumofSD62r8gKoFHVhNKDfGZqNqdeGqzSP
+         ENE9x5XZn+C8z/FDbERgC5ePeg3XTW2aLv34Zdm5RyjzJpAouh+VOuQI3Nhm66P36LE+
+         AE0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794335399; x=1794940199;
+        d=1e100.net; s=20260707; t=1794335803; x=1794940603;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=h/fDqdjeF2qNLQi3iaEH9vKqxnzXslPVSp3ugOVQ8hM=;
-        b=Ue24GYVMBD+9g3yfawWj3ld2+aGZmQVNqrGbf+4Y/1C28cAheKF6EOqgbJuQoMSBTz
-         oPSuJGdoRRpBso1x78Lgg149heqCNkkFOYbLHfoTz2JSehzKOIdKDRTM4noSj49rEcz2
-         0r9h3rSLg4qJaPA8astjsunldI1CTY5mzPKqniAfUaB/LwDZ7LAfYwBFbr3Pd6ekTmMZ
-         pQqauoqQt6jFn6Nrce1qR1ULsPplFcDf3X5dzsyUxqI0ALad2GP+XazYs9ZDFKHlooyI
-         bemF/r6HJgB3/uAwH0aVhY7SLLjHeh87X8VEzQxdPvSBp2tjNesEuq1DllFog3SozWb9
-         FSog==
-X-Forwarded-Encrypted: i=1; AL+hErG1oRBVBb0K2aXDaTuyAYsK5CYt8jbRJ8VNW+gFe79jP0VC+uyyaYxY+p9WDVFg1P7JWtI7pK/+cg==@kvack.org
-X-Gm-Message-State: APuU4Z8ChZc3ioRVRo9cCmx7GqbR8hns7tSGV7iG1yLKNOX47dsf1Brf
-	AGnrMU19sTp8X6ZEBUTcszM3U+zVA+9WlBZmY6vZGiyQrQL8W1RR/eJ2HTW256TBHg==
-X-Gm-Gg: AYBFou03qjn0rSGwjKwASkrj7l2Wp28kRjb4XecY1G3FVhovZ86wUBnvRUYFCe4wbDO
-	ZGtZrt1hz88uDeT6dKRokz5AZwilqtnrUAuJmUgnbOzZIeuEVXfj8SyRTfADdFaZnYiWOpKoqXs
-	c2UUextVSHD7tqOmBO72nUXpnj3xRZabDp4dwH1rCqNdL61+fHx6MiuxjF5K6NyF+WC8/Ba0BR9
-	RxUraQxOT1jFe+eU9SOLvDAkz0sKDNOkmpoh+1RLUmSlfhxse6TYddBe8yhfVTDtZ7yMx94IGgR
-	kupabny9+gLFOCVRpnX1EdLkY3fk39iHxeNP59rUpnT/QRjJT/9vZ+S1zxzHHOIOqjBWv3EM9f0
-	SiOB6BRvqG1xdh9G53k3eWcNKeZM8OQ50UVy3jbNSiIljSBc79x5vdTmv9CnZGnXWCiIEOqLgv4
-	LEKNzpSGKOzMwZVZKXxG1fylV//3EYfobla/xcGGQUpUXLBz8CLHsBimlvf+F/+kzVWfAIxA1XW
-	/kwUpJoDAxlFl5a1pWwPoCxFYpcwkrsRvSGMhX29bTU/ofDN6C3l1M719pM1VpzKeHWQplSNXDP
-	iQ103APY2SjKKbkx8cV6mBwl7JWkvmWCwHUZJTVQUVw++sgye2kwedgPYwE69sWR+S1Z0VkHJLs
-	Hzc0U6fDIkQevQjQfu1A0Abfeccu9ntZBxJoFE05LA2w=
-X-Received: by 2002:a17:902:ce04:b0:2c9:b404:b55 with SMTP id d9443c01a7336-2edb81c27e3mr6143235ad.6.1794335398359;
-        Tue, 10 Nov 2026 10:29:58 -0800 (PST)
+        bh=nq8v7VJ5VqpFS97EP72RtDwjUZHtXRoVpvPyoM9R8Ys=;
+        b=boR5Yvae17eajmI0uZtW0zq1Qq9nv9jBxBEDh1BQnhhJTB5ZHOOouQZ7fe7TvhKSaZ
+         2QBDPDCkaA1E+/qnF5LIGVfg5JBctyZWNc+hZUl4jPDUBGHVF2VmZYDK8tq1aS2rUHSQ
+         baAxudh46tK3NtmTkHWoYLMkDHZZSc3tCphLH0bEhCov4o+GLItb1xbIrsTtisfFrY62
+         p6bAvWjme7q3t0hn9D8JoKJj3Ji0mcR4xdMDWQWEJrPwcYgdYmmRL8pX4OEsrW1Y41Qt
+         JY1Fa9OcBPM6faANdj+D0jBO3522sefysmLpUFyDWsobNR1xYRAW9LZHW385gW/DIlwb
+         Jyxg==
+X-Forwarded-Encrypted: i=1; AL+hErHb6ErVxrG69ZzmRdhshKgHyvP1RrUfOVLjiS7zPE3sindSjYI5yb3p4tEthmOcjp4WZmyabvw4ww==@kvack.org
+X-Gm-Message-State: APuU4Z+9xFJ90s5zY9GJQZaR8gcOuGCWyq+bdzJi2KNCwOUePurqtkSK
+	hV3IYSWXtl3vfKgG7Ri7p4KTDH4PPze0lsKrS1gxqf2EogaoAvLoS/1RM50E8b1hjA==
+X-Gm-Gg: AYBFou3WnphmkDFRBzG2etLVLM+Je0/jLvEAMuiduM03y6qbnbb1FbcqvyO19bHX7U7
+	QFjf0WnenB3OLrK+PsRt4AtA+/Dm+NHg73HtE5jVqgBi1XpY/xNnVWbBFrKqDBYewBlozkklaVP
+	f3oPYU3ktKIAZnjZc5PvpyMODBasfZDStalz8ox25hW60UdhIRB2Ml15jSbxEzpjpHQ1fDxRCPS
+	TeOMlPQ4lzJKKAw5Y4kl5FsFvHjgp5lSM0gPuD03nSim5m/nGV4J8dxXi8m0G67V6d5+8jzkgwQ
+	PE8x1Hs+7g7t4N9iXF9r1l0g56DPRmUI9kn/lPQw5GAF3f8LShsnCfuQN9Zkm+1FhBcBVMhmw58
+	gzK3pyB3Bh/BLwMNbHkokYQ3mUkRvpsnh4RGKNwuaE9pSUTgsA1GzZKQPLMWyLtU8Mlu8uZSH0g
+	9zgKLsKT37BoZ8cdQKiz2YGOKfvE6TmydY28XkyjYyyO8wVIAGYul6Ak+U0aHqxYhZaRtEK19yY
+	3UmQ337qHmezAcK9NkxlBkzjlq1f9wGcAGolL0hiNtxZEtzrhqgWlJPNCHQqEhD8uIDtYDeAUmw
+	UAyu4CsDXLv89j4T5Roz4vuWh5Wx+fiVoE/L2T2glC2aU9zkWNVNm4s97PTi07o8DKaR7e+rs8B
+	wMIJ2D9wx9wwZnj5ZiWuZ/wqlAwRG7Y0zhd6UrD72APE=
+X-Received: by 2002:a17:902:ef50:b0:2e5:9bdf:6b65 with SMTP id d9443c01a7336-2edd6b65b7fmr241375ad.0.1794335802929;
+        Tue, 10 Nov 2026 10:36:42 -0800 (PST)
 Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2edb6a4013csm12795005ad.1.2026.11.10.10.29.57
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2edb6d7bf46sm12827355ad.31.2026.11.10.10.36.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 10:29:57 -0800 (PST)
-Date: Tue, 10 Nov 2026 18:29:54 +0000
+        Tue, 10 Nov 2026 10:36:42 -0800 (PST)
+Date: Tue, 10 Nov 2026 18:36:39 +0000
 From: Samiullah Khawaja <skhawaja@google.com>
 To: Pratyush Yadav <pratyush@kernel.org>
 Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
 	Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
 	kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 1/2] liveupdate: luo_file: allow keeping private_data
- from retrieve until finish
-Message-ID: <avNilY9saqTlNZNn@google.com>
+Subject: Re: [PATCH v2 2/2] mm/memfd_luo: keep memfd frozen until finish
+Message-ID: <avNkLp6z8MUdjgRc@google.com>
 References: <20261110175855.2437084-1-pratyush@kernel.org>
- <20261110175855.2437084-2-pratyush@kernel.org>
+ <20261110175855.2437084-3-pratyush@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20261110175855.2437084-2-pratyush@kernel.org>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: g1cnbqbwc9go84upixekak5yedgfhckr
+In-Reply-To: <20261110175855.2437084-3-pratyush@kernel.org>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B5DB52000B
 X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Queue-Id: 2E21720011
+X-Stat-Signature: a3rbns1neokatyqb15ck4eumc8jj99xf
 X-Rspam-User: 
-X-HE-Tag: 1794335400-463291
-X-HE-Meta: U2FsdGVkX19fWl7WveejUBBnBY1fUGOoICrVe+Mi9T/4htiOL7porgTYW5zQFfOG+iS9p72w18p2i68ISRxFysAl/KSaFki+RBZvEYBo27pe2Al/6HMKvxqgdzXH5KcZD4JdMAvhbHKQjnJmDAWgJvt455zdVBopyVUyS3WS68+3rhO5EeGNVNJ+PUeNX64NTk6ib9HazhTXbpKn3Md9bIzobP6wGaQPEWhgfIUrVo1Y2P56Joe3X6pUwm9pY3mNi7xUftP9NFA+qdGROYiSEaQZpyTWRY4wFdAujcO6QsKDBf+mO3ve1NQOzR2BlC36aE+hjBo18uO3nyVjfqdhkL2Qkh9v438HP5NAtcACVJBd9ujRAMKvI4Z+f1MrqU6d+BD0fvZng3VqHwaAmGX3gbJoVmWEPUNhXY4jLmsHdFcBveu2OUk2ljbGGDlYuvuKn6L31fNrzND44w20CLTg6sXcV8YoGPt1aTW0uvW5tMVAX05aAifH7ubE3moEr2jHftXtyehLe8o3pWx6svWnAcktpLvZFn5LJt4DrOLTzTpyyWz/WpTtS+4TWV5VIQOwY4QHSNXJeZDI2xNCzWt504dyAzT5CiQoKB4ytqBZizpZeSiLbqYZQnysW9MeS/vnFKm5709pTrhcqpwdttNrMEIKiqB6+YZBtoExBU4cEQnqu+yvMjSWZi0HsFP9D5a1WsLVdC2TLRU5zFiiLWXjiP5Sqsxyc6w6F+4QhC7O7ergDl/TVStF8151cxvOiZzvD8oCh3iJ4/0HJ+CuSLwTi090J5jxZ0VvnP8er+/8rteKd/t/g85rXVyOUsrEf2XyO6vQUoBsBhWdxAJukE9NoKEYFXUIltUpzIXPG8o6X14EjegZhErsZEp/Kd6RiB4irTIAH99qFAk5FcD9rMB1kqg/EE0ztharyxiL1j8jdL4Y+meJmU3vo6t23bsZVbPeEf/J2fMBQGxEbVFsN8J
- B4cNdloX
- YOTzzwBWgF42Aq1pC1yHoJ5HCtDF3YQe+kQPmL/B8WSaKrJz0tlRNwinl+xPN4I5ukJNMXJZwS3S7sqfDXTZyFEulW0TDvKDzSm9mgOzsLvQTx4Y5YULLPbnKM02EzF3gP3SGj7t6R+/StTfxcmmz6yJK5IoiqtvANVHAzwEWD7EhETuZbNN1UftWnEjTedbpR6U8iSEtP4sWxVuk1+HeYvSHcbWYQuq54eKI6uJpE3xelo4lynSejr0WZsJLIrRVur6g7AJRSlgWBG/V79iG3vzgyMuBe2hVOK5PFFpJsmIQk5sb2tsQomRAgx20cPfrCZ2pniqXy2BKhvKJNCXoSbYyNVgx+xx+3UNFHRMNgM0eXUJdsHQbwL5rB5a+s7Vu94LmpIiRs7hmEi3NmGoeYNLyonCR3nTsNKIFCLrRHamBeZ0jorp45UDauS4sH7WAKLnz/jPo6NfgoDCpIx9qbdhPemPkMUlFch6e
+X-HE-Tag: 1794335804-655857
+X-HE-Meta: U2FsdGVkX1856kR9Np8vMN9Rguhj9aJVj7dwx6AWwrD6G+hld1HvJiDZdzs1ChyUpU+wjVafXeBjrDk0XxYWC30co7cqvJmV5m5I8LsIWTxdsiB7Dvwgx1CEbckQOvzwpWgoD49Bgup+g/wzrKa4x3mKGsAdMlcWnTVB2I+APMhXEBcnjGxtn0vXfBVt6CwhFl4w8avKs8nx31SmKcq3NnI53G369ma48k4lUPk2qGUC7S2NHpKhautazEtxy9q72GOJRpuKRHoZBR13b/C7nMAuTXDFoUunfN3JYkC0IZ98dD2UWkwCzSkNpIGCPCGWBj65rA6T5xQH5Ba7gjk4QTJKqPCnsUtyHou+Hu7KHnHjhqCqIMeFhrEBZp2ElCJdwfGkEf1Z/YNkAIQYZDNCKQA98ByeQsVwbgFiBc35YUXngqhq3kniunRxBhYV/dZu8dfL08b3DwnHfqDH6RHx3ieGfINP2RavMqKKRPjLhX0kZ7ol4stORFF6qwGAK9Qezg8ooUqJR7EA2zE2QnT9Uqpwx/pfL43k7Y6nJsVzwWZ2kYJqEEBscDtmDA9x/I13gCZcHFGLnIcPIB5kAD5l/GZwZJHQ61cz9ot8imbl4NU6tIF61mlEv7y3mciXC+Ur1/Rl7LDITp3Sq/+ZU0FEJlfu91YsVszxaZIN+XEC+BCXfkwSPICmDj85qug0+jlBzlPOivOCYRRUEFnpajAK8Vy/AMCOOE9rKpMCak3+z9FqtNC+KGeJ2KjBM4MSF4s7Et3p/DNNP9QWckHcgSS41Kt4rcGG4SJ3KIfsDYUFkxs1b7PmHm4L/tMm8Wo1C68u1cIuVsgA1xgJLCGtwTFJawCx+3PoC2mdBHo3GIgybhPhULo+83JiFwUFnl7uXVCscZhpHJ/GTW+YL10KcdGfG8OHgPBBGlwDn/vt/n6p/D+mB/ixMRPA/SIGAWPLvfG/7jFhfnurrrKZMUi3mi9
+ qBO5PKif
+ YikfmZcbxuZag8z9bGkZ4yv7rHK19N7q8XCm3Iw5/PH70h9QtdOIU53ZLHk7igYxB8mZJMrzL0ahFGYzwD3ugd8DPD2Now5gyT6YeP59/LiL3wS7DgImW0btSCn2c45yC41GjNZ4JgD5jJjc/bluddoMcg0I6PFjoNxclylDix/JfwTNKrd8pHP6I1kPYEXKC232UzbUGGhVBRhSM0tlJOygej7WdZVehWWaTbVOHri3DGWkUj7maI+o8N0h4h50MLqLFb/cbTA+RO0+JPqYBb4H7rv6lSNI+M2S/oToosSeASLfDBprkD3+Da4AqRd1DskFwb2SqTDudQdKatBqis20X7tWTYNuyoXwqLTU8XhVLlDNMCDFYIN2UXbmBiGJphXc69pRJJdryBIYmqBzlpsQv+8Hc3vIBTqA71LIZk413n36djLsQQHE5kqpvIxRLB/DkLr6X0rU6zc9MH6J+nhDzKB57Pcyp0dYW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,33 +127,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 10, 2026 at 06:58:52PM +0100, Pratyush Yadav wrote:
+On Tue, Nov 10, 2026 at 06:58:53PM +0100, Pratyush Yadav wrote:
 >From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 >
->The private_data field of struct liveupdate_file_op_args lets file
->handlers keep runtime state that is not preserved. It is set by
->.preserve() and passed to the later outgoing callbacks, up to
->.unpreserve(). But in the new kernel, nothing set by .retrieve() is
->kept, and .can_finish() and .finish() always get a NULL private_data.
+>After a memfd is retrieved, it immediately goes back into "normal"
+>operation. The file comes back unfrozen, and its pages can migrate, it
+>can be truncated, and so on. If the memfd is depended on by something,
+>like iommufd, that can open a window for folios to move around before
+>the consumer can re-establish its references.
 >
->Handlers might need to keep runtime state from retrieve until finish.
->For example, memfd will need to remember the folios it holds on to
->until finish so it can release them there.
+>Finish is the conceptual point when a retrieved file can start to behave
+>as "normal". So take an extra reference on the folios and freeze the
+>memfd on retrieve until finish.
 >
->Save the private_data set by a successful .retrieve() in the luo_file,
->and pass it to .can_finish() and .finish(). The handler must free it in
->.finish().
->
->While at it, update a stale comment under struct
->liveupdate_file_op_args. There is no 'data', but there is
->'serialized_data' and 'private_data'. Refer to them instead.
->
+>Suggested-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 >Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 >Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 >---
-> include/linux/liveupdate.h   | 11 +++++++----
-> kernel/liveupdate/luo_file.c | 11 ++++++++---
-> 2 files changed, 15 insertions(+), 7 deletions(-)
+> mm/memfd_luo.c | 87 +++++++++++++++++++++++++++++++++++++++-----------
+> 1 file changed, 68 insertions(+), 19 deletions(-)
 >
 
 Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
