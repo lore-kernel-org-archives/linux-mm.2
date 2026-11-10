@@ -1,95 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0389360A6F43
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 15:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D53F0606AA47
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 15:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=qqOyL10H
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=gP1Tdcf1
 Received: by kanga.kvack.org (Postfix)
-	id 2F8A76B05C5; Tue, 10 Nov 2026 10:05:09 -0500 (EST)
+	id 3E13A6B05C8; Tue, 10 Nov 2026 10:05:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A9886B05C7; Tue, 10 Nov 2026 10:05:09 -0500 (EST)
+	id 36C8F6B05CC; Tue, 10 Nov 2026 10:05:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BF9A6B05C8; Tue, 10 Nov 2026 10:05:09 -0500 (EST)
+	id 2830C6B05CD; Tue, 10 Nov 2026 10:05:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EF6516B05C5
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:05:08 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E5F95A0961
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EC5B56B05C8
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:05:10 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E47CE40932
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:05:09 +0000 (UTC)
+X-FDA: 85419532338.06.F3A455E
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 0C0CE140003
 	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:05:07 +0000 (UTC)
-X-FDA: 85419532254.04.D6D5A67
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 1670140009
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:05:05 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=qqOyL10H;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.53 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=gP1Tdcf1;
+	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794323106;
+	s=arc-20220608; t=1794323108;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vcLnXutpVbgBdRb5uPCtaaSlCuask7xhgkuh3/sjzDQ=;
-	b=59erXoSmXNZA+Tr1YrMMLjaAGMFGvxotjKc5C284UeLuYmndrWqldqbVOoLx6XEDx21yta
-	B49yIyczyrTkH3CdBATL1+5MpbEx/iqH1Ab2D5IKRKAkM2J5tse/ljawYZ0eXlFPRSDsCW
-	mWrZLG0/DoDlWdKRDCiNlm7/lj1TvSw=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=qqOyL10H;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.53 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	bh=b9ZjhJYgeBT8nslEyZrG/np7JkCr0xptEAmrRjaWc2Y=;
+	b=DeHZZQq6qqvMIpoQvSpA1xOmWTQVh/znreLtYLLRM06a3S61UnFQ1kj1iLbreJtSpqCcjq
+	uLLGX8P+XtOAqOW9Kx7kHSUyC8DWm1vynqFNoTALHeHoCJoaFrKnsliv/L2/8I5SQHYf9j
+	ver6MBigLJkLZK2aPkF3rOGtWjBsmKA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794323106;
-	b=iTIEASzLl36x3lTEBuYsrLybANRESN7iguuEMXormEkvI9dCuY2riy1CwpsWGno+s0c/dR
-	22xIq6+r/Q3qUVvrr+ml31pCbOpxlb/RhEl06um53dexNvyd1hwjpBkuqtKrfNGPsCQNqL
-	afRqlqy32lwSQLvrpFNadV0d/p9ARG8=
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-91e9309f171so18552956d6.2
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:05:05 -0800 (PST)
+	t=1794323108;
+	b=dYbajc/nzbML58qZMoE3D8OTZeD1OgDsPzLlD29gxsx2gPIPlRry6yU+H2BaNh7ful3XWc
+	60zI1daPuyf5lg4tHVwoyp1ZyLYQIIrageSNHQloqCw9FgVw1xL9NtYwkN1VZNKop0BR3G
+	lpedsFG7ulZakDUrgB34hPLt4k6HvW0=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=gP1Tdcf1;
+	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-91eed03da8bso17122916d6.2
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:05:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1794323105; x=1794927905; darn=kvack.org;
+        d=gourry.net; s=google; t=1794323107; x=1794927907; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=vcLnXutpVbgBdRb5uPCtaaSlCuask7xhgkuh3/sjzDQ=;
-        b=qqOyL10HqBS4dy5RPo/SNWlcb6yibPx7dlurXsP+j1lk4rOehVs1C1g3emoscHcvam
-         qz1ZV8Y2VyIdp1v7lo6H3w5/BTe7cllprqhnDVVb05kPye2RUlhIN0Pl1EYGzqU9Sl1m
-         tbFz0WdgIG2wec2iLvhkXWaWCO9aklMrJ1/NzjhmyBTlCrgWp0+MA2TIQ1KrayHpwtml
-         A4lubJJhoi+cj6wzeQLBc/QnBWz8ElgDvYTLps8eITKIcfimhQ3bX+J7zo/F1Be5PJBe
-         LggZm9bSCClG6aDfTT3txolAqOkP+Pdccaiz8jr85gCszJyMNuzMVk7a5naiF2mxqQXY
-         6mNg==
+        bh=b9ZjhJYgeBT8nslEyZrG/np7JkCr0xptEAmrRjaWc2Y=;
+        b=gP1Tdcf1DRJgA+LljAKDT5zJhkHeYZcr57/WIHUeBGtCllRM6mELOLbRoq4derfa/5
+         pnBaX58VgbwEo36FCHMwo9ASiMqS9pyQj6nGi4msBk0MB2oTFThoLyKa9tbX8tpWNHfk
+         E0Qo6iOSprS4jA4RWZ2KXC0fI4+H52nEMSiUjU18HEYuJmAL2Z4dpq05Zj1vNBXUnzas
+         Z2mTt+ytJVb78Hc/k2/ICTyXr5sBClomef7M+woiwZ1p7B2emBvQCRjvFHF1AYAq+rtZ
+         9Qh7HmkDJwpD7QuSD4HUPv1AM84zUoFIMFMNR3exXssizpGtgcPABy158mtjCu+GNNw+
+         iBoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794323105; x=1794927905;
+        d=1e100.net; s=20260707; t=1794323107; x=1794927907;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vcLnXutpVbgBdRb5uPCtaaSlCuask7xhgkuh3/sjzDQ=;
-        b=BwwIOq016h7RmUVvcuwTWY5YrSlJbcQ6rinkasibwfJFboZga819hzCGdDtRzlO7fJ
-         gLpw6HZ0SbNc23+/rOmTlC/7c/ubK39b99cpEUM9LknO395V7+7h4y+JNOlFwCRmkgPz
-         E+Tt4IPWWTMCEjoPJX0kXtQaCJweHJB/Z/1nCdR+xItW8tvtoaLuj3iHoD7hMnR6+ZN4
-         LVw0+CSKVwezTbJniVhMbxHktIIjgo7Ci/yyEN+B/3+/E9/I/w3QLyNYQ/rw3ktJh26Z
-         PQC1HwwIKbkx4J3qdeIx9u6vC3ReCu16zcldPPI5/XpLYhSm1jtj+rXbVyQLYe8wcXbz
-         DPYA==
-X-Gm-Message-State: APuU4Z/L2x+aojkrFP6wAEDCktu7qnwMDtksSbWHBpot2D12EuRe4H1q
-	uuzAAFE7ckPhKHix4ofXeLKwQ0hoH9k4rYEFHK7KvCuugvHpPVDNbHdVptEn7md+/w7bSdjjtCO
-	bp5kZ
-X-Gm-Gg: AYBFou3KhqMpB1d3xkKhbFkLG5rcBzwsqu1wqZW/nHCPuzVksIly0Hcc2E9EzqswUno
-	DB6aaXrKf6xG467+TOw8Oh/S2NEvdUXvJ5N7xFxOJzYG9CJQCI6aktd63lNUYPYfaaM/R4ZW2Oc
-	mQOsFxWFRBWQO0x/URwtqa3DhcieqUcbHwDqJf3F6F0aDk7p4Ez5TW87mibyZEdYniSGifAmTsU
-	soNc9r9Qxv9U5D/aJPS41L/G8TgxwzYerTm0vQXPKXBeLuVBoWeTlk/V4ELKH4xRsJogsC7O6JY
-	8BdWEShP/PlbT48bK2VSuuH/RthpR8LXgNXAJqh3OIfwqCaoivgS3zD4iYO8xPmWrSnUxAoxzox
-	GT6tzHb8qlJoszXRpPDq0KrV9IbLhwXuFl7mgb6geZlPfImYbffwrsXMGlZ/niTUXNPC2ejuNUT
-	UMEPR0IEqslOY5zwu5MqykbdZBy9cZK44LQ/Ev528Yy1u4VnZUDXkV7bd62xPT9Nr1pV2T5AKi8
-	mooKv2W8fuGwvfiFWwS/YE9+kq8ER329tbxbVTy3nJ9F8oukT5eXU0rBbzaJZEdRYgmnKNuU9RJ
-	dYryzavgbVtqWDLdvZUuTU1UGv3DT3avhYEvVk87Exjvxl1NtC2WG9867xDsPSxSQecLvigHL5x
-	MP6ZBErxM7t+iHwUkQZdcPQigSGt2EqkcGI78
-X-Received: by 2002:a05:6214:858c:10b0:91e:73ca:c74d with SMTP id 6a1803df08f44-91eef82dc27mr36514096d6.38.1794323104914;
-        Tue, 10 Nov 2026 07:05:04 -0800 (PST)
+        bh=b9ZjhJYgeBT8nslEyZrG/np7JkCr0xptEAmrRjaWc2Y=;
+        b=NwsQwuIFsnXCBazUj5ofM4hlLiEF5n+kZQMSGasah+ZXsoD9TyI971CFRix306IH7q
+         dvMr5K+SRrXNWtopKmtFw3S/DXLT5GQvwhi6TiMoo/mlufZquIyN1GVScJZfvnzkgFKn
+         NCmivEftT5hu96OVH4zxhZyY2HU8VMvA2GFCZ0Nc3Va01bQzm0MrzX4Az99vaMYu5IxJ
+         e+I/2dCmRCwEcEw4/jQT4H+buWwmUG7ZrFTl2saH+DM0//iOaINSwPpbHKGkyMu9Iu82
+         nCGXZ29P5EO3Zxm7Empi32hU0gQwsivMn2y6f/LR5hZOxae3lLz4q715eWvblfAYWc3M
+         o6bg==
+X-Gm-Message-State: APuU4Z+T7/2b5Jzw+PhtLawHOsBH8Q6/2JztrRmJdHsRYdKu/V51PleF
+	r58WlmQtcg11g+m9VxgDZ62V/6wtZYM+bHQ1ez91qmoO2MDMCAJyp3vUJuB+KiJgenNC4a1M9qU
+	+XCde
+X-Gm-Gg: AYBFou0ZB7MD2aLcKb8tBKsJmb5oJ5ZEWvuB2zKlSCjOHUar6xN1zS79J5zUdhyANp6
+	bVBPF1kd4ez5lAo9QkTpNpxsR885pgYUSLHc6AAPj4U3+JoEXeMhLCgIn/ECUjKW2vKiAMoalyK
+	rOmowToY7V+U/Azfe/Vs0q9x+owBQDN+UzJfiOQdGEgW+yrz5Mb3S+R/Ygrk+51wys3URYkgLYi
+	csaO9RAOg8cDuKNZ8ZrBL56W92TBfYPc4eI3PnOdASRUQrVD4BH9aifOBdsxRs0dTbo6ZxGpNGK
+	YZojgmZFMdgDPOQRKGJiET3Ohc1FPuFzOOWtdEQWq1wCic8TXVq9UXttpQzAVdwpEOxfGR9xYjy
+	ZpAK+9qWyEmXyiq44+wcT59zUzgJnlbspsCHy+lVsy41iIfZ5YcLLKYLaPolknUUu3wpzC2bBXx
+	wvHOBx+TNMlOSjzLUMufN5npPBW3A6MWwT3qEwzAinUVu5NUHBq//Q8UpSIXb6xo20B6lUhpvKt
+	I+zQEvJ/3O9XwNHfGbNLlpoE/VEe8kN/cZTxOb8YqDiGx5BwdUkLup0Sxeaz8Q5P4vSI+3YY7Fr
+	MJrWfddtQJIDwa+hnbwhUyV6QJFiRxFA5Ww77A0Pok5pvoFVz20+WBwGyVZFcYO3BMN0E1X3S3g
+	5R6WvXDIymTHWFIk=
+X-Received: by 2002:a05:6214:f2b:b0:91e:8ee1:9307 with SMTP id 6a1803df08f44-91eef5e807bmr47437096d6.1.1794323106997;
+        Tue, 10 Nov 2026 07:05:06 -0800 (PST)
 Received: from gourry-fedora-PF4VCD3F (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ef031c7dasm22902406d6.1.2026.11.10.07.05.03
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ef031c7dasm22902406d6.1.2026.11.10.07.05.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 07:05:04 -0800 (PST)
+        Tue, 10 Nov 2026 07:05:06 -0800 (PST)
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -132,29 +132,28 @@ Cc: linux-kernel@vger.kernel.org,
 	pfalcato@suse.de,
 	hannes@cmpxchg.org,
 	osalvador@suse.de,
-	raghavendra.kt@amd.com,
-	stable@vger.kernel.org
-Subject: [PATCH v5 5/7] sched/numa: scan PID-inactive VMAs for promotion
-Date: Tue, 10 Nov 2026 10:04:44 -0500
-Message-ID: <20261110150446.2452975-6-gourry@gourry.net>
+	raghavendra.kt@amd.com
+Subject: [PATCH v5 6/7] mm: use BIT() for change_protection() flags
+Date: Tue, 10 Nov 2026 10:04:45 -0500
+Message-ID: <20261110150446.2452975-7-gourry@gourry.net>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261110150446.2452975-1-gourry@gourry.net>
 References: <20261110150446.2452975-1-gourry@gourry.net>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1670140009
-X-Stat-Signature: 1a51rhzj9r8fzus1iuj1zh97iobs76ny
-X-Rspam-User: 
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0C0CE140003
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794323105-433883
-X-HE-Meta: U2FsdGVkX18jxmd3s5ctX7jPTGto5ricdblrUw7dginnQTYJGGAVukvPqgSWUyzpuLFkz+djvRPLzpkTJW93woMcvUhOX0NYtWW2THcqx/zy72E314ath2jukDKggIXeVKgldKYlYXEFJDmijgudVb5pywR+bjQL82214SoYSxP5LzmHwKnfxffhaA9v5mLBM70mCfMKJ44M9q79d4CNfiraYYsS7UQqTxqk1QNLaSH9lz9mzSaMDZbAWkD3sMjxvbg4M1L/8vw3d8uamliuHBQ5WlPPDN6sbaIndLLR9UW5KtRkzQUqDvNb46iUQvjbtISiE9i/Q7plbCBq/leDZvFSuuQJNRcd5RiKSbVJlDj/sk9ZCY/3Gx7Z9no7g9Ek1yxMyMY+85E/cF6hRQ33WGTSEndo4ZYwdQsRd2OpgzOw7oMekZDee6zFbb2ndNDYVKMQJJ9WXrFvy1MdNaQFc8TfcUilfFgSGzI8+03MpFdbZaXlvNe1X4wIBxytT9JWy4C4C2Zz556pqwnXVRlMiybrUqCtZQWhIk6fJ9f+nXqTed5jZwocK5xCGkEqkeWqFlBhUH/sL8GH92QTxIRr6J1SZSpla1eJBDtkLgTwaG0DRxVW0wFeQ/ZygudKroJ82yLp8jYMqymRvwTN8Fyjyt2jPXiW4xjhOidmmZBVG6auNJILgGtH/F3mBhwuSrT07gplFDKOUjW/HxYEvwoa9aQQJ5XtaMGDS26B1YxlPwvSjVhw5JGUbEc5ukTBkVzrIUwwJptEealQaOzJpZ2SaZQm3G48lCFub8uj2Id24Hs95c5mLDxsk0C2GJmQcpXhhhy7qnXv/tSAxUjrNW80RMKcX8gKA0Jz9lgpOiV/l9rE8s0xp3UVn32sI1pYrKJSm0z3S3F+sJpYusfcEN4mD970y8H2rq+WA4khOKYRMuqPTssWmvKgbzPYOLWm8mB85JOnmcDm0JPiWeHvMGW
- HGOxB01E
- sOfs6aWZFjnIS9ZOSQYheOTNYHyqYu1Xt53K1L0p51FvvpePw/JPQ02+y0hL7F8bU2ereBbxW7tltPUqVV7D4xR5LowV3EanSXh0UPPYSECpLRqdMzI4CI7DILAakF7ImmNSLI4Xjs+3PRcrx++gvL/fTGc6zXdY1rKDh+axWAIyJd4JgvMuwBv8gdFngHLWyLWUjdqyeuf7BnYVCGZkoUjhTN0S03F7qWcUZXXRzz6KQ93fnXizaD0Bq3fD3Iaj6irTxafWWsKcDp0Ew8BWoL0RI6Rcg7DMPfG7ZI2I1PENtQgoKWflb8FPFH0gZglkSnkGUC54bxRUGuJnunYMHi6U4vTiFjkm/u0xpBhmaev7DWmWyaHClzd/Z5P2KDaPbmBkByIcmSkJq2v4op1slJTAiqg==
+X-Stat-Signature: 5m8yrxbzq688wept51fkupddhc7ysd4p
+X-Rspam-User: 
+X-HE-Tag: 1794323107-137135
+X-HE-Meta: U2FsdGVkX18eDIqBnbA18gw+KSSSZw9sB8yqqvmryiJWHREUeak5BV1HdFhwYTRy7yKczonBjjWxzgTrFDuv/orU9VtBWegU5/cmkM6rNPekBbNpHleZbhJvdLbnLa/cOmnHh45/g+CBXnUfRrA2DS1KnyxcjLZqfCaCB9luBLLaoRAqvxG+eTYgJSCyl7+mqP5ph/Q4b4XBM8Tdme3u+2QCPl+aCwR9Yc7e5k1M8Fk0wRiv7uqa+hAfvR6D4iZ3zVCRKAGbjVpJuQimhxmgUsMsrOMl+DTstflSo9o1b7N16gnuHOvPqIhkbPjq6Ueqb+hkFMgB4oLJVsSPNDfH2N72hwpBFpHQTT+7RRqEVdZmFkA2ea/5pTG2bluqEjkAurxG1rMQ64WoJ/A9En31mSU69Vyi5UmbBAcICtktHzCZYZYgvnLqDTyb4gPyPpegwhkVXrcUSdUC/nnn4LsBRHnPkbwmg3qQ3DiOs66pufY1JehHOr6P7uQ/MlVTThsK5WsF0icRbezYUCDDTZycLSlNbcerlxYDjqKxXPNyhAzsRti3DBZ4nkZP9mSVBCr1KOC8/P3wERkuIDsPkSKI4AAM0CeepE9GS/58uiUMkH9WNoYPbAHXIAGnITyG4DuoyvGpt4Y8sJ36SsMPnh5C+7ROP04kRn70rrwku3d8hN0pPpGXim142DANKdV58By9JjxuhMNKZqiwJ+p18VSJ5ELQloQglEvNL6SCtWL2pGu8e/QWLGKPp4HfaVPN5BJ0mktPnOsAQCySnjxGVwCzhNkV51oaWtD9tyz3Wu3vtPUixjAoBeeUm+lwlych1aUVQDTwZPEXhlM0oueHIiEKNqjIpk8khIUv/L2QXCVE/Mk0XyJDgKVW5BIl0UBSaXxsGQcVR62Kj6QaQ9asoC4Vd0W9txn9SAUyKEbLnRNN7x2a2fu6XCoQTQ2op2fgErrf6N/WBXNATtmIQ8Mmgnh
+ OIucP/6M
+ Oeqrz9z+wzECN8R8SKqsDMVANsEjyxkhoLB0nsQksbQ+Y6/PsY7n8SbAihgRVW+hv2YwXHLfFclaweDAvKChdWvRBqWhrHt0LTuIE2dB/Sm33uDqCWLjvVltrYmLy3d2FNEXbhAXFO2UuzQ3musv8Q2gmtG6SodwptW0Oo2m/0Fd5z5Wm7rdsF8P3rOmRoTW+mxWp3esLnUGtIbezOxBW/Dn56ydvnHw5X+bwZABxk04eBuYQ5eJTZSIpdCVUJNl5TNE7syqt41YIrbDaJEOGPChV9tyOwG5kdWjpjtp+BvVX5SdqKf6VfoVc6NP2SVjJq0APegKYzUdHUpmxdb09WmXqguq/0XCmL1e1ayJqoiCh1oBa6GoleP7lxZ9CmuU0m5l1kXg1PCNZGcmymdekx79zCXUVKIJpeVAf+64ezPqhTPnRSPiialk/Lc3S6lFHLT0F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,140 +162,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Commit fc137c0ddab2 ("sched/numa: enhance vma scanning logic") skips
-VMAs without recent PID activity. Since only NUMA hint faults record
-that activity, the filter can suppress the fault needed to promote hot
-slow-tier memory.
+The MM_CP_* flags are individual bits expressed as open-coded shifts.
+Use BIT() consistently for the complete block.
 
-Let memory tiering bypass the PID scan filter. In combined mode, use the
-placement decision to restrict top-tier sampling to VMAs that need it,
-while inactive VMAs still receive promotion-only scans.
+No functional change intended.
 
-Make this decision only when a VMA scan starts. placement_due is
-evaluated for the current task, and a partially scanned VMA is usually
-resumed by a different thread, so re-evaluating it for each chunk would
-demote in-progress placement scans and starve large VMAs of placement
-sampling in multi-threaded processes.
-
-Track the last completed placement scan separately from scans of any
-kind. Promotion-only scans still update prev_scan_seq, but do not
-advance the placement-starvation horizon.
-
-On a host with 768 GB of DRAM and 256 GB of CXL memory, one large shmem
-VMA consumed most scanning activity, while 2,537 other VMAs covering
-84 GB were skipped as inactive. One stand-out result: a hot 20 GB hash
-table ended up trapped entirely on CXL and drove CXL bandwidth
-utilization beyond sustainable levels - resulting in a large regression.
-
-With this series, the hot hash table ends up split evenly between DRAM
-and CXL, tier residency tracks runtime load, and CXL bandwidth
-utilization drops from 45GB/s (maxed) to 5-10GB/s, while DRAM bandwidth
-utilization increases from ~200GB/s to 250GB/s+, resulting in major
-throughput improvements for the database workload.
-
-Fixes: fc137c0ddab2 ("sched/numa: enhance vma scanning logic")
-Cc: stable@vger.kernel.org
+Suggested-by: David Hildenbrand <david@kernel.org>
+Link: https://lore.kernel.org/r/9b5e1573-6fd8-48a5-a274-a6e7ff83d2fe@kernel.org
 Assisted-by: LLM
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- include/linux/mm_types.h |  7 +++++++
- kernel/sched/fair.c      | 31 +++++++++++++++++++++++++------
- 2 files changed, 32 insertions(+), 6 deletions(-)
+ include/linux/mm.h | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 045b47f4b0463..94350132d1803 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -804,6 +804,13 @@ struct vma_numab_state {
- 	 */
- 	int prev_scan_seq;
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 55817dea7307f..da22750faddbd 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3572,21 +3572,21 @@ int get_cmdline(struct task_struct *task, char *buffer, int buflen);
+  * because something (e.g., COW, uffd-wp) blocks that from happening for all
+  * PTEs automatically in a writable mapping.
+  */
+-#define  MM_CP_TRY_CHANGE_WRITABLE	   (1UL << 0)
++#define  MM_CP_TRY_CHANGE_WRITABLE	   BIT(0)
+ /* Whether this protection change is for NUMA hints */
+-#define  MM_CP_PROT_NUMA                   (1UL << 1)
++#define  MM_CP_PROT_NUMA                   BIT(1)
+ /* Whether this change is for write protecting */
+-#define  MM_CP_UFFD_WP                     (1UL << 2) /* do wp */
+-#define  MM_CP_UFFD_WP_RESOLVE             (1UL << 3) /* Resolve wp */
++#define  MM_CP_UFFD_WP                     BIT(2) /* do wp */
++#define  MM_CP_UFFD_WP_RESOLVE             BIT(3) /* Resolve wp */
+ #define  MM_CP_UFFD_WP_ALL                 (MM_CP_UFFD_WP | \
+ 					    MM_CP_UFFD_WP_RESOLVE)
+ /* Whether this change is for uffd RWP */
+-#define  MM_CP_UFFD_RWP                    (1UL << 4) /* do rwp */
+-#define  MM_CP_UFFD_RWP_RESOLVE            (1UL << 5) /* resolve rwp */
++#define  MM_CP_UFFD_RWP                    BIT(4) /* do rwp */
++#define  MM_CP_UFFD_RWP_RESOLVE            BIT(5) /* resolve rwp */
+ #define  MM_CP_UFFD_RWP_ALL                (MM_CP_UFFD_RWP | \
+ 					    MM_CP_UFFD_RWP_RESOLVE)
+ /* Whether a MM_CP_PROT_NUMA change is for promotion only */
+-#define  MM_CP_PROT_NUMA_PROMO_ONLY        (1UL << 6)
++#define  MM_CP_PROT_NUMA_PROMO_ONLY        BIT(6)
  
-+	/*
-+	 * MM scan sequence ID when the VMA was last scanned for placement.
-+	 * The starvation horizon in vma_needs_placement_scan() counts against
-+	 * this, so promotion-only scans cannot postpone placement indefinitely.
-+	 */
-+	int prev_placement_scan_seq;
-+
- 	/*
- 	 * The in-progress scan of this VMA is promotion-only.
- 	 * Resumed scans finish with the policy they started with.
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 778ba0ed34fe8..279bf12b74b64 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -4249,7 +4249,7 @@ static bool vma_needs_placement_scan(struct vm_area_struct *vma)
- 	 * threads can help scan this vma, force a vma scan.
- 	 */
- 	if (READ_ONCE(mm->numa_scan_seq) >
--	   (vma->numab_state->prev_scan_seq + get_nr_threads(current)))
-+	   (vma->numab_state->prev_placement_scan_seq + get_nr_threads(current)))
- 		return true;
- 
- 	return false;
-@@ -4423,7 +4423,8 @@ static void task_numa_work(struct callback_head *work)
- 			 * to prevent VMAs being skipped prematurely on the
- 			 * first scan:
- 			 */
--			 vma->numab_state->prev_scan_seq = mm->numa_scan_seq - 1;
-+			vma->numab_state->prev_scan_seq = mm->numa_scan_seq - 1;
-+			vma->numab_state->prev_placement_scan_seq = mm->numa_scan_seq - 1;
- 		}
- 
- 		/*
-@@ -4456,10 +4457,13 @@ static void task_numa_work(struct callback_head *work)
- 		 * Do not scan the VMA if a task has not accessed it, unless no other
- 		 * VMA candidate exists. If a scan is already in-progress, finish it,
- 		 * but track continuation separately from starting a new one.
-+		 *
-+		 * The PID filter must not gate promotion. Allow PID-inactive VMAs
-+		 * to proceed when memory tiering is enabled.
- 		 */
- 		placement_due = vma_needs_placement_scan(vma);
- 		scan_started = mm->numa_scan_offset > vma->vm_start;
--		pid_scan_allowed = vma_pids_forced || placement_due;
-+		pid_scan_allowed = tiering || vma_pids_forced || placement_due;
- 
- 		if (!pid_scan_allowed) {
- 			if (scan_started) {
-@@ -4471,9 +4475,18 @@ static void task_numa_work(struct callback_head *work)
- 			}
- 		}
- 
--		/* Keep scan policy stable while processing a VMA in chunks. */
--		if (scan_started && vma->numab_state->promo_only)
-+		/*
-+		 * Keep scan policy stable while processing a VMA in chunks.
-+		 * placement_due is evaluated for the current task, and a
-+		 * different thread will usually resume the scan. Finish an
-+		 * in-progress scan with the policy it started with.
-+		 */
-+		if (scan_started) {
-+			if (vma->numab_state->promo_only)
-+				placement_scan = false;
-+		} else if (tiering && !placement_due) {
- 			placement_scan = false;
-+		}
- 
- 		vma->numab_state->promo_only = !placement_scan;
- 		cp_flags = MM_CP_PROT_NUMA;
-@@ -4506,8 +4519,14 @@ static void task_numa_work(struct callback_head *work)
- 			cond_resched();
- 		} while (end != vma->vm_end);
- 
--		/* VMA scan is complete, do not scan until next sequence. */
-+		/*
-+		 * VMA scan is complete, do not scan until next sequence.
-+		 * A promotion-only scan did not cover top-tier folios, so it
-+		 * does not count towards the placement-scan starvation check.
-+		 */
- 		vma->numab_state->prev_scan_seq = mm->numa_scan_seq;
-+		if (placement_scan)
-+			vma->numab_state->prev_placement_scan_seq = mm->numa_scan_seq;
- 		vma->numab_state->promo_only = false;
- 
- 		/*
+ bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
+ 			     pte_t pte);
 -- 
 2.53.0-Meta
 
