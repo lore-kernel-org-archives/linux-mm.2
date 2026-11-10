@@ -1,98 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2ECE606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 05:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A22B0606A326
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 05:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=T5/HMq9H
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=surriel.com header.i=@surriel.com header.a=rsa-sha256 header.s=mail header.b=l2AqlyJL
 Received: by kanga.kvack.org (Postfix)
-	id DB49E6B00EF; Tue, 10 Nov 2026 00:24:14 -0500 (EST)
+	id A0E8C6B05B1; Tue, 10 Nov 2026 00:26:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D63746B05B0; Tue, 10 Nov 2026 00:24:14 -0500 (EST)
+	id 9E5F96B05B2; Tue, 10 Nov 2026 00:26:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA0786B05B1; Tue, 10 Nov 2026 00:24:14 -0500 (EST)
+	id 8FB566B05B3; Tue, 10 Nov 2026 00:26:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A70296B00EF
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:24:14 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3FDE214051E
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:24:14 +0000 (UTC)
-X-FDA: 85418068428.05.189F812
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 80287C0002
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:24:12 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="T5/HMq9H";
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 63EAA6B05B1
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:26:18 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E15C9A8471
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:26:17 +0000 (UTC)
+X-FDA: 85418073594.25.42EAE33
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 466E880004
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:26:16 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="l2Aqly J";
+	spf=pass (imf02.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794288252;
+	s=arc-20220608; t=1794288376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tql7eR5er24MenGv5PCYQqqSyChkhlwFStj9pdPekzo=;
-	b=KDU8fJbj6fhN/pNasZMBeIhkaqLJJ7iB+6Pz1tkg2QL2xVIFL+NVoeEMNdD9nxEGhWRHYs
-	CCNRheV3hxKPr70aWiEQ3xEDA3MnOkCLZBZymh3PMk2mJNQzNhOk8vwuNjZk0/udaHTW/1
-	SY6Aq8Gr8WhGVVE/ISiQoaHywz3O700=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794288252;
-	b=HMWLRT3UrFVxqTIzpsfRR5lK+Vqar6oAE6KfoYe9+nv6NP2LS896oJ8GenTcogPdwsjJ+O
-	jvvc1DP7QsPQ15ZDePCqyOMW0H7GLAM35GhpnHYOKj8wXgwHybGZk2AWcZaDoPaCEUn9DW
-	U5wVKK8TIdwN/jyzl+PDpxJN7hTfkrE=
+	bh=Jn/JURTzNSN702gufOjyuihJkt0/ufyCIq9CJgAj7Ss=;
+	b=E0ot6IWoHin/N5XAy5lVlcOeunF7+Pro6B7on4rCbV6T719Gt2sUsU40dOInl7HM82Xm+x
+	Cji5cbcvC10ZRBk2iVufGpJrPW8Q0hZh+LMRTYq0756iHg2+scQmYqup3fRx6qWXxsPP/j
+	I9w7Pn+st1+ZoPbi8HxXERHY1SR87pE=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="T5/HMq9H";
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 926B860AAB;
-	Tue, 10 Nov 2026 05:24:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D101F0089F;
-	Tue, 10 Nov 2026 05:24:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1794288251;
-	bh=tql7eR5er24MenGv5PCYQqqSyChkhlwFStj9pdPekzo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=T5/HMq9Ho6wBHSn2SyLD+V0y7apDVcIEcxsAbM9bnQuCbLvHw6LbrS3L8oQWoJdLS
-	 xDaM8FBlCgcuAoUBNXFa7Xb8i2/V+MMB+YSg/oc1v0bC6dFoqwUkeA+EGUyi4PZaBm
-	 fJDST0/5AG8QCpg5dZFPoHB52xvaiVPnB2IDMaeQ=
-Date: Mon, 9 Nov 2026 21:24:10 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Mingyu He <mingyu.he@shopee.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner
- <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Roman Gushchin
- <roman.gushchin@linux.dev>, linux-mm@kvack.org, Muchun Song
- <muchun.song@linux.dev>, Yosry Ahmed <yosry@kernel.org>,
- cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
- littleswimmingwhale@gmail.com
-Subject: Re: [PATCH] memcg: keep propagating stats updates to ancestors
-Message-Id: <20261109212410.ca24bffef1abcd50b3f58c13@linux-foundation.org>
-In-Reply-To: <CAAoBcuRfhFf4p5qfWZnNs5=4foeE6jtGFggG5XHmMi6cXwje9w@mail.gmail.com>
-References: <20260911032905.63683-1-mingyu.he@shopee.com>
-	<aqRXqcynCx88D2QK@linux.dev>
-	<CAAoBcuS=sqOAPFr9Gda9aTwuCMHMPzBMEee8qvPNHtNxrRWKuw@mail.gmail.com>
-	<asy_L2s1TNcN7bOK@linux.dev>
-	<CAAoBcuS5VJwsYyw9=77SaBUf3N1hL8NfRtGwpBhmyUUhT4+T8w@mail.gmail.com>
-	<CAAoBcuRfhFf4p5qfWZnNs5=4foeE6jtGFggG5XHmMi6cXwje9w@mail.gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	imf02.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="l2Aqly J";
+	spf=pass (imf02.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794288376;
+	b=tY5QrViEDNpYF8Zqy0BrjPwVqqlpPAc1q0lvdjzdAlOcKccZ8GZXffqGa7fom5EnzaJ34g
+	IwC2C9e9G5Tizdi1Yyff1hStzvNTGSw/b0I9MIqF9nbU3ci6/5gayiD9HURKrj6QC75r1s
+	WBvb5wsnY9jFF+hbT8bZIVUAT1vOw6g=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=Jn/JURTzNSN702gufOjyuihJkt0/ufyCIq9CJgAj7Ss=; b=l2Aqly
+	JLF/ZWWhtNYgzeru75YDr+PlygIIgxmigulBaWiPo62y8dOR3x6vaJEpnBGUAWYDv8KcIsvOXv+S2
+	WuPz8ck72BKhBDQVq7O20goXlRT4fz+lCRXIN3qVGWnMr80nFvs6NFboaaLC60IATEnGYyopDyhqh
+	xdUfMvPaPPbFpA0glNLu+Sj4nHsr0R3BvNhblcmjv33h6HRlqudUaGAtPvKGAVMFepSPcLzp1Jid0
+	jQWD8eyHI/cXTWxEPnayLl4+KxPXcGmEHs1XhaIMWRqea/hAaAbcLEpxp+bjSH/8oS+V1FBLkUGlI
+	RFWDSe3x97aoO3AKeHM+D332ZWiA==;
+Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
+	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <riel@surriel.com>)
+	id 1xQeMz-00000003Wu8-0jjJ;
+	Tue, 10 Nov 2026 05:26:09 +0000
+Message-ID: <7627c0d90188b581e7740bf8d17c8dd07b460f89.camel@surriel.com>
+Subject: Re: [PATCH v3 5/6] mm: gup: introduce gup_unshared_pages()
+From: Rik van Riel <riel@surriel.com>
+To: Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+ Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
+ Howlett" <liam@infradead.org>,  Vlastimil Babka <vbabka@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,  Michal
+ Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>, David
+ Hildenbrand	 <david@kernel.org>, Yuan-Hao Hsu <aa9736195201@gmail.com>
+Date: Tue, 10 Nov 2026 00:26:08 -0500
+In-Reply-To: <20261109-refactor_gup_fast-v3-5-2aaef02df0e1@arm.com>
+References: <20261109-refactor_gup_fast-v3-0-2aaef02df0e1@arm.com>
+	 <20261109-refactor_gup_fast-v3-5-2aaef02df0e1@arm.com>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: k4rq3umsnjef1j1jkh851mktdccqax6k
-X-Rspamd-Queue-Id: 80287C0002
+MIME-Version: 1.0
+X-Stat-Signature: 7o9w4koqhod17t6cbnpoxcjwhdc6rfxh
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
+X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794288252-716799
-X-HE-Meta: U2FsdGVkX1/xPWYoG6kbhLBdi9i2JB1XjqC4DSLpwyoYVrwRBrAScBlyuJny19AVUX7XOpf5S9HmQwJUtCBOxDjMS1B+l5eTl9wlcXySw8kmUVQEV9w2J9fMLehVk4aFMnmE01H1zbm/5jX+fXqK16P06naulqsQKDxaXub1GUAQuIH7qtLLqRxJpNfiZeTNXEWuuOTqA1JkKbwq8UugycOIbxvAdp0j6Im1+6yFs/2GI3P5h5t1njzLEzyqQGmNYCMEiPt/4YYKTy8L56OJznn7KLzqSyTYL8LPZw2f5yLGuF3sC06w+IxI2dfbVk7YdQb/WrkoX/32CsB105RTR2p4xg3bYcOndky9TT/Rq64IIsgX3kXnS8sJZFsc4e6fIiR/oa5Xo0angQgam9oD6+X+zrb7AbqccVlRpepXCONb2x1bZFCCoQrWg8fn/+UAKq82mggFcByF9q7F9Fvgw8KSlcyzm1bpiYq1uKRYepYZvcy4dx4RBBq6QccTAgU7OhhyACNKIOgFbBC5O9UveAVYkFYWOo0OtwRN1eeMePZreERAdJzRTGZ5ISqBpHwRnJHKe2Vzjxk9NlmYDCaOGAB+DzyvENrAMfTPNSbLHLlKH+RGrkcpXArCLA4STIriIiL3x5YYFKyi3GdjuFXEch2HEjRT0BaPrabcxWitDJFc4akYkZF6kcI68W3uxsNnpccBaSr9l8Hia9x+HUdnygwkA51AJiQ66L4Q4r31mLKLLb88qh4reDJyr79oehc6lqrBSaXxBDNcgohVf8OaNX/U8JAHCOMQI4JvpLYj7KWjW7+sSycIwuRdh5mf+aSpOOSCb9bk5aj+oQnwnfAB4wHNpc7AVV3sszRHpKsdqJmVWGrRWtwvgx2q9KFVL0Z0wILvqyOMynpqcWca/l4wU4FxHtveTsMAMMuRmIKe3xEguEDU9VCxv/ZSXPvnh1PyfC7PDkZYe/JgeAL/A3U
- GZTeXO4M
- E5hDHI67D5YWFt6r7DMYXYo/n79/RsA74qC/NrW+0c0OdqOVF3tVStgE5O0lW0RIOLGWAcW+SNBK219wKfTGVsZPkwA19+zsN167vpQRTEmDOharnIqUxHGaoZe1gRS6+7hCguZNh1aID1SCrb8HbGdAwrgt9+KdNjhzW5EawcDAepqzO9fPfmWA03uUSNg7tJZRYLMG8ZoHy1n34A19YI+NCVEjLO6gD+2pkJWEQT8mtPPVvOFIuVez0qRRmeli09P6ntNwULVmNvOxlLCxTSOv/sxr9YQ8s02EQCbr208G0zdy7fNss8wde+DoriSkh1d7FZ1XR/y4GpOI=
+X-Rspamd-Queue-Id: 466E880004
+X-HE-Tag: 1794288376-272659
+X-HE-Meta: U2FsdGVkX18CnxFd44jVtrm5Q+80P8OHUSAjf2CXn9S7v2zbLs99jSjXL7pyF+bROec2diXZGKnQj8YMaoDr4bEerMmYlPkHUDdwu7zxqdaDzXvwHBVFO+Kw7XAlnSLVoDSXl0BAN17sNp0UsLc14iabzSKIM21b9AieqwNDLXzDiLD/HklTZMxRsr73P3jJq0KaS4z2d9Bif/6TaUTou3UvDZhY4S5hgEHaivH5Jh0AJcSbGGxuUx+GqWpSQNUR1igrtNVB0XgcnqYbjcWeiFnHpa3/57z6N36BKw/rkrMfT91qKZh6GGg44tscAiCClJOv3bPH9EETKcM3pUofls+A/Y38uyify8/fALMZopKwkMEmYPM0BnYBAc2YGLU8y1gTB/yV0ie+QCwXNCarQGJI1wnOvqQAsMU0WTKupP8tCXs9Kv4DaCAcsjGwQBcTHOqWvdZYsF2cU/0qZPHILyMnY2IlydG0SHCNydm2XLuA2lOWu7iWXtBjuNfqoeq6Ru0F9jkbOtHvHwGdu3EaREwq+y4mVYhq+OGCOnYBpuGFcy2xjYuJf8DhBTb32cmwvBpqinSovfdvJlZyhXXa9HFf5ZuxLK7RiGnnbPDBxTMjA++xThamO3U5K3qSFzSbQJ2FBnU5qwp/Wai9TOZvrJrYgz7b5btqn/7KLyf0peb3cSOPhd9ptW0QKzaa2pDFdWE0vvMZ4TVmvZ86/rtvaA4kKhFI+VYmKb45c/DFypMnhR1G8hmBSdsWPgrH3cdRcVi+zLPvPerHgvdxTYLCJ2cV9y5KV/fp72cvYuIdTIXbW49PQzkaGRavyoY3xCpTkUvP3xDeqPq+RzphgVayQ/qAaY9VB3SBgS9CvvCEf+p9AtrbHSbLMguRLi/IPGkiKpTgc651uhPej/AC7POX4HicrCe6tlxS9yb23myGJMwlee/nepa4u2An31TcpCFYgLl0F8ikP+Enf5L3Jf1
+ kkBXzj2y
+ I733hIIZQd/Ug/hcBrk3gDl4TvEy3YToD2S1DCLs+4LRQVMkLK3xSgAO+EJLBSUgZ/9N6X5uwK4ajZnOW4ax8uy4IP52daYZKtA/U6XBDMpPN0gapYsCE2nUldUv/Qr2TXDz3j0flleBuQ28EZElMYer5RXTdtYLqnf5/S1dZRzOBTTJoUiLd4rGLFRzkoyEtqqzMPpuvntb5IAJESrNhiwAI1vFeTX3CGFZyv16Z+4gSBSf/2p7F9MI/0dz1FFOFgfRtWlyj7Eh3dP7XMG+SMvoxFrENRamR2d7zc1BphrUyrOTBhMLk05JrI/UF+9tFsdTNERyA2nZ9UCjllRiIUUCMLDB8pUTc9XWKOKxq+s2CQ6SrdJKH0S/pmC+PPXpdBxi06E1mPgAkKppKL+fSxe9DsRyl27l9LcTJCSywUx/lQTmPeJoUDRQs4ix8FQwSaeVnK+SWxcEoOxb+VrTiiaBt4A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,12 +126,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 10 Nov 2026 11:17:37 +0800 Mingyu He <mingyu.he@shopee.com> wrote:
+On Mon, 2026-11-09 at 12:32 +0000, Yeoreum Yun wrote:
+> This is preparatory patch to make gup_fast_pte_range() batchable.
+>=20
+> Introduce gup_unshared_pages() to count consecutive pages within a
+> folio
+> that do not require unsharing, and use it to implement
+> gup_must_unshare().
+>=20
+Could gup_exclusive_pages() be a better name?
 
-> hi, gently pin this email.
+The code all looks good, though.
 
-I think Shakeel is suggesting that the bpf caller be altered to also run
-css_rstat_flush() regardless of the update threshold.
+> Also add a folio argument to gup_must_unshare() so callers can reuse
+> an
+> existing folio and avoid the compound_head() call implicit in
+> PageAnon().
 
-Your custom in-kernel caller would need a similar alteration.
+Does that count as a functional change? ;)
+
+>=20
+> There is no functional change.
+>=20
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+
+Reviewed-by: Rik van Riel <riel@surriel.com>
+
+--=20
+All Rights Reversed.
 
