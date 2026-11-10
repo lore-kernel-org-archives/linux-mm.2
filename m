@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EECAE60A2603
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 20:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F290F606A331
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 20:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nlM5W3Mz
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SecDpxdf
 Received: by kanga.kvack.org (Postfix)
-	id 0B0CC6B00EF; Tue, 10 Nov 2026 15:59:45 -0500 (EST)
+	id 571A66B05B0; Tue, 10 Nov 2026 15:59:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 062036B05B0; Tue, 10 Nov 2026 15:59:45 -0500 (EST)
+	id 542AA6B05C3; Tue, 10 Nov 2026 15:59:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB9096B05C3; Tue, 10 Nov 2026 15:59:44 -0500 (EST)
+	id 457F06B05C4; Tue, 10 Nov 2026 15:59:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C8A666B00EF
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:59:44 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CA0B91A00E9
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A1846B05B0
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:59:46 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5AE1AA0101
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:59:45 +0000 (UTC)
+X-FDA: 85420425930.22.81F1CCF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C2950C000A
 	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:59:43 +0000 (UTC)
-X-FDA: 85420425846.28.D1FAFBB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 3D75C1C0005
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:59:42 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nlM5W3Mz;
-	spf=pass (imf21.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SecDpxdf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794344382;
+	s=arc-20220608; t=1794344383;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bRLf2eJN5BnQ1Rs/bcxgd+v8VFy6BbzXvv2K0AmYCKg=;
-	b=zCi4H2oUZhZFN1bdpNLHSKqCokPK4paz73h3VYj6NtEwj/WvHoTVSHDrEZBE3ZeFnu/3X7
-	KJVkBg8n0LUnA1OP/PDcrRzXMz2md0b5RoMXCK0G5xwoJPuwmn+qFBS8oSjX7RzkYynfp/
-	RSOconpb8r1a+CYxzKwtLbfnth5fGsI=
+	bh=SvDAtH/JwM3DeoG4H2x9y63kqFLwTXOfr8/w9opbDq4=;
+	b=tuJJoOEmPgJ/tM34bZgE8SH/0os0/Ajm3KrWh7+iy+WoS/UtdlFdLtXj9zXoFAhr79xRNS
+	UK5F8fa77H+E0JJyNtra3CrrWofD+aYIlEXgbC0EiFPqkBbONe44pbp8J3MgQMJt4N2wsz
+	ImjrSpXbv7OaBpMsM2GwS+rtIpZ2nRA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794344382;
-	b=p+yGzkreRXp/liqfOcsp9mZKsgudcCaEkXZV6R62olwPYgdv24EU7/fSu6ugl+kboZ0/AE
-	3v8VNZYTW1/FgO966+C17Xpi96eDLFlIZ8N+jUMrOwfYsHOLkxs4wk1M5J25ctXQRAE9b1
-	tiRTgZ1g1QrWhVa8/dQ4+Rm4ZVas+Bw=
+	t=1794344383;
+	b=xc6D/9LaHtwbJZKdxpVrTjIxNH8LysJ439D+251CBMNgoBuuPRVFv5gkddeUZIVMYdSBHr
+	UCjNK8NDHurlsE881LxOGd7WUNDjUw/Hd/MGtlRjDNMtTidttA6MaPFBOo7Gq85iEb0bBi
+	JAJ6jBj69EgNQ5kEWcLNUTMWScAcvwQ=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nlM5W3Mz;
-	spf=pass (imf21.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SecDpxdf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B4BCE61DFB;
+	by sea.source.kernel.org (Postfix) with ESMTP id 0816D414E1;
+	Tue, 10 Nov 2026 20:59:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD1481F0089F;
 	Tue, 10 Nov 2026 20:59:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389351F008A1;
-	Tue, 10 Nov 2026 20:59:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794344381;
-	bh=bRLf2eJN5BnQ1Rs/bcxgd+v8VFy6BbzXvv2K0AmYCKg=;
+	s=k20260515; t=1794344382;
+	bh=SvDAtH/JwM3DeoG4H2x9y63kqFLwTXOfr8/w9opbDq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nlM5W3Mz7qJXbzXx+vZqRsw7/wYbIpJjW9CVOWIElD2gFAzHeGVdC3miiPm60ZYd2
-	 yysxsqTt2svLatsCIvl1eKxOT6xEE55TJIX3kMDWCll7w6A8sAQzmD5BY9pjyHesC/
-	 GLvjcxlUpHEPLybSF2JtQwHkTzs72dGROkS5tND0AWjvlPX6SEM8O/u3jpfP/Su2g+
-	 oSh7ZohunDzJRGuH81LixqMm13wLh1Qkf/5NIWnTY1g8+VmbnojQTN2cE37piI3rD9
-	 ALTwJWhYqsc082U3k2/nSs+52KPp6sbJTpIkRV0F+4SV30kTdjQADQ0AVr3xLU8Tst
-	 OnNBSRP3E0ZIg==
+	b=SecDpxdfGrKd1P4S8rrxkkKkOUJeS+n1jUr3POukRnrtIZdVaci3IYjVS/7GqNkWm
+	 RPavbp5xKo4Sc/pYnqG3s82jL3RnDMh7Dw1LhMn+A25lMufTI3bD07iK/OMBOqDB8l
+	 B/k4m+kBgYQhOA6y2LgmlVVmWuNn9QizHjkNFVm+nju0BBjYg6WIa5uxcUaUpw3eDV
+	 sjZrfTwUse3BXlUfsYRhUEtZHMzr0Ldz+oOtiZh2/BC0+c0nI6GxP9KA+C3FHxWUb3
+	 e85ifEIvSaByTatItprlXR3Lg+KGnuGHe36aqWHy6v4Gz0X+nXkeh11Ll9cjwYnU0q
+	 uqLNqwuTf3u/g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>,
@@ -73,27 +73,27 @@ Cc: Sasha Levin <sashal@kernel.org>,
 	Mauricio Faria de Oliveira <mfo@igalia.com>,
 	linux-mm@kvack.org,
 	Hamid Nassiby <hamid.nassiby@nokia.com>
-Subject: Re: [PATCH 6.12.y] Revert "mm/page_owner: fix memory leak in page_owner_stack_fops->release()"
-Date: Tue, 10 Nov 2026 15:59:04 -0500
-Message-ID: <2026-11-10-1-daily-reply-0008-page-owner-revert-6.12@kernel.org>
+Subject: Re: [PATCH 6.18.y] Revert "mm/page_owner: fix memory leak in page_owner_stack_fops->release()"
+Date: Tue, 10 Nov 2026 15:59:05 -0500
+Message-ID: <2026-11-10-1-daily-reply-0009-page-owner-revert-6.18@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261109141509.2880440-1-hamid.nassiby@nokia.com>
-References: <20261109141509.2880440-1-hamid.nassiby@nokia.com>
+In-Reply-To: <20261109141527.2880867-1-hamid.nassiby@nokia.com>
+References: <20261109141527.2880867-1-hamid.nassiby@nokia.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: twkb36pnya66m9shhse8f7z9mbgwky43
+X-Stat-Signature: jhgp1qudc8811og4ei1f4ckwbhpyo3i3
+X-Rspam-User: 
 X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 3D75C1C0005
-X-Rspam-User: 
-X-HE-Tag: 1794344382-969240
-X-HE-Meta: U2FsdGVkX1+4JjrXhFdjPC5frsq3+4Yp6c7Nb7ZuPQlCjtgGnAm2zn/Ahh9x7xuj841cKRVUKOoZ8cSBNFvxqm+4BMrW4BZtufJqy16/iuFtJIrkww86nPGHHclm94e/qD2Ghw9ZBRwiiEBcb6xboYPVg8mUB9ciTIUNRrNqCFsQd2mNxZ4jFMN5vrfe1ywi79CYmbE6Mo/zF5hsf0Woq5tKNHiUmoObaKnqmbI2at6sGTAXPMJk2Cu4fMYvt+EiNJr/y5s6wCs0wzNBKBs/To1iKx6aN/n95OU1pWwFzeMh/Ae9/ufbTF3RNdajcodchwQD0M+MAOF7en98AwP9p3dDKDCKTdQQxMILRVrG3CjMmDmxlNxEuuCGT+HjTF/qpULE6doeTC56U1Uk6rnSjjURs7Nne4gPQNCUAILCp7xDD6bqgNJBLuqFATGE1lj/1O1NgwNUv2+fAm36mj3U+vA+IbCzDHAAybLW2nTxSpbLvNF1vrs8ZB3C2SdMCyQb1tFzjwDzapOg/HIJUZHajY+fnKirs4CKdHp7ePnt0MtOmX8447R83gruAeNdCbkZGNWS9n6yl1mHfc+XJz7Yt3iT3HUgMcptev9muaXBdkxeiDHFb2Au4hmJ1mSwD3xQyDoW17UycL1ukKGcX4YiIneuXCv6VkD7DxuOnii7A0BekiD4tzbjZD8Y/WuK/aO89CkUi9uYTPbyIt3sHz+Yb4kmemb7bvLM3Snji3w3q5/bI7zSSAR4j6Tk248IfmL15jWb1QbyqsEyPs3ocbOmPz3EN660BoKhIiHcUZR+1wtFwAK4Ig9tRkyFiVG3RlzvBuiY0HoZD/VL42jNUDIV8gnP6blkUgIMf/xuK4fd7iMYc22BTyuOhFtlmaBaM9UOApY9Q/iLFweZgCv/kgm8saGeOhVBgQAaZYdzxeKmB3z7ItTCHjJomCeg7sDe2n6TP6Hmjrw+jj1LXR8sCkZ
- XGXzI97Z
- JmmD01sqoGw3iftzwIuDlrgKheazTF76zrj9jTidxMQ9HEhZiWIs+S6SCoh/fzY5kIwPdxjWO3YZ2H+WOCO5t7AXwD/256o0h0UxlAzpPCFMxbdSMOAfAVQ/5XovRzz/mKV9+gKNt8KkHRZDvAquuo30Vem2hN+0nPtCGjtoDwKA2291Vat57irHrf8cg26H2pV16bxpEPVkI8hTQbTb8wb4Bfq9J49LkCo7fPDZLfTBWZS7/aiL887OQd2oSuFyYfxo+
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C2950C000A
+X-HE-Tag: 1794344383-955245
+X-HE-Meta: U2FsdGVkX19eQuOSrjaJP0I1pLRiq6owlPipwsjm5tKJvLVycaOEdN4eMPhmJmlRkVXE6qW9tDFP4Yd9fzAc/5SdhMrLQ08bZ07Hh+WBTvB2NB+SgO7PGPZx7CTE0xQwp0St7Jf32j4QZo8KP+kQM/Cnr/T9fWqVd/K84v47WBBPApLnM/BCYPWoFGy+SaINRxSaPfd8mLe/ILEy8NItx+SC9hVcKq++v75o8U9ehFJ2fvTlfSIVQ3VOMnjkS2L++JDQE7EfDIYmP3uPWo0W4AWkgZE7UwxSGMcYS306KZp511pztUkUv6LdJrIHZHNz3HmjkBGRkkS+bB4DqcCHmEcVPeZenxNgNMdJKhbFFNVQM8FwskefgsZNB7pnqPqHdSih1eyYFeNYnRFNL6Ntjsmjnn/hrkl9cNDrLtvqlyhMGMr5tzGyJmHBVgp/8A+yTHG8IVbaLZuAI2fkZL/ITM78SzZJVFez1bG5EHTPeinV0nW1ZhcwOi55UJ1FgAEdt3FW52nCJ0jvfAHi2wZf8HFhRZ7JWMO36MoRHToglPa69SA2rGYCPW5BXkM1byHsdLtiQGsxeBdwoFZQeei3A9BqEmYCt5eF3DWA/zuTz30p+7cF+VR+1JWDpx+GJdOAaG8+a/Dyi3jCHosj4mMSt6NTVZcs03tDJCeR46CFE6VriQr/1684YQgQyVr2i1QLJPzskAxZVPejYv9KzC8jAkit0nKrKCD6zd7tT0Qvon0eYxAHWH6+9fIaKI9HNJbJiYemvj3ooNBVa0agk1rTy3Za+aqlTQxc42P/WDKL0rJYLenNdeqCLKF5ubm8V+5PkIMdflpWjqhntfc7CUBoevRiIYiFvOuZEuxDiTP75/ZWD02xAwG+lpuVvffD3F1S3zqJJXmRg0CjWCjQ6VR38cnRd/FG4n6Av/2BFawhwaq7OWKv+brdMg1fiTk6b8V4WeZG6kRqMaOkyUvNg+h
+ zBSvnEkX
+ 6K1rATsDRRiOuifV4dFm+P9UeKUutfRdlBLLcpuHIXvff/aEUqZFtrE9VmxfejK5frkGY1p3GeFkSWkb3Vk9FhbsFVKhJPXhZDyU1ubc7PGn365BoMO5r7pPx3eFf6rheP+0Bj/4UHQ6b6WNFAhRUuValxLqqQc0inMTutk+Kzacmum8oDBGDFu2WOrb9u3YiX0pF3Q5YWOpUMJ8Iq7ul+G9Pwloxda856oo5tViSuWd4n+XKZPXkyodXuLNUDTxAJHoS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,7 +104,7 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 > Revert "mm/page_owner: fix memory leak in page_owner_stack_fops->release()"
 
-Queued for 6.12, thanks.
+Queued for 6.18, thanks.
 
 -- 
 Thanks,
