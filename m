@@ -1,142 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEAA2606A332
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 10:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50C0606A334
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 10:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=li9W2jHU;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=RTsnqhdh;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=tovQQbFU;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Z1UIzdV2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ip9du/PW
 Received: by kanga.kvack.org (Postfix)
-	id D6C646B00EF; Tue, 10 Nov 2026 05:37:56 -0500 (EST)
+	id F3ABF6B05B1; Tue, 10 Nov 2026 05:38:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEFD46B05B0; Tue, 10 Nov 2026 05:37:56 -0500 (EST)
+	id EEB116B05B2; Tue, 10 Nov 2026 05:38:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB70E6B05B1; Tue, 10 Nov 2026 05:37:56 -0500 (EST)
+	id DB2EB6B05B3; Tue, 10 Nov 2026 05:38:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9071D6B00EF
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:37:56 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3013A1A04E5
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:37:56 +0000 (UTC)
-X-FDA: 85418858952.19.81CA3D8
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf28.hostedemail.com (Postfix) with ESMTP id CE78CC0003
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:37:53 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=li9W2jHU;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=RTsnqhdh;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tovQQbFU;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Z1UIzdV2;
-	spf=pass (imf28.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A718B6B05B1
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:38:04 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 42F09A04D4
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:38:04 +0000 (UTC)
+X-FDA: 85418859288.21.D9A45D6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8B6DF80005
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:38:02 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ip9du/PW";
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794307074;
-	b=EqVrIUF9fX0WO3+yiuTehfeS08SzIAbVdrQpm0NxGZcG8bGM+0DyMd4+6/4LI5Bdv8/VsC
-	FGa4KnVF++3TWhwJE+dZyJ4rLg9UV8Ig2XUPqUXwyIHl+LmvxeY42AQOtl98PJtAdoMbto
-	Y25QXCA62wEeeXB15SM/n5OMiZXV03k=
+	t=1794307082;
+	b=4RxCnsKR/AvuatA07lYrlnhLJLLVvGbi0Efcr0+q5gkP4r4N9FO07Ka+3p9Vl2tWqvLoBa
+	w+ow4GGKJqzuZlbxfL+g8EvHqOT74xVtAdQkXwY6fvZnAXq2oKjw8RAMuLVKzAy3DkW7xx
+	0+fAuKiOx4/J2oCX0l0rQR3Yxuwi2ik=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=li9W2jHU;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=RTsnqhdh;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tovQQbFU;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Z1UIzdV2;
-	spf=pass (imf28.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ip9du/PW";
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794307074;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1794307082;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UlV+p7Ntb3+w27D9HU+z/TWwQDK7MyawCat5dRFi5NM=;
-	b=aIsIZ2+c6g/iWdYxZIg9+AMMNCcylvKK9LUUpj4tndRE+pclSM5RJiy3bMYtAWVxbK3SAy
-	LimQil2b9q1XqbH4SUaSKM8htHVa+612Bs728kNCfLTgoWAelUytryOQK2np/rMVj3//YR
-	/lfifQRMzOOWGw6LngAU0Fw552wAuWk=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E701D21D9F;
-	Tue, 10 Nov 2026 10:37:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794307072; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UlV+p7Ntb3+w27D9HU+z/TWwQDK7MyawCat5dRFi5NM=;
-	b=li9W2jHUQBd8RF/mnIdAvDFGeOiTFnpMBUfryhtYKGN+o/AboED3XJpT6teCcrfnBljg06
-	VIMmX88Fmu9f4dJoEcCcB8uw3XAm+FJ8TKFBfOL25wXa04QWnGhgmdYoYzlR29eURCk+Sv
-	Gx61YrQxgt2Bw4QvTvCK2Oj0lGykOxE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794307072;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UlV+p7Ntb3+w27D9HU+z/TWwQDK7MyawCat5dRFi5NM=;
-	b=RTsnqhdhTgKVgkdt2CCeVQ6GrHLrS/wKLyJEGkbvqXQYZQ8BcZY4hh3cif5ogfotYB2Z+D
-	tiooSCRlFQZyCsDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794307071; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UlV+p7Ntb3+w27D9HU+z/TWwQDK7MyawCat5dRFi5NM=;
-	b=tovQQbFU/F6wNXLEsnCezRZ9VBPvbjiXFYg/arT6r3gP1F0Ha7TVBbDTX0EmcF92VQaPN+
-	eHCAl3qCl+XE8CjXLTpE7WPQnk5Xavez9V3lCqc1Roj5OaV+RLFBTd3gh62njXYPZl9+85
-	sn4rnpsSmuRrK+DEpgVbPz+l4pu+B64=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794307071;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UlV+p7Ntb3+w27D9HU+z/TWwQDK7MyawCat5dRFi5NM=;
-	b=Z1UIzdV28HX3HA/oFk93aVP0slCgu+1wQXXSLucK19h1jFXZRVVHKNky5zmkLo4HxAv82X
-	zyNbKYs8l+AbThBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BDF0A1339F;
-	Tue, 10 Nov 2026 10:37:51 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ZrdcJv/z8moPNQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 10 Nov 2026 10:37:51 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 4FFCF22485; Tue, 10 Nov 2026 11:37:47 +0100 (CET)
-Date: Tue, 10 Nov 2026 11:37:47 +0100
-From: Jan Kara <jack@suse.cz>
-To: Alireza Haddadi <alireza.haddadi@it.uu.se>
-Cc: Jan Kara <jack@suse.cz>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vishal Moola <vishal.moola@gmail.com>, fujunjie <fujunjie1@qq.com>, 
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>
-Subject: Re: [PATCH] mm/filemap: let sequential faults restart mmap readahead
-Message-ID: <vna2y3gpsdkntml6fzfvhf55vjbetoitnqv5bitfkh24gfecz6@iihzrvi2g2kf>
-References: <20261109-mmap-miss-v1-1-8b44b33f3358@it.uu.se>
- <gewwqi2kcu4nsitueyw2nd6g6eqjb3wqh4mks5lqcbkc6re4sn@eaqpgn2hxls5>
- <5310BD2F-6626-44C9-A156-3B985552030A@it.uu.se>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5310BD2F-6626-44C9-A156-3B985552030A@it.uu.se>
-X-Rspamd-Action: no action
-X-Spam-Score: -11.51
-X-Spam-Level: 
-X-Stat-Signature: mgngtx4ez18ec6wznhzbmtb3gabr3e9f
-X-Rspamd-Queue-Id: CE78CC0003
+	bh=W2Gq9BK7mt4RyAB9fOrbZzlCxy1UiGy5QVH65hM3wgw=;
+	b=7b/dvDCP00SGKWKTmD/AlNIxJQZJA/OeTYtU3fvztYP7/eqtln1dbSa4MpdUrU+3QG4ktT
+	861PMYQAl25JNeSPxhElxZoE71jwOsHiHnzDQHw07POGdqWhFms5iocvjVmtK32bipqYhz
+	sbosvtFuvvOjWjgMoYeY6wAkTm8chh4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BFA5241AAC;
+	Tue, 10 Nov 2026 10:38:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE76D1F008A3;
+	Tue, 10 Nov 2026 10:38:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794307081;
+	bh=W2Gq9BK7mt4RyAB9fOrbZzlCxy1UiGy5QVH65hM3wgw=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Ip9du/PW/M5YU+G5ulWsLh05WENw6Xmg9uq3aAfz0Ph/u0/wwb4EdhDadRsB1GBKi
+	 8wc+5+d3S4qMfi35OxnDTQVdU7vQI/zeYlUwr78dKZEWyS8ivG/RHirC3RLw4wsYId
+	 h1GCbVG0i2v9GLzrbo/i48i0MVyMU68M0WhCaS4r4yE/300KQ0xJp7f6a3rbX0xtGa
+	 ctpr2xXemG9I9pZki0S10f98rfn3xFERH3kRP5OBn64lHaoDfVhY46B92C16cpHDtx
+	 rRKBF0ibJCBIuEoLkNN4NltUdw9EEeV3jaiLLTnDj4MbCeDs/lGHVuvVpjFLFurszo
+	 YBkxncx9zFz3A==
+Message-ID: <sashiko-outbox-206880@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3] rust: alloc: add per-task memalloc scope
+ abstractions
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>, =?utf-8?b?Qmo=?=
+ =?utf-8?b?w7ZybiBSb3kgQmFyb24=?= <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Vlastimil
+ Babka" <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Uladzislau
+ Rezki" <urezki@gmail.com>, "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir
+ Duberstein" <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
+ =?utf-8?b?T251ciDDlnprYW4=?= <work@onurozkan.dev>
+Cc: linux-mm@kvack.org
+In-Reply-To: <20261109-gfp-noio-v3-1-a573e7be9c44@kernel.org>
+References: <20261109-gfp-noio-v3-1-a573e7be9c44@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 10 Nov 2026 10:38:00 +0000
+X-Stat-Signature: p1ekozwafj3pcx47ryedt8q49hp9rng3
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8B6DF80005
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794307073-585638
-X-HE-Meta: U2FsdGVkX19G7J2MUtMCy1zc0/ZiDjVaRjtPhEDs1cWvb78KC6fMloNB3ZYkSg5vAixBKGeVoYUNdMJk/T/7RomkSPDAyn0xFtl6iIsDzfFNQ411pN1k64bEgu+CjfODNU2/Hvtg7hyw8sy1QRVE+DIUmV/8iWP+habLiuDXGMmK/OeT/KQXcbtXmoXdD4HOrvLMBId4sl1zBCaKcf7guGwH0iopcK4fGd+A/LVf3bdfszRIv/sIbkEzs9GjEsbn6Z/s6zlfJa1y4olmC92St404yeYLq2ObvSviNeI+C64PWjY66Od/q1dPvs1JFsmdifDncllPDStjihoXPDg+5w7FuOeeQ/Sq/kPb1lYJ4NKj3/NS/hMMw/83PUjwRoKfqL87GYYEYdFgsJrYGxILjK4yzKROdptCjdCzMqPf0W5bhjcj7UYJM1aQUhe267oWLbcsjElHT3i6PNL5il1VHjDeE6UzpWHZonCH3iBjBuaVNz3aF5hJTSZBNd8QKrZNs34CRt3zGKJzNTlnYlIQxMdwtV3waN5y5kuvInJhAI3T0C+voD7tkzgsIXmqs3ay9IlNHaK3DGnK86T78dF9phO5gioTChKXmcd8AJ88P8L2VdFWOH7aEScuB0PJNMa7fOxr3Ke2RbWt/mM7FA6y5Bs1rLuigw7UAqfTvDFz1gnEr+LoYu6YJ6LtZOSGUGBfRQ8lzkwi+XiEh+n23lLM5D+yHQz1rVkBMzRHFxJVklh/cAbDGyWqYYEvUunAF4gyVbf0adrBK1WlBePR6bfD73JLB3vlNbjlffF4NwJxbjRQ+tQe1jFSr2sJFHqeAa/dYzkzRCu3LugQoWw+yGBAlHoA8lRZfEBaKpDTiUEpMS6w/bordAsY04oDLEXcFvQ0n1vHl0f+D8iDuijEVV7v2ma7QSFd8SdDL6OqgYi/NA2zAcTNW04MRStA+NJWE7zUwkMdXDAMHR6lVWC4VQA
- anSpeH4P
- eKQfYrenjxTEAZ2XBZEwPO+I+z5rChN7j7h7D5yTr2Zovk/90OZe1cmCG8oSyz0T3ZGDktB2bJeKkJoxdyYaN9j9JqGZ3aylfnoe1yA7ZKxN9upI0dx71k01lssLRNpN+wQVCSNHpo9bSD3nXUDFBqwT7TVBHy5phdahV/AWg+fG6BwMFdE2nOzMSP/ezw8Sep6xeTb9VM8T2bcfag3GOEuOkG9B6DsbDxNG/lTz7oBbgcsSNizVF1TiaP/x4FGR+wyRAKxg6ecDsguvBOJ1sJGZZksQzw7aXyUl49Tk8ld3yp91d0QW8Xp8WcQqOc0vMyQ/fcUChwlgNJ/TfXumHdEcbUQnAPCWtJIHAdF0A0wUBLdHR9Nr02KR3IbnPPELB1XhTpMRYf1jO5RBkE8r2bO1U+x8u56dslwVvGXgPPUI7JCscXMQ+ZXjK+OjS47lEwg64rRJYurfjfYc=
+X-HE-Tag: 1794307082-904748
+X-HE-Meta: U2FsdGVkX18nk/ULjuIaGiNelDRiFDkh5Kbf7nYHl5fudJnXFdKg+87f2x/W3uuW+vPtCLhxgEHUIXZP6HSsFZz+vX+GQtWbwlWCIRej/3j/aSlUqAzW4sQvwWHOBHoeUTppL5ySOtuI7nY5Z2NDyDmgdfntRZv2zye6hkEM0gh6wpXNM2IpJ+sqgRWh3SBKcWdiu2V3breOKsRW7KiFN5KrGqgR133hZvpiyN7X1we/Rqs9u953u1SV/4P0vloyYeG0Oo39tLMrgM5somYTwDDMSIx1qnNyyb1KcJCN9QZiRXeGU+zCVxbiQypkcP0jT5v3TSACQAh2fAtNDC5KOKiR0dNWOB3wgPj7Xv6irdeCKnMsEnKWTs0Fa79VYWeTIiRs1jdb0T6SW4rvqkA9ePuN8JVcTy4y6Xp5wrfk8LIMSpAhcrrzZipB74fdKEzxpfbRw4oK8INQW/W4NsvZKBJCr9pCmQITLJel7y19yYScSgaC/9d96Xl6zz2I7eoKndG9/2OSnipwhnGdtk+N+5b5/Updy0gHteqVlOfOhfjxgXKVkuA0ij9WfCATwwfWGd9K0hdsJUS65Ku/04gTaWfTEnWKYb8UFbzvff1SkwT9WJzq+YuGmguELFokIzZ3346ow/aD7U3A7/MG9gwsLCd/kw5JPEDkjTFG3O6IEjKmiBa3Z38p+pfGiSGJUDyZK4K5Dew+SIMZExRH96uAVTM1xbyY1UZFENGqh9Pez1LmUEkPRChL8V+XaGmTBTYr9EvisPq5+V0mjtd289ZzMuTv9kWG8c+8zhJgzljw0PUZZpy+Iadc5bMNHcLzSQF++3ATgOw31S11AxRdlVVGalmwwE/2cx/i/Fna/oDihZ3b6GqKLmOLZs4mNCgwW1dy+xdKIg8CojN6Bgf+iXhlFBh1g9tS2l3w6d/pgLpwVbi/GYkqjfHmx055Rz4JHFOSP44uIJupabe/CQTAvBE
+ GWOIM4Yg
+ yEhPubg866u1rgxMiH27SPWuwoKPCAlZXlACpCaLc00EUkfENuLYulWW3vJ7N/9h13v+/etdOF54EKOCMhQkOaRmKryctfmN1yy8PX6XMSrwj8QgxdkC8waAWRnVRB5i04iupS1Q21dWHXRaINohW5oeXtEoqlqd32NU8v1hMnTOO7Pf2pw2SXEqUn8I297h2VzbW0SqxA/P4bKnXiFEfHV05vTRIHQUPOyAP5p1TAEOyMio+hqMz37qLMdmIwhFYZ9BAh7okh8zUJQtO6r9y7nmy1ZmcYkVm0weFey95q3aLa1mwz9tofUcfboucH48pafwaoDEd+4EtwrZcYjW+LzHz5IfdtixLIM9tYxZnj+YkZXxzsvRY5EWDxUtG7BI3it3fW3Mqy4iSv9qttqwS7jiKZyVeHdzNuqkCnN8YfU69KW/y4yU3MzsFP2sF1HDkdxy9ezQDe1XMuMwKUfkBTyfPtGSaj5YveLJaDwvi6Ex6cMyp7FwoV2sVJ9O/S4ZairXE4Jzpd8w4Xb3AtqtLewD8+USuEO0rdFHbvlnn210rFieUCwpTVhpaJRiG8QgZYhaVUQJ+gIyaItZf4ecwfcPN+g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,32 +99,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Mon 09-11-26 20:23:29, Alireza Haddadi wrote:
-> As Sashiko noticed, with a minimum folio order (large block size
-> filesystems), the 2-page request ends up as a single folio with the
-> mark on the faulting folio itself. That folio gets mapped in full on
-> the retry, so the mark is never hit and the readahead does not
-> restart there.
-> 
-> I checked it myself, and it's right. In v2 I'd read two minimum-size
-> folios instead and mark the second one:
-> 
-> unsigned int nr = mapping_min_folio_nrpages(mapping);
-> ra->size = 2 * nr;
-> ra->async_size = nr;
-> ra->order = mapping_min_folio_order(mapping);
-> 
-> With a minimum order of 0, this is the same as now. The cost stays the
-> same in proportion: a miss that follows a cached page reads two
-> minimum-size folios instead of one. I'll also test it on XFS with 16k
-> blocks before sending v2. Would you be OK with me keeping your
-> Reviewed-by for that, or would you rather look at v2 first?
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [Medium] rust: alloc: safe ScopeKind::save() allows violating
+  restore() safety
+- [Low] rust: alloc: missing #[inline] on ScopeKind::with() and C
+  forwarders
+--
 
-Yes, I agree with this solution so feel free to keep my Reviewed-by.
+commit 41cec7ee242c1aa90cf2533b8574e3fdf2331dac
+Author: Andreas Hindborg <a.hindborg@kernel.org>
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+rust: alloc: add per-task memalloc scope abstractions
+
+This commit adds a ScopeKind trait and the tag types NoIo, NoFs, NoReclaim,
+and MemallocPin to expose the per-task memalloc_*_save() and
+memalloc_*_restore() helpers in Rust through a closure-based ScopeKind::wit=
+h()
+method.
+
+> diff --git a/rust/kernel/alloc/scoped.rs b/rust/kernel/alloc/scoped.rs
+> new file mode 100644
+> index 0000000000000..6745c06d6725c
+> --- /dev/null
+> +++ b/rust/kernel/alloc/scoped.rs
+
+[ ... ]
+
+> +pub trait ScopeKind {
+> +    /// Begin a scope on the current task and return the flags added to =
+`current->flags`.
+> +    ///
+> +    /// Every call must be paired with a [`restore`] call on the same ta=
+sk, in LIFO order with
+> +    /// respect to other scopes. Prefer [`with`], which arranges this au=
+tomatically.
+> +    ///
+> +    /// [`restore`]: ScopeKind::restore
+> +    /// [`with`]: ScopeKind::with
+> +    fn save() -> c_uint;
+> +
+> +    /// End a scope on the current task.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `prev` must be the value returned by the matching [`save`] call,=
+ the call must execute on
+> +    /// the same task that ran [`save`], and no scope begun after the ma=
+tching [`save`] may still be
+> +    /// active.
+> +    ///
+> +    /// [`save`]: ScopeKind::save
+> +    unsafe fn restore(prev: c_uint);
+> +
+> +    /// Run `f` with this policy applied.
+> +    ///
+> +    /// The current policy is saved before `f` runs and restored when `f=
+` returns.
+> +    fn with<R>(f: impl FnOnce() -> R) -> R {
+> +        let prev =3D Self::save();
+> +        let ret =3D f();
+> +        // SAFETY: `prev` was produced by the `save` above on this task.=
+ `f` is a synchronous
+> +        // closure, so it has already returned and any scope it began ha=
+s already been restored.
+> +        unsafe { Self::restore(prev) };
+> +        ret
+> +    }
+> +}
+
+[Severity: Medium]
+Should ScopeKind::save() be marked unsafe or moved to a private sealed
+supertrait?
+
+Because ScopeKind::save() is a safe public method, safe code can call
+NoIo::save(), NoFs::save(), NoReclaim::save(), or MemallocPin::save() witho=
+ut
+a matching restore(), permanently leaving PF_MEMALLOC_NOIO, PF_MEMALLOC_NOF=
+S,
+PF_MEMALLOC, or PF_MEMALLOC_PIN set in current->flags. Safe code inside the
+closure passed to ScopeKind::with() can also call save() and return without
+restoring it, violating the safety precondition on ScopeKind::restore() that
+no scope begun after the matching save() is still active.
+
+[ ... ]
+
+> +pub enum NoIo {}
+> +
+> +impl ScopeKind for NoIo {
+> +    fn save() -> c_uint {
+> +        // SAFETY: Updates a per-task flag and is documented as safe fro=
+m any context.
+> +        unsafe { bindings::memalloc_noio_save() }
+> +    }
+> +
+> +    unsafe fn restore(prev: c_uint) {
+> +        // SAFETY: Per the trait contract, `prev` is the value returned =
+by the matching `save`, on
+> +        // the same task.
+> +        unsafe { bindings::memalloc_noio_restore(prev) };
+> +    }
+> +}
+
+[Severity: Low]
+This isn't a bug, but ScopeKind::with() and the save() and restore()
+implementations for NoIo, NoFs, NoReclaim, and MemallocPin are small kernel
+crate helpers and direct C binding forwarders that are missing #[inline]
+attributes.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109-gfp-noio-v=
+3-1-a573e7be9c44@kernel.org?part=3D1
 
