@@ -1,177 +1,180 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66AC8606AA02
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 04:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2F3606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 04:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=tPVseIha
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=L681TkNB
 Received: by kanga.kvack.org (Postfix)
-	id 5F7D46B05B0; Mon,  9 Nov 2026 23:11:38 -0500 (EST)
+	id 806676B05B0; Mon,  9 Nov 2026 23:16:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CEFD6B05B1; Mon,  9 Nov 2026 23:11:38 -0500 (EST)
+	id 7610D6B05B2; Mon,  9 Nov 2026 23:16:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4975F6B05B4; Mon,  9 Nov 2026 23:11:38 -0500 (EST)
+	id 601FB6B05B3; Mon,  9 Nov 2026 23:16:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 06DFB6B05B0
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 23:11:37 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3ADD1403FE
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 04:11:37 +0000 (UTC)
-X-FDA: 85417885434.16.C7A87FD
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010014.outbound.protection.outlook.com [52.101.46.14])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 1F5D91A0002
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 04:11:33 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=tPVseIha;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf19.hostedemail.com: domain of ziy@nvidia.com designates 52.101.46.14 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F3E46B05B0
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 23:16:58 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 974D2A08C1
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 04:16:57 +0000 (UTC)
+X-FDA: 85417898874.01.8C54F50
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012062.outbound.protection.outlook.com [40.107.200.62])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8B21820002
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 04:16:54 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=L681TkNB;
+	spf=pass (imf03.hostedemail.com: domain of shivankg@amd.com designates 40.107.200.62 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794284214;
+	b=zo+4vKeHQWUrWns8fDqCJHItqsNh+BC4avjl6lUeB4RjV/R5vrUMu3JSnD/wKQWgfU8nZN
+	opWnqj3wCj82EoIM7XVMMM8Aa1VDswyQxh8LhxARV20c7iEkbtlLyOqzMdNFGqiqpdWhWU
+	vq9K4/kImZhzKc1BBRmtAQz2R+FjBRU=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=L681TkNB;
+	spf=pass (imf03.hostedemail.com: domain of shivankg@amd.com designates 40.107.200.62 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794283894;
+	s=arc-20220608; t=1794284214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=34BtucXwpnOmuiVglCMZ1DyBUj42ze1oXVNlbgB+R1A=;
-	b=kRa8fUuuVjs6XTzZNMKe+2EjoCB3KKBT7wXDHj4d1t78DGxHVtJZ0kYN/giBapO6KjARpP
-	HZkTGBMY0BaLCoi3f48aYC1J8ZoZ80ltI6OV2UvM8WpMOvcfiNJNlkx8E0MWQGC3T5TXFi
-	plhIDwu4SbfAnLw8F/t8St8doPOO27g=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794283894;
-	b=P3yEjqmK0piJFWsFwVMJW/eeRbawdkPbwLyHanA113FTALjUE/NDilgkSKejU1Z6u9vzrR
-	94GrRiEO3iVq5x+ae2tgES9dLYdHKooZ7NSqcHTIdASgtbKeCbW7mh1E0yGOsLtWOV+b/+
-	LivaWjfiSJzyUIdr9KPRsKzyOOV0UbY=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=tPVseIha;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf19.hostedemail.com: domain of ziy@nvidia.com designates 52.101.46.14 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+	bh=OKJ6WobrwbDkYqLAH6fb6qljWiugsDiTZ6U4AQymzpA=;
+	b=McOhfhvMgrPsouHoP7zlXn3uij94GSuZnSh3ZFWu/v8bB6r2CjnaNF4PKbXVz7rF/vHMnu
+	r4NQ1HC0PtHDqSHfBbZqf6pBok5/94SJHJLn5cBtPNtvSTCeucSv9+qx8FRzbP7In04Q8g
+	+x5Bqgoar63ZiPDLXYyZUsduw+y8yJU=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=y+rhYKFaNxAxSyam0c0mfAOpA+l34/iu39yt4XsFlGP5mXFQhjQGfdJrSHLR041R84FHO61+dHV9g6w/9wcwJMk7P3y7tbqs3+FslvoE7roEldDvUm/GitKQXNueGFdTRtqf/MUBYcKGR1Al44rYSfEa1o2O4TTUCt3AAtwinF5o06778uTbwGXIuMwAzyiMh4KiC8nZ11yY8EVWLXEQ7p6Lmc+xUaA2D2Kz748IEwG9aCng59km40GGfSdXHRQir/Dg4pnsWnReCdkCkDos19mcqrT/rRIUP51QAiGaPmq4XLZwNY5ZGiUazG0uguastR4panqOTg+kkoNNF3JCHw==
+ b=ZyD89/ADt59TdKkzYpHgNY58YS6iLJ2Bs9YEs1MQTOQcyCeSk5tAHVQhw9YsiR9LwSEc+tWLSyCvGW53HOE/L571niSS2wqKqBtZruZdkcMwONq4vXi3REvcEbw3Lq9SXCUPFbgWm507apTlRO/c8AFr06S0DrXg0doXTuteyB+zweAsc8U1NK1YABCCbZuc+XCo+b/l973LjD6BwE0dCNYVLobe4PpMvxTL+rqQDFHcwPBPoXTTlANlOITZaYWbHXlS168nxw1WbQMUKvoDeXdb/Rhrs0nuoN2eFHl2Tjh/GbV3aLOb0N0fomyLQc6SZ/Qj8LzuM7kh/1sHqkYVbw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=34BtucXwpnOmuiVglCMZ1DyBUj42ze1oXVNlbgB+R1A=;
- b=HLFvaTygQpKDhtLoa3Aa8u1xUwG3zOk//kjvGwf7/IOv7LAMzdyXua//J2dfyfLGp7BMygbVzTlhHP8Ub1wrSgWHd0fwH8+lGAl0JXD05q8CTYsJ3mgh3/DmK6H+zvaxS+TgBFoyuTOQBrmWBnJshSFBcP99ULW8ErlTLtGQIxQ3SkMIcvd+MNqvzLHDHwc6svDGq84Nx3Pi0OeweVyLLWz5yRbOcvzRm6eIzF+JEn8LGTQzThp9zozWnHg/ozUatDywaKtiZhENWvskPfR/MEVf7UXjf9qS7Nj2o6SJXH20H69I50kdxOdvn8szexUmWA6+TO8DiA3oJgVgzdLDtQ==
+ bh=OKJ6WobrwbDkYqLAH6fb6qljWiugsDiTZ6U4AQymzpA=;
+ b=ESqPy2FD0K6BqYErmiXqSeLQIc0cJp5fWZNFbdB5ifAOihgNgVixOk6D4pr6DUdP/ULojvAGa4eWGIBK55dBquL6s1frJTyGb2xirll93WsjUomoNiFO/HDWQHyTrOMcYXf6ohJ1mZgLFk6GZX9Ub+nLHZBY7HGWSbmaVtt/8PQRWacIy2dIVpicQF3G9KMn6FnzPUAcjiDwv9XjM2g49PeSITduF5A+ioh7b3XVw6/YjaiL1PNM+mDiBL4jJWfWS/Rp8c89gyVFrLLyYN+4HBYCh3HBDMswsf3cFQYTqmyib9sJYSEMs9rJCNaKIKgvqrNCdwVsiWzad55Jo7+ITw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=34BtucXwpnOmuiVglCMZ1DyBUj42ze1oXVNlbgB+R1A=;
- b=tPVseIhabvMODKh3UL0VNUSWj0GXkwFVs9b+m/fvjMKPPIPUlOGeTI/9y7BK/eOn1byJGtQNSRkJXjWAUDgz5NreGU8EploMB5mnak94idiTVYxgr5srRvgCaa4yRE3SskGpME5If0e6z//YTiZwmj1pjrOyyodGc/AxnUYVJymfDJSYml1P2fiOXTeYsIGuDeqU4zQKnCV3Ja6SVnqrH2h0gDVHdf4fmbutg8jcnlj0QKOy06+AFbG0QksobmdnXdjMiI2+Cp6P63kjo8LqFoFUIgCKlXB9/oxUyqtwDubfK1xJWkpZyoqYcuwp6IjtUj15Bd0g88LQtmASMRz/lg==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by SN7PR12MB7979.namprd12.prod.outlook.com (2603:10b6:806:32a::18) with
+ bh=OKJ6WobrwbDkYqLAH6fb6qljWiugsDiTZ6U4AQymzpA=;
+ b=L681TkNB7DInJOgulGKcB+qw9d/MHcjqMHTBK+OjpT8kf/7P7tIeT0csY8k0rFGffwuHQrLru5aldpZPeyI2QDTPEi5bFrpojKY2QNhjj3Z4kG3UTmujaroIKW5fZs8mYAC1OuMGDgp15U2eeCf/XsFcbbnyy5phD0s4YPJ56tM=
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com (2603:10b6:408:100::17)
+ by DS6PR12MB460083.namprd12.prod.outlook.com (2603:10b6:8:4d3::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.12; Tue, 10 Nov
- 2026 04:11:21 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0592.010; Tue, 10 Nov 2026
- 04:11:18 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Fang Xieyan <fangxy@xiaopeng.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Jan Kara <jack@suse.cz>, Hugh Dickins <hughd@google.com>,
- Carlos Maiolino <cem@kernel.org>, Pankaj Raghav <p.raghav@samsung.com>,
- Luiz Capitulino <luizcap@redhat.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
- Kairui Song <kasong@tencent.com>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
- <linux-xfs@vger.kernel.org>
-Subject: Re: [RFC PATCH 0/3] mm: enable filesystem page-cache large folios
- without THP
-Date: Mon, 09 Nov 2026 23:11:16 -0500
-X-Mailer: MailMate (3.0r7038)
-Message-ID: <FB183619-34C4-4B9E-9BFD-D5F9233E9C13@nvidia.com>
-In-Reply-To: <DMR8IXC61XST.3GFDCM6FZ5OCM@nvidia.com>
-References: <20261110035205.3036-1-fangxy@xiaopeng.com>
- <DMR8CJLIMPDY.2NOHDSE107FBK@nvidia.com>
- <DMR8IXC61XST.3GFDCM6FZ5OCM@nvidia.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-MS-Reactions: disallow
-X-ClientProxiedBy: MN2PR11CA0014.namprd11.prod.outlook.com
- (2603:10b6:208:23b::19) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Tue, 10 Nov
+ 2026 04:16:51 +0000
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed]) by BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed%2]) with mapi id 15.21.0592.007; Tue, 10 Nov 2026
+ 04:16:50 +0000
+From: "Garg, Shivank" <shivankg@amd.com>
+To: "Salunke, Hrushikesh" <Hrushikesh.Salunke@amd.com>, "Rao, Bharata Bhasker"
+	<bharata@amd.com>, "pfalcato@suse.de" <pfalcato@suse.de>, "david@kernel.org"
+	<david@kernel.org>, "mhocko@suse.com" <mhocko@suse.com>, "surenb@google.com"
+	<surenb@google.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"ankur.a.arora@oracle.com" <ankur.a.arora@oracle.com>, "ljs@kernel.org"
+	<ljs@kernel.org>, "liam@infradead.org" <liam@infradead.org>,
+	"vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>,
+	"Nayak, K Prateek" <KPrateek.Nayak@amd.com>, "bp@alien8.de" <bp@alien8.de>,
+	"peterz@infradead.org" <peterz@infradead.org>
+CC: "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v3] mm/memory: drop PROCESS_PAGES_NON_PREEMPT_BATCH
+Thread-Topic: [PATCH v3] mm/memory: drop PROCESS_PAGES_NON_PREEMPT_BATCH
+Thread-Index: AQHdcH7OSO+J2tGPsk6kyOa+UPv/DbcmSl4AgABpQIA=
+Date: Tue, 10 Nov 2026 04:16:50 +0000
+Message-ID: <420c59779498e976307ce4591347cd75706a9964.camel@amd.com>
+References: <20261109-clear-pages-batch-v3-1-6693efe18dff@amd.com>
+	 <b47cc8f4-3f8a-4893-8a2a-f88dd5ab762d@kernel.org>
+In-Reply-To: <b47cc8f4-3f8a-4893-8a2a-f88dd5ab762d@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BN9PR12MB5259:EE_|DS6PR12MB460083:EE_
+x-ms-office365-filtering-correlation-id: ffab0997-467b-4df2-231e-08df3ee171dd
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|376014|23010399003|366016|1800799024|22082099003|18002099003|10067099003|921020|38070700021|5023799004|11063799006|4143699003|261102123227099003|261026121527099003|261028144727099003|261022105027099003|261009223027099003|261021121427099003|261021123027099003|56012099006|261026140227099003;
+x-microsoft-antispam-message-info:
+ mYa/qUqdh7OEfz99LI3iq5IHVZkv4eH2oeON5ST0M6srKY1ZosHChpudY9484MnSmZO9TYOnX3QU0PExgXmyePf29uKno6wf6sg1Zy3RLyiaYLhqRa/e1vI4alOknuahqAOj+x1nd7j8xKjTayCiiJ5XADSPq5ffJiVVfwrf3evBsENsuBwcEERtF0XyYjkcF/JM7ZQEDlAokPihkreb+uRR94M/rTlbgD7wCfpEh84RDyKBgoX2iK7P8K6Jvz9T490pFCVjPpmOFflzvS8M8Iwf+beFeTKoW5/gnoNV9LhSI2YfqF4EtOgcLxRc8ZjuaIaeC1Uo73lSkod4efhxv7qRuEKO31wVJRkFZv5/Els6VFUWzng1lgWJbKcRjoOKifxJoQ3scdC+RnDRnHx+9RWboJZQsMWn5zagrYjxhhyVWeu61+nBUtVHh6eepjRL0FH9fmbwLth7Da2j+fsa29Gy3RdYH9MZeAYPi5UN3N6elrHYLLzpwdyxvLOzVVS0zDVSxFV0s021qnPzaJaPiC3Yag+68ynKb1ifg9dWTj+V1qa0VKU1G2F1/XopAnFB+QIwokSqthe0ZJIv4cQ6gYK4SK3vD3vst2jCsK6Q63Vs4pKCUpPV05uJDv9ClGDTLw7XGkM+/BYN72W2G+Bpwzryx6lYm6++/xZI+N8KHsgZEZVmTPYh/GPGLcbaIvn7
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5259.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(366016)(1800799024)(22082099003)(18002099003)(10067099003)(921020)(38070700021)(5023799004)(11063799006)(4143699003)(261102123227099003)(261026121527099003)(261028144727099003)(261022105027099003)(261009223027099003)(261021121427099003)(261021123027099003)(56012099006)(261026140227099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?RWt3RHQvUDRGM3J5UWYrbjNzK0JYWDJIOUw1RjN0Q3I2aTZaS25xdDlXUzdu?=
+ =?utf-8?B?RW9mVnBmOGFQdUo1T0lQbDAzU2ZsZlJRSUszdnJSYmFUcjk2OG5DVFpjKzFa?=
+ =?utf-8?B?MnRTUHhTMXhMU01GZHpId0JWMEdEQnlQNzVsNnNoUWQwVTJHUk1zNSt4Wk1o?=
+ =?utf-8?B?OHNBVFBjMXJiZGVaVGxaNjZlcndlNHFpV2tEZEl1eGkwTUlpdTFrRGF3NUpT?=
+ =?utf-8?B?Vk9HV01DZ3dUbERLR0RSMWJkVVNWUGhPSDVDM1grYnRERHhsSTlaMFlIdk1B?=
+ =?utf-8?B?d1p3UTkyTkRtRitBUEpOSG9oU2laS0NxcFVBL2Q2UUZRMHZ3c3BDMm5MUlcz?=
+ =?utf-8?B?SnVWRkc0S0tncGRkZEtJVDU4RXBybkNlcXFNZVp5QzJDOWN4dmYrS2ZCeXNF?=
+ =?utf-8?B?VTdVSWRTcHM2U29tTGZYaTA0V2xBSWZJYXBnV3lzWlAwU0hJMjZwNVAvYmF1?=
+ =?utf-8?B?RDVySElaOGNGVjRkNlloV2h6NVhxZzE2S0gxdU1MeFNJa1ZBcDJ6Y0tLOU1I?=
+ =?utf-8?B?VUpNQ0RQZTgxdlJsdjE4aXBvTkVzdkNXaEhpa3hDL09qd1RlSThoYnB5VEhl?=
+ =?utf-8?B?NGZVNnhqTElqU0JnbDNuZVBKMTVqcG1VM0ZLbmJHZ1RHTXdyZGF0d21DZzl3?=
+ =?utf-8?B?OXpmQUVSNTFxREY3U0VTZUMwdVpUR2MxT0xkUHJJNzFYV3VvUHpPaVVpeXNv?=
+ =?utf-8?B?VFA4VnJzSEVNdCtONmJ2UHUrMkpQQzJMNjUxR3IrMUp4ZlBGQ0lmWkhTdlF5?=
+ =?utf-8?B?MTk0SGozRGk4cEpuVXMxNW9BOGFDSWRQWW1QLzBXMlZUYWZ2MVEvMG42SmtL?=
+ =?utf-8?B?NmRiaDNtWEh5RXcxUUVkWTV4WkFrUCtVWTcybUE3MzVLcmg3ZHpLaFl2VTdZ?=
+ =?utf-8?B?bUlBeEJ3WmxXWFEyQk1UZ1hZQWNyMXZvQ3pnSEVyK290dXhnNXZrejFwcnNW?=
+ =?utf-8?B?TEc3RXN1QTMrNmoxakdrcjB6UDdqblgwU0MvbGViOTgvQkxIRmR6aFdkMko4?=
+ =?utf-8?B?T2JHMldzR1dDUUpEQ0xrYkVZK0Y4UllVN2tWUVlyTVpWdmtFRkkvTzdHamtn?=
+ =?utf-8?B?aDF6aUhaR29ORVpYbWFJVDMvTExSWVhBVGwySmhQbkNWdVlhZXY5SSs3Rm92?=
+ =?utf-8?B?QnRldlltLzNnN0RZdDgvaUdWdWc3elRZbW5nNUY1c2NzQmlSOE9xSlFHRDBF?=
+ =?utf-8?B?TjJicTRNNlM4SU1RaWdKc080TmovTXU5RUZnMVRFdmpSblZqT2lLdW9XWlox?=
+ =?utf-8?B?N2loWndmYVEwd2czeGxYVmZzM2FRZlVqVE5zL1ZibzZMY0Y0ZVNDRTlOMU9M?=
+ =?utf-8?B?YmlVemgzYU1BWUVycXZIWFdxV2tZYmpCQnRmbkpvU3JGRnhOdzlGbXVVU2FT?=
+ =?utf-8?B?QXJlY2ZIMktJcE11eG13ZE1PdUlwbVRKUVlhbDZrWTVnVXA4RGZ4eVh5RGph?=
+ =?utf-8?B?dzZNVlI0VVVvY3NKSXhnK1MyOEdBK0NRUUJiWGMvQnVnckl0M2JUbFh0bkcr?=
+ =?utf-8?B?TmRvckd2NFRZZjZ3ZW1yYnp6cUk4NXV1YUNDcFZ5SWpUanJ6UGdMeWQ1Zm53?=
+ =?utf-8?B?b0pJU29LNHpKMDFWbW5FeUE0eWpjbFdlQlVaL2hjckJVSjhFM09BZkZickth?=
+ =?utf-8?B?V3FKaFZDWWVyeFI2b2VxN1RmYmRpOU5rcE8zNTJ4T05lZVZUeERrdVRyZmJl?=
+ =?utf-8?B?WkJVMkdwWWJqRnV6VWFtQ0EySTlPNjJpckEvUFVJV01penBZaEpWTGE1YVNv?=
+ =?utf-8?B?MzJFLzF6Nmg3WG1tTzUzU0FGaGVhaU9JNUJRSmIveGxvWk80Z3lMci9rQmVV?=
+ =?utf-8?B?NUdFdTY4dlNwdVJOWDZHY2F2N1F2T056aEVkMDNlMEJKWHdzazZ1OWZUSTM1?=
+ =?utf-8?B?cFBZNUxQWjZZS3h0cjdDSGFrc1N2UlB5RHdLRnRNWUxtT1dHWGE5NU45QTNj?=
+ =?utf-8?B?OEVhd2tHK09nRzFBcmlxQ2hBQjd3cG1MYjMybUV3N1V2bHlETlFhS1gvSU96?=
+ =?utf-8?B?bzVWN25yTDNaY0h0RjE5Vjdrb2Q2cFlTTTVLcFRSK2ZDZUxYcmlwYk9nY1ZW?=
+ =?utf-8?B?dS90VWgzZDk3RHpBYnU1VkgyRjRNUmVvYlc2QkRUU0VYdVhNNDhBUWlVc2Fs?=
+ =?utf-8?B?RFJlYjBNMU5lWmdVajNkUXJaOTRGLzIrMzdHTEZMQmF4dFdHUWxNYzVjWHlr?=
+ =?utf-8?B?ZEw4SGR3dkQwcERDbGU2QlVieXlaWmRWWnZnQWZCMTg0aE0xWThaUUwvMHp5?=
+ =?utf-8?B?SXVqbTB1b2dRUG9uYkdrdWFTbFJod2paYkJKYmtMd2lrbjF0V0pVLzZRbnlj?=
+ =?utf-8?B?bnI2ZW1Nc21WektQd3Z0NkFpZkw2Q1NNV2dpcXAyK3IwY1k3RlRpZz09?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <5ED6B53DF06D7746A8EC2B09D6593DB7@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SN7PR12MB7979:EE_
-X-MS-Office365-Filtering-Correlation-Id: a0a40570-bb9d-4e4b-688b-08df3ee0abb1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|366016|7416014|376014|22082099003|18002099003|6133799003|10067099003|4143699003|261028144727099003|11063799006|5023799004|261102123227099003|261021121427099003|261022075727099003|261022115727099003|261026140227099003|261021123027099003|261026121527099003|261022105027099003|261009223027099003|56012099006|260925021311599003|260925021911599003|260925022911599003;
-X-Microsoft-Antispam-Message-Info:
-	cJ3dKuWfAzGZcQfTyq00ebDIo93PtbsODBXT5uuDFHHcrP7WeGeJjMFzie66LE+gvyxgbCGmHIn64vqrb8eJeoqxRabVZtDx2pHu4xFT14ObqNdIN0KWD/KnXADfxBcXYawdo7JFxEYbjv39DFN03GTb7OYw1A10tuajna5ZrJg5uD0qNGcOmxe5ByJXbqnskYp0hxmUsxjha9MiaebJkGDt5kNszCA3L5KSRIEMQIZkNwtFtCaV9Mk0jd6/ZAszKQcvapKlSP18h6SBA/fQklRuQ4DTrIUtJTn0v6/Fw5mKzELqW08+uauyfs/hjWnFIaCXVoGXeidhQPXRzl40o8J/waOQOvrNX6sEBHIOnkSMTek4/stQlTem+WZ1QEVNsYsjFkUxjpNe8o5iCQWObt3sr+s8mBZOFyiQ4GqDpIQESzMzdFMV4H7jres0r97cqJfCny1bnX1vo8HIL75UxNUXicBMj5kSNWnXwbtg7FLvbeiuQBaOWp7f3l38BlvBwZbxzUopRtaBInMH3AbguweOR0wR/bDTG/YoXvUCK4kfEsEd0b0uL68Bz5g31PUzS38DnYUDv++f5LOgt+G6Chrg0aqTy6OUvC/Lnyefwkwvi7pZ53HwjRKvlu5P4Rgb/+OJYa2rWnRECtKy3x9gSZk8hrJ+v74EQ0oPLPKf7oU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(7416014)(376014)(22082099003)(18002099003)(6133799003)(10067099003)(4143699003)(261028144727099003)(11063799006)(5023799004)(261102123227099003)(261021121427099003)(261022075727099003)(261022115727099003)(261026140227099003)(261021123027099003)(261026121527099003)(261022105027099003)(261009223027099003)(56012099006)(260925021311599003)(260925021911599003)(260925022911599003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Lj7hY/IK4YPH2oamC2oPWts1SVn8ylwy36gRoRT73U5WlWA9l9CxdgRXFGst?=
- =?us-ascii?Q?IBM9/p6JdBz3SlC8WLW6JwyQoqg+8Z9F2xGx2LgseUca1gtqdzUUBkR1iFrA?=
- =?us-ascii?Q?22OLy40UvGo6mNx+4IQV16Kt4lCcaQjoWagDuchPlU6jFw+XfeYhA+EmInmi?=
- =?us-ascii?Q?yEsAu5ZhNOrvAkQo9ZSkHDjGLE27kE+o1bE9aggzOT25wzIs5bmIeBP+dr+w?=
- =?us-ascii?Q?bZrfeF2be/gddWv+N3TOTBd3NPX6IeXS7yYV+KpcIbqS2KsfchL0G++EIxb0?=
- =?us-ascii?Q?iHMrDkJ95rdXXlYMF3BvO8Cjnxk0uERC+2GoTZz5d4NBNaeer2gIsdIfGFMr?=
- =?us-ascii?Q?S5Z0vYUHDv65BgHZUNqflq0CW9agsvH62eSOAMUZLOpDHhemLIri0KmFofKk?=
- =?us-ascii?Q?2Ln72/HeYiLDJM20WzsYw9V79I/bYmrEoUdlmCFpW+CpfYVQ8oeTg276ODyQ?=
- =?us-ascii?Q?RjKTdro02tmGVOgagyrqL9k6nMzukKRZ+pz2xnDraYclss3OSSrMrpoZMnar?=
- =?us-ascii?Q?QViSPUpI65E8Ln8wSZjDtPaRlHFm2+3MB/kH5aoodMeGl0xJUoc+lGXzccHG?=
- =?us-ascii?Q?aTwJMhCS34DEqltarZc8rip5zh5GRmk4BtgWEjrft8i2yTyxCdixO+RfYowD?=
- =?us-ascii?Q?hH3JcdF/fTNLuNtf23YNMRkW+9RRtFxqG4NzbElbvFtx8OUbW+4pbcMY8NtF?=
- =?us-ascii?Q?dCZ0NF0MVGqEhPcE6StgyssII/e4n/2iTt5aD6ZkWxyp1OnN0agf2JLUQw+L?=
- =?us-ascii?Q?sl9q2g71Oc3Cr1UlfMcKyxNl6aT9dYadvZr42ZPwK2Mas+4Tb0SIvQRZuarh?=
- =?us-ascii?Q?RhLYq/WAjXm++WHFc5yvsdcr4bg+NHNI624XfYFVNbqBCb5SEoRWkWnQMrjv?=
- =?us-ascii?Q?eW0sNUg64ho6T04YZURe36BSM0YgbPGnQCHmqI/HrJcuDi7l7Cfg1kIq6lrH?=
- =?us-ascii?Q?FXAoO6mktL5jCZLqzreVdcQwvy/Tl+zZeXm8IsNgj2JjC2OXtsLQgJBMksyk?=
- =?us-ascii?Q?Ew/isytp7UyezmM5JrETW3BU8qAvuVh7aWVtKmj6nha3fYzkcrp8r8dcxZuy?=
- =?us-ascii?Q?Mik+9DO0eOwaOjKwkE5x6EckfmMAZNAv4lmc7WatzBNJjd2zdhGWMcTZCC8N?=
- =?us-ascii?Q?2cTFIirql8EI18y0uLAxJX1+c5aSYb5NxeE7EdIlWKtn1jDS7GIYhcyVFc/E?=
- =?us-ascii?Q?W/z4Zxe0esNICnP0hCKY21wD4RHpGsPqeIxJMipsAsXKKw/+rX2C4zwP+N5b?=
- =?us-ascii?Q?AXYGHawxdj2U/zNIaMG5iuXZ7//ChSlSwszFCwQGhI4ivT8P0g20gIb/mhFt?=
- =?us-ascii?Q?9rA077SEkxiFOZUrqnCo3YZLEPTVL6iKL1TAvaGUiBeuQnjdWUlW9ZV5zjEt?=
- =?us-ascii?Q?aLm+N2dWXxCQKKHAmZnIgklUc0Do/xofOzTwccuJXQ4yviCICvg0OgYSrCMW?=
- =?us-ascii?Q?mGaOcV4FW+B+lkInZ4+uEtAJNYmDmvbGc4Lbi2pHzN9vle8RCdHXx2lRdbCz?=
- =?us-ascii?Q?l5Z5wnz6gla9q4JCyIX+Rieaqo9VPKf3rTuZF8nGpkvTYwY+eWg1ecWEPWr2?=
- =?us-ascii?Q?Lq96/IH4aX+uABwPZ2f7Tuap1Sc7cBzYKOL9KXE1Rb58pCuE+8HO5nKzplAX?=
- =?us-ascii?Q?uAyoCvw7XCRAL1WJxVFhQt4Oft+ybz9PfR52ux6+Ph9Y/RvXNAc+bUOuxnlt?=
- =?us-ascii?Q?LiCLZkAQlNMuEI5VeLlpKgZ2u1b5xstvX6ZAIm/73j+iQkew?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a0a40570-bb9d-4e4b-688b-08df3ee0abb1
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-OriginatorOrg: amd.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2026 04:11:18.4978
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5259.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ffab0997-467b-4df2-231e-08df3ee171dd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Nov 2026 04:16:50.8758
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QGYMKyhLrtnfGkm7dkSJRLvkpPoi7YIv83pEJjPV1MEta2BEucDtqqjk4YEH8fJH
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7979
-X-Stat-Signature: stizunzeoexjk8dkbrhwazasatn334uq
-X-Rspam-User: 
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: PCBIuBTTcisVQj8hJmVLEcnEOFQGnInPj3zudUV4jTyKaWxng9M3g8cnhXXsMBH9O7If4duL+W94b4kEtugPLw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS6PR12MB460083
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1F5D91A0002
-X-HE-Tag: 1794283893-652565
-X-HE-Meta: U2FsdGVkX1+8aI4RouEoflMo2we0YrUHyc5YfbKQu+uDrnUH43v+mcpSy1WqIPjnHBUhPzhMaewih6iXsSasDsZ1/tP6lJ7w9C+x618qhdxwr/QeuoqSYnEyigCb7aqqjBdA1vqR5OBTYrcV+PlyUv6MaBV5KySPx390u/FRtf9CVjNC8PWIe7I8fa3FJ9PXjwVN4BHwYHrsGdicvR3O/x5ajV0elWDtWW5Khbn8yUkrPEHZFaBOL9XqIYKQ3ZPkilueDPovX1spN8psZkx5gZT4TdzbFQZz892lP1X2TNe2y/PbD6J2QVfZPfqPxLE/irHkUgorhSnlH3CCmD3xDqI7UlkbWl9CtMc8bDf7iU3oFt7oyKrxgbYLnqdtmr4HiWut0XZbQSgOetqTK+52zZTiHlP42mQD8PkilF9Y6s2gUOnhmoYQ6zwkNUNNVM/Sh8aPA/i3Cq3gNF09tQ9/h3k6h/ZKxxSs/rSQYH16ywB2lAdd+sjcOa0nSPdWeuKjNCzUGnTMAofDQEoC3NxR8JZWTxllh2doi++5z7GCl6a35CbVcWTv0oek7of5CCYt075XElrFnbuiBJYJtci2PIBSNzCXc64sWGf3cLkWvtodLq+9h3WHLPtWRjCO+/hNEh4mZeN13iU66jZ7O8mwW1qqie6/A7xjvycpeukuuACxly+pEdgVKY8JIttaj7aAXZhZlK05MzVw0iipjx8y1naQhig66P+ZsfvPoTprmwIYR6lm1aaaexXElwd6kuZdnHKWyd2fQUZIQLohfLvX80JDTuU0g/nRXwp3w/IQKZcRxxyjt/vGutD5m4fRn9QLX8iV4lvwdk+VIScUouKsc7HH7O8T/RJ4JmCMKmHNDTrkNbU9yoo/cRdgm/9WaBrSTvRUulQkUZE4AK5Sei/3n7aoYYIBAS4nagxC4AZyRUs472RfTBixQfgnA+RO6STKvNMz6XNRQGj9V2d0Vmd
- cm8dtgM1
- x/5iSCvOnx0MSIY5GZXNQ6Xw2v/0sJlBmCkzxIbY6jp90DIRTnhEkSjtguRhrPrbUPkazBZAcexrxWCD8/K5KhG5be+DmiglN3njOGQeaeL4MGhNxXPb1G7VaEsZiSXH5TX0gARKOX6ANNmrHj2iPl8dzLk5qqYbyGqlxwgpnlDkUEMAM8goQdgJaa+H1FuDbf4DOUbWnTFRRB2anCnLecsnc73qgd432vdaPAVdgKpTl9nBAlz4e3nSuE2WVZdlYGXxfO/sHnPpnDwMdYG5ybjiYf0nhxbQqJsEln6ad4Ai7oswAGhZ9RN71g7C7/wtxE/GAOa1BmWJk1q4MwKo6k044DHvvqkXaG46DK+LXjY/t5j50x3liHyS46MMFtolKdAArw5a0y9BrStgTSev6RnvZz6YwoliGXInBxngenK9etHF9+W8lTj1M3ScGBlcklLyX+8mkCYglV70=
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 8B21820002
+X-Stat-Signature: hzc7tccmj97dte6ytp7spkofz4j8md76
+X-Rspam-User: 
+X-HE-Tag: 1794284214-295097
+X-HE-Meta: U2FsdGVkX18I9/kfdK0DCB9mWjke4zY7pb0ejFZkhUD4b3a4GzBvMzmDCvCalf31/q1Bxr+wT+oB4rXwE6OfLJ1OXoKf3uDeP2cCrtiy/EBRd6RwSwtHny8AHoMGHWh3AnY4JSSYTZRq49C+BkRSODE3KonvZg9WklLkXG8LGnDrwNg3lYstIvN3JWA1qwucYpqHLFKaqG2KB2f1JDRXY9yP1mvttsmysezOk9cS36U3LcSmjtxCjQUlmsnpZogkg9gnpZzhvA87LhogQbLgFmpxs7FCD0kU4y4jhNno97d6sWxiSW6OkzWkJYFGGMvCo+ZstMqOg6dsRd6TQm0nDxshXA+uW/rz2hkBHnYjnIvXl7HYnDbYSf3+kZnjT/zJosdAoDMqbN715wt/lt/aauSfXEhJcP7Cf6lrl0+23imcq8MsC1tRd490YLp5Qsl9PSqEGCEfPPQeQyUWrnwl0kKK8hOq7TftGFMhyUMc0Mfm2lRpu+6DM3HZT0wixrQUFZjs4ehuk+rOxb++eEHfSoagVRHTi6ccpVZhzCr81thbJFolZDFhQM2QWr1LspFrLL6GkUzUvheII1EQi8unns4Yjyhw1zmfJdTe+YtdhN1rHpxK/UKTb/Ww4/h6urvGy8aPhisgfoPG0FZQs3TC43VLiNVy/fQ9COpEqD9vzUE6APMflbUNN97YR7DBKKgRNlHbcPX4KuhLGW5HY/FrxNP1VlySUHhUJqGr9aU9k2rLoKkLwta/D9txEolR6851nXEQknHvP4q5kmvrLvt9AtqxHj4whoD+PWEBw/XPASCp0nhvfXH8UAh1qGfxWsu4nxgJHfs343MEkfG+5msGSqgqyV2/rppg6msFIS6L/xfTFp0ifI8Rk6CTKVFItKzrxDwsFfxXq30Odb/sD6rCfq6npEc+Y2IYxCUBq3y5nh4Rya4eoMt51Zc3mlVvPRV2/zbUmhNl4Bi7V2nv2sI
+ gbnDpnVG
+ Yicjq5FFPeE3bdMQ3z/JUytUWb5rEpd/lYRp7qhXQEoi1PqhWzGf1U82ThnCHhjCMs+kqnhVv7+LV8zB1iV6ZYtLUEWAr/mugp2/VRYi4fN9gGdO+hhOzavs1A9c4U6YWJNOcNexsdJtna/bd0owShO4ks5N4XIcFH5xBJmVWZMdnaGqKU6YffVHFICck4Z27mzsx8ivcgYmAB7wCTQBIRvbHBNXarAu2T2HSnWwQHFv6nbob7kRy6KzZK0grMa7BtFVh+T1Y1XRu0/YKPtkSFd444+hpz/RwoRlsJd/cMH1t1kDIvQ2aP61RuNRAvp84ixL9xD1UMOH/JG1N1hHv1jDEkBYL1m0Q9NrV8VV49GPbFysKaEbMoKfJmdtsxmsmwJC9cEtjYgHRuEPYzklYCJaG82Xelq3m6JXDKq45edcbVeuUGHsoUvuej6TtJZLgjjKjK8sMJymdEdbPgvt6Y6eRC6ttMblJzU9DNfP7L8KW5WiOB6QcvWPlKoogc14VUqvsJlieolf54rXHeQn3kATXmQMCwQdCe6sR/GcC/jGKZs/m2qp8Wy+5643IF97y7LUoIIeDH7ZnD4Xmhm28/4dV/8h9V+gyotCEo2aXsHa8eLCfgxYlaIbIhnR/ZApLpz0Kgp6tDszS9X0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -180,306 +183,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-+Luiz for real, sorry for the fat fingers.
-
-On 9 Nov 2026, at 23:10, Zi Yan wrote:
-
-> +Luiz, since he is working on "mm: thp: always enable mTHP support"[2].=
-
->
-> [2] https://lore.kernel.org/all/cover.1789695931.git.luizcap@redhat.com=
-/
->
-> On Mon Nov 9, 2026 at 11:01 PM EST, Zi Yan wrote:
->> +Pankaj, since he was working on this[1].
->>
->> [1] https://lore.kernel.org/all/20251206030858.1418814-1-p.raghav@sams=
-ung.com/
->>
->> On Mon Nov 9, 2026 at 10:52 PM EST, Fang Xieyan wrote:
->>> This series makes filesystem page-cache large folios work on kernels
->>> built with CONFIG_TRANSPARENT_HUGEPAGE=3Dn, and keeps them splittable=
-
->>> there.
->>>
->>> 1. Why this is needed
->>>
->>> TRANSPARENT_HUGEPAGE depends on !PREEMPT_RT (mm/Kconfig), so a
->>> PREEMPT_RT kernel always has THP off.  Today that also removes
->>> file-backed large folios entirely: the helpers that split them live i=
-n
->>> mm/huge_memory.c under CONFIG_TRANSPARENT_HUGEPAGE, and the order
->>> accessors in include/linux/pagemap.h short-circuit to "no large
->>> folios" when THP is off, so every filesystem that opts in silently
->>> ends up with order-0 folios.
->>>
->>> The consequence is not only throughput.  XFS allows block sizes up to=
-
->>> 64K and fs/xfs/xfs_super.c refuses to mount anything larger than
->>> mapping_max_folio_size_supported().  With THP=3Dn that helper reports=
-
->>> PAGE_SIZE, so a 64K-block filesystem cannot be mounted at all:
->>>
->>>     XFS (vda): block size (65536 bytes) not supported; Only block siz=
-e (4096) or less is supported
->>>
->>> There is no degraded mode to fall back to, because a block has to fit=
-
->>> in a single page-cache folio - which is why
->>> fs/xfs/libxfs/xfs_ialloc.c derives min_folio_order from
->>> sb_blocklog - PAGE_SHIFT.  Either page-cache large folios work withou=
-t
->>> THP, or the filesystem is unusable.
->>>
->>> 2. What the series does
->>>
->>> The anon and file split helpers were already separated by Kairui
->>> Song's "mm/huge_memory: clean up and decouple the anon and file split=
-
->>> helpers" (v6 04/17, in mm-unstable); that is the base this series
->>> starts from.
->>>
->>> 1/3 moves the folio-splitting implementation out of mm/huge_memory.c
->>> into mm/folio_split.c without changing any behaviour.  The new object=
-
->>> is still built by CONFIG_TRANSPARENT_HUGEPAGE, so a THP build keeps
->>> exactly the code it had before; a pure move is also the easiest thing=
-
->>> to rebase on top of further churn in this area.
->>>
->>> 2/3 builds that object for CONFIG_LARGE_FOLIO instead, and drops the
->>> anon, PMD and khugepaged dependencies a file-only build cannot have.
->>> The symbol comes from Matthew Wilcox's "[PATCH v9 12/15]"; if that
->>> series is in first, this patch shrinks to its Kconfig default and the=
-
->>> accessors it already rewrites.
->>>
->>> 3/3 enables filesystem page-cache large folios when THP is off.  It
->>> lifts the compile-time short circuits in pagemap.h for
->>> mapping_max_folio_size_supported(), mapping_set_folio_order_range(),
->>> mapping_max_folio_order() and mapping_min_folio_order().
->>> PREFERRED_MAX_PAGECACHE_ORDER is left alone: an LF-only build keeps
->>> the existing cap of order 8 instead of following HPAGE_PMD_ORDER.
->>> Without THP such folios cannot be PMD-mapped, so raising the ceiling
->>> would mainly increase the maximum page-cache allocation size.  The
->>> changelog has the arm64 64K-page arithmetic, which is a calculation
->>> and not a measurement.
->>>
->>> The split side is not rewritten: truncate, migration and memory-failu=
-re
->>> already call the helpers outside any THP ifdef, so with 2/3 in place
->>> they simply stop resolving to the -EINVAL stubs once 3/3 turns
->>> allocation on.  madvise is inside a THP ifdef and does not take part.=
-
->>>
->>> 3/3 also makes the XFS mount failure above say why it failed: when
->>> CONFIG_LARGE_FOLIO is not set, the warning now names the missing
->>> option instead of only reporting the block size as unsupported.  With=
-
->>> LF=3Dy the added warning is compiled out completely.
->>>
->>> 3. Testing
->>>
->>> Six configurations build clean as full kernels, bzImage and the
->>> vmlinux link included, with no new warnings: A (THP=3Dy), B (THP=3Dn,=
-
->>> LF=3Dy), C (B plus HUGETLBFS), D (THP=3Dn, LF=3Dn), and RT-B and RT-C=
- with
->>> PREEMPT_RT=3Dy.  The PREEMPT_RT configurations were build-tested only=
-=2E
->>> No runtime PREEMPT_RT stress test or livelock validation was
->>> performed.
->>>
->>> THP=3Dy is unchanged: the .text sections of mm/filemap.o,
->>> mm/readahead.o and mm/shmem.o are byte-identical before and after the=
-
->>> series (md5 equal, 45896, 7139 and 35314 bytes).  With THP=3Dn and LF=
-=3Dn
->>> mm/filemap.o and mm/readahead.o stay identical (44584 and 6259 bytes)=
-
->>> and every function in mm/shmem.o keeps its size; the only difference
->>> there is one dead argument load that the folded-out
->>> mapping_set_large_folios() call leaves behind, so the section keeps
->>> its 29778 bytes while its md5 does not match.
->>>
->>> In the new LF=3Dy, THP=3Dn configuration mm/shmem.o keeps its size as=
- well,
->>> 48 bytes shorter at 29730.  That difference is not from 3/3: 40 of th=
-e
->>> bytes are shmem_writeout(), which shrinks because 2/3 turns
->>> split_folio_to_list() from an inline -EINVAL stub into a real call, a=
-nd
->>> the other 8 are the padding in front of the following function; the
->>> same 29730 bytes appear with 2/3 alone, and 3/3's own shmem hunk
->>> changes no function size.  The new call is unreachable in this
->>> configuration anyway, since shmem_alloc_and_add_folio() still forces
->>> order 0 without THP.
->>>
->>> Where the generated code really changes is the allocation policy:
->>> mm/readahead.o grows by 880 bytes of .text (6259 to 7139) and
->>> mm/filemap.o by 134 (44584 to 44718).  nm -u mm/folio_split.o lists n=
-o
->>> anon, pmd or khugepaged symbols.
->>>
->>> Runtime, x86_64, 4K pages, THP=3Dn, QEMU/KVM, on a 64K-block XFS imag=
-e
->>> (mkfs.xfs -b size=3D64k -s size=3D4k), with kprobes on
->>> filemap_alloc_folio, filemap_add_folio and __folio_split:
->>>
->>>   - writing 64M: 84 allocations - 59 at order-8, 5 at order-7, 5 at
->>>     order-6, 5 at order-5, 10 at order-4, i.e. exactly 64M;
->>>   - reading the same 64M back after drop_caches: 72 allocations,
->>>     62 at order-8, 1 at order-7, 5 at order-6, 4 at order-4;
->>>   - truncating 1M to 700K: one __folio_split, landing at order-4,
->>>     which is the min_folio_order XFS asked for; order-0 never appears=
-
->>>     in any of the three phases;
->>>   - tmpfs writing 32M: 8192 shmem_alloc_folio calls, all order-0;
->>>   - shmem write vs F_SEAL_GROW, reproducible as: memfd_create(),
->>>     ftruncate() to exactly 4096 bytes, F_ADD_SEALS with F_SEAL_GROW,
->>>     then a single pwrite() of 8192 bytes at offset 0, comparing the
->>>     syscall's return value.  It returns 4096, the same as the
->>>     pre-series THP=3Dn kernel.  A THP=3Dy kernel returns -EPERM here,=
- and
->>>     so did the LF-only build before shmem's mapping was put back
->>>     behind THP; that -EPERM is pre-existing behaviour of THP kernels,=
-
->>>     this series neither introduces it nor extends it to other
->>>     configurations.
->>>
->>> Same image on the pre-series kernel, for reference: it fails to mount=
-
->>> with -ENOSYS before any of the above can run.  The whole probe was
->>> re-run on the final revision of the series with identical numbers.
->>>
->>> 4. What this turns on for existing filesystems
->>>
->>> LF=3Dy makes the existing opt-in take effect for every filesystem tha=
-t
->>> already asks for large folios, and that list is not ext4 only: ext4,
->>> xfs, btrfs, f2fs, fuse, afs, erofs, nfs, cifs and zonefs all call
->>> mapping_set_folio_order_range() or mapping_set_large_folios() from
->>> their inode or superblock setup, unconditionally, today.  Those paths=
-
->>> run on any THP=3Dy kernel; the new configuration is only THP=3Dn with=
-
->>> LF=3Dy.  With THP off the ceiling is PREFERRED_MAX_PAGECACHE_ORDER,
->>> which stays at order 8.
->>>
->>> On the tested 4K-page configuration, 4K-block ext4 gets min order 0
->>> and max order 8, while 64K-block XFS gets min order 4.  Btrfs derives=
-
->>> both ends from the mkfs sectorsize and nodesize.  A THP=3Dy kernel ke=
-eps
->>> the order-9 ceiling (HPAGE_PMD_ORDER) it has today on 4K pages.
->>>
->>> shmem keeps its THP dependency: its mapping is only marked large-foli=
-o
->>> capable when THP is enabled, because shmem_alloc_and_add_folio() stil=
-l
->>> forces orders to zero without it.  This matters beyond cosmetics.
->>> generic_perform_write() sizes its write chunk from
->>> mapping_max_folio_size() and passes that length to ->write_begin()
->>> before clamping it to folio_size(), and shmem_write_begin() rejects
->>> pos + len > i_size for F_SEAL_GROW.  On a 4K memfd sealed with
->>> F_SEAL_GROW, an 8K write at offset 0 returns 4096 on the pre-series
->>> THP=3Dn kernel and -EPERM on a THP=3Dy kernel; advertising order 8 wh=
-ile
->>> allocating order 0 reproduced the -EPERM on an LF-only build.  Tying
->>> shmem's policy to LARGE_FOLIO means the allocation, swap and split
->>> sides together, which is a separate series.
->>>
->>> 5. What is not covered
->>>
->>> Since PREEMPT_RT is the motivation, the RT side needs to be explicit.=
-
->>> The freeze-to-xarray-update window in __folio_freeze_split_file() is
->>> the fourth freeze site named by Matthew Wilcox in the RT livelock
->>> thread started by Dong Hui
->>> (<c2ff0c66422c4e2d869499a1186ff0ae@xiaomi.com>):
->>>
->>>     There's also __folio_freeze_split_file().  I know PREEMPT_RT
->>>     disables TRANSPARENT_HUGEPAGE at the moment, but hopefully that
->>>     restriction will be lifted.
->>>
->>> This series does not fix that problem and does not claim to be
->>> RT-safe.  It only makes a code path that already exists on THP kernel=
-s
->>> reachable in a configuration that has no THP, which is the same
->>> exposure Kairui described in 06/17 as "should be fixed generically".
->>> One detail that may matter if a reader-side fix is chosen: the
->>> function already holds the xarray lock until the folio is no longer
->>> frozen and visible, since folio_ref_unfreeze() happens before
->>> xas_unlock_irq(), so a generic fix of that shape would cover this pat=
-h
->>> without touching it.
->>>
->>> Also not tested here: the migration, memory-failure and madvise split=
-
->>> entries at runtime (only truncate was exercised end to end), arm64
->>> with 64K pages, nommu, KASAN and lockdep, xfstests, and the btrfs
->>> order range.
->>>
->>> 6. Questions
->>>
->>> (a) Non-THP split accounting.  count_mthp_stat() is a no-op without
->>> THP, so in an LF-only build a file split updates no counter at all an=
-d
->>> THP_SPLIT_PAGE does not even appear in /proc/vmstat.  I have a
->>> follow-up patch that gives the file path its own counter.  Would you
->>> rather see a new vmstat item, an existing one reused, or nothing?
->>>
->>> (b) Should XFS select LARGE_FOLIO itself?  Three lines of
->>> "select LARGE_FOLIO if MMU" in fs/xfs/Kconfig make 64K-block XFS
->>> mountable on a THP=3Dn kernel with no manual configuration; I built s=
-uch
->>> a kernel and mounted the 64K image.  The cost is mm/folio_split.o: 3.=
-2K
->>> of .text in a THP=3Dn build, code that every THP=3Dy build already ca=
-rries,
->>> paid also by XFS builds that will never use a block size above the pa=
-ge
->>> size.  Kconfig cannot express "only when a 64K filesystem is mounted"=
-=2E
->>> I left it out because it changes default coverage for a decision XFS
->>> maintainers should make, but I can add it as 4/4 if that is preferred=
-=2E
->>>
->>> Comments welcome.
->>>
->>> Fang Xieyan (3):
->>>   mm: move folio split code into mm/folio_split.c
->>>   mm: build file-backed folio splitting with CONFIG_LARGE_FOLIO
->>>   mm: enable filesystem page-cache large folios without THP
->>>
->>>  MAINTAINERS                |   1 +
->>>  fs/xfs/xfs_super.c         |   2 +
->>>  include/linux/huge_mm.h    |  60 ++-
->>>  include/linux/page-flags.h |   5 +-
->>>  include/linux/pagemap.h    |  17 +-
->>>  mm/Kconfig                 |  19 +
->>>  mm/Makefile                |   1 +
->>>  mm/folio_split.c           | 969 +++++++++++++++++++++++++++++++++++=
-++
->>>  mm/huge_memory.c           | 920 -----------------------------------=
-
->>>  mm/internal.h              |   1 +
->>>  mm/shmem.c                 |  11 +-
->>>  11 files changed, 1054 insertions(+), 952 deletions(-)
->>>  create mode 100644 mm/folio_split.c
->>>
->>>
->>> base-commit: b024a51b0184b1efb6f55b11aaf7b15a490a6307
->
->
->
->
-> -- =
-
-> Best Regards,
-> Yan, Zi
-
-
-Best Regards,
-Yan, Zi
+T24gTW9uLCAyMDI2LTExLTA5IGF0IDIzOjAwICswMTAwLCBEYXZpZCBIaWxkZW5icmFuZCAoQXJt
+KSB3cm90ZToNCj4gT24gMTEvOS8yNiAyMDoxNSwgU2hpdmFuayBHYXJnIHdyb3RlOg0KPiA+IGNs
+ZWFyX2NvbnRpZ19oaWdocGFnZXMoKSBjbGVhcnMgdGhlIHdob2xlIHJhbmdlIGF0IG9uY2UgdW5k
+ZXINCj4gPiBwcmVlbXB0aWJsZSBtb2RlbHMuIE90aGVyd2lzZSBpdCBjbGVhcnMgUFJPQ0VTU19Q
+QUdFU19OT05fUFJFRU1QVF9CQVRDSA0KPiA+IHBhZ2VzIGF0IGEgdGltZSwgd2l0aCBhIGNvbmRf
+cmVzY2hlZCgpIGluIGJldHdlZW4uIFRoZSBiYXRjaCBpcyAzMk1CIGlmDQo+ID4gdGhlIGFyY2hp
+dGVjdHVyZSBkZWZpbmVzIGNsZWFyX3BhZ2VzKCksIGFuZCBvbmUgcGFnZSBvdGhlcndpc2UuDQo+
+ID4gDQo+ID4gU2luY2UgY29tbWl0IDdkYWRlYWE2ZTg1MSAoInNjaGVkOiBGdXJ0aGVyIHJlc3Ry
+aWN0IHRoZSBwcmVlbXB0aW9uDQo+ID4gbW9kZXMiKSwgYXJjaGl0ZWN0dXJlcyB0aGF0IHN1cHBv
+cnQgbGF6eSBwcmVlbXB0aW9uIG9ubHkgb2ZmZXIgdGhlDQo+ID4gZnVsbCwgbGF6eSBhbmQgUlQg
+cHJlZW1wdGlvbiBtb2RlbHMsIGFsc28gd2l0aCBQUkVFTVBUX0RZTkFNSUMuIHg4NiBpcw0KPiA+
+IG9uZSBvZiB0aGVtLCBhbmQgaXQgaXMgdGhlIG9ubHkgYXJjaGl0ZWN0dXJlIHRoYXQgZGVmaW5l
+cw0KPiA+IGNsZWFyX3BhZ2VzKCkuIFNvIHRoZSAzMk1CIGJhdGNoIGlzIG5ldmVyIHVzZWQ6IHdo
+ZW5ldmVyDQo+ID4gY2xlYXJfY29udGlnX2hpZ2hwYWdlcygpIHJ1bnMgdW5kZXIgYSBjb29wZXJh
+dGl2ZSBtb2RlbCwgdGhlIGJhdGNoIGlzDQo+ID4gb25lIHBhZ2UuDQo+ID4gDQo+ID4gTWFrZSB0
+aGF0IGV4cGxpY2l0LiBDbGVhciB0aGUgd2hvbGUgcmFuZ2Ugd2hlbiBDT05GSUdfUFJFRU1QVElP
+TiBpcw0KPiA+IHNldCwgYW5kIG9uZSBwYWdlIGF0IGEgdGltZSB3aXRoIGNvbmRfcmVzY2hlZCgp
+IGluIGJldHdlZW4gb3RoZXJ3aXNlLg0KPiA+IERyb3AgUFJPQ0VTU19QQUdFU19OT05fUFJFRU1Q
+VF9CQVRDSCwgd2hpY2ggaGFzIG5vIG90aGVyIHVzZXJzLg0KPiA+IA0KPiA+IFBSRUVNUFRfRFlO
+QU1JQyBrZXJuZWxzIGFsc28gaGF2ZSBDT05GSUdfUFJFRU1QVElPTiBzZXQsIGFuZA0KPiA+IGNv
+bmRfcmVzY2hlZCgpIGRvZXMgbm90aGluZyBvbiBhbnkgb2YgdGhlc2Uga2VybmVscy4gU28gYSBi
+dWlsZC10aW1lDQo+ID4gQ09ORklHX1BSRUVNUFRJT04gY2hlY2sgaXMgZW5vdWdoLCBhbmQgcHJl
+ZW1wdF9tb2RlbF9wcmVlbXB0aWJsZSgpIGlzDQo+ID4gbm90IG5lZWRlZC4NCj4gPiANCj4gPiBO
+byBmdW5jdGlvbmFsIGNoYW5nZSBpbnRlbmRlZC4NCj4gPiANCj4gPiBTdWdnZXN0ZWQtYnk6IERh
+dmlkIEhpbGRlbmJyYW5kIDxkYXZpZEBrZXJuZWwub3JnPg0KPiA+IFJldmlld2VkLWJ5OiBQZWRy
+byBGYWxjYXRvIDxwZmFsY2F0b0BzdXNlLmRlPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFNoaXZhbmsg
+R2FyZyA8c2hpdmFua2dAYW1kLmNvbT4NCj4gPiAtLS0NCj4gPiANCj4gDQo+IFRoYW5rcywgSSds
+bCB3YWl0IGEgYml0IGZvciBtb3JlIHJldmlldyBiZWZvcmUgYXBwbHlpbmcuDQo+IA0KPiBSZXZp
+ZXdlZC1ieTogRGF2aWQgSGlsZGVuYnJhbmQgKEFybSkgPGRhdmlkQGtlcm5lbC5vcmc+DQoNCg0K
+VGhhbmtzLCBEYXZpZCwgZm9yIHRoZSByZXZpZXcuDQoNCk9uY2UgdGhpcyBpcyBmaW5hbCwgSSds
+bCB3b3JrIG9uIHRoZSBuZXh0IHZlcnNpb24gb2YgdGhlIGJhdGNoIGNvcHkNCmluIGZvbGlvX21j
+X2NvcHkoKSBbMV0uIDopDQoNClsxXSBodHRwczovL2xvcmUua2VybmVsLm9yZy9saW51eC1tbS8y
+MDI2MTAxOS1iYXRwYWdlY29weS12Mi0xLWQ3NWU3ZDBkZmFhZUBhbWQuY29tLw0KDQpSZWdhcmRz
+LA0KU2hpdmFuaw0K
 
