@@ -1,63 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BAD160711C4
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 07:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604D7607623A
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 07:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=RelAKPru
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vlqCJjlJ
 Received: by kanga.kvack.org (Postfix)
-	id B38106B05B8; Tue, 10 Nov 2026 02:45:11 -0500 (EST)
+	id 62EB06B05BB; Tue, 10 Nov 2026 02:45:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0FBC6B05BA; Tue, 10 Nov 2026 02:45:11 -0500 (EST)
+	id 5DF536B05BC; Tue, 10 Nov 2026 02:45:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4C586B05BB; Tue, 10 Nov 2026 02:45:11 -0500 (EST)
+	id 51D016B05BD; Tue, 10 Nov 2026 02:45:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CD7E6B05B8
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:45:11 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EEC7F4082E
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:45:10 +0000 (UTC)
-X-FDA: 85418423580.27.ACB561A
-Received: from mta0.migadu.com (out-231.mta0.migadu.com [91.218.175.231])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B333B14000D
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:45:08 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RelAKPru;
-	spf=pass (imf09.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.231 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794296709;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3dI0t/SwdqvYchxdAM18dF6Ej68UZ7/5g2MyxsU/FwM=;
-	b=MK1dlbecH90w/Ghi7yagQSA8BsT7FbmApewWO/JmRG4tW/2C+BxNGwu3hM/zJnV6ybYuQD
-	4ndoYW7AYoLqGyL2wbtakXXS7h05MczUiNg9aT1Adx/u6DgU70Sjtc5wdAMAFHP+hJuKvO
-	tY+qZ/N9ZhgfKx/bUZh3cK8rLVwC4I4=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RelAKPru;
-	spf=pass (imf09.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.231 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 323006B05BB
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:45:27 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 970351C42B4
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:45:26 +0000 (UTC)
+X-FDA: 85418424252.28.0B173A6
+Received: from mta0.migadu.com (out-238.mta0.migadu.com [91.218.175.238])
+	by imf25.hostedemail.com (Postfix) with ESMTP id EFE7FA000D
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:45:22 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vlqCJjlJ;
+	spf=pass (imf25.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.238 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794296709;
-	b=ZSUnOuEGMecQz1EIDgkRSluBBJfn4jZeFRtMK8qm8nYZHoSAsUq+7uHl6kattcX1gpwrvX
-	clOBGzE6Fm7KB/7hsVGYEXbRgLVv16x2gWOVRFPoc7JRxf2H87FC6d6Cr5DeipxsLlmAvn
-	osxfy4bJ0B0v7HivfE0Iy7EQU8p0Djs=
+	t=1794296725;
+	b=PTSeSqj0P/cQmZoiffm78H437lYVp+kopkACN23lxdzTcdXvsmLGp7wZwLYgar8brLbJKO
+	LI6EVkU7CFyzK5lywMDNVi70s+J1hhTOJTQrbljSNHdgwrVgZJK5L4n5eKq6W5Jq3sJs5i
+	FB0KWP0Tdz9FEUz7qgI5sC5XAA+RU3U=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vlqCJjlJ;
+	spf=pass (imf25.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.238 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794296725;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bYjIYJm+n4nfDEAiZsWWktm7zzoyMcwgpbOm01w6spo=;
+	b=rhfrftvfZ+4EZ5r8sc4iJeX5+BH2ICx4n4f1y3AxgXyppesUKC0Mesxhsx8IuAqzj+WeG6
+	V2mf7cNHiYOG6OvDwN4Obn7me7lGBuMprIuWB3+aoSNBlnf+dIVZWJWymmueomtxno8G0N
+	NdGM9Liim6HQbpIzX0665/InVZ2pZ3o=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=4FYYcIMsWui5FEtbJc216IVCEEljsCSq2dMO0ldq0m0=;
+DKIM-Signature: a=rsa-sha256; bh=eY4VzD6wuof/JGdxP9nVKDJYmUFOxcoqpj+Y4Rp/P/w=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794296707; v=1; x=1794901507;
- b=RelAKPruwzUF0dmqfLH7UcqhLAHJBe4St9VpbqdmnCc+DYgKLU4RMGWOyVIbsVjDgG4G2OVb
- VfQQHxevQ0ZlZjAmk2Fd30hEHJEkcHfFKzBe+fGwHqlqKEe6F6+Z0VD4NqJ53KFlwtWkgANbt2P
- e5YK62pI/ktysaItN4T5S29s=
+ t=1794296721; v=1; x=1794901521;
+ b=vlqCJjlJyhHO7JNbh8wajhkg5NO2nXDKM909lNOFUfkvgpW5VMjfwx25/Ij7r4IAoc3qN9jO
+ pvKoFU0KTLNqAH5FS6p7MEbW8dboYwgKqMDNyHnEDT077oFgIzFKurSY4FboJMkAIQaAG2+6jjm
+ Wzn+O01jdKSBSvqiJwnfISLo=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 0f38bc380dfc5c8d;
-	Tue, 10 Nov 2026 07:45:05 +0000
-X-Mizu-Trace-ID: 0f38bc380dfc5c8d
+Received: by mta10.migadu.com with ESMTPS id d048f83d76d25cf6;
+	Tue, 10 Nov 2026 07:45:20 +0000
+X-Mizu-Trace-ID: d048f83d76d25cf6
 X-Migadu-Flow: FLOW_OUT
 From: "Xu Xin (vivo)" <xu.xin@linux.dev>
 To: xu.xin@linux.dev
@@ -77,28 +76,28 @@ Cc: akpm@linux-foundation.org,
 	tujinjiang@huawei.com,
 	vbabka@kernel.org,
 	xiao.wang@vivo.com
-Subject: [PATCH 1/4] ksm: add only_merge_zero_pages to merge only empty anonymous pages
-Date: Tue, 10 Nov 2026 15:44:48 +0800
-Message-Id: <20261110074451.220524-1-xu.xin@linux.dev>
+Subject: [PATCH 2/4] ksm: skip rmap_item allocation for non-zero pages under only_merge_zero_pages
+Date: Tue, 10 Nov 2026 15:44:49 +0800
+Message-Id: <20261110074451.220524-2-xu.xin@linux.dev>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261110074312.219847-1-xu.xin@linux.dev>
+In-Reply-To: <20261110074451.220524-1-xu.xin@linux.dev>
 References: <20261110074312.219847-1-xu.xin@linux.dev>
+ <20261110074451.220524-1-xu.xin@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rfy4modeyo8opkmuiwkq57mqo57ryidw
-X-Rspamd-Server: rspam01
+X-Stat-Signature: gkq7df7ozucdz3x5ixx7sm3uwg59nabb
+X-Rspamd-Queue-Id: EFE7FA000D
 X-Rspam-User: 
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: B333B14000D
-X-HE-Tag: 1794296708-448551
-X-HE-Meta: U2FsdGVkX1/4H3+rnMjuvjc+p2IEWPlUbJAI7UxGsfx+SLvAs6d1KPsLmTrZIF9D4sdMj7ENWRqUU1/xj7zBiICmLhC5pGyIUbTrL9DkTkQ+dQtT0L2e7lnKh37W+H4WyGPXeorhH+O6OZL5rNpdkoq85Fk0QsEoKRe5YmlpSip1XWGUY64zyQK5z8ZNxjwgd4d/XZyqas9pXmStqTt7+K4XSTDNhL+DfL7TYTtBeaFu0Du9d5CmuzORoyOmijCwb4Vx4umfa2l6sMJgkf09EaKsh89tpN88N3vrnP+A6naKlc4JJYW8rxLfxzjJBil5W8C3pbe9msYHFCCYeGr8ByzIYHgDBn845yJPT23bDHjEqAaNbtHNarFVvsEyoHvYdxAOOPrVIsRMevb9jMRCznaG2tRG/DsWbcmYw461nu4B4+ISW6erjsLkiP0LnX5RXdM5N9DxXGX1i5hyNmPJUwBiuNeLr4kZhUZOYdZ9xr95WyMOFnk842Q7DqZZSV3kW8mvuGyCuts7Yv0ITK/LgGmdbvKeGa8Wkdtc8L91YEjT3j9hhmWfX8seE9CZOJx/4EZNFd7RIyML8lKkcVsgCDpQtigEMPGAqb9nYlf+Hs2oyhGNACihWfzE2gEsz1DYBNfPyeM6sgv4czpwUISwHl0wgrOv7gv/zqpKBuBMo3JEgyN650L6+u0LbS8KSERgrGjSeO6g8ofIb7q4MFVwl+lAtav/y8GWW6Mms2oV/NpHY6qWpnYctUdpGGe1wUsAXU196St0hAr5tb+b/Pjxj5fRWpuWMQ+pWgu5DP6+mbMhp6ZbdLhGa7VMW5Kvq3Mk/c1I/VSrCvt38bVfhuDUG9Ya4LzTI13bi/RMvDKlY1KeYjNzDH/YbaWgdNL9svG/KEdprUC/me43ZCxVEIINlrUAD4SQFgKaFcpXfJu+WCrM8n+EBVl7QxTyuTg6av2EQQwJ++jJWFkXuolhfXf
- dCPLo+bT
- QiDLAyTVHyf02FJbk2HdR9XtZemE55xOd9c+BcL+x5ObgrAVdtGdxTzr5s0FJY/qhXny8BhwrYGpLPL0ECSmW6ZKgL9G5gVsgzDJVz/3XINfJe5+ta26QJJdWLfWrjI5peEsNacYeFNxfYnoeuxxm9XBfVm5L7zw9zUeGhn7tl3x7B5EdXEP0poDogetM5a542nRwYH4bYxrfuMU5ah797aB2DrcM01/Er6cgov1mKBQy7+olfPrPxu2goFnqHI826r5y+lPaFPOUclDr5bZaV5OZX6KXXSU3EzwuKuZqYk0LzEGimj3hGuo/3aBIlzkNnZFXLvJA/FxBQqw2TJW340llwpvqRaUDEFWP5OJz1XnzigiTI4kr0Z3z4l84psCrgtHiAighpj/aTa1GTWMMHWyJHPJasioPXZBU
+X-HE-Tag: 1794296722-16840
+X-HE-Meta: U2FsdGVkX18Behtq/Uhs1gvb0VePdjPZMmpuACxwxZTLcTKsHE3psaiy3H4gyb8lfzzPmEeasjQvIwJmk6Ao7Kh9zoyRTWHvL14Ih+17eNhnD2FnTF6/CtdGDYnDpQ/PwUR5CMmDagVTv1Ae37sUyqZb7zfvIwsj4R0iUagOpBMJJkxt6VNxzOyy7UY2N0yr5uLh8Godv6C5LGBPTEMZT5XaVvtivOQsHcbGoOhovMIgal7Mk9Xqgg7YPAcMRwGK3jy18QzKJZnsO+ToK6WOWrRmMwSoXWa4oMeFNzs92+qCe5OH7jXFdtRHotyZiOlclRXzNh4Ec+gFL6aOMYdOQKOaGkPeal+d6i+6kyrPTHzWjnZyfaYkWMRoa6QG78K01ZnhZqjo4lfib7LLTCvUxaQCM4kfjeDa4nqneRxPkxRhYIfJAlbdF81ne52GB/pGyYA3QnI9R5buJe4R/wJzv6JlBwu+3aSXJm7XmojngXruPIcP9CxsddgduPzZgDFeWp0T8xs+PJnbAdR7E4tNTnk6h5j3odzW0mYnfIJZmWk+bv4+or/QAyNl7/gceq3whAvkrlMPGHar9VfPqmaqQDdirpcjWNvKZqGXX498iy604T+36OJq3BY0IzugxEUjNIhoQJ7PISmsxQ4aOjMMhbhBrCvnMlgGfLjJorr9pUhFO3BoA0KGvDZpUgc54L755sQpw/oH4r18UPeS/7oZqTFVej1LZx70wPgvK2TmETgPK9hjRlMxtrx9GGXIDyiWUx9XJJ0qfVczj8wZ81482CBBEuEo6RFM4yktaVdZMsw8xspMYsBIlGNT0ntQySLoyNdJ8bgQ2vJqiy082WSmMns4xYiKpDDxZhPkhWJA4z/mO0LKNHS9avhS2mMC3FCeG4Jp4THWj3TuJQ2oanZcZdMnRpf+cJSG/8GoiziIcaB+RuWJVanaW4tJ6MEYKCBwiRMLQCogC26MRCxNOSc
+ 16a6UJKB
+ L1W19Al2ODmxu6yoNK6oP7D8xQVpNaCOLsLRfHdvVjgLlpmWTpoIn88zeCEaAZoOFYsdx9gceHymE0AJoE8zO74r63VivRx5FxE8GhWTnczTA6XBt3DutQnt/y6z/NhmUzNY2LnFhCvuZxyujMVtvpK8xwrpzDSxM0BPfJ6pbKteb0NndW/vsKC8U2lZ+dqpZpUwWx0kVgiiYx4t7KvrSxhYIkpS0c1rCBglmzfSybDFb/T1ClSw1PZTQBsFkdzl8mwpxs8uOVmFfM/W8v/T8XtqgWt6LIo3bo51BDFXT0G113u4cK+4GB9tII09hN9x4HCUCY27AHomw5+1meyaEGFUaxfeldF48EIwdSeGF1NG71Y63kjtAh4WBpQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,227 +106,154 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add a new sysfs attribute, /sys/kernel/mm/ksm/only_merge_zero_pages,
-which, when enabled, makes ksmd merge only empty (zeroed) anonymous
-pages with the kernel zero page and skip the stable and unstable trees
-entirely for pages that carry data.
+When only_merge_zero_pages is enabled, ksmd only ever merges empty
+(zeroed) anonymous pages with the kernel zero page. A page that carries
+data can never be merged, yet the current code still allocates an
+rmap_item for it in scan_get_next_rmap_item() before cmp_and_merge_page()
+decides to skip it.
 
-The attribute requires use_zero_pages to be 1, and the two are kept
-consistent by symmetric constraints: it cannot be enabled while
-use_zero_pages is 0 (-EINVAL), and use_zero_pages cannot be turned
-off while it is active (-EBUSY). Both store handlers take
-ksm_thread_mutex around their check-and-set so that a concurrent write
-to the two attributes cannot leave use_zero_pages=0 and
-only_merge_zero_pages=1, a state in which ksmd would scan and checksum
-pages but never merge any. The new attribute can be changed at any time
-and is only effective for pages merged after the change.
+On workloads with a large amount of non-mergeable anonymous memory this
+is a real cost: every scanned non-zero page pays for an rmap_item
+allocation, and the rmap_items accumulate in the per-mm pending list.
+For example, a MySQL instance with hundreds of gigabytes of anonymous
+memory (mostly buffer pool pages that cannot be merged) ends up with
+ksmd creating rmap_item metadata for each candidate page; the metadata
+overhead can wipe out any gain from the zero-page merging and even turn
+the net benefit negative.
 
-Benefits in three aspects
-=========================
-- Memory saving:
-  On memory-constrained systems such as Android and embedded devices,
-  zero-filled anonymous pages are the largest source of duplicate
-  anonymous memory. They are produced by userspace allocators: the
-  zeroing of freshly allocated Java objects and buffers in the ART heap
-  (new byte[]/int[], Bitmap buffers), calloc/memset in native code, and
-  preallocated media buffers. Merging them with the kernel zero page
-  frees a significant amount of physical memory, which matters as DRAM
-  costs keep rising. With this enabled, we measured 100MB–300MB saving
-  tested with several popular applications on aarch64 (Android).
+Add should_skip_non_zero_page(), called in scan_get_next_rmap_item() before
+get_next_rmap_item(), which, when only_merge_zero_pages is enabled,
+checks whether the candidate page is all zeros. A non-zero page is
+skipped entirely: no rmap_item is allocated for it, and any stale
+pending rmap_items below it are freed (as get_next_rmap_item() would).
+The page is reported back to ksm_do_scan() as ERR_PTR(-EAGAIN), which
+counts it as scanned and continues, so the pages_to_scan budget is
+preserved.
 
-- CPU overhead reduction:
-  Merging only zero pages also reduces the overhead of ksmd. A page that
-  is not merged with the zero page carries data and can never be merged
-  with the zero page, so there is no point in searching the stable tree
-  or inserting it into the unstable tree for it. Skipping those tree
-  operations for data-bearing pages reduces both the CPU time and the
-  rhashtable memory footprint of ksmd, which makes zero page merging
-  practical on low-resource devices where full KSM scanning would be too
-  expensive.
+The all-zero check (pages_identical() against the kernel zero page) reads
+the whole page. For a non-zero page this is a net win: the extra page read
+is cheaper than the rmap_item allocation and the stable/unstable tree
+operations it would otherwise trigger.
 
-- Security:
-  Finally, this shrinks the KSM side-channel attack surface: only zero
-  pages are ever merged, so the sharing status of data-bearing pages is
-  no longer observable through KSM timing side channels.
-
-Note
-=====
-- Suitable for Android, embedded and low-memory devices, where zero-page
-  deduplication is wanted but full KSM scanning is too costly, and reduced
-  KSM side-channel exposure is desired. Many handset vendors may prefer
-  this knob, which can be used as a default fallback policy.
-
-- Not suitable for server and virtualization workloads containing many
-  non-zero duplicate pages, where vanilla KSM provides better memory
-  savings.
+A page that is zero now but is written before cmp_and_merge_page() runs
+is still handled correctly, because the checksum-based decision in
+cmp_and_merge_page() (added by the previous patch) is the authoritative
+one.
 
 Signed-off-by: Xu Xin (vivo) <xu.xin@linux.dev>
-Reviewed-by: Huan Yang <link@vivo.com>
-Cc: Wang Xiao <xiao.wang@vivo.com>
+Co-developed-by: Jinjiang Tu <tujinjiang@huawei.com>
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
 ---
- Documentation/admin-guide/mm/ksm.rst | 40 ++++++++++++++++-
- mm/ksm.c                             | 67 ++++++++++++++++++++++++++++
- 2 files changed, 106 insertions(+), 1 deletion(-)
+ mm/ksm.c | 82 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 82 insertions(+)
 
-diff --git a/Documentation/admin-guide/mm/ksm.rst b/Documentation/admin-guide/mm/ksm.rst
-index c329ca747b8c..7c2cbac4b020 100644
---- a/Documentation/admin-guide/mm/ksm.rst
-+++ b/Documentation/admin-guide/mm/ksm.rst
-@@ -128,10 +128,48 @@ use_zero_pages
-         KSM for some workloads, for example if the checksums of pages
-         candidate for merging match the checksum of an empty
-         page. This setting can be changed at any time, it is only
--        effective for pages merged after the change.
-+        effective for pages merged after the change. Turning this off
-+        while ``only_merge_zero_pages`` is enabled fails with EBUSY;
-+        clear ``only_merge_zero_pages`` first.
- 
-         Default: 0 (normal KSM behaviour as in earlier releases)
- 
-+only_merge_zero_pages
-+        specifies whether ksmd should only merge empty (zeroed)
-+        anonymous pages, with the kernel zero page, and skip the stable
-+        and unstable trees entirely for pages that carry data. This
-+        requires ``use_zero_pages`` to be 1; it cannot be enabled while
-+        ``use_zero_pages`` is 0, and ``use_zero_pages`` cannot be turned
-+        off while it is enabled (the write fails with EBUSY).
-+
-+        This is useful on memory-constrained systems (e.g. Android and
-+        embedded devices) where the main source of duplicate anonymous
-+        memory is zero-filled pages produced by userspace allocators
-+        (for example the zeroing of freshly allocated Java objects and
-+        buffers in the ART heap, ``calloc``/``memset`` in native code,
-+        and pre-allocated media buffers). Merging only those pages
-+        avoids the per-page cost of searching and inserting into the
-+        stable and unstable trees for data-bearing pages, which reduces
-+        the CPU and memory overhead of ksmd. It also shrinks the KSM
-+        side-channel attack surface, since only zero pages are ever
-+        merged and the sharing state of data-bearing pages is no longer
-+        observable through KSM.
-+
-+        - Suitable for: Android, embedded and low-memory devices, where
-+          zero-page deduplication is wanted but full KSM scanning is
-+          too costly, and reduced KSM side-channel exposure is desired.
-+          Many handset vendors may prefer this knob, which can be used
-+          as a default fallback policy.
-+
-+        - Not suitable for: Server and virtualization workloads containing
-+          many non-zero duplicate pages, where vanilla KSM provides better
-+          memory savings.
-+
-+        This setting can be changed at any time, it is only effective
-+        for pages merged after the change.
-+
-+        Default: 0 (normal KSM behaviour)
-+
- max_page_sharing
-         Maximum sharing allowed for each KSM page. This enforces a
-         deduplication limit to avoid high latency for virtual memory
 diff --git a/mm/ksm.c b/mm/ksm.c
-index 5e24b5ca8dc8..49f3728a3d03 100644
+index 49f3728a3d03..e641c37ee096 100644
 --- a/mm/ksm.c
 +++ b/mm/ksm.c
-@@ -295,6 +295,13 @@ static unsigned int zero_checksum __read_mostly;
- /* Whether to merge empty (zeroed) pages with actual zero pages */
- static bool ksm_use_zero_pages __read_mostly;
+@@ -2535,6 +2535,69 @@ static bool should_skip_rmap_item(struct folio *folio,
+ 	return true;
+ }
  
 +/*
-+ * When set, ksmd only merges empty (zeroed) anonymous pages with the kernel
-+ * zero page and skips the stable/unstable tree entirely for pages that carry
-+ * data. This requires ksm_use_zero_pages to be enabled.
++ * Determines whether a candidate page should be skipped entirely when
++ * only_merge_zero_pages is enabled, before an rmap_item is allocated for
++ * it.
++ *
++ * A page that is not all zeros carries data and can never be merged with
++ * the kernel zero page, so there is no point in allocating an rmap_item
++ * for it. Skipping it here avoids the rmap_item metadata cost that full
++ * KSM would otherwise pay for every non-mergeable page.
++ *
++ * @rmap_list: head of the per-mm pending rmap_item list
++ * @addr:      address of the candidate page
++ * @folio:     folio containing the candidate page
++ * @page:      the candidate page
++ *
++ * Returns true if the page should be skipped (and any stale pending
++ * rmap_items below @addr are freed), false if it should be processed.
 + */
-+static bool ksm_only_merge_zero_pages __read_mostly;
++static bool should_skip_non_zero_page(struct ksm_rmap_item **rmap_list,
++			     unsigned long addr, struct folio *folio,
++			     struct page *page)
++{
++	struct ksm_rmap_item *rmap_item;
 +
- /* Skip pages that couldn't be de-duplicated previously */
- /* Default to true at least temporarily, for testing */
- static bool ksm_smart_scan = true;
-@@ -2323,6 +2330,14 @@ static void cmp_and_merge_page(struct page *page, struct ksm_rmap_item *rmap_ite
- 
- 		if (!try_to_merge_with_zero_page(rmap_item, page))
++	if (!ksm_only_merge_zero_pages)
++		return false;
++
++	/*
++	 * Pages already merged by KSM are handled by cmp_and_merge_page();
++	 * do not skip them here.
++	 */
++	if (folio_test_ksm(folio))
++		return false;
++
++	/*
++	 * An all-zero page is exactly what we want to merge with the kernel
++	 * zero page; process it.
++	 */
++	if (pages_identical(page, ZERO_PAGE(0)))
++		return false;
++
++	/*
++	 * The page carries data: free any pending rmap_items that are below
++	 * it (they are stale, as get_next_rmap_item() would), and skip it so
++	 * no rmap_item is allocated for it.
++	 *
++	 * Compare the masked address, unlike get_next_rmap_item() which
++	 * compares the raw rmap_item->address (which may carry the
++	 * UNSTABLE/STABLE_FLAG bits). That is intentional: a pending
++	 * rmap_item at the same address as a non-zero page is stale and must
++	 * be freed here, not returned for processing.
++	 */
++	while (*rmap_list) {
++		rmap_item = *rmap_list;
++		if ((rmap_item->address & PAGE_MASK) > addr)
++			break;
++		*rmap_list = rmap_item->rmap_list;
++		remove_rmap_item_from_tree(rmap_item);
++		free_rmap_item(rmap_item);
++	}
++	return true;
++}
++
+ struct ksm_next_page_arg {
+ 	struct folio *folio;
+ 	struct page *page;
+@@ -2737,6 +2800,16 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+ 			if (tmp_page) {
+ 				flush_anon_page(vma, tmp_page, ksm_scan.address);
+ 				flush_dcache_page(tmp_page);
++
++				if (should_skip_non_zero_page(ksm_scan.rmap_list,
++						     ksm_scan.address, folio,
++						     tmp_page)) {
++					folio_put(folio);
++					ksm_scan.address += PAGE_SIZE;
++					mmap_read_unlock(mm);
++					return ERR_PTR(-EAGAIN);
++				}
++
+ 				rmap_item = get_next_rmap_item(mm_slot,
+ 					ksm_scan.rmap_list, ksm_scan.address);
+ 				if (rmap_item) {
+@@ -2839,6 +2912,15 @@ static void ksm_do_scan(unsigned int scan_npages)
+ 		rmap_item = scan_get_next_rmap_item(&page);
+ 		if (!rmap_item)
  			return;
-+
-+		/*
-+		 * A page that reached here was not merged with the zero page this
-+		 * round. Under only_merge_zero_pages we do not insert it into the
-+		 * stable/unstable trees.
-+		 */
-+		if (ksm_only_merge_zero_pages)
-+			return;
- 	}
- 
- 	/* Start by searching for the folio in the stable tree */
-@@ -3697,12 +3712,63 @@ static ssize_t use_zero_pages_store(struct kobject *kobj,
- 	if (err)
- 		return -EINVAL;
- 
-+	/*
-+	 * only_merge_zero_pages depends on use_zero_pages: refuse to turn
-+	 * the latter off while the former is active, so the two cannot
-+	 * silently diverge. Take ksm_thread_mutex so that this check-and-set
-+	 * is serialized against only_merge_zero_pages_store(), which reads
-+	 * ksm_use_zero_pages under the same lock.
-+	 */
-+	mutex_lock(&ksm_thread_mutex);
-+	if (!value && ksm_only_merge_zero_pages) {
-+		mutex_unlock(&ksm_thread_mutex);
-+		return -EBUSY;
-+	}
- 	ksm_use_zero_pages = value;
-+	mutex_unlock(&ksm_thread_mutex);
- 
- 	return count;
- }
- KSM_ATTR(use_zero_pages);
- 
-+static ssize_t only_merge_zero_pages_show(struct kobject *kobj,
-+					  struct kobj_attribute *attr, char *buf)
-+{
-+	return sysfs_emit(buf, "%u\n", ksm_only_merge_zero_pages);
-+}
-+static ssize_t only_merge_zero_pages_store(struct kobject *kobj,
-+					   struct kobj_attribute *attr,
-+					   const char *buf, size_t count)
-+{
-+	int err;
-+	bool value;
-+
-+	err = kstrtobool(buf, &value);
-+	if (err)
-+		return -EINVAL;
-+
-+	/*
-+	 * Take ksm_thread_mutex so that this check-and-set is serialized
-+	 * against use_zero_pages_store(), which reads ksm_only_merge_zero_pages
-+	 * under the same lock. Without it, a concurrent write to the two
-+	 * attributes could leave use_zero_pages=0 and only_merge_zero_pages=1,
-+	 * a state in which ksmd would scan and checksum pages but never merge
-+	 * any.
-+	 */
-+	mutex_lock(&ksm_thread_mutex);
-+	if (value && !ksm_use_zero_pages) {
-+		mutex_unlock(&ksm_thread_mutex);
-+		pr_warn_once("ksm: only_merge_zero_pages can only be enabled "
-+			     "when use_zero_pages is 1\n");
-+		return -EINVAL;
-+	}
-+	ksm_only_merge_zero_pages = value;
-+	mutex_unlock(&ksm_thread_mutex);
-+
-+	return count;
-+}
-+KSM_ATTR(only_merge_zero_pages);
-+
- static ssize_t max_page_sharing_show(struct kobject *kobj,
- 				     struct kobj_attribute *attr, char *buf)
- {
-@@ -4028,6 +4094,7 @@ static struct attribute *ksm_attrs[] = {
- 	&stable_node_dups_attr.attr,
- 	&stable_node_chains_prune_millisecs_attr.attr,
- 	&use_zero_pages_attr.attr,
-+	&only_merge_zero_pages_attr.attr,
- 	&general_profit_attr.attr,
- 	&smart_scan_attr.attr,
- 	&advisor_mode_attr.attr,
++		if (rmap_item == ERR_PTR(-EAGAIN)) {
++			/*
++			 * A non-zero page was skipped under
++			 * only_merge_zero_pages: it was examined but not
++			 * merged, so count it as scanned and keep going.
++			 */
++			ksm_pages_scanned++;
++			continue;
++		}
+ 		cmp_and_merge_page(page, rmap_item);
+ 		put_page(page);
+ 		ksm_pages_scanned++;
 -- 
 2.34.1
 
