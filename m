@@ -1,77 +1,80 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EDE3606A321
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 11:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CBC2606A339
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 11:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=EqAZ6bR2
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=i2Y39OAK
 Received: by kanga.kvack.org (Postfix)
-	id 8B5196B05C6; Tue, 10 Nov 2026 06:47:11 -0500 (EST)
+	id E822E6B05C7; Tue, 10 Nov 2026 06:47:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86D3A6B05C7; Tue, 10 Nov 2026 06:47:11 -0500 (EST)
+	id E5A466B05C8; Tue, 10 Nov 2026 06:47:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 691A46B05C8; Tue, 10 Nov 2026 06:47:11 -0500 (EST)
+	id D6FA66B05C9; Tue, 10 Nov 2026 06:47:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 35CE36B05C6
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A80B36B05C7
 	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 06:47:11 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DB533A858F
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:47:09 +0000 (UTC)
-X-FDA: 85419033378.24.1890424
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 35C31C055E
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:47:11 +0000 (UTC)
+X-FDA: 85419033462.28.04DD6C7
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 0D13618000A
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:47:07 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=EqAZ6bR2;
-	spf=pass (imf24.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 73920C0003
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:47:09 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=i2Y39OAK;
+	spf=pass (imf10.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794311228;
+	s=arc-20220608; t=1794311229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gRVW2SlXZrQJCF/A0kq7pS5b8flQ/Sh7jAI5q7A4ms4=;
-	b=6QN9QZf+rqnSlEyMb+N+lejnKX3m+GSMV8pFPveo3Yn6DpsfpxRdagyyLaYKrJ6jAcLUTl
-	sP6MTTisipvTCjOTyIIAwvJevrfhc1SWfQ/GI64gGUBsQcY1RXY/RLFke4U89HGFy9pBVu
-	ZRauOuPedTHn+hKSBp0tY9svxxD21Uc=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=hbY0RzxFM5S4ir9xTxtZ6iuWd15w11W3iqB+mvroyYQ=;
+	b=l4snLRhrKggrXoBh8K5d56rzqs4KWsRGvgVJVzKTBI74JfVRmfmOFAi67SbeDPqloRujtk
+	AljtiLYV6cspSNtaurZJfTIU+KIAxGiBE6A4K4+zI3n3ke6+pE9XnTlPWb4QYrW2NeQ79v
+	6bPFVqj3g1mj+lQfx17SvrKD/F+/6b8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794311228;
-	b=m3N+Kw5pnrS5NlISHOn6uafddPCxodWtK96vbYOA1+K06MNts0uwsOCCQ/Jl8+yFpiY9M5
-	deCRBlmC/Qhnu+KEvmcKWKt1QH6lpTVdaFGsU55qVOJEaEZXAfeRvmeemUKcygNYQE4xZh
-	zxL3lggbBeiS+VWmIjLqiRk6IPpKeS4=
+	t=1794311229;
+	b=G9mKk8mg4dZ9uIj89gON+mtDyBNAw+DLO6grzhXmKFwFEm00vVlvvIWAlq3Rn+r4BS9Cqc
+	6JbTZYTYl1oIYVIrEdcft8Of00SH6bc0KxVomd1MT5YTNwC/dWUfHQ6DFlZtV/ETiVeSbm
+	OOSlSeWVmbzla2V9sAu0yZq8jRwGfd8=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=EqAZ6bR2;
-	spf=pass (imf24.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=i2Y39OAK;
+	spf=pass (imf10.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=gRVW2SlXZrQJCF/A0kq7pS5b8flQ/Sh7jAI5q7A4ms4=; b=EqAZ6bR2kjWZmkur3br2mPpRhS
-	2JP2wKrtXb402ZPLJlwHk3CCE3gzUDouicoZk9sekNwOabrgL1jw4R75fMkmGeLPKB2atHPN9y4Y+
-	v4DhAzYggMrnFKCFfStatDp5v2wqf9e7bcaCVQIy9VS3c6S4VUy3CfGqCn7FqWLpYgPrtOfV2WmuJ
-	Sv/NfeQzZq5o9oo+ooVIXDs2TyzucOQypasuYjEc51IBubfNI25MF3qluglyLu8yLlA25N/doqRWt
-	1b/SyI0r57W9EzzzRzY3lJ72vSvubdpY2P6vAsNbn0KY7eVqgqR+QHxOFsPFaqIWns9NRc6mE87AH
-	cZSchDGg==;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=hbY0RzxFM5S4ir9xTxtZ6iuWd15w11W3iqB+mvroyYQ=; b=i2Y39OAKDD7hr3QUivUv78G+OL
+	n5jO35f1Bx7pUETtXw0IGi60mc3dkEEogbQC+IvFULrLl9/Y5Ima8+eCu+K/YEF0adnS2Fd3ylzqZ
+	nMpVWQFvUqQsbZrioEYskqKBn49/ZVgidB5CJXjSDAUOyEIle3yRnBXe9Pb/fKD+i4Obj7pkoHMa2
+	Fb3ftpWz2WS1KW2OP8Q1ugJTolMQrGbm2n0IIyYq12X9l7V//9LZeBk2qdFqF3INRBrtC0wx9KIRc
+	qjfQlPeFQ9+u1t5FFtljEPE6QikTu7Qk1QVbKDSo7tIQ3PKM7tkBE3n71ZlUfkfxtDGZiKFfRsdD1
+	A+sBEMaw==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1xQkJS-00CNTa-2O;
-	Tue, 10 Nov 2026 11:46:55 +0000
+	id 1xQkJB-00CNSj-2Z;
+	Tue, 10 Nov 2026 11:46:38 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Tue, 10 Nov 2026 03:39:29 -0800
-Subject: [PATCH v2 3/4] writeback: log the end of a slow writeback wait
+Subject: [PATCH v2 0/4] writeback: make slow writeback report more
+ actionable
+Date: Tue, 10 Nov 2026 03:39:26 -0800
+Message-Id: <20261110-writeback_stall_report-v2-0-9e0ed75074ca@debian.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-writeback_stall_report-v2-3-9e0ed75074ca@debian.org>
-References: <20261110-writeback_stall_report-v2-0-9e0ed75074ca@debian.org>
-In-Reply-To: <20261110-writeback_stall_report-v2-0-9e0ed75074ca@debian.org>
+X-B4-Tracking: v=1; b=H4sIAHMC82oC/3XNQQqDMBBA0auEWZuSxBrRVe9RRBIddagYmQTbI
+ t69VOiy2794f4eITBihFjswbhQpLFALkwnoJreMKKmHWoBRxmqtCvlkSuhd92hjcvPcMq6Bk9S
+ lKgvlbFVdLWQCVsaBXid8bzIBE8UU+H1+Nv2tP9L+IzctlfSD6nJfKZO74tajJ7dcAo/QHMfxA
+ aSccuq9AAAA
+X-Change-ID: 20261105-writeback_stall_report-170750a69946
 To: Alexander Viro <viro@zeniv.linux.org.uk>, 
  Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
  Julian Sun <sunjunchao@bytedance.com>, 
@@ -84,37 +87,38 @@ To: Alexander Viro <viro@zeniv.linux.org.uk>,
  Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>
 Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org, cgroups@vger.kernel.org, 
- Breno Leitao <leitao@debian.org>, kernel-team@meta.com
+ Breno Leitao <leitao@debian.org>, kernel-team@meta.com, 
+ stable@vger.kernel.org
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2451; i=leitao@debian.org;
- h=from:subject:message-id; bh=u2qEqJa97IMYQjXULEzv1cq2WuUThXMDMARYrLe/reE=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq8wQYnbNvAsZXal8d97AAOhUXQdWcdYAtPVoqf
- ThjeRURiG+JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCavMEGAAKCRA1o5Of/Hh3
- bWa8D/0Q8o7HtSBw541Vvwgp2xYsXuYm7Xe9cEoo452XKnUFKjgfFRwYCTsua/Gq/sgxlgGF+Cq
- QOfmimWUKd1DYxOycjuKFQQ6HC61zgJX5+Q9xOEyHk1Q0+ff5suDwfUHQnp70yn3Lq8N2oGImyv
- 32IjgGegUnsc/l/rYHnLDltFYVirWl2HMBviA4A76E9ouwWg7xAx5pS0ZFfwAsbxF/MqCy57Erc
- +ZfWJvaNxIMXKWX0pBTUpszVcjqHv/OYiyAbY36nLDRgBLqztr2TLgsxcwlEsakKS9gCKL6mTtb
- EIC9tgR84X6W2/V0RxxDLb3Pu2NOMiQcQ0p/pA3uYu1a2LWQFsPFW+nIh/iAIby8aml0cca8w27
- eHZ3YO1hATrFmzPBFWXj5nKh7X+j2FBgLGLTjcaE8j54Iuc2kMzlP9z6RY6+82tFyeDxG7i2ctg
- B/C06UYRYGBoYOXjAzjl2OIQu3UiaBgI4zZGkxkYVIvkZgD+Yv3zgOAhVMJAPOJIyysHe++yK+4
- L0HPoUprEbXv8i3s9rOdOYeliWgwXJ2ST5ix0KfVxqZTRqX2xqhnVZsf+V17azLTjMxkz60tSmS
- jf4la6GMq+tUhO3lBcQ/vTLkUEDK4zBMvUnC4rbXw3vfLzZJAkk+M9RFdcOvtDxLH7sbT660upR
- H8m2pgEYyG/IJ/w==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3450; i=leitao@debian.org;
+ h=from:subject:message-id; bh=tDJ++Af7+O4AhquRgYHiOK13KG8D1GnF3NPlto0zneA=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq8wQYtHhI/oKszB0e1xtawWAcoGeX226O8qce/
+ EKj6+dxdU+JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCavMEGAAKCRA1o5Of/Hh3
+ bcG2D/4rlCu3WQSAMkq9YS/yA/bsW3D4kFIaKGgigSHX02WG5qO6O7lisQ6Cjjtm8hR+xO6n4GN
+ L+23KZS954trl4EIRd9oh7zktc+8kMLZIbSDRd0ex1nDDkjxksbBSOP64TQsqt/ssLTPunD2Nie
+ v7qPb0OmBze/MtyLH/bw7IByqEaeLJVqjbfic0B2f4ndRUAN1DbcPxux+4DKcr2YzZlTwk9iuIe
+ FeESxWiJO2YRfG5ldvpsBeQBNybcNNc1s/aNFFJ8dpalx51+Flqnp4VWLXwlf5p7rzalWZYzElU
+ 0gr39q6oyyJ5PBZ6d96wvbbKyacaqiFLwsNVnXD8e7uj/bm6rnI4sd/bgGb90AHk55BXBA2cBoe
+ lD88KM7EqRjS8Xta14Ho5heYeHhyCA7ewxwpw9UJhjlTMAAOgTKi9n2tD96/1QMWFQE05zlFo0O
+ EYU//p7M5IPjyGMtbnsUCnr7QV7qsuxsduao+ZfKTZzPk2zkdkltXktVmTAoLKYCZSMUnJ7VvKj
+ FAEg9ukR6pmINzE+oB7kyiA2d5FUR8CAedZHQm2tiqiUmlmrtxr7Eema3X4VqVtssH27sb9W6zw
+ qcE5JHnXfNRCbsGF84qqxmhSxaIbAhHBcIUH0TogcVlCRPDs4YBKFPqurUjw+63soAv1h0eITCS
+ MxlTkeAwFFz7s0Q==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
-X-Rspamd-Server: rspam06
-X-Stat-Signature: kdz3iwn97mdxu7x3r5kog6869znru8cf
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 0D13618000A
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 3abuy6ek3f6b1pwichsfafruxng4ibx9
+X-Rspamd-Queue-Id: 73920C0003
 X-Rspam-User: 
-X-HE-Tag: 1794311227-921683
-X-HE-Meta: U2FsdGVkX1/pbeL4NaOCV3KDiNPNDQqELciNTz3p87xuvtOnt6nCoYDjSLDAI2Rq/7pXj9wKHdrfhoDsZSbWk4zDunakTwK5iSMjiAMsadWveNFvbMnIZbOY6m2LWfQAWm45e91kCKKxUqNYVmcdd8VQqvByAlpsV8a4Xny52Qc7o1RQXchSrx8C2Xe6HFzRpxk3SJCpqR345VSLrOSAVj2/d2g2oSDeWeFbYfpDd/aCEegRlBAIFWRGD8aRB4gHYiQcK9WHZuUF3usxOzvCnua1boFAk7f5I9TNZAfiep2sRqb7kQd3QRYo1ORLIgGej7CJzWz6byIMAqPCwhYDmH9+yaFKeLODdvwHhe4/lwDTEs30267g66beyHXQyyg+fKXE0fNs8Qgv5rXt/E0dsfX1SpsRsDSaY1vRvxT7xvPJKcaUMTIHeGqtWqEefGN0TmXkGiOUA5uGAiaan/KnL7kPHUkBQTORL3usIxJr8nd8zDNj36oLnrjj360fbwHcoELyxdoY4MqcjWP44ftwCFb29xg32QQ5apZAqjWNv/dJz/Q89eKIg26iSN79hxpZcCAMct3JcksVWV9G7LQE1jFXPaRGJIAjP6PGuRusvL0wSTA4OfrEXsos1NV7Yekrl/gPs+9dYXRzvV1XBqRQbILIfaYFgkOcTZ8f+RcR+yoEUTTTDou2Uq9Ifog5/tZyz5pnJ1l3Q5xhsdgtKTbk+ccIIW22QtRGfIS/ods9GWtpHrW8yYTibiRIzTRNCKyZnYS7u9jIzgrz22XPZNKikHvYyfaRZkvypk61Y7VsLw9yK4ttmN4t/fnEjzASDc0TB9suxFCtOKoAK0El4KphXlPdWYoGdgksaBuUv6qv3W26CVZXDYXUvu4V0OL7bRmE9D+XEnGyWev7OBKRo/z+uAoCtLm36DFIxA9hoPjLOpb+dWM4LgSIAn2QcUKbDxGUt6jmwaOOxikPxxFDvoP
- 0FDoi2E5
- Os4wtMMo51LBiYZIAjsaqVRhY85gp2q1COo9DPL3um4Oh+bVJWLMwzD30xMEqAIhj9ha2vJokFngCUIc2rB+4kssM93Y0pHdK8WzhzGvytmsgiiMHIJTq56oKmwRWJoEOjqL679PrXaCMlcQlK8paLeMjbxraTl0D18peSPotvTf7PpudvRHxSYayg2GFe83EVvDFoVeE3kTcEo2AeznxKHAXFGgR/RtlQplFx6n2SrEhtXQQhDwdLD4Nz654UVmaEnPPhpcqWQbY8+kTPbptB8N6n12Fts3datOD
+X-HE-Tag: 1794311229-764239
+X-HE-Meta: U2FsdGVkX1/NCUAaCg2G558I7Q7/Ggv/QDEAk+EfpO3HGE1QLyndYfBtXoIK7Uw+DcchJlLOrrwlRRwK/nlTkSanBPjlVD4T/5PihxYt6xkUZPPS7YWhZClVpFvZd3YY3ToqzKeSe5eNpcm6wQAyyh3K6NpsigwNq7BpuR3i6FEt3S2DD4orqVrN0Y07+o2eoTOe1NgHHhAFjxD/BF5LCoRy7KK1ZhNMhE1rFZzvTnFFFbQWhdoXLDSO5QDYRIFRfKOjmiklUkkvkZxR48F7RIeRLiYUEFRClhCBew3bjVgStOxRJAeLAyvzvSeocMOQbkP1DpAH7KRJ9nVFpFtgrEyzHkOMmuBDMOQNrNSChC604nBhsyBo1HRRoZS0SOudMJHNba1xuitmRPCgVmf6yiYsr1Ix9SEiUrySfsQk61wV8Fx1DAlR9Gn6l6iT8gKV99vUjZMy7fdKpfyPQtukdPzv6DAwPgeiEhKmCZG35cU3DePQFFVWHjgg8ayzFDhL9pK/ktqpcRJ40KH9GkciGb+A4qjz2CfmIOnxdXY+gVGsZ7F//+Itu6xSxZrbSNBNZy5oEoucEuwn0XayfdpPB3ypQQhuMZ500PJmS+Bne8WIpiQxUJqAoUnB863/YUNIXvwpS9kfYf8Cq72zL3RGnlvWR23a8faQ62K2dgoa70DpPodvTyntQqsPbsGJLQLNybpH6KvIRI//8J8ENKAUNajvAqb6/mxCLMV0jyYg3y88hEgk0OXVp7rlwD7vrINkyQpLlMsB2mUePasG6HfkOUEmzhdqgI/BYWVpvEMwaytLl5FcV5MMeVUiQIcxxWvwuyRdFc5GBpJLSjlH8j21TZee4LTuxWy5UH466yDABmKSoNGTQaIiuCNqMbM3rs9Bpv8btG9Y+6YIVDjP0/v5xEGNa/6nnwByTimzYXdNp2m0nw02JHPfxhU0YbNnAEN/yM9qR8nzvnvbEWJPN0B
+ Pw+gib8w
+ 3bwTDHgK8ER3sUBs/ULInKG52g6xV1UZqKQIH3JGRDVBJnw/h+OORd3S1bwtUuYUM83zGsPxNm2snTl/RIFmVD9eHnBa10joc7JKWZoDYwianNpAo5G8hokuHVjBkNcqmmypn5B0FxB352umJJywdqD4rWgIUgVHhMp0Qs5PoingHYRD8EwqeHcoCuxrfIrKFKCZOCvLNHZuWJhhqILcWirVl/D/yUFLn3LhTtcNHfXymsBpaSTFvcFDxuDTPosS18NO5tvw80D9M0IUnHYqh1QSIqEwfdGtHTsAHo0Bg7yb/GHIUZmZLNKvkdjak+h4m9MTuGJT9L6ggD1aaKJ1W22Oa70dGZnvXGbTIQHnJmfNPZHSt/hT3t9XM0g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,71 +127,74 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A slow writeback wait ends with one more "has been waiting" report,
-printed by the wakeup that sees the last work item complete:
+Since v6.19, writeback waiters are woken while their writeback makes
+progress, so a slow sync no longer trips the hung task detector.
+Instead, a waiter past hung_task_timeout_secs logs:
 
-  [   31.763963] INFO: The task sync:276 has been waiting for writeback completion for more than 29 seconds (bdi 252:0, work items left: 0).
+  INFO: The task sync:180 has been waiting for writeback completion for more than 28 seconds.
 
-That line reads as if the task were still waiting. To tell a slow
-writeback from a stuck one, the reader has to notice that the reports
-stopped, which is easy to miss in a busy log.
+Across the Meta fleet, this line is logged about 19,000 times a day
+(the median over 40 days), and up to 82,000 times on a busy day.
 
-Report only while work items are outstanding, and log how long the wait
-took once it is over:
+Over one day, 194 hosts logged 16,858 of these lines for only about
+2,000 waits, half of them longer than 160 seconds. Most reports were
+printed twice, and a wait logged a median of 7 lines.
 
-  [   31.807879] The task sync:275 waited 29 seconds for writeback completion on bdi 252:0
+Going through these reports, a few things made them hard to use and
+quickly act on:
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+1. The message has no trailing newline, so it only shows up once the
+   next message is logged. Patch 1 fixes that, for stable.
+2. It does not say which device is slow. Patch 2 adds the bdi and the
+   number of work items left.
+3. The end of the wait is logged as one more "has been waiting" line.
+   Patch 3 logs the total wait instead.
+4. It is printed every half timeout, often twice. Patch 4 wakes the
+   waiter and prints it once per timeout.
+
+With the series, a sync of files dirtied from two cgroups, on a null_blk
+device throttled to 4 MB/s and with hung_task_timeout_secs set to 5,
+logs:
+
+  [    9.262814] INFO: The task sync:276 has been waiting for writeback completion for more than 5 seconds (bdi 252:0, work items left: 2).
+  [   14.683024] INFO: The task sync:276 has been waiting for writeback completion for more than 10 seconds (bdi 252:0, work items left: 2).
+  [   20.103027] INFO: The task sync:276 has been waiting for writeback completion for more than 16 seconds (bdi 252:0, work items left: 2).
+  [   25.222884] INFO: The task sync:276 has been waiting for writeback completion for more than 21 seconds (bdi 252:0, work items left: 2).
+  [   30.542836] INFO: The task sync:276 has been waiting for writeback completion for more than 26 seconds (bdi 252:0, work items left: 2).
+  [   33.562975] The task sync:276 waited 29 seconds for writeback completion on bdi 252:0
+
+Without patch 4, the same test logs 18 reports.
+
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- fs/fs-writeback.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+Changes in v2:
+- Print the bdi and the work items left on the report line itself (Jan)
+- Patch 4: wake the waiter once per timeout instead of adding
+  report_stamp (Jan); its changelog shows the hung task warnings that
+  this can bring back
+- Patch 4: the doubled reports come from wait_event() checking the
+  condition twice per wakeup, not from the two flushers
+- Collect Jan's Reviewed-by on patches 1 and 3 (patch 3 rebased on the
+  one-line report)
+- Link to v1: https://patch.msgid.link/20261106-writeback_stall_report-v1-0-bf0c3b9023a5@debian.org
 
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index c5e9e5c0d506a9..e2da4781b5e00b 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -201,15 +201,16 @@ static bool wb_wait_for_completion_cb(struct wb_completion *done,
- {
- 	unsigned long timeout = sysctl_hung_task_timeout_secs;
- 	unsigned long waited_secs = (jiffies - done->wait_start) / HZ;
-+	int left = atomic_read(&done->cnt);
- 
- 	done->progress_stamp = jiffies;
--	if (timeout && (waited_secs > timeout))
-+	if (left && timeout && (waited_secs > timeout))
- 		pr_info("INFO: The task %s:%d has been waiting for writeback "
- 			"completion for more than %lu seconds (bdi %s, work items left: %d).\n",
- 			current->comm, current->pid, waited_secs,
--			bdi_dev_name(bdi), atomic_read(&done->cnt));
-+			bdi_dev_name(bdi), left);
- 
--	return !atomic_read(&done->cnt);
-+	return !left;
- }
- 
- /**
-@@ -226,9 +227,18 @@ static bool wb_wait_for_completion_cb(struct wb_completion *done,
- void wb_wait_for_completion(struct wb_completion *done,
- 			    struct backing_dev_info *bdi)
- {
-+	unsigned long timeout, waited;
-+
- 	done->wait_start = jiffies;
- 	atomic_dec(&done->cnt);		/* put down the initial count */
- 	wait_event(*done->waitq, wb_wait_for_completion_cb(done, bdi));
-+
-+	timeout = sysctl_hung_task_timeout_secs;
-+	waited = jiffies - done->wait_start;
-+	if (timeout && waited > timeout * HZ)
-+		pr_info("The task %s:%d waited %lu seconds for writeback completion on bdi %s\n",
-+			current->comm, current->pid, waited / HZ,
-+			bdi_dev_name(bdi));
- }
- 
- #ifdef CONFIG_CGROUP_WRITEBACK
+---
+Breno Leitao (4):
+      writeback: add the missing newline to the slow writeback report
+      writeback: name the bdi in the slow writeback report
+      writeback: log the end of a slow writeback wait
+      writeback: report a slow writeback wait once per timeout
 
--- 
-2.53.0-Meta
+ fs/fs-writeback.c           | 40 ++++++++++++++++++++++++++++------------
+ include/linux/backing-dev.h |  3 ++-
+ mm/memcontrol.c             |  2 +-
+ 3 files changed, 31 insertions(+), 14 deletions(-)
+---
+base-commit: 8b7179210b22f8e48a82c5ceacb9d56a9c4cfec4
+change-id: 20261105-writeback_stall_report-170750a69946
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
 
