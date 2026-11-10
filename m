@@ -1,95 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815D4606A320
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 18:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96EFC60A260A
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 18:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PraCURSf
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YmYAM52+
 Received: by kanga.kvack.org (Postfix)
-	id 9A4CB6B05C5; Tue, 10 Nov 2026 13:01:18 -0500 (EST)
+	id B04D46B05C6; Tue, 10 Nov 2026 13:01:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94E736B05C6; Tue, 10 Nov 2026 13:01:18 -0500 (EST)
+	id AAED36B05C7; Tue, 10 Nov 2026 13:01:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EED46B05C7; Tue, 10 Nov 2026 13:01:18 -0500 (EST)
+	id 9766F6B05C8; Tue, 10 Nov 2026 13:01:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 51EC86B05C5
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:01:18 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id 694DD6B05C6
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:01:34 -0500 (EST)
 Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 267FA1C448B
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 18:01:17 +0000 (UTC)
-X-FDA: 85419976194.12.D102906
-Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 38C872001C
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 18:01:15 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=PraCURSf;
-	spf=pass (imf03.hostedemail.com: domain of yintirui@gmail.com designates 74.125.82.49 as permitted sender) smtp.mailfrom=yintirui@gmail.com;
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E13AE160A22
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 18:01:33 +0000 (UTC)
+X-FDA: 85419976866.12.E568D6D
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+	by imf23.hostedemail.com (Postfix) with ESMTP id E9CA414000F
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 18:01:31 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=YmYAM52+;
+	spf=pass (imf23.hostedemail.com: domain of yintirui@gmail.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=yintirui@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794333675;
+	s=arc-20220608; t=1794333692;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pBX3osvzrvBpUa9EFYcJneROuN57Xe3Iwp54yQOPd4g=;
-	b=KkXP+ie+jb7YFGHL12AJGFQiGlskQNtTkBUABlpxFT59S1mrOtObCYDh6VO+fTY7r+0Rh7
-	lJnecb2GnvIxcJ2TSLfAkp/CnXTmjkffuMKmboq8NrBZs+ZTPBaeNbOtpLInpETyhP+qTF
-	TuPHnNExYxQc4eSYOCMG3jzkoU0/Cxs=
+	bh=ervt3KHoX6weTgmM3kRzwEYGukf7U2iehUJ+wpCaJjA=;
+	b=oDuNyEkjogbjfUVaSKYy6TTXuyx+7oiQvzxgQ/ODp5l/E+kNYF0/7gKAOfjaRZN0HdLInZ
+	lMaa1J7sxW0+1Z1JFfsi4pAyeufiTMawoHBlNVnYPvkPSHA7IEp9j7nPCUdywLGL5wb/Nm
+	GzquIT5w/knEjAUcu6R1paJTLIPKqIE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794333675;
-	b=rWdcSCLaxgdV50AIb/hMqCXdg4KyWLyAVTcsp99wikcdDfM7/DH8/oYDfhmjpUhNJ2IEFv
-	ell9lCm7J+1xplSXkuIoRkXQp0vEvtabF4oXCqo9g2aWOYiW/HIwmyc6JkhEubcm/m6X1l
-	J7ey7gI0PpPffZA2PUXmPXsYyzVWmcA=
+	t=1794333692;
+	b=693b27l+fsMmccXJGFUZR7GVCCYfLUsVZ0amIZ5WhbvoC5Cs8KzLzQADseiruhdUksC1Gr
+	Qs/V2hiMLTQX6k/0kN6YoEwWnibOlH+y65CxfS3NV0T2Xmv391ojZ0+Rpv8bh4ynsVvKy2
+	YCdZ4Q6z+cVMy56L5T8GqH1afCXrSso=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=PraCURSf;
-	spf=pass (imf03.hostedemail.com: domain of yintirui@gmail.com designates 74.125.82.49 as permitted sender) smtp.mailfrom=yintirui@gmail.com;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=YmYAM52+;
+	spf=pass (imf23.hostedemail.com: domain of yintirui@gmail.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=yintirui@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-15dd124bbe7so3080939c88.1
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:01:14 -0800 (PST)
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1b3acec6677so3569262c88.1
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:01:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794333674; x=1794938474; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1794333691; x=1794938491; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=pBX3osvzrvBpUa9EFYcJneROuN57Xe3Iwp54yQOPd4g=;
-        b=PraCURSfk1/N6OzpwJUS9OedffR1YhiUG2JQ5ZUlmo9w8cIVjN5VHM5hXlngjL8CgA
-         RTtkuwUevMSK+Th0a6Avll6MAu6mKo/3KMF6z5YS29nXaXPMWtdfVy8nyfhMvHvRwszj
-         kVyKT5lOo6ChvFtrhR+RHF1pEM1i7RRwD5vZj+d8tD8qayQC9u375Vm5mHuTJ9vgn3p2
-         TC5f+00f+oiAe4Fjw2oiFJnyHAEZgux7gj48Bma3FswHITqrixOC+Zp/2BZot2bsnoxa
-         HYltLfLI7Z01uqFN8eFGzwHH4EiaVLYLJj0Ui0ArTkAvZlXrVYeIBH6vBHkYWscydbmz
-         5Qkg==
+        bh=ervt3KHoX6weTgmM3kRzwEYGukf7U2iehUJ+wpCaJjA=;
+        b=YmYAM52+7I4rbAOC+N2mBL4QL1hb1ezzCWDcgiZf7B35Vt9rnXkVMyTzanLTF6AtXb
+         TlSWtri2ZP38FOlKXdLV5lzGDb7bAbitGlipCdeDSARZkGryDBG+AYk0lyvCFR57tzhb
+         ytyaFcEx7eC8Q9Ji+0ZBdCVWGaPJ+R65wEWX2RmzKwVfoFZhd3cy2Rs9eFGMFyrbwYjX
+         AaDUhjrtHFftBoAjMJd78o09q3TyoRWpAlEg9V/e/uqjct48opW3gCcv6L/Qgxzr3hIx
+         ZY9nnfrhT7QXp0/bgPZipTvE3qBstGsQTzZc/vvNYE5g0LUwuJO0Q1LbHmXNGESmTvTC
+         XHYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794333674; x=1794938474;
+        d=1e100.net; s=20260707; t=1794333691; x=1794938491;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pBX3osvzrvBpUa9EFYcJneROuN57Xe3Iwp54yQOPd4g=;
-        b=cHz38UhECO8ec3ADLvUIugKuDqxgdt/ZZtEoLlNkfmMGD3NGmL3HmLq10meyca9L7h
-         oRVXqYg2sTvtQ2qbqZhMyOEuXyD+qxEBdHSze/3ohXIoLXSCsnNMFeq//pCrJEtNJc10
-         BURD2Jv6X0ueOi/tk0ynRuCsKmFcn51gyxuS3eNy9xbvC3G5YmEDo+pVTzKlZZHFKScf
-         mZT9uRJbHfRsrr+QyHl57xCObmTy68jmUp99K6a02eOPdY9ntianN+oI7B8CvQg2Cv1j
-         EW8D2z92adwb/9NfkzzpIYs3Y+KmPZzwa/3V5Z0ULEWc0SliD4MAiqFm8M1jtEeVxwBM
-         r6iw==
-X-Forwarded-Encrypted: i=1; AL+hErFYms0MDZSvgei2VKhTYK2RElLhTzj/q8dzJMYPyoyAURz9wpaGAr3HZe91T/fUE+HtzJNJayNNQw==@kvack.org
-X-Gm-Message-State: APuU4Z+Ghk0HV7IRNvPm2EV5ELvVMOTIGMxMivkJit9yA75tQdi1WQAU
-	zxNLvHBfE3+C+22fpGNSOPDQvH2bsPl7KsNDNeeT2gTx4yJdt9aAiBby
-X-Gm-Gg: AYBFou2eczppu0ewRE/u2UgUmDk/LgC9qP6krOCpObQ9U74QLxq5uLTkv29wuW1MiXG
-	qdyvEqgZS5+e6hdOrbRGrQQPE/U/0WibstWUw/UZdX/GUVw4rwbpvIP/c0XxqqolrH3dky9ej4y
-	mvGupS8oaP+aZFOmP++lJapX/Ai1BQ3/c25Sf1VX2YJTB8XEdwGeO671GIKuSAafGH0aLyph1L6
-	2bKXvUI9P2J1B+pZNiGK1FzSidrHLQA46bdepNxtZYJU0NONPPaCwyJ8HAuimHdjT6nlpCZDiXg
-	/Vu/0a/h6xMjVC+56z551fph4DtGXpD+WCdrulQJkFr1nyqmHoVQ1N+H/WdzmXYtI7gkGVIEF2+
-	Xe8AnQypH3AIr3nsKGbIGcKxNC/OGOIUIWSAeFFh8q0/7DIyFj38h2l/P3AgmRBpIKMPLfqTLWJ
-	LYk+xzjIG/GOANbTIJw+MK3bLmptxwmQr7rj5L8FOtVx4NcAuwq0Vk8IYkoF0V1o4D+eTYz+j3p
-	Xy3Q/3Cdpd8RVgcd7g92hRys/gUqqR3C+VZQWfDwuungX8MrXN/QkhlreE1j+fnWs+SNDu1jBlm
-	B8ERc0hFUKPhpEZmB3DkSMuZBpjZGkQUrRr4o65QTeIw7FizGewGF6AOdwAbgeMGyLOjK947qw9
-	zuyKE
-X-Received: by 2002:a05:701b:42c1:10b0:19b:1202:77f8 with SMTP id a92af1059eb24-1b3b61801famr4896533c88.32.1794333673663;
-        Tue, 10 Nov 2026 10:01:13 -0800 (PST)
+        bh=ervt3KHoX6weTgmM3kRzwEYGukf7U2iehUJ+wpCaJjA=;
+        b=pXALgWNlSaDMRrkr8RgF6gomzW/1eHha1Kf12uYporTi22+sk1N35vtq8zYNiRZ5kG
+         hwc6O2nV8OnjAfOk5JXdT2EN+Q6oyE2qd2oFSmc0JpGayV694nire0v0f3wB0RrPe34U
+         ldjwVvrHGplE2OjM7R65Q+iaCIQJtYAt2nBsQtaoSxO6n4l4Bh6DAOt4LlXKoT8qGmoH
+         GIOS7OdZsB1URFDqCDwmKwalq09Hui8R9gGzS10XgL/me0KkoV8c8ddpp8w3odv5/aLW
+         j9xtcCXfftb9sEGlxGC8vDKeMIXYkOEB90fpxarQtsvEVomKCxgBfgmULjGcvOXSK7Kp
+         tB6Q==
+X-Forwarded-Encrypted: i=1; AL+hErE9wJBhobev9/gUEB/NHDGyHzCaJQ6FEO4SxDXELii7qrjR910Z5dGqiiYuRWLeNAKxq0ePinPecA==@kvack.org
+X-Gm-Message-State: APuU4Z8d68F21u2Ohgdtn1PfoVuwlpAZ6MDZvrSdjJXwY91SkF+lorwT
+	Vuu6j5zoV1/81BUZxglxkd/PK3vN/tYAQYRWPP4AablQ6wAUcK4FlmVn
+X-Gm-Gg: AYBFou0I01SOENDDARQP52qnxYLgDzaOhHloZONOtlR2UXwuC3KMt/3gqtaw9SBCPFv
+	o0P5fPYGePCpMMGXjZwBNShu0n+ewYoFp39p/0WeEJTMS0uL/vg8GE8rQhb1kjX/fgcYFCEjr/T
+	DtOl1JKB2/fgnFukPz2uFecBX/u0qcMPvrKK4gRHiBLIzQbRtRnmmegvxQdXZcvZmklO/acDoR1
+	rnOJTWubGeTiegzmzywiTw8pYK63U6FtI5SH5XM7QCxHvUFT5nrFb/xDAck4uFHROHELWYCAFzq
+	tNk4qYHSGuIAb86cCpQpxon285YjFmXjfmgdtsBUtSTv0yXNrOXivWgskacJ5WFlFDVDPNEspOg
+	OqhHm8hFHvneB8XGxSyeAud3iCrZMlosKooivDxpCcqUMzUDZdfEuGBpeWFQAHzVffonAIdzfh8
+	vCI+n5ZAFGRhCF43Sm+DS9E9NR8WGgHM08M5tJRnS2xaedjAtvUdTCINZyqeHKl8dCkN3HOE1EP
+	/me0tUeIci5JAIjZu5KHIY9u7JMByATcMn6O7Vov2iq+SG7eO5kMEHqQSCypLsBhsdaE78/PeZl
+	WuxLk78x+MZPiT0HNUcUX51gpuncEyMOE6epoI1kY5b0TUwN4G6czxJ1w98=
+X-Received: by 2002:a05:7022:1181:b0:188:e51:e86a with SMTP id a92af1059eb24-1b3b5f9e98fmr4130814c88.2.1794333690054;
+        Tue, 10 Nov 2026 10:01:30 -0800 (PST)
 Received: from aig-kmd-01.. ([120.133.49.20])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b4b90csm7624260c88.14.2026.11.10.10.01.01
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b4b90csm7624260c88.14.2026.11.10.10.01.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 10:01:13 -0800 (PST)
+        Tue, 10 Nov 2026 10:01:29 -0800 (PST)
 From: Yin Tirui <yintirui@gmail.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -109,28 +108,28 @@ Cc: ljs@kernel.org,
 	yintirui@gmail.com,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH RFC v2 7/9] mm/huge_memory: add struct split_pmd_state
-Date: Wed, 11 Nov 2026 01:59:22 +0800
-Message-Id: <20261110175924.2945538-8-yintirui@gmail.com>
+Subject: [PATCH RFC v2 8/9] mm/huge_memory: split present and non-present huge PMDs separately
+Date: Wed, 11 Nov 2026 01:59:23 +0800
+Message-Id: <20261110175924.2945538-9-yintirui@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261110175924.2945538-1-yintirui@gmail.com>
 References: <20261110175924.2945538-1-yintirui@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: eai7ohhpdug49zps5ojoszhfezceh8ma
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E9CA414000F
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 38C872001C
+X-Stat-Signature: 5jyg5oy15kdnc7wgzourfjc4r5ogbjki
 X-Rspam-User: 
-X-HE-Tag: 1794333675-65319
-X-HE-Meta: U2FsdGVkX1+5yTwdr3jBxk2zhGISx82pW/XVqlKERh1zDRVilgR33/Gz4pKcsYd5VjgbAxiuCS81hCDTcZ+16waSo47IPmfg4+vMXGiEZp9Ludh8I0pOIKDqs2S0Fn5/92TNDWUlo2eA8fkEUKiZRYJsM5+dAPBnArlpx7WMmbwT0M2yx0doTnC9S9fbWBgF1MroEPp564imIMmObWmsaQozanDPOLxJoF2UueE8t/rpSEkujzrM3LPihazv+HlTrFAGxPJtUSmsU8/5pKq+iovQ0bu7v2csDYF0IkRDjWBLO61fR225F4LCjqsAAXYPbooPWL7Jx+w/eAjvV2+i1tBLQWwhxrfNECwWQag40V0GXinTM4rARBgTJJO2n3QzU9rpxRtbA2LSGpe2GdM0oOTZ60rgYLogls+Y6+jNTD1MRBb7TDwsrGHrGUsLfssgmGLaBaXUfWocpGqWWLI6IvEVBSIjGAIpAekxhlVwIOsTwW0XUYPiM+RqmO1JJMWzJlAn1sUWuMN1daaCoGrYy7jfCviQifShJTvXK47+vgxkZ21bQHvbMUY5uiQ2R/9xTAfnG/qhRzRPab/yH438ZJGsR62V0mrnEkrCHLERoe/2EsiznDQwppoyaTCtS59KwK96/2zqzO+Bhu537Nk8RUxY8/GBqH/v6FbKLH7oa24wU1eFxjsEU2cTlLapYINJ2ZASupTkBlqXQwSaAMsApOa5IPftwR2GDIyVe66NpbDtCjELT1eQLBLWURGlfWRnn8igIocijhzYyIaj4dme5ersm9YGbS9BZOhaVeg2hEIPMmIsVY04lwEsjEjdaka29ir+qXQbTokNGIg5L7/hWVzQ9yMWb5QqY5gTYRiQ94HUU34KtiZl3y0hanJgDEfQkH7DA+X+Sme+k1Bq86FAoy/Om4/JlV9z9WTNqZpRf+KyL4OV1hDBbvMaZIfrAoRV2aHfwG0sFksP1TvhA+l
- MT7j3oXW
- IFRrD0QeHqXmoS6tam7R+dWQB+eq+HsWF4YaH5bJGKItTXFVj82KfUxzdKZdZKe9FFdqgQwWwDQbQJhKCYm9zTo8AGaGEKdeteqANabrqu918fZltyBHVkHSJILYEKw/FONT1RikdEHUUDK3EqXfIC5apAKVHbFRbaB5UKUOHJuWEfMfmLWPe1D0TXR7G3xmKqAQi6t/RUzJtpgXiLGw5lcS/AvseeV9+DeNo4kLFDHcdUTqgfNxLcagNmH08+Vfv/OccG8d95xTOgrb4i8mz2cb7fEse9q0vTdv3LLSEmPAxcd2/OH/BfMPtA+g1m6KB0x84QtO+KCigc5GS7CYdu0pa7LmSeOk2Wt3l6yh3h1OvwCQ42IBM8Ct6ZWVa0YPQBYMUQMYkfxMPE/EJ76s8Rx0LHOeu8MycYA2fI4S01BrbS3vs2uWHfiLbEWoZ15bmNE/0QI3Sqvdd19w=
+X-HE-Tag: 1794333691-63130
+X-HE-Meta: U2FsdGVkX18wdPOKcoPetazGxeHXtzBuld5BPM0bWymza09jl40Y8gWNLCfvjpmaqtTI3FjzStfEJpTtBwVYan/oxBEVa6eXGuProl1JoNKkrsh5bO4lQ8h2gOkZXxWkkM1oXhFA57eR+hoA/zQZ7ORzA/I9RDLR8Jt8of76F5Obr1cEGvcsqGHGfTz3eptbPxDbgDa17RJRE6/hH4l0+J5ZH37r1EAG/4vugdvZoT1bbBJen60ktHWDZl2Z7vlCq2Fmx3dG/1QqEIM0OJ3+xX9xegP+T1FCnQk3/+pYNvSNfrWp7M8e61MUgzmjTmEU2xum+W575rF5+cqnuQzLwWzCgQwaeFqJndRQkxsC9LyrmgGDOUj/7OtxNj9p6CjNv5DEJDpKK+D4qTRnU4GrRV4VQA62u83TNRdh01jvthPBhCmoyvXUGlnOdD9LfaqCkHUCkYt7BuxeJazcs7KhH3UlbK3j6JuzoVHiKNICQvme7uS9qsddE8u00xJlO7w+fQxyklEj2kHOr++5KpjB/a5um0JfAt91S4DeB4GS0J0u7/K1dhbJ9tIbBC/qdKWPsVPChjpUep8nBBaoAhhIel+88yeZzFH70vLqQC5+tIGLYGfW4O2wXJ3FQ5POBNIxctBQFb8/9FmRBmjNJFCuMzzQFR1qERISs6Z0YCFkn40Q5/n4jyYZiGLxDOJMUJyGa2nCguKHmDQmbCgzQjJ1DUXHBTbFd/8lkG4BzIecVfXnE/oGNJiH/oKl80+5RGukn109NWvGq7Kk8WDB/yiqw1EbP2vcGPFA/vWEzESR3U9eJoXkhMLPFq07GDTZ/bZ9TxS1ITHff8DKc2/vR8D/lkdAYWJIzsBHdPnHT2d/CoRlqyqG0vg5IC8lgM7CH6uEL7QxxbeuiS81K1zQt09q1M5wvZAosUzfk21QlSlOEzmG70yQ0dXKEgiKxDP5mVnpL3GnT+iPGNPtolvL0hx
+ fbuE9cjj
+ 2Zg+aCQBXpQuk/PO/3C+JvBcfdQrylA91UIg95aD6aEyxENO05IEkmpuCg1x+HPQnXmw0wartVE7Vso6QfdLtc8H9Ra6qPZPPYQNYgIeymMiaIfjMdgscgP61UJXxMdPlI51G1/HBd+s1nOtSUGmWS6KPitmc2zFTR1iLZI4uBkuROT0zvO6abA7q2PhJNAH71pYuISAr9wqlxj8WjXBU1otJeVZX0IM3Vz0hfyZ0wwOv3noLXGJp4kJKR9lE+rds60W4oR5IJsAygarmf3+rprNcE3mk0M/bChaVEXau6xMDQKU45rLZnFzpwE95XOeUqh/Bjuviv/4mXqqwLNgTxf1qYc8HFzA87glbKIDQNPtIcrcmx9Dot/O428H/wG1zuLEUy8sCX+SBE366vIaQKPuHVU16sDb4D1iczZ9vrV95th5VlVN7VP87cZhg1SGU85+f+rEVPyg8+PK2ja9t0iBd7A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,303 +138,439 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Put the state read out of the entry being split into one descriptor, so the
-read and write paths can be separated without passing a long argument list
-between them.
+Move the shared PTE rebuild into split_huge_pmd_to_ptes(), then add
+split_present_huge_pmd() and split_non_present_huge_pmd() on top of it to
+separate the present and non-present cases in __split_huge_pmd_locked().
 
 No functional change intended.
 
+Suggested-by: David Hildenbrand <david@kernel.org>
+Link: https://lore.kernel.org/linux-mm/67a655e3-fa23-4d2a-9685-14e6221d5d26@kernel.org/
 Signed-off-by: Yin Tirui <yintirui@gmail.com>
 ---
- mm/huge_memory.c | 160 ++++++++++++++++++++++++++---------------------
- 1 file changed, 88 insertions(+), 72 deletions(-)
+ mm/huge_memory.c | 334 +++++++++++++++++++++++++----------------------
+ 1 file changed, 180 insertions(+), 154 deletions(-)
 
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 5abcd194bd4d..b179dc26dc8d 100644
+index b179dc26dc8d..5eaf8a87f1ba 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -3239,6 +3239,20 @@ static void unmap_huge_pmd_entry(struct vm_area_struct *vma,
- 		folio_put(folio);
- }
- 
-+struct split_pmd_state {
-+	struct folio *folio;
-+	struct page *page;
-+	bool is_present;
-+	bool is_device_private;
-+	bool freeze;
-+	bool write;
-+	bool young;
-+	bool dirty;
-+	bool soft_dirty;
-+	bool uffd;
-+	bool anon_exclusive;
-+};
-+
- /*
-  * Convert the folio's PMD-level anonymous rmap into PTE-level ones.
-  *
-@@ -3258,37 +3272,38 @@ static void unmap_huge_pmd_entry(struct vm_area_struct *vma,
-  *
-  * Returns: whether the mapping may still be frozen.
-  */
--static bool split_huge_pmd_anon_rmap(struct folio *folio, struct page *page,
--		struct vm_area_struct *vma, unsigned long haddr, bool freeze,
--		bool anon_exclusive)
-+static bool split_huge_pmd_anon_rmap(const struct split_pmd_state *state,
-+		struct vm_area_struct *vma, unsigned long haddr)
- {
- 	rmap_t rmap_flags = RMAP_NONE;
- 
--	if (freeze &&
--	    (!anon_exclusive || !folio_try_share_anon_rmap_pmd(folio, page)))
-+	if (state->freeze &&
-+	    (!state->anon_exclusive ||
-+	     !folio_try_share_anon_rmap_pmd(state->folio, state->page)))
- 		return true;
- 
--	folio_ref_add(folio, HPAGE_PMD_NR - 1);
--	if (anon_exclusive)
-+	folio_ref_add(state->folio, HPAGE_PMD_NR - 1);
-+	if (state->anon_exclusive)
- 		rmap_flags |= RMAP_EXCLUSIVE;
--	folio_add_anon_rmap_ptes(folio, page, HPAGE_PMD_NR, vma, haddr,
--				 rmap_flags);
-+	folio_add_anon_rmap_ptes(state->folio, state->page, HPAGE_PMD_NR, vma,
-+				 haddr, rmap_flags);
+@@ -3290,143 +3290,31 @@ static bool split_huge_pmd_anon_rmap(const struct split_pmd_state *state,
  	return false;
  }
  
- static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 		unsigned long haddr, bool freeze)
+-static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+-		unsigned long haddr, bool freeze)
++/*
++ * Replace an anonymous huge PMD entry with a page table mapping the same
++ * folio at PTE granularity.
++ */
++static void split_huge_pmd_to_ptes(struct vm_area_struct *vma,
++		unsigned long haddr, pmd_t *pmd, struct split_pmd_state *state)
  {
--	struct mm_struct *mm = vma->vm_mm;
--	pmd_t old_pmd = *pmd;
-+	const pmd_t old_pmd = *pmd;
- 	const bool is_present = pmd_present(old_pmd);
-+	struct mm_struct *mm = vma->vm_mm;
-+	struct split_pmd_state state = {
-+		.is_present = is_present,
-+		.freeze = freeze,
-+	};
- 	struct folio *folio;
--	struct page *page;
-+	unsigned long addr;
+-	const pmd_t old_pmd = *pmd;
+-	const bool is_present = pmd_present(old_pmd);
++	/* Present mappings and device private entries hold a PMD-level rmap. */
++	const bool rmapped = state->is_present || state->is_device_private;
+ 	struct mm_struct *mm = vma->vm_mm;
+-	struct split_pmd_state state = {
+-		.is_present = is_present,
+-		.freeze = freeze,
+-	};
+-	struct folio *folio;
++	struct page *page = state->page;
+ 	unsigned long addr;
  	pgtable_t pgtable;
  	pmd_t _pmd;
--	bool soft_dirty, uffd_wp = false, young = false, write = false;
--	bool anon_exclusive = false, dirty = false;
--	unsigned long addr;
  	pte_t *pte;
  	int i;
  
-@@ -3331,38 +3346,39 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 		return;
- 	}
- 
-+	state.folio = folio;
-+
- 	if (pmd_is_migration_entry(old_pmd)) {
--		softleaf_t entry;
-+		const softleaf_t entry = softleaf_from_pmd(old_pmd);
- 
--		entry = softleaf_from_pmd(old_pmd);
--		page = softleaf_to_page(entry);
-+		state.page = softleaf_to_page(entry);
- 
--		soft_dirty = pmd_swp_soft_dirty(old_pmd);
--		uffd_wp = pmd_swp_uffd(old_pmd);
-+		state.soft_dirty = pmd_swp_soft_dirty(old_pmd);
-+		state.uffd = pmd_swp_uffd(old_pmd);
- 
--		write = softleaf_is_migration_write(entry);
--		anon_exclusive = softleaf_is_migration_read_exclusive(entry);
--		young = softleaf_is_migration_young(entry);
--		dirty = softleaf_is_migration_dirty(entry);
-+		state.write = softleaf_is_migration_write(entry);
-+		state.anon_exclusive =
-+			softleaf_is_migration_read_exclusive(entry);
-+		state.young = softleaf_is_migration_young(entry);
-+		state.dirty = softleaf_is_migration_dirty(entry);
- 	} else if (pmd_is_device_private_entry(old_pmd)) {
--		softleaf_t entry;
-+		const softleaf_t entry = softleaf_from_pmd(old_pmd);
- 
--		entry = softleaf_from_pmd(old_pmd);
--		page = softleaf_to_page(entry);
-+		state.is_device_private = true;
-+		state.page = softleaf_to_page(entry);
- 
--		soft_dirty = pmd_swp_soft_dirty(old_pmd);
--		uffd_wp = pmd_swp_uffd(old_pmd);
-+		state.soft_dirty = pmd_swp_soft_dirty(old_pmd);
-+		state.uffd = pmd_swp_uffd(old_pmd);
- 
--		write = softleaf_is_device_private_write(entry);
--		anon_exclusive = PageAnonExclusive(page);
-+		state.write = softleaf_is_device_private_write(entry);
-+		state.anon_exclusive = PageAnonExclusive(state.page);
- 
- 		/*
- 		 * Device private folios are treated the same as regular folios
- 		 * w.r.t. anon exclusive handling, see
- 		 * split_huge_pmd_anon_rmap().
- 		 */
--		freeze = split_huge_pmd_anon_rmap(folio, page, vma, haddr,
--						  freeze, anon_exclusive);
-+		state.freeze = split_huge_pmd_anon_rmap(&state, vma, haddr);
- 	} else {
- 		/*
- 		 * Up to this point the pmd is present and huge and userland has
-@@ -3390,22 +3406,22 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 		 * This must also happen before PageAnonExclusive() is read
- 		 * below, see folio_try_share_anon_rmap_pmd().
- 		 */
--		old_pmd = pmdp_invalidate(vma, haddr, pmd);
--		page = pmd_page(old_pmd);
--		if (pmd_dirty(old_pmd)) {
--			dirty = true;
-+		const pmd_t pmdval = pmdp_invalidate(vma, haddr, pmd);
-+
-+		state.page = pmd_page(pmdval);
-+		state.write = pmd_write(pmdval);
-+		state.young = pmd_young(pmdval);
-+		state.dirty = pmd_dirty(pmdval);
-+		state.soft_dirty = pmd_soft_dirty(pmdval);
-+		state.uffd = pmd_uffd(pmdval);
-+		state.anon_exclusive = PageAnonExclusive(state.page);
-+
-+		if (state.dirty)
- 			folio_set_dirty(folio);
--		}
--		write = pmd_write(old_pmd);
--		young = pmd_young(old_pmd);
--		soft_dirty = pmd_soft_dirty(old_pmd);
--		uffd_wp = pmd_uffd(old_pmd);
- 
- 		VM_WARN_ON_FOLIO(!folio_ref_count(folio), folio);
- 
--		anon_exclusive = PageAnonExclusive(page);
--		freeze = split_huge_pmd_anon_rmap(folio, page, vma, haddr,
--						  freeze, anon_exclusive);
-+		state.freeze = split_huge_pmd_anon_rmap(&state, vma, haddr);
- 	}
+-	VM_BUG_ON(haddr & ~HPAGE_PMD_MASK);
+-	VM_BUG_ON_VMA(vma->vm_start > haddr, vma);
+-	VM_BUG_ON_VMA(vma->vm_end < haddr + HPAGE_PMD_SIZE, vma);
+-
+-	VM_WARN_ON_ONCE(!pmd_is_valid_softleaf(old_pmd) &&
+-			!pmd_trans_huge(old_pmd));
+-
+-	count_vm_event(THP_SPLIT_PMD);
++	if (rmapped)
++		state->freeze = split_huge_pmd_anon_rmap(state, vma, haddr);
  
  	/*
-@@ -3422,33 +3438,33 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+-	 * FIXME: Do we want to invalidate secondary mmu by calling
+-	 * mmu_notifier_arch_invalidate_secondary_tlbs() see comments below
+-	 * inside __split_huge_pmd() ?
+-	 *
+-	 * We are going from a zero huge page write protected to zero small
+-	 * page also write protected so it does not seems useful to invalidate
+-	 * secondary mmu at this time.
+-	 */
+-	if (huge_zero_pmd_can_split(vma, old_pmd)) {
+-		__split_huge_zero_page_pmd(vma, haddr, pmd);
+-		return;
+-	}
+-
+-	folio = normal_or_softleaf_folio_pmd(vma, haddr, old_pmd, is_present);
+-
+-	/*
+-	 * A non-present entry which is neither a migration nor a device
+-	 * private entry is corrupt, and pmd_to_softleaf_folio() has already
+-	 * warned about it. Leave it alone rather than act on a PFN which
+-	 * means nothing.
+-	 */
+-	if (unlikely(!is_present && !folio))
+-		return;
+-
+-	if (!folio || !folio_test_anon(folio)) {
+-		unmap_huge_pmd_entry(vma, haddr, pmd, folio, is_present);
+-		return;
+-	}
+-
+-	state.folio = folio;
+-
+-	if (pmd_is_migration_entry(old_pmd)) {
+-		const softleaf_t entry = softleaf_from_pmd(old_pmd);
+-
+-		state.page = softleaf_to_page(entry);
+-
+-		state.soft_dirty = pmd_swp_soft_dirty(old_pmd);
+-		state.uffd = pmd_swp_uffd(old_pmd);
+-
+-		state.write = softleaf_is_migration_write(entry);
+-		state.anon_exclusive =
+-			softleaf_is_migration_read_exclusive(entry);
+-		state.young = softleaf_is_migration_young(entry);
+-		state.dirty = softleaf_is_migration_dirty(entry);
+-	} else if (pmd_is_device_private_entry(old_pmd)) {
+-		const softleaf_t entry = softleaf_from_pmd(old_pmd);
+-
+-		state.is_device_private = true;
+-		state.page = softleaf_to_page(entry);
+-
+-		state.soft_dirty = pmd_swp_soft_dirty(old_pmd);
+-		state.uffd = pmd_swp_uffd(old_pmd);
+-
+-		state.write = softleaf_is_device_private_write(entry);
+-		state.anon_exclusive = PageAnonExclusive(state.page);
+-
+-		/*
+-		 * Device private folios are treated the same as regular folios
+-		 * w.r.t. anon exclusive handling, see
+-		 * split_huge_pmd_anon_rmap().
+-		 */
+-		state.freeze = split_huge_pmd_anon_rmap(&state, vma, haddr);
+-	} else {
+-		/*
+-		 * Up to this point the pmd is present and huge and userland has
+-		 * the whole access to the hugepage during the split (which
+-		 * happens in place). If we overwrite the pmd with the not-huge
+-		 * version pointing to the pte here (which of course we could if
+-		 * all CPUs were bug free), userland could trigger a small page
+-		 * size TLB miss on the small sized TLB while the hugepage TLB
+-		 * entry is still established in the huge TLB. Some CPU doesn't
+-		 * like that. See
+-		 * http://support.amd.com/TechDocs/41322_10h_Rev_Gd.pdf, Erratum
+-		 * 383 on page 105. Intel should be safe but is also warns that
+-		 * it's only safe if the permission and cache attributes of the
+-		 * two entries loaded in the two TLB is identical (which should
+-		 * be the case here). But it is generally safer to never allow
+-		 * small and huge TLB entries for the same virtual address to be
+-		 * loaded simultaneously. So instead of doing "pmd_populate();
+-		 * flush_pmd_tlb_range();" we first mark the current pmd
+-		 * notpresent (atomically because here the pmd_trans_huge must
+-		 * remain set at all times on the pmd until the split is
+-		 * complete for this pmd), then we flush the SMP TLB and finally
+-		 * we write the non-huge version of the pmd entry with
+-		 * pmd_populate.
+-		 *
+-		 * This must also happen before PageAnonExclusive() is read
+-		 * below, see folio_try_share_anon_rmap_pmd().
+-		 */
+-		const pmd_t pmdval = pmdp_invalidate(vma, haddr, pmd);
+-
+-		state.page = pmd_page(pmdval);
+-		state.write = pmd_write(pmdval);
+-		state.young = pmd_young(pmdval);
+-		state.dirty = pmd_dirty(pmdval);
+-		state.soft_dirty = pmd_soft_dirty(pmdval);
+-		state.uffd = pmd_uffd(pmdval);
+-		state.anon_exclusive = PageAnonExclusive(state.page);
+-
+-		if (state.dirty)
+-			folio_set_dirty(folio);
+-
+-		VM_WARN_ON_FOLIO(!folio_ref_count(folio), folio);
+-
+-		state.freeze = split_huge_pmd_anon_rmap(&state, vma, haddr);
+-	}
+-
+-	/*
+-	 * Withdraw the table only after we mark the pmd entry invalid.
+-	 * This's critical for some architectures (Power).
++	 * The caller has already invalidated a present entry, and a softleaf
++	 * entry is not present to begin with. Either way the entry is out of
++	 * service before we withdraw the deposited page table, which is
++	 * critical for some architectures (Power).
+ 	 */
+ 	pgtable = pgtable_trans_huge_withdraw(mm, pmd);
+ 	pmd_populate(mm, &_pmd, pgtable);
+@@ -3438,33 +3326,34 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
  	 * Note that NUMA hinting access restrictions are not transferred to
  	 * avoid any possibility of altering permissions across VMAs.
  	 */
--	if (freeze || pmd_is_migration_entry(old_pmd)) {
-+	if (state.freeze || (!state.is_present && !state.is_device_private)) {
+-	if (state.freeze || (!state.is_present && !state.is_device_private)) {
++	if (state->freeze ||
++	    (!state->is_present && !state->is_device_private)) {
  		pte_t entry;
  		swp_entry_t swp_entry;
  
  		for (i = 0, addr = haddr; i < HPAGE_PMD_NR; i++, addr += PAGE_SIZE) {
--			if (write)
-+			if (state.write)
+-			if (state.write)
++			if (state->write)
  				swp_entry = make_writable_migration_entry(
--							page_to_pfn(page + i));
--			else if (anon_exclusive)
-+						page_to_pfn(state.page + i));
-+			else if (state.anon_exclusive)
+-						page_to_pfn(state.page + i));
+-			else if (state.anon_exclusive)
++							page_to_pfn(page + i));
++			else if (state->anon_exclusive)
  				swp_entry = make_readable_exclusive_migration_entry(
--							page_to_pfn(page + i));
-+						page_to_pfn(state.page + i));
+-						page_to_pfn(state.page + i));
++							page_to_pfn(page + i));
  			else
  				swp_entry = make_readable_migration_entry(
--							page_to_pfn(page + i));
--			if (young)
-+						page_to_pfn(state.page + i));
-+			if (state.young)
+-						page_to_pfn(state.page + i));
+-			if (state.young)
++							page_to_pfn(page + i));
++			if (state->young)
  				swp_entry = make_migration_entry_young(swp_entry);
--			if (dirty)
-+			if (state.dirty)
+-			if (state.dirty)
++			if (state->dirty)
  				swp_entry = make_migration_entry_dirty(swp_entry);
  			entry = swp_entry_to_pte(swp_entry);
--			if (soft_dirty)
-+			if (state.soft_dirty)
+-			if (state.soft_dirty)
++			if (state->soft_dirty)
  				entry = pte_swp_mksoft_dirty(entry);
--			if (uffd_wp)
-+			if (state.uffd)
+-			if (state.uffd)
++			if (state->uffd)
  				entry = pte_swp_mkuffd(entry);
  			VM_WARN_ON(!pte_none(ptep_get(pte + i)));
  			set_pte_at(mm, addr, pte + i, entry);
  		}
--	} else if (pmd_is_device_private_entry(old_pmd)) {
-+	} else if (state.is_device_private) {
+-	} else if (state.is_device_private) {
++	} else if (state->is_device_private) {
  		pte_t entry;
  		swp_entry_t swp_entry;
  
-@@ -3458,19 +3474,19 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+@@ -3474,19 +3363,19 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
  			 * pages corresponding to the pte entries when freeze
  			 * is false.
  			 */
--			if (write)
-+			if (state.write)
+-			if (state.write)
++			if (state->write)
  				swp_entry = make_writable_device_private_entry(
--							page_to_pfn(page + i));
-+						page_to_pfn(state.page + i));
+-						page_to_pfn(state.page + i));
++							page_to_pfn(page + i));
  			else
  				swp_entry = make_readable_device_private_entry(
--							page_to_pfn(page + i));
-+						page_to_pfn(state.page + i));
+-						page_to_pfn(state.page + i));
++							page_to_pfn(page + i));
  			/*
  			 * Young and dirty bits are not propagated via swp_entry
  			 */
  			entry = swp_entry_to_pte(swp_entry);
--			if (soft_dirty)
-+			if (state.soft_dirty)
+-			if (state.soft_dirty)
++			if (state->soft_dirty)
  				entry = pte_swp_mksoft_dirty(entry);
--			if (uffd_wp)
-+			if (state.uffd)
+-			if (state.uffd)
++			if (state->uffd)
  				entry = pte_swp_mkuffd(entry);
  			VM_WARN_ON(!pte_none(ptep_get(pte + i)));
  			set_pte_at(mm, addr, pte + i, entry);
-@@ -3478,21 +3494,21 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+@@ -3494,21 +3383,21 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
  	} else {
  		pte_t entry;
  
--		entry = mk_pte(page, READ_ONCE(vma->vm_page_prot));
--		if (write)
-+		entry = mk_pte(state.page, READ_ONCE(vma->vm_page_prot));
-+		if (state.write)
+-		entry = mk_pte(state.page, READ_ONCE(vma->vm_page_prot));
+-		if (state.write)
++		entry = mk_pte(page, READ_ONCE(vma->vm_page_prot));
++		if (state->write)
  			entry = pte_mkwrite(entry, vma);
--		if (!young)
-+		if (!state.young)
+-		if (!state.young)
++		if (!state->young)
  			entry = pte_mkold(entry);
  		/* NOTE: this may set soft-dirty too on some archs */
--		if (dirty)
-+		if (state.dirty)
+-		if (state.dirty)
++		if (state->dirty)
  			entry = pte_mkdirty(entry);
--		if (soft_dirty)
-+		if (state.soft_dirty)
+-		if (state.soft_dirty)
++		if (state->soft_dirty)
  			entry = pte_mksoft_dirty(entry);
--		if (uffd_wp)
-+		if (state.uffd)
+-		if (state.uffd)
++		if (state->uffd)
  			entry = pte_mkuffd(entry);
  
  		/* Restore PAGE_NONE so an RWP marker keeps trapping */
--		if (userfaultfd_rwp(vma) && uffd_wp)
-+		if (userfaultfd_rwp(vma) && state.uffd)
+-		if (userfaultfd_rwp(vma) && state.uffd)
++		if (userfaultfd_rwp(vma) && state->uffd)
  			entry = pte_modify(entry, PAGE_NONE);
  
  		for (i = 0; i < HPAGE_PMD_NR; i++)
-@@ -3502,10 +3518,10 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+@@ -3518,15 +3407,152 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
  	}
  	pte_unmap(pte);
  
--	if (!pmd_is_migration_entry(old_pmd))
--		folio_remove_rmap_pmd(folio, page, vma);
--	if (freeze)
--		put_page(page);
-+	if (state.is_present || state.is_device_private)
-+		folio_remove_rmap_pmd(state.folio, state.page, vma);
-+	if (state.freeze)
-+		put_page(state.page);
+-	if (state.is_present || state.is_device_private)
+-		folio_remove_rmap_pmd(state.folio, state.page, vma);
+-	if (state.freeze)
+-		put_page(state.page);
++	if (rmapped)
++		folio_remove_rmap_pmd(state->folio, page, vma);
++	if (state->freeze)
++		put_page(page);
  
  	smp_wmb(); /* make pte visible before pmd */
  	pmd_populate(mm, pmd, pgtable);
+ }
+ 
++static void split_present_huge_pmd(struct vm_area_struct *vma,
++		unsigned long haddr, pmd_t *pmd, struct folio *folio,
++		bool freeze)
++{
++	struct split_pmd_state state = {
++		.folio = folio,
++		.is_present = true,
++		.freeze = freeze,
++	};
++
++	/*
++	 * Up to this point the pmd is present and huge and userland has the
++	 * whole access to the hugepage during the split (which happens in
++	 * place). If we overwrite the pmd with the not-huge version pointing
++	 * to the pte here (which of course we could if all CPUs were bug
++	 * free), userland could trigger a small page size TLB miss on the
++	 * small sized TLB while the hugepage TLB entry is still established in
++	 * the huge TLB. Some CPU doesn't like that. See
++	 * http://support.amd.com/TechDocs/41322_10h_Rev_Gd.pdf, Erratum 383 on
++	 * page 105. Intel should be safe but is also warns that it's only safe
++	 * if the permission and cache attributes of the two entries loaded in
++	 * the two TLB is identical (which should be the case here). But it is
++	 * generally safer to never allow small and huge TLB entries for the
++	 * same virtual address to be loaded simultaneously. So instead of
++	 * doing "pmd_populate(); flush_pmd_tlb_range();" we first mark the
++	 * current pmd notpresent (atomically because here the pmd_trans_huge
++	 * must remain set at all times on the pmd until the split is complete
++	 * for this pmd), then we flush the SMP TLB and finally we write the
++	 * non-huge version of the pmd entry with pmd_populate.
++	 *
++	 * This must also happen before PageAnonExclusive() is read below, see
++	 * folio_try_share_anon_rmap_pmd().
++	 */
++	const pmd_t pmdval = pmdp_invalidate(vma, haddr, pmd);
++
++	state.page = pmd_page(pmdval);
++	state.write = pmd_write(pmdval);
++	state.young = pmd_young(pmdval);
++	state.dirty = pmd_dirty(pmdval);
++	state.soft_dirty = pmd_soft_dirty(pmdval);
++	state.uffd = pmd_uffd(pmdval);
++	state.anon_exclusive = PageAnonExclusive(state.page);
++
++	if (state.dirty)
++		folio_set_dirty(folio);
++
++	VM_WARN_ON_FOLIO(!folio_ref_count(folio), folio);
++
++	split_huge_pmd_to_ptes(vma, haddr, pmd, &state);
++}
++
++static void split_non_present_huge_pmd(struct vm_area_struct *vma,
++		unsigned long haddr, pmd_t *pmd, pmd_t old_pmd,
++		struct folio *folio, bool freeze)
++{
++	const softleaf_t entry = softleaf_from_pmd(old_pmd);
++	struct split_pmd_state state = {
++		.folio = folio,
++		.page = softleaf_to_page(entry),
++		.is_device_private = softleaf_is_device_private(entry),
++		.freeze = freeze,
++		.soft_dirty = pmd_swp_soft_dirty(old_pmd),
++		.uffd = pmd_swp_uffd(old_pmd),
++	};
++
++	if (state.is_device_private) {
++		/*
++		 * Device private folios are treated the same as regular folios
++		 * w.r.t. anon exclusive handling, see
++		 * split_huge_pmd_anon_rmap().
++		 */
++		state.write = softleaf_is_device_private_write(entry);
++		state.anon_exclusive = PageAnonExclusive(state.page);
++	} else {
++		state.write = softleaf_is_migration_write(entry);
++		state.young = softleaf_is_migration_young(entry);
++		state.dirty = softleaf_is_migration_dirty(entry);
++		state.anon_exclusive =
++			softleaf_is_migration_read_exclusive(entry);
++	}
++
++	split_huge_pmd_to_ptes(vma, haddr, pmd, &state);
++}
++
++static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
++		unsigned long haddr, bool freeze)
++{
++	const pmd_t old_pmd = *pmd;
++	const bool is_present = pmd_present(old_pmd);
++	struct folio *folio;
++
++	VM_BUG_ON(haddr & ~HPAGE_PMD_MASK);
++	VM_BUG_ON_VMA(vma->vm_start > haddr, vma);
++	VM_BUG_ON_VMA(vma->vm_end < haddr + HPAGE_PMD_SIZE, vma);
++
++	VM_WARN_ON_ONCE(!pmd_is_valid_softleaf(old_pmd) &&
++			!pmd_trans_huge(old_pmd));
++
++	count_vm_event(THP_SPLIT_PMD);
++
++	/*
++	 * FIXME: Do we want to invalidate secondary mmu by calling
++	 * mmu_notifier_arch_invalidate_secondary_tlbs() see comments below
++	 * inside __split_huge_pmd() ?
++	 *
++	 * We are going from a zero huge page write protected to zero small
++	 * page also write protected so it does not seems useful to invalidate
++	 * secondary mmu at this time.
++	 */
++	if (huge_zero_pmd_can_split(vma, old_pmd)) {
++		__split_huge_zero_page_pmd(vma, haddr, pmd);
++		return;
++	}
++
++	folio = normal_or_softleaf_folio_pmd(vma, haddr, old_pmd, is_present);
++
++	/*
++	 * A non-present entry which is neither a migration nor a device
++	 * private entry is corrupt, and pmd_to_softleaf_folio() has already
++	 * warned about it. Leave it alone rather than act on a PFN which
++	 * means nothing.
++	 */
++	if (unlikely(!is_present && !folio))
++		return;
++
++	if (!folio || !folio_test_anon(folio)) {
++		unmap_huge_pmd_entry(vma, haddr, pmd, folio, is_present);
++		return;
++	}
++
++	if (is_present)
++		split_present_huge_pmd(vma, haddr, pmd, folio, freeze);
++	else
++		split_non_present_huge_pmd(vma, haddr, pmd, old_pmd, folio,
++					   freeze);
++}
++
+ void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
+ 			   pmd_t *pmd, bool freeze)
+ {
 -- 
 2.34.1
 
