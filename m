@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90C88606A336
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 20:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C5260A2608
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 20:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gWEhRREK
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DHPcEkzb
 Received: by kanga.kvack.org (Postfix)
-	id 9D8226B05C2; Tue, 10 Nov 2026 15:38:02 -0500 (EST)
+	id 9652B6B05B8; Tue, 10 Nov 2026 15:38:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B0836B05C3; Tue, 10 Nov 2026 15:38:02 -0500 (EST)
+	id 93ACF6B05C5; Tue, 10 Nov 2026 15:38:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C8976B05C5; Tue, 10 Nov 2026 15:38:02 -0500 (EST)
+	id 8506F6B05C7; Tue, 10 Nov 2026 15:38:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BFB16B05C2
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:38:02 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D3A67160A16
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:38:01 +0000 (UTC)
-X-FDA: 85420371162.30.4F8831A
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 660556B05C5
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:38:18 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0F004A0AFD
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:38:18 +0000 (UTC)
+X-FDA: 85420371876.09.B52D384
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 22CFF180009
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:38:00 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gWEhRREK;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 546201C0006
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:38:16 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DHPcEkzb;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794343080;
+	s=arc-20220608; t=1794343096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pHhzsFK46xamHLjxn99YRGd8ys0XhYnUbLCGMyb//rs=;
-	b=WT281lNdHZz2lQ7UJUifLt5T2HDvrZ33vHrBqEdRtp7jdQIsNFkscYN49nyoWxb9rkjOjV
-	uSjnkMKxgcgo2oXK8OmC77HhCbGobXswD/Vi6uHO0Ij1FAO593T6e0GY8scolu4af5NPoL
-	jf8x7Uul2+UZJgxaTFtm5oNF5u83BYc=
+	bh=TQhZr4bKzH1yYf83YlQikJs/ouU09iimk/Cgl1T4SEk=;
+	b=ClzN0afBZrC0Jqd2Cv7LfFH68eieKCyD6XFXoNkOrUCP1ghGA3eaFSQgQCpr27iFg7SxTm
+	FN0hrgYhJjPRkbYRadGouMFWnoVVN2AVYfa8sW9NJ6fg8waUjuSod1CZwPiGZxYYithw/v
+	gXRKrXeiCbz1nk8QYXhVUf+k49XKXbA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794343080;
-	b=XB89y24sXDs/qDRUvfW+GmLvfHQNkmCaItZc1a4zCRE2duVTH+w5F3LjvYsGJsw3WugX5K
-	OEaGpq1W8mYWTGcS1easE3WZva7uQW45Nt0+RtTnqCGdxFREvg+YHeKdJvjwi+TPXWx4fc
-	7jLl5xI8EchU/xzHlB84jP+vx9+1L9s=
+	t=1794343096;
+	b=MepSPWW/a+ghYB3weoukKXmSgoCECxN7rFGi7iMqCbFezQPFOl8NUzWQGsWANLaInY/ycP
+	ew31NxF8qri+XHVqIGEE/ulBvifXAvmuiG3ozsDGpIwPkxMWpdPcdEog68TkcY/3NnblwJ
+	/octoV2URz5QILviDY14SyEdhCQdGpw=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gWEhRREK;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DHPcEkzb;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B1D0F618CA;
+	by tor.source.kernel.org (Postfix) with ESMTP id B4044612FC;
+	Tue, 10 Nov 2026 20:38:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 153321F008A1;
 	Tue, 10 Nov 2026 20:37:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38231F008BD;
-	Tue, 10 Nov 2026 20:37:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794343079;
-	bh=pHhzsFK46xamHLjxn99YRGd8ys0XhYnUbLCGMyb//rs=;
+	s=k20260515; t=1794343095;
+	bh=TQhZr4bKzH1yYf83YlQikJs/ouU09iimk/Cgl1T4SEk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=gWEhRREK9FVVHGNpd2nGoRZ8s8g//Xfo+FROKWQm72DFOPJ0clcsk98bP/mbSEE15
-	 8tWNbXJ6ZNTJnEuv0ZAUuKp6PFeH/15MVpNDyhm3dMZpIOcWjMjBN9nu1TGLpO8Fdm
-	 K938D0LjGqLb8R7ju5fJRrASjlZd+VkaeJ4987fZcckyNFHaLstEB4wbWA+Kp+AaEJ
-	 GbUCt5fezRqDI2Ol+HJEiFl3DN+nSnWYbbAasN0F9NQtdU2FPjnwK7OdH93/i4jZtb
-	 G7QVslVoA/cKhDVDIKtarFgGX4bz//b/KI9Ga/Jc7nXTTY8Tzkre99epxDmtOqTeVE
-	 Ix7wdKANaY+3g==
+	b=DHPcEkzbho85PvDiXuH1Qd5lFyC5q8gv5xBGffOubCgfOWWV7lqek7lvYfLRpSA0t
+	 IQhTVJa4D+18lGt7AH2soR542b0oAlCR8P7LrIYpK31KzO7WrEG5dh9vxvNnyOQM/S
+	 Zzp0LW4h/4rd/y6B/YdEiEzjYrWRL++7W+rtuk1+Hj57yFgXvgIdV4CQiW+ldPSf67
+	 6GKEdhSSGHlGPBXfai6+VBlvQkQwf+pS+xWNq8luXH6gsQU2QOgxTB3fEnlfzzRiiM
+	 NiKA0VJ1SYCOE+9P07p5d1RFLT20ramI6Mni0mRodbWhV4r9rKIOncSV1qxGF1Jmt+
+	 y25nKd0tEPckw==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Tue, 10 Nov 2026 21:35:44 +0100
-Subject: [PATCH v3 4/9] iommufd: fix cleanup when adding memfd folio pins
- fails
+Date: Tue, 10 Nov 2026 21:35:45 +0100
+Subject: [PATCH v3 5/9] mm/gup: limit pagecache folio refcount when
+ grabbing references
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-refcount_overflow_stable-v3-4-318625d63a98@kernel.org>
+Message-Id: <20261110-refcount_overflow_stable-v3-5-318625d63a98@kernel.org>
 References: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
 In-Reply-To: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
 To: Lorenzo Stoakes <ljs@kernel.org>, 
@@ -107,29 +107,28 @@ To: Lorenzo Stoakes <ljs@kernel.org>,
 Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
  fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org, 
- iommu@lists.linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org, 
- Jason Gunthorpe <jgg@ziepe.ca>
+ iommu@lists.linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3608; i=david@kernel.org;
- h=from:subject:message-id; bh=fau3pBzKpQXLjgKtqqi0yzExsXgD+rlECuO7Pn/e1yI=;
- b=owGbwMvMwCF2QOXvyb15Z08znlZLYsj63BA+Y9ux4zLMk2e4PpP5oXDoUBfvZgmLYJ+T4Suvf
- 7qZaHHRsaOUhUGMg0FWTJHl2rqc1OA1rY5lUYZuMHNYmUCGMHBxCsBEki8w/E9vmOcWxrp9lUtt
- kNILo72njKafUJm6ob9t4eGK2tjDS1QZGXqWF/mFrH+wmGlO4dX2pglu6r/jEpRkppTqH5vx6V5
- pKg8A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4131; i=david@kernel.org;
+ h=from:subject:message-id; bh=U2nJUUKzo83lirIS+DNqGFEsPfDiTB+27qyVWt6EY4E=;
+ b=owGbwMvMwCF2QOXvyb15Z08znlZLYsj63BC+Xi7jxvm37RO/J0ZcYPGTjOO+dHWBuLZc/bcgh
+ UsBpnZzO0pZGMQ4GGTFFFmurctJDV7T6lgWZegGM4eVCWQIAxenAEzkbDkjw5fAS44nfZnacuf5
+ MJ/NztLk33np7QlN1nMf71/7dsjK7CIjwzXxOSLLW+9qfzk1I/lYa8CL/dqKjX0dMxnj5fuu9x6
+ 5zQUA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 9p3yygdupwcfw9xwgrq5wirnoqrnwatx
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 6o4tutaxteyouhu7htbhxzfhddieyuok
-X-Rspamd-Queue-Id: 22CFF180009
+X-Rspamd-Queue-Id: 546201C0006
 X-Rspam-User: 
-X-HE-Tag: 1794343079-824551
-X-HE-Meta: U2FsdGVkX1//PUObGOH1wUignZdOMKkUDFMfGT8mt6tg0kfUQgjhrEkC3K3lyHtXEA7/CMxaZOLq42tsGxop6kxD5BhLWbMfIH5gMV9CrB6cVT9DxQLipwcSOuaMJl3w8ssKoOQSh3vN+1bbwI9zV+8Tj1yVO7ElFX1/H3G4WIznKKnv319EwpY0QmVca6ef1EUnQcU3XqJxfAKgAElkOdmaa59S7YPNDgpHi2EtRrJ6E4QBfpWnm6HkNKn8nKz8n7IPbY3XEyMHJE+44GGq+1RwnHwn7+jZmxWVdAvTCD5SSELmR4rJvsbIIH5bwWd3hPNBAQjpT1cCmBVINebo756YI2SECyHr0LMtCsvgqzD4Ij21C5wH69bb4RDvBjBZAuYDRv4x/NikBwCPs9fBI62+/jyPFVH+KHZZOnN4IVLgsyASCvUCcHGG4n1TwjD0nE380teFdAXSLpXdmcKZyKrjkzSS0gJmYq860BN+s2nY6NZaPMFHG1m3kps4VJUXa3VTtKYQlDP9zEa4NY+oKmf08JQ8eh0uO7QRAQT1V5ZugYrDAExroDSMQyvGAzDp7VfuojBhsCGTG5Lwy/XrKHZslnLDQ0C2K1lO4xEmwAFbvNtYheVUM8FkAmVmSleBvbpjJWpe9+XL+feu6/VEaKGUywe6WQXgDXrdBttETN4R7VGdzbor6Defm2jt6XE7gb58zOG2KyTi7Q06sBOK8ELz4hboti51QoP45PlbxYCIs+EeaTZZPB0sC77YwwMVPl6Eh5H7LH+iOk0KY8jjiA6vnT2+1UHB/I2DrlWpy7zfvNvuNnRvnll1yKsRl5zHH4egtnuKfXBd5IdlsjtupaPkFO9eJ558WcyFiZN6VSQa1jhuduA3rIEVsNbUA4uR2qE47FqE2wMlIQcRyGOU1/nagv1Krz+LqcC/TZcDu52u6nh1qFcacXGI6DEd8RLyliJwXsTVcJy24a374xd
- ZoZRu2Ie
- tO76ApTAfJS6z7EKHGZe4756EWrNZHYgM1obNn0NlTBEc2WcOpDGQNWlTjGiWeCiQd+v2Qhqm/fo3sg510VTu7tgvwBxeafJx59k9Fe90A7TUMo/ZKpGvwJtaejBU51s1Ua2xiXTyAY9GWlK+bGtNTDka55lI3pCaqgkjPbj6E2xINsb7Z0jmL0xFh7r4sSzfzJBqaleQ3fHyk2ZH+ZLjFJjnvlDwjZgAo+805m3BlO/ESeuRRGruO4w6IxvGm9vR7sXX9W2kp4z8L2T3xDRoufKpoD+L2bHdD80ojOnFzFMwzXvPfG7AhwU6W9oMtp3sgEyE88yXgsQn4/MGwU1gvuFFIg==
+X-HE-Tag: 1794343096-913788
+X-HE-Meta: U2FsdGVkX1/KOLa82Ot46ZhJTGMX7XSH4pMswqi/BAR+4Q4B0VIXhLvGvK+IbOv1ksG+xhMJJ073rLsWqvp7x5BttJWkkDgs3kG8lbARdvDj3gc6cXxzK8El4ZyxEWSu1JyNWq9bjKNZ/BlzMWEm9rQ2ZCf+gf88B35tWokiCnxCJJQ3mhC+8k6kZzMpIOpinLmdRLFuLBAHZ0/Dv1E0Gc/P6YwYm370DDMn1Wfgd8YK5BXZ1ttyxac6tRjXp2aksU3sosLIfEB6kEwONSE/3Raj4Um/iX/YlajYqKOArZKMVr2mgIbUOk6mPWMrcX9llmqptgm9O11+WXvuv0VYrL0fXqYvlG3ZwP8r7JOT25bPXNBTvShYCxHuZQGicPFPHty6FClGAM38B1f+0CoSTHLd8gMBWiMyyl924Hw9TGZnO5FIofwQJo98iQGD8PqgxOA2VB36YlQMP3UMtcUmjAptFv3q2Pz60GsOXvBQyXT55YFThqqy+nuBBz9hZev3LIf40s04p2egWZk0VhVfrbjfLCVcIhbfAnuR1FY6QozkVAyNQcpjhRTIbIXYBkaUbXz0dTG+1vkEbii+aCpEo9UIMldaAW0sVa76JKT9pdeGoKuDazpWxBPJ6s6O4CQrW1nYNDK5tpft976CKpJL5fK5pH3PT8CPflBYsOVyP4DDkwEar+b/ZQ7lJqfErLe3jj8UIyDyuJoaRKL9OZIKnOYf1y1JOlQFpmW/hONpLwp6kK7eLHHow8Wpc9TjE2H2bnPGDUgror8SKZTs+MnqeC3r0QEQE/x8WVzdfYYXIj+miAI7TUeJB9zIg8LAYDZxYvfIb77EVr2pO+TEXDTzXAyYvFXx+pLIky6UtCZp9BVl+E877zF/6/tt2Q9aWgGsSnR9d1UonGiPZINzyLOk9+GkahqoBoIF1s1UffdALA25We4e2Xxoz6GH3/E8b1yLluQ6+RZNkLKRjTE1pAx
+ hq4KxwDz
+ QPE0bGVs/HBgF7UHi3r9U2UwgQ9PJ5nPKhUj9PBn7PF8zphtphbqAq7LpxgcsvNUOfZ+GFWdDdZBXR+twaCT3YcMazQHYiGTOuG2OBn4Zb3wqj3hIHilefmc+g+npnOHBRNiSBQzOf8gH8K37IpaXlmZfNhaMX9EY+d6ZT6wpSMQAM6s++J1mFR4QqZtwx8gEwDhILlHnyTQygSBqLcvRzdEwt0QuIOiMHwn5Tpgpbda02vAxbOFXXC48ZFsiRyyv+NfueDqS8hbIWHR03RL1K3CQTJrlyXhY4PGOxJuXTfPpD/DZD8nQ6axh6A7xgrHHO39okL6ioivBbbZKiEImuv9hgQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,103 +137,119 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-folio_add_pins() can fail after memfd_pin_folios() succeeded pinning a
-folio. Upcoming folio refcount limit checks will make this easier to
-trigger.
+Let's add a folio_ref_count_over_limit() check in fast and slow GUP
+before acquiring additional references or pins.
 
-Let's fix three problems in the error handling:
+Keep it simple and use the check for all folio types.
 
-1. pfn_reader_release_pins() uses the allocated array size instead of the
-   number of folios returned by memfd_pin_folios(). With large folios,
-   cleanup can unpin uninitialized entries. Remember the number of returned
-   folios and use that during cleanup.
+Also propagate try_grab_folio() errors when grabbing additional
+references in __get_user_pages() and in memfd_pin_folios(), so hitting
+the limit returns -ENOMEM instead of -EFAULT and -EINVAL, respectively.
 
-2. pin_memfd_pages() returns on failure without releasing the pins acquired
-   by the current call. Release the per-page pins for folios already
-   expanded into the page array, and the single pins for the remaining
-   folios.
+Keep the existing invalid-refcount warnings.
 
-3. pfn_reader_next() returns on failure before updating batch_end_index,
-   even if the batch already contains successfully expanded folios. Update
-   it before propagating the error so cleanup releases those pins as well.
-
-Fixes: 92687c793644 ("iommufd: pfn_reader for file mappings")
+Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
 Cc: stable@vger.kernel.org
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- drivers/iommu/iommufd/pages.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ include/linux/mm.h | 11 +++++------
+ mm/gup.c           | 24 +++++++++++++++---------
+ 2 files changed, 20 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/iommu/iommufd/pages.c b/drivers/iommu/iommufd/pages.c
-index 2f6153108add7..fcdbde007a9ab 100644
---- a/drivers/iommu/iommufd/pages.c
-+++ b/drivers/iommu/iommufd/pages.c
-@@ -781,6 +781,7 @@ struct pfn_reader_user {
- 	struct file *file;
- 	struct folio **ufolios;
- 	size_t ufolios_len;
-+	unsigned long ufolios_count;
- 	unsigned long ufolios_offset;
- 	struct folio **ufolios_next;
- };
-@@ -800,6 +801,7 @@ static void pfn_reader_user_init(struct pfn_reader_user *user,
- 	user->file = (pages->type == IOPT_ADDRESS_FILE) ? pages->file : NULL;
- 	user->ufolios = NULL;
- 	user->ufolios_len = 0;
-+	user->ufolios_count = 0;
- 	user->ufolios_next = NULL;
- 	user->ufolios_offset = 0;
- }
-@@ -843,6 +845,7 @@ static long pin_memfd_pages(struct pfn_reader_user *user, unsigned long start,
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index a36ff83589c61..9b11af88de2b9 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2244,6 +2244,9 @@ bool __folio_ref_count_over_limit(unsigned int ref_count);
+  * to pagecache folios (!hugetlb), either before acquiring references or
+  * afterwards with rollback if the operation is refused.
+  *
++ * Also required when pinning folios without a dedicated pincount that use
++ * GUP_PIN_COUNTING_BIAS.
++ *
+  * Checking other folios does no harm.
+  *
+  * This check is an approximation; we leave some headroom such that concurrent
+@@ -2951,12 +2954,8 @@ static inline bool folio_maybe_dma_pinned(struct folio *folio)
+ 		return atomic_read(&folio->_pincount) > 0;
  
- 	offset >>= PAGE_SHIFT;
- 	user->ufolios_next = user->ufolios;
-+	user->ufolios_count = nfolios;
- 	user->ufolios_offset = offset;
+ 	/*
+-	 * folio_ref_count() is signed. If that refcount overflows, then
+-	 * folio_ref_count() returns a negative value, and callers will avoid
+-	 * further incrementing the refcount.
+-	 *
+-	 * Here, for that overflow case, use the sign bit to count a little
+-	 * bit higher via unsigned math, and thus still get an accurate result.
++	 * Use unsigned math so even an unexpected negative refcount is
++	 * treated as possibly pinned.
+ 	 */
+ 	return ((unsigned int)folio_ref_count(folio)) >=
+ 		GUP_PIN_COUNTING_BIAS;
+diff --git a/mm/gup.c b/mm/gup.c
+index ebbfee09b7278..531ef2469228e 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -79,6 +79,8 @@ static inline struct folio *try_get_folio(struct page *page, int refs)
+ 	folio = page_folio(page);
+ 	if (WARN_ON_ONCE(folio_ref_count(folio) < 0))
+ 		return NULL;
++	if (unlikely(folio_ref_count_over_limit(folio)))
++		return NULL;
+ 	if (unlikely(!folio_ref_try_add(folio, refs)))
+ 		return NULL;
  
- 	for (i = 0; i < nfolios; i++) {
-@@ -859,8 +862,12 @@ static long pin_memfd_pages(struct pfn_reader_user *user, unsigned long start,
- 			} else {
- 				int rc = folio_add_pins(folio, npin - 1);
+@@ -143,6 +145,10 @@ int __must_check try_grab_folio(struct folio *folio, int refs,
+ 	if (WARN_ON_ONCE(folio_ref_count(folio) <= 0))
+ 		return -ENOMEM;
  
--				if (rc)
-+				if (rc) {
-+					unpin_user_pages(user->upages,
-+							 upages - user->upages);
-+					unpin_folios(user->ufolios + i, nfolios - i);
- 					return rc;
-+				}
++	if ((flags & (FOLL_GET | FOLL_PIN)) &&
++	    unlikely(folio_ref_count_over_limit(folio)))
++		return -ENOMEM;
++
+ 	if (unlikely(!(flags & FOLL_PCI_P2PDMA) && folio_is_pci_p2pdma(folio)))
+ 		return -EREMOTEIO;
  
- 				while (npin--)
- 					*upages++ = folio_page(folio, offset++);
-@@ -1251,14 +1258,14 @@ static int pfn_reader_next(struct pfn_reader *pfns)
- 			return -EINVAL;
+@@ -1482,17 +1488,17 @@ static long __get_user_pages(struct mm_struct *mm,
+ 				struct folio *folio = page_folio(page);
  
- 		rc = pfn_reader_fill_span(pfns);
-+		pfns->batch_end_index = pfns->batch_start_index +
-+					pfns->batch.total_pfns;
- 		if (rc)
- 			return rc;
+ 				/*
+-				 * Since we already hold refcount on the
+-				 * large folio, this should never fail.
++				 * Grabbing more references can fail once we
++				 * hit folio refcount limits.
+ 				 */
+-				if (try_grab_folio(folio, page_increm - 1,
+-						   gup_flags)) {
++				ret = try_grab_folio(folio, page_increm - 1,
++						     gup_flags);
++				if (ret) {
+ 					/*
+-					 * Release the 1st page ref if the
+-					 * folio is problematic, fail hard.
++					 * Release the folio reference we
++					 * already took.
+ 					 */
+ 					gup_put_folio(folio, 1, gup_flags);
+-					ret = -EFAULT;
+ 					goto out;
+ 				}
+ 			}
+@@ -3541,10 +3547,10 @@ long memfd_pin_folios(struct file *memfd, loff_t start, loff_t end,
+ 					break;
+ 				}
  
- 		if (WARN_ON(!pfns->batch.total_pfns))
- 			return -EINVAL;
+-				if (try_grab_folio(folio, 1, FOLL_PIN)) {
++				ret = try_grab_folio(folio, 1, FOLL_PIN);
++				if (ret) {
+ 					folio_unlock(folio);
+ 					folio_batch_release(&fbatch);
+-					ret = -EINVAL;
+ 					goto err;
+ 				}
  
--		pfns->batch_end_index =
--			pfns->batch_start_index + pfns->batch.total_pfns;
- 		if (pfns->batch_end_index == pfns->span.last_used + 1)
- 			interval_tree_double_span_iter_next(&pfns->span);
- 
-@@ -1320,7 +1327,7 @@ static void pfn_reader_release_pins(struct pfn_reader *pfns)
- 		if (!user->file) {
- 			unpin_user_pages(user->upages + start_index, npages);
- 		} else {
--			long n = user->ufolios_len / sizeof(*user->ufolios);
-+			const unsigned long n = user->ufolios_count;
- 
- 			unpin_folios(user->ufolios_next,
- 				     user->ufolios + n - user->ufolios_next);
 
 -- 
 2.56.0
