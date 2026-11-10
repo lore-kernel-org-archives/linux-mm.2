@@ -1,122 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C6FD606A321
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 03:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04FC9606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 03:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=obkh7Bqy
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=bhiX/sg9
 Received: by kanga.kvack.org (Postfix)
-	id 8F5526B05B4; Mon,  9 Nov 2026 22:01:22 -0500 (EST)
+	id EAA636B00EF; Mon,  9 Nov 2026 22:09:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A69C6B05B5; Mon,  9 Nov 2026 22:01:22 -0500 (EST)
+	id E5B0D6B05B0; Mon,  9 Nov 2026 22:09:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7962B6B05B6; Mon,  9 Nov 2026 22:01:22 -0500 (EST)
+	id D70C96B05B1; Mon,  9 Nov 2026 22:09:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C2D96B05B4
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 22:01:22 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B59C11C1197
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 03:01:21 +0000 (UTC)
-X-FDA: 85417708362.19.BF521EF
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D745C100008
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 03:01:19 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=obkh7Bqy;
-	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B3DCC6B00EF
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 22:09:09 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2E28B80742
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 03:09:09 +0000 (UTC)
+X-FDA: 85417728018.23.DC622C3
+Received: from mta0.migadu.com (out-92.mta0.migadu.com [91.218.175.92])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0FFA440007
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 03:09:06 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="bhiX/sg9";
+	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.92 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794280147;
+	b=ikwlGS8bfREGU1DvRb4PXE2JaWYwCgaL7gmTPcfXnR3mCgXp07Oa87RToQrq9krooQNQfb
+	Iz8s/8YgJgcHzODMe7eQpEhxHohfLC1s3hZMkXV8pS9o/CD3C6rwgWqPgvpiug0SrRWem8
+	C1S37QzJ6gDxgrgYFYhLAdpYVxwTCrI=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="bhiX/sg9";
+	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.92 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794279680;
+	s=arc-20220608; t=1794280147;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=keimOPBn6zqYZGZ+MFySGLhtS4gerw7P0fcwObyzCWU=;
-	b=M5Z9GNcKcNOBqlZuC7lu2QQRfzx4LIZ4N+xp4RKSHfURuPt32HpWPj/sNu+y3F8qtHlism
-	7CwDZh2EYfZf/LagdWUbkkdVjTlyn6nZgg3eZYXNB1I4ftgC789rIDF8oOKYBOOoPuj1uJ
-	41HEfupegTfqZBiP0hqA9oeiL0xqFcw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794279680;
-	b=dk7Z1+L4CCb+QA6OjYkoIsAAzuDRvVE5zB4Bt5wOd2W1BqmhPKyYaLd02qyBEs8HtapaoW
-	H8sWWeztx/KgUnpFva7Sr47bZtJqycllvjx8Q7ED8PvK4BnIEsLdWvqjXZsQe0A/gZb5ID
-	WY1XWe/mI3DzTB10VpEZOipd6F2/i7k=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=obkh7Bqy;
-	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ea138a3497so10112035ad.2
-        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 19:01:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1794279679; x=1794884479; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=keimOPBn6zqYZGZ+MFySGLhtS4gerw7P0fcwObyzCWU=;
-        b=obkh7BqyZa209WLh6VClrq/bPpyYByWeq/uKmVhedWZ+yf7PBLfcRJP/HdE4xC+Vi4
-         QmofZzPkm1Ui1GgV9XcHb+2/0Ip/6/Mq2P4YgXUL6xLwRWsdqwpVfU380+jauX6h0eRa
-         VAq3+XA9NNh70TQ03xiUEY0Vbqm16Xam9Zrow=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794279679; x=1794884479;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=keimOPBn6zqYZGZ+MFySGLhtS4gerw7P0fcwObyzCWU=;
-        b=npnLJWwuCxnU9Q1CfGc2VG2i2bifuZfOkhAK4sAuJZDNgs17kghL6+H3DYqM8OoEG+
-         aV+PT1rV1CAhybEJNpZKTTMbYqAso/j714s/6P8HUlO7n9wGQWN/W1tTeqe1FbsXcKGW
-         VqJ9UhoH62GUvrvw/o0LAuffRxSTYKukSP98rkhWYiv8uHBUlTxFwTt2jUZCOILvG4jl
-         Kpr1GyTWqKarxTEdV7hy4qvPLaV7eN9CrRycroLpn2tvXmMMB+Iqb4+B5fDYE3+2d2Uh
-         yl2jmgx142y/YPHRSbxVhwm/HeuYdB6m+vRC7pV4RwctFnuHXcDPtB+gc7MKaz+sVBLh
-         wx8A==
-X-Forwarded-Encrypted: i=1; AL+hErFx6MZmiLK1gLvyGl5C7LEefqCFdklrXYTzpx2wf7fXWRn0+Zoj19fwtbN5Ejlboj2V6VhTLlsy8w==@kvack.org
-X-Gm-Message-State: APuU4Z+/tY/7Yxe6NioEibPgNSQsJXpmRZtbDSevfxP+4E5zwvrdjdfm
-	+FcpAIrBflTe6nDjwjhzxZ1tayeOcmMaSO0jl34puDRKIsVmSnRZS38i447b25J7aQ==
-X-Gm-Gg: AYBFou1e9bMlztxubaIdmfDdGne80csrz098dsKgZsCIFUT0kt5FjEQiBxZe40GkV35
-	utHsM3+Zokzi0dmmCTB8ItFdgl3wVVwk0X9QLoq0+6VQvEZXsmKEUqFkHSGGbKVN4XnrTUwCO/q
-	94Wg8skOtddS8U14mYmiVEGy7J4KjBk2lGQyDur24s7X/zYhHpIGLKwFpviX+Su5bvrV6W1z9wY
-	JhMuv/2uM+glyKa/5zbxlSoC6kph6YTuZoqI6OdnPDJfuN3QYv28rXlYcSzMk9nH05jyKQH70xq
-	Lk1NkHNErL6UoOjX9/8Xlayb9TCyGhanInZsBlB/lukh+2ln2fDo9mBDAhm05w2zzEX2NwheBQC
-	PA7CLxmAnFWx/NOh8YQeJaxmIiQMpyY1z3aQfdhzrV5uiZUXzzHdf6yvOg8cSPf+H1boyQ4kIsy
-	+psjSDAaEdej3HIB1qREeKRy9HXkAojpXxZrvJ7krNKGsQKAyrKcZuvCY4VaKgsiUf7uPPaH1P2
-	3oW1tgvwnSbkElaCgO4TrK6TN4pC+XptVz2vryJ9vIFYMCfc+cilOl25/KQc0yVjy3Oif0/Cn5r
-	6SSQdjPRdoeyx6eUSstMVEFzMZuHAWAtv35ejHHVxsremlEqu5M7VmHrRLYe4+vFbdA6bw==
-X-Received: by 2002:a17:903:2f45:b0:2ed:1c15:ffc0 with SMTP id d9443c01a7336-2edb91be092mr12516445ad.30.1794279673820;
-        Mon, 09 Nov 2026 19:01:13 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:e137:9384:7cd8:6e40])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2edb6dc9ea4sm3699045ad.54.2026.11.09.19.01.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 19:01:13 -0800 (PST)
-Date: Tue, 10 Nov 2026 12:01:08 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
-	Richard Chang <richardycc@google.com>, linux-mm@kvack.org
-Subject: Re: [PATCH 4/7] zram: allocate zsmalloc object under slot lock
-Message-ID: <avKISrcR0goF2NXv@google.com>
-References: <20261105044752.1997895-1-senozhatsky@chromium.org>
- <20261105044752.1997895-5-senozhatsky@chromium.org>
- <sashiko-outbox-200764@kernel.org>
+	bh=/VXI1onF5SeS09KK9lzcvTcmpzrz6Lunid7ms1UK5Nw=;
+	b=oYrJlQNaHu1pd4GziIIn/O1p/w9VC9xr65U9r8ZzPPJwiT244yCb8jnrirIPO8FPWU/VcM
+	GKJtNQuQ8Uk0U2sTXIAofzvIy0huM/5cJUs7YXjHRTfLedWCJoT9PYeXDi62FRjWar8tor
+	Jd3OZxRjH9OR7nGldW8U2TRVcm5MKL8=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=4vNRBThxCRg1/lwUML9Zpz0Ty+nyn6/jDAJxsej0PWU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794280145; v=1; x=1794884945;
+ b=bhiX/sg9FPtDK3iMLNvJz7zXB6dMMvEYHUUslfV4P4zbO3qth0HImCn+hr2JXeA1kktzmScU
+ c6Mt17R+gbskOLXahCJnU8H3k1TAuJBBIFTO6wQ179GEaJX+ClrTcJbtAubAANM4sL/JvVAaKUy
+ +EqsJeUV15NXEEi+Dhp5UpUU=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id dd3535646e2a8843;
+	Tue, 10 Nov 2026 03:09:05 +0000
+X-Mizu-Trace-ID: dd3535646e2a8843
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=utf-8
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <sashiko-outbox-200764@kernel.org>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D745C100008
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: s9r4oqrtjadhtsje91qxtgnardkzkjw8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH 02/11] mm/mm_init: factor out common struct page
+ initialization
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <sashiko-outbox-204836@kernel.org>
+Date: Tue, 10 Nov 2026 11:08:43 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ James Houghton <jthoughton@google.com>,
+ Lance Yang <lance.yang@linux.dev>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ linux-mm@kvack.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <01DEE4E5-49E9-4C33-BBC4-EB04611803B3@linux.dev>
+References: <20261109095807.41547-1-songmuchun@bytedance.com>
+ <20261109095807.41547-3-songmuchun@bytedance.com>
+ <sashiko-outbox-204836@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-Stat-Signature: 6oqsii1rzud7t9oar7dihqzjhjkeq3da
 X-Rspam-User: 
-X-HE-Tag: 1794279679-309451
-X-HE-Meta: U2FsdGVkX19G7hF22mEp9wLmlRQ2mS5K9EiYunQbtMWcVAQZ82oL3NasAM3FK80W52TVml22a/ylBi7MaHeuF4gUTTMuqjg7suCe+7ESB+/7QFkqWYXBYNcXgF6q+Rv55Et2ySsPI/djVrN9E7V1ITpI/k1TVshhMpdg2hwmTe5Qgr6jxfVIRr5WjKneDpRLfwh+IrUtExSZjbMAmAaBF2i6aWmcNFb2TKqu2n0zsUm3dhD9xPcFOctnGiwgdC13cA/w0gJELXL1twAjaWl+7B1BLl1sMEeumBeXUuD8YFmzgZSSzsCso4DK77YYaKG/G/WqXmbUljr/s1RwJQ5uduA4WC3toqtCI/kscUGozI2fM+t2MK1bPGWXR0E4YHTnM6up+V9B8c6QpXuqBb4HMCyeMfBe/CjWYbnYg/BiX9jdd3rrZxDApsX9DfVR9bY6XO71G2EUHBh5s8fGrjhDHIAfD1GpBl4PMgrkS8jWDYQCeKkLOlsGgeISL4auhjTxbcQ8RtkBue1fX46Iei/t4OJ3TLEh76Vg0Ohd3iPJVfR5i6G8FTBWHrlDBv4dUTyjduxNbI8TKAi0hPksnBSoUgJvF321fX0ynCTjrDihPhjh98ehF88CRAAr7eT87/0Iw25Hp6Fs43/Bv/YGKDpX0XEQChq+UUUaQTPUNHR4P/WfKS7FyB12m0isdhmIafXLIXAljrkCAOxARaziV4Z0G5JURKNduLrkGE+2+xURmjwfmkwEABvum79OU8IjoyzTO0bgOuZPiPzvRS9JP/kNA0M2fDepV8iUGHetaG85GvXHe17F1WWmrvsyNdoeGF1P7O9cH0GTHyHdCorhEXEd5Yo4Zc5W0UDw+ukJ1fvkC30r25aH7U1ygLg3zaugDuJwojalrVDcTjkbDicjjGE892lD1ZkOTDbkusGoFrr5+1Z1gC3GjYDZaRl8qhsG5D+/vh5tmfzpC69cy9VXrV6
- LleRH8zI
- 80SySN2kBATQF/ZoFj8lVieSXVFmZtw1pp0pmJSLM+wJT1+CVTpXbRUOsBN3X91N6FixiijsCf+8hVVruMnzrvAWlv5Rwi4w9xfei/IxScDDoaSr7HyaFlE1JMWwJKSL/f8HVLeKSaMS5481Hafxsa1M3v61lTjyknaTma0Yjzb7VDPPM/x5LxLGXAh9KP/gSs1BoJmQ1gMHGgqb2bSPBpe2op18GwjWbvMgezG2Fy50QTf5tdfpI2Udrrrf3SCIr7CFBXOfXBTC64tjD29X6abNPFJnzkSb6/Q6Lg0jqn140cgTgvJlYQrQOkr91hiWMoYBV//oD+/proxWSYZVmQChTIrRcSJ4/ZlLmqXUNHjbPc6QKslXcifuv0O3PGcAjskot
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0FFA440007
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794280146-930190
+X-HE-Meta: U2FsdGVkX1+RmckQu/TM5SvMIS2w+KYWpQ6WafmWZHRGRw/ugF5yIKJl5jsg8dyfVbFk4lvj0javm1IIXC2FJGlxrCLDHnPSKAesB2XLljn8hZobsf0ZlWdZq9MoxTFmOm+fs4/+pYUJS750T+bc0WMFnVH8/Oil7vFiIdJH93Ek8V0lOgywjiKBlCXe9ix0xr4fuDNFmhOWwoKOq219bwQpPC+kbagVggErmgRBCJCw3nCcfYU3CNorG/zkdJ8DhexYd+Cz67ZkiPq+nPN1Fd974P5/inmP7+xFL9u+rKnp/kV2Mz5nUZV2uCM7U94i08Ez5sLWd6c3tnjrUfPvbJgvJe+uYjs4dEGIKFC52DE0pW9IDj4iIM1bjXtjdAf0I5zmHyAMOVARIu/9bZZXx6xfi/GMX7kddE3JdUlHSyckHVgPt2Yty6KMgwhIs1H7m/t5t1I5ppvPUYWKTVRSNYt0D5lphEt6TrVQV4rbEkUkv42YtrY6n7yGN3auXlu09QZsAqCVsdM6Lw3KKVk34uhb8eksLw/le4HOVSo54nUKW9g/r3E0RGFy+f9YurISQkLkkHxBLdxdFzfJsdsxvlVq/Ai+MzQsG2FVS2yG7/qZses/S3ohT5uNF+gLkNjMDt9KM0K6Ky2p4km4ZsKPWk8Kmk+PzrQb0dW1TtjGQ9uwhCiXRr6w9gnhFXOXd3acd9OU18EZZuCDUAlnWSwNbkrlFx7+7PbRO1fTPy03utBhfuzqq6r3SYy4FUu+KW4B9QWHsMYG0AV2dg6ajyXq9hPGvodz7uNwIoT3NtGdEjutNCkm7BiYcKBY2F1HhvvCcGWLxuZH8phQ12JBc91iJf6YO5zB1Wl2nnpsQEtThJ0AlWsDmmttb90t6MMzSElrkJ9DLzdfqiR29x6aBYBFTIepxiP1uC9H4xQrWixKgwxRSMMfR1oTemSgGpgIGjuE8FvU/md/QN8jZvUU0Jx
+ vEI0XBDp
+ D1OsiYjlc2V+YgQkHYrdUWnclosd5Ap2JUxZtOzMZaFFsX1NayRjmuCab7T+3Rqzd+B9gFfjtDXKgDJe9GZZSj754mPMlH7k8hW+6xhvrVMvzVtku9qlJXpBlW68cNFtyosXcHVwTjqD4e1vqckaFehvT5Y2OBUl6G4t8uTr5wD58DbcFQRYAET3swneJxSvcMz7hufXISWCh7u0FRkLTM/NaSU70qcTZHfpIh9uQcDcL/JbOcjMeZwErifxeWX21DRDw7oOXXthCQ8TUn6OpCWWO7kI4IoJMgMjnFrFaqJ0pxY6+xkHgh87fQ3/pEnH0ofadnggDTX6iqY48u2ZTHyL3K5gud7+e982rESwIfHzTdj27gAeuJPVbucaCCSK/BiiZJ/l/9GJv1NN32cqU5zDOzGkGiMDnB731
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,36 +109,104 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On (26/11/06 04:48), sashiko-bot@kernel.org wrote:
-[..]
-> > +	slot_lock(zram, index);
-> > +	slot_free(zram, index);
-> >  	handle = zs_malloc(zram->mem_pool, comp_len,
-> >  			   GFP_NOIO | __GFP_NOWARN |
-> >  			   __GFP_HIGHMEM | __GFP_MOVABLE, page_to_nid(page));
-> >  	if (IS_ERR(handle)) {
-> >  		zcomp_cstrm_put(zstrm);
-> > +		slot_unlock(zram, index);
-> >  		return PTR_ERR(handle);
-> >  	}
-> >  
-> >  	if (!zram_can_store_page(zram)) {
-> >  		zcomp_cstrm_put(zstrm);
-> >  		zs_free(zram->mem_pool, handle);
-> > +		slot_unlock(zram, index);
-> >  		return -ENOMEM;
-> >  	}
-> 
-> [Severity: Critical]
-> Does calling slot_free() before zs_malloc() and zram_can_store_page() in
-> write_incompressible_page() and zram_write_page() cause existing data in the
-> slot to be lost if the allocation or memory limit check fails?
 
-Realistically mem_limit is the only scenario to consider and I will
-move mem_limit check before slot_free/zs_store.  The mem_limit was
-never a hard limit anyway, overshooting it by one zspage is not a
-huge problem.
 
-The zs_store() failure is very unlikely in practice, because it implies
-a 0-order page allocation failure.
+> On Nov 9, 2026, at 18:43, sashiko-bot@kernel.org wrote:
+>=20
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [High] mm/mm_init: __meminit on memmap_init_page_common() crashes at
+>  runtime
+> --
+>=20
+> commit bb3e83c26b241fd60613632a0fd50cc529ce8be7
+> Author: Muchun Song <muchun.song@linux.dev>
+>=20
+> mm/mm_init: factor out common struct page initialization
+>=20
+> This commit factors out PFN-independent struct page initialization =
+into
+> memmap_init_page_common() and uses it in both __init_single_page() and
+> vmemmap_shared_tail_page().
+>=20
+>> diff --git a/mm/mm_init.c b/mm/mm_init.c
+>> index 0129152b74d87..9677698f30d3a 100644
+>> --- a/mm/mm_init.c
+>> +++ b/mm/mm_init.c
+>> @@ -602,15 +602,28 @@ static inline void =
+vmemmap_optimization_verify_zone(struct page *page)
+>> 			page_zone_id(page));
+>> }
+>>=20
+>> -void __meminit __init_single_page(struct page *page, unsigned long =
+pfn,
+>> -				unsigned long zone, int nid)
+>> +/* Initialize PFN-independent fields common to pages in the same =
+zone. */
+>> +void __meminit memmap_init_page_common(struct page *page,
+>> +		enum zone_type zone, int nid)
+>> {
+>> 	mm_zero_struct_page(page);
+>> -	set_page_links(page, zone, nid, pfn);
+>> -	init_page_count(page);
+>> -	atomic_set(&page->_mapcount, -1);
+>> +	set_page_zone(page, zone);
+>> +	set_page_node(page, nid);
+>> 	page_cpupid_reset_last(page);
+>> 	page_kasan_tag_reset(page);
+>> +	atomic_set(&page->_mapcount, -1);
+>> +#ifdef CONFIG_ZONE_DEVICE
+>> +	if (zone =3D=3D ZONE_DEVICE)
+>> +		__SetPageReserved(page);
+>> +#endif
+>> +}
+>=20
+> [ ... ]
+>=20
+>> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+>> index 9b80dd7326f7e..fd869617423a3 100644
+>> --- a/mm/sparse-vmemmap.c
+>> +++ b/mm/sparse-vmemmap.c
+>> @@ -212,12 +212,7 @@ struct page __ref =
+*vmemmap_shared_tail_page(unsigned int order, struct zone *zon
+>>=20
+>> 	for (int i =3D 0; i < PAGE_SIZE / sizeof(struct page); i++) {
+>> 		page =3D (struct page *)addr + i;
+>> -		mm_zero_struct_page(page);
+>> -		atomic_set(&page->_mapcount, -1);
+>> -		set_page_node(page, zone_to_nid(zone));
+>> -		set_page_zone(page, zone_idx(zone));
+>> -		if (zone_is_zone_device(zone))
+>> -			__SetPageReserved(page);
+>> +		memmap_init_page_common(page, zone_idx(zone), =
+zone_to_nid(zone));
+>> 		prep_compound_tail(page, NULL, order);
+>> 	}
+>=20
+> [Severity: High]
+> Can vmemmap_shared_tail_page() call memmap_init_page_common() after
+> .init.text has been freed when CONFIG_MEMORY_HOTPLUG is disabled?
+
+Right. I'll remove __meminit from memmap_init_page_common to fix this.
+
+Thanks.
+
+>=20
+> When !CONFIG_MEMORY_HOTPLUG, __meminit expands to __init, placing
+> memmap_init_page_common() in .init.text, while __ref on
+> vmemmap_shared_tail_page() suppresses the modpost section mismatch =
+warning.
+> With CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP=3Dy (which does not depend =
+on
+> CONFIG_MEMORY_HOTPLUG), allocating HugeTLB pages at runtime reaches
+> vmemmap_optimize_pte() -> folio_vmemmap_shared_tail_page() ->
+> vmemmap_shared_tail_page() and executes freed .init.text the first =
+time a
+> zone's shared tail page for that order is allocated after boot.
+>=20
+> --=20
+> Sashiko AI review =C2=B7 =
+https://sashiko.dev/#/patchset/20261109095807.41547-1-songmuchun@bytedance=
+.com?part=3D2
+
 
