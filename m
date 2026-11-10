@@ -1,112 +1,121 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A1F60A382A
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 14:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1EE606A32A
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 14:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=nhgEZOPf
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gMq0XiiY
 Received: by kanga.kvack.org (Postfix)
-	id 801516B05BD; Tue, 10 Nov 2026 09:43:22 -0500 (EST)
+	id 51FC86B00EF; Tue, 10 Nov 2026 09:45:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D8996B05BE; Tue, 10 Nov 2026 09:43:22 -0500 (EST)
+	id 4F6CA6B05B0; Tue, 10 Nov 2026 09:45:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C8716B05BF; Tue, 10 Nov 2026 09:43:22 -0500 (EST)
+	id 40D676B05B4; Tue, 10 Nov 2026 09:45:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 49B826B05BD
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:43:22 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DA875140895
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:43:21 +0000 (UTC)
-X-FDA: 85419477402.11.A844DBD
-Received: from mta1.migadu.com (out-124.mta1.migadu.com [95.215.58.124])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 4D6F820002
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:43:18 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nhgEZOPf;
-	spf=pass (imf31.hostedemail.com: domain of qiliang.yuan@linux.dev designates 95.215.58.124 as permitted sender) smtp.mailfrom=qiliang.yuan@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794321800;
-	b=rhVaVHnldCHZcNvx1wKHK9B/bMguI5l4kupLPn82jQPUb4K1qAnLjqeKd7HmeEqEdhDPxr
-	fQmyQX4toLdBmcWZLFYQ5kH7NT3oaiiOClWpPqlQh11bPS5ZB2I85UDI2vX8eziIxHKJuo
-	T9LYlKyD2JR79q3T3/eJ7G0bbh3k+z8=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nhgEZOPf;
-	spf=pass (imf31.hostedemail.com: domain of qiliang.yuan@linux.dev designates 95.215.58.124 as permitted sender) smtp.mailfrom=qiliang.yuan@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 17D616B00EF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:45:35 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 81301140903
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:45:34 +0000 (UTC)
+X-FDA: 85419482988.03.7C8069B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B94BDA0009
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:45:32 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gMq0XiiY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794321800;
+	s=arc-20220608; t=1794321932;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ONtiqfBY7XF9tcsGZa6BGd36+aq3hcBRWhYmk4rQLvM=;
-	b=gnfORaQGRuQ+yp9ZQUo+EZvNHnKYDivCPDUlHHXSObohMoIFvzdOmIMtNszbT55DDQcrSH
-	GWsvYP3GS0Tlaqe6XaL9N34yhvArk6jU7oHsh68Rt30uiCYqbzmt8KRSXWSX1GyXntOd/b
-	/14P8rmC/yGFLMYi/O9ZTT5XPqYA3i4=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=x8taPRgwxDpWF2n1mLGTs5sZSctanW78ZPHgi3RsjbQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794321796; v=1; x=1794926596;
- b=nhgEZOPfXyqrxK2Kd1sLKf8FyfBDXX+1LFf24hZCfiaUOAcahMUM/FDuRhq2kChjnO9QxCA3
- lyrgx86DoLqc/s3VNrURV0k2XAzR56ufMbKCCTkYAglq/+K4rUsrFx9lcize8UCNPNOl/57UMWH
- K6rC3IhRAMJ4Cd+6mwySI7xQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id c0dc64717c01038c;
-	Tue, 10 Nov 2026 14:43:16 +0000
-X-Mizu-Trace-ID: c0dc64717c01038c
-X-Migadu-Flow: FLOW_OUT
-From: Qiliang Yuan <qiliang.yuan@linux.dev>
-To: Vlastimil Babka <vbabka@kernel.org>
-Cc: Qiliang Yuan <qiliang.yuan@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] mm/compaction: defer failed async direct compaction
-Date: Tue, 10 Nov 2026 09:42:56 -0500
-Message-ID: <20261110144256.3841504-1-qiliang.yuan@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261102-bug-mm-thp-async-compact-defer-v2-2-b407e974db54@gmail.com>
-References: <20261102-bug-mm-thp-async-compact-defer-v2-0-b407e974db54@gmail.com> <20261102-bug-mm-thp-async-compact-defer-v2-2-b407e974db54@gmail.com>
+	bh=Nxsf4aqPpWbByTWy4qgF4wCWfY6HdQuZno5SuvcTfA4=;
+	b=rFYnaDC1BhFbrcAu259D+VVVQp7pIkALyYub2TxmiuCrRVBpCkFe486Hw/IOvzNklziDzB
+	YCx8QXEOTASMfSrc8GFqwkBRBGHjj1mKc3Y1vil8OdbmbLtgS2teY8NbFmgpW0nZDLq/DM
+	jGemhkr0+5lMYfRJIklgcWteE4yIPpw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794321932;
+	b=VrJvy5b3/4Z8rTLCtRHaL/lQvXO7q5vo7HVzp5kVqNECz1hXttiO6xSjYv+vKqTwMUpnQ+
+	hfNJyX5zq5LpWJneUBUOXf5stwdJ4ThyhuBnn5xGdzt4Wz0aeVA1ebCYWLH3jiYjj+snCI
+	qsJVSk2YgCCzP5/0J5ezBAIEQUxYRGQ=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gMq0XiiY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 90F89639D0;
+	Tue, 10 Nov 2026 14:45:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A886D1F0089F;
+	Tue, 10 Nov 2026 14:45:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794321931;
+	bh=Nxsf4aqPpWbByTWy4qgF4wCWfY6HdQuZno5SuvcTfA4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=gMq0XiiYjFsCGAfnWkgRhZOskIKpU2I9gUCk9jukF20AmtPKoEGlRgbUUPgizde06
+	 oD2E3939NbrV1tjsIbmos++atRL1kj+O4dUDN6mIbrolTOIfBjS1XGmbLAb5A/Xy5B
+	 u3gCJTZxcA5jLgMDCWWhuFAkWrkl1oAutbtBFzylE3KCHeKc6Rdqlfo3bckuvOKE11
+	 g93sXoJzxZtBvRPlRHsmY/jO6+AoVWv7o7xdnHduN1zEvfIu3ALLuHvSGdbrd0KPV7
+	 5yO0U6TxqWiUEISMWTLHc/+4Of6Rkkyonyy1GbOXbiDUgTWnz/HhlRARgPDMEwFDUO
+	 DNr1G8aAoNFXQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Tue, 10 Nov 2026 15:44:22 +0100
+Subject: [PATCH v5 4/4] rust: page: add byte-wise atomic copy methods for
+ `SysMem`
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4D6F820002
-X-Stat-Signature: zfockatxth8hj9z4tmg9e996nj11xdfg
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261110-page-volatile-io-v5-4-a91ef252c24b@kernel.org>
+References: <20261110-page-volatile-io-v5-0-a91ef252c24b@kernel.org>
+In-Reply-To: <20261110-page-volatile-io-v5-0-a91ef252c24b@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Lyude Paul <lyude@redhat.com>
+Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7130; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=0Yld6Xn1ZAuuVlcl8F4kf0vlZbzxXdxmJTVFWA2EiHY=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq8y39HfY8eyoOIJboqBscbDsAohXqHM82iKpnX
+ AT2dCkacSqJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCavMt/QAKCRD6UCkIqsW9
+ 0GXPEACS4z32suEL1KhuaK+bOQTuHnPxNwc7zKFUr2QC1tUwUt9Os76/aTEhR4E+HkbAK2/q6CK
+ CWTYxmYdxxEL0yWgDnA72JBZopYvVfS9pMmePful3IHftfnuV3aueV7Uov6vraNfySJiaGRXTNe
+ bWJePVAucXTMdvTrq2Htk//gRQuR/H9oRgp+nHh8ooeKlZgvnxzQOWMloDINhXURtvBRKC7vM+4
+ svH10lFQLEKrc2wQn2dOw5nTJ1Hf8Jxr6UlvVB/7IGsyIvayUEUnVBGv6D0yIeIwTnpP0O+RK5B
+ 7E8jlK1OSJkxSt9etuBUbIsS4X+kP7EKMNMOt8o4J6WAKNxMEnc1MFdgYnjguCMYPLPC3blIiJ+
+ RNZy7aqU8lB1GSLv36nLej6Yw1j5lYEeu8mjP5M84C6ydTODxo0S/qIWiE/YyRFdhxMCaK6lH5g
+ C8yDHLsNoITMq+Sn4VNffVHMHaM57BENV2JJJMxBiqVphxK4kM7jOxegIUExXRjYhlPdDZQAntW
+ FS8XHpbRH4M77BfnA9b8i0gsW8/lsb9nkkwI3E1624uPAVUkNdR7+cou0SXdIto5TD9eo8T1tcd
+ XJRxG2A7YKoEYY6+ohS6jlhmrnG06fLlrKokMcufdvO180Xf9IZKY/4QkjKU1qQhkuSVmew7meY
+ mJOSPyylnea/PEA==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+X-Stat-Signature: 9zm4w66qz5ezt7x6dewt9bgodoiki9i3
 X-Rspam-User: 
-X-HE-Tag: 1794321798-77590
-X-HE-Meta: U2FsdGVkX19IBn//5BzGA4Lh4/8nY+XMTAnXbmHX2Vu5bd6zOE5aowzfILjS78CePXX6rFnQDw7yHkvlzh18VtdW2+253b6qj99LBpeqrGTqovWED1nU5WaJEgw1kwvUv7Lu7VnWth/ukeJ63VL9DNagVankk4qt4bRNN1fKsOevPOluSbubngtQxJBa+KpanT6CmL0o1WOUchfn33Jt2zgAy2G+9HXRtytqIId08+taK+iYfADff63zy8btB7Xb9mcUlrjCOXthms1ZnbRkHPxzUuW88VBLJUTkt4S6gV74wao/zBFumQt4vbNdSGKYpkbsBfZN+KmPnNbXwIeSyYhS4CmPheEYmkPDMigCi/3Wsjaagq8fC9SFohc3DyuMjLckA8/nmzJC07jEqq9ePY4/kVkjBy79YHWP61SWdXyp2rf42/rhLvuy0VrMvrQ1NOZK+7eVjL2+6Qc7R/sG2zsno8DKb1pWrqHfQQXHZvzFNCs4aUoYzMvTylOBB0hMJdfpszfBclgUuEo0+YEncMCIEMraFlhdXBM8Lg8Ex6WyTyGg91c8UCJWq27SW1qbBA093SFzsG8s8bPLvMK/pRgxLBwYiUZZBYDKOJ0cfShe2SbtTKOfBHJkGe45eJdqx7iXEMxH/IIsGnvfGkjHHIOyIZkhyaCTvQSCRuhFwdLFE36QPqTQWV5jZ6OCSohH7w+YBWGjJhKUNa5Fgd+m8HBJOeuCWMCRb5RijFh7Vt6FBJfMAS+IMkZM7QeMsAAdAe3B57bzLNLOTom7CCIp/N8Nzhbe4Juyc/EXdmfof95HVK6vNOXZUTjovpjLVxXwUWLt9ZW/6ckRYSBK30HRHsEv3tLOkNwlSDAFTkbbtDUaNfu+gVKmHrT3/Njr9aRfArwyw2AuuPsYKmNS3MG8LZAfKCQ68lwqtFXMSYAj9Khd1y8zTS2duThRb6P36QwqMutkYTRI2vfxh94ZmR9
- 7LQUI9FK
- MAPeeMd9ksKb9Jcux+RJfKvWLZxUTyueYWURpNX6ycoonBRQsh37dkCIU3KHFU6zrvqvjoNw71wYqHsxaGwZKsLzecCm5g/2jBE1Thk2rn/1QJrANpz5QddIBgRWT4LmQhZOg5k5ea6ru4t2ho9PqfPRFckeKL6HPPjK7w3ZLsj93NZ+vENr9PUOuKsVbotdIC1U2dQeS74ZykcGHEr3Ivf9reo+ysQs+VCxs
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B94BDA0009
+X-HE-Tag: 1794321932-154286
+X-HE-Meta: U2FsdGVkX1+Vl36xC9UXyzOOR95MJ9ICfxwK4UP5ylEgja825JeYbcstSsMH25fe+tKUfc72zm/lxMIpMZt7HR1CybRpz+8aMm4/xguyiij3BQhpBGK1AKE/9SoTv4M+Rthdp06DancN4IKLrzV92erQ907PVEs0Jc0lvXmLEP3y4/MaM71fH+KXy6hws2aIGQxO2L+y5iNQvjxcXJK6W+V27cAkuz0S6R/FGu+ytyPVdbWuhcp1CF67J+jtRz29x9fUdlvWUmVCCnQelWNDHMiVwfX8M2A5O+WmGmb5y/xUstqWrbh6J0y3ElHhzQ4LG2qIow1Wlaq0QxG9Nbx80ov0wPIuwdonEqPajuI7JWB7EQMw5dyBmeAZQK81mIRUX5ack+XcKSp/bC0gC0aOCixZpXKogxEkDwiumkqc2Iu39I9ZbSvypse8+J+5uXg1Sz6Xy1yWnYJ+pPT1sHz7PGr6e/5wo54TXl/voQxvxkyQKsauYNFeT7a6c6eascsA/jK/3tCOzw8p2lXoOjztvyDKQDYEIjBmRg8ZDVMDODEMLb79bFObJuE66iUrYnWYttVJ7VvbuXS5fD/rwftoDSEbSOPytAJdkg3+Hx25VRoqL2rNUo/+Uzzfc38JAA3TYqYEkHbAGWmJ3pGz+0kqpFeWHvwnn9S91eut2A8jBwjUc6H6IN8PP5DbCDi629/iH/KMgMNUQwXOwnjUDj/MxWwJffBRTLj+NaCWRilNzV/c0x/X/PP5xevJn7pUL78k1kpXAUIvJ9IJTyHc9NWedrxnoT1EnKU3hwgSGHqmjGrNXAwnlcHu4Dnt8ylg9XSW0siZeyuGXaTJ21SNP8a0319u9QgDfyX/PK5fZPkoQ2QRChKHUYfAoD7cDN4DU2pXudcFvLmaYWu5H06UQN/89nu7z0Sk9ZlZ401aQokxvj1AVgdynJ7Duum3t+l6xPBVv1eNHVpWipHqqPxd+EJ
+ c5Y5f9U/
+ DcqOIcRvSSD89vf0j9IFZsVB2j+roFWVK3VjbO2cR5YLFmlmoiuRPeFELmdb3hG6h+V253DihqiyVcPkiYaIEvfXmmmakMY2D1pyUTb/9ASLW5kIt/nokZBXU45JNySzR6mgE8Zb8dVac8dmUTlikbto87/UpVWRA73vqcotTQuCW7iADNu0/uMVJqrm6YCqt8hA1XS+684NXketSglm9c4usuhO/DAo5W7Y+S2XpeDAWdlhQcT3URPoOcA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,265 +124,172 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 02 Nov 2026 01:01:08 -0500, Qiliang Yuan wrote:
-> @@ -2600,9 +2600,12 @@ compact_zone(struct compact_control *cc, struct capture_control *capc)
->  
->  	/*
->  	 * Clear pageblock skip if there were failures recently and compaction
-> -	 * is about to be retried after being deferred.
-> +	 * is about to be retried after being deferred. Leave this to sync
-> +	 * compaction: async compaction relies on the skip hints, and clearing
-> +	 * them on its retries would rescan the whole zone each time.
->  	 */
-> -	if (compaction_restarting(cc->zone, cc->order))
-> +	if (cc->mode != MIGRATE_ASYNC &&
-> +	    compaction_restarting(cc->zone, cc->order))
->  		__reset_isolation_suitable(cc->zone);
+When copying data between a `Page` and a buffer that is mapped to user
+space, or otherwise shared outside the kernel, it is impossible to
+guarantee absence of concurrent memory operations on that buffer. Copying
+with `Page::{read,write}_raw` would be a data race in that case.
 
-As was pointed out to me off-list, this test removes a recovery path.
-I'm not asking to reconsider the series, only leaving the analysis and
-a reproducer here in case they help when you look at the issue.
+Add `Page::{read,write}_bytewise_atomic`, which take a `SysMem` view of the
+shared buffer. The accesses to the buffer go through `SysMemBackend`, which
+uses byte-wise atomic operations, so they are well-defined when racing with
+external actors or with atomic accesses from other kernel code. The page
+side of the copy uses plain accesses, so the page itself must not be
+accessed concurrently, as is the case for `Page::{read,write}_raw`.
 
-The async run a THP fault does on the local node is never deferred:
-try_to_compact_pages() calls defer_compaction() only for sync
-priorities, because the deferral state is shared and deferring it
-after an async failure would defer sync compaction too. The async path
-checks that same sync state in compaction_deferred(), so as long as
-sync isn't deferred, every fault scans the zone again. Patch 1 splits
-the state so that async can be deferred on its own.
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ rust/kernel/page.rs | 121 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 121 insertions(+)
 
-Skip hints are cleared in two places: in compact_zone(), when
-compaction_restarting() sees the sync deferral at its maximum, and by
-kswapd before it sleeps. Madvised THP faults don't wake kswapd, and
-with proactive compaction off nothing else resets the hints, so once
-the pinned pages become movable again, the reset in compact_zone() is
-what lets local THP attempts use those pageblocks. After sync reaches
-the maximum deferral, that reset comes from an async retry, which is
-what the test in this patch blocks.
+diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+index 1c0796ea229f..92486d312b0c 100644
+--- a/rust/kernel/page.rs
++++ b/rust/kernel/page.rs
+@@ -12,6 +12,12 @@
+         code::*,
+         Result, //
+     },
++    io::{
++        Io,
++        IoCopyable,
++        SysMem,
++        SysMemBackend, //
++    },
+     uaccess::UserSliceReader, //
+ };
+ use core::{
+@@ -305,6 +311,58 @@ pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result
+         })
+     }
+ 
++    /// Maps the page and reads from it into the given system memory region using byte-wise atomic
++    /// memory operations.
++    ///
++    /// This method will perform bounds checks on the page offset. If `offset .. offset+dst.len()`
++    /// goes outside of the page, then this call returns [`EINVAL`].
++    ///
++    /// The writes to `dst` are byte-wise atomic, so they are well-defined even if `dst` is
++    /// concurrently accessed by hardware, by user space, or by other kernel code using atomic or
++    /// volatile accesses. The reads from the page are plain accesses, so the page must not be
++    /// written to concurrently.
++    ///
++    /// # Safety
++    ///
++    /// Callers must ensure that:
++    ///
++    /// - This call does not race with a write to the source page that overlaps with this read.
++    /// - The memory region of `dst` does not overlap with the memory of the page.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::{
++    ///     io::SysMem,
++    ///     page::Page,
++    /// };
++    ///
++    /// let page = Page::alloc_page(GFP_KERNEL | __GFP_ZERO)?;
++    /// let mut buf = [0xffu8; 16];
++    ///
++    /// // SAFETY: `buf` is a local array that outlives `dst`, and it is not accessed in any other
++    /// // way while `dst` is alive.
++    /// let dst = unsafe { SysMem::new(&raw mut buf as *mut [u8]) };
++    ///
++    /// // SAFETY: `page` is not written to during this call, and `buf` is not part of the page.
++    /// unsafe { page.read_bytewise_atomic(dst, 0)? };
++    /// assert_eq!(buf, [0u8; 16]);
++    /// # Ok::<(), Error>(())
++    /// ```
++    pub unsafe fn read_bytewise_atomic(&self, dst: SysMem<'_, [u8]>, offset: usize) -> Result {
++        self.with_pointer_into_page(offset, dst.len(), move |src| {
++            // SAFETY:
++            // - If `with_pointer_into_page` calls into this closure, then it has performed a
++            //   bounds check and guarantees that `src` is valid for `dst.len()` bytes, which is
++            //   equal to `dst.size()`.
++            // - By the safety requirements of this function, the page is not written to during
++            //   this call, so `src` is valid for volatile reads.
++            // - By the safety requirements of this function, `src` does not overlap with `dst`.
++            unsafe { SysMemBackend::copy_to_io(dst, src) };
++            Ok(())
++        })
++    }
++
+     /// Maps the page and writes into it from the given buffer.
+     ///
+     /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
+@@ -326,6 +384,69 @@ pub unsafe fn write_raw(&self, src: *const u8, offset: usize, len: usize) -> Res
+         })
+     }
+ 
++    /// Maps the page and writes into it from the given system memory region using byte-wise atomic
++    /// memory operations.
++    ///
++    /// This method will perform bounds checks on the page offset. If `offset .. offset+src.len()`
++    /// goes outside of the page, then this call returns [`EINVAL`].
++    ///
++    /// The reads from `src` are byte-wise atomic, so they are well-defined even if `src` is
++    /// concurrently accessed by hardware, by user space, or by other kernel code using atomic or
++    /// volatile accesses. The writes to the page are plain accesses, so the page must not be read
++    /// from or written to concurrently.
++    ///
++    /// # Safety
++    ///
++    /// Callers must ensure that:
++    ///
++    /// - This call does not race with a read or write to the destination page that overlaps with
++    ///   this write.
++    /// - The memory region of `src` does not overlap with the memory of the page.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::{
++    ///     io::SysMem,
++    ///     page::Page,
++    /// };
++    ///
++    /// let page = Page::alloc_page(GFP_KERNEL)?;
++    /// let mut data = [0xabu8; 16];
++    /// let mut buf = [0u8; 16];
++    ///
++    /// // SAFETY: `data` and `buf` are local arrays that outlive the views, and they are not
++    /// // accessed in any other way while the views are alive.
++    /// let (src, dst) = unsafe {
++    ///     (
++    ///         SysMem::new(&raw mut data as *mut [u8]),
++    ///         SysMem::new(&raw mut buf as *mut [u8]),
++    ///     )
++    /// };
++    ///
++    /// // SAFETY: `page` is not accessed in any other way during these calls, and neither `data`
++    /// // nor `buf` is part of the page.
++    /// unsafe {
++    ///     page.write_bytewise_atomic(src, 0)?;
++    ///     page.read_bytewise_atomic(dst, 0)?;
++    /// }
++    /// assert_eq!(buf, data);
++    /// # Ok::<(), Error>(())
++    /// ```
++    pub unsafe fn write_bytewise_atomic(&self, src: SysMem<'_, [u8]>, offset: usize) -> Result {
++        self.with_pointer_into_page(offset, src.len(), move |dst| {
++            // SAFETY:
++            // - If `with_pointer_into_page` calls into this closure, then it has performed a
++            //   bounds check and guarantees that `dst` is valid for `src.len()` bytes, which is
++            //   equal to `src.size()`.
++            // - By the safety requirements of this function, the page is not read from or written
++            //   to during this call, so `dst` is valid for volatile writes.
++            // - By the safety requirements of this function, `dst` does not overlap with `src`.
++            unsafe { SysMemBackend::copy_from_io(src, dst) };
++            Ok(())
++        })
++    }
++
+     /// Maps the page and zeroes the given slice.
+     ///
+     /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
 
-I reproduced it on the same QEMU guest as the series: 32 vCPUs,
-node 0 with 16 CPUs and 24 GiB, node 1 with 16 CPUs and 8 GiB,
-compaction_proactiveness set to 0 and defrag left at madvise:
+-- 
+2.54.0
 
-  1. Fill node 0 with anonymous memory, free every other 4K page and
-     long-term pin the rest through io_uring fixed buffers.
-  2. With defrag set to always, fault in a 1 GiB MADV_HUGEPAGE buffer
-     bound to node 0, so THP faults there run sync direct compaction
-     and fail until sync compaction reaches the maximum deferral.
-  3. Close the io_uring rings. The pins are gone, the memory stays in
-     use and is movable again.
-  4. Populate a 4 GiB MADV_HUGEPAGE buffer from a CPU of node 0.
 
-Compactions that succeeded in step 4, one boot per number:
-
-  mainline              1184, 963
-  v2                    8, 0, 516, 400, 534, 521, 495
-  v2 without the test   1025, 994, 906, 957
-
-v2 recovered in five of seven boots without resetting any skip hint
-(no call to __reset_isolation_suitable() in the two boots I traced):
-with async compaction deferred, it scans few pageblocks while they are
-pinned and leaves most of them unmarked. In the other two boots the
-marked pageblocks kept it from recovering at all. Without the test,
-the reset after the maximum sync deferral recovers every boot, as on
-mainline, and the steady pinned case stays as cheap as with v2 (7.8
-to 20 ms in compaction against 310 to 332 ms on mainline).
-
-The reproducer is below, run as CPUS=0-15 sh thp-recover.sh.
-
-Thanks,
-Qiliang
-
----8<--- thp-recover.sh
-#!/bin/sh
-# Run as root on a two-node machine; CPUS lists the CPUs of node 0.
-CPUS=${CPUS:-0}
-D=/sys/kernel/mm/transparent_hugepage/defrag
-echo 0 > /proc/sys/vm/compaction_proactiveness
-echo madvise > $D
-echo 1 > /proc/sys/vm/drop_caches
-
-M=/sys/devices/system/node/node0/meminfo
-free=$(awk '/MemFree/ { print int($4 / 1024) }' $M)
-./thp-recover hog $((free - 300)) > hog.log &
-hog=$!
-until grep -q ready hog.log; do sleep 1; done
-
-echo "steady, pinned:"
-for i in 1 2 3; do taskset -c $CPUS ./thp-recover fault 4096; done
-
-# Fail sync compaction on node 0 until it reaches the maximum deferral
-echo always > $D
-echo "bound to node 0:"
-taskset -c $CPUS ./thp-recover bfault 1024
-echo madvise > $D
-
-kill -USR1 $hog
-until grep -q unpinned hog.log; do sleep 1; done
-echo "after dropping the pins:"
-for i in 1 2 3 4 5; do taskset -c $CPUS ./thp-recover fault 4096; done
-kill $hog
-
----8<--- thp-recover.c
-// SPDX-License-Identifier: GPL-2.0
-/*
- * thp-recover hog <mb>     fill node 0, free every other page and long-term
- *                          pin the rest; SIGUSR1 drops the pins and keeps
- *                          the memory in use
- * thp-recover fault <mb>   populate a MADV_HUGEPAGE buffer and print how
- *                          much of it got THPs and on which node
- * thp-recover bfault <mb>  the same, bound to node 0
- */
-#define _GNU_SOURCE
-#include <linux/io_uring.h>
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/mman.h>
-#include <sys/syscall.h>
-#include <sys/uio.h>
-#include <time.h>
-#include <unistd.h>
-
-#define MB		(1UL << 20)
-#define MPOL_BIND	2
-#define RING_BUFS	16384
-
-static volatile sig_atomic_t unpin;
-
-static void on_usr1(int sig)
-{
-	unpin = sig;
-}
-
-static void bind_node0(void)
-{
-	unsigned long mask = 1;
-
-	if (syscall(__NR_set_mempolicy, MPOL_BIND, &mask, 64))
-		perror("set_mempolicy"), exit(1);
-}
-
-static long vmstat(const char *key)
-{
-	char name[64];
-	long v, ret = 0;
-	FILE *f = fopen("/proc/vmstat", "r");
-
-	while (f && fscanf(f, "%63s %ld", name, &v) == 2)
-		if (!strcmp(name, key))
-			ret = v;
-	if (f)
-		fclose(f);
-	return ret;
-}
-
-static long thp_mb(void)
-{
-	const char *key = "AnonHugePages:";
-	char line[256];
-	long kb = 0;
-	FILE *f = fopen("/proc/self/smaps_rollup", "r");
-
-	while (f && fgets(line, sizeof(line), f))
-		if (!strncmp(line, key, strlen(key)))
-			kb = atol(line + strlen(key));
-	if (f)
-		fclose(f);
-	return kb / 1024;
-}
-
-static int hog(size_t size)
-{
-	size_t npages = size / 8192, done = 0, i, off;
-	struct iovec *iov = calloc(RING_BUFS, sizeof(*iov));
-	int fds[4096], nr = 0, r;
-	char *buf;
-
-	bind_node0();
-	buf = mmap(NULL, size, PROT_READ | PROT_WRITE,
-		   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-	madvise(buf, size, MADV_NOHUGEPAGE);
-	memset(buf, 1, size);
-	/* Plenty of free memory, but no free 2M block */
-	for (off = 4096; off < size; off += 8192)
-		madvise(buf + off, 4096, MADV_DONTNEED);
-	/* Long-term pin the pages left, as RDMA registration does */
-	while (done < npages) {
-		struct io_uring_params p = { 0 };
-		size_t n = npages - done > RING_BUFS ? RING_BUFS : npages - done;
-		int fd = syscall(__NR_io_uring_setup, 4, &p);
-
-		for (i = 0; i < n; i++) {
-			iov[i].iov_base = buf + (done + i) * 8192;
-			iov[i].iov_len = 4096;
-		}
-		if (fd < 0 || syscall(__NR_io_uring_register, fd,
-				      IORING_REGISTER_BUFFERS, iov, n))
-			perror("pin"), exit(1);
-		fds[nr++] = fd;
-		done += n;
-	}
-	printf("ready\n");
-	fflush(stdout);
-	signal(SIGUSR1, on_usr1);
-	while (!unpin)
-		pause();
-	for (r = 0; r < nr; r++)
-		close(fds[r]);
-	printf("unpinned\n");
-	fflush(stdout);
-	for (;;)
-		pause();
-}
-
-static int fault(size_t size)
-{
-	size_t n = size / (2 * MB), i, node[2] = { 0 };
-	long stall = vmstat("compact_stall"), ok = vmstat("compact_success");
-	void **pages = malloc(n * sizeof(*pages));
-	int *status = malloc(n * sizeof(*status));
-	struct timespec t0, t1;
-	double ms;
-	char *buf;
-
-	buf = mmap(NULL, size + 2 * MB, PROT_READ | PROT_WRITE,
-		   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-	buf = (char *)(((unsigned long)buf + 2 * MB - 1) & ~(2 * MB - 1));
-	madvise(buf, size, MADV_HUGEPAGE);
-	clock_gettime(CLOCK_MONOTONIC, &t0);
-	for (i = 0; i < size; i += 4096)
-		buf[i] = 1;
-	clock_gettime(CLOCK_MONOTONIC, &t1);
-	ms = (t1.tv_sec - t0.tv_sec) * 1e3 + (t1.tv_nsec - t0.tv_nsec) / 1e6;
-
-	for (i = 0; i < n; i++)
-		pages[i] = buf + i * 2 * MB;
-	syscall(__NR_move_pages, 0, n, pages, NULL, status, 0);
-	for (i = 0; i < n; i++)
-		if (status[i] == 0 || status[i] == 1)
-			node[status[i]]++;
-	printf("%zu MB in %.0f ms, %ld MB in THPs, 2M ranges on node 0/1: %zu/%zu, ",
-	       size / MB, ms, thp_mb(), node[0], node[1]);
-	printf("compactions: %ld, succeeded: %ld\n",
-	       vmstat("compact_stall") - stall, vmstat("compact_success") - ok);
-	return 0;
-}
-
-int main(int argc, char **argv)
-{
-	size_t size;
-
-	if (argc != 3) {
-		fprintf(stderr, "usage: %s hog|fault|bfault <mb>\n", argv[0]);
-		return 1;
-	}
-	size = strtoul(argv[2], NULL, 0) * MB;
-	if (!strcmp(argv[1], "hog"))
-		return hog(size);
-	if (!strcmp(argv[1], "bfault"))
-		bind_node0();
-	return fault(size);
-}
 
