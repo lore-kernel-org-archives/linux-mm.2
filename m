@@ -1,67 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50432606BFF5
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 12:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C7860A260A
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 12:56:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=iI7ym2rR;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=d7Rq00c+;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=iI7ym2rR;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=d7Rq00c+
 Received: by kanga.kvack.org (Postfix)
-	id 6F08F6B05C5; Tue, 10 Nov 2026 07:56:12 -0500 (EST)
+	id 93A436B05C8; Tue, 10 Nov 2026 07:56:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C7986B05C6; Tue, 10 Nov 2026 07:56:12 -0500 (EST)
+	id 8EAAE6B05C9; Tue, 10 Nov 2026 07:56:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 605D06B05C7; Tue, 10 Nov 2026 07:56:12 -0500 (EST)
+	id 801F16B05CA; Tue, 10 Nov 2026 07:56:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BA016B05C5
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:56:12 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D79A51A05B8
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:56:11 +0000 (UTC)
-X-FDA: 85419207342.18.A931FA8
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 556426B05C8
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:56:36 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EF2FC1405D5
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:56:35 +0000 (UTC)
+X-FDA: 85419208350.23.3901CDA
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E4CBBC0003
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:56:09 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
+	by imf04.hostedemail.com (Postfix) with ESMTP id BF4BE40003
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:56:33 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=iI7ym2rR;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=d7Rq00c+;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=iI7ym2rR;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=d7Rq00c+;
 	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794315370;
-	b=BIfOGI+0VqHtfm2ONUDbN2Q3XHm2AF8NFMSmVepQSxXGZiDimcO4t9h9RrvBxCdYY1yeKl
-	Yml5+7XwC5QQc1EjoceaGvkzLhHr6945H36fXHZIDNi4GXu2501kzL+9rdNj3pTRUUkFYA
-	s6DXMaIXxsZA6F950XnlWDxq0cKm0tc=
+	t=1794315394;
+	b=JnRbO0uu5PlS7V6C9+7riBOTlaFyZBTyeF9/HOJeOOcrKi+iOKs9f0vVQaiJrD56WFnk+A
+	LULW53OBHtmEP+sYPexC2W66Au27WCNuWv8drM/j5k0TTY8Iru99fsVX4vBWbwWINXdRG2
+	bzb84gqqAGirXzT8KnxwmfkY5MybqIM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794315370;
+	s=arc-20220608; t=1794315394;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QUEL7ami9tBt93YnGorfmeiZG+8AFflik0IQpbpHjtQ=;
-	b=5807uC5G7IV7Gba/v3YNW/foGCuIi32ps5x8aPIiURGz+o6S9MGabnAiv/JtGLIMObXC9T
-	/4nVs9/G8onwiWK2RC77dFYwdlSHdyAJzTq9yOJHdxE+kuVZlwrsWqJxECsu6bfA5vMETl
-	M1WfqosWuti7VXhJ3Hg3HcgWi+f8lQE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HPonFqTWiUmtrNs+Qb0D36Y6ciEfhMadviiHreNFwYc=;
+	b=1eVCxYcxtwE+vRVXFkqbHHO+XUI39cs8s5KmUYzMnX3+NRcj96ysnNwktZT7uVMxY7qhex
+	u9d6bzj8unztsQeIvFw2MFc7R6/UxdQnbOTYdrXqc2JpHJvVitdYipIHvf4NlrtSStPton
+	ZDiUadnUaMRw5GEJKpAOX66aT8J5BAk=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
+	imf04.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=iI7ym2rR;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=d7Rq00c+;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=iI7ym2rR;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=d7Rq00c+;
 	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id DB0C521ECA;
-	Tue, 10 Nov 2026 12:56:08 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 76D2521F51;
+	Tue, 10 Nov 2026 12:56:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794315392; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HPonFqTWiUmtrNs+Qb0D36Y6ciEfhMadviiHreNFwYc=;
+	b=iI7ym2rRMMc3VrhaaAlN5WNcqZznLEHDbtpYqtRkG5n1tfi+3M5v/n/1WuSOFedMo1sqbz
+	Sc32CgTVFd7/opphYDcFWOT80BR/RRxVs/vkTtWjRDJpkb4OidIs7+B5BXeAuF4BOYbj/J
+	KLIaaDFlgWnKom1lHgtRS/Kk0HCzFnQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794315392;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HPonFqTWiUmtrNs+Qb0D36Y6ciEfhMadviiHreNFwYc=;
+	b=d7Rq00c+LDwkQJ8CY66ztb5ybwTC8KjmYM3gSgR5ZqtZLmPfIVg22YnOIpbxkR6cuLihJP
+	WLfQ9WIdsrYIm9Aw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794315392; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HPonFqTWiUmtrNs+Qb0D36Y6ciEfhMadviiHreNFwYc=;
+	b=iI7ym2rRMMc3VrhaaAlN5WNcqZznLEHDbtpYqtRkG5n1tfi+3M5v/n/1WuSOFedMo1sqbz
+	Sc32CgTVFd7/opphYDcFWOT80BR/RRxVs/vkTtWjRDJpkb4OidIs7+B5BXeAuF4BOYbj/J
+	KLIaaDFlgWnKom1lHgtRS/Kk0HCzFnQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794315392;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HPonFqTWiUmtrNs+Qb0D36Y6ciEfhMadviiHreNFwYc=;
+	b=d7Rq00c+LDwkQJ8CY66ztb5ybwTC8KjmYM3gSgR5ZqtZLmPfIVg22YnOIpbxkR6cuLihJP
+	WLfQ9WIdsrYIm9Aw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AE1661339F;
-	Tue, 10 Nov 2026 12:56:08 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4B4391339F;
+	Tue, 10 Nov 2026 12:56:32 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id o3haImgU82qJQwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 10 Nov 2026 12:56:08 +0000
+	id 7R2CCoAU82qzQwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 10 Nov 2026 12:56:32 +0000
 Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 53F33224E5; Tue, 10 Nov 2026 13:56:08 +0100 (CET)
-Date: Tue, 10 Nov 2026 13:56:08 +0100
+	id E835D224E7; Tue, 10 Nov 2026 13:56:27 +0100 (CET)
+Date: Tue, 10 Nov 2026 13:56:27 +0100
 From: Jan Kara <jack@suse.cz>
 To: Christian Brauner <brauner@kernel.org>
 Cc: linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>, 
@@ -75,36 +118,30 @@ Cc: linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>,
 	linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org, ocfs2-devel@lists.linux.dev, 
 	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, 
 	Amir Goldstein <amir73il@gmail.com>, linux-erofs@lists.ozlabs.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH RFC 05/41] kernfs: use fc_init_pseudo()
-Message-ID: <bktltatbokowanmaf2kqhfcjg47gok7lbk4bs2mjsbwu33tvbe@gxd5dq25slfp>
+Subject: Re: [PATCH RFC 06/41] proc: use fc_init_pseudo()
+Message-ID: <sqdczu46saxh7e2x5d7cuzkfqnlrp2naoqau374n2chx55ylpm@tirkx2qx4uju>
 References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
- <20261110-work-loop-pseudo-v1-5-4c998976c6c7@kernel.org>
+ <20261110-work-loop-pseudo-v1-6-4c998976c6c7@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261110-work-loop-pseudo-v1-5-4c998976c6c7@kernel.org>
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Spam-Score: -4.00
-X-Spam-Level: 
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
+In-Reply-To: <20261110-work-loop-pseudo-v1-6-4c998976c6c7@kernel.org>
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: E4CBBC0003
+X-Spam-Score: -13.01
+X-Spam-Level: 
+X-Rspamd-Queue-Id: BF4BE40003
 X-Rspamd-Server: rspam12
-X-Stat-Signature: iocmrqwcs9tuj3eaa7nn6ee749pr749k
+X-Stat-Signature: gik8fziwdc4i5xnkexbqiric8bfn9da6
 X-Rspam-User:
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794315369-884810
-X-HE-Meta: U2FsdGVkX1+0/HyFotUcgWcGB9nkUasNEDZ8rmNG8hyr+JrRIiELzCGW0QIAVG2BboJKmeDryLGagDJGf8WgznuQsBjUobpgr7e16WaRXUZfSObXdO6KjQWAulD2rS3AzC2nfhu/j3RsTCW9kb6lYEoszChdxJQcZuUr8lViu7qDbH/KwYz8PUCSN4qXAIsoblp0R8o2yIiENvf8VCHfOSVyThpokSJradZtNpFQkw67aNhXyKwM9/nNZImCgEA3+aOp5PdC0Pmn7w+GAhoPMnE90nb6Ta9v7/CysAtlD7AfKCAnvLWS/ii2y3Yt/Le6dNJRnDH1fyW2fQamuKWZ31pd8ar5YUPvW8AqrnBpV3IpAVgRTq8xerz3+gblLzMFhV3NgrwMsLCcBLVcRWyAfrxslv4NvZCTqSoQMHiAv8V+21S3Pac6go1zyVox/GcWJ9pvocefGh3O9BKm+0YF7uAvjw8jWLHFn9KdBD3xSqYPpyEL8ugBWx3bG3iq2NrjdS5t1Lyp2zOeCKFdwARW7TK4I439R0Fe7f9otyXt6ETIq0yTAzR+jJMEE4E7yPRuPpDSsKuIz8kSq4Gu0p9zU/yn9GKkdpgOMWZBfbvCXGheuOskbUTsolhcdp0vUzUb7n/3KxhTnkDtxkWgAcbosFPZdSAfmFsY0Ab/8HCLHHZPtnU5RaW4WLRLJ+M3csWZPG9qrNAYgQRCckZ0ORguNnrlX6k6EB/+NubM8L0cVbJJKVVgUz2p04QkIZG/QdxD0QrKTAH28RVWJgGEBFbUuKZLDD9xVR01tbV3ZDRJ/ADl9rwaKhh3L1bFM0uonmksUtkW3JMrLnE7IR5Nv5CK4C7XicWhLoEhfdZneXcu6b+uFMX3RRQ4MbikDYNwrt2tccMdGpPPEDxk0aZDZTEH4sfjY6p9Py9gP0vXbp0cySZtSU6/xnU7e9qeaYZ302pGTdYEKbEL2NV9VwJfIbP
- v7wNWFJF
- JNJqao5Ci7ocq2IeyU60to0UpejjH7FARHFnWIFg3q90+Ohb/+j8FiIq4AqHg/GgdH25TOPny3gEpIqXIxfOz5ziq73j/Ty6HhMVJQ5Y+Gv+86ON4GIcjnuSei0lABtgXDUZk8YkYdrmKmjxtCc+eZ+gfUd1X7zufgnwm+Kwf0si8BGaKgzwQOpELNMCtfGBZ9kvNcw9FE7K69vv5GxycpKL9oPF85yo7Mbd3AlTPVKNtPRcyC5RNIq6syRwpvohCC0QN3WbaPBUIeNUumtKk/xuCwG3VcJ72s3waD9txOFvrivbXbkwq+hbvoCUbUV5XpgCFVG6A6XajW5oLXz7weBj+vWpe0OumCHm3
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794315393-60938
+X-HE-Meta: U2FsdGVkX1/9cDiMEGM3Om022SGzcgXBIOmmiTep4oSjs9/VC6opbopgEB/NKX5DZYsn+nNm9tVo6hbfrMR9yFUgiv7aD+kmANarF7wr18u1eSHJYah6Rdkn6z7MmG3KVvkj7F7A8YUlIKVvevwChIOVbr+HWXhOd1fYU78LchNg3Vp8gcL/scWyXWiPqZXbiYcb/Ai+BZ0l2W301FblSqY5jdoOFVbj2tR7bWy+Ph+wug0KEW4WMdx1EFAU1dJ2QVAJmN3sVOim2Ia9oPM/LC1UgrcMC2Q0qaZWJYmburYW5N/2bQIgtEk1sFqxRfkUoUoyJzbSWpT1mnTBx6yFQQoTzVF+qefXBg1PiAK5DE7fOjwx70GP6KCbNBv92SN1EUoZ7lwh8vDBWsETk+bqA9qoeWkF+j5EYTw6qCCgrFY1/yHD2f7uo6TsU3K5SlbNAhFDaPrTaFVZ/4vmbH0JO30Rv7jesf795n8zzPkNJMf45hExy7rZTaaBvX9fL50pUEV5dH1iY8XPzJG/ZIns3vfgbbdIjOProQwcNXUERBdK8vB8QFOzAcZXMLvkValsR8a3RKe1+zT7wM1IFMNW+vU0dRVTUd9dshw0UApjtwi3WBrxHjkMMQI26z9p7ZIsl/bDUpHEGdw2Q8Eau6fv6Pzv5wRdZf6xF7GI3nC9+Fh8jkSF1MtvTuC68zXQJOH080mq/dBKkudg2yYdxOZxM8wXkpxyzq/A/JabGdgQJEjYfSS2q08SwQndXuRlNOz/vsPnGFlYOmZJlVSVBz2YS2vwb0MjflGohAgRGLvqnOdgZDN8gMoOrUzu6ZU5ZkbvLVfnAfU4KmVT/U4FyT9onGKY9pKVlBKu63wEwxSL5lRPjLS54UIHvZRUJxLvywcxsWIJRa7P5T/9ROQSbqxMorBYrPOXMK5e1dvFuDB4MOLLAIeJstt7qiCHl53B1GZp3VGjaa+K7usMSvo82gx
+ bS+g7P2n
+ otnYoEZNSYixbl+QiUQxyoftwkEVQHNgW5QEHRe85Ok6KLTtjTbFxHPhZ2Nmzx2SLW1NL9PQzdVd0q4DLFMBTecNJ/ayMEXv+XSYRbdHF/E07RiehOsTeRk56IRDKhryZk8RJKef1EN6PrLjbR0vyxrnD+froNhc/EhKoTePLDQBrWiEQjW9DWLMlkWKEnxCOogE9Xl1QmX0VbU1Xdk9nKLRySL1s2++WMU4jnp0ud6lgBU4UekEoVPsA0+VcxK/ZhsnVnmIRcUH6RNYNhrgg21kxa2Ks4shhjw3bHoyt0XyRqQm6rlz7MvOZUBMdbqUNg0iy+XBCgZ/50zxz0vGmFVRHOslLLVGslCFy6s/2ZtxsPdQ1dpwuXetffBl+JSRirlFy5SfH3nPpsIuQut29RT0Bl91XQiywr7G8vQ3xH36JgZAP5n1efSdoGEYONv815ffLhdzx8J22/hRp1a7K4L3kSG10TFJu0pfIWYfZzlHzNP2w5SHViEVJpUoPPqE8X4XhhzdpzYh1CSk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,11 +150,9 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue 10-11-26 10:14:21, Christian Brauner wrote:
-> Initialize all kernfs based filesystems as pseudo filesystems in
-> kernfs_get_tree() instead of raising SB_I_NOEXEC and SB_I_NODEV by hand
-> in kernfs_fill_super(). This adds SB_I_PSEUDO for sysfs, cgroupfs and
-> resctrl.
+On Tue 10-11-26 10:14:22, Christian Brauner wrote:
+> Initialize procfs as a pseudo filesystem instead of raising
+> SB_I_NOEXEC and SB_I_NODEV by hand. This adds SB_I_PSEUDO.
 > 
 > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
@@ -128,38 +163,38 @@ Reviewed-by: Jan Kara <jack@suse.cz>
 								Honza
 
 > ---
->  fs/kernfs/mount.c | 4 ++--
+>  fs/proc/root.c | 4 ++--
 >  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/fs/kernfs/mount.c b/fs/kernfs/mount.c
-> index a0be784bfb06..6b60d212b003 100644
-> --- a/fs/kernfs/mount.c
-> +++ b/fs/kernfs/mount.c
-> @@ -8,6 +8,7 @@
->   */
->  
->  #include <linux/fs.h>
+> diff --git a/fs/proc/root.c b/fs/proc/root.c
+> index 7fbbe92bf73a..ca0e75081934 100644
+> --- a/fs/proc/root.c
+> +++ b/fs/proc/root.c
+> @@ -17,6 +17,7 @@
+>  #include <linux/bitops.h>
+>  #include <linux/user_namespace.h>
+>  #include <linux/fs_context.h>
 > +#include <linux/pseudo_fs.h>
 >  #include <linux/mount.h>
->  #include <linux/init.h>
->  #include <linux/magic.h>
-> @@ -298,8 +299,6 @@ static int kernfs_fill_super(struct super_block *sb, struct kernfs_fs_context *k
->  	struct dentry *root;
+>  #include <linux/pid_namespace.h>
+>  #include <linux/fs_parser.h>
+> @@ -265,8 +266,6 @@ static int proc_fill_super(struct super_block *s, struct fs_context *fc)
+>  	if (ret)
+>  		return ret;
 >  
->  	info->sb = sb;
-> -	/* Userspace would break if executables or devices appear on sysfs */
-> -	sb->s_iflags |= SB_I_NOEXEC | SB_I_NODEV;
->  	sb->s_blocksize = PAGE_SIZE;
->  	sb->s_blocksize_bits = PAGE_SHIFT;
->  	sb->s_magic = kfc->magic;
-> @@ -388,6 +387,7 @@ int kernfs_get_tree(struct fs_context *fc)
->  	info->ns = kfc->ns_tag;
->  	INIT_LIST_HEAD(&info->node);
->  
+> -	/* User space would break if executables or devices appear on proc */
+> -	s->s_iflags |= SB_I_NOEXEC | SB_I_NODEV;
+>  	s->s_flags |= SB_NODIRATIME | SB_NOSUID | SB_NOEXEC;
+>  	s->s_blocksize = 1024;
+>  	s->s_blocksize_bits = 10;
+> @@ -350,6 +349,7 @@ static int proc_init_fs_context(struct fs_context *fc)
+>  	put_user_ns(fc->user_ns);
+>  	fc->user_ns = get_user_ns(ctx->pid_ns->user_ns);
+>  	fc->fs_private = ctx;
 > +	fc_init_pseudo(fc);
->  	fc->s_fs_info = info;
->  	sb = sget_fc(fc, kernfs_test_super, kernfs_set_super);
->  	if (IS_ERR(sb))
+>  	fc->ops = &proc_fs_context_ops;
+>  	return 0;
+>  }
 > 
 > -- 
 > 2.53.0
