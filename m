@@ -1,97 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8CE3606A320
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 17:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C63B9606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 17:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AdR/iIal
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WDEC3wKQ
 Received: by kanga.kvack.org (Postfix)
-	id F3C796B05B3; Tue, 10 Nov 2026 12:37:36 -0500 (EST)
+	id E7AA56B05D4; Tue, 10 Nov 2026 12:38:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EED136B05C7; Tue, 10 Nov 2026 12:37:36 -0500 (EST)
+	id E039C6B05D5; Tue, 10 Nov 2026 12:38:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2A326B05D1; Tue, 10 Nov 2026 12:37:36 -0500 (EST)
+	id D1D166B05D6; Tue, 10 Nov 2026 12:38:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C7C1D6B05B3
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:37:36 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 66F51160A05
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:37:36 +0000 (UTC)
-X-FDA: 85419916512.13.3913B9F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D09EF80005
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:37:34 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="AdR/iIal";
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A0BCD6B05D4
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:38:12 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 221991A0A77
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:38:12 +0000 (UTC)
+X-FDA: 85419918024.02.88D5654
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6733E4000A
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:38:10 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WDEC3wKQ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794332254;
-	b=hRWiNYkJq63lkHCtuBzHg28bFL3glwUSaeI/JzZL5o8NUlOcG2LAo00lbKdVOzxKiMMuSd
-	Vhbhuoj1IAqxRaovMcC/fYud5JdOuFuZXqAva4luk+3hq5/ouJZhPevlleBOOa1rTyduPv
-	AmJ1E/+R4hJVNVOpQLZCNsFEOYvCtWk=
+	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794332254;
+	s=arc-20220608; t=1794332290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1RfyL/TcZ4ZTAYnZqeNVh51xKbXVpc1QnVP/NPBvRh4=;
-	b=GDBQGyfxp2XujnC8zvajBZZHS9SocdEuNJRYTc7nu9UcpdEdyZHkMugm5QahzyCTfXXyNr
-	Jrkp949FgRQkS9ZDuh3HPX/pzMxCRVJPz2COXSUrUcEEytd8lg74t1mIFmJTvzRFj1eAsV
-	sdSzsqCoUHXXumURGnyE9UHvr28i/Iw=
+	bh=6/eB+/CH5yaEpI1uhM4dFjSsW0sUvRV8va2xHbNL6Kg=;
+	b=fPL1Qk+3dlbRIULAe2K/Z9XRuyIj4i7FHJJakJ7NbHKq8D30p5d42GJvU1OA/tm1ovOQLU
+	VjKoCK6HUD6SY9KuEI4Vm56rbrXvicYwotvrTBMGtVbVE2j5rvo+YAXfGVth+SX61husAy
+	Chvn4f0VL+6NLMrdvJHk+I/5h7y4r+M=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794332290;
+	b=LElnEPCAhtp4+GPjhFjk6R3OuJ36/kqT5pCTe1RMzBPPp3msXdYOG9Vr+NTzzf3RO2ooy6
+	uwzyNyQ6V50O7/GlNDN6dOj8109L3X1MWei6++XojvfMGfS3HSYvSuGyzbHdUzuYpnGoM5
+	UFutU8TTIwsB4K7PIOgm209vzBv0gdE=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="AdR/iIal";
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WDEC3wKQ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 577F360218;
-	Tue, 10 Nov 2026 17:37:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E101F0089F;
-	Tue, 10 Nov 2026 17:37:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9A9D44088B;
+	Tue, 10 Nov 2026 17:38:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 392F71F0089F;
+	Tue, 10 Nov 2026 17:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794332254;
-	bh=1RfyL/TcZ4ZTAYnZqeNVh51xKbXVpc1QnVP/NPBvRh4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AdR/iIal7CJ/v9yej9YNB2M0x4MKHjl8+kbhv5lSQTwpgvTjIm+3VQzyE4AQeTthP
-	 kBgsagPvRR6i+pYNoNMLfB8qf7jOtLYQq9j1cAAIaYiM/NDG1ERgrHlDk1Dh0xsetm
-	 ClWe4MuQ2pZXy57EhCpHOlOvXxW0yJg/9bHu9aX3jGBdpKOEQ2H0KE3Y4WUCwQ1E9p
-	 3YTi6NMP9CC6z6Hq9dr1XiK42WuKUvOVHuimlRH1rgWQJ8utnMttYXuQeaYkUylb8/
-	 tKxLG3+wWEJuCQo94ADRIwSibf/dNy/RF/LRft6LfWUq9ls70xAZbdeStvlL/XscxA
-	 qk5tFvH7VTnyg==
-Date: Tue, 10 Nov 2026 17:37:27 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Seunghyun An <san55@wisc.edu>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Lance Yang <lance.yang@linux.dev>, "David Hildenbrand (Arm)" <david@kernel.org>, 
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] mm/vma: predicate vma_assert_stabilised() on
- CONFIG_DEBUG_VM
-Message-ID: <avNVoCWBhVQea7Vq@gremlin>
-References: <20261110-vma-fixup-debug-asserts-v1-1-0b2e0680cd7e@kernel.org>
- <MN2PR06MB6639D846B30A3357B01BC61DD2722@MN2PR06MB6639.namprd06.prod.outlook.com>
+	s=k20260515; t=1794332289;
+	bh=6/eB+/CH5yaEpI1uhM4dFjSsW0sUvRV8va2xHbNL6Kg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=WDEC3wKQyX0hwMUN7w0VPurSY8Nvo/ERaH/+f4RahK/VRm8DW4X2gwlvhh7KTVPcD
+	 M1BCzIkLVMIL9ZJYaGK3hVB9BiyTYIK8mAg88QneuGhyvFPARVRjC6tIdUJJ8BPvBH
+	 txO0v2O2BXqcz5yMfuH0485bf+bmK8ZDLA4Z+ynQioxlG/HCoIBIpUfLW1Nr9AKDC+
+	 PzWNOAj5G3lN37XjPQeNeEtRlMi8Oc9OwVJT0CsDSxxdAIrbUy+//RaNdNL+a6YfzG
+	 EEUQ1wiGUUPMeoXetkDh3OZ/8xOdTkUCqOpfLg9RMsOYCt2JFmSKHxZKJ8EOM6H9Sv
+	 Q1oK4bFpBW/TQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  Andrew Morton <akpm@linux-foundation.org>,
+  kexec@lists.infradead.org,  linux-kernel@vger.kernel.org,
+  linux-mm@kvack.org
+Subject: Re: [PATCH v2] mm/memfd_luo: don't use memfd_pin_folios()
+In-Reply-To: <179381215936.28814.9050829645096838793.b4-review@b4> (Mike
+	Rapoport's message of "Wed, 04 Nov 2026 19:09:19 +0200")
+References: <20261103172251.2348370-1-pratyush@kernel.org>
+	<179381215936.28814.9050829645096838793.b4-review@b4>
+Date: Tue, 10 Nov 2026 18:38:06 +0100
+Message-ID: <2vxzse18h9j5.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <MN2PR06MB6639D846B30A3357B01BC61DD2722@MN2PR06MB6639.namprd06.prod.outlook.com>
-X-Rspamd-Queue-Id: D09EF80005
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ozw538xf5aonjhufiwub8r4n6ofn89we
-X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain
+X-Stat-Signature: 9oy149oqaypt99uzet69wxiwpudrojuy
+X-Rspam-User: 
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794332254-932211
-X-HE-Meta: U2FsdGVkX1+TMUkJYPUHF4P47mUtkvq6LabR9PXehy4MSnnbykEeD6lg3xtSTIxU6loPjnhjZqcDl2FjyV7VI5THYbCm7/+2D7NdJDmhxCD3eLpMbsvxJhca7xKpOXZMI4fXP1YwCvXnGaXb5Qw1MO4SZS29mpnwFldKUkbcNyHIyzazFIod8OsB8VXaGuoMoxXtXQ9pXPwFNKJMr06l580D3v8XpcIHBa0kvWxlgQhV1B5u8rm6vkVj2Kg0S9kI3tv/3NxB9QK9p2l72wz5oU1p3b/6V+P/yoFj+vx8EAOR3KDfPAocnHRyNOUvr2aO34Xh9fq338VGfXzXJrLWV9VwWJUXsEF8hOGW9Er1KACpz0mnlM/ydbyQYxPugxWhi7wlxxuyKyxprCOFgoAc44MYaRtrnFxPqLQW7GAxKlZ3pzl7F1QNIvPyJJG49CfCTTNDwxPs5hau4hzsbQUG+0jopfba1DkUM80KeCtu/Y0WldXStMQKB91wMU/WGF74YQfvA+BdwWRj7MWlmJEUvnWoDZsN2sHl/4HzDAlf/hCFkdXiFThB71eKnmL18RA5XV+s71087t62BMZQ2XNXi8SL5SQ1MmYRpwpIzyI2du6yNe+aqR3Mo1AIPJPUEvrcNLvZNFqoaAY04zPIVBMRcfai1N8JHpOslG2+sC66SEaO9nEu6a1hilgzGYOIej1j0NhkCp+3A0h/8kg/5dpqXfhFEE4mCykv6JrHBX0eRAdZQ64cjktvF8uYe6fvR4DwT5xjhOHFcaGqzd8IdxKepTq6hINYKshykImCJARxkZUCTfXP8m6uBhg781SUnNqd48fFFhWDjCsjdSUnuzYLasUZCSR+bqKGsD9xYRtO9JEFgq3/E62SEwzWrc0tXkBKYaSjsgI+zThIJ2cWTL0XLll/OjY6lj/zyGi+R6XkrRjeV4O8KRGoKWnWVx0buupX+TB1s7md0UesbyPcAOR
- 4UG6QZ7D
- ZsIZW0LSRpTL8jSSKkUAqVDzLc/6YEOC3COhuXpyh9XRCjhF1kZ1Nqu8O6yGz8/Hr+yAJrmf272NYHP4hPVWSJeEk5lhsvZiCFZNTk+9hx2+grznL0NgW4+9YhuKCZjlYI4s90xln8ipJxvvDKfiCR6TbHGwILjAhRJmlvKYi7ufQ9oH31HiEMYUesbrt+yV7JPgZNFKuVOGl8gM4JjFF2VMsWYJXmL5HvMenAKyBaWK6jQs8YXNMO9ySFxsfR0MVYHsyhh/6+ldIVHKA1nIj01HaWtOQnFbP14hAUqbDhyXvQRwyoTTC6ZMleeuG/Nb2V0YuEJVNVhtkLFTOcxizFRSZHZMi2ghYxQft+jIBEr3tJ7+OiLi2WXzmqeaqCfEwYKabf3bQOgEJ2xHoecyW5CAo/0r4SfrtPZuAqHz54Th2u021gFxb+0cwleBW8MJfNTTQ3kgxwq2ZpAChQIjsoYBh7ROwdvJWR0VxMLzyR0uJtyFX9WxvRWlqVg==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6733E4000A
+X-HE-Tag: 1794332290-826238
+X-HE-Meta: U2FsdGVkX1+HcHrb9mH9/gLn6XRRJ/sdNkSizoCqpfHRi/NY4z0l3caP8rbz/bHVzrAW7mDJfWVvamFE+P+3k7tIVuskTlPxnTNpVv7V/ytOJwUJfs3TK22/+erbFaKH9rhBlI6AjZ140fnLC/DIUC8YshzGmmYCydhqeIFwOXQ7cmj3aBsYC+3xOTyL/X7ILPWXB4GctVsQp3iWj2msCWZKYAxmhzUD4tnXl0IM8jnZUFJITRpz9SyUn4JQpkS7D6HjMzThtwpUBPKe1cs27yjmSBAupyLI5zBWG15/3kx26H0p+KouuYC0juvhmjWYJPLp4TjwuZEOo2hPIL4jITGyrb4kJX+8CNiGxoU9gRYw7IlehgysRd/NjvZ14UCq0JuvGTSHt3a8rihQWWuRfKUinzx8Ru8PgEC6aEsfL5rpoFFcW/m6aGctV9EsPhkYy/kzNtLIM8T76P6zJeK98Ns6XLOw8SoIO9rUGW8fQt5dOIhOd9RzEfgUFMtXHm8kssuli15zKNGMlwari/QH8Uqq/q7XVgu59/C73o+m/1kDwlBJSEHCq923iOCTO7yPi7oXLk/xNWlqdV12nF9yGOxc9IBvYdhB/A941EvgYeT4SOW1y93nKVXcGG2f82WoTyP7X98I6UEi8f78GeoTMxjgmX9gU1UKeh7loPhGlBILTsfG1TSvqlSxx0YoKo8Mz7rPgd0s5HDtCBpqm9hR/bYgHVAwb32zmWi3W+jUuW5ug+THyWPu6pxRT8PhlBtIcvLZOApzn4WNo9vt3TBC1Obc4cK8Sv4jNxnMeP3EjQQ1SfQw8v5aLKtIkfOUMvurZB8DAToofZ//L+8M4dvuxNcQgKPbBQoYLyht540NYO4oDz8ehzQOeGj2VyDqrJLAPgjBIYxCwyBPkqZC/6/h9iscW54+lXEsiD12xsU4kVOQ35FfdDus/ZLh/RK1J0/s4O8GoF4b8VaX08WYzpI
+ 5GuHWZb3
+ jfTikrpAUdQe8BrFcbnDtkff7o3TlEWb9nVtI8pXKlOCRzWUHCYhEdlZRIBHegGZkOXTdVT4HTkF5tDWsgfgEwXod6+wEulWGsQHnYbkAO3ijJzz30Nrxg9x6gK3+kfg1+5DUlB0I2m43w3wlYi9m7Qv0/p7du83W15AJEhaiIDZLNCrqOUDMygL9Ok5y9kDOqUBiR49SjDXsdmk05rQKSW/Dos0bDO8RVj5r8NaSy5sw2MyXN558imZbr4MyBujdnvBBU6RSxG0XQSGwXlYQh5G4OqvHb3hcV3kSqOFakA3r/vRAU8RX7bpZBE4YuZsnnN+9y+8MYp3EIB+odWYa3YeYnQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,60 +98,143 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 10, 2026 at 05:32:17PM +0000, Seunghyun An wrote:
-> On Tue, Nov 10, 2026 at 03:10:40PM +0000, Lorenzo Stoakes (ARM) wrote:
-> > I introduced commit 17fd82c3abe0 ("mm/vma: add and use
-> > vma_assert_stabilised()") with the intent of picking up programmatic bugs
+On Wed, Nov 04 2026, Mike Rapoport wrote:
+
+>> memfd_luo takes a snapshot of the folios in the file's mapping. To make
+>> sure the snapshot does not go out of sync, it pins the folios in the
+>> file via memfd_pin_folios(). The pinning also migrates the folios out of
+>> MIGRATE_MOVABLE to make sure doesn't land in KHO boot memory or in a CMA
+>> region.
+>> 
+>> memfd_pin_folios() does not lock the folios. So it can race with
+>> shmem_writeout(). A folio returned by memfd_pin_folios() might already
+>> be in swap cache. This happens to work but is fragile. memfd_luo looks
+>> at folio flags and index on a folio that isn't in the memfd's page
+>> cache.
+>> 
+>> In addition, memfd_pin_folios() needs the caller to allocate an array of
+>> folios. memfd_luo does not really need that since it will vmalloc
+>> folios_ser and store the information there anyway. The folios array is
+>> unnecessary overhead.
+>> 
+>> Finally, memfd_pin_folios() fills in holes in the memfd. This makes
+>> preserving sparse memfds very expensive in both compute and memory.
+>> While this patch doesn't yet stop filling in the holes, it sets up the
+>> infrastructure to make it simpler.
+>> 
+>> Fix all this by walking the page cache directly using shmem_get_folio()
+>> with SGP_CACHE. This returns a locked folio with an elevated refcount.
+>> memfd_luo holds that reference until the memfd is unpreserved. This
+>> blocks compaction, migration, etc.
+>> 
+>> There is still a need to migrate folios out of MIGRATE_MOVABLE page
+>> blocks. This is because those might be CMA or KHO scratch. memfd_luo
+>> will hold a longterm reference to the folios so it will block migration
+>> in that pageblock. Introduce memfd_luo_migrate_folio() to do this.
+>> 
+>> Also factor out folio unpreservation logic into memfd_luo_put_folios()
+>> and use it from memfd_luo_unpreserve_folios() and from error paths in
+>> memfd_luo_preserve_folios().
+>> 
+>> Since shmem_get_folio() always returns uptodate folios, drop the folio
+>> zeroing logic.
+>> 
+>> This change also improves preservation performance, shown in the table
+>> below.
+>> 
+>> |------------------+----------+------------+-------|
+>> | memfd            | baseline | this patch | delta |
+>> |------------------+----------+------------+-------|
+>> | 4K pages, 32 GiB | 748 ms   | 600 ms     |  -20% |
+>> | THP, 4 GiB       | 0.59 ms  | 0.59 ms    |    0% |
+>> | THP, 16 GiB      | 2.99 ms  | 2.61 ms    |  -13% |
+>> | THP, 32 GiB      | 4.83 ms  | 5.21 ms    |   +8% |
+>> | sparse, 32 GiB   | 8695 ms  | 7269 ms    |  -16% |
+>> |------------------+----------+------------+-------|
+>> 
+>> Acked-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+>> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 >
-> Tested on an AMD EPYC 9634 (84 cores, 12 CCDs), CONFIG_DEBUG_VM=n.
-> Applied on d48723711bae; base and patched were measured on the same day.
-> Throughput figures are in faults/s; JVM pretouch time is in ms.
+> With a few nits below
 >
->                               base      patched
->   shared-VMA faults, 7 CCDs   1.776M    1.917M   +7.9%
->   shared-VMA faults, 12 CCDs  2.303M    2.431M   +5.6%
->   pft, 7 CCDs                 1.910M    2.126M  +11.3%
->   pft, 84 cores               4.201M    5.028M  +19.7%
->   JVM G1 pretouch (32G)       1877 ms   1672 ms -10.9%
->
-> Tested-by: Seunghyun An <san55@wisc.edu>
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 Thanks!
 
 >
-> As a follow-up, I also checked whether avoiding the __vm_anon_pgoff_hi
-> read in __folio_set_anon() provides any further benefit. For comparison,
-> I tested my earlier patch 1 on top, which computes the index from
-> vm_pgoff for anonymous VMAs and avoids that read:
+>> +/*
+>> + * Move a folio out of ZONE_MOVABLE or CMA, so it can be held until the next
 >
->                               this patch  + patch 1
->   shared-VMA faults, 12 CCDs  2.431M      2.941M   +21%
->   pft, 12 CCDs                2.434M      3.474M   +43%
->
-> With pft on 12 CCDs, this patch alone is essentially unchanged from
-> base (2.442M faults/s). The additional improvement with patch 1 suggests
-> that avoiding the __vm_anon_pgoff_hi read may be worth investigating on
-> CPUs with high coherency costs between L3 cache domains.
+> "held until next kernel" - here and below - I feel that something is off
+> here, but can't pinpoint what exactly.
 
-OK that suggests there are cases other than the one you mentioned that have
-an issue.
+Hmm, perhaps this:
 
-I'm disinclined to do something like that patch, as it's rather a hack.
+    Preservation holds a longterm reference on the folio. This would
+    block migration in ZONE_MOVABLE or CMA. Move it out.
 
-Cna you give me the workload you're actually exercising here? Ideally
-something that's easy for me to run + analyse locally.
-
-I have a zen 5 with 8 CCDs so can probably exercise some stuff over here.
+?
 
 >
-> Happy to run anything you'd like to try.
+>> + * kernel. Called with a reference on the unlocked folio, which is always
+>> + * dropped. The caller must look up the folio again afterwards.
+>
+> I'm having hard time parsing "called with a reference" sentence :)
 
-Thanks!
+What about this:
+
+     Must be called with folio unlocked. Drops the reference to folio.
+     The caller must look it up again.
+
+?
 
 >
-> Thanks,
-> Seunghyun
+>> +/*
+>> + * Look up the folio at @index, allocating it if needed, and make sure it can be
+>> + * held until the next kernel. Folios that are not longterm pinnable are migrated
+>> + * out first, retrying a few times if someone else has them isolated.
+>> + *
+>> + * On success, returns 0 with *@foliop locked and holding a reference.
+>> + */
+>> +static int memfd_luo_get_folio(struct inode *inode, pgoff_t index,
+>> +			       struct folio **foliop)
+>> +{
+>> +	int err, busy_retries = 0;
+>> +	struct folio *folio;
+>> +
+>> +	for (;;) {
+>
+> Won't
+> 	for (retry = 0; retry < MEMFD_LUO_MIGRATE_RETRIES; retry++) {
+>
+> look better and the body simpler?
 
---
-Cheers, Lorenzo
+Right, good idea.
+
+>
+>> +		err = shmem_get_folio(inode, index, 0, &folio, SGP_CACHE);
+>> +		if (err)
+>> +			return err;
+>> +
+>> +		if (likely(folio_is_longterm_pinnable(folio)))
+>> +			break;
+>> +
+>> +		folio_unlock(folio);
+>> +		err = memfd_luo_migrate_folio(folio);
+>> +		/* Someone else might have it isolated, retry a bit. */
+>> +		if (err == -EBUSY && ++busy_retries < MEMFD_LUO_MIGRATE_RETRIES)
+>> +			continue;
+>> +		if (err)
+>> +			return err;
+>> +	}
+>> +
+>> +	*foliop = folio;
+>> +	return 0;
+>> +}
+>
+> .
+
+-- 
+Regards,
+Pratyush Yadav
 
