@@ -1,90 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EDAB606A32D
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B206606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l0OBpzVC
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GgjQ7b6Z
 Received: by kanga.kvack.org (Postfix)
-	id 806EF6B05B1; Tue, 10 Nov 2026 11:10:46 -0500 (EST)
+	id 85F636B05D8; Tue, 10 Nov 2026 11:16:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DD066B05BE; Tue, 10 Nov 2026 11:10:46 -0500 (EST)
+	id 7E8696B05D9; Tue, 10 Nov 2026 11:16:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71B736B05D7; Tue, 10 Nov 2026 11:10:46 -0500 (EST)
+	id 6D79B6B05DA; Tue, 10 Nov 2026 11:16:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 534A26B05B1
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:10:46 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CDE10120958
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:10:45 +0000 (UTC)
-X-FDA: 85419697650.19.6DA177E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 3A806180003
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:10:44 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l0OBpzVC;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C5B86B05D8
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:16:44 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D4F66C0933
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:16:43 +0000 (UTC)
+X-FDA: 85419712686.06.0193F33
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id EC0E5160007
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:16:41 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GgjQ7b6Z;
+	spf=pass (imf08.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794327044;
+	s=arc-20220608; t=1794327402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cZL1GthlzVtU2QKypsvLAA1E2TIUdiH1wSAT/Ld8YiY=;
-	b=mLL4Vh8Pw87WtCGvUkKBL6xRmWklFgnYIgD7/tsB/typvPsc00etl+zzJBzOrgVUSf2WI6
-	OMwKDRsYjJZafY5EvsxE2GfQnm4ccEJFwchtvgGpQFW2VZ9qz2Dk5y4ooZw1XYIic/4K8J
-	P/l87MKWqH6U2wBxpUcB0QmGuyhm3RE=
+	bh=t/2MuWYVBhNCrWHxBkQfWYvbU9j9ZMayABUoxRH/r90=;
+	b=wFgH4yK2byO43rYKfAcabdjTCm4nJv+GyFDiFzCQKpQKWR1/T++zumVq3AkgEmoNDPfYcJ
+	5DnGvB1w+kTNBC6HDd+EEKtsNozwl0IUa4w1Y8rBF5h98E5gmbyidA8jCKxf5Q2nPupWN1
+	lgBptwaAWoyWqVGpaeCj8dS0Ddl5hd4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794327044;
-	b=nTGoVEIsJaAP0kXMWtRPvn3rb0y/ZRPDpC6KbcFaDYWTDeDs7fjX369x5UwtD1/9e/ttMY
-	sRgkPluMEwE1RUZWH9GlbWkgAVOj7oNuzi1LlblW5rSL/iwHAJDOzY/erz/U+QfVYtQYpq
-	tJ+IzR2ja1fJwKUPziRLtyJyNreWyIY=
+	t=1794327402;
+	b=5x7mfCFpTUBpS8P5BF2TCPTzhiZyThORXzq0WwpFX24p/+IUtkixEJ4VG/uM9Q8v4NdQYv
+	6bXI87EvSNAqZnyEgzRQgOREMJAVnGpQreX53LniZzjwc3lUTZZQVUVf0G6EA0sq2jxhg7
+	73lLdqtiEawqL+amzS0NL9psLATxeJg=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l0OBpzVC;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GgjQ7b6Z;
+	spf=pass (imf08.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8C53C63A1B;
-	Tue, 10 Nov 2026 16:10:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864431F008A1;
-	Tue, 10 Nov 2026 16:10:41 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1C3BC447B8
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:16:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F41FF1F008A3
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:16:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794327043;
-	bh=cZL1GthlzVtU2QKypsvLAA1E2TIUdiH1wSAT/Ld8YiY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=l0OBpzVCZZWsZt2XAltyVbrbIzt5LGZb+Zels/WrgDajA7VfcwELTAKXHG0z6bsIy
-	 EUVRe8qhbce+Y5D1s8r0lqE2ppx/pGp5vaWion6pjrOZnXOzyE5X031rJ27g+360LP
-	 GCp32fWpsvktlMh1Wj7KCZ2FVT4KcxntUkPxc3C8mC83LNapHektuVVqCPiP1m0fFs
-	 54Jxud/lxeNt8ejpg3FF5lCWK4FzMQc5QZ0RG4Uz83nDrLxHyVzsfDD1ajMdl9T3Eh
-	 VP4wxU1bhehp+KZQRCJwImI2v0N00C7XCt7I3BtUeyCM6qg9ETYzjyZpunzWDYmTPF
-	 uVz6ALmwcFVdA==
-Date: Tue, 10 Nov 2026 16:10:38 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Sarthak Sharma <sarthak.sharma@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Zhen Ni <zhen.ni@easystack.cn>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] tools/mm: add page_owner_filter to .gitignore
-Message-ID: <avNBw8RTBOoEL9Vg@gremlin>
-References: <20261109110139.216653-1-sarthak.sharma@arm.com>
+	s=k20260515; t=1794327401;
+	bh=t/2MuWYVBhNCrWHxBkQfWYvbU9j9ZMayABUoxRH/r90=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=GgjQ7b6Z84JEROSbvsW1NEndXwpDWmRJ5mdiK0eU50fDHy4S2q/4x1fnZM9peLwEn
+	 ZmB7VeDTwD7CNnPWJkKtIX6OPYrwC/4nwt4t0B5K/Gyapwig1ADFvptXyr8zatX4kR
+	 xk7Qz/a4olH9pCPm6U+Ws3I4BDq3fyyoDwTUwKLQny70Mpy316Co5KZZ3wvKrJ3wTi
+	 akioaTVIzkGHEOo0dJcUu7a4EvYFXqk0VX1JszXvYsLZnReYIz88ULmV5AOnuHcj23
+	 xh2qcM6D+FuL63WiuCnwJ8Lo/IvIP/nHiexKLWz4uZsaPpHIgfJBJzp13LGoWWrosU
+	 hhnMljyw0UiwA==
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-943e8d35f74so188631885a.0
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:16:40 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErEGL93xAcdkYcH9EVMpZLdop1f+H6jCMcMzxpifGzFmoFyA1HPArY/bdQ/unIInda8GyGAz9cdQMA==@kvack.org
+X-Gm-Message-State: APuU4Z/S6ghFSMyPL3xSfSb0p9t0yA33vJyWs6zrQh1qARsAUg6QYSXg
+	uo3oOrszW4r2WC5vBD+M3Nh5IX3ORJcQksb2O86NJhWEPbc3Kjx2OIBpxYiYHUF+FX7gICVy7qI
+	V+7V11k0NKNiw/mVQN3esPBW15P1VQJ4=
+X-Received: by 2002:a05:620a:414c:b0:93f:353c:6bee with SMTP id
+ af79cd13be357-9479f2e6ba0mr519311385a.41.1794327400308; Tue, 10 Nov 2026
+ 08:16:40 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261109110139.216653-1-sarthak.sharma@arm.com>
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+References: <20261110054836.1515030-1-senozhatsky@chromium.org>
+In-Reply-To: <20261110054836.1515030-1-senozhatsky@chromium.org>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 10 Nov 2026 08:16:25 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zMW4T+0-UFtPUi5EDdvP1b53=0Tpasx7kc5ZkdbqHW0Og@mail.gmail.com>
+X-Gm-Features: AclHuK-dt6QyaQbEWS9LvYKZc0TVuyB5CsV5lfGXmiKwVChcOCfSsn2FOyFBdvY
+Message-ID: <CAO9r8zMW4T+0-UFtPUi5EDdvP1b53=0Tpasx7kc5ZkdbqHW0Og@mail.gmail.com>
+Subject: Re: [PATCH v2 00/11] zsmalloc: redesign object alloc API
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
+	Richard Chang <richardycc@google.com>, linux-kernel@vger.kernel.org, 
+	linux-block@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: EC0E5160007
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 5jmcfmsufqpfm3tuigk7oryfdxduptds
-X-Rspamd-Queue-Id: 3A806180003
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: tksrop5xm8effeoi43zac71jao4kdupw
 X-Rspam-User: 
-X-HE-Tag: 1794327044-762842
-X-HE-Meta: U2FsdGVkX19a+yyauSekLYPrhfmz7G6VldPR4pxXEY+Um5eZbGulnFyBFF/j1iRjUMWT5juzg/LSmNIKP2ZuI9gC/nYjfPEHuiY+dlKigDeCAOKLW4xAW/CSs6HdYmk5OdJYlRY0UvT5VX7jAdfXPK2gkS23/gxqs4ujaDx9nWmxaTfOA8+HJXT6DKt9J4/PF+LQY62wU4AREUlfLm0VsJtF2gIGGiUwT28v+dyHxKjlwkCjNdZQbuF+zF9pV50XWxB2bb8BM+ZBcBxv0VvWbGW5xMkf6PsfCbKXiBdtUy1DoR2SwPEHwG95+0+hTwo6nTyZh+FkxUb7xe9MjJM8vfdJWVcAyiDewJb8ajGW28G8djnaC3pobHiiUj9cbTWY1zpw5ZH5THaBvwCbPmTAZVYxwNlCbHDOEiHDg5XMD1ucnQ0HwLb/7TemZ7ozH+rErnyRD5k7RLU4169uY0zFA3A9eAbDL0QeFYjrF/U0R2eXmizPmpRL6k9P1K/vDXueweaiZ9fRSebfmtHO4VZKhv8PxttvlMvMVH6a5o7WuER8LbxDoOjtRmmEjojiC+fjLRUaZeKdOkZtJGOV8E5T+kOczXSZeJznl+QJkdrhQewxjWLx4m77/sA97ifu2tlBaIU0JXmnIiqP/hsIvgs4TZNqG/bXo/ev77k0eiqHi2i/Zx+pQQTCTH3ebkQeTxoKFWq3qTRRPG8qSTleuKqdEuG7eyxb8pjScXcovvoRv+zogGTLhZkoxeXXppvBV881gZdwIQBvfxi+cVta15yxfno+gBmQXtBufOQQ7B3p87NoE4KESbuoIkCfXY7eCEMriS8lTfFKGlpEHOWV/cN3VW4IbnQdqy9YWq1RIud/B1nKuHFS993V8ic0Jx+fP/2Q5pp49xpwo9+wV+enamgVhRg7NVpmB52zzXj8+fbLeYsCtlpE9Mi959LcolZEiuMtiiZ1rKEVBq5gWujGMrL
- J3nfNSJ1
- 6Mv2M2cHdBu56VhGTba26bkggAJDpI/CpD8CZ4ejwk21vd2kHJVYPtKT5JW3Dk7BTfZLZ10Jy11HMt3MnzV9CRK1zjmy2l95Qtefln9OJHwGWpCcD6BloCiU0XwELKd1rPckIsjln6VFLfBrRKrmmgG8T0IikzpAVokk1zlAMhyZgLVh2Eo3c6DbqJ5qulDNXotXRKuZYaubLnKQINE0rtudQC1krIpEDWvRPXi5HYKL/jTeBMRSRNMPptpWP/KTW/ytle5IPazprorWoFqvMh7ppN8UM14em2ruWESocbkcPOXsUQZsW+MDllsLSe3JgF0h+tmn17hhin1HIoV8/LiWB+jtmN2Px08Zegyrq4kMEl1k4WYOGXEv6lGwZi7i2RuQD
+X-HE-Tag: 1794327401-897867
+X-HE-Meta: U2FsdGVkX19cW5qEfaRUQ7ZQi3/LiSh33489NOfOjvO4IKYEhd3jXPFn1Ot37j9z2THvT+/vyyKU+MnAunneZ0F0zjWLrSazVyt/MaPHk9EKfNJUupkcm2xlZB/88dJlJ2ydzNPzLcYLfgNTlvdm3VzgP2zgec0uM5b1KrX1AYb+eXc8SdUHHJplTG1R7++JY+YktXq+umEp5Ql4EULzVacg2+8SFvlcYKoCyu5J+NV8Wx42EATFpl++xVZpJeuZ64lTKke30UjeK1H3fr1DeJv3Dh++8nt+AFLt0BrqUxWpIppL+o9s3rwagXJTvcmEA1UBZoIrDzr9R7+WT6QpV2EMlbQOvg8tBWPv0KaALZ/JOx9TeknHiAjIObsRUlZImMu3SvZroyPKAnTLiY+jDC85W/AK0/v1kZPy6Y5+PTCzobEyzEQO2XVYjfAE3zotBW1yipPykQwTZatdXDmOt3CgHsYqzOv9OcuOl5aqe91sY2xwk16W6qXdZm8ZssNkKywEikVu1JZA9YxFTVkTuH/bltLtYIK77UVvaWWfcBU4p2Na/Gdzw7gtdDPhv9aXgqnYT9CrVUhBVHP0lcJDDI7A5KPP6zzh44MSkJwjtgTqlw1a4ypqRocgIzjcznMS3L2yLtpDcbQA+kDSoeWbiZVdPOAcqAVu7FGc+fUshO2A8mfRyitAkK8HWyRSLpUS/dxAJ78j8oDeQWYewrfB6nc0rNxJdTpVt+w3j1LjkQ9YTjYYWrR69tZ/FKJ0U536kFA3S7F3NM3erT5HgI7L4iCFmXKqj7Y2q/2d8IGNlnHUQPH8fDQDr8xEEumsGRthcv5nn5k+agQzSSB3PoNZe8Dxw432bAChOD87T+qLbKl6SgUiYa7ydZhMCaVEuHkVInTUN9qkM9k1j49GHuxXz+RjH2xX5Mx6M5vT3MXBmtww3uIxg3FK13v+JeqovYv9nlOhTPgyCHimOWzO/xl
+ g/1ZR/kE
+ nIp0qBuyqTffhiiG46k45HRVPVVInV9GhG1u/9v5n1RRUQUSRhPJIbo0MVT9o+CnVJ5IyJWC5RER1bpHnXvVfXvMZ0e7qdGwfBKXxKryLnu/4wfOaZ5ZGCrvnB4NRfUbGode1Ym06FELtfAkM4W27YnUNUMM0hX9bSO5qyeDHL//cHwyWsFAnOHwZIHW6b4BbEyDbGPPLtlhv0K5UDrHPjIznq5fpkPLOObOUeIPHl8lIPc0dYLgKN5tDqtNvalr4K9/8ItlW1auM2xPYPYqRvyiN8AtYDQW9qmrr2CTOl8e/s31McFJmEpB6fA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,38 +108,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 09, 2026 at 04:31:39PM +0530, Sarthak Sharma wrote:
-> Add the missing page_owner_filter to .gitignore in
-> tools/mm.
+On Mon, Nov 9, 2026 at 9:48=E2=80=AFPM Sergey Senozhatsky
+<senozhatsky@chromium.org> wrote:
 >
-> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> Both zram and zswap already have per-entry structures that store zsmalloc
+> handles, so allocating a separate handle_cachep object per stored page is
+> redundant.  This series embeds struct zs_handle directly into zram and
+> zswap entries and drops handle_cachep, saving 8 bytes and a slab
+> alloc/free per stored object (2MB per 1GB of swapped out 4K pages).
+>
+> It also folds zs_malloc() and zs_obj_write() into zs_store() so we don't
+> take pool->lock and look up object location again right after allocation.
+>
+> A simple zram test on a 24-vCPU VM
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> 165 fewer kernel instructions and 0.7-1.8% fewer kernel cycles per write;
+> lz4 single writer +2.3% IOPS / -2.6% average latency;
+> 24 writers +0.9-+1.0% IOPS; no regressions.
+> Memory: 8 bytes less per stored page.
+>
+> v1 -> v2:
+> -- addressed Yosry's v1 feedback (too lengthy to mention here, Yosry
+>    posted over a million comments, or something very close to that):
+>    split-ed some patches, squashed the other ones, added handle
+>    alignment run-time check, added 0 PFN defense, etc.
 
-LGTM, so:
-
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-> ---
->  tools/mm/.gitignore | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/tools/mm/.gitignore b/tools/mm/.gitignore
-> index b4ac68a08e1a..2d08f713b664 100644
-> --- a/tools/mm/.gitignore
-> +++ b/tools/mm/.gitignore
-> @@ -2,6 +2,7 @@
->  slabinfo
->  page-types
->  page_owner_sort
-> +page_owner_filter
->  thp_swap_allocator_test
->  gup_bench
->  memory-failure/hwpoison-panic
-> --
-> 2.53.0
->
->
->
-
---
-Cheers, Lorenzo
+I will take this as a good thing :p
 
