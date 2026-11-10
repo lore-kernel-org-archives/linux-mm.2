@@ -1,95 +1,156 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAAFE606A32A
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 12:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767AC606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 12:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y8CbpRw/
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=APPGUM0V
 Received: by kanga.kvack.org (Postfix)
-	id 186D86B05E8; Tue, 10 Nov 2026 07:05:47 -0500 (EST)
+	id A14C66B05BA; Tue, 10 Nov 2026 07:07:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15F196B05E9; Tue, 10 Nov 2026 07:05:47 -0500 (EST)
+	id 9ECF36B05BB; Tue, 10 Nov 2026 07:07:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 075936B05EA; Tue, 10 Nov 2026 07:05:47 -0500 (EST)
+	id 8DB5E6B05BF; Tue, 10 Nov 2026 07:07:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D94736B05E8
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:05:46 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7428A80352
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:05:46 +0000 (UTC)
-X-FDA: 85419080292.12.E88BB01
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id CE1D72000B
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:05:44 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Y8CbpRw/";
-	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794312345;
-	b=3MekERSpwwZ1+HBtjGt9xbLG8jaOslowRrbXAelqSLTzxdqPGNo0ykRfFD5f0cFCAcBY7W
-	r9XyYAKd6BXGmUTklVY3TyoCIemSebFxpJHVJiaxoypRiBkFxRU4YtabZqC0l396O3nMgN
-	emI7WNt2EDvggTP6idrdYDrPaS6G2Og=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Y8CbpRw/";
-	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 5F58B6B05BA
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:07:07 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F2865A853B
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:07:06 +0000 (UTC)
+X-FDA: 85419083652.07.2C89A1F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 490E240007
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:07:05 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=APPGUM0V;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794312345;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1794312425;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j7f29XFWh64dcE7Gp945WM5mLh6no3Sb2g9P1AjvQJw=;
-	b=che3mcoYUcn6nTIGMQj94l/+GuTnOPYDBqCz6oxuz1ne7c1UGyBZmmpRiQHjVN4pz7QAH7
-	745CzyvlynvsTdoa74WUXM2//0AmGyokH8khWXRT6eeqUvh/ddTO3rrmYcYbg8Y+B1E7ab
-	C3a/yFnBVwe/RRiT/2dhk3HiEFXU6t0=
+	bh=PuarVyFrf3apeKzpKie9MDgckTNqUn82BTmZSfLSgZw=;
+	b=5ZE/9Ve1iQPksniMSofe/IwwLxExuLMVBHIgpa1u8/9FPN8OUY8CMZLipUQf+z35tfeMh6
+	l9GpBj1L3f1s+B+SYEmi/xYRowtH9kS4n0HgJGKh6eD2BykRMONZuLT8dwpaFo1agJuiA3
+	+rkuq72w7y3q5KOLxMcoqUPDd+DPfVA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794312425;
+	b=b5q3DmKzbkOl1yQbVLBLmO/9/0ndOLUaNBzosbw9MFwCEBBwpo2RpZgW2YWhPNNyTt1KFz
+	LdFDtjLiNT7cEveOVcxdBmkE2xTuAzpHcHT1U4+6z7diqWVBo8GO2mIefinIzyejLCmbjc
+	G7EZEOzKgIXy/90EktbADCltkiMl1zU=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=APPGUM0V;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0A07140426;
-	Tue, 10 Nov 2026 12:05:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A0861F0089F;
-	Tue, 10 Nov 2026 12:05:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D72CF611D6;
+	Tue, 10 Nov 2026 12:07:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15741F008A2;
+	Tue, 10 Nov 2026 12:06:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794312343;
-	bh=j7f29XFWh64dcE7Gp945WM5mLh6no3Sb2g9P1AjvQJw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Y8CbpRw/nm+kIkWV5WEeq/0BxuE9wHCWFMC/cm0g1cRT7hVsWLamnW6a0ANHjpaZT
-	 S6UMOBEuKH7iKxqLJ+VaCMUjMPimpe7PdWZEessyxHRONhgvliaXgXmpreIfdpXknr
-	 bAsUtTJeH3zAfzg46VMDe0BqJA4zcjHvwh7yAvfBv1yOu5nj6fC9euSXOABOcugvvQ
-	 gFx8y/JPa/X+4BGvowNono7b2jjAAgl9WiMreT1fcKmhtp/JPFJ1bOFMcHJSqeIZ5n
-	 hSkqajRGX23b/xsVP4Ux8l4cyyh1YgMNFWTpDlRAcaA6Lg7gZ37nhNWRH0Hogdb82T
-	 0U7Y0q/e1uEjA==
-Message-ID: <sashiko-outbox-206977@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/6] arm64: entry: Always inline helpers used by
- non-instrumentable paths
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jisheng Zhang" <jszhang@kernel.org>, "Catalin Marinas" <catalin.marinas@arm.com>, "Will
- Deacon" <will@kernel.org>, "Mark Rutland" <mark.rutland@arm.com>, "Andrey
- Ryabinin" <ryabinin.a.a@gmail.com>, "Alexander Potapenko" <glider@google.com>, "Andrey
- Konovalov" <andreyknvl@gmail.com>, "Dmitry Vyukov" <dvyukov@google.com>, "Vincenzo
- Frascino" <vincenzo.frascino@arm.com>, "Tejun Heo" <tj@kernel.org>, "Dennis
- Zhou" <dennis@kernel.org>, "Christoph Lameter" <cl@gentwo.org>
-Cc: kasan-dev@googlegroups.com, linux-mm@kvack.org
-In-Reply-To: <20261109114500.20298-3-jszhang@kernel.org>
-References: <20261109114500.20298-1-jszhang@kernel.org>
- <20261109114500.20298-3-jszhang@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 10 Nov 2026 12:05:42 +0000
-X-Stat-Signature: 1apqtiaj1pqj1j411ihqa85hygrzdjqi
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CE1D72000B
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	s=k20260515; t=1794312424;
+	bh=PuarVyFrf3apeKzpKie9MDgckTNqUn82BTmZSfLSgZw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=APPGUM0VRVMP52EQNDXONl7QtQWq0CtfrgxucDXbHt/IPGP/j9XmbfbRNo/DU1S2q
+	 g/aD5NWCkTTnpLxzt8BhdGOvCubU2Ga6cNg2dy49FRo0O4xvIQxKZVRRahyEq7MUeE
+	 jCKCoy+ILpGGlrmRCfAVeg80i30lJcYzV0cmWvhh6wMtPSp2vO0r0/6lO7ulWPGcYB
+	 EhiBzH/iDh+jK3cysaB39m46LUbem9MiSHiYQW0Qt7uLzdjqJMJoBy51EqYTfQolId
+	 7XGebc3tEnrxp/NX1URUkTvfOQHcq3+wFI3LEKe6o3j/t2uKHfH2INNMP0fkL3DSbW
+	 4u7dcDHbqO/Rg==
+Message-ID: <e1b0d6b4-f7ec-44df-a9f0-0e3a3722a973@kernel.org>
+Date: Tue, 10 Nov 2026 13:06:52 +0100
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] MAINTAINERS: remove my reviewerships, add CREDITS
+ entry for THP
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Uladzislau Rezki <urezki@gmail.com>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, rust-for-linux@vger.kernel.org
+References: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: t1tne1ie6ajnfridwpsadrugmr5qx3it
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794312344-498024
-X-HE-Meta: U2FsdGVkX18PIOTTEkzJ5GjQa+ik8a8v/eqzIqPWa0Pl11W0PrhaET9kE6XfKowE1wt+31jJZBJUdk0Me/BW0nBH+O3mDHkjpxzMa6Su+wCEMrHl4HszQjBiDhwi90UiXcrCApU+9zc6lGkrlKIu7CVh1IpM8lfc12j0vF6ZzS8OeWGl+YPoLbBKRrbAL6ur9uh15s2duBLfvAnWcEQNMgAF2XBno4e7wGthM818NRJ2gA7oHdQZ4CxHlIRBeMa/EhtcdiWSQ6tMYGaftA0etoqQu59DJQm7W3DpIrIB60gn+22Qsr237QNf4k+S3u2y55pHOKVyl/LObwQTzhnj4YyEkbsQZVppouQ9Q+dWRzfA1bGkJz/J/syFqkJBGe5ko6ozzlDVCsJRVbF3QqA7iYUQzdoyAF06dvvDVDSgPe7rpsgJ+b3UYotZNCxNBqNy2Mj0cmiTFGmBaSe1gXFEm/wrtDRzQ2RZUMvxGj8ZucW1oO+PCkfkwm3ATSZs19RJGFN7Pth4GVqcIQAJrU8opEcUCCpsuKrEcUA2504a0qvODYFOVN3L2NqUo3niJWxwSZbrV+bfT/1CsorUydJYT0ra0Mp9AyFUXeYaU3oetS9hFs35urwQ+ByfLsIp/dT7YEGw4OvPnWrfXHDhuUtDo3vS4HjNLINstTCxCsKTv9XsXmT4uG+DJjTOxu2/86oDu8X5o/CnYxFFBs/+B+jlvszSl9VjCkJ7FWZnCMUiANpkHVrzaPw7lPvMKYkzGrD1F2AGrnqD8YV2VItrvV2lvPyuFMvvZoGd9PTcPkP+544Q/eH124VUExNxbBxuVCWJO9W6YBE/jeKWoIGAllO0LuJtuYZjvRt+yJ/D/MP1DwQOReog7dT1BwOOqABuCJB6F+uNFs1Pu0F/m0jn5BBBITYIrW6jacfmXfWCrkYhoHgJFEyNQtsP5KQzqhWpPovCZimL31xrUM2bfwUgY9p
- MT5sSR11
- k+WqIPuq2P4eVnzBS2ZKcayVj7shmIKTSwPvvKkWrxB1gx51buTSWadiWh4uAmThQT/QycFpnLeokr732qgYhYd7sN8lL5YiiBqgUMIjsqeN3vLgOaqI0p4+MUcaKiGn3gwDP1y3LeMYGYItj5npbSPo6xlJIE4jFyyjtSJW8vOJHN9+iUtPSp3blRK+jCooUPo+y5q+exrpRIrcNoIx+7SXgwZaZSs1kDAG44M5jX/fXvFALucDOMVu8vfsGfP7u0YvNKmVnNj0m36Dwk50IztHMcyF6I2nbKXXVIA0YzPNBHm8mzY7k076KnAWtGWrlRIvOTRozagxeJM8ZC9SoTaGtF6Yoy3QQez1ujugMRbT4/2UisZZxUTn30xIARqAW7ilk2V2guqWg+ScbCAbopkls0ovyf3dFk8KMQUd5iSq2PZLKqSbHXZZOC8zEch2vpOBMlKln9MnybehthC4KcXszOb4wOa4erzJ7qVDL6xP+Mt+WGJRtSFFxIZ1o6gtoUFbHarVovDuJgW82QzlJp1Ss42cMPFmngeG1tSQI6xrTS+WKtGyeK6ZzT1+lbQIUdfiTBsl9bDy+Ga2YZfNGa3xQCpktDTwocgt0brJWhKTwNRoew6y4+tVvfJBtJ0m/xY3IB/MGkbiSJuaB8aLBBE25cjHCM635NT7T
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 490E240007
+X-Rspam-User: 
+X-HE-Tag: 1794312425-341153
+X-HE-Meta: U2FsdGVkX19bH1mtSozodGqZOMw8wYQ7Ol2aJ3T2665FcbXRgQ7yNofhA8jwPpH1je3zezd+05gXh+YCg6z3lxjxvQRpBIBpbnJ1gr9gSTFBe+A/mSfTrQ6znUZAER79nCeqDjPAfOia90QznukZYLBs31nFqaHAmETDqpgztdAgxprTYO2cG6t8yCuGWqfEBHI2Ajm4tTF0OyIKOaqYxpaqnr7i6fMxmoN5Avoqh2Uk6CWdx1yI/uiqfTYGcdw+5tmqBAFlHxlzx2/Chm+KU7Nu4lrY9ga2b+vxUAr1MgdMqpcQGS/xk6L/jClSpKkp2PVMF4mWu80kwIXo0vTYQatqW6bzWYJ0LwTxAjrr0F3v67rSTvN5Z46exi6+s927ZiMS28RKU/eK1R4z8MPOXFC657iKcv4p9Nq2bUdNlbq4HsLeGMfdMqFNBe0tK0gVH7j1RU5R8AbFG+05BJxfD8PI6Uxg6swJdNbLh5nbnFn80LYgYzPr2m/grW52DExoGxhzA6CgPtIvKrfBYFF3JhjsWIhGEU3hDrIs3IqSd3p7Dx5qfn+qfRDUhmNDNu9mENlfdtaXKG5z9YenoVxTjhipbzeLhKzVHK+EkAc3QAA2Jbdz0w21CPD9J4N/7FmfwRoSk0AWEkj3N3vMh0+F7+7+11XMlB/Fa04UVZ+HvxAAjlwvQ+Ub3y9PGOIGnisxYHEUwixx/z/gZNp300uaE6jC22vSB3rwU4y/KWqODjJFwxW7wOF4owKV5r+GH6AEmmcLENiSU9DEBJ4ph1u1/cb/F/3xdsGhHHpaVDJk3LRVCe3QAVo64tdthGBhIQisAV4ZzjLvj+AErUp6l4fATh8OcC4G7RFHX82WVOTZJ+kooLhoI97ghgYItXoS2JH/6AsxuMKWT4bXeMN/ssJpADtEXf70eUODnd3VuX/rs7i3No7sSKnzVxsMRMCMdC368wiFYvZzraXcLXA4Ed4
+ x8XRtmmv
+ vhQantxtm9E2HuF202qSFT8wKsSc6qY53uES/RrIrozGfx1swjISC6t8cqB0ToqBsYRdkGhj5cWj+FEDqiLlNWJ1m3eTDi4PJPlcMrwQRTiMZ9N0kaMB242E6IPHPHawqpSwntCVUCI/ehE5V+quHvtB68xsp9rMP+/CCIJKdF7yoGw6j9I4+P0/Yhgx/jjqeRUGpX4ynaNVE9VSN6F+1TZ59a8Dr8LmptwPj1y2vW3cMbcMYFsigAeP1uoMgbkOfahRUKCJ3/+I5tKj22S2Pzulbjw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,57 +158,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] arm64: entry: missing __always_inline on !CONFIG_ARM64_SME stubs
-  in fpsimd.h
---
+On 11/10/26 13:03, Lorenzo Stoakes (ARM) wrote:
+> Given the current throughput in the kernel resulting from AI-generated
+> series, I unfortunately lack the bandwidth to generally be able to offer
+> review except in those areas I maintain.
+> 
+> I have separated the patches into areas maintained by David, Andrew, and
+> Alice + Danilo, so each can take the patches relevant to the subsystems,
+> for convenience.
+> 
+> Apologies for doing this, but given the current trends I'd like to do
+> something to make my inbox a little more manageable :)
 
-commit ed5f3b4320afc347aa0402f3b75096047a676bff
-Author: Jisheng Zhang <jszhang@kernel.org>
+Yeah, it's crazy.
 
-arm64: entry: Always inline helpers used by non-instrumentable paths
+Thanks a lot man!
 
-This commit marks MTE, SME, CPU feature, and rescheduling helpers called
-from noinstr entry and exit paths as __always_inline, and updates the SME
-entry and exit helpers to use tif_test_bit(TIF_SME).
+Andrew can just queue the whole series I guess.
 
-> diff --git a/arch/arm64/include/asm/fpsimd.h b/arch/arm64/include/asm/fps=
-imd.h
-> index a67d5774e6728..e7c881c1c1f79 100644
-> --- a/arch/arm64/include/asm/fpsimd.h
-> +++ b/arch/arm64/include/asm/fpsimd.h
-> @@ -749,17 +749,17 @@ void sme_enable_dvmsync(void);
->  void sme_set_active(void);
->  void sme_clear_active(void);
-> =20
-> -static inline void sme_enter_from_user_mode(void)
-> +static __always_inline void sme_enter_from_user_mode(void)
->  {
->  	if (alternative_has_cap_unlikely(ARM64_WORKAROUND_4193714) &&
-> -	    test_thread_flag(TIF_SME))
-> +	    tif_test_bit(TIF_SME))
->  		sme_clear_active();
->  }
-> =20
-> -static inline void sme_exit_to_user_mode(void)
-> +static __always_inline void sme_exit_to_user_mode(void)
->  {
->  	if (alternative_has_cap_unlikely(ARM64_WORKAROUND_4193714) &&
-> -	    test_thread_flag(TIF_SME))
-> +	    tif_test_bit(TIF_SME))
->  		sme_set_active();
->  }
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-[Severity: Low]
-Should the !CONFIG_ARM64_SME stubs for sme_enter_from_user_mode() and
-sme_exit_to_user_mode() in the #else branch below also use
-__always_inline, matching the !CONFIG_KASAN_HW_TAGS stubs updated in
-mte.h and mte-kasan.h?
+-- 
+Cheers,
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109114500.2029=
-8-1-jszhang@kernel.org?part=3D2
+David
 
