@@ -1,90 +1,115 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 641AB606A325
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 09:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3A8D606A32A
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 09:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ODEo880n
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iJREp1Nw
 Received: by kanga.kvack.org (Postfix)
-	id 41C566B00EF; Tue, 10 Nov 2026 04:15:56 -0500 (EST)
+	id E07F56B05B0; Tue, 10 Nov 2026 04:16:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CCFB6B05B0; Tue, 10 Nov 2026 04:15:56 -0500 (EST)
+	id DB7896B05B2; Tue, 10 Nov 2026 04:16:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BF766B05B1; Tue, 10 Nov 2026 04:15:56 -0500 (EST)
+	id C7E886B05B3; Tue, 10 Nov 2026 04:16:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E549C6B00EF
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 04:15:55 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 79EC21A042E
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:15:55 +0000 (UTC)
-X-FDA: 85418652270.25.A0CA693
+	by kanga.kvack.org (Postfix) with ESMTP id 932E56B05B0
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 04:16:00 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0EF0E1A0117
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:16:00 +0000 (UTC)
+X-FDA: 85418652480.08.DD312BF
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id DA6FD140004
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:15:53 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ODEo880n;
-	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 4EA6F140004
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:15:58 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iJREp1Nw;
+	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794302154;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FjEfVvHiE6TItsgfVUv2xXlEv0l2v730UTDllHhPtsM=;
-	b=xIB4XsEyV3Bi6stxM6Ux7OnJoLewgIaV7+KLrrMcMgm78NScI1GANGnDc1zOeI1wCpTPYO
-	1/EELYtOiBQS1BHn57xJ5LB/iSIgJBmjL4H0ojdnIcUyXdOZPEnGRUo4chArA8HUYeYXOJ
-	VQNDictD+fpwVqFweSZgADLkXLlMR84=
+	s=arc-20220608; t=1794302158;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=PuZuHEnsND00fHRoxO3q8GjJUd6kGJ0dXTi/U306um4=;
+	b=4K2bXgYD+rKoMuixcT12fO/I2JNqsahJh1zk4r/efXamaGT4B+svkhAn+sOMglSLs1SR2L
+	e9L8xd2FiNHuDqbV1AAtQyGTk3Z2X02DmAYOrydX6jB4wmTuq8BFRLIOvwhmI2Q+QMV/xp
+	iwbltu6BKPfbIw/4X1Oi9EVEYBltUw4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794302154;
-	b=0HICJeyKJLXtQnDyk3AnU1d0u728iP51JvnNb0BgT383iKLCjH8kRI1H1c3cx5wXBlkNvz
-	/2uvyOKPhTbGB35eh6ZHVdXt+Vo4NlXmd7n3HJ15SxejIgxmmkCjD5IouTSgxmI6cMng5u
-	6OLO3x2Kq6KublCJB3jYO3V4W3c1Ux4=
+	t=1794302158;
+	b=u4KFanGRlWyiOXO8+U6vnfeE60xU1y9YYIeHwb0b5K2s3j91gHmiIlxzqiL/+tN9pMabG5
+	Q9LZixAM4X4JW0wwPvFO2+xxK0rwc+291h0BYbqp7lCf1f5W0PJA6hD1bnunKiov8/+p+W
+	Y8+3Ak51SEVnjjIsglWsWj8IRyhDYTw=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ODEo880n;
-	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iJREp1Nw;
+	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 50CA06021E;
-	Tue, 10 Nov 2026 09:15:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1AFC1F0089F;
+	by tor.source.kernel.org (Postfix) with ESMTP id B15EE602A8;
+	Tue, 10 Nov 2026 09:15:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CCE11F008A1;
 	Tue, 10 Nov 2026 09:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794302153;
-	bh=FjEfVvHiE6TItsgfVUv2xXlEv0l2v730UTDllHhPtsM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ODEo880nTW+Sj4ZnJdRYZZ/WyVnqZvULhfLfij8WSbA2h8l492Hr7eLRybcaMNMea
-	 JaQVjaJLPwYlZAxbJOUo5dda7PZxkpAgxiA1tZ5HQlwuScVupNQysjewMy2nLXTkox
-	 iMVdUqMyCJmrawHtkn97kSrGygRObnr15pnPWE5SR9TMlFpbt8jkJRKk2mDGlehWBc
-	 n/QneNoMwFqCSmUYLdN3AtPZYa+PUlOUmFsD/3EDALm+jIbZb7O11cVl3JeyI4nZvB
-	 yGSq3il0Hck3jfDjkxnEuaV3uMClLm2MIZR4PvjqAteSkv8B3gg2kJI8B9yhO990eB
-	 W40rW+UfIetoA==
-Message-ID: <sashiko-outbox-206717@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] mm/filemap: restart mmap readahead on sequential faults
- after many misses
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Gopal Malaviya" <gopalmalaviya53@gmail.com>, akpm@linux-foundation.org, willy@infradead.org, jack@suse.cz
-Cc: linux-mm@kvack.org, fujunjie1@qq.com, vishal.moola@gmail.com, roman.gushchin@linux.dev, Trace <tracekotae@gmail.com>
-In-Reply-To: <20261109091444.128521-1-gopalmalaviya53@gmail.com>
-References: <20261105192517.228523-1-tracekotae@gmail.com>
- <20261109091444.128521-1-gopalmalaviya53@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 10 Nov 2026 09:15:49 +0000
-X-Stat-Signature: kk65yp94iwjnbub4u4twig7eunpngrg6
-X-Rspamd-Queue-Id: DA6FD140004
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	s=k20260515; t=1794302157;
+	bh=PuZuHEnsND00fHRoxO3q8GjJUd6kGJ0dXTi/U306um4=;
+	h=From:Subject:Date:To:Cc;
+	b=iJREp1NwHp3BdNh6YhirQMz3aLkdMJad9SaoqicwlHouUofyAaOyHUxlQAMyZlF7r
+	 dxoDogK7Z/SmQMPjvGb107aIw98Hug2c7nyD4DMV9g1SOQKjCPLz3oKAbIbpZoqTaD
+	 pZrbqTndD5C37PARA3QH+ymdbAjgpqhVM8lgzWc8vdrxfAWdPiJr4Zuz7epLK6TvTH
+	 K8+0uuv2p91CoV2BZDxur21nCPhrfDd3bYEfgv9CR8OaiC0kdRmQmvH415KgWFHkQX
+	 DEVbxCY/pgx0ga6OIRh+WS9KothVO+G1SwN3cmU1cAxe1h0Acn2ceEg6DAhgL9k4pG
+	 roZHSfl8QE69g==
+From: Christian Brauner <brauner@kernel.org>
+Subject: [PATCH RFC 00/41] fs: don't use pseudo filesystem files as storage
+Date: Tue, 10 Nov 2026 10:14:16 +0100
+Message-Id: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ6CMBAF0KuQWTtNSwgpbk08AFvjoi2DVE3bd
+ ERNCHeXyvL/+fMWYMqeGI7VApnenn0MW1CHCtxkwo3QD1uGWtatUrLDT8wPfMaYMDHNQ0TdSd0
+ 0qtU0KtjeUqbRf//kBfrzCa57ybO9k3sVrMysYUKbTXBTqQorCit2VpQ7rOsPZFHYQaEAAAA=
+X-Change-ID: 20261109-work-loop-pseudo-890844168ef1
+To: linux-fsdevel@vger.kernel.org
+Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>, 
+ Josef Bacik <josef@toxicpanda.com>, Christoph Hellwig <hch@lst.de>, 
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org, 
+ target-devel@vger.kernel.org, driver-core@lists.linux.dev, 
+ linux-mm@kvack.org, bpf@vger.kernel.org, 
+ linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
+ apparmor@lists.ubuntu.com, linux-nfs@vger.kernel.org, 
+ netdev@vger.kernel.org, fuse-devel@lists.linux.dev, 
+ linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org, 
+ ocfs2-devel@lists.linux.dev, linux-s390@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, 
+ Amir Goldstein <amir73il@gmail.com>, linux-erofs@lists.ozlabs.org, 
+ linux-kselftest@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.17-dev-ce4c1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10223; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=WAx5V1LxGhR1UvA5SWC4CADg+JxO9oBzu81M/1sMo5Y=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWR9ejD52Vp9Rt+JU9PPyLRYcDzr9thcK9op63nkT0XG0
+ 9tVb6tZO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACbiG8XI8J1572stqcqPZ3dm
+ znK65z3nlUlHTqE/T8hKpkDxSwpWsgz/FKwaX6+8IPBNt3Ftpf31vw35c90UOxbdS3Dp+3xJ6N0
+ RDgA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Server: rspam06
+X-Stat-Signature: kyr9ok3fzyoemm3htf3aywctffkzs4ri
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794302153-926020
-X-HE-Meta: U2FsdGVkX1/k/g6qAsQspis8XYcZXOJUlwwArhfqq+pg5jIwztzfiz4r6z08lrlUFzofzngA8oC7z/iDKo2tjM8AGc6kmEeJJmYXGvfXf4sl3VKcLJ0Z7wS8qofPXw7l5QmEc6/4OvO8RBRiVxpkN/lylZyXjlE1olxWBVWBsFy0cmQfiV7lD2aQQ2rYvPMrf2dg0kBFCcQZyRuObuZWF6DfRqZcDT6xROLH7sP4ET/T9s889y45yaWGuGJ4Z9WOE+4JqpBiYg8IuLGaZ/q+nQpKWbPKGeeRA31Cmr8f2Fgqli2/NV/64AUGmerwRPjSkzPqd/5kTJ4YT+Z4Wjj5U3IfPT8b+SOm0oJEHkmfrBY7IdXmfC+JBGDLoV0mU+wDLQCJUCqY5/EU1QlCoZAJVUdQRr9rJ5GoXPScBpH+Gu9Z/IIFMhllfT1J47NoKQYaYL/6JBlKaHwvGRE9/cZoyrgf1zTalfIfGXgwj3+EFGjO4xdgCuvv+lL8gaDumOM6qbJqh8koHpvZswDGQs+opUVDlurJd3p0edToQm+WHs60u1D1zJAOH+F/4Gyh3HBd4tqjlv0Kw8j+IH42/0xgpZJ1QCDxYTJSUxtqfXB3BRbKg1vLgOU+UIWNmnbxW8Xo2UpEvyjFl1mmh3LGGtUjJCcv370oxMX1MfcbwHGA0zgfo+Jg8h+NamJR7+jEalyDhINs28JRWb9y/8VsdOri85vVaRy2eZpDZyRhoa3xqDSl1RuhqvpAjMpGV4jaaERilah0+CbS6X2fmS4/eJusrGvAcvDwoV0VCiLg9vFOB68QJXGgW6lNz8vJNEGp4m1GaVSMun4bQ0zKe8AHEIzPQXdh6ecygHR+KCkCJLFiNJFighnbjNITFmEVX/x12u5rbMoL2RWJD4arWbeFRWEGsoJUHyX0OuJnDDswykJkrJRcKmvc9311gMB3LTvXz3eoMEasJuPXFM36R9IyktS
- +Oxb8L89
- e30TeoxmQzGKLTSKwQaDbEAmyIIgI6VRuylz0375/WUOCnu+o0UVg07UPcnMHOw8rlXxNIizIoRRTwG7MiB5/pZwaMgPA8D6CxbbVBMRFkU+pQSvOrMMkdF6PJuwvXEiP8nlY1weoCRqSCKgLPRYAgoxnuf711enZ2uaGHN3ROSKBLJE/FN7b2gMh7Brjgiky1NdfdeNbQ7e7xPcw5i9RFFO7clhoabWGR6tqwBAgTmHPYOJPnXYEwJg2g8tpn5NjehwUVYoB2S23SXubyNrO3U0Zl4U3TuP7cwgtZA8ItY3P5ALJzBUNjNxhAY2az0uCImW3qqkW2VXSbZDU5qls/NnzAfJXa+js4/v+2hKD1A/AYLAT2AlB9TJlkx7jHV6fVc3dc8d8Po8zeWMwVzJHO3EKahyfBsXfulmu/YZ7KwXZBLWNlJzoAAx50QW4LMly5kYnk8Cx5yC9mBkPWPo8fQ7hhD/h26EgJWH0KLWuL1ky94FWO/ytZhPW6KKDdWNJ2qThQ5On5ghUiDJujykfeH9B4k7aACL4gcKVD39R++W5cgeSkS+Wz1hkkd9BlVxLCZIzmJKm6eAN99GnG4YWk1JA635g35HL/tg/4MmXQzmMPCzXyK4WGGiKBP22hIiGCJ1ELZB0w6IlomxwpxVioFYc4ErTN858oQvt
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 4EA6F140004
+X-Rspam-User: 
+X-HE-Tag: 1794302158-809895
+X-HE-Meta: U2FsdGVkX1/Bj3RmV7lnLCXesjjrRccM/l7eTChvOY3LMW7p06iSNarwAh2fWr3pn82OEEdT17bv9GU6QjXQkFsUq1yQtmVvNPDpMZKZRWs2/PNckpKdaS+tbBOWWEaj+edjG8DCudODBKENHWofPfDh2IbH+HgXT0sM/FQvUQw8nnJj9TaXUqdCLUJYMK9bRR+e+S6j20NNBLr6a/S/5sPPYX4Ym2LjQ+9CwG2qUKtoYQdinI0gGBAYy8aEo+GU8GQY7Gl6e97FZ+9ypzXjNu2X9uoVy/lwUFiqf/KJ1R/bBiDXKc5hSmylR0niKFnVubv1pJE9tLETsZav6tKPDaydQeuqx1xcUo4G7+ZXi3hOkQ0Hisu0Taabe1kxaMY/cI33ZLbXBTIf0RIoJSkQ45G4At1tBVp2eO42MOjc4iBGlCNFAIp4DCkcDAChJZlMnM8Ib/Btt5dkT6UX8K1vkqI5TNebfLQIqknGQOaLkyAUpuaF95Lq6m3xfNZdyHQ6j/7P9d80tq4ySkiM1tEgHvY1NieTB0TvZbt+NW9X1JXMY9ajvINCEaI2zk96K++Zb5yF/6gcL/KHzpZ5uL0oMamva7CF1D33A6cgfTS9RWQJkL08ng3OwLlp9qBXKtyLyhTwnKY8By/fYukROudRybhnWuOQZIf+QrMXIJZZfkT/KtHR5Z0u31dfT90LUsSeMsmMetkO/HcUsbcDschLNsoB2Ku+plx9LV68buCBgrq6OkAIGI7DmNrxtigJr8WerxHsdUMftfCdZh6dN/6lH+E1NeSXE7/6kYEPVjrBysibBvfZiFBpJcKt8QZdEdeVjT1O/KdBtQO0EPGOuK449uva6F4JEhFJLfZLBipjarB9Yt2iZld1h5sAmVk7Ccn7neH0Rrz3uEU2iLfbECgVQFU4kbQLyaZbWBcyyH49sWmgBcaAs/6PnTpM1ldzAynmI8J/4PKLRNc0K2ygbRL
+ f/VbRe57
+ nsuD1EXE1GysR+FZLw/OqUEacQLyAHyi+qmWL6zy2b/gnDqPisEZXAZa1tX9uNXRr/1203uaO1GBWZ7R25RSQgsBHMXR7V3f7CrDlWp2FL65gAMSPgxRq5u3JdAQ0mJxxLNu8ieynfG0jpbZzbIaC9hKlwSLLE+tcUtxGp6m8m/MD3nrtcTUeAxDhzilfZrAkUdxmRPQdCRL4zeBPVbKexe93JiIP2E+5Lr5Y3L4B6noB7z0VaMS2FtYioA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,163 +117,219 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issues to consider:
-- [Medium] mm/filemap: do_sync_mmap_readahead() recovery fails when
-  min_order > 0
-- [Medium] mm/filemap: do_sync_mmap_readahead() ignores VM_RAND_READ and
-  !ra_pages
-- [Low] mm/filemap: prev_pos =3D=3D -1 wraps to match pgoff 0 on 32-bit in
-  mmap ra
-It also noticed 1 related pre-existing issue this patch does not
-introduce:
-- [Medium] mm/readahead: unsigned underflow of index - start in
-  page_cache_ra_order() [1]
---
+Loop happily takes any regular file with ->read_iter() as a backing
+file and any file that also has ->write_iter() as a writable one. A few
+examples:
 
-commit 607714545f8f33b9040290a1fe8d984f2caffeba
-Author: Gopal Malaviya <gopalmalaviya53@gmail.com>
+* /proc/kcore attaches read-only as a loop device the size of the
+  kernel's virtual address space (64 PiB with 5-level paging)
+* sysfs attributes attach read-write as 4096 byte loop devices
+* using /sys/kernel/mm/transparent_hugepage/enabled for the loop device
+  and writing a block to the loop device changes the THP setting
 
-mm/filemap: restart mmap readahead on sequential faults after many misses
+It's not just silly. It's abusable (is that a word?). Loop calls
+->read_iter() and ->write_iter() of the backing file directly from its
+kworker which runs with kernel credentials.
 
-When mmap_miss exceeds MMAP_LOTSAMISS in do_sync_mmap_readahead(), this
-commit records the fault offset in ra->prev_pos and calls
-page_cache_sync_ra() if the next fault miss lands on the immediately
-following page, while clamping ra->mmap_miss to MMAP_LOTSAMISS * 10.
+But pseudo files enforce part of their access rules at read and write
+against the caller. So dozens of sysfs ->show() and ->store() methods
+call capable().
 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 371a4bbd06876..1548021472729 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3398,9 +3398,27 @@ static struct file *do_sync_mmap_readahead(struct =
-vm_fault *vmf)
->  		/*
->  		 * Do we miss much more than hit in this file? If so,
->  		 * stop bothering with read-ahead. It will only hurt.
-> +		 *
-> +		 * But without read-around no hits are left to bring
-> +		 * mmap_miss down again, so a file that turns sequential
-> +		 * would stay without read-ahead. Remember where we missed,
-> +		 * and treat a miss on the next page like a sequential
-> +		 * read() miss: page_cache_sync_ra() starts with a small
-> +		 * window and only grows it while access stays sequential.
-> +		 * Keep mmap_miss at its limit, so that hits on that window
-> +		 * do not bring back full read-around for random access.
->  		 */
-> -		if (mmap_miss > MMAP_LOTSAMISS)
-> +		if (mmap_miss > MMAP_LOTSAMISS) {
-> +			pgoff_t prev_index =3D (unsigned long long)ra->prev_pos >> PAGE_SHIFT;
-> +
-> +			ra->prev_pos =3D (loff_t)vmf->pgoff << PAGE_SHIFT;
-> +			if (vmf->pgoff - prev_index !=3D 1)
-> +				return fpin;
+But setting up a loop device requires no capabilities. It only requires
+access to the device nodes. So whoever has a loop device skips all of
+the capable() checks.
 
-[Severity: Low]
-On 32-bit architectures, can a fault at vmf->pgoff =3D=3D 0 match
-vmf->pgoff - prev_index =3D=3D 1 when ra->prev_pos is still -1?
+A couple of fun examples:
 
-file_ra_state_init() initializes ra->prev_pos to -1, and mmap faults while
-mmap_miss <=3D MMAP_LOTSAMISS do not update it.  When the first fault with
-mmap_miss > MMAP_LOTSAMISS lands on pgoff 0, truncating
-(unsigned long long)ra->prev_pos >> PAGE_SHIFT to a 32-bit pgoff_t yields
-prev_index =3D ULONG_MAX, so 0UL - ULONG_MAX =3D=3D 1UL wraps around to tru=
-e and
-starts readahead on a non-sequential miss.
+On v7.4-rc1 uid 0 without any capabilities can't kill a process of uid
+1000 and can't poison its memory either:
 
-> +			WRITE_ONCE(ra->mmap_miss, MMAP_LOTSAMISS * 10);
-> +			fpin =3D maybe_unlock_mmap_for_io(vmf, fpin);
-> +			page_cache_sync_ra(&ractl, 1);
->  			return fpin;
-> +		}
->  	}
-> =20
->  	if (force_thp_readahead) {
+    $ grep CapEff /proc/self/status
+    CapEff: 0000000000000000
+    $ kill -9 327
+    bash: kill: (327) - Operation not permitted
+    $ echo 0x220689000 > /sys/devices/system/memory/hard_offline_page
+    bash: echo: write error: Operation not permitted
 
-[Severity: Medium]
-Does this readahead recovery work when mapping_min_folio_order(mapping) > 0?
+But put hard_offline_page behind a loop device, write a block
+containing 0x220689000 to the loop device and the loop worker happily
+does it:
 
-When the first miss above MMAP_LOTSAMISS returns without readahead,
-filemap_fault() -> __filemap_get_folio_mpol() allocates a folio of
-min_nrpages =3D mapping_min_folio_nrpages(mapping) base pages (at least 2).
-During a sequential scan starting at a folio-aligned offset, the next cache
-miss occurs at prev_index + min_nrpages, so vmf->pgoff - prev_index !=3D 1 =
-is
-always true and readahead never starts.
+    Memory failure: 0x220689: recovery action for dirty LRU page: Recovered
+    MCE: Killing victim:327 due to hardware memory corruption fault at 7f468e972000
 
-Even if the initial miss was on the last base page of the previous folio so
-that vmf->pgoff - prev_index =3D=3D 1 holds, passing req_count =3D 1 instea=
-d of
-mapping_min_folio_nrpages(mapping) to page_cache_sync_ra() sets mark =3D
-index + 1 in page_cache_ra_order().  In ra_alloc_folio(),
+That hard_offline_page is a write-only file doesn't stop loop from
+using it as a writable backing file either.
 
-mm/readahead.c:ra_alloc_folio() {
-    ...
-	mark =3D round_down(mark, 1UL << order);
-	if (index =3D=3D mark)
-		folio_set_readahead(folio);
-    ...
-}
+Other fun examples:
 
-rounding mark down by 1UL << order places PG_readahead on the first
-(faulting) folio instead of the next folio.  Because
-maybe_unlock_mmap_for_io() drops mmap_lock, the retried fault runs with
-FAULT_FLAG_TRIED set, skips do_async_mmap_readahead(), and maps that folio
-via finish_fault(), so page_cache_async_ra() is never called to grow the
-window.
+(1) soft-block radios via /sys/class/rfkill/rfkill*/soft
+    (CAP_NET_ADMIN)
 
-[Severity: Medium]
-When force_thp_readahead is true, can this block run page_cache_sync_ra()
-even when VM_RAND_READ is set or ra->ra_pages is 0?
+(2) change the reboot mode via /sys/kernel/reboot/mode (CAP_SYS_BOOT)
 
-do_sync_mmap_readahead() only checks VM_RAND_READ and !ra->ra_pages when
-!force_thp_readahead.  Once mmap_miss exceeds MMAP_LOTSAMISS on a
-VM_HUGEPAGE VMA backed by a mapping with large folio support, two adjacent
-misses reach this path: with VM_RAND_READ, page_cache_sync_ra() only checks
-FMODE_RANDOM and issues multi-page sequential readahead while setting
-PG_readahead on a folio that do_async_mmap_readahead() refuses to clear;
-with !ra->ra_pages, maybe_unlock_mmap_for_io() drops mmap_lock and forces a
-VM_FAULT_RETRY cycle only for page_cache_sync_ra() to do a single-page
-forced read.
+(3) reconfigure md arrays via /sys/block/md*/md/. md_attr_store()
+    requires CAP_SYS_ADMIN for every md attribute.
 
-[Severity: Medium]
-This problem wasn't introduced by this patch, but in page_cache_ra_order()
-[1], can index - start underflow when an unaligned readahead request
-fails on its first folio allocation?
+(4) reconfigure scsi disks via /sys/class/scsi_disk/*/allow_restart and
+    friends (CAP_SYS_ADMIN)
 
-mm/readahead.c:page_cache_ra_order() {
-	pgoff_t start =3D readahead_index(ractl);
-	pgoff_t index =3D start;
-    ...
-	ractl->_index =3D mapping_align_index(mapping, index);
-	index =3D readahead_index(ractl);
+(5) read dmi-sysfs attributes (CAP_SYS_ADMIN)
 
-	while (index <=3D limit) {
-    ...
-		err =3D ra_alloc_folio(ractl, index, mark, order, gfp);
-		if (err)
-			break;
-		index +=3D 1UL << order;
-	}
-    ...
-fallback:
-	if (ra->size > index - start)
-		do_page_cache_ra(ractl, ra->size - (index - start),
-				 ra->async_size);
-}
+And an unprivileged container that was handed a loop device can change
+gro_flush_timeout of its own network devices. That usually requires
+CAP_NET_ADMIN in the initial user namespace (via sysfs and via netlink).
 
-On a mapping with mapping_min_folio_order(mapping) > 0, start holds the
-unaligned readahead_index(ractl) before mapping_align_index() rounds index
-down to a min_order boundary, making index < start.  If the first
-ra_alloc_folio() call fails (for example with -EEXIST when a folio is
-already cached at the aligned index), the loop breaks before advancing
-index, so index - start wraps around near ULONG_MAX and skips the
-do_page_cache_ra() fallback for the entire window.
+I've reproduced that all on v7.4-rc1.
 
-[1] https://sashiko.dev/#/bug/linux-da6e8836-f808-4b39-9f04-de52995a0162
+Aaaand zloop, the nvme target's file backend, the scsi target's fileio
+backend, fuse passthrough and the usb mass storage gadget have the same
+problem. erofs takes pseudo files as images for file-backed mounts as
+well. It reads them with the mounter's credentials though so that's just
+silly and not abusable.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109091444.1285=
-21-1-gopalmalaviya53@gmail.com?part=3D1
+Fwiw, device mapper doesn't need anything. It only takes block devices.
+md's deprecated bitmap file is fine as well. It maps the file with
+bmap() which no pseudo filesystem implements.
+
+So this series adds SB_I_PSEUDO to state that the regular files of a
+filesystem are kernel interfaces and not storage and makes all seven
+refuse such files.
+
+I didn't want to sprinkle SB_I_PSEUDO over all pseudo filesystems one by
+one. Instead there's now a common initialization point for all of them
+via fc_init_pseudo().
+
+init_pseudo() uses it for the internal pseudo filesystems and all
+mountable pseudo filesystems call it from their ->init_fs_context().
+
+kernfs does it once in kernfs_get_tree(). It raises SB_I_PSEUDO,
+SB_I_NOEXEC and SB_I_NODEV. Pseudo filesystems never hold executables or
+device nodes. Some of them raised SB_I_NOEXEC and SB_I_NODEV already,
+most didn't.
+
+I went through every single one of them. None of them needs to execute
+anything. The files that can be mmap()ed map data and the tracing ring
+buffer refuses VM_EXEC anyway.
+
+SB_I_NODEV is cleared again by devpts, binderfs and selinuxfs. The first
+two did that already. selinuxfs needs it because Android init opens
+/sys/fs/selinux/null by path as /dev/null doesn't exist yet at that
+point. Note that systemd mounts most of these filesystems with noexec
+and nodev already.
+
+file_is_pseudo() looks at d_real_inode(). overlayfs happily stacks on
+top of sysfs, cgroup2, debugfs, tracefs, configfs and securityfs and
+reads of such overlayfs files are served by the pseudo file. Only procfs
+and binfmt_misc are refused as they set s_stack_depth to
+FILESYSTEM_MAX_STACK_DEPTH.
+
+Whether all pseudo filesystems should refuse stacking is a separate
+discussion. overlayfs reads the lower file with the mounter's
+credentials so a root-mounted overlayfs on top of a sysfs directory
+hands capability gated reads to every reader. With SB_I_PSEUDO overlayfs
+could easily refuse them.
+
+The first three patches are independent fixes. Loop never checked
+whether its backing file is open for reading. It relied on
+vfs_iter_read() refusing such files. Direct I/O never went through
+vfs_iter_read() and since v6.15 buffered I/O doesn't either. So whoever
+has a loop device can read files they could only open for writing. And
+the nvme target's file backend and the scsi target's fileio backend call
+->read_iter() and ->write_iter() without checking that they exist.
+
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+Christian Brauner (41):
+      loop: refuse backing files that aren't open for reading
+      nvmet: check that the file backend supports ->{read,write}_iter
+      target: fileio: check that the backing file supports ->{read,write}_iter
+      fs: add SB_I_PSEUDO
+      kernfs: use fc_init_pseudo()
+      proc: use fc_init_pseudo()
+      binfmt_misc: use fc_init_pseudo()
+      mqueue: use fc_init_pseudo()
+      bpf: use fc_init_pseudo() for bpffs
+      nullfs: use fc_init_pseudo()
+      failfs: use fc_init_pseudo()
+      rust_binderfs: use fc_init_pseudo()
+      devpts: use fc_init_pseudo()
+      debugfs: use fc_init_pseudo()
+      tracefs: use fc_init_pseudo()
+      configfs: use fc_init_pseudo()
+      securityfs: use fc_init_pseudo()
+      selinux: use fc_init_pseudo() for selinuxfs
+      smack: use fc_init_pseudo() for smackfs
+      apparmor: use fc_init_pseudo() for apparmorfs
+      nfsd: use fc_init_pseudo()
+      sunrpc: use fc_init_pseudo() for rpc_pipefs
+      fuse: use fc_init_pseudo() for fusectl
+      efivarfs: use fc_init_pseudo()
+      pstore: use fc_init_pseudo()
+      xenfs: use fc_init_pseudo()
+      openpromfs: use fc_init_pseudo()
+      ocfs2: use fc_init_pseudo() for dlmfs
+      s390/hypfs: use fc_init_pseudo()
+      powerpc/spufs: use fc_init_pseudo()
+      usb: gadget: f_fs: use fc_init_pseudo()
+      usb: gadget: gadgetfs: use fc_init_pseudo()
+      fs: add file_is_pseudo()
+      loop: refuse files on pseudo filesystems as backing files
+      zloop: refuse zone files on pseudo filesystems
+      nvmet: refuse files on pseudo filesystems as namespace backing files
+      target: fileio: refuse files on pseudo filesystems as backing files
+      fuse: refuse files on pseudo filesystems as passthrough backing files
+      usb: gadget: f_mass_storage: refuse files on pseudo filesystems
+      erofs: refuse files on pseudo filesystems as backing files
+      selftests/filesystems: add backing file tests for pseudo files
+
+ arch/powerpc/platforms/cell/spufs/inode.c          |   2 +
+ arch/s390/hypfs/inode.c                            |   2 +
+ drivers/android/binder/rust_binderfs.c             |   3 +-
+ drivers/block/loop.c                               |   6 +
+ drivers/block/zloop.c                              |   5 +
+ drivers/nvme/target/io-cmd-file.c                  |  10 +
+ drivers/target/target_core_file.c                  |  15 ++
+ drivers/usb/gadget/function/f_fs.c                 |   2 +
+ drivers/usb/gadget/function/storage_common.c       |   5 +
+ drivers/usb/gadget/legacy/inode.c                  |   2 +
+ drivers/xen/xenfs/super.c                          |   2 +
+ fs/binfmt_misc.c                                   |   5 +-
+ fs/configfs/mount.c                                |   2 +
+ fs/debugfs/inode.c                                 |   2 +
+ fs/devpts/inode.c                                  |   2 +
+ fs/efivarfs/super.c                                |   2 +
+ fs/erofs/super.c                                   |   6 +-
+ fs/failfs.c                                        |   3 +-
+ fs/fuse/backing.c                                  |   3 +
+ fs/fuse/control.c                                  |   2 +
+ fs/kernfs/mount.c                                  |   4 +-
+ fs/libfs.c                                         |   2 +-
+ fs/nfsd/nfsctl.c                                   |   2 +
+ fs/nullfs.c                                        |   3 +-
+ fs/ocfs2/dlmfs/dlmfs.c                             |   2 +
+ fs/openpromfs/inode.c                              |   2 +
+ fs/proc/root.c                                     |   4 +-
+ fs/pstore/inode.c                                  |   2 +
+ fs/tracefs/inode.c                                 |   2 +
+ include/linux/fs.h                                 |  12 +
+ include/linux/fs/super_types.h                     |   1 +
+ include/linux/pseudo_fs.h                          |  11 +
+ ipc/mqueue.c                                       |   3 +-
+ kernel/bpf/inode.c                                 |   4 +-
+ net/sunrpc/rpc_pipe.c                              |   2 +
+ security/apparmor/apparmorfs.c                     |   2 +
+ security/inode.c                                   |   2 +
+ security/selinux/selinuxfs.c                       |   5 +
+ security/smack/smackfs.c                           |   2 +
+ tools/testing/selftests/filesystems/.gitignore     |   1 +
+ tools/testing/selftests/filesystems/Makefile       |   2 +-
+ tools/testing/selftests/filesystems/config         |   9 +
+ .../selftests/filesystems/pseudo_backing_test.c    | 274 +++++++++++++++++++++
+ 43 files changed, 419 insertions(+), 15 deletions(-)
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20261109-work-loop-pseudo-890844168ef1
+
 
