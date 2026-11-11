@@ -1,134 +1,154 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2CB9606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 20:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E53C606A32A
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 20:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=VlM7DWeD
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E9fGcD86
 Received: by kanga.kvack.org (Postfix)
-	id 14C5C6B00EF; Wed, 11 Nov 2026 15:56:22 -0500 (EST)
+	id 9191C6B05B1; Wed, 11 Nov 2026 15:58:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 124326B05B0; Wed, 11 Nov 2026 15:56:22 -0500 (EST)
+	id 8C9146B05B2; Wed, 11 Nov 2026 15:58:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 039926B05B1; Wed, 11 Nov 2026 15:56:21 -0500 (EST)
+	id 7B9336B05B3; Wed, 11 Nov 2026 15:58:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CE0DD6B00EF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 15:56:21 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 511641203E2
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 20:56:21 +0000 (UTC)
-X-FDA: 85424046162.29.26AF872
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 0FE06A0003
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 20:56:18 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=google header.b=VlM7DWeD;
-	spf=pass (imf25.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.53 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794430579;
-	b=Ka7qyC8pyd35WO+Xsn8CoO6nQkt375IIXWFwvL2Z5BVPUiOv8Oj0+QwuO1VDqgQXU3aAiP
-	G09XDeyROXXiqHOWSYOQvDIRvtYtgYY9HRDACrzuotEU0BLTbFKvDEIMUX0LiHUrYsW56G
-	6Y+itYD4jW7alKI6Q4ddyo1ttYWcNsE=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=google header.b=VlM7DWeD;
-	spf=pass (imf25.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.53 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 550CC6B05B1
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 15:58:48 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E3853A7F78
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 20:58:47 +0000 (UTC)
+X-FDA: 85424052294.20.291A2E0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2A9541C0008
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 20:58:46 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E9fGcD86;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794430579;
+	s=arc-20220608; t=1794430726;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xzgw+taeENUOT3ZDyM1tex5SiMxNZDRD9mmmwBeUwBA=;
-	b=BC/3zfprE5MlactZV9CeTLV2FFDB/Kt+6cU9IRex1k9oWOIr1F7GOGH0JDAqaOzaK5TzXT
-	NqaH04IZK6/XTjqmoWporz8fnrE4+Si5DAyzvYp9/X+TkRkrGvj7LFCTG0q8sPS9yQCIcC
-	C1cmycL5E7QO58OULHY+Ocgdba0QYDI=
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c4d581da0aaso400069866b.2
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 12:56:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1794430577; x=1795035377; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xzgw+taeENUOT3ZDyM1tex5SiMxNZDRD9mmmwBeUwBA=;
-        b=VlM7DWeDMAd+L8P6eJZVnXlI9oJvtAsmJhFRGC9TK0AOt+gzu/CwqdpTTXgU0v7xE4
-         X6ZMdko99KA73/iUO7E7pW42kgcnJxT//q3iZf873RPnJj17QvbJkH9tFkz7t1nnOTHP
-         +Lytlt7C4UlLIFxCayql1StIB1EDXvmXoSyPQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794430577; x=1795035377;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=xzgw+taeENUOT3ZDyM1tex5SiMxNZDRD9mmmwBeUwBA=;
-        b=1hdfB2IdaMtRLfbydeLWTs4uTE+u3DA4KGsIWZ4G32RiQe/qG46Uo50H2AkTM190AP
-         yq/jeOV4kGfkH/s2rntGCMoHj/tQSm76VlMjfz0nB/oFK00Jgksd+oyXZnLPy/b7qHCt
-         VJ+KJ7d7Lf1plqU4LDt6ki8So5alAQwKHH7tp/HVqxaves9fHy3wh3OVudCFsDFa8CUk
-         C+wUVEw8Q2QtvHxiT/sGborNivuDJAWgSkiNB8Yl9hZXNcEa8ebV5z3hICFNXcElHy/s
-         b38a46MnlRpMADL4zsn143YJuKvnZpDv2g52Dk/j97SDgAHGoMlm0ioA5dDLfi0MqHvL
-         18eg==
-X-Forwarded-Encrypted: i=1; AL+hErG4zby5fKsG+tJWDRyPS6XzNphqQEjoWSqPJPRcuUCaWJs5fa5SYreXNuVgmKbNqS515uS31qGBRA==@kvack.org
-X-Gm-Message-State: APuU4Z9kwDWOPo0wrLjr8+uFPGytwexzYIrDA0Cqy7jBuJyyBMaV+082
-	6XTf8oagy3xI9PwSXlRSmTS3v7rBAwnrNMv4PwGwTu//X4S/ONI6OzD2lBl56WCaucTz9uzaKaQ
-	t065Q9dYmCA==
-X-Gm-Gg: AYBFou0ot/Lr4ecwP/xFciR8P6ev8qOQhV9g2Ju8j0H3Py69i0j323oqX1ASpW7ypZ3
-	Gog8ze4iktnkNxGL3evVau4H9kxnJ9yJbJF1v1so9AJbdpq0rq2KfYpNZZ0Cx3wMW0xQqR71Kbt
-	7QEfg43EsU1bC5tSDcX2uckPbVnNLzgvsiUuzj65rzg9pGWG2j0Y6gwTX7i2Yt93KJ8cUweHWnm
-	ROHe3VNxWCvOY7MTvGpQKZsTm/diK4cleCvnf7xv0zu5SQW5Otamqm7QVeGMEmk76k2nxQRm1jv
-	YKLt0XgQmE3cvscEi0iFRP5U03GM2soJFjMR9GcQypF49l5ti8856T2xL54rfCflI+BYvJ7Kx5U
-	b5aSPfMhx2bhyCmWpOI+jycT06/9thBgwq3SQ0uNHw8M+IHpjtCgafmitedPgMrVvNo/b79iSBo
-	QpLAetyRU6ONoOKEWojV9zZa8okYo64FwgG1xupGDWLL3tdoRs3nAt9ngleQw0v0tIhJqQGJGz0
-	xEcD1aiaFvvKI4FvHn/SOI1RDaBqfiTagwE/IGX0rCnExrLTnwPJhpFbhi6hHXr4E5zdzvtr1Fy
-	aVQksMWztXUknziaN1rvaJ6FeDyOLIvYboRZKbcR2d49zf6rOVV4OP+X30b4D5n3BzpZf0PdV0k
-	zSw==
-X-Received: by 2002:a17:907:1c98:b0:c41:b94c:4539 with SMTP id a640c23a62f3a-c506698cf92mr254257566b.6.1794430577150;
-        Wed, 11 Nov 2026 12:56:17 -0800 (PST)
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com. [209.85.208.54])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b7578d57c4sm2650978a12.18.2026.11.11.12.56.15
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Nov 2026 12:56:16 -0800 (PST)
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6b587591414so4184263a12.0
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 12:56:15 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErH8yp/ZGgqdDMJTA5eJp2xcd2PkXpsP5aj1YOSvSmkYNtp+hU6ZoPq20+8/JfF1DT9sNljLpP0Axg==@kvack.org
-X-Received: by 2002:a05:6402:84c:b0:6b5:867c:879c with SMTP id
- 4fb4d7f45d1cf-6b77780e6d0mr2757004a12.35.1794430575651; Wed, 11 Nov 2026
- 12:56:15 -0800 (PST)
+	bh=Ds6gjgiS3vY0BGdY0DRhZwlXVM0IcXWHW91s2wNzqW8=;
+	b=Tqh1w7xKh4oW2G3Vq9sfpz7R8EmgtFkCIGdLqoZ/n/+/+EWo6ize1mHX3GtT40EXS1IWGM
+	6oq9ww+LaRcVpNR+fPWGhlElMth1mHZ06Wdru2TANWMtVGKRg0qrYwKuxvjFmc3G5IO5gE
+	F4CZfhfULXt1Xff1KATzHbU8VGASfMs=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E9fGcD86;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794430726;
+	b=SMGG+QETg3ifw+YPnpldBb3uZZy+U45TIqHfoVtgeSK1+rjO31NrqawZ8RMxdLUj6zRpra
+	0bYkeWYkXpEoTUDJcINeKfn6YxSp7OtkqjQOonDnGhpIvAo6hlIKklEVkdOE8FTdLojjDQ
+	pSqZU1wsLKeeMAk08d4nwbagiuleSoo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0758141397;
+	Wed, 11 Nov 2026 20:58:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9797E1F00A05;
+	Wed, 11 Nov 2026 20:58:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794430724;
+	bh=Ds6gjgiS3vY0BGdY0DRhZwlXVM0IcXWHW91s2wNzqW8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=E9fGcD86Lx9XaWIpof0R7WUxZBmGxJ67mAfGNyxR1VMoMYLYRYiqCdyL00LjShnRG
+	 70cfe5mHbIJaOOM9q5iRijQ8mzdENzfPv3fQ3OVRiqnKTb/JdmquA+tEVlZk/9AJCr
+	 VC27Rtvis8BoRNO634nMCsXM+sZ6+dg5WRXuYrO4dv66qPbaAFDSjHP+Ot9FMMXqYL
+	 zMsn5dgo/uBFv1zS4YgMVA7Xe94gz/jZS4h6/GH1cdyfNi3dPNvOB79WAqdOeamWSy
+	 BorNP6QWpar3MvsLNku0jhe8L7Cm/mwBlttLWHXD0svE7jyliIAmGRDt6G/Tc6/kWh
+	 cAV5vKYxwjCsw==
+Message-ID: <4df90a0f-0bba-4899-9232-e3e968b55138@kernel.org>
+Date: Wed, 11 Nov 2026 21:58:33 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <606cae9e.bbec5.1a1c54f4f9f.Coremail.18670333770@163.com>
- <60541e98-b1f0-4f92-a155-8a29c0bb17dc@kernel.org> <44abb8ef-7711-4ad0-be9f-ca47206892a3@columbia.edu>
- <856cdf21-7982-475a-b244-a7ceff4eb6aa@kernel.org> <avS5QcRj85yAm9ll@thinkstation>
- <71e24630-4c71-4518-a9b7-68cf3597ce80@kernel.org>
-In-Reply-To: <71e24630-4c71-4518-a9b7-68cf3597ce80@kernel.org>
-From: Linus Torvalds <torvalds@linuxfoundation.org>
-Date: Wed, 11 Nov 2026 12:55:59 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wh=cVrn+xs3fZiPW=kJbFQLwf_C+c-YBCR2K9s9aNE_1Q@mail.gmail.com>
-X-Gm-Features: AclHuK-gqWa4UC85dpRfsS1fgVBckngemj92OtcgMmiJYVibB47wPOEx7bU3zC4
-Message-ID: <CAHk-=wh=cVrn+xs3fZiPW=kJbFQLwf_C+c-YBCR2K9s9aNE_1Q@mail.gmail.com>
-Subject: Re: [SECURITY] mm: khugepaged collapse_file() drops RWP PTE markers
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>, Tal Zussman <tz2294@columbia.edu>, n3rd <18670333770@163.com>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "ljs@kernel.org" <ljs@kernel.org>, 
-	"ziy@nvidia.com" <ziy@nvidia.com>, Mike Rapoport <rppt@kernel.org>, 
-	"peterx@redhat.com" <peterx@redhat.com>, "security@kernel.org" <security@kernel.org>, 
-	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: gyjps9tfukcg1jfhruzom1yuxetpugwe
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/memory: drop PROCESS_PAGES_NON_PREEMPT_BATCH
+To: "Garg, Shivank" <shivankg@amd.com>,
+ "peterz@infradead.org" <peterz@infradead.org>,
+ "ljs@kernel.org" <ljs@kernel.org>
+Cc: "Rao, Bharata Bhasker" <bharata@amd.com>,
+ "rppt@kernel.org" <rppt@kernel.org>,
+ "ankur.a.arora@oracle.com" <ankur.a.arora@oracle.com>,
+ "vbabka@kernel.org" <vbabka@kernel.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "surenb@google.com" <surenb@google.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "Salunke, Hrushikesh" <Hrushikesh.Salunke@amd.com>,
+ "liam@infradead.org" <liam@infradead.org>, "mhocko@suse.com"
+ <mhocko@suse.com>, "bp@alien8.de" <bp@alien8.de>,
+ "Nayak, K Prateek" <KPrateek.Nayak@amd.com>,
+ "pfalcato@suse.de" <pfalcato@suse.de>, "x86@kernel.org" <x86@kernel.org>
+References: <20261109-clear-pages-batch-v3-1-6693efe18dff@amd.com>
+ <20261111124006.GI2668564@noisy.programming.kicks-ass.net>
+ <avRnJiDLdGcbSW5d@gremlin>
+ <20261111132105.GJ2668564@noisy.programming.kicks-ass.net>
+ <261ef956af0843f414b4def58b13dae003c933ac.camel@amd.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <261ef956af0843f414b4def58b13dae003c933ac.camel@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2A9541C0008
+X-Stat-Signature: ej4rh76oxhs8khwczhajmuji3p91jmnc
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0FE06A0003
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794430578-149111
-X-HE-Meta: U2FsdGVkX18CuH37ym/QtYIKZQV+yr693MVb8qM/feBMaxQVfutaMM8970tm4ON4by2JfO6na0VXxKP+ces9+4SUumzEM+VHLU9tw97cgquCMNAAb2NR78rhjWHVnlQUDFoXoVB0l1OE9y2rHFA70X7FikCuDjTMrvI/eH13YaW/m8x4daXl1PTASHsB1QifQEhHXBwEKUe0OCCi/T1VifWO/zBiqhzuWsfRuPxLlZ/+DR8VGToGj/o7/vmcjzB9h+UnKhTlTfb+8g/OoIHD50fmMxTbLf9LQZQJSHCo07FUH+v1skRApGlq+x9cZKpsoVvq1X9/rx2+XTgXw/SrGdBuhPehlBffAjCQT5Ch3JSvKpGVaFMmx4RKwuSEiq4CgTM5wRSvmA9lBZaseIDaK7URP8vQORAIy30WEWToGoiOK/PqP1ISzBY5WkaLIePeJAmIPpRTevSFL705tA15OBkVbRgx9dweurViLZBK1znC08PYTRQC/qJm9atVzfPiCh3UuL2QNqA71cUMLjdd5u1cObsPcaOIIuKsbdadSc7eeltBylke/0JW5dPj9y982p9FrX+Z0b22F3x8c9dVat0x8bFaG26XG2tsent2Sc4jVqdCYoQ39tQrWPb5YpX5T1L2V3r6cf+Zl/01b45b7lqVj0vTy2H4+C3BbiYfJs9YfHsAPd9hZtGYuPU5mSlX69mbcC+KcM4bdnRyLK4fglAFlhTyWLYGjknIe2pZW4nmkgrXIXIgfrvGlyjyiBtGCossEqGnPz0D01LajkHpHtscCoXL31EWCJ45GkAO3fsQe2biio1C9G/PB2zSc94LUpS12+hXBA41obkEB/Dc0CMdANN7uiy15Ho+0XC9PkIZZVBMh5sqodN7jtIOjr4cZ8TuaVf/kr5j0Tg5TwRxKizUUnEW0QvJwWLdfTTU+js9fLF+vqcc8cIHoYExQ8TDsBGxDr6AFUnAuM355hH
- juebja4+
- PvWDp/evCPowhnv3U9EPwRAphGiw/ocrWdIgBhldEt/pprI79LgpsK9Ifwfh+13zNxcEz12+Pf5Q75JmlLnSyLN/nUb1xBpBM05dLRtDmhQfUV3WQYFsH/r3KqJnyYAP89dMRKsO/RiMTey2/X3miPhu6f0LWGsHn41kX0rcVPHq+QHtEvnN1yfBg3rTyX1SAmteTFV/u3vTNPp2XRYDjyW9hHsQV11lmdlWacs4QgLDC6yO7sgOYeOUjvexsQHFZjBmVzcSSGomLxiGsXfyN8AqsBS/QCOCRsegvSgnd9zWz27a75CgGDO1Mpm3uMeD0gc31Ve5AvYalRhfQ31nM7PwegbnRpsIj8u8EWjK5cKG3dEpDadRfiuPb/xCrr+92kUgIB4AqPhZ2kQ8LCSCpdRC+A5Hu2yWScrEvpukdz2pGs3fEz11RLeQICyZBpr2KgJUU
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794430726-48224
+X-HE-Meta: U2FsdGVkX1/HpzKjcQ2OVgF/U32XWuffvMD5GNWfsoF7lWcjFookFZTt6toWKoc65Si9VTYlQjlIzjcTYpzhLgWkwQYR9ZILvdhNHuCTFGMbcDel0Vp4nTIxa+5vDlfYpbvrFtWnmi6w69cLoVel+9Rmma0A5jBYADGcd+FvQ6BPWSiYgsrbFmetP5zfnI72Uy5Q7gtyZumL37AnrZIyacbhF6vLO8T/SEEeLGpb63Jbunlh4sTldzeuey+Kc+Y8GrdLxhuI3UWo6pVIj5KFqhRo+fGt4vYZCzoFVKQTRmAOG22nSuh8uFwS/UUG4Jx6PcTVawvdl/0wdbHPfY7iVVGrj7eCHXu+qlfTWNwr+d5twJoA5/XCgFjFMPMrISB4RsgCAQIWbvEQ4kE250QxQgBoPwvF4NZB3sUZGlIkFkzgizq53NeQbLEE5CF45picqCwTnAci1HVTqK3gZBqyjUbuSYtFk4ppN92d8PcoOW4cYjofBCCo4O5kVZ85WzH3gPI4IesqI6tFu0OfBSz5qKVIyTn2UbVKMFIp7fM0gOglbR0O/q+yxTBFaCIemqkl02/FewXvaEsMdNG8AuXj2alQ2QqFZnJjrvXw2ho1w1jvyKiYpiivI3hKBeW/1ZbQoe2XyQ+gyohaWmRzS+jW4ViII/GeTwWCSYidHJ8GnTtDpWNV/eU7BSVhGMybAnZN2U4ldSEUoJc1r6RlZMSMcWETH21KMDKBAgJrRrZZU/7g3iM122Xlxx9ltOkVAxFKzGJtxqLERYRMkFrERzEnSG2HJFMG0vnG8Rrt3zPyFMPf5j/bkp/KJj6YQ9dWgXbJILKNbEgLnhgPjRxsxbc6YicFdwOIvwlmoNg07uGxEDFBYqGlYDdgDSQEmWJGSzl4VuTMhB1e/fbXhyNRxtzxVX7VmvVcU9EbW5ERF5w4eyOluIMXpSoZZAUZFmEV9YGDR2JbLuAJHwf/Bj57udo
+ zyV4ylPI
+ eDMgzcVcNkWu/zbp9pwi4AKrPvZewb1bjxjyZDfy49+ny/0eY5DpTyOr6Ffi5ViDgzFGfboMt6dJzCiSYxrCDteUgxPErxZQu2pEmFGIjD3UHR0q9FgQEH0P75oExjytSuq9hB8GQCJjGZeUhCSX3nfuvEwY6nzSMBBugaS4wt5LbNtCuu2Miw6lssLCBRmjnWgYR7tA6fXvGZXHCJgy7gRxW1iZxuePleMIiwWzebVzhefs31seGZ2KP1z/BDkJ36VgzyZIRM1W/Vzf+4zDAzF0b8ie2/gD6I6KkWhmlbrhPpMvUQC2z3ZeEp9x8diLmReJTQPGaOoRrW94TJ6D7crFuTi2/0In2D5LPs8lmiN9Qzca8D/NRgfim5mNEvv6r1LgCrMetvTFzVkF2L9ClsD9GKrGPDgItqsYMjqoQ7MeCY4I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,25 +157,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, 11 Nov 2026 at 12:20, David Hildenbrand (Arm) <david@kernel.org> wrote:
->
-> It would be a lot more consistent if we'd just add marker support. Or is there a
-> good reason why that is explicitly not wanted?
+On 11/11/26 20:07, Garg, Shivank wrote:
+> On Wed, 2026-11-11 at 14:21 +0100, Peter Zijlstra wrote:
+>> On Wed, Nov 11, 2026 at 01:12:06PM +0000, Lorenzo Stoakes (ARM) wrote:
+>>>
+>>> I guess we all got used to the existing patterns and I for one only
+>>> recently found out (doh) that this was legal in kernel style (because I saw
+>>> it used in KVM)...
+>>
+>> Right; which is why I keep reminding people this is now 'legal' :-)
+> 
+> 
+> Thank you, Peter.
+> Good to know this and I'll keep in mind for next time.
+> 
+> btw the patch is already in mm/core.git. I don't have a strong
+> opinion on this, but I'm happy to send a V4 if you'd prefer.
 
-Let's not help people do things that won't work on older kernels for
-no real gain.
+I can fix it up, but we can also just leave it like that. (I tend to prefer the
+old way of doing it, but in the end I don't care :) )
 
-Is there an actual real-life user that would care and be enormously
-helped by such a thing and it would increase performance or something?
-That sounds very unlikely, since presumably re-faulting never happens
-in practice, so just tracking it in user space is "free".
+-- 
+Cheers,
 
-In the absence of some real load with a real argument for it, please
-let's just document existing behavior to the fact that you need to
-simply see the re-faulting of these things..
-
-And let's document it in a way where the LLM's also see it and don't
-think it's a mistake.
-
-               Linus
+David
 
