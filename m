@@ -1,97 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77DF0606A326
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 18:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92427606A32D
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 18:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Cj5Tvm3G
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aBODQap9
 Received: by kanga.kvack.org (Postfix)
-	id 5F4E26B05B3; Wed, 11 Nov 2026 13:19:44 -0500 (EST)
+	id A1D986B05C9; Wed, 11 Nov 2026 13:24:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A6506B05C9; Wed, 11 Nov 2026 13:19:44 -0500 (EST)
+	id 9CEA26B05D5; Wed, 11 Nov 2026 13:24:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BB276B05D3; Wed, 11 Nov 2026 13:19:44 -0500 (EST)
+	id 8BDC36B05D6; Wed, 11 Nov 2026 13:24:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F74F6B05B3
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:19:44 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8BA52120389
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:19:43 +0000 (UTC)
-X-FDA: 85423651446.03.D35EE0D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7155A4000C
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:19:41 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Cj5Tvm3G;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf04.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794421182;
-	b=rCAAz3jtpdKd/TQBf9kdcIJIe2mjSNxTFKJUhaUeLgUrDiBsN+X7Nj7qhO8dfnBNaA9Qt2
-	tCwMwgpubyLuRyPPGpmyyif9K1nWZEmntjFR/6A47jeKjAJkgo4f6r15YjIpwRe1hOHrDc
-	NzneUqV8yME6eOtyzU6TGNdQUIPxETw=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6288E6B05C9
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:24:57 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E74511C31D7
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:24:56 +0000 (UTC)
+X-FDA: 85423664592.15.2A04D43
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E21B4C000A
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:24:54 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aBODQap9;
+	spf=pass (imf10.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794421182;
+	s=arc-20220608; t=1794421495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pfXEXdjQzZILw838pgfZ70Et9pyX3bVcetws/5uL/zw=;
-	b=RhuutBejs7nwwpOo98IaRhgTVS9Nzj11245l2ueh70OlyA7qXeiRCko8GkfDBBxRX0IblJ
-	wWUUE7J27xVzED55qnIi0vU4KhPZfi0qvlY/TDXGTPH/h8Z5+/W/hU7KSb0a1kkVlAe7Gd
-	zSRWJmYcg4/+7M4FJdUUd93GXjKFphA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=AH3G4Ld/Cw2YgMeAy/KmwdAu0nKPOp5SWLznGtNiRM8=;
+	b=OYYfuPhFBbuEm32QcNRB7mvWeE+TCYWBr+GMcfGZuTyZEWnL1iAwe7jGfVuOVLz2/HGNrG
+	e5t6o8NL1syBJuF5K7X/tLqHYYLxA2h8EGsuYvR50BUFRv5Sz3d25HfSgdOI7vVIZnX8gm
+	W4EDCjdClKrS81kj+lDt9a55RIzKSWE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794421495;
+	b=2RMLaiq1vMXW/WHP9SUSjXqDA+jrMw5EROCsAMa1N1QBAeIoPg00+XUCCffskKqsQFWyBw
+	vLl/H/7B8wYZf4QM52Qeg8vm1hcGj7q5IZ9rcFaPekAWJ1hXLi5tcodOaRNrB0IT+5sVXT
+	Mry/QE+yt4oaBsBYUfvPztHSShTTC7M=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Cj5Tvm3G;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf04.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4A15E1576;
-	Wed, 11 Nov 2026 10:19:37 -0800 (PST)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1BBAA3F632;
-	Wed, 11 Nov 2026 10:19:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794421180; bh=pxMbuBYnl7smF+fcq5aPZzge8JNq0PsIOWBvviY84Ik=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Cj5Tvm3GOgQ6hwsYhv5MYuKsZdtkk5Gxs/yjbSHzfcAJbDMNnsmY077R/ag8kn/wg
-	 7wi6Zvd1tg/X9S2bA3EtIvFKuopik1Auxq+lW5Ku+MDefJSPklDMDjSXkW0lw2MCC6
-	 +QzpnS9PTiDv/BBv5Fw2y6/jB1jiKY0wjM4snZoM=
-Date: Wed, 11 Nov 2026 18:19:34 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Yuanhe Shu <xiangzao@linux.alibaba.com>, akpm@linux-foundation.org,
-	"Huang, Ying" <ying.huang@linux.alibaba.com>,
-	Kaitao Cheng <kaitao.cheng@linux.dev>,
-	"Garg, Shivank" <shivankg@amd.com>, vbabka@kernel.org,
-	ljs@kernel.org, liam@infradead.org, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com, ziy@nvidia.com, wangkefeng.wang@huawei.com,
-	tujinjiang@huawei.com, mgorman@techsingularity.net,
-	chengkaitao@kylinos.cn, muchun.song@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm/highmem: refuse to copy hwpoisoned folios in the
- !copy_mc fallbacks
-Message-ID: <avSxtpwhTbfHi4zh@arm.com>
-References: <20261110112641.1196786-1-xiangzao@linux.alibaba.com>
- <16cf88a0-6652-4276-95fb-12306e417701@kernel.org>
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aBODQap9;
+	spf=pass (imf10.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2210045836;
+	Wed, 11 Nov 2026 18:24:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0986D1F00A07;
+	Wed, 11 Nov 2026 18:24:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794421494;
+	bh=AH3G4Ld/Cw2YgMeAy/KmwdAu0nKPOp5SWLznGtNiRM8=;
+	h=From:To:Cc:Subject:Date;
+	b=aBODQap9Whfj8W2pMoHX8qEUEl0vwV6jfWDgC/N7NLqQkhX99X7SA7VEe8ul6+gkj
+	 jQeRl06i9VN4MxVr0balWW5uM0GfC3fA+y/yzdSRshEGn+ZTlMmagNuC6HdpAy2l8f
+	 7DcAPWCQ5uhrMT/G8lkDIqG3o+0Y4s7GWKNmFXL2O+XA10jWHwbgrlU1tTgkr0QMrg
+	 wCaONfkUrZYOLbsAdn2O2Rco52HJSKozuzlDzutgnWKr1Q26mEfzxSffD3I9fkR3My
+	 oHKWv4RSP2vZZiuPxYoiRgd/POF6+6SVCPwe8t4rV2R9//71T2hxg/8zza8DPp6iBs
+	 6JQ59wW99+HhA==
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 2D70B198003A;
+	Wed, 11 Nov 2026 13:24:49 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Wed, 11 Nov 2026 13:24:50 -0500
+X-ME-Sender: <xms:8LL0ahgMC1sdqltW2Qo3f0WrT3MZ--3w2nI1U9MuKGqsoB3f8wN9eQ>
+    <xme:8LL0avYBGHhtPvOReDD3bYzTf5BnOozVpAswS2KAuAPHR69TDO7qfk8iPXKmMPbVq
+    sYPy-woYcNVcnKj4KXbm5aJxZEqXt3AR1PD1iF2ASgBp310lSWnmCjV>
+X-ME-Received: <xmr:8LL0apkXw6bL8ewsmZAqDvkZ5_s2ijQFQkolTjm5HTtDw_5FakQDWxTF46Y>
+X-ME-Proxy-Cause: dmFkZTG2wF4Dcbvhh7gz8ExlXKwNmF/VlJm9jIhvBywTJn4RMzX60KMrFIt260tiGp3huV
+    9loRqotF8zi7MdcgMxVqASC12iSUZLWUGDdCWc9jof5PS1StOs6DX3KySpf23UHeCSfyyG
+    E5DWQfJRHn46Jdw2Th1Vk0cLz0xJsVv7gt9a/Au7ONtW2Yq3ff74pd/XkKxGiJ/ik5TogK
+    UDNtQajjfl+Pp9mSMi05yIt+KwLx/h972BRj/zMDCbhijKgzvjTsL9I0o1vS5bDIPKQLqb
+    r+IuBJHBy4S53FF5o0bRQse+zPwebOp5sbw1Oqv3bRoexrLIuj1sw2XO10iVxqypbt4cDx
+    EWj9i5/lWdJIBZRe7s8Yyz8BykkURsWo471Qx48Bx8wPKiKqjtDqdofxT8Qm0LFgrWbHvB
+    SNMLnQWTltAC6Lzzjw5wuFOsaECoQxtoqdTrWG7mNJAWU9zpscPr4a03UYnigCJHNd5CeG
+    CbIDaERAAbxRYBn9o66xgZ1GoDFNFzGz1QFrs4o/lCA12Ls6E4Nt0vcF66Y/Bob1HwuxC8
+    tI69DRgQAnD/OrkW+/PVE2iaLSYOV8Ms3gTUG8djydzX+puuokedYPb7Hq7Wldzygm1dWQ
+    xAQJvih+ljNWUNAcmgjO1l1jQ8bNfyBEYZuBOqXVQdSlBUf2R5FVbQwUxuEw
+X-ME-Proxy: <xmx:8LL0alwAifPlbgw1trr7V5-hkxLfzXtYFLUvvY6_flQbJg3_cuESpw>
+    <xmx:8LL0av_UJMOuM9gr7u5epFKeLP8ZtjxuXgxpHy8EKThUcK7tYpxb2w>
+    <xmx:8LL0aoCUoVhow7ddQF0-izevA-QRLVwf0C5blCDSMLeQS3vtbEEMHQ>
+    <xmx:8LL0aurcLIg-kluuma3o9aAfH0gugxHXlkXoTb12W0QPlbH7zsXDAg>
+    <xmx:8LL0aokKkSYlX_7tltQzCEV4H5NhoTdRgh_8qWKkpnVARBzW8STPJ7N1>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 11 Nov 2026 13:24:48 -0500 (EST)
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Hugh Dickins <hughd@google.com>,
+	Chris Mason <mason@kernel.org>,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH v3] mm/memory: refuse to map page cache folios that are not uptodate
+Date: Wed, 11 Nov 2026 18:24:43 +0000
+Message-ID: <20261111182445.656620-1-kas@kernel.org>
+X-Mailer: git-send-email 2.54.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <16cf88a0-6652-4276-95fb-12306e417701@kernel.org>
-X-Rspamd-Queue-Id: 7155A4000C
-X-Rspamd-Server: rspam12
-X-Stat-Signature: s4nz8wp9b6h56p6nmtbt9yp6n1h1wknb
-X-Rspam-User:
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794421181-769610
-X-HE-Meta: U2FsdGVkX1/XuvK9dTtauM3frDh6AOxuEP9Ms84y2WRQOf+ZNAoasFQDRegdrRFkGCqXEckACDkP6SRUkLRBwEmlr83/MlbjYS1zHNOdmN/oogP/5AIpadMycEljuu2cnx+9iJ2M0ONK1FTtE/j+YtaG3L2ImwpX4q7MyprKOUTB6NIPkD/GndPyMOP6wEJK/getI8EHWllw/vaf4pjDsCQpODeWjfQABbyu53GJ9TwaDTVUuTKiyt8M6dGkmOq0v+7fSsppE/GBZa9lxWX3pAUBK7ywHr9tajED3MNaouAPpG5z2CkrsJtgdrJKamvefyW5szUedhNvfhAyydf4Nmsiau8Z8fm1JasFdIeGautFpAEucPd4uiiA9FxiSmZvd6ygJgw/zvCj2PZ/oaSTeOZX6f3GCQLrnV/BImatV3lkavtpscY+4Xu4urqU4oJLNNM2CBCFMUdJylpo84ZCLeJM2Nzv+1+It+x7818KkJLB/YRmdC3UMtVJdDJ5tlBeuIr1jvhLXFeutNoRJ9/Gud2D5b4+EGOV+40YzIKNV5xT5ryo2vSmsrKPazY+5fUQ+L9FynT2MmfSjPVWql2grqucLAnn1RUTq791pj0MBTcE06GPJoAMcrZYVqNLv0AYb7bHRBEtEwmYDnIzPLiR9nuKsEZiaQbDeWYNpDl7pvnbwAycGBIqp7jYwC0YtjwjM8Vk979gw7+diXVsXlHTK6mqGkOjlP4SlyweLvoeZ6M2hN/g73XrJN43+TFq21iiZcyyfPf2V4PA3GadYwLPd41ncZG93UA9BCkbu29Xk298pYlIeKcrttTgVW2Iw5X9fqSLVg8F2v5lE5vZfE72+Mp7yZn3L1NVTm1FbxiDeK+ifVGJAdggOpm5mV3DyCE/VeY/XoWgPi0TBXvIYW+zce+LwblgW7db4YJ4fmpdVYpX5pLsG9Kl0bGLELKpalgXysnMrJY7pHuC9P/KbtI
- /c1mubZs
- SnjHsPZQ8jh9nXod/80T9LQORhzwctmdNdzdHMl6oKC6ljaV2cg6QMYvUZwB8IIdzNeny8kzwt3Cx3fDt4wIW6CRL6ADCS47CK4sVcqgq99lk2Oys/3gPHxL8jRPHnTMWkcoNQjpHVDIFrxq4N8OkW3nMcaZxHC8IeFeK4sKnhgdU3niD1RJKRgNpOHviPg5NRYedxRK2o3FXSZ6UrsdCj2cSS0X/aE2BeVhyJepiEyahxWcNw9oqJFfY4e8IduMKDjM4CUWGpjeXliEUcqNruyY2Ezm7CIwrDeOll1pKueiaa3jk3go52dAx9LWN25e+zgbW1OoMA8UmAWc3IfHJr/D++XJ4GBy5H5CWOjGTGaCGutj4uVYrgo8st+eKQEDjpA9PKIC61Vvj7LY1jIa/D6j0m7rRlI0ST1Sqvp6mMFlzsxCimq0BFqcBNVvlZWo7rdt5tXTJl7Xfy/xRfr2nwjaEnm9X5iqwlhLHaYEij5N7UBl9ezRtlOSCD3IG+WFSVNyvDuuDLOTEIK+9o0QmhE9WvPOZ3Vrde70+/7TezQNUlNY=
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: mg59kztxoksezqyq11u6u3rczshh6odn
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: E21B4C000A
+X-Rspam-User: 
+X-HE-Tag: 1794421494-89527
+X-HE-Meta: U2FsdGVkX1/LJXd20LpNY1/fNGn4m1PVHKTts0vsvgjm6ez77Yz7MdV6sTp6jGSqgEU7UBgiXCJE/dizWAMJ7hy+BHzH2kHxQ6HYcd/7noCPxc4KbVe9A1pDL+SRe2QBYwkbmyH1zXKUvU2S6dSQdKTdxT/aMRjrHTOxCknjw2JDHajCMLow/HgN4D52r/zZQi/T0ebdvxHHzZZADcDv+7GoEO++iCyH7nSqQKhqMJSgSg7vfQOj1fwbmfBugnKWZOdcsrj07yuuiAP9As8N0elk2iMkSornpadNHA3QmJ4xBtTA3KMPWZT9RIHzV7w3TOti/DLzQhurwBB/KJMfl60wjrfJ4KjCvi6lRlCI9zliGFdd+LKwZ+rZ86tqFKsMqmlPkQlEXreDOZsh3+jBUj/nCkSkTGE7lsVmXpYACXsTqAeS2wI+2EkXg5ytxjoUgl2u11qWqGB6DBWOMf76bJp5n+Yj0s+QmyMEnqs7iEUR4e+Cwnq+BvAOxplPcRWwFspqagnXDHf2BhFpFJqYXow3th8qiVgT9AfhkiPPkoi4ySKu7YAIcyutbnUrdnTnVRNx7U26xQ5DpORRnauHIkdLD7l6sg/jRvSH8X/Vj+N4u5rRNbuE27mYoER1N6ssVMiJKvSDSlxV1YcsgzFDNtbbXMnrnFDIYv7nCNfAXdT8ilwmwdDldoQrNdmdO+oDCLoZOn6xjY/xxDJbCWcEkrtu7DU3lU/5LWW9uojthUmVehfyXx9DbG9qKNzRAOIvvU8hNwc3A14uoEjng8hGPwakUHl0dCQaWcuI+w7XluNuGlF94fKebMBBegwno12fMpzg/KeWYUcbpxlMCXi5pGCPsFknUplBO8LK3AAWvJogntBIQWfO5Tc+K+kPBvjx6uaAhpcCeVebieeJrfMEh3T7l1aX72QAFah7n/1GVZOsiKg+GFgDvp0jxm+YsUhDqHYXHubg8d6Tx1Nia+Z
+ Mw1bKeBY
+ IDk7KYesDkLdOCfme9aIvWpTROaU5UWyKNuv2tHn+aMrUpd6ZkoiMQ+yzM4kuFr9BpullLt1Lm88GEr3eL+fZJIagXfEad6YfKa8PAL/EW0gJJasI3tyhbLFWtMYIYwYdDDmxWpdfzcbGDhzzyf2JAKdTIGMb5E7JeC0zIM3wTl+fpLi2Ne+4UC7aWWwTZsL+BYZLyWMtrblY/6CZ2EKQ5eseYdjjKaUIFCdqNvhZJNC0J3zbMpiyBlMDiEu+PGY7Kt3JT2H61DXrXUwl0WWK8vqvLffaiuN+pkS5rnDUyle/80g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,40 +132,154 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 11, 2026 at 10:36:40AM +0100, David Hildenbrand wrote:
-> On 11/10/26 12:26, Yuanhe Shu wrote:
-> 
-> While the file touches highmem.h, this really isn't about highmem at all, right?
-> 
-> This really affects any architecture except the ones that define
-> copy_mc_to_kernel (x86+powerpc).
+A page cache folio that is not uptodate holds data that was never read
+in or cleared. shmem fallocate(2), for one, adds such folios and clears
+them only on first use. Mapping one hands userspace whatever the memory
+held before.
 
-I think is_page_hwpoison() is compiled out unless CONFIG_MEMORY_FAILURE
-is enabled. Only arm64, parisc, powerpc and x86 enable it with the
-latter two having proper mc support.
+Each path that maps page cache checks for this itself: fault-around in
+next_uptodate_folio(), a fault in filemap_fault() or shmem_get_folio().
+Nothing in the mapping code does, so a caller that misses the check
+leaks stale memory silently. MADV_COLLAPSE did exactly that with
+fallocated shmem THPs until recently.
 
-> > The !copy_mc fallbacks of copy_mc_user_highpage() and
-> > copy_mc_highpage() return 0 after a plain copy.  With PG_hwpoison
-> > set while the data stays readable, there is no fault to recover
-> > from: the copy completes, the destination folio carries no poison
-> > marker, and the poison is consumed silently.
-> > 
-> > Check the source page with is_page_hwpoison() in both fallbacks,
-> > before the copy, and return PAGE_SIZE, the not-copied-bytes
-> > convention of the real copy_mc paths, so the callers take their
-> > existing error paths.  On archs with copy_mc this code does not
-> > compile.
-> > 
-> > Measured on arm64, where the fallback code compiles: a
-> > kernel-space microbenchmark measures 90.00 ns per copy before the
-> > patch and 90.71 ns after, 0.8% of the copy itself.
-> 
-> CCing Catalin. I'm surprised that arm64 cannot recover from a copy from a
-> hwpoisoned page.
+Warn and refuse the mapping in __do_fault() and do_set_pmd().
 
-Yeah, it's been around for some time. Lack of review cycles on our side
-as well.
+__do_fault() checks the folio ->fault() returned while it is still
+locked. For CoW, that is the page cache folio that do_cow_fault()
+copies from. do_set_pmd() covers MADV_COLLAPSE, which maps without a
+fault.
 
+do_shared_fault() then unlocks the folio for ->page_mkwrite(). A
+filesystem that clears PG_uptodate on a folio in the page cache is
+buggy, so that window gets no check of its own.
+
+The fault gets SIGBUS, as for a folio that fails to read in.
+MADV_COLLAPSE fails and leaves the range to be faulted in.
+
+Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+---
+v3:
+ - Drop "mm/memory: recheck PG_uptodate after ->page_mkwrite()": a
+   filesystem that clears PG_uptodate on a cached folio is buggy (Matthew)
+ - Move file_folio_not_uptodate() into this patch, assert it never sees
+   an anon folio, reword its comment and drop likely() (Lorenzo)
+ - Rebase on mm/core.git for-next, which has the MADV_COLLAPSE fix
+
+v2: https://lore.kernel.org/all/20261109120403.82361-1-kas@kernel.org/
+v1: https://lore.kernel.org/all/20261106144323.3634477-1-kirill@shutemov.name/
+
+ mm/memory.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+
+diff --git a/mm/memory.c b/mm/memory.c
+index fcc7ea2a00d1..c79c1c6f6141 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5641,6 +5641,22 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
+ 	return VM_FAULT_OOM;
+ }
+ 
++/*
++ * A page cache folio that is not uptodate holds data that was never read in
++ * or cleared, and mapping it leaks stale memory to userspace.
++ */
++static bool file_folio_not_uptodate(struct folio *folio)
++{
++	VM_WARN_ON_ONCE_FOLIO(folio_test_anon(folio), folio);
++	if (folio_test_uptodate(folio))
++		return false;
++	/*
++	 * ->fault() can also return driver memory that is not in the page
++	 * cache. It never gets PG_uptodate.
++	 */
++	return folio->mapping;
++}
++
+ /*
+  * Either the VMA lock or the mmap_lock must have been held on entry
+  * (see FAULT_FLAG_VMA_LOCK) and may have been released depending on
+@@ -5700,6 +5716,13 @@ static vm_fault_t __do_fault(struct vm_fault *vmf)
+ 	else
+ 		VM_BUG_ON_PAGE(!folio_test_locked(folio), vmf->page);
+ 
++	if (WARN_ON_ONCE(file_folio_not_uptodate(folio))) {
++		folio_unlock(folio);
++		folio_put(folio);
++		vmf->page = NULL;
++		return VM_FAULT_SIGBUS;
++	}
++
+ 	return ret;
+ }
+ 
+@@ -5745,6 +5768,9 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
+ 		return ret;
+ 	page = &folio->page;
+ 
++	if (WARN_ON_ONCE(file_folio_not_uptodate(folio)))
++		return VM_FAULT_SIGBUS;
++
+ 	/*
+ 	 * Just backoff if any subpage of a THP is corrupted otherwise
+ 	 * the corrupted page may mapped by PMD silently to escape the
+
+Range-diff against v2:
+1:  632ab50e643d < -:  ------------ mm/memory: recheck PG_uptodate after ->page_mkwrite()
+2:  1e329f330c41 ! 1:  50ea9bc46c05 mm/memory: refuse to map page cache folios that are not uptodate
+    @@ Commit message
+         Warn and refuse the mapping in __do_fault() and do_set_pmd().
+     
+         __do_fault() checks the folio ->fault() returned while it is still
+    -    locked. do_shared_fault() unlocks it for ->page_mkwrite(), and a
+    -    writeback error can clear PG_uptodate after that; that case retries the
+    -    fault instead. For CoW, __do_fault() sees the page cache folio that
+    -    do_cow_fault() copies from. do_set_pmd() covers MADV_COLLAPSE, which
+    -    maps without a fault.
+    +    locked. For CoW, that is the page cache folio that do_cow_fault()
+    +    copies from. do_set_pmd() covers MADV_COLLAPSE, which maps without a
+    +    fault.
+    +
+    +    do_shared_fault() then unlocks the folio for ->page_mkwrite(). A
+    +    filesystem that clears PG_uptodate on a folio in the page cache is
+    +    buggy, so that window gets no check of its own.
+     
+         The fault gets SIGBUS, as for a folio that fails to read in.
+         MADV_COLLAPSE fails and leaves the range to be faulted in.
+    @@ Commit message
+         Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+     
+      ## mm/memory.c ##
+    +@@ mm/memory.c: static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
+    + 	return VM_FAULT_OOM;
+    + }
+    + 
+    ++/*
+    ++ * A page cache folio that is not uptodate holds data that was never read in
+    ++ * or cleared, and mapping it leaks stale memory to userspace.
+    ++ */
+    ++static bool file_folio_not_uptodate(struct folio *folio)
+    ++{
+    ++	VM_WARN_ON_ONCE_FOLIO(folio_test_anon(folio), folio);
+    ++	if (folio_test_uptodate(folio))
+    ++		return false;
+    ++	/*
+    ++	 * ->fault() can also return driver memory that is not in the page
+    ++	 * cache. It never gets PG_uptodate.
+    ++	 */
+    ++	return folio->mapping;
+    ++}
+    ++
+    + /*
+    +  * Either the VMA lock or the mmap_lock must have been held on entry
+    +  * (see FAULT_FLAG_VMA_LOCK) and may have been released depending on
+     @@ mm/memory.c: static vm_fault_t __do_fault(struct vm_fault *vmf)
+      	else
+      		VM_BUG_ON_PAGE(!folio_test_locked(folio), vmf->page);
+
+base-commit: 8d21e3d3faf19f461f6d0380fe8a1f5bdba97f25
 -- 
-Catalin
+2.54.0
+
 
