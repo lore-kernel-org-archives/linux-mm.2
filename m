@@ -1,103 +1,64 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05665606A89B
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 17:51:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=tootLfOq;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=hIqtQddj;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=tootLfOq;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=hIqtQddj
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78751606A8BE
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 17:51:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 217C16B05B5; Wed, 11 Nov 2026 12:51:29 -0500 (EST)
+	id 2FDD16B05B6; Wed, 11 Nov 2026 12:51:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EF9B6B05B6; Wed, 11 Nov 2026 12:51:29 -0500 (EST)
+	id 28BD36B05B9; Wed, 11 Nov 2026 12:51:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BA766B05B8; Wed, 11 Nov 2026 12:51:29 -0500 (EST)
+	id 12D176B05B7; Wed, 11 Nov 2026 12:51:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CDF4D6B05B5
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DBC886B05B6
 	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 12:51:28 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 68D7D1A03BF
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7106CA7D82
 	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:51:28 +0000 (UTC)
-X-FDA: 85423580256.02.A47C7B4
+X-FDA: 85423580256.03.2D9ED9A
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 608E01C0002
+	by imf30.hostedemail.com (Postfix) with ESMTP id 74ACD80007
 	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:51:26 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tootLfOq;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hIqtQddj;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tootLfOq;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hIqtQddj;
-	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Authentication-Results: imf30.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794419486;
+	b=a2OVeWWmjukf2x47ISwiQKorgJnCskH6wt4KVxf1M++ReJGQbybn7UX/MQ7t6ehZGw7E4B
+	2brYyHsLTEhjmBYiu3y0SxPavVPACQvMOlv0/MXQMorZ0+13wq6hp3gk3D4zHfZzXbCzpc
+	Zk5AAEfagxeqaz/98hz+qX4P56EYy0c=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1794419486;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=kNvahHNr+ZnzS6BVqxpaB44fT0M1MamccoIc3pC6eE4=;
-	b=6CPuJEjyKmgoWgcWrePFJqELWr3aelUswWH+XF00TUEW9xj0pMmDPOxEBz2uk4Al1mb5G2
-	Y5iVdfamqy+eGQqxwYyJ2VUKmtlPbzLiaNn0O5dVcxokV85px4NXfro1aRyEQl9nU0dBD6
-	mj5ymQ4HL/Zvj6CwYIdRn/jeJtIPvWU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794419486;
-	b=DckEewWkT52kSSIH+giGy5XdKvIMYxaYpSjOOiV1Zz5LLkmifS9qBbQvvVZoNiYavHJvuF
-	rotBYL0wUw34h7Ercmob5vWqINvd8pUQLS30EM7uyVqINKrzvilZIBxscHek6WFiCJ4vvp
-	17ojBetwTxfyeUzJqJ/sSRTRBSLTHbE=
+	 in-reply-to:in-reply-to:references:references;
+	bh=wL2QDiXgYZ0Yn6yfW/NEQwRS6ba4jqEjyh6K7k8Gtdc=;
+	b=BsKcnpDCGySIVRLRpk2uB3vo9alqwFVx9EI/9GFTUhbuPJv6Mshj0OTbYVJ2ZoJVxTyt68
+	iL8A7TlSZ0GZDRJrg6TPFsHUaAYNusKpK/uUAXJRkY4lH/aT87PY7n3yhJK/0KGM3E3V5p
+	nT4c2lXbOGK8YwDpDmMXs3nnOGHAHbI=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tootLfOq;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hIqtQddj;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tootLfOq;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hIqtQddj;
-	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	imf30.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 6D3581F45A;
-	Wed, 11 Nov 2026 17:51:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794419484; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=kNvahHNr+ZnzS6BVqxpaB44fT0M1MamccoIc3pC6eE4=;
-	b=tootLfOq6n+huT/L0wPFtVc9Cr37kH/3CByuKhioM9XtkQVUn2upi819BxHqSKE+/LluF1
-	qU0osjk6nzn+JsznB6gTAg8bFQqMfPf+Yzmn/F0JUX1SmvBUgJGG3x06/L4+WbYSmqTe2E
-	xrVTRbRxEpvMd/UhAJIADVa5QZTFJN8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794419484;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=kNvahHNr+ZnzS6BVqxpaB44fT0M1MamccoIc3pC6eE4=;
-	b=hIqtQddjhDYyd/etrvpeoXmab+twE6gMqWJKKg9qhdzq9i45GpZfcUAUbH0CY7trU5VAia
-	FtxH4wE8vKmocAAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794419484; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=kNvahHNr+ZnzS6BVqxpaB44fT0M1MamccoIc3pC6eE4=;
-	b=tootLfOq6n+huT/L0wPFtVc9Cr37kH/3CByuKhioM9XtkQVUn2upi819BxHqSKE+/LluF1
-	qU0osjk6nzn+JsznB6gTAg8bFQqMfPf+Yzmn/F0JUX1SmvBUgJGG3x06/L4+WbYSmqTe2E
-	xrVTRbRxEpvMd/UhAJIADVa5QZTFJN8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794419484;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=kNvahHNr+ZnzS6BVqxpaB44fT0M1MamccoIc3pC6eE4=;
-	b=hIqtQddjhDYyd/etrvpeoXmab+twE6gMqWJKKg9qhdzq9i45GpZfcUAUbH0CY7trU5VAia
-	FtxH4wE8vKmocAAw==
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 69D7F1F458;
+	Wed, 11 Nov 2026 17:51:25 +0000 (UTC)
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5B8261339F;
-	Wed, 11 Nov 2026 17:51:23 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 62A06134F4;
+	Wed, 11 Nov 2026 17:51:24 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id +SJmCxur9GphXQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 11 Nov 2026 17:51:23 +0000
+	id +SJmCxur9GphXQAAD6G6ig:T2
+	(envelope-from <pfalcato@suse.de>); Wed, 11 Nov 2026 17:51:24 +0000
 From: Pedro Falcato <pfalcato@suse.de>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -115,27 +76,36 @@ Cc: Pedro Falcato <pfalcato@suse.de>,
 	Kiryl Shutsemau <kas@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/8] mm/khugepaged: collapse_file() cleanups
-Date: Wed, 11 Nov 2026 17:51:13 +0000
-Message-ID: <20261111175121.1328383-1-pfalcato@suse.de>
+Subject: [PATCH v2 1/8] mm/khugepaged: separate out windy folio logic from collapse_file
+Date: Wed, 11 Nov 2026 17:51:14 +0000
+Message-ID: <20261111175121.1328383-2-pfalcato@suse.de>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261111175121.1328383-1-pfalcato@suse.de>
+References: <20261111175121.1328383-1-pfalcato@suse.de>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -11.80
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
 X-Spam-Level: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 608E01C0002
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+X-Spam-Score: -4.00
+X-Rspamd-Queue-Id: 74ACD80007
+X-Rspamd-Server: rspam12
+X-Stat-Signature: msohmk3d75mn48bcijy1hx1ehxk4sw6s
+X-Rspam-User:
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: jbpb5smuhd3un6czz4yqt6moji86egis
-X-Rspam-User: 
-X-HE-Tag: 1794419486-877909
-X-HE-Meta: U2FsdGVkX1+6sRMWLiMadxJ4vwYNmY5HREv22ZcXq0QEVZgajNQbj5dT0HZPBGEqzW463I47YvunLJNTDAhvTv7wdJTpcWkeARtx91EbWNPl9Eaj27332InFtqgFxkq8UcyHc1r3HZHFWOznkqqUFuERVOMOh9KcbPmNP0wNl/5BGOmwxKpdGK2vOPXp2Ir2/KyWNuGLDkhlPku/mLzM13r8ei/2SHG36CSw4wyox0Fk4zqjwuGCuiMNWUg5/swSgujjCJ6TL5Rd/0CUDoGPUtFuQ1eGdqUU0xl1nUoBTAPBE9w6MAbo2d0rMIJgnUJzh7Uc9NAfhQtu97Ci79jduc5PyB1qy2P1hkndbL9P8VM7Ix1i/WyG/MpCe96799WlqNslZPRl/8QsFuwZx7erAb2NPaDOtJwTpFf3l436vW2u7d2ZVoRj7jGKGzSrfBKSLObMU6W47ucByMjFsNNx/A2+xWyQDRDCXNB+h5iX9zJqNJAhXbYlddg4TpCvn/VPHrWdvAcgrBzN62YMae+bWz4TE9cB5aBKbrgmOVy/8ma4/9Vb5bYam5Lzv+vu6ncFj5FPNRxQ1RU9Dpj/dg78CZcKnSHL/fHjjwNDd/B9sZKqCL8Hmvvq4kiJi+MOlK/PeFyQxfLZGIAKx1kiWHF809khtRvt1PnqNVyUhcbCfCpuJXpZnxzZgYaH6cHTnVol+6ADmaapv1eydS/FKcoEDLPbOVbz5yYJyO/DhF69BFV1GXvZdfVh12KX1xzHwaskAUCafP/VwG2ohj5bCOXA77efNcS6vxarsrcnznnEhcypGnQHFRx84k1r70bXHJJ0z7OC8/uf2oPCx0IltkVyNnd2fRfd2Hc70WkyssIaIzbeDmSipJMOYsXkKnjR08QU9PSV8u1s4g3uk0qqUyfm/tGcPSxXHn2jn5lM/wl145VSzkmOFg2nF2mF59MN+iNySW7ykDMzoD5PLOqXwo8
- 3eC29qP0
- 0UuSVtEdHt41vJG8Hsg3a1WRRMaDkm8aTASg5T6xVBZz7II9q7nac+bvknWPA0i0RLLw3UCsukkGxEo1+Qo0270O7TgnLrITz7aE069dHClbqlhxkrfER2vK6uRhl5s4k8is9EwH1XFr1KvpoM+8zjf2Nno4rSl+7tRWC3G1LwjjqqRJSyY3Ehfz8V9qeK79v41FcSbLVYJ8NV8kz9+t1ba6kswU4yuiGErORu4M09xrQeqm0ZDNSjGR3MBkxM9x7/V01UYVtQ1E3+3GLI1ccT3L2jPgMsfg/m8nWOxQKtMVfZKeTvQdWbkrM7hpbuDGfSpl/XuEU0pBCCL/u1shQrFtKJYlRx88427yWDkVZ9z9HcileQRvI4YBMU2fohU9Qsg7cGSGMNxqxwyQwAWBSnmuXGxcy/WDw/hsZO6TfNsv68G0gDcJzQgl1/A3qRAW92iPALOHujW8aQ58NLcnheY4erkeF63x3W09QNKCRMhnlrKZvrdCLPJHGXwvYdAyifZfXHTEL5LoDNHtqNjXB0Dd6OQ==
+X-HE-Tag: 1794419486-450896
+X-HE-Meta: U2FsdGVkX1+6ZXaGJ5AAnIZZ3nqXb4f/8KRawjw6bwf8PudBW28+r8dfEsHoaMDHaBnvvPC0H3VqY9mOtC5ore/Fy478w4CXGcC16JOlunIehGRfsXT5kQOxe+liH3abg9QjPMpvR4ZsgXTYRhdb9P1U46vFAl0WZso3q36vPJRamm0iAm81juZahgq7aFVFhIakO3wpPOEE/kfOjqrC6cS5rwIZRw0HkBXK2n70Zgt6lTttmCpGyW7KC8yeLtdsxnNwM+egQb6+x2hj9VPkseNF35+GOptvSYBzptz4CFqK5N2a3QQoxlq0lmcK2vAZRwgfYzRltIvWQlY8EcbO7mG8uSlhkBn2xVOGFzSIldHZ5smp2w4cralF87H5YmPqmo9JtbmWXPmeGuKXlYtJLUNbsnAJeE3ZoxBYm1suf+OPdhqKj0QZRC4918MbsDlUxVDWQV0zVAcACaoq7H5DZrzWoV3hxL0gmWAD8SxM8/MdPsc0TU3ZK3X8OgZdWp2m6fyxU72PiQRiBxLJjweF+hIQ1Jl0WDxpB8OILHGL22/U7LwxyVPgAkiL9PcHnx/XRYI2Q1agFf8667BNeoeFcs0YtKn7Y1yjRqLfuHiXNdZV3uatreTGfHfLGGMufaLh7EX9ljjpN10O6HwiQEPeioDh76ArY9odbZRLEEC5Opg/6aRAU2C/wwCkWMjK9JCzeoX2FZyRRbCxZrMbndz6Hu35+twl3FsJFAFcFp1ClqdGz56kRjP6zBRPkC6NCQyd7RsSLn0s/Xi5DeyBR+XX7lvz89Cd2AQ+eKLwAIPm5aefjBMWNIU9SUhR88BsPE8PuZJx+tCOjlMIvQbtaN/aoVuiwiVq39Yfml++aZJZPV5UAR6Oovt4LufugCySvjEZvnzUzB5RX2wYExe6KbutL52Xr7USz8QBajLoTZUfrvrfPVjgf/qM0SGLBBt9tzKYw8HuDFjtQXSWFlHJtKX
+ SOayVvad
+ Cs+4JAom5pMTl5ttMacOYCvugDlLq6Y2+Wjc3iurVFISYShYamMYKud8ziK+4VwT3DGTNnrBsl4K1qd3i7vo1iuZ+h4wTMj5c0jKXbi017UBF1dXiDy70GwZIWaRMxfmgkb1+TctrovgFdMk/O6XzkcNR+zj32lZpf30nuDtmqWq9i2dH0gRDzt5HF9BGr7P+aoxtH8IumLCMmpvNa64P2O7L+HjkL+pO9WFZ+Ko71vNX+nI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,85 +114,269 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Here are a bunch of cleanups for collapse_file() that attempt to aid
-code readability and understanding. This is part 1 out of N, and only
-attempts to address the main collapse loop. The exit path is still a
-mess but I figure it's much easier to review if I send this batch as-is,
-versus sending the whole thing.
+Separate out complex folio-related logic from the main collapse_file()
+loop, and introduce a new helper struct to help marshal arguments back
+and forth.
 
-Tested using the khugepaged shmem and file selftests.
+No functional change intended.
 
-Based on top of latest mm-core/for-next.
+Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+---
+ mm/khugepaged.c | 202 ++++++++++++++++++++++++++++++------------------
+ 1 file changed, 128 insertions(+), 74 deletions(-)
 
-Note that some review comments from v1 went unaddressed
-(Nico's larger restructuring, some small Lorenzo suggestions) for a couple
-of small reasons. The main one being that I want to get this v2 out before
-going insane :)) I agreed to work with Nico, and I'll either send out some
-of his patches as a followup, or he will.
-
-In any case, I'm tired of this function and I hope this kicks off some
-discussion :)
-
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: "Liam R. Howlett" <liam@infradead.org>
-Cc: Nico Pache <nico.pache@linux.dev>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Usama Arif <usama.arif@linux.dev>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-
-Changes in v2:
-- Rebased on current mm-core/for-next, which contains a number of fixes to
-  the amazingly simple and awesome collapse_file() function.
-- Fix the "bad unlock balance" reported by syzbot ci (syzbot ci, Lorenzo)
-- 1/8:
-  - Fold in v1 5/8 (kerneldoc); new helpers get their kerneldoc in
-    the patch that introduces them. (Lorenzo)
-  - Group the input fields of collapse_file_state and make end and
-    is_shmem const; is_shmem is now a bool. (Lorenzo)
-  - Wrap the prepare_collapse_file_folio() declaration to fit in 80
-    columns. (Lorenzo)
-  - Keep the original LRU drain behaviour (drain only after a
-    successful shmem_get_folio()) (Lorenzo)
-- 2/8: New patch. Turn value entries into NULL before calling
-  prepare_collapse_file_folio().
-- 3/8 (v1 2/8):
-  - Rename collapse_read_folio() to maybe_read_folio(). (Lorenzo)
-  - Replace the compound condition with an early-return guard.
-    (Lorenzo)
-  - Comment on why the xa_lock is dropped. (Lorenzo)
-  - Expand the commit message. (Lorenzo)
-- 5/8 (v1 4/8): Drop a duplicate blank line.
-- 6/8: Add a commit message, noting that errors before try_to_unmap()
-  no longer call try_to_unmap_flush() themselves.
-- 7/8: Explain in the commit message why the refcount and dirty checks
-  don't need the i_pages lock. The flush added by 854e5ff8b3ce now
-  happens at out_putback.
-- 8/8: Retitle (drop "fix"), since 854e5ff8b3ce already reworded the
-  comment; drop a stray blank line.
-
-  Link to v1: https://lore.kernel.org/all/20260720142913.846902-1-pfalcato@suse.de/
-
-Pedro Falcato (8):
-  mm/khugepaged: separate out windy folio logic from collapse_file
-  mm/khugepaged: sanitize the folio passed to file folio collapse logic
-  mm/khugepaged: factor out page cache folio reading
-  mm/khugepaged: factor out and simplify dirty/writeback handling
-  mm/khugepaged: simplify prepare folio locking and exit paths
-  mm/khugepaged: hoist isolation into collapse_isolate_folio()
-  mm/khugepaged: hoist more code into collapse_isolate_folio()
-  mm/khugepaged: flesh out try_to_unmap_flush() comment
-
- mm/khugepaged.c | 461 ++++++++++++++++++++++++++++++------------------
- 1 file changed, 286 insertions(+), 175 deletions(-)
-
-
-base-commit: 8d21e3d3faf19f461f6d0380fe8a1f5bdba97f25
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 24eb8281ea3c..0fe19acf470b 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2211,6 +2211,105 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
+ 	i_mmap_unlock_read(mapping);
+ }
+ 
++struct collapse_file_state {
++	/* Inputs */
++	struct address_space *mapping;
++	struct file *file;
++	struct xa_state *xas;
++	/* folio is in-out; preparing might modify it */
++	struct folio *folio;
++	/* collapse end index */
++	const pgoff_t end;
++	const bool is_shmem : 1;
++	bool do_readahead : 1;
++	bool readahead_done : 1;
++};
++
++/**
++ * prepare_collapse_file_folio() - Prepare the collapsing of a single file folio
++ * @index: folio index in the page cache
++ * @state: helper struct of state being passed back and forth.
++ *
++ * prepare_collapse_file_folio() helps prepare the THP collapsing of file folios
++ * (both shmem and !shmem), including the reading of folios, initial tests for
++ * dirty/writeback, locking, etc.
++ *
++ * Context: Expects @state->mapping->i_pages.xa_lock to be held. Releases the same xa_lock.
++ *          On success, returns a refcounted and locked folio in @state->folio (that may
++ *          not be the same that was passed in).
++ *          If readahead needs to be (and can be) done, sets state->do_readahead.
++ * Return: Appropriate scan_result value (on success, SCAN_SUCCEED).
++ */
++static enum scan_result
++prepare_collapse_file_folio(pgoff_t index, struct collapse_file_state *state)
++{
++	struct address_space *mapping = state->mapping;
++	enum scan_result result = SCAN_SUCCEED;
++	const bool is_shmem = state->is_shmem;
++	struct folio *folio = state->folio;
++
++	if (is_shmem) {
++		if (xa_is_value(folio) || !folio_test_uptodate(folio)) {
++			xas_unlock_irq(state->xas);
++			/* swap in or instantiate fallocated page */
++			if (shmem_get_folio(mapping->host, index, 0,
++					&folio, SGP_NOALLOC)) {
++				result = SCAN_FAIL;
++				goto xa_unlocked;
++			}
++			/* drain lru cache to help folio_isolate_lru() */
++			lru_add_drain();
++			goto xa_unlocked;
++		} else if (folio_trylock(folio)) {
++			folio_get(folio);
++		} else {
++			result = SCAN_PAGE_LOCK;
++			goto xa_locked;
++		}
++	} else {	/* !is_shmem */
++		if (!folio || xa_is_value(folio)) {
++			state->do_readahead = !state->readahead_done;
++			result = SCAN_FAIL;
++			goto xa_unlocked;
++		} else if (folio_test_dirty(folio)) {
++			/*
++			 * This page is dirty because it hasn't
++			 * been flushed since first write.
++			 *
++			 * Trigger async flush for read-only files and
++			 * hope the writeback is done when khugepaged
++			 * revisits this page. Writable files can have
++			 * their folios dirty at any time; blindly
++			 * flushing them would cause undesirable
++			 * system-wide writeback.
++			 *
++			 * This is a one-off situation. We are not
++			 * forcing writeback in loop.
++			 */
++			xas_unlock_irq(state->xas);
++			if (!inode_is_open_for_write(mapping->host))
++				filemap_flush(mapping);
++			result = SCAN_PAGE_DIRTY_OR_WRITEBACK;
++			goto xa_unlocked;
++		} else if (folio_test_writeback(folio)) {
++			xas_unlock_irq(state->xas);
++			result = SCAN_PAGE_DIRTY_OR_WRITEBACK;
++			goto xa_unlocked;
++		} else if (folio_trylock(folio)) {
++			folio_get(folio);
++		} else {
++			result = SCAN_PAGE_LOCK;
++			goto xa_locked;
++		}
++	}
++
++xa_locked:
++	xas_unlock_irq(state->xas);
++xa_unlocked:
++	state->folio = folio;
++	return result;
++}
++
+ /**
+  * collapse_file - collapse filemap/tmpfs/shmem pages into huge one.
+  *
+@@ -2249,8 +2348,13 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 	XA_STATE_ORDER(xas, &mapping->i_pages, start, HPAGE_PMD_ORDER);
+ 	enum scan_result result = SCAN_SUCCEED;
+ 	int nr_none = 0;
+-	bool do_readahead = false;
+-	bool readahead_done = false;
++	struct collapse_file_state state = {
++		.is_shmem = is_shmem,
++		.xas = &xas,
++		.mapping = mapping,
++		.file = file,
++		.end = end,
++	};
+ 
+ 	/*
+ 	 * MADV_COLLAPSE ignores shmem huge config, so do not check shmem
+@@ -2270,7 +2374,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 
+ retry:
+ 	result = SCAN_SUCCEED;
+-	do_readahead = false;
++	state.do_readahead = false;
+ 	xas_set_order(&xas, start, HPAGE_PMD_ORDER);
+ 	__folio_set_locked(new_folio);
+ 	if (is_shmem)
+@@ -2299,79 +2403,29 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 		folio = xas_load(&xas);
+ 
+ 		VM_BUG_ON(index != xas.xa_index);
+-		if (is_shmem) {
+-			if (!folio) {
+-				/*
+-				 * Stop if extent has been truncated or
+-				 * hole-punched, and is now completely
+-				 * empty.
+-				 */
+-				if (index == start) {
+-					if (!xas_next_entry(&xas, end - 1)) {
+-						result = SCAN_TRUNCATED;
+-						goto xa_locked;
+-					}
+-				}
+-				nr_none++;
+-				index++;
+-				continue;
+-			}
+-
+-			if (xa_is_value(folio) || !folio_test_uptodate(folio)) {
+-				xas_unlock_irq(&xas);
+-				/* swap in or instantiate fallocated page */
+-				if (shmem_get_folio(mapping->host, index, 0,
+-						&folio, SGP_NOALLOC)) {
+-					result = SCAN_FAIL;
+-					goto xa_unlocked;
++		if (is_shmem && !folio) {
++			/*
++			 * Stop if extent has been truncated or
++			 * hole-punched, and is now completely
++			 * empty.
++			 */
++			if (index == start) {
++				if (!xas_next_entry(&xas, end - 1)) {
++					result = SCAN_TRUNCATED;
++					goto xa_locked;
+ 				}
+-				/* drain lru cache to help folio_isolate_lru() */
+-				lru_add_drain();
+-			} else if (folio_trylock(folio)) {
+-				folio_get(folio);
+-				xas_unlock_irq(&xas);
+-			} else {
+-				result = SCAN_PAGE_LOCK;
+-				goto xa_locked;
+-			}
+-		} else {	/* !is_shmem */
+-			if (!folio || xa_is_value(folio)) {
+-				do_readahead = !readahead_done;
+-				result = SCAN_FAIL;
+-				goto xa_locked;
+-			} else if (folio_test_dirty(folio)) {
+-				/*
+-				 * This page is dirty because it hasn't
+-				 * been flushed since first write.
+-				 *
+-				 * Trigger async flush for read-only files and
+-				 * hope the writeback is done when khugepaged
+-				 * revisits this page. Writable files can have
+-				 * their folios dirty at any time; blindly
+-				 * flushing them would cause undesirable
+-				 * system-wide writeback.
+-				 *
+-				 * This is a one-off situation. We are not
+-				 * forcing writeback in loop.
+-				 */
+-				xas_unlock_irq(&xas);
+-				if (!inode_is_open_for_write(mapping->host))
+-					filemap_flush(mapping);
+-				result = SCAN_PAGE_DIRTY_OR_WRITEBACK;
+-				goto xa_unlocked;
+-			} else if (folio_test_writeback(folio)) {
+-				xas_unlock_irq(&xas);
+-				result = SCAN_PAGE_DIRTY_OR_WRITEBACK;
+-				goto xa_unlocked;
+-			} else if (folio_trylock(folio)) {
+-				folio_get(folio);
+-				xas_unlock_irq(&xas);
+-			} else {
+-				result = SCAN_PAGE_LOCK;
+-				goto xa_locked;
+ 			}
++			nr_none++;
++			index++;
++			continue;
+ 		}
+ 
++		/* At this point folio can be NULL, or a value. */
++		state.folio = folio;
++		result = prepare_collapse_file_folio(index, &state);
++		folio = state.folio;
++		if (result != SCAN_SUCCEED)
++			goto xa_unlocked;
+ 		/*
+ 		 * The folio must be locked, so we can drop the i_pages lock
+ 		 * without racing with truncate.
+@@ -2667,7 +2721,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 	folio_unlock(new_folio);
+ 
+ 	/* Readahead may take invalidate_lock; source folios are unlocked. */
+-	if (do_readahead) {
++	if (state.do_readahead) {
+ 		for (index = start; index < end;) {
+ 			folio = filemap_lock_folio(mapping, index);
+ 			if (IS_ERR(folio)) {
+@@ -2685,7 +2739,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 		}
+ 		/* Drain the local LRU batch before retrying isolation. */
+ 		lru_add_drain();
+-		readahead_done = true;
++		state.readahead_done = true;
+ 		goto retry;
+ 	}
+ out_put:
 -- 
 2.56.0
 
