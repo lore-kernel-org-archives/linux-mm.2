@@ -1,82 +1,82 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19766606A326
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 23:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFDB606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 23:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=hYLYssA0
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=gzug4Vpd
 Received: by kanga.kvack.org (Postfix)
-	id 1388E6B05B3; Wed, 11 Nov 2026 18:12:25 -0500 (EST)
+	id ACFDF6B05BD; Wed, 11 Nov 2026 18:12:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E17B6B05B8; Wed, 11 Nov 2026 18:12:25 -0500 (EST)
+	id A7FD16B05BF; Wed, 11 Nov 2026 18:12:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEBD96B05BD; Wed, 11 Nov 2026 18:12:24 -0500 (EST)
+	id 971B16B05C1; Wed, 11 Nov 2026 18:12:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B60946B05B3
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:12:24 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1E93AC02C8
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:12:24 +0000 (UTC)
-X-FDA: 85424389008.13.9B74418
-Received: from pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.162.73.231])
-	by imf17.hostedemail.com (Postfix) with ESMTP id AFFA54000A
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:12:21 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=hYLYssA0;
-	spf=pass (imf17.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 35.162.73.231 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794438742;
-	b=tz6NIl/RIme3Rm42SJrAOWKqiIiwyPQko/oJKotkj+YGfRhdh1+yJ2pM3kSCU5TloyGOp6
-	WYpWDHUld/nxgBHtqveaOCOwbV+bR+6WnJrTsufRTYWidqiJy/CJuUGYhDhTgLJRRPAkVJ
-	ULAF+sNzleA/Vs2nc6B35c+A4/Of6Fk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=hYLYssA0;
-	spf=pass (imf17.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 35.162.73.231 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 67E336B05BD
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:12:58 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 036111603A1
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:12:57 +0000 (UTC)
+X-FDA: 85424390436.16.176E975
+Received: from pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.155.198.111])
+	by imf31.hostedemail.com (Postfix) with ESMTP id BA07A20008
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:12:55 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=gzug4Vpd;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf31.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 35.155.198.111 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794438742;
+	s=arc-20220608; t=1794438776;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VNIEPDuhqStN4HF4N7LcMFdEdY9vqc1YFIz5yG1MSFs=;
-	b=vb+HDCjDI6p+CTD1gdxNZL6QHyVQdzl7l9LFNxt3aMII+HKKlFRZjD/WP7k+4YL8pQ0FS8
-	Lm5WwPitqXk6jvGtkm4yyOu8xIaZPo7ZXQCQfovzPOFiGxnkGcMkXFN8lOyxeR3uNzrfA7
-	Db76I2S7a/qG9/U5ZAKIhVIUR3ViFmo=
+	bh=vEMZMK0Re/UwHhA8b3WXi0Dtpsb6OJa9eiUgk7u+9gk=;
+	b=N2QzCUP7PO5tSV26XZxxjXtwlXgWhZwJAsgcpzyMz1Wc+dheFnh1vmealEQRQtjS09BUUS
+	87PkWL/+fHZFIqWmixRVAaHE2U07uzETSFByp3YsT83Z5CSyxAD4LWu2Pvt9hbDgOKaX3Y
+	eDlqtrNphyv7vkvrmHtXmKc5Kn+wijA=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=gzug4Vpd;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf31.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 35.155.198.111 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de"
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794438776;
+	b=3qdJUUJwJfv5PivsHbTFIqAfOYEQV0kcp4K62FCimJjozMdrjk0rv3/MxHEg0AV9Q33zQY
+	c509UVk5N4BwoQ2q33GBHlufs6N16hh9OutGCGb75DZN9tUsRjCQDnD5u7RPkSwHxqdoIs
+	qvg+xrcJ5kpDtl1PN8PcrTnDRNx9DZ8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1794438741; x=1825974741;
+  t=1794438775; x=1825974775;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=VNIEPDuhqStN4HF4N7LcMFdEdY9vqc1YFIz5yG1MSFs=;
-  b=hYLYssA00lJ7VXEDBBXMOozTSQWtF0xb9Iz9B78cI0z0a6pohnmdGJOK
-   cu05lr8Voz5H8V1MosdzgsJyEmNjx0Fgr1dI1NuHgyKYJyxzJuOm/8UqP
-   EuMXrNx6oj+SPtlBDm5u3dqsXD5RPCbn7Hs1ttkxZug6A/I4ZKQd524V2
-   QxShIVhuBWjxAsN1QnRJVdA7LfDnlaGFRazBKWspZa3D/qVuGiHQiByS0
-   egzGik7N9c4TeIrB/NgpRsRtNWAJYZwU5eHOYCzgoFfyXXRlPYYnWMkXN
-   /FaJu36rtU0XTM6GDCjp+0DHTEow28N1g5/what646NWbpokUgfam+rbU
-   A==;
-X-CSE-ConnectionGUID: kvBWXK+hTsOPZuf+0vvGNw==
-X-CSE-MsgGUID: 5eZIbGlDTzm7wjOwWzmaKw==
+  bh=vEMZMK0Re/UwHhA8b3WXi0Dtpsb6OJa9eiUgk7u+9gk=;
+  b=gzug4VpdBUx3mkFpDXZUXF08DXg/aoP0rt06vGvWxb/TziZjGM1ixseI
+   LMTThM/qYY00AX8fG67DTG2UV5c8dgOIz1kV25pErSpO54taLdaSQ81Cw
+   IO420JmUfnr2OGFI+2TR6Dhom3yBj9NgsflSZR2w02g0L5qD5iQarCn/d
+   XetJqLX7VkkPI7H5qyRIg+Nx4stWtMztQU72b/D6jIL7KbnNwh/g8YQC/
+   tMxS2MTDv4wwE0yWfzYhMElHz+Qz1vV0Ie/NER28XY5EdIyJhPcWXGd3Y
+   Ae6uudEvdy4x6vtVv7ZtjoIB6WXBoFiBLLo7O2dinrtHB38MUbFA8WMkv
+   Q==;
+X-CSE-ConnectionGUID: mKnDkw2bQhejxBLto6192Q==
+X-CSE-MsgGUID: pR8KfXqTQBC12qvOfUASNw==
 X-IronPort-AV: E=Sophos;i="6.27,208,1787011200"; 
-   d="scan'208";a="33573918"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 23:12:20 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.182:17378]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.12.127:2525] with esmtp (Farcaster)
- id 1e72a3cb-0649-4a32-9a1c-1b640a0756a6; Wed, 11 Nov 2026 23:12:20 +0000 (UTC)
-X-Farcaster-Flow-ID: 1e72a3cb-0649-4a32-9a1c-1b640a0756a6
+   d="scan'208";a="33663815"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 23:12:54 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:25483]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.46.128:2525] with esmtp (Farcaster)
+ id 4a9643e4-42b7-4517-8fba-e39f75437681; Wed, 11 Nov 2026 23:12:54 +0000 (UTC)
+X-Farcaster-Flow-ID: 4a9643e4-42b7-4517-8fba-e39f75437681
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Wed, 11 Nov 2026 23:12:19 +0000
+ Wed, 11 Nov 2026 23:12:53 +0000
 Received: from ip-10-253-83-51.amazon.com (172.19.99.218) by
  EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Wed, 11 Nov 2026 23:12:16 +0000
+ Wed, 11 Nov 2026 23:12:51 +0000
 From: Alexander Graf <graf@amazon.com>
 To: <linux-kernel@vger.kernel.org>, Greg Kroah-Hartman
 	<gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>
@@ -88,9 +88,9 @@ CC: The AWS Nitro Enclaves Team <aws-nitro-enclaves-devel@amazon.com>, "Shuah
 	<david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
 	<nh-open-source@amazon.com>, <linux-mm@kvack.org>, Jonathan Corbet
 	<corbet@lwn.net>
-Subject: [PATCH 37/40] nitro_enclaves: Add NE_ENCLAVE_CPU_OVERCOMMIT_MODE
-Date: Wed, 11 Nov 2026 22:59:41 +0000
-Message-ID: <58469275b84367e8a49ae9975df231abc26234ea.1794393491.git.graf@amazon.com>
+Subject: [PATCH 38/40] nitro_enclaves: Add NE_GET_CAPS
+Date: Wed, 11 Nov 2026 22:59:42 +0000
+Message-ID: <7908d660c8c691565ec53f5de0007c60a70dd80c.1794393491.git.graf@amazon.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <cover.1794300002.git.graf@amazon.com>
 References: <cover.1794300002.git.graf@amazon.com>
@@ -98,21 +98,21 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D031UWA001.ant.amazon.com (10.13.139.88) To
+X-ClientProxiedBy: EX19D031UWC002.ant.amazon.com (10.13.139.212) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
-X-Stat-Signature: rdtmdkpf8ds36jem4r8zyenidm3jq7pf
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: AFFA54000A
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BA07A20008
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794438741-736200
-X-HE-Meta: U2FsdGVkX1/MRtKqevhoslfzT0t6YCrRFKFHLnneUWhG80CSJJAY5MQtZwoMK6lD4Dj4PyCQH4iB0R1GLA9rQ+PJHpMx6gXj5USc54kUV+l4b8c2CWUrOekl/ZaGqSF8I0qFAmdnEOjxD+ER2cS/dATegr7y/pJXDm2pvQeCQSgxzMRet6XPztpUyPfPHstHFdr9tfrLmvb1xAarxbyNwmPAaVHBayOb7QNeD3tc+pc9kiokE5fLfMhr8XVektJLWYOwQmgRueZps2LJa3zKEgMF/o3udVw2hE6aafruioe5hSm9W+7Cb3Why4bpZJXm/uYYjlcaSHnPxUgaqU+YPuzotvklT9SZ3YS21+XDf7AfXHWYhS/wsERtUaZEjGdB9cGO587ZZgGecHOF/38CtHPWzCyoAvWcnFW3l8UpGFTROcLrYs+D1mmFfWpDdt2xfrY4FvEv1yoChwXqvd61UEAx0gBWPtiADmNZIr6MpKh44K+Lf9zCTh74lo7eR/IaEz5I9bqh3rJYFeOvL9nXB1Cs+TzLnUVDC3RCZQ1EvEfUHYPbC0lDvyMJ5fgiv1+cuyRm0HPgN8V1Ry14T4mGILR/A+Hatv2fUHKvx4p1dH7qp5w4ocJ0OTohmi2mYEnHcbCXg7wTD3KQAeSO0r0uanBlGWGw4bZ7vbvJmTjdLz+BUV37DvbI9etIGVyu9McBGanvETEwWSQSr17nYsEta9+OaS1teAn71w2tEi+ffCDy3sBzuh1y2jFukEOdj82UYsivZjKXU1BRexqJjZZ1VF9v+RPkclweHl9+LaemBMK8UBicX9u4x8Sa/dFpkq6DZkRPH9L+lPtCHuwvalX1pybg8ugm4w119BzggVEi+gjetQP+MlT4APuuU3Kn75Mc1V59IT8xqVcv/B37z+HJFhtLmsmRzA6P5b/0JnNjMJAl98x/GcY8gkpMqO8p5ivAhy+pu5Xvat+B/nGCwNT
- EkMVgYo7
- K30wf2g9pMKWfe25jPw2fqfMD0EvpYpT6Xg27pvctQbmMIhToP2idWL+niVkF71bSMi+s3C9gYd+1rhwjluLO+Yn8zC6+mMpFyxYCLglGhEW7gKnsk/K7jPqH93SCr9awgzory5RA/T93O7BAu2mFWq5J5jYhe1y7CJfypCQ8I4KZAC8wIao5d4NRgEAB0SwgUaaXua2VMFmtLE29VaJBGmezJRQgjjfsJ7bXqMvpnMR3r7kwDVJTA4xe5X9X3Idhhe3JzsOL8847X+EoUTgHo+9lfytFeu4MTPBqT4SzgTBrasbDWdzUcg2CS6Uh7O8Zw0oHu0ix2D5yo92WIV0VpubyaS3WoUfWnLJdDmXjUZddvROxMFoOzZ4h5Mg/9HR1jfQDeeK3L6HIX1PArfcglpQYSDufISYIQBCjlIoiuApOeZ1ZzTv65ckO1dWfknK/CCoNhUooWg2RPeIDDnB64OBsbyX2YblW7NXchne9ibczFrZGZL9alwaGELwr+vzil123Zcprcp2015dg5J9xgDTZRsi9Krxyn4ufY3dK5n4bE54Hr/qe2wgWq4zLAkhCLmuD0gzziJXGhoYdRemhSw3letUiC8L4q+i0znOcLt9gEiUiEXopVc6pk8FaWCifo8Q7Jt+SjI8+ysm5/x81Z+oLdEHDstrwSzaPr/fYZdKauUcblK9gk14Ru2cEmVwkeXFgde4PZ7jlDPk=
+X-Stat-Signature: nd1bquo1efsqkpsfs53scz9sfbjsqd54
+X-HE-Tag: 1794438775-206836
+X-HE-Meta: U2FsdGVkX18qodKD2WYNsXqcc0taGrDHCL8VD0HR+PsSNLq7ED5O5Tbdi4mlVmg+nSXvkL2hD0uvucHn+zW8jh45Ivjne4lNxk5aUsCC1UW+hFQiMJTEymJTKU/gqcisROQMX6/nMOMCT4dmpOozwvbPpt2ECLt9jlqufsU/SK2yQ+Eu+DpEhbVxD5+0dEWpVf0YV4N0H+giZuVXGuzCmpvtvlLWMErXfC0ENKwA9KHjxMGZG+K6NxCi6Um3P2lLBrP7O5ZPf+q76X+TCNTAx3e76MQXawUZyIAOqilewSMvntQvbWKSG6Gtepu5KfekRFqSeEalQXOquQzZ87X7Toh4xAamhKlJLE+VxCmL3H6d8nEdUN3zbSiotiLcjOo80mG8Q8FM5HNKazTkgwc+4ls9nbD2QNnZj4DQ1pKogBfbdRYmInDFFfoCR3SIluF9MRn4L8CHmPF77oteBnS/DyaCzM8F+qt9PycdLa/N+oReKHL7CaBVdMH8dss1HKfHjKRTXpFyoHmLC0zlYXJkN6T8VZiII8ql+N/I67N0ZkT7IQ/ANtbJvBg3kYbmVzUFIRSp5Wlz7+9IS0P8nvRsZwvAjjBM8yG5OJ+B0ZByfbRQCw/5dFORnZmSUpiZZinhB7WGUM/1LN6XT0DnE6LhskYjYuA/fTdsd1yX60iJJhRgwUxZMU9dyLg7lsY+nfFXLYr8H11qScMb38WfsWGe1SRekCsnT9v/TU8Ijv1QaExF4eeI4p2hXAWqPOKR28S8PuI0K4EG1QVeWEDmFfc3IZrkNb6nxeaWAHqHbRGhB+LuQBEUsy3jevrXcH2AbLK5uMb+zZknof+IPke/CxTvnFCTS1o4UsTdx9tk9OXFHz0ytkEIbV3HdI6u7P958dRorxC1Gq3eckQ1PlnfukQIMJy16w48kYRokLnAVO6L9vEwbPf4QtJwOo6wCUgzxFwzQtse4xa/LGQXgtWB1yD
+ eqq1Bp9/
+ /EIMh1/khwPMvOGwDBBMfVOEIhaLPf5UP1HxDeVtJDdAt4eo1I4vsfDhL1WgSk3sDDaKlsjxlQqgtp+HrrkYVghefY7EUaufadtdKz+cnj81V6wKHISzmux+897dhAS2+sV6QbxYyZjAL/yENzAO5T/Etf3zzSUMzPXUgNpNKfugbnpNwsjhdEf3Z3hzOrnHra4iZ5a6IY/GL6cjTZj8yH8j/VF76O3OcW6a55S2YwdP7vsK83rsMFsR2T5KQartf6X+DwB0j9Z72s2iRNPGYed/ivHRzuNHcpKQsTRp6orzOpCM+oR/FhpdlvzXOajJnq0wn7D2vA9tnrQ0xfMiVUHdDEpkSgYPd22qfKBd3qYojQDpxAKxFa7gXEj5WQxlX3azZRudVVdb0dnv1nNRSZMSIFPLUypUpyEPU9kJFa7jRM1i7HbSK86QO1ju+FfT14iBlGcBns0QbDvFKTe8nofDgYbv3j9mLOq6xx5nSg67poDflmPlrcdmLs1aPOwTAoXPGAKQkyrLwYuFHJI6Hqf6IDM9siOHyAHQptu1gmMH1T/o2soNwUOgYg3MDDRuBfwo0H4cfVPvqGfPW6skPdutFsfftnuwPPBrWzGTdoIeS6krzqIopXMut56EuWarhvJ7+/YmqMc7FXnFz6IjPZUQTap9zMXbzkDTjU1KSe+0nYmmqaVDhJ5VK8sPqPWFyBsrAbjWfWkSWgas=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,498 +121,351 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Nitro Sandboxes relax the dedicated-vCPU requirement and allow a sandbox
-to opt-in to CPU overcommitment. When active, the hypervisor performs
-vCPU scheduling of sandbox vCPUs (vCores really) on top of the parent's
-vCPUs.
+User space that launches Nitro Sandboxes needs to know which of the new
+calls and launch flags the kernel and the host implement, how many
+devices a slot takes, the size of the info page, the queue limit per
+device and the configuration space NE_ADD_DEVICE takes, before it
+allocates or fills them.
 
-Add the NE_ENCLAVE_CPU_OVERCOMMIT_MODE flag and relax the dedicated CPU
-validation and pooling logic when the mode is active.
+Add the NE_GET_CAPS ioctl on the /dev/nitro_enclaves fd. struct ne_caps
+reports those sizes, the NE_CAP_* bits of the optional calls this kernel
+implements, NE_ABI_VERSION, and how many bytes the kernel filled in.
+
+supported_matched_flags reports the matched launch flags this kernel
+passes on, and hypervisor_matched_flags those the device reports.
 
 Signed-off-by: Alexander Graf <graf@amazon.com>
 ---
- Documentation/virt/ne_overview.rst        |  15 +-
- drivers/virt/nitro_enclaves/ne_misc_dev.c | 249 ++++++++++++++++++++--
- drivers/virt/nitro_enclaves/ne_misc_dev.h |   1 +
- include/uapi/linux/nitro_enclaves.h       |  45 +++-
- 4 files changed, 283 insertions(+), 27 deletions(-)
+ drivers/virt/nitro_enclaves/ne_misc_dev.c |  73 +++++++++++++
+ drivers/virt/nitro_enclaves/ne_pci_dev.c  |  33 ++++++
+ drivers/virt/nitro_enclaves/ne_pci_dev.h  |  22 ++++
+ include/uapi/linux/nitro_enclaves.h       | 124 +++++++++++++++++++++-
+ 4 files changed, 251 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/virt/ne_overview.rst b/Documentation/virt/ne_overview.rst
-index 5984fd32ec07a..3aa33d3f06cf2 100644
---- a/Documentation/virt/ne_overview.rst
-+++ b/Documentation/virt/ne_overview.rst
-@@ -113,10 +113,23 @@ each node in turn, and sets numa_node to NE_NUMA_ANY when it does not
- care. Both start from a free thread of a core the enclave already holds,
- and only take a new core once there is none.
- 
-+A slot allocated with NE_ENCLAVE_CPU_OVERCOMMIT_MODE has its vCPUs
-+scheduled by the host alongside the parent's own and takes no core out of
-+the pool, so the pool is not consulted for it. Both NE_ADD_VCPU and
-+NE_ADD_ANY_VCPU choose an id the enclave does not hold yet, and the host
-+schedules the vCPU alongside the parent CPU that id names, so the node
-+NE_ADD_ANY_VCPU takes still places it, and a node with no free id left
-+fails the request. Both prefer a free id whose SMT sibling the enclave
-+already holds, so its vCPUs share cores as they do with a pool, and
-+otherwise take the lowest free id. A parent that never set a pool up runs
-+such an enclave.
-+
- The node says where cores come from. NE_ALLOC_MEMORY takes its own node;
- see `Memory pool`_. An enclave built out of a pool that spans
- nodes has no node of its own, so the rule that its memory be on that node
--does not apply to it and its memory can come from any node.
-+does not apply to it and its memory can come from any node. A slot
-+allocated with NE_ENCLAVE_CPU_OVERCOMMIT_MODE holds no core at all, so it
-+has no node of its own either.
- 
- The pool occupancy is readable under
- /sys/devices/virtual/misc/nitro_enclaves/cpu_pool/, and per node under
 diff --git a/drivers/virt/nitro_enclaves/ne_misc_dev.c b/drivers/virt/nitro_enclaves/ne_misc_dev.c
-index 870b3a6368cf9..e79740eac6f29 100644
+index e79740eac6f29..abbba71bbef06 100644
 --- a/drivers/virt/nitro_enclaves/ne_misc_dev.c
 +++ b/drivers/virt/nitro_enclaves/ne_misc_dev.c
-@@ -267,6 +267,12 @@ static const struct kernel_param *ne_cpus_kp;
-  *				ne_setup_cpu_pool() offlines them, because
-  *				cpu_to_node() is not documented to answer for an
-  *				offline CPU.
-+ * @core_cpus:			The threads of each core slot, indexed the same
-+ *				way as @avail_threads_per_core. Unlike that
-+ *				array it does not change while the pool is set
-+ *				up, so it names the SMT siblings of a pool CPU
-+ *				while the CPU is offline and
-+ *				topology_sibling_cpumask() no longer names them.
-  * @node_cpus:			The threads of the pool on each NUMA node, indexed
-  *				by node id and sized by nr_node_ids. It partitions
-  *				@total_cpus: a thread sits in the entry of the node
-@@ -292,6 +298,7 @@ struct ne_cpu_pool {
- 	unsigned int	nr_parent_vm_cores;
- 	int		numa_node;
- 	int		*core_nid;
-+	cpumask_var_t	*core_cpus;
- 	cpumask_var_t	*node_cpus;
- 	struct cpumask	total_cpus;
- 	struct cpumask	used_cpus;
-@@ -656,6 +663,14 @@ static void ne_free_core_slots(void)
- 	kfree(ne_cpu_pool.core_nid);
- 	ne_cpu_pool.core_nid = NULL;
+@@ -154,6 +154,19 @@ static_assert(sizeof(struct ne_enclave_start_info) == 16);
+ static_assert(offsetof(struct ne_enclave_start_info, flags) == 0);
+ static_assert(offsetof(struct ne_enclave_start_info, enclave_cid) == 8);
  
-+	if (ne_cpu_pool.core_cpus) {
-+		for (i = 0; i < ne_cpu_pool.nr_parent_vm_cores; i++)
-+			free_cpumask_var(ne_cpu_pool.core_cpus[i]);
++static_assert(sizeof(struct ne_caps) == 64);
++static_assert(offsetof(struct ne_caps, struct_size) == 0);
++static_assert(offsetof(struct ne_caps, abi_version) == 4);
++static_assert(offsetof(struct ne_caps, caps) == 8);
++static_assert(offsetof(struct ne_caps, supported_matched_flags) == 16);
++static_assert(offsetof(struct ne_caps, max_devices) == 24);
++static_assert(offsetof(struct ne_caps, max_vqs_per_device) == 28);
++static_assert(offsetof(struct ne_caps, max_config_size) == 32);
++static_assert(offsetof(struct ne_caps, reserved) == 36);
++static_assert(offsetof(struct ne_caps, info_page_size) == 40);
++static_assert(offsetof(struct ne_caps, info_page_align) == 48);
++static_assert(offsetof(struct ne_caps, hypervisor_matched_flags) == 56);
 +
-+		kfree(ne_cpu_pool.core_cpus);
-+		ne_cpu_pool.core_cpus = NULL;
+ /**
+  * NE_EIF_LOAD_OFFSET - The offset where to copy the Enclave Image Format (EIF)
+  *			image in enclave memory.
+@@ -3817,6 +3830,66 @@ static long ne_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 
+ 	/* Extensible Argument ioctls */
+ 	switch (NE_EA_IOCTL(cmd)) {
++	case NE_EA_IOCTL(NE_GET_CAPS): {
++		struct ne_caps caps = {};
++		struct ne_caps __user *uargs = (void __user *)arg;
++		struct ne_pci_dev *ne_pci_dev;
++		unsigned int usize = _IOC_SIZE(cmd);
++		size_t wsize;
++		u32 asize;
++		int rc;
++
++		if (usize < offsetofend(struct ne_caps, supported_matched_flags))
++			return -EINVAL;
++
++		if (get_user(asize, &uargs->struct_size))
++			return -EFAULT;
++
++		if (asize < offsetofend(struct ne_caps, supported_matched_flags))
++			return -EINVAL;
++
++		wsize = min3((size_t)asize, (size_t)usize, sizeof(caps));
++
++		caps.struct_size = wsize;
++		caps.abi_version = NE_ABI_VERSION;
++		caps.caps = NE_CAP_CREATE_VM2 | NE_CAP_DEVICES;
++		caps.supported_matched_flags = NE_ENCLAVE_FLAG_VALID_MASK &
++					       NE_ENCLAVE_FLAG_MATCHED_MASK;
++		caps.max_vqs_per_device = NE_MAX_VQS;
++		caps.max_config_size = sizeof_field(struct ne_add_device_args,
++						    device_config);
++		caps.info_page_size = NE_INFO_PAGE_SIZE;
++		caps.info_page_align = NE_INFO_PAGE_ALIGN;
++
++		/*
++		 * Hold ne_devs.lock over the register reads alone, so that a
++		 * fault on the argument does not hold up an unbind of the
++		 * device.
++		 */
++		rc = down_read_killable(&ne_devs.lock);
++		if (rc)
++			return rc;
++
++		ne_pci_dev = ne_devs.ne_pci_dev;
++		if (ne_pci_dev) {
++			u32 matched_flags;
++			u16 max_devices;
++
++			ne_read_device_caps(ne_pci_dev, &matched_flags,
++					    &max_devices);
++
++			caps.max_devices = max_devices;
++			caps.hypervisor_matched_flags = matched_flags;
++		}
++
++		up_read(&ne_devs.lock);
++
++		if (copy_to_user(uargs, &caps, wsize))
++			return -EFAULT;
++
++		return 0;
 +	}
 +
- 	if (ne_cpu_pool.node_cpus) {
- 		for (nid = 0; nid < nr_node_ids; nid++)
- 			free_cpumask_var(ne_cpu_pool.node_cpus[nid]);
-@@ -719,6 +734,10 @@ static int ne_build_core_slots(const struct cpumask *cpu_pool)
- 	if (!ne_cpu_pool.core_nid)
- 		goto free_slots;
- 
-+	ne_cpu_pool.core_cpus = kzalloc_objs(*ne_cpu_pool.core_cpus, nr_cores);
-+	if (!ne_cpu_pool.core_cpus)
-+		goto free_slots;
-+
- 	ne_cpu_pool.node_cpus = kzalloc_objs(*ne_cpu_pool.node_cpus, nr_node_ids);
- 	if (!ne_cpu_pool.node_cpus)
- 		goto free_slots;
-@@ -728,7 +747,8 @@ static int ne_build_core_slots(const struct cpumask *cpu_pool)
- 			goto free_slots;
- 
- 	for (i = 0; i < nr_cores; i++)
--		if (!zalloc_cpumask_var(&ne_cpu_pool.avail_threads_per_core[i], GFP_KERNEL))
-+		if (!zalloc_cpumask_var(&ne_cpu_pool.avail_threads_per_core[i], GFP_KERNEL) ||
-+		    !zalloc_cpumask_var(&ne_cpu_pool.core_cpus[i], GFP_KERNEL))
- 			goto free_slots;
- 
- 	cpumask_clear(processed);
-@@ -746,6 +766,9 @@ static int ne_build_core_slots(const struct cpumask *cpu_pool)
- 			cpumask_set_cpu(cpu_sibling, processed);
- 		}
- 
-+		cpumask_copy(ne_cpu_pool.core_cpus[next_core_idx],
-+			     ne_cpu_pool.avail_threads_per_core[next_core_idx]);
-+
- 		core_nid = cpu_to_node(cpu);
- 
- 		ne_cpu_pool.core_nid[next_core_idx] = core_nid;
-@@ -1166,6 +1189,118 @@ static bool ne_donated_cpu(struct ne_enclave *ne_enclave, unsigned int cpu)
- 	return false;
+ 	case NE_EA_IOCTL(NE_CREATE_VM2): {
+ 		struct ne_create_vm_args args;
+ 		struct ne_create_vm_args __user *uargs = (void __user *)arg;
+diff --git a/drivers/virt/nitro_enclaves/ne_pci_dev.c b/drivers/virt/nitro_enclaves/ne_pci_dev.c
+index b5a7ecfffb4b6..591c43590a845 100644
+--- a/drivers/virt/nitro_enclaves/ne_pci_dev.c
++++ b/drivers/virt/nitro_enclaves/ne_pci_dev.c
+@@ -1101,6 +1101,39 @@ static void ne_slot_pool_read_geometry(struct pci_dev *pdev)
+ 	ne_pci_dev->slot_pool_gran = size;
  }
  
 +/**
-+ * ne_cpu_pool_core() - Find the core slot of a CPU in the NE CPU pool.
-+ * @cpu:	CPU to look up.
++ * ne_read_device_caps() - Read what the device reports about itself.
++ * @ne_pci_dev:	PCI device state to read the registers of.
++ * @matched_flags:	Where the launch flags the device reports go.
++ * @max_devices:	Where the number of devices it reports goes.
 + *
-+ * Context: Process context. This function is called with the ne_cpu_pool mutex
-+ *	    held.
-+ * Return:
-+ * * Index of the core slot that holds @cpu.
-+ * * -1 if @cpu is not in the pool.
++ * The registers are part of the block a vendor-specific capability publishes,
++ * so a device without one is not read at all and both values come back zero.
++ * A device that has the block and reports zero in one of them names no value
++ * for it, which is also what a device predating that register reads as. A
++ * caller cannot tell those apart, so a zero is not an answer it can refuse a
++ * launch on.
++ *
++ * The registers are read on every call. A hypervisor update changes
++ * which flags the host implements and how many devices it lets one enclave
++ * have, so a caller asking after one gets what the host implements now.
++ *
++ * Context: Process context.
 + */
-+static int ne_cpu_pool_core(unsigned int cpu)
++void ne_read_device_caps(struct ne_pci_dev *ne_pci_dev, u32 *matched_flags,
++			 u16 *max_devices)
 +{
-+	unsigned int i = 0;
++	*matched_flags = 0;
++	*max_devices = 0;
 +
-+	if (!cpumask_test_cpu(cpu, &ne_cpu_pool.total_cpus))
-+		return -1;
++	if (!ne_pci_dev->has_vendor_cap)
++		return;
 +
-+	for (i = 0; i < ne_cpu_pool.nr_parent_vm_cores; i++)
-+		if (cpumask_test_cpu(cpu, ne_cpu_pool.core_cpus[i]))
-+			return i;
-+
-+	return -1;
-+}
-+
-+/**
-+ * ne_get_floating_vcpu_id() - Choose a vCPU id for a slot whose vCPUs the host
-+ *				schedules.
-+ * @ne_enclave :	Private data associated with the current enclave.
-+ * @vcpu_id:		The chosen vCPU id, set on success.
-+ * @lowest_id:		The lowest id the caller allows to be chosen.
-+ * @nid:		The NUMA node the vCPU should land on, or NUMA_NO_NODE
-+ *			for no preference.
-+ *
-+ * The host schedules such a vCPU wherever it schedules the parent's own
-+ * threads, so no core is taken and there is no pool to take one out of. It
-+ * reads the id as the parent CPU to schedule the vCPU alongside, so
-+ * cpu_to_node() on the id says which node the vCPU lands on, and only a free
-+ * id on @nid is chosen. A node with no free id fails instead of yielding an
-+ * id on another node. Without NE_ENCLAVE_PCIE_NUMA_MODE the hypervisor
-+ * refuses a slot whose vCPUs straddle nodes, and the caller would only learn
-+ * that when it starts the enclave.
-+ *
-+ * A free id whose SMT sibling already holds one of the enclave's vCPUs comes
-+ * first, so the vCPUs fill whole cores the way they do for a slot that takes
-+ * its cores from the pool. Otherwise the lowest free id is chosen. The siblings
-+ * and the node of a CPU in the NE CPU pool come from what the pool recorded
-+ * while the CPU was online, because the pool may have taken it offline since.
-+ * An id that is not a possible CPU names no host CPU and is only chosen when
-+ * @nid is NUMA_NO_NODE.
-+ *
-+ * @lowest_id is 1 where the caller hands the id back in the same word it
-+ * read the request from, since zero is the request there.
-+ *
-+ * Context: Process context. This function is called with the ne_enclave mutex held.
-+ * Return:
-+ * * 0 on success.
-+ * * Negative return value on failure.
-+ */
-+static int ne_get_floating_vcpu_id(struct ne_enclave *ne_enclave, u32 *vcpu_id,
-+				   unsigned int lowest_id, int nid)
-+{
-+	const struct cpumask *siblings;
-+	unsigned int first = nr_cpu_ids;
-+	unsigned int cpu;
-+	int core;
-+
-+	mutex_lock(&ne_cpu_pool.mutex);
-+
-+	for (cpu = lowest_id; cpu < nr_cpu_ids; cpu++) {
-+		if (cpumask_test_cpu(cpu, ne_enclave->vcpu_ids))
-+			continue;
-+
-+		if (!cpu_possible(cpu)) {
-+			if (nid != NUMA_NO_NODE)
-+				continue;
-+
-+			if (first == nr_cpu_ids)
-+				first = cpu;
-+
-+			continue;
-+		}
-+
-+		core = ne_cpu_pool_core(cpu);
-+		if (core >= 0)
-+			siblings = ne_cpu_pool.core_cpus[core];
-+		else
-+			siblings = topology_sibling_cpumask(cpu);
-+
-+		if (nid != NUMA_NO_NODE &&
-+		    (core >= 0 ? ne_cpu_pool.core_nid[core] : cpu_to_node(cpu)) != nid)
-+			continue;
-+
-+		if (first == nr_cpu_ids)
-+			first = cpu;
-+
-+		if (cpumask_intersects(ne_enclave->vcpu_ids, siblings))
-+			break;
-+	}
-+
-+	mutex_unlock(&ne_cpu_pool.mutex);
-+
-+	if (cpu >= nr_cpu_ids)
-+		cpu = first;
-+
-+	if (cpu >= nr_cpu_ids)
-+		return -NE_ERR_INVALID_VCPU;
-+
-+	*vcpu_id = cpu;
-+
-+	return 0;
++	*matched_flags = ioread32(ne_pci_dev->iomem_base + NE_MATCHED_FLAGS) &
++			 NE_ENCLAVE_FLAG_MATCHED_MASK;
++	*max_devices = ioread16(ne_pci_dev->iomem_base + NE_MAX_DEVICES);
 +}
 +
  /**
-  * ne_get_unused_core_from_cpu_pool() - Get the id of a full core from the
-  *					NE CPU pool.
-@@ -2578,7 +2713,37 @@ static long ne_enclave_do_ioctl(struct file *file, unsigned int cmd, unsigned lo
- 			return -NE_ERR_INVALID_VCPU;
- 		}
+  * ne_slot_pool_alloc_run() - Allocate one run for the slot pool.
+  * @nr_pages:	Number of pages in the run.
+diff --git a/drivers/virt/nitro_enclaves/ne_pci_dev.h b/drivers/virt/nitro_enclaves/ne_pci_dev.h
+index 5a92e0c565ba0..44491e451082a 100644
+--- a/drivers/virt/nitro_enclaves/ne_pci_dev.h
++++ b/drivers/virt/nitro_enclaves/ne_pci_dev.h
+@@ -175,6 +175,24 @@
+  */
+ #define NE_SLOT_POOL_BASE_SIZE	(0x0208)
  
--		if (!vcpu_id) {
-+		if (ne_enclave->launch_flags & NE_ENCLAVE_CPU_OVERCOMMIT_MODE) {
-+			/*
-+			 * The pool hands out the parent VM cores a slot runs
-+			 * its vCPUs on, and a slot the host schedules the vCPUs
-+			 * of takes none, so the pool is not consulted for it.
-+			 * An id of zero asks this kernel to choose, as it does
-+			 * for any other slot; an enclave still cannot be given
-+			 * the same id twice.
-+			 */
-+			if (!vcpu_id) {
-+				rc = ne_get_floating_vcpu_id(ne_enclave, &vcpu_id,
-+							     1, NUMA_NO_NODE);
-+				if (rc < 0) {
-+					dev_err_ratelimited(ne_misc_dev.this_device,
-+							    "Error in choosing a vCPU id [rc=%d]\n",
-+							    rc);
++/**
++ * DOC: Device capability registers in the NE PCI device MMIO BAR
++ */
 +
-+					mutex_unlock(&ne_enclave->enclave_info_mutex);
++/**
++ * NE_MATCHED_FLAGS - (4 bytes) Register reporting which of the launch flags in
++ *		      NE_ENCLAVE_FLAG_MATCHED_MASK the device implements, zero
++ *		      on a device that reports none (Read-Only).
++ */
++#define NE_MATCHED_FLAGS	(0x01fc)
 +
-+					return rc;
-+				}
-+			} else if (ne_donated_cpu(ne_enclave, vcpu_id)) {
-+				dev_err_ratelimited(ne_misc_dev.this_device,
-+						    "CPU %d already used\n",
-+						    vcpu_id);
++/**
++ * NE_MAX_DEVICES - (2 bytes) Register reporting how many devices the device
++ *		    lets one enclave have, zero on a device that reports no
++ *		    number (Read-Only).
++ */
++#define NE_MAX_DEVICES		(0x020e)
 +
-+				mutex_unlock(&ne_enclave->enclave_info_mutex);
+ /**
+  * DOC: MSI-X interrupt vectors
+  */
+@@ -835,6 +853,10 @@ int ne_do_request(struct pci_dev *pdev, enum ne_pci_dev_cmd_type cmd_type,
+  */
+ void ne_mux_binding_free_rcu(struct ne_mux_binding *binding);
+ 
++/* Read what the device reports about itself, zero where it reports nothing. */
++void ne_read_device_caps(struct ne_pci_dev *ne_pci_dev, u32 *matched_flags,
++			 u16 *max_devices);
 +
-+				return -NE_ERR_VCPU_ALREADY_USED;
-+			}
-+		} else if (!vcpu_id) {
- 			/* Use the CPU pool for choosing a CPU for the enclave. */
- 			rc = ne_get_cpu_from_cpu_pool(ne_enclave, &vcpu_id,
- 						      NUMA_NO_NODE);
-@@ -2823,15 +2988,38 @@ static long ne_enclave_do_ioctl(struct file *file, unsigned int cmd, unsigned lo
- 			return -NE_ERR_NOT_IN_INIT_STATE;
- 		}
+ /* Nitro Enclaves (NE) PCI device driver */
+ extern struct pci_driver ne_pci_driver;
  
--		rc = ne_get_cpu_from_cpu_pool(ne_enclave, &vcpu_id, args.numa_node);
--		if (rc < 0) {
--			dev_err_ratelimited(ne_misc_dev.this_device,
--					    "Error in get CPU from pool [rc=%d node=%d]\n",
--					    rc, args.numa_node);
-+		if (ne_enclave->launch_flags & NE_ENCLAVE_CPU_OVERCOMMIT_MODE) {
-+			/*
-+			 * The host schedules the vCPUs of such a slot wherever
-+			 * it schedules the parent's own threads, so the slot
-+			 * takes no core out of the pool and the pool is not
-+			 * consulted for it. It reads the id as the parent CPU
-+			 * to schedule the vCPU alongside, so @numa_node still
-+			 * says which node the vCPU lands on and the id is
-+			 * chosen to match it.
-+			 */
-+			rc = ne_get_floating_vcpu_id(ne_enclave, &vcpu_id, 0,
-+						     args.numa_node);
-+			if (rc < 0) {
-+				dev_err_ratelimited(ne_misc_dev.this_device,
-+						    "Error in choosing a vCPU id [rc=%d]\n",
-+						    rc);
- 
--			mutex_unlock(&ne_enclave->enclave_info_mutex);
-+				mutex_unlock(&ne_enclave->enclave_info_mutex);
- 
--			return rc;
-+				return rc;
-+			}
-+		} else {
-+			rc = ne_get_cpu_from_cpu_pool(ne_enclave, &vcpu_id, args.numa_node);
-+			if (rc < 0) {
-+				dev_err_ratelimited(ne_misc_dev.this_device,
-+						    "Error in get CPU from pool [rc=%d node=%d]\n",
-+						    rc, args.numa_node);
-+
-+				mutex_unlock(&ne_enclave->enclave_info_mutex);
-+
-+				return rc;
-+			}
- 		}
- 
- 		rc = ne_add_vcpu_ioctl(ne_enclave, vcpu_id);
-@@ -3433,22 +3621,31 @@ static int ne_create_vm_ioctl(struct ne_pci_dev *ne_pci_dev, u64 flags,
- 		slot_alloc_req.flags = flags;
- 	}
- 
--	mutex_lock(&ne_cpu_pool.mutex);
-+	/*
-+	 * The pool hands out the cores a slot runs its vCPUs on, and it has
-+	 * none left once every core in it has had its threads taken, which is
-+	 * also where a parent that never set one up starts. A slot the host
-+	 * schedules the vCPUs of takes no core out of the pool, so what the
-+	 * pool has left says nothing about it.
-+	 */
-+	if (!(flags & NE_ENCLAVE_CPU_OVERCOMMIT_MODE)) {
-+		mutex_lock(&ne_cpu_pool.mutex);
- 
--	for (i = 0; i < ne_cpu_pool.nr_parent_vm_cores; i++)
--		if (!cpumask_empty(ne_cpu_pool.avail_threads_per_core[i]))
--			break;
-+		for (i = 0; i < ne_cpu_pool.nr_parent_vm_cores; i++)
-+			if (!cpumask_empty(ne_cpu_pool.avail_threads_per_core[i]))
-+				break;
- 
--	if (i == ne_cpu_pool.nr_parent_vm_cores) {
--		dev_err_ratelimited(ne_misc_dev.this_device,
--				    "No CPUs available in CPU pool\n");
-+		if (i == ne_cpu_pool.nr_parent_vm_cores) {
-+			dev_err_ratelimited(ne_misc_dev.this_device,
-+					    "No CPUs available in CPU pool\n");
- 
--		mutex_unlock(&ne_cpu_pool.mutex);
-+			mutex_unlock(&ne_cpu_pool.mutex);
- 
--		return -NE_ERR_NO_CPUS_AVAIL_IN_POOL;
--	}
-+			return -NE_ERR_NO_CPUS_AVAIL_IN_POOL;
-+		}
- 
--	mutex_unlock(&ne_cpu_pool.mutex);
-+		mutex_unlock(&ne_cpu_pool.mutex);
-+	}
- 
- 	ne_enclave = kzalloc_obj(*ne_enclave);
- 	if (!ne_enclave)
-@@ -3459,7 +3656,17 @@ static int ne_create_vm_ioctl(struct ne_pci_dev *ne_pci_dev, u64 flags,
- 	mutex_lock(&ne_cpu_pool.mutex);
- 
- 	ne_enclave->nr_parent_vm_cores = ne_cpu_pool.nr_parent_vm_cores;
--	ne_enclave->numa_node = ne_cpu_pool.numa_node;
-+
-+	/*
-+	 * The node an enclave takes its memory from is the node its cores
-+	 * are on. A slot the host schedules the vCPUs of holds no core, so
-+	 * it has no node of its own and its memory can come from any of
-+	 * them.
-+	 */
-+	if (flags & NE_ENCLAVE_CPU_OVERCOMMIT_MODE)
-+		ne_enclave->numa_node = NUMA_NO_NODE;
-+	else
-+		ne_enclave->numa_node = ne_cpu_pool.numa_node;
- 
- 	mutex_unlock(&ne_cpu_pool.mutex);
- 
-diff --git a/drivers/virt/nitro_enclaves/ne_misc_dev.h b/drivers/virt/nitro_enclaves/ne_misc_dev.h
-index ed1b29997e1bb..f18b57a225325 100644
---- a/drivers/virt/nitro_enclaves/ne_misc_dev.h
-+++ b/drivers/virt/nitro_enclaves/ne_misc_dev.h
-@@ -27,6 +27,7 @@
- 					 NE_ENCLAVE_PCIE_VSOCK_MODE | \
- 					 NE_ENCLAVE_PCIE_VIRTIO_MODE | \
- 					 NE_ENCLAVE_PCIE_HOTPLUG_MODE | \
-+					 NE_ENCLAVE_CPU_OVERCOMMIT_MODE | \
- 					 NE_ENCLAVE_PCIE_NUMA_MODE)
- 
- struct cma;
 diff --git a/include/uapi/linux/nitro_enclaves.h b/include/uapi/linux/nitro_enclaves.h
-index f204d0f6e7efd..bfe1ca5ef7f7f 100644
+index bfe1ca5ef7f7f..f8eeacd2e7062 100644
 --- a/include/uapi/linux/nitro_enclaves.h
 +++ b/include/uapi/linux/nitro_enclaves.h
-@@ -96,6 +96,21 @@
+@@ -129,7 +129,9 @@
+ /**
+  * NE_ENCLAVE_FLAG_MATCHED_MASK - The launch flags the hypervisor enumerates.
+  *				  It answers for them before a slot is
+- *				  allocated with them.
++ *				  allocated with them, and
++ *				  &ne_caps.supported_matched_flags reports the
++ *				  ones this kernel passes on.
   */
- #define NE_ENCLAVE_PCIE_HOTPLUG_MODE	(1u << 8)
+ #define NE_ENCLAVE_FLAG_MATCHED_MASK	(0xffc0u)
+ 
+@@ -185,6 +187,114 @@ struct ne_create_vm_args {
+  */
+ #define NE_CREATE_VM2			_IOWR(0xAE, 0x30, struct ne_create_vm_args)
  
 +/**
-+ * NE_ENCLAVE_CPU_OVERCOMMIT_MODE - Allocate a slot whose vCPUs the host
-+ *				    schedules alongside the parent's own,
-+ *				    instead of running them on cores taken out
-+ *				    of the NE CPU pool. The pool is not consulted
-+ *				    for such a slot: %NE_ADD_VCPU and
-+ *				    %NE_ADD_ANY_VCPU both choose an id the enclave
-+ *				    does not hold yet, and the host schedules the
-+ *				    vCPU alongside the parent CPU that id names.
-+ *				    Requires
-+ *				    NE_ENCLAVE_PCIE_MODE and
-+ *				    NE_ENCLAVE_PCIE_VIRTIO_MODE.
++ * NE_ABI_VERSION - Revision of this interface the kernel implements, reported
++ *		    in &ne_caps.abi_version. It counts additions to the
++ *		    interface as a whole. Some additions carry a %NE_CAP_* bit,
++ *		    and a caller after one of those reads its bit. An addition
++ *		    with no bit is probed by issuing the call, which a kernel
++ *		    that does not implement it turns down with ENOTTY.
 + */
-+#define NE_ENCLAVE_CPU_OVERCOMMIT_MODE	(1u << 11)
++#define NE_ABI_VERSION			(1)
++
++/**
++ * NE_CAP_CREATE_VM2 - This kernel implements %NE_CREATE_VM2.
++ */
++#define NE_CAP_CREATE_VM2		(1ULL << 0)
++
++/**
++ * NE_CAP_DEVICES - This kernel implements %NE_SET_INFO_PAGE,
++ *			 %NE_ADD_DEVICE, %NE_SET_NOTIFY_EVENTFD and
++ *			 %NE_SET_VRING_CALL.
++ */
++#define NE_CAP_DEVICES			(1ULL << 1)
++
++/**
++ * struct ne_caps - What this kernel implements, and what the device it reaches
++ *		    reports about itself (in / out).
++ * @struct_size:	Bytes of this structure the caller has (in), and the bytes
++ *			the kernel filled in (out). A caller that finds a shorter
++ *			value than it asked for has the fields past that point
++ *			unwritten, which is a different answer from a zero.
++ * @abi_version:	%NE_ABI_VERSION this kernel implements (out).
++ * @caps:		%NE_CAP_* bits (out). A set bit says this kernel
++ *			implements the calls that bit's own documentation
++ *			lists, and not that the device the caller reaches will
++ *			serve them, which is what that device's answer to the
++ *			call says. Support for a launch flag outside
++ *			%NE_ENCLAVE_FLAG_MATCHED_MASK is reported here or, in
++ *			the end, by what %NE_CREATE_VM2 does with it.
++ * @supported_matched_flags: The launch flags inside
++ *			%NE_ENCLAVE_FLAG_MATCHED_MASK this kernel passes to the
++ *			hypervisor (out). A set bit says the bit is accepted on
++ *			its own, not that every combination is. Bits outside that
++ *			mask read zero here whatever the hypervisor does with
++ *			them, so a caller masks its request before comparing.
++ * @max_devices:	Devices one enclave may have, as the hypervisor reports
++ *			the number (out). It answers a request past it itself,
++ *			so this is what a caller plans against rather than what
++ *			it is held to. Zero names no number, which is what a
++ *			device reporting no number, a device publishing no
++ *			vendor capability, a device predating the register and
++ *			no device bound at all leave here, so a zero bounds no
++ *			request and %NE_ADD_DEVICE is what answers.
++ * @max_vqs_per_device:	Largest @num_vqs %NE_ADD_DEVICE takes (out).
++ * @max_config_size:	Largest @config_size %NE_ADD_DEVICE takes (out).
++ * @reserved:		Zero (out).
++ * @info_page_size:	Size the %NE_SET_INFO_PAGE allocation has to have (out).
++ * @info_page_align:	Alignment it has to have (out).
++ * @hypervisor_matched_flags: The launch flags inside
++ *			%NE_ENCLAVE_FLAG_MATCHED_MASK the hypervisor reports it
++ *			implements (out). @supported_matched_flags is what this
++ *			kernel passes on and is the same on every host; this is
++ *			what the host behind the device answers for. A caller
++ *			requires a flag in @supported_matched_flags always, and
++ *			in this field as well when this field is non-zero.
++ *			Zero names no flag, which is what a device reporting
++ *			no flag, a device publishing no vendor capability, a
++ *			device predating the register and no device bound at
++ *			all leave here, so a zero refuses no flag and
++ *			%NE_CREATE_VM2 is what says so.
++ */
++struct ne_caps {
++	__u32	struct_size;
++	__u32	abi_version;
++	__u64	caps;
++	__u64	supported_matched_flags;
++	__u32	max_devices;
++	__u32	max_vqs_per_device;
++	__u32	max_config_size;
++	__u32	reserved;
++	__u64	info_page_size;
++	__u64	info_page_align;
++	__u64	hypervisor_matched_flags;
++};
++
++/**
++ * NE_GET_CAPS - The command is used to read what this kernel implements and
++ *		 what the device it reaches reports about itself, so that a
++ *		 caller sizes its allocations and reads which launch flags will
++ *		 be passed on and answered for. The ioctl can be invoked on the
++ *		 /dev/nitro_enclaves fd at any time, including before an
++ *		 enclave exists.
++ *
++ *		 The argument carries its own length in @struct_size, and the
++ *		 kernel writes back how many bytes it filled, so a caller built
++ *		 against a header this kernel predates can tell a field this
++ *		 kernel never wrote from one it wrote a zero into.
++ *
++ * Context: Process context.
++ * Return:
++ * * 0					- Logic successfully completed.
++ * * -1					- There was a failure in the ioctl logic.
++ * On failure, errno is set to:
++ * * EFAULT				- Argument read or write failure.
++ * * EINVAL				- The argument stops before
++ *					  @supported_matched_flags, or @struct_size
++ *					  names a length that stops before it.
++ */
++#define NE_GET_CAPS			_IOWR(0xAE, 0x29, struct ne_caps)
 +
  /**
-  * NE_ENCLAVE_PCIE_NUMA_MODE - Allocate a slot whose memory and vCPUs may come
-  *			       from more than one host NUMA node. Without it the
-@@ -162,7 +177,9 @@ struct ne_create_vm_args {
-  * * ENOMEM				- Memory allocation failure for internal
-  *					  bookkeeping variables.
-  * * NE_ERR_NO_CPUS_AVAIL_IN_POOL	- No NE CPU pool set / no CPUs available
-- *					  in the pool.
-+ *					  in the pool, for a slot allocated
-+ *					  without
-+ *					  %NE_ENCLAVE_CPU_OVERCOMMIT_MODE.
-  * * Error codes from get_unused_fd_flags() and anon_inode_getfile().
-  * * Error codes from the NE PCI device request.
+  * NE_ADD_VCPU - The command is used to set a vCPU for an enclave. The vCPU can
+  *		 be auto-chosen from the NE CPU pool or it can be set by the
+@@ -612,6 +722,18 @@ struct ne_set_info_page_args {
   */
-@@ -177,7 +194,12 @@ struct ne_create_vm_args {
-  *		 one enclave can be from different nodes.
-  *		 The vCPU id is an input / output parameter. If its value is 0,
-  *		 then a CPU is chosen from the enclave CPU pool and returned via
-- *		 this parameter.
-+ *		 this parameter. A slot allocated with
-+ *		 %NE_ENCLAVE_CPU_OVERCOMMIT_MODE takes no CPU out of the pool,
-+ *		 so the pool is not consulted for it: an id of 0 asks this
-+ *		 kernel for one the enclave does not hold yet, preferring an
-+ *		 id whose SMT sibling the enclave already holds, and the id
-+ *		 it chooses is never 0.
-  *		 The ioctl can be invoked on the enclave fd, before an enclave
-  *		 is started.
-  *
-@@ -200,7 +222,9 @@ struct ne_create_vm_args {
-  * * NE_ERR_NOT_IN_INIT_STATE		- The enclave is not in init state
-  *					  (init = before being started).
-  * * NE_ERR_INVALID_VCPU		- The provided vCPU is not in the available
-- *					  CPUs range.
-+ *					  CPUs range, or the slot was allocated
-+ *					  with %NE_ENCLAVE_CPU_OVERCOMMIT_MODE and
-+ *					  every id is taken.
-  * * Error codes from the NE PCI device request.
-  */
- #define NE_ADD_VCPU			_IOWR(0xAE, 0x21, __u32)
-@@ -208,7 +232,9 @@ struct ne_create_vm_args {
+ #define NE_SET_INFO_PAGE		_IOW(0xAE, 0x25, struct ne_set_info_page_args)
+ 
++/**
++ * NE_INFO_PAGE_SIZE - Size the info page allocation has to have, reported in
++ *		       &ne_caps.info_page_size.
++ */
++#define NE_INFO_PAGE_SIZE		(0x200000)
++
++/**
++ * NE_INFO_PAGE_ALIGN - Alignment the info page allocation has to have,
++ *			reported in &ne_caps.info_page_align.
++ */
++#define NE_INFO_PAGE_ALIGN		(0x200000)
++
  /**
-  * struct ne_add_any_vcpu_args - Argument for %NE_ADD_ANY_VCPU.
-  * @numa_node:	The NUMA node the vCPU has to come from, or %NE_NUMA_ANY for
-- *		any node.
-+ *		any node. For a slot allocated with
-+ *		%NE_ENCLAVE_CPU_OVERCOMMIT_MODE it is the node the host
-+ *		should schedule the vCPU on.
-  * @vcpu_id:	The vCPU id the kernel chose, set on success. Ignored on
-  *		input.
+  * NE_MAX_VQS - Highest number of virtqueues one device may have.
   */
-@@ -231,7 +257,13 @@ struct ne_add_any_vcpu_args {
-  *		     for each node in turn and stops when a node runs out.
-  *		     @vcpu_id carries back the vCPU id the kernel chose, so
-  *		     a caller collects the enclave's vCPU set as it builds
-- *		     it.
-+ *		     it. For a slot allocated with
-+ *		     %NE_ENCLAVE_CPU_OVERCOMMIT_MODE the host schedules the
-+ *		     vCPU rather than a core out of the pool running it, so
-+ *		     the pool is not consulted and the chosen id is the
-+ *		     parent CPU the host schedules it alongside. The kernel
-+ *		     prefers an id whose SMT sibling the enclave already
-+ *		     holds.
-  *		     The ioctl can be invoked on the enclave fd, before an
-  *		     enclave is started.
-  *
-@@ -251,6 +283,9 @@ struct ne_add_any_vcpu_args {
-  *				  about and the excess is not all zero.
-  * * NE_ERR_NOT_IN_INIT_STATE	- The enclave is not in init state (init =
-  *				  before being started).
-+ * * NE_ERR_INVALID_VCPU	- The slot was allocated with
-+ *				  %NE_ENCLAVE_CPU_OVERCOMMIT_MODE and every id
-+ *				  on @numa_node is taken.
-  * * NE_ERR_NO_CPUS_AVAIL_IN_POOL - No CPUs available in the NE CPU pool on
-  *				  @numa_node.
-  * * NE_ERR_VCPU_INVALID_CPU_CORE - The core the pool handed back is outside
 -- 
 2.47.1
 
