@@ -1,94 +1,125 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2012606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 19:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92930606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 19:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=Avl+JJgH
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QqEDY18u
 Received: by kanga.kvack.org (Postfix)
-	id D2B5A6B05BD; Wed, 11 Nov 2026 14:49:51 -0500 (EST)
+	id 876D26B00EF; Wed, 11 Nov 2026 14:53:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDC706B05BE; Wed, 11 Nov 2026 14:49:51 -0500 (EST)
+	id 84EAB6B05B4; Wed, 11 Nov 2026 14:53:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C19456B05BF; Wed, 11 Nov 2026 14:49:51 -0500 (EST)
+	id 78D4B6B05B6; Wed, 11 Nov 2026 14:53:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DF616B05BD
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:49:51 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2D23880190
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:49:51 +0000 (UTC)
-X-FDA: 85423878582.10.DF334BF
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 016A712000C
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:49:48 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Avl+JJgH;
-	spf=pass (imf29.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 41E286B00EF
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:53:51 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9445C403F2
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:53:50 +0000 (UTC)
+X-FDA: 85423888620.03.EA78E71
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9C19980004
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:53:48 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QqEDY18u;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794426589;
+	s=arc-20220608; t=1794426828;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zrvPkJULyEyiiTV7s5r2ZxB5yrxXRBtYdQX97+mN3Qw=;
-	b=Es4mkMXHmtTQ/tcWT9XxkWlaK1YUSpRPHFqT2N5kRcWip3JU7WCDLPA3XjjcgImZLDW1tz
-	wjA6Qfi3iUKsDQerJjocZfMfhQCvZOvM2nv50LhgdSdj6Hi3X0jrSWCrTieE3msTv9Mea1
-	N/HIc0sybxN1q/peup5zgFzOf3hfWVg=
+	bh=9+V3zwWP2ctAms80lrtSl8y9J0bEHrdTUBNayQYF8AY=;
+	b=g77bOUqgETG68xRPV+skY7t3y0Wd66IBR5S+RvEJJXUGHyycZUhTjndu0loV2loj4NILZM
+	9mtS7JTHpX7W6xbfQLuKEfuRMM2R+wR6EKsNMqj931tlsBR/5sIGO5kEfuQNyW46VTbW53
+	3UI91C0c1X459ZAMpF9trz80A/tlfsE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794426589;
-	b=xCvMMxNVjnXYUwt7uKa8WXGP/PdbUgtV3ctVTGnxdIbLF2xoSYzyqfZy5aGX7D0XOalYpS
-	xjDLho6qfy2bWYsD+zdwZGvsl8Qw8JUgQL3d/OqU2lEF5eZqpBTCSEKo8Fq3ZkR+re1a4R
-	vB+BxvTeBJRxygdSpj3d55qejWKLOak=
+	t=1794426828;
+	b=mC+TCrBJfvJJLmAtkrVwutqKIghiV4sTXW6libKH+uhbJJRN7diwS2pL+xITzwsSo2afDk
+	v6felNSuV08YPCYpgcXExCL9TG5v518OPGlyYb/ReMoT42Qq9yjQgy5fyWPfJO4vwzq6Dn
+	fbgWsIhhBQqBULzaO9EBJEZgxF4aiks=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Avl+JJgH;
-	spf=pass (imf29.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=zrvPkJULyEyiiTV7s5r2ZxB5yrxXRBtYdQX97+mN3Qw=; b=Avl+JJgHnfZt5VxJgZOf12120G
-	P1BzDPzgqQruxE1dTjcEezmt45xaOjJNw/FXIl94c6SOcW+WFg2gXY8/SSm6BY3jQckDwyVcwbGSy
-	/5Vk85yvw93AjywByPWi8S05ojcDoGBj1Sx7Y+NdRdW6uuNXeCGMA7ltQVNjSyKoLpEqoD7gtxqFv
-	y+DkEDepySNk9YjNdBPwxmlP7KRwfsx6TrrcqVtQDO9urYOHNRyhfNxJDtJDGRH1ZDC0g6qaBUGQn
-	riwWO/ZaZpWqn79A327n5cHZEtTwEdYDB4aFcaBGyRdR+6BeXKInaY6qSD2HGVmxLJBMxyyVnTAsL
-	LkqDOFtg==;
-Received: from [38.23.173.23] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xREKJ-00000007ZIj-0Mya;
-	Wed, 11 Nov 2026 19:49:47 +0000
-Date: Wed, 11 Nov 2026 14:49:44 -0500
-From: "Liam R. Howlett" <liam@infradead.org>
-To: Hongfu Li <hongfu.li@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Hongfu Li <lihongfu@kylinos.cn>
-Subject: Re: [PATCH] selftests/mm: mlock2-tests: fix fclose(NULL) in
- is_vmflag_set()
-Message-ID: <t4vjvdkdvmqcagvhw7z3p2x67p3iopcjqllrapwrzd7qyothb4@un6bq6otzb7w>
-References: <20261104-for-mlock2-v1-1-57e6dd74c2bd@kylinos.cn>
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QqEDY18u;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C81DF4148A;
+	Wed, 11 Nov 2026 19:53:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3628F1F00A07;
+	Wed, 11 Nov 2026 19:53:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794426827;
+	bh=9+V3zwWP2ctAms80lrtSl8y9J0bEHrdTUBNayQYF8AY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=QqEDY18unlA2o1SPFKzDefmcUelA+gy1zBm6nI24LQCxqs+C6LPu37Ssb87DTGkJ0
+	 q5Aw+Pup6Uawag8qqvCaXC7NMZLUX1XwaHcgChPno545yuqxHPntPAZqOl1E/HyNRK
+	 fBavzkMhg+5AaMpoSXyAJFGb15buwN5z+K0g5UZsI+FUgl0BTIDKerV9duJ2aqv3U1
+	 T1RtbmQFZH2lbRln7uwWa4GP6WddzkzpIuq5UlsVQ9j7f+i6J5vBhEGaDIqGbL1U4Z
+	 uBb6mQKPqTbOCIfkGT4Mxm2CQQs+h9ob4+aHuzEgwdmWjtXnnV3vSIdpYZADLr/uAD
+	 ZpBAv7/MHfGFQ==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.ams.internal (Postfix) with ESMTP id C7AC4198003A;
+	Wed, 11 Nov 2026 14:53:43 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Wed, 11 Nov 2026 14:53:45 -0500
+X-ME-Sender: <xms:x8f0aiyCfeXVGyCi9ug4jnThpi5tqkKwpagbx-m6T_Edfi43Iy6pIQ>
+    <xme:x8f0ajLoRKQchyVDbsD8uPBhWbxEh-HYBnhPBhsQfaQzZCirodgLnrsVNylHTWn8E
+    iOn79CSJePGBhzPhQtUU2KYwwdEQFk7P9QDy6_VjSwomTtKjtO4Xi5F>
+X-ME-Received: <xmr:x8f0ah7aN5zKrBuJq1SAHPC3gTk0Oh5VMy5gCOvjscNCIpNrmeJTL-sMhC4>
+X-ME-Proxy-Cause: dmFkZTFk3L7XZlF5+7GH502WRsWRu7U+bYuq0I87emmDHqofs2C6Hcc8RGeJn/UwsU80aQ
+    Oy5YxXNQD1BqRn8XJ/GTClKi2hastwCjkmd8COFgy1QD6KTMxDorZdMtO1IFTW2oWK3BBJ
+    Ud6J7xk6J7MJa+AvKNYZq7fGtXh5bug13QkkC2bMXnBNPwAyDQLNhRrDDptQimi1nEzMvu
+    9TRfS/AYmmmzrrSal/oeqggCJbce/BM6qn3UOoa/Yz8qXU1ssT2aJrhmaxkrlctMFW7YKN
+    EQ5KIcWt1jqxB2qOtX0eZbldsKebou1BaF/6/y0uWBSjqp4ov2Z+/g/QHKX3gdUs4JZpIj
+    g6gPfA+H5faF09ppkSkY+6L7Hdb/HYFEtGOIq3q3a2KuWgSZNxWsFbeKl3LAByY4oOiqhj
+    B34d0BUoUpfreNUO3uAT+MGxdJHWl0K7sQVmYNnCTDeQVmPyoDUZVMiJQ6i4aWEPYcQn83
+    4aoSnc69Gxs+HvTBiYEpSV9UWELqBN4R18h9XxAM42kUav2Yxvbjcw8r6oqxnigVcTSvKp
+    iwe8mMLREybAHPyDO+qIM9AofTNL3GERFVtc/fdeMjFU8DeesspO1OiSjNOVK2ZOfVCcI7
+    Ri1KC/anUqpFspDwXFE5oVAFNgi2wKvWPt3hCw62UxGNakgUKiPteSzR2MCA
+X-ME-Proxy: <xmx:x8f0aqmiCdZsxSv--RgHZ2FV6V3kBhg7iVxeEM_XLzdNVot4Pjilgw>
+    <xmx:x8f0ajJxUuhB86g3eESVIXZRafN9Ymn-2-BOOKLHI76XRxHDAsOMew>
+    <xmx:x8f0arFlD4FqF_vAN_45ugEIfFa7VxHG5tGvFamumUjHZeC7C1PTWw>
+    <xmx:x8f0akOS1E5dLyR--vH9rDZ-YRqQN9CG0p5M_bTGLNgD4WBjsSW_iw>
+    <xmx:x8f0al-Jiu0Nr7VSnOBMnuyCfJRr4MLTsSY2cQT7qtLl-FcrooCeQXL_>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 11 Nov 2026 14:53:42 -0500 (EST)
+Date: Wed, 11 Nov 2026 19:53:41 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Tal Zussman <tz2294@columbia.edu>, n3rd <18670333770@163.com>, 
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "ljs@kernel.org" <ljs@kernel.org>, 
+	"ziy@nvidia.com" <ziy@nvidia.com>, Mike Rapoport <rppt@kernel.org>, 
+	"peterx@redhat.com" <peterx@redhat.com>, "security@kernel.org" <security@kernel.org>
+Subject: Re: [SECURITY] mm: khugepaged collapse_file() drops RWP PTE markers
+Message-ID: <avTHmQXzWQagnsh5@thinkstation>
+References: <606cae9e.bbec5.1a1c54f4f9f.Coremail.18670333770@163.com>
+ <60541e98-b1f0-4f92-a155-8a29c0bb17dc@kernel.org>
+ <44abb8ef-7711-4ad0-be9f-ca47206892a3@columbia.edu>
+ <856cdf21-7982-475a-b244-a7ceff4eb6aa@kernel.org>
+ <60029f5a-091a-4022-ae48-8fb9a00d922c@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261104-for-mlock2-v1-1-57e6dd74c2bd@kylinos.cn>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 016A712000C
-X-Spam-Status: No, score=-13.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: dpt6porxeupzpdrbdufor7unaxispbtr
+In-Reply-To: <60029f5a-091a-4022-ae48-8fb9a00d922c@gmail.com>
+X-Stat-Signature: h9at8wzcowhhdamgda6qmh3z1toh9jsf
 X-Rspam-User: 
-X-HE-Tag: 1794426588-148287
-X-HE-Meta: U2FsdGVkX183gi5U1iWS0ZG7jv8wCKu9Rf0IxUdOE2jpD72xmcVET4LMuvTd7Q9UCU2VRqBX7n9aUL1Cy4C9+Zw4y+uxIOvimvXdkRf6O1oynUJz7hFQVG7WKnYV1xQOLZpPs1d/cViiPifyRsunnOfGLCrJh0AsHmxjZUdPimwbnX2JWSKvolb6was1UBze7qBKrAbE/tn6CTKqOhu4BY/Q3bhgavQ59ycEdlNUfrGHsU+IR1tQEAy1v4Pn0KSWK5fQC8x8yOZzlF4g2lFZ3mOasSvGO68QDUHBjDM6RI97hpxInK4L97HRdHcas9iZvdR221C8FUbdQKy157C2ciJoYGtOP/du3amndtjzO3kWoPhYCV9GaINbns/diQ50eUNVZzNqtkNB5Mji3QH+/mo5dWdXlCf+TtrLhed7jdGLGSQPa4+4NgaHorEvxvLg4/u5HAbGhTzZx8TdwQqKK+Snoc1+YttOWVusF5Xnt+ZHmD0/3Sf/Z/KGqq9qwTxCyRk7Ae8sVcpKdY6PiC+LWk/41VaUswg/30qTN1OtEWcdIJOu18GXb+nkFWiM7QTdDFfaBtQjnnGvQlDQRFvB77T9IfiEGXl3gRnPWs8iukbY1JziHhYwiMTFgepci95jquR4cSZ7phR3cRFTFb4e+COrayd/edaDT8NSqeciEBWJ8Czllm2QfjlePMw+9prXEGAQBY9dtCSazlUJWvny7fWsU0XCkTLjMNXvUPSAs/WOolaQ9/mNKcHocf68xj2gESE1vvJVkOSvOtSVqy1psuDqcfz4hp09WEg6vzIcEFbUq2qyJPlXwDWzULDXMF/+29g7Vqs4np9F0ttYmluusGs2Ik2m6SqgvT4quR0DjNsNRKkPTKRWg8Y7U13bAv1m4kTVdtHg6d+vzNlplNe8+qu+zkgnH1H3ujl0n0MXYzfrpVHIbLjN6Iy/B8koLOd8dNrm3zB5CtDv/+a7eZT
- UQppXK3I
- 6FVavaissXYgHi+lXsGoC6BeQK6qaafr8SxG2GXTrROwYtaDu3ZM/mt2mECsKz6saw7eGJeGW22RdJPk6Zm9djYmYNpydTN+Orn1+OWFqmjofGwSPsbB5R0Io1Ug82oqQb1LuYt3Bx35o/jDsQqB+QJ27sA78AHWHpu2ntIQnSpL0/gPLFHshnz6qvprseUxLNxfzsTqbasYcI8CKGNAqf/SdxG4mF0gEw2b1cQ3Uabt4rTKDQweWbkHhS50gJauA9CQVGn9onvD62kiOvob/7wPe5FwNgWILv2JYTIIP6YAofdSYcSyTvZByKwsoVPmr7XNoIshFrBsKHCQ=
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9C19980004
+X-HE-Tag: 1794426828-791721
+X-HE-Meta: U2FsdGVkX1/bfi/Llk5iwoHphrCWMllmTaNIm7+bDc0Qx/mtL6T21wL1qppwRHDCkzd6rUdVGbxMFNSHf/gsX29hciFqjdvHCCt+E52ErcdYC8s1dktXdhyA0+MweJaobEFNn+NIT7My3dsQoOkjKUo7eOwU3utzl+nXkTJh+AYj3gjymz2YQagf0IelvViLPZ51aONE1/XDRrfBonTUxEm8J5uPM2NCL9TkjB2qeWxd68KMOG/CAIfEofpoct3kJxz2SsMZAoc8r9076ZXASMPUatkVU0Kkifef9jzFgo1ACtNQCVa6cdQGYda3wR0wkKtMgLYGWIN46KOUqeVEQwueYNNGA97hp9HmwhGLAoRJpXsUXBMo/uum7AnOih/ZJQ7fX1Qyx6k/DKJmtSIX+Yl6Zf62zfSmTNBg7Lg4S8SqVxYfSihbQgU2MWRVxadH8PGLSsQVM9GCuEJ40y/5TlDCfRGlFxNmfjZCFXpjFn7Enq46XdSWaoiZo5pmE0aKLz1rI81Py5vKURqN1B7fXTDrw02vfzctWLnlArSFsVyzoNi9c9FvdYldkS6HEoR3aRum6wwdFuns9AJ29Xc0jc9AFQph5XzhfFJMuvspP8PlIOrfRK22YD7DvcKPZTR2RpI2jHD1Mjk/Bo+rp25sFCNQFI4QR91oATI1HModxBPZKTXh+CUCYhikufgEpK1I3uit67N03iqLv1QAkq9sXvr0C6g3J0YOT62WI+qnzFJstVy4kfopZfWPHNwDjE6/1hPEw799TyyPESNqMc8345+Ad8JmzaOjF9GG9osyxcrfFeXjNy8A4S0KEX6VzFAh6CXpe1j6IHMgZlOlLVR5TFV3MIZ84sJxKUibxacreitWYxCIriz75TfcYgMqRLyJ3hQlL0ZklMiK4KSmUEUzUZ9gR747FtlO8Zjn809r/6drD7UjPQeOqVUEo9gbejJJsEE7L0W8lKpmEPmEPYI
+ 2y97DcJ8
+ bvDIcMqnpFzhIi4sEj9LcwmCcIfeYv+fj9UKA5QTdwJMkm1s3bY2srnAiT8C42kx/M8ULGD6heH8Unwr+/J3c8bGv0g/yH9lghN/tNuUPwD/je8TFJK+z76VLN0xBMQ/FOaf9py15oKfLNPDQbptP2yZoIO+RSjHQ9cyAKgi9RgjMP/epNAnPJJUcgxOzPXVR9Dcvid9cA2ncEhliCK/67sdp+CXfcCXT10pkc29650zc06M7MIAEkKYLJRuvU1/qsrzH2vlSwoisTsVWDFNr9j+6WWXxRJo2M3ghv4BsT2pem+8bBE12+iLkrAD7Fyu24zEiFu/5lNn0lkq+9ltNvh0w99ez2qg2HbeQLg0djAyHTwYeCRdgm1I5LHY9juoiASWF017I3oSDyvogNO+4FJi1/peMTKgTPA6ZQp46fzwx2XNd12FpkEQpq2vWlFdLv+5AejYeBRfoc+7Z8olnzAmt7Pfx1b1BMdbU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,50 +128,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 26/11/04 04:49PM, Hongfu Li wrote:
-> From: Hongfu Li <lihongfu@kylinos.cn>
+On Wed, Nov 11, 2026 at 08:43:47PM +0100, Jose A. Perez de Azpillaga wrote:
+> On 11/11/26 8:29 AM, David Hildenbrand (Arm) wrote:
+> > On 11/11/26 04:19, Tal Zussman wrote:
+> > > On 11/10/26 6:55 AM, David Hildenbrand (Arm) wrote:
+> > > > On 11/10/26 12:54, n3rd wrote:
+> > > > > 
+> > > > > Hello,
+> > > > > 
+> > > > > I am reporting a security bug in the Linux kernel.
+> > > > 
+> > > > Stop sending uffd problems as security bugs. STOP IT NOW.
+> > > > 
+> > > > Tal has a long list of uffd-related fixes he is about to send out. CCing him.
+> > > > 
+> > > So this issue was originally on my list and I had a fix for it... but it was
+> > > REALLY ugly and a band-aid, so I dropped it.
+> > 
+> > Yeah, RWP is a mess.
+> > 
+> > > 
+> > > I think the real solution is to just add actual markers for RWP and solve
+> > > all of these issues at once... but that should be a separate series from my
+> > > batch of fixes (which I'll be sending shortly). Is there a reason RWP
+> > > markers weren't done in the first place that I'm missing?
+> > 
+> > Let's ask kiryl: why is it ok to drop RWP PTE bits during swapout, zap, collapse
+> > etc?
+> > 
+> > https://kernel.org/doc/html/latest/admin-guide/mm/userfaultfd.html?utm_source=chatgpt.com
+> > 
+> > states "Unlike WP (which persists via PTE_MARKER_UFFD_WP), there is no
+> > persistent RWP marker today. The user needs to re-arm the range with
+> > UFFDIO_RWPROTECT after any operation that explicitly frees PTEs."
+> > 
+> > But requiring the user to re-arm is rather questionable design if the kernel can
+> > just zap these page table entries.
+> > 
+> > @Jose, maybe you want to look into marker support for RWP to make RWP a bit less
+> > horrible?
 > 
-> is_vmflag_set() jumps to the shared 'out' label when
-> seek_to_smaps_entry() fails. smaps is NULL on that path, and the
-> code at the 'out' label calls fclose(smaps) unconditionally.
-> fclose(NULL) is undefined behaviour, so the test crashes before
-> it can report a test result.
+> oops. I overlooked the thread because of the AI report...
 > 
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
-
-The sending address should match the sign off.
-
-
-> ---
->  tools/testing/selftests/mm/mlock2-tests.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> IMHO (and after reading Kiryl's email), I'd fix the doc instead. "Scope of
+> protection" doesn't mention collapse or shmem reclaim, and it still tells
+> the user to re-arm.
 > 
-> diff --git a/tools/testing/selftests/mm/mlock2-tests.c b/tools/testing/selftests/mm/mlock2-tests.c
-> index 144b550813a6..85e6cd24515a 100644
-> --- a/tools/testing/selftests/mm/mlock2-tests.c
-> +++ b/tools/testing/selftests/mm/mlock2-tests.c
-> @@ -66,7 +66,7 @@ static bool is_vmflag_set(unsigned long addr, const char *vmflag)
->  	smaps = seek_to_smaps_entry(addr);
->  	if (!smaps) {
->  		ksft_print_msg("Unable to parse /proc/self/smaps\n");
-> -		goto out;
-> +		return false;
->  	}
+> I could work on that patch :)
 
-This looks better.
+Thanks for volunteering :)
 
-The next function is also messy with the goto usage/ordering of
-unrolling and should probably be changed in the same way.
-
->  
->  	while (getline(&line, &size, smaps) > 0) {
-> 
-> ---
-> base-commit: 74d73ffcffe03804f97e9fb82301dadf75671282
-> change-id: 20261104-for-mlock2-a67f86dad498
-> 
-> Best regards,
-> --  
-> Hongfu Li <lihongfu@kylinos.cn>
-> 
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
