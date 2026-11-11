@@ -1,95 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A82A0606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 17:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC95606A326
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 17:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CQ3YcXyn
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=qLwB8YuY
 Received: by kanga.kvack.org (Postfix)
-	id BEE6D6B05B1; Wed, 11 Nov 2026 12:19:52 -0500 (EST)
+	id 5B3BA6B05B3; Wed, 11 Nov 2026 12:21:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9F036B05B2; Wed, 11 Nov 2026 12:19:52 -0500 (EST)
+	id 589E76B05B4; Wed, 11 Nov 2026 12:21:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB4EE6B05B3; Wed, 11 Nov 2026 12:19:52 -0500 (EST)
+	id 4C7FE6B05B5; Wed, 11 Nov 2026 12:21:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 84D916B05B1
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 12:19:52 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1380D1C39FF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:19:52 +0000 (UTC)
-X-FDA: 85423500624.17.382264A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 70B5840005
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:19:50 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AF5C6B05B3
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 12:21:40 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2C80E140383
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:21:38 +0000 (UTC)
+X-FDA: 85423505076.18.E84054C
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3E6CA40004
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:21:36 +0000 (UTC)
 Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CQ3YcXyn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794417590;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SzVvTj1tb0Ep/dVhlciwGP6JmNFPxZFsMdX03oVDkMc=;
-	b=uYmNcUHTFjFd3O5PDJUT7jsJQvlwSu2J/xl7dJpkvCeh3CF7yR0lFbS2EN8elD3Og5llHz
-	PqKDTGRelLg8YkBDT3f6nlKWqJbNy32U72v1AWnLOvw1VGG8kQY6TAu6YFRjUQqcmcqnRn
-	Z4NOF8PsmZXZKMk/3XBnMZBkxPj3KaE=
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=qLwB8YuY;
+	spf=pass (imf07.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794417696;
+	b=PaaH1EZgRATqWCst239vxFLYUcPYIPFxjZWLe1dUOlq8GjzEmXbmjFCFyRfeSr96Jh3EfX
+	pFshbHx6yfWx1YHh8uTtPTfzSJkzKtAxqdGTDlin4hNLynLbKiG/QvF1ILON1gJRfb1pHE
+	vcLGSPcy2/MQpsk5/pU6Q/l47ZmE22U=
 ARC-Authentication-Results: i=1;
 	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CQ3YcXyn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794417590;
-	b=t/+RpUsymZIej7Fpi/8gd16cBs51S7VbOKZPZm4yk6aWFHbz9cLK8MQ7tBsry5LIx9gmQd
-	ZK8mHi9Z9rSM/P80yrH8AxcQLtJchym+mDfPAVwIhaTGC+KoD7oeDYqbBf1P/lcflUCfkB
-	LrsZH3RXviFp6T62/GpfgjkYu70oI58=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 956A14024B;
-	Wed, 11 Nov 2026 17:19:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98DD1F00A06;
-	Wed, 11 Nov 2026 17:19:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794417589;
-	bh=SzVvTj1tb0Ep/dVhlciwGP6JmNFPxZFsMdX03oVDkMc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CQ3YcXynk2NNxkFh7xuYG+u1w6DYEZQOJNfKlFFaE/sNwPgn4RKaz4gOQ20GQbOX+
-	 yhiH7qyqQ3QQrpE2UQ8ugqPlDZ1mIOOckrHEjqpDqZlr43m4asZBpiwy5xONb/VcrC
-	 3d9Y6PyMSNsQsH7ej70xHWaRigvetj/wYkW3BjHy2Ozc+0MhiMQFXTsOXSnsEvErpZ
-	 XkTFlTMTopy3TrLGAvumKZQCx7FDJT/IIikxhIhnzV5MY3+lx7+Uch3VbofCJjs2Qd
-	 tbYyZUJ8j9v3WA/x4sJMTl/5PkIimtqddygHCjinVCcPrXBYh40OkmJQV5PB6ssFVr
-	 33RV1UalcUW4g==
-Message-ID: <sashiko-outbox-209401@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 3/3] mm/khugepaged: release contended mmap read lock
- after scanning enough VMAs
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?TG9yZW56byBTdG9ha2VzIChBUk0p?= <ljs@kernel.org>, "David
- Hildenbrand" <david@kernel.org>, "Zi Yan" <ziy@nvidia.com>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Liam
- R. Howlett" <liam@infradead.org>, "Nico Pache" <nico.pache@linux.dev>, "Ryan
- Roberts" <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance
- Yang" <lance.yang@linux.dev>, "Usama Arif" <usama.arif@linux.dev>, "Kiryl
- Shutsemau" <kas@kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org
-In-Reply-To: <20261110-khugepaged-latency-fix-v3-3-6eea743cf9a3@kernel.org>
-References: <20261110-khugepaged-latency-fix-v3-0-6eea743cf9a3@kernel.org>
- <20261110-khugepaged-latency-fix-v3-3-6eea743cf9a3@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 11 Nov 2026 17:19:48 +0000
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=qLwB8YuY;
+	spf=pass (imf07.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794417696;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mgdmcspbD1Yyk+0ecRe5xCyE0njK/qpMy7OsZTOU9pA=;
+	b=d3Ra8iRQv4mlMpfeaSNNqwc0CG4ilKXldzK7Jspl5BgyRzHOdOt4eyvVEELrVWSXXgZLR+
+	njetJNtLHhdXb6t1mBQzv0k6n57w7q/2e4teBluO+XKSvmnt/r4+WE8eeNRf0o4lF0FOUa
+	3wRtT7txdwxDDop3+irELpGl1v298e8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=mgdmcspbD1Yyk+0ecRe5xCyE0njK/qpMy7OsZTOU9pA=; b=qLwB8YuYISU6n72YmjlDMvwfBh
+	h/z/COi0TrAJz8Ram/slbP3UEwSHIcCZ8uXK1SR1hXnlQ6x5A9eyX2KBtH4XdJRJCVzXnuicCaDZT
+	Lbwrc8CCcJNtU1OKoNR9KjLyvMrOWIoEguIcmwkA/kztGB+02Go8rO/5RypB0KH35550pYv9h+AOc
+	HO5KaRA758zKA+w3CEWhLZSfxsIVzv9MMRumia6IGlyfFIwlEoxP7rKaMZmDozt5oBFV00MwjGR99
+	txipC4M+XXzb5LfgID9YmDCPxfCRN8jMpXhNMdQqMJhvYa59+HJJqFSZPnGM7C9jVB2lIYSSynqx1
+	pfpIyoig==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xRC0p-00000007IAb-2pCY;
+	Wed, 11 Nov 2026 17:21:31 +0000
+Date: Wed, 11 Nov 2026 12:21:28 -0500
+From: "Liam R. Howlett" <liam@infradead.org>
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Yu Zhao <yuzhao@google.com>, 
+	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>, stable@vger.kernel.org
+Subject: Re: [PATCH v3] mm/mglru: fix a no-op lru_gen_clear_refs() call in
+ lru_lazyfree()
+Message-ID: <4xqyzrl4lbxwbky22lc5k5mcvusudg75z6hspjokfoghp3dny3@rjuukqzxiuyv>
+References: <20261109021611.22247-1-hui.zhu@linux.dev>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261109021611.22247-1-hui.zhu@linux.dev>
+X-Stat-Signature: wuukk5ixfwocu51oq8zh51rg8mautq31
+X-Rspamd-Queue-Id: 3E6CA40004
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 70B5840005
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-13.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: cxnb7yyt87i1cn6pgmyzpcbyugnn9t3h
-X-HE-Tag: 1794417590-137639
-X-HE-Meta: U2FsdGVkX1+vqO7InoFJ7E0bUnySXClZCR1lPFWT/0itj8kxcMNIxkJaYK92eUni2f5Nfd1njPofvo9Ww81D4lP23R2WI1AIG81K4AW3WM6cDkHwIcndHZTtU9RRf9suzvFkHhf6GBWePBBO1sqavVH/9YXtCi2GWcOo8RVufvQxDqSxOcYWsGXj89KMXSMbB3M8vMz8JaQKZ5FOlw0iiqzLpA91g4WJ6ym5yzyrnIRNNwOioKo0P6ocLsbZiCa6LhR08P0XHq8Wn0Kn0oUxOptIu13oT+Y+b7rI0hdA5d/hGiAxkChy7BErU5mJId76vSzAScmL9GSVyhcBU8cxDMlZTdICqIyRgk2HDgauvYKe3yRIZbt2s3ytwOvp2oCGNp23DyowzqhVI9IAbtiP+SV/RxJ7YPbgPf3ymKoSAmvgfKBhfYf7Wok5Y7acYlwQ6Do2YwPM7G8rX6Dur9KPCqYCBuptDi8+UlKtnj9olUQcen0DIIM4ToLOvi8BFDEkDwu0BI8LV1i4vwltH7ORWaEWbQZiI2Cydb3wEyyMhPDAd/yuCoFs3JwZsb+FCCffksfkxJTOf2cPNclkU0r51GcPt2nfscNYtQjswF21Y7br3IXIvkRLdd8ISpq2q5u1PsSg7S6RPZyAhu8fHdIrjEYqe9E50Z0sv9u0kMTGbBr04snJiDXhFlHQGpcWShlsi7yup9ZBmL2YAd2b2diLuLl5TTBr/bIubY8lR5YRlaejT+kTjKizB2niGvzxoPbe4kYM3O5EVJEycmH8hjH3siKA1kHoiA1vS0474xqjatgSVsgHIKnm4FrT9e7pGNnHVR8AqbP/woKZXnY723wovJwm0wevS2OXpmzkmPIzpHHG0RBIchgtoBIjr7TNIzncel/Ah5fWvmTdGwJbb++WX7RYvojh7bypp9WJ3aQALvOhqL6tfu81LQSst+3WHWF/ooVrOjieCGZ83yEimez
- QQDOmjDK
- V5Upv8+NO3vCqGQr0mpdwImey18EQSd1Qy0Fd280vIudUrwrkwTHA7oJlgUtm0wx0P9WMvhS2+bqrOiZKn/SA/wHxAFgLzTnpRITFFVV04ZdYSGXMd08Fzt6e7HEbZxWlng1ZMIoGQalySvteMQfndkXvmGlCpEtB9ruff9+m1mAcaO1LkC/SRyh6IkPpp0NoUgcOsx2vg/dfMDttUPdEIw5diPWD6bsAzZc1uSJbYOfobGB4B8GECDXTYYg4PueDFUNlnX8gTioXwDKBvxNdxO6DiDTgzXnWKbZoFaQmhIlflGxK7eQYFASFN5jpTVaYf5vhvehiNbhjhgBtqAl7XG5o0o0REVpzEo8mDdcZgdGiPlPqvBs0xoAVvEl+jMUtDZwTO+R6PDTr9OuSI6rX4iZxMtO5CgnHMjpBoocOVPyVznSRdQWOxSi6KEitlio/I/0gbqqhud2/e9SHsFmLy5AifKNDUNrWKeG+LzO73vYc/5lfL3ANjtJSvUHQnG9Wi/yRIkOmTlPEr66rQrz/SrH+0jNtR4nyb5xY5i8pchW/52A+whQ2PWKfjru4mkyY6yWObfTF0w1OJ8wlcfI6hI95oUdMK3OUK8F9msNC6KvvJ8/FmnAqu3BYSsTpAOIOsjhA
+X-HE-Tag: 1794417696-795223
+X-HE-Meta: U2FsdGVkX19eY57vdTPj6R5Q7PbpRlfbU3pqPnFkpqZ7mqBR2keVjVDz3ILXAvVYeSvFwtFWlUjO8kK328N8zM4gL/Pb9xUPw3Kp2we7mfRqlwEQbLIv4deWzhqZr3LbDNhAKpYa8UqfZU/o2YCqTuaM/xYAQFFSNaLHtewOf7F9ZJu5CFL+vjvwdFSS2adM8U+w8KrxkARpREvR0m5gUKYFlGW24NxK+8kfjCYWDtdaK7ujL8QsNoGmH7qlBoZvxfHc7ET8uKedgW6C/YO7BxcNcwcX8d6TZZZKTog4Q7C1LMgt8zT5ThMSc1LV7R5hPA5ofmIjWxfqia4oDAq8hNJ24GRNVJixYNgw25yYxmyzfuMyz2ypGWok5DY/1fjAIIaJbkcB/h+FValsWU1Cq6zlMYskFGvCixv5WfiDrK2pg1b69RkXUTEdGILxTGQBXbanC7N7WisOaUVWpb9uwqrBz2ZDe0Bwz9KoOT9HOjmVd777Mp0ktZ0zky2pvLrfJF8hxhJZKUyZqkwA0nc5QjyAMjqM/idN2vYYNGX9kaw7BT4VFmNWreH0s0fKMSGh9wds+4UbK8D7orFixD1jVKG/XAX2gVO3crIuue2TuhJ0XOq+FIkc4VrWjyG13EQ4KkKelPik7CZ84cyW/xseDJBDNJOEVVYQPiRMSwN3Pneb3z5fBGkWy/e0slKISheAOqDDG7KBiLwpNmuyjeBL0WizjEANgaklRkl9PVFAm1326oZuXXVLFAosFX4G/bwNiR0TECMB5OWa8tHm3u+ol0Tny/A+d5YP/g9OY4yBwySAgI7vjGQ3uW2b9CHtTieXz73mi3dYaesH1W1pdVMu9GD2Cz42r8Vb1QuRO+860oOr4zbhJWZcH6zTcOr8tCJu3q1z6abU4822iRiONAidHWsCztijSjELyvY4piqyoDvUB4/cydtkHoBz0Cn8bVgOJISoXt1EAnXbRQcTHe7
+ tK1g2iea
+ ctCzR4TtCgQuWZmGTR+iCBm0tRoKAElicQM53sduaj+Asgwel8fJ6m5iT+adlabUIw1VPQjrP/OL3J6sl6chcmYaVtcKIZVdg/3aOm1ApYnSHhGRsKgOwMGffn4fNxva5VRTSmAOkFDzgvB2eN0/mSdFGU+m4+gxsYvEg0hoTL3M6feN9EiDnm8bTtQLgBJFWlTnuAxXwBdVroHCBGa8H4oaVxNKMhjWgFkKiWOcHaONUC2qrgSCCxpNUq3hVMMiYwoI3mpEGNrn1iGnfXZzHhMpIkcUXMJmIH8a8+qm8/W76MA9rN7fN8MM68IxU52RXZMEWTjv8Xrryaas+gc3M6+yG5nfiOK2cmf+DzUkGFEmWMsUMCKPjL3s1PsCUuo/JbfauPkilZK/Uivp03XL7De5WxM5c4W/jpHpv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,38 +96,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] mm/khugepaged: stale jiffies-based check description in commit
-  message
---
+On 26/11/09 10:16AM, Hui Zhu wrote:
+> From: Hui Zhu <zhuhui@kylinos.cn>
+> 
+> lru_lazyfree() calls lru_gen_clear_refs() after lruvec_del_folio(), but
+> lru_gen_del_folio() has already cleared LRU_GEN_MASK, so folio_lru_gen()
+> returns -1 and lru_gen_clear_refs() exits at its "gen < 0" check without
+> clearing the refs or PG_workingset.
+> 
+> A MADV_FREE folio therefore keeps the state it had before madvise(2),
+> even though madvise_free_pte_range() has already cleared the accessed and
+> dirty bits of its PTEs.  lru_gen_folio_seq() places it one generation
+> younger, and PG_workingset puts it in the last tier, so sort_folio()
+> promotes and protects it instead of evicting it and charges it to
+> lrugen->protected[], which read_ctrl_pos() uses to balance anon against
+> file reclaim.  __folio_inc_gen() clears the refs but not PG_workingset,
+> so this repeats every time the folio reaches the oldest generation.  If
+> the folio is redirtied first, ttu_anon_lazyfree_folio() keeps it and
+> lru_gen_eviction() packs the stale state into the shadow entry, so a
+> later refault is promoted to the youngest generation.
+> 
+> Call lru_gen_clear_refs() while the folio is still on the generation
+> list, as deactivate_file_folio() and folio_deactivate() already do.  Its
+> return value only says whether the folio is in the oldest generation,
+> which lru_lazyfree() does not need because it re-adds the folio below.
+> Keep folio_clear_referenced() unconditional: the classic LRU needs it,
+> and it also covers the folios that lru_gen_clear_refs() skips.
+> 
+> Fixes: cc8ec7be78ff ("mm/mglru: optimize deactivation")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Barry Song <baohua@kernel.org>
+> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> Reviewed-by: Barry Song <baohua@kernel.org>
 
-commit bce7aeac77f8f4e7344a0f568e13d01a781dac5f
-Author: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+One nit..
 
-mm/khugepaged: release contended mmap read lock after scanning enough VMAs
+Reviewed-by: Liam R. Howlett (Google) <liam@infradead.org>
 
-This commit drops and reacquires the mmap read lock in
-collapse_scan_mm_slot() if the lock is contended after walking a batch of
-1024 VMAs.
+> ---
+> Changelog:
+> v3:
+> Add Cc: stable@vger.kernel.org and pick up Barry's Reviewed-by.
+> No code change compared to v2.
+> Per the thread discussion, the __lru_gen_clear_refs() refactor will be
+> sent as a separate cleanup after this fix lands.
+> v2:
+> Call lru_gen_clear_refs() before lruvec_del_folio() instead of
+> open-coding the flag clears; drop the lru_gen_enabled() branch and
+> the comment (Barry Song).
+> 
+>  mm/folio.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/folio.c b/mm/folio.c
+> index 35e242b48870b..ea3adb6a89d75 100644
+> --- a/mm/folio.c
+> +++ b/mm/folio.c
+> @@ -597,12 +597,10 @@ static void lru_lazyfree(struct lruvec *lruvec, struct folio *folio)
+>  	    folio_test_swapcache(folio) || folio_test_unevictable(folio))
+>  		return;
+>  
+> +	lru_gen_clear_refs(folio);
 
-Link: https://lore.kernel.org/all/20261105-rwsem-dont-steal-from-queued-wri=
-ter-v1-1-275e070f426f@kernel.org/
+Since you're not checking the return here, you could use
+folio_set_lru_refs(folio, 0);
+folio_clear_workingset(folio);
 
-> Address this by checking whether the mmap lock is contended after 1-10
-> ms (depending on CONFIG_HZ), i.e. the granularity of jiffies. This is a
-> long time for a lock to be held, so is a reasonable compromise for
-> determining when best to do this.
-
-[Severity: Low]
-Is this paragraph left over from an earlier jiffies-based version of the
-patch?  The code checks mmap_lock_is_contended() every
-KHUGEPAGED_MAX_VMA_SCAN_BATCH (1024) VMAs, as described in the following
-paragraph, rather than using jiffies.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110-khugepaged=
--latency-fix-v3-0-6eea743cf9a3@kernel.org?part=3D3
+>  	lruvec_del_folio(lruvec, folio);
+>  	folio_clear_active(folio);
+> -	if (lru_gen_enabled())
+> -		lru_gen_clear_refs(folio);
+> -	else
+> -		folio_clear_referenced(folio);
+> +	folio_clear_referenced(folio);
+>  	/*
+>  	 * Lazyfree folios are clean anonymous folios.  They have
+>  	 * the swapbacked flag cleared, to distinguish them from normal
+> -- 
+> 2.43.0
+> 
 
