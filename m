@@ -1,146 +1,136 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA774606A896
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 14:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE694606A33B
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 14:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=r58BF0D8;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=15TlV9Nr;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=r58BF0D8;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=15TlV9Nr
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VOIzhbnP
 Received: by kanga.kvack.org (Postfix)
-	id DC6916B05C1; Wed, 11 Nov 2026 09:15:17 -0500 (EST)
+	id B60E36B05B0; Wed, 11 Nov 2026 09:21:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D78106B05C2; Wed, 11 Nov 2026 09:15:17 -0500 (EST)
+	id B38626B05B3; Wed, 11 Nov 2026 09:21:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C668E6B05C3; Wed, 11 Nov 2026 09:15:17 -0500 (EST)
+	id A4E826B05B5; Wed, 11 Nov 2026 09:21:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 98BEE6B05C1
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:15:17 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 59FB1A02ED
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:15:16 +0000 (UTC)
-X-FDA: 85423035432.23.5488C7E
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D98B24000E
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:15:13 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=r58BF0D8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=15TlV9Nr;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=r58BF0D8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=15TlV9Nr;
-	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794406514;
-	b=0E+vDuCizbCDKwq4ewExNTzOB/y7osC+KRUoHK/AUpKIENYAsQiMPVR69LPpl83jC9N2kI
-	mMysB41ASjDpZzKtPL45VR2b2Aqz9rd/qLHZkmPbjkPhRim/THTt65bZKa6VQvMscvbaVy
-	XpgT4DH34fw1TrMSXbB1lldf5WeS6pE=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=r58BF0D8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=15TlV9Nr;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=r58BF0D8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=15TlV9Nr;
-	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 841896B05B0
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:21:09 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1FEB51A01BA
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:21:09 +0000 (UTC)
+X-FDA: 85423050258.02.0899B5C
+Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 26EA118000A
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:21:06 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=VOIzhbnP;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.129 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794406514;
+	s=arc-20220608; t=1794406867;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iEM9kPeISwrg1hp3zFsHM5gU3S8hitOkRPQJum2vFMU=;
-	b=4Sa5uwcI31B7knxds9+otQMpzX8yZ7B0p/OcAhMN8G/y21iCEbS89oDFb7/Q7RrI7/Amhd
-	S/LsH/pVhfriJgKXYp/de3l32Y5GeggwhCkTcM/6pQvrwosaNwA134SXAR65Aif+NB3evg
-	GlotMBVMdkhb7D7sn0u6mIJoz1j+2Z0=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 09F3E22A5E;
-	Wed, 11 Nov 2026 14:15:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794406512; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iEM9kPeISwrg1hp3zFsHM5gU3S8hitOkRPQJum2vFMU=;
-	b=r58BF0D8W8gzgIAphVb7+yXG4Wp0CzJfQUUtsAILSsDExswBBX2Vz1DZhrqDcoIpRX0ZTt
-	0gBD9RMFaruNOsM+g+SXe7YVni3W376lEjHWkMsC8cv+03B46mcbwzWMdN6eutgUbVcR1I
-	skb2yG6nBdMmWTQD7PkbKOeYbn2js8w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794406512;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iEM9kPeISwrg1hp3zFsHM5gU3S8hitOkRPQJum2vFMU=;
-	b=15TlV9Nrfb6fbwPB+XQGAF9gQF4YSshvgg4Qr4JwuaNYvo4isPqFDJlR8PRYTR3/TFQArE
-	KUe4A2NvjL7x2ZAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794406512; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iEM9kPeISwrg1hp3zFsHM5gU3S8hitOkRPQJum2vFMU=;
-	b=r58BF0D8W8gzgIAphVb7+yXG4Wp0CzJfQUUtsAILSsDExswBBX2Vz1DZhrqDcoIpRX0ZTt
-	0gBD9RMFaruNOsM+g+SXe7YVni3W376lEjHWkMsC8cv+03B46mcbwzWMdN6eutgUbVcR1I
-	skb2yG6nBdMmWTQD7PkbKOeYbn2js8w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794406512;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iEM9kPeISwrg1hp3zFsHM5gU3S8hitOkRPQJum2vFMU=;
-	b=15TlV9Nrfb6fbwPB+XQGAF9gQF4YSshvgg4Qr4JwuaNYvo4isPqFDJlR8PRYTR3/TFQArE
-	KUe4A2NvjL7x2ZAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BD61B134E5;
-	Wed, 11 Nov 2026 14:15:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id oMu1Jm949GpWAQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 11 Nov 2026 14:15:11 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 475D422933; Wed, 11 Nov 2026 15:15:11 +0100 (CET)
-Date: Wed, 11 Nov 2026 15:15:11 +0100
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	Jan Kara <jack@suse.com>, Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org, 
-	linux-ext4@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
-	linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, linux-mm@kvack.org, ntfs@lists.linux.dev, 
-	ocfs2-devel@lists.linux.dev, linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, 
-	linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org, 
-	Karl Mehltretter <kmehltretter@gmail.com>
-Subject: Re: [PATCH v2 04/34] ext2: don't set SB_RDONLY after filesystem
- errors
-Message-ID: <za33axmgzmuzsj3zmfeh43fkphtcsqtkhhrauwuvs7aiftelgp@dzl6z322st5f>
-References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
- <20261029-work-fs-sb_rdonly-v2-4-2f44f64f0b66@kernel.org>
- <5qefa4mracb3x2z4vsdejmkyyfrhdcrixmmnooz4rzwcdfoejm@mqkvixj6afwp>
- <20261110-kargheit-impfen-pausieren-881763d28b19@brauner>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ET7iczPctAVnyXFpp6ZDoVXUaxuU2xX/qY9AdNh6SRs=;
+	b=xouIaLmgzRIFT9tCBggtJpQps4otHitWThHdFIzv9nKGFTokVPm+qxNkw/ePG04lp2Ojyn
+	ETdz2ZQePHY3eUDlkv9LvqmX3vhnT0jtMUfr5eCDiMVXZBjU8S34qCJWjyh/gm8RA7S24O
+	AUrDxBYCAjHCdQdnqK+HlmdMLkXecKk=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=VOIzhbnP;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.129 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794406867;
+	b=rXw7WTqLV80X0aOBox3xWV8n7bHbNHGs8cDD7MYn/qda4o1saivxVoYC+Dg/Lx4I8pDZEE
+	4cHRB3BkE3XlS77STPfMUt8ChdTNN+vxYS43CwcKlYR8YMxH7kaGcqdkEtJDtl5uR+93aA
+	eBbS+f/rWguVXHF3ludlRPNYo3GsQ2E=
+Received: by mail-pj2-f1.google.com with SMTP id 98e67ed59e1d1-3b0d11b85f0so1935428a91.0
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:21:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794406866; x=1795011666; darn=kvack.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ET7iczPctAVnyXFpp6ZDoVXUaxuU2xX/qY9AdNh6SRs=;
+        b=VOIzhbnPN4LM7BXJ8UgRASr3GG7ZZwQr1mfxDJWkXdBxRceC076MiVo0lbd5cg8Oje
+         uwDSpYMKNIwggc+avtgLTDCnPFMqfrgQB0ezpA/+l4jB7Iqmr/Aw9OWL84q7jSHA4De2
+         V088sWTh36BW7tqXc3sheZLV8is29yw6ENj+5+YVnc6V13U7+ajNx5FdkxpJcI2xnrMK
+         yj+1ctPr1BX52hYRhTa+NwEF0l0CLAXvPsDfP2kAxm89wfO/kXozgQWV/SNUkeZ5zNAi
+         JHw3+eSOAg/YURxARVhDlC/OTajsrSQpByhlbEalDptDrr8BIq7uNz61LbJIUiTIsktF
+         TLFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794406866; x=1795011666;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=ET7iczPctAVnyXFpp6ZDoVXUaxuU2xX/qY9AdNh6SRs=;
+        b=SY3ljfv2yTa+Yoz16uXSwbhzQyoStrM2zIFSYXO4R9qSWuTGTBcL4Nqubu0GtdKix4
+         vhVDwgRLD7dgtBk44sudPyeGbzdFxgktVRaNr6bYQAUHrqxjS0ihfmmS4gjW83NRQAnV
+         AUYabkeB+EuMXrG0buY0KYpDDs5hb7ChHC8O877FEykCN+s+89L8XuwNqQ1rNWMVtlqr
+         pTaYoTgqlPT9warrhNkgghvgvT7IX0QX/glEREHhZOb9AY7yD9LdiqoDS0axEAx5l3Id
+         1m+EdFKNuGYLsd6QianmBTjyNvQ8Rj8xzTuTN51kbrwcs1hwdhTkadwVYi3kez1vPRLA
+         pcLQ==
+X-Forwarded-Encrypted: i=1; AL+hErGosbaouDHiGBXeDV8BeLVJVTrMuznip43iesQAbkY1r5sFR3SATtWarbVPCkwDlICuU7JRUgNnUQ==@kvack.org
+X-Gm-Message-State: APuU4Z9KJNAknyzJJi+E7cntNQecTS6ZEzzVDS10oTw8ulgds8o2Xbs3
+	FrvsYYSjj5gJ14ZJJR99qL9eesyrDqA5KTXhBu7AHdyqhJ/ftTxZ2Vy4
+X-Gm-Gg: AYBFou2Q7NW+t6g7mF+fn494J2HimQhhwwuORedtFjEgYzSmp7KCRCWqEGVJ+07f6ww
+	exurnMQoGRDozoBA1xO/PsjGl6Izshfs+qaahcZFat+gfhRpdXtMLRXC6j1Rcx7a4Mg8pmN/p9z
+	kyzok6zDfSnxfY66+MfVt1bpngXbhTo+9Y4xPqItetzwEvG7sXO175d+AT661V9jaF8ar3v4fyd
+	jQIz5zteHs76kV9s2wrFS+RSMFgAW3iFqmnKrwKPLG/FNnIKe6SX7CMYMU/YMHaWNaKq2f/VqaK
+	gslrHDBGtXuXIdsn72ePttSob5DCZD0XNQ6Ky4xL32ytn9qMp5K8WCRyPO2p9Nt1J1JRKx66UPD
+	Lu8LzwFI4b7sx6AgVKnyNzycEl9EyzSUwKVsRcXlsareS4lDyfzcI4in6q55q6wOqTAHz9hSo0N
+	5xJ27RgfPGmAEEkOdE5GZQricUvNTj4UNZZ7yrghnRNX9UU16YDcjnMKKMO0Bg6dDPUe6Glcd3Z
+	f/Ea4eThDNGdJsJSsyWdjxbfM5K/IZsJH3qG1b5PaSzCuidAo5KJPJguGYc89Ymj64yx6+JTMoI
+	Q84O/J1zOidOZXgUWuQvDTQX6kGRdZF/KlTsvK6zSFdYcVJN0Hx5yFOOsVWaFUCgMm+WyhDB2c1
+	cVGsE4OO6DlD8e3QCLbqKCc/0qg==
+X-Received: by 2002:a17:90b:2541:b0:3b0:a757:4f85 with SMTP id 98e67ed59e1d1-3b182df3396mr2481822a91.2.1794406865432;
+        Wed, 11 Nov 2026 06:21:05 -0800 (PST)
+Received: from localhost (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b186234c12sm2844333a91.10.2026.11.11.06.20.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 06:21:04 -0800 (PST)
+From: Aveline Noir <jm5905938@gmail.com>
+Date: Thu, 12 Nov 2026 01:11:35 +1100
+Subject: [PATCH] mm: multi-gen LRU: migrate every mm owner on memcg attach
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261110-kargheit-impfen-pausieren-881763d28b19@brauner>
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spam-Score: -11.51
-X-Stat-Signature: pf3x7xm459uru9jm7diafx6fs1ozpwgt
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261112-mglru-memcg-attach-fix-20261112-v1-1-4c3c707ba922@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/z2NwQrCMBBEf6Xs2YWmFFv9FfGw2axJxERJ0iKU/
+ ruJgsc3M7zZIEvykuHcbZBk9dk/YwV16IAdRSvoTWUY+uGolBow2EdaMEhgi1QKscObf+O/nwy
+ PJzOPUz8zVMsrSe2/D5frj/Oi78KladtCUxbUiSK7FgXKRRLs+wdXZ6+snAAAAA==
+X-Change-ID: 20261112-mglru-memcg-attach-fix-20261112-7dc49d84708c
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+ Yu Zhao <yuzhao@google.com>, Kairui Song <kasong@tencent.com>, 
+ Qi Zheng <qi.zheng@linux.dev>, Barry Song <baohua@kernel.org>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Brian Geffon <bgeffon@google.com>, 
+ "Jan Alexander Steffens (heftig)" <heftig@archlinux.org>, 
+ Oleksandr Natalenko <oleksandr@natalenko.name>, 
+ Steven Barrett <steven@liquorix.net>, 
+ Suleiman Souhlal <suleiman@google.com>, cgroups@vger.kernel.org, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+X-Mailer: b4 0.16.0
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D98B24000E
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 26EA118000A
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794406513-202094
-X-HE-Meta: U2FsdGVkX18B6z6NL+elclJpSEXHFSsuYZLsFek8q3xtzGJO8gpSz8QJcHrHjNbgfNuh9piYb/YRL4LgEZYvvfSwoce0s5jVpW5QDOquccQ1WtUHDuJh1hWDBarCH7KhnzURj+7zPApc2kr6W1imyhLzk2t3/8Fg6vyVcEaMmT/RrxpKmBquZTO6E9p4809tfgvKNwc3gkI1AjOX6ZRfBxGqsjgzrRXS6XAayt4wF4JQ/qz53LD+vOy2OIyO0xAEYnM6QEYW/1+RA3CLgD+n/IWFdN0CNRsZqSvayvu42YpDNikAZhEnX6g6kEmf8mkpLxcLsJUn25u7Ip0nE6c5iqIjQWIaYWYjKFV8vUh1uv8yQwccXqXkGExBAJWLTc/7u1Tsi526l6tZ+hpTLGToE4BV3Up6bFYiiTFZ4X3WaSX/VtxTlcJtfuQ42YKU8u6xGPj6m9jScWq7hfEUXnERx9gOstiNEZfT7en7TcWhMNYB3IK2qbV54GBK1e18VWZJK18BBxkc846hJAn1T8BvfGQb43TuWgrmWb/dhhr8aBvF9F+zA7m6a4u3qi05Y4FzwyrXQWxE9Dc1KflJjSfOCQFsz2/Kq+wsINuqI5OArsyncMCdOfXJSxPaTbOfGJN/cNOpnymhGWd0On9zuFT2HuGk9p8SVCHgv7hTlql/G38UpD3f9x/+j+oVJrRuIOaGdHIZH2aj3NG4CBvAcZayoKAryygYLD8cP1mNNG35UA9K0f8dSEU/UNP1i42kXYAFcRk+ntQzzhghCID8F/TRXXsckzMyZcJ9CVmkBScFuku1ivvNeCdKx54wFXwR33Ws7n44IcRM1tO5HLoIQGzBSJYh9OxbcgYdcUfcvvKTIerYRob3pmWK1mabmuTQzoOEKC/z89+93OdmGFVwCK0R/sdxnatPrZufFNNG/NEqLWHwTsQ+p8jH/m28j2fi7m98lNsKxHVbtYrZB8V36vP
- TPiARekI
- vru2zSDsrAUNSXHjOQ3kAs3fl1c6dnBlXwBC3yqcj3UA2dp4bZDGS/9haT2vMaNMLzs3UDu+K/ZEq8zJd1T7fSPV+mCQ1tMooxdiMPyXe8GI03hTG70wl5PqZXciTsf0MfHeSCPaDi+3H0eCcjvuWYXfJLb08iaUU9tX9R2tqXbwORHvc7qXWtSMMdklqQ+ejS40GmYwewmVRqlAZcRYxYevs9LiW7d8Pa0SVn8tGgqHs+fenocGSXydguS3PvT/aMuH5n/JZXcsFTnygDLM0MQ+6OgI+RX6CKoMc3Zr+6xvtnHOMFrjXrhMpUfTwiJh2nKTNgcbc3Or/7sB7te5S8wO9g9Sa/0/yHSJMBZLWYopYOtiKUhddxORbTSblTZ0E11x/jVOLgXa2XOahh/xZtUy1Dc78N207G7JTXysNor/T270=
+X-Stat-Signature: qtim5n1j7fa9zrn1rq436j8ooqwtuezg
+X-HE-Tag: 1794406866-767950
+X-HE-Meta: U2FsdGVkX1/xZKvoG7fWOx9RwfDxKgELyeRYTW86KpFdN5leuyrIB6M/wtz5CYjvxQqqzI4wY1D8sm1M5eDU2Xup91FYtYd7YeXxvXErLZtR39GxzgpI5/lRijuE90QaQrg8wFiAiPtC+HXpXizMNHU27kS6IldmKHaxCpkbYG9v90IVU2gjl5pL10Kxv8U/m14Dk5gAm4qAL3KqpO6CMCdxgXmUtZZgAq3/4ks/nDaJX9QyYhCnrU4d5lPpu9sZh87JDvt/wKHhhauNL1gy0mEsDBH5JCRXJYIDiFII0oiLNNw92aKbl4dohLRj3il//dQ9u+Ni8BUiXZV6XSJd5A7YZh3JRSnjv1CoquDqOEKs3G4CxVdQjW4N0+WABKnbyeZnv2a8+ojS8U+xEJ4hYklRlxkUuPLY9CS3FIrH2MV71uuJbsxDViRcaxwq0bReFaVuDziQT1plqp8oP6qR6rs7iw9DihkM3MciQHPwp9i1K6NcXQEepzn8g1CCPYkE11ZfNDPnw6rdx9BVPJisjbwPTrlHppBZMtnMfP9gef6zrgJGmF5hsPyT39ZstZtAxwo1X6EmQ/SZ2r3VKZeKEPjGGzGV5MqebmmAhli5PGabVwUIUp4NUt4za0jGSZW7DntjKAzzizHBvn3SzqpQTyHMT1r6J6J9kr/gGmZ4NmWEpe7TBxqy06P7MFJVPx4Bt1EVG/SRmfAXoXgJxvLtWoXIuGC3FsYJpyp+vi5Z1Q/iQwuOw5x/JIS3jb+Lo0BibAdgnCeFcdLwG8JjlI034NFIdvwvzwAjY1h7Gj4bbyOGPXTMLQ8KeUUYFr/Yng2RRMetccxs5Hj3ETpJ7TOlK5ED7aZoIF3AGDflnfprqnZBjE7m7ueZK4rKLVdzi0XDRIjzWlRWYGeO0fy1+4TFvJoaffPj6i6xQzJ9qJPCyQbpO3Uevg9BKLDhGuw9HosAx+fLPdMiA/vY1u7iEzQ
+ Or56PPPE
+ ov3vjYO19WCZFI+rjHnittyuSjGpoje9dn67Wvf6eOYG1KZvcxYzzX/H2hv8UZFUJKQA4hM3ZpHwgL1GlGf47PsYm82jG8DEKsqEzw7Mek5xQWXvFqqIzHeD9XBh91T1jJdVkxsXY4fap8IX0tyUFtyvyfjrlds5Bn9Ccz7vir45zIbsv0suwUwKC+MhnGe6CrR1/OVCS5UYVqcZxvCQNTeBiApu77wGJw1zqRbiLQfOwz/0IqLwoc3Nurt3lxrwrcOYdMkkZICQwzdq78JG4ggPpmlcXtt8XV+RxgDMb3V4OG3lP/HMiRDH0bBtiMFsGVe4Qy1Gkx7uVErHnBGOEbQVimovQWQFu0VGrQMtQEZUO33267bLgkgogYgW4njMWceoRN65RgXCIGFFsKmtmNf5VEBwrOHJY8ABhWxI+jGpMyWuTw9bTR6TNcCTUPs7xH9mjoDj/jOKz9ua3DA5VlOVevg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,54 +139,76 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue 10-11-26 22:50:47, Christian Brauner wrote:
-> On Thu, Nov 05, 2026 at 10:22:07AM +0100, Jan Kara wrote:
-> > So shouldn't we just modify the sb_rdonly() check in sync_filesystem() to
-> > use also sb_emergency_ro() and don't bother with modifying individual
-> > filesystems?
-> 
-> The VFS patch I posted in v1 thread did that. I dropped it because
-> of jfs. jfs keeps anonymous tlocks for every allocation that writeback
-> hasn't committed yet. If sync_filesystem() bails after the error nothing
-> commits them before evict_inodes() and jfs_evict_inode() hits the
-> BUG_ON() for a non-empty anon_inode_list on umount.
-> 
-> Which is what happened before the series because the error set
-> SB_RDONLY. jfs_reconfigure() relies on the same sync_filesystem() call
-> when going read-only after the error.
-> 
-> jfs could commit them itself before evict_inodes() but that means a
-> ->kill_sb() wrapper and a txQuiesce()-like walk over the global
-> anon_list filtered by superblock. I don't think that's worth it.
+When a task moves to another memcg, MGLRU should move the mm it owns to
+the new memcg's mm list.  mem_cgroup_lru_gen_attach() only checks the
+first thread-group leader in the taskset, though.  A taskset can have
+several processes, e.g., when +memory is enabled on a parent, or no
+leader at all if the leader has exited.  An mm missed this way stays on
+the old list, so the new memcg's aging doesn't walk it, and it keeps the
+old memcg alive after its memory controller is disabled.
 
-OK, so instead of BUGing in jfs_evict_inode(), shouldn't JFS just do
-something like:
+Check every task in the taskset instead.  Skip this when MGLRU doesn't
+walk page tables, since lru_gen_migrate_mm() does nothing then.
 
--	BUG_ON(!list_empty(&ji->anon_inode_list));
-+	if (!list_empty(&ji->anon_inode_list)) {
-+		WARN_ON_ONCE(!sb_emergency_ro(inode->i_sb));
-+		/* This needs helper in fs/jfs/jfs_txnmgr.c */
-+		TXN_LOCK();
-+		list_del_init(&ji->anon_inode_list);
-+		TXN_UNLOCK();
+This takes task_lock() for every task being moved.  Moving a 256-thread
+process via cgroup.procs got about 2.8 us (26%) slower in a QEMU/KVM
+microbenchmark.
+
+Fixes: bd74fdaea146 ("mm: multi-gen LRU: support page table walks")
+Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+---
+Reproducers for both cases pass on x86_64.
+---
+ mm/memcontrol.c | 21 ++++++++-------------
+ 1 file changed, 8 insertions(+), 13 deletions(-)
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 84f4a8fd4d16..4590a9bfd9ff 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4762,27 +4762,22 @@ static void mem_cgroup_exit(struct task_struct *task)
+ 	task->objcg = NULL;
+ }
+ 
+-#ifdef CONFIG_LRU_GEN
++#ifdef CONFIG_LRU_GEN_WALKS_MMU
+ static void mem_cgroup_lru_gen_attach(struct cgroup_taskset *tset)
+ {
+ 	struct task_struct *task;
+ 	struct cgroup_subsys_state *css;
+ 
+-	/* find the first leader if there is any */
+-	cgroup_taskset_for_each_leader(task, css, tset)
+-		break;
+-
+-	if (!task)
+-		return;
+-
+-	task_lock(task);
+-	if (task->mm && READ_ONCE(task->mm->owner) == task)
+-		lru_gen_migrate_mm(task->mm);
+-	task_unlock(task);
++	cgroup_taskset_for_each(task, css, tset) {
++		task_lock(task);
++		if (task->mm && READ_ONCE(task->mm->owner) == task)
++			lru_gen_migrate_mm(task->mm);
++		task_unlock(task);
 +	}
+ }
+ #else
+ static void mem_cgroup_lru_gen_attach(struct cgroup_taskset *tset) {}
+-#endif /* CONFIG_LRU_GEN */
++#endif /* CONFIG_LRU_GEN_WALKS_MMU */
+ 
+ static void mem_cgroup_kmem_attach(struct cgroup_taskset *tset)
+ {
 
-So that JFS doesn't block everybody else? Because conceptually, once sb is
-marked as emergency read-only, we really want to stop writeback so letting
-sync_inodes() run seems moot.
+---
+base-commit: 067c5c24cef23d913b67eaaf71ae67e7169a6620
+change-id: 20261112-mglru-memcg-attach-fix-20261112-7dc49d84708c
 
-> > Is this really needed? All the xattr operations go through mnt_want_write()
-> > / mnt_want_write_file() so this should be caught in VFS...
-> 
-> Not the ones ecryptfs does on the lower filesystem...
-> Hm, maybe we should make ecryptfs get write access to the lower mount
-> instead and drop the xattr checks from the filesystems. Not sure.
+Best regards,
+--  
+Aveline Noir <jm5905938@gmail.com>
 
-Argh, also NFS I assume. OK, that won't be easy to get rid of AFAICT (we
-generally don't have mount available there).
-
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
 
