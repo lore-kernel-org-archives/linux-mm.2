@@ -1,99 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A1EA606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 13:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA20606A88B
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 13:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TCOOE1SS
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N1FWFgdc
 Received: by kanga.kvack.org (Postfix)
-	id B02C96B05B2; Wed, 11 Nov 2026 08:30:52 -0500 (EST)
+	id 7E4436B05B1; Wed, 11 Nov 2026 08:42:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB3536B05B3; Wed, 11 Nov 2026 08:30:52 -0500 (EST)
+	id 76DA06B05B2; Wed, 11 Nov 2026 08:42:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C8BC6B05B4; Wed, 11 Nov 2026 08:30:52 -0500 (EST)
+	id 6353D6B05B3; Wed, 11 Nov 2026 08:42:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BE0A6B05B2
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 08:30:52 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 14FF7802D0
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:30:52 +0000 (UTC)
-X-FDA: 85422923544.20.E55B138
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 76A1DA000C
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:30:50 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TCOOE1SS;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794403850;
-	b=ssd6RTXPro38uz8FnK+g552kDZqn8e659zivDXVsDkfWPAHGE51c8+NfD/qcpQO6GinAsv
-	vYTTmyOoxb4l3WxiEGocSv2UjQaF3+DLmy24Sv9j/6wvz8vAEKniKdxoxzgdEEZEvaYX04
-	MfyAD7bPUCehJONdiY4Uq+V55GuOWzE=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TCOOE1SS;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 38E9E6B05B1
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 08:42:56 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BDF0BC0299
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:42:55 +0000 (UTC)
+X-FDA: 85422953910.18.A559FC9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1683820006
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:42:53 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N1FWFgdc;
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794403850;
+	s=arc-20220608; t=1794404574;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+z/sJOVgAS28x/o3MBGl9WUjLHrIvvzM3O5rOwm04js=;
-	b=F7N9vfPrRSJtwfVxeUPU9uLUpoYH6rfMftC4t2xhN01ivoq+l8ofyyuWWeVt30gAtxLzx9
-	xNhngM+Q8fENrIo+QKhKlFdGcP9hI4aPD3oSvyY6B0+RWO/LhiiAr0l0r3mQPomeJDP7bx
-	uFSqj+dGAopXKkA/7DwaZD1l11z2fSQ=
+	bh=r2uDapf2vLabhbDFIRRtIj4i5+V0KX58w12edhkpSZU=;
+	b=b3LX11+WxmBtZTFNhibfhyzI0foStUkwyPnRIQX4pYxJntMXI03u1GXzbwHix9pvGJJ5I8
+	scawCuEKjI5zfhR1r86SvvnpCkH0232seaFcUnrnYxNneCo09rUmYKKn5lfT0WZg8xxDRM
+	Ceigryzq/pgu+NJep6A7sZhG/rEEf+w=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794404574;
+	b=TJml7kjd0Mi1JkbOZoxgmOo2NLtFjO4sIKtSgeyQbv5CoTEa36cfn7Ck+X8fp7CDYxk0aP
+	mq4S09u/SLvdq2YTZGCH/lIJo/uKjj3rZuTCW092wjuwXaYf9aLVHK9Ugz9PmiawiUFT6e
+	U0uK6v2wzrsnQQ4kEgVyzoiagNrjmzs=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N1FWFgdc;
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1726C63CCA;
-	Wed, 11 Nov 2026 13:30:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 239EB1F00A05;
-	Wed, 11 Nov 2026 13:30:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3C0FA4764C;
+	Wed, 11 Nov 2026 13:42:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B351F00A06;
+	Wed, 11 Nov 2026 13:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794403848;
-	bh=+z/sJOVgAS28x/o3MBGl9WUjLHrIvvzM3O5rOwm04js=;
+	s=k20260515; t=1794404573;
+	bh=r2uDapf2vLabhbDFIRRtIj4i5+V0KX58w12edhkpSZU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=TCOOE1SSD10QWz6ETDZQQa8vMzC3OQf7QgzVHTot3DF2mHh3BGpH6oizahN+4xoIw
-	 V3tUDGYYwfQVsmabwgFAkaDuZDnkhRAzjvVniXDXC3kgP/C7x4a0UowHWVHTmh4elc
-	 AprsIFNdFLJQcHPmZWalSfBqHNk4MvhSfNt4SVagQIekeLaWQy5pCgDAj7UMrU20Zu
-	 D3Uik2dp3cyRA39clPl+3cwOHuo3mg24zpfiZA9hCPtZfRLRbkFMFYgHLBhHzPK50r
-	 8h7ykUxGXare4jcYCCOclmSEYI00dG8SFkpKA6pvK5xfrRa5Voib2AyqIlrEpk9+7c
-	 gkx+KmeMqrh+g==
-Date: Wed, 11 Nov 2026 13:30:38 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, apopple@nvidia.com, 
-	byungchul@sk.com, david@kernel.org, gourry@gourry.net, jannh@google.com, 
-	joshua.hahnjy@gmail.com, liam@infradead.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, matthew.brost@intel.com, mhocko@suse.com, 
-	pfalcato@suse.de, rppt@kernel.org, surenb@google.com, vbabka@kernel.org, 
-	ying.huang@linux.alibaba.com, ziy@nvidia.com, kas@kernel.org, hannes@cmpxchg.org, 
-	riel@surriel.com, shakeel.butt@linux.dev, kernel-team@meta.com, 
-	baolin.wang@linux.alibaba.com, Nico Pache <nico.pache@linux.dev>, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH 3/3] fs/proc/task_mmu: account device-private PMDs as
- present in smaps
-Message-ID: <avRtypkg16mVSDxM@gremlin>
-References: <20261111113904.650722-1-usama.arif@linux.dev>
- <20261111113904.650722-4-usama.arif@linux.dev>
+	b=N1FWFgdc7n3FyJi4mWq7kE7aBBRtNzoz7OTcWnlRMydaapZ3nDIlCS4Okv1TVPC3m
+	 JL6rQ4hb45pb3iD/dM5aW7LzXLL/qyYUni1xL1rlyF6YBcPpru6XkKZzzFwowC9Y6y
+	 C7NiuCGH+vmHlWX+5tIej70Q1CIcqLl6FT43SjHcnbxrNC7mmiqAQmKBwWSoAD7GLd
+	 ArJzKTz6tCYzM+6Y3ek8ew3nEUuf+jxXUBKm3e9gdsw66SDyb8OUIR83eD2WnwijaO
+	 dPW/jiYjBeQgF5n7srNsN9thQlouIMfyRaahC/yQazXkj1+PCWlU+Bj+iM7D9axTAT
+	 G3hqLCcrRvQ3g==
+Date: Wed, 11 Nov 2026 14:42:44 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>
+Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Miklos Szeredi <miklos@szeredi.hu>, Amit Shah <amit@kernel.org>, 
+	Jan Kara <jack@suse.cz>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Zi Yan <ziy@nvidia.com>, Bernd Schubert <bschubert@ddn.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-fsdevel@vger.kernel.org, 
+	fuse-devel@lists.linux.dev, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 1/4] virtio_console: copy pipe buffers in splice_write()
+Message-ID: <20261111-thunfisch-wirbt-waldrand-822275b2d3b1@brauner>
+References: <20261110145241.536019-1-kas@kernel.org>
+ <20261110145241.536019-2-kas@kernel.org>
+ <avNuQqLf9CG9dSsE@casper.infradead.org>
+ <20261111-heimreisen-ungeziefer-empfunden-a892571f2c07@brauner>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261111113904.650722-4-usama.arif@linux.dev>
-X-Stat-Signature: e94riejtqeu8ragociqysbecygdueoga
-X-Rspamd-Queue-Id: 76A1DA000C
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
+In-Reply-To: <20261111-heimreisen-ungeziefer-empfunden-a892571f2c07@brauner>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: inq78ucqdkyp5c3ud39wtwmnokihngrx
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794403850-858686
-X-HE-Meta: U2FsdGVkX1+osE5SRrls2vqs4wtTyKhVIN+XCX8LslF58MP6LwV1gf9Lp9gPWQEi2AbmDcCE4Du9Q4yMcS20iRJeNiVt925eyW+z32HhKXEApdlYrNGApuY5ryiR8PVBPJQUVLaAR8kNLQnC/phO04oQ+p2t/PhzoXeMShJDqQexS4mRNfOL4QPLU1sudNlOA7zMyOQpKxYED5aEqdZZdVLd+z7ldrWRWdoq4eP7fdgc03xTodQk0HHCP61sTHc7ADvOqVHmxFYrR5e3yPTMgIXKNF7bbgmtv6j2cqPxgWkwo1FOHWtKIDamyivlu4JSngJk6I+h+oOKayRsYrIaC9M8Jo7cxfBshGmbKXJRy8v1G23j5Xe5LW7NWfq3MqGf09UvYkGVEa5pKXBp2g65tOsX+hf/jGDIwl07QXWMUfDKBw8Wdmcu1LQLycQRAVwpHrcL33J71Ci5NFpGiPjuvA9/kqAZp9ZV+29bQE+bwY9b5CoZZDjtbkbL8M5xO1C9xp1xtYVZA9DzaZ1g9/Y79zQpwB8S9rRdo29Dslsw2UjQkeyXXCcySUIoT+RlpnJVG4EzgpuatnfvU4BNbc8/kXYIF9Fe1C5xPg20xrSKRdp3Xmi1CJUmB6IGar/XT1Rl1cojGzLHE8rxaycsYkajR+g3FfsUtbCZ9Xpg78MZ/ed0EGl87BNXlFryjrnZaV1/NSNjoKmJ52RvIywSDvdvC8d3rKa4BZ7kXie07V2yfoiIWNZqll1cWChAC7Lnx0QpLYWhzVGITpB0RO8iE5FZDx3DUiUlHAmgwISrpytsZtIc3dvueLc+wOprcH6tpCTd8cjzm0bXCLqCRCLMYqzPWJFrMPJsnVxOrySVRJgYLzKZXBqthT2VWarm9B4I5GZWsR/N2w5xUN5KaShCSjrJWEHVAxOkZwdTmmVPwWshyBW025ehetOx4UfjwE/NUWWWW2oZ1YOh8MZfC5ol1wr
- uHWU4IcH
- sYeI76/FDUjNaN1ZOL7twzh4DgIzVDgB7BMqEOhGFXDEsE47fB1LZczJttPoxvYyiIqjnGOFSEHSoEjYf5oe+jCul5bZVMiUEZGfV1DkGxJ3ryFjaSIWta/VEHUguIPif3NfalQRe8FPYRrS3vF/A093BaA3QAgWyfyUunQ/TtrdOULDXt3W9emIJ9YKjxduZepznsvHYcWN3snf2RGLL1rc4BjR+Kb+bn7hEoBlw7WxKMhmqtJK/Xv+JbgE7+38kfkiwkAyDxVnQxXukG889o0A3f4/v1XHvhMLpGbWTj2++q+iPG0SjgWNM8NGZZrSqymVVcOeGnVu4nD/a9TdoU3UEop/RUKyoASk/f6n8WAp/s0bCKeOiUntRLWAdSBwZvC7jhh9CCqah/BE=
+X-Rspamd-Queue-Id: 1683820006
+X-Rspam-User: 
+X-HE-Tag: 1794404573-916393
+X-HE-Meta: U2FsdGVkX19S7NuGdfviDLiinCNDDjLi9kXYxyeRgno0qrjldaoGrdflEH+HBsSi9yAgehOTmL8/R8y3mvKMPMxCoOqG0r+/oQhw+3HR9MvS5t7dfGAVVsimiCFHWbHuFml87GlgtKGRIrMRUqvkNFPt0Dl8eyS3mMWHS3UydiCHhG31zqt4Gal4k5onrmDVTHWF4JROx6fJRula1khGLzsGQF0tZgr5PgZCzlY5xAtRgifV0ifJPR5MRSlURHJle1AHPk9c+jqfLxKZmCRuWfUcBV1n0HgJkSYuYAJvrk9+3HetFmLQPC+YCbAVMUNj81nv/7zDGBxTSIsNipSl03Y41IfWibdETXBqLBCTOF4wyVg9dDrLnQLXpkpwgddrpE6p3myYaoDlRpwTqZgsh5w5MBym7OznOoNDgGS0T3hZGkxE71R0pj65r1/WA+2brhlrgADgDKxwei4Jyr3PW1khpT2SM43hAQpAV12cbftGl4vEK6WIS29A7DEJ1wE435D9rwUR3ZUZzcAH5Ra+KNyx/ux2varJVseXvWxeneFhKVpjruO+UxNxQwoEuH0YsGywb892rijS1ctluzfC7gJIX5vjuQV3b3S+csTm9s0ETR4LZQog/PQvPK2qLm4V75SIUWCGROpLrboDRk5wMGDUWAfFylgT6s2/jTQiTkPusM6/4dmxXIrvq3K/J6e2wykMXprkeChIavM19r+kYJRLXD6XACM6jCSYwKk481jexEjmmVXDXPN/2KQ7VItotdTuihJrrsC3muqGXHvjkAM3u+hli4xgb5scPG/ltvqK8MkpbjJ+2/zx0u9Z4ssSH8nvZ9nI9Ds1KqoViPU50QKgxmP/5fJcZzEcrg9UhLS1AR/m4m4+lsAdjJYmediKB+kJmsLPmSkkYgZuyjgUN+jjD7eSbJK0FQMYwduhIRJETp619KOt4Fh63gOR/MGvF1+eUV+TbZwJoVhwpAT
+ 7twOKN7f
+ NLE4Zyz9Bmipv3fJFjkZXO4EdXfIQTAfdVwWbQ/eOdRyFZsbr9MPgExJtupQ51XTvv7Omf7DHskbuIU6Z+ddEB7WCJtVrIn7grzqF6FMDkZFuw/Oacfb7EatcYVMwiRS5NupbDEwPn1l1Cc9LdYlrP6UIHMi30Gj5p09JMIiOn5NqRjB66I471uWO31cL7ejgeOv9DMIWSsSz0PGsE1HZ3a9ioCAj35xVY5s3ofN0WyooZvoZ35L/jNfX67LIMvtoHnHlllp5x+oqekYrbfKYlR7/Dko+7zKFnraoeJAC7DDapQdKbUQeg0YMmgmjEVjOMT+/PtJAARTF/3Ge+sJhAiDdmq79wt8r1GUE9Njh3FTyCTZI7hM4ASWcLdkL6keL6251aeJkIfL506W6iT1Pe7MvGsD/WwxZ9p3g
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,49 +106,99 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 11, 2026 at 03:38:31AM -0800, Usama Arif wrote:
-> Device-private PMDs represent mapped pages, but smaps_pmd_entry()
-> passes present=false to smaps_account(). That treats them like migration
-> entries: mapcounts are ignored, PSS is charged in full, and exclusive
-> mappings are accounted as shared.
->
-> Match smaps_pte_entry() and mark device-private PMDs as present so
-> smaps_account() uses mapcounts for PSS and private/shared accounting.
->
-> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+On Wed, Nov 11, 2026 at 01:36:37PM +0100, Christian Brauner wrote:
+> So we need to copy per page which would fix both.
 
-It feels like PMD level device private entries have been the source of a lot of
-issues, maybe a good area to audit in general... :)
+So the fix below is what we've done before for pipes and I think it's
+the right thing to do here too. I put the following on vfs.fixes:
 
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+-- >8 --
+From: Christian Brauner <brauner@kernel.org>
+Subject: [PATCH] virtio_console: copy pipe buffers that span multiple pages
 
-> ---
->  fs/proc/task_mmu.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> index c0d391186c2b8..ad97532fc1184 100644
-> --- a/fs/proc/task_mmu.c
-> +++ b/fs/proc/task_mmu.c
-> @@ -1032,8 +1032,11 @@ static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
->  	} else if (unlikely(thp_migration_supported())) {
->  		const softleaf_t entry = softleaf_from_pmd(*pmd);
->
-> -		if (softleaf_has_pfn(entry))
-> +		if (softleaf_has_pfn(entry)) {
-> +			if (softleaf_is_device_private(entry))
-> +				present = true;
->  			page = softleaf_to_page(entry);
-> +		}
->  	}
->  	if (IS_ERR_OR_NULL(page))
->  		return;
-> --
-> 2.53.0-Meta
->
+pipe_to_sg() maps buf->page with kmap_local_page() and then copies up
+to a page worth of data starting at buf->offset. But kmap_local_page()
+only maps a single page and a pipe buffer can span multiple pages of a
+compound page with buf->offset pointing past the first one:
 
---
-Cheers, Lorenzo
+- skb_splice_bits() for AF_UNIX and TCP sockets
+- tracing_buffers_splice_read() with sub-buffers larger than a page
+- fuse_dev_splice_read() which hands out the page cache folios of WRITE
+  requests. Those can be large folios since b46e09667411 ("fuse: enable
+  large folios").
+
+Without HIGHMEM this happens to work because kmap_local_page() is just
+page_address() and a compound page is contiguous in the direct map.
+With HIGHMEM the copy reads past the mapping. A fuse server on a 32-bit
+HIGHMEM guest that splices a WRITE request into a virtio port crashes:
+
+  BUG: unable to handle page fault for address: fffab000
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  Oops: Oops: 0000 [#1] SMP
+  EIP: pipe_to_sg+0x158/0x1e0
+  Call Trace:
+   __splice_from_pipe+0xd6/0x1f0
+   port_fops_splice_write+0xf9/0x170
+   do_splice+0x2c1/0x810
+   __ia32_sys_splice+0x2e7/0x310
+   ia32_sys_call+0x1916/0x2510
+   __do_fast_syscall_32+0xd4/0x550
+   do_fast_syscall_32+0x32/0x70
+   do_SYSENTER_32+0x15/0x20
+   entry_SYSENTER_32+0xa6/0x115
+
+pipe_read() had the same problem and 08aa64796016 ("teach
+copy_page_to_iter() to handle compound pages") fixed it by mapping one
+subpage at a time. So copy the buffer with copy_page_to_iter() as well.
+
+Fixes: b46e09667411 ("fuse: enable large folios")
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+ drivers/char/virtio_console.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/char/virtio_console.c b/drivers/char/virtio_console.c
+index b1b1aaf43e07e..b93a31b81cf4e 100644
+--- a/drivers/char/virtio_console.c
++++ b/drivers/char/virtio_console.c
+@@ -12,6 +12,7 @@
+ #include <linux/freezer.h>
+ #include <linux/fs.h>
+ #include <linux/splice.h>
++#include <linux/uio.h>
+ #include <linux/pagemap.h>
+ #include <linux/idr.h>
+ #include <linux/init.h>
+@@ -891,8 +892,9 @@ static int pipe_to_sg(struct pipe_inode_info *pipe, struct pipe_buffer *buf,
+ {
+ 	struct sg_list *sgl = sd->u.data;
+ 	unsigned int offset, len;
++	struct iov_iter to;
+ 	struct page *page;
+-	char *src;
++	struct kvec kv;
+ 
+ 	if (sgl->n == sgl->size)
+ 		return 0;
+@@ -907,9 +909,14 @@ static int pipe_to_sg(struct pipe_inode_info *pipe, struct pipe_buffer *buf,
+ 	if (len + offset > PAGE_SIZE)
+ 		len = PAGE_SIZE - offset;
+ 
+-	src = kmap_local_page(buf->page);
+-	memcpy(page_address(page) + offset, src + buf->offset, len);
+-	kunmap_local(src);
++	/* The buffer can span several pages of a compound page. */
++	kv.iov_base = page_address(page) + offset;
++	kv.iov_len = len;
++	iov_iter_kvec(&to, ITER_DEST, &kv, 1, len);
++	if (copy_page_to_iter(buf->page, buf->offset, len, &to) != len) {
++		__free_page(page);
++		return -EFAULT;
++	}
+ 
+ 	sg_set_page(&sgl->sg[sgl->n], page, len, offset);
+ 	sgl->n++;
+
+-- 
 
