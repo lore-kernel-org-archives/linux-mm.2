@@ -1,124 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905EC606A327
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 18:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B37606A8A6
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 18:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kuufHG+P
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X0vd4Ds2
 Received: by kanga.kvack.org (Postfix)
-	id 8097A6B00EF; Wed, 11 Nov 2026 13:53:46 -0500 (EST)
+	id F35016B05B1; Wed, 11 Nov 2026 13:54:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B9116B05B0; Wed, 11 Nov 2026 13:53:46 -0500 (EST)
+	id F0C226B05B2; Wed, 11 Nov 2026 13:54:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CFF26B05B1; Wed, 11 Nov 2026 13:53:46 -0500 (EST)
+	id E22156B05B3; Wed, 11 Nov 2026 13:54:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E5D76B00EF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:53:46 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BDE261A03E5
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:53:45 +0000 (UTC)
-X-FDA: 85423737210.23.88495BA
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BE96F6B05B1
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:54:00 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D1B65A7F19
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:53:57 +0000 (UTC)
+X-FDA: 85423737714.05.53479B9
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id BD08940002
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:53:43 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kuufHG+P;
-	spf=pass (imf11.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794423223;
-	b=rJurFZ5HFMi8uNZxlZESKRbRiB8rk2y9jyOyB1Ca/5VmKYeeO17ZR5tFDrICKoYek0S7lv
-	l4XBxcJBl0frfx1LDoPXFD/vBYSQAulXCCxh1nKpRoY6bKFW96omK1ptw0HssmS7cF1cgu
-	gzMwZMXUqBKOgGQREu71bSDWC+ScTWY=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kuufHG+P;
-	spf=pass (imf11.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id 4505E1C0009
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:53:56 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X0vd4Ds2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794423223;
+	s=arc-20220608; t=1794423236;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PYzsGgod1v2dvJrVFGeY0BQ+HuOlbqzOMG61uDWBRg4=;
-	b=xibjx/0xzGHl8mfhcE3b2D34N/dzNqfqcSrqTEdjUPgYfe+qJ5zh/6+V7Ppfq5wkAxkbuA
-	1ZcaR88X1kmgsdzRIvdDpmCLAulQq5sb3V2k0ZjeCvmqTN8ESv+7Ih2opXNFgsk77G0++Y
-	o7i3LvzStvp+RIzBG8jZEYJ5Thl9zIg=
+	bh=+5n1VoXqaGtyr2AYAd3HrKxaDIwkNj4GWqnIam41N0U=;
+	b=B6oC+NUW1y51w/4Rwpu9+plRsu1AzmkKisvpazb19yy3ixbDHymY0esoDEDAXjkEAbUIdx
+	Hf7OAjs1H25GuIpO1N0sQzZG7osEcbgpsVnqE1CNvjSbOTvTc3JtckJ8Sl0a9RmklteV/q
+	ImyI0tEEhoCv56A+y1ULUd7INIpfc5M=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794423236;
+	b=zQjlPc6A2U2SJNe9cHSRElqueIWFqD03HNzQT9HNAFm8GIAc+D0viTRmpqbb7X+R9tvFlN
+	UXtCIFEWDjftizPQ62+8+swyrG63uThiLbWw0CDmDISP4g9+fignA2h0C4MRd1Fr1TvSWQ
+	sywYCvoW+7EZnbqEI17eUX5OEJTgRqY=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X0vd4Ds2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3D75363285;
-	Wed, 11 Nov 2026 18:53:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274D31F00A08;
-	Wed, 11 Nov 2026 18:53:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C77276350E;
+	Wed, 11 Nov 2026 18:53:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9700B1F00A06;
+	Wed, 11 Nov 2026 18:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794423222;
-	bh=PYzsGgod1v2dvJrVFGeY0BQ+HuOlbqzOMG61uDWBRg4=;
+	s=k20260515; t=1794423235;
+	bh=+5n1VoXqaGtyr2AYAd3HrKxaDIwkNj4GWqnIam41N0U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kuufHG+PZt7gE5/bUwtIDSgCQyKQNoZnZNCoNyjfVvnb06r5ujSUAEeQarCPQfiIc
-	 wZp4EBr4rq4cXFNltmxrf0SIaMjQ2uWMU9vpupTsy10coO1fjnoJXdfI2OATToYcax
-	 o9LiayjACNwwHvtGSyMWZ6HLQfGhoxmaVtcqTacNG7gEeuA8nApxQFGRtoavID4QIJ
-	 6Yx8fGtBNI6rNqFs+Mz96J983JITGWCDc5i5XQCtpGhhvciBxovheVzlsYm/Q31WQN
-	 eex2bPQRDUwnvECITJWo8uGKjkc4tSfU483/Jx3tohwcOPHfU835+jhz7HXQ8/Yc78
-	 FK1eFRwZVOnWA==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.ams.internal (Postfix) with ESMTP id CA3A4198003A;
-	Wed, 11 Nov 2026 13:53:38 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Wed, 11 Nov 2026 13:53:40 -0500
-X-ME-Sender: <xms:srn0ak_-aftocvvhwWq8K26WaFaTB70dZ5Kf8AAA7zrAGC9NZfJPAA>
-    <xme:srn0andSnJHjOKAtahVGUVpWWcwI-R0xxszz6UxCFRla6R-kDpC6DfEXw75doH3ow
-    xsAmbevugqDuJUhWL3-L5a-INtpVLscLoywoQUzznU8hU8ywz_xgVTz>
-X-ME-Received: <xmr:srn0ao7W_LWkosI7Q3A2ZqQYxlu1B_thjIm0NMyjUHlCz2YhOO5EQQVjvo8>
-X-ME-Proxy-Cause: dmFkZTEa1dvnx6ihvTibVGtAfbCVzvwaA0LvSEoEdkrti8I5hWXxtjO6pYb7xAtBYPXprf
-    24I1jLpD1rG1ueNtQO7uHF5m0Cs2F5bIo86oBDf+1smmo5Eu06F9GBAj93UUsQfgjhfSjN
-    Qov9F9ZcoPX+nbAdKEV3ue0niovWqmWzxUyLwn1Udo3iRU5q774aTYsG7Dd1DtxvXBMPjb
-    31zhIFEGq1K7YkQ49uYelSH16y3gF8S0vKwZxZLVjWoYGod1m2+9ACDYXJ3mk6bofQMp54
-    uJxqAU5j3HbIrd30UTRvV6lpcorhjFIL7huhuDpdoNAD8Sj8ZN9QUl2HKNwBvyKXfllKW5
-    /+tDkfPISPKrmzIPgb5PIsge929BdCSHitecDptB5A8yL+CFkgQxR3MOXqd44baz+MbzXJ
-    Yz1fhqvA8I7PHblTZZFFotsbmQtYGAGTExZHZ8SIQOXRXtV1IH18sSzschAv9HLc6/f134
-    OaMMobfwqBkON2h/1fySfPxq2kCewuUBruhloon+eF6rEowyfpHrfEYgYEWv6CXAh6eGnQ
-    v2kvbdJwCRtuy/6nO4TCikhtvfmLrr7kRA4vo/Wm5gmr58uSA11tO9Cd6EXQHtBrJcbuLJ
-    IBluKQXFDBMdoL+ePqLGvJoU7Q09pc0IQCdDRfJWTlV/jCSeZTZww/KcbgAw
-X-ME-Proxy: <xmx:srn0arNHmzBFe3B9B3P8wD-cROYNj2sGs8hOw2vUJmlY8AS5fx-mnA>
-    <xmx:srn0ap6gtlXiXhN_ZM-G2c6YvVBX9kUZnK057PGCDKvtTxYDWa-nzA>
-    <xmx:srn0aiyXdfFaPmoch8ftg6YGvgjFF_AqNkeGlnNtzn6gWBnt42vdNA>
-    <xmx:srn0apT2TmtgD1k2Hmwu6CuitIyMt2U8pPR-YEjqE3MgU5tOthX16w>
-    <xmx:srn0aq9HYBlk66VetoipOqdJluzifyRP37eZ989HEGwcufebdttc91ol>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 11 Nov 2026 13:53:37 -0500 (EST)
-Date: Wed, 11 Nov 2026 18:53:36 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Tal Zussman <tz2294@columbia.edu>, n3rd <18670333770@163.com>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "ljs@kernel.org" <ljs@kernel.org>, 
-	"ziy@nvidia.com" <ziy@nvidia.com>, Mike Rapoport <rppt@kernel.org>, 
-	"peterx@redhat.com" <peterx@redhat.com>, "security@kernel.org" <security@kernel.org>, 
-	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-Subject: Re: [SECURITY] mm: khugepaged collapse_file() drops RWP PTE markers
-Message-ID: <avS5QcRj85yAm9ll@thinkstation>
-References: <606cae9e.bbec5.1a1c54f4f9f.Coremail.18670333770@163.com>
- <60541e98-b1f0-4f92-a155-8a29c0bb17dc@kernel.org>
- <44abb8ef-7711-4ad0-be9f-ca47206892a3@columbia.edu>
- <856cdf21-7982-475a-b244-a7ceff4eb6aa@kernel.org>
+	b=X0vd4Ds2ttFc1KZuSjD/KbzjkMEx7L2o6Kd1wX5ida9swtkXa0xSt666pNbbQeM8Z
+	 xQIW1QRIiqrsFABQxrUFj1k2xiGwV7gqqYc57CANRAxCrBuQTst6+aWo5TTQhzwZNt
+	 at3dNhbfeDgocuOCIMvoNJLEKUNeIGVmhT04Gr5E+uppy2SWXEDmThX1j+Cxq45MuR
+	 SbdA8xtTxyjKpum9y4AhIPNvIJy+TvuMQqTS3D4HVw5dYfCXsqqIcR+wZUaZw2UUPq
+	 ZIU9/IihDSQEQdcY+/Nl/VPc+sLsLpFVJO+tm/sFwzJcbovN8eRM4qVtbx7y7mFCGZ
+	 wCA9RGzWsZbVQ==
+Date: Wed, 11 Nov 2026 19:53:47 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>, 
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Amit Shah <amit@kernel.org>, Jan Kara <jack@suse.cz>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Bernd Schubert <bschubert@ddn.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-fsdevel@vger.kernel.org, 
+	fuse-devel@lists.linux.dev, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 1/4] virtio_console: copy pipe buffers in splice_write()
+Message-ID: <20261111-stumpf-montag-miterleben-c4e2feac8090@brauner>
+References: <20261110145241.536019-1-kas@kernel.org>
+ <20261110145241.536019-2-kas@kernel.org>
+ <avNuQqLf9CG9dSsE@casper.infradead.org>
+ <20261111-heimreisen-ungeziefer-empfunden-a892571f2c07@brauner>
+ <20261111-thunfisch-wirbt-waldrand-822275b2d3b1@brauner>
+ <CAHk-=wjPY=kfgnmtx4COEQjD5UzKx9m2-=KLGAZP4d=RKEH+pg@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <856cdf21-7982-475a-b244-a7ceff4eb6aa@kernel.org>
-X-Stat-Signature: bsxrncxykw57xj1bwqe9bh6k73rqfx43
-X-Rspamd-Queue-Id: BD08940002
+In-Reply-To: <CAHk-=wjPY=kfgnmtx4COEQjD5UzKx9m2-=KLGAZP4d=RKEH+pg@mail.gmail.com>
+X-Stat-Signature: 8bggpedexgwrn1s6qn1f3c5mm5m8exiy
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794423223-510889
-X-HE-Meta: U2FsdGVkX19o2+U4oZO9LDCQNzOIEsAN0MuWxqoQ0O/RcucsQiERgvsDCeWzBtDrTVTcCTbT+MiQbc/dr4byO7SOqKAnmBo9KbcnA0Gk9ViZvJElLSqmFTwff5gQr7sC99mzlOH7KdoB71P3hN7PbNHGh7vx9gfzuDGaaC+JsZPyZ5WGdjSxu59trKlIlUf3a+jBWJIl7K3aUs22S6MnKKSBgI1Dt8/FlnaZk9UkVeZ7lCBjAydY/D9aUBgdHc1wmVJn/2m2ISyPu4PTxGm5PEVHydNkyaMyn+uaG4da8DQU1caAkgJEuP5Iz7zH+gJTeaneUWYFgU0SEx9kHfSSXlaLcWTq9r5jbfT7ov0bppkoAAL3yJdpq7WBMUmjI/CnokyTx1vO90SLxOswHw2sPNpR0kSACDMcpqibi0DF4T3eJ2eGc9HbSUr15awrL0FFRkP6srdVqFw3DURZ/yMZ9fW1crIEcWuCYGtb3uJB+TW4DQHH5QtCrxgBYMkSVI2soS1UQzhDX0xPpDT17ineAbssu4bBw/g8y/jPYAHB6KWAYKpRg6tUW/XFrG+3YfwJm2a3rLrGRuSyZl4M8d1O+1vUSLtGViP3cW9wUSqjrEtZx0a6AYHhlvhU7d4eDRUxbTBYAGuvJmgZBA5780zGVF6Ntb/88oyQHkpgfsMDIiMkG0qAQl75pmCZZFLzp6DFBwBo+o2I6TsYOtE36DSIxNAOdViwmEkm70y85MBmBR1RozlYaTD3ivUs7ima6p1iOfkeiz/zQ6z81nt6SR/bKciBXJdgIFmpSWPLsTXOif4N5XFxj/F3KN3GJx5xsyubB8+4cnL0Q9SGoJqRPMOnxjVmZb7wgZNIIVdUWbbpEtpWfbdvTMwPhXUwRrI5xPU5C1OZp1GAJkvrsJOtXL5j9XUQhVZQ+OM5r5FlreIl5YzCnHfvo2qv1nKZgG1NpYxedojaH5A1OoZJP1wHdaJ
- tNriV6vB
- NQ+a3L2qrdHvQlwzfcNBef81gVpvfQi+uA5MlVMdFVC//isX+GetVfK5NFrVA/RzC7NIuFTT8BE9N8R8v/EonG/HCFxEiT4wQo1xO2MgbsvM9j+5Zl+I7x+rZpeIGoWuJFdTLd40280icyChp4BMM12bgMVnEPH9CjDLnyCjdXA6YznNsoS6OHKMyZakFaoc0NHhYAOXSlalSj9QD7meEkCnxgTetfNXO0WWLtvR3dvc6/71YEi/v+q6RyFIdz8kNCBYSt8D8yLrbHznJfFOK4N9OnjD8TOua2OUppe+4uFbatw8kNHVMeM+029jTXupmrxvUdVIemdus+8j2n5ZTG+Yup8D6fARJBhMzURjdcNEqisCAeF57OLmiPdqTkJK6hGK/FNBToRZ2VRcv3+5aePlTTea3zsQ0QKxS34K6r9kvNAgXM1qFqXAMXM+Du7U5itdrDOVqJqSW6eil+zR5iiiekyGYKnLpUu44
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4505E1C0009
+X-HE-Tag: 1794423236-862946
+X-HE-Meta: U2FsdGVkX1+g6/0NXWWpLVJ9MTXCZdmcAuRc4CKeamzrvFa1A6XHmtuQqq8RtvxRqTSZebRHNCCLn93+XYKA21m4Do0ahXQFbpbw6Ig3B/jRvbmU5RpOFYJu+88cImHzagtLTT9hINrYSViUk8iGX2zQyZF7UwQevHHs4bDF37/mg1CsgilwmYPBfmui76+KyIR8Z60aLYliT1hG0fPyi3m7DIHsfSwvqInxFmba2xwE4UCaU5p6FghYuemIBLnDbTIWIiZEOE99xEt1EdEtpaiSzoy2Cs0j5iq7ua0LUjKKYjN3qDdJ/sOD6j9dW3myOG6mxiAFbuX3cxjSfOSfCoE7Vu9MENLd01M5JwZWWhZ837tY/oDeI+/UGvqfoxmvGK+CErP0LL0RGB/0raS/epJrB0aj6bmaZOpJgPM1Cb/Vl0RBmsjsgh47geM/gUrgSyMPTNM+xszButOnNS796OJAsS5YLfBoqWtdpeSnK6WImnp+WRM64yJprSXBryKzS/wKefJmZXMoyN4OLXeEVUeG6aMSiotU8tDv7XWVgSMGOZO6W3T7RupUbqBILlZoj+EKytsOouG8StdnFKxzZ/axEanll/mFvQJwewkCLqV6pmwSCc3cXY58OpCBbKtMj/75YcjIFewWdyIbSoanApvrrqMSq8Izeow/rU1M5dN52lsvLIcF91/6W17JVUJLrp+UtU04TiOTX7WunsiknThxbuTZ5s/M9kmJuGh46ZvH/uIPC5Kgl0FnoBqIGs7VI1rqEea1/EbmHpa0FVOi0ySNchtKHUrD0gt9PxwiVZ4iBO7GHe96atW6W+YwFqK0ycIPFq/PDzOFG5vuRmHxles22ca9XnzmPaAwxiny7e0mwhRlAO5iLYQ441+G2sS5eQX7vPnxFmS/1wu04tmRLadNP1mn37yL5kh8e8iyHbeMiEpGcupMhOmxz75KOWZ86aUip1FJV3hkmnVGp7n
+ 9HPeKNN1
+ xC3RGGxXpujRLltzChr4G2RQYajG40WSIDBO4SBBavaj+S5+s4QJ/PBn+O8bbgjG/oupu43TtO51Kw8FHnPRVlPB6euEIZm/dsmu52vKyv/v/ttEAn9+PMf+YQOvQaVfbGuoDkDHFgmAqs2Fhft2SlVxP2oHbCzbQhpiXuKOlwpD48noNVoBvDIMq2iRAept/0xbbpG0t0c7NNUVVf/M7G3JndcegcRwM1cFOFtbLQgKlq7niC/qwP3WnTlTqBLR4wxIVixxb65V221hfyXEpHFFIxBgFEoCF9/d8OowK1ZEDESVbOYfzEKXs52pc/PgLgdegwTB/8vw3aUksS7L8+dTkO9IR1xkiS5hjYjUcEmVOaE8KyTJqmF9+Cw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,63 +107,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 11, 2026 at 08:29:50AM +0100, David Hildenbrand (Arm) wrote:
-> On 11/11/26 04:19, Tal Zussman wrote:
-> > On 11/10/26 6:55 AM, David Hildenbrand (Arm) wrote:
-> >> On 11/10/26 12:54, n3rd wrote:
-> >>>
-> >>> Hello,
-> >>>
-> >>> I am reporting a security bug in the Linux kernel.
-> >>
-> >> Stop sending uffd problems as security bugs. STOP IT NOW.
-> >>
-> >> Tal has a long list of uffd-related fixes he is about to send out. CCing him.
-> >>
-> > So this issue was originally on my list and I had a fix for it... but it was
-> > REALLY ugly and a band-aid, so I dropped it.
+On Wed, Nov 11, 2026 at 08:43:53AM -0800, Linus Torvalds wrote:
+> On Wed, 11 Nov 2026 at 05:42, Christian Brauner <brauner@kernel.org> wrote:
+> >
+> > So the fix below is what we've done before for pipes and I think it's
+> > the right thing to do here too. I put the following on vfs.fixes:
 > 
-> Yeah, RWP is a mess.
+> Please no.
 > 
-> > 
-> > I think the real solution is to just add actual markers for RWP and solve
-> > all of these issues at once... but that should be a separate series from my
-> > batch of fixes (which I'll be sending shortly). Is there a reason RWP
-> > markers weren't done in the first place that I'm missing?
+> > -       src = kmap_local_page(buf->page);
+> > -       memcpy(page_address(page) + offset, src + buf->offset, len);
+> > -       kunmap_local(src);
 > 
-> Let's ask kiryl: why is it ok to drop RWP PTE bits during swapout, zap, collapse
-> etc?
+> This boils down to one memcpy.
 > 
-> https://kernel.org/doc/html/latest/admin-guide/mm/userfaultfd.html?utm_source=chatgpt.com
+> HIGHMEM is dead. Nobody sane uses it. It *will* go away. It's already
+> effectively never ever used.
 > 
-> states "Unlike WP (which persists via PTE_MARKER_UFFD_WP), there is no
-> persistent RWP marker today. The user needs to re-arm the range with
-> UFFDIO_RWPROTECT after any operation that explicitly frees PTEs."
+> There are some broken 32-bit arm setups that use it, and legacy museum
+> 32-bit x86.
 > 
-> But requiring the user to re-arm is rather questionable design if the kernel can
-> just zap these page table entries.
+> Don't make one memcpy() that can be inlined become this garbage:
+> 
+> > +       /* The buffer can span several pages of a compound page. */
+> > +       kv.iov_base = page_address(page) + offset;
+> > +       kv.iov_len = len;
+> > +       iov_iter_kvec(&to, ITER_DEST, &kv, 1, len);
+> > +       if (copy_page_to_iter(buf->page, buf->offset, len, &to) != len) {
+> > +               __free_page(page);
+> > +               return -EFAULT;
+> > +       }
+> 
+> just because of broken shit that nobody has ever complained about or ever hit.
 
-There is no need to re-arm. 
+If that's the official new stance than I'm very happy.
 
-Once the PTE is zapped, the next access faults, and userfaultfd already
-has a mode for that fault: MINOR if the page is still in the page cache
-or in swap, MISSING if it is gone. Register the range with RWP|MINOR and
-the first access after collapse, shmem reclaim or MADV_DONTNEED arrives
-as a minor fault. The monitor counts it as an access and resolves it
-with UFFDIO_CONTINUE.
+I went by what we have historically done and very recent history still
+has us fixing HIGHMEM shit.
 
-That is why there is no RWP marker: MINOR already covers it. WP needs a
-marker because MINOR would trap reads as well, and a WP user does not
-want those.
-
-Anon has no MINOR mode, so there the bit stays wherever the page
-survives: it is carried on swap and migration entries, and anon
-collapse bails on uffd PTEs with SCAN_PTE_UFFD. MADV_DONTNEED frees the
-page, so the next access is a MISSING fault.
-
-The report registers RWP alone. That is the only setup where the access
-after collapse goes unreported.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+So if this is an official thing that we can now say: "Fuck it, we don't
+care about HIGHMEM and will ignore bugs because". Then why can't we just
+completely kill it for say v7.5?
 
