@@ -1,111 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D2E606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 09:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E82AC60A262A
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 10:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N857zjfe
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=OUXVGGxw
 Received: by kanga.kvack.org (Postfix)
-	id 6663A6B05DE; Wed, 11 Nov 2026 04:58:09 -0500 (EST)
+	id 161886B05B1; Wed, 11 Nov 2026 05:00:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6167E6B05E5; Wed, 11 Nov 2026 04:58:09 -0500 (EST)
+	id 138646B05BD; Wed, 11 Nov 2026 05:00:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 508A96B05E8; Wed, 11 Nov 2026 04:58:09 -0500 (EST)
+	id 04EF86B05CB; Wed, 11 Nov 2026 05:00:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B3B96B05DE
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:58:09 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A3418A78C3
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:58:08 +0000 (UTC)
-X-FDA: 85422387456.24.5B8B1B4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B7F2240009
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:58:06 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N857zjfe;
-	spf=pass (imf27.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794391086;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BD42D6B05BD
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 05:00:33 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 547191A01B2
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:00:33 +0000 (UTC)
+X-FDA: 85422393546.15.3886D7A
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4500D180008
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:00:31 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=OUXVGGxw;
+	spf=pass (imf16.hostedemail.com: domain of elver@google.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794391231;
+	b=NFqwGywo66uo0uEUKa/NJEm3fMMDVZHTSnLYjDvmmL8Pf72n+KL3gybIxFzsUdklIN5Rlr
+	gQi+7itTVO4hfH+b1xvDrbtE21Kben79sB73xzNdjSH5bScXO4Gd/hu8LJuNK8MKlbpzCS
+	XKRLA33huATxUUW8WQz7u5MS/dn5cO8=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=OUXVGGxw;
+	spf=pass (imf16.hostedemail.com: domain of elver@google.com designates 74.125.224.45 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794391231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x8WYaUyHEV3s5p2jssXz770F7CHpaoglZMsT5OswgdQ=;
-	b=GxuuKWEXNUJCJE18Ebk67HABKn2d83FHGdxYFU+wf2qHXgzap9DQTsuKnIiT77C3XUn+rb
-	7/9ikOmlWSlWQPkbeBFSjX9YFqsEueJyqmZc5fld7xjZrUtp1OMD07kUnHdc3In8cXWAzW
-	6A8Xlpslm/q+lQUOlkQbof1dwhfzqJ4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794391086;
-	b=1kivaQnZ48WvLe8V+mBI5X2oZbiHrDzDKIQ57rJ07WAuymGh9ef5Evf2jhrxol0hplxCjs
-	Sn4nuBnHzEs8ecjSm8v9cKRxNA8hmmg71mcNSV3jDpbWb0VctFEKJKtba+dVPbn4bjDGLg
-	TMn81xzFMQyT1hhjfsZgRM5G35Z1OlI=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N857zjfe;
-	spf=pass (imf27.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E79C545E6F
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:58:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC5131F00A0B
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:58:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794391085;
-	bh=x8WYaUyHEV3s5p2jssXz770F7CHpaoglZMsT5OswgdQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=N857zjfelwJgxMwZgeMvdviy4yb25FhIkfYq9xYiegrSWPbwNMp0kTtnImQAwnhLx
-	 QKigHsKalH2vjAw/nxrSgVxbl8NitojaovS5jx9jR2An9toiCSIXjvbUVXXGo3LXRH
-	 x/2WHbp9K0hGTSnSvseQzBQIbwRiZLInhUZS7zbONYGXfBZwBJ6Bm/KzauvYrSPjT2
-	 GsA1dHR5bUM8ZsGunn5xNirPgvnmG9DBk1CS3Jq2WZrbl7pSA9AiQRRABBZXxIR24x
-	 xg9CYEYdZRbnT4xig27wGxrETP3lprjb5D18kPE1VNECuj/mqmgcVUI1gnkIM3/l8v
-	 qNv2GaBfHwwRg==
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-93e63ee7b4cso269965685a.2
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:58:05 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErFv9ODbQKdIm6dYK+gyzqIHXtdUCeUUVmcBB1ruBuqfjqZWBtNGhO4wIwKB4gzYYMjFZzDt8OJoeg==@kvack.org
-X-Gm-Message-State: APuU4Z/j312szu7+Ks2KbzG3C9PPfa5F8pMTeFdVBCkRuPfqN1ffJ7Ql
-	ESDAMUzhMwlFhIWMb4v8pBZvCpywbp9tRK0H7OLaY4FRFMT4ecSGmvBL+ovtw6MejcrzdCSY66E
-	0dYCALeW3oHEWaB0OfZ2vC7vatSjf8DI=
-X-Received: by 2002:a05:620a:2805:b0:93e:e425:229f with SMTP id
- af79cd13be357-947b00ea38amr289814885a.77.1794391085076; Wed, 11 Nov 2026
- 01:58:05 -0800 (PST)
+	bh=0snpShHvjoBSXjJ0hmmIC0sdwMSEV+1aJlZlq/yq2c4=;
+	b=IEEVkB2ednJ0yvmTUbGbUDbG8bC/Okff/N0c+RExgrTYo44RCbyXpOeFMVE/Q3rKvsWhpR
+	PIHH/RfSOJoSSAkOq9AykAPscvmqYrFG0cnXBTeq0RqRe/5sYIKyyshGU2x8YlJgqIKlvj
+	eXfSkqZ8UYs97Icf7tznjfWA8mDcOHo=
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-67c0bd676eeso2932808d50.3
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 02:00:31 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794391230; cv=none;
+        d=google.com; s=arc-20260327;
+        b=bLCqqjrrcWZTVIKsQGcqq0d/ttcVo6USScfK6jVKvSf3P6I624ubCr3/hEljxuK9o1
+         IgnrNpldCx0G0GRGhA45ovCrXJ+XW3fnwbYwSqsNh8C711x/r6+HO0+fRZoUvrmTLL4s
+         y7fPhcBbjlVN1cPKTNrQa7F+Xywj67lOxfKdWDMeJiRzzfMks0NGVBoZNM67IwnElcSw
+         /J7vjmGxywwsK66ZzocU9jDXHNHikYzn+hflp5XTNlxjSMVfg05YycBxcZBH8iF4Tkb2
+         azQF9E1A6PRlxOnSNyLGdWYp8hwbh7HGqITnAkuwuyqlGz+zQo2ls+kHFRCxfiogwVQf
+         CzLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=0snpShHvjoBSXjJ0hmmIC0sdwMSEV+1aJlZlq/yq2c4=;
+        fh=b8jdRW0nHvYLAgfWx8j9qu311bXhJfh6fTqrgWctAKU=;
+        b=SfW3U9hJ3qVVT22P52uX1de9sWS9MaSOkMV+4dM+HgrD2vUE1tuxCsRw1M+TySfsbs
+         TPF1bkaPxGLE9hEqcjFcvfYCcWPsdurofnYrbk4/uvE5+75dutOdRIfzHXgpiEPPvh0A
+         IrxhLGUGB++7OeJwlkpKVoENm0eDArCCzB2mq/8/ALZn2w/gI410g3W5Np2+CHw6W2C0
+         o0NYV1CfHcdm0e5R78cBX+bK2hrIC1TapkyI0YxtJvkYBQD5fJ1Ci1HCE6O+rLM+WFt7
+         Q6XoBcLVIh/JMtlvbRUZm+g4pnaarZtDdX9cMmlUbfxc9K2s+1VDyTDtiUfJ35Jekuni
+         vGyw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794391230; x=1794996030; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0snpShHvjoBSXjJ0hmmIC0sdwMSEV+1aJlZlq/yq2c4=;
+        b=OUXVGGxw+sU0JvU5XteqoGeBP5yx/4GpFfP+wWvXUG7eLaqJxRIomus4IxWlViPi69
+         qHnJ19ZuYmK41TXWtXRgQ8IQqNTSsb0NVqWWtnH37l+g1i+Lj1srTEusxs+ugYAO7ldt
+         D39exBU8YxyVn9soyTKsBk06Sg02P9WtWDOgDVuKv2Irw9m36gzwOXJRmy4N9j9TlmPe
+         9aomfBjbARfFZwfAIp/jR1ywa+lDcyZl6ynSk27Mmn3nwWvscdsOiAlz6oODyWqOVTk3
+         6xMMR7zGu/0kD6ySGmcpwirPyvPF2UiTZvd1gBqDPHuWijarVFr3myZCcrA8l+YUJQJk
+         AowA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794391230; x=1794996030;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=0snpShHvjoBSXjJ0hmmIC0sdwMSEV+1aJlZlq/yq2c4=;
+        b=mw8PIIlwKXdpFeI5ImQVD15p8EceplAAkXCc+4V7OjOFkIFlq4P7L/E4nSutK0MVpr
+         TG5lU/7CzFPaLcJ4/RpHkxeU+FtbVeTYkvNOJZSYQgcFvNyh38I/gTUjdBRCn/b5xeqj
+         Gwda6F/PlXLUEMqDZ/sL3w1mGCa6zP5Zn+AS3CCQyXncRmTiWt+BILbPAbkT8DobPyLy
+         xCr/scraDXsJLKHDvFxVBKICOTv11AaUO1qTp5xBTMuiU2AawOW5MvhjdQ3w05KpU7hY
+         m2dZcMwCVFyXs/QDyBU3TnOoc2Btu4l4DKSt7DqKXGDDEU6DO7NEWSy9uy9S4vbO0txT
+         zcjA==
+X-Forwarded-Encrypted: i=1; AL+hErHOOWa8k0T1hghvuO4kCwY13WjEDdXviImy8OvvJiaSqRwCvCr+5pLZB5wwX0z5pwYHEYGi2iNYKg==@kvack.org
+X-Gm-Message-State: APuU4Z9xBTVWUXa/QnWazRHWJ4VjRku5vrPaGgrVUL8bfR7DrkbTMgMa
+	cyxgLQZIk+5V6KXu5Qd7idoKbwWlOrJNutr3pJUhj/F2CxhU5wZpaRLQSq5LCClObCz5lYpDdb2
+	kwYdDVQWXFkJkVcGovGXN0aG5JHaOMm8IdV30O69x
+X-Gm-Gg: AYBFou0y5UI6O2vLTKGnvSQtXWfRTTG33n4Gx+8w590n0OyfY7PNMnFNfqrV67wpQAu
+	cPBJls3a24Kossg6DYQQ1mC+ZDtk/2S8cmWev5+Wo+PatOa8PGEIKCPy38T4A3otNpcBbpfpZXl
+	Mzj/bw4ObPEXR1QDdjGUi0YdDbXJTdyOllKfXmmHLgU3enuKMNqC6IRSy5DZoWUQHcKzKV715zW
+	ZLc4GvdtpHFfrgD9LAGuLFXOwUTbg6ZPNoy8HHTq++XWa38jDaBWrbn0YDDUxC/B/QQVXWY7zqm
+	v0AiE3OHXftm9f34IFfEYL4XubzEXsaAjixQuXcbzvkoQ1c5rpyusKiqzR2iJP6XZbUQTa/LQC8
+	vJb3AXq3VH+NtVZ6T068KD1JeCoVdeL1Xmc676o9SSg3ChRFXdDs8LEs+QdrmIZCofgyD4l58Qu
+	6ZCz63mcDZoiu8cw==
+X-Received: by 2002:a05:690e:439b:b0:67c:2fdb:9419 with SMTP id
+ 956f58d0204a3-67c67f97140mr1094112d50.57.1794391229421; Wed, 11 Nov 2026
+ 02:00:29 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261109-maintainers_mglru-v1-0-c25e6de60bcc@kernel.org>
- <20261109-maintainers_mglru-v1-1-c25e6de60bcc@kernel.org> <20261109104142.c4e01c2e29ee9ead4056f354@linux-foundation.org>
- <CAMgjq7Dd6UQWfBwex4vTLdxAhHKMfpmgTG9DB3MG+4+qig0Eig@mail.gmail.com>
-In-Reply-To: <CAMgjq7Dd6UQWfBwex4vTLdxAhHKMfpmgTG9DB3MG+4+qig0Eig@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 11 Nov 2026 17:57:53 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zrBB80iR+R0oi7BaLGNcw0sk_KNEFYns5G1WEsMXCQ2Q@mail.gmail.com>
-X-Gm-Features: AclHuK-Ghv2CWsuvoFAiqxBS_I6Udh_YXnqVh2xFzO-4R4-Vf_0ARb-xDyX3CmE
-Message-ID: <CAGsJ_4zrBB80iR+R0oi7BaLGNcw0sk_KNEFYns5G1WEsMXCQ2Q@mail.gmail.com>
-Subject: Re: [PATCH 1/2] MAINTAINERS: MEMORY MANAGEMENT - MGLRU (MULTI-GEN
- LRU) update
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Lance Yang <lance.yang@linux.dev>, Ridong Chen <ridong.chen@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
+References: <20261111092231.2027735-1-arnd@kernel.org>
+In-Reply-To: <20261111092231.2027735-1-arnd@kernel.org>
+From: Marco Elver <elver@google.com>
+Date: Wed, 11 Nov 2026 10:59:51 +0100
+X-Gm-Features: AclHuK_qP5L8F_RmiE0XH87_imZfKgz52BAPUVzydYBM3OwPM4hCNb5eu8txhc4
+Message-ID: <CANpmjNP5p-N6v=GiETYQMxgRMsOgKOdUjDCxSHj-6=pa4NkA8w@mail.gmail.com>
+Subject: Re: [PATCH] [RFC] instrumented.h: mark instrument_write non-const
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
+	Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>, Andreas Grapentin <gra@linux.ibm.com>, 
+	Finn Thain <fthain@linux-m68k.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Anshuman Khandual <anshuman.khandual@arm.com>, David Hildenbrand <david@kernel.org>, linux-s390@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 8c7hpiemnn6iopo9f9z6313ox6bqgajs
-X-Rspamd-Queue-Id: B7F2240009
+X-Stat-Signature: k8zt6d3edbbtzty85o9zgmktb6eu1mgo
+X-Rspamd-Queue-Id: 4500D180008
 X-Rspam-User: 
-X-HE-Tag: 1794391086-826057
-X-HE-Meta: U2FsdGVkX1/QLsAj6o0ZolyJPNq/W4JN/jpj5LNlkMW1wPswkyycvg1FebOu29xfo+cEdUc3BZ4yIjR8tjELSG2FBP/m8h0P0oV1VHEJrQpKN3gfBsTfhYLskz9i4qlJ9U2IsRy5mcinoRQEjxyWnPaqsKWLP/dCfQ+f+1zfERAAUdEadrJZPbORX9LfKedo6PD3uyiTbRepQnUgf9Di7rfjREjPqOimY4SxXf2V4AbDXZZT/P8VvNq8OKcZrQ4B+gsixzGisa5JQLtNMbT07RMt5X5lmvvMN3BXmVfcwf3yvuV9hU8kMqAmwFdL40W9K0QXtP9qhIUau3RMKcze6JAy/HSnKnTEUpLlXoIOHCjA/t5cOelEGWZXwIU9WbEKAHpioycNsEdP/bHkZhCjXK14g2Jp7ZkR5MPTc23hmpoFqDuxf574+ZktrdugyUNGsA+2pfYPVaihSDqFBPitkJLB/r/5aCxDgabbsTMAvy8P7tZGbxmFu1SJ5dYnmPL6aQYAQiulYW+yboQKWK+oIxwTYlA8Vp5SgATK8K8jb43AAzm9NOKtSQNFrGUEtDakd8NZ8PCKxVZMuY5L6UZknftuhpqBdJdVyb39OM3QXReVfLBd7MP303EILxpxtMyEIKQExwhOw3H8JttOkuvaskGgPs3nbrZstlDEWF8sAM+0taEjnBuMVIwu7hGOPCMumDbf2xr9aWhPZ5g03D0f5yTJQfg1SWRtZGmaHq9FAqy23QsdAxCa2Zx/Fq3SwRacAMRjvlyTWW+QjVNNAksvKp9GTJhjaHTLWA7qU6/XN6mX+kgxu7MvAkzlzjduxi/7JTWfQ4Ptp8mEfaQNds9F7n6WroYmiAyNjS6/LWyksTxNToEsWsP0TLhpz/QdCv+GMwazpc8Hb9pW8wPxZXhN8xhPnX5RtETwzezyyY0WEuZJoLGgBPAdhMTSDICwqg4ueAX0+fyh5jbKEuZEb13
- GjeUKcHl
- /ipE84NkyKPUeFTtLntmzy+izpociQ0ZOD6GSxvaofcRjw5UPyaHRi2Pz3WTTqHR/VLu1Mtw/BJlnmJEgeANYDRLRXC6YhCkOE/eFiBe14RpsJ1AD9FJyNkcvoPEaCXafeYScenNg5vHdr2DPxU1R5tQdt6VyibdVWNmJAWEL2N3EzijP3OyZnAjjlxi+wcOxZOcjOsF201nMg4gFUA9LOPLSe1IYJ87wuv2oeHwkicpnEFctvm74yJyKb0018wFR27kMVb8KxHWOP0tCtSkt42TtnJbvPBCAoQCEZKlJuPJs9R6dcHj1akrzmDVPIoYZv/2OT98XA2fSHN38CmFaMyClNfUtcstGCpwhtTzsdoVGP4bfCA5uCC9oqAhQ1X6WRMwPYLrZlwtoKqI=
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794391231-364785
+X-HE-Meta: U2FsdGVkX1/yTtLh6/6Q7Qbvp8efEMzGmEtWPQ5NXzscGw5KxH3EeTZ5cQFr6DAZLfhzT4kJbqcPddC1TbUwYI1G+58fLJ6iBWCYa/s/5tXlWdVbnZGIkj7+A4ntaencdEjFhiV6v8dL71qVgA3WFVHE9G+46oGX3Vr/IUQAFkTWXu6CbqIw5r+TQZ/fZleAWP5Snc+/M9OfA+pjsQorwndkgYVCPdXGBKKHGy0HeB+EgO3YBSDfYbOBNPzHOHjmcscyvTaa8bDA2n4v1FVmuxC81r47tbcbs2foUx6iI0RvGX9J2acRJQoToBlA01S/kFAsUFFtEMVJqt3m0OxJfjt52Kv38Vr/8YHltZgvPc20m0ZhLdcJ0olAqPwhLYVNUDwpIvvzvSn1X1lhz2ZVP5W2iBhS6y4h6w+4e6KrSiFGTxEBDPVFyyU64r//w9myg0VWgjzxO9Lx1+cN/PtjbG0MuSz2An99wuMZSJ05qiOORkkcVTvrLez9+f/0jEiBdU4yPIg0b5Tath7bMYtvHcmlz653EZQQx11fE2FeXILyJR8bTQolN+YpQAc6TKf5A0+QAxCElC8DyNz7Uqzp8qbGbqThmup4Mk6H84mwov7CiEis8RBApGty2uJEJo3MSVPw82n0Yk9W9DMTL+WvpqfxNf+3GXUB9H5pnc042AiE4Dht3SrVBcnNzfipxtEKeZSaoT54R8FG7qlYId719Vb2Oycq6+wCJol7dnUcBYfTmhmsBfYriyTb7jb1RxE8uUxlKZs3Axn5M54UFDEBbkErrFARFcacNjwd44hS85eSVciHxbEEjgHq+Rgxm8Xm+Xbcpnv9k4wqwcdn4253jxEaR4JXTcFrLNc6E9PGGFEgeSRsKSyLgrAlPvZgu28VjpPPDdS6/+4ozQY7HVHCsMlbCy1NE7oBwR/EwkxKkwLu2p29gT5Bobspb9tpTst6km131hzmpRD/frSoxLc
+ rbMHEwLn
+ IuBoF+ApvysUJTV82Y9Ki4/fg5PEV5zbO4xdlfhGDHBkQv+/t1bnkCO9Ox+DA2op+7/m/kDi74zDRFS5KkCUwOeARXlDKilYJeyFYso+asLjHz+k2AtUnPI7T9jMU6rYl0G10Rxf90T62XIJZHc0HYuLg1Gq8Chk98aKW4m3XpAFTOk/tMl/LRJBtJfUK2igxYgKT46ecnkiujMsVDEwv62iinCPBSUPLjcZiYE8nx6BIv1Q5iFJwv25rH75X/68RMFnoOiehFLBH/xyErEaCVnWbcMkThzKP2+QGasVylhn6M12/H7X9ewftexc0ryBpl9RYlJxM+XchVc1L/ZLGz4wxzSK5xE1lp6QPWOWHQ254H1sBDCITRxs61mrojkmDEUHgE5vElB7yb3SmZGyl6OBLRQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,77 +150,198 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 11, 2026 at 2:16=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
-e:
+On Wed, 11 Nov 2026 at 10:22, Arnd Bergmann <arnd@kernel.org> wrote:
 >
-> On Tue, Nov 10, 2026 at 2:55=E2=80=AFAM Andrew Morton <akpm@linux-foundat=
-ion.org> wrote:
-> >
-> > On Mon, 09 Nov 2026 19:31:53 +0100 "David Hildenbrand (Arm)" <david@ker=
-nel.org> wrote:
-> >
-> > > MGLRU is currently the only MM component without a dedicated componen=
-t
-> > > maintainer. Fortunately, Kairui and Barry have been actively
-> > > contributing to MGLRU and have volunteered to take on more responsibi=
-lity
-> > > by officially taking care of it.
-> > >
-> > > Given that Kairui is already an established MM component maintainer i=
-n
-> > > a related MM component (SWAP), add him as an MGLRU maintainer right a=
-way.
-> > >
-> > > For Barry, the idea is to transition him towards a component maintain=
-er
-> > > role over the coming months, starting by moving him to the top of the
-> > > reviewer list.
-> > >
-> >
-> > Yay, thanks guys.  It's been wonderful to see the rebirth of MGLRU over
-> > the past ~year.
-> >
-> > When do we get to remove the legacy LRU???
+> From: Arnd Bergmann <arnd@arndb.de>
 >
-> That's on my radar :), though it will take some time and it's always
-> hard to give an exact timeline...
+> I got another instance of a -Wmaybe-uninitialized in ntfs, as this is
+> the only place that enables the warning:
 >
-> Items I'm aware of to sort out besides the FG series, maybe we can try
-> to make MGLRU the default at some point during this process:
-> - Refault distance, otherwise we still have a major regression in
-> heavily overcommitted cases, also protects cross-memcg workingset
-> thrashing. I also have an idea to remove memcg id and node id field
-> from the shadow so it will have enough space to hold both the gen
-> number and distance, will post that in a few weeks hopefully.
-> - Memcg LRU vs. iterator (Ridong once tried to unify that, and it's
-> good to see there have been optimizations for memcg LRU itself
-> recently from Max).
->   I also noticed recently that the Memcg's LRU reclaim balance is
-> somehow a bit broken, I'm not exactly sure why, nor a very major
-> problem, I will look into it later.
-> - Isolation protection (from Hui, not a very high priority, but still
-> on the list, we don't want premature OOM).
-> - IO cost & swappiness (Barry and I are still looking into this, with
-> an series posted).
-> - Page flags usage issue (FG cuts it down by 1, though it's still tight).
+> In file included from include/asm-generic/rwonce.h:26,
+>                  from fs/ntfs3/file.c:10:
+> In function 'instrument_copy_from_user_before',
+>     inlined from '_inline_copy_from_user' at include/linux/uaccess.h:184:2,
+>     inlined from 'copy_from_user' at include/linux/uaccess.h:222:9,
+>     inlined from 'ntfs_ioctl_fitrim' at fs/ntfs3/file.c:78:6,
+>     inlined from 'ntfs_ioctl' at fs/ntfs3/file.c:246:10:
+> include/linux/kasan-checks.h:38:27: error: 'range' may be used uninitialized [-Werror=maybe-uninitialized]
+>    38 | #define kasan_check_write __kasan_check_write
+> include/linux/instrumented.h:146:9: note: in expansion of macro 'kasan_check_write'
+>   146 |         kasan_check_write(to, n);
+>       |         ^~~~~~~~~~~~~~~~~
+> include/linux/kasan-checks.h: In function 'ntfs_ioctl':
+> include/linux/kasan-checks.h:20:6: note: by argument 1 of type 'const volatile void *' to '__kasan_check_write' declared here
+>    20 | bool __kasan_check_write(const volatile void *p, unsigned int size);
+>       |      ^~~~~~~~~~~~~~~~~~~
+> fs/ntfs3/file.c:66:29: note: 'range' declared here
+>    66 |         struct fstrim_range range;
+>       |                             ^~~~~
 >
-> We also have aging optimizations and async aging planned. I'm not sure
-> if we are missing anything else, but we are getting close and with a
-> sane todo list.
+> The problem here is that copy_from_user() is called on an uninitialized
+> object, but the instrumentation passes the pointer into a function that
+> takes a const object. gcc deduces that any access to that object is
+> undefined behavior and warns about it.
+>
+> The only workaround I could come up with is to remove the 'const' keyword
+> from these annotations, which of course is not great either, as the
+> functions do not actually access the data at all.
 
-Thanks very much, Kairui. Besides the items above, I am also
-thinking about a few more:
+Agree, but the code where a real 'write' happens ought to never pass
+in a const-qualified variable or pointer anyway, so I think it's fine.
 
-- Cross-memcg aging / look-around folio promotion (folios with
-large mapcounts across multiple memcgs still easily fall back to
-rmap walks today)
-- mmap_lock contention during aging (perhaps switching to VMA
-locks, as mmap_lock contention can cause jank in Android
-foreground UI)
-- Baoquan's PUD filter
-- Making MGLRU more friendly to Android foreground/background
-workloads
+> This also found incorrect 'const' annotations in
+> arch/s390/include/asm/fpu-insn.h, which writes to those pointers.
 
-Thanks,
-Barry
+That looks like a bug. Maybe split it into a separate patch.
+
+> Any ideas?
+>
+> Fixes: 33b75c1d884e ("instrumented.h: allow instrumenting both sides of copy_from_user()")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+
+If there are no warnings that appear because of this elsewhere, then:
+
+Acked-by: Marco Elver <elver@google.com>
+
+> ---
+>  arch/s390/include/asm/fpu-insn.h |  8 ++++----
+>  include/linux/instrumented.h     | 10 +++++-----
+>  include/linux/kasan-checks.h     |  6 +++---
+>  mm/kasan/shadow.c                |  2 +-
+>  4 files changed, 13 insertions(+), 13 deletions(-)
+>
+> diff --git a/arch/s390/include/asm/fpu-insn.h b/arch/s390/include/asm/fpu-insn.h
+> index aaf1faeb3dc5..7cd6e9f30485 100644
+> --- a/arch/s390/include/asm/fpu-insn.h
+> +++ b/arch/s390/include/asm/fpu-insn.h
+> @@ -359,7 +359,7 @@ static __always_inline void fpu_vsrlb(u8 v1, u8 v2, u8 v3)
+>
+>  #ifdef CONFIG_CC_HAS_ASM_AOR_FORMAT_FLAGS
+>
+> -static __always_inline void fpu_vst(u8 v1, const void *vxr)
+> +static __always_inline void fpu_vst(u8 v1, void *vxr)
+>  {
+>         instrument_write(vxr, sizeof(__vector128));
+>         asm volatile("VST       %[v1],%O[vxr],,%R[vxr]"
+> @@ -370,7 +370,7 @@ static __always_inline void fpu_vst(u8 v1, const void *vxr)
+>
+>  #else /* CONFIG_CC_HAS_ASM_AOR_FORMAT_FLAGS */
+>
+> -static __always_inline void fpu_vst(u8 v1, const void *vxr)
+> +static __always_inline void fpu_vst(u8 v1, void *vxr)
+>  {
+>         instrument_write(vxr, sizeof(__vector128));
+>         asm volatile(
+> @@ -385,7 +385,7 @@ static __always_inline void fpu_vst(u8 v1, const void *vxr)
+>
+>  #ifdef CONFIG_CC_HAS_ASM_AOR_FORMAT_FLAGS
+>
+> -static __always_inline void fpu_vstl(u8 v1, u32 index, const void *vxr)
+> +static __always_inline void fpu_vstl(u8 v1, u32 index, void *vxr)
+>  {
+>         unsigned int size;
+>
+> @@ -400,7 +400,7 @@ static __always_inline void fpu_vstl(u8 v1, u32 index, const void *vxr)
+>
+>  #else /* CONFIG_CC_HAS_ASM_AOR_FORMAT_FLAGS */
+>
+> -static __always_inline void fpu_vstl(u8 v1, u32 index, const void *vxr)
+> +static __always_inline void fpu_vstl(u8 v1, u32 index, void *vxr)
+>  {
+>         unsigned int size;
+>
+> diff --git a/include/linux/instrumented.h b/include/linux/instrumented.h
+> index a1b4cf81adc2..d28aa6b0aeb8 100644
+> --- a/include/linux/instrumented.h
+> +++ b/include/linux/instrumented.h
+> @@ -36,7 +36,7 @@ static __always_inline void instrument_read(const volatile void *v, size_t size)
+>   * Instrument a regular write access. The instrumentation should be inserted
+>   * before the actual write happens.
+>   */
+> -static __always_inline void instrument_write(const volatile void *v, size_t size)
+> +static __always_inline void instrument_write(volatile void *v, size_t size)
+>  {
+>         kasan_check_write(v, size);
+>         kcsan_check_write(v, size);
+> @@ -50,7 +50,7 @@ static __always_inline void instrument_write(const volatile void *v, size_t size
+>   * Instrument a regular write access. The instrumentation should be inserted
+>   * before the actual write happens.
+>   */
+> -static __always_inline void instrument_read_write(const volatile void *v, size_t size)
+> +static __always_inline void instrument_read_write(volatile void *v, size_t size)
+>  {
+>         kasan_check_write(v, size);
+>         kcsan_check_read_write(v, size);
+> @@ -92,7 +92,7 @@ static __always_inline void instrument_atomic_read(const volatile void *v, size_
+>   * Instrument an atomic write access. The instrumentation should be inserted
+>   * before the actual write happens.
+>   */
+> -static __always_inline void instrument_atomic_write(const volatile void *v, size_t size)
+> +static __always_inline void instrument_atomic_write(volatile void *v, size_t size)
+>  {
+>         kasan_check_write(v, size);
+>         kcsan_check_atomic_write(v, size);
+> @@ -107,7 +107,7 @@ static __always_inline void instrument_atomic_write(const volatile void *v, size
+>   * Instrument an atomic read-write access. The instrumentation should be
+>   * inserted before the actual write happens.
+>   */
+> -static __always_inline void instrument_atomic_read_write(const volatile void *v, size_t size)
+> +static __always_inline void instrument_atomic_read_write(volatile void *v, size_t size)
+>  {
+>         kasan_check_write(v, size);
+>         kcsan_check_atomic_read_write(v, size);
+> @@ -141,7 +141,7 @@ instrument_copy_to_user(void __user *to, const void *from, unsigned long n)
+>   * variants). The instrumentation should be inserted before the accesses.
+>   */
+>  static __always_inline void
+> -instrument_copy_from_user_before(const void *to, const void __user *from, unsigned long n)
+> +instrument_copy_from_user_before(void *to, const void __user *from, unsigned long n)
+>  {
+>         kasan_check_write(to, n);
+>         kcsan_check_write(to, n);
+> diff --git a/include/linux/kasan-checks.h b/include/linux/kasan-checks.h
+> index 3d6d22a25bdc..90b878b876f5 100644
+> --- a/include/linux/kasan-checks.h
+> +++ b/include/linux/kasan-checks.h
+> @@ -17,13 +17,13 @@
+>   */
+>  #if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
+>  bool __kasan_check_read(const volatile void *p, unsigned int size);
+> -bool __kasan_check_write(const volatile void *p, unsigned int size);
+> +bool __kasan_check_write(volatile void *p, unsigned int size);
+>  #else
+>  static inline bool __kasan_check_read(const volatile void *p, unsigned int size)
+>  {
+>         return true;
+>  }
+> -static inline bool __kasan_check_write(const volatile void *p, unsigned int size)
+> +static inline bool __kasan_check_write(volatile void *p, unsigned int size)
+>  {
+>         return true;
+>  }
+> @@ -41,7 +41,7 @@ static inline bool kasan_check_read(const volatile void *p, unsigned int size)
+>  {
+>         return true;
+>  }
+> -static inline bool kasan_check_write(const volatile void *p, unsigned int size)
+> +static inline bool kasan_check_write(volatile void *p, unsigned int size)
+>  {
+>         return true;
+>  }
+> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+> index d286e0a04543..591c179164af 100644
+> --- a/mm/kasan/shadow.c
+> +++ b/mm/kasan/shadow.c
+> @@ -32,7 +32,7 @@ bool __kasan_check_read(const volatile void *p, unsigned int size)
+>  }
+>  EXPORT_SYMBOL(__kasan_check_read);
+>
+> -bool __kasan_check_write(const volatile void *p, unsigned int size)
+> +bool __kasan_check_write(volatile void *p, unsigned int size)
+>  {
+>         return kasan_check_range((void *)p, size, true, _RET_IP_);
+>  }
+> --
+> 2.53.0
+>
 
