@@ -1,98 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E463606A33C
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E71606A335
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=cmaAuP8N
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=BeZMMawf
 Received: by kanga.kvack.org (Postfix)
-	id 64F8A6B05C3; Wed, 11 Nov 2026 06:09:07 -0500 (EST)
+	id ABFDF6B05C5; Wed, 11 Nov 2026 06:11:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6272E6B05C4; Wed, 11 Nov 2026 06:09:07 -0500 (EST)
+	id A70356B05C6; Wed, 11 Nov 2026 06:11:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5166B6B05C5; Wed, 11 Nov 2026 06:09:07 -0500 (EST)
+	id 9863D6B05C7; Wed, 11 Nov 2026 06:11:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 353E56B05C3
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:09:07 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C853A1C2B4C
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:09:06 +0000 (UTC)
-X-FDA: 85422566292.04.18F3F03
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 15B0140004
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:09:04 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=cmaAuP8N;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf07.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E7B16B05C5
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:11:02 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 164E8C0298
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:11:02 +0000 (UTC)
+X-FDA: 85422571164.01.C07ACC9
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2CE721A000F
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:10:58 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=BeZMMawf;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf19.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794395345;
+	s=arc-20220608; t=1794395460;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1E8ZwW2Eu8WYRG4t6PuIDQjLMNRBTfUw3ilSDjs1rRU=;
-	b=hqKtGCfVeh1iXqb/zqXmFr1kFCGzteVh6K4lzJXKhF6M5jtIlmrSNWeNGZ7FIEEcObh7FO
-	UngStl95L+5cnXXbKJC6Ful2lYetBu6bXP8o+UinBLnZS0fjmtqBPp87tZDPfoXL/GxjUd
-	ls8GzWN7BKVWayoKhWhvF3NGmv+yNBY=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=cmaAuP8N;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf07.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+	bh=41dldmnzUpbVdvTasv/OLzoqF6WSHnIdkg3e9karzSg=;
+	b=exiVfQJaAF2YiSYIQJN0e4KAbZXramFdEzdI/eMCC2poQCYgxMBh4UVykhlZGR3ln98lmb
+	PT4Fc7Wy7wzUrIaZapU+sjHS+zEGFQziJgpf82qzDys9JZzU6X5aKiyBsi2dSpWN42d35J
+	h0Ymi//9yNMlS3WMbAr7TfXeoHDxrDI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794395345;
-	b=t6b3LVGLWw5Xg3obaAfJFDAg/rA5ybNpC37dIurdC3d6wVPQ6xS1DCYhTSvrhjbmeUg5AA
-	SPYDEey1W2H0hDDfJm5thlq1fwdyx6wPxr7hG9wX27O+DqVirJCnKM5jXIgvBWRNDvijIK
-	Tp9TcuHxkGH9XSsFuLgDZ8BrYOY3wiU=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=1E8ZwW2Eu8WYRG4t6PuIDQjLMNRBTfUw3ilSDjs1rRU=; b=cmaAuP8N+P52iDtJVOwMGPU1Rm
-	FqzHy98fPelH0mq8DY0owqaAxg/oEFesnLx84zScoPFheV2k7WVlrIMZiD+YqhJOtdi1Uad5BMK9F
-	6en5BPWw+v3fE+/rL0Y5CGl2nlw31TWn7YIv55D9SZjD1cX3jcE0XFY9dru8/P/fJ9kxPBYu19j9r
-	dQCRq3bb5gxvXhKwVOCKpAVuCo/ZyutzCT/zkQXD2VE5qDpt5OROuRuNhBFVcpEfNi5ysabYpZyI6
-	NrlmK+fONZ1CyH6Ge32APS7qP0t5pyBN5b2pWN8ZWGxHWvL80WG44ipLS8WqhJtviyLV0r98zCRA3
-	+B8IoyiQ==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xR6CD-00D8c2-2m;
-	Wed, 11 Nov 2026 11:08:54 +0000
-Date: Wed, 11 Nov 2026 03:08:48 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Chris Down <chris@chrisdown.name>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, 
-	Alexander Graf <graf@amazon.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 1/9] kho: Reclaim the metadata page left reserved after
- kexec
-Message-ID: <avRMoA8Hy3P6k72d@gmail.com>
-References: <cover.1794383544.git.chris@chrisdown.name>
- <63ca64c004b296a998a3e531f8c0c4964916b70c.1794383544.git.chris@chrisdown.name>
+	t=1794395460;
+	b=zJA+HlNrJMtdwM35mBAx8xhB3QYUrcQdkEh0mv5lJnvQoN5k2EGQ7XwbaSPbLaWsSEEq7F
+	I+KawYBLV/ZELaYPoS9YceoLvRG9hEYfcDYJ7mgi7cYj+/fvJFEdsz2jdgHKTYcuhALp+Z
+	MASrsY41iJF95YnfDdMGuQqpp5LSCZ0=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=BeZMMawf;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf19.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1794395454; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=41dldmnzUpbVdvTasv/OLzoqF6WSHnIdkg3e9karzSg=;
+	b=BeZMMawfNUA79+3UIxKmYl5iVh1678JFt9BajSOX7UZbO4zQw5uAFgoTxPZEAYS1eUpKm4Cokfw9YgoQQ/tZ3GKPIp6L4Cry5Bd92u38u+andYi2kdmELsWx14LrU8rSBWkBMUV91tkgwZp+IRE9uc1Vxtf6lavA6VzC9DH1aXw=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=tongweilin@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0XEYmuI._1794395440;
+Received: from x31l07246.sqa.na131.tbsite.net(mailfrom:tongweilin@linux.alibaba.com fp:SMTPD_---0XEYmuI._1794395440 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 11 Nov 2026 19:10:51 +0800
+From: Weilin Tong <tongweilin@linux.alibaba.com>
+To: wangkefeng.wang@huawei.com
+Cc: david@kernel.org,
+	xiangzao@linux.alibaba.com,
+	akpm@linux-foundation.org,
+	ying.huang@linux.alibaba.com,
+	kaitao.cheng@linux.dev,
+	shivankg@amd.com,
+	vbabka@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	linmiaohe@huawei.com,
+	nao.horiguchi@gmail.com,
+	ziy@nvidia.com,
+	tujinjiang@huawei.com,
+	mgorman@techsingularity.net,
+	chengkaitao@kylinos.cn,
+	muchun.song@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	catalin.marinas@arm.com,
+	tianruidong@linux.alibaba.com,
+	tongtiangen@huawei.com,
+	xueshuai@linux.alibaba.com,
+	baolin.wang@linux.alibaba.com
+Subject: Re: [PATCH v3] mm/highmem: refuse to copy hwpoisoned folios in the !copy_mc fallbacks
+Date: Wed, 11 Nov 2026 19:10:33 +0800
+Message-ID: <20261111111033.627610-1-tongweilin@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <64df30e9-4297-4e37-9e9c-2760d68af24f@huawei.com>
+References: <20261110112641.1196786-1-xiangzao@linux.alibaba.com> <16cf88a0-6652-4276-95fb-12306e417701@kernel.org> <64df30e9-4297-4e37-9e9c-2760d68af24f@huawei.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <63ca64c004b296a998a3e531f8c0c4964916b70c.1794383544.git.chris@chrisdown.name>
-X-Debian-User: leitao
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 15B0140004
-X-Stat-Signature: kgwtisaio6yhfkwsuw769qcm6sz74t7x
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: c93jknbjge4zd5ecfh8ersw6ofuj9n5h
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794395344-1874
-X-HE-Meta: U2FsdGVkX1+7qhzxlIblNSdXlPM/J/ACTV6hn7EhXpHkF6MZn+cc245onDxHc7/OGTUwnOAkdPXtE/Wqm1oVu3uOB/FIXDv5CUR6JbvgYSeH8e9sAWUvU7uK3nQlDSqJ/B89duAjVUe3hM7Nk3bZnLS74M6LIad9MAxsH0wSKmJlYuXYhBTAGFqR0fYHlvh4qBs7gG9v/gQ1drKXO7PBTPYjA8nhCHvl5x18enN6WOXSCIatIkK2+7JMeHmjmZ86t01TWQAd3cY3HZZmTrc1PcK7ocjEXtDEReB/zWv4EpRLeCNqRGdaAB7DOhJGJKop0CoNQrX3QhofIWrFBm36KeOteS2cJ8jjgTpKAbPar4VkjxcQSaT38WFxPsZjaXcizrQjaTKAbQBBBespTcrFjTgjdijE6q4BzNpSIH+W4oUUhkV9UracjZIzb3Jhvhxbhpsoyi65N4ruoyZ6i4gB6/0J0/xYhh9zGBjB2SfAbiRKIbCuNzvV9BbjuBlye5FZUv0bkUbnxJ27yaGgts0h8Hu9lNgEwqrzqjV70LMNj1Gvq10cBnkgplNrsaYZCvvsOX57Bac+jmUWVqtzvzZjLYQX+Wi3k4MrW230NAtQ4LiGowKikq/hKoyxfrzqX3PBCNhzEURv6weF1mFHFOE2hMSKZtRlTF98HZVvYQVhqGI4YJPzBzAgqgCDzk3ELZ5+sl+uoQXK5bqeOH9+0jaSdWbdngNR10q+oTxZu5zQuwTCy52cSdPLXgGCrThYLyqLTI+bVGd7JEwjRtiAk0cj+pqFFzXk4pKtXZMHjEc5LW/JAxelmjArDwvcTeLoTvkV3tLQoV3MBT/EVsmYTH38AhS3QrPNgRzUzcagxu9symheW+UxJnLU0JTuwi8zXiKHXMyf+rIfwbwr37sbAkbtG90hUeH5GV2HC+5eqb08QewOTf+VUwVQ/bsgA5If9pg+BKjGgYZoYT6/nQOoouV
- MpxENQF2
- hl41UTy8sRN0rE2yT+XtTUmNYnVU5nBdd0QTy5m6PI9Esh7zoRmPqFAeOUceFIu6GPVnkPyNSUGchojl2XUhCbEdZbH28ewWJaVFhJKauPnGN8G2O/f5J4/GjfXzoiwzoaulBHtLxy2TeD6NW9AE3P/x9MGlif0LqEtnssk+GtXVTROGddls8y9iwb+klo5D+n5wlVgxsz0M8moojHBAcR/GuDmmO3coWt7ch7r8xVAzjU6xzUl1sqJWU2QCj+uFpOKkDdm+63lBEJAOoZNasbylaiA==
+X-Spam-Status: No, score=-16.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2CE721A000F
+X-HE-Tag: 1794395458-905622
+X-HE-Meta: U2FsdGVkX19QReJVhfe8XBR9ENEI8jZwrZokprf3FQycdlFDllOs3NMgN0RBEntAryT3WnYytFh3oDIJkB96qRQWNYERdNKQHBeDvw50D6tX0JSfqVLpS4yaQKTSvIQr3MOQvUq2zk8k6ayQvCOW0FEG2bAUwNs2p8Q9traCYeZ+yZ85Q4url4CODy5e52mHD2GXjlqaC5fsGORWLHfZMHs9+mJiVYH/dPdK1V/m0X+pSZfMOxS+Xt/B6xRTAOT95GoNgZTOpNCjjZvGAvXuXPuN0U8e+3sLQq+/VmgX6nkMmWSERiRRW36XiZMxpH7iu9T6v8eJibPh4pH01CkSb8xYuZiD0/H+bclIGnuLShRUqlNd3lboTFsWUGUM8Jh2xBNqFKZrHZhFSf0mUcyI1m7Q1WzZh4KzHzEjO6ZMnRjA2LHuBw97szrmW0tXizWCaECqXke/cfMc8eMzTyjlnIC/Kdc+NXZDz/KzPlwRo/nO6r3wkRyrGIS4T6Xar5/jWI37EnoVO9caSj7DeFKtcyE5MIpa6J/mA1DMqhDcV2usLvIF424JNm4xwcmFgnAX6oOGKHa1oTrW//GL7S/Ma3/nusYGx49+jF03a7/dT7NnsIAcehAuWjcGt6nXWGxSlm2iXvis+IhLl2my9tVsRJCIPQxJuuQF+mySonT6dLN7OUlyos6aRPKXdducYLZEsQjiga6ubWwMKodpAXgLo6CW8H9wiFmyd9j+D8BCr6MguS0cP8zHQhXtls7OiFvLJ5bgd5dsA3ylu5E7guoL/GFxxU0EkwPq+/NCAfYKWhZNkqCA6UWwL+QArNviab2Ec2rD1Zd+US2Akqi+1yoviLVFHXT9vjfLvFnSA3moESGGiqXSTchRaKc1VZj4kG9H+JexYFMyKLMifunZi8XFwGZHZxeo/Umrk3k7GwCG7ed7WOLYL5n78LK444jbXf9uGDC/R4v7TORCkrRE3O7
+ x7jNRk7X
+ wGPJ9cgemHaaSSDvJdZ5m4asnlJ1PmCigDPx6rNpot/wEZeNJqgRArfGB8Pq4Su5anK8wOuic3QNGT+RlEr7YSaGc/8Ct+qQkBFJIO6B5TWSg8j0yrlBqoUXzRcifvooEV/sm63MXFDyXX+ETdpqwTjlzjvufaxHqHHzPfuPc/1SugFbrQa9RVcMkoLAdPUMPV9FrQM9GAGRYv8Ym7ZtGlqRkjqioss6h6MZNh/KghCQSAx8qldm4EmzOKj6uCkVfSPtVcVg7k/8BcEEpZlXiOy1IVE8V85FchUFkFcctib1Qy5pSfSCRkasAmmucOMccpkEAwuaEqK9U5Sgq6kbmGl40jz4XXnpbt9HY1kXSiCUcJJMsIOa/gD/lzPICVeazi/iIXfhpw3Ryh3gO3FmlH78GdVEoKX02U0rPRQmIbiX1ZEnnTX/zEoFYCTct+M3QnvI6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,19 +114,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 10, 2026 at 11:52:55PM -0800, Chris Down wrote:
-> After a KHO kexec, the new kernel keeps the page holding the previous
-> kernel's kexec metadata reserved for as long as it runs. It only needs
-> the page once, since kho_in_kexec_metadata() copies the previous release
-> and the kexec count out of it at boot, and nothing reads it again.
+Hi Kefeng, David, Catalin, Tiangen, and Ying,
 
-Good catch.
+Thank you for raising this and for the continued work and review
+on arm64 COPY_MC support.
 
-> 
-> Free it with kho_restore_free() once copying is complete.
-> 
-> Fixes: 76aa46b9e404 ("kho: kexec-metadata: track previous kernel chain")
-> Signed-off-by: Chris Down <chris@chrisdown.name>
+I would like to provide an update on our side. Ruidong has left
+Alibaba and is no longer focusing on kernel development. I will
+be taking over the development and upstreaming of the arm64
+ARCH_HAS_COPY_MC series, building on Tiangen's and Ruidong's work.
 
-Tested-by: Breno Leitao <leitao@debian.org>
+This work is already underway. I will follow up on the feedback
+from previous revisions and plan to submit an updated series
+in the near future.
+
+I have also added my colleagues Shuai Xue and Baolin Wang to Cc.
+Please keep me copied on further discussions of this series.
+Any additional guidance on outstanding issues or priorities for
+the next revision would be appreciated.
+
+Best regards,
+Weilin
 
