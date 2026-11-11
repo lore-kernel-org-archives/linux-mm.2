@@ -1,93 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FB52606A337
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 06:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D28606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 06:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=OThinlnI
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=NQ+KEAOU
 Received: by kanga.kvack.org (Postfix)
-	id 7B9B96B05B3; Wed, 11 Nov 2026 01:47:21 -0500 (EST)
+	id 60C176B05B5; Wed, 11 Nov 2026 01:47:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 791AB6B05B4; Wed, 11 Nov 2026 01:47:21 -0500 (EST)
+	id 5BC8C6B05B6; Wed, 11 Nov 2026 01:47:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A7BF6B05B5; Wed, 11 Nov 2026 01:47:21 -0500 (EST)
+	id 40FAB6B05B7; Wed, 11 Nov 2026 01:47:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4035E6B05B3
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:47:21 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B451BC0226
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:47:20 +0000 (UTC)
-X-FDA: 85421906640.24.431A4CF
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E38E0180003
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:47:18 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=OThinlnI;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf16.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.53 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 105666B05B5
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:47:24 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 888511C2830
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:47:23 +0000 (UTC)
+X-FDA: 85421906766.07.D3C26A8
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf15.hostedemail.com (Postfix) with ESMTP id BB4CCA000B
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:47:21 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=NQ+KEAOU;
+	spf=pass (imf15.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.182 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794379639;
+	s=arc-20220608; t=1794379641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LoLBKM4Sjqa25bXrwKOIU9y0T4xg6/+5J3Td4BlyGMY=;
-	b=VydGFV6ROKXfpPOgPwvOFY57lLD+InqlLOzTBPPUNMJlqL6tdbd3T0iiKQo132tIMHueEi
-	6US06RY96mYp28bRgkKW0KdrzSmwK9DHNdZSBt0nS0xapD9TK2ucH2IjTMJlPNh5RRAR8H
-	xiGgaGmleBesmmPG7OLn8eAm8h+yFAg=
+	bh=Tu9NrHqKlXzz55x+volPwRYKOdbYof5nwc5oAEpTpeM=;
+	b=BkWizqSJrkrfbk3brhfLACQohySUhFy/6Jh0zLbmRx96FhaP4q43dVM2ZPwqjhqykxajSv
+	x1HbtJWBvnIwyIpg0C4wwCjosbiQH9aXoDi8/RoR5BS+ymfjAgUt6dPywGNF4jckNDpzXb
+	3XRCBeE+NiTvK080S0DRJU1x9/2dV2w=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794379639;
-	b=BnNokTDj+Ee2YHPqZJFMAWtbxKMJZcfL4JRqdZbu8Vio35c3kLgdjMp3V3H/jJM3hYVSDk
-	PbbNZbGmM7yQykrTMowDY9TH53Wt7ERPuESibuKz7v78fh5ZfY74eTFJ5xwFtb7F4JCmOv
-	w639ouNzfYjztA7U9K3LmKwDNefcVUo=
+	t=1794379641;
+	b=YYrhKry0i4A/wfsl6OzoFCjl8Z0k+K3AtCo0om4fbkt1r+ZzmPyapDEYbShZlyw7vTsWZs
+	ezWAtxZnfQtSR2onkY1Q5z3+jmT1CjPtSMJOVCkYpLdpVsBprfEjVydeb5BvKIQhgYOlMy
+	HMHFP2lYk61Di/aH3gI3/MlKC1Oc2Tg=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=OThinlnI;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf16.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.53 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3ac9f49b984so1610121a91.1
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:47:18 -0800 (PST)
+	imf15.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=NQ+KEAOU;
+	spf=pass (imf15.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.182 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2ed06b725fdso21306405ad.0
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:47:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1794379638; x=1794984438; darn=kvack.org;
+        d=chromium.org; s=google; t=1794379640; x=1794984440; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=LoLBKM4Sjqa25bXrwKOIU9y0T4xg6/+5J3Td4BlyGMY=;
-        b=OThinlnIJEE2vn51tzEppyF3hhFWI0TZd4wm6eKsVtyynudXwo6E1ZQwMO/Pr9zGVh
-         SAVoq0K99Ztk/isvlfrd+DdItyQZUThILrFcrEB77pP+gJVh6IUYJa2P4eZFOYLd+NDF
-         7pkzF0EY8TKmR6cOJVA/SKfaEQWPKWLiix1b4=
+        bh=Tu9NrHqKlXzz55x+volPwRYKOdbYof5nwc5oAEpTpeM=;
+        b=NQ+KEAOUJAC8uc8//A/5Xu34lLrm6rGkLuuAinyI7EcyrUSZo7oTTiAXv+A7M7SwpK
+         uc3UAaW5o4vQTGneqgU0MHzVFhYZBMIqGt5hnD+tphwjEwNuIxZBfY1+eWsHDkwvUxCm
+         GfERk0x8HhODf5HxG5ZX3xDPcMDtuZaidQ3RQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794379638; x=1794984438;
+        d=1e100.net; s=20260707; t=1794379640; x=1794984440;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LoLBKM4Sjqa25bXrwKOIU9y0T4xg6/+5J3Td4BlyGMY=;
-        b=vy8aftq9JN4DkBe4Ns8sa43sePCAf6KI+wZWIZrF3e8uBwkRbLBFLGsBvZmiQxsdse
-         PRCxcpXh4cXE30xb+TVcjzSDdf1IHCr17+vgNfzGstrk0AtTER/YW212RXStRwq31+Ac
-         A2FdZbvg/sqrGI+UZWC/X203eciQDeSGC+5/2ATUXDcJJxhyaByoHyqk5r2itxIhpTF7
-         JtZEebZGTKVFaAQQR/UeXml8o05rA1k2vmQg/mZotJYHm/nONxAJOkVdxcIdeOgw4EWh
-         cLXueu0lvo5rL69IvhpETMWSBRP18ZzDBbAmjjHMlrNa1U4AV8B/L1xx/jXrq3fnxeVX
-         zzVg==
-X-Forwarded-Encrypted: i=1; AL+hErE4vAHa7UMy8kVp+9ye6vhjYKakifqt3T7hcYGD/f5gymBakJ+QYhJo9MzJbdCwrsN8tPnr+ARTcw==@kvack.org
-X-Gm-Message-State: APuU4Z8gyd3YShfsQqWXTVgR0X1EaxHVeoOzFbXs3yPabWGs0f1eNtrJ
-	9PJ1XGymmMnEWQBgStFRH+x6RCzL3uE8TWkLAnt8aYlV51PGH7RbpVKVXXlg18Ox96rNmcmIAbp
-	n6z4=
-X-Gm-Gg: AYBFou3kp9URzkKxrO3q3JRSgX/3Ay5E5Ud/1tDCRA1qRpLyhKne7YLfXo0gK6WCVsr
-	WzRM0ADn20HthV4SKixTr2xNSLFVrpJguObHX8TcVyh9JeFUDx5V7nV4Yt32J4uMxMxXoJFOp9S
-	sXdHT7zTo+1qpx/t/EcFRtD9pwS9h9ruvoFuvqIc/KUzboRmLVlBD9PfAr3lPGmwUOqc4GxGQps
-	TjrPTRask2HTrmzvBQ+i7V0NPpRie2LBi1ozIcSJHl/DG+4EAHgyDsBAQ7mzlPotuZ+3I0pEtzB
-	DpgDyxT0j6EfngJTB7o/B600+l4eNwiOwfgYDNBDAtSjXuTHGRmpR2zo0BqJV8TD5uq6L+hqLq2
-	lr0JuuTs6yDGXCnHRiqxKPC+ZinuQMcXJz+ejPIgDYKb6H4OB6U9x6uf79WL46k1mSDXe4i7nq9
-	aIK/8H5idvgAvDJm+5Ah3wr+4RmC8VJiQvCJHErkoVjfPXnqyguUeQDGBxuehSKJnAAfqRGd7r4
-	/qBXuHyHHEJUMgHKcIKxFy7FTEH300qVjv7g3lVIOMHlHeIaYy6r+Hdh8tR/X6gdqVaotjt2NWC
-	IifXqPnZIyIECMMKtICcv9VLbKNduc3uHT8Hdsp1R2ein9iqbJAQl+vF+lstDSn3vBmbfCOVEIY
-	yFRBnaGhEeSOuXpPv4e03/Pfycv4ppi+OBJ7m4G8=
-X-Received: by 2002:a17:90b:3c06:b0:3b0:a413:dd8e with SMTP id 98e67ed59e1d1-3b182fd6335mr947201a91.43.1794379637677;
-        Tue, 10 Nov 2026 22:47:17 -0800 (PST)
+        bh=Tu9NrHqKlXzz55x+volPwRYKOdbYof5nwc5oAEpTpeM=;
+        b=ReVoI/BmtHDeYhAj7TmJbTsRkaGluHbBq8eOXhAjIlaLYwZWtXV/UdzsYZ2tQWj47H
+         nY8Jdw1Ok0Bl8L/kjq+cfnRNT8WaGcM1pgP2qryAmWNtyBMqmbzwChfQGCRx8YU5As8p
+         3y+HbYv1zLlNa8DkBYC/AtPhsPQNndacTjwUbRdJYwFXAL1lp0u8lpufu8/ovtnojx6O
+         V7TlPt2Os090XCD7CLCFmH9lQ0xQwmYV0oO/wPVArNL05oT/XbnHUgBhoD5PXXvB3b8K
+         R03fgEeYdwOyQQRpfFLA84cIn3+RRDBVAUiJSPeFaVT2WQ+G6BmU3ZaXH4j0L1xerxkz
+         ofVA==
+X-Forwarded-Encrypted: i=1; AL+hErFl1vLwseshYknuM05fyQ6sUVwPnV9J6THP9qu5dTDvSsf2uKOIjD0wgirhF0kzqO/p/oUGlA3OhQ==@kvack.org
+X-Gm-Message-State: APuU4Z+ZrjTdKWCO6UhSmR8hGaNzaB7lWyeFFTIeGqAldy2mHWaZZJvy
+	jLSiPvk9r9qSVcUnGKlkXoMoRfA+YH/HKW12j1b+Naj7v/g/N/HBFsRtkZ2IgYTSwg==
+X-Gm-Gg: AYBFou3tzWD5q6Ya441VCAlEZdn0vP6GTeSzeqqweKUzCYCFiPOksgqYP4PJ8S73z6s
+	HMjveH+QKsua4/H/O+/RIwZe9pFjDiXhTR7QlEpwxsd2XEkOYJdLDtLeKML3CPj4Ot411iz8xaR
+	5LEjT6sLsLGzEeKF/ZNgmK4uyTBG/OLHio0D3oHtxJoHVoqVRx7OBZuYPfPLwaw43a9Q6bJGPem
+	CxJev+IiIV+SQgiELiNZufb2GNHirW2j6yYHPfTYSmwfbA30rzUxgmVzUVc3Nk8I+Bz5em3QGFD
+	nSpNfMLuucCthMgcD1YYxlz0zKsnvuhbNVj1MYOlmXaeZ4FjcvtMmCuRL6YsjvwjpH1DsuR4638
+	9m62EoFks/o+8dzGct1dRSZ1BHYz2cDsvy95IHGNaCDYOBCoL8huuujxvH1haVdkNHzY/kTTvVp
+	NPSu+LGLHN6U3R08AVh02Ibf/XrT5WqBWQF9+ZHuhbvOZyRJshkzojsM+/A2ULBkSOsaYiEGycT
+	fd6riCln2smUmzZbsSp6dExV6MAkNPs1FxMygCdil/oTA7jDSnV1YFVuj3BI0p0b2iUkoMUtowZ
+	3wXRfIjBRPzaA/DQIMmLsM8xdW5RINtJog1a24Hn4FTMMoGllNIhaoytLorNCWjzO1iTN8hhldC
+	l+O3aMhuTxfTy9xvP7A==
+X-Received: by 2002:a17:90b:2b43:b0:3a4:b509:88bd with SMTP id 98e67ed59e1d1-3b182e0c1fcmr1171979a91.2.1794379640543;
+        Tue, 10 Nov 2026 22:47:20 -0800 (PST)
 Received: from tigeriii.tok.corp.google.com ([2a00:79e0:2031:6:ad6a:b446:df00:78dc])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b17db85a9bsm3268666a91.14.2026.11.10.22.47.15
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b17db85a9bsm3268666a91.14.2026.11.10.22.47.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 22:47:17 -0800 (PST)
+        Tue, 10 Nov 2026 22:47:19 -0800 (PST)
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Nhat Pham <nphamcs@gmail.com>,
@@ -100,27 +99,27 @@ Cc: Nhat Pham <nphamcs@gmail.com>,
 	linux-block@vger.kernel.org,
 	linux-mm@kvack.org,
 	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH v3 01/11] zram: drop stale comment in write_incompressible_page()
-Date: Wed, 11 Nov 2026 15:46:24 +0900
-Message-ID: <20261111064707.2568433-2-senozhatsky@chromium.org>
+Subject: [PATCH v3 02/11] zram: drop get_slot_handle() and set_slot_handle()
+Date: Wed, 11 Nov 2026 15:46:25 +0900
+Message-ID: <20261111064707.2568433-3-senozhatsky@chromium.org>
 X-Mailer: git-send-email 2.56.0.542.g3ef89b7020-goog
 In-Reply-To: <20261111064707.2568433-1-senozhatsky@chromium.org>
 References: <20261111064707.2568433-1-senozhatsky@chromium.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: iyfnex65sdedhri6gdnbsy3x3yxk3jhz
-X-Rspam-User: 
+X-Rspamd-Server: rspam06
+X-Stat-Signature: hokd3bpsq6fxyi5jemcgdubsaweguyfo
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E38E0180003
-X-HE-Tag: 1794379638-54150
-X-HE-Meta: U2FsdGVkX18jpKQNlzGkS5BvZdHpjtNzwDxARTsmlyW4cTuy5bUfLq9a58+XzcK9vND0tIbR7vPUnHLjBUtgt61Guavmo1gsk4aIx2y9bz72t6deeOD/psU4INhfjhzZB9BQ7x4XkOn2TMUcnPDMc/pb+XoLqEBKRgB1YbFIIJJ7tSsLznOO8/daAnwP4InI9zweb/X97W1OdcLjMLodqDuyg+uKL+VGbxz+jYM3ra4FMx13kEZ/Qb7F2IXPptT5UFO3JgGXIPaFzjclTrHaoWfM8/ECoxW4SrBjl4m2IQttoDk9IqmznbdQ+UhiBrCtvp5xNs1mjJCFVUGbSgKOcpCjeilFv1ZK1hfwKE2ahXiOq4yQJy20SriTlrQe8iXl5mstCX0ZTS/HJKIAZ6VmaF6/zHKiPV5XxXDCh8dmKKU4xqpaYxFJG8Q4zysb3bPy7NsLTl0Trubb5H7NvSFkAvQeBJNe21S4mKxNgUGhZEFIIs+2c6kDT+4+96Mvysl4c49WfKPAXiTmWSsOU2IPMEFMMMDT6WOkohlBKEqNfro4yC17zb44FWys+2OEVxeQFdAhjTDGuStDTeiFez6MuJ2weC66PIn5PFjwudwnuth4fpTloKI/VrMKYdyfYpfniF8pB9OkRCT6270lrxZUgc1x9R35uU+53xVSG0XSySGjX2k1HUmg6ALReoRx6OmiFlAheHAvS6P7TcFBXN1jmEusiSnDxOtztKopUfJNgk52rb2ooM7W8G36V0FOL7G0Ixf5rPZP+UG3fwHa7wYUPgDdXGiQusxvd1Mf/vQwMPl2LQ8O6c1Vrxc2P+2T+GDGQluUXDHqBuKOjpJizvXJsOQXwQw+hEB1VWTDEb10+sx6KitVXLRvZOkpEU8s9+KUBXlM0mJOu58eStMN3m1kHxSBq1gWWBGctYI/uTlUhw5JXYyTR0LjzaoH6FDfjx9vymuubJnGmsZBrUTpnl6
- PadXSHbE
- j1mbRnFtD4IV9Xu83ybG8UXipdNO8IhvmZti+2ttbl6O1wLEld7TNYztQTsyRafoeJ/v+Ogt6w5G9O/ZIt/y9h/HqOCnKX51pTB94yZuD8E7ogPfEtEnLhYFu1jEfyqrCGmWjnY4jvY/3V3dt+DT6kh0YBg24qLO9MxV7n9u1JxhOweIOTSgfvol5BH6Wasq0yEymgElu4NSfIROusmF3qNk0CRWLj5auACIIYRxGbXVBvO4EC/T7PPmcMJWcb4tSq7kpVg3uSPbnRKQC0MlkXLC/yaCQgFrd8RaJ/Ao+HPCbiJswMc1b4yeat3qCYnJhlkdWhRkh/L+AsvUbSvA51RYhK1B089KGjcihIGRk8Dzxae0=
+X-Rspamd-Queue-Id: BB4CCA000B
+X-Rspam-User: 
+X-HE-Tag: 1794379641-765118
+X-HE-Meta: U2FsdGVkX188RcGv5QloupYcR9tYPO/M8C3osjsr1rUhklE2/ISnM42MF9PIxeXcz5x+s30jYZVv744OWlHmludHJq9sNjBXE7bN1bTbnEq644Q3Lw8ZBUWPpJHr7WAso9m8MusfsCm7+YmE4aoaY6rATBDBe6Fi/3ISShWptkHBF90dboFzHRflJfmnsHl/UPYPjLryc7DbTrTLxryVduGjT1ClxPq1Y1/kIFTfSrlZUBo1m8PBpHK6xfKA+bEhn7ZTrhraTvio8mh6LW5rlxYZSSF1u28tMkWMp2wwm/4TRYxZzs1siFT/lLOrY3e9vKYxWaUk5kcYgDx14l1ww/xsTUVZ6b+BxNw3TvbZC8rHCUbsdVC491q4xkIUFucGjzeq/xOvFUFD842eJb85PBJmCid8wduYuId+3MiipHO9H3sdqfL0o47WaejzvqYvQYpUFUg3p6+6A00q7paYcHgDIV5qfYsAvBjweNB77bhQXBmmWUx3zspoM2X5pbt2nFf5FdCmZSVbGggM8IcfHxgb0N0dQnwcAHDetzI10WZ7EcLOA9Hh+wuOMPLwLI4A9rs3LAX4GQVBzsOhuMzZyiIZCtwJ19fHnF7K13qki8Oh1sQhIFWcSf1zPI/ZtAuYOnUPcAKGMJaEAix4BySI/dGpeVcfCBt99f0t830EwlnGqlQmNTzDLDNKGVK9SyE5jxn8ty4jHyYJPnUZUNfReKit3m1bJlFZxSN0PHBkk//XglB2XtDPwX8dOOFNLGudj0BOJb8qB8PJwUhwzGg5NRsxUQ/DUjQHqEgtcAeXM+AmYXD3Gvj8sDGX92AcccwTw1UwYxoZk9GUZ8pddeUPMYBLt8drEjx4LtC5Tilx6sW/qin36msuvHy998MiHTs6GJZRybsG1ETDpiw8E2PLyCfjl/NtBvT/AxnNws44l/7mwoNClyKIrufJN8adBu63SBqLrTnwNgbFDXJV4Rs
+ Jnb0dA85
+ FAAaJMEmUUofkofQmOrs5yxhsTTAAgcNFETkAjD4tVWKJ4pBsXKKcbAnLnu4WH6MyZNcESu4xTZ7Z0pzRgihGA77OvM7ADYvEKis1ephdAAt78x3IcsBiUMqox4YIGmy2UleKyngO64v9jO7qeAVIuPAAU80+SFLxDp2ZaTnpH21OYNb2PqlGU5yHKWpQ8s86lwCRHAwJSWzvL8bO/UIq+x+l9FG2ryaaRzNcSGg74wMTYHRhdG1mYfHIavE6SEwCljQ4WCVzYrZBjYLUrHVO/llPx0TkGaboeC58GPuep+vc+N2RAxRzzpY1PXLl3Ow1QqGCgA+eitmmRnEawNapcox5DjPtXCG/LSyH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,30 +128,197 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-zram doesn't do fast/slow-path handle allocation anymore, so
-the comment in write_incompressible_page() is stale.  Drop it.
+zram_table_entry ->handle is overloaded to store zsmalloc handle,
+same-filled page pattern and writeback block index, so calling
+set_slot_handle() or get_slot_handle() for blk_idx and same-filled
+pattern is confusing.
+
+Turn ->handle into a union of handle, element and blk_idx, drop
+get_slot_handle() and set_slot_handle(), and open-code field
+accesses.  No functional change.
 
 Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 ---
- drivers/block/zram/zram_drv.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/block/zram/zram_drv.c | 43 +++++++++++++----------------------
+ drivers/block/zram/zram_drv.h |  6 ++++-
+ 2 files changed, 21 insertions(+), 28 deletions(-)
 
 diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 632045b65bdb..380615b73446 100644
+index 380615b73446..5c13addd22f6 100644
 --- a/drivers/block/zram/zram_drv.c
 +++ b/drivers/block/zram/zram_drv.c
-@@ -2271,11 +2271,6 @@ static int write_incompressible_page(struct zram *zram, struct page *page,
- 	unsigned long handle;
- 	void *src;
+@@ -111,17 +111,6 @@ static inline struct zram *dev_to_zram(struct device *dev)
+ 	return (struct zram *)dev_to_disk(dev)->private_data;
+ }
  
--	/*
--	 * This function is called from preemptible context so we don't need
--	 * to do optimistic and fallback to pessimistic handle allocation,
--	 * like we do for compressible pages.
--	 */
- 	handle = zs_malloc(zram->mem_pool, PAGE_SIZE,
- 			   GFP_NOIO | __GFP_NOWARN |
- 			   __GFP_HIGHMEM | __GFP_MOVABLE, page_to_nid(page));
+-static unsigned long get_slot_handle(struct zram *zram, unsigned long index)
+-{
+-	return zram->table[index].handle;
+-}
+-
+-static void set_slot_handle(struct zram *zram, unsigned long index,
+-			    unsigned long handle)
+-{
+-	zram->table[index].handle = handle;
+-}
+-
+ static bool test_slot_flag(struct zram *zram, unsigned long index,
+ 			   enum zram_pageflags flag)
+ {
+@@ -962,8 +951,8 @@ static int zram_writeback_complete(struct zram *zram, struct zram_wb_req *req)
+ 	if (test_slot_flag(zram, index, ZRAM_HUGE))
+ 		atomic64_dec(&zram->stats.huge_pages);
+ 	atomic64_sub(get_slot_size(zram, index), &zram->stats.compr_data_size);
+-	zs_free(zram->mem_pool, get_slot_handle(zram, index));
+-	set_slot_handle(zram, index, req->blk_idx);
++	zs_free(zram->mem_pool, zram->table[index].handle);
++	zram->table[index].blk_idx = req->blk_idx;
+ 	set_slot_flag(zram, index, ZRAM_WB);
+ 
+ out:
+@@ -2064,7 +2053,7 @@ static void slot_free(struct zram *zram, unsigned long index)
+ 
+ 	if (test_slot_flag(zram, index, ZRAM_WB)) {
+ 		clear_slot_flag(zram, index, ZRAM_WB);
+-		zram_release_bdev_block(zram, get_slot_handle(zram, index));
++		zram_release_bdev_block(zram, zram->table[index].blk_idx);
+ 		goto out;
+ 	}
+ 
+@@ -2078,7 +2067,7 @@ static void slot_free(struct zram *zram, unsigned long index)
+ 		goto out;
+ 	}
+ 
+-	handle = get_slot_handle(zram, index);
++	handle = zram->table[index].handle;
+ 	if (!handle)
+ 		return;
+ 
+@@ -2088,7 +2077,7 @@ static void slot_free(struct zram *zram, unsigned long index)
+ 		     &zram->stats.compr_data_size);
+ out:
+ 	atomic64_dec(&zram->stats.pages_stored);
+-	set_slot_handle(zram, index, 0);
++	zram->table[index].element = 0;
+ 	set_slot_size(zram, index, 0);
+ }
+ 
+@@ -2098,7 +2087,7 @@ static int read_same_filled_page(struct zram *zram, struct page *page,
+ 	void *mem;
+ 
+ 	mem = kmap_local_page(page);
+-	zram_fill_page(mem, PAGE_SIZE, get_slot_handle(zram, index));
++	zram_fill_page(mem, PAGE_SIZE, zram->table[index].element);
+ 	kunmap_local(mem);
+ 	return 0;
+ }
+@@ -2110,7 +2099,7 @@ static int read_incompressible_page(struct zram *zram, struct page *page,
+ 	unsigned long handle;
+ 	void *src, *dst;
+ 
+-	handle = get_slot_handle(zram, index);
++	handle = zram->table[index].handle;
+ 	zs_obj_read_sg_begin(zram->mem_pool, handle, sg, PAGE_SIZE);
+ 	/* an incompressible object never spans two pages */
+ 	src = kmap_local_page(sg_page(sg));
+@@ -2134,7 +2123,7 @@ static int read_compressed_page(struct zram *zram, struct page *page,
+ 	void *dst;
+ 	int ret, prio;
+ 
+-	handle = get_slot_handle(zram, index);
++	handle = zram->table[index].handle;
+ 	size = get_slot_size(zram, index);
+ 	prio = get_slot_comp_priority(zram, index);
+ 
+@@ -2161,7 +2150,7 @@ static int read_from_zspool_raw(struct zram *zram, struct page *page,
+ 	unsigned int size;
+ 	void *dst;
+ 
+-	handle = get_slot_handle(zram, index);
++	handle = zram->table[index].handle;
+ 	size = get_slot_size(zram, index);
+ 
+ 	/*
+@@ -2188,7 +2177,7 @@ static int read_from_zspool(struct zram *zram, struct page *page,
+ 			    unsigned long index)
+ {
+ 	if (test_slot_flag(zram, index, ZRAM_SAME) ||
+-	    !get_slot_handle(zram, index))
++	    !zram->table[index].handle)
+ 		return read_same_filled_page(zram, page, index);
+ 
+ 	if (!test_slot_flag(zram, index, ZRAM_HUGE))
+@@ -2209,7 +2198,7 @@ static int zram_read_page(struct zram *zram, struct page *page,
+ 		ret = read_from_zspool(zram, page, index);
+ 		slot_unlock(zram, index);
+ 	} else {
+-		unsigned long blk_idx = get_slot_handle(zram, index);
++		unsigned long blk_idx = zram->table[index].blk_idx;
+ 
+ 		/*
+ 		 * The slot should be unlocked before reading from the backing
+@@ -2255,7 +2244,7 @@ static int write_same_filled_page(struct zram *zram, unsigned long fill,
+ 	slot_lock(zram, index);
+ 	slot_free(zram, index);
+ 	set_slot_flag(zram, index, ZRAM_SAME);
+-	set_slot_handle(zram, index, fill);
++	zram->table[index].element = fill;
+ 	mark_slot_accessed(zram, index);
+ 	slot_unlock(zram, index);
+ 
+@@ -2289,7 +2278,7 @@ static int write_incompressible_page(struct zram *zram, struct page *page,
+ 	slot_lock(zram, index);
+ 	slot_free(zram, index);
+ 	set_slot_flag(zram, index, ZRAM_HUGE);
+-	set_slot_handle(zram, index, handle);
++	zram->table[index].handle = handle;
+ 	set_slot_size(zram, index, PAGE_SIZE);
+ 	mark_slot_accessed(zram, index);
+ 	slot_unlock(zram, index);
+@@ -2355,7 +2344,7 @@ static int zram_write_page(struct zram *zram, struct page *page,
+ 
+ 	slot_lock(zram, index);
+ 	slot_free(zram, index);
+-	set_slot_handle(zram, index, handle);
++	zram->table[index].handle = handle;
+ 	set_slot_size(zram, index, comp_len);
+ 	mark_slot_accessed(zram, index);
+ 	slot_unlock(zram, index);
+@@ -2471,7 +2460,7 @@ static int recompress_slot(struct zram *zram, unsigned long index,
+ 	void *src;
+ 	int ret = 0;
+ 
+-	handle_old = get_slot_handle(zram, index);
++	handle_old = zram->table[index].handle;
+ 	if (!handle_old)
+ 		return -EINVAL;
+ 
+@@ -2554,7 +2543,7 @@ static int recompress_slot(struct zram *zram, unsigned long index,
+ 	zcomp_cstrm_put(zstrm);
+ 
+ 	slot_free(zram, index);
+-	set_slot_handle(zram, index, handle_new);
++	zram->table[index].handle = handle_new;
+ 	set_slot_size(zram, index, comp_len_new);
+ 	set_slot_comp_priority(zram, index, prio);
+ 
+diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.h
+index c563a7c13a49..5416e25e64e8 100644
+--- a/drivers/block/zram/zram_drv.h
++++ b/drivers/block/zram/zram_drv.h
+@@ -78,7 +78,11 @@ enum zram_pageflags {
+  * of each entry and hence of the meta table.
+  */
+ struct zram_table_entry {
+-	unsigned long handle;
++	union {
++		unsigned long handle;
++		unsigned long element;
++		unsigned long blk_idx;
++	};
+ 	union {
+ 		unsigned long __lock;
+ 		struct attr {
 -- 
 2.56.0.542.g3ef89b7020-goog
 
