@@ -1,123 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D8A606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 04:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69292606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 04:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=UU/Lr0hn
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OZ7PzxqK
 Received: by kanga.kvack.org (Postfix)
-	id C325B6B05B7; Tue, 10 Nov 2026 23:24:52 -0500 (EST)
+	id 3A64C6B05B9; Tue, 10 Nov 2026 23:25:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C09EB6B05B8; Tue, 10 Nov 2026 23:24:52 -0500 (EST)
+	id 37DBD6B05BA; Tue, 10 Nov 2026 23:25:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B21D36B05B9; Tue, 10 Nov 2026 23:24:52 -0500 (EST)
+	id 2BCED6B05BB; Tue, 10 Nov 2026 23:25:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 938456B05B7
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:24:52 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 36CF5A7109
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:24:52 +0000 (UTC)
-X-FDA: 85421547624.24.176B146
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 55682180003
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:24:50 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="UU/Lr0hn";
-	spf=pass (imf16.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.51 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794371090;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5+PpphlpajmWTe2u74lHALG+B1qJVE8FkqGWsdeseUE=;
-	b=MwVvTc7COL1Qn9qQU6bT25RHX157cVAp7Y+NQjHESmNWfridYnN8ABnwE9j5qL38A7HEuC
-	ABigdX1EGBNPP6UkjtwhTOZerrzJzAiapmJLlOeBMQ0CSUin9srQvViiQh95F6/RDVYwy7
-	P6wL7ovXi9QzSAnA1rY9AbWhLEEwXBg=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 021C76B05B9
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:25:07 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 89060401D4
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:25:07 +0000 (UTC)
+X-FDA: 85421548254.29.527AAF0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 01C34C0003
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:25:05 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OZ7PzxqK;
+	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794371090;
-	b=8knlD/5NDRZJtOV75IkYTnEMIknKRgGiKHv1n9/MNhtgHTnaZXkeH3WZWMz1TgpMTuE64k
-	4wWRsIVIjIRa5ZmfV3tsd6mDDdqqWfkAHxgIkI+omPtKdFVv24Mpw/33apIuh7JhNvUFXh
-	tM/Ng1J1KRZRq+/WTEoV/5VAg14tqEg=
+	t=1794371106;
+	b=2hsJdnH1uEYBLF3VCAOE40qWV3zkx+AKxg1yYuOXmcsLsMYgGQ5JHBy93aD66094GU02d2
+	YDOFt8ipEZkPow6RI4WHD8GoA3r/SDwa6GU7Tph5fxAMbzKFt7adU0TbTbLz8j5fYxASUs
+	4V4RvtczYzYRod7r72BkX5fVOSBD/bk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="UU/Lr0hn";
-	spf=pass (imf16.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.51 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3ae1da332bcso1313083a91.2
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:24:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1794371089; x=1794975889; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5+PpphlpajmWTe2u74lHALG+B1qJVE8FkqGWsdeseUE=;
-        b=UU/Lr0hnjURS38HGZ8kkkEp4Q0capsNofgLemstHQlGSLEQnsSPKik6D2/bRrmtu9M
-         NYTJ/42yklIrVZeYn6sbX0Teis63Urs6Hks6jUnuiyeoQpHJMPI0os6M8Qp0moYetQuJ
-         ANMD0wVkv1yKhGLlg1mU4yz4lk3+IbZj3sxtQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794371089; x=1794975889;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5+PpphlpajmWTe2u74lHALG+B1qJVE8FkqGWsdeseUE=;
-        b=ZAd9eLjzKpOMqzOUBe4OCgU0vkKttDXE+UAyWsAESOWNIyOeLK4SP3XT+Mrv+jr/Lf
-         Spc/q5zs2iZKWa5pppC8Xv/JIzHYoG6HQRqSV32NrHxtumyRMmk8L7QXQnqOzbC8FHdC
-         kTEk2+e4LVSyjjMPDA0afr7kwPUK54ksxpL5BR1zURLG5/7nIaC3gytwfm1uAjh3Ctn7
-         jr05f5D8oxSqbpYOy4g1FYJiwaVefN6IhFD4qb5NlaMToMwFx5DHBf9eMvj+lULKY9Na
-         PP1oKW5x83/PJV00C1iFu5krWt98NzhgPDe2iMrIwtWWb67Hi7u3NSXLCVI7R90+wQ2y
-         435g==
-X-Forwarded-Encrypted: i=1; AL+hErFG0iSvb/G37EEz9IVMVkZ+tze9AKpemaH4dJG1wIT0U26daIypWjQX9+Ntk7QwmuKXbazGn/55dg==@kvack.org
-X-Gm-Message-State: APuU4Z9n+r6wtjF9qV+Fvw+iDn1N5TcaSoycfe97nioR4l/tvXHPPwmX
-	S5/pDHBmjigewaZU6s7yrQ3EcD3hz8JCVahcGej1UtchiuCh6MlZe3HxGaobR8w+/w==
-X-Gm-Gg: AYBFou3fEnEIJtDrPTvan00dGIyNqoIpe7Ud3iqeLY6gFqIQpc44QrmUgdPC6WLmdeB
-	LZnvF1qy9nw+ST2wC6quWiihGoYTn28gwdiv/sCouRDQYMmSs3p6kWF5NBAEB8jSMAfqF27vGI8
-	rt4+Hx3OvucdmrfX/AJvcjDwGlJTjMhEVQwIjp6G7wUUXUSCWUGwPx+1S46aFLGl1PqCebtO6m4
-	ehkcQWr4jrTsPEQwJezA1b5+3RF9H3hENqw2BisqcXUdr7focVJGa70BLrgkx7GojBx6AJZRxPh
-	+xJhi5iA98nVeftaGkzQxl6tL+p2rbZA8rdN35HxAZWQ4liFfpKcV5jhg34o0m9WD2WukH2ebJW
-	0lvBWjvXNTDFNSoszATsNJblAKpxhWsiGcrNY027nhDIaKbM1RApRI6//FEHcYWpYe9nHKzukkW
-	OnqsY95gVPENWyqwVj6vC6aezBhVVnCW5VFCS+UetYdynliFKViK2RH4VbcyGRvcrtB7kwwFWpz
-	9JpFkctpccQEw/RogsPggeDUVlp9RfSv1VuPMx4YzqFcV7GUUB6xijGR9s4lOY97uKFbz5bSR4I
-	rmGVLqFHi/LVXJtsPYUIyY57itpdnsZQ/kIlcpdiuHHThuPt1DHMOziNoe5SxPoJeSmgmA==
-X-Received: by 2002:a17:90b:3c44:b0:3b0:d365:f8ed with SMTP id 98e67ed59e1d1-3b182efb65bmr1194697a91.21.1794371089135;
-        Tue, 10 Nov 2026 20:24:49 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:ad6a:b446:df00:78dc])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b17dfb7a84sm2353036a91.2.2026.11.10.20.24.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 20:24:48 -0800 (PST)
-Date: Wed, 11 Nov 2026 13:24:44 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
-	Richard Chang <richardycc@google.com>, linux-mm@kvack.org
-Subject: Re: [PATCH v2 08/11] zsmalloc: encode 1-based obj_idx so valid obj
- is never 0
-Message-ID: <avPto_ATpOqET8af@google.com>
-References: <20261110054836.1515030-1-senozhatsky@chromium.org>
- <20261110054836.1515030-9-senozhatsky@chromium.org>
- <sashiko-outbox-207590@kernel.org>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <sashiko-outbox-207590@kernel.org>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 55682180003
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OZ7PzxqK;
+	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794371106;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ZIGOfIqty5WmF9m/oFG68PzA/sTP+YnuJipwBQIjsAk=;
+	b=cFH9m8EfR00bwWwNWEmUuJDEvLs9jC64V7c26ApkMHhQ3pksVSNps7WxjOCXvR3spsIvqU
+	+fv0X7sKTtmN5dRmOPipsdikM3McPbZP9RcIdq0pIn3sGVzi04NfAyeANFASJ0YOrvhI8s
+	Ofd6yMfENRgnVsviJiwTkXeLZPj20/8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 103D461162;
+	Wed, 11 Nov 2026 04:25:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A4E1F0089F;
+	Wed, 11 Nov 2026 04:25:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794371104;
+	bh=ZIGOfIqty5WmF9m/oFG68PzA/sTP+YnuJipwBQIjsAk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=OZ7PzxqKOxlm5xAfzYFww0chMklkLL3FTViiMh8or+Dp2kXFwTOT2RZ9Rd/vB8gzM
+	 QjSUbcU1fJY0BcB5ktDGUhra68ZuQbIsvaa0tgu46z+nkvwiGX4dJYjjzjXBkglnJ1
+	 cvRl/FkqcK5cu760SAha675YsLPeEG6yCu68DglbVWTpdOZ0iK1eiJtHIcVb8AQTK5
+	 La7NLYZNBYRcbEi/WM3I4zmjD+L9yfUjjWV0VfJPIZX8rn1nNr4Q/b/5zsjuYNm6PA
+	 jhzkc/qfYyFbXUQlBM5Hr4acckYAwGoQLO1KgRbAZER+CilVh/VOD3YrEAdc0xfyiV
+	 PsbwSqUydsviA==
+Message-ID: <sashiko-outbox-208280@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH v2 24/25] Documentation: Add PISA architecture
+ documentation
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Luigi Rizzo" <lrizzo@google.com>, "Luigi Rizzo" <rizzo.unipi@gmail.com>, "Joerg
+ Roedel" <joro@8bytes.org>, "Will Deacon" <will@kernel.org>, "Robin Murphy" <robin.murphy@arm.com>, "Christoph
+ Hellwig" <hch@lst.de>, "Marek Szyprowski" <m.szyprowski@samsung.com>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Vlastimil Babka" <vbabka@kernel.org>, "David
+ Hildenbrand" <david@kernel.org>, "Jens Axboe" <axboe@kernel.dk>, "David S .
+ Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>, "Matthew
+ Wilcox" <willy@infradead.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Jesper
+ Dangaard Brouer" <hawk@kernel.org>, "Ilias Apalodimas" <ilias.apalodimas@linaro.org>, "Willem
+ de Bruijn" <willemb@google.com>, "Kuniyuki Iwashima" <kuniyu@google.com>, "Joshua
+ Washington" <joshwash@google.com>, "Harshitha Ramamurthy" <hramamurthy@google.com>, "Alexander
+ Lobakin" <aleksander.lobakin@intel.com>, linux-mm@kvack.org
+In-Reply-To: <20261109182533.3594984-25-lrizzo@google.com>
+References: <20261003212241.3432303-1-lrizzo@google.com>
+ <20261109182533.3594984-25-lrizzo@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 11 Nov 2026 04:24:57 +0000
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: c5mgn7qmbi1naw5peine5pjpkobc47gj
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 01C34C0003
+X-Stat-Signature: 1gpafjkewjhwxj8iqkaegwu4b8g5hy7a
 X-Rspam-User: 
-X-HE-Tag: 1794371090-507060
-X-HE-Meta: U2FsdGVkX1/T4BWpubISyTSpyS86r9FBdbto93zHOBBYnxMgzPaqc3zTTLzXf1cH02KAwvnDlxWb4c6ngvOeIB43k65aRZL5Ep0lOt/MgQrT2xsCCeHZNXlQpayEWHRoxwZwHuQsYTU+bUiknQAP2sEEc+gU9zEQWU6KmzVkHc54eWbUOuXbxTOrdEi7+WXIyl8qB2XzyjiGOFyb44PCgnBY2/CHO65UQZ5DuO+aebi2rmEq48XMh7ciXa0EZHH2Yf7w37p05QD1ukawBVvGJXNMz7oKng4tFsp6AVYE4SBWcz7yj6jG8zoo0WDOyYrAnbGoFtUrl05xvzkF1twoZtgiwe/9RfRw9VEtVtqtpW1dRKL47zJTr22u0Q+zltZgUPkjUTjzZxrEfWCCiE1YtTSGK3fVf7eURPycl3FnJCiRMcz8C4acX+f5gG+FWmb7Kk1N7sOwHX3tnFDTkEdpxdMUx2GqJsGpKnRRXLErDTKZJdkMKcH0EugvHCD+H6asN8d3KZ9z/CY7ip8vx6SpM2OekwIyU8Y4O+945qjyFa/IIqTV60j5QrpRLmU8zldRf2pT6/ZqOrLvMcUyRWSG7dKTLGEPPMlBatYURpLrfPfXXrdCX3YcdZ23s9/Bx+JFjl8+KShoUe+X4eK3SVk0wcZzx55UARgh12KgpOiTOVLBXAkpz8oxPZc/DMLBpRHDgrb0P6rHuY00sPl/SNnRss83D+5H0PAcvBiu4aH0/Sqg4J35UU23xBKb8kl71yXRkWiQcIPLxmvyNlbqhAg4yoxrZ98XkIXQN1yLPtFEcLVikOOlOxX8TK7i9ahrWlcYi9b/bcpEi67QteynEROsaUM+XDIl0CwBh9IVBQPKii1Oux90tbUXZQ1biKhi17Q3S3XlrETEbW4knOc0G99NJnybfaOdfk0FVaXJ6rKpPlcePeDvwuq4/EmqA7rJ57tMIpPjfaE43kFiDhJe/YQ
- Uk9SK7dh
- taetQ3lcJ+pHNScbYR0Sdie8/hjNrV0igJz+8cQoIbb1mpSZAF4iCugpBD+7UBjYkpp9grVrL8jj1MrBVWJezrOhYCyfyDoLJjzM7209Uh5d9kbyGzLGFWQxKPVIB72al1WCb3d91RohO5fKlvksRSIUitdCH0fyuPNY4U43PuH2CezjSNwpwNVrW+8U/VUKvgHja8J/Nriq7QmpmrH48Fs3bEBYja5qFLtiU1n3oJQ3pCiquro1aBj0b5JsmGlxlMtRGO9zr4jsq4kuXS6IftJiEa9FPYhMZMX8U7rAPto6+mprC/sA3GEJEPf7HLC9UfJQ+rc3jCFtbSPlDU4vIlUIIJtcE9+03Aaiq0q5N6cSFCt5ojjsNcxAwmk0LxV18wiCMENN8IZht8T4qpxxYGdV88xTPxnoOWI5rWVXwN7eyn00=
+X-HE-Tag: 1794371105-264874
+X-HE-Meta: U2FsdGVkX1/x1m0KwDf3oaOpxdSEay7BQKykRTloRdDwjG0WKThkL0sZOKnpso/F95IsdaScGViCMIM8FIpzxpckVoDTBqB51F4Nm3ETlyiTffnaUQI59bJZx1fYW5KVc5YhRXbL6n7oQ+ya9dHFDcHe6X2B04OWN5EbxlCKptv/iHQHzNgL7WhSWzMsLDB5Ej2CEapXvyBJ6JZjAz+tUhhPkJpk6gHwIwpBcEJYOh080/XGosRL/EnvN20Lz9roSPas96wiOD37AJsEHYL/W1l/IKFFqHXnqQF5NVbajyVriMZF0HDHUwp6IbU0cB0i9RFQiER2uaDxXlWldGP2odQ+xOiWgXpGgHD8Q89urQIfPRooqKUPKjFRe1HjSZaPq4YkxlOl7LgBN2AXIQQhze7PS30Zgbl7hHzF3KY3HrOLAb5odPtyacy1J8FFq6t1s6LW0DFjjlzDPTMyrYhmJOyTupBnlABch9QLgAF1qD2lCsY6speYujRK/HOvGzSdD+Xjx44L6WoOgCzml/rLv/hLU8tZm4lFxycSkF0Ez+6mwTvbV8bS8E6Y3sPIbjsuHN+biq3k+ilkRyyiig+ilq3Rs8RA2dvLF9U5eVNNVTkVsQp4Mec6BAmJPoSrnoQHLKkV/YD2M4KxNH7nSclxajEjOXKAg84HPwkQw3eiKaFEwl+Q/i3nQ2ya0dDY8+hlqlMwgUKl4BElveAX91ZwDXv3/P7afsgdZjEW4EU1uae3/qRoDNPBDagOoprLbsmsM95GFrGAjh0cWd+08SwD6FK1Bo1AXgKdfQ+a89P006uTAx+6aYSONlNSe+Ey8qC2zaxjRxBNvOjiR4WNV1dAVtggE7Tso99BnpYO9aQKKdJK+9dhFhnDO/UbGuXXLyGEdmLPVT8nnB1wn1xAdABLPjzxqCZck1Yd+1F71+beD6j+ODgErxuRXAuK0vNfv66xryfTHroKohLag8ZUw72
+ gaYC+AJw
+ 9JgE3E1JvqWPXEg1ECvQKcwK3VRaIsr3dihii9k74HzDM+hA6uJ3wZNepi9RDcYgRdo2rf8WIHaFhPb5Xhd+vjJb4jDPkU2BPL4lMb6klOefeUesiDHifW5xqMLoYGix9TOR3gZfynmyuR/nzRr2DEVKr7/MioX4SJICboSL7P/y2qlts9C2kDLXPRkbaQz4+TGbfUlDlRruPSJRyj2D/xMy+cdxjrSjt7SFuvFb7Ct4OD8Rgw4zTI3KHj/CqhB3DkpfQyApAjR9eGZoRZFxBjEdWRZqN6vlMGmKUUYfxcmrpNrDSEw7Qm9A+JTCsVUhZXvCdQeJVUkeEXk+w6cOWYZlGk9lSYbk0RSKqTYxpCCEJcRVvNilUBLC0EeR4q4y2mYD4jNs/G/ImzLA78XUeudlSNlhKlKIIB1ZYQgw1eNzDpyzaWUwHIvOTn3Z4mYs+W807j4CxnZjD6BddAPmsP2/KHiAWrT5XDDARPnAsPLtIChcYXUoYOLTD5TRNPtXEsfm+Eb2XwFmn/aHLDRrnSygeRzmJ4GVcm7wv6xsV/QD4j8Xe2pyJ1WecDA66f9cpXxtndTw83xefFD7Ebn0/TAlgw6iZgo8onskORTqzON7f8MmOFN9RiYXcB5mptHIszhh42Ohh2wr5bO5J5riyl4S0Nl2qDvoP+dFi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,44 +104,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On (26/11/10 18:37), sashiko-bot@kernel.org wrote:
-> > @@ -169,9 +170,6 @@
-> >  static_assert(ZS_OBJ_IDX_BITS >= ZS_PAGES_PER_ZSPAGE_BITS,
-> >  	      "zsmalloc: ZS_MIN_ALLOC_SIZE would exceed ZS_MAX_ALLOC_SIZE");
-> >  
-> > -/* ZS_MIN_ALLOC_SIZE must be multiple of ZS_ALIGN */
-> > -#define ZS_MIN_ALLOC_SIZE \
-> > -	MAX(32, (ZS_MAX_PAGES_PER_ZSPAGE << PAGE_SHIFT >> ZS_OBJ_IDX_BITS))
-> >  /* each chunk includes extra space to keep handle */
-> >  #define ZS_MAX_ALLOC_SIZE	PAGE_SIZE
-> >  
-> > @@ -189,6 +187,11 @@ static_assert(ZS_OBJ_IDX_BITS >= ZS_PAGES_PER_ZSPAGE_BITS,
-> >   *  (reason above)
-> >   */
-> >  #define ZS_SIZE_CLASS_DELTA	(PAGE_SIZE >> CLASS_BITS)
-> > +#define _ZS_MIN_ALLOC_RAW \
-> > +	DIV_ROUND_UP(ZS_MAX_PAGES_PER_ZSPAGE << PAGE_SHIFT, ZS_OBJ_IDX_MASK)
-> > +#define ZS_MIN_ALLOC_SIZE \
-> > +	MIN(ZS_MAX_ALLOC_SIZE, \
-> > +	    MAX(32UL, ALIGN(_ZS_MIN_ALLOC_RAW, ZS_SIZE_CLASS_DELTA)))
-> >  #define ZS_SIZE_CLASSES	(DIV_ROUND_UP(ZS_MAX_ALLOC_SIZE - ZS_MIN_ALLOC_SIZE, \
-> >  				      ZS_SIZE_CLASS_DELTA) + 1)
-> 
-> [Severity: Medium]
-> Should ZS_MIN_ALLOC_SIZE align _ZS_MIN_ALLOC_RAW to ZS_ALIGN instead of
-> ZS_SIZE_CLASS_DELTA?
-> 
-> Because _ZS_MIN_ALLOC_RAW uses DIV_ROUND_UP() with a non-zero numerator, it
-> is always at least 1.  On 16KB and 64KB page kernels, ZS_SIZE_CLASS_DELTA is
-> 64 and 256 respectively, so ALIGN(_ZS_MIN_ALLOC_RAW, ZS_SIZE_CLASS_DELTA)
-> rounds _ZS_MIN_ALLOC_RAW up to 64 or 256 and overrides the 32-byte floor in
-> MAX(32UL, ...), eliminating small size classes even when ZS_OBJ_IDX_MASK can
-> index 32-byte objects.  As noted in the comment above ZS_SIZE_CLASS_DELTA,
-> ZS_MIN_ALLOC_SIZE only needs to be a multiple of ZS_ALIGN.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [Low] docs: incomplete pisa.* boot parameter docs and wrong scrub_max
+  unit
+- [Low] docs: pisa.rst omits block I/O, page-cache folio, and user_pa
+  support
+--
 
-Hmm need to think about it.
+commit cadce0626ec3fdede5eca92aaf3542cae769fd37
+Author: Luigi Rizzo <lrizzo@google.com>
 
-Those min-size-classes are never used anyway, e.g. compressing 16KB to 64
-bytes is just not happening often enough (if ever).
+Documentation: Add PISA architecture documentation
+
+This commit adds architecture and runtime control documentation for the
+Pre-mapped IOVA Superpage Allocator (PISA) in
+Documentation/core-api/pisa.rst and lists the pisa.* kernel parameters in
+Documentation/admin-guide/kernel-parameters.txt.
+
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentat=
+ion/admin-guide/kernel-parameters.txt
+> index 0b3c140babd94..cb978469a7df3 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -5345,6 +5345,12 @@ Kernel parameters
+>  	pirq=3D		[SMP,APIC] Manual mp-table setup
+>  			See Documentation/arch/x86/i386/IO-APIC.rst.
+> =20
+> +	pisa.*=3D		[IOMMU] Pre-mapped IOVA Superpage Allocator (PISA)
+> +			tuning parameters (max_bits, max_pages, slots, max_idle,
+> +			idle_ms, reservoir_max, scrub_max, compact, wasted_pct,
+> +			old_ms, pcp_batch, user_max_4K_pages, scrub_migrate).
+> +			See Documentation/core-api/pisa.rst.
+
+[Severity: Low]
+Should this entry also include the pisa.decrypt boot parameter defined in
+drivers/iommu/pisa-alloc.c, and use [ARM64,X86-64] instead of [IOMMU] (which
+is not defined in the restriction tag list in kernel-parameters.txt)?
+
+In addition, this entry defers to Documentation/core-api/pisa.rst, which
+does not describe decrypt, max_idle, idle_ms, compact, wasted_pct, old_ms,
+pcp_batch, or scrub_migrate, and describes scrub_max as counting idle 2MB
+PISA pages even though pisa_scrub_alloc() accounts the budget in 4KB base
+pages ((unsigned long)used << order) and scrubs dirty blocks from
+partial_dirty and partial pages before idle pages.
+
+> diff --git a/Documentation/core-api/pisa.rst b/Documentation/core-api/pis=
+a.rst
+> new file mode 100644
+> index 0000000000000..6ed4bd9951f8a
+> --- /dev/null
+> +++ b/Documentation/core-api/pisa.rst
+
+[ ... ]
+
+> +  - ``/sys/devices/*/*/pisa_{coherent,rx_bufs,tx_bufs,tx_skb_heads}``
+> +    per-device entries that control whether a device uses PISA for coher=
+ent
+> +    allocations, RX buffers, TX socket page fragments, and small TX skb =
+heads
+
+[ ... ]
+
+> +- **User pages for MSG_ZEROCOPY** (``drivers/iommu/pisa-user.c``):
+> +
+> +  - ``madvise(MADV_PISA)`` migrates the present private anonymous pages
+> +    of a range into blocks of per-node ``DMA_TO_DEVICE`` allocators, so =
+that
+> +    zerocopy sends from them use the PISA window instead of per-send IOM=
+MU
+> +    mappings or hypervisor pinning. ``MADV_NOPISA`` migrates them back to
+> +    ordinary pages. Both are allowed through ``process_madvise()``.
+> +    Freeing the pages (``munmap()``, ``MADV_DONTNEED``, exit, reclaim)
+> +    returns the blocks to their allocators.
+> +  - ``/sys/module/pisa/parameters/user_max_4K_pages``: Soft cap on user
+> +    pages held in PISA blocks, in 4 KB pages (``max_pages`` counts PISA
+> +    pages). When non-zero, eligible pages are also migrated on
+> +    ``MSG_ZEROCOPY`` sends (best effort, non-blocking, skipping pages st=
+ill
+> +    referenced by in-flight skbs); 0 (default) disables both.
+
+[Severity: Low]
+Should these sections also document how pisa_rx_bufs, pisa_tx_bufs, and
+user_max_4K_pages apply to block I/O and page-cache folios?
+
+In drivers/iommu/pisa-user.c, user_pa[] maintains per-node allocators for
+DMA_BIDIRECTIONAL, DMA_TO_DEVICE, and DMA_FROM_DEVICE.  When
+user_max_4K_pages is non-zero and pisa_rx_bufs or pisa_tx_bufs is enabled on
+a block device or its parents, PISA also migrates pinned order-0 user pages
+for O_DIRECT bios in bio_iov_iter_get_pages(), allocates or migrates order-0
+page-cache folios in __filemap_get_folio_mpol(), ractl_alloc_folio(), and
+writeback_get_folio(), and skips blk-mq IOVA allocation for PISA pages in
+dma_iova_try_alloc().
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109182533.3594=
+984-1-lrizzo@google.com?part=3D24
 
