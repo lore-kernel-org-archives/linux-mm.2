@@ -1,139 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08AC4606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 08:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E3A0606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 08:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LKLewB+j
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=S8273CJF
 Received: by kanga.kvack.org (Postfix)
-	id 02BD56B05BD; Wed, 11 Nov 2026 03:19:15 -0500 (EST)
+	id 227AE6B05B9; Wed, 11 Nov 2026 03:19:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF9016B05BB; Wed, 11 Nov 2026 03:19:14 -0500 (EST)
+	id 1FF5E6B05BB; Wed, 11 Nov 2026 03:19:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0F706B05BC; Wed, 11 Nov 2026 03:19:14 -0500 (EST)
+	id 02A116B05B9; Wed, 11 Nov 2026 03:19:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B32356B05B9
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BB6CE6B05BA
 	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 03:19:14 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 868E180214
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 08:12:52 +0000 (UTC)
-X-FDA: 85422122184.06.4586E98
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id A9A97A0004
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 08:12:50 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LKLewB+j;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1BBFCC0245
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 08:12:29 +0000 (UTC)
+X-FDA: 85422121218.18.7B9F4A6
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 1FE63C0006
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 08:12:26 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=S8273CJF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of lin2530632123@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=lin2530632123@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794384770;
+	s=arc-20220608; t=1794384747;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QqYu+xo/RGd/fLeZ6KK9QI6PGDCPVZsf1WvEjBr3Jhs=;
-	b=trWVJ4CGZMrZ0FIZ87UrtSl0fIyUuULBMi0QCXXpCikYYffsDIzyx9FwLI1sLOHNNEKh4e
-	JiFXEXwvXOvRitlMj2/CbTLcRzDeGtKSmS+nLrhp5sumGZJzjaWUasqHxCi8enTSFAtPWo
-	k+kFUQur1c3dJtHU9wcZSDhAqX79QG0=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LKLewB+j;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	bh=fDQqFMFsaggT4dI5ccBsPoJYKVRVo9nP+0XBMBBOzpw=;
+	b=yu6Cl7HCDxdR9fL9UkKiPRcT7cMCbviutSlaP9HwmU58pB9C4ahNTdSUK10eC7HjA3FfIe
+	tbRU4GIqrGsbf1YJ3jEPK07YIHbE3n73KtfWl+gI664j1tZhoOiyZvuZ01ShwhWLuJxkwX
+	waxmo3SEIuaovBxVOm9ksIAhmUXGiuw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794384770;
-	b=FLdR6XnHUprcdTeXBZyaSDzW7eWf45l61kKe9qC2GVTYwApO9q4fjxlOmDgGwXuCEHMiPX
-	QxE4fs8KyvEk9nAVf7qMOMMf3DaqVkhWOfTnfEivNU3bwib1R8LRMY4HTiOUh891q08alX
-	NwE+5tNH1blM4CxCfMbs+9UTpfb7E08=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E6DBD400D6;
-	Wed, 11 Nov 2026 08:12:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC4511F00A05;
-	Wed, 11 Nov 2026 08:12:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794384769;
-	bh=QqYu+xo/RGd/fLeZ6KK9QI6PGDCPVZsf1WvEjBr3Jhs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LKLewB+jFjOgi49f2xKrvF7D8P0iWQtbBLAze1EBM2isZVVp+26Z1/lcrvLm+d5/o
-	 jtFPL8EXgK9BU4HMO59P6H+yflloVKcsfqC6kdSttu5Kbf7sDy8h4jh14tU75lU7H9
-	 aFeUVwMpFZ5Pk/es63ZNogDXe93CKhgsYAGx/+JZNF2faFpW84IkRs4JKbLFNocANP
-	 sZwapAdEy4uANCFM/FCHDmG36MDostBXfW61L7EAPEfRCfH9vvl3oGmIq5WZVxcRCP
-	 m8C73X10pt0u7GWfyEHW7282WvTTdv6sYpsM16sjMYy4q1zPwmujeUaSl/Lm27Bv/9
-	 q/E6aoHbCZcjg==
-Message-ID: <3f761a27-74df-4e19-878b-323164da5a69@kernel.org>
-Date: Wed, 11 Nov 2026 09:12:44 +0100
+	t=1794384747;
+	b=VHYNsbfs3ChBS2UEkkHFi0R9jjeexGNYEqfWQ10Pj/sblnWn7ULq06Lc7+LFPcBxc5HU2K
+	SHAWkQ4vsIGBs2IqBtfeREgScvaJqw/U0CdY52d85O9FB6P/9TjjTVnjrmoD51wJ+RvjC+
+	tS6VA4BxwGn4aywXfYgrz9GbCPyo89c=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=S8273CJF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of lin2530632123@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=lin2530632123@gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2e96502e447so24255705ad.1
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 00:12:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794384746; x=1794989546; darn=kvack.org;
+        h=content-type:mime-version:message-id:date:references:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fDQqFMFsaggT4dI5ccBsPoJYKVRVo9nP+0XBMBBOzpw=;
+        b=S8273CJF0Uzs93nj7sAWfHWeTo7zkDNcBdBgy5mj7uVQlOwlJ5axnIoqxURLfh8514
+         sgtb8EFF7N2YSC5qFEPngkpbu7xEpSrd4EQ/uUXNcMK5b6uDVxL0hPzv7LZ8q4c+TqzE
+         +FytA6M360BrhkJiOOW+tGlWl+gZngOhNszrqZGetixIx4p9sCCMjLY9QXDOJVVbUBqm
+         Thi6o7XL/VSvSL0J3xrA4ARdPRLHUN5FzTRGMapW1X96HDb4WYWUjTY9YY/XjE6jyAHD
+         DBGRtwFk3H3eeYUaJ4LzhQf8Ur2jhcfUeJp+OxxB0MZXtPN8ZpYMRWg+Ci4SEKbB8v6T
+         qu5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794384746; x=1794989546;
+        h=content-type:mime-version:message-id:date:references:in-reply-to
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fDQqFMFsaggT4dI5ccBsPoJYKVRVo9nP+0XBMBBOzpw=;
+        b=sRQzjmt70QiQH+zsS+KZ7MBNA4hM/eYuMW9kbeth9YEaJSlzV68hZlDyWktFuqYHjJ
+         mY+uqbpOVRGo0/ntQMmU8uH+udvpjxsTY5OxfNZtq8FeNzSLBV8SmygZHPgLwNarrmXf
+         tpmri6ONmauWNaDYqnTYm0spwN06vHAUPyQCBeDzNrqZrgZLmGEOxysi0DR8Q7QPPYWR
+         eKRyhSr7s9C+/zoFDauR+wACtarGMoXxvsrGa072OVutYhZO3u5LVTvdS0o9Pr7ysi9E
+         3Dx2ooj76mZ8BVP+iGa6SdICx18BP6bkLPLlUB1a65/RKBK161OAgEONRF618oew0G5g
+         CFZA==
+X-Forwarded-Encrypted: i=1; AL+hErELpj8niNzsZKaMGFGE/hhkie+DME4nO857/7MSo+y8qTEaSgkH8tHj6YlW5T5+j3xQxW6t8p0XFA==@kvack.org
+X-Gm-Message-State: APuU4Z8Y9XLqusuaJEH/OQgufrQ9FKhz+UOjfXrbdDcaWoShmvuiW4O8
+	DRBxiZObU4GxuQvVK4l8GoKqp7RpNukHB08SmVVvafmn09+x/1OGtTwW
+X-Gm-Gg: AYBFou0P29B9CXZjwZ/azcQcIjjTQvhfUMwgwNg/cl4vKViPD/AtxoFz9EdZeMqcbA5
+	uPSZ8Nds+wQeI/i+dWW/G1R+MIHFmQTVQ7zUGQ/pI/aFSE3gjm0PLWPt6rgbvgQ4957C1q87bsv
+	qyJ4DBftiWf5WjhAsJbrE8a/czI9oeShzTqES+GHaVgL/K3icmSqcNwxYNs/jSadISrd1rnCQpF
+	WJbE7xWwgeSiiPlLyHWkk44xm8GQ4MYgPtfncvdH6vADQ3k1RtbK3wBrbIVJkRHn/H3iddthJou
+	dqm17L2D1gL/7Xg/tJeuVuumNrVjgRfa9KYzqfa6Y4zw055/0DV9ZPeievEtt1ggYMCY606dhub
+	hmw/tFUND5liW9CeelOw+ChczsNmA0RsMChqGjryLIzsFlzenYKv8hqXe0xbl/x9oKc0zUaebRO
+	H+GuMTdVJMBlGH8ASAEME8dceAixl9jiREP17CQrqFTeKL2CWU6GOl8+LLotc7pNYOiYEl4DJ5G
+	vPeBUgba5+XpMNlXnmkhSOpH09Xh5AI7aEYRggAF0ve1KUu1sPB6SPudEfk/VnUzl7ffNwLs80K
+	lbU8YMq5b2VtAYUVsZHtWBwU/Yz1tf6smCrH87Cx7UgzyC2TnUX5ASa+pZYuUATBPXl8nRZb/+0
+	gbUZQwyuW/A==
+X-Received: by 2002:a17:903:3bd0:b0:2ea:e24:3eaa with SMTP id d9443c01a7336-2edd745486dmr18667185ad.2.1794384745370;
+        Wed, 11 Nov 2026 00:12:25 -0800 (PST)
+Received: from reply-rstat.eml ([117.28.251.181])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2edb6d9afa2sm17326745ad.43.2026.11.11.00.12.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 00:12:24 -0800 (PST)
+From: Chengfeng Lin <lin2530632123@gmail.com>
+To: Joanne Koong <joannelkoong@gmail.com>, Yosry Ahmed <yosry@kernel.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Song Hu <husong@kylinos.cn>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>,
+ yunzhao@cloudflare.com
+Subject:
+ Re: [PATCH] mm: memcg: use ratelimited stats flush in obj_cgroup_may_zswap()
+In-Reply-To:
+ <CAO9r8zPqJncFKQbF3tGe1d4sg-4dLQ3dQRGze_vab26wWrXTqA@mail.gmail.com>
+References: <20260817131843.45121-1-husong@kylinos.cn>
+ <CAO9r8zPqJncFKQbF3tGe1d4sg-4dLQ3dQRGze_vab26wWrXTqA@mail.gmail.com>
+Date: Wed, 11 Nov 2026 16:09:08 +0800
+Message-ID:
+ <179438454803.6.16655549133383619919.zswap-rstat-counters@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] pipe: Prefer mempolicy node for metadata allocations
-To: Andrea Righi <arighi@nvidia.com>, Jan Kara <jack@suse.cz>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Quan Liu <qualiu@nvidia.com>,
- Lee Trager <ltrager@nvidia.com>, Seth Forshee <sforshee@nvidia.com>,
- Gregory Price <gourry@gourry.net>, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>
-References: <20261110065219.894219-1-arighi@nvidia.com>
- <hbkxlhc5y2jkvuov5o2kjgpisx2pavuo3ad4c4ydixeic7vaq6@mpzzfmhjvtof>
- <avQP1aXhe7nQuzt9@gpd4>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <avQP1aXhe7nQuzt9@gpd4>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============0836176935274178407=="
+X-Stat-Signature: 3a54seedn9ri64u7w17j6kgfzrd4ffj1
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A9A97A0004
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: uij9zc7gmfppkhma87juoc6eg9t3kkok
-X-HE-Tag: 1794384770-31125
-X-HE-Meta: U2FsdGVkX1+8jkpYgcYvyvLDcyuvXp8Gz9xVcXgNYmi8wrvjAlH0reW1JOmLMI/vxctRQoP0fNHkX5XmvqkvkTs2AWO/eWXreRkBa5+TZbNKU7mosCTlLHzUHlRtMxuq7RRORSgQSGeKXr+a6kyukdb6I4PWtu8d4rMFHseyyrO/RAmQDhzInNcmiYEnReP9OIr2OHJipVn3rYm0qNjYwhUnxgjcAqDXruZbjTUIha8Qv0ph1zGtHWdTSfxopLAgpebUMJttGAfHBxePgKR09mizhaV/cZdcZRwDXZFz/9/baRYO5e4eDmdPOcE/l+uYDEisr8pDWULY3bNVJfSHPlmbwbW2dEGhTCdHG5JHzckm5rWusFchAOrA2UJXzNofoWHrlZeJpm8eUUtQ9PQDiJwAdnD78FAXcTiOIVDxfpA9PzMmW64MXVKlzD/9OYssKtLFT9jPiYb+mKYM0dgG8YM478sQlUbEL0d0XklFPKbIu/Ghg9ulwWj1EViZreuCXMZZkQwJLDmV4T7a600HAONPCgLkj56IemHliJ3RLsMlsv2u+JK6PxA0/AwgqpDozQUqe15pB4/GKRlM0SGmglGVJj97HoeENAPjue8VzgNqIfiiSHHYTXrhnaBg/tP5J3xrur1+1p9Su40Rj/TTUNmwWqxG+XIyuYez9tJc9+0JJLW0lvq4L3+njiboRHlFacIePENbo0HLQXGhl7ZFDWmjgA8rG6pkcGOZnWIQDMt+uuIzYIkIN70G++fbSeX9WlU5WaJ4lDzsmpKN0+SsJD/nYwBRA/XI2jmq3U+BeY0d7ytyRrWTgMb6gP49dxohXgcM7jY7JKOZfLPNnnv1jEMcjmFvrVbUZ1ZIi98tmewaR0gCosJcHST1IoKmDHQPe4X9KDxRlM9z6RYJycHBxX4PB4JGINfdV3NA1oNt3t7Q8rCYmX+QlBY2BY50blXDw1GF9sI2a3S12ZtW22y
- dKoGaPyp
- frQiPeOUykU0v+MkZH/pIdcX/L+YRi6cRXsOP7tlx3p0s+azgv2z80Et/k8lm+tA43h/j+YLgqlXhx1R5j5SzpJuCMUUW+cOg3+JyHDAGabGdk1lmzdbO6oX2YFmORnkqFpLYeE8A418/gv5XjWhQvpngtB0m0vfWlUHQtu58XjLoZ7kk3RmiCQTzmMaxcb7z/B9LQVJJX6OfUshWfpHiZiixSQifubcPzBta+mZa2IclNkdvNGe5ezlfj+VxkMuAvMNtJ1FL8oIjU7wWz9HuL/4IFdFuQthB7fQmA8k1NMUoZxWoCrEM4eYBGL3HaoXYA7xvgzv8lUWleoj+z9JNwu5mZg==
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1FE63C0006
+X-HE-Tag: 1794384746-9112
+X-HE-Meta: U2FsdGVkX19AWQtZeXNcl5sVfdI3knmd6q74JM4OqC0kHPHgzc3BHdETJZo4B9bC5uN8HhSBRY/FlpMQXYfXCosX0+ZWaHq6W+mo5lb7w1u6RQLSKIiFvoclHDScvXkvxj4nLEGZOfXmnHT3s7+Ja9fXNXjhslqwmExMo5K4zjcwtE2BPKEH8lRUfqLss1ltf1A/hML5AS9smLLZZEPFGjFtnuR8jPxQ31xDWmDBqZmKhhE7BX1EXwxt8J7phvoZpw4VYctFQsguV1RU31oM1tkcRfEv7/eAiP1ivZfsiYDWrxYGQvQefXsrESM4dXrYSCyf51UmHBPPwqHCAwLHe5VXABk4pmFNDxpdnxVpUqlUXbCwRFydAMWebY9MTE2uUSpuTtAfah+JslNVoaSVX9kE96JfQ5354e24iQAKscja/k7CW40McR8q/DC4wQX5zHjJlTa989F8bkxxzOmZb0MYeTzl8lIng2t9e53+AMRQyAVvzaiTNPKtL45T1m2rZOWFU4ACbZiCwWkty7LtU59Ll9fmsFSN5MzHKDHcrTLJ0ktxe1kr0EX4m2hTAtRM4PdG8Rj2IWTgs33+V1XKHFcsaw6Pz2SV9MRuqlHcI5QW0TCA17gHihO+Qy6ZMOchwdUI5oEmpE6qHpw78RNbsBDHQXcddXcvTPAa1+eK2Un11p6Iey4JieNsCSRW+JocOLgXY127por86oavcm6583NdfpK1RUNp/hKLzWVLw7LytyREGfRHZn1PLAILpCVwwjfRMvbt7BV35unnQCh45B3Z1of9e8eyCn2eMw38Oig4ITh7MaeJa0VJiV6g7wd7HSYHA9Sjq7tqZ7aNMyHXwF8IgOZbBtH/gTAxG4banLzA3egAwm7yLYoSacpOjaqXpNI5kswdTLAInh8qxKDBLyNGePY9ZITSG5v66GiUf/RSwzM7M4OfEm+xgOkUVh1vcGjD8ZmhdQeZAQH6zt7
+ x77jtdAb
+ Lr+H38POTMEBCjNHSI+1/hfwF7pPlMZ1TdFTG0HtpATiWaivHbUvpiNyaq/e6jJAN+3tlEOGpivkIcoC2juGeKR57dppKfmhmEG75szctppA5MW4CvzTUgC0k7vc02fcqHjxAbR38GR+wej/rZq5B5ji1rNNaHmusoX4XJmP3uqSjIOgX6kBzYctFZqGB7pt9cKQsTTdNDSk7qbmmvI+eq5DNYyn50UBHGpCzB2gRwvYcTyu0Lytvz4+eDntFCxXOPZ1Jze0TDxAYcZVLhCpCcwxcP6fxtXXI13TH1SSCAZU4LwE1TFnwltEDRvXysSCCtGG5IEerz/Y6qV83IUDHrJ4Zk79blsEt8PTwz8I86W7M28jvjvt34d+WNrp1VIJHRh5PY+dN3wV6cbiovXShBCitlfJUJTkEsa5FEc3ISwdvSbP0KXh+/0uluSBFbtKoKs9uYlOd9fnlIPcoW5UjgVj4DaU56UvYQhcJnZh11fhkxedLq3YwDnX+TJEAY/315x/ZpL9ilMUWmctHt53KVHydMRzXc8YhCjop7Ala3w+qhJ/X7cB0Tdk0mKyBGTp2mBY6/JKaNi2I3DuT0sWqwv8kbKIf1CUjFIg3bWFkghrj6Xetzw0gKNo9ixljkdJBjws5qZkidQYlnM8Sq2z4FDr05uwX2zEdTg0eeAjLI7VldWLGlr2Vn/3NWvfZM9WttgfC8ZncVV3EKO1eLwJhVy23stgeofyh097FR5CLIuwRrxYTHU1PEiednWzUxjQZnrKrxnyg7NOLSuE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,180 +131,283 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/11/26 07:48, Andrea Righi wrote:
-> Hi Jan,
-> 
-> On Tue, Nov 10, 2026 at 01:27:53PM +0100, Jan Kara wrote:
->> On Tue 10-11-26 07:52:19, Andrea Righi wrote:
->> > Generic slab allocations can reuse partial slabs from another NUMA node,
->> > even when a pipe workload is bound to one node. Pipe metadata is shared
->> > between senders and receivers and accessed throughout the pipe lifetime.
->> > Reusing remote metadata can therefore make an IPC workload pay remote
->> > access and coherence costs on every exchange.
->> > 
->> > The target use case is a workload that binds its workers and memory to
->> > one NUMA node with numactl. The policy node is then a useful placement
->> > hint for shared pipe metadata.
->> > 
->> > Allocate pipe_inode_info and its descriptor array on the node selected
->> > by the caller's memory policy. Apply the same preference when replacing
->> > slab-sized descriptor arrays during ring resizing. An explicit node lets
->> > SLUB try local allocations before reusing remote partial slabs.
->> > 
->> > For descriptor arrays larger than KMALLOC_MAX_CACHE_SIZE, pass
->> > NUMA_NO_NODE to keep the policy-aware page allocation path. An explicit
->> > node would otherwise lose the MPOL_BIND nodemask on fallback. Select the
->> > policy node only for slab-sized arrays, avoiding an extra advance of an
->> > interleave policy for large allocations.
->> > 
->> > Moving a pipe's users to another node doesn't migrate its existing
->> > metadata, so migration can still result in remote accesses regardless of
->> > this change. Generic allocations may reuse remote partial slabs, making
->> > initial placement dependent on allocator state. In contrast, preferring
->> > the policy node leverages the workload's placement hint to improve
->> > locality when users remain on the intended node.
->> > 
->> > Testing has been performed on a dual-socket NVIDIA Vera system, covering
->> > hackbench, pipe transfers, pipe creation and resizing, pipe_bench, and
->> > targeted stress tests.
->> > 
->> > The primary hackbench reproducer is:
->> > 
->> >   $ numactl --physcpubind=0-87 --membind=0 \
->> >       hackbench -P -p -g 10 -f 20 -s 100 -l 100000
->> > 
->> > Results (over 10 measured runs per case):
->> > 
->> >               avg       stdev
->> >    before     9.811s    0.130s
->> >    after      5.770s    0.058s
->> > 
->> > Before this change, allocations could reuse remote pipe metadata. With
->> > this change, both pipe objects and descriptor arrays are allocated on
->> > the requested node, improving locality and reducing hackbench runtime by
->> > approximately 41%.
->> > 
->> > Reported-by: Quan Liu <qualiu@nvidia.com>
->> > Signed-off-by: Andrea Righi <arighi@nvidia.com>
->> 
->> To me this makes sense so feel free to add:
->> 
->> Acked-by: Jan Kara <jack@suse.cz>
->> 
->> But IMHO it deserves a look from MM guys since this is more of an MM thing
->> than a filesystem one... Added to CC.
-> 
-> Thanks for taking a look, and good point about getting MM feedback.
-> 
-> Vlastimil, Gregory, do you think this SLUB locality and mempolicy
-> aspects makes sense here? In particular, does preferring the policy node
-> for slab-sized pipe metadata, while retaining the policy-aware path for
-> larger arrays, look reasonable?
+--===============0836176935274178407==
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-It's not wrong, but feels a bit ad-hoc. If it's pipe metadata now, what's next?
+Hi Joanne, Yosry, and all,
 
-Slab will generally return objects from the cpu's local node even if it's
-not specified. It's not guaranteed, but it's not guaranteed also when it's
-specified by kmalloc_node() (unless __GFP_THISNODE forces it).
+With existing rstat updates retained, hierarchical per-CPU counters reduced
+single-worker PAGEOUT CPU by 44.69% and whole-program CPU by 21.78% in this
+bare-metal test.
 
-So the results above are surprising to me. Are they on recent kernels? Are
-cpus 0-87 all local to node 0, or is membind 0 there to force a node that's
-not local to some of them? If they are all local, I would expect the objects
-to be from node 0 even without kmalloc_node(). So maybe we have some unknown
-deficiency that should be investigated.
+One worker uses MADV_PAGEOUT on 32 MiB of compressible anonymous memory in
+a private cgroup, with THP disabled and memory.zswap.max=64 MiB. The limit
+is not reached. The host is an i7-12700KF with 20 online logical CPUs,
+full preemption, LZO and zsmalloc. Unlimited controls change only the
+zswap limit to max.
 
-Also note that it's possible to force this behavior of respecting mempolicy
-for all slab objects, usigng the slab_strict_numa boot parameter. AFAIK this
-was added for systems where the interconnect makes remote accesses
-especially costly.
+A matched parent/commit/parent test of 0efc297a3c49
+("cgroup/rstat: avoid disabling irqs for O(num_cpu)") showed:
 
-> Thanks,
-> -Andrea
-> 
->> 
->> 								Honza
->> 
->> > ---
->> >  fs/pipe.c | 26 ++++++++++++++++++++++----
->> >  1 file changed, 22 insertions(+), 4 deletions(-)
->> > 
->> > diff --git a/fs/pipe.c b/fs/pipe.c
->> > index 4fa69192e6fba..2a8f9e9f70f84 100644
->> > --- a/fs/pipe.c
->> > +++ b/fs/pipe.c
->> > @@ -24,6 +24,7 @@
->> >  #include <linux/syscalls.h>
->> >  #include <linux/fcntl.h>
->> >  #include <linux/memcontrol.h>
->> > +#include <linux/mempolicy.h>
->> >  #include <linux/watch_queue.h>
->> >  #include <linux/sysctl.h>
->> >  #include <linux/sort.h>
->> > @@ -874,6 +875,16 @@ bool pipe_is_unprivileged_user(void)
->> >  	return !capable(CAP_SYS_RESOURCE) && !capable(CAP_SYS_ADMIN);
->> >  }
->> >  
->> > +/* Prefer the policy node over remote partial slabs, retaining fallback. */
->> > +static int pipe_slab_node(void)
->> > +{
->> > +#ifdef CONFIG_NUMA
->> > +	return mempolicy_slab_node();
->> > +#else
->> > +	return NUMA_NO_NODE;
->> > +#endif
->> > +}
->> > +
->> >  struct pipe_inode_info *alloc_pipe_info(void)
->> >  {
->> >  	struct pipe_inode_info *pipe;
->> > @@ -881,8 +892,9 @@ struct pipe_inode_info *alloc_pipe_info(void)
->> >  	struct user_struct *user = get_current_user();
->> >  	unsigned long user_bufs;
->> >  	unsigned int max_size = READ_ONCE(pipe_max_size);
->> > +	int node = pipe_slab_node();
->> >  
->> > -	pipe = kzalloc_obj(struct pipe_inode_info, GFP_KERNEL_ACCOUNT);
->> > +	pipe = kzalloc_node(sizeof(*pipe), GFP_KERNEL_ACCOUNT, node);
->> >  	if (pipe == NULL)
->> >  		goto out_free_uid;
->> >  
->> > @@ -899,8 +911,8 @@ struct pipe_inode_info *alloc_pipe_info(void)
->> >  	if (too_many_pipe_buffers_hard(user_bufs) && pipe_is_unprivileged_user())
->> >  		goto out_revert_acct;
->> >  
->> > -	pipe->bufs = kzalloc_objs(struct pipe_buffer, pipe_bufs,
->> > -				  GFP_KERNEL_ACCOUNT);
->> > +	pipe->bufs = kcalloc_node(pipe_bufs, sizeof(*pipe->bufs),
->> > +				  GFP_KERNEL_ACCOUNT, node);
->> >  
->> >  	if (pipe->bufs) {
->> >  		init_waitqueue_head(&pipe->rd_wait);
->> > @@ -1375,12 +1387,18 @@ int pipe_resize_ring(struct pipe_inode_info *pipe, unsigned int nr_slots)
->> >  {
->> >  	struct pipe_buffer *bufs;
->> >  	unsigned int head, tail, mask, n;
->> > +	int node = NUMA_NO_NODE;
->> >  
->> >  	/* nr_slots larger than limits of pipe->{head,tail} */
->> >  	if (unlikely(nr_slots > (pipe_index_t)-1u))
->> >  		return -EINVAL;
->> >  
->> > -	bufs = kzalloc_objs(*bufs, nr_slots, GFP_KERNEL_ACCOUNT | __GFP_NOWARN);
->> > +	/* Keep the policy nodemask for allocations that bypass slab caches. */
->> > +	if (nr_slots <= KMALLOC_MAX_CACHE_SIZE / sizeof(*bufs))
->> > +		node = pipe_slab_node();
->> > +
->> > +	bufs = kcalloc_node(nr_slots, sizeof(*bufs),
->> > +			    GFP_KERNEL_ACCOUNT | __GFP_NOWARN, node);
->> >  	if (unlikely(!bufs))
->> >  		return -ENOMEM;
->> >  
->> > -- 
->> > 2.56.0
->> > 
->> -- 
->> Jan Kara <jack@suse.com>
->> SUSE Labs, CR
->> 
+  CPU time, ms / 32 MiB         Parent A   Commit    Parent B
+  PAGEOUT                       17.180     24.464    17.316
+  Whole test program            46.215     53.419    46.235
 
+PAGEOUT increased by 7.216 ms (41.84%) and whole-program CPU by 7.193 ms
+(15.56%). Both versions stored 8192 pages and performed 8192 limit-check
+flushes: a finite zswap limit forces a stats flush before each store.
+
+To limit interrupt-disabled time, the commit
+releases and reacquires the rstat lock after processing each possible CPU,
+with cond_resched() in between and cpu_relax() if it does not reschedule.
+Previously this was conditional on rescheduling or lock contention.
+Per-page flushing repeats these extra operations.
+
+On MM baseline 2967f3ccdb5f, I adapted Joanne's hierarchical per-CPU option
+[1]. The limit pre-check uses dedicated counters, retaining MEMCG_ZSWAP_B
+rstat updates and the IRQ-latency protection. Extra updates are included:
+
+  CPU time, ms / 32 MiB         Base A     Counter   Base B
+  PAGEOUT                       23.903     13.113    23.514
+  Whole test program            49.247     38.569    49.363
+
+PAGEOUT CPU fell by 10.595 ms (44.69%) and whole-program CPU by 10.737 ms
+(21.78%). Stores were unchanged; forced flushes fell from 8192 to zero.
+These two comparisons use different baselines.
+
+Both comparisons used fresh A/B/A boots, two warmups and nine clean
+samples per condition per boot. PAGEOUT return drift was 0.80%/-1.63%,
+with maximum within-boot CV of 2.82%/3.55%. PAGEOUT measures worker CPU;
+whole-program CPU includes preparation, re-access, verification
+and cleanup, but not external cgroup setup or host-wide background work.
+
+A single-worker unlimited control changed PAGEOUT/whole-program CPU by
++0.41%/+0.86%, with PAGEOUT CV up to 4.74%; there was no clear difference.
+
+A supplementary A/B/A test compared the MM baseline with the counter
+derivative, with eight workers pinned to different P cores, each processing
+32 MiB (256 MiB total). Their shared cgroup had memory.max=2 GiB and
+memory.swap.max=1 GiB.
+The zswap limit remained 64 MiB; compressed usage was about 18.75 MiB,
+below the limit. Counter-kernel means follow, with baseline-relative changes:
+
+  Eight-worker metric, per 256 MiB   Finite limit          Unlimited
+  Summed PAGEOUT CPU                199.238 ms (-84.04%)  196.272 ms (+1.17%)
+  Summed re-access/verify CPU        215.365 ms ( -1.36%)  214.950 ms (+0.09%)
+  Whole-program CPU                 663.404 ms (-61.39%)  660.535 ms (+0.24%)
+  Whole-program elapsed time         94.618 ms (-58.26%)   95.183 ms (+0.99%)
+
+Both kernels stored 65,536 pages. Finite-limit forced flushes fell from
+65,536 to zero; unlimited controls performed none. Counter-kernel PAGEOUT
+CVs were 4.51%/4.91%, with baseline return drift of +5.10%/+0.97%.
+All nine finite-limit counter samples were below both baseline groups,
+but baseline drift limits the precision of the gain estimate.
+The small unlimited increase does not
+establish a regression. Re-access and elapsed-time CVs were at most 2.81%.
+
+Elapsed time includes preparation and cleanup; it is not summed CPU time.
+The re-access metric includes reading and verifying the data; zswap
+decompression was not timed separately.
+
+Both kernels passed bounded leaf/ancestor-limit, dynamic-limit,
+cross-CPU-freeing and cgroup-offlining checks. Deep cgroup hierarchies, CPU
+hotplug, and 32-bit systems were not tested.
+
+I hope these results help assess the benefit and update cost of dedicated
+counters while retaining the existing statistics. The reproducer sources and
+the measured counter patch are attached.
+
+[1] https://github.com/joannekoong/linux/commit/9092e0057f038ffca43ae3f35faf58c33b1d7c9b
+
+Thanks,
+Chengfeng
+
+--===============0836176935274178407==
+Content-Type: application/gzip
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="zswap-reproducer.tar.gz"
+MIME-Version: 1.0
+
+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
+
+--===============0836176935274178407==
+Content-Type: text/x-patch
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="hierarchical-with-rstat.patch"
+MIME-Version: 1.0
+
+ZGlmZiAtLWdpdCBhL21tL21lbWNvbnRyb2wuYyBiL21tL21lbWNvbnRyb2wuYwppbmRleCA0ZDAw
+NzQ4Li4xM2U3MDViIDEwMDY0NAotLS0gYS9tbS9tZW1jb250cm9sLmMKKysrIGIvbW0vbWVtY29u
+dHJvbC5jCkBAIC02NzQsNiArNjc0LDExIEBAIHN0cnVjdCBtZW1jZ192bXN0YXRzX3BlcmNwdSB7
+CiAJc3RydWN0IG1lbWNnX3Ztc3RhdHNfcGVyY3B1IF9fcGVyY3B1CSpwYXJlbnRfcGNwdTsKIAlz
+dHJ1Y3QgbWVtY2dfdm1zdGF0cwkJCSp2bXN0YXRzOwogCisjaWZkZWYgQ09ORklHX1pTV0FQCisJ
+LyogSGllcmFyY2hpY2FsIGNvbXByZXNzZWQgYnl0ZXMsIHVwZGF0ZWQgZWFnZXJseSBhbmQgc3Vt
+bWVkIG9uIHJlYWQuICovCisJbG9uZwkJCXpzd2FwX2hpZXI7CisjZW5kaWYKKwogCS8qIFRoZSBh
+Ym92ZSBzaG91bGQgZml0IGEgc2luZ2xlIGNhY2hlbGluZSBmb3IgbWVtY2dfcnN0YXRfdXBkYXRl
+ZCgpICovCiAKIAkvKiBMb2NhbCAoQ1BVIGFuZCBjZ3JvdXApIHBhZ2Ugc3RhdGUgJiBldmVudHMg
+Ki8KQEAgLTYyMTIsNiArNjIxNywzNSBAQCBzdGF0aWMgc3RydWN0IGNmdHlwZSBzd2FwX2ZpbGVz
+W10gPSB7CiB9OwogCiAjaWZkZWYgQ09ORklHX1pTV0FQCisvKgorICogRXZhbHVhdGlvbiBvZiBK
+b2FubmUgS29vbmcncyBoaWVyYXJjaGljYWwgcGVyLUNQVSBleHBlcmltZW50ICg5MDkyZTAwNTdm
+MDMpLgorICogS2VlcCB0aGUgZXhpc3RpbmcgcnN0YXQgdXBkYXRlczogcHVibGljIHVzYWdlIGFu
+ZCBzaHJpbmtlciBhY2NvdW50aW5nIHN0aWxsCisgKiBjb25zdW1lIHRoZW0uIE9ubHkgdGhlIGxp
+bWl0IHByZS1jaGVjayB1c2VzIHRoaXMgYWRkaXRpb25hbCBjb3VudGVyLgorICogQ2FsbGVycyBo
+b2xkIHJjdV9yZWFkX2xvY2soKSBhbmQgdXNlIHRoZSBzYW1lIG1lbWNnIGFzIHRoZWlyIHJzdGF0
+IHVwZGF0ZS4KKyAqLworc3RhdGljIHZvaWQgbWVtY2dfenN3YXBfaGllcl9hZGQoc3RydWN0IG1l
+bV9jZ3JvdXAgKm1lbWNnLCBsb25nIHZhbCkKK3sKKwlzdHJ1Y3QgbWVtY2dfdm1zdGF0c19wZXJj
+cHUgX19wZXJjcHUgKnN0YXRjX3BjcHU7CisJc3RydWN0IG1lbWNnX3Ztc3RhdHNfcGVyY3B1ICpz
+dGF0YzsKKworCXN0YXRjX3BjcHUgPSBtZW1jZy0+dm1zdGF0c19wZXJjcHU7CisJZm9yICg7IHN0
+YXRjX3BjcHU7IHN0YXRjX3BjcHUgPSBzdGF0Yy0+cGFyZW50X3BjcHUpIHsKKwkJc3RhdGMgPSB0
+aGlzX2NwdV9wdHIoc3RhdGNfcGNwdSk7CisJCXRoaXNfY3B1X2FkZChzdGF0Y19wY3B1LT56c3dh
+cF9oaWVyLCB2YWwpOworCX0KK30KKworc3RhdGljIHVuc2lnbmVkIGxvbmcgbWVtY2dfenN3YXBf
+aGllcl9zdW0oc3RydWN0IG1lbV9jZ3JvdXAgKm1lbWNnKQoreworCWxvbmcgc3VtID0gMDsKKwlp
+bnQgY3B1OworCisJZm9yX2VhY2hfcG9zc2libGVfY3B1KGNwdSkKKwkJc3VtICs9IFJFQURfT05D
+RShwZXJfY3B1X3B0cihtZW1jZy0+dm1zdGF0c19wZXJjcHUsCisJCQkJCSAgICAgY3B1KS0+enN3
+YXBfaGllcik7CisJcmV0dXJuIG1heChzdW0sIDBMKTsKK30KKwogLyoqCiAgKiBvYmpfY2dyb3Vw
+X21heV96c3dhcCAtIGNoZWNrIGlmIHRoaXMgY2dyb3VwIGNhbiB6c3dhcAogICogQG9iamNnOiB0
+aGUgb2JqZWN0IGNncm91cApAQCAtNjI0NSw5ICs2Mjc5LDcgQEAgYm9vbCBvYmpfY2dyb3VwX21h
+eV96c3dhcChzdHJ1Y3Qgb2JqX2Nncm91cCAqb2JqY2cpCiAJCQlicmVhazsKIAkJfQogCi0JCS8q
+IEZvcmNlIGZsdXNoIHRvIGdldCBhY2N1cmF0ZSBzdGF0cyBmb3IgY2hhcmdpbmcgKi8KLQkJX19t
+ZW1fY2dyb3VwX2ZsdXNoX3N0YXRzKG1lbWNnLCB0cnVlKTsKLQkJcGFnZXMgPSBtZW1jZ19wYWdl
+X3N0YXRlKG1lbWNnLCBNRU1DR19aU1dBUF9CKSAvIFBBR0VfU0laRTsKKwkJcGFnZXMgPSBtZW1j
+Z196c3dhcF9oaWVyX3N1bShtZW1jZykgLyBQQUdFX1NJWkU7CiAJCWlmIChwYWdlcyA8IG1heCkK
+IAkJCWNvbnRpbnVlOwogCQlyZXQgPSBmYWxzZTsKQEAgLTYyODMsNiArNjMxNSw3IEBAIHZvaWQg
+b2JqX2Nncm91cF9jaGFyZ2VfenN3YXAoc3RydWN0IG9ial9jZ3JvdXAgKm9iamNnLCBzaXplX3Qg
+c2l6ZSkKIAogCXJjdV9yZWFkX2xvY2soKTsKIAltZW1jZyA9IG9ial9jZ3JvdXBfbWVtY2cob2Jq
+Y2cpOworCW1lbWNnX3pzd2FwX2hpZXJfYWRkKG1lbWNnLCBzaXplKTsKIAltb2RfbWVtY2dfc3Rh
+dGUobWVtY2csIE1FTUNHX1pTV0FQX0IsIHNpemUpOwogCW1vZF9tZW1jZ19zdGF0ZShtZW1jZywg
+TUVNQ0dfWlNXQVBQRUQsIDEpOwogCWlmIChzaXplID09IFBBR0VfU0laRSkKQEAgLTYzMTEsNiAr
+NjM0NCw3IEBAIHZvaWQgb2JqX2Nncm91cF91bmNoYXJnZV96c3dhcChzdHJ1Y3Qgb2JqX2Nncm91
+cCAqb2JqY2csIHNpemVfdCBzaXplKQogCiAJcmN1X3JlYWRfbG9jaygpOwogCW1lbWNnID0gb2Jq
+X2Nncm91cF9tZW1jZyhvYmpjZyk7CisJbWVtY2dfenN3YXBfaGllcl9hZGQobWVtY2csIC0obG9u
+ZylzaXplKTsKIAltb2RfbWVtY2dfc3RhdGUobWVtY2csIE1FTUNHX1pTV0FQX0IsIC1zaXplKTsK
+IAltb2RfbWVtY2dfc3RhdGUobWVtY2csIE1FTUNHX1pTV0FQUEVELCAtMSk7CiAJaWYgKHNpemUg
+PT0gUEFHRV9TSVpFKQo=
+
+--===============0836176935274178407==--
 
