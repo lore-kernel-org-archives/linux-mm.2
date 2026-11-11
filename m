@@ -1,118 +1,178 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE494606E2B1
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 22:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B8D606F6C8
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 22:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=qaxYqcXt
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=GCBgPRNh
 Received: by kanga.kvack.org (Postfix)
-	id DA9106B05C4; Wed, 11 Nov 2026 17:44:30 -0500 (EST)
+	id 65A746B05B2; Wed, 11 Nov 2026 17:47:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D59206B05C5; Wed, 11 Nov 2026 17:44:30 -0500 (EST)
+	id 60B106B05C6; Wed, 11 Nov 2026 17:47:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C959C6B05C6; Wed, 11 Nov 2026 17:44:30 -0500 (EST)
+	id 4FA5B6B05C7; Wed, 11 Nov 2026 17:47:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A92776B05C4
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:44:30 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 56AC940426
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:44:30 +0000 (UTC)
-X-FDA: 85424318700.20.8E73563
-Received: from pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.162.73.231])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0EBA940007
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:44:27 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=qaxYqcXt;
-	spf=pass (imf12.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 35.162.73.231 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794437068;
-	b=oBDkSIRFBEJzs6i08cSV27cnPSaIS+0M9ODcZceFACWp+7ARLN1tpYw0XVSHwza0qsum8K
-	ZW1SmmT0nL7pP4XB2GJynfZemokKUo4cVQyuXIoRfNHwhdHAvNnPOPMdXt9kFuehWESn9x
-	vdUYmPKjxUNv0i4TCk9bS0tgMo3xluA=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=qaxYqcXt;
-	spf=pass (imf12.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 35.162.73.231 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794437068;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FAFE6B05B2
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:47:54 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8F1B980416
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:47:53 +0000 (UTC)
+X-FDA: 85424327226.15.68D1947
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010012.outbound.protection.outlook.com [40.93.198.12])
+	by imf08.hostedemail.com (Postfix) with ESMTP id BC6E1160003
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:47:50 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GCBgPRNh;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf08.hostedemail.com: domain of apopple@nvidia.com designates 40.93.198.12 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794437271;
+	b=2V5Zy8VRGwTJsa9YYXsqvpzE3WJ2aE4GI8xnoVfJ1NymAEj5gs4TZ+IL8ptsP1wZMKKaCm
+	KjCmb1/Ljjtg1Hw46dQ6wolYYiOlW0Qt2QlyzCZfHOYY6useZ4vsYydJCBUQ4dspMG1zgz
+	hVJhgzw4sPCP0442nnEQb8EOMtz4yGY=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GCBgPRNh;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf08.hostedemail.com: domain of apopple@nvidia.com designates 40.93.198.12 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794437271;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RikZQ1odxaSHdwBKe1B1T6fN0JY99txMaqyijCLq4Tw=;
-	b=hgp43xzt3v5seurYceZtk2OjJdSRlEL0f9JZi6tiv/6KPCUWf4d5RoM2fPllkXjcxSaEEz
-	h+oEJyNJVggjsUc41C0/0tEsyOsuQBTZ2w9eFpdDUmBQZjbFJGxhRpDyznthYT3v5H0VVD
-	4AFrEDryKv3Fa8zT5+L3wlBKHpOf/ok=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1794437068; x=1825973068;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=RikZQ1odxaSHdwBKe1B1T6fN0JY99txMaqyijCLq4Tw=;
-  b=qaxYqcXtZudQcb6XFbu8GNk09GkIisWDwCzhkpVPTWqVOwpreEPkyKoD
-   kbgMNNgJ4qFKAv0tP+qQhaWTW4u08vrPH2pUPGuJgRKmjdUeRG/xrUOPv
-   uzg5ck61i8mzkr7IamEgvIJ2PuejRm48DjaRXqjiMUBEjXlCJ3rIhUraB
-   SANst5ESIfkF9muFoctJe5uE8K3bmKbarFBneTrVimgkxZNnWtfmppPC0
-   ByWdsuMzzqi2cMibvo9nLYfSe/0HojQTVNFb1wJgYJh/Nvtwx6N0jcu63
-   uPqOSp88cFIIHEMkkRFQoCBo5Fg2ZBwIT8Kz3+S3Csg8LoCuq3/eWL+1k
-   g==;
-X-CSE-ConnectionGUID: WTNM8apySkiSNhJ16IVtBw==
-X-CSE-MsgGUID: kpqw3RAmQTm0n4HuTKIUtA==
-X-IronPort-AV: E=Sophos;i="6.27,208,1787011200"; 
-   d="scan'208";a="33572346"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 22:44:27 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:30085]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.55.227:2525] with esmtp (Farcaster)
- id edac81ec-ae2d-4f54-a2dc-5d8fd8cdc477; Wed, 11 Nov 2026 22:44:26 +0000 (UTC)
-X-Farcaster-Flow-ID: edac81ec-ae2d-4f54-a2dc-5d8fd8cdc477
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Wed, 11 Nov 2026 22:44:26 +0000
-Received: from ip-10-253-83-51.amazon.com (172.19.99.218) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Wed, 11 Nov 2026 22:44:23 +0000
-From: Alexander Graf <graf@amazon.com>
-To: <linux-kernel@vger.kernel.org>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>
-CC: The AWS Nitro Enclaves Team <aws-nitro-enclaves-devel@amazon.com>, "Shuah
- Khan" <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy
-	<robin.murphy@arm.com>, <linux-doc@vger.kernel.org>, <iommu@lists.linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-	<nh-open-source@amazon.com>, <linux-mm@kvack.org>, Jonathan Corbet
-	<corbet@lwn.net>
-Subject: [PATCH 12/40] nitro_enclaves: Name the device's error codes in the UAPI header
-Date: Wed, 11 Nov 2026 22:41:57 +0000
-Message-ID: <5ef0d84ef7ca12328f6debd41d3bcdbf07315450.1794393490.git.graf@amazon.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <cover.1794300002.git.graf@amazon.com>
-References: <cover.1794300002.git.graf@amazon.com>
+	bh=bUuGXl7v/IvjjZlG6/l86Wsb20/evZCBhE5nrxrKyFs=;
+	b=pMcmygJXrwk6illuozy/FHmK1byxVleFE2v8BFEfPWwobxD94U6agO7Zl8z9yUVxETdU+n
+	UrcUcGNQ15U96/6cDI3Dtf7JNhqYjBUV3o0oOACA+7Y379dYj16P9Q4HUjSZhxmCMdox41
+	4llAwbKtN5uoalp+sl9VUHWZk4YsOkE=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=y4cTbbEjgbfYdw7Y25p5e2sRceC0uK0wpv8wAQAF9WZvhCULRcTjTk5EPK29W9dLjkInZ2MOK+wK8eFOO1YWj/EVLI4mQvzrAl2j/AVjz5SxLsqdODc8X6aQLahCC6LcFYCLD1mkunv/KB/G7MVpmsCPLC+rYVH4LpdR4/VX/N9GFAkZSFridD4Aq6x1tNMlrZBbLYRF1Bspcyqe1kpEd0AL946UobN58x5H0ifsdJxfrTA1IsJOb+bovGBk7+JDMFHcaBew4d3mHGJxsCyevJ7KdZumqVllBFcEk+WppVRLRe4J7xuoyaSD9aCVv93gq1xiyflQbaKB6VYNymLF4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bUuGXl7v/IvjjZlG6/l86Wsb20/evZCBhE5nrxrKyFs=;
+ b=bEFbxudT7lBa4fhKMhX42ss7tPVMOaX4I9coee9mGf+cIxo/jPz7SlUApWeSsVwUMZ9um/CbgW9qz5g1s4vMXph4GkQ8KpR0AsoJtDUpN6S4u7Q0pJdczGOMG6R1Swmkmcz8z0YJaYP7l1DKtGqk5VOCBkjjK350jmhy6JuIAwUzF73f7QEV4f1vnVCqgPU9lWvpZiYfdwho90Lzu3fWDhspKV3BEhEL4CT//Vsxm+kVNQ/g4elfoiVKKlQTUfLrlUHcNDSUxQzK31vEf1g9TcjOFKomSiW/gBPZyRhlj0cB/sKUAJx0k4QS4ueS/v2uk5Sq4YYDlbEXCD7mw0v+Eg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bUuGXl7v/IvjjZlG6/l86Wsb20/evZCBhE5nrxrKyFs=;
+ b=GCBgPRNho7BrK4pQhIxY7hMhXX5XWL0Kl/0qlAMSPjAic0Mscquzecwdrvgww831rDutWl+nFjq9SiO43UslVGwElAmxT9Q1Hha7FAAVWaIbQJ/cQQuFkNlp/FmF88LXIi3HIRMzhSXypyGfrbDq0fpwD4cV5XcwBzVq98Ij2X+B0hd8aj07KA1TWdglk8z0J+LK081kKsns+LA8iaRTfB//0+7NvsKjMK4fMz4p4IdcK85Vy/CPBiKnRz6i/wI04isyCiGgL6xMqKL/plVNMitZWaLtaF/ph26IxsygC3U/TOgEdeweom8X1TFQ9wGIVa+uCNDDwOI001XMIQegxw==
+Received: from SA3PR12MB598757.namprd12.prod.outlook.com
+ (2603:10b6:806:52d::14) by DM4PR12MB6136.namprd12.prod.outlook.com
+ (2603:10b6:8:a9::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.9; Wed, 11 Nov
+ 2026 22:47:39 +0000
+Received: from SA3PR12MB598757.namprd12.prod.outlook.com
+ ([fe80::e206:100:5946:a777]) by SA3PR12MB598757.namprd12.prod.outlook.com
+ ([fe80::e206:100:5946:a777%5]) with mapi id 15.21.0615.007; Wed, 11 Nov 2026
+ 22:47:39 +0000
+Date: Thu, 12 Nov 2026 09:47:33 +1100
+From: Alistair Popple <apopple@nvidia.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Nhat Pham <nphamcs@gmail.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Usama Arif <usama.arif@linux.dev>, Kairui Song <kasong@tencent.com>, 
+	Balbir Singh <balbirs@nvidia.com>, =?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Christoph Lameter <cl@gentwo.org>, Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>, 
+	Chris Mason <mason@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, "Borislav Petkov (AMD)" <bp@alien8.de>, 
+	Mark Brown <broonie@kernel.org>, "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 08/13] mm/migrate_device: fix ksmd oops on a migrated KSM
+ page
+Message-ID: <avTu3LmscsttRVRp@nvdebian.thelocal>
+References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
+ <20261111-mason-migrate-et-al-fixes-v1-8-3d2454362e8d@kernel.org>
+ <ef0432fc-2d00-4568-8087-cb39264620c1@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ef0432fc-2d00-4568-8087-cb39264620c1@kernel.org>
+X-ClientProxiedBy: SY6PR01CA0057.ausprd01.prod.outlook.com
+ (2603:10c6:10:ea::8) To SA3PR12MB598757.namprd12.prod.outlook.com
+ (2603:10b6:806:52d::14)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D031UWA003.ant.amazon.com (10.13.139.47) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-X-Stat-Signature: 7ipbckxihimr9jrh43pk4bs368qcpn46
-X-Rspamd-Queue-Id: 0EBA940007
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB598757:EE_|DM4PR12MB6136:EE_
+X-MS-Office365-Filtering-Correlation-Id: 02308fb4-a109-40bf-88a4-08df4045c9ad
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|23010399003|376014|22082099003|18002099003|11063799006|5023799004|56012099006|4143699003|261028144727099003|261021121427099003|261102123227099003|261026140227099003|261026121527099003|261022105027099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	SCEVxJk3Hj+5IJ9gRfy6Mxo60p+k81MIgWAhZ3llH0Pm/t2fZf/pXqNlhjEVxLXuCxfeOvKCs2PcHv1Kq3GcOX9vFexdDCzrHtn6YkuYqdFuO1BYUbSuXPjUFLqPlwVVw0Ex9tcKxv1fCJj3gh8b7G6OUC6pnrW+qguWe8wttKCOINRtn+H9QV1nA5ZvV8gkqHmb5iNxSBO3gaJWrFE3/0NK5SscfoG3GIAq9zGzu9kDgeZ6m7GdXVN8cxMOFghJSy5emGSRAExeayR2n3Fg1XCR6VsPVHqtQSsA0AoCfeFBscUJwYHf1VxOTjFg20S+R/TW8ijx+JUTfml/C4nRvhnMxACZF/4Z1gLuS7rTNcJdMdrleHjMMV0dgQs74PoXtZkeshbbr2g+ScEvwp6n+VJn+TpWD2u3z4NhqW/jEceemiC4aOzeFk+UaXxPeh027RqdDY60FmsyT9pc7UKbMVUAeqK5b3AMyhYzDbG+H5lGllFXUqVQkYwdf1WDpKt6i7T7X7XMnlfymsjW/WBUR1VNSPp5hbK0QehV4GYxiAMtUnXwJINDTjGBduuekFX2xK9l/oNdhr6hbthy6pIhKO+H5DM9CZV8HZDEurBCUKtEMYP6PH3/alwUNgZOPFa16w2yYubDlErRh3OrtH6/6wfh+U/bMalIXz5HanaLAvY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB598757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(23010399003)(376014)(22082099003)(18002099003)(11063799006)(5023799004)(56012099006)(4143699003)(261028144727099003)(261021121427099003)(261102123227099003)(261026140227099003)(261026121527099003)(261022105027099003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?iTH5jtExl4VOvI7HR47krkbAing5fAzzcarvgJY2neeI5glwjncZWv5/n2o5?=
+ =?us-ascii?Q?gKvWkqal+wgL7qAZAuRAoFsYawjn1dtIkHQPSHKZuUOBPxouiSXjXXgGbCQH?=
+ =?us-ascii?Q?bgIfszIm04yrRPKOmEg0z+Kirnk/ZC46mWgh8W7u/YxMVhXK+sb+YU+PcYSq?=
+ =?us-ascii?Q?RfMus9y7p9ufG8/8DzfIiiBaJTrIly6c7wvYZErI2xpNuQCIf7Nyi9Ww39/i?=
+ =?us-ascii?Q?RoKemn+TtIJTSAVB8dD2rOs8WuZypJsrCOL5LBSEdtEEFzhg1wXFrEyOrl2P?=
+ =?us-ascii?Q?PU4gzcsTmwPXOjoLj8gxcE/PNo27KbFHydZzqRSgmXu46T0DdJrmna630kOe?=
+ =?us-ascii?Q?h15yZNa9koC2AOz1fP27GpnyshiDlTHlB/RvRP4fIZ8MU31SkIun8fsUoqLD?=
+ =?us-ascii?Q?Lt0rbi3zCe5kP0rU7s6OmTGOmcx/zzVcPuUcNgDr5GNBL6J8UQ6+WEPVOM6L?=
+ =?us-ascii?Q?E+Pd6N/O3zLcv5HzQOL4wW6XIKH4R6SbIXWfM1a0kz5SZ6mYCmjXwmEr/TOg?=
+ =?us-ascii?Q?WP5BFo/7OHvsvqrLaDgUgyxZkXV+NOpqP0jVkG2DYwCfuFwX1JXX/ic08Gmt?=
+ =?us-ascii?Q?fiLVALodcPsmDHM+juB611358V/a0eOgvLM/tJTRBBceyoh3kjizF4CMu3dc?=
+ =?us-ascii?Q?8ZeqavrMsvcJKAyQxJsSV/P/2wkKOTcAX3Qu0CqLUbNvRetywfddxXp8FiQv?=
+ =?us-ascii?Q?oBa+xKNukCHx5ZuwBeyPKPykEQihiHUwNvCn+ELLnKyuWrB2p/kicTmEHXJH?=
+ =?us-ascii?Q?CUMnpgotglyDOH3W3jsIUJWNB912Yo4ZjXjzrs5FDa+sPQ2S1Y0G1Pcr8vUC?=
+ =?us-ascii?Q?Pj0ZwY1LfYZLBa9qRAlh3bqNfri5YzW7kJQBs4c9d4sgVVRUBDthTEjwWA68?=
+ =?us-ascii?Q?CRTzXTYBKu2+GuSHfj1dB6mDx9kB5Aqcedqm7Tu2mjvYhALlmAd3UjTx4eX0?=
+ =?us-ascii?Q?Iz6iPIGrbQ3JkHEFOC0eb/+hZCimt17vDVzom5fsau+doUMcCQ5Q+whQ31tg?=
+ =?us-ascii?Q?exnCS5lOKhiY+pq85JTjeNtfRTkaOMCmp57AgToZ+JkQX4LJk1LWMtY0Rv6L?=
+ =?us-ascii?Q?Ax7wPg0H2v1RKCSnrSV8gaGpC5ErADUCKMX69Ik9lTGBi6DnSarzu9bFfRzE?=
+ =?us-ascii?Q?UJ0jqYYWLEPIj189bCf0gAUtKWFevO40WB0MZF8ODiy+5jLBdzBHWAG8Zz+M?=
+ =?us-ascii?Q?T9dSN5cHFrhsle9xAFhXSuEyXXQWhi3dIYe/CvG68A2XCEOwiGjuHof0Pfuv?=
+ =?us-ascii?Q?I0sPzhQLRZmi6l+ZCiLvTAv1sewWitKzFZNvzI8ewSmEH6qC2YNUfL/53q5Q?=
+ =?us-ascii?Q?ND7kdHFzzIPeiN/ruB+doe9daENSSR8fY3po5rXml6iuty7xBQ8XLRUen6Tz?=
+ =?us-ascii?Q?ybvjVJu8orOMdn22RWDeGXxiiNuioMwL45Q4OI9Kzb0aTHVTb/UoHdXXZogH?=
+ =?us-ascii?Q?3N5MJL2ZUoehEVo+Rb+4aE8SVV4s0KEd7IcLEkZgJClzGHdHjIMB/plbSUFV?=
+ =?us-ascii?Q?NktKA8cXebryhiaOxBVhjtWC1mHi78FphzO4WMNrNEWy+Wv+CkiuMhyVRF45?=
+ =?us-ascii?Q?AQv+GO6CHDEF4SKrqG0KEO3+LDVul1O+O9JBhRQ8bfkUUjRSF8/6ktn6IFo9?=
+ =?us-ascii?Q?rI1RdlYI+pTKxLRLqlD8TxuNf+JYmZvbiNvV/dMX8n0Zpp26/UhM5HxRc1m8?=
+ =?us-ascii?Q?aRkosZdoNbvuReiE4SWrHI83oJApE4aTXfXuSo0mk/udjoFcNoVhPQNfSKa7?=
+ =?us-ascii?Q?G4oC5cvrOg=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 02308fb4-a109-40bf-88a4-08df4045c9ad
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB598757.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 22:47:39.1189
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bahZ+X2CljY6W+Yav3NviGmq4WrQyicFuv35c8t2EcgUDsos4zzlDCgsNMNjkLQWbG/Jj779l9TYMBTOC5CESw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6136
+X-Stat-Signature: m9r7i4y4nzwm9s4kqe8r5ckhywywnb19
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BC6E1160003
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794437067-435420
-X-HE-Meta: U2FsdGVkX18g0H7jH+FBJii0eMG0XK+OPh+jVvHoK5FAebu2MjXnfYmLJwOApl7woK6zAabbPIQRpcJ3J446s2xD8mjcXulhpjUlEs6BbdcCON6RnPzds3g7eg/tMJB50RPX3M7YjI2Ol3Bqf8VGyspJCyoo5QEZHW16aI2cqwDd+8P+nI/FVH15qwViwkcEdB7jcd/RrDJ5LByWW6zYRD9whXpIeefriUzZW5eZriBerNq/cgPpul4qN43QHqow7HeHM8+plptLk9m5ld00EJzgIJStF9JejFyuGD+i/pECUfAMjIuJh0hVbuN+s8VBZsRZ+ENuder8d881TmBd5Kgh9K8Ep7ulI1KEwDANWc3qDpuO31HzTgwpjddlM7w37c2X6wQCzKnBxGJWGWhIyd7olUGtLPz57zMDWv+0eV33Oebgbon2Z6J+FZdwLBvJnwIKmQLM52u2u0BlgS5C5FAJN2Rvy1DlDkUkL59DOLUqlW6Po/oJYxlsKW5HHPTDdt9OZSPGK0twIBsD7LLiRaSFrShyhvKdzwlrC92VlEtsJvo+DXc1OMkurwG8xYEs2g7jfCeLOY4qY2tYP7HfzU5oNXx6AFoFriXQbjwWkb0beBXXfgACLxvbWteRvLVwJu7whw8k26BbpNcpHgJsmz11rKOb01P2arliYCbuijFZaX1BFLynnLeJQP1Iv5Y3R/st8boQoP54RQKu99Jg0NzhqzQttM8M+ZVEyKb0CauYNlMSzNRxxQGzqBPrBTRwxLRy0xyGieBV7Hv9NHREYMlltmwr0H9ovhLmwAzsfdG7BJWkDlHAxIXQhHFJYsDnXxGdK1yrQefCRv8gYyxJvVBumlgEQ2Pw7qkHR3kyyCg7SqeeDmZ1e0NlNaN70oQAluaUKwENNxc3ueHg8kkHylj4OyDgmFxB+W2J5ErSoXRfgmA8RJ5+CSOs4Gdrvm5GswATWYtamnyN1UYNUzT
- TtUYZ1AE
- 1SCPicierE7OBttVYWW5usVCIu5yTTfHx15paQ1sRioIxJHbV7X3bcM0om9qP74ZXJsVn3tP+/FVEhd09V5h5ay49VB3+GE7O5WkFSPcbTxsmDNRTjVGtSEzrGpTSdadHAzofHeTJ4w45hRSDRgL8AW7hDp8wOn5JFaskrC9mKZiG0VyX5pBdbX6UcPdQvSfDVymRpXSeTiKzGdfmiCMI2ia3ghdasFY4my1ans9CJ/6lfzggtOwPGzBjUEGj7kzv18f1iNQhQAf58OT85cP9twzFYq+GeijKqiCiO4FhMLhoRccZRcOkJt2YCW3MZynN/HQE+yskCfRWIWMAR0XsJjJZ8RpC6uUbDb5KC5Pbah2cB8PZyP8B+98OyDGoSPCoOq+GHVPdCqr0XrT1gpRKb5dJggO3XGW24tItNyq354ZOlZ51DN0tkafufKA6hO17IH027i/OTiK07Z51onNa7y794VZhBBhRRtj2/NTzqeEdR+K4YPy9Lf+RSdp8COEKZ0jhgKz8EMZB/hh3hKAfDbLTb1w7PaBOupMgBkeJMqfY/eVeByNnbPhVwGi3hhiiXftvq1lKtOG/yhZ9ACBZGBrXjx05Wla/c/gAMRLY+mKz4Q7Hipo/QH6m6UxrvBFxWqU4yKnRvSOpz4G0XA4RZM/5bC2qqhkvKwzhcHuLFYsYrA+jzy+TgTXE8mu19BU00O4zqS9LsjW1cO3cR2x8gKs1+w==
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794437270-114096
+X-HE-Meta: U2FsdGVkX1+dW4oTk7yfZAh+2M7sKPeVo6FAcOMBYJ+HeTYOQiSE6HeV6xiSIIr98bQFzdT68TiwyvTDrnE+4fYgCBoGxBBHhlWMUZYxWp0pwXj9Pr+cUxA0XXl0SpjgILYh03rf23ovzgD/jsCer6xVOzxfxS2BAVKH78TtaPWBieA31hZmgukbprjzcFh9foDPU3ljB1aLhiubc0x2TMO0tCghqlyNvz6zXipr6BJyz2peg0BdYCfmZ1yJ4zNrk8pKaU6bdLja+YBK+drJ/e9ZgriLLoL+iJjYq4v48FgpydUBfzNXzBDgyssJkKZflZPVgJANgsHTrUK6Rm4LOoWoERRihP9UImNFDZWQeYr4m9HarOngfvqFX+xDh/5jSwlaCfjEbN161roHP6gwVfo66QPv9r0e4H/Go3IEFhfHmemVj/e8UgY/uHdMFGT/QSkksoboXZfvlvGHC0vA5NaQVi7p3qWLN4Mz/ITKe0t0BWtHtgWfAwgvJdFQKXwLjadtYNH2r2ABqDLuY3B1OiVoyUpt9e1C0+FaNzgL2QE5mGcF7cwxvlguVPyyGKkgEF9/BULRJU1SbJgZ8frvuyZqFByNejErAsWLiDhyL0QCt6TMVBJdTs1sRkM/gmjUchkALTKhS/XusMc4If17+Nx2ZV0mY4B0nrxP54llkeBb1J2m3UL5giTItj/DQ1c1MZ7UQQteHYMrxuVtbxasSENARbU54G53zTypZX9gFFVlf3M4LKl9CZxNb5AiYmpfbjpVa0KC/hlVrQK3tvlhy58wW7kNpMZpmsoKJxBnkjvTI8Gapt+Oo00eAk1JgqLJQWfV5aOVua6IJh1uFbmI4nf5qMb6wEGf1GbAdn2i0nJ4PYwebfNLj/lESWCbNFoBNMOJz6FgTGiiZrNT6i/tL/wUcqN9KniHcrrlkGOL/EPjwuGdctkCTccoqEbE7a341smzONRkcr6vCtcFGQ6
+ NI3IR0sS
+ HNs5NQMOULgqwcTUqlkFvom03JFIjiVFBvzh6z4mn0C4bd11B1qJU3Q8AAw1TyUGy6IPltX498sG04UNAZFjNq+AGHCpLA+zviRpT8XSdF5fKR6P6+hjW1aXAWUtVxZLa9xujJf2m5mcjyxFvtMiNp5Ob5kuboLhwEYFH9Nkkkmm9rFAUUsTs3PnucGUUZDIfTdddtYgH4RtD5OAQiXKV6XYIk/KioUNLvrYjAUCdytylmLY5fhpk7TdDBm8MUzzbsU/CQ4EnMv0SysjDSASq0n7BHV7BKgidwfvlij223msWJin8ftPMR8VqiyQDZBxvoELhNXs9yDLq/omadIGytQP1gH1Wt+bF++x1q45rqw0JPKWQ75IBmbu7rmrNHfmS/eBI8lPqlRKVqpbkOVQDjIXSIOQYfdvjcvMRcmRh1WpX6WgFFab4ad3K9x6Tky4zAfC14evu098A7LPCrIqEHeU7XVOhVAPJKMlJeecJKqYJvvY9SPL3ObtqKH5jqAJTfZleW9uWmFXYEkopzyQNaOtGFLlRUyk0gFK/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,178 +181,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The nitro_enclaves device refuses a command with an errno or with an
-NE_ERR_ code, which ne_do_request() passes on to user space as it is.
-The codes of its own that the device returns start at 276, after the
-driver's, and we want the device to be able to add more of them later.
+On 2026-11-12 at 08:54 +1100, "David Hildenbrand (Arm)" <david@kernel.org> wrote...
+> On 11/11/26 19:13, Lorenzo Stoakes (ARM) wrote:
+> > From: Chris Mason <mason@kernel.org>
+> > 
+> > After a KSM page is migrated to device private memory, ksmd can oops,
+> > and KSM then stops until reboot. A process that maps the page can also
+> > loop in page faults when it next accesses the page.
+> > 
+> > The problem arises because KSM doesn't know not to try to look at device
+> > private memory that does not exist in the direct map.
+> > 
+> > Disallow this from happening by explicitly testing for this scenario in
+> > __migrate_device_pages().
+> > 
+> > Fixes: a5430dda8a3a ("mm/migrate: support un-addressable ZONE_DEVICE page in migration")
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Chris Mason <mason@kernel.org>
+> > [ ljs: tweak commit message, comment ]
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > ---
+> >  mm/migrate_device.c | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> > 
+> > diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> > index 45e571dbfb4c..7ebd02ec303b 100644
+> > --- a/mm/migrate_device.c
+> > +++ b/mm/migrate_device.c
+> > @@ -1205,6 +1205,15 @@ static void __migrate_device_pages(unsigned long *src_pfns,
+> >  		}
+> >  
+> >  
+> > +		/*
+> > +		 * KSM doesn't know not to try to read device private pages, so
+> > +		 * disallow the combination.
+> > +		 */
+> > +		if (folio_is_device_private(newfolio) && folio_test_ksm(folio)) {
+> > +			src_pfns[i] &= ~MIGRATE_PFN_MIGRATE;
+> > +			goto next;
+> 
+> In general, LGTM. I was just wondering if we could reject that earlier. because
+> apparently we already allocated a destination folio :)
 
-Name the device's codes in the header, so that a caller can tell for
-example a refused flag from an invalid slot, and document three ranges:
-the driver's original codes from 256, the device's codes from 276 to
-511, and codes only the driver returns from 1024. That way new codes on
-either side never collide. 511 stays below the kernel-internal error
-codes, and 1024 well below MAX_ERRNO, so user space reads every code as
-an error.
+You could do it in migrate_vma_collect_pmd(), but that would prevent migration
+of KSM pages to DEVICE_COHERENT pages. DEVICE_COHERENT pages are always in the
+direct map and are by definition fine to look at, so I think it's better just to
+do the check here.
 
-Signed-off-by: Alexander Graf <graf@amazon.com>
----
- include/uapi/linux/nitro_enclaves.h | 142 ++++++++++++++++++++++++++++
- 1 file changed, 142 insertions(+)
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
 
-diff --git a/include/uapi/linux/nitro_enclaves.h b/include/uapi/linux/nitro_enclaves.h
-index 8ccf16e9cf5fb..6dd00c41c07d5 100644
---- a/include/uapi/linux/nitro_enclaves.h
-+++ b/include/uapi/linux/nitro_enclaves.h
-@@ -567,6 +567,148 @@ struct ne_add_memory_region_args {
-  */
- #define NE_ERR_INVALID_ENCLAVE_CID		(275)
- 
-+/**
-+ * DOC: NE error code ranges
-+ *
-+ * The NE_ERR_ codes come from three ranges:
-+ *
-+ * * 256 to 275 - The driver's original codes. The NE PCI device also
-+ *   returns NE_ERR_MEM_MAX_REGIONS, with the same meaning.
-+ * * 276 to 511 - Codes the NE PCI device returns. The driver passes them on
-+ *   to the caller unchanged, and the device adds new codes upward from the
-+ *   last one defined here. The range ends below the kernel-internal error
-+ *   codes, which start at 512.
-+ * * 1024 and above - Codes only the driver returns, added upward from 1024.
-+ */
-+
-+/**
-+ * NE_ERR_INVALID_FLAGS - The command's reserved flags field was not zero.
-+ */
-+#define NE_ERR_INVALID_FLAGS			(276)
-+/**
-+ * NE_ERR_INVALID_ALIGNMENT - An address or a size the command carries is
-+ *			      misaligned or too small.
-+ */
-+#define NE_ERR_INVALID_ALIGNMENT		(277)
-+/**
-+ * NE_ERR_INVALID_SIZE - A size or count the command carries is zero, too large
-+ *			 or too short.
-+ */
-+#define NE_ERR_INVALID_SIZE			(278)
-+/**
-+ * NE_ERR_INVALID_SLOT - The slot the command names does not exist.
-+ */
-+#define NE_ERR_INVALID_SLOT			(279)
-+/**
-+ * NE_ERR_INVALID_DEVICE - The command names a device, an address or a memory
-+ *			   range the device does not accept.
-+ */
-+#define NE_ERR_INVALID_DEVICE			(280)
-+/**
-+ * NE_ERR_TOO_MANY_DEVICES - The enclave already has as many devices as it may.
-+ */
-+#define NE_ERR_TOO_MANY_DEVICES			(281)
-+/**
-+ * NE_ERR_TOO_MANY_VQS - The device already has as many queues as it may.
-+ */
-+#define NE_ERR_TOO_MANY_VQS			(282)
-+/**
-+ * NE_ERR_NO_RESOURCES - The device could not put together something of its own
-+ *			 that the command needs.
-+ */
-+#define NE_ERR_NO_RESOURCES			(283)
-+/**
-+ * NE_ERR_ALREADY_EXISTS - The slot already has what the command gives it.
-+ */
-+#define NE_ERR_ALREADY_EXISTS			(284)
-+/**
-+ * NE_ERR_MISSING_INFO_PAGE - The slot has no info page, or the one it has is too
-+ *			      small for what the command writes there.
-+ */
-+#define NE_ERR_MISSING_INFO_PAGE		(285)
-+/**
-+ * NE_ERR_INVALID_FLAG - A flag bit the device does not know, or does not allow
-+ *			 here, was set.
-+ */
-+#define NE_ERR_INVALID_FLAG			(286)
-+/**
-+ * NE_ERR_RESERVED_FLAG - A reserved flag bit was set.
-+ */
-+#define NE_ERR_RESERVED_FLAG			(287)
-+/**
-+ * NE_ERR_MISSING_PCIE - A flag that depends on the PCIe flag was set without it.
-+ */
-+#define NE_ERR_MISSING_PCIE			(288)
-+/**
-+ * NE_ERR_INCOMPATIBLE_FLAGS - The flags asked for cannot be had together.
-+ */
-+#define NE_ERR_INCOMPATIBLE_FLAGS		(289)
-+/**
-+ * NE_ERR_EIF_FLAG_MISMATCH - The image's matched flags are not the ones the
-+ *			      enclave was started with.
-+ */
-+#define NE_ERR_EIF_FLAG_MISMATCH		(290)
-+/**
-+ * NE_ERR_DEVICE_DISALLOWED - The device type asked for is not allowed.
-+ */
-+#define NE_ERR_DEVICE_DISALLOWED		(291)
-+/**
-+ * NE_ERR_HOTPLUG_DISABLED - The enclave does not take devices once it is
-+ *			     running.
-+ */
-+#define NE_ERR_HOTPLUG_DISABLED			(292)
-+/**
-+ * NE_ERR_BAD_EIF - The enclave image is missing, or did not pass validation when
-+ *		    the enclave was started.
-+ */
-+#define NE_ERR_BAD_EIF				(293)
-+/**
-+ * NE_ERR_MISSING_PCIE_VIRTIO - A flag that depends on the virtio-PCIe flag was
-+ *				set without it.
-+ */
-+#define NE_ERR_MISSING_PCIE_VIRTIO		(294)
-+/**
-+ * NE_ERR_BAD_PAYLOAD_VERSION - The request's payload version is one the device
-+ *				does not take.
-+ */
-+#define NE_ERR_BAD_PAYLOAD_VERSION		(295)
-+/**
-+ * NE_ERR_INFO_VECTORS_EXHAUSTED - No notification vector is left.
-+ */
-+#define NE_ERR_INFO_VECTORS_EXHAUSTED		(296)
-+/**
-+ * NE_ERR_TOO_MANY_ENCLAVES - The instance already has as many enclaves as its
-+ *			      quota allows. A terminal answer: neither
-+ *			      resending the command nor donating more memory
-+ *			      changes it.
-+ */
-+#define NE_ERR_TOO_MANY_ENCLAVES		(297)
-+/**
-+ * NE_ERR_NO_MEM_SLOTS_ON_NODE - The memory budget of one NUMA node is used up,
-+ *				 which -ENOSPC does not distinguish from the
-+ *				 budget as a whole.
-+ */
-+#define NE_ERR_NO_MEM_SLOTS_ON_NODE		(298)
-+/**
-+ * NE_ERR_NUMA_SPAN - The enclave's CPUs and memory span more than one host NUMA
-+ *		      node, and the enclave was not set up to span nodes.
-+ */
-+#define NE_ERR_NUMA_SPAN			(299)
-+/**
-+ * NE_ERR_NUMA_ALIGNMENT - The memory of a guest NUMA node other than the last
-+ *			   is not a multiple of the guest's memory section size.
-+ */
-+#define NE_ERR_NUMA_ALIGNMENT			(300)
-+/**
-+ * NE_ERR_LOW_RAM_TOO_SMALL - The lowest contiguous run of enclave memory is too
-+ *			      small for the boot layout the enclave needs.
-+ */
-+#define NE_ERR_LOW_RAM_TOO_SMALL		(301)
-+/**
-+ * NE_ERR_ZERO_REGION - The enclave's memory layout has a region of size zero.
-+ */
-+#define NE_ERR_ZERO_REGION			(302)
-+
- /**
-  * DOC: Image load info flags
-  */
--- 
-2.47.1
-
+> -- 
+> Cheers,
+> 
+> David
 
