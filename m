@@ -1,104 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A134606A333
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 19:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47885606A324
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 19:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Zx+nIfXZ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hUvLR+bo
 Received: by kanga.kvack.org (Postfix)
-	id 4DCA26B05B3; Wed, 11 Nov 2026 14:40:45 -0500 (EST)
+	id 640E36B05B5; Wed, 11 Nov 2026 14:43:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4668E6B05B4; Wed, 11 Nov 2026 14:40:45 -0500 (EST)
+	id 5F20E6B05B6; Wed, 11 Nov 2026 14:43:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32EC36B05B5; Wed, 11 Nov 2026 14:40:45 -0500 (EST)
+	id 4BAD86B05B7; Wed, 11 Nov 2026 14:43:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AD416B05B3
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:40:45 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8B2C31203AF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:40:44 +0000 (UTC)
-X-FDA: 85423855608.21.1ACC336
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D40416B05B5
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:43:11 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 55955A7F29
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:43:11 +0000 (UTC)
+X-FDA: 85423861782.30.695307F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 03FADC0006
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:40:42 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zx+nIfXZ;
-	spf=pass (imf22.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7DBF020008
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:43:09 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hUvLR+bo;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794426189;
+	b=pxLn4K3DL62+UPxiUQZ4RaW2lq4YR3n8o9++2p87WqqG+Pf/EH0YzvJGI9XIRG7qVPSwvz
+	mSSWBq5jydevq+T0DVNMjd1UnKmoEKYMMp/yJx+6VgOXl/w0cCBLh/paDAJ6KHzgvwiUrY
+	a0MiwGu63BAXZtvQOGhUucqdbpLfwBQ=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hUvLR+bo;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794426043;
+	s=arc-20220608; t=1794426189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B9+U4iNiHz63kgEwzrgZfWzI7/jqnf7J3/4pv9aI/zc=;
-	b=rVJei+hEV55ygFdxXRD7zBF1aPbYfA6PalhhnYTQUyoIy0gqUggF6XSZWfE15EMJA3VWLG
-	q4FjKJGtPdeE5WsVeJ9YbBDLYjoySQccd+ovoQ2LfFjyvABVmj4vo3KrZyHyZB+IXq4HNH
-	z0Y2a0qfKwM4Fqb2frMNLd/nn33BY0Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794426043;
-	b=jjYQsatJ5wtRDFtW+125sGlHL1akfPKvgwSOTB63A0GY9ev+d94itmX9FyijTAlo5XAV+l
-	xiiUKTSZscV6WKAuJ+td5v7bw0e/zeAssMKpuyoFEm3+LDzoQxPNopkb8j3F0ORc7DKcTB
-	d0KtNufyVmsext8yMTMfo1x2y9v6ypg=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zx+nIfXZ;
-	spf=pass (imf22.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=2vDqA8f48MzAhhukXlkIPSTxvdHyn7+6decpCKpqaQc=;
+	b=5Bb5I73wATTjP9jDlyn/8N/tvBxxIDFsH3Jy6oUwjDArjB9C3ObVcqaTNetXRjZJtgY29z
+	5OqlE+/+ok/XHBgutEeJH/jc4za9uy+nnqK/y8JeLt/3jKcBAamAH9YIJe8VpbD9pBLN2x
+	eVAIfqcK962N7XvbxPvareInFsrV0ig=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9A89065541;
-	Wed, 11 Nov 2026 19:40:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8279C1F00A0A;
-	Wed, 11 Nov 2026 19:40:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 018DB6540D;
+	Wed, 11 Nov 2026 19:43:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E385B1F00A05;
+	Wed, 11 Nov 2026 19:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794426042;
-	bh=B9+U4iNiHz63kgEwzrgZfWzI7/jqnf7J3/4pv9aI/zc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Zx+nIfXZJ5nduKwV4Kohuy6/wPdBQ4ZIaJJqYxE+zuPQGTjFy0XKAB/vd5Nul6mWS
-	 dfbb8UYEW+trGtamk7bCAjRFBbU/f9x+NGE3/pvTn1LX17XvYSldT9RNfsRDtbg5ZF
-	 yMx9oiUTY1wuYeAu49os930Inq/rwkyDpMpahOZV4+zQhdZc6ZrMe2sWjWkNp9CnMJ
-	 5gwC/xRFPp8FsEMGuA0isPQ0XSW15BK4OQ2abwu82gu1KzNB6abF6XDM+IDpfsBueP
-	 tE2J47l2c9YtzO73s6ESRKnkVBC+VbnnD+c+f74bsv7iVifmphXZ9IdlkaBHomBLvZ
-	 RDQpI7pIY1AcQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: sashiko-reviews@lists.linux.dev, Alice Ryhl <aliceryhl@google.com>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun
- Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
- =?utf-8?Q?n?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Will Deacon
- <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Mark Rutland
- <mark.rutland@arm.com>, Daniel
- Almeida <daniel.almeida@collabora.com>, Tamir Duberstein
- <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Onur
- =?utf-8?Q?=C3=96zkan?=
- <work@onurozkan.dev>, Lyude Paul <lyude@redhat.com>
-Cc: linux-mm@kvack.org
-Subject: Re: [PATCH v5 1/4] rust: io: require freedom from plain accesses
- for `SysMem`
-In-Reply-To: <sashiko-outbox-209186@kernel.org>
-References: <20261110-page-volatile-io-v5-0-a91ef252c24b@kernel.org>
- <20261110-page-volatile-io-v5-1-a91ef252c24b@kernel.org>
- <lAtM0NMr_K13f2Z2C_qDZsigOTH50qf6QuQZFFVh8k5-v2pkTO25UdKBCrSXWiHNHqhYUtZjNkwa-xsZraO9Og==@protonmail.internalid>
- <sashiko-outbox-209186@kernel.org>
-Date: Wed, 11 Nov 2026 20:40:24 +0100
-Message-ID: <875wy3w40n.fsf@t14s.mail-host-address-is-not-set>
+	s=k20260515; t=1794426188;
+	bh=2vDqA8f48MzAhhukXlkIPSTxvdHyn7+6decpCKpqaQc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=hUvLR+boOm7fyzYFTLLM1kzy4pOLyWEFNldRghZ8zaiKvBrfSb6yTLAKnBUkMRnYp
+	 5ggVwKLQMqOqI1mocrWk6Jh2qnZU6eBZZpn+h4w4tlUdgZ52c2qhJ0YMVXploC3Ol6
+	 CQF5+SgAO+hTNXHA4rK5wSzx65uWyviRO98d0ldSFXH7y1ihg62GiKzs8F23YucqPv
+	 ebH00pOyx4rlo4SNj4Gb4voPbPC6/hrdVghLkHXnqoahMCNyY08Q6m2PU1KBa2beoz
+	 GWYFbv3A2im8j6u88vRyIUaS2+wmR3NUPrqzKqelrBuGoJJqlHSkKX5Oe9/Qau8bfb
+	 lrX3hLe6spCcA==
+Message-ID: <71e24630-4c71-4518-a9b7-68cf3597ce80@kernel.org>
+Date: Wed, 11 Nov 2026 20:43:00 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: xmy3nkqxax75g3unedaaoj6owogxitqx
-X-Rspamd-Queue-Id: 03FADC0006
+User-Agent: Mozilla Thunderbird
+Subject: Re: [SECURITY] mm: khugepaged collapse_file() drops RWP PTE markers
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Tal Zussman <tz2294@columbia.edu>, n3rd <18670333770@163.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "ljs@kernel.org" <ljs@kernel.org>, "ziy@nvidia.com" <ziy@nvidia.com>,
+ Mike Rapoport <rppt@kernel.org>, "peterx@redhat.com" <peterx@redhat.com>,
+ "security@kernel.org" <security@kernel.org>,
+ "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+References: <606cae9e.bbec5.1a1c54f4f9f.Coremail.18670333770@163.com>
+ <60541e98-b1f0-4f92-a155-8a29c0bb17dc@kernel.org>
+ <44abb8ef-7711-4ad0-be9f-ca47206892a3@columbia.edu>
+ <856cdf21-7982-475a-b244-a7ceff4eb6aa@kernel.org>
+ <avS5QcRj85yAm9ll@thinkstation>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <avS5QcRj85yAm9ll@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 7swqi9iri1hw8ej3s4jqcufkjutqws7z
+X-Rspamd-Queue-Id: 7DBF020008
 X-Rspam-User: 
-X-HE-Tag: 1794426042-651609
-X-HE-Meta: U2FsdGVkX1+4m/NYSTQQ2WShq6PtDf5hO0vJmN9oW2WIJmB1Lx+nOEVt54JDY8p9VlNoMo2g1g5FbnROf5R/vdbQG7hqxgNeKwpz1ztGvbp4EmR/iwAnBXnJ3Sn1V47YnF6td7qbGqKzfYS1E0mMr3+Qk6g0A7syAyXJ81WAyN0gjZPx6B9LOZrMpj1FdZXmTs9X2lkNWHkBRTmjSiUfX0XZeACTxGv9bsZ53Au+muFcscX+uyzqp26xEYbyldUloZZPTfVlhLPo6r9Yw1bHEz3HJSbgL0p99IGLYW+MH9fSLcKuAGOLDKadbkXY5YwWsf2hqRGKzQLuqWK2j31uG0Y2812rXDf68j2XQ7iAlN/74Oydvh1h/jKGppA63c8Ly6BgXGT0Wm+0Vv+MngUygxSFfid2xAp/ijV/+sudl7vzYdD6QtmAUx7aYy33ei7yMsyW/IzlKQOzu5JFUaqwLGG3S2AeJYeSSjVBPtgovStDGK0JLLG/4dNyRZaVdx3wvriImJu5omDqwxJrJcmIPolvUCSUIBY4NVZj1BiA1InKvCu8AyIBogQ1+KxpQxkauXbQgPkdoNzD7qb7iRcaoKMwyqKuRAOdP6BPXnB9w2/K7faMBSa+HF5PyuZKNzxXRBuqy9xqrX2ZuV7YzCKrgyB7PQMO4gQEZR36jTAf+WHa7Ng3Q+xmJL6xqYOsMFBqWxA+fT6iEUG9KQ1IhoAiQULfNjjdxWGX4D9ODo8Hwypn9h6a1/lG1AAopGcbQ213b2HHbOucOW3kbyl70gStGxMPwYdQmF3pbd6yeq6JawvSf3CVbzG6c2dCyzxiobKRORjXgd26kDG13a1PPsfwOkCheAA0/xCKjJ3NT2tyoCK43i4LM9MjllmOvKpnhlNOwRuMWUyusN/61mitkYJUC+ny8Vf+dHo5v0A2+FpJ6ZDtpZtCX9bm5CpnTj4bY21OyAKIk/I9sluyJyKVhwD
- l8fUsUR1
- AoElJbIbO5hoyr3mx6NI/87IgBhyNNsEH6nLzTAZjzBoFp7dOGt1OHD7ylYWUYO62CuQhZGqntW0ygwFR0mDVGEIf/vU56DY37RqspKwLI2C7A0dfwxlr5HMvOzepPADfs3lySE1V3tXrp8t5aQqp/oR5flUfffvo5EgeaVxWqmhWq4/8TuKuPAoC+dPYDc2oDnfWDeLqXNJjFiQLySEeoBRyHHTVyL3z4ZhX
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794426189-21169
+X-HE-Meta: U2FsdGVkX1+1zFVktc91eECeuty/NKJ5J5pyA9qfIc0vDSjMAZknDsyf+vcI5mxwm0+w2I5Uf5vIv+RQs97TtPnxC023lc3SX0019jSRRM0KgZA0JKrQloOEX3ZrxhL2vSSefppnt9zqeWGAglmd9W1Ks06iKReDIgAocu6VWxa40QF0tezIBYfJ1ryMcHv5D2mLctzZsUhOOigQNTh1X+u8wB1d6Cgx0x9o+bIeq3M6sgUGwcbjZdUHmzPWtdjYEX/V3o90kMifFIeGhgt4LpiFAZk4JDA9OD7CcyO1Ck0r/WVB9FbeHs+lNO2sNy4xJ7R338lgYxoDo5Y6Rr6fpIgXebgKwdVPYEQresSYPQZv6RUxCXbG36XqQMZZP18dYRxmYAEPZLFzU8Pc67VGoKv6+wWBqiOAeKuYWhwmWYWsInINZ7kcg/IA4/YpSj/3DlLoGbM+7CSg25N0jgCPBoS1n7SmnPXElO1s0NBJoF3S7Evm75FsyYjtJDg3LvWim1oYahepjS/g6hebbHjRMHKIKIV9TbvEpP85BzoGUhnLbkGBllhw0X4SebbTNZbxzA6znMMsAPsugJs6xjzMsZu1572UsH1dX3gC/rnYXzlFxPVi0o829wllp3ltFur8nXRcTJDSBLCzYqjdkE0r7/1JKycOhHLutRjBtUpoUq1xbAGWSWR82Uokqu5BqQhOQSLA0sXLIqBOkpPdSdJq11adN4Syz1zszYiMTxtb6WKymCCkE1r1VW34y0g+ZKXorGXibbIFliTpM/6s6CJTv+Zr8zKNBEK8mV884U/62dpXEB1TuuDQ0aHeN0XbvcFTRyjD34f3JQyDNRxPF0HvALNggRyiq9ObxqaGkVy4tqSTQiEzU32fOy8i2Jkw8MXLqDWe/WnLjZapMHOHGf5LVUmDg8l1yCKDdikFDi61TTQXAislgPHSSWC7qNfaTeWQaXbbB6BXVHzu7Q5ImDu
+ 8iMwMHuD
+ 8H+GioZx8ISH2u3EcYlcQMxk98I5DQ7kHLlwrUPyqznAhyYJkC96Zk1fXDUOYmSksGLFtsAk7qQR87T4SRh/ZMhAewFyU4pxd8mp+GJPFOebdm4FC/Ar8x9p7ArCLi3VJg/uly3FVw5Cz0gwE34Kb2nrC13EcO1zIrikkVwKGNxuk2HHyeWs0JTHWtY+1N1RpF7BMTALvCbaxIK8z6cW6bkdtK0qk1LcmqGaV1ljtwsm3TmLyxTOJcSHkNSaQUTBrZSH60PFSfckDV3YiIDkjJz2ORpTZadztYQ0aK7nRw8lyyQqDMsCc/EYIrsFubewHDx/dhChHXETm2mfIWvdzIYzwNaXXu1EGVxduj3JTrS39moKri7G7BLcNTZZJTd56l5iJ8bQ0WpsvfXAtHj2W5Oh5KsF3m7TAyv+Ak2EKdxlyJVdwMsbVU3jHF3HlHrvhYeqqFVGtjkz/zwM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,86 +150,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-<sashiko-bot@kernel.org> writes:
+On 11/11/26 19:53, Kiryl Shutsemau wrote:
+> On Wed, Nov 11, 2026 at 08:29:50AM +0100, David Hildenbrand (Arm) wrote:
+>> On 11/11/26 04:19, Tal Zussman wrote:
+>>> So this issue was originally on my list and I had a fix for it... but it was
+>>> REALLY ugly and a band-aid, so I dropped it.
+>>
+>> Yeah, RWP is a mess.
+>>
+>>>
+>>> I think the real solution is to just add actual markers for RWP and solve
+>>> all of these issues at once... but that should be a separate series from my
+>>> batch of fixes (which I'll be sending shortly). Is there a reason RWP
+>>> markers weren't done in the first place that I'm missing?
+>>
+>> Let's ask kiryl: why is it ok to drop RWP PTE bits during swapout, zap, collapse
+>> etc?
+>>
+>> https://kernel.org/doc/html/latest/admin-guide/mm/userfaultfd.html?utm_source=chatgpt.com
+>>
+>> states "Unlike WP (which persists via PTE_MARKER_UFFD_WP), there is no
+>> persistent RWP marker today. The user needs to re-arm the range with
+>> UFFDIO_RWPROTECT after any operation that explicitly frees PTEs."
+>>
+>> But requiring the user to re-arm is rather questionable design if the kernel can
+>> just zap these page table entries.
+> 
+> There is no need to re-arm. 
+> 
+> Once the PTE is zapped, the next access faults, and userfaultfd already
+> has a mode for that fault: MINOR if the page is still in the page cache
+> or in swap, MISSING if it is gone. Register the range with RWP|MINOR and
+> the first access after collapse, shmem reclaim or MADV_DONTNEED arrives
+> as a minor fault. The monitor counts it as an access and resolves it
+> with UFFDIO_CONTINUE.
+> 
+> That is why there is no RWP marker: MINOR already covers it. WP needs a
+> marker because MINOR would trap reads as well, and a WP user does not
+> want those.
+> 
+> Anon has no MINOR mode, so there the bit stays wherever the page
+> survives: it is carried on swap and migration entries, and anon
+> collapse bails on uffd PTEs with SCAN_PTE_UFFD. MADV_DONTNEED frees the
+> page, so the next access is a MISSING fault.
+> 
+> The report registers RWP alone. That is the only setup where the access
+> after collapse goes unreported.
 
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [Medium] rust: io: SysMem::new() no-plain-access invariant violated by
->   callers
-> --
->
-> commit 2301a5fd31bd2665dfd4001d0e9beab25a81725b
-> Author: Andreas Hindborg <a.hindborg@kernel.org>
->
-> rust: io: require freedom from plain accesses for `SysMem`
->
-> This commit adds a type invariant to SysMem and a safety requirement on
-> SysMem::new() requiring that no plain accesses are performed to the memory
-> region for the lifetime of the view.
->
->> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
->> index a877df11a03e0..3bc4be35e3554 100644
->> --- a/rust/kernel/io.rs
->> +++ b/rust/kernel/io.rs
-> [ ... ]
->> @@ -1570,8 +1582,10 @@ impl<'a, T: ?Sized> SysMem<'a, T> {
->>      ///
->>      /// # Safety
->>      ///
->> -    /// `ptr.addr() .. ptr.addr() + KnownSize::size(ptr)` must be valid and aligned kernel
->> -    /// accessible memory region for the lifetime `'a`.
->> +    /// - `ptr.addr() .. ptr.addr() + KnownSize::size(ptr)` must be valid and aligned kernel
->> +    ///   accessible memory region for the lifetime `'a`.
->> +    /// - No plain access (see [`SysMem`]) to that memory region may be performed for the lifetime
->> +    ///   `'a`.
->>      #[inline]
->>      pub unsafe fn new(ptr: *mut T) -> Self {
->>          // INVARIANT: Per safety requirement.
->
-> [Severity: Medium]
-> Does this new SysMem<'a, T> invariant conflict with the existing
-> SysMem::new() callers in Coherent and VMap?
->
-> In rust/kernel/dma.rs, <&'a Coherent<'_, T> as IoBase<'a>>::as_view() is a
-> safe method that wraps the buffer in SysMem<'a, T> inside CoherentView<'a, T>,
-> while CoherentView::as_ref() and CoherentView::as_mut() hand out &'a T and
-> &'a mut T references for plain accesses over the same lifetime 'a:
->
-> rust/kernel/dma.rs:CoherentView::as_ref() {
->     pub unsafe fn as_ref(self) -> &'a T {
->         // SAFETY: pointer is aligned and valid per type invariant. Aliasing rule is satisfied per
->         // safety requirement.
->         unsafe { &*self.cpu_addr.as_ptr() }
->     }
-> }
->
-> rust/kernel/dma.rs:<&'a Coherent<'_, T> as IoBase<'a>>::as_view() {
->     fn as_view(self) -> CoherentView<'a, Self::Target> {
->         CoherentView {
->             // SAFETY: `cpu_addr` is valid and aligned kernel accessible memory.
->             cpu_addr: unsafe { SysMem::new(self.cpu_addr.as_ptr()) },
->             dma_addr: self.dma_addr,
->         }
->     }
-> }
->
-> Any plain read or write through those references during 'a violates the
-> SysMem<'a, T> invariant even when no concurrent access occurs.  Similarly,
-> <&'a VMap<D, R, SIZE> as IoBase<'a>>::as_view() in
-> rust/kernel/drm/gem/shmem.rs calls SysMem::new() without VMap's invariants or
-> its SAFETY comment guaranteeing that no plain accesses occur during 'a.
+I have the faint recollection that we discussed that handling during early
+(pre?) RWP handling.
 
-The last bullet of the safety requirement for `SysMem::new` is not
-formulated correctly. It should state that no plain accesses may race
-with accesses performed through the view, not that all accesses are
-prohibited. I will fix this in the next version.
+I think that expectation and the implication is indeed not documented anywhere
+for users that have no idea what markers are.
 
-I will also update the safety comment on the call sites. The calls do
-comply with the requirement, as far as I can tell.
+Even LLMs are confused.
 
-Best regards,
-Andreas Hindborg
+Or is it documented already?
 
+It would be a lot more consistent if we'd just add marker support. Or is there a
+good reason why that is explicitly not wanted?
 
+-- 
+Cheers,
 
+David
 
