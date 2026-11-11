@@ -1,121 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 622F1606A334
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 06:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0840C606A320
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 06:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=DrEe06rN
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=J55tOz/l
 Received: by kanga.kvack.org (Postfix)
-	id 84A996B05B9; Wed, 11 Nov 2026 01:21:00 -0500 (EST)
+	id 175BA6B05B3; Wed, 11 Nov 2026 01:25:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FC2D6B05BA; Wed, 11 Nov 2026 01:21:00 -0500 (EST)
+	id 126F56B05BA; Wed, 11 Nov 2026 01:25:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EB376B05BC; Wed, 11 Nov 2026 01:21:00 -0500 (EST)
+	id 014646B05BB; Wed, 11 Nov 2026 01:25:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 481256B05B9
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:21:00 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D362E1401A3
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:20:59 +0000 (UTC)
-X-FDA: 85421840238.03.0EB0820
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com [209.85.218.72])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 2D2F380004
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:20:58 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=DrEe06rN;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of 3SAn0agkKCIk6n4705nu7t11tyr.p1zyv07A-zzx8npx.14t@flex--tarunsahu.bounces.google.com designates 209.85.218.72 as permitted sender) smtp.mailfrom=3SAn0agkKCIk6n4705nu7t11tyr.p1zyv07A-zzx8npx.14t@flex--tarunsahu.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D2A8B6B05B3
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:25:20 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7B1734020B
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:25:19 +0000 (UTC)
+X-FDA: 85421851158.27.FDF189A
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 976E8140003
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:25:17 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="J55tOz/l";
+	spf=pass (imf23.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.177 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794378317;
+	b=C9USuasS/LJMkU5GOi3e8quqHTQfsEPdSmm9kMIjbih0rEmabjxAtXV2dcOYzssNhT/lZ1
+	C84v9c+R9dV1RZKKdweW+NMbraho+VGFis+c4qNIxYbJqRI4v8bJQkH4QR8MhmBStSuBlo
+	Uw1ucpGx7zLPVGHDPxKDcnl9jZ7GOCE=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="J55tOz/l";
+	spf=pass (imf23.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.177 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794378058;
+	s=arc-20220608; t=1794378317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Up8Sxm5Z/vJlw6/f/g9Tue73jy4SQVTZi+t46heonUg=;
-	b=w6KUcJ/KOhSi1KPbVBxOSkWxBWXcy4YKCIjH9zaA5G21H6tudUk0uISAnPbBrkmsHGA2k8
-	3NOGZtuGRTypJTvmK1+6LTo43hLhsS4OIGS1jrXfHtOxsS0fv1gdEK1sKSDDdU4TrBNy2o
-	ctDeH0Ud5HQqVyv0p3fflv/P1PInbk0=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=DrEe06rN;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of 3SAn0agkKCIk6n4705nu7t11tyr.p1zyv07A-zzx8npx.14t@flex--tarunsahu.bounces.google.com designates 209.85.218.72 as permitted sender) smtp.mailfrom=3SAn0agkKCIk6n4705nu7t11tyr.p1zyv07A-zzx8npx.14t@flex--tarunsahu.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794378058;
-	b=Oy9EPs49oRjkcrOyqbfWhllZgtJGlwYhBMgcX0EOUHCLk84ymA27iVAICqTYJmCJDzqYRs
-	JfFHmZCL0lIU+JyelhLNwa90XnCacnq/ZTFGRZg7icEK8fysWRatN9cmgX7ByCrW9zUOWX
-	a2h2PRR5rXM7cyRNsd46usRhuh5djMI=
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c50715e8328so10266b.0
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:20:57 -0800 (PST)
+	bh=UpG4mWaD3IAbNd6Zc+GPW6MdrE6UHLepfWNOwfzGPT0=;
+	b=dqp2svpi8h2hwvkEportwl+VJnbEwOY9Da+Q6l0UTabEMpdnm4BMEl8F6NmP+rdOTT3Ovw
+	iZs4aHWC9IqzvnCtl81YP6JWXb4bJWkM7CZe3ogIdCZfxu7YXSGyWc5XpLPY5n3zNkpdKf
+	QjNMoA1mquuGTde4vXu18MsFnOHW0X4=
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-cdab938dc83so1138047a12.3
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:25:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794378057; x=1794982857; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Up8Sxm5Z/vJlw6/f/g9Tue73jy4SQVTZi+t46heonUg=;
-        b=DrEe06rNjFGzeogohd6DYVNlP+P817KCm9OkwA8vkm9LyM0U4mnRTHddsN5N41XX7b
-         n1ylNnVGfOwkp0I7saW68wiK2UbbR3UROj7jG0sPpOM/C2wtWaWrogabROlfeBG44TKp
-         O54Tk6n+rFuBNHZY+9UOLGqLtP908By/CcILX+xOkKifBZ8SHGxJJOnrj/YQlvbmmAAE
-         d1b64SZHvUxUvYeCa2XeN67voA0CA+hzcCcsK/OCfrW904sP4iiikwwnzimsbQzuxvoF
-         nHAG205BsiBfgnW9iUb6DFwj2afJ1VOYmV5Owox0QKhvKVJ6g5ByWAYMxuguft5FpiZ5
-         bbyQ==
+        d=chromium.org; s=google; t=1794378316; x=1794983116; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=UpG4mWaD3IAbNd6Zc+GPW6MdrE6UHLepfWNOwfzGPT0=;
+        b=J55tOz/lmsH9K4cs+fq3AirQS1s53vJgfiAZSHQY1sBNabF6v8LpzLaH3t93U0HHBl
+         eq5pTlggJ+iCEmrCFtUyIE51Vxpm+KVu6PG9u6sZeZOnw6jOgbfoHDb4gwapvxW3qOuu
+         B7wcmAzsceFFcitsG/ul6B7SQztJqobg9p8jI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794378057; x=1794982857;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Up8Sxm5Z/vJlw6/f/g9Tue73jy4SQVTZi+t46heonUg=;
-        b=Sx0/7vMBw8QOdCIxWuuD8u4RUZPGP+Ih1h62PfnwLKjj6RY8wyPuvC+2yzIGTy1xGb
-         Mx6g7BsKpgWKGr5CJPv9T4PIdH7rvVnvj22K30to0oJbkHSmqjSq1M1KzbyAbCrFEF2v
-         mUh4TWVOR4MEzMJKlG4F26EcCDz1ZjrC7vd+kKHKmueFh4QWwb4FZGgPOk7yhqu61wEM
-         MB37mwr0eiLOZKx0kYYGgPJUPLi1P9Sb3e3u0KHYtM+Dsn1jmQgy/S80vQDBXA89tvp1
-         sKx1oK2XorIric3mOXTck116+Q9dzOxSPXakOPvjkN9VbSuPjdjr1JABTfkoUttpUVRU
-         o0Zg==
-X-Forwarded-Encrypted: i=1; AL+hErHcIfqxvI0N8ux6Aj5g2h2pLhP4i3ZIRb2uWERlvlLwWGlSd4oK2hmGYfIW0DtXcCYo0EFQH5YScw==@kvack.org
-X-Gm-Message-State: APuU4Z8dGKe7ueUe1JCvN4B80qZtqOHI4IUNzUNN2IFWsVmFNlvcw30F
-	s/5dwI37y4xsnqMUKJk7N/yQXjLB/zlsqtkirFQXq29IurZcRQrqbVHfE6Q5KYOdwwG7njjeiVy
-	q/DoUqXaW4FsIPC6/1w==
-X-Received: from ejcuu11-n1.prod.google.com ([2002:a17:907:c60b:10b0:c3f:fb8f:67f3])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:3e8b:b0:c31:8c48:e18b with SMTP id a640c23a62f3a-c5066aa85bemr101254666b.14.1794378056032;
- Tue, 10 Nov 2026 22:20:56 -0800 (PST)
-Date: Wed, 11 Nov 2026 06:20:55 +0000
-In-Reply-To: <179432062803.2329176.7220119921541924936.b4-review@b4>
+        d=1e100.net; s=20260707; t=1794378316; x=1794983116;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=UpG4mWaD3IAbNd6Zc+GPW6MdrE6UHLepfWNOwfzGPT0=;
+        b=fOHETMihdjXgN+VNBRLrBCfMCO2BqI2SnZMAknpqe87BtNHHf1hyql2vVhpzduSbOv
+         AXw0Jazcqu12feypg6C1p+HXE3J4gncHiWnBJB4nKQrDmXuQiY4v3vgoO/pMm4Y49+sw
+         XEn7M28uW0rBT2WZ7csMRRtTkKf/k6HQaGglGQQ6/xf09jUO8QhCe7cUFUImLX6MRYeh
+         uqgwjwR2SqfQhollgjjKs/dXyixJvSsBig+fEpZ3jYkZHeGUIpzpgjxsld6xWzCN4dug
+         tEYO5l2C63Gcc8519MZWr8tUwl0pMcaB5FM1oaVfoNeQNH3MxD+f6fHiA+Nn83j8BeO8
+         DcZA==
+X-Forwarded-Encrypted: i=1; AL+hErHU4sOrnnRfya1DwY7mQmr4kuZ87x9vR34Cc7vxROQkUgpvo1m2Fu4mqXi0Pq6kn98ezm3Lencxag==@kvack.org
+X-Gm-Message-State: APuU4Z801adl67oAPw4YWCcvcPKg5HyJFExr6j1ve0N4d+AN9eLbWeHT
+	QRpMMaVYPp36kziY/7LQOeZCu5ZhYeTjLJj391TM11wfXLGaUMqAQcSqQYICZOPn4w==
+X-Gm-Gg: AYBFou0PhWDWBxNqHzp1IqkVw8RhoOtgFPPx9bPSlRxZ2NBJWO/Wp2zr8J9KNLodcno
+	+u74FLr2r17nQYo1j0sIJM4yuciuhzvY4qsTnSmtYXet/pHQjiwS6HLS2oODuxBZLSPQ8sQOgDv
+	mTd94ufogBMpBUWi8zfb6HbS8JfHEjFAgECWOalCPU9o4IqRvYIOqz0+ZzfZvR16YhjM0ctmkv9
+	OnRFIrhRUHvv/p1gyQdF/0gbP2g2hl6aYLx7apFahcySjmmA1xZv/fNL6QLJ2YtrswxPyaGvl/j
+	b0znmKj30rjrR2cRr5A15MEX2i/mMm7eKlCkorRfrwZdHG3kVmOS+8J9z5IuhLn1gc9OIl9USoR
+	xrXc7k/klTtUroWMPet+Hyl4M+I0m86uzytpG4UvTfH8E4AZmR7IrJgfCsyt8IoDl+7X0fKYwgT
+	jHLpUWXurDnfEprKw5NoElFAdnNXKt0EvefMmY4D8rW0LoJjrIZDCxIPBREOD96i2Ou9wzk6+2j
+	GJlb+eCcnrrzrjYV9pstzjQDSqXckwWFxY/5VEHbvw4D/xxx2by/DRHRRQ6xXuvq72lq7vhRiLw
+	OWGmChGSbun6X9EVrBr3h606UnkDq7+TlX4TtHEvvqiTcY3dIxQTsGSI4IpUWXoWuNtLaG8=
+X-Received: by 2002:a17:90a:dfcf:b0:3ac:9a03:20bc with SMTP id 98e67ed59e1d1-3b182f858f5mr1600801a91.47.1794378316367;
+        Tue, 10 Nov 2026 22:25:16 -0800 (PST)
+Received: from google.com ([2a00:79e0:2031:6:ad6a:b446:df00:78dc])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2edb6d9ed10sm17185825ad.49.2026.11.10.22.25.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2026 22:25:14 -0800 (PST)
+Date: Wed, 11 Nov 2026 15:25:09 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Cc: Minchan Kim <minchan@kernel.org>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] docs: zsmalloc: describe statistics with
+ CONFIG_DEBUG_FS
+Message-ID: <avQJ5NG99xSRhAwV@google.com>
+References: <20261109-zsmalloc_stat-v2-0-caee41684aba@gmail.com>
+ <20261109-zsmalloc_stat-v2-3-caee41684aba@gmail.com>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261110050202.529473-1-tarunsahu@google.com> <20261110050202.529473-4-tarunsahu@google.com>
- <179432062803.2329176.7220119921541924936.b4-review@b4>
-Message-ID: <9huzy0azq46w.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH v4 03/19] kho, memfd_luo: Reference struct kho_vmalloc via
- serialized pointer
-From: tarunsahu@google.com
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, 
-	maz@kernel.org, will@kernel.org, David Matlack <dmatlack@google.com>, 
-	Alexander Graf <graf@amazon.com>, seanjc@google.com, jgg@nvidia.com, loganodell@google.com, 
-	arnd@arndb.de, dwmw2@infradead.org, baolu.lu@linux.intel.com, 
-	Bjorn Helgaas <bhelgaas@google.com>, oupton@kernel.org, alex@shazbot.org, 
-	gle.com@google.com, pbonzini@redhat.com, 
-	Andrew Morton <akpm@linux-foundation.org>, kevin.tian@intel.com, joro@8bytes.org, 
-	kvmarm@lists.linux.dev, linux-pci@vger.kernel.org, 
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, kvm@vger.kernel.org, 
-	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	skhawaja@google.com, sagis@google.com, linux-arch@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261109-zsmalloc_stat-v2-3-caee41684aba@gmail.com>
+X-Stat-Signature: dbrhf15qit6fkyo6mwhtgrig6a1o5kwo
+X-Rspamd-Queue-Id: 976E8140003
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2D2F380004
-X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: ydh6huksj47x9sk4dmcsag5nf1chtqpa
-X-HE-Tag: 1794378058-651349
-X-HE-Meta: U2FsdGVkX1+ATkXuTnHUsYoLqqD61XvAmKhrjJuD0cC67qE9caAzRSeKJHTZPaXUUJ4hKbowGXTbPUqcRYVeIxihRs1l5BbjyeV+Pi5oU6yzDcHpui/VVyz0qe9stPBDihLtYhAzDDVSGHlcJ/s1qnLZ5n1gyABLJMBI2sayg30TaowutEMaIsOJG7uXbiU944L0OHiQYgCCguAyabzM0UZBzfrCRRr+ahT5bQ0napDTLOScLd4ryZqdxKWjaq1X8tw7ThlZmAY9bAwpbf3IPFbSJ20V+cwu4X86WZ6dU+8TrPCCR6uFQzF19fv1yNYPpwqs7dQLyRUGgH70Ms009pWPMQRFWbNY+enc9ul95KaAMvhzAavvSZUeoyyEZFX8Ea2TTfp75jrssEb0EzpyU2/ph9V04MU+LjPmvc/hKPil+vdpv8p0/ML3n3vNSQ4K7JXd41SfIpFjZB7JVBEfZJZlzAML0QPUNDUTL9ch0/uws1jKlg6eba4Ch23CYsWpZI6q0runI3CvTelRo/tuCw9JYwHkG7GlRnRg1xCK6smfQwddQjAFbGBs9ejOwiEktVo/uyGX61F77/jTQrOHSyouKFM3u32HJHg+Z/wTnRNPseCWUuEzIQHoGXglZtfGK1nBoWdDLsmGVcygm3PghvPgKIGEx1bQKtZ8u64Xvdyhz3ihJYyotrbtsnK8XO/8KzzTLGESvhDs66AHgVogKZMUuzlk0q/uPT7JDlqL15h2DJ9hq40NrNv4woktu5Zy1RPCFcejoIs3wSsO+2RoQP8lzEBWJ1I3lhmtJ3yaRaM/EbRGDv7OT1gy9WOOzMQxkqRz6jUKBFokXo4eMEIi1MBxadfB/2yR0mmly9jqjZVcdcuqpH65U50WYAYhE9A0p517VOGNDW6S+EtQvvbHVQ8j6VoGawK4fvjS6FRpsnCbR7rOmR86KcIYSeI61Q4GEF90Ni0Q0di+ui59B9B
- Bfa6s4r0
- EDJuOU/LMgCR7Zg7NoJyLtpgFiuzJlmFRxTkbZmg0v3+CoBI2vfJv98wnmnL5QSlaFTN6sBp7ded9Igy/Kb5BJbCRV2QIrGD1bES/wVwuNdoZoxyWzPHZdBhKWyW9rvLB0lJHj+loyOIqaw5vNA5wvGiYd5N6uml78WskNBMFB5yv23pP6zezokISTzMmPvEPMEdAVHqhim1/LCN1URkAU1svzWa8mxoh8UR+2BhkglEdChKDaTPEaIftSzzfG99VUpAIbYPEW9UZoxLDJw3pf33COYI/Noc0LU7HEtmqoMcbL+m+jvxz9RKCswvkg0s6ayGtZBT0fPio+edHjA5BmXmIgMECMah/Xz2hrybvVWdLLpNCQI7SAUW282XBL0iu7FLpnW1r/lar12TGFyqPqax0/RINwdF6SxgM9aLlxMtALu9mRmYwr8X1GLIENufpEsukz8d/1xSCKoA/GnrHTGEXlMimpS9Ptg9qWZve9gWzPIqEhoGQkOLD4mDbCn+TYb78kXJWkleboOwFs8s10DLL18rE7vM8PTnpyMGVHbYdXo/QHoGKxS434roaXRXDnaOEOFBAp1Zb0aPjCgU7BCxIn6CrmNVHT7ffzmOYW4wffgegzFzL2mYq0GYT1Q3klrKf5Cqzz2/6m23IxSlKcA+QDjArk4WkqSDwN8dAyu6EZ06bgP0s1oBbQ2evI+JN6cML
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794378317-882564
+X-HE-Meta: U2FsdGVkX1/jF9qTw8khNQSaid1fMQJ/Je8RZoDJ6/Quoa+1Amvs5/DWmdZvlWPq3xzD+swYskgH90/xJGS2OdTT9AXGTowZBF4KmBxgaFkSEJDebKU/oV9WTs0g2BkeMtHjpSewFQCbG3xwe6OGg8WhBIBJX4/oS4AoOQ44/HHY+gr/GIODLJgOYVcELUVqJNhd4XuUXZWd7E2R60ZlaOtNiXPovgt4BP9i6yNIl7D/YLcTzYCz1eIQyVLNNhGnGt+D1q92czR4bwtDY/ZC6EbBZhTKksLjWl051LDEgT8Pueb/NULt4YN6PZiJPI9hVPVcgJDN0ywXO1GWBcDjpNutr6IBv8Nzng5ad6hB+DhLzxg724kVUTUezyh8gEXfJuXFYvEIWHDX3L5IRRvXP2dQWA4oUb5NRYKmBDA7XZs8uGbjrQjWa3062uKhPU+OGAWLxBjZYH/QIrqwJMi56IwQeRwI6yN/Z85FZRzrq8+YOfpcufs2HVGDMeU2Ex74xrjA3XpUjsItLx53v+CNaBZzs7tUcZIb+QtWWRaucD5C893b8hMe7rhEHmsNNL6H3o/gK/AXv5SvWcesvSjx0kodoqH7qkXYTQXAsUZsuAys6JjvN0Z49wN/CtP6egtUvm7qKLUgGOo2x5dlGuAXwjY4QuQSQIjEvQApeVKzsRGTYTfMVjNcMEsmJCPeV3NiE6cqwtAT7o1Q1C50IxbeZjLmWXhkl62feMdIXIN41642j7kjU0oas8ZUH5DICPnNcWyhkHDcs+uwNtj/Skk7a7sQlztgvxm6fj6y86q2UzNqH0YPfcpHftmnVjjcYsX80GaxAMxbOxAmG0k9EBduu+6mknqZ/pFoRCOOjEARVB+AN4dBAnGgO/mtyGNRFJipRQVsERM2lj+OkX8e5ZsMnqpqm50Y6TwwTlxW3Dj/Y2RcqjyGa5aToJfu1yNtZ+yCj/Hn0tUdxD8w4e8JL7/
+ iV/mvYzY
+ WRMJTmGyIcztWgrnpC0YvP1ZLg+bJtWS3l+zLAS5HidPG/GzCPS7scj4DnpM3MPZD8dolJ/GQ2mzjVq2QgLjMqsaLbbkD4R68100HfHL6Dpn36p3sZsxfyVG6qjBLKN6PTdJiTDEWROPuK9xB9ilS4XH65QoSiMJGrTFgZJQcDvRjgwnvDYYLSfNAPAMK7OE9P5+rUV1MpdpmH1gmDHpKIfIZo4uny23hSIwJYqdH0nS/etnf7LTBxEINmw+yjz6/1uwjR1CkTz6vuZg+OPi/BHRvuiMZcHLOIUIeIRmz6tdIEblVvOTjy5WDwkj3KZHMiJHHKzIs1HJ/BxbWqGZLAoJ2LHS/4PD3UNLRPxTxp4oCmalKYlAPuFAYUkkF4z/6hUXlyMUShLpTUrLvJfDRTc/UC5jARQd8UjAAtlucssowGsfhy9ktjsWBE96iqxu8QT+I3YAUJ5mmd4VqfTv++0ArnRP7PS877fhMWgXmVRE+vzxNHsS4/yVUPKqNxyRSMZMj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,204 +125,11 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Pasha Tatashin <pasha.tatashin@soleen.com> writes:
+On (26/11/09 20:59), Xueyuan Chen wrote:
+> -通过CONFIG_ZSMALLOC_STAT，我们可以通过 ``/sys/kernel/debug/zsmalloc/<user name>``
+> +通过CONFIG_DEBUG_FS，我们可以通过 ``/sys/kernel/debug/zsmalloc/<user name>``
+>  看到zsmalloc内部信息。下面是一个统计输出的例子。::
 
->> Subsystems preserving vmalloc allocations currently embed struct
->> kho_vmalloc directly by value in their serialized structures or device
->> tree properties. For example, struct memfd_luo_ser embeds struct
->> kho_vmalloc folios, and test_kho writes the structure directly into the
->> folios_info FDT property.
->> 
->> Embedding struct kho_vmalloc directly couples the containing layout's
->> field offsets and size to struct kho_vmalloc. Any modification to struct
->> kho_vmalloc shifts subsequent fields in the containing structure and
->> breaks the handover ABI across kexec.
->> 
->> Convert callers to hold a DECLARE_KHOSER_PTR pointer to struct
->> kho_vmalloc instead of embedding it by value. In memfd_luo, allocate the
->> main structure and struct kho_vmalloc in the same preserved folio, placing
->> struct kho_vmalloc in the remaining 8-byte-aligned space, and bump the
->> compatibility string to memfd-v3. In test_kho, place struct kho_vmalloc
->> in the remaining space of the FDT folio, store the serialized pointer in
->> the folios_info property, and bump the compatibility string to
->> kho-test-v2.
->> 
->> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
->>
->> diff --git a/include/linux/kho/abi/kexec_handover.h b/include/linux/kho/abi/kexec_handover.h
->> index 6f12f5037ea5..bee75a7006e8 100644
->> --- a/include/linux/kho/abi/kexec_handover.h
->> +++ b/include/linux/kho/abi/kexec_handover.h
->> @@ -11,6 +11,8 @@
->>  #define _LINUX_KHO_ABI_KEXEC_HANDOVER_H
->>  
->>  #include <linux/bits.h>
->> +#include <linux/build_bug.h>
->> +#include <linux/kconfig.h>
->>  #include <linux/log2.h>
->>  #include <linux/math.h>
->>  #include <linux/types.h>
->> @@ -177,6 +179,10 @@ struct kho_vmalloc {
->>  	unsigned short order;
->>  };
->>  
->> +static_assert(sizeof(struct kho_vmalloc) == 16);
->> +static_assert(!IS_ENABLED(CONFIG_64BIT) ||
->> +	      __alignof__(struct kho_vmalloc) == 8);
->> +
->>  /**
->>   * DOC: KHO persistent memory tracker
->>   *
->> diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.h
->> index 376a724a1d8c..7b49dd6d7e2a 100644
->> --- a/include/linux/kho/abi/memfd.h
->> +++ b/include/linux/kho/abi/memfd.h
->> @@ -81,7 +81,7 @@ static_assert(!IS_ENABLED(CONFIG_64BIT) ||
->>   *             to directly use them in the ABI.
->>   * @flags:     Flags for the file. Unused flag bits must be set to 0.
->>   * @nr_folios: Number of folios in the folios array.
->> - * @folios:    KHO vmalloc descriptor pointing to the array of
->> + * @folios:    Pointer to KHO vmalloc descriptor for the array of
->>   *             struct memfd_luo_folio_ser.
->>   */
->>  struct memfd_luo_ser {
->> @@ -90,14 +90,14 @@ struct memfd_luo_ser {
->>  	u32 seals;
->>  	u32 flags;
->>  	u64 nr_folios;
->> -	struct kho_vmalloc folios;
->> +	DECLARE_KHOSER_PTR(folios, struct kho_vmalloc *);
->>  };
->>  
->> -static_assert(sizeof(struct memfd_luo_ser) == 48);
->> +static_assert(sizeof(struct memfd_luo_ser) == 40);
->>  static_assert(!IS_ENABLED(CONFIG_64BIT) ||
->>  	      __alignof__(struct memfd_luo_ser) == 8);
->>  
->>  /* The compatibility string for memfd file handler */
->> -#define MEMFD_LUO_FH_COMPATIBLE	"memfd-v2"
->> +#define MEMFD_LUO_FH_COMPATIBLE	"memfd-v3"
->>  
->>  #endif /* _LINUX_KHO_ABI_MEMFD_H */
->> diff --git a/lib/test_kho.c b/lib/test_kho.c
->> index aa6a0956bb8b..cd0f183ff68e 100644
->> --- a/lib/test_kho.c
->> +++ b/lib/test_kho.c
->> @@ -25,7 +25,7 @@
->>  
->>  #define KHO_TEST_MAGIC	0x4b484f21	/* KHO! */
->>  #define KHO_TEST_FDT	"kho_test"
->> -#define KHO_TEST_COMPAT "kho-test-v1"
->> +#define KHO_TEST_COMPAT "kho-test-v2"
->>  
->>  static long max_mem = (PAGE_SIZE << MAX_PAGE_ORDER) * 2;
->>  module_param(max_mem, long, 0644);
->> @@ -34,7 +34,7 @@ struct kho_test_state {
->>  	unsigned int nr_folios;
->>  	struct folio **folios;
->>  	phys_addr_t *folios_info;
->> -	struct kho_vmalloc folios_info_phys;
->> +	DECLARE_KHOSER_PTR(folios_info_phys, struct kho_vmalloc *);
->>  	int nr_folios_preserved;
->>  	struct folio *fdt;
->>  	__wsum csum;
->> @@ -47,13 +47,13 @@ static void kho_test_unpreserve_data(struct kho_test_state *state)
->>  	for (int i = 0; i < state->nr_folios_preserved; i++)
->>  		kho_unpreserve_folio(state->folios[i]);
->>  
->> -	kho_unpreserve_vmalloc(&state->folios_info_phys);
->> +	if (KHOSER_LOAD_PTR(state->folios_info_phys))
->> +		kho_unpreserve_vmalloc(KHOSER_LOAD_PTR(state->folios_info_phys));
->>  	vfree(state->folios_info);
->>  }
->>  
->>  static int kho_test_preserve_data(struct kho_test_state *state)
->>  {
->> -	struct kho_vmalloc folios_info_phys;
->>  	phys_addr_t *folios_info;
->>  	int err;
->>  
->> @@ -61,11 +61,10 @@ static int kho_test_preserve_data(struct kho_test_state *state)
->>  	if (!folios_info)
->>  		return -ENOMEM;
->>  
->> -	err = kho_preserve_vmalloc(folios_info, &folios_info_phys);
->> +	err = kho_preserve_vmalloc(folios_info, KHOSER_LOAD_PTR(state->folios_info_phys));
->>  	if (err)
->>  		goto err_free_info;
->>  
->> -	state->folios_info_phys = folios_info_phys;
->>  	state->folios_info = folios_info;
->>  
->>  	for (int i = 0; i < state->nr_folios; i++) {
->> @@ -123,14 +122,19 @@ static int kho_test_prepare_fdt(struct kho_test_state *state, ssize_t fdt_size)
->>  
->>  static int kho_test_preserve(struct kho_test_state *state)
->>  {
->> -	ssize_t fdt_size;
->> +	struct kho_vmalloc *folios_vmalloc;
->> +	ssize_t fdt_size, alloc_size;
->>  	int err;
->>  
->>  	fdt_size = state->nr_folios * sizeof(phys_addr_t) + PAGE_SIZE;
->> -	state->fdt = folio_alloc(GFP_KERNEL, get_order(fdt_size));
->> +	alloc_size = fdt_size + sizeof(struct kho_vmalloc);
->> +	state->fdt = folio_alloc(GFP_KERNEL, get_order(alloc_size));
->>  	if (!state->fdt)
->>  		return -ENOMEM;
->>  
->> +	folios_vmalloc = folio_address(state->fdt) + fdt_size;
->> +	KHOSER_STORE_PTR(state->folios_info_phys, folios_vmalloc);
->> +
->>  	err = kho_preserve_folio(state->fdt);
->>  	if (err)
->>  		goto err_free_fdt;
->> @@ -234,7 +238,8 @@ static int kho_test_save(void)
->>  
->>  static int kho_test_restore_data(const void *fdt, int node)
->>  {
->> -	const struct kho_vmalloc *folios_info_phys;
->> +	const DECLARE_KHOSER_PTR(*folios_info_phys, struct kho_vmalloc *);
->> +	const struct kho_vmalloc *folios_vmalloc;
->>  	const unsigned int *nr_folios;
->>  	phys_addr_t *folios_info;
->>  	const __wsum *old_csum;
->> @@ -255,7 +260,11 @@ static int kho_test_restore_data(const void *fdt, int node)
->>  	if (!folios_info_phys || len != sizeof(*folios_info_phys))
->>  		return -EINVAL;
->>  
->> -	folios_info = kho_restore_vmalloc(folios_info_phys);
->> +	folios_vmalloc = KHOSER_LOAD_PTR(*folios_info_phys);
->> +	if (!folios_vmalloc)
->> +		return -EINVAL;
->> +
->> +	folios_info = kho_restore_vmalloc(folios_vmalloc);
->>  	if (!folios_info)
->>  		return -EINVAL;
->
-> Why do we need DECLARE_KHOSER_PTR() in test_kho.c at all?
->
-I tried to keep the kho_vmalloc reference after kho_ser_hdr to be
-same at every places. But Now I realized it is completely unnecessary.
-
-> DECLARE_KHOSER_PTR() makes sense in shared ABI structs like struct 
-> memfd_luo_ser where both kernels reference the same struct field and get 
-> type checking between KHOSER_STORE_PTR() and KHOSER_LOAD_PTR().
->
-> Here, struct kho_test_state is purely local to the saving kernel and the 
-> handover ABI is just the "folios_info" FDT property carrying a u64 
-> physical address. Having two unrelated DECLARE_KHOSER_PTR() declarations 
-> doesn't buy any cross-kernel type safety
->
-> Can we drop DECLARE_KHOSER_PTR() here, keep a plain pointer in struct 
-> kho_test_state, serialize a u64 phys addr into the "folios_info" FDT 
-> property, and read it back as const u64 * + phys_to_virt() like the rest 
-> of the KHO FDT code?
-
-Yes,Agree. I will update it. Thanks!
-
-~Tarun
->
-> -- 
-> Pasha
+Just out of curiosity, what does <user name> mean?  The stats are at
+/sys/kernel/debug/zsmalloc/zramN/classes, where N is zram device number.
 
