@@ -1,99 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42B1606A320
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 03:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91075606A327
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 04:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BQZ9yaxV
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ak+Yzqay
 Received: by kanga.kvack.org (Postfix)
-	id 786A16B05B4; Tue, 10 Nov 2026 22:52:34 -0500 (EST)
+	id 605616B00EF; Tue, 10 Nov 2026 23:15:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73A0E6B05B5; Tue, 10 Nov 2026 22:52:34 -0500 (EST)
+	id 5B52D6B05B0; Tue, 10 Nov 2026 23:15:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D9256B05B6; Tue, 10 Nov 2026 22:52:34 -0500 (EST)
+	id 4A4196B05B1; Tue, 10 Nov 2026 23:15:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 22CD76B05B4
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:52:34 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 794011A01FA
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 03:52:33 +0000 (UTC)
-X-FDA: 85421466186.29.C2006AD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C38D3140005
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 03:52:31 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BQZ9yaxV;
-	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794369152;
-	b=IGSgNcVYd3qV3rvJEThXVQDQJKQ04KUSrzjzlQhZu/DzNJ40oViVOze9nor4AqaIEA2hqv
-	XHUVCjDDO7+VftMW4AlJp0HYREm5Eohsa4fUjGHZf+Y894XgEMRtcb0mMEwEQcyxFWQpFM
-	WKkuwsVLGeRpSb6CZu5vZ8VlALXSWr8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BQZ9yaxV;
-	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BFD86B00EF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:15:31 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 851141201E7
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:15:30 +0000 (UTC)
+X-FDA: 85421524020.14.51462D8
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf15.hostedemail.com (Postfix) with ESMTP id AED9AA0004
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:15:28 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=ak+Yzqay;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf15.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.169 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794369152;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794370528;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PCA4lVRwhEIsdu+0oYpfIPzauvwmKP4p1xEn9giGvwg=;
-	b=nObZidnnXl60EP8E3L4FzerQzuUbvGX0SOPyRg7TMcjLPyF+adgEQXGCsiPH5C8QIztPLs
-	uMuqpuJylHq8Bn0WOUO2HgzxvYzEvAS1sIxQuefQLBm5k7O56VCYYBnCdXCKhxDX7lARlr
-	iYN2/pBJhzmZl5ivtblz+CWrVAbnyqs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1B2FC4590F;
-	Wed, 11 Nov 2026 03:52:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98111F0089F;
-	Wed, 11 Nov 2026 03:52:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794369151;
-	bh=PCA4lVRwhEIsdu+0oYpfIPzauvwmKP4p1xEn9giGvwg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BQZ9yaxVXpnLAOPMHGgEL+3Wa0NjNQsATdFfrV1HeHXR6vaNQP5Pz+O4pV/0B/t+6
-	 GzCu1UEte2D5+B0Sbard+OyvWwkvefqIXKchyEXoHrqzXACHIsq8iodInvUoDbeY5X
-	 d6bCqPV9zZdVFJPDJa6Oby9278ZBbk93edpKQlwr5CEfHMql/gYAwjHRsQ9qcdlIMV
-	 VDwzfGlwaiDO82GOIEBC7IkL4fImnX3VvCbjxpzNEl/pRnQCFTAJ+YWNRxkMLHptlF
-	 +RMQb2XllIcBKjKyrNZPkovXhCiZVlvadrItg+osSSw0ulN81kSN4YbUD2iGn7WqTt
-	 wJ8rkk5fXf+xA==
-Message-ID: <sashiko-outbox-208242@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 3/3] mm: enable filesystem page-cache large folios
- without THP
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Fang Xieyan" <fangxy@xiaopeng.com>, "Andrew Morton" <akpm@linux-foundation.org>, "David
- Hildenbrand" <david@kernel.org>, "Zi Yan" <ziy@nvidia.com>, "Matthew Wilcox" <willy@infradead.org>, "Jan
- Kara" <jack@suse.cz>, "Hugh Dickins" <hughd@google.com>, "Carlos Maiolino" <cem@kernel.org>
-Cc: "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>, "Nico
- Pache" <nico.pache@linux.dev>, "Ryan Roberts" <ryan.roberts@arm.com>, "Dev
- Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama
- Arif" <usama.arif@linux.dev>, "Kiryl Shutsemau" <kas@kernel.org>, "Lorenzo
- Stoakes" <ljs@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
- Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
- Hocko" <mhocko@suse.com>, "Muchun Song" <muchun.song@linux.dev>, "Kairui
- Song" <kasong@tencent.com>, linux-mm@kvack.org, "Liu Chao" <liuc63@xiaopeng.com>
-In-Reply-To: <20261110035205.3036-4-fangxy@xiaopeng.com>
-References: <20261110035205.3036-1-fangxy@xiaopeng.com>
- <20261110035205.3036-4-fangxy@xiaopeng.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 11 Nov 2026 03:52:29 +0000
-X-Stat-Signature: 9kara7m4bpzbaz4yc5eota4d4npfyt6y
+	bh=zqiKMWOLSQyjwMbkXK+aSiPK2rl2ZK7WmqO7AOWRX9M=;
+	b=EhJarK7clbXhzzL4YKfbMqGSglCF74JUQCvZvFO1MmDgb7/A3UdFzLmpdChKnXWdGg7fPO
+	olsIVCLspzZItWTVewilO4sYkI5XghuvWycNUrWf6psvvPhoUhGjKivpprnjL+EXE1Lqub
+	IaAIC7e0ZCrp3wwqT6rKtkFEnTXzBDA=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=ak+Yzqay;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf15.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.169 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794370528;
+	b=rZt8uNQmKpnjLiqUVqPoL9ShINieEIo/2MwYV6w02+sbNk8d9K5Zx/PcXqotJP5ofGSV3X
+	eFnLCbQFl+EHpwebfN5Cy3xIBvxhcJqLVR+migCtti08zOpzzRrnjLVNtb7iihMuM1Aoxb
+	c/Y3N+RDArbws5d3/N+y4fiw9VS+Hcg=
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2e95bd1c14cso25106935ad.2
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:15:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1794370526; x=1794975326; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zqiKMWOLSQyjwMbkXK+aSiPK2rl2ZK7WmqO7AOWRX9M=;
+        b=ak+YzqayGAiCpw2fOq/yHeP8q4JAkvSU0yVgYjRXnBrkNFdoGi+qTggF0+B48BupgW
+         /iFHvlKnFiltBMkNzt/31eHozmf37G0/wabNXv4q0QNIDHq27MoAflW/+yLZbV5zhTSy
+         LFnsnfKiit4/Kf4eq5gQMAcMRJ/TSYWxnDPIg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794370526; x=1794975326;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zqiKMWOLSQyjwMbkXK+aSiPK2rl2ZK7WmqO7AOWRX9M=;
+        b=sD/BR2y8gvC5Msnfp5BSQXSZuOkGMW3x3ET9e059CK0XxP6QbTe/pvwJyQd/nw45tW
+         1Z26UIrVRvEeISvLz7wSf0kd4m/0z+/VNH4duE88siqGt4uHrCCthOGC+Iuu3ePH+SsG
+         PySSDsCfJ0YZM5QTZXPqvl8VIJfRnfgQieF0ij/GOgdDPuy4awI9fj9mTsLEQM4a8gig
+         3ZDuKqP4nX2qa2ELDGHmdus0+KDKM5FujXETYEkhk1k07xuoXgefZUJcIXg4txnqG2fO
+         pXQNbjUZAsdKHAtyJ0MYnOAz2OsungqzQ/UbEPXqwqV21UtNIrRuRt2J0PO+dKFnSdcS
+         hotQ==
+X-Forwarded-Encrypted: i=1; AL+hErEwPwuQjDOpezXBPjfJvQCsNRgYJr9WANoLDf5Mhx1tUGgZN0PaGMe4rW/4mFSx/AwcrwriMel5YQ==@kvack.org
+X-Gm-Message-State: APuU4Z/Tl/ZSf4N/asWXqmAg7o1YmfpKZpsiorqLbizfqOAZeh3i2uYj
+	uaf02eKfF7CyasQgZmEqzdskY1asxKTGv3O0iBgPerByjp3tZGQWc8U/dK4xF2TkDg==
+X-Gm-Gg: AYBFou1jjQp2PeS0bxTKQp/MrzjpoJpuRLvSnvV83juKXdj8WGEKLqZGwsnhrpw9dpo
+	1rvSO4dD0v0sLoZOro0RBBmRYxNAjwVep6AE6zLM7SvkPLBj0M2sE4kloSjKNevrP99oNvEUCyh
+	cRknqVmm/jwDKF8Ts8OoxlmVqQOqjO48a/My/4lSpdo7gCT+MBedlr5b4FAdGPsg1URjWFboq2+
+	Icb/OBbgkntJeICvGhgrNBExsxHirlUfCCYvXj0ek86vKw8+AS7090grSeLsNIlAzlRdqUvu7Vz
+	3c3Sy4VrrBqwV5zB6GIdGGzqCB2vLLhvSH7HzfVgbCUpk8qQ9haHQPvxdSIy8YpNul95ubwAZJf
+	AvUjEuV87vSO8Vm2qtXSzsZcsnCE2PZs6Xohr1I/FhDrpw/STh6wpqWEn0PliA6ukym8ckylFxO
+	c+wNtWRo3OpH4Mn8P4DOxu/CnkeTr1LudXKT5ec7s5prmm7pZcxQOiViyuGtuiWHuuCfZkaEo0x
+	Im2yweYk1+JfV8csJZsYUNWO60L0PBDKFgyuHpGAlZEX9mqvo0UDiau3QGFujeT52/uXb68iKkE
+	QFEKAeAsdxVRfSQTagL0BlJpWZv+3P9EK8+C6EigBqUylIR6wtbEQp2LqjQnLdmXZx+Wcw==
+X-Received: by 2002:a17:903:94b:b0:2dd:ad74:ac1d with SMTP id d9443c01a7336-2edd79bf870mr15709035ad.24.1794370525821;
+        Tue, 10 Nov 2026 20:15:25 -0800 (PST)
+Received: from google.com ([2a00:79e0:2031:6:ad6a:b446:df00:78dc])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2edb6d7bf46sm16294355ad.31.2026.11.10.20.15.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2026 20:15:25 -0800 (PST)
+Date: Wed, 11 Nov 2026 13:15:20 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
+	Richard Chang <richardycc@google.com>, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCH v2 04/11] zsmalloc: switch handle type to struct zs_handle
+Message-ID: <avPrwgD8lrQQLBlG@google.com>
+References: <20261110054836.1515030-1-senozhatsky@chromium.org>
+ <20261110054836.1515030-5-senozhatsky@chromium.org>
+ <avNHoaIU-RV8_fEG@google.com>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <avNHoaIU-RV8_fEG@google.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C38D3140005
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: AED9AA0004
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794369151-711751
-X-HE-Meta: U2FsdGVkX19wkay5ZM458JR7VzI1e43CQJKrlZ+GRKWzg0VXzjkG98ZwGBEy3ir7EUnwRksez2/EJ5F5RiDD7sr+Zi8kQsDlHg2oMq6+oMSx+ZtDFqoP+2GzwxNbKxNN6Ollv5tlp2JRNDHsCwWodnWgCrbUQTa3HAbs6iAV+6sbkv8yA9eCJ04f9yL/fRCP3xGbOnc6sN462dGCEsaQA8Eh/xr4Qdz1I681fPnO3o82o82v9P2Fb3GBaOHzunDBrhViSfyHyU2/ZC7KKgDCvdmjAAZPFyUm61inMPk3lurOQt2nWvgVYTWYDPiYjE/dmfnRSOzSS8BhwZdo8odlZA7y/0sOir6kTsOi8P+PhZGOJG9fQyzvf2Cm1sN56S2d44KddlS1tm7SPOH7H8ffLYA79LUVL0m7riruxR5PYyXLggs+s/2Z4tyo7Os5aluiayV8cjRMdx1GOltRzCLsY+uKtBFciuMDQr64pDLHVAaJ5/xGEJKIo1QSj6Jo2MEKDy3/JgzZjQIdoCO9HU14FNToXX1xdj9VKlUrDlWtVdOYpA+5Jusv8ZXGC4IMVvacqnv+t+ZyOUV6C0OwI4ORB+Af4UmhQi09j4mV4uUVwXUZWbDN+uQzleug0xh/fpJVETCaN8+hsmOHXH2ohbpGCVXWO+u/GJ9XwhUVAoG7LctvNqfqOvHyZkkXyO46OVN8mkLWpHH1hR8wO0iQ26Ikl1suiGZZcfTlrUVeNebAr19spfMTWf4bzDMwnhU4aNU7PI5hGhBQwSOOmbjLWhPMUemiKP51t4GDs7K4m/aKzXsxnrc5vQc/VZp806DHtvo9/EOWAIjJvDM0JPH5DdotUJRUYbVbPIp8sVu/u55e7TAYdTBVEAvw6eT+jREnKNNie4vigN2Tcnid8hj/aZl0dRke4pGex+SC508HM3F5iUBOMTPBFrf34yp+yctoK/9XzXvQO42CvI/rwhjtJu0
- M3thM5yO
- NIw9OGcDa2NagQ0QYz9naLcJT0wpx25BgaJMdTuKHN4uJbHypokRjhkY03BOfH/j26U4XPMCDT3QEYkadpnVuRHz1wV1Y5XXZXIyz7DkgnxtP/H7P4fqH9My5cxPdtjAEi37QA0X4KpnqP19bu2k++zF3oUOzZ4gZi9Djl/k1UJpTIl35jTXUJ0w0rrd2ZFRBmxCVAVfhb1sNcCDOjQQMIwaYRqvWai5G1mGfJuAAHxR3C8yeYDZxy8sNZ+29c/Lq3AjtGMJ1Dyr4QWhXTeH/ipVPPEKhNksWsrU0CqdIz+vv6VI2xyDsPY9iJzAwgCjEx9VCFendwUPwzkDnr/5FOnwBtP77np0jtC1v2675XBOYv1OmA2AE38qQyors8MP+K4Gx+1RxhvkdyIE+keSd+eo3JGGnkqewxbMUqfsJjrUoTEyLTSiBTMatolSSAXEBB8bDGyMP0wNudQsVA4T3dnxAaZ7D09M5A3SAKzUA1taJ1eROMWXWLn1gJMJU+O9x4RD98NoMGQtQPkfNwelvgultdI4/7HCMNtwxOR1Nh9k8ZI+j6T45uqqnYKG2Qh6wQS4AkOiD/hyVbaxX4MOdxmyFvF+Ixs60jpJ7bqEz3bkNItBi31dx06h0tw==
+X-Stat-Signature: 9bg1ax7r6g4irhx8boyugu19ccpa97ne
+X-HE-Tag: 1794370528-25742
+X-HE-Meta: U2FsdGVkX19mJPt5SH3JHxJfCL3Z0/X41WxWF30N44GEd0nO/rTwtzbCqA9yleuOO3vWKNejiokj9ULViJ2n0cPPEYwC3c+7GvMrubfgH+7vWJd3uKobt2fuVWAtaxG7cIFteXyIfWhAvG0IwM3yb4phfHBmODxEhXpczJ+XjHpcz0S7x56+zLUXlU95Ka7jgWb6yogx08t22I+GyNubTDKMpyXR+f5dUSCoZ4bQbhMDxDtfPaEIfnf8ngCHiaxkXPAhuFJR9G5nLxcCJEzHe8BYwh6YsUhsH2zl3DDshoHVXVfNbdXf7vXxPeBQ3mt0ApksBoDTzE8/kBUajW4O3KMNbFAMAycZrdRoIwURmK0RRxVxcCV8Pb5cSQNiGbcwsQz9jFMVnHSGgjUoouSSZ4C5Bc+93WcXEd9attAjr5vRayDX3pNvTipXqulUIgGna268uxuSqH2ql3mfv7kbfOrN4SER71k1ap88Qxxj3PrhCPW81uteZb+QZYF7ftvaJSnm7sZENueXdMSWKQzZkePz9u7gZZ3DeaJyTS9E4qdHUA5T/fiVqDoTz0yZflEyhnF8NOteC1lZRRpb+orxQa1tjxkpyQ2CFQIBbSMmo4vQqpU0Zc+bOnq6H/c5rkEDRDgLFAl0wp6wPKmv734ZPF46jhJfZuVktgiwUAVqBqollX2YBwmgkrOW+xonGT02l5xaaS0Vr895A2d5+s+5L4FY3IHSYrjF7NYMmPMUTH4PA5yY+r1XkUomgscaO+6GV9gmzXdcO7MwmgY/Djb1MsKz6CkRqfr89TLxauaERX3j0bZrDbeHj+/bisx9PfEj+EDU0QTA8HwwzB6PKybESTHWnUTFB2ycMXQKp1/fPSvJQZjBMKEqsVkcMWUJi4MYdjUzXXG2PQbn52Xr14Lee5myGiTtSsQ61adRJNgN/2J2x1y+IfnuBA28TUhDtwkl8iXFewkK/kJj50k1WTS
+ D9EpI0yR
+ NuMAzkWhSh7EqvMPTzE4ET2962zzjkbV8puS6FCBgGAt88NqM3OdryQt3HZadwruBtGqvvyc2QwJ/+pQdoMgPkBpgx12k25mXs2da7uA2j6RUamRf+Uh/KnX6J5sFn+mpYmLI7cTi5fnlQXH22jsHKAb397/PATu7XyS5ReaQN57bI7VHBIPYbeBl9ET9aJK4gmEpccPyQ9wYR8DZdIhFNB5q4+8UZa4WdL8uW8yENYfmSE4OBgsrUcAxns5TQ2bkDhx02slLaZYYM2jVKjKQze66lJTopouAOETIOXxv0PS06MAE1kdjrNLUIJ6P0CUAAphHEVdU05E2ZwY6WQ6qsTscmDhH0pdTrHLjkcj0Qd0Lf0S6A/+rLxylWTthaQwuttaLrlVsrFjIZQHihgGaOCkbyA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,171 +125,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issues to consider:
-- [High] mm: PG_has_hwpoisoned stays gated on THP when
-  CONFIG_LARGE_FOLIO=3Dy
-- [Medium] mm: MAX_PAGECACHE_ORDER is not clamped to MAX_PAGE_ORDER
-  without THP
-- [Medium] mm: LARGE_FOLIO does not select MM_ID for
-  folio_maybe_mapped_shared()
---
+On (26/11/10 16:35), Yosry Ahmed wrote:
+> On Tue, Nov 10, 2026 at 02:48:09PM +0900, Sergey Senozhatsky wrote:
+> [..]
+> > diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+> > index dab71f582103..3a6a7253fd01 100644
+> > --- a/mm/zsmalloc.c
+> > +++ b/mm/zsmalloc.c
+> > @@ -264,6 +264,10 @@ struct link_free {
+> >  	};
+> >  };
+> >  
+> > +struct zs_handle {
+> > +	unsigned long __private obj;
+> > +};
+> 
+> nit: Update the definition of ZS_HANDLE_SIZE to sizeof(zs_handle)?
 
-commit f8230ba10447d9debf48d1c6aebdac69481344a4
-Author: Fang Xieyan <fangxy@xiaopeng.com>
-
-mm: enable filesystem page-cache large folios without THP
-
-This commit gates the page-cache folio order accessors on CONFIG_LARGE_FOLIO
-in addition to CONFIG_TRANSPARENT_HUGEPAGE so filesystems that opt in to
-large folios can use them without THP enabled, while keeping shmem gated on
-CONFIG_TRANSPARENT_HUGEPAGE.
-
-> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index 73af18a373670..2102733c109c3 100644
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -393,7 +393,8 @@ static inline void mapping_set_gfp_mask(struct addres=
-s_space *m, gfp_t mask)
->   */
->  static inline size_t mapping_max_folio_size_supported(void)
->  {
-> -	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
-> +	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) ||
-> +	    IS_ENABLED(CONFIG_LARGE_FOLIO))
->  		return 1U << (PAGE_SHIFT + MAX_PAGECACHE_ORDER);
->  	return PAGE_SIZE;
->  }
-
-[Severity: Medium]
-Can MAX_PAGECACHE_ORDER exceed MAX_PAGE_ORDER when CONFIG_LARGE_FOLIO is
-enabled without CONFIG_TRANSPARENT_HUGEPAGE?
-
-Without THP, PREFERRED_MAX_PAGECACHE_ORDER is 8 and MAX_PAGECACHE_ORDER is
-only clamped to MAX_XAS_ORDER.  On configurations where MAX_PAGE_ORDER < 8
-(such as powerpc or sh with 64K pages and a smaller ARCH_FORCE_MAX_ORDER),
-mapping_set_large_folios() sets mapping_max_folio_order() to 8.  Once
-sequential readahead in page_cache_ra_order() scales ra->order above
-MAX_PAGE_ORDER, ra_alloc_folio() -> filemap_alloc_folio() is rejected by
-alloc_order_allowed() without retrying smaller orders, aborting large-folio
-readahead and falling back to order-0 allocations in do_page_cache_ra().
-
-> @@ -418,7 +419,8 @@ static inline void mapping_set_folio_order_range(stru=
-ct address_space *mapping,
->  						 unsigned int min,
->  						 unsigned int max)
->  {
-> -	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
-> +	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
-> +	    !IS_ENABLED(CONFIG_LARGE_FOLIO))
->  		return;
-> =20
->  	if (min > MAX_PAGECACHE_ORDER)
-> @@ -459,7 +461,8 @@ static inline void mapping_set_large_folios(struct ad=
-dress_space *mapping)
->  static inline unsigned int
->  mapping_max_folio_order(const struct address_space *mapping)
->  {
-> -	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
-> +	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
-> +	    !IS_ENABLED(CONFIG_LARGE_FOLIO))
->  		return 0;
->  	return (mapping->flags & AS_FOLIO_ORDER_MAX_MASK) >> AS_FOLIO_ORDER_MAX;
->  }
-> @@ -467,7 +470,8 @@ mapping_max_folio_order(const struct address_space *m=
-apping)
->  static inline unsigned int
->  mapping_min_folio_order(const struct address_space *mapping)
->  {
-> -	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
-> +	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
-> +	    !IS_ENABLED(CONFIG_LARGE_FOLIO))
->  		return 0;
->  	return (mapping->flags & AS_FOLIO_ORDER_MIN_MASK) >> AS_FOLIO_ORDER_MIN;
->  }
-> @@ -500,8 +504,9 @@ static inline pgoff_t mapping_align_index(const struc=
-t address_space *mapping,
->  }
-> =20
->  /*
-> - * Large folio support currently depends on THP.  These dependencies are
-> - * being worked on but are not yet fixed.
-> + * Large folio support is opt-in per mapping and requires CONFIG_LARGE_F=
-OLIO.
-> + * It does not depend on THP; CONFIG_LARGE_FOLIO defaults to y when
-> + * CONFIG_TRANSPARENT_HUGEPAGE is enabled.
->   */
->  static inline bool mapping_large_folio_support(const struct address_spac=
-e *mapping)
->  {
-
-[Severity: High]
-Should FOLIO_FLAG(has_hwpoisoned, FOLIO_SECOND_PAGE) in
-include/linux/page-flags.h also be enabled for CONFIG_LARGE_FOLIO?
-
-include/linux/page-flags.h:
-    #if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_TRANSPARENT_HUGEPA=
-GE)
-    FOLIO_FLAG(has_hwpoisoned, FOLIO_SECOND_PAGE)
-    #else
-    FOLIO_FLAG_FALSE(has_hwpoisoned)
-    #endif
-
-With CONFIG_LARGE_FOLIO=3Dy, CONFIG_TRANSPARENT_HUGEPAGE=3Dn, and
-CONFIG_MEMORY_FAILURE=3Dy, folio_set_has_hwpoisoned() is a no-op and
-folio_test_has_hwpoisoned() always returns false.  When memory_failure()
-poisons a tail page of a large page-cache folio and the folio remains large
-after split_huge_page_to_order(p, min_order_for_split(folio)) (for example
-when mapping_min_folio_order() > 0 or splitting fails),
-folio_contain_hwpoisoned_page() returns false.  shrink_folio_list() then
-reclaims and frees the poisoned large folio instead of skipping it, and
-__free_pages_prepare() (which only intercepts order-0 PageHWPoison pages)
-either triggers bad_page() or returns the poisoned tail page to the buddy
-allocator.
-
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 9f97ad6982bc8..7bbed71af85b4 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -831,13 +831,20 @@ config LARGE_FOLIO
->  	bool "Large folio support for the page cache (without THP)" if !TRANSPA=
-RENT_HUGEPAGE
->  	depends on MMU
->  	select XARRAY_MULTI
-> +	# Keep LARGE_FOLIO enabled whenever THP is enabled:
-> +	# huge_memory.o is built for TRANSPARENT_HUGEPAGE and calls into
-> +	# folio_split.o, which is built for LARGE_FOLIO.
->  	default y if TRANSPARENT_HUGEPAGE
->  	default n
-
-[Severity: Medium]
-Should LARGE_FOLIO also select MM_ID (or MM_ID if !PREEMPT_RT) like
-TRANSPARENT_HUGEPAGE does?
-
-include/linux/mm.h:folio_maybe_mapped_shared() {
-    ...
-	if (!IS_ENABLED(CONFIG_MM_ID))
-		return true;
-
-	if (mapcount <=3D 1)
-		return false;
-    ...
-}
-
-When CONFIG_LARGE_FOLIO=3Dy and CONFIG_TRANSPARENT_HUGEPAGE=3Dn, CONFIG_MM_=
-ID is
-not selected, so folio_maybe_mapped_shared() unconditionally returns true f=
-or
-every large page-cache folio even when mapped by a single process with
-mapcount <=3D 1.  As a result, unprivileged move_pages() fails with -EACCES=
- in
-__add_folio_for_migration(), mbind(MPOL_MF_MOVE) and migrate_pages() skip
-those folios in migrate_folio_add(), and MADV_COLD / MADV_PAGEOUT refuse to
-split sub-ranges in madvise_cold_or_pageout_pte_range().
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110035205.3036=
--1-fangxy@xiaopeng.com?part=3D3
+Ack.
 
