@@ -1,72 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ED2B60A263C
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 09:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC7BE606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 09:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MzR37AmC
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lGrGSJZM
 Received: by kanga.kvack.org (Postfix)
-	id 530176B05DF; Wed, 11 Nov 2026 04:38:21 -0500 (EST)
+	id 866596B05BE; Wed, 11 Nov 2026 04:38:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DFDA6B05E0; Wed, 11 Nov 2026 04:38:21 -0500 (EST)
+	id 8160C6B05C1; Wed, 11 Nov 2026 04:38:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F6CA6B05E1; Wed, 11 Nov 2026 04:38:21 -0500 (EST)
+	id 72B7D6B05E2; Wed, 11 Nov 2026 04:38:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1CD636B05DF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:38:21 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B8F3A140236
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:38:20 +0000 (UTC)
-X-FDA: 85422337560.03.E86EC6C
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F0146B05BE
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:38:56 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D8AD21A022F
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:38:55 +0000 (UTC)
+X-FDA: 85422339030.19.3A9B37D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id F2C3940008
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:38:18 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MzR37AmC;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 1AB03180006
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:38:53 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lGrGSJZM;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794389899;
+	s=arc-20220608; t=1794389934;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5p/q3+WMS3ls8L+KObTnHmV8zpLfczVrwuNUj9yKsvQ=;
-	b=HG6ZdRleJrfXvqUf9bF42Xf3HrGpwSxwE/GjShXCkwfI9X2ziJKnxomQNwwvinCoD5atPx
-	9qVZ+X4bH0Kon+3b03Z4UeIWdSlAAmDcK2WqGKfwWJjD0o/QmDyHaUp5fkZrfe84OOodcr
-	7TvcSCXKPZS4DgDPXXUc5OcqM13ziQ0=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MzR37AmC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	bh=4fY7y3DvJR+ThhW1hxlai7deN/WqRZ83gAUMd110UE4=;
+	b=o7+WlhSD0OR2nMCiBDPBZWCH468UDejKYjBhuy2lRi7ZWNBoCaiuXyjbHOnPQT5fW3BNp6
+	zw+HzJyYf6VIrUUJRIFkrbXtSWv/rlNF64wHBQyfQYgQmpUjeDNqtHkFrmHCBP/HApyKZ+
+	YVBlB1X145c25VudoNsmpF9YdrpZ0yg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794389899;
-	b=VtEY5q3e4h+6BAg3VJF/LmmTqWcphJ0e96rNxIZEaq1M8TACWPYGQges7/50gfhLmrS5ci
-	kPoiDN+WuPVFODt9VtJuvR6qjWWlHaMWE6uW8gHLWrC6cmwLqvsSbT4+NpHJhxWFMMsSBX
-	WwBTAqxlrEmzZLAa2gHKhDqGMp8IpnI=
+	t=1794389934;
+	b=Y5JuVomGgizCut//OM8iYhcd1f4EzG/IhEiqLyHf0l+bkzH8l/V4tYPEJ3EzLk1RLSxwBi
+	3K2btBb0YGUUvbpYU//JsdBTR01pcXDwxP/2eZ50NJggUUv+KKzhRVC8bITv+FJSAba9r6
+	MooIKmmik0pZfqEiylldDyla2tn+uzU=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lGrGSJZM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 86650611A1;
-	Wed, 11 Nov 2026 09:38:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D79D91F00A06;
-	Wed, 11 Nov 2026 09:38:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B42F3611A1;
+	Wed, 11 Nov 2026 09:38:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33C81F00A05;
+	Wed, 11 Nov 2026 09:38:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794389898;
-	bh=5p/q3+WMS3ls8L+KObTnHmV8zpLfczVrwuNUj9yKsvQ=;
+	s=k20260515; t=1794389933;
+	bh=4fY7y3DvJR+ThhW1hxlai7deN/WqRZ83gAUMd110UE4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=MzR37AmCszwGbQH+6B0ZwpFLoz/cN8Un+xeXNMhovJUZ/SghyRwpY2NP1NfcnmXLh
-	 slCIxDons0PwXhP6IQbO5Q+NTv+dwJmdtafsQhv2LJQ9yRoNir8jp7il4Q8ob368ZI
-	 9aiFYwL7b6Dy+Y4PfoVdvMIXAAZ9S53m/5DbrpZAEYZeAH0iBM+ofGCE5N6uY1b+wt
-	 tnZCwTuG0BiN8pCnOH1DCNxPAT3lpCsEWgr8aoFBUVwOFbf4k+ewGTBFkTXceIRyTk
-	 HZGac6UXuQfiCFRdcaCaEH3h8VpZjBmmr5tcc9D7AH0v8kK2vEsSfWudNIVhE3njf0
-	 mOnTOJOWiAVRQ==
-Message-ID: <d053c2b5-dc2b-4475-9832-db575e4b8cd5@kernel.org>
-Date: Wed, 11 Nov 2026 10:38:15 +0100
+	b=lGrGSJZM6doF9c4EAvbkk9cqMFO7Gn7ruLcFXqhlf4encNqTGsoqGX9buFQ0zRlpw
+	 NnXtS2mxNbFa7hkwUwejUlJlZD5jjvirnlbAlBnX/ZISdFXT5eOtBruYRdFbD3JAN6
+	 EcnSuekavKbwk6fW9eWdP114V4TdTQWBrfn9hW+dSDJwD2jCJNSERk+igooNZ2x/JE
+	 PejkO/XZgVXQkrbGN2bxVkDWFlYoUsi1m1aBJ7s715aF1hh5ccGLlg3UQIx616sgGZ
+	 U8W0nU7rElxqtvLPd6FFGG7DGeZzdcduNpYe5Q1Wh/5AW+f9LrSABNF5wJCjYlYyrY
+	 u3di+tCaoeRTg==
+Message-ID: <0069b6c6-a2d4-4a3b-b723-71c96509a3f2@kernel.org>
+Date: Wed, 11 Nov 2026 10:38:50 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] mm: only assert VMA locks if CONFIG_DEBUG_VM is set
+Subject: Re: [PATCH 3/3] mm: convert WARN_ON_ONCE()'s to VM_WARN_ON_ONCE() in
+ VMA lock code
 Content-Language: en-US
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -74,7 +75,7 @@ To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
  <liam@infradead.org>, Shakeel Butt <shakeel.butt@linux.dev>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20261110-tame-vma-asserts-v1-0-be293ff499a7@kernel.org>
- <20261110-tame-vma-asserts-v1-2-be293ff499a7@kernel.org>
+ <20261110-tame-vma-asserts-v1-3-be293ff499a7@kernel.org>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -115,22 +116,22 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20261110-tame-vma-asserts-v1-2-be293ff499a7@kernel.org>
+In-Reply-To: <20261110-tame-vma-asserts-v1-3-be293ff499a7@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: uzqwbn8k48uhnc5djno1czm7qjix74qc
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F2C3940008
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: afyq7aruim4jt61mh1jdz79c6e8zjnx7
-X-HE-Tag: 1794389898-117783
-X-HE-Meta: U2FsdGVkX19L7nTD4xmOS3rrl1SrDeMaytTcGXDO3UAf4kAfQEyuwJ3gEbXvKIROe5yiRRovn/0XO0BeHdRzMwaDM5CnoyRPHb6Y3zC3ZGBCpLLEe5L5ohbOw0mYyRv6yPrVjKOnJJyipgtgiCux/fhurxEXBlRWfxfYqlfydoPjbC4vOL57+5CsyiC6a+ISaIvRhr+Uijo+vBcjd5NWRPVS/mjZDX7U8kuS1Ehku40BDbk1m4kBlpbetmQKunoKH6u2bWkoIZhc6Y1/ze5tKRlQnpHgsR8Ehsqv8/BJcpqxDHmKgtoJIJtLOqoD08Tb22W7Me5azPrNZc4BttenNU85CyPf/XffnVSdZwSPoewWnDAvJAYkMF+fCX3pPLAVal7djqymPLjq72yGrQrYSr8M95Grdk04/ICTYs6zN4RweuShrlnU5JcofgKjwpYnRWmQuhrPhy0xRNgceNjxIFc1khlUmwEqnZ7c+jIJxMs6Svs+UP8sF4Nc4YJRtHWhAjtV/f4NvzznYkTQJsMzKEhUWF94pMFqaOqbrGeCsdcCP1zrQfQFB2rBtHFlF+J0wJKmBg432zHMV3vI9HxD4CebR2RX0QgpgUgpYcL5RVcldw+Umj5Mf5wFk8XsHf4izF/PFwoND5k1qbruDYe4g1BLCBdG+0UK759wI2bEg33mALwvW6ZCFjTeylFAPCNZY2W3v/h5TDQkDEJdPrdcWwck6VeCb+1GQ20j9MM5FFvlo5v2Xd17AQeOCiPVvxOez5NNfkZg0ejpgduLm5RkOgIJUo0bVoUgfcaiq3mfk+Afm58oUhGw2CwvnicRJfHuqhI+mXYsOUj4/PVlQ+nM1Rp8E81JbEfIz1v988fP/p7SLxWO2cE9iNwXV+0H9DcjxrJKn8idmlQuJKo2+Kw4S75CM/FjWKcWy7cZh4Cw80Aqq+LCwXra4TRjum9nVNq8my8BewYh6plbMIZAFgq
- RXAbO5M9
- f3rb+wt9PoXaPEsDpamraRi55QYwc9BOuaGyzdG6jUqU+b19XUd5wKYCIXn88xGZAw+3CftY1sIIVAGHGf/Afo9tB31Z+ONzlYRygaixTjysuDXrh22YrvouQhP4pi7FHX/Vzf8LRmmwVNv+8Nf80wZmVpcAoZiBvg6ARr+/KwQxCqbDHibRUBHi+O+PqOc2P+57QivwTC+VFm1lFVTdEnV/KJ9/1ql37uqhytjDA5xS5iAD4LqcLODyrlobrgf1lFF0n5Ke3TCB1omsZsP0dkfLWhfAJ7Etawchp/V6Yv1nkqHGN06jRodrq1gz7lpGUzSkSMFNwxqJa4JA=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1AB03180006
+X-HE-Tag: 1794389933-761147
+X-HE-Meta: U2FsdGVkX1+ZUA1XHW+givgLPj9lj8DrvQlgw8B0BT3TDrr/i7l4n6giWvfMh3s5HtjSEjF0CtYMb9ai8H+GJew68xazCdFtQmfdKwCLWCPHlGYRdwImNr1VCPJrZDoOfotY8vuE5TrLpRVzyw0pLY2c3ICRvT9vfuOEAVLmkxKrvuBFQCgKwp3t9gK/mh1XqFzBmns4P3XmVcl1oP76leTnoNbJSwVT6auieemubGcBMb8nhfiSYFhlgzVXnH87bJvMwxNqiKwsMuW17LBcTlAsF5rOXIEuP6gioRlgTRxV185syuxPJ5HAOBC+fbhk0SXS0wqgg5F+56y+O1gcp8CfwYZhQiEBbCLvMUZjW/4EGsjHh0yPxxzJ30n1891j7E4WGDxd+ScoTFiLIXb2RXPFq6xeYQJ8pY4D8tgUeeCfG/93+nfjD4YzDweczRtTnFSWHrAq20hQRH0RbcbR17rMbTn1gPGOl6bmGqWEXIITzBCyBAl3gx0+MbmYrYDti+I4IrM6LbGn8kKCc0vXR7k8B3D2dWRcLDtJkJvUYxGfiWULJnVhHULqc/6JjCEevQYBa/+brITfobm4kHzRug6bgNWa6g4yP9p1cag9uJBEjjNN1OTHhg30dS0DYF3R1CAGMsmOjMqe6jJJqpo/fHAuprCpTcfkTUqRZkIBxMq8CmWVGdM74Su1cFQpjBi9qJ+SX3KJGRIcuVv72OPhYAPXcTR5mEyzlfAXqcXSo4rRTUISbTzddfW4GbUHslrpEhu8/Yhb7lpljTtBySVGfKlB92Qo6yurGglzygug0pSIr//uWkJaJndD8ycEAdqs5iqSerIKnf58fKeULSDFimaRPP7UyvyW2q0bR1w58qp4CE50T4md2LUD3aJzro3v58D3mqJrLwDUW4CcxWV+Ijs0hUoT0MLr9HFa/dKNvAzuKqzMasx58z/JBi0m6J2pPBT4kSSde0lIa/g6TVm
+ EWCsErzv
+ u1KF3ZtZouudgtAw2C2M/7RwuTDiHa71mMFq8QoW2YiIvE+EIOH1unZGQJH8ERiWkhEHhWoaUcaBE01f/XEbC1sZnb/qlDbQa5x7/sDNHqoakVkgM2Fw9vkoYEDPYpzjdkla3vWofegpQnK3kTZTmE8RlHKG6G4XVLFZCOebmc+dOUocMXdlmjw3u3WdKI1LRt4mGtTksTa1p7+uiAHA5Hh96h1O2Q9GrCY69b2jj3pYIYBe7fLNq2NVbQB0ii7hwPbJeVvXmJxk22Ti5wfOAGrgrUaEHZvl4I4zah5fKGcOv884YqsJ8e2x6GrNPd0KPSSEQjhRZOwQjF2o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,104 +141,53 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/10/26 17:57, Lorenzo Stoakes (ARM) wrote:
-> Similar to the mmap lock asserts, we have also asserted VMA locks
-> regardless of whether or not the kernel is a debug build or not.
+> Now that VMA assertions are predicated on CONFIG_DEBUG_VM, it makes sense
+> to convert existing unconditional WARN_ON_ONCE()'s in VMA lock code to
+> VM_WARN_ON_ONCE()'s.
 > 
-> Similarly, these are asserting basic assumptions about kernel code which
-> should never assert in production code.
-> 
-> Since all such bugs are generally asserted using VM_WARN_ON_ONCE() or
-> similar, it creates an odd and inconsistent situation where some
-> programmatic asserts are only checked under CONFIG_DEBUG_VM and some are
-> always checked.
-> 
-> Since the intent is the same as any VM_WARN_ON_ONCE() check, do not assert
-> if CONFIG_DEBUG_VM is not set.
-> 
-> Implement by updating vma_assert_attached() and vma_assert_detached() to
-> use VM_WARN_ON_ONCE() rather than WARN_ON_ONCE(), and gating
-> vma_assert_[write_]locked() and vma_assert_can_modify() on CONFIG_DEBUG_VM.
-> 
-> nommu loses its CONFIG_LOCKDEP asserts if !CONFIG_DEBUG_VM in
-> vma_assert_[write_]locked(), but this doesn't seem to be a problem.
-> 
-> In addition, there were already inconsistencies - vma_assert_write_locked()
-> uses VM_WARN_ON_ONCE_VMA() and performs no actions if CONFIG_DEBUG_VM is
-> not set, and vma_assert_locked() looked up vma->vm_refcnt but also only
-> asserted if CONFIG_DEBUG_VM was set.
-> 
-> Therefore simply update these functions such that they're predicated on
-> CONFIG_DEBUG_VM and update their kdoc descriptions accordingly.
+> These are asserting programmatic invariants which are in most other cases
+> asserted using VM_WARN_ON_ONCE(), and there is simply no need for these to
+> be unconditionally checked, so no longer do so.
 > 
 > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
 > ---
->  include/linux/mmap_lock.h | 17 +++++++++++++++--
->  1 file changed, 15 insertions(+), 2 deletions(-)
+>  mm/mmap_lock.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-> index 9367430ee53c..bada7a03ddf4 100644
-> --- a/include/linux/mmap_lock.h
-> +++ b/include/linux/mmap_lock.h
-> @@ -354,9 +354,14 @@ int vma_start_write_killable(struct vm_area_struct *vma)
->  /**
->   * vma_assert_write_locked() - assert that @vma holds a VMA write lock.
->   * @vma: The VMA to assert.
-> + *
-> + * Assert only if CONFIG_DEBUG_VM is set.
->   */
->  static inline void vma_assert_write_locked(const struct vm_area_struct *vma)
->  {
-> +	if (!IS_ENABLED(CONFIG_DEBUG_VM))
-> +		return;
-> +
->  	if (!IS_ENABLED(CONFIG_MMU)) {
->  		mmap_assert_write_locked(vma->vm_mm);
->  		return;
-> @@ -369,11 +374,16 @@ static inline void vma_assert_write_locked(const struct vm_area_struct *vma)
->   * vma_assert_locked() - assert that @vma holds either a VMA read or a VMA write
->   * lock and is not detached.
->   * @vma: The VMA to assert.
-> + *
-> + * Assert only if CONFIG_DEBUG_VM is set.
->   */
->  static inline void vma_assert_locked(const struct vm_area_struct *vma)
->  {
->  	unsigned int refcnt;
+> diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
+> index 834bbf86e004..073c5125b424 100644
+> --- a/mm/mmap_lock.c
+> +++ b/mm/mmap_lock.c
+> @@ -146,7 +146,7 @@ int __vma_start_write(struct vm_area_struct *vma, int state)
 >  
-> +	if (!IS_ENABLED(CONFIG_DEBUG_VM))
-> +		return;
-> +
->  	if (!IS_ENABLED(CONFIG_MMU)) {
->  		mmap_assert_locked(vma->vm_mm);
->  		return;
-> @@ -480,12 +490,12 @@ static inline void vma_assert_attached(struct vm_area_struct *vma)
->  	if (!IS_ENABLED(CONFIG_MMU))
->  		return;
+>  	err = __vma_start_exclude_readers(&ves);
+>  	if (err) {
+> -		WARN_ON_ONCE(ves.detached);
+> +		VM_WARN_ON_ONCE(ves.detached);
+>  		return err;
+>  	}
 >  
-> -	WARN_ON_ONCE(!vma_is_attached(vma));
-> +	VM_WARN_ON_ONCE(!vma_is_attached(vma));
+> @@ -161,7 +161,7 @@ int __vma_start_write(struct vm_area_struct *vma, int state)
+>  	if (ves.exclusive) {
+>  		__vma_end_exclude_readers(&ves);
+>  		/* VMA should remain attached. */
+> -		WARN_ON_ONCE(ves.detached);
+> +		VM_WARN_ON_ONCE(ves.detached);
+>  	}
+>  
+>  	return 0;
+> @@ -193,7 +193,7 @@ void __vma_exclude_readers_for_detach(struct vm_area_struct *vma)
+>  		__vma_end_exclude_readers(&ves);
+>  	}
+>  	/* If an error arose but we were detached anyway, we don't care. */
+> -	WARN_ON_ONCE(!ves.detached);
+> +	VM_WARN_ON_ONCE(!ves.detached);
 >  }
 >  
->  static inline void vma_assert_detached(struct vm_area_struct *vma)
->  {
-> -	WARN_ON_ONCE(vma_is_attached(vma));
-> +	VM_WARN_ON_ONCE(vma_is_attached(vma));
->  }
->  
->  static inline void vma_mark_attached(struct vm_area_struct *vma)
-> @@ -549,6 +559,9 @@ struct vm_area_struct *lock_next_vma(struct vma_rcu_iter *rvmi,
->  
->  static inline void vma_assert_can_modify(struct vm_area_struct *vma)
->  {
-> +	if (!IS_ENABLED(CONFIG_DEBUG_VM))
-> +		return;
-> +
->  	if (vma_is_attached(vma))
->  		vma_assert_write_locked(vma);
->  }
+>  /* Do the VMA, mm seqcounts indicate the VMA is write locked? */
 > 
 
 
