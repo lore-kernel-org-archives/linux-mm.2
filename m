@@ -1,97 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F22C3606A33A
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 06:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5AB5606A330
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 06:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=XSCYPU7A
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=PjZ/NObN
 Received: by kanga.kvack.org (Postfix)
-	id 12A706B05B1; Wed, 11 Nov 2026 01:46:56 -0500 (EST)
+	id CE9DD6B05B2; Wed, 11 Nov 2026 01:47:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 102496B05B2; Wed, 11 Nov 2026 01:46:56 -0500 (EST)
+	id CC2066B05B3; Wed, 11 Nov 2026 01:47:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01B846B05B3; Wed, 11 Nov 2026 01:46:55 -0500 (EST)
+	id BD95C6B05B4; Wed, 11 Nov 2026 01:47:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D46F06B05B1
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:46:55 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D923E801F9
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:46:53 +0000 (UTC)
-X-FDA: 85421905506.20.AB37AF6
-Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A10E9100005
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:46:49 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=cmss.chinamobile.com header.s=default header.b=XSCYPU7A;
-	spf=pass (imf05.hostedemail.com: domain of zhujun2@cmss.chinamobile.com designates 111.22.67.135 as permitted sender) smtp.mailfrom=zhujun2@cmss.chinamobile.com;
-	dmarc=pass (policy=none) header.from=cmss.chinamobile.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 955106B05B2
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:47:18 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 015431C2814
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:47:17 +0000 (UTC)
+X-FDA: 85421906556.28.CEF525E
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 37374180004
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:47:16 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="PjZ/NObN";
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf24.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.46 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794379612;
+	s=arc-20220608; t=1794379636;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=1zOfDWlY9E9tUb8YUI6fsfw2lGwWkARTEb35JoGHspk=;
-	b=FuZYjzby3rFmIqYiahlHKvWmloDzp7gMR8t2i2DnS+Gl7isEB+jJGmIsVwMmtWr8dFdRtN
-	FuOg/ArhG89ONRhJa1KgPHmdHFnfV5psaR9E156Zths8Wxod4CQSun9eOWmkWhvy9BfdUM
-	wCVMilUzcf/0cqgj7wcA+tgS5QVyY1Y=
+	bh=4EiG4ohiaJ+2VhSrJi2s5uqPv+5cYMcFL4w9Bign1CU=;
+	b=wEE2uTc1GmRPFq3n9ko13R2tfrkCkGJ3AtDz/5KWPKrCEvz0E/TpHdOAgrsOdSalJiqdlR
+	grVQAcypidCOamr0KHrTGwmDdj0OFG0LQOkLM468+HR1t+7+S+BpjeHGGl6QAbi60xe8VA
+	7LQovkooZV+pLqoDZxleRTDsdK4H4ew=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794379612;
-	b=oqjt2aMbvuSttn5m99HtZG1LJGLot9a/Glg2oFhlxBEttJc6ocHbgTRnFLnj7dhbe8ItOf
-	S+Z/Sd4c4uoVsRfxYvOL1T4qZryIe6tAHMqXGzhXoDdleNCVCwYGVMGwsSSa/zNK3tL4b2
-	jVFkjVL0XfaW0L+WvwARpp6gWuLCf48=
+	t=1794379636;
+	b=YiUM3O+leDFNuNzRUYBNSDVeWRiqdVhDLrK5zu6104OVdTx65hJqjS3bYQgtNHB0hAJ9O0
+	S9+mrMapxuti28IPD0IltiCLmB8XnEoVP1p0tnPQ3x5zdyb0MMabEVufnh1PetnKa1Or2P
+	QJ7+hNaMeQyY/8H+5yHVrJ1zzqqp1Bw=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=cmss.chinamobile.com header.s=default header.b=XSCYPU7A;
-	spf=pass (imf05.hostedemail.com: domain of zhujun2@cmss.chinamobile.com designates 111.22.67.135 as permitted sender) smtp.mailfrom=zhujun2@cmss.chinamobile.com;
-	dmarc=pass (policy=none) header.from=cmss.chinamobile.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="PjZ/NObN";
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf24.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.46 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3b0b3754f57so1689070a91.0
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:47:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=XSCYPU7AeqaH6GEWuQCl0edE9BZx3+FzR9VaN1wQJKGTMuVUMmho+zW1/2g5sfYlh4MA1Kjb1jD9v
-	 Xu8SRnmZsQfxOrG0q0Tl5I/XkxYIrzPVs1hhlBWZ157AxR3Q5pTel8AJ7LGDw4drLs6uMWN9o6+Xh3
-	 myuDw044Vlkn/pik=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app07-12007 (RichMail) with SMTP id 2ee76af40f546b2-d5fd9;
-	Wed, 11 Nov 2026 14:46:44 +0800 (CST)
-X-RM-TRANSID:2ee76af40f546b2-d5fd9
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from devin-VMware-Virtual-Platform.localdomain (unknown[10.55.1.72])
-	by rmsmtp-syy-appsvr01-12001 (RichMail) with SMTP id 2ee16af40f51e23-d1f1d;
-	Wed, 11 Nov 2026 14:46:44 +0800 (CST)
-X-RM-TRANSID:2ee16af40f51e23-d1f1d
-From: Zhu Jun <zhujun2@cmss.chinamobile.com>
-To: jack@suse.cz
-Cc: willy@infradead.org,
-	akpm@linux-foundation.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
+        d=chromium.org; s=google; t=1794379635; x=1794984435; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4EiG4ohiaJ+2VhSrJi2s5uqPv+5cYMcFL4w9Bign1CU=;
+        b=PjZ/NObNkZkvR8rXHHTpeGlcA61dUaB3fVYEX+zHr4WfUXTYt9FSgxONdMmDNldtAI
+         7Olt3ezqjxh7HXc2L9iafbIUWyG9lN9WIBNOb+CK4UQb6vQIfgGUwN3YIfBDe86DtXtt
+         K+bj3MUTeXyoVN45dIrGk6HDXQ9DSzKRvvo7s=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794379635; x=1794984435;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4EiG4ohiaJ+2VhSrJi2s5uqPv+5cYMcFL4w9Bign1CU=;
+        b=hrR+WLE8B50jc/2A0Z3n1uR1j5D60wBEmVwDb3w2IZJqnVt+MlW2wfIz+nLTszg/Yy
+         YxTv/s53ebNULe1ewPgf9BV7fzTbmUBebpbHR4cH40Kz23L5KrSkSiYXoanftnvqVmk5
+         p4Tk78e70YkceWVKXMIf7LyOzGUj6gfwYbZ191jacApPLUmor3TFOzKAy4exMllbooeS
+         fDhzZS3aXnmAcZl02ja8qFOrjS9JC11vMD+E2517zFMoevX5XzHqRc8oySjkl2oTLYYK
+         Z7xQ9EjI/lGnv/KmNT0esttt2Ws47PWpwB+pSocG+FhGELLtKfOcidWTzqWLWHdy5AtF
+         rQCg==
+X-Forwarded-Encrypted: i=1; AL+hErEh6ilyTM4zce3WJbh9VWmGZ42eJ2dKScVWiuYhY7tEkv2H+wFLM8tuHazCLsa5Pbr+gWbzOsQ7HQ==@kvack.org
+X-Gm-Message-State: APuU4Z/TMWAFbEjoNlTDnhD7umLqEs0xJP2AM91QJhXuvRoIUQmqz3kJ
+	eRw3wz6Ku3O1YuDxvSR7uRbVm2DtvRGfQXkxNAOD0Vd/bRQp7Iy+NCCl+XveS0salA==
+X-Gm-Gg: AYBFou0R4cAukX0Rk4Z8yvLO31dM/R8ZTBw4U/USrlfADtPP1Busxb+sMF85aSPwjoX
+	Z9k0TI+Bn79F3uNBPew6XkO9kmhZaiGVXPWb20GLD9JUd8CXMN326DmhRTnNAZSzniiU5+EB0zq
+	jSE5auJGjkl5/JZGAO7oHrNJzHmPE/A9+VS7RcG4GbypZMfJJoMKTJuqiEDWl9koxB6VKJyrzDo
+	XgpyyPvxOWncjRWW37T0kY0BISvrcy4MMb+nhTB1i0xGqWXd1ZMJ/m16THvrygu1sgv5UR2kzfC
+	+rP2UHotTWW7OWzkYTjNlbdPGoKV8pZHqdZ7ejNQfzQwVZ7irgjT2F6aKoDVR25Xcajo4iGnMCV
+	JRH9I5q5RiFYZjJl6llgEpLhTNQX/WceXIi4WA5t3G031+1Asu/4oklsDAvDVNqDr6rOFvp9Vpc
+	qu1Oht1YcNiAvb+cMZnbwQpkG3u7QQPIzAztoKxtTbAKHwGPI0UBJsE0w/cxLFxgex/dFQPu7YZ
+	OE9M7yt6QpUtoD0KZHk1pu28TVNrAw22GiHbXsUDQ0VpOWPI683g2pIiR3BAZwYMxKQQZ5kuEHo
+	0nuAjbmBr0Ab9m3ZyHEq2qbZKmnTyVZ4PXuEAs3ZC8UI2Ynpq5FuIswfHH3MxaK6Lc4+KpljdED
+	+i9/L1zDi26roPf6JQrw270rBZ5WFbIfwcfwKEGE=
+X-Received: by 2002:a17:90b:37c3:b0:3ab:413:49bc with SMTP id 98e67ed59e1d1-3b182ee2462mr1689014a91.37.1794379634902;
+        Tue, 10 Nov 2026 22:47:14 -0800 (PST)
+Received: from tigeriii.tok.corp.google.com ([2a00:79e0:2031:6:ad6a:b446:df00:78dc])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b17db85a9bsm3268666a91.14.2026.11.10.22.47.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2026 22:47:14 -0800 (PST)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Nhat Pham <nphamcs@gmail.com>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Brian Geffon <bgeffon@google.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Richard Chang <richardycc@google.com>,
 	linux-kernel@vger.kernel.org,
-	syzbot+c4e217748763d41236ee@syzkaller.appspotmail.com,
-	Zhu Jun <zhujun2@cmss.chinamobile.com>
-Subject: [PATCH] writeback: mark concurrent accesses to the aging period time
-Date: Wed, 11 Nov 2026 14:46:42 +0800
-Message-ID: <20261111064642.17114-1-zhujun2@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.51.0
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: [PATCH v3 00/11] zsmalloc: redesign object alloc API
+Date: Wed, 11 Nov 2026 15:46:23 +0900
+Message-ID: <20261111064707.2568433-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.56.0.542.g3ef89b7020-goog
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+X-Stat-Signature: cdx8f8jgamfcph4xi6y56usf7g8m5ecj
+X-Rspam-User: 
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 338eu46mrgz196icw17fwcgbzcdnj3xu
-X-Rspamd-Queue-Id: A10E9100005
-X-Rspam-User: 
-X-HE-Tag: 1794379609-805234
-X-HE-Meta: U2FsdGVkX1/jecWy8tCJJXDgeIExTQRKIfX2h5jyoQp0WSbLsKQzuiLavzmp2hi505TI/i0sAoL+agcsHTD+5whHfHO8haOv6qL7ly4NvuLP4qbLYlnE95uog06sO6rLVxAYDWfsG5p2RRn/ggahLi5caaAzyXBLTMrtTwcKQyLmYlxh/O6DfMQUkcSCtA7kC0mF7lyPIYZjaapz4e/jalgN7ru6fUaoepEcQ1US3u6b1js833cFnQzAEDltOb2XsMqVAmM0/1+gtrCeya7VSRWmRsB+BYnb0FI2OK6ITnv00HkvSmuQ7P0lAdw1L0CcDu5b4UFKUfKxECjg8V4TLuOsSiPkP/BpjjJHDqL2DDub+EdGC3W9J/QfnL2fm7Gp9lM5vdy8LRlCPoEwgeoDpSIRjmfHlwY4xs0uX7yREVJ8obNew+U4gESE/GCtOEqlHNYUFvQYl8hyq//N4b637fVUO3grjXCnJYjowDolIakH3ovE9yGzMGaoRkfbOYlwN7+6qTACDzokHDAkHf04+f65rAaJePEVccdQcXD1EA+gCL8J1kD6tBveIrW9p4+Bu2ytfVUSQk7IE3A7cBJsTrCs/kPPFPEFWx7MdHUTG+45jNOZuLc/H6w/+vnigM0Ou0FgZbf2HU6/xUx+ErwbOEX5oQFBr69bt8oQBTSVTPs3eVWr4dxBWMvtoEgDGBxXzsAH10oDPBSCxft0UorMK1xYlHLQfzuc4V/aAn05NNk6bEQvFCkpeupZ2qixfiyH5sjcyluNTcFg7wKhDimxwKYiDSqENOfp2AJ8AVqx4Sfb65OwobrVupBZ3vrGZaam5OvFcnkc0B4QHZxcEcZm4syQShQS2dwzkklRbhiKl+evqADX80uzzWonmZEhF3JbOpkFKucHBlhTARyZotkuYiVpGzLI9b1M9TqSR/ZIZNEfaNoElMriy0pVGb1ctMu9Cgho1q/6XoEBZouWdd1
- Akb3NxW8
- RXBW6oH9sKv4u5tMLbXLnT1b4abd7M9dlkCcK1gWqxdBvId0cbrgjcawwXeRK7y2ahdrsRHl290q7zVcs/ugxD4qnjbqNRdwHNQAqrOdn8pwL/D++Wokd/rXzQgPcANp0Mr+sHOmRvgoKWt4up24WqKLeHepttCppTpMYulss6PhaRKSCKkH7LDcXV+MA3tVm7CTEyAQvwoKpVWiusZyAMltsgK2d98YkigZiqwVFIasbZDtF95RliEBQgF+o/lvzlxFHI6A8OuN4sLY8Lk0COMoslM3+31aE89zyZVtNYmB90RK0IVnF7ouck2oLVEyXWtRHbFz6ZRad9bafXqZvXlNXupQof7qq1Kz7mNDwP3iVXYOwwZCMVXihK1wzOki3yDBMdXSszob4agB5oNpdAi1xktJ0tbj/cQREyglEerrqi3a2HWGJLj/tiNU+bx2bILodB6VTtmEsFHe7dsh2W5hWNUweqd+Y6io6CAzit/TQQAKptd41dDOOUQ==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 37374180004
+X-HE-Tag: 1794379636-402763
+X-HE-Meta: U2FsdGVkX1+LnU5kBpe8hvNlXkXu+meXYZfEkZPJjnYW4NapVLBF+l67wZmW+rPVYxV8jX20l+JmuQR3xVLyuarmBBU/ssXMISsg5Po4ZZGbzNy4VjDYbWcEAv8VLbAPYtRs15ZA0BytAMBeifkoWkrMsdR7fU7zszRsWIIVqwSB4+ZGDen+YT/8X9N9sB86stW5zmURJYYkOfVSM9ZLTSxZL0sKv+eh27+aKei3574FRu8dCEYMkJw6rB22/AzPmzgqLn7AUSPPEN8VEsg8jPlIqHUzmNq02qGXdc/05N3Colqh385oJbIrUP2f4KD3ffhy5pxoFhBlp87eO4SO1GsdEvCk24mvwNj6y33osheAS0OQ4PojFS/hL/vMIm4oFZ6KMRzo/syY5g1NfVslQ1D5egMLDdlcbASfola7KNfjE0wzFjMct65JwZE2BPKIfJZWjFpRUSJnySK64K+xKq6q53R7855qWupJXNKk01qPTvbRH2X5j84CeyRu9ur2VcajT+pReNPB5qiIKr0TMvdb7Ar8iIfekB6QPMC5PTcMz3qTBHLZct/ueUsDf+T4SF1Y3rbPdjXHDByi6kVbWG2SlhAAtxDNJDO6922ADbqbcGTKs4Fa7fBG00dHB5a0CbMFe0PWGEsxC2v9cqhaEWIAW7fgmynijx5//sSf+1NOkaEOKraUdrIwxT+xmOFaBMNTf5Fqc5+2F299C6lOStfFA9mfM9v0MT3q/R7bsxUY9NbDpZCgACZlpLG1xYE9vGd0QNmknWQ8nQFoUJftVdvH/2YiRS0+k1ruegZb/eYO9ksbD7ze5+HvG6cgPFkul6Yp5XDW02VFZZRxFxWImZVXEPoK53ValODqpgSla5bOO0VMSDUmVEqGB7EChml2qKSvigH5HDyhAMvpyxpsYnuB6cBbAA0f1dcnZ1I9n3AZ1Z/xbC/wb+hmrqp8bqkxRN95/AxGqQ4xymqZsaM
+ j1lxvm2m
+ cz2+df4UOFYkKkD3Y8kd6D3T4pOItqpcj8Lx2JYesQeu9fy14PZzL9War9nBX2ifFZiVfsGmmZLyxf6cyhhpZqoxNZHOWLRRFLp0dcfEQLcooNDYaIgr9MNuBDoXWS0uk5yK/gyJiHY9dswOrWbKLXv9kiNVj9XzHiw2G8xml7aBFXCiAxYgyunDxWddXJleCwom07qL20CJ+yZlGvO2H9bwEEZWWW6wulwmG9QoOOwFpwXE9Op1W0E97OpUpwUC5FrDElcOS6LtdlV54fUiD8U/1R1xT0JNg8wPonTRjedmhAESllHxvrFMFZ/+HaAOAiY8i
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,78 +125,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Writeback completion and the aging timer access dom->period_time without
-a common lock. Concurrent restarts are deliberately allowed, since an
-approximate aging deadline is sufficient, but the plain reads and writes
-cause KCSAN reports.
+Both zram and zswap already have per-entry structures that store zsmalloc
+handles, so allocating a separate handle_cachep object per stored page is
+redundant.  This series embeds struct zs_handle directly into zram and
+zswap entries and drops handle_cachep, saving 8 bytes and a slab
+alloc/free per stored object (2MB per 1GB of swapped out 4K pages).
 
-Use READ_ONCE() and WRITE_ONCE() for the shared deadline. Keep a local
-copy when calculating and scheduling a deadline so that each calculation
-uses one snapshot.
+It also folds zs_malloc() and zs_obj_write() into zs_store() so we don't
+take pool->lock and look up object location again right after allocation.
 
-Fixes: eb608e3a344b ("block: Convert BDI proportion calculations to flexible proportions")
-Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
----
- mm/page-writeback.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+A simple zram test on a 24-vCPU VM
+==================================
+165 fewer kernel instructions and 0.7-1.8% fewer kernel cycles per write;
+lz4 single writer +2.3% IOPS / -2.6% average latency;
+24 writers +0.9-+1.0% IOPS; no regressions.
+Memory: 8 bytes less per stored page.
 
-diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-index 0694ec4098f6..fd75f46f744a 100644
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -550,18 +550,21 @@ static void wb_domain_writeout_add(struct wb_domain *dom,
- 				   struct fprop_local_percpu *completions,
- 				   unsigned int max_prop_frac, long nr)
- {
-+	unsigned long period_time;
-+
- 	__fprop_add_percpu_max(&dom->completions, completions,
- 			       max_prop_frac, nr);
- 	/* First event after period switching was turned off? */
--	if (unlikely(!dom->period_time)) {
-+	if (unlikely(!READ_ONCE(dom->period_time))) {
- 		/*
- 		 * We can race with other wb_domain_writeout_add calls here but
- 		 * it does not cause any harm since the resulting time when
- 		 * timer will fire and what is in writeout_period_time will be
- 		 * roughly the same.
- 		 */
--		dom->period_time = wp_next_time(jiffies);
--		mod_timer(&dom->period_timer, dom->period_time);
-+		period_time = wp_next_time(jiffies);
-+		WRITE_ONCE(dom->period_time, period_time);
-+		mod_timer(&dom->period_timer, period_time);
- 	}
- }
- 
-@@ -590,19 +593,21 @@ static inline void __wb_writeout_add(struct bdi_writeback *wb, long nr)
- static void writeout_period(struct timer_list *t)
- {
- 	struct wb_domain *dom = timer_container_of(dom, t, period_timer);
--	int miss_periods = (jiffies - dom->period_time) /
-+	unsigned long period_time = READ_ONCE(dom->period_time);
-+	int miss_periods = (jiffies - period_time) /
- 						 VM_COMPLETIONS_PERIOD_LEN;
- 
- 	if (fprop_new_period(&dom->completions, miss_periods + 1)) {
--		dom->period_time = wp_next_time(dom->period_time +
-+		period_time = wp_next_time(period_time +
- 				miss_periods * VM_COMPLETIONS_PERIOD_LEN);
--		mod_timer(&dom->period_timer, dom->period_time);
-+		WRITE_ONCE(dom->period_time, period_time);
-+		mod_timer(&dom->period_timer, period_time);
- 	} else {
- 		/*
- 		 * Aging has zeroed all fractions. Stop wasting CPU on period
- 		 * updates.
- 		 */
--		dom->period_time = 0;
-+		WRITE_ONCE(dom->period_time, 0);
- 	}
- }
- 
+v2 -> v3:
+- addressed Sashiko review: alignment and READ/WRITE_ONCE mem_limit
+- picked up review tags from Yosry and Nhat
+- added handle validation helper
+- change definition of ZS_HANDLE_SIZE
+
+Sergey Senozhatsky (11):
+  zram: drop stale comment in write_incompressible_page()
+  zram: drop get_slot_handle() and set_slot_handle()
+  zsmalloc: return handle from obj_allocated()
+  zsmalloc: switch handle type to struct zs_handle
+  zram: check mem_limit before allocating zsmalloc object
+  zram: allocate zsmalloc object under slot lock
+  zswap: do not free the entry if its pool is NULL
+  zsmalloc: encode 1-based obj_idx so valid obj is never 0
+  zsmalloc: embed struct zs_handle into zram and zswap entries
+  zsmalloc: fold zs_obj_write() into zs_store()
+  zsmalloc: populate new zspage outside class->lock in zs_store()
+
+ Documentation/admin-guide/blockdev/zram.rst  |   4 +-
+ Documentation/admin-guide/mm/slab.rst        |   2 +-
+ Documentation/core-api/memory-allocation.rst |   2 +-
+ Documentation/mm/zsmalloc.rst                |  22 +-
+ drivers/block/zram/zram_drv.c                | 148 ++++------
+ drivers/block/zram/zram_drv.h                |  10 +-
+ include/linux/zsmalloc.h                     |  36 ++-
+ mm/zsmalloc.c                                | 288 +++++++++++--------
+ mm/zswap.c                                   |  28 +-
+ 9 files changed, 297 insertions(+), 243 deletions(-)
+
 -- 
-2.51.0
-
+2.56.0.542.g3ef89b7020-goog
 
 
