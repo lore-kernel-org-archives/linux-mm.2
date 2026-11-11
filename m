@@ -1,82 +1,82 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7562606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 23:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB65606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 23:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=ZyNUBywD
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=mjXniEWD
 Received: by kanga.kvack.org (Postfix)
-	id E95866B05C4; Wed, 11 Nov 2026 18:07:19 -0500 (EST)
+	id A4FFE6B05C6; Wed, 11 Nov 2026 18:07:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6C696B05C5; Wed, 11 Nov 2026 18:07:19 -0500 (EST)
+	id A00EC6B05C7; Wed, 11 Nov 2026 18:07:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5C516B05C6; Wed, 11 Nov 2026 18:07:19 -0500 (EST)
+	id 916F46B05C8; Wed, 11 Nov 2026 18:07:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A51096B05C4
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:07:19 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 356791A04D6
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:07:19 +0000 (UTC)
-X-FDA: 85424376198.16.3EFCEB6
-Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C84E740006
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:07:16 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=ZyNUBywD;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf11.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de"
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E5256B05C6
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:07:51 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D367CA049F
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:07:50 +0000 (UTC)
+X-FDA: 85424377500.05.2F1F364
+Received: from pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.35.192.45])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 849F91C0005
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:07:48 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=mjXniEWD;
+	spf=pass (imf21.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 52.35.192.45 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794438468;
+	b=B4Txx19gAIN0NK0SNuVippAeLTw0famK+o0p1ZM/B87AhcUs3O52OW55O0+5dLv547dTEy
+	6DnKe7oeRpZk3IfazDapQv24r4GhO730mXTx1kB2ozWVZ3vg8j6W987vvcKrjIJrvbNVBg
+	9UTJrAM5sp1zRxT2cERR0plLb91oQ3M=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=mjXniEWD;
+	spf=pass (imf21.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 52.35.192.45 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794438437;
+	s=arc-20220608; t=1794438468;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3g1pMQLPHr98q1xN/NLmPJ71j1vnyryRJ4kaKPk0b8s=;
-	b=0xrKw6zViQktuXEfwrfDcndRlX6AuyIsTpCtW307VvfC4+fO+CaWEVowbwi2HohSyDijM8
-	9yHeW8yBofIaSIWi2worSibU8y09F8uuAs68X/n4EDSyShak7ddBv+rDrGbssZj619j4Pn
-	7eycDdeDj7TdZRo6/eUVy7pabVeIhLM=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=ZyNUBywD;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf11.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de"
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794438437;
-	b=Ldd91qjkfCCfqPmmd79f5YlU1nb3fEWwzagTst5+lCV/F9eIauBubgEybJsjIb+27XV2sy
-	yTo4qsDu7yx560KG/oK0872DQdNrL1XRDP/YbxZFLAqLOmxvJzWVKuvDcRunTGCY8t52Dc
-	1m6bsi4NoQ1cLF+7x1mxa6HdX3hXLdg=
+	bh=YI+xwxK91yLq9AqwLK+2Jfov8Vn7uJsFM2qc/TcD+q8=;
+	b=s3yyuKSHsXGHhYQE5xDXuVkXsXzsn2jAAFi6giO3u+qXBmkOQLWK3JqRCrdoB1WqZZ0fZN
+	xOPQMU9pryeFttTtTrbzG2KrRroulv9d/ITqT4Ldap2uZ+Z+kHoHYiKH9z2DaYasR70tGY
+	+CfPGZ5xR7TKsH/rGe9eTRJL/5J64Gw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1794438436; x=1825974436;
+  t=1794438468; x=1825974468;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=3g1pMQLPHr98q1xN/NLmPJ71j1vnyryRJ4kaKPk0b8s=;
-  b=ZyNUBywDaSF4C2jU1N7vf7ONiLkyRZqNaYENrFqqJ1s0GYUvn/I9Rh+j
-   ZbdijwJfbee7qJPXe4AZh1bfYXFf1f69Q5TUlL4zDUIOOJWu2esTD2cvo
-   52rMUrdEvyPyaM+N+DkTwDYDc7h1xvbjsGmsTYKypE9GZ/14npwl8Dwmj
-   KDta4iiCJcbGEsonza9fMPfO3fMUYuXFq+lH+ulwWyZ4CC/MtTmoZ79mh
-   qGYfIdpzKko/1xigHXQykYVGiBfuGxWoagea475Vy7v9z09+b2OGbkUVY
-   lEt7aqfnqJvOu9sfj0fHC7ni5ungm7YfEbqwXxOwwkQnBzkCKm/uii4aF
+  bh=YI+xwxK91yLq9AqwLK+2Jfov8Vn7uJsFM2qc/TcD+q8=;
+  b=mjXniEWDR8UDtUl+RmCnxJE33z7T11+AnRvYDO3roal03qf5am9G0YyD
+   50PMC+xw+Nzno4Ao+4Qe6wy9iMYegAk3OIiP0M0Ryv04s0iw+Ts6/59sf
+   gs2H1sHa6l9FIp3Pa9UYHwmpfxdxQexFv28EhO+6PK/9cTzvb8e4tbfh8
+   Nc7NacCNRJHIiN0pZCTEPfil+Y6dLjjvgWx8gkq8V7HsHdAexBXVrVADt
+   skXCUzKMYi8Bqno6HK58NEQMrRCyXY5EUdtY+EjwTP/MUe3jezazNvXuA
+   KrSRKcGouyvLyLAyXCupH5vWcWPKm7Fg7g48vybRaH7+p5t+q1+v+lDx3
    g==;
-X-CSE-ConnectionGUID: sdNAaQ/RS6uyQhwPPdvBaQ==
-X-CSE-MsgGUID: 86yTFcSKS86ncNlQuzZReA==
+X-CSE-ConnectionGUID: qC2rSK8SQC+u5HOmmrVYGw==
+X-CSE-MsgGUID: 3XGB0BkJQbyBIvH0D6attw==
 X-IronPort-AV: E=Sophos;i="6.27,208,1787011200"; 
-   d="scan'208";a="33789722"
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 23:07:13 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.48:6522]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.31.142:2525] with esmtp (Farcaster)
- id 299b9647-441f-4247-a855-65df5f6a012d; Wed, 11 Nov 2026 23:07:12 +0000 (UTC)
-X-Farcaster-Flow-ID: 299b9647-441f-4247-a855-65df5f6a012d
+   d="scan'208";a="33533664"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 23:07:47 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:7122]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.34.255:2525] with esmtp (Farcaster)
+ id 0f86f7d9-eb20-4b7e-8481-9bbbcb461490; Wed, 11 Nov 2026 23:07:47 +0000 (UTC)
+X-Farcaster-Flow-ID: 0f86f7d9-eb20-4b7e-8481-9bbbcb461490
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Wed, 11 Nov 2026 23:07:12 +0000
+ Wed, 11 Nov 2026 23:07:46 +0000
 Received: from ip-10-253-83-51.amazon.com (172.19.99.218) by
  EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Wed, 11 Nov 2026 23:07:09 +0000
+ Wed, 11 Nov 2026 23:07:43 +0000
 From: Alexander Graf <graf@amazon.com>
 To: <linux-kernel@vger.kernel.org>, Greg Kroah-Hartman
 	<gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>
@@ -88,9 +88,9 @@ CC: The AWS Nitro Enclaves Team <aws-nitro-enclaves-devel@amazon.com>, "Shuah
 	<david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
 	<nh-open-source@amazon.com>, <linux-mm@kvack.org>, Jonathan Corbet
 	<corbet@lwn.net>
-Subject: [PATCH 28/40] nitro_enclaves: Add NE_SET_NOTIFY_EVENTFD
-Date: Wed, 11 Nov 2026 22:59:32 +0000
-Message-ID: <9db6d42bdf77370c94a86d4098bbd6a71dcc1e7d.1794393491.git.graf@amazon.com>
+Subject: [PATCH 29/40] nitro_enclaves: Report the device's info notification
+Date: Wed, 11 Nov 2026 22:59:33 +0000
+Message-ID: <2c69a8916a5da01b8d857c366c1fc0253572750d.1794393491.git.graf@amazon.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <cover.1794300002.git.graf@amazon.com>
 References: <cover.1794300002.git.graf@amazon.com>
@@ -98,21 +98,21 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D031UWA003.ant.amazon.com (10.13.139.47) To
+X-ClientProxiedBy: EX19D031UWC002.ant.amazon.com (10.13.139.212) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-Stat-Signature: nif1nukdf6nb9ww6hw1c3pqkzabw961d
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C84E740006
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 849F91C0005
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: omw87eozotjj4by7qgsuqad643mzdwup
-X-HE-Tag: 1794438436-606388
-X-HE-Meta: U2FsdGVkX18m+IlH50AoRUe3gk3SowyH3WZMDZPpaV5F4n3unpiW4Tsg97Y6Vs/J2hmp5pWfL0WyIxyfWqor4hCZiu7wWG+N0LgciWvzahiO5qQLK/xLNCQm6YCCJNVjyP9eDbgS+fIUQ65L0nMu09nE9x4HizNfdr0n74oeNVdYDwuETuZfxHnrTo3oHuVEofDZqrl5l0r/zlGEKQUKmPXbC+gcVcrcK+RPlCdk8BCwAyiXrLhXqCXibxGMFE+JToz70b1I2cv7LdqJdhNTuggDywFJkyEtECjKhwI8jzDh5NhYpOGbv+87skwyI9nbXEOnAsnglPGufjOh+fftnUd2p1Uazj+q0Dcyp2rIv3Bzb3JAYPPNLxfymiXxV62xauGo7/5o2u+9zSldUmH41DRvahCj/dwtTejIgN8xz2PrB5I9Odn9pN3auIoxnP0+/H6171tOK5SZsOxECsUC4wkFvLaWao4++XOoViGDSAwRBZr2fmhv41LxE7OHBS3l52i3Hw9wIOuACRegwIkEgT82edsKYQfl6y9M/IPW9oWBUcqt2sSErHifZKzsugXJNtyXeDbJrILHZ11/SSREtg4QaUr+ASnVlx8Vr4Gx0PqemYD2GpO+G5KMa/+XwJNpIzpKCl5vy2DwOAR8QmBPcKph82hAFWvBI1Xdk1CpKuvDhLijuJf5FvYwARLBHhyfe3+IotT32oM1MG/nR7tKsllizfyRr8sDqUQPh85sfu71dq/+DEGi63uHBSyyhVbd3eui3wtwaxHQX0LyQGKGL7Klu4RfG6jhxuEgZ4Ez4cG7LTOHhbQZoSn+3MzO2eqA+AMUHUbxzK4KEJv6xgu7nGyLY8B29wwqjqsMJ5kccHf/cSaxN0mGRTUXQBeSJbAX2/21t74FA9KXVmYsYuxzreY6sYDSuHW4EKj/XksHRoyENOqddp2mBixda+QIRHpi4PqEzC9bKJuVC5OyNYv
- dMPPhLKQ
- ABgCT7P0fwjbmB5Dwf3VTf4LPIW1k1MoowIIxPrfT/I0X1mhybmc+vZRBGB/cCUnFu83gc3Dd6V6b48MYptSLZwy9WGueXE7wt4oNzoFGx1kFPZ5i2ZoxUgCNtuE+FzhtyWxGJboZnCQyPN+iFXY3Uku2JDzDzYKiUDN7Amy7PTAsggS34yLQicRUuIFLv4CakTDKEg867XUb7MsUFgPTo0Zxh9WjCkfwFM3Jx0/wgMtM0cyyzHfE5IyNuhMEKdoFXvA3S+Os3JwAQhFSBkAtg527Ojl4eQEO0WPSs/VKn39qPz77Za1CJxlkMB9Ib6S98ps+6RxBKOIdlLM6HvPeYg/G7uyXubwImOsIOGiEBEY30rkQJJjaCyANi0qxI9p+0t3jEJ0c+5aG31ghWYrJMIUjKxqFN88PEiUGiSuJmef2NN/YIAYTck5FDDcfhl5OdnNHNoO5T9/fxUWIBxCe2lc4s4YIg8VvxMlI2H3Vrokhv4fxkIZ3DkDI41CHTxYN32HgnnOMfFn9CmVdrRBPmNvYgDb/nsCvTBnhbYcKinXioAAw50+wX9U8iLfOQlh8CfYcmrQesoWSQrz22q6daoOsQvS8ICIsohLUCo+CTG8LPnxmBYQ6bZGLsh98Vh1Ca2jWgRO17wLcGL8hKMIPyPndb6Df6RjsnLXTXXjpYb/T2gXN7FE9Kfk2S8SEAWPqxZwU
+X-HE-Tag: 1794438468-154907
+X-HE-Meta: U2FsdGVkX18muErKOWIqQDX8fKsom3w/EhacHZjPDAWSEF+yxO/bTG+eFSZZbjY8OBrx2oeuivx6jzmP1t1BDOF71S46rGX6FxTdJHyD29C9nYXc5Nua0XbgGZRx8RrtLJE07NxNaoGVuLodkJEO8ZngxDOmfjwSJ4UsPnZj6cFbpMlL5li+XKH6Y6okjWVFNnRiYercMEU+ty9RO/CATXwwEYeN7VEPEioOZtmb/t8zEw9TNt5XwrZiYFkXG8hS67fdJXQ+WspGdD8DH6pqgasXzKUDMmqOFwMl96BU7u8K7QfUjoLqBuAtUj1Kt2yaeeL8HAxT0CczpqnByf0PoDuJfBcqlt/v3Zmck1URtJIv3F9eimMf0KW+r/Nrj3uZWwpC6Xi1a3SS4RTg+ehXdS8D2lQjQAlBlkf/EELarpVR6/Ga87fqF31xK2jjNHWUXNc3S0lWfFIN+S3cfnvIGEv+ql4b2EXJfHRBB/11hWL3TktMxzBdr+RGiVqP1H04S++oPwNWbx9rfTduGV75gpVHr7MiDAIBygBeAK0B/w2eG7mzgxBRCjTSbPlTrAug4mWQySQjLB+OyS38n3WutuhSDyrpFRtZXLhe5b+DtjIulDw9jxeuo+Y48yZ537m/n+EwLzxKMQXBAIeN689PcLMhkHhqMf0NrifguF1ynCgGNEArsbUgxbBJ3RlLs/lIduTDLGf0WKnbVrkUu93FyGPwjXiah1UB+dJp5nks4PvJro7OE7ENivgs9O9xrvqTkpm77v320IQtD8sOZYvYuC0qQ5uomcdxu90zRQkMbk52SH8KrtcAkWIpBcvXjrKO6yLCGvo3oHkR4Qzy0/mhMbw7svU7IFwdkvQ2UjeqPz0Oa6aX2CZdOLxdh8YFE8XgnBOj3N35cqLHvyVw5I/vQgrdeT8QPB0lpyhM4cqC+23qwqYNbpcGe8giYXD2VBRceFGhS1LMnr70aSxUeGU
+ Gm7fYpgS
+ UnggpTgbEojz19pRFpMhtCNRNGlqZSAQCB6BPrJM4T3tcxdpekZ/Rrb+vDZbcVo0hiel7UWdMZ6NS7f0bQMhXANXoTk3oc3dDsFZXzcBhk5I6I2ITtG/EQzya/J8PMOkQ4IiWA2bwQmBQAkCfRm1rSfUV1axZ9uqnggpUfqJAZl81pGP6iCG9WW5zWZJ77Nx+MrOaq+7bmYg6PbooXB48Lj4f2iqgGt+EdQVMe6JuEoTCSJKOi4wYQHE4i7KKG2TSVtG05ciWrjyYDnIVTaAAw+4amNEu7G9OCjsXRN/b4ON0Cc8w8nPe37tIoVXYiTX70o0eWbIy1TxGJ+ODkd6pW4GVWLXqKct7C9dOuBzuxPmw1TjB7X2V12drMkgVD5M5uQ5Fi3666VbZ8ZVZFb9AFHbjPrrQmIlp5ni2GJmEp7kuDL2eruuWPXostkRdfPBIsJEdR4nZToxSZx5A16SFf9EgfoQsQ7YbKk9R4ouqnVyHNg8KPhpS3XUTpGpL989fkJcE85ZRmzQiQVcmoXmjZI6u+6NE7EWjJ3/TNcyNZFe/6UwJGl3MqrCzmgiTcGypH0ofBh0zHm9MK8gKK0z0Cs+g1uApXSuUpH1gs1JpSLn1a8lH7rgh3KP8WVz2VY5EvyeYlibcAVj/fZmhgICcgqmtFxH+mtPa7PqSguii7lt9lNMzhdsuKvRKDJwv/cMdoN8sBGLeTi1Hbus=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,761 +121,431 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Nitro Sandboxes notify the parent through the interrupt multiplexer
-when a sandbox kicks a virtqueue, so that the device backend in the
-parent can wait for work on its queues on an eventfd.
-
-Add NE_SET_NOTIFY_EVENTFD on the enclave fd. It binds an eventfd to the
-notify index of a queue, and the multiplexer handler signals it on a
-kick. Binding again replaces the eventfd and NE_EVENTFD_UNBIND removes
-it. A bind delivers a kick that was already pending, and an unbind drops
-one, so that the next owner of the index does not get it. A notify index
-is device-wide, so a bind only takes the indices NE_ADD_DEVICE reported
-to the same enclave.
+When the device updates the entry of a device in the info page, it
+raises an event through the interrupt multiplexer. User space needs to
+learn about these events, so we tell it the index as part of its
+SLOT_ADD_DEVICE ioctl response in the new info_notify_index field.
+It can then use it to request device update notifications the same
+way it listens to VQ events.
 
 Signed-off-by: Alexander Graf <graf@amazon.com>
 ---
- drivers/virt/nitro_enclaves/Kconfig       |   1 +
- drivers/virt/nitro_enclaves/ne_misc_dev.c | 418 ++++++++++++++++++++++
- drivers/virt/nitro_enclaves/ne_misc_dev.h |  31 ++
- drivers/virt/nitro_enclaves/ne_pci_dev.c  |  41 ++-
- include/uapi/linux/nitro_enclaves.h       |  66 ++++
- 5 files changed, 547 insertions(+), 10 deletions(-)
+ drivers/virt/nitro_enclaves/ne_misc_dev.c | 64 ++++++++++---------
+ drivers/virt/nitro_enclaves/ne_misc_dev.h | 15 +++--
+ drivers/virt/nitro_enclaves/ne_pci_dev.c  |  3 +-
+ drivers/virt/nitro_enclaves/ne_pci_dev.h  | 30 ++++++---
+ include/uapi/linux/nitro_enclaves.h       | 77 ++++++++++++++---------
+ 5 files changed, 115 insertions(+), 74 deletions(-)
 
-diff --git a/drivers/virt/nitro_enclaves/Kconfig b/drivers/virt/nitro_enclaves/Kconfig
-index 7b2456cdbb9fb..c78a5c654a241 100644
---- a/drivers/virt/nitro_enclaves/Kconfig
-+++ b/drivers/virt/nitro_enclaves/Kconfig
-@@ -10,6 +10,7 @@ config NITRO_ENCLAVES
- 	depends on (ARM64 || X86) && HOTPLUG_CPU && PCI && SMP
- 	select CMA
- 	select DMA_CMA
-+	select EVENTFD
- 	help
- 	  This driver consists of support for enclave lifetime management
- 	  for Nitro Enclaves (NE).
 diff --git a/drivers/virt/nitro_enclaves/ne_misc_dev.c b/drivers/virt/nitro_enclaves/ne_misc_dev.c
-index 7698c7210eb86..bc78580bad475 100644
+index bc78580bad475..d47fc8b514bcc 100644
 --- a/drivers/virt/nitro_enclaves/ne_misc_dev.c
 +++ b/drivers/virt/nitro_enclaves/ne_misc_dev.c
-@@ -9,6 +9,7 @@
-  */
- 
- #include <linux/anon_inodes.h>
-+#include <linux/bitops.h>
- #include <linux/bsearch.h>
- #include <linux/build_bug.h>
- #include <linux/capability.h>
-@@ -17,6 +18,7 @@
- #include <linux/cpumask.h>
- #include <linux/device.h>
- #include <linux/dma-map-ops.h>
-+#include <linux/eventfd.h>
- #include <linux/file.h>
- #include <linux/fs.h>
- #include <linux/highmem.h>
-@@ -48,6 +50,7 @@
- #include <linux/types.h>
- #include <linux/uaccess.h>
- #include <linux/uio.h>
-+#include <linux/xarray.h>
- #include <uapi/linux/vm_sockets.h>
- 
- #include "ne_misc_dev.h"
-@@ -1773,6 +1776,357 @@ static int ne_start_enclave_ioctl(struct ne_enclave *ne_enclave,
- 	return 0;
+@@ -1777,27 +1777,27 @@ static int ne_start_enclave_ioctl(struct ne_enclave *ne_enclave,
  }
  
-+/**
-+ * ne_mux_drop_bit() - Take the bit of an enclave queue out of the bitmap of its
-+ *		       pooled vector.
-+ * @ne_pci_dev:		Private data associated with the PCI device.
-+ * @notify_index:	Notify index of the queue whose bit to take out.
-+ *
-+ * The handler leaves a bit it finds no binding for set, so that a bind can take
-+ * it and deliver the kick it stands for. Once the binding is gone, the bind
-+ * that bit was waiting for has already happened, and the next bind of the index
-+ * belongs to whoever holds the queue by then, so leaving the bit would hand one
-+ * caller's kick to another. It also costs every later interrupt on the vector a
-+ * lookup for a bit nothing will claim. Take it out.
-+ *
-+ * The caller takes the binding out of the xarray first, so at this point no
-+ * binding for the index is left to look up, and the kick this destroys is one
-+ * no later scan could have delivered. In the other order a kick the device
-+ * recorded in between would be left with a live binding and no interrupt of
-+ * its own still to come.
-+ *
-+ * A kick the enclave raises between the two is dropped. It is a kick that
-+ * arrived as its caller stopped listening, so the ioctl documentation says a
-+ * release leaves a later bind of the index no kick to collect.
-+ *
-+ * Context: Process context.
-+ */
-+static void ne_mux_drop_bit(struct ne_pci_dev *ne_pci_dev, u32 notify_index)
-+{
-+	u32 nr_vecs = 0;
-+	u32 vec_rel = 0;
-+	u32 bit = 0;
-+
-+	/*
-+	 * ne_mux_teardown() sets the pool size back to zero, so take the size
-+	 * once and do the arithmetic on that copy, as a bind does. Reading the
-+	 * field again below would divide by whatever it holds by then.
-+	 */
-+	nr_vecs = READ_ONCE(ne_pci_dev->mux_nr_vecs);
-+	if (!nr_vecs)
-+		return;
-+
-+	vec_rel = notify_index % nr_vecs;
-+	bit = notify_index / nr_vecs;
-+	if (bit >= NE_MUX_MAX_BITS)
-+		return;
-+
-+	if (!ne_pci_dev->mux || !ne_pci_dev->mux[vec_rel].bitmap)
-+		return;
-+
-+	clear_bit(bit, (unsigned long *)ne_pci_dev->mux[vec_rel].bitmap);
-+}
-+
-+/**
-+ * ne_del_notify_eventfd() - Release the eventfd bound to the interrupt of an
-+ *			     enclave queue.
-+ * @ne_enclave :	Private data associated with the current enclave.
-+ * @ne_pci_dev:		Private data associated with the PCI device, taken by
-+ *			the caller so that the release runs on the device the
-+ *			caller looked the enclave up on.
-+ * @notify_index:	Notify index of the queue to release.
-+ *
-+ * Context: Process context.
-+ * Return:
-+ * * 0 on success.
-+ * * Negative return value on failure.
-+ */
-+static int ne_del_notify_eventfd(struct ne_enclave *ne_enclave,
-+				 struct ne_pci_dev *ne_pci_dev, u32 notify_index)
-+{
-+	struct ne_notify_binding *notify_binding = NULL;
-+	struct ne_mux_binding *binding = NULL;
-+	struct ne_notify_binding *entry = NULL;
-+	int rc;
-+
-+	rc = mutex_lock_killable(&ne_enclave->enclave_info_mutex);
-+	if (rc)
-+		return rc;
-+
-+	list_for_each_entry(entry, &ne_enclave->notify_bindings,
-+			    notify_binding_list_entry) {
-+		if (entry->notify_index == notify_index) {
-+			notify_binding = entry;
-+
-+			break;
-+		}
-+	}
-+
-+	if (!notify_binding) {
-+		mutex_unlock(&ne_enclave->enclave_info_mutex);
-+
-+		return -ENOENT;
-+	}
-+
-+	binding = xa_erase(&ne_pci_dev->notify_xa, notify_index);
-+	if (binding) {
-+		/*
-+		 * A handler that looked the binding up before the erase can
-+		 * take the bit after it and then look the index up again. A
-+		 * bind of the index can run as soon as the unbind returns, so
-+		 * wait for that handler first. Otherwise its second lookup
-+		 * finds the new binding and signals a kick the unbind drops.
-+		 */
-+		synchronize_rcu();
-+
-+		ne_mux_binding_free_rcu(binding);
-+	}
-+
-+	ne_mux_drop_bit(ne_pci_dev, notify_index);
-+
-+	list_del(&notify_binding->notify_binding_list_entry);
-+
-+	mutex_unlock(&ne_enclave->enclave_info_mutex);
-+
-+	kfree(notify_binding);
-+
-+	return 0;
-+}
-+
-+/**
-+ * ne_enclave_owns_notify() - Check that NE_ADD_DEVICE reported a notify index
-+ *			      to an enclave.
-+ * @ne_enclave :	Private data associated with the current enclave.
-+ * @notify_index:	Notify index to look for.
-+ *
-+ * Context: Process context. This function is called with the ne_enclave mutex
-+ *	    held.
-+ * Return: true if one of the enclave's devices has the notify index.
-+ */
-+static bool ne_enclave_owns_notify(struct ne_enclave *ne_enclave,
-+				   u32 notify_index)
-+{
-+	struct ne_device_wiring *dev = NULL;
-+	unsigned int i = 0;
-+
-+	list_for_each_entry(dev, &ne_enclave->devices, list_entry)
-+		for (i = 0; i < dev->num_vqs; i++)
-+			if (dev->notify_index[i] == notify_index)
-+				return true;
-+
-+	return false;
-+}
-+
-+/**
-+ * ne_set_notify_eventfd() - Bind an eventfd to the interrupt of an enclave
-+ *			     queue.
-+ * @ne_enclave :	Private data associated with the current enclave.
-+ * @notify:		The eventfd and the notify index.
-+ *
-+ * Context: Process context.
-+ * Return:
-+ * * 0 on success.
-+ * * Negative return value on failure.
-+ */
-+static int ne_set_notify_eventfd(struct ne_enclave *ne_enclave,
-+				 struct ne_notify_eventfd *notify)
-+{
-+	struct ne_pci_dev *ne_pci_dev = ne_devs.ne_pci_dev;
-+	struct ne_notify_binding *notify_binding = NULL;
-+	struct ne_mux_binding *binding = NULL;
-+	struct ne_notify_binding *entry = NULL;
-+	struct ne_mux_binding *old = NULL;
-+	struct eventfd_ctx *ctx = NULL;
-+	bool rebind = false;
-+	u32 nr_vecs = 0;
-+	u32 max_bit = 0;
-+	int rc = -EINVAL;
-+	u32 vec_rel = 0;
-+	u32 bit = 0;
-+
-+	/*
-+	 * ne_mux_teardown() sets the pool size back to zero, so take the size
-+	 * once and do the arithmetic on that copy. Reading the field again
-+	 * below would divide by whatever it holds by then.
-+	 */
-+	nr_vecs = READ_ONCE(ne_pci_dev->mux_nr_vecs);
-+	if (!nr_vecs)
-+		return -EINVAL;
-+
-+	vec_rel = notify->notify_index % nr_vecs;
-+	bit = notify->notify_index / nr_vecs;
-+	if (bit >= NE_MUX_MAX_BITS)
-+		return -EINVAL;
-+
-+	if (notify->fd == NE_EVENTFD_UNBIND)
-+		return ne_del_notify_eventfd(ne_enclave, ne_pci_dev,
-+					     notify->notify_index);
-+
-+	ctx = eventfd_ctx_fdget(notify->fd);
-+	if (IS_ERR(ctx))
-+		return PTR_ERR(ctx);
-+
-+	binding = kzalloc_obj(*binding);
-+	if (!binding) {
-+		rc = -ENOMEM;
-+
-+		goto put_ctx;
-+	}
-+
-+	binding->ctx = ctx;
-+
-+	notify_binding = kzalloc_obj(*notify_binding);
-+	if (!notify_binding) {
-+		rc = -ENOMEM;
-+
-+		goto free_binding;
-+	}
-+
-+	notify_binding->notify_index = notify->notify_index;
-+
-+	rc = mutex_lock_killable(&ne_enclave->enclave_info_mutex);
-+	if (rc)
-+		goto free_notify_binding;
-+
-+	/*
-+	 * A notify index names a notification across the whole NE PCI device,
-+	 * so an enclave only binds the ones NE_ADD_DEVICE reported to it.
-+	 */
-+	if (!ne_enclave_owns_notify(ne_enclave, notify->notify_index)) {
-+		rc = -EINVAL;
-+
-+		goto unlock_mutex;
-+	}
-+
-+	list_for_each_entry(entry, &ne_enclave->notify_bindings,
-+			    notify_binding_list_entry) {
-+		if (entry->notify_index == notify->notify_index) {
-+			rebind = true;
-+
-+			break;
-+		}
-+	}
-+
-+	if (rebind) {
-+		/*
-+		 * This enclave owns the notify index and, by the invariant the
-+		 * fresh bind below upholds, is the only owner of its xarray
-+		 * entry, so the entry that comes back is the binding it set
-+		 * last time.
-+		 */
-+		old = xa_store(&ne_pci_dev->notify_xa, notify->notify_index, binding,
-+			       GFP_KERNEL);
-+		if (xa_is_err(old)) {
-+			rc = xa_err(old);
-+
-+			goto unlock_mutex;
-+		}
-+
-+		if (old)
-+			ne_mux_binding_free_rcu(old);
-+
-+		kfree(notify_binding);
-+	} else {
-+		/*
-+		 * Bind against an empty entry so that an enclave which asks
-+		 * for a notify index another one still owns leaves that owner's
-+		 * eventfd in place.
-+		 */
-+		old = xa_cmpxchg(&ne_pci_dev->notify_xa, notify->notify_index, NULL,
-+				 binding, GFP_KERNEL);
-+		if (xa_is_err(old)) {
-+			rc = xa_err(old);
-+
-+			goto unlock_mutex;
-+		}
-+
-+		if (old) {
-+			rc = -EEXIST;
-+
-+			goto unlock_mutex;
-+		}
-+
-+		list_add(&notify_binding->notify_binding_list_entry,
-+			 &ne_enclave->notify_bindings);
-+	}
-+
-+	/*
-+	 * Raise the scan bound of the vector the queue shares. Enclaves bind
-+	 * under their own mutex, so two of them can reach the same vector at
-+	 * once and a plain read-modify-write would lose a raise and with it a
-+	 * queue kick.
-+	 */
-+	max_bit = READ_ONCE(ne_pci_dev->mux[vec_rel].max_bit);
-+	while (bit > max_bit)
-+		if (try_cmpxchg(&ne_pci_dev->mux[vec_rel].max_bit, &max_bit,
-+				bit))
-+			break;
-+
-+	/*
-+	 * The device may have set the bit of this queue before there was a
-+	 * binding to deliver it on, and the handler leaves a bit it has no
-+	 * binding for set, so that bit is still there to be taken. Take it
-+	 * here, after the binding is in the xarray so that a handler taking it
-+	 * instead of this path finds the binding, and after the raise above so
-+	 * that such a handler reaches the word the bit is in. The handler takes
-+	 * a bit with an atomic read-modify-write on the same word, so exactly
-+	 * one of the two consumes it. The bitmap words are the width the device
-+	 * writes them in, which is the width the bit numbering of the handler
-+	 * is in as well.
-+	 */
-+	if (test_and_clear_bit(bit, (unsigned long *)ne_pci_dev->mux[vec_rel].bitmap))
-+		eventfd_signal(binding->ctx);
-+
-+	mutex_unlock(&ne_enclave->enclave_info_mutex);
-+
-+	return 0;
-+
-+unlock_mutex:
-+	mutex_unlock(&ne_enclave->enclave_info_mutex);
-+free_notify_binding:
-+	kfree(notify_binding);
-+free_binding:
-+	kfree(binding);
-+put_ctx:
-+	eventfd_ctx_put(ctx);
-+
-+	return rc;
-+}
-+
-+/**
-+ * ne_enclave_remove_all_notify_binding_entries() - Remove all the enclave queue
-+ *						    bindings from the device
-+ *						    wide bindings xarray.
-+ * @ne_enclave :	Private data associated with the current enclave.
-+ * @ne_pci_dev:		Private data associated with the PCI device, taken by
-+ *			the caller so that the removal runs on the device the
-+ *			caller looked the enclave up on.
-+ *
-+ * Context: Process context. This function is called with the enclave
-+ *	    information mutex held.
-+ */
-+static void ne_enclave_remove_all_notify_binding_entries(struct ne_enclave *ne_enclave,
-+							 struct ne_pci_dev *ne_pci_dev)
-+{
-+	struct ne_notify_binding *notify_binding = NULL;
-+	struct ne_notify_binding *notify_binding_tmp = NULL;
-+	struct ne_mux_binding *binding = NULL;
-+
-+	list_for_each_entry_safe(notify_binding, notify_binding_tmp,
-+				 &ne_enclave->notify_bindings,
-+				 notify_binding_list_entry) {
-+		binding = xa_erase(&ne_pci_dev->notify_xa, notify_binding->notify_index);
-+		if (binding)
-+			ne_mux_binding_free_rcu(binding);
-+
-+		ne_mux_drop_bit(ne_pci_dev, notify_binding->notify_index);
-+
-+		list_del(&notify_binding->notify_binding_list_entry);
-+
-+		kfree(notify_binding);
-+	}
-+}
-+
  /**
-  * ne_enclave_do_ioctl() - Ioctl function provided by the enclave file.
-  * @file:	File associated with this ioctl function.
-@@ -2230,6 +2584,22 @@ static long ne_enclave_do_ioctl(struct file *file, unsigned int cmd, unsigned lo
- 		return 0;
- 	}
- 
-+	case NE_EA_IOCTL(NE_SET_NOTIFY_EVENTFD): {
-+		struct ne_notify_eventfd __user *uargs = (void __user *)arg;
-+		unsigned int usize = _IOC_SIZE(cmd);
-+		struct ne_notify_eventfd args;
-+		int rc;
-+
-+		if (usize < offsetofend(struct ne_notify_eventfd, notify_index))
-+			return -EINVAL;
-+
-+		rc = copy_struct_from_user(&args, sizeof(args), uargs, usize);
-+		if (rc)
-+			return rc;
-+
-+		return ne_set_notify_eventfd(ne_enclave, &args);
-+	}
-+
- 	default:
- 		return -ENOTTY;
- 	}
-@@ -2415,6 +2785,27 @@ int ne_enclave_free_slot(struct ne_pci_dev *ne_pci_dev,
- 	rc = ne_do_request(pdev, ENCLAVE_STOP,
- 			   &enclave_stop_request, sizeof(enclave_stop_request),
- 			   &cmd_reply, sizeof(cmd_reply));
-+
-+	/*
-+	 * The notify index of a queue belongs to the slot, so the device is free
-+	 * to give it to another enclave once the slot is freed. Take the
-+	 * bindings of this enclave out of the xarray the handler looks them up
-+	 * in before that, or a bind for the reissued index finds the entry
-+	 * still taken. This happens whether or not the stop went through,
-+	 * because an unbind of the device tears the multiplexer down next.
-+	 *
-+	 * A handler that looked up a binding of this enclave before it was
-+	 * erased here can still be running. Were the index reissued under it,
-+	 * it would take the bit of a notification the device raises for the
-+	 * next owner and signal this enclave's eventfd instead, so wait for it
-+	 * before the slot goes.
-+	 */
-+	if (!list_empty(&ne_enclave->notify_bindings)) {
-+		ne_enclave_remove_all_notify_binding_entries(ne_enclave, ne_pci_dev);
-+
-+		synchronize_rcu();
-+	}
-+
- 	if (rc < 0)
- 		return rc;
- 
-@@ -2437,6 +2828,9 @@ int ne_enclave_free_slot(struct ne_pci_dev *ne_pci_dev,
+- * ne_mux_drop_bit() - Take the bit of an enclave queue out of the bitmap of its
+- *		       pooled vector.
++ * ne_mux_drop_bit() - Take the bit of an enclave notification out of the bitmap
++ *		       of its pooled vector.
+  * @ne_pci_dev:		Private data associated with the PCI device.
+- * @notify_index:	Notify index of the queue whose bit to take out.
++ * @notify_index:	Notify index of the notification whose bit to take out.
+  *
+  * The handler leaves a bit it finds no binding for set, so that a bind can take
+- * it and deliver the kick it stands for. Once the binding is gone, the bind
+- * that bit was waiting for has already happened, and the next bind of the index
+- * belongs to whoever holds the queue by then, so leaving the bit would hand one
+- * caller's kick to another. It also costs every later interrupt on the vector a
+- * lookup for a bit nothing will claim. Take it out.
++ * it and deliver the notification it stands for. Once the binding is gone, the
++ * bind that bit was waiting for has already happened, and the next bind of the
++ * index belongs to whoever holds the notification by then, so leaving the bit
++ * would hand one caller's notification to another. It also costs every later
++ * interrupt on the vector a lookup for a bit nothing will claim. Take it out.
+  *
+  * The caller takes the binding out of the xarray first, so at this point no
+- * binding for the index is left to look up, and the kick this destroys is one
+- * no later scan could have delivered. In the other order a kick the device
+- * recorded in between would be left with a live binding and no interrupt of
+- * its own still to come.
++ * binding for the index is left to look up, and the notification this destroys
++ * is one no later scan could have delivered. In the other order a notification
++ * the device recorded in between would be left with a live binding and no
++ * interrupt of its own still to come.
+  *
+- * A kick the enclave raises between the two is dropped. It is a kick that
+- * arrived as its caller stopped listening, so the ioctl documentation says a
+- * release leaves a later bind of the index no kick to collect.
++ * A notification the enclave raises between the two is dropped. It arrived as
++ * its caller stopped listening, so the ioctl documentation says a release
++ * leaves a later bind of the index no notification to collect.
+  *
+  * Context: Process context.
   */
- static void ne_enclave_free(struct ne_enclave *ne_enclave)
- {
-+	struct ne_device_wiring *dev_tmp = NULL;
-+	struct ne_device_wiring *dev = NULL;
-+
- 	ne_enclave_remove_all_contig_regions(&ne_enclave->contig_regions_list);
- 	ne_enclave_remove_all_contig_regions(&ne_enclave->device_regions_list);
- 	ne_enclave_remove_all_mem_region_entries(ne_enclave);
-@@ -2445,6 +2839,9 @@ static void ne_enclave_free(struct ne_enclave *ne_enclave)
- 	if (ne_enclave->info_file)
- 		fput(ne_enclave->info_file);
- 
-+	list_for_each_entry_safe(dev, dev_tmp, &ne_enclave->devices, list_entry)
-+		kfree(dev);
-+
- 	kfree(ne_enclave);
+@@ -1828,13 +1828,13 @@ static void ne_mux_drop_bit(struct ne_pci_dev *ne_pci_dev, u32 notify_index)
  }
  
-@@ -2686,6 +3083,8 @@ static int ne_create_vm_ioctl(struct ne_pci_dev *ne_pci_dev, u64 flags,
+ /**
+- * ne_del_notify_eventfd() - Release the eventfd bound to the interrupt of an
+- *			     enclave queue.
++ * ne_del_notify_eventfd() - Release the eventfd bound to an enclave
++ *			     notification.
+  * @ne_enclave :	Private data associated with the current enclave.
+  * @ne_pci_dev:		Private data associated with the PCI device, taken by
+  *			the caller so that the release runs on the device the
+  *			caller looked the enclave up on.
+- * @notify_index:	Notify index of the queue to release.
++ * @notify_index:	Notify index of the notification to release.
+  *
+  * Context: Process context.
+  * Return:
+@@ -1909,17 +1909,20 @@ static bool ne_enclave_owns_notify(struct ne_enclave *ne_enclave,
+ 	struct ne_device_wiring *dev = NULL;
+ 	unsigned int i = 0;
  
- 	init_waitqueue_head(&ne_enclave->eventq);
- 	ne_enclave->has_event = false;
-+	INIT_LIST_HEAD(&ne_enclave->notify_bindings);
-+	INIT_LIST_HEAD(&ne_enclave->devices);
- 	mutex_init(&ne_enclave->enclave_info_mutex);
- 	ne_enclave->max_mem_regions = cmd_reply.alloc.mem_regions;
- 	INIT_LIST_HEAD(&ne_enclave->contig_regions_list);
-@@ -4255,6 +4654,7 @@ static int ne_add_device_ioctl(struct ne_enclave *ne_enclave,
- 	struct ne_shm_region *shm_regions = NULL;
- 	const struct ne_vq_wiring *wiring = NULL;
- 	struct slot_add_device_req *req = NULL;
-+	struct ne_device_wiring *dev = NULL;
- 	struct ne_contig_mem *info = NULL;
- 	LIST_HEAD(regions);
- 	u8 buf[NE_MAX_VQS * sizeof(struct ne_vq_wiring)];
-@@ -4346,6 +4746,17 @@ static int ne_add_device_ioctl(struct ne_enclave *ne_enclave,
- 		goto free;
+-	list_for_each_entry(dev, &ne_enclave->devices, list_entry)
++	list_for_each_entry(dev, &ne_enclave->devices, list_entry) {
++		if (dev->info_notify_index == notify_index)
++			return true;
++
+ 		for (i = 0; i < dev->num_vqs; i++)
+ 			if (dev->notify_index[i] == notify_index)
+ 				return true;
++	}
+ 
+ 	return false;
+ }
+ 
+ /**
+- * ne_set_notify_eventfd() - Bind an eventfd to the interrupt of an enclave
+- *			     queue.
++ * ne_set_notify_eventfd() - Bind an eventfd to an enclave notification.
+  * @ne_enclave :	Private data associated with the current enclave.
+  * @notify:		The eventfd and the notify index.
+  *
+@@ -2051,10 +2054,10 @@ static int ne_set_notify_eventfd(struct ne_enclave *ne_enclave,
  	}
  
-+	/*
-+	 * Allocate the record of what the device reports before it is told
-+	 * about the device, so that nothing can fail once it has been.
-+	 */
-+	dev = kzalloc_obj(*dev);
-+	if (!dev) {
-+		rc = -ENOMEM;
-+
-+		goto free;
-+	}
-+
- 	for (i = 0; i < args->num_shm_regions; i++) {
- 		rc = ne_add_device_region(ne_enclave, &shm_regions[i], req,
- 					  &regions);
-@@ -4438,10 +4849,16 @@ static int ne_add_device_ioctl(struct ne_enclave *ne_enclave,
- 		args->vq_info[i].notify_index = wiring[i].notify_index;
- 		args->vq_info[i].msix_entry = wiring[i].msix_entry;
- 		args->vq_info[i].doorbell_offset = wiring[i].doorbell_offset;
-+
-+		dev->notify_index[i] = wiring[i].notify_index;
+ 	/*
+-	 * Raise the scan bound of the vector the queue shares. Enclaves bind
+-	 * under their own mutex, so two of them can reach the same vector at
+-	 * once and a plain read-modify-write would lose a raise and with it a
+-	 * queue kick.
++	 * Raise the scan bound of the vector the notification shares. Enclaves
++	 * bind under their own mutex, so two of them can reach the same vector
++	 * at once and a plain read-modify-write would lose a raise and with it
++	 * a notification.
+ 	 */
+ 	max_bit = READ_ONCE(ne_pci_dev->mux[vec_rel].max_bit);
+ 	while (bit > max_bit)
+@@ -2094,9 +2097,10 @@ static int ne_set_notify_eventfd(struct ne_enclave *ne_enclave,
+ }
+ 
+ /**
+- * ne_enclave_remove_all_notify_binding_entries() - Remove all the enclave queue
+- *						    bindings from the device
+- *						    wide bindings xarray.
++ * ne_enclave_remove_all_notify_binding_entries() - Remove all the enclave
++ *						    notification bindings from
++ *						    the device wide bindings
++ *						    xarray.
+  * @ne_enclave :	Private data associated with the current enclave.
+  * @ne_pci_dev:		Private data associated with the PCI device, taken by
+  *			the caller so that the removal runs on the device the
+@@ -4675,7 +4679,7 @@ static int ne_add_device_ioctl(struct ne_enclave *ne_enclave,
+ 		return -NE_ERR_INVALID_FLAG_VALUE;
+ 	}
+ 
+-	if (args->padding)
++	if (args->padding || args->padding2)
+ 		return -EINVAL;
+ 
+ 	if (args->num_vqs > NE_MAX_VQS) {
+@@ -4854,8 +4858,10 @@ static int ne_add_device_ioctl(struct ne_enclave *ne_enclave,
  	}
  
  	args->device_uid = cmd_reply.add_device.device_uid;
++	args->info_notify_index = cmd_reply.add_device.info_notify_index;
  
-+	dev->num_vqs = args->num_vqs;
-+	list_add(&dev->list_entry, &ne_enclave->devices);
-+	dev = NULL;
-+
- 	rc = 0;
- 
- free:
-@@ -4452,6 +4869,7 @@ static int ne_add_device_ioctl(struct ne_enclave *ne_enclave,
- 	 * the enclave, leaving nothing here.
- 	 */
- 	ne_enclave_remove_all_contig_regions(&regions);
-+	kfree(dev);
- 	kfree(req);
- 	kfree(shm_regions);
+ 	dev->num_vqs = args->num_vqs;
++	dev->info_notify_index = args->info_notify_index;
+ 	list_add(&dev->list_entry, &ne_enclave->devices);
+ 	dev = NULL;
  
 diff --git a/drivers/virt/nitro_enclaves/ne_misc_dev.h b/drivers/virt/nitro_enclaves/ne_misc_dev.h
-index 4f695f1410aec..57e20fe3ee1da 100644
+index 57e20fe3ee1da..0df403f0080e5 100644
 --- a/drivers/virt/nitro_enclaves/ne_misc_dev.h
 +++ b/drivers/virt/nitro_enclaves/ne_misc_dev.h
-@@ -112,6 +112,29 @@ struct ne_mem_region {
- 	u64			userspace_addr;
+@@ -117,18 +117,23 @@ struct ne_mem_region {
+  *			     enclave.
+  * @list_entry:		Entry in the list of the enclave's devices.
+  * @num_vqs:		Number of entries of @notify_index.
++ * @info_notify_index:	Notification the enclave raises when it has changed
++ *			the info page of the device.
+  * @notify_index:	Notify index of each virtqueue of the device.
+  */
+ struct ne_device_wiring {
+ 	struct list_head	list_entry;
+ 	u32			num_vqs;
++	u32			info_notify_index;
+ 	u32			notify_index[NE_MAX_VQS_PER_DEVICE];
  };
  
-+/**
-+ * struct ne_device_wiring - What %NE_ADD_DEVICE reported for one device of an
-+ *			     enclave.
-+ * @list_entry:		Entry in the list of the enclave's devices.
-+ * @num_vqs:		Number of entries of @notify_index.
-+ * @notify_index:	Notify index of each virtqueue of the device.
-+ */
-+struct ne_device_wiring {
-+	struct list_head	list_entry;
-+	u32			num_vqs;
-+	u32			notify_index[NE_MAX_VQS_PER_DEVICE];
-+};
-+
-+/**
-+ * struct ne_notify_binding - Entry in the list of enclave virtqueue bindings.
-+ * @notify_binding_list_entry:	Entry in the list of enclave queue bindings.
-+ * @notify_index:		Notify index of the bound queue.
-+ */
-+struct ne_notify_binding {
-+	struct list_head	notify_binding_list_entry;
-+	unsigned long		notify_index;
-+};
-+
  /**
-  * struct ne_enclave - Per-enclave data used for enclave lifetime management.
-  * @enclave_info_mutex :	Mutex for accessing this internal state.
-@@ -139,6 +162,12 @@ struct ne_mem_region {
+- * struct ne_notify_binding - Entry in the list of enclave virtqueue bindings.
+- * @notify_binding_list_entry:	Entry in the list of enclave queue bindings.
+- * @notify_index:		Notify index of the bound queue.
++ * struct ne_notify_binding - Entry in the list of enclave notification
++ *			      bindings.
++ * @notify_binding_list_entry:	Entry in the list of enclave notification
++ *				bindings.
++ * @notify_index:		Notify index of the bound notification.
+  */
+ struct ne_notify_binding {
+ 	struct list_head	notify_binding_list_entry;
+@@ -162,8 +167,8 @@ struct ne_notify_binding {
   *				so that the device keeps the page after user space
   *				has closed the descriptor. NULL until
   *				%NE_SET_INFO_PAGE is called.
-+ * @notify_bindings:		List of the virtqueues this enclave has bound an
-+ *				eventfd to.
-+ * @devices:			List of struct ne_device_wiring, one for each device
-+ *				%NE_ADD_DEVICE gave the enclave. The notify indices
-+ *				in it are the only ones the enclave may bind an
-+ *				eventfd to.
-  * @max_mem_regions:		The maximum number of memory regions that can be
-  *				handled by the hypervisor.
-  * @mem_regions_list:		Enclave user space memory regions list.
-@@ -172,6 +201,8 @@ struct ne_enclave {
- 	bool			has_event;
- 	u64			id;
- 	struct file		*info_file;
-+	struct list_head	notify_bindings;
-+	struct list_head	devices;
- 	u64			max_mem_regions;
- 	struct list_head	mem_regions_list;
- 	u64			mem_size;
+- * @notify_bindings:		List of the virtqueues this enclave has bound an
+- *				eventfd to.
++ * @notify_bindings:		List of the notifications this enclave has bound
++ *				an eventfd to.
+  * @devices:			List of struct ne_device_wiring, one for each device
+  *				%NE_ADD_DEVICE gave the enclave. The notify indices
+  *				in it are the only ones the enclave may bind an
 diff --git a/drivers/virt/nitro_enclaves/ne_pci_dev.c b/drivers/virt/nitro_enclaves/ne_pci_dev.c
-index de96d68906bbf..a079abb2b4618 100644
+index a079abb2b4618..cedf828240214 100644
 --- a/drivers/virt/nitro_enclaves/ne_pci_dev.c
 +++ b/drivers/virt/nitro_enclaves/ne_pci_dev.c
-@@ -580,12 +580,15 @@ void ne_mux_binding_free_rcu(struct ne_mux_binding *binding)
-  *		   has a binding for.
-  * @mux_vec:	Multiplexer state of the pooled vector.
-  *
-- * A bit leaves the bitmap by the same atomic read-modify-write that decides to
-- * deliver it, so a bit this vector has no binding for stays set. It is left set
-- * on purpose: a queue can be kicked before user space has bound an eventfd to
-- * it, and a bit taken out of the bitmap on the strength of a binding that is not
-+ * A bit is delivered by an atomic read-modify-write that clears it as it reads
-+ * it, so a bit this vector has no binding for stays set. It is left set on
-+ * purpose: a queue can be kicked before user space has bound an eventfd to it,
-+ * and a bit taken out of the bitmap on the strength of a binding that is not
-  * there yet is a kick nobody can ever be told about. The bit waits instead, and
-- * the bind of that queue takes it and delivers it.
-+ * the bind of that queue takes it and delivers it. A bit is cleared without
-+ * being delivered only for an index whose binding has just been erased: by
-+ * ne_mux_drop_bit(), or by a scan that took the bit and then found the binding
-+ * gone.
-  *
-  * So a set bit is consumed at most once, and exactly once if a scan finds a
-  * binding for it or a bind for its index runs. A bit whose index is never bound
-@@ -598,8 +601,8 @@ void ne_mux_binding_free_rcu(struct ne_mux_binding *binding)
-  *
-  * Context: Interrupt context. Called with the RCU read-side held.
-  * Return:
-- * * true if the scan found no bit it could deliver, false if it found at least
-- *   one.
-+ * * true if the scan found no set bit with a binding, false if it found at
-+ *   least one.
-  */
- static bool ne_mux_scan(struct ne_mux_vec *mux_vec)
- {
-@@ -626,8 +629,26 @@ static bool ne_mux_scan(struct ne_mux_vec *mux_vec)
+@@ -554,7 +554,8 @@ static void ne_teardown_msix(struct pci_dev *pdev)
+ }
  
- 			empty = false;
- 
--			if (test_and_clear_bit(bit, (unsigned long *)mux_vec->bitmap))
--				eventfd_signal(binding->ctx);
-+			if (!test_and_clear_bit(bit, (unsigned long *)mux_vec->bitmap))
-+				continue;
-+
-+			/*
-+			 * A rebind can replace the binding between the load above
-+			 * and the bit taken here. The rebind stores its binding
-+			 * before it tries to take the bit, and test_and_clear_bit()
-+			 * is fully ordered on both sides, also when it finds the bit
-+			 * clear, so a bit taken here after that attempt sees the new
-+			 * binding. Load it again and signal the binding that load
-+			 * returns, or drop the kick if the entry is gone. An unbind
-+			 * waits for this handler before the index can be bound
-+			 * again, so this load never returns a binding made after
-+			 * the unbind.
-+			 */
-+			binding = xa_load(&ne_pci_dev->notify_xa, notify_index);
-+			if (!binding)
-+				continue;
-+
-+			eventfd_signal(binding->ctx);
- 		}
- 	}
- 
-@@ -661,7 +682,7 @@ static irqreturn_t ne_mux_handler(int irq, void *data)
- 	 * whatever the bitmap holds, so such a bit has an interrupt of its own
- 	 * still to come and reaches its eventfd on that one. Scanning again,
- 	 * reading the bound again, delivers it on this interrupt instead, so stop
--	 * on the first scan that delivers nothing. Stopping on an empty bitmap
-+	 * on the first scan that finds no bound bit. Stopping on an empty bitmap
- 	 * instead would wait for a read a bit no bind is coming for never gives.
- 	 * NE_MUX_MAX_PASSES caps the scans either way, so a device that goes on
- 	 * setting bits cannot hold the handler.
-diff --git a/include/uapi/linux/nitro_enclaves.h b/include/uapi/linux/nitro_enclaves.h
-index 6f83a8b0762b3..ff1b32e380e7b 100644
---- a/include/uapi/linux/nitro_enclaves.h
-+++ b/include/uapi/linux/nitro_enclaves.h
-@@ -1061,4 +1061,70 @@ struct ne_enclave_start_info {
- 	__u64	enclave_cid;
+ /**
+- * ne_mux_binding_rcu_free() - RCU callback freeing one enclave queue binding.
++ * ne_mux_binding_rcu_free() - RCU callback freeing one enclave notification
++ *			       binding.
+  * @head:	RCU head of the binding to free.
+  *
+  * Context: Softirq or process context.
+diff --git a/drivers/virt/nitro_enclaves/ne_pci_dev.h b/drivers/virt/nitro_enclaves/ne_pci_dev.h
+index 0dbce83cb06bd..18aafe8111a67 100644
+--- a/drivers/virt/nitro_enclaves/ne_pci_dev.h
++++ b/drivers/virt/nitro_enclaves/ne_pci_dev.h
+@@ -559,8 +559,11 @@ struct slot_pool_mem_donate_req {
+  * @add_device.device_uid:	SLOT_ADD_DEVICE. Unique id of the new device.
+  * @add_device.num_vqs:		SLOT_ADD_DEVICE. Number of entries of wiring
+  *				the device wrote to the info page.
+- * @add_device.reserved12:	SLOT_ADD_DEVICE. Bytes owned by other
+- *				commands.
++ * @add_device.info_notify_index:	SLOT_ADD_DEVICE. Notification the
++ *				enclave raises when it has changed the info page
++ *				of the device.
++ * @add_device.reserved14:	SLOT_ADD_DEVICE. Bytes the device writes as
++ *				zero.
+  * @add_device.vq_wiring_offset:	SLOT_ADD_DEVICE. Offset into the info
+  *				page at which @num_vqs entries of struct
+  *				ne_vq_wiring start.
+@@ -602,7 +605,8 @@ struct ne_pci_dev_cmd_reply {
+ 		struct {
+ 			u64	device_uid;
+ 			u32	num_vqs;
+-			u32	reserved12;
++			u16	info_notify_index;
++			u16	reserved14;
+ 			u64	vq_wiring_offset;
+ 		} add_device;
+ 	};
+@@ -616,6 +620,10 @@ static_assert(offsetof(struct ne_pci_dev_cmd_reply, alloc.mem_regions) == 32);
+ static_assert(offsetof(struct ne_pci_dev_cmd_reply, info.slot_uid) == 8);
+ static_assert(offsetof(struct ne_pci_dev_cmd_reply, add_device.device_uid) == 8);
+ static_assert(offsetof(struct ne_pci_dev_cmd_reply, add_device.num_vqs) == 16);
++static_assert(offsetof(struct ne_pci_dev_cmd_reply,
++		       add_device.info_notify_index) == 20);
++static_assert(offsetof(struct ne_pci_dev_cmd_reply,
++		       add_device.reserved14) == 22);
+ static_assert(offsetof(struct ne_pci_dev_cmd_reply,
+ 		       add_device.vq_wiring_offset) == 24);
+ static_assert(offsetof(struct ne_pci_dev_cmd_reply, info.enclave_cid) == 16);
+@@ -677,8 +685,9 @@ struct ne_mux_vec {
  };
  
-+/**
-+ * NE_EVENTFD_UNBIND - Value of an eventfd field that releases the binding the
-+ *		       caller holds, instead of naming an eventfd to bind. A kick
-+ *		       the enclave raises as the release lands is dropped, so a
-+ *		       caller that binds the queue again gets no signal for it.
-+ *		       Any other negative value names no open file and is an
-+ *		       error.
-+ */
-+#define NE_EVENTFD_UNBIND		(-1)
-+
-+/**
-+ * NE_SET_NOTIFY_EVENTFD - The command is used to bind an eventfd to the
-+ *			   interrupt of one enclave virtqueue. When the enclave
-+ *			   kicks the queue, the NE PCI device raises the
-+ *			   interrupt the queue shares and the driver signals the
-+ *			   eventfd. A queue the caller has already bound is
-+ *			   rebound to the new eventfd, and the driver drops its
-+ *			   reference on the one it replaces. A kick that is
-+ *			   already being delivered when the rebind lands is
-+ *			   signalled on the outgoing eventfd, so a caller that
-+ *			   rebinds a queue an enclave is still kicking can see
-+ *			   one last kick arrive on the eventfd it replaced.
-+ *			   %NE_EVENTFD_UNBIND
-+ *			   releases the binding the caller holds on the queue.
-+ *			   The ioctl can be invoked on the enclave fd.
-+ *
-+ * Context: Process context.
-+ * Return:
-+ * * 0					- Logic successfully completed.
-+ * * -1					- There was a failure in the ioctl logic.
-+ * On failure, errno is set to:
-+ * * ENODEV				- The NE PCI device is not available.
-+ * * EFAULT				- Argument read failure.
-+ * * EINVAL				- The argument is shorter than @notify_index,
-+ *					  the NE PCI device shares no interrupts,
-+ *					  the notify index addresses a bit outside
-+ *					  the bitmap page of the vector it shares,
-+ *					  %NE_ADD_DEVICE did not report the notify
-+ *					  index to this enclave, or the given fd is
-+ *					  not an eventfd.
-+ * * EBADF				- There is no open file for the given fd, which
-+ *					  is the case for every negative fd other
-+ *					  than %NE_EVENTFD_UNBIND.
-+ * * E2BIG				- The argument is longer than this kernel knows
-+ *					  about and the excess is not all zero.
-+ * * ENOMEM				- Memory allocation failure.
-+ * * EEXIST				- Another enclave holds a binding on the queue.
-+ * * ENOENT				- The caller holds no binding on the queue to
-+ *					  release.
-+ */
-+#define NE_SET_NOTIFY_EVENTFD		_IOW(0xAE, 0x28, struct ne_notify_eventfd)
-+
-+/**
-+ * struct ne_notify_eventfd - Eventfd to signal on an enclave virtqueue kick
-+ *			      (in).
-+ * @fd:			Eventfd to signal when the queue is kicked, or
-+ *			%NE_EVENTFD_UNBIND to release the binding on the
-+ *			queue (in).
-+ * @notify_index:	Index the enclave writes to notify the NE PCI device of
-+ *			the virtqueue (in).
-+ */
-+struct ne_notify_eventfd {
-+	__s32	fd;
-+	__u32	notify_index;
-+};
-+
- #endif /* _UAPI_LINUX_NITRO_ENCLAVES_H_ */
+ /**
+- * struct ne_mux_binding - Eventfd bound to one enclave queue.
+- * @ctx:			Eventfd signalled when the queue is kicked.
++ * struct ne_mux_binding - Eventfd bound to one enclave notification.
++ * @ctx:			Eventfd signalled when the notification is
++ *				raised.
+  * @rcu:			Head used to free the binding after a grace
+  *				period, so that an interrupt handler which
+  *				already loaded it can still dereference it.
+@@ -707,8 +716,8 @@ struct ne_mux_binding {
+  *				capability, and with it the multiplexer and slot
+  *				pool registers.
+  * @iomem_base :		MMIO region of the PCI device.
+- * @notify_xa:			Enclave queue bindings, keyed by the notify index of
+- *				the queue.
++ * @notify_xa:			Enclave notification bindings, keyed by notify
++ *				index.
+  * @mux:			Per-pooled-vector interrupt multiplexer state.
+  * @mux_nr_vecs:		Number of MSI-X vectors in the interrupt
+  *				multiplexer pool.
+@@ -789,9 +798,10 @@ int ne_do_request(struct pci_dev *pdev, enum ne_pci_dev_cmd_type cmd_type,
+ 		  size_t cmd_reply_size);
+ 
+ /**
+- * ne_mux_binding_free_rcu() - Free an enclave queue binding after a grace
+- *			       period.
+- * @binding:	Binding that has been removed from the queue bindings xarray.
++ * ne_mux_binding_free_rcu() - Free an enclave notification binding after a
++ *			       grace period.
++ * @binding:	Binding that has been removed from the notification bindings
++ *		xarray.
+  *
+  * Context: Process context.
+  */
+diff --git a/include/uapi/linux/nitro_enclaves.h b/include/uapi/linux/nitro_enclaves.h
+index ff1b32e380e7b..4f2ca77f1b827 100644
+--- a/include/uapi/linux/nitro_enclaves.h
++++ b/include/uapi/linux/nitro_enclaves.h
+@@ -590,6 +590,9 @@ struct ne_shm_region {
+  * @device_uid:		Id the device gave the new device (out).
+  * @vq_info:		How the enclave reaches the device's first @num_vqs
+  *			virtqueues (out).
++ * @info_notify_index:	Notification raised when the device has updated its
++ *			entry in the info page (out).
++ * @padding2:		Must be zero.
+  */
+ struct ne_add_device_args {
+ 	__u32	flags;
+@@ -603,6 +606,8 @@ struct ne_add_device_args {
+ 	__u64	shm_regions_ptr;
+ 	__u64	device_uid;
+ 	struct ne_vq_info vq_info[NE_MAX_VQS];
++	__u32	info_notify_index;
++	__u32	padding2;
+ };
+ 
+ /**
+@@ -636,6 +641,12 @@ struct ne_add_device_args {
+  *		   reads them from there and returns them in @vq_info, so a
+  *		   caller learns the interrupt vector and the doorbell offset
+  *		   of every queue from this call.
++ *		   One more notification is raised when the device has updated
++ *		   its entry in the info page, and @info_notify_index names it,
++ *		   so %NE_SET_NOTIFY_EVENTFD binds an eventfd to it the same way
++ *		   it binds one to a queue.
++ *		   An argument that ends at @vq_info is taken and gets no
++ *		   @info_notify_index back.
+  *		   The ioctl can be invoked on the enclave fd, before an
+  *		   enclave is started.
+  *
+@@ -648,7 +659,8 @@ struct ne_add_device_args {
+  * * EFAULT				- Argument read or write failure.
+  * * EBADF				- A region's @fd is not an open file
+  *					  descriptor.
+- * * EINVAL				- The argument is shorter than @vq_info, or
++ * * EINVAL				- The argument does not reach the end of
++ *					  @vq_info, or
+  *					  @padding is not zero, or @num_vqs is
+  *					  more than %NE_MAX_VQS, or @config_size
+  *					  is more than @device_config holds, or
+@@ -662,7 +674,8 @@ struct ne_add_device_args {
+  *					  made for another enclave, or it is
+  *					  %NE_MEMORY_PRIVATE, or the regions are
+  *					  made of more runs in total than the
+- *					  device takes.
++ *					  device takes, or @padding2 is not
++ *					  zero.
+  * * EIO				- Current task mm is not the same as the one
+  *					  that created the enclave.
+  * * E2BIG				- The argument is longer than this kernel knows
+@@ -1063,29 +1076,35 @@ struct ne_enclave_start_info {
+ 
+ /**
+  * NE_EVENTFD_UNBIND - Value of an eventfd field that releases the binding the
+- *		       caller holds, instead of naming an eventfd to bind. A kick
+- *		       the enclave raises as the release lands is dropped, so a
+- *		       caller that binds the queue again gets no signal for it.
+- *		       Any other negative value names no open file and is an
+- *		       error.
++ *		       caller holds, instead of naming an eventfd to bind. A
++ *		       notification the enclave raises as the release lands is
++ *		       dropped, so a caller that binds it again gets no signal
++ *		       for it. Any other negative value names no open file and
++ *		       is an error.
+  */
+ #define NE_EVENTFD_UNBIND		(-1)
+ 
+ /**
+- * NE_SET_NOTIFY_EVENTFD - The command is used to bind an eventfd to the
+- *			   interrupt of one enclave virtqueue. When the enclave
+- *			   kicks the queue, the NE PCI device raises the
+- *			   interrupt the queue shares and the driver signals the
+- *			   eventfd. A queue the caller has already bound is
+- *			   rebound to the new eventfd, and the driver drops its
+- *			   reference on the one it replaces. A kick that is
++ * NE_SET_NOTIFY_EVENTFD - The command is used to bind an eventfd to one of the
++ *			   notifications an enclave raises, which is the kick of
++ *			   one of its virtqueues or an update to a device's
++ *			   entry in the info page. When the enclave raises the
++ *			   notification, the NE PCI device raises the interrupt
++ *			   the notification shares and the driver signals the
++ *			   eventfd. A notification the caller has already bound
++ *			   is rebound to the new eventfd, and the driver drops
++ *			   its reference on the one it replaces. A notification
+  *			   already being delivered when the rebind lands is
+  *			   signalled on the outgoing eventfd, so a caller that
+- *			   rebinds a queue an enclave is still kicking can see
+- *			   one last kick arrive on the eventfd it replaced.
+- *			   %NE_EVENTFD_UNBIND
+- *			   releases the binding the caller holds on the queue.
+- *			   The ioctl can be invoked on the enclave fd.
++ *			   rebinds a notification an enclave is still raising can
++ *			   see one last signal arrive on the eventfd it replaced.
++ *			   %NE_EVENTFD_UNBIND releases the binding the caller
++ *			   holds on the notification. The ioctl can be invoked
++ *			   on the enclave fd.
++ *			   @notify_index names a notification across the
++ *			   whole NE PCI device, and an enclave fd binds only
++ *			   the indices %NE_ADD_DEVICE reported to its enclave,
++ *			   in @vq_info or in @info_notify_index.
+  *
+  * Context: Process context.
+  * Return:
+@@ -1107,20 +1126,20 @@ struct ne_enclave_start_info {
+  * * E2BIG				- The argument is longer than this kernel knows
+  *					  about and the excess is not all zero.
+  * * ENOMEM				- Memory allocation failure.
+- * * EEXIST				- Another enclave holds a binding on the queue.
+- * * ENOENT				- The caller holds no binding on the queue to
+- *					  release.
++ * * EEXIST				- Another enclave holds a binding on the
++ *					  notification.
++ * * ENOENT				- The caller holds no binding on the notification
++ *					  to release.
+  */
+ #define NE_SET_NOTIFY_EVENTFD		_IOW(0xAE, 0x28, struct ne_notify_eventfd)
+ 
+ /**
+- * struct ne_notify_eventfd - Eventfd to signal on an enclave virtqueue kick
+- *			      (in).
+- * @fd:			Eventfd to signal when the queue is kicked, or
+- *			%NE_EVENTFD_UNBIND to release the binding on the
+- *			queue (in).
+- * @notify_index:	Index the enclave writes to notify the NE PCI device of
+- *			the virtqueue (in).
++ * struct ne_notify_eventfd - Eventfd to signal on an enclave notification (in).
++ * @fd:			Eventfd to signal when the notification is raised, or
++ *			%NE_EVENTFD_UNBIND to release the binding on it
++ *			(in).
++ * @notify_index:	Index the enclave writes to raise the notification with
++ *			the NE PCI device (in).
+  */
+ struct ne_notify_eventfd {
+ 	__s32	fd;
 -- 
 2.47.1
 
