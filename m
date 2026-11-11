@@ -1,139 +1,115 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC1F2606A324
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 23:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A980F606A32D
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 23:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ebl8P1Hp
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kjxuV5yB
 Received: by kanga.kvack.org (Postfix)
-	id 11E986B05D2; Wed, 11 Nov 2026 18:23:20 -0500 (EST)
+	id 9FCCB6B05D4; Wed, 11 Nov 2026 18:26:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F68A6B05D3; Wed, 11 Nov 2026 18:23:20 -0500 (EST)
+	id 9D5F36B05D5; Wed, 11 Nov 2026 18:26:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00EEB6B05D4; Wed, 11 Nov 2026 18:23:19 -0500 (EST)
+	id 912CD6B05D6; Wed, 11 Nov 2026 18:26:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CE2A36B05D2
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:23:19 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6124B1C3AAE
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:23:19 +0000 (UTC)
-X-FDA: 85424416518.02.C0611A2
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6692C6B05D4
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:26:15 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E6F0414046F
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:26:14 +0000 (UTC)
+X-FDA: 85424423868.27.5ABD58D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 3EAD2140003
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:23:17 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ebl8P1Hp;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5E4AA40009
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:26:13 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kjxuV5yB;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf26.hostedemail.com: domain of devnull+ts.perfloop.ai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ts.perfloop.ai@kernel.org
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794439397;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	spf=pass (imf12.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794439573;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=zE4AdyJ1+yT1NztSJ3PyUf+wR+cmqR5P4rzXtjdrpsY=;
-	b=HefkPNX4IsGCd/iakvZJE+jVKo13EvyMeNNHbVy4v+xRx0qS1jDKj8t2IVa74nKABITPEe
-	1Iz9cn4UXypVHHP2ewFxQ04/amkzdL43hlOE8vb8prSzG4jPJJ1fXmI10d+/ZmO0zWRr1K
-	n7+KaVU9IxvmgIRCPpoE0eBndIkKOiU=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ebl8P1Hp;
+	 references:dkim-signature; bh=5cPu8Hb8iDdKAlJhQZkVAjtblqinU0ui27HqYJ6//bQ=;
+	b=z+EpOnPL2xGeeTM3c28JCGY9MGLnYntFIKcHwOYwXjFhww0zpYtqqb9hB3SmCdz/UjB2Fe
+	ObDm7F8Dh7Hm9hyHK5drTJk2VEKw/eKhhUgAN37MuLwYkDYjR+d5QuZ8pStrghFPfxOWxQ
+	DE04ZM2sdFlscDxyqLibsqUaSXWww/g=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kjxuV5yB;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf26.hostedemail.com: domain of devnull+ts.perfloop.ai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ts.perfloop.ai@kernel.org
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794439397;
-	b=korG35g3lqNXNETlW2TpUKDDruUTcPxFK52rspyku+dF4OfFJzKvQgYx6mh7U0D/3dNbZZ
-	cdVyvQ4X8JDq2J4e5e1FRgQ+AaE1vSUry7Z9z+huxp7qPZIZb9EbvR6viAM1Zk9af4Jwp7
-	kdFPuLBkhuVTJCjL19tCdC7qjxtrr+8=
+	spf=pass (imf12.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794439573;
+	b=V5WWX98EUM7XOZnv3MufxPi5kpkkEy20qU5/hCjDWXJbpxIRvbVCEbcdvuYyMMbu98/sw0
+	eKowNlSaUoarIPTT3iL7EuYkr7/ChlkmRg63Th+/9+oOEY/rpNRiYVVyBma0HsrbH0pPva
+	XZS1WBRZWeiGVKzO6az3CCyhSeKvtHw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 718DC6372A;
-	Wed, 11 Nov 2026 23:23:16 +0000 (UTC)
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794439396;
-	b=dG16uP+DVgoc0xh7+xxhbKc3Ep79FfAmAvu2dUiqgFqwKcz/TLlHndqsJsmX3JlsmpPn
-	 edBfox1udBD0OUSWNHQFJWq4V41W4VwW7bVBBK4l6vt3YOv5FhgaIXdeF7JLBEnxalW4Y
-	 9JDlhnvIzFxoMzUPtfNrslFKB0dC1ZVtu4ynp8zkHSldyIS8n9fB/goW5GGeCy60MVEk5
-	 amzx+N1p5T95TkcKqGdnb943gV35d9oN3R6uDKW1xXixDcTzdKdOorhrI/iZk2lyzoOpL
-	 ll5o/wajTKr0bWITQwKZxtZexjghdd7MP3NAVR0DkmJCoLkRaZxJP/Okp8mKDAp2oXg==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794439396;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=zE4AdyJ1+yT1NztSJ3PyUf+wR+cmqR5P4rzXtjdrpsY=;
-	b=tNmyOQjbq5tPqV48IZxZgVKNUKO5QhIcogu1omu+Lsq/11FeMgcDa+FXoTjI1uMI1Egq
-	 VAwqXoF+/JlTbR+ot1ye32Ak+OZZk6LulDCL6FhvC9lKto9LGNkMv+c9if7oiEXFh45nT
-	 VBnd8Fubm98mQNmXsI8Njqx7bfVj0hg/CmLrrPjpSivCkpsxJd+1sfO0yBJ7PcNSmY8WN
-	 jWAOS4nz+NKXzjmJOznaDNZ9Uv2H4BhNZ4Jf7RRlrcKRDdE+2yyXScHrDXTIA88q+jdth
-	 tMMMf7lDdJA0H85yB+dBKkUcRYOoc/sgJWVYk9rwoAKzJOJBO97M9iNQ3qGO7DSCdtQ==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 762B11F00A05;
-	Wed, 11 Nov 2026 23:23:15 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BC72C6062A;
+	Wed, 11 Nov 2026 23:26:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E372F1F00A05;
+	Wed, 11 Nov 2026 23:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794439396;
-	bh=zE4AdyJ1+yT1NztSJ3PyUf+wR+cmqR5P4rzXtjdrpsY=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=ebl8P1HpraNn40FLfpgT+Lj69xbIQoBguHHHiLjbxho7unXpae2j8h3WXfDTgI3sS
-	 PVUEXi6ry2rXoXLhh8dDIzVePPf8Lt0qctxxJ/Ll1Bpy279g+walCsirXdwS6WGNug
-	 /C+flCM3iN3pvE98LwRglpwPxKbcqwZgSfE5q2JQ83KUpvdJ3Kmzp/2gaht2VRdmxZ
-	 +q11UVj7f2auiAnIWYlNaWgzx0T/IkutIoa3Pbd/Y1AyD+YKtnAi6SQ9Bf9v3Wsl4z
-	 l3DEWBYinJ/1ZRBJAVJbvlWnBqJYxg5SKbCVBc5bjEFWN+rbbgP9aU+83izumQJzHr
-	 +h5uUnWXYt1xA==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id C04C44916C;
-	Wed, 11 Nov 2026 23:23:14 +0000 (UTC)
-From: =?utf-8?q?Tom=C3=A1s_Senart_via_B4_Relay?= <devnull+ts.perfloop.ai@kernel.org>
-Date: Thu, 12 Nov 2026 00:23:13 +0100
-Subject: [PATCH] mm: zswap: honor zero cgroup limits after successful
- reclaim
+	s=k20260515; t=1794439572;
+	bh=5cPu8Hb8iDdKAlJhQZkVAjtblqinU0ui27HqYJ6//bQ=;
+	h=From:To:Cc:Subject:Date;
+	b=kjxuV5yBZvO2EUPKuE50BMCOOcvSWeKnetwkrzySyfqyIYF3luwsxqmwgiHY/nYAw
+	 k5aRafcfUbR+TmjKiYIRVLErStBDTAuasyaYKX7giMfVXWfscvuwZsMSME2uGHCs7G
+	 adAp4zInCI/PegULWnIrZDzauvDBKeav4oUqJi8Rt/YzwDHDbrnGJP5XMzABnnXyGU
+	 vVZjR2cXwwJh0ZY8dBmruqygumEqjuT/DmjFSjSItjH3kAHbRgW1cwLjwYZwjCzES+
+	 RGe+xXcfZPa1j5QQGsp6nR9mKp539bTUCImsHqJT5+luaWsLT/w+HqMCYUc8fCUSAe
+	 A3nWo3SiUdlTQ==
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+To: akpm@linux-foundation.org
+Cc: axelrasmussen@google.com,
+	baolin.wang@linux.alibaba.com,
+	baoquan.he@linux.dev,
+	hannes@cmpxchg.org,
+	hui.zhu@linux.dev,
+	kasong@tencent.com,
+	kunwu.chan@gmail.com,
+	liam@infradead.org,
+	lianux.mm@gmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	liuxiang.277@bytedance.com,
+	lyugaofei@xiaomi.com,
+	mhocko@kernel.org,
+	mhocko@suse.com,
+	qi.zheng@linux.dev,
+	ridong.chen@linux.dev,
+	rppt@kernel.org,
+	ryncsn@gmail.com,
+	shakeel.butt@linux.dev,
+	surenb@google.com,
+	wangzicheng@honor.com,
+	weixugc@google.com,
+	yuanchu@google.com,
+	zhangbo56@xiaomi.com,
+	zhuhui@kylinos.cn,
+	sidchintamaneni@gmail.com,
+	"Barry Song (Xiaomi)" <baohua@kernel.org>
+Subject: [PATCH v7 00/16] mm: mglru: fix swappiness behavior
+Date: Thu, 12 Nov 2026 07:25:47 +0800
+Message-Id: <20261111232603.9934-1-baohua@kernel.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261112-zswap-zero-limit-v1-1-19f33081b09e@perfloop.ai>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAA/yWMwQ6CMBBEf4Xs2U0A00b9FeOhLYuswUJ2AQmEf
- 7fVub3JzNtBSZgUbsUOQgsrDzFBdSogdC4+CblJDHVZ2yoFN/24ETeSAXt+84TOmEt7vtrSNgb
- SbRRqef0p748/6+xfFKbsyQvvlNCLi6HLVc9xXjGXcBxfTwK4rJEAAAA=
-X-Change-ID: 20261111-zswap-zero-limit-a558f39606d5
-To: akpm@linux-foundation.org, yosry@kernel.org, hannes@cmpxchg.org, 
- nphamcs@gmail.com
-Cc: roman.gushchin@linux.dev, tj@kernel.org, chengming.zhou@linux.dev, 
- mkoutny@suse.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- mhocko@kernel.org, shakeel.butt@linux.dev, muchun.song@linux.dev, 
- cerasuolodomenico@gmail.com, linux-kselftest@vger.kernel.org, 
- shuah@kernel.org, cgroups@vger.kernel.org
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794439392; l=8065;
- i=ts@perfloop.ai; s=linux-zswap-send; h=from:subject:message-id;
- bh=hFoFA37/xPMSR9gx/RxcnOaVQHs9U2AHzWcDrxEi6Ls=;
- b=KH9964zzP1eOc4pd4uA+hh/AtHL3SDkaaIbkZR1HDNd7DnO/Opx+CWiMuhnE9oRrNEze3lj5z
- 3pw2bW4hYupBF1Ql+ufpYl/jifbVbje1YooETPBo6snUJ/2u43gd4+F
-X-Developer-Key: i=ts@perfloop.ai; a=ed25519;
- pk=b+DBayzsW8pO9vRMlsrjlegfP4eogiqFEXM4mEKusH8=
-X-Endpoint-Received: by B4 Relay for ts@perfloop.ai/linux-zswap-send with
- auth_id=1492
-X-Original-From: =?utf-8?q?Tom=C3=A1s_Senart?= <ts@perfloop.ai>
-Reply-To: ts@perfloop.ai
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 3EAD2140003
-X-Stat-Signature: 6uy6wircua5fikf3rfcx8hwiddndwy3a
+X-Rspamd-Queue-Id: 5E4AA40009
+X-Stat-Signature: 4knefr4jmrrosw9gh6srbqbr6b5mjse8
 X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794439397-960474
-X-HE-Meta: U2FsdGVkX1+iSHLbjhgUGBoVKOA97MFpZxyQFIckPHsclyKeuyfyhQ6od8diBd0l7C9f3GrF4/kAm493ZWR7dtCUjTFp7s+67y0a+66ujo5Za3foA2Nw04yDux5Gnz4eE/rAd8Y/eU1/6W8roIJdHqtorbmo6sLXLGK3A/MgX9j6Vd4oS3o9ztM/xv2V3Sm2j/aNXx+Sz6pBjZXzpIqgI+w+Lo5j5f+G+xOckW8DQ7GBZqlOqGdirMvSPNweN49NHaNU81jWX4ibTiA6bNIrexcoG0KLPsAFxcjs6BwdHcnuHM3dZSfpX6FrXPC5+nhI0qVEs5qK6/Q2X1bgzkq1jtRJDRJPVTBKGR3oP20Oq3IbgmrEYO5nFJIkLvk+5fmop5BStlOYhQWJTDXg+t6hn/+CDNRV6N92qJm1+uH3F9aQuQPkbaKES0FaAjEs16zA2VYLwFzZCTTsvYpWI3tddHbyrq+C3NDaX1JomXUclMaGjqQ6khpvyU2cmaFabgeCzk2qXURScpANhagkq3neb4Xl6U2U5929Noa0osWVLN08PkFk0SRuFuHlVqMTJ8UFzvl75g2b4SHAO4EaYymV6xtsSL8X2fGN6Qy+SwfcFHc+OKpIvKYKoYFihATcXb16IPlPIEmMrW2C5C+bsLsii0cx1HQhC1V2kxL9iSBLCiR7amtrk+l/eYF2YDjWExUmlCfT9mza/lsrWFMhmmOGpxptoXsW0YXpUy5k5wTZDF02EkpU7l/K1QXXehgovSS8FLOSWP1i9Ri41SwxyKCUx+/YEcDBTbwUgNbrSsu6uuOdLwCXQE+7nbd1/9bgU/95mvnMyd995ijCKub4azR0elEICBB9dDlOKcikxFMMaU4u4U9ho9cvVbth0IYgHAWWgZY3jLvbsNIeJU+k3JTDfUHjCkivyWQH2fReChCEMm3VtolGejAqkTHR5NciCmrtle+VIfW7L4+7fLMIkvI
- VDZhmZC+
- oX9PXd4qewMuwUxVe5pHSVNb7089bpA51oxQ/ijKsjP4T8dcOHHCiNMXYFZJrZxrZOjpe9YMLLIO6zCH+Ch202qwQERzihUaIRO0+ceqE3ckr381KTpSPV7Kvodw2rnVbR8BPglVz2B4AQbvecwia0/xpCD99B1jD+b1bEUhJtDnaERbO5XzHp2I48gMkagZdZmZhyxLQ9HKOvLz0qz4yC2ENt1i7idB/3mm7PHRVC5rUsVo9XoHTFKATecC4jQcobj3TO7BuBQlh5YvGFtZK7MjZrOeaFv6wzGAAf5IT6OdpQTfNyM1eNPYSn6438KSrnmeCa6oOEyly2DHi+NAVsudK2wfZu4V+6fFbgJ255z0Xi+aM/+dNKeLXFzE3qxX98nmcXtuteYnic7WaB4PfR1jCDVUstRT+Y0YskUevsSYukhoBucT79jRET4k34b9GrU9mFHo75lRyyjGKNnWOrjQKPXDmkfNIRYuTJx/otkyywI0=
+X-HE-Tag: 1794439573-889197
+X-HE-Meta: U2FsdGVkX1+2rFS3UJlBj1kvO7ZkIn11rR7zPGkdrUXJE7vB0zXzMlsnhkjv1o59lTFyr0TrI8MHrUj8/vc9cZ2H978d+kmcmrmtCy7Szkgwxc5qeUoh+zm6VV83MMCAzQI5I0I7ABxGROZBlD1Tq68KzxNgEY93Y2jmjOjKa03cUB7OQqwESx10o9o8jCybM4P5doG8bsEXcjyKSuaMLW4DGLH0T5vhKjWPhY7yhYfl50etQHPQZu6dXRk2XfTLVNtqaQkIqqxvba/ApI32cZYL4BXAFPTpDlqhP0qlp6Hmku2vEg8SlCEUMYmhJ1YaYvp7eAvH1wgG8kuBBlyd0QJOpMk6UPGaWCc4slwN14OYy+FFATl17LCprrLTP1IMZxhxzi0SW849AJ17IxPP1nyUDisjdWIFLvCuUPcwemTzzoeieHzQrMeDroZhtNJ8txu2ys8v+d4x5Bv8NJ85UzXyQH/YJwwzDsbeN2GXpyNlfm3nGcnbJ+gPxfzs1PmUCEkTF2FhQGJg3TMVHgL8vgKJ3DAHT68M7hDpT06e5QZlvA6IWG+ZYVwGMGyeRb++vpFpWaSRRoP1RQ46hCsnX1daA0rdCv+epIJpOXv+FeOZKPwHbX/dcLCQp5Nt3uhUWYXrD1cU2h/UCS84c3JudwEa4/oH4cHMwF0N6n7jwbaSyMbPV4cmulkoDXDfXRwYdHC+C2q414eoteRdVTRbpSHQZO9R1dZAU8uzKElqXMaWzvZIlqC8uK1ur2Ewym6qSX6oZx1nsjeP1eVhk40b8luzcQJaIU3yDHUiiHleHTQHU6MdACT2BH/e5j8dLCVPqGRtHBCITtX1G6Ou2epkfjzPCMH0x3OiPyUtt5x9a/NJ4GRaZYL7Oz8v2SSH+QnPNlTIkdfc/J9BzXFh/fo5pwnKG07bbC00iaTsK1gpHFkCQQO1VZzJW9V/yRO4DmZY6YHj9/+wlBV4LH2HyQI
+ 8TwNW/nK
+ iDdn8A7cLcRiXOTHVzqIqZEuM3+TkVbPCOXYVF/2zQueOSbCZVmaJHsccnLvlzYt1xCf+6qw56QlXbouG+rb5r84FToVTnJsTuYFh67ZMas5whtMp3sOJCD8lQsjs69ZUkVJo1Psp8dNTFL98sTpTCH6Gfk3JamoThAu9qhdB/kqc3KbvAAiVRBRE9OokbHed6BBTSm/DQeB5v2kSF1o9+wVoqKaL0yc4sbubjqgt/4Gp2/44Tb/gMT9jKRXB2TMmW40JVR6yxFTfjzPQJH5mBM0m51hVd7zNKynp8TGve3IKV9giwsi1MKl6pLlu2gI/SMNP1ZprYU94oDVm+okzdhpvCPZGp1iRqTcj0vyMbohC7KDwMVNMnVabSiN0FJg990yKVCD8t89bJzr8/BVPSUT1yO3Tqvd1cA5wFOCw1Qynis/pm7cKQfePR2oKlo2Rsaij
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,242 +118,209 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Tomás Senart <ts@perfloop.ai>
+Classic LRU respects swappiness, while MGLRU only weakly
+honors it when selecting the scan type. The fallback logic
+can easily override the bias established by
+get_type_to_scan(). As a result, swappiness has a much
+smaller overall impact when changing from 1 to 200, as
+shown by the data presented later in this cover letter.
 
-Commit a65b0e7607cc ("zswap: make shrinking memcg-aware") lets a store
-proceed after a successful cgroup reclaim. That also lets a cgroup
-whose memory.zswap.max was lowered to zero replace an old entry with a
-newly compressed page, although zswap is disabled for that hierarchy.
+In this patchset, patches 1-8 from Kairui introduce a model that uses
+refaults to determine nr_to_scan[] for both file and anon in MGLRU.
+For each reclaim operation, we calculate how many file and anon
+folios to scan, similar to CLRU, rather than relying on
+get_type_to_scan() and fallback mechanisms to decide what to
+reclaim, which have proven rather unreliable in honoring swappiness.
+This model also allows scanning and reclaiming from the two youngest
+generations, including the youngest generation itself. This can help
+resolve OOM situations[1] and reduce the need for aging.
 
-Check for a zero limit again after a successful reclaim, before
-compression. Use a zero-only hierarchy check rather than repeating
-obj_cgroup_may_zswap(): a nonzero limit must still allow replacing cold
-entries even when one reclaim batch leaves usage above the limit. Keep
-the existing reference release and stale-entry invalidation paths.
+As Kairui mentioned, the OOM reproducer was demonstrated
+previously [2], and that series was merged in v7 [3].
+The problem was largely alleviated as described, but not
+completely fixed. Under higher memory pressure, the system
+could still hit OOM. Before this series, Kairui could still
+reproduce OOM after hundreds of iterations. With the fixing
+patch in this series applied, the problem no longer occurs.
 
-Add a regression test to the cgroup zswap selftests. It seeds an old
-entry, lowers either the leaf or the ancestor limit to zero, and pages
-out fresh memfd pages. It counts written-back entries as well as
-retained ones and verifies the data on readback. The test fails without
-this change and passes with it, and the other test_zswap tests still
-pass.
+Patch 9 from Barry fixes a cold/hot inversion exacerbated by patches
+1–8 (which also exists in mainline) and improves reclaim efficiency.
 
-Limit updates that race with a store remain non-atomic. This change
-does not make nonzero limits exact.
+Patches 10-15 from Gaofei and Barry optimize aging based on folio
+distribution imbalance and improve reclaim behavior at extreme
+swappiness values such as 1 and 200.
 
-The problem was found, and the fix, the test and this changelog were
-drafted, by Perfloop, an AI coding agent.
+Patch 16 from Bo Zhang addresses the GFP_NOIO issue in MGLRU.
 
-Fixes: a65b0e7607cc ("zswap: make shrinking memcg-aware")
-Assisted-by: Perfloop Agent <agent@perfloop.ai>
-Signed-off-by: Tomás Senart <ts@perfloop.ai>
----
-Tested with the cgroup zswap selftests (tools/testing/selftests/cgroup/
-test_zswap) in QEMU with TCG only, not on hardware. The patch also
-applies cleanly to mm-new.
----
- include/linux/memcontrol.h                  |   5 ++
- mm/memcontrol.c                             |  17 +++++
- mm/zswap.c                                  |   2 +-
- tools/testing/selftests/cgroup/test_zswap.c | 101 ++++++++++++++++++++++++++++
- 4 files changed, 124 insertions(+), 1 deletion(-)
+After the patchset, the results track CLRU across the full swappiness
+range (see table below), with more file scanning at low swappiness
+and more anon scanning at high swappiness.
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 69e1bcc67..948bc5b1b 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -1944,11 +1944,16 @@ static inline void mem_cgroup_calculate_protection_path(struct mem_cgroup *root,
- #endif
- 
- #if defined(CONFIG_MEMCG) && defined(CONFIG_ZSWAP)
-+bool mem_cgroup_zswap_disabled(struct mem_cgroup *memcg);
- bool obj_cgroup_may_zswap(struct obj_cgroup *objcg);
- void obj_cgroup_charge_zswap(struct obj_cgroup *objcg, size_t size);
- void obj_cgroup_uncharge_zswap(struct obj_cgroup *objcg, size_t size);
- bool mem_cgroup_zswap_writeback_enabled(const struct mem_cgroup *memcg);
- #else
-+static inline bool mem_cgroup_zswap_disabled(struct mem_cgroup *memcg)
-+{
-+	return false;
-+}
- static inline bool obj_cgroup_may_zswap(struct obj_cgroup *objcg)
- {
- 	return true;
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 84f4a8fd4..448955327 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -6267,6 +6267,23 @@ static struct cftype swap_files[] = {
- };
- 
- #ifdef CONFIG_ZSWAP
-+/**
-+ * mem_cgroup_zswap_disabled - check if a zero limit disables zswap
-+ * @memcg: the memory cgroup
-+ *
-+ * Unlike obj_cgroup_may_zswap(), this ignores nonzero limits so that reclaim
-+ * can replace cold entries even if usage is still above a nonzero limit.
-+ */
-+bool mem_cgroup_zswap_disabled(struct mem_cgroup *memcg)
-+{
-+	for (; !mem_cgroup_is_root(memcg);
-+	     memcg = parent_mem_cgroup(memcg))
-+		if (!READ_ONCE(memcg->zswap_max))
-+			return true;
-+
-+	return false;
-+}
-+
- /**
-  * obj_cgroup_may_zswap - check if this cgroup can zswap
-  * @objcg: the object cgroup
-diff --git a/mm/zswap.c b/mm/zswap.c
-index ae19e301f..60a725680 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -1542,7 +1542,7 @@ bool zswap_store(struct folio *folio)
- 	objcg = get_obj_cgroup_from_folio(folio);
- 	if (objcg && !obj_cgroup_may_zswap(objcg)) {
- 		memcg = get_mem_cgroup_from_objcg(objcg);
--		if (shrink_memcg(memcg)) {
-+		if (shrink_memcg(memcg) || mem_cgroup_zswap_disabled(memcg)) {
- 			mem_cgroup_put(memcg);
- 			goto put_objcg;
- 		}
-diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
-index d50acc1b8..7632aadd8 100644
---- a/tools/testing/selftests/cgroup/test_zswap.c
-+++ b/tools/testing/selftests/cgroup/test_zswap.c
-@@ -22,6 +22,7 @@ static int page_size;
- #define PATH_ZSWAP_ENABLED "/sys/module/zswap/parameters/enabled"
- #define PATH_ZSWAP_SHRINKER_ENABLED "/sys/module/zswap/parameters/shrinker_enabled"
- #define PATH_ZSWAP_STORED_PAGES "/sys/kernel/debug/zswap/stored_pages"
-+#define PATH_ZSWAP_WRITTEN_BACK_PAGES "/sys/kernel/debug/zswap/written_back_pages"
- 
- static int read_int(const char *path, size_t *value)
- {
-@@ -244,6 +245,105 @@ static int test_swapin_nozswap(const char *root)
- 	return ret;
- }
- 
-+/* Lowering the limit must also stop stores when old entries can be reclaimed. */
-+static int pageout_zero_limit(const char *cgroup, void *arg)
-+{
-+	const char *limit_group = arg;
-+	size_t stored_before, stored_after, wb_before, wb_after;
-+	size_t size = 3 * page_size;
-+	int fd, ret = -1;
-+	char *mem;
-+
-+	fd = memfd_create("zswap_max_zero", 0);
-+	if (fd < 0)
-+		return -1;
-+	if (ftruncate(fd, size))
-+		goto out_close;
-+	mem = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-+	if (mem == MAP_FAILED)
-+		goto out_close;
-+	for (int i = 0; i < size; i++)
-+		mem[i] = 'a' + i / page_size;
-+
-+	if (get_zswap_stored_pages(&stored_before))
-+		goto out;
-+	if (madvise(mem, page_size, MADV_PAGEOUT))
-+		goto out;
-+	if (get_zswap_stored_pages(&stored_after))
-+		goto out;
-+	if (stored_after != stored_before + 1) {
-+		ksft_print_msg("Failed to seed an old zswap entry\n");
-+		goto out;
-+	}
-+	stored_before = stored_after;
-+	if (read_int(PATH_ZSWAP_WRITTEN_BACK_PAGES, &wb_before))
-+		goto out;
-+	if (cg_write(limit_group, "memory.zswap.max", "0"))
-+		goto out;
-+
-+	/* The first attempt can give the old entry a second chance. */
-+	for (int i = 1; i < 3; i++)
-+		if (madvise(mem + i * page_size, page_size, MADV_PAGEOUT))
-+			goto out;
-+
-+	if (get_zswap_stored_pages(&stored_after))
-+		goto out;
-+	if (read_int(PATH_ZSWAP_WRITTEN_BACK_PAGES, &wb_after))
-+		goto out;
-+	/* Writing back old entries must not hide newly admitted entries. */
-+	if (stored_after + wb_after != stored_before + wb_before) {
-+		ksft_print_msg("New zswap entry after setting memory.zswap.max to zero\n");
-+		goto out;
-+	}
-+	for (int i = 0; i < size; i++) {
-+		if (mem[i] != 'a' + i / page_size) {
-+			ksft_print_msg("Invalid data after zero-limit pageout\n");
-+			goto out;
-+		}
-+	}
-+	ret = 0;
-+out:
-+	munmap(mem, size);
-+out_close:
-+	close(fd);
-+	return ret;
-+}
-+
-+static int test_zswap_max_zero(const char *root)
-+{
-+	char *group = NULL, *child = NULL;
-+	int ret = KSFT_FAIL;
-+
-+	if (access(PATH_ZSWAP_STORED_PAGES, R_OK) ||
-+	    access(PATH_ZSWAP_WRITTEN_BACK_PAGES, R_OK))
-+		return KSFT_SKIP;
-+	if (cg_read_strcmp(root, "memory.zswap.writeback", "1"))
-+		return KSFT_SKIP;
-+
-+	group = cg_name(root, "zswap_max_zero_test");
-+	if (!group || cg_create(group))
-+		goto out;
-+	if (cg_run(group, pageout_zero_limit, group))
-+		goto out;
-+
-+	if (cg_write(group, "memory.zswap.max", "max"))
-+		goto out;
-+	if (cg_write(group, "cgroup.subtree_control", "+memory"))
-+		goto out;
-+	child = cg_name(group, "child");
-+	if (!child || cg_create(child))
-+		goto out;
-+	if (cg_run(child, pageout_zero_limit, group))
-+		goto out;
-+	ret = KSFT_PASS;
-+out:
-+	cg_destroy(child);
-+	free(child);
-+	cg_destroy(group);
-+	free(group);
-+	return ret;
-+}
-+
- /* Simple test to verify the (z)swapin code paths */
- static int test_zswapin(const char *root)
- {
-@@ -824,6 +924,7 @@ struct zswap_test {
- } tests[] = {
- 	T(test_zswap_usage),
- 	T(test_swapin_nozswap),
-+	T(test_zswap_max_zero),
- 	T(test_zswapin),
- 	T(test_zswap_writeback_enabled),
- 	T(test_zswap_writeback_disabled),
+pgsteal_file
+swappiness   CLRU          MGLRU         MGLRU+patches
+1            6,620,680     745,968       6,249,276
+36           807,807       508,974       569,354
+71           553,144       417,700       419,718
+106          402,880       402,474       329,145
+141          240,293       337,797       296,131
+176          187,682       330,045       260,850
+200          0             343,949       128
 
----
-base-commit: b3dfbde62cf1981c4638939c159dfd087b7a72e9
-change-id: 20261111-zswap-zero-limit-a558f39606d5
+pgsteal_anon
+swappiness   CLRU          MGLRU         MGLRU+patches
+1            4,436,199     2,671,934     4,960,289
+36           2,858,117     3,032,747     3,066,513
+71           3,042,392     2,827,735     3,258,388
+106          3,292,622     3,184,314     3,217,699
+141          3,612,869     2,999,000     3,417,135
+176          3,827,154     3,134,127     3,720,778
+200          13,825,283    3,269,753     14,551,425
 
-Best regards,
---  
-Tomás Senart <ts@perfloop.ai>
+pgscan_file
+swappiness   CLRU          MGLRU         MGLRU+patches
+1            11,853,625    877,311       13,703,243
+36           1,016,826     582,783       680,534
+71           662,823       474,772       467,822
+106          496,374       451,285       356,494
+141          277,109       382,604       307,866
+176          206,261       372,059       268,584
+200          0             393,608       128
 
+pgscan_anon
+swappiness   CLRU          MGLRU         MGLRU+patches
+1            20,804,386    5,847,747     6,766,764
+36           17,830,330    6,740,075     5,870,434
+71           18,357,293    6,126,194     7,333,437
+106          19,938,920    6,431,355     7,702,863
+141          19,609,579    5,997,762     8,915,973
+176          21,612,749    6,071,032     10,590,224
+200          44,776,474    6,544,125     30,318,894
+
+refault_file
+swappiness   CLRU          MGLRU         MGLRU+patches
+1            6,523,070     667,302       6,171,580
+36           722,110       431,585       492,267
+71           477,062       340,241       342,626
+106          327,610       324,747       262,786
+141          161,827       265,959       224,831
+176          115,551       258,515       184,601
+200          0             268,049       88
+
+refault_anon
+swappiness   CLRU          MGLRU         MGLRU+patches
+1            867,728       552,829       1,382,052
+36           419,635       657,745       675,629
+71           536,299       611,345       706,445
+106          580,742       693,689       718,644
+141          706,151       639,850       785,236
+176          706,499       685,086       906,427
+200          4,693,850     733,273       5,489,076
+
+With a normal swappiness setting (without extreme bias), I
+see almost no noticeable performance difference between
+the two versions.
+
+For example, with `swappiness=60`, the average results
+over 5 rounds are:
+metric          W/o patch     W/ patch
+real            1m49.273s     1m48.876s
+user            25m33.186s    25m31.449s
+sys             3m41.851s     3m39.935s
+
+[1] https://github.com/ryncsn/emm-test-project/tree/master/file-anon-mix-pressure
+[2] https://lore.kernel.org/all/20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com/
+[3] https://lore.kernel.org/linux-mm/20260428-mglru-reclaim-v7-0-02fabb92dc43@tencent.com/
+
+v7:
+* fix a build error of bisect and address some other sashiko minor comments;
+* add no-populatable aging;
+v6 link:
+  https://lore.kernel.org/linux-mm/20261110202025.25736-1-baohua@kernel.org/
+
+v6:
+* rebase on top of mm-new(a lot of conflicts due to recent active mglru
+  developments);
+* only count eligible zones below sc->reclaim_idx for
+  lruvec_evictable_size() and lru_gen_imbalanced();
+* GFP_NOIO further fixing by Bo Zhang, exclude unreclaimable type
+  in lruvec_evictable_size().
+* Add Kunwu's reviewed-by, thanks!
+* RFC v5 link:
+ https://lore.kernel.org/linux-mm/20261022220203.91911-1-baohua@kernel.org/
+
+RFC v5:
+* Remove the aging optimizations, which have been merged - thanks for Baolin,
+  Baoqun, Lian Wang, Kairui, Kunwu, Ridong reviewing on this;
+* Add Kairui's model for determining nr_to_scan[] for both types.
+* Fix cold/hot inversion for rejected folios - Barry.
+* Improve and clean up imbalanced aging, and optimize extreme
+  swappiness values of 1 and 200 - Gaofei, Barry.
+* Address the GFP_NOIO issue in MGLRU - Bo Zhang.
+* RFC v4 link:
+ https://lore.kernel.org/linux-mm/20260812121658.69965-1-baohua@kernel.org/
+
+RFC v4:
+* Clean up isolate_folios() based on Baolin's feedback. Thanks!
+* Further improve isolate_folios() and scan_folios(), including
+  handling of exhausted reclaim types.
+* Add fixes and performance improvements to inc_min_seq(),
+  and reduce lock contention.
+* Improve the handling of imbalanced aging and remaining
+  generation-based aging.
+*  RFC v3 link:
+ https://lore.kernel.org/linux-mm/20260731083843.37811-1-baohua@kernel.org/
+
+RFC v3:
+ - Added Ridong's patch of improving isolate_folios() readability;
+ - for lru_gen_imbalanced(), apply some suggestions from Zicheng
+   and Kairui, considering lruvec size and use macro;
+ - drop "mm: mglru: only fall back when reclaim is running at high
+   priority"
+ - mitigate aging for balanced swappiess value(near middle 100)
+   as swappiness bias is less a concern for them; but slightly
+   increased aging overhead might not be good.
+ *  RFC v2 link:
+   https://lore.kernel.org/linux-mm/20260726122123.7614-1-baohua@kernel.org/
+
+RFC v2:
+ - Quickly address a few issues raised in the Sashiko comments so
+   reviewers can ignore v1 and review a cleaner version instead.
+   https://sashiko.dev/#/patchset/20260726012946.18684-1-baohua@kernel.org
+   Thanks, Sashiko!
+
+Barry Song (Xiaomi) (5):
+  mm/mglru: Avoid placing rejected folios below populated gen
+  mm/mglru: Run aging when one type has no populatable folios
+  mm/mglru: Restrict eviction accounting to eligible zones
+  mm/mglru: Reduce LRU lock contention by shrinking folio batches in
+    inc_min_seq
+  mm/mglru: Make swappiness=1 file reclaim more aggressive
+
+Bo Zhang (1):
+  mm/mglru: Avoid scan anon while swapcache is low for GFP_NOIO
+    allocation
+
+Kairui Song (8):
+  mm/mglru: report evictable sizes per type
+  mm/mglru: extract lruvec_populated_min_seq() helper
+  mm/mglru: reclaim from the oldest populated gen
+  mm/mglru: lift the forced protection of reclaimer
+  mm/mglru: skip zones above reclaim_idx instead of rotating them
+  mm/mglru: return for unavailable anon reclaim earlier
+  mm/mglru: balance anon and file scan budget by refault rate
+  mm/mglru: lift youngest gen protection for higher priority
+
+lyugaofei (2):
+  mm/mglru: Run aging when pages are rare outside the youngest gen
+  mm/mglru: Avoid prolonged anon reclaim with swappiness=200
+
+ include/linux/mm_inline.h |  22 +-
+ mm/trace_vmscan.h         |   4 +-
+ mm/vmscan.c               | 488 +++++++++++++++++++++++++-------------
+ mm/vmscan.h               |   5 +-
+ 4 files changed, 343 insertions(+), 176 deletions(-)
+
+-- 
+2.34.1
 
 
