@@ -1,96 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9386A606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 01:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04CF4606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 01:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=BNlwdDE7
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=f+WADTlC
 Received: by kanga.kvack.org (Postfix)
-	id 78B116B05B4; Tue, 10 Nov 2026 20:31:11 -0500 (EST)
+	id 172036B05B5; Tue, 10 Nov 2026 20:31:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73B996B05B5; Tue, 10 Nov 2026 20:31:11 -0500 (EST)
+	id 149486B05B6; Tue, 10 Nov 2026 20:31:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67BF36B05B6; Tue, 10 Nov 2026 20:31:11 -0500 (EST)
+	id 037FF6B05B7; Tue, 10 Nov 2026 20:31:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E4E36B05B4
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:31:11 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A68CA40167
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:31:10 +0000 (UTC)
-X-FDA: 85421109900.07.9AAFA2D
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 9F19720006
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:31:07 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=BNlwdDE7;
-	spf=pass (imf31.hostedemail.com: domain of joseph.qi@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=joseph.qi@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794360669;
-	b=aUCj8MrmDkabK6EEpiB6oLhUnh0Jv4qCaDMOFFU2u+KD822GNpWAYSPCZBa5/wDbqQB4jx
-	aGK+0VZhLXiBM4ROqm16plFH5El3/7CmR+dQ0eBmbsVFabfANJEKG9hoI7HNIsClh7cU1C
-	4r8RYW+ZgIWxLtUtGmgPjabGYr40Om4=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=BNlwdDE7;
-	spf=pass (imf31.hostedemail.com: domain of joseph.qi@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=joseph.qi@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D82846B05B5
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:31:30 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BF46D80148
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:31:28 +0000 (UTC)
+X-FDA: 85421110656.10.54B27C9
+Received: from mail-pj2-f6.google.com (mail-pj2-f6.google.com [74.125.227.134])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B8B954000A
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:31:26 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=f+WADTlC;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.134 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794360669;
+	s=arc-20220608; t=1794360686;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fz7Db6YPpucPps2P9eFgAPZMsl4Z2nZBpO1+iQqdPhM=;
-	b=fEWBNoUkW7XhDbqb3bswquOv/IpZ4kXnDVZZBxZ8mbCWlVA5t0WH3hDZwVnzzbtAwg4V+b
-	uja5DArw44ge9kGa07VM/4qvv5/SCJCr7xvugu9ykzpeOh1+s4hvYQBRDu6efe0bJvVKIZ
-	izdxfIC/c9cTO9v0lXn+UGetcxXrjrI=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1794360665; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=fz7Db6YPpucPps2P9eFgAPZMsl4Z2nZBpO1+iQqdPhM=;
-	b=BNlwdDE7qV9jY0jsTjdvSLiR4R5Gt5bkOifwnmWW3kMZ/6Frva0l6JrxMIlYIS1tXZoofKA5UcLW6FnyvaorVOn5LrNmepzCI5LPn8fkafAYVfCS1NZNmML42EWOh0XSid//F/oPXipXWCzr2WdO0axi/aFdOn9hJkCBUv7VC1g=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=joseph.qi@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0XEX6F-L_1794360662;
-Received: from 30.221.145.127(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0XEX6F-L_1794360662 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 11 Nov 2026 09:31:03 +0800
-Message-ID: <f6cdf5d0-9468-48cb-9bfb-0cc41b46c7fe@linux.alibaba.com>
-Date: Wed, 11 Nov 2026 09:31:01 +0800
+	bh=vvimweWXdTkslV51aQTQuVA5EhGHU7gBJImiZfr2+Uo=;
+	b=hg/nxFhWh29QtYKhUshaLu3WE63xz9e1f7Fw3U8QaSYta02VDR5gmh5imRqBOCkofhEWQw
+	NisbgxGncBy6t1g8zDmo3v+QyHvzT8SvzvQSvHflm375J+2v52YKeQiJhckXiZfhVqU9ru
+	Zm8NlQt4uyXSiQYmFcHPGo997gQEINc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794360686;
+	b=1MP4C67822dQBhtK2yfV4rPJ+8vq1DP6qKs6QnYIpsfwXLE1/kFWO5MRp34HlW7TPnZz8b
+	xXclim+mYBSbVIj+r+WoyVu+jsKWskBrbLnLhi4jVAC/QghPibPrVA/qC1E08AnD6wC850
+	7zOZX6Q8zwVY/1mbclxbzeOVSfwjdi4=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=f+WADTlC;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.134 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+Received: by mail-pj2-f6.google.com with SMTP id 98e67ed59e1d1-3ad211ad92bso980627a91.1
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:31:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794360685; x=1794965485; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vvimweWXdTkslV51aQTQuVA5EhGHU7gBJImiZfr2+Uo=;
+        b=f+WADTlCLoNLc3Qy+nAi//HHXydbcN99AYypZ8OoRX6+8OPvM3yDjevt7g/dsCpsA+
+         OlnxR0EMoUpRNltUYNJLgCzXhGgTkJux80T2T7E31ow3loy1j7SDbgms4ZsSdBIO0vdK
+         DbCrIETC006Hfm6SbLLBCLbbxvJFfY+AVXDS0gK8we+IeXKrCIhtOfTWs12YYDUS61xy
+         4ssw+4rrwjQ3XcWApekVh5IbmyZ5nJ8Xwj4Yhnt4fGdnkVOVR/kZe7LpqVWbuqmyY12u
+         rCvrnB/feN8VwVjprmZhBV1PKxLhqmfKs9mtViL/etVLaADai8U3fBClbadSEZr8CeZ+
+         Ed+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794360685; x=1794965485;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vvimweWXdTkslV51aQTQuVA5EhGHU7gBJImiZfr2+Uo=;
+        b=CiSP3YGvwRESqv5/XLhDIDn/WfKJTmlvT9dp13jEVmr2+kCsed8wOD0H2yQ6ojErRH
+         SSfimCAgcR7zPImGRCFvIwoDEYdM0JeCIN80gv9ayEfIPfv5XVHkUfHoSE3CFpMXPQez
+         PdQlFKbJuUzy1MDx5/PBawO6+fWJMXxEtN0OP6c3fGMf//LIYF7PysPDASaJS+T8tZBC
+         3ELUE10ksgidTHzj1QXPrk8N63PDmkoRJX7WTFwVYkLg5C5xcBQMMbKTb/Na9gewxbZA
+         utuGZfwOK1cjajAC1FyoFVM8xW9fjQgnNdBTeEnr+y7KnPj8842K96X2/GuFj/KGBRD3
+         hjqQ==
+X-Forwarded-Encrypted: i=1; AL+hErFmUziaXF0rGXsEJYepMmNfZY1XnACkVpAMJKHnPl2atEJTvnT+0k5Q97Vu42wHGTb7++yTMXVsaw==@kvack.org
+X-Gm-Message-State: APuU4Z+GvSkSz0HRjYGCAjYN6lS5FQjfzrmvRdc3rq/aEzPpZjM1IdMY
+	9iNB5cf9udXp/Hlha/Uc1uFtTb1WUd5u4yq8WSDcr7eF4EHXhQnDOcTa
+X-Gm-Gg: AYBFou0jHiSaiPOeVZqWRtoxhces8yGz8xbFdNQrurdRZcZa2QBCoTZAFKnVcaHpsEj
+	3KoDJfLZxLMK4niJm2fh1YYY0SsHzosDA+kV6yiJGlUyZriWp8yJuRdw4ewasakJed1ZzSCqvpN
+	T0LGdPNZEWomC+9lawM83SAmRAHtR6H+diPPhlPUgEjePEpuczDb+n+hnY0AgXeGMg9HodvSfI4
+	SKtS4XS2bE+sl5iWCvUICRPakWN5B2b7YJ0Gw6vzslIIO4QbNpnjdFEGQImJrDl+sPbKdaQ297A
+	j+/fihHKEi1mZhLxffpIBPZIdQG20RDz3yvikh9ewK3zOftmE1ELu5xfb5HIxh/1/MZ+lLZN+i8
+	nhILFCZMD3uv95Uo/21xmPA17OosEQv+PbcOhzPAarbfHHONVtcFafQYztQvHIo6QTo+h/z1To5
+	lI6zkWlMMbumFpkHvv6BrvI57/UwEeCKa+Gv1rzcI+lPhyIq862LMwblFXJDFxl3hgXEx40is12
+	JD4YqBzYIhlSBMMtvCQyjw2R7Yzg1ui0mF2tPnJ9bKgIe8frorimpAVPx6H3uZRityMDWhc2JSb
+	sKo0S1Cg15qP72zFj8Kc9Jtf7Xl1T2NlcPjd
+X-Received: by 2002:a17:90b:5487:b0:3a0:516d:9f88 with SMTP id 98e67ed59e1d1-3b182eac822mr798734a91.26.1794360685246;
+        Tue, 10 Nov 2026 17:31:25 -0800 (PST)
+Received: from [10.125.112.22] ([122.11.210.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b182e0ecd3sm441451a91.3.2026.11.10.17.31.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Nov 2026 17:31:24 -0800 (PST)
+Message-ID: <e83df8e0-f48c-4262-b96a-6f99a53df9d9@gmail.com>
+Date: Wed, 11 Nov 2026 09:31:14 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 19/34] ocfs2: keep the current mount options on remount
-To: Christian Brauner <brauner@kernel.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.com>,
- ecryptfs@vger.kernel.org, linux-ext4@vger.kernel.org,
- jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org,
- exfat@lists.linux.dev, linux-mm@kvack.org, ntfs@lists.linux.dev,
- ocfs2-devel@lists.linux.dev, linux-btrfs@vger.kernel.org,
- gfs2@lists.linux.dev, linux-efi@vger.kernel.org,
- linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org
-References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
- <20261029-work-fs-sb_rdonly-v2-19-2f44f64f0b66@kernel.org>
- <0a8576a4-e397-4a49-ab0e-8f0f32bf2642@linux.alibaba.com>
- <20261110-zerfallen-meiden-wacholderbeere-a90ac157e063@brauner>
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
-In-Reply-To: <20261110-zerfallen-meiden-wacholderbeere-a90ac157e063@brauner>
+Subject: Re: [PATCH v2] mm/migrate: improve mlock tracking for PTE-mapped
+ large folios
+From: Wandun <chenwandun1@gmail.com>
+To: david@kernel.org, hughd@google.com, akpm@linux-foundation.org
+Cc: ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261110123218.1579490-1-chenwandun1@gmail.com>
+Content-Language: en-US
+In-Reply-To: <20261110123218.1579490-1-chenwandun1@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 553qbxgao77qtd77gewsop3wa687bt8e
+X-Stat-Signature: 55mmkmypgij4xmz9hj64ot6a4nszc4nh
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9F19720006
-X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794360667-536171
-X-HE-Meta: U2FsdGVkX18dVi/LI11gtov+k8wPmnULYb+w+653EX2fxk8U5shq+hRz/DrlNh+HqrPASRpZRXkF6zql/XPpW4gSGj/42ok1bRIJBLk6iwbC2ZtBq4TGc2CcLz6BrZymun/ay0WRTj+zJIJxtlz7JnHBqiz45RVfkpYORWpLm+VUKiRG/NdpSw9mx+o3tdqBDd+c1xQd2p+3FD/WLQRg9s1vkIRXCsKWYpMNPznCZn9+5KHXUr0Vym92XHPR0DMK8JGuhjl0AzrFysGBnQ+Af0yIBdsqA1ygmsMgDP5ToocKTWRlsRMfG7ZdJmOnbi0P34A9krWbVTkLe8xBxWVC95XeZoFhJbybFIwifQKmT53ebHr8kc01uOo0uD6UlE9QbSJxXlSRDsRfSH2CyxB89Hbr/gYFoRkHfRCyIpdC1CalVhH2kfnCMvzziGytQTzqp/lVNw7qbG8G7ajOLvetUiRlqcQmu1pfQSm/duNt7Y7TH0UBr2eJWWKmf8ixh6lnGX6zF01Uy+L6D700sGAs0LKr+pHxzmbwjhNJCbGpI/fTSxSqe+c+kBM+zDm1KOLXDhCpWJVWdBNBMgxPf5EYmaSDJ9XiN8T8EL9vEuemgNgysvQtrFPLAcFLJPXMLOUN1Blj1PPDcQa3aM+cBnptTK022G7vKivCgc/vgsRv4cWqC1Jc0dOQo+0fzVevn9CYGrNfBI6/bQE+OyWCpfoEfP4gYzSkiZi15dA2Ie/jO9+BLs1Vy+a9C4HcgmFzkjv5dVzrWh58VwrxYMmNEf4AkJ4ZDNKGTyc6SqJe7oWmULMAtzKjNY8hNv2zQKdninj111wj5k5fHn//L+X+hC5Fhg8Ly5Y7ie9wXM0ORcdjEjQ4qOr5j8rJVTbT2n+xzhjsUDEPsWqUEWUFquS+Wr5CxIYMqkXqyQpyhkgS9JJxPjFwcsuUHyClOY5zzsbqhA2iWy1ZO5Geiln2SxAO13U
- vzh/S12L
- IT3Dl9Vy9r+JlZTT+Oed0fqwsSK6Ois1Q1vsy75+2KL/iv9sx6qw8q9WmLKbJgEcPDXtWg86MIsNh7z68Axxu164nnBqJ0Y9DUOIXcW5S6HJwTqXZiFDAcmpYKHOOGLZs55QofEQvhPqYITdgiWPgBkMRLB/EowDaAvGDkzHy38yugCZzqvk3YKxFQmx7bEs6AHSQT06s19rD09qEN0IcfH2f8HgKS3s/Xh3C201j7Blm2/TgOeh1msFG9jxk/3iwZdSyo0HIUIWhnM4i7QF2xOjE8y8LLXe15+KG0YDUKFA9jODY8z5y3u4q4LXduFRp3O9EqzwB1xzY7K/C0E+JTWUnwkzPfeBohCKKLs3wNNeak1A=
+X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B8B954000A
+X-HE-Tag: 1794360686-47961
+X-HE-Meta: U2FsdGVkX18IfJB29TX6IsIrIAve3w60jgobom9vxVF/fluQ9Q5u9bZKGQFOsz3qRCegpg5nMHpwjImCvqLUn72Qwg0m37LKEI8Xnf1IB3ByWDPlakRpcQw+AIIpVvzwNojoA0uWgcE1x02jubvKnLdX0XASPPooWzN9CfYSXg+bmcwGP14ouombfCC1TOFmFZjdzkBH99HTqabYQoDORW/7oZHvLQmM7vKQEsR30JKnkQAJvCpB7vowzCTOpAG5BLhM2F9tmfutulDYZPNWQ69V11JbHoQbRI4W3MDCdWKVlDZpUoEBwR+At2OCWCvBSrEzuSL3yEGVKAxZr1MMPBR41CnBGv45cz1rnbhb96MwwvG8RCw+lPS1eSGPeSO79rvJjorFQg94gVRQvEg9Tb2KO99XeTmYxAEGDhy6PTGj6YnVHjt9WRezr1/5s8op5LQvIfhnbZhMjcyVTSyBG8lKiDDDhFK11gZdGGiPYSlJdcw5jvWfHjZVX3rVZvhBkRDx9b0MMwZnbH5F5JztQ7IPdivYjsTv39k73FJCSMHUTTflBVlENuqzA/8CtjhV9t84q+Ea87sf7ZLbCAtlPGUyNc8bConI2XPw1zvtJOeLpa7xwFEGScYDg/9MyNTxypBp5o94Uxjy+JcnPZ/t1QQ/kUcoG7p9zPG3KyWGhWep/l5W+O5yfsOF01LkuE4Hz+jhVl6sL2CZmiYDcHseIT8f7UFrZo4UqAYbM3Hby+ev70PdvSTp735UhudNWR+LTo4bdaPpmEd/b49FmzbijiSzuXk+9n7y7FOY8HYLsHeITAREy2PWK87IAYDCPluW79UJyJN6XpTymMTtW3dxonJ0bqvrMnlG71Mm7Qiod1jo8iVFfMLWEnBqKMCKPpjWfri/+KkCSGCI2M9Kfl1lT8ZJDL1ZcnVu9FVt66CStmgWRD+vUf7LusoM8smQsmLcJUhYct7mxxQbmtnFK5m
+ 7O53g77U
+ WL857UBLQCIj5Cx2rvHnYGT25NDRHCEMw8mDF1tDudVp4OECpHuWijitB80l/kDsW52drd6tDdeTsJuqeqzeALgOhIoonhtEs7BVLpjBUM8u5q6OsI0vUbAJKipM1hyXhrFOH8KMWnFlxMoyQBBOOvppqND1YaeuS7WPomDgE/VXg5i6z1EYpkoDQ2aaPUMiEH9/pIGPylvVVzWIAFaepzBaOmod65RuUMQU0fnM1eXukhaYEbnNep8zUsL11a49ZWbXZxIS+EnC2INbWprDIHTeQZdaUKMbgnlpLISpqUxUW4XSaM6kEfMhnxGyOuKokbJbc1j4loJhwCh7/ckGi/d5TLOaeOGlLPEnzLv04vR0d9qr56hvM4KHaWvRSKSYRushCTK8quAkwW2hYy60lJVQXxgtWS+Y4WMvfwIZVjvS0BBmM4WDepjAeGEDxgvRJGAplg68vhovXBOAprZMHUkvF4raWgZTPBbYQCHyZU3KTsb1J6eDdwzB70ht3L34qoo0dmjjn5uWJLImNbgwWVU8WKGnO72s8aBQnI3QRTxUUhfD7d80udS4gJAHu+WvDjkUv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,35 +131,66 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 11/11/26 5:52 AM, Christian Brauner wrote:
-> On Fri, Oct 30, 2026 at 10:58:52AM +0800, Joseph Qi wrote:
->> ocfs2_reconfigure() decides the transition from fc->sb_flags alone without
->> sb_flags_mask test, unlike reconfigure_super(). And fspick() passes
->> fs_context_for_reconfigure(target.dentry, 0, 0). So on a read-only mount:
+On 11/10/26 20:32, Wandun Chen wrote:
+> From: Wandun Chen <chenwandun@lixiang.com>
 > 
->> So it seems we should test sb_flags_mask as well?
+> Commit ab521b4142aa ("mm/rmap: improve mlock tracking for large folios")
+> mlocks a large folio when all its pages are added in one rmap operation.
+> However, when a PTE-mapped large folio is migrated, remove_migration_pte()
+> restores PTEs individually, passing nr_pages = 1 to the rmap helpers. As a
+> result, PG_mlocked is not set on the destination folio.
 > 
-> No, that's a generic bug. I fixed that in reconfigure_super() with
-> "super: keep the read-only state if a reconfiguration doesn't change it".
-> That is in vfs-7.5.super (cf. [1]). This series depends on that work.
+> Reclaim can restore mlock in try_to_unmap(), but Mlocked in /proc/meminfo
+> remains undercounted until that scan occurs.
 > 
-> If SB_RDONLY isn't in sb_flags_mask it fills in the current read-only
-> state. So ocfs2_reconfigure() sees SB_RDONLY and stays read-only. ocfs2
-> is one of the 23 filesystems listed there that only look at
-> fc->sb_flags.
-> 
+> Restore mlock once the full mapping has been restored in a locked VMA
+> under one page table lock, rather than waiting for try_to_unmap() to
+> restore the mlock state.
 
-Now it looks fine.
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+I forgot to include the v1-to-v2 changelog:
 
->> The same falls out of a legacy remount whose flags omit MS_RDONLY.
-> 
-> No, do_remount() always passes MS_RMT_MASK which includes MS_RDONLY. A
-> remount without MS_RDONLY asks for read-write.
-> 
-> Thanks for the review!
-> 
-> [1]: https://lore.kernel.org/r/20261011-work-super-fixes-core-v1-11-c727176c5b53@kernel.org
+Changes in v2:
+1. Reword the subject and commit message.
+2. Drop the Fixes tag.
 
+Best regards,
+Wandun
+
+> 
+> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
+> ---
+>  mm/migrate.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index 94033c222e04..140e291d4587 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -353,6 +353,7 @@ static bool remove_migration_pte(struct folio *folio,
+>  {
+>  	struct rmap_walk_arg *rmap_walk_arg = arg;
+>  	DEFINE_FOLIO_VMA_WALK(pvmw, rmap_walk_arg->folio, vma, addr, PVMW_SYNC | PVMW_MIGRATION);
+> +	unsigned long nr_ptes = 0;
+>  
+>  	while (page_vma_mapped_walk(&pvmw)) {
+>  		rmap_t rmap_flags = RMAP_NONE;
+> @@ -446,9 +447,16 @@ static bool remove_migration_pte(struct folio *folio,
+>  			else
+>  				folio_add_file_rmap_pte(folio, new, vma);
+>  			set_pte_at(vma->vm_mm, pvmw.address, pvmw.pte, pte);
+> +
+> +			nr_ptes++;
+>  		}
+> -		if (READ_ONCE(vma->vm_flags) & VM_LOCKED)
+> +		if (READ_ONCE(vma->vm_flags) & VM_LOCKED) {
+> +			if (folio_test_large(folio) &&
+> +			    nr_ptes == folio_nr_pages(folio) &&
+> +			    !(pvmw.flags & PVMW_PGTABLE_CROSSED))
+> +				mlock_vma_folio(folio, vma);
+>  			mlock_drain_local();
+> +		}
+>  
+>  		trace_remove_migration_pte(pvmw.address, pte_val(pte),
+>  					   compound_order(new));
 
 
