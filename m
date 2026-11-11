@@ -1,119 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37038606A33E
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 05:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23779606A327
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 05:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=fnkQJRbn
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wIWvYtFj
 Received: by kanga.kvack.org (Postfix)
-	id 484D16B05B3; Wed, 11 Nov 2026 00:46:05 -0500 (EST)
+	id C2E246B05B5; Wed, 11 Nov 2026 00:50:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 435BD6B05B4; Wed, 11 Nov 2026 00:46:05 -0500 (EST)
+	id BDDB96B05B6; Wed, 11 Nov 2026 00:50:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 324236B05B5; Wed, 11 Nov 2026 00:46:05 -0500 (EST)
+	id AA6426B05B7; Wed, 11 Nov 2026 00:50:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C9D56B05B3
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 00:46:05 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 780DA120206
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 05:46:04 +0000 (UTC)
-X-FDA: 85421752248.25.8101EE9
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
-	by imf24.hostedemail.com (Postfix) with ESMTP id BE2B0180002
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 05:46:02 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=fnkQJRbn;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of 3GAH0agkKCEk4l25y3ls5rzzrwp.nzxwty58-xxv6lnv.z2r@flex--tarunsahu.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=3GAH0agkKCEk4l25y3ls5rzzrwp.nzxwty58-xxv6lnv.z2r@flex--tarunsahu.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794375962;
-	b=073jXPWTIFcG5OnXUeSNMX+ny/X0qdz+hatv+sZjDtxHb367k+2yBzcuZaY60AM6fYZdzz
-	TtXbJ8LLY3bs3A8Nr3Ocpn9vTlgCeI4sGhWmFADj5ZdFbSBjKQ8HZAZ5einVpvhzcLvR+n
-	zYgQ/rRKsBHdNLmuPStbxFkhj6BIp0w=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794375962;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 886496B05B5
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 00:50:11 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1658EC0210
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 05:50:11 +0000 (UTC)
+X-FDA: 85421762622.21.F025A25
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 1D57BC0002
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 05:50:08 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=wIWvYtFj;
+	spf=pass (imf10.hostedemail.com: domain of rohithmatham@gmail.com designates 209.85.210.43 as permitted sender) smtp.mailfrom=rohithmatham@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794376209;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lhosHtg8wPbXMxrTNQaWwGDOdBWHTWddIh+Zj1SEb0g=;
-	b=MCvxySsoSpHqh7FbkgZ3WbCXniAgOJAG8cHnrO6vVujnp4OFuF86TZyi4NQC/iQIY1ffB2
-	auWvesSPU55as3FiGVbSUfD72BBgmQCHjLuobBE9ifu1mt+ChkQeobgb8k7HPJz+AJoI1p
-	XMdHaUEIieDBfZmOCsP7cua7F+NLKyw=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=fnkQJRbn;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of 3GAH0agkKCEk4l25y3ls5rzzrwp.nzxwty58-xxv6lnv.z2r@flex--tarunsahu.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=3GAH0agkKCEk4l25y3ls5rzzrwp.nzxwty58-xxv6lnv.z2r@flex--tarunsahu.bounces.google.com
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6b6723180baso2988401a12.3
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 21:46:02 -0800 (PST)
+	bh=qLjMFu8J4R65tVxrQqm5yS5zqVzYkCd8FhHMRrbl5tE=;
+	b=ncrVmZguODCBoANzB/53KNQfedX+Sj918qd7WvU3GAYZX25lIm32mbClQ78sLmuIZTbZw8
+	ai3CaCSodD5+NC2QQmDIZEoQ9Rltqxhy0mQkccRuxE4zieJPdjhTyQd+mA8YZKOLSoHlAI
+	QL+RMf3fe4u2cRSdSm6E0dRAYslIsX0=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794376209;
+	b=xS+Wn0KZJxO6z8ErZr916RO+OArd05v+bPpUh4bBpIW4XTF81tEFmnqtyNtcEnbVfldqRa
+	QAtblDeWTP137io6+XavFeLkF3RiQbgnNCD/8soJiGe2zBMiL9IsYC4JUeyui25Izvv4E1
+	KicyORz7xv60r0l3lVJiQw4pQSnKGTo=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=wIWvYtFj;
+	spf=pass (imf10.hostedemail.com: domain of rohithmatham@gmail.com designates 209.85.210.43 as permitted sender) smtp.mailfrom=rohithmatham@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7f84a55cc06so1674334a34.2
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 21:50:08 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794376208; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HdAhCbB1E1i3+uQ7g9FI/BLM13j/pbk78kI55Hm8xDp4F/fkO7JMKEOHV0jQaT20O2
+         /lXnJJlSa0Hg9ks2Xl4XQNcOZVNr+seesXaWNXouqEWbsoGEiZs94qzDDQYi/jiJ8mLJ
+         CqWRhFtSGz6SW7dX4zvFJPo421o3qYULX2yl4R0PtwIOYrMuCtWRhVpng1hhfyHoqM1X
+         WNtb8OBidl9iUW3s5Tvqbv3vFnoVNGWzxll4LFBjKWzQvlDOqJe0YMh/S01SE/L6ZuR8
+         5jdOALwGZ8oyTWCe2UuNng043oXB08/GKPK6t2wokF/7WWkjaPjxDCMLfFHbg9FPjT/0
+         gVNA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=qLjMFu8J4R65tVxrQqm5yS5zqVzYkCd8FhHMRrbl5tE=;
+        fh=osemRs35mg537oR+odJC6gbxBAtibEfCpgGs5SvHWI0=;
+        b=GrvdRotFYEfAQfR6NesssHpwJW5u8JA9GEDtpbYtwGE3cRu5GF1UGAgwYCPGBtKKeg
+         SNjEjj/riVFmFgFv4Mf7xK4ibkZhBwmU2kMhX/um4mMDrA6foGYVB9W2ITXG5Qs5nurB
+         A5MLk4e0WMzpGwCLTvhrKZjbetP4QYRILSUt62EQcvm3G/VNDawFCD+ahGA4TabuTGl7
+         ywIi9EqvIz6WcJtjx70b3DS/HgNTRUVkeBt6d+M8oXgQNX3Tr4gRNPBeSWPpfqhX2y5O
+         iQfor+C8PJx9K1jkR49GUmyFVlQglH4AHbxU7MvjKNV1aMtTXXW6xoRPrPGGXXf51Vw6
+         wDhg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794375961; x=1794980761; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20260707; t=1794376208; x=1794981008; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=lhosHtg8wPbXMxrTNQaWwGDOdBWHTWddIh+Zj1SEb0g=;
-        b=fnkQJRbnaZMr9vUuxqZln/IeyVdvcQHekUO1WDECR8a+XNC4pa99oKg3xnpRBO4A9y
-         8bI45FLLSVM/P0KWwu0zJECVnhyBDqhZhvaCYbwDqtDNkeNPXjxZaWKs4pUWGkDBCwfM
-         xollX00dE2xjxq8aXc4TuorckmHkxPLl5UkKBAptP0+lhkn8KV2TeVtVUzZuf/rYBQWm
-         9iBHt5C9124Ri8kRJ6b2KfrmuFUuN79bkzSdVEFJh10VZHzribUGzyMg8wYBYj6cPDbJ
-         vpN/OriehXCdHRHIoVQX/aRQ2/s9143t/3brpwLqNQuEiedVsNSqNSoAWBdA8Rf/Z7C5
-         +wlQ==
+        bh=qLjMFu8J4R65tVxrQqm5yS5zqVzYkCd8FhHMRrbl5tE=;
+        b=wIWvYtFj5V065BLERIU0AB1nI6SRycGz+Ke3GDxHLkQREtWtSCfYICrW3PXNnyTT0B
+         c/sLkT0tMLLdWnQ61Jry+UEI4Z0gXRIQlP9PTllBwe6Sl02+Bm+Ofn26ajaXii5ODNhF
+         HMfLc3TnW1b2Mh0/+L0C6H7dCjMDveLpFlwAVs4hOmxsluZi3794pMqKltdAM0B9CnWN
+         SEO8AKAejLuqon1Yk8/dZjZb9n0JZ11+8C3QgAfXYs89dwn1NDSvsfORhmQSZo/BFWIr
+         GlfmnnOoeRvZJ10zoAXvvBNriX7RRhIv7o/2vWfG4ghNmI46qeJ9p6KDxXo+AbkpGtNs
+         dsvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794375961; x=1794980761;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lhosHtg8wPbXMxrTNQaWwGDOdBWHTWddIh+Zj1SEb0g=;
-        b=UOVKOaQuyc1LASwkG9JLpWZ83sW5LeKb8oVH38K9Ei3Mej7Y8gD6c08qhPYnNTZMG9
-         QfoIhyWGGkY3i/kvP89wyCMxetVFXHUGZLcZORkWoiop6d/dmjXNjkbWBT1ybYl3y0jf
-         83H5ahRkij/JV3Cj5mVIRZwXR4k/vKmnuh/7Udbgiep+YpZFGe61fVuzjnOsc0Y5I8d9
-         VwZ7cTIUJd0rPKLfI2J7zERUySW1Qlrkor0f7c5K+8iSulgGKF/2y1tOFwjoUAg1fWdx
-         MwMl382tSgeosW1EE0gwHmnpI0lfvL31o9D3ykw4fkl32f6lIXdwI5g4F5Z/877srk+s
-         4oog==
-X-Forwarded-Encrypted: i=1; AL+hErHSjKxGqh3AGnNmP/9Bv8LI2dstSvrNB6oCPeo2ZxiT+YQXyXbcTl9dIibV8FUErgEPjeeDtVCW/g==@kvack.org
-X-Gm-Message-State: APuU4Z/Pq9y/qRhW1NNiuS2p9GIEB2aDtHMKs0R7vAGJQhZcH/EczzHf
-	hxxEIvsdGaLDyL38Zn11EfzFKhcvOaJwUccPSJ8Rtx5PGlzaNUtBB+p9cvpWqBgPM7zbaqKKhZc
-	nqih/wPWin8KVCzz1KA==
-X-Received: from eduw9.prod.google.com ([2002:aa7:dcc9:0:b0:6aa:448f:b887])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:b18:b0:6b1:c1e5:a85b with SMTP id 4fb4d7f45d1cf-6b777342a32mr753053a12.3.1794375960798;
- Tue, 10 Nov 2026 21:46:00 -0800 (PST)
-Date: Wed, 11 Nov 2026 05:45:59 +0000
-In-Reply-To: <DMRK0PU0VCN3.15F59WLOQ05P4@soleen.com>
+        d=1e100.net; s=20260707; t=1794376208; x=1794981008;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=qLjMFu8J4R65tVxrQqm5yS5zqVzYkCd8FhHMRrbl5tE=;
+        b=UZUo5p/veSWUL0JFkrUn5N4Zt7gMMCY1Ulzp7z/kvtMDXUwFJFQXo/21W1s6ZTmaGw
+         Kn2G0MHUbdoS+CE4zHOXJmCf1XzX66+8lxpfsajmoM5GGSzq6TLhUbBuFqZLzbkZOAVP
+         EZTC0Z64erx7c4SxMHYW5l7O2NUvXmJjlohQmqyiR+Y+/vPaALMS8hYnpD+DIeFZJQ54
+         o22aVMRIOjtwf2rcfo5XP72YYM/Kd5MUMkw1YYeW6TzDewxThQ5y6e3whzqC1+7Q4bmZ
+         9UWAxfftJvQv7Z7eahLokKiGCpl3c7UlkVz4Jij9zguFB83lewRLtdiH9QAGkCTV0qqo
+         /zfw==
+X-Forwarded-Encrypted: i=1; AL+hErFlp6dUTiHao1fLjXn1CMTmhBPqxxYlwK0asXO2IioCt9oUvUmb8OwkAFtiM4+/MY2c7u1JZ/A5EQ==@kvack.org
+X-Gm-Message-State: APuU4Z/fdfXOflTi+kQrEYdVllUtYAZkopOD6sjAw5I7zKIqJQmzw1rc
+	zIe/B65F666Wq+8nVxQ+M4kqNXT6GY9oo1aha2wCoU5zu6N+uKHp7022zLMC0wiQQvERdLSvTj7
+	op7qhHBYbX/yDMXHYJoaxIkQlEjTf1Jg=
+X-Gm-Gg: AYBFou0lAJ9t+wUGVKVbGokk/8c557a63IAtnNPx0N7XR225NKS2Y2UYKfewMQDKTm1
+	367SDBnZ+HYc4UAqIb5XX/W8If46ZUQ/EXV8f8UKn5xcNr48TvW2XVJpbdcnbK26X07qlTUEEx7
+	+07OS6Sw46Wm95DkCURKCNmrPL9UlzH6WsxxbE1jGVw3aTow9PDsHlEHlk8tGXta6ggePzwLKHj
+	jmuYEh85UquCiScxZQ0EIorYJu3haZmRA5hqcj9qH8ZPm7R2KKDIY0l7+zqm3sfWSgXOxQB+4iy
+	Y+6LCiBWEBU9/TMxhNE68JSzJTlb0ohCW9NVw6YP+iZMJt+nPHjN1tp6HVG+k94aD2EEI/EEmJO
+	0FVxBRPGIk5IDnKAQGHvMfDWcZ4YyYL9d8mFNaXfATWwwZC+vpBz7h0Z5r2xUoNw8ajhDKM4HcN
+	wzK9tpE6B6RmKM0wWqtaDS2JzaUfJ7nI7irYZIX8qfhh9gtuHI008=
+X-Received: by 2002:a05:6808:1686:b0:567:fb7c:5e51 with SMTP id
+ 5614622812f47-56b97b176b2mr1256490b6e.50.1794376207565; Tue, 10 Nov 2026
+ 21:50:07 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261110050202.529473-1-tarunsahu@google.com> <20261110050202.529473-3-tarunsahu@google.com>
- <DMRK0PU0VCN3.15F59WLOQ05P4@soleen.com>
-Message-ID: <9huz1p8rrkdk.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH v4 02/19] kho: block: Record the entry size in the block header
-From: tarunsahu@google.com
-To: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, 
-	maz@kernel.org, will@kernel.org, David Matlack <dmatlack@google.com>, 
-	Alexander Graf <graf@amazon.com>, seanjc@google.com, jgg@nvidia.com, loganodell@google.com, 
-	arnd@arndb.de, dwmw2@infradead.org, baolu.lu@linux.intel.com, 
-	Bjorn Helgaas <bhelgaas@google.com>, oupton@kernel.org, alex@shazbot.org, 
-	gle.com@google.com, pbonzini@redhat.com, 
-	Andrew Morton <akpm@linux-foundation.org>, kevin.tian@intel.com, joro@8bytes.org
-Cc: kvmarm@lists.linux.dev, linux-pci@vger.kernel.org, 
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, kvm@vger.kernel.org, 
-	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	skhawaja@google.com, sagis@google.com, linux-arch@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: BE2B0180002
-X-Rspamd-Server: rspam12
-X-Stat-Signature: fy6t554ojiim3irt7u1bgr63fjmz7xkz
-X-Rspam-User:
-X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794375962-705443
-X-HE-Meta: U2FsdGVkX1/fzE1TlN9kK7jffrfP6Eu36XsP6cquEnS7/O3X1KHtcnQifv51/5I36SuGNDXTo/PjwHgBYJ92MMeVN0lNCxsLJOEpqpP77Zp7Vcfw/P9I9AIx260xN3gQmCHMtfuaYBe2OXfKOiYvJod+u2k+k4Jbd7xcSGQU0by9jUe7SUvpsVX77HfCEZN56K63hawiSY6auG5smHjHG+xi41mpwlNnQ/9k5TFyVpXeIeyHQ7IsHiiJJvGHCSsfPlbkPn5N+8jJYUz36pCZFhNnKtWX0o+RKx0shYpAZAoSf7zZjtnr7vqkzK/pErO+UmXV5UcT96rZ0Zd0mDnuRBxW9Yi+GXZe2E2E/rAeIkqgRGOQikLqB8MScU5wsqJZ9xLDTUKo1pPGKhAIvIzp6T1wFP4zfUozK78rqHMMhvtD2PmoGiiEIucaKe3r3H2w1FyWbyY4U7NjEeDE82mW8RtCC11pNcOA9uv4SEQpBq3xxuElEEFgF4nXAWdLdC5PyuhMaroP0zBv4jlweOcJbXS6APgh26d8L+cIkjC9jqCGjg6hcdBD2J4r8cSy2TCiJzVwwWpdP9Xtiv75VFWMa5LzRXEzYFwgilw+/kBtOx03V/Aad719EtiwDoPSvjwTMt2DMhGQl3nw9nWORRR6xqZWZQzX8LTccu1X9rvRsEgIiclR1rP1gcChMie/5kD8YqH3FJFe+jHcnDzotex7h2g7l6i6Cfnl7/yqAIZ2/rrYELdbO+w+CvyjSzGw3Ln4Ybq5tQqih3no4AM0sqFB5D4rXwYdXUzQI0G5keJkvUJpVdwt/rEl2HyeMiM2jetN+EYGvkQDuZRm7xNGppcpbVpk8Xnz8u8aqxVz39A19eHEJe+0vbHAbXI8m71QKPK9PfA0dN97iq4T8+nPeNX99z/f7zcyf3FST7JQgay2jbRUsYS1jSyogbFlqekvvCmhcsscoBAtY2ruCkUN0+j
- E+2/+REi
- xG7QMXQuN2/0tbwLHgLT+cRAkSk1G3GF2/WYnYvgYn6aes3Yd5MDpsts2OGwcmoutG/xqYshPht5TFV63Jb4/9FmumoZ2jHDxnpjQxCJ5L1EdBJkHqciGf3xjTykyRYLnPs1sKw/xWdOEk6m1NtxvzHNrPxTTM+vkItYhKgE4N4n0kpOWZ/V1pPX098tWKQp+Xo+TCyTRyqrbzDZbdm/SEoSO2+OMA4RD6RoloAEgcQTpQbR9Hpk4/qzE40g8qOOC37iCv9SYgbOdDMU6KRncInhZl6Q4+t/9+zjQW2Kgg0zx0VcQTbAvKvAsZ9w55nY+TrwtKWcsD+3rNDLEVUZMfqA6Niya7rWDA/VKPBxgefPRsXk+MN3n5bWcmZeOy6vhYUHp/whP8Y2ntJmZjQZVoCTqQ1DF60hr91T59WN7tReW1SH1cnPjay9YaHKqnwCB5wVYwfGZuXMv8OGMBNyhTNl+qkUk/fqzDg0DMPN/A0Ru2Mhgajx+lC0tRxM0od6ozTVFKCWc8tbVYyzoplNgGATx6JO8Q5axJ7X3FGaGaEJfalKSk7g3sbaoil2bsUIvF66Imy/GixijFO77ddbM36NxJ9X1LPvytrmbe8/FvGzwSWCNaZoySYlOxWzFUWgf4dxi74vAYLv2jGgVPplvBy/4lfIDD2kG1vHKKdaoPtMFCm5th+RMNQGVTE6BzM2ttb9VSbtfSWDB7BPJqmZFz5sW9eHFZ1ezFk564+hsLK4Oth2zte3xnxCDUjlJmHVQo1h0q/hGQBhzu+9VDafzybuFhQ==
+MIME-Version: 1.0
+References: <6ae09458.f0fe5aea.79aa1.008e.GAE@google.com> <20261027101009.18e9136537144533915008e4@linux-foundation.org>
+In-Reply-To: <20261027101009.18e9136537144533915008e4@linux-foundation.org>
+From: Rohith Matam <rohithmatham@gmail.com>
+Date: Tue, 10 Nov 2026 21:49:56 -0800
+X-Gm-Features: AclHuK9vREYDdXUQROwalxOpZu44UxFr5X6sOJrgEYZa8zOqfkVcD1SaqwiAwi8
+Message-ID: <CA+FtcEqSLhNZHcYVEiwtD-CYkf6PEmVfi+tVc852ZdTTtbaaAA@mail.gmail.com>
+Subject: Re: [syzbot] [mm?] [usb?] WARNING in corrupted (4)
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: syzbot <syzbot+9fe09db3795456e0b442@syzkaller.appspotmail.com>, cl@gentwo.org, 
+	hao.li@linux.dev, harry@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-usb@vger.kernel.org, rientjes@google.com, 
+	roman.gushchin@linux.dev, syzkaller-bugs@googlegroups.com, vbabka@kernel.org, 
+	mchehab@kernel.org, hverkuil@kernel.org, duoming@zju.edu.cn, 
+	linux-media@vger.kernel.org
+Content-Type: multipart/alternative; boundary="000000000000720aef065ff9c40c"
+X-Stat-Signature: rcep8j1hddmx7pn9rsqdcefaj3hebxwd
+X-Rspamd-Queue-Id: 1D57BC0002
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=0.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,HTML_MESSAGE,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794376208-254690
+X-HE-Meta: U2FsdGVkX1+8VvI3+HPYjIsVPbsEGbP8vucSMMGZzLxeHxqguCP9ZKzhRvFk0n1KUmI91eJ5B5cq7M4nVp2MiyMsoP9Q2aEMyPGS5WGTNA8NZNdeagweJrjSKlTlZL+pdJIGt0+NptEERtqs57j3n33BrhatD+kGWeU0OeVSbWb3RWR8rX4UOJu03htrAfMq2terlSkfUhSQ55jmAbc3J7/vThWboDQxZJZ9Z+oyEsZTNuXOG21uhyRhsd2pYLONZkz+LZRAiG0yIQqtI2JZLZ7zg3F2QjZF9V4Cw2yUmuJutr6uSewPSSnEtIXr53p7AB8ssq3q8a0FO761c86oio5Fimj9BAP6RJr1ATM4O4vLMTjeB8rVZ7ZKlKaRtt5zb577ll3UtECU/T66O8UmqUoUUTI+S5kIGaOK/mPw0b4a6TbNdyUFmannJ7iyfAQPm+kZjBqdjm1+nkwtLA7D4omNgv9eYeGRD1jCeMX71u7Y1vtQiUguvDf5BtiH3/NIPM2IwkBhKbSuZNDgN1C09L5vwU/6ZcpktHD0h7lVMS59WkjCaEPDfRzDWDtLigRQgoBWnED2ZW52+4W2NGspAnz4bPyGHYbnWNVUnA89L/NSJMnoNHSmhhD4XHpuEpaiJabc4IHRUwZblOp5plYiJporpL+LpFBfwey4iYjjnTm1aJMlhjpJFcBihhrgT5z794pziuM28OCxyp83O8xfJ0Xo/f41BKDrxLEFkNtaiUF9oacrF1vcbvOPD9DSphvP5dbJKvLRos1Y7deRMr/5wcbKO8TQP8DSAkk9ZD6nFF1qeEvLqemByC7+5MwHEQCl0GlkKjFzkEDuFPIxiP8OLecwh1W9NUajYPePQYjJSfUXkTqsOV8ea/UZQENM4KGRbuB+EDApy51tm5w0ew/cRRIBUnCkT7xcONhFvs+zih3rBhYo9FSkFIBhKIPZd343eZZEuQdJNma9NeJeyJq
+ 0KvepYz6
+ qVS7SqoMMhrNRnlFzWlfyNHvJDTxz2yErgmDThmRv45qDgvNPygavGWQXMWOelV/3tT8O60Sp1yctU91Dpz/XmlY45NqkAUV5W61LfwCrmQiYNZjy80xh8YnM/HhMAyov2x4bTGmV2c6chTcR0YqPP5NIZpiRlDWlU/rkhIcuMtEY/EY+1igUWRUX5H++BPKt0ntvdYbtviNwYFp647R+XY6b8lk9ePygFSSfRC+SJSyN0vpY7i1DQrdlS2lRQxHv8rzs83rS4NOk//GH3t2yN0DCpbWeTccRTzkGS6Dcj1aAXnOPWT1YC5/z1PMyr/5WFlA3fdO14iMeJa8YDGLJg2G6Kh7eZS2uJjJiK9uEedNeyw/JMglfuVVK5B8wHtsHXHUNDwpvTpd+PUULzVC192/eF3DUlgWdXG2ccub0JRNW7tTgfoFA55Eiw/65tCXfpJJSsl/bwysLLuxCOSpmu+ZJUj/urSej0nnts20jhiFC9O7q9QHkWte6eV9lXxdjD1uJ08PPuAQTWb1DjZdBQIESo2WKecvlPWwo9LCd4W6FFfqe4q1zy0+YrF3NiDSI5U1ll5RVw6uchg3DS/DEYb6Gu7oXl+nqxKxZ9btWSslvNZpPHtHU0DomiFjKBmsqx/DA4LXczHN+lSzqmnmAzQYi6OXer7gITdADbEnov2eh7UxJ0or6h0DdBog1laail21/SI8+N+/98RwZO4W23sToAw81blbuweWshEoBvs2M1ZF62j5AyUB3CW3Jm5BWRxclo/pbmPFEaFsDcWe+GcyhF0WSSIibhTCkoB07O+cdud19s7gex1N4skICeTinX3DA024p1hLdKKlC+nc5boqtIfzw1lPJNYLj/oRJ7/UDykZ+jOPwEHtH5aVRkIMzve3BgMIqcbRSNjFuvgd1Z9NnZhCLloC74dvjMYCaUySerZT48vKQKIsrEHYQdvS/HYbfKsg1g5avA+FovQmUSVMoErRj
+ 8SqNEXB2
+ xE51Z5AajA0pML4QT8hdrAxtI/aWipdk12rVXLkPG6+cs2hUJa1fUe+Yx9WPIPfBsXlcw10VjrtEN7nP10PjhIjaXRN3VLIMjsL+MoBSwMCgLuSNcMoQbS7iAa1lMcCPpVadmhMiwtO+F+Qpi8TRKvNTuoTyVxhocmPMIpZl2Dz0gcFPJVoUYQWzG8u3TpLxN6006WXW/J5SAnl1AZJVfVJFXsvHELygFnoRAfHMGhFtNDYvDEcICu35sAXb4b8E9uZ5zTUUBWMDBUJ7we/kOqTqVObpdvim+2tioMybipD5iCuYK9hbvnEhf7/4YDQO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,209 +147,192 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-"Pasha Tatashin" <pasha.tatashin@soleen.com> writes:
+--000000000000720aef065ff9c40c
+Content-Type: text/plain; charset="UTF-8"
 
-> On Tue Nov 10, 2026 at 12:01 AM EST, Tarun Sahu wrote:
->> Subsystems using the KHO Serialization Blocks framework currently do
->> not record the serialized entry size in the block header. The entry size
->> is only known to individual callers, which must track and store it in an
->> owning serialized data structure. If a newer source kernel adds fields
->> to an entry, the changed entry size breaks the stride when an older
->> target kernel iterates over blocks.
->>
->> Add an entry_size field to struct kho_block_header_ser. On the outgoing
->> side, record bs->entry_size into every block header during allocation.
->> During restoration, derive the entry stride directly from the block
->> header instead of relying on caller-supplied dimensions. The
->> kho_block_set_init() interface remains unchanged. A zero entry size,
->> or one that differs between blocks of a set, is rejected during
->> restoration.
->>
->> This change modifies the serialized layout of struct kho_block_header_ser
->> and shifts the offset of serialized entries within preserved blocks.
->> Bump KHO_FDT_COMPATIBLE from kho-v4 to kho-v5 so that pre-v5 and post-v5
->> kernels cleanly reject mismatched handover state during boot. Also
->> update the stale compatible string example in the documentation.
->>
->> Suggested-by: Pratyush Yadav <pratyush@kernel.org>
->> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
->> ---
->>  include/linux/kho/abi/block.h          | 10 ++++----
->>  include/linux/kho/abi/kexec_handover.h |  6 ++---
->>  kernel/liveupdate/kho_block.c          | 32 +++++++++++++++++++++++---
->>  3 files changed, 38 insertions(+), 10 deletions(-)
->>
->> diff --git a/include/linux/kho/abi/block.h b/include/linux/kho/abi/block.h
->> index 36bdbaf9b3b8..a40b0906c821 100644
->> --- a/include/linux/kho/abi/block.h
->> +++ b/include/linux/kho/abi/block.h
->> @@ -40,9 +40,10 @@
->>  
->>  /**
->>   * struct kho_block_header_ser - Header for the serialized data block.
->> - * @next:  Physical address of the next struct kho_block_header_ser.
->> - * @count: The number of entries that immediately follow this header in the
->> - *         memory block.
->> + * @next:       Physical address of the next struct kho_block_header_ser.
->> + * @count:      The number of entries that immediately follow this header in the
->> + *              memory block.
->> + * @entry_size: The size in bytes of each serialized entry in the block.
->>   *
->>   * This structure is located at the beginning of a block of physical memory
->>   * preserved across a kexec. It provides the necessary metadata to interpret
->> @@ -51,9 +52,10 @@
->>  struct kho_block_header_ser {
->>  	u64 next;
->>  	u64 count;
->> +	u64 entry_size;
->>  };
->>  
->> -static_assert(sizeof(struct kho_block_header_ser) == 16);
->> +static_assert(sizeof(struct kho_block_header_ser) == 24);
->>  static_assert(!IS_ENABLED(CONFIG_64BIT) ||
->>  	      __alignof__(struct kho_block_header_ser) == 8);
->
-> The above change goes away once my comment on the previous patch 
-> is addressed.
+Hi Andrew,
 
-Ack.
+I retested my v6 patch against the October reproducer, and syzbot
+reported the patch test as OK.
 
->
->>  
->> diff --git a/include/linux/kho/abi/kexec_handover.h b/include/linux/kho/abi/kexec_handover.h
->> index 2f4fb9c63942..6f12f5037ea5 100644
->> --- a/include/linux/kho/abi/kexec_handover.h
->> +++ b/include/linux/kho/abi/kexec_handover.h
->> @@ -41,7 +41,7 @@
->>   *   restore the preserved data.::
->>   *
->>   *     / {
->> - *         compatible = "kho-v3";
->> + *         compatible = "kho-v5";
->>   *
->>   *         preserved-memory-map = <0x...>;
->>   *
->> @@ -62,7 +62,7 @@
->>   *     };
->>   *
->>   *   Root KHO Node (/):
->> - *     - compatible: "kho-v3"
->> + *     - compatible: "kho-v5"
->
-> These are just examples, don't update them.
->
-Got it.
+The patch removes URB_FREE_BUFFER from the Siano-owned buffer and also
+fixes the related work initialization and teardown ordering.
 
->>   *
->>   *       Identifies the overall KHO ABI version.
->>   *
->> @@ -90,7 +90,7 @@
->>   */
->>  
->>  /* The compatible string for the KHO FDT root node. */
->> -#define KHO_FDT_COMPATIBLE "kho-v4"
->> +#define KHO_FDT_COMPATIBLE "kho-v5"
->>  
->>  /* The FDT property for the preserved memory map. */
->>  #define KHO_FDT_MEMORY_MAP_PROP_NAME "preserved-memory-map"
->> diff --git a/kernel/liveupdate/kho_block.c b/kernel/liveupdate/kho_block.c
->> index 0d2a342ef422..9b148009085e 100644
->> --- a/kernel/liveupdate/kho_block.c
->> +++ b/kernel/liveupdate/kho_block.c
->> @@ -16,6 +16,12 @@
->>   * array of serialized entries. Multiple blocks are linked together via a
->>   * physical pointer in the header, forming a linked list that can be easily
->>   * traversed in both the current and the next kernel.
->> + *
->> + * Each block header also records the size of its entries. A newer kernel may
+Patch:
+https://lore.kernel.org/r/20260601201639.63171-1-rohithmatham@gmail.com
+
+Mauro, Hans, could you please take another look at v6 for inclusion?
+
+Thanks,
+Rohith
+
+On Tue, 27 Oct 2026 at 10:10, Andrew Morton <akpm@linux-foundation.org>
+wrote:
+
+> On Tue, 27 Oct 2026 05:08:56 -0700 syzbot <
+> syzbot+9fe09db3795456e0b442@syzkaller.appspotmail.com> wrote:
 >
-> "newer kernel" does not make sense in the documentation comment, as any 
-> kernel can do that. I would suggest "outgoing kernel." By the way, in 
-> this series you use the terms "source" and "destination" kernel, whereas 
-> traditionally we have used "outgoing" and "incoming." While both 
-> conventions work, it would be preferable to maintain consistency.
+> > Hello,
+> >
+> > syzbot found the following issue on:
+> >
+> > HEAD commit:    5b0764a53235 Merge tag 'drm-next-2026-10-21' of
+> https://gi..
+> > git tree:       upstream
+> > console output: https://syzkaller.appspot.com/x/log.txt?x=13739fc9580000
+> > kernel config:
+> https://syzkaller.appspot.com/x/.config?x=fd1433abd362f255
+> > dashboard link:
+> https://syzkaller.appspot.com/bug?extid=9fe09db3795456e0b442
+> > compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD
+> 22.1.8
+> > userspace arch: i386
+> > syz repro:
+> https://syzkaller.appspot.com/x/repro.syz?x=11cb9b0d580000
+> >
+> > Downloadable assets:
+> > disk image:
+> https://storage.googleapis.com/syzbot-assets/05ac8658d211/disk-5b0764a5.raw.xz
+> > vmlinux:
+> https://storage.googleapis.com/syzbot-assets/9cfb73243216/vmlinux-5b0764a5.xz
+> > kernel image:
+> https://storage.googleapis.com/syzbot-assets/fc45c7faf785/bzImage-5b0764a5.xz
+> >
+> > IMPORTANT: if you fix the issue, please add the following tag to the
+> commit:
+> > Reported-by: syzbot+9fe09db3795456e0b442@syzkaller.appspotmail.com
+> >
+> > ------------[ cut here ]------------
+> > !PageLargeKmalloc(page)
+> > WARNING: mm/slub.c:6855 at free_large_kmalloc+0x97/0x110 mm/slub.c:6855,
+> CPU#0: kworker/0:1/10
+> >
+>
+> Thanks.
+>
+> > This report is generated by a bot.
+>
+> So is this report ;)
+>
+> This looks like a double free in the Siano USB media driver, rather
+> than an MM bug.
+>
+> The failure occurs during USB probe error recovery. The allocation
+> comes from smscore_register_device(), and the page-owner records show
+> that smscore_unregister_device() has already freed it. The USB core
+> can then attempt to free the same memory because smsusb_submit_urb()
+> sets URB_FREE_BUFFER on a buffer owned by the Siano core.
+>
+> Rohith Matam posted a patch in June which removes URB_FREE_BUFFER
+> and fixes several related URB teardown races:
+>
+> https://lore.kernel.org/r/20260601201639.63171-1-rohithmatham@gmail.com
+>
+> I don't know why that patch hasn't resolved this problem, but it
+> would be worth revisiting before developing another fix.
+>
+> This doesn't appear to need any MM changes.
 >
 
-I used source and target, based one of the discussion we had in
-hypervisor liveupdate meeting. But, for consistency, I agree, I will
-change it to outgoing and incoming.
+--000000000000720aef065ff9c40c
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-~Tarun
+<div dir=3D"ltr">Hi Andrew,<br><br>I retested my v6 patch against the Octob=
+er reproducer, and syzbot<br>reported the patch test as OK.<br><br>The patc=
+h removes URB_FREE_BUFFER from the Siano-owned buffer and also<br>fixes the=
+ related work initialization and teardown ordering.<br><br>Patch:<br><a hre=
+f=3D"https://lore.kernel.org/r/20260601201639.63171-1-rohithmatham@gmail.co=
+m">https://lore.kernel.org/r/20260601201639.63171-1-rohithmatham@gmail.com<=
+/a><br><br>Mauro, Hans, could you please take another look at v6 for inclus=
+ion?<br><br>Thanks,<br>Rohith</div><br><div class=3D"gmail_quote gmail_quot=
+e_container"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, 27 Oct 2026 at 1=
+0:10, Andrew Morton &lt;<a href=3D"mailto:akpm@linux-foundation.org">akpm@l=
+inux-foundation.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quot=
+e" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204)=
+;padding-left:1ex">On Tue, 27 Oct 2026 05:08:56 -0700 syzbot &lt;<a href=3D=
+"mailto:syzbot%2B9fe09db3795456e0b442@syzkaller.appspotmail.com" target=3D"=
+_blank">syzbot+9fe09db3795456e0b442@syzkaller.appspotmail.com</a>&gt; wrote=
+:<br>
+<br>
+&gt; Hello,<br>
+&gt; <br>
+&gt; syzbot found the following issue on:<br>
+&gt; <br>
+&gt; HEAD commit:=C2=A0 =C2=A0 5b0764a53235 Merge tag &#39;drm-next-2026-10=
+-21&#39; of <a href=3D"https://gi" rel=3D"noreferrer" target=3D"_blank">htt=
+ps://gi</a>..<br>
+&gt; git tree:=C2=A0 =C2=A0 =C2=A0 =C2=A0upstream<br>
+&gt; console output: <a href=3D"https://syzkaller.appspot.com/x/log.txt?x=
+=3D13739fc9580000" rel=3D"noreferrer" target=3D"_blank">https://syzkaller.a=
+ppspot.com/x/log.txt?x=3D13739fc9580000</a><br>
+&gt; kernel config:=C2=A0 <a href=3D"https://syzkaller.appspot.com/x/.confi=
+g?x=3Dfd1433abd362f255" rel=3D"noreferrer" target=3D"_blank">https://syzkal=
+ler.appspot.com/x/.config?x=3Dfd1433abd362f255</a><br>
+&gt; dashboard link: <a href=3D"https://syzkaller.appspot.com/bug?extid=3D9=
+fe09db3795456e0b442" rel=3D"noreferrer" target=3D"_blank">https://syzkaller=
+.appspot.com/bug?extid=3D9fe09db3795456e0b442</a><br>
+&gt; compiler:=C2=A0 =C2=A0 =C2=A0 =C2=A0Debian clang version 22.1.8 (1~deb=
+13u4), Debian LLD 22.1.8<br>
+&gt; userspace arch: i386<br>
+&gt; syz repro:=C2=A0 =C2=A0 =C2=A0 <a href=3D"https://syzkaller.appspot.co=
+m/x/repro.syz?x=3D11cb9b0d580000" rel=3D"noreferrer" target=3D"_blank">http=
+s://syzkaller.appspot.com/x/repro.syz?x=3D11cb9b0d580000</a><br>
+&gt; <br>
+&gt; Downloadable assets:<br>
+&gt; disk image: <a href=3D"https://storage.googleapis.com/syzbot-assets/05=
+ac8658d211/disk-5b0764a5.raw.xz" rel=3D"noreferrer" target=3D"_blank">https=
+://storage.googleapis.com/syzbot-assets/05ac8658d211/disk-5b0764a5.raw.xz</=
+a><br>
+&gt; vmlinux: <a href=3D"https://storage.googleapis.com/syzbot-assets/9cfb7=
+3243216/vmlinux-5b0764a5.xz" rel=3D"noreferrer" target=3D"_blank">https://s=
+torage.googleapis.com/syzbot-assets/9cfb73243216/vmlinux-5b0764a5.xz</a><br=
+>
+&gt; kernel image: <a href=3D"https://storage.googleapis.com/syzbot-assets/=
+fc45c7faf785/bzImage-5b0764a5.xz" rel=3D"noreferrer" target=3D"_blank">http=
+s://storage.googleapis.com/syzbot-assets/fc45c7faf785/bzImage-5b0764a5.xz</=
+a><br>
+&gt; <br>
+&gt; IMPORTANT: if you fix the issue, please add the following tag to the c=
+ommit:<br>
+&gt; Reported-by: <a href=3D"mailto:syzbot%2B9fe09db3795456e0b442@syzkaller=
+.appspotmail.com" target=3D"_blank">syzbot+9fe09db3795456e0b442@syzkaller.a=
+ppspotmail.com</a><br>
+&gt; <br>
+&gt; ------------[ cut here ]------------<br>
+&gt; !PageLargeKmalloc(page)<br>
+&gt; WARNING: mm/slub.c:6855 at free_large_kmalloc+0x97/0x110 mm/slub.c:685=
+5, CPU#0: kworker/0:1/10<br>
+&gt; <br>
+<br>
+Thanks.<br>
+<br>
+&gt; This report is generated by a bot.<br>
+<br>
+So is this report ;)<br>
+<br>
+This looks like a double free in the Siano USB media driver, rather<br>
+than an MM bug.<br>
+<br>
+The failure occurs during USB probe error recovery. The allocation<br>
+comes from smscore_register_device(), and the page-owner records show<br>
+that smscore_unregister_device() has already freed it. The USB core<br>
+can then attempt to free the same memory because smsusb_submit_urb()<br>
+sets URB_FREE_BUFFER on a buffer owned by the Siano core.<br>
+<br>
+Rohith Matam posted a patch in June which removes URB_FREE_BUFFER<br>
+and fixes several related URB teardown races:<br>
+<br>
+<a href=3D"https://lore.kernel.org/r/20260601201639.63171-1-rohithmatham@gm=
+ail.com" rel=3D"noreferrer" target=3D"_blank">https://lore.kernel.org/r/202=
+60601201639.63171-1-rohithmatham@gmail.com</a><br>
+<br>
+I don&#39;t know why that patch hasn&#39;t resolved this problem, but it<br=
+>
+would be worth revisiting before developing another fix.<br>
+<br>
+This doesn&#39;t appear to need any MM changes.<br>
+</blockquote></div>
 
->> + * append fields to an entry, so the kernel that writes a block and the kernel
->> + * that reads it can use different entry sizes. The reader steps through the
->> + * entries with the recorded size, so every entry is found, and it does not read
->> + * beyond the recorded size of an entry.
->>   */
->>  
->>  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
->> @@ -110,6 +116,8 @@ static int kho_block_set_grow_one(struct kho_block_set *bs)
->>  	if (IS_ERR(ser))
->>  		return PTR_ERR(ser);
->>  
->> +	ser->entry_size = bs->entry_size;
->> +
->>  	err = kho_block_add(bs, ser);
->>  	if (err) {
->>  		kho_block_free_ser(bs, ser);
->> @@ -242,7 +250,8 @@ static bool kho_block_set_is_cyclic(struct kho_block_set *bs)
->>   *
->>   * Restores a serialized block set from a given physical address. The caller is
->>   * responsible for ensuring that the block set @bs has been allocated and
->> - * initialized prior to calling this function.
->> + * initialized prior to calling this function. The entry size and the number
->> + * of entries per block are taken from the restored block headers.
->>   *
->>   * Return: 0 on success, or a negative errno on failure.
->>   */
->> @@ -250,6 +259,7 @@ int kho_block_set_restore(struct kho_block_set *bs, u64 head_pa)
->>  {
->>  	struct kho_block_header_ser *ser;
->>  	u64 next_pa = head_pa;
->> +	u64 entry_size = 0;
->>  	int err;
->>  
->>  	/* Restored block sets use size from the previous kernel */
->> @@ -264,8 +274,21 @@ int kho_block_set_restore(struct kho_block_set *bs, u64 head_pa)
->>  	}
->>  
->>  	while (next_pa) {
->> +		u64 capacity;
->> +
->>  		ser = phys_to_virt(next_pa);
->> -		if (!ser->count || ser->count > bs->count_per_block) {
->> +		if (!ser->entry_size || (entry_size && ser->entry_size != entry_size)) {
->> +			pr_warn("Block contains invalid entry size: %llu\n",
->> +				ser->entry_size);
->> +			err = -EINVAL;
->> +			goto err_destroy;
->> +		}
->> +		entry_size = ser->entry_size;
->> +		bs->entry_size = entry_size;
->> +		capacity = (KHO_BLOCK_SIZE - sizeof(*ser)) / bs->entry_size;
->> +		bs->count_per_block = capacity;
->> +
->> +		if (!ser->count || ser->count > capacity) {
->>  			pr_warn("Block contains invalid entry count: %llu\n",
->>  				ser->count);
->>  			err = -EINVAL;
->> @@ -370,7 +393,10 @@ void *kho_block_set_it_reserve_entry(struct kho_block_set_it *it)
->>   * @it: The block iterator.
->>   *
->>   * Iterates through previously written entries during state deserialization,
->> - * respecting the actual count stored in each block's header.
->> + * respecting the actual count stored in each block's header. Entries are
->> + * spaced by the entry size recorded by the kernel that wrote them, which can
->> + * be smaller or larger than the caller's structure. Fields beyond that size
->> + * are not present in the entry.
->>   *
->>   * Return: A pointer to the next serialized entry, or NULL if all serialized
->>   * entries have been read.
->
->
->
->
->
-> -- 
-> Pasha
+--000000000000720aef065ff9c40c--
 
