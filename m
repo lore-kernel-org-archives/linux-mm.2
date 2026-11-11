@@ -1,147 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A560606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 22:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF41606A8A1
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 22:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=OwNR3b+W
+	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=IPT4+gET
 Received: by kanga.kvack.org (Postfix)
-	id 43A756B05B1; Wed, 11 Nov 2026 17:26:45 -0500 (EST)
+	id 7C1316B05B3; Wed, 11 Nov 2026 17:29:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EB236B05B2; Wed, 11 Nov 2026 17:26:45 -0500 (EST)
+	id 74B936B05B4; Wed, 11 Nov 2026 17:29:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DA536B05B3; Wed, 11 Nov 2026 17:26:45 -0500 (EST)
+	id 5EEDA6B05B5; Wed, 11 Nov 2026 17:29:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F12286B05B1
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:26:44 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 76C9214024C
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:26:44 +0000 (UTC)
-X-FDA: 85424273928.25.87F25CB
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 6DB1DC0008
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:26:42 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=OwNR3b+W;
-	spf=pass (imf10.hostedemail.com: domain of fvdl@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=fvdl@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794436002;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 279606B05B3
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:29:28 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 375661A04AA
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:29:27 +0000 (UTC)
+X-FDA: 85424280774.16.122BEEF
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 372FE20004
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:29:25 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=IPT4+gET;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.179 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794436165;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0qXxJbBqWWiSbLfZQoa2Zp5mRREk6/0luQcqtAQF1PU=;
-	b=nskyiTtTM89MPwE/uL5kLI649MYS2nI4nE+b7LnBmX0/kGL1HnOatxgJLrITRlpvIrNtUp
-	sy4pCOWKIiU1i5O8Dmveg4Gtv3pm6musCgOUwXDuQbL+oiNo3E8xRY3YTMi7f5drZYx75x
-	RxTodzv3A3KqydZyG3d8Tctl0aVdCKA=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794436002;
-	b=kWhr9aGyorp+F6SkefRn6WvZappCtBPY2elBI3c6hrKckYo+6l0KWibWEcgedDrfDDTbIF
-	EoBt5FY2Ne8u4ZHyCSKo3zPWf5GKPjeOSBjvxt7yQ2tv8/qjcAFHkCpPZD4vkiOVmhsF+o
-	igeOSMhHqXLsL3aTqZuNCjYrhxm2w9Q=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=OwNR3b+W;
-	spf=pass (imf10.hostedemail.com: domain of fvdl@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=fvdl@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-533202fe429so28881cf.0
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:26:42 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794436001; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Ocv4nGuXOZ/LnIix60rBa09Dx/fNuwH62ZBzUf0/XgoGQCtyk4hZwxE6oZlV0XLsrW
-         H5J/i1EeG6kvY3lyMWKJjEhGlFooEBwr/PRp+lbAx0qysgEck0++YloF2u/zzIJVV845
-         xhrknNXBd+ue1fZejZbkVFmJf0Y8KUyF+l8HEkky6QHXRWYCFjFxdT9NO8ifemASDHV5
-         YuCIqYMgkrEED9JF7Fu6xVsnCqSe/irf9FR4FA7EQ2kRgbs1U96xKvPfgt2uFb568dYo
-         42CJim7HPcU/tt0nUCvXdkr2rkhy+TT1SwnVG12Q50OUf6LtMV33qasR5jifmnhbyn+a
-         PrvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0qXxJbBqWWiSbLfZQoa2Zp5mRREk6/0luQcqtAQF1PU=;
-        fh=2MiCX2lde5EGL1e4yv8vbqLqj0+pbOZ0GPQQMYos44I=;
-        b=U6oODTV9U1E6RWfWM25W7SiVSbUCYct/iwx2b3DF/VQJWgQ2QDflKmfGIVzB6/z3ny
-         zSD4kGFQG3RV5+sKSYoTAcDJGLDwyhV5VbtiPM+CRN/aWSKe4Ev1WDObmapZzPf1uzIz
-         o+icn4q+B8paOzqIRfuy/P3rU4/bGLoKjXFE8rAthaOJ86odOIpZP89mZWG8lTOQY+VV
-         CVL3QPE7WstfmYiwvFZDRe/lnjT9yX95OHWovkCCrtDNh2KI98d8EBtLjCOQHOU2ExJ/
-         mtK9wVnXsXqp3HIkTZIQiOOawHI+sVUB3+LSinBjsOFkB3O9XS3XTF6YnUHgXoQihxp2
-         nn8g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=VhufRV4BoS98pezOde2Ss8la06aT4y3vZY8jTMf1PWs=;
+	b=GoYSg7IW6tHOnAQ8jm8FoZPiXF6Al3AhoOh2ET86Xjx3vuGDg2tI8AUZ1JdJ2Vw3tftHmp
+	H02YJrgvsLybJdo92gE3dF8xU/LHU08G+i4eCn0DdMmvy5+aMUxBkfequBJ/mSt/nrFs2F
+	MPE6vG0ovdYVGE5ayFMfyJ7fzeC/h04=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794436165;
+	b=6FZ8dsgkQty+STdi65Oz8XFg4eYkgzy0j1cD+lla1rlzst6I5VpNJ+I0QuXBdutVjlnSlx
+	evX1b44rTLzU/UqSN0Pxpq+yPgnQXi0ZWP/dmw17WLvItFr0xl2kUvT1s/pSYxg/b4QR6X
+	HOyYgWFjSG9YEJfx+si5/dGj48q/dvU=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=IPT4+gET;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.179 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5eaeb7fdda2so2215294e0c.3
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:29:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794436001; x=1795040801; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0qXxJbBqWWiSbLfZQoa2Zp5mRREk6/0luQcqtAQF1PU=;
-        b=OwNR3b+W+cZX9utfWMRnRpWDAn+J9O5/Pbe2R85ij83jJyOaDCQlTr9Oymdu5kaS3Q
-         4BMBwXt/mX4+sIY7eYJ+nYICD3IFugRIZet2DNfKdUbi7JnfXVJQWRwDfRPvZoA/6tcO
-         6IJR4vhJ4/mRRVATRA06vk2i1pUWvtkn/IDeGscZa0/up4K9lFaWVcdenDDQD9vpZU7A
-         muMiegyaDf5U9/lf6vdygCENLtoHhsmk7dXCxKGwTbqEO/GGL2FiZA2cjLjIGIgvlGCr
-         FWZNJblMO51ZcUng2HZj6P7PbJ+pMAcPM2syy+5kYLgj5THSPG/Hb9YpHe29xEEydIct
-         jfwQ==
+        d=soleen.com; s=google; t=1794436164; x=1795040964; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=VhufRV4BoS98pezOde2Ss8la06aT4y3vZY8jTMf1PWs=;
+        b=IPT4+gETJTWp3qoxC+tWmkrB/eFtc8TWnr8i+uNBInpYUls2zAVHG8INoncS4V5E9k
+         Xj3iOC8Fsnt/bLC1bBDlpXjWHLoTLcgkPTulpzqTXQ2gOGLyJaUPeSMg3SuWESCVVeVs
+         T+/bLo1N9qqw60fWNrhRrHoCEzk3kspQjnzy44YFaixoMxkwwGe5KZA9RbY8axn80Sjd
+         yi+uaoK+iTQHlM9h2sTXV4GsIK+e231RERJf4cwgL6Y7av6AjzmnL6NZa8sptVhUUfWR
+         /hZrOay1WmwHupxsNgAxiQZPHl3l+CiNILZmzy8uCV5gTTEHI5+cbkReojEPDJi56z4Q
+         Eabw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794436001; x=1795040801;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1794436164; x=1795040964;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=0qXxJbBqWWiSbLfZQoa2Zp5mRREk6/0luQcqtAQF1PU=;
-        b=gCORLKTHEyxkI6GSCltnKSlhJjnduOhedOb1kxGoNyfTXwlwQI+KYGX/0kcv3o7Y1P
-         inXOHHQ4lziS0cA6+9TFS1QPFQgNkmWMK201GfhElEvXFPtTowsK+5K7t8KpkV3SnMIx
-         PKyN4SATJkiI73EJvUujb88ZtL4djgWw4oMtJPEZhM2dspBMRpTV93HoRM4pKRvBemD8
-         9TMmuzCVrHoAdL5sMwpubGtY6ziQlqR9QD+YLOXJbuAUsyyqL7nDysmDVTvtN9X9X5K2
-         V2D8ErbYLjB4SJg1lqcdDiQqzTLIByrWGRTeJi5KXLnJX4X5lBnZazmJyNt27xMU0038
-         lVjg==
-X-Forwarded-Encrypted: i=1; AL+hErGRbNKkO0AaoEExpy4oOazbZRZTWf9eJvP5oFwjy+IeTnBj3hF3Fe6jxKzCHHcN6t0x/GUUtqJzbA==@kvack.org
-X-Gm-Message-State: APuU4Z+F0GWUqlTt8Azj4frd2l471x5JVlIsRrU4AJ93n1yeo+v3TEeM
-	LNBax7V5pPYjZijyhNjekjqAUDxY/RXSzTrpyH0pQMMMEK/WSxvxsZth1Il0jsX8QwdevWGCTP+
-	/KdAxwmbYkwuSHfEsTOk0SuBV34HHtlVgH7U7jhR+
-X-Gm-Gg: AYBFou2CH1bYANRC9zEUyKEdSF8M2dAIfrmyToYe5PU3UfXfEWMa0sFPWG2+1MhznID
-	G1oeSsQdiTz4JHqYx7F3KWalCNk8Lhl5L2QON/Ynl1NXy499AucU8/v7idjvm73NG9/l7Y93kcJ
-	7yWw0qceII6h9GQa1EMLmI+I+19+8vI8OSBnI3KAPoygncy/JUOnaBrI8RbIcsE8mX8RcclaqVz
-	aB79V9ziblTvDtA0YhZR9sPzzd4ZZPKU4WXy9FwIe4BneVVoKwDUxq+NeJbdYL769/KDeOEre9g
-	Qrjcn/t+p63M2kRatn5Pmb2nV2JPmtDKHt6cCLTpH0kV9S28OGaubS7n00bwu+YePF7IsN32S7T
-	Z459mEujgPH4oMgNPhe0b8dVoeU+NtPtih6bc
-X-Received: by 2002:ac8:5c84:0:b0:534:d386:c3f1 with SMTP id
- d75a77b69052e-5598d505571mr2598201cf.9.1794436000897; Wed, 11 Nov 2026
- 14:26:40 -0800 (PST)
+        bh=VhufRV4BoS98pezOde2Ss8la06aT4y3vZY8jTMf1PWs=;
+        b=w63QftL78CjrpNMUtnj6Y034jci8vR938UJta7dU33+SqZ5Eg7ieB0UC2lAzra6qv7
+         aQYdNrzehgV8+e+vGLLi57oLMrkEWX+Vq71SDFw5Lr8reZJvS/+kQDOty/whLgFVH/Gi
+         JnrWxS229V+IvRciCwSj2lSOYuJIRe/4JHwPUMyhGwrkJBLkHOm2AIvOOs1XlGOZLiRi
+         PLM552ew1o3FUrJI/DqhWBVA+Obvx3iaSsQOtlvJOdRNHAfSfjF0Stp5JpzszLwcmxYk
+         3B4vxBLkSXky8sotYC51Gn4ZTaFb9evRz6eU92DyYeCYFbbxlDNmDANefs0vaUNgorSQ
+         Vw/g==
+X-Forwarded-Encrypted: i=1; AL+hErGenXKzGu9XAIz3Qx5ARhbdbyDtYVKi2O+NydyTDap78QHHcAgdRvLAf6hE1c+HmRYUMA8tXaXpiA==@kvack.org
+X-Gm-Message-State: APuU4Z+SNs3cXp1Vw0zWwYTuzjJf223OPKeMY+RhXp/E15cdl7R5JLRd
+	8HkxV98Zu5SAAWXz32HsdYy6v1T1qsiMveFFC47DQhxQLeJZEFmMW9CDGyJpn2BHG+g=
+X-Gm-Gg: AYBFou2iWW8YtZeyJbAaCVKWDf1K5UPdqLkAXvWGVhfyQkUWGwaznPqkJEXPqXREyFI
+	qV+h/2KM1yW1J18ydUs1mVMRwhTKlYA3qjRdfAVU2tp2xZY82Bk2anV1aWmcreeTra1yp9s17yq
+	SlTbYdVJGxoQPEMbMYswOtjiuEIeplBtU3ioaZulIqcQsGjMXcOSfjKXsa1LJpoyNwxsCYTKfbx
+	5MhKlR/NZ7w0ScDK1Yvv9ypJ6mc8P0EyUOoqcXzfH8OW4ofGNXXJ99jthOUiqw2PagRStHtqP9y
+	OK+3dTmgvsDmzYyy59ewPh82KrGAJPxtMzOX9+9Kqs2NF+lhpVVrpKQVtX99LJApMKjQaL4lPPE
+	jXVKWcmvykwb7g7fdlnhzJsw8DYkl14JsJjqHQn8NaKTKbhJLFtUtAQtePnGieyfU+SPlnNGk/s
+	7/mVsQRWmjUNEM6TviMJdggDk/ler23v5255ArczKJEaNwr8tUV1eQGqanAyblLm+xib9hPT1hs
+	hp5ZbywpezP5pNdwHgYw2WuAGBM1nEqsDd0ynDnCT1xNBMM2eRenhDZONQcCv1p0fkz/P6UduFG
+	j8HjWjGNbZtqoXoi8Lm6xbQQE4j1byTZ3Uxc9FqlmKdjg1dh9lnE/5i1pF9185sYoMzBlU1ztQw
+	6q1HGNwvsX3CxAcla8DQt8qToKqf82/4mXcVJNIL1SzYq
+X-Received: by 2002:a05:6122:4210:b0:5ec:d84e:3833 with SMTP id 71dfb90a1353d-5ee1c453cbdmr1849715e0c.14.1794436164290;
+        Wed, 11 Nov 2026 14:29:24 -0800 (PST)
+Received: from soleen.c.googlers.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ee0c58ee8csm4508834e0c.6.2026.11.11.14.29.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 14:29:23 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <cover.1794046188.git.zhengqi.arch@bytedance.com>
- <586d6c53ab7e4c64d6e89ad3cf0cf7e07dabbfaf.1794046188.git.zhengqi.arch@bytedance.com>
- <7abb3aa1-385a-422f-86bd-7aac9661c4d8@kernel.org> <423c9b28-ecf2-4fab-817d-2fb326690c73@linux.dev>
- <3a1a3bb5-0b01-4f20-aa0e-74a952544b8c@kernel.org> <5f68ffba-9f56-4e31-9e7c-9d110f552efc@bytedance.com>
-In-Reply-To: <5f68ffba-9f56-4e31-9e7c-9d110f552efc@bytedance.com>
-From: Frank van der Linden <fvdl@google.com>
-Date: Wed, 11 Nov 2026 14:26:30 -0800
-X-Gm-Features: AclHuK8ui2RDy0cmaEz9Z61Dze9vT6ffy1pZqe99lY-d2GDxcD7lU32xjKq4-x4
-Message-ID: <CAPTztWb0XbjCxtihyp=Tx16Z_kjF+M8sa7YcUjvFv0WcS83MAg@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] mm: gup: allow long-term pins of CMA-allocated
- HugeTLB folios
-To: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, muchun.song@linux.dev, osalvador@suse.de, 
-	akpm@linux-foundation.org, azpijr@gmail.com, lance.yang@linux.dev, 
-	Qi Zheng <qi.zheng@linux.dev>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 39oxmmc9jazidxw9s1o7m4t9ahnwwrs7
-X-Rspamd-Queue-Id: 6DB1DC0008
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/9] kho: Reclaim the metadata page left reserved after
+ kexec
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Chris Down <chris@chrisdown.name>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, 
+ Breno Leitao <leitao@debian.org>, Alexander Graf <graf@amazon.com>, 
+ Baoquan He <baoquan.he@linux.dev>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, kexec@lists.infradead.org, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, kernel-team@meta.com
+In-Reply-To: <63ca64c004b296a998a3e531f8c0c4964916b70c.1794383544.git.chris@chrisdown.name>
+References: <cover.1794383544.git.chris@chrisdown.name>
+ <63ca64c004b296a998a3e531f8c0c4964916b70c.1794383544.git.chris@chrisdown.name>
+Date: Wed, 11 Nov 2026 17:29:20 -0500
+Message-Id: <179443616043.2329176.17166425351392983946.b4-review@b4>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2439;
+ i=pasha.tatashin@soleen.com; h=from:subject:message-id;
+ bh=jGQo4CvboZX/j4iYyskgIcnUkGUfctp7MromfOrLaYc=;
+ b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBq9OxDl5eSqxBhOZE5p1XG7yi8PQ1rOiwUmOTWN
+ tSoxjgP6WuJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCavTsQwAKCRC7dyhM23N6
+ 3uNSD/0Wo/iIWR2aXRe5YzNSrRfo/731JlX1MXOtpy+A5vTlCNvhVm398rzpLHqepWduInwcdRK
+ 4tex7caWuDlEdOt+RIVRYZ9mDjBo4xRQ0pvDBu9TWfu/8iU6zATD9T2YuP0IZnK23JCBq2LZdNL
+ Pd1ZB7+If5y2zy1PJcSHbWDjJR9cu52ZsvA6Ni0FgTTyy3SdqMWwntgGPXP/LkzxuTKVIxTCew/
+ zAi8DC6COcIzjFKPckc3lqS4x+o2s5Zwpfgfa/yAKCJIXNcdgmZhS/bqjRG1k30OiLRzjm1AUH0
+ +/Wzasj+qb7r0d0gsdRO44Q3LUAgYoBNNtbFLy+xdLMwqLcDpWFCNFIsuQoxoTLzbNi/ldIvWM7
+ Bhe1ME5c/vfVxRfgVtSpaG6iwt7oCEesTRczv6SaBP0L2VXQcphd+4/BXqpxAX3OQlRgygYDjh2
+ 1FlvPx3aw7hsvLSA1SpUCaE1/h4TboRhZXeYpX7Qjfo5WJMt9pwdUSkpQoQ/IZ0H7DlnI3dcKAJ
+ LKGf5Y3yLsfxcsbOghJ6yLAHz8Qa5p2lyNP/Jke0X30ny06+HzRS9+hTk2lJkxIc+bfFW/kZkt1
+ l4/OofVK10BUEKi4onJaayj27ChYPFFdnwt9J1sO+PHCisIKLgi9L8aR/AUtsyOX7ZBzKO2lVH8
+ P8fa89xifqHqa4w==
+X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
+ fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
+X-Stat-Signature: t65ygahty3ksqt7mx4dazi94ij9rs7tz
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794436002-407965
-X-HE-Meta: U2FsdGVkX192dbLdVo9g6whB5G1a7bwTffjo1npNgwmDyb40L6kUMxVjRtoLlwMF8XtBZN1vzm//EYXRZ5fDSbpJKHK0EKMWTjK/d/mVJiBgfqedFKzn6p5nsvRiiSKtJbgQYjpm2IwCJjnMih4KSOEYYqzg1td52ZEYD/PDgGaw0a6vDnHtpXYVvoiE+rQntPzElGJ9dVeWMrNrgNXfpC3kcUW8eKqXandIEIeDBKuaHGo4CThbbNOkIvfB3S3h8257kLSUHy8sCiQ27S0BGtz42rjAqGVeUCTg2+kV5Yq/zt5P1gHj+2yRY2qpVZzmpA4ZuWsUFDx+0kN0NPPwEBnmNc7tcoj7Fp55ME+LT2RlcGl6z+J86nukaJ44ytGTMuVqWcMWC3BqCWf5VPt0G4m7TWGvUkwMJoRro65m9DsB7yPfIfu5F0vhznRaYy9o0355w9wx/P1b4mjAY36fBAVJ2c3/i6YiCV77ELIJWjszxWGyC0P8jVgGGUAbKM2ZP4Y/aqN1q9eQ1A5uKMymsHZBavEHlwgiCFKKoiq0Sz713ajrezbXOWlF9SoykFu6aj0noo5erpHH0q2urC8Zoekteb6RACk1lPXxHbz2E0HU2Y8mQXkYdVXikpf1BDGccLeZ5OWiiUh+f/FKSODSXLyTbBt+Rf9mMgCZRQTGNXyN8Apfq3SN/irRfY6JFWfRkk2oI94mguy2sbZ1y3BcX7Wsrqv92uGQc1e/uUCUsSu1u9R8dhL/z1drhb6EXQv3D97hhjpOMG5lOD3vmRN1X3CFz42W5nNZAgaFxxjZMm1MgaYj+dsjdWsza2fZ3DyHw5d8jWhy7ERpwt7KVsNcLpDWcg/MzRi8v4biQSJV/zkP6npQM+w+xEZUOP2PVOErrWfDjohV50Nm1hHpdDlV3O1tw6WYd2VghchRs5uXrXTHIhNPb9sy3gLlEII9EOXXIIbaTf/vWJre8ShOF81
- 1oNgd3bb
- PHJ27wCX+nf4eB1HlbCqY9MRswPCPO+LBPxHbfqTIBvfs6xkOQoHBfrlmlVL7IqySEM8veBI9TDhqvx3n1/u/xKdj9OysAtUzgCW7Q/o0QXYFJ9tsae04LM1Z1nsbob0CYyoo7mRpOyt2vI0xT47iiQGK62jziFNoDdRcp51IXJXc6ZzhY6cLhidxskyfI3T/iiivaNYYA6RZySFpyK6n57M+BeZTjKbOwBOUHEvpnfysg6GdzrvgQbLc/O2uoVgq9zzYZmbNkMH5LR3fINVc9WxpRbN/ZS8ypH2+f9bej6oWbscGKBwUyoQt/Cip45cJ5zoVb60+4TOE01E=
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 372FE20004
+X-HE-Tag: 1794436165-106316
+X-HE-Meta: U2FsdGVkX18GyV85UTxSq7iZmtqzl8rBWBDBetZBNA2ljM/f2QVTuyVNhGWGbOYTfC5eOu1hZp/ssc8dPdf2xvfSFBw6vj4J2EQf//akHz9dYovM1StAQBDlFffNYvXsEsSxnJAaV4leMwiglnKkMunWJ9xUpGjICDoF82XGIoJi517BRLoWvLB7GIvqVXyFEQfgX8eir1Vv17PRrnYYMRc/kFSwaCUVL0P9AiRWjDCe5PDVbAL2WhMXC+7sm+60DbRmpNOxPx/+NJs4C95zExLIBtF8zeRlkOhCkcuNPWMQnY4+mOalxiTKfhvgX5dApcRi//PVrSAWZBcBBjkoXLhaevOWDSeNuEZUAH/KrHiO94Ywe3RJlYrnhTu6zhI8PJyZjluWR/xDfycBlUfV8aJerqmwGG7rLA87nmwPv1Z4B8c06HgPSAkoPEG0kc5H7I1i22x2rmbgwRomBXXv3ZLkmfF0SqcxYfayyYaaixcHCsqZ4tFs1p94tCUG/vSvr8gx4fMj6QhfWRPffNyBJPY5qI2UeUyApQxmQBl+ZCCblbPzqwKC8Dk7naGJIU56iFh88OyN5ys/Eh77zpIF5vtNjC9IX1+pMR1cfmWBi7oaMU7oX+kDGkmHixtW8ADgIwivHwqcYNYsFQiZZSvk2ErYlC1vTVORBQi8WoyCgDheLccrrr6luq0MJfjbABrtnUNenwbfJKcbU7xZHtnbTtDqjNKo7MR3qmlKayM4W449r5a5o27vAjncrBpBUIzzz6/i366uEGvgDTR8/tGfIPDW2Y8FRrgZ6lGCSyptwIj9CqkUQdLyEgbkmPGLY9FwH6ZsbPMlwdW3vCqfv28dKeHdLkqrAC/8HT6q6v4kiOnJjTHN4pEsxS72TtmGS2qt7eqrlSzWQTN3suJmGdoHYFr7/f9jZ6JeyOlDPEqDdq0qnB3nTp+kNlGAbPH1lGCMFDEwiiNf9i2P/iTHpfu
+ DZpfpASm
+ Saq56lXWBtoZf5fNIOKonJFxqeNaHCe60Eil2skW4XIlTk0Ia1i+ZiFWHLsx57bFswb5IwuuguuQ7DextRDsFhQM37ElbLDNizNiYd6AHoMmq0Cv+PS+QQNXviGEIvQl1G5jJEhcJiQaY5ZFywEiaFF1a5lbDe03sqQ+OBDgbSKyCinKTEc7gtufPOM/1y7TSpjj/L3ozcMLNd/mHKCUT27z9zOga6zBaN1Opzhrs4z64OckPeNUofwd0KK2U57cy1hMxQGQPA/7BgroNfGAGn/i7xxmLSOJs8eU/3+qnssTyNIMSKPugtziAJqMinY7uRJDm4F/BZGQz0WUsrt0xAPZOMw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,212 +150,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 11, 2026 at 2:27=E2=80=AFAM Qi Zheng <zhengqi.arch@bytedance.co=
-m> wrote:
->
-> Hi David,
->
-> On 11/11/26 3:43 PM, David Hildenbrand (Arm) wrote:
-> > On 11/9/26 04:10, Qi Zheng wrote:
-> >>
-> >>
-> >> On 11/8/26 1:58 AM, David Hildenbrand (Arm) wrote:
-> >>> On 11/7/26 11:30, Qi Zheng wrote:
-> >>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
-> >>>>
-> >>>> Long-term pinning treats explicitly CMA-allocated HugeTLB folios as
-> >>>> unpinnable, causing unnecessary migration or pinning failures.
-> >>>>
-> >>>> These folios already own their CMA bitmap ranges, and memory blocks
-> >>>> overlapping CMA areas cannot be offlined. Allow HugeTLB folios with
-> >>>> HPG_cma to be pinned directly, including in ZONE_MOVABLE.
-> >>>>
-> >>>> Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic huge=
-pages using cma")
-> >>>> Cc: stable@vger.kernel.org
-> >>>> Suggested-by: Muchun Song <muchun.song@linux.dev>
-> >>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> >>>> Acked-by: Muchun Song <muchun.song@linux.dev>
-> >>>> Reviewed-by: Oscar Salvador <osalvador@suse.de>
-> >>>> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-> >>>> ---
-> >>>>    include/linux/mm.h | 29 +----------------------------
-> >>>>    mm/gup.c           | 31 +++++++++++++++++++++++++++++++
-> >>>>    2 files changed, 32 insertions(+), 28 deletions(-)
-> >>>>
-> >>>> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> >>>> index 2d0b8a4c9974f..75dd40265d3f4 100644
-> >>>> --- a/include/linux/mm.h
-> >>>> +++ b/include/linux/mm.h
-> >>>> @@ -2975,35 +2975,8 @@ static inline bool is_zero_folio(const struct=
- folio *folio)
-> >>>>            return is_zero_page(&folio->page);
-> >>>>    }
-> >>>>
-> >>>> -/* MIGRATE_CMA and ZONE_MOVABLE do not allow pin folios */
-> >>>>    #ifdef CONFIG_MIGRATION
-> >>>> -static inline bool folio_is_longterm_pinnable(struct folio *folio)
-> >>>> -{
-> >>>> -#ifdef CONFIG_CMA
-> >>>> -  int mt =3D folio_migratetype(folio);
-> >>>> -
-> >>>> -  if (mt =3D=3D MIGRATE_CMA || mt =3D=3D MIGRATE_ISOLATE)
-> >>>> -          return false;
-> >>>> -#endif
-> >>>> -  /* The zero page can be "pinned" but gets special handling. */
-> >>>> -  if (is_zero_folio(folio))
-> >>>> -          return true;
-> >>>> -
-> >>>> -  /* Coherent device memory must always allow eviction. */
-> >>>> -  if (folio_is_device_coherent(folio))
-> >>>> -          return false;
-> >>>> -
-> >>>> -  /*
-> >>>> -   * Filesystems can only tolerate transient delays to truncate and
-> >>>> -   * hole-punch operations
-> >>>> -   */
-> >>>> -  if (folio_is_fsdax(folio))
-> >>>> -          return false;
-> >>>> -
-> >>>> -  /* Otherwise, non-movable zone folios can be pinned. */
-> >>>> -  return !folio_is_zone_movable(folio);
-> >>>> -
-> >>>> -}
-> >>>
-> >>> Moving code while adding new stuff to it, please don't.
-> >>>
-> >>> Move code first, then modify it.
-> >>>
-> >>> I don't want to play "find the difference between two pictures" on a =
-Saturday
-> >>> evening.
-> >>
-> >
-> > You resent your series way too fast.
->
-> Got it.
->
-> >
-> > Now we have discussions in to threads, congratulations ;)
-> >
-> >> ;), got it.
-> >>
-> >> I moved the code to resolve a build dependency.
-> >>
-> >
-> > Why can't that be resolved differently? What is the dependency?
->
-> The dependency is that the new check wants to use
-> `folio_test_hugetlb_cma()`, which is a HugeTLB-specific inline helper
-> from `include/linux/hugetlb.h`.
->
-> `folio_is_longterm_pinnable()` currently lives in `include/linux/mm.h`,
-> while `include/linux/hugetlb.h` already includes `linux/mm.h`. So I
-> can't simply use `folio_test_hugetlb_cma()` from `mm.h`
->
-> >
-> >>>
-> >>>> +bool folio_is_longterm_pinnable(struct folio *folio);
-> >>>>    #else
-> >>>>    static inline bool folio_is_longterm_pinnable(struct folio *folio=
-)
-> >>>>    {
-> >>>> diff --git a/mm/gup.c b/mm/gup.c
-> >>>> index 2b405cce2ca5c..f41701c603500 100644
-> >>>> --- a/mm/gup.c
-> >>>> +++ b/mm/gup.c
-> >>>> @@ -2216,6 +2216,37 @@ struct page *get_dump_page(unsigned long addr=
-, int *locked)
-> >>>>
-> >>>>    #ifdef CONFIG_MIGRATION
-> >>>>
-> >>>> +bool folio_is_longterm_pinnable(struct folio *folio)
-> >>>> +{
-> >>>> +#ifdef CONFIG_CMA
-> >>>> +  int mt =3D folio_migratetype(folio);
-> >>>> +
-> >>>> +  /* These HugeTLB folios own the CMA memory, so they can be long-t=
-erm pinned. */
-> >>>> +  if (folio_test_hugetlb(folio) && folio_test_hugetlb_cma(folio))
-> >>>> +          return true;
-> >>> More hugetlb hackery ... don't like that, sorry.
-> >>
-> >> Agree.
-> >>
-> >>>
-> >>> I think this just goes down to a problem we discussed a while ago tha=
-t is
-> >>> independent of hugetlb: we'd need some way to identify that the the p=
-age was
-> >>> actually allocated by the CMA owner, and it's not just some other mov=
-able
-> >>> allcoation that ended up there.
-> >>>
-> >>> For something generic non-hugetlb thing, can't we call into CMA to as=
-k whether
-> >>> the current chunk is marked allocated?
-> >>
-> >> The existing bitmap is set before allocation completes, so the range
-> >> may still contain borrowed movable pages. A set bit alone cannot
-> >> establish ownership.
->
-> The more accurate code path is as follows.
->
-> Assuming the 2M buddy allocation is successful, page P is borrowed from
-> the 1G CMA area.
->
-> Now, proceed to request a new 1G huge page:
->
-> only_alloc_fresh_hugetlb_folio
-> --> alloc_gigantic_frozen_folio
->      --> hugetlb_cma_alloc_frozen_folio
->          --> cma_range_alloc
->                  /* set bitmap!! */
->              --> bitmap_set(cmr->bitmap, bitmap_no, bitmap_count);
->
->                  <time A>
->
->                  /* may fail */
->                  alloc_contig_frozen_range
->
->          /* set HPG_cma!! */
->          folio_set_hugetlb_cma(folio);
->
-> At time A, for page P, a bitmap was set, but HPG_cma was not set.
->
-> If a concurrent FOLL_LONGTERM pin uses the bitmap alone to determine
-> ownership, it could incorrectly allow P to remain pinned. If
-> alloc_contig_frozen_range() fails, cma_range_alloc() clears the bitmap
-> bits, while the long-term pin on P remains.
->
-> HPG_cma is set only after explicit CMA allocation succeeds. It records
-> the folio's own CMA ownership, whereas a set bitmap bit can represent
-> another allocation's in-flight reservation. Therefore, the bitmap
-> alone cannot replace HPG_cma in this check.
->
-> >>
-> >> A generic query may need separate ownership tracking, such as an
-> >> owned_bitmap recording successfully allocated pages. Its updates and
-> >> lookups would also need to handle concurrency with fast GUP.
-> >
-> > Or simply two bitmaps? "trying allocation - allocated"
->
-> As a fix, perhaps this is a bit too complex? :(
->
-> Alternatively, we could adjust the timing for setting the bitmap, though
-> this might introduce new concurrency issues.
->
-> Thanks,
-> Qi
+> After a KHO kexec, the new kernel keeps the page holding the previous
+> kernel's kexec metadata reserved for as long as it runs. It only needs
+> the page once, since kho_in_kexec_metadata() copies the previous release
+> and the kexec count out of it at boot, and nothing reads it again.
+> 
+> Free it with kho_restore_free() once copying is complete.
+> 
+> Fixes: 76aa46b9e404 ("kho: kexec-metadata: track previous kernel chain")
 
-Yeah, ideally there would be a way to identify folios allocated
-through cma_alloc. But that would probably require.. dare I say.. a
-page flag. Trying to check bitmaps does seem too complex.
+Do we really need to apply this to stable? It behaves correctly, and 
+your patch performs a minor optimization by releasing a single page back 
+to the system.
 
-And, since we've had a local change that does exactly the same thing
-for a few years (which I apparently forgot to send along with other
-hugetlb_cma changes), I can confirm that this looks good to me and
-works. So,
+> Signed-off-by: Chris Down <chris@chrisdown.name>
+>
+> diff --git a/Documentation/admin-guide/mm/kho.rst b/Documentation/admin-guide/mm/kho.rst
+> index 902d171a780a..f9d2cc5999ee 100644
+> --- a/Documentation/admin-guide/mm/kho.rst
+> +++ b/Documentation/admin-guide/mm/kho.rst
+> @@ -120,4 +120,6 @@ stabilized.
+>  
+>  ``/sys/kernel/debug/kho/in/sub_fdts/``
+>      Similar to ``kho/out/sub_fdts/``, but contains sub blobs
+> -    of KHO producers passed from the old kernel.
+> +    of KHO producers passed from the old kernel. A blob disappears
+> +    once the kernel has read and freed it, as ``kexec-metadata`` does
+> +    during boot.
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 6f1f55fe3181..8a07783326a4 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -1782,6 +1782,9 @@ static void __init kho_in_kexec_metadata(void)
+>  
+>  	pr_info("exec from: %s (count %u)\n",
+>  		kho_in.previous_release, kho_in.kexec_count);
+> +
+> +	kho_debugfs_blob_remove(&kho_in.dbg, metadata);
+> +	kho_restore_free(metadata);
+>  }
+>  
+>  /*
+> @@ -1859,14 +1862,15 @@ static __init int kho_init(void)
+>  	if (err)
+>  		goto err_free_fdt;
+>  
+> +	if (fdt)
+> +		kho_in_debugfs_init(&kho_in.dbg, fdt);
+> +
 
-Reviewed-by: Frank van der Linden <fvdl@google.com>
+so add debugfs node here.
+
+>  	err = kho_kexec_metadata_init(fdt);
+
+Remove the kexec metadata node here. While this is somewhat unintuitive, 
+I do not see a better alternative.
+
+>  	if (err)
+>  		goto err_free_fdt;
+>  
+> -	if (fdt) {
+> -		kho_in_debugfs_init(&kho_in.dbg, fdt);
+> +	if (fdt)
+>  		return 0;
+> -	}
+>  
+>  	for (int i = 0; i < kho_bootmem_cnt; i++) {
+>  		unsigned long base_pfn = PHYS_PFN(kho_bootmem[i].addr);
+
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+
+-- 
+Pasha
+
 
