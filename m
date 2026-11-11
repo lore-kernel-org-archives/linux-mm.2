@@ -1,204 +1,115 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0387E606A327
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 22:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AAF960A2601
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 22:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=pps01 header.b=IT/8NHst;
-	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=lionmail header.b=qMZnsprd
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=HYBe+NyF
 Received: by kanga.kvack.org (Postfix)
-	id 0F5B36B05B1; Wed, 11 Nov 2026 17:39:23 -0500 (EST)
+	id 25A126B05B3; Wed, 11 Nov 2026 17:42:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CDF76B05B2; Wed, 11 Nov 2026 17:39:23 -0500 (EST)
+	id 20B4B6B05B4; Wed, 11 Nov 2026 17:42:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED7716B05B3; Wed, 11 Nov 2026 17:39:22 -0500 (EST)
+	id 122406B05B5; Wed, 11 Nov 2026 17:42:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C260E6B05B1
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:39:22 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 47F63C046F
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:39:22 +0000 (UTC)
-X-FDA: 85424305764.14.9E3E13E
-Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 64153160002
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:39:19 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b="IT/8NHst";
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b=qMZnsprd;
-	spf=pass (imf08.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794436759;
-	b=pfqvi2/rt0R3dNqt2OGKZWJBJTFCem5pwuhV4UlKRYogmqGwPt8SUyjq6o7mpRqhAfHbrP
-	6mzLGnkMz6uHmIYZ+pa7YOt7lxflOxQI72nNaTxak8jzEtM6ioXu3/noWOWFYMU0Ke0Nxu
-	56FcaLbTlxTkb88TnE52bwhq/0JOhns=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b="IT/8NHst";
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b=qMZnsprd;
-	spf=pass (imf08.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DA3FD6B05B3
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:42:36 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 77C8F1603A1
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:42:36 +0000 (UTC)
+X-FDA: 85424313912.30.8956C0A
+Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 53E3F100005
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:42:34 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=HYBe+NyF;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf05.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 52.34.181.151 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794436759;
+	s=arc-20220608; t=1794436954;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tyB99dES1VWSWEDHCuA5hRT/5p/ujc67VH3aWrgWNkc=;
-	b=QrHmLRJBX6eDJTiUsPsbaozzlFlI5a+0c146GIRvovKnnzy900/Mv4z0sHRVT6KJS/27S6
-	sHWz+G/cM+sN1CZXHAZ1v+gJyysElFnPjxWfMQ3rH5UnqzTh9b7zomH6YaeF5C3APJvUNf
-	CThC/9vGg9dOXE16bjpy3dBfe8Lpk9o=
-Received: from pps.filterd (m0167072.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ABMBwrb4018382
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:39:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=tyB9
-	9dES1VWSWEDHCuA5hRT/5p/ujc67VH3aWrgWNkc=; b=IT/8NHstUgDEGgSQnLX6
-	Vaiv1AWGs/qhkiRKlUcq7D3eR5gJ6ItvRqnKsmZtifCmYF83Etsk6xnSg4ghYtJq
-	E3Nqa0kPb00QkhUF3JRsTPPds/3MgmGm6kO+aDh9nKa4vJnXR2esYIlCFPgPXPSF
-	lDUFil5vp3qkfjAq/6sbqbK9b31ugJ/b+kyU7psmTCLkP66JQr1rsht9NlWn/cmN
-	je7rKgCUnqELG3AW5AuZzJoGUPyEc5DA6apdCCOb7QTWpyxE8PDE5hdqLeYunDsC
-	dTBiuFo0GmbBv8Ls2WN0w0DzSQA2IFSMjQ7cwioWb1nXGym7TLR/jbioy1JwNf9Q
-	0g==
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4hvwrc1w1w-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:39:18 -0500 (EST)
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-91b937ecbb4so70639026d6.2
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:39:17 -0800 (PST)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Nf/e7h6zi5zw9Vu4WfB0GEyN8EmLcf8HjHUMJ9G9oow=;
+	b=AsoTtbCk3A3s4If4f1W3bBKCo7mJW4G0Z6r2c4YK5mXV8cTz2GIXCP3X4jVlX7w6jzv7Gd
+	Ha3eC4EzxnIzfx1cfu4ngIj0Q0wC7a1mAP4V9Apt3Z5x1INBFJz8TuKP2hIA/jerwZl0K7
+	RivbF670N7QbzUmQORVLSf+FCtjqvng=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=HYBe+NyF;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf05.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 52.34.181.151 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de"
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794436954;
+	b=jOtW32zc3Z1sGkHv07zQ+GZ8K+f/CPCxotA7v+lOgqErajZiTNFZ+/YmMQzP8OanjnIwHG
+	ey2fjIcyaI/aGG24qKsqeq35VKBtfZXBKi0QR2lA97erM/714Vx22PaGNMZ5+kgdzGnZ0F
+	b0hiZ3M3TilsGeAVji/614EiVg3+dXA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=columbia.edu; s=lionmail; t=1794436757; x=1795041557; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tyB99dES1VWSWEDHCuA5hRT/5p/ujc67VH3aWrgWNkc=;
-        b=qMZnsprdrpLlKmY/IAi8vuu/Ds3nNqstyGmn/7y20m/D6gW1yzKzVGvmolkd9g6qox
-         CkaTtem2YOFYway6iF+2dpTxcNdrQSVXReMGWutljc+uATzWVjLfQmJlEMu7QMozUoH5
-         RdJeEuMN7iB651XH+OuC/oODQDA8jcNvZ2rb6oJK75TKg3oGafOd6ApkDAmN62jIpQta
-         USFnWXyKDF4Kp5Lq64dcBAwl0L6cd/83MaA3nMdK192sesV2fcg2dQX9rK8jGAwVpv4V
-         cV/a30tvkD2T7mTNiUVpimpW74QA1phXFMEmiwPPENclkXBpfbccKC+BMhrmJ7HQK5Qm
-         Pntw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794436757; x=1795041557;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tyB99dES1VWSWEDHCuA5hRT/5p/ujc67VH3aWrgWNkc=;
-        b=h/JFZ+0T7zwWpUxlncTjAPIuWgo0FJpuKT/D/Q8EKt3PuYxpQEFpYnh2i3BM/qZ5Um
-         zSkRxZskbO/+/p8khqY18VNbje3cw4Vnf1FQcb3RJtufjPdBqj26SGqDTVmFH82rAZJo
-         8g4txh5iX6lKursfTQKTSeLRv6tU9rYqaLfGxPTjH9oYehBRrIAgP7D3bloGocZ7vHZ7
-         i/6lU9IemL5/72s9yDWJaTPoRBRbF1I5g28ki/LEwL91BL+QylvOyJPVS6ZZ/Wo9oBwG
-         +JNoM+yBeLjKlpdUuFciiY21Q8Of7fC99jDknRk5WTLMZx/741ZG7ly4lCJSu+Inla1w
-         UeWQ==
-X-Forwarded-Encrypted: i=1; AL+hErH2IhuENM7k503cTdAuCUI7kNbVuBbJB82l4+mn9o0fsjwZaUx4YaMtpnv4dABfXN4UxmWxCRIKqw==@kvack.org
-X-Gm-Message-State: APuU4Z+0XGvJ51GgGckhr0CB40W4Z9ob8rZfw30u4Zi+mMqe9lFIOgn+
-	T0RzzXtHNa+6oN1o/tXq4excaTKkneUST0vSzE56ERvxS7+6woHjFtLkGrs0dBLNCbNDkjI+b5R
-	OydLSY6Y0rOw+MY+2KKkKBmTzoh5G9AnzjXkBxPEXw3B3zMI7
-X-Gm-Gg: AYBFou1fP0zFdnMvEk64VzkV7OVWmS0nPFFXXlfwzXnh2fY6NBhr4xkWWOd6B+AKd0l
-	iJPDos6PdPh3hPSnGYgd3d5xJCLewH/tWfVNRARX0aCdctpsu6iu49Lres2b1K/ZJqQiZ4VKWWO
-	C1A5MVAVQ+jf7ZA+Ne4hPC6DewU7J7G9g1RsdH0udG299I9enxw6BCQqOKb4v3B0AddnL8wRTp3
-	UvqOo8eMpV83bJt6IxVfIg7gjZbeU05b3gx/6an/5FB2ZDPZlL5IyQnvJE2FHt+ZQp3dwcn445u
-	k++oFU5PyaIXpvZ05SgYqGuP4KYyDKXHRyVzgZpzbIyG2hAGYgX+UeyDQ7P2DHPQeO5Yizoohwr
-	ysT9hhwHAjiYlt9FPKc6BmnpUJO+refRdvtapvo2bk0XDll8KBDQc9sXxWBrV07/TpVdFxqSGgP
-	9bSNURB590siIJBAJ4zHFyaV9rs4M=
-X-Received: by 2002:ad4:5943:0:b0:91c:996a:7fc6 with SMTP id 6a1803df08f44-91f03e26d40mr67403476d6.6.1794436756510;
-        Wed, 11 Nov 2026 14:39:16 -0800 (PST)
-X-Received: by 2002:ad4:5943:0:b0:91c:996a:7fc6 with SMTP id 6a1803df08f44-91f03e26d40mr67403156d6.6.1794436756029;
-        Wed, 11 Nov 2026 14:39:16 -0800 (PST)
-Received: from [10.207.116.169] (nat-128-59-177-239.net.columbia.edu. [128.59.177.239])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ef04d8397sm57802366d6.18.2026.11.11.14.39.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Nov 2026 14:39:15 -0800 (PST)
-Message-ID: <956d86f1-9d8d-4d4a-91a1-00583987c622@columbia.edu>
-Date: Wed, 11 Nov 2026 17:39:13 -0500
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1794436954; x=1825972954;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Nf/e7h6zi5zw9Vu4WfB0GEyN8EmLcf8HjHUMJ9G9oow=;
+  b=HYBe+NyFnPN6siPz9k2PKGhfLBAbEwxZ6l1JQMuZAbzAPKc+IrCgjTh1
+   GSaoTdCS95w6WR1fHtiOznDaNBA3zVnpP//qQKAAMlPdiSZXBMniQyNRE
+   xUtEs3+zDF0HVqElWBxGpzCOiZsqDynoIcMUJNJNT9ZkVmlGLy91YIAE/
+   q1R5Umbm1mbaDZks+FtZxwZPHYfJ1Kz0UbrQ5ZW74WYrhbed3GqBVNuRy
+   fkw1EcRD2hgnB4lluCNsqUYClNehW2cF83wY+hoE/VaA5VjAAL+ITrZqw
+   R6uKKPucVII9EgYulc1053QhVqFpP6skhYZRaCZTwz8fjG/P3TlW6puvp
+   Q==;
+X-CSE-ConnectionGUID: G7TPEGiWQRSBLwmwzCQc/A==
+X-CSE-MsgGUID: DDSJSqkBS+O+gJ5y7ySdsA==
+X-IronPort-AV: E=Sophos;i="6.27,208,1787011200"; 
+   d="scan'208";a="33756163"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 22:42:30 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:31849]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.31.142:2525] with esmtp (Farcaster)
+ id 152a9830-b7c4-42e9-a68c-30a0443400c8; Wed, 11 Nov 2026 22:42:30 +0000 (UTC)
+X-Farcaster-Flow-ID: 152a9830-b7c4-42e9-a68c-30a0443400c8
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Wed, 11 Nov 2026 22:42:29 +0000
+Received: from ip-10-253-83-51.amazon.com (172.19.99.218) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Wed, 11 Nov 2026 22:42:27 +0000
+From: Alexander Graf <graf@amazon.com>
+To: <linux-kernel@vger.kernel.org>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>
+CC: The AWS Nitro Enclaves Team <aws-nitro-enclaves-devel@amazon.com>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy
+	<robin.murphy@arm.com>, <linux-doc@vger.kernel.org>, <iommu@lists.linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	<nh-open-source@amazon.com>, <linux-mm@kvack.org>, Jonathan Corbet
+	<corbet@lwn.net>
+Subject: [PATCH 00/40] nitro_enclaves: Add support for Nitro Sandboxes
+Date: Wed, 11 Nov 2026 22:41:45 +0000
+Message-ID: <cover.1794300002.git.graf@amazon.com>
+X-Mailer: git-send-email 2.47.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/12] mm/mremap: resolve uffd state when the context is
- dropped, not during the move
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Mike Rapoport
- <rppt@kernel.org>, Peter Xu <peterx@redhat.com>,
-        James Houghton <jthoughton@google.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Balbir Singh <balbirs@nvidia.com>,
-        "Liam R. Howlett" <liam@infradead.org>,
-        Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
-        Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?=
- <mirq-linux@rere.qmqm.pl>,
-        Andrei Vagin <avagin@gmail.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>,
-        Muhammad Usama Anjum <usama.anjum@arm.com>,
-        David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-        Matthew Brost <matthew.brost@intel.com>,
-        Joshua Hahn <joshua.hahnjy@gmail.com>,
-        Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
-        Ying Huang
- <ying.huang@linux.alibaba.com>,
-        Alistair Popple <apopple@nvidia.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
-        Chris Down <chris@chrisdown.name>, Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        =?UTF-8?Q?Miko=C5=82aj_Lenczewski?= <miko.lenczewski@arm.com>,
-        Michal Hocko <mhocko@suse.com>, Mike Kravetz <mike.kravetz@oracle.com>,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org
-References: <20261111-uffd-state-fixes-v1-0-00713d368976@columbia.edu>
- <20261111-uffd-state-fixes-v1-7-00713d368976@columbia.edu>
- <avS_43B79K2lUV3Q@thinkstation>
-Content-Language: en-US
-From: Tal Zussman <tz2294@columbia.edu>
-In-Reply-To: <avS_43B79K2lUV3Q@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=DbaCOftW c=1 sm=1 tr=0 ts=6af4ee96 cx=c_pps
- a=wEM5vcRIz55oU/E2lInRtA==:117 a=BoHXNMl2GZKy+iVh/K8zVQ==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=SsB-OO3BMngHh3ZO9fOt:22
- a=VwQbUJbxAAAA:8 a=kkTTwOaqnXeBwKB4IF8A:9 a=QEXdDO2ut3YA:10
- a=OIgjcC2v60KrkQgK7BGD:22
-X-Proofpoint-GUID: 2CRLswc5TVDPjEPHJEM_5cvJ06rIcAkP
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTExMDA5MCBTYWx0ZWRfX1OEsUMK/6pUV
- KlPeBdRUMxEHBiWpyUmKF7Ab30iOtLo9ATHvL6q/tvLrHUbv0IZ9fwQwBOBNxeGToz21LY4m3y1
- QRs7kd1vU11hjoTHwGYT/Of+t6PGeoJTxW30EZxvc7o9j4E3s6hj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTExMDA5MCBTYWx0ZWRfX4ZbKxnzd6Esc
- HDQZQnA/EUKAzq0WGMPCSMWOYFpb9HY8GEhV3GIMHRmD2P2x2z/EsdpFvgN2rEJRRxHd1vq9tql
- KgWsytO3bXm7J9keUWDgsS36+6tA+8+ekE+6NVbOVHImll8hduC7IKmBVULhjN6PjYPIqNsOrGt
- evuu/r9BbeH1q7G0IowiapOf6VFTyRmEcc3Vx/GkEImTYuBl6oBL6Xv9ETVtH89ekT5BrSboDj0
- jjecZ5ThJsmIxDwVT+F2THeV+mEuPNuQCvTdJno3Dyqz4oZVB4K5owgIx/DNBrVgDzUpqiqmwgs
- Ij6wARypAqifLmFoF3HgglxgvfwAIkdz+cgB+23pu6RV9WRwt41oWHhTuwYKhGIrUCSLsMyP9BG
- DgHAc/DGt58yvydxFWNvCjjYPXpl3a2Aq1ZD+ciYyoGGJIPR9Sc2UuK6fTcrGaMag+GYCN7o5ru
- 6bnnadOuMkzU1tMdzuw==
-X-Proofpoint-ORIG-GUID: 2CRLswc5TVDPjEPHJEM_5cvJ06rIcAkP
-X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11963
- signatures=596817
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 bulkscore=10 lowpriorityscore=10 adultscore=0 priorityscore=1501
- suspectscore=0 spamscore=0 malwarescore=0 clxscore=1015 impostorscore=10
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611110090
-X-Stat-Signature: m9npy3cg6388qnuq6igt5zxaw8jh7pph
-X-Rspamd-Queue-Id: 64153160002
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D031UWC004.ant.amazon.com (10.13.139.246) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794436759-885133
-X-HE-Meta: U2FsdGVkX18aUqLxwwfix+kvIfq3NTIjnw3J2cf6jNWbH6beZQ41P8QuORPLqsxIxLN0tdFDXDVX0XPHpNZhaFClBnUGaoPHNBIq/GEbBJ1S3jGH/GDQa2bTF/wJCBuktC6CBalMfpcrzt2dKWxcehAdiT+dgJB2Kc0DC25neYhnZ12dNBnHjozBeeMV3aInV1QlxEQTcmIB3J9TojFGQfh1yMOAlltEkpPUZmvAUzdKOQhs35n+Z8bACOtekY72Q9uQxFIWdH7NZ8nmS4AISwagy+RDNfcWUEPNHQ2S4uSY1/oireT1o6LyaeAZ/b99mV0Y2SqvfH+wFaOPHuVaW0lHR2SGuygAVT9aqmG7KPO2WdGFG3a+pyHm36m+EWf8DY6+z3SoIBCxzg2u9dO2Aq1ErUcLGx0Ot3ID04NL4ydDtNKeRE4dOURWe4s0Zr8nF2zdyVYH/wK4KQj3aRTGEh5XG+FTUb0xzxR5evv0HnoVzh2peKbQcKQkRSw1MZpGzd4uwTkpIoHxZOiJLMVbq5ctT6HponLj90tMvKlLICQTP+2GLJCeExK0AGtPPsuWuWqHS/fbJ8YooyRpp1RNbbYrpExHTYig+HoqDRNULcRXrEsbfHgwPrmF1qUwNfwtX2c3JY12UbzhbezgLxKAhngf4XhkjcbNPkn/U8/Tn4gS/Gn48HuMVAdTuNiPRNbTxMym/hFANCDwKz1nU1BuWC1pPbM9DTXmYZOIngVRtAEY8E1LmB3DFE/VL8V7n5V3W3yUvIldPfCN1vqgsak/0+tiT+O82mWDm7ln2Fmf3JqCeugRNw07SqNuSP08USXVSdeTSFpxm0U/v2ZSlBhTgJksS9bSznQqbWONy26TcDoXnj/kxCo9NKIFw6SrHtZVhYiYpFnJLGoqyZTTBAnu63O4Z51IaBhevmI95L10+99gGM9pPTKkfR33Mj4tg1+Ia+9d3p59J8I452Y16xy
- HLtBerO/
- JR4TAk9W+3aRYAKSL5Ub7oKJ46Qb/Qmpst6SGhKozU15HthZMsiZLHki4xf5IATT2fGBgLgISsIzkCJVUnVfucM1xtMQ4Iqt1Axsrk4w/SMaZp6z+Jbh+oOLQLuvLGv4gMO41HiWAbaP/CdcmPzpC/df8jgHcnifrsIt6BnXA574HvgzG+fFFY1maUE/Nyfs/hfCUd4o304JMWK8VxoK1vzU/c4Pw4ccY3+fpQPCb6bLbR2IkukHOUXk3vVseuhuni1A29ZxCA6qpy2AZOZapHKKqrfWHBLv9z2CHJVKFynDvg2ojcmpIB2ZM9EtOzPWX3zDEwpdsAqh5owVumrW2QRsJ/fHUkb0sjdFg/2ReUkIlvcL6NEr8qUAaFA/gewc1VTJyOHuD5BniKBiV5O8hmy0FR/noytOsom59elJhNwfKHB3jbim81fB8P0Sih59UQDdiVKz4vo8bWNSWDQu+keq4TlH/cOiG0IVJgVI9kXOFUDZaSNBV+LVuchUSLVEjFR3xxZa4f6mxiAE=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 53E3F100005
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: pmn3tg7s31bsnghy4zyqs5csmo8duiab
+X-HE-Tag: 1794436954-907465
+X-HE-Meta: U2FsdGVkX18bh6ikd1hi57Z9Oelx7ophv7/fJD3YVx0b/dNOuaz7Ot6nVFFRj7h7BiZqMDnCRh0iOP0yfbh7ysEHsjjESQmSOkVCGeuoCrgMZOleaHv5GUbwDK4ByafSwWa9lQU0gTdvm9WgD4eEwHYdyq2B2qsCVC3Oh1jRzfME/5xbrI/zLxWbOxx5iN8lpzjcJh8nDMtBZqq5qT3CIp3+w4Il+QmO7F009fCB5/nUb8ojttWjOCz1VeG7KtjgwPdcMnxvHDFIVKe2SBhr0qKEnVZxQ+5MJBVZGNxKRqsP2yE8AtHNnzYCGcZjS+kRy2p6ak6WmwhbAsWeOQUK3D8xp1mcTArJ+zQn8NZa59Fe7KGosOwtFKcFglnsZnsoTeigpZO8G6XbOxRbXDJTCNGeZc3y2ACjpPhbulWJAetuDWp4QXfhI9cVFSyLjcpTtacrXj0RuogVw7E5gJR0q0foZChQqZFSZ8xpfIv8MOSg9JpOzBvjz02Ts2XGXLxL8j1omBF/xAWhltVnPLlsUUCNTsxYHHoJsuUeQWFnOpUzUcoV72RBbCFVdfxhFfkWV2oY4ly7ZTFXAsmh+BlpK0H3eZiyPfbsDyf0449IvwzGnFgvTtuM0uZBPA5g8Ecs8z77TxX7HNg1U4qgw1efy0L/lHstyf5MIVcAOwI6GehAq+ZGGjsaEdGFMxUBYoJ4RqDvH4cJmTeYxa5s4Xlb7YlHZjSlTrZnxDNE/5+6jp1khUNqPcG2Z5hzErAPQZe/Kuukczg+zbCG3uGwJ03kFyjBanP/9ICT4Vg6AO9dfIklKyr2DmiBf/96KdCTqd/SlG/TrTrRZOi+CxJxnyc0cg2AvG65xCMr5i0w/aXIiSoRO46I97SKUJdHc+6TMTH/s7RJyUw5gNsOjzQhpJcrlyPH//+LbjP3nvbaUrHOqM1PuLnlX/vdHy7TRvzJw1FSyHvVuTuDkG7aipUYNo3
+ OhF5/kkI
+ Kuk2ANhOtetwufaAP6jkFCfkwMFm1VJrqZomfm2d9x7qJK65tWVxbaX+4eF4MrbD8L7+N7TMTNXUzFzHJa9QLXjU/ldmv16a6frAnFwPdXA/KhBXw07PnCcaiE89e629wpHnIq/AM44Vj+yfBCO6z2WerQF2QahSoL/hYE053VWUK9w1wYkfldEt8iRu37STByuGOPutEND+pOaHa24txKNhWQaICzYkslIRgVc/AadW3esAEsHe8+7H3ULhJwO7skNS2OkTJhql7qPvUV0H8Ahd3EVVOy94P6hAQs8rh4r7z5SNUlJ2NdN8rfp8sCxETdd3jtF29CjfyReElyuvm/hUb41wz2uNfSJPnFrCjq5TPsd0yjdtC8Iw+o116TNCro51eiq4p1j7pzzFFhdnnOa9FHxWC2ZmWfYfsYIlTGeWJ6q7Co7OWeOmnpendjCvGzEz1T7Vw0bUFj+7sdQhWcSYfmcgrc75FvcHpYUu7iKTb+J14M8zff030kNxbFnI6atZxDrbDL9XNJ8NOxddJv8E1ooVED+KTRtItmvFZEpP8BhWm09x658rNlVwT4NcASc6HU+IuQIrgdVvgz6UEA73r3TdUKTIwi9jPihwEXfD9hi9bbz62m+KLYwTRSJqScbzF/F/1WrakRI9l952+6BVh0bAyxxgPsn1PjI6lsGmj85Q7xhDTsyzCaJaCGY9N35JE0BIRGOlceSgpwpSTjtxT4fahM9pW1AGL7zDMmp8orn0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -207,24 +118,143 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/11/26 2:20 PM, Kiryl Shutsemau wrote:
-> On Wed, Nov 11, 2026 at 12:55:15PM -0500, Tal Zussman wrote:
->> However, this adds spurious minor faults on shmem and hugetlb.
-> 
-> "Minor faults" reads as UFFDIO_REGISTER_MODE_MINOR in a uffd changelog.
-> Maybe "write faults"?
-> 
+Nitro Sandboxes [1] are a new EC2 feature that build on top of the
+technical foundations of Nitro Enclaves - an EC2 feature that allows
+you to spawn a virtio-vsock-only VM sibling constructed out of resources
+donated by the VM you execute in.
 
-Yep, will change for v2. Thanks!
+Nitro Sandboxes build on that concept and the same hypervisor interface,
+but add the ability to implement virtio devices in the parent, run vCPUs
+oversubscribed, add device hotplug support and allow to spawn a sandbox
+without attestation, but shared memory. They also boot a full EC2-like VM
+that runs with a UEFI stack and executes the EIF-wrapped kernel as UEFI
+executable.
 
-> The RWP side keeps its behaviour: vm_page_prot does not depend on RWP,
-> so resolving with change_protection() gives the same PTEs as the
-> per-entry code did.
-> 
-> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> 
-> -- 
->    Kiryl Shutsemau / Kirill A. Shutemov
-> 
+In combination, Nitro Sandboxes provide a way to create a confidential
+compute VM for almost all workloads, but without the biggest gaps that
+other confidential compute offerings have: The parent has no timing
+control and the parent also has no control over the base device model,
+such as timers, PCIe, UART, etc. All base devices are implemented in
+Nitro.
+
+This series adds parent-side support for Nitro Sandboxes to the
+nitro_enclaves driver.
+
+This supports adds a few non-obvious technical foundations:
+
+guest_memfd like CMA allocator - With Nitro Enclaves, memory came from
+hugetlbfs and user space maintained visibility into it. That led to a
+few problems. With this new enablement, we add a guest_memfd like
+allocator that seeds from CMA, allows the parent to seed the EIF before
+hand-over and then loses any mechanism to access donated memory. Thanks
+to CMA, it also provides much larger contiguous chunks than 2M huge pages.
+
+Virtio notifications - To implement virtio in the parent, we need to
+handle notifications in both directions. Parent to sandbox goes through
+a BAR write; sandbox to parent through multiplexed IRQs. We provide
+eventfd support in both directions, which also enables vhost support.
+
+NUMA - With Nitro Sandboxes, NUMA became a first class citizen and all
+APIs now support NUMA targeting.
+
+Memory Donations - Every sandbox requires hypervisor memory. To allow
+for a larger scale of sandboxes you can run, we add a way to donate
+memory from the parent to the hypervisor. The user visible effect of
+that is that there is a slot limit sysfs file which you can increase.
+On write, we allocate physically contiguous CMA memory and donate it.
+
+This series depends on "nitro_enclaves: Fix enclave release, command
+retries and the CPU pool", which I posted earlier today.
+
+I used Kiro, an AI coding assistant running Claude Opus and GPT models,
+to draft the initial code and patch descritptions.
+
+I validated all new functionality on x86_64 and arm64 as well as ensured
+that Nitro Enclaves are still fully functional after this patch series.
+
+[1] https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/amazon-ec2-nitro-sandboxes.html
+
+Alex
+
+Alexander Graf (40):
+  nitro_enclaves: Allow the CPU pool to span NUMA nodes
+  nitro_enclaves: Add NE_ADD_ANY_VCPU
+  nitro_enclaves: Expose CPU pool state under sysfs
+  nitro_enclaves: Document multi-NUMA CPU pools
+  dma-contiguous: add dma_get_numa_cma_area() accessor
+  nitro_enclaves: Allocate physically contiguous enclave memory
+  nitro_enclaves: Add NE_MEMORY_SHARED
+  nitro_enclaves: Add NE_ADD_MEMORY_REGION
+  nitro_enclaves: Document the memory pool
+  nitro_enclaves: Add NE_CREATE_VM2 with a launch flag word
+  nitro_enclaves: Add NE_ENCLAVE_PCIE_MODE launch flag
+  nitro_enclaves: Name the device's error codes in the UAPI header
+  nitro_enclaves: Log a reached device limit at info level
+  nitro_enclaves: Add NE_SET_INFO_PAGE
+  nitro_enclaves: Document the info page in the memory pool
+  nitro_enclaves: Turn the command reply into a per-command union
+  nitro_enclaves: Add the slot pool donation commands
+  nitro_enclaves: Donate memory for the slot pool
+  nitro_enclaves: Add the slot pool growth commands
+  nitro_enclaves: Add a helper to grow the slot pool
+  nitro_enclaves: Document the slot pool
+  nitro_enclaves: Expose slot pool state under sysfs
+  nitro_enclaves: Add the device add command
+  nitro_enclaves: Add NE_ADD_DEVICE
+  nitro_enclaves: Read the interrupt multiplexer geometry at probe
+  nitro_enclaves: Donate a bitmap page per multiplexed vector
+  nitro_enclaves: Dispatch multiplexed interrupts to per-queue bindings
+  nitro_enclaves: Add NE_SET_NOTIFY_EVENTFD
+  nitro_enclaves: Report the device's info notification
+  nitro_enclaves: Count multiplexed interrupts under debugfs
+  nitro_enclaves: Map the doorbell window at probe
+  nitro_enclaves: Add NE_SET_VRING_CALL
+  nitro_enclaves: Assert the layout of the ioctl argument structs
+  nitro_enclaves: Pass on the Nitro Sandbox launch flags
+  nitro_enclaves: Add NE_ENCLAVE_DIRECT_MODE
+  nitro_enclaves: Add NE_ENCLAVE_PCIE_HOTPLUG_MODE
+  nitro_enclaves: Add NE_ENCLAVE_CPU_OVERCOMMIT_MODE
+  nitro_enclaves: Add NE_GET_CAPS
+  nitro_enclaves: Add NE_UPDATE_DEVICE_CONFIG
+  nitro_enclaves: Document the driver side of Nitro Sandboxes
+
+ .../sysfs-devices-virtual-misc-nitro_enclaves |  232 +
+ Documentation/virt/ne_overview.rst            |  256 +-
+ MAINTAINERS                                   |    1 +
+ drivers/virt/nitro_enclaves/Kconfig           |   19 +
+ drivers/virt/nitro_enclaves/ne_misc_dev.c     | 4832 +++++++++++++++--
+ drivers/virt/nitro_enclaves/ne_misc_dev.h     |  206 +-
+ drivers/virt/nitro_enclaves/ne_pci_dev.c      | 1568 +++++-
+ drivers/virt/nitro_enclaves/ne_pci_dev.h      |  599 +-
+ include/linux/dma-map-ops.h                   |    7 +
+ include/uapi/linux/nitro_enclaves.h           | 1182 +++-
+ kernel/dma/contiguous.c                       |   36 +
+ samples/nitro_enclaves/ne_ioctl_sample.c      |   10 +-
+ 12 files changed, 8282 insertions(+), 666 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-devices-virtual-misc-nitro_enclaves
+
+
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+prerequisite-patch-id: 542b3d78fda912095b75a49becd1b93109befdbc
+prerequisite-patch-id: 318368e966c1925652b7976948f435d42b87c72f
+prerequisite-patch-id: eb35b5d713e7f50f6d1d02310c9afe10b1628fc6
+prerequisite-patch-id: 223bf6e60620ca8fe72f3ff6f3bd3f5839cdd6d5
+prerequisite-patch-id: e5305ce0515a02f7f88e72adf02c6a2bee2fd2e0
+prerequisite-patch-id: 759b5920f842d70e675770608d9088639c10559e
+prerequisite-patch-id: e1837df37663da3d3ce53afa4594828b2d602152
+prerequisite-patch-id: f0d4302bd36f94de95951a0db1ae9eb9747076aa
+prerequisite-patch-id: 41159b92e250fef705be52f714b6e2761a2cd1f7
+prerequisite-patch-id: a0c3a56907acac2297c800209faa2849a8df0e48
+prerequisite-patch-id: a80a95bd682b540be5760e8fdf7044379fe32d61
+prerequisite-patch-id: 9c01e0fecd6810f3448582715c87cd3dd7a6cdf1
+prerequisite-patch-id: b94dfc8bb1039740d88a30535445bb7b3dd1fe74
+prerequisite-patch-id: bd76f15728dc0ee2ca3417cd95a6b23a7d63e91f
+prerequisite-patch-id: 0c60f1574b590f68885a25760017e9ff87752f66
+prerequisite-patch-id: 63dff43da52934a6e6f5e65c3e235a7114b6b4dc
+prerequisite-patch-id: af52cf938525874cadd6d879aa76495e563876d2
+prerequisite-patch-id: f53ee22764b5f13708cacd3e48a59a82d71a270c
+prerequisite-patch-id: 258b8c18168db49aacbda5156e33978b539666ab
+-- 
+2.47.1
 
 
