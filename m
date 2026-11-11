@@ -1,88 +1,118 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E42C606A324
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 22:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B879606A326
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 22:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CDTIwWvo
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=kEFJij1x
 Received: by kanga.kvack.org (Postfix)
-	id 3FB406B05B2; Wed, 11 Nov 2026 17:57:40 -0500 (EST)
+	id 735486B00EF; Wed, 11 Nov 2026 17:59:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3AC7B6B05B3; Wed, 11 Nov 2026 17:57:40 -0500 (EST)
+	id 6E5E56B05B5; Wed, 11 Nov 2026 17:59:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E9FB6B05B4; Wed, 11 Nov 2026 17:57:40 -0500 (EST)
+	id 5AF9F6B05B6; Wed, 11 Nov 2026 17:59:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 105866B05B2
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:57:40 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CE006B00EF
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:59:53 -0500 (EST)
 Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A01F11A047A
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:57:39 +0000 (UTC)
-X-FDA: 85424351838.16.1756040
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1638240004
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:57:37 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CDTIwWvo;
-	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 49C22120310
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:59:52 +0000 (UTC)
+X-FDA: 85424357424.16.49F2C53
+Received: from pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.162.73.231])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 2C3AB40009
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:59:49 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=kEFJij1x;
+	spf=pass (imf04.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 35.162.73.231 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794437858;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1794437990;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5VT8DgmyydrVCsq6iQ1NGHQ1X/1hn8WI48WKI7IR98E=;
-	b=Qe+sWvNLzos3JHxHImzO1r2jEn9JQfLEzTHD0XOPwp7HP6eph2Xp3DA5zYYdkrwNYOjIn7
-	M/vl7PeLC8fVPHGky3xW92xZDBY4EJuVnSUddBEG/XXIaTcEgVVC99tXZ9K+SCwR9KAAuI
-	sc8LUk+w4XO6zuHRN6n7AiBwSPi9TOE=
+	bh=NxlZ3d0PBPnk05nrYhRlkiXhE+5MZd2ltaw+yg5jqDs=;
+	b=mzpBOqjkxE3RnntWgmTEPlTOJG8iP5fS3EN9y+muQtOb2O/vRLrLDRvmzIkfdwUDlWKHe+
+	/bFNdIxZM7hpq5MfeAG/L7sc8MF1TR00XG/MYsbbFLq64fhYg8usJqs+ZxjiSxR6ZVKKL4
+	rYoJqDx3F4ES06F/jBK5Naf7QcnTPlo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794437858;
-	b=I0DTTuRZAyBR9h3sV+uwVnYAygkaTzTVMYfSjO9E7bBEThgFQJCxG66HSR3BHIa6d4Ij8/
-	gkE09hXjhEFzF0D/GdWv81oDcUasqo/aAkSMz2Exx4m4K5Dg2qYVaNHfWY3pP/POviZqir
-	jqhd3Qhzd6j6j4PNs1AcVrfHPyfvA8A=
+	t=1794437990;
+	b=qSFCDjkAh5VLOzIrLeJHXxZU5KYq7LMZeiDePIB/d80P2JHxUOpZ12mErNRgqnbm40MbVo
+	s/QPqSccAwFfVwTJDhL7UN7IqaRuWLKlHjmT81ms4qEG2e06INjWLAexnegXMYNpcJs60/
+	XVFBD7sqjYulUUJDOt7uNcwUO+g4I88=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CDTIwWvo;
-	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4D556403A6;
-	Wed, 11 Nov 2026 22:57:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA38C1F00A05;
-	Wed, 11 Nov 2026 22:57:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794437857;
-	bh=5VT8DgmyydrVCsq6iQ1NGHQ1X/1hn8WI48WKI7IR98E=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CDTIwWvoKVuz9EvFiLSeUU7OhIpWhOk1Dm6XCV/YqntGUOVFTjalLRS0P5ss0T0cO
-	 oAN4swuWMJsWRFCd8KMKph9puvu71p/2LEklrnKK3xeLluzU4OXy+2QzBuOzxrFn2d
-	 n+gCee/pAFa7Uk/VT2SKdvpLwdh55N+KSasGnPzN+sTMnVTNGW1GNWeVVpu4Q5qNHH
-	 BnC+0HAggvXNQtVWDYL7dS+KPPfYc3dwO/Q+LwerwM9Lk/6PYsntJpaNtQVZt9PE/F
-	 hUUu4tJCNffScB4hR8f9kShYMPJ4vFQsad5uZWEnQHq/cUdNXchIaumAz9xdfn4ZZJ
-	 h9VHZUhXG6LHg==
-Message-ID: <sashiko-outbox-209838@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] shmem: Serialize fallocate progress with writeout
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Zhu Jun" <zhujun2@cmss.chinamobile.com>, akpm@linux-foundation.org
-Cc: hughd@google.com, david@kernel.org, baolin.wang@linux.alibaba.com, linux-mm@kvack.org, syzbot+aae8bd56cc1c38d50ec4@syzkaller.appspotmail.com
-In-Reply-To: <20261111084155.80971-1-zhujun2@cmss.chinamobile.com>
-References: <20261111084155.80971-1-zhujun2@cmss.chinamobile.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 11 Nov 2026 22:57:36 +0000
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: oo4zeo4n1qamr9h8rbd8fbx75d6e8cq8
-X-Rspamd-Queue-Id: 1638240004
+	imf04.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=kEFJij1x;
+	spf=pass (imf04.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 35.162.73.231 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1794437990; x=1825973990;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=NxlZ3d0PBPnk05nrYhRlkiXhE+5MZd2ltaw+yg5jqDs=;
+  b=kEFJij1xpYHce3ZNxHGHIRA922CrcEMohkIzcXg4bJcbMau65HDeHtrk
+   KirARkF5JTj3ZlzaqGxfK/HH5okayOdWJGKfVqime7Yzl4q6KE5Ryft3H
+   Fs0YSUGeFd6jQHZA+svD5BgT6bknvro7PQEI28E3yeePqhjHQ/EzJdopm
+   +MUKt30xFgK61hfC0DwsB9ARV3qfllpjl2zTNkE57LCsZybdBeVatxmIR
+   9C+Z4QibwEpyPGfByJdV6nzscRX/TaSpg6PFB125AdksmFItCdJA4eRds
+   /+h+KlsdP3MhPoKlewqNVqwaQ7g7lttsI7TUzOIh119M4GA8fwzNcTDMK
+   w==;
+X-CSE-ConnectionGUID: tfAma2DzRFOFb8bdIGIDVw==
+X-CSE-MsgGUID: iyTsTEHxS0uD4j25ZbIutg==
+X-IronPort-AV: E=Sophos;i="6.27,208,1787011200"; 
+   d="scan'208";a="33573114"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 22:59:49 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.236:10977]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.55.227:2525] with esmtp (Farcaster)
+ id f883803e-6c22-4425-9ce0-85931add301b; Wed, 11 Nov 2026 22:59:48 +0000 (UTC)
+X-Farcaster-Flow-ID: f883803e-6c22-4425-9ce0-85931add301b
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.217) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Wed, 11 Nov 2026 22:59:48 +0000
+Received: from ip-10-253-83-51.amazon.com (172.19.99.218) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Wed, 11 Nov 2026 22:59:45 +0000
+From: Alexander Graf <graf@amazon.com>
+To: <linux-kernel@vger.kernel.org>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>
+CC: The AWS Nitro Enclaves Team <aws-nitro-enclaves-devel@amazon.com>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy
+	<robin.murphy@arm.com>, <linux-doc@vger.kernel.org>, <iommu@lists.linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	<nh-open-source@amazon.com>, <linux-mm@kvack.org>, Jonathan Corbet
+	<corbet@lwn.net>
+Subject: [PATCH 15/40] nitro_enclaves: Document the info page in the memory pool
+Date: Wed, 11 Nov 2026 22:59:19 +0000
+Message-ID: <e7f196dd3055426734dc363f9a75a45e442d3eec.1794393490.git.graf@amazon.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <cover.1794300002.git.graf@amazon.com>
+References: <cover.1794300002.git.graf@amazon.com>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D031UWA001.ant.amazon.com (10.13.139.88) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-Stat-Signature: aebud98uocyb4tyxpkytqjh3nckahabe
+X-Rspamd-Queue-Id: 2C3AB40009
 X-Rspam-User: 
-X-HE-Tag: 1794437857-940875
-X-HE-Meta: U2FsdGVkX18DBOTQ/ALqmL1gIEF59Io1B19zgovPEI9u0d9ku6XzOBOEHj297mv6uyPUrWXgcDhocMeuslCl/dq34UhoQsDwQKKHyHPTrdtRzLmV90MOLQ9gAUQaO+lWThl+0vk8TAnZ8mtjJ/89cq0Y5rzL7eRpn+S9gUNNrRj1Wr5g6ZHVNda47oFXN0bpkzHatNmu7tNSzPLZg/k9cHcq81C7GGQtKUZ2yT3xS8ShOrjHAo2ddJ7U0Vd0ykeU/EkZF9Lo7D5JkqkbhEK9UOdjGdFRXQa/uNymAEDtdxtpeuf7ubYzYzS6+6Q7Q6iir/StyLIprB9vXohxU+u7OwlaA++6XlmKM1GpoHG/to8q0yCL60Ry15jSG2T1Yt7z7Y6TH8HpxJ456A8z2drRiVAST+6bOSEgl73nv12DfSJ+cuuyhHIzcNHMh7GOJKqR7qQfF9AIZ0KZVCvprXFe6/cZjVu+mz7yB4G4L6VwROFUeCGu4BdR60sSCwq/T1YjopIcy4dbPCAD12zCHvVIZseaN77vbNCcghHx+Y8IXMMRgrjsFOtCfBXWFON3LfKjkL43eGGixvpQWuClqLxwm+JE3dAnAb7MJcZnHQMO1dwmfCxBhqxAu8XUkJcYhAx93xTf2r102DfWk38FFFPPXBLszGjbVpMFw5PNALHi7vGQU83ABYTNoQuZWw9drNNMFGXEBeTUaLqMGTxlPgVCHwpBE77vqzUFGwZtxTwRSFczS5Sfx+ZcWWAquUaXhUmm8QGfItbcwrOGgi/g94oXlYlIBbBdJT19F4lNpeO7h5eI5lzROEmTeilhD96G+VPqM1jkNFIH3+hE9a8SrjYUst4Ov7RirRRZ+KVtm8Oq96PnouUJyGpW6ZwShY/LLmbjs7Kqz4VPHO6q4sw6VeJ1Rn6077162STWuZYxE3tcbfPyRt6/vpzsaO3TMWBnxCcVYjdF/IRyaY+3AiF+py7
- XtF13Ji7
- 72QWg8ruhOJrat+SFxkSamKH6Ko7I1PvC3eplaZ2xXa7wIwx0St5aKFWiwNud/p3wG4AYU/tfhfHE1KGfDRW7F9mSLQb4p0pk5CZtzRNpJ5YtxVy1H3fuZJBFkqAsemBBeCVAOQLf8hWSij8RK0Vp0q0+8F+GMniz+3PKo8csptIWmVUHK5wMImVilWY9MtdMQ9swEW5SZJL+/4Dh+A9c/iV35he2zjcP5MPgQW9jkD1OA9usCXlzQ7dFT/MO37hXu/oFXo04yWi9Kukw2LnmWm8dzaVyJS8/1+xesyA8PWIU+4I3LZQCbybxC+0XatyiSrUMCop3xedEfXpfP5g5K7Qf53FXF+UcmTTkwKndK4wjrdxYCU4S21kNGy206h/hmMNw/NZFSNhMxKj4bq4kFFpw0/907O8ZqtzPytkd7nScE1jNiWF2OhrJqRclSV1FibSFlKsjf68n3sxBvEcQeNURrCkMVCSSPQ5nAcQWdfhQhEkZWx4TxW0oRyOBljs5w3CMvaY1hnAOLIdqIVvmWt9U4h+kdDExb9dJ4Fe/249LBBlKbGp75m3rz4LQyN9p70itdK1MiCcuk99JB4mxz9WBeBUBN6DCylhWDPNQQv3URTwZ9aC6UJ41qhW2tGKY/z35iWb8lZoBBq44+p/vb9eDb7+LFpGBdZFGKYw75fi+WOoah/cR1T/S55fsMBaYl5OVDEHA0q+frqj9s1kU8bmgCg==
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794437989-234765
+X-HE-Meta: U2FsdGVkX18dEU7flezzxUlSC2j41X/Lwv0hnr9u5Tbo7qHPwnWChrj55QFXaRU5h3/5+5VOamN3IKvhj2iayL4hGg6rKuvJYG52DAjDzNBs1dWxzqqDf2njhFAxIVUbWuxFKLHOHfCEfLYWtYjMathixiecJdfsEDLoXcWAxRDQeWZHfYENGxvUsf/+iz3Wv+sCNDP4RKEDnBZFWAJveJGJjFvesxzrXe21gnka5eUUuaHtnRnxyUTJCckXkE9ejkPH7TMYw2wBoQD06AQ3j9nnr7qMu5WBfaj3OPw0wyTYiAa1fHEy3qFmfOnjRD6n9M0IKpEDbj9JiXoI2NxWCFA0Zy+4YUpjkJn1hpCK1+vnUzK3j8fQKQYDEEdfJYYrDmYgIRGj7YS0HK23R1ZEBpeDw19oZ4NrgyVTCC0FfHoSIL67Khn4M+zGQDzw3209xMZFjvxP8kXFX84jsERPopSHVITH8eMsId6n6QrNssYmB9p4wsIbgKtmeufVAccwP+mKtH3937qrDrN2mxPwvKiGjoSD8SVTQch+cTEBnMYiVTgn8Jt2U//pZmr4Yp1j4QtN6Gtq283ZXrQEoImzRBITDk0o0z+6uk9tYxZc4z+1Ht7yQIeFfyLI0NzaWap4EZuTKe6RXDxP6D6jHQId6Tnux5IkpXYiDC/Zjjzq2XY2l80ylzLOYvWnyDqRe68dlONmatnjD8ejEijYWjzDPerv/kyNNyBc8mxM/7cMEMtP/Djm6q5DDR+uIhpGvka2xsfmv+iZqbe5ah3glCVoI3vi3oKpdFsShvoceDsl3Pc/3+J2J6/g1MRgPlGSc6G0v4oUD3oMO6GLAfBxIYW0aq6iTEcXDZZFNA+xsRVBebqdzEt1CeHMzwJI5euhfWuFurxRk+7eiEmvgu5MxrptqkOrIvzWQqpUnS/zDHxdZTLbdzVKsxLWVeoR9HGVDsiSZ+PCNb46ccoDEUJpZQc
+ Fa5FUV7/
+ mYxGbz/3Ow0CeMxqTahOsRTikaOXUw9V4ACEsTwC7FxjlM0R5o/xcBlzY6EZXJdVw2jlobmH1QrQg3fL2v6uE0NIPc0MJl0pQc9/gRbtehhuN//lXQfQALttNEJwiZ0S8RPwBtrV3lgpCNXANNmi9ZLUzypacRG8oL+jAt23oZJ/3MiV3uAdAA97xD/lxHxGHM1GiNIfVWUDyINrtkMiB/XaEp45X3Zdh9pIgpuJtlfxeO0bMeu3VxakuIXoCOAlmr7+vGkkxB8ov1imh1WQnL6Oa/XfP027njsK4eWrlEte/yJMCP3dpMxtZvWc7U7TtfTJbDOe4Kxmt5JlNm4uAYXL8lcMloroTirjZ55pTZOwbK0JmWkoNic1OuAU1GrrQxtuiiyvpyNv8OQr09o8NrgFCmpgOLQXxvyO+Gpx94oh+HUgfBqZQmcpnycSV+pxXTaPE4qr6P49nMg/IrSQW5veD/NhtHs1chMzXr1LdXAhcLa0BFjkymHQWdTUQwMForaPqEAdpxyhlL3zT6AZZH8yw0aoqb0EE5txBtq0HoHfal9FNH9guctj9nSg6lOhvpqcHF14FdL1d0Vjb/zYWlbpSuFX5pxrsFiF7UlurCzsKCQs2cbGAXGExcG0rUxOHGZFImakLUsIaVVxGUDmx0PaPbwTUrZUoZpZrRYrl+tK6c9vmI04RahZxCalxUGlQ7LFG7iys7AyX7P4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,65 +120,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found no new issues
-in this patch, but noticed 1 related pre-existing issue it does not
-introduce:
-- [Medium] mm: shmem: unsigned underflow of unmap_end in
-  shmem_fallocate() [1]
---
+An info page takes one contiguous allocation from the same CMA
+reservation as enclave memory, so an admin reserving the pool needs to
+leave room for it. Document its size, that it is registered before it is
+mapped and is read-only to user space from then on, and that it keeps
+its allocation alive like a memory region does. Also say that a larger
+NE_ALLOC_MEMORY request comes back in several runs where it has to.
 
-commit 9946039967ae29ddb921f16d447ade65e0f1335b
-Author: Zhu Jun <zhujun2@cmss.chinamobile.com>
+Signed-off-by: Alexander Graf <graf@amazon.com>
+---
+ Documentation/virt/ne_overview.rst | 28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
-shmem: Serialize fallocate progress with writeout
+diff --git a/Documentation/virt/ne_overview.rst b/Documentation/virt/ne_overview.rst
+index 4c4b7febaff0a..3cfc50f788433 100644
+--- a/Documentation/virt/ne_overview.rst
++++ b/Documentation/virt/ne_overview.rst
+@@ -150,10 +150,11 @@ node enables to name the node a reservation lands on. cma= needs neither, so
+ on a host with one online node the driver's own select is the whole
+ requirement.
+ 
+-NE_ALLOC_MEMORY on the enclave file descriptor allocates 2 MiB aligned,
+-physically contiguous memory from one host NUMA node's CMA area. A request
+-that area cannot serve fails with -ENOMEM, so the reservation bounds what the
+-enclaves on a node can take between them.
++NE_ALLOC_MEMORY on the enclave file descriptor allocates 2 MiB aligned memory
++from one host NUMA node's CMA area, in one physically contiguous run where it
++can and several where it cannot. A request that area cannot serve fails with
++-ENOMEM, so the reservation bounds what the enclaves on a node can take
++between them.
+ It returns a file descriptor for the allocation. For an enclave whose cores
+ all sit on one node the ioctl refuses any other node, so name the same node
+ here and in NE_ADD_ANY_VCPU. An enclave built out of a pool that spans nodes
+@@ -195,9 +196,22 @@ a caller reaches and not for all of it. It keeps the memory reachable from the
+ parent for as long as it lives, so an allocation that is only being handed to
+ an enclave stays private.
+ 
++An enclave can also have an info page: an allocation the NE PCI device writes,
++provided to the device by NE_SET_INFO_PAGE. It does not become the enclave's
++memory. Only the device writes it, so from NE_SET_INFO_PAGE on it is read-only
++to user space: write() on the descriptor fails and a mapping has no write
++access. The call fails while a mapping made before it exists, so a caller
++maps the page after it. It is asked for as NE_MEMORY_SHARED, since a mapping is
++the only way for the parent to read back what the device wrote. The device is
++given one address and one length for it, so it has to be one contiguous run,
++and 2 MiB is the only size that cannot come back split. Ask for 2 MiB per
++enclave that will have one, on the node its cores sit on, or on every node it
++may draw from where the pool spans nodes.
++
+ NE_SET_USER_MEMORY_REGION is unchanged and still takes the address of a
+ hugetlbfs region.
+ 
+-The allocation lives until the last of its descriptor, its mappings and the
+-regions given from it is gone, so neither closing the descriptor nor
+-unmapping takes memory away from a running enclave.
++An allocation lives until the last of the things holding it is gone: its
++descriptor, its mappings, the regions given from it and the enclave it is the
++info page of. So neither closing the descriptor nor unmapping takes memory away
++from a running enclave.
+-- 
+2.47.1
 
-This commit takes inode->i_lock in shmem_fallocate() when reading
-shmem_falloc.nr_unswapped and updating shmem_falloc progress to synchronize
-with shmem_writeout().
-
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 4686875a3adde..219ac18aef915 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -3981,6 +3981,11 @@ static long shmem_fallocate(struct file *file, int=
- mode, loff_t offset,
-> =20
->  	for (index =3D start; index < end; ) {
->  		struct folio *folio;
-> +		bool unswapped;
-> +
-> +		spin_lock(&inode->i_lock);
-> +		unswapped =3D shmem_falloc.nr_unswapped > shmem_falloc.nr_falloced;
-> +		spin_unlock(&inode->i_lock);
-
-[Severity: Medium]
-This problem wasn't introduced by this patch, but can unmap_end underflow
-when cast to u64 earlier in shmem_fallocate() [1]?
-
-mm/shmem.c:shmem_fallocate() {
-	...
-	if (mode & FALLOC_FL_PUNCH_HOLE) {
-		struct address_space *mapping =3D file->f_mapping;
-		loff_t unmap_start =3D round_up(offset, PAGE_SIZE);
-		loff_t unmap_end =3D round_down(offset + len, PAGE_SIZE) - 1;
-		...
-		if ((u64)unmap_end > (u64)unmap_start)
-			unmap_mapping_range(mapping, unmap_start,
-					    1 + unmap_end - unmap_start, 0);
-	...
-}
-
-When punching a hole with offset + len < PAGE_SIZE, round_down(offset +
-len, PAGE_SIZE) is 0 and unmap_end becomes -1.  Casting unmap_end to u64
-turns it into U64_MAX, so (u64)unmap_end > (u64)unmap_start is true and
-unmap_mapping_range() is called with a holelen of 0 (or -PAGE_SIZE), which
-unmaps all page table entries from unmap_start to EOF.
-
-[1] https://sashiko.dev/#/bug/linux-d9244c37-209f-42ee-9567-f317e50a1be0
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111084155.8097=
-1-1-zhujun2@cmss.chinamobile.com?part=3D1
 
