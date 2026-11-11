@@ -1,97 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87C0B606A334
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 08:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894BE606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 08:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z2yz/HGR
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Dk66witd
 Received: by kanga.kvack.org (Postfix)
-	id AC1B86B00EF; Wed, 11 Nov 2026 03:27:00 -0500 (EST)
+	id 8D0766B05C3; Wed, 11 Nov 2026 03:32:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4BFF6B05B3; Wed, 11 Nov 2026 03:27:00 -0500 (EST)
+	id 881906B05C4; Wed, 11 Nov 2026 03:32:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 961C66B05C3; Wed, 11 Nov 2026 03:27:00 -0500 (EST)
+	id 797266B05C5; Wed, 11 Nov 2026 03:32:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 73E8D6B00EF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 03:27:00 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 006F212022A
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 08:26:59 +0000 (UTC)
-X-FDA: 85422157800.26.D910F83
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 67DBC40003
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 08:26:58 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Z2yz/HGR";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DAB46B05C3
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 03:32:36 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C27E91A019A
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 08:32:35 +0000 (UTC)
+X-FDA: 85422171870.15.9E0CD4F
+Received: from mta1.migadu.com (out-223.mta1.migadu.com [95.215.58.223])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A4FBD40005
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 08:32:33 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Dk66witd;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.223 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794385618;
+	s=arc-20220608; t=1794385954;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PbZEjgVXvDK8Kgt+gDF1qseEqGMNX5lwx+fvKLN2KlU=;
-	b=uFgV3XAK8yeY9VoP3ozn7Fe5Lc+h/o1Nw6Qj+a6LK18V0hBCTRdJC+CqHqLi/AKmvrU9w7
-	ZBKhwQiKS8/YUdF1w3ZsmR75f03cwQEKw8/1kkegOYemBKA6E4gP1IoSuHJvbjptWOVZdp
-	+hMvYF3M+rLJSax+hFBrlWefjvn1jHk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794385618;
-	b=CmVO2z9zC5+OvKu3KqJN3BHKGUTBEJpMepzEcnj51/tUdme3AAl8VseZnACMlhGkBf2+Lb
-	JLYolBhJtPTaMkLEy7kecaRYS+3FnB0rSmJ9PY3JWB5UTQ4fQcmcmbyGtqKQg0xSxWcuGC
-	EE/lMgt9RcRG66TKaWW+wuUoRf1WeV0=
+	bh=/GPPQeHUC5B+kqwljLDfgvXAOpL+49jyNjXeUp6zlqI=;
+	b=w/AHQhyKekc/HGBe6RErcaCpzwNrdpX0rZt9Ydsb95A4q9jlqeM7hAZSKfvIf3bPffobdP
+	wDCVIRLvSBflMa/U3j64wVyFHK4AJv4Xk2ZbvjzIk7seGfKs4N8SvdfBGbdTCbrznR2dwM
+	3Bi6p34IVSQNGDxARDAio4HGe9dBwEE=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Z2yz/HGR";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CA16B63686;
-	Wed, 11 Nov 2026 08:26:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99F221F00A05;
-	Wed, 11 Nov 2026 08:26:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794385617;
-	bh=PbZEjgVXvDK8Kgt+gDF1qseEqGMNX5lwx+fvKLN2KlU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Z2yz/HGRzmYSvQvNgV67yt87aPCx9/zsbsS1SeMWnjmYqjoz6Vlkpxfdp24lOa+2U
-	 7y/hdkwhwsxLT47Do3IxTVA95ZRIWFepZdyVHxxaRI3JuipVKrwCI3o3VtQUu+ZKjJ
-	 OzGxICDXrhjgVOsKCquA4syGsxF7w0y4MYURwdUg9lPRIA0jHeL505rmrMmQkgQNUN
-	 NX/IG7iXkVHF41wjDSUEx1mC8B9vBW22qbSbqeSnFwwXMgbFz1r5Fzo+vZHswXM8dM
-	 u1iCw/dqNnqFezdo4efFPrjWaypkyLhGq6msNhZ97Gw+i/PebXHjgpAM6Q6P410K+e
-	 QzQgz7RqhEWWg==
-Date: Wed, 11 Nov 2026 09:26:51 +0100
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Frank van der Linden <fvdl@google.com>,
-	Ivy Lopez <skunkolee@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/cma: simplify cma_declare_contiguous_multi()
-Message-ID: <avQmyzQZhwRPQJxa@localhost.localdomain>
-References: <20261111-cma-multi-v2-1-4e2dddb2a2d8@kernel.org>
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Dk66witd;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.223 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794385954;
+	b=SwRUTuhwKsG9jJNClUZNVQH50eFR6E/mOh0CWevRD+RpbSL4Xk3iONgp9XDuP6XywgOmr1
+	DxH/Jb0GLO2C7/boau/kSoRVTwp17loOYdOTl3DIHR41kZjfRlDL1nxEOHMFJFkRnTVFIs
+	298GlQ5MztT6b1VAA9FEkZA2ry5bod4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=dhlpr5+SPOvUdYnN6WpqPYeLnGLPggshdzJrAywxpNA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794385952; v=1; x=1794990752;
+ b=Dk66witdAsnLUiWP/E3/l0kL94BsXihMIlqqG2cGjwRIkFWQ8u71KHsxB3/+TAEpm7C2Jfxa
+ piot+b6AIc7/7iCr+fpDbaJPprM5smshH5h4yfizXIT4uUdTvEDrlwrBTevXuQb+8sNWBEZOo08
+ QCV+eO1DtIfh0J4p0Kulcc6I=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 91f71c34f96ac602;
+	Wed, 11 Nov 2026 08:32:32 +0000
+X-Mizu-Trace-ID: 91f71c34f96ac602
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=utf-8
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261111-cma-multi-v2-1-4e2dddb2a2d8@kernel.org>
-X-Stat-Signature: wqhto9gedoxkjxgznh46mueacrod7ojo
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH] mm/hugetlb_vmemmap: fix PMD split TLB flush race
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <sashiko-outbox-206969@kernel.org>
+Date: Wed, 11 Nov 2026 16:32:14 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Joao Martins <joao.m.martins@oracle.com>,
+ linux-mm@kvack.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <C58DC8B2-F2F6-49F0-A9D4-079FA66B69C9@linux.dev>
+References: <20261110112456.62827-1-songmuchun@bytedance.com>
+ <sashiko-outbox-206969@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 67DBC40003
-X-HE-Tag: 1794385618-907930
-X-HE-Meta: U2FsdGVkX18L5oC+hoNyUU0gm3ikBAk8FtyEIpm4VAsMWYcxhw/+5ib8ZbPAMMbwboKaQbv1zd85n6eJHn064VOSQtWl740apPQlLjy7LMkvJcAY527lz/Gp0+GXNOWTnBiugE1IdF3GQzmQKmnlEVdZWd0FMy/QVFUIV6pDwu/yPfWm0xE7X4a6PjZjSajAm70geHIWDWrwOHOOpeWR7rNKF4blTxJ8UYr7ZwS8Cz5yfNqu/0hl7ivr048BwLoPbf7C4HvZULgKVTizx9SKL/Jn1qfRF3T6eNPdx6fK+wzVoWALZG8tsG4KRa8OBb9/XvssWEiwXc43l8z3+CXG5i98nfRxWZgy18VtfVrhwVGBuFmNwRsxkvrmGJEU6hXwkQLwJ/7YGnn+YOj1LEzCKgzYk8H+HyQUQruLzZrnPVqRlKqV/kLoSTPrqN58vmhTey0Fi9kvto8wb4y5OCa043tv3WVFMjysJgjMGRZQxDnMtTobfOOgni4RSbeJS711Mad2EDqJl2uJSTFIV8GynkV5k0d1qyGITZT5YTVBVVQhrFr72liXKwdAVjlXKrZdokZotemtU5I+eYHg8OxZu4t887oD0EVVHEVNHsat4uAYsk/mv70iCfCij3sPxxHrNVq7veIYOBQ47aoA4jweig8IovdJF9ppYT+Vn8NRz6Cq+dbduyZKwulDSJbBlA/rPYqVaWbKS+v+Fy0aGi8vC2SuSFIVDsowEOvU56hAhZjK7iwcOX89OSVO0dw5szm+BPv/pGyi+YynIsfLYwkuDBuaCEQeNqk4ksXe+qUXPpFUyiTje/PpmoGmmoWgv9s5g1GkJ9TGVDv4bEIiJkPgacg9udHmCPK0+jarMAQMTi4ySlKr3y7XJEY4iSn+yePXMlhjTnFN75icib0W4p80gOoUac3m5srJvmyvPgNvn2T3OC8y5imviH/Iy7BIfssgo//gKOxnyXzSJj1H222
- o3lr/yGZ
- atlwQASEz4sCQOcCQGQdx7gSotEiaT9Jb/TMdLFqijfDzmdK7GwsmkSzR2/M+etvWX71RAOjkeunqb1CkENQQTi2Twc/iocA9pV92wL69ytQrF/KcMMBf55OH4HLqxWsfd0Aidw4zgNtL6Uzw2jYMQHm1R8euvBJYWs4Br5NXRjMqT+EMSMt4vj2NtdqIyWJUT/hKXn9qzfgmv4eg9mroKZkGBESyeasEgprEH2wWssLR0EMgYu2qXtBOUj8eJ+XO5psEd53v+hyw4ZKxYIGm6enAM9K7KjQ/EvE/q5z9UoRuWVMXIVL4k7HGlQ==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A4FBD40005
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: 5u3ag68fgmb1nkyj8k96dgou1yd5xwk3
+X-HE-Tag: 1794385953-626630
+X-HE-Meta: U2FsdGVkX1/vInd5yp1EU0/NF4H7nDtf9X8RYATRAjpYVDDVEKWKzWhUUpnUN8ZVjINFkiRdGhVREOs2X8acoXt6rTyLReU+m9HQU3UHDHlBGP+7/Jrz6wpZSZRxPuVruhWG1b1SNHQz1DAuPKbuVzGA7ljNALQ6kqAS0A5201NWYLYVwug5d4maYn7FyUbm2/wTYTz0lHjhEOCrcLYQLpFXETN8k0/26sr0ZDWIwHAVHWtPrTe0uaifKPa36XAVUbHQypKfIk4rxp2SIaBOT+c4bMzg/2y/I/zj66FmXrK5GEoDwtShs4BdPftx4fGu03OqL4+4ibifq0bbxNNEwO/G++yowe1+MxP0sPLi16GV0NqKpCUYCMUQb40g586IBUaq2WoL2njiSlX0tHVVuaaVq32vO1/1wHlL3GThf5f/wOB7OliUUcaFl6ndTcZOTXIp4vvGTuTfgTK1I1dHVsFyIJuVFN0OgPTl0AHpdzezB6vOtGV+DIPH9WVsXpK3yJKLEasuduGNlABCR87jyW6t0MQLqOXMp7/tSjbzVa1gPaKJDxTTIlrvG/0lXJSjKmmj+s4kV0icGZVL7R2q9sWovyeiEp53qs69At+FTfZYth8hs5TkuLcVyJZorAMqoVLqZ2jOKbPytxm9uqnUKD5Cn1j/LbpqabEd57oY5pl9dX+RIzWLU5D/wAyrZqjZDhdSNhPzw/hpnDYW/wkWBrSKOTnUxWIBtufdRHGBggkLZzlNSBDnC7oHVqmzD/nMCx+aTGdrsX0q6XME5Yl5s+OeZlqOYlmzpjKL8UnmgCxIfr5/q5Wxp2Tw2h3joH7zlHV/40vBWmYCSCu+BjFG6UsIUUr/W2dYHGd6kvv2vl7YeGYvdiOQZG5Pz39anTw2Bdj5niInVt5aM63mdqh8z27EkUH4H+wc7sikAR0UjYcmpfMHCwWPj1Z9RFo+5aP2igRfsaU0PBxp4Qz3azz
+ 2zZJZSIE
+ PRm2Q9NFUBiMEZaMA+HgoEpIX+ANY+cxBAkGxrq86ecHsXuj7FLNnU0Qlth+8CFhe+z2WkLUlLJFNw2z+jdctnwYUsGHbA9EmlULOltkk+09ZSD8N+gNGITbgEEh9pdbuUiHWGJAKn/nTcHs7YFwVFWStSy2LCVqcyxkclUaF1a/ptup931WbHVjIVQHtyXrcvNUWl3M25ZZOaiyyC5STDizoA4h+NvnSgOKBLBSrsUlqvyy7dK7FrgByPzCK6MmQt8Bm2w5Y5242ADQRh0BiXCuXkbflVdWdsLOMsfqjBLHV7qRGwTuonglqxfFlpW7sTYX5O4PC7mJVfoVMffzqUmb1DbysL/Y23L07KTxiuSCIfFoHyP9/PTagTuZ5F34HyJkgDwKzQqMVFDydyxJqUCIfgROZKova8yIY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,51 +100,80 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 11, 2026 at 12:14:40AM +0200, Mike Rapoport (Microsoft) wrote:
-> When cma_declare_contiguous_multi() cannot allocate a CMA area as a
-> single range, it falls back to collecting a list of up to CMA_MAX_RANGES
-> largest free ranges above 4G, reserves them in memblock and adds them to
-> cma->ranges.
-> 
-> The list and subsequently cma->ranges are supposed to be sorted in the
-> order of base addresses of the "allocated" ranges.
-> 
-> This implementation has two bugs:
-> 
-> * The allocation may fail even when there is enough free memory because
->   list_insert_sorted() sorts the list in the wrong order.
-> 
->   When the list is full, the largest range is evicted rather than the
->   smallest, the final list is not sorted by address, and the smallest
->   ranges are used first.
-> 
-> * the function may report success while it reserved less memory than
->   requested because sizesum accounts for ranges that were skipped.
-> 
-> And overall it is a lot of list management and open coded range
-> selection for no real gain.
-> 
-> Replace the current code with a loop that finds the largest free range
-> above 4G, reserves as much of it as needed and repeats until the entire
-> area is reserved or CMA_MAX_RANGES ranges are used.
-> 
-> After successful alocation sort the cma->ranges by their base address.
-> 
-> The new code scans free memory once for every range rather than once
-> for all ranges, so it is slightly slower, but it is way simpler and more
-> robust.
-> 
-> Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
-> Reported-by: Ivy Lopez <skunkolee@gmail.com>
-> Closes: https://lore.kernel.org/all/cover.1792032699.git.skunkolee@gmail.com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
 
- 
+> On Nov 10, 2026, at 20:01, sashiko-bot@kernel.org wrote:
+>=20
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [High] mm/hugetlb_vmemmap: deadlock from GFP_KERNEL alloc under
+>  init_mm.mmap_lock
+> --
+>=20
+> commit c4de2ad9c999ebd1524c99a20d1c19a13ab7ec8f
+> Author: Muchun Song <muchun.song@linux.dev>
+>=20
+> mm/hugetlb_vmemmap: fix PMD split TLB flush race
+>=20
+> This commit serializes batched vmemmap PMD splitting and its final TLB =
+flush
+> against concurrent PTE remapping using init_mm.mmap_lock.
+>=20
+>> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+>> index ba8e11e399b24..ba6559bef742a 100644
+>> --- a/mm/hugetlb_vmemmap.c
+>> +++ b/mm/hugetlb_vmemmap.c
+> [ ... ]
+>> @@ -559,6 +565,7 @@ void hugetlb_vmemmap_optimize_folios(struct =
+hstate *h, struct list_head *folio_l
+>> 	if (list_empty(folio_list))
+>> 		return;
+>>=20
+>> +	mmap_write_lock(&init_mm);
+>> 	list_for_each_entry(folio, folio_list, lru) {
+>> 		int ret;
+>>=20
+>=20
+> [Severity: High]
+> Can holding init_mm.mmap_lock for write across =
+hugetlb_vmemmap_pteify_folio()
+> deadlock in memory reclaim?
 
--- 
-Oscar Salvador
-SUSE Labs
+A valid point, I'll fix it ASAP.
+
+THanks.
+
+>=20
+> hugetlb_vmemmap_pteify_folio() walks the kernel page tables and calls
+> vmemmap_split_pmd() -> pte_alloc_one_kernel(&init_mm), which allocates =
+a page
+> table with GFP_PGTABLE_KERNEL (GFP_KERNEL).  Reclaim shrinkers such as
+> ttm_pool_shrinker_scan() take mmap_read_lock(&init_mm) when restoring =
+direct
+> map attributes via set_pages_wb() -> change_page_attr_set_clr():
+>=20
+> hugetlb_vmemmap_optimize_folios()
+>  mmap_write_lock(&init_mm)
+>  hugetlb_vmemmap_pteify_folio()
+>    ...
+>      vmemmap_split_pmd()
+>        pte_alloc_one_kernel(&init_mm)  /* GFP_KERNEL */
+>          <direct reclaim>
+>            ttm_pool_shrinker_scan()
+>              ...
+>                change_page_attr_set_clr()
+>                  mmap_read_lock(&init_mm)  <-- self-deadlock
+>=20
+> Because fs_reclaim nests outside init_mm.mmap_lock, this also triggers =
+a
+> lockdep splat on the first vmemmap PMD split (including under
+> mmap_read_lock(&init_mm) in vmemmap_optimize_folio()) and can ABBA =
+deadlock
+> against kswapd.
+>=20
+> --=20
+> Sashiko AI review =C2=B7 =
+https://sashiko.dev/#/patchset/20261110112456.62827-1-songmuchun@bytedance=
+.com?part=3D1
+
 
