@@ -1,94 +1,121 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49CC9606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 06:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 622F1606A334
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 06:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MbNXobAQ
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=DrEe06rN
 Received: by kanga.kvack.org (Postfix)
-	id 70A4E6B05B7; Wed, 11 Nov 2026 01:17:02 -0500 (EST)
+	id 84A996B05B9; Wed, 11 Nov 2026 01:21:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6BA586B05B8; Wed, 11 Nov 2026 01:17:02 -0500 (EST)
+	id 7FC2D6B05BA; Wed, 11 Nov 2026 01:21:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F8006B05B9; Wed, 11 Nov 2026 01:17:02 -0500 (EST)
+	id 6EB376B05BC; Wed, 11 Nov 2026 01:21:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D27D6B05B7
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:17:02 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DC95BA7483
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:17:01 +0000 (UTC)
-X-FDA: 85421830242.09.DAB62D3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 44F4F20005
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:17:00 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MbNXobAQ;
-	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 481256B05B9
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:21:00 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D362E1401A3
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:20:59 +0000 (UTC)
+X-FDA: 85421840238.03.0EB0820
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com [209.85.218.72])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 2D2F380004
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:20:58 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=DrEe06rN;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of 3SAn0agkKCIk6n4705nu7t11tyr.p1zyv07A-zzx8npx.14t@flex--tarunsahu.bounces.google.com designates 209.85.218.72 as permitted sender) smtp.mailfrom=3SAn0agkKCIk6n4705nu7t11tyr.p1zyv07A-zzx8npx.14t@flex--tarunsahu.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794377820;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794378058;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0CG1UcJOAjSNTO8JIN0pN5xZ098zwfCHiKYXyozJu5g=;
-	b=wv1tCxe6KMp0JVsvE05UOzNHYU+6X6ghxjvtQ/QX6ru19ZvJDLAwX/FSkyt3uzHQyJP/rz
-	7kQCMz9x2dxLlA45CpbiOlmiJX/NhnXogSl30nshGYoxL7yOBBALuneRkgL9SENCRVixMr
-	N7ef2r0jaVMb5QkVDafShRLYKM8ePEU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794377820;
-	b=gW2kcIMktmyuhLQ48hvnCm4DGTddseTJ+5NwxOnbUrWRp4safJqWyr3HPchhCScYW+BFMr
-	2SGUfoyB/fcOLP8NUM6pyNQPLi7bma4XQbw0BOCkkPqix59L3DFRYLZokSDyNKvUL2EVOS
-	WUfwpYSw27bvt5Z9EDS8u7uU5FyppHc=
+	bh=Up8Sxm5Z/vJlw6/f/g9Tue73jy4SQVTZi+t46heonUg=;
+	b=w6KUcJ/KOhSi1KPbVBxOSkWxBWXcy4YKCIjH9zaA5G21H6tudUk0uISAnPbBrkmsHGA2k8
+	3NOGZtuGRTypJTvmK1+6LTo43hLhsS4OIGS1jrXfHtOxsS0fv1gdEK1sKSDDdU4TrBNy2o
+	ctDeH0Ud5HQqVyv0p3fflv/P1PInbk0=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MbNXobAQ;
-	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9EDDA44D64;
-	Wed, 11 Nov 2026 06:16:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215CD1F00A05;
-	Wed, 11 Nov 2026 06:16:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794377819;
-	bh=0CG1UcJOAjSNTO8JIN0pN5xZ098zwfCHiKYXyozJu5g=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MbNXobAQp8xUF/BBqw0Es8S0zNZqgPpsP8tSno3whHxWT+eG/GJdAXRflVIdGyAKb
-	 TfsZkz+mzhAgqkksMKP8UwAl6jQyxasiCBrTlL6LOV7UVW0MxW2KT0LtffLtBCtU5k
-	 KwQTpERdezry2cljcogaGSA8gWqU2BRUOschZo8q5gNjz5FKq731YnejwrxtrzDjrI
-	 Adj6uwLe/JvRxCEEQUvvB0yhiZbtLhpM9ajpet7kB1P2xZmjCob5z/COmv1IDGKRTo
-	 6k1hrtDHqhtipPQWp771Pk1tPIi/U4O2LWEO/ArfmJ7qEZrWuu+hnCJ6TZCaoAhXfD
-	 C5n0O4pSW+0wQ==
-Message-ID: <sashiko-outbox-208421@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 18/19] mm: memfd_luo: Add feature header to struct
- memfd_luo_folio_ser
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tarun Sahu" <tarunsahu@google.com>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Mike
- Rapoport" <rppt@kernel.org>, robin.murphy@arm.com, maz@kernel.org, will@kernel.org, "David
- Matlack" <dmatlack@google.com>, "Alexander Graf" <graf@amazon.com>, seanjc@google.com, jgg@nvidia.com, loganodell@google.com, arnd@arndb.de, dwmw2@infradead.org, baolu.lu@linux.intel.com, "Bjorn
- Helgaas" <bhelgaas@google.com>, oupton@kernel.org, alex@shazbot.org, gle.com@google.com, pbonzini@redhat.com, "Andrew
- Morton" <akpm@linux-foundation.org>, kevin.tian@intel.com, joro@8bytes.org
-Cc: kvmarm@lists.linux.dev, linux-pci@vger.kernel.org, "Pratyush Yadav" <pratyush@kernel.org>, kexec@lists.infradead.org, kvm@vger.kernel.org, skhawaja@google.com, sagis@google.com, linux-mm@kvack.org
-In-Reply-To: <20261110050202.529473-19-tarunsahu@google.com>
-References: <20261110050202.529473-1-tarunsahu@google.com>
- <20261110050202.529473-19-tarunsahu@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 11 Nov 2026 06:16:57 +0000
-X-Rspamd-Server: rspam06
-X-Stat-Signature: yu5mabwk1dhw6w95rie6quj7cwe7yixa
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 44F4F20005
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=DrEe06rN;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of 3SAn0agkKCIk6n4705nu7t11tyr.p1zyv07A-zzx8npx.14t@flex--tarunsahu.bounces.google.com designates 209.85.218.72 as permitted sender) smtp.mailfrom=3SAn0agkKCIk6n4705nu7t11tyr.p1zyv07A-zzx8npx.14t@flex--tarunsahu.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794378058;
+	b=Oy9EPs49oRjkcrOyqbfWhllZgtJGlwYhBMgcX0EOUHCLk84ymA27iVAICqTYJmCJDzqYRs
+	JfFHmZCL0lIU+JyelhLNwa90XnCacnq/ZTFGRZg7icEK8fysWRatN9cmgX7ByCrW9zUOWX
+	a2h2PRR5rXM7cyRNsd46usRhuh5djMI=
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c50715e8328so10266b.0
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:20:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794378057; x=1794982857; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Up8Sxm5Z/vJlw6/f/g9Tue73jy4SQVTZi+t46heonUg=;
+        b=DrEe06rNjFGzeogohd6DYVNlP+P817KCm9OkwA8vkm9LyM0U4mnRTHddsN5N41XX7b
+         n1ylNnVGfOwkp0I7saW68wiK2UbbR3UROj7jG0sPpOM/C2wtWaWrogabROlfeBG44TKp
+         O54Tk6n+rFuBNHZY+9UOLGqLtP908By/CcILX+xOkKifBZ8SHGxJJOnrj/YQlvbmmAAE
+         d1b64SZHvUxUvYeCa2XeN67voA0CA+hzcCcsK/OCfrW904sP4iiikwwnzimsbQzuxvoF
+         nHAG205BsiBfgnW9iUb6DFwj2afJ1VOYmV5Owox0QKhvKVJ6g5ByWAYMxuguft5FpiZ5
+         bbyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794378057; x=1794982857;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Up8Sxm5Z/vJlw6/f/g9Tue73jy4SQVTZi+t46heonUg=;
+        b=Sx0/7vMBw8QOdCIxWuuD8u4RUZPGP+Ih1h62PfnwLKjj6RY8wyPuvC+2yzIGTy1xGb
+         Mx6g7BsKpgWKGr5CJPv9T4PIdH7rvVnvj22K30to0oJbkHSmqjSq1M1KzbyAbCrFEF2v
+         mUh4TWVOR4MEzMJKlG4F26EcCDz1ZjrC7vd+kKHKmueFh4QWwb4FZGgPOk7yhqu61wEM
+         MB37mwr0eiLOZKx0kYYGgPJUPLi1P9Sb3e3u0KHYtM+Dsn1jmQgy/S80vQDBXA89tvp1
+         sKx1oK2XorIric3mOXTck116+Q9dzOxSPXakOPvjkN9VbSuPjdjr1JABTfkoUttpUVRU
+         o0Zg==
+X-Forwarded-Encrypted: i=1; AL+hErHcIfqxvI0N8ux6Aj5g2h2pLhP4i3ZIRb2uWERlvlLwWGlSd4oK2hmGYfIW0DtXcCYo0EFQH5YScw==@kvack.org
+X-Gm-Message-State: APuU4Z8dGKe7ueUe1JCvN4B80qZtqOHI4IUNzUNN2IFWsVmFNlvcw30F
+	s/5dwI37y4xsnqMUKJk7N/yQXjLB/zlsqtkirFQXq29IurZcRQrqbVHfE6Q5KYOdwwG7njjeiVy
+	q/DoUqXaW4FsIPC6/1w==
+X-Received: from ejcuu11-n1.prod.google.com ([2002:a17:907:c60b:10b0:c3f:fb8f:67f3])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:3e8b:b0:c31:8c48:e18b with SMTP id a640c23a62f3a-c5066aa85bemr101254666b.14.1794378056032;
+ Tue, 10 Nov 2026 22:20:56 -0800 (PST)
+Date: Wed, 11 Nov 2026 06:20:55 +0000
+In-Reply-To: <179432062803.2329176.7220119921541924936.b4-review@b4>
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
+References: <20261110050202.529473-1-tarunsahu@google.com> <20261110050202.529473-4-tarunsahu@google.com>
+ <179432062803.2329176.7220119921541924936.b4-review@b4>
+Message-ID: <9huzy0azq46w.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH v4 03/19] kho, memfd_luo: Reference struct kho_vmalloc via
+ serialized pointer
+From: tarunsahu@google.com
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, 
+	maz@kernel.org, will@kernel.org, David Matlack <dmatlack@google.com>, 
+	Alexander Graf <graf@amazon.com>, seanjc@google.com, jgg@nvidia.com, loganodell@google.com, 
+	arnd@arndb.de, dwmw2@infradead.org, baolu.lu@linux.intel.com, 
+	Bjorn Helgaas <bhelgaas@google.com>, oupton@kernel.org, alex@shazbot.org, 
+	gle.com@google.com, pbonzini@redhat.com, 
+	Andrew Morton <akpm@linux-foundation.org>, kevin.tian@intel.com, joro@8bytes.org, 
+	kvmarm@lists.linux.dev, linux-pci@vger.kernel.org, 
+	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, kvm@vger.kernel.org, 
+	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	skhawaja@google.com, sagis@google.com, linux-arch@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1794377820-927482
-X-HE-Meta: U2FsdGVkX1/uInwNmm6ger2lnOuXGJ0kKzsoz8aUeEKNucmbF7hZoWA3U7ixOFxwaR0ndekcuiPZIiJhv/2R9Cv8JJ3Nxv+8oZyT8MV+YV67PSMO7nt2GpcUrelU/x9icPTtxRr1ooc7kjzeKaO78BDXYWlliZuSadYsd5k8LObbNUH/RfxYDBG+L7rR1+MkTr69EqGiPn1bOYlLCOPLPQhd4/XEZ6jZg8UCk6yZLLAtONaCkHYMh41Gg3szGwpuCEBLbRDhTaqRTR6p/HdzBFYaIu7K5vi1WHrxVtzW0ZDVhc8TIwwpLV1ZjxvGUKDGq7Xab7B06KTFkfb9+30xZQsR5ZCtUfC5rPd1fx/53GzRean7OtECnXxQuAytTb3NsS9yAtReZJVdUigXB7pe3kRX40+RCRt0IrqEkmxlcFwfYxzivIyGBSDfa+E3SBE9AZ+qSiZDqlSnYgVcFeW9UxBPZ8lHoFNVO6CAY8LjNyBnlSR8E7OZDrLm43wjgMk10co4Xo83sPddA4TsSg1OafOoPH8or/jPDweSj+F5jCacwZ/w93PQhA49RzvIYTCZq1C2mlnDzTp2TpTBFwIi1FgM3lgCdhSc1C3HEnUSk1ySnns9Cx0xppbEfUfVwsfPaa2jhfbk01KDpNu1rTAlhVHuIbefvoCZ2NBiCU0HAlE93yd0pA2I+0lAh06QXKc++kXvxJi4RLsmydxCLuEK6+WKUP6i1izDM3OYl/UsTNsCDcUqtcRQSHQ4rqCc+s1FaJEll3rMJB70BDLz1W+PUVv03UqZmelCGvZuosG8M3fMWcKlF8YySFj1GduPiEzrJf+KoOHLL5jxFhPxkKKYB+UHEsJhrm1Shu5P8n9Lttmm3vinKO86WQHvA3TOV6xzwGbU/KYn3kW64JrPZSbIYQmSNLC4PLegiHoLcIjWu+5w5uv5rMi3B25gFX031HD4TZw0p5Tne/n9704dSsJ
- 4uUhJD7i
- Ud5QFKCE79uLGujRcXf2q2HZ13MmnhNCTcO4gMb8bP7f7sahyUCYUm5PSv6Quek4SpXqTrxXl2xeSCDF/LszKbHk0Xsk0mcBQQtA2lBuzYy8rewcGgpK58C5Z2E266iAtw/HXlOEb9iu8o/+AyUNK/L/Jrto5Yk/WWvYOLHc2AyR1xkY30IeBCmYXzsFA3iyjXfldesUxWdvQJW5/GvCs6N2dxmhOztfp2drm4BnfqsfzIfgmvDG4/mjURjmf9CK0XQ0Os8rbDIavvaNHtxEMToePoEkDgBXO5qHobXVthv49G5pmWj/Xm6VTbkBE25d3o8lX48sQh6NFeRCpm0OVUBnFFhflHlvixwQ/jv77pDX/8nlxEPnC02+XlN0wK9nXRQl1a1D+2T5CcfTtVbMdrJ6AiyHlyVtHxhLhUqZRi+3RO8OLQov8kWngKPV2beImZKIVvj66fa0EYgIxzpVKmyYSugUwkPyPB9cr9JjSM1vbkqoHL1CGrJq5+JYQ9LFfBZDWGx4Y7rJ3tXdCa8tBtO9zkYT+ok6DHDcT/UAbVao6R88QrSzwgLLXwDmS4rehibje7P5UahmLfT2BOSgkr2sCY/DubGiPVaSLD7R6a0zLd/bZY8kIn8k9spYnK4Irmayu2FCcmwVx0Ug=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2D2F380004
+X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: ydh6huksj47x9sk4dmcsag5nf1chtqpa
+X-HE-Tag: 1794378058-651349
+X-HE-Meta: U2FsdGVkX1+ATkXuTnHUsYoLqqD61XvAmKhrjJuD0cC67qE9caAzRSeKJHTZPaXUUJ4hKbowGXTbPUqcRYVeIxihRs1l5BbjyeV+Pi5oU6yzDcHpui/VVyz0qe9stPBDihLtYhAzDDVSGHlcJ/s1qnLZ5n1gyABLJMBI2sayg30TaowutEMaIsOJG7uXbiU944L0OHiQYgCCguAyabzM0UZBzfrCRRr+ahT5bQ0napDTLOScLd4ryZqdxKWjaq1X8tw7ThlZmAY9bAwpbf3IPFbSJ20V+cwu4X86WZ6dU+8TrPCCR6uFQzF19fv1yNYPpwqs7dQLyRUGgH70Ms009pWPMQRFWbNY+enc9ul95KaAMvhzAavvSZUeoyyEZFX8Ea2TTfp75jrssEb0EzpyU2/ph9V04MU+LjPmvc/hKPil+vdpv8p0/ML3n3vNSQ4K7JXd41SfIpFjZB7JVBEfZJZlzAML0QPUNDUTL9ch0/uws1jKlg6eba4Ch23CYsWpZI6q0runI3CvTelRo/tuCw9JYwHkG7GlRnRg1xCK6smfQwddQjAFbGBs9ejOwiEktVo/uyGX61F77/jTQrOHSyouKFM3u32HJHg+Z/wTnRNPseCWUuEzIQHoGXglZtfGK1nBoWdDLsmGVcygm3PghvPgKIGEx1bQKtZ8u64Xvdyhz3ihJYyotrbtsnK8XO/8KzzTLGESvhDs66AHgVogKZMUuzlk0q/uPT7JDlqL15h2DJ9hq40NrNv4woktu5Zy1RPCFcejoIs3wSsO+2RoQP8lzEBWJ1I3lhmtJ3yaRaM/EbRGDv7OT1gy9WOOzMQxkqRz6jUKBFokXo4eMEIi1MBxadfB/2yR0mmly9jqjZVcdcuqpH65U50WYAYhE9A0p517VOGNDW6S+EtQvvbHVQ8j6VoGawK4fvjS6FRpsnCbR7rOmR86KcIYSeI61Q4GEF90Ni0Q0di+ui59B9B
+ Bfa6s4r0
+ EDJuOU/LMgCR7Zg7NoJyLtpgFiuzJlmFRxTkbZmg0v3+CoBI2vfJv98wnmnL5QSlaFTN6sBp7ded9Igy/Kb5BJbCRV2QIrGD1bES/wVwuNdoZoxyWzPHZdBhKWyW9rvLB0lJHj+loyOIqaw5vNA5wvGiYd5N6uml78WskNBMFB5yv23pP6zezokISTzMmPvEPMEdAVHqhim1/LCN1URkAU1svzWa8mxoh8UR+2BhkglEdChKDaTPEaIftSzzfG99VUpAIbYPEW9UZoxLDJw3pf33COYI/Noc0LU7HEtmqoMcbL+m+jvxz9RKCswvkg0s6ayGtZBT0fPio+edHjA5BmXmIgMECMah/Xz2hrybvVWdLLpNCQI7SAUW282XBL0iu7FLpnW1r/lar12TGFyqPqax0/RINwdF6SxgM9aLlxMtALu9mRmYwr8X1GLIENufpEsukz8d/1xSCKoA/GnrHTGEXlMimpS9Ptg9qWZve9gWzPIqEhoGQkOLD4mDbCn+TYb78kXJWkleboOwFs8s10DLL18rE7vM8PTnpyMGVHbYdXo/QHoGKxS434roaXRXDnaOEOFBAp1Zb0aPjCgU7BCxIn6CrmNVHT7ffzmOYW4wffgegzFzL2mYq0GYT1Q3klrKf5Cqzz2/6m23IxSlKcA+QDjArk4WkqSDwN8dAyu6EZ06bgP0s1oBbQ2evI+JN6cML
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,152 +123,205 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] mm: memfd_luo: folio leak on kho_ser_validate() failure in
-  retrieve/discard
---
+Pasha Tatashin <pasha.tatashin@soleen.com> writes:
 
-commit c3d8dd278c3f1e63ea2c973472e060bae843ec49
-Author: Tarun Sahu <tarunsahu@google.com>
+>> Subsystems preserving vmalloc allocations currently embed struct
+>> kho_vmalloc directly by value in their serialized structures or device
+>> tree properties. For example, struct memfd_luo_ser embeds struct
+>> kho_vmalloc folios, and test_kho writes the structure directly into the
+>> folios_info FDT property.
+>> 
+>> Embedding struct kho_vmalloc directly couples the containing layout's
+>> field offsets and size to struct kho_vmalloc. Any modification to struct
+>> kho_vmalloc shifts subsequent fields in the containing structure and
+>> breaks the handover ABI across kexec.
+>> 
+>> Convert callers to hold a DECLARE_KHOSER_PTR pointer to struct
+>> kho_vmalloc instead of embedding it by value. In memfd_luo, allocate the
+>> main structure and struct kho_vmalloc in the same preserved folio, placing
+>> struct kho_vmalloc in the remaining 8-byte-aligned space, and bump the
+>> compatibility string to memfd-v3. In test_kho, place struct kho_vmalloc
+>> in the remaining space of the FDT folio, store the serialized pointer in
+>> the folios_info property, and bump the compatibility string to
+>> kho-test-v2.
+>> 
+>> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+>>
+>> diff --git a/include/linux/kho/abi/kexec_handover.h b/include/linux/kho/abi/kexec_handover.h
+>> index 6f12f5037ea5..bee75a7006e8 100644
+>> --- a/include/linux/kho/abi/kexec_handover.h
+>> +++ b/include/linux/kho/abi/kexec_handover.h
+>> @@ -11,6 +11,8 @@
+>>  #define _LINUX_KHO_ABI_KEXEC_HANDOVER_H
+>>  
+>>  #include <linux/bits.h>
+>> +#include <linux/build_bug.h>
+>> +#include <linux/kconfig.h>
+>>  #include <linux/log2.h>
+>>  #include <linux/math.h>
+>>  #include <linux/types.h>
+>> @@ -177,6 +179,10 @@ struct kho_vmalloc {
+>>  	unsigned short order;
+>>  };
+>>  
+>> +static_assert(sizeof(struct kho_vmalloc) == 16);
+>> +static_assert(!IS_ENABLED(CONFIG_64BIT) ||
+>> +	      __alignof__(struct kho_vmalloc) == 8);
+>> +
+>>  /**
+>>   * DOC: KHO persistent memory tracker
+>>   *
+>> diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.h
+>> index 376a724a1d8c..7b49dd6d7e2a 100644
+>> --- a/include/linux/kho/abi/memfd.h
+>> +++ b/include/linux/kho/abi/memfd.h
+>> @@ -81,7 +81,7 @@ static_assert(!IS_ENABLED(CONFIG_64BIT) ||
+>>   *             to directly use them in the ABI.
+>>   * @flags:     Flags for the file. Unused flag bits must be set to 0.
+>>   * @nr_folios: Number of folios in the folios array.
+>> - * @folios:    KHO vmalloc descriptor pointing to the array of
+>> + * @folios:    Pointer to KHO vmalloc descriptor for the array of
+>>   *             struct memfd_luo_folio_ser.
+>>   */
+>>  struct memfd_luo_ser {
+>> @@ -90,14 +90,14 @@ struct memfd_luo_ser {
+>>  	u32 seals;
+>>  	u32 flags;
+>>  	u64 nr_folios;
+>> -	struct kho_vmalloc folios;
+>> +	DECLARE_KHOSER_PTR(folios, struct kho_vmalloc *);
+>>  };
+>>  
+>> -static_assert(sizeof(struct memfd_luo_ser) == 48);
+>> +static_assert(sizeof(struct memfd_luo_ser) == 40);
+>>  static_assert(!IS_ENABLED(CONFIG_64BIT) ||
+>>  	      __alignof__(struct memfd_luo_ser) == 8);
+>>  
+>>  /* The compatibility string for memfd file handler */
+>> -#define MEMFD_LUO_FH_COMPATIBLE	"memfd-v2"
+>> +#define MEMFD_LUO_FH_COMPATIBLE	"memfd-v3"
+>>  
+>>  #endif /* _LINUX_KHO_ABI_MEMFD_H */
+>> diff --git a/lib/test_kho.c b/lib/test_kho.c
+>> index aa6a0956bb8b..cd0f183ff68e 100644
+>> --- a/lib/test_kho.c
+>> +++ b/lib/test_kho.c
+>> @@ -25,7 +25,7 @@
+>>  
+>>  #define KHO_TEST_MAGIC	0x4b484f21	/* KHO! */
+>>  #define KHO_TEST_FDT	"kho_test"
+>> -#define KHO_TEST_COMPAT "kho-test-v1"
+>> +#define KHO_TEST_COMPAT "kho-test-v2"
+>>  
+>>  static long max_mem = (PAGE_SIZE << MAX_PAGE_ORDER) * 2;
+>>  module_param(max_mem, long, 0644);
+>> @@ -34,7 +34,7 @@ struct kho_test_state {
+>>  	unsigned int nr_folios;
+>>  	struct folio **folios;
+>>  	phys_addr_t *folios_info;
+>> -	struct kho_vmalloc folios_info_phys;
+>> +	DECLARE_KHOSER_PTR(folios_info_phys, struct kho_vmalloc *);
+>>  	int nr_folios_preserved;
+>>  	struct folio *fdt;
+>>  	__wsum csum;
+>> @@ -47,13 +47,13 @@ static void kho_test_unpreserve_data(struct kho_test_state *state)
+>>  	for (int i = 0; i < state->nr_folios_preserved; i++)
+>>  		kho_unpreserve_folio(state->folios[i]);
+>>  
+>> -	kho_unpreserve_vmalloc(&state->folios_info_phys);
+>> +	if (KHOSER_LOAD_PTR(state->folios_info_phys))
+>> +		kho_unpreserve_vmalloc(KHOSER_LOAD_PTR(state->folios_info_phys));
+>>  	vfree(state->folios_info);
+>>  }
+>>  
+>>  static int kho_test_preserve_data(struct kho_test_state *state)
+>>  {
+>> -	struct kho_vmalloc folios_info_phys;
+>>  	phys_addr_t *folios_info;
+>>  	int err;
+>>  
+>> @@ -61,11 +61,10 @@ static int kho_test_preserve_data(struct kho_test_state *state)
+>>  	if (!folios_info)
+>>  		return -ENOMEM;
+>>  
+>> -	err = kho_preserve_vmalloc(folios_info, &folios_info_phys);
+>> +	err = kho_preserve_vmalloc(folios_info, KHOSER_LOAD_PTR(state->folios_info_phys));
+>>  	if (err)
+>>  		goto err_free_info;
+>>  
+>> -	state->folios_info_phys = folios_info_phys;
+>>  	state->folios_info = folios_info;
+>>  
+>>  	for (int i = 0; i < state->nr_folios; i++) {
+>> @@ -123,14 +122,19 @@ static int kho_test_prepare_fdt(struct kho_test_state *state, ssize_t fdt_size)
+>>  
+>>  static int kho_test_preserve(struct kho_test_state *state)
+>>  {
+>> -	ssize_t fdt_size;
+>> +	struct kho_vmalloc *folios_vmalloc;
+>> +	ssize_t fdt_size, alloc_size;
+>>  	int err;
+>>  
+>>  	fdt_size = state->nr_folios * sizeof(phys_addr_t) + PAGE_SIZE;
+>> -	state->fdt = folio_alloc(GFP_KERNEL, get_order(fdt_size));
+>> +	alloc_size = fdt_size + sizeof(struct kho_vmalloc);
+>> +	state->fdt = folio_alloc(GFP_KERNEL, get_order(alloc_size));
+>>  	if (!state->fdt)
+>>  		return -ENOMEM;
+>>  
+>> +	folios_vmalloc = folio_address(state->fdt) + fdt_size;
+>> +	KHOSER_STORE_PTR(state->folios_info_phys, folios_vmalloc);
+>> +
+>>  	err = kho_preserve_folio(state->fdt);
+>>  	if (err)
+>>  		goto err_free_fdt;
+>> @@ -234,7 +238,8 @@ static int kho_test_save(void)
+>>  
+>>  static int kho_test_restore_data(const void *fdt, int node)
+>>  {
+>> -	const struct kho_vmalloc *folios_info_phys;
+>> +	const DECLARE_KHOSER_PTR(*folios_info_phys, struct kho_vmalloc *);
+>> +	const struct kho_vmalloc *folios_vmalloc;
+>>  	const unsigned int *nr_folios;
+>>  	phys_addr_t *folios_info;
+>>  	const __wsum *old_csum;
+>> @@ -255,7 +260,11 @@ static int kho_test_restore_data(const void *fdt, int node)
+>>  	if (!folios_info_phys || len != sizeof(*folios_info_phys))
+>>  		return -EINVAL;
+>>  
+>> -	folios_info = kho_restore_vmalloc(folios_info_phys);
+>> +	folios_vmalloc = KHOSER_LOAD_PTR(*folios_info_phys);
+>> +	if (!folios_vmalloc)
+>> +		return -EINVAL;
+>> +
+>> +	folios_info = kho_restore_vmalloc(folios_vmalloc);
+>>  	if (!folios_info)
+>>  		return -EINVAL;
+>
+> Why do we need DECLARE_KHOSER_PTR() in test_kho.c at all?
+>
+I tried to keep the kho_vmalloc reference after kho_ser_hdr to be
+same at every places. But Now I realized it is completely unnecessary.
 
-mm: memfd_luo: Add feature header to struct memfd_luo_folio_ser
+> DECLARE_KHOSER_PTR() makes sense in shared ABI structs like struct 
+> memfd_luo_ser where both kernels reference the same struct field and get 
+> type checking between KHOSER_STORE_PTR() and KHOSER_LOAD_PTR().
+>
+> Here, struct kho_test_state is purely local to the saving kernel and the 
+> handover ABI is just the "folios_info" FDT property carrying a u64 
+> physical address. Having two unrelated DECLARE_KHOSER_PTR() declarations 
+> doesn't buy any cross-kernel type safety
+>
+> Can we drop DECLARE_KHOSER_PTR() here, keep a plain pointer in struct 
+> kho_test_state, serialize a u64 phys addr into the "folios_info" FDT 
+> property, and read it back as const u64 * + phys_to_virt() like the rest 
+> of the KHO FDT code?
 
-This commit adds a struct kho_ser_hdr feature header to each serialized
-memfd folio entry and validates it during retrieve and discard.
+Yes,Agree. I will update it. Thanks!
 
-> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-> index 94510f73a6069..c00daa8a508e1 100644
-> --- a/mm/memfd_luo.c
-> +++ b/mm/memfd_luo.c
-
-[ ... ]
-
-> @@ -384,16 +391,23 @@ static void memfd_luo_unpreserve(struct liveupdate_=
-file_op_args *args)
->  	inode_unlock(inode);
->  }
-> =20
-> -static void memfd_luo_discard_folios(const struct memfd_luo_folio_ser *f=
-olios_ser,
-> +static void memfd_luo_discard_folios(const DECLARE_KHO_SER_HDR(memfd_luo=
-_folio_ser, *folios_ser),
->  				     u64 nr_folios)
->  {
-> +	const DECLARE_KHO_SER_HDR(memfd_luo_folio_ser, *fhdr) =3D folios_ser;
->  	u64 i;
-> =20
-> -	for (i =3D 0; i < nr_folios; i++) {
-> -		const struct memfd_luo_folio_ser *pfolio =3D &folios_ser[i];
-> +	for (i =3D 0; i < nr_folios; i++, fhdr =3D (const void *)fhdr + fhdr->s=
-ize) {
-> +		const struct memfd_luo_folio_ser *pfolio;
->  		struct folio *folio;
->  		phys_addr_t phys;
-> =20
-> +		if (kho_ser_validate(fhdr, memfd_luo_folio_ser)) {
-> +			pr_warn("invalid folio feature header, folios not discarded\n");
-> +			return;
-> +		}
-> +
-> +		pfolio =3D kho_ser_payload(fhdr, memfd_luo_folio_ser);
->  		if (!pfolio->pfn)
->  			continue;
-
-[ ... ]
-
-> @@ -447,9 +461,10 @@ static void memfd_luo_finish(struct liveupdate_file_=
-op_args *args)
->  }
-> =20
->  static int memfd_luo_retrieve_folios(struct file *file,
-> -				     struct memfd_luo_folio_ser *folios_ser,
-> +				     const DECLARE_KHO_SER_HDR(memfd_luo_folio_ser, *folios_ser),
->  				     u64 nr_folios)
->  {
-> +	const DECLARE_KHO_SER_HDR(memfd_luo_folio_ser, *fhdr) =3D folios_ser;
->  	struct inode *inode =3D file_inode(file);
->  	struct address_space *mapping =3D inode->i_mapping;
->  	struct folio *folio;
-> @@ -457,12 +472,20 @@ static int memfd_luo_retrieve_folios(struct file *f=
-ile,
->  	int err =3D -EIO;
->  	long i;
-> =20
-> -	for (i =3D 0; i < nr_folios; i++) {
-> -		const struct memfd_luo_folio_ser *pfolio =3D &folios_ser[i];
-> +	for (i =3D 0; i < nr_folios; i++, fhdr =3D (const void *)fhdr + fhdr->s=
-ize) {
-> +		const struct memfd_luo_folio_ser *pfolio;
->  		phys_addr_t phys;
->  		u64 index;
->  		int flags;
-> =20
-> +		err =3D kho_ser_validate(fhdr, memfd_luo_folio_ser);
-> +		if (err) {
-> +			pr_err("memfd_luo_folio_ser feature validation failed: %pe\n",
-> +			       ERR_PTR(err));
-> +			goto put_folios;
-> +		}
-> +
-> +		pfolio =3D kho_ser_payload(fhdr, memfd_luo_folio_ser);
->  		if (!pfolio->pfn)
->  			continue;
-> =20
-> @@ -472,7 +495,7 @@ static int memfd_luo_retrieve_folios(struct file *fil=
-e,
->  			pr_err("Unable to restore folio at physical address: %llx\n",
->  			       phys);
->  			err =3D -EIO;
-> -			goto put_folios;
-> +			goto next_put_folios;
->  		}
->  		index =3D pfolio->index;
->  		flags =3D pfolio->flags;
-> @@ -524,15 +547,22 @@ static int memfd_luo_retrieve_folios(struct file *f=
-ile,
->  unlock_folio:
->  	folio_unlock(folio);
->  	folio_put(folio);
-> +next_put_folios:
-> +	i++;
-> +	fhdr =3D (const void *)fhdr + fhdr->size;
->  put_folios:
->  	/*
->  	 * Note: don't free the folios already added to the file. They will be
->  	 * freed when the file is freed. Free the ones not added yet here.
->  	 */
-> -	for (long j =3D i + 1; j < nr_folios; j++) {
-> -		const struct memfd_luo_folio_ser *pfolio =3D &folios_ser[j];
-> +	for (; i < nr_folios; i++, fhdr =3D (const void *)fhdr + fhdr->size) {
-> +		const struct memfd_luo_folio_ser *pfolio;
->  		phys_addr_t phys;
-> =20
-> +		if (kho_ser_validate(fhdr, memfd_luo_folio_ser))
-> +			break;
-> +
-> +		pfolio =3D kho_ser_payload(fhdr, memfd_luo_folio_ser);
->  		if (!pfolio->pfn)
->  			continue;
-
-[Severity: Medium]
-Does this leak the remaining preserved folios when kho_ser_validate()
-fails?
-
-When kho_ser_validate() fails on entry i in memfd_luo_retrieve_folios(),
-it jumps to put_folios with fhdr still pointing at entry i.  The cleanup
-loop then calls kho_ser_validate(fhdr, memfd_luo_folio_ser) on that same
-entry and immediately breaks, leaving entry i and all subsequent entries
-un-restored and permanently leaked.
-
-Similarly, memfd_luo_discard_folios() returns on the first validation
-failure instead of continuing or still restoring pfolio->pfn across the
-array using fhdr->size, which only checks for unknown required feature
-bits while the base payload and entry stride remain valid.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110050202.5294=
-73-1-tarunsahu@google.com?part=3D18
+~Tarun
+>
+> -- 
+> Pasha
 
