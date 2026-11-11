@@ -1,150 +1,131 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37DE6606A881
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 21:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5A1606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 21:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Y/AJAEOg
+	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=C6mXfIdn
 Received: by kanga.kvack.org (Postfix)
-	id 578976B05B3; Wed, 11 Nov 2026 16:04:10 -0500 (EST)
+	id 92B206B00EF; Wed, 11 Nov 2026 16:08:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 503076B05B4; Wed, 11 Nov 2026 16:04:10 -0500 (EST)
+	id 8DBFD6B05B0; Wed, 11 Nov 2026 16:08:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CA7A6B05B5; Wed, 11 Nov 2026 16:04:10 -0500 (EST)
+	id 7CA0D6B05B1; Wed, 11 Nov 2026 16:08:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 10A0B6B05B3
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 16:04:10 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7E0591603F2
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 21:04:09 +0000 (UTC)
-X-FDA: 85424065818.07.7AE1CC5
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7FA4C16000B
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 21:04:07 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b="Y/AJAEOg";
-	spf=pass (imf08.hostedemail.com: domain of surenb@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794431047;
-	b=OqNkFmk/Y6fTE7PkSp+X2+tivZTLwckN7oEibE7Kg1EHYaqE5VK3L6DRqow/9JQDLg4Tw2
-	PMr62gggqRu437EriD9R850sR5rYUhprTybWpIouEHX3eniVdMVyHFHUAoU9zRrqusHj1h
-	K2i/wEjz5AU5yeLcplZWVDVOmSV0UeQ=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b="Y/AJAEOg";
-	spf=pass (imf08.hostedemail.com: domain of surenb@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794431047;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 54B5B6B00EF
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 16:08:44 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DF1FC1A0452
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 21:08:43 +0000 (UTC)
+X-FDA: 85424077326.01.2305E48
+Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
+	by imf28.hostedemail.com (Postfix) with ESMTP id F3BE4C0006
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 21:08:41 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=C6mXfIdn;
+	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794431322;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7jfAi01Q4CRlBo14NA8JUFvh8yBOtjDMjluJPzC/jYk=;
-	b=0CkxLOpGaOFZ9fMH8/1V+VGIhY4oiUWOy+A/FKZtl4ij7Y8XjSpLGXKOThpcyZy1zfBPX5
-	G2AmX9ANQ5DcdHMc+oyLAatPLRNz5eUq1ouanapfEzS7bl8Q9lyRXOSX+DrgZnED3Dj4fo
-	PLOOTMwb8f1Vc4B5a1CWvgejyW2PGUw=
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-533202fe429so9041cf.0
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:04:07 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794431046; cv=none;
-        d=google.com; s=arc-20260327;
-        b=IIrUgbQ33kEl5bE49KulO86H4V7bHtpvpgDWTgUKECCv4We2h6l56nQHiI7j4/OVcS
-         n8uhJAg2oapibrln1ALK1RKs52snCrAZFpDjA7liUH5FnglcRBshit7ZKX5s/Mk/ZeqV
-         vdQfRh9YinQxV8yC3faWsmWj/ya4zI/EBAa/dfsKFFTdokCEKOS3GOi70NB2MhJssGv7
-         ai9JztSsT+u9JLEEJVJNd9zOXwxYXBLuLE5o5nR0oKFDHvkUepdSKoGoaRZzxNrN+CTy
-         O2s5S9i2nCwQJzAHxYPDyB8J7o+tFX31axEfywPBdGs+J4H0sQ5sNPXl5qq1E9VIVLhd
-         sgYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7jfAi01Q4CRlBo14NA8JUFvh8yBOtjDMjluJPzC/jYk=;
-        fh=1bLU26zYwUhkeSwgnI16BwudINYLtoVa81Abcvq+A8o=;
-        b=GYjb+K3Mf81h8mJ4agri1qBeJS/Ft7x3/GBbcbAj3RiWkWj7er2il0g39QqEkjc1b4
-         fiJ/ViORDXNYDIuzQBZ28tSgCOJ8MTRpr2artHOEF25SeEMoqV+rxPg3/W4lVf8Zwi/B
-         I4ESiwLdL5QUxGyqQczFG5vFJybO1pikj2Mn6ZiOVaHsgeVPmwRA0KyQ9uC/EcNNEDPK
-         v/YfU+3aBa5WLBE2Rk6OoHke8Kgpk/ce0g70umDhPb/H0C+ExSlinEpFS/kaF0EPXbNW
-         btovX7ZbNr729OjEyYoAEXLkrCDwFrQPALxqD83+qlcREK/WdfQ4GQ3KdqfTbONp76kC
-         W3JQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=btDrkYTYNJ0PoGfoU0vNHJPAv57DG39AtPHvIg5EYYI=;
+	b=CObFwdZCQ0uw6hNAlrgI0Voo27mWyI3FePEAEGiTA7vLiUdCLKwMITrKCL2LANmyePkHFk
+	gk7sfuk40ihLEIm0odzDYFohryJQBETFzglixHiXno9nAGORxk5hDiV+6xv3KdVtK7VD1e
+	IEbldj+WDr2nqtG94GGbUHlq8plzo3I=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794431322;
+	b=1Nnqwf5bOCI6k7pah2WJEmnlck512RViNy/7DiXXnGqZSSqu4qObnecUipxXbsuEFcZwJS
+	xf/MtJHsykdmxVQcptNNLk6gLM9MFXGdHRYQkE4/Mg/c38hRT0BR/pXapdA7uES8UMbA7l
+	7GPtkko6mdya8xP9OeTX4ym397snkCs=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=C6mXfIdn;
+	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-7a6e560f580so2669286137.1
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:08:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794431046; x=1795035846; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7jfAi01Q4CRlBo14NA8JUFvh8yBOtjDMjluJPzC/jYk=;
-        b=Y/AJAEOgymE68NjyrGyMGPZevuN7MEFGBrwhKODhCCS47EpfNipu1pkIC3W50Em2e6
-         z6y3NL3OGSLQr6QI1GkBcum8aWW9NOZRe5VXeag4sGD1Ic11qTQMv6fhGxEX8tqMjSVa
-         YynRzAXfULTBLxuV8Rq4qe2XhfwVsF2ZQyrY/08lC7swpbVIjKOSwNh4L9sAjKTopRz2
-         LLSOxndS09Ed4anpJMcfhtcIyp3+V6ZL4Kg/pyZ1zL2LSfOG6Q3F6bR6155D7Pyn8D6E
-         rMxuvT2jY8M2xakt4Hl66kny/9X897WG+aBP3MWnRvhmN9X8+zJZpxcgVyXHFK0RaaQy
-         Pnbw==
+        d=soleen.com; s=google; t=1794431321; x=1795036121; darn=kvack.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=btDrkYTYNJ0PoGfoU0vNHJPAv57DG39AtPHvIg5EYYI=;
+        b=C6mXfIdnyK1JFeL2lCWibK6GwLNmTa+8eJT9EOXfCQFADclrG9SqdiNXn8eX5xCPZf
+         hUxFKVrGEMx/DCq/9pq5FZoK513JkXlLQVmOJz/jXF3YbK862GeNEeWR1DTfDpqjXwYk
+         okZ/IeK6gmWvCGTlwYZcCUPBvaKI7PmwEES/n3MyTl82IsYKmmB7Y3S0yK7tbfFFBXic
+         d87LF0kw2i5tbByAG3XEv4S6bx5l/EMYFhxRyUp+fvCp+IykrIx21q+w/2r8zH7Qmt7I
+         NEi9EqpBLEZzh2kkmBD3YwmTpqUlBZefMP4jBZNHJ0zAx7+2+a7TtB/Dv4JnZaKjsPU/
+         N7gQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794431046; x=1795035846;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1794431321; x=1795036121;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7jfAi01Q4CRlBo14NA8JUFvh8yBOtjDMjluJPzC/jYk=;
-        b=m8marMWq6eNn/Oxtr3bvkqZW15Y5cMbq0Owky+TczK9A/GZdFuMJcAHiDRho+F7xdf
-         Hvmej8WBjwoc2IVGTkX/CzioQ4TdIcGuEg43Ryycd6TcC+wQM3hP8bSyOcTnC4OvOSXI
-         IW+Nzp2xtUnESZWTnO5MuNREChYZ57yhu4l9R1RPYk052LlcFBc4+p6lZtYjRDftUW/f
-         LYUs8eZwJoT8kd59lbokFIFweFr/OAPkiLODu5YR6UB8wBSgjKkJr9+ZYbreDgdJmohE
-         MJpqTAojGyQOTJovtpzZosz+mJ9D1NiCxQBJvkFhPmH5CAluWlt/hZvOEIwmh/DacQj4
-         5hQA==
-X-Forwarded-Encrypted: i=1; AL+hErFzAmPZMpCxdsK9WSPoFG+Be9M1GexHEtG8yk6SbAS6zBrzmGkrASBbRTPmjq0BpOY47rOBNIKjjQ==@kvack.org
-X-Gm-Message-State: APuU4Z9VhRI3R1qTMC2/E7SizExSasjA8cPMshHVN9iol1rbgmp6P+TU
-	PE3mSi6oo/4j3JZ2kRBfZ6QpUFruHTm5q3jqKjRiRjOQ1W2q016tSBT6elap9Cu0Xjbm7gOBdmG
-	4fIFqawxOi3OuCKBT1YmJv50FVpRd7E2OjZf2pGqi
-X-Gm-Gg: AYBFou0O0JnQQrz+AxoWK2HgMxU/+Dxmwz3FaMH3smOuR6GUSNwXEOtNQ8lBJSfqKHe
-	8Vxtdt2YCpL1NFuoJQVpfcIUieTv6IMAnvVCGq+tboGQb6YqHw3zUqq5ZI13yDoMK+AGPL/VPhB
-	Vk8sxpu3ifBFbHwzqmCPadUmxoAz/ZrkX12Zy0BR0bGXf5Yqj8LHXi+FzQ/lV5LJ3jtYc2+YRXY
-	+DIMcLQ0zslF2cgvZDOCC0AK3zY8ooXBseLzHqCeJuD7aWYMiVPAEcLlsICN3BPdTdbmVYD9LGI
-	rOa4vcECqRs0TYQp8pf6U6BvogxUVyxylB5Viuu/6PGD4i317DHnWG1RzmviaLw6qfq4MdPUeEy
-	Bbef3b3DA/4S5FfnML6h4mQrc9pxsZnFIggEoo0M4KPybbUxs7p53AfpW/wFb3GVwVXwwnKAubk
-	yCKpMsBBj2AYELDFnXRYXjsvth
-X-Received: by 2002:a05:622a:2612:b0:530:e00f:7768 with SMTP id
- d75a77b69052e-559670434c8mr4152141cf.0.1794431045881; Wed, 11 Nov 2026
- 13:04:05 -0800 (PST)
+        bh=btDrkYTYNJ0PoGfoU0vNHJPAv57DG39AtPHvIg5EYYI=;
+        b=bm76v5nxB+NfvoVSjzNfte/NQI+DGyo9fqe4WKfiYT6bF2li/gBiIMMkhtBbZGilyG
+         vKhuWpVqZff7Ud6ZjECYYYRgjWRFv0qzksas13mDvlm2oqNpB3bSqU3cb2z6Ksdhhwie
+         fU7QzDIPLDUtZWJ5jiLlBtzTFj1ICcqiPtt7ePXkKZYgJ/uJ5CXtW+fperBvBfasY9zJ
+         1j3NS+GUREd6eDZ2jpd4C6p0UEh/uah74a9OhNGLcFyJHV9mj7UNzjTEzluN59Cd7lrw
+         f76KHVxE2cys6wD3tHhfHt2GlW259zwm0Cyg2NOp9Qm8Lhwrkr9Se2Z9m2mRe1CxFesg
+         h4wg==
+X-Forwarded-Encrypted: i=1; AL+hErF+OWJhHnWdl6Kgi65jrSUEGJ/ABk7+COvhT0A+ik6sj4U0MG52jvE1H5xYV1nFIrRbm0hKixUwAA==@kvack.org
+X-Gm-Message-State: APuU4Z+43ebYInJGZNzQ6XlAHsZUeuSJ5xhAfeqdWtuXuPUqcBoK7SBy
+	3rU8aKJtZIayy1IhHO8+lO4gjX4492itAecRdFxfdm+JuNWFU2WWoLIMjX9VQmZYt+o=
+X-Gm-Gg: AYBFou27pQIwEH6KsTAe0j1JSOrNqhHhAV1UUp7ncGDXwTr7VAn0CzCJKmBa/TQKswX
+	YpRpJaK/vcNjgshPmXWWDjl5HwiGaewgNdQ3dOUmA1iRVAZfiWg8KCDn7Dc17z2O7eg+iIJMdzH
+	pvTNSNGRNhdm8pH79lX9rrmYlEfr9yo7uQYGlNIA9cuAeTDvf3E0WppebP+9msi0G4QThq3SkCP
+	im94vVZDfZGP7t32Kc+/uyHjzj0d7XrOo5RQSd7gHriDAZrHNFsjSVMBkzbEnTkrA91KdLoJ09Y
+	Uz2uQX+eIaatD6vMzeO1sPdohDwm9qlBcW79nkmyOk1x/3ncy5n6Dl4otyercCLeNWyi0W89OnK
+	CitbpEEOzhpca3qC6KkkUlvgbBN+kCJY3M3Y/QFVuDVMu9czoryMZ+LxyRlcm8sauGHvmjT3HSe
+	8oDab2U3mJz/sPrXmHwPKsqgeBpy4oxsXDQqdvitIY7SbYkGXqbng8bVWsJuGJP4nejWS1aPAqy
+	mpQGwkWmLA0yy8Y+LiXfslaX9Id8Y8Xn8RLVkRLM9U2HcGq6c971KCY1Jy67EkxbL0zNGqi2fir
+	Nlc/1mlXWGYweiqnXPCGidLfEL7kIo+hex2GSANT5je7vdorRCr8YPhGC7bAHC375rYqU6oYthU
+	zePGiqXI/U3VkqspozdMfg6pVlEnKtB9ucp/BUiZromAXHH+efw==
+X-Received: by 2002:a67:e7cc:0:b0:7cc:2bb7:1335 with SMTP id ada2fe7eead31-7d50619786fmr1721867137.33.1794431320983;
+        Wed, 11 Nov 2026 13:08:40 -0800 (PST)
+Received: from localhost (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d302239188sm4464461137.2.2026.11.11.13.08.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Nov 2026 13:08:40 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <20261110112546.261415-1-hao.ge@linux.dev> <20261110112546.261415-2-hao.ge@linux.dev>
-In-Reply-To: <20261110112546.261415-2-hao.ge@linux.dev>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 11 Nov 2026 21:03:53 +0000
-X-Gm-Features: AclHuK9dy2sCAhDvi6AKjzXMWgnJES78GwGzZ1LsZZk9UkuHFg5q24wLvar7eig
-Message-ID: <CAJuCfpHjSZhPPpRudAdrDPzz8dGK=Mx62CYCNoO4MC9OhnGd=A@mail.gmail.com>
-Subject: Re: [PATCH v4 1/9] mm/kmsan: undo the shadow mapping when the origin
- mapping fails
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Uladzislau Rezki <urezki@gmail.com>, Dev Jain <dev.jain@arm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
-	Shrikanth Hegde <sshegde@linux.ibm.com>, Alexander Potapenko <glider@google.com>, 
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, Dennis Zhou <dennis@kernel.org>, 
-	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: intpqmmu7urnsj4doewkid7xzrzh1zo5
-X-Rspamd-Queue-Id: 7FA4C16000B
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 11 Nov 2026 16:08:39 -0500
+Message-Id: <DMSOTBXD71F7.1EJSHUFZLZH39@soleen.com>
+Cc: <linux-kselftest@vger.kernel.org>, <shuah@kernel.org>,
+ <linux-mm@kvack.org>, <skhan@linuxfoundation.org>,
+ <linux-doc@vger.kernel.org>, <vipinsh@google.com>,
+ <linux-kernel@vger.kernel.org>, <corbet@lwn.net>, <dmatlack@google.com>,
+ <kexec@lists.infradead.org>, <pratyush@kernel.org>,
+ <rdunlap@infradead.org>, <graf@amazon.com>
+Subject: Re: [PATCH v5 4/6] liveupdate: luo_flb: support incremental
+ outgoing FLB publication
+From: "Pasha Tatashin" <pasha.tatashin@soleen.com>
+To: "Mike Rapoport" <rppt@kernel.org>, "Pasha Tatashin"
+ <pasha.tatashin@soleen.com>
+X-Mailer: aerc 0.22.0-39-g5d7784875be2
+References: <20261105050053.3063001-1-pasha.tatashin@soleen.com>
+ <20261105050053.3063001-5-pasha.tatashin@soleen.com>
+ <179439592041.425130.7284974054491864276.b4-review@b4>
+In-Reply-To: <179439592041.425130.7284974054491864276.b4-review@b4>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: onh7uk6i7w57fh14syqiik6soz19wypo
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794431047-198337
-X-HE-Meta: U2FsdGVkX1/6WDfmB0OTjkPKy3LJenl9/CMSjJ29/DnwJTBTvAIBARf1jt++1d4vWSX5ZDFYMwHZB1iKmte4UsR5tCxoqHByjnj8VBC6OOnX/7eJjZBeowFbR1ZE3hpQ66WsqitijQ/fy6TWZjbjF3MoI6fk7ZQafRdRZRWAJLt933KfC5+ZgGaUT/utHox23Ufb3nIRPRYm5e3SaOipb5X0XhyqqkSTq/Pw5FGUg0s27tohwNpWefj14F+3/Yh66+xo6QgWDEJKT2c5w4Rtu9iwfJRMY+8BnM1de2pGmDKrXNsg00LnRysbT3+GznZ4P+mh7J9S5W2nUiLrsbzlzuh8/rKgWNCley00UgIBj7rXSF9nQB0o7FuMgDB3OHF9QqWnD3Af+LaxP4BWredH6QVstt6rhIoE20kIyKzKLcH+z/xGkeLq/98wo32hdPm8wr1u1yBZFt+IRwEN0QjeKrUvtsQwmvX9jvbtXKZKMPNKySZ6ubXgkrXE0AnC6wLhOR/DpLlLVtR2E1UBjfMy/67+mHr+fTCXYaHdOXA3xb5Mt13pFrGjqdfk81aqqx2nVA2/c1m01KSl9uxXcZniRT1FTgGbHSbpkmK/4LEThfYFcQKIOINbbu7C1rgTmwGq708dUMvvgv0Ijm42WIEcRlLUhTrz7sNG5DQaNUn+ZU/3VIlpb1smHsoJdZDnQh8GhkuJuhA5UCBB2XVNls+o/KkuAouh8rGQsJBCCkikdnXnVpGTV+w2nRGUK/2DUf4fixRL366cFlQKd7jfFHeWCWggvgfRkbxEgc8IXVeOsbrahoKevdY5MK70dOS71ZbFWQhnqaPi0a00+ZgJRj+QY2c/KqUfIorli+jmxFsH/LC2CTi0XR0qFNJwASSQ3G9W7WH+fWNcYq+9AkmbXH7+ltf3jbiqm/JbpP6KOliIr46uHBGTPEFnoTdApShLQvbQ9QzV9OqmJOHoP2vPgoa
- EgYtul9l
- PidfFwn5pA2V1EbW8zCQSpqvN7ExXGNMn3q/4NKVKFJfbL1ALPKtomxiS1ooMQRRy7LQCQ2LvXaDHwLEzpEgS+f2ZBvj3+u6PdnlE+rHxr8H0lyoCT1zzy7PPQdCjJoIiHcdd1iWS7OzOYo2p2DC/T2RCdPc8upHJP2xaTYLWmvZ+agJZl8Rsbq+0HCI5FRYydIq8Bbub4b1hay+U0XM2nfg7++w74mZC+gqdpAfyNkuYTlv6enayCaWqOdd/uddf/i/giuJk1FGlPqGH7y+ivuV03hZ81JjdD6XZA+6WXHmI4sUw55WP0w1CaS8EzXRfpnVNDla5uBK8BQhfhXEcgP8zsqolCL6MByFz7If+ZbkuQOPVYCufc0SgVyuijJIFWuFili7nKj41mYWFRI1KE5SlUODPe+85BBYJ
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: F3BE4C0006
+X-Rspam-User: 
+X-HE-Tag: 1794431321-542991
+X-HE-Meta: U2FsdGVkX1+kI5Zw36/oZr4bh8w3+SqMNw1Co4HFOchQAQZ6ENQQXX/4cuRY9M45s22A1dAlY4uvRI2NhneuGf+8UwcYABTSsdPGyNi7iN7rm7npilgr4Qyn6QhxxgIAlh5/Fh2+/QQa7zM7iPEfO9wXQQY6DpfegvJWaugJEiJv/i6DkgzKXabGfjvvlOEGgU1HVnriQU57yfQkh1zz8jvMBNCueKtiX63crengV3uFxjpT59lPQN1by8GxjkneXeHYDGX1czaKq//y7pt44muPjV/+/ko6+Mut9YJVrXpX31Nnl914VmJRi/W5tgBpFN4aMO7f39JD+n/KyBinIC1GFvHlrdgdqnDrMYmfF9GoNmMz2Dqrsqeuf+AmGEAj8dRCtF9KT6kjwFHJvbTx0VQCJeG0W4HR+evu7lJBeTbOjbaGQAg0i2CCMTvzR3mrhQ+R7yBb2yD1jzGxOr+ru40paIFoFT83mfRxs7PIwZr1VEFz231ZNzhXZgN0cTg6XjBBCYmyzbBrtpCJLkQe1Urh7mel6O82mUmfT+84k1IvA/Dnstwyk5dpvtTDSUFdStzUtxBmbupSKEsnPb8aiW80Bs7ZCjSWi2OijOCvSaDvSRNTIkXQW0IqXEPVR/in3l9l4r0VRaFB7jvu1QDuDTD8SeffdCm+iZStLC6Y57Fi9t21gFsJhoXe/msI1e5hhPY02Q9+qlBD8X0PrkMpuEHhkhYhxzS4JGLJnxQ5AIWqUlYsBMl7uNOHuBSH+8/+fUSVl3i2+aCf4QIeU90QiyeoEGw9YvB5YO8Z5Ss7bNQdZOjdPXfFbtVE3D45lAVbN/hTp5CIVd3JkX0TDXECRFonoC+NtqJxbW/hCoivaWfVUa/0JElvkdAwgPZWzyV8J3YLX1yuEAz0xYE8IZ9u+pzPuqFYJ8xzWtEu4mfvCEEMyysfKOQOcP+rGNAawsdy6BjnlXyOozyxNPQE0gl
+ tlQe6dlr
+ nlOW2PzJu18TAOhhFawvWOFwVaE0KnVbHnAW2ke9LStT+gRhs0ppLg/6m/HSvZdYWRH2Opu1jcqJ3lucj28418bNypEoi+k5D33QtEsvfSfeGKQE599h+ITsBwgO1khrGxFcaI9bK8oQ4xO+hj9EpXNeVdxFbku/0cLzXl3lpVuQN8FCn1riOwHVvZevIGQyOCgnTu3LVkvJB9ZZXAM6jSWIomOhhUtuQTyfrmD4VS+J4VMc6Otjuwf8FR2aqKwybjf6OnMtFjKTQtHoIpR8rVRmdm64+IXMc9MUqNpMf8A5Bzfn5b577qeqzuy1sn/GbdqCh2g/UwrGn048GZWaZuzTU7PRzEfx3Lpjf5yW2e4pDUpqO8/wxb5DscfeJTZnGCOfghxzVNQntSMLaUAPWqDkzMLu9jzhjYBRByyPf6YRadM5f+wjoU2U3dCiZjBZPeG6qwJYt2YmUhp8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,55 +134,220 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 10, 2026 at 11:24=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote:
+On Wed Nov 11, 2026 at 6:18 AM EST, Mike Rapoport wrote:
+> Hi,
 >
-> kmsan_vmap_pages_range_noflush() first maps the shadow pages and then
-> the origin pages. If the second mapping fails, the first one is left
-> mapped, and the callers do not roll it back. The next vmap of the
-> same metadata range hits the stale PTEs again and fails with a
-> WARN_ON() and -EBUSY in vmap_pages_pte_range().
+>> When a session is published to KHO via luo_session_publish_one() ahead
+>> of reboot, any FLBs that its preserved files depend on must already be
+>> present in the outgoing KHO FLB array so the KHO tree remains
+>> self-consistent.
+>>=20
+>> Currently, outgoing FLB metadata in luo_ser->flbs_pa is populated only
+>> during reboot by luo_flb_serialize(), leaving luo_ser->flbs_pa empty
+>> when sessions are published earlier.
+>>=20
+>> Publish outgoing FLBs from luo_session_publish_one() via
+>> luo_file_publish_flbs() -> luo_flb_file_publish() ->
+>> luo_flb_ser_publish_one(), and drop the now-redundant
+>> luo_flb_serialize() pass from liveupdate_reboot(). For each published
 >
-> Undo the shadow mapping on that error path, the same way
-> kmsan_ioremap_page_range() cleans up after a partial failure.
-> __vunmap_range_noflush() only clears the PTEs; nothing has touched
-> the shadow mapping, so no TLB flush is needed.
+> Oh, my :(
+> Why do we care about exact long call sequence here?
 >
-> Fixes: 47ebd0310e89 ("mm: kmsan: handle alloc failures in kmsan_vmap_page=
-s_range_noflush()")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> Reviewed-by: Dev Jain <dev.jain@arm.com>
-> Signed-off-by: Hao Ge <hao.ge@linux.dev>
-> ---
->  mm/kmsan/shadow.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>> file, luo_flb_ser_publish_one() either appends a new luo_flb_ser entry
+>> with count =3D 1 using smp_store_release() on header_ser->count or
+>> increments the existing entry's count in place, keeping the serialized
+>> count equal to the exact number of published files in KHO without
+>> including uncommitted sessions or transient
+>> liveupdate_flb_get_outgoing() references.
 >
-> diff --git a/mm/kmsan/shadow.c b/mm/kmsan/shadow.c
-> index 0c88d89bf0d6..2166086d3dc3 100644
-> --- a/mm/kmsan/shadow.c
-> +++ b/mm/kmsan/shadow.c
-> @@ -258,6 +258,10 @@ int kmsan_vmap_pages_range_noflush(unsigned long sta=
-rt, unsigned long end,
->                                             o_pages, page_shift);
->         kmsan_leave_runtime();
->         if (mapped) {
-> +               /* Undo the shadow mapping set up above. */
-> +               kmsan_enter_runtime();
-> +               __vunmap_range_noflush(shadow_start, shadow_end);
+> Got tired here, the prose needs a lot of human touch.
+>
+>> FLB publication is one-way and never needs to unpublish: before reboot
+>> it runs only when a session is committed, and a committed session never
+>> unpreserves its files, keeping private->outgoing.count >=3D 1 until
+>> reboot so flb->ops->unpreserve() is never called on a published FLB.
+>> If more FDs using an already-published FLB are preserved later,
+>> flb->ops->preserve() is not called again; file handlers update the
+>> shared live object via liveupdate_flb_get_outgoing(). Consequently, FLB
+>> handlers must:
+>> - return a stable root KHO handle in argp->data from .preserve() whose
+>>   address does not change as FDs are added later;
+>> - synchronize concurrent mutations to outgoing.obj with their own lock;
+>> - support per-FD rollback when uncommitted sessions close without
+>>   disturbing already-committed entries.
+>>=20
+>> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+>> ---
+>>  kernel/liveupdate/luo_core.c     |  10 +--
+>>  kernel/liveupdate/luo_file.c     |  16 +++++
+>>  kernel/liveupdate/luo_flb.c      | 111 ++++++++++++++++++++-----------
+>>  kernel/liveupdate/luo_internal.h |   3 +-
+>>  kernel/liveupdate/luo_session.c  |   2 +
+>>  5 files changed, 95 insertions(+), 47 deletions(-)
+>>
+>> diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
+>> index 1b2bda22902d2..9fef5161a1f3d 100644
+>> --- a/kernel/liveupdate/luo_core.c
+>> +++ b/kernel/liveupdate/luo_core.c
+>> @@ -219,18 +219,10 @@ late_initcall(luo_late_startup);
+>>   */
+>>  int liveupdate_reboot(void)
+>>  {
+>> -	int err;
+>> -
+>>  	if (!liveupdate_enabled())
+>>  		return 0;
+>> =20
+>> -	err =3D luo_session_serialize();
+>> -	if (err)
+>> -		return err;
+>> -
+>> -	luo_flb_serialize();
+>> -
+>> -	return 0;
+>> +	return luo_session_serialize();
+>
+> I suppose the wall of text above describes why you change this.
 
-Sorry, there is a problem here. You introduce "can_resched" check to
-avoid calling cond_resched() later in the series (in patch #7), but at
-this point __vunmap_range_noflush() can be called with GFP flags which
-do not allow blocking. Before recent Ulad's change called "kmsan:
-remove hard-coded GFP_KERNEL flags" this function was called only with
-GPF_KERNEL but now that's not the case. I think you can move
-introduction of can_resched flag into this patch.
+Yes, FLBs are now serialized as each session is serialized, so the separate=
+ luo_flb_serialize() pass in liveupdate_reboot() goes away. I will make tha=
+t clear and short in the commit message.
 
-> +               kmsan_leave_runtime();
->                 err =3D mapped;
->                 goto ret;
->         }
-> --
-> 2.25.1
 >
+>>  }
+>> =20
+>>  /**
+>> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
+>> index 988eb313a135f..611b9967a3a91 100644
+>> --- a/kernel/liveupdate/luo_file.c
+>> +++ b/kernel/liveupdate/luo_file.c
+>> @@ -380,6 +380,22 @@ void luo_file_unpreserve_files(struct luo_file_set =
+*file_set)
+>>  	kho_block_set_destroy(&file_set->block_set);
+>>  }
+>> =20
+>> +/**
+>> + * luo_file_publish_flbs - Publish FLBs for all preserved files in a fi=
+le_set.
+>> + * @file_set: The file_set being published to the outgoing KHO subtree.
+>> + *
+>> + * Iterates through all preserved files in @file_set and ensures their
+>> + * associated FLB metadata is published in the outgoing KHO FLB array b=
+efore
+>> + * the session itself becomes visible in KHO.
+>> + */
+>> +void luo_file_publish_flbs(struct luo_file_set *file_set)
+>> +{
+>> +	struct luo_file *luo_file;
+>> +
+>> +	list_for_each_entry(luo_file, &file_set->files_list, list)
+>> +		luo_flb_file_publish(luo_file->fh);
+>> +}
+>> +
+>>  static int luo_file_freeze_one(struct luo_file_set *file_set,
+>>  			       struct luo_file *luo_file)
+>>  {
+>> diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
+>> index cd715a7c1d992..6cd87a9f8307d 100644
+>> --- a/kernel/liveupdate/luo_flb.c
+>> +++ b/kernel/liveupdate/luo_flb.c
+>> @@ -34,6 +34,15 @@
+>>   * This reference-counted approach ensures that shared state is saved e=
+xactly
+>>   * once and restored exactly once, regardless of how many files depend =
+on it,
+>>   * and that its lifecycle is correctly managed across the kexec transit=
+ion.
+>> + *
+>> + * Serialization: Outgoing FLB metadata is published into the KHO FLB a=
+rray
+>> + * incrementally as sessions are published to KHO (when committed early=
+ via
+>> + * LIVEUPDATE_SESSION_FREEZE_COMMIT or during reboot). Because a commit=
+ted
+>> + * session never unpreserves its files, FLB publication is one-way: onc=
+e
+>> + * published, the FLB's .unpreserve() callback is never invoked and its=
+ root
+>> + * KHO handle from .preserve() remains immutable in KHO, while later se=
+ssions
+>> + * may still add or remove per-FD state in the shared live object under=
+ the FLB
+>> + * handler's own synchronization.
+>>   */
+>
+>
+>> =20
+>>  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+>> @@ -72,6 +81,13 @@ static struct luo_flb_global luo_flb_global =3D {
+>>  	.list =3D LIST_HEAD_INIT(luo_flb_global.list),
+>>  };
+>> =20
+>> +/*
+>> + * Serializes updates to luo_flb_global.outgoing.header_ser and .ser[].
+>> + * Lock hierarchy:
+>> + *   luo_register_rwlock -> private->outgoing.lock -> luo_flb_ser_lock
+>> + */
+>> +static DEFINE_MUTEX(luo_flb_ser_lock);
+>> +
+>>  /*
+>>   * struct luo_flb_link - Links an FLB definition to a file handler's in=
+ternal
+>>   * list of dependencies.
+>> @@ -104,6 +120,36 @@ static struct luo_flb_private *luo_flb_get_private(=
+struct liveupdate_flb *flb)
+>>  	return private;
+>>  }
+>> =20
+>> +static void luo_flb_ser_publish_one(const struct liveupdate_flb *flb, u=
+64 data)
+>> +{
+>> +	struct luo_flb_header *fh =3D &luo_flb_global.outgoing;
+>> +	u64 nr;
+>> +
+>> +	guard(mutex)(&luo_flb_ser_lock);
+>> +	if (!fh->active)
+>> +		return;
+>> +
+>> +	nr =3D fh->header_ser->count;
+>> +	for (u64 i =3D 0; i < nr; i++) {
+>> +		if (!strcmp(fh->ser[i].name, flb->compatible)) {
+>> +			WRITE_ONCE(fh->ser[i].count, fh->ser[i].count + 1);
+>
+> An LLM says:
+>
+>   Why the WRITE_ONCE()? All writers hold luo_flb_ser_lock, and nobody rea=
+ds
+>   this before kexec.
+
+Same kho-ro prep as in patch 2, will switch to fh->ser[i].count++ in v6=20
+and move the concurrent reader bits to the kho-ro or luo-ro series.
+
+>
+>> +			return;
+>> +		}
+>> +	}
+>> +
+>> +	if (WARN_ON_ONCE(nr >=3D LUO_FLB_MAX))
+>> +		return;
+>> +
+>> +	strscpy(fh->ser[nr].name, flb->compatible, sizeof(fh->ser[nr].name));
+>> +	fh->ser[nr].data =3D data;
+>> +	fh->ser[nr].count =3D 1;
+>> +	/*
+>> +	 * Ensure the serialized FLB entry is visible before exposing the
+>> +	 * incremented count to concurrent KHO readers.
+>> +	 */
+>> +	smp_store_release(&fh->header_ser->count, nr + 1);
+>
+> An LLM says:
+>
+>   And this release store pairs with nothing.
+
+ditto
+
+--=20
+Pasha
+
 
