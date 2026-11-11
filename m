@@ -1,114 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94026606A331
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 22:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A560606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 22:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=N9gTsIvA
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=OwNR3b+W
 Received: by kanga.kvack.org (Postfix)
-	id ABC9F6B00EF; Wed, 11 Nov 2026 17:18:55 -0500 (EST)
+	id 43A756B05B1; Wed, 11 Nov 2026 17:26:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6D4F6B05B0; Wed, 11 Nov 2026 17:18:55 -0500 (EST)
+	id 3EB236B05B2; Wed, 11 Nov 2026 17:26:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 982C46B05B3; Wed, 11 Nov 2026 17:18:55 -0500 (EST)
+	id 2DA536B05B3; Wed, 11 Nov 2026 17:26:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A6C56B00EF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:18:55 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 13E75A0461
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:18:55 +0000 (UTC)
-X-FDA: 85424254230.26.B2F3A69
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 45C301C0004
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:18:53 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=N9gTsIvA;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794435533;
-	b=8CLF/dHrEjGpfD+5r1aduB8ym9xQf5aLm5GGL9tEyZfxFVRujQ0kLZVCyxH/qauurutytj
-	rdUkkrEMtd0aF1VLKwMVEL47kK5i0RvdbqQyU1OhMF543PoBBWkNQm6SBAkJL73mkVgQM2
-	vE+EJa3MXjFFY/EtT/GUvLiGErY7SJo=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=N9gTsIvA;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794435533;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F12286B05B1
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:26:44 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 76C9214024C
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:26:44 +0000 (UTC)
+X-FDA: 85424273928.25.87F25CB
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 6DB1DC0008
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:26:42 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=OwNR3b+W;
+	spf=pass (imf10.hostedemail.com: domain of fvdl@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=fvdl@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794436002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YhV5+1cS0emO9WNIGDx6eBvv8/9J401vylAgxkfRXbk=;
-	b=MRGZDHBoQkqPGKhF7tGnaK/h9l7WSEIdRQLSfxpSqjia4ItPXvAy0Q5xDx1ilYSLRD/NEc
-	Ich/ZFF0TG81GtJYUw75dlvAUAF1+dxJpg/y8/3RURCx74/F99FQ3YGncBucFnQVt+ccZl
-	T93ltczpo1g3b2oS8Y7JMq+MY5b7aGE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D4F2D62F92;
-	Wed, 11 Nov 2026 22:18:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388ED1F00A05;
-	Wed, 11 Nov 2026 22:18:50 +0000 (UTC)
+	bh=0qXxJbBqWWiSbLfZQoa2Zp5mRREk6/0luQcqtAQF1PU=;
+	b=nskyiTtTM89MPwE/uL5kLI649MYS2nI4nE+b7LnBmX0/kGL1HnOatxgJLrITRlpvIrNtUp
+	sy4pCOWKIiU1i5O8Dmveg4Gtv3pm6musCgOUwXDuQbL+oiNo3E8xRY3YTMi7f5drZYx75x
+	RxTodzv3A3KqydZyG3d8Tctl0aVdCKA=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794436002;
+	b=kWhr9aGyorp+F6SkefRn6WvZappCtBPY2elBI3c6hrKckYo+6l0KWibWEcgedDrfDDTbIF
+	EoBt5FY2Ne8u4ZHyCSKo3zPWf5GKPjeOSBjvxt7yQ2tv8/qjcAFHkCpPZD4vkiOVmhsF+o
+	igeOSMhHqXLsL3aTqZuNCjYrhxm2w9Q=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=OwNR3b+W;
+	spf=pass (imf10.hostedemail.com: domain of fvdl@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=fvdl@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-533202fe429so28881cf.0
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:26:42 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794436001; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Ocv4nGuXOZ/LnIix60rBa09Dx/fNuwH62ZBzUf0/XgoGQCtyk4hZwxE6oZlV0XLsrW
+         H5J/i1EeG6kvY3lyMWKJjEhGlFooEBwr/PRp+lbAx0qysgEck0++YloF2u/zzIJVV845
+         xhrknNXBd+ue1fZejZbkVFmJf0Y8KUyF+l8HEkky6QHXRWYCFjFxdT9NO8ifemASDHV5
+         YuCIqYMgkrEED9JF7Fu6xVsnCqSe/irf9FR4FA7EQ2kRgbs1U96xKvPfgt2uFb568dYo
+         42CJim7HPcU/tt0nUCvXdkr2rkhy+TT1SwnVG12Q50OUf6LtMV33qasR5jifmnhbyn+a
+         PrvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0qXxJbBqWWiSbLfZQoa2Zp5mRREk6/0luQcqtAQF1PU=;
+        fh=2MiCX2lde5EGL1e4yv8vbqLqj0+pbOZ0GPQQMYos44I=;
+        b=U6oODTV9U1E6RWfWM25W7SiVSbUCYct/iwx2b3DF/VQJWgQ2QDflKmfGIVzB6/z3ny
+         zSD4kGFQG3RV5+sKSYoTAcDJGLDwyhV5VbtiPM+CRN/aWSKe4Ev1WDObmapZzPf1uzIz
+         o+icn4q+B8paOzqIRfuy/P3rU4/bGLoKjXFE8rAthaOJ86odOIpZP89mZWG8lTOQY+VV
+         CVL3QPE7WstfmYiwvFZDRe/lnjT9yX95OHWovkCCrtDNh2KI98d8EBtLjCOQHOU2ExJ/
+         mtK9wVnXsXqp3HIkTZIQiOOawHI+sVUB3+LSinBjsOFkB3O9XS3XTF6YnUHgXoQihxp2
+         nn8g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1794435531;
-	bh=YhV5+1cS0emO9WNIGDx6eBvv8/9J401vylAgxkfRXbk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=N9gTsIvABmWA9FG/AxHE9BOkDd+PvfjEmh/9xkTi4E6r7N/z2bxN7nq40VisAO49F
-	 IgUSAQYdoqkEMhROZYKhYAJjC/XC2ncIl2uqCE9C4Ngoz2nsfjoacmgz3/SUlnrv7j
-	 f2Mcda/BOS1gCJ4w3EOHrh9rdEh2rSgXT1W+3JxY=
-Date: Wed, 11 Nov 2026 14:18:48 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>, "Lorenzo Stoakes (ARM)"
- <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, David Rientjes
- <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn
- <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
- <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, Joshua Hahn
- <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
- <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
- Popple <apopple@nvidia.com>, Usama Arif <usama.arif@linux.dev>, Kairui Song
- <kasong@tencent.com>, Balbir Singh <balbirs@nvidia.com>, =?ISO-8859-1?Q?J?=
- =?ISO-8859-1?Q?=E9r=F4me?= Glisse <jglisse@redhat.com>, Yu-cheng Yu
- <yu-cheng.yu@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, Dennis
- Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter
- <cl@gentwo.org>, Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>,
- Chris Mason <mason@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- "Borislav Petkov (AMD)" <bp@alien8.de>, Mark Brown <broonie@kernel.org>,
- "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>, Josef Bacik <josef@toxicpanda.com>,
- stable@vger.kernel.org
-Subject: Re: [PATCH 04/13] mm/migrate_device: allocate THP deferred split
- heads
-Message-Id: <20261111141848.11762f60e737c97c3a239fe1@linux-foundation.org>
-In-Reply-To: <95682ddd-d200-4827-a009-77ee59d14f86@kernel.org>
-References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
-	<20261111-mason-migrate-et-al-fixes-v1-4-3d2454362e8d@kernel.org>
-	<avTB6h61nXfvCXUS@thinkstation>
-	<95682ddd-d200-4827-a009-77ee59d14f86@kernel.org>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=google.com; s=20260707; t=1794436001; x=1795040801; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0qXxJbBqWWiSbLfZQoa2Zp5mRREk6/0luQcqtAQF1PU=;
+        b=OwNR3b+W+cZX9utfWMRnRpWDAn+J9O5/Pbe2R85ij83jJyOaDCQlTr9Oymdu5kaS3Q
+         4BMBwXt/mX4+sIY7eYJ+nYICD3IFugRIZet2DNfKdUbi7JnfXVJQWRwDfRPvZoA/6tcO
+         6IJR4vhJ4/mRRVATRA06vk2i1pUWvtkn/IDeGscZa0/up4K9lFaWVcdenDDQD9vpZU7A
+         muMiegyaDf5U9/lf6vdygCENLtoHhsmk7dXCxKGwTbqEO/GGL2FiZA2cjLjIGIgvlGCr
+         FWZNJblMO51ZcUng2HZj6P7PbJ+pMAcPM2syy+5kYLgj5THSPG/Hb9YpHe29xEEydIct
+         jfwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794436001; x=1795040801;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0qXxJbBqWWiSbLfZQoa2Zp5mRREk6/0luQcqtAQF1PU=;
+        b=gCORLKTHEyxkI6GSCltnKSlhJjnduOhedOb1kxGoNyfTXwlwQI+KYGX/0kcv3o7Y1P
+         inXOHHQ4lziS0cA6+9TFS1QPFQgNkmWMK201GfhElEvXFPtTowsK+5K7t8KpkV3SnMIx
+         PKyN4SATJkiI73EJvUujb88ZtL4djgWw4oMtJPEZhM2dspBMRpTV93HoRM4pKRvBemD8
+         9TMmuzCVrHoAdL5sMwpubGtY6ziQlqR9QD+YLOXJbuAUsyyqL7nDysmDVTvtN9X9X5K2
+         V2D8ErbYLjB4SJg1lqcdDiQqzTLIByrWGRTeJi5KXLnJX4X5lBnZazmJyNt27xMU0038
+         lVjg==
+X-Forwarded-Encrypted: i=1; AL+hErGRbNKkO0AaoEExpy4oOazbZRZTWf9eJvP5oFwjy+IeTnBj3hF3Fe6jxKzCHHcN6t0x/GUUtqJzbA==@kvack.org
+X-Gm-Message-State: APuU4Z+F0GWUqlTt8Azj4frd2l471x5JVlIsRrU4AJ93n1yeo+v3TEeM
+	LNBax7V5pPYjZijyhNjekjqAUDxY/RXSzTrpyH0pQMMMEK/WSxvxsZth1Il0jsX8QwdevWGCTP+
+	/KdAxwmbYkwuSHfEsTOk0SuBV34HHtlVgH7U7jhR+
+X-Gm-Gg: AYBFou2CH1bYANRC9zEUyKEdSF8M2dAIfrmyToYe5PU3UfXfEWMa0sFPWG2+1MhznID
+	G1oeSsQdiTz4JHqYx7F3KWalCNk8Lhl5L2QON/Ynl1NXy499AucU8/v7idjvm73NG9/l7Y93kcJ
+	7yWw0qceII6h9GQa1EMLmI+I+19+8vI8OSBnI3KAPoygncy/JUOnaBrI8RbIcsE8mX8RcclaqVz
+	aB79V9ziblTvDtA0YhZR9sPzzd4ZZPKU4WXy9FwIe4BneVVoKwDUxq+NeJbdYL769/KDeOEre9g
+	Qrjcn/t+p63M2kRatn5Pmb2nV2JPmtDKHt6cCLTpH0kV9S28OGaubS7n00bwu+YePF7IsN32S7T
+	Z459mEujgPH4oMgNPhe0b8dVoeU+NtPtih6bc
+X-Received: by 2002:ac8:5c84:0:b0:534:d386:c3f1 with SMTP id
+ d75a77b69052e-5598d505571mr2598201cf.9.1794436000897; Wed, 11 Nov 2026
+ 14:26:40 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 45C301C0004
-X-Stat-Signature: ei1q3zudm6zcbn4oxunkw34dxfykkrcd
+MIME-Version: 1.0
+References: <cover.1794046188.git.zhengqi.arch@bytedance.com>
+ <586d6c53ab7e4c64d6e89ad3cf0cf7e07dabbfaf.1794046188.git.zhengqi.arch@bytedance.com>
+ <7abb3aa1-385a-422f-86bd-7aac9661c4d8@kernel.org> <423c9b28-ecf2-4fab-817d-2fb326690c73@linux.dev>
+ <3a1a3bb5-0b01-4f20-aa0e-74a952544b8c@kernel.org> <5f68ffba-9f56-4e31-9e7c-9d110f552efc@bytedance.com>
+In-Reply-To: <5f68ffba-9f56-4e31-9e7c-9d110f552efc@bytedance.com>
+From: Frank van der Linden <fvdl@google.com>
+Date: Wed, 11 Nov 2026 14:26:30 -0800
+X-Gm-Features: AclHuK8ui2RDy0cmaEz9Z61Dze9vT6ffy1pZqe99lY-d2GDxcD7lU32xjKq4-x4
+Message-ID: <CAPTztWb0XbjCxtihyp=Tx16Z_kjF+M8sa7YcUjvFv0WcS83MAg@mail.gmail.com>
+Subject: Re: [PATCH v3 2/3] mm: gup: allow long-term pins of CMA-allocated
+ HugeTLB folios
+To: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, muchun.song@linux.dev, osalvador@suse.de, 
+	akpm@linux-foundation.org, azpijr@gmail.com, lance.yang@linux.dev, 
+	Qi Zheng <qi.zheng@linux.dev>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 39oxmmc9jazidxw9s1o7m4t9ahnwwrs7
+X-Rspamd-Queue-Id: 6DB1DC0008
 X-Rspam-User: 
-X-HE-Tag: 1794435533-412098
-X-HE-Meta: U2FsdGVkX1/yAV5Uj36wYOBN2+VKi16B3uxWxr1+OypuJ9poaimgDMGoT7rgwO12ayx5XsT0buJBzomEfxr8wXPSKoHnobJqOZ3dIOtzHLbi3NXOK9KIKR2npvdnjvP3AaukRX8mHoZQvsdsLxGvKjJOk2LcGkSze8GFu1CmEVnIRbn6dZKzcGJnBybElXUwcPRQBEBo5BSkzhNlIjQWroUVtbEFqXyHmYmXapuPv25cd/988Y+Op2K2qoErFgrVQ2OLP9R2RL2UEQ3ehh7Ancb0MuECQQY+V7LkUUWFeD2V1tUils97y+KIzCHhJcVyyRGee+fwYxJjk8FfOth9hWrHxswNDnjmusoi6OZEaysx0QYNob8+f2Fy6eL6Dlrg4vChsT5bQEr40H5QFfB/buljHo+SDZ47jo0pCw/zesQQmdwIU07MHvMQVNBOCCbsphYPb67AEEwtjUG/8TvsEY6Xkxc8rBd7Utdte43XQDZ1IKsrAFapBXFT98faHJneUWN60w0AOS3i8ET6tlVRynUeWaWXOJ/DrQ+TJr5XKiIwzgCA2Nt8RAiRbWEzS265fJjWaepToY4t8A8SVvEZIbRhVTfCi8hKslya3P+qzeaYB2QN14vkM5ND21g/8C3TsAMxGQTIhg9aWhGm3SATmhj1aUWNReyaIDAueVSMPbrQHdCnEcK0eOZlvOSll1aTMy9UoQ2Trx8cqfoma/VchGg8BwuACEUi0EeWWQ4Yv7IIlVcdEIqkHFFQsy8AaQPZ2te9PfEmFzhS7SulpagBotuMS3mYynGhkAYUtXf5cP1eVfjw46KpseyYRJz7SU+FL6cu8BrTJfUVd2yMbR6ZVnto/t3dR3iRIE6FMzxUl1n9QYYDQ/4aBH1j+MeEjfDbMKmDKdQiw2xS9iQV4zcYzOQckdxGMVRjdEKKWJ1hQkSEgVgJrdpZ+c9pDNmEjSGAcMgx55ejLIrdVeaNvAx
- R2+GQ28c
- FoMFQ1YacFbyCWiFgH6cNBxZjMeubOh14wB4x4hzKE8Wa4Lvmwst+4pXSy286LUfUfV7U6QvOqefKli19ewrP8CQT4Palkf9qnCEhzrKbgz8jCZwS/MY8T7XR4hTTWThTe4DeemI8YNLh/WGHvV+PIPDQkz8rE22VDJ6wTN/jJclTJTt80Imwspr+NsyLtk18HuVkOEtdj4ZHcf0qnF38Q1WvBtLBFMtqFMXHFTt82fmqmaqkh3OZ3bN+I3p9MCH0oPyq/oAt0rgjnv51La30X7A0Xx5PFrHxvArbciXBHFb176gltzHJJU0ZgysUEi6zKeU83bNZFb6xKVILjnvVbUFDBkDTknXyyr9JYMRxGIYDwR22ja/MwAmZnO0A5fZnOIrx6eVOSucfAPs72QFqE/y9zU9PfzFcN845FNbF38EKpDXAphVCnqbu58ErLAGZ0Mw3flI485t5sdXgPuonhhURxmTjDFJFixy+e8eHa4Xmep/VDukbazoL6Q/6z89Pv7zaeGftf07qQqo=
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794436002-407965
+X-HE-Meta: U2FsdGVkX192dbLdVo9g6whB5G1a7bwTffjo1npNgwmDyb40L6kUMxVjRtoLlwMF8XtBZN1vzm//EYXRZ5fDSbpJKHK0EKMWTjK/d/mVJiBgfqedFKzn6p5nsvRiiSKtJbgQYjpm2IwCJjnMih4KSOEYYqzg1td52ZEYD/PDgGaw0a6vDnHtpXYVvoiE+rQntPzElGJ9dVeWMrNrgNXfpC3kcUW8eKqXandIEIeDBKuaHGo4CThbbNOkIvfB3S3h8257kLSUHy8sCiQ27S0BGtz42rjAqGVeUCTg2+kV5Yq/zt5P1gHj+2yRY2qpVZzmpA4ZuWsUFDx+0kN0NPPwEBnmNc7tcoj7Fp55ME+LT2RlcGl6z+J86nukaJ44ytGTMuVqWcMWC3BqCWf5VPt0G4m7TWGvUkwMJoRro65m9DsB7yPfIfu5F0vhznRaYy9o0355w9wx/P1b4mjAY36fBAVJ2c3/i6YiCV77ELIJWjszxWGyC0P8jVgGGUAbKM2ZP4Y/aqN1q9eQ1A5uKMymsHZBavEHlwgiCFKKoiq0Sz713ajrezbXOWlF9SoykFu6aj0noo5erpHH0q2urC8Zoekteb6RACk1lPXxHbz2E0HU2Y8mQXkYdVXikpf1BDGccLeZ5OWiiUh+f/FKSODSXLyTbBt+Rf9mMgCZRQTGNXyN8Apfq3SN/irRfY6JFWfRkk2oI94mguy2sbZ1y3BcX7Wsrqv92uGQc1e/uUCUsSu1u9R8dhL/z1drhb6EXQv3D97hhjpOMG5lOD3vmRN1X3CFz42W5nNZAgaFxxjZMm1MgaYj+dsjdWsza2fZ3DyHw5d8jWhy7ERpwt7KVsNcLpDWcg/MzRi8v4biQSJV/zkP6npQM+w+xEZUOP2PVOErrWfDjohV50Nm1hHpdDlV3O1tw6WYd2VghchRs5uXrXTHIhNPb9sy3gLlEII9EOXXIIbaTf/vWJre8ShOF81
+ 1oNgd3bb
+ PHJ27wCX+nf4eB1HlbCqY9MRswPCPO+LBPxHbfqTIBvfs6xkOQoHBfrlmlVL7IqySEM8veBI9TDhqvx3n1/u/xKdj9OysAtUzgCW7Q/o0QXYFJ9tsae04LM1Z1nsbob0CYyoo7mRpOyt2vI0xT47iiQGK62jziFNoDdRcp51IXJXc6ZzhY6cLhidxskyfI3T/iiivaNYYA6RZySFpyK6n57M+BeZTjKbOwBOUHEvpnfysg6GdzrvgQbLc/O2uoVgq9zzYZmbNkMH5LR3fINVc9WxpRbN/ZS8ypH2+f9bej6oWbscGKBwUyoQt/Cip45cJ5zoVb60+4TOE01E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,81 +150,212 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, 11 Nov 2026 20:40:17 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
-
-> On 11/11/26 20:30, Kiryl Shutsemau wrote:
-> > On Wed, Nov 11, 2026 at 06:13:18PM +0000, Lorenzo Stoakes (ARM) wrote:
-> >> From: Josef Bacik <josef@toxicpanda.com>
+On Wed, Nov 11, 2026 at 2:27=E2=80=AFAM Qi Zheng <zhengqi.arch@bytedance.co=
+m> wrote:
+>
+> Hi David,
+>
+> On 11/11/26 3:43 PM, David Hildenbrand (Arm) wrote:
+> > On 11/9/26 04:10, Qi Zheng wrote:
 > >>
-> >> A THP that device migration maps into an empty PMD can end up on the wrong
-> >> deferred split list when it is later queued for a deferred split.
 > >>
-> >> This occurs if the memcg has no heads yet (resulting in a warning if
-> >> CONFIG_DEBUG_VM is set), where deferred_split_folio() will then queue the
-> >> folio on the parent's list.
+> >> On 11/8/26 1:58 AM, David Hildenbrand (Arm) wrote:
+> >>> On 11/7/26 11:30, Qi Zheng wrote:
+> >>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+> >>>>
+> >>>> Long-term pinning treats explicitly CMA-allocated HugeTLB folios as
+> >>>> unpinnable, causing unnecessary migration or pinning failures.
+> >>>>
+> >>>> These folios already own their CMA bitmap ranges, and memory blocks
+> >>>> overlapping CMA areas cannot be offlined. Allow HugeTLB folios with
+> >>>> HPG_cma to be pinned directly, including in ZONE_MOVABLE.
+> >>>>
+> >>>> Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic huge=
+pages using cma")
+> >>>> Cc: stable@vger.kernel.org
+> >>>> Suggested-by: Muchun Song <muchun.song@linux.dev>
+> >>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> >>>> Acked-by: Muchun Song <muchun.song@linux.dev>
+> >>>> Reviewed-by: Oscar Salvador <osalvador@suse.de>
+> >>>> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+> >>>> ---
+> >>>>    include/linux/mm.h | 29 +----------------------------
+> >>>>    mm/gup.c           | 31 +++++++++++++++++++++++++++++++
+> >>>>    2 files changed, 32 insertions(+), 28 deletions(-)
+> >>>>
+> >>>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> >>>> index 2d0b8a4c9974f..75dd40265d3f4 100644
+> >>>> --- a/include/linux/mm.h
+> >>>> +++ b/include/linux/mm.h
+> >>>> @@ -2975,35 +2975,8 @@ static inline bool is_zero_folio(const struct=
+ folio *folio)
+> >>>>            return is_zero_page(&folio->page);
+> >>>>    }
+> >>>>
+> >>>> -/* MIGRATE_CMA and ZONE_MOVABLE do not allow pin folios */
+> >>>>    #ifdef CONFIG_MIGRATION
+> >>>> -static inline bool folio_is_longterm_pinnable(struct folio *folio)
+> >>>> -{
+> >>>> -#ifdef CONFIG_CMA
+> >>>> -  int mt =3D folio_migratetype(folio);
+> >>>> -
+> >>>> -  if (mt =3D=3D MIGRATE_CMA || mt =3D=3D MIGRATE_ISOLATE)
+> >>>> -          return false;
+> >>>> -#endif
+> >>>> -  /* The zero page can be "pinned" but gets special handling. */
+> >>>> -  if (is_zero_folio(folio))
+> >>>> -          return true;
+> >>>> -
+> >>>> -  /* Coherent device memory must always allow eviction. */
+> >>>> -  if (folio_is_device_coherent(folio))
+> >>>> -          return false;
+> >>>> -
+> >>>> -  /*
+> >>>> -   * Filesystems can only tolerate transient delays to truncate and
+> >>>> -   * hole-punch operations
+> >>>> -   */
+> >>>> -  if (folio_is_fsdax(folio))
+> >>>> -          return false;
+> >>>> -
+> >>>> -  /* Otherwise, non-movable zone folios can be pinned. */
+> >>>> -  return !folio_is_zone_movable(folio);
+> >>>> -
+> >>>> -}
+> >>>
+> >>> Moving code while adding new stuff to it, please don't.
+> >>>
+> >>> Move code first, then modify it.
+> >>>
+> >>> I don't want to play "find the difference between two pictures" on a =
+Saturday
+> >>> evening.
 > >>
-> >> Once a later THP fault in the same memcg allocates the heads,
-> >> __folio_unqueue_deferred_split() and the split path resolve folio_memcg()
-> >> to the memcg's own, now existing, list and take its lock.  They then
-> >> list_del_init() a folio that is linked on the parent's list, racing with
-> >> anything holding the parent's lock, and both lists' nr_items counts go
-> >> wrong.
+> >
+> > You resent your series way too fast.
+>
+> Got it.
+>
+> >
+> > Now we have discussions in to threads, congratulations ;)
+> >
+> >> ;), got it.
 > >>
-> >> Resolve the issue by calling folio_memcg_alloc_deferred() after the charge
-> >> in migrate_vma_insert_huge_pmd_page() and falling back like a failed charge
-> >> if that fails, as __do_huge_pmd_anonymous_page() does.
+> >> I moved the code to resolve a build dependency.
 > >>
-> >> This was originally discovered by code inspection.
+> >
+> > Why can't that be resolved differently? What is the dependency?
+>
+> The dependency is that the new check wants to use
+> `folio_test_hugetlb_cma()`, which is a HugeTLB-specific inline helper
+> from `include/linux/hugetlb.h`.
+>
+> `folio_is_longterm_pinnable()` currently lives in `include/linux/mm.h`,
+> while `include/linux/hugetlb.h` already includes `linux/mm.h`. So I
+> can't simply use `folio_test_hugetlb_cma()` from `mm.h`
+>
+> >
+> >>>
+> >>>> +bool folio_is_longterm_pinnable(struct folio *folio);
+> >>>>    #else
+> >>>>    static inline bool folio_is_longterm_pinnable(struct folio *folio=
+)
+> >>>>    {
+> >>>> diff --git a/mm/gup.c b/mm/gup.c
+> >>>> index 2b405cce2ca5c..f41701c603500 100644
+> >>>> --- a/mm/gup.c
+> >>>> +++ b/mm/gup.c
+> >>>> @@ -2216,6 +2216,37 @@ struct page *get_dump_page(unsigned long addr=
+, int *locked)
+> >>>>
+> >>>>    #ifdef CONFIG_MIGRATION
+> >>>>
+> >>>> +bool folio_is_longterm_pinnable(struct folio *folio)
+> >>>> +{
+> >>>> +#ifdef CONFIG_CMA
+> >>>> +  int mt =3D folio_migratetype(folio);
+> >>>> +
+> >>>> +  /* These HugeTLB folios own the CMA memory, so they can be long-t=
+erm pinned. */
+> >>>> +  if (folio_test_hugetlb(folio) && folio_test_hugetlb_cma(folio))
+> >>>> +          return true;
+> >>> More hugetlb hackery ... don't like that, sorry.
 > >>
-> >> Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
-> >> Cc: <stable@vger.kernel.org>
-> >> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> >> [ ljs: tweak commit message, remove unnecessary comment ]
-> >> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > 
-> > mm-new already has this: "mm/migrate_device: allocate deferred split
-> > sublists for new huge folios", same Fixes: tag.
-> > 
-> > Hm?
-> 
-> I assume that's one from Andrew that he created after a security report (where I
-> was CCed and the reporter didn't follow up), but he never sent it out officially.
+> >> Agree.
+> >>
+> >>>
+> >>> I think this just goes down to a problem we discussed a while ago tha=
+t is
+> >>> independent of hugetlb: we'd need some way to identify that the the p=
+age was
+> >>> actually allocated by the CMA owner, and it's not just some other mov=
+able
+> >>> allcoation that ended up there.
+> >>>
+> >>> For something generic non-hugetlb thing, can't we call into CMA to as=
+k whether
+> >>> the current chunk is marked allocated?
+> >>
+> >> The existing bitmap is set before allocation completes, so the range
+> >> may still contain borrowed movable pages. A set bit alone cannot
+> >> establish ownership.
+>
+> The more accurate code path is as follows.
+>
+> Assuming the 2M buddy allocation is successful, page P is borrowed from
+> the 1G CMA area.
+>
+> Now, proceed to request a new 1G huge page:
+>
+> only_alloc_fresh_hugetlb_folio
+> --> alloc_gigantic_frozen_folio
+>      --> hugetlb_cma_alloc_frozen_folio
+>          --> cma_range_alloc
+>                  /* set bitmap!! */
+>              --> bitmap_set(cmr->bitmap, bitmap_no, bitmap_count);
+>
+>                  <time A>
+>
+>                  /* may fail */
+>                  alloc_contig_frozen_range
+>
+>          /* set HPG_cma!! */
+>          folio_set_hugetlb_cma(folio);
+>
+> At time A, for page P, a bitmap was set, but HPG_cma was not set.
+>
+> If a concurrent FOLL_LONGTERM pin uses the bitmap alone to determine
+> ownership, it could incorrectly allow P to remain pinned. If
+> alloc_contig_frozen_range() fails, cma_range_alloc() clears the bitmap
+> bits, while the long-term pin on P remains.
+>
+> HPG_cma is set only after explicit CMA allocation succeeds. It records
+> the folio's own CMA ownership, whereas a set bitmap bit can represent
+> another allocation's in-flight reservation. Therefore, the bitmap
+> alone cannot replace HPG_cma in this check.
+>
+> >>
+> >> A generic query may need separate ownership tracking, such as an
+> >> owned_bitmap recording successfully allocated pages. Its updates and
+> >> lookups would also need to handle concurrency with fast GUP.
+> >
+> > Or simply two bitmaps? "trying allocation - allocated"
+>
+> As a fix, perhaps this is a bit too complex? :(
+>
+> Alternatively, we could adjust the timing for setting the bitmap, though
+> this might introduce new concurrency issues.
+>
+> Thanks,
+> Qi
 
-oops, that's supposed to be commented out.
+Yeah, ideally there would be a way to identify folios allocated
+through cma_alloc. But that would probably require.. dare I say.. a
+page flag. Trying to check bitmaps does seem too complex.
 
-> So let's review this one here. It's supposed to go through my tree either way :)
+And, since we've had a local change that does exactly the same thing
+for a few years (which I apparently forgot to send along with other
+hugetlb_cma changes), I can confirm that this looks good to me and
+works. So,
 
-Patches are identical.  So I can say
-
-Tested-by: Andrew Morton <akpm@linux-foundation.org>
-
-
-Based on Ada's supplied fix and reproducer. The report uses CONFIG_TEST_HMM
-and privileged guest setup; ordinary-user reachability through a production
-driver has not been established.
-
-Built matching pre-patch and patched 7.4.0-rc1 kernels and ran the same
-one-folio HMM migration test in each. The x86-64 KVM guest had 8 GiB RAM,
-one virtual NUMA node and four single-threaded vCPUs in one virtual socket.
-CONFIG_TEST_HMM, CONFIG_MEMCG, CONFIG_SHRINKER_DEBUG and CONFIG_DEBUG_LIST
-were enabled; KASAN was disabled.
-
-Both kernels migrated 512 pages to device memory and one huge folio back.
-After a partial unmap, normal THP allocation and freeing the migrated
-folio, the pre-patch kernel still reported one deferred-split entry on
-the root list. The patched kernel reported no entry. Both one-folio
-tests completed without a panic or warning.
-
-In two further bounded pre-patch guest runs, eight migrated folios were
-queued on the root deferred-split list. Both runs produced DEBUG_LIST
-"list_del corruption" warnings during folio release, with
-__folio_unqueue_deferred_split() in the trace. In the second run the
-warning occurred during a timed scan/removal trial. Neither run crashed
-or hung; no delay or fault injection was needed.
-
-The patched guest did not create misplaced root-list entries, so the
-concurrent scan test stopped at its setup check rather than running
-identical timed trials. These tests do not establish unprivileged
-production-driver reachability or privilege escalation.
-
+Reviewed-by: Frank van der Linden <fvdl@google.com>
 
