@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D20CC60A2619
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 18:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE26606A334
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 18:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DnPJqPlu
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G3G/Avwr
 Received: by kanga.kvack.org (Postfix)
-	id 06F626B00EF; Wed, 11 Nov 2026 13:15:13 -0500 (EST)
+	id 550AF6B05C3; Wed, 11 Nov 2026 13:15:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01E8D6B05C2; Wed, 11 Nov 2026 13:15:12 -0500 (EST)
+	id 5014B6B05C4; Wed, 11 Nov 2026 13:15:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E50E76B05C3; Wed, 11 Nov 2026 13:15:12 -0500 (EST)
+	id 3F0486B05C5; Wed, 11 Nov 2026 13:15:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B2A5A6B00EF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:15:12 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4C146C03DF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:15:12 +0000 (UTC)
-X-FDA: 85423640064.02.943C604
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BF066B05C3
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:15:22 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BB47D403C7
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:15:21 +0000 (UTC)
+X-FDA: 85423640442.17.6BA8205
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7459440018
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:15:10 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DnPJqPlu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794420910;
-	b=Ty08a20UWNJVLvCcB2Z0fxC/O6F6Z/F9ow5eoic3TUUe2NRMqnjIM5WyUx15icr0NlRuh7
-	A3tsQKDtQcRIehHzJ0TSch2FVQAsLW0ASEv/qSuUwdBT1qcnKn6gysM5rz3iC29PqqElJx
-	1pVP6FsV60q3GMzvDyMYNUNj2fLjp70=
+	by imf31.hostedemail.com (Postfix) with ESMTP id C2BFE20011
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:15:19 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="G3G/Avwr";
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794420910;
+	s=arc-20220608; t=1794420919;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NaCGdAZFU1z2YSGcCoqnUOLBqNj5/a8OsE72YWxUAAw=;
-	b=0yjQoKQQvd8Cpe1rNO7O9VT073UjvFMUf7taDFPe6YKzaXAlNMgr4hXBmLvEOIqfXLpeiY
-	PCoNEzWJdceGBvFrml3ZfGozpl1u34r9mITIyIdbwC6H9Kk/aeOMg+adVT+EaeXy1EO7tm
-	VSTTNgsSXoHSsLaRngQPJVq0DOvpR5E=
+	bh=h/gMKka0KRVoDYIjz1ajHMHaZowebVJOe2Ih0vRtI6w=;
+	b=vG8R5yKzs8TXL7rvMZg78OP6fZVUYDvegmpgbc9WTeSCs+P4lFMIlQzKCofUWOLzkszgaU
+	PZqxfMTSnFeRCoyDoxHJEpMmcOUerNTSvalzE0aN5SEWd11xJZgSHP8MSJyT5cxfPHORyy
+	tp9CirqtJwBQ74PTs7td2DRmNjvq0BU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DnPJqPlu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="G3G/Avwr";
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794420919;
+	b=wVRrc/0SDGoHhsCEvDt0Kk8vBTHJMAmdL9GH1kg/A5K6Am0HRPpJNR2bB0iEsL8sFBEpBf
+	7KqvhxvLCsUQ2pLUlVf55OXfLT7hQrZYon4P3pc5MH6QXtjd+h2lQaHOVUmfwafJ6lq+H2
+	LDqHDg1lMozM/IGFHCLWmbPOsO3y+Z8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B2027435BB;
+	by sea.source.kernel.org (Postfix) with ESMTP id 19F4241883;
+	Wed, 11 Nov 2026 18:15:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14AEC1F00A05;
 	Wed, 11 Nov 2026 18:15:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5BA91F00A05;
-	Wed, 11 Nov 2026 18:15:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794420909;
-	bh=NaCGdAZFU1z2YSGcCoqnUOLBqNj5/a8OsE72YWxUAAw=;
+	s=k20260515; t=1794420919;
+	bh=h/gMKka0KRVoDYIjz1ajHMHaZowebVJOe2Ih0vRtI6w=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=DnPJqPlu4G7knZgeHK4wye/RZiaNpcz1rdYnJCH5Se8RJTolf+zsB5C0WYDsPiaKp
-	 NtNncTGwbiM3I+lHGCpYN+ZuKR7AVKoCIr72MLOehDdubOkD5r1vpnYdjUUNyzwjBZ
-	 VP5p1i8f5XfSaO+eqNMpTEy/olsQJEjokv7GEOYrMDswpURevS6doBi+Vlc7UtPtET
-	 b0fNxuqAnm33ZuTrlAbzJv8SNNPqmIAa+FlGwNq/uWwCfShq+P6wapgt0EuaYAwqgp
-	 Q7EkYdhTY3uIqfMJOCHHJxttp0vv1bhrWU4ThZxRlHPbb5euj42t+ODQw2FJNTHMV0
-	 p2pEs8ac20RQg==
+	b=G3G/AvwrGxMCrgciaaymdYokDEwWVMqcW7sQoSgNfmLG73ObWU4/CgPD83q/GF3HC
+	 l6OrGPBF3VkAfcGm48h26cMxgB7gl+iWHYpL9jLI89e5MkWICAxZ9cXNa5RVf2AuDd
+	 NkZMzfZtPNsjZ6C8UMlihXtXGK53CtGfw8s5FG19kEVcWjA6DBL+cbnKSq6cCfxLH6
+	 H/tt27z5bi9yoy5sBEc4ixkK0plFfI3O6qSdFra3ueHxclDVFiCV6jAOKMIFxwQlzg
+	 0uQHib+dInkNx5CR9sn3rPUgt8skTptKHSpECdXZOq/WGl6wPw96Z1SlCiYG6AtzPM
+	 32lhC+r1+zjBw==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Wed, 11 Nov 2026 18:13:20 +0000
-Subject: [PATCH 06/13] mm/migrate_device: don't let go of the fault page
+Date: Wed, 11 Nov 2026 18:13:21 +0000
+Subject: [PATCH 07/13] mm/migrate_device: look up fault folio after a split
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261111-mason-migrate-et-al-fixes-v1-6-3d2454362e8d@kernel.org>
+Message-Id: <20261111-mason-migrate-et-al-fixes-v1-7-3d2454362e8d@kernel.org>
 References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
 In-Reply-To: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
 To: David Hildenbrand <david@kernel.org>, 
@@ -100,26 +100,26 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
  Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2760; i=ljs@kernel.org;
- h=from:subject:message-id; bh=W+/JIRCjXf8mo6Ivny1TOt/IqNOFsXqGJrUphYME/e4=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLK+bMi+HPonq1B9CYvOzr6G64tX9q1xWX5/S6b+zSNbt
- KYbsEamd5SyMIhxMciKKbI8/yK+P0gkbF7nBX83mDmsTCBDGLg4BWAiB7Yy/I9vb7gcLi00xWP7
- JiPxCi+O1G4Gln9OT1POzl3t5PdT4yUjw6qr7stSH+xPtUwVnhi3JWSWBL/KNcluG4ONf65eCYp
- axQMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1644; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=4y13Zn4Hv1aBFdu53Ug8OJJPI5ryvtg3+l0TbgSLV/c=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLK+bMiuPGJq8Kpaq2TdZ+lvpce7bHgDLux73dg61z/n8
+ 1/R4EVTO0pZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjAR/VMM/5TmGzLqzJ/p75i+
+ 4/qipbOme54KaW6avPTDk0kZpg8Kz5QwMvQsmeGpL6hfW2uxSua96fsk/f/LAxdMWOl7fOvHrQ/
+ 2K7AAAA==
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Queue-Id: 7459440018
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 4k5p5sc7aoq74zj615gqniw7fwgku1gq
-X-Rspam-User:
+X-Stat-Signature: aw99fiwij969dswbek91ttw9wnmmwrm5
+X-Rspamd-Server: rspam01
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794420910-618179
-X-HE-Meta: U2FsdGVkX19Ix2RnPD/JYQJb7umCz1ZyS5U4kt7LPHCQgAozdjdRv9I/9kOqK6xNQhpwlx6DwlN4Opn2w73YkTppF+Uz+iC74u5kYRa7DcdEGJoPiKUcQyrezIjMmlktRZ4lXEZgMXkjimWXlIgKl/y3lPS9aIUJBsxlYlB6IzmH3eU1YzH3dXpLZXBiHvvB+U90EwOfGYBjz5jKZRqZpOBqVQ99Gsi39COkHURVPeFMQ2xF4preg7AtqdlTaK+Vg03cjkL9tEBYDcU9a+66McZoQlvUAEHzHwS1udLMlm3T+LnDM/EDRj/PSDE7u1oJZa7EHkNCWM0F47yEjqykfkrSf90yC2brcLBsaggEJrZvWc+5z//bebKIynCaUkvFwEGYOjI/fa6C4ljSuqzTvejvVnmWmYgY+nOIy1gKhNcN/Zb6i9TMyLn97i40rQ/BUvYbm3wQPiIRntn3oK4sacM0sh5iVh8v80M2hPyqYVBcgUQoSdBo34WPdngo4HmSTg5yxXiUo78tH4I6kg1Cl/4UXGPyHY9T0vk9TfsmKvgHgXVe/1L6VEPA5PVcb1p9QKts8O57CH9oD6kWU9DHjMSsetkOuxiCZiIKctkeOYkN5QtDoflhfduZszgNXDTBkIZoH0CoSQNWvj5s2aCOxRWcWPXCt4bMovpCQ2tvMQDPFfAlxd95R1vH4xQQ9e6FkFuJldv6cOS/TC6nADp+edF4AsEO4kxc5bKfdQOyLdzT7bGQoDWFuz9XYKmAZ0U4Fffz4aBSb8KAj2Rw31rmRUNQkmHgKqO3SCX20w/EsEUodawjomSUBtNC7mxIygetGoC2EGz+Ze8dnGfvWjHo6gNbpS3XHuavaQ0x0VQfKv2/7JPpaUS9x2rsjmu8l9sCBwxASXoMZ1kKaMcuwSohXczecfSVlWsIHhxuivc8PmBrw74tWVV8OoB1j8i6+77j/ad4ZZ34YB8Tn2jakfv
- lH9YA7L1
- prmtqQlMgmRo43HlNyVWu94ZFXu0HfwdVnOGKIDR8cD71SVxu+gTQAgfEWl3aGbjHHjJNvFWuBRnfuiJFtczYZFY01J3mo47DwSNpquaca99SyiXgaqRIkUrBwYqhqebh2Cwa33gAgD3WjvZSF0w9tFNCTunADYGhGcMcaZmytY+aVV+ANEobl8ihJ7lN71mqHBCbQHQ3vd4AnHacpkQlXxL69LWt9gmNzpNeNou+4Hi1K5LpEKXuFhul2BfY8fHPwX42kpJ6vIvT3RZPMjWLQ8jtlHco53MXcxWURuJvcDI4pnEUATpvALhYnjmS1iLlY6rS28dXsJCg+Q11OIpXKdKuMrtQE4QU7PFiW/mL0r++nWZcnG8QbzknbR+kptWSx62EOiPjWxxwMl27ptBYkL0Ii0go8kA0I8h5NRpfIcsljUffe4bava3MA2tp0xFpKcQvyKqbwfpu8RFlw3QzIsdXIH3Z668R6MUWOsMnN49F1/l9sMvqhxehPFqLLAW9DGZiZGND2T1smD25rfNVWECTJqxdNI6gF5J9FdoaxhJwyLdmDpGeOac+JFjPc5N+5ufM4SLvjZD/1Ek=
+X-Rspamd-Queue-Id: C2BFE20011
+X-HE-Tag: 1794420919-733939
+X-HE-Meta: U2FsdGVkX1/sjt/uk4C88IjCAf3jy6i0SIix4MjC7+I1Alcto2FaKL1YsvGaOpxDmPQqQZeJa0MOWYOCL7hFzr84si0mfxQFKKxIK/ZNsP5EeS9WPZkYgWzTHVa+xY3TkkY3mkVbDg1ytP15sAFN8XUl+ChuXPf2EmzWuTocQ4Km0RkkmEh5QOfDUbinZxuT/qNyZGXu/mWB40iwkcO2UowagmbEOb9o0XcdiGmxkZCa37viJfLzbufbKcbTDaFOUV3Rr/pSd1SH3l9SE9IkXbeLJO1qWvY+8rPNKlMGUs+veIGujPPOhTVkAmzIO3zeNefSIz7IiBuVBcdRUo9Y1MMwUwhjZAjFmad2P8DKFsXSDlP30Pbc4gqJwtD3lxQ0QmURjBW56KgCUZYZt1AzV1lbhC1KZhFLABc6RBKOHsHNfjVjGoKsYLIlghIkngQ1gxfNwafa9oezQMjIYNHEPtsFI84XTwqio9yyRKPTdx92Eq7MEBFritqvZSVo4N+GgXFPI+P4x+NjSK5YqnYaWUV0jR1TCpicickHtpvzAWK85oI+9ad/j7dGwvh2leAT48FbDc8xWfuKpBpkrLMbz6NwCZdNsN8zOYMegp0Rqj/PR6gYUQTSdGg5EkQwFM4BOHaBljGXwtrXNEQse2jvMMLbTiS9n7chq/K6v2bbCNAaPc/NnlTiOAV3gOTX5mfJ5xgpkgoM1f/SI/8v1t+/8dk3Hr3FNDO/DeekaBGhTVnQ+gUrwK+Swt2BhMGDE33QOBnhfgd5+YNZxjHCEuJrN1gZ5c4i5OaA9bAXpcvhIB1tIllDZurLvT2j4eTrlUA61bCFj0cJx07m1ggI6pwxTEWngYiYQ3QlCnOy1L+6t8tlN/etP0/SQkUElypCYjOsx8DuRDA62vke+ZkFHg8kzSk/TDOEq+5LBtlY8osmgEF6rFllA0CAWPG+nzm2xUvyARKuj6KJ/FxkBO7m17u
+ 9ysblj0p
+ AUKAaPpfBw7q4r7w6ZrrCWtbDK1mp7reHsEZKSdwn3nrE4zufJhTiWUieEF15gWtKJsLSvhKJ3cwLvcoGB5mu+Zj6+fiMi7GeL4aL8u2fzxJAb/WmDvOdFsCPMq9VRfFHqgAQYsRTo3fG5ZsGvLcn5hFAfcdwFeSgUs4tXeV1P2EaTj/EtXX8M8V6L/dTTchDGJ3F/UjpRDcDTmscpQQGoQ+E+RnH7BKlMqW+qDhDo3PmReFAdX10joN+R3Ba+ZysW+l8SBc/Q3IWM0GWT9qv3OBUX527iS+Em9V1OYGrZEyQdy6Ce51oEOtVwyWe50JYvPMy/LL4mcKIkkRrHQicfbBsX/FuJbNHlqd54XhoA22ER+pJ4kvQJ8ds0LVsyfutiuVfdhLT0E3iPRDnbViEw2KuWn8blQTQ3oGv7hwVtmEHMIs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,94 +130,46 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Josef Bacik <josef@toxicpanda.com>
 
-When migrate_vma_split_folio() has split the folio of the fault page,
-the lock and the reference which the fault handler has taken are at the
-former head page.
+migrate_vma_collect_pmd() looks up the folio of migrate->fault_page once,
+when it is entered, at which point the folio is locked.
 
-It then moves them to the folio which now holds the fault page, by
-taking a reference on and locking that folio, then unlocking and putting
-the former head.
+The fault folio is assumed not to change after this, however if
+migrate_vma_split_folio() splits a PTE-mapped large folio which contains
+the fault page, the fault page ends up in a different folio.
 
-split_folio() has unlocked the new folio and has dropped its own
-reference on it, so until folio_get() nothing but the page table entry
-holds it.
-
-Only the mmap lock is held for read, which does not prevent another thread
-from zapping the entry with MADV_DONTNEED.
-
-If this happens the folio is freed which results in folio_get() taking a
-reference on a free device page, which the driver can hand out again at any
-time.
-
-In addition, folio_lock() can sleep here with the lock of the head page
-held.
-
-Utilise split_huge_page() which will leave the lock and reference at the
-fault page correctly.
+Resolve the issue by looking up fault_folio again after each restart of the
+walk.
 
 Fixes: 022a12deda53 ("mm/migrate_device: handle partially mapped folios during collection")
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-[ ljs: tweaked commit message ]
+[ ljs: pared down commit message ]
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- mm/migrate_device.c | 39 ++++++++++-----------------------------
- 1 file changed, 10 insertions(+), 29 deletions(-)
+ mm/migrate_device.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 28ed706109da..ae795fdf36f4 100644
+index ae795fdf36f4..45e571dbfb4c 100644
 --- a/mm/migrate_device.c
 +++ b/mm/migrate_device.c
-@@ -87,39 +87,20 @@ static int migrate_vma_split_folio(struct folio *folio,
- {
- 	int ret;
- 	struct folio *fault_folio = fault_page ? page_folio(fault_page) : NULL;
--	struct folio *new_fault_folio = NULL;
--
--	if (folio != fault_folio)
--		folio_lock(folio);
--
--	ret = split_folio(folio);
--	if (ret) {
--		if (folio != fault_folio) {
--			folio_unlock(folio);
--			folio_put(folio);
--		}
--		return ret;
--	}
--
--	new_fault_folio = fault_page ? page_folio(fault_page) : NULL;
+@@ -233,11 +233,14 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	unsigned long addr = start, unmapped = 0;
+ 	spinlock_t *ptl;
+-	struct folio *fault_folio = migrate->fault_page ?
+-		page_folio(migrate->fault_page) : NULL;
++	struct folio *fault_folio;
+ 	pte_t *ptep;
  
- 	/*
--	 * Ensure the lock is held on the correct
--	 * folio after the split
-+	 * The lock and the reference of the fault handler stay with the
-+	 * folio which holds the fault page after the split.
- 	 */
--	if (!new_fault_folio) {
--		folio_unlock(folio);
--		folio_put(folio);
--	} else if (folio != new_fault_folio) {
--		if (new_fault_folio != fault_folio) {
--			folio_get(new_fault_folio);
--			folio_lock(new_fault_folio);
--		}
--		folio_unlock(folio);
--		folio_put(folio);
--	}
-+	if (folio == fault_folio)
-+		return split_huge_page(fault_page);
- 
--	return 0;
-+	folio_lock(folio);
-+	ret = split_folio(folio);
-+	folio_unlock(folio);
-+	folio_put(folio);
+ again:
++	/* The fault page is in another folio once its folio has been split */
++	fault_folio = migrate->fault_page ?
++		page_folio(migrate->fault_page) : NULL;
 +
-+	return ret;
- }
- 
- /** migrate_vma_collect_huge_pmd - collect THP pages without splitting the
+ 	/* [start, addr) is collected if we get here after splitting a folio */
+ 	if (pmd_trans_huge(*pmdp) || !pmd_present(*pmdp)) {
+ 		int ret = migrate_vma_collect_huge_pmd(pmdp, addr, end, walk, fault_folio);
 
 -- 
 2.56.0
