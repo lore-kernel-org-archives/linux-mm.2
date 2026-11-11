@@ -1,177 +1,184 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A89F606A32A
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 03:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD742606A324
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 03:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=pps01 header.b=TIcq03Up;
-	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=lionmail header.b=C9Ttc9h9
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=MSew78O/
 Received: by kanga.kvack.org (Postfix)
-	id 65F456B05B9; Tue, 10 Nov 2026 22:19:56 -0500 (EST)
+	id 96F1C6B00EF; Tue, 10 Nov 2026 22:20:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60F8D6B05BA; Tue, 10 Nov 2026 22:19:56 -0500 (EST)
+	id 945096B05B0; Tue, 10 Nov 2026 22:20:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D84D6B05BB; Tue, 10 Nov 2026 22:19:56 -0500 (EST)
+	id 80D556B05B2; Tue, 10 Nov 2026 22:20:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 199A76B05B9
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:19:56 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A08C5801DA
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 03:19:55 +0000 (UTC)
-X-FDA: 85421383950.15.501A4A2
-Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 75ED7180003
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 03:19:52 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=TIcq03Up;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b=C9Ttc9h9;
-	dmarc=pass (policy=none) header.from=columbia.edu;
-	spf=pass (imf24.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794367193;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CDEB6B00EF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:20:39 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AF2AB1A01F9
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 03:20:38 +0000 (UTC)
+X-FDA: 85421385756.09.DC985D5
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011039.outbound.protection.outlook.com [52.101.62.39])
+	by imf10.hostedemail.com (Postfix) with ESMTP id BF717C0004
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 03:20:35 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="MSew78O/";
+	spf=pass (imf10.hostedemail.com: domain of ziy@nvidia.com designates 52.101.62.39 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794367236;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o8lmC1CEcuQRQENyfqYrXJ3vs6TTuyhEVdpg3dSwAzs=;
-	b=mifcjfPTUDOgoi9go0zWbYmbMYV3sPz/i1FtuCFzGFZbd1Qzag6ZxoZa0NF7FUZrE3wOXT
-	+0/gqIAPPi1q61ofA0ZwJxUnZCOtbv1+QtK5wHTLTMR5jxl4zRfA1kb18jeokBnOk+e5RV
-	EYS1qQuUgbfSosGjNJqolJmOWY7AVoU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=TIcq03Up;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b=C9Ttc9h9;
-	dmarc=pass (policy=none) header.from=columbia.edu;
-	spf=pass (imf24.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794367193;
-	b=zrr0CAQ/UMb2/QLiCNH1xf12Q5oFhJ5bLj8pfrJMbIEdTA5kVt/p+rywSSt2U9Bem0DhtF
-	SY4NKrFJgD06bTDA/TsKLYyXwtAv5SpibEjyTr+/HIymkfi3cyy+A0OA51TrB4+b9VSXsA
-	cXkw76u2cUAyTdY+qw5PhR/W03Mn15k=
-Received: from pps.filterd (m0167069.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AB1bMYk2569908
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:19:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=o8lm
-	C1CEcuQRQENyfqYrXJ3vs6TTuyhEVdpg3dSwAzs=; b=TIcq03UpeXG5lwYgqnoC
-	oiIGN1h+T9pWC3UwBNT1771VVg0u4q1PH/9AAQYGex6VEhdW0bmD2r7tdcfA1RQr
-	5yZ9JD4Z5ClYyb2xiZ19yggiwwQausPdbOJMzZamTKLiypUKCJYQfN6n7wBcljC9
-	ep7JF56xU25TxwH4SPaQ1EEnRp2bNNXupiNQXkmfzICk9oYpIfUQCmXfLW84GfO8
-	pVknrQmjI7YGa/+hcBaCMyp094tU2VEK84j96m6+RMOvOn+MnP3HC/izSokntB81
-	uepYzn0NW6tQtZCTgHkNB/Aqey9UQ3gc1xsCvOivR7oWbmYZ+jLPww3zMKXtXZoZ
-	9w==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4hvayq23ms-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:19:51 -0500 (EST)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93f6f4fe531so495554285a.0
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 19:19:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=columbia.edu; s=lionmail; t=1794367190; x=1794971990; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=o8lmC1CEcuQRQENyfqYrXJ3vs6TTuyhEVdpg3dSwAzs=;
-        b=C9Ttc9h9jW6r9M9efpXMVJf/h5gj9wcZ/nZu9MDo3Wu7tegO0ldclGbXI2M7kwPnwl
-         sINu++Ox87dTaYG6omMGdCrz90UY0y6M3/FuJ73HnvMFxArd/erbO/+27xkh6BkrNat4
-         BovupYSvT1snA+lrxO1Fm7X4iDKONbw8P5jXETlfscv+o3NWW3bKAwT4GuzhLAu1hJ0r
-         SCoOtAKsbv4ObA3tttLOQssq5CNPy78CQUewMFzig+QotUjcf/bCutEZ7M1uZgpsuqGK
-         amQBVO+4lbCy3hIxYIqtS1ucNAVia2DWcA+ylRLHgg8H4CaRYomFKNtN0QyHxXlrXweQ
-         wTcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794367190; x=1794971990;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=o8lmC1CEcuQRQENyfqYrXJ3vs6TTuyhEVdpg3dSwAzs=;
-        b=yRiGoxHgGP0XWSo822V4tQrKv34OWi+CFMMeLw8ynFT3hUFMELF28sxhoUiTiLkI62
-         WnH7j29XafYbNU9UG0YXxH0IxFGtvP1JESWL6k42xpQgkCCJiKlITAFnxv0fDYRzlLaH
-         8hVET02+IzK+PMUS4YqoCfy824C/2Nr9oD5BV4N9zsiE4Nvw8Kgub+Hcl3uflEgFjREV
-         4ADKNgAyM+jA8fF9PI4FtBFEjF5BVDlOwfoXax1Onug6gTRDOIW5j3tZfhL5bWeu140s
-         5guYd1Yzo+R4FWofOShBCckOuTGX2UHO+lAIztu7FZZK8kbZt5pjO9UVpoMTTcle/FQK
-         JBig==
-X-Forwarded-Encrypted: i=1; AL+hErGW7biX/aw70hjXlbtXFVO7qYBnyANqmbqx7dVwsYBWynz3IkRm0FSuru/c42b+sp8F00oFpBLkyg==@kvack.org
-X-Gm-Message-State: APuU4Z9H2HbBfMm2t2a9jGwX4wRVls+EI4sUvzLdUNr+DGWXFfxHgLFm
-	d/8s8OIrXoTh9XCBFOrN0ztLufS1UIu14Yw/rPRK2XdtX90BcW9OyMLS2wpRwCyrAf9lVcrdHhQ
-	D38OCrrAIrGOFEX6VOtUYvFeGucyIQlP1vU8VzG73tgkAwL4K
-X-Gm-Gg: AYBFou0RU6K30JEEHaF3mu9n54H+/D6R3XErz/28xHM+BFoa85jlPdl9MmWG+IXSHL3
-	Sppqlv/wlWrG5A6uiCdzvWl2zsVAy5PvEf7P/NDOmUdvti48ivKb8q/F50629NCR2CHaA73KzDZ
-	jLYqYDVsXp46owP0i8z0pTrYR81szshmhtkkFtnfGEqgVqZEl9lb3cd59wngYPFVTWQHeyK8r4p
-	UbJRRHeE8x1iAh8E05CZmFs0apayYPFnnU/bzsnXaehKSUNc2PjSbQ+yhPSw1nMJdbhPjP3T2fi
-	ZhUJtXsUgaVjsGSItl7entkwM7eDV5/rcp3gWhA0wRQqLk2eQl/tuvpSbEubkZQQsn8s6nyCgYF
-	AV6d2dMolXPGp/m3kSadC8YYpS8yzt24oiWGa2pBTYuUaShhB1jzhAGb9AOZC7m2HvV9H04BnDj
-	v0d395QnfY6n7zygkKLHXeSg==
-X-Received: by 2002:a05:620a:294c:b0:93f:2b23:481b with SMTP id af79cd13be357-947afd6d3camr182910185a.22.1794367190193;
-        Tue, 10 Nov 2026 19:19:50 -0800 (PST)
-X-Received: by 2002:a05:620a:294c:b0:93f:2b23:481b with SMTP id af79cd13be357-947afd6d3camr182908385a.22.1794367189754;
-        Tue, 10 Nov 2026 19:19:49 -0800 (PST)
-Received: from [192.168.1.62] (dyn-160-39-33-242.dyn.columbia.edu. [160.39.33.242])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9479e7f2edesm383441285a.40.2026.11.10.19.19.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Nov 2026 19:19:49 -0800 (PST)
-Message-ID: <44abb8ef-7711-4ad0-be9f-ca47206892a3@columbia.edu>
-Date: Tue, 10 Nov 2026 22:19:48 -0500
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=CqLmui5G5J1YL9y1nGqs7Qttp4NgGrBaRK6kblXuyKY=;
+	b=RA4jVQhM43QolZW68Gkj4C3V2y7LC1YlzG/AOU1rzIMHcpKnxbJPt2OyzRNai1nfD3kyec
+	d7JV9ZXvstc7+iWOduVnUBTVDUIrhs2ujX/b4b65xE0X8PET78roONS5s1cxBmS7pusSZI
+	X5O8Tc79jjM/V+VC/qFOCPUf5ZknIuU=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794367236;
+	b=OUTBuam13ZsrZa5ZGF7sMzwVX4oR0MpSJk6BAoot0GFYBnT6YpPEeg5nBIKZ0HyXYop++v
+	/byIiayzuGjb+rFDNgkx3fzhGBUxUwxyBgB+7SRI1z6dMUGFLg4FYVWFBwCKYo1WX10YiZ
+	sYAaXLAcJQIiyHZobSCK6/skIZyHyZM=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="MSew78O/";
+	spf=pass (imf10.hostedemail.com: domain of ziy@nvidia.com designates 52.101.62.39 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mqQQoUrUToYyTpxYlCj0Mjua8g0q2MDhZdQc0FYT6OTVHIp/J4pW5lMMJswzEn0FHYzifGKjJafnuBVS66BL2GuGLHLEqB5meTfnE3SkUFnSltP9TRf4kDrEUGtdZOMx8kPSByh+RwPFGJA+OkELLaQ3a/fA1tpEVuk/z8tolvJXrF1RzHyTnjb/ge99g2uklzqed6YIDd6xjnWCQVa5eBDJT31/ISrrb5cG2FeThW4HRbrvt4TpJM3pVrs/y/dFK1i8QhhNBAw6W0XZ4JgzDCcb87oBH9gZEp+GIRyNxWfVu7H1p0L39JTXQe3f1l+gmlP+ZdZsAlpzOpDhbnUHZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CqLmui5G5J1YL9y1nGqs7Qttp4NgGrBaRK6kblXuyKY=;
+ b=is2Wel7qfGLrHOwWZfcMv3Cxc/Nsjgbw2fmtfrgkUi2CuE/rC9k0MPSxIHIJrn1nTU9qj9YQt93yyWTnXSI7VCEHGfLgNMFgfWkT0/tFBbBJUoTgyoSfapv6ojFpqQwM4094YyIJR4pBVSsKxI9xFqi2HRq11IH5K04T/Fwd7Onky7Dt7xqf9GqgV7HrwNuDcggfIUNWbDk9Gm/JuCq5J5pFYVhTrWBrtP60bK0hAzdJJt5+9W5ciG3/5yXL6tke2P8PiwFXjtuEYjGWSF8p8LozmI8cZQJMM8CzkjlVjQXNkCCUcAwbJVQQEA2wotCpFkDxURS8RAv2tO+Zddi/hA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CqLmui5G5J1YL9y1nGqs7Qttp4NgGrBaRK6kblXuyKY=;
+ b=MSew78O/6Y7HrttuzAYAchHwApExPfEOOJD6Pxcpv68rgV2v3iAue8doZ/GsTaDbGOzh7qdrErT74U+qhlGhKb60jYfKmPA2jyInfYTJUMJqYAkpGuU/saDaprQnjmMeVEhCMukpi9hbpJxdDo8jWAmGWtWJbv12Md8VI0dCpJ5xzH4cF4EkdG+6VL89mP6aCazj3PNhSR+VjGxgh5sYTpbk3KcWlj6qGy4WuS4LLRfsmtagm+6hlEWU7TzOJ1QcuGvF6a9QrPfy4cYElfpHykyQ6AOqIiRUsvKQxKJgdnxf0LuW6GcNHn0N+5y6Itnc+4zKwWRMG9KsrVfItTvJ/w==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by DS2PR12MB9685.namprd12.prod.outlook.com (2603:10b6:8:27a::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Wed, 11 Nov
+ 2026 03:19:40 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0615.007; Wed, 11 Nov 2026
+ 03:19:40 +0000
+From: Zi Yan <ziy@nvidia.com>
+Date: Tue, 10 Nov 2026 22:19:25 -0500
+Subject: [PATCH v4] mm/huge_memory: prevent losing PG_waiters in
+ __split_folio_to_order()
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261110-fix-split_folio_to_order-race-v4-1-cc5042f33408@nvidia.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/43OS24CMRAE0Ksgr2Pkz3xZcY8Ijex2O3QEY2RPL
+ CI0d48NiyTKgixLqn7VN5YwEia229xYxEyJwlxC87JhcDTzG3JyJTMlVCeFGrmnK0+XEy2TDyc
+ K0xKmEB1GHg0gF0NvlBm99T2wYlwiloO7/3p45PRh3xGWitbGkdIS4uf9gSxr779bWXLJTTNo6
+ JtWWuH2cyZHZgvhzOpYVt+cFN0zThVO2naErreD8foPp39yT7/TlQMHrRhRNxZ/ceu6fgG6dqe
+ DewEAAA==
+X-Change-ID: 20261029-fix-split_folio_to_order-race-087a2a9fbf7c
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+ Kiryl Shutsemau <kas@kernel.org>, 
+ Brendan Jackman <brendan.jackman@linux.dev>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Ye Liu <ye.liu@linux.dev>, 
+ Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.16.0
+X-ClientProxiedBy: MN0PR04CA0024.namprd04.prod.outlook.com
+ (2603:10b6:208:52d::14) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [SECURITY] mm: khugepaged collapse_file() drops RWP PTE markers
-To: "David Hildenbrand (Arm)" <david@kernel.org>, n3rd <18670333770@163.com>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "ljs@kernel.org" <ljs@kernel.org>, "kas@kernel.org" <kas@kernel.org>,
-        "ziy@nvidia.com" <ziy@nvidia.com>, Mike Rapoport <rppt@kernel.org>,
-        "peterx@redhat.com" <peterx@redhat.com>,
-        "security@kernel.org" <security@kernel.org>
-References: <606cae9e.bbec5.1a1c54f4f9f.Coremail.18670333770@163.com>
- <60541e98-b1f0-4f92-a155-8a29c0bb17dc@kernel.org>
-Content-Language: en-US
-From: Tal Zussman <tz2294@columbia.edu>
-In-Reply-To: <60541e98-b1f0-4f92-a155-8a29c0bb17dc@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTExMDAxMyBTYWx0ZWRfX9wH3uIgzQh2F
- RUVvYe0Ls7GjTtSQBDhSXi0yKAl9HzdATweopUhMTH1lfne+4G9B3JdB2AJppsmdG83QJaaeDe2
- ZeZFlA3KuCXTEGbSvjAjwkamjTdMMesg2g20mCDFD5zOMp+9jZEVcDZe64oTIkoAkVFE+5s6SyZ
- D6rZJX9Hn1fa+hqojeSNaxOtV8+LTEh27ukdQEnLYYlkb3NrpcQMs11DmOzGFvp3iDkidDZcCBp
- 4dIdjHsNRVm0K0vNqThAgHEFgnoRahuRGWzAPbfcmQ9Rnkor7e837v7l8YgRvx2VpNpLRIzISrR
- cOgaiJsDyVWb/jTSUek5IsHoCscWD4J6khoRK73CEhQopiePHhFGw9D2w+DkgDVFUmYQPWb/N1t
- EXqqW+taeFnv960TshHYV9J7Tnn6VHRzB0oadM9F3avLUBOe0anFZ1+4pJep1oP8W0y8aS5y1NZ
- KWoB3MjLlC+CaJp5QFw==
-X-Authority-Analysis: v=2.4 cv=X4vHu2Te c=1 sm=1 tr=0 ts=6af3ded7 cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=GaPK54s0Se3oFqK5NkZy0g==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=JR4YdQiviy7OQf72WyZ1:22
- a=a8VdgqZZYpu-pf18SQIA:9 a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10
- a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTExMDAxMyBTYWx0ZWRfX6ALOBC97814H
- CwdVaLAgZtoCyt8GjRnCK2WSKeW/sdGV9duUTMr5axKXDGKPSzn57I6y6SviS89YayIcw3cUPx2
- 0tmFGuUXtZmcwbg9hOSz3U/B3xhLY+l6Iw+pV8DrenG5I6uHN7uq
-X-Proofpoint-ORIG-GUID: VILwgAI7r1ZKQbB6JrjUDO3lhUqh6ra2
-X-Proofpoint-GUID: VILwgAI7r1ZKQbB6JrjUDO3lhUqh6ra2
-X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11962
- signatures=596817
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=10 lowpriorityscore=10 phishscore=0 spamscore=0 malwarescore=0
- adultscore=0 suspectscore=0 priorityscore=1501 impostorscore=10 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611110013
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DS2PR12MB9685:EE_
+X-MS-Office365-Filtering-Correlation-Id: a51d698d-e13d-403c-4444-08df3fa29f71
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|23010399003|1800799024|366016|376014|18002099003|13003099007|921020|56012099006|5023799004|261026140227099003|261028144727099003|261026121527099003|261022105027099003|261102123227099003|261021121427099003|261022075727099003|261021123027099003|11063799006|261009223027099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	qfQ/+aU5MGOtB4rq7rQ2I4LI2NDoEsfqOkXuM7xynqi8VPODxKBPTGUNoR18q5idSMdltMqIGAHN5Hq3jxFJOcCfBlT5T16NQHNB9S0YJLpVMeo7GWT9OYyenwflOjqCzPRzRqRMomcWbG+PjctNjsFduAuviglbx0Um8xU4K/PbjURyLwwpgOVLibmiV45z4lgWb895Npb9ovkyyRMYaCLKJg2Y2rl42/qTHvqlIFukGkwT25vTR4N0qybJfjLZihRRkn5jJ3z5t6QKOAy79WHkkQiXxoMdCw5MkCd8CIDYSnv+1Ga5AQdqg9v8dvagaE/DX0y+7JSOz2bjKPsrMfXuyP5NC5esXrgnY2Tow3sJl8YpXrwdJ8GJ3QmHuoZzeECh2Qr31E/qBzI6POhrslJMc3evT6pUOmJ94BWYIjV3T05bIRh1syhdr/olzIf/bCRBzwIhIkifzth3F/h+qOS7rtV4yZV86KOQsXkpXd54nrhZismDsxxgak8OEqtEnJ/PNAcmiXdj1oBJJ5aT9jJdZK1ATaj5BupKoX4fsDftIBsS4PhAbvDGOqc2BJ7m5xlwocE39qlQXXM47PSKIFgt9QC+W+DKZEFiYtOXYgI6CzvbUfQmGIa7mp7yxyOW50W86TGGPycbyJnDB8NFoHgMyi3eRO3d2QFZzf1uv1Mnx673eDWorUFr/pvnkg/mR1ti2icdcqSk3EgIWmG/IQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(1800799024)(366016)(376014)(18002099003)(13003099007)(921020)(56012099006)(5023799004)(261026140227099003)(261028144727099003)(261026121527099003)(261022105027099003)(261102123227099003)(261021121427099003)(261022075727099003)(261021123027099003)(11063799006)(261009223027099003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dDhRWG1rZStlUDd6UlB6SzJGQmVkcFFNMXRCM0NuUjM3NGlEMVh5dUozUTlw?=
+ =?utf-8?B?M3M5RGw5REhDY2F4c204ZWFWU2VmYWhYSHBpdlFYN1J5dUNETmVDK2tPQ3hX?=
+ =?utf-8?B?bUZhLzhLQWdxbjdCZFlDK2w4R3R4REFmbitrVlZEamFEb2RPZlppNWdyVXhY?=
+ =?utf-8?B?c3k2SjVpRU1yS3AyZXo0dVB2M2JvcW50ZHlJWmsvZXZFYWkzaC8xdjZrY2dP?=
+ =?utf-8?B?dTkwRFlzZjN3VllYamFiZnNpL1h5aWtKaWxtQm1uWjJBbzhIZzQwL1FuOVU1?=
+ =?utf-8?B?dUlZMEdhMDRUOXBzUkE5OW51ajNzNERXYTlzNi95T2dvb0taTDJVZ01nbkRo?=
+ =?utf-8?B?bjFhdG11QWN2OHhmanIrTjNqUWtyWTFnUHVOaUxyWGlwZFFsakgyMG94V1k0?=
+ =?utf-8?B?VGx6YmZ0WXVWV3Ywd21scEM1VHQwT1FtdVFQT0hITDBjSU5ZaFEyaEh1YS80?=
+ =?utf-8?B?clhsZ2hVTHNOODB5cTdla3hnbHU0SDlPdTZDUVhieVF2czl1SlMwWUtTTVhN?=
+ =?utf-8?B?VzlaL2dJYVVwZkpTdnRwUVRhSzBVY296eGY3TklCWGRuNll0bXhuN1hUYzJ5?=
+ =?utf-8?B?aE9YbHZaSWluMHAzQmwyblBBbUVzUkN0a1pMRytZa1h3blN4RlBOdEdoSldS?=
+ =?utf-8?B?UVZ6d3V0Ly9EbGx0ZE1pREFDOFd2ZjVhZExzcXV4ZWxQa3pnTUxLS3BVQXgr?=
+ =?utf-8?B?RUJKc0hHbkhGZU9PUjEzd2Z4QnR4WFIvWHMvdWhEckVnc1VSd1dmTU92b1Ew?=
+ =?utf-8?B?SnFKNmtLUWtVWEVMbWF1cko1K0JzQVhMWXNyUHVYOW5sUE83TU9iTWVHMkJK?=
+ =?utf-8?B?RE9mZndHN1lYbEQzd2IrMFU3YXFzajFtWmdDbXpGcEpURmRnUkQwVVJjdk12?=
+ =?utf-8?B?eXdTcHVid2VFSSt6a0RiemkzY3JVVjZCUlZZUEw3dW52UGxxSTRwNTBzQUhJ?=
+ =?utf-8?B?MW52QnU4bUZLVWpSSzU2NHdVUFdUdG1LYy9XUDZGU0JlUm9wSENka2JUbUw0?=
+ =?utf-8?B?czhYeUlHQmtkYllUSEh3NlFhM3NGN2Rsc1MrWGpSbDZKNkxkN0Z6YjQ3UjJx?=
+ =?utf-8?B?WkRMaGUzTlE0ZTBucU9NbWQ2eFVVNVFVQzNrWHJZaHJocUVpc3RsY3FweGRT?=
+ =?utf-8?B?R1dIclBGczMxNjdSRzB2STBUUGFMYXJwOUtsYW9pNHQ5bTRIM0cvK0E5WUJJ?=
+ =?utf-8?B?bGlKWDBOckJXaXJHcjNMSlBGT2plUm9LdzhGYnJnTUFQUFBjY1JMalFEL2RM?=
+ =?utf-8?B?cmV6cG5vTis0U29zMnNRVVpzYUt3NzduK04ra2NRNDR3dnliNVJZQnJQQ0lT?=
+ =?utf-8?B?cXY1bzZzclJOQTJ3VTF3UStGdEIrUUlaRVFURmpERmxmZVRrem9SM1d6MXM1?=
+ =?utf-8?B?ZGdaS1prTjNYSnorRGhFWG1rL2x1UDNmUmRwS1luRk8rbDExck5BelMyWTZv?=
+ =?utf-8?B?YTVDSnVXODkveXpZY0w3S0Znc2dCUHliSGlweDNHSEU5aWo2cmlsVHdiRzZ0?=
+ =?utf-8?B?WU54UjZnTmQ3TXU0d2dHeXlnbDZ4VmVzWlZyK3JTTEJKV0hjaFRJeDNjZFgr?=
+ =?utf-8?B?VkhGNWcrdDdWTmlLejl5cVpla3hjOEJGaVVKQjBaWmtRZkhiSHEyYWZOekFl?=
+ =?utf-8?B?cmNVSk1QdHlXN2VqT1hUR0ZzSGEwaXJORGs1TElaZ0hOOFRTUE15Y1VCSkJ6?=
+ =?utf-8?B?WE5vOG9pOVg3M3JrNkhFQUNNWGxjOEJsU2h0VVNjQXBmMk5ueXRMcTYrNHdU?=
+ =?utf-8?B?cENJSVIwTTJTbTR5TDJkTkYxVTdQZkN2cFF4Y2tlMUpWdlExYWhuaDhNUnNN?=
+ =?utf-8?B?UFdaOTUxRkhVMzhOREdSQ3NmM1VCSGtldEZrV3R4QWJSMm9RZk1ZeTZEK1k1?=
+ =?utf-8?B?OE4wOGxUT0w1amdvL3VpWVBKWEhnck9GZWhmRUFka1NnaTZ4VDc5Q1dTZ2ZG?=
+ =?utf-8?B?MEp3UHRJdkJwcnZFRXlacXdHV1p4L29XRjNEMXA0ZEQrTC9iak5aUmt4U2NH?=
+ =?utf-8?B?Tmh0eGNpbjg4UnNqZk5JK1NaZk1hcHVXNE9FOUE3V1ZQelljQkxWWlY0THVv?=
+ =?utf-8?B?ZnBLdE9sUDN4bEg4ajBqZk5wc0tVQ295UkZ0ZmVnR3J4R1l5cDNVS0IzZHNX?=
+ =?utf-8?B?Uk9zSkl1anF0dmtlNk9Jb3Rvby8vd0Y0eFZMYWk4SzVNeFlHZUs0SisrN3Jx?=
+ =?utf-8?B?Q2lWUWppZFFMZ3Vrb0JSUXJNNW0zaTgvc05yMUN4RE12cE5kWloyQmJpYXNw?=
+ =?utf-8?B?VnN5MjFRTmRIMGxQTHZnZEVmN1ZPZUxrNzNTaDJCSEtsV0lkTVY1NUtUelpq?=
+ =?utf-8?Q?bNW+wDDb1+RlpNrDeH?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a51d698d-e13d-403c-4444-08df3fa29f71
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 03:19:40.3650
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RKZecvzedyvz7QSpRmLjeKfBG4FMwRyLHIp3hJOErrdePJRJi0RuXmSHGVQJaz+/
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9685
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: zooc8d4saqrhtzf3n4qyx33518p68ghe
+X-Rspamd-Queue-Id: BF717C0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 75ED7180003
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: oodurix8w3hs8abzyimoh8j5g5qejny7
-X-HE-Tag: 1794367192-889265
-X-HE-Meta: U2FsdGVkX1/tfRzJJAtBCiJLa0NCwkI7n3hE8QlZxvc/UxJ5PcgHZj67pqfgycBsfOlxmdmWe9I7wuJ1c0y04OgZIE2FbXnlxDpyW+FtiFkCT6rKXIKYFr7Wfuk2wpPDe3kksK4541X1rrq9ikKsiDb/X0amHClDQzdOslKYSl8UIkXZzqf8HzllKUdw1OMzCqoopfSbgb17olQG8DshcMOxfJpqksdd4b86hY9sri9ARqdUfzl7bCnOmUFJLun/++NB3ohqyrKdRuZGfvvC+5zduKiNBauwlI9K6Mqi4w23TG1LPjq5c3fayKxwChw5RoJUxdcKA8H2G+Ag2Gkg+6rXUCAjG+FjwbaQWjkcQdVll0NdXdQks0DB+FyCcjpqcI5sk5cu8tohJtdzHB1kBSgtc1c4bzzppQZkYlyhgcNWmsC++zt9RoE+i9fucnFAeT1G/2LG2tE/nqOT7QDMq9qNc3LhtSNQTz8RcYDC9X/RfWKUSiS3Ki3DKieNNQxEzMZGr/LMxiG1Sb+CY1x6AlYuafWHLvALyRUUWYmyFZhGoyS0On+lvyqFC3VFAw4frtcDUA99fkxmw9vfFScEq5ctqdj4b5Sq9r+PuNkPbFQpmGjgNVkbAYZ1WPWq/ednvrxw8WkqTDrZEXs00raluNqNeP0I8xFSszVNzaxxXyNiZDsXjVP3E+Rvkv1qmj6qgEV054iAwfk0r1iJNn+gzzSSc62KkJ6T4CXxNAzDdNIp2IkmOob2mF8/QQQNOzcNdI2UGYn7Q7k7SzcS8VrJHk2MFiNG5HOXakR2a4OuzjSx9q2pSxYZADUZeY3tEWxjRRSX8PkI6EpK6f0vbZXL5cJqT0GobxOIjDxr9mcpCt3voA0/j7tuF77cDJmFYFYjxVtYpgvm9r4/T7dpUgiUyTxFKgnFW7N9DFcwoAiV1IseYQ0QSOx+5eJS7wc+t8xIKJxCIaSKhYGMXRpSCNd
- dWRYCVn8
- irio5+LJ4XTbuuDvlOWi25KupmDfjJO6y2fnngi2bvczhWU2beheJ/rFgcQ6QnniZgTjjL4+jTIMr/f7i6d3lETJtKj3cWl45vGaaQR2JpHbzqlPhvY7xt6Rf8iGTlm08BIFA/KpLIunUC32op/on2PVhgISZrcU0DGaCmT6ydXMlLfymxkFsfbMdq1TudCBUChrJY2KcM4TqLXBXGaaH5hdEWlDNJo8yb83RlYTxFyIH4E/XgebZAUGI/+7OtWCA9aYg7PFOLofYj2kzJa3fjx2ShZVNb7INCEB5y7pm63nxyJsJ7LcnCPGtED0HkL5tYv+EDvKNQxoA1jeuM7e2/76W9hXe9w/OCSWWhmeHM4lyigjGJlPf1aWQw1ckOEvETPprti1zRyJsGkILMsfLq/pmQVi3ivL6QfoB9bi2EwwBhWEm3Odluf61k0RICpFk7fADthW0wCXUemH+uhrnnVWhV+m9jiP+W+eb0XzYmA/d3wAxxc9cteUA6X+6SqsxF8fq/1YxWI3Ta+Ua+Mei5FJQHQ==
+X-HE-Tag: 1794367235-798819
+X-HE-Meta: U2FsdGVkX18tSnSH1yH1yr+1yMq3jrRwrOvWyrN5F0NUuycE4U6BnmBntnytpVWEoduEMS/XJmcrt3DWomke1+ExFHfsZuitpY9uQ13AVVdlIf0vVL+moLw/09qqvBpcplGycQsJjdOs+E8jszpRJyucXD4QLsdrTE5jvoDdeduQ3C68rwt+XuWV7aY001OEjrBBVES6xJGfQHMisxXYr3a+ub3E/GdbeULO7g7KgS90lkzWOgmPhz7RFENmy/B26wN56wMXTeU18ieUpYbM6DN2z8XHwzf2r31qQHARiY6SqmLBf5ijz1C8hJ+X6cRMW/2FJ9pTT8CtKlwLZk1b3x9kqsbpKYfhg3YhSNuiPwz9UTEvzE8R/Azn5BRJIbMIgxzlO/ym+LbjZZboDCnryVvBXWvqncdpfzui4CNvlesEvjTWsTP3eAx9CIVk23+oJXwtxTgslPX24dS8GieVw1O4ig4wU3veL5jMMkaeBzwXJHXVuZYRo24ee5DhGl+irVOo98/10ERfIg51SxBwBsz5tTICbc9xJrfo8Fpp3qcDCjCTT7c4Ovvn+VYBvso2RHXE0BYAxmw1+WAXsLw3oAVurzYh3KNqIph9TmU49qJ4qvPqO0J0mX2STe1BJoTrgLMluDr3KeeARo5fCONjbV4TOB1GF9bWf/DhGoqQ5J+oQsLpSks8iPl3NDqL54jrPkjA219MTnjXJQXIaSGUINwyHnDBHbNjaJojDMo1LamGOdM5nkswWX7TyJcB4oVTOoyILwzGmS6bGIK1e2Qgg0Du82n/VCnQFEet1XvjR+sbCJxbxhRbcCKmCLhAyijvCyZdA25ZONNhulhJcuMQ+kq0O2YDRMlOsYQcOOFnNotkCx6N4W+Q8ZoYaq8EnSzaLhrISouaVmdTEZeRsdex+ZLjWghN8wscPaJX5Fglh6GTLaSjO6gcj4MtpnQYSE72/y6Lz7jmvIAxtIdtuLS
+ UaOtEjRL
+ /JZTh6iuPSChARU1De60aNjVRkseHQBXLi//Xi1ElcYevK6YusP2MlAE0fs64NpT+ZbYcaRx0SpVfDQft+3ivShYKD4/W5MRtaeITq+44NxGgLYR654pUId2TC15d1kEdvFO7/F2fFj1R+Bt8x7gzvPlfI2b7Fv4ElgSgcZhIHkm+I/uyxYzrS053a6cJKvcC6/lSa7SY/1hV9s+3FkTGosh87Pk8g8HfSd8dlH9p08CzEiSsZOYm2fcof2t3iuE3swl4PypQH0KXmXNgUFk4zXLNFhLrAUCw/A8aCylrKb9SYFTG40lb+a8nBj+eWDT4ybPQBDlOymJVmjlcaKujxpc/cFWtSOdyPHdyx8jCLBabPeIkfBsqV74845U96ZfibVGvuSdln2dWc6xhNtKDGg2zIU9VavXgFovzzic6VIC5owF9ZC3+MSlYWtdSD76EG/x9xv58lBeD/eqCnZRSbI9YLEtMWR0OBnvBYevh2Y+GeJbHOYk7xm6IM98oH2l5jI7WRRTNH/BsfZANbKV2GAWWw3IkB9tYnIlg2snnkjrjzEs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -180,25 +187,221 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/10/26 6:55 AM, David Hildenbrand (Arm) wrote:
-> On 11/10/26 12:54, n3rd wrote:
->> 
->> Hello,
->> 
->> I am reporting a security bug in the Linux kernel.
-> 
-> Stop sending uffd problems as security bugs. STOP IT NOW.
-> 
-> Tal has a long list of uffd-related fixes he is about to send out. CCing him.
-> 
-So this issue was originally on my list and I had a fix for it... but it was
-REALLY ugly and a band-aid, so I dropped it.
+__split_folio_to_order() calls prep_compound_page() on each new head page
+to create a compound page after clear_compound_head(). prep_compound_page()
+uses non atomic __SetPageHead(). It is mostly OK, since the folio is locked
+and frozen and no one else is supposed to modify the folio's flags.
 
-I think the real solution is to just add actual markers for RWP and solve
-all of these issues at once... but that should be a separate series from my
-batch of fixes (which I'll be sending shortly). Is there a reason RWP
-markers weren't done in the first place that I'm missing?
+However, code calling migration_entry_wait() can reach the folio by PFN,
+then access its flags. It is because softleaf_entry_wait_on_locked() used
+by migration_entry_wait() sets PG_waiters concurrently without taking a
+reference and the frozen refcount during split cannot block it. Meanwhile,
+__SetPageHead() does a plain read and write, so PG_waiters atomically set
+by softleaf_entry_wait_on_locked() will be lost if the set happens after
+__SetPageHead()'s read and before its write.
 
-Thanks,
-Tal
+One example code interleaving:
+
+CPU0: __split_folio_to_order(new_order>0)  CPU1: do_swap_page()
+
+1. clear_compound_head(new_head)
+   new_head->compound_info = 0
+   (page_folio(new_head) == new_head now)
+
+                                           2. migration_entry_wait()
+                                             softleaf_to_folio(entry)
+                                             page_folio() -> new_head
+                                             (not the old head any more)
+
+3. prep_compound_page(new_head, new_order)
+     __SetPageHead(new_head)
+       tmp = new_head->flags.f  <-- load; PG_waiters == 0 in tmp
+
+                                           4. folio_set_waiters(new_head)
+                                             set_bit(PG_waiters, &flags.f)
+                                             enqueue on waitqueue, sleep
+
+5.     new_head->flags.f = tmp | (1UL << PG_head)
+       <-- store; overwrites step 4, PG_waiters == 0 again
+
+Later, folio_unlock(new_folio) sees no PG_waiters, skips folio_wake_bit(),
+and CPU1 can remain blocked indefinitely.
+
+Fix it by setting PG_head along with other flags in new_folio->flags before
+smp_wmb() and clear_compound_head(). The remaining compound page metadata
+is set after clear_compound_head(). In that way, after
+clear_compound_head() makes new_folio visible, nothing overwrites the
+PG_waiters from softleaf_entry_wait_on_locked() by modifying
+new_folio->flags non-atomically.
+
+While at it, use data_race() to suppress the KCSAN issue reported by Ye
+Liu's patch (the second Closes) on reading folio->flags in
+__split_folio_to_order().
+
+Suggested-by: Kiryl Shutsemau <kas@kernel.org>
+Reported-by: David Hildenbrand <david@kernel.org>
+Closes: https://lore.kernel.org/all/DMHE8BEEER1H.2BIY52NXATPIA@nvidia.com/
+Reported-by: Ye Liu <ye.liu@linux.dev>
+Closes: https://lore.kernel.org/all/20261029-data_race_huge_mem-v1-1-112e331291c1@linux.dev/
+Fixes: c010d47f107f6 ("mm: thp: split huge page to any lower order pages")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+---
+The issue was raised by David when reviewing Ye Liu's "mm/huge_memory: use
+READ_ONCE() when cloning folio flags during split" [1]. This patch also
+supersedes Ye Liu's patch.
+
+[1] https://lore.kernel.org/all/20261029-data_race_huge_mem-v1-1-112e331291c1@linux.dev/
+---
+Changes in v4:
+- removed the data_race() on new_folio->flags read, since there is no data
+  race on it.
+- rephrased the comment above data_race() to avoid confusion.
+- rephrased the comment on setting PG_head to clarify why it needs to be
+  set before smp_wmb() and why no plain RMW is allowed after
+  clear_compound_head().
+- adjusted the comment on __prep_compound_page() about PG_head.
+- Link to v3: https://patch.msgid.link/20261109-fix-split_folio_to_order-race-v3-1-1cdc509e34be@nvidia.com
+
+Changes in v3:
+- set PG_head before smp_wmb() like Kiryl suggested instead of
+  prep_compound_page_atomic().
+- used data_race() to suppress KCSAN reports while at it.
+- dropped Lorenzo's ack, since the patch is changed.
+- Link to v2: https://patch.msgid.link/20261106-fix-split_folio_to_order-race-v2-1-1b59c67b8af3@nvidia.com
+
+Changes in v2:
+- renamed __prep_compound_head_and_tail() to __prep_compound_page().
+- added comments to prep_compound_page() and __prep_compound_page().
+- Link to v1: https://patch.msgid.link/20261029-fix-split_folio_to_order-race-v1-1-a483c7451b0d@nvidia.com
+---
+ mm/huge_memory.c | 32 ++++++++++++++++++++++++++++----
+ mm/internal.h    |  2 ++
+ mm/page_alloc.c  | 17 +++++++++++++++--
+ 3 files changed, 45 insertions(+), 6 deletions(-)
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index bd44d58e86845..76c57d845269e 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3714,6 +3714,7 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+ 		 * Don't pass it around before clear_compound_head().
+ 		 */
+ 		struct folio *new_folio = (struct folio *)new_head;
++		memdesc_flags_t new_flags;
+ 
+ 		VM_BUG_ON_PAGE(atomic_read(&new_folio->_mapcount) != -1, new_head);
+ 
+@@ -3730,8 +3731,15 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+ 		 * unreferenced sub-pages of an anonymous THP: we can simply drop
+ 		 * PG_anon_exclusive (-> PG_mappedtodisk) for these here.
+ 		 */
+-		new_folio->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
+-		new_folio->flags.f |= (folio->flags.f &
++		new_flags.f = new_folio->flags.f & ~PAGE_FLAGS_CHECK_AT_PREP;
++		/*
++		 * data_race() is used because folio->flags is only read here,
++		 * but a reference-less writer can still write to it, e.g.,
++		 * PG_waiters update from softleaf_entry_wait_on_locked().
++		 * The flag is not transferred to new_flags as it is
++		 * folio specific, so it is not lost.
++		 */
++		new_flags.f |= data_race(folio->flags.f) &
+ 				((1L << PG_referenced) |
+ 				 (1L << PG_swapbacked) |
+ 				 (1L << PG_swapcache) |
+@@ -3749,7 +3757,19 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+ #endif
+ 				 (1L << PG_dirty) |
+ 				 (1L << PG_dropbehind) |
+-				 LRU_GEN_MASK | LRU_REFS_MASK));
++				 LRU_GEN_MASK | LRU_REFS_MASK);
++
++		/*
++		 * Set PG_head before smp_wmb() and clear_compound_head().
++		 * After clear_compound_head() marks new_head as a folio of its
++		 * own, new_head->flags must not be modified by plain RMWs.
++		 * A plain RMW can cause a loss of atomic PG_* updates from
++		 * a reference-less writer, e.g., setting PG_waiters via
++		 * softleaf_entry_wait_on_locked().
++		 */
++		if (new_order)
++			new_flags.f |= 1L << PG_head;
++		WRITE_ONCE(new_folio->flags.f, new_flags.f);
+ 
+ 		new_folio->mapping = folio->mapping;
+ 		new_folio->index = folio->index + i;
+@@ -3779,7 +3799,11 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+ 		 */
+ 		clear_compound_head(new_head);
+ 		if (new_order) {
+-			prep_compound_page(new_head, new_order);
++			/*
++			 * PG_head is set above, so only set up the remaining
++			 * metadata on head page and tail pages.
++			 */
++			__prep_compound_page(new_head, new_order);
+ 			folio_set_large_rmappable(new_folio);
+ 		}
+ 
+diff --git a/mm/internal.h b/mm/internal.h
+index aeebb3e49ed11..4ce67ce2f3fba 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -807,6 +807,8 @@ static inline void prep_compound_tail(struct page *tail,
+ 	VM_WARN_ON_ONCE(tail->private);
+ }
+ 
++void __prep_compound_page(struct page *page, unsigned int order);
++
+ #if defined CONFIG_COMPACTION || defined CONFIG_CMA
+ 
+ /*
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 143776e671abb..5f03f3725dd2e 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -682,18 +682,31 @@ static inline bool pcp_allowed_order(unsigned int order)
+  * This usage means that zero-order pages may not be compound.
+  */
+ 
+-void prep_compound_page(struct page *page, unsigned int order)
++/*
++ * Set up the metadata on head page and tail pages.
++ * Caller must set PG_head before this.
++ */
++void __prep_compound_page(struct page *page, unsigned int order)
+ {
+ 	int i;
+ 	int nr_pages = 1 << order;
+ 
+-	__SetPageHead(page);
+ 	for (i = 1; i < nr_pages; i++)
+ 		prep_compound_tail(page + i, page, order);
+ 
+ 	prep_compound_head(page, order);
+ }
+ 
++/*
++ * PG_head is set non-atomically. It should be used when no one else can modify
++ * @page's flags.
++ */
++void prep_compound_page(struct page *page, unsigned int order)
++{
++	__SetPageHead(page);
++	__prep_compound_page(page, order);
++}
++
+ static inline void set_buddy_order(struct page *page, unsigned int order)
+ {
+ 	set_page_private(page, order);
+
+---
+base-commit: d865f2677c44cb2171b833d6775cf692756fa8be
+change-id: 20261029-fix-split_folio_to_order-race-087a2a9fbf7c
+
+Best regards,
+--  
+Yan, Zi
+
 
