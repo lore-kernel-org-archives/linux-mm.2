@@ -1,102 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A67E606A332
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 09:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E880E60A260C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 09:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=cmZW0raJ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jfdjwyV7
 Received: by kanga.kvack.org (Postfix)
-	id 5405D6B05E1; Wed, 11 Nov 2026 04:47:09 -0500 (EST)
+	id 0482E6B05E6; Wed, 11 Nov 2026 04:56:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 517FE6B05E4; Wed, 11 Nov 2026 04:47:09 -0500 (EST)
+	id 01FC86B05E7; Wed, 11 Nov 2026 04:56:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42D516B05E5; Wed, 11 Nov 2026 04:47:09 -0500 (EST)
+	id E9F9A6B05E8; Wed, 11 Nov 2026 04:56:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2566C6B05E1
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:47:09 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A6248C026C
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:47:08 +0000 (UTC)
-X-FDA: 85422359736.22.BB30E2F
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E9882A0009
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:47:06 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=cmZW0raJ;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf15.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B6BBE6B05E6
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:56:18 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 55C901C2C45
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:56:18 +0000 (UTC)
+X-FDA: 85422382836.16.35C2383
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A8763180004
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:56:16 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jfdjwyV7;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794390427;
+	s=arc-20220608; t=1794390976;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g4FJ8o8UQUtyD0eGI0sUCpicqPvdI4Vdc4LMM0bmn0w=;
-	b=kZ2k98wmU5ZXA3HbY+zsIhZyIEKU312wn7B5CYeHm9Ml5vplxD9dAY9uly1daTmG6hWQdM
-	GM1IM+p5asC5vvNVvFsvMZmRRgMpkWJLKamIgps4mFOZU91apyfFI3IM/Wf+b9aPL9BJb2
-	JsWbqCEM2khqkZn/ORmK7IT8+H03A9A=
+	bh=diWWembtglhqYOPIvis4i129yRh0famPUXEo2wrIz2U=;
+	b=Rfh+0IQHdOJzQYFURc9bRdRnombKHVe4w8F7blQrV5gd0Lc8SRjJWOFN5JByALbelbFBN5
+	eGIRJYBOjNILFrxGQdjj56fcVdqFSw38Mmgn0o1N3KUvtFv6rApu2GOjwHZqe7QY4MSWt9
+	ev/M4O2RF95D1S/I+O4cF5jo2t4S/EA=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=cmZW0raJ;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf15.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jfdjwyV7;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794390427;
-	b=uO9N6UgXuZXTWxjSpRXW4bT1HarA7xXgAlWA3o5rNyRwNSzzNC2GiW5CFoNkckagbUkbnc
-	hK3lUvYas304e3mY1tr8zWBsxejM8kYk+OJPj2y9Lxb9q6Dh8sAB09A7nZpd6yn4nRLtHQ
-	r3POQy/lBaA05zj6W08FnCDVJIE1Z5E=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=g4FJ8o8UQUtyD0eGI0sUCpicqPvdI4Vdc4LMM0bmn0w=; b=cmZW0raJpZImC504fK0B0kMd2h
-	XJQXfLj15TrbtRxuoXIll7+dYj88ZVAl2AayT9vhDBlAQ57+Eho/cFEk5It94wIbKS4EH4G+cdutI
-	0K9jgabrgunrLX95HA3KOWeYRz+hLh5iGe5EyD3w5xx8w9MzCtlstOcNUcfrAtIPd3RxiWEjnELaD
-	hbo41pU2e/eygmvhOngKp7971UVKKEY71/mIvuWf0WfaOur34IyUdpGFowB9/oVJFRm81ZxsZDxLw
-	5M54Kif6OKPedXxyOCO9YpK4/4uqCIxZE2p81NHj3kV9mf9cnMGZSmbBCsLntHmPvgWT1OTOymjci
-	CwvzesXA==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xR4up-00D5nW-2D;
-	Wed, 11 Nov 2026 09:46:51 +0000
-Date: Wed, 11 Nov 2026 01:46:43 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>, 
-	Chris Mason <mason@kernel.org>, Josef Bacik <josef@toxicpanda.com>, 
-	Christoph Hellwig <hch@lst.de>, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, 
-	driver-core@lists.linux.dev, linux-mm@kvack.org, bpf@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, apparmor@lists.ubuntu.com, 
-	linux-nfs@vger.kernel.org, netdev@vger.kernel.org, fuse-devel@lists.linux.dev, 
-	linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org, ocfs2-devel@lists.linux.dev, 
-	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, 
-	Amir Goldstein <amir73il@gmail.com>, linux-erofs@lists.ozlabs.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH RFC 16/41] configfs: use fc_init_pseudo()
-Message-ID: <avQ5dv0747H-XKmD@gmail.com>
-References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
- <20261110-work-loop-pseudo-v1-16-4c998976c6c7@kernel.org>
+	t=1794390976;
+	b=ExOuEPPjYK8GqDrcQuxem2bGt9nYe+HgpsqB4fjMsjlT47QEztd/V2ydtyfw62VRE6HYgv
+	BdYxf9gNlgP0+2ORdWiyO2c9qFHpXGNWvefN5YVK2vhWXeGR8Wa+hixDErflE7+kXXx1I/
+	09EBEicmDzWHFLnTa1u/OK7rpDw8PwY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 34A2D60DC0;
+	Wed, 11 Nov 2026 09:56:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8389C1F00A07;
+	Wed, 11 Nov 2026 09:56:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794390975;
+	bh=diWWembtglhqYOPIvis4i129yRh0famPUXEo2wrIz2U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jfdjwyV7bUSfgDZ02cMgBlkUPVzLsUIHBZpEZ9gjxJLEB7RQQotgrvJDisFBP2mGe
+	 1NHuCT0JkZNr+UP/Ybs26Lu+/9fKSssvhnCOKdmX7d9DcmfLg+SIOFKhUvkSfwW7ab
+	 HRtGRji2oHVakaCzi+qGkCEI7raAQ2t7BsCKCAhnGnHmFNCbzBewT2P0phoWMuaozQ
+	 cXI5F+lpiu9h/tgByfAOB+GrgTYhtXSaWyZXt4tt9baW75C+zFBV+IUEbq6Q60eMQw
+	 Co897B6NUq24lQqOADAhxfrdpeoY1uvOzL8cYDQ8MRlCFdEiVtHcAStNfURIKZ3Ovz
+	 pfm7uj1uJMbyA==
+Date: Wed, 11 Nov 2026 11:56:07 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: linux-api@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	shuah@kernel.org, linux-mm@kvack.org, skhan@linuxfoundation.org,
+	linux-doc@vger.kernel.org, vipinsh@google.com,
+	linux-kernel@vger.kernel.org, corbet@lwn.net, dmatlack@google.com,
+	kexec@lists.infradead.org, pratyush@kernel.org,
+	rdunlap@infradead.org, graf@amazon.com
+Subject: Re: [PATCH v5 0/6] liveupdate: Add LIVEUPDATE_SESSION_FREEZE ioctl
+Message-ID: <avQ7t_ijdR4nm-RO@kernel.org>
+References: <20261105050053.3063001-1-pasha.tatashin@soleen.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261110-work-loop-pseudo-v1-16-4c998976c6c7@kernel.org>
-X-Debian-User: leitao
+In-Reply-To: <20261105050053.3063001-1-pasha.tatashin@soleen.com>
+X-Stat-Signature: sigtddhctrgjn8ka9184ou73zc3ie6ro
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E9882A0009
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: pcartcc13ao17nwrou7g6wschda5fu1b
-X-HE-Tag: 1794390426-109619
-X-HE-Meta: U2FsdGVkX192Di+y7pUCHBBTVPy2wUPpPXiyNBwZ6pkymjL2kViY37wW7SpaR18L5xZBOB5Cy0jA+nTXPCBWqhvV2z3xhK8/oeomiZPVCz3UR11KMpQuKwUtq4KrmOd7YtWjLPWqpKEh6dGUHVJWdaqA2gCe77AOPwtrkELMpsIJB/82KSjhhgJLIah0zuIJbaIaL1ZM9ScVgzdVpxySzjuCkt0kP0jyie10a7xUTIGwmkJFba7jLXbM79sOU9AHJf0VRkPJMqhxLjVf0ncP70+YaOW4rtSyGGSnUlGcSV5oa5BfUGVu+q3BDaLOZ0E/oe/GWzfPsSAL5R1fobwrda4K3bTb/KG1TD94qlkpyYfpMyIbn408TLDaspUk4ks08gV1du6n2ymav32ASgvbX3wu7yqkOWI/23IZ+CDGmAEc5QrrtRnyJLELzfUshuV2TIDTCFCdDG0v63SBK1DLQpvcVpFQo+e/e/h0zFj0VaERrV/31TZkeX8T4Ch6F5o+vmG1+Ngd7KgQjuvJyA7haIyOxbDuSM/3IqdTGx+gHYYBjC4KKOR039pTIHUvQDLWDibtDGpubcwX2my+5cca9XoHv6piM7bSnt1d+kGIDgiXRKJQJo+Mh53j8QqQcxOlvf7+Fgu7dpZ5UH3QClRp5frHjcm9bJ+484HRvTPEwqRGnFRXS++rtQ3KHf4rG2IMNWEA3y6wclFq/xa69GIgT6cSoRvrTnWHLp0M+ERLa18DMuU9L653tffjh/NBAn3O6I0ts0yoP3p+Xm0EEz8WMN0zM+2EZa560bokwrkaUqfgxb11vdzK5zDqUQ1PBB2y2t2SlSOVigC2Feaag2FcU8PZlYN2oAF6kS4xTVtVsN7Ci8In2BNj3hlFYwJSqnPM2TvOUwbN75AzsdsR+4RSBiPSiSkZS7zf0Xc9vA9aquXalXPBzfRDBYmdw5gVR9ssqPqnw0/xPOkDT2kSF7x
- 8clxh3La
- dGeILQ82ZyeS1gHzpOw9PslzWCYXluwciu4KSD4b+K6pMHm3+lJVyBSIpmg+QTGzLCjdNM52BcT2z/ra6biDOBcnKnNbqXKbAb3ypcZJRMtKEOsD+j5gz3jWkf3RVWJbJTccyAh2f0asn8PfsDdmoayGgUukPFC4qXfD8VhjJ4jaCkkrA2LC9A6OqtFpaPEAKJjDJCO3GwL6mSBgsYSQ8AQLTdENiY4nEgkKGgpaEMk2+jDpFvvlXmdn0gbfrl5kYgUR98dHGee1mlTaGqHA1/Sm+89d67HjYOzjFLeh38JvNyOKyR92nk8o8GmB7iJgHgk5Mj4t0J/Ae2a8tihKLm+ttYi8x7Smn6U9D
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: A8763180004
+X-HE-Tag: 1794390976-792026
+X-HE-Meta: U2FsdGVkX180BTJ0Cp6doFU2Lx+sXZskJTT7ojicZirzuPZDbk/tSnqtKKu4z9m/dTThcxzP06WTPjg48Dlvya/3S2kJ4+YPGG5BQOFsERyFzDp2z+euXkf+rYDYJVYoI4Oa1cOlf+wqUHE40bNn85wBaOVSOvs8o4QPo43n2QMWIxHYlIvsM1jcZXR77CCk7Np3k04StpOmIQR4NDFcPDJvg19h2jSQMd8a1NpKyibb66Pv5yHIVgV4b1wpNqtFCXg9ZKQkbQASXBm7vq8a5OreVVOaoWIng0bsFOYb9m/Vv6HZ/IAMkpU3uyZk86mFGrrcMApcD7ddcdd/mdYcVM03pQE5EDx505UdlbkeQKEZtvZVcDfsqrXFG566ZAoYQ2tHEHbIWFrHLyUiaFAs2CF1SMvHJ3Tz5yqXKGedkZJR3rj4XUSvSZcxeKlmA3GPXbHc8pYXsFlPLLL0u1xWx3xZza0BuJiOQ9Q4FLWIGw8Bww4qg3bqZoZooU6/6KSGeuBeRSiXCFiffBn9Z8SDsxL0gwX/3gQWPN1nVPx6bys9Kvbpwfo1NP1U8q+iiRgIiCFHvyZWGsuF/4kDBA9dXKXpPXXeyNxCweVxFgezqlw1YEzIPYxitoe1sEQwzCsV3Sv0wk0T139Y6qHserlVyRy9GDuXIb1ANUpWQt47brnXBhBdfhNHsK9ZeAMW5yjZz5Sa1EdEYzNzPge6oUQFyL/xjLhRqdIdKVvkwQMUGwZP/eUrWIZk7edS9DHfPtjnsui6viqZl2slVzKqe4dqs4wpKPbc0hd7yDnMZni/21Sly1sHeFbFUx41p1xfzXiasItye54uFhYRewvuo5nJ++pR0a6ilt1GHUB1OMMsgX21FEIx9NvVd62W683ZJ2fNzK1bcCn/be8YlA2hne7YSIyJGsEHM6BvNkb2N/YJpYNMdEchN/uYjV0iG3LxGykkpXinSmR9mEkRWa5y76r
+ JYVld5ok
+ 8Gk+KRQ29C57hSnK0q7AudvoBRpO15tRiE6KyIyfRReleUhWM/hFmhuFCpojjyehw5WAzVoBN47CkZs7/vBtolpgsJQNFRA5e5VOroNEApCCiiJRNAQ+E3/GxKXsh/H7K+ciep0ENWeRM8ywsMl5kPliVf3pZzN/ErbOs4ZC+H66kQV7XOs2l3UsCWSK0xHlGKtt1gC7uOgvHfp7nTtd0ecJHscgpyxo2/5C5UjtvV/IWOZod3rOkvp9/eCXQrhs8IB/JnU2ZaiEMkXUQ1cpnrvjcSw97FPV8FSBpSaxEBGQLOFVepqNJ/yjDRDupfz9dNPI6B2pFqIvoaCgAKdDuVaSnHWqHIl2xD+7KsiHpo2FCwD6IsWK+A2XVHqGrQX5Byu73
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,12 +97,141 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 10, 2026 at 10:14:32AM +0100, Christian Brauner wrote:
-> Initialize configfs as a pseudo filesystem. This raises SB_I_PSEUDO and
-> also SB_I_NOEXEC and SB_I_NODEV. configfs never holds executables or
-> device nodes.
-> 
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+(adding linux-api@)
 
-Acked-by: Breno Leitao <leitao@debian.org>
+On Thu, Nov 05, 2026 at 12:00:46AM -0500, Pasha Tatashin wrote:
+> Currently, LUO freezes outgoing sessions only inside the
+> reboot(LINUX_REBOOT_CMD_KEXEC) syscall path, serially under global write
+> locks, and binds every outgoing session's lifetime strictly to an open
+> session FD until reboot.
+> 
+> On hosts running many workloads (such as VMs or stateful daemons),
+> workloads do not all pause simultaneously inside reboot(): they quiesce
+> one by one ahead of the host kexec. Userspace needs an explicit
+> per-session freeze point to snapshot final file state (.freeze()) as
+> each workload pauses -- concurrently across sessions under per-session
+> locks -- along with a way to commit a frozen session into KHO so it
+> survives closing the session FD.
+> 
+> This series introduces LIVEUPDATE_SESSION_FREEZE on session FDs:
+> 
+> 1. Freeze (flags == 0):
+>    Freezes all preserved files in the session under the per-session
+>    mutex while keeping session lifetime tied to the session FD. The
+>    session stays frozen as long as the FD remains open; closing the
+>    session FD before reboot (for example, to abort the session or on
+>    process exit/crash) runs .unfreeze() and .unpreserve() and reclaims
+>    all resources. At kexec time, already-frozen sessions skip the late
+>    auto-freeze step and are published into the outgoing KHO subtree.
+> 
+> 2. Freeze and commit (LIVEUPDATE_SESSION_FREEZE_COMMIT):
+>    Freezes preserved files, immediately inserts the session and its FLB
+>    dependencies into the outgoing KHO subtree in O(1), and commits the
+>    session so it survives close() with full ownership retained by LUO
+>    until reboot. Once committed, closing the session FD (or another
+>    session failing to freeze during reboot) never unfreezes or
+>    unpreserves it. This allows processes to hand off preserved state to
+>    LUO and exit prior to kexec, and makes committed sessions immediately
+>    visible in the outgoing KHO subtree before the host reboots.
+> 
+> Overview of the series:
+> - Patch 1 decouples luo_file_freeze()/unfreeze() from
+>   struct luo_file_set_ser.
+> - Patches 2-4 add incremental KHO publication helpers for kho_block
+>   (kho_block_set_it_append()), LUO sessions (luo_session_publish_one()),
+>   and outgoing FLBs (luo_flb_ser_publish_one(), replacing the late
+>   luo_flb_serialize() reboot pass).
+> - Patch 5 introduces LIVEUPDATE_SESSION_FREEZE and
+>   LIVEUPDATE_SESSION_FREEZE_COMMIT and updates the LUO core and uAPI
+>   documentation.
+> - Patch 6 adds selftests covering both uncommitted and committed session
+>   freezes across unit and multi-session kexec tests.
+> 
+> This series is based on liveupdate/next commit d80a5528df4c ("Merge
+> branch 'lu-pci-preservation' into next").
+> 
+> Changelog:
+> v5:
+> - Rebase onto latest liveupdate/next.
+> - Replace reserved field in struct liveupdate_session_freeze with flags
+>   and add LIVEUPDATE_SESSION_FREEZE_COMMIT so userspace can either
+>   freeze a session while keeping it bound to its FD (rolled back on
+>   close()) or commit the frozen session (inserted immediately into KHO
+>   and retained by LUO across close() until reboot).
+> - Add incremental KHO publication helpers in kho_block, luo_session, and
+>   luo_flb so committed sessions and their FLB dependencies are inserted
+>   into the outgoing KHO subtree immediately on freeze, dropping the
+>   separate luo_flb_serialize() pass at reboot.
+> - Keep luo_session_freeze_one() / luo_session_unfreeze_one() in Patch 1
+>   rather than renaming them to luo_session_serialize_one() /
+>   luo_session_unserialize_one() and back once luo_session_publish_one()
+>   is introduced.
+> - Update Documentation/userspace-api/liveupdate.rst and kernel-doc
+>   across kho_block, luo_flb, luo_file, and luo_session.
+> - Drop v4 Reviewed-by tag on the modified freeze and selftest patches,
+>   and expand selftests to cover both uncommitted and committed freezes.
+> v4:
+> - Split out a preparatory patch that drops struct luo_file_set_ser *
+>   from luo_file_freeze() / luo_file_unfreeze() and moves file_set_ser
+>   handling into luo_session_serialize_one() /
+>   luo_session_unserialize_one() (Suggested by Mike Rapoport).
+> - Few more nits from Mike.
+> v3:
+> - Renamed session->frozen to session->user_frozen, - Pratyush
+> - Added Reviewed-by's
+> v2:
+> - Rebased onto liveupdate/next (commit 27be83a12b24 ("Merge branch
+>   'lu-pci-preservation' into next")) and split out early session freeze
+>   into a standalone series (tmpfs preservation and its per-file user
+>   argument plumbing were spun out into a separate series).
+> - Patch 1:
+>   - Drop struct luo_file_set_ser * from luo_file_freeze() and
+>     luo_file_unfreeze(), and rename the session helpers to
+>     luo_session_serialize_one() / luo_session_unserialize_one() so all
+>     of struct luo_session_ser is populated and cleared in one place
+>     (Suggested by Pratyush Yadav).
+>   - Unfreeze the session's files if luo_ucmd_respond() fails in
+>     luo_session_freeze().
+>   - Update remaining reboot-only wording in luo_file.c kernel-doc
+>     comments.
+> - Patch 2:
+>   - Add checks verifying that non-zero reserved bits and freezing an
+>     incoming post-kexec session fail with -EINVAL.
+> Link: https://lore.kernel.org/all/20261015093816.2438942-1-pasha.tatashin@soleen.com/ # v1
+> 
+> Pasha Tatashin (6):
+>   liveupdate: Move file_set_ser handling to luo_session_serialize()
+>   kho: support incremental entry publication in kho_block
+>   liveupdate: luo: serialize sessions via per-session publish helper
+>   liveupdate: luo_flb: support incremental outgoing FLB publication
+>   liveupdate: Add LIVEUPDATE_SESSION_FREEZE ioctl to freeze sessions
+>     early
+>   selftests: liveupdate: Add tests for LIVEUPDATE_SESSION_FREEZE
+> 
+>  Documentation/userspace-api/liveupdate.rst    |  30 +++
+>  include/linux/kho_block.h                     |   1 +
+>  include/linux/liveupdate.h                    |   3 +-
+>  include/uapi/linux/liveupdate.h               |  46 +++++
+>  kernel/liveupdate/kho_block.c                 |  86 ++++++++-
+>  kernel/liveupdate/luo_core.c                  |  10 +-
+>  kernel/liveupdate/luo_file.c                  |  94 ++++-----
+>  kernel/liveupdate/luo_flb.c                   | 111 +++++++----
+>  kernel/liveupdate/luo_internal.h              |  16 +-
+>  kernel/liveupdate/luo_session.c               | 178 ++++++++++++++----
+>  .../liveupdate/lib/include/libliveupdate.h    |   5 +-
+>  .../selftests/liveupdate/lib/lu_utils.c       |  21 ++-
+>  .../testing/selftests/liveupdate/liveupdate.c | 107 +++++++++++
+>  .../selftests/liveupdate/luo_kexec_simple.c   |  22 ++-
+>  .../selftests/liveupdate/luo_multi_session.c  |  33 +++-
+>  15 files changed, 612 insertions(+), 151 deletions(-)
+> 
+> 
+> base-commit: d80a5528df4cdee5871243e392da08c2d5c92e43
+> -- 
+> 2.56.0.398.g882cbad275-goog
+> 
+
+-- 
+Sincerely yours,
+Mike.
 
