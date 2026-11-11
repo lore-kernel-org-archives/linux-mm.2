@@ -1,81 +1,82 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AAF960A2601
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 22:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F38A606A337
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 22:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=HYBe+NyF
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=aS+68Mqh
 Received: by kanga.kvack.org (Postfix)
-	id 25A126B05B3; Wed, 11 Nov 2026 17:42:37 -0500 (EST)
+	id 6C9AB6B05B8; Wed, 11 Nov 2026 17:42:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20B4B6B05B4; Wed, 11 Nov 2026 17:42:37 -0500 (EST)
+	id 62B906B05B6; Wed, 11 Nov 2026 17:42:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 122406B05B5; Wed, 11 Nov 2026 17:42:37 -0500 (EST)
+	id 4F2606B05B7; Wed, 11 Nov 2026 17:42:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DA3FD6B05B3
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:42:36 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 77C8F1603A1
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:42:36 +0000 (UTC)
-X-FDA: 85424313912.30.8956C0A
+	by kanga.kvack.org (Postfix) with ESMTP id 2F2566B05B4
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:42:39 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C30701603A1
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:42:38 +0000 (UTC)
+X-FDA: 85424313996.24.AEDE573
 Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 53E3F100005
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:42:34 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=HYBe+NyF;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf05.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 52.34.181.151 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de"
+	by imf30.hostedemail.com (Postfix) with ESMTP id 8158180002
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:42:36 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=aS+68Mqh;
+	spf=pass (imf30.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 52.34.181.151 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794436956;
+	b=vUL1Go2Nj+fj+PIV+lPw4/PXdhYo7hGeWSjTWEVuarJi6shxFnTNSRgFzmoif7sr3wQJyJ
+	QlHMTxUuIx3Qszg9nahCtoItPRaVp5aJNV6nEe3chO3g2t9QHgH3vpXWwxF/8bTaWpLTkx
+	GzSxZXSivlfXEWdSjljHsfHPO9gj/b0=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=aS+68Mqh;
+	spf=pass (imf30.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 52.34.181.151 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794436954;
+	s=arc-20220608; t=1794436956;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Nf/e7h6zi5zw9Vu4WfB0GEyN8EmLcf8HjHUMJ9G9oow=;
-	b=AsoTtbCk3A3s4If4f1W3bBKCo7mJW4G0Z6r2c4YK5mXV8cTz2GIXCP3X4jVlX7w6jzv7Gd
-	Ha3eC4EzxnIzfx1cfu4ngIj0Q0wC7a1mAP4V9Apt3Z5x1INBFJz8TuKP2hIA/jerwZl0K7
-	RivbF670N7QbzUmQORVLSf+FCtjqvng=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=HYBe+NyF;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf05.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 52.34.181.151 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de"
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794436954;
-	b=jOtW32zc3Z1sGkHv07zQ+GZ8K+f/CPCxotA7v+lOgqErajZiTNFZ+/YmMQzP8OanjnIwHG
-	ey2fjIcyaI/aGG24qKsqeq35VKBtfZXBKi0QR2lA97erM/714Vx22PaGNMZ5+kgdzGnZ0F
-	b0hiZ3M3TilsGeAVji/614EiVg3+dXA=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UxYweRxm1jxmevq4ssKlYUqBx3+MSGqJMKtXpG6cMZs=;
+	b=JHZ6aIdwQIlp0Krky9moVUSSPVb24Gbn9zHBWxIozmdhSE1HW9w01k/jSXPQCfgUTi+kaJ
+	GLk47uMuPvxfyjr9lj1nSzjVlYYmC5Eyk1G3qOrMN+kryp4mWnXv+9gFuy/mDlAJesAMJG
+	XrXtefu7U8EILkc9q3o0HHqpJgjFlJs=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1794436954; x=1825972954;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Nf/e7h6zi5zw9Vu4WfB0GEyN8EmLcf8HjHUMJ9G9oow=;
-  b=HYBe+NyFnPN6siPz9k2PKGhfLBAbEwxZ6l1JQMuZAbzAPKc+IrCgjTh1
-   GSaoTdCS95w6WR1fHtiOznDaNBA3zVnpP//qQKAAMlPdiSZXBMniQyNRE
-   xUtEs3+zDF0HVqElWBxGpzCOiZsqDynoIcMUJNJNT9ZkVmlGLy91YIAE/
-   q1R5Umbm1mbaDZks+FtZxwZPHYfJ1Kz0UbrQ5ZW74WYrhbed3GqBVNuRy
-   fkw1EcRD2hgnB4lluCNsqUYClNehW2cF83wY+hoE/VaA5VjAAL+ITrZqw
-   R6uKKPucVII9EgYulc1053QhVqFpP6skhYZRaCZTwz8fjG/P3TlW6puvp
+  t=1794436956; x=1825972956;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=UxYweRxm1jxmevq4ssKlYUqBx3+MSGqJMKtXpG6cMZs=;
+  b=aS+68Mqhus+7PFhb4Af+ihLVjWRwCH6C33PdLvMf1Po0AW0w4nQigjwH
+   CTHpMAN5JqfsMIjmu8URipG317wN/GWl0gllMPDm+nDa4LJQmBH28vW/L
+   cMTq7CL2f+TXaCRTCUxPN8x9xsULHurY6rjI8QbS6OTD3c00vlUukgX0f
+   rapNVDlzCKrK5HETSWP/nPl6VyJknjV9/AcS8G41Js4ZQc/zjVnTivFPX
+   ySwet6/Id268ZcIBfNrHWuasRM3gA0QYrb2rJVJe0XVQakwhQdfLbH6ml
+   ksD5+/ETeUxaGsLYi9BTUxxDA2KhN0+5wKHVAkujnbNRiy3wfXGFlOYEk
    Q==;
-X-CSE-ConnectionGUID: G7TPEGiWQRSBLwmwzCQc/A==
-X-CSE-MsgGUID: DDSJSqkBS+O+gJ5y7ySdsA==
+X-CSE-ConnectionGUID: rXovG/BETqmn+vbmyNsKtQ==
+X-CSE-MsgGUID: RqVgO+5rQaKtb0DX5vPaTA==
 X-IronPort-AV: E=Sophos;i="6.27,208,1787011200"; 
-   d="scan'208";a="33756163"
+   d="scan'208";a="33756177"
 Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 22:42:30 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:31849]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.31.142:2525] with esmtp (Farcaster)
- id 152a9830-b7c4-42e9-a68c-30a0443400c8; Wed, 11 Nov 2026 22:42:30 +0000 (UTC)
-X-Farcaster-Flow-ID: 152a9830-b7c4-42e9-a68c-30a0443400c8
+  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 22:42:35 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.111:20493]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.16.231:2525] with esmtp (Farcaster)
+ id fc83ea97-8a60-4672-82e4-94100366064e; Wed, 11 Nov 2026 22:42:35 +0000 (UTC)
+X-Farcaster-Flow-ID: fc83ea97-8a60-4672-82e4-94100366064e
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Wed, 11 Nov 2026 22:42:29 +0000
+ Wed, 11 Nov 2026 22:42:34 +0000
 Received: from ip-10-253-83-51.amazon.com (172.19.99.218) by
  EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Wed, 11 Nov 2026 22:42:27 +0000
+ Wed, 11 Nov 2026 22:42:32 +0000
 From: Alexander Graf <graf@amazon.com>
 To: <linux-kernel@vger.kernel.org>, Greg Kroah-Hartman
 	<gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>
@@ -87,29 +88,31 @@ CC: The AWS Nitro Enclaves Team <aws-nitro-enclaves-devel@amazon.com>, "Shuah
 	<david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
 	<nh-open-source@amazon.com>, <linux-mm@kvack.org>, Jonathan Corbet
 	<corbet@lwn.net>
-Subject: [PATCH 00/40] nitro_enclaves: Add support for Nitro Sandboxes
-Date: Wed, 11 Nov 2026 22:41:45 +0000
-Message-ID: <cover.1794300002.git.graf@amazon.com>
+Subject: [PATCH 02/40] nitro_enclaves: Add NE_ADD_ANY_VCPU
+Date: Wed, 11 Nov 2026 22:41:47 +0000
+Message-ID: <205db2f63e5458098d7d147a28efa04af2d4930d.1794393490.git.graf@amazon.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <cover.1794300002.git.graf@amazon.com>
+References: <cover.1794300002.git.graf@amazon.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: EX19D031UWC004.ant.amazon.com (10.13.139.246) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-Stat-Signature: hw8ekgepzur61bhnz1xdzy3usmp5nh3x
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 53E3F100005
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8158180002
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: pmn3tg7s31bsnghy4zyqs5csmo8duiab
-X-HE-Tag: 1794436954-907465
-X-HE-Meta: U2FsdGVkX18bh6ikd1hi57Z9Oelx7ophv7/fJD3YVx0b/dNOuaz7Ot6nVFFRj7h7BiZqMDnCRh0iOP0yfbh7ysEHsjjESQmSOkVCGeuoCrgMZOleaHv5GUbwDK4ByafSwWa9lQU0gTdvm9WgD4eEwHYdyq2B2qsCVC3Oh1jRzfME/5xbrI/zLxWbOxx5iN8lpzjcJh8nDMtBZqq5qT3CIp3+w4Il+QmO7F009fCB5/nUb8ojttWjOCz1VeG7KtjgwPdcMnxvHDFIVKe2SBhr0qKEnVZxQ+5MJBVZGNxKRqsP2yE8AtHNnzYCGcZjS+kRy2p6ak6WmwhbAsWeOQUK3D8xp1mcTArJ+zQn8NZa59Fe7KGosOwtFKcFglnsZnsoTeigpZO8G6XbOxRbXDJTCNGeZc3y2ACjpPhbulWJAetuDWp4QXfhI9cVFSyLjcpTtacrXj0RuogVw7E5gJR0q0foZChQqZFSZ8xpfIv8MOSg9JpOzBvjz02Ts2XGXLxL8j1omBF/xAWhltVnPLlsUUCNTsxYHHoJsuUeQWFnOpUzUcoV72RBbCFVdfxhFfkWV2oY4ly7ZTFXAsmh+BlpK0H3eZiyPfbsDyf0449IvwzGnFgvTtuM0uZBPA5g8Ecs8z77TxX7HNg1U4qgw1efy0L/lHstyf5MIVcAOwI6GehAq+ZGGjsaEdGFMxUBYoJ4RqDvH4cJmTeYxa5s4Xlb7YlHZjSlTrZnxDNE/5+6jp1khUNqPcG2Z5hzErAPQZe/Kuukczg+zbCG3uGwJ03kFyjBanP/9ICT4Vg6AO9dfIklKyr2DmiBf/96KdCTqd/SlG/TrTrRZOi+CxJxnyc0cg2AvG65xCMr5i0w/aXIiSoRO46I97SKUJdHc+6TMTH/s7RJyUw5gNsOjzQhpJcrlyPH//+LbjP3nvbaUrHOqM1PuLnlX/vdHy7TRvzJw1FSyHvVuTuDkG7aipUYNo3
- OhF5/kkI
- Kuk2ANhOtetwufaAP6jkFCfkwMFm1VJrqZomfm2d9x7qJK65tWVxbaX+4eF4MrbD8L7+N7TMTNXUzFzHJa9QLXjU/ldmv16a6frAnFwPdXA/KhBXw07PnCcaiE89e629wpHnIq/AM44Vj+yfBCO6z2WerQF2QahSoL/hYE053VWUK9w1wYkfldEt8iRu37STByuGOPutEND+pOaHa24txKNhWQaICzYkslIRgVc/AadW3esAEsHe8+7H3ULhJwO7skNS2OkTJhql7qPvUV0H8Ahd3EVVOy94P6hAQs8rh4r7z5SNUlJ2NdN8rfp8sCxETdd3jtF29CjfyReElyuvm/hUb41wz2uNfSJPnFrCjq5TPsd0yjdtC8Iw+o116TNCro51eiq4p1j7pzzFFhdnnOa9FHxWC2ZmWfYfsYIlTGeWJ6q7Co7OWeOmnpendjCvGzEz1T7Vw0bUFj+7sdQhWcSYfmcgrc75FvcHpYUu7iKTb+J14M8zff030kNxbFnI6atZxDrbDL9XNJ8NOxddJv8E1ooVED+KTRtItmvFZEpP8BhWm09x658rNlVwT4NcASc6HU+IuQIrgdVvgz6UEA73r3TdUKTIwi9jPihwEXfD9hi9bbz62m+KLYwTRSJqScbzF/F/1WrakRI9l952+6BVh0bAyxxgPsn1PjI6lsGmj85Q7xhDTsyzCaJaCGY9N35JE0BIRGOlceSgpwpSTjtxT4fahM9pW1AGL7zDMmp8orn0=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794436956-877211
+X-HE-Meta: U2FsdGVkX1/94QD6JrNelKhkyJuJXqa6OBdUykiXG5Yf51lkw33M6o84ode/mwhJbF7pOPy2LDGUu/6h7CYqZiqZzmLrc7KCPUcX50qkZYxDoLl7v/JxKW/Ak1Wh+tM4J2/EkB95PiBtKL0a9V+bhhvtCbDvbYVwJVCAZVTpG5cKM7v3KGZO3Bv4AF7ymKlkDo6E4aMEMGDErmBn7QEd0rwT7JeSy6Ceh2H0UjA+t3fcIRmTBfVtO0eqy2D8LUi2AchhMn3i55BzTq6S3eQMpMf4L/Ovcpl3wgRFRE4ntAGB6SfX8A7mD85Gu8UHcO4xeoWqQD6g/DlPdQ9tuH38ovz2kp81AIhTdL0qARhptrO1jTllVvBKG9DZ8YM0UNhBaziYlcAb62Ke5JpnscZoT77cLBh9lSZS9Uf9ZPVM3b5umC74BQKxqtalGVDU3iL/XnhV2gcGU+sL/LNnUBD6BuGYYeohRshaHfDc9/whIsJ1n8DFNE4956Oj7TnWcm2xWpjBQ/vWCLaoLBfjhaMgzJ9pmID7JQWkdKwA59WgaE4EJziBuDAVX3QXNqLO+5czNYLzUCteZXTyystWU/z7I3/SpAZqzJKaHC3bMv6Rh+ECGPnfrX0WUegD7E+p0ShCBNVRR4s415G2rejkvT/ff0fd5lGDE2tP4k6867wSxy3W5H3rUgYSZfLDlqo84bvGC+QVWTBtfpBGi6+7kEJUU64/83DHY+rrmrjgAE/kYWeRZX+iUFG7X9PVT4KcjkqdqaI0/WUqSkIAUFVJ+1FFWhn1/SHCkZe3uXWFVfYdI/vN0bx5b8M2cDlcEItUjHZ8vItnKTNXBlh00yTtWXUhQb/3kZzhbt5bQOoRHwsf3JtB8aUZ2AOhpfFwFxohLDDyl1tPGkL0rK3BONd/3JthZ39NQcQooU98/J94OFPBo+8ZZFGIWHJnGM/sU9VlfPkRhlFOQc0ONyI3vbmAErf
+ pgFpaVC7
+ letuvLVZZvI/dh0jq0eUDgWI9RkWfihj8ubmzlyUcHdIk8u1wadYLBOJK/b4rVwOdXV+snNbiGKujv0/DQOtK4RoAnQH/waR11IDouU7vIqqqt1bGjC84N61kUCPtjS15bT8C2NWqmYNEtiDBD5o3NpH6fKIIAlgwi4UOQUsYg14+HuReXpI/S89UdEMEX0+NNH2KQ165tFogqH9z1eArDOpKoDpeU4Jb3TJFeaezltGpmO3AhD3HbT9N6ukhLY/Xb6/j0wQexD5vrlBuBXNciUh3rzDOOVI/wyJNzhItUJxYqLqZPDgK3tnW7EpIz0bQhwmM0740ZxqCtxA3LDQASXTXJLhDIQYshH9Ij6qL0UDokIEXRdqbcjfr5IxORKkeQmuvKxInh+v9tL9F4GR2ZcixFoFFsLA4dk5OWf/cS1Nb6egJsdBrMXPknUshe3utTvwD1Vvva/Sc71faxueUFf+CBV770XstPekfeqboQtRMFKhjtJKFIbdel0al/p7ClnHt0hiVil/fspnfxOQsxul17nd0Q3cELhpn+Ruzc9DRTvGTZv6O03/4gVw6kzMp6rvJVa4kHWU6C+j99oYYZSPInkOv0XlSfy90/bzS/+AvJ6rHnGkuQzzxg9yo8tEUeOh0S9mmrhTSXX5rN/65OsvjDeRcmt8Gn2agCJGeQOEAQDcV85AKDa9+VGzhcGnTJR+DYc33DlX7viQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,142 +121,228 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Nitro Sandboxes [1] are a new EC2 feature that build on top of the
-technical foundations of Nitro Enclaves - an EC2 feature that allows
-you to spawn a virtio-vsock-only VM sibling constructed out of resources
-donated by the VM you execute in.
+A Nitro Sandbox can span multiple NUMA nodes. The current NE_ADD_VCPU ioctl
+only takes a target CPU id as input or a special ANY id. With NUMA, we want
+to be able to take any CPU from a specific NUMA node. Add a new
+NE_ADD_ANY_VCPU ioctl with nid parameter to select the target node. The new
+ioctl returns the selected CPU id or NE_ERR_NO_CPUS_AVAIL_IN_POOL.
 
-Nitro Sandboxes build on that concept and the same hypervisor interface,
-but add the ability to implement virtio devices in the parent, run vCPUs
-oversubscribed, add device hotplug support and allow to spawn a sandbox
-without attestation, but shared memory. They also boot a full EC2-like VM
-that runs with a UEFI stack and executes the EIF-wrapped kernel as UEFI
-executable.
+To already prepare for later argument extension, filter out the size field
+of the ioctl and handle the fields we know about.
 
-In combination, Nitro Sandboxes provide a way to create a confidential
-compute VM for almost all workloads, but without the biggest gaps that
-other confidential compute offerings have: The parent has no timing
-control and the parent also has no control over the base device model,
-such as timers, PCIe, UART, etc. All base devices are implemented in
-Nitro.
+Signed-off-by: Alexander Graf <graf@amazon.com>
+---
+ drivers/virt/nitro_enclaves/ne_misc_dev.c | 92 ++++++++++++++++++++++-
+ include/uapi/linux/nitro_enclaves.h       | 54 +++++++++++++
+ 2 files changed, 145 insertions(+), 1 deletion(-)
 
-This series adds parent-side support for Nitro Sandboxes to the
-nitro_enclaves driver.
-
-This supports adds a few non-obvious technical foundations:
-
-guest_memfd like CMA allocator - With Nitro Enclaves, memory came from
-hugetlbfs and user space maintained visibility into it. That led to a
-few problems. With this new enablement, we add a guest_memfd like
-allocator that seeds from CMA, allows the parent to seed the EIF before
-hand-over and then loses any mechanism to access donated memory. Thanks
-to CMA, it also provides much larger contiguous chunks than 2M huge pages.
-
-Virtio notifications - To implement virtio in the parent, we need to
-handle notifications in both directions. Parent to sandbox goes through
-a BAR write; sandbox to parent through multiplexed IRQs. We provide
-eventfd support in both directions, which also enables vhost support.
-
-NUMA - With Nitro Sandboxes, NUMA became a first class citizen and all
-APIs now support NUMA targeting.
-
-Memory Donations - Every sandbox requires hypervisor memory. To allow
-for a larger scale of sandboxes you can run, we add a way to donate
-memory from the parent to the hypervisor. The user visible effect of
-that is that there is a slot limit sysfs file which you can increase.
-On write, we allocate physically contiguous CMA memory and donate it.
-
-This series depends on "nitro_enclaves: Fix enclave release, command
-retries and the CPU pool", which I posted earlier today.
-
-I used Kiro, an AI coding assistant running Claude Opus and GPT models,
-to draft the initial code and patch descritptions.
-
-I validated all new functionality on x86_64 and arm64 as well as ensured
-that Nitro Enclaves are still fully functional after this patch series.
-
-[1] https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/amazon-ec2-nitro-sandboxes.html
-
-Alex
-
-Alexander Graf (40):
-  nitro_enclaves: Allow the CPU pool to span NUMA nodes
-  nitro_enclaves: Add NE_ADD_ANY_VCPU
-  nitro_enclaves: Expose CPU pool state under sysfs
-  nitro_enclaves: Document multi-NUMA CPU pools
-  dma-contiguous: add dma_get_numa_cma_area() accessor
-  nitro_enclaves: Allocate physically contiguous enclave memory
-  nitro_enclaves: Add NE_MEMORY_SHARED
-  nitro_enclaves: Add NE_ADD_MEMORY_REGION
-  nitro_enclaves: Document the memory pool
-  nitro_enclaves: Add NE_CREATE_VM2 with a launch flag word
-  nitro_enclaves: Add NE_ENCLAVE_PCIE_MODE launch flag
-  nitro_enclaves: Name the device's error codes in the UAPI header
-  nitro_enclaves: Log a reached device limit at info level
-  nitro_enclaves: Add NE_SET_INFO_PAGE
-  nitro_enclaves: Document the info page in the memory pool
-  nitro_enclaves: Turn the command reply into a per-command union
-  nitro_enclaves: Add the slot pool donation commands
-  nitro_enclaves: Donate memory for the slot pool
-  nitro_enclaves: Add the slot pool growth commands
-  nitro_enclaves: Add a helper to grow the slot pool
-  nitro_enclaves: Document the slot pool
-  nitro_enclaves: Expose slot pool state under sysfs
-  nitro_enclaves: Add the device add command
-  nitro_enclaves: Add NE_ADD_DEVICE
-  nitro_enclaves: Read the interrupt multiplexer geometry at probe
-  nitro_enclaves: Donate a bitmap page per multiplexed vector
-  nitro_enclaves: Dispatch multiplexed interrupts to per-queue bindings
-  nitro_enclaves: Add NE_SET_NOTIFY_EVENTFD
-  nitro_enclaves: Report the device's info notification
-  nitro_enclaves: Count multiplexed interrupts under debugfs
-  nitro_enclaves: Map the doorbell window at probe
-  nitro_enclaves: Add NE_SET_VRING_CALL
-  nitro_enclaves: Assert the layout of the ioctl argument structs
-  nitro_enclaves: Pass on the Nitro Sandbox launch flags
-  nitro_enclaves: Add NE_ENCLAVE_DIRECT_MODE
-  nitro_enclaves: Add NE_ENCLAVE_PCIE_HOTPLUG_MODE
-  nitro_enclaves: Add NE_ENCLAVE_CPU_OVERCOMMIT_MODE
-  nitro_enclaves: Add NE_GET_CAPS
-  nitro_enclaves: Add NE_UPDATE_DEVICE_CONFIG
-  nitro_enclaves: Document the driver side of Nitro Sandboxes
-
- .../sysfs-devices-virtual-misc-nitro_enclaves |  232 +
- Documentation/virt/ne_overview.rst            |  256 +-
- MAINTAINERS                                   |    1 +
- drivers/virt/nitro_enclaves/Kconfig           |   19 +
- drivers/virt/nitro_enclaves/ne_misc_dev.c     | 4832 +++++++++++++++--
- drivers/virt/nitro_enclaves/ne_misc_dev.h     |  206 +-
- drivers/virt/nitro_enclaves/ne_pci_dev.c      | 1568 +++++-
- drivers/virt/nitro_enclaves/ne_pci_dev.h      |  599 +-
- include/linux/dma-map-ops.h                   |    7 +
- include/uapi/linux/nitro_enclaves.h           | 1182 +++-
- kernel/dma/contiguous.c                       |   36 +
- samples/nitro_enclaves/ne_ioctl_sample.c      |   10 +-
- 12 files changed, 8282 insertions(+), 666 deletions(-)
- create mode 100644 Documentation/ABI/testing/sysfs-devices-virtual-misc-nitro_enclaves
-
-
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-prerequisite-patch-id: 542b3d78fda912095b75a49becd1b93109befdbc
-prerequisite-patch-id: 318368e966c1925652b7976948f435d42b87c72f
-prerequisite-patch-id: eb35b5d713e7f50f6d1d02310c9afe10b1628fc6
-prerequisite-patch-id: 223bf6e60620ca8fe72f3ff6f3bd3f5839cdd6d5
-prerequisite-patch-id: e5305ce0515a02f7f88e72adf02c6a2bee2fd2e0
-prerequisite-patch-id: 759b5920f842d70e675770608d9088639c10559e
-prerequisite-patch-id: e1837df37663da3d3ce53afa4594828b2d602152
-prerequisite-patch-id: f0d4302bd36f94de95951a0db1ae9eb9747076aa
-prerequisite-patch-id: 41159b92e250fef705be52f714b6e2761a2cd1f7
-prerequisite-patch-id: a0c3a56907acac2297c800209faa2849a8df0e48
-prerequisite-patch-id: a80a95bd682b540be5760e8fdf7044379fe32d61
-prerequisite-patch-id: 9c01e0fecd6810f3448582715c87cd3dd7a6cdf1
-prerequisite-patch-id: b94dfc8bb1039740d88a30535445bb7b3dd1fe74
-prerequisite-patch-id: bd76f15728dc0ee2ca3417cd95a6b23a7d63e91f
-prerequisite-patch-id: 0c60f1574b590f68885a25760017e9ff87752f66
-prerequisite-patch-id: 63dff43da52934a6e6f5e65c3e235a7114b6b4dc
-prerequisite-patch-id: af52cf938525874cadd6d879aa76495e563876d2
-prerequisite-patch-id: f53ee22764b5f13708cacd3e48a59a82d71a270c
-prerequisite-patch-id: 258b8c18168db49aacbda5156e33978b539666ab
+diff --git a/drivers/virt/nitro_enclaves/ne_misc_dev.c b/drivers/virt/nitro_enclaves/ne_misc_dev.c
+index 6e36abeff01a2..576f1909c7304 100644
+--- a/drivers/virt/nitro_enclaves/ne_misc_dev.c
++++ b/drivers/virt/nitro_enclaves/ne_misc_dev.c
+@@ -9,11 +9,13 @@
+  */
+ 
+ #include <linux/anon_inodes.h>
++#include <linux/build_bug.h>
+ #include <linux/capability.h>
+ #include <linux/cpu.h>
+ #include <linux/device.h>
+ #include <linux/file.h>
+ #include <linux/hugetlb.h>
++#include <linux/ioctl.h>
+ #include <linux/kernel.h>
+ #include <linux/limits.h>
+ #include <linux/list.h>
+@@ -24,12 +26,15 @@
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+ #include <linux/nitro_enclaves.h>
++#include <linux/nodemask.h>
+ #include <linux/numa.h>
+ #include <linux/pci.h>
+ #include <linux/poll.h>
+ #include <linux/range.h>
+ #include <linux/slab.h>
++#include <linux/stddef.h>
+ #include <linux/types.h>
++#include <linux/uaccess.h>
+ #include <uapi/linux/vm_sockets.h>
+ 
+ #include "ne_misc_dev.h"
+@@ -42,6 +47,23 @@
+  */
+ #define NE_CPUS_SIZE		(512)
+ 
++/**
++ * NE_EA_IOCTL() - Mask the size and direction bits out of an ioctl command, so
++ *		   that an Extensible Argument ioctl matches whatever size of
++ *		   argument the caller passed. The direction bits go with them,
++ *		   so a caller that spells the command _IOW(), _IOR() or
++ *		   _IOWR() reaches the same handler, and the handler decides
++ *		   what it reads and writes.
++ * @cmd:	The ioctl command to mask.
++ */
++#define NE_EA_IOCTL(cmd)	((cmd) & ~(IOC_INOUT | IOCSIZE_MASK))
++
++/*
++ * NE_NUMA_ANY reaches the core allocator as a node id, so the uapi spelling
++ * and the kernel one have to agree.
++ */
++static_assert(NE_NUMA_ANY == NUMA_NO_NODE);
++
+ /**
+  * NE_EIF_LOAD_OFFSET - The offset where to copy the Enclave Image Format (EIF)
+  *			image in enclave memory.
+@@ -334,7 +356,8 @@ static int ne_setup_cpu_pool(const struct cpumask *cpu_pool)
+ 	 * multiple NUMA nodes, set numa_node to NUMA_NO_NODE; the pool is then
+ 	 * treated as node-agnostic for placement and memory-locality checks.
+ 	 * A CPU that reports no node at all is refused, because otherwise such
+-	 * a CPU would join a single-node pool and turn it into a spanning one.
++	 * a CPU would join a single-node pool and turn it into a spanning one,
++	 * and its core would be unreachable through a node-named pick.
+ 	 */
+ 	for_each_cpu(cpu, cpu_pool) {
+ 		int nid = cpu_to_node(cpu);
+@@ -1592,6 +1615,73 @@ static long ne_enclave_do_ioctl(struct file *file, unsigned int cmd, unsigned lo
+ 
+ 		return 0;
+ 	}
++	}
++
++	/* Extensible Argument ioctls */
++	switch (NE_EA_IOCTL(cmd)) {
++	case NE_EA_IOCTL(NE_ADD_ANY_VCPU): {
++		struct ne_add_any_vcpu_args __user *uargs = (void __user *)arg;
++		unsigned int usize = _IOC_SIZE(cmd);
++		struct ne_add_any_vcpu_args args;
++		u32 vcpu_id = 0;
++		int rc;
++
++		if (usize < offsetofend(struct ne_add_any_vcpu_args, vcpu_id))
++			return -EINVAL;
++
++		rc = copy_struct_from_user(&args, sizeof(args), uargs, usize);
++		if (rc)
++			return rc;
++
++		if (args.numa_node != NE_NUMA_ANY &&
++		    (args.numa_node < 0 || args.numa_node >= nr_node_ids ||
++		     !node_state(args.numa_node, N_POSSIBLE))) {
++			dev_err_ratelimited(ne_misc_dev.this_device,
++					    "Invalid NUMA node %d\n", args.numa_node);
++
++			return -EINVAL;
++		}
++
++		rc = mutex_lock_killable(&ne_enclave->enclave_info_mutex);
++		if (rc)
++			return rc;
++
++		if (ne_enclave->state != NE_STATE_INIT) {
++			dev_err_ratelimited(ne_misc_dev.this_device,
++					    "Enclave is not in init state\n");
++
++			mutex_unlock(&ne_enclave->enclave_info_mutex);
++
++			return -NE_ERR_NOT_IN_INIT_STATE;
++		}
++
++		rc = ne_get_cpu_from_cpu_pool(ne_enclave, &vcpu_id, args.numa_node);
++		if (rc < 0) {
++			dev_err_ratelimited(ne_misc_dev.this_device,
++					    "Error in get CPU from pool [rc=%d node=%d]\n",
++					    rc, args.numa_node);
++
++			mutex_unlock(&ne_enclave->enclave_info_mutex);
++
++			return rc;
++		}
++
++		rc = ne_add_vcpu_ioctl(ne_enclave, vcpu_id);
++		if (rc < 0) {
++			mutex_unlock(&ne_enclave->enclave_info_mutex);
++
++			return rc;
++		}
++
++		mutex_unlock(&ne_enclave->enclave_info_mutex);
++
++		args.vcpu_id = vcpu_id;
++
++		if (copy_to_user(uargs, &args, min_t(size_t, usize, sizeof(args))))
++			return -EFAULT;
++
++		return 0;
++	}
+ 
+ 	default:
+ 		return -ENOTTY;
+diff --git a/include/uapi/linux/nitro_enclaves.h b/include/uapi/linux/nitro_enclaves.h
+index 206546f24748e..e266b8a611c92 100644
+--- a/include/uapi/linux/nitro_enclaves.h
++++ b/include/uapi/linux/nitro_enclaves.h
+@@ -83,6 +83,60 @@
+  */
+ #define NE_ADD_VCPU			_IOWR(0xAE, 0x21, __u32)
+ 
++/**
++ * struct ne_add_any_vcpu_args - Argument for %NE_ADD_ANY_VCPU.
++ * @numa_node:	The NUMA node the vCPU has to come from, or %NE_NUMA_ANY for
++ *		any node.
++ * @vcpu_id:	The vCPU id the kernel chose, set on success. Ignored on
++ *		input.
++ */
++struct ne_add_any_vcpu_args {
++	__s32	numa_node;
++	__u32	vcpu_id;
++};
++
++/**
++ * NE_NUMA_ANY - Value for &struct ne_add_any_vcpu_args.numa_node that asks for
++ *		 a vCPU from any NUMA node.
++ */
++#define NE_NUMA_ANY			(-1)
++
++/**
++ * NE_ADD_ANY_VCPU - The command is used to set a vCPU for an enclave, chosen
++ *		     from the NE CPU pool. @numa_node confines the choice to
++ *		     one NUMA node; %NE_NUMA_ANY leaves it unconstrained. A
++ *		     caller that spreads an enclave over several nodes asks
++ *		     for each node in turn and stops when a node runs out.
++ *		     @vcpu_id carries back the vCPU id the kernel chose, so
++ *		     a caller collects the enclave's vCPU set as it builds
++ *		     it.
++ *		     The ioctl can be invoked on the enclave fd, before an
++ *		     enclave is started.
++ *
++ * Context: Process context.
++ * Return:
++ * * 0				- Logic successfully completed.
++ * * -1				- There was a failure in the ioctl logic.
++ * On failure, errno is set to:
++ * * ENODEV			- The NE PCI device is not available.
++ * * EFAULT			- Argument read or write-back failure.
++ * * EINVAL			- The argument is shorter than @vcpu_id, or
++ *				  @numa_node is neither %NE_NUMA_ANY nor a
++ *				  possible NUMA node.
++ * * EIO			- Current task mm is not the same as the one
++ *				  that created the enclave.
++ * * E2BIG			- The argument is longer than this kernel knows
++ *				  about and the excess is not all zero.
++ * * NE_ERR_NOT_IN_INIT_STATE	- The enclave is not in init state (init =
++ *				  before being started).
++ * * NE_ERR_NO_CPUS_AVAIL_IN_POOL - No CPUs available in the NE CPU pool on
++ *				  @numa_node.
++ * * NE_ERR_VCPU_INVALID_CPU_CORE - The core the pool handed back is outside
++ *				  the enclave's core slots.
++ * * Error codes from the NE PCI device request.
++ */
++#define NE_ADD_ANY_VCPU			_IOWR(0xAE, 0x2D, struct ne_add_any_vcpu_args)
++
+ /**
+  * NE_GET_IMAGE_LOAD_INFO - The command is used to get information needed for
+  *			    in-memory enclave image loading e.g. offset in
 -- 
 2.47.1
 
