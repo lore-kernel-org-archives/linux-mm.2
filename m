@@ -1,93 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B164606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 01:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7A1606A333
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 01:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=C54bK2r7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SOTP3HHV
 Received: by kanga.kvack.org (Postfix)
-	id 98D476B05B5; Tue, 10 Nov 2026 20:54:57 -0500 (EST)
+	id 968FC6B05B7; Tue, 10 Nov 2026 20:56:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 965126B05B6; Tue, 10 Nov 2026 20:54:57 -0500 (EST)
+	id 93F7E6B05B8; Tue, 10 Nov 2026 20:56:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A35E6B05B7; Tue, 10 Nov 2026 20:54:57 -0500 (EST)
+	id 87F4D6B05B9; Tue, 10 Nov 2026 20:56:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BBBC6B05B5
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:54:57 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EEE051201A9
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:54:56 +0000 (UTC)
-X-FDA: 85421169792.26.5B4A9A7
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 560DA100004
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:54:53 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=C54bK2r7;
-	spf=pass (imf14.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5006B6B05B7
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:56:12 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C19D71A01DC
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:56:11 +0000 (UTC)
+X-FDA: 85421172942.02.5D10BC8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 307D11A0006
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:56:10 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SOTP3HHV;
+	spf=pass (imf19.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794362170;
+	b=zVF8BJrHOVbURSdrOCle2Z4uC7UhvnCYTXuVVNEDBluVCOy9xbxGIeZxGckMvAlnY4s1Vq
+	BRZNvmQtvQvYIrBMm7+24+11nBDPUvHRYeJRHeeqJ3kyHbIOz1Pr91hbUODHFI7FqDdnGq
+	veEFFDb+SVLmtVCoESRIM59cF3CNdkw=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SOTP3HHV;
+	spf=pass (imf19.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794362095;
+	s=arc-20220608; t=1794362170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=88xXlYyhRaZNXXS3X5RWnFnkAdm1161ZT112AKHXrTc=;
-	b=03Sz76N3SvfxVcP+47IjVlj8qTXLjCR4y75j721OhB41QGhwGDHV2+JlPtaGSWqpoQYk4v
-	h5P91hSSfqxZx0iLHHqkT9SNohwdKUfjnvBOSvnl8IP/KSKKet0A5/l8srsl16If6/F9lZ
-	7TsDh30cNpanYQRSqWmpmREFIg5q8EQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794362095;
-	b=U4jnLFGnBHp96c73wIb9E9pvNEdTK1tQvS6SEfGvnurbxTeev0eQsR4k+7vWcjBWOnb7Tw
-	GqDgjZN/PAbD4haQvsa0GKJLbEXteJU7e9Yn/pumsMYcG8kAP56Ej2DQE0OpGNgJKxyppT
-	ysM5PtQZVFyEwvcJq3RSR6dDwj6ywgA=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=C54bK2r7;
-	spf=pass (imf14.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1794362091; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=88xXlYyhRaZNXXS3X5RWnFnkAdm1161ZT112AKHXrTc=;
-	b=C54bK2r7jNmzfBU9aZKJ1P+pFVOr6FkX3kNvl0sZCDnP3iR7U+/47s6HxQFXTUckeZnfiRml7cwcXcVU93eSv6/LX4y2eKbAK0smX79YNxM5cdMgZcVcTAJd4H328s7Kbj7jbExBaunLG23mQsACE3yUOxwOgU+Fen2N2prI4ms=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R721e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XEX4t7B_1794362088;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0XEX4t7B_1794362088 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 11 Nov 2026 09:54:49 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Yuanhe Shu <xiangzao@linux.alibaba.com>
-Cc: akpm@linux-foundation.org,  david@kernel.org,  "Kaitao Cheng"
- <kaitao.cheng@linux.dev>,  "Garg, Shivank" <shivankg@amd.com>,
-  vbabka@kernel.org,  ljs@kernel.org,  liam@infradead.org,
-  rppt@kernel.org,  surenb@google.com,  mhocko@suse.com,
-  linmiaohe@huawei.com,  nao.horiguchi@gmail.com,  ziy@nvidia.com,
-  wangkefeng.wang@huawei.com,  tujinjiang@huawei.com,
-  mgorman@techsingularity.net,  chengkaitao@kylinos.cn,
-  muchun.song@linux.dev,  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm/highmem: refuse to copy hwpoisoned folios in the
- !copy_mc fallbacks
-In-Reply-To: <20261110112641.1196786-1-xiangzao@linux.alibaba.com> (Yuanhe
-	Shu's message of "Tue, 10 Nov 2026 19:26:41 +0800")
-References: <20261110112641.1196786-1-xiangzao@linux.alibaba.com>
-Date: Wed, 11 Nov 2026 09:54:48 +0800
-Message-ID: <87jymkt9nb.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=U33p1bWUYQ2rMJhKB3AhFOc4JmHWhcjAfKKn9UYYW08=;
+	b=e9HmF7HRZINvXwEHpN4jkh2DOKj+4fKK3BhwZP9JxRWWkWajy+qhXm6MsU83O0oQ9hBX2r
+	BuQ/hJsGbM1XJQnCUtCqDcR2BXg1Xhvf23WFbew+wZ5T/nRk4mf/fJhDWf9rcMaww0dNP3
+	P/D1kU8oJguGG9WCCxf2/UdWVrC5a8o=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 411BF412CD;
+	Wed, 11 Nov 2026 01:56:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1B71F0089F;
+	Wed, 11 Nov 2026 01:56:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794362169;
+	bh=U33p1bWUYQ2rMJhKB3AhFOc4JmHWhcjAfKKn9UYYW08=;
+	h=From:To:Cc:Subject:Date;
+	b=SOTP3HHV7YUQ350EbayIS9J8d/YQ86XYhp5JqV2Yt98M7khwvj3Ri7cbJes4lIcD+
+	 E3Sc538FKteqioboUMUW/wAmESPF99IAqazgCvvFUfGjlGrUkAQCJFH3+HaGjXObjl
+	 0DkuFe8xSZL5zYyshiuur3aJPRuDhUEKAlM9tlhLw9t/aHfLqhSJlBOupg/MYRj1cc
+	 UCcRfCv3pPex3tkkM1dcuK606Y63g++bOg1SQELN5/kZHGcdo6gXPIwqRi1V9WuURg
+	 tSRyVuROiMBe9bLXNVl98oWo4JY+8z8i3X5wCCXBepqXwnEflUHnSdPUGW5eccFEAp
+	 aMWtLdDYwiqgA==
+From: Mike Snitzer <snitzer@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	linux-mm@kvack.org,
+	Christian Brauner <brauner@kernel.org>,
+	linux-fsdevel@vger.kernel.org
+Cc: Chuck Lever <cel@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-nfs@vger.kernel.org
+Subject: [PATCH v11 0/7] mm, iomap, NFSD: stop DONTCACHE writes reading back shared pages
+Date: Tue, 10 Nov 2026 20:56:00 -0500
+Message-ID: <20261111015607.46338-1-snitzer@kernel.org>
+X-Mailer: git-send-email 2.44.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Stat-Signature: cbzu4i5jsfjt1c5c4gy5oid3hsz36okw
-X-Rspamd-Queue-Id: 560DA100004
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 307D11A0006
+X-Stat-Signature: 5d6sxmhq7wm4fuf1w59pzefztsh36nii
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794362093-94425
-X-HE-Meta: U2FsdGVkX19VbBvLF1Z1hy30kg28ly7BbMRyY59KRTqsz2MTQ4BVQUax9dph0w1EDF9v8+xxoyvOVQIJqbNvQh8tg+l1C3ibOBHd7tJFQJZthpiSf3Ra5+Up0V76B2DWZEIWFD+tzvlAGQVuQVz9f8rfvawyPYGmCmGn/c/MZAd85OFMRhiyBJ8gSa2VXQh903QIqKHuo5oDgbt1kmXFTA59LSD0XP8QmKRsh/mq57WSB8Ahv0ZEqBgJ2tMYxjPA5fNpbh3IbnDJE4XkAcZvUrQruqlslUMAhAMqAQq7aTjvGXZcufiOWdlFcC5/yCMfn4FIFXxPQlkBJZmoan3Zzu2xiD01Uto3ZZFUmT3L4fusBCnWDxxSnsl9BJ68kz5DxugJrjOyt4bbrqDWTatuNKu9igpYeADq1ybOeodE9QR2Cg6lGe/94qqg8M5GYIGHCjXuN6VGCl51kzcsajZW3FrBF3OlV44QJb5xTcMF2AHtBxEZlWwhvaZQBZoIzOqNwwoEcAvsdrcPkUwl78zs+0tFtQysceg1H7Ls/hGeOMw73epF97pTkh90n+12HTJvDMPtwYnYsncGXYVj1HQppmDmsZeaNPGxiFAqk/xMg3mJjRJOEnLBsu1IK62FGpHx1a+QqCh4N4VO247TaM7pqFghqUNDmUvARPUsnx9HhuSBtLzZN6jjZ6F5QR++sUEoFrFz1JZ4RKkb4R5GuP1Pj3IzQIJ8T3qvGMXDp753QFiA23RIfo9jlbZZjLgan5ulv4Zp8m/ZbkVS2gB1IAq+XIU1Y3DunK8zKZDeo+38Z0CxBI2SKVp649b/K4X4ViBoGYPdiTU0SGKBkNJGUM4TEYPq86eAjNQF2ohh6yRVGhflG7lIVaEzyxFlp5ZVdCzM4qlYzk1+a3oNi7Qw/dxFFeTqKQs+y6HZVkmalfgpzePDBaXberCmfyCk36g6qBO/Zkwb38IIXcAEr5OpCW+
- SSb8Er2e
- PYEUADxHxNzzHan+t8dlswo4cnudJhw6iRjPHRJmZY8LS9CjB9qQGVVFUPV79PvtG+jD7gJb0PXE1RXjG+evQYxwfTVe1dEgW2xBmJBlloWVZuEFPmQFZypKVoSaHvdFk7O36saFM9pWVcqz0Vbrrr/15URjW1Fl2A/WCaRhrGDx8cy2MvJcdi0e01hDZ1jTZnhIHZ783ttxEU3BiMgsVvNG7CQAXsNMADE6nL400iNP/j+jFnJXhke3Yx9JsRRQ4mnEv2uZad4M8iuEHAcQ0igUaM7Jzhs//kcj0fwn4fsV5mQzHZYBILRbWg6AkTu1yzEWG8/0P0/tkZpW+sfaA87NyNzc7gfjofpwagcM82w3qAQR0GtzEJI31cxwQwRxAiLsE0A7ozvjfPeqdQUpCZtCbMAoJCciPI2uv3AVhUyDJ4UO+3/gSjVBeMwFSi9dKp6e4
+X-HE-Tag: 1794362170-231509
+X-HE-Meta: U2FsdGVkX1/xhAAdht6frVCYevvpxfFsK5FFuN5NG1xRy+TbMUgU/rvpdtN7u+Z5dWTz1qZj3S8s7U5wjHnqhVQfRXQBwBRp682guYPdsNO5tq1oFm0DGFpezeYRM7aPvLWx27idZOzaN1KK35TMkpEWuX8p6a0CMu3olo8kj2yxwNVmlgL/fMBX5ddY5zPXoBNzHUxHa/oVgtHAtYv5fOQ6BAbrJ+xAI3S8BmAOk6+ZkwPgk4moF5W11kYul1SU9/kmsYKQ82gWHUXmxM0qEFD1VCKNpU2Y8Kz0bA8Zaqbds8FXqKpvdFFzod/+z2A//BLpCIi2SIOcjF1FQwV9LDfEzW4X8Pp8Yk1Kq88WaW9fYpIyVgoEOoT3ObyGjuycEV1GHgZe62W2up8ewnF5AfXkXsxEYhomwqfnY1qaFWcUAORRXWiTcPxsSJuew7ZpgIVgzaGq5f1DmKpqf96dqrno8P7r5QZF3VLl+KFmi2JkBxyMqrzBOMQE0A295XxI8gInCOu0mjIXwKfmbBCPno/9kLQ/H9dL/o0RY+Jdrz5b5Jtb2t71+r6XetgKbPt7CJum0buSUpeMDkrBoNiMrfVq4Bvm6syB+8PLwIU2AxZDkyG43TdSmvTD+VuWMpyc+PSoJLehC9mlg7RahHK9PBWehvut/N1swiqTf/l4Uo/JRGdnmvimEFu35yiGymCuSI4H3Ca+UPE8l6t5TFolKdaeTpLhn/7PeYn4k7K8Mlc5ac87gvUYeIq9Fi0QfwHB+UmO+3vtHnjMj3OsaJgSMcG4/yy1dQutCbZWnx9XxBt1LI5iIecdb5dz2ssopVUXkHjbvnj/JkDRdotGVgjfK9igYxvfFTTM++fYvk8kUrksdcvgKK6RfG78ZRwLTWYSikDoxoayENTHnVZq6rL7h3zQ5IX/xZ4xdoS5BbbM/bQRwoPezWFxPUoyJrqHm+kwIYaDV4nqTsWfeNduwFf
+ YFtKfDS+
+ w3g7Y5bOSOZYVE3qn/PaWMCwe4E9lmsfk3i6lq5lBOsX7g1+X3cknuRCRvULn19WgIJUQQSr/s5Oz6Y/7FDeFNlcry7Fa4rCflvVxpzidzQ8Ky/yCu3Wq/4oLIrocP3xMJ5P5hyjK7LTkC8Dro/b0a9eg9MWYszWwmYWmBCgtM+8RBns9f7w3gabPybzGlmVrRwLPYOdwyFnOohag3SS5Bxoa6FfpfTZOr4HMBmoBTewSPnc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,37 +96,122 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Yuanhe Shu <xiangzao@linux.alibaba.com> writes:
+Hi,
 
-> The !copy_mc fallbacks of copy_mc_user_highpage() and
-> copy_mc_highpage() return 0 after a plain copy.  With PG_hwpoison
-> set while the data stays readable, there is no fault to recover
-> from: the copy completes, the destination folio carries no poison
-> marker, and the poison is consumed silently.
+An RWF_DONTCACHE write is buffered IO: its data goes through the page
+cache, and writeback drops each folio once the folio is written back.
+A write that starts or ends inside a folio covers that folio only
+partially.  Usually another write covers the rest of the folio.  If
+writeback drops the folio before the other write writes its part, the
+other write must first read the folio back from disk.  32 threads
+writing interleaved records to one XFS file, 4 KiB pages, before and
+after 5/7:
 
-IIUC, this is just RAS debug behavior, not real-world behavior.  When
-poisoned memory is accessed, an MCE/SEA is triggered, and the kernel
-will panic without a proper copy_mc_* implementation.  This patch
-reduces the probability of a panic, which I think is its main value.
+  record  pwritev2() flags          4 KiB device       MiB/s
+  bytes                             reads per write
+                                    before   after     before  after
+  47008   RWF_DONTCACHE             0.97     0.0005    831     2281
+  47008   RWF_DONTCACHE|RWF_DSYNC   0.99     0.0005    601     1227
+  6000    RWF_DONTCACHE             0.97     0.0001    121      488
+  6000    RWF_DONTCACHE|RWF_DSYNC   0.99     0.0002     90      206
 
-> Check the source page with is_page_hwpoison() in both fallbacks,
-> before the copy, and return PAGE_SIZE, the not-copied-bytes
-> convention of the real copy_mc paths, so the callers take their
-> existing error paths.  On archs with copy_mc this code does not
-> compile.
->
-> Measured on arm64, where the fallback code compiles: a
-> kernel-space microbenchmark measures 90.00 ns per copy before the
-> patch and 90.71 ns after, 0.8% of the copy itself.
->
-> Suggested-by: "Huang, Ying" <ying.huang@linux.alibaba.com>
-> Suggested-by: Kaitao Cheng <kaitao.cheng@linux.dev>
-> Assisted-by: LLM
-> Signed-off-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
-> Link: https://lore.kernel.org/r/877bjowf9i.fsf@DESKTOP-5N7EMDA/
-> ---
+47008 bytes is the transfer size of IO500's ior-hard, in which each
+rank writes interleaved records to one shared file.  Any record size
+that is not a multiple of the page size has the same problem.  6000
+bytes is a second example.
 
----
-Best Regards,
-Huang, Ying
+The test program and script: https://lore.kernel.org/linux-nfs/atqJBS8MlYfeUU-t@kernel.org/
+
+- 1/7 moves code into a helper, with no functional change.
+- 2/7 fixes 88d6f128d06d ("mm: track DONTCACHE dirty pages per
+  bdi_writeback"), in v7.3: WB_DONTCACHE_DIRTY could drift.
+- 3/7 reports WB_DONTCACHE_DIRTY in the bdi debugfs stats.
+- 4/7 adds folio_mark_dropbehind() for a folio that is already dirty.
+- 5/7 keeps a partially covered folio until the write that completes it.
+- 6/7 lets a writer that syncs its own write complete those folios
+  itself, after the sync.
+- 7/7 makes NFSD do that for the misaligned ends of a direct-mode WRITE.
+
+Merging: Chuck suggested taking the series through the mm tree.  1/7 to
+6/7 apply cleanly to each of these mm branches:
+
+  mm-unstable  93d7a816a2df ("fs/proc/task_mmu: fix lost maps entries above 2^63")
+  mm-new       488f62a72b8e ("riscv: mm: fix concurrency in mark_new_valid_map()")
+  mm-stable    fa4ad798f6f6 ("Merge tag 'for-7.4-rc1-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux")
+
+7/7 needs the NFSD direct-mode changes that are in cel/nfsd-testing.
+The whole series applies to cel/nfsd-testing at f7ef2ce48812 ("SUNRPC:
+Load the GSS module by OID only when the mechanism is missing"), where
+each patch builds with W=1 with no warnings.  So 7/7 could follow in
+the nfsd tree once the mm part is merged.
+
+Changes since v10:
+- Two fixes, from sashiko's review of v10 6/7
+  (https://lore.kernel.org/r/sashiko-outbox-198089@kernel.org):
+  - 5/7: iomap decides whether a unit is an edge from what is left of
+    the whole write (iter->len), not of the current extent.  With blocks
+    smaller than the folio, an extent boundary can split a unit that the
+    write covers in full.  v10 then looked the unit up as two edges.
+    With IOCB_DONTCACHE_DEFER, nothing marked the unit, and it stayed
+    cached until reclaim.
+  - 6/7: filemap_dontcache_edge_complete() leaves a clean mapped folio
+    unmarked, as filemap_end_dropbehind() leaves a mapped folio.  v10
+    marked it dropbehind, but no writeback was to clean it.
+- The commit messages and code comments use different terms.  They say
+  RWF_DONTCACHE, DONTCACHE or dropbehind, and "the other write that
+  covers the rest of the folio".
+- 5/7 says that an RWF_DONTCACHE write goes through the page cache.  It
+  says that the kernel cannot know if another write will come, and what
+  stays cached when no other write comes.  It names IO500's ior-hard as
+  the source of the 47008-byte records, and adds the 6000-byte result.
+- 6/7 and 7/7 say which WRITEs NFSD syncs: a WRITE that the client
+  sends as FILE_SYNC or DATA_SYNC gets one vfs_fsync_range() over the
+  whole WRITE.  An UNSTABLE WRITE gets none.  7/7 also says that the
+  Linux client sends an O_DIRECT write that fits in one WRITE as
+  FILE_SYNC.
+- Christoph's Reviewed-by on 1/7.  Jeff's Reviewed-by of v10 is carried
+  on 2/7, 3/7, 4/7 and 7/7, where only comments changed.  It is dropped
+  from 5/7 and 6/7, which have the fixes above.
+- The review notes below the --- line are dropped.
+- Rebased on the current cel/nfsd-testing.
+
+v10: https://lore.kernel.org/linux-nfs/20261103211754.35352-1-snitzer@kernel.org/
+v9: https://lore.kernel.org/linux-nfs/20261024221152.6965-1-snitzer@kernel.org/
+v8: https://lore.kernel.org/linux-nfs/20261023024548.71123-1-snitzer@kernel.org/
+v7: https://lore.kernel.org/linux-nfs/20261020220346.28020-1-snitzer@kernel.org/
+v6: https://lore.kernel.org/linux-nfs/atbfEbgMU6UGkn2X@kernel.org/
+v5: https://lore.kernel.org/linux-nfs/20261019150725.1507-1-snitzer@kernel.org/
+v4: https://lore.kernel.org/linux-nfs/20261015233309.42999-1-snitzer@kernel.org/
+v3: https://lore.kernel.org/linux-nfs/20261001045502.48381-1-snitzer@kernel.org/
+v2: https://lore.kernel.org/linux-nfs/20260929231329.22018-1-snitzer@kernel.org/
+v1: https://lore.kernel.org/linux-nfs/20260929173423.16149-1-snitzer@kernel.org/
+
+Thanks,
+Mike
+
+Mike Snitzer (7):
+  mm: move clearing the dropbehind flag of a found folio into a helper
+  mm: take a folio off WB_DONTCACHE_DIRTY only if it was counted there
+  mm: expose WB_DONTCACHE_DIRTY in bdi debugfs stats
+  mm: add folio_mark_dropbehind() to mark a folio dropbehind and account it
+  mm, iomap: keep a partially covered page until a DONTCACHE write completes it
+  mm, iomap: let a DONTCACHE writer complete its shared pages itself
+  NFSD: drop a shared boundary page only once both WRITEs have written it
+
+ .../filesystems/nfs/nfsd-io-modes.rst         |  18 ++
+ fs/iomap/buffered-io.c                        |  30 ++-
+ fs/iomap/trace.h                              |   3 +-
+ fs/nfsd/vfs.c                                 | 107 ++++++++-
+ include/linux/fs.h                            |   5 +-
+ include/linux/iomap.h                         |   1 +
+ include/linux/pagemap.h                       |  12 +
+ mm/backing-dev.c                              |   6 +
+ mm/filemap.c                                  | 207 ++++++++++++++++--
+ 9 files changed, 358 insertions(+), 31 deletions(-)
+
+
+base-commit: f7ef2ce48812080b87572a2f0fdec93cb2d2a629
+-- 
+2.52.0
+
 
