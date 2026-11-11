@@ -1,69 +1,70 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5B0606A334
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 15:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F23606A32E
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 15:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=surriel.com header.i=@surriel.com header.a=rsa-sha256 header.s=mail header.b=nOH3v0Bg
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=surriel.com header.i=@surriel.com header.a=rsa-sha256 header.s=mail header.b=EoVBFv6o
 Received: by kanga.kvack.org (Postfix)
-	id DF8766B00EF; Wed, 11 Nov 2026 10:43:46 -0500 (EST)
+	id A29566B05B1; Wed, 11 Nov 2026 10:44:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA8FB6B05B0; Wed, 11 Nov 2026 10:43:46 -0500 (EST)
+	id A008C6B05B2; Wed, 11 Nov 2026 10:44:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBF8F6B05B1; Wed, 11 Nov 2026 10:43:46 -0500 (EST)
+	id 9417C6B05B3; Wed, 11 Nov 2026 10:44:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AD29C6B00EF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:43:46 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 477261A0360
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 15:43:46 +0000 (UTC)
-X-FDA: 85423258452.28.EDC4877
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 75D966B05B1
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:44:37 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EA5CF120306
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 15:44:36 +0000 (UTC)
+X-FDA: 85423260552.24.38C9435
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A075D20002
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 15:43:44 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="nOH3v0 B";
-	spf=pass (imf03.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 4D7BF100004
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 15:44:34 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="EoVBFv 6";
+	spf=pass (imf14.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794411874;
+	b=dkD3bfKD7hhTdRQRrRyIM/8sYWFBpaavKo7cyXQzGGXm/F2/Nk7rOA7X00trxIBfnt12g+
+	pq0Gds+7MnYbv1ubhFExuj67dVqnKh1/t3FzHTemgLk/yGhG199wFZh1E2MJKPhWSbDPPb
+	Z2vc9YKmr/pR2z+ENJHFhu6T9jYZg2A=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="EoVBFv 6";
+	spf=pass (imf14.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
 	dmarc=pass (policy=quarantine) header.from=surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794411824;
+	s=arc-20220608; t=1794411874;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/9VREGS4F/KCTU6r3pJe44nJmA9BMguSSiJq5/NaFng=;
-	b=v3oPdB32a/g4lmve42uy+UNT2C6PrZfCHcJOz0t9s5tG2F6TzCiGUH2GMZHEZqxZO5g91d
-	eMkondUNNu3pzV3wgr3RK6KOLG40klzqKWUqYenRrYmS3Kwvm1icKVETxO0mQLAIzCqe+J
-	zxl5VeIe9B4D2CXab5QXiw6VtQWkFKU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794411824;
-	b=7TriORpnOb/dzIhim7VIHMREihuN5n70uw2ShAHpn7RnNyxuKO50UfhxDLcZEvZvZ7soQd
-	/swrg3bvnr0ul7ygofzk0SjUOP77dvQz/QSIJam+TKVeq4VS01MyfhqisMI6g0XYMemxAa
-	GJysEENF+ycc/UGf+aDKipi41TD28kg=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="nOH3v0 B";
-	spf=pass (imf03.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+	bh=0fjVRx5vsZkDMKGmhuNd7Yjfbs2A2AKB7RRC040th0Y=;
+	b=oUQK5MfXcM3/1PAzEej2G1qhSV5qVMC6Z8fRyA3Ffz5bvr/yZyBluqWLWzBv+/nxKsoU9b
+	S67QdL/yPTR+EElgTcXyRVrXP0F9AyCkeHi445trvO68lUSlKb3WAxtcF3dqz4ZJLivOMF
+	mdsV1tSos0CoLGuYlOJlorGqVVKkOAA=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
 	In-Reply-To:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=/9VREGS4F/KCTU6r3pJe44nJmA9BMguSSiJq5/NaFng=; b=nOH3v0
-	BgviyORkrv/kYgza8bS7DBqp+z6vvdhaL6MxCQAWNfCtloYDKLKiTixQodcP0Sv5jlvMdnsha054W
-	U/qYAGfbfN9SwVkEb5vulZ1Qz9Foi1t5GZSl4aVD4TFGijBzZu0Nd0QJIhP6aCyTl4e0cbfYMogcM
-	7qGghq1U7cyU4tQUSXmWgDwgOfmPU4LJhFTZi5tSwNPCwygqVsBby4hSMH3zGwzfVGzqWL6Nxv9ly
-	WIwJsxy+52HXAyLJo1bkBtLeiqhbQ8jn1ZWAue8+vxVWlpKu/iYnu6bBfMrefDAHpIRedWi/fwloW
-	ULCpubfTY4uMAZjRaxN7az8CXoCA==;
+	:Resent-Message-ID; bh=0fjVRx5vsZkDMKGmhuNd7Yjfbs2A2AKB7RRC040th0Y=; b=EoVBFv
+	6oY8+IOL8Tyrj2uliK/+jDzxNnmJgURLiHpTSqGjVydHO/Ny7XVuOvp3vas+3W6+iABLVZMX9aMXt
+	DDyJix35YA0TeyTJqMQgcVABnpmPL5yBSdnAI8j7at/Ax0Se3nS1Ufe8Zae+echT/5bsrF/Uce0iY
+	hY4QkORTL6PDyXjWxwMU4LDNROEp2C3OPaDHupepWY5jNMq1oTujdKu2CjXzruuhYUxBJairvppjc
+	uUeWrjpyQaFlQUX0dFpfIeg0h8SUsk0Zdqad+arogguxMf/qalnOKOscTdwzs7aSw0n/lYJf17iMg
+	nJ4HjW2Mpg6FX6rObqinZdrp06PQ==;
 Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
 	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.5)
 	(envelope-from <riel@surriel.com>)
-	id 1xRATp-00000003v0H-3ThD;
-	Wed, 11 Nov 2026 15:43:21 +0000
-Message-ID: <5cf37868cde9f220b5b6b60871864d8679454ac0.camel@surriel.com>
-Subject: Re: [PATCH 1/2] crypto: zstd - use vmalloc() for stream workspaces
+	id 1xRAUh-00000003v17-3enR;
+	Wed, 11 Nov 2026 15:44:15 +0000
+Message-ID: <6e62d5b36362a5dd174de68b5090794877ce499c.camel@surriel.com>
+Subject: Re: [PATCH 2/2] crypto: deflate - use vmalloc() for stream
+ workspaces
 From: Rik van Riel <riel@surriel.com>
 To: Usama Arif <usama.arif@linux.dev>, Herbert Xu
  <herbert@gondor.apana.org.au>, 	davem@davemloft.net, terrelln@fb.com,
@@ -71,10 +72,10 @@ To: Usama Arif <usama.arif@linux.dev>, Herbert Xu
  chengming.zhou@linux.dev, Andrew Morton	 <akpm@linux-foundation.org>,
  linux-crypto@vger.kernel.org, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, shakeel.butt@linux.dev, kernel-team@meta.com
-Date: Wed, 11 Nov 2026 10:43:21 -0500
-In-Reply-To: <20261111153532.1036709-2-usama.arif@linux.dev>
+Date: Wed, 11 Nov 2026 10:44:15 -0500
+In-Reply-To: <20261111153532.1036709-3-usama.arif@linux.dev>
 References: <20261111153532.1036709-1-usama.arif@linux.dev>
-	 <20261111153532.1036709-2-usama.arif@linux.dev>
+	 <20261111153532.1036709-3-usama.arif@linux.dev>
 Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
  keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
  eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
@@ -104,18 +105,18 @@ Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A075D20002
+X-Stat-Signature: ho46sb8oqo13yu54mb3rmtbmxb1doq88
+X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4D7BF100004
 X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
 	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: tiz8mq373breqiem6rcw4jqzgiqm4cta
-X-Rspam-User: 
-X-HE-Tag: 1794411824-974762
-X-HE-Meta: U2FsdGVkX1+XBiDEdvuBPE5jNrXvGxZn8WliP0i3XQwbgGclKW6WR6MXra/N6xW9JTw7ew87F/gLAHFjaju5EpeZ93MBkkmu1LDvWJwY+e1ty4wPUFG+D85DmACSid56RjxYtct1zrdHbSevv6hyYg04NhQsvtXinsf5qeaSn4CwIJHobEEw+EjYeDileVGqJDkNIc2DGoUS7FjkUTZeRiIuvc21qqZuORGuEZfrGtbXTBoSIW00riy+R1btkvwIH5a60o2Od2OqX+QugK4fS912yqpTwFhJC28wJrTKm1eT4hponDS+t8fm3sBExPs4w4X4DW6sMpybh+ojoBea4TSbpBwZN2HQeej+AYUTv/8D3l1/4TBuBpq4Acxmc647vBOudbqLYRblQPplOccBmZsVWpmdchC4LrbZrk2yuSfnOvGz36mUHFd9Rf5AR0ad/i/nXkzYDnTH8TeT/JrJxQ1lDzDrs0fCZDe66a58qloaXV/qpah3tBXouamE98KTH9db+mYDdEX5F2No+y4ucIHlhS3GesiS5NlC8Hkx9FNUpYzc3EkMrVsf5QCM3diwjx+QQsiNcUTURKfvwG7wjlg35wLTPQvHTTECAtf5/Dbi4uACeLCwrXJX3vy30aAnNz2A4VobLo3vxWzYRyea7YiH4dPGBMQuuHfdRaIPlyU13GzukLMy+xpGLxOFsl9UiMFydUWVdR1JPc4AdVSdRNfR8WUOvPe91wjwfQugyDWoOjiSBYKrYvcyDHLXN1MEq3IUsJzA+KMEqw/Z4Jv0S7tndkGS9bVn4/a4/4+CEZ+soGRk1vV1u0UBUSaEAcrU2Vxf2oYUAEsonO6+U0UaVMEA7g2vPTt7b/u+bmL78p0dJgXtD7VCZO7ucuYzh+DRqmONNsrdeSxDQDKs0gKC0oTQ3svbsEGeKVEANeVdp+4ab158k/Bzt9RpyI4gVZcIqQnuYZStY5u+X7XNn9f
- fUi9mCiL
- yDvQsg13zSunU0ZlCvffnihJ2N60+gOJ0u1/EGm2ilb42Io5W/y8phM/ZR8SOKXBTefMEd7tq0yPKVjX1FPZl0osSjlRuo+fiiH6/PmC5HdF0qQ9THrc8iZDMRAW0C98oD8GFrlSo6l8O9D0F3ugf4iYtkN1LiIUhZnt43CHdWa08N6sJhuVC8kI5eZOD26WZJ5gq+HsTPD9Y+jhzQaiuKwxmhBxziB3Nr3ufkoJyXUgbT7DCCSY2hThTRoc1sleBnvJd44ixXrCI5dX96uYKsZu7cygbd4QNplNDqlggYs/C/9aUGe7bx+h+ixCDFoP+IzqayiASdFDjyLUjqu8QAyZuUA==
+X-HE-Tag: 1794411874-782067
+X-HE-Meta: U2FsdGVkX19GHQ++1JUnCgikgAKAnhzTF1N+xIT11lbifSV2017pnDDkVLEfVKqNLX7LMJz9G/bBNouY4PLXWOTWRGOasnkeRBOiKljr6HZGMDvDynZTulp+aVpwiN8VVU4g3HK9A20PuKBs0PACstaGylILppC3h/yePf6pQlXz1+IKz7kGS2HsuEySqS+VfARQe5AbpksKNyCxRj2rlRUNYjL18cxVqbYI2fc1eZ+FKio9VFf0yb1qaI9cYSMB3VSWYxtZBPWUoDc6JPEm0BkKCab+5zniDcd61Or2wakpBr4DsIsDVgLxuEM9Uva8K4f2YVkrueefRMzeLjqT6tqsoI9a41irxaPbs+kIrwqU0flE3hdvPm+OJQm+uNOpkj5GMzuScd3y2o6qt6419Noq/cbL/tVzIXaGTm+8uJDsrlmR5phwWRd44mQXUKkbUmqSphEQ33/S9dJjNSiF5VxvIpQjVvPwy/Bxa5fBIi1OoRCliS8yifLvAWjv3IUEeQ0AsBX22bepw5/gEHSaDAUTNpP0fjyOcNYLtYOt1EnKVPpv74++RMDDxCNLhCWrykh4kNq2l1xYWYFsMxgmCluGi7IFE9EYKySH22K7GEyVUr4jhuAx6RsiyOhJKGwm9FV2GMLz147/fTBDa6gOdEM2n+R3Rlg2MMRJYzyOR5xIVnnvb18PvuvbfxIfQCgn8D4VZMV9cOSbjTsrsGYhgkQ3PS9axY4PE+gx2m+NgArccVivp8CSP+vt4azXi0yw5bkroKZkJJl2Vb4txSzRmJBWgpsdFSWPbrqfkVWKq6ueV1P3+GQHxNbmCddEBQntvWXfiR+1tvjo8VRzQa38De9I+m3vRY16S2bIy77iJ64CENHgysR0ySXu3KC4YiXSh0DhZ9N4yExgWoErZXD9XhBh+aL6j9ZY+oS4AqfuG5+GNurMp24uiQEBTr+eqsP/pNwA9JgGGtZzShY9pgb
+ DWLjMOtB
+ XBOMIIDOhGmd8vkz0b18fCq3Vqk9TxRd3xRG1dTzEWf1yNzUFH7SUYykMZJpml0V1DK9Mf2cte8oJO0MGJApKh5cUo+6k5mLzN+BWd4VPM6Oadm+JhWSDe4qlu7mrOH7vJuPQbyWE+afg04YPDEywOVZXo44Zsk3EFxmdmiOmkdL4TS0/iJUBzBF9BBi6srzJ3qYVRs0fuLvKbjpFxk3C5vhH613VX8G9F00pWqIkUFFJKzhVM8I8bSxO15NVlkiaxIfjr63ELq1giTiBPba7kOGSNA+fWdkoILp9EITacK6+3jo3gzxgmSpWnwaUZSfi4VruBBMsW/KwpYYET4SrjDaN4g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,22 +126,24 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On Wed, 2026-11-11 at 07:07 -0800, Usama Arif wrote:
-> The zstd acomp streams retain their workspaces after the last
-> transform
-> has been freed. The first is allocated during transform
-> initialization;
-> additional per-CPU streams are allocated on demand. They are released
-> when the algorithm is unregistered.
+> The deflate acomp streams outlive the transforms that use them. One
+> stream is allocated during transform initialization; additional
+> per-CPU streams are allocated on demand. They are freed only when
+> the algorithm is unregistered.
 >=20
-> In a 4 KiB-page x86-64 build, each stream requests 1,566,281 bytes.
-> If kvmalloc() succeeds via kmalloc(), it occupies an order-9 block
-> (2 MiB). vmalloc() needs 383 backing pages (1,532 KiB), 516 KiB fewer
-> per stream. Across 384 populated streams, that is 193.5 MiB less
+> In a 4 KiB-page x86-64 build, each stream requests 145,320 bytes.
+> If kvmalloc() succeeds via kmalloc(), it occupies an order-6 block
+> (256 KiB). vmalloc() needs 36 backing pages (144 KiB), 112 KiB fewer
+> per stream. Across 384 populated streams, that is 42 MiB less
+> workspace backing if all would have used kmalloc(). There is no such
+> gain when kvmalloc() already falls back to vmalloc().
 >=20
-Woah. Nice catch
-
+> Use vmalloc() and vfree() directly, as the crypto lz4 implementations
+> already do. This uses vmalloc address space, page tables and
+> bookkeeping; the figures above compare workspace backing only.
+>=20
 > Signed-off-by: Usama Arif <usama.arif@linux.dev>
->=20
+
 Reviewed-by: Rik van Riel <riel@surriel.com>
 
 --=20
