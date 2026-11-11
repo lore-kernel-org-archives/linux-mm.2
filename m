@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8780606D735
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 18:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF46606F391
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 18:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ip+MeyH0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gggu3Kzp
 Received: by kanga.kvack.org (Postfix)
-	id CC86C6B05B6; Wed, 11 Nov 2026 13:14:26 -0500 (EST)
+	id ACD9B6B05B8; Wed, 11 Nov 2026 13:14:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C790B6B05B7; Wed, 11 Nov 2026 13:14:26 -0500 (EST)
+	id AA4B56B05BA; Wed, 11 Nov 2026 13:14:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB5F26B05B8; Wed, 11 Nov 2026 13:14:26 -0500 (EST)
+	id 9E1E96B05BB; Wed, 11 Nov 2026 13:14:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 91B706B05B6
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:14:26 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F3271C03CE
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:14:25 +0000 (UTC)
-X-FDA: 85423638090.23.B27EAA4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 2B7B44000C
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:14:24 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ip+MeyH0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7032F6B05B8
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:14:35 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CF0FE1A0144
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:14:34 +0000 (UTC)
+X-FDA: 85423638468.17.62071CE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1F7DF1A0008
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:14:32 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gggu3Kzp;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794420873;
+	b=FYoD/Z4dt0KDfwuqXpjycT8mLtUIrGxjnvfELDeXgjhPQ5LZ4udKxhASZ+0YhNZl0MU7Jh
+	qC36ApMd7y9gRJ6Xg3zGyHrQYAQP5KgDOkOcLJcW3ERKzBqu+/etY4R4wgmdjRu7/v/Q/V
+	F021XwjzCEkykJNS5JPXgBPVDuTv6qE=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gggu3Kzp;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794420864;
+	s=arc-20220608; t=1794420873;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=srFqpP6ZDnZa1ayDvcvXf1T4HKZiEcS8ufIpxBUhNHg=;
-	b=pV/v6tu0cZqDmiFsstPCctHCjhUBFTkmw4+SrQ1ZOFxTCFw7rTrPsRTq4gF6ZQrNkzipg9
-	moqgy3O3nqdWM0PCzkb1z+pNOwfASHaiw0J7ui9lV4E+eWs1vv6i66f87U1D5F0tWjk5XJ
-	/tQXQl8BuvvpN6b2nbQbTKB3mpi00M0=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ip+MeyH0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794420864;
-	b=Ga3J2iLNGyoKttxiOzs7VRCuTQ07XGNKKO06deJ+EeHRlLLwt7LvzDV7NnKatheeIfQrkK
-	k9kBjiqqBmvwajttOPJMJAOCDBI+ytERSt7JKPEKmHDGNkJ7i3Ig94urKt/JqSLoNfwmxf
-	8ApS+/Bc/xeQYnJeZrEuCuwc+Nh0bbU=
+	bh=hnpErT/5ex3ruLHjEk/CH/pFjQzrzGhN0FfCOEgwH8E=;
+	b=PpFJaSt8B7NsbuLn5jYVikuxts2jI6AfU4utTyt6jwM0nA7OJT2Kzi+rApSbVoavoBtgBg
+	oicfFIka0i9Kc42kcAMZMG5NFwLZdIaTiIlh3RpQ2KKKlYgyMUzbSb5iVQdH0k1sc3r3B5
+	4PHfMvhYXj93vq4qG5PSTINPOV2tNZM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 59B3D4553E;
+	by tor.source.kernel.org (Postfix) with ESMTP id B506963DE8;
+	Wed, 11 Nov 2026 18:14:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B607C1F00A07;
 	Wed, 11 Nov 2026 18:14:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869881F00A06;
-	Wed, 11 Nov 2026 18:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794420863;
-	bh=srFqpP6ZDnZa1ayDvcvXf1T4HKZiEcS8ufIpxBUhNHg=;
+	s=k20260515; t=1794420872;
+	bh=hnpErT/5ex3ruLHjEk/CH/pFjQzrzGhN0FfCOEgwH8E=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Ip+MeyH0mnXVSjSEn12CmZeAEvgFsGWlr2WxmKNYL4sDxR1G3qt6hIEeCNLwGRFSp
-	 hRz3BFLnK1H3vdJVAQ+gzq1wyNwNKgnhHaIcFgsYPryXM7b3smmdxggP5pI+D7b5nk
-	 WzSd/KZbK58N22J/u4fo9F/KGqgsa6bwTbAR6aSXLzmUl4RlWxpsCtsXTKKsB58gzr
-	 HDhTg4lpizdWNz3Q2pqvL1tOvYOgZwIMv0JLX+IIB+76j2VkMilI+DCxCJY7fztCkY
-	 lH1zl8oVWWKAAjqvSwMw1ntCa2zfNJ9rCfQIB2m3ydcDzywt951PY2hpzcZOXtAiUm
-	 1o903NslRCmfQ==
+	b=gggu3KzpzpzxVd847cbidkioq1t/iCuVorKe0gddlXiOBwITTFoL70pfujDKNK1xA
+	 jwZyzTeDwM/nstQjwFDRab6o+ZiOyd0QVmYUTYr5/0WmN3ghJ7K0PpvyA3Gbawi41b
+	 LVLUE9qOfJMwBTJo9xNrJV3cUzTmj8QaMd3Fq6uPr3WfQ0SFqzfD8/UjYnaVUWtHEH
+	 E9JKDTz9Qxep/eg20EupXcOh+1MzGysf9ro3ISes9jEjUIN/0GU+BphsjlSANSQzql
+	 NiVSxOdTPQMM1vaxhONoLqnZRPxhaiXe6tfFwu07lgtpbK4Seyt2uG+mw2KXbFGCmB
+	 Z4rfzw4aSkIqQ==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Wed, 11 Nov 2026 18:13:15 +0000
-Subject: [PATCH 01/13] mm/mmap: free gathered pages before MMF_OOM_SKIP
+Date: Wed, 11 Nov 2026 18:13:16 +0000
+Subject: [PATCH 02/13] mm: cachestat: count each page only once
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261111-mason-migrate-et-al-fixes-v1-1-3d2454362e8d@kernel.org>
+Message-Id: <20261111-mason-migrate-et-al-fixes-v1-2-3d2454362e8d@kernel.org>
 References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
 In-Reply-To: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
 To: David Hildenbrand <david@kernel.org>, 
@@ -99,26 +99,26 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Rick Edgecombe <rick.p.edgecombe@intel.com>, 
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3855; i=ljs@kernel.org;
- h=from:subject:message-id; bh=ogD4hL7hm3MRJZQvw+1xlLAOQuORFeu7Ul+kQhgYJJ0=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLK+bMjquVNbGPnR7VVQQfTClY2bbHxy97cnzl+ofuT2p
- 4n1djG7OkpZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjARpU6G/9We2ln6sZLPOtNn
- 9MyQ3OUqbf6TZ4n09+4XuTM3tE3rOMTI0POkclbizHgPx6lNj9mv2cX1nZP00XfPEmTfv8dM738
- gGwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3239; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=bQk7Pct3Nv6+Lk3m/yXgydjISRgLjjXotQmEcxH2ziQ=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLK+bMj6emSjJs/flWJfGa0+vm6XPCWub20hLb/KLHArn
+ 3uZYxxTRykLgxgXg6yYIsvzL+L7g0TC5nVe8HeDmcPKBDKEgYtTACYitZOR4e5mQSN13/DzAZ5v
+ z1t+zk34rsZ1+t3C71ej9s5ft33tvkuMDJs+hc6QTK7/2yL355t97hWnc1y+ex8mnXX9MuXPojd
+ 1B9gB
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2B7B44000C
-X-Stat-Signature: ajodtftq3338fmp9owt1hz4syq83nndm
+X-Stat-Signature: hqfm7wg76jau6qtyqbrrnz6xufb6ouxd
 X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1F7DF1A0008
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794420864-376722
-X-HE-Meta: U2FsdGVkX18mjyDMDavPpA/tWt44JVsVWXKq47dfD/2YHIZPjEJdedkP7NcNEZGTBOFkoXCpZbeEfHSfmX0XbFErf4Gy6XmbM+G4zyirJoS9lnMXwfoXrikRM5N5hdwevLjof8QsREgcCUpvbldegEyrIf68iV0YZBEIm3iZVltdvvRBQfyGMHOIXP0SV/hwKAqAI0AfAUUQqmdiuTX87qhcNGlYzeVAtf4A+5FXeFCRc1iPSWZC+spR1/aNw6ehHGlnnvlp9bET3BfdRMsFYrC/Fi8gi20vpmHzxbOXoe6UeUMoONdpuMJvOiYHzXcIlGlywrYVm+Cz3SDXprz+6pXNM4iG4uaqA91l87OraQ0eG9RWu9Wxy7gzgILbKyp6m+87dVP4CzgREpj/FRhWl71PtmdfPc+rO7O8WP+7Nwrb5CdRDJszzXT9msVo+Hu1pX/lnX4zqAFWJQmpdXhAcroMY6RQ2mrcgVrE4M8tev5YjEMJYaudqnHPQzD9bjMqx4Wvl5MCKFSgWFJQR2issS730ulfJ51EiKj4IRBz8jvz3H0jYFOirdJgYUjluerpElf+QpR3LBLwuAWdFbGAuajwfqV3RD0Uf/5ugSDvG+fCFm6L7bxnt7IKJPi9SaXPvP03Nd07y0zfyV0aVmYM7ikk2yMZmDg5y3mITOcsb1jk1yqBCsGT0bemxMuN50pPNxyFLybiWb1aN/AIFzt72fQqhxqTqkmR9ERFkAJgoSQfawLbLeTLUg8BO7vmpaZd5ORXrEAcLgTrU1PcbdW/4Hcrlra9xScqErAHsASFHggi5oIlTzxCRieCVq+5GFz5oDidTHLBpBRmtUOle5yxD9qW+MzUXEf6DfsuekGP8EVtg7U+Huj+sqWREIP8P+SVZEJfdUqlgrRWEYAcy5xyWunL4ysqnCxZ6vgM9MvarKjsEQbPTuIx+/+jUzDl18kRJT4f81ASckoP6iV62f1
- QrEsuIQN
- Du+Wo3fbG85sjEPPLn6sXtKfXR9cr38CmgwrSDZGrJmN/zvjQ8XsDw430fLiaQ/GspurWqGUTX2LRJe9n4ilsXv0AZxPEbuAB7L38KQ27GSJyVACQuSsAfixE2vPGBCjepN1R3NTk2376KET1R02XC8Mg65HGM06knhAeK4KXUg4FHLhmliAXAj6vDIF5CcZMRNAEnHGfTcLY5UKIBDjq8cDbfuDfJBJYErzneX60xRRplIhPKUS3gbxM5OAgMNBomY06J+6QVlSC0GRA64nKK7dhyh85sUPfdOyZoxBuU5ExalGJrC5VGW7oiiIP79dkXUL8bZUuJiQkIqHwPx+8FS8zm9aHR99K0oh0xJWz/PsC6nQs2i2TmgRvMQ==
+X-HE-Tag: 1794420872-227894
+X-HE-Meta: U2FsdGVkX1+1K9Ku7q4/cIV/qjtjw07k89B06qsmvJbWGVGD5LL1ATPkMFClO38yWg29z4N/pf641iYGOPe4KkRyRceUbg0nUSwj1Cl0m85K36cbIUSYP5Ql+I5wRIF1QcUa4uzhDBqnAlgE9iJkMr7iVbOkpFKtHjILblZtXRG6EOl/WGd5RK+Md5AbSGxdrz58cE+GbUi+Dz1ALOeEwk8t2voTwI6cESRJPAPHRgXl/S5c/jkkEdhOpc7MBSBIyymaD5sIwwyRjKBwDk+4OzdhMu+fAsDZK65pnKvzB28LSpQTMTb+Tn45hk8rZXFZQ8rNFyPWnLWkdsY4zoGUMzgCVLZufVcQt9Jd7N3/SoyHIfwmcYhQgdakIcExbvIDUcp94zhPeyssHuAvrGSgfTQqYXYU+THrdU3pc4vLza0tvywud30HjyRZd76UjLTc+6DcQL9yuaQGprBzKBryp2o9PNV3pIXu8gVcSuWNA5GHkoN6P0nzF81mCQiIRSmGLiuv+ylSyyBvO04pgVdMdEpLf2p4yn+8q52+pGZjgFdb/h7EvSGlh+CE5LW/L6Fsf0KRp+aTo5EpZTKbEvLjuJwUg2NSxup42q/L4RUdB8SMH/DNa9hoP49U1xizQuGfiA6jbv2/HZMrlh1qpLZ5a/L4F8I8aBF47yyhXbHQ+BLhIwDd/4HfmfHS3nmh8MqT6mbd5ySJDrtJPe9fa9qI9Lh3jvLFbKISKROlnq1cCvT8u23MXK6SqtTjabH0JkQlPinxEHhogRtJXfS/gMCoU0K5h2IMAS/3H9Q/4w0dyy50tjO/zrN4IF6mZ+fno2TQWPGM4SrU93MNsgTam0aisDzjPt4N9aO7icD3KNPZxdpDKGFpI/ADj6EXdrI58nbDRYtQJNsPk+5Zaz+JpaTOo2Sv3tWqLWyCjQwm3crsey0LGQgA3RYrwfFnE3/giU/EiNu0XGWlrNikoPw+LIP
+ /lnerAF+
+ /8xIY6BIrz6Qhhemg3Re1QIvlW8/T8SGpTedrqdhsqcPuXNp9ItjJ+QPBldH4lHeAsreoeRitdcefAxjlWqVBZBkzGMHvBL6bcRqo6HyDCL5mt//xPOhIbaLXUkAaE9vF+vFFQR6tmffwJMpEGxhFbUhaDb++SBBxbYEHt04wag7GXdupsXK3qRayL3gdRv8rxIpoE6EDBzymGv6tDSMR1Z2jXSXIDnl6Lm5czn8X5YD2EUI2K3QJvbKUnXQNuJ8p5xJUEuxfEY0dS30g7/6JVaoXJDcoVIRbY+V5UCXeaU2FRjxsgC7BnKly956+4vmPTlpN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,108 +127,94 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The OOM killer can quickly trigger again after having selected a
-victim. That victim might not have freed its memory yet, but its mm will
-be marked MMF_OOM_SKIP by this point, so the OOM killer will ignore it.
+From: Chris Mason <mason@kernel.org>
 
-This can cause the OOM killer to kill an innocent process when the first
-might have freed enough memory to relieve the memory pressure.
+It turns out that filemap_cachestat() can unwittingly return incorrect
+page counts, if large folios are present.
 
-Fix the issue by freeing the memory before marking the mm MMF_OOM_SKIP.
+This can occur due to underflow - nr_cache is nearly 2^64 on a 64-bit
+kernel if the input range starts more than 64 pages into a folio that is
+split during the call.
 
-Note that the task which calls mmput() might not be the victim - if it
-took a reference on the mm (e.g. ptrace), it may hold the last reference
-and release it when it calls mmput().
+It can also occur due to pages after a large folio being skipped if the
+range starts in its second or later XArray slot and the call reschedules at
+that folio.
 
-Therefore we cannot rely on current to tell whether the mm belongs to an
-OOM victim. Instead, partially revert commit b3541d912a84 ("mm: delete
-unused MMF_OOM_VICTIM flag") to reinstate MMF_OOM_VICTIM, which
-mark_oom_victim() sets on the victim's mm, and check that.
+Finally it can be caused by pages being counted twice due to folios in the
+range being split or collapsed during the call.
 
-Reported-by: Chris Mason <mason@kernel.org>
-Fixes: bf3980c85212 ("mm: drop oom code from exit_mmap")
+filemap_cachestat() walks the page cache under the RCU read lock only,
+and for each entry it counts the pages that lie in the range. It does
+not track how far it has counted, so the counts are only right if the
+walk returns each index once.
+
+But a large folio can be split during the walk, or small folios can be
+collapsed into a large one, and the next entries then cover indices that
+were already counted.
+
+Resolve the issue by tracking the current index as one past the last index
+in the folio, and explicitly using xas_set() to set the current position in
+the XArray.
+
+Additionally, add a check for folio_last_index reaching or exceeding
+last_index and break out of the loop if so.
+
+Fixes: cf264e1329fb ("cachestat: implement cachestat syscall")
 Cc: <stable@vger.kernel.org>
+Signed-off-by: Chris Mason <mason@kernel.org>
+[ ljs: updated to use curr_index, fixed comments, updated commit message ]
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- include/linux/mm_types.h | 2 ++
- include/linux/oom.h      | 9 +++++++++
- mm/mmap.c                | 9 ++++++++-
- mm/oom_kill.c            | 4 +++-
- 4 files changed, 22 insertions(+), 2 deletions(-)
+ mm/filemap.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 1ed35d258d2e..09e63ff12b04 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -2030,6 +2030,8 @@ enum {
- #define MMF_TOPDOWN		31	/* mm searches top down by default */
- #define MMF_TOPDOWN_MASK	BIT(MMF_TOPDOWN)
+diff --git a/mm/filemap.c b/mm/filemap.c
+index b04be64a5069..7c05e4fad081 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -4638,6 +4638,7 @@ static void filemap_cachestat(struct address_space *mapping,
+ {
+ 	XA_STATE(xas, &mapping->i_pages, first_index);
+ 	struct folio *folio;
++	pgoff_t curr_index = first_index;
  
-+#define MMF_OOM_VICTIM		32	/* mm is the oom victim */
+ 	/* Flush stats (and potentially sleep) outside the RCU read section. */
+ 	mem_cgroup_flush_stats_ratelimited(NULL);
+@@ -4667,13 +4668,19 @@ static void filemap_cachestat(struct address_space *mapping,
+ 		folio_first_index = round_down(xas.xa_index, 1 << order);
+ 		folio_last_index = folio_first_index + nr_pages - 1;
+ 
++		/* Skip already counted entries, e.g. after a split/collapse. */
++		if (folio_last_index < curr_index)
++			goto resched;
 +
- #define MMF_INIT_LEGACY_MASK	(MMF_DUMP_FILTER_MASK |\
- 				 MMF_DISABLE_THP_MASK | MMF_HAS_MDWE_MASK |\
- 				 MMF_VM_MERGE_ANY_MASK | MMF_TOPDOWN_MASK)
-diff --git a/include/linux/oom.h b/include/linux/oom.h
-index 00da05d227e6..a9390cb70541 100644
---- a/include/linux/oom.h
-+++ b/include/linux/oom.h
-@@ -76,6 +76,15 @@ static inline bool tsk_is_oom_victim(struct task_struct * tsk)
- 	return tsk->signal->oom_mm;
- }
+ 		/* Folios might straddle the range boundaries, only count covered pages */
+-		if (folio_first_index < first_index)
+-			nr_pages -= first_index - folio_first_index;
++		if (folio_first_index < curr_index)
++			nr_pages -= curr_index - folio_first_index;
  
-+/*
-+ * Use this helper if tsk->mm != mm and the victim mm needs a special
-+ * handling. This is guaranteed to stay true after once set.
-+ */
-+static inline bool mm_is_oom_victim(struct mm_struct *mm)
-+{
-+	return mm_flags_test(MMF_OOM_VICTIM, mm);
-+}
+ 		if (folio_last_index > last_index)
+ 			nr_pages -= folio_last_index - last_index;
+ 
++		curr_index = folio_last_index + 1;
 +
- /*
-  * Checks whether a page fault on the given mm is still reliable.
-  * This is no longer true if the oom reaper started to reap the
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 7618e72766a5..4cb18b217048 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1313,11 +1313,18 @@ void exit_mmap(struct mm_struct *mm)
- 	/* update_hiwater_rss(mm) here? but nobody should be looking */
- 	/* Use ULONG_MAX here to ensure all VMAs in the mm are unmapped */
- 	unmap_vmas(&tlb, &unmap);
+ 		if (xa_is_value(folio)) {
+ 			/* page is evicted */
+ 			void *shadow = (void *)folio;
+@@ -4721,8 +4728,11 @@ static void filemap_cachestat(struct address_space *mapping,
+ 			cs->nr_writeback += nr_pages;
+ 
+ resched:
++		if (folio_last_index >= last_index)
++			break;
 +
-+	/*
-+	 * Free the memory before marking MMF_OOM_SKIP so a re-triggered OOM
-+	 * killer will only skip this mm if it's already freed all it can.
-+	 */
-+	if (mm_is_oom_victim(mm))
-+		tlb_flush_mmu(&tlb);
- 	mmap_read_unlock(mm);
- 
- 	/*
- 	 * Set MMF_OOM_SKIP to hide this task from the oom killer/reaper
--	 * because the memory has been already freed.
-+	 * because the memory has been already unmapped.
- 	 */
- 	mm_flags_set(MMF_OOM_SKIP, mm);
- 	mmap_write_lock(mm);
-diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-index 5d48bd862c27..9de57a23893c 100644
---- a/mm/oom_kill.c
-+++ b/mm/oom_kill.c
-@@ -752,8 +752,10 @@ static void mark_oom_victim(struct task_struct *tsk)
- 		return;
- 
- 	/* oom_mm is bound to the signal struct life time. */
--	if (!cmpxchg(&tsk->signal->oom_mm, NULL, mm))
-+	if (!cmpxchg(&tsk->signal->oom_mm, NULL, mm)) {
- 		mmgrab(tsk->signal->oom_mm);
-+		mm_flags_set(MMF_OOM_VICTIM, mm);
-+	}
- 
- 	/*
- 	 * Make sure that the process is woken up from uninterruptible sleep
+ 		if (need_resched()) {
+-			xas_pause(&xas);
++			xas_set(&xas, curr_index);
+ 			cond_resched_rcu();
+ 		}
+ 	}
 
 -- 
 2.56.0
