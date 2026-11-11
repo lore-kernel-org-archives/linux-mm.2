@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C72606A32A
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 00:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB86606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 01:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MgB914t7
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Uj2EVE2U
 Received: by kanga.kvack.org (Postfix)
-	id E7C9A6B05B0; Tue, 10 Nov 2026 19:37:54 -0500 (EST)
+	id CAE276B00EF; Tue, 10 Nov 2026 20:03:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E539D6B05B1; Tue, 10 Nov 2026 19:37:54 -0500 (EST)
+	id C37CD6B05B0; Tue, 10 Nov 2026 20:03:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D90AB6B05B2; Tue, 10 Nov 2026 19:37:54 -0500 (EST)
+	id AFF496B05B1; Tue, 10 Nov 2026 20:03:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AD6476B05B0
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 19:37:54 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 26EB3140165
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 00:37:54 +0000 (UTC)
-X-FDA: 85420975668.13.BFE3B44
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 6F01D120004
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 00:37:52 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MgB914t7;
-	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794357472;
-	b=P6QWskb1xMFY2ccuK7fmobrWmVHfJ/pf6RKwvVjCdEI6IRBWeF12Cd6v4A5IhxjhUX0xHh
-	vizjNN+MM51BxCCfiyOx6lge4HrqyLMvkGDBMxlp30fVv0QXTKIFCscJao6W5pqper5s9c
-	CZGpO+CIYiRkJ91e66F3GTkV1LjDON4=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MgB914t7;
-	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 8286C6B00EF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:03:08 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0C4E61401BD
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:03:08 +0000 (UTC)
+X-FDA: 85421039256.20.2A0F58A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A228EC0008
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:03:05 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Uj2EVE2U;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794357472;
+	s=arc-20220608; t=1794358985;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2MW+BYa03x6O0BCaaNQi2IqCMMz8W8XvZxNxwWAD/O0=;
-	b=G7hCkml19qVa2BwGKazXEGkboKUNfUuV/T0Sdv6mujZOzESzp62cvagDvD/JJJUCC4HloK
-	GYW/U1GiFRJ5cZFKLER9TS+P9cVDJxfzNayDLAw7dQRqmMoJXa6DFo1+OeD9uB/Gl5LRn4
-	xw2HfYsTqgLB6uBAdtMZxGLq4bNLtTU=
+	bh=j2mlZdhoXM9fc5EMhNEd+NBol7Fpmgn82gd901AHkDs=;
+	b=azqr8iwPfwsPfL1QD1q0Da0KF+2fua0qLTzen6PYFvBaDFfD476IuA7La+7ObKEzf9BUnt
+	B9z97jw0VEPDOYjsiGoqPnCZk2QnwIF60QztkqmQFfJE3uIQz5OkRRJzT040NG3Ufb42Mn
+	sE3qn9kfyt7ERjxgru2litgoICNkIjI=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Uj2EVE2U;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794358985;
+	b=lPK7qf6SDJwviQgWVpXFCw/EWaimvUMnSXMNi8li6j6w5X8vyCeuOV8fJbDazf5V5z/eI4
+	DF8M2+6UL2IemfhniMOrVnVIxY5hkDk3Qcx3BF10DWm+VyF+oDykV2fUiwsuvAs3I/fZqp
+	sTMUGDT0Tf0ri2WLxkYEASFBot31+oA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8E2B64481B;
-	Wed, 11 Nov 2026 00:37:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E071F0093D;
-	Wed, 11 Nov 2026 00:37:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2ECB9615AA;
+	Wed, 11 Nov 2026 01:03:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F5751F0089F;
+	Wed, 11 Nov 2026 01:03:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794357471;
-	bh=2MW+BYa03x6O0BCaaNQi2IqCMMz8W8XvZxNxwWAD/O0=;
+	s=k20260515; t=1794358984;
+	bh=j2mlZdhoXM9fc5EMhNEd+NBol7Fpmgn82gd901AHkDs=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MgB914t7MhjCHdAOMgBSwMHRY+/2DiSjhLxSpUwJ4Yq/HPDB8wd3UQg+3jWIz11eP
-	 Prm9ffDYI6vZMPPtMoWv6ZUvwNq21m9Db/hA2y3nPUXESa1Gkmp3Ab7dtm/Eoltb5Y
-	 /TFuLl7s7CWGLJnZVS9LXtKs24LbS25HzzMFgppSui1shEFoqSYU2cR1ZeGkB0Yhs8
-	 Olwcg+XMNJZ2uI9UknvDjJugVANaUaRMXuLy5dv+fgdobJW5Y6GdqFDV0uwetJoRfL
-	 Yif87fL8O9Wa+LEZhgatZ3uclAmL9OWOsR9snZEzRSfQhkZ7l09eXPTYoGNjx9d8po
-	 ++v/A+G56f+Pw==
-Message-ID: <sashiko-outbox-208026@kernel.org>
+	b=Uj2EVE2UhsksQKIJ1gbJ3/LNJ4kTMqHkdd3KrXw67+rw0cRDuWGrh2u6CIXSBYmoQ
+	 qLbeYpkXn62UGFmHRcpPnO7QFyFa9LsltDpbtKvpNKGhZ5nqvZCiqANNLet4K6XkGS
+	 cusMnizFoNFz/KhLb9ifABoCrWXR1sQehpr1GQOdDfZTAwyGdUqzbky17o+Of80F4y
+	 9ee4vvuVAYK1BsCGmV7KZSB3TuhS+WZHLRfoo0P3L7i6HsY479KHLE20iPhiF+lQ8J
+	 2Ho4ZURWDjrOq6BbL6rwB6W5g38id7TgwknlJyRAQMmdXv6vXM1HRwQKFDVaKQwtA4
+	 Q+ayoVWfkxBRA==
+Message-ID: <sashiko-outbox-208044@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v2 15/25] iommu/dma: Add background page scrubber
- for PISA allocators
+Subject: Re: [RFC PATCH v2 16/25] mm/slub: Add SLAB_CACHE_PISA_RO for
+ PISA-backed slab caches
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Luigi Rizzo" <lrizzo@google.com>, "Luigi Rizzo" <rizzo.unipi@gmail.com>, "Joerg
  Roedel" <joro@8bytes.org>, "Will Deacon" <will@kernel.org>, "Robin Murphy" <robin.murphy@arm.com>, "Christoph
@@ -79,24 +79,24 @@ Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <raf
  de Bruijn" <willemb@google.com>, "Kuniyuki Iwashima" <kuniyu@google.com>, "Joshua
  Washington" <joshwash@google.com>, "Harshitha Ramamurthy" <hramamurthy@google.com>, "Alexander
  Lobakin" <aleksander.lobakin@intel.com>, linux-mm@kvack.org
-In-Reply-To: <20261109182533.3594984-16-lrizzo@google.com>
+In-Reply-To: <20261109182533.3594984-17-lrizzo@google.com>
 References: <20261003212241.3432303-1-lrizzo@google.com>
- <20261109182533.3594984-16-lrizzo@google.com>
+ <20261109182533.3594984-17-lrizzo@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 11 Nov 2026 00:37:49 +0000
+Date: Wed, 11 Nov 2026 01:03:02 +0000
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A228EC0008
+X-Stat-Signature: zbnbfybtn8frcjf5jzwb6ti9gmto7pru
+X-Rspam-User: 
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6F01D120004
-X-Stat-Signature: jite14iu71w3sptqhzf8qayxbbdp1rqc
-X-Rspam-User: 
-X-HE-Tag: 1794357472-25462
-X-HE-Meta: U2FsdGVkX1+2/DZzffRwQT4G+DjyPAUjqtLNazhcewJf5c6y01FVmIqpvZYbZ8/E1zRd4Hz9A7NeuDGjwvevn3VNJKKUKtYVaKFxhTR9FUq9TVuMw0gJtqXfhqGxYKYutaA/SGp+QOvdPGAdEXyqcPw9Qb/MGIYfH2n1s0R8IWRfP496NN4Eys4DVENMAG5uJbSknd9jlcaKQ8l2wqLqkK8QRZmwPbWklQc4s/kjVq4yOt+VbXJONTKIq8D5wzOdP6mfRe3Ksr8vSg887cMWLwAOeCeB2gw7lARmLpjYJfzcTC/TP04xGarNhnlV1pdirvzMCrp8iVU85ZGG9B0XbfHjaR2ySzFrpt53litKm2YnH0cFf/Wg/101MYXHqqCA5HfbZD5aV39+f8uW1/7C+SlfsFqgqxoaLNKqfXdMkAfjUaTONVsJ5mfgP5kB6IhCetbVri9+UgUXYYOcjZ34VxSPISvI22B7zSiDs6VtVoNLDhz+0XD1KoRRQ+Rjh858nJ8HFT/ORLGO3VhyhWT/G7jUB5GyCcM9vIE1465l7uS1uslSlABfXmXWHxivqX1b65K9UVXldUj+E3sryzn68bjw3a4EgBgoBSaoABMXka2CFOioT27SRLvAD6Tnq029/WLRydbCW1Tgdnn5QSEAd4im+SyLrfY8lNLIZoz5axZAUS/Ik0gNwEXqFg/Qbn5gfNlUD8SQOA6gpNykTFZyAS8Mwl0lqGsi/y4FXXkNnZXXOdueasAknZQHLCnXORLiCThlN/3kpYkijIi1rtTDXey4Z/UI8YoPDirIrWJKlTW0twkuv6Zi7igFJwq6RVoej9ijKvdJ5aENLhtki+hSjreV0Ssf82JjJEU0fjWmLaIS6ZKwtCJy8cwWjK1wlk1ufnibvlEO8QfAekl/xv6f+csMVyb5wDl9BjzZFPTiTbF9/Cmo7YCHwV8pPEba/0gbwWOGF6suCQZIvgl11pj
- ha/37HFv
- y8NCRotDPDBRKG9r/IvwosRbTkW+b1W2S00KjmqqIKbY2PXxt+KcOCl7h8tW/czdKfCke+mejkfH1NYdSLLKH2zZgh29ZmXZsTvxovd5YvuQ6TekoawUFHgyR9TQJGtnqZfAPYkjqtqAfR4U26cxQmdy0y7jii5kJQWFKGN1ht1JvIyhVxw8AEbAGy1T/f1n2/vNBpQN4uCPB68uOBHMmyjG3va1ve2CmclEllHJ7AfCLhRR72RDl93/Q0Y9TMRI7jgim5a7f6f1skt2VzE4upE8SWix1b+RP5dga5BAbRg0cnGUkzTpbSkU+YkKuBFyMJvjG5s6JsvVh8yhTpoBLjmA0FB/ErKWh+/19cykEJcZKXzAqNXKscG54UCGeNivTakqMi95lQWCrcj+NcdYTJxa+oV+RACZED9Pf5Kkq3GTQ9HOADP2keKZa+sqKfGnidE8X8TYkIfAuT1a7HWzhruluXg4M/04W9KVwuQxINtKDR3kkb5BkF9MxLv8w9mXXEDV4ahNjGJjRGkQEYy3rudD/3SY7WPUFATbXhOMSiStrbXDo/dD9hSvEISJZ3gqPTaXnTjv3ZthSEm1Mbz5HWop7yulkMhr8ZuleZawRSygpbC0ePQWli2F3ke46HIQd1256pgxweKNUtZlCDcoCNmv1zyMYRya2GVpH
+X-HE-Tag: 1794358985-600702
+X-HE-Meta: U2FsdGVkX1/SnL2wC1ByDhOlwfjJa+i9w6Lyl6hDndrSc/md2Hcxmogizeu61vtvvngkHBiaEoV1uLKP2Azkisc6PdYJtA5X9DpxCqbMvVpheSeHumuEFx/dILaDTm31TYV+TKqu2owiPZp0Qv8W3vzZ6wvYf9KYaQlFZzIbJO2l3fTtrQ9eczk2iUXJLZ6CAxyLB0dHHbEdRaTOf/h0pGJmqG9M09I+qqS7GaAlgJ/RobRrPC7xd0ytUVv2cggfqSYTxAlA2LX9EwSipWAj7lRLblalBYD1b8K6dFp9JMiqTU6NlFWFLNEm2w1t1S9WI29fZ0MnVukTacrqPgjGGA1Rbxvd85DXbXMLK50pFX39aTvFMCil+Fy9YQN+KZEUeBL+/qZ6zYGzeKsifTBem9EAUMBd8AN9ThVNArA9DFcI664GtlySFBx0AUUGBt5ZH8pQ8LoEjeno+d9p2IB3DOJtu5cOtFeXOOSTaGwQ2qz/ERur3TanmnntgZmw7gB7vVN7XvUNjcWP6QL/3AEdCjEvXAD6jCMGBj8XQRF9dPBIt+DTfgECB2xZj594i0XzVNZrxMPlQXpWLQ85sA9Pltb2LhCXVvp69w2bVnpoosz+FnxgS5O7SKlA2ENuHTg7vjpvz6TncjhYR/bU4/To/JLzw71N+WeKTs3kNfiw8NwSMFfhZ6MdsN63CkhgeigGoEXr+944Z9g6Yca7u9s3rYmHiBBmWh4eCjLzOPmP0n0XYjc3O4ASTMWK03b81iFs/zpXi9fzIMhm3ZduC114h/n78rZVscvr8awJXanuHMgwU7KwlLf2QDhsNzHFV6wh+qYBTRAXLCFPQy2tN88W4LqVpXomxEieZI+c7fygl8BW5szB3yOWQ7EOsKz7EYL5SmzFV7jO7oavOK7kyV5XUK3Qm1R22bRGh8syjseC7+kIfAbKY6XPUnwaijJXO1llFzvkukLpDoVWccUnRvf
+ KO0XSwjC
+ WxPXCGPgs9kMuNGlKwl0Q+m/9nDJdwusf9rYkFIjxYwDSrvAbJLjFV01qvcARRmfJPWEEC01PFnSgLwM5XDV3m0M/WQbJ1hwIKvP5wa25NNRgXBUbtCPun9vVUh/uREd8gk77wNi8owA6R0VYi39Ln6qRchA0ItNTw2o2em7CGTqUgR9ySGBB0X9F8jvL53rn0QldaGGVy9DtIYv8NR+OTYmSlCxFvP3rFXiAnrH/AME7GrPlpxB+9mEAcOwqdpQ0bVn/rUJXBFvrnriLA48/43preo5IT9b6KE/aHCoMIaQa//pgiFOnvEMTvFmeRqqyBCuVsI4TSfeK1ebQ1rv9ZA4gJrn0pqTQ3mBf3ZaM3qjSFRRRSVO3KcKjIg8pRzJtA6qLAv3Thd0H5K1bRSKWl3isOrPIUrjHqgXWIle9KCqJuBSYLI14lJ539GQq2kdHxD/0ULmOrE8Q0+1VDCaYfYv+oeMBF1gcpsZOto7GAjyS8IAcwO73TPwQxx909WoUsa39VWseS2cvcCfIz6bOjiXqBSnYTMQpV9oRZN0h15mfbSqstdzwtSRjXgBw8Bls7//z3ic+M7FI7FrAhPCpggrQnmF4jX7k5IvE/xd9oNcZbkIHytIthkukIysNCzNVwWt09gg7PdgK2+ZAgtZnsyIeDixqXgyM663zpGI8lX3RoEv82gxQkQo/V9Q6s1kTfgeiJ7uRh8uWqJ+cPbA7oaq7ug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,197 +106,231 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issues to consider:
-- [Medium] iommu/dma: redundant memset() of scrubbed blocks in
-  pisa_alloc_coherent()
-- [Low] iommu/dma: race with async refill when trimming reservoir in
-  KUnit test
+- [High] mm/slub: order clamping in calculate_sizes() breaks non-4K
+  pages and slab->objects
+- [Medium] iommu/pisa: pisa_alloc_folio() pollutes per-node allocator on
+  __GFP_THISNODE
+- [Medium] mm/slub: __GFP_PISA_RO leaks into alloc_slab_obj_exts() via
+  OBJCGS_CLEAR_MASK
+- [Medium] mm/slub: alloc_slab_page() and pisa_alloc_folio() bypass
+  current_gfp_context()
+- [Low] iommu/pisa: kmem_cache leak in test_slub_page_alloc() on
+  allocation failure
 --
 
-commit aab269faff1eb0d2c96bc73f80823d9c0113582c
+commit 48ed47e1e79e98a68d2521a0d03cf1f63453e5e9
 Author: Luigi Rizzo <lrizzo@google.com>
 
-iommu/dma: Add background page scrubber for PISA allocators
+mm/slub: Add SLAB_CACHE_PISA_RO for PISA-backed slab caches
 
-This commit adds an optional demand-driven background page scrubber for
-PISA allocators that zeroes dirty blocks on each NUMA node's work item and
-moves them to clean_bitmap.
+This commit adds the SLAB_CACHE_PISA_RO flag so SLUB caches can allocate
+zeroed, read-only PISA folios via pisa_alloc_folio().
 
 > diff --git a/drivers/iommu/pisa-alloc.c b/drivers/iommu/pisa-alloc.c
-> index b4a25c65bf97e..4b61ec84ed6d1 100644
+> index 4b61ec84ed6d1..3b5c49d143a7e 100644
 > --- a/drivers/iommu/pisa-alloc.c
 > +++ b/drivers/iommu/pisa-alloc.c
+> @@ -848,6 +848,33 @@ unsigned long pisa_alloc_pages_bulk(gfp_t gfp, unsig=
+ned int order, int preferred
+>  	return pisa_alloc_bulk(pa, gfp & ~__GFP_PISA_RW, nr_pages, page_array, =
+frozen);
+>  }
+> =20
+> +/**
+> + * pisa_alloc_folio - Allocate a frozen folio for SLUB (SLAB_CACHE_PISA_=
+RO)
+> + * @gfp: GFP flags (must have __GFP_PISA_RW or __GFP_PISA_RO set)
+> + * @order: Folio order
+> + * @nid: Target NUMA node (or NUMA_NO_NODE)
+> + *
+> + * Drops __GFP_THISNODE before calling the per-node allocator and verifi=
+es
+> + * node placement afterwards.
+> + *
+> + * Return: Frozen folio of @order, or NULL.
+> + */
+> +struct folio *pisa_alloc_folio(gfp_t gfp, unsigned int order, int nid)
+> +{
+> +	struct page *page;
+> +
+> +	page =3D pisa_alloc_pages(gfp & ~__GFP_THISNODE, order, nid, NULL);
+> +	if (!page)
+> +		return NULL;
+> +	if (unlikely((gfp & __GFP_THISNODE) && nid !=3D NUMA_NO_NODE &&
+> +		     page_to_nid(page) !=3D nid)) {
+> +		page_ref_unfreeze(page, 1);
+> +		__free_pages(page, order);
+> +		return NULL;
+> +	}
+> +	return page_folio(page);
+> +}
+
+[Severity: Medium]
+Can stripping __GFP_THISNODE here attach a remote 2MB PISA page to nid's
+per-node PISA allocator?
+
+When ___slab_alloc() tries the local node first, it passes
+GFP_NOWAIT | __GFP_NOWARN | __GFP_THISNODE.  If nid's PISA allocator and
+reservoir are empty, pisa_alloc_pages() reaches __pisa_page_alloc(), which
+calls alloc_pages_node(nid, gfp, PISA_ORDER) without __GFP_THISNODE.  When
+nid has no free order-9 buddy pages, alloc_pages_node() falls back to a
+remote node, and __pisa_alloc_bulk() binds that remote 2MB page's
+pisa_meta to nid's pisa_alloc and sets PISA_ACTIVE.
+
+pisa_alloc_folio() then rejects the block because page_to_nid(page) !=3D nid
+and calls __free_pages(page, order), which intercepts PISA_ACTIVE in
+__free_pages_prepare() -> pisa_free_page() and recycles the remote block
+back into nid's pisa_alloc instead of freeing the 2MB page.  Subsequent
+__GFP_THISNODE allocations on nid will repeatedly pop and reject blocks
+from that remote 2MB page.
+
+> diff --git a/drivers/iommu/pisa-kunit.c b/drivers/iommu/pisa-kunit.c
+> index 40bf7801183da..9cc1328893ace 100644
+> --- a/drivers/iommu/pisa-kunit.c
+> +++ b/drivers/iommu/pisa-kunit.c
+[ ... ]
+> @@ -621,6 +622,23 @@ static void test_reservoir_and_scrubber(struct kunit=
+ *test)
+>  	WRITE_ONCE(pisa_scrub_max, old_scrub);
+>  }
+> =20
+> +static void test_slub_page_alloc(struct kunit *test)
+> +{
+> +	struct kmem_cache *s;
+> +	void *obj;
+> +
+> +	s =3D kmem_cache_create("pisa_kunit_slab", 1024, NULL,
+> +			      SLAB_NO_MERGE | SLAB_CACHE_PISA_RO);
+> +	KUNIT_ASSERT_NOT_NULL(test, s);
+> +
+> +	obj =3D kmem_cache_alloc(s, GFP_KERNEL);
+> +	KUNIT_ASSERT_NOT_NULL(test, obj);
+> +	KUNIT_EXPECT_TRUE(test, is_pisa_page(virt_to_page(obj)));
+> +	kmem_cache_free(s, obj);
+> +
+> +	kmem_cache_destroy(s);
+> +}
+
+[Severity: Low]
+Does KUNIT_ASSERT_NOT_NULL(test, obj) leak the kmem_cache s if
+kmem_cache_alloc() fails?  KUNIT_ASSERT_NOT_NULL() aborts the test
+immediately before reaching kmem_cache_destroy(s).
+
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 45e077c7526c2..63609768f4e3f 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+[ ... ]
+> @@ -3378,6 +3379,8 @@ static inline struct slab *alloc_slab_page(gfp_t fl=
+ags, int node,
+>  	if (unlikely(!allow_spin))
+>  		page =3D alloc_frozen_pages_nolock(0/* __GFP_COMP is implied */,
+>  								  node, order);
+> +	else if (unlikely(flags & __GFP_PISA_RO))
+> +		page =3D (struct page *)pisa_alloc_folio(flags, order, node);
+>  	else if (node =3D=3D NUMA_NO_NODE)
+>  		page =3D alloc_frozen_pages(flags, order);
+>  	else
+
+[Severity: Medium]
+Does calling pisa_alloc_folio() directly bypass current_gfp_context()?
+
+alloc_frozen_pages() and __alloc_frozen_pages() apply
+current_gfp_context(gfp) in __alloc_frozen_pages_noprof() to strip
+__GFP_DIRECT_RECLAIM, __GFP_FS, or __GFP_IO under scoped
+memalloc_noreclaim_save(), memalloc_nofs_save(), or memalloc_noio_save()
+sections.  Neither alloc_slab_page() nor pisa_alloc_folio() applies
+current_gfp_context(flags), so a GFP_KERNEL allocation from a
+SLAB_CACHE_PISA_RO cache inside memalloc_noreclaim_save() still has
+gfpflags_allow_blocking(gfp) true and can sleep in pisa_alloc_split_page(),
+and inside memalloc_nofs_save() or memalloc_noio_save() can enter
+pisa_meta_init() from __pisa_page_alloc() before pisa_memalloc_save() is
+called.
+
+> @@ -3484,7 +3487,7 @@ static struct slab *allocate_slab(struct kmem_cache=
+ *s, gfp_t flags,
+>  	gfp_t alloc_gfp;
+>  	void *start;
+> =20
+> -	flags &=3D gfp_allowed_mask;
+> +	flags &=3D gfp_allowed_mask & ~__GFP_PISA_RW;
+> =20
+>  	flags |=3D s->allocflags;
+
+[Severity: Medium]
+Does __GFP_PISA_RO in s->allocflags leak into internal slabobj_ext
+allocations?
+
+flags |=3D s->allocflags sets __GFP_PISA_RO in flags after ~__GFP_PISA_RW is
+masked out, and allocate_slab() then passes flags to account_slab() ->
+alloc_slab_obj_exts().  Because OBJCGS_CLEAR_MASK does not include
+__GFP_PISA_RW:
+
+mm/slub.c:
+#define OBJCGS_CLEAR_MASK	(__GFP_DMA | __GFP_RECLAIMABLE | \
+				__GFP_ACCOUNT | __GFP_NOFAIL | \
+				__GFP_THISNODE | __GFP_COMP)
+
+alloc_slab_obj_exts() (and alloc_empty_sheaf() when a caller passes
+__GFP_PISA_RO) leaves __GFP_PISA_RO set on the internal kmalloc call.  If
+the slabobj_ext array exceeds KMALLOC_MAX_CACHE_SIZE,
+___kmalloc_large_node() allocates the SLUB metadata array from a PISA RO
+page.  Adding __GFP_PISA_RW to OBJCGS_CLEAR_MASK would prevent this.
 
 [ ... ]
 
-> @@ -1166,11 +1339,13 @@ static struct page *pisa_take_contig(struct pisa_=
-meta *meta, unsigned int nblock
->  		} else {
->  			__clear_bit(off + i, meta->dirty_bitmap);
->  			meta->nr_dirty--;
-> +			dirty++;
->  		}
->  		pisa_block_prep(page + i);
->  		page_ref_unfreeze(page + i, 1);
->  	}
->  	pa->blocks_in_use +=3D nblocks;
-> +	pa->scrub_demand =3D min(pa->scrub_demand + dirty, PISA_SCRUB_DEMAND_MA=
-X);
->  	pisa_place_meta(meta);
->  	return page;
->  }
-> @@ -1185,7 +1360,7 @@ void *pisa_alloc_coherent(struct page **pagep, stru=
-ct device *dev,
->  			  struct iommu_domain *domain, size_t size,
->  			  gfp_t gfp, unsigned long attrs)
->  {
-> -	bool should_release =3D false;
-> +	bool should_scrub =3D false, should_release =3D false;
->  	struct list_head *lists[3];
->  	unsigned long align_mask, flags;
->  	unsigned int nblocks, i;
-> @@ -1234,10 +1409,14 @@ void *pisa_alloc_coherent(struct page **pagep, st=
-ruct device *dev,
->  		}
->  	}
->  	if (!page) {
-> +		should_scrub |=3D pa->scrub_demand >=3D PISA_SCRUB_TRIGGER;
->  		spin_unlock_irqrestore(&pa->lock, flags);
->  		meta =3D pisa_alloc_split_page(0, gfp, pa->nid);
-> -		if (IS_ERR(meta))
-> +		if (IS_ERR(meta)) {
-> +			if (should_scrub)
-> +				pisa_schedule_scrub(pa->nid);
->  			return NULL;
-> +		}
->  		spin_lock_irqsave(&pa->lock, flags);
->  		meta->pa =3D pa;
->  		meta->prot =3D pa->prot;
-> @@ -1247,10 +1426,13 @@ void *pisa_alloc_coherent(struct page **pagep, st=
-ruct device *dev,
->  		if (unlikely(!page))
->  			should_release =3D pisa_place_meta(meta);
->  	}
-> +	should_scrub |=3D pa->scrub_demand >=3D PISA_SCRUB_TRIGGER;
->  	spin_unlock_irqrestore(&pa->lock, flags);
+> @@ -8182,6 +8189,11 @@ static int calculate_sizes(struct kmem_cache_args =
+*args, struct kmem_cache *s)
+>  	if (s->flags & SLAB_RECLAIM_ACCOUNT)
+>  		s->allocflags |=3D __GFP_RECLAIMABLE;
 > =20
->  	if (should_release)
->  		pisa_schedule_reclaim();
-> +	if (should_scrub)
-> +		pisa_schedule_scrub(pa->nid);
->  	if (!page)
->  		return NULL;
->  	*pagep =3D page;
-
-[Severity: Medium]
-Does pisa_alloc_coherent() end up zeroing blocks twice when background
-scrubbing is enabled?
-
-pisa_take_contig() charges dirty blocks to pa->scrub_demand and
-pisa_alloc_coherent() schedules the background scrubber on the per-node
-order-0 RW allocator, which zeroes dirty blocks and moves them to
-meta->clean_bitmap.  However, unlike __pisa_alloc_bulk(),
-pisa_alloc_coherent() unconditionally calls memset(page_address(page), 0,
-size) at the end of the function even when blocks were taken from
-meta->clean_bitmap (and pisa_pcp_alloc() on the same allocator also refills
-with zero =3D false and zeroes inline), so background-scrubbed blocks are
-always zeroed again on allocation.
-
-> diff --git a/drivers/iommu/pisa-kunit.c b/drivers/iommu/pisa-kunit.c
-> index b63cd6585b673..40bf7801183da 100644
-> --- a/drivers/iommu/pisa-kunit.c
-> +++ b/drivers/iommu/pisa-kunit.c
-> @@ -572,8 +572,53 @@ static void test_gfp_pisa(struct kunit *test)
-> =20
->  static void test_reservoir_and_scrubber(struct kunit *test)
->  {
-> -	KUNIT_ASSERT_EQ(test, pisa_meta_init(), 0);
-> -	KUNIT_EXPECT_EQ(test, READ_ONCE(pisa_reservoir_max), 16U);
-> +	unsigned int old_res =3D READ_ONCE(pisa_reservoir_max);
-> +	unsigned int old_scrub =3D READ_ONCE(pisa_scrub_max);
-> +	struct shrink_control sc =3D { .nr_to_scan =3D ULONG_MAX };
-> +	struct pisa_meta *meta;
-> +	struct pisa_alloc *pa;
-> +	struct page *p;
-> +	int nid;
-> +
-> +	pisa_shrink_scan(NULL, &sc);
-> +
-> +	/* Refill reservoir to 1 PISA page per memory node, then consume one. */
-> +	WRITE_ONCE(pisa_reservoir_max, 1);
-> +	pisa_schedule_reservoir();
-> +	for_each_node_state(nid, N_MEMORY)
-> +		flush_work(&pisa_nodes[nid].work);
-> +	KUNIT_EXPECT_GE(test, pisa_reservoir_count(), 1UL);
-> +
-> +	pa =3D pisa_node_pa(first_memory_node, 2, true);
-> +	KUNIT_ASSERT_NOT_NULL(test, pa);
-> +	p =3D pisa_alloc(pa, GFP_KERNEL);
-> +	if (p) {
-> +		meta =3D pisa_meta_of_pfn(page_to_pfn(p));
-> +		/* Reservoir pages come pre-zeroed (all remaining blocks clean). */
-> +		KUNIT_EXPECT_EQ(test, meta->nr_dirty, 0U);
-> +		__free_pages(p, 2);
-> +		if (!want_init_on_free()) {
-> +			KUNIT_EXPECT_EQ(test, meta->nr_dirty, 1U);
-> +
-> +			/* Scrub dirty block back into clean_bitmap. */
-> +			pa->scrub_demand =3D 1;
-> +			WRITE_ONCE(pisa_scrub_max, 512);
-> +			pisa_scrub_node(pa->nid);
-> +			KUNIT_EXPECT_EQ(test, meta->nr_dirty, 0U);
-> +		}
+> +	if (s->flags & SLAB_CACHE_PISA_RO) {
+> +		s->allocflags |=3D __GFP_PISA_RO | __GFP_ZERO;
+> +		order =3D clamp_t(unsigned int, order, 2, PAGE_ALLOC_COSTLY_ORDER);
 > +	}
-> +	pisa_shrink_scan(NULL, &sc);
 > +
-> +	/* Trim reservoirs back to 0. */
-> +	WRITE_ONCE(pisa_reservoir_max, 0);
-> +	pisa_schedule_reservoir();
-> +	for_each_node_state(nid, N_MEMORY)
-> +		flush_work(&pisa_nodes[nid].work);
-> +	KUNIT_EXPECT_EQ(test, pisa_reservoir_count(), 0UL);
+>  	/*
+>  	 * For kmalloc caches we enable sheaves later by
+>  	 * bootstrap_kmalloc_sheaves() to avoid recursion.
 
-[Severity: Low]
-Can an in-flight refill race with the trim step and cause
-KUNIT_EXPECT_EQ(test, pisa_reservoir_count(), 0UL) to fail?
+[Severity: High]
+Does clamping order to [2, PAGE_ALLOC_COSTLY_ORDER] after
+calculate_order(size) break on 16KB and 64KB page kernels?
 
-Popping a page from the reservoir in pisa_alloc() drops res->nr_pages from
-1 to 0 while pisa_reservoir_max is still 1, which queues res->work to
-refill the node:
+In pisa_init(), read-only PISA allocators are only created for order 2 and
+SKB_FRAG_PAGE_ORDER:
 
-CPU0 (kunit)                      CPU1 (kworker)
-pisa_alloc(pa, GFP_KERNEL)
-  pisa_reservoir_pop_node()
-    res->nr_pages-- (0)
-    pisa_schedule_reservoir_node()
-      queue_work_node(..., &res->work)
-                                  pisa_node_work_fn()
-                                    pisa_reservoir_trim_node()
-                                    pisa_reservoir_refill_node()
-                                      /* reads pisa_reservoir_max =3D=3D 1 =
-*/
-                                      __pisa_page_alloc()
-WRITE_ONCE(pisa_reservoir_max, 0)
-pisa_schedule_reservoir()
-  pisa_schedule_reservoir_node()
-    /* nr_pages (0) =3D=3D max (0),
-     * does not re-queue res->work
-     */
-                                      spin_lock_irqsave(&res->lock, ...)
-                                      list_add(&meta->list, &res->pages)
-                                      res->nr_pages++ (1)
-                                      spin_unlock_irqrestore(&res->lock, ..=
-.)
-flush_work(&pisa_nodes[nid].work)
-KUNIT_EXPECT_EQ(...,
-  pisa_reservoir_count(), 0UL)  <-- fails (count is 1)
+drivers/iommu/pisa-alloc.c:pisa_init() {
+	const struct {
+		u8 order;
+		bool ro;
+		bool pcp;
+	} cfg[] =3D {
+		{ 0, false, true },
+		{ 2, true, false },
+		{ SKB_FRAG_PAGE_ORDER, true, true },
+	};
 
-Flushing pisa_nodes[nid].work before setting pisa_reservoir_max to 0 (or
-re-checking pisa_reservoir_max under res->lock in
-pisa_reservoir_refill_node()) would avoid this race.
+On ARM64 with 16KB or 64KB pages, SKB_FRAG_PAGE_ORDER is 1 or 0, so no
+order-3 (PAGE_ALLOC_COSTLY_ORDER) read-only PISA allocator exists.  When
+calculate_order(size) returns 3, pisa_alloc_folio() looks up
+pisa_node_pa(nid, 3, true), which returns NULL, and allocate_slab() skips
+the s->min fallback for SLAB_CACHE_PISA_RO, causing every allocation from
+the cache to fail.
+
+In addition, clamping order up to 2 runs after calculate_order(size) has
+enforced MAX_OBJS_PER_PAGE (32767).  On 64KB pages with s->size =3D=3D 8,
+forcing order 2 produces 32768 objects, which fits in the 16-bit OO_MASK of
+s->oo but truncates the 15-bit unsigned slab->objects bitfield to 0 in
+allocate_slab(), corrupting freelist setup in build_slab_freelist() or
+looping in ___slab_alloc().  Finally, if s->size exceeds
+PAGE_SIZE << PAGE_ALLOC_COSTLY_ORDER when SLUB_DEBUG inflates metadata,
+clamping order down makes oo_objects(s->oo) =3D=3D 0 before
+do_kmem_cache_create() can reach disable_higher_order_debug.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109182533.3594=
-984-1-lrizzo@google.com?part=3D15
+984-1-lrizzo@google.com?part=3D16
 
