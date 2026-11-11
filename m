@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA889606A89C
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 22:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F6D4606A89C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 22:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OIcV2Ati
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WT1C8sty
 Received: by kanga.kvack.org (Postfix)
-	id 1CC066B05BC; Wed, 11 Nov 2026 17:50:36 -0500 (EST)
+	id 463656B05C0; Wed, 11 Nov 2026 17:50:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 155FA6B05C8; Wed, 11 Nov 2026 17:50:36 -0500 (EST)
+	id 3EDFA6B05C1; Wed, 11 Nov 2026 17:50:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF11C6B05BC; Wed, 11 Nov 2026 17:50:35 -0500 (EST)
+	id 2B5EC6B05C9; Wed, 11 Nov 2026 17:50:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CD46C6B05BC
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E7C036B05C0
 	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:50:35 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6CE7EA0470
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7ED211A01DC
 	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:50:35 +0000 (UTC)
-X-FDA: 85424334030.28.549BFA2
+X-FDA: 85424334030.10.4CA30B7
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C312D1C0005
+	by imf05.hostedemail.com (Postfix) with ESMTP id E0861100003
 	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:50:33 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OIcV2Ati;
-	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WT1C8sty;
+	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794437433;
+	s=arc-20220608; t=1794437434;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SVTuJ1ZadpM8DW+Gw10f6JclMBh6bL2TpwjonMT6ua8=;
-	b=X6q+tVNRoXvIv3yUIWeY8dvRaZFJL2L2Zua0ef6CS2Gqh2XcYXENIcGYuKzhID8THnEOWb
-	TfOL3umM81+0cguQeU2uVSkAP2vDC1KWEpFmGFk/IEz9Z3M4biIJfcXWxLkq+6VduYXjwT
-	2WTfA+w0fRaHQNBy6jp5Iuw3RvXg+SQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794437433;
-	b=QqNFDXJn4FToRnKsx1qciquuGE0QKn7iC5wK6T+pvCAdQT8jjZY2azryPgcrNi2kcZT9TG
-	aUAnUu+fSMMUUy/ZZeOcGF3H+ffpBjMvmW6cLM4Ysv/3SnpOyja7O3fqdWpCYKdn7Jma/a
-	SXOXVdvgjTxXC9MG/trYDZXy/1/1zQY=
+	bh=JM8sbqrYlgMDry6zWHzievP0h2WyCRO0O7Hgtn6Zl/E=;
+	b=l9DYAZU9NlsuOcXtFYUQJSV5g+R15Gv8U9uLCOogyHL2vpRIWLGOBsHvG5z7Lzmogr8ZFF
+	g19r/VA/QKn3kzLnspyqGV/XrDWhVrshFWItm5crxEJP5eZY/0TIaVbYKr18eq5g3TpcfW
+	jgYBdaPNxfk8fjL2QCrzd6dGfc88wEA=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OIcV2Ati;
-	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WT1C8sty;
+	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794437434;
+	b=DsbYlLN0vJFAczMXjZo8aYe5B0JinvstNmngnVkiEWdyXWGG5/zlJzishwcz6S4mp2r5Kc
+	n/nkb0eZHztodi5BzS5eXRhiyOp01WH2RHxF8CNpA9lNHSSwnNE3/kIsQF0FEe7zxqj4lc
+	jR7bSMoe6Uji3G/Ppis68d1QGdl7tkk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6002963BB6;
+	by tor.source.kernel.org (Postfix) with ESMTP id 7763965331;
+	Wed, 11 Nov 2026 22:50:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA921F00A05;
 	Wed, 11 Nov 2026 22:50:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC571F00A05;
-	Wed, 11 Nov 2026 22:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794437432;
-	bh=SVTuJ1ZadpM8DW+Gw10f6JclMBh6bL2TpwjonMT6ua8=;
+	s=k20260515; t=1794437433;
+	bh=JM8sbqrYlgMDry6zWHzievP0h2WyCRO0O7Hgtn6Zl/E=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OIcV2AtiJytrDbWIJF1koHJiEFHT/7wOAqNsExJ7YxlByp8cmLqv/S92++fHtn7yI
-	 N8RWmzH1Uqvi5AXN7hQaFJUiCDRpemD4kVKbtW3+5CsgMT/QEvdwzeKxywy09K9DAn
-	 qnpnyvLAUaVlGuJe18ytH45hhxkLlDRG57U/iZP2g5iNxo1FR98Xr47Yu5Gus0TbFY
-	 OrmNqMyqwMiZ+BNDa6tz0wNIeQpQ6ji/OCi9waoCJ536xngtL3hGCAz/p6L6io3e8z
-	 ccx40a0SPY7yawRpbkQv/AC10u6B6J2/NDrmO6aq1rKYO8+9K2+aF6uRyAVl/B0DVz
-	 uo50+Ter5Nf0w==
-Message-ID: <sashiko-outbox-209832@kernel.org>
+	b=WT1C8styWEhq7LAEGBCmoiGwEVoww+2VJvtBFd/Z+HU2SFBHbWosk4tO2QDKUUVIu
+	 19OiaMq0uJ1xGfvUyDtRysk/h6OIvTUEQ+8ULr7vEpLH0gkk7SKvmpd0sbGxgh1QcN
+	 k3YJgd/YQbfki/oucyGUhmJuJWcQlwmUspv8xsyL/XTM3P8WCthYNmDjRmr8+KBH8a
+	 q8ZPiHv53kHhVxREjf1Nu3EDdtW4/ZINsSJTKGwKEAOSnP3IKcLB2417kxrax7gQkq
+	 JwHsokYBj63yGPrabR239rbQWfHQsB5CcfildYHpONviaHxmjiBEmE9Cw8Nbu7qoTV
+	 KyTMCcub/+hig==
+Message-ID: <sashiko-outbox-209833@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/4] mm/char-mem: implement huge_fault support for
- /dev/mem
+Subject: Re: [PATCH 4/4] uio: implement huge_fault support for physical
+ mappings
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Eliav Farber" <farbere@amazon.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Greg
  Kroah-Hartman" <gregkh@linuxfoundation.org>
@@ -71,24 +71,24 @@ Cc: "David Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, 
  R. Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
  Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
  Hocko" <mhocko@suse.com>, "Jann Horn" <jannh@google.com>, "Pedro Falcato" <pfalcato@suse.de>, linux-mm@kvack.org
-In-Reply-To: <20261111113045.35368-4-farbere@amazon.com>
+In-Reply-To: <20261111113045.35368-5-farbere@amazon.com>
 References: <20261111113045.35368-1-farbere@amazon.com>
- <20261111113045.35368-4-farbere@amazon.com>
+ <20261111113045.35368-5-farbere@amazon.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 11 Nov 2026 22:50:30 +0000
-X-Rspamd-Server: rspam06
-X-Stat-Signature: nhx3ic4f86ushhxn5gd1f1txr87x64dg
+Date: Wed, 11 Nov 2026 22:50:32 +0000
+X-Stat-Signature: hpd3fsusibnhx9cg4fbyrhg7qwje35ts
+X-Rspamd-Server: rspam01
+X-Rspam-User: 
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: C312D1C0005
-X-Rspam-User: 
-X-HE-Tag: 1794437433-54401
-X-HE-Meta: U2FsdGVkX1+Fqumyf4wLDFdEtsGi9RANnAVHp1l0youH9inSy7cZcUNLVDfnkx1hMMQ5bw/DOALDtrauTvkuxU35wdr5K/EXOVqGIMSwZDmqDDDu18v2+cFWN6spd6U+Go2m46nVZScm9981Ux2ShqXinzgcwOJ1FQdDmZGgw0W1gUFrP6k+D7ODFfa/+CDUqzI2ql90LSVn64BtWNp7NgbTtAM4+SLWJW04N7TR2dBjxlMx/XQ5D8aBd6rq88JS1iznLWPvVEijVl1YM0uUqb2iD9P1EPywqKMhyKkxKV7etj6b6DxVx/IzE4dNnJFSSqFlYVYc9j1GRk6CMzn8g+PvpdmLTItFrC70iRt6CHz5D+PcKr2SUcqY+huc3D4F3N/SVcjv9cl46r5viv/6yve9i4L1dY+765lY2E+lD+Dgm5znfIKmhK5nJYvj6bZWUdBYrObYqRykyblMxYBGLqy6T0nnw7vAkLW2bW1J6oxI8p+82Hqtu5oU3H9rAzJxB38iINFxHVsCo/h1yy/cvcFVcRzf0SufyDqrt8e0jk0Pr5SiDkf/ZDgyVgNofb9N3PYRF8ErzasQKGxFDPKFv1qWS03jA0XFAPabQ0XRuhz+SCAGmn4SdOQX88iWAKECzwDVqqH0FNJQ0vLj1vCmxFiDJK8SVDtiBBT+V1y5LO4U3Ilur0E5ofsedubjzllDjV7NOm61bEhYg9EhifY2YSr3X2UHy667D0f7dmf82kae/uJMEDbstIFPmyCi9PZEgWaRtltgGf7A+sTFyg96DnuCagpmt9UwEK9RU6eCqhbrSnQDk0T1BGWihxPEEUUThZpc1JF9ZzF8Cgd4q2pJii6pLphcjRV3/+dyZ2z+6/UfuCdrEqhKKjnn8zh0eU8HVzrWGfOXOqAy06U8jqvUIExS155MvbUO1YK4jNa6C+rMrF3Q6OciNl7ZoD2kbjw3Rvd7NImDB2VHbefJmGK
- WP/FZwD4
- g1VUX6mSXMHH+0ijZIZNSVmDKziA5fZiM2trOZDQOQCGkj3g1aeAsVQqYElZOOv/6tEG6W2kebpDbcdEYgbG/Okd4vWWaexhHE+rwdn96yt4ptiDzvAtxeNAOXfdA8/nL5DGeYE4/GhDhPBy740m/hRf2+aOeocxtnC5FNEvrqYIDBVFUT52OxwqFIzov3QTm6UlyYt9W4WhuOiTbt3pG8SoeiLGB9uCDpxc70DYWSwXghBd93yAw107/YH+8RmO2p5WdR9tJzxr4PFV2dG/8IyiNr2UM8Zzxb5VAtbW/Qyb0xeeXcLTb4MxKnRLfPK4A7Kil7HgM0YthrQmIwuJbf3+LPxg0ya3vZVHTREEWmdMhpJ2VJsYy+u0TX5A1q8/vyWOkX6gt/IunPuWBl98NXtPzKxLK/3Id8qjMmvlDXfpWv+daCTW5XZ8cVfNrdTs4Ao0y9KvuiVPVUjJt21e6Xatlg3YwnsYwiUcwZTHX+o3jORhqN7ju7hoOb2fgagJNedrUokwglmtXUCqFY90TcozYZoa66xHpZNskNQWqIlNIVjx3jPp17yY5BjGP1NPc3JcRzB9NHr3BYcb/UA6B4CVZ5Z2aPaF+y+q5aAK+E48ZySJ9vVXXCF0PUtdywkA0DJu8
+X-Rspamd-Queue-Id: E0861100003
+X-HE-Tag: 1794437433-674342
+X-HE-Meta: U2FsdGVkX1/HtVjBjPHg2c3HauEvMsMC0H552T3N4DjCm45Y4GTT2aYL9Zys+nNSOyh7IJO6JRpLkBvamaklswVrJ9eeaxxiMkb6+dAEdbiqG34SzPYM4OoqLMAFvf5pRoZHDVAYviTYAwL4xQ/R8XZ53LRU5XmfzWQ6IngNo95QJg0hAIiMr0ZZGiftGAoqXkmwO5lAJMjpCY/FBkpaiKrV+BTpO3F08eE2LCnopnIKo/qdqJfgW2B2SHXy3yj2amn/HB6QiB+dbHs2k8hCdr8n7Byt4MbrPIdkozTZS7l+2Zrlz+hPAmYO3dtXJXpQdDNqu8gptqWmzraR6MetOziJN6zhKRtWG0wP15OmM7GMyvzcQdhqLw9RlE7HNrAH3WlWHjF/lcL/SvNObOSDilkLFVcuofhakvbvoYdOHXx7+0tyYo10dHVUwgDbBB4yvlWxnKv5HWR/U/zDJR8dDZqp1W8lDJPaGNvJStKAAc0J8iNwrAEqN5QffcP/eeQMq38n8Sxy3lP6Ry6me/TMWNoawRrSflfXh6X8kSbPM2u75/+oXPiBTV6Cm4BFggzT0fRtOOimO2sOaEHmO88MS1w6nzebFqaxea1ee5bHMav0GFV2Vu97DZ73aMc6EiG100xLn9lHMqFTaIF5nY67R5GEjMYNBza5HNdGOfs+2Y8AVMNgyO2YpscADbBHFdMtyjFguF25rpoMl0EQgtj0A5MZEde0owbF4A6L87ZQGgar/wEdRx/+IzImVCozuwn51nesCNeQy3e1jTSR3P1iu9C9OLq0rHzQtWtIoFVEEVYR57fv7e4e7UtfKz0gXQ0hwlNKQqnWo2+pecC2Rq/C7jpabxZg9kBsD2POGjraDIxSoSVBuwmkW7zSBsW0cyPhraYddrSVscPJ/aaGGhFhSbavBzN+3ToAvVGRFycPaMfCEZiT/Hqswt3uJk3bQpUdr+kQ9tbJRFnI96QiOfV
+ ycLZKuHU
+ 9jtUVkSNVRRGLoEZ0lnQCPnFU+dIFaN1COSKKOnGbATJK3p2KYFTEzBRbjLmV8apNqSBjI63KQORz8imBbz8ufyOBr0L+5u68scMCA2PIi5QA3TO8+9S+0xP69NAlwNZCYmE1CNJNa8QVv2+VMZ9Vkuti+26py0EZltVn6KuHdYdpuYZe3qUvZGxuo33O8Suphc7eLZ2Qp2vbcQjuHCAE4rwbwKagG2kysJVcx7taCFNkcHmUlXKgfRI/i1uTwn+aAyDsoJqdUw/ELItkTLlv5nAUinKTAErMrpKd6a62x+CQvBgA0Oq00nT9+6inZUW5H/NiOJPRT+0ELu4/oLYNiCBsfmhGBJQeH3UjxcaWnPlwfKtY9+zIQG1M2jPxtR3u4N5QbaTnCnynnzX2vO+UDtRyDFoYhI1+dXF0e/wIOhEdZ9lhxK1/F5Vt8CiNf/9Iy2j1e6saBeTNlv/J8PFwdoT+S9jwNt/Mi6ojZciWIXQRgHXl0LC3X+YVRb/2Kp4QdU3h2TsARtUJcMZjzXtveXlySzM31CW90HGtAiLdYi1zi67pZbdNltGFx7HqgSyipGcMG5GRCUpr4mOP1QFZ4YJxKuOUH4TJicLyQcGYqg/AMUCnB7iyE/ThDTd3jLAdaoAiGjK1Tu6q+XY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,38 +98,78 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] mm/char-mem: read-only PTE after fixup_user_fault() in
-  mmap_mem_access()
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [High] uio: BUG_ON in uio_physical_huge_fault() on COW physical
+  mappings
+- [Medium] uio: read-only PTE after fixup_user_fault() in
+  uio_physical_access()
 --
 
-commit 2398e62524e61afe6489b128b93a5b0922afcd83
+commit 64a7c2da3be318c1019224cd530d155344992a33
 Author: Eliav Farber <farbere@amazon.com>
 
-mm/char-mem: implement huge_fault support for /dev/mem
+uio: implement huge_fault support for physical mappings
 
-This commit switches non-COW /dev/mem mappings from eager remap at mmap()
-time to fault-time population using ->fault and ->huge_fault handlers, and
-adds mmap_mem_access() to fault in untouched pages before calling
-generic_access_phys().
+This commit populates non-COW UIO physical mappings on fault via .fault and
+.huge_fault handlers using vmf_insert_pfn_order(), while tracking the PFN
+range with pfn_range_track() and faulting pages in from .access.
 
-> diff --git a/mm/char-mem.c b/mm/char-mem.c
-> index c5761ddedbd7d..b9ed8473baeb7 100644
-> --- a/mm/char-mem.c
-> +++ b/mm/char-mem.c
-> @@ -318,9 +318,92 @@ static inline int private_mapping_ok(struct vm_area_=
-desc *desc)
-
-[ ... ]
-
+> diff --git a/drivers/uio/uio.c b/drivers/uio/uio.c
+> index f8fa205226601..6b4c79340e5c8 100644
+> --- a/drivers/uio/uio.c
+> +++ b/drivers/uio/uio.c
+> @@ -733,9 +733,80 @@ static int uio_mmap_logical(struct vm_area_struct *v=
+ma)
+>  	return 0;
+>  }
+> =20
+> +/*
+> + * Populate UIO physical mappings on fault, using a PMD or PUD mapping w=
+here the
+> + * architecture, the fault address and the pfn allow it.
+> + */
+> +static vm_fault_t uio_physical_huge_fault(struct vm_fault *vmf,
+> +					  unsigned int order)
+> +{
+> +	struct vm_area_struct *vma =3D vmf->vma;
+> +	unsigned long addr =3D vmf->address & ~((PAGE_SIZE << order) - 1);
+> +	struct uio_device *idev =3D vma->vm_private_data;
+> +	vm_fault_t ret =3D VM_FAULT_SIGBUS;
+> +	unsigned long pfn;
+> +
+> +	/*
+> +	 * vm_pgoff is the base pfn of the mapping (see uio_mmap_physical()).
+> +	 * vmf_pfn_order_ok() ignores pfn if the window starts below vm_start.
+> +	 */
+> +	pfn =3D vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
+> +	if (!vmf_pfn_order_ok(vmf, pfn, order))
+> +		return VM_FAULT_FALLBACK;
+> +
+> +	mutex_lock(&idev->info_lock);
+> +
+> +	if (idev->info)
+> +		ret =3D vmf_insert_pfn_order(vmf, pfn, order);
+> +
+> +	mutex_unlock(&idev->info_lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static vm_fault_t uio_physical_fault(struct vm_fault *vmf)
+> +{
+> +	return uio_physical_huge_fault(vmf, 0);
+> +}
+> +
 > +#ifdef CONFIG_HAVE_IOREMAP_PROT
 > +/*
 > + * generic_access_phys() only follows present PTEs, and a lazily populat=
 ed
 > + * mapping has none for pages the target has not touched yet. Fault the =
 page in
-> + * first, so that remote access (ptrace, /proc/pid/mem) keeps working.
+> + * first (through the handlers above, so info_lock is honoured), so that=
+ remote
+> + * access (ptrace, /proc/pid/mem) keeps working.
 > + *
 > + * fixup_user_fault() refuses a fault the vma does not permit, so an unt=
 ouched
@@ -137,9 +177,9 @@ ouched
 apping
 > + * left a present PTE.
 > + */
-> +static int mmap_mem_access(struct vm_area_struct *vma, unsigned long add=
-r,
-> +			   void *buf, int len, int write)
+> +static int uio_physical_access(struct vm_area_struct *vma, unsigned long=
+ addr,
+> +			       void *buf, int len, int write)
 > +{
 > +	unsigned int fault_flags =3D FAULT_FLAG_REMOTE;
 > +
@@ -159,28 +199,98 @@ r,
 > +#endif
 
 [Severity: Medium]
-Can a remote write to an untouched order-0 page fail with -EINVAL when
-soft-dirty tracking is armed on the VMA?
+Can a remote write to an untouched page fail with -EINVAL after soft-dirty
+bits are cleared via /proc/<pid>/clear_refs?
 
-Writing 4 to /proc/pid/clear_refs clears VM_SOFTDIRTY on the VMA and strips
-write permission from vma->vm_page_prot via vma_set_page_prot().  On an
-order-0 fault, vmf_insert_pfn_order() calls vmf_insert_pfn(), which calls
-insert_pfn() with mkwrite =3D=3D false and installs a read-only PTE:
+Writing CLEAR_REFS_SOFT_DIRTY to /proc/<pid>/clear_refs clears VM_SOFTDIRTY=
+ on
+the VMA and calls vma_set_page_prot(), which strips write permission from
+vma->vm_page_prot so soft-dirty tracking can catch writes.  When
+fixup_user_fault() then faults an unmapped page at order 0,
+vmf_insert_pfn_order() calls vmf_insert_pfn(), which passes mkwrite =3D fal=
+se to
+insert_pfn() and installs a read-only PTE from vma->vm_page_prot, returning
+VM_FAULT_NOPAGE without running wp_pfn_shared().  generic_access_phys() then
+sees !args.writable and rejects the FOLL_WRITE access with -EINVAL.
 
-mm/memory.c:vmf_insert_pfn_order() {
-	struct vm_area_struct *vma =3D vmf->vma;
-	bool write =3D vmf->flags & FAULT_FLAG_WRITE;
+> +
+>  static const struct vm_operations_struct uio_physical_vm_ops =3D {
+>  #ifdef CONFIG_HAVE_IOREMAP_PROT
+> -	.access =3D generic_access_phys,
+> +	.access =3D uio_physical_access,
+> +#endif
+> +	.fault =3D uio_physical_fault,
+> +#ifdef CONFIG_ARCH_SUPPORTS_HUGE_PFNMAP
+> +	.huge_fault =3D uio_physical_huge_fault,
+>  #endif
+>  };
+> =20
+> @@ -767,11 +838,30 @@ static int uio_mmap_physical(struct vm_area_struct =
+*vma)
+>  	 * So we just do the physical mmap without a page
+>  	 * offset.
+>  	 */
+> -	return remap_pfn_range(vma,
+> -			       vma->vm_start,
+> -			       mem->addr >> PAGE_SHIFT,
+> -			       vma->vm_end - vma->vm_start,
+> -			       vma->vm_page_prot);
+> +	if (vma_is_cow_mapping(vma)) {
+> +		/* COW mappings cannot be populated on fault: map them now. */
+> +		return remap_pfn_range(vma,
+> +				       vma->vm_start,
+> +				       mem->addr >> PAGE_SHIFT,
+> +				       vma->vm_end - vma->vm_start,
+> +				       vma->vm_page_prot);
+> +	}
 
-	if (!order)
-		return vmf_insert_pfn(vma, vmf->address, pfn);
+[Severity: High]
+Can installing uio_physical_vm_ops on a COW mapping trigger a kernel BUG_ON=
+()
+when a concurrent fault observes a transiently cleared PTE?
 
-fixup_user_fault() only invokes handle_mm_fault() once, so it does not take
-the second write-protection fault (do_wp_page() -> wp_pfn_shared()) that a
-CPU store would take to make the PTE writable.  generic_access_phys() then
-sees !args.writable with FOLL_WRITE set and returns -EINVAL on the first
-write attempt.
+uio_mmap_physical() sets vma->vm_ops =3D &uio_physical_vm_ops before checki=
+ng
+vma_is_cow_mapping(vma), so a MAP_PRIVATE writable VMA gets .fault and
+.huge_fault installed even though it is mapped eagerly by remap_pfn_range():
+
+CPU0                                  CPU1
+handle_pte_fault()
+  do_wp_page()
+    wp_page_copy()
+      ptep_clear_flush(...)
+                                      handle_pte_fault()
+                                        orig_pte =3D ptep_get_lockless(...)
+                                        /* sees pte_none(orig_pte) */
+                                        do_pte_missing()
+                                          do_fault()
+                                            do_read_fault()
+                                              __do_fault()
+                                                uio_physical_fault()
+                                                  vmf_insert_pfn_order()
+                                                    vmf_insert_pfn_prot()
+                                                      BUG_ON(...)
+      set_pte_at(...)
+
+Previously .fault was NULL, so do_fault() took the !vma->vm_ops->fault bran=
+ch,
+rechecked the PTE under the page table lock, and returned VM_FAULT_NOPAGE.
+With .fault set and no vma_is_cow_mapping() check in uio_physical_huge_faul=
+t(),
+do_fault() calls into vmf_insert_pfn_prot() (or the PMD/PUD equivalents),
+which hits BUG_ON((vma->vm_flags & VM_PFNMAP) && vma_is_cow_mapping(vma)).
+
+Even if uio_physical_huge_fault() checked vma_is_cow_mapping() and returned
+VM_FAULT_SIGBUS, having .fault set on a COW VMA would still bypass do_fault=
+()'s
+page table lock recheck and deliver a spurious SIGBUS on transient PTE
+clearings, and having .huge_fault set makes vma_can_map_huge_file() report
+THPeligible: 1 in /proc/<pid>/smaps for PMD-aligned COW mappings.  Should C=
+OW
+mappings keep using a vm_ops structure that only defines
+.access =3D generic_access_phys?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111113045.3536=
-8-1-farbere@amazon.com?part=3D3
+8-1-farbere@amazon.com?part=3D4
 
