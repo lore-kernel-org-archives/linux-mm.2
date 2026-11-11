@@ -1,110 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07AAB606A339
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 10:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DFA1606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 10:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=aeK3Uqod
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=NQHo0OpC
 Received: by kanga.kvack.org (Postfix)
-	id 2EBFE6B05B3; Wed, 11 Nov 2026 05:23:23 -0500 (EST)
+	id 204FF6B05B5; Wed, 11 Nov 2026 05:25:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29CB86B05B4; Wed, 11 Nov 2026 05:23:23 -0500 (EST)
+	id 1DC1F6B05B6; Wed, 11 Nov 2026 05:25:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DA8F6B05B5; Wed, 11 Nov 2026 05:23:23 -0500 (EST)
+	id 119B76B05B7; Wed, 11 Nov 2026 05:25:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E8F5E6B05B3
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 05:23:22 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0D8C4160282
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:23:21 +0000 (UTC)
-X-FDA: 85422451002.10.15952E5
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 99D54C000C
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:23:18 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=aeK3Uqod;
-	spf=pass (imf22.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E70226B05B5
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 05:25:00 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7A030A025C
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:25:00 +0000 (UTC)
+X-FDA: 85422455160.02.C38B4A6
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8880A40003
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:24:58 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=NQHo0OpC;
+	spf=pass (imf12.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794392599;
+	s=arc-20220608; t=1794392698;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4ULj0NXijTq3R1zAP8uyHKnM0ACD9LxvphraQmHtKkA=;
-	b=JmvsTl/MYhT9OWJ0moLx27erlKZ97z/K4IhurJJpRd7Vr60Vqn+Nl6v+YwTZg9O4+rcFEY
-	Arn86bnhDv3vAWwwSj02fznw5m+6DEPXtnxVQSmQ9cLYkUHBHtxKrJw3TxTKc26iuOWP/9
-	sp/cCOaDftnqwAufMGmRiXZ4uHPLd4E=
+	bh=JnH6E3m3OytwHtdIb9v7wOGuBamv9Irg/1uvzHNiYxQ=;
+	b=sj1GsQn0C04ZSB9fl1R0/Xk8b8nYV8fT9UeiXOJt1T+bmasnCmu/6YI95Qb2fwifb/Z8Sy
+	M6CqL4xnQUolNVjzthWnnLwLu66ldm+VZNQfc68IL+ZGzLx4htbP2Xa9rlquIHd1PVd2Jb
+	katrueXjlpslO3F7XplDTlphgr2TRCU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794392599;
-	b=AX7DtwBUQVKdSOObL4bcf1AyOViWZ9IZt2BlcOuhiQH7O5YjyrmTgNzPmKW4FOPebMOCxE
-	Ot6mX1Eew+h3MXYignSR5ca4GQWS0oHPcwvhx1CTJAUGzPPhg5eR+zEIUTWy5MusJWSv7o
-	f2EVHMXMUiwu+wTV3O6lSMEaoXq4vMo=
+	t=1794392698;
+	b=uIWWPNba7CS8LcmO58ggOUGSTsok79s3/NVWWDFTRvW7LPdOBcFG4eOkm8rld/KJQZlMdI
+	9izuwstXS8T/jQ6monsqfxnPsnjNZwtAB5244Q4yV6Rh4qcd//T4NotSufUCHze9Ronf4f
+	CWpljFoEd6mXWRnAeKNQ6GuHpR87xSQ=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=aeK3Uqod;
-	spf=pass (imf22.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=4ULj0NXijTq3R1zAP8uyHKnM0ACD9LxvphraQmHtKkA=; b=aeK3UqodNlDWjBScGAVJ8KTmuy
-	Cdsgqaz7P9Avj5eIOHiUlVFx1jai/GcydbFP8Lme3YNPd80i59nXuTrwAnZCoh2UpnUB7Ab0QFSb6
-	BIwv7I13irUypCepClj8HBG8qoLa8ElVklAHKtygKB1scRfFjqKJR1sQODjuqVbbOW+Itf7sWqQES
-	4VHlsEAfXSEC2aFEXu8zWClvKXtxHscqRVYyFct07Ng0+fKdPzikJO1Qw1ORI1IO3vgDSu1st2pSe
-	Aqd8HRxQm15Q/TmeXKD9qUtvDSYkk9hBH8ljj2+H2+lcqjGTnOzjiyFeCyFSJTTneszC0+D/qMal+
-	iSk6Bqcw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xR5U3-000000091IT-1x2s;
-	Wed, 11 Nov 2026 10:23:15 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 27E4B30025D; Wed, 11 Nov 2026 11:23:14 +0100 (CET)
-Date: Wed, 11 Nov 2026 11:23:14 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Marco Elver <elver@google.com>
-Cc: Arnd Bergmann <arnd@kernel.org>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Potapenko <glider@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>,
-	Andreas Grapentin <gra@linux.ibm.com>,
-	Finn Thain <fthain@linux-m68k.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	David Hildenbrand <david@kernel.org>, linux-s390@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] [RFC] instrumented.h: mark instrument_write non-const
-Message-ID: <20261111102314.GM1779021@noisy.programming.kicks-ass.net>
-References: <20261111092231.2027735-1-arnd@kernel.org>
- <CANpmjNP5p-N6v=GiETYQMxgRMsOgKOdUjDCxSHj-6=pa4NkA8w@mail.gmail.com>
+	imf12.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=NQHo0OpC;
+	spf=pass (imf12.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A4FF51576;
+	Wed, 11 Nov 2026 02:24:54 -0800 (PST)
+Received: from [10.57.63.24] (unknown [10.57.63.24])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5293A3F632;
+	Wed, 11 Nov 2026 02:24:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794392697; bh=fS7+dm1lVrR3kORF0oVfw8gO0FZtBp9Mzni64/2uajE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=NQHo0OpCNlDTSyVwt9AskltMoLOC5DmzwE0FLofcyuQKXSh1OQ1LRblNqRoVCwt5D
+	 47za/dhQFqhiljNKutssaQNItZ5vVOwNbXueiF1wf174d18hrJ0Dw+pX/osNlH1KtV
+	 wvmVCbGhtttzbT1gy+aQN1BIJ3boc+tDGe7M8IOI=
+Message-ID: <0dcf6c71-9584-48c8-86ba-43b9bda0d16f@arm.com>
+Date: Wed, 11 Nov 2026 11:24:44 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANpmjNP5p-N6v=GiETYQMxgRMsOgKOdUjDCxSHj-6=pa4NkA8w@mail.gmail.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 99D54C000C
-X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: y7oj4o3ypdz7odkzhzcc8tzg9nchx4hk
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v10 01/22] mm: Introduce kpkeys
+To: sashiko-reviews@lists.linux.dev
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Ard Biesheuvel <ardb+git@google.com>, Andy Lutomirski <luto@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David Hildenbrand (Arm)" <david@kernel.org>, Jann Horn <jannh@google.com>,
+ Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
+ Kees Cook <kees@kernel.org>, Linu Cherian <linu.cherian@arm.com>,
+ Linus Walleij <linusw@kernel.org>, Marc Zyngier <maz@kernel.org>,
+ Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Maxwell Bland <mbland@motorola.com>, "Mike Rapoport (IBM)"
+ <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Pierre Langlois <pierre.langlois@arm.com>,
+ =?UTF-8?Q?Pierre-Cl=C3=A9ment_Tosi?= <ptosi@google.com>,
+ Quentin Perret <qperret@google.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Will Deacon <will@kernel.org>, Yang Shi <yang@os.amperecomputing.com>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org, x86@kernel.org,
+ Ira Weiny <iweiny@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>
+References: <20261109-kpkeys-v10-0-aa6c4d9603bc@arm.com>
+ <20261109-kpkeys-v10-1-aa6c4d9603bc@arm.com>
+ <sashiko-outbox-207315@kernel.org>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <sashiko-outbox-207315@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 6e99szdu9hcy3e7jynrore3wo17cpf8t
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 8880A40003
 X-Rspam-User: 
-X-HE-Tag: 1794392598-500967
-X-HE-Meta: U2FsdGVkX18bwI43fEiuiZbKjh59vX6S9li8AMYXkUN801eHitIT8FdIvslYWfcdJMHN52S02ODjOpxC2N8Or2imJXku2fL5M5WqxcuR3hhg7snmtoImAMbYa+KxKSn9PygBgY7B3xXsgONYRZB2wSFVLwKk04USW+tO5AL+2CwRb4NBFPX34/bcddhtEBaTCQXJQkc9hvOHTYxKEyPNdNTEjGMxdHdc6zZbSwdomn2Ai6zFqK+Xn9aKQnZh3iWTIUXSkhnCiKUuS4DqQTBFJOveNouTt7o73PWCUmYF/j0SbabiXJw6QF/9acfIMGcutcTN3sj6SU+9xoES9tNFQ2cRVW5OYtB90qg1FEs297AZYmuwxGqQ1NMg7JCO33sse+Auo+T2r1h+YsnqIFKRAXZGVMNruR/6jobMi8OMedN2wFRFwZltBW1ES0oFpzLaxG89n34lvxVwOvwKdtjg/wqUOHvN4PahHTSxh0e+YHyWvG7UjbbSagOxSQLOu3d+OylFHNps/bD8MFzhB9Wp0Dbc+4OHmOUwjxO8FNcvneNIRvt0ZR+p8gz/3roFlmAVJVK+70zYvbOD+S8mh5cCLiM6QHpcLQPWbHzanmMR2CW+vLdx9C4UuymA2HKOrqAZv3VPwUAcl/kVHnrmUuULkiEMLpE2wIITu7moayXTFVh04Jf2gN9/l4S9Sqp5fQGJJHnODFT8OTQCrrp9RyMXbrGPIE7IuIOIZ3YomsfpcBCbTSwVquCy7Gyj7xKwTrM5AzSQZQCyVwUXSjKY65SKtMxBlKTVPCvgtdrQGoE0viGG9W59Mf2FZV9cen+BTQl23KYPOZXZpSKJAxIZjbyPFG1ud00APUbOiPfVNd+cC6DAEhUjm5ddbbtiJyxjZhsNSG9BFaXP69uiISwENyAV/5EhSwFiLzhq9quz0wot81h4FfKpVYXq7zRxn5PIlT9NGjqW42AbzfMotc+2Cf/
- 30jgYDFb
- ZJf3yr3Sg1pJgGqo9cutzYWpHE2Lmxcyw7IYF/49G1lR56vrcXFTzpF60CkwpGQOe7reDGUEPyRBzp/vjMLRtoJKPtBt6m874slZjwLPu29bSchHwV8Ud8be72Lj656CTFdQhjX3/v6ScXskeHPj3F+yFR9MRYNAu1U9s3Kh4dPhpv3T0dl/b4p8VNWcK3tsPD6+cSMcITpFUMYkAHljgRGwfJfWuGhVKENe2CpG+qjdYCVqRB2UEn/irjUd+pRKjdu/Nc3iQlrFiBeQV2Pj8qWjPO0EsEWN2CZaCgfU1k5rUbdycLYvE3yXLcfmuAuKh53qeCOC6Zs6fxUfNmIpK5zVZne2XZWg0EcuGOtJr6FqEVTTEVG+P0hPYCw==
+X-HE-Tag: 1794392698-989159
+X-HE-Meta: U2FsdGVkX1+J9iZhtRRkdTJHm4DYxzgfRM/sxgRDG+BJCxEmzUkchDTivmEtsPt9zPueOuqMHw/9dItdXsDolqPKoAEtX9eqimCTKlfsTZIeF+IZkZXlRIzgOhPRPuWZEXyil4ShVn/77jD1OqEDi2hKxpKVzUxoad+OyjKRRYVjZr9aE0KokhSCx/1uJz1F8Qx87t+voaPx5piL1EhVoo5IBfEy2rVppvKM+dn2PYK68WEjHvudwGNMx2U/fJq2EUT4cc8nro7ZMmwHtW6xyPkgw5riP7krFtga3FIfWTxLiklD/L5RkuIPFcF3i//4UW91ema5s/JMHIzTNoNRbM25i1K1XZCKuwrqPe26DCSaTnHD5cR53kJe+iKJqV/mucovGg1dt/DGA9sp/TW0/QM6xrOLwz1mvSMFEd3/1botOYuby9SYGaTOZsJhUW6vKuJKXAl+FVbUPl9q9b+uxJorxiZTlI/RpEC+zb/KFkcHKno7WuJcSFZYUqk1TSXUoTjkmqiU2FsXzjjzCYMgV/meM78zqwEHvkD3qp/5c0So2DwzRWD1OuPrGFW0z4WGJoWrJAwquJtEKQI5zkFMjd8SucFIawBBKZl0MYHd2THc24mZBubqTIyRQdgTCfgPTxboRMcL4JXP6X9JuOSZjFLozPtLaySn3rVwpQfcaB9KSF87aWVKne5MWTchY4L5ks/hlrG3Zg3UyWJudwPlidezSZ/Quqk+EXkH17VyYI9oJYodcTvs/pGhb2tfoDCiOndJcZZx8gBDhRuuK+BpCkmKrO68lMuI/rUJWf+tr0RFAMSMmutujnW1pZKqcCYl37y7lv/xiEr8k+klJYq6PgcHmgqH9PUpYH6/xj2ps4pDz0BShkTOxDXENYJWL41dlU/HEFvo0QyhsNVHxQ/AItKmoa11dE8Zoyd1H4y1VWvvZLmRz1l2SsVV852NDw/kBcAw4ZVaAVgIpmoKH11
+ l3PyIRYj
+ Woc+nU9EFsjxdYVsvs1z1VVKZSNtOEGFXZWdpGl38dNqPAcR6KKea4meyluxtpNPtRfoiNLwvAoilCh0eORJo++pSHVUzHsdf/Ee3jUh3BDnHa1Gui13zxoRKx5ftn1OiB9KjNvXVYxvaVXn+tKpoQ6fCPEB/0D2w/xafIPKUw3/VRmIJBGt90jUnNVYo1XJlwm6gUOZjy42RrxOjcgGdl6sB+fjvNVRXpCCD19/n1N3YpvK4+aFHWSgs5cpZOlL6IBm0JKtvXZ1SS3I80UCPppPNgif3sL0Mo+x/lg34yBDWcjThcTqmAmNmnJ1Ae6aaO9Aa+ZkFRRRFSSoZw/uQ1p05ziohYdVVMBCSGSW+thiTYsD9Fmp6VT4yVg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,60 +113,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 11, 2026 at 10:59:51AM +0100, Marco Elver wrote:
-> On Wed, 11 Nov 2026 at 10:22, Arnd Bergmann <arnd@kernel.org> wrote:
-> >
-> > From: Arnd Bergmann <arnd@arndb.de>
-> >
-> > I got another instance of a -Wmaybe-uninitialized in ntfs, as this is
-> > the only place that enables the warning:
-> >
-> > In file included from include/asm-generic/rwonce.h:26,
-> >                  from fs/ntfs3/file.c:10:
-> > In function 'instrument_copy_from_user_before',
-> >     inlined from '_inline_copy_from_user' at include/linux/uaccess.h:184:2,
-> >     inlined from 'copy_from_user' at include/linux/uaccess.h:222:9,
-> >     inlined from 'ntfs_ioctl_fitrim' at fs/ntfs3/file.c:78:6,
-> >     inlined from 'ntfs_ioctl' at fs/ntfs3/file.c:246:10:
-> > include/linux/kasan-checks.h:38:27: error: 'range' may be used uninitialized [-Werror=maybe-uninitialized]
-> >    38 | #define kasan_check_write __kasan_check_write
-> > include/linux/instrumented.h:146:9: note: in expansion of macro 'kasan_check_write'
-> >   146 |         kasan_check_write(to, n);
-> >       |         ^~~~~~~~~~~~~~~~~
-> > include/linux/kasan-checks.h: In function 'ntfs_ioctl':
-> > include/linux/kasan-checks.h:20:6: note: by argument 1 of type 'const volatile void *' to '__kasan_check_write' declared here
-> >    20 | bool __kasan_check_write(const volatile void *p, unsigned int size);
-> >       |      ^~~~~~~~~~~~~~~~~~~
-> > fs/ntfs3/file.c:66:29: note: 'range' declared here
-> >    66 |         struct fstrim_range range;
-> >       |                             ^~~~~
-> >
-> > The problem here is that copy_from_user() is called on an uninitialized
-> > object, but the instrumentation passes the pointer into a function that
-> > takes a const object. gcc deduces that any access to that object is
-> > undefined behavior and warns about it.
-> >
-> > The only workaround I could come up with is to remove the 'const' keyword
-> > from these annotations, which of course is not great either, as the
-> > functions do not actually access the data at all.
-> 
-> Agree, but the code where a real 'write' happens ought to never pass
-> in a const-qualified variable or pointer anyway, so I think it's fine.
-> 
-> > This also found incorrect 'const' annotations in
-> > arch/s390/include/asm/fpu-insn.h, which writes to those pointers.
-> 
-> That looks like a bug. Maybe split it into a separate patch.
-> 
-> > Any ideas?
-> >
-> > Fixes: 33b75c1d884e ("instrumented.h: allow instrumenting both sides of copy_from_user()")
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> 
-> If there are no warnings that appear because of this elsewhere, then:
-> 
-> Acked-by: Marco Elver <elver@google.com>
+On 10/11/2026 17:02, sashiko-bot@kernel.org wrote:
+>> [...]
+>>
+>> +/**
+>> + * KPKEYS_GUARD_COND() - helper to define a guard type that conditionally
+>> + *                       switches to a given kpkeys context
+>> + * @name: the name of the guard type
+>> + * @ctx: the kpkeys context to switch to
+>> + * @cond: an expression that is evaluated as condition
+>> + *
+>> + * Define a guard type that switches to @ctx if @cond evaluates to true,
+>> + * and does nothing otherwise.
+>> + */
+>> +#define KPKEYS_GUARD_COND(name, ctx, cond)				\
+>> +	__DEFINE_CLASS_IS_CONDITIONAL(name, false);			\
+>> +	DEFINE_CLASS(name, struct kpkeys_state,				\
+>> +		     kpkeys_leave_context(&_T),				\
+>> +		     (cond) ? kpkeys_enter_context(ctx) :		\
+>> +			      (struct kpkeys_state) {}, void);		\
+>> +	static inline							\
+>> +	void *class_##name##_lock_ptr(struct kpkeys_state *_T)		\
+>> +	{ return _T; }
+> [Severity: Low]
+> Could KPKEYS_GUARD_NOOP() and KPKEYS_GUARD_COND() use
+> DEFINE_CLASS_IS_UNCONDITIONAL(name) after DEFINE_CLASS() instead of
+> open-coding __DEFINE_CLASS_IS_CONDITIONAL() and class_##name##_lock_ptr()?
+> include/linux/cleanup.h already provides DEFINE_CLASS_IS_UNCONDITIONAL() for
+> this purpose, avoiding reliance on internal cleanup.h helpers.
 
-Yeah, this looks sane enough for me too. Shall I take this (after s390
-acks it), or do we want to have it sit in a CI first?
+Agreed, that's the helper I was looking for but it didn't exist when I
+first wrote this code!
+
+- Kevin
 
