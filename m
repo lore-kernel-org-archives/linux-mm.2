@@ -1,128 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C46606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571B9606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=honRTN4G
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=bl5uhVOo
 Received: by kanga.kvack.org (Postfix)
-	id 5A4136B05B2; Wed, 11 Nov 2026 06:21:24 -0500 (EST)
+	id 841B46B05B0; Wed, 11 Nov 2026 06:25:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 554E56B05B3; Wed, 11 Nov 2026 06:21:24 -0500 (EST)
+	id 81A8F6B05B1; Wed, 11 Nov 2026 06:25:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4434C6B05B4; Wed, 11 Nov 2026 06:21:24 -0500 (EST)
+	id 7564D6B05B3; Wed, 11 Nov 2026 06:25:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A3CF6B05B2
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:21:24 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A3A9916024F
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:21:23 +0000 (UTC)
-X-FDA: 85422597246.08.B6D6239
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C940220005
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:21:21 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=honRTN4G;
-	spf=pass (imf13.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 541676B05B0
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:25:02 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E4A1D120271
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:25:01 +0000 (UTC)
+X-FDA: 85422606402.20.EF99722
+Received: from va-1-111.ptr.blmpb.com (va-1-111.ptr.blmpb.com [209.127.230.111])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4C07940004
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:24:58 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=bl5uhVOo;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf12.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794396081;
+	s=arc-20220608; t=1794396300;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wr9LUpNEHOOjAzDkbtOdFfPOarAUZcRS58IEDQefKL8=;
-	b=C7Wmu2N/bxC/f1bHzU9jNRJ6FKUXbV3mcv41G/+K7yCrLl31n4epr8kWJyefbeH1xmWx1G
-	bS2LqkwJnVOb6YfuhNCTF7fJTL8/rfNpgLnK5ps51XXpvPk1KRG3ieVYB8sTUD+XZ0jQrL
-	H2/Fe8G+EjIhTyA/JWooTb/NEYF2u0U=
+	bh=NVdfdUf+zfYeCBjYOT/U/HtbAWZ/RAxAIgf7+f5fEIo=;
+	b=xvW08sj7bisvd6GWjbH3UZL1r0hA0erBnmnK6k5TQBNxwnzgoMBkQzQMmp+FBc6wlE062O
+	Lj8rL6bR1WHNSXiKo58NasUe8yGFRkEG0+wVGLc1AmfaPA2B2XZx7ledWLNQaxp0dheL89
+	ikLGNu8iDB1gOirf0Z5Zhtoj4SWmDLs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794396081;
-	b=ttqTkA5fUujbK2h4gIMVqc/MbNdIJ4WgawHHrQfHbWTUifrjWj9N0ojew9O/UAZXcKKGXI
-	PaKPiIs7Sya9v9CtHmhzo84nqbBo7cUafIraAP6RJWQo13ZiAUtiDNs4WWs6LqUROdtzn/
-	1UtYWcWpFJngu7khGTcq4OnHlum53H4=
+	t=1794396300;
+	b=gZCcMvfBQl3Nrv6h+qcC9oCeKkgRnhlSsJ92k5s0j56Vkl/ZOhuTJ/DfHEpXSwCjqdIu3h
+	WdxkRsvNHn6hsDcMb9euXY+tvLDgQLbUi6BTvrS52LprnI1HtVUcwlke6oe7rp5ZCjxHl9
+	5Um/tl1zFVE1xPSsfSD2SKoJUB7qns4=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=honRTN4G;
-	spf=pass (imf13.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-36e2b1db9bfso51712eec.0
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 03:21:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794396080; x=1795000880; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=wr9LUpNEHOOjAzDkbtOdFfPOarAUZcRS58IEDQefKL8=;
-        b=honRTN4Gu8AQEpHclmCZRo98QjDgOJ8ai7Y3zRF7/9Q2A+7+jyNzPAOmzFAbXZYDpn
-         PcDZ5F+Es7MSZMnHozBREU8MKRj8Sa8l7kSqfql0rim20xRE1TKW7G/mCHH2M+UGAEmd
-         WdQvFYNaOfv/iBg3Z7B1/8+N6eVPuwrSToZQVQby3UxlRpRuFVAvARcv+9lxjCcxhP0n
-         rXT+VuG6ei+nAfSCFj9QW8HN10lQ93U54+A8EzafXeEXG3zi5zj/lTpd6jAhASWEv7Bq
-         paSJPceyfa1oSDR9FRF2iVuyZnd8XwQig7DBfVETQO6gAYJWuKjfPMJHHeWyBn2MctHI
-         Kdmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794396080; x=1795000880;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wr9LUpNEHOOjAzDkbtOdFfPOarAUZcRS58IEDQefKL8=;
-        b=tIQi1ceH7yTKQh4WCtBjzYljgcuwETh1Rux+yGsLrVDzkyU4QWjOgu3OCphoE9OlKV
-         18BOhlCH2m3zVF/575qzoa+902lkh4Oqswdf0kGfTxVcZE9votLjSHsDZMIsaHQFyL47
-         ApeCoG4cHpKrTtFplLjf/hu6ELdOPYhizayowi30OKf6qPw1jIuYGZpN8fmu1tHcYaaQ
-         1AcCXQuy2Y4i79I/0pd/7XV4kJFqerimtPm04j0w6U4d1zcLDnsjiHzYvqwdB2NEhqP6
-         FmCrK2PMsBoGR+VqsZ4gBn57R7WQAT+lc0pXOLqT5kZIa+V5kGH2u62EWo2ouZ9p1YWO
-         t1WQ==
-X-Forwarded-Encrypted: i=1; AL+hErHU2p5GQhp9m2mUPqdJ7QjI0yYU6kXIVohFeiwClYrRrE4r0b1ITLiKZ6NE7jaOJlqFSljDerManA==@kvack.org
-X-Gm-Message-State: APuU4Z83SvoEHejUm8hrgIxPrAoma2LpRaLZgLb2aaa4uQ/T0z2/wjap
-	YdRUQfoXVrAiOv0lmTep3Zz+nujnKzu9Oj2atoHoYFJT6EkfVGAmLkEi
-X-Gm-Gg: AYBFou1BMGRaeWiQaXqcsSjzYiIvR4IxncO7Qm9A2kltGEGan8ZEnNzIXJZRWDe1jms
-	c/oaMbTPlHbteVwt38lO2r8lbWHyYKeWiy0tqJF38IicusZIyJXTANj3xlxEGfgrIH5ETvck4kE
-	NA8AQS+diX6db3e6Z0or86T1XEsS5zhrsNBuGZYBJEAGj7szU+ip4Jil3JWxE8tUmfZdJAZB3J1
-	jPCuHyn3TUIIQTguZYb28Zu1OdPDoZG1fB5YGCPuI4QtySzzGqFbY3L3oPxYw1muGjMQK23S3d8
-	APRdcmceOUEVo87LW8zLhTcmM3/z6b5AVm1fuOn/VeLdZy/cvsov+uUJMcLhltNOZfmauCh+uFn
-	DlnHbjV8GztdnpZLkEuRcs+rRjCI+l0mrUPhqknwDu+UiBz0IYZTmUCIimePhAb7WzB39nEA8nX
-	ygQnDQJf3iGJz4lJUkdzpMLIa8lJARfE3kOlVYO2bpvh1k3zW/IMoyJczA2pdAK0FSBsv7zfDbZ
-	gF5d6aoShbnwH8+9u7ziR+dRYJqj6fgpWeszf+aE6gC7yWdqcOpUxIrgHXmOLfLz2G5+sR992wQ
-	EQkrVvvfyb6kBBhpe5sjCQu31iZybVACJqs4zhKGMmZuOieS8FiogNx1Gp12YBwPN1o=
-X-Received: by 2002:a05:7300:f547:b0:36a:13fd:b5c with SMTP id 5a478bee46e88-376854b73ddmr4138428eec.2.1794396079980;
-        Wed, 11 Nov 2026 03:21:19 -0800 (PST)
-Received: from o6.lan ([2602:fce1:44f:115e::])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-375212e7d24sm24474631eec.22.2026.11.11.03.21.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 03:21:19 -0800 (PST)
+	imf12.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=bl5uhVOo;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf12.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1794396292; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=NVdfdUf+zfYeCBjYOT/U/HtbAWZ/RAxAIgf7+f5fEIo=;
+ b=bl5uhVOoos64AzgvqPNRcE9nkGzyKPkB4Nw1A4ZqYOZqn51XaCTYG7WTe5kLq7AjiwwF92
+ 5dVkUuNX3xkPeox4hUzpdLhtLW3up+r7Vd9FaVCz6ilmVPWbxOTkInR3PCdjlz61qYYXeK
+ 4e3kHtL96iL2vxTaOpLuTAKJp7PQI+r8MUvB3gZk3zXlYXdIJ58Jdszahxk9FSPnhqISml
+ /5powAz86rxub69+6Pp0zDZ/8dP6EdMp0/5EBLV0EopxUMrEqr0b1I3eyZWNnRYK/IpMLR
+ mYed++T0ymgb94exuxERGkCWt09kODXsn7a0IvPizy+Bk3TsOBAaic7gqqY3ow==
+To: "Mike Rapoport" <rppt@kernel.org>, "Muchun Song" <muchun.song@linux.dev>
+Message-Id: <016ed325-2b5c-4170-b545-47b766d7f8e8@bytedance.com>
+References: <20261110114859.76343-1-lizhe.67@bytedance.com> <avQjbt-QUp-W3_9v@kernel.org>
+In-Reply-To: <avQjbt-QUp-W3_9v@kernel.org>
+Cc: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <balbirs@nvidia.com>, 
+	<david@kernel.org>, <osalvador@suse.de>, <linux-kernel@vger.kernel.org>, 
+	<linux-mm@kvack.org>
+Subject: Re: [PATCH v2 0/2] mm: optimize HugeTLB bootmem hugepage init
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 1/3] mm/zsmalloc: remove CONFIG_ZSMALLOC_STAT
-From: Xueyuan Chen <xueyuan.chen21@gmail.com>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Xueyuan Chen <xueyuan.chen21@gmail.com>, 
- Minchan Kim <minchan@kernel.org>, 
- Sergey Senozhatsky <senozhatsky@chromium.org>, 
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <CAKEwX=M6dJMccGcDqp2S-66cbegdivnB6MqQRj6tQ2u18UH62g@mail.gmail.com>
-References: <20261109-zsmalloc_stat-v2-0-caee41684aba@gmail.com>
- <20261109-zsmalloc_stat-v2-1-caee41684aba@gmail.com>
- <CAKEwX=M6dJMccGcDqp2S-66cbegdivnB6MqQRj6tQ2u18UH62g@mail.gmail.com>
-Date: Wed, 11 Nov 2026 19:21:15 +0800
-Message-Id: <179439607522.2142163.11892098572560820648.b4-reply@b4>
-X-Mailer: b4 0.16.0
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C940220005
-X-Spam-Status: No, score=-14.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 7bgra7oezgqcsauu6giojh79yjse5ywk
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Date: Wed, 11 Nov 2026 19:24:33 +0800
+User-Agent: Mozilla Thunderbird
+Content-Transfer-Encoding: 7bit
+X-Lms-Return-Path: <lba+26af45082+88a098+kvack.org+lizhe.67@bytedance.com>
+X-Stat-Signature: ut53tx8kfgrf48qyxjz41fwcgecnomii
 X-Rspam-User: 
-X-HE-Tag: 1794396081-94503
-X-HE-Meta: U2FsdGVkX18oqLOpUABELZj55WD6Fd5jEoj938ehj6UmbLC8EHJxMYy9zkn4j7PvVNmGh3j4YI9dBTmhKR1jHBZhbaNBdvts/OREtW5aD4lLgWJoNtaPpqAcAEFccw8mPuOkQ2jkbIeO4c7/px8zzqz/Y6D2hIMf3L2inmCZP+BFlQLLt6D6eYcZ8LKDmLSg+ga/yNTFTK7BSbatjntEGZq3MB/QehB8pqLloF9QjYOByOavg79bXym5hcREi3LfXCDWY//1NK3JZchjvkrrkCP2wxnE5CO56kBuUzDZujyjzTdO+iq8QzicK8RP2gL44hb5NW4JSBdJlea7b3vrdc56kLN65zaLWUqnUh9lDQJh6RqBjYLmZHIG7c+W4gYPxix1Q1XkDxtkITD1/XZrs3yll4nq/6WdthNPI1QHtwKbYCaHLpVYuYunJsdsiJT7CFUD8Cws8Tf8Y6i+OTpHstPsfwbF12fQVF+xs9tDI3LSNy15ptSGivaJwVimmDAyFYTFwzJFLS4xZxpnjoEYKxxnjY0tQHry/7K0k1AhVau2uKqwWst8m/meGoeRVenJJBqlD0HlZ7jJsLhqigHAVa7JmP/2GDgaPNWmDGiVq+HB/1jQiAvmrcPZ37f9a7rSL89xyy7ooe9rsMEaIiJ3DiU0pM2Q0sCckBy2WY2g1xV7aqamrfoW04/JAGHr++hSpltTAEFpewPy6xLdfMThyunVcJIQohNxfCFSy4VES10ye7ccn63ex0KPR9x/VqhLLLKS9CTLxsc+79iCZXtKMCc/d+QeEiUs40K2yviCdzhJHfFHq4ygSsjlD2Nqdf2F+bTfSeZOuxomgOjNL5/zooZZChlWyvMKSnQ7z+X4+p5kmvJ9O/KyTLq2OtmES+ZjTp8EnGZcoXqDMtxdoDcd86uFYd92ZMlw3pF1j4Qqq8WeZuduFYNePequVZUtCRngJ6zpJCbroE9YStNpvwp
- Mmg97ziJ
- TPEOHJ0NcZ6sIKjUh9075QskqyJSUsPvePk62+W5TREpnLnD8nNLXv4y++erPsgi/goVsyL9ltxdNbPc394qETvvJX5Jx497vC8ivYyIk4Zz/16D83WMA6fpNA1a6imZNNX9ya2xR3koh95uG0iSEARCf6goS0VR8/IT1+ZfTMpJNdLamsvua495O69/cHupIlz9FEQJKrLJH9BfEAnek8jfxb0bRo7Khcpx0uSzf8k4Ni46cTpS+KwWbLwyKYFIIfIvs1K2jTGxCB8nheqCqKUcaRHEKQ1mwjmh36HYkOD8eNc8zZN0pcEGalyTd2/9jgaHPqZRXfHFurVrlK1FpWDpad9rHCqSwPQLBT8i58lsxfQudsljmrXQ9WMdw43J9YXtwL+12Aiud6iXS0k0A9uN6OEKAJ2tqJZ0vEeO97EPNwuKD4JK78fWzVi+OYCst1yCfy/tL2jAe+rujaGpEOAoRztus4Ham9mtmaREo9Bh5v1iMVd/udEuXHJxsQw06tnCn9eeiDFjNheJC9CuJtR66iVPDkCgPqkmD7N6pz0KsjQZS1AyhNX8yNLMW5v1l3eOktFM6Hc/cjjp/UnEfr/Ole9qFzHrdx4rhZNKJCX3hL8Q=
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4C07940004
+X-HE-Tag: 1794396298-235339
+X-HE-Meta: U2FsdGVkX19gH3NUtfjhIZvxvIZANLC46l6RhZM+VUWdc/u5dToudoAS75CMRALPmVtnMrNfkxsNlwADhvk1wnSUTMJDopUXmXVcj31RlDHRI1F1yuBAk6pqauxjBGQnvqfxO2jnTOrruTMJUBJ1gBn8G1RZQtC6wHMajJ5rmiGKKYfYQNpAqNiPANAnbS9uoU7x+RrDHG/1OJjeViLOzv2sQvVX+jg4JU/vQfYxhHBtP51wPszDKitDaTNSqi0dLN9L5QnB8H7QBobPrgEg+3gTSlBapP4m5LGHP7N4OFWU2z3OUe+lQfC7QAgqJe39FAtI7L51O4+D+Jr1F1ApJKtSHNKkRq+teRsKT3E1CyA8X/tVPZmA2HrWzo/RgzHujuyLv4/4WTCbmZo9nzaJEK+lNbOKCZgoVvGwb/zRs3rtFFHUhN7M3LVGndse8J/3BIGlgU5k6Of3dgequwO7VXhfKWmAaQKXrIGJIs3iklXv2E5Yn0TJkJ3QusF67IWKnKOPhrj8m2hcfZPObxPWavEbvCKeP2Si/kWp29+ne0YdrOwqqUVcDsTjWbJn4SCSJ1sjXrxVzLxLxZfxtjp0HobtmHqGS4uR3lFRL74HPWDN6axbbsXWpqVjXqTnAIjwVPHO/GWJuk6uYPXl+i0rFt9ScaleABisdK+OepFum/SbF4OQfcwTYH6ZdjBkRBh3g/YnwhwNI41oyNf74gB541bwHUETA55Nqdueou2vmyFPU1ldPCl9Ttm0e0oN057NERAfDr33kdoH866RM6f0Cm3Z/8ATAQEtsXZB/xYnvdiTa0uBGTuuXNFvv8jIrBcRGLOQvgLAVeSpDEr+DIo9EM2RlKxdTDhoZK97gj6jF4m6LtGNnt3fuf3CarZFs2BNfVU/QFLNh8eGUU3ra+42wIxgv77pY1U6P6bEAmf8znA11uHOY1g6ye3hfLe1Uwe4BSJUg9kKUlx2sKxA82r
+ 1I6FR2YR
+ trRyKw6w7gDZxAMqDm9zYukHX4RZIS38ES6bjZMrHcB0pyz2WLK3GfBBp+ZwIvbO+TSjLjDWqqmsRyOEL8YnOxonbRDZxbiiPtCE7VeoABx4t4iAxWZrsWx0pcYaGFY98Bl4xU39n9NZkFXa+PD44BY23XsEr7Mq5lo67vGycXBR6jAFTlpbbRMgFSiotZgpQi01goe+wubpd9PB8PU1rAFB2v5jDck0bvVftokvz8H7ZLJSmr7QqOwkEvBpxbmPglBWj31lL5Ee2TyRt2IV2DJP0z3wezdt9ffs1Qy3bNrnAXKaaW3CDk9izlZB6UycR5mNE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,44 +93,85 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-10 08:00 -0700, Nhat Pham wrote:
-> On Mon, Nov 9, 2026 at 5:59 AM Xueyuan Chen <xueyuan.chen21@gmail.com> wrote:
-> >
-> > CONFIG_ZSMALLOC_STAT only controls the debugfs interface. The class
-> > counters are updated regardless of this option.
-> >
-> > Remove the CONFIG_ZSMALLOC_STAT guards and rely on the debugfs API
-> > stubs when CONFIG_DEBUG_FS=n. Skip statistics setup silently when
-> > debugfs is unavailable.
-> >
-> > Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> > Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> > ---
-> >  mm/zsmalloc.c | 33 ++-------------------------------
-> >  1 file changed, 2 insertions(+), 31 deletions(-)
-> 
-> FWIW, LGTM:
-> 
-> Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-
-Thanks for the review!
-
-> 
-> But I come from the perspective of large(r) server machines - I'd wait
-> for the feedback of embedded folks too :)
-
-I also tested the memory overhead. For a typical Android setup with
-one zram pool, the additional inode/dentry slab object footprint is about 2.11 KB.
-Even with 32 pools, it's only about 45.7 KB.
-
-I think this overhead is acceptable for embedded devices.
-
+On 11/11/26 4:12 PM, Mike Rapoport wrote:
+> Hi,
 >
-> Sergey, how do you feel about this direction? We've run the stats
-> collection (even before we select CONFIG_ZSMALLOC_STAT to expose the
-> stats to userspace) for eons, and it was never a bottleneck AFAICS in
-> our fleet...  And the stats files seem trivial, relatively speaking?
-> 
+> On Tue, Nov 10, 2026 at 07:48:57PM +0800, Li Zhe wrote:
+>> This series speeds up the fallback initialization path for HugeTLB tail
+>> struct pages during boot-time hugepage allocation, when HugeTLB vmemmap
+>> optimization (HVO) is unavailable or fails.
+>>
+>> Patch 1 factors the existing ZONE_DEVICE template-copy operation into
+>> memmap_init_page_from_template().
+>>
+>> Patch 2 reuses that helper in hugetlb_folio_init_tail_vmemmap():
+>> initialize the first tail page normally, copy it into a local template,
+>> then initialize the remaining tail pages by refreshing only PFN-dependent
+>> fields before copying the template.
+>>
+>> In the earlier discussion, Mike asked whether the same kind of
+>> template-based initialization also helps the ordinary struct page
+>> initialization path:
+>>
+>> https://lore.kernel.org/all/akfB6Qe-jKDEMUxz@kernel.org/
+>>
+>> I tested that direction as well, but did not see a measurable benefit
+>> for ordinary struct page initialization. The measurable improvement I
+>> could find is in the HugeTLB bootmem hugepage tail path, where gigantic
+>> pages can require initializing a large number of tail struct pages when
+>> HVO does not cover the allocation.
+>>
+>> Tested on an arm64 QEMU/KVM guest with 4K base pages and 64 boot-time 1G
+>> hugepages. HVO is unavailable on arm64 in v7.4-rc1, so the fallback tail
+>> initialization path is exercised.
+>>
+>> Results averaged over five boots, measured with a temporary
+>> jiffies-based printk:
+>>
+>>    base (v7.4-rc1):  318.4 ms
+>>    with this patch:  202.4 ms
+> Are there numbers for x86 without HVO as well?
+> We need to be sure this does not regress that use case.
 
 
+Thanks for the feedback.
+
+I did some additional x86 testing today, but the result was different
+from the similar x86 test I did earlier on linux-7.2-rc1. After
+replacing memcpy_nontemporal() with regular memcpy(), the result looked
+better. I need to re-check the old test code, since I may have mixed up
+which copy primitive was used there.
+
+Muchun, could you please hold off folding this series into your patchset
+until I send v3?
+
+Thanks,
+Zhe
+
+>   
+>> This is a 36.43% reduction in the measured fallback tail initialization
+>> time. The temporary measurement instrumentation is not part of this
+>> series.
+>>
+>> Li Zhe (2):
+>>    mm/mm_init: factor out memmap_init_page_from_template()
+>>    mm/hugetlb: optimize bootmem hugepage tail vmemmap init
+>>
+>>   mm/hugetlb.c | 20 +++++++++++++++-----
+>>   mm/mm_init.c | 34 ++++++++++++++++++++--------------
+>>   mm/mm_init.h |  2 ++
+>>   3 files changed, 37 insertions(+), 19 deletions(-)
+>>
+>> ---
+>> v1: https://lore.kernel.org/all/20261105120615.16817-1-lizhe.67@bytedance.com/#t
+>>
+>> Changes in v2:
+>> - Add a comment for the template-before-copy ordering, as suggested by
+>>    Muchun Song.
+>> - Drop the empty-range guard in hugetlb_folio_init_tail_vmemmap()
+>>    as suggested by Balbir Singh and Mike Rapoport; current callers are
+>>    expected to pass a non-empty range.
+>>
+>> -- 
+>> 2.20.1
 
