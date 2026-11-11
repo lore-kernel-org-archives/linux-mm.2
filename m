@@ -1,93 +1,150 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1C0606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 07:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E171E606A32A
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 07:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=e8CQsAlW
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RZLzHr0q
 Received: by kanga.kvack.org (Postfix)
-	id 9D2C66B05BA; Wed, 11 Nov 2026 02:19:21 -0500 (EST)
+	id 0AA036B05B2; Wed, 11 Nov 2026 02:23:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A31F6B05BB; Wed, 11 Nov 2026 02:19:21 -0500 (EST)
+	id 05B1E6B05B3; Wed, 11 Nov 2026 02:23:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B8386B05BC; Wed, 11 Nov 2026 02:19:21 -0500 (EST)
+	id E64706B05B4; Wed, 11 Nov 2026 02:23:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DA026B05BA
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 02:19:21 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DE80FC0226
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:19:20 +0000 (UTC)
-X-FDA: 85421987280.17.A4508FC
-Received: from mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C4977100004
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:19:18 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=e8CQsAlW;
-	spf=pass (imf14.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B2A9B6B05B2
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 02:23:05 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3F84C80179
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:23:05 +0000 (UTC)
+X-FDA: 85421996730.06.AF16D6E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 639D5180007
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:23:03 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RZLzHr0q;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794381559;
+	s=arc-20220608; t=1794381783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2B44I80yRTwHpmne7w8w5UEwVE2FyJszfb9G+y4FbZQ=;
-	b=PapCZUt/UANgqur880Q35/iqjKRYtnr7BrFImiju1cMRV5R+YEAiD0BFXBIPD6frZiaWNu
-	tpZJ0WTxYClTwxvdcBNq6DVaabh7PtPLt9ABFRTZqoIV1uD6MCEs6hK5lEWzsvY72MrBdW
-	ox2rmTSXn/D0m3dwHn/jn3MExFJWNE0=
+	bh=NH/RCBHe4j+B/KuhXgvP5McWYYKWKQYjKk9U30Okeec=;
+	b=J6bT+t9kXuDI48JvQWF/j6dGz7DVtagnhvd5SZKbQ07SC5BF0KT71KhDU1r6N2YRrwzobm
+	JUjXi7cHEIpSV0Px92zCMQfECD4SzTYZVYrqKv+9rwi8bUgOj0s4JIe1Vci8Ox95BF+cyr
+	6H5xC4JkzEWhuxbHpmxcVh7fC06Bf9M=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794381559;
-	b=7VV/p69Wewn4WIeczxeJasmZTJVUMs7qvXu+MUkNADNr9EaOEHDugCbfkgjkYoC8aew4ea
-	qIO/NWRbWl0ckglvHixc25v+rK0LD/i1WelJb3GgmUKeHxY/kX07gtxq+CjVpLtBV+xedV
-	9r3GVLAcbSzT3TWCogx3Ro49ZMLf1j4=
+	t=1794381783;
+	b=duBXdz7KdxUKSWaiZU2fUq8K3dUP3l9/0Q9D+nKphqTRbWSFoNTUnu89zj/skubImROROy
+	rui0tl3H6X9NN76TjrNGGclROqkBkxGXyliHa7kiuIMb4DgmX/udnH3WVlPDCn/ITGRaZy
+	yYeA7upiFBoglg3yIKbuF1R3b0KLkEY=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=e8CQsAlW;
-	spf=pass (imf14.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=e3C2YxWwamp1JVxxl+Kr1uZVG71pB4w/RtL57aIvTw8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794381557; v=1; x=1794986357;
- b=e8CQsAlWT5fwC3bouk2rRXr/uuK41/tLMOeOxpo8OD7eCxQxEUyLLEvOG4R7xRcTMuW8EWAT
- ZCSq+w9+SB8lyekQS0JCulRmcWy2HkDVTC7XM1g+1Wqzyusm99qF9i6fJlq6+5K7+X67L6ywksh
- knAkVVO4yIUjcdKQWVlQ8HfE=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 585797a17084865f;
-	Wed, 11 Nov 2026 07:19:17 +0000
-X-Mizu-Trace-ID: 585797a17084865f
-X-Migadu-Flow: FLOW_OUT
-Date: Wed, 11 Nov 2026 15:19:06 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org,
-	akpm@linux-foundation.org, baohua@kernel.org, kasong@tencent.com,
-	shakeel.butt@linux.dev, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, david@kernel.org,
-	rostedt@goodmis.org, mhiramat@kernel.org, hannes@cmpxchg.org
-Subject: Re: [PATCH v2 3/4] mm/mglru: skip cold PUD subtrees during aging
-Message-ID: <avQW6uvW7iG9Tw_F@fedora>
-References: <20260901063755.1519710-1-hebaoquan@kylinos.cn>
- <20260901063755.1519710-4-hebaoquan@kylinos.cn>
- <atJwMRHXzXc57qpu@KASONG-MC4>
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RZLzHr0q;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id DACF3410A1;
+	Wed, 11 Nov 2026 07:23:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EED51F00A0F;
+	Wed, 11 Nov 2026 07:22:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794381781;
+	bh=NH/RCBHe4j+B/KuhXgvP5McWYYKWKQYjKk9U30Okeec=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RZLzHr0qjUHvIFATC6/7ZIpPlsFylU9Bi7RzL6FZ/JktCxWbLMWy3kknJ/1UDF5Cm
+	 iKOZeYx7AP7HDaPjWNdLgRO4Ftpc3yIxY67Qku7W3pUAes03r1CYOv0dqrkITW7Oop
+	 ZZO5oZiswXDdKjYYCGr6z4RVnmhrTinsh9XFRXPK4oei4wfF4TbfVhCHosyjASL/R+
+	 NOCMV2NlRBC3pKJtSy6LN9HS4vGBHrQtRQgSTnhOrVYWStBHhgCRpeo6qMlBCasOiz
+	 eiPDdj5ITKvWNORf5ZAgMZgUDUfLXBASFq9w6gt6hq6HyRu8otP7YIOijeuCrrMdAf
+	 UCFRJzzplEvWA==
+Message-ID: <b59239f9-fcbd-42b3-a3a9-9fb57de0b547@kernel.org>
+Date: Wed, 11 Nov 2026 08:22:45 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <atJwMRHXzXc57qpu@KASONG-MC4>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C4977100004
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: gmw1yixjm4qmnypgkinyi9xxpb6y6b7b
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/3] mm: enable filesystem page-cache large folios
+ without THP
+To: Fang Xieyan <fangxy@xiaopeng.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Hugh Dickins <hughd@google.com>, Carlos Maiolino <cem@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Kairui Song <kasong@tencent.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-xfs@vger.kernel.org
+References: <20261110035205.3036-1-fangxy@xiaopeng.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261110035205.3036-1-fangxy@xiaopeng.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: yh4uqo6zq5hd1k7k8dx1unajug5hh3fb
+X-Rspamd-Queue-Id: 639D5180007
 X-Rspam-User: 
-X-HE-Tag: 1794381558-150834
-X-HE-Meta: U2FsdGVkX1/safoYD07Y+/1FKGYNKD8DnQDy/vx5gcVffrpLngoPA47GGlRTsonntura8BSBnzYWlPstAj2CMNJUIm/vMWnSYfgVZuABPRRKcItHorsSrZ6P0YIhm8p2+Qo4s53JMbxX6lg60LFfeHGtNlKsgmkCivNN2Ha+O2LOeLyIkNCFNxuQkkqBFIaHp/JRftN2Z2n14HanBnl85lLGuT0XlzNTQpN1eqrs6a0sNJ00uFxYsVMKyTDJutjrBL2pOvWPTlv6KMqrGVvL11cIeoBL1vQUedxt98sYQs89pPyKid5USH4RPgcFJHDe/YbsSVV9zWRISpCBPk0AWrCd/zbEWNXUD+97yGjLG0qBtGAQbx0PAXKODh1Vk99IX2/dBXrP837TsNPl6T7tEAClOm8d0jXsO6DBfb9m+BCWiOy3VMJ9VAJbT0t6VDlpWs8Yw+UvJlkGchYySm6Z2SYtvgbWl9A4hsxaY6XP9ncYEIzbb27MCU1792ncIpZwhjJBkECDGVbNyCUqpKlsVFzgdEmRxxLFeP+UC3kZjw6kHjvWkUVxHUm4lC99aBc9JzAbatYOJDeZ77J4i27dL+LTCl0yFMOJXIlfBT8JYR+vf5fRWn3EZBM7i8nfWhJnterIMDMe5LZ9bl54NTJpwX5lk6swe3jmXqqIi22K+e+2CMuNjCG1rqxowTuL9eEzbx98HMTIclGLTkMOY9PlWmC4sY7YhXxz60XNe9cM0MCFFb0B9udX50BhBlyyzbNxw7nZUwZqo/+CHXUlaSS/Eikgn4aL4wGCP8FLIwrpG9gzirkz0AJJ+bh1fKTIOC/7SluB/5h0I2VtJNVBplkmm/Ax0MdLoBRrAqWD1VLLNopn9Fi2UezbKFiLv+Sv1uPynmnDnbEtdy+vlXsnkv4Veu8iU6c0rfrzmtOfo2eoyPQoFUBpnDHkOH/QWFHyp81BTvD1PPvZK/hcUZgnOs+
- 1JqGff3e
- L52eP7idI+ktC2EG3s8mzC7sFBeNSlYczLgdQqOH0Vnl7fIKqfFLIy9oTIk7DWEEOa5ho0rCY09UZNI2WsZyvkA/SjRKJZ/hA8gb6z5ls6nBXiFkpNbuVJCWfoAv+jghsWBJbArXfM1tN7iC6zqYeWTD+Xwl02V8AWRrqxMkfASGpXeO0yJ7p/Ig0/2piNpwXKoNw7K2m0G9fdufsoPPGCRZzUVTw8zL8xU21hW/BmYO6ufx5/BJWAdFWZMqfa/XjBYesKv6inPvFMy0=
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794381783-370420
+X-HE-Meta: U2FsdGVkX18zo4rXYo3J+bH7yBh2zOIoYavVTrZdnSLoqMlRcSNLDXtgEeCp9EoHlFNzrT3AeAc9VuB50kZlM+xPf0WhJqD6KZbXRx9QRq/v4XZGDrSVwJlgrtaLzMa18JGRcgfptgNqafGCNQ1Z2WS9Xk4fkoE5LyQIlgpc2kllTYkIIhZYac2KNsXoARDw92T4e+fkJozAKDvmdPz4bfu/WcBWRI2i7jYCNRXEFb2tLeX5abWBJy0MbU5XQGN3Ko7wACofzzmJOc4Onyy1mmp5yymhmdMJUWe8pBPYq8sltbobGXd8CbVfrjC83pyuNJfV7ZH0QwsDX5zQYgkQUoEgmjvJ5HvQW6ctv7pwjvb+3ZmCOYfQAMWmOQRGtSPQBV8SMpXHSoMiOWFx781PcJH7/EgfVVxu/9Nl/RPXngaFWK0+P7Z/qCasQ356GwZrsxdR90keoKJtv2cJiUeYitezbthbuZFmxxLBbfls2n6AIbupW9fAAysQ/aPulFsbalVnl1RkROX+6lOKcidTUBcm47bg15EaNhBRO+ZBAcbjJHA99PHr3UZQZHxrhwAqT4tebJHZMuuRKRiuA16dA+3wURNzCGuyFuWwOe0eNVV1nKH6zNJRp6S/WoQVeurTYKK13bIy0d+SmOwQXC0qaH0qN46qxWXNThDEEfabnPjhg6aW+FqD2sPvc4Zb1357CeSOs0z/iLHvt5c4ubvYqkNVlIfKbpXkp1aQsxYttYpV01AUpwU0f5wb7ZjPHSbAwub8VVI7EAdCwsMk/jfCs7E3FV+obbZy5C6hY0SbOG16sLoZS4HL1ff9acHonicRlF0ED0OxCGRKS57+3lwlGJJuH32R1OqS7jn2Z0opy/pwUYPzB+xfy2w6kn27fvb8cVrzKHFLEMVUeZpUV21CODg/3xcGRFTkNqb/yUZ6Ye322wTzycg86k7HCtqc3wlYLWqG3tG7JQ/3TJOyZWU
+ nfbgqNs7
+ pGK8A0CnJU4BxQTP23EOqauw3s2qtEpZMcmD/QeyEq2PflefMWZVd6GVOow3nwScBgKWJcekjT0zsOL48rBcsf3+LVfJSAAVcEuTo+s9OdE8D6qdKcEz9MOQUd/v4m2ZvZYs93pAqyNnbEvLIj3eTtiGLLCOy3SiEjV0Qf6piV+r60lCG/UfRGqrkUlRguA22AQNYCIuz6bbj8cFvHo2TC2rTNbENqd4zYTaISMFLsBBxt62R4rz42zSCQhJj/v0xzU7eZPJEfXmp/seqXzRln/BKbhbd2+I+CcEoz1YSPF8A7ax69dzSA+BYpQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,100 +153,233 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Kairui,
+On 11/10/26 04:52, Fang Xieyan wrote:
+> This series makes filesystem page-cache large folios work on kernels
+> built with CONFIG_TRANSPARENT_HUGEPAGE=n, and keeps them splittable
+> there.
+> 
+> 1. Why this is needed
+> 
+> TRANSPARENT_HUGEPAGE depends on !PREEMPT_RT (mm/Kconfig), so a
+> PREEMPT_RT kernel always has THP off.  Today that also removes
+> file-backed large folios entirely: the helpers that split them live in
+> mm/huge_memory.c under CONFIG_TRANSPARENT_HUGEPAGE, and the order
+> accessors in include/linux/pagemap.h short-circuit to "no large
+> folios" when THP is off, so every filesystem that opts in silently
+> ends up with order-0 folios.
+> 
+> The consequence is not only throughput.  XFS allows block sizes up to
+> 64K and fs/xfs/xfs_super.c refuses to mount anything larger than
+> mapping_max_folio_size_supported().  With THP=n that helper reports
+> PAGE_SIZE, so a 64K-block filesystem cannot be mounted at all:
+> 
+>     XFS (vda): block size (65536 bytes) not supported; Only block size (4096) or less is supported
+> 
+> There is no degraded mode to fall back to, because a block has to fit
+> in a single page-cache folio - which is why
+> fs/xfs/libxfs/xfs_ialloc.c derives min_folio_order from
+> sb_blocklog - PAGE_SHIFT.  Either page-cache large folios work without
+> THP, or the filesystem is unusable.
+> 
+> 2. What the series does
+> 
+> The anon and file split helpers were already separated by Kairui
+> Song's "mm/huge_memory: clean up and decouple the anon and file split
+> helpers" (v6 04/17, in mm-unstable); that is the base this series
+> starts from.
+> 
+> 1/3 moves the folio-splitting implementation out of mm/huge_memory.c
+> into mm/folio_split.c without changing any behaviour.  The new object
+> is still built by CONFIG_TRANSPARENT_HUGEPAGE, so a THP build keeps
+> exactly the code it had before; a pure move is also the easiest thing
+> to rebase on top of further churn in this area.
+> 
+> 2/3 builds that object for CONFIG_LARGE_FOLIO instead, and drops the
+> anon, PMD and khugepaged dependencies a file-only build cannot have.
+> The symbol comes from Matthew Wilcox's "[PATCH v9 12/15]"; if that
+> series is in first, this patch shrinks to its Kconfig default and the
+> accessors it already rewrites.
+> 
+> 3/3 enables filesystem page-cache large folios when THP is off.  It
+> lifts the compile-time short circuits in pagemap.h for
+> mapping_max_folio_size_supported(), mapping_set_folio_order_range(),
+> mapping_max_folio_order() and mapping_min_folio_order().
+> PREFERRED_MAX_PAGECACHE_ORDER is left alone: an LF-only build keeps
+> the existing cap of order 8 instead of following HPAGE_PMD_ORDER.
+> Without THP such folios cannot be PMD-mapped, so raising the ceiling
+> would mainly increase the maximum page-cache allocation size.  The
+> changelog has the arm64 64K-page arithmetic, which is a calculation
+> and not a measurement.
+> 
+> The split side is not rewritten: truncate, migration and memory-failure
+> already call the helpers outside any THP ifdef, so with 2/3 in place
+> they simply stop resolving to the -EINVAL stubs once 3/3 turns
+> allocation on.  madvise is inside a THP ifdef and does not take part.
+> 
+> 3/3 also makes the XFS mount failure above say why it failed: when
+> CONFIG_LARGE_FOLIO is not set, the warning now names the missing
+> option instead of only reporting the block size as unsupported.  With
+> LF=y the added warning is compiled out completely.
+> 
+> 3. Testing
+> 
+> Six configurations build clean as full kernels, bzImage and the
+> vmlinux link included, with no new warnings: A (THP=y), B (THP=n,
+> LF=y), C (B plus HUGETLBFS), D (THP=n, LF=n), and RT-B and RT-C with
+> PREEMPT_RT=y.  The PREEMPT_RT configurations were build-tested only.
+> No runtime PREEMPT_RT stress test or livelock validation was
+> performed.
+> 
+> THP=y is unchanged: the .text sections of mm/filemap.o,
+> mm/readahead.o and mm/shmem.o are byte-identical before and after the
+> series (md5 equal, 45896, 7139 and 35314 bytes).  With THP=n and LF=n
+> mm/filemap.o and mm/readahead.o stay identical (44584 and 6259 bytes)
+> and every function in mm/shmem.o keeps its size; the only difference
+> there is one dead argument load that the folded-out
+> mapping_set_large_folios() call leaves behind, so the section keeps
+> its 29778 bytes while its md5 does not match.
+> 
+> In the new LF=y, THP=n configuration mm/shmem.o keeps its size as well,
+> 48 bytes shorter at 29730.  That difference is not from 3/3: 40 of the
+> bytes are shmem_writeout(), which shrinks because 2/3 turns
+> split_folio_to_list() from an inline -EINVAL stub into a real call, and
+> the other 8 are the padding in front of the following function; the
+> same 29730 bytes appear with 2/3 alone, and 3/3's own shmem hunk
+> changes no function size.  The new call is unreachable in this
+> configuration anyway, since shmem_alloc_and_add_folio() still forces
+> order 0 without THP.
+> 
+> Where the generated code really changes is the allocation policy:
+> mm/readahead.o grows by 880 bytes of .text (6259 to 7139) and
+> mm/filemap.o by 134 (44584 to 44718).  nm -u mm/folio_split.o lists no
+> anon, pmd or khugepaged symbols.
+> 
+> Runtime, x86_64, 4K pages, THP=n, QEMU/KVM, on a 64K-block XFS image
+> (mkfs.xfs -b size=64k -s size=4k), with kprobes on
+> filemap_alloc_folio, filemap_add_folio and __folio_split:
+> 
+>   - writing 64M: 84 allocations - 59 at order-8, 5 at order-7, 5 at
+>     order-6, 5 at order-5, 10 at order-4, i.e. exactly 64M;
+>   - reading the same 64M back after drop_caches: 72 allocations,
+>     62 at order-8, 1 at order-7, 5 at order-6, 4 at order-4;
+>   - truncating 1M to 700K: one __folio_split, landing at order-4,
+>     which is the min_folio_order XFS asked for; order-0 never appears
+>     in any of the three phases;
+>   - tmpfs writing 32M: 8192 shmem_alloc_folio calls, all order-0;
+>   - shmem write vs F_SEAL_GROW, reproducible as: memfd_create(),
+>     ftruncate() to exactly 4096 bytes, F_ADD_SEALS with F_SEAL_GROW,
+>     then a single pwrite() of 8192 bytes at offset 0, comparing the
+>     syscall's return value.  It returns 4096, the same as the
+>     pre-series THP=n kernel.  A THP=y kernel returns -EPERM here, and
+>     so did the LF-only build before shmem's mapping was put back
+>     behind THP; that -EPERM is pre-existing behaviour of THP kernels,
+>     this series neither introduces it nor extends it to other
+>     configurations.
+> 
+> Same image on the pre-series kernel, for reference: it fails to mount
+> with -ENOSYS before any of the above can run.  The whole probe was
+> re-run on the final revision of the series with identical numbers.
+> 
+> 4. What this turns on for existing filesystems
+> 
+> LF=y makes the existing opt-in take effect for every filesystem that
+> already asks for large folios, and that list is not ext4 only: ext4,
+> xfs, btrfs, f2fs, fuse, afs, erofs, nfs, cifs and zonefs all call
+> mapping_set_folio_order_range() or mapping_set_large_folios() from
+> their inode or superblock setup, unconditionally, today.  Those paths
+> run on any THP=y kernel; the new configuration is only THP=n with
+> LF=y.  With THP off the ceiling is PREFERRED_MAX_PAGECACHE_ORDER,
+> which stays at order 8.
+> 
+> On the tested 4K-page configuration, 4K-block ext4 gets min order 0
+> and max order 8, while 64K-block XFS gets min order 4.  Btrfs derives
+> both ends from the mkfs sectorsize and nodesize.  A THP=y kernel keeps
+> the order-9 ceiling (HPAGE_PMD_ORDER) it has today on 4K pages.
+> 
+> shmem keeps its THP dependency: its mapping is only marked large-folio
+> capable when THP is enabled, because shmem_alloc_and_add_folio() still
+> forces orders to zero without it.  This matters beyond cosmetics.
+> generic_perform_write() sizes its write chunk from
+> mapping_max_folio_size() and passes that length to ->write_begin()
+> before clamping it to folio_size(), and shmem_write_begin() rejects
+> pos + len > i_size for F_SEAL_GROW.  On a 4K memfd sealed with
+> F_SEAL_GROW, an 8K write at offset 0 returns 4096 on the pre-series
+> THP=n kernel and -EPERM on a THP=y kernel; advertising order 8 while
+> allocating order 0 reproduced the -EPERM on an LF-only build.  Tying
+> shmem's policy to LARGE_FOLIO means the allocation, swap and split
+> sides together, which is a separate series.
+> 
+> 5. What is not covered
+> 
+> Since PREEMPT_RT is the motivation, the RT side needs to be explicit.
+> The freeze-to-xarray-update window in __folio_freeze_split_file() is
+> the fourth freeze site named by Matthew Wilcox in the RT livelock
+> thread started by Dong Hui
+> (<c2ff0c66422c4e2d869499a1186ff0ae@xiaomi.com>):
+> 
+>     There's also __folio_freeze_split_file().  I know PREEMPT_RT
+>     disables TRANSPARENT_HUGEPAGE at the moment, but hopefully that
+>     restriction will be lifted.
+> 
+> This series does not fix that problem and does not claim to be
+> RT-safe.  It only makes a code path that already exists on THP kernels
+> reachable in a configuration that has no THP, which is the same
+> exposure Kairui described in 06/17 as "should be fixed generically".
+> One detail that may matter if a reader-side fix is chosen: the
+> function already holds the xarray lock until the folio is no longer
+> frozen and visible, since folio_ref_unfreeze() happens before
+> xas_unlock_irq(), so a generic fix of that shape would cover this path
+> without touching it.
+> 
+> Also not tested here: the migration, memory-failure and madvise split
+> entries at runtime (only truncate was exercised end to end), arm64
+> with 64K pages, nommu, KASAN and lockdep, xfstests, and the btrfs
+> order range.
+> 
+> 6. Questions
+> 
+> (a) Non-THP split accounting.  count_mthp_stat() is a no-op without
+> THP, so in an LF-only build a file split updates no counter at all and
+> THP_SPLIT_PAGE does not even appear in /proc/vmstat.  I have a
+> follow-up patch that gives the file path its own counter.  Would you
+> rather see a new vmstat item, an existing one reused, or nothing?
+> 
+> (b) Should XFS select LARGE_FOLIO itself?  Three lines of
+> "select LARGE_FOLIO if MMU" in fs/xfs/Kconfig make 64K-block XFS
+> mountable on a THP=n kernel with no manual configuration; I built such
+> a kernel and mounted the 64K image.  The cost is mm/folio_split.o: 3.2K
+> of .text in a THP=n build, code that every THP=y build already carries,
+> paid also by XFS builds that will never use a block size above the page
+> size.  Kconfig cannot express "only when a 64K filesystem is mounted".
+> I left it out because it changes default coverage for a decision XFS
+> maintainers should make, but I can add it as 4/4 if that is preferred.
+> 
+> Comments welcome.
+> 
+> Fang Xieyan (3):
+>   mm: move folio split code into mm/folio_split.c
+>   mm: build file-backed folio splitting with CONFIG_LARGE_FOLIO
+>   mm: enable filesystem page-cache large folios without THP
+> 
+>  MAINTAINERS                |   1 +
+>  fs/xfs/xfs_super.c         |   2 +
+>  include/linux/huge_mm.h    |  60 ++-
+>  include/linux/page-flags.h |   5 +-
+>  include/linux/pagemap.h    |  17 +-
+>  mm/Kconfig                 |  19 +
+>  mm/Makefile                |   1 +
+>  mm/folio_split.c           | 969 +++++++++++++++++++++++++++++++++++++
+>  mm/huge_memory.c           | 920 -----------------------------------
+>  mm/internal.h              |   1 +
+>  mm/shmem.c                 |  11 +-
+>  11 files changed, 1054 insertions(+), 952 deletions(-)
 
-On 10/17/26 at 03:53am, Kairui Song wrote:
-> On Tue, Sep 01, 2026 at 02:37:54PM +0800, Baoquan He wrote:
-> > The aging walks into every PUD and runs the PMD-level Bloom filter
-> > on each PMD. Add a coarser PUD-level filter (pud_filters) one level
-> > up:
-> >  - walk_pmd_range() now reports whether it found any young leaf entries,
-> >  - walk_pud_range() records that in the PUD filter, and
-> >  - on subsequent generations, skips the whole 1GB subtree when the filter
-> >    says it had none last generation.
-> > 
-> > The double-buffered filter flips with each new iteration, so newly hot or
-> > migrated-in pages are re-checked promptly rather than suppressed
-> > indefinitely. force_scan walks bypass the PUD test, so manual aging and
-> > newly added mm's always rescan and re-populate the filter.
-> > 
-> > To keep hot regions marked, also report the covering PUD from the rmap
-> > feedback path (lru_gen_look_around()), so regions whose hotness is only
-> > observed by eviction will be re-scanned.
-> > 
-> > Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
-> > ---
-> >  mm/vmscan.c | 52 +++++++++++++++++++++++++++++++++++++++++++++++-----
-> >  1 file changed, 47 insertions(+), 5 deletions(-)
-> > 
-> 
-> ...
-> 
-> > @@ -4397,8 +4431,14 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
-> >  	lazy_mmu_mode_disable();
-> >  
-> >  	/* feedback from rmap walkers to page table walkers */
-> > -	if (mm_state && suitable_to_scan(i, young))
-> > +	if (mm_state && suitable_to_scan(i, young)) {
-> > +		/* the PUD entry covering the young PTEs scanned above */
-> > +		pud_t *pud_p = pud_offset(p4d_offset(pgd_offset(vma->vm_mm, pvmw->address),
-> > +						     pvmw->address), pvmw->address);
-> > +
-> >  		update_pmd_bloom_filter(mm_state, max_seq, pvmw->pmd);
-> > +		update_pud_bloom_filter(mm_state, max_seq, pud_p);
-> > +	}
-> 
-> I saw the discussion from Barry about the concern about the overhead
-> 
-> I think we can drop the PUD ptr walk entirely. The filter only
-> needs a stable identity for the range walk_pud_range() is iterating,
-> and (mm, PUD-aligned address) gives that on both sides:
-> 
->    walk_pud_range(), test and update alike:
->       (void *)((unsigned long)args->mm ^ (addr & PUD_MASK))
-> 
->    lru_gen_look_around():
->       (void *)((unsigned long)vma->vm_mm ^ (pvmw->address & PUD_MASK))
-> 
-> Will this work? Also I took a look at the hash algorithm of this too:
+I'm sorry, but I have 0 capacity for that right now.
 
-Sorry, missed this mail too, thanks for great suggestion.
+https://lore.kernel.org/linux-mm/a2f584f6-e382-4876-aa6d-d5a34de6ee59@kernel.org/
 
-Yeah, it's a much better way to do pud level filtering. I will
-switch to it in v3.
+-- 
+Cheers,
 
-And the same idea on PMD has been merged, your suggestion is earlier
-than it.
-65a9bf08a3e4 mm/mglru: don't use stack pointers when walking PUD and PMD tables
-
-> 
-> static void get_item_key(void *item, int *key)
-> {
-> 	u32 hash = hash_ptr(item, BLOOM_FILTER_SHIFT * 2);
-> 
-> 	BUILD_BUG_ON(BLOOM_FILTER_SHIFT * 2 > BITS_PER_TYPE(u32));
-> 
-> 	key[0] = hash & (BIT(BLOOM_FILTER_SHIFT) - 1);
-> 	key[1] = hash >> BLOOM_FILTER_SHIFT;
-> }
-> 
-> And hash_ptr is actually hash_long, 64 bits if we use hash_32
-> will it be even better?
-
-Right, hash_ptr() is hash_long(), i.e. hash_64() on 64-bit: it hashes the
-full 64-bit value and returns the top 30 bits of val * GOLDEN_RATIO_64.
-The 30-bit width comes from BLOOM_FILTER_SHIFT * 2.
-
-With the v2 pud pointer as the key, page table pointers share most of
-their high bits, e.g (0xffff8...). But with the new way you just
-suggested, it's the other way around. With the (mm, PUD-aligned addr)
-key the low 30 bits are cleared by PUD_MASK, so the address difference
-lives above bit 32 - hash_32() would truncate the key there, and two
-PUDs every 4GB in the same mm would get the same keys and always share
-Bloom bits. Please correct me if I am wrong.
-
-Thanks
-Baoquan
-
- 
+David
 
