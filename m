@@ -1,97 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86213606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 10:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70851606A884
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 10:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=t1XoflFL
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=hpvU2tZT
 Received: by kanga.kvack.org (Postfix)
-	id 858F86B00EF; Wed, 11 Nov 2026 05:13:58 -0500 (EST)
+	id 91DD06B05B1; Wed, 11 Nov 2026 05:15:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 809066B05B0; Wed, 11 Nov 2026 05:13:58 -0500 (EST)
+	id 8F4FC6B05B2; Wed, 11 Nov 2026 05:15:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71EC56B05B1; Wed, 11 Nov 2026 05:13:58 -0500 (EST)
+	id 7E4A36B05B3; Wed, 11 Nov 2026 05:15:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BAA26B00EF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 05:13:58 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5DE531C0E23
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:13:56 +0000 (UTC)
-X-FDA: 85422427272.03.51BAC11
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4113420007
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:13:54 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 572626B05B1
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 05:15:10 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E5C28A0267
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:15:09 +0000 (UTC)
+X-FDA: 85422430338.08.CA9E6BE
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 61F6A20006
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:15:06 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=t1XoflFL;
-	spf=pass (imf03.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794392034;
-	b=4cID3A/00eorFGDIJdu1v2BDWfYLvjCI4wTEcWdtZ+58o8Edv73q5KGXm86wZbJzrfg5i7
-	fKQGLtHnG8TNAXZbM1E1GdtnkIMmDXq9rTA2iEE4F0n3RLlel58W3xk1TKa3+EvdmA1qPL
-	4KKcRWJI3mL2nlQJESfOPJ6fg51hdTs=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=t1XoflFL;
-	spf=pass (imf03.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	dkim=pass header.d=huawei.com header.s=dkim header.b=hpvU2tZT;
+	spf=pass (imf03.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794392034;
+	s=arc-20220608; t=1794392108;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QFsUrJ0dxOWP7r3frqNT5Bu7ce7smoD0qQQqG1/Rh6Q=;
-	b=RlK/l4X49UqyknL1qmM82wO3DjfxaxgXAd/VywQKti2eDCIS3qW10UVjzKR0Us1iWOGWg9
-	PnqaJRX8ITkFKgzswCjPbU5ZASg/g3/eoVRT/etbhFNjHxQFc3yhlJh9T84PbWzLtMwmak
-	vPmQdFIVlSlBpUY+Ehc0d26f5Fee3GM=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 19D6F1576;
-	Wed, 11 Nov 2026 02:13:50 -0800 (PST)
-Received: from [192.168.29.156] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DF9843F632;
-	Wed, 11 Nov 2026 02:13:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794392033; bh=1UEncBFzc6ar7AzXQMp/oadOU3GZsGaET5zqzd1pFeE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=t1XoflFL8fdXTGRA8TKAuiSWlNqE8dajStSZclPxJPQhhPfQ4rp6WJdfL3xNKT35o
-	 5skjqINIMXPS133CRRqRgZMCqxpLzq/FXQw6Wwde839uQ4Yh5hRfQfyIvBwJeC2N5s
-	 mQs95NZEbgNSiP6CcMm6Fqqa1W3LWZEDLdaXhaNk=
-Message-ID: <f2df3351-ccc8-44c6-bcfc-d380264fb8fd@arm.com>
-Date: Wed, 11 Nov 2026 15:43:44 +0530
+	bh=WoFu5Y8HEl5Mu4EdTi3BieAt/LoevyDG2bUSzTwF484=;
+	b=waJGXA+XPbtnj6MG3taCFHWO+IYD8JVJtxcg3bFesxaeFKHdC5WvPS1od8qAva3s6ToZye
+	5iyca5ilNBxWE+G066H5xVddthORU9Spof8WtvY6hznJmtyJls31noiJPVB4Nb+7q007NX
+	w11KzB+TXNa2SiJCikxv2+lSTfW2FKk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794392108;
+	b=nSl8urmR0K6zDxMR/ir7+g0uehJidmfwcaXHhpRo907GXZl5Mrqueimw5PV+3vBRDUIptl
+	NCjbsAcyPiYpDftNNGPZDBTTfpNOkOqCitA2+7yw4D40as8H/Zi3Fdl37hFE6lITsG6Zep
+	I3LJmLTCYROTd+hzavMsIpGdkmNHf8o=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=hpvU2tZT;
+	spf=pass (imf03.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=WoFu5Y8HEl5Mu4EdTi3BieAt/LoevyDG2bUSzTwF484=;
+	b=hpvU2tZThU1T1BxQr/2toWig69cLVckE9jSW2O40IDMDKabXB4+6aj6yO1He0Gm2NRlgrIRCp
+	098Zp68VMRuEU+7iz+UQeqep2Mk8rvcEm/42ADGib0Cpp7b9KSTrfAOrAD3SFIlxayNl6mBRU98
+	zvoj8LCGtM5vvTV9IVqiVMc=
+Received: from mail.maildlp.com (unknown [172.19.163.15])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4jPfX51cgpzLlt9;
+	Wed, 11 Nov 2026 18:14:45 +0800 (CST)
+Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6D54D40578;
+	Wed, 11 Nov 2026 18:15:00 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ kwepemk300003.china.huawei.com (7.202.195.93) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 11 Nov 2026 18:14:59 +0800
+Message-ID: <64df30e9-4297-4e37-9e9c-2760d68af24f@huawei.com>
+Date: Wed, 11 Nov 2026 18:14:58 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v2 00/12] improve mremap_test
-To: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- John Hubbard <jhubbard@nvidia.com>, Kalesh Singh <kaleshsingh@google.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>, Park Tae-sun
- <ts930@dgu.ac.kr>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20261102100211.141831-1-sarthak.sharma@arm.com>
+Subject: Re: [PATCH v3] mm/highmem: refuse to copy hwpoisoned folios in the
+ !copy_mc fallbacks
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Yuanhe Shu
+	<xiangzao@linux.alibaba.com>, <akpm@linux-foundation.org>
+CC: "Huang, Ying" <ying.huang@linux.alibaba.com>, Kaitao Cheng
+	<kaitao.cheng@linux.dev>, "Garg, Shivank" <shivankg@amd.com>,
+	<vbabka@kernel.org>, <ljs@kernel.org>, <liam@infradead.org>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
+	<linmiaohe@huawei.com>, <nao.horiguchi@gmail.com>, <ziy@nvidia.com>,
+	<tujinjiang@huawei.com>, <mgorman@techsingularity.net>,
+	<chengkaitao@kylinos.cn>, <muchun.song@linux.dev>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+	Ruidong Tian <tianruidong@linux.alibaba.com>, Tong Tiangen
+	<tongtiangen@huawei.com>
+References: <20261110112641.1196786-1-xiangzao@linux.alibaba.com>
+ <16cf88a0-6652-4276-95fb-12306e417701@kernel.org>
 Content-Language: en-US
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-In-Reply-To: <20261102100211.141831-1-sarthak.sharma@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <16cf88a0-6652-4276-95fb-12306e417701@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemk300003.china.huawei.com (7.202.195.93)
+X-Rspamd-Server: rspam06
+X-Stat-Signature: kft7pd7eo949q97nm7rcixq4jbxj3638
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4113420007
-X-Stat-Signature: ukniobiyqmem67tm3m9grhjs4gu6cxpq
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 61F6A20006
 X-Rspam-User: 
-X-HE-Tag: 1794392034-150065
-X-HE-Meta: U2FsdGVkX18e3cceXT9J3HpL4O+ZdGk11zJ2FMREVqWEHXbZs1j2s6zeiJPeRyh6a+bDvON4siaIOxl6o1O6ZRwDZXqgIk09WtmdHA6GapkQUoVVsFu+zhLN0+2Q/aciovpmf38zqKjGFb8zpQ3ZEzJ2Kt02GbTBN9e5e1GEiXpQViSfF80zJezUUCKmUfoJwuU2ruAJYRTzxOebxplqXq4iQ+WvM7MvckgDzFl5V0B8UjRHrvUUbdZfwPukdFc+96wIXvIS4PG5mFrtF0H9MBvC8o0KZFHkPqKAFp/7Tu/U0F44jRKb7NLbM/OTDbaaHyWb9QG4MzCe30r9jAR2R38hNZAnBoUwEhBynMqTd/mRlLXjjzfbR+muk4m2qKrTUtG1XU9E+CBSS/X0yK7cgdkdN2B0bBSfdVk1VAtStGecjJ+AUBGQiCPUK54vBHzQVy8BVF14/1nMRWRQXi88tDBW3GxMNCl0VJOtEGArWkmwzAEDT20c81zrEdYH9Jg8km38PgWfqJoxccRAK48gvCdsoyNgTK66wNVzFNjH1Dlshm9tHovl8O+nLk6Ntq6ryJjC/zSL1W5LCmX+EI4Pv9Lj5zkXDLKWOT1YIe7vbQKly7eeCteTWIyAQYSzLvImubfC8pC60mWd0qu0BJCyA2O/8fzOIfgXjahpeZZzgtw1aA/q818clBU31/iPpMjK8N8yf9mNxmbolHnLPh84sEKFSoGR7xTtnszDIrw1dd7FaL+5SmrwrWeEzcgUhnKp15knSOUFJJg1CLSCwO100QmAK+TpV28ZYXbESNILQKXThrRa5OXUjctmFBey8zcSILLIHCdHlEk46n5Ii5PM+epsk5hbiuB/YYClAmGKbjX+f5drFiAVXYrTMuK8qOknDcWLi6ANYCXnroGNufUVg3D0y73r9jKSSQA6Zgx5m4AtiMNhAi9sKbg8T3jXfsVQAvi/ErjqlvPMGZzgA25
- 03HeqhM1
- cWmbFgjPHKqCVWhsPG/Ti2ffI8nMpEpKl8y0n8Xf66Gakeqer4OodFIJBaB5BJyUsvuSNkEzk6CdtcyUsI9tfPuS0X8szkJwh7LUhc1Td2brUwcsIKTiHfADlF0gnlz8hQtQ378krxbzrrLLr5eB6Lbf+LeUDiihb488Tv3Daimj62qcjUqnPmJgqF/By/ZE4O1get72X7chklBYPyQpRkOVZLPPs0m3I997/stvJ4vF1UrhCvxen5C9qSliuipmbSMKEV4W1aLzwWZzFyyqdDZx42GazkHQN/6BXKpt9Kg7d+BI1rkW5ImINFlI++T2mSGSmogyNYxCTqsF+oZBiu+1kW+TpKf7r0Fy0UQyA3g2v0fRftI7GY4rCDw==
+X-HE-Tag: 1794392106-745699
+X-HE-Meta: U2FsdGVkX19/ZUCoZ0wxaYOsyFy+gcyC4EZNFBHJ2kZiHV2SOTn7xty6cJ4uUuKsyqTV10FgjSF3rwKVLhCtuUIxITyVMlv974teJDQEbEdQzdcdyXNsr5NpiUL6X7Ei4x9f1x1zgsL/WTtTPMYvT1NeZzaRmmbjmRkEhmXh0ooJs+ccjguh/WDsDMvC4lvhuxxqWj6dHt1WfOxa3Z0p4lAcNBZl7IG/QpJIEWUOhWghbavuJh/8g/mQsSFe72WRTWAyPg3FWv6NwSEqfcKWLh0hxqHpgYP34M+Ls51ZuZR7wvqottRX29KDjcd9XgNek7Ay0U7usJ7TowVgj8Sqo3Ihz8D1dwl2zmp8wltv8i8A1h8Ex8AGgni7h2prmwhmY2zp+2hl2EQcG6XQRes+4IiiYNiZwJA2oDOZoM+zBEHtOpiklgJ69JP5YsHw449zH7iEX0xpFMYvd1TvU6CfBkIRa38ZriN2dTun6kNcTaCCOX6tTo7ckPbVSh+/kK7YVFiXuEH5z6xX9ch+RhlMJ/aIgbug96A3sro2CDLHsqkcFgNreKOWpCbyjZsT+Hqh/sSge76g4rYQlE/cJkHOiuhpsaSoYdbg/gkOOdA5PeThQ9Uig3BIY6IAeRHkRudZqBbdSoQnad2DdJjCTw7FGsqXgbqPutMjp3qlrmkNOxTs35gRyhXpIaFsGAvDp22zY6bj13n292XhPRm2lfeV3xLU11gIn6mjcYnqp6W/PK3TuDCx+UxAkZ/OqRy6NVVtvUzhhNEZlAbVfmV8VO5a7sg5tFUfdW+xGbV83Auyqzropk4iztOtQpXVpEHlbl0pUee0/NYdsgVzxFyoUwaT5WOoReyCYl5g8P37Q2qoYNiRdqOWn3ZlNDA6tIA+Ar3HDae2TtFuDmC7uDcOzTuUirKDzmtKSFyVgzVAT4rPO9WSWA/PrdkTSdr3AB5YBvQ/l8i1vRgM6hYxYBE/3dY
+ HVdjBd7i
+ rdFLU01U5pLOQvCybQeNHVqOj9dY9BJmSVg7eHAMrVUxOSJt87NYFZKLNbkFjciBAm9dY0kpUTZR9po0UNqyjeRZyWTvKhNDIwL/XTAw78Z1217Sj9CjIOtcMAN3V2v95EH3iva1f/yPhK3RlRybgAcDO0zE+1e8Je1MMhpc1cqNZgnSVI4P9swRF5jzjFdj8ZFe5beLoSW5oZhn2T7B9QZBqEiqHahGBcpD81DwehCDhgejRDGa528aFyXCUG4Hpi5VbNqQNdk5xKacvBGve3Nzh8iE9+PdaeO6UXBu9LgE4oo1+sA0YH/3ctxpemSnvZ78QCxwxJQynmhEEJfJ1eImbjGY76OIYxQzmznTBrTUYM8+skRgc5JwXNUMtPUNlocD/liygO/57OWQ9ZPB6ENnShmKdU/ot9RrQ8etfXyN81HwzQjB7t0yoOUmXIiW0a9hy6hPgadWRGYN+I01QFytZe6aVUvi9V4/Fh5Y5JDOiOJSfHGi2J24Qd7fqMavPrBQ+HoFe66DUO4m0rlUfLscNwg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,67 +113,51 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 11/2/26 3:31 PM, Sarthak Sharma wrote:
-> This series fixes correctness issues in mremap_test, simplifies its
-> test infrastructure and strengthens validation of remapped mappings.
+On 11/11/2026 5:36 PM, David Hildenbrand (Arm) wrote:
+> On 11/10/26 12:26, Yuanhe Shu wrote:
 > 
-> Patches 1-3 remove unused command line handling, unnecessary cleanup
-> checks and redundant errno handling. Patch 4 converts the test to use
-> kselftest helpers and removes manual failure tracking.
+> While the file touches highmem.h, this really isn't about highmem at all, right?
 > 
-> Patches 5-8 fix handling of unavailable userfaultfd support, unexpected
-> mremap() successes, data-corruption failures and cleanup after mmap()
-> failures. Patch 9 removes perf tests and timing infrastructure.
+> This really affects any architecture except the ones that define
+> copy_mc_to_kernel (x86+powerpc).
 > 
-> Patches 10 and 11 replace threshold-based random-data validation with
-> sampled validation and a deterministic data pattern. Patch 12
-> strengthens multi VMA validation by also checking the mapping state
-> of holes after remapping.
+> Or am I missing something? Would be good to clarify that.
 > 
-> This is a resend of v2 without any changes.
+>> The !copy_mc fallbacks of copy_mc_user_highpage() and
+>> copy_mc_highpage() return 0 after a plain copy.  With PG_hwpoison
+>> set while the data stays readable, there is no fault to recover
+>> from: the copy completes, the destination folio carries no poison
+>> marker, and the poison is consumed silently.
+>>
+>> Check the source page with is_page_hwpoison() in both fallbacks,
+>> before the copy, and return PAGE_SIZE, the not-copied-bytes
+>> convention of the real copy_mc paths, so the callers take their
+>> existing error paths.  On archs with copy_mc this code does not
+>> compile.
+>>
+>> Measured on arm64, where the fallback code compiles: a
+>> kernel-space microbenchmark measures 90.00 ns per copy before the
+>> patch and 90.71 ns after, 0.8% of the copy itself.
+> 
+> CCing Catalin. I'm surprised that arm64 cannot recover from a copy from a
+> hwpoisoned page.
+> 
 
-Hi,
++1
 
-It has been some time since I've posted this series (v1 posted around 2 
-months back :)) but it hasn't been reviewed enough. Requesting for some 
-review on this series, if someone has some time to look at it.
+We have been trying to support this feature in the mainline for over
+three years. This year, Alibaba took over and released new v14 and v15[1].
 
-> 
-> Changes in v2:
-> - Add a first patch to remove command-line options (David)
-> - Add a second patch to remove munmap() checks from cleanup paths (David)
-> - Add a third patch to simplify errno handling
-> - Drop the "correct multiple VMA range size" patch
-> - Add an eighth patch to fix cleanup after target mmap() failures
-> - Replace fully populating and validating large mappings with
->    populating and validating 10 pages each from the start, middle
->    and end (David)
-> - Extend multi VMA strengthening to userfaultfd multi VMA test
-> - Fix minor formatting issues
-> 
-> Previous versions:
-> v2: https://lore.kernel.org/all/20261006092511.145776-1-sarthak.sharma@arm.com/
-> v1: https://lore.kernel.org/all/20260924050009.19974-1-sarthak.sharma@arm.com/
-> 
-> ---
-> Sarthak Sharma (12):
->    selftests/mm: mremap_test: remove command line options
->    selftests/mm: mremap_test: drop munmap() checks from cleanup paths
->    selftests/mm: mremap_test: simplify errno handling
->    selftests/mm: mremap_test: use kselftest helpers
->    selftests/mm: mremap_test: skip test when userfaultfd is unavailable
->    selftests/mm: mremap_test: fail unexpected mremap successes
->    selftests/mm: mremap_test: fail on data corruption
->    selftests/mm: mremap_test: handle cleanup after mmap failures
->    selftests/mm: mremap_test: remove perf tests and timing
->    selftests/mm: mremap_test: replace validation threshold with sampled
->      checks
->    selftests/mm: mremap_test: replace random data with deterministic
->      pattern
->    selftests/mm: mremap_test: strengthen multi VMA validation
-> 
->   tools/testing/selftests/mm/mremap_test.c | 701 ++++++++++-------------
->   1 file changed, 291 insertions(+), 410 deletions(-)
-> 
+In server scenarios, COPY_MC is very useful because it helps avoid
+unnecessary panic behavior in the system. We would like to receive some
+guidance to accelerate the integration of this feature into the
+mainline.
+
+CCed Ruidong/Tiangen
+
+[1] v15 
+https://lore.kernel.org/linux-arm-kernel/20260618092124.3901230-1-tianruidong@linux.alibaba.com/
+
+
 
 
