@@ -1,97 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C9E5606A332
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 00:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A82606A320
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 00:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P4vULWk7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nwUM4nyk
 Received: by kanga.kvack.org (Postfix)
-	id 341526B05D5; Tue, 10 Nov 2026 19:26:09 -0500 (EST)
+	id 763DE6B00EF; Tue, 10 Nov 2026 19:28:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 319A96B05D6; Tue, 10 Nov 2026 19:26:09 -0500 (EST)
+	id 714896B05B0; Tue, 10 Nov 2026 19:28:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 258BC6B05D7; Tue, 10 Nov 2026 19:26:09 -0500 (EST)
+	id 62DCE6B05D7; Tue, 10 Nov 2026 19:28:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EEF6B6B05D5
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 19:26:08 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8DD731C23C1
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 00:26:08 +0000 (UTC)
-X-FDA: 85420946016.13.C22288C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 062B9120008
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 00:26:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P4vULWk7;
-	spf=pass (imf29.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 224586B00EF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 19:28:07 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 93E631601AD
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 00:28:06 +0000 (UTC)
+X-FDA: 85420950972.18.94E91C0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A16B640006
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 00:28:04 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nwUM4nyk;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794356767;
+	s=arc-20220608; t=1794356884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x80Jur2dVbfsH8vBU7Ebsz2GwukQ6rj58JAuvqMVqv8=;
-	b=YPRThIfsa/z+i52ckdUPXdI0aTzx1t7FrW9HEUT7pwv7s6DNkOYGCM8PO/6Eq0Fpbw4o0x
-	y/kpBugQGVRpgbGKkn9PFGCBxGo8tA6sali61lCmhXGbY3/KLfchAfjsUp4j2db6SODY6E
-	G+H0GojmjB/JZ55NuDz6zKVHrokJHzA=
+	bh=bbBaRo/7L6iOQrhDinfNIJ3r1kvuz8qfg44WFld2veY=;
+	b=qINEs7FmMu6IOJuWnVqSouXzKssOv3dOS7Pg5J6jlf9KkXcYKzovIrR/j8hBSJ8CFoCUyH
+	Y5eIsRenbUoGTiZNc2VXSGE9YUDKifME9Dje62YjDl7T5AGlLEeIwhqCK6zOvPJwtiM8zQ
+	y9O5DThenvlmZiUaIWs0DZaeHAtd5AQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794356767;
-	b=b9hDb3w6qVzXBlxPDlkqi3bgBRcIKMww86Io5ES/T2zqIh1eyLkV+QVQgySTGociqF9RJ4
-	8iWuuej9wdSggrvfUaUrNFfW/EDVQ8cvDQjhI6bTxfa0bhY7DVvZn2/aP6NqBq7+fPWlI1
-	d5d1+VrayQt/7Pn8Cwv0XvXYd96RFX4=
+	t=1794356884;
+	b=AdhZES0QbAjmvJUGLxY8yhvsxdQNsRe4LfKKDBYcQtTQuO2EuD7QI5ZvluQwJGwu9Zv3I2
+	Tqnue6bIO2ntvKcBdtSY/ljvG+Vd2I6Q99L7TF2QaUyqjHoPERSROqTHeRuNERvkpHZWB+
+	j0gOtknxbHA7h/bokEmQdZ0m10fb5CA=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P4vULWk7;
-	spf=pass (imf29.hostedemail.com: domain of snitzer@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nwUM4nyk;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 15F2760615;
-	Wed, 11 Nov 2026 00:26:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D40E1F0089F;
-	Wed, 11 Nov 2026 00:26:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D0DEF47333
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 00:28:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B81711F00A0A
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 00:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794356765;
-	bh=x80Jur2dVbfsH8vBU7Ebsz2GwukQ6rj58JAuvqMVqv8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=P4vULWk7Lz3JxWoQ1fFiZ1BhFF6mP3QT8MUkw0nM1uczi2dCWxzwTj2/3jymz8p1p
-	 WkU4wHtcNekWZctiFGEwKCWtRaf2gf4zmkF2KtMeiGjvKTlp0fHztgrDb+UHAgtyEM
-	 r+68HkuvbDNZb0WK/EMleuT9LsEO2jaMGfns2vx0CVBBvhgnkT4Lxpg2kFWieUKuPA
-	 9x5WccVA1+oUhvF9GGaXM/xclcu8uBRMaMrf8F22f7F2YjbZH7vKHFRLYDsb9jeWSB
-	 feB66WMI12AvuO+ctXjGtq2FFS8NHRPKneG0GhXjrHn1ddE0aABWamvGuQYlP8evjl
-	 1oJGe+gP4rwOQ==
-Date: Tue, 10 Nov 2026 19:26:04 -0500
-From: Mike Snitzer <snitzer@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org, Chuck Lever <cel@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>, linux-nfs@vger.kernel.org,
-	NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	Jens Axboe <axboe@kernel.dk>, Jonathan Corbet <corbet@lwn.net>
-Subject: Re: [PATCH v10 0/7] mm, iomap, NFSD: stop uncached writes reading
- back shared pages
-Message-ID: <avO2HG8_m4v-NYYM@kernel.org>
-References: <20261103211754.35352-1-snitzer@kernel.org>
- <20261104091740.GB31130@lst.de>
+	s=k20260515; t=1794356883;
+	bh=bbBaRo/7L6iOQrhDinfNIJ3r1kvuz8qfg44WFld2veY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=nwUM4nykXPopNGTyscZh/s7QXJS/OKgc04ASib+wR47Y2WPuiWkNkx/dQzj5zR/fd
+	 KdpC2qkBAGTl8LwWYm/rlheh54DOzdjT9vxQyhOeM5znZ4AXE+cnNUSX80gcPLdQiw
+	 8PcPac/FGedKA40KsOEC8D+7UB8oe/mJzwNSMqCrGJ6iP3Cgrp90Ap3foEn3bo53d4
+	 428fKlQ+5H1/ZDRfOKnvB2pQ+1zpjfbG2/1IQ9HbOisOOFYNfPGl6NIor4BwbtH0de
+	 8kLiFMwAGC5gB9G07ADVCmQnbYydJJDpKjuhai2m6JfkEk86PW4JlcpMLgRUw4PlOm
+	 QzbFUP7+5OY7g==
+Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-5eaabf28c06so1745452e0c.2
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:28:03 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErFRtJShMhFzulmTBJXhiOTwnuYT6xUKiX6UwAowqSpNkXQ8oBl2oIIJmCIUz7JpNJsUhQmGfMsIxA==@kvack.org
+X-Gm-Message-State: APuU4Z+xUHalea2wq6/pXAlEF48UoCDYvTPnaziiIHk0I5w6ngkEe1ld
+	Z2UoD+EPmIrgkwX/9Bzmk7GG0l2ug1LOsBRHyoRWE4vxDBnh0IQKMbvvi9RNGE4++ygvENUfPmu
+	VrMoz8IWUwuhZuaOWi0i2HKWkbejchFc=
+X-Received: by 2002:a05:6123:64:b0:5ea:c98d:768 with SMTP id
+ 71dfb90a1353d-5ee1c3b55f5mr233673e0c.6.1794356883023; Tue, 10 Nov 2026
+ 16:28:03 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261104091740.GB31130@lst.de>
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: ijm6pa8ej7d5mxfw9c4455p4rh8w6y5x
-X-Rspamd-Queue-Id: 062B9120008
+References: <20261111000913.22943-1-shakeel.butt@linux.dev>
+In-Reply-To: <20261111000913.22943-1-shakeel.butt@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 11 Nov 2026 08:27:51 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zRycX9dcW6P1J2R6f+xyO4+z6_LXz1i+qbNbMEnYm9uA@mail.gmail.com>
+X-Gm-Features: AclHuK8i5C1ziLIFv7nuGyug3gNnUasxxchiBj9TPgocQ0U6mI78FyGiazCDdjg
+Message-ID: <CAGsJ_4zRycX9dcW6P1J2R6f+xyO4+z6_LXz1i+qbNbMEnYm9uA@mail.gmail.com>
+Subject: Re: [PATCH] mm: mglru: splice all generations when reparenting a memcg
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, Kairui Song <kasong@tencent.com>, 
+	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Noah Feldt <noah@feldt.systems>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 5c5ttn7e6fbzxi5c4c4cm8x18faarbiq
+X-Rspamd-Queue-Id: A16B640006
 X-Rspam-User: 
-X-HE-Tag: 1794356766-536190
-X-HE-Meta: U2FsdGVkX1/RjaCqo07Gk75KmBN779iGuGhzACka209KUthe0AYCZP+w9z/y4gp/zyfoY5r99q+YamYnX/wV6If0weg7p76pvg7MZc2F9gC1mEz92ooIMsHlT/Fw4w6D5b9g397nEIxofYUEHs+7Fmw9LBzAhzu+BEs/hlU/7ZNcYytXOvAfTOBfE1cUIrNxzs5HmUZidxqjkKaNOBJd7jKy8y1GGaeVsFTiHgNtazermtSUM8z5DnkQcjRWE18Yw0tdXQLdT98bb4p50Mgxb1eGTRDLqEsOKNHFWh/ZUCLEGULvyNO3g0jI6XPF/+z0jGvwYq2NCyT4CH4W3BgxiwfXRH+RhPFQvPpyjgXWTJyFM1+tamt5intK6K6Pf7fAz6uZ+Ouq0G2Vsj3GaDCDK2i4GABKpBIMZOe+o2KFLrQ9wj5kPjYDq2OnKSzX48RlNSnl7vKwbFJAv6ZJHp9i2AIxuFHzAie0m581QePPI1moGk+FWWXJP4E4Hra3e4CKK47m+GTA1IUSnf+EiTPe2ulG2B1rOwMsYQgCTI/FAihJu35rXzB220Sk85lJyAIiq5OKgfSZoAhrLexg555kxn82SHk/gQVw2ebsA7a1u2nBmgitl5KlCec5efPUk/Y7WdX6hItZtHNmHJJ9t4CHzqkaxxnBdLDFA1gz3Qon/mnj7r1W5ym7r74LJrPeoTYmMAddagEK4nfJZUrkl+hmq0D9isva55J1/3K96Az82+w//HVhFq0jcxxEsFjYZEuCeAKXPPN9jq4xblfP0839ppWRMu3DHoufeEjeRslEEjauI4P2NGNToqWcES13qA5qdBfoj2lAloIyl5AmUZsodTQZsf7EluHNRGH8/9LWPLq4FcO2zF3r8WmGJg3OIMwGCm4yXjvhb1Fh0y+UxOG69LZuKMDc27A1MblJiDXGybDD5yw5ZDBj4mJb1pwhxYNgIN8Am+yRB/lLNagQwSf
- jk0kQyu6
- RnM6JJNZpTWVwPBRuS/mvYk8RLk+v0a7VEBPvwNe+zoz4OhHziiP8eqCpbzh2iERjD4BM4IuBs25bgoOW4pU+NTwNsol7rCB1NSUnBP1ytfdfsvqyioYJDXm0UtfP2ETJZKLqwWPJw8sk/jXixAOWMel473JxyujMQ+1XJy5tVwYEJPDrUxH+hXT5geKF5+gpx/gGerJuCs8Piof3zEVvXtL1IBXV/iN48brWDwsJYec1X+1s4XYGuEumNmJHfKAOh5j3hg/D49fSjZOyqhqYHrrSqt5mJMc5yc/fyDFo8D52ufY9VkoKs5qDXPT+PIAwwH6lRR0LxqqtPyM=
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794356884-312350
+X-HE-Meta: U2FsdGVkX18zSkswq1zxu8ZtN8qjoiighVswKTDVsT+/VHqF1qgy1irxvOqBKDizbSxMW8Qjm0TV7hKvjOmZdNyy0XeQ3nykdd/0gTmrcHbdoxvoEB70TAn4wR6pQ1iqoY+ydVNw1y6irRUOiQs40MFNYD7E9QkeqAYJYPi4T+g+IpuLaG+Y0p00CV3EYkD/0Oujwin6XLuMnkr9WNzcQQfWeiVe0xLsh6QnyiiH6oqO6+DeabIQ6xeY95QGrJDFmKBLv8VyhkEtMAdIkGRi8cU0/NmYVkexHUaf6Dkv5l/jav7gu6Z3j2os/1fgiarwLIJOpxjBySgAaKGesD4KmlmZIIM8bvytUoolzCvFNKh+j+/IKkccjl420E/iWD3HVOPOl2uD8Eb7c1wn/CiMT/Xmpr8S0x8t1Ze3+cTZRpVwsH1fD35pjnZ9Uxutkm5UivS4k+HAjtUK8mJkHAI0ZXu3sFt0bBrRNYTntllM+sV8MPzz0aPkTKat2eKnnb84qSZuy3EJG63lfVyISoWzkGH9uMIbSFlXFXuO/k+HC03dVtkd031bb/Y22dKfzOC8x3BDvWhdVhSOOoyNGs+JSsKXO3aAJaDBkupDCjt5o1E4F/LInzEAA/NLnK/GzY6XNMjva6pbwBlldaz8z9AWeUW2RVWTWF0GBiHi++uytoHJNZt/j7bzTMzsyXYFjF6jaax6fZnp4av0uXwJsWhht8ehmOQjcmCVKFRpfK0Fo65q7wO3ZCmLqqdtjd9eEZaeFcFyElQcGH9GVOCKlwrZ7ii36ILMEn94HoiYJbMqTrGKj4prtMUTmW6raK03u/MA9obrXOLsTi71fYI2GQCQy0mJJwzs1/XOvP4qaMkDB5Ygx/FTjl4kf5VqPOnELUsg1t+/YKPcQVoKGQi8DTpMoaLuUkxEiJ2r/RnglSH+1FVVHf04N5hGpyhl3Vv+Jk3KDAsfkTPyoK26+hQjFV1
+ E+u8gYgv
+ CoO+LG2bR0T8mEXmkVzy6mQo1dMfjneTk14nH521UjFzj9zo+R6ISUFBKUJeI453SbUF/7WpD0/M/qUB9ROCjpFXBvzkdnFykLK0pwcwRZ2rSGzqLh0NetOU72myZkOVluRKt5cpcfC5YxmG4TjZqoUNs+Kor8fQ/5YoLSaiyYzF8ohVBvydOD6r4g6hjKlCOkTN6LRue1i1Gl14dfd5xsoSWSwNGg0GvTeZx+8HW9h2uIfotz7HGRUqMOHLt9aEF+GKvnNQ1gIRvY7KHnxvQe7k5sE7GDv0PZh9q5n9LPmIBg8Z2MVQ3k6PrZcpu+dEmPP+RGu028y6Uook=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,76 +107,113 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-[against my better judgement I'm replying, hoping technical discussion
-wins out.. usually does]
+On Wed, Nov 11, 2026 at 8:09=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.de=
+v> wrote:
+>
+> Noah reported list_del corruption on single-node hosts running 7.2.11,
+> which already has commit bf4ade7dbd76 ("memcg: keep folio's objcg same
+> as its node"). The bad pointer is an MGLRU list head in a freed
+> mem_cgroup_per_node:
+>
+>   slab mem_cgroup_per_node start ff31bfa36a3c9e00 pointer offset 528 size=
+ 1920
+>   list_del corruption. next->prev should be ffacf881ccc70e08, but was ff3=
+1bfa36a3ca010. (next=3Dff31bfa36a3ca010)
+>
+> When a memcg goes offline, __lru_gen_reparent_memcg() moves its MGLRU
+> lists to the parent. It moves only the generations (gens) from min_seq
+> to max_seq, and it puts each list at the same index in the parent.
+>
+> A folio's gen in folio->flags can be ahead of the list it is on. In the
+> parent, the same index can stand for an older gen, so the folio's gen
+> can end up older than its list. Once the parent's min_seq passes that
+> gen, sort_folio() puts the folio on the list for max_seq + 1, where it
+> stays until the next aging.
+>
+> If the parent goes offline before that aging, the folio is not moved to
+> the grandparent. It stays on the parent's list after the parent is
+> freed, and the next list_del() on it touches freed memory. This needs
+> two cgroups on one branch to go offline one after the other, such as a
+> container and then its pod.
+>
+> The parent always has MAX_NR_GENS gens at this point, so every index is
+> valid in it. Move all MAX_NR_GENS lists, not only the gens from min_seq
+> to max_seq.
+>
+> A reproducer that drives these steps through the lru_gen debugfs file
+> gets a KASAN use-after-free on the freed mem_cgroup_per_node without
+> this patch, and no report with it.
+>
+> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
+> Reported-by: Noah Feldt <noah@feldt.systems>
+> Closes: https://lore.kernel.org/all/20261110132853.71228-1-noah@feldt.sys=
+tems/
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Cc: <stable@vger.kernel.org>
 
-On Wed, Nov 04, 2026 at 10:17:40AM +0100, Christoph Hellwig wrote:
-> On Tue, Nov 03, 2026 at 04:17:47PM -0500, Mike Snitzer wrote:
-> > Hi,
-> > 
-> > An uncached (RWF_DONTCACHE) buffered write drops each folio it writes
-> > once the folio is written back.  A folio that the write covers only
-> > partly is shared with the neighbouring write.  If it is dropped before
-> > the neighbour writes its part, the neighbour reads it back from disk
-> > first.  32 threads writing interleaved records to one XFS file, 4 KiB
-> > pages, before and after 5/7:
-> 
-> Very colourful terminology here.  Who is "the neighbour".  How do we
-> know a "neighbour" exists and what it wants to do?
+Thanks very much, Shakeel! I saw Kairui has exactly the same code here:
 
-"the neighbour" was meant to convey the other write that covers the
-rest of a page that another write covers only partly.  For example,
-with 4 KiB pages, a write of bytes 0 to 5999 covers bytes 4096 to 5999
-of the second page.  A write that starts at byte 6000 covers the rest
-of that page.
+[PATCH v4 14/17] mm/mglru: reparent folios from all generations
+https://lore.kernel.org/linux-mm/20261016-mglru-fg-v4-14-2106750c0bfa@tence=
+nt.com/
 
-We do not know that such a write will come, and patch 5/7 does not
-assume it.  5/7 looks only at the state of the page:
+somehow, Shakeel's patch makes us need the change earlier even before
+mglru-fg lands?
 
-- If the page is not uptodate, it is not fully written.  5/7 does not
-  mark it dropbehind.  It stays in the page cache, like a page from a
-  normal buffered write, until a write completes it or reclaim drops
-  it.
-- If the page is uptodate, it already holds the other part, and this
-  write completes it.  5/7 marks it dropbehind, and the writeback that
-  cleans it drops it.
+> ---
+>  mm/vmscan.c | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 6a1af9b92349..902616a3b755 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4751,19 +4751,25 @@ void max_lru_gen_memcg(struct mem_cgroup *memcg, =
+int nid)
+>   * The same generation has different meanings in the parent and child me=
+mcg,
+>   * so this compromise method will cause the LRU inversion problem. But a=
+s the
+>   * system runs, this problem will be fixed automatically.
+> + *
+> + * Move all MAX_NR_GENS lists, not only the gens from min_seq to max_seq=
+.
+> + * An earlier reparenting can leave a folio whose gen is older than the =
+list
+> + * it is on. Once min_seq passes that gen, sort_folio() puts the folio o=
+n the
+> + * list for max_seq + 1, where it stays until the next aging. If that li=
+st
+> + * were skipped, the folio would stay behind on a memcg that is about to=
+ be
+> + * freed. The parent has MAX_NR_GENS gens here, so every index is valid =
+in it.
+>   */
+>  static void __lru_gen_reparent_memcg(struct lruvec *child_lruvec, struct=
+ lruvec *parent_lruvec,
+>                                      int zone, int type)
+>  {
+>         struct lru_gen_folio *child_lrugen, *parent_lrugen;
+>         enum lru_list lru =3D type * LRU_INACTIVE_FILE;
+> -       int i;
+> +       int gen;
+>
+>         child_lrugen =3D &child_lruvec->lrugen;
+>         parent_lrugen =3D &parent_lruvec->lrugen;
+>
+> -       for (i =3D 0; i < get_nr_gens(child_lruvec, type); i++) {
+> -               int gen =3D lru_gen_from_seq(child_lrugen->max_seq - i);
+> +       for (gen =3D 0; gen < MAX_NR_GENS; gen++) {
+>                 long nr_pages =3D child_lrugen->nr_pages[gen][type][zone]=
+;
+>                 int child_lru_active =3D lru_gen_is_active(child_lruvec, =
+gen) ? LRU_ACTIVE : 0;
+>                 int parent_lru_active =3D lru_gen_is_active(parent_lruvec=
+, gen) ? LRU_ACTIVE : 0;
+> --
+> 2.51.0
+>
 
-So if no other write comes, at most the first and last page of each
-write stay cached.  If one comes, writeback drops the page after both
-writes, and the second write does not read it from disk.
-
-> In general if the user gave a very clear indication that the data
-> should not be cached, it is a bit awkward to second [g]uess that.
-
-RWF_DONTCACHE does not keep data out of the page cache.  It is buffered
-IO, so all of the data goes through the page cache.  The flag only asks
-the kernel to drop the pages after writeback: "buffered IO that drops
-the cache after reading or writing data" (include/uapi/linux/fs.h).  It
-is also best effort today: an RWF_DONTCACHE write drops only the pages
-that it creates, not the pages that it finds in the cache.
-
-5/7 does not change whether the data goes through the page cache.  It
-changes only when the kernel drops a partially written page.  Today the
-kernel drops the page before another write might get to it.  That write
-must then read the page back from disk into the page cache, to merge its
-own bytes.  So the page cache does not hold less: it holds the same page
-twice, with a disk read between.  In the cover letter test, that is 0.97
-device reads per write, and 831 MiB/s instead of 2281 MiB/s.  The user
-asked for less page cache use, not for a read-modify-write of each
-misaligned write.
-
-> Especially if the expectations are not very clearly documented.
-
-The 5/7 commit message states it: "An edge whose neighbour never writes,
-such as the last page of a file, stays cached until reclaim."  So the
-only change to what the user sees is: an RWF_DONTCACHE write can leave
-the first and last page of the write in the page cache, if no other
-write completes them.  Writeback drops all other pages of the write,
-as before.
-
-Mike
-
-ps. I'll reduce the "colourful terminology" in v11 (e.g. drop
-"neighbour" jargon) and also address the 2 issues sashiko raised
-against v10's 6/7.
+Thanks,
+Barry
 
