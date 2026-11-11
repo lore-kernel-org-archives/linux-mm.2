@@ -1,93 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F255F606A339
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 20:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 156B5606A324
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 20:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=rLAFqeBU
+	dkim=pass (2048-bit key, unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=smtpout1 header.b=gO2IBJoY
 Received: by kanga.kvack.org (Postfix)
-	id 8F0616B00EF; Wed, 11 Nov 2026 15:17:12 -0500 (EST)
+	id 0B8ED6B00EF; Wed, 11 Nov 2026 15:36:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A1F96B05B0; Wed, 11 Nov 2026 15:17:12 -0500 (EST)
+	id 063EE6B05B0; Wed, 11 Nov 2026 15:36:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B7266B05B1; Wed, 11 Nov 2026 15:17:12 -0500 (EST)
+	id D82B86B05B4; Wed, 11 Nov 2026 15:36:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 629026B00EF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 15:17:12 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DB292403F5
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 20:17:11 +0000 (UTC)
-X-FDA: 85423947462.17.3519660
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 956D7160007
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 20:17:09 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=rLAFqeBU;
-	spf=pass (imf08.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A8C026B00EF
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 15:36:47 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2AFDC1C3BA1
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 20:36:47 +0000 (UTC)
+X-FDA: 85423996854.10.019FE8A
+Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8B4E6100007
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 20:36:45 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=gO2IBJoY;
+	spf=pass (imf05.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794428230;
+	s=arc-20220608; t=1794429405;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oD3CNLbIRk9zgIo0q6lJWHOlAEvsBK/j/BkurlWIEZE=;
-	b=szLALbhNydVLhZ9VpItB/FLX9uKtvTC2T8AyZXlTiRMYJ3MkH1NQIooWDX6ELtn0acP1wd
-	K3LGF7U7izx1gL36Kg5K1nhjCdOsbwdj3NADwi/iZ47D1bRYzqqNPmT2Gkjw1DvqnIheAd
-	mbNv7o4NnWUa6wOTKcf6Gtm+HuZbBNo=
+	bh=uiPGc2n2/BGHMqpLuvgSG4/0QiY/CLJ19HEnna2L/fE=;
+	b=dADieko/fZK7HBZtY9Vhp93el5+keo/0hOg7c2o229AldXcmWHs/cEpVyZU66jhJKAApHO
+	sMXtDKx4dp2qGePMzus18Vw3pIs9GTvYXY8ODtLDXEeTLyGvcZuvnJr5+STEoKNj5wT+NP
+	eJw3EB4tMNzEKp4bkyPlQwiFfKVzCCM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794428230;
-	b=vSLL5hGlPZzvtpI2+GV5FM53XZrUhs4mi6TpZyb3ztsDYgtZGWpr/eFAPY98ZLQCSE+yvj
-	WuqePl2CV8BG3OHtiEP9gzL8rtRtVlHu2yUgwO4AP2TP6LJLloG3Ny3vV6WLcWqy8Zu68t
-	zlsSJ4TP2ASd8xuLdP7+Svt1qtyi+TM=
+	t=1794429405;
+	b=BYilghZWpZOMpSANEFpFDQIKdkt1++XuK/J1RkoSNlTK8lNh4NYjwMd0RPVQ2aK09pAf7G
+	IDJXjtsX7N94XjYsm5X5iZ0iHoqcSjmG4bSX4OcJmKyLV4K2AZYRAWSg1p4CBIN9qbNn1f
+	VzKm9WXLrmkM3dP87CT+N6ZR6aGhdT0=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=rLAFqeBU;
-	spf=pass (imf08.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=oD3CNLbIRk9zgIo0q6lJWHOlAEvsBK/j/BkurlWIEZE=; b=rLAFqeBUcRnY4NFkuIHyq7axiM
-	OXoJlAbDb0EldqG2BE/m1cR/pt7hEIOLwW/UrBT8SD/09THyBOdupL7HrT/Pin5s5AS+ljJpiuV91
-	uFBF1p3C0+GrY12Z51g4zudUG9d0I/4SNRMta9KcCqF2XA5QiF1uxLR7BumUoYnoQqeQctvrqmmr1
-	23k9UcSdMZspzmPMbgIClHfC2bTLvo4KCW56OA11vkfrts/urzO6HaA6MWEApc+rNK5pQzZzljSXE
-	zYWK6hijsIIwAHOD19U9V7c6nttMAWznydYLvAbPxtcTIatXZoHTZbtpncxPE2Vk64Ln4f3IW+54X
-	ifyMh7PQ==;
-Received: from [38.23.173.23] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xREkj-00000007bhW-1sZ9;
-	Wed, 11 Nov 2026 20:17:05 +0000
-Date: Wed, 11 Nov 2026 15:17:03 -0500
-From: "Liam R. Howlett" <liam@infradead.org>
-To: Florian Schmaus <florian.schmaus@codasip.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Dimitris Charisis <dchar@cslab.ece.ntua.gr>, linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCH v2] test_maple_tree: test maple_range_64 node below the
- root in RCU mode
-Message-ID: <b444rjvq32jvaljx2jp25ky7jp3zwkgvojemuq4hvwua4fdyqo@unnxuu64mnqo>
-References: <20261102-maple-tree-fix-slab-corruption-v2-1-d0037f04ecd6@codasip.com>
+	imf05.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=gO2IBJoY;
+	spf=pass (imf05.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+	s=smtpout1; t=1794429405;
+	bh=uiPGc2n2/BGHMqpLuvgSG4/0QiY/CLJ19HEnna2L/fE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gO2IBJoYm8igvrjkzx9dzgvirhseWfahzJqIhIpUysJEn7FX2KUp6GE/5DcGBh5Ll
+	 10xcKMskngtdeX0oekmL6y1dut1WvGqhwN7sDODD36rEE9RvF1CXI2klIe/S/zBhLM
+	 Z5egJEt9FuBEJ5uUz8OnG4rZSt+OSbrIjkd4tkkaFIIYPVeTJ8A+Ux377gTDFfCTNA
+	 5T3CenAsbuwSSdNodKayGcaykVS9C6Az8ygX7UyK92kHEA1ayRsrpij0PKkDr/DTKg
+	 nGZfvHmsYYM1PsNkoVn2cWzsXj6C2SfNoIOWMK2ZmvASia5jW8FEjjrnUQ5NUT0TSq
+	 hrCt4emA+VEJg==
+Received: from thinkos.internal.efficios.com (mtl.efficios.com [216.120.195.104])
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4jPwKm626CzN2x;
+	Wed, 11 Nov 2026 15:36:44 -0500 (EST)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: David Hildenbrand <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Martin Liu <liumartin@google.com>,
+	David Rientjes <rientjes@google.com>,
+	christian.koenig@amd.com,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	SeongJae Park <sj@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Yu Zhao <yuzhao@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	David Carlier <devnexen@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	linux-doc@vger.kernel.org,
+	Harry Yoo <harry@kernel.org>,
+	Hao Li <hao.li@linux.dev>,
+	Kees Cook <kees@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	linux-trace-kernel@vger.kernel.org,
+	Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Oleg Nesterov <oleg@redhat.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Andrea Parri <parri.andrea@gmail.com>,
+	Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Hugh Dickins <hughd@google.com>
+Subject: [RFC PATCH v25 03/14] mm: use hierarchical per-cpu counters for the RSS counters
+Date: Wed, 11 Nov 2026 15:36:15 -0500
+Message-Id: <20261111203626.95838-4-mathieu.desnoyers@efficios.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20261111203626.95838-1-mathieu.desnoyers@efficios.com>
+References: <20261111203626.95838-1-mathieu.desnoyers@efficios.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261102-maple-tree-fix-slab-corruption-v2-1-d0037f04ecd6@codasip.com>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: hnx7cmewh1kuzbqx47mag9sx17g574im
-X-Spam-Status: No, score=-13.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 956D7160007
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8B4E6100007
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: ouyd3kj1wrm56kxqbteecutaa9qz4im9
 X-Rspam-User: 
-X-HE-Tag: 1794428229-590916
-X-HE-Meta: U2FsdGVkX1+WeONwOqSf48Eafbwc0h+C5L9VZd0RBx6Bx86HA8eTN1woqDBEy2v0wXVJXP2IHdqfDkyIkFMoDDSnJgBiGvq4/fhNWHZxPFQmU4m1MucvhUt1XZU5LTo1bCxlHRJAsvfBylHRh5WXGIVfO7mdjULa/5ThYQOTQCAdetJz9Bjxsbt0DzL9eLZsvktRSvXLR1oyg7WkV6xflSC9IV1gS0F9o1SppTuZuzeoMsEuFlCYG0Nuf6hKIeOY2yT62tHedxqVL2oXQtj6RyItnXUvCcWWkK4CInwmrQWfMtvMrJB2ugDH3h7RB0eG7xjDL1Y+1Gs3KOCiTJKRKD7djXPLpYyUyPb3OPlDGcqHKimq0wb0d+l4HMV3U3fL1jdDkC74Fhk8P2EvFz/24utPthQQvnIEvDsjamuGusAZ/L6wP2/bZhOrBmnjAiTm4xRJWmw7UNDY1LqdLXOTNYggqHyf6Bcffp+1NXD6hVaJcFfZJp4F9NvImN7bXcRk40Ehf5m1DHxOGiVWNWnjx4L5MdUzaQEfvic/DfOUqA0gamrLuLxQCQT++wl4HKGPIGyR+0v9qmOIjonrHWK7XNli6NocnN3tMffm8QQyXQ65Rd/X1+unAoH/GAz/evE2ttssYFuE8rqgQ8FIn6Aclf943oOaK82xUk9FBbyBiaI+BhukJN/akcOm1wB2gSiZaxqcYGQZ2lBXt6oGmTGL6c7gfxfYN10ZBg8qo7cya7YyjUDIEwz08ZaOUweEZpfdsufyUCxNo7C5lpez3uIH5KpQzu3jeUJOH1qHck/hRhNxw4FyKSKng4nf9YM72744J8F5inRxntcY2rxF71NeDp8dGngnhAfslt+yBLz/mOvxwivrxk/aAbFo2sYDV1LKiCusN6lU2blSjNB9zI6MABoZRE+wBNU8cj+xdglAhT4kfumMtimMjgBFrVEju8GATi5aNu0d+r/50lSJG4V
- RFdMrzVY
- yz0qIvXr8F6CLUkpOz4jjTv7lgMTFuzCmYiEgUVaOklAAQbC8YkreqLVRL4prsuQHyvyozyJO0ZDKXftplCv3Z5UgWox6BNmibPaftbQQoX5Pbn7joYIwFbpapKCASEN3h5y24AZ6ga+SespfcSSA4VV0Z7wzVK27RCPQOLlLJ/r1s9yi4U3vU2cDZEonsI2a9SkV/LAkvqYMnsdxKINVGxHH42rH/RwRhhXQacJll7GvHJbf35LgD/ZdEs8qKCXgo9qFVk/LmU3RYtvcqlCw7mrJZWB6vmcvK8NS45AlOLmetl/+/6LAB07rOVu+uAo1bH1bWmdlJkne93uufZD84c4fP6dJ9Xw5kLHf5we72i80+JoZ9Kjx3oRBok/tfZqvjGvCgmZACjlGviEed3c0ThHtIHxrS9Raa0T2pYkgIWv2c7PygXXJYvncmMONt61Pe6tyWhQB+jXQQPh2dcfj+bQkkBHkZofZB7v513DCx20DvhayqvVle2/3TFfaam2eRqXzFdN5UolOpAgSL+u97sFIHHxbwyPNU3Zj3rVVBw1Mrh8=
+X-HE-Tag: 1794429405-177259
+X-HE-Meta: U2FsdGVkX1/9XRloLDDMLqRIZgV+pbivL/7M5Js2+ZkO9wqR1722+0Gb3dD3mL2jCKzrCu55R/2GWCQ8pdjy8KqzN4OdmQanVUO0dBoUA+3gem+BeIjBiaww14cpulzQ8XhAeNSGe4K4rsPs9XBLT6/u+otrWshrq78aof89xJXaNEV9wXU6EEx0EHhj+EJ4yanNxyZU7iaNyoCixNUmrb2+MQ+S377VnXkOfi9643ry6nq8O2mgL5I/uN/AuAa00PLFA9OaCgguipg+Dwp1dIyOWvDdVxWED3y0ymIRgxDgnnhnvtr61XpQubSbFFFZHQVevHyHs01uffB40a6qF2rPfLnYm0EQ36Gxyv9cS8CHc+/uoAxeGEQr3yffwm3fjMzyB5nzFVc7yVp1QfaRjD/2V6oDEWas7rPYrC/rjoI+a5mHQ3De287NeXm6RGZCT9MZyLKiMXrp2Q2NDpJ4ColHv4zrOoQ0JVsaVwQnAdj/JdghMcIJ3ZquoDujnriK9OL2Foy5P4fDDIXUXDLI8aG+bl3qhEcYUXhM0N5C+YPckIMSYEZ5YD4SCK7JSH3XfmWVjk2hfWsyDTNElMyPKcXf9SPe0KTi1M7IWQfljmw6kjHhqt6O7YZKAb9bf7EummV6srEgnRD2jHZ6l7zB8Wbe3giE6kiKifvYZYcaYjm6aiQ3UjIEbl8BWkoYIkw4tQl4wtUAKeQaI84Sxr7hWkjePg/bgd9z0SMR0O9RQ4UwVc9joADZfsApb0I3ih+bWuFMjtluNpofZDOO5J1L8c9U5kPFauasABoQRyRj/WsRSrYBrIWrclTqv+7lsU9ldzMUYGecNFHscdvEyMtOVPDUsySsOwssbWTdsq7CEDN3a5vv/UbPgAi/yrjzHNIwqfTm0Xg9BCQStKCY5LFB0/XpuWntaOCO4RQ3LxF0Q1z8FMqbdnOiEz+bX5AcUGzZN/BlMuY088N0d02jA5u
+ rTlx2nPe
+ gXnf0fp9X/ehckKYdBr5NyPfYSxA8O40/kYasIZh7isVZTFdyqxj12fXLywTts1Qs+ekgnP2BrFd4vosJF0hWTiiErhVrx1+bxeMWvkDL/Vu53fRMMtYfhMahkE+D09MsUUIrk5KS6k6+a9IVbNLTOSvx774H0MSiRB6O+Fl2Te4uhXGaplwxMQEUqEyxw2+f3k7zLE4kHUi5c5rhuYbUSwKdTZ8I5AhzNaBfE/W8sIkdPuLxcJusTVJhea49FaoQfn+Ns7n0ucUnZNiGbuVjEzSyI+3WuQRFZIdmfnRmlBZaB1k96OCNO4B3+j36uPCOjIMfX4ipx3/eny289QzIediKmaTbacYYAYK/cSg+H8pJq0D+Z8L1ePF0OKgg61PyaP3h/JG8L+2GUDr04itqNARNDWVelDmNkLHH88aGXVJ4zgtu17LailwjeHEluiwKO+XP18jbUqeRlBULA70dd1ojONNb7GfmwX1Manx/I4ouUUkDwRKoC+IFhL+YTSbTgMCYzkflVasuegBlXUlpJgEeIISI8RSeo84mnivJq3qv6u5yvMAQHxOdWniaTGGkx0om7oOEiNpOTgl6ASPXX5fraxeuZun+PKFkDwASM9UlP+lmYafc3dIgtp4L8iy+pM9XKakbf7vYqTs4WId9tVIQlrojIFV3RJ9cs5AXdIFQx99ADlLxlCsSsbY2ugNlMWk75wT4pdpFGWJjsC1WrBNirOyZ7FlbxAadpynG7xTBmOpSi2Z2GkAmoDohpW3miAPAZYD0J5QMKwEwEbAOiIHaR4qGuTa46WCRaQwxZVQlBYeScavyG66rS5d1YARcPW2W3UNDydaZ3vP7ZS3nZ3XtRiGFu0mJ97BivBwDzOgSjo8d1AyZnOr1ELvb1dXkH3kXZRLe01W/jSG+1p4cWsjl418MwRKlA/A14qbeJVCy4CrQTcXNWFL6HHnwa13DZT5stDufi8bBWCzPvaJ5QTJfI/Mh
+ QvGqdz9e
+ qe9TdUN7f9F81a5b1gBVp9Szf1P8vvP5cGU2/yt8iWQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,97 +150,335 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 26/11/02 10:14AM, Florian Schmaus wrote:
-> Commit baed735a956f ("maple_tree: fix maple_range_64 crashes in RCU
-> mode") fixed mt_free_walk() taking the metadata in the last slot of a
-> maple_range_64 node with 15 children for a child node.  The bug only
-> affects nodes at least two levels above the leaves.  The test added
-> along with the fix, check_range64_in_rcu(), uses a height 3 tree, in
-> which the root is the only such node.
-> 
-> The height 3 tree only exposes the bug because the same commit also
-> removed mt_clear_meta(), which used to clear the metadata of the root.
-> On the code before that commit, the bug is only reachable below the
-> root, and the height 3 tree is destroyed without a crash.  If the
-> metadata of the root were cleared again, the existing test would no
-> longer detect the bug.
-> 
-> Add a height 4 tree in which a child of the root has 15 children and
-> keeps its metadata in the last slot.  5191 insertions produce such a
-> tree on a 64-bit build.  Destroying it crashes without the
-> mt_free_walk() fix, with or without mt_clear_meta().  For example, on
-> the code before the fix, the userspace test harness reports:
-> 
->   lib/maple_tree.c:4755:27: runtime error: member access within
->   misaligned address 0x00000000000e for type 'struct maple_node'
-> 
-> Signed-off-by: Florian Schmaus <florian.schmaus@codasip.com>
+Use hierarchical per-cpu counters for RSS tracking to bound the inaccuracy
+of the per-mm RSS approximation on large many-core systems [1].
 
-Reviewed-by: Liam R. Howlett (Google) <liam@infradead.org>
+The approximation is read by /proc/PID/stat (rss), by the RSS high
+watermark (VmHWM in /proc/PID/status, getrusage() ru_maxrss, taskstats
+hiwater_rss), by the taskstats integral RSS, by NUMA balancing to scale
+its scan period, and by the mark_victim OOM tracepoint.
+/proc/PID/status, /proc/PID/statm, the OOM killer and the rss_stat
+tracepoint use precise sums, which iterate over all CPUs for each read:
+the tracepoint since commit f1a7941243c1 ("mm: convert mm's rss stats
+into percpu_counter"), and the others since commit 82241a83cd15 ("mm:
+fix the inaccurate memory statistics issue for users") and
+commit 5898aa8f9a0b ("mm: fix OOM killer inaccuracy on large many-core
+systems").
 
-> ---
-> v1 of this series fixed two bugs when freeing RCU-mode maple trees. Both
-> are now fixed in mainline by Dimitris' commit baed735a956f ("maple_tree:
-> fix maple_range_64 crashes in RCU mode"), so only the height 4 test case
-> remains, which I offered to send as a follow-up in [1]. It now extends
-> check_range64_in_rcu().
-> 
-> Testing: the userspace test harness (tools/testing/radix-tree) passes
-> on x86_64 with ASan and UBSan, and on s390x (big-endian) under
-> qemu-user with UBSan. On both, the new case fails without the
-> mt_free_walk() fix, with or without mt_clear_meta(), while the
-> existing height 3 case only fails once mt_clear_meta() is gone.
-> 
-> 1: https://lore.kernel.org/all/46073a08-20fd-465e-86e8-9c358787f9b3@codasip.com/
-> ---
-> Changes in v2:
-> - Drop the two fixes, superseded by commit baed735a956f ("maple_tree:
->   fix maple_range_64 crashes in RCU mode").
-> - Rebase onto current mainline.
-> - Add the height 4 case to check_range64_in_rcu() instead of a separate
->   check_rcu_destroy(), using its insertion pattern (5191 entries).
-> - Drop the full root case, which check_range64_in_rcu() already covers.
-> - Link to v1: https://patch.msgid.link/20261015-maple-tree-fix-slab-corruption-v1-0-160d97f7304c@codasip.com
-> ---
->  lib/test_maple_tree.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/lib/test_maple_tree.c b/lib/test_maple_tree.c
-> index fb40e193a3cb..121f521e263f 100644
-> --- a/lib/test_maple_tree.c
-> +++ b/lib/test_maple_tree.c
-> @@ -3738,6 +3738,19 @@ static noinline void __init check_range64_in_rcu(struct maple_tree *mt)
->  
->  	mtree_destroy(mt);
->  	rcu_barrier();
-> +
-> +	nr_entries = 5191; /* Height 4. Root child has 15 children + metadata */
-> +
-> +	MT_BUG_ON(mt, !mtree_empty(mt));
-> +	mt_init_flags(mt, MT_FLAGS_USE_RCU);
-> +
-> +	for (i = 0; i < nr_entries; i++) {
-> +		MT_BUG_ON(mt, mtree_test_insert_range(mt, i*10, i*10 + 9,
-> +						      xa_mk_value(i)));
-> +	}
-> +
-> +	mtree_destroy(mt);
-> +	rcu_barrier();
->  }
->  
->  static DEFINE_MTREE(tree);
-> 
-> ---
-> base-commit: d89e1d186ec9271bf78e62771779e9fc03bf0fc3
-> change-id: 20261015-maple-tree-fix-slab-corruption-d1f098521d15
-> 
-> Best regards,
-> --  
-> Florian Schmaus <florian.schmaus@codasip.com>
-> 
-> 
-> -- 
-> maple-tree mailing list
-> maple-tree@lists.infradead.org
-> https://lists.infradead.org/mailman/listinfo/maple-tree
+Here is a (possibly incomplete) list of the prior approaches that were
+used or proposed, along with their downside:
+
+1) Per-thread rss tracking: large error on many-thread processes.
+
+2) Per-CPU counters: up to 12% slower for short-lived processes and 9%
+   increased system time in make test workloads [1]. Moreover, the
+   inaccuracy increases with O(n^2) with the number of CPUs.
+
+3) Per-NUMA-node counters: requires atomics on fast-path (overhead),
+   error is high with systems that have lots of NUMA nodes (32 times
+   the number of NUMA nodes).
+
+4) Use a precise per-cpu counter sum for each counter value query:
+   Requires iteration on each possible CPU for each sum, which
+   adds overhead on large many-core systems running many processes.
+
+The approach proposed here is to replace the per-cpu counters by the
+hierarchical per-cpu counters, which bounds the inaccuracy based on the
+system topology with O(N*logN).
+
+* Testing results:
+
+Test hardware: 2 sockets AMD EPYC 9654 96-Core Processor (384 logical CPUs)
+
+Methodology:
+
+Comparing the current upstream implementation with the hierarchical
+counters is done with a debug patch, which keeps both implementations
+wired up in parallel, and a test program, neither part of this series.
+The single-process, single-threaded program hops randomly across CPUs in
+the system, calling mmap(2) and munmap(2) on random CPUs, keeping track of
+an array of 100000 mapping slots, randomly choosing slots to either map 1
+to 16 pages or unmap them.
+
+get_mm_counter() is instrumented to compare both counter approximations
+to the precise value, and to record the largest delta of each.  The test
+runs in a KVM guest with 384 vCPUs, each pinned to its own CPU of the test
+hardware, with the NUMA topology of the host.
+
+With the counters of this patch, before the single-threaded mode added
+later in the series, the upstream implementation counter approximation
+reaches an 830MB delta from the precise value within the first seconds,
+while the mappings accumulate, compared to a 106MB delta with the
+hierarchical counter.  The hierarchical counter approximation is
+guaranteed to be within 158.5MB of the precise value in both directions
+on that hardware topology, compared to 1.1GB for the upstream
+implementation (384 CPUs * 767 pages).
+
+* Fast path implementation comparison
+
+The new percpu_counter_tree_add() updates a per-cpu byte with a
+this_cpu_try_cmpxchg() loop on the fast path, like the upstream
+percpu_counter_add_batch().  When the per-cpu residual reaches the batch
+size, it calls a slow path which "trickles up" the carry to upper level
+counters with atomic_add_return(), each of them keeping its own residual.
+
+In comparison, the upstream percpu_counter_add_batch() takes a global
+raw_spin_lock_irqsave() when reaching the batch size, and flushes the
+whole per-cpu count into the global count.
+
+The hierarchical implementation is therefore expected to have less
+contention on mid-sized allocations than the upstream counters because
+the atomic counters tracking those bits are each shared by a fraction of
+the CPUs.
+
+* Benchmarks
+
+Using will-it-scale page_fault1 benchmarks to compare the upstream
+counters to the hierarchical counters of this patch.  This is done with
+hyperthreading disabled at runtime, so the counter tree keeps its shape
+for 384 logical CPUs, while the upstream batch size follows the 192
+online ones (384 instead of 768).  The differences are within the
+boot-to-boot spread of up to 3%, and the multi-threaded runs, bound by
+the mmap_lock, have a standard deviation of 5% to 11%: no regression is
+measured, and no gain is claimed.  The numbers with the whole series are
+in patch 7 and the cover letter.
+
+                                          upstream   hierarchical     delta
+page_fault1_processes -s 100 -t 1           544932         557092     +2.2%
+page_fault1_threads -s 100 -t 1             547501         557742     +1.9%
+page_fault1_processes -s 100 -t 96        37374404       37580199     +0.6%
+page_fault1_threads -s 100 -t 96           2311884        2299998     -0.5%
+page_fault1_processes -s 100 -t 192       69491758       70590309     +1.6%
+page_fault1_threads -s 100 -t 192          2284108        2271423     -0.6%
+
+* Memory Use
+
+Each mm_struct holds NR_MM_COUNTERS (4) counters, initialized together
+by percpu_counter_tree_init_many() with a batch size of 32, so their tree
+items share cache lines.  Per mm, on a 64-bit arch with 64-byte cache
+lines, compared to the upstream percpu counters, along with the maximum
+inaccuracy of each counter in pages:
+
+                  Bytes per mm         Accuracy (pages)
+  nr_cpus fan-out    hpcc  upstream      hpcc    upstream
+        2 2           200       192      +-62        +-62
+       16 16          256       416     +-496       +-496
+       64 16,4        704      1184    +-3904      +-8128
+      128 8,16       1728      2208    +-7552     +-32640
+      256 8,4,8      3776      4256   +-21248    +-130816
+      384 8,8,8      6336      6304   +-40576    +-294528
+      512 8,8,8      6848      8352   +-44544    +-523776
+     1024 8,8,16    13504     16544   +-89088   +-2096128
+     4096 8,8,8,8   53952     65696  +-471040  +-33550336
+
+This counts the 4 counter structures, their per-cpu data, and the tree
+items, without the rounding of the slab cache holding them.  The
+fan-out is listed from the per-cpu counters to the root.  Up to 32 CPUs,
+the tree is flat.  Up to 16 CPUs, its accuracy matches the upstream
+counters, whose batch size of max(32, 2 * nr_cpus) grows beyond, making
+them less accurate than the hierarchical counters, except from 33 to 39
+CPUs, where the intermediate counters of the 16,4 tree make the
+hierarchical counters up to 1.37 times less accurate.
+
+The hierarchical counters use less memory than the upstream counters
+from 3 to 64 CPUs.  The tree is shaped for nr_cpus rounded up to a power
+of 2: when nr_cpus is a power of 2, they also use less memory beyond 64
+CPUs (at most 0.89 times as much).  Between powers of 2, fewer CPUs
+share the cost of the tree items: 1.01 times at 384 logical CPUs, 1.09
+at 192 and 0.94 at 96, and up to 1.47 times just above a power of 2 (at
+129 CPUs, 1.23 at 65 and 1.36 at 257).
+
+* mm_struct layout
+
+percpu_counter_tree_init_many() allocates the per-cpu data and the tree
+items of the RSS counters, so their size in mm_struct does not depend on
+the number of CPUs: struct mm_struct shrinks by 32 bytes, as a struct
+percpu_counter_tree is 32 bytes, compared to 40 for a struct
+percpu_counter.
+
+* rss_stat tracepoint
+
+The rss_stat tracepoint keeps reporting the precise sum, now computed
+from the hierarchical per-cpu counter.
+
+Link: https://lore.kernel.org/lkml/20250331223516.7810-2-sweettea-kernel@dorminy.me/ # [1]
+Link: https://lkml.kernel.org/r/20260227153730.1556542-4-mathieu.desnoyers@efficios.com
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Dennis Zhou <dennis@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Christoph Lameter <cl@gentwo.org>
+Cc: Martin Liu <liumartin@google.com>
+Cc: David Rientjes <rientjes@google.com>
+Cc: christian.koenig@amd.com
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Cc: David Carlier <devnexen@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org
+---
+Changes since v22:
+- The library allocates the per-cpu counters and the tree items of the
+  RSS counters: mm_struct holds no tree items, and the static init_mm
+  and efi_mm need no change.
+- check_mm(): sum each RSS counter once.
+- Keep reporting the precise sum in the rss_stat tracepoint. Switching
+  it to the approximation is done by a separate patch.
+- Initialize the 4 RSS counters together so their tree items share cache
+  lines.
+- Fix checkpatch warnings.
+---
+ include/linux/mm.h          | 10 +++++-----
+ include/linux/mm_types.h    |  3 ++-
+ include/trace/events/kmem.h |  3 +--
+ kernel/fork.c               | 13 +++++++++----
+ 4 files changed, 17 insertions(+), 12 deletions(-)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 6af3b7008f1a..2b40f382da35 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3611,33 +3611,33 @@ static inline bool get_user_page_fast_only(unsigned long addr,
+  */
+ static inline unsigned long get_mm_counter(struct mm_struct *mm, int member)
+ {
+-	return percpu_counter_read_positive(&mm->rss_stat[member]);
++	return percpu_counter_tree_approximate_sum_positive(&mm->rss_stat[member]);
+ }
+ 
+ static inline unsigned long get_mm_counter_sum(struct mm_struct *mm, int member)
+ {
+-	return percpu_counter_sum_positive(&mm->rss_stat[member]);
++	return percpu_counter_tree_precise_sum_positive(&mm->rss_stat[member]);
+ }
+ 
+ void mm_trace_rss_stat(struct mm_struct *mm, int member);
+ 
+ static inline void add_mm_counter(struct mm_struct *mm, int member, long value)
+ {
+-	percpu_counter_add(&mm->rss_stat[member], value);
++	percpu_counter_tree_add(&mm->rss_stat[member], value);
+ 
+ 	mm_trace_rss_stat(mm, member);
+ }
+ 
+ static inline void inc_mm_counter(struct mm_struct *mm, int member)
+ {
+-	percpu_counter_inc(&mm->rss_stat[member]);
++	percpu_counter_tree_add(&mm->rss_stat[member], 1);
+ 
+ 	mm_trace_rss_stat(mm, member);
+ }
+ 
+ static inline void dec_mm_counter(struct mm_struct *mm, int member)
+ {
+-	percpu_counter_dec(&mm->rss_stat[member]);
++	percpu_counter_tree_add(&mm->rss_stat[member], -1);
+ 
+ 	mm_trace_rss_stat(mm, member);
+ }
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 1ed35d258d2e..20b4517b7329 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -19,6 +19,7 @@
+ #include <linux/workqueue.h>
+ #include <linux/seqlock.h>
+ #include <linux/percpu_counter.h>
++#include <linux/percpu_counter_tree.h>
+ #include <linux/types.h>
+ #include <linux/futex_types.h>
+ #include <linux/rseq_types.h>
+@@ -1350,7 +1351,7 @@ struct mm_struct {
+ 		unsigned long saved_e_flags;
+ #endif
+ 
+-		struct percpu_counter rss_stat[NR_MM_COUNTERS];
++		struct percpu_counter_tree rss_stat[NR_MM_COUNTERS];
+ 
+ 		struct linux_binfmt *binfmt;
+ 
+diff --git a/include/trace/events/kmem.h b/include/trace/events/kmem.h
+index cd7920c81f85..ac4c96db7638 100644
+--- a/include/trace/events/kmem.h
++++ b/include/trace/events/kmem.h
+@@ -448,8 +448,7 @@ TRACE_EVENT(rss_stat,
+ 		 */
+ 		__entry->curr = current->mm == mm && !(current->flags & PF_KTHREAD);
+ 		__entry->member = member;
+-		__entry->size = (percpu_counter_sum_positive(&mm->rss_stat[member])
+-							    << PAGE_SHIFT);
++		__entry->size = get_mm_counter_sum(mm, member) << PAGE_SHIFT;
+ 	),
+ 
+ 	TP_printk("mm_id=%u curr=%d type=%s size=%ldB",
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 5efceb8d58a7..d9bdaf2bd998 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -137,6 +137,11 @@
+  */
+ #define MAX_THREADS FUTEX_TID_MASK
+ 
++/*
++ * Batch size of rss stat approximation
++ */
++#define RSS_STAT_BATCH_SIZE	32
++
+ /*
+  * Protected counters by write_lock_irq(&tasklist_lock)
+  */
+@@ -633,7 +638,7 @@ static void check_mm(struct mm_struct *mm)
+ 			 "Please make sure 'struct resident_page_types[]' is updated as well");
+ 
+ 	for (i = 0; i < NR_MM_COUNTERS; i++) {
+-		long x = percpu_counter_sum(&mm->rss_stat[i]);
++		long x = percpu_counter_tree_precise_sum(&mm->rss_stat[i]);
+ 
+ 		if (unlikely(x)) {
+ 			pr_alert("BUG: Bad rss-counter state mm:%p type:%s val:%ld Comm:%s Pid:%d\n",
+@@ -738,7 +743,7 @@ void __mmdrop(struct mm_struct *mm)
+ 	check_mm(mm);
+ 	mm_pasid_drop(mm);
+ 	mm_destroy_cid(mm);
+-	percpu_counter_destroy_many(mm->rss_stat, NR_MM_COUNTERS);
++	percpu_counter_tree_destroy_many(mm->rss_stat, NR_MM_COUNTERS);
+ 
+ 	free_mm(mm);
+ }
+@@ -1143,8 +1148,8 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p)
+ 	if (mm_alloc_sched(mm))
+ 		goto fail_sched;
+ 
+-	if (percpu_counter_init_many(mm->rss_stat, 0, GFP_KERNEL_ACCOUNT,
+-				     NR_MM_COUNTERS))
++	if (percpu_counter_tree_init_many(mm->rss_stat, NR_MM_COUNTERS, RSS_STAT_BATCH_SIZE,
++					  GFP_KERNEL_ACCOUNT))
+ 		goto fail_pcpu;
+ 
+ 	lru_gen_init_mm(mm);
+-- 
+2.47.3
+
 
