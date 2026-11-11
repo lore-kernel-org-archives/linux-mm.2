@@ -1,84 +1,86 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3EF606A33A
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 07:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 365D460A6F55
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 07:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XUpiXuE8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ObQRHuq/
 Received: by kanga.kvack.org (Postfix)
-	id C29416B00EF; Wed, 11 Nov 2026 02:30:02 -0500 (EST)
+	id 4DA2B6B05B3; Wed, 11 Nov 2026 02:32:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C08566B05B0; Wed, 11 Nov 2026 02:30:02 -0500 (EST)
+	id 4B1FD6B05B4; Wed, 11 Nov 2026 02:32:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B16AA6B05B1; Wed, 11 Nov 2026 02:30:02 -0500 (EST)
+	id 3C70A6B05B5; Wed, 11 Nov 2026 02:32:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 79C7E6B00EF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 02:30:02 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E35C412019C
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:30:01 +0000 (UTC)
-X-FDA: 85422014202.30.5E34D8B
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 074286B05B3
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 02:31:59 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9400F1C28D5
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:31:59 +0000 (UTC)
+X-FDA: 85422019158.17.2AFB11D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 254BC20004
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:30:00 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XUpiXuE8;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id C9C951C0005
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:31:57 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ObQRHuq/";
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794382200;
+	s=arc-20220608; t=1794382318;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AboEUDy+0XQ7R2YYo0S+EhzsgQLMIlJ5QVM52GjU8mw=;
-	b=Q7PL83xQcTSRb+UmfsIf99GOjBvl5a2PmtZmTSKGp+2JU1SdiA1EkQAN3L0g4a9D49xTT2
-	6mCMv0vGZSrTqN/LaxyvCPW5FZw+h5+g4lb2V8uTViaHHUklPi2/zs/ikM/RJS71fup6xV
-	fFeTL1ncLet+MQX59V027YHCKMUNvDE=
+	bh=ie63I/vqihvU/O2noHVVupJoOKK+1gsz2XIEhasUdzA=;
+	b=vOtchsZ9TlQ4UgDEPzGyWF4w62fVy5/99SoPZsnsrn+efXkA5/5zH/1isbNiEg3S3oLR89
+	SQR0aWoYQ9Oa9Z5ueV1vzmKyZNcixuDe5OX2Wfr6aE40V1A4BmTlOsM6a+BJHXYa3YLByx
+	9PBsBordm6RQWF+wEEZAJFsH2gQ9Mts=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794382200;
-	b=aFMPnWm/s9YvDkP+8myQo2mk00Y3pvXMZ7gJxP2q4QvW57eNuo6T0ISQZjJTA9ZP6yn3Tg
-	MMS3GSVM/gaU2rrQp6AcO/9d8lu9crbjrEyG07ntgE3/iVWqYkAAclRIGhtvhmVUna5EmR
-	WumMHyASXgKFVPYsrl99HQuCglksypc=
+	t=1794382318;
+	b=CHa1Vy6clKiTRw8F4y9ucNbyv3Nd3iiBT3WzxOgX0bnIzmFbf+49iyZ3W+lZvbCY2S8heQ
+	MYjP0QLRsjMCwy7qP5hC5MBFCVxGnZU0vHwBdCP9dhrlKpKr0B7eobDwPShTWXMNRLxUtZ
+	2hA+tiOZ/4J1q07gI26VzX1OtBgbjzs=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XUpiXuE8;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ObQRHuq/";
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4B86B44000;
-	Wed, 11 Nov 2026 07:29:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2F01F00A05;
-	Wed, 11 Nov 2026 07:29:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 117CF4757D;
+	Wed, 11 Nov 2026 07:31:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C781F00A0D;
+	Wed, 11 Nov 2026 07:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794382199;
-	bh=AboEUDy+0XQ7R2YYo0S+EhzsgQLMIlJ5QVM52GjU8mw=;
+	s=k20260515; t=1794382317;
+	bh=ie63I/vqihvU/O2noHVVupJoOKK+1gsz2XIEhasUdzA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XUpiXuE8rXjiH2ua6oHyBD487MrqG8UJeaDGf40ZXo/8ioaryGV/lvoSsT3CE9jdg
-	 d5Re3OgWK+IQwmV4HuF2KHYqjINbC9OFaZM0JLlbhYUw5JBaAXHEoUrKQDl6hEyxL5
-	 S96+rq0QgC+Mr7Bv46sea7cDoxBo+QWn+U4qIhp4d9GZZoszGJwV7ArxXKanNchnDb
-	 pCj2Em/2pNRuWnS4qJ7WXOLl6i9BGKsXi3TnPUtDUpEl6XnPEZqmT1dhojVuAi1CH1
-	 OYClegvaB7BTlPC6PuybmOtxsLfoxKC2J7PnCn1MBtsK3rvwIwIVFztWKdhcJ4M7s8
-	 Opavd4+j83fLA==
-Message-ID: <856cdf21-7982-475a-b244-a7ceff4eb6aa@kernel.org>
-Date: Wed, 11 Nov 2026 08:29:50 +0100
+	b=ObQRHuq/TKfv91d9UNP4fOEHNXKRmrn+ZZuiGw+fC0JICqOy0R8pxdlumxSRY9Xnb
+	 4+3ZAExg7GyvI0vfJax/HXGujErz9v1pC4ZrvsesEynsTuT4Ep5o0Eqv9QmVYOL+TT
+	 YXYkZDzot/QoSi91fctxvLdK2KzyO+6bipomdJ+dglIUpE1qBp4u9Mru6dx7NeNsPy
+	 SiD2TqBGqF/ouSTur7kq24hHn+cuxuLFhJ5Pq/meMyOY32YQJdAQfRISFmjbDdnMBW
+	 /Zs81yw3jdx0m0CfkeA8W6Sb9XKMk7Xf0ar6vTZAuIGIHq5vDSkc6SRAEMnbBTSaJ0
+	 4HGMbYKJQ24dw==
+Message-ID: <1a667c1c-9604-4882-aed6-02057517a8a3@kernel.org>
+Date: Wed, 11 Nov 2026 08:31:47 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [SECURITY] mm: khugepaged collapse_file() drops RWP PTE markers
-To: Tal Zussman <tz2294@columbia.edu>, n3rd <18670333770@163.com>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "ljs@kernel.org" <ljs@kernel.org>, "kas@kernel.org" <kas@kernel.org>,
- "ziy@nvidia.com" <ziy@nvidia.com>, Mike Rapoport <rppt@kernel.org>,
- "peterx@redhat.com" <peterx@redhat.com>,
- "security@kernel.org" <security@kernel.org>,
- "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-References: <606cae9e.bbec5.1a1c54f4f9f.Coremail.18670333770@163.com>
- <60541e98-b1f0-4f92-a155-8a29c0bb17dc@kernel.org>
- <44abb8ef-7711-4ad0-be9f-ca47206892a3@columbia.edu>
+Subject: Re: [PATCH v4] mm/huge_memory: prevent losing PG_waiters in
+ __split_folio_to_order()
+To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Brendan Jackman
+ <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
+ Ye Liu <ye.liu@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261110-fix-split_folio_to_order-race-v4-1-cc5042f33408@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,21 +127,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <44abb8ef-7711-4ad0-be9f-ca47206892a3@columbia.edu>
+In-Reply-To: <20261110-fix-split_folio_to_order-race-v4-1-cc5042f33408@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 254BC20004
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 6qcrtkapqrmu73n5nqwoda446ou9sqe6
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: 9n3m1cju53yffuzbir3fttfkjctzaeuq
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: C9C951C0005
 X-Rspam-User: 
-X-HE-Tag: 1794382200-435724
-X-HE-Meta: U2FsdGVkX1/0VN5r1FUDp/vI1IKgVssRKQRsi/fsuSl2IQBcbEfZfGDU3LY0iwCxqnjMByflheZPCiAVP++8DKFYJSSaI+ZwmJg3SJQgZe5MWHt8HyY8cQCO9cUV8hwxS9qNwyPXsy16qN7zL905m8GYRl/qzWLDZBA48XiquLuZ480rBfUf9stMUg9xv3BaNWyc5zNF2MZMiv5g3VKpVR7XpBMWtyisW6z22DEMpXBtxZB29IpZmwqDWc4zQZVk5lMnB9jQC/u8pbahb5noma3YBvaPOh4eXOBdRWuLYyeo9utpZ69vL2jcYQexiKaMuFysGSvskt3mTB6fR/PAB86yh4YsaGGN5qlRwDGIJWdAj3+tpwnxgWOeYlOAIVrHitqXBDT7HQEtXlPn93QJv87jrGQr5O/7ea5cmx5/ymbtf4+wd1tOQyZ5kOd0l2b4p7gWPznfvZVD4en/v8OaMp7KkQPVtvihGg+t4uPTZ4UIDZueqy9fZqSM/QGoUH+40VItseT7AJPeY6YcM9MQ9H4Uig35I/MBbSdUorMNumxEaZsnHDswdDUs/76SiMzrJcabfmg6jxzDzmZ8MRRD+mfGfdI+35bQU9dFfs2cWK+slmD2biIT2zTAiVmvaXbVE/HR4o4QSHebKqFhU/4uUHuVXWRf+391AzWZSVku0MwsEuvpKUbhUhlNdGdpZN+UQMlC6vu/9KclBscx2lvxXmu/j/KVVc1rlGFY9b+Jw2qhmR+cYvElx/4EcHd2QeEL7LBSvE0L8Xz5pHiLjwJYg7fqYDf/wXQcN5Af8FUE9ncCiA0nTuN/7IPwGh68WMrcqWkMeugW2evJrw0Lm7jlC3+AvWMkBp9WMIeUTIod4o8yBLcAY3iWjoCURwAwMWLppQHOxxk71FYzX9LgaYGLu0xVg9oJzkZGa3Vsge4jMHGFhgJGrHHP6mRnZgtYj05s5hXOQYJQgmQeOOLdOSY
- aO5SL9DY
- KH4lQzbA+gZzvkJZADUHDKMhmuA5WPlwnuNAXczx1X0s34zTfyH8EX2i6UvrVmT5t1/HuqhFxYmbhXcoul8qG6DPR8aCgxhXJKrvQItJO/m8bidpsKGiQtcFzWHlAP0+VUxgoLjNuvNBumG0EpEQA97k4P74FropNJ4UvHV2LhInm0qvNDbL60cK9c5klZk1/b/HvvfT5jm6R1MovHlgiHFwrtTS5Ug7kWfdDy1IdvFu7EZ8aB7OvYeLjzGjKk09Up4KsUZjy1GpMu+eRuLNjXFq2pQ6wfYmLsJAmfk08fFD/dgKFi1Vo43pbb7NWtxAMbZLDoxLhH19++p5ShzW3je7le8EkSvwBvNv3amo09m09P+ikQSRa5z3noamNnKypwjClmbREZoLoJNDMnYRjDvJbG//60gqVEl/FeUND/KPMFFPpOvtLbMpopfOrsQrt0/u4LXyZLWevyys=
+X-HE-Tag: 1794382317-348484
+X-HE-Meta: U2FsdGVkX18uyQ5Cmkp7JVlXbiTaAgMA7ZpwV5vEUpqQhA0XwwSD4aSf1Rw6E9+s996QP2dw3gujH6dmsOSvfM6nqMzjXXi0MfReoC75DTX7/DVKyZOYkIbPlArdarVGuDFpUpNz4QuLWpcX1rLLsP+AwVYgGY7RJdsVBTI93pLDtDOdxB25EOWj+xsbxWEoIiTd+Ec3FFKEt+ohAPJgPkzj/0rrsGcb64STNC7LtFF1Vh2hFxNsu+9OB6jSGPF5ZE77OWiQNsu0Ivr52udhKJwfBmcvllP4vyfZWMHkmwnOQ3e6o5WFExRbTB5xg9qQPjv+yJ4KKjTKf8zp1f2mu8V6R63E8wZukhSwsiJaR939bsW0qP+Xs8p0hFiF6jbe8dpDD9cxMqXMdAcxSynx6S3aTZQfPPvQ2x18VIrmtVrn9PMrG5SbfVqUfyjsl+NaG0oShc0fZ3Xdgv5ApbMVyCxxD0m2G7gcd2/WGMgAmNnCg60eh9Q0cxH3mV+7auvwQrlQNvsPKiK/CNQvttvNHk/uvCI8K6+qwmqNJITulBCKuL2MOND2K2/ivHeIqUbp6NKyMOryhUkfNvviIrnTvlmLWUKw+K/GNjOHPpiegfmFcT6bT9wfJMnpTr+CfbqZ8OJXlxrCgmg8/YLbyBYCORaUQVng6qyqx/t9anO79vxedWVA/jHN5YOyNGcYldYafMjHfEMWMQVEIjheqm1Lq/gxyjZ2iVoaciGjo2Tt4BmSJflcBTrLqN2CTZnNAhVojG28H4zR8CeK/mBUNi++yx/8Ac1tJunEbHLs1Z1zv24Z4prYndfD5EI6A3gVkQelNDTiusF2H6pZCDmW30O8NC/0moGdP1fGJCDHNvYmQtYvzkjKn7ikrh6wZ/FUJ+6teL3oFJCa8mgapGAwb/lBUnt94QPGQI67ULy5DDayt020foKRn3l5fbSWMj4uO8A8Y1/eQz8ZSX0ekQoNEq+
+ Zh1MI4gz
+ 6SOK3GbVqnPEMvP+2nICEWXT3oVD9Y5DDEDNeGBnN22nMHR8EXgWFVArtESXzBOboaWfXqHdrZW3W5DQIjefNjYiFdWLu/m1taFakEReOxMuRI8oDvJ74SQERnXRVBGBtwNafz9S+vMbn5rMgsVJp2WDnmhTsQIvEe1b92OE+KBJ9/IBuihBjhlJdJZKVviP3C9Y4DbXjxhJwcjyDroVJ3Ihdmt1jsquGtuxnOaHLxVUwKvqtlgkDDUvpd+XDh5vf0LdbGdskxXRT/bvfxUszWgegIa9uu5RXgjLiHsmznNXRkDNdi0a1Ds+pmYOyzKPErQezyU6MElieHy9mHUYGaA37v99RtDYix3+Q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,44 +150,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/11/26 04:19, Tal Zussman wrote:
-> On 11/10/26 6:55 AM, David Hildenbrand (Arm) wrote:
->> On 11/10/26 12:54, n3rd wrote:
->>>
->>> Hello,
->>>
->>> I am reporting a security bug in the Linux kernel.
->>
->> Stop sending uffd problems as security bugs. STOP IT NOW.
->>
->> Tal has a long list of uffd-related fixes he is about to send out. CCing him.
->>
-> So this issue was originally on my list and I had a fix for it... but it was
-> REALLY ugly and a band-aid, so I dropped it.
-
-Yeah, RWP is a mess.
-
+On 11/11/26 04:19, Zi Yan wrote:
+> __split_folio_to_order() calls prep_compound_page() on each new head page
+> to create a compound page after clear_compound_head(). prep_compound_page()
+> uses non atomic __SetPageHead(). It is mostly OK, since the folio is locked
+> and frozen and no one else is supposed to modify the folio's flags.
 > 
-> I think the real solution is to just add actual markers for RWP and solve
-> all of these issues at once... but that should be a separate series from my
-> batch of fixes (which I'll be sending shortly). Is there a reason RWP
-> markers weren't done in the first place that I'm missing?
+> However, code calling migration_entry_wait() can reach the folio by PFN,
+> then access its flags. It is because softleaf_entry_wait_on_locked() used
+> by migration_entry_wait() sets PG_waiters concurrently without taking a
+> reference and the frozen refcount during split cannot block it. Meanwhile,
+> __SetPageHead() does a plain read and write, so PG_waiters atomically set
+> by softleaf_entry_wait_on_locked() will be lost if the set happens after
+> __SetPageHead()'s read and before its write.
+> 
+> One example code interleaving:
+> 
+> CPU0: __split_folio_to_order(new_order>0)  CPU1: do_swap_page()
+> 
+> 1. clear_compound_head(new_head)
+>    new_head->compound_info = 0
+>    (page_folio(new_head) == new_head now)
+> 
+>                                            2. migration_entry_wait()
+>                                              softleaf_to_folio(entry)
+>                                              page_folio() -> new_head
+>                                              (not the old head any more)
+> 
+> 3. prep_compound_page(new_head, new_order)
+>      __SetPageHead(new_head)
+>        tmp = new_head->flags.f  <-- load; PG_waiters == 0 in tmp
+> 
+>                                            4. folio_set_waiters(new_head)
+>                                              set_bit(PG_waiters, &flags.f)
+>                                              enqueue on waitqueue, sleep
+> 
+> 5.     new_head->flags.f = tmp | (1UL << PG_head)
+>        <-- store; overwrites step 4, PG_waiters == 0 again
+> 
+> Later, folio_unlock(new_folio) sees no PG_waiters, skips folio_wake_bit(),
+> and CPU1 can remain blocked indefinitely.
+> 
+> Fix it by setting PG_head along with other flags in new_folio->flags before
+> smp_wmb() and clear_compound_head(). The remaining compound page metadata
+> is set after clear_compound_head(). In that way, after
+> clear_compound_head() makes new_folio visible, nothing overwrites the
+> PG_waiters from softleaf_entry_wait_on_locked() by modifying
+> new_folio->flags non-atomically.
+> 
+> While at it, use data_race() to suppress the KCSAN issue reported by Ye
+> Liu's patch (the second Closes) on reading folio->flags in
+> __split_folio_to_order().
+> 
+> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
+> Reported-by: David Hildenbrand <david@kernel.org>
+> Closes: https://lore.kernel.org/all/DMHE8BEEER1H.2BIY52NXATPIA@nvidia.com/
+> Reported-by: Ye Liu <ye.liu@linux.dev>
+> Closes: https://lore.kernel.org/all/20261029-data_race_huge_mem-v1-1-112e331291c1@linux.dev/
+> Fixes: c010d47f107f6 ("mm: thp: split huge page to any lower order pages")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> ---
+> The issue was raised by David when reviewing Ye Liu's "mm/huge_memory: use
+> READ_ONCE() when cloning folio flags during split" [1]. This patch also
+> supersedes Ye Liu's patch.
+> 
+> [1] https://lore.kernel.org/all/20261029-data_race_huge_mem-v1-1-112e331291c1@linux.dev/
+> ---
 
-Let's ask kiryl: why is it ok to drop RWP PTE bits during swapout, zap, collapse
-etc?
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
-https://kernel.org/doc/html/latest/admin-guide/mm/userfaultfd.html?utm_source=chatgpt.com
-
-states "Unlike WP (which persists via PTE_MARKER_UFFD_WP), there is no
-persistent RWP marker today. The user needs to re-arm the range with
-UFFDIO_RWPROTECT after any operation that explicitly frees PTEs."
-
-But requiring the user to re-arm is rather questionable design if the kernel can
-just zap these page table entries.
-
-@Jose, maybe you want to look into marker support for RWP to make RWP a bit less
-horrible?
-
+I'll wait a bit for more review and then queue it.
 
 -- 
 Cheers,
