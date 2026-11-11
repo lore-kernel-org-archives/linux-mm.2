@@ -1,129 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A549606A32A
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 17:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05665606A89B
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 17:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=W+S01ofy
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=tootLfOq;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=hIqtQddj;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=tootLfOq;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=hIqtQddj
 Received: by kanga.kvack.org (Postfix)
-	id AC4596B05B3; Wed, 11 Nov 2026 12:47:47 -0500 (EST)
+	id 217C16B05B5; Wed, 11 Nov 2026 12:51:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9D566B05B4; Wed, 11 Nov 2026 12:47:47 -0500 (EST)
+	id 1EF9B6B05B6; Wed, 11 Nov 2026 12:51:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B2DD6B05B5; Wed, 11 Nov 2026 12:47:47 -0500 (EST)
+	id 0BA766B05B8; Wed, 11 Nov 2026 12:51:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 70B066B05B3
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 12:47:47 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 052A912034A
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:47:46 +0000 (UTC)
-X-FDA: 85423570974.19.C6C94CE
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf28.hostedemail.com (Postfix) with ESMTP id E15C5C000C
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:47:44 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=W+S01ofy;
-	spf=pass (imf28.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794419265;
-	b=K1DlkhBQzym7XAgSIOlrHknTJnAWlH0HIiXgm5yTaPe5U9EXmA70DLRaDc8Sgwy2udWzXl
-	TdYq3/X33BEHWJNRCvfwEF8EgW4cEDk5gqEcVBS/S+lMK4VDW76kcIVMy51ZSFW8zO8nUy
-	mn0iqB8Qa+8wC3U0Dq25P5PDFGmzxaY=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=W+S01ofy;
-	spf=pass (imf28.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CDF4D6B05B5
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 12:51:28 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 68D7D1A03BF
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:51:28 +0000 (UTC)
+X-FDA: 85423580256.02.A47C7B4
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 608E01C0002
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:51:26 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tootLfOq;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hIqtQddj;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tootLfOq;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hIqtQddj;
+	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794419265;
+	s=arc-20220608; t=1794419486;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cavo6rumtYx83DhhSgHjGqxw295JLU9mSeXiMoOdbTo=;
-	b=vTqkSWYKI15vraWKrUVtbyuaxo83tHwFwhuONnD9xsEYEAjox6fRLczPQWSIwQnfV3f9e3
-	3mYFsPoPhenDc0jzRuaWVmKkahCWW1oJ7iJE/qRZ6sLG0qnbr4MpdxDUiq1wdm7BJPkEL1
-	MZT3MaHmAN5XDwlLYReAPQCufQ+w9Jc=
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4a20bde60a0so34775605e9.3
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:47:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1794419263; x=1795024063; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Cavo6rumtYx83DhhSgHjGqxw295JLU9mSeXiMoOdbTo=;
-        b=W+S01ofygv3nW2j1/BolJMiDAuft6jbpy/uPTRYmANN81zFkr20yOvmTbJvZcWcA4r
-         2ELau+1mHwVmybnRqjwLPXSlHEfYD3G7t6/EJRiOYW7+DiXRiskJN+2IInidf9Mpa0/4
-         0pqnfD6MkgFvRf+qBydqszz3h+VAMKefAVDJoQ0uGTbj6WDoCJft4NlaIiUmTG5XGkLA
-         OHNEjDC5zg3jdK3FkIwe/hP0/JtFflIWnzg/v5v9wNuafrOtZJQ+XZcxFPEz2UbFF687
-         KDcQR+BOWyiDdhu9J6CO4+IoQcaWX+dLuQ27WfnwKYHXjySLvzlTxZ/M+mYUVy3hIVeK
-         wvuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794419263; x=1795024063;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Cavo6rumtYx83DhhSgHjGqxw295JLU9mSeXiMoOdbTo=;
-        b=peAj8j5Nq1ua46sHDpWg76TxYpnthL71ybAUjqB7hDVBjS5ZY4ADRwGf9s5qIdzAtd
-         iIvDwZy1KwuOy5L1J86W9Z9VU+6CxYFT4C+zcwIWb6PNrgHl2lYGCC0khKhp+vGhHRHu
-         wnhpKvO/f/8szEjBXbOeYSpanYXuZzXxi2qDKyML/wxK2p9P2z5yw7sX6g+771uQP3hS
-         /A4Mf6PNOLgKPOP4xvvERCMO5bo5m2XahTNm8SN6L1Y296gj8ADDFKvpmzT2zYh3W8d1
-         1qejzROXaQzo2aGcqGY2GB//gVanTUBhLXZHqVkGG7Op3XOzf2JfPCpE7xbSc8vpe+AZ
-         Bv5g==
-X-Forwarded-Encrypted: i=1; AL+hErEZ5ZXARrtCWfUS1ab2JR4ZqPW/lA8kwCnYFwjWMZ+U5dbFPio8k1Q/Sn4cvcdOFLFibaDe5nmC4w==@kvack.org
-X-Gm-Message-State: APuU4Z+25k1YAnd75CkdgDwU+I6FAYAPrZESwoHCjzvZ6HHgFKhT4aB6
-	ahAeEpE3DZUjYD38ccG+zQ0L6si/gsuaac3ZjBBJsluj7DynnfvYzZ4MjlYUEnzxv7Q=
-X-Gm-Gg: AYBFou2F36fz40t19X8iTzbgZva9RBqAetyVCM+V7fCQRUDXrqdPiniW4BlPiQ0Hxkf
-	uRLP09L4D62qHpUj1LuUCWbiBb6qnl5XNpY2S7uBkm+6+zLMeKp7caPdZthbLchdt1sVsInbjwE
-	6bcrS525Ku/L5MjrPl/H++/DrTkdC7w7pHygExXd0E2+BheK4TAZn+Cz83IsrA7h6Tk5AIob7Iz
-	EGusPsJ6oOH/4LAG2tWEoqlmkBg2msoxys/qZt0M17dDkkRxzUFszoCvSm2hYue180902bNdcHf
-	6F/66+GlF4+e0Jtqj+PcG9INdwwZnIV/6QSi+yWoFKukgGvkru1qkgFLUjTDc6y4Kn1QgNwltB8
-	1CoJRzJLbmaHRLg4HlrqGqFBl7ZZCLXc1Pdck+CnwTOesExR5JliBYblgto8YQHvfkLGBf+bGE7
-	W+oywRyxRNXMKmX8NKhwVFYe4NipXLR8XPt00nuk+/61QJQR93jK1GcWlx7991OuYHNYZLlmlKS
-	o5sKfaEsVWNTNEDqR3ad+dEgWfOnbEb3Ju0h4/q777zYKwum5mW5Iv+7cVCDxeL2BmuYla+I9Ur
-	Hi/RF3JOd/saBfJE79eB/BOuXXzLLTKMVxOq1YkgdjMhv45+PQNFaA==
-X-Received: by 2002:a05:600c:3f07:b0:4a5:87a:50ba with SMTP id 5b1f17b1804b1-4ba0938a6a7mr55235815e9.33.1794419263442;
-        Wed, 11 Nov 2026 09:47:43 -0800 (PST)
-Received: from localhost.localdomain ([2001:af0:8000:1409:193:86:92:181])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb4e2593e4sm5375895e9.5.2026.11.11.09.47.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 09:47:43 -0800 (PST)
-Date: Wed, 11 Nov 2026 18:47:41 +0100
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: sashiko-reviews@lists.linux.dev, akpm@linux-foundation.org, 
-	yosry@kernel.org, shakeel.butt@linux.dev, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, nphamcs@gmail.com, 
-	chengming.zhou@linux.dev, sj@kernel.org, david@kernel.org, ljs@kernel.org, 
-	linux-mm@kvack.org, damon@lists.linux.dev, tj@kernel.org
-Subject: Re: [PATCH v2 2/4] mm: memcg: read root lruvec stats from the node
- counters
-Message-ID: <avSqMxGjwYPrQLlV@localhost.localdomain>
-References: <20261110015321.611093-1-joannelkoong@gmail.com>
- <20261110015321.611093-3-joannelkoong@gmail.com>
- <sashiko-outbox-206041@kernel.org>
- <CAJnrk1aQrRE78wqd2yZWS2Sk8MiCHd9x0dveZBh5LHE5w75nkg@mail.gmail.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=kNvahHNr+ZnzS6BVqxpaB44fT0M1MamccoIc3pC6eE4=;
+	b=6CPuJEjyKmgoWgcWrePFJqELWr3aelUswWH+XF00TUEW9xj0pMmDPOxEBz2uk4Al1mb5G2
+	Y5iVdfamqy+eGQqxwYyJ2VUKmtlPbzLiaNn0O5dVcxokV85px4NXfro1aRyEQl9nU0dBD6
+	mj5ymQ4HL/Zvj6CwYIdRn/jeJtIPvWU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794419486;
+	b=DckEewWkT52kSSIH+giGy5XdKvIMYxaYpSjOOiV1Zz5LLkmifS9qBbQvvVZoNiYavHJvuF
+	rotBYL0wUw34h7Ercmob5vWqINvd8pUQLS30EM7uyVqINKrzvilZIBxscHek6WFiCJ4vvp
+	17ojBetwTxfyeUzJqJ/sSRTRBSLTHbE=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tootLfOq;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hIqtQddj;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tootLfOq;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hIqtQddj;
+	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6D3581F45A;
+	Wed, 11 Nov 2026 17:51:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1794419484; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=kNvahHNr+ZnzS6BVqxpaB44fT0M1MamccoIc3pC6eE4=;
+	b=tootLfOq6n+huT/L0wPFtVc9Cr37kH/3CByuKhioM9XtkQVUn2upi819BxHqSKE+/LluF1
+	qU0osjk6nzn+JsznB6gTAg8bFQqMfPf+Yzmn/F0JUX1SmvBUgJGG3x06/L4+WbYSmqTe2E
+	xrVTRbRxEpvMd/UhAJIADVa5QZTFJN8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1794419484;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=kNvahHNr+ZnzS6BVqxpaB44fT0M1MamccoIc3pC6eE4=;
+	b=hIqtQddjhDYyd/etrvpeoXmab+twE6gMqWJKKg9qhdzq9i45GpZfcUAUbH0CY7trU5VAia
+	FtxH4wE8vKmocAAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1794419484; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=kNvahHNr+ZnzS6BVqxpaB44fT0M1MamccoIc3pC6eE4=;
+	b=tootLfOq6n+huT/L0wPFtVc9Cr37kH/3CByuKhioM9XtkQVUn2upi819BxHqSKE+/LluF1
+	qU0osjk6nzn+JsznB6gTAg8bFQqMfPf+Yzmn/F0JUX1SmvBUgJGG3x06/L4+WbYSmqTe2E
+	xrVTRbRxEpvMd/UhAJIADVa5QZTFJN8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1794419484;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=kNvahHNr+ZnzS6BVqxpaB44fT0M1MamccoIc3pC6eE4=;
+	b=hIqtQddjhDYyd/etrvpeoXmab+twE6gMqWJKKg9qhdzq9i45GpZfcUAUbH0CY7trU5VAia
+	FtxH4wE8vKmocAAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5B8261339F;
+	Wed, 11 Nov 2026 17:51:23 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id +SJmCxur9GphXQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 11 Nov 2026 17:51:23 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>
+Cc: Pedro Falcato <pfalcato@suse.de>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/8] mm/khugepaged: collapse_file() cleanups
+Date: Wed, 11 Nov 2026 17:51:13 +0000
+Message-ID: <20261111175121.1328383-1-pfalcato@suse.de>
+X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJnrk1aQrRE78wqd2yZWS2Sk8MiCHd9x0dveZBh5LHE5w75nkg@mail.gmail.com>
-X-Stat-Signature: g3jruqwr95it5edc6td97fu4h4thaw8y
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E15C5C000C
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Score: -11.80
+X-Spam-Level: 
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 608E01C0002
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794419264-57526
-X-HE-Meta: U2FsdGVkX18NevIiK8n10UAGx1dNOGJxD4SNWr8O3VBVZGji/ElGwvjf81yQJT30O067RJ5E8uuT9JW+Ym+qSKVUCi2xOtcu7pJutvBXAdKKbiq8IE1d4+RpxIWQHd6nI3Hzp7I+pRkD4RHV3sNTCBNXgJy6yPLyD0NmK2mHXuJVGcJUEEHejmp5FEaNwPXovXBXCBQQxOc1670z6xcf3nfsEeMBpjq5KSP28SP2vJmLFlBVDm8shvtw3M/bs1wPrmK8EcN1q0tNX+C8d9O+WhGRsO8ktascTr966nzE6RgaVN5uErXU5PUbDXjLIllakOPaoKeNDJOQsPHy6lGBaxHjLHpPXfzmC01Y290mX8i6v6cuAhay6auWadVoLurq+BDX8Lbq1f2+MCcNOirMxCqLE5SLtnZYh1ZPFZMO7nnY3TBSy7ItfV/cgaBnzYEKXFaPb1dzYUIOaIQjZC+Cg1VNMufBnz5S5dMopzzYAU0AbYEnJYTirOecN4htecvV8kWN/ygd+g4lYt8FlDsK8VRle8K5jYoDQbJ+wQdHVrC+VGRM0Nd9mg9uWZa5NWp3HbryuO9dGnmBSicK84hyixcsimjQmzsDRhaaAxOQerIE5aYRrjp4NzWmHfCkIqoIBTCDCka8Z63SWd+DzdeFxY9vrbnii9SRT1dSGXfbWqlGYUJFAKyamVa4l9BXU333wIBJ9wNcHMaYOMv/boPB4777iSGaWbxhg+deZDhtsyrD7txc/j75V/WdBIVRdYZglCKQrtDya1Ka1AQhuBWYJ9h/gbYCtRvmI60t/Yn6RUJ91lc1b8vVW5NjXX5oSWqhtadEQogIf5a0WiIcPk+zOJVnHy9xjlGZUQphMU/Aops5XQjmre9wjPLM4UJJgFC/2U6GcXO63YSzHmAoTjxxLXZeVTtyG/qmwQ7qi8R1xc5Ye6CdaRUyBibZkzMGSBjEBxEYvJaBuEOCo82HPKA
- VwtZorMb
- RbcHcp4IHxkf9V0P+46U+dqo+l3hNnaNYtIWiXyeTUwTPdahfOsL3iJ1y9cEJvk3f4RLeQtj4Io7XgdtdfzytXWm7u9niEFz+HhcXjpjbRLusbBRWy140/gQf6FPKupuZOxRZ0qHYsFth+T113/+8itt+Kobn+1gpJqwLCRiD0IA2byXmTFQt6voF8eCnPRNaDLsJTyYJrJy0TCaZWyV/jRTyN88VRcNLp78EF/cu6yGvJBgo2j4LSOgnxoNWUsjfHTK6hgpE6x4uv92hkdfrwoBysZNuYeOjOmYbgiwbAodMd/+UG5Adv9DKia+TACUN73iY6jWKSCzzccFwwoAByylK9frpbKxGghPyK3NDmljHkCWn8T83k6obLNP0kCsnFtXByz+BXh0eW/k6MX4HZn9En4RJrN0Xx1uZ37bJB8VcfQrmUfOk4nPvPc1JYi67epXrZx0BpE00KvHsrrAAsQOdBQ==
+X-Stat-Signature: jbpb5smuhd3un6czz4yqt6moji86egis
+X-Rspam-User: 
+X-HE-Tag: 1794419486-877909
+X-HE-Meta: U2FsdGVkX1+6sRMWLiMadxJ4vwYNmY5HREv22ZcXq0QEVZgajNQbj5dT0HZPBGEqzW463I47YvunLJNTDAhvTv7wdJTpcWkeARtx91EbWNPl9Eaj27332InFtqgFxkq8UcyHc1r3HZHFWOznkqqUFuERVOMOh9KcbPmNP0wNl/5BGOmwxKpdGK2vOPXp2Ir2/KyWNuGLDkhlPku/mLzM13r8ei/2SHG36CSw4wyox0Fk4zqjwuGCuiMNWUg5/swSgujjCJ6TL5Rd/0CUDoGPUtFuQ1eGdqUU0xl1nUoBTAPBE9w6MAbo2d0rMIJgnUJzh7Uc9NAfhQtu97Ci79jduc5PyB1qy2P1hkndbL9P8VM7Ix1i/WyG/MpCe96799WlqNslZPRl/8QsFuwZx7erAb2NPaDOtJwTpFf3l436vW2u7d2ZVoRj7jGKGzSrfBKSLObMU6W47ucByMjFsNNx/A2+xWyQDRDCXNB+h5iX9zJqNJAhXbYlddg4TpCvn/VPHrWdvAcgrBzN62YMae+bWz4TE9cB5aBKbrgmOVy/8ma4/9Vb5bYam5Lzv+vu6ncFj5FPNRxQ1RU9Dpj/dg78CZcKnSHL/fHjjwNDd/B9sZKqCL8Hmvvq4kiJi+MOlK/PeFyQxfLZGIAKx1kiWHF809khtRvt1PnqNVyUhcbCfCpuJXpZnxzZgYaH6cHTnVol+6ADmaapv1eydS/FKcoEDLPbOVbz5yYJyO/DhF69BFV1GXvZdfVh12KX1xzHwaskAUCafP/VwG2ohj5bCOXA77efNcS6vxarsrcnznnEhcypGnQHFRx84k1r70bXHJJ0z7OC8/uf2oPCx0IltkVyNnd2fRfd2Hc70WkyssIaIzbeDmSipJMOYsXkKnjR08QU9PSV8u1s4g3uk0qqUyfm/tGcPSxXHn2jn5lM/wl145VSzkmOFg2nF2mF59MN+iNySW7ykDMzoD5PLOqXwo8
+ 3eC29qP0
+ 0UuSVtEdHt41vJG8Hsg3a1WRRMaDkm8aTASg5T6xVBZz7II9q7nac+bvknWPA0i0RLLw3UCsukkGxEo1+Qo0270O7TgnLrITz7aE069dHClbqlhxkrfER2vK6uRhl5s4k8is9EwH1XFr1KvpoM+8zjf2Nno4rSl+7tRWC3G1LwjjqqRJSyY3Ehfz8V9qeK79v41FcSbLVYJ8NV8kz9+t1ba6kswU4yuiGErORu4M09xrQeqm0ZDNSjGR3MBkxM9x7/V01UYVtQ1E3+3GLI1ccT3L2jPgMsfg/m8nWOxQKtMVfZKeTvQdWbkrM7hpbuDGfSpl/XuEU0pBCCL/u1shQrFtKJYlRx88427yWDkVZ9z9HcileQRvI4YBMU2fohU9Qsg7cGSGMNxqxwyQwAWBSnmuXGxcy/WDw/hsZO6TfNsv68G0gDcJzQgl1/A3qRAW92iPALOHujW8aQ58NLcnheY4erkeF63x3W09QNKCRMhnlrKZvrdCLPJHGXwvYdAyifZfXHTEL5LoDNHtqNjXB0Dd6OQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,134 +144,86 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 10, 2026 at 03:10:54PM -0800, Joanne Koong <joannelkoong@gmail.com> wrote:
-> On Mon, Nov 9, 2026 at 6:23 PM <sashiko-bot@kernel.org> wrote:
-> >
-> > Thank you for your contribution! Sashiko AI review found 1 potential
-> > issue to consider:
-> > - [Medium] mm: memcg: node_stat_includes_unaccounted() omits file and
-> >   writeback stats
-> > --
-> >
-> > commit d2ba314724a8ba015e3bf2a30f155f1beba25a8c
-> > Author: Joanne Koong <joannelkoong@gmail.com>
-> >
-> > mm: memcg: read root lruvec stats from the node counters
-> >
-> > This commit changes lruvec_page_state() and lruvec_page_state_monotonic()
-> > to read per-node vmstat counters instead of rstat values for the root
-> > memcg when querying stats that only track memory charged to a memcg.
-> >
-> > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > > index 1ebc9330aeae5..2575bf2ba0ea6 100644
-> > > --- a/mm/memcontrol.c
-> > > +++ b/mm/memcontrol.c
-> >
-> > [ ... ]
-> >
-> > > @@ -504,13 +511,52 @@ struct lruvec_stats {
-> > >       long state_pending[NR_MEMCG_NODE_STAT_ITEMS];
-> > >  };
-> > >
-> > > +/*
-> > > + * Whether the node counter for @idx can also count memory that isn't charged
-> > > + * to a memcg (eg kernel memory that isn't accounted). For these stats, the
-> > > + * node counter can be larger than the root memcg's value, so the root memcg
-> > > + * has to read its rstat value instead.
-> > > + */
-> > > +static bool node_stat_includes_unaccounted(enum node_stat_item idx)
-> > > +{
-> > > +     switch (idx) {
-> > > +     case NR_SLAB_RECLAIMABLE_B:
-> > > +     case NR_SLAB_UNRECLAIMABLE_B:
-> > > +     case WORKINGSET_NODERECLAIM:
-> > > +     case NR_VMALLOC:
-> > > +     case NR_KERNEL_STACK_KB:
-> > > +     case NR_PAGETABLE:
-> > > +     case NR_SECONDARY_PAGETABLE:
-> > > +#ifdef CONFIG_HUGETLB_PAGE
-> > > +     case NR_HUGETLB:
-> > > +#endif
-> > > +             return true;
-> > > +     default:
-> > > +             return false;
-> > > +     }
-> > > +}
-> >
-> > [Severity: Medium]
-> > Should node_stat_includes_unaccounted() also include NR_FILE_PAGES,
-> > NR_FILE_MAPPED, and NR_WRITEBACK?
-> >
-> > For NR_FILE_PAGES, swapcache operations such as __swap_cache_add_folio(),
-> > __swap_cache_del_folio(), and __swap_cache_alloc() update NR_FILE_PAGES
-> > only in the node counter while accounting swapcache in the lruvec under
-> > NR_SWAPCACHE:
-> >
-> > mm/swap_state.c:__swap_cache_add_folio() {
-> >         ...
-> >         node_stat_mod_folio(folio, NR_FILE_PAGES, nr_pages);
-> >         lruvec_stat_mod_folio(folio, NR_SWAPCACHE, nr_pages);
-> >         ...
-> > }
-> >
-> > Reading node_page_state(pgdat, NR_FILE_PAGES) for the root lruvec
-> > therefore includes all swapcache pages, which inflates the "file" counter
-> > in the root cgroup's memory.numa_stat (double-counting swapcache alongside
-> > "swapcached") and causes it to diverge from memory.stat even after a
-> > flush.
-> >
-> > Similarly, __folio_mod_stat() -> lruvec_stat_mod_folio() updates the node
-> > NR_FILE_MAPPED counter without updating memcg rstat whenever an uncharged
-> > folio (folio_memcg(folio) == NULL, such as a driver mapping or a
-> > root-cgroup __GFP_ACCOUNT kernel folio) is mapped into userspace, and
-> > nfs_folio_mark_unstable() and nfs_folio_clear_commit() update
-> > NR_WRITEBACK only in the node counter for unstable NFS pages awaiting
-> > server COMMIT.
-> >
-> > --
-> > Sashiko AI review · https://sashiko.dev/#/patchset/20261110015321.611093-1-joannelkoong@gmail.com?part=2
-> 
-> Thanks, this is a good point about the folio stats.
-> 
-> Hmm... I wonder if we should go with an allowlist instead of a
-> denylist. The allowlist is longer (31 stats vs 11) but would be more
-> resilient to failures (a stat missing from the allowlist just reads
-> the rstat value whereas a stat missing from the denylist will silently
-> report the wrong value) for any stats added in the future. Any
-> thoughts?
+Here are a bunch of cleanups for collapse_file() that attempt to aid
+code readability and understanding. This is part 1 out of N, and only
+attempts to address the main collapse loop. The exit path is still a
+mess but I figure it's much easier to review if I send this batch as-is,
+versus sending the whole thing.
 
-I agree the opposite predicate would be more robust and potentially
-easier to review (review only the _listed_ cases, not the "unknown"
-complement).
+Tested using the khugepaged shmem and file selftests.
 
-Also, instead of
+Based on top of latest mm-core/for-next.
 
-       if (something && !mem_cgroup_is_root(eviction_memcg))
-                mem_cgroup_flush_stats_ratelimited(eviction_memcg);
+Note that some review comments from v1 went unaddressed
+(Nico's larger restructuring, some small Lorenzo suggestions) for a couple
+of small reasons. The main one being that I want to get this v2 out before
+going insane :)) I agreed to work with Nico, and I'll either send out some
+of his patches as a followup, or he will.
 
-I'd consider
+In any case, I'm tired of this function and I hope this kicks off some
+discussion :)
 
-       if (something)
-                mem_cgroup_flush_stats_ratelimited_opt(eviction_memcg,
-		1UL<<NR_ACTIVE_ANON|
-		1UL<<NR_INACTIVE_ANON| ... );
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "Liam R. Howlett" <liam@infradead.org>
+Cc: Nico Pache <nico.pache@linux.dev>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: Usama Arif <usama.arif@linux.dev>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Kiryl Shutsemau <kas@kernel.org>
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
 
-and collect the exceptional handling in memcontrol.c:
+Changes in v2:
+- Rebased on current mm-core/for-next, which contains a number of fixes to
+  the amazingly simple and awesome collapse_file() function.
+- Fix the "bad unlock balance" reported by syzbot ci (syzbot ci, Lorenzo)
+- 1/8:
+  - Fold in v1 5/8 (kerneldoc); new helpers get their kerneldoc in
+    the patch that introduces them. (Lorenzo)
+  - Group the input fields of collapse_file_state and make end and
+    is_shmem const; is_shmem is now a bool. (Lorenzo)
+  - Wrap the prepare_collapse_file_folio() declaration to fit in 80
+    columns. (Lorenzo)
+  - Keep the original LRU drain behaviour (drain only after a
+    successful shmem_get_folio()) (Lorenzo)
+- 2/8: New patch. Turn value entries into NULL before calling
+  prepare_collapse_file_folio().
+- 3/8 (v1 2/8):
+  - Rename collapse_read_folio() to maybe_read_folio(). (Lorenzo)
+  - Replace the compound condition with an early-return guard.
+    (Lorenzo)
+  - Comment on why the xa_lock is dropped. (Lorenzo)
+  - Expand the commit message. (Lorenzo)
+- 5/8 (v1 4/8): Drop a duplicate blank line.
+- 6/8: Add a commit message, noting that errors before try_to_unmap()
+  no longer call try_to_unmap_flush() themselves.
+- 7/8: Explain in the commit message why the refcount and dirty checks
+  don't need the i_pages lock. The flush added by 854e5ff8b3ce now
+  happens at out_putback.
+- 8/8: Retitle (drop "fix"), since 854e5ff8b3ce already reworded the
+  comment; drop a stray blank line.
 
-        void mem_cgroup_flush_stats_ratelimited_opt(struct mem_cgroup *memcg, unsigned long needs)
-        {
-                if ((needs & ~node_stat_equivalent) == 0 &&
-                        mem_cgroup_is_root(mem_cgroup))
-                        return;
-		...
+  Link to v1: https://lore.kernel.org/all/20260720142913.846902-1-pfalcato@suse.de/
 
-This way in-kernel flushers will be expicitly annotated so that
-potential mismatch is more obvious to spot (and it adds possibility of
-future optimizations).
+Pedro Falcato (8):
+  mm/khugepaged: separate out windy folio logic from collapse_file
+  mm/khugepaged: sanitize the folio passed to file folio collapse logic
+  mm/khugepaged: factor out page cache folio reading
+  mm/khugepaged: factor out and simplify dirty/writeback handling
+  mm/khugepaged: simplify prepare folio locking and exit paths
+  mm/khugepaged: hoist isolation into collapse_isolate_folio()
+  mm/khugepaged: hoist more code into collapse_isolate_folio()
+  mm/khugepaged: flesh out try_to_unmap_flush() comment
 
-(This is all only a concept, it may turn out uglier when worked out to
-details...)
+ mm/khugepaged.c | 461 ++++++++++++++++++++++++++++++------------------
+ 1 file changed, 286 insertions(+), 175 deletions(-)
 
-HTH,
-Michal
+
+base-commit: 8d21e3d3faf19f461f6d0380fe8a1f5bdba97f25
+-- 
+2.56.0
+
 
