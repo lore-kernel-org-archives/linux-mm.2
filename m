@@ -1,105 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFC5606A32A
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 09:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5BA606A32A
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 09:28:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KBJZ7wYj
 Received: by kanga.kvack.org (Postfix)
-	id BCCBE6B05B9; Wed, 11 Nov 2026 04:24:54 -0500 (EST)
+	id 82A076B05BB; Wed, 11 Nov 2026 04:28:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7D746B05BA; Wed, 11 Nov 2026 04:24:54 -0500 (EST)
+	id 7DAAA6B05BC; Wed, 11 Nov 2026 04:28:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A93396B05BB; Wed, 11 Nov 2026 04:24:54 -0500 (EST)
+	id 6A2166B05BD; Wed, 11 Nov 2026 04:28:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8832A6B05B9
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:24:54 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 18AAF120248
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:24:54 +0000 (UTC)
-X-FDA: 85422303708.16.C79C3DD
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 594EA20005
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:24:49 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	spf=pass (imf13.hostedemail.com: domain of chenhuacai@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=chenhuacai@loongson.cn
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C2876B05BB
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:28:03 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CF53DC025C
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:28:02 +0000 (UTC)
+X-FDA: 85422311604.01.7A1096C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 141D6180004
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:28:00 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KBJZ7wYj;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794389092;
+	s=arc-20220608; t=1794389281;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=1HiZVoGdgP26KTrqD2XwxNDHWJELschXpQq9mDiL7Kw=;
-	b=D84t1UjlVi8mJpQfLZ/6CmXRbhRee8KmCK0u+KI90c5lXNOPcsqHIB8/vmFs4Cp7+E3HNx
-	6rx7TBm4WJ9yn/OPQyDPkIqeE/KVg155lbfIebqs+8v7WxmrqLPNdvlfDoGPYOW99rPK7U
-	HNszDM8Yqv3TBn0wyGr7ER/DOmx3wgw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794389092;
-	b=yIKxdoIDoYlOBy/8WdUGTo7GJMWB1AaxzYjIlF3r1QRhT+CvOHphWuxQyDAvZxfObWMxQ+
-	9gvX1ERyt71rLNbLpe5KR4ju92/MYsdNbaC8mv1xh5tAVfkNfZ0a3a61caPy5ZsMG7FMAg
-	nvoBVMi6dG1NqmYRBPQW0znb44+TOsE=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=x0aZ1tfcJ/Ty94l1h2AbQVLEmxVEaAa3uZWU0teerOA=;
+	b=b4MejP4rTePv3v7LWNebW5GF0zbY+vPPEwkVCJwYbU4QP5zraX4cYab8Oaz99I7y04/kSL
+	IZLEpVvYU30/T1wlUUdsLyVfIgY/Fkuy17offTZuPIPHItfVz8uNVirOntWbGYNuUyusCw
+	4PQpnuvdSH8xuy8CqdOVRLaptarVrR8=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of chenhuacai@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=chenhuacai@loongson.cn
-Received: from loongson.cn (unknown [223.64.69.17])
-	by gateway (Coremail) with SMTP id _____8DxOvBYNPRq1n8eAA--.22784S3;
-	Wed, 11 Nov 2026 17:24:40 +0800 (CST)
-Received: from kernelserver (unknown [223.64.69.17])
-	by front1 (Coremail) with SMTP id qMiowJDxxMxRNPRqU7IzAA--.12611S2;
-	Wed, 11 Nov 2026 17:24:39 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Huacai Chen <chenhuacai@kernel.org>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	stable@vger.kernel.org,
-	Tiezhu Yang <yangtiezhu@loongson.cn>
-Subject: [PATCH] lib/smp_processor_id: Don't warn if there is only one CPU
-Date: Wed, 11 Nov 2026 17:24:21 +0800
-Message-ID: <20261111092421.3771992-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.52.0
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KBJZ7wYj;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794389281;
+	b=hCdxYB+E2ZtxpnSGxMIKts6wtEuQitevZ1NZpFSYcUk8I3p9UwOQZtd+AiHIUE6WqQSZMp
+	HTAoDgQPuF5m3AGLruCMc36Fwbw6H+EgK876Gvyx0gsuv4N3WTZjC/WHBAovr/AZkIVd/O
+	qAsRyZ4ArM91EcGfFeb23e4hA2eRiHw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 010CC608FB;
+	Wed, 11 Nov 2026 09:28:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B651F00A05;
+	Wed, 11 Nov 2026 09:27:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794389279;
+	bh=x0aZ1tfcJ/Ty94l1h2AbQVLEmxVEaAa3uZWU0teerOA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=KBJZ7wYjVPMNH+Z7oJGDoD7RqrAGyc3bECakaiFSlQh1xu8oCgqgtPOKmMlZTT5+h
+	 8By55TlsCZH3BNdAPQpN7XK0JjKVI7cLo5GYkIksD66pjs6GxBuuJpUuFPz3vDl1B+
+	 r2GXQdDt4ENrss06oHsKoLXE+vNYxF8UaTfp599sn07LdWp5RLYUj9Pph5QCk4h0GZ
+	 L5lJI97UcWbJTJ3X5d8kJpZi/ExiuLX7RHV8fGRmrW5ZnDemZanemqmKhhZEI5ECnp
+	 KCE0XTdCMFGLuogtSmLl6EOTRQZXHA46nXhNxB2/+fm4imvVqjfyoLD1IeR4y50Q37
+	 9w3CwuOhjuHIA==
+Message-ID: <1c57ff65-ac25-44d4-8416-c92623f65066@kernel.org>
+Date: Wed, 11 Nov 2026 10:27:50 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxxMxRNPRqU7IzAA--.12611S2
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW7uryDZr4fCr43CrW3JF47trc_yoW8KFyDpa
-	40k3y8Kr48Cr1jva17Ja4kGry5Xas8ua93Cw17Aw45Zr15Aw1DJry5tF12gFyrCF4UGayU
-	GF1vqr1Fvr1rXwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUU9Yb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	AVWUtwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
-	AKI48JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v2
-	6r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17
-	CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF
-	0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
-	AIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIev
-	Ja73UjIFyTuYvjxUc0eHDUUUU
-X-Stat-Signature: 9gdjtmmb9jy977hj1qraebwt5mr9ajur
-X-Rspamd-Queue-Id: 594EA20005
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/3] mm/khugepaged: release contended mmap read lock
+ after scanning enough VMAs
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261110-khugepaged-latency-fix-v3-0-6eea743cf9a3@kernel.org>
+ <20261110-khugepaged-latency-fix-v3-3-6eea743cf9a3@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20261110-khugepaged-latency-fix-v3-3-6eea743cf9a3@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: tncy6psnk63j34ge4asbir13xwoiouj7
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794389089-776717
-X-HE-Meta: U2FsdGVkX1+C04fspoAw97Vee5280pJDud5R05688iX4vmkHM44DpjWC7A6cDKcFGO27R/WI/PhUz/oxWqAH3mS9P4CE95qYNiKgJRKIIwhbuG+EkqAQpMnY3HvZtQl/GfhK251pbkN08ywzfwq9yPqEplHytEbdf0je8DvcCPlC0Ik7vd6QacpUSZPgFbmuD/HqFFVEezDFMp8j+81E01c2+3TQIcu4VuKncRPIMJ4of68VK58ElgGPXmdEq2q1pkHWkO722zWtM672yqwYv/0JV8XC7MQZjZRDE+zxQ/zKRJwWiM0AFrJX9qg6xgnKnyWpDPN7BEwxpbD99jghhj8ItG2VlT+2FGwXy+wT4Jd0BL/MEIrsCXbvmvoNZjvuV7UzOMbbNElM/zedczSWo5hAHsnUpRU0vsek6XnK0qyLE1ci9kayRP/cndzn6kLhQ1NzamsgB248d7pmpUj9yL/902424zzMLl24q0BidasdY47sjYsXt/lMOAMK45dpW/bjXe+SY4eEAr8m8Dsxd6IP9NdpM7909vMwF8GI8MljDzAoVMRxHXmDlQMTbQo0dPKPggnTd1kzeYz9FrhiHSz7bqS55WXgFh+lKMxR8MjHF0wMZhmrFER5USKSd0hm9uHlUTP4DHm+gx4YdqzgKnMJoWGAkdtUfgWn/J67eES+55XXMg1KSmV8c6v15M13n0jyMVAFZzm6iimfKBdeKjciZv/dvbV0tZ1kqJjG7ukoTZ3nOC2E0gvgb3xVDQO+CttgPhHPIKrqNJ6XVT1Anio+ikBthru0B3pkECCjFcf1C7CGYwkq11w4Vhx13BL5qiwE8uUz4a0JEQg0UIlIvyDxpFWAILsrUdJtviYdi6BCkZX29e78cNJEO2mpGXlPxSzq2h044QD32/7oDIWIuqr87alyNgv/EPOROAU1jtJtgHnHc65r3RY4U9uTubDeEp4AfHDdYuTDxYDy7Up
- 33+r/eJk
- uTFH0dAKuNWKTy7OmUFAobNkK9FUu/0KBplzhmwhx/AHAz8YvJ4f/4GSz/C/kvs56Ays/39oVmMVi0U0=
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: 141D6180004
+X-HE-Tag: 1794389280-233893
+X-HE-Meta: U2FsdGVkX18VokRGzX+6Ztp/GBBH3ZVyjSbb1w65B2MDB7r6CTOGV0FJSrztt1EK015ClgHjUJIaYqz9u8Vafji0tCTGR6pIHrtSXFyxVH/y6GEbPHS8N6QeztjKGWkkZKNZJCpoctZmskz6WtpCrGN04BxwS1LqCqajOJ4rWxbfYyN/Kjn1n8mpz5q3Jxu3V0KS3QfOC9pakDacBRMdFHuZS6L4raCqA+vH9OXhZ34YnhXZUYgCRjG8lGk9z9CmKxdqDDjyRdVA7M0cpIL29P37ezStO0/PfOya50gcaE5Rm3OO+HeAN1ZcKV3tCpBg8vSJz95wWB2qyy6xUjHvi5BUo1NpGK43nYbSxmr9ZjvqmNMK0gt/+RwKkqVjWyMUnIN4appu9X7zUubhKyCgyyve1ltK7+bBK0P6gHhZf4UE3HLRJZaX2aIFv9WrcIwox/NsJ4OcgGk6JfsFTE1lnSRyyzqVaruBnVISnkJe1H+JunSxjva6Ld0JuWzj6Cj/JoMma8I/A2AmQ9Hi4IObBpx+memGbBo0Dpsjkx+iMZ8MV1JUP9fJib0WvRGeCypulUlgqBDtXVmHiFqCH81R8W4ux946loEOLzzabRQe0DTlmtAD/YZ09vy7vB/2/sPHa6pA0gH4jp3J9nkDSJntYJaq178rfM7FQc6SbvE8Cst9TeTgRbl8APvJJZnNo7cHIB0dYSbDNFO6OvNHP38llBYeubk7Zftd7j2zL3P1YkvTcPqgN1XdgAN7/eqVG2tz9u8lwycka5EK3QWScegmaVwAHBeCI3J2ndp0eVi6qzoPhN2xiJ81VGkvtMEAwh+Slb0MaPcY2AbeqCVz3R+LkX8eVpO1VsHEk9CRVXiAes7avnYceCdYyXDZ5Dkp6pgrsuUkZQSN6FdcITjEhHGzeOEffcmGjb4twc6T0jcnrAiTlgU5qs6kfhrNk9JiC5mrymU3SkFb1o7DJJ2vjW1
+ N6wRc09j
+ QNvJZFd8uYUwbiuxk1oLIB00nQdew3VGHXRzxOq9AJ5hJROc99JgpYGOF5iky3L7DqZdiCYpvn0qPXhetzzsv4hW3XqhNo2o1mt2IdnHGXrXwMWBeInJTsnLpagIQ/SfhTF3YqZ2yDCQAPkomVPJ9rie/YitPAgj0Ve2lkS507nxvaTFIA4ao2GmLl/tkRVcAyuQgK7A6NOWW9YBNwb9IvJob+F1s8Bf2bURvs2w2PcIrz2iQLXB41ozLUtxqwWaPIckSENMZ7XxA1i/usDK2ZuZBRufc/N9SrzOQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,64 +148,102 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When CONFIG_DEBUG_PREEMPT is enabled on a Non-SMP (single-core) kernel,
-calls to smp_processor_id() in preemptible contexts trigger some false
-positive "BUG: using smp_processor_id() in preemptible" warnings, which
-are harmless noise because the process always executes on CPU 0 and CPU
-migration is impossible.
+On 11/10/26 18:19, Lorenzo Stoakes (ARM) wrote:
+> khugepaged walks an mm's VMAs under the mmap read lock in
+> collapse_scan_mm_slot(), checking for ineligible VMAs first, and skipping
+> them if encountered.
+> 
+> It charges cc->progress 1 page against the /sys/.../pages_to_scan budget
+> when these are encountered, however only checking this budget once an
+> eligible PMD-spanning VMA is encountered.
+> 
+> It can therefore hold the mmap read lock for a long time if there are a
+> large number of ineligible VMAs present in an mm, over which time no mmap
+> write locks (and thus no VMA write locks) can be acquired.
+> 
+> Address this by checking whether the mmap lock is contended after 1-10
+> ms (depending on CONFIG_HZ), i.e. the granularity of jiffies. This is a
+> long time for a lock to be held, so is a reasonable compromise for
+> determining when best to do this.
+> 
+> Skipping an ineligible VMA costs ~100 ns on tested hardware (x86 server),
+> so a batch of 1024 bounds the lock hold to ~100 us without expensive
+> high-grained timer checks.
+> 
+> This scales for large numbers of VMAs, and tests with ~1M ineligible VMAs
+> reduced the maximum mmap read lock hold time from ~93ms to ~110us.
+> 
+> This was also observed to reduce mmap_lock stalls in concurrent threads of
+> a similar duration. Note that a reader re-acquiring the lock can currently
+> steal it from a writer that is queued but not yet running, so the full
+> benefit to writers depends on the linked rwsem change.
+> 
+> Local measurements indicated no change for ordinary use cases, so this is
+> all upside.
+> 
+> This work came out of investigations into mmap stalls when getting latency
+> numbers for an unrelated patch series.
+> 
+> Link: https://lore.kernel.org/all/20261105-rwsem-dont-steal-from-queued-writer-v1-1-275e070f426f@kernel.org/
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+>  mm/khugepaged.c | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 7d1414a9b2a5..59bbef61f104 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -66,6 +66,13 @@ static DEFINE_READ_MOSTLY_HASHTABLE(mm_slots_hash, MM_SLOTS_HASH_BITS);
+>  
+>  static struct kmem_cache *mm_slot_cache __ro_after_init;
+>  
+> +/*
+> + * The number of VMAs to walk before checking for, and relieving, mmap lock
+> + * contention. This bounds the maximum mmap read lock to an estimated ~100 -
+> + * 300us depending on hardware.
+> + */
+> +#define KHUGEPAGED_MAX_VMA_SCAN_BATCH 1024
+> +
+>  /**
+>   * struct khugepaged_mm_slot - khugepaged information per mm that is being scanned
+>   * @slot: hash lookup from mm to mm_slot
+> @@ -2910,6 +2917,7 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
+>  	struct mm_struct *mm;
+>  	struct vm_area_struct *vma;
+>  	unsigned int progress_prev = cc->progress;
+> +	unsigned int nr_vmas_batch = 0;
+>  
+>  	lockdep_assert_held(&khugepaged_mm_lock);
+>  	*result = SCAN_FAIL;
+> @@ -2942,6 +2950,18 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
+>  	for_each_vma(vmi, vma) {
+>  		unsigned long hstart, hend;
+>  
+> +		/* Relieve mmap lock contention after walking a batch of VMAs. */
+> +		if (nr_vmas_batch++ >= KHUGEPAGED_MAX_VMA_SCAN_BATCH) {
+> +			nr_vmas_batch = 0;
 
-Here are some of the trimmed log messages:
 
-  Call Trace:
-  [<9000000000d33e28>] show_stack+0xf8/0x1c0
-  [<9000000000d2fdac>] dump_stack_lvl+0x4c/0x78
-  [<9000000002456fc0>] check_preemption_disabled.isra.0+0x100/0x110
-  [<9000000002456ff8>] debug_smp_processor_id+0x18/0x40
-  [<9000000000d31118>] init_cache_level+0x18/0x90
-  [<9000000001adbe2c>] detect_cache_attributes+0x4c/0x640
-  [<9000000001adc44c>] cacheinfo_cpu_online+0x1c/0x310
-  [<9000000000d5ae04>] cpuhp_issue_call.constprop.0+0x94/0xd0
-  [<9000000000d5b278>] __cpuhp_setup_state_cpuslocked+0x208/0x320
-  [<9000000000d30148>] do_one_initcall+0x68/0x200
-  [<90000000024711b8>] kernel_init_freeable+0x1fc/0x294
-  [<900000000245824c>] kernel_init+0x20/0x134
-  [<9000000002455b54>] ret_from_kernel_thread+0x24/0x1d0
-  [<9000000000d31650>] ret_from_kernel_thread_asm+0xc/0x9c
+We could simplify by just doing
 
-This warning only exists for the !CONFIG_SMP build. This is because for
-CONFIG_SMP cpuhp_issue_call() invokes callbacks in cpuhp_thread_fun()
-which is a percpu thread, but for !CONFIG_SMP build it invoke callbacks
-in the init process which is not a percpu thread. And there is such a
-skip condition in check_preemption_disabled():
+	if (++nr_vmas_processed % KHUGEPAGED_MAX_VMA_SCAN_BATCH == 0)
 
-    if (is_percpu_thread())
-            goto out;
+I guess. saves one LOC ;)
 
-Since there is only one CPU for the !CONFIG_SMP, we can simply skip the
-warning if (nr_cpu_ids == 1) in check_preemption_disabled().
+> +			if (mmap_lock_is_contended(mm)) {
+> +				mmap_read_unlock(mm);
+> +				cond_resched();
+> +				mmap_read_lock(mm);
+> +				vma_iter_set(&vmi, mm_slot->address);
+> +				continue;
+> +			}
+> +		}
+> +
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Cc: stable@vger.kernel.org
-Reported-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
- lib/smp_processor_id.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/lib/smp_processor_id.c b/lib/smp_processor_id.c
-index 94b3f6b19538..64901d33c0ee 100644
---- a/lib/smp_processor_id.c
-+++ b/lib/smp_processor_id.c
-@@ -19,6 +19,9 @@ unsigned int check_preemption_disabled(const char *what1, const char *what2)
- 	if (irqs_disabled())
- 		goto out;
- 
-+	if (nr_cpu_ids == 1)
-+		goto out;
-+
- 	if (is_percpu_thread())
- 		goto out;
- 
 -- 
-2.52.0
+Cheers,
 
+David
 
