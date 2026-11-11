@@ -1,114 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39D6606A882
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B20A606A32E
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 12:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=R5XxGFbM
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H9+vLzd2
 Received: by kanga.kvack.org (Postfix)
-	id AF2B86B05B5; Wed, 11 Nov 2026 06:59:21 -0500 (EST)
+	id 78F6E6B00EF; Wed, 11 Nov 2026 07:36:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA3466B05B6; Wed, 11 Nov 2026 06:59:21 -0500 (EST)
+	id 7403F6B05B0; Wed, 11 Nov 2026 07:36:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 992536B05B7; Wed, 11 Nov 2026 06:59:21 -0500 (EST)
+	id 6561E6B05B1; Wed, 11 Nov 2026 07:36:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 663F66B05B5
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:59:21 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E3111C0286
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:59:20 +0000 (UTC)
-X-FDA: 85422692880.09.2A0987A
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 47BCC20003
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:59:19 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=R5XxGFbM;
-	spf=pass (imf31.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794398359;
-	b=6DpfDFoBL0eAmcTDwZ0+FXIhEpkogl5vpGKmo8XvRPHRG/BhSUaLkeXWgz30gcd01wr6vy
-	NGFVisHmX+zeZxamVVqqrnyeIFzbf1T5ERulEAH3c9DacriesuBhSeTDv3GRRtqQl+5QJl
-	XEl15yRyykFTGFTVKbBTQIQ4DqaWmj8=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=R5XxGFbM;
-	spf=pass (imf31.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 40D6E6B00EF
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:36:50 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 18EA68028A
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 12:36:49 +0000 (UTC)
+X-FDA: 85422787338.28.F5C047E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 5CC99180008
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 12:36:47 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H9+vLzd2;
+	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794398359;
+	s=arc-20220608; t=1794400607;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6+DIIko/jddTALojzUdCwqYFD7qAVSieeB13vaTbTZ4=;
-	b=rujLtNV+mdlN07XGACN0F+NvDPZfvkBmpRtouRUqIbF+JwBc1bppXnJ9qPEEUtQ/KPf+My
-	TtwCfHIgXY0Z8FdidpzawFyDYsidUOEDnFBhWb1I7NPgQLp5ZWEdFSDcO5TCnn8QhCNXop
-	hWSsZL0eDUZFMO3SS8YsAZqQcUKP4Sc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=6+DIIko/jddTALojzUdCwqYFD7qAVSieeB13vaTbTZ4=; b=R5XxGFbM6TZRqhT0SXxuzcMt1x
-	LUNRh7V8lAnKwChToktKXZ/BvtFiWDBfAUJ9dLKtb2UHW2064KOlAZ6KUeSJJgWg/hPASfykHm9lb
-	dvvgSD9ejQiiI+LIrAd6gbPGs/9xZWqr0yWBdHoCClUgJD2Bg1YMupaoC/QOZRmfVPSCT6MpDMhbS
-	246KM0GzqcBbc4E2580QxhluNnyoa2vW19Sk2kqFlCkeQ6ViS/yest6rZWy5lPKlR+T/Ay7hDfWGq
-	IJLMSEFD0EmRJ6D4dVOiq+0BkJb7lfNarlib+MyMxjNYvepLWzR3xSOakoCQkMgy3TimUB70/p52t
-	iE2dAMXA==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xR6yh-00DAF9-2o;
-	Wed, 11 Nov 2026 11:59:00 +0000
-Date: Wed, 11 Nov 2026 03:58:49 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
-	Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
-	Eric Dumazet <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
-	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
-	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
-	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	netdev@vger.kernel.org, ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
-	coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, 
-	linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
-	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, 
-	linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
-	linux-sh@vger.kernel.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
-	sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, 
-	linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
-	Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
-	linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org, 
-	Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH RESEND v2 39/51] powerpc/crash_dump: recover from a
- machine check in copy_oldmem_page()
-Message-ID: <avRXzzCSzT9Qj2FC@gmail.com>
-References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
- <20261104-work-procfs-bugfixes-v2-39-021c84d852e0@kernel.org>
+	bh=NA3S0+TcajF90K5hGXvldMp+JqFlXBnQmtQs2Oovhrc=;
+	b=yxXrqn/tSevlsHiHVvbdo+Bpq03tcFmWfD+ZNyIczsbrUNLE7KJPeEdvr+8yYesyjOu8fR
+	tyrBSmzkY+YCdDWZ9op/nm1vqB+MhWQAsVC5u3XCawK3X0ow2dw+L0kOm1EdZphbZL060t
+	SK1EBY+0/Z/wSQuiy8GOengBd+LZD28=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794400607;
+	b=02wc1lnDJf/CUinY8jF+z/fDRBK+VLkHTzqRddrGUXGdKJD/jvnrYSUrKS0pLwdCQoYe2s
+	bOU8ReUcElgVqf4xL2CdBzAcF9NenZTMubxszLF5qETIRkYpogCTELwNl5OKw/l7HJU63b
+	PHRoy1hHgoYwZvU2Rr5Oo0+NYX03WHo=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H9+vLzd2;
+	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 596C145ABF;
+	Wed, 11 Nov 2026 12:36:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB07A1F00A07;
+	Wed, 11 Nov 2026 12:36:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794400606;
+	bh=NA3S0+TcajF90K5hGXvldMp+JqFlXBnQmtQs2Oovhrc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=H9+vLzd2Lhu/eWWmeDsvRPseso8wUf+PyA2D4q8090P92qb4NNccLDohXyYUMEpnb
+	 hf7xzk8PyBrRkszUciwVXEBszNLjVAruA91NZhWmmuH5klyj2fPK3lz/jjQ3qtjSJ5
+	 QWvEGKlnB7uHH5OepDSKp0OOexS+hkY4/i5H8NWFyVE617U/vDgqHpECZ9GypiMXft
+	 ZhndU/e1LMyGF1CC/qVU0NGj7ESGf5Won6mywMD0lED3dPbzw5yjdvNRqjQzl0N+6E
+	 mPPllJ+h5ALbxOucIniGOXGpeJ6E92tSJu/75MFcA7ofbbBw23SCOC2LT23EMRNqKl
+	 rxKTcpqwbMw0Q==
+Date: Wed, 11 Nov 2026 13:36:37 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>
+Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Miklos Szeredi <miklos@szeredi.hu>, Amit Shah <amit@kernel.org>, 
+	Jan Kara <jack@suse.cz>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Zi Yan <ziy@nvidia.com>, Bernd Schubert <bschubert@ddn.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-fsdevel@vger.kernel.org, 
+	fuse-devel@lists.linux.dev, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 1/4] virtio_console: copy pipe buffers in splice_write()
+Message-ID: <20261111-heimreisen-ungeziefer-empfunden-a892571f2c07@brauner>
+References: <20261110145241.536019-1-kas@kernel.org>
+ <20261110145241.536019-2-kas@kernel.org>
+ <avNuQqLf9CG9dSsE@casper.infradead.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261104-work-procfs-bugfixes-v2-39-021c84d852e0@kernel.org>
-X-Debian-User: leitao
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+In-Reply-To: <avNuQqLf9CG9dSsE@casper.infradead.org>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: u4t6e8kw1mfgoqsmqy3dt5sngjar5bje
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 47BCC20003
-X-Stat-Signature: hbcgemkzsk95rbwepd9uux46o1f87omw
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 5CC99180008
 X-Rspam-User: 
-X-HE-Tag: 1794398359-828112
-X-HE-Meta: U2FsdGVkX18+otGroU7a4FWHJ1puQhJ/hgk+vkcHWHqbD+m4cg/7zxWKuhKJ/b03GUl1rFZ6XExAe1tNOUiamKQgDQzw7QgvqqG8ZS3X+sqZhDkvdAORfVs4DlgFjY3wSCK/8vYzXsUEv9rkVjLUU1Y4oYfDo1CWz8XpXJ44YjhNSGH59WmX/Dfdlf6t1BUutFYJtLJu4xuGB2ihInsqmCQRR3ZeI5QWEBX4SOVhOGTrY8bToAg1K429jtOL2mDjGn2WbMuIKjilaTmGYxUmt/lua7AU6XJLCseWrBYVJ6zJ9+xYA0xcHfOb5aUe3OcyyskV0Wifu7M+/mWL0N3yMYt9xmLw6oimazBUAPPNu5kcRz0nO0pBnFtkZtxn4vJa61BxS8kRi0OOpyHxcvp0EUhxCJBMtSopxfFUl/4wac+G4bmkITx0pMWXN225/ql81Ih82M8Yhbt1yQI2na6Z3UeHsyyiMUXNDiXkVcDja11FpS/mxCVEL90aqALNjRLPeEbL00iYJr1aN3D0Aa/ugU3nWnR2ThdP8yusScZYIDTGWGTCqCkcp4/lEQfFL1siDSf2jrDfitFCSNyzunyQyzG5cmiAdnKgYf4U06K8QbdGZv9SIakEqyIU10BdRkRDGnC3ELVjLysqXobl5OxmzZib9AmADA8RWzu+tJtKwQwZSP3ShnlSMSS9zEpjx4WpLBA8U7DN2aL/9bzzoWlrshGFNbyLWgHzE0ypChx+u9IW4TpLQn8lSw7XkWYz5Cy09p+1U9WrCmd6FeFXGkMYRAuPBuff/UhGh6yW/Z72Qf3OYr8hBt8BRGN2QPAkPN1LlqjelAYqsTxHfY2Tgxw/AeOL+h3SV63T0FSEd5+HkGK7xVcKZbCO+uweazWzhBqFzJii2c1OfH9zj3sAkmPnOxBySi79F7nHsj3TrBjfAmwtM+QjJb/gEjlzGxZvDbdO60J1yurafRFxxc8059D
- 0cvhoeIf
- KcESmjvJ7qesl0YGNtgV2+h8SGbTBnloy9xhgrfpoNKcGogJpgxSgvOv76lb1khwFMgQK8qSIuZsCwlRY1Tb6g5hE+0PuXeB9+Xau90iROed9WMGTvsgmXvoM+X6pw4aLdb8i92/40i/1Dad2JPeywh5cVDHO31K3NkLFC+mGt3cQauo7viHKr4glkP/IyTkL2DfExfvdbe/9mBbokqwwbhNExfHOhLoSNGP88SvAAjFYm5ICyREe3x8n70EspGJM3LJT6kPCL6n53+fPJft66r5FDOd5rCCtvuarz5DVYhiOTMS2ks54mgqXARWX8CrgeMCq3rHUTLil7Iy6sZWChrIJ250kKZGHtzLrstKYKyAsDdaVoM2EKNtIdeZJnt6orMfp
+X-HE-Tag: 1794400607-151239
+X-HE-Meta: U2FsdGVkX1/s9PPfQ+sLquoOv53fnCzy24/huZj8shvw3+pn5XoiDS/LqG3Xvs7mv8RdEjIwSqucyqOilcQyoxccsn9BIXh1AYqdQFWQkwXVL6fa8IX+hmtPlpQXvF//j8yxlE5iTAyMw1StzKThzv2jfj2QxCqNaPydYXlJRBQM8MjuoRF2EXSn6IlNEm2r6oYv7ZkwBbNAzSEr77Uy3AsD8oSFoih5fovUaQ6XTcHFA9zUoVMXNiYTiy/NL3MARPS6GFfaISXuMVjk7TWfipb6YeH7JM7PUG87fEBM2DNXFWKljw6qSLYRTBrrB8qMOeFQZNukzesr8NNfDQzONgl8wq7bxCoWol/psLHQNo7rEpHZaPfw4o5CEsR/ob4lIEnPsUdZgF8lGgO6zNGTHyRG2d2qd+/l3SCgU+d8UvVwe5e/PcgnbOjTmMoDxDJERI+e3zC0YcFri/za2St4bDWFE031U2ORrmhfkQedig/DuqLuaReaP0hXwUS3MPtb8EkfJBdrqm1JpsaINpc/he2xWt+wT37RQQ0GpMob8ahKkk1IvVGqZq5lJYa7lTzfaISrPCkIMxP4EE9vDSK3JS3gkzqoQp1ZqT9vKMka0y0YkFo5GTmqTs4b93Ol8d817EGfI0od3yT/RN7BmbG1R7SO38Zb0Ct5wYiftNCWtpL8TVyZ44UtDQ18D94YJqHoW7IYmiN8EqKadsJMaNj32W+wo0JiJxC5b+opBtofxotXRnHvHIGFxU/bmjuLWuYWlWRBbC3lbCj0OXSqo399QKPD3dWqRNUxAq5d2Py/0QEE4fw+Xlpp8E7xaHaR9Gc4huYQVSB9PjvLpCHzdtmLd0pOII++VvntfXXzzEbmWyB9i8u7FYFsxD/Z0rWnnojCjghTiQrBjrjsbwRkIv11C/Z3uq0pboU3e+VsflFKBoAgQE3XZAllUGMgETCJDel+Eh+6jssd6L9zIWn1eEQ
+ 9APodPRU
+ U6pxWy5YQUguIXoIRpdtD/GDVvxXCX9H+SpuSGt9h0YcX3jaYCoucmnjg8I8RGfZTiIcVYXioCoTMXWmdCi7BboLWa45AsC00rg9iqZIcyewBPcyu6V5K6GwiMb+5CGxSUhMbnd6HsjKh25O3QDXDCvc8DHDQV7X6bskfsh7vQi3C/NXb6hG1kqvsqL9X0GE1Wr0DYdxblpJ4pLYLTPcby+S4j5aq2nAt9xa9wrsubknxkh9xo/1iHay3QMVIZYNGlFj/38+3aaVJcMsMN08sf87i/smOGhvWHoRhbkXVNbOpuOwd4WSqObBCkxJeQU6DqVzCGa2bKHUvtI/xSJPKaUWq4HU17+ZY031Y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,48 +105,59 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 04, 2026 at 08:25:32PM +0100, Christian Brauner wrote:
-> A capture kernel reads the memory of the crashed kernel, and that memory
-> may well have uncorrectable errors. On powerpc a machine check in the
-> kernel is only recovered from if the instruction that took it has an
-> exception table entry (cf. mce_common_process_ue()). copy_oldmem_page()
-> copies with copy_to_iter(). For a read() of /proc/vmcore that is a user
-> copy, all of whose loads have exception table entries, so the machine
-> check turns into a short copy and read_from_oldmem() returns -EFAULT.
-> 
-> But since commit 4a22fd20379c ("vmcore: convert __read_vmcore to use an
-> iov_iter") /proc/vmcore can be spliced too, and splice(), sendfile()
-> and copy_file_range() copy into kernel pages with memcpy(), which has
-> no exception table entries. A machine check there panics the capture
-> kernel. The same goes for the reads of the ELF headers and notes that
-> vmcore does itself, and those have been memcpy() for as long as
-> copy_oldmem_page() has had its kernel buffer branch, since commit
-> 54c32021eb6f ("[PATCH] powerpc: Add arch-dependent copy_oldmem_page").
-> 
-> Copy with _copy_mc_to_iter() instead. PPC64 selects ARCH_HAS_COPY_MC
-> and there it uses copy_mc_generic() for kernel and user destinations
-> alike, which has the exception table entries. Everywhere else it is
-> _copy_to_iter().
-> 
-> Reported-by: Chris Mason <mason@kernel.org>
-> Fixes: 54c32021eb6f ("[PATCH] powerpc: Add arch-dependent copy_oldmem_page")
-> Fixes: 4a22fd20379c ("vmcore: convert __read_vmcore to use an iov_iter")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+On Tue, Nov 10, 2026 at 07:19:30PM +0000, Matthew Wilcox wrote:
+> On Tue, Nov 10, 2026 at 02:52:36PM +0000, Kiryl Shutsemau (Meta) wrote:
+> > +	src = kmap_local_page(buf->page);
+> > +	memcpy(page_address(page) + offset, src + buf->offset, len);
+> > +	kunmap_local(src);
+>
+> 	memcpy_from_page(page_address(page) + offset, buf->page, buf->offset,
+> 			len);
 
-Reviewed-by: Breno Leitao <leitao@debian.org>
+I don't think that works. pipe_to_sg() only clamps len to the
+destination page. A pipe buffer however can span multiple pages of a
+compound page iircu. And buf->offset can point past the first one.
 
-The change is the right direction, and x86_64 has the same gap.
+I found two exmples:
 
-arch/x86/kernel/crash_dump_64.c:__copy_oldmem_page() copies with
-copy_to_iter(), the same as the powerpc code this patch changes. x86_64
-selects ARCH_HAS_COPY_MC, and _copy_mc_to_iter() is already available,
-with the _copy_to_iter() fallback in include/linux/uio.h for arches
-without it. The plain and encrypted paths share __copy_oldmem_page(), so
-one conversion there covers both.
+(1) skb_splice_bits() for AF_UNIX and TCP
+(2) tracing_buffers_splice_read() with buffer_subbuf_size_kb > 4,
 
-PS: I found this because I am looking at x856 production fleet  kdump
-success rate , where first kernel died of an MCE very often produce no
-usable vmcore at all, and makedumpfile never finishes due to this type
-of problem.
+And virtio-trace splices that stuff.
+
+Which means VM_BUG_ON() in memcpy_from_page() fires:
+
+kernel BUG at include/linux/highmem.h:542!
+Oops: invalid opcode: 0000 [#1] SMP NOPTI
+RIP: 0010:pipe_to_sg+0x130/0x150
+Call Trace:
+ <TASK>
+ __splice_from_pipe+0x92/0x1e0
+ port_fops_splice_write+0x13f/0x1a0
+ do_splice+0x3b6/0x8e0
+ __do_splice+0x20a/0x230
+ __x64_sys_splice+0x97/0x130
+ do_syscall_64+0xde/0x4b0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fwiw, the open-coded copy is broken as well. Just on HIGHMEM...
+
+Starting with b46e09667411 ("fuse: enable large folios")
+fuse_dev_splice_read() hands out large page cache folios and
+kmap_local_page() only maps the first page.
+
+So a fuse server on a 32-bit HIGHMEM guest that splices a WRITE request
+into a virtio port crashes mainline:
+
+BUG: unable to handle page fault for address: fffab000
+#PF: supervisor read access in kernel mode
+#PF: error_code(0x0000) - not-present page
+EIP: pipe_to_sg+0x184/0x2b0
+Call Trace:
+ __splice_from_pipe+0xd6/0x1f0
+ port_fops_splice_write+0xf9/0x170
+ do_splice+0x2c1/0x810
+ __ia32_sys_splice+0x2e7/0x310
+
+So we need to copy per page which would fix both.
 
