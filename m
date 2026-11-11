@@ -1,139 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D0F9606A32E
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940EA606A336
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=s6BX8a9h;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=uN4oYGZL;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=p/LYOaxX;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=qs0l/DFN
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cGy5Z06g
 Received: by kanga.kvack.org (Postfix)
-	id 6939A6B05B3; Wed, 11 Nov 2026 06:45:56 -0500 (EST)
+	id B2AE76B05B4; Wed, 11 Nov 2026 06:47:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66BFB6B05B4; Wed, 11 Nov 2026 06:45:56 -0500 (EST)
+	id B02976B05B5; Wed, 11 Nov 2026 06:47:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55BAD6B05B9; Wed, 11 Nov 2026 06:45:56 -0500 (EST)
+	id A3FAF6B05B6; Wed, 11 Nov 2026 06:47:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E8FC6B05B3
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:45:56 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9D102A0283
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:45:55 +0000 (UTC)
-X-FDA: 85422659070.13.6358482
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2C5ADC000B
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:45:53 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=s6BX8a9h;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=uN4oYGZL;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="p/LYOaxX";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="qs0l/DFN";
-	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794397553;
-	b=cuC4RwY+RNJ85SplLQOvEfj8aquvV+NasH0/lfkoWm8CA2kVYWWdFqn+qTmuIZNOb3bYZF
-	Q47Qj6u53YTqGBjU21/rR7oHIOkCPlL37c4NuQ6OmA0GT1eQaFSGJpSMOaHDb2lBWHhODS
-	8Jb6DK2d/PQrZiqIntP6nVYJiSC8c3M=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=s6BX8a9h;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=uN4oYGZL;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="p/LYOaxX";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="qs0l/DFN";
-	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BB216B05B4
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:47:42 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0995D12027D
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:47:42 +0000 (UTC)
+X-FDA: 85422663564.27.430C134
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 47E62140008
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:47:40 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cGy5Z06g;
+	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794397553;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1794397660;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FOeckYZLzpTjDlCSMcNe3YCWoDCfaX4IlNVrhqCPTQo=;
-	b=Is64U8Xj2qBm+VqU+maendLOULh70chGBD3/hW0FH89Lc8Ow8cpGE4sAQ/Kwzntdpav24z
-	A6Ncv9zRotREUgmyOPhFUHJYtvtqxkDFFm+x1hKYFOYXfI5kqzAiyf6ZiV5dv3iA7ebP90
-	u92xrsbym35eDNnYK9FeM7c+bgpk8B8=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 75B821F458;
-	Wed, 11 Nov 2026 11:45:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794397551; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FOeckYZLzpTjDlCSMcNe3YCWoDCfaX4IlNVrhqCPTQo=;
-	b=s6BX8a9hyHYJk3Z5UpX3ucmxqVW5naQK2EWnRYF/JMtmoRkByYLUk5tDSYZvmVCSGWX6/P
-	jrCFXRM0CEkSlDISMW2Q+yqOXRteM0VsFqKpkqSti7OkDj5MEr+lvxOlVZ9ipQwecRmh58
-	YURDtKaDb8l65cCYOdmyBrhX7FmpYKc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794397551;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FOeckYZLzpTjDlCSMcNe3YCWoDCfaX4IlNVrhqCPTQo=;
-	b=uN4oYGZLgkd3IFxs1MztgB9Bh/RKewnj+HvoiAKdUlTPHCRYIXvxuIjTYguaSuY7vrrPmy
-	42ILGHyNz+9AEtDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794397550; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FOeckYZLzpTjDlCSMcNe3YCWoDCfaX4IlNVrhqCPTQo=;
-	b=p/LYOaxX/ZvF0hJsvCX+detet60BIfid09glgP58k23wnP4rA/a3w5dhXaYGiv/kUOdqOq
-	/h1DCLSOvf7eaVtSfbT1KlwOZAHiWjY2CP/t8wtmWOfp3p400bmiuB+ryaf4nvXb0QsvDs
-	TK1pYPng2R77A39d777twj6U0sLbgGQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794397550;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FOeckYZLzpTjDlCSMcNe3YCWoDCfaX4IlNVrhqCPTQo=;
-	b=qs0l/DFN/ahzoaaymot81rtIOJjFLzB6z19dAQQ/lmkvX8JJZA6gHl2B6LD2ByU2/n/Qne
-	4GdNozEoBxAmevAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4ADBB1339F;
-	Wed, 11 Nov 2026 11:45:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id tIsdCm5V9GrfZAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 11 Nov 2026 11:45:50 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id CBCD5225EE; Wed, 11 Nov 2026 12:45:45 +0100 (CET)
-Date: Wed, 11 Nov 2026 12:45:45 +0100
-From: Jan Kara <jack@suse.cz>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	William Kucharski <william.kucharski@oracle.com>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>
-Subject: Re: [PATCH RFC] mm/filemap: fix lseek() skipping a new large folio
-Message-ID: <wkpls4kiwl3ktyu5ekahlchabnaqq45o4tgv26cmrs552ljse4@oczec23ankdt>
-References: <20261110-lseek_hole-v1-1-c089c960b846@kernel.org>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261110-lseek_hole-v1-1-c089c960b846@kernel.org>
-X-Rspamd-Action: no action
-X-Spam-Score: -13.01
-X-Spam-Level: 
-X-Stat-Signature: sikgihn8rexxdqgnqcae9tsc77ejfif7
+	bh=5+4YllydhLYIhKjaH2Dq1a349nWeQdKBMYQlbh0797k=;
+	b=70GntXK7FW13+xZUTQ9wHupIsRXsokvBmOtK0Gf+Zn2Wwg5uPWtdLPkQyNaj+pafDeAts7
+	//+ZLPGmapU8OAYA5v91m4GjAJQVv4nX6dtnM0A9eYBP6dvu5S0qrRXRYLVgwrus+TGW7T
+	WwYGum52vuU7sRn8HMH08dAyC1e0Yhk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794397660;
+	b=4yWM5+KAO/t/ocyJHBqnjsEV+TW3Qn5dLhFCI+kLth9lOgxjNNDwgzCgJJB1gHUhPEvAjR
+	VsTBEPEBfIQXIiaqOiSJv8j8nxForqqNGX6P/x3dZdOmtK+Zh4d7/bC/rgYVZr8cdnrffi
+	kSAQ4AMkPrt8vp46Pgnh/2kMzXvJW5U=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cGy5Z06g;
+	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id F26346187F;
+	Wed, 11 Nov 2026 11:47:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B138A1F00A05;
+	Wed, 11 Nov 2026 11:47:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794397658;
+	bh=5+4YllydhLYIhKjaH2Dq1a349nWeQdKBMYQlbh0797k=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=cGy5Z06gRnAurReB0aL9C5sS+GXSKxcYqsQ8Gllupj76P+K95XmkFuQ3JXz0SAMoC
+	 UXJHRMLK8KBHW1F9uBuM2BUZZN9pL8R2ZLeDZXkGY0ZNglIggFbTegu4zFaSpIVKle
+	 6zimhSUXEku3NQ+3JCu0jeYRblVoGFFOmFWBVuPUlL9MYjWwHICDlJ0OY4G9KUqEGU
+	 CLeiNj1JAoeOWLR9v02ybDIuT1xjcThTOUHyAFGQDw7zUbb5F4qC2ofRVifhDd2ZUO
+	 oSHepuYh8H2I9rEIqhUWRKmnnJa0OGRmDA03kVnWpcfhjYU+w2BMYTiktfL1OfktUJ
+	 PrAXJ+pTbd1Kg==
+Message-ID: <sashiko-outbox-208900@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 4/4] writeback: report a slow writeback wait once per
+ timeout
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Breno Leitao" <leitao@debian.org>, "Alexander Viro" <viro@zeniv.linux.org.uk>, "Christian
+ Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>, "Julian Sun" <sunjunchao@bytedance.com>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Vlastimil
+ Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Johannes
+ Weiner" <hannes@cmpxchg.org>, "Roman Gushchin" <roman.gushchin@linux.dev>, "Shakeel
+ Butt" <shakeel.butt@linux.dev>, "Muchun Song" <muchun.song@linux.dev>
+Cc: linux-mm@kvack.org, kernel-team@meta.com, tj@kernel.org, mkoutny@suse.com
+In-Reply-To: <20261110-writeback_stall_report-v2-4-9e0ed75074ca@debian.org>
+References: <20261110-writeback_stall_report-v2-0-9e0ed75074ca@debian.org>
+ <20261110-writeback_stall_report-v2-4-9e0ed75074ca@debian.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 11 Nov 2026 11:47:37 +0000
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ru4icbk7zcopgqj5wzso9xonxmfduzcc
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 47E62140008
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2C5ADC000B
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794397553-114883
-X-HE-Meta: U2FsdGVkX18i3DlDIOjPS/M6scdQNFnBQ6xKTYbs+DOWQgyzduzRDvKL7TIyt9l5g0uQzv59YlOx8jXN26CCKA7hJgKtcqg2LPE8VAdQVzV8nXcwO5CqR+nzTIT6LwBBZTm6js7U+ZFCqD1yoHuZ7xeSzgva9Rt0JNd0MRYyTjSKjqkGfhADdatlovT+96cMhCQmuocM50ZdPaM0Jppc37fWheobwpzreXAyuv2Jmu+5nMhrygzVsxfpgT3EtEaAHhDAkJnUgKEiyPwZg4b5i+c4/yLnN/1SFnjaaxdewP/pZjO++98S3SzzoyB84MaChoaHmmtbiS+8NNk8nUUcUK2DghgL+ErsT7PbKSS0ugncAGlHfbjEjcd/VwjKOeumTJ06d0vohG9K4ohT171q3QPLsH3wJVm20wM+/wHprAZMAlWZFDk1lj7BV4T3Zjj51tEHCWpjgs5cbfc9nS0fDAfNl5Lj0Hvm5GLDN/JJrcKYHpi14zeIwqVW1+jDBG311ahjEA9v3MTJ0R0z0p6TJCWOHza4C9NaodfWJfyXFVOaTNvsEfc3aoj52tYmgYsJg1nNctrJKT6gzSj3OaAA3z495Ms1yeAkpKjiPD2vxwZF2LfNTOjkrZdHLp9UQxflFMmuG7GWa8yOqVpaOpZZVKcXy7wy7j9dTMBMFfzh6b2DXtoxH+eTPBnUhN/bC5JGDbiC7GNcq2dmnZGfdcPHJWl1UKI+1aOVzqUwXChU7uVEYlx4licyuNQFOwKU37GrUsPQEKCeTdEwby6DGZu3GQ3i9OV0tFjLCqcJu1rbY4s9jvHcrw8a+Li7zCZjVzj80nI3NEOH1kaACcesY2HzM9eqNH0pwnKiSEcShP/iQ96dfqttmkTfEpWDigrOQGUFn1Wwf/qTmR9LlIRbXUgVSpfdOpprPzbkhX5SCm0yhzTx8MXo6iksDxiAQsrpMFZtlwz5E1oo9pFgFHxrZJI
- BLoeILRx
- rARkjqT/OROftD5f/iF6NQGGHPbdstGst21x/qmD7gDMbPIXCFoyL/wfO9jZ0hyQwxIVF8a3MX+STn805X3YqDZX8hlDec+V17f9wQc3ac0p9acpYLyzks5S8s3M33m4WGMyisuDyG1S+cPDs3J+FuQQ4BonbQzZsGZVby1N4gzrnqbUTS7tEov8Z8cnFLEa+A/7sIAIA6EMrrNsNZWtvmL1gKDFEbL013dIQJ2SWKM4igeeZafbeRnzyurpdX1J3WRBh55e8dzbjq21FzTkAftTCVYke0aU/iQ9xXEwE8f2ycvMuWur1PraeOtes4KiWOhIhzk5BXGBdPgr6RsttGijZjZqWyg5pYf1mzK3iOIV6ISg=
+X-HE-Tag: 1794397660-595559
+X-HE-Meta: U2FsdGVkX1+AsUEqLlbGDdvn1PVAckeYZG7gjsn78jlP0Yn8BkY9FIqUTz9PTzWtjZvHUK/E5qDiNxjNBBRmqvb4J9/IibFFGjIQxBZBc4htgtlpaXhA8q8Qz6dBmhilTIKVDdEOBcGafw9ubYkeeQeY5J6SAgg7I5zBF0eyGWbPeqivBQvvJp6sIoXNinT7/i7j9VSaNv/McjTy5K+43dGPo83Zb5vQTrqxpsKZVYEdzyjyp7ZkVSRg1dI9oeL/G6jogAiGNdmjk6uWQ+Orc6Bp1u6ZL8o0y1NxT4Poa5yeMWZJQVzDJ9TamU6k4zaPkbAwGpZ5xVGH0xF5Sref/1NOAc6seQWSt7b3gsE1PONga+ez71sqz0buvFepQdhyHGPdju35/rWvgJvcxhHxq99vAhUfRqHUcLQCmS+6xltSdN5Fae8v36PgWYKVO50YjTCx7jFMrZmVvzKxaDt0uwFZvIzU12mcBffbDFTlNQRKEIv18YGnhXJ1LG3Ok2M5igQQi/PKq8LrjGN4hoS0XG2BufLWc8lUiaKrAASVkogZfWRbB6vW2UNTT5gaH1Hxnt6iDfG0m6adjJDC7QWvlNDdyBwXrc4eP0JpFacf/An/+nDteHGRPrnFYc/biyc85rvHMXXQdKS6EbrOyv84cElLZVOzao7oQL/uKfLRD8g1xNV2mDJ4zzjpDPw3FNNZn6lL68mgejMuJ7Vcn/95hkzMElN+iHm5+lXmjJtf/O4VOs2tyAWuiHflhduE6mpBZb7GVogWry2oJSgLikcJSip3QZGfmUdG3SmxRxgMU6lneaaZCSjufVAY9a7WWDSxMeG8eds9pIpa7345lc8Cxq+UTLYcsZn+sFNJafO4NhXvQf5RjjEiQK+Ty6vIwK+ugh5t0LC3t6EFS/3SbH+M+K+XseODlCUROJ+Wu27rWcw45dW+usuIgBOu+g2n0mhiah15ZKbEoJ+jxXF96lG
+ 5WfrBBrt
+ GEt8fps6KilpgVGEvmfLL1gQYFkdnOzWe5+5GisRNIRyIM0+0shj/zA5yLgQqXR8jq6iNArY6MIONg0kxrPjBC2gdDq1G21Z5dZxRFzgIRTkADZFFtOqyx1hWV9R99Ak1J6pZXI1FWMKNyNBT9JhOr6tLgaLWGZWHlmTIiaW1nXf7+NaEh+HhFsjMEMi5o1cDJ2wQ7kTBVPYSIIfONjmbwJfS5UIWTeaf6DEeYuFKH1fhITrkfNnur0EqOtukADrjm0k/H4GG8tsWQ/IiBpzHa3sb/sPb8VP/MxollRHNV7eJG4DETwEXb1/sq1vnFghRl3uGYkQ/8c967cy4nY+lPakcRvelcCTaO0SrAgi+3VM2B2pldElAlxMXsWP3e5q5GHDOZIjPtEU7VFRlwvrN5CGl1Jg5XfztBjCHg3UokTqAfWb/q0qNEM7k90I30Z8QQdARReGeo0W/EnEz38vpgWyOp4Tr5lmaf5juM0EAbB/4/R9aQEQH86d2X8LZHHxWZe5QE+1ttHonVjKhtfvt/iIQI9ywEpeIuxKXZenfStZ/BvjdFR5al7EbDP965mAg61VHmP5SNVcsHtd2tMLsK7N1HA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,139 +99,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Tue 10-11-26 21:33:12, David Hildenbrand (Arm) wrote:
-> mapping_seek_hole_data() walks the page cache under RCU and only calls
-> xas_set() after entries larger than a page. Between base-page entries,
-> it continues the walk with xas_find(), which skips sibling entries
-> to return each multi-index entry only once. If a large folio replaces
-> small folio entries between iterations, the slot holding the new folio
-> can lie behind the cursor. Skipping its sibling entries then skips data
-> that has not yet been examined.
-> 
-> On tmpfs, SEEK_HOLE can then return an offset inside existing data.
-> SEEK_DATA can skip data after a fallocated page that is not uptodate.
-> 
-> For example, assume a 2 MiB tmpfs file backed by 4 KiB pages on x86-64,
-> with page index 63 fallocated but not uptodate and all other pages
-> uptodate. Index 63 occupies the last slot in the old xarray leaf. A
-> SEEK_DATA starting there can skip that page, then race with collapse of
-> pages 0-511 into one 2 MiB folio. The next xas_find() moves past the old
-> leaf and skips the new folio's sibling entries in the parent, returning
-> -ENXIO instead of finding data at page index 64, or 256 KiB.
-> 
-> The inode lock held by lseek() does not exclude collapse or swapin.
-> 
-> Restarting the xarray walk after every entry fixes this, but increases
-> SEEK_HOLE time about 24%, when scanning a fully written 1 GiB memfd backed
-> by base-page folios in an x86-64 microbenchmark.
-> 
-> Instead, use xas_next() for adjacent indices. Restart the lookup from the
-> root at the requested index if it returns an empty slot or an internal
-> entry, including a sibling entry. Also restart for nonadjacent indices,
-> invalid iterator state, or failed folio validation. This avoids skipping
-> unexamined data without restarting each lookup during base-page scans.
-> 
-> Fixes: 6b24ca4a1a8d ("mm: Use multi-index entries in the page cache")
-> Reported-by: Chris Mason <mason@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
-> I'll be more than happy if someone of the pagecache folks wants to take
-> over ;)
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [High] writeback: hung task wakeup interval exceeds timeout in
+  writeback_sb_inodes()
+--
 
-This looks good to me. Feel free to add:
+commit f3edfd7b6ff429943317ab66c7dd1c29f9226156
+Author: Breno Leitao <leitao@debian.org>
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+writeback: report a slow writeback wait once per timeout
 
-I just find it unfortunate that we have to play complicated games like
-these for such a simple operation as sequentially iterating over all folios
-in a mapping. And it is not a first bug of this nature trigered by
-compaction. So longer term I believe we need to provide saner apis
-shielding pagecache users from these nasty details.
+This commit rate-limits the slow writeback report in
+wb_wait_for_completion_cb() to once per hung_task_timeout_secs, initializes
+done->progress_stamp when waiting starts, and increases the progress wakeup
+interval in writeback_sb_inodes() from half the timeout to the full timeout.
 
-								Honza
-
-> ---
->  mm/filemap.c | 38 +++++++++++++++++++++++++++++++++++---
->  1 file changed, 35 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 648f783454c3..87c583509567 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3233,6 +3233,40 @@ static inline size_t seek_folio_size(struct xa_state *xas, struct folio *folio)
->  	return folio_size(folio);
+> diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+> index e2da4781b5e00..fcb7fb0196208 100644
+> --- a/fs/fs-writeback.c
+> +++ b/fs/fs-writeback.c
+> @@ -203,12 +203,13 @@ static bool wb_wait_for_completion_cb(struct wb_com=
+pletion *done,
+>  	unsigned long waited_secs =3D (jiffies - done->wait_start) / HZ;
+>  	int left =3D atomic_read(&done->cnt);
+> =20
+> -	done->progress_stamp =3D jiffies;
+> -	if (left && timeout && (waited_secs > timeout))
+> +	if (left && timeout &&
+> +	    time_after(jiffies, done->progress_stamp + timeout * HZ))
+>  		pr_info("INFO: The task %s:%d has been waiting for writeback "
+>  			"completion for more than %lu seconds (bdi %s, work items left: %d).\=
+n",
+>  			current->comm, current->pid, waited_secs,
+>  			bdi_dev_name(bdi), left);
+> +	done->progress_stamp =3D jiffies;
+> =20
+>  	return !left;
 >  }
->  
-> +static inline struct folio *seek_get_entry(struct xa_state *xas, pgoff_t index,
-> +					   pgoff_t max)
-> +{
-> +	struct folio *folio;
-> +
-> +	if (!xas_valid(xas) || xas->xa_index + 1 != index)
-> +		goto restart;
-> +
-> +	/*
-> +	 * A lookup within a multi-index entry can leave xa_offset at its
-> +	 * first slot. Restore the slot corresponding to xa_index before
-> +	 * advancing.
-> +	 */
-> +	xas_advance(xas, xas->xa_index);
-> +	folio = xas_next(xas);
-> +
-> +	/*
-> +	 * A concurrent collapse can replace the next slot with a sibling entry
-> +	 * referring back to the slot holding the folio.
-> +	 */
-> +	if (!folio || xa_is_internal(folio))
-> +		goto restart;
-> +	if (xa_is_value(folio))
-> +		return folio;
-> +	if (!folio_try_get(folio))
-> +		goto restart;
-> +	if (folio == xas_reload(xas))
-> +		return folio;
-> +	folio_put(folio);
-> +restart:
-> +	xas_set(xas, index);
-> +	return find_get_entry(xas, max, XA_PRESENT);
-> +}
-> +
->  /**
->   * mapping_seek_hole_data - Seek for SEEK_DATA / SEEK_HOLE in the page cache.
->   * @mapping: Address space to search.
-> @@ -3263,7 +3297,7 @@ loff_t mapping_seek_hole_data(struct address_space *mapping, loff_t start,
->  		return -ENXIO;
->  
->  	rcu_read_lock();
-> -	while ((folio = find_get_entry(&xas, max, XA_PRESENT))) {
-> +	while ((folio = seek_get_entry(&xas, start >> PAGE_SHIFT, max))) {
->  		loff_t pos = (u64)xas.xa_index << PAGE_SHIFT;
->  		size_t seek_size;
->  		u64 next;
-> @@ -3286,8 +3320,6 @@ loff_t mapping_seek_hole_data(struct address_space *mapping, loff_t start,
->  			goto unlock;
->  		if (start >= end)
->  			break;
-> -		if (seek_size > PAGE_SIZE)
-> -			xas_set(&xas, pos >> PAGE_SHIFT);
->  		if (!xa_is_value(folio))
->  			folio_put(folio);
->  	}
-> 
-> ---
-> 
-> base-commit: 93d7a816a2df3e907e2719bd12b0073f1285fc5c
-> 
-> change-id: 20261110-lseek_hole-4a9eb450d473
-> 
-> --
-> 
-> Cheers,
-> 
-> David
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> @@ -230,6 +231,7 @@ void wb_wait_for_completion(struct wb_completion *don=
+e,
+>  	unsigned long timeout, waited;
+> =20
+>  	done->wait_start =3D jiffies;
+> +	done->progress_stamp =3D done->wait_start;
+>  	atomic_dec(&done->cnt);		/* put down the initial count */
+>  	wait_event(*done->waitq, wb_wait_for_completion_cb(done, bdi));
+> =20
+> @@ -2135,7 +2137,7 @@ static long writeback_sb_inodes(struct super_block =
+*sb,
+> =20
+>  		/* Report progress to inform the hung task detector of the progress. */
+>  		if (work->done && work->done->progress_stamp && timeout &&
+> -		   (jiffies - work->done->progress_stamp) > HZ * timeout / 2)
+> +		   (jiffies - work->done->progress_stamp) > HZ * timeout)
+>  			wake_up_all(work->done->waitq);
+
+[Severity: High]
+Does raising the wakeup threshold from HZ * timeout / 2 to HZ * timeout cau=
+se
+khungtaskd to report false-positive hung tasks (or panic when
+sysctl_hung_task_panic is set) during slow writeback?
+
+In kernel/hung_task.c, task_is_hung() stamps t->last_switch_time with the
+time of the scan that first notices a new switch_count, not the time the
+task actually scheduled:
+
+kernel/hung_task.c:task_is_hung() {
+    ...
+	if (switch_count !=3D t->last_switch_count) {
+		t->last_switch_count =3D switch_count;
+		t->last_switch_time =3D jiffies;
+		return false;
+	}
+	if (time_is_after_jiffies(t->last_switch_time + timeout * HZ))
+		return false;
+
+	return true;
+}
+
+Because writeback_sb_inodes() only checks the threshold after
+__writeback_single_inode() finishes, consecutive wakeups are spaced by
+HZ * timeout plus the time spent writing the next inode.  That wakeup period
+is strictly longer than khungtaskd's timeout * HZ detection window, so a sc=
+an
+that runs right after a wakeup can be followed by the next scan at
+last_switch_time + timeout * HZ before the next wakeup happens, defeating
+1888635532fb ("writeback: Wake up waiting tasks when finishing the writeback
+of a chunk.").
+
+Keeping the wakeup threshold at HZ * timeout / 2 while tracking the last
+pr_info() timestamp separately from done->progress_stamp (or only updating
+done->progress_stamp when logging) would avoid waking the waiter late.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110-writeback_=
+stall_report-v2-0-9e0ed75074ca@debian.org?part=3D4
 
