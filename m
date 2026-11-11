@@ -1,146 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01841606A327
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 13:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DBE2606A339
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 14:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MNh/Womf
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=aSw1KnWA
 Received: by kanga.kvack.org (Postfix)
-	id 258676B05B2; Wed, 11 Nov 2026 08:56:45 -0500 (EST)
+	id 2B6D06B05B5; Wed, 11 Nov 2026 09:04:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2098F6B05B4; Wed, 11 Nov 2026 08:56:45 -0500 (EST)
+	id 266F76B05B6; Wed, 11 Nov 2026 09:04:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F94B6B05B5; Wed, 11 Nov 2026 08:56:45 -0500 (EST)
+	id 1582B6B05B7; Wed, 11 Nov 2026 09:04:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CF9FA6B05B2
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 08:56:44 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C80201C2F6C
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:56:42 +0000 (UTC)
-X-FDA: 85422988644.23.4CA93C3
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B351D14000A
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:56:40 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="MNh/Womf";
-	spf=pass (imf26.hostedemail.com: domain of konishi.ryusuke@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=konishi.ryusuke@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794405400;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D1CE26B05B5
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:04:54 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CF424A7C51
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:04:52 +0000 (UTC)
+X-FDA: 85423009224.26.4B9A0D3
+Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9D07EC0008
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:04:50 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=aSw1KnWA;
+	spf=pass (imf22.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 52.42.203.116 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794405891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oRF2guphEyqLr1O9h9fq+s+FW78qBgZ0/k6wviHnruU=;
-	b=A8QyH/8hROboW09BWh7hQIQ2BM+KehlDtyFNh6Jhphi5igkEvWAEVrV/8iLYu9AO8Noc/y
-	xaWN/HOVANggq+Sjb6FUhklS6jt55s0pQtsLpCzfgqVo4GlXHxWKEKoGiBUJMI6zycHUy9
-	GHVb6KMWtz8UR7G4gdSbg+ACuSsfipY=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="MNh/Womf";
-	spf=pass (imf26.hostedemail.com: domain of konishi.ryusuke@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=konishi.ryusuke@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794405400;
-	b=W1hAKEoQR6ygU5p/p9lAc3A7MUQ04f12LcG1EALaPLJTT8B1aN93Piz+ny7XolvV/p0Ks7
-	Gj4HXjby5hbWamkTbHR0S9jznkZilq/svaBolH2Z8dzGEqv1FX9DA7iIBF8ES1s4rbPdv5
-	s4LqzEH5Lie++oTmxJimCNP3WszoSOs=
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a207b02a2cso22146935e9.1
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 05:56:40 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794405399; cv=none;
-        d=google.com; s=arc-20260327;
-        b=do8YkQC64BvimxX3qcUiMQuTMz89kATz2Zyk5GX3IGRyJ7EweW1rzqiHT1M0AqW70y
-         x4Upi+YiEPQyjA8BFYnz+AZz5/qZFrUlYT+tuBHpdd6TMBPAgEVrJcaZBH2HHnqQTXY4
-         W2/RIRPn9vaui8hWtbAKTu4ot3LePc08lkXgL5QHz9RFeLrOZleGNG4I40Kh3CF7lcJR
-         fvPpqaFo5X6FPUuZZQCfEMLwMs9Q38wwj3oM6vryaRFbHcX7nKnGZfBQ3FwzGi7Mpdz7
-         EFaFmM5T77ZjaFiDwD/zPBk5qpUKiT9lX8Us45tTMwpoZWt5qw3Ar9u44LAy9q1k8dXk
-         sNjw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=oRF2guphEyqLr1O9h9fq+s+FW78qBgZ0/k6wviHnruU=;
-        fh=D0F2R8E4nLWlr4i2B1BVGqC0WOhbJ8a7+jgjF+qpfZg=;
-        b=QaUKCsu7XpRSldzdghlVq/boJia325/PuQBSkCZUwY6ANIO2U1l9+z5LEnXcS+hg6g
-         lL91FQowyETqOw1dzbSKvireuwTkntBk9wSQF+vzYXR1Jkl6bvZ9csAv95thISbuM2aT
-         sY6tOmuFi2feTGT4per8HCxCMsJ5rlWOdwk7Ozt7XVqMtFPcNMYlXOoAS76bb1bnqEkq
-         a8EeW0zrP4i+5Mlv4PUV5ERJpPr1iB6Y1eu7OQkEHaBgwUgsyCCqi/3/hglRs6j2ycXN
-         4JlEec5hWLof0QkaZka35ohrbEgJtRDy/Br77+TNPkS/nE87Uuu9gmAPX7PSiHXUVvVk
-         heZA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ajXEYqjwM+nCEIVJkZ6WILdonbk+OIty74QS6bYQ+DU=;
+	b=0rm/d98qG7lwJdeQMUSS6ys2//QAW7/ByM5AsJWiY3o00OqbtNnYT9x2ybpD9ak6KGKCEV
+	7z+zMt1IqWUzEjRfhcFgX7Kw1/zDmZpPvOh+NAL2by/FyflMl6e0/H+ZcUvSVRtK3UCpku
+	LuKFSKaAZJ3jDECK5VBKN/j141/tuyM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794405891;
+	b=5/TFA9LCxH3vdbZx4/YqK6n+SFId9DpCZE/LKWhsFndKyz3qNiZiRkzgBUcuPP9v5r1ZtY
+	xDNr3dsZtlNnimiE8TE+hgcFGlxpqfxuxCO11E2DqCyFw9p/xgnzRWV/2IYKoVCUZL3yOn
+	NUxMrbMYNZfB8aNpzt+e1rOg5eNs0as=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=aSw1KnWA;
+	spf=pass (imf22.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 52.42.203.116 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794405399; x=1795010199; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oRF2guphEyqLr1O9h9fq+s+FW78qBgZ0/k6wviHnruU=;
-        b=MNh/WomfKGw6d03v8hp5kNybKiga9HDQbU/n1X9HmNfTbofXAExzzPfmzQtdnAysZi
-         FnS8xAZ11D0EDM68iQ9A4638YfTx4MUwuEPnAzpuWUwNUD6gVNYUgAywb0x+YqmgH+uJ
-         1INc31YSpvsp64lHRg1LAqVbChl09cqoBGJkCVVNOKP4R1b/oygQCxYHglsA2DfMGqK5
-         2pthQYa8Lur0NqRaT9mMYP7VrngD/cHDeNmJgxQYnn4H59jU707wZVwY7yzNHCdymUhh
-         tnmATkfCNef0klv0LuGCmsQ0zu7jcoQtNGFX3dixiz83qTLT626cQlETVD7hGYySM4gx
-         KZNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794405399; x=1795010199;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oRF2guphEyqLr1O9h9fq+s+FW78qBgZ0/k6wviHnruU=;
-        b=hDT4KMES+9ichpn/2/r/gUknMAP105jlbbR/eawtAa96CgfDVZRdDoYucw7elNvXOv
-         KQOkEDtI7z71NFPWmywtI7r1o5L4yXutcysm6AKC+RHbMNW46bVZaWCsAugDgdjm1NzO
-         sKfyo/XywsQH9+hZCBh7Jz+oZRbwrmpmF/PtE3WEYXtt8grKpuWOC3oo63hZWHrRF7Vh
-         QSpNeJ8kJqFJvA0NonlUzWhDXYsQLOcwXPeUvwmP/X8qw+I7deR883ba7rVzBEK61pWt
-         f/nukKdd2M6SF4YhmljOjsTLZZrB25FbaRGNjg+A4pM+yFd1hxEufaKf/rhEI2Yciz1D
-         QPvQ==
-X-Forwarded-Encrypted: i=1; AL+hErEWROONjGIiWNkn1Ge7TQ9MWDvHetvYYicbTBRdmho6YeAYBKQwO4/FkPOCgYCE9OC0mFzR0Iafsg==@kvack.org
-X-Gm-Message-State: APuU4Z/Mn2aE+YhzdkmgaVXGdGQJZa5kfint8PNXOoL85Ce1eecg5Aol
-	Yi0yuv+iBChP2tAmuyo6qhRi3eL6friFPlHQ597lDwLr5z5enPz53nsy7F1k+5kq7m4ULt+GyuJ
-	zXxTg3RzXd2VoWtOjrFj+ijVPK/vT+ko=
-X-Gm-Gg: AYBFou3xxiD9KZ7Au54NJKdZH4pGrbhmqYgbO8+Zi52qUm9Xsbudhyym/veUR35RDiH
-	A3JrFBg2MTHOzwPrJAKBEkrxm89sNjrmjVmeFPlzqQCeCqf1GW24ui5PHMef6gFLvYrM83eDTv2
-	j0S8KHbXibZcIgKAaF081K2/uW/bt5pPenvOT4jRogQIqK9m4/h1DyXENVFqthHgxXzxwUqnas7
-	bNYSdNrcGHkumcFeWxU8Tl2T2jZ7At3uCxZ/PrdXpTqeNVTFg4f9YuXhHY01FDZ/3LiXi2ikdHQ
-	GWjjcJPotmdN3Z9JEkvRCot55XsE+klcao4ZqcAmZnJ8im9MdHftnAN/N/3UwfFzr01GdOOaItW
-	gfZDcwaKqlahHZSFKgezNC/FOPN1pxowCK73Wb+cRO2PkJORgRURu5oBvcB8=
-X-Received: by 2002:a05:600c:3485:b0:4a5:a5ca:de1d with SMTP id
- 5b1f17b1804b1-4ba093a9321mr49991515e9.30.1794405398960; Wed, 11 Nov 2026
- 05:56:38 -0800 (PST)
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1794405890; x=1825941890;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ajXEYqjwM+nCEIVJkZ6WILdonbk+OIty74QS6bYQ+DU=;
+  b=aSw1KnWAg3YBBQp7jv+kqqX5BYSYpW7yCBk9DKqvFZuR0oWxmvRRNbvi
+   9YbsuDCos1MyvwM1s0dKQ/jBmkt7Q/3iF+jcC3rzbcl+Ws6+jpS3XjOQ5
+   2oq2Reta98Vk0MQQSB0JL2tUrl9KsII7d2NilKNOpfhUJoxMXH1NYGF3s
+   aDd+dP/Ph6KikGr1VdmXVI8bVsrDKU7kSf8R+a6WLbnUmMWDWGyVekIMX
+   NT8UrmIEXdVA51H1QZGJQGPoE8AK6oSAsZfGmtH0Xp7L67T81qYXOors9
+   F4fsUIdzJNNasYH1rfoC31tQn1rj/Cbs07hfAFPuQD3QQujV3wUPW4dSZ
+   w==;
+X-CSE-ConnectionGUID: mp+qsCQeQSa3lZBPareIIw==
+X-CSE-MsgGUID: OV2cOm+zQAGswQmM5sZIqw==
+X-IronPort-AV: E=Sophos;i="6.27,207,1787011200"; 
+   d="scan'208";a="33751363"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 14:04:45 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:17225]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.31.142:2525] with esmtp (Farcaster)
+ id 5ffd8552-4597-40d9-9dd4-121f17a20803; Wed, 11 Nov 2026 14:04:45 +0000 (UTC)
+X-Farcaster-Flow-ID: 5ffd8552-4597-40d9-9dd4-121f17a20803
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Wed, 11 Nov 2026 14:04:44 +0000
+Received: from ip-10-253-83-51.amazon.com (172.19.99.218) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Wed, 11 Nov 2026 14:04:42 +0000
+From: Alexander Graf <graf@amazon.com>
+To: <linux-kernel@vger.kernel.org>, Marek Szyprowski
+	<m.szyprowski@samsung.com>
+CC: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>, Robin Murphy <robin.murphy@arm.com>,
+	<linux-doc@vger.kernel.org>, <iommu@lists.linux.dev>, Andrew Morton
+	<akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, "Mike
+ Rapoport" <rppt@kernel.org>, <nh-open-source@amazon.com>,
+	<linux-mm@kvack.org>, The AWS Nitro Enclaves Team
+	<aws-nitro-enclaves-devel@amazon.com>
+Subject: [PATCH] dma-contiguous: support percentage sizes in cma_pernuma= and numa_cma=
+Date: Wed, 11 Nov 2026 14:04:40 +0000
+Message-ID: <20261111140440.43024-1-graf@amazon.com>
+X-Mailer: git-send-email 2.47.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
- <20261029-work-fs-sb_rdonly-v2-6-2f44f64f0b66@kernel.org> <sashiko-outbox-191225@kernel.org>
- <CAKFNMombDWkJ=m+CjMy7qnd_yy-vZ9c-EE7R95HKKkcy-M0+SQ@mail.gmail.com> <20261110-deformation-knabe-geltung-3bb7600eaead@brauner>
-In-Reply-To: <20261110-deformation-knabe-geltung-3bb7600eaead@brauner>
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Date: Wed, 11 Nov 2026 22:56:21 +0900
-X-Gm-Features: AclHuK-kg_k64kD5D3ppXkSngFLDCk2NlJ0a-lNWh9VMpnIyjECtxc1ueGN5wqg
-Message-ID: <CAKFNMomUbm3JUBy2GthZwAuFZWh5TSb7i0+g8u1qv1aRviqdaw@mail.gmail.com>
-Subject: Re: [PATCH v2 06/34] nilfs2: don't set SB_RDONLY after filesystem errors
-To: Christian Brauner <brauner@kernel.org>
-Cc: sashiko-reviews@lists.linux.dev, Jan Kara <jack@suse.com>, 
-	Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, linux-mm@kvack.org, 
-	linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, 
-	Karl Mehltretter <kmehltretter@gmail.com>, dsterba@suse.cz, tytso@mit.edu, 
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
-	Joseph Qi <joseph.qi@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: getxpj8i9eqry4xign1c6eu58t96tq7h
-X-Rspamd-Server: rspam01
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D031UWC004.ant.amazon.com (10.13.139.246) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: ytwyn5wywggr65s6x5azaqx3ytpxi4b3
+X-Rspamd-Queue-Id: 9D07EC0008
 X-Rspam-User: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: B351D14000A
-X-HE-Tag: 1794405400-818961
-X-HE-Meta: U2FsdGVkX18bN17S2E/BTtPeQp4vrpx5B5cLHpv4Li4QoZ1FUJ2kuq33vSC+dB6BipEGHRyTwHwVbClVwKEnM3BxV3gPt4OsJG0vGW0i2A1eTfwqK22ZfANF7fcX8twlI74KSYlBHS00YMmR36n9cVR/PBisHBviVHk2LvSOKgtqqcQwYPcsGPyUdhp6AHPcLDuZY+xgZHKZL5pOaa8Ig1FLkcTsoiV6aM24Y4dAH8RxtW2Xc9ThZafmQe/9v9Bm/HJ2EYQ8oDwV0UhNfo+2xSDuM7UJ6B5jZ9yjMzI/GiuHmps7TUpXyEqXzsI/nn/PJNmQwDVVHTawiUpqRHDLDqrg4jNnR1P1mA522lZGqLxirkRSgpn9ncaBGZD4PR4EO40eXH4nPjHe4D1LgeXb5M2FmRNdMMKZ1S28TlFH2uRrfR4nV+BvpG2K8Wznb7UjCCNxCkJA9t3ItEk0SYhL+4LJoumF5LwluFmkMuAjpk3liYk1POCqVe73mJsJKkMESqQgdlNTxdjQnFfH/CU3Mqfs+OpXiB/m1YmUmaYu12OmNH4kMLqr/oA1/nmaRaHz13S/GfWypZ8IeiDOofQqMWdD9cMF+lc8CYahe8s3iPDo+E0akQOk7ndmdFeLqB54CoNyjmDYof4iLt1nH1XXejE+BQJRuJ33s00qUzEtKCdvp2F7E05HcRr3ePHgBVyuzlaPN1S2Ge9gIqljHsdhUCY5N/KGMaeYe6ijt021tQmKpPXL2hLQA50S056czUquA/AJhTkQGQSK64bhxTgByB33V+L1ggmTIorITRKuB/pIDQD9PRiarp+yWr+UrJM++IGUWposCxbzClaa7ZRN8We411bNY5q0BEETyzjEuv4vJ05OKeJ0Wzr2eoVkJCbQAM6bnbHEKdA8hCIvPChRvu4qfWcqGjDe+uagF9EQOupQe4y6qoO0MbQjRWRBY3suHPoDnqTYAKI3d4lWRMg
- KrNrfDsn
- 45QDfFkX72wcFjvjNANSqtEGPfBolxzhFbWTk5h/KrRgV2l6SwII2hxkMXER8dBlV53zPS9XptVgElse20IExgLclg4Al29HpyG7RGSfdQsJMbIsodR7PBqWb5h+una2/kPAh2si7JAjMwuGb7G9zbISTQTohMl1MJ9CzFHsRW1JTjbCFilDEsYQgoCPdtwp2z3y2+FCWwIaV2SFwNMPpUs6kKzSoZbbh9wq5bZ4x6ATDPeMnOMdAo5XCwMp5sVWDcNCG/AnMYlqGUtxea476ShirT1pb5uSzP5XXMg6XkuPubII6RiVoWxHxDZNTQtjXW4yKPtcYjaPTgCxkuM05xXrDEYZd2gHrxYrvvMJEErYzgbUtEJAJ3CDenfU05pPTQr4FPjxFAO8EHVq0GmnNNqA3J3ibjHgT4ngWjGr2J7987LMTdsAek+KPGA+Swg9Ql1jKV8fXUA+xpcNAsVCAYKub38AahvE8E6T4MBlX4dAdJvI=
+X-HE-Tag: 1794405890-88170
+X-HE-Meta: U2FsdGVkX1/J9uDwToDwt+9KNw9RkvqhuRWkNDKj0oB78D4uwbNorhreqMi5DuO2IJEVwtXVYF82XPOtoFVHKSqFWGrfQdw2zlPL9XfWStofnwtCA0cHRYYqZ1lu/qRc8kp0akOpsSdwlcP///bvsFakgRw9S75VgFrkEy4BLsMURF9cAMJ+9myS5p81HfbgBbQ0hYwIPl7l8OrzStS8oYkV2ZDLVqqcxW+PWezLrVJZ8+Qd9/4xmnOLNIafEx4+S+pYiaUL0IhhnNdA54qOf5b4qaC1QDGgdQfTruOhAzA1MK+jq7k/JJb//ldZR+bdTgrckEGuHNgihnIId/088Xv5p9+Eeq9C96Qi/H8U31cvsCK7WJYc1jqNfdE7beckktkKExVIerg1WclL6MUCeEfgFX2B6Th2OjiN3cjRrKKZcY1/jr0ytCYRO5RflGKtdP846HszOEga0bqleAQusTVGn1NxxbKEtU69t/XOX/poiAPZuEe+7JcWL+WuhG38NpWSuGbLZGScli3JUgQ0mymskhfUFiH6TcNhek1YdSSlgRwBYUJKM+XADFoEgARSt+CaPLroQdUALEpNtEUxSjH+ZVcGt9R+or5w+h7xNaj4yMJ5CMmLDN184vZ3wIY7b8C5pQlxrc/MwXS3MpJNdcTvy3H1euWCJWhr0ohAcf2uxmPH0L/E93pqLzO4WiIRm2FABX9E1AEYOx4CjiFPAw1nNjih3HHC5YpPWqngxaAXZmx/49NrRluZ3qTYKbLK5QWQL6n01/h0x98PQdiNE9VKtrzbHDAq2XlPHiWysYVk8azoSH/6gq1R1dyx75Bawm1zMD3xImzTlrOuGB5DkolDxcY+lad85y37jPGvbpNU+aPIEVfI2685M37aFP5pU1r3cfBm/bf9ZghL1Z0ElzO1x1K7Pc59+KlZj/Q2pWeywvXz4etFJLVUzx5un9GHd4s+N+DCidFUzyqq1yN
+ 9mipP0e4
+ 55BaKLsnpsJ+NhLtjmEa2H8UZj7di78//szpvpM/WYQ0xsPbVchr/8LVGJ7IO6SFMzUjGCeQH5DL7AHsPknO3XIaa1B467FEZVO7K66uJw3Qete+V1YoWcYqB6nlG4jOKt0j8DsjhZJGLXi/TuEpnW7pEmS8/+u93zeoDd9fgSLJ/vhP+iCM6y4rAz1TjoOHHu8Wuiw3hNPh4NTbnzE5Hczt8Pyzb7D9vfYnKUv+lg7aec/aZ+nLFpTBOWzsyc7lJqdgMg2UH0IOtLno1/XBroCZ8rUPh4hL1wRdhNjxU7QFnTwp+/CeeP5zr7wjZwl3hPrEr2L0Rd5rrbqPEMovii2MqfoCUOB7E8p736BmjzAPLmi6Nkk/5LweZF5azCQ6zweKS7JSfydq+8gWlVH2Vvo73RRgLA0ekK0pV/fmtgH/w0fPh2GWGtS6Gw5FZNjSsHFSG39OHcJxuLCaoXIgvC1z9GB8jDsXerSQgqsqEnECF/VSDSlgiyxXMoWm4m9pG0dRCW8mKLz1nx2fXVtgfh4sWZaXzyLfqFz8b0YEZmkHAO9TSbu3DPyYLZDZb3Xek3yz2pQ1ziQIIiVkTTBeWNwK6a4zDgR0vG4SsAA2nHeHm2Dp58iY+jRF4A+xYeE0vkHfRLvQHE3AsxaHtnErsMYHFySz0XcUIbAZa5gENIvRXzkjtzc0O9YVMKkE0sRa6zrRSyh0yS1KnwfA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,72 +117,357 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 11, 2026 at 6:56=E2=80=AFAM Christian Brauner wrote:
->
-> On Wed, Nov 04, 2026 at 02:32:10AM +0900, Ryusuke Konishi wrote:
-> > Sashiko's point here has a valid aspect.
-> >
-> > This inconsistency can be resolved by inserting the following handling
-> > logic if sb_emergency_ro(s) is true:
-> >
-> >        } else if (!ctx->cno) {
-> >                 if (nilfs_tree_is_busy(s->s_root)) {
-> >                         if (sb_emergency_ro(s)) {
-> >                                 if (!(fc->sb_flags & SB_RDONLY)) {
-> >                                         err =3D -EROFS;
-> >                                         goto failed_super;
-> >                                 } else {
-> >                                         s->s_flags |=3D SB_RDONLY;
-> >                                 }
->
-> Meh, I'd not set SB_RDONLY there. Because it changes the read-only state
-> outside of reconfigure_super() which is precisely what this series gets
-> rid of.
->
-> The superblock can be frozen at that point, e.g., when the error hit
-> while it was frozen, and then thaw_super() leaves s_writers locked again:
->
->   mount /dev/sda /mnt
->   fsfreeze -f /mnt
->   <error>                       -> sb_set_emergency_ro()
->   mount -o ro /dev/sda /mnt2    -> SB_RDONLY on the frozen superblock
->   fsfreeze -u /mnt              -> s_writers stay locked
->
-> It also turns the superblock read-only underneath the existing
-> read-write mount without sb_prepare_remount_readonly().
->
-> The busy-tree branch does what get_tree_bdev() does for every other
-> block device filesystem. A second read-only mount fails with EBUSY and a
-> second read-write mount gets the superblock and every write fails with
-> EROFS. That's what ext4 does since commit d3476f3dad4a ("ext4: don't set
-> SB_RDONLY after filesystem errors").
->
-> If we want the second read-only mount to work I think we should do it
-> for get_tree_bdev() and nilfs2 alike and treat the emergency state as
-> read-only in the comparison without touching s_flags:
->
->         if ((bool)(fc->sb_flags & SB_RDONLY) !=3D
->             (sb_rdonly(s) || sb_emergency_ro(s))) {
->
-> But I'd do that on top.
+While CMA_SIZE_PERCENTAGE supports percentages for built-in defaults, the
+CMA allocation kernel parameters currently only take a fixed size argument.
+That makes it difficult to have a single system image that sizes its CMA
+allocation based on the available memory. To use CMA as backing pool for
+large, physically contiguous guest memory, I want to be able to say
+"allocate 90% of system RAM minus 1 GiB for CMA". Per NUMA node.
 
-Thanks for the detailed explanation and the concrete scenario with
-fsfreeze; that
-makes complete sense.
+Extend the CMA parser logic to accept command line options like this:
 
-While the "s->s_flags |=3D SB_RDONLY" assignment in my example could simply=
- be
-dropped, your approach of treating it directly in the comparison looks bett=
-er
-as it is more conservative and natural.
+  cma_pernuma=80%, numa_cma=0:95%-1G,1:4G
 
-I also agree with aligning this secondary mount behavior across get_tree_bd=
-ev()
-and nilfs2 alike in a separate follow-up series on top.
+To avoid incomplete allocations on parsing errors, check for them
+before actually allocating.
 
-So, I am completely fine with keeping the current v2 patch as-is for this p=
-art.
+Signed-off-by: Alexander Graf <graf@amazon.com>
+---
+ .../admin-guide/kernel-parameters.txt         |  64 +++++-
+ kernel/dma/contiguous.c                       | 184 +++++++++++++++---
+ 2 files changed, 217 insertions(+), 31 deletions(-)
 
-Thanks,
-Ryusuke Konishi
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 0b3c140babd94..1ca82f8c29f97 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -862,10 +862,13 @@ Kernel parameters
+ 			contiguous memory allocations and optionally the
+ 			placement constraint by the physical address range of
+ 			memory allocations. A value of 0 disables CMA
+-			altogether. For more information, see
++			altogether. The size is absolute; the percentage form
++			is accepted by 'cma_pernuma=' and 'numa_cma=' only, and
++			CONFIG_CMA_SIZE_PERCENTAGE sizes this area as a fraction
++			of memory instead. For more information, see
+ 			kernel/dma/contiguous.c
+ 
+-	cma_pernuma=nn[MG]
++	cma_pernuma=nn[MG]|nn%[-nn[MG]]
+ 			[KNL,CMA,EARLY]
+ 			Sets the size of kernel per-numa memory area for
+ 			contiguous memory allocations. A value of 0 disables
+@@ -875,14 +878,61 @@ Kernel parameters
+ 			first try to allocate buffer from the pernuma area
+ 			which is located in node nid, if the allocation fails,
+ 			they will fallback to the global default memory area.
+-
+-	numa_cma=<node>:nn[MG][,<node>:nn[MG]]
++			The size may also be given as a percentage (nn%) of
++			each node's memory present at boot as seen by memblock;
++			hot-added memory is not counted. It is evaluated at
++			reservation time.
++			A percentage of 0 reserves nothing, like an absolute
++			size of 0. A value that does not parse, such as a
++			missing size, text after the value or a percentage
++			above 100, makes the whole parameter invalid: no node
++			takes a size from it, and
++			it does not fall back to mirroring the default area
++			onto every node either. An absolute size takes
++			priority over a percentage whichever order the two
++			were given in. A 'numa_cma=' on the same command line
++			still applies.
++
++			A percentage may be followed by a size to keep back
++			from it, so cma_pernuma=95%-1G reserves 95% of each
++			node less 1G. Keeping back at least as much as the
++			percentage came to reserves nothing on that node, and
++			warns as any other percentage resolving to nothing
++			does. The size kept back belongs to the percentage: a
++			later 'cma_pernuma=' percentage given without one
++			keeps nothing back.
++
++	numa_cma=<node>:nn[MG]|nn%[-nn[MG]][,<node>:nn[MG]|nn%[-nn[MG]]]
+ 			[KNL,CMA,EARLY]
+ 			Sets the size of kernel numa memory area for
+ 			contiguous memory allocations. It will reserve CMA
+-			area for the specified node.
+-
+-			If it is setup together with upper 'cmd_pernuma='
++			area for the specified node. A per-node size may also
++			be given as a percentage (nn%) of that node's memory
++			present at boot as seen by memblock; hot-added memory
++			is not counted. It is evaluated at reservation time.
++			A size of 0, absolute or percentage, is the same as not
++			naming the node at all, so the node falls back to
++			'cma_pernuma=' when that is given. An entry that does
++			not parse, such as a node number of MAX_NUMNODES or
++			more, a missing size, text after a size or a
++			percentage above 100, makes the whole parameter
++			invalid: no node named
++			here gets an area, and there is no fall-back to
++			mirroring the default area onto every node either. A
++			'cma_pernuma=' on the same command line still applies.
++
++			A node may be named more than once. The last value of
++			each form is the one kept, and an absolute size takes
++			priority over a percentage for that node whichever
++			order the two were given in, so numa_cma=0:4G,0:50%
++			reserves 4G on node 0.
++
++			A percentage may be followed by a size to keep back
++			from it, per node, so numa_cma=0:95%-1G reserves 95%
++			of node 0 less 1G; see 'cma_pernuma=' above for what
++			keeping back more than the percentage came to does.
++
++			If it is set up together with upper 'cma_pernuma='
+ 			(unlikely), its size setting takes priority for the
+ 			specified numa nodes.
+ 
+diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
+index 90937dc7c627d..c04d50ee0f7c8 100644
+--- a/kernel/dma/contiguous.c
++++ b/kernel/dma/contiguous.c
+@@ -41,6 +41,7 @@
+ 
+ #include <linux/memblock.h>
+ #include <linux/err.h>
++#include <linux/math64.h>
+ #include <linux/sizes.h>
+ #include <linux/dma-map-ops.h>
+ #include <linux/cma.h>
+@@ -135,45 +136,132 @@ EXPORT_SYMBOL_GPL(dev_get_cma_area);
+ static struct cma *dma_contiguous_numa_area[MAX_NUMNODES];
+ static phys_addr_t numa_cma_size[MAX_NUMNODES] __initdata;
+ static phys_addr_t pernuma_size_bytes __initdata;
++static unsigned int numa_cma_pct[MAX_NUMNODES] __initdata;
++static unsigned int pernuma_pct __initdata;
++static phys_addr_t numa_cma_sub[MAX_NUMNODES] __initdata;
++static phys_addr_t pernuma_sub __initdata;
+ static bool numa_cma_configured __initdata;
+ 
+-static int __init early_numa_cma(char *p)
++/*
++ * What numa_cma_parse() does with a string it accepts: NUMA_CMA_CHECK leaves
++ * everything outside the function as it is, so a caller can validate the
++ * whole string before NUMA_CMA_APPLY lets any part of it take effect.
++ */
++enum numa_cma_action {
++	NUMA_CMA_CHECK,
++	NUMA_CMA_APPLY,
++};
++
++/*
++ * Parse one numa_cma= string: a comma separated list of <node>:<size>, where
++ * <size> is a size or <percent>%[-<size>]. Anything else fails the parse.
++ */
++static int __init numa_cma_parse(char *p, enum numa_cma_action action)
+ {
+ 	int nid, count = 0;
+ 	unsigned long node;
+-	phys_addr_t size;
+-	char *s = p;
++	phys_addr_t size, sub;
++	char *s = p, *start;
+ 
+ 	while (*s) {
+-		if (sscanf(s, "%lu%n", &node, &count) != 1)
+-			break;
+-
+-		if (s[count] == ':') {
+-			if (node >= MAX_NUMNODES)
+-				break;
+-			nid = array_index_nospec(node, MAX_NUMNODES);
+-
+-			s += count + 1;
+-			size = memparse(s, &s);
++		if (sscanf(s, "%lu%n", &node, &count) != 1 || s[count] != ':' ||
++		    node >= MAX_NUMNODES)
++			return -EINVAL;
++		nid = array_index_nospec(node, MAX_NUMNODES);
++
++		start = s + count + 1;
++		size = memparse(start, &s);
++		if (s == start)
++			return -EINVAL;
++
++		if (*s == '%') {
++			s++;
++			if (size > 100) {
++				pr_warn("numa_cma: node %d percentage %llu%% > 100\n",
++					nid, (unsigned long long)size);
++				return -EINVAL;
++			}
++			sub = 0;
++			if (*s == '-') {
++				start = ++s;
++				sub = memparse(start, &s);
++				if (s == start)
++					return -EINVAL;
++			}
++			if (action == NUMA_CMA_APPLY) {
++				numa_cma_pct[nid] = size;
++				numa_cma_sub[nid] = sub;
++			}
++		} else if (action == NUMA_CMA_APPLY) {
+ 			numa_cma_size[nid] = size;
++		}
+ 
+-			if (*s == ',')
+-				s++;
+-			else
+-				break;
+-		} else
+-			break;
++		if (*s == ',')
++			s++;
++		else if (*s)
++			return -EINVAL;
+ 	}
+ 
+-	numa_cma_configured = true;
+ 	return 0;
+ }
++
++static int __init early_numa_cma(char *p)
++{
++	int rc;
++
++	/*
++	 * Per-node CMA is configured either way. Leaving the flag clear on a
++	 * string this rejects would tell dma_numa_cma_reserve() that nobody
++	 * asked for per-node areas, and on a CMA_SIZE_PERNUMA kernel it would
++	 * then clone the default area onto every node.
++	 */
++	numa_cma_configured = true;
++
++	rc = numa_cma_parse(p, NUMA_CMA_CHECK);
++	if (rc)
++		return rc;
++
++	return numa_cma_parse(p, NUMA_CMA_APPLY);
++}
+ early_param("numa_cma", early_numa_cma);
+ 
+ static int __init early_cma_pernuma(char *p)
+ {
+-	pernuma_size_bytes = memparse(p, &p);
++	phys_addr_t val, sub;
++	char *start;
++
++	/* See early_numa_cma(): a rejected string still counts as configured. */
+ 	numa_cma_configured = true;
++
++	start = p;
++	val = memparse(start, &p);
++	if (p == start)
++		return -EINVAL;
++
++	if (*p == '%') {
++		p++;
++		if (val > 100) {
++			pr_warn("cma_pernuma: percentage %llu%% > 100\n",
++				(unsigned long long)val);
++			return -EINVAL;
++		}
++		sub = 0;
++		if (*p == '-') {
++			start = ++p;
++			sub = memparse(start, &p);
++			if (p == start)
++				return -EINVAL;
++		}
++		if (*p)
++			return -EINVAL;
++		pernuma_pct = val;
++		pernuma_sub = sub;
++	} else {
++		if (*p)
++			return -EINVAL;
++		pernuma_size_bytes = val;
++	}
++
+ 	return 0;
+ }
+ early_param("cma_pernuma", early_cma_pernuma);
+@@ -198,6 +286,33 @@ static inline __maybe_unused phys_addr_t cma_early_percent_memory(void)
+ #endif
+ 
+ #ifdef CONFIG_DMA_NUMA_CMA
++static phys_addr_t __init numa_cma_node_size(int nid)
++{
++	unsigned long spfn, epfn;
++	phys_addr_t total = 0;
++	int i;
++
++	for_each_mem_pfn_range(i, nid, &spfn, &epfn, NULL)
++		total += (u64)(epfn - spfn) << PAGE_SHIFT;
++
++	return total;
++}
++
++/*
++ * A percentage of the node, less the size the boot line asked to keep back.
++ * Keeping back more than the percentage came to reserves nothing.
++ */
++static phys_addr_t __init numa_cma_pct_size(int nid, unsigned int pct,
++					    phys_addr_t sub)
++{
++	phys_addr_t size = mul_u64_u32_div(numa_cma_node_size(nid), pct, 100);
++
++	if (size <= sub)
++		return 0;
++
++	return size - sub;
++}
++
+ static void __init dma_numa_cma_reserve(void)
+ {
+ 	int nid;
+@@ -214,16 +329,37 @@ static void __init dma_numa_cma_reserve(void)
+ 		int ret;
+ 
+ 		if (!node_online(nid)) {
+-			if (pernuma_size_bytes || numa_cma_size[nid])
++			if (pernuma_size_bytes || pernuma_pct ||
++			    numa_cma_size[nid] || numa_cma_pct[nid])
+ 				pr_warn("invalid node %d specified\n", nid);
+ 			continue;
+ 		}
+ 
+ 		/* per-node numa setting has the priority */
+-		size = numa_cma_size[nid] ?: pernuma_size_bytes;
+-		if (!size)
++		if (numa_cma_size[nid])
++			size = numa_cma_size[nid];
++		else if (numa_cma_pct[nid])
++			size = numa_cma_pct_size(nid, numa_cma_pct[nid],
++						 numa_cma_sub[nid]);
++		else if (pernuma_size_bytes)
++			size = pernuma_size_bytes;
++		else if (pernuma_pct)
++			size = numa_cma_pct_size(nid, pernuma_pct, pernuma_sub);
++		else
+ 			continue;
+ 
++		/*
++		 * A percentage of a memoryless online node, and a percentage
++		 * entirely consumed by the size kept back, resolve to nothing
++		 * to reserve. Say so, since the operator asked for memory.
++		 */
++		if (!size) {
++			if (numa_cma_pct[nid] || pernuma_pct)
++				pr_warn("node %d percentage reserves nothing\n",
++					nid);
++			continue;
++		}
++
+ 		cma = &dma_contiguous_numa_area[nid];
+ 		snprintf(name, sizeof(name), "numa%d", nid);
+ 		ret = cma_declare_contiguous_nid(0, size, 0, 0, 0, false, name, cma, nid);
+
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+-- 
+2.47.1
+
 
