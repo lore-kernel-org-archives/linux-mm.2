@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B109B606B781
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 18:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3628606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 18:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z5nxKlFa
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kqUyIhVM
 Received: by kanga.kvack.org (Postfix)
-	id BB9B96B05B5; Wed, 11 Nov 2026 13:15:40 -0500 (EST)
+	id 725CF6B05C8; Wed, 11 Nov 2026 13:15:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6AD86B05C6; Wed, 11 Nov 2026 13:15:40 -0500 (EST)
+	id 6D6276B05C9; Wed, 11 Nov 2026 13:15:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A59D96B05C7; Wed, 11 Nov 2026 13:15:40 -0500 (EST)
+	id 5C5AA6B05CA; Wed, 11 Nov 2026 13:15:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 683086B05B5
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:15:40 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 06D061C3986
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:15:40 +0000 (UTC)
-X-FDA: 85423641240.03.28B4629
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AF2A6B05C8
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:15:50 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7A4F7A024B
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:15:49 +0000 (UTC)
+X-FDA: 85423641618.08.B3E4B81
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 391391C0007
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:15:38 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z5nxKlFa;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5BAC62000D
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:15:47 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kqUyIhVM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794420938;
+	s=arc-20220608; t=1794420947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F+0on+c6fgbk8jYItKkTyblkgmfkgI4yLzH5xLDODzE=;
-	b=C+7qK5wchQTgciFPhVdc8WPqrCeFB8POdDxJZVjJy3IydnUqWa+SXX6HMr66m+2dBfzNuY
-	auvvb6mNN18pz9B7GXJt8whSLtHbqHUVagVSoj334G4CeUQ9R27UtXmvPkWEuUFsk1pW9A
-	IIuhgDsvhCeWWFGRPxNplcLseFqJVKc=
+	bh=h5THLcBMLeSTN5K3PiMki3R6in5uEjKDjlZfoIyutMo=;
+	b=7ReKd3tFQO5kuZkRshBPh9atwPOBVX7yfqub2A+dPPyEsTlxIj3KMVVVhFe1jkZ/bRYeog
+	jw4i2UtE68xPGP2C6v6qMKi7q4L4YyDAQhxjsyxA6swYN8bFxRzsOKYCJFQyV4piZujCt9
+	HM33hD2e49Q1jVogi0scAXFG8nrq5CM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794420938;
-	b=DYUaLMaugcPqjhofUCT9U+u1qIBXQMpMJPaFGamj9S/I14+DzrQkjxDEGBQ1tqTeqJ0St+
-	xbfGVqE05zdDiVxIQbwreFahgvwUk+M65Pua44Mrg4F44QdEyn4ufn/mKZMEONOK5DtXIZ
-	QOcemsKFIq/7kXSUokFMo6dXc4PPlYs=
+	t=1794420947;
+	b=xV+2Il/0PD7yTPgZ1e9WFdJKN9almxBkERvEEmoIaWaCwxXtZvwJZPOPyBpY9rrodY138w
+	OQt3zMXwVVuhfhAHYlQfvtBNFWmJfVPgTyWQWR4ckfhYzItZbaUVNCMxUPHskIG4YLF5y2
+	x7VN2j4uZRr5bItP0GULF3L0P6O0Z/0=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z5nxKlFa;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kqUyIhVM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 77BDA4369C;
+	by sea.source.kernel.org (Postfix) with ESMTP id A3E4543840;
+	Wed, 11 Nov 2026 18:15:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9AB1F00A06;
 	Wed, 11 Nov 2026 18:15:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1BC81F00A05;
-	Wed, 11 Nov 2026 18:15:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794420937;
-	bh=F+0on+c6fgbk8jYItKkTyblkgmfkgI4yLzH5xLDODzE=;
+	s=k20260515; t=1794420946;
+	bh=h5THLcBMLeSTN5K3PiMki3R6in5uEjKDjlZfoIyutMo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Z5nxKlFapIrfQ2+7YDWIgZpI228prJbwMKR+k0L5557K/aWV0vkipZ07h6WUzbIo+
-	 xHFhBH9mMF69uLXElOfTWf6qN/CQyftV/YElYK4638b1WVPVCqTxBoRZmZnBfp7/Hr
-	 8+vwPkLMmQP/iL4zjiizcELRHhjnhJC0Ax4MG7gE/4/lnFHXgpHAyiD4jPqG7e9Z4s
-	 l8rqxrj56O9E4thsdAHBCT7l4+OVxZbMe78vWUONdypjknEufaJmRHPTi/6EF9rc0M
-	 wtEeTPO2/pLuBAw3m4letXcBGvZLqOzuJSdSb8I6OwELY4prDm5RzkZ/DX3LGCj4r6
-	 ui+7WzbAwgVbA==
+	b=kqUyIhVMNg0ENWRKdyQc8N8j33+TGLGVIncqmNZ+vBtJ+7MWKgecLJZTcRZr0NYzA
+	 EzwRv/U4qhhZNRxt/3BImeIrJ1AO2hWC0D+qCzXomrCIVcETdfHqQWqgclbJ7+RCV8
+	 aNGyS6AgyZbx5pCIwNvZ17pvVbzgKMeZcUZXaLlk2BgjEkN6gJuYQFXZ8JNFDg674B
+	 iUwDMVIrF0bAypSzyKgWOGX64GoQ2eQMO2gs3GWIpiZebajQE9dweskDOIW6toaZIg
+	 cyQT2j5kW6RImC9NpPXIZ5bNkcsoeIb6RKIf01tBXjjLLroIRmYEdSDpG/qhLjUwse
+	 Uaz7aZvEwK2/A==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Wed, 11 Nov 2026 18:13:23 +0000
-Subject: [PATCH 09/13] mm/migrate_device: fix use-after-free of the anon
- rmap
+Date: Wed, 11 Nov 2026 18:13:24 +0000
+Subject: [PATCH 10/13] mm/migrate_device: refuse to migrate shadow stacks
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261111-mason-migrate-et-al-fixes-v1-9-3d2454362e8d@kernel.org>
+Message-Id: <20261111-mason-migrate-et-al-fixes-v1-10-3d2454362e8d@kernel.org>
 References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
 In-Reply-To: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
 To: David Hildenbrand <david@kernel.org>, 
@@ -100,26 +99,26 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Rick Edgecombe <rick.p.edgecombe@intel.com>, 
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5441; i=ljs@kernel.org;
- h=from:subject:message-id; bh=K1/UpDA00InuyltqYw3wsCTORYhmIFURHVM5zyIq1ds=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLK+bMjJfB18ea4BB8tus9nZie9r7LIvdu83Ljp6KKT6D
- HuEw3uNjlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAEzk+ROG/+k/bfel9karHj51
- uDUvKs40lu/u++ysaTc4Hs7j8pzSU83w3+PylJotWz0uifMpGZ+fs6TsWfrVSW/3vVe+PEXg/6M
- 3cSwA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1393; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=HHmymWLilfGbiIKGsQADYadldeCxqCYd2QRpmZM8e2E=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLK+bMj5vWSa2KLz1dauO05K6Z3KEtijvmTOfK11z7T4Z
+ 3Rt/bZ6UUcpC4MYF4OsmCLL8y/i+4NEwuZ1XvB3g5nDygQyhIGLUwAmwrKB4Z/lU8MZm4x/vDys
+ deLU1yeRp+7s9jBJThIPlxf2Eby49zgbw/8aBblFpnmTK9+aPWg48PD07xOpOzbZ9HbYv7YP4vx
+ qepMFAA==
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Stat-Signature: 1astgqyh6o3sx8o3k8wprsubieht5k3c
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: krgfsb6iny1epytxzkejk8i5sxj11497
-X-Rspamd-Queue-Id: 391391C0007
-X-Rspam-User: 
-X-HE-Tag: 1794420938-713911
-X-HE-Meta: U2FsdGVkX1+90bzHgxAaB09arUoz3dOr+yC61uDabJhKOd4Bif4eCf9UiS0O9VDYeD+77yUPBbK29sVQUIeHl6pDPAkmeZLt4zlnBO7OnIe47TBPFwYGbg2WZpt/+w2wclfiZqCbcoh7KtGInp0PnTqQ26O7jFzwyxMF/skly3H0PDCkaqlJEGvf1fonnqjHyikepTl/bEv+xuBATmPqREtpxdQX6HCSgERoOs70pMZUGludCP/FGKz1caJ9iFr3MpaU0aCA+kiRxTLg239P8hINAzndLx2kN5u03m304mwmzygsVMgCvRPIkDD+jy1iHuSIkW3Mh6tCzypFCqurU9C5e8N+Ghjq2OoMm2V+nnBxR0RdO9ymZf8VrLOADbwPdwDDLfaLdkEmhAA7eQZp7Xn9M7FyAs5FXkKb8ZDiF4cSR5WXbyO7flBTH/xBJDsIpT3bQG4x5K4TGJVnN6c3RflkVO8fHAMZS3BU20VFqp6cuZ3VSv1gFOx9c5RFwuJo53+VXgAL0ANb9af/gA7PrNLDptNg2y3IiLqEDaFsrtkmPyUD/sAq3SxzRMQv9tFMlhtKLW8zu6k8Ym51FS2ZLiC3zTytviX8ir0yoKnL60jWm1FwSwVtWvEN8tMct/b+po2UOi4aR4bPBS9vH8e+g7+MuNS1hhY1nXs7DZ+dZ6G4t5BOi2aqIYNFWCAd3cdKo/Urb0ptx8qV0J24XKMCsEAsPh6fqwBUiS6sFbPQ/WqExaQzP48EhbTR6LXidAR85DajTv/Qn28jyS2TQxCHJvjSg/yMpFxyGnIo3hgatxe0U7CIdA9UwWessR83euvq+jaYiO3mStRqJ7VS63eliZPoQsXZFGNaSdGMcSvfuAlYeGKU3f2iRCQvlTzzstXvErMSLdOMn7VPAqc1qWmf0DrCOkbZkbEgGSsTRRjZO88jqLEkTcR8BOVwyUQDOV7VSDw7k5dZ1HyzUSIGqLc
- jqWP6Or3
- q5WzZRC8TUMyTt+9kEHyT5+INqQHhkZOGCpI78CkswcOAGohVXgASGzJ2MhiUllqvBI91pP1OaibzTvd2dE8oGFdLWCnvnMowLp8fSOi1JsLWIbOhg9j54yU9P6tzthE/OOFtFlDAlYhhC0ZvKP029kEpNIPi3Qh82XRyZiLbqM325PL8rqNmIXR1IPAwxVGWQ8t2ZVVga6waMiYqWbDIlKoeKNx49Fp2UiKmmGp2SuugxHuO94Is0Q4sxkN4we8BKKAbUPdwSZIhMYfGqn/qhDHn+R+lA8vprckv5NFzCKpQQV2rV2GPPC8RbZOkFtILfcpuzg7qi9rFKPVKl2CwRqEVna5AUkW9CzyMjQNwkEQ7czIzRaO5U1ShPg==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5BAC62000D
+X-HE-Tag: 1794420947-634181
+X-HE-Meta: U2FsdGVkX1/0RQG+sh4H+CN6oCIfv80zNEveMXqsurYEOHQPG8zrZTPc0LRuS6OVMjByCD8wlJ7hG9R3C4sLRAFayC7HVrFa2+Zp45L136cPlJCCGY0Dz0bGVZAERFGzNLstgajPoBVF6euL6Arn7ahNj3ZjhWbcPdxu96oq8QeErZ4vkNvbmXoufIXfjVotdGtV8SGlgPOSKA7TFS6vSjCM3f3BB4D/6SmycmFCIE/CbXbNWDnM9cxEHNec7ugXl3+/MJ2ZY4XgnrSG+o8AGxB5AP/YuKg9AWHv4EE9EuCpViusXEN5yAa4eyGYiyfZoOU3WrTbtXHgkTbiKofKIpOAe5dvJpQeBqcZvaj0BTjXSteNRk1hn7G4VQZW4rk7gGHNMHWGO9hRwHsDQhzj7HM7YJ8OZXwXVptbodrX6rGS0ZJN11mnbIIRdM/Nba9dbjBjpH/7cMyiiCghdvgWEkrhyPFxNnGYz1GfmoPiGUkr3lF4X0L+2bbFKjbdh/jHU/ApTcZ4A3UXB+wTqx/i0PlaZgxd//YM48ciCuVuNPnUkSBM8SpSDJv+Q1cA/MUUbcJ3013UVJF5c4nrgITuwC3OxIZNDYn6cVOm/5UYGg3QYRLozY1ypS6sEK5L0Ua2+hbsG80OzQrXnAWwqDqrY5urvacrzH40P1GxVhe0sgVk83ugRtHiMFelerqBLKfRSrN1ezPkUTduSMTfecHM2bDxlNS5PDpXHIyWNbnrwiDXMgGY844lQsu85KLLUH4QEADHAy6VEf1vpyJfyyvdtRJr1ATguWKhmyT1+5eapoXZwjedA1wdOVCbALr9sxVhCHPlXU2vCcFO/P5kLa6CxQOUPMSAAzHnjHIo8cgeBBNAiwz+8hXGMTeRLGg0ydpYJ9moMfmB16Lxr0ohkdLZt4yHvd5BHUi3ESUdIOYJV4Eyjs0wJGAaohkAey6PbX3J/ESHpIigKWKNpBYrAdg
+ 3D9YGAXP
+ ehe1aLmZ1rG6f70luldk+3wTAR/9zS+SmgoO9D1j6OnMxvxCRUQi0L7JJipvSXVC6KUKHuRb+0ERunnR/iSpU0uUEsKH60lI0/Rp+XHRRhnkkm7oD5fro6kPoWIbvt0yEWEdu2SW6xqBQ7z6forWyz0eJbHACBqz1giMxf3LP8s+4U8lL8Y4Dd8pygZYlmzXfFxJzEsvJtIjF4Nm9HUU89yV5yYOi4nS9kXCQfPgXkuPfN2yknhzKHD7vIPuZ0NYGWC7XyJaOjL/Bo5LxU6OmJH8h6+MgoE1axdys2Q5ojZlER1ZP0ENUpI2tH4WEccAfu56ijs2PYGw2LGMj9rx46j8C1LnXzdNDPhVGym0wnHIAvVJ/QGi9X2jDAOakOQ0CrhW3nNMBr7li3GkhVocUXpzqeQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,159 +127,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A munmap() of anonymous memory can result in a use-after-free of the
-anonymous rmap if a concurrent device memory migration occurs and the
-migration runs without the mmap_lock held.
+From: Chris Mason <mason@kernel.org>
 
-This can occur for a long-term pin of device-coherent memory, or a driver
-evicting its device memory by PFN.
+The kernel blocks ordinary writes to a shadow stack. But pte_write() is
+true for a shadow stack entry, and migrate_vma_setup() sets
+MIGRATE_PFN_WRITE for each page where pte_write() is true.
 
-Consider:
+Notably, the nouveau GPU driver takes that flag as permission to map its
+copy of the page writable for the GPU, meaning that the next CPU access
+migrates the page back into the shadow stack, and the page then holds what
+the GPU wrote.
 
-    eviction                        munmap()
-    ========                        ========
-    migrate_device_range()
-      migrate_device_unmap()
-        try_to_migrate()
-                                    zap the migration entry
-                                    unlink_anon_vmas()
-                                      last VMA: free the anon_vma
-    migrate_device_finalize()
-      remove_migration_ptes()
-        /* locks and walks the freed anon_vma */
+Be consistent and disallow this for migration.
 
-If munmap() runs before try_to_migrate() instead, the folio is no longer
-mapped and gets no migration entry. The walk still runs, and follows the
-stale folio->mapping to the freed anon_vma.
-
-Resolve this by pinning the anon rmap of each folio which possesses one in
-migrate_device_range(), migrate_device_pfns() and
-migrate_device_coherent_folio() before its PTEs are replaced, and
-unpinning it once the walk is done.
-
-A folio which is no longer mapped cannot be pinned and has no migration
-entries to remove, so skip it rather than migrating it.
-
-Reported-by: Chris Mason <mason@kernel.org>
-Fixes: e778406b40db ("mm/migrate_device.c: add migrate_device_range()")
+Fixes: 54007f818206 ("mm: Introduce VM_SHADOW_STACK for shadow stack memory")
 Cc: <stable@vger.kernel.org>
+Signed-off-by: Chris Mason <mason@kernel.org>
+[ ljs: removed unnecessary comment, refined commit msg ]
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- include/linux/migrate.h |  1 +
- mm/migrate_device.c     | 39 ++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 39 insertions(+), 1 deletion(-)
+ mm/migrate_device.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/migrate.h b/include/linux/migrate.h
-index 78424b3824c2..c6cce7925b9b 100644
---- a/include/linux/migrate.h
-+++ b/include/linux/migrate.h
-@@ -136,6 +136,7 @@ static inline int migrate_misplaced_folio(struct folio *folio, int node)
- #define MIGRATE_PFN_MIGRATE	(1UL << 1)
- #define MIGRATE_PFN_WRITE	(1UL << 3)
- #define MIGRATE_PFN_COMPOUND	(1UL << 4)
-+#define MIGRATE_PFN_ANON_RMAP	(1UL << 5)	/* mm internal */
- #define MIGRATE_PFN_SHIFT	6
- 
- static inline struct page *migrate_pfn_to_page(unsigned long mpfn)
 diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 7ebd02ec303b..5fe11dd01291 100644
+index 5fe11dd01291..a59864f2e9a6 100644
 --- a/mm/migrate_device.c
 +++ b/mm/migrate_device.c
-@@ -552,6 +552,27 @@ static bool migrate_vma_check_page(struct page *page, struct page *fault_page)
- 	return true;
- }
- 
-+/*
-+ * Pin the anonymous rmap if present to allow migration entries to be safely
-+ * removed. Returns true if the pin succeeded or no pin is required, and false
-+ * if the folio is no longer mapped.
-+ */
-+static bool pin_anon_rmap(struct folio *folio, unsigned long *src_pfn)
-+{
-+	if (!folio_test_anon(folio) || folio_test_ksm(folio))
-+		return true;
-+	if (!folio_get_anon_vma(folio)) /* Pin the anon rmap. */
-+		return false;
-+	*src_pfn |= MIGRATE_PFN_ANON_RMAP;
-+	return true;
-+}
-+
-+static void unpin_anon_rmap(struct folio *folio, unsigned long src_pfn)
-+{
-+	if (src_pfn & MIGRATE_PFN_ANON_RMAP)
-+		put_anon_vma(folio_anon_vma(folio)); /* Unpin the anon rmap. */
-+}
-+
- /*
-  * Unmaps pages for migration. Returns number of source pfns marked as
-  * migrating.
-@@ -633,6 +654,7 @@ static unsigned long migrate_device_unmap(unsigned long *src_pfns,
- 
- 		folio = page_folio(page);
- 		remove_migration_ptes(folio, folio, 0);
-+		unpin_anon_rmap(folio, src_pfns[i]);
- 
- 		src_pfns[i] = 0;
- 		if (fault_folio != folio)
-@@ -1335,6 +1357,7 @@ static void __migrate_device_finalize(unsigned long *src_pfns,
- 		if (!folio_is_zone_device(dst))
- 			folio_add_lru(dst);
- 		remove_migration_ptes(src, dst, 0);
-+		unpin_anon_rmap(src, src_pfns[i]);
- 		if (fault_folio != src)
- 			folio_unlock(src);
- 		folio_put(src);
-@@ -1384,6 +1407,7 @@ EXPORT_SYMBOL(migrate_vma_finalize);
- 
- static unsigned long migrate_device_pfn_lock(unsigned long pfn)
- {
-+	unsigned long src_pfn = migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
- 	struct folio *folio;
- 
- 	folio = folio_get_nontail_page(pfn_to_page(pfn));
-@@ -1395,7 +1419,13 @@ static unsigned long migrate_device_pfn_lock(unsigned long pfn)
- 		return 0;
- 	}
- 
--	return migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
-+	if (!pin_anon_rmap(folio, &src_pfn)) {
-+		folio_unlock(folio);
-+		folio_put(folio);
-+		return 0;
-+	}
-+
-+	return src_pfn;
- }
- 
- /**
-@@ -1431,6 +1461,7 @@ int migrate_device_range(unsigned long *src_pfns, unsigned long start,
- 		nr = folio_nr_pages(folio);
- 		if (nr > npages - i) {
- 			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
-+				unpin_anon_rmap(folio, src_pfns[i]);
- 				folio_unlock(folio);
- 				folio_put(folio);
- 			}
-@@ -1474,6 +1505,7 @@ int migrate_device_pfns(unsigned long *src_pfns, unsigned long npages)
- 		nr = folio_nr_pages(folio);
- 		if (nr > npages - i) {
- 			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
-+				unpin_anon_rmap(folio, src_pfns[i]);
- 				folio_unlock(folio);
- 				folio_put(folio);
- 			}
-@@ -1509,6 +1541,11 @@ int migrate_device_coherent_folio(struct folio *folio)
- 
- 	folio_lock(folio);
- 	src_pfn = migrate_pfn(folio_pfn(folio)) | MIGRATE_PFN_MIGRATE;
-+	if (!pin_anon_rmap(folio, &src_pfn)) {
-+		folio_unlock(folio);
-+		folio_put(folio);
-+		return -EBUSY;
-+	}
- 
- 	/*
- 	 * We don't have a VMA and don't need to walk the page tables to find
+@@ -759,6 +759,8 @@ int migrate_vma_setup(struct migrate_vma *args)
+ 	/* The migrate_vma page walk has no hugetlb support. */
+ 	if (!vma_is_mm_backed(vma) || vma_is_hugetlb(vma) || vma_is_dax(vma))
+ 		return -EINVAL;
++	if (vma_test_single_mask(vma, VMA_SHADOW_STACK))
++		return -EINVAL;
+ 	if (nr_pages <= 0)
+ 		return -EINVAL;
+ 	if (args->start < vma->vm_start || args->start >= vma->vm_end)
 
 -- 
 2.56.0
