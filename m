@@ -1,137 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E01606A339
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 09:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03306606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 09:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T2qNYQkE
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hnAJOnka
 Received: by kanga.kvack.org (Postfix)
-	id 9706D6B05CD; Wed, 11 Nov 2026 04:35:48 -0500 (EST)
+	id 246B56B05CF; Wed, 11 Nov 2026 04:36:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 948426B05CE; Wed, 11 Nov 2026 04:35:48 -0500 (EST)
+	id 1F6D16B05D1; Wed, 11 Nov 2026 04:36:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85EFD6B05CF; Wed, 11 Nov 2026 04:35:48 -0500 (EST)
+	id 1380F6B05D2; Wed, 11 Nov 2026 04:36:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FF466B05CD
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:35:48 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 05EE112024F
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:35:48 +0000 (UTC)
-X-FDA: 85422331176.13.E19BC58
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3AD6620004
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:35:46 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T2qNYQkE;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E3F036B05CF
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:36:35 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8249D80243
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:36:35 +0000 (UTC)
+X-FDA: 85422333150.11.673C209
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E3829A0009
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:36:33 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hnAJOnka;
+	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794389746;
-	b=B3wozrtf1sg4EYSUnaoMGKEcbtKf6RPcoKbXf+HA/e/Nyva5ebiYLAEba0kXF/Un/u/bSF
-	B22KwmMf79oPZm9wWSgm8aqLWTYwMHqhPEGEt3xFiE3cIY9GRO/7av33uC3qEwvT1FxHCJ
-	1XkilFBFF48yvdMpwUqeew1bVx7hfjI=
+	t=1794389794;
+	b=Qng9cdEU3NySkrzi4mYQ81PWM9oLs+ma7HDMHSNX5XSJ7nNYi4JEL1RzvRHaRqrGoken4m
+	V+OSawkEzi77lIATk3KiEc1UYSE2n9QAoWY8SpjHXynpR00g4btPYDobCQlcCLtgui1nEw
+	GBK0ct4RZGbXttZFhcyq9IOn16c3j50=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T2qNYQkE;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hnAJOnka;
+	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794389746;
+	s=arc-20220608; t=1794389794;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9X8CCswIaiCe2k/d80ea7S7jWAHEKF+u255fg2VFMFw=;
-	b=p/wE5g7KESPHBnr7bL5tXWs0syhcojuc6C7JajDU+Jv3fJsjvEFltxC6Lp+N6N4c+HdYXA
-	NTktaHWeE6VIGq3xJ3F6Buja//OYFFq+4i8Dpd3Y8UwXnrpg5vtZGJvj5ZyoBzky5N+nmV
-	LXfAoL1cWrmGq6/ipaIWuzDWMzYko08=
+	bh=LJNb3lZ6t5sFOGVn3CCAi04LzEeZdHbIsSE+XUn+En8=;
+	b=qi3DV+WXn9aC6IY+/+Mz036ZTZHY9/cuN9QhHlknXNJGjmJYh47DXy5Mur7tACRR56PyFa
+	kgXnJ4Sgi1ONY54Dqb9s7LEFI9+uasetrJiHqTLZirEFvNd8Bg0RQ7rgJtNko4kMSpPQWe
+	jtP+c4wKr7EJ9cQteZJLgk07eAFfN/c=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8803040145;
-	Wed, 11 Nov 2026 09:35:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19881F00A05;
-	Wed, 11 Nov 2026 09:35:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7EB19608FB;
+	Wed, 11 Nov 2026 09:36:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851D61F00A05;
+	Wed, 11 Nov 2026 09:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794389745;
-	bh=9X8CCswIaiCe2k/d80ea7S7jWAHEKF+u255fg2VFMFw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=T2qNYQkE61kCIR/UriUiEp2Xe+xDAU4E1joo4LXujXTT1NiLFqQTbEsOAsAo2g5bK
-	 hG0PCYjhQ2JRcdXyUEN7VcGwBsupQZ6hAxvCLVilPlRb4MlylhqRGPyxI+BFNutXCt
-	 D0PHRPnp4Nz7HgQeYs1joXy4FBbJUpsLYykHZoqr4I+1MwtIetWyqpKOam8RZAV5u2
-	 4ELqRRMIndDcRR4uw8FynIaqqaRRRb04+OVZl2kxVj186R/6T/2+swrwHPsSk235q0
-	 LK/ktYI3fqYgg3oGJ8cVWMbvVzIdCQRYtvjdprwTT78fEBSuTVxMJBHQSIBUMepRuk
-	 7nL0CN6YmKO8Q==
-Message-ID: <f796b3fc-90e4-4fa7-997f-8df8cd5d2b47@kernel.org>
-Date: Wed, 11 Nov 2026 10:35:42 +0100
+	s=k20260515; t=1794389793;
+	bh=LJNb3lZ6t5sFOGVn3CCAi04LzEeZdHbIsSE+XUn+En8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hnAJOnkaTiUIgD29xN8uy/N56NBdY8A0ox3+/FrL5khLxHOW6B2l8W6nLGQl0PrYn
+	 YRIvPTe6YF/F3tDZ1iLBZGjGcQRZYlJw5bXJPcMcr4qQhGB4HxcWH9xifBMAN/DXpi
+	 QWygDMgiN3z6tAu8U0RscVHXhqpoNah8jj1ZzNOEaeU23RuYUbjC936+XyAQaUulCP
+	 ZSxB3xwlGnJ8DdjO6p2DUu/+Hkvccj4/VCaDe1sJf8V2z8QoHYGPeGCbdY4UVTKsk7
+	 roysdqQ5a7H/LXUQtnyn7UPieCP10CHPFcxaoYQl/wQsVAGM/0iByy97QqdujK4SQx
+	 NdUm0GDBliRRg==
+Date: Wed, 11 Nov 2026 10:36:26 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: Jan Kara <jack@suse.com>, Al Viro <viro@zeniv.linux.org.uk>, 
+	linux-ext4@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, 
+	linux-mtd@lists.infradead.org, dsterba@suse.cz, tytso@mit.edu, Mark Fasheh <mark@fasheh.com>, 
+	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>
+Subject: Re: [PATCH v2 26/34] gfs2: don't set SB_RDONLY on withdraw
+Message-ID: <20261111-sangen-klagen-klonen-331f995b9cdc@brauner>
+References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
+ <20261029-work-fs-sb_rdonly-v2-26-2f44f64f0b66@kernel.org>
+ <sashiko-outbox-191245@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] mm: only assert mmap locks if CONFIG_DEBUG_VM or
- lockdep is set
-Content-Language: en-US
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett"
- <liam@infradead.org>, Shakeel Butt <shakeel.butt@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261110-tame-vma-asserts-v1-0-be293ff499a7@kernel.org>
- <20261110-tame-vma-asserts-v1-1-be293ff499a7@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20261110-tame-vma-asserts-v1-1-be293ff499a7@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <sashiko-outbox-191245@kernel.org>
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 3AD6620004
-X-Stat-Signature: bcp1quxrk4cr7r6t7b6wshdmzkebg4wq
+X-Rspamd-Queue-Id: E3829A0009
+X-Stat-Signature: 84rjuk516myz9f96i1sy3xbaj66irzaf
 X-Rspam-User: 
-X-HE-Tag: 1794389746-711397
-X-HE-Meta: U2FsdGVkX19ezWXbLwQI608rLkydwnSGGcrhHuiBA7vGDEJzO0xlcgWUYTGJdBS4jiMJPRd+Y7Zk8Ejf1XU+oKSTsgypHSq8hW8JMd+mqYRxAcYNtdl+0FThxOTH3qCMeN7j3GBeQZX5BfyZLzFn1ZcOkv2heeIzv6gKLUUnIPTOcV7c4RE3jEHWSMNezLKc0IFqahAe43DrbMwsUG9SPM1mQ19w8YuJaQacmSenSO7NNOVbxJHM0pCvfKs1vVHSlj+Gh66lePtGDQN4HzchYp1tsJnSNIWrX6RTm9O4ID3ZSl1dTD5AzLfZjAAJrGNfmgM270s3GjxNldqLZ4RttVjcXX9GZNtzyK91vzYN0hkS3hrxQxHkPHSDmav62Q5TLNKy6OvQo+LWXNcL8adt+ocMpaQUyCGKPRGS2FOrQo8ilT70GLtdDwRQDuS7obqtufoopkSFKTIQwfAHqPr6TUPEkRK9JFXbhIr1K3a+5kswEh/vme/XDI4gq25ee/nG8r99Ew2HDg8WY0YiC9Q9r3sGLnzEFFrnxGFmHp0JsBY/xfTtf5iFMOYGMpR2sTZU2zPL+adgCamSfX0JFsWLst2w4PIYf0wVFJz/KYzIDi+hsdE+86gUYLvS9BqPuQ531nLGoqM6K+CePROjCWpEVr+ItouWEekyUENVJpuqnpfJ4g04Jrq46bRtSmcXEJRB6k4n/bUOClNReBI4+PQFwzsX+3RES0e4jSM3hzklYtw2b7QoI3+feP8J6AFVeKiGdVdUEPUAkt4x7hOe+hK2wGRhBSyzimWiQQLrXrm7B4qTLPYyhh6OG0659XPnijIOQw2OXO1ftR/7qvD7gYRrU6EHGn3uuFQnAIWfuGvGCpz99R8dqpAO6vOqhAU4Acnm9WGKCgXE+Ko6yhpGuqa06VsGQ5oiyyS0xwudkxwnPusP3aEx4iBSDrkexr94CiHSD4kQnqSv+abCs55CY60
- 4qGs1BxW
- buieJXn9YWgNpIR1KOmUYveoXRi68yadsa4buB18JKmQuf3odbbWd8dISmy4JpWZ/Lyxdpuj/6cPhnS5uj3Jeb+tMDSkY0zWSYkOiEkySiM26/JzhARv7D8MRyP5sSY0vkIdHqq8F4inQULDPR81xomFyIrDkPGKykBCp5Im7VG9bHQvYXLBbArV40B4n2kIN6JMw1lJlryiHLplxAufN3es3dAUc8W/lzm5hQnB/6SB7pPWiJ9bDGQ5l5tVUkLC/AvYPOkg5rrgLAtWtEsuEF8fgHHvOWBKnwh6Ow0a6TIAVjUEM29OIm/W9DG6ABpVyvz/WDonjCA7UDfI=
+X-HE-Tag: 1794389793-706078
+X-HE-Meta: U2FsdGVkX19TQqAx9p3B2dQ1J6shwWLfygm173xZyADXqil1MW8xKuSyGgkl6ahftIyfonWgCdfDrcwgedyEfxkgyd1uvbcOzuY4M0f/1bd6smVIylAkM8AUHpJE/rvW+NNxEKrnvtmwkbRsbjtDKoEHPRO+g1y27OZKo+vGe1I63TKL38zizCl3yKCIlscAE8ssnjTAumFOgpqk+fLHkP8Gm3BVlp+BvlukPj7GjvoW98OtafApcyIKo/caKE4FbomMVP+cn6QppyLx8sK7cWp/AFDS6a1UwZC4zOB9JKz3qyJLtgGtGR/VIhD8khEOyLgp3Iyb06PJXGDVu7jIAVsiH1G2H7h8amXXY3Az74Zww/YIxTExT6oUy8fQqUYtff34w4obqm+3wMdV6UFBri73vbgR/D/9R9fqu9c3BEeBE1yXm8IGwqUxKh6wlGt7H2tKV1pPyXhmu1frBtWQ0QFNbwKS+h7cpjtLq5c5cjvhWmVIkqBrDL9kmPA1mJi3zaAr/NlHQWREnK1dn/lZxG4DG9KLveH51cRmpmL/Jb13eLTiUm50aWXQ/Up0/w9pEysOOAl849DVGuyA9NK31VQV4DDuwkNDLf5WZU4Q9JM0gYU1l/7v19Ah+OyXAjB0gTbxFo//zHXjw1Twacd5JFIH0RZAOYTsAAt9T9GBho/2d4ux2KgviDRzqnmafjRhka5oD5BFM3WRv9eYBqbO3+4xOLNeJBtr1PxaLhdAVVgQ7tcUPZZ+DViH3+HUPb+gJRe4WrAVl9urgsZkMT1IJwJGEAmIPCRDcnu9D2CAuqmXYy7zJ1j5I1ab2hs0F2UT5mkR/PgfXYP+eM0MxkKlt1PwCRV86+qWQRhn/z7wZEHtoUdyNKDhPVqU3/fyL99bDu0atBawudIHbu6XRyddzFCr9AGZ+5uKBCauRgCnADswbeALEQZu+mQ8k8J6QdNoTyebKizhgTwULyXmdoE
+ +qmSEclY
+ SoKEcfdnuXlAyXYTp70jdpTE3aofXNirPSaxr49nzWasc4GA/gTJFXJWyOEkWNrMWndmQpbIzgqlJfkxoXt+ZVSNgOgPQEFsW62GyqWsV48NXR/ULe06SNW/JmuD6c+47oX8e6zMMm3K6wyOupSLITHZL+w8iGnJMKod/ZV2MNlfO2Z9rb+rsOUAQOAUKffJVpuyvejSvbbGMCbvwqIOONkR64LcYpLLWVzzz73nwS17st3zRZ+WBDcLWdTl9y2hS+mqTt89xVkKXqVDuo0KfvlBTMu8ihQkKcWBoShBtMjH3xiWmxsMJiTchBENCi1OsfzGFsbug49r5I6hPId4qDsjDJCqUjveoDDR8kDBwqGfR2uiknDUDOVuaGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,53 +97,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/10/26 17:57, Lorenzo Stoakes (ARM) wrote:
-> For a long while we have asserted the mmap lock being held regardless of
-> whether or not the kernel is a debug build or not.
-> 
-> In general, given that these have been added as programmatic asserts that
-> nobody did something stupid, production kernels are simply wasting their
-> time checking for this.
-> 
-> It also means there is a two tier system - where some programmatic
-> asserts (e.g. VM_WARN_ON_ONCE()-checked conditions) are only checked for if
-> CONFIG_DEBUG_VM is enabled, whereas others are checked unconditionally.
-> 
-> If we genuinely want to unconditionally check for the mmap lock being held
-> at runtime, then that should be made clear in the code doing it.
-> 
-> Regardless, if CONFIG_LOCKDEP is enabled, ensure that the lockdep
-> assertions are performed.
-> 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+On Fri, Oct 30, 2026 at 04:10:10PM +0000, sashiko-bot@kernel.org wrote:
+> which submits writes for those dirty resource group buffers to the block
+> device without reaching gfs2_write_inode(). Should gfs2_aspace_writepages()
+> also check gfs2_withdrawn(sdp)?
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+No. sd_inode comes from new_inode() and is never hashed so
+__mark_inode_dirty() never puts it on a writeback list.
+sync_filesystem() doesn't write it back.
 
-> ---
->  include/linux/mmap_lock.h | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-> index 9c3a9c6525c1..9367430ee53c 100644
-> --- a/include/linux/mmap_lock.h
-> +++ b/include/linux/mmap_lock.h
-> @@ -75,12 +75,14 @@ static inline void __mmap_lock_trace_released(struct mm_struct *mm, bool write)
->  
->  static inline void mmap_assert_locked(const struct mm_struct *mm)
->  {
-> -	rwsem_assert_held(&mm->mmap_lock);
-> +	if (IS_ENABLED(CONFIG_DEBUG_VM) || IS_ENABLED(CONFIG_LOCKDEP))
-> +		rwsem_assert_held(&mm->mmap_lock);
->  }
->  
->  static inline void mmap_assert_write_locked(const struct mm_struct *mm)
->  {
-> -	rwsem_assert_held_write(&mm->mmap_lock);
-> +	if (IS_ENABLED(CONFIG_DEBUG_VM) || IS_ENABLED(CONFIG_LOCKDEP))
-> +		rwsem_assert_held_write(&mm->mmap_lock);
->  }
->  
->  #ifdef CONFIG_LOCKDEP
-> 
+> If a freeze is triggered via freeze_store() in fs/gfs2/sys.c or
+> gfs2_freeze_func() in fs/gfs2/super.c (which call VFS freeze_super()
+> directly rather than gfs2_freeze_super()), or if a withdraw completes during
+> the msleep(1000) retry loop in gfs2_freeze_super() after the initial
+> gfs2_withdrawn(sdp) check above, won't freeze_super() succeed on the
+> withdrawn filesystem and leave s_writers locked? Should gfs2_freeze_fs()
+> check gfs2_withdrawn(sdp) outside the SDF_JOURNAL_LIVE check?
 
+freeze_super() succeeded on a withdrawn filesystem before as well via
+the read-only shortcut. Now it takes s_writers and thaw_super()
+releases them again because SB_RDONLY doesn't change in between. That's
+the point of the patch. A withdraw during the retry loop makes
+gfs2_lock_fs_check_clean() fail and the freeze is undone.
+
+> When gfs2_lock_fs_check_clean(sdp) fails in gfs2_freeze_super(), doesn't
+> calling gfs2_do_thaw() below re-initialize sdp->sd_freeze_gh while it is
+> already queued and holding sdp->sd_freeze_gl in LM_ST_SHARED mode?
+
+Pre-existing.
 
