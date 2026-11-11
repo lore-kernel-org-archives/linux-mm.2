@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5127606A339
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 06:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD89606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 06:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EImt61fl
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TJ19gYVp
 Received: by kanga.kvack.org (Postfix)
-	id 07A4B6B05B4; Wed, 11 Nov 2026 01:16:50 -0500 (EST)
+	id CD5FF6B05B6; Wed, 11 Nov 2026 01:16:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 051D86B05B5; Wed, 11 Nov 2026 01:16:50 -0500 (EST)
+	id CAD846B05B7; Wed, 11 Nov 2026 01:16:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA9626B05B6; Wed, 11 Nov 2026 01:16:49 -0500 (EST)
+	id BEB116B05B8; Wed, 11 Nov 2026 01:16:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CA00C6B05B4
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:16:49 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 501621401A3
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:16:49 +0000 (UTC)
-X-FDA: 85421829738.28.7356208
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B7152180004
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:16:47 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EImt61fl;
-	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 982D76B05B6
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:16:55 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1F94EC021C
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:16:55 +0000 (UTC)
+X-FDA: 85421829990.08.7D7BE4E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 7AA2C40004
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:16:53 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TJ19gYVp;
+	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794377807;
+	s=arc-20220608; t=1794377813;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QHfiaWxCcZhurl6F9ZemW3Q0LNncHtCBCbMGBWelkuM=;
-	b=49p9/nQX4z+BAdSCsI2zcORONsr/JR81Knyq4Pn30XbV3iNeOhKt4yhDLulK9HbiJ8Haev
-	uLWuCMReRTcLs0wnJahP2Iqsv4H50YpA3B5M4Y9WHyXjYrnnKAPJVc6aoSKpfzKBsnEMZt
-	z8s3hog49C7gCLU2YwPzMjdCeMS8u4A=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EImt61fl;
-	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=cs0evi9dVSmKWqiPi75Cnylb6/Wxv9tJ6r+A8LIBuRE=;
+	b=t4p/Ad9OfFV0IeiSo7EVmqNCpGmvweRQDTEZQOUtFBY3La3TRC/wxGqZTcqJQhzPz+KMQq
+	5/wq1OwGYNeSQAmlaFpQ8RvFeba/NPLD61h42kx5aV71tih84k+qYlkMIhfluct0Gwrjjq
+	7zmtGM0DG22kuYhguf7jfXoFy7+DmtA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794377807;
-	b=NgGMbOqxbYqvUSk76iabJ9Kc0ZbNi64XVJi96Qao4wSNwS1PCw/p6gsvfU7V1JO+rf78eu
-	65twOaMKa6s81wwn6N8VVm31uWWRggqSDcwyFNq/ggeJB2q+plI2db4hFvtzG6cOnouJoh
-	8zCh8eMEQhAZYlSFayz5s8kQ3zrSNS0=
+	t=1794377813;
+	b=ofB8QUweqgYAWmZ5Jj0kdS2Jp5/IwltE6CsA8qh2V0KxZ1AItJ6vjuUS6jvAxUc7jaTSvR
+	HBN6NCU7i02qzFJn1wmjxJ2rXRV/NtJFBh3suROe76QNN+YaVDO/orlAvXqimLcEScsLvB
+	r+WnNK3foDKExaH8vQR57oZzl/eZYcI=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TJ19gYVp;
+	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5C2A7630B6;
-	Wed, 11 Nov 2026 06:16:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF7C1F00A05;
-	Wed, 11 Nov 2026 06:16:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7466444880;
+	Wed, 11 Nov 2026 06:16:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E6A1F00A11;
+	Wed, 11 Nov 2026 06:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794377807;
-	bh=QHfiaWxCcZhurl6F9ZemW3Q0LNncHtCBCbMGBWelkuM=;
+	s=k20260515; t=1794377812;
+	bh=cs0evi9dVSmKWqiPi75Cnylb6/Wxv9tJ6r+A8LIBuRE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=EImt61flV5cq+7e4hR+ft3m7e7xCstobBu6qSNOHi0GZRaD7AB3LXX/d6RpGrMMHM
-	 lwiKJBhIYkVVBiy95ALKfS6qYNOgl5pRLKP8Opd7WFLVXOQSm48YVTbFQ5ctAaUmiv
-	 LrNh9151rRHt5atGrFLvwc+vq1Ol/kdiFvqBgWJyi+speMlFnmyJP/b+i/H+aHBIfX
-	 SvYO1rGxI/3Tgu2yX1fDFkvTW1qDhgDRUFnvcdw0W6DIgmW1BTuWCTsZl2b7L0SVFU
-	 aLqq+V/0C696+ioxmJX5IFJA7ARzQz5QYrbKcogK/13TeXUd6HI65dkA0VCU7pk0L2
-	 xWNejiZNeMcOw==
-Message-ID: <sashiko-outbox-208414@kernel.org>
+	b=TJ19gYVponJXD+6bXVDXHTYShKtvx4kcBfVwQuS7qpbOzWRj8Pp+US+SAxz+Udt0Q
+	 svT7zXCMBNACh8E1zYYtOhtP9+zlXPJtNcVsiM03nuZVZoz5nqfBwsj+3GD6N0k5NZ
+	 sRnybVSechBWdKccJWIc2b+VF88rIjd4wikq3LoCuAKD4JiN/Lo1S8bDqCEB48nAl/
+	 xn/xBGef74dOtIMPWFnhCYH1ClDI3VARcH4/lPQ94XXZGeZd8zdNYdIGE+xYO/ajVm
+	 jLOxNdr10MlfUw+3DdwrRxoUo7o/5FkniBmLmn2RYbgz5Yjb4OfmpvIfDucaGGLNEf
+	 u4DA/vs9XvuGg==
+Message-ID: <sashiko-outbox-208417@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 11/19] liveupdate: Add feature header to struct
- luo_file_set_ser
+Subject: Re: [PATCH v4 14/19] liveupdate: Add feature header to struct
+ luo_flb_ser
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Tarun Sahu" <tarunsahu@google.com>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Mike
  Rapoport" <rppt@kernel.org>, robin.murphy@arm.com, maz@kernel.org, will@kernel.org, "David
@@ -71,24 +71,24 @@ To: "Tarun Sahu" <tarunsahu@google.com>, "Pasha Tatashin" <pasha.tatashin@soleen
  Helgaas" <bhelgaas@google.com>, oupton@kernel.org, alex@shazbot.org, gle.com@google.com, pbonzini@redhat.com, "Andrew
  Morton" <akpm@linux-foundation.org>, kevin.tian@intel.com, joro@8bytes.org
 Cc: kvmarm@lists.linux.dev, linux-pci@vger.kernel.org, "Pratyush Yadav" <pratyush@kernel.org>, kexec@lists.infradead.org, kvm@vger.kernel.org, skhawaja@google.com, sagis@google.com, linux-mm@kvack.org
-In-Reply-To: <20261110050202.529473-12-tarunsahu@google.com>
+In-Reply-To: <20261110050202.529473-15-tarunsahu@google.com>
 References: <20261110050202.529473-1-tarunsahu@google.com>
- <20261110050202.529473-12-tarunsahu@google.com>
+ <20261110050202.529473-15-tarunsahu@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 11 Nov 2026 06:16:45 +0000
-X-Stat-Signature: zuzbhb1ag14masi7wpmjnije6ibd7f4r
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
+Date: Wed, 11 Nov 2026 06:16:50 +0000
+X-Rspamd-Server: rspam06
+X-Stat-Signature: gx4bkatzai93z4md38dm1wkqr3cuu96j
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: B7152180004
-X-HE-Tag: 1794377807-808873
-X-HE-Meta: U2FsdGVkX1/d7p57tvSN6QuKVTyPyvjsvNVcKGadm6z3fEyT205wnsJ7mbwEXtJiOvk/5HEFXLVTVUKes983Pmb9k7Yz2B99uI7vjZjfGqr1qwgMG1fV9vsTynd5N9403sz0ewk1V28fxLWJGbPpDVI+r1G27I6iJOxiTASRDZEmxiWtf8LF4FG4RtlT4I70AFxwe+F/kh54yIHMDyIJhBhqODUDldO4Dp9QPgdd5WvG5zz0fR7Lb/E9fzXdPgna3dlvQ2m1neopgZi2YLfC4ez03RAepTapjrteUSzuCnThXVkzuTT70n6aAKmSYYSrecpsLafbzXjSpQiqAZcg6MOj3jrGVZDMOlfrahPHAF6KOUi+cWPKcYvybxSL6maWj0jeMZKz2NYcUm9CTbE89BTBRVFsMYbVkdxdKpP8GU6blvK2G0iAQwsRBC2bfIa5NUpyH5Ab1u5Dywcw8lhUWK8ueqfGFKoaXFKVvG5Oyp/D/hBRRvut5qYwcCB+2dBLmtT+vRFtRhc6q+PJ30o/DgDoJvkfeBLe1LKCYwG6U/W4vykWbaIYeclmrgcp6rC1FqoRcszfekZ+Hob6kigvLKnQQmdSssGzIUXk1Np2I3k20kx7jrLTasqcoA8ZqgHmu7kIr+oNEn7eKZVhV/yfjjNGRc9qLUcxUv7XAB5rgz4V9MUe0+CZUrXSjF928LShnOS/6JcUZKbZAriisviyFBEvZcX/M2zWf1QDwf3ONmzmJjei81GsTZoxnl1cQbOw9NfhP/jznhZr7ndSQ2vpDp27gCxqv2XrZjt2MERcSij8zvQjxrM+lamuxQH9QEQr+fJ1pyeLbk3q7/yUJZ1M3W1bbji0JtOymFxBePgOSHAbBh2Z5UOHva4ZTAumK0n+vjOWYQNkxSadx/nwQZLWyacAg6Ud7nTHyGZJvzfBcvAMCW+CjgGv/rZb0MlkfTSsmxncY/uR2ibc0jvthjL
- CHU74k1t
- q41+m9n7UTBKTPtBAKIfipFLKiqqQ6TM6tohF9XgUJ1unEzcxOtyORYzAMD9CTSe6OSST1LZMA0iYLaqL+gK33G6eyFF9Hp26cjxf6viv4KEEOOwZWpuiiD4vrEqQrVMJDqwVHWt2cd+t7g8FWDJZA9loZtOd59fmcobsaErsiKDmmKyJwiE1dnBA6u2LozDjxd2FtvRy8VYDcvEheyB8+0jw6ZmDEB3lfY6fbvWcZHsmkQIt/rQqnzwNk5NiXv9hns1Btd6fVGs1O0O/gOeYoGSgU0nnBA1GGyvVWceshFEeUiRaEKMg37SVjpbnArz/L2lG3Fy/SK4pAaN14fnVOhlARbP3fWti+8GKiMgXA+87iRZH3yOZfHYnAvUMfxWE79FZdSQKsuUMDi1CAfwcgodRWXPHLpsVTGej7/tEEVwtnyaOc9TXnOhRIZuLmla8+PUkjGG5w7M7x0avumkxU+pFGsXBUW12BypZdN1sGgnQ3e0Dx0NwjD1GPUC/5GRSSpqAUyRqvd8LOAdAU+nF3pv2p/akkihy39IaNZIUlu/ihIExb4ZrKPqqL/8MzKTInBdMVXxmr7MC83zkXNaFMH1ckO6g7sXCYmeD0uUM7I8UTX/mBzCLv6i6ahUhDCJAtdWF
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 7AA2C40004
+X-Rspam-User: 
+X-HE-Tag: 1794377813-713476
+X-HE-Meta: U2FsdGVkX18HnMhnF3k2RWEjW9fvKLDpI8dqT4xPjrhSOJZp7aFX5pUvV7D2R4rO8z/PMrHbDO2UMVmfKK9Vx/FDxH9EpsDXopccPjO90Kpu0/wNOGDy3WZU0vMDuSBSKmk9KTN8iv6zpp2USbbfe4/JIsdGDL867EctnJ1lJSaaqwAVM3gMdzMDvETdS5wXO+srQT54YWDxerHMiVYGJ5UPexQwUxfMjBU1/Hd79VvxYeuaHhftSmf++2FDoN5PASBOwQ2puv68Geub0XNWoBvn82HVZU7xRsN5lIZJGZG9bPGAUETycWph75LVSVj42pE1Q1bk+NZfoR3FaIcylSpWiC36cM1jhmTbXMXtvem7Q4JgUFlwM49eCpKdCG5ro9MjJ+c+vRYa8V/p6yBqDbcQMaakoEQ5JMGptJ1zIoeeybcm1hFONJ+wwWst0v5A46kYogJEvk6SNJ3OkBSdLJA1sURR0/Ql2tjLHmQ/pblrLET/XBNW8BhUSuIW28cIf7InjsDkELr3/lmNRhohTs0adThCKKU9jAESmG0PXIjAoTxfsQv4CCwWCi3qnxQVxNAYXql/WUa9E57J/uh/FdQB+yGfBVNs0O5Tkr3rMZYMCE73ZfhV6I+D24RY/XNosKlhl4i9k30n7cY7dAnbevh62PTg84zHgTsjheDy3kScj1YeKV5Q/y1nJkyYkVNYpu8LbZF/Xupj8IcM57QZGiUhfjwaHTSFUN6MUinY6+nMt5g4tmnQyGHDeETQOcPviWg6rTCqbXNLscQj2jqeokz0t91u19uDbB/kyEuf8zBhVYMZjKItyBy28SEaxMaZ7wnlXcXVs2Fb4GlRMzNxXRnvObqpVLFHqkKF7k259LJPqXMS/J/TQAPSjk8jjx3Yo4/iXgQ9nHMMbud2u/NEfAOmyBsZGRz+Oh+VRJu4pPUfUxx+C4El9BLlvY1PCuIGNbDfbfjmvj8hK3g7lqY
+ JQXD6UuO
+ 8Wk0T2YbqQb1rozxr9dgwXwLH0gFYL9ve/I4san4c/TWbvwhIExeZslPO+hcb/Kv6xeIoPIZ9i7FdEB8SJShdYDZQqNluzhW5GQrN5mGldo3vCVOopXXXCHrHDQeL0XQM9BvrQ8DFUnDiClftHKHUkYd1t1ictD853Wvn+0DGEciFv7IVEk/84sUvQ8sdBwbjP7fNUvD6G/IbSHUEcOM7Dqcnwu/WwKD1+H87y/TOzK3DphbI2gltLqiNuCowPLiC9MbfGGRWptB2yyrrz+C5gRn01rILEjTIz5V5cimpZYaese9ev/QF6kBzKui7+0SOb2TgNSG2RnvwgsVRoE692tEX1WrhUGi4cACAmD63txCd+yt7vfz4GtTHLyKoRTcSdWDHxgEoIPtB2PSitk+alsOsHErXXHHA3xrmL27rJMgSZa+JziiTtvT0DXfiMllSlCynvoPNwUBwQ18KkvB2Iww1JnY563ICkQu2Sa34zPYWtYoJlAqCidWRfUrbSa7wTxNxo6HQ94ey1E68ImT0RZ98ttetY5GSOkh5BfSL/+hDl7lfvyYZPJ9FfUqLFZpCvCJi5k+Q6J4CerbolqXiyS/EIk9L9LBVtZeB+SyPSlsoIiqVmby40tv+wJBoFE2V3CFfPl+vro1FUOQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,66 +100,82 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Low] liveupdate: DECLARE_KHO_SER_HDR() mangles kernel-doc in
-  luo_file.c
+- [Medium] liveupdate: -EOPNOTSUPP collision in luo_flb_retrieve_one()
+  on validation
 --
 
-commit 56a2b87048122363acff436905ac6fad2da6e4c3
+commit f2fc7f3d05b147a7eeaad5c4521b29383721337e
 Author: Tarun Sahu <tarunsahu@google.com>
 
-liveupdate: Add feature header to struct luo_file_set_ser
+liveupdate: Add feature header to struct luo_flb_ser
 
-This commit precedes struct luo_file_set_ser with struct kho_ser_hdr via
-DECLARE_KHO_SER and updates the file-set freeze, unfreeze, and
-deserialization routines to initialize and validate the feature header.
+This commit adds a struct kho_ser_hdr feature header to each serialized
+struct luo_flb_ser entry and validates each entry header during retrieval
+in luo_flb_retrieve_one().
 
-> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-> index a39992da504fb..02d09a80d7852 100644
-> --- a/kernel/liveupdate/luo_file.c
-> +++ b/kernel/liveupdate/luo_file.c
-> @@ -440,8 +440,8 @@ static void __luo_file_unfreeze(struct luo_file_set *=
-file_set,
+> diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
+> index a8dcdb8456fd2..d38c223741ff4 100644
+> --- a/kernel/liveupdate/luo_flb.c
+> +++ b/kernel/liveupdate/luo_flb.c
+[ ... ]
+> @@ -177,10 +178,18 @@ static int luo_flb_retrieve_one(struct liveupdate_f=
+lb *flb)
+>  	if (!fh->active)
+>  		return -ENODATA;
 > =20
->  /**
->   * luo_file_freeze - Freezes all preserved files and serializes their me=
-tadata.
-> - * @file_set:     The file_set whose files are to be frozen.
-> - * @file_set_ser: Where to put the serialized file_set.
-> + * @file_set:      The file_set whose files are to be frozen.
-> + * @file_set_fhdr: Where to put the serialized file_set.
->   *
->   * This function is called from the reboot() syscall path, just before t=
-he
->   * kernel transitions to the new image via kexec. Its purpose is to perf=
-orm the
-> @@ -472,12 +472,14 @@ static void __luo_file_unfreeze(struct luo_file_set=
- *file_set,
->   * Return: 0 on success, or a negative errno on failure.
->   */
->  int luo_file_freeze(struct luo_file_set *file_set,
-> -		    struct luo_file_set_ser *file_set_ser)
-> +		    DECLARE_KHO_SER_HDR(luo_file_set_ser, *file_set_fhdr))
+> -	for (int i =3D 0; i < fh->header_ser->count; i++) {
+> -		if (!strcmp(fh->ser[i].name, flb->compatible)) {
+> -			private->incoming.data =3D fh->ser[i].data;
+> -			refcount_set(&private->incoming.count, fh->ser[i].count);
+> +	for (u64 i =3D 0; i < fh->header_ser->count;
+> +	     i++, fhdr =3D (void *)fhdr + fhdr->size) {
+> +		struct luo_flb_ser *ser;
+> +
+> +		err =3D kho_ser_validate(fhdr, luo_flb_ser);
+> +		if (err)
+> +			return err;
+> +
+> +		ser =3D kho_ser_payload(fhdr, luo_flb_ser);
+> +		if (!strcmp(ser->name, flb->compatible)) {
+> +			private->incoming.data =3D ser->data;
+> +			refcount_set(&private->incoming.count, ser->count);
+>  			found =3D true;
+>  			break;
+>  		}
 
-[Severity: Low]
-Does using DECLARE_KHO_SER_HDR() in documented function prototypes break
-kernel-doc output when building htmldocs?
+[Severity: Medium]
+Does returning -EOPNOTSUPP from kho_ser_validate() collide with the
+-EOPNOTSUPP return value that liveupdate_flb_get_incoming() uses to
+indicate that Live Update is disabled?
 
-Documentation/core-api/liveupdate.rst includes kernel/liveupdate/luo_file.c
-with :internal:, which processes luo_file_freeze(), luo_file_unfreeze(), and
-luo_file_deserialize().  Unlike DECLARE_KHOSER_PTR(), DECLARE_KHO_SER_HDR()
-has no CMatch transform in tools/lib/python/kdoc/xforms_lists.py.  When
-create_parameter_list() in tools/lib/python/kdoc/kdoc_parser.py splits the
-parameter list, it replaces the comma inside the macro with '#' and never
-restores it, emitting invalid C syntax in Sphinx:
+When an incoming struct luo_flb_ser entry has an unsupported required
+feature bit set, kho_ser_validate() returns -EOPNOTSUPP, which
+liveupdate_flb_get_incoming() propagates to callers:
 
-  .. c:function:: int luo_file_freeze (struct luo_file_set *file_set, DECLA=
-RE_KHO_SER_HDR(luo_file_set_ser# *file_set_fhdr))
+drivers/pci/liveupdate.c:pci_liveupdate_flb_get_incoming() {
+	...
+	ret =3D liveupdate_flb_get_incoming(&pci_liveupdate_flb, (void **)&incomin=
+g);
 
-Adding a CMatch("DECLARE_KHO_SER_HDR") rule in
-tools/lib/python/kdoc/xforms_lists.py alongside DECLARE_KHOSER_PTR would
-let kernel-doc expand the macro cleanly.
+	/* Live Update is not enabled. */
+	if (ret =3D=3D -EOPNOTSUPP)
+		return NULL;
+	...
+}
+
+Instead of panicking on incompatible incoming state, the PCI subsystem
+treats Live Update as disabled and proceeds with normal enumeration over
+preserved devices.
+
+Also, kho_ser_validate() runs on every entry before checking ser->name, so
+an unsupported required feature on an earlier entry fails lookups for later
+compatible FLBs, and returning before refcount_set(&private->incoming.count,
+ser->count) leaves private->incoming.count at 0, which underflows in
+liveupdate_flb_put_incoming() during luo_file_finish().  Validating all
+luo_flb_ser entries up front in luo_flb_setup_incoming() (or translating
+the validation error code) would avoid both issues.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110050202.5294=
-73-1-tarunsahu@google.com?part=3D11
+73-1-tarunsahu@google.com?part=3D14
 
