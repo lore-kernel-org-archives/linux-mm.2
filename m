@@ -1,129 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B91606A88E
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D0F9606A32E
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=KWOnhTEn
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=s6BX8a9h;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=uN4oYGZL;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=p/LYOaxX;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=qs0l/DFN
 Received: by kanga.kvack.org (Postfix)
-	id 88EAE6B05B0; Wed, 11 Nov 2026 06:45:18 -0500 (EST)
+	id 6939A6B05B3; Wed, 11 Nov 2026 06:45:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 866B96B05B3; Wed, 11 Nov 2026 06:45:18 -0500 (EST)
+	id 66BFB6B05B4; Wed, 11 Nov 2026 06:45:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77CC36B05B4; Wed, 11 Nov 2026 06:45:18 -0500 (EST)
+	id 55BAD6B05B9; Wed, 11 Nov 2026 06:45:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F9456B05B0
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:45:18 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DF4891C26E2
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:45:17 +0000 (UTC)
-X-FDA: 85422657474.24.F8F8FB5
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 031921C000D
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:45:15 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=KWOnhTEn;
-	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E8FC6B05B3
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:45:56 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9D102A0283
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:45:55 +0000 (UTC)
+X-FDA: 85422659070.13.6358482
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 2C5ADC000B
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:45:53 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=s6BX8a9h;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=uN4oYGZL;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="p/LYOaxX";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="qs0l/DFN";
+	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794397553;
+	b=cuC4RwY+RNJ85SplLQOvEfj8aquvV+NasH0/lfkoWm8CA2kVYWWdFqn+qTmuIZNOb3bYZF
+	Q47Qj6u53YTqGBjU21/rR7oHIOkCPlL37c4NuQ6OmA0GT1eQaFSGJpSMOaHDb2lBWHhODS
+	8Jb6DK2d/PQrZiqIntP6nVYJiSC8c3M=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=s6BX8a9h;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=uN4oYGZL;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="p/LYOaxX";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="qs0l/DFN";
+	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794397516;
+	s=arc-20220608; t=1794397553;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kVFpNKJHonPsoU0rKznaV1aSGj2r5pa7n7k1+LB8yBg=;
-	b=4F4kZNpcGjI18QWFeRZJsgFQ1iXK5/3hR7PmGxuafWUbNoK4P6J1qns+Cqk1dqqbdN2hDG
-	f4Sfa5jnnrepezxD+o3jRhkQBvQ9U2wDlqzJxRzrB0BNWdJ3j2Enbj5VDnbYqXwOUtO2aL
-	ZBv3hNbyDO8UoSNDZJPY8Rn4br57Hts=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794397516;
-	b=Ws/NtsGXEZR+1mHvM+etXI6l2IU4dNXjBdnyKYm01hSJrN7Xs6UsHzezMrzI7E1N0vmWb7
-	cqVQEJ5YvUrdhC0q5FEO3BYEcYm8NTgP2dxFcQTL/D7Vw2T175En/06RrirR6yOSqb655B
-	NDW2ctgm+7ldX4DfaAiXT8L7Or2pXVM=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=KWOnhTEn;
-	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-99c0c1d07feso1385900241.1
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 03:45:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1794397515; x=1795002315; darn=kvack.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=kVFpNKJHonPsoU0rKznaV1aSGj2r5pa7n7k1+LB8yBg=;
-        b=KWOnhTEnvgP4QOIxn/FNRDIubnde20ZOp0JPrfmv7U4mzVJwD2vIhoNAhs8iThKDxx
-         ZvKa+mv8MpHXjXc0e52vkp1qEoiGzHctAd6AzErGMm6DhlrnNyIURUFHuD9Er62k/8cZ
-         G+UfewRzIouo4omoB4ukH3qP6yPR2XLF/a2EkeGGnHUQ6vT31D7+OCcSjbN2Zj6FYjq3
-         kjg7dBxpSauv7nkwTEN716Bxaa3Twte+FeaCPeOpJ8X7QPRRBioWQTVFkHKgLYyIGtPv
-         z2dmAYQE1X3zvJvY7VTWe+sQrIMakKZnJrC+TYyI2QZrUy1873E4RQZask0C2MKaL0la
-         7l4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794397515; x=1795002315;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kVFpNKJHonPsoU0rKznaV1aSGj2r5pa7n7k1+LB8yBg=;
-        b=hYdnrJ69qvtQZ4N/pcR5JzjnwoQ2W3tnlJ8KiE8bvExst0w8n/f23z3vyKW3auytDy
-         6KhTz4Ilz8Ge8Wy0u9CTTPn9aTA5y4C0wcYrw36kIqPI0dBEAtHZrTlolQv0VAacBtZF
-         RKCQBwH5jWlXSnFdGaL2ETIQcMMCeovvy7k/sjhOWummTXI9LnkPVKFumIXwYnhDVDO3
-         fzgsZPox9fXJH3Zbi//L7LhDdRgKIJXpM6OLyAx51s8dLHiBswjt4PN4CkT8hlK9M9dL
-         bGpadLb5uPbE0GucjANkBdmfTEaF3mPXArZLiLEg/6rbblUq2iuIbU2cEJh2+ZJCSTGj
-         wo0g==
-X-Forwarded-Encrypted: i=1; AL+hErE/Ev8uKJSah/449VMIBhkUeCuPqG56kqGp6PM8fp9Q7dx4q5qbaBXj9wQnZLSEgcysGiCJH4WWRg==@kvack.org
-X-Gm-Message-State: APuU4Z9KUrixpih2pATbfo6zsiEtMW0g0JYTDcn82BRitcRN7t1FCHPF
-	L4kbLJXg/jA0bIMyMq8WhNaZm807z/aNKP/7OYhwtEPKGHTBFlE5OI6vjIyG2iB5hdA=
-X-Gm-Gg: AYBFou2J3J4ZxFoHLbwrTwni43vT41vx1VXFXDxuyrI8wRHQnuu/E+E1sFQAa4gjabs
-	bJ7nO26I71oUHWZ4wiEZiI2dyHyJDcktnroqtCM8QUfTgOHpthy/jRnUcAlqTG0sYvFITBhhlsL
-	TAQAHYBQfJcoJuZ74JkmClwVmKyKHh8rxxYiek1znhQ9kK6uaINBjMB3QJvWYcUGqc8hm5vLXOs
-	eBHz6i9wTfTswVaBxsodb8c1aeFAZnogIJYmShiTRyM+9EPBQR428mCPCFBV+NMyJILqTtXI+x/
-	Uj0bua8jQ7ImEN5YL8lcmCpUzSRVvFNIhV1/PM8Unav82oGh1EZGzsWT9Y5yDUjCPfZPIIk5tiN
-	I+Blul1hTXv7xA/YCCnw7OPqzVqmYkJCstn9Zd2W042II27BcVUblC7i8DSRcfWtGfcr7xjEZRT
-	CO/QUMVTVPxksIr+nGzcxSP5itd4tpOQqfERY0pvkffM15EU9uwCW9jxVD7pHnu1/KMkAjaf6pz
-	fhoZBqcR9oIV3qEuSL+7Gbup1byGWMWs69EyhCtOyRkfSW3Y22gytv1Ak5W8490+pvsY+UbZekh
-	U0qZ7qnAvX6akzqJG1MmfcOlc46TBwqVK1SZnGh/tVH4fKbGJb1QROrlgb7kFHR4cCKnIn1UZUS
-	8Mvs/UgPJ1NeYgbLbyvA2q0h42hvzb4c=
-X-Received: by 2002:a05:6102:5241:b0:7cc:306:d3ab with SMTP id ada2fe7eead31-7d4efab730fmr666726137.5.1794397515001;
-        Wed, 11 Nov 2026 03:45:15 -0800 (PST)
-Received: from localhost (64.167.245.35.bc.googleusercontent.com. [35.245.167.64])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d3023543casm3548860137.5.2026.11.11.03.45.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Nov 2026 03:45:14 -0800 (PST)
+	bh=FOeckYZLzpTjDlCSMcNe3YCWoDCfaX4IlNVrhqCPTQo=;
+	b=Is64U8Xj2qBm+VqU+maendLOULh70chGBD3/hW0FH89Lc8Ow8cpGE4sAQ/Kwzntdpav24z
+	A6Ncv9zRotREUgmyOPhFUHJYtvtqxkDFFm+x1hKYFOYXfI5kqzAiyf6ZiV5dv3iA7ebP90
+	u92xrsbym35eDNnYK9FeM7c+bgpk8B8=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 75B821F458;
+	Wed, 11 Nov 2026 11:45:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794397551; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FOeckYZLzpTjDlCSMcNe3YCWoDCfaX4IlNVrhqCPTQo=;
+	b=s6BX8a9hyHYJk3Z5UpX3ucmxqVW5naQK2EWnRYF/JMtmoRkByYLUk5tDSYZvmVCSGWX6/P
+	jrCFXRM0CEkSlDISMW2Q+yqOXRteM0VsFqKpkqSti7OkDj5MEr+lvxOlVZ9ipQwecRmh58
+	YURDtKaDb8l65cCYOdmyBrhX7FmpYKc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794397551;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FOeckYZLzpTjDlCSMcNe3YCWoDCfaX4IlNVrhqCPTQo=;
+	b=uN4oYGZLgkd3IFxs1MztgB9Bh/RKewnj+HvoiAKdUlTPHCRYIXvxuIjTYguaSuY7vrrPmy
+	42ILGHyNz+9AEtDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794397550; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FOeckYZLzpTjDlCSMcNe3YCWoDCfaX4IlNVrhqCPTQo=;
+	b=p/LYOaxX/ZvF0hJsvCX+detet60BIfid09glgP58k23wnP4rA/a3w5dhXaYGiv/kUOdqOq
+	/h1DCLSOvf7eaVtSfbT1KlwOZAHiWjY2CP/t8wtmWOfp3p400bmiuB+ryaf4nvXb0QsvDs
+	TK1pYPng2R77A39d777twj6U0sLbgGQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794397550;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FOeckYZLzpTjDlCSMcNe3YCWoDCfaX4IlNVrhqCPTQo=;
+	b=qs0l/DFN/ahzoaaymot81rtIOJjFLzB6z19dAQQ/lmkvX8JJZA6gHl2B6LD2ByU2/n/Qne
+	4GdNozEoBxAmevAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4ADBB1339F;
+	Wed, 11 Nov 2026 11:45:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id tIsdCm5V9GrfZAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 11 Nov 2026 11:45:50 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id CBCD5225EE; Wed, 11 Nov 2026 12:45:45 +0100 (CET)
+Date: Wed, 11 Nov 2026 12:45:45 +0100
+From: Jan Kara <jack@suse.cz>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
+	William Kucharski <william.kucharski@oracle.com>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>
+Subject: Re: [PATCH RFC] mm/filemap: fix lseek() skipping a new large folio
+Message-ID: <wkpls4kiwl3ktyu5ekahlchabnaqq45o4tgv26cmrs552ljse4@oczec23ankdt>
+References: <20261110-lseek_hole-v1-1-c089c960b846@kernel.org>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 11 Nov 2026 06:45:13 -0500
-Message-Id: <DMSCTXTWCJWK.QF8T3E7OJ7L2@soleen.com>
-Cc: <linux-kselftest@vger.kernel.org>, <shuah@kernel.org>,
- <linux-mm@kvack.org>, <skhan@linuxfoundation.org>,
- <linux-doc@vger.kernel.org>, <vipinsh@google.com>,
- <linux-kernel@vger.kernel.org>, <corbet@lwn.net>, <dmatlack@google.com>,
- <kexec@lists.infradead.org>, <pratyush@kernel.org>,
- <rdunlap@infradead.org>, <graf@amazon.com>
-Subject: Re: [PATCH v5 0/6] liveupdate: Add LIVEUPDATE_SESSION_FREEZE ioctl
-From: "Pasha Tatashin" <pasha.tatashin@soleen.com>
-To: "Mike Rapoport" <rppt@kernel.org>, "Pasha Tatashin"
- <pasha.tatashin@soleen.com>
-X-Mailer: aerc 0.22.0-39-g5d7784875be2
-References: <20261105050053.3063001-1-pasha.tatashin@soleen.com>
- <179439592040.425130.10808690337075841196.b4-review@b4>
-In-Reply-To: <179439592040.425130.10808690337075841196.b4-review@b4>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: hcnmnpu163i9cjdr4ngsijibdqex7g9h
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 031921C000D
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261110-lseek_hole-v1-1-c089c960b846@kernel.org>
+X-Rspamd-Action: no action
+X-Spam-Score: -13.01
+X-Spam-Level: 
+X-Stat-Signature: sikgihn8rexxdqgnqcae9tsc77ejfif7
 X-Rspam-User: 
-X-HE-Tag: 1794397515-694799
-X-HE-Meta: U2FsdGVkX1/CzfQTiAymkVEivqQe2Y/UuGe7BjukyvPLcz9PZZA6T00qRIPcZOs8nPWGBgkke7NujnSrDdlg83L7QA3jeYLQazXpotNYRRlq303eWeNT8tq0ppiKmDoDg6t9pOuhoQc942Ce5XXW/DQv8611efNJZAuAeLx5Hn2ejol+cWFHjX6wAucikMIpklm1Gdw+UrBp6oNQUYH+BgL6x8grn3jZUaO4iHamDH37EOGW5+U+WppJuTy5I7qYgsGWwbezCIqKi2zd6AlgUPab8I0vOdn2f08/1Syqq8c+r/U59MQQFZJkwPW87tJpAdqjfpzhj8RENy7hUkXaA7ndKMKKvKDzaN5P9GUwFEaZDVsXppigHUibIyVizy+gEsh7xHpXUFWAHrAMDs7mm2oTrZkNQy99u+uIP9ZKyitNPFi3AFYShs5s0+8oaNFI8Kayiud3xrhr96NF91wwqH1Xxn5ZRySFY32j31cl96iHUNFv3ECgSypMPDf9rc/mf5NcqltcrZRpn/c95T2WDyxgyqZeUOdpOWhsNFB0cGnvOUQcCyOtgPtS61Xwi09mS6a9fUtr04KZ/uRI0ngYv69PflOxIUooegs0WP+bl5P9BYi4JSfwJO6l0vBNsODEUZe7Md7MqRMLYif7Faj4kfiE9Q+Jsgdvj/Vu+0E1nxuMrNc/1U61fUZYo2iApun4a+OwktBtJ5sqlEG2eDUpVqfXe4s1KppDGIxNcdfu0tBZEb5KbDsdhCsa8t9lhIEnV+Ldof3ki36rKU0Fz5Cxxoz34fuhbdRlkrfhyXJlnywsbKDTF4tzf2tiplVfYy5+BvL14dW99kdvX/d/BL5a4p2qGMhqmv9ps6k2DY3eaoAiHyPfwKsUjGDR/StMsB4VP+NI0kasJn4oUe4PiVw9qSKgBWRONP0BkkvI22S03Ct/j+pkUqVk+sCv9dwJgdXlTuZ4Q2IIKSWsHviz88K
- IuGPq7gA
- Vie7HHouvEhXGsnJgXeKV2Uvl2TXIt+vlZFYCkm2TUX17IQmY406G0/EZwzKaKodFjTJiRi4QB0A34bnq38e1Dt+6+6MZAsFPWovaFomYI6PRSypq13sqoRLpSMa6525CeFi2byWiTFLx0uj9j3bTAqa3FGaWL9/JxTIeq+4E8drFJ/qGbBmFNjEGcYQIlMV/Gjod05ik5YscigXEx9DAiWwbw7jh4A2oxsvCKj+91VvJ+yPvma3pvqVyexYmqZTmCOE6+6KF4rg+Z4GfcxBJ8asQQU7VA/yWg2E1b7Cxt9UswBC8kmpM5755hHVteNUtn/f+QjgG5E5x0madK56fyjNnxf3Z48piN0PBtrXItMV7rFIF2VJVaSslO0B09YgM+iMj8Ts87ev/C3c0ybyUETrc/Q==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2C5ADC000B
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794397553-114883
+X-HE-Meta: U2FsdGVkX18i3DlDIOjPS/M6scdQNFnBQ6xKTYbs+DOWQgyzduzRDvKL7TIyt9l5g0uQzv59YlOx8jXN26CCKA7hJgKtcqg2LPE8VAdQVzV8nXcwO5CqR+nzTIT6LwBBZTm6js7U+ZFCqD1yoHuZ7xeSzgva9Rt0JNd0MRYyTjSKjqkGfhADdatlovT+96cMhCQmuocM50ZdPaM0Jppc37fWheobwpzreXAyuv2Jmu+5nMhrygzVsxfpgT3EtEaAHhDAkJnUgKEiyPwZg4b5i+c4/yLnN/1SFnjaaxdewP/pZjO++98S3SzzoyB84MaChoaHmmtbiS+8NNk8nUUcUK2DghgL+ErsT7PbKSS0ugncAGlHfbjEjcd/VwjKOeumTJ06d0vohG9K4ohT171q3QPLsH3wJVm20wM+/wHprAZMAlWZFDk1lj7BV4T3Zjj51tEHCWpjgs5cbfc9nS0fDAfNl5Lj0Hvm5GLDN/JJrcKYHpi14zeIwqVW1+jDBG311ahjEA9v3MTJ0R0z0p6TJCWOHza4C9NaodfWJfyXFVOaTNvsEfc3aoj52tYmgYsJg1nNctrJKT6gzSj3OaAA3z495Ms1yeAkpKjiPD2vxwZF2LfNTOjkrZdHLp9UQxflFMmuG7GWa8yOqVpaOpZZVKcXy7wy7j9dTMBMFfzh6b2DXtoxH+eTPBnUhN/bC5JGDbiC7GNcq2dmnZGfdcPHJWl1UKI+1aOVzqUwXChU7uVEYlx4licyuNQFOwKU37GrUsPQEKCeTdEwby6DGZu3GQ3i9OV0tFjLCqcJu1rbY4s9jvHcrw8a+Li7zCZjVzj80nI3NEOH1kaACcesY2HzM9eqNH0pwnKiSEcShP/iQ96dfqttmkTfEpWDigrOQGUFn1Wwf/qTmR9LlIRbXUgVSpfdOpprPzbkhX5SCm0yhzTx8MXo6iksDxiAQsrpMFZtlwz5E1oo9pFgFHxrZJI
+ BLoeILRx
+ rARkjqT/OROftD5f/iF6NQGGHPbdstGst21x/qmD7gDMbPIXCFoyL/wfO9jZ0hyQwxIVF8a3MX+STn805X3YqDZX8hlDec+V17f9wQc3ac0p9acpYLyzks5S8s3M33m4WGMyisuDyG1S+cPDs3J+FuQQ4BonbQzZsGZVby1N4gzrnqbUTS7tEov8Z8cnFLEa+A/7sIAIA6EMrrNsNZWtvmL1gKDFEbL013dIQJ2SWKM4igeeZafbeRnzyurpdX1J3WRBh55e8dzbjq21FzTkAftTCVYke0aU/iQ9xXEwE8f2ycvMuWur1PraeOtes4KiWOhIhzk5BXGBdPgr6RsttGijZjZqWyg5pYf1mzK3iOIV6ISg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,40 +142,138 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed Nov 11, 2026 at 6:18 AM EST, Mike Rapoport wrote:
-> Hi,
->
->> Currently, LUO freezes outgoing sessions only inside the
->> reboot(LINUX_REBOOT_CMD_KEXEC) syscall path, serially under global write
->> locks, and binds every outgoing session's lifetime strictly to an open
->> session FD until reboot.
->>=20
->> On hosts running many workloads (such as VMs or stateful daemons),
->> workloads do not all pause simultaneously inside reboot(): they quiesce
->> one by one ahead of the host kexec. Userspace needs an explicit
->> per-session freeze point to snapshot final file state (.freeze()) as
->> each workload pauses -- concurrently across sessions under per-session
->> locks -- along with a way to commit a frozen session into KHO so it
->> survives closing the session FD.
->>=20
->> This series introduces LIVEUPDATE_SESSION_FREEZE on session FDs:
->>=20
->> 1. Freeze (flags =3D=3D 0):
->>    Freezes all preserved files in the session under the per-session
->>    mutex while keeping session lifetime tied to the session FD. The
->>    session stays frozen as long as the FD remains open; closing the
->>    session FD before reboot (for example, to abort the session or on
->>    process exit/crash) runs .unfreeze() and .unpreserve() and reclaims
->>    all resources. At kexec time, already-frozen sessions skip the late
->>    auto-freeze step and are published into the outgoing KHO subtree.
->
-> Let me bikeshed for a moment :)
-> I'm not fond of "published" terminology. We just moved serialization
-> from one place to another, why not keep the naming?
+On Tue 10-11-26 21:33:12, David Hildenbrand (Arm) wrote:
+> mapping_seek_hole_data() walks the page cache under RCU and only calls
+> xas_set() after entries larger than a page. Between base-page entries,
+> it continues the walk with xas_find(), which skips sibling entries
+> to return each multi-index entry only once. If a large folio replaces
+> small folio entries between iterations, the slot holding the new folio
+> can lie behind the cursor. Skipping its sibling entries then skips data
+> that has not yet been examined.
+> 
+> On tmpfs, SEEK_HOLE can then return an offset inside existing data.
+> SEEK_DATA can skip data after a fallocated page that is not uptodate.
+> 
+> For example, assume a 2 MiB tmpfs file backed by 4 KiB pages on x86-64,
+> with page index 63 fallocated but not uptodate and all other pages
+> uptodate. Index 63 occupies the last slot in the old xarray leaf. A
+> SEEK_DATA starting there can skip that page, then race with collapse of
+> pages 0-511 into one 2 MiB folio. The next xas_find() moves past the old
+> leaf and skips the new folio's sibling entries in the parent, returning
+> -ENXIO instead of finding data at page index 64, or 256 KiB.
+> 
+> The inode lock held by lseek() does not exclude collapse or swapin.
+> 
+> Restarting the xarray walk after every entry fixes this, but increases
+> SEEK_HOLE time about 24%, when scanning a fully written 1 GiB memfd backed
+> by base-page folios in an x86-64 microbenchmark.
+> 
+> Instead, use xas_next() for adjacent indices. Restart the lookup from the
+> root at the requested index if it returns an empty slot or an internal
+> entry, including a sibling entry. Also restart for nonadjacent indices,
+> invalid iterator state, or failed folio validation. This avoids skipping
+> unexamined data without restarting each lookup during base-page scans.
+> 
+> Fixes: 6b24ca4a1a8d ("mm: Use multi-index entries in the page cache")
+> Reported-by: Chris Mason <mason@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+> I'll be more than happy if someone of the pagecache folks wants to take
+> over ;)
 
-sgtm, I serialization it is.
+This looks good to me. Feel free to add:
 
---=20
-Pasha
+Reviewed-by: Jan Kara <jack@suse.cz>
 
+I just find it unfortunate that we have to play complicated games like
+these for such a simple operation as sequentially iterating over all folios
+in a mapping. And it is not a first bug of this nature trigered by
+compaction. So longer term I believe we need to provide saner apis
+shielding pagecache users from these nasty details.
+
+								Honza
+
+> ---
+>  mm/filemap.c | 38 +++++++++++++++++++++++++++++++++++---
+>  1 file changed, 35 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 648f783454c3..87c583509567 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -3233,6 +3233,40 @@ static inline size_t seek_folio_size(struct xa_state *xas, struct folio *folio)
+>  	return folio_size(folio);
+>  }
+>  
+> +static inline struct folio *seek_get_entry(struct xa_state *xas, pgoff_t index,
+> +					   pgoff_t max)
+> +{
+> +	struct folio *folio;
+> +
+> +	if (!xas_valid(xas) || xas->xa_index + 1 != index)
+> +		goto restart;
+> +
+> +	/*
+> +	 * A lookup within a multi-index entry can leave xa_offset at its
+> +	 * first slot. Restore the slot corresponding to xa_index before
+> +	 * advancing.
+> +	 */
+> +	xas_advance(xas, xas->xa_index);
+> +	folio = xas_next(xas);
+> +
+> +	/*
+> +	 * A concurrent collapse can replace the next slot with a sibling entry
+> +	 * referring back to the slot holding the folio.
+> +	 */
+> +	if (!folio || xa_is_internal(folio))
+> +		goto restart;
+> +	if (xa_is_value(folio))
+> +		return folio;
+> +	if (!folio_try_get(folio))
+> +		goto restart;
+> +	if (folio == xas_reload(xas))
+> +		return folio;
+> +	folio_put(folio);
+> +restart:
+> +	xas_set(xas, index);
+> +	return find_get_entry(xas, max, XA_PRESENT);
+> +}
+> +
+>  /**
+>   * mapping_seek_hole_data - Seek for SEEK_DATA / SEEK_HOLE in the page cache.
+>   * @mapping: Address space to search.
+> @@ -3263,7 +3297,7 @@ loff_t mapping_seek_hole_data(struct address_space *mapping, loff_t start,
+>  		return -ENXIO;
+>  
+>  	rcu_read_lock();
+> -	while ((folio = find_get_entry(&xas, max, XA_PRESENT))) {
+> +	while ((folio = seek_get_entry(&xas, start >> PAGE_SHIFT, max))) {
+>  		loff_t pos = (u64)xas.xa_index << PAGE_SHIFT;
+>  		size_t seek_size;
+>  		u64 next;
+> @@ -3286,8 +3320,6 @@ loff_t mapping_seek_hole_data(struct address_space *mapping, loff_t start,
+>  			goto unlock;
+>  		if (start >= end)
+>  			break;
+> -		if (seek_size > PAGE_SIZE)
+> -			xas_set(&xas, pos >> PAGE_SHIFT);
+>  		if (!xa_is_value(folio))
+>  			folio_put(folio);
+>  	}
+> 
+> ---
+> 
+> base-commit: 93d7a816a2df3e907e2719bd12b0073f1285fc5c
+> 
+> change-id: 20261110-lseek_hole-4a9eb450d473
+> 
+> --
+> 
+> Cheers,
+> 
+> David
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
