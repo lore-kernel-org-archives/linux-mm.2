@@ -1,137 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEEC9606A8A0
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 16:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA168606A338
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 16:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=Ov2tBg+j
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=FSczxfpD
 Received: by kanga.kvack.org (Postfix)
-	id 03A446B00EF; Wed, 11 Nov 2026 11:44:23 -0500 (EST)
+	id C01176B05B1; Wed, 11 Nov 2026 11:47:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2D9B6B05B0; Wed, 11 Nov 2026 11:44:22 -0500 (EST)
+	id BD7F76B05B2; Wed, 11 Nov 2026 11:47:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF53E6B05B1; Wed, 11 Nov 2026 11:44:22 -0500 (EST)
+	id AEE6D6B05B3; Wed, 11 Nov 2026 11:47:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BA2196B00EF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:44:22 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3CD8680354
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 16:44:22 +0000 (UTC)
-X-FDA: 85423411164.21.D3BEFB1
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id EE5DC40008
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 16:44:19 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=Ov2tBg+j;
-	spf=pass (imf27.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.214.172 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 848C86B05B1
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:47:46 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1E6E916026C
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 16:47:46 +0000 (UTC)
+X-FDA: 85423419732.12.999BD03
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 48F632000B
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 16:47:44 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=FSczxfpD;
+	spf=pass (imf13.hostedemail.com: domain of vdonnefort@google.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=vdonnefort@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794415460;
+	s=arc-20220608; t=1794415664;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eZsD1auAFGH9focpKeQLt7lmstuziSR0maGDEOD7IaE=;
-	b=sV/I2KAiWB7MvCTmiAffa6JLxztjq/mfeNEzhiY+T9RQ5i9ejarB7Ul6xi4oPTLiW2ygM1
-	X0kSmXbSf5EOLybz4vTPjwnY7eFkOKvrwAZaRAaqd9ovcBQKjTezGBWftVC8td+fdcHVBX
-	qo5tFY4XUaXWMuNrW9C+TJXwI/gr6UQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794415460;
-	b=TF06fn1wPXCr5GCuCDXFZAIUCaf0WoIdaJ4EECclkHMVANre/zWlY7tXe58FY9LSZa+XjW
-	ftuNN0ZTaFyPa+1KvaVRTcGswhlofmX99OqJc0hKiEyzWUiUPHExa9503GZMJM7w6r42t/
-	aQd/2JNEWYHF/SXjphmRrISO+Q3tckY=
+	bh=JEN1we3zUbJ34wQgamBpttlVbDethKWGuPURScqYgfU=;
+	b=PLPAp+cFYCY8mwktbMXequ7aZsfK19dTejyiC79X3SHtK1ZqeqcUFPe83e6wvQK99gAeej
+	tEJaapRPsIBJ/TFT5HCqk9sA6C3DKQpL5C/EpRhc8z4tuhk5tTRQp5+zt4F1m2upIDqPDI
+	suprGO6zgqA/q30kUpFBfsLFm17r4Ew=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=Ov2tBg+j;
-	spf=pass (imf27.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.214.172 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ede7cb02daso65485ad.1
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 08:44:19 -0800 (PST)
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=FSczxfpD;
+	spf=pass (imf13.hostedemail.com: domain of vdonnefort@google.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=vdonnefort@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794415664;
+	b=Ofp/sT1Yc3oG/RmJHW2uJdj6SN54lwZxb6HlIuEhiqjO90w4NsNnmS0TV00DsVLeYMgnx2
+	87OiA6HKLw5q3+Nm4ytdfwH3O3EKLya75S2V9kq+hJoFZblb83vYGDk/hpbRdmQP8hM16C
+	d3HLkOZ3NKIOcPEEpU8THb8dp34e2+Q=
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4a549cd7fd2so252055e9.0
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 08:47:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1794415458; x=1795020258; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=eZsD1auAFGH9focpKeQLt7lmstuziSR0maGDEOD7IaE=;
-        b=Ov2tBg+judDWQcE8KO+GXUzpUxpyf2a0AoT/tnW2Eks4kKO6+9z1woVivRGDggSLnk
-         483PvH8AmaXQDt3uKVBV7mM0AEq2Le3YFJz6lHWD2OF8Y00l5ZTWVCahLSId9pknQsnN
-         8NnRRsVXt4ShLtOUpeM5ensmVpkfDZCXlBCps=
+        d=google.com; s=20260707; t=1794415663; x=1795020463; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JEN1we3zUbJ34wQgamBpttlVbDethKWGuPURScqYgfU=;
+        b=FSczxfpD9w8CxT2/DvHlIqaxluYExEx/ka+5yILkSsqjXs71Oi+7Ks0K7k3Y5Ju4Bc
+         XO2MKU4KpLLiV53ufnYFvlwzM1mYDmxz7TeDu7PH/hPaN0aW/sOZQOHZOn/D+FrNo+xD
+         oP0h6zUF+C3BKL+niMP2KBOrkBf7fUe3cTGkQwl2CQPozwzUbJez2H3z+aBxx1rK5SWq
+         nAQz8R0nt+h28bTvvvYPLRKYdOx4nlqoimo9AuroK5KipwtQOMZ6jCmcRAi2Z+PYWhqa
+         BJaP3UZXwHB62C0Qte+axFX0t6pa8BCo/5QbQjuy+4qRELg2nw45bzLVIj3IJqpsexsl
+         3/uQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794415458; x=1795020258;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=eZsD1auAFGH9focpKeQLt7lmstuziSR0maGDEOD7IaE=;
-        b=GiPMB812aMG46CNusTy/khrILyp5tYQRsN6cSh5PoorH6lDrl9aLEN10HAWa/E6g1O
-         +dGpDPPVQxOzXgRoNC0+b53aPSrpBs7U4T2JMyzPblu5/cWPnK9X87lOzKIYE483ONNK
-         jvrLUfWHlZSLSWJoyu6OsZ+2qZPRAR4BQPXCeYv6PbM32oTbrWAheM/d+yzwNnj689rn
-         zyOJZx237wgwxCon06+w33Rc3xKsObjEGJwkEtvo4NW032sshMb1/Fmvdr8Mey8tWnu9
-         YXtKJXRaB4ehG1PsKk6IgbYKI36j0FDBvpWBijHPTQoIO3hwA8E735YUkaPifA8RO/Zu
-         qOTw==
-X-Forwarded-Encrypted: i=1; AL+hErHrCRa6H7B9U7Pi9HJH5nDEFBaJwpESPEjr+17X8Ce+tcAF9zyvzVuS5o7pCddU/miPVvV+6m34hg==@kvack.org
-X-Gm-Message-State: APuU4Z/HZtWIOJkLFG4Z977BS+TzxKhaqd1M891prwxTRGDqUavYn/IY
-	05jL9X6tabu/9Ht/hR8fJnzoUmIgpe2dzhrofi+CIa6Ulp9GEVoQ2J3baeiUUaYXomvuxX9eo/K
-	7uuwp8XrNxQ==
-X-Gm-Gg: AYBFou0ty+bMiSVZ5evEUDAyP69jI2qBHEVt9czJYDyjaPAL4UOo+X9h5+vnu3nSn49
-	BKN1YtelLsWvz6qtpmODQJzwKnfeZR/I8dohHSC85v3pMmTbE3DW7stXuz2B+0q+g6H1HBphw+C
-	ADHBMUjERPjv7pN/Ntv0o3vzAIqd4cchaMGAVqWpiffB5sb1VtAtHEwdohxwZonjz0usNKdTe3O
-	bRxewDYs9nptmGe+i+WMXWU8bgnbyKEKvKwn7BHdW9X3d8tHviGT5oV7oYL/ejcrqaZJDIbQ+f/
-	Po3FFTXU3OKpTL93p5SbTwECSdcB5xWU4mxBLArYU+Y3JnQAfTZDF89lFYVvK5JTd/TyisVw9tr
-	NUWBPh8jv8/vdUm+vkyoxHCXVBoFRHpUY+b1QPkhOZAIw1qyRugoF6ZfEOSU5+UsVcD33p8ttSi
-	3HKxSvRF+cs8/mDi81jrtiP4mPPeZWY3glT1DwXDMDy8eHtyqoyRnDOdE6TkTWj/DchlVI+L6kO
-	lgDMjvN/EHmBvWS01tJ3QFyNStnkNJ44hOb+OLC6ZEDKf/JoVWUtoICmCW2EnxlgTPhfpNY2LDt
-	Txi6ZpljbbtFZ2TlUPtAQW/9ZH7kQ/O4yhqfWrXTis9nUKRdQusQDia6HPemzT+/LuN32uEfc58
-	1870=
-X-Received: by 2002:a17:90b:1b01:b0:3b1:6689:a016 with SMTP id 98e67ed59e1d1-3b197c93f3amr20413a91.16.1794415458086;
-        Wed, 11 Nov 2026 08:44:18 -0800 (PST)
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com. [209.85.216.46])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197c42a4csm63828a91.4.2026.11.11.08.44.16
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Nov 2026 08:44:16 -0800 (PST)
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3ae1b34e0d2so6294a91.1
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 08:44:16 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErG3TRWpdb1m+k8n8VATRtIgsp9ChBS1m2YbToHzR92KfhKOIBR4FV08x08o1mpYIcPJHfBpC3LdcQ==@kvack.org
-X-Received: by 2002:a17:90b:1d45:b0:3a0:cca0:4a8c with SMTP id
- 98e67ed59e1d1-3b197c817dbmr35589a91.7.1794415456305; Wed, 11 Nov 2026
- 08:44:16 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794415663; x=1795020463;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JEN1we3zUbJ34wQgamBpttlVbDethKWGuPURScqYgfU=;
+        b=D52oWYLdmFUNsdIfU2KIQysBI0d/uVnoQSE60NlGcqMLbgF7MylBW0y2N3AdFC4rCE
+         LsfqTIWuB8/3gpFt0IkPx6Ooj9rgwAe4brLj0BDRr3q78iZqIfQmH/90nFG6q7o7tS1E
+         8dPUDhI7hVBFLCYaAoooQNWvh0pDy2Kjq+wPbNmI6cmQQwmxxpPNB7m/o55LTwY53OYu
+         OsO+o8Sgo89RqiN+sD3vVl6UaJD79gOSpyAcxHbRQ6csXN9qSeSHJhixuijwGOrl1gGE
+         igWesEUPATHyynSaih/kXLWBwyR5s0S9gTmW0zXkxEzJ+uOBw8Yi8wKCzBsM6pbTi5LS
+         IVwg==
+X-Forwarded-Encrypted: i=1; AL+hErGy1b29wWCvIslzQJGsyxpHEZ2nbXXejxogn+9omF/UOiwUX/0OyR8XqJGBhcvOx27h1+mfCMmtyw==@kvack.org
+X-Gm-Message-State: APuU4Z/g6fGzTBTzvBsTq+vFDeGLXCG2ZH9DDUYjh5JfVnqN0+TO2kWJ
+	jnmR0+1MaMn37cfJq6HI3tWkVuaIYtC/bx1B317gRzgrAr6cQ1ub3rVn6LFM+vULsQ==
+X-Gm-Gg: AYBFou2Qhu8HCNZbUx8sCDNyyt3MnG4w3vKPqC2BPf/Ew7zxuv+UPcGSzR92n/bWsib
+	WRrXDehpTEQCKrjyhr7UYKa4Zi6AlQgFE05N72zXk//d/K3zyd9lDJWwag3GyTB0ubr5l3ggkMT
+	HmhsdnFBsFC7pdSW1DitQd/p1FwANVy/zZw3ilXR65uEifwLDsfNs3gNCMMUb3rYERlGNXaqo7R
+	idMd3Rpwc891g9T948CQbXzEDdknyRGvXCZ4OF/eZUugLPHz77NdwZrJIs2P66uLoTRBwpj+MAZ
+	JMZ1sOg1sHrVsoAaRzFz9DQX4wRJ61VvyHPhmPJfJjKZpYWFah3Pjl78KS9R7SMyT7B8rJyijpP
+	qNMxjpIDbY5VZrFByFd0FLZhn4RerAklZMHwhSnVGubyOxpE8mWLjQOxD4u6Ni4gDTnrmBYXeoF
+	tFNF6dMqsg1NYLtF4v1dBCYfFTpUcFcQrGTzlkAza01EmKmebYjQdK19oabZyz6l4dulk57M18L
+	zSHMFq/s0a/QiDPiosjmsK+yRZc9C5aXvD27d0HqbN+kYeS4SH4dXUvmpNbRrGrvohZ39xvf6V+
+	IUGZ16FFXDxWV6wo3hZCxmp0TWhNPNxN/nEQ6nwBGo/gXMym/BfbQvY/l5rayOtWew==
+X-Received: by 2002:a05:600c:3f07:b0:4a2:18c4:61a5 with SMTP id 5b1f17b1804b1-4bb4e27994emr1100895e9.6.1794415662004;
+        Wed, 11 Nov 2026 08:47:42 -0800 (PST)
+Received: from google.com (0.182.34.34.bc.googleusercontent.com. [34.34.182.0])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-498365cd06fsm11724877f8f.40.2026.11.11.08.47.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 08:47:41 -0800 (PST)
+Date: Wed, 11 Nov 2026 16:47:38 +0000
+From: Vincent Donnefort <vdonnefort@google.com>
+To: Tao Cui <cui.tao@linux.dev>
+Cc: akpm@linux-foundation.org, dgilbert@interlog.com, mkp@kernel.org,
+	loberman@redhat.com, jmeneghi@redhat.com, kraxel@redhat.com,
+	vivek.kasireddy@intel.com, mst@redhat.com, jasowangio@gmail.com,
+	eperezma@redhat.com, stefanha@redhat.com, sgarzare@redhat.com,
+	rostedt@goodmis.org, mhiramat@kernel.org, jgg@ziepe.ca,
+	kevin.tian@intel.com, axboe@kernel.dk, linux-mm@kvack.org,
+	James.Bottomley@hansenpartnership.com, sumit.semwal@linaro.org,
+	christian.koenig@amd.com, phasta@kernel.org, joro@8bytes.org,
+	will@kernel.org, linux-scsi@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-trace-kernel@vger.kernel.org,
+	iommu@lists.linux.dev, io-uring@vger.kernel.org,
+	linux-kernel@vger.kernel.org, bobbyeshleman@meta.com,
+	mathieu.desnoyers@efficios.com, robin.murphy@arm.com,
+	mason@kernel.org, aesteve@redhat.com, tjmercier@google.com,
+	harry@kernel.org, vbabka@suse.cz, cuitao@kylinos.cn
+Subject: Re: [PATCH 4/7] tracing: account ring buffer pages and trace_array
+ metadata to memcg
+Message-ID: <avScKhR22kFOQ1z4@google.com>
+References: <20261106131829.3228926-1-cui.tao@linux.dev>
+ <20261106131829.3228926-5-cui.tao@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261110145241.536019-1-kas@kernel.org> <20261110145241.536019-2-kas@kernel.org>
- <avNuQqLf9CG9dSsE@casper.infradead.org> <20261111-heimreisen-ungeziefer-empfunden-a892571f2c07@brauner>
- <20261111-thunfisch-wirbt-waldrand-822275b2d3b1@brauner>
-In-Reply-To: <20261111-thunfisch-wirbt-waldrand-822275b2d3b1@brauner>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 11 Nov 2026 08:43:53 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wjPY=kfgnmtx4COEQjD5UzKx9m2-=KLGAZP4d=RKEH+pg@mail.gmail.com>
-X-Gm-Features: AclHuK9b6hltBFcCGqxpbtG8UmrJwldogvwXrVDW7-YQ5_XK3IWVlpv59flts7k
-Message-ID: <CAHk-=wjPY=kfgnmtx4COEQjD5UzKx9m2-=KLGAZP4d=RKEH+pg@mail.gmail.com>
-Subject: Re: [PATCH 1/4] virtio_console: copy pipe buffers in splice_write()
-To: Christian Brauner <brauner@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Miklos Szeredi <miklos@szeredi.hu>, Amit Shah <amit@kernel.org>, 
-	Jan Kara <jack@suse.cz>, "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Bernd Schubert <bschubert@ddn.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 3em8asmsno1ykoyk5d7axn7e19fqoumg
-X-Rspamd-Queue-Id: EE5DC40008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261106131829.3228926-5-cui.tao@linux.dev>
+X-Stat-Signature: 5jcdqnt4psh37c7e1g8npy7ph69bunuj
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794415459-404940
-X-HE-Meta: U2FsdGVkX1+ZaxaZ/yTGZKa5knpccZSEfh+YpJzASfWVzvxMOnnhyozR8+iF3j+SSDK4t9+qIq5NPzaMRNppHXHEisl2kFBZ4lPenbBMOzQNDB0JGwEExt9IG0Aj91XMY/SNw/qaCyty6THmXv2kQ9NIVGcYuCOHR3iG4QPjF5wZVOkCzCV4Lf4p/NmzJ2KuxXdjtSYcFbxPJbL2AuCBBO2oqQZ4r6B5vkNnjcD9+w3CCUaC/QRXlPr5Nc2ZLu2+zLOI5A22uaeeWmYuV2H8FVu0a/Thra2lhz76KncOFtthm7LrCiORbGjQwp5DTVAkVlUtOggz0tT8+TOKhlwYQLtThT3KzG63Dycn8LdZLaQ5GzgU0C5i5nThu5zhWdMZjJCUo+3t/yrrn/2l6v6lT4nuj+4SqomGFNpaBUyf3LOSQDB8uddVXGuE/VqLWbo5Dg6cI1zDRZQ/XaQg1anjIlcxvqEK0pafEGsn1HqOP2A+cWHbaG3rJbMlPdAuD5N3tKBNWEeyJUjd1mnTwVJ2UoMpDVKtvoslr0s1BwcigJEV8kOtOsBvP3EySdNM+9YBCXc04mZ78qHExFDKcEkuf6ZRes4P4p+N15IOAJksvkt35eGz6ZNN/7wxQm21he5oucOhsAveYRSvHyItYGt44v21/vZnkuJb7NJc+eGHueA0d3Ws8Z03jMRMpqvh6mJYCsbQTC5ZadCcBcQl5XG+rqP/2qdc6yvbGphOXyKo/Fjk/cbynXmqD+TeITcEqDfSfD9qsweTlAUMvXXoJd5W7HS1xFuN7CRZiKhBA5sQVNNrKtLU2fYN7heeGia8TJagWr2uWxnHan6Gwmm4JXFvUaLx0nLJZ+UoMgpN4dCKqPAzi2gK+hwSLz51z800XJ07pwkiXka7AFRBR/s7kDySEdQYCfNOY2d2iryP6DiJ1nTC65Ye/HyUTzWi3N+mlVrE74nHPQg99m1hmz9CW6Z
- XUlgNade
- 4Hd19oIa7O/5t51h1RwTwioFqY0LOPWsAvP/KxfaRMy1UdN6PdJb0amrbyH7gYgcVD7/RqcICY9T3OAJJ27Egc07i7xOeQq9YpksH4JtgAA9V7qHOB3belsEHSzp9Zeyee94n3gW1ElRw5rki72EGQSiLC4zaFUTHII1xGwpJjL6SGMnGYN1Ve6Igi/aU/LcZYcBZbeB0U8CpIjxs0ICvbFAjORzOZuVZBbNvX3QAfyNSXkCmZPANVY9k1NyU2dTae/2GM7YVurfkBqPKWkc+BHfT18P0X8pjviTKUDS+Lp+5yplmGB8uz8NK6H3Zi0rtgGmrCYY+5x8jlOHAjdL1Tqv6UMZ9juIFp4tE8jqFi3eKAk+lleLRE7fKU7sqEy0KB9Nz1NusMqLt4d2Qyv7vIlier5qQEU1OlRgvWLOM/NrXQaQSVACZHNT95cNgY/8rQZVEPUJxnQR3dWFC+Hy8HWV8m5p3qA2cQtOLwO/iEDvRfSuRUfQQfixtb5KHBF+tVu6A+ZnyQe0gpR/YioJfCCZOeHZsJb6kBnita3oT/T8K34T1PnRVW+hmXMVqQSAccA4MuCQGTsfBzpw=
+X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: 48F632000B
+X-HE-Tag: 1794415664-487073
+X-HE-Meta: U2FsdGVkX19Zr7MqrpZQpAnpi8rqfYZCKPa6425DCR0aQaNLIj40gWO+27k16Tcaozk5Xyny/px4rO8wFRtFR5S6cWtyJFrJctDsn2P90NV8mbsdG4TVh9NrKDRJdRBwbadPcYA4wWXieZ/mLEQP/3Rrgf/PW678x2GM5L7LmNq92ugaOTMs9DvA/K9+Flumk9f/ZCbybux7fF/lJbafyEZRZp+vsrBzVULbg41+MrvQDWvtCf/MyzaIFyG04xmit3RaD2LI3qmsHhiWLV7Sb5a6IDIL00TxvmLhJTZj8+1jQ4whSrlRkI5NsQENnlsA1VpsGQQ7mZO8nJFV+gxG7qZOBvy7WqZ4yqBUycKy5YbebcBpsqSKzOByILyH9KdF0VBHI3zP01rZS90BN11mb/E1AbdyXyvwu953UW8bOvBxNdcuavQ1sfZBU6PMb/5Cp5++38aBg5O+EBWB99X0txU2UIgpM9799XQdkik0wxNUl8/l306kpVh9ahfPYAC3WMLCGUPJr4NCbTbsCMCbV/MK7deIVn3iX5oAkUoSArxxpt+JaTpO5gBVMSXE0PoRGPglsuq4/x7N6l+NXS0rFgNxfw70nxtzAw/7k/60fcCf7nXc3H0jwaYfV5DQd0eHYOHNQEE9icqDzKWGFGNa6Do0k2DG8MY4HGYCpPiC5xs0dsInQutehKW+0TkBIkN8QCtA3KoqNTXpxXTjN/atEH4msyUG8yQlbgnHMh7oCrS/6QriqEFPDw3sn/QXrqoBQMnIeKLvFffAe0mclC/Sehq7//LWYrme2Y65V+UeVFgAYIKSY5pZrpZGeMKcjOE21GNnccvyOakb6xAN9JGyROe0HJAsMyfLBbCORKZF/Z7E7IKyh+YD4ziNJclzEwXU99dnALcsRv4syq1IViZjY0Sc9im1fKvKurgkhZIgSgbtk0Uiq/HDqV3ECyie3j2oSXkAmWpM6I2ksazWAFE
+ mEeK0Z7V
+ c/3rMMY1ESZN5ywD/kJYY9zDZKms+lsoaYitNL827ay1O9LKSERkC6cdv2d6GtCf9BuYvu+e+43WnA8zuM67WfEBkYgWBbPmkVP/3bGKwAChY6q4mR7pK80hiTcwWxSKsddXSiV/j99LWLPMd1Mfc+C+5MZ62R1i70U1wRDhmRbxoAzLUHGEUnxrWTwIN6wdtJGK2nXCi5LvUQ+dWLK8dr4Wahd93M2JcsmPwVV1chgDAzOiRtewMXYlHpjSkIhPG1eKyVIXRNHlc5ChqXhJsLJkioc/yKre4ultUa/MJT4LGTWN/GPBQjX3n7dQHh7lqBEMgat6c5WmLKBCuYD7SHXlrykimdI/rnmgkhOjHjaOWhmyHx2iHGMEBi+x0FNlYibMhXaZfIKd/ZYlgCfJRqkxW6FE+ltjNNLRP1NW7jafbDOG1mC/LuJVTn6IonC4oR8cUiU2qmyy6YbnP9GkyULfP8uiORKmO6vA5TLI4FoANuUI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,37 +141,90 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, 11 Nov 2026 at 05:42, Christian Brauner <brauner@kernel.org> wrote:
->
-> So the fix below is what we've done before for pipes and I think it's
-> the right thing to do here too. I put the following on vfs.fixes:
+On Fri, Nov 06, 2026 at 09:18:26PM +0800, Tao Cui wrote:
+> From: Tao Cui <cuitao@kylinos.cn>
+> 
+> Creating an instance immediately allocates two full sets of per-cpu
+> ring buffers, array buffer plus snapshot, about 1.375MB per cpu per set
+> on the default config, plus the trace_array and its name.  None of it
+> is charged: neither trace.c nor ring_buffer.c passes __GFP_ACCOUNT,
+> while user_events in the same directory accounts everything it
+> allocates.
+> 
+> Instance creation is currently gated by tracefs file permissions
+> alone, so a
+> rootful container with the host tracefs bound in can create instances
+> until the host runs out of memory.  Charge the ring buffer pages and
+> the trace_array metadata to the creating cgroup.
+> 
+> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+> ---
+>  kernel/trace/ring_buffer.c | 8 +++++++-
+>  kernel/trace/trace.c       | 6 +++---
+>  2 files changed, 10 insertions(+), 4 deletions(-)
+> 
+> diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+> index 1fd28a72e6ee..676c059c112c 100644
+> --- a/kernel/trace/ring_buffer.c
+> +++ b/kernel/trace/ring_buffer.c
+> @@ -441,7 +441,13 @@ static struct buffer_data_page *alloc_cpu_data(int cpu, int order)
+>  	 * gracefully without invoking oom-killer and the system is not
+>  	 * destabilized.
+>  	 */
+> -	mflags = GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_COMP | __GFP_ZERO;
+> +	/*
+> +	 * The subbuffers are charged to the memcg of whoever caused the
+> +	 * allocation: the creator of a trace instance, or root at boot for
+> +	 * the global trace.
+> +	 */
+> +	mflags = GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_COMP | __GFP_ZERO |
+> +		  __GFP_ACCOUNT;
+>  
+>  	page = alloc_pages_node(cpu_to_node(cpu), mflags, order);
+>  	if (!page)
 
-Please no.
+Hum, by default tracefs is root only. 
 
-> -       src = kmap_local_page(buf->page);
-> -       memcpy(page_address(page) + offset, src + buf->offset, len);
-> -       kunmap_local(src);
+And even if made accessible to other users: 
 
-This boils down to one memcpy.
+  1. The life span of a trace instance is not tied to the caller.
+  2. The ring buffer is shared by multiple users.
 
-HIGHMEM is dead. Nobody sane uses it. It *will* go away. It's already
-effectively never ever used.
+Overall I am not convinced charging the creator makes much sense.
 
-There are some broken 32-bit arm setups that use it, and legacy museum
-32-bit x86.
+Eventually a few allocations for iterators could be GFP_ACCOUNT.
 
-Don't make one memcpy() that can be inlined become this garbage:
+-- 
+Vincent
 
-> +       /* The buffer can span several pages of a compound page. */
-> +       kv.iov_base = page_address(page) + offset;
-> +       kv.iov_len = len;
-> +       iov_iter_kvec(&to, ITER_DEST, &kv, 1, len);
-> +       if (copy_page_to_iter(buf->page, buf->offset, len, &to) != len) {
-> +               __free_page(page);
-> +               return -EFAULT;
-> +       }
-
-just because of broken shit that nobody has ever complained about or ever hit.
-
-              Linus
+> diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+> index e8c4efa8107b..04b60b9cc4f5 100644
+> --- a/kernel/trace/trace.c
+> +++ b/kernel/trace/trace.c
+> @@ -8693,11 +8693,11 @@ trace_array_create_systems(const char *name, const char *systems,
+>  	int ret;
+>  
+>  	ret = -ENOMEM;
+> -	tr = kzalloc_obj(*tr);
+> +	tr = kzalloc_obj(*tr, GFP_KERNEL_ACCOUNT);
+>  	if (!tr)
+>  		return ERR_PTR(ret);
+>  
+> -	tr->name = kstrdup(name, GFP_KERNEL);
+> +	tr->name = kstrdup(name, GFP_KERNEL_ACCOUNT);
+>  	if (!tr->name)
+>  		goto out_free_tr;
+>  
+> @@ -8708,7 +8708,7 @@ trace_array_create_systems(const char *name, const char *systems,
+>  		goto out_free_tr;
+>  
+>  	if (systems) {
+> -		tr->system_names = kstrdup_const(systems, GFP_KERNEL);
+> +		tr->system_names = kstrdup_const(systems, GFP_KERNEL_ACCOUNT);
+>  		if (!tr->system_names)
+>  			goto out_free_tr;
+>  	}
+> -- 
+> 2.43.0
+> 
 
