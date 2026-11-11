@@ -1,95 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12E4606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 09:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C01B606A326
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 09:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OdtnVYVc
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gAMQa0RH
 Received: by kanga.kvack.org (Postfix)
-	id C07666B05C9; Wed, 11 Nov 2026 04:34:54 -0500 (EST)
+	id 922D06B05BC; Wed, 11 Nov 2026 04:35:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDECE6B05CA; Wed, 11 Nov 2026 04:34:54 -0500 (EST)
+	id 8D31D6B05C3; Wed, 11 Nov 2026 04:35:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1C8D6B05CB; Wed, 11 Nov 2026 04:34:54 -0500 (EST)
+	id 810526B05CB; Wed, 11 Nov 2026 04:35:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 92BA76B05C9
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:34:54 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 332DD16022F
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:34:54 +0000 (UTC)
-X-FDA: 85422328908.29.F415F7C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 996D91C0005
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:34:52 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OdtnVYVc;
-	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 603456B05BC
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:35:32 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0302D80243
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:35:31 +0000 (UTC)
+X-FDA: 85422330504.13.83956BA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 69F3120002
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:35:30 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gAMQa0RH;
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794389730;
+	b=KNDIQNiFqTsENsW5fn/UetRDOWRbuTLJef669TA1zOvc5TXn6trcfPIK/1hMVEKGLV2bvX
+	LMSt3ZO9aRrSqF2C3T5ma0qtF+4gBOpc3cSCsY8tHSMdnZJ4mupmbd5Xp02m5u0FYmTTqV
+	vMdoZQF2BQkMm9KqAJNikWTAfZh0iYE=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gAMQa0RH;
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794389692;
+	s=arc-20220608; t=1794389730;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9oT8mJ+Ro9B5pT3ilEOpm07E7nXRbdqUWub1X6gjjq8=;
-	b=XI6N/KAPzybs3TEdh6G/1BNXAqnqs742I6vsto6MVWoudoKzVWilUil/XufOYDt6+Xpxzt
-	hF1DlOd3Lvh77XFOArGjOQ1L+uGB+07SULgi9cFqJs97XxBFTznt72EiQ6HS+YoXkhFmGY
-	9ii+7XUH5phYiVzPMKTWowS4OT65/Yw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794389692;
-	b=xrZrTRsgG5XVoQXULy8h/uZbqumQQ/u1GtMMImoE6DDG7Ms8pToxzTRSDJ7YnspIC2Lz3w
-	2pAsXsQ1iDw17fWT+ZmSUkhBnfkvAr0YnACyCWp8+hZFlmc0ShpZu+YWBVHin6a8+Flbdq
-	yCftafILOqdSODW3vywG8/+m8BAavaE=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OdtnVYVc;
-	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=0wPrDM3ByIgNRkd8um3+s03MrGcxAel/A496/JlTAcw=;
+	b=ZLwA7IbrrTy2Wk4XNLmZm32Sw8vRHiz2UIe+HJzHYrr/mTgVpZNWPdktCfIE5WHdwyOZS+
+	xwraK9nC6oDvpAnIsCjiWNiWNW2/lX9Tnkk+2ahaLybB6Ujv6v3AmXDNaMa0DJuh/agi9b
+	ilU2/6Q133zYQSy/0/PfgofA2hQWrus=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DC8E3433D1;
-	Wed, 11 Nov 2026 09:34:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90CCD1F00A05;
-	Wed, 11 Nov 2026 09:34:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E3FC2633C5;
+	Wed, 11 Nov 2026 09:35:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C1C1F00A05;
+	Wed, 11 Nov 2026 09:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794389691;
-	bh=9oT8mJ+Ro9B5pT3ilEOpm07E7nXRbdqUWub1X6gjjq8=;
+	s=k20260515; t=1794389729;
+	bh=0wPrDM3ByIgNRkd8um3+s03MrGcxAel/A496/JlTAcw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OdtnVYVcsG19f5hTkpS9kaTbzYuiT4HMccwgMwUjVwnIpesQBW34vpb3Soyr4kOrP
-	 hOWU9u/FdRtMey9V9HCAE456IT8ckxwm57A+Ly6VYYZWBpzFU181QmxIL4ZKaQBkuv
-	 R4IW4Vu3xTtqaWY7OChZuL0TLDuaiwTiXF6Sh1i/iIOBQY4YZqWcOBld9mgeDtepGg
-	 xhpH4Hal/ORXF7Ws8rDRjza2UZ1LZnHqJFb3QJhbDQIkq2cHWiFFEkTUDv9nHA3f8I
-	 KC2GcTd5PWGGo5PuIK0Rr7OdS0N/e91AdadUEU857idCihrAQD4FlV8x8zGu2F2D2e
-	 mjn9fyjTG/YWQ==
-Date: Wed, 11 Nov 2026 10:34:46 +0100
+	b=gAMQa0RHrVEcdCTId5GAxxrGWJDWYg7Xh9YkxitRixioy7tg5wkBQEI9uDd0st8Uh
+	 YnLgub2226L347lF9jDxz6rLuPv+BzoRXwpWU0BDi3ju+jCRN2OVUks/c7NHGphhPb
+	 yixhl7x1QNHf0c/Lk2q3KpoiDJj3aFjSw/RyQ1fFnXRuUmU7OERWNGYndDndIk28pZ
+	 mcUdS46AqNl+Ss3lxn4EkmaINg65asBvoEa4HqvQacm+3kr4vokkQ8k0xi5Y3s3AtZ
+	 xSra2BP1eQvakfogTaMApKno9neO8lkjjcSTp8d26FwgVll1KJ2zWA+h/3Hdorto4K
+	 Aygw8PaUPL5yQ==
+Date: Wed, 11 Nov 2026 10:35:23 +0100
 From: Christian Brauner <brauner@kernel.org>
 To: sashiko-reviews@lists.linux.dev
 Cc: Jan Kara <jack@suse.com>, Al Viro <viro@zeniv.linux.org.uk>, 
 	linux-ext4@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, 
 	linux-mtd@lists.infradead.org, dsterba@suse.cz, tytso@mit.edu, Mark Fasheh <mark@fasheh.com>, 
 	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>
-Subject: Re: [PATCH v2 17/34] ntfs: don't set SB_RDONLY after filesystem
- errors
-Message-ID: <20261111-weinreben-einlieferung-sequenz-e817949ea18c@brauner>
+Subject: Re: [PATCH v2 25/34] gfs2: wait for a pending withdraw before
+ remounting read-only
+Message-ID: <20261111-dackel-verfechten-eheringe-01ff8d8ee23b@brauner>
 References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
- <20261029-work-fs-sb_rdonly-v2-17-2f44f64f0b66@kernel.org>
- <sashiko-outbox-191236@kernel.org>
+ <20261029-work-fs-sb_rdonly-v2-25-2f44f64f0b66@kernel.org>
+ <sashiko-outbox-191244@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <sashiko-outbox-191236@kernel.org>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 5s3zqkw1knb9njn7rhy9bptuwi1admdp
+In-Reply-To: <sashiko-outbox-191244@kernel.org>
+X-Stat-Signature: sujbkgyxcmra3n41oc6oh31yfdi3iffk
+X-Rspamd-Queue-Id: 69F3120002
+X-Rspam-User: 
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 996D91C0005
-X-Rspam-User: 
-X-HE-Tag: 1794389692-507542
-X-HE-Meta: U2FsdGVkX1+7Rhv/jKXu7goIPYQVBgzB+aQG9gnKp/Nc1/dfWtxehuDGQXEDgoCIq5hgG/YgzwQGRCC6ntvjzZY4EWYVcvNwjRNEDWlX5dqdvWBJZqswRAcIU80n8ZeTXTlCVH3KW0BPFo2ET4CJ8DNwbX/w1ZAGkluihtcVJZeqkQbGBr+iQjSRv5T6JPxMltwrWcM/a+JcrVjRSSwLhRJhbvX0j0s+Ds3dC/pg9I8okYtR/axcBwuFUTwl1eQhhaFcQz2Aaxsb+AsTIeQEJOVGbTh2ZiJMU/XNNhaMWCt9sbOhQDSmSSCiGoHS0CqnAzqljNlhuxafa0uy82zN6aSC/R3pLtfmfjl1MtdeE5b+8iGxREepbiRuJVfd/vQSlbXjdh8te6GncGmNl78Aq9mtaZhgK9cwHLUrcFe+KeadJawCZJ+UpigBJPD3NUncYY+IyoKL0kwGakMZ7yqrTYOW7DmEe5cIUWmMkV6vUbgii7ADDHrhsHgNWyTI+eydmj7xHmdE+oGcUdOcvX3UXHsEumXIuHC3LT8onziVWGf55BcwQYVFcu9VDqkxs2H9TIYVI1NcUUeGJZw/sh5Ty/eGCx3mwPFFeAWzEjJ5wPPKp8RwKCDdkw3u8zutRtUj7gVDxeJ5AE39qxNp6o4m5nprcQ1Q23x9uyUhzfd5E7flZI4hso67W135grNEMCKzKW03vRuAYWkjYB7bClKpPaRQ/XwkoFxY2D9bPHXy+EqwpVFActrA9Pk1JGaURxuG4maFtRZnPSzjtEkITor8MFfCDSav2y6p9r3FuEI4sdYFar60YTfxzTD0GuRFhfBoPxAlpcS7Tw+g/ZvjwZ/Mi4kOpDeYK7mrRUvn+boWPDnS0VU/w85Ly1/K536s5NDhSBGDUhdRyoOtOp/yeLAil7RNm9cmuS/TrFuSSbXWujWD7IsfeNnt7DYU5ZM7vBh1wl1oDczxmQYTFKTvWn1
- qFierFXY
- WCW0VA6Sq7OO6axK6CWl5WUrjwCQCTIVyRPlM0tmf2+2Ul6cGdVRHCkTI+S606gbG47MGFDfWixa5DZ/F2mrc/kz29VkPoyp2YtW3am2AAABE7jjrfBXbdJEVHRzB0ZbQvURD+9S7g9TP2uAo7VW32o7sJHqiW2qChegL+kzUfLpJ8+UlwG+PS05sN8qeFFNcYfWzkzsWtadxDKRs1YeNE3gqT/FAaD7BjzU+BjqMFToppg9MLCyIy5qgY85XUcQlMPuvZ5nLYB8rvGSE/VyasnM+XeIKloPRE9Tn6xNvJOnH8ootp1cv5osn92PT1cWvGPL1n+Efe6LHNsbIatB7sY5WuasCzCR9DLh1ZQ/OmZIEqDFgAtp7I7iFqg==
+X-HE-Tag: 1794389730-842941
+X-HE-Meta: U2FsdGVkX1+Z0rc8tBHw/QmZA1Yn237x4f3m1p4kUQ9bpq3sbNz5vHqs731Q86wNGOLQ94FxWEgQ1oMRwSGXy4dajx2ZG95u6eU9O/5BerL2mcdTNGQMwwWxck/91jhZwuPbc2/SGJhILHhyHLqWdDRD+5kC/ujwzhBRJ1YuLmu0ABTZoDtTyZH1rFnrYSX5n+rZf0qnqdTkkFPb2bSQr/IB/Nphl7QI4v/KL2ujW7uJq/8uG1r0p4qRNw2FpblJ+dYufJAIuO63SLHOj2OivbUUpMxdHas6Fihtdtj05mD+kJRC7oL8igfCrPWaWe6c4lxQf4F9vlonkaYqOcpGX64PaixkKpxzKYalvt58IfL3iSGuElkBHyGowg3dy/6SW9D/K7tGEMf2CrU2OSjmiHt/rMDC3X97Xv5Vio4WTiZSVNWPiQK608xglSR4emThNiLEenauvAjzkamj3KZ2rZ5wXX80iBEh34WBAFSvYV+urQHq+c2bChKmxaHA6S/U8Pu41605hscSDhRTGLVWtqfMhk/yZBVY676QUzsvSRZB+YEK/X3ntWRdk6fOHe216Gk7XroyRT7IU4gZx4CGOn+udJogAv5vDeIQt4UVnB7rdr8Hmj+Glqo/1aQnBx0U6d2aOUOALZRy/SA7cuNToNTTTpHCSPC0SuU8sLgCW4+/lifaCtyrckpYz14ftpRT10VemK7k/Fr0Q3p2RuFusDZu5xe+gF7Par8GUEB6zV5GhwycZ7mpCbiYSZ1JnRLzYNPhu4JsXd5Dd45zt+1lvxudXVw5rmLTUyA7MuhbSK0nun4BN5lHuEi4dOCr11J6DsQPKfxBsil/ICsTfRlP4iC6MOXhcr3PzyiHv8HNz34gIAjA3cChOdX/tBOJjKStgKbzPfeoFCQ+MrVvMSdlKwVSh+egJJPUtlprDF4PQSaj0eT0MeWsnRZzNq1KqGe40S/LN5Wcy1DG1w0J3Kj
+ fTsvk7PY
+ D0Z1QQvddtpNjsGwYnuRN9YPS9ZnPytRD1FsgyC8WlhiNK+SmSAyfhud4MqUvfABa4So9Skh9NHbPjL2qtffSImD3iEU0+DQ6WPdz8PVh9YNH/ZWYEIOShf9CC/eoIChr0zneFb9yutwx8dMa1N9dmESQwO0hfKmE1ARNyz/1pX3l3YB9WzmDNUt8MbtoUr70sGCIgnO3Aj64ri4OOH6IHxcUtKGSZssgEQzgHQaxUlsFe9cQL0pZ+75+lYraGKDvCmYCzVdAn6I6eD0CuzbJVnPXxDA01kUu9u3YUAa5PPHO8meOzAhXu11Ir2BmSK6sTRI+0aCFor+XXv4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,18 +98,13 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 30, 2026 at 04:10:02PM +0000, sashiko-bot@kernel.org wrote:
-> Should ntfs_trim_prealloc() (called from ntfs_file_release() and
-> ntfs_stream_file_release()) also check ntfs_emergency_state(vol) before
-> rolling back preallocated blocks?
+On Fri, Oct 30, 2026 at 04:10:09PM +0000, sashiko-bot@kernel.org wrote:
+> If the filesystem is subsequently remounted read-only via
+> gfs2_reconfigure() -> gfs2_make_fs_ro(), gfs2_log_flush() bails out early on
+> the withdrawn filesystem without clearing SDF_JOURNAL_LIVE, leaving
+> wait_on_bit() in gfs2_make_fs_ro() sleeping forever while holding
+> sb->s_umount.
 
-It only drops trailing holes from the runlist so no clusters are freed.
-And __ntfs_write_inode(), ntfs_mft_writepages() and
-ntfs_mft_record_free() refuse in that state so nothing reaches the disk.
-
-> Does ntfs_drop_big_inode() need the same !ntfs_emergency_state(ni->vol) guard
-> when truncating unlinked inodes with I_SYNC set?
-
-Yes, ntfs_evict_big_inode() already leaves unlinked inodes alone in that
-state. We'll probably just do the same.
+Pre-existing. The fix is probably to queue the withdraw from
+gfs2_reconfigure() and flush it before gfs2_make_fs_ro().
 
