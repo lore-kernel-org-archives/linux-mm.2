@@ -1,142 +1,131 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E291606A339
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 21:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8FE606A33F
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 21:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=gcUmKaTG
+	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=Jd4UA/DV
 Received: by kanga.kvack.org (Postfix)
-	id 75A1A6B05B1; Wed, 11 Nov 2026 16:10:42 -0500 (EST)
+	id C68076B05B2; Wed, 11 Nov 2026 16:13:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70AC96B05B2; Wed, 11 Nov 2026 16:10:42 -0500 (EST)
+	id C18E66B05B3; Wed, 11 Nov 2026 16:13:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FA016B05B3; Wed, 11 Nov 2026 16:10:42 -0500 (EST)
+	id B07516B05B4; Wed, 11 Nov 2026 16:13:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 29E2E6B05B1
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 16:10:42 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 960F2140429
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 21:10:41 +0000 (UTC)
-X-FDA: 85424082282.17.85FC996
-Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C201740008
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 21:10:39 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=gcUmKaTG;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 86E206B05B2
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 16:13:34 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1906E120405
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 21:13:34 +0000 (UTC)
+X-FDA: 85424089548.25.E8D7B89
+Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 2F26920004
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 21:13:32 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="Jd4UA/DV";
+	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794431439;
+	s=arc-20220608; t=1794431612;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=r8AUQA6KaaSP0401Cp0Pm+i8FjqoJHWRTLuh0q617+w=;
-	b=BtsvgnDdtqu5cY3ByOXdgXtxDaxG2XVE/0enW3O5HuXILkFraZF9cx3G1ClX2WDjgZHpKf
-	VF4SstvRAvZxEQAViGGdIpsXT8NyymY2bBM0hio1l41I9tLcXvhwwELYyMOeEu+OgKbg+L
-	jWcfEuG3lnuw60UciCNXOKyQO3qgyUA=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=gcUmKaTG;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=3IrB6l2ge+kT+1cpfqcWAfjg5pGysZEjTO7L0UKFQf8=;
+	b=4R1FTvMjE9hX0BiM6gOIf7JR8ueu3CVPADBl1+cSPw5XXlZVwmdoyX9lJENpjc/q/oNkAH
+	cIVLAysQmxb56YjFNJ6Qnv94wTP/uAzwwMiYphcuOTVKVW2B4wfrpTXNRAlLtH3BXriPGJ
+	qfv2WLJyUo3alywmXcTTtM3uYcRTkyA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794431439;
-	b=iBvGzXNrqse+/Y3EUD/36he+edwUdDAvT2Snir20dNWWCPxU7KIf1qvnRS2sbCBKN6qPkx
-	TW1EDO+HtGAFkI7zTOrVsCkX2xmyj7jRF/5LPObHPUHLVS8EaM8ia6sJL2WlINiwxihAWF
-	rvdMaP0FRFZYz1ocAAZzC/zcmXynhLo=
-Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-7d2da1667b2so1810154137.2
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:10:39 -0800 (PST)
+	t=1794431612;
+	b=v3wtfUY7mj3JYmtrf9nAdTdBW6NlPOHNUsWRQZuf2UStecGwtnK4LUMHkmacH03hQl+2qm
+	DUK1wARXHJ4dRllhgNcO47hVYkTtbDHI1OFrHjp2KUE0CRrOTVe1TAcFNuLOxxHl57FmmD
+	q7mbuinV+1KHhcHX+jjpP+hNaWv7zzI=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="Jd4UA/DV";
+	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-7d2d18f1bf5so1822915137.0
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:13:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1794431439; x=1795036239; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=r8AUQA6KaaSP0401Cp0Pm+i8FjqoJHWRTLuh0q617+w=;
-        b=gcUmKaTGK8H3rbFZbvrvzKO8vKy0e2cfmFN+oaaTPR5s0yCVo8LARFv2AuzipLxc1f
-         6XTfZnbEOS6lemAQWmv9DJBIjbTfI0BGIbUeKjFANfY45nCenemmw3yX7hq5eGOaDEZx
-         I09HiaQR0HTi5xrQSyswEGM1auYNgg8WfJnMENJT6ukKvHoNjJxkh7Zmaysfn2amyl+q
-         xBcNkIKP7MAnzsi2EL0DL0vyt7WtlLJZFE0cLFExTaDm6FK4kGhXPowI+t6rSP9tpZli
-         /AwfaST84NbSXJ2ctPnzIGbNVZ5UpRxSvjaLkRaKN5DxWojAgtY8F4uINoRVFZdEQY6j
-         yjSQ==
+        d=soleen.com; s=google; t=1794431611; x=1795036411; darn=kvack.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=3IrB6l2ge+kT+1cpfqcWAfjg5pGysZEjTO7L0UKFQf8=;
+        b=Jd4UA/DVA0mq7z2ivR6Dt9w/MwmFLQYaDwe1oGEQ6MyJzVvuFNCt9TlVaP4jB6Y6EL
+         mtD4dEdYbYTUruclGNVwkDva8MI4XGFEg1n47bIfXe3LTFKwqawsfRE10jus/KvGsD5l
+         V8Dsdlw4jRjC4A9ouPIoFcRM0SyIeRjRCy1fp64ZLrcR+mEhgg8AjeUc6Hi6ZemxlCOp
+         +h2O2It6TiLkKv00wn1FrMNSuairfQjL9fPew4AJpHwBCOwmPtwkx3oMKzMu3ckObqD8
+         FzlY5KfTt6wnaBebuHqmtdwUWFKTOnH3KYTcIAsfUcGVOaK+vEl5sn6CYY/ZKq1q2C8H
+         sGWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794431439; x=1795036239;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=r8AUQA6KaaSP0401Cp0Pm+i8FjqoJHWRTLuh0q617+w=;
-        b=nO90CgG3FoZUqfT9kUhLJhh9ASH+WKhKH06fbE/J8y/eN3gb54yb+S1UMDke/atGNR
-         TF2JDzQJxLTDBww0q7MLtlo5kfGwhfa5SZnxWA1uJwqKXJzPJjG8YfemApHSsKv1/x8h
-         rj9dXEMjDnkxt6iDTuutO2/ZR9LejcQX43HGaicA3/kBhHv4oftoZPR65r9hz/HQRSqC
-         DFdn8hwHe3HnuxNcWM+E1dNCFSW6BqCYjbg7WzcXp22oGMZiRSGQKQKn0ED0ajUhoOu0
-         SP9lpsqoEwPBtFK7TP7/iUO7R1DOxwe1OHJc+QkrsXTxyvVrzKsOjkIEISNUQUneCLIL
-         b5nQ==
-X-Forwarded-Encrypted: i=1; AL+hErHEFeV3L3n2yHU9j4Wor5lbLWq7z08trLh3WJ6bO46I0SboNMazUap/rg489rqxf6KmzTarUknwsQ==@kvack.org
-X-Gm-Message-State: APuU4Z/3AiNsgRHzFDoPGdkGtQwnW5y6TWOIcK4VnPcwiKRscSvpZfIR
-	4gn2qPvcjSLH049vXi0PeHIaHgw1jkjnZ0f1pMSwfNbK/J/Sp9mSeshktPsgziDITHA=
-X-Gm-Gg: AYBFou3EGGJIf+W2hsdlLOVdvfikGcZWgpJMZyoHvkRiYgP5XD7DFci05OLY4Vz8S7H
-	5Hdq0C+fuWKbPPuaI4dqqGG6Np1oFZKhTQlQ0s8pIwAY62Xsl/P+0cwIxs/mykcz/KsBWXMSFab
-	+YzivQDS9Y6aFsJwHWdbH3IUb72pxb/bf/6TVsgx1xcke+ofCLQLnFRaYVZLjBXMCd3KajPicML
-	EPzCtnyU+c8MPLfihwqIU9VflVx1C9DjccZjDBSUE4iMHskk7Nmm7BkHY/sYZzlYxEsAU3fy28X
-	0zY3zjA/FLPSyKJVscRLU1iFSyzXZsrsQLDAcYTleBNQs4uElViFdmdU0NABUyuPESgxW40gYTr
-	ikAd3KcgTHDLCiDcSnQEqWvKllhngc1rIZGLPxRKTgBF7NXSg6uMWQTSEXYVpAYj+8WY4Uf0BHW
-	DA2g7gpUlF6bKlKIVQ/ruqXDQJZw+fvsRZEh8FFNNWj2Z9qUe4gWeDjTWSr1vXGE5+izg7kWzSu
-	ZCVfPlgwwLJ0Vtf9gJwDdAEhFVOHd+aunlnwEzR4dYhcgq6ltrhY+SOZXUOCyPADzT9TMhbhH+v
-	YtjXUA/tRMHp8FCRZPSogNruIlL/Qa7HidPrYthi5+8S2siqRBMVhADL3tVPNzrP/rQj4nbLYFs
-	FD6Ff+p2jnPYkvTgArQODhWi1/BqljFbDMftLJa4j23tNr76rpMb8
-X-Received: by 2002:a05:6102:4496:b0:7c3:1395:a090 with SMTP id ada2fe7eead31-7d4fb2a592fmr1781381137.6.1794431438861;
-        Wed, 11 Nov 2026 13:10:38 -0800 (PST)
-Received: from soleen.c.googlers.com.com (64.167.245.35.bc.googleusercontent.com. [35.245.167.64])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d3023847absm4914038137.8.2026.11.11.13.10.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 13:10:38 -0800 (PST)
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Alexander Graf <graf@amazon.com>,
-	"Andersen, Tycho" <Tycho.Andersen@amd.com>,
-	Anthony Yznaga <anthony.yznaga@oracle.com>,
-	Baolu Lu <baolu.lu@linux.intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	David Matlack <dmatlack@google.com>,
-	"Heyne, Maximillian" <mheyne@amazon.de>,
-	James Gowans <jgowans@amazon.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Praveen Kumar <kpraveen.lkml@gmail.com>,
-	Vipin Sharma <vipinsh@google.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	"Woodhouse, David" <dwmw@amazon.co.uk>,
-	Luca Boccassi <luca.boccassi@gmail.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Jork Loeser <jloeser@linux.microsoft.com>,
-	Chenghao Duan <duanchenghao@kylinos.cn>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	linux-mm@kvack.org,
-	kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [Hypervisor Live Update] Notes from November 2, 2026
-Date: Wed, 11 Nov 2026 16:10:30 -0500
-Message-ID: <20261111211035.3297484-1-pasha.tatashin@soleen.com>
-X-Mailer: git-send-email 2.56.0.567.gdb80ae8cd5-goog
+        d=1e100.net; s=20260707; t=1794431611; x=1795036411;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3IrB6l2ge+kT+1cpfqcWAfjg5pGysZEjTO7L0UKFQf8=;
+        b=rBwiy200308CDt29ecrWzbbsSnpbVIbJjlKKnHD0J+kWPyZ0s1nrmof1V4fRFqWrxX
+         sJGcKdXYFW1UbxJ4u4OBt05r8MskSfnNUGKReXbP+Qee7OhMAWzShns32+LpyBMsFIdi
+         Vvbowa9csTM1FybVwkfOY1J/wsMKox7pxUFtoDi18KwV29g0qsLmJQ3NJeK0evfVtQeT
+         jg0aCtZoOF5w7XMrgzGEZ+g/LL/VQRdDAjuq8f5lTfYB4UI7U+T/mtorFlZ8uN/FKm64
+         6u+1k/ojJNq+ZZLeoesga2NwVGtkFz/3r5pF7Q+rPVX0722rPvRpKpNmphurSmnswuN/
+         7F3g==
+X-Forwarded-Encrypted: i=1; AL+hErEtkQcAo5ir+RVhaLFtNJzCoEy+IGCNZqQhD0B8rFPvSk058B/duZuKM2Ms8J/K7GnVi37rpuGLlA==@kvack.org
+X-Gm-Message-State: APuU4Z+uf0vlUWKbP7jgAM+Zic/NN6CJft0G1h7KvGxc0k+h803fb+N4
+	c7IkZqNlFXcbCa1mWIfcDh8GkCz2t9Jbh7+Tgf5n0sQ39xWd2XQH9lfj9sJk6N4iFw0=
+X-Gm-Gg: AYBFou0tjyDON6urwp2YWBnI60J+qUlNBjEbKhYcX0txlV3KCVH5MiMEtaPgVKn+PSi
+	R2DO9Uihxsq30jO9ul714XJJhUUmsf+rONBZ9J+r2Ys9i/h+mT+u5RzLoWNZQX/2QTeK9XMzEog
+	FwCvDc/7ctDRaLMYnDNW5FAXM8ykW82h8cJZC8Fg+zPaEjrYh43UGDNjp/3Hdck6uOQvhaIld/x
+	sSzmmhufLZb+ms9ijx637UBuavtBX9e92deiGS85XcQzoXBsQavAHBYjp5ecuESxY7wrdRr9U9y
+	w+5qonFLk24nGPqWJcc5XP7DqWsMlHDD7JyylTCfBIkZ3EZqAF1LMpdZNjiXY+rUCASAmyOIi8H
+	pv9PO+SqwrgVCbU9QRYs2b1tej2IU5MV8S7UMDtRPvSFqmu8UszxpprGhTeBl51fLWpt4nwpPwL
+	bEUeGMSBVzpLcXH0HUOJ7wLBgwUH77LyGKne20qQwDbs/npSzgGkplEUJHdzlQW0jOaYpzKCjM1
+	hkpMg2aCEV4TgT6mDpFXrGzjA0Aro2PDGre6sBzJ+x5qct1HfDecshiZYz1ZFsBibGVuEqiuVxp
+	Zz35i5MBjy3dmCcAyeO7C0CFB+49sWFcSwksjsEkGOs4GTlzdNZ+a6SfOViv5RoIL4qrevoOqJ2
+	pSO1IQ1coufwmTPAL5JkExgEpKLnl
+X-Received: by 2002:a05:6102:2d0e:b0:7cb:bc5e:7d9f with SMTP id ada2fe7eead31-7d4fb2577edmr1659351137.11.1794431611247;
+        Wed, 11 Nov 2026 13:13:31 -0800 (PST)
+Received: from localhost (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d3023838a9sm4907083137.7.2026.11.11.13.13.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Nov 2026 13:13:30 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Wed, 11 Nov 2026 16:13:29 -0500
+Message-Id: <DMSOX12JE1BL.33ASGRFO04NUM@soleen.com>
+Subject: Re: [PATCH v5 5/6] liveupdate: Add LIVEUPDATE_SESSION_FREEZE ioctl
+ to freeze sessions early
+From: "Pasha Tatashin" <pasha.tatashin@soleen.com>
+To: "Mike Rapoport" <rppt@kernel.org>, "Pasha Tatashin"
+ <pasha.tatashin@soleen.com>
+Cc: <linux-kselftest@vger.kernel.org>, <shuah@kernel.org>,
+ <linux-mm@kvack.org>, <skhan@linuxfoundation.org>,
+ <linux-doc@vger.kernel.org>, <vipinsh@google.com>,
+ <linux-kernel@vger.kernel.org>, <corbet@lwn.net>, <dmatlack@google.com>,
+ <kexec@lists.infradead.org>, <pratyush@kernel.org>,
+ <rdunlap@infradead.org>, <graf@amazon.com>
+X-Mailer: aerc 0.22.0-39-g5d7784875be2
+References: <20261105050053.3063001-1-pasha.tatashin@soleen.com>
+ <20261105050053.3063001-6-pasha.tatashin@soleen.com>
+ <179439592041.425130.6098227055493441109.b4-review@b4>
+In-Reply-To: <179439592041.425130.6098227055493441109.b4-review@b4>
+X-Stat-Signature: nqy1ztzojtj4eni51194swbr8jc1e341
+X-Rspamd-Queue-Id: 2F26920004
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C201740008
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Stat-Signature: y84zuf6z61muwcndd7jnr1b51t1nkpjx
-X-HE-Tag: 1794431439-508170
-X-HE-Meta: U2FsdGVkX1894qoflycjziXJMyUOYg7M/8MvmldoTxt94A1mvSL2xk9wa7KD2PxdB912iOjGFWtB8d5CuVUnGOC28pIa14lpchYvavijjXb+xieUblnYZeqk6Ol1m4JAeh0ZvY9NqmW1DxM5Lsu9cNFZ5Y5PiAXkB/wmEB1K2WrbKMGB/zhns052RdI+IzpeLXu/Cya3fV6HcvIYecJ2P0uEzAkw3lmKpmTTy+6vU8JZJQNF8ZCZDb+waeXHVA4/ccxytDiucYst5cFTHqBzx38l2iXA3vcxIcM5xfti6mPhpGtZBBJvzgUsjhZmy0LvHYI9smNRVZqpK+lu4nO6PrTV/tKwIBlD1QJqs4/W6Py185av87oQ8CcgqnxISQOxqPbb93ahO7laSu0SMbU3bu5hbLK51DEYlsjRITmNw3p6OhPAB42YNbk+liLxHJVMc+eWS7HW8hUgu7O0ANtnx+sr3cBXEG+QEUgh2u20BcmbyhKnEZ6q+A5L9tGM/Zv7uiMk6/GFs/RwaAhE1oTzv0t+rDx3X/STWLflAwcefCJGqRwx3yT9PXhBN/pE7B3VYNdVpqoVlIyO/siW7XnRJKQP9x+Eddi6QmSGaVNBFIupPezYJ/Fm7w9fVZ4RnqcDLZ40UdPYHuPPS+g670xAsNB5B8Ep9jiMUVPG8CkZHNp+B986Y6LdWtKXImaGwI4H73cLCs6ZfkmmWBVChMa7l6CXC79v6c/nYibj/ig+v+XoKdckTRDt16qLyZG+5dlRnLbOfX33jVUy7vCan4w1RhiHIOomdIK2Qk8pS6ySR8v4ZyrO4TU4d38Fn3d9zMmrITOUrTzoOcd6cUcXMQI0cU3drOHeSXr28K0d/ux3ShIoGmm9eX+wPByeCqJzgqdTTDUxfLz8EoReYj6cbfyemdIi7gHSVUiooySrreZvDO460my48rJ423DclK9afEBlKQieIFPDEeXyhTa6SRw
- A4JgdioF
- bxCUPu7KAjtPKVJaTEun0rlhZAF4eFGsaK5gAUi/1ldrhMRFQDqudmOsL9E+X60SaWigmbdW4G93zawrH0dpWjWTL7gAcd7KDQYLmxPjHGb4LfTSVZVGy85Qpx7IIKzg1RpYQPhceEpM6KjjqE4cjEYwFltGy1YUgibk6/nQHUfaMNvRFxr5xSlSRSRK124dHodncbdhjT22Ta++yL/woISrDkR8og61orC8YQ4qsKKet7vAqmMSMujcMGnb2EwDXql18Jz3IXVCcRvlIp4iN5MqARZAZGb9FNKbGuLBy6m90hAhsYxUVE17hY7YBECdkn0XO7mlZ4BeTZ6TBrooveA/0TZPX1Lx1YU32XpM7bjUNYLLYeve5C0Mf6nvEElRfgma1q74kmT3/wLn/12Nv8XGy/O4Ez/dw8kIklQohW3YYz8XlGswtGP9tlDEnHDzulzE9oSrJtDKsa8fM8vL0qkCIGrX1fk2ZTC9tecZuSHXRu2s=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794431612-782797
+X-HE-Meta: U2FsdGVkX1+px3DZH6epwFvXHmCGPgUZlcbQhzWTFzBQ5UUDo9GMiXmq+vXSA2S9b059VLNS7mjqKYy29EcQtYnS8aHN9DoJZJOoV3In0TFk6U5X6DDz7Yf5s5G9hEe1/JIQk9wiaVVX9FsztTJ5xK/Pql+iNXMuhTwV3fZpiw+cp/8+DY0zjBXSp85JOH9At8tzWmLVnrfD2kxe0vEB0bYOkVSmrKHqfuT0zbHX2j1nzuncrsYM7Fs9s1izWsPCKEltzSRDXXjjqpYV4rQVY7VIamC2x8f6yAaPnStIut8bx/JGEM8aFoDdZy556HQ1vwoiHcce/lYPs7MvoPEBBXxOMKCaylxLTArSvlt0dNRiPqSMvExIUBVwA3eZ42xRiu0YsDNrTIg6Hdcx89YXnR2BRcP83baLXb64w8eqx0lLSH9xGZsEX3VLWdHjf5pX4tVeHtIAtu04v2l3m0+BC0ZiDSl+EwLzXUZIcI3ChQ6KucL+0SyAJVWQgkSirukRqmGF0iFiMyIToNTbES8i1IJzBgLK6wV4uKOJnPeXR5lGnk2CqVLRHt7RdyzUkNrrmYk91z3JSX+15lusjW0So/0TI5mA4UBzuZAHdNDdDGpzFRkvt+z+jSrXajQDVYQGd7We0/uPEyBkA0YhAzumuQLm5loI/M6yXVWZgKRJ6b1lxFDt54tTR3wXakzjcozCT1kNQhsK6fcXF8yoDfDJgu9ZVJ1Nh0s7O6bXJi77EtABKtIH964oY39QsVDyGH4EvtiRBQISmKsuqEc89igF42O7/+ixQvsIrw3hoMkXeVukbcPixY0TW+sj/18KNiEmhcuxUXHsPWIO6O0bi4C/z2s1HruN3jzI16Np6pxvmR5/L7AWHcYDdNKURCDCPyyuA0qkRf4VXYAfepcIn34GUi2bKDm1G7DM3+KNcKKrbV1aZaiaaiTVXw60FcmMeo8hS7MRcm24x2BBoSFrBEw
+ xvWE8Tm/
+ oSp/fhy2Ynx6yiQnQLQQzKKnRAGOxRl6zf5zEJOaGoRmW36M6DqkpPx+9zY+49A6CQ8QzlNdpRpMo6l0RTgrh9qVDUBhMbfBsq2viN6t7d9QHYVmFAbN4KRt26DYcQ4NLxS6n7hEyWIGphXWlVMAul7Ib03KHplkf1qC36lj7jK4pSLLdCKyoKtNl1pqwBbnZMQfeqnTRb5XAR8xzX+z/4By7mH4kuEGYX9u0vwCXollmkl1eikpDh8HNTWN9QNwq7j+VfLRMtaEKJWVzQAg+3dylZEqKRKJl5CmI6rZ2r/dWsKRu8VvUi/t5BkzXmpEH2R5O1Ps1BPTusrJog6JzAdEbvs7nXGjaVT9xX1v2uJP8dsJWSM+N2ggtJzRNnQ6UfclZWgVeUB+mawhihVLsWT0q5w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,239 +134,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi everybody,
+On Wed Nov 11, 2026 at 6:18 AM EST, Mike Rapoport wrote:
+> Hi,
+>
+>> Currently, LUO sessions are frozen automatically only inside the
+>> reboot(LINUX_REBOOT_CMD_KEXEC) pathway, where luo_session_serialize()
+>> iterates through all outgoing sessions under global write locks and
+>> freezes them serially during shutdown. On hosts running multiple
+>> workloads that quiesce one by one ahead of kexec, userspace needs an
+>> explicit per-session freeze point so each session can capture final file
+>> state under its per-session mutex as soon as its workload pauses.
+>>=20
+>> Introduce LIVEUPDATE_SESSION_FREEZE on session FDs to freeze an outgoing
+>> session early. The ioctl runs .freeze() across all preserved files in
+>> the session and serializes their metadata. Once frozen, no additional
+>> files can be added to the session, and subsequent freeze calls return
+>> -EBUSY. Freeze is only valid on outgoing sessions and returns -EINVAL on
+>> incoming ones.
+>>=20
+>> By default (flags =3D=3D 0), session lifetime remains bound to the sessi=
+on
+>> FD: the session stays frozen while the FD remains open, and closing the
+>> session FD before reboot (for example, to abort the session or on
+>> process exit/crash) unfreezes it via .unfreeze(), unpreserves its files,
+>> and reclaims all resources. During kexec, already-frozen sessions skip
+>> the late auto-freeze and are published into the outgoing KHO subtree.
+>>=20
+>> With LIVEUPDATE_SESSION_FREEZE_COMMIT set in
+>> struct liveupdate_session_freeze.flags, the frozen session is committed:
+>> it and its FLB dependencies are immediately inserted into the outgoing
+>> KHO subtree via luo_session_publish_one(), and the session survives
+>> close() with full ownership retained by LUO until reboot. Once
+>> committed, closing the session FD (or another session failing to freeze
+>> during reboot) never unfreezes or unpreserves the session, allowing
+>> processes to hand off preserved state and exit prior to kexec.
+>>=20
+>> Update the uAPI and core LUO documentation to describe session freeze
+>> and commit semantics.
+>
+> Please teach your LLM to use shorter paragraphs, focus on why and don't
+> list every implementation detail, but only important ones.
 
-Here are the notes from our Hypervisor Live Update call held on November 2.
-These notes are intended to bring those who could not attend up to speed
-and to keep the momentum going between meetings.
+The first paragraph explains exactly why; however, I agree that it needs=20
+to be more concise. I will address your comments in v6. Thanks!
 
------>o-----
-Orphaned VMs & Linux Caretaker
-
-* Shift to Specialized Full Linux Caretaker: Evolving the Orphaned VMs RFC
-  architecture presented at LPC:
-
-  https://lore.kernel.org/all/20260920193650.3373435-1-pasha.tatashin@soleen.com
-
-  Pasha moved from a standalone KVM-only caretaker runtime to a specialized
-  full Linux caretaker kernel. Using Linux directly avoids reimplementing and
-  abstracting KVM execution logic in a separate environment and enables
-  handling VMM-level VM exits (including select virtio exits such as pvpanic).
-  To stay lightweight and isolated, the caretaker boots strictly within its
-  assigned memory and physical CPUs—skipping PCI discovery and device access
-  entirely and leaving the global KHO tree owned by the host machine owner.
-
-* Supporting Upstream Series:
-  - CPU Hotplug Performance Improvements: Standalone series accelerating CPU
-    offlining and onlining to reduce physical CPU transfer blackout time
-    between the host and caretaker domains:
-    https://lore.kernel.org/all/20261019011446.834487-1-pasha.tatashin@soleen.com
-  - Read-Only KHO: Introduces a read-only KHO mode for the caretaker kernel
-    (currently awaiting upstream review):
-    https://lore.kernel.org/all/20261025174017.3870481-1-pasha.tatashin@soleen.com
-    Following discussions with Pratyush Yadav and Mike Rapoport, Pasha will
-    continue enforcing that KHO-preserved memory outside the caretaker's own
-    RAM is excluded from its direct map and mapped read-only on demand,
-    preventing accidental KHO modification and avoiding unscalable direct-map
-    / struct page exceptions. Read-only memfd changes (previously prototyped
-    solely to exercise an end-to-end selftest) will stay separate while core
-    read-only KHO is reviewed.
-  - Early Session Freeze (LIVEUPDATE_SESSION_FREEZE): v4 is posted upstream:
-    https://lore.kernel.org/all/20261026014948.162559-1-pasha.tatashin@soleen.com/
-
-* Caretaker Handover Lifecycle & Session Pinning: Pasha walked through the
-  caretaker lifecycle: a global session (e.g., session_lc) holds the
-  caretaker's preserved physical CPUs and boot RAM memfd. On the outgoing
-  path, the VMM suspends the VM, freezes its LUO session (resolving circular
-  FD dependencies and committing metadata to KHO), and tells the caretaker to
-  look up the session by name; on the incoming path after kexec, userspace
-  stops the caretaker before retrieving and resuming the VM session. Pasha
-  discussed adding an optional LIVEUPDATE_SESSION_FREEZE_COMMIT flag (avoiding
-  "_IRREVOCABLE" in case an explicit LIVEUPDATE_CMD_SESSION_UNFREEZE ioctl is
-  added later) so frozen sessions remain committed in LUO if the VMM exits.
-  Pratyush Yadav, David Matlack, and Samiullah Khawaja noted that session
-  protection is symmetric across outgoing and incoming paths: while the
-  caretaker is actively using a session's preserved resources, the kernel
-  should pin / hold a reference in LUO metadata so userspace cannot unfreeze,
-  close, or prematurely retrieve and release backing memory (e.g., memfd
-  pages) until the caretaker stops.
-
-* Session Isolation vs. Global KHO Tree: Pratyush and David Matlack also
-  asked whether the caretaker needs visibility into the global KHO radix tree
-  (whose primary purpose is excluding preserved memory from early boot
-  allocations, whereas the caretaker boots from dedicated RAM) or could be
-  handed only its target LUO session payload(s) for stronger isolation. Pasha
-  noted that the caretaker currently maps KHO nodes read-only only along the
-  lookup path at retrieve time, and will evaluate whether KHO tree access is
-  still needed if session physical addresses are passed directly.
-
------>o-----
-Cross-Subsystem Versioning & Compatibility Strategy
-
-* Expandable Serialization Header (kho_header_ser) v4: Tarun Sahu has v4 of
-  the minimal expandable serialization header series ready to post, adding
-  entry_size alongside feature flags per Pratyush's review feedback and
-  updating existing KHO/LUO serialized structures across upstream Linux.
-  Recording entry_size in the header is necessary for early-boot array
-  deserialization (such as luo_session_header_ser entries), where callers do
-  not inherently know the entry size written by the previous kernel.
-
-* Header Naming Alignment: Tarun asked whether kho_header_ser should be
-  renamed to include "feature" to distinguish it when prepended to
-  kho_block_header_ser. Pasha and David Matlack agreed to keep kho_header_ser:
-  every serialized structure starts with kho_header_ser, while KHO blocks
-  naturally follow it with their block-specific kho_block_header_ser.
-
-* Custom Preserve/Retrieve Arguments & Version UAPI: David Matlack is working
-  on custom preserve/retrieve argument support alongside tmpfs preservation.
-  Pasha suggested landing the serialization header series first and starting
-  upstream discussion on the kernel version UAPI in the coming weeks.
-
------>o-----
-Guest Memory (guest_memfd), KVM & Confidential VMs
-
-* End-to-End KVM & Confidential VM PoC Series: Tarun Sahu prepared a combined
-  PoC patch series to demonstrate the end-to-end preservation ABI and future
-  extensibility for KVM maintainers, structured in layered stages with
-  kselftests for each:
-  - Non-confidential VM preservation (guest_memfd, KVM VM FD, and vCPU FD
-    preservation + selftests).
-  - Intel TDX preservation (feature header + selftests, thoroughly reviewed
-    with Sagi Shahar).
-  - AMD SEV-SNP and ARM CCA preservation (feature headers + selftests,
-    prototyped/LLM-tested to illustrate cross-architecture ABI coverage and
-    noted accordingly in the cover letter).
-
-* Rebasing & Split Plan: Tarun is cleaning up the PoC series and rebasing it
-  onto kho_header_ser v4. Once kho_header_ser lands in liveupdate/next, he
-  will post the PoC (marked not-for-merge) to anchor ABI review, with
-  standalone vCPU and guest_memfd preservation series prioritized next.
-
------>o-----
-TDX Module & VM Preservation
-
-* KVM PoC Integration & HKID Preservation: Sagi Shahar confirmed that TDX
-  preservation is integrated into Tarun's combined KVM PoC patch set. Ongoing
-  work is focused on resolving Intel TDX Host Key ID (HKID) preservation
-  across kexec.
-
------>o-----
-PCIe Persistence
-
-* Merging PCI v10 & Sequencing for Linux 7.5: With Linux 7.4-rc1 released on
-  November 1, liveupdate/next is now open for Linux 7.5. Rather than delaying
-  David Matlack's reviewed PCI Live Update v10 series or posting a PCI v11
-  that would require re-collecting Reviewed-by tags across the series, Pasha,
-  David, and Tarun agreed on a two-step landing sequence:
-  1. Pasha will merge PCI v10 into liveupdate/next immediately so it begins
-     soaking in linux-next.
-  2. Tarun will base kho_header_ser v4 on liveupdate/next and include a patch
-     converting PCI's serialized structures (alongside KHO, LUO, and memfd)
-     to kho_header_ser, requiring review only on that conversion patch.
-
------>o-----
-VFIO Persistence
-
-* VFIO Live Update v6 Posted: Vipin Sharma returned from leave and posted v6
-  of the VFIO live update series (based on PCI v10). Moving beyond the LPC
-  prototype (memmap + DSA), v6 uses preserved memfd as the DMA backing source
-  in no-IOMMU mode and has been validated end-to-end across kexec on both
-  Intel IGB and DSA devices. Community reviews on v6 are welcome.
-
-* PCI Save State Dependency: To get v6 out for review without stacking another
-  unmerged series, Vipin included temporary manual serialization of PCI save
-  state into an allocated buffer. David Matlack noted that because the
-  kernel's current pci_saved_state layout is code-driven and not ABI-stable
-  across kernel versions, his PCI save state rework series must merge ahead
-  of VFIO. David will review VFIO v6 while Vipin reviews the PCI save state
-  rework series to accelerate landing it first.
-
------>o-----
-IOMMU Persistence & LUO Core
-
-* IOMMU Persistence v6 -> v7: Samiullah Khawaja received Reviewed-by tags
-  from Baolu Lu on the Intel IOMMU driver, IOMMU core, and IOMMUFD changes in
-  v6, and plans to post v7 soon.
-
-* Preventing memfd Hole-Punching Hazards for IOMMU Mappings: Samiullah
-  started an upstream discussion (mm/memfd: add F_SEAL_PUNCH_HOLE) to prevent
-  a gap where userspace maps memfd pages into IOMMUFD and punches a hole
-  (FALLOC_FL_PUNCH_HOLE) prior to memfd preservation—discarding pinned pages
-  that existing seals do not block so they are missing after kexec. Per
-  feedback from David Hildenbrand, rather than introducing a new seal UAPI,
-  memfd will set a sticky flag whenever a hole is punched, and IOMMU preserve
-  will reject memfds with that flag set (leaving standalone memfd preserve
-  unchanged). Investigating this path also uncovered and fixed a bug in
-  memfd_pin_folios().
-
-* Hitless Replacement & IOTLB Conflicts: Upstream discussions continue on
-  hitless IOMMU translation replacement across kexec and evaluating potential
-  IOTLB conflicts.
-
------>o-----
-Agenda Rotation for Next Meeting
-
-* Deferred Topics First: Because the first seven agenda items filled the
-  hour, Pasha will continue rotating the agenda so that the remaining topics—
-  tmpfs File Preservation, KHO & Boot Memory (bootmem), PowerPC & LoongArch
-  KHO Support, and Resource Accounting & Session Handover—are covered at the
-  beginning of the next call.
-
------>o-----
-Action Items & Next Steps
-
-Pasha:
-* Merge PCI Live Update v10 into liveupdate/next for Linux 7.5.
-* Post the next revision of the early session freeze series incorporating
-  caretaker session pinning / lifecycle updates.
-* Evaluate whether the Linux caretaker still requires KHO tree access if
-  session payload physical addresses are passed directly.
-* Rotate the deferred topics (tmpfs, KHO/bootmem, PowerPC & LoongArch) to the
-  top of the agenda for the next meeting.
-
-Tarun:
-* Post kho_header_ser v4 (with entry_size) rebased onto liveupdate/next,
-  converting PCI v10 alongside existing KHO, LUO, and memfd structures.
-* Clean up, rebase, and post the combined KVM + guest_memfd + confidential VM
-  (TDX, SEV-SNP, ARM CCA) preservation PoC series once kho_header_ser is in
-  liveupdate/next.
-
-David M:
-* Review Vipin's VFIO live update v6 series.
-* Continue work on generic/custom LUO preserve & retrieve arguments alongside
-  the next tmpfs preservation series.
-
-Vipin:
-* Review David Matlack's PCI save state rework series so VFIO preservation
-  can rebase onto ABI-stable PCI save state structures.
-
-Samiullah:
-* Post IOMMU persistence v7 incorporating review feedback and tags.
-* Implement the sticky memfd punch-hole tracking flag check for IOMMU
-  preserve and continue hitless IOTLB replacement discussions.
-
-Pratyush:
-* Review Pasha's read-only KHO and updated early session freeze series, as
-  well as Tarun's kho_header_ser v4 series.
-
-Sagi:
-* Continue working on TDX HKID preservation across kexec with Tarun's KVM/TDX
-  PoC series.
-
-The Group:
-* Review Pasha's read-only KHO series and Vipin's VFIO live update v6 series
-  on the mailing list.
-
------>o-----
-
-Next meeting will be on Monday, November 16 at 8am PST (UTC-8), everybody is
-welcome!
-
-Join Here: https://meet.google.com/rjn-dmzu-hgq
-
-Please let me know if you'd like to propose additional topics for
-discussion, thank you!
-
-Best regards,
+--=20
 Pasha
+
 
