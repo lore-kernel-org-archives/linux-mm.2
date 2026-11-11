@@ -1,97 +1,148 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C16606A326
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 06:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482EF606A339
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 06:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=uidMCwNS
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tzaQbQ2T
 Received: by kanga.kvack.org (Postfix)
-	id DFB356B05BB; Wed, 11 Nov 2026 01:06:57 -0500 (EST)
+	id 61DF56B05B0; Wed, 11 Nov 2026 01:16:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD35C6B05BC; Wed, 11 Nov 2026 01:06:57 -0500 (EST)
+	id 5F5F56B05B1; Wed, 11 Nov 2026 01:16:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC38B6B05BD; Wed, 11 Nov 2026 01:06:57 -0500 (EST)
+	id 50B856B05B2; Wed, 11 Nov 2026 01:16:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A0C556B05BB
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:06:57 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 11AA4160172
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:06:57 +0000 (UTC)
-X-FDA: 85421804874.25.8069C13
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf31.hostedemail.com (Postfix) with ESMTP id E4EA420003
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:06:53 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uidMCwNS;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794377215;
-	b=JjjS4lVOxKW3oWXNcglwLXAgMa6fgyPT54B2tS2ql2iBceH5Gn5m4+IXfn20WBTlh0OSGC
-	Ncqs5xIWxK9h63qqIecHyDVhvJfuZdV7ni3akY+m51UqbVdtAf466zIymBDp85935EV1j3
-	DjDrKCuAReywv+qJai20P/kp7Jkcvb4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794377215;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 22C3C6B05B0
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:16:17 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AAA97A0218
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:16:16 +0000 (UTC)
+X-FDA: 85421828352.15.5414CE7
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	by imf24.hostedemail.com (Postfix) with ESMTP id AE06B180004
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:16:14 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=tzaQbQ2T;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf24.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794377774;
+	b=svdcWwjngrrQXqLr+DyYiwilb91hjsL2ENfSAehhJohEUwQh6Z/GjalvLziR2rz8p1D9f5
+	CSiCNEgqxt28sUv/vVe/jj3OxfT8inZAYfZVTnGeNkhNHdplG2gzVreW8S2VmYYzOlFaYO
+	lE0v1x7Ac7HfpqgiCeonNTvgzC3Nxf8=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=tzaQbQ2T;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf24.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794377774;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=s92FQZqziYdPkK0Z14gXxUm+Jr8xarhyobVXri/rOeU=;
-	b=osPsh6cgkcmPKVIZN+VMzRrO6TfYzfFfXFlliV+CkrLeAtxrDl8fMzd9cUPTXh0V8W2ZZC
-	5Hj/4FK0c2z9gEmrLXwv6Y9Mp+dVaaSuD9oUv/PN9guKMlX3OX6hVzm+IW331D+tO7OUyR
-	HCPYNK0pIvAg+KEpWom7wR7QL8f2V9k=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uidMCwNS;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1794377211; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=s92FQZqziYdPkK0Z14gXxUm+Jr8xarhyobVXri/rOeU=;
-	b=uidMCwNSaSVuBG5bMvsiok5FwgQ8xHhiWhklCmVazWoRgQZWPtdoLPllntIWOHTeqfgfSUKS8hvmEdi9Qr4FFLFeMAnx1/AQFlGVAxoBVbG31Z+Rp1nMI/3TUg29EVgKYmYb0lXearyfjNM/RZ/DslrHAuj+jxRJvHHcSkiXq5g=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0XEXp.ui_1794377209;
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XEXp.ui_1794377209 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 11 Nov 2026 14:06:50 +0800
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org
-Cc: riel@surriel.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	harry@kernel.org,
-	jannh@google.com,
-	lance.yang@linux.dev,
-	qi.zheng@linux.dev,
-	pfalcato@suse.de,
-	baolin.wang@linux.alibaba.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm: use memory barriers for non PMD-sized folios to sync
-Date: Wed, 11 Nov 2026 14:06:39 +0800
-Message-ID: <09736bc2e01bec0ca7436733078c82c7e0cc6627.1794376686.git.baolin.wang@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.5
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=p71/DW116beDMpJe07R6eFNT4MapU9JGcbN3csjU8TM=;
+	b=19rzBnR0izihtXDTMbw5bE+zwpc3GO1LYbJIKLjARYdO80KclI5WdII69WrNY5mdo8oNs2
+	jiGqez/0YTa2hBLyrAMcQd37jQxcwf4/43N09CfS1XadsNSg8xfqKh+zCUTfozvsaJPsvm
+	nLRLihMhzffdab6U0xfibCuSpUvazZk=
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6a642495d81so4455608a12.2
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:16:14 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794377773; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Sy2268vptboPmBZ2ER3B0cHrgtsMItl8hlOgJf6WhmYnii+NAmGhBMVFxZh+JgV84F
+         6d7aw43+LaO6m0CEbwFyPhNvq6Fu0wz8Q4VZ2dKNNXRLwgeqouKR0QPzq5FKA99Nh4/i
+         b6PUHbXcHI0zOaR1HJGbGZFv+xF7UrsKcUaoSamVV/g1G/JqKum2aNVBPqYx0CZEODnh
+         25tcc04W07rokhQXx9jxf7TJFxKPr36cZ2FSu4FH1N5CXbh5MuqrL4z7FQpbzUurZkT4
+         ml7Hopq/A7QudRwZNfkHYwY5AHE52T7COEftSpsrMJD7xhsILKJY2wrW+z/y8SQhS/jC
+         arMw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=p71/DW116beDMpJe07R6eFNT4MapU9JGcbN3csjU8TM=;
+        fh=1Sk3wso9qSbxqzCMuqPnVUX7GJbrBiqL+b1AFnoLlnM=;
+        b=eccnpYKK47oyn6mbUoL5U2MkDgpA8Ngb3XtD6bS6DOTE/GVm7JolzfvIdXN++rosuy
+         dmfm3VSLVwE2h8VOnug/W5RIRZaU94V3713vmiKYnnAi0S8ylT7/997TjVWa59fqvzye
+         CoqGUmaAFRWbFie4RfpsqtovR/p1aSoq/AmP40A7abxQHXJDEyXc0WUQwrfeLtbAn7Nx
+         zg8ykTgxH62nzOwgQg6kAoqWxaoMhKuCjj/fe9O841InVfIQ/fjqR8sIXGZGx9YCa5+n
+         s3ekRC8dKlj1tFsKqT5S56Jc2WnXG4MIBKFyBsPEMlFDGrrnBzKlrgaxzuZZ7s6/52ed
+         zCRA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794377773; x=1794982573; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=p71/DW116beDMpJe07R6eFNT4MapU9JGcbN3csjU8TM=;
+        b=tzaQbQ2T2s+DqkjrJ3kPv2MY8MVlKIfvenrKu98IgwF7xvu8mHZrOZMUun2lHTvKUo
+         34F+WiHLcBbtiKpQPpG5x2ExgjbWuMETBEheeCE4sr+TPV2A4wqSDOgizyIF3LGuRuZ7
+         M6OkbQYw/hYziwG9n3g/XNkgN9YR5RriYrBtZSDjKDH2CSGo4ArUVaj6VeVxIe4V6YNG
+         nUSeBeVxDwI44Vjb/oMDG789Zz8BkL/jQz6MAZUUdy3e1SUiSZBCnysR1Zh31Ac59U2x
+         sA9V2hWEC4lYyaMt6/y5fCOoYtQE/AAYtn0uuw0PVno4aCtM7rX9iFsOejIlnYSILKY9
+         dmUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794377773; x=1794982573;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=p71/DW116beDMpJe07R6eFNT4MapU9JGcbN3csjU8TM=;
+        b=o/QJ1urLY2xbLmWgbgATY0NH+LiaOn5mWNOORwcrI360SaKbneBFlfhs1euLtrJ9PI
+         zxw3Ova6YWC2HB+msGNzeBsctiLWEfTA0c8MzaXogNqm/qOlHylNVzlw366o1SOfOPjR
+         VEWZmchsvuEF/bHVLobRgQsKM6cH83yZyB2PC6Y6/nqAwMcaOi3OGyURKvaR+Sk2TBIf
+         /QeAF05a8v7B6EAGAFMjp6oIa/cdYzzEwNdfXvqb8QqKucpZ0VC4Cf7pTapVZB7o5lX2
+         mP/R8+67IAR/gOWDF+4iJDA8emjAY/MGPsBEWjQbtdPbSLkFa3Hl1xZ8tVhXUYNrORkz
+         64sA==
+X-Forwarded-Encrypted: i=1; AL+hErF6k4VE7Qnfwr/APmaCcTaGpanmIpELJPhmCWlvOjyrkFFUh/qFoYimK5uVAnx6OIKW47yjoMMadA==@kvack.org
+X-Gm-Message-State: APuU4Z8SUx6Jp2DuuLTnS6HT7wTGLs6ih/9TN8gsF7ZENI08xqecOuxg
+	PEFb+vuJmUbKwWEHxEY7zlsEwPLNblbehP3js/owJm89rLJplRm3Lwt8pfPjtAfm/9GnpH63c0A
+	ABql/F4JobhbM2m7RJioZ4vgR4rRgjX8=
+X-Gm-Gg: AYBFou1T5spAqb36QIOUufD8JM3VCYH0Z0vqltKC95PrkqXGJS6OpJzMcuoKQgAwSHX
+	s8nZMzzsZ/+k40Ob5pq3tBu3HnvyLaZ9FtPfxc+6GwNAlJK+ZB+Vvj5STgP1pUSMZEVzm69P5iF
+	bxNg5d8wlF2mJpaYNai1MDXUpv0rA+N4+mhT72dRv/9T/sxdrZigARVq5eDtQeQDZ239+5ERGZv
+	sAH3qkCJMegryXu0fIXuVSx2ixEF6HsR9OnWqhdcNNHA4Tzb9QBN99PvkPkj4YI8AxGfkY8j4v9
+	n2vRvtmJyLbOw2mHMczffZfu9mGKzMM9lfxw85RWF448eQQSz/HIS33GVv6qJssSHw9qvI4H9V7
+	AwGkQfEluydFXvSQH7/vNt3UMPZs1Ae8B3PjmHSmqERxQownRKrzbS0YVUDngdBLNYVAD+Q==
+X-Received: by 2002:aa7:d357:0:b0:6b5:9725:ff0f with SMTP id
+ 4fb4d7f45d1cf-6b7773e2f90mr673414a12.11.1794377772963; Tue, 10 Nov 2026
+ 22:16:12 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E4EA420003
-X-Rspamd-Server: rspam12
-X-Stat-Signature: c3c84eq48kr41bwa35698oxcuzn9hkns
-X-Rspam-User:
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794377213-252198
-X-HE-Meta: U2FsdGVkX1+6RTtXvHe610pRHjx3/jcxu8Ho+tVBV42YuN/gJTDWgpeizlQzrpXc/SDDaMRNeUgkdAf+Fr3h/05KscyDlCPP7/rAL2Z92n9TYhYj5WVggJaz6kNU00Un0xDrr5PfMkfJ2TxrunUgzIBT3tYGZK6Qkxf6sBqiLRha2oFhcO7ggejFOIub/OM9CLqF6c2WQqcEjBgDc4i6ldvxSQ6LdhBXUB40Wmf0+GtSbLj6jrHwVB92X/EJc8u4cTIPCECk8ca0kvxbDOydyAcAdaswXQ9yBC2hvWUKCMca4jMIh/V3IMttbcFDFtv7dnVCqS45QuZIM0LDGEshtODG20UDI1kwUVsf9QtUxVHMQcvNxUXVQ+iqu9aTZm/HH+jL9MuEn4acpm0vFlFuMH51K0C/PMbDYfYBFMoOJHgbjQFJ06GA50f1B4Xprt9F/cm/LljRaMFKWSShIZadX6PHaO6YVoP2Vg8I4nhffPEJro57AH1BQ90wuBivcnJw5zbAIaM+QKmgBPJVp/jM002fcli74+zyKaKTeTZtJn8BuwNIjlFYQ86LSHsvGZm0yaExzMI2aEt5RyVTM5NfOTdpv2j1GyZn4ZcEGVP9BHdd3sl0pTEHEGDm1J0dLU6o1eatvcL0hsCTrwWuvZe4hE1kF1W2DQmwqfPVAF91AqSZ1hcAgNPrDP3V07kogp8Ajn0ruGXxUsH1kPaAV0ZX5Ym30mg+Zufo2MEM6bCtXj+c+sRBBGS+GmIWfNmBS0N4WvIsrvbAeHybWk58IGmQBfvHP3DjhZC3Cphbreq1S1IouxdnBzcEDhblFhp50NRLuSJLQ28GaPbkU5PFofqRU9xFqsei0ZyQPtLa5tRKNijg6URb+wwuk1YCeZf0+L9//qTYlfNiexVk8eV9n6qWNtf/ucc9SQPv/fF/0agQq9wNcZcKgOmykWyaTNb3UODuhoJRiKTdLLcu21fv9wV
- JktJ1+Mk
- V/Jmwqu+OKm5VEaUOtEE/HZ9b5qksbRQb80UhYz61PdnWoSu+yh92rt6SDYpp4k3fFPsPIRKnGe/WomjoKFAfXADXi4Gzlp67PMcOYfVN8pgRRoEc8nokYPpizpil/ySdefPOjRExUfpbUQvsDa/cATcku5Tkwi2UO0IfXd1PReINy8qC364+yiyHJdTQkdAB4GgKStsM8WMeJRGvkEgN8RmrLK3Nq7Mlv35pSKLME0AZt+zVhS/9xPrlGuFMuynfzKezTc5Pg+TSwCsNkDET2Z4k1Nqn4Q/w8lhxAEmMLXTCKatxParWkB9EQpLW9xzhvBSFDgv+oO9arGqmwbhDFLPCvbIgaoEEVApY4UBlFIlteFk1ZdwC4p+AfI+beGjX58+JYd/eiOSVstWgrfBx01ARsGDnTtZqaWePRY0YCEHsFFU=
+References: <20261109-maintainers_mglru-v1-0-c25e6de60bcc@kernel.org>
+ <20261109-maintainers_mglru-v1-1-c25e6de60bcc@kernel.org> <20261109104142.c4e01c2e29ee9ead4056f354@linux-foundation.org>
+In-Reply-To: <20261109104142.c4e01c2e29ee9ead4056f354@linux-foundation.org>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Wed, 11 Nov 2026 14:15:35 +0800
+X-Gm-Features: AclHuK-fhrTrvILE4a2W2jzvXP48Kzwh2MpWzSARmUPbICPhrCm-RaiJ5eBx5hA
+Message-ID: <CAMgjq7Dd6UQWfBwex4vTLdxAhHKMfpmgTG9DB3MG+4+qig0Eig@mail.gmail.com>
+Subject: Re: [PATCH 1/2] MAINTAINERS: MEMORY MANAGEMENT - MGLRU (MULTI-GEN
+ LRU) update
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Barry Song <baohua@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Lance Yang <lance.yang@linux.dev>, 
+	Ridong Chen <ridong.chen@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: x9hjrt8fbrrm5ip9bygca7t1ek15yqr6
+X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: AE06B180004
+X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794377774-888018
+X-HE-Meta: U2FsdGVkX1+43HeqShumqIG84i6EJMUSLMV/ubUW7oZoHwsLDrz/CpvSnB5KATEKJhs9F02NKCJC9uf8Y4YqkW15ztTcho0hDSVnPDK0QKg72Lw8ywzJln0+SVgkwjBJ82GbOh2Os2jI+sZBbh3QaTV+7E1Ul3oJlT0q/HO0+89+wRe3qw9XFVzvFpXlBBm2kdDqzTV4l6mOW60tiVNHfT5wEewJet/hkFXr/1XfUqwqsy9yaah7Upie8qVZ5K/ofU2gPkcY+YogWpop1S2zuPyuG4OPqhKYAdim25qdlIYGNdKrzET25iBXvi4O0LvWUPqy7R8hjTEjZBqHL2BcwwBQH2rWlCWL3ZjUcm4o6Mkmzxod+JQMexmZodVmOo9cCeuLh5AE0mUzSx6F0VaPfa72I4qQ6pRdh/2m/qo+zJHp3KtjX8Jyb+++gJZTPNFmktpEBSHI3gaIP7P41eSYrZsaZGFLlD48l/m9tjsbG8icT4D6Ed+2/Fg4zDPoL9rZj8bufrxaIDpqhqfX0EfLPpzl5ZJ+P9rGnCw6F6UtwdlO9TqaNMpmIVhKBm1xs+hwkIgR1J/Ge1YbXRa3+cAwReTd7Cw4+8Rjc/hK1zAIan1IoUC9emvUt21mP3Q68QJNYSVVDFCrjFDzb4wFTlqw+/+VWgCdSc/zYy+GZ3mMx96m7L0fwRuqiHDAHkW7cxU6XhOj3NDFS30h3/m8AKCZFoc3F5Ox5ocBll14fej7WCyhIVMrAvf4wRdlECYI+wr2IIv1Lg+euodyBonFsdMZOqBa04QOjubMqeigexkYPyaMR2eG4PSg8WPnY4peuaFNjrvDh/xxfiaEBwMRj2pP2f6tAIW3gw1OMb6CGLjTBMoXg5ZB3ltS6c4m28Zii+gnIQs0zVUO4JvqkZjm0pWLCTrVUh0O548nz3tbGvmgpb6ikzTx/DCn3vcdlk8W2Sfxv3BtjmkT0+80GQ81U3i
+ PHUyUwRj
+ aT3v+QvLB3XkLuPS0LkkHNTdEVcePpfnIDiiKlQwU03/oVohyxBXdvoVaXTln2PqK95DvTJ5o+wZ72dktbfSFIdQqS+GWN+Jn3ulX6sTRf4Kkb7PLCKxO4OZGmDkYoKc6FwkAY6tmf5HNXJmvTSqNPqSn7zs7YsufmMHK4Y/FapVeQfH4s8FuPdcwc6Y/HETzv4WN9B5uBRpcXY2VjeRBiX58yY6kA79LokbKWy3SeKIVHh4SFVSB0cr3n2uw+Yn3+hqwWgoX5voE+0cMnOTbnkAZmFO/6elDXbMsZjmAXnGVmw/lFNgP0Gs9zin9zJPGU+rF0+ZQ0a+20vD0cycwfcS0QVEYwuBeZyBmROkbM0ZtudWOj69BdeEy+rDgbprUXR3aHNgFOulHLYWt/kHiqxFioT/aTuTB/pkx8u9p9kKe0kcPoFEiql8NyvAP6VO37clvbrxjj/GPk0t/t2RrCTAGfFReHfivTIvRpseV9uhXgPWVqL4ZvAXpaNEtiBwRvT+w
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,150 +151,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped folios")
-uses PMD lock via sync_with_folio_pmd_zap() to synchronize when a cleared
-PMD is found while unmapping a folio.
+On Tue, Nov 10, 2026 at 2:55=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Mon, 09 Nov 2026 19:31:53 +0100 "David Hildenbrand (Arm)" <david@kerne=
+l.org> wrote:
+>
+> > MGLRU is currently the only MM component without a dedicated component
+> > maintainer. Fortunately, Kairui and Barry have been actively
+> > contributing to MGLRU and have volunteered to take on more responsibili=
+ty
+> > by officially taking care of it.
+> >
+> > Given that Kairui is already an established MM component maintainer in
+> > a related MM component (SWAP), add him as an MGLRU maintainer right awa=
+y.
+> >
+> > For Barry, the idea is to transition him towards a component maintainer
+> > role over the coming months, starting by moving him to the top of the
+> > reviewer list.
+> >
+>
+> Yay, thanks guys.  It's been wonderful to see the rebirth of MGLRU over
+> the past ~year.
+>
+> When do we get to remove the legacy LRU???
 
-However, for non PMD-sized folios, the cleared PMD can only come from
-PTE table reclaim, which clears the PMD only after the rmaps for the
-table have been removed. This is plain message passing, and taking
-the PMD lock is more than needed, like I did in the previous patch[1].
+That's on my radar :), though it will take some time and it's always
+hard to give an exact timeline...
 
-Without barriers, the walker can observe the cleared PMD but a stale
-mapcount on weakly ordered architectures:
+Items I'm aware of to sort out besides the FG series, maybe we can try
+to make MGLRU the default at some point during this process:
+- Refault distance, otherwise we still have a major regression in
+heavily overcommitted cases, also protects cross-memcg workingset
+thrashing. I also have an idea to remove memcg id and node id field
+from the shadow so it will have enough space to hold both the gen
+number and distance, will post that in a few weeks hopefully.
+- Memcg LRU vs. iterator (Ridong once tried to unify that, and it's
+good to see there have been optimizations for memcg LRU itself
+recently from Max).
+  I also noticed recently that the Memcg's LRU reclaim balance is
+somehow a bit broken, I'm not exactly sure why, nor a very major
+problem, I will look into it later.
+- Isolation protection (from Hui, not a very high priority, but still
+on the list, we don't want premature OOM).
+- IO cost & swappiness (Barry and I are still looking into this, with
+an series posted).
+- Page flags usage issue (FG cuts it down by 1, though it's still tight).
 
-CPU 0 (unmap folio)                 CPU 1 (MADV_DONTNEED, full PMD)
-================================    ================================
-folio_lock()
-                                    lock(ptl)
-                                    clear PTEs
-                                    remove rmaps   /* W mapcount */
-[mapcount load satisfied early,
- folio still mapped]
-                                    pmd_clear()    /* W pmd */
-                                    unlock(ptl)
-pmdp_get_lockless() -> none         /* R pmd */
-skip the PMD
-folio_mapped() -> true              /* R mapcount, stale */
-unmapping assumed to have failed
+We also have aging optimizations and async aging planned. I'm not sure
+if we are missing anything else, but we are getting close and with a
+sane todo list.
 
-Pairing an smp_wmb() before the PMD clear with an smp_rmb() after the
-PMD read forbids this outcome:
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -17635,10 +17635,10 @@ K:  (?i:vmemmap)
+> >
+> >  MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)
+> >  M:   Andrew Morton <akpm@linux-foundation.org>
+> > -R:   Kairui Song <kasong@tencent.com>
+> > +M:   Kairui Song <kasong@tencent.com>
+> > +R:   Barry Song <baohua@kernel.org>
+>
+> Totally-Acked-by:me.
 
-CPU 0 (unmap folio)                 CPU 1 (MADV_DONTNEED, full PMD)
-================================    ================================
-                                    remove rmaps   /* W mapcount */
-                                    smp_wmb()
-                                    pmd_clear()    /* W pmd */
-pmdp_get_lockless() -> none         /* R pmd */
-smp_rmb()
-folio_mapped()                      /* R mapcount */
-
-If R pmd observes W pmd, R mapcount must observe W mapcount, so
-folio_mapped() no longer reports the removed mappings.
-
-No changes for PMD-sized folios unmapping.
-
-[1] https://lore.kernel.org/all/542c97482eae84f86704bcee56482633d1b32321.1791616645.git.baolin.wang@linux.alibaba.com/
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
----
- mm/internal.h        | 26 ++++++++++++++++++++++----
- mm/memory.c          | 12 ++++++++++--
- mm/page_vma_mapped.c |  2 +-
- 3 files changed, 33 insertions(+), 7 deletions(-)
-
-diff --git a/mm/internal.h b/mm/internal.h
-index cd3675c044e0..a277bf4841f8 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -592,6 +592,7 @@ void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
-  * sync_with_folio_pmd_zap - sync with concurrent zapping of folios
-  * @mm: The mm_struct.
-  * @pmdp: Pointer to the pmd that was found to be pmd_none().
-+ * @nr_pages: The number of pages in the folio.
-  *
-  * When we find a pmd_none() while unmapping a folio without holding the PTL,
-  * zap_huge_pmd() may have cleared the PMD but not yet updated the folio
-@@ -600,13 +601,30 @@ void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
-  * against later mapcount reads. Skipping the PMD without synchronization
-  * could make folio unmapping code assume that unmapping failed.
-  *
-- * Wait for concurrent zapping to complete by grabbing the PTL.
-+ * Wait for concurrent zapping to complete by grabbing the PTL for PMD-sized
-+ * folios, otherwise smp_rmb() is sufficient.
-  */
--static inline void sync_with_folio_pmd_zap(struct mm_struct *mm, pmd_t *pmdp)
-+static inline void sync_with_folio_pmd_zap(struct mm_struct *mm, pmd_t *pmdp,
-+		unsigned int nr_pages)
- {
--	spinlock_t *ptl = pmd_lock(mm, pmdp);
-+	if (nr_pages >= HPAGE_PMD_NR) {
-+		spinlock_t *ptl = pmd_lock(mm, pmdp);
- 
--	spin_unlock(ptl);
-+		spin_unlock(ptl);
-+		return;
-+	}
-+
-+	/*
-+	 * For non PMD-sized folios zapping, concurrent zap_empty_pte_table()
-+	 * may clear the PMD after the rmaps for the table have been removed,
-+	 * but later mapcount reads could still be observed before the PMD
-+	 * read, making the folio appear to be still mapped after unmapping.
-+	 * Order the PMD read before later mapcount reads, so that observing
-+	 * the cleared PMD implies observing the rmap removals.
-+	 *
-+	 * Pairs with smp_wmb() in zap_pte_range().
-+	 */
-+	smp_rmb();
- }
- 
- struct zap_details;
-diff --git a/mm/memory.c b/mm/memory.c
-index fe72e66c9c2e..1ee286cdd3af 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2054,8 +2054,15 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
- 	 * Clear the PMD after the rmaps for the table have been removed, in case
- 	 * an incorrect mapcount is observed after unmapping the folio.
- 	 */
--	if (can_reclaim_pt && direct_reclaim && addr == end)
-+	if (can_reclaim_pt && direct_reclaim && addr == end) {
-+		/*
-+		 * rmap changes need to be observed before page tables get zapped.
-+		 *
-+		 * Pairs with smp_rmb() in sync_with_folio_pmd_zap().
-+		 */
-+		smp_wmb();
- 		direct_reclaim = zap_empty_pte_table(mm, pmd, ptl, &pmdval);
-+	}
- 	pte_unmap_unlock(start_pte, ptl);
- 
- 	/*
-@@ -2110,7 +2117,8 @@ static inline unsigned long zap_pmd_range(struct mmu_gather *tlb,
- 			/* fall through */
- 		} else if (pmd_none(*pmd)) {
- 			if (details && details->single_folio)
--				sync_with_folio_pmd_zap(tlb->mm, pmd);
-+				sync_with_folio_pmd_zap(tlb->mm, pmd,
-+						folio_nr_pages(details->single_folio));
- 			addr = next;
- 			continue;
- 		}
-diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-index a931243ca42b..d793ad0c5364 100644
---- a/mm/page_vma_mapped.c
-+++ b/mm/page_vma_mapped.c
-@@ -295,7 +295,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
- 			pvmw->ptl = NULL;
- 		} else if (!pmd_present(pmde)) {
- 			if (pvmw->flags & PVMW_SYNC)
--				sync_with_folio_pmd_zap(mm, pvmw->pmd);
-+				sync_with_folio_pmd_zap(mm, pvmw->pmd, pvmw->nr_pages);
- 
- 			goto next_pmd;
- 		}
--- 
-2.47.3
-
+Thanks!
 
