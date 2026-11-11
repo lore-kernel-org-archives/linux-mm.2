@@ -1,117 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFDE7606A880
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E463606A33C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bMQAE6IN
+	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=cmaAuP8N
 Received: by kanga.kvack.org (Postfix)
-	id 69D686B05BC; Wed, 11 Nov 2026 06:08:44 -0500 (EST)
+	id 64F8A6B05C3; Wed, 11 Nov 2026 06:09:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6769D6B05BD; Wed, 11 Nov 2026 06:08:44 -0500 (EST)
+	id 6272E6B05C4; Wed, 11 Nov 2026 06:09:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B1A96B05BE; Wed, 11 Nov 2026 06:08:44 -0500 (EST)
+	id 5166B6B05C5; Wed, 11 Nov 2026 06:09:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 362E76B05BC
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:08:44 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C9C9B4028E
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:08:43 +0000 (UTC)
-X-FDA: 85422565326.28.405B1A3
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 11FE0180008
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:08:41 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=bMQAE6IN;
-	spf=pass (imf06.hostedemail.com: domain of 3uEz0agoKCIE0itssjktwylttlqj.htrqnsz2-rrp0fhp.twl@flex--vdonnefort.bounces.google.com designates 209.85.221.69 as permitted sender) smtp.mailfrom=3uEz0agoKCIE0itssjktwylttlqj.htrqnsz2-rrp0fhp.twl@flex--vdonnefort.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794395322;
-	b=S9yDciORi2iMTNr8yhpVu1t0tSfe7dYwgF/yOg27qqnd4nT1oojjpFxmGpYpjvMLZSpDwS
-	eb0vhK2jWhiyv7QF7tGmXWtsBVGCuPmVrrOaAv/UFMTT2h/AezXrjGuCgk8tBxTrypSwPr
-	R6CgA5fdXmCTOn4Eu6kSwlS9BvA10H4=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=bMQAE6IN;
-	spf=pass (imf06.hostedemail.com: domain of 3uEz0agoKCIE0itssjktwylttlqj.htrqnsz2-rrp0fhp.twl@flex--vdonnefort.bounces.google.com designates 209.85.221.69 as permitted sender) smtp.mailfrom=3uEz0agoKCIE0itssjktwylttlqj.htrqnsz2-rrp0fhp.twl@flex--vdonnefort.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 353E56B05C3
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:09:07 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C853A1C2B4C
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:09:06 +0000 (UTC)
+X-FDA: 85422566292.04.18F3F03
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 15B0140004
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:09:04 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=cmaAuP8N;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf07.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794395322;
+	s=arc-20220608; t=1794395345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1XlqkjYgUHqMtiyvO2/LqlbV238Aov7kyKv1cwFa5P4=;
-	b=kWaA3LH+40cRw20paZ7lCI/StS/pdl3OiCZHmx5wEPwTWhCRH1nIWCSZd8dSDF8Iq3Ow4Y
-	/5onPhZ7pMkf+5xjkZ/FwspOQVP1LQwPppqq0Vi6g8AX2kPa+7JaylTtwWo2YhezHMOXG8
-	WinHgYkq1EmdTHUxzAgvTew63xCYb1c=
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4902ce85f72so2397979f8f.2
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 03:08:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794395321; x=1795000121; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1XlqkjYgUHqMtiyvO2/LqlbV238Aov7kyKv1cwFa5P4=;
-        b=bMQAE6IN6B/wMGaDP9zCHMbgF79aq7S+fCMF5XfDA6GPLl+lCMxiZr2Hr8hFkarZoY
-         EWakB0CBOg/iOc58HY00OKoc6+iXO0HPvnmOIUSG0T9xf93r7lffG+bQ9+JeTErAdgQ8
-         55dAm4VN7Px7xYuNgX3/P009s+fc5/THSDqQj3j/bUA4zQ1qGbLlh6tGGg117Qex9y3y
-         ey0dBmUi56Gdkz4f6do+KDO5VejhAZGk3ucc+6G9wLm260vPUK51MI2h5RRIn0k4WCO2
-         J0XsCa8HT2w6FTSzPswYAHqV+3Om/sP2azkJzk7dlqxNdxyas6xXC2WRj4Dgmi3nBXjI
-         bNjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794395321; x=1795000121;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1XlqkjYgUHqMtiyvO2/LqlbV238Aov7kyKv1cwFa5P4=;
-        b=V2RpHWdOzphL5riyJDBYVHPzdqps+W1bUpsGseELGtmb2loe1s7JyabN87401drKnH
-         it3sMylxdUkSim0YxU+wwU5q3sh+Ghmo4D2QBXPvUVne/9sO4hmRcQMf/iMgy8k1unLM
-         kiNRkWU9H874yjwoc7jdChdgHCZcCFo5N51sUujp6ig26RBniX6QXt9SdqpTyyXxR+fa
-         HdWXQp5SCYctWXwfjFaF/8y+fUsB1blQnNUSXQaKmK4AmPNozixaa7le7qSFUBlYHi5x
-         F8KGRXcn9FUYvZsTCtYk3x9v8ZuLHa4U418hzww8Ts3v3j6Jp+Rv5pdJQzT3kpFYyaE3
-         e71A==
-X-Forwarded-Encrypted: i=1; AL+hErGTeBHdwY9udw0p8sSJHZGQVtpafeTRilcoNvW1XYJPWDVxTxbLiqwcTRJF7TL51r99yIaco19UAg==@kvack.org
-X-Gm-Message-State: APuU4Z++TnK1eqhmRnRSdzPtB8A0K7Je0YJBFvwEbTssTkKQVMX2wUcl
-	9CWUW8xVZtq+oAC7icqWGO/ePFDAYdVQnELQ6RSbDR07w1ZXCcT4U3sQGelCENpv6GhyMrjTUZ5
-	zJ4MJe43kw9GLwo8OSkgnGg==
-X-Received: from wrqn16.prod.google.com ([2002:a5d:4210:0:b0:48e:3826:ef3f])
- (user=vdonnefort job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:481d:b0:493:803e:800f with SMTP id ffacd0b85a97d-499c6e96f58mr3024659f8f.29.1794395320547;
- Wed, 11 Nov 2026 03:08:40 -0800 (PST)
-Date: Wed, 11 Nov 2026 11:07:38 +0000
-In-Reply-To: <20261111110738.872947-1-vdonnefort@google.com>
+	bh=1E8ZwW2Eu8WYRG4t6PuIDQjLMNRBTfUw3ilSDjs1rRU=;
+	b=hqKtGCfVeh1iXqb/zqXmFr1kFCGzteVh6K4lzJXKhF6M5jtIlmrSNWeNGZ7FIEEcObh7FO
+	UngStl95L+5cnXXbKJC6Ful2lYetBu6bXP8o+UinBLnZS0fjmtqBPp87tZDPfoXL/GxjUd
+	ls8GzWN7BKVWayoKhWhvF3NGmv+yNBY=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=cmaAuP8N;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf07.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794395345;
+	b=t6b3LVGLWw5Xg3obaAfJFDAg/rA5ybNpC37dIurdC3d6wVPQ6xS1DCYhTSvrhjbmeUg5AA
+	SPYDEey1W2H0hDDfJm5thlq1fwdyx6wPxr7hG9wX27O+DqVirJCnKM5jXIgvBWRNDvijIK
+	Tp9TcuHxkGH9XSsFuLgDZ8BrYOY3wiU=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=1E8ZwW2Eu8WYRG4t6PuIDQjLMNRBTfUw3ilSDjs1rRU=; b=cmaAuP8N+P52iDtJVOwMGPU1Rm
+	FqzHy98fPelH0mq8DY0owqaAxg/oEFesnLx84zScoPFheV2k7WVlrIMZiD+YqhJOtdi1Uad5BMK9F
+	6en5BPWw+v3fE+/rL0Y5CGl2nlw31TWn7YIv55D9SZjD1cX3jcE0XFY9dru8/P/fJ9kxPBYu19j9r
+	dQCRq3bb5gxvXhKwVOCKpAVuCo/ZyutzCT/zkQXD2VE5qDpt5OROuRuNhBFVcpEfNi5ysabYpZyI6
+	NrlmK+fONZ1CyH6Ge32APS7qP0t5pyBN5b2pWN8ZWGxHWvL80WG44ipLS8WqhJtviyLV0r98zCRA3
+	+B8IoyiQ==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xR6CD-00D8c2-2m;
+	Wed, 11 Nov 2026 11:08:54 +0000
+Date: Wed, 11 Nov 2026 03:08:48 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Chris Down <chris@chrisdown.name>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, 
+	Alexander Graf <graf@amazon.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 1/9] kho: Reclaim the metadata page left reserved after
+ kexec
+Message-ID: <avRMoA8Hy3P6k72d@gmail.com>
+References: <cover.1794383544.git.chris@chrisdown.name>
+ <63ca64c004b296a998a3e531f8c0c4964916b70c.1794383544.git.chris@chrisdown.name>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261111110738.872947-1-vdonnefort@google.com>
-X-Mailer: git-send-email 2.56.0.542.g3ef89b7020-goog
-Message-ID: <20261111110738.872947-9-vdonnefort@google.com>
-Subject: [PATCH v3 8/8] optee: Add support for lendable-dma-pool
-From: Vincent Donnefort <vdonnefort@google.com>
-To: catalin.marinas@arm.com, will@kernel.org, rppt@kernel.org, 
-	akpm@linux-foundation.org, m.szyprowski@samsung.com, jenswi@kernel.org, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
-Cc: mark.rutland@arm.com, robin.murphy@arm.com, hch@lst.de, 
-	ryan.roberts@arm.com, sumit.garg@kernel.org, sudeep.holla@kernel.org, 
-	ardb@kernel.org, thierry.reding@kernel.org, david@kernel.org, 
-	danielmentz@google.com, linux-arm-kernel@lists.infradead.org, 
-	linux-mm@kvack.org, iommu@lists.linux.dev, op-tee@lists.trustedfirmware.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Vincent Donnefort <vdonnefort@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: sck738n7w4ki81qfb6ofh7xt4fswmhiu
-X-Rspamd-Queue-Id: 11FE0180008
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <63ca64c004b296a998a3e531f8c0c4964916b70c.1794383544.git.chris@chrisdown.name>
+X-Debian-User: leitao
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 15B0140004
+X-Stat-Signature: kgwtisaio6yhfkwsuw769qcm6sz74t7x
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=unavailable
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794395321-551810
-X-HE-Meta: U2FsdGVkX1/p+z63j3xms9FNrBtwSTPbyUXOl8zFWpLL6yghJJEGGyoJ+DoxACP96Id/2H/igvwBjHnpxO1eeMRxBixt/nX7cFVwq46vG3761TwpB3cNH05s+7EuedytfjSZZc1iPoXHSsKTfedN06ZuOVwhFbKum7/4jmAxL0rLx6L5UfcVe7E+CUPLMVXM6bAkvS0Xy7wFjA5X3SRMpf8BWFPmvyBi8OZw8ieujk0d8f8NCEjpUHsKLadoC+syrButf5jHi4xHQTKS1PUOCTeQuTeg07/rRwCavdyD46s9Ral623DZqBQYHoMoKxz9Wy4WTjnOY0JIw/MN1qnvx6fnq8BTmW5iylzpKBYmlR8qLgPqU/LXt41+iVmW1BhO1nMzw6oHFwgVeGy0t1jVAGmiGz2F6MJyGt7F+DNCneY1Fw4bzzOUQ+gQJk2R7I4fc4pOyXuj8ujD3pkgFYmfUJXTYDEWM0uB2mZZH3+77v5ssQpoVnREgWJ32vBSH91JqMVF4rh+KdIv0GNIR6KSqOXPQ/TevI/zhJUvYzCLIh/oSl5jAHFEEGk8tnMrSalCeV7zGzMnNZyytWNaAbMotZIyKLHT+dhF7LETQO+9uaKts8oeOQmXWZ5Odyry5ere1tlnRX5+OBjsdoOWVb+Ho4V8fr9EsMIXh9f0k8yQ81mqumwmiGI08MeX4SEwLGlGKHvScUsjSV6SBCNWab7Q+hWv7GRwyvxApHBEobovgN2oPXUADVRHHZb8PJpmtKfA1ybj1HVr+efhw1y+Rq9V0+Ivp+wQTd10fgzM9pzCpEO4Z2lrPTmLAA3f+IHniOM0Oi7sx/prkMl6dPegFq9Mo54sT82rI8xwlg8kya8FORPe0K7Exr0mPV3FTCWdAbyBR1sk8naZ6uPWZSuI401aXuoHOQek+KMJ9/95o9UCZcXwqAV+zEDVDiwgzA/QHVLLb5nuL7FxF3BfWD4wBS2
- 1qWOrhUH
- d7Q5cGCAe1mDa90i74pST2j0+Jn7WczDkXI9z6UVXlHQlMcEFOSm+/pInMj7rxj7KakGrR5CEZr1W7/3KsdNV9WmH1Eisg9Ji0nDCfkuKGpo13mMPXL6oR671W1hfysrorE1fyPsdEJ/bfPZrgcZPNoKThiftp41KX5Y4Bdv1QFNTrfcnqoIeF4WkszP3GxEm/njiuiYZ2YXfrBQpJROhrRfdf/GX2xiy1xDnea85zXKsiLNCWthJOKswTg/e0FCaMKIbpTuWccZvnIeaTU6GrgBRlYpT2fWPU4w4CEVVANpfUKoQM8FzUTK5lVzIBY56ZahCp2tqCl5XLVpBPTxjzvOzKX0w7UicQjTFaM0gsK3W9s2rCETGrA9uRTg0sHQZabWsakevxapWajTZOnugGgLocqmodrGl01P9bmhn/wt5MOIqp0bQ4Xr/RmC7kvI8EjR5D+bRPGXmTv58JvegsXlg57++uXMYloSbnfs4fsJMW8Ho36OgsH76fvSR4UbLpQqzEC3/OCuEzOlSPAw/xQ5iNbW3N+6q1y7uW1b2mLekdSsipNdzVEOFsCiB1TxbhDWH1pZqyXsPeJX4vWdcT4Aj0cMN2pkKCmRT4Gf9933QdI5BzehDlojS6e6TivbbfYVz5kJCXD9lSiId8x41cFdVZysO7M8Xxt1cvjrYjP/89rAx8/62we6X0P2cKnSYgEiiLmdXpR8ov661KJwjatcMtw==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794395344-1874
+X-HE-Meta: U2FsdGVkX1+7qhzxlIblNSdXlPM/J/ACTV6hn7EhXpHkF6MZn+cc245onDxHc7/OGTUwnOAkdPXtE/Wqm1oVu3uOB/FIXDv5CUR6JbvgYSeH8e9sAWUvU7uK3nQlDSqJ/B89duAjVUe3hM7Nk3bZnLS74M6LIad9MAxsH0wSKmJlYuXYhBTAGFqR0fYHlvh4qBs7gG9v/gQ1drKXO7PBTPYjA8nhCHvl5x18enN6WOXSCIatIkK2+7JMeHmjmZ86t01TWQAd3cY3HZZmTrc1PcK7ocjEXtDEReB/zWv4EpRLeCNqRGdaAB7DOhJGJKop0CoNQrX3QhofIWrFBm36KeOteS2cJ8jjgTpKAbPar4VkjxcQSaT38WFxPsZjaXcizrQjaTKAbQBBBespTcrFjTgjdijE6q4BzNpSIH+W4oUUhkV9UracjZIzb3Jhvhxbhpsoyi65N4ruoyZ6i4gB6/0J0/xYhh9zGBjB2SfAbiRKIbCuNzvV9BbjuBlye5FZUv0bkUbnxJ27yaGgts0h8Hu9lNgEwqrzqjV70LMNj1Gvq10cBnkgplNrsaYZCvvsOX57Bac+jmUWVqtzvzZjLYQX+Wi3k4MrW230NAtQ4LiGowKikq/hKoyxfrzqX3PBCNhzEURv6weF1mFHFOE2hMSKZtRlTF98HZVvYQVhqGI4YJPzBzAgqgCDzk3ELZ5+sl+uoQXK5bqeOH9+0jaSdWbdngNR10q+oTxZu5zQuwTCy52cSdPLXgGCrThYLyqLTI+bVGd7JEwjRtiAk0cj+pqFFzXk4pKtXZMHjEc5LW/JAxelmjArDwvcTeLoTvkV3tLQoV3MBT/EVsmYTH38AhS3QrPNgRzUzcagxu9symheW+UxJnLU0JTuwi8zXiKHXMyf+rIfwbwr37sbAkbtG90hUeH5GV2HC+5eqb08QewOTf+VUwVQ/bsgA5If9pg+BKjGgYZoYT6/nQOoouV
+ MpxENQF2
+ hl41UTy8sRN0rE2yT+XtTUmNYnVU5nBdd0QTy5m6PI9Esh7zoRmPqFAeOUceFIu6GPVnkPyNSUGchojl2XUhCbEdZbH28ewWJaVFhJKauPnGN8G2O/f5J4/GjfXzoiwzoaulBHtLxy2TeD6NW9AE3P/x9MGlif0LqEtnssk+GtXVTROGddls8y9iwb+klo5D+n5wlVgxsz0M8moojHBAcR/GuDmmO3coWt7ch7r8xVAzjU6xzUl1sqJWU2QCj+uFpOKkDdm+63lBEJAOoZNasbylaiA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,115 +101,19 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When memory is lent to secure world, fatal CPU speculative reads can
-still occur while it retains a cacheable mapping. Use the
-lendable-dma-pool API to unmap pages before lending and restore them
-upon reclaim.
+On Tue, Nov 10, 2026 at 11:52:55PM -0800, Chris Down wrote:
+> After a KHO kexec, the new kernel keeps the page holding the previous
+> kernel's kexec metadata reserved for as long as it runs. It only needs
+> the page once, since kho_in_kexec_metadata() copies the previous release
+> and the kexec count out of it at boot, and nothing reads it again.
 
-Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
----
- drivers/tee/optee/protmem.c | 48 ++++++++++++++++++++++++++++++-------
- 1 file changed, 39 insertions(+), 9 deletions(-)
+Good catch.
 
-diff --git a/drivers/tee/optee/protmem.c b/drivers/tee/optee/protmem.c
-index be3abf6e8aa6..10e8f1540e5e 100644
---- a/drivers/tee/optee/protmem.c
-+++ b/drivers/tee/optee/protmem.c
-@@ -4,6 +4,7 @@
-  */
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
-+#include <linux/dma-mapping.h>
- #include <linux/errno.h>
- #include <linux/genalloc.h>
- #include <linux/slab.h>
-@@ -21,6 +22,7 @@ struct optee_protmem_dyn_pool {
- 	u_int mem_attr_count;
- 	refcount_t refcount;
- 	u32 use_case;
-+	bool unmapped;
- 	struct tee_shm *protmem;
- 	/* Protects when initializing and tearing down this struct */
- 	struct mutex mutex;
-@@ -32,6 +34,35 @@ to_protmem_dyn_pool(struct tee_protmem_pool *pool)
- 	return container_of(pool, struct optee_protmem_dyn_pool, pool);
- }
- 
-+static int zap_direct_map_dyn_protmem(struct optee_protmem_dyn_pool *rp)
-+{
-+	int ret;
-+
-+	ret = dma_zap_direct_map(&rp->optee->teedev->dev,
-+				 phys_to_page(rp->protmem->paddr),
-+				 rp->protmem->size);
-+	if (ret && ret != -ENODEV)
-+		return ret;
-+
-+	rp->unmapped = !ret;
-+
-+	return 0;
-+}
-+
-+static void restore_direct_map_dyn_protmem(struct optee_protmem_dyn_pool *rp)
-+{
-+	if (WARN_ON(!rp->protmem))
-+		return;
-+
-+	if (!rp->unmapped)
-+		return;
-+
-+	dma_restore_direct_map(&rp->optee->teedev->dev,
-+			       phys_to_page(rp->protmem->paddr),
-+			       rp->protmem->size);
-+	rp->unmapped = false;
-+}
-+
- static int init_dyn_protmem(struct optee_protmem_dyn_pool *rp)
- {
- 	int rc;
-@@ -42,19 +73,15 @@ static int init_dyn_protmem(struct optee_protmem_dyn_pool *rp)
- 		goto err_null_protmem;
- 	}
- 
--	/*
--	 * TODO unmap the memory range since the physical memory will
--	 * become inaccesible after the lend_protmem() call.
--	 *
--	 * If the platform supports a hypervisor at EL2, it will unmap the
--	 * intermediate physical memory for us and stop cache pre-fetch of
--	 * the memory.
--	 */
-+	rc = zap_direct_map_dyn_protmem(rp);
-+	if (rc)
-+		goto err_put_shm;
-+
- 	rc = rp->optee->ops->lend_protmem(rp->optee, rp->protmem,
- 					  rp->mem_attrs,
- 					  rp->mem_attr_count, rp->use_case);
- 	if (rc)
--		goto err_put_shm;
-+		goto err_restore_direct_map;
- 	rp->protmem->flags |= TEE_SHM_DYNAMIC;
- 
- 	rp->gen_pool = gen_pool_create(PAGE_SHIFT, -1);
-@@ -76,6 +103,8 @@ static int init_dyn_protmem(struct optee_protmem_dyn_pool *rp)
- 	rp->gen_pool = NULL;
- err_reclaim:
- 	rp->optee->ops->reclaim_protmem(rp->optee, rp->protmem);
-+err_restore_direct_map:
-+	restore_direct_map_dyn_protmem(rp);
- err_put_shm:
- 	tee_shm_put(rp->protmem);
- err_null_protmem:
-@@ -112,6 +141,7 @@ static void release_dyn_protmem(struct optee_protmem_dyn_pool *rp)
- 	rp->gen_pool = NULL;
- 
- 	rp->optee->ops->reclaim_protmem(rp->optee, rp->protmem);
-+	restore_direct_map_dyn_protmem(rp);
- 	rp->protmem->flags &= ~TEE_SHM_DYNAMIC;
- 
- 	WARN(refcount_read(&rp->protmem->refcount) != 1, "Unexpected refcount");
--- 
-2.56.0.542.g3ef89b7020-goog
+> 
+> Free it with kho_restore_free() once copying is complete.
+> 
+> Fixes: 76aa46b9e404 ("kho: kexec-metadata: track previous kernel chain")
+> Signed-off-by: Chris Down <chris@chrisdown.name>
 
+Tested-by: Breno Leitao <leitao@debian.org>
 
