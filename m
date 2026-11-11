@@ -1,125 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65696606A8BB
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 17:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3EFA606A338
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 17:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=pps01 header.b=T4qiOUVq;
-	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=lionmail header.b=kDDigErR
+	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=pps01 header.b=nL1QA79v;
+	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=lionmail header.b=2WiX7ibV
 Received: by kanga.kvack.org (Postfix)
-	id 88B6B6B05B2; Wed, 11 Nov 2026 12:55:59 -0500 (EST)
+	id AFB316B05C7; Wed, 11 Nov 2026 12:56:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 815516B05C7; Wed, 11 Nov 2026 12:55:59 -0500 (EST)
+	id AAB476B05C8; Wed, 11 Nov 2026 12:56:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68FE86B05C8; Wed, 11 Nov 2026 12:55:59 -0500 (EST)
+	id 94BDA6B05C9; Wed, 11 Nov 2026 12:56:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FD1E6B05B2
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 12:55:59 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CED151A03C4
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:55:58 +0000 (UTC)
-X-FDA: 85423591596.20.934D87B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 645196B05C7
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 12:56:00 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 02322A7C26
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:55:59 +0000 (UTC)
+X-FDA: 85423591680.07.8352469
 Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1A49920007
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:55:55 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=T4qiOUVq;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b=kDDigErR;
-	dmarc=pass (policy=none) header.from=columbia.edu;
-	spf=pass (imf03.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
+	by imf30.hostedemail.com (Postfix) with ESMTP id 6898A80004
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:55:57 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=nL1QA79v;
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b=2WiX7ibV;
+	spf=pass (imf30.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794419756;
+	s=arc-20220608; t=1794419757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=LvmOJZQBB7IFXQ4rWiGOm3EqZVi1Citt+WxZ2aQ6a20=;
-	b=jhxUQO08aU2uDT/aNyLFair2YRnnTlxaN1tV9541xgBV8YcMY6Ir1Q74JtDqGeyyTnnpbT
-	HQiIFrqOPZyKkck0gbX/aA4jiNwHx8Fc8xfmFXRB4BrVhv/w+fnuKw1l0780DIpW3/Rjvo
-	tIJBXydGBSyl6b9RxPKI3kG2KFIHGOs=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=T4qiOUVq;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b=kDDigErR;
-	dmarc=pass (policy=none) header.from=columbia.edu;
-	spf=pass (imf03.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=deCzxOFeDCQXgKxHB3hOal3UgkmEGxjDuW74KEugHoU=;
+	b=0Y+uag38XNoNA8WhEpinfP5y/8eMzhjoHlODe9gLid89VK1HHB/4i1wCKRE13CqXTR/zzr
+	16TeNJ9UZTUjV5Fo/4QDUhCDPm4RLA8LgI11MaeMHsalsa2qEGZW0K9eod4sXgHzrvROAM
+	zbzF9DRIraRFWIPWkRlN3WVO2OU1g7k=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794419756;
-	b=z9+8oQsA5YoJSHx8NKrUgLzHNUw0P2hqMJiDMrDPWpEy2utO11bljVO0G5H2/qswtlcAf8
-	dYcZAbfq1JjrWeLH22qKlHCDGUdV9Wy0P5FFKPYfTYWsScG7Vv9A5doqLHVwYSbe0Pms8P
-	aEe12QfEjqGF7J1DAXL9hwvY+NMDkHs=
-Received: from pps.filterd (m0499199.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ABHYFt53844932
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 12:55:54 -0500
+	t=1794419757;
+	b=ZL0S7U2X3UxdnbFNmHduOPG+aJR9we7YvGjRv8NghxBlV6VIcN8T+LQ11D4dVIPpyAlqev
+	WhzQMljO42K/HSk4S/o2VGS63Ad0rwaGpY8cc+jM7mKcRawJcoU9c8I9qFGptCPXlSuSJu
+	S2/lHI3vVkMs89E9Gra2REpKEdE3wyg=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=nL1QA79v;
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b=2WiX7ibV;
+	spf=pass (imf30.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from pps.filterd (m0167070.ppops.net [127.0.0.1])
+	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ABHYY1H135676
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 12:55:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pps01; bh=LvmOJZQBB7IFXQ4rWiGOm3EqZV
-	i1Citt+WxZ2aQ6a20=; b=T4qiOUVqH14cGGbnsTSJxS4tbddUBrhFmsLiPt+sYy
-	eveWAhH+ZZRt1Zc9U4VkkGjt6JD8dbgQOWe7txZfaxAXGCvp4IWTVZEtjY2ui5QV
-	Cz7apLFSbuqpYm86l8jC5gXpWWByv3rzgpnr2yodcXTs5QVg3EurmndxGMjGlRXm
-	2vzYejk2gq6udQbxeQ1DdosGkSb96Xj1Bj7TvpIITitTAwk+GS2AY/+8CLPAVF4R
-	i7lfZpPSkWWKD1wKguwZZfdKclL2xEVnsb2a5IpgvFoWinZfHUVHyqK/8W1Rx8/X
-	s8GXFaM10U23XqBjlfPO6Suyg4yxF4X9cQZ08RvcfSjg==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4hvg4qmexc-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pps01; bh=deCz
+	xOFeDCQXgKxHB3hOal3UgkmEGxjDuW74KEugHoU=; b=nL1QA79vIxrk1LgRXl1R
+	ipAVXpxa26rNAPdRIHB2IMbb1SbgNxZNxC6+K43RVctvACGgXZ9c/sMH0lHNFgoA
+	NUbS4vXonzDqYheWBIi2VsAKB02Siim+bORzdo4O0M5R8/5InB4F8/SSfIFg87+7
+	eLLBRyWqs+PiYQPhiovxSeEg4g5MM5YSJ76W2DC9A9b8I5E0i3L3raNk4nu7TUSW
+	QGje/p67Ob49L6nWEu5f88d+wHJyf+pEQqyK2S9TpDoyMMjUaPl06rVA/reQ5GOw
+	1kLoNnQWh+PPE13TgFJt1BPQB9NvkEXaiUU6KSu/MmojvRAlqAZV/8IZXws0+NEk
+	pA==
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4hvtu5sfwk-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 12:55:54 -0500 (EST)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-53664602c7fso75584691cf.1
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:55:54 -0800 (PST)
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 12:55:55 -0500 (EST)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-5339739b343so69252191cf.2
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:55:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=columbia.edu; s=lionmail; t=1794419753; x=1795024553; darn=kvack.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=LvmOJZQBB7IFXQ4rWiGOm3EqZVi1Citt+WxZ2aQ6a20=;
-        b=kDDigErRWxfJffYTnKDr+lBxCQIcddg35bfO9ZeN31l/BkDMUK0MFnU8nPXIZTMzb2
-         t87ePUADT7u0VALnIkv8qyDLsGxn9UHUTFbKlFrZZJSUFmq1trrmA2X8VeLWP6TZxUBb
-         AVZ/RxYFqaj9HxqhCh/vn2XWHKPXVVO11cz1koyfiJiaU60X7OTrqY2iMOnYJW7PJxRF
-         Y4E5Dgdw4/g97Xq9+jjSXNHjN3joWFJ4n/h2kIXbltjQ+TaWHJBZms3BsMbpetEQtlPl
-         H3/kzEBbOtcoX0wAdBIkvNV46t7T6mOzItGn+PjsNgUAQbqYMCOBCiWlPcecB9wvTnLG
-         erGw==
+        d=columbia.edu; s=lionmail; t=1794419755; x=1795024555; darn=kvack.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=deCzxOFeDCQXgKxHB3hOal3UgkmEGxjDuW74KEugHoU=;
+        b=2WiX7ibV8IXLircb7sRG60FNnSWCeZcpHqQQ2ynVmwv1bavTGo0MA9t/tk45Z/cy2O
+         kAjcT/hWrKf4XONkejy8rKHgPPvM08365zb3NZ0OPNCLrlVi7muhgZyh9Z6omt6cR5Tp
+         fmLEkoxvghOVSwFeswVAeVe0RDYxezev29U+iNVDU6Ptx7ZMNJZPt/LC3Ul6hV3sANzc
+         TeaxQIQ0BWB9tpOLPBiyspUaA26Ji87FODzwfo0zOd4StVHSB9UCTpTZk+3/kdJih3Gm
+         HKf2toW1vqX11EUatql7C5ir4zq8aMJOguJ0oqoznPWCL6gfuWoJ/3F73PENC4r2mocf
+         NGQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794419753; x=1795024553;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=LvmOJZQBB7IFXQ4rWiGOm3EqZVi1Citt+WxZ2aQ6a20=;
-        b=o2nmmm0wlWAENKs7oDPd2q32Ll0tRFHPtgxuE3T32rJl958ukZpTPWcNSlIxOl6W5B
-         TarDJLmJGn82Z2Clgzg+uwhSXGHnqek3TfsoBYf5b5WAOaDw2gzxblUl6BGRgX8j8OYO
-         Kq69PCJWLoqr46cbdiJVze3To6J1AhwRQU+FCe8n82CzFdO7KoeR7J7C7fMcM87HG8uV
-         0VrK7gWZHmysK9lyWAqnmHU+aaKNuhtRQ4PUGqNPY2jCEGwj9IHF6rDO1JBZat5JN9ek
-         GPF4TJaPlOPXyyxvqX7ngjBhN15diw0s6Yb1Ari2aVC0wiBcMBFRDtyf8KKwxFfdJWb3
-         J2QA==
-X-Gm-Message-State: APuU4Z/oLy+DY57IC2Zm+mADyecyTp6lUn95ASeV64085ex4fz+m2tyH
-	Q//kfhmX/ItI/CxEc/r3Mh5IV7xEU5x3nQI9JnA3XdpwJmRn4ultIb2KXEcNFuOvw47rHuLvwAw
-	q9y9noLnR+C80dsv7JeGRQYmRPb/bOM4Ui90WNkYVgyw/X7d6
-X-Gm-Gg: AYBFou3ZO9up/esTVVbu8H0m1w3OdvLImvAPgJYMUCHdOYmTvjeeT9LnjiH+p+zIzmV
-	diLvc1p0wiCIv1wYfnwbMoP2tWdErnSFhgpJdUxJTqNsXtBoPyoS9QygfLbvdjrfJQDeUgEBYYs
-	6OJXaVlCHXPbV2v+F3RPcQpLRU+okwzhERGl/56ilM0QQFvZLzy9jHalYcoJ++b6S6E/rHXN9Ne
-	I6CzRIdIum7eiqyc/LYi0Q2M6CnSPVTYd4lF+RRELDXA0gXHEiZiXifsppmCBza55F5wifVF3Vc
-	IAUiYQ6QDUVLEin5L9k5UytH1W5992blDgY5lhCn/BXs3bgl+JmvwRC/uPq0AqcojgxDGUSK+aa
-	egmwhgTMAT8aPPmOM8JU7fkLB9+EWRLe60PCE5l2YKW+PsBqDl/9y0u+5j/Pc3OJboKPUlqhNKY
-	egxRoxoZ6xEsOe46Uq4Q==
-X-Received: by 2002:ac8:5f4f:0:b0:536:6856:f590 with SMTP id d75a77b69052e-556bfc28a79mr49069481cf.18.1794419753278;
-        Wed, 11 Nov 2026 09:55:53 -0800 (PST)
-X-Received: by 2002:ac8:5f4f:0:b0:536:6856:f590 with SMTP id d75a77b69052e-556bfc28a79mr49069031cf.18.1794419752787;
-        Wed, 11 Nov 2026 09:55:52 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794419755; x=1795024555;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=deCzxOFeDCQXgKxHB3hOal3UgkmEGxjDuW74KEugHoU=;
+        b=D20EGp2BhwFYVtu7gz22iusvnu0iUaeliRJmRxP2acYa2Q+Q2O2awQWA0LW+ScHlSR
+         4QixeRCRKtqkAGPhnn8gJfLrYTBPX6zUfSXMQnBSAv5d8/PrscJL24Hnf72kk2D6SdFT
+         l2domVTMPk93p7/mwrvOwuhyWNfpRcJ89A14oXnysonSsf35JhktzkL78SIv1wt/09GB
+         TtY2SP/40YqGjeu4xP9gliCLvoWxf7Q0ag76LBFvH8UBzGaoYQhPqW5EC7QOJ0VsYeIg
+         38NVA8IsNx1fP6S7hEu8dVsbtKMJGCRf3dkxQTUwoZOuZUJbWqz94uPDGpK3GJpNfWAG
+         8bEA==
+X-Gm-Message-State: APuU4Z8jimuqfGpHNltH0XDz33guxdsp6EJwxJPG6iHNoRk8/ca+oc1f
+	TM4g7OHfETVy/aJkaMPL0gfZBsOMa/joLM0u9VsvmpFOxNi+e6+uC4YZL4dXqi0X0cEbsuxPQP2
+	nV6DEVWuWuK0J7pQXKcPsVwclMjVFrCNwxObKCTKMPxzunY56
+X-Gm-Gg: AYBFou2K9L9hTlr8OTRALI4boC6nnG1QC7k5qjklLgeXunY/mf8bp5PLEFaygX8kWF0
+	nk3HipMCnLqW7S4B84lrvz7Q1EMJslPY86RfBdH9DBs6x2aGQwFgPn6YGQP9jzLqlz0t1oLO1bB
+	zdnavAqxpYzwxxrFgfd+Kk4B2zqsISPzCdNHUMBAL7XuZoRcdt3R4gyYF+F0SGSoY3YGbmkh8Gb
+	B5NKJ/j6VN3lCqnhCGWcnLrbA+ikxda5T9z3J/+znBcrLDVkM1UCBpkDEDSLAcVaMdez/ibaP/O
+	as6mAdjR+JTWTrnT/h+fZJ5qDX12Y6QZ8IviegbP0chRnaTDtUbzZgIzKFHY9DMmKqR8Afpz4a6
+	RPmgH2lOlAHfqr7a8MOZijtN7ak5RxQk0flv83wpgjS3Se1pyRX/jUh1xJxvJ2xL5/lsWZgGijS
+	lhjuIph6GXf0/VEbsq+Q==
+X-Received: by 2002:a05:622a:4c6:b0:551:ad99:3df0 with SMTP id d75a77b69052e-556c1a5e3f7mr48808121cf.71.1794419754911;
+        Wed, 11 Nov 2026 09:55:54 -0800 (PST)
+X-Received: by 2002:a05:622a:4c6:b0:551:ad99:3df0 with SMTP id d75a77b69052e-556c1a5e3f7mr48807671cf.71.1794419754264;
+        Wed, 11 Nov 2026 09:55:54 -0800 (PST)
 Received: from [127.0.1.1] (dyn-160-39-33-242.dyn.columbia.edu. [160.39.33.242])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5550b93ee00sm54974231cf.16.2026.11.11.09.55.51
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5550b93ee00sm54974231cf.16.2026.11.11.09.55.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 09:55:52 -0800 (PST)
+        Wed, 11 Nov 2026 09:55:53 -0800 (PST)
 From: Tal Zussman <tz2294@columbia.edu>
-Subject: [PATCH 00/12] userfaultfd: assorted fixes (part 1)
-Date: Wed, 11 Nov 2026 12:55:08 -0500
-Message-Id: <20261111-uffd-state-fixes-v1-0-00713d368976@columbia.edu>
+Date: Wed, 11 Nov 2026 12:55:09 -0500
+Subject: [PATCH 01/12] userfaultfd: use anonymous memory for
+ UFFDIO_ZEROPAGE on private file mappings
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAPyr9GoC/yXMwQqDMBCE4VeRPXfBDUWkryI9RDPR7UFLNhZBf
- PdGPX4M/+xkSAqjV7VTwk9Nl7lAHhUNk59HsIZicrVrROqG1xgDW/YZHHWDcXAiAuf78GypZN+
- EayhV975ta//BkM8fOo4/Jw+9OHQAAAA=
-X-Change-ID: 20261106-uffd-state-fixes-d2111e2abd48
+Message-Id: <20261111-uffd-state-fixes-v1-1-00713d368976@columbia.edu>
+References: <20261111-uffd-state-fixes-v1-0-00713d368976@columbia.edu>
+In-Reply-To: <20261111-uffd-state-fixes-v1-0-00713d368976@columbia.edu>
 To: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
         Peter Xu <peterx@redhat.com>, James Houghton <jthoughton@google.com>,
         Andrea Arcangeli <aarcange@redhat.com>,
@@ -151,51 +153,52 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
         linux-fsdevel@vger.kernel.org, stable@vger.kernel.org,
         Tal Zussman <tz2294@columbia.edu>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794419750; l=3924;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794419750; l=5307;
  i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
- bh=cHZMnkuvxuVsum5IPSVBD2Hn2T2KOpeSqPFMnmKTxDE=;
- b=PkxX+j2NoQYADfdFn1SMpbWDsHba3k2jAxsod8ceDHDYyebLuzyuWYyJoweea/Y/WhGIgizjc
- tc/IiVb91ndBzMIK+oPCx5sSZLBqMlOolvppMeZlGQp/vadBlj2yIzh
+ bh=ZGzqhLx0gH//2ZFXY5DcwHUNOIJoLDbuuIlcIz+dT4o=;
+ b=eBI5XdW7u+jazsrmWEO2BTjYrlgooAZbQFoFI5BxfJc84/TDMCva259mt44pi4Q3MmInVwbC8
+ Gp0p0OSeiIXAPfpI5jclFrZpIzdZfkcquSiZQb7hr/WMWAWNQXKUChK
 X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
  pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTExMDA3MSBTYWx0ZWRfX9n6TUdA/TX+2
- k10+6/aYuKsUr+YMaATE9q8/KuZd49UZMBWddXpMKro2nC6N04AwuhF5nFG3LLhgyVeH1Xp297e
- xsBOyZGUGwN2akC4IJeJi3Wb0BhGXsfIkLB/4aSTVXLpa1BC8Cj1uHpulhkvlnzyQ+U62mT3hHC
- J+j1cpVMg5R0mexO8btNHqibpoeOBGA1rqMW6B+ULv4OUPqHje3A62H+ND72Ejqs3xGWuH+6yQP
- AEgwB5iAARXFl4kr30CEfQ0oi3AO6bTT4zYoyhIYxWxcAxZNJpXMPp7euB3y6PC7E2+B0lUvHez
- WjMiFVtBSRBQcBiTaVh2aMnqHW9KGfSKFCFWwYGjATlkVXo970+fxqyCIlBhGvCNpxkzCHjzXlo
- dtXZiSuoWRzbFVfgybgOUmC30KpRDTsoXEZEj8ddqwAyNOSd08djzX5nSvNfid6TAEwAqNDZgxZ
- SVDcmQN9DZH5N0AlrRw==
-X-Authority-Analysis: v=2.4 cv=fodJ914f c=1 sm=1 tr=0 ts=6af4ac2a cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=GaPK54s0Se3oFqK5NkZy0g==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTExMDA3MSBTYWx0ZWRfX2gBW/a/Xqq9C
+ KqkfozLVe3TtxUajaTed5BgfikqAsWVXkJHqCWbOkdlXZCUmmJXwUPeWYRY6Hf4V4unxBmuaSqV
+ vufu4eMuzgtqbvgzp3WWbUxGJ1ElWNFvFayZBNkmTYBhPfu7vZlOVToow+1RXmdCzEfhfAIHtv0
+ GYl8uYpKvqjGhjIRh0TP5qpw2Ohh7h8TS8KgCwXHKMPZ7b/eBksps0SGN55TRYYQQcUvS1vMkR5
+ V8XLBbkwbV0PY5u4QlgveoD5ec2QASe5POX6G7yuzlQPBh/yisZrVghBqEQHwsL37kp1l0jccE4
+ LJrLWeRYJ/ta81HHmUPkIky3WPAJ6rCBX6UHAov40mLW19iu+BXCgE1IGVOzh5R5ranwWDUUF/A
+ qtR7I64o6RrWlUxiN819LzhUjDdXzF9AoIfldIYSS9A1uLRIdlSk/4b8QELwldxSIeG1iz/OzzQ
+ k5f7hjh5MmQ3gu1EKdw==
+X-Proofpoint-GUID: dJShRlRhXs2LurvxbyAWAvs4usn3SoPV
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTExMDA3MSBTYWx0ZWRfX8JMTPRhYE6vs
+ hBU2uZ/Lzy3M8dRCE10UNsZq/ru2sv20QVPK2WBN7tTJTW0FELraQ460ELP9xhML3+zHFyVN5ac
+ dn1s72AgyykmKLOjjlTAXXU1ByHpj0HA4xgGCaNOuqHs/4CCYriL
+X-Proofpoint-ORIG-GUID: dJShRlRhXs2LurvxbyAWAvs4usn3SoPV
+X-Authority-Analysis: v=2.4 cv=A+35rKWG c=1 sm=1 tr=0 ts=6af4ac2b cx=c_pps
+ a=WeENfcodrlLV9YRTxbY/uA==:117 a=GaPK54s0Se3oFqK5NkZy0g==:17
  a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=G--0XuH5328wxK7v7Suf:22
- a=ctVpGLEqiRcwzRHSUTwA:9 a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTExMDA3MSBTYWx0ZWRfX0UN5XQz1IHEu
- RXUhieIevU8LAHM0Axh/CaGg2di5AL/YerWTGf3imDMoQNrPWxDL0cQoWKO67XWjGXYUaADf53T
- HBYdbfRsHR5FzmokiV3nXYivRdlf9Ot6NHoyV6sFP7Bw5HdmIBh4
-X-Proofpoint-GUID: zr-jYVa84CXGUqctU3POFsKKhHu8AO4B
-X-Proofpoint-ORIG-GUID: zr-jYVa84CXGUqctU3POFsKKhHu8AO4B
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=svvvyxlR1OQQkelhaPoB:22
+ a=VwQbUJbxAAAA:8 a=a5NvJi0EDLanwwYVvGMA:9 a=QEXdDO2ut3YA:10
+ a=kacYvNCVWA4VmyqE58fU:22
 X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11963
  signatures=596817
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=10 clxscore=1015 priorityscore=1501
- lowpriorityscore=10 malwarescore=0 spamscore=0 bulkscore=10 suspectscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ priorityscore=1501 adultscore=0 phishscore=0 bulkscore=10 spamscore=0
+ lowpriorityscore=10 suspectscore=0 clxscore=1015 impostorscore=10
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
  definitions=main-2611110071
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1A49920007
-X-Stat-Signature: pigfay7d87s7ii4thpcsw15j63e44ds7
+X-Stat-Signature: xob7h4wcckyki43p6pmqguxzjpoyjq5h
+X-Rspamd-Queue-Id: 6898A80004
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794419755-392238
-X-HE-Meta: U2FsdGVkX1+ifwyKx9z0ekD/JtHMIBEF0kK4gO2afaMpaKhDiLqRVgkCtbKkgzjtfo4pA1hOw2whziuFvVtDnzIGVXmqUKeK/lJQ99/DgZQUlkfU0zQ3L8f+yAWi0XqXMoFgy4Ke5HB4k/yOgWoOYMjGKYm2UdMPwuGmqhoHr2YnNSQODFZYhzFjJ6AYhi7Ql1u55Q/a3b1KCG3o33ve/TSakHCWIEAulexlOMeXG7wPJj2D6vHIwEHxbPcEYmSrvofg5jtf8pfyd/TqJyiLnIwb/6n6fpQXC2uSuUAJsISiStJx/Z1eCKxsGlwqFx8AJrMTx75IGsBQgAp2EflZ86gOcz1MrYKoJsgu7VJc5K9CVzWB4IjsMKT3Z1fKLXtGg3T8bjnio0MhfyjV6s0NoUuyAu0IcAqyLzh0ZD/CQh/julSzX9hAW98guO6yyCSdPvjwODuh8NZowxV7aDhUMoMgUnONVW2+5IhJ0i8trjgAa7LSeIC9vjNy37LCyx77QnpnfjU+hwbPtydTqqcjq5twS9FAeml3yLmc19sQ7iZ9dY28Xiw9gA4428HC0Qg7n3y0pamPe0IYI2/I5HGnYibMQFkLdkI6qKqFoQtmKm6OvPCtFRHxNy8+ACTI47EO1vZwJQ+0q/26si1puss/FwURqD1+co8aPb5rDQqcu59OFDeIaYOgQK1cKiGOifz5dXjksA9hiYHXVWAVEuqzMoHk+XapZyBNdHHMmR71COS48c4MqYTlu4fXotbcIC+SVEwsNYyNlLvGn/8GqvFMgUMNmL6+Sf1CFicpXwuVi5ADGuqoFAVEvTYHk4Q7ADbWht5rqaJPZZ1pltQ7S+Rr5aUl3qK/odO76yRb53ou2r9/6abDbsHKWFKPDVS1A8Ry63p9xSzVIL23GgDamia6RIDc1icLC+fh3neoI0G7iv9zmNYTanjKPO6gbIzKBGJdU0KkH+/Jh6lNtP+9i9/
- HoGeqpXG
- TJkfNzR8mC6GDJ9ghASzTj7CfxW0J283iJzijUgYN01WCK7hEIAxAyLKYFJE6CoU/gnWBypR6sf7tMmLT/1zT0vOFGO+pkPJec6D15oZp35CErYSZJ7GLV1Qnp7nxymrWOMoOqZ3gUCL5AbQY8mbilEB5B79YP+4DihZMDx3ULp7IVxE92yIhVF+tH6CHxx0wtcbIH2DkqjHTq7mIAHxYBhfEf42LtRduPqTfX8UfnXdxfHTDUNiV8ACt898iB/714VNCo2WPV+DGv2Cks7jVaqtMkwsV0ffSj6XxXua8UnAl3Xp9QP74kJS5eUf6csbEjeEfgDaBMw5q868COFgVE1f/qdQVoJitaiUIvDLh13865BExW+6y5RtNXM3tarbLwyccrOleXbDvBOBf86D+pbbPncBQy2xBU3JLRjRNE7XPt51e4O0Eo+0V8ptQqAckIARL9NWYzsAKeGY=
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794419757-353016
+X-HE-Meta: U2FsdGVkX1+I05J6YNcneMICoulGDfnfbL8LMrx2uu94mpc290zMzB28Udn4zkBJUtipTZVnhej0t6/Z2YvvMMReg93lCRgrOj+olGRuu5WMWzlSklfNLLO7ALPmcNY83LdM26tnaE3AYyUtgriTDf61Q8AEvrzTLgLsUcVDRBp8orBa5qN3eEiELM2ZakT+CHBeNnl7PTZ7bKyUUpV2TFQzJKKCT5xspMqlJt3RpfDlW2QW82mqHnaTvClcrAu0B8Fu7x247PnwYs4cO/btnQT4YZ4KvhJwNGox4K+PoY2IxNWtA98Ma4jhA3UElWcvF2KoemCF4ZXCBAtQzx62VxlV46r94e4N0fCQdhT6PYur2D8Hu7FC7spYouTLlDYzYjC6sZxkEO3Fht+D8bRbASr/m2nbp2htytWKuaDv1LdaxiSeb/5JOmqsbQVj4kfrNKrHCVz3eoQaIGujiITsf8elBTzYzM9x6cLI/yxfbTVGxzj9kBBpyA9JClKtICvZuKRWomVzW+gzFsCXWRQCyViF546ghOotVMCf/zfOWkbyGsMgmTzlG8HzKVXaWB//mxqWmgNFtr5y8b/nY27ZT+LY9Emb+My0XR0lk2m9pjItWf6oPl4sx0Cyrb2kNLV6woFj32TkQeYFaJMBleQjPm/ZlFF5/0S6rVxQtU6HV5WsowPjyt+Nk3f+krgj8JwjUHXb5uMl8crFoU+h9xeo4SX7u8HGixCliN6JHoKPyTU2ZF+ZUiwRuHAHBpEmUJGKNtx2wv8qJgm7Fw4beSkThtu31v5iT7yLPNHSS75QlfjV5tFamoFSqsOVvwhaN7UsHI6RX585thV5qrjbF5e4PQy3/BvzZZU3AWvyFdQ2fQXjy24wMI9XRHNpwESnTJ9kUYlauZRunm7lzvoWTXXHtogo0rmVRFQKEkqNR1VyN3CR29fAW5oowMXA/+11wLkFSxk1XW4j3kwnB62xabT
+ fgALBbdf
+ v8vn2oP+ow2aHvsHFZgZY2xOpknQWp6d0m1lSJi51jCzVqR/1LGQhetp+3lFPQtjqJZYz1CkS5RYq9uBTt/0BEsNaLQWZ2Q4rv7xqa9HabrLNa/fTI6ZL1n/Nf+GrATGU5Rxkq2pAobbZyGnMyxB7X8SrKAzL8tLbgkccaAOQJL7VkePnlPxW1S1WsAFC1VyNRHaA+JxshH9xNa1fGo+KHhE9s8I9Tk/jQFE1MM3w1E7bWr4sVeaLkoYxD5oSAR4uRE7MGEpN4uaxiSZgvhceS2wcLDNAUzJS1uV/TXFL3aJcOWtjyenYn35gwjcGBAVoMQ+hX6ck/btACvJ+eojld7BEfDHIrSRxL6wvVDaFCJvYMtACNVRQNj8AYjSIElNUVOZ7Bglh2mbcjQaoWNK90KAwLupVtLhhQItQLGRXT6C0QMhc07k9evRQVorbSREJY5IELV3lvZODKwQ4r8y5faKLnCl8MSdwun6APHpgIxgL2WQv9J31U+4NQb3ynTJRwF8B2e9MG+SUz4Z0AJ42ExrdZw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -204,84 +207,133 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-This is a first batch of userfaultfd fixes, with more to come.
+If the mm cannot map the shared zero page, UFFDIO_ZEROPAGE falls back to
+mfill_atomic_pte_zeroed_folio(), which allocates a zeroed folio and
+installs it through vma_uffd_ops(), no matter what kind of mapping it
+is. An s390 KVM guest with storage keys or protected virtualization is
+such an mm.
 
-These were found by a mix of regular old LLM review and by having an LLM
-write a TLA+ model of uffd interactions with PTE bits and other state
-and seeing what issues fell out.
+For a MAP_PRIVATE shmem mapping, that adds the zeroed folio to the page
+cache of the file. That is wrong: a private mapping must never modify
+the file it maps, and the file might even be mapped from a read-only fd.
 
-Most of these fix places where mm code loses uffd-wp or RWP protection
-while moving, migrating or zapping an entry. Userspace then either
-misses writes and accesses, or gets pages reported that nobody touched.
-There are also two hangs (UFFDIO_MOVE and MADV_GUARD_INSTALL), and
-UFFDIO_ZEROPAGE modifying a file through a private mapping.
+The ioctl can also fail where it should succeed. A missing fault is only
+delivered for a hole in the file, but UFFDIO_ZEROPAGE can be called on
+an address that did not fault, or can race with a write to the file. If
+the file has a page at that offset by then, inserting the zeroed folio
+fails and the ioctl returns -EEXIST although nothing is mapped at the
+destination address.
 
-Patches 1-2:   UFFDIO_ZEROPAGE and UFFDIO_MOVE fixes, cc stable
-Patches 3-5:   PAGEMAP_SCAN write-protect vs. migration and
-               device-private entries
-Patch 6:       UFFDIO_MOVE of the huge zero page from an RWP source
-Patch 7:       mremap() losing uffd state when a move fails halfway
-Patch 8:       migrate_vma replacing a uffd-protected zero page
-Patches 9-11:  guard regions vs. uffd-wp
-Patch 12:      UFFDIO_UNREGISTER with a misaligned hugetlb end
+What we want is what UFFDIO_ZEROPAGE does on a private mapping when the
+shared zero page can be used, and what UFFDIO_COPY does: only check that
+nothing is mapped at the destination address, map zeroed memory there,
+and leave the page cache alone. The zeroed folio path did that before it
+was moved to vm_uffd_ops.
 
-A few of the fixes change what userspace sees:
+To fix it, pick the ops in the common folio path, as
+mfill_atomic_pte_copy() did for UFFDIO_COPY: anon_uffd_ops for a private
+mapping, the ops of the VMA otherwise. That makes
+mfill_atomic_pte_copy() and mfill_atomic_pte_zeroed_folio() redundant,
+so remove them and rename __mfill_atomic_pte() to
+mfill_atomic_pte_folio().
 
- - UFFDIO_ZEROPAGE on a private file mapping no longer fails with
-   -EEXIST where the file already has a page, on an mm that cannot use
-   the zero page (patch 1)
- - UFFDIO_MOVE returns -EEXIST for any huge destination PMD, not only
-   for a present THP (patch 2)
- - MADV_GUARD_INSTALL sends UFFD_EVENT_REMOVE, and can return -ENOMEM
-   or -EINVAL if the VMA goes away or changes while the lock is dropped
-   (patch 11)
- - UFFDIO_UNREGISTER with a misaligned hugetlb end fails before
-   unregistering anything (patch 12)
+UFFDIO_ZEROPAGE no longer modifies the file, and only fails with -EEXIST
+if something is already mapped at the destination address.
 
-Patch 6 has little user impact on its own. It is included because,
-together with patch 7, it allows removing clear_uffd_wp_pmd().
-
-Patch 7 adds spurious minor faults on shmem and hugetlb after mremap():
-when dropping uffd protection there, change_protection() makes writable
-pages that were never protected read-only. UFFDIO_UNREGISTER and
-UFFDIO_WRITEPROTECT already behave this way and lead to the same
-spurious faults. This will be fixed in change_protection() in a separate
-series.
-
-Based on mm-new.
-
+Fixes: f74991b4e383 ("shmem, userfaultfd: implement shmem uffd operations using vm_uffd_ops")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 ---
-Tal Zussman (12):
-      userfaultfd: use anonymous memory for UFFDIO_ZEROPAGE on private file mappings
-      userfaultfd: refuse UFFDIO_MOVE into a non-present huge destination PMD
-      fs/proc/task_mmu: downgrade writable migration entries in PAGEMAP_SCAN write-protect
-      mm/migrate: keep the uffd bit when restoring a writable migration entry
-      fs/proc/task_mmu: write-protect device-private THPs in PAGEMAP_SCAN
-      mm/huge_memory: build the moved huge zero PMD from the destination VMA
-      mm/mremap: resolve uffd state when the context is dropped, not during the move
-      mm/migrate_device: do not migrate a uffd-protected zero page
-      mm/madvise: let a guard marker carry the uffd-wp bit
-      mm: set the uffd-wp bit on a guard marker when write-protecting
-      mm/madvise: send UFFD_EVENT_REMOVE when installing guard regions
-      mm/userfaultfd: check hugetlb end alignment in UFFDIO_UNREGISTER pre-scan
+ mm/userfaultfd.c | 46 ++++++++++++++++------------------------------
+ 1 file changed, 16 insertions(+), 30 deletions(-)
 
- fs/proc/task_mmu.c      | 64 +++++++++++++++++++++++++++++++++++++++++---
- include/linux/leafops.h | 18 +++++++++++++
- mm/huge_memory.c        | 31 +++-------------------
- mm/hugetlb.c            | 27 +------------------
- mm/madvise.c            | 62 +++++++++++++++++++++++++++++++++++--------
- mm/migrate.c            |  2 +-
- mm/migrate_device.c     | 23 ++++++++++++++--
- mm/mprotect.c           | 26 ++++++++++++++++--
- mm/mremap.c             | 46 +-------------------------------
- mm/userfaultfd.c        | 70 ++++++++++++++++++++++++-------------------------
- 10 files changed, 215 insertions(+), 154 deletions(-)
----
-base-commit: 2dc0136b1fdac153434ab02778fcdb32db5d0dae
-change-id: 20261106-uffd-state-fixes-d2111e2abd48
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index d65184d9a480..61a712e1f9f5 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -531,15 +531,27 @@ static int mfill_copy_folio_retry(struct mfill_state *mfill_state,
+ 	return 0;
+ }
+ 
+-static int __mfill_atomic_pte(struct mfill_state *state,
+-			      const struct vm_uffd_ops *ops)
++static int mfill_atomic_pte_folio(struct mfill_state *state)
+ {
++	const struct vm_uffd_ops *ops = vma_uffd_ops(state->vma);
+ 	unsigned long dst_addr = state->dst_addr;
+ 	unsigned long src_addr = state->src_addr;
+ 	uffd_flags_t flags = state->flags;
+ 	struct folio *folio;
+ 	int ret;
+ 
++	/*
++	 * The normal page fault path for a MAP_PRIVATE mapping in a
++	 * file-backed VMA will invoke the fault, fill the hole in the file and
++	 * COW it right away. The result generates plain anonymous memory.
++	 * So when we are asked to fill a hole in a MAP_PRIVATE mapping, we'll
++	 * generate anonymous memory directly without actually filling the
++	 * hole. For the MAP_PRIVATE case the robustness check only happens in
++	 * the pagetable (to verify it's still none) and not in the page cache.
++	 */
++	if (!(state->vma->vm_flags & VM_SHARED))
++		ops = &anon_uffd_ops;
++
+ 	if (!ops) {
+ 		VM_WARN_ONCE(1, "UFFDIO_COPY for unsupported VMA");
+ 		return -EOPNOTSUPP;
+@@ -597,32 +609,6 @@ static int __mfill_atomic_pte(struct mfill_state *state,
+ 	return ret;
+ }
+ 
+-static int mfill_atomic_pte_copy(struct mfill_state *state)
+-{
+-	const struct vm_uffd_ops *ops = vma_uffd_ops(state->vma);
+-
+-	/*
+-	 * The normal page fault path for a MAP_PRIVATE mapping in a
+-	 * file-backed VMA will invoke the fault, fill the hole in the file and
+-	 * COW it right away. The result generates plain anonymous memory.
+-	 * So when we are asked to fill a hole in a MAP_PRIVATE mapping, we'll
+-	 * generate anonymous memory directly without actually filling the
+-	 * hole. For the MAP_PRIVATE case the robustness check only happens in
+-	 * the pagetable (to verify it's still none) and not in the page cache.
+-	 */
+-	if (!(state->vma->vm_flags & VM_SHARED))
+-		ops = &anon_uffd_ops;
+-
+-	return __mfill_atomic_pte(state, ops);
+-}
+-
+-static int mfill_atomic_pte_zeroed_folio(struct mfill_state *state)
+-{
+-	const struct vm_uffd_ops *ops = vma_uffd_ops(state->vma);
+-
+-	return __mfill_atomic_pte(state, ops);
+-}
+-
+ static int mfill_atomic_pte_zeropage(struct mfill_state *state)
+ {
+ 	struct vm_area_struct *dst_vma = state->vma;
+@@ -634,7 +620,7 @@ static int mfill_atomic_pte_zeropage(struct mfill_state *state)
+ 
+ 	if (mm_forbids_zeropage(dst_vma->vm_mm) ||
+ 	    (dst_vma->vm_flags & VM_SHARED))
+-		return mfill_atomic_pte_zeroed_folio(state);
++		return mfill_atomic_pte_folio(state);
+ 
+ 	_dst_pte = pte_mkspecial(pfn_pte(zero_pfn(dst_addr),
+ 					 dst_vma->vm_page_prot));
+@@ -927,7 +913,7 @@ static __always_inline ssize_t mfill_atomic_pte(struct mfill_state *state)
+ 	if (uffd_flags_mode_is(flags, MFILL_ATOMIC_POISON))
+ 		return mfill_atomic_pte_poison(state);
+ 	if (uffd_flags_mode_is(flags, MFILL_ATOMIC_COPY))
+-		return mfill_atomic_pte_copy(state);
++		return mfill_atomic_pte_folio(state);
+ 	if (uffd_flags_mode_is(flags, MFILL_ATOMIC_ZEROPAGE))
+ 		return mfill_atomic_pte_zeropage(state);
+ 
 
-Best regards,
---  
-Tal Zussman <tz2294@columbia.edu>
+-- 
+2.39.5
 
 
