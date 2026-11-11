@@ -1,124 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58EF606A332
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 16:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8101606A326
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 16:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nZ/85UWg
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MXRFtoMu
 Received: by kanga.kvack.org (Postfix)
-	id 0B49F6B05B1; Wed, 11 Nov 2026 11:05:38 -0500 (EST)
+	id CAF766B05B3; Wed, 11 Nov 2026 11:15:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08C326B05B2; Wed, 11 Nov 2026 11:05:38 -0500 (EST)
+	id C866B6B05B4; Wed, 11 Nov 2026 11:15:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE3A46B05B3; Wed, 11 Nov 2026 11:05:37 -0500 (EST)
+	id B9CA96B05B5; Wed, 11 Nov 2026 11:15:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CB30F6B05B1
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:05:37 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 68701A7AD9
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 16:05:37 +0000 (UTC)
-X-FDA: 85423313514.15.A8FF848
-Received: from mail-wr2-f7.google.com (mail-wr2-f7.google.com [74.125.225.71])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 887C718000A
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 16:05:35 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="nZ/85UWg";
-	spf=pass (imf16.hostedemail.com: domain of mohamedalibouhaouala@gmail.com designates 74.125.225.71 as permitted sender) smtp.mailfrom=mohamedalibouhaouala@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794413135;
-	b=I2qp4VzWWKb5awtI6QR9FGlnG4jaT8YNe3gdSM1feB9/GMx8h0jev2I6gOXgpAz19Lgy9t
-	Q1eg4Z5OwSqgreRf1Wse88tIMiWEHPJaa3vKhA4NCpeXsly8nXp6xrqBHNfxaRh1L+hbtq
-	U3IlUTnOGcKzph7qu7bDirYC4hO3fU8=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="nZ/85UWg";
-	spf=pass (imf16.hostedemail.com: domain of mohamedalibouhaouala@gmail.com designates 74.125.225.71 as permitted sender) smtp.mailfrom=mohamedalibouhaouala@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 931ED6B05B3
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:15:43 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 84E0280357
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 16:15:41 +0000 (UTC)
+X-FDA: 85423338882.25.F202701
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id CEE831C0005
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 16:15:39 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MXRFtoMu;
+	spf=pass (imf20.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794413135;
+	s=arc-20220608; t=1794413740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=lRiUlywrwld98ENTQ9ryYYw6DTlHnImGRe3UChrbN5g=;
-	b=Wyw7Tuz2NxO3xxuyBxSU+WM3HIKABbI0YDJpCxOwjvM4LOBdGWidC2uBF7UBpoC0g+NZ3i
-	cJChavUOwAU8WP3M63bjMpDDUJfoFtCeE2Z5v2zbjaKnIJMnN++qG1cNpe2XF07FD1D1kk
-	A6/caMYvMhIFPJKu/mBRCQT/sITksKQ=
-Received: by mail-wr2-f7.google.com with SMTP id ffacd0b85a97d-48e0c9bc8f9so1495309f8f.1
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 08:05:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794413134; x=1795017934; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lRiUlywrwld98ENTQ9ryYYw6DTlHnImGRe3UChrbN5g=;
-        b=nZ/85UWgcYCPY92yHZYy6fo5lhqF/l8eCH6TIoZtQWzlrUGCtmMIgbKuY83Zod4NpP
-         27e1gLA+bNR3T307P9a0PukXZEyGkFf1m/MLS9bFNrF8PuhSe5TNVhZc82Oa4/vggP+h
-         rG9F9LAKJvT2DniuBTwNZqCAYBBHq0t9kPehL2h9kaynE3WngBpY+ODPK3ofueuYV7oB
-         6zUbl5afg6u/zLcOciiOcbuVWlum6dsE8Qb8FPyyk19r+79eGx4dWglkvuWpQiub9HdF
-         KV9ZgnWg1xfqnEJ/8/lqaL0NmZcrp894ohpGPlxQgTkdGtitFE0xee6+ryrxAAaEyn51
-         elMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794413134; x=1795017934;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lRiUlywrwld98ENTQ9ryYYw6DTlHnImGRe3UChrbN5g=;
-        b=lWoQ1ypXdHmfqjuKQ1IVdVvIVP4tOiBzvQL/ClizxllZ5l60B8CbV3WEwjiCV+8NDz
-         r/xZpx0ze2Gv8gcyl1sK6cR02If5NOLvm8kgBirwY1nuSfQHTqGcPmf+aQCjsmJ9ZZ8E
-         gkL4gV7f/TYgTyi5Ioq5ZT9/aS5rNxQN7UekgC8iZFDVGanjcOm8to2sk7anv1s/hCi6
-         mWaI2yhEj9jyfZIxv0bUHp/ydYWRaH1TrpH0UMxBSyfb6L4cj1CrUrFp+KVM+fh1z9Wp
-         7zDbQxy4nPd5CBPcWwEmpzcDGiq5zoNGsr2CLjNQG3wwDY4I2EJDUumGalnvNVKUIk9g
-         CGhA==
-X-Forwarded-Encrypted: i=1; AL+hErGjexpcWam8KQHlSI1w8Yzk5EHxIITlpdRmKso0yMFjVik5wmuQ7RABLJB2FJMuzxlwgXazfV5DfA==@kvack.org
-X-Gm-Message-State: APuU4Z8N5dr2IuLdIwvukDcWeJQJKJXJBaK9F99+jAYYq3nOD4/G9OuC
-	pAWbn7adCO9fTptHpR0yzp7DQ6Idbe3wZNqrllPAHR9vBNNJLkmhC2Sl
-X-Gm-Gg: AYBFou0FERlcIo9odFQqefXXDlpm5Sd4iWXw4draMHGf53pX2C68gjxcz/huUPbQOyn
-	Ip11OsidbFgUpWBwD+DsXdxuL7D+SAhP97t5w8RhANo1pmNN2aeCSe4kamfc+tDernyRSEP09vf
-	IHLD9ZGpbvqgg3qZABdTusQolMkfgfnBfvpLMLU+JQLcYPvW3IVrJmNaskyZ388Uh6Dt5le5Tzy
-	vMseNEd0wGvNn3asn0HiNywWv3UgGcRBYRv3fVBMU87sZGTCdxG/QoIHSxaffUb7j37ysqSlgIm
-	AtyVa2yUvQ+I7PJWmrTKjaf1vRefXDl0TCv7QxRgsEO8FcHjhU+TqiBFAZaqDuVYk0I3WMFO4Fa
-	BImidF1sPX1VtoQm7sM4Y1Ut9w4UM+vRJHiJpS4KWvKaBFxPUs26HPIUH4MexhL9lDWZyJI4vDX
-	V2YHL5Rb3e3z1rURwww/srhWke0z78dOqeC3zTWEfAwcqBnL5h3UbqcmR0zVZJl7PrK3PWbuKih
-	2KfKcBSLLsHHHSX6UqqmbaGVAOQS6sDiM+IIVWlwS6VQ5PLMGLRT4hCH8mUje8X8QibbqP8h83q
-	2S2srxMXLLzTG3y0zc20lfGTi2facNeROcaGkw+sKgYa25inl2mxOH+erbj+8TnH9OecQwNxmjd
-	g4P4tmHKKgO8KwAdsPXQeiSlgDQ==
-X-Received: by 2002:a05:600c:46d2:b0:4ba:73f:ef5 with SMTP id 5b1f17b1804b1-4ba093b1bcfmr49437235e9.34.1794413133588;
-        Wed, 11 Nov 2026 08:05:33 -0800 (PST)
-Received: from mohamedali-HP-EliteBook-840-G8-Notebook-PC.mshome.net ([196.203.210.193])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb4c55f667sm4955755e9.15.2026.11.11.08.05.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 08:05:32 -0800 (PST)
-From: mohamedalibouhaouala@gmail.com
-To: willy@infradead.org,
-	jack@suse.cz,
-	corbet@lwn.net
-Cc: skhan@linuxfoundation.org,
-	rdunlap@infradead.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	MohamedAliBouhaouala <mohamedalibouhaouala@gmail.com>
-Subject: [PATCH] docs: filesystems: update VFS locking documentation
-Date: Wed, 11 Nov 2026 17:05:15 +0100
-Message-ID: <20261111160516.30458-1-mohamedalibouhaouala@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6VIZ3PtCdrmMEOv2W4/v/h0FEesRkpl7sdLewNtxWW4=;
+	b=ARrdEo70OCz3Ww6sRzeTXHBTTjFTCDRkthZM2GyzGhLfWskenwa85UUZWAv/qLM9spdbDG
+	/N22CRoHiQMMWJ+/kb9Ypp8SxbQhYGuly1PMQwM/O5v+lTEoP3PTZO5C2EEpOgae4bdvUr
+	QBanfRztD5y47sG0eQayWrgP7EXOzsE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794413740;
+	b=c7VvppvSVz4NQfGIhnNg5qppmR5iFgjyhbR2NZjtzjM796aN1eZAjBtf4KV6LFF/dHlLrE
+	1HvkW0IKEapXrk26ma1jSojAcOz62qs7ijGiL0fmAAN3/O9tV6gUsshP0qgyaNIWXQkXmM
+	rgRR+pJKV8URSuJvGJ8ARRgue2n5aYA=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MXRFtoMu;
+	spf=pass (imf20.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DBAC863E0D;
+	Wed, 11 Nov 2026 16:15:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFE261F00A05;
+	Wed, 11 Nov 2026 16:15:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794413738;
+	bh=6VIZ3PtCdrmMEOv2W4/v/h0FEesRkpl7sdLewNtxWW4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MXRFtoMupiT3qJYgXy2sB5augkLgLy01qRPMNW45hSF9TkcmcmWYGEuV1Vz8rWyW6
+	 0ooJ3PmsQeytlwlshiRdctOVUiFAzHmpWyxKu9nbUHJdynm5l0dpxSF3+fMGPvTAtl
+	 h5Wrl2+XF/DcnC0+tpUiX1ybjfuL2oM7cFwCwZpi+3ORaDY+l4Ad0P+yIjIazHFrIA
+	 YKx6+GKltenDm8orj9uCHBo4Wv2y5lbssOY/NWJ+aLstSRAD6AtSBoYHk9V08IH3J8
+	 /HJ0P69c8aNYZzrVMV0lGp4+KJ7N/z8bUp+urrmmHsLr3Ll0KkVI476EDVM0DHH0/9
+	 +L8aD2xMGC3+A==
+Date: Wed, 11 Nov 2026 16:15:28 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-hardening@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ard Biesheuvel <ardb+git@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
+	Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
+	Linu Cherian <linu.cherian@arm.com>,
+	Linus Walleij <linusw@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Maxwell Bland <mbland@motorola.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Pierre Langlois <pierre.langlois@arm.com>,
+	=?iso-8859-1?Q?Pierre-Cl=E9ment?= Tosi <ptosi@google.com>,
+	Quentin Perret <qperret@google.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
+Subject: Re: [PATCH RFC v10 22/22] mm: Add basic tests for
+ kpkeys_hardened_pgtables
+Message-ID: <9deffbb1-75fd-407e-90cc-59bf4c2fa1a6@sirena.org.uk>
+References: <20261109-kpkeys-v10-0-aa6c4d9603bc@arm.com>
+ <20261109-kpkeys-v10-22-aa6c4d9603bc@arm.com>
+ <2d13fbb7-b5b4-446e-8709-5b43349ff19a@sirena.org.uk>
+ <9e59fd71-97e7-422c-a7dd-bc23c6e6a852@arm.com>
+ <717cccfe-81d6-4e09-a466-5361ae27776f@sirena.org.uk>
+ <0b29393f-bb84-4df1-a699-f7afcb50f2e8@arm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 76w7t1gijwotu1ibmy4me3fadw16so3b
-X-Rspamd-Queue-Id: 887C718000A
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="OedQK9JKFipfKU6l"
+Content-Disposition: inline
+In-Reply-To: <0b29393f-bb84-4df1-a699-f7afcb50f2e8@arm.com>
+X-Cookie: Do not pick the flowers.
+X-Stat-Signature: mpeysdhegxp9xqrihpw5sxr9xytud5g4
+X-Rspamd-Queue-Id: CEE831C0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794413135-956099
-X-HE-Meta: U2FsdGVkX1/UbeoTnZ+moR0FoTKE9bG2ygs/GhxN7cpFP0PBdVHMvnmHUPTUqzJJiQERu8G2IU0QQduiFAHilugzlIaZy1nb/L5NCf2xF0vTR6JzcheSeClm4ZG3sCKe4n0rRzVjw1B2F+D9RtIyV5umEc5VSD7hasIi1UZkq2t09LyVFKAMa6E5JFb6XXHXUE8WFJHvmnAVpqtw46ffHZ80hAZ7ivdqBX0kl++MUY2AutHw1wCQb2FJxoutgvHxtmgdfzolTU8LVOHImnzvymhdL8J8UmJ7ZhmQiRPhFDP9HJ51iZCUHbN4crVphMBZYVq/EP79IUOQ1Bj3PAja9tuV9DN8PYFfkTx/cUmY2s1HTUmuFB8IUiUG6oRuyveVdtxMJw9ZaoIUoQj/cdjbqpmPK8+n1yNKCqRVW5pGJ677UKCo9k2Aj+3mLa3Q3ZCXZwpAhJO83OyvgbVoIASZZJMOkqhEszvA1C6giBRzfpDnc143WSor8ImUzgRUIZydwNZloqwXd9EpOiHYoboLOTl3fhBCAPxVqprcT9woDG5sJu5Rw74bvEBbv9m78IZW3Xhf/+S2dFNtzczy+rluvCm7kGmpXdkuFUpzojhM7jrhA+dIOcK1RVPWbihIaGgU3v7eAfRa479a0yPOsHtzGByz+Rv5KuTEYsFhrVvqETJ1q+JWzgXAr/b3ehuSYv1eGd93Jm6RMteK98QCx8TdVSYJB7J5+hgY92QIlU/TVQ1LGwlbL5qxWft85UI0BLetSceWAgYwDDUpQj5agQDIi2x9UgjPqhw4Z4zpJKELn8GLmFax0PPa+FYpXwm089pKNDTv3gf1sPfDi8dhl+6LF92XoJKRwTtB6nREokFzwDMgOHMDJz/fsAGed5qljp1xYZH8O1bbrasZcWDT1iUxziscfkylfRQG1nQ7Lpz1yFArAL+JX/0aP2Cd0XEbKJeXaeuz//Xpa6agpx4le0k
- CA3qk2yB
- DMTksh8w4LjEV/WVC7Q321zU3WzG3Z8nZEUwaGVGoPwaue3EnX/WGWJy+b+eWAMkX2yaQ7BmnMk3M6hMdMoNmKs2cmdvKB1chOuRbmiYVzujr5JZ4AjrKA5F+lIN/yynSoDQyJXuL+t+U2FEQgPk74b/FRaY2ONrkj5Kc3ZCzgsJUDQYP+A5r1sYsdhJmf7LuIy4PKlGQQa4sv/5Zr3pinx9RG/eE36c6zaG7J1a5Sz4HP0Sli4SP4TBYypnMAoTglGlvYynNp9eooWwsDwESkLZOwOoPxkDdirS/rgLJKiDI3hscTa+bUb9jwBN7Qdo55w+b1dVdNyJPF90W5KYpL0D9VXQjABfQT4W8kP8rcZGXTrYsCO0FnNZWWkdBGOpPV5FMKk2vorDZQXgu8z5uEQtLNg==
+X-HE-Tag: 1794413739-126556
+X-HE-Meta: U2FsdGVkX181rezU1GW3xNsB71i0vaeeuipq7OPZhP6XiynwaYBv3p1xZPaaHtzU4c4z/9wvjM9cH61z39BdkRh7QKzjgKh0vUJ/bFSdZqaO46/uBB9l+ox+IN5ZP5Dz3MjK7zlXcyQU76QH3UQTuVdjsJDeHUBAna2VgzH3F/srN7mZU6kvRsFRVdKO+NX5qfxH9WrlOCuZk09U5n5YAASmgmcbu1Nd9rXQdLdtY0RDZgCeCiRMFfZ3XY6mSjsNl8uHxQZ616PUOvWZbLPKp/1L9+z7T1YuyRHTX9aE+bBDMRjyi7slGUyS+yZDHBVF4HIpyBwdDoJB+eLlnZtC4Cps67B+6B58VPa2Z5R1LFVZ/U1uUT3GtO46Xs0UHNzB0ha0oJjnLyW26D9ILu5I0ImcHz8NQeha1v6yNEGHaZGOmCX7UTX7VleJVB3f34hu8cs1arKvrU3ji0nnPWu964HGANJkd/acPTsLxo5fb7PwpYXfqAFGf+hBg0VkBkOP042N9n0A5epkYi0AAR5BN6ISYYSfP7l/JrV6OLnQjrYSD/lnl8Wss9Q+z0HaiKi7y+H7hmFKNt/QNDMr2N4JnwsdoHkTyf+1/dJolu6xhfKZCx2m062kbyYIu+JIQ3vU8oDo0w+IdjR1X2nwTgZ/tSH8C/I71Oo8gWTqOcTute1gNh3kbtgmhFymj7g1bLE3gQxfdIR6zk4eeWJBXwXSsWVGayo1N6xsyJcEqTQ2IZRalu8azEvUjXdlrsCEwFtioascMvBq09b+JC8qrbiLx0MkxOMQKjNGCeKeD6vFzwAoxZVsb2etv/QA2m1IgcaFNBw+07DBHl72D7H56zAPaJryLmmn40d88YCHwes1xYBzp+jZC0yS3RZoIYqgehgClZoOlIzaoy/L7L8krc6oSiitK8H2CDuJYfcyxlJadbV8NsgfynNxzLtFomDTkJHak6Wzu3/+5AVY6u8n4AL
+ O/dvqWCP
+ CgCA45MwyT90WB3g90IxpYVLsZNNti+r2veAYgvljcmWzKy1mudgGt+fUkTIz4zkCnXyivOHK7zKz9N/njsqclsOL+Coy6FreQyCxwSrnprlkrbnHa3dtJBlAaG6083FdEhCkhK7C/SJfwx8EDsoLwrXZybdQvsqq0/ZacZyJoq1YEJxMzKAV95Jv8s52Y9+urhK9wjqD80fg/BMD0u3ACvSXIqQP1/7ji75hfVb3vkSHa7QCxIqqsI5IbtPDPMjAlKRGuYVaLk84HuzuUWp5e67QFpLrFNDnFXRxt4+bzlciZbl2twU0KutPM0SAetiULOOnXb8TaD1mpZIu6O1PlMDNJR5aUn4XI1C3Tji7e3UTJcD5XJgUUfxGMFvG540DobRTSWpmgpG8cPPfRpxchrx+YTB/w+uRzWrKwliuysmv4ZgzbLNLIPugdxF6jMqkvNCXDsZJkmFFJuMqHaiUINvrBw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,106 +125,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: MohamedAliBouhaouala <mohamedalibouhaouala@gmail.com>
 
-Update outdated VFS operation prototypes in locking.rst to
-match their current definitions.
+--OedQK9JKFipfKU6l
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Add the missing d_prune and sync_inode_metadata callbacks,
-and correct the signatures of existing operations.
+On Wed, Nov 11, 2026 at 04:29:02PM +0100, Kevin Brodsky wrote:
+> On 10/11/2026 12:24, Mark Brown wrote:
+> > On Tue, Nov 10, 2026 at 10:01:36AM +0100, Kevin Brodsky wrote:
 
-Update the locking table to include sync_inode_metadata.
+> >> Do you mean adding the dependency KPKEYS_HARDENED_PGTABLES=y to
 
-Signed-off-by: MohamedAliBouhaouala <mohamedalibouhaouala@gmail.com>
----
- Documentation/filesystems/locking.rst | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+> > Yes, or something like that - unfortunately KUnit checks to see if the
+> > config options appear in the configuration so something that vanishes on
+> > other architectures causes issues.
 
-diff --git a/Documentation/filesystems/locking.rst b/Documentation/filesystems/locking.rst
-index f7363ad770c7..a6a011858ada 100644
---- a/Documentation/filesystems/locking.rst
-+++ b/Documentation/filesystems/locking.rst
-@@ -26,6 +26,7 @@ prototypes::
- 	int (*d_delete)(struct dentry *);
- 	int (*d_init)(struct dentry *);
- 	void (*d_release)(struct dentry *);
-+	void (*d_prune)(struct dentry *);
- 	void (*d_iput)(struct dentry *, struct inode *);
- 	char *(*d_dname)(struct dentry *dentry, char *buffer, int buflen);
- 	struct vfsmount *(*d_automount)(struct path *path);
-@@ -80,8 +81,8 @@ prototypes::
- 	int (*getattr) (const struct mnt_idmap *, const struct path *, struct kstat *, u32, unsigned int);
- 	ssize_t (*listxattr) (struct dentry *, char *, size_t);
- 	int (*fiemap)(struct inode *, struct fiemap_extent_info *, u64 start, u64 len);
--	void (*update_time)(struct inode *inode, enum fs_update_time type,
--			    int flags);
-+	int (*update_time)(struct inode *inode, enum fs_update_time type,
-+			    unsigned int flags);
- 	void (*sync_lazytime)(struct inode *inode);
- 	int (*atomic_open)(struct inode *, struct dentry *,
- 				struct file *, unsigned open_flag,
-@@ -173,6 +174,7 @@ prototypes::
- 	void (*destroy_inode)(struct inode *);
- 	void (*dirty_inode) (struct inode *, int flags);
- 	int (*write_inode) (struct inode *, struct writeback_control *wbc);
-+	int (*sync_inode_metadata)(struct inode *inode, struct writeback_control *wbc);
- 	int (*drop_inode) (struct inode *);
- 	void (*evict_inode) (struct inode *);
- 	void (*put_super) (struct super_block *);
-@@ -196,6 +198,7 @@ free_inode:				called from RCU callback
- destroy_inode:
- dirty_inode:
- write_inode:
-+sync_inode_metadata:
- drop_inode:				!!!inode->i_lock!!!
- evict_inode:
- put_super:		write
-@@ -255,7 +258,7 @@ prototypes::
- 				loff_t pos, unsigned len, unsigned copied,
- 				struct folio *folio, void *fsdata);
- 	sector_t (*bmap)(struct address_space *, sector_t);
--	void (*invalidate_folio) (struct folio *, size_t start, size_t len);
-+	void (*invalidate_folio) (struct folio *, size_t offset, size_t len);
- 	bool (*release_folio)(struct folio *, gfp_t);
- 	void (*free_folio)(struct folio *);
- 	int (*direct_IO)(struct kiocb *, struct iov_iter *iter);
-@@ -265,7 +268,7 @@ prototypes::
- 	bool (*is_partially_uptodate)(struct folio *, size_t from, size_t count);
- 	int (*error_remove_folio)(struct address_space *, struct folio *);
- 	int (*swap_activate)(struct swap_info_struct *sis, struct file *f, sector_t *span)
--	int (*swap_deactivate)(struct file *);
-+	void (*swap_deactivate)(struct file *);
- 
- locking rules:
- 	All except dirty_folio and free_folio may block
-@@ -455,14 +458,15 @@ prototypes::
- 	ssize_t (*write) (struct file *, const char __user *, size_t, loff_t *);
- 	ssize_t (*read_iter) (struct kiocb *, struct iov_iter *);
- 	ssize_t (*write_iter) (struct kiocb *, struct iov_iter *);
--	int (*iopoll) (struct kiocb *kiocb, bool spin);
-+	int (*iopoll)(struct kiocb *kiocb, struct io_comp_batch *,
-+			unsigned int flags);
- 	int (*iterate_shared) (struct file *, struct dir_context *);
- 	__poll_t (*poll) (struct file *, struct poll_table_struct *);
- 	long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);
- 	long (*compat_ioctl) (struct file *, unsigned int, unsigned long);
- 	int (*mmap) (struct file *, struct vm_area_struct *);
- 	int (*open) (struct inode *, struct file *);
--	int (*flush) (struct file *);
-+	int (*flush) (struct file *, fl_owner_t id);
- 	int (*release) (struct inode *, struct file *);
- 	int (*fsync) (struct file *, loff_t start, loff_t end, int datasync);
- 	int (*fasync) (int, struct file *, int);
-@@ -475,7 +479,7 @@ prototypes::
- 			size_t, unsigned int);
- 	ssize_t (*splice_read)(struct file *, loff_t *, struct pipe_inode_info *,
- 			size_t, unsigned int);
--	int (*setlease)(struct file *, long, struct file_lock **, void **);
-+	int (*setlease)(struct file *, int, struct file_lease **, void **);
- 	long (*fallocate)(struct file *, int, loff_t, loff_t);
- 	void (*show_fdinfo)(struct seq_file *m, struct file *f);
- 	unsigned (*mmap_capabilities)(struct file *);
--- 
-2.43.0
+> Alright, I guess there's not much we can do then, short of creating
+> arch-specific fragments.
 
+Or my suggestion below, or come up with some generic option that could
+always be there and would in turn select hardening things.  There's
+probably a case for having something given that the hardening features
+will tend to catch some kinds of test error but that feels more config
+fragment like.  Another idea would be to teach KUnit about the idea that
+it should try turning on some config options but not worry if they're
+not selected.
+
+> > Perhaps the default for the config
+> > option ought to depend on KUNIT_ALL_TESTS?
+
+> Not sure I'm following, the config already has default KUNIT_ALL_TESTS?
+
+The config for the test does, but KPKEYS_HARDENED_PGTABLES which the
+test depends on does not so unless the underlying defconfig turns that
+on the test won't be enabled.  I was suggesting also adding a default
+for testing.
+
+--OedQK9JKFipfKU6l
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmr0lJ8ACgkQJNaLcl1U
+h9Dq7gf/ZN2+f02DNQ9bdbwTMYXtyyu+7wCmjXUlHCsNgO5GlbWut9+uS4GmuCc9
+WunBOQc+J/oUb1xLrMkgaxOW8h2KAztK6MPg8BzPufhwZctxuJ0HsBbUgTgnmHpc
+uoZtu7URTziUz+kLkGEIB4+6a34aEQiW4SYdu5Z22jWqmT4vxb9JIQDA0e5V/Roc
+hg2/qulDP5GDSotg3oHcwqqbXrxt4zvb6Z2fKdAZUJz3zc8gon/WHyqUXgJHRVOn
+bFcpqtPEyz0j7rRAyFagwJ42Sq2SRDsU/qjaHb8Hne1OK9cK0DSMMlCJ3Lf/+sx3
+Dk0E+Do8vqDs8wBZ0lCJuKqAtRjyng==
+=+B7J
+-----END PGP SIGNATURE-----
+
+--OedQK9JKFipfKU6l--
 
