@@ -1,177 +1,118 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A462606A33D
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 23:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB05606A324
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 23:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=PL1p69Rn
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=QybIVyF1
 Received: by kanga.kvack.org (Postfix)
-	id 9FCEF6B05C0; Wed, 11 Nov 2026 18:04:27 -0500 (EST)
+	id 0393E6B05C2; Wed, 11 Nov 2026 18:05:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D3D86B05C1; Wed, 11 Nov 2026 18:04:27 -0500 (EST)
+	id 010B56B05C3; Wed, 11 Nov 2026 18:05:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C3E26B05C2; Wed, 11 Nov 2026 18:04:27 -0500 (EST)
+	id E41906B05C4; Wed, 11 Nov 2026 18:05:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 564796B05C0
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:04:27 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B37D6A7FE4
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:04:26 +0000 (UTC)
-X-FDA: 85424368932.15.1014856
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013023.outbound.protection.outlook.com [40.107.201.23])
-	by imf08.hostedemail.com (Postfix) with ESMTP id BA4A1160002
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:04:23 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=PL1p69Rn;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf08.hostedemail.com: domain of apopple@nvidia.com designates 40.107.201.23 as permitted sender) smtp.mailfrom=apopple@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794438264;
+	by kanga.kvack.org (Postfix) with ESMTP id A33036B05C2
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:05:00 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3DBE5A7FF9
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:05:00 +0000 (UTC)
+X-FDA: 85424370360.01.D633360
+Received: from pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.83.148.184])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A8ADEC0005
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:04:57 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=QybIVyF1;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf10.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 35.83.148.184 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de"
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794438298;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ITfXhxIBCO5tTSM7ICylR6LU/HFC7o80IHw+R38q4WM=;
-	b=rTlR7MUSeymbPFri1Y4thGddgBdvPvUeeLNORgvL9OinfCOTjj6rDi2MMnEIHTPFv08ORt
-	j646vyCSJUC5OjsUpda7oe3CcdfjpBW9o5TvVFjZsgy4G9j9GC/4LOaBwaIYgoZUzwhe7q
-	frV7CNgeynlVFMC6l6elpiX8S13BA0Y=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=PL1p69Rn;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf08.hostedemail.com: domain of apopple@nvidia.com designates 40.107.201.23 as permitted sender) smtp.mailfrom=apopple@nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794438264;
-	b=KMW9gTejy+fArChgkcRTr4A9fwV6XJQuDc1TyEOdoMIYOcW+D5S8d2xHDvdyR2jQdvJVlt
-	H9y0nLrJ0pl4svumVuQ/WMSqYQdAthLaY1pkFnM1ZF28/hkWlQHwI650YzGZCKgEQh4qKU
-	NC6+/QYzDbWH40+1v1WfdPhmnrgSjJU=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=T2sbTOlgB+JUUfTCsJGC2Ngs4tI043RoczoT9BB8K6QT8gG/WZCV/+k2487OOcyY7kBpl4VyfXFnIrtL12/GDuytUXaS+mbGxQ/hwgnNn2FDTi79KPP1R03k+ovWbFIAo29dhUiII6Ek/0c7ze5ZXyp4TeabJCaDVqkZOM7SgMGrItyxH68SbAIP5O+MHmjRd5jw9GKqjZWxUwfIklbwOuX9lZZLBxfAF4cbv5Lk6Pfoo0qQftF+/e+pi9MVCCBwLtjvXzVsEoHAf3NPn1O4pQRrRNZw/ugejgURxa/Tt3AwkOWKjk2wqri1b4JMZxScy4bz5qGMZ672zviKvzSomQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ITfXhxIBCO5tTSM7ICylR6LU/HFC7o80IHw+R38q4WM=;
- b=PofoueYqmC/k1pR2aibBiCmpANUwecjuhZVytaLQmK6GpLOrzQ463UC5dokJs7lH7g+dqXqvi3iziu+Wvyq6e4KYrJxfPPFTdA6E+4LVF+ojN2c4SGOR2pa9po52JmFVXR4yairiHzW1t+8DDaaioieL8IJuWm1+PAKkPqSq0WV2frujGbxCq2qthtIilEOmU883RoUQ5QmbUW+b+ywLjTiyazLS5sAHXvOR68LSQ7MYH+1JurbzOMZ+A5ccSksNw/AP9R+58UtzJx2TIrf0lG6nPox3K4KLu++bwrrP/+XZw7jj+eAxZSOzsGkB7QnpUUxcBzNcdTgpPp18Xxgqkw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ITfXhxIBCO5tTSM7ICylR6LU/HFC7o80IHw+R38q4WM=;
- b=PL1p69Rn+VHYUtmnFSzU/bIdX9pAG6mAUVsKBroDSyp1fkR0q431QGQMNT24emAMYMvL9NeC2KGNFAhNl8awAphqMjIerpyEWD7jc8JHmxXfbu3c19d+/8o60/pxOsMmfYgFJ/XAxYCFI42ICfPaZaSvG400kDjasJWNTAdWX3nLJinBrmvqRpmRVTWiaJju7eJ86yx0EPZAimS48O+P3TogetvegUQzHwdyg4+d3mhNjuuiOEIymx9Qb6RYmQqINNGOB78ZoGQEnqzYz5/dV6xlppBo6Zfluv/sQDXPprFszLYtSOS62HTkSCxXrKhSOkyCdOtTu3XEP4SRYLjkVA==
-Received: from SA3PR12MB598757.namprd12.prod.outlook.com
- (2603:10b6:806:52d::14) by BN5PR12MB9463.namprd12.prod.outlook.com
- (2603:10b6:408:2a9::7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.9; Wed, 11 Nov
- 2026 23:04:15 +0000
-Received: from SA3PR12MB598757.namprd12.prod.outlook.com
- ([fe80::e206:100:5946:a777]) by SA3PR12MB598757.namprd12.prod.outlook.com
- ([fe80::e206:100:5946:a777%5]) with mapi id 15.21.0615.007; Wed, 11 Nov 2026
- 23:04:15 +0000
-Date: Thu, 12 Nov 2026 10:04:10 +1100
-From: Alistair Popple <apopple@nvidia.com>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Nhat Pham <nphamcs@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Usama Arif <usama.arif@linux.dev>, Kairui Song <kasong@tencent.com>, 
-	Balbir Singh <balbirs@nvidia.com>, =?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Christoph Lameter <cl@gentwo.org>, Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>, 
-	Chris Mason <mason@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, "Borislav Petkov (AMD)" <bp@alien8.de>, 
-	Mark Brown <broonie@kernel.org>, "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 09/13] mm/migrate_device: fix use-after-free of the anon
- rmap
-Message-ID: <avTzHDlCiaNSzhtX@nvdebian.thelocal>
-References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
- <20261111-mason-migrate-et-al-fixes-v1-9-3d2454362e8d@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261111-mason-migrate-et-al-fixes-v1-9-3d2454362e8d@kernel.org>
-X-ClientProxiedBy: SY6PR01CA0049.ausprd01.prod.outlook.com
- (2603:10c6:10:e9::18) To SA3PR12MB598757.namprd12.prod.outlook.com
- (2603:10b6:806:52d::14)
+	bh=VDizH9UQlJDrepSMCVqebqfI8dVRrw1tTfp8o4jN0b0=;
+	b=28IYlvIaNZYsqp0i1WTbVXR/uxoo042LCg9EMHl6H6FUWSpLBx/YTFq5lt2k6vWCjHhx7g
+	l1IjrQYmidjOck48QApFINTTu2Mdd5ixYFFnTR2SSMvGaVlhyz/iJYFAMgFGHG7eTrbKzT
+	S+8XDfO/l6CsCpXbWYFQV2t6JuGLeI0=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=QybIVyF1;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf10.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 35.83.148.184 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de"
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794438298;
+	b=ygXHcXJL++pOONuiY46ebY7vvFpzOyDqzxJ0Nrpllt5RiizIezZBpTe7NXVcMBd+8+00Ch
+	gwqax0iFYis/KAx3jyONNn1KpoP4AHJiPS9IXRgHwKNW8S1/CrAUXm21GK25bMk1xZhlGg
+	6Owzve5SHx2N1UkkEJeLngjKXKX8IUI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1794438297; x=1825974297;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=VDizH9UQlJDrepSMCVqebqfI8dVRrw1tTfp8o4jN0b0=;
+  b=QybIVyF1r5Y/c4633K3+/GulXO1bN6OitB4IZ719JxPLtHVwxJDbAF02
+   jx6ONiNK8o7/FsuaKD59yvGpIBel9u3VE/AbVBQY7c/BSP1y+maLp2KdK
+   AxuYjedeWZNgEBbNsTfJ/297bpb2Bexja9Yydy3jxQl1g9ntJkftXmD9Y
+   h3L1E9Y1ewJX7Ds7x1sh+Su2pedvaYdRWrjzaza12PQDsIkIOYsgnHPpx
+   5diz1ayax5duCbgI0Ofp87gehXWMdI80uVrzh2g108i2yMlwvNS6mofYv
+   fYRqArAMgPULyjhi2VfArAztxJtExgYZQVw6uwZksG0fQD/zpVg+NNJat
+   g==;
+X-CSE-ConnectionGUID: 2Z2qPgUdRGiyPPZRhSVGgg==
+X-CSE-MsgGUID: ZTCm3efdRCi+Zh0l5MYAXg==
+X-IronPort-AV: E=Sophos;i="6.27,208,1787011200"; 
+   d="scan'208";a="33551036"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 23:04:56 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.236:8802]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.55.227:2525] with esmtp (Farcaster)
+ id 2ea21bb7-5cd9-4159-9d18-e65c0640ea10; Wed, 11 Nov 2026 23:04:56 +0000 (UTC)
+X-Farcaster-Flow-ID: 2ea21bb7-5cd9-4159-9d18-e65c0640ea10
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.217) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Wed, 11 Nov 2026 23:04:55 +0000
+Received: from ip-10-253-83-51.amazon.com (172.19.99.218) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Wed, 11 Nov 2026 23:04:53 +0000
+From: Alexander Graf <graf@amazon.com>
+To: <linux-kernel@vger.kernel.org>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>
+CC: The AWS Nitro Enclaves Team <aws-nitro-enclaves-devel@amazon.com>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy
+	<robin.murphy@arm.com>, <linux-doc@vger.kernel.org>, <iommu@lists.linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	<nh-open-source@amazon.com>, <linux-mm@kvack.org>, Jonathan Corbet
+	<corbet@lwn.net>
+Subject: [PATCH 24/40] nitro_enclaves: Add NE_ADD_DEVICE
+Date: Wed, 11 Nov 2026 22:59:28 +0000
+Message-ID: <6dc9984007af3ef768d10cc7586e4d180c98e873.1794393490.git.graf@amazon.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <cover.1794300002.git.graf@amazon.com>
+References: <cover.1794300002.git.graf@amazon.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB598757:EE_|BN5PR12MB9463:EE_
-X-MS-Office365-Filtering-Correlation-Id: a372b873-5470-4e2e-ef6e-08df40481b66
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|376014|366016|7416014|18002099003|22082099003|11063799006|4143699003|261021123027099003|261102123227099003|261026140227099003|261028144727099003|261026121527099003|261021121427099003|56012099006|261022105027099003|261102130727099003|261009223027099003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	sz7a37t9M+6PQJ37zFelNevW/60Ok6y9krBD05srJsV5RZmDNoHm8tJsLSM2LYv/oSPi0+BwjWK1cD+LrkDJe000EK5WpJP6qb+sOSIvjdKo1gP8VxSEGeJMLA5fTJBycgkft2pXrw20wVWfbFT3xF9b8ox9imC3W/DR+oMcbpdRU1XsxUs9m98FMxjEL8FuPNLw5wzKFogiLFTU9gNXdXdLRn3gAUewRfOZC15DU3whu+dnw3UXXVbk33eK0IIFbFafwIH/f3WOxvgqMZAsIeQNZQwV5i7D3cxUHEH8mJ7HqbKN3abhygbO1HEVeS6ZK9y/T9vtTQJeFBA41pBKDXLQMVZPgsjtudzL4YEp5TyGfWErrCbZksO97x7rpk7bBO1FGdgdNXn+Xv9M2gBIxGc1xwx5VDrFGYzv/eOdXqZS8C7xljKirNfvfHi2VCVt9G3Sm2+Qhq7T+evbCKtXN/prdXRGA3l4D55iaMA9SsnEc3N5d3B8tQl7DOAMwBS5ub8HgYfxiaCroc5C46boNAgVkjZkWiFb4Hp3U+KvTRa3q0i7dFdpJw8bwUh4Sik4IBa+qjdv7UmcUMg7CIbjQ0Gzhm7xxgGVtP3/mOfCwRQEr2Vipw8gcCDobsDAbt6wkF2OqOCdeWnJ7UdvE1QWFaFVAqhflp7hKI6ajQiG+xE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB598757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(7416014)(18002099003)(22082099003)(11063799006)(4143699003)(261021123027099003)(261102123227099003)(261026140227099003)(261028144727099003)(261026121527099003)(261021121427099003)(56012099006)(261022105027099003)(261102130727099003)(261009223027099003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?VQHeYejFZsqvucv6ZCgSM3My/ZlpAOwhA83l5Tcx5mYorYRYGnzyDhPDd2D5?=
- =?us-ascii?Q?5oC9CnrdeL4icfZoaCl74KHEWDzomcjucEgOIaLk+OzCvviawcI2BdM8+t4b?=
- =?us-ascii?Q?07NyXhqT5oihxtMJZL8TJUHbr1QgqWCcR6J4KBeIe0UV6bqMRdL77pZbzD1R?=
- =?us-ascii?Q?RdI+xTtwgl3y7usEPi1n/xc4K8QIv1Q6bZ/tLJnF08gu+Ko5zSEs1SknX3H1?=
- =?us-ascii?Q?JWRZwkZcWlKqbrjATGE/L1dH+hrWoIdew4fTK/sjeWVLJgVY4lKUhb7cvzY+?=
- =?us-ascii?Q?X5JvhbYNwxhjEfDacDkMtS94PFQwnIXhbhpbSuUZd+AO6FqoIxANRLwJeyDX?=
- =?us-ascii?Q?0gafgByX5do8Jih0THVIIbVdkYUi42g2CF1Toj9NSNP9jJ7H2p0B18X7cvlD?=
- =?us-ascii?Q?ZuXuK91Z9qZoaVKu8VrFSh/t7hlgj0CSLS7qakR1taTStGujeA4zWykHbJfz?=
- =?us-ascii?Q?cNzbe2+E+iSXsCBcz7uqt0G28JaITWddU1MQdecufPLiXbuOnoHvfClHAL3k?=
- =?us-ascii?Q?jynnL4UjGpTmyPxtvXJVa27F5YkqnMSrSE2pPAHJmxohkLf73oVZnsaDhc5R?=
- =?us-ascii?Q?bZl66a15xKq2A0swLnrESvaAL4AZegbHMRjXfVpbu0NO5NvYIXckNrTuLP/C?=
- =?us-ascii?Q?Xyabpw86cySw7GG8RWNiLV2/fPvSuKIueAgb3X/eNgAj9RL0lDIiybO9RMcJ?=
- =?us-ascii?Q?YHOyBQFGML7q56JzQewNyMcN3B53N7K0h0aklL0MqheYuAc76po7HsA0nu0P?=
- =?us-ascii?Q?YSFbfJRPztWsBNc/Sy5P8I7ouW7hhl3L8HqxhaOOWcQbvnuIn2YAk5GT14Lp?=
- =?us-ascii?Q?r6RLE9Y9X51xXwnLXpn+We0/aRTtpWwQpl7Iv1hLYIymvxAkp8lMPZ43Msg1?=
- =?us-ascii?Q?UfpkkQu3b+vXYGWl5zJBGM2gxRkF0A5ZM1Avtox3wuFMM7PSvfyyesN//Se7?=
- =?us-ascii?Q?9s0zJ0GVT4H+sTAPJyvTH2AY28w/LkA/IwnrF2u6vlitFVgVLF5RI3m+sN7j?=
- =?us-ascii?Q?2xs3CkFbWFX0WzLhCBdYum4Z0zcZeB5nOS9wJ5SCUZu9DbFpFcjN7Qawe3Y5?=
- =?us-ascii?Q?jeF8tvkaWZvOpTe60ILYE1UWHY+0TQCqTqkbIVBmeTMr2YO/SoykMJEyEYM8?=
- =?us-ascii?Q?FG8fTy3btD+kTs/eRmjT/zWA0XK9GzLkk3xP74yoJTzSXKoj9rf1Rsh70336?=
- =?us-ascii?Q?U4+Moils0szyYaF23E+SAQE4UM7sX8teyj5Yjq03ju5qKgNAnH7ItYagO7E3?=
- =?us-ascii?Q?mUS9Sgth6wReQTiPutvN2Sl5QFJCSc8XAdFWNGyNPfLV9MYBUK2Gh1lhPeHY?=
- =?us-ascii?Q?yjcKEP3G6PvvpEFjRNVGX4BLyBn6qfIA6D82UnHZnXYZ4e+dQXujXp105aHI?=
- =?us-ascii?Q?yAY3F4R6PSCIPXfx2IWG6nngRPP9QHXYC0bQnPcBdWvLbEcB6FxnKEO7uHqe?=
- =?us-ascii?Q?mlmGI3Ad8wpCimEMEXjmBONIqP8URDDWYmxn3nTisXFPi0xHBr6PX08oeQCH?=
- =?us-ascii?Q?W1aPJ7E1tXehyWDz4Rj2Rki8o2RoWFGwWbF5iLVkIxnjg78oOMikjxYOHyLP?=
- =?us-ascii?Q?5NACpialCEnELyrQ5h1brzb3rjaWWXanVd7gmYzQq6KeoE5wZto7Q30vXygE?=
- =?us-ascii?Q?/wKdoOFfmJZgOmv46PNNB3rL8dTgLKKdBtpJVcBQFysdnwUnqPOy0GTDd20P?=
- =?us-ascii?Q?Dx4YNc0RgABSVY9CI5/UU7i6nQxN2SwH1jpzoojTVInu1C4vC11wM/VbilfP?=
- =?us-ascii?Q?OdTk9ginXQ=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a372b873-5470-4e2e-ef6e-08df40481b66
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB598757.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 23:04:15.2123
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QRVM/MEWPZaUwYx0BKP2GhiyD3HbfdIyYwJsiGkJOivlMa1rNsDrDhOM/auVCTIcEGFoK8Szo1Cy6vmp7Gz6ow==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN5PR12MB9463
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D031UWA002.ant.amazon.com (10.13.139.96) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BA4A1160002
-X-Stat-Signature: 3hj7amqhtistzi64od178s6rp184jjcu
+X-Rspamd-Queue-Id: A8ADEC0005
+X-Stat-Signature: axb7qqq9ucog3kzeionfg7dsqtrr86hy
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794438263-151279
-X-HE-Meta: U2FsdGVkX19DIVjq3Q/x+DDF8APMJ/s5mrE1vzIbuwSwEb5WtOSf2UxjkwSph25UxQuUv6wpR1t6WkzLljQ8xxv4VdEK9HQTXACEsaW8weYvvLMu1zvX7D+2njNFOs9c7yeWcQlAjm9TX2SndoBNHrrSNlDvqhoeGryi8vwws9DTJupr8kZDWOWQ7Ubtm8S1uTAE0qaeFHRZ9/1dL/bgDI4gTAGx+wRIZmXywfuCqcTHskxz/jGaNBU5qkUD8sRsx/VMnI9umVG4ilD4nPgXVftYXmVpOxwy8Gf+z7XBvu0yOZ1wMUr5L01KsBQ+U4ZCDIRfioUjxLgfq1apDBsEnBm+Yt4X8P35/Z8hEsjqpZu0yzZLzv1QL6+XH+D+Jb4TMFPcYcp4e/MB/2TafvaPVoR7lrUFOlTA+F5A64QmVgy0uqsDzgPprYpRAkIqK62836jzpy4LwvYe+kcRlcv0wTO+gk67vfFIZUMLILh5ePrO8eIvncblGw2fGrBALSnnObKGp+Ltis8LxQERFuVK6/w1vZMBAyoR0lzacQelwysdlASJZgf6q97Vy+pfdT18gCUhbBon/FUJO52DcHAjvzvFW3kcuWteRm5gfm8Ay7AHBKc8axcUcO9b35WOODfFN7oqM0Zvd2u4kc8BIX2NgK+VgVoQGK1xnjA9gsyA/PeiCXI5j9MFpcLQs8Uy2djmtqYkxvtd6R1baTbe2tig0txy9KdHmHKGCiGNA4jbr65Z1IDTOZhLpCqHfUTyKFefW3NSOQh18753yd6fqOXduWkJGmPPDhwqGohuSQlenpXY54A3P29GLTh+1wPlLZpmYjhtC0kstikVeYfnnAeTuJUsjytUhYXYLofX7UkvUkhH04ofCBzoIqQm/rMSsqEq4d5r5E0QoEJ0c5VPkbMAhJRUWAED0XL6n+JAqR7f/dhnBaORomvnIOw6nPH4sasBPbnE6y/2W0zqRkBM3YP
- JnZlp3AZ
- x4Jxt4fTHvmHkqGUhxYJ/myksFrMYfdZGVWpuz3eINEhzY+JdqvBzKsR6ydrVlD+pUPQlCO3D8pYBFWfXPjaldN1NQ1+XtRYFcgSumKNwXR+OpcQ9pIKqld1l3wGHwcwQtB6T4qVGIPrr8WCzyGPuc7yc7uDTjESR3ZS3XbNhTQggEaHgqNGqRSRkhAR834C/wYxxkIhKPnb9+JT7qYeuRIDd6nVEjmip4Y4q4q1t3uO0sgrfYBGX26ypPyw73Dhw12xwavyYpRKXEZQzMfIwi09CeCmmTUHsGNvsb51Af5VE34Gkazn4N1VYwdiPAhY3toZQ/WNjm+8CXKnTNW2VkQd+fKLzDFIOIUA+cn6665EStRu4SSmR5gxvlL6wae4ZKX/bfV64RAPJCU0lzz9+VQFgUo7qenP60kdAAP11BsTjq0VK/ziziRgnt+QUZCVKkZY5PyiHgLisDVwVU4qsaWr0YR0HXpPhsrzXd/LE7CwGr46zTQB1CPvXy4UMrERvCluzehJvAQcducY=
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794438297-155448
+X-HE-Meta: U2FsdGVkX19CKnQE/bGwrlMEX+34nUm6/0lNkezrjShOsAnOpXBz2SxBAJrY/JwxybUvTQ9DyBBoVM2YMEuxFBgaaIdESQ1CqoD94OLlc08iIyRwxrV9CF8aBOFF++/v5nPuJz70zM+82U01O1iLtCRNGW2A3kcvKYvo6DPg56/PTI41l6YZgbagZ0OyMNCxZ5LwN8mimEouca80swrXouiuDyfS65mmsLMrUsEe7r8kppZw9xbbPuc+RSPrHC9pAJRzGwd4jf0x4/aawrI4MSEfDgu2QwAnWzMPuIQ/5/8l2A9v67E/pw8Gr4GIBv4qrFhWiJYXLfDoeVwt8fK5lolQXdjFbNQiqpCWgHImkKtDzAxMR2WPCIBZqDkUWUzDBlSuPluJ0LuAmEdkyLL9TzH9C5E1Bx2do+KMZFm/odMlN7fTC58rSbRF9BdKCGlX3/84yA7R8y0ZQ/mw+E8aErEK5Cfpt/TSGdTrKHakl74EM//7drFpT0tUyL3DIcuFWBnfi93xCVMREKRPltDe1aUuRDSXs8ug2lLXwivhoCmSRWmXfhgD7SS/FEVUcvUDENwkOt4FxMF4JJd3O0BJ1mc2me/BlA3sj9dAVPOber/gxDr6q49YewZXwTuPCajJJy3J6JHLypIPS+cLY8juCGNs/rSmeTHnMFcW28UaTuQ79rAsyYXWMtMyGppniz4BXm/ZJw/v+WS5xKILD75ZfEvOmnOO+ZyIL/7H+uFk9FLQjEgtjMIA/GaNsOPHtO7HyjQYxfN1bk8ox9Fxw+DE/MMNnDbwqvwzeAIvmDeJTQqsv2Vc9LYzh+QTTajBICRu9XA3n/iFnZ8JXMHoojA3a4Pu8r7jPe4rm9emhbKRc5loNoEr9etG/u4aZhPOqKCeINLleLqKFtJFBlsaxoN80dXiGcacjZlw+A2vTBJnXTYF8F06RwG9DOpN7gWO+iKMAjIqhCk5EvsWEW2lW0G
+ e9AX/gw5
+ ZR7gzuvRtQwaT2Ks9piR+Xz+Ih7UJEktJIftbl3phfAP4x9M3yGo0RN7Pg4ANeJj6OI7RDjrA3lFYNzbUaaYPkliMjhcfw/sj13/1Z7TaB4iWbXL0thTswll5yPzhy2UTnysD4aa1KF28K75RG8AjXYn+muvJN/BVzzoq4Jqmasr0lyhqvTnKj9rPZ2HgOS6VYfWQtMZXuH3TeIMI3PbCfxnKNCgaBg8zfD2KyKvig9kDz6TJGDhJZpyLabkBTHuJiGBxviAoGbM64kj5Y1ETefWrhLrZhBhkgHsLERNWrMrk/0w91l9S16f/84FUhpe+5A8p0a+4kw3Q8rrGx7m2WfX4r2CWsDR8z7yOJbsm3u0kBIzCrV/y7+qnUcEStI0zw+VWZzyorI0eQ7idsDRxHIjHPXFp1rOAW5gU58ak5s3OuWOu07Jqm3yBHidRNaZ907rcuejzU+cpj8/g3zh3Rjds+cM6lINqPH+guv3jebjwMNsf46FLc7Y2+JhpWn/66HVdm1OlW3QKtqSNXb/kibGML8xi4qHosd9YhPLcDMzdLBVHddwGQlQCehy1Tm2YY+05q/yERh7cVNOapM+nQGGoDFY6dBTjx14E+2yykJuwTHXnWRRbAOqWIoqo6ukrELqVlQON7dOJJUFiEAah9afbhVKmHyjsufcklAlErW40ApzdUOia5dCca6yj1Twm7tTuSGFNRU2x58Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -180,166 +121,929 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-12 at 05:13 +1100, "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote...
-> A munmap() of anonymous memory can result in a use-after-free of the
-> anonymous rmap if a concurrent device memory migration occurs and the
-> migration runs without the mmap_lock held.
-> 
-> This can occur for a long-term pin of device-coherent memory, or a driver
-> evicting its device memory by PFN.
-> 
-> Consider:
-> 
->     eviction                        munmap()
->     ========                        ========
->     migrate_device_range()
->       migrate_device_unmap()
->         try_to_migrate()
->                                     zap the migration entry
->                                     unlink_anon_vmas()
->                                       last VMA: free the anon_vma
->     migrate_device_finalize()
->       remove_migration_ptes()
->         /* locks and walks the freed anon_vma */
-> 
-> If munmap() runs before try_to_migrate() instead, the folio is no longer
-> mapped and gets no migration entry. The walk still runs, and follows the
-> stale folio->mapping to the freed anon_vma.
-> 
-> Resolve this by pinning the anon rmap of each folio which possesses one in
-> migrate_device_range(), migrate_device_pfns() and
-> migrate_device_coherent_folio() before its PTEs are replaced, and
-> unpinning it once the walk is done.
+Nitro Sandboxes allow the parent to back arbitrary virtio devices:
+virtio-blk, virtio-net, virtio-console, etc. Their backend runs in the
+user space process that drives the nitro_enclaves device.
 
-I was going to ask why this wouldn't also be an issue for migrate_vma_setup()
-which does something similar. But in that case mmap_lock is held across setup
-and finalize which I guess is what saves us there?
+Add the NE_ADD_DEVICE ioctl to enable user space to drive device addition.
+It takes a device type, the offered feature bits, a configuration blob,
+and struct ne_shm_region entries that name the NE_ALLOC_MEMORY allocations
+the device works out of and the id the sandbox knows each one by.
 
-> A folio which is no longer mapped cannot be pinned and has no migration
-> entries to remove, so skip it rather than migrating it.
-> 
-> Reported-by: Chris Mason <mason@kernel.org>
-> Fixes: e778406b40db ("mm/migrate_device.c: add migrate_device_range()")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  include/linux/migrate.h |  1 +
->  mm/migrate_device.c     | 39 ++++++++++++++++++++++++++++++++++++++-
->  2 files changed, 39 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/migrate.h b/include/linux/migrate.h
-> index 78424b3824c2..c6cce7925b9b 100644
-> --- a/include/linux/migrate.h
-> +++ b/include/linux/migrate.h
-> @@ -136,6 +136,7 @@ static inline int migrate_misplaced_folio(struct folio *folio, int node)
->  #define MIGRATE_PFN_MIGRATE	(1UL << 1)
->  #define MIGRATE_PFN_WRITE	(1UL << 3)
->  #define MIGRATE_PFN_COMPOUND	(1UL << 4)
-> +#define MIGRATE_PFN_ANON_RMAP	(1UL << 5)	/* mm internal */
->  #define MIGRATE_PFN_SHIFT	6
->  
->  static inline struct page *migrate_pfn_to_page(unsigned long mpfn)
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index 7ebd02ec303b..5fe11dd01291 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -552,6 +552,27 @@ static bool migrate_vma_check_page(struct page *page, struct page *fault_page)
->  	return true;
->  }
->  
-> +/*
-> + * Pin the anonymous rmap if present to allow migration entries to be safely
-> + * removed. Returns true if the pin succeeded or no pin is required, and false
-> + * if the folio is no longer mapped.
-> + */
-> +static bool pin_anon_rmap(struct folio *folio, unsigned long *src_pfn)
-> +{
-> +	if (!folio_test_anon(folio) || folio_test_ksm(folio))
-> +		return true;
-> +	if (!folio_get_anon_vma(folio)) /* Pin the anon rmap. */
-> +		return false;
-> +	*src_pfn |= MIGRATE_PFN_ANON_RMAP;
-> +	return true;
-> +}
-> +
-> +static void unpin_anon_rmap(struct folio *folio, unsigned long src_pfn)
-> +{
-> +	if (src_pfn & MIGRATE_PFN_ANON_RMAP)
-> +		put_anon_vma(folio_anon_vma(folio)); /* Unpin the anon rmap. */
-> +}
-> +
->  /*
->   * Unmaps pages for migration. Returns number of source pfns marked as
->   * migrating.
-> @@ -633,6 +654,7 @@ static unsigned long migrate_device_unmap(unsigned long *src_pfns,
->  
->  		folio = page_folio(page);
->  		remove_migration_ptes(folio, folio, 0);
-> +		unpin_anon_rmap(folio, src_pfns[i]);
->  
->  		src_pfns[i] = 0;
->  		if (fault_folio != folio)
-> @@ -1335,6 +1357,7 @@ static void __migrate_device_finalize(unsigned long *src_pfns,
->  		if (!folio_is_zone_device(dst))
->  			folio_add_lru(dst);
->  		remove_migration_ptes(src, dst, 0);
-> +		unpin_anon_rmap(src, src_pfns[i]);
->  		if (fault_folio != src)
->  			folio_unlock(src);
->  		folio_put(src);
-> @@ -1384,6 +1407,7 @@ EXPORT_SYMBOL(migrate_vma_finalize);
->  
->  static unsigned long migrate_device_pfn_lock(unsigned long pfn)
->  {
-> +	unsigned long src_pfn = migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
->  	struct folio *folio;
->  
->  	folio = folio_get_nontail_page(pfn_to_page(pfn));
-> @@ -1395,7 +1419,13 @@ static unsigned long migrate_device_pfn_lock(unsigned long pfn)
->  		return 0;
->  	}
->  
-> -	return migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
-> +	if (!pin_anon_rmap(folio, &src_pfn)) {
-> +		folio_unlock(folio);
-> +		folio_put(folio);
-> +		return 0;
-> +	}
-> +
-> +	return src_pfn;
->  }
->  
->  /**
-> @@ -1431,6 +1461,7 @@ int migrate_device_range(unsigned long *src_pfns, unsigned long start,
->  		nr = folio_nr_pages(folio);
->  		if (nr > npages - i) {
->  			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
-> +				unpin_anon_rmap(folio, src_pfns[i]);
->  				folio_unlock(folio);
->  				folio_put(folio);
->  			}
-> @@ -1474,6 +1505,7 @@ int migrate_device_pfns(unsigned long *src_pfns, unsigned long npages)
->  		nr = folio_nr_pages(folio);
->  		if (nr > npages - i) {
->  			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
-> +				unpin_anon_rmap(folio, src_pfns[i]);
->  				folio_unlock(folio);
->  				folio_put(folio);
->  			}
-> @@ -1509,6 +1541,11 @@ int migrate_device_coherent_folio(struct folio *folio)
->  
->  	folio_lock(folio);
->  	src_pfn = migrate_pfn(folio_pfn(folio)) | MIGRATE_PFN_MIGRATE;
-> +	if (!pin_anon_rmap(folio, &src_pfn)) {
-> +		folio_unlock(folio);
-> +		folio_put(folio);
-> +		return -EBUSY;
-> +	}
->  
->  	/*
->  	 * We don't have a VMA and don't need to walk the page tables to find
-> 
-> -- 
-> 2.56.0
-> 
+When the hypervisor successfully added the device to the slot, it adds
+the full device info, including VQ mapping, into the info page.
+
+Signed-off-by: Alexander Graf <graf@amazon.com>
+---
+ Documentation/virt/ne_overview.rst        |   6 +-
+ drivers/virt/nitro_enclaves/ne_misc_dev.c | 463 +++++++++++++++++++++-
+ drivers/virt/nitro_enclaves/ne_misc_dev.h |  19 +-
+ drivers/virt/nitro_enclaves/ne_pci_dev.h  |  16 +-
+ include/uapi/linux/nitro_enclaves.h       | 195 ++++++++-
+ 5 files changed, 671 insertions(+), 28 deletions(-)
+
+diff --git a/Documentation/virt/ne_overview.rst b/Documentation/virt/ne_overview.rst
+index ba030cde59989..012fcb394a2ef 100644
+--- a/Documentation/virt/ne_overview.rst
++++ b/Documentation/virt/ne_overview.rst
+@@ -212,9 +212,9 @@ NE_SET_USER_MEMORY_REGION is unchanged and still takes the address of a
+ hugetlbfs region.
+ 
+ An allocation lives until the last of the things holding it is gone: its
+-descriptor, its mappings, the regions given from it and the enclave it is the
+-info page of. So neither closing the descriptor nor unmapping takes memory away
+-from a running enclave.
++descriptor, its mappings, the regions given from it, the enclave it is the info
++page of and the enclave it is a device's memory of. So neither closing the
++descriptor nor unmapping takes memory away from a running enclave.
+ 
+ Slot pool
+ ---------
+diff --git a/drivers/virt/nitro_enclaves/ne_misc_dev.c b/drivers/virt/nitro_enclaves/ne_misc_dev.c
+index 208c1997609d3..7698c7210eb86 100644
+--- a/drivers/virt/nitro_enclaves/ne_misc_dev.c
++++ b/drivers/virt/nitro_enclaves/ne_misc_dev.c
+@@ -125,6 +125,8 @@ static int ne_alloc_memory_ioctl(struct ne_enclave *ne_enclave,
+ 				 struct ne_alloc_memory_args *args);
+ static int ne_set_info_page_ioctl(struct ne_enclave *ne_enclave,
+ 				  struct ne_set_info_page_args *args);
++static int ne_add_device_ioctl(struct ne_enclave *ne_enclave,
++			       struct ne_add_device_args *args);
+ static const struct file_operations ne_fops = {
+ 	.owner		= THIS_MODULE,
+ 	.llseek		= noop_llseek,
+@@ -2189,6 +2191,45 @@ static long ne_enclave_do_ioctl(struct file *file, unsigned int cmd, unsigned lo
+ 		return rc;
+ 	}
+ 
++	case NE_EA_IOCTL(NE_ADD_DEVICE): {
++		struct ne_add_device_args __user *uargs = (void __user *)arg;
++		unsigned int usize = _IOC_SIZE(cmd);
++		struct ne_add_device_args args;
++		int rc;
++
++		if (usize < offsetofend(struct ne_add_device_args, vq_info))
++			return -EINVAL;
++
++		rc = copy_struct_from_user(&args, sizeof(args), uargs, usize);
++		if (rc)
++			return rc;
++
++		rc = mutex_lock_killable(&ne_enclave->enclave_info_mutex);
++		if (rc)
++			return rc;
++
++		if (ne_enclave->state != NE_STATE_INIT) {
++			dev_err_ratelimited(ne_misc_dev.this_device,
++					    "Enclave is not in init state\n");
++
++			mutex_unlock(&ne_enclave->enclave_info_mutex);
++
++			return -NE_ERR_NOT_IN_INIT_STATE;
++		}
++
++		rc = ne_add_device_ioctl(ne_enclave, &args);
++
++		mutex_unlock(&ne_enclave->enclave_info_mutex);
++
++		if (rc < 0)
++			return rc;
++
++		if (copy_to_user(uargs, &args, min_t(size_t, usize, sizeof(args))))
++			return -EFAULT;
++
++		return 0;
++	}
++
+ 	default:
+ 		return -ENOTTY;
+ 	}
+@@ -2228,8 +2269,8 @@ static long ne_enclave_ioctl(struct file *file, unsigned int cmd, unsigned long
+ 
+ /**
+  * ne_enclave_remove_all_contig_regions() - Drop the enclave's references to the
+- *					    allocations it was given.
+- * @ne_enclave :	Private data associated with the current enclave.
++ *					    allocations on one of its lists.
++ * @regions :	One of the enclave's lists of held allocations.
+  *
+  * The last reference on an allocation's file frees its runs and gives back its
+  * %RLIMIT_MEMLOCK charge, so an allocation whose descriptor and mappings are
+@@ -2238,13 +2279,12 @@ static long ne_enclave_ioctl(struct file *file, unsigned int cmd, unsigned long
+  * Context: Process context. This function is called on an enclave that is on
+  *	    no list and has no file left.
+  */
+-static void ne_enclave_remove_all_contig_regions(struct ne_enclave *ne_enclave)
++static void ne_enclave_remove_all_contig_regions(struct list_head *regions)
+ {
+ 	struct ne_contig_region *ne_contig_region = NULL;
+ 	struct ne_contig_region *tmp = NULL;
+ 
+-	list_for_each_entry_safe(ne_contig_region, tmp,
+-				 &ne_enclave->contig_regions_list, list) {
++	list_for_each_entry_safe(ne_contig_region, tmp, regions, list) {
+ 		list_del(&ne_contig_region->list);
+ 
+ 		fput(ne_contig_region->file);
+@@ -2397,7 +2437,8 @@ int ne_enclave_free_slot(struct ne_pci_dev *ne_pci_dev,
+  */
+ static void ne_enclave_free(struct ne_enclave *ne_enclave)
+ {
+-	ne_enclave_remove_all_contig_regions(ne_enclave);
++	ne_enclave_remove_all_contig_regions(&ne_enclave->contig_regions_list);
++	ne_enclave_remove_all_contig_regions(&ne_enclave->device_regions_list);
+ 	ne_enclave_remove_all_mem_region_entries(ne_enclave);
+ 	ne_enclave_remove_all_vcpu_id_entries(ne_enclave);
+ 
+@@ -2648,6 +2689,7 @@ static int ne_create_vm_ioctl(struct ne_pci_dev *ne_pci_dev, u64 flags,
+ 	mutex_init(&ne_enclave->enclave_info_mutex);
+ 	ne_enclave->max_mem_regions = cmd_reply.alloc.mem_regions;
+ 	INIT_LIST_HEAD(&ne_enclave->contig_regions_list);
++	INIT_LIST_HEAD(&ne_enclave->device_regions_list);
+ 	INIT_LIST_HEAD(&ne_enclave->mem_regions_list);
+ 	ne_enclave->mm = current->mm;
+ 	ne_enclave->slot_uid = cmd_reply.alloc.slot_uid;
+@@ -3751,6 +3793,15 @@ static int ne_add_memory_region_ioctl(struct ne_enclave *ne_enclave,
+ 		return -NE_ERR_MEM_REGION_ALREADY_USED;
+ 	}
+ 
++	list_for_each_entry(held, &ne_enclave->device_regions_list, list) {
++		if (held->file == fd_file(f)) {
++			dev_err_ratelimited(ne_misc_dev.this_device,
++					    "The allocation is a device's\n");
++
++			return -NE_ERR_MEM_REGION_ALREADY_USED;
++		}
++	}
++
+ 	list_for_each_entry(held, &ne_enclave->contig_regions_list, list) {
+ 		if (held->file == fd_file(f)) {
+ 			dev_err_ratelimited(ne_misc_dev.this_device,
+@@ -3885,6 +3936,7 @@ static int ne_set_info_page_ioctl(struct ne_enclave *ne_enclave,
+ 	struct ne_pci_dev_cmd_reply cmd_reply = {};
+ 	struct slot_add_info_page_req req = {};
+ 	struct pci_dev *pdev = ne_devs.ne_pci_dev->pdev;
++	struct ne_contig_region *held = NULL;
+ 	struct ne_contig_mem *mem = NULL;
+ 	int rc = -EINVAL;
+ 
+@@ -3961,6 +4013,15 @@ static int ne_set_info_page_ioctl(struct ne_enclave *ne_enclave,
+ 		return -NE_ERR_MEM_REGION_ALREADY_USED;
+ 	}
+ 
++	list_for_each_entry(held, &ne_enclave->device_regions_list, list) {
++		if (held->file == fd_file(f)) {
++			dev_err_ratelimited(ne_misc_dev.this_device,
++					    "The info page allocation is a device's\n");
++
++			return -NE_ERR_MEM_REGION_ALREADY_USED;
++		}
++	}
++
+ 	rc = ne_contig_make_read_only(fd_file(f));
+ 	if (rc < 0) {
+ 		dev_err_ratelimited(ne_misc_dev.this_device,
+@@ -4007,6 +4068,396 @@ static int ne_set_info_page_ioctl(struct ne_enclave *ne_enclave,
+ 	return 0;
+ }
+ 
++/**
++ * ne_add_device_region() - Take one of a device's shared memory regions.
++ * @ne_enclave:	Private data associated with the current enclave.
++ * @region:	Descriptor for the allocation the region is made of, and the id
++ *		the enclave sees the region as.
++ * @req:	Request being built. The runs of the allocation are appended to
++ *		its backing ranges, each tagged with the region's id.
++ * @regions:	List the reference taken on the allocation is recorded on, so
++ *		that a later region failing gives every earlier one back.
++ *
++ * Context: Process context. This function is called with the ne_enclave mutex held.
++ * Return:
++ * * 0 on success.
++ * * Negative return value on failure.
++ */
++static int ne_add_device_region(struct ne_enclave *ne_enclave,
++				const struct ne_shm_region *region,
++				struct slot_add_device_req *req,
++				struct list_head *regions)
++{
++	struct ne_contig_region *ne_contig_region = NULL;
++	struct ne_contig_region *held = NULL;
++	struct ne_contig_mem *mem = NULL;
++	struct file *file = NULL;
++	unsigned int i = 0;
++	int rc = -EINVAL;
++
++	if (region->reserved[0] || region->reserved[1] || region->reserved[2])
++		return -EINVAL;
++
++	file = fget(region->fd);
++	if (!file)
++		return -EBADF;
++
++	if (file->f_op != &ne_contig_fops) {
++		dev_err_ratelimited(ne_misc_dev.this_device,
++				    "Not an enclave memory allocation\n");
++
++		goto put_file;
++	}
++
++	mem = file->private_data;
++
++	if (mem->enclave_id != ne_enclave->id) {
++		dev_err_ratelimited(ne_misc_dev.this_device,
++				    "Allocation was made for another enclave\n");
++
++		goto put_file;
++	}
++
++	/*
++	 * The parent drives its end of the device's queues through a mapping of
++	 * the allocation, and a private allocation cannot be mapped.
++	 */
++	if (!mem->shared) {
++		dev_err_ratelimited(ne_misc_dev.this_device,
++				    "The device allocation is not shared\n");
++
++		goto put_file;
++	}
++
++	if (mem->donated) {
++		dev_err_ratelimited(ne_misc_dev.this_device,
++				    "The device allocation was donated\n");
++
++		rc = -NE_ERR_MEM_REGION_ALREADY_USED;
++
++		goto put_file;
++	}
++
++	if (file == ne_enclave->info_file) {
++		dev_err_ratelimited(ne_misc_dev.this_device,
++				    "The allocation is the enclave's info page\n");
++
++		rc = -NE_ERR_MEM_REGION_ALREADY_USED;
++
++		goto put_file;
++	}
++
++	list_for_each_entry(held, &ne_enclave->device_regions_list, list) {
++		if (held->file == file) {
++			dev_err_ratelimited(ne_misc_dev.this_device,
++					    "The allocation is already a device's\n");
++
++			rc = -NE_ERR_MEM_REGION_ALREADY_USED;
++
++			goto put_file;
++		}
++	}
++
++	list_for_each_entry(held, regions, list) {
++		if (held->file == file) {
++			dev_err_ratelimited(ne_misc_dev.this_device,
++					    "Two regions of the device name one allocation\n");
++
++			rc = -NE_ERR_MEM_REGION_ALREADY_USED;
++
++			goto put_file;
++		}
++	}
++
++	/*
++	 * The device takes one address and one length per run of every region,
++	 * and the request has room for NE_MAX_BACKING_RANGES of them.
++	 */
++	if (mem->nr_allocs > NE_MAX_BACKING_RANGES - req->num_backing_ranges) {
++		dev_err_ratelimited(ne_misc_dev.this_device,
++				    "The device regions are more than %d runs\n",
++				    NE_MAX_BACKING_RANGES);
++
++		goto put_file;
++	}
++
++	/*
++	 * A run's length shares its word with the id of the region the run
++	 * belongs to, so a length that reached into the id would arrive at the
++	 * device as another region's memory rather than as a wrong length.
++	 */
++	for (i = 0; i < mem->nr_allocs; i++) {
++		u64 run = (u64)mem->allocs[i].nr_pages << PAGE_SHIFT;
++
++		if (run > NE_RANGE_SIZE_MASK) {
++			dev_err_ratelimited(ne_misc_dev.this_device,
++					    "A device region run is longer than %llu bytes\n",
++					    NE_RANGE_SIZE_MASK);
++
++			goto put_file;
++		}
++	}
++
++	ne_contig_region = kzalloc_obj(*ne_contig_region);
++	if (!ne_contig_region) {
++		rc = -ENOMEM;
++
++		goto put_file;
++	}
++
++	for (i = 0; i < mem->nr_allocs; i++) {
++		struct ne_backing_range *range =
++			&req->backing_ranges[req->num_backing_ranges++];
++
++		range->phys_addr = page_to_phys(mem->allocs[i].page);
++		range->size = ((u64)mem->allocs[i].nr_pages << PAGE_SHIFT) |
++			      ((u64)region->shm_id << NE_RANGE_SHMID_SHIFT);
++	}
++
++	ne_contig_region->file = file;
++	list_add(&ne_contig_region->list, regions);
++
++	return 0;
++
++put_file:
++	fput(file);
++
++	return rc;
++}
++
++/**
++ * ne_add_device_ioctl() - Give the enclave a device it drives itself.
++ * @ne_enclave:	Private data associated with the current enclave.
++ * @args:	Descriptors for the allocations the device works from, what the
++ *		device is, and where the wiring of its queues is returned.
++ *
++ * The device works out of the runs of the allocations, so they have to stay where
++ * the device was told they are for as long as the enclave lives, and the
++ * references this takes on the files keep them whatever user space does with the
++ * descriptors and their mappings. ne_enclave_free() drops those references
++ * after SLOT_FREE. The allocations are not donated, so the parent keeps writing
++ * to them and reading them back to drive its end of the device's queues.
++ *
++ * The device writes the wiring of the queues to the info page and the reply says
++ * where, so this reads it from there rather than out of the reply, and returns
++ * it to the caller.
++ *
++ * Context: Process context. This function is called with the ne_enclave mutex held.
++ * Return:
++ * * 0 on success.
++ * * Negative return value on failure.
++ */
++static int ne_add_device_ioctl(struct ne_enclave *ne_enclave,
++			       struct ne_add_device_args *args)
++{
++	struct ne_pci_dev_cmd_reply cmd_reply = {};
++	struct pci_dev *pdev = ne_devs.ne_pci_dev->pdev;
++	struct ne_shm_region *shm_regions = NULL;
++	const struct ne_vq_wiring *wiring = NULL;
++	struct slot_add_device_req *req = NULL;
++	struct ne_contig_mem *info = NULL;
++	LIST_HEAD(regions);
++	u8 buf[NE_MAX_VQS * sizeof(struct ne_vq_wiring)];
++	u64 wiring_off = 0;
++	u64 wiring_len = 0;
++	u64 copied = 0;
++	u64 n = 0;
++	unsigned int i = 0;
++	int rc = -EINVAL;
++
++	if (ne_enclave->mm != current->mm)
++		return -EIO;
++
++	if (args->flags >= NE_ADD_DEVICE_MAX_FLAG_VAL) {
++		dev_err_ratelimited(ne_misc_dev.this_device,
++				    "Incorrect flag for adding a device\n");
++
++		return -NE_ERR_INVALID_FLAG_VALUE;
++	}
++
++	if (args->padding)
++		return -EINVAL;
++
++	if (args->num_vqs > NE_MAX_VQS) {
++		dev_err_ratelimited(ne_misc_dev.this_device,
++				    "The device has more than %d queues\n",
++				    NE_MAX_VQS);
++
++		return -EINVAL;
++	}
++
++	if (args->config_size > sizeof(args->device_config)) {
++		dev_err_ratelimited(ne_misc_dev.this_device,
++				    "The device configuration is longer than %zu bytes\n",
++				    sizeof(args->device_config));
++
++		return -EINVAL;
++	}
++
++	/*
++	 * The device reports the wiring of the queues by writing the info page,
++	 * so a slot without one has nowhere for it to land.
++	 */
++	if (!ne_enclave->info_file) {
++		dev_err_ratelimited(ne_misc_dev.this_device,
++				    "The slot has no info page\n");
++
++		return -EINVAL;
++	}
++
++	if (args->flags & NE_DEVICE_NO_SHM_REGIONS) {
++		if (args->num_shm_regions || args->shm_regions_ptr) {
++			dev_err_ratelimited(ne_misc_dev.this_device,
++					    "The device names memory it works out of anyway\n");
++
++			return -EINVAL;
++		}
++	} else if (!args->num_shm_regions) {
++		dev_err_ratelimited(ne_misc_dev.this_device,
++				    "The device names no memory to work out of\n");
++
++		return -EINVAL;
++	}
++
++	/*
++	 * Every region is made of at least one run, so the number of runs the
++	 * device takes bounds how many regions it can have.
++	 */
++	if (args->num_shm_regions > NE_MAX_BACKING_RANGES) {
++		dev_err_ratelimited(ne_misc_dev.this_device,
++				    "The device has more than %d regions\n",
++				    NE_MAX_BACKING_RANGES);
++
++		return -EINVAL;
++	}
++
++	if (args->num_shm_regions) {
++		shm_regions = memdup_array_user(u64_to_user_ptr(args->shm_regions_ptr),
++						args->num_shm_regions,
++						sizeof(*shm_regions));
++		if (IS_ERR(shm_regions))
++			return PTR_ERR(shm_regions);
++	}
++
++	req = kzalloc_obj(*req);
++	if (!req) {
++		rc = -ENOMEM;
++
++		goto free;
++	}
++
++	for (i = 0; i < args->num_shm_regions; i++) {
++		rc = ne_add_device_region(ne_enclave, &shm_regions[i], req,
++					  &regions);
++		if (rc < 0)
++			goto free;
++	}
++
++	req->slot_uid = ne_enclave->slot_uid;
++	req->device_type = args->device_type;
++	req->num_vqs = args->num_vqs;
++	req->config_size = args->config_size;
++
++	memcpy(req->device_features, args->device_features,
++	       sizeof(req->device_features));
++	memcpy(req->device_config, args->device_config, args->config_size);
++
++	rc = ne_do_request(pdev, SLOT_ADD_DEVICE, req, sizeof(*req),
++			   &cmd_reply, sizeof(cmd_reply));
++	if (rc < 0) {
++		dev_err_ratelimited(ne_misc_dev.this_device,
++				    "Error in slot add device [rc=%d]\n", rc);
++
++		/*
++		 * A negative return does not say whether the device took the
++		 * runs. The command may have been turned down, or it may never
++		 * have been answered and still be in flight, and one request
++		 * carries the runs of every region, so a device that turned it
++		 * down may have taken some of them first. The enclave holds
++		 * them either way and ne_enclave_free() gives them back after
++		 * SLOT_FREE, as the two SLOT_ADD_MEM sites do.
++		 */
++		list_splice_init(&regions, &ne_enclave->device_regions_list);
++
++		goto free;
++	}
++
++	/*
++	 * The device works out of the runs from here on, so the enclave holds
++	 * the allocations even if this call goes on to fail, and
++	 * ne_enclave_free() gives them back after SLOT_FREE.
++	 */
++	list_splice_init(&regions, &ne_enclave->device_regions_list);
++
++	if (cmd_reply.add_device.num_vqs != args->num_vqs) {
++		dev_err_ratelimited(ne_misc_dev.this_device,
++				    "Device wired %u of the %u queues asked for\n",
++				    cmd_reply.add_device.num_vqs,
++				    args->num_vqs);
++
++		rc = -EPROTO;
++
++		goto free;
++	}
++
++	info = ne_enclave->info_file->private_data;
++	wiring_off = cmd_reply.add_device.vq_wiring_offset;
++	wiring_len = (u64)args->num_vqs * sizeof(struct ne_vq_wiring);
++
++	if (args->num_vqs && (wiring_off > info->size ||
++			      wiring_len > info->size - wiring_off)) {
++		dev_err_ratelimited(ne_misc_dev.this_device,
++				    "Device put the wiring of %u queues at %llu of the info page\n",
++				    args->num_vqs, wiring_off);
++
++		rc = -EPROTO;
++
++		goto free;
++	}
++
++	/*
++	 * Where the kernel may have highmem a run is not contiguous in the
++	 * direct map, so the entries are copied a page at a time rather than
++	 * read through one address, and the copy makes no assumption about how
++	 * the device aligned them.
++	 */
++	for (copied = 0; copied < wiring_len; copied += n) {
++		u64 pos = wiring_off + copied;
++
++		n = min_t(u64, wiring_len - copied,
++			  PAGE_SIZE - (pos & ~PAGE_MASK));
++		memcpy_from_page(buf + copied,
++				 info->allocs[0].page + (pos >> PAGE_SHIFT),
++				 pos & ~PAGE_MASK, n);
++	}
++
++	wiring = (const struct ne_vq_wiring *)buf;
++
++	for (i = 0; i < args->num_vqs; i++) {
++		args->vq_info[i].msix_vector = wiring[i].msix_vector;
++		args->vq_info[i].notify_index = wiring[i].notify_index;
++		args->vq_info[i].msix_entry = wiring[i].msix_entry;
++		args->vq_info[i].doorbell_offset = wiring[i].doorbell_offset;
++	}
++
++	args->device_uid = cmd_reply.add_device.device_uid;
++
++	rc = 0;
++
++free:
++	/*
++	 * Whatever is still on the local list belongs to a call that was refused
++	 * before the device was told about any of it, so those references go
++	 * back. A call the device was told about has already put its regions on
++	 * the enclave, leaving nothing here.
++	 */
++	ne_enclave_remove_all_contig_regions(&regions);
++	kfree(req);
++	kfree(shm_regions);
++
++	return rc;
++}
++
+ #if defined(CONFIG_NITRO_ENCLAVES_MISC_DEV_TEST)
+ #include "ne_misc_dev_test.c"
+ #endif
+diff --git a/drivers/virt/nitro_enclaves/ne_misc_dev.h b/drivers/virt/nitro_enclaves/ne_misc_dev.h
+index 59374a35c3c7d..4f695f1410aec 100644
+--- a/drivers/virt/nitro_enclaves/ne_misc_dev.h
++++ b/drivers/virt/nitro_enclaves/ne_misc_dev.h
+@@ -39,8 +39,8 @@ struct ne_contig_alloc {
+  * @nr_allocs:	Number of runs in @allocs.
+  * @size:	Size of the allocation in bytes, mirrored in i_size.
+  * @shared:	Whether the caller asked for a shared allocation. A shared one may
+- *		be mapped by the caller and may be a slot's info page; a private
+- *		one is neither.
++ *		be mapped by the caller and may be a slot's info page or the memory
++ *		of one of its devices; a private one is none of those.
+  * @enclave_id:	Id of the enclave the allocation was made for.
+  * @mm:		The mm charged for the pinned pages, held via mmgrab().
+  * @nr_pinned:	Pages charged to @mm->pinned_vm.
+@@ -52,7 +52,8 @@ struct ne_contig_alloc {
+  *
+  * The runs hang off the file, so that closing the last descriptor does not free
+  * memory an enclave is still using: a donated region holds the file with
+- * get_file(), and so does the enclave the allocation is the info page of. That
++ * get_file(), and so does the enclave the allocation is the info page or a
++ * device's memory of. That
+  * is also what keeps a mapping's page table entries from outliving the runs,
+  * since a VMA holds vm_file for as long as it exists.
+  *
+@@ -67,8 +68,8 @@ struct ne_contig_alloc {
+  *
+  * @enclave_id is compared, never dereferenced, and the counter it comes from is
+  * 64 bits wide, so an allocation cannot be donated to, or become the info page
+- * of, a later enclave that happens to have been placed at the address of the one
+- * it was made for.
++ * or a device's memory of, a later enclave that happens to have been placed at
++ * the address of the one it was made for.
+  */
+ struct ne_contig_mem {
+ 	struct ne_contig_alloc	*allocs;
+@@ -85,8 +86,8 @@ struct ne_contig_mem {
+ };
+ 
+ /**
+- * struct ne_contig_region - Enclave memory given from one allocation.
+- * @list:	Entry in the enclave's list of allocations given to it.
++ * struct ne_contig_region - One %NE_ALLOC_MEMORY allocation an enclave holds.
++ * @list:	Entry in one of the enclave's lists of held allocations.
+  * @file:	File holding the runs, held with get_file() so that they outlive the
+  *		descriptor the allocation was handed out on and its mappings.
+  */
+@@ -121,6 +122,9 @@ struct ne_mem_region {
+  *				held for writing.
+  * @contig_regions_list:	List of %NE_ALLOC_MEMORY allocations given to the
+  *				enclave with %NE_ADD_MEMORY_REGION.
++ * @device_regions_list:	List of %NE_ALLOC_MEMORY allocations a device of
++ *				the enclave works from, given with
++ *				%NE_ADD_DEVICE.
+  * @enclave_list_entry :	Entry in the list of created enclaves.
+  * @eventq:			Wait queue used for out-of-band event notifications
+  *				triggered from the PCI device event handler to
+@@ -162,6 +166,7 @@ struct ne_enclave {
+ 	bool			detached;
+ 	bool			slot_freed;
+ 	struct list_head	contig_regions_list;
++	struct list_head	device_regions_list;
+ 	struct list_head	enclave_list_entry;
+ 	wait_queue_head_t	eventq;
+ 	bool			has_event;
+diff --git a/drivers/virt/nitro_enclaves/ne_pci_dev.h b/drivers/virt/nitro_enclaves/ne_pci_dev.h
+index 3445318b84672..a0bca5863e2a1 100644
+--- a/drivers/virt/nitro_enclaves/ne_pci_dev.h
++++ b/drivers/virt/nitro_enclaves/ne_pci_dev.h
+@@ -7,6 +7,7 @@
+ #define _NE_PCI_DEV_H_
+ 
+ #include <linux/atomic.h>
++#include <linux/bits.h>
+ #include <linux/build_bug.h>
+ #include <linux/list.h>
+ #include <linux/mutex.h>
+@@ -346,10 +347,23 @@ struct slot_add_info_page_req {
+  */
+ #define NE_MAX_BACKING_RANGES		(4)
+ 
++/**
++ * NE_RANGE_SIZE_MASK - The part of a backing range's size that is a byte count.
++ */
++#define NE_RANGE_SIZE_MASK		GENMASK_ULL(55, 0)
++
++/**
++ * NE_RANGE_SHMID_SHIFT - Where a backing range's size carries the id of the
++ *			  shared memory region the run belongs to.
++ */
++#define NE_RANGE_SHMID_SHIFT		(56)
++
+ /**
+  * struct ne_backing_range - One run of enclave memory a device works out of.
+  * @phys_addr:	Physical address of the run, in the parent's address space.
+- * @size:	Size, in bytes, of the run.
++ * @size:	Size, in bytes, of the run in the low %NE_RANGE_SIZE_MASK bits,
++ *		and the id of the shared memory region the run belongs to in the
++ *		8 bits above them. A device tells its regions apart by that id.
+  */
+ struct ne_backing_range {
+ 	u64	phys_addr;
+diff --git a/include/uapi/linux/nitro_enclaves.h b/include/uapi/linux/nitro_enclaves.h
+index 4f604712983f1..6f83a8b0762b3 100644
+--- a/include/uapi/linux/nitro_enclaves.h
++++ b/include/uapi/linux/nitro_enclaves.h
+@@ -317,11 +317,11 @@ struct ne_alloc_memory_args {
+  *		     Donating does not take a mapping away, so a parent that
+  *		     mapped a shared allocation can still write to it through
+  *		     that mapping afterwards.
+- *		     The allocation lives until the last of the descriptor, its
+- *		     mappings, the enclave regions donated from it and the
+- *		     enclave it is the info page of is gone, so a caller can
+- *		     close the descriptor as soon as it has donated it or
+- *		     provided it to the device.
++ *		     The allocation lives until the descriptor, its mappings,
++ *		     the enclave regions donated from it and the enclave that
++ *		     uses it as an info page or as device memory are all gone,
++ *		     so a caller can close the descriptor as soon as it has
++ *		     handed it over.
+  *		     The ioctl can be invoked on the enclave fd, before an
+  *		     enclave is started.
+  *
+@@ -396,8 +396,8 @@ struct ne_add_memory_region_args {
+  *			  contiguous run it is made of, or fewer where runs turn
+  *			  out to be physically adjacent. The argument is input
+  *			  only. The allocation has to have been made for this
+- *			  enclave, cannot be its info page, and can be given away
+- *			  once.
++ *			  enclave, cannot be its info page or the memory of one
++ *			  of its devices, and can be given away once.
+  *			  Writing to the descriptor stops working here, so an
+  *			  enclave image goes in before this call. The allocation
+  *			  has to be %NE_MEMORY_PRIVATE, since memory the parent
+@@ -434,7 +434,8 @@ struct ne_add_memory_region_args {
+  *					  before being started).
+  * * NE_ERR_INVALID_FLAG_VALUE		- The value of the provided flag is invalid.
+  * * NE_ERR_MEM_REGION_ALREADY_USED	- The allocation was already given to the
+- *					  enclave, or is its info page.
++ *					  enclave, or is its info page, or is the
++ *					  memory of one of its devices.
+  * * NE_ERR_MEM_MAX_REGIONS		- The number of memory regions set for the
+  *					  enclave reached maximum.
+  * * Error codes from the NE PCI device request.
+@@ -470,8 +471,9 @@ struct ne_set_info_page_args {
+  *		      made writable, so the call fails while one exists, and a
+  *		      caller maps the page after the call. A call the device
+  *		      rejects leaves the allocation writable again.
+- *		      A slot takes one info page, and an allocation is either an
+- *		      enclave's memory or its info page. The driver holds the
++ *		      A slot takes one info page, and an allocation is an
++ *		      enclave's memory, its info page or the memory of one of its
++ *		      devices, never two of those. The driver holds the
+  *		      allocation until the enclave is gone, so closing the
+  *		      descriptor does not free the run the device was given.
+  *		      The ioctl can be invoked on the enclave fd, before an
+@@ -501,7 +503,8 @@ struct ne_set_info_page_args {
+  *					  before being started).
+  * * NE_ERR_INVALID_FLAG_VALUE		- The value of the provided flag is invalid.
+  * * NE_ERR_MEM_REGION_ALREADY_USED	- The allocation was already given to the
+- *					  enclave with %NE_ADD_MEMORY_REGION.
++ *					  enclave with %NE_ADD_MEMORY_REGION, or is
++ *					  the memory of one of its devices.
+  * * ETIMEDOUT				- The device did not answer. The slot keeps
+  *					  the allocation, read-only, until the
+  *					  enclave is gone, since the device may
+@@ -510,6 +513,176 @@ struct ne_set_info_page_args {
+  */
+ #define NE_SET_INFO_PAGE		_IOW(0xAE, 0x25, struct ne_set_info_page_args)
+ 
++/**
++ * NE_MAX_VQS - Highest number of virtqueues one device may have.
++ */
++#define NE_MAX_VQS			(64)
++
++/**
++ * struct ne_vq_info - How the enclave reaches one virtqueue of a device.
++ * @msix_vector:	Interrupt vector the device raises for the queue.
++ * @notify_index:	Index the enclave writes to notify the device.
++ * @msix_entry:		Entry in the enclave's interrupt table holding
++ *			@msix_vector.
++ * @doorbell_offset:	Offset of the queue's doorbell in the device's doorbell
++ *			window.
++ */
++struct ne_vq_info {
++	__u16	msix_vector;
++	__u16	notify_index;
++	__u16	msix_entry;
++	__u16	doorbell_offset;
++};
++
++/**
++ * NE_DEVICE_NO_SHM_REGIONS - The call names no shared memory region, so
++ *			      @num_shm_regions and @shm_regions_ptr both have
++ *			      to be zero. A device that works out of the
++ *			      enclave's own %NE_ADD_MEMORY_REGION memory is
++ *			      what it is for.
++ */
++#define NE_DEVICE_NO_SHM_REGIONS	(0x01)
++
++#define NE_ADD_DEVICE_MAX_FLAG_VAL	(0x02)
++
++/**
++ * NE_DEVICE_TYPE_VIRTIO - A virtio device. The low 16 bits of @device_type
++ *			   carry the virtio device id the enclave sees.
++ */
++#define NE_DEVICE_TYPE_VIRTIO		(0u << 16)
++
++/**
++ * struct ne_shm_region - One shared memory region of a device (in).
++ * @fd:		Descriptor from %NE_ALLOC_MEMORY, made for this enclave, asked
++ *		for as %NE_MEMORY_SHARED, and named by one region only.
++ * @shm_id:	Shared memory region id the enclave sees the region as. The
++ *		driver puts it in the top 8 bits of the size it gives the device
++ *		for every run of the allocation, so that the enclave and the
++ *		device can tell one of a device's regions from another. The
++ *		parent and the enclave agree on the numbering; the driver does
++ *		not read it.
++ * @reserved:	Must be zero.
++ */
++struct ne_shm_region {
++	__s32	fd;
++	__u8	shm_id;
++	__u8	reserved[3];
++};
++
++/**
++ * struct ne_add_device_args - Device to give an enclave (in / out).
++ * @flags:		%NE_DEVICE_NO_SHM_REGIONS or zero.
++ * @device_type:	Type of device to give the enclave. The top 16 bits name
++ *			the class of device, of which %NE_DEVICE_TYPE_VIRTIO is
++ *			the only one, and the class says what the low 16 bits
++ *			carry.
++ * @num_vqs:		Number of virtqueues the device has, at most
++ *			%NE_MAX_VQS.
++ * @config_size:	Number of bytes of @device_config the device reads.
++ * @num_shm_regions:	Number of entries of @shm_regions_ptr, at least one
++ *			unless %NE_DEVICE_NO_SHM_REGIONS is set, and made
++ *			of no more than four runs in total.
++ * @padding:		Must be zero.
++ * @device_features:	Feature bits the parent offers the enclave for the
++ *			device.
++ * @device_config:	Type-specific configuration of the device.
++ * @shm_regions_ptr:	Address of @num_shm_regions struct ne_shm_region.
++ * @device_uid:		Id the device gave the new device (out).
++ * @vq_info:		How the enclave reaches the device's first @num_vqs
++ *			virtqueues (out).
++ */
++struct ne_add_device_args {
++	__u32	flags;
++	__u32	device_type;
++	__u32	num_vqs;
++	__u32	config_size;
++	__u32	num_shm_regions;
++	__u32	padding;
++	__u8	device_features[64];
++	__u8	device_config[64];
++	__u64	shm_regions_ptr;
++	__u64	device_uid;
++	struct ne_vq_info vq_info[NE_MAX_VQS];
++};
++
++/**
++ * NE_ADD_DEVICE - The command is used to give an enclave a device it drives
++ *		   itself, out of the %NE_ALLOC_MEMORY allocations the device
++ *		   works from. One allocation is one shared memory region of the
++ *		   device, and the region's id goes to the enclave with it, so
++ *		   that a device made of several of them tells them apart. Every
++ *		   allocation has to be %NE_MEMORY_SHARED, since the parent
++ *		   drives the other end of the device's virtqueues through a
++ *		   mapping of one, and none of them is donated, so writing to
++ *		   the descriptors keeps working. They are not enclave memory
++ *		   either: they do not count towards the memory regions
++ *		   %NE_ADD_MEMORY_REGION fills, and an allocation is a device's
++ *		   memory, an enclave's memory or its info page, never two of
++ *		   those. The driver holds the allocations until the enclave is
++ *		   gone, so closing the descriptors does not free the runs the
++ *		   device was given.
++ *		   The device is given one address and one length per
++ *		   contiguous run of every region, and it takes four of
++ *		   them in total, so regions that a fragmented node splits
++ *		   into more runs than that are refused. On a system with
++ *		   that much fragmentation, you wouldn't get enough
++ *		   contiguous memory for the enclave itself either.
++ *		   A device that works out of the enclave's own memory
++ *		   regions says so with %NE_DEVICE_NO_SHM_REGIONS and names
++ *		   no region.
++ *		   The slot needs its info page first: the device reports how
++ *		   the enclave reaches each virtqueue by writing the info page,
++ *		   and the reply says where in it those entries are. The driver
++ *		   reads them from there and returns them in @vq_info, so a
++ *		   caller learns the interrupt vector and the doorbell offset
++ *		   of every queue from this call.
++ *		   The ioctl can be invoked on the enclave fd, before an
++ *		   enclave is started.
++ *
++ * Context: Process context.
++ * Return:
++ * * 0					- Logic successfully completed.
++ * * -1					- There was a failure in the ioctl logic.
++ * On failure, errno is set to:
++ * * ENODEV				- The NE PCI device is not available.
++ * * EFAULT				- Argument read or write failure.
++ * * EBADF				- A region's @fd is not an open file
++ *					  descriptor.
++ * * EINVAL				- The argument is shorter than @vq_info, or
++ *					  @padding is not zero, or @num_vqs is
++ *					  more than %NE_MAX_VQS, or @config_size
++ *					  is more than @device_config holds, or
++ *					  the slot has no info page, or the
++ *					  argument names no region and does not
++ *					  set %NE_DEVICE_NO_SHM_REGIONS, or it
++ *					  sets that flag and names one anyway,
++ *					  or a region's @reserved is not zero,
++ *					  or its @fd is not a descriptor from
++ *					  %NE_ALLOC_MEMORY, or the allocation was
++ *					  made for another enclave, or it is
++ *					  %NE_MEMORY_PRIVATE, or the regions are
++ *					  made of more runs in total than the
++ *					  device takes.
++ * * EIO				- Current task mm is not the same as the one
++ *					  that created the enclave.
++ * * E2BIG				- The argument is longer than this kernel knows
++ *					  about and the excess is not all zero.
++ * * ENOMEM				- Memory allocation failure for internal
++ *					  bookkeeping variables.
++ * * EPROTO				- The device replied for a different number of
++ *					  virtqueues than it was asked for, or placed
++ *					  their entries outside the info page.
++ * * NE_ERR_NOT_IN_INIT_STATE		- The enclave is not in init state (init =
++ *					  before being started).
++ * * NE_ERR_INVALID_FLAG_VALUE		- The value of the provided flag is invalid.
++ * * NE_ERR_MEM_REGION_ALREADY_USED	- An allocation was already given to the
++ *					  enclave, or is its info page, or is the
++ *					  memory of one of its devices, or was
++ *					  named by two regions of this device.
++ * * Error codes from the NE PCI device request.
++ */
++#define NE_ADD_DEVICE			_IOWR(0xAE, 0x26, struct ne_add_device_args)
++
+ /**
+  * NE_START_ENCLAVE - The command is used to trigger enclave start after the
+  *		      enclave resources, such as memory and CPU, have been set.
+-- 
+2.47.1
+
 
