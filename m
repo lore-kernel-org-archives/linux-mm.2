@@ -1,124 +1,135 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 215A7606A32D
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 13:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96BAD606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 13:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XNlhvh4v
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W6kuST3N
 Received: by kanga.kvack.org (Postfix)
-	id 4161A6B00EF; Wed, 11 Nov 2026 08:02:07 -0500 (EST)
+	id C12636B05B1; Wed, 11 Nov 2026 08:08:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C6FE6B05B0; Wed, 11 Nov 2026 08:02:07 -0500 (EST)
+	id BEA886B05B2; Wed, 11 Nov 2026 08:08:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B70D6B05B1; Wed, 11 Nov 2026 08:02:07 -0500 (EST)
+	id B024F6B05B3; Wed, 11 Nov 2026 08:08:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F06D16B00EF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 08:02:06 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 792D5802D1
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:02:06 +0000 (UTC)
-X-FDA: 85422851052.21.0673F17
-Received: from mail-dl2-f7.google.com (mail-dl2-f7.google.com [74.125.229.135])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9DE0240019
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:02:04 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=XNlhvh4v;
-	spf=pass (imf11.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.229.135 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794402124;
-	b=ExDNmUGFBhufNSsoU4QZNv+MAdisebrrNkKGAUyY1+JddY1l8uuU5bBnztlE+Gtp3JbsCt
-	ig84zIjEJuF9ZtSL7eCyjx5BQhv6dzeoiAQp529GmreOAfWDw1fcgfBGU7sQza7udNaPZb
-	uzZZd9lbRMEH3vOMO0GGbHeZwRO6hlM=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=XNlhvh4v;
-	spf=pass (imf11.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.229.135 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 89AC46B05B1
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 08:08:47 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 132641602B9
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:08:47 +0000 (UTC)
+X-FDA: 85422867894.03.4777DA1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 455021C0007
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:08:45 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W6kuST3N;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794402124;
+	s=arc-20220608; t=1794402525;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=w2/+xHZKQ2U7spoWRX9s3/PlBR0bd8B1wNdFaiAbagI=;
-	b=UGs12lIP9SC8091yQlN+DFRkd6PmTQUilmO6/1+V5spCRY44ecZ0eyjkVOI4+6xI8li9Ij
-	btXJvRt/ONAAh4NratBIaII/W/OxlXOyEIxe0fssK9BbTbnmIg09EE4okteWc8EG4aThku
-	MMkoIB8wTyyFTAfbGcz/dNIxSDEJUFE=
-Received: by mail-dl2-f7.google.com with SMTP id a92af1059eb24-13985f8229aso2850808c88.1
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 05:02:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794402123; x=1795006923; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=w2/+xHZKQ2U7spoWRX9s3/PlBR0bd8B1wNdFaiAbagI=;
-        b=XNlhvh4vbirUaN03tNU5t4p7J5wKv7RJLOsVUTNHOFbFCY0u6E96y7XmSOomoOfFaf
-         eFYQlVc25MDfbGLYetldkyKrSd8mn7L+/IecM5+y/1yP9cwkVurg01UNtbYuz0eYEaj7
-         S/E1NorUOpBqETthYZhYv021nx0C13U6fQzxzsytdmZF8KGCkcjUyceUohIY6ofmzBKu
-         mujT0NOWCasuBBQwqWDILPg4gYj/YskL4ewpxVR3HnIsn3FYy3I4bljRgewXa7xhw2AL
-         ehuHq9NUg6jM9mvacQaEOS8lJ8hO9O7vIGU97f81S3BeJjnvy+PhkyVAOpeke1EFrRPv
-         4vMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794402123; x=1795006923;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=w2/+xHZKQ2U7spoWRX9s3/PlBR0bd8B1wNdFaiAbagI=;
-        b=OU5HRWNax9WYtb2F1FEDEuVcYyegdk14RzShiY7CJ65oPKS47rcKuEkGatEWgYkPhN
-         8DL36MocR+7inHez52DrYmDA6FuJLqHnUIlTFHrg+5T8EkllXhns4lfr5H+MyrfQJNnN
-         yXtoFWSJb8o4QRmVo0Qi07IBIVpA+VYKxE8IDYDl909rKY6TjbJkMOYbYfRr4d61c+kn
-         D9tRA7QbF6F+3iszFYVmKQ5OxY9T4TjgvxYdjRgrNO2x71PySkgvt8OV8OVAK4VyAmmo
-         D19wI9S2GPBP7Isg8ekT+n4+e4HyVhCDbFH2+4tDUlE2R+d7cfaUc2ROctg2UX6NK4+K
-         JkLA==
-X-Forwarded-Encrypted: i=1; AL+hErGBiWMRe+Bou9nOfW4WvZWBiSlw6ojr56irSlqeTZxMLLNizooyCv1h98EhssSQfDXW96MuCcETsQ==@kvack.org
-X-Gm-Message-State: APuU4Z/Kmr6IKdgxHRdH00fq4Uqhr0y2HBeBAKTE503V8MLaDK2ajjO+
-	pLxQ/ngVrhhjU4KCai5PdfkxuA2NjJwvMSHeM28ygu9Cn11fL7KC51hI
-X-Gm-Gg: AYBFou0bzLE1dK4jcUmBh/5nMW8Ik0WrvN+9lewkvvxtDdcmJYsb24Moih8XKcIRGr8
-	j5a9pXpLY/4mX/DmGR1VU4uDU+KSorjWJsnK8M5Z4YVKABgUZnVmBU87Ke9OafkvCmUWwbKFZuH
-	sHrc82uCowRVpYv1WPcfTLok/BHTDlPa/6wOBpX9o0ZFT5JIKI1pXVnqPxz+wY8B/ouKpcwOPwp
-	borRz7l7ahiejOSDiREvuDgvmGpTRrgUZQePktLZkHbEueswfxekBR+L6O+WkZvLcfbH50nuGCk
-	R7IBYFGiba6ockccyLbc57qbrWrAEtTxQ8sniUqj0skVbxIwqcvhi9gmfWmprijW+Spl0KY0Tft
-	qQnZQW3QjPLZ1C1xYJC5PlnBGBZUAkkpfWcJn5rXXqXNUl3tk0Qa07rSzkVF1Nu2v1L+br+lN+5
-	8w+sFJar1R9VnTKHzWcy9PgC5PnOTLH51w5MmQZ8QqhQVakwalOcLJRbB47/cZ0P+i/qw5OabIq
-	dQ7qvhnk4BvPydz7LD2jizmKa+YMvjhCsxXGPAqWwPqLD+PyvkSuRiGoCEgyHv6T3DXoVdDV3hW
-	ksJJzmDuPlcPoMOIxN/poRp0YWs8cL2cT/lPGJXzDuNUccJGWFPSxAyyJEJ5ekBnPofJCDPd7Vj
-	HnZtVaJNwKPGj22n2PGxXp+trs1yMTGCEiXWXGg==
-X-Received: by 2002:a05:701b:450b:20b0:1b3:ba92:145a with SMTP id a92af1059eb24-1b3c0303655mr2388509c88.19.1794402122900;
-        Wed, 11 Nov 2026 05:02:02 -0800 (PST)
-Received: from localhost.localdomain ([98.148.34.5])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b11150sm21696634c88.5.2026.11.11.05.02.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 05:02:02 -0800 (PST)
-From: Hungyu Lin <dennylin0707@gmail.com>
-To: muchun.song@linux.dev
-Cc: osalvador@suse.de,
-	david@kernel.org,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jm5905938@gmail.com,
-	dennylin0707@gmail.com
-Subject: [PATCH v2] hugetlbfs: report inode limits without a memory subpool
-Date: Wed, 11 Nov 2026 13:01:45 +0000
-Message-ID: <20261111130145.96534-1-dennylin0707@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tpSt5JkGUaHCP8XlikkEOI4qJddO1S2MUXWY1pm1gq8=;
+	b=ZiM1NlkjEym8GeXLLj2mQeecfMZ/BvFH+API3W1jmwjjMqkXBGmJYOv1M2YN/Hkiaigd7T
+	TL+ZRH68JdLtVGVEZLd/iS34QHuHoHt4Zkv8QT4RKW1z/z0cuR1IdR9oX6iDXftlgT7VOz
+	bulZh3SQSNGivi5vva6/qI0Gx4bkaQU=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W6kuST3N;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794402525;
+	b=xGEicaABlhXvk89smMSmCUkx7e/ZdiK8cJRcj8vsUpIuGQIUOkhLCyrFuDBxQpEc5zhCkM
+	QWiIpT9atNUtLwTXxabx8waFNDjxIID4DEF2ZhoXx4gN5zukUR6vBv+/suSBDhefHO8+5I
+	0Ne7cEJSEUj/5iIcu2NsqgSX+SpZpeQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3E9F640C04;
+	Wed, 11 Nov 2026 13:08:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536EF1F00A05;
+	Wed, 11 Nov 2026 13:08:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794402524;
+	bh=tpSt5JkGUaHCP8XlikkEOI4qJddO1S2MUXWY1pm1gq8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=W6kuST3NNP4zzA9PqmXm/bYJ6yoRhEgKl5fNUQn6dha9mMZiyvNhUUICtqwe3+ArG
+	 jrSjuVs6BfBQGx22OPJQDQ77+zIoHH2HjoU2ZvMA72U2kcHSkaIJPXdd7WX8Q6lU23
+	 BvsgBMhjHnKrtcDHA0gHVEVcKkuv7cyNUTCCbadw4goRnxkbFWPRAj5QxKya1CySU1
+	 vhoM+ye5tViT7u0sZFpSC8q3yi9BbrZSS0jKAptLmf2YYRwMsQ1ePzHf2uCedCXW4f
+	 /KreGp+leeCIRPhMfpge9Ms4JosjH+/kYUEU1/2xKHMyvkoAXWxY72zws1fLN5KnlT
+	 mk5wUibYF1QZg==
+Message-ID: <e2d1dc9f-59ff-4dfb-8ca4-35c584d14b35@kernel.org>
+Date: Wed, 11 Nov 2026 14:08:40 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9DE0240019
-X-Stat-Signature: yubq5cosfn471dfmohabdcmi9bgtz73h
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/slab: don't set SLAB_MAY_ACCOUNT for
+ KMALLOC_PARTITION_CACHES
+Content-Language: en-US
+To: Hao Li <hao.li@linux.dev>, harry@kernel.org, akpm@linux-foundation.org
+Cc: cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Suren Baghdasaryan <surenb@google.com>
+References: <20261111125628.375624-1-hao.li@linux.dev>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20261111125628.375624-1-hao.li@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: rrq37kuc9bx3o8d8eepfpz64ug9xp9b3
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1794402124-353953
-X-HE-Meta: U2FsdGVkX19+/w2PUJxCnaJVNMu2GNqeB5yKig9jybYQFbNeXhrqQcZNdk4Az357Kj8bBzoUbIZvmx5Sa2P6jS22/Kv24T92JI5l1sGI6aRKEPozOHRPR0jXqLcbL2Wiqy55cU5Xps33v/QUH51GHKfYBP7wkHCn6kPFrtEmxIOSJDhKt6XDNxqQWI62pEA2Le65YeiqEH1abbd5nOKvcV2FfEDRNqI+QRQ32lvSD++Very4+Lyoi9kWYCx7yDhR6wIJfWA9hu01M6IjumjmT9zPHUQ5zheYl3M2d/Y/cZVFKRyzpBezyQdF2NEdYSufe+ID7YIMhjYVMBN2eB7htZwLpPWRW4rBJAUyRzZdU4NhGwKPCa7tYTmuvT4Clou8u1C9yDSPUxhZvFh2nnnTol4sj2liZNyZXlJ+bpTLtvd3auQswrA5J8CreRPLO2rsEbJAcoX9IXEP/5d137EETUDN/BOT1rxykbCdiao/UUsJr1+CNdiW7uMGo0pzeIjaOEjP/oNAg1TTtZ4i4gEi4n6yPWKXyU5Qksf2qjwWzQnPbMI46Hl0176Ck12m8mJZS5QdvQCZSIik+eKjIBEpCTrH66VfwcHPdQfOxMi6grubN6a6Ji9eb5oTwCFKTfej7j/YqQ7Uc+Aucz9j8nBac2OW/wHu1INxudXvCda3b/DF2pgDRQEf3JCZCbgHHdWSlX2M9F9qyDFLpSMO8CNd2Jdm4Zt4UmKxHomnLWdJg1/1UhOpKmWX1Nd26JnnI+7qiBgXa6tZ98GeJHfAmTIs5PaSfKt4e5f1nOIBONxEQpG+8QfchcDkTmY6VvjEXGBSTUxfVUmFwyIk3CuyssdpG+ZEVqq2/msQF+CRK8Vgv1cfS6dT4Scc72QRp5YOJJWlN9njeJVkNntjbxFqAL9FbYrfPPzc3tEyMN1PufuwiM+pv1kqOP4vwYOtANv+Xcb4PqV4m7n3atmIApIEQge
- WAC7xxbB
- TIloravioovjJuKkX8J+jdjVKKPNLDRxItOU3qTDNZ1LBVlYRqJWi1P8Ttuq7USnWBhjUljqm8cP5L4jc9awodAAGCHPFUEzIvPgQAeSs+2uimjv64C6TksJrIe99Pi7w/VvKV8R0EFKnLJV12IbHiFZBE4/ukeN9fyS46Y8RFiVZTxdYx3nENuyG7Pnn4LyWGS6+bjNtF10dtg2OjRwXNjSRawSWhZTHrAbUfRhxnKX1dxSt4RzDdOaLg10xw3Qk3GvfKPsC1+PsbW5JHgf47BeSMLvQtINmQxIkJL8k2Ye61CiSsbbQ4qJ84cYoLENac8gDJe1iBEKkW1QcIucAHABNbm77x4xqtojny9NqlBz6PU/22+g56Ez34KqZPSzVu6qsNBKBoXbSucYtotspuCu4sLUlumEcNAi6qMnCJj9PGpVufjXsrP0OSQ==
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: 455021C0007
+X-HE-Tag: 1794402525-86416
+X-HE-Meta: U2FsdGVkX1//MtIV9a5WY3f9HPJkk/JtkLEll37/JmrpG1+OcodPy3hKbL31K3b97+/hCKjIoW2dpodKmxQGqFO/8t2hmJugjGjvcqRHfUmJR92uyrqnLhsg4UHnU/HOCujfAt9zfHYLqIL8O5ee7Q3J1lU9dPzNvrJ8kxSPWMdA2e+caD4uqbX61pQxFhyza6tkURZy1wlCF412kodjTdcAoToZv9lihI1k4GjvScD0/w9W9cYs1Es1SnMJyVG5RwUtRQLqbpdTc7rNMa+fl82ZIJG8L3aQpuJN50Smd89GQ1nWuA1LXxx4scN21o1yp6+XsTp5YdCEL2wzhpMneeSgljjnWqzzwGAa6hUNxNVUzbRnRpbrpZbDnqLrayp+RxX2lRrSO1Fch+cJC71+ic7yfaU2Jhh0vWf3RMLfFowMk5GLpBGliMsX9szlfp4VwZlTqwNsyha2HR6y9d50HrtJ5gOedysZF0Xd0yh5xAXb7sZRRwULPYQ71FV00BxYCum1hDlAaBmZMtBckFJSdtM5dbWm7b9xgYwUrMF8TSTFKmnUn85YK9yHLGHWCE+2sC6Zod6OLwGkTNgNKMkw5btA6bHJQY14YT9nAvEDf8H7X/ZM1CUzQAtjjIkGDg5ivLNY+RYWIF8cvVAEP6S/dodWtg5z27XznY0stuQl8IV4VFSe6RijwQ9nOCm8IfK64IufSyLL2XNeWV2z0i7y2BQvVd31yuwDvKKZ8XSwYSjvaNLZnRzNrwzskUS4FHJjznz07WrfNrvy1LmV9wzgwV0tKAj3sfAj7vcJFvl5XONi18yl2/HUGpi5F4KUrJreh3+o/dNrL0zazMdBBcnmShIM6dqV1TYxkmCzh98PsaoBhHy5BdEDlFv+ZYdxG3O/pLCl3wXLjyeXpAR9utTuzyhjCzyYfWk+wddCO2arBszWPkI11KLDVjYr6PWRLYBPU8Ajl+YNKZOfnz21wmD
+ 5mh1K9hZ
+ KL1lBhBtxxiT3KZHSbkEQC/R6X9BCvRhYZeK0zuZpiS3OxmWM9XMEEP6lfSAVZ6mSrb1H1oBoRzWOHr9wgTJwSIMe9wgh8qdR6c2ZTucwoYyJsQUklHCICjvD9/varkRVvhRUCEtZVnj51T0bM4NX1NlbVEhgwmCXQ6ZQ0KcxXyTdzw9Hn8YLRBU3xZ+BPtQ5b8EHzfSOuCpzgqdSc73qLRO1SU7J3mlgfQRGFKm7e3+kdGhdB8Ggz61H7AxpdmZxsBmHkxhsMZN8maFxdOIzw0pZL/p7RKRE+gLHhQqTzWHzJ7r7uQT31C1LYefneHMzp50/bqmLZ5+sdFs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,46 +138,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A hugetlbfs mount can limit inodes with nr_inodes independently of size
-or min_size. hugetlbfs_statfs() only fills f_files and f_ffree when a
-memory subpool exists, so an inode-only limit is enforced but its inode
-counts are reported as zero.
+On 11/11/26 13:49, Hao Li wrote:
+> An allocation with __GFP_ACCOUNT set (without __GFP_DMA or
+> __GFP_RECLAIMABLE) is redirected to KMALLOC_CGROUP and will never hit
+> KMALLOC_NORMAL or KMALLOC_PARTITION_CACHES. Consequently, neither of
+> these caches requires objcg slots in obj_exts.
+> 
+> While KMALLOC_NORMAL already skips setting SLAB_MAY_ACCOUNT,
+> KMALLOC_PARTITION_CACHES still carries it unnecessarily.
+> 
+> Extend the check to skip KMALLOC_PARTITION_CACHES as well, saving
+> unnecessary objcg slots in obj_exts.
+> 
+> Signed-off-by: Hao Li <hao.li@linux.dev>
 
-For example, a fresh mount with nr_inodes=4 reports zero total and free
-inodes instead of 4 and 3. This hides the inode limit from tools such
-as df -i, even when creating another file fails with ENOSPC.
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-Report the inode counters when an inode limit is configured,
-independently of the memory subpool. Preserve the existing zero and -1
-results for unlimited inode counts.
+> ---
+> This doesn't seem like a real bug to me, just a small waste of memory, so I
+> didn't add a Fixes tag.
 
-Fixes: 74a8a65c5261 ("[PATCH] Fix hugetlbfs_statfs() reporting of block limits")
-Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
-Reviewed-by: Aveline Noir <jm5905938@gmail.com>
-Tested-by: Aveline Noir <jm5905938@gmail.com>
----
-Changes in v2:
-- Add Aveline Noir's Reviewed-by and Tested-by.
+Hmm I'd add
+Fixes: 7def2e8549e5 ("mm/slab: add cache_ and slab_needs_objcg() helpers")
 
-v1: https://lore.kernel.org/r/20261101122653.53982-1-dennylin0707@gmail.com
+The question is whether cc stable as well. 7.3 LTS will be used for Android
+and IIRC they have memory allocation profiling enabled. Not sure about
+kmalloc partitions. Cc'ing Suren.
 
- fs/hugetlbfs/inode.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 01c4d6f44ebe..e94ee8e17004 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -1113,6 +1113,8 @@ static int hugetlbfs_statfs(struct dentry *dentry, struct kstatfs *buf)
- 				- sbinfo->spool->used_hpages;
- 			buf->f_bavail = buf->f_bfree = free_pages;
- 			spin_unlock_irq(&sbinfo->spool->lock);
-+		}
-+		if (sbinfo->spool || sbinfo->max_inodes >= 0) {
- 			buf->f_files = sbinfo->max_inodes;
- 			buf->f_ffree = sbinfo->free_inodes;
- 		}
--- 
-2.43.0
+> ---
+>  mm/slab_common.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index 2befd24b4d09..f0ea1fa178e7 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -1000,16 +1000,18 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_type type)
+>  #endif
+>  
+>  	/*
+> -	 * If memcg_kmem is enabled and this is a KMALLOC_NORMAL cache and not
+> -	 * aliased with any other type, make sure it's never merged with any other
+> -	 * cache.
+> +	 * If memcg_kmem is enabled and this is a KMALLOC_NORMAL or
+> +	 * KMALLOC_PARTITION_CACHES cache and not aliased with any other type,
+> +	 * make sure it's never merged with any other cache.
+>  	 *
+>  	 * In other cases the kmalloc cache may end up being used for a
+>  	 * __GFP_ACCOUNT allocation so mark it as such. The exception is a
+>  	 * KMALLOC_NO_OBJ_EXT cache.
+>  	 */
+>  	if (!mem_cgroup_kmem_disabled()) {
+> -		if (type == KMALLOC_NORMAL && KMALLOC_RECLAIM != KMALLOC_NORMAL)
+> +		if (type >= KMALLOC_PARTITION_START &&
+> +		    type <= KMALLOC_PARTITION_END &&
+> +		    KMALLOC_RECLAIM != KMALLOC_NORMAL)
+>  			flags |= SLAB_NO_MERGE;
+>  		else if (!(flags & SLAB_NO_OBJ_EXT))
+>  			flags |= SLAB_MAY_ACCOUNT;
 
 
