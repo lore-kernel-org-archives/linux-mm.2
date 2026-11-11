@@ -1,95 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31CD260A2622
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 07:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADD0606A32A
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 07:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=cBhDNGAH
+	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=GYsZL44i
 Received: by kanga.kvack.org (Postfix)
-	id 32D8D6B05BC; Wed, 11 Nov 2026 02:53:38 -0500 (EST)
+	id C57DE6B05BE; Wed, 11 Nov 2026 02:53:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 305356B05BE; Wed, 11 Nov 2026 02:53:38 -0500 (EST)
+	id C2DE86B05C0; Wed, 11 Nov 2026 02:53:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CE886B05BF; Wed, 11 Nov 2026 02:53:38 -0500 (EST)
+	id B1CF56B05C1; Wed, 11 Nov 2026 02:53:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E4B4F6B05BC
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 02:53:37 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 76A7BA0228
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:53:37 +0000 (UTC)
-X-FDA: 85422073674.28.BE88C26
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 9A9AB20004
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:53:35 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=cBhDNGAH;
-	spf=pass (imf31.hostedemail.com: domain of chris@chrisdown.name designates 209.85.214.179 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E3E06B05BE
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 02:53:43 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 10E3740213
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:53:43 +0000 (UTC)
+X-FDA: 85422073926.06.46E4670
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 33EB0100004
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:53:40 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=GYsZL44i;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf14.hostedemail.com: domain of chris@chrisdown.name designates 209.85.210.181 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794383621;
+	b=g7crjbc9RWfQ4BRF61Ie6hL6zLVvnFHPudfx0aKcfFFj8/KoW4q05fu+n7A9xDKbHvJqhK
+	aJMG30xRCqG8lfyQ9YdXdCS/tocSDUTwI8eedi5CHDGA77bSiG2w/onE4HgcEa2xTHpig1
+	poQKOXWDQ0wsFtRSFOZ0FG49yiJIFEY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794383615;
+	s=arc-20220608; t=1794383621;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+8ppAZ4kI36SkHC2JSY1XPhx8Cnr7U+W7X/gURi12I4=;
-	b=moWYmBmbpSH1CbCM1W/z3gzx5VU78i9CwVBzw2nsjQwD67eSsonj9LGGiik6CHFfoIE//Q
-	tHRFa/qo5CLL4VkSQSA3kx3XV0Wl1e04l/XDV3eQB0sGHNpdt8BsJRsdV9f0oDiF2uMCxd
-	+s582VF6y6n4apJBnp1nEf70i2IeRaE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794383615;
-	b=50UscCU1u6ffLs4wSS6uSusgwLaD57gNaDnhel7LdCACgEVuCBrKPe2jh/5WNjWADNy+fk
-	CxTaA0jiaMmVF5j7AsaxboUkGlPSaIrU5FwR27egKmBNVDOal/1VF9toSaEuFeufAWl0w1
-	bCFNSsKQsGRAqQXYg4Npj32SZJl2zF8=
+	bh=sK/H9HvHFSTiGugEGJQyMUnIkFUyigqct4WxtQyCZAI=;
+	b=Hsv++vt9vGj0GBPssMEL0OuV8uf9ezFDQuUSBKwuv5AT734JCfd+te6I4KPv5kjEKKK8Fb
+	reitU8IaqJ9unUywfXDYAXTw757LFBA6GcyJJnMtCHaBxJzloAQoKWNkV9UvPB4+XNE940
+	aAJK4hln5UOQdv/nOaCVtseFdJ8o494=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=cBhDNGAH;
-	spf=pass (imf31.hostedemail.com: domain of chris@chrisdown.name designates 209.85.214.179 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2ea7190aea1so12349055ad.1
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:53:35 -0800 (PST)
+	imf14.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=GYsZL44i;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf14.hostedemail.com: domain of chris@chrisdown.name designates 209.85.210.181 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8b5c3288e6cso1266134b3a.3
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:53:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1794383614; x=1794988414; darn=kvack.org;
+        d=chrisdown.name; s=google; t=1794383620; x=1794988420; darn=kvack.org;
         h=user-agent:in-reply-to:content-disposition:content-type
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=+8ppAZ4kI36SkHC2JSY1XPhx8Cnr7U+W7X/gURi12I4=;
-        b=cBhDNGAHe0Z9STF3daKwxIr+zbNzi5K2M1QEHdvM/G8h1JOVXB3xpDHEiCbRrEWnqQ
-         DYkzoWWTLu7OSjTacy2g+7+OkXADkNwm8olUwlEJ7fIwa6Js/zfs8xUZ6VhQY6/Qbrd4
-         Vgm40hKJ9P3msPB1goiZRnuq8ggISox89M1do=
+        bh=sK/H9HvHFSTiGugEGJQyMUnIkFUyigqct4WxtQyCZAI=;
+        b=GYsZL44iPE8C25Qx6g0QijsCZmHaPaS6FHFRFq/6uIqj+fQYVyPRM34kBewdwZnO9K
+         JQBDDRtcgP+U4j6I41/qJuetCRGQd4nx1CjhWEk5/upGKoAb0Bmj30bjf2V74oQ3+EAr
+         D8+MtbC0xZGK8yr5sClSJEEnwetGLmDtEMtwQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794383614; x=1794988414;
+        d=1e100.net; s=20260707; t=1794383620; x=1794988420;
         h=user-agent:in-reply-to:content-disposition:content-type
          :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=+8ppAZ4kI36SkHC2JSY1XPhx8Cnr7U+W7X/gURi12I4=;
-        b=XMw8vd8VGieRmztjco0rEZUXXrjTWd5Pn7Mg9x6l4LNrDadMxRxY0Ro13lSohiJm2I
-         px+duyyGHc/5iXUHxC22QTEMEJxVzqh0Ye3NBGmuiQcfn66IdWRtGaPlnNcPVXijjrHG
-         Hf2yYRu7d7+XFe8zJerJotA3lHOI01IqvBrWJgPdDcuyLApMef29Zl1jMX5gg1R2ybF+
-         PWsz8UOoQEcU6aMVCKECNhuSIYXA9cOcQxs9bw6qU1INSykDyA8NCE+jVRAJP0k4LbdG
-         vqJHkt0GhLFHSDsxFW0xm/nBYvL4dayMLaHtXufOv3fEToHQTVWG055nLE837zL8DMFe
-         PaZA==
-X-Forwarded-Encrypted: i=1; AL+hErEq1YRvLjklxroms0aQIprXXx48jQb6agPw6Ua+QzEZfIoJiAe3nHHNn2Ayf8i1zhl2IquExp6/2A==@kvack.org
-X-Gm-Message-State: APuU4Z+bTs+RucShDojYy+XzmlW1ghwpK/Yqd3vuqG1ZbOrcrSVH5c4H
-	x1TqicXHfLUwcT68uNk1cdtuiB32qttBWhDX6O3YDfx/3ZG74wvOtPztMKN2KavcUtE=
-X-Gm-Gg: AYBFou1xxpi2OW4f4S9W2gv012kHbV6ilfTgsBEiBM/dvJzKtnmOTCUPXxYJcWoB12a
-	gk0e7MLD/ZrLexdtIoeFt1brRJNDC10hF3hZCYJQrxYqW38+rEW5vzu3mm3Xy3aHKec7ho47pWI
-	Ylv/k8MtqvzVkIf6tUwODMfKL5/6ebEw3DLZEz8OgqxYsNJ839KFGiCs5a/dOk4crhDwJFSynh1
-	PH/bcI1axl3Wc/dk34ZO4erk7ZbdP/xj/lACE0pHWLyom+87pQGJLOLcoXU8ewIPou698JTAFt5
-	Xp0JpC/7dn1VLtiBDkcq/hYXwt5v6GnTNkLpQlxryTet4h8eNK2/lFu8dfGrYK/90bTiLK+fZQV
-	wMRah+li33YyCiK1yJgBmRd3VP43t+SjsVx5AEHT6lfMZ7Dfz7YbKYEzOFa+hw7UqFnepjS8AGj
-	dnw98e0JB3wKF1QzEsPTtjyPkEsf+BvO6UbzTGvaGXpdQ0a4H8AL0BoJSHNpftO3lr7NJjoXm85
-	vcaJIuiAN9X/247hIhuH3q2G3Dsg1zopOskn+g8N+eqYrNHeg4g9zGjz/xzY0qji2TZtpXX2zEV
-	MSlT7UBJtJGxW2jdF1NSWw6xLA+wgW9TYQyZSGZUneYWr9UOfnpipaBSV6L96vHfstxIyAlhPhY
-	qKN1SmWa+/QkqaPOfq7ZJSa4jTAJUSVLHFLMAReRsc5eWtoVSpX1ekPfvP+DRahS4fAfrVO8Wsa
-	RoSJ0UwFzTeRhSPoXzH8iuoLvfGQuJBeZheVY6amIfEkUaZOn6WOQN
-X-Received: by 2002:a17:902:da87:b0:2ed:294c:2b9c with SMTP id d9443c01a7336-2edd7ac1ea6mr21231125ad.51.1794383614325;
-        Tue, 10 Nov 2026 23:53:34 -0800 (PST)
+        bh=sK/H9HvHFSTiGugEGJQyMUnIkFUyigqct4WxtQyCZAI=;
+        b=N7dTngU2hysxEyaREJmiOKRhuYW15iCPuWl05hz+jqjmMLJvewCEddvH68Qy0IFMdi
+         ozwrx2kp+Tryd0HC4WV1edrb+0ihVEtw40P5ZDxWx+Fq5yyieu5Ma91fZho6qJujspYK
+         Zf+k/sjyYpluiI+cyu8JbO11xO5/56fvXt0pyP0TKGbg41HDik1WXlR/cJya1dN1FQwr
+         7OIs2cBU7QOFLFRYgBVoaS0SKkFrvwe09NmQp5CEMrrAfgC5UWilj1kfBTpU8XU/pWSG
+         B6E4DIwA2ddgb6YzIvLFDi9i515UQdlZf2DtdJaj4uqredq7tmSZY54Cv2JjUndpImO+
+         CFKA==
+X-Forwarded-Encrypted: i=1; AL+hErGi9Zt8iY40qlgK8vGuo3Fmtyv/8D/bid/CF4jMawpRYOY2LsG1W5ok04yG1D5CKV/4LGWVUFKCLw==@kvack.org
+X-Gm-Message-State: APuU4Z//oGCx9XXMyfLM2mOF5xywtlufkw+gq1fUFMisuXYQu8pnBe1A
+	FJmMYHvDXweEsjpCK2kd/cMyowsBWbEBNYxgGwdAGVCiP9346xZwoUrb6agqqhfQ9m8=
+X-Gm-Gg: AYBFou0DtlbuQ72HK5uY+QsTgPMm/zF8wGDLahDv2j94djWblXh7rfAY3RpqD6+0HrJ
+	XBJQyotAZ8avQoxE8yGhNIOAX2U//AMr1gW15QCxGgE7zY8Le7S9Y5XuPnKL+5KE880cJgQ2bHq
+	SEaXEAzG20dmsM4yPBYczlRcrbjm+VCbAt4dL3C6sY1Eoa+6rpZCS242Cxj6Bek+8MaSiAXAK5y
+	kGSHnDEfW38/BDBjwpVcSB08v9SldsnqO5Prl8LOcEbX1zEblB/X3SBsOvcUZP9oFzSLx9gdYMl
+	wgTuTwOd0KBstJGV4ZPpKtgSuC8N68AjDJTcfqIRp4DCsNRqcgFiGcwcEaHRZM04U8Exz+8S+I4
+	reVu7SJ4ZEeed2KTcy72NBwLPTjKraMjtmHg3xrn+LwKv82TbxfOJIk2miNm2Qw5Dn4l4FZB6lZ
+	b6YIDzEv2SoSvUIXqP3ob4TTJnW4ny8MOrzSZ7Ac/LXSHkYXY+nifRcEPXI53YuwsDVdvfn+ERj
+	oVxOnESORcizEei9xa4KxzLTjanuUn8oVvig5RTu902xD96W4Rf1v7+pjAHIV7LAlJDOvMrbm18
+	afOd+v+2k/m6D+XexYY6OFALELe+SDzY4A/iG3BUqW3jXW08PvH29ki1F4GGIl3HAn4IC7Qu1yR
+	kT0DbDY/m7jmDAZIAFia4cZ396uM+PT8G2YN1WfjsyFohy5nxaQ+g2aasDK0FbFMDINe5+vlc5m
+	PWeFBIQS+yLaRvYmxNi+pFRlHUjsuXjrL0E+rtsNRai1AaEX4cVv9B4A==
+X-Received: by 2002:a05:6a00:2d2a:b0:8a0:1e49:71bb with SMTP id d2e1a72fcca58-8bc1ddf8792mr1803838b3a.57.1794383619946;
+        Tue, 10 Nov 2026 23:53:39 -0800 (PST)
 Received: from localhost ([199.201.64.8])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2edb6a3f730sm18051095ad.5.2026.11.10.23.53.32
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baaa2a6c51sm1842597b3a.14.2026.11.10.23.53.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 23:53:33 -0800 (PST)
-Date: Tue, 10 Nov 2026 23:53:30 -0800
+        Tue, 10 Nov 2026 23:53:39 -0800 (PST)
+Date: Tue, 10 Nov 2026 23:53:35 -0800
 From: Chris Down <chris@chrisdown.name>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>,
 	Mike Rapoport <rppt@kernel.org>,
@@ -100,8 +100,9 @@ Cc: Alexander Graf <graf@amazon.com>, Baoquan He <baoquan.he@linux.dev>,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [PATCH 6/9] kho: Expose rejected handovers that look like cold boots
-Message-ID: <abfe907e8da92802cd5e0c843d8013e4d229aab3.1794383544.git.chris@chrisdown.name>
+Subject: [PATCH 7/9] kho: Report how much handover memory is preserved and
+ restored
+Message-ID: <920192d01c6534b5754648e12840f73cdcfa73de.1794383544.git.chris@chrisdown.name>
 References: <cover.1794383544.git.chris@chrisdown.name>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
@@ -109,19 +110,19 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1794383544.git.chris@chrisdown.name>
 User-Agent: Mutt/2.3.3 (9073d26d) (2026-06-12)
-X-Rspamd-Server: rspam06
-X-Stat-Signature: t7tr77ztgnugfsk6m6ofxey8i3tziwit
+X-Rspamd-Queue-Id: 33EB0100004
+X-Rspamd-Server: rspam12
+X-Stat-Signature: nyg83ay5skox7kuepnpqrdw8t5t77ku7
+X-Rspam-User:
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Queue-Id: 9A9AB20004
-X-Rspam-User: 
-X-HE-Tag: 1794383615-939936
-X-HE-Meta: U2FsdGVkX18XeWdUYdn2Llb7PAjKyjTRVYAa7pmfwqENXEE3LH71J3Qdx+m/np+l4AxttuUVNbepZM88hS3o/K+uVNwTU7siE+mLtJ6JBWkazz4UGcoHZn4dUDmL3Xi/lYgg6/16/S3EO5tpTrFH7QqPbzXR+c1gMu+Kqus7l0XXWAqqJNPxMXV1P8o8HmZ45G0DI2HC9rdTcHMaXvr7f5xwZsSvKKrHZIQYNlQKsk2y3svApbGF+QdpHGj9Tv2MRBcQuGifqGvtoDTPS6In45DBwfNp0e1EnVKH1C4c4Iw3AU19sco6KjwieRyvG/7OKzSTyADyiW48pA8F6GuqQfqxIXTe+9WPLc/r1QpPgOMGI5SUDkfKmCb/mtIyTf74M0d8LR/QwsDPxGH1++SW03CSLhcWlyY990o9Hz79JZI3uaKFLQFJp8y3CcfKJlMhqWafQAfWqsWbiADEiukqIDkDUGy/YJ+prxuNVMUAPiA4ipf35tvflbjgEHFrFpnx42DlAiXjIWStSMrg9IZYtQLSviuJLobt5N4E8tRME0xVNYmU8jVM7O7NiJIAiKpyybUM8M9wZgQhSzbwGYAjx85scww9IhrG33xIgvWLgK/RD7dnQZTD+DvY1Mf3+6kca5u2I2cTcsTeU4CTKXO+iy+je3gaYaHPLOHvCV8YU3EnqRV/r8+fAHyEHYbGo559fDiUbHahWe0OjZJY3Ci4vH99s8J7o5YoS9UJ4TwApP9F8v6Ag8hy0BDKaagC4TmZ4sibpVSIYdkFHZKhJHnTyU/1zHz0pzGHdDrrjzXfU5tFGwCA4cWJE40URzXDIQXY9Bm+cYUoinySTWDtVlhj2vaPRuIrQqxLpZgm3PfiIDYwE/Fkri5jIwdMmBqA18wknU9TqnQD/IyT/qADtrIO4xILifs4jpWZT2h7J3M6xWv4PciwkpcdJxYTHz/Mst4OeQPePhP0utQ7EuHWPEr
- xYm7PNmy
- xzZyuGwN0ruu+pT/BlK1L3hMNBNx/Wixb0D3iqbKeeOkug+U/C6HW65dVNf7Ceo7cMBbr/z/KDSI5pt/v5KggIU8vvAOTKSvYTJ2sLdc0TeGlD8m3GFVWD1V27ScbXHjt7Up5AwAWSyFYf/ywdipzDYI8N+gcze93OrJxx9KR5IBt+Z1R+pHdat8Y0gQC4jc3ps8uZtYAWziouc+X6emyzTUlfk3ooAoj9Tyf/CXbvvZsaVcrHJB6bWbm7STYzAVs+YxPXaxWlJ4pOaeCqtlrE0wL3L7earp3P5mbU+VSB39QBw4FolR8QZHlquR2C5dKVpqRqNXmEyadKImUVQA5b+B9N9C/8BivA677057tkiQ6DBzpa3Yf4IZ+3FxBOrLNRC13DA2wsRnyNV4mgjSBMkgCEAGZskgyxR/cPk8VxwK+FTNDDXLG1aX8YvAhWvrOzN5Gk7xUuvep1glNlm3Lg7HN5eF4Rh8ih4rYiFMg4qJThYIr/LVon2uIqUDGVvYnHKEn5VA6slejfijRbtLpXfjiUA==
+X-HE-Tag: 1794383620-375410
+X-HE-Meta: U2FsdGVkX19Xp28l4KK0JisfNIETsLnuPY6RIzZR0yGvRzXETmCksffwXTo75+eYA8Pq5nlgFZd9+tSmz/A0xWVVMOQnXVkhrtI3xuIUlRVtAoQ2Dz/jqJ9h7M9CI7A22Et1NKESp18DmO4ty3mU9OJDDjAMNr+xUNO0np3OkqNTXnNtQ7vzKKX19NITePCJ61CbdRswq0VXnPw7/mxKdsVBFeZvY4stfyUJV0AK8j5Z9RaawPKWGVOi9EGsZn+d6uB7iHYwoLI4OovsgO7mVkD6rEtdEO0uIxMGZOJn8srnh848WmZB28W4MV+hlg8qJelF7k3Anmi++Ld5vdx3kVk2Eriv1bHKxQDuK1PbPrcVan80NlZgNwR972SMWjr6+c+u/4Hlbz0duA0N6wjonOuhiuqqQOqa6BAjen68WSyV2E29YVl0OhGAyzYdlDYqh84WVdfhL0L/1Pp3s6RD/OJ1y5eUC78hB2l+rxG5JtIeIvoIMk6/4acWYxriQRTIlK9KEvGd9ACgF6ylejUXPBD+MRnvCXgh/dCfGOOYmps8kqTvwdfGxx7UWveT++qerFSNEmofk9tzceplay9HukE6GUpzEotUfEEEhSPfw7KRVU4A3UagsHKQo2phdRcy6zTC8e2wKQ/XABCozI20fUkd2qc4KwHf7wesu5uWvbLGyetvl2rE2y44wXafLn6m9OQ8+jXls70OJ2PnNFXjgrRo5EK8uDaxmkFhpGBSUZseoOfZL2XQSaNLLUrUz5wVksdjIjkIkdCS0eySFqFJJZPwj8zh+q6eTFjKbMbQXzCMlwHllM+0jle5kdkwZpUQEk7zODL2G8f9M7cLsP+SEevFmBalx7i7c2H9L0KVfdiGoyzFhie1UMWx/rlE1yd90veAXJAPt7XwU/JXGM3bhY9dTpJFJUFcKZBxMCBMuR0/Vn3Xaz46PX2XsHlBQ4QNVMjsAMyR9x3A2y91P3H
+ 2Frtuc9e
+ CR91NKSNGtEv5vcRthS3TkUHqNCmQxKgH3kky85UCVNMFjp3E8oARPswylngus0Kg/eriaKvJzzrjF2wBbsgTs/Ruo23WV4MLeko/jnHPXeozbK6kCxnZ0ncgNKzDyFSlXYsjfso9AsDerEuj7zKNdzTanAUhGfC2n7O1w2r8+I9JcR0LKGFKQskIJmyj2ZDz4FRs8+AIyFKCwRJvf3vzani+GFQ8/K+kp8gUOvFg/dWdIrUailtTZ2VRA1yFXASwhKGmgemK/ASlG40X912iUgKn5uDs3iextZqV+8hJJ8I0mNQtjVuEZSr0zG8nAo5MrXu5Ag7l46qMwTv+tkvGCxW9+1qQNyzIOd6a3Myzh6qVlt7rJPYn50FkQE7XKHQrWcLnP1QvcdcrFpyF5rbDSusfMG0VocTSC1L/hwruqDojl5RRe/rl67cFHwItxmQE1jYfRV1zazXpDzoewb7nOu2hDrVlyXkrsDvxV1t2RZ7c2Rz1DOmma3Mk+zATGIeXfhmluQ48z5Di+Y/vnoLzr2h4FiVoPc5P4GP1KyjL6hrKLMHoQcQw4YiAiRhFgbI7PThuYD4Xz/oqrNLzHufnlBS9NFOy/qdp5R6F3oE75LP3MIcZrIXJqkDZEYAoFRFyCnWooxd+/IWkSSSS0/vyerZu05OWLG6dEqT8dpPh/Vw308Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,198 +131,129 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-At Meta, our rollout needs to stop if the new kernel rejects the KHO
-handover. For example, if it doesn't recognise the handover FDT's
-compatible string, it can boot normally with all the preserved state
-lost. LUO's incoming/state reads "none", as on a cold boot. We log
-"disabling KHO revival", but our fleet collector reads procfs and sysfs
-and can't rely on kernel logs from every host.
+Most memory the previous kernel preserved stays reserved until its user
+restores it through KHO, either to use it again or to free it. If
+nothing does, it stays reserved for as long as the kernel runs. On a
+hypervisor host that can be gigabytes, but amusingly nothing really
+shows it reliably. The host simply has less memory than it should, which
+is not exactly obvious.
 
-Let's add /sys/kernel/kexec/kho_incoming/state so the collector can tell
-a rejected handover from an ordinary boot. "revived" means the kernel
-accepted the handover and completed the preserved memory map walk. LUO
-reports the outcome of restoring sessions separately.
+All preserved memory is reserved in kho_preserved_memory_reserve(), and
+everything restored through KHO goes through kho_restore_page(), so KHO
+can count both easily. Let's add preserved_size and restored_size, in
+bytes, to /sys/kernel/kexec/kho_incoming/.
+
+For example, after a live update preserving a 64 MiB memfd:
+
+                     preserved_size  restored_size
+    before retrieval       67403776           8192
+    after retrieval        67403776       67395584
+
+The 8 KiB left are the incoming KHO FDT and LUO's FLB header.
 
 Signed-off-by: Chris Down <chris@chrisdown.name>
 ---
- .../ABI/testing/sysfs-class-misc-liveupdate   |  3 ++
- .../ABI/testing/sysfs-kernel-kexec-kdump      | 12 +++++++
- Documentation/admin-guide/mm/kho.rst          |  3 ++
- include/linux/kexec_handover.h                |  2 ++
- kernel/kexec_core.c                           | 13 ++++++-
- kernel/liveupdate/kexec_handover.c            | 34 +++++++++++++++++++
- 6 files changed, 66 insertions(+), 1 deletion(-)
+ .../ABI/testing/sysfs-kernel-kexec-kdump      | 10 ++++++++
+ Documentation/admin-guide/mm/kho.rst          |  3 +++
+ kernel/liveupdate/kexec_handover.c            | 23 +++++++++++++++++++
+ 3 files changed, 36 insertions(+)
 
-diff --git a/Documentation/ABI/testing/sysfs-class-misc-liveupdate b/Documentation/ABI/testing/sysfs-class-misc-liveupdate
-index 25e3b49d7aeb..608f788ef0fa 100644
---- a/Documentation/ABI/testing/sysfs-class-misc-liveupdate
-+++ b/Documentation/ABI/testing/sysfs-class-misc-liveupdate
-@@ -19,6 +19,9 @@ Description:	read only
- 		"deserialized"  The sessions can be retrieved.
- 		"failed"        Deserialization failed. Opening
- 		                /dev/liveupdate returns -EIO.
-+
-+		See /sys/kernel/kexec/kho_incoming/state for the status of
-+		the underlying KHO handover.
- Users:		system monitoring
- 
- What:		/sys/class/misc/liveupdate/incoming/sessions
 diff --git a/Documentation/ABI/testing/sysfs-kernel-kexec-kdump b/Documentation/ABI/testing/sysfs-kernel-kexec-kdump
-index 80941a7d8a7c..5636cd060cb2 100644
+index 5636cd060cb2..2b9f9917d2d4 100644
 --- a/Documentation/ABI/testing/sysfs-kernel-kexec-kdump
 +++ b/Documentation/ABI/testing/sysfs-kernel-kexec-kdump
-@@ -67,3 +67,15 @@ Description:	read only
- 		Total size of the KHO bootmem regions in bytes. Returns 0
- 		when KHO is disabled.
+@@ -79,3 +79,13 @@ Description:	read only
+ 		           the walk of its preserved memory map.
+ 		"failed"   The kernel rejected the handover.
  User:		system monitoring
 +
-+What:		/sys/kernel/kexec/kho_incoming/state
++What:		/sys/kernel/kexec/kho_incoming/preserved_size
++What:		/sys/kernel/kexec/kho_incoming/restored_size
 +Date:		Nov 2026
 +Contact:	kexec@lists.infradead.org
 +Description:	read only
-+		Status of the incoming KHO handover:
-+
-+		"none"     No handover was passed to this kernel.
-+		"revived"  The kernel accepted the handover and completed
-+		           the walk of its preserved memory map.
-+		"failed"   The kernel rejected the handover.
++		Bytes preserved by the previous kernel and bytes restored
++		through KHO, respectively. Both are 0 unless the incoming
++		state is "revived".
 +User:		system monitoring
 diff --git a/Documentation/admin-guide/mm/kho.rst b/Documentation/admin-guide/mm/kho.rst
-index c329d720bf25..9d74d4ce18b5 100644
+index 9d74d4ce18b5..37a62daa7622 100644
 --- a/Documentation/admin-guide/mm/kho.rst
 +++ b/Documentation/admin-guide/mm/kho.rst
-@@ -88,6 +88,9 @@ sysfs Interfaces
-     Total size of the KHO bootmem regions in bytes, or 0 when KHO is
-     disabled.
+@@ -91,6 +91,9 @@ sysfs Interfaces
+ ``/sys/kernel/kexec/kho_incoming/state``
+     Status of the incoming KHO handover.
  
-+``/sys/kernel/kexec/kho_incoming/state``
-+    Status of the incoming KHO handover.
++``/sys/kernel/kexec/kho_incoming/preserved_size`` and ``restored_size``
++    Bytes preserved by the previous kernel and bytes restored through KHO.
 +
  See Documentation/ABI/testing/sysfs-kernel-kexec-kdump for the sysfs ABI.
  
  debugfs Interfaces
-diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
-index 736d51e79fd2..1f37d2300e26 100644
---- a/include/linux/kexec_handover.h
-+++ b/include/linux/kexec_handover.h
-@@ -42,6 +42,8 @@ void kho_populate(phys_addr_t fdt_phys, u64 fdt_len, phys_addr_t bootmem_phys,
- bool kho_bootmem_overlap(phys_addr_t phys, size_t size);
- phys_addr_t kho_bootmem_size(void);
- 
-+extern const struct attribute_group kho_incoming_attr_group;
-+
- static inline enum migratetype kho_bootmem_migratetype(unsigned long pfn,
- 						       enum migratetype mt)
- {
-diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
-index ed105e6351eb..c1085a53b7f4 100644
---- a/kernel/kexec_core.c
-+++ b/kernel/kexec_core.c
-@@ -1372,7 +1372,18 @@ static struct kexec_link_entry kexec_links[] = {
- };
- 
- static struct kobject *kexec_kobj;
--ATTRIBUTE_GROUPS(kexec);
-+
-+static const struct attribute_group kexec_group = {
-+	.attrs = kexec_attrs,
-+};
-+
-+static const struct attribute_group *kexec_groups[] = {
-+	&kexec_group,
-+#ifdef CONFIG_KEXEC_HANDOVER
-+	&kho_incoming_attr_group,
-+#endif
-+	NULL
-+};
- 
- static int __init init_kexec_sysctl(void)
- {
 diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 21d77e29d2bb..dfd6fa7e4a71 100644
+index dfd6fa7e4a71..fe6b66270124 100644
 --- a/kernel/liveupdate/kexec_handover.c
 +++ b/kernel/liveupdate/kexec_handover.c
-@@ -19,6 +19,7 @@
- #include <linux/kexec.h>
- #include <linux/kexec_handover.h>
- #include <linux/kho_radix_tree.h>
-+#include <linux/kobject.h>
- #include <linux/utsname.h>
- #include <linux/kho/abi/kexec_handover.h>
- #include <linux/kho/abi/kexec_metadata.h>
-@@ -97,11 +98,18 @@ static struct kho_out kho_out = {
- 	},
- };
- 
-+enum kho_incoming_state {
-+	KHO_INCOMING_NONE,
-+	KHO_INCOMING_REVIVED,
-+	KHO_INCOMING_FAILED,
-+};
-+
- struct kho_in {
- 	phys_addr_t fdt_phys;
- 	phys_addr_t bootmem_phys;
+@@ -110,6 +110,8 @@ struct kho_in {
  	char previous_release[__NEW_UTS_LEN + 1];
  	u32 kexec_count;
-+	enum kho_incoming_state state;
+ 	enum kho_incoming_state state;
++	unsigned long preserved_pages;
++	atomic_long_t restored_pages;
  	struct kho_debugfs dbg;
  	struct kho_radix_tree radix_tree;
  };
-@@ -957,6 +965,29 @@ phys_addr_t kho_bootmem_size(void)
- 	return size;
+@@ -552,6 +554,7 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio,
+ 		kho_init_pages(page, nr_pages);
+ 
+ 	adjust_managed_page_count(page, nr_pages);
++	atomic_long_add(nr_pages, &kho_in.restored_pages);
+ 	return page;
  }
  
-+static const char * const kho_incoming_state_names[] = {
-+	[KHO_INCOMING_NONE]	= "none",
-+	[KHO_INCOMING_REVIVED]	= "revived",
-+	[KHO_INCOMING_FAILED]	= "failed",
-+};
-+
-+static ssize_t state_show(struct kobject *kobj, struct kobj_attribute *attr,
-+			  char *buf)
+@@ -643,6 +646,7 @@ static int __init kho_preserved_memory_reserve(unsigned long key, void *data)
+ 	info.magic = KHO_PAGE_MAGIC;
+ 	info.order = order;
+ 	page->private = info.page_private;
++	kho_in.preserved_pages += 1UL << order;
+ 
+ 	return 0;
+ }
+@@ -978,8 +982,26 @@ static ssize_t state_show(struct kobject *kobj, struct kobj_attribute *attr,
+ }
+ static struct kobj_attribute state_attr = __ATTR_RO(state);
+ 
++static ssize_t preserved_size_show(struct kobject *kobj,
++				   struct kobj_attribute *attr, char *buf)
 +{
-+	return sysfs_emit(buf, "%s\n", kho_incoming_state_names[kho_in.state]);
++	return sysfs_emit(buf, "%llu\n", (u64)kho_in.preserved_pages << PAGE_SHIFT);
 +}
-+static struct kobj_attribute state_attr = __ATTR_RO(state);
++static struct kobj_attribute preserved_size_attr = __ATTR_RO(preserved_size);
 +
-+static struct attribute *kho_incoming_attrs[] = {
-+	&state_attr.attr,
-+	NULL
-+};
++static ssize_t restored_size_show(struct kobject *kobj,
++				  struct kobj_attribute *attr, char *buf)
++{
++	u64 pages = atomic_long_read(&kho_in.restored_pages);
 +
-+const struct attribute_group kho_incoming_attr_group = {
-+	.name	= "kho_incoming",
-+	.attrs	= kho_incoming_attrs,
-+};
++	return sysfs_emit(buf, "%llu\n", pages << PAGE_SHIFT);
++}
++static struct kobj_attribute restored_size_attr = __ATTR_RO(restored_size);
 +
- /*
-  * Look for free blocks of 1G. This is a heuristic chosen to work efficiently
-  * with large systems with hundreds of gigabytes of memory. It will work poorly
-@@ -1753,6 +1784,7 @@ static void __init kho_mem_retrieve(void)
- 	 */
+ static struct attribute *kho_incoming_attrs[] = {
+ 	&state_attr.attr,
++	&preserved_size_attr.attr,
++	&restored_size_attr.attr,
+ 	NULL
+ };
+ 
+@@ -1785,6 +1807,7 @@ static void __init kho_mem_retrieve(void)
  	kho_in.fdt_phys = 0;
  	kho_in.radix_tree.root = NULL;
-+	kho_in.state = KHO_INCOMING_FAILED;
+ 	kho_in.state = KHO_INCOMING_FAILED;
++	kho_in.preserved_pages = 0;
  }
  
  static __init int kho_out_fdt_setup(void)
-@@ -1992,6 +2024,7 @@ void __init kho_memory_init_early(void)
- 	 */
- 	kho_in.fdt_phys = 0;
- 	kho_in.bootmem_phys = 0;
-+	kho_in.state = KHO_INCOMING_FAILED;
- }
- 
- void __init kho_memory_init(void)
-@@ -2090,6 +2123,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
- unmap_fdt:
- 	early_memunmap(fdt, fdt_len);
- report:
-+	kho_in.state = populated ? KHO_INCOMING_REVIVED : KHO_INCOMING_FAILED;
- 	if (!populated)
- 		pr_warn("disabling KHO revival\n");
- }
 -- 
 2.54.0
 
