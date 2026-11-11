@@ -1,94 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F34A5606A327
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 09:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4168560A2606
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 09:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S3A4M8PG
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=d9Av/BHV
 Received: by kanga.kvack.org (Postfix)
-	id 1F98E6B05BA; Wed, 11 Nov 2026 04:37:11 -0500 (EST)
+	id 63F4C6B05D5; Wed, 11 Nov 2026 04:37:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A9FF6B05D3; Wed, 11 Nov 2026 04:37:11 -0500 (EST)
+	id 5EF306B05D6; Wed, 11 Nov 2026 04:37:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E8186B05D4; Wed, 11 Nov 2026 04:37:11 -0500 (EST)
+	id 505B66B05D7; Wed, 11 Nov 2026 04:37:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E158D6B05BA
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:37:10 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 898C2A024C
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:37:10 +0000 (UTC)
-X-FDA: 85422334620.20.B017252
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 07AEA1C0008
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:37:08 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S3A4M8PG;
-	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D7796B05D5
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:37:14 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BF34580259
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:37:13 +0000 (UTC)
+X-FDA: 85422334746.27.D2FE160
+Received: from mta1.migadu.com (out-231.mta1.migadu.com [95.215.58.231])
+	by imf06.hostedemail.com (Postfix) with ESMTP id A0C1A180006
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:37:11 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="d9Av/BHV";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.231 as permitted sender) smtp.mailfrom=xu.xin@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794389829;
+	s=arc-20220608; t=1794389832;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V3OCk+N8SB0awCd36HtzgSzqG30/oaImEUc9AZVKUng=;
-	b=u0/A3LVHyGjvBbE6LETdPnILzPm8IAmWkbrF4sgGVs5tHOMunFbWV72bfZA/dBbQH5lnEj
-	f2F0EmdNqfL7pHs2JUsS0cPsikoUjV5+Ev2cXO4XrxDs06NSg8EoIh7HrBD3zy5LMCBukL
-	h3m9VFDJFF7aXel78I8l/m9ffnP72lU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794389829;
-	b=wg3xV5RiZrkAbkLW4BoXkRwGldi2oGeyxGWoq1wyTo7yyOBhMuz9To2Tpdm/M1EUigIUhX
-	j9fIX+aAyVIEtVfAWSKghoI9JBBAuXUvZdjOsfHaRCXqCJx7QG1TrGZ5Cc3fb7eFe9mAfc
-	clGkOqssDgkEyzYDzElvy7slZ1eSGo0=
+	bh=fU9XfcyXyDYY96b4oLkbxP2QCB6xnQM84ny0U+EIIak=;
+	b=G2rwRHQiSmi3WFxlmAuuJnxL6rLD4N+FhnGkJKWSh194V4imrAsn8SFKwqZRPZXHy44Dvd
+	c6tH3Yy1td5d6cntpxFKl0WfoBRb1Q5pK/nPj5Mw5MRCcGLjCkPaJxYmBj2DkNoMAH4e77
+	MGKWRl6UsJSNiaiYHMmUkq/wkI1hM7s=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S3A4M8PG;
-	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9D8BF608FB;
-	Wed, 11 Nov 2026 09:37:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D071F00A05;
-	Wed, 11 Nov 2026 09:37:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794389828;
-	bh=V3OCk+N8SB0awCd36HtzgSzqG30/oaImEUc9AZVKUng=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=S3A4M8PGrXZZOjpczvfRgaHWV379jGtDI+QSGgXmCBtKj/ifTm4o2c/Ak/jI1r70F
-	 2G46uDCdpQPL2kqtHqHS5rV/1XDUQoXAxQT2YrsX0fEoyBXHynKrsDXD6F4ZFfE9Iv
-	 rg9rJLzMKxS14WpcNgCywWHctZHbfmICCX40LkQshwDheWrF1im1dw2Juu+6OxXvsI
-	 QR+QoVJrLogbfPB2tmdB2QXkbfq6pDu14YuQu21BrehPbP86A/CS6YUpMGnawv5j+g
-	 vvsgo74iOZRxBtosfh27sXCrUErO6RMDC9/L5pG6pwW800na+FQoE9k4Xsp5ln0jFn
-	 2jqesqNPs4+vQ==
-Date: Wed, 11 Nov 2026 10:37:02 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: Jan Kara <jack@suse.com>, Al Viro <viro@zeniv.linux.org.uk>, 
-	linux-ext4@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, 
-	linux-mtd@lists.infradead.org, dsterba@suse.cz, tytso@mit.edu, Mark Fasheh <mark@fasheh.com>, 
-	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>
-Subject: Re: [PATCH v2 28/34] ubifs: don't set SB_RDONLY after errors
-Message-ID: <20261111-perfekt-dekaden-bildband-0e31f4bd1858@brauner>
-References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
- <20261029-work-fs-sb_rdonly-v2-28-2f44f64f0b66@kernel.org>
- <sashiko-outbox-191247@kernel.org>
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="d9Av/BHV";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.231 as permitted sender) smtp.mailfrom=xu.xin@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794389832;
+	b=e45+i17I43XozUmI8UDU8lYru9/oQOsExyf1iiU8fOMDzYhhfTcRSlyZK+KfAcLoiGbvBd
+	pQ9PU1da8sEcN0W1aLeFSYKn7T16y1Mvne7oL/uEr7wpemwv9oJzoqTW5WNgMQu72EuLcQ
+	7WxuuySDIPM8CigVdA2wigTaBDIO7Z0=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=6wp3khVZFr9nCgPoeJN5KkCAJtgzTDUmCQsA5IU4RCg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794389828; v=1; x=1794994628;
+ b=d9Av/BHVMSaBOhJ9tQ4D+vWpZKoty1v3C0dRUpHbHptA8MVuGOCheqnA74/ZXe9jFnZ38cIg
+ A/EmWY7naiTBS9B3vdzrolqw5pIS3BBYlxKgp3eFFpQpjBHMGvn6lVZ0O3zmyPDI9LOHH3HQs1C
+ jafFTp+ux8W7ZGoQ5nHPLHd4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id 3265524654880463;
+	Wed, 11 Nov 2026 09:37:07 +0000
+X-Mizu-Trace-ID: 3265524654880463
+X-Migadu-Flow: FLOW_OUT
+From: "Xu Xin (vivo)" <xu.xin@linux.dev>
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	chengming.zhou@linux.dev,
+	link@vivo.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	tujinjiang@huawei.com,
+	xiao.wang@vivo.com,
+	xu.xin@linux.dev
+Subject: Re: [PATCH 2/4] ksm: skip rmap_item allocation for non-zero pages under only_merge_zero_pages
+Date: Wed, 11 Nov 2026 17:36:57 +0800
+Message-Id: <20261111093657.123292-1-xu.xin@linux.dev>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <5445434f-078f-47d8-9851-dcc3712d18f1@kernel.org>
+References: <5445434f-078f-47d8-9851-dcc3712d18f1@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <sashiko-outbox-191247@kernel.org>
-X-Stat-Signature: i1cku134d7pi1dy1t9oq4y41qx4gb3c9
-X-Rspamd-Queue-Id: 07AEA1C0008
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A0C1A180006
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794389828-522924
-X-HE-Meta: U2FsdGVkX1+3vhBbNwufh3M9FiDx3dbbUfsYV+8HQT8jUm5XtDKBHkq26nyf4J4wvylkwjMI3hq7GGsFAjDKZofA4Fv+1bp0groPoHjVguMrojHkMIm1oXxtU2eFJxxnUXBEpXs94Uauf74IurCgB8Kg0gOUMVaDn8JjW3bbIzQanQ75xWvHzYy/KBPIyIP698DIVIoUqIZPTRJpa1Mgj67vj7eQZAVF8zLQQhD8+y0E7DCBEjVg/UG/AgIRp3HilBdy60LLqCtmbYk3pe93aWcwP6HPUgdphMUjcyt2OSbBPTFkXWVxJmBWhhCmP9dmZWile/Ke+tZvlbq9z/TjG9HjEOjod9bEmujcSQS1MB9exWUPvbThdRBXxCOpC2NxtUGLCG5DuEIq9hlUXN+a4vWl9uOUSDRrJAcyHK9lUBpoDqAQAANkVvpvzSiLScPptseMJ5NgAaIiH7aerZSTdB6gYX64ymUWTjoUnDyEA8d9OvlZJbaQwnUH/P1b84wy/SPZTwLytJdVGi5swQqdiae+5HPqKmH1SRi+hOAsRaws8ngSaj9rxKirZyR3uSWgZLFul71BZSEPat4b1/c2Uc7azIwDfAvfSOgJkcvqy5pItkV+p00wccddu1VnlQv1H4gJOGEZk4/IlOonnw6jEf5F9IKCeJMdGoAYfXkaub9l9x4ZLQAcjOom5IepeTYd4Ygw7uvUiBUclJg+dveKlA12Ooh7Hju6M9aO5JrsrlQHxvLUMWTPT+Xp2tqmEmhC08hiBHP0apOG+Dpk5NeDacredT8wGfOYzLJFxR7WZ/ulWsWB0XjkIpgcB7Q0fGjF1o5LHFQv411iVAmP16keupa58r12FNF/LEulO6ASPSTi+gq4eQz2K4m+0QsAMBfRL8mS3eAHcj9rQ2CMA4u6hCwP+Ye2Fj2cks82rhRIW6jlCSnFRyuzFmB1/ciVOv65ADDraMQaeSMtwxUA717
- HQChJY1S
- FOqPkDkTm9vyaY/8K9V3yz/6gr3Ro3Td/xiYXFsMHQew/n986PX+DzDdXWqZjbJt7jMNraF+DTeJA9sEVzutQrpT6hcR5LsxdDo7GTYjWJe3L5hBqBThHX4PD0sPFBvtgNoqRjkiuQRMtsCN5HVyZ/knP35HGf5keH9F3qKE/pI4mJSEPQoK0e8t79I6Gk5c2KLAghq1aCocbU2/TkmX9jjpkW9VT9/rFxzvRUG8gwC+/7Uu7g3YYFEd9VDN/d5sP+dt7orTy1kG+dELnPPC6UXp9UNwPbsNa85hZev50UfXYSA/zbQRiKgXomZjSLiOD56HqiqNE/gRavGJirlwxj4L0xDnCywK2S/8Ub5uAVzQVIzT4IOnaBR+k4wRSMJDZHRT7EYIFXM8yQ4s=
+X-Stat-Signature: szezyh98cxcgqopgr8gd5dqdwrzmefcp
+X-HE-Tag: 1794389831-565678
+X-HE-Meta: U2FsdGVkX1/64WzZvJ9gyDhUBwqwD1d6okeGQYnqUTMIQWNba2jEh7U+N9WOpEXTbROmgG9Re6ZkmgMKru37MxglWo86X85W9chlzb1w+CFNHaEA13SNSOXBRC5X+pJJiWItlQg4VqmHopGzgpFBCCctDLnLx3k4/hd48nwVh4NjkZSvhTaiqyNU7xLwEvkcyG9lE5eskL09aM7sVEIe8V/qAKj9oirYk3arvmfiDnERTFch9PymkUlvJuNwUj+bDzaGHyGbY0tCpQK1PFsQh+2hLFM+hNJZ3MAkcKpI7p7w1ldOBCT8QLH6B0ZOHd5Yj3howiu1p9FTac41XZ6PhPySRMyuK7afxpKi14kZOBoQUD+dRO4eLgiTtLokRY5wOxNjsRIIkBXqxk/kSbfuNvpdK6BbLVlwHHChESynpPjpTfJE9TdZ13jTY/XE5yZD967Z98l0A7pRgQXGxxrCbtmHkFZqSR5ieyynZD2S4/HL1Annn2e6u3yENfqpw8iGndRubnxsCPaYAhPK3jlquaOvfAwZkJTALaAD2ps0KhsrbX5ivCcUgKfdKykB/HhVJzjEC+PBjv0xJ8hh0Xr4VFdzEI8AJHX7qTqjxgmgiX8TH1RvC9OMVWofKXexaxo+1FA9zMZ1jahrph3prXIQCZbcMgO4TATSofpm+8Zq5Wrm4S4RoD82lEecQ9EatWkoSe07hcFxh7CEAFMw+QkazLUTNTq55PF5EffheKnbIPkzXPpupRGYk9iy+NLiUMCnHQJusKckLXdG/Hw8f5aHS0dADrZlR0SGuhS93cTqOSxCDlM8bkyRRMdx7cqR7Yy9v79n7ZY6t1uLo5jTTbAvRKqXj3eNsg3sQpPNmGLkKEvH27PDHWhZry9m6R4dj7LY27hU6tIwx//VTH5N7e20+mkx7OYv2Ni0o5dd61cIBmF1wfU63dNZ4eoSTHjuWtvWEgI1y+1PjVYkSELUPaf
+ o/dNXfDu
+ dru43dYDy9UT51Xljoe+iJloNZwHKeoUTKWS5y92deiXcuOtIoQ26Ebh7tltomi+h/oyEWLx8x5orqMoUqQj0OyR3XlVaouiD1UqfFraN983nfJIX/6cpO6K9FzjEPQGqxe2/yZ1OmWFOyWjV0R1zDjOy33ugz74Mp0+nK0bcFzbdoXo9ec9T8nTkAynbaVydrbN4xz5zud85ZE/ecY9uBg/d11gfnH6bZfT/6v94e9bcU/sgp2hROg39BkEwUFO0zF0pKkXrztq48yQMAXSKqcZ0Dw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,22 +100,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 30, 2026 at 04:10:12PM +0000, sashiko-bot@kernel.org wrote:
-> Should ubifs_ro_mode() call sb_set_emergency_ro(c->vfs_sb) unconditionally?
+> I think we should get rid of any rmap items when merging the shared zeropage
+> only. That might require more changes to the ksm code, but it really doesn't
+> make any sense to have rmap items.
+> 
+> Maybe we just want a separate KSM infrastrcture that only focuses on
+> deduplciating shared zeropages in KSM: get a page, see if it is zero-filled. If
+> so, try deduplciating with the shared zeropage. Done.
+> 
+> Mangling this into the existing infrastructure might look easier but it just
+> adds things like additional zero-page comparisons and (as Lorenzo points out)
+> makes the code harder to understand + maintain.
 
-Yes, the background thread doesn't hold s_umount. I'll do that.
+Makes sense, I agree.
 
-> Does allowing ubifs_remount_ro() to run after c->ro_error is set cause a NULL
-> pointer dereference on c->write_reserve_buf or trigger assertions in
-> reserve_space() and ubifs_wbuf_sync_nolock()?
+I actually thought about doing it this way at first, but went with the
+current approach since it looked simpler back then. Without needing any
+rmap_item tracking for zero pages, we can avoid rewriting scan_get_next_rmap_item()
+with more complexities.
 
-ubifs_remount_ro() won't sync the write-buffers or write the master node
-after an error anymore and ubifs_sync_fs() fails early. See my other reply.
+Splitting them up has two obvious wins:
 
-> Now that ubifs_reconfigure() no longer returns -EROFS on a read-only remount
-> when c->ro_error is set, should the assertion at the end of
-> ubifs_reconfigure() also be guarded by !c->ro_error, similar to
-> ubifs_put_super()?
+1. ksm_do_scan() becomes much easier to read:
 
-Yes.
+   if (only_merge_zero_pages) {
+           scan_get_empty_page();
+           try_to_merge_with_zero_pages();
+   } else {
+           /* existing logic */
+   }
+
+2. We can even add better filtering in scan_get_empty_page() to speed up
+   empty page scanning, without making scan_get_next_rmap_item() even messier.
+
+That's a very constructive suggestion. I'll rework v3 this way.
+
+Thanks,
+Xu
 
