@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F287E606A8A5
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 18:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86A5607012B
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 18:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SjvbQVSp
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mAqi/pv4
 Received: by kanga.kvack.org (Postfix)
-	id 1CE1F6B05BE; Wed, 11 Nov 2026 13:14:54 -0500 (EST)
+	id CA2AC6B05BF; Wed, 11 Nov 2026 13:15:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A5EF6B05BF; Wed, 11 Nov 2026 13:14:54 -0500 (EST)
+	id C7AD86B05C0; Wed, 11 Nov 2026 13:15:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 093BF6B05C0; Wed, 11 Nov 2026 13:14:54 -0500 (EST)
+	id BB7B96B05C1; Wed, 11 Nov 2026 13:15:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DFA636B05BE
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:14:53 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 76AA580399
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:14:53 +0000 (UTC)
-X-FDA: 85423639266.12.F72B5AB
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A13496B05BF
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:15:03 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E7CA7403C8
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:15:02 +0000 (UTC)
+X-FDA: 85423639644.11.4A1D714
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 911D3160010
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:14:51 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SjvbQVSp;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0991340006
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:15:00 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mAqi/pv4";
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794420891;
+	s=arc-20220608; t=1794420901;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iBrqxDvAX0jm66MYxGueSU6Y9eUtRw26738r/ikyIJ4=;
-	b=BYY7RhyMHrnASPodUO5GQcH/z5QVxK+s5/uzCBTIHcGQ8IC+zToqHgs52vMxjohQ55KsMn
-	v2ahsOv9yMZmWbc4e7IN9TcUwfZgvG6NSMQZB6S1uKPKuybXx1TQ7yHUhxQO4npSDujF8L
-	AdmTfTyxMoAsi+ZQHFAp75XfOPv67qY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794420891;
-	b=0bNcjEK1/rNwyQUt0J2Oy4OyaLLOgHY+/Hi71pxr4luFjJ2GYiNS1nmYdMVUUiHjd1oM2Q
-	awNv4kPDMSmih/wzPoiSKmFrSncAn8sr3jE8VToHqX8HpTX9Xo+cRuQflB2aKeWMTUHaXh
-	6bi3v6vV4Gobk4YQ++X5lDs6JbEwZoI=
+	bh=Buk3PCdlUKSvrN/rLV6mnuKwPReLzCz01F1nyw9gMnE=;
+	b=QzskBzfMbPWhG2GVdauHCq7y2cR52Abod2eYTC7xuH7q4+OgMnjIx8LW8bgZC0XHYCWVw2
+	Ty6CVP4LCUQ70LeVeB9p64qxzCZuiRGLrmVs0CmgE7xDPnuu9GZeJAvmCvwNrlCC7BWA96
+	ChFC8m+e3XDXvsAWSoXp9+xu48jWPXM=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SjvbQVSp;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mAqi/pv4";
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794420901;
+	b=0eQTffsVtLUjTLA/IrIP0B63FeOBOzP1ylhmxz7ZydYGa+yAtc/uXzEMR9V/dT3s2jlgZH
+	uKoSg015g7WvTmAQZDznYPHkRp+g0IyaFBHewemoNX5hnnlUJ2uRIEc5miwAzW7zim0NmM
+	UzabM0wbkKjbalUN7owjtDAzLoBfFtM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E445442B9A;
-	Wed, 11 Nov 2026 18:14:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCFC01F00A06;
-	Wed, 11 Nov 2026 18:14:41 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4EB0042B9A;
+	Wed, 11 Nov 2026 18:15:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46AF11F00A07;
+	Wed, 11 Nov 2026 18:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794420890;
-	bh=iBrqxDvAX0jm66MYxGueSU6Y9eUtRw26738r/ikyIJ4=;
+	s=k20260515; t=1794420900;
+	bh=Buk3PCdlUKSvrN/rLV6mnuKwPReLzCz01F1nyw9gMnE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=SjvbQVSppMTg2svz/QJqu/NneUf/CM9ncBjbTwznaM/ia/FZG2x6VrAbIep9rXiOb
-	 9YdTerPAfZDGdMEqtMTQxWjesf/YknFJY9VFVarEG5R94zHAQ5EhvNw7KwlvHF32fK
-	 S/lZ+DxCTtd1c3W5mYdwSJhzS+h0PXqRlqD0U7WmBy74VpWmjtwjASpxP+SQbOPr3s
-	 16FeyHejGTbuucjHttyObG7cE4/tikgwSeF1Xc2YXO2h2KJIsMLucauyScuuBK1qxR
-	 nvxTWBwN+DjqMFRgzCAhRDTILzcMmr7OrRgMaT2Pve7K7/qOAl5asIIhdBgNdzVXwu
-	 9kURjg/DKSBGw==
+	b=mAqi/pv4v4Iopb7CiXqu2cDOEuZ0ArviQcECPk+lduBzPgLoWeozZ1fBgRqlh0Wr3
+	 9cT2tSNJOstlvhqtkHbi4OuiUFT9CKQWwe1+dOzvcOjsR+THcIH8JG+GlC/NZ1wjpt
+	 TPa9A8G/HZyD0IdR/MwzymJuCdDpoNunYGdeaq2pO8zG3mJ33r3WkEoaNrifY60Khh
+	 jvF3sPAaiqsS5SJgJYU2jQdfID7nMJiLqBriAFrbWOQ5fuLDTKYd5oJHo2k5jKQAjr
+	 vMIfcelKI2iCjeyul09CNd9l7vyc+Ja3PuxltmkMtbkpDvvOQaKIStx0g/H73U6OcR
+	 qT0CDECZKQozA==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Wed, 11 Nov 2026 18:13:18 +0000
-Subject: [PATCH 04/13] mm/migrate_device: allocate THP deferred split heads
+Date: Wed, 11 Nov 2026 18:13:19 +0000
+Subject: [PATCH 05/13] mm/migrate_device: don't collect a range twice
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261111-mason-migrate-et-al-fixes-v1-4-3d2454362e8d@kernel.org>
+Message-Id: <20261111-mason-migrate-et-al-fixes-v1-5-3d2454362e8d@kernel.org>
 References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
 In-Reply-To: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
 To: David Hildenbrand <david@kernel.org>, 
@@ -100,26 +100,26 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
  Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1849; i=ljs@kernel.org;
- h=from:subject:message-id; bh=ibMf4g8+XoIQ5HakdVfha6zsUSXLFsCy8+nehPr+V+0=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLK+bMieU3BEonX2kbI2rkn+W+ZnJUiu/7T6n8Wvmyrbl
- q+RubjoVEcpC4MYF4OsmCLL8y/i+4NEwuZ1XvB3g5nDygQyhIGLUwAmMn8HI8N18Z19Rcp9ndt6
- /NbOdXwU4Ht2nULe5OmXPmSaOzW18T5mZDjcFrl5b7baCYmE9k5jz5oJW5Sn9OTNz05XUblt+Or
- 4NjYA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2005; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=kqozfbS2qa3Y1PRYknIOHsgbbOevcTlvnNv/lqyBKgQ=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLK+bMhW/5h0cbeo9p9lTYXl0Va55ocYqntOGgrd7L59k
+ 1HZZfH8jlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAExkSTQjwxOmvrkm7Gs/Wezr
+ yL0QPGd5epJ12LNFdmrdU7q3LtuwaRsjw+c1LptN8o5a6mhy/HBOOhSxjzvYaEtxyH91680LFxz
+ cxgQA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Stat-Signature: o9u74i5hjxbz6a5owc87iscba5kxmbr4
+X-Rspamd-Server: rspam01
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: eem11mur86wu5fa6j7uqd1j9fkxeqfak
-X-Rspamd-Queue-Id: 911D3160010
-X-Rspam-User: 
-X-HE-Tag: 1794420891-65746
-X-HE-Meta: U2FsdGVkX19Ko8/ppAqE+tDfbJY9at3YRNxHdzJwPHQ2thV71JGi5WN8EA4KmtZsUCfF2YJsUMrw6wVDZbYdjXvYUhe2cn+v+RQrjByvUIu+j9ZUBiK18A27cFmlpfkT8xXD4YQ7FDTBQqFpLLw3Kd+LWDPQiAe9BY42DC1i2a7rESKhIjXaPGavpYpsdgcT+Flw56f/4mypAuuuUmZrfO943mgBUUh/wviuaBHwn2BTZXZfU9kjZZpZ9CnL+Rj8YLfFmzhAhmj6KVt+zCe2N6pxC+5Z9e/HwJOOTzqjpfVYN2+bxvrKqFFFul/Aqoivu/1g7+Rsj2kvU0hs5rtVaVnM/mQzjxikvCqgTqm/FHUkG4bTnia/ZUiRjBuC9VvvsRaxUyxH1Pu6K+e3Ln1rd5+DUm+TilcIOakSFdqLc6FVV7Xx5gQ1+2x2Cg556Veygs6rcFP7YfFY9slXD/xVfr1wB9/haKrmskCVOnFkWoEdudCvpZOAdtTDXjxUnamsYtJngfI3+sO8mC8ury0qHOUfMDV9zFF8WpxnvizZal6CbmX12Xj1Pr4hv3//0KBENZgKsBLUlhr8XJqHaOvf+ZZYpwEbT+xetNb/vdrdX0EzGwLhQwXJQQSnGCagprPU0lSX1Bq7qhDFNq2X3n+zi3ESzNrdk+Ch0C55YqhxcZy2OJFy9M342XORC805V8JNTK8v9QZiI2awc4g6HKUPZoFWVp522lIMqsQ/+6YfrnYZ/+F36iA6j50LOW6dGmsTa5kix4aAl7tTGZJ+RZFYMRIyu2+sLJz5eyD287fCLCNf0B2UwASYZhUoXfG4oriM4AkiDomMu/wYjnK9pMerzI7MkUJm0QI4QJoZk6K+/JX17gQkRyhCF4T1dKqobo7gtZcqeUasmr20S5I9OzfgmGmqgfLhWTaJtOI4eeUeHOHOBqBc72n1Rshtm1uUjD/WdcHDvtAbTf1OaKv+/Zg
- hE2yTPqy
- /gszhtF4JhmeSvB17W5rDaKLWyeFZzVSpb3IJbIx3PoAYlFbWjQAtCtVYmeZRmJZ2J+zf+A2+I3z+ZiYCTtXcBBqt+wQnCqghfDS7md2FgvrOXBt0Pyx73I17F88Pvqp5+gUGlX0e0XGyG0jA89Usce7kS4We9B2qTmH9lVuZrMVihic6W8HIxO93Xe/qke/9o83JEl8khYL6xe0NuiV0PTw8+kYzYI5zEAJKrIDh1LyRxvbg3l5c9pDiajhHJqhTAy2PNAlZH710TOefUfTp9T0y/MTmovw69+od3JSbXDAK+9ih/3SROXTF7Ruk7jo2KeL2IAuZfhO+LyU+65rpREHq7tcKKVcaG4U1ixe3mIePggnBUOC655Hk8ISzHH7U3gS4E6C+97j4Qq9ZFhg0koYDI3fRjNx5eBvkyAIz9mobJUc=
+X-Rspamd-Queue-Id: 0991340006
+X-HE-Tag: 1794420900-348799
+X-HE-Meta: U2FsdGVkX1+MUqkXTFFjmsIbQy7NcCKcfc1W53XllAJu/9vgiqcf45Zzs/Sf7/OJNsbFTT9NWo8lt2RDswJKRpQD/XPkGek+73Ul1FgSDME4xAWwqMDp1pUIHZ2ugHQz7Bg5JT2nIDCa1hJyM5HWw94KeDKjElGftZesnMKdJ7wrqz5fAIv3jqqdtEeTWvJKrxIqSwMqxcUk0Olrt5qOyL8uPihTCl5nZeC6xrqONOr1Sdg6Zq5/dXz420bAc9XEFgECyakirkkz9FaLAauQyYwpdbr5hdoQOwSJKiHr9oDurxElBpbpalgtfHZlBOhwar2IrnOVNlbZjS2pwOG6euvT6exEB4YWC3Fp9SzhNjqx8OjfJI77MndbScmq8Q4lZaO0PJaKfo6KWbmWZNuMet1Vh5iZHsqPNDR/dciO9+OyjNpH6o7CGcdtlVdigMEN/V1cH4hXLR3fbQ/25NEH7wND2E5uHUVMw5jllkUusDm8yMQcIcvwBkgS+fPdTmrap/lrWFIgAwn8vuPK5TuwAfWPZLX3Mqes4mDewtftljT4mKl7IlHgFQ0zFMF2aKQjziyX0H6bSsr7k2W8huhBX78FvsX4sU4alcElr4BomwOaA/M6iV92DO1/l7dSNxrbJ2S29c2t4N0/GdPCjydFTavTfasNYt8cZt5qa0WXOCJkUN6Ular7V6N9ymQrW8e4ErFKKYnq6JMbhiZiXd2CiQWjw7zD9hvBQzp54XPIUQQSoTqQUwAmfKufRy58praYkOREgGCe7hjMTFLpW6IqEwfhSjCfUeWAZ9LMMUOBQ2pZNxEQjmwLfCsAy9ZmxpVQr9qgVWETU2BhH17lJ3Na0Q9jbHWD1lY55LdafLmnCeDBiYzWiaA/kSC0BRbtoLTq4LuBI/xW6KKNM9Sa9nFPzFRTV//J4AXN/fLNLJsHkzOrPFe5tPvmWeGzbppsskpQ+6at5ccqNfHqtJ4/dYL
+ 7H8Zw2x5
+ ZX1qpmgfPX3j6dVkwt6kSotDlivEauBHaLlkabimYe2w48x1Y2jRysZURtuigjjkIb8lGTkdM5Hyr+7motFdLPWof65dNqC271qYmcaD1vhga9VHTkLbN4tUK9KKIiiVEzr36Jyc6JVC96l2UPVP2ikxBT74ZMwjz0d2Z6w1v553BVVAWAhpqWyguZRk1TX2t/qmwI8tPAxhDB4Xa7IRIdbqvLss7PTmKQtPtIgeXkTeiLo2lTXCwi0LSY8dEBf1k+TtPsKUEqtM4c1IaTzQYw7WuNTQ6px1gJDXVFfdk8SrcSDXZYTiLMs3GfZpQoJ2m1hxDg4oIhd+wcjsP8mdGbJcM5cHN9tJ8cX2IdhelOj7UpLU8Jhjd959UBDMSaGPbSZieeT5Iai3HHxD60w4++dRSz9A2LmYURtU9jlXNGruL/WM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,53 +130,57 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Josef Bacik <josef@toxicpanda.com>
 
-A THP that device migration maps into an empty PMD can end up on the wrong
-deferred split list when it is later queued for a deferred split.
+migrate_vma_collect_pmd() drops the page table lock to split a large folio
+which it finds in the middle of a page table, and then starts over at the
+"again" label. The entries for [start, addr) are in migrate->src[] and
+migrate->dst[] by then.
 
-This occurs if the memcg has no heads yet (resulting in a warning if
-CONFIG_DEBUG_VM is set), where deferred_split_folio() will then queue the
-folio on the parent's list.
+While the page table lock is dropped the page table can go away, in which
+case the restarted walk invokes migrate_vma_collect_huge_pmd(). However
+this is passed start rather than addr, so [start, addr) is collected a
+second time.
 
-Once a later THP fault in the same memcg allocates the heads,
-__folio_unqueue_deferred_split() and the split path resolve folio_memcg()
-to the memcg's own, now existing, list and take its lock.  They then
-list_del_init() a folio that is linked on the parent's list, racing with
-anything holding the parent's lock, and both lists' nr_items counts go
-wrong.
+This can result in migrate->npages exceeding the number of pages the
+caller asked for, and therefore in writes past the end of the
+migrate->src[] and migrate->dst[] arrays.
 
-Resolve the issue by calling folio_memcg_alloc_deferred() after the charge
-in migrate_vma_insert_huge_pmd_page() and falling back like a failed charge
-if that fails, as __do_huge_pmd_anonymous_page() does.
+Fix this by only handing over what has not yet been collected,
+page-by-page, and flush the TLB for those entries which have been
+previously replaced, similar to the other returns in the function.
 
-This was originally discovered by code inspection.
-
-Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
+Fixes: 022a12deda53 ("mm/migrate_device: handle partially mapped folios during collection")
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-[ ljs: tweak commit message, remove unnecessary comment ]
+[ ljs: cleanup commit message ]
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- mm/migrate_device.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ mm/migrate_device.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 9e19fadfa65c..9e5dab8e1b77 100644
+index 9e5dab8e1b77..28ed706109da 100644
 --- a/mm/migrate_device.c
 +++ b/mm/migrate_device.c
-@@ -833,6 +833,13 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
- 		goto abort;
+@@ -257,13 +257,17 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+ 	pte_t *ptep;
+ 
+ again:
++	/* [start, addr) is collected if we get here after splitting a folio */
+ 	if (pmd_trans_huge(*pmdp) || !pmd_present(*pmdp)) {
+-		int ret = migrate_vma_collect_huge_pmd(pmdp, start, end, walk, fault_folio);
++		int ret = migrate_vma_collect_huge_pmd(pmdp, addr, end, walk, fault_folio);
+ 
+ 		if (ret == -EAGAIN)
+ 			goto again;
+-		if (ret == 0)
++		if (ret == 0) {
++			if (unmapped)
++				flush_tlb_range(walk->vma, start, end);
+ 			return 0;
++		}
  	}
  
-+	if (folio_memcg_alloc_deferred(folio)) {
-+		count_vm_event(THP_FAULT_FALLBACK);
-+		count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_FALLBACK);
-+		ret = -ENOMEM;
-+		goto abort;
-+	}
-+
- 	__folio_mark_uptodate(folio);
- 
- 	pgtable = pte_alloc_one(vma->vm_mm);
+ 	ptep = pte_offset_map_lock(mm, pmdp, start, &ptl);
 
 -- 
 2.56.0
