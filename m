@@ -1,137 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC7BE606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 09:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A67E606A332
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 09:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lGrGSJZM
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=cmZW0raJ
 Received: by kanga.kvack.org (Postfix)
-	id 866596B05BE; Wed, 11 Nov 2026 04:38:56 -0500 (EST)
+	id 5405D6B05E1; Wed, 11 Nov 2026 04:47:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8160C6B05C1; Wed, 11 Nov 2026 04:38:56 -0500 (EST)
+	id 517FE6B05E4; Wed, 11 Nov 2026 04:47:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72B7D6B05E2; Wed, 11 Nov 2026 04:38:56 -0500 (EST)
+	id 42D516B05E5; Wed, 11 Nov 2026 04:47:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F0146B05BE
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:38:56 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D8AD21A022F
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:38:55 +0000 (UTC)
-X-FDA: 85422339030.19.3A9B37D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1AB03180006
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:38:53 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lGrGSJZM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2566C6B05E1
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:47:09 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A6248C026C
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:47:08 +0000 (UTC)
+X-FDA: 85422359736.22.BB30E2F
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E9882A0009
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:47:06 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=cmZW0raJ;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf15.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794389934;
+	s=arc-20220608; t=1794390427;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4fY7y3DvJR+ThhW1hxlai7deN/WqRZ83gAUMd110UE4=;
-	b=o7+WlhSD0OR2nMCiBDPBZWCH468UDejKYjBhuy2lRi7ZWNBoCaiuXyjbHOnPQT5fW3BNp6
-	zw+HzJyYf6VIrUUJRIFkrbXtSWv/rlNF64wHBQyfQYgQmpUjeDNqtHkFrmHCBP/HApyKZ+
-	YVBlB1X145c25VudoNsmpF9YdrpZ0yg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794389934;
-	b=Y5JuVomGgizCut//OM8iYhcd1f4EzG/IhEiqLyHf0l+bkzH8l/V4tYPEJ3EzLk1RLSxwBi
-	3K2btBb0YGUUvbpYU//JsdBTR01pcXDwxP/2eZ50NJggUUv+KKzhRVC8bITv+FJSAba9r6
-	MooIKmmik0pZfqEiylldDyla2tn+uzU=
+	bh=g4FJ8o8UQUtyD0eGI0sUCpicqPvdI4Vdc4LMM0bmn0w=;
+	b=kZ2k98wmU5ZXA3HbY+zsIhZyIEKU312wn7B5CYeHm9Ml5vplxD9dAY9uly1daTmG6hWQdM
+	GM1IM+p5asC5vvNVvFsvMZmRRgMpkWJLKamIgps4mFOZU91apyfFI3IM/Wf+b9aPL9BJb2
+	JsWbqCEM2khqkZn/ORmK7IT8+H03A9A=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lGrGSJZM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B42F3611A1;
-	Wed, 11 Nov 2026 09:38:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33C81F00A05;
-	Wed, 11 Nov 2026 09:38:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794389933;
-	bh=4fY7y3DvJR+ThhW1hxlai7deN/WqRZ83gAUMd110UE4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=lGrGSJZM6doF9c4EAvbkk9cqMFO7Gn7ruLcFXqhlf4encNqTGsoqGX9buFQ0zRlpw
-	 NnXtS2mxNbFa7hkwUwejUlJlZD5jjvirnlbAlBnX/ZISdFXT5eOtBruYRdFbD3JAN6
-	 EcnSuekavKbwk6fW9eWdP114V4TdTQWBrfn9hW+dSDJwD2jCJNSERk+igooNZ2x/JE
-	 PejkO/XZgVXQkrbGN2bxVkDWFlYoUsi1m1aBJ7s715aF1hh5ccGLlg3UQIx616sgGZ
-	 U8W0nU7rElxqtvLPd6FFGG7DGeZzdcduNpYe5Q1Wh/5AW+f9LrSABNF5wJCjYlYyrY
-	 u3di+tCaoeRTg==
-Message-ID: <0069b6c6-a2d4-4a3b-b723-71c96509a3f2@kernel.org>
-Date: Wed, 11 Nov 2026 10:38:50 +0100
+	imf15.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=cmZW0raJ;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf15.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794390427;
+	b=uO9N6UgXuZXTWxjSpRXW4bT1HarA7xXgAlWA3o5rNyRwNSzzNC2GiW5CFoNkckagbUkbnc
+	hK3lUvYas304e3mY1tr8zWBsxejM8kYk+OJPj2y9Lxb9q6Dh8sAB09A7nZpd6yn4nRLtHQ
+	r3POQy/lBaA05zj6W08FnCDVJIE1Z5E=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=g4FJ8o8UQUtyD0eGI0sUCpicqPvdI4Vdc4LMM0bmn0w=; b=cmZW0raJpZImC504fK0B0kMd2h
+	XJQXfLj15TrbtRxuoXIll7+dYj88ZVAl2AayT9vhDBlAQ57+Eho/cFEk5It94wIbKS4EH4G+cdutI
+	0K9jgabrgunrLX95HA3KOWeYRz+hLh5iGe5EyD3w5xx8w9MzCtlstOcNUcfrAtIPd3RxiWEjnELaD
+	hbo41pU2e/eygmvhOngKp7971UVKKEY71/mIvuWf0WfaOur34IyUdpGFowB9/oVJFRm81ZxsZDxLw
+	5M54Kif6OKPedXxyOCO9YpK4/4uqCIxZE2p81NHj3kV9mf9cnMGZSmbBCsLntHmPvgWT1OTOymjci
+	CwvzesXA==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xR4up-00D5nW-2D;
+	Wed, 11 Nov 2026 09:46:51 +0000
+Date: Wed, 11 Nov 2026 01:46:43 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>, 
+	Chris Mason <mason@kernel.org>, Josef Bacik <josef@toxicpanda.com>, 
+	Christoph Hellwig <hch@lst.de>, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, 
+	driver-core@lists.linux.dev, linux-mm@kvack.org, bpf@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, apparmor@lists.ubuntu.com, 
+	linux-nfs@vger.kernel.org, netdev@vger.kernel.org, fuse-devel@lists.linux.dev, 
+	linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org, ocfs2-devel@lists.linux.dev, 
+	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, 
+	Amir Goldstein <amir73il@gmail.com>, linux-erofs@lists.ozlabs.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH RFC 16/41] configfs: use fc_init_pseudo()
+Message-ID: <avQ5dv0747H-XKmD@gmail.com>
+References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
+ <20261110-work-loop-pseudo-v1-16-4c998976c6c7@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] mm: convert WARN_ON_ONCE()'s to VM_WARN_ON_ONCE() in
- VMA lock code
-Content-Language: en-US
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett"
- <liam@infradead.org>, Shakeel Butt <shakeel.butt@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261110-tame-vma-asserts-v1-0-be293ff499a7@kernel.org>
- <20261110-tame-vma-asserts-v1-3-be293ff499a7@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
- KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
- 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
- 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
- tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
- Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
- 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
- LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
- 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
- BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSNWbGFzdGltaWwg
- QmFia2EgPHZiYWJrYUBrZXJuZWwub3JnPsLBsAQTAQoAWhYhBKlA1DSZLC6OmRA9UCJPp+fM
- gqZkBQJqFFy6GxSAAAAAAAQADm1hbnUyLDIuNSsxLjEyLDIsMgIbAwUJGtCBUAULCQgHAwUV
- CgkICwUWAgMBAAIeBQIXgAAKCRAiT6fnzIKmZJIUEADFx/tREzUImHrEwVHeSvDFmA7tJysI
- UVrlvrM09E7GIuzphzv7jYmo8n3ANpCczLEVr4G0syYQdTigaZgv3+FQDIIzhKih1IHhu1Ei
- XHlywNWKnQxxQEUNi5Mwx43wQz5XVw9F1A7gtKBKNtfogO511hAbrzagrYajyQacEJ/+sfhZ
- 9Da8ltHIXD8pcYaHUfQgEusCgmEd9+KrUwrTbckFKmYq5chuE6yJ4J0EmWknL096jIE6CnzF
- FRslQ3B1UKDjxVsm1ZHfir5NeWszLkTvGFsddFaWTgh8UycESG6VQzKXjjewXu2pG7YQYRpj
- QKm1W5X2TkwWkXRBZTmfmbhxIUMh3+zf5wQ463rSmDN/8v81tdqBtAW6rH/kzg1GvkaTHXn0
- 507yEHFzBksk2viAuIxxr7km8+/KARYLIdGtx30EG8cKzAUZOK6WqxtNCsXUJNrVE8CWrCaD
- icoNu7Fs1c5hmPHdSTnU48ce67449DdnO4neLSNhRiGlMHJgfJUmgrxu/hcYeOZ3haWmEQ2w
- uW1Mh01OHi8QZHCEyAbABrPs9GUgccc/4eYXX9hIgxfSkYzn8f+8NuIFPWl/0uTvjgqU29FQ
- SbzOLxHq9439Ox40G5mS5eZXRGxITYR+6TXvRGI6P/264jvflnr/pDGUttaikU+0W+1uxgKH
- cmYbEc7ATQRbGTU1AQgAn0H6UrFiWcovkh6EXVcl+SeqyO6JHOPm+e9Wu0Vw+VIUvXZVUVVQ
- La1PQDUi6j00ChlcR66g9/V0sPIcSutacPKfdKYOBvzd4rlhL8rfrdEsQw5ApZxrA8kYZVMh
- FmBRKAa6wos25moTlMKpCWzTH84+WO5+ziCTsTUZASAToz3RdunTD+vQcHj0GqNTPAHK63sf
- bAB2I0BslZkXkY1RLb/YhuA6E7JyEd2pilZOrIuBGl/5q2qSakgnAVFWFBR/DO27JuAksYnq
- +aH8vI0xGvwn75KqSk4UzAkDzWSmO4ZHuahKtQgZNsMYV+PGayRBX9b9zbldzopoLBdqHc4n
- jQARAQABwsF8BBgBCgAmAhsMFiEEqUDUNJksLo6ZED1QIk+n58yCpmQFAmfIHFQFCRYU6J8A
- CgkQIk+n58yCpmS2PA//bqN1LfcotmArgElsa+0EGZSQlYgK48pm8WAeTXTngudP9IJ4SuKY
- HR5RNjHcBeqN+Me0zxRqYzRb8nGanHEkDyf4Im8DQM8d6vbyU+FcPmG4skud4kgS1zMHnlVd
- SXfSIwKC/hKgdHG8aBV7545Lz9X6Iohea+94wneD0aw/hqF+QWewGZhWJriWAZtvEkzNjQOi
- 4U9F/trLten/x7bpphDSnDMKJtITbtzATT1Dq7o7VpIUK1nCTQALMuMjKCdi8OdU/+V+R3O4
- 0PXWvX8qrvqYapVbZ+9KqT74FsuB0Ya9uXwgBF2Q6cRuETZk5vqaqKxzqoQZCO8AOz/58j6O
- 2RHNy/mZEN+7tJ5Tsq42zVJ4jxsT8b9YplavCMsnBgDeRWhcbYhCyttoL7nYISyWg4kQYZ/P
- wIV3OuNv2f8iKYsxNsRuClOAF82+gvqOy1/1pprFjy8uo2pkoOrb63aOP3vO5VHnRKgra6dq
- NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
- OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
- jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20261110-tame-vma-asserts-v1-3-be293ff499a7@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: uzqwbn8k48uhnc5djno1czm7qjix74qc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261110-work-loop-pseudo-v1-16-4c998976c6c7@kernel.org>
+X-Debian-User: leitao
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E9882A0009
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1AB03180006
-X-HE-Tag: 1794389933-761147
-X-HE-Meta: U2FsdGVkX1+ZUA1XHW+givgLPj9lj8DrvQlgw8B0BT3TDrr/i7l4n6giWvfMh3s5HtjSEjF0CtYMb9ai8H+GJew68xazCdFtQmfdKwCLWCPHlGYRdwImNr1VCPJrZDoOfotY8vuE5TrLpRVzyw0pLY2c3ICRvT9vfuOEAVLmkxKrvuBFQCgKwp3t9gK/mh1XqFzBmns4P3XmVcl1oP76leTnoNbJSwVT6auieemubGcBMb8nhfiSYFhlgzVXnH87bJvMwxNqiKwsMuW17LBcTlAsF5rOXIEuP6gioRlgTRxV185syuxPJ5HAOBC+fbhk0SXS0wqgg5F+56y+O1gcp8CfwYZhQiEBbCLvMUZjW/4EGsjHh0yPxxzJ30n1891j7E4WGDxd+ScoTFiLIXb2RXPFq6xeYQJ8pY4D8tgUeeCfG/93+nfjD4YzDweczRtTnFSWHrAq20hQRH0RbcbR17rMbTn1gPGOl6bmGqWEXIITzBCyBAl3gx0+MbmYrYDti+I4IrM6LbGn8kKCc0vXR7k8B3D2dWRcLDtJkJvUYxGfiWULJnVhHULqc/6JjCEevQYBa/+brITfobm4kHzRug6bgNWa6g4yP9p1cag9uJBEjjNN1OTHhg30dS0DYF3R1CAGMsmOjMqe6jJJqpo/fHAuprCpTcfkTUqRZkIBxMq8CmWVGdM74Su1cFQpjBi9qJ+SX3KJGRIcuVv72OPhYAPXcTR5mEyzlfAXqcXSo4rRTUISbTzddfW4GbUHslrpEhu8/Yhb7lpljTtBySVGfKlB92Qo6yurGglzygug0pSIr//uWkJaJndD8ycEAdqs5iqSerIKnf58fKeULSDFimaRPP7UyvyW2q0bR1w58qp4CE50T4md2LUD3aJzro3v58D3mqJrLwDUW4CcxWV+Ijs0hUoT0MLr9HFa/dKNvAzuKqzMasx58z/JBi0m6J2pPBT4kSSde0lIa/g6TVm
- EWCsErzv
- u1KF3ZtZouudgtAw2C2M/7RwuTDiHa71mMFq8QoW2YiIvE+EIOH1unZGQJH8ERiWkhEHhWoaUcaBE01f/XEbC1sZnb/qlDbQa5x7/sDNHqoakVkgM2Fw9vkoYEDPYpzjdkla3vWofegpQnK3kTZTmE8RlHKG6G4XVLFZCOebmc+dOUocMXdlmjw3u3WdKI1LRt4mGtTksTa1p7+uiAHA5Hh96h1O2Q9GrCY69b2jj3pYIYBe7fLNq2NVbQB0ii7hwPbJeVvXmJxk22Ti5wfOAGrgrUaEHZvl4I4zah5fKGcOv884YqsJ8e2x6GrNPd0KPSSEQjhRZOwQjF2o=
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: pcartcc13ao17nwrou7g6wschda5fu1b
+X-HE-Tag: 1794390426-109619
+X-HE-Meta: U2FsdGVkX192Di+y7pUCHBBTVPy2wUPpPXiyNBwZ6pkymjL2kViY37wW7SpaR18L5xZBOB5Cy0jA+nTXPCBWqhvV2z3xhK8/oeomiZPVCz3UR11KMpQuKwUtq4KrmOd7YtWjLPWqpKEh6dGUHVJWdaqA2gCe77AOPwtrkELMpsIJB/82KSjhhgJLIah0zuIJbaIaL1ZM9ScVgzdVpxySzjuCkt0kP0jyie10a7xUTIGwmkJFba7jLXbM79sOU9AHJf0VRkPJMqhxLjVf0ncP70+YaOW4rtSyGGSnUlGcSV5oa5BfUGVu+q3BDaLOZ0E/oe/GWzfPsSAL5R1fobwrda4K3bTb/KG1TD94qlkpyYfpMyIbn408TLDaspUk4ks08gV1du6n2ymav32ASgvbX3wu7yqkOWI/23IZ+CDGmAEc5QrrtRnyJLELzfUshuV2TIDTCFCdDG0v63SBK1DLQpvcVpFQo+e/e/h0zFj0VaERrV/31TZkeX8T4Ch6F5o+vmG1+Ngd7KgQjuvJyA7haIyOxbDuSM/3IqdTGx+gHYYBjC4KKOR039pTIHUvQDLWDibtDGpubcwX2my+5cca9XoHv6piM7bSnt1d+kGIDgiXRKJQJo+Mh53j8QqQcxOlvf7+Fgu7dpZ5UH3QClRp5frHjcm9bJ+484HRvTPEwqRGnFRXS++rtQ3KHf4rG2IMNWEA3y6wclFq/xa69GIgT6cSoRvrTnWHLp0M+ERLa18DMuU9L653tffjh/NBAn3O6I0ts0yoP3p+Xm0EEz8WMN0zM+2EZa560bokwrkaUqfgxb11vdzK5zDqUQ1PBB2y2t2SlSOVigC2Feaag2FcU8PZlYN2oAF6kS4xTVtVsN7Ci8In2BNj3hlFYwJSqnPM2TvOUwbN75AzsdsR+4RSBiPSiSkZS7zf0Xc9vA9aquXalXPBzfRDBYmdw5gVR9ssqPqnw0/xPOkDT2kSF7x
+ 8clxh3La
+ dGeILQ82ZyeS1gHzpOw9PslzWCYXluwciu4KSD4b+K6pMHm3+lJVyBSIpmg+QTGzLCjdNM52BcT2z/ra6biDOBcnKnNbqXKbAb3ypcZJRMtKEOsD+j5gz3jWkf3RVWJbJTccyAh2f0asn8PfsDdmoayGgUukPFC4qXfD8VhjJ4jaCkkrA2LC9A6OqtFpaPEAKJjDJCO3GwL6mSBgsYSQ8AQLTdENiY4nEgkKGgpaEMk2+jDpFvvlXmdn0gbfrl5kYgUR98dHGee1mlTaGqHA1/Sm+89d67HjYOzjFLeh38JvNyOKyR92nk8o8GmB7iJgHgk5Mj4t0J/Ae2a8tihKLm+ttYi8x7Smn6U9D
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,54 +105,12 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/10/26 17:57, Lorenzo Stoakes (ARM) wrote:
-> Now that VMA assertions are predicated on CONFIG_DEBUG_VM, it makes sense
-> to convert existing unconditional WARN_ON_ONCE()'s in VMA lock code to
-> VM_WARN_ON_ONCE()'s.
+On Tue, Nov 10, 2026 at 10:14:32AM +0100, Christian Brauner wrote:
+> Initialize configfs as a pseudo filesystem. This raises SB_I_PSEUDO and
+> also SB_I_NOEXEC and SB_I_NODEV. configfs never holds executables or
+> device nodes.
 > 
-> These are asserting programmatic invariants which are in most other cases
-> asserted using VM_WARN_ON_ONCE(), and there is simply no need for these to
-> be unconditionally checked, so no longer do so.
-> 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
-> ---
->  mm/mmap_lock.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/mmap_lock.c b/mm/mmap_lock.c
-> index 834bbf86e004..073c5125b424 100644
-> --- a/mm/mmap_lock.c
-> +++ b/mm/mmap_lock.c
-> @@ -146,7 +146,7 @@ int __vma_start_write(struct vm_area_struct *vma, int state)
->  
->  	err = __vma_start_exclude_readers(&ves);
->  	if (err) {
-> -		WARN_ON_ONCE(ves.detached);
-> +		VM_WARN_ON_ONCE(ves.detached);
->  		return err;
->  	}
->  
-> @@ -161,7 +161,7 @@ int __vma_start_write(struct vm_area_struct *vma, int state)
->  	if (ves.exclusive) {
->  		__vma_end_exclude_readers(&ves);
->  		/* VMA should remain attached. */
-> -		WARN_ON_ONCE(ves.detached);
-> +		VM_WARN_ON_ONCE(ves.detached);
->  	}
->  
->  	return 0;
-> @@ -193,7 +193,7 @@ void __vma_exclude_readers_for_detach(struct vm_area_struct *vma)
->  		__vma_end_exclude_readers(&ves);
->  	}
->  	/* If an error arose but we were detached anyway, we don't care. */
-> -	WARN_ON_ONCE(!ves.detached);
-> +	VM_WARN_ON_ONCE(!ves.detached);
->  }
->  
->  /* Do the VMA, mm seqcounts indicate the VMA is write locked? */
-> 
-
+Acked-by: Breno Leitao <leitao@debian.org>
 
