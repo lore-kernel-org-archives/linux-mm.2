@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915F0606A8A3
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91439606A333
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=O7UvWw6D
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ol4gTM4U
 Received: by kanga.kvack.org (Postfix)
-	id 1CD426B05CB; Wed, 11 Nov 2026 06:39:22 -0500 (EST)
+	id D177E6B05CC; Wed, 11 Nov 2026 06:39:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17ECF6B05CC; Wed, 11 Nov 2026 06:39:22 -0500 (EST)
+	id CC81C6B05CE; Wed, 11 Nov 2026 06:39:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F39356B05CE; Wed, 11 Nov 2026 06:39:21 -0500 (EST)
+	id B90326B05CF; Wed, 11 Nov 2026 06:39:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D24476B05CB
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:39:21 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5AC23A7B26
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:39:21 +0000 (UTC)
-X-FDA: 85422642522.20.5FD66EB
-Received: from mta0.migadu.com (out-149.mta0.migadu.com [91.218.175.149])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 27035140002
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:39:18 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=O7UvWw6D;
-	spf=pass (imf23.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.149 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 95BBC6B05CC
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:39:22 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3484F80238
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:39:22 +0000 (UTC)
+X-FDA: 85422642564.05.4FEB9AB
+Received: from mta0.migadu.com (out-154.mta0.migadu.com [91.218.175.154])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 1DC1BC0003
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:39:19 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ol4gTM4U;
+	spf=pass (imf10.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.154 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794397160;
+	b=hbABdDWOsfF7rC+dq/K+iChn3HbTA8VUupzT3auefooqecmakaDB18cJVOa665UX1mM6Jy
+	q5I0mmdkHxJPdN8xunBkbIRlV7qJyMnk6Bm/azR2rMUUwxu+IsNbIsjolm9AW8MXzbVZoK
+	jSgx1VLHXtM0xD0fcX6H8HZwk/cXDtQ=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ol4gTM4U;
+	spf=pass (imf10.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.154 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794397159;
+	s=arc-20220608; t=1794397160;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JsSfYSFniRGmuPRfq48u5DDdTpeJF4QuAl3fe5dik5M=;
-	b=ffzgcG0m1mzJxyNBF1dgDSFZpOkmZw02qn/xm2YYY35tRTcI6XPhrQZ+qqUGaz1d++qlnG
-	SwG++8QXAbQdLBylWV89p/iHcoa1q8ZCFrezaMl8nbNXAmUmtC93I2LF/h+bLPtJo5Jlas
-	+L5leSxB960R1c4iw5FXSy7GGRxEhoA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794397159;
-	b=pGE5uOTEX20+Z1HnPIHIdrlSjkYzUYbSIFg2ta7+KGeo2rU3kK1zjy2iY6Iz2vKC5hSPiw
-	f8e/7Q3v3FE/JhyviIEfjr1ro7Cm1Km52BZdnb1sH0U6s3MFmGlonuFSn2esSkl8T7evp7
-	Hf1UijxypAd9sslgJNjn0nEcMbZHCCc=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=O7UvWw6D;
-	spf=pass (imf23.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.149 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=2saoVbYFwvaTsDZ1OYoBWs5gUVifzn045/gtvbvuIH4=;
+	b=DrVLnSZo7Bo3xaEwpBzpm8fjtkKOepOEEUl9MGflRUMmaKtspTzIGc6u2SB+ry9Z8Q0ri0
+	+T6MpdDQRu+qoYhitwuHlWV1LDiLz5Zi2uMFnE3RXVqAtOEU44MgVf8bf+7w8sZmhoHx+g
+	brvl9EK7TGdrgQfEfJ/LkE8XE9fo7w0=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=zdZjBwRCrc/bJJQOamLttRr417Z2hw8mLNGL8JIUru8=;
+DKIM-Signature: a=rsa-sha256; bh=RMq5jEADKeGNruhLoquiDuSfixBjLOzms6+A0cUPnr4=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794397156; v=1; x=1795001956;
- b=O7UvWw6DTIle1OGgNxQFMYG7hepijbTb6ERfRfSS5opxNxPUNoALMR57ZqMwxeWPXjU/2TcL
- d5lHg8gMznxqBQ7sVYZ5wcrU9YEz5a7c5OtjzW3+aKxDYzlHL0TfyA1MmkEND2mSznUtlVZrvne
- 8gKn8dvxGTeZ3CBePG5C4EMs=
+ t=1794397158; v=1; x=1795001958;
+ b=ol4gTM4U5KHxFLvbS+cFMtU47Q7/IWQU1DlbzZnCaIGuqvVwK8Gm6MEkpVq4G7ECizDEl9E3
+ uqh1sQmp0WJI5PGBncqlTXnpqiUpo+twikOuRi1Oi/DbxH7fR16Pyb9NWc8P1ZJinvi/KAEdaFq
+ TeNsUe9L0cjn8h0t+pXt6vpw=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 780683f44d9afa50;
-	Wed, 11 Nov 2026 11:39:15 +0000
-X-Mizu-Trace-ID: 780683f44d9afa50
+Received: by mta10.migadu.com with ESMTPS id 2797f348b581f3be;
+	Wed, 11 Nov 2026 11:39:18 +0000
+X-Mizu-Trace-ID: 2797f348b581f3be
 X-Migadu-Flow: FLOW_OUT
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -92,9 +92,9 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	lance.yang@linux.dev
 Cc: Usama Arif <usama.arif@linux.dev>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/3] mm: don't PTE-batch a swap-in over a hardware-poisoned subpage
-Date: Wed, 11 Nov 2026 03:38:29 -0800
-Message-ID: <20261111113904.650722-2-usama.arif@linux.dev>
+Subject: [PATCH 2/3] fs/proc/task_mmu: don't read young/dirty from a non-present PMD in smaps
+Date: Wed, 11 Nov 2026 03:38:30 -0800
+Message-ID: <20261111113904.650722-3-usama.arif@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261111113904.650722-1-usama.arif@linux.dev>
 References: <20261111113904.650722-1-usama.arif@linux.dev>
@@ -105,14 +105,14 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: ba13rzhn588d37k9pop8pum9xsq19cgj
-X-Rspamd-Queue-Id: 27035140002
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1DC1BC0003
+X-Stat-Signature: s4y3co75juq5ebfafhuopumi98whq3np
 X-Rspam-User: 
-X-HE-Tag: 1794397158-855475
-X-HE-Meta: U2FsdGVkX1+D1gAiHQ51taXkjMgQ0+f8bbDqmTTiQduzPO5KUi6OtowXpowAeHmQSfOxehLp8lMQiGlj6qa2LTI0FY6HTL+p6szQhxrcP1k067vFEI2Xvg2ikUfg2kgRoDvU7d3iLJDvPwkdukr1gbJlSBel3qfYQnL/izeoz0Pc0x67YAjLjDf+ZZDwoJq6JcgcI8FN+ajmcQG5a4d7N+Hsh/nuDtDUmhKoOGV9KmELAPCves4ZIpISlDSdJKj71aT2FNfuqg5HGQT6siiZcxvk6mnyfPFJqUxU3sU3WN0SqyJI95mq38/VlSE4tEKHvHbMPOIoX63vOZgGuc9ga/G+/ic/unOFU4FSJFeNHCjKxo1pUfYNCjuwoz6xd9GMuMl747eBJWGKStFwlGz3OTYqmLoD2GgzpXTC6Us4K8DM0fxuQw6QLttPaMh/s+rg18z3cWSBPmFzkjS6fcvYnZH8HpjCQP1Zor4NDhYZksqrM9TU0OMJOgG1fJmCS1iqEuObqLd2u7vbtlpYYBiawVWNlshGwjwA8frfrq8D7kMHyrsp/mQ0++50o6oez8xSz6KGW2tlzIanHopUq7sEprNIw14I+cijVr8J9H+VW4Y5xUPxi9xdneKYEaCe3HybKTjOCoXIIsj9/Xazayb/a/exgbXBrk80xNzrJhUd3FNG1/qWu83bICp6/xgmwLfT2o0k+M3LVXoDUVxDrG+/Sx7dvPZTX+jZYdar37CMuyzi2Pz6m4NHawxuyJHDRKmpjt8WQUmBeWYi8TnjECPgl9q/5ZA7ASggOl6TwiVd37jnxPVd09wp4NUjqHkXndxZUc7r+UkNdOyDnXjobfzutxIEBEMps3OaDEX+JwV/j+C8lA4lCWZaTpAMqJu8YCPiNhJd5KPw0F6/GknFz/ytxsN59+a+51pbkjzC/1fpxi10A8vYdTo4EbnzF0msxFu5zCm6qaxopckAs6H++qh
- 5T8g/Cd7
- MDL7F5WODKMlkacjTh5P7E2xsMYVHOQTMBHE1qRlC2qBkOgixDktZzXG4j10ytIYWuEj1cbmT4/NuaOLvpR/0nUpfMleufERmkz7vplwiHg1aWHqK6gO+FcnFxyoKEcmaxdeqieKx++vHC+alKFtU6JXX8NOKlg+F8vzstcIsB+yfSh242EaV64FuEVlXH1aJZSWXdJkCYEaSdglqvNhoFsSWOowpaSC7IK0o1J3edo5PujBQV/fDWtDIMr9/4mfVcuhV0CPn5bVtzrI5FNES8vJWH1zWzNdMyYpdG/NL8qZ+wHfpABD3oy3rs2vdoH/GuMCMLzG4LLgebPk=
+X-HE-Tag: 1794397159-716458
+X-HE-Meta: U2FsdGVkX1/AzSbTJ8p1kUSwYx7HOue3Awo/obw76qlYyGjT3jzoNPDQt349z1wAtwyn1mkP6HH4F7J23U5YHHSRlDzempU5Z7ytSEkmG1MA9bJMDcFuGeWWah+q/yOXgsFkYSpMwh2fosDE17qTmoD+xXnmxI/d15ewcl/V6UMMtRjSXcjt06PT+tmDSzFN082cEAs19ER8XU3BBRAQBj8Z/YoDJBD4/QxvsU0DhcwDS3Q8YJpLuQapQmsouIKJYkvQ8bC/eAR5ZPLO4S5ccJ9iGI4Ml0yDDopDwMstDJXKFGPnE3k+1bg/abeFNx4pS/83WhW9K87Ud61oy9ZB18AETHW5HCehtw+Vk6rYtg9LtxlIYGohqgXBr0Oq6IHlHPcwmGYJYHmPgfAvWY4I+lW/iYiO62mtU7arI/3rYnSF6lduCDM5gudkSdItjDC8z+JlClZVLyes4jvcOAiQLeU9JiCqUQuuUVYGJ4Tfuo3UKiyQ7+Bn+jZGjYXd74y7FIs9k00GDe+aufRMidezvakVVlsk/BHhl+jzqxJEsgkc7m4+JGWmUkYNjTXHDnv99hZO6MMgrPhGcL4BvfwdS9ufC2hEvTfSvkG2k3d71B98/2iJc+ll6l2GHENOG2g8YgTTIBBxyngu4Tsxo7i3jyPtJl9FjewIZL+/0qZaJ6qizKqHt2/BmSp8o9bNZGPC6x8KLPZC+L+/GTq4mepzOVWDa92JwywOaZCoBkR24ntYTMeqtlqjEvQCwd6dVVLVufc9ZphM9L9HQ1QaXRZWi0IDSqO6VMqh5AcvEKMB4RGTKwY96/df0fQcI2QJ1AuHD4AQArPemx1SDRk7mEgq0xkSrAfHbfo0b+eLXlVTe6I004LjcDIBHaEAQJJI25rHprEYFR8vvFRdI9tGv3yXcYedI4pLCA4xaj/WQ52l+62j1+IhD68vAMiFQn/niaX+YVU9WmRrsJ2ob/RZoUu
+ mFbbGKoo
+ e6Hx+f/qYElUiC2mH3TmpS0hmzEL/8Smk8fmv+jpGMncs1vPLQ10/lp4xvXtldz8+VNFEhJ9Tnzg/+6UY/eOwiJxNBD1zPrQqb8KQeYVPPpqLWQXegZqLY8Tswhc/dLchnBUYUEFZgU203emaRrLQ6NdEjdlHJtOM2gyOAJ9z8t5euS6nvkEVwXB2sfPSu+VhdJEUsHhr+mbd3tc9bwKjUf708mSiz598aPv1sDBmj1xki9czYkjXspTN2dTH/fh8Tle/97fp97NlVn1wqW6pCjlXgQSOmzJQ6fGszhnNB0FBuYDzCr7P7MhQ8o3twLWQWLRo/6MbI+WrrZy+GP6mxA0qy4hj0JN0tzNQ4kmVUG6IjwA6oiwubQLzWQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,70 +121,58 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-do_swap_page() checks PageHWPoison() on the faulting page, but the
-large-folio batching path then maps the rest of the folio without looking
-at the other subpages. A poisoned subpage that is not the one being
-faulted gets mapped anyway, and the fault that would have reported it
-never happens.
+smaps_pmd_entry() passes pmd_young(*pmd) and pmd_dirty(*pmd) to
+smaps_account() for every PMD, including migration and device-private
+entries, where those bits hold part of the swap offset rather than
+accessed/dirty state. smaps_pte_entry() only reads them when the entry
+is present.
 
-Skip batching for such a folio and let each page take its own fault,
-where the existing check catches it.
+On x86_64 the offset is stored inverted across bits 9-58, which overlap
+_PAGE_SAVED_DIRTY, so pmd_dirty() returns garbage: a clean 2MB
+device-private mapping is accounted as 2048 kB dirty, and lazyfree
+accounting is suppressed. pgtable_64.h also warns that the hardware can
+set the accessed and dirty bits on non-present entries by mistake.
 
-Scan the subpages rather than testing the folio-level PG_has_hwpoisoned:
-memory_failure() sets PageHWPoison() on the subpage first and only sets
-the folio flag much later, and the bail-outs in between - for example
-get_hwpoison_page() losing a page lifecycle race - return with the
-subpage marked and the folio flag never set.
+Only read the bits when the PMD is present.
 
-Fixes: 508758960b8d ("mm: swap: entirely map large folios found in swapcache")
+Fixes: c94b6923fa0a ("/proc/PID/smaps: Add PMD migration entry parsing")
 Cc: stable@vger.kernel.org
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- mm/internal.h | 15 +++++++++++++++
- mm/memory.c   |  4 ++++
- 2 files changed, 19 insertions(+)
+ fs/proc/task_mmu.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/mm/internal.h b/mm/internal.h
-index cd3675c044e0a..e61c02f4019b0 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -28,6 +28,21 @@ struct folio_batch;
- int __copy_remote_mm_str(struct mm_struct *mm, unsigned long addr,
- 		void *buf, int len, unsigned int gup_flags);
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 22361607020d1..c0d391186c2b8 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -1019,13 +1019,15 @@ static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 	struct vm_area_struct *vma = walk->vma;
+ 	bool locked = !!(vma->vm_flags & VM_LOCKED);
+ 	struct page *page = NULL;
+-	bool present = false;
++	bool present = false, young = false, dirty = false;
+ 	struct folio *folio;
  
-+/*
-+ * Check every page of the folio for HWPoison, rather than relying on the
-+ * folio-level PG_has_hwpoisoned, which memory_failure() can leave clear.
-+ */
-+static inline bool folio_has_any_hwpoisoned_page(const struct folio *folio)
-+{
-+	long nr = folio_nr_pages(folio);
-+	long i;
-+
-+	for (i = 0; i < nr; i++)
-+		if (PageHWPoison(folio_page(folio, i)))
-+			return true;
-+	return false;
-+}
-+
- /* mm/workingset.c */
- bool workingset_test_recent(void *shadow, bool file, bool *workingset,
- 			    bool flush);
-diff --git a/mm/memory.c b/mm/memory.c
-index d477a4f986bc8..4b7d456332200 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5158,6 +5158,10 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 		    swap_pte_batch(folio_ptep, nr, folio_pte) != nr)
- 			goto check_folio;
+ 	if (pmd_none(*pmd))
+ 		return;
+ 	if (pmd_present(*pmd)) {
+ 		page = vm_normal_page_pmd(vma, addr, *pmd);
++		young = pmd_young(*pmd);
++		dirty = pmd_dirty(*pmd);
+ 		present = true;
+ 	} else if (unlikely(thp_migration_supported())) {
+ 		const softleaf_t entry = softleaf_from_pmd(*pmd);
+@@ -1045,8 +1047,7 @@ static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 	else
+ 		mss->file_thp += HPAGE_PMD_SIZE;
  
-+		/* Let a poisoned subpage take its own fault. */
-+		if (folio_has_any_hwpoisoned_page(folio))
-+			goto check_folio;
-+
- 		page_idx = idx;
- 		address = folio_start;
- 		ptep = folio_ptep;
+-	smaps_account(mss, page, true, pmd_young(*pmd), pmd_dirty(*pmd),
+-		      locked, present);
++	smaps_account(mss, page, true, young, dirty, locked, present);
+ }
+ #else
+ static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
 -- 
 2.53.0-Meta
 
