@@ -1,129 +1,118 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92427606A32D
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 18:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B1B606A32E
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 18:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aBODQap9
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ic+37J/+
 Received: by kanga.kvack.org (Postfix)
-	id A1D986B05C9; Wed, 11 Nov 2026 13:24:57 -0500 (EST)
+	id D937B6B00EF; Wed, 11 Nov 2026 13:39:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CEA26B05D5; Wed, 11 Nov 2026 13:24:57 -0500 (EST)
+	id D1D4E6B05B0; Wed, 11 Nov 2026 13:39:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8BDC36B05D6; Wed, 11 Nov 2026 13:24:57 -0500 (EST)
+	id BE5326B05B1; Wed, 11 Nov 2026 13:39:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6288E6B05C9
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:24:57 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E74511C31D7
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:24:56 +0000 (UTC)
-X-FDA: 85423664592.15.2A04D43
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E21B4C000A
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:24:54 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aBODQap9;
-	spf=pass (imf10.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F4BD6B00EF
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:39:25 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1680380399
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:39:25 +0000 (UTC)
+X-FDA: 85423701090.23.4E605C6
+Received: from mta0.migadu.com (out-114.mta0.migadu.com [91.218.175.114])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 01AD21C000D
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:39:22 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="ic+37J/+";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.114 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794421495;
+	s=arc-20220608; t=1794422363;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=AH3G4Ld/Cw2YgMeAy/KmwdAu0nKPOp5SWLznGtNiRM8=;
-	b=OYYfuPhFBbuEm32QcNRB7mvWeE+TCYWBr+GMcfGZuTyZEWnL1iAwe7jGfVuOVLz2/HGNrG
-	e5t6o8NL1syBJuF5K7X/tLqHYYLxA2h8EGsuYvR50BUFRv5Sz3d25HfSgdOI7vVIZnX8gm
-	W4EDCjdClKrS81kj+lDt9a55RIzKSWE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794421495;
-	b=2RMLaiq1vMXW/WHP9SUSjXqDA+jrMw5EROCsAMa1N1QBAeIoPg00+XUCCffskKqsQFWyBw
-	vLl/H/7B8wYZf4QM52Qeg8vm1hcGj7q5IZ9rcFaPekAWJ1hXLi5tcodOaRNrB0IT+5sVXT
-	Mry/QE+yt4oaBsBYUfvPztHSShTTC7M=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=LRAIfcX6+TdrX9n5/F+l2/1/bdd3k5f7+8neSB5hSIA=;
+	b=VUYvbk5X0fC6dcPSQq/tH79OrUdaWya04DooWDqkGbGMCm92Zi5JCU/QVNhBfjk7T7ZUFj
+	F/xBu3FmC3pWZuuUR/Z4h4gTPCAm14ui94FWtGyN4nWPrblCU0WP7a+uwZhAd9nWlVP5Cg
+	J8zkYnl2HSIQJECZS5LS3Q8RO43qZA0=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aBODQap9;
-	spf=pass (imf10.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2210045836;
-	Wed, 11 Nov 2026 18:24:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0986D1F00A07;
-	Wed, 11 Nov 2026 18:24:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794421494;
-	bh=AH3G4Ld/Cw2YgMeAy/KmwdAu0nKPOp5SWLznGtNiRM8=;
-	h=From:To:Cc:Subject:Date;
-	b=aBODQap9Whfj8W2pMoHX8qEUEl0vwV6jfWDgC/N7NLqQkhX99X7SA7VEe8ul6+gkj
-	 jQeRl06i9VN4MxVr0balWW5uM0GfC3fA+y/yzdSRshEGn+ZTlMmagNuC6HdpAy2l8f
-	 7DcAPWCQ5uhrMT/G8lkDIqG3o+0Y4s7GWKNmFXL2O+XA10jWHwbgrlU1tTgkr0QMrg
-	 wCaONfkUrZYOLbsAdn2O2Rco52HJSKozuzlDzutgnWKr1Q26mEfzxSffD3I9fkR3My
-	 oHKWv4RSP2vZZiuPxYoiRgd/POF6+6SVCPwe8t4rV2R9//71T2hxg/8zza8DPp6iBs
-	 6JQ59wW99+HhA==
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 2D70B198003A;
-	Wed, 11 Nov 2026 13:24:49 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Wed, 11 Nov 2026 13:24:50 -0500
-X-ME-Sender: <xms:8LL0ahgMC1sdqltW2Qo3f0WrT3MZ--3w2nI1U9MuKGqsoB3f8wN9eQ>
-    <xme:8LL0avYBGHhtPvOReDD3bYzTf5BnOozVpAswS2KAuAPHR69TDO7qfk8iPXKmMPbVq
-    sYPy-woYcNVcnKj4KXbm5aJxZEqXt3AR1PD1iF2ASgBp310lSWnmCjV>
-X-ME-Received: <xmr:8LL0apkXw6bL8ewsmZAqDvkZ5_s2ijQFQkolTjm5HTtDw_5FakQDWxTF46Y>
-X-ME-Proxy-Cause: dmFkZTG2wF4Dcbvhh7gz8ExlXKwNmF/VlJm9jIhvBywTJn4RMzX60KMrFIt260tiGp3huV
-    9loRqotF8zi7MdcgMxVqASC12iSUZLWUGDdCWc9jof5PS1StOs6DX3KySpf23UHeCSfyyG
-    E5DWQfJRHn46Jdw2Th1Vk0cLz0xJsVv7gt9a/Au7ONtW2Yq3ff74pd/XkKxGiJ/ik5TogK
-    UDNtQajjfl+Pp9mSMi05yIt+KwLx/h972BRj/zMDCbhijKgzvjTsL9I0o1vS5bDIPKQLqb
-    r+IuBJHBy4S53FF5o0bRQse+zPwebOp5sbw1Oqv3bRoexrLIuj1sw2XO10iVxqypbt4cDx
-    EWj9i5/lWdJIBZRe7s8Yyz8BykkURsWo471Qx48Bx8wPKiKqjtDqdofxT8Qm0LFgrWbHvB
-    SNMLnQWTltAC6Lzzjw5wuFOsaECoQxtoqdTrWG7mNJAWU9zpscPr4a03UYnigCJHNd5CeG
-    CbIDaERAAbxRYBn9o66xgZ1GoDFNFzGz1QFrs4o/lCA12Ls6E4Nt0vcF66Y/Bob1HwuxC8
-    tI69DRgQAnD/OrkW+/PVE2iaLSYOV8Ms3gTUG8djydzX+puuokedYPb7Hq7Wldzygm1dWQ
-    xAQJvih+ljNWUNAcmgjO1l1jQ8bNfyBEYZuBOqXVQdSlBUf2R5FVbQwUxuEw
-X-ME-Proxy: <xmx:8LL0alwAifPlbgw1trr7V5-hkxLfzXtYFLUvvY6_flQbJg3_cuESpw>
-    <xmx:8LL0av_UJMOuM9gr7u5epFKeLP8ZtjxuXgxpHy8EKThUcK7tYpxb2w>
-    <xmx:8LL0aoCUoVhow7ddQF0-izevA-QRLVwf0C5blCDSMLeQS3vtbEEMHQ>
-    <xmx:8LL0aurcLIg-kluuma3o9aAfH0gugxHXlkXoTb12W0QPlbH7zsXDAg>
-    <xmx:8LL0aokKkSYlX_7tltQzCEV4H5NhoTdRgh_8qWKkpnVARBzW8STPJ7N1>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 11 Nov 2026 13:24:48 -0500 (EST)
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="ic+37J/+";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.114 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794422363;
+	b=cNOhrsgcZhhXOQRpUwPjNaE889zxweKdIbF895jaAMw/Fa0rHrN5SWmK7MtY2T2ZFN8bKp
+	9Ezk11ChObqXPKEyYts/6kwW74sXyNwXwVCaqiMS26lMrLPdDG/C3CU2bpDEi0c3EDic+R
+	W3zLMkgQBbUKx9CEGPcVfsGGbk0phS0=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=2gpjyCxlXHV0kojP2zZzDz+9fWvH7WUFDk0I4A7ZOo4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794422360; v=1; x=1795027160;
+ b=ic+37J/+PMNglcZ4O6GYMCFRlVhoVoVzwDw1G1hNEFe33rP4lI7o2VPyrhiNLm7OMduH99Zc
+ JujJ2y9jwJHfRxjzfA45Asz24HLAPqfsgPq6vzdGsKB3a2x/GZ926pdBgKMVm1VWvktKWv30q99
+ kPA8m5W8zklVFd9Dd/y9VZOY=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id 9920d73fa52f55d7;
+	Wed, 11 Nov 2026 18:39:20 +0000
+X-Mizu-Trace-ID: 9920d73fa52f55d7
+X-Migadu-Flow: FLOW_OUT
+From: Usama Arif <usama.arif@linux.dev>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Usama Arif <usama.arif@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Hugh Dickins <hughd@google.com>,
-	Chris Mason <mason@kernel.org>,
-	linux-mm@kvack.org,
+	apopple@nvidia.com,
+	byungchul@sk.com,
+	david@kernel.org,
+	gourry@gourry.net,
+	jannh@google.com,
+	joshua.hahnjy@gmail.com,
+	liam@infradead.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH v3] mm/memory: refuse to map page cache folios that are not uptodate
-Date: Wed, 11 Nov 2026 18:24:43 +0000
-Message-ID: <20261111182445.656620-1-kas@kernel.org>
-X-Mailer: git-send-email 2.54.0
+	linux-mm@kvack.org,
+	matthew.brost@intel.com,
+	mhocko@suse.com,
+	pfalcato@suse.de,
+	rppt@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org,
+	ying.huang@linux.alibaba.com,
+	ziy@nvidia.com,
+	kas@kernel.org,
+	hannes@cmpxchg.org,
+	riel@surriel.com,
+	shakeel.butt@linux.dev,
+	kernel-team@meta.com,
+	baolin.wang@linux.alibaba.com,
+	Nico Pache <nico.pache@linux.dev>,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] mm: don't PTE-batch a swap-in over a hardware-poisoned subpage
+Date: Wed, 11 Nov 2026 10:39:17 -0800
+Message-ID: <20261111183917.1093166-1-usama.arif@linux.dev>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <avRqaatdOUunxrcZ@gremlin>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: mg59kztxoksezqyq11u6u3rczshh6odn
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 01AD21C000D
+X-Stat-Signature: zaqanwd9xox4i5cmspsdyhugn3a4nrbi
+X-Rspam-User: 
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: E21B4C000A
-X-Rspam-User: 
-X-HE-Tag: 1794421494-89527
-X-HE-Meta: U2FsdGVkX1/LJXd20LpNY1/fNGn4m1PVHKTts0vsvgjm6ez77Yz7MdV6sTp6jGSqgEU7UBgiXCJE/dizWAMJ7hy+BHzH2kHxQ6HYcd/7noCPxc4KbVe9A1pDL+SRe2QBYwkbmyH1zXKUvU2S6dSQdKTdxT/aMRjrHTOxCknjw2JDHajCMLow/HgN4D52r/zZQi/T0ebdvxHHzZZADcDv+7GoEO++iCyH7nSqQKhqMJSgSg7vfQOj1fwbmfBugnKWZOdcsrj07yuuiAP9As8N0elk2iMkSornpadNHA3QmJ4xBtTA3KMPWZT9RIHzV7w3TOti/DLzQhurwBB/KJMfl60wjrfJ4KjCvi6lRlCI9zliGFdd+LKwZ+rZ86tqFKsMqmlPkQlEXreDOZsh3+jBUj/nCkSkTGE7lsVmXpYACXsTqAeS2wI+2EkXg5ytxjoUgl2u11qWqGB6DBWOMf76bJp5n+Yj0s+QmyMEnqs7iEUR4e+Cwnq+BvAOxplPcRWwFspqagnXDHf2BhFpFJqYXow3th8qiVgT9AfhkiPPkoi4ySKu7YAIcyutbnUrdnTnVRNx7U26xQ5DpORRnauHIkdLD7l6sg/jRvSH8X/Vj+N4u5rRNbuE27mYoER1N6ssVMiJKvSDSlxV1YcsgzFDNtbbXMnrnFDIYv7nCNfAXdT8ilwmwdDldoQrNdmdO+oDCLoZOn6xjY/xxDJbCWcEkrtu7DU3lU/5LWW9uojthUmVehfyXx9DbG9qKNzRAOIvvU8hNwc3A14uoEjng8hGPwakUHl0dCQaWcuI+w7XluNuGlF94fKebMBBegwno12fMpzg/KeWYUcbpxlMCXi5pGCPsFknUplBO8LK3AAWvJogntBIQWfO5Tc+K+kPBvjx6uaAhpcCeVebieeJrfMEh3T7l1aX72QAFah7n/1GVZOsiKg+GFgDvp0jxm+YsUhDqHYXHubg8d6Tx1Nia+Z
- Mw1bKeBY
- IDk7KYesDkLdOCfme9aIvWpTROaU5UWyKNuv2tHn+aMrUpd6ZkoiMQ+yzM4kuFr9BpullLt1Lm88GEr3eL+fZJIagXfEad6YfKa8PAL/EW0gJJasI3tyhbLFWtMYIYwYdDDmxWpdfzcbGDhzzyf2JAKdTIGMb5E7JeC0zIM3wTl+fpLi2Ne+4UC7aWWwTZsL+BYZLyWMtrblY/6CZ2EKQ5eseYdjjKaUIFCdqNvhZJNC0J3zbMpiyBlMDiEu+PGY7Kt3JT2H61DXrXUwl0WWK8vqvLffaiuN+pkS5rnDUyle/80g=
+X-HE-Tag: 1794422362-513187
+X-HE-Meta: U2FsdGVkX1+DdbFzzl/eNfi5I9GytUqSmdS69BZXflEphM7512b3fs1xSxo/WmiURzc/O3VU3o1ZnhB3pqnLgW3BdCzlBHoKctB8ikK6vfho2wQoG/0dZpA3drJN53vBldTBdvhN1nQQ7csnTMKxPyRWEJWmeL+uUj8SBDB8NyY3tja6lb1QI0h+9NFcZGXlwcsganTc06vYKlX5sXCcGIK99d4aqnztkthyTG+VHlpTs5t2893YeEZTSIui3fWDHYwMQVPBW0ahrNwxMIXcL50rIBzq0VbngjU5GtNHW4Rk9kI/xWf9yxM0yEUEJZF5FAh3yadC0BajdMTMFkBzANvCFJk0x7kHRNy5owoWBIypNTW93O/9rIThy2ihVQsNhp1aaOsSnlEoK7y5S2iuweTp0R7wCUH7s9hvik0Jk11LE9b2gHklBQUG3Sa6ehlRi74tKVnLDKIcwXFUPzXc009Q0bDSua2jCn5x5cKFjqajiMtIEFE43AHeHWt6g+tSI0Q/CQ+lDyXSoXfXLQflVQ8xIYe35Gc8IgHCmrDKoEOIMzSgicA8DHKxupuPqaKGsqdAbxcyjanUqPKtNj3EX7o4KEdBGn0gzyBpYuzzWxBDD3OhWvNdgr8G5YZ/cyLTGCgEWNhDQz0ADsemXvW8Io5b1abdXobQ0PXZQ/m8k3gUCVi5zWfFBTF0wDiApZvydY9LTDE7v6iTFY4Mu0TkspJk4JDmth5o0uuJWxACOmD+abN5gMMfImfHnSfYtznk0Kcmgb/nVx9ErZm19Xz1BP6BzP2B6G/7Ibd3kb8cyN5R78YDdEK6TpBNDqo4H788onMcYIxquofjRIsJE771sU6PIQimzOJ+P/d2NUfje0YzWa55dLcI1zQLJQJXUJ690tJHcTxguVVBLSwHyX69GTGVgawQag2OO6hiMW97nmzDOS5lKMGjvHK1EVlGsLYQclgqSnaFcDmzlDU/FQ7
+ GCJol1y4
+ vxqQiFmcWBsKg/haBqcf6AGMhflrw55WRr4icnbe6EnZOcIjcWMbXHl68m8WM5TvTvEv/0kpFiSzl3gGist9w4PrJwEaPas6PfX+efkVj96IwWxeeeueO0A7/iEJ5VD7pgkuP6bzW/t3aawOZfcmxWcxSX0F9JuXs1cj9lSEIx+/as1PKTnKqKNijEpN8c+fx0IOPBxRdl5OQyjAgvXL/u6P2zjt0m6WVb/6fG4mGrO+8K8cvHU1GINsaVH9YaGio3M5z0g8BrZTZYfFvF/FQpkKvkY6wrwteViwWLMMuxxLGDLLR6cuzNWXqNbPyTdRpWOmtayLqWDRY+tw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,154 +121,127 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A page cache folio that is not uptodate holds data that was never read
-in or cleared. shmem fallocate(2), for one, adds such folios and clears
-them only on first use. Mapping one hands userspace whatever the memory
-held before.
+On Wed, 11 Nov 2026 13:18:36 +0000 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
 
-Each path that maps page cache checks for this itself: fault-around in
-next_uptodate_folio(), a fault in filemap_fault() or shmem_get_folio().
-Nothing in the mapping code does, so a caller that misses the check
-leaks stale memory silently. MADV_COLLAPSE did exactly that with
-fallocated shmem THPs until recently.
+> On Wed, Nov 11, 2026 at 03:38:29AM -0800, Usama Arif wrote:
+> > do_swap_page() checks PageHWPoison() on the faulting page, but the
+> > large-folio batching path then maps the rest of the folio without looking
+> > at the other subpages. A poisoned subpage that is not the one being
+> > faulted gets mapped anyway, and the fault that would have reported it
+> > never happens.
+> >
+> > Skip batching for such a folio and let each page take its own fault,
+> > where the existing check catches it.
+> >
+> > Scan the subpages rather than testing the folio-level PG_has_hwpoisoned:
+> > memory_failure() sets PageHWPoison() on the subpage first and only sets
+> > the folio flag much later, and the bail-outs in between - for example
+> > get_hwpoison_page() losing a page lifecycle race - return with the
+> > subpage marked and the folio flag never set.
+> >
+> > Fixes: 508758960b8d ("mm: swap: entirely map large folios found in swapcache")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> > ---
+> >  mm/internal.h | 15 +++++++++++++++
+> >  mm/memory.c   |  4 ++++
+> >  2 files changed, 19 insertions(+)
+> >
+> > diff --git a/mm/internal.h b/mm/internal.h
+> > index cd3675c044e0a..e61c02f4019b0 100644
+> > --- a/mm/internal.h
+> > +++ b/mm/internal.h
+> > @@ -28,6 +28,21 @@ struct folio_batch;
+> >  int __copy_remote_mm_str(struct mm_struct *mm, unsigned long addr,
+> >  		void *buf, int len, unsigned int gup_flags);
+> >
+> > +/*
+> > + * Check every page of the folio for HWPoison, rather than relying on the
+> > + * folio-level PG_has_hwpoisoned, which memory_failure() can leave clear.
+> > + */
+> > +static inline bool folio_has_any_hwpoisoned_page(const struct folio *folio)
+> > +{
+> > +	long nr = folio_nr_pages(folio);
+> > +	long i;
+> > +
+> > +	for (i = 0; i < nr; i++)
+> > +		if (PageHWPoison(folio_page(folio, i)))
+> > +			return true;
+> > +	return false;
+> > +}
+> > +
+> >  /* mm/workingset.c */
+> >  bool workingset_test_recent(void *shadow, bool file, bool *workingset,
+> >  			    bool flush);
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index d477a4f986bc8..4b7d456332200 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -5158,6 +5158,10 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> >  		    swap_pte_batch(folio_ptep, nr, folio_pte) != nr)
+> >  			goto check_folio;
+> >
+> > +		/* Let a poisoned subpage take its own fault. */
+> > +		if (folio_has_any_hwpoisoned_page(folio))
+> > +			goto check_folio;
+> > +
 
-Warn and refuse the mapping in __do_fault() and do_set_pmd().
+Hello Lorenzo,
 
-__do_fault() checks the folio ->fault() returned while it is still
-locked. For CoW, that is the page cache folio that do_cow_fault()
-copies from. do_set_pmd() covers MADV_COLLAPSE, which maps without a
-fault.
+Thanks for the reviews!
 
-do_shared_fault() then unlocks the folio for ->page_mkwrite(). A
-filesystem that clears PG_uptodate on a folio in the page cache is
-buggy, so that window gets no check of its own.
+> 
+> Hm, isn't scanning every single page in the folio potentially quite costly
+> here?  I thought the point of batching was to improve performance overall?
 
-The fault gets SIGBUS, as for a folio that fails to read in.
-MADV_COLLAPSE fails and leaves the range to be faulted in.
+Swapping in requires checking every subpage, so there would be a cost.
+I guess trading it off for correctness :(
 
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
----
-v3:
- - Drop "mm/memory: recheck PG_uptodate after ->page_mkwrite()": a
-   filesystem that clears PG_uptodate on a cached folio is buggy (Matthew)
- - Move file_folio_not_uptodate() into this patch, assert it never sees
-   an anon folio, reword its comment and drop likely() (Lorenzo)
- - Rebase on mm/core.git for-next, which has the MADV_COLLAPSE fix
+> 
+> It seems broken to have stuff potentially interact with hwpoison but then
+> to only set the folio-level flag much later?
+> 
 
-v2: https://lore.kernel.org/all/20261109120403.82361-1-kas@kernel.org/
-v1: https://lore.kernel.org/all/20261106144323.3634477-1-kirill@shutemov.name/
+PG_has_hwpoisoned lives in the second page, so memory_failure() only
+sets it once it holds a folio reference, otherwise it could race with a
+THP split. If get_hwpoison_page() can't get a reference,
+memory_failure() gives up with only the subpage marked. The comment
+above folio_set_has_hwpoisoned() in memory_failure() says that is fine:
 
- mm/memory.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+  Don't need care about the above error handling paths for
+  get_hwpoison_page() since they handle either free page
+  or unhandlable page.
 
-diff --git a/mm/memory.c b/mm/memory.c
-index fcc7ea2a00d1..c79c1c6f6141 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5641,6 +5641,22 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
- 	return VM_FAULT_OOM;
- }
- 
-+/*
-+ * A page cache folio that is not uptodate holds data that was never read in
-+ * or cleared, and mapping it leaks stale memory to userspace.
-+ */
-+static bool file_folio_not_uptodate(struct folio *folio)
-+{
-+	VM_WARN_ON_ONCE_FOLIO(folio_test_anon(folio), folio);
-+	if (folio_test_uptodate(folio))
-+		return false;
-+	/*
-+	 * ->fault() can also return driver memory that is not in the page
-+	 * cache. It never gets PG_uptodate.
-+	 */
-+	return folio->mapping;
-+}
-+
- /*
-  * Either the VMA lock or the mmap_lock must have been held on entry
-  * (see FAULT_FLAG_VMA_LOCK) and may have been released depending on
-@@ -5700,6 +5716,13 @@ static vm_fault_t __do_fault(struct vm_fault *vmf)
- 	else
- 		VM_BUG_ON_PAGE(!folio_test_locked(folio), vmf->page);
- 
-+	if (WARN_ON_ONCE(file_folio_not_uptodate(folio))) {
-+		folio_unlock(folio);
-+		folio_put(folio);
-+		vmf->page = NULL;
-+		return VM_FAULT_SIGBUS;
-+	}
-+
- 	return ret;
- }
- 
-@@ -5745,6 +5768,9 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
- 		return ret;
- 	page = &folio->page;
- 
-+	if (WARN_ON_ONCE(file_folio_not_uptodate(folio)))
-+		return VM_FAULT_SIGBUS;
-+
- 	/*
- 	 * Just backoff if any subpage of a THP is corrupted otherwise
- 	 * the corrupted page may mapped by PMD silently to escape the
+But a large folio that is briefly off the LRU, e.g. isolated by
+reclaim, takes those paths too and can still be mapped afterwards.
 
-Range-diff against v2:
-1:  632ab50e643d < -:  ------------ mm/memory: recheck PG_uptodate after ->page_mkwrite()
-2:  1e329f330c41 ! 1:  50ea9bc46c05 mm/memory: refuse to map page cache folios that are not uptodate
-    @@ Commit message
-         Warn and refuse the mapping in __do_fault() and do_set_pmd().
-     
-         __do_fault() checks the folio ->fault() returned while it is still
-    -    locked. do_shared_fault() unlocks it for ->page_mkwrite(), and a
-    -    writeback error can clear PG_uptodate after that; that case retries the
-    -    fault instead. For CoW, __do_fault() sees the page cache folio that
-    -    do_cow_fault() copies from. do_set_pmd() covers MADV_COLLAPSE, which
-    -    maps without a fault.
-    +    locked. For CoW, that is the page cache folio that do_cow_fault()
-    +    copies from. do_set_pmd() covers MADV_COLLAPSE, which maps without a
-    +    fault.
-    +
-    +    do_shared_fault() then unlocks the folio for ->page_mkwrite(). A
-    +    filesystem that clears PG_uptodate on a folio in the page cache is
-    +    buggy, so that window gets no check of its own.
-     
-         The fault gets SIGBUS, as for a folio that fails to read in.
-         MADV_COLLAPSE fails and leaves the range to be faulted in.
-    @@ Commit message
-         Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-     
-      ## mm/memory.c ##
-    +@@ mm/memory.c: static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
-    + 	return VM_FAULT_OOM;
-    + }
-    + 
-    ++/*
-    ++ * A page cache folio that is not uptodate holds data that was never read in
-    ++ * or cleared, and mapping it leaks stale memory to userspace.
-    ++ */
-    ++static bool file_folio_not_uptodate(struct folio *folio)
-    ++{
-    ++	VM_WARN_ON_ONCE_FOLIO(folio_test_anon(folio), folio);
-    ++	if (folio_test_uptodate(folio))
-    ++		return false;
-    ++	/*
-    ++	 * ->fault() can also return driver memory that is not in the page
-    ++	 * cache. It never gets PG_uptodate.
-    ++	 */
-    ++	return folio->mapping;
-    ++}
-    ++
-    + /*
-    +  * Either the VMA lock or the mmap_lock must have been held on entry
-    +  * (see FAULT_FLAG_VMA_LOCK) and may have been released depending on
-     @@ mm/memory.c: static vm_fault_t __do_fault(struct vm_fault *vmf)
-      	else
-      		VM_BUG_ON_PAGE(!folio_test_locked(folio), vmf->page);
+> Also why are we swapping out folios containing hwpoison pages? Shouldn't we
+> migrate away from the hwpoison? :) (I'm not really familiar with the hw
+> poison stuff)
+> 
+> 
 
-base-commit: 8d21e3d3faf19f461f6d0380fe8a1f5bdba97f25
--- 
-2.54.0
+The error hits a folio that is already in the swap
+cache, e.g. while reclaim has it off the LRU to write it out, and
+get_hwpoison_page() fails for any folio that is off the LRU. Normally
+memory_failure() would split the folio and isolate the bad page (for
+an uncorrected error there is nothing to migrate; that is soft
+offline). Here it does neither, and the folio stays in the swap cache
+with only the subpage marked.
 
+While looking at this I also noticed that the fallback drops a freshly
+read (not yet anon) folio from the swap cache and frees it with the
+poisoned page in it. We should actually actually also check folio_test_anon()
+before checking folio_has_any_hwpoisoned_page().
+
+> >  		page_idx = idx;
+> >  		address = folio_start;
+> >  		ptep = folio_ptep;
+> > --
+> > 2.53.0-Meta
+> >
+> 
+> --
+> Cheers, Lorenzo
+> 
 
