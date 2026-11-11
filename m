@@ -1,140 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9305606A324
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 07:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B13D606A326
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 07:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZrKPgrKE
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Kcr8dbbk
 Received: by kanga.kvack.org (Postfix)
-	id EB93A6B05B1; Wed, 11 Nov 2026 02:42:17 -0500 (EST)
+	id 7D81D6B05B9; Wed, 11 Nov 2026 02:43:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E14156B05B7; Wed, 11 Nov 2026 02:42:17 -0500 (EST)
+	id 73A2C6B05BA; Wed, 11 Nov 2026 02:43:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D037E6B05B8; Wed, 11 Nov 2026 02:42:17 -0500 (EST)
+	id 629286B05BB; Wed, 11 Nov 2026 02:43:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B33C36B05B1
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 02:42:17 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BDEBEA0228
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:42:15 +0000 (UTC)
-X-FDA: 85422045030.20.CD2D5CA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id E480C40007
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:42:13 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZrKPgrKE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 39C9F6B05B9
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 02:43:17 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3C5C6160165
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:43:16 +0000 (UTC)
+X-FDA: 85422047592.26.7AC8395
+Received: from mta1.migadu.com (out-236.mta1.migadu.com [95.215.58.236])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 15AA240006
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:43:13 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Kcr8dbbk;
+	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.236 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794382994;
+	b=E8lR6VvKkRrxwaQYrF1woMZHOKwMKrYzetMacG1zctOt76rdB/wsJJdyMrbgJrtgAAtt1E
+	dyW7tJ7IPhskLa972H7p1GWx8WUUGOLOjwVG1x32FiGyilwm0QHe+0p5A60L7ZW5nTPtA7
+	iWmfoBV8FPSnVmWhfee8CDeRo60fD6I=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Kcr8dbbk;
+	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.236 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794382934;
+	s=arc-20220608; t=1794382994;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=173yMYYw7ZcLxgKiy0jg0nsIJyUryKORRWD5GlUnhak=;
-	b=PcMQoq2Ir2TQOkUwD08Tk+Fj224zFHM03bVDbN76LQlws14VU5O+aw3pTE6GwjWnzlyajH
-	jzVX34TcX60byNm++1fsTRiZ6XgiwwWDVQKD9nH08sKwy3OrPt4eaNaoxBng8mOW3k0duK
-	0Rs1z6nWlZtHwVgdSuEJqPsRC3h4ZIs=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZrKPgrKE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794382934;
-	b=JcTDfTde9VTmeRxNbg0Qm+OL5rRdgl1yuqiQB9kRv4ie3m9XlVZvt5U5MeSJACqkhT3dU2
-	IyYIyvxRyY7riAgJOfTKbWxh5ctve1tzInuyigeDqmsrhmS4TNbLsUZgdkZ+PAShkaKytx
-	XsAnXAZR4ScKwU5TEfdH9Q8Au+EfOGI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 150AA4050D;
-	Wed, 11 Nov 2026 07:42:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB16B1F00A05;
-	Wed, 11 Nov 2026 07:42:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794382933;
-	bh=173yMYYw7ZcLxgKiy0jg0nsIJyUryKORRWD5GlUnhak=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ZrKPgrKEYhJ3yrT5CDmjH+84XqAPuC8dBR6n+o7uRVewZeDxtBU2esNhdUhlKZDGE
-	 5/OF8Zp10h+LNC4wePwc242X5r0kA9voZ5MGuPjjE5dVW3bbYyojijX+SXp25q5yz7
-	 pterk5xVQD/sj/5wJ8ps8IK2ZzriKEki/mJ5baXKQLA0xGsjApnODfEKbZLLYvQOzN
-	 +HjL8O3rKTiiWnl5jF5TLaKxnviMquCws9mMONye0NSZABK80mzBQnPuPWKNps/mzh
-	 InlthapJu41kW/sIjVNzmijcKciWkTZ/IObbE2c61U2ZW++XL25Arq/TAlS9Yu5PsE
-	 eDcz2l1F79syw==
-Message-ID: <0a971398-35d6-457c-81b4-0fd706da12b8@kernel.org>
-Date: Wed, 11 Nov 2026 08:42:06 +0100
+	bh=EfxdzkdgDHIptdiFFicHU4j+CsK16rJHdQjUlG9Ac2o=;
+	b=sgf0HzkypEg5bOhl3IxY0bV3l2VkuJhX3kxZqCtSPHlIC8Dk4KxMb4mrsB7UhD+i5ODXgA
+	saIoYp4gl2ibDS8cVv+pkYyAW2XLks+qAgaP55EQYbGtUrm7SgKoyj/KDvXvtRMISNGjAW
+	h1wBiPmd3W2gSl/2QNj+5pTk9dzMoIQ=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=2ou7idqYN0vwf8nRLylpa5vOfvnrhR/VXDNnnd6BgTQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794382992; v=1; x=1794987792;
+ b=Kcr8dbbk8h+TSq+Yyw2YDIeSvwq6yLwpn8tc9FoowpR6nJsm66vFNZV0q63S6RgLxmroBChc
+ WecxsGdtXIm0yDJpOcwWcwvoeDE1fmBqgl2/rqwDO3dDRbmCq7NHYAHz0g9Pc24beyB4ykRUhPD
+ IYs1LeyW5IqEBhh54uHO5AjM=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id 12f4ebcce8353a82;
+	Wed, 11 Nov 2026 07:43:12 +0000
+X-Mizu-Trace-ID: 12f4ebcce8353a82
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
 Subject: Re: [PATCH v4 2/3] mm: gup: allow long-term pins of CMA-allocated
  HugeTLB folios
-To: Qi Zheng <qi.zheng@linux.dev>, muchun.song@linux.dev, osalvador@suse.de,
- akpm@linux-foundation.org, azpijr@gmail.com, lance.yang@linux.dev
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <503c9f6d869e3206c6fd591de962c3d619b73825.1794379433.git.zhengqi.arch@bytedance.com>
+Date: Wed, 11 Nov 2026 15:42:56 +0800
+Cc: osalvador@suse.de,
+ David Hildenbrand <david@kernel.org>,
+ akpm@linux-foundation.org,
+ azpijr@gmail.com,
+ Lance Yang <lance.yang@linux.dev>,
+ linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <80FED512-77D2-4D49-BAE5-745CE1F711CA@linux.dev>
 References: <cover.1794379433.git.zhengqi.arch@bytedance.com>
  <503c9f6d869e3206c6fd591de962c3d619b73825.1794379433.git.zhengqi.arch@bytedance.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <503c9f6d869e3206c6fd591de962c3d619b73825.1794379433.git.zhengqi.arch@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: Qi Zheng <qi.zheng@linux.dev>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-Stat-Signature: r9dtixh5jg8tm4frye9t4jrouuegrtkx
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E480C40007
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: 1ofxiiae11ndsx6s61p449g6ykk7oxzd
-X-HE-Tag: 1794382933-35311
-X-HE-Meta: U2FsdGVkX1+stdqCFgmPU1RXT+S1HpK+RepRq+zcq6P0+E3JIZcUCSIj0mNVhqTyoW9vvdE8OTaeXfBTiPkXGMHpcDh1Ivg4X2mW0bYQqrhIi5fC6jQ9fiS1P7CpO26X/pAPNt8AV1c259x6FYRdt2o3AEoLnzaixF+tcdDdbepewHyZFK0YVhrM49ctvZGymH1bhRg0jgO0mvL500pjVK3j1t32pQ5uqNc7HjoSwKLjVFK3INCxkcdN9OeMicSVPhFvaN+fOzi65mkM+TdAzRDxswtdMZT3Wf1txRwW/zU7zo33HBF9lsmxQaAjrIfzicFDXbAJGujULxcP2A2WgCAiQBm3guDu0nIkoIt4v0h890gb0BQMMF66jXgOF/LRgvKxUEqguGbRRF+6dmexBTgs5jr34y7mANtDw+55gCmRRYT2mocexwkE2KSM6cBpT1ZEwfOVe8o84XH0yL46V7EN3eiWYMhmtEXQB6yQcCF0L3Dyl5p0iUAIW6xHbU81u0zbZ/0q4bxs3Ffy0WgUbVJtQO3jBDlDRdWUwLS6/oQhvuULp9TEGDfd5uoR+0MDftGNdEwlwlKTIwL0bNcp0XaFOgL4cRup0NMlquVeV7tDlkaNd1VmomlUwrr5PiMkJzxaQKbzUljFotzTVvn5BqNQ4owsrmtucTRyOl76+edw1kHwMZTrBRfV1CEvK9bzShKnaKICtZlIiclF5CSJzyJpu/FmGqdas3N7Rblndl8JjOrL1U3UGnu8UGqhSz6RINWF+M//jC4BRoTJ1v5De2HkI3+vrwnY8lXVLTbbX//ak6pxikX//AUXumWUHDCBKY0I5pDnvLbagwCqVS5CUH3iogObFfzWkgJ7kaB8p7bksidqd7uR4SVkFfY+oY/hvGtaTBdm+DDaJAFVKP89x7ajTdQ6AiTiElLj9cclujxWeM/92j55TWejzz3AeNMCCy7+8ZAkZi++ILBcUXZ
- zHcyN6nJ
- jchMFtzg5VQ1PzcMfuc77bA9ydDoy7vHp2Z47cyE/4PYZVmxzzBGO2EnY4NWJGez7AggS7YMYPnwqzeRMMg1OttWe9t+TDR3gj2MolmneNOc34jlKdKwW4N/u6EBm4qCo/0IveWU9ZBNNAFVvqCaiuUlq4ibPSu5WcC/vPaNwRosi0pgvZC0U/HEjeoWgKmFq6NdNu/6nPaUfd2CriYSD9Xr4lk57NFeFqS0k/Iiv4qYdBW26dO6Sq1PqSUivNetdpVpTc+cmRB3QlqzKrn3pEbAbHQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 15AA240006
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794382993-923069
+X-HE-Meta: U2FsdGVkX18nCMkJrq+4g/glzCuQC+D5TiStk6UmxuOacmzVngvOu4kPAySaQmNAASMv3g5axzAVtZ0BnGkp15oG8tnCyD/PDQ7C5s1iS7+wadldzvbEciTIrgWU6epDfOGm7j+8wM5OF6hOD7i3vTUwFZpfHXTYjlC0b/BcC7UyXciIKedADyQ6XMgU/gU9jPf2FQsWaa+OAg7nB+jBuuTEzfCzN4SGfe6uqiHZcs91rzUNon0hjK+aE2Pj7Yz6os3U8G9VDr9LBrATgdxyb/Hm6tv01t2qoklf7EXMBEs8k0F3aeLlwaQ3RKlVhE+tLxtyYMtth1cMdyXyA5jzI20spImuo9mLqAx7ptQQTAjS+PdrjNkPEveuE9zPf/qHUXk/uk5/wBWTpdIrSJ+LYQoWpGkSqmpZQBPfsdeTlxVZuCgLSOyL8Fv7bjcAwLEL1Dep+MtHhoD1KOdPLXcccHTBaw4C8ffA9D2yYVB3Tu7vEPFlhka9/OAIr3zNddjtcmClY1wT7+f6qklx4CKYN5hgZeDnSSXVid/CRR6NYq79D/8buOy9zQRGmu+iEGZSoCOvUakYhSYop1eGhZRhEHPEL47W2V93aF3DCm1zWRHxjZA1JZo+Pvzmb61szGMkLtzHalVuFf2WgaLcdnZ5K3yscDShkOzrFmN4LE9LsMdRfrnZCJVkPfxGqg418qLf8WL3bC4xaRpf4lGBht6KLnuetYy4hKg5VX/W4kjH1RQvJgc+54uV13yLmWSBN0dfOHoWKcbf710Y6IgmW1he1hrjSYUAS4OkZqY8ovHLG0GPpfbTlzCvTtZ55LYJDStpjWEqdcxntDVQmHc6Ffwsmebd+iSmHrkmeYP3guNjdQMuTb9fxs0V3e7QsgyE86YRgzx7ojSKqSvL2IBFA9AuOLSxdTqoiQuxzq+b2VXsJOtFsCt2rHGiwJakglnA7HvdfmuBWaprVlIA/86wzFw
+ UJdEj+lE
+ xcWjoVcLs7a//llTwmab6rRzmXhqT9/AVwym92NaO7eATbKCbVY7Uoeup7qP/SXAjTXOfMtdbxAobZaaeMpcwYTlDyp3krmEwUQSzLE35Jbvc/6REmW2DoNHKy7exDTxoh52ai4bFLkUHVylKogRmOPrHqUY8Erex0C2jx4xNbQVHJoVLML1CI3isqjDVM5cxtxqPwR/Wvja918cd0evFFikuMcp9aC97nxsZeNJ+/hU3snHU1Wh6P6Ugcuo4kpuDGK73eMcKM5D8Ywuviu00Ra8jjk0YaveLxwTn5gxfy4YdTk+SjPusPy+Qg+/TnOf+KZSygAiN7RE5QOM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,22 +103,135 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/11/26 07:46, Qi Zheng wrote:
+
+
+> On Nov 11, 2026, at 14:46, Qi Zheng <qi.zheng@linux.dev> wrote:
+>=20
 > From: Qi Zheng <zhengqi.arch@bytedance.com>
-> 
+>=20
 > Long-term pinning treats explicitly CMA-allocated HugeTLB folios as
 > unpinnable, causing unnecessary migration or pinning failures.
-> 
+>=20
 > These folios already own their CMA bitmap ranges, and memory blocks
+
+Commit message needs updating to bitmap as well.
+
 > overlapping CMA areas cannot be offlined. Allow HugeTLB folios with
 > HPG_cma to be pinned directly, including in ZONE_MOVABLE.
+>=20
+> Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic =
+hugepages using cma")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Muchun Song <muchun.song@linux.dev>
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> Acked-by: Muchun Song <muchun.song@linux.dev>
+> Reviewed-by: Oscar Salvador <osalvador@suse.de>
+> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+> ---
+> include/linux/mm.h | 29 +----------------------------
+> mm/gup.c           | 31 +++++++++++++++++++++++++++++++
+> 2 files changed, 32 insertions(+), 28 deletions(-)
+>=20
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index b0da9be413098..47d1d96bfc7fd 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2954,35 +2954,8 @@ static inline bool is_zero_folio(const struct =
+folio *folio)
+> 	return is_zero_page(&folio->page);
+> }
+>=20
+> -/* MIGRATE_CMA and ZONE_MOVABLE do not allow pin folios */
+> #ifdef CONFIG_MIGRATION
+> -static inline bool folio_is_longterm_pinnable(struct folio *folio)
 
-You should really describe here what this patch does (move stuff) and why, and
-document why you decided to add more hugetlb hacks to core-MM that I absolutely
-hate.
+I think David prefer to move this function first, then fix it in a =
+separate patch,
+right?
 
--- 
-Cheers,
+Thanks,
+Muchun
 
-David
+> -{
+> -#ifdef CONFIG_CMA
+> -	int mt =3D folio_migratetype(folio);
+> -
+> -	if (mt =3D=3D MIGRATE_CMA || mt =3D=3D MIGRATE_ISOLATE)
+> -		return false;
+> -#endif
+> -	/* The zero page can be "pinned" but gets special handling. */
+> -	if (is_zero_folio(folio))
+> -		return true;
+> -
+> -	/* Coherent device memory must always allow eviction. */
+> -	if (folio_is_device_coherent(folio))
+> -		return false;
+> -
+> -	/*
+> -	 * Filesystems can only tolerate transient delays to truncate =
+and
+> -	 * hole-punch operations
+> -	 */
+> -	if (folio_is_fsdax(folio))
+> -		return false;
+> -
+> -	/* Otherwise, non-movable zone folios can be pinned. */
+> -	return !folio_is_zone_movable(folio);
+> -
+> -}
+> +bool folio_is_longterm_pinnable(struct folio *folio);
+> #else
+> static inline bool folio_is_longterm_pinnable(struct folio *folio)
+> {
+> diff --git a/mm/gup.c b/mm/gup.c
+> index ebbfee09b7278..fdafc5a1b78ed 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -2219,6 +2219,37 @@ struct page *get_dump_page(unsigned long addr, =
+int *locked)
+>=20
+> #ifdef CONFIG_MIGRATION
+>=20
+> +bool folio_is_longterm_pinnable(struct folio *folio)
+> +{
+> +#ifdef CONFIG_CMA
+> +	int mt =3D folio_migratetype(folio);
+> +
+> +	/* These HugeTLB folios own the CMA memory, so they can be =
+long-term pinned. */
+> +	if (folio_test_hugetlb(folio) && folio_test_hugetlb_cma(folio))
+> +		return true;
+> +
+> +	if (mt =3D=3D MIGRATE_CMA || mt =3D=3D MIGRATE_ISOLATE)
+> +		return false;
+> +#endif
+> +	/* The zero page can be "pinned" but gets special handling. */
+> +	if (is_zero_folio(folio))
+> +		return true;
+> +
+> +	/* Coherent device memory must always allow eviction. */
+> +	if (folio_is_device_coherent(folio))
+> +		return false;
+> +
+> +	/*
+> +	 * Filesystems can only tolerate transient delays to truncate =
+and
+> +	 * hole-punch operations
+> +	 */
+> +	if (folio_is_fsdax(folio))
+> +		return false;
+> +
+> +	/* Otherwise, non-movable zone folios can be pinned. */
+> +	return !folio_is_zone_movable(folio);
+> +}
+> +
+> /*
+>  * An array of either pages or folios ("pofs"). Although it may seem =
+tempting to
+>  * avoid this complication, by simply interpreting a list of folios as =
+a list of
+> --=20
+> 2.54.0
+>=20
+
 
