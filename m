@@ -1,97 +1,121 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15182606A327
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 18:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845E1606A8A4
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 19:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KfLQmTEy
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nYh0Hc5W
 Received: by kanga.kvack.org (Postfix)
-	id 990596B05B4; Wed, 11 Nov 2026 13:54:22 -0500 (EST)
+	id 83E4D6B05B7; Wed, 11 Nov 2026 14:02:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9676F6B05B5; Wed, 11 Nov 2026 13:54:22 -0500 (EST)
+	id 7EF846B05B8; Wed, 11 Nov 2026 14:02:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A49D6B05B6; Wed, 11 Nov 2026 13:54:22 -0500 (EST)
+	id 6DF466B05B9; Wed, 11 Nov 2026 14:02:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FABF6B05B4
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 13:54:22 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 073B780188
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:54:22 +0000 (UTC)
-X-FDA: 85423738764.21.48E6580
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 66E8D40006
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:54:20 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KfLQmTEy;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794423260;
-	b=ti0jfTKG4H0PXzpPg33Y1ZRsHyWL9of0fXErO9x1UdXVKfWKzvBIuOCeJDqW86yge6bpq1
-	xxdUDHUiXMJlij2Z3V1IG8N0HYm1F/lq6GjW21mkTwQUBqk5qwwFhxDOU6XNicKlbVMCvg
-	jErOnvTIwSiRX/khuzhc3uST4ypIFEw=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KfLQmTEy;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 43DD86B05B7
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:02:05 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CCF52C03E3
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:02:04 +0000 (UTC)
+X-FDA: 85423758168.07.0193714
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id BD936C0003
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:02:02 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nYh0Hc5W;
+	spf=pass (imf28.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794423260;
+	s=arc-20220608; t=1794423723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7ZxY6FRy+iKIYaOcDLkICzfkOfpdlmgKNXCeP3oQIdA=;
-	b=7FSs6AlqaADNsEMhvVCEStz+0NRMxyrWD8LwluB6u0ZEl05CmPP5MYJeTO2QbT4tG8Nvlb
-	fnolOJmK6KI+OAO4+tV/HOiMCp38Cc0Ryw1riAXqENqIiSGFC8tZ4pR8LDTIciRF52idyM
-	8XUGGd1RWWsChijje3TghnM3OKSTSJ8=
+	bh=UGvA7aNbElvHdqmQ/xMwu/aFIwDZ9xdeje6P1XRIG3E=;
+	b=e9vwsSPf///FHa5ujIStsVos95O1hmgu4iMRYM3Oh8JhHtxJ3zonw3Hfwnh7C7Kxc2hzzY
+	WusoPurlLbhDoQbyyeFuN77qsVV9H2hBr0wNhXKQvOBaGhRam9WBx02cNyFK3kJKFNf5+E
+	B3VuABtZSaEm1bdepk3RG6K8S1Ofpx8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794423723;
+	b=dM1EIX8DUXJ6YKhEGch8EiuPpHVOc4CXIXJ8xZZdSkInUSgVcW+y14lQ2np3OPbeUOGZZ/
+	O5I0k49h1418+US+/voXLll89MtxPXbsoNOc94EblX9ffUmhlkREWB2U9wEiwRqRAC/xOD
+	hdjTvrLMT2Txjh/N4khNZeLwOqC5Jbk=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nYh0Hc5W;
+	spf=pass (imf28.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0B58961CD5;
-	Wed, 11 Nov 2026 18:54:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE5F1F00A05;
-	Wed, 11 Nov 2026 18:54:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D9D5747630;
+	Wed, 11 Nov 2026 19:02:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B051F00A06;
+	Wed, 11 Nov 2026 19:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794423259;
-	bh=7ZxY6FRy+iKIYaOcDLkICzfkOfpdlmgKNXCeP3oQIdA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KfLQmTEyEkOjYetaEk86ZORqkxLgjToheQz9VDFoVBwVZrB/rJa6h9lEWderuWfiQ
-	 ULjZbma3rGqhDciaC502VLOZvkQ2w2xErqM0Hog1YFYSl4Rx45zl/ZAd0ri7hH+qrE
-	 QtErvf9h8g+tbl8H2VGCQgGiUxktXrOOCgR6qJgXFpuJwyiDiwlNzq3/4FOBJ7+Gle
-	 U+l8BYmRkJ4nk8jnkKBSiuaUjytbADFO4Ek9XJKkuXU9UxzuVsmyH+LaQrP5sPgNIt
-	 OIJrWa6AiIZyTHrYGmq6W1he/IXInF4jzwG/wDVRVWDLWU3myEF/9tyx/Jq8wtt+E/
-	 ruJB9OrNjbp8g==
-From: SJ Park <sj@kernel.org>
-To: Aveline Noir <jm5905938@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Ravi Jonnalagadda <ravis.opensrc@gmail.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [RFC PATCH v0] Docs/mm/damon/design: document data attributes report infra design (beyond page table accessed-bit milestone 2)
-Date: Wed, 11 Nov 2026 10:54:11 -0800
-Message-ID: <20261111185412.145514-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <179438255225.3134195.10613668244848761847.b4-reply@b4>
-References: 
+	s=k20260515; t=1794423721;
+	bh=UGvA7aNbElvHdqmQ/xMwu/aFIwDZ9xdeje6P1XRIG3E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nYh0Hc5WTvLXWR0PpdeDEQycij6SQVynG/D9w8M6LNmJF6fZnX+KZhqmcr9+DofTL
+	 1t869zG0ixpyUwRsMt3QwMx5ThEG9Bs8ZLo8VfWWQs03p77SnH/0m4BPhxklYl5p4E
+	 qLnpsBM96i9dW1JgfsTos/MYnkoPxVDpBCVFBQHCJWqxB1Cu2A6lj5t076B63LWVYz
+	 pdtQrojzSvgJpSxUnaZ/WAP/T8jpr2H6hsgE/UDlifpjUWOel+gkuHuwUYFBf8Nmkz
+	 CiO2rDoMh/Uzwyh6wFvwy84CBThROr1FbbUXBEb1cfAn7v27vpKfkasmGPV0QRwnXS
+	 2dQy0JEAJJGFQ==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 45AB9198004A;
+	Wed, 11 Nov 2026 14:01:57 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Wed, 11 Nov 2026 14:01:59 -0500
+X-ME-Sender: <xms:pLv0auFvRs13t94fambPBJxaah0jl9soK9jYvksUwEnSQMFUiv7_cQ>
+    <xme:pLv0avNH0BHJJysjdWJ0KAtbCZ2JluCm6hK8b7C_Tzf9l14Wp-zveuD2kDJmEmCzn
+    Lxjr-dasRnZykEn0_ssIzr-zAvor5YsYf5DIuhLOb6Ib69OgTj7StNE>
+X-ME-Received: <xmr:pLv0alf7Lhu2rO9745tEPXz2cD8D1p6-Jfg8z3UY9esl3NWls50yvUb07cU>
+X-ME-Proxy-Cause: dmFkZTGUrBls5w/UEENbc4QSrU45nLKjL4/o++nqxC9OJS9f5x3nG4z2h0vA9zTXVlIrwk
+    CwfDyXOcV7vO+BP7Z89KGrkm4YQkxS96v2gVR/kgVbZBHpUz2ZXhJO8sIGLtQj2Tn3CoVw
+    hG0wp+uaydBlisb2ScHtGCEd4zxa002LBa33wxBHeD1SO2skN4MjcRow7HuyZS+C9CHS3X
+    1FcU34iQECUsMDUhAG3tswsFel1JQc9DrrukwJo2Jx7ZCpcvn27jIuhpDvLHrUp+EucfbC
+    UuoCLpjHnrpn3/cNfboWDuvRCcwgCfNKam4Uj7NynoW0ZDHcY/FmkLsgm6RcxCgB13MxaY
+    qNJfZ63LHM1TLvxg9XzJ4AZzQh2FqHvqBn5XcefCQ7zln8J+tkHM7S7B3qyxFVOyLsCuG+
+    aXReTLfd7xIPgO+kPGAOWnEnz8FBaJOvZ2d3vb6i132Qck9TpIkgM/rYZXgiNKVOqYa42L
+    KA+Pt7RK+i5vWp3sEQpf7ObXQtNV+HFtkVgrWy6//p7vnTbQrBoqE6VZXWDe45Ooi5rv/e
+    mJwBUg0Sigiy6BNH4OymxE2Wgf794hMQ05VG4dg2BtZiuXTvEm7vo+sNZZO2hC66pNhjlm
+    BWq5x2q6oauGQt61tBKF3S+un8za9g8FYXHJAg/jFFoifSYnVYbwyGVsKt0w
+X-ME-Proxy: <xmx:pLv0akTltdapm9PFC0tYwCjfAj_TxsUfUqqFlu3hmg46Vn9rjKYBOg>
+    <xmx:pLv0aheLpWDc__1-d2kIRQApBXAWn3YxIOmEAOk47fqwuDNJZuG4gg>
+    <xmx:pLv0asoogV_DY8Y9z02GhVBDWQKjBO9Bmtqber5ICa1Iy4WbDj_Qig>
+    <xmx:pLv0aqeVLJlCdZkd1bX1rMWUV3dXQYLG_JvpLsklDqd7s3qtsgiPtQ>
+    <xmx:pLv0aslaqHjoC7cmEZh296IHSmUbxZ7gIMTcVtgfZSFfqKedoNBkqcuE>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 11 Nov 2026 14:01:56 -0500 (EST)
+Date: Wed, 11 Nov 2026 19:01:55 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Wandun Chen <chenwandun1@gmail.com>, hughd@google.com, 
+	akpm@linux-foundation.org, ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/migrate: improve mlock tracking for PTE-mapped
+ large folios
+Message-ID: <avS7FfzvjieHufUE@thinkstation>
+References: <20261110123218.1579490-1-chenwandun1@gmail.com>
+ <5f9c449e-43b3-4732-9c14-8199418cace0@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 66E8D40006
-X-Stat-Signature: xsh73hn6tpkmikd5e4di6h3bgrqz4i4k
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5f9c449e-43b3-4732-9c14-8199418cace0@kernel.org>
+X-Stat-Signature: o5ob74zk6bdh191cyzi1ywyu6fx85yr6
+X-Rspamd-Queue-Id: BD936C0003
 X-Rspam-User: 
-X-HE-Tag: 1794423260-178872
-X-HE-Meta: U2FsdGVkX1/gBFgy4cnmg4TxTTXtatMib/oFH0jaomUZU3OOhGTeJkR6VOgwsPcV4ru3/JY2g9hHKqgz2Vv3l60muBGcYao7Ugpdw025fdGwAkjsgbEasrj6bT9pYfWga7u86ByvUzyQBnidhbUoAtxS3KQ79n+d/bn8nWU8BFLwwuXViCyVPPMQNbm5P0Gsp0LDV0b8ZBMZxAKuCvhPz71TeM+2hxT4VC9is6VfXptCBl2O3z+pf2OMn1cRqe77pVeSsMzvOk4pyLO57fNJw6HU+DNw+5mDcZiO0hGmEoMWKnoFY60ojQJm5zTf/ESKLJ4D/COu/nQtj8X2/oBXI4gdlETVodbKDMN33q0mUnpzscAsR5D6yRt53qrkdF3CRKc85EGNP8L3ccxCZGKmzmYwK+cmhabPZE/o0DuSLo4qIvv0CBkN2CUtAE52XkCTQh2Vzp6dL6WgLUbr+VTyLIzu2fZEBvGbd35mEbZ/PMfg4QjT27Rf2XaRR1A7xGTBamu1R/0WLA0w1K+0KTjCmRHY7pwO4IHClOF2eAJ3d/acJYb28p+3EMFXE2Cnnzh2DqVB53rjAuZDjtAvlP8F6SnDeHbvumEyqoWSg72+QKgPEuHCgwE9+NOOOgYE6Hc+hOz2W57Gew7V40Wy5EfhDiPXNbnkTv1XrhC9puvdbhSLEO2F6s0OZb6sJHTq2rrsMUPddBCAsFCmlRePt+AHNacpakVRlQzYM9cWzVLKwedprWv3L8Dn0ZaAaGb6hWGkQ0jZNLPTrD1CPrdf07H43nq/i91AfPYLXw++mYpUqLWVlDt7RmmFksbbVUKZDOuIu8W/zGg2XjrKJjelgh205ZoJMHmtu5y8uxM+AZNTN0tLO5ZVBlGrw7mDmZUZP++ijZAYj7Tdq2sVRPrIVSq2Z6s3/Ou+4g2gX3s/OyBaZ+SZw6PitwCV07lMlGJaJdoH6ZytQpvTBHByUqr2hvq
- 8fsHcY+n
- wcOjQ8axqxi1QDKry+JR/0CmsOvEC9mg1jbrCu0XqY3y+oygzNrLny59spqQjPmxlFknslND5K4cA8l1xWgkkUmRLARVSrXG13b1vpftGhVBiZmueV5KvQFqenMQqas+PqdPaRbJPkb+pzymCK4gYbIsr/6Kedpkk+N8aIzzEHeKHMI9Wn9MCMBurWd5Bnk1a7bqZObZoYcE9Yfbcs3Uvx9iyeHLdk38aNZTxNCSV6WmC71Tp5994bBH/tzydTfNYRlxcAZhsDrZLwd+rEHwEshhV9EnZSWWG9c8wqVnjZKLucJEX4fqSngS9sQ==
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794423722-735803
+X-HE-Meta: U2FsdGVkX1/6ZE1gei/7YkS+qiD+XPQ0EOuDuN3z+isfo8lbg9bHWdUeqLI+Zs7jTZIs8bib56rKCTxcGt1vDfyeSBvu6myERNZlhO9uVDlKp4uzzACsQcBgJatOAP+ivUm0cSRF5fQPGoleBgo+c6VyYD7iIGTNxTlwIJYUjGVW7O/2JeS5Qm7uhb+AimGGMjT0WrWta2qvzNjUbm/80gTkmXqnGOCamc4XcLT3oOLSsVfHhqhRdcqs2Ypl6AShDbbAc86ceDZ7JfG/c7ubb5dY1Is1HyBKVb6skT3N4QJiqvBqIlviNsvUJMuHhQ2yBD5CntbezfBCOoH1yvqS1AwDMjcJPwt2brcOkc/rI9Rc97pPD25rsx3tSUUfzkvkWzGf+7ZaiURcptzSRg5qFlJtnmJmPby46NaXyIH5whjYoSkY0/YSjhRc1mONGzs7tzjmy62sKWyjeeXEBGWUy3o3PjCO4NpFg9r+PEa1f1f6y30WC0BHqSwGZisCWuClOXsG2f2lL26wluxLsBQWhsPQS13X9v55Gddb9zRgpCBTy5l+CuA4FlCfnjdhBdRTtifJiViGrMgIDqdv/M5rMAXo/6nDMcqKPdCOlV4DA9SXMTZbyZQrlcMH5yHfg5WPctBytIubKa4j+rvlWNe1Po6Kg6qg9XJDcbb97unkm0DYQ0Zk8xG+YOXjbgnCIy/6nhxnz5mOn0+ZEzu0dIpkUQlprmVal3emrSWqjcARROSfTxbpYnPBSCjp6yAjw7k9DKGPTb6t2O4N498x9hr61p+J/a9RDn9mu4lHhZmVbv2MUFtlvmSJoz/o5iUbt7dh6xPMj0GNgNVIppJxmkyw+LpYNh3Fdp1sFervcM4BKlURA/73fYk39HROXQGKOeGpc2iL3HAZH0TGvXx1hqvifZ61zgoGTvH3P21TVouUOeeN0I2FQl5IoUQNUSalvdhNMOkk4J0hp3IHiyK0MPW
+ jFwYqExF
+ 3Pxn25VKq05dJfnKm6qMlTGkr0NCLT4G3i840MsYIBs34EIe8fHh6Zeds19KtD4yadTSJ/f2endy+aPZV1vy214x/+1MHQvTsQCX5fn0HxdvGvqC1DTehdrwEInvgnTreM0KLBhnYHeKhq/dlR/cJe9dsL4g2MoWw5lvVIfSGDgXNFh5bqUhOxusdZU/ddqBfcmCxyptK8KNpSLOZ5XSCWEAs03Lk8D7a2E8b/AJP/xwU4lS0fgjzrZC1u/hNa9Kdd9SmuRx8/KLTWS6WrEs7wdctw7w8tofXHuBEADpf6wMqwtaFJc4+loR3XZ2Flj1hI0kHYI9n+7/U8+7OSjIVaE/s0LewqsA9Bt/HM9usA7H/ZNFrU+q1fhTOggEUfUIsOCRm26+z3UUqbTmVfZAI5rQbvmNb8Xu55dp4p42BOkSLub1dqess/pGjAQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,60 +124,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Aveline,
-
-On Wed, 11 Nov 2026 18:35:52 +1100 Aveline Noir <jm5905938@gmail.com> wrote:
-
-> Hi SJ,
+On Wed, Nov 11, 2026 at 09:00:10AM +0100, David Hildenbrand (Arm) wrote:
+> On 11/10/26 13:32, Wandun Chen wrote:
+> > From: Wandun Chen <chenwandun@lixiang.com>
+> > 
+> > Commit ab521b4142aa ("mm/rmap: improve mlock tracking for large folios")
+> > mlocks a large folio when all its pages are added in one rmap operation.
+> > However, when a PTE-mapped large folio is migrated, remove_migration_pte()
+> > restores PTEs individually, passing nr_pages = 1 to the rmap helpers. As a
+> > result, PG_mlocked is not set on the destination folio.
+> > 
+> > Reclaim can restore mlock in try_to_unmap(), but Mlocked in /proc/meminfo
+> > remains undercounted until that scan occurs.
+> > 
+> > Restore mlock once the full mapping has been restored in a locked VMA
+> > under one page table lock, rather than waiting for try_to_unmap() to
+> > restore the mlock state.
+> > 
+> > Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
+> > ---
+> >  mm/migrate.c | 10 +++++++++-
+> >  1 file changed, 9 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/mm/migrate.c b/mm/migrate.c
+> > index 94033c222e04..140e291d4587 100644
+> > --- a/mm/migrate.c
+> > +++ b/mm/migrate.c
+> > @@ -353,6 +353,7 @@ static bool remove_migration_pte(struct folio *folio,
+> >  {
+> >  	struct rmap_walk_arg *rmap_walk_arg = arg;
+> >  	DEFINE_FOLIO_VMA_WALK(pvmw, rmap_walk_arg->folio, vma, addr, PVMW_SYNC | PVMW_MIGRATION);
+> > +	unsigned long nr_ptes = 0;
+> >  
+> >  	while (page_vma_mapped_walk(&pvmw)) {
+> >  		rmap_t rmap_flags = RMAP_NONE;
+> > @@ -446,9 +447,16 @@ static bool remove_migration_pte(struct folio *folio,
+> >  			else
+> >  				folio_add_file_rmap_pte(folio, new, vma);
+> >  			set_pte_at(vma->vm_mm, pvmw.address, pvmw.pte, pte);
+> > +
+> > +			nr_ptes++;
+> >  		}
+> > -		if (READ_ONCE(vma->vm_flags) & VM_LOCKED)
+> > +		if (READ_ONCE(vma->vm_flags) & VM_LOCKED) {
+> > +			if (folio_test_large(folio) &&
+> > +			    nr_ptes == folio_nr_pages(folio) &&
+> > +			    !(pvmw.flags & PVMW_PGTABLE_CROSSED))
+> > +				mlock_vma_folio(folio, vma);
+> >  			mlock_drain_local();
+> > +		}
+> >  
+> >  		trace_remove_migration_pte(pvmw.address, pte_val(pte),
+> >  					   compound_order(new));
 > 
-> On Sat, 17 Oct 2026 12:57:45 -0700 SJ Park wrote:
+> I guess pte batching would be one way of handling it, but that requires more churn.
 > 
-> > +The data attribute probe supports the reports.  The probes can be configured to
-> > +hit for a given memory region depending on the existence of specific types of
-> > +reports that associated with the memory region in given report buffers.
+> The spirit is similar as in try_to_unmap_one(), where we count the number of
+> ptes in one VMA. For consistency, I would call it "ptes".
 > 
-> I'm wondering how this would interact with the region size.  If each
-> page of a region is reported with probability q, a region of s pages
-> would hit with probability 1 - (1 - q)^s, so a large region may hit
-> more often than a small region of the same access density.
+> @Kiryl, can you take a look?
 
-Thank you for sharing this finding.  Seems this theory assumes the probe will
-hit for report of any byte of the region exists in the report buffers.  Under
-the assumption, that makes sense.
+Looks right to me. Agreed on "ptes".
 
-But I'd say the assumed implementation is not realistic.  That's because DAMON
-design does probing for only single sampling byte of the region, not the entire
-bytes of the region.  In a real implementation that is aligned with the design,
-the probe will hit if a report associated with the sampling byte exists.
+With that adjusted:
 
-> The page
-> table accessed-bit check samples one page per region, so its hit rate
-> doesn't depend on the region size in the same way.
-
-I'd say it is not because it uses accessed-bit, but it respects the address
-sampling design.
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
 > 
-> A quick replay of the crediting rule of Ravi's RFC v4 [1] on synthetic
-> traces showed a similar trend.  The adaptive regions adjustment would
-> mitigate this to some extent, but large cold-only regions still kept
-> high hit rates after split and merge in the replay.  I'm not sure how
-> much it matters on real workloads, though.
-> 
-> Would crediting the hits relative to the region size, e.g., reported
-> bytes / region bytes, make sense to you?  It would need probe_hits
-> wider than u8, so it is not free.  If you think it is worth exploring,
-> I may run more experiments and share the results.
+> BTW, why don't we care about that in try_to_migrate?
 
-As long as the real implementation respects the address sampling design, I
-think this will not be needed.
+try_to_migrate_one() unmaps the folio whether the VMA is VM_LOCKED or
+not, so there is no mapping left to keep mlocked; removing the rmap
+munlocks the source.
 
-Thank you again for raising this question, and please let me know if I missed
-something.
+The mlock is rebuilt on the destination in remove_migration_ptes(),
+which is the path this patch fixes.
 
-
-Thanks,
-SJ
-
-[...]
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
