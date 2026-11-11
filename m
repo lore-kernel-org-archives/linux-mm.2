@@ -1,100 +1,134 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B13D606A326
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 07:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37056606A32D
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 07:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Kcr8dbbk
+	dkim=pass (2048-bit key, unprotected) header.d=uu.se header.i=@uu.se header.a=rsa-sha256 header.s=centralsmtp2 header.b=X0fzAzJB;
+	dkim=temperror header.d=it.uu.se header.i=@it.uu.se header.a=rsa-sha256 header.s=halon header.b=Qq5BqxLJ
 Received: by kanga.kvack.org (Postfix)
-	id 7D81D6B05B9; Wed, 11 Nov 2026 02:43:17 -0500 (EST)
+	id 5B43F6B05BB; Wed, 11 Nov 2026 02:44:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73A2C6B05BA; Wed, 11 Nov 2026 02:43:17 -0500 (EST)
+	id 5641E6B05BC; Wed, 11 Nov 2026 02:44:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 629286B05BB; Wed, 11 Nov 2026 02:43:17 -0500 (EST)
+	id 454976B05BD; Wed, 11 Nov 2026 02:44:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 39C9F6B05B9
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 02:43:17 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3C5C6160165
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:43:16 +0000 (UTC)
-X-FDA: 85422047592.26.7AC8395
-Received: from mta1.migadu.com (out-236.mta1.migadu.com [95.215.58.236])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 15AA240006
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:43:13 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Kcr8dbbk;
-	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.236 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794382994;
-	b=E8lR6VvKkRrxwaQYrF1woMZHOKwMKrYzetMacG1zctOt76rdB/wsJJdyMrbgJrtgAAtt1E
-	dyW7tJ7IPhskLa972H7p1GWx8WUUGOLOjwVG1x32FiGyilwm0QHe+0p5A60L7ZW5nTPtA7
-	iWmfoBV8FPSnVmWhfee8CDeRo60fD6I=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Kcr8dbbk;
-	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.236 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 136426B05BB
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 02:44:04 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B23CDA75E2
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:44:03 +0000 (UTC)
+X-FDA: 85422049566.25.140911A
+Received: from smtp-out2.uu.se (smtp-out2.uu.se [130.238.7.173])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E3AF51C0005
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:44:00 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=uu.se header.s=centralsmtp2 header.b=X0fzAzJB;
+	dkim=pass header.d=it.uu.se header.s=halon header.b=Qq5BqxLJ;
+	spf=pass (imf21.hostedemail.com: domain of alireza.haddadi@it.uu.se designates 130.238.7.173 as permitted sender) smtp.mailfrom=alireza.haddadi@it.uu.se;
+	dmarc=pass (policy=none) header.from=uu.se
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794382994;
+	s=arc-20220608; t=1794383041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EfxdzkdgDHIptdiFFicHU4j+CsK16rJHdQjUlG9Ac2o=;
-	b=sgf0HzkypEg5bOhl3IxY0bV3l2VkuJhX3kxZqCtSPHlIC8Dk4KxMb4mrsB7UhD+i5ODXgA
-	saIoYp4gl2ibDS8cVv+pkYyAW2XLks+qAgaP55EQYbGtUrm7SgKoyj/KDvXvtRMISNGjAW
-	h1wBiPmd3W2gSl/2QNj+5pTk9dzMoIQ=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=2ou7idqYN0vwf8nRLylpa5vOfvnrhR/VXDNnnd6BgTQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794382992; v=1; x=1794987792;
- b=Kcr8dbbk8h+TSq+Yyw2YDIeSvwq6yLwpn8tc9FoowpR6nJsm66vFNZV0q63S6RgLxmroBChc
- WecxsGdtXIm0yDJpOcwWcwvoeDE1fmBqgl2/rqwDO3dDRbmCq7NHYAHz0g9Pc24beyB4ykRUhPD
- IYs1LeyW5IqEBhh54uHO5AjM=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 12f4ebcce8353a82;
-	Wed, 11 Nov 2026 07:43:12 +0000
-X-Mizu-Trace-ID: 12f4ebcce8353a82
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
+	bh=lAdLzm0lC6RteZTIgPAPr9QVhABezDfRESoAcyYKOqc=;
+	b=CmfFbyfe4/GHKMr0t51wWd8Kd5YU+xME/Azikq6WjlZ4QfoAnWBmL9+vvSAGiTPtyWE7i6
+	TZxtwGBB6Ir3xev751g7xSWotJgm57bW1P2oF63tnkn3egY/Xx+4wmyzeFA5NnlwL4/XeE
+	Bupn5q5VdMNIcHwfs+2u0pPbbvr2hXc=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=uu.se header.s=centralsmtp2 header.b=X0fzAzJB;
+	dkim=pass header.d=it.uu.se header.s=halon header.b=Qq5BqxLJ;
+	spf=pass (imf21.hostedemail.com: domain of alireza.haddadi@it.uu.se designates 130.238.7.173 as permitted sender) smtp.mailfrom=alireza.haddadi@it.uu.se;
+	dmarc=pass (policy=none) header.from=uu.se
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794383041;
+	b=zlLHM4axUYy1tC54c/9/LaC8sKrcq1WbFqc+xt6PmdHaJClabOjsePl3TghSucFdXWFMig
+	c2+ov/Azazr8S55elzNn+RYxygsIVcKZWD3EJJMFfqs/ix0gaGP7Q161pOaqk7R4Wwt0Zs
+	zyCEdcQ6/epiDy290vdiFtEv0nSL0lc=
+Received: from mailfilter-ng-3.sunet.se (mailfilter-ng-3.sunet.se [192.36.171.200])
+	by cursor.its.uu.se (Postfix) with ESMTP id 293DD680354
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 08:43:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uu.se;
+	s=centralsmtp2; t=1794383038;
+	bh=lAdLzm0lC6RteZTIgPAPr9QVhABezDfRESoAcyYKOqc=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To;
+	b=X0fzAzJBxqmCcUWUW107VD4jNm2DEjgqwA/gfIoTMmfIb0Ig9bP4C65WSTohrXzRZ
+	 GrdJPf5Bkh0ojEp18Nf8ytBBpx4hCNrisLz+Hx8v/BxIJvD/TyXHksHCY79GYA15fU
+	 34nhygh0wRqDzx2SQcry5O2a4QHK34qgzoSYNhHz8zzwtCfo6kQrtaHy5f/PX/BQGK
+	 AUE/qcr7thBH0JIfkT/MUZzCLEpVi1qnvLCiLASjdmEKMotjLrQObTz2Rjrv4FVDaQ
+	 iKQW9FmFMenowBFQU0rAr6nHR+T6Oi0ZjnVYkILNuf8R0CYcnLhe/KGcFeyeEOCrm2
+	 eKo+tyM53aQzA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=it.uu.se; s=halon;
+	h=mime-version:content-transfer-encoding:content-id:content-type:in-reply-to:
+	 references:message-id:date:subject:cc:to:from:from;
+	bh=lAdLzm0lC6RteZTIgPAPr9QVhABezDfRESoAcyYKOqc=;
+	b=Qq5BqxLJ4oAo00iMNlrHTOpc9HvjRubpjClAEe5L3t+l2IozLY455YfG9pN9eHB5WO2RSNeUZ927l
+	 ODci0EOU9b3Nd/DbKkSRhAhErAihDZxMg3Lhq+AdjG0MU9Hbp8r7I0GBYk9LeAdTOWIYuImLeLcluL
+	 37j/LfZd1I8HaOXVQIXN1N2Xjj9LpFOrIMzJRcXHz226+VHP2fvZMJJ5IKwdMZ2jJMTlwYMsCyPkRi
+	 re0nJPjknrXj5GpwEWyfSZiCQLgosSuMOsD3V510XmS06H++eryZDC4QyhuL24WRYi5N7F0jYgXVGa
+	 0oxoLONhHEkhuwGJvT5DjsLbvZU4CIg==
+X-Halon-ID: a67b696e-dda3-11f1-95df-0050569a1168
+Received: from lyra.its.uu.se (lyra.its.uu.se [130.238.7.73])
+	by mailfilter-ng-3.sunet.se (Halon) with ESMTPS
+	id a67b696e-dda3-11f1-95df-0050569a1168;
+	Wed, 11 Nov 2026 07:43:56 +0000 (UTC)
+Received: from smtp.user.uu.se (uuc-epost016.user.uu.se [130.238.3.26])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lyra.its.uu.se (Postfix) with ESMTPS id B1301600088;
+	Wed, 11 Nov 2026 08:43:54 +0100 (CET)
+Received: from UUC-EPOST014.user.uu.se (130.238.3.24) by
+ UUC-EPOST016.user.uu.se (130.238.3.26) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Wed, 11 Nov 2026 08:43:54 +0100
+Received: from UUC-EPOST014.user.uu.se ([130.238.3.24]) by
+ UUC-EPOST014.user.uu.se ([130.238.3.24]) with mapi id 15.02.2562.056; Wed, 11
+ Nov 2026 08:43:54 +0100
+From: Alireza Haddadi <alireza.haddadi@it.uu.se>
+To: Gopal Malaviya <gopalmalaviya53@gmail.com>
+CC: "jack@suse.cz" <jack@suse.cz>, "willy@infradead.org"
+	<willy@infradead.org>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "vishal.moola@gmail.com"
+	<vishal.moola@gmail.com>, "fujunjie1@qq.com" <fujunjie1@qq.com>,
+	"roman.gushchin@linux.dev" <roman.gushchin@linux.dev>, "linux-mm@kvack.org"
+	<linux-mm@kvack.org>, "linux-fsdevel@vger.kernel.org"
+	<linux-fsdevel@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "regressions@lists.linux.dev"
+	<regressions@lists.linux.dev>, "tracekotae@gmail.com" <tracekotae@gmail.com>
+Subject: Re: [PATCH] mm/filemap: let sequential faults restart mmap readahead
+Thread-Topic: [PATCH] mm/filemap: let sequential faults restart mmap readahead
+Thread-Index: AQHdcFXobp3vto+/eEuuawUN31FcZrcoN0gAgAA4CQA=
+Date: Wed, 11 Nov 2026 07:43:54 +0000
+Message-ID: <26E03EC6-F37C-4350-B2A9-1F354217F469@it.uu.se>
+References: <20261109-mmap-miss-v1-1-8b44b33f3358@it.uu.se>
+ <20261111042310.191979-1-gopalmalaviya53@gmail.com>
+In-Reply-To: <20261111042310.191979-1-gopalmalaviya53@gmail.com>
+Accept-Language: en-GB, sv-SE, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-uu-exchange-origin: Internal
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <00E735D1736E5D4697FA838A52C10B56@user.uu.se>
+Content-Transfer-Encoding: base64
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v4 2/3] mm: gup: allow long-term pins of CMA-allocated
- HugeTLB folios
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <503c9f6d869e3206c6fd591de962c3d619b73825.1794379433.git.zhengqi.arch@bytedance.com>
-Date: Wed, 11 Nov 2026 15:42:56 +0800
-Cc: osalvador@suse.de,
- David Hildenbrand <david@kernel.org>,
- akpm@linux-foundation.org,
- azpijr@gmail.com,
- Lance Yang <lance.yang@linux.dev>,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org,
- Qi Zheng <zhengqi.arch@bytedance.com>,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <80FED512-77D2-4D49-BAE5-745CE1F711CA@linux.dev>
-References: <cover.1794379433.git.zhengqi.arch@bytedance.com>
- <503c9f6d869e3206c6fd591de962c3d619b73825.1794379433.git.zhengqi.arch@bytedance.com>
-To: Qi Zheng <qi.zheng@linux.dev>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Stat-Signature: r9dtixh5jg8tm4frye9t4jrouuegrtkx
+MIME-Version: 1.0
+X-Stat-Signature: bc1ifugznqwrq3me85nx87pjggqraqez
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 15AA240006
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794382993-923069
-X-HE-Meta: U2FsdGVkX18nCMkJrq+4g/glzCuQC+D5TiStk6UmxuOacmzVngvOu4kPAySaQmNAASMv3g5axzAVtZ0BnGkp15oG8tnCyD/PDQ7C5s1iS7+wadldzvbEciTIrgWU6epDfOGm7j+8wM5OF6hOD7i3vTUwFZpfHXTYjlC0b/BcC7UyXciIKedADyQ6XMgU/gU9jPf2FQsWaa+OAg7nB+jBuuTEzfCzN4SGfe6uqiHZcs91rzUNon0hjK+aE2Pj7Yz6os3U8G9VDr9LBrATgdxyb/Hm6tv01t2qoklf7EXMBEs8k0F3aeLlwaQ3RKlVhE+tLxtyYMtth1cMdyXyA5jzI20spImuo9mLqAx7ptQQTAjS+PdrjNkPEveuE9zPf/qHUXk/uk5/wBWTpdIrSJ+LYQoWpGkSqmpZQBPfsdeTlxVZuCgLSOyL8Fv7bjcAwLEL1Dep+MtHhoD1KOdPLXcccHTBaw4C8ffA9D2yYVB3Tu7vEPFlhka9/OAIr3zNddjtcmClY1wT7+f6qklx4CKYN5hgZeDnSSXVid/CRR6NYq79D/8buOy9zQRGmu+iEGZSoCOvUakYhSYop1eGhZRhEHPEL47W2V93aF3DCm1zWRHxjZA1JZo+Pvzmb61szGMkLtzHalVuFf2WgaLcdnZ5K3yscDShkOzrFmN4LE9LsMdRfrnZCJVkPfxGqg418qLf8WL3bC4xaRpf4lGBht6KLnuetYy4hKg5VX/W4kjH1RQvJgc+54uV13yLmWSBN0dfOHoWKcbf710Y6IgmW1he1hrjSYUAS4OkZqY8ovHLG0GPpfbTlzCvTtZ55LYJDStpjWEqdcxntDVQmHc6Ffwsmebd+iSmHrkmeYP3guNjdQMuTb9fxs0V3e7QsgyE86YRgzx7ojSKqSvL2IBFA9AuOLSxdTqoiQuxzq+b2VXsJOtFsCt2rHGiwJakglnA7HvdfmuBWaprVlIA/86wzFw
- UJdEj+lE
- xcWjoVcLs7a//llTwmab6rRzmXhqT9/AVwym92NaO7eATbKCbVY7Uoeup7qP/SXAjTXOfMtdbxAobZaaeMpcwYTlDyp3krmEwUQSzLE35Jbvc/6REmW2DoNHKy7exDTxoh52ai4bFLkUHVylKogRmOPrHqUY8Erex0C2jx4xNbQVHJoVLML1CI3isqjDVM5cxtxqPwR/Wvja918cd0evFFikuMcp9aC97nxsZeNJ+/hU3snHU1Wh6P6Ugcuo4kpuDGK73eMcKM5D8Ywuviu00Ra8jjk0YaveLxwTn5gxfy4YdTk+SjPusPy+Qg+/TnOf+KZSygAiN7RE5QOM=
+X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: E3AF51C0005
+X-HE-Tag: 1794383040-976974
+X-HE-Meta: U2FsdGVkX18YT/xvlEuIu/gSg9ZFxX5lJcP6z/gd0FMVvDuBkaq6UWkWGQPa4hGx7AvF/teHnEQVwmU5enozDVSP0QdQdyY/iopg15G1FvE0E96C0vxRtELNSpAiOdvs3y9+alq7EtvM0Apcrvmk2VtRYa0HWLs+NKBZkfEBEUWlXvctWj+LLGg2Zm3HK96tQHyRA54l7lxmmt5Lv0VCm9WhOaFRl+JidNO0d07MdqWrYD+ASLa+LAEnlE/sCEHZ5jTb98jUk1clVIXRlaLv2D2j2IUmSA3mLjj3+3XOs6E8XwbajhzdTPJv3ECR2XqMcvLVFu2hsNLwH+KBKBgkEyVd9RHnSqpbnDiVE30K4CROBEs4Dv0o/Kv9pjpaKc9HUE09uBrqn+l5hE8hGtRqeJ7chPBF6DOY5yiO4G6CMTF1fkgvBDPsdOkpfo6aUDHzh1mwBO3U/FfOQxKjNw4v9AH6/ddHTH6BmVLzP1U1lYf/J2XdjvRmjdSAB56TFx45LA3MNd6b8gxHEKVwGekTMIVF5qFblDtpGhNYaU6Aro8I3hrdzRWX3f04aYRUT4joZg0ZidH0+lNEexlmF2Q+DBXFSeKf3anupwNWurVzAQLyjkddpGACn/nvA/pZAsxsWCXYfrEu1zX8yWYpmtTmydgchRafeKk5xO83DRHWzfBdXIfpZNLYa5IIkuXF9wd5rarWTGB39AR8asqp0lfnSdfDiVhEiJY2Fu9YP07dPt2udqiykOsqDc2PsaOLBzYOZC4zbFmyb93Es4X5A7gTNISigczL7kOgBG9J5ZiUl4Fq51hQoxAzPB0sKxv+JIh7Ebcs+CNkgEW7KqPL7/hBuo71YgD7xFwJ37JXhN05nwYUBvZULPg2YolEe5vIoXmiwmOjS7xwHw9YxhBASnkvra2aL0eEtGt1aU5OKJ65HSdzKwN2125mLcC9xSZ5Drk7Y7nr5Urw8E3J8ElJx9U
+ 5oUEFJH9
+ zlvqKgSw9DchWFj5sl3f+RbJniIjo+52aYWGwITf7laFxGH983Er5qiJGjGa1bcfeWneoncgwMcBBat5EO3HpZrq9uzVzAwPSapprqgmNTjvQwa+zuuwDT95ht0CZPFHvNni3MWgJKwtMPQc85HccahR5Yd7ZCIG5ko4RT6RZOsWyALiZMZeXXIL/0GW+g9C3vwuAQdt/JmpfvKRoEO6QXoT/OBSqWKLvLCSTuuM2N0hBLSEY3cxsnhtIVDMNSDB7AWuJMWQKi6nMgJiIRC+lUJp/+T2GwW5jb71UP5yw+4a6aVj5fYFBgl49kuqlhqgVEG9R5AGA4U/xtyIuaMxLEznAX3fd3xXdjxiyIWh97MNnLWqAF6h7ZZae2iNKEoTKAO5A9ysKksMmuL/YD2YHBSfP/njzhVs+u7YBwA9ny8OTrZqk4T+yRzkXReaZDIkm2qcc4H9jN3K+QLAbARVtWYvK/kIBVnuuSnjJuuWD4I1sB2VLiexRVlvohXoZbubuNIEd2syEwZh9dmrsnJ2evSSpCDPC8IDGa6pg0nqKYV/zzqEnfP2mWi66lcz2KDJx65mkp1q1D2/4vV3FwrLl4AZgV1gcThDm4dOcEhdKyh5n/nFl5Iz/9IrUl08zxu2rvXe9BdMQdiW5aMpLswCB6QGrtA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,135 +137,71 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-
-> On Nov 11, 2026, at 14:46, Qi Zheng <qi.zheng@linux.dev> wrote:
->=20
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
->=20
-> Long-term pinning treats explicitly CMA-allocated HugeTLB folios as
-> unpinnable, causing unnecessary migration or pinning failures.
->=20
-> These folios already own their CMA bitmap ranges, and memory blocks
-
-Commit message needs updating to bitmap as well.
-
-> overlapping CMA areas cannot be offlined. Allow HugeTLB folios with
-> HPG_cma to be pinned directly, including in ZONE_MOVABLE.
->=20
-> Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic =
-hugepages using cma")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Muchun Song <muchun.song@linux.dev>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Acked-by: Muchun Song <muchun.song@linux.dev>
-> Reviewed-by: Oscar Salvador <osalvador@suse.de>
-> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-> ---
-> include/linux/mm.h | 29 +----------------------------
-> mm/gup.c           | 31 +++++++++++++++++++++++++++++++
-> 2 files changed, 32 insertions(+), 28 deletions(-)
->=20
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index b0da9be413098..47d1d96bfc7fd 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2954,35 +2954,8 @@ static inline bool is_zero_folio(const struct =
-folio *folio)
-> 	return is_zero_page(&folio->page);
-> }
->=20
-> -/* MIGRATE_CMA and ZONE_MOVABLE do not allow pin folios */
-> #ifdef CONFIG_MIGRATION
-> -static inline bool folio_is_longterm_pinnable(struct folio *folio)
-
-I think David prefer to move this function first, then fix it in a =
-separate patch,
-right?
-
-Thanks,
-Muchun
-
-> -{
-> -#ifdef CONFIG_CMA
-> -	int mt =3D folio_migratetype(folio);
-> -
-> -	if (mt =3D=3D MIGRATE_CMA || mt =3D=3D MIGRATE_ISOLATE)
-> -		return false;
-> -#endif
-> -	/* The zero page can be "pinned" but gets special handling. */
-> -	if (is_zero_folio(folio))
-> -		return true;
-> -
-> -	/* Coherent device memory must always allow eviction. */
-> -	if (folio_is_device_coherent(folio))
-> -		return false;
-> -
-> -	/*
-> -	 * Filesystems can only tolerate transient delays to truncate =
-and
-> -	 * hole-punch operations
-> -	 */
-> -	if (folio_is_fsdax(folio))
-> -		return false;
-> -
-> -	/* Otherwise, non-movable zone folios can be pinned. */
-> -	return !folio_is_zone_movable(folio);
-> -
-> -}
-> +bool folio_is_longterm_pinnable(struct folio *folio);
-> #else
-> static inline bool folio_is_longterm_pinnable(struct folio *folio)
-> {
-> diff --git a/mm/gup.c b/mm/gup.c
-> index ebbfee09b7278..fdafc5a1b78ed 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -2219,6 +2219,37 @@ struct page *get_dump_page(unsigned long addr, =
-int *locked)
->=20
-> #ifdef CONFIG_MIGRATION
->=20
-> +bool folio_is_longterm_pinnable(struct folio *folio)
-> +{
-> +#ifdef CONFIG_CMA
-> +	int mt =3D folio_migratetype(folio);
-> +
-> +	/* These HugeTLB folios own the CMA memory, so they can be =
-long-term pinned. */
-> +	if (folio_test_hugetlb(folio) && folio_test_hugetlb_cma(folio))
-> +		return true;
-> +
-> +	if (mt =3D=3D MIGRATE_CMA || mt =3D=3D MIGRATE_ISOLATE)
-> +		return false;
-> +#endif
-> +	/* The zero page can be "pinned" but gets special handling. */
-> +	if (is_zero_folio(folio))
-> +		return true;
-> +
-> +	/* Coherent device memory must always allow eviction. */
-> +	if (folio_is_device_coherent(folio))
-> +		return false;
-> +
-> +	/*
-> +	 * Filesystems can only tolerate transient delays to truncate =
-and
-> +	 * hole-punch operations
-> +	 */
-> +	if (folio_is_fsdax(folio))
-> +		return false;
-> +
-> +	/* Otherwise, non-movable zone folios can be pinned. */
-> +	return !folio_is_zone_movable(folio);
-> +}
-> +
-> /*
->  * An array of either pages or folios ("pofs"). Although it may seem =
-tempting to
->  * avoid this complication, by simply interpreting a list of folios as =
-a list of
-> --=20
-> 2.54.0
->=20
-
+DQoNCj4gT24gMTEgTm92IDIwMjYsIGF0IDA1OjIzLCBHb3BhbCBNYWxhdml5YSA8Z29wYWxtYWxh
+dml5YTUzQGdtYWlsLmNvbT4gd3JvdGU6DQo+DQpIaSBHb3BhbCwNCg0KVGhhbmtzIGZvciB0ZXN0
+aW5nIHRoaXMgc28gdGhvcm91Z2hseSwNCmFuZCBmb3IgcG9pbnRpbmcgbWUgdG8gVHJhY2XigJlz
+IHJlcG9ydC4NCg0KPiBIaSBBbGlyZXphLA0KPg0KPiBJIGhhZCBzZW50IGEgZGlmZmVyZW50IGZp
+eCBmb3IgdGhlIHNhbWUgcmVncmVzc2lvbiBbMV0sIHJlcG9ydGVkIGJ5DQo+IFRyYWNlIGluIFsy
+XS4gSmFuIHByZWZlcnMgeW91cnMsIHNvIEkgaGF2ZSBkcm9wcGVkIG1pbmUuIEkgcmFuIHlvdXIN
+Cj4gcGF0Y2gsIGFsc28gd2l0aCB0aGUgdjIgY2hhbmdlIHlvdSBkZXNjcmliZSB0byBKYW4sIHRo
+cm91Z2ggdGhlIHRlc3RzDQo+IEkgaGFkOiBhIEtWTSBndWVzdCAoeDg2XzY0LCAyIHZDUFVzLCAz
+IEdpQiksIG1tLWhvdGZpeGVzLXVuc3RhYmxlIGFzDQo+IG9mIDIwMjYtMTEtMDgsIGV4dDQgYW5k
+IFhGUyB3aXRoIDE2IEtpQiBibG9ja3Mgb24gdmlydGlvLWJsaywNCj4gcmVhZF9haGVhZF9rYiAx
+MjggdW5sZXNzIG5vdGVkLg0KPg0KPiBUaGUgcmVwcm9kdWNlciBmcm9tIFsyXSAoMjAwMCBzaW5n
+bGUtcGFnZSBmYXVsdHMgMSBNaUIgYXBhcnQsIHRoZW4gYQ0KPiA2NCBNaUIgc2VxdWVudGlhbCBy
+ZWFkKSwgbWFqb3IgZmF1bHRzIGluIHRoZSBzZXF1ZW50aWFsIHBhcnQ6DQo+DQo+ICAgICAgICAg
+ICAgICAgICAgICAgICBiYXNlICAgYXMgcG9zdGVkICAgd2l0aCB2MiBjaGFuZ2UNCj4gIGV4dDQg
+ICAgICAgICAgICAgICAgMTYzODQgICAgICAgICAgIDIgICAgICAgICAgICAgICAgMg0KPiAgWEZT
+LCAxNiBLaUIgYmxvY2tzICAgNDA5NiAgICAgICAgNDA5NiAgICAgICAgICAgICAgICAyDQo+DQpU
+aGF0IG1hdGNoZXMgd2hhdCBJIHNlZSBoZXJlOiBvbiBtbS1uZXcgd2l0aG91dCB0aGUgcGF0Y2gs
+IFhGUyB3aXRoDQoxNmsgYmxvY2tzIHRha2Ugb25lIGZhdWx0IHBlciAxNiBLaUIgZm9saW8gaW4g
+dGhlIGluLW9yZGVyIHJlYWQuDQo+IFRvdWNoaW5nIDElIG9mIHRoZSBwYWdlcyBvZiBhIGNvbGQg
+MjAgR2lCIGZpbGUsIGxhcmdlciB0aGFuIG1lbW9yeSwgaW4NCj4gcmFuZG9tIHJ1bnMgb2YgMSwg
+MiBvciA0IGFkamFjZW50IHBhZ2VzLCBNaUIgcmVhZCBmcm9tIGRpc2sgd2l0aCB0aGUNCj4gdjIg
+Y2hhbmdlIChmaXJzdCBvZiB0d28gcnVuczsgdGhlIHNlY29uZCB3YXMgd2l0aGluIDEwJSk6DQo+
+DQo+ICAgICAgICAgICAgICAgICAgICAgICByZWFkX2FoZWFkX2tiIDEyOCAgICAgcmVhZF9haGVh
+ZF9rYiA4MTkyDQo+ICAgICAgICAgICAgICAgICAgICAgICAgYmFzZSAgIHdpdGggdjIgICAgICAg
+IGJhc2UgICB3aXRoIHYyDQo+ICByYW5kb20gNC1wYWdlIHJ1bnMgICAgIDI0MCAgICAgIDExNDYg
+ICAgICAgIDEyMDAgICAgIDU3NzQ4DQo+DQoNCj4gVGhlIDQtcGFnZSBydW5zIGF0IHJlYWRfYWhl
+YWRfa2IgODE5Miwgd2hpY2ggaXMgd2hhdCB0aGlzIGd1ZXN0J3MNCj4gdmlydGlvLWJsayBkaXNr
+IGdldHMgYnkgZGVmYXVsdCwgcmVhZCBhYm91dCA0OCB0aW1lcyBtb3JlLiBBcyBmYXIgYXMgSQ0K
+PiBjYW4gdGVsbCwgZWFjaCBydW4gbm93IGhhcyB0d28gbWlzc2VzIGFuZCB1cCB0byB0d28gaGl0
+cyBvbiB0aGUgbmV3DQo+IHdpbmRvdywgc28gbW1hcF9taXNzIHN0YXlzIGFyb3VuZCBNTUFQX0xP
+VFNBTUlTUywgYW5kIGVhY2ggdGltZSBpdCBpcw0KPiBiYWNrIGF0IHRoZSBsaW1pdCB0aGUgbmV4
+dCByYW5kb20gbWlzcyBnZXRzIHRoZSBmdWxsIDggTWlCDQo+IHJlYWQtYXJvdW5kLiBNeSBwYXRj
+aCByYW4gaW50byB0aGUgc2FtZSBhbmQga2VwdCBtbWFwX21pc3MgYXQgaXRzIGNhcA0KPiBvbiB0
+aGF0IHBhdGg7IHNvbWV0aGluZyBsaWtlIHRoYXQgbWF5IGhlbHAgaGVyZSwgYnV0IHlvdSBhbmQg
+SmFuIGtub3cNCj4gdGhpcyBiZXR0ZXIuDQoNClRoaXMgaXMgYSByZWFsIHByb2JsZW0sIHRoYW5r
+cyBmb3IgY2F0Y2hpbmcgaXQuIE5vbmUgb2YgbXkgdGVzdHMgaGFkDQpzaG9ydCBzZXF1ZW50aWFs
+IHJ1bnMgYXQgcmFuZG9tIHBsYWNlcywgc28gSSBtaXNzZWQgaXQuIEnigJlsbCByZXByb2R1Y2UN
+Cml0IGhlcmUgYW5kIHJld29yayB0aGUgcGF0Y2ggYmVmb3JlIHNlbmRpbmcgdjIuIEkgd2FudCB0
+byBjb21wYXJlDQprZWVwaW5nIG1tYXBfbWlzcyBoaWdoIG9uIHRoYXQgcGF0aCwgYXMgeW91IGRp
+ZCwgd2l0aCBvbmx5IHJlc3RhcnRpbmcNCnJlYWRhaGVhZCBvbmNlIHRoZSBmYXVsdCBjb250aW51
+ZXMgYSBsb25nZXIgcnVuIG9mIGNhY2hlZCBwYWdlcy4NCg0KSmFuIHRoYW5rcyBmb3IgYmVpbmcg
+T0sgd2l0aCB0aGUgbWluLW9yZGVyIGNoYW5nZS4gR2l2ZW4gdGhpcywgdjINCndpbGwgY2hhbmdl
+IG1vcmUgdGhhbiwgc28gSSB3b27igJl0IGNhcnJ5IHlvdXIgUmV2aWV3ZWQtYnkgb3Zlci4NCkni
+gJlkIGJlIGdsYWQgaWYgeW91IGNvdWxkIHRha2UgYW5vdGhlciBsb29rIGF0IHYyLg0KPg0KPiBP
+biB0aGUgRml4ZXMgdGFnOiB3aXRoIHRoZSBjb21taXRzIG9mIHRoZSBzZXJpZXMgYnVpbHQgb25l
+IGJ5IG9uZSwNCj4gY29tbWl0IDBiOWMwYWViYTkzOCAoIm1tL2ZpbGVtYXA6IGNvdW50IG9ubHkg
+dGhlIGZhdWx0aW5nIGFkZHJlc3MgYXMNCj4gYSBtbWFwIGhpdCIpIGFsb25lIGRvZXMgbm90IHNo
+b3cgdGhlIHByb2JsZW0gKDEgbWFqb3IgZmF1bHQgd2l0aCB0aGUNCj4gcmVwcm9kdWNlciksIGFu
+ZCBjb21taXQgOWIwZmNhYzNjZmU3ICgibW0vZmlsZW1hcDogZG8gbm90IGNvdW50DQo+IEZBVUxU
+X0ZMQUdfVFJJRUQgcmV0cmllcyBhcyBtbWFwIGhpdHMiKSBkb2VzICgxNjM4NCkuIFsyXSBpcyB0
+aGUgc2FtZQ0KPiByZWdyZXNzaW9uLCBpbiBjYXNlIHlvdSB3YW50IHRvIGFkZCBSZXBvcnRlZC1i
+eSBhbmQgQ2xvc2VzIHRhZ3MgZm9yDQo+IHJlZ3pib3QuDQo+DQpJIG9ubHkgdGVzdGVkIHJldmVy
+dGluZyBib3RoIGNvbW1pdHMgdG9nZXRoZXIsIHNvIEnigJlsbCBjaGVjayB0aGlzIGFuZCBmaXgg
+dGhlDQp0YWcgaW4gdjIsIGFuZCBhZGQgUmVwb3J0ZWQtYnkgYW5kIENsb3NlcyBmb3IgVHJhY2Xi
+gJlzIHJlcG9ydC4NCg0KPiBJIGFtIGhhcHB5IHRvIHJ1biB0aGVzZSBhZ2FpbiBvbiB5b3VyIHYy
+LiBUaGUgdGVzdHMgd2VyZSBzZXQgdXAgd2l0aA0KPiB0aGUgaGVscCBvZiBhbiBBSSBhc3Npc3Rh
+bnQuDQoNClRoYXQgd291bGQgYmUgZ3JlYXQsIHRoYW5rIHlvdS4gQ291bGQgeW91IHNoYXJlIHRo
+ZSBzaG9ydC1ydW4gdGVzdCwNClNvIEkgY2FuIHJ1biB0aGUgc2FtZSBoZXJlIHdoaWxlIHdvcmtp
+bmcgb24gaXQ/DQoNCkJlc3QgUmVnYXJkcywNCkFsaXJlemENCg0KDQoNCg0KDQoNCg0KDQoNCk7D
+pHIgZHUgaGFyIGtvbnRha3QgbWVkIG9zcyBww6UgVXBwc2FsYSB1bml2ZXJzaXRldCBtZWQgZS1w
+b3N0IHPDpSBpbm5lYsOkciBkZXQgYXR0IHZpIGJlaGFuZGxhciBkaW5hIHBlcnNvbnVwcGdpZnRl
+ci4gRsO2ciBhdHQgbMOkc2EgbWVyIG9tIGh1ciB2aSBnw7ZyIGRldCBrYW4gZHUgbMOkc2EgaMOk
+cjogaHR0cDovL3d3dy51dS5zZS9vbS11dS9kYXRhc2t5ZGQtcGVyc29udXBwZ2lmdGVyLw0KDQpF
+LW1haWxpbmcgVXBwc2FsYSBVbml2ZXJzaXR5IG1lYW5zIHRoYXQgd2Ugd2lsbCBwcm9jZXNzIHlv
+dXIgcGVyc29uYWwgZGF0YS4gRm9yIG1vcmUgaW5mb3JtYXRpb24gb24gaG93IHRoaXMgaXMgcGVy
+Zm9ybWVkLCBwbGVhc2UgcmVhZCBoZXJlOiBodHRwOi8vd3d3LnV1LnNlL2VuL2Fib3V0LXV1L2Rh
+dGEtcHJvdGVjdGlvbi1wb2xpY3kNCg==
 
