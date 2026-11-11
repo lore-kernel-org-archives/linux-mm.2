@@ -1,144 +1,143 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28B50606A32E
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 10:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C7B7606A8AA
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 10:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JrTLwSLE
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=bjvfla5w
 Received: by kanga.kvack.org (Postfix)
-	id A4C906B05B9; Wed, 11 Nov 2026 05:30:40 -0500 (EST)
+	id BE28F6B00EF; Wed, 11 Nov 2026 05:38:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A24306B05BA; Wed, 11 Nov 2026 05:30:40 -0500 (EST)
+	id BBA3C6B05B0; Wed, 11 Nov 2026 05:38:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93A406B05BB; Wed, 11 Nov 2026 05:30:40 -0500 (EST)
+	id ACFA96B05B4; Wed, 11 Nov 2026 05:38:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 72D636B05B9
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 05:30:40 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EC1CBA0278
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:30:39 +0000 (UTC)
-X-FDA: 85422469398.21.6134C07
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 374F8180005
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:30:38 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JrTLwSLE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8326F6B00EF
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 05:38:52 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1E8CD80269
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:38:52 +0000 (UTC)
+X-FDA: 85422490104.04.27673C9
+Received: from mta1.migadu.com (out-224.mta1.migadu.com [95.215.58.224])
+	by imf29.hostedemail.com (Postfix) with ESMTP id EB07D120004
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:38:49 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bjvfla5w;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.224 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794393038;
+	s=arc-20220608; t=1794393530;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KxrhFMa8/sp9xXjPYISbhRzyRkp2BmT2lD81VC2uH5g=;
-	b=lU1QguqoD3RLH4BhSCCXKs3x90P7tfNrOXGSmUeu5eyXLDv1ICn23S5mH6I5xrBnwLpLxd
-	jy3eb2z8yrcO/laftzCyjgZuths2T+mfC4HmJusyw/D4vwxz6IVXDG+GPLhDTqM0Iz699E
-	LU3Q5nIR6vagO4zOjNdmQ5d1LFKz+cs=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JrTLwSLE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=xDU+VUQuiVqA+errFgpqHKql5l47PsMQESWCLQkI4gc=;
+	b=2RaJYyWIvP60gZMKBfgc3mBZsiM8RMwJTAL1mda0dxA3smSz6cVNghXYEeLe2VgglH+FAm
+	gZ9xKC3c3GrY82i5nzUc4X8b8x8TJeMPVcRwvmoH/z/25z7EGfHLwF0SldnQwprk5StUJ3
+	x8NX4iCu0+kEG8+J96FBDI7RTiW6fQQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794393038;
-	b=qNfplCBeXV2K19P2ZNaZM+9HbVoeWr+wrjA6cn3K+vN8uXVyDioQjF0C3WoNv2aI9IgW4L
-	B3AByQ6/GFGgy1xatKxNxtk3+hwz1CxOIMHN89AoojHcVRpUJU4EWi1RSXj9YpR1KMhAOT
-	1W2rm7Xgppta/0Ae0W0Q74e1ALIsn1A=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B350B63C31;
-	Wed, 11 Nov 2026 10:30:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB69F1F00A05;
-	Wed, 11 Nov 2026 10:30:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794393037;
-	bh=KxrhFMa8/sp9xXjPYISbhRzyRkp2BmT2lD81VC2uH5g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=JrTLwSLEd+YvzAemdyR51xbG4OegeC7uVGwCapD1h/0s5JMcEnFwWTDyHw8hxhFYc
-	 Yceo4rD3o841E85q5UtJ63r9LzJ+/IPSvgm54TH6mNqnP/tb0WyhsqEDBspvr1nMgU
-	 Hu4Q34UrszFwNjN+s0A0uWuX0SBJx41Hhlkwlrl2IZ2jWWBFyeM5f6ONI7me+XJd2x
-	 tDLrSIQN0h+XzgIJDmF0lUAShZ6b6bEeZ/g2Px2DPD5n88Mxnvvk5FF5+ArOFgekE3
-	 KuBbgHWL/Op3aP1kzP2GjMevvmUd+kFCCVz2h+/uqELmyOPdyL+R577xO/dD9peHYL
-	 sFm19EJSuqEpQ==
-Message-ID: <e66b6c19-95d2-459a-926c-8429df693acb@kernel.org>
-Date: Tue, 10 Nov 2026 14:06:23 +0100
+	t=1794393530;
+	b=SkP9fJxfR/gK2dyToLMmOwKy25gjaAawbSxLZr/jvlhUgi5CMWZDHy01KJeqqV4wL/z6M5
+	p43NXk/FOzt3RrM3aNf2O3H6CDgRz1SNeFGUg1JqnrWReUDE6tFap+XUedKHDu5sDc5QFa
+	no3JAc8moiKmxd9BrYPco0VvQU0Gsp4=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bjvfla5w;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.224 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=Pgs9Rl2H9Mrm9v98ZZj54dqFp+ymM4kJacjilJCmcW0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794393528; v=1; x=1794998328;
+ b=bjvfla5wO8wtHYY4gSPf478Ha6EcgBkojYdgSSSWnEhPH2JZVAQ33yT1o3xNJVDqUw7YvvH0
+ 3EFHYlF/woFlHpDarnibVMC3p+oYEJxF6nosE0wGj9PNePOfrbD+l/9/tfEvKHC0UVKE/X/jmiB
+ gJmazx4HcncKYSXjLw154HKc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id 272d3a1a2ff3a6d3;
+	Wed, 11 Nov 2026 10:38:46 +0000
+X-Mizu-Trace-ID: 272d3a1a2ff3a6d3
+X-Migadu-Flow: FLOW_OUT
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	JP Kobryn <jp.kobryn@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	davem@davemloft.net,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	KP Singh <kpsingh@kernel.org>,
+	Tao Chen <chen.dylane@linux.dev>,
+	Mykyta Yatsenko <yatsenko@meta.com>,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Anton Protopopov <a.s.protopopov@gmail.com>,
+	Amery Hung <ameryhung@gmail.com>,
+	Tobias Klauser <tklauser@distanz.ch>,
+	Eyal Birger <eyal.birger@gmail.com>,
+	Rong Tao <rongtao@cestc.cn>,
+	Hao Luo <haoluo@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Jeff Xu <jeffxu@chromium.org>,
+	mkoutny@suse.com,
+	Jan Hendrik Farr <kernel@jfarr.cc>,
+	Christian Brauner <brauner@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [RFC PATCH v2 0/2] memcg_ext: dynamic memory.low protection requests
+Date: Wed, 11 Nov 2026 18:38:14 +0800
+Message-ID: <cover.1794393349.git.zhuhui@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/6] mm: gup: introduce gup_unshared_pages()
-To: Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>,
- Rik van Riel <riel@surriel.com>, Yuan-Hao Hsu <aa9736195201@gmail.com>
-References: <20261109-refactor_gup_fast-v3-0-2aaef02df0e1@arm.com>
- <20261109-refactor_gup_fast-v3-5-2aaef02df0e1@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261109-refactor_gup_fast-v3-5-2aaef02df0e1@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: gjt9mszonrw73gp5e7aa36xn515c55zh
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 374F8180005
-X-Spam-Status: No, score=-16.2 required=3.0 tests=BAYES_00,DATE_IN_PAST_12_24,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: kbbo6g9z6h3acgzzi3rdfmnp3k1sxqs9
-X-HE-Tag: 1794393038-553400
-X-HE-Meta: U2FsdGVkX19o6BzS8HiYwE9jP4sqSs/0z4RJMztGY8ZD++QO++OQ7IsBXEI7setnsvxQURTNuyJdAuv9k7ETUKbWc8nc7+P5ErDQrRVx3t4gPEh1H6KYPRBi+FOAit6UWGZD0oNSOmWVSkmMhnJTACN7qocdCIHSVJ0eTRA9EM9DxjahsJeOZFD3DuUPTb/oyTHxdxHS6o4JkUNKqBzyNVv4sGjoafpEcwuhShm5mk/zR6/W0b2GAcX/wRMKkiiIEHIamPJ4e7zVbIRqa+tZ//sgrYUrWHJAjKjJ5n5GNnC+jgiFGWy0+PWVUhcKkd1A1bzsAN6Tvy/Rw3edNdlwQK8e3unv5wxa/EE+t6qEdudYE/1/3dB7fo4lZ3F4WQ1k62nQ0UQli22Wxr8lsj4Rf1hpqDkqZ47NFc5UlAO3OsaXhgWYsR2tEaoeyK2UpU9QKtNjmESN1u7pY31XX8YVpdYezX7dPnOxOA296zKq6olqEgOcct9uMScNP/N1WKK4Yfl198m8rBm9IbfFffgV50u86sR1zV5xkaZ4wuEWa2E9gACaEV0OgL/cwNe+N3jaZEXtDAeec+QZ6gM0lTVjWhyfYvV1GuFg6C4AVyrhR0whNgSp0JG8IET3YYNmcDUqehyOfT6tw7V8+YjP1ey4WMV7vo8rfVgdWT53+WVsOapH/Lb2W5FIkcXElDm70jCgVwY6Im0YwPkq2n+sXuWyAFC4GTPy+WcSryQ7fqyFrxwl+lYb49kpa5bth5PiufbTdPcSHwR93NedNK2e3WL6ItVqTNFXbNsQa1d/Cp4KTB76FB9rEdMOZxmAzQmbPsEHEzv/rFWZbwnJEhs99KK4EBdwOAVo2sgz26D8JazGLdhBv9p7GE/jVa3GTY3YltLhpVGApVQ4OiFATpXr5yTyANfsSl4UzyghHSMwBB3/svJF7HnBEwzNjdrgztMXE2df8zOyUSuBIi/vfUTSX6t
- lfG3H9hs
- M2ACSOVFj7spwMcqxSE7BSzvZZMohcPK7PRyCUIYXk+bFWkD4Yq6OVeyCPxmUzXR0WWwzEoMwPHh9u9uoBw19fTO0cqYgH1YzkanIg3vZltFumGcHA0V189u3nZsB1vWOS1Po9aOVdwZ+rBFp8IUTouDV4JdKJgQeMwxmMBfD4zql/CnX72U9Z159qylZ+4Hn56732w5Gr04gIDTQ+9HnCqUaM8IrmlqRvWGXHhH8j3MLqwjerqkK88Ckwwl4ZZzW71uv5W1UMupC/7VB3ibs+a0JIL68ogRsYFnUKEEkWDgnI/xaJhsFOXapQjbAzc7m2+rcuuS7HPefyas5vhcikUNOcGQoYxuGt7KQo2Ui/PXvn4c=
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: EB07D120004
+X-HE-Tag: 1794393529-829007
+X-HE-Meta: U2FsdGVkX1+hDtTAu/nK3pk6v34oOlnO8iN34BVUxSVwK4r2MYTdKPEYju7CtQiD+IJsFX1WwGoo4SXmEMKrFCmPRIdG6e7N7H/qdao1EIfgQy4PtoBeB7rwNZemlnmb9cNtTu1QzmD3ZgjgYOw4Wr2k0cp2mDMJ/pvGvjhYBjg9fmGGQsfCcryuboeJJCe+XZS6Wbb5N8IkfCH/EEQ2gRkxfayY7ZolDfzMdDtHA5tfoeNjz3p623Ytyu9EtwiLctAw00pQrFIs1Sb0PPjVzBHEUx5cu3Yn5KnyS3GQPdbCpxBPKKbwO93/+ac5os6m3wr/YPskrqNf8t2GVoPow3r7cuYxksUpanHnXqGK8XGe4D28J9uLFwmXUN2Xj/WYKWz56Y677sY8YmcwqeZTybPyYT/kLiWIjdqRstWn1W3LjVBdQTKHAl9KBRcBmMTp7xN5kaz2iRJjE4QAppK7d9GGC6ToUHpVDEQdvN/QBeyEq6Le13mxGL+jtPwfjiDP8jp+rJ698BNx9oySvlgz+81xn1g/a/Robu5qxb8vhsaxlyvQUNZVjl2a6btznmo2L6VgVbRy7gYaVKuaqn/I5qOFHyRGiTJOnTXal2CC3FImhLkmiI9EDn6ySEnrE0tr8AoDXo+BicFz0ZRCBNjb4FbkimNPbV2B9g4GEvMLznECCULDMS7wWOuyOyQ4ETgbCxq5SAr+wek6Xgdzo/UuGx8DF9FXYzoBWuXywdEW4cFZGDrv3KNWgKTpwWXNziFdrYLuxbgd9tG4pwOcLb6lRNozfyAgNTHpm4qd8H9Dp/UrteAlkz+zf5FU3MtMjtVr4M9mPYauTbP4eeiNI2lnwachoU+s3BnprTbT/ccXPe0LJ2IEKt09mspbTRLJJsaywBTwybK2Yb4525SwxjN+oUFhDiPlb8juFKS2zAX3KQCqqAnpsIyQTgNlextyxwtzko/sZnk9qXpDS1e0z+E
+ VSg7gXEP
+ vDpVhbfJLM8GK+ArGg5RdLMOQrh5P+E/8C5XH1ZUvx+mDnLWHD5antNbhIrkpHWiP2lBsYq7WOtpCWo2tDhLJRhqXKKYZsptJgK1IFjbiGskgAjNxXxS6eUg43ZIKnh693VT6RbwTtpXWX60S9RvIO7WtQHTIfM2dlrskODOHZtC7iwywSfJ9+/wMfwUqYPgKEmAi7RehstrEUCUrJK1JdAFTe0PGIJjPpThseaK5MeHsgsXCWCO2veFU7FeyPr3o3pKXTlm4M5i9OfAY80b6K0P4+YOxALg/gaJJRsJmthqyPjNhNol5cmqRANvbWZ7WTHAQqa3x4zVRAIoZtcSiUIeabrLmgQjCZc4+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,61 +146,203 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/9/26 13:32, Yeoreum Yun wrote:
-> This is preparatory patch to make gup_fast_pte_range() batchable.
-> 
-> Introduce gup_unshared_pages() to count consecutive pages within a folio
-> that do not require unsharing, and use it to implement gup_must_unshare().
-> 
-> Also add a folio argument to gup_must_unshare() so callers can reuse an
-> existing folio and avoid the compound_head() call implicit in PageAnon().
-> 
-> There is no functional change.
-> 
-> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> ---
->  mm/gup.c | 111 +++++++++++++++++++++++++++++++++++++--------------------------
->  1 file changed, 66 insertions(+), 45 deletions(-)
-> 
-> diff --git a/mm/gup.c b/mm/gup.c
-> index bfe83ce1411d5..c863bae33e2f1 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -633,58 +633,39 @@ static struct page *no_page_table(struct vm_area_struct *vma,
->  	return NULL;
->  }
->  
-> -/*
-> - * Indicates for which pages that are write-protected in the page table,
-> - * whether GUP has to trigger unsharing via FAULT_FLAG_UNSHARE such that the
-> - * GUP pin will remain consistent with the pages mapped into the page tables
-> - * of the MM.
-> - *
-> - * Temporary unmapping of PageAnonExclusive() pages or clearing of
-> - * PageAnonExclusive() has to protect against concurrent GUP:
-> - * * Ordinary GUP: Using the PT lock
-> - * * GUP-fast and fork(): mm->write_protect_seq
-> - * * GUP-fast and KSM or temporary unmapping (swap, migration): see
-> - *    folio_try_share_anon_rmap_*()
-> - *
-> - * Must be called with the (sub)page that's actually referenced via the
-> - * page table entry, which might not necessarily be the head page for a
-> - * PTE-mapped THP.
-> - *
-> - * If the vma is NULL, we're coming from the GUP-fast path and might have
-> - * to fallback to the slow path just to lookup the vma.
-> - */
-> -static inline bool gup_must_unshare(struct vm_area_struct *vma,
-> -				    unsigned int flags, struct page *page)
-> +static unsigned long gup_unshared_pages(struct vm_area_struct *vma,
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-Besides the function name, LGTM.
+This is v2 of the RFC "memcg_ext: dynamic memory.low and memory.min
+protection" [1].  It sits on the memcg_ext base [2], which adds
+bpf_memcg_ops - a struct_ops type attaching memory controller policy to
+a cgroup - and lets a BPF policy take part in memory.low protection:
+not by deciding whether reclaim skips the cgroup, which is what the RFC
+did and what the review correctly rejected, but by requesting
+protection and going through the same arbitration as a write to
+memory.low.
 
-gup_pages_requiring_unsharing() ? Don't quite like it, but something along those
-lines.
+Two things changed since the RFC, and both are answers to the review.
+
+THE CEILING
+
+As posted, a policy could make reclaim skip a cgroup whose usage was
+above what its parent affords.  That defeats the cap
+effective_protection() applies at subsequent levels precisely to keep
+delegation safe: a delegated tenant can attach a policy to its own
+cgroup, so it could grant itself protection its parent never gave.
+That was a defect in the interface, not a property to defend.
+
+In v2 the hook no longer decides anything; it requests.  The request is
+collected before the effective value is derived, and what a cgroup
+claims becomes the larger of its memory.low and the request - capped by
+the parent's effective protection and shared out with the siblings by
+the same code, on the same inputs, as a declared value.  A request can
+move protection around inside the parent's budget; it cannot lift the
+subtree above what the parent affords.  Anything a policy can request,
+a write to memory.low can request too.  What is left to the policy is
+when and on what evidence the request is made: every pass, at the point
+where the effective value is about to be derived, rather than between
+passes.
+
+min_policy is dropped rather than converted: this round concentrates on
+memory.low, and the interface goes from two members to one.  A
+memory.min counterpart can be revisited later.
+
+The rework also removes the memcontrol.h change entirely:
+mem_cgroup_below_low() and mem_cgroup_below_min() keep their signatures
+and the series no longer touches the protection checks.
+
+One cost is stated here rather than left to be found: the callback now
+runs for every memcg on every pass - with MGLRU that includes
+lru_gen_age_node() walking every memcg on the node - where the RFC
+asked only about the cgroups reclaim had found unprotected.  With
+nothing attached, a call is a page counter read, a static key check and
+a comparison against the stored request.  Measured under the reclaim
+storm of the demonstration below: ~56k hook calls in a 30s window, 52ns
+average per call, 2.9ms of in-hook CPU in total - 0.01% of one core.
+
+THE MEASUREMENT
+
+The review asked why the same cannot be achieved by changing
+memory.low from userspace - the same question Michal asked on the v7
+thread [3] in May.  This time the answer is a measurement rather than
+an argument.
+
+The claim under test is a window, not a throughput.  Direct reclaim
+runs in the allocating task's own context, and shrink_node_memcgs()
+examines memcgs one at a time, calling mem_cgroup_calculate_protection()
+per memcg.  An agent cannot do anything for the memcgs a pass has
+already examined, and for the ones it has not reached, a concurrent
+write to memory.low is picked up only once the agent has been woken,
+scheduled, read memory.stat or memory.pressure, decided and written -
+in a burst that window holds at least one full pass, which is where the
+working set goes.  After the rework the hook sits at the point where
+the request is collected, so it is asked on that pass.
+
+Method.  Three implementations run the same integer policy on the same
+evidence and differ only in where the decision runs:
+
+  U   userspace agent: preads the victim's memory.current on a 5ms
+      timer and pwrites the sample to memory.low.  Made as strong as
+      I can: pre-opened fds, no allocation in the loop, and its own
+      cgroup with memory.min so it survives the pressure (disclosed).
+      A PSI-poll trigger variant exists and was measured too.
+  B1  a bpf_wq callback on a 5ms timer reads the same counter through
+      bpf_mem_cgroup_usage() and stores the verdict; the low_request
+      hook executes it.  The control for "the action runs in the
+      kernel".
+  B2  the low_request hook decides from ctx->usage - the value the
+      kernel read for this very pass - on every protection pass.  The
+      only arm that claims something userspace cannot do.
+
+The shared evidence is the fall rate of the victim's memory.current:
+reclaim uncharges it synchronously in-pass, so a falling usage means
+"the victim is being stolen from" with no statistics-flush dependency.
+The textbook channels were tried and measured blind: workingset
+refaults need the shadow entry to survive eviction (96M stolen from the
+victim counted as 2 refault pages under the filler's shrinker churn),
+and pgsteal is only readable from flushed counters (a whole burst
+window passed with the in-hook arm seeing zero movement while the
+victim lost 19k pages).  The threshold is a rate - pages per second,
+not a per-sample fall - so the ~10x spread in sampling frequency
+between the arms does not bias the comparison.
+
+Workload.  Under T (memory.max=160M, memory.low=64M, swap off): a
+victim A (32M file working set re-read on a 500ms pace, hooks
+attached), a filler B (112M of file cache rewritten continuously - a
+renewable flow of cold pages that keeps satisfying T's reclaim while A
+is protected), and a one-shot 64M anonymous burst C that is
+unreclaimable without swap and raises A's share of the scan.  Metric:
+A's pgsteal over a 30s window.  Protocol: 15 rounds, arms in rotating
+order, a sanity gate every round that verifies the protection chain
+before any round counts, cache dropped between runs, every knob
+identical across arms and rounds; then a sweep of U's trigger interval
+(1/5/20/100ms timer and PSI poll, five repetitions per point, reported
+as medians).  QEMU VM, 8 GiB, no swap, booted with psi=1.
+
+Results (medians [IQR], 15 rounds per arm):
+
+  stolen from A    B2 452 [339-755]    U 3723 [2825-4730]    B1 3960 [3211-4853]
+
+  - B2's median is 8.2x below U's and 8.8x below B1's, and the IQRs do
+    not overlap (Mann-Whitney p < 1e-4).  In 14 of 15 rounds B2's
+    worst (968 pages) stayed below both other arms' best round
+    (2051 / 2615).
+  - The tails overlap only where the kernel itself broke protection:
+    B2's outlier round logged 920 MEMCG_LOW overrides, and B1's own
+    outlier - 9303 pages, the worst single round in the dataset -
+    logged 352.  That is memory.low's documented soft ceiling: reclaim
+    legally overrides it when T's max cannot be satisfied from
+    unprotected supply.  It applies to every arm and to any policy
+    alike; memory.min is the hard guarantee and is out of scope here.
+  - Overhead: B2's entire in-hook cost is 2.9ms per 30s window (~56k
+    calls at 52ns average, 0.01% of one core); U's agent costs 140ms
+    for ~6.7k decisions and 187 memory.low writes; B1's hook is 1.7ms
+    plus ~7k wq timer callbacks whose CPU is not in that figure.
+  - U and B1 are statistically indistinguishable.  Moving the action
+    into the kernel buys nothing by itself; what makes the difference
+    is deciding at the collection point.
+  - The sweep answers "poll faster".  U at 1ms leaks a median 1308
+    pages at 374ms of agent CPU per window; at 5ms, 5330 at 138ms; at
+    20ms, 7746 at 34ms; at 100ms it engages in only 2 of 5 windows and
+    by then the drain has happened.  B2 beats U's best point (452 vs
+    1308) at 1/129 of that point's CPU.
+  - The PSI-poll trigger never fired in any window - a publishable
+    negative result, not a bug: the victim stalls 0.3-0.6 ms/s, an
+    order of magnitude below the 10 ms/s trigger, while the filler
+    stalls 39-44 ms/s.  The cgroup being stolen from is the last place
+    PSI-on-the-victim can see it.
+  - Time to first protection is statistically identical across the
+    arms (medians 2.1-2.8s): under this pacing it measures when a
+    drain episode happens, not how fast an arm reacts inside one, so
+    I do not rank arms by it.
+
+In short: the same policy, decided at the collection point instead of
+out of band, cut the victim's losses ~8x at 2% of the userspace
+agent's CPU, and beat even the agent's most aggressive polling point
+while costing 129x less CPU.  The scripts and the protocol description
+are in [4]; the raw CSV rows and per-run logs behind the numbers above
+are at [5].
+
+THE PATCHES
+
+1/2 memcg_ext: arbitrate low protection requests like memory.low
+    struct page_counter grows low_req; low_setting() becomes
+    max(low, low_req) everywhere protection is derived; and the
+    bpf_memcg_ops callback moves from mem_cgroup_below_low() to
+    mem_cgroup_calculate_protection(), so the request is collected
+    before elow is computed.  The request is recomputed every pass and
+    reported as none whenever no program can run, so detaching the
+    last program drops what it asked for on the next pass - nothing to
+    clean up.
+
+2/2 selftests/bpf: Add bpf_memcg_ops protection test
+    A three-level tree, a policy on the grandchild requesting its
+    current usage, memory.low on the middle cgroup as the budget, and
+    reclaim from the top.  Three budgets, same request: with 0 the
+    effective value stays 0; with 2M an 8M request comes back capped
+    to 2M and reclaim still goes into the victim; with 16M it is
+    granted in full, reclaim skips the victim and memory.events low
+    moves.  The ctx contents are checked along the way.
+
+[1] https://lore.kernel.org/all/cover.1793086858.git.zhuhui@kylinos.cn/
+[2] https://lore.kernel.org/all/20260921192559.2619635-1-shakeel.butt@linux.dev/
+[3] https://lore.kernel.org/all/cover.1779760876.git.zhuhui@kylinos.cn/
+[4] https://github.com/teawater/memcg-async-reclaim/tree/memcg_ext_20261109
+[5] https://github.com/teawater/memcg-async-reclaim/tree/memcg_ext_20261109/log/run-20261111-071332
+
+Hui Zhu (2):
+  memcg_ext: arbitrate low protection requests like memory.low
+  selftests/bpf: Add bpf_memcg_ops protection test
+
+ include/linux/bpf_memcontrol.h                |  97 +++++-
+ include/linux/page_counter.h                  |   8 +
+ mm/bpf_memcontrol.c                           | 155 ++++++---
+ mm/memcontrol.c                               |  30 ++
+ mm/page_counter.c                             |  51 ++-
+ .../bpf/prog_tests/memcg_ops_protection.c     | 297 ++++++++++++++++++
+ .../bpf/progs/memcg_ops_protection.c          |  82 +++++
+ 7 files changed, 678 insertions(+), 42 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_ops_protection.c
+ create mode 100644 tools/testing/selftests/bpf/progs/memcg_ops_protection.c
 
 -- 
-Cheers,
+2.43.0
 
-David
 
