@@ -1,124 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2CB60A3812
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 04:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D5DD606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 05:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=cX29iSql
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=SK4bRdud
 Received: by kanga.kvack.org (Postfix)
-	id E54456B05B4; Tue, 10 Nov 2026 23:45:58 -0500 (EST)
+	id 440D06B00EF; Wed, 11 Nov 2026 00:29:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2BB56B05B5; Tue, 10 Nov 2026 23:45:58 -0500 (EST)
+	id 3F1936B05B0; Wed, 11 Nov 2026 00:29:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D44A96B05B6; Tue, 10 Nov 2026 23:45:58 -0500 (EST)
+	id 308186B05B1; Wed, 11 Nov 2026 00:29:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B0DF26B05B4
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:45:58 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 351ACC0209
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:45:58 +0000 (UTC)
-X-FDA: 85421600796.28.E63AD09
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5B55780002
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:45:56 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=cX29iSql;
-	spf=pass (imf02.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.46 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 06EFA6B00EF
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 00:29:06 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6D68C14017E
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 05:29:06 +0000 (UTC)
+X-FDA: 85421709492.13.DF98205
+Received: from mta0.migadu.com (out-40.mta0.migadu.com [91.218.175.40])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D7F331C0002
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 05:29:03 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SK4bRdud;
+	spf=pass (imf18.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.40 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794374944;
+	b=uAA07Y2hswM+hcrOkFAgZWq23teM621+PRWqYA+ruaG7L4XXch0qziycZLliL+sFGfZ4BT
+	Sxy9duGDvNtd1cfOW+EYK4iiVO++rNHsn5h5nQqyRD0kY9R7uq/PdJOAFzcoY3ZZVOPqFK
+	MOzRAFssTsJqrfjpQBdJK4OHt7kXfxI=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SK4bRdud;
+	spf=pass (imf18.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.40 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794372356;
+	s=arc-20220608; t=1794374944;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OxBc7udt7i3/+ft4HX8pY2dwrc5+goW7dVLwPsErWuM=;
-	b=bWmxJfzes0v3dvwm1e2Ubp0dyIdnQO9rsMM3WawIUwh7Si0fv1HmlpkmEJECZx3puHW8C5
-	7jC9/Q2YmgWB605GrGXHwcfgAuqqOfIDQl1O88aJcVr1JclEe9mDXGiDh8gCPx/AWdVzBc
-	B7d8CRWEVG1nRCZSguEkOT9ATRbjai8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794372356;
-	b=VRBNohN9VrOxgrQ1SOnLaGRB8ZtoZ2C6Lhu65OxRQwd8D4jUmDncEZ1E6DYbpMrvThX+n0
-	rP06iLgg488KzB2SbByC3CEgICh1DWEgW2CUHBvNyTsYTPcnXIotB46Pt9Gd80GnUCGmZH
-	BSV1eg8kwzmxXXW/YHh++8bMN0mLPWg=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=cX29iSql;
-	spf=pass (imf02.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.46 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3b10ca4e3f9so1598542a91.0
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:45:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1794372355; x=1794977155; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=OxBc7udt7i3/+ft4HX8pY2dwrc5+goW7dVLwPsErWuM=;
-        b=cX29iSqlWN7OH6O4tu8VilY+rP/c9l0p6IknrVNm4W39PXn2YL1L/ZcKffUm5d8CzU
-         4XufBNn/kSbo9lHINwGOXD9P/9NEFE0uxwVj4IdCtXaNanU5sNzw3MRjcLRG0zQ6EbdI
-         CcKbbWlKhGIKQplQhdpDuz9y/fCH+aceV/nqc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794372355; x=1794977155;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OxBc7udt7i3/+ft4HX8pY2dwrc5+goW7dVLwPsErWuM=;
-        b=tuZamnXsrMCP/C6G3x7H2PkOgZOWY+EPIkJg1AOE7PUA/EKxpb26mRI/XzwHnZkLq8
-         hdKAIjuAlFLI8FiY3rbsGgJOP4hI8Xs8WjbBAjc7zAVEW5xJDkU2zVmqZiXU3ZzEDTO8
-         9AHcWojzFbeGdUNfW8NhD/NVYYe0Iw2c4aKX8SFWqzVMRgd79haxUpVYs9WaORNlGkW4
-         aPqOloDGCg3Iut9n9Sh/NQ3/O8xeTr8vuu8gh5ITVae4xhgp70kip1ujeFqkob+/AcgN
-         453D2PF2gzw3/+IwL8i622K8Nakpk29FddYPD38FoVKTfTehpsBwuGglICzS2O4nVPZu
-         iA5g==
-X-Forwarded-Encrypted: i=1; AL+hErFdgqT0p2CVFzGFhx95U292sDngYHCXmQur3V4msLuL8dn8r02KlpXms9LCREEnhLlynWXoNdSfIw==@kvack.org
-X-Gm-Message-State: APuU4Z+jg8wKo8U1FrtrdUHU2xfaDLvuW75MSiTi/aDk+qME33WohXUE
-	GpW3sjvGEcOOsxdnGznNQmDH/SKIbP4mOGkhj8h3zrQBfAEqo4gajM3H9rKjTbdGcA==
-X-Gm-Gg: AYBFou3+WnTsswWBzn+NA2+Q+iUhen0fCnOTNnTOl2qxqNlUzoWDddHwFaaytSJQC9I
-	03l3c2UJdx6ixOqGdw4vEvjisbXnzcqOR8FG8shhhMn5ZGGgPsb3DT2Lk714mORlQIppaOFXmD0
-	KgyIt8vydPpnezguq/hrM1D7qmZBDotCTptqc4IPInoZ6VaTkLVlL4CYiRjjaTizrIV3veyEmlq
-	DHvUjvCaz/zpPj5ucuCJL1FLQ/0ubFTpn/Z0p6RjsRZaDrX6LCdcX8H9x6TNa7qI7UoMgIedMUz
-	PX7nCSoLxHQ+Xh+F1oK191NZ4KpVB7r6byYfHhhgeLy1bp6EquqfV483FV52wUXWYwKpDY4To1q
-	2n3fo1hekF//SRxEFLFuG7Z9R5s5DLPfzJj9vwjNSLanUHPBhbzPw+zn/q0GfVahKURfw+b0ENc
-	ONoWf8N/ojRkh8Jg5yALi1gu0sHWNqfTO297iupH48RDXr76oAVvy0lTLkE++b/nZOq31ENcXSC
-	hZC4DJNiRwtl/4bkGvULjbmcBi8oIyorNSuC6imgrUAYyIYcC7mPWaOzRhGvipUWbTwfZQu4Tvo
-	lmxAHeAvQK2v0gtW54kP2p91/9EB9RGMKBXvCfqc3Q0uY0cLIHBzeaXh/k/No7jUOWVgzn6y+nW
-	9l/+UiK0ANSavYVo=
-X-Received: by 2002:a17:90b:534e:b0:3ac:8dfe:8ec9 with SMTP id 98e67ed59e1d1-3b182f63112mr1181106a91.47.1794372355253;
-        Tue, 10 Nov 2026 20:45:55 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:ad6a:b446:df00:78dc])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b17db85a9bsm2707226a91.14.2026.11.10.20.45.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 20:45:54 -0800 (PST)
-Date: Wed, 11 Nov 2026 13:45:51 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, 
-	Minchan Kim <minchan@kernel.org>, Richard Chang <richardycc@google.com>, 
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 08/11] zsmalloc: encode 1-based obj_idx so valid obj
- is never 0
-Message-ID: <avPy0QUkvtzNy8aA@google.com>
-References: <20261110054836.1515030-1-senozhatsky@chromium.org>
- <20261110054836.1515030-9-senozhatsky@chromium.org>
- <CAKEwX=OhvH80f-6emK0fBhbm2d4Er0rQ8oXX=FmfG0vrTdvZdA@mail.gmail.com>
+	bh=bwksgTw9I8PjraaWt8ZlC3K1PQ8zcFO2I1Y4bvOFsQo=;
+	b=fXUA7dc7f2flZ5ZuLPyLObEkM1JLvG4O1z1/1aIWtuVFPQ8w6BsOeN169HcVmV9joIGIzv
+	rw14AQP1kgzVaXwvzSzAup6gT2NotTkkTiQYA/7RE46OMSsbU8g6S+zmhZLZ30t4MfRNDM
+	r/c9gTimwk/XHqGGqwQnReEhLLxXUdQ=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=H/pkuNYA9Q/UTwaD/maO8VJWbP/0UM/v9RxeBIjqa8U=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794374941; v=1; x=1794979741;
+ b=SK4bRdudskRS14K6AyaMFjXPpr7wn+Q4DqtjLpoRXUIj319yhLPOTE8DQ3LpRogflQ4FXyH0
+ ABD6l0W42a7CvlXzkWl0XfPOXEDaLG0CsxWsHIZuiu16j2wBudf3DuOp8xPrSOrQRknb27dJg30
+ H7g7l9hVD+i6pZcKHgiJRt7A=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id f7fb7a3319c0cf62;
+	Wed, 11 Nov 2026 05:29:01 +0000
+X-Mizu-Trace-ID: f7fb7a3319c0cf62
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <000a2613-6643-4ac1-8378-a3e7df0b211a@linux.dev>
+Date: Wed, 11 Nov 2026 13:28:50 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKEwX=OhvH80f-6emK0fBhbm2d4Er0rQ8oXX=FmfG0vrTdvZdA@mail.gmail.com>
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: twnu35t69htxq9c6okxjjasy9jqxuwpi
-X-Rspamd-Queue-Id: 5B55780002
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] mm/hugetlb: optimize bootmem hugepage tail vmemmap
+ init
+To: Li Zhe <lizhe.67@bytedance.com>
+Cc: linux-mm@kvack.org, sashiko-reviews@lists.linux.dev,
+ akpm@linux-foundation.org, apopple@nvidia.com, balbirs@nvidia.com,
+ david@kernel.org, osalvador@suse.de, rppt@kernel.org
+References: <20261110114859.76343-1-lizhe.67@bytedance.com>
+ <20261110114859.76343-3-lizhe.67@bytedance.com>
+ <sashiko-outbox-207133@kernel.org>
+ <0bb7599b-b20f-4bba-a7b8-fca2a093fcf9@bytedance.com>
+Content-Language: en-US
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <0bb7599b-b20f-4bba-a7b8-fca2a093fcf9@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: csu3s37kr9fpu1iqphoepc5ubuqkhpsg
 X-Rspam-User: 
-X-HE-Tag: 1794372356-308193
-X-HE-Meta: U2FsdGVkX1+n+b9xlwW+rx6HwQxGi7ZlgBbwMY25hKEKDciJAP4Jk4OUHCG8QB22lSFPegcHzf5NfAi5mWmnSezvktVsQydv2Yg7EK/Bs31P7XoeDMnmRsqxoJZB8DgKpNFbYpSt8tk4Cd8dulf6eYwxDN3SqH90NgYVItgDHiGeYSpgpo9D25LV6mIpy6K90wuRrEH2Y3Fb28lKh79fwKNf2fa1no6YYUh62PHFa8MYx0vR0aKFopAPJrlBw8VfDtlcLGDRioCOwwEbOtpjSe8Dk9GiF0Q4yVmwMSAfoHL4tDsAz+S15rlKyN72ur+KUEHKUtSBQxyTFNAW0RpnxXYq0KyIjUFjNm4SUlOn5UM3hgmG6n6qScJrjssPAmBfWAJByVHQwhLTbvDCZ4Gx7k59LwwzbEmubK5Fzbrf4mgFHYGcvuHIVI/gvpGYJ/eYTlVJfpHChwgmcwnbMpRmYKB9joOFHS6kjEHb7QT5J6B8xT+u7WAZutOydB+YrvggzbhVF/3DT2PkezGxqNsLuwA/1PhP0glG8o42RKxOiWLShenm6CdtMI8IwBW0CuCOzolcGsOSto+Jhb2Y2GclIxv4NuyrVAQHacWDe12J7Ug7wRtgclS01DSb+q/2HXcXSPAmnGWmSu5LARaqOxaloqBWYm0rpsPiFEF67QdvnjFLrJUu4gSklMp2esKumac6VcK8aK0VBzdhXfVdMWjUbzfvQkvt8IQI2q5zZeiyKEr5Rex03rKn3aLDeXuQnNRHBPijgT4BtPrtnnlOw1Kur34kQERFnhSBOaKUhWCyrDui3G9dyyEcbZVOu8vn+D16as1hcBz6hWHNvAE2iI2vCT5rJ10ImocY/jTZ7GM2py4nSGcCkCNtl1GhintsbVSYqGnaKtQ0nKWINmNdOHwmSHoIHjUzq9K0LPuTZ+BqXTLHpdUYbaBQQQCJnnJzS0IPHqsL+NcNFt9uHqB+m4W
- Jywl22in
- uuXh/gisnuehAwB33fLxupgFdBzAMjh5vWz1AJLtOl9pviH7kcWXezADz1Kk1UT6PSUnbBDTguaYp0o3El97Lu7Iq8kw7/QJ0uq8TkCfDWkeBY+CgWQEoIzg6J7bT1nGHNCQj0x6NypwXi44zI8GB5aXtc0I09dZ6oEmWMtAAaliNoOaJ/t66435u9FlEB/igdv7vttzPHwzrc6mHhJbweynXrAOBYx0A8M9fvnqhDdGZs33QSYFMMeFs8yLgG61/T81S2MK5K+DUA4W8pnfcBnSJmG7vi7qyq8NQfe4jE1H3Vzrksn7Jbg8243WDL8ZTzKBRZUdnoZuKWI4EQXDXnUPxPJ0VWUZzRozZbV2lMAjbCXikUpghJSs8EceafTQLH/dOWbURb3B2z3Q=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D7F331C0002
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794374943-827998
+X-HE-Meta: U2FsdGVkX1+TfZ3idUNFT9rWeKhjzsJm3Hu9QmJ5W0rIzu83PGMlgbNDptSrOe6ERSWo9l4V+Q5ve9JpJcpm5K511Z+y9th9euIeVkAv+gvQDI7vz7Gflm93KKblUj5h2DhJbvHWvVMNzeq7OoC8nCSut62yQIsa9bOkN/fYQ26IuyMDCq83YWkg7Ti+ERHT9QQS64JNxLswZflJghZkUkXKXEbGtQfgSCiqu3nrzOzIYXMmoyCg7aHiqz6cuMqhPrR5/gjN84iGOp66pe9qGefe4oqeD8KVw5cbAv8Ba+0zZkVRQuuc3Z/fhvPGAS1nBd5enr224XfAMWh1V6Md8VA15AKNGdPykT6khy9Gj2yMDmTlPIuspST3Q4p/gbUMRYCGNKgpKe/PRuDifW55eWSDVFf6miiQOyKjUj8O4RTVsJh1EWnfAtYTrdlgsswxzd0oT2hEcrOJjtm7xkFiPaEiapx45IyC7lSfDbTdt/+Ta5QiPvNFeKwzI7O/BPexU/+Q4mhJvjInMRDf2RpQQTrYYKwQUPR43dWMVbr6bdcbozFXPC3BXjTLsM4A8BP7rTpdfG6msOku+Me+1xcDQB9P79i+2p5LS+otsxpUbERnJp5KOy89hrZVhF7ciYYw5rGiueLLZZeRDp5dltHqbvFTW1vT8BjMcusoymlWEtAdd6Ju4ctrw9F4kGqkJn9usFWK0sqeK94dDTOJ01mP1WunJYIEU3TD7nRHIV3ddYcsRAU4mbiuzrUxlhNsbjLOcrBC/nA4VLJrcTjmhCnFRaV9jHE4KGQWOLuf04Md+9uTHoIZXHdbCeL+egIr+7blJRHVHo+iFwYTISFNfui5YRMzE5wcvX3V4ymPHhiMZc9/uvw5Zo2pJohl65n8HoV6qt4evAL+Mz90m1bKlZdyLzuYu82IHMWU634iPMVCvv0WyOzA7g08MSviGKUpzW3MQ6wj6cR70CNehhIAhHX
+ 9/Ao4pAD
+ xlv8MXtHWNQALRTyhkz/OnCHtD19VZ0mpsiVwJUUHbTQIau0XO0EaCJEc2KDxiJLnJjuw4Joc4SCPVBaQwaKVQ1iYmkaBP4JF+DHURZDc2LOnrVisWi4Jzy4M0WoPotVLo2ySuHPR2/YqkkSBVX8KdZYc7qVJ7a5GGsNg4ClEtjviTGNmhunxIhddqypuWpppLtcx9NH7icwY/GvBhNn2M/OyydVx+LB9ggdNH7NuCC1LJAndNpsRrJgkcrrceo7tCUav01wcJ5C3120iScHVTD/peiunQNaJ5ptvjhUkfMZ+q2r8bl1wXGy38mALWBNFAbc2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,23 +99,90 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On (26/11/10 10:57), Nhat Pham wrote:
-> > The next patch embeds struct zs_handle into zram and zswap entries,
-> > and a handle is considered allocated when its obj is not 0.  But obj
-> > can be 0: object 0 of a zspage whose first page is PFN 0 encodes to
-> > 0, and some platforms do give PFN 0 to the page allocator.
-> >
-> > Store obj_idx + 1 in obj, so that a valid obj is never 0, and adjust
-> > ZS_MIN_ALLOC_SIZE so that the largest index still fits.  Unlike a
-> > separate tag bit, this doesn't take any bits from obj.  zsmalloc did
-> > the same before handles moved to handle_cachep, see
-> > commit 67296874eb1c ("staging: zsmalloc: Ensure handle is never 0 on
-> > success").
-> >
-> > Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-> 
-> Bit convoluted, I assume the this is so that we can use obj's 0 value
-> to mark unallocated state?
 
-Correct, 0 is for zs_handle_is_allocated().
+
+On 2026/11/11 11:14, Li Zhe wrote:
+> On 11/10/26 9:35 PM, sashiko-bot@kernel.org wrote:
+>> Thank you for your contribution! Sashiko AI review found 1 potential
+>> issue to consider:
+>> - [High] mm/hugetlb: out-of-bounds write in
+>>     hugetlb_folio_init_tail_vmemmap()
+>> --
+>>
+>> commit 5be89b38412d58045fd600596787f54c7559d32c
+>> Author: Li Zhe <lizhe.67@bytedance.com>
+>>
+>> mm/hugetlb: optimize bootmem hugepage tail vmemmap init
+>>
+>> This commit optimizes bootmem hugepage tail struct page initialization by
+>> seeding a template from the first tail page and initializing the remaining
+>> tail pages via memmap_init_page_from_template().
+>>
+>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>>> index cb2de24affdc4..6ae5d2679e3aa 100644
+>>> --- a/mm/hugetlb.c
+>>> +++ b/mm/hugetlb.c
+>>> @@ -3239,6 +3239,7 @@ static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
+>>>    	enum zone_type zone = folio_zonenum(folio);
+>>>    	int nid = folio_nid(folio);
+>>>    	struct page *page = folio_page(folio, start_page_number);
+>>> +	struct page template;
+>>>    	unsigned long head_pfn = folio_pfn(folio);
+>>>    	unsigned long pfn, end_pfn = head_pfn + end_page_number;
+>>>    	unsigned int order = huge_page_order(h);
+>>> @@ -3247,11 +3248,20 @@ static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
+>>>    	 * As we marked all tail pages with memblock_reserved_mark_noinit(),
+>>>    	 * we must initialize them ourselves here.
+>>>    	 */
+>>> -	for (pfn = head_pfn + start_page_number; pfn < end_pfn; page++, pfn++) {
+>>> -		__init_single_page(page, pfn, zone, nid);
+>>> -		prep_compound_tail(page, &folio->page, order);
+>>> -		set_page_count(page, 0);
+>>> -	}
+>>> +	pfn = head_pfn + start_page_number;
+>>> +
+>>> +	/*
+>>> +	 * Seed a template from the first real tail page and refresh only
+>>> +	 * PFN-dependent fields before copying it.
+>>> +	 */
+>>> +	__init_single_page(page, pfn, zone, nid);
+>>> +	prep_compound_tail(page, &folio->page, order);
+>>> +	set_page_count(page, 0);
+>>> +	memcpy(&template, page, sizeof(template));
+>>> +
+>>> +	for (pfn++; pfn < end_pfn; pfn++)
+>>> +		memmap_init_page_from_template(pfn_to_page(pfn), pfn, zone,
+>>> +					       &template);
+>> [Severity: High]
+>> Can peeling the first iteration out of the loop overwrite the struct page
+>> past the end of folio when start_page_number >= end_page_number?
+>>
+>> Previously, the loop was a no-op when pfn >= end_pfn.  Now, when HVO does
+>> not optimize a gigantic folio, prep_and_add_bootmem_folios() calls
+>> hugetlb_folio_init_tail_vmemmap(folio, h,
+>> VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES, pages_per_huge_page(h)) after
+>> gather_bootmem_prealloc_node() has already initialized the first
+>> VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES pages.
+>>
+>> On configurations where a gigantic page has pages_per_huge_page(h) <=
+>> VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES (for example, powerpc
+>> mpc885_ads_defconfig with 16 KiB pages, MAX_PAGE_ORDER == 8, and 8 MiB
+>> gigantic hugepages of order 9, where both values are 512), this
+>> unconditionally initializes folio_page(folio, start_page_number) and marks
+>> the adjacent physical page's struct page as a compound tail of folio,
+>> corrupting mem_map.
+>
+> Thanks for the report. This looks valid.
+>
+> I will restore the empty-range check before seeding the template in v3.
+
+Go ahead. I will end up removing this empty-range check here [1].
+
+[1] 
+https://lore.kernel.org/all/20261109095807.41547-8-songmuchun@bytedance.com/
+
+>
+> Thanks,
+> Zhe
+
 
