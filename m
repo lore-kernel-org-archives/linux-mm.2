@@ -1,90 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571B9606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D233606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=bl5uhVOo
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ietIUcB/
 Received: by kanga.kvack.org (Postfix)
-	id 841B46B05B0; Wed, 11 Nov 2026 06:25:02 -0500 (EST)
+	id 8BB336B05B1; Wed, 11 Nov 2026 06:27:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81A8F6B05B1; Wed, 11 Nov 2026 06:25:02 -0500 (EST)
+	id 892896B05B3; Wed, 11 Nov 2026 06:27:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7564D6B05B3; Wed, 11 Nov 2026 06:25:02 -0500 (EST)
+	id 7D0E36B05B4; Wed, 11 Nov 2026 06:27:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 541676B05B0
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:25:02 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E4A1D120271
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:25:01 +0000 (UTC)
-X-FDA: 85422606402.20.EF99722
-Received: from va-1-111.ptr.blmpb.com (va-1-111.ptr.blmpb.com [209.127.230.111])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4C07940004
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:24:58 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=bl5uhVOo;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf12.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 617156B05B1
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:27:08 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EBEC58028B
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:27:07 +0000 (UTC)
+X-FDA: 85422611694.28.5310CD9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3164040002
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:27:06 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ietIUcB/";
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794396300;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1794396426;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NVdfdUf+zfYeCBjYOT/U/HtbAWZ/RAxAIgf7+f5fEIo=;
-	b=xvW08sj7bisvd6GWjbH3UZL1r0hA0erBnmnK6k5TQBNxwnzgoMBkQzQMmp+FBc6wlE062O
-	Lj8rL6bR1WHNSXiKo58NasUe8yGFRkEG0+wVGLc1AmfaPA2B2XZx7ledWLNQaxp0dheL89
-	ikLGNu8iDB1gOirf0Z5Zhtoj4SWmDLs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794396300;
-	b=gZCcMvfBQl3Nrv6h+qcC9oCeKkgRnhlSsJ92k5s0j56Vkl/ZOhuTJ/DfHEpXSwCjqdIu3h
-	WdxkRsvNHn6hsDcMb9euXY+tvLDgQLbUi6BTvrS52LprnI1HtVUcwlke6oe7rp5ZCjxHl9
-	5Um/tl1zFVE1xPSsfSD2SKoJUB7qns4=
+	bh=3PMJZmw8MJh2mWVqw780qdUE6D8XJjqTBbqBroaGkaA=;
+	b=YByCIeBuk2p4PpfqH4v93/Pj7cRs+l05d6ykwDnKxHmn16qgFzZljFGi/Z6laZLNGLTdbn
+	+SCA6ScYTUK5Bo5EL5yRtdoptPchVvTburGWiXJWYRa+d17FnrlZwDV7UgW3P/KsEpOqbY
+	5nrNPosjfoweT9vwHjQg1w1ciFgM7PA=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=bl5uhVOo;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf12.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1794396292; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=NVdfdUf+zfYeCBjYOT/U/HtbAWZ/RAxAIgf7+f5fEIo=;
- b=bl5uhVOoos64AzgvqPNRcE9nkGzyKPkB4Nw1A4ZqYOZqn51XaCTYG7WTe5kLq7AjiwwF92
- 5dVkUuNX3xkPeox4hUzpdLhtLW3up+r7Vd9FaVCz6ilmVPWbxOTkInR3PCdjlz61qYYXeK
- 4e3kHtL96iL2vxTaOpLuTAKJp7PQI+r8MUvB3gZk3zXlYXdIJ58Jdszahxk9FSPnhqISml
- /5powAz86rxub69+6Pp0zDZ/8dP6EdMp0/5EBLV0EopxUMrEqr0b1I3eyZWNnRYK/IpMLR
- mYed++T0ymgb94exuxERGkCWt09kODXsn7a0IvPizy+Bk3TsOBAaic7gqqY3ow==
-To: "Mike Rapoport" <rppt@kernel.org>, "Muchun Song" <muchun.song@linux.dev>
-Message-Id: <016ed325-2b5c-4170-b545-47b766d7f8e8@bytedance.com>
-References: <20261110114859.76343-1-lizhe.67@bytedance.com> <avQjbt-QUp-W3_9v@kernel.org>
-In-Reply-To: <avQjbt-QUp-W3_9v@kernel.org>
-Cc: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <balbirs@nvidia.com>, 
-	<david@kernel.org>, <osalvador@suse.de>, <linux-kernel@vger.kernel.org>, 
-	<linux-mm@kvack.org>
-Subject: Re: [PATCH v2 0/2] mm: optimize HugeTLB bootmem hugepage init
-X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Date: Wed, 11 Nov 2026 19:24:33 +0800
-User-Agent: Mozilla Thunderbird
-Content-Transfer-Encoding: 7bit
-X-Lms-Return-Path: <lba+26af45082+88a098+kvack.org+lizhe.67@bytedance.com>
-X-Stat-Signature: ut53tx8kfgrf48qyxjz41fwcgecnomii
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ietIUcB/";
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794396426;
+	b=oE61hTgveTOrQNdEbhAEN1pw8zzvckjTa9zLx0GgLL1N+FD+moh11+thrEia1RB4vfUtaV
+	AFnU5uS4CNH4Cvf+pdp89A1z+7fr1TyIJuM6o1tT7Oil+2AS2cy2vqDxjKB3gy9XwEIQ+P
+	Yuf5yl3s9VNNFFCHX1lygw3Uk5wLawQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 60BE541781;
+	Wed, 11 Nov 2026 11:27:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 482841F00A05;
+	Wed, 11 Nov 2026 11:27:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794396425;
+	bh=3PMJZmw8MJh2mWVqw780qdUE6D8XJjqTBbqBroaGkaA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ietIUcB/kWR5VleMqsja0T2FGslp2EcPHF9zkbs6CWGG/rbSrFVAC6EGFkNFQ8RHh
+	 uCCrm8WuKIVOkMYSwWSXfBs9uHjjf6ShymQJIbthifCCLALysO7MT4gzQi8AaiIm29
+	 q+c96idAHljaZdqatwKxH5tjgZBsbmJnrWJ2gXw9uDujaKfuWCZZqtXjZ5YgQliacP
+	 H9wZyyTHPVaC8ZwDwGde4bo39YOEOEi9yjXZq2CBNZG7hn3/QVDybEeWM0xcLav0Jw
+	 2SsVeOM+7eN/k9PbIRWExlAK5zTCyf5xCmViHxzQqo6BB7dMsZjfolH6aP8su1EQea
+	 07r98Ebv5CPKA==
+Message-ID: <sashiko-outbox-208876@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3] mm/highmem: refuse to copy hwpoisoned folios in the
+ !copy_mc fallbacks
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Yuanhe Shu" <xiangzao@linux.alibaba.com>, akpm@linux-foundation.org, david@kernel.org
+Cc: =?utf-8?b?SHVhbmcsIFlpbmc=?= <ying.huang@linux.alibaba.com>, "Kaitao
+ Cheng" <kaitao.cheng@linux.dev>, =?utf-8?b?R2FyZywgU2hpdmFuaw==?= <shivankg@amd.com>, vbabka@kernel.org, ljs@kernel.org, liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com, ziy@nvidia.com, wangkefeng.wang@huawei.com, tujinjiang@huawei.com, mgorman@techsingularity.net, chengkaitao@kylinos.cn, muchun.song@linux.dev, linux-mm@kvack.org
+In-Reply-To: <20261110112641.1196786-1-xiangzao@linux.alibaba.com>
+References: <20261110112641.1196786-1-xiangzao@linux.alibaba.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 11 Nov 2026 11:27:03 +0000
+X-Stat-Signature: c5bs5ikjwqjn7h5r6xx3z4bb8hfidq7p
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4C07940004
-X-HE-Tag: 1794396298-235339
-X-HE-Meta: U2FsdGVkX19gH3NUtfjhIZvxvIZANLC46l6RhZM+VUWdc/u5dToudoAS75CMRALPmVtnMrNfkxsNlwADhvk1wnSUTMJDopUXmXVcj31RlDHRI1F1yuBAk6pqauxjBGQnvqfxO2jnTOrruTMJUBJ1gBn8G1RZQtC6wHMajJ5rmiGKKYfYQNpAqNiPANAnbS9uoU7x+RrDHG/1OJjeViLOzv2sQvVX+jg4JU/vQfYxhHBtP51wPszDKitDaTNSqi0dLN9L5QnB8H7QBobPrgEg+3gTSlBapP4m5LGHP7N4OFWU2z3OUe+lQfC7QAgqJe39FAtI7L51O4+D+Jr1F1ApJKtSHNKkRq+teRsKT3E1CyA8X/tVPZmA2HrWzo/RgzHujuyLv4/4WTCbmZo9nzaJEK+lNbOKCZgoVvGwb/zRs3rtFFHUhN7M3LVGndse8J/3BIGlgU5k6Of3dgequwO7VXhfKWmAaQKXrIGJIs3iklXv2E5Yn0TJkJ3QusF67IWKnKOPhrj8m2hcfZPObxPWavEbvCKeP2Si/kWp29+ne0YdrOwqqUVcDsTjWbJn4SCSJ1sjXrxVzLxLxZfxtjp0HobtmHqGS4uR3lFRL74HPWDN6axbbsXWpqVjXqTnAIjwVPHO/GWJuk6uYPXl+i0rFt9ScaleABisdK+OepFum/SbF4OQfcwTYH6ZdjBkRBh3g/YnwhwNI41oyNf74gB541bwHUETA55Nqdueou2vmyFPU1ldPCl9Ttm0e0oN057NERAfDr33kdoH866RM6f0Cm3Z/8ATAQEtsXZB/xYnvdiTa0uBGTuuXNFvv8jIrBcRGLOQvgLAVeSpDEr+DIo9EM2RlKxdTDhoZK97gj6jF4m6LtGNnt3fuf3CarZFs2BNfVU/QFLNh8eGUU3ra+42wIxgv77pY1U6P6bEAmf8znA11uHOY1g6ye3hfLe1Uwe4BSJUg9kKUlx2sKxA82r
- 1I6FR2YR
- trRyKw6w7gDZxAMqDm9zYukHX4RZIS38ES6bjZMrHcB0pyz2WLK3GfBBp+ZwIvbO+TSjLjDWqqmsRyOEL8YnOxonbRDZxbiiPtCE7VeoABx4t4iAxWZrsWx0pcYaGFY98Bl4xU39n9NZkFXa+PD44BY23XsEr7Mq5lo67vGycXBR6jAFTlpbbRMgFSiotZgpQi01goe+wubpd9PB8PU1rAFB2v5jDck0bvVftokvz8H7ZLJSmr7QqOwkEvBpxbmPglBWj31lL5Ee2TyRt2IV2DJP0z3wezdt9ffs1Qy3bNrnAXKaaW3CDk9izlZB6UycR5mNE
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 3164040002
+X-HE-Tag: 1794396426-624811
+X-HE-Meta: U2FsdGVkX195hoCY3DJ/mkL3UHJoi0ZDwyJOL6+5fduKWkJ293Dtr86Td/xalGeNgKT08ZzL/0vteWqjgo0Phu/9yl1ecWpaTg9WH5BxUAYtcroUh0gtv/1zwD5k5XnZ6lk52p/L0uTi1hqSiVBlC7gf6VMyfVdPiyhjP9CuapIOQPfpjfx0VLD5YvMBm5ykPly0uUF8bgM83w6Yl9WAwuDCBprE7skBBHzuulcFmLtg8gWhTB1MY/GGEJxYyD7U9LY/d4+cITT1zdnlwNRTQe0XUocKz2GKqq2eXVUZEH8gW8oDd1wCk6zzbjfvgsJeuKMLe6vzgcwOiORXj6YZ6MufbTgsGn2aiootVl2zNKKFVJLwhCezdqRw/ruJZ5+3+KwNg4AK0QMUGCQoanqwC15HzaH0OQqx8d0ZgzdyX6j4zIeyOeisJETHzToXhG8MSCJ5yzDVp8XW7kbnQiGCsEuqkLCzq1EfudyOoWo/j1YhgXNgSnl8diQ3ebus0wK0zt3M4DGl8xqKyDA51dYRYHS4Q8xO8A4tyxdirytQUWm3qv/PI6UYN616wOvS/xiciTLKEJ+USshOxntG34DxDIGlIrweylZ9Bc/HebZGPc/DmvpYbiLtwiLRRKgMzVTD2n7WqenU8RWPSRPb9ypnI4V6md4XOLbVZMvwlRTFf3vMTvOr1QeIThO0TuXtNcXaTMn0SNvWdvOFg/meJR80wwiaK4l4xYgE1TGfhniCal/lQ1bnbL95lQMntkm9t486BLu+1OYZSHGcaRIdmWuubhWfS1N+YWv3gcdPQ7lLyO2f4553L6iOkdW6CMZ/HF/A1CpefNe/LYH+vGX+R32HnyT2yANNWdRzJYKckIBlpuzvtsshMSnGQn2/4XdkoI0P3uesRUwfYs2oAbFy9dm+WU9FXOi+sXHFeFTYmQ6LUyYTnkaIbce9pjJrAH00GhOD5TlW/Yb4rOmtwgW+xUd
+ i9ZIpQdp
+ TVPdT/NuJA21mFwcB1BcYJTYIfj8/kBeaelqWvjIKWkUp2Xu8Jn79lMoEdJPf/G1jqoLGmQVCnKz9+2wz+FFUQK3qT/RwfCWx6G3jQbg9d/8bdXzHLpU7TZKwZ7uTX5y7unTKAz3Gac29wtkgkzHySxIIvgeVhojkUp62SUUSd3dlBQ4Gd5tRRjXJJT/O2/9GmDJLA1y/YSNGLsRwDsBMQKNKwwP9/sNSIOD/RRnMq1NHaLiskEcdsf8BwurH8dJFU3AyzJ17l8WK09MxxQB5D2pIgl3VDO/IdjG4gCKDxJwGeGi6MvEq0vJBOtMCjwta0jtX2/5b3uC1NRfbWiBwb5/ckz1HUzeXhLUg7nHGdAsuCALZcYNU0zngH9/ApGICw7OcKZ6e/crXdYhJMhQ9W4A3n6XFw71DMzcQNw6+7+cM3rRPMod9yUKYrj/1N4d+xodNn6p44KfzdQJQg09dMR8arHJuyYTkTDoINaZks1A3gPhUj1yQ5VPoYJ7CmLwDJ+1BeYh1mNnCGgeaTAgay0U6/cYC+1O+F3tVRHhpu7J4n1uL3R34/yGbez7McXQVYZDJIbQ8DxD8Nx0TlWWlZUz/kgJEXoGEe3cpvmBfhyLC3P9mqLebq8y9pvV+1Oy7zzCVqZ/8ril8TYsfbgUFWjIBP9Ss4nmo6PInA45sCu20DQAtBOexPRkNMdCSMnTb7waXbwY+kWSJru+xRdHsQBz2LVHaD1LJ3QOZgV5YxqxKNbeW0+ORwDnI6tFrKy7pImq93sVpu6lqLcDc71cOgEu8SOMh5UKjv1052tdiACSh5EHoZM8P80WETQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,86 +92,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 11/11/26 4:12 PM, Mike Rapoport wrote:
-> Hi,
->
-> On Tue, Nov 10, 2026 at 07:48:57PM +0800, Li Zhe wrote:
->> This series speeds up the fallback initialization path for HugeTLB tail
->> struct pages during boot-time hugepage allocation, when HugeTLB vmemmap
->> optimization (HVO) is unavailable or fails.
->>
->> Patch 1 factors the existing ZONE_DEVICE template-copy operation into
->> memmap_init_page_from_template().
->>
->> Patch 2 reuses that helper in hugetlb_folio_init_tail_vmemmap():
->> initialize the first tail page normally, copy it into a local template,
->> then initialize the remaining tail pages by refreshing only PFN-dependent
->> fields before copying the template.
->>
->> In the earlier discussion, Mike asked whether the same kind of
->> template-based initialization also helps the ordinary struct page
->> initialization path:
->>
->> https://lore.kernel.org/all/akfB6Qe-jKDEMUxz@kernel.org/
->>
->> I tested that direction as well, but did not see a measurable benefit
->> for ordinary struct page initialization. The measurable improvement I
->> could find is in the HugeTLB bootmem hugepage tail path, where gigantic
->> pages can require initializing a large number of tail struct pages when
->> HVO does not cover the allocation.
->>
->> Tested on an arm64 QEMU/KVM guest with 4K base pages and 64 boot-time 1G
->> hugepages. HVO is unavailable on arm64 in v7.4-rc1, so the fallback tail
->> initialization path is exercised.
->>
->> Results averaged over five boots, measured with a temporary
->> jiffies-based printk:
->>
->>    base (v7.4-rc1):  318.4 ms
->>    with this patch:  202.4 ms
-> Are there numbers for x86 without HVO as well?
-> We need to be sure this does not regress that use case.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] mm/highmem: missing is_page_hwpoison() check in
+  copy_mc_to_kernel branch
+--
 
+commit 5b18d6f721e579b691687c6c8c6355f1e1a00b17
+Author: Yuanhe Shu <xiangzao@linux.alibaba.com>
 
-Thanks for the feedback.
+mm/highmem: refuse to copy hwpoisoned folios in the !copy_mc fallbacks
 
-I did some additional x86 testing today, but the result was different
-from the similar x86 test I did earlier on linux-7.2-rc1. After
-replacing memcpy_nontemporal() with regular memcpy(), the result looked
-better. I need to re-check the old test code, since I may have mixed up
-which copy primitive was used there.
+This commit checks is_page_hwpoison(from) in the !copy_mc_to_kernel
+fallback implementations of copy_mc_user_highpage() and copy_mc_highpage()
+and returns PAGE_SIZE when the source page is marked hwpoisoned.
 
-Muchun, could you please hold off folding this series into your patchset
-until I send v3?
+Link: https://lore.kernel.org/r/877bjowf9i.fsf@DESKTOP-5N7EMDA/
 
-Thanks,
-Zhe
+> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
+> index d7aac9de1c8a4..c3240f70471d5 100644
+> --- a/include/linux/highmem.h
+> +++ b/include/linux/highmem.h
+> @@ -473,12 +473,18 @@ static inline int copy_mc_highpage(struct page *to,=
+ struct page *from)
+>  static inline int copy_mc_user_highpage(struct page *to, struct page *fr=
+om,
+>  					unsigned long vaddr, struct vm_area_struct *vma)
+>  {
+> +	/* Don't touch data that is already marked poisoned. */
+> +	if (is_page_hwpoison(from))
+> +		return PAGE_SIZE;
+>  	copy_user_highpage(to, from, vaddr, vma);
+>  	return 0;
+>  }
+> =20
+>  static inline int copy_mc_highpage(struct page *to, struct page *from)
+>  {
+> +	/* Don't touch data that is already marked poisoned. */
+> +	if (is_page_hwpoison(from))
+> +		return PAGE_SIZE;
+>  	copy_highpage(to, from);
+>  	return 0;
+>  }
 
->   
->> This is a 36.43% reduction in the measured fallback tail initialization
->> time. The temporary measurement instrumentation is not part of this
->> series.
->>
->> Li Zhe (2):
->>    mm/mm_init: factor out memmap_init_page_from_template()
->>    mm/hugetlb: optimize bootmem hugepage tail vmemmap init
->>
->>   mm/hugetlb.c | 20 +++++++++++++++-----
->>   mm/mm_init.c | 34 ++++++++++++++++++++--------------
->>   mm/mm_init.h |  2 ++
->>   3 files changed, 37 insertions(+), 19 deletions(-)
->>
->> ---
->> v1: https://lore.kernel.org/all/20261105120615.16817-1-lizhe.67@bytedance.com/#t
->>
->> Changes in v2:
->> - Add a comment for the template-before-copy ordering, as suggested by
->>    Muchun Song.
->> - Drop the empty-range guard in hugetlb_folio_init_tail_vmemmap()
->>    as suggested by Balbir Singh and Mike Rapoport; current callers are
->>    expected to pass a non-empty range.
->>
->> -- 
->> 2.20.1
+[Severity: Medium]
+Should the #ifdef copy_mc_to_kernel implementations of
+copy_mc_user_highpage() and copy_mc_highpage() also check
+is_page_hwpoison(from) before mapping and copying the source page?
+
+copy_mc_to_kernel() only catches hardware exceptions raised during the
+memory read and never inspects page flags.  On architectures that define
+copy_mc_to_kernel, copying a page with PG_hwpoison already set while the
+underlying memory remains readable (for example, an uncorrupted subpage of
+a poisoned hugetlb folio, an asynchronous patrol-scrubber notification, or
+on x86 when copy_mc_to_kernel() falls back to plain memcpy()) still
+succeeds and returns 0, silently consuming the poison and leaving the
+destination folio without PG_hwpoison.  When the source page does have
+physical DRAM poison, reading it also triggers an avoidable kernel-mode
+machine check and queues a redundant memory_failure_queue() work item.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110112641.1196=
+786-1-xiangzao@linux.alibaba.com?part=3D1
 
