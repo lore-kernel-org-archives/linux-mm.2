@@ -1,92 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC4D606A33B
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 01:09:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=uR+T25uH
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76357606A332
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 01:11:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 714666B05B1; Tue, 10 Nov 2026 20:09:52 -0500 (EST)
+	id 8294A6B05B2; Tue, 10 Nov 2026 20:11:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C59D6B05B2; Tue, 10 Nov 2026 20:09:52 -0500 (EST)
+	id 800DD6B05B3; Tue, 10 Nov 2026 20:11:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DBDB6B05B3; Tue, 10 Nov 2026 20:09:52 -0500 (EST)
+	id 73EDA6B05B4; Tue, 10 Nov 2026 20:11:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AB866B05B1
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:09:52 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BD9041201D6
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:09:51 +0000 (UTC)
-X-FDA: 85421056182.08.8BDAA5E
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 89B8CC0009
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:09:49 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=uR+T25uH;
-	spf=pass (imf22.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 56F9C6B05B2
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:11:22 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D7B381601C7
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:11:21 +0000 (UTC)
+X-FDA: 85421059962.01.8E409FF
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 01A8F40005
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:11:18 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	spf=pass (imf07.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794359390;
-	b=kY+zHZLdXCeBIG/rrxBvseHBQ/+nV7IVKaNrXbR1SNZkmCiIiXB7sRKe9UQsivFgqII8a4
-	fa7Z6hF/l1UXDLdL8iwoI5fh0BlKsQEu9HI504vGBUdbpT7iDJysCIFq08ZRtgey8BYhg3
-	tPpDobLuNQvsHXP1QeimLk9Z0IeckBM=
+	t=1794359480;
+	b=aJspuZ78I73dBxYWLOs82ZqI4Nje/TcXnWaf4YXQMyVyziIgGZ57+1NByyVii0ypFE+upk
+	H7IpZI/QV2khZgNXHTRGOmuXP8pVds0+P+RiWC/00VWrHWDZmTpJX+Xoez17jw6EiAvKpe
+	Nkp11cPLFajf4lilfK8rF2UJvdw245Q=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=uR+T25uH;
-	spf=pass (imf22.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794359390;
+	s=arc-20220608; t=1794359480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FIA9nXl5MDGFx7HCmxaQOKJbU8t3S2XBCcL09Ok7ifY=;
-	b=TJMdyqVKiNAAzXD5NqaDhiFGzW+lgRx9vpaRIsNq+s01pDiOtGGlesIq07HrGLX7OWrIjO
-	6UW79KfbfQGtdDMmxaSxfn7VnuPGsFSYMaUAAZL3Zop6yYsQoLQZM2lNadn910EI1IHvvC
-	ezkSG9gMZdBaYBWPkHI/BjqsAKrPAwM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=FIA9nXl5MDGFx7HCmxaQOKJbU8t3S2XBCcL09Ok7ifY=; b=uR+T25uHbz01nyBGay5Gh1MBgZ
-	/NPRZJAfigCeg+6QKsOKXI17e/9ODt5JsEwMnMPAThYeOtYqhOzey0yCWvVvqA65grMx1oJvMIlPU
-	hiyej0FSXvZgic4InSM3u2IIa1dPjG7tQEslpgs7bt5R98UTeoCVKo5UZzUZuDyTkY6vEnNVXidAd
-	EEVUU0otdIOlIc4sAO1F2/xphx/gJ6a4og4UeVM2k/ZgJdX04kMdJ/PP2HJXzUHndZ5SLRVpx4ODf
-	yJcqTZVELoRVYMY7DhFazyKNsZBcd0i84m7++VskFr9d8CRHXKUD/EiM9K8S/ZN262fcFr+m+9ZqS
-	WoZPChmg==;
-Received: from [38.23.173.23] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xQwqR-00000005Lwb-2Ptf;
-	Wed, 11 Nov 2026 01:09:47 +0000
-Date: Tue, 10 Nov 2026 20:09:39 -0500
-From: "Liam R. Howlett" <liam@infradead.org>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Frank van der Linden <fvdl@google.com>, 
-	Ivy Lopez <skunkolee@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/cma: simplify cma_declare_contiguous_multi()
-Message-ID: <2h5vqasbyjxmdpzvtnsih2nhrjxmblpv46zl4phbn4huqadn3u@w4fcjow2wcvu>
-References: <20261111-cma-multi-v2-1-4e2dddb2a2d8@kernel.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=zKSEdF9+1/4Is5GWGmFxtOqEqpvl78JV1G/SHbLFOjA=;
+	b=lnfAfsYNGK2+84+5PBjeFo9yoQmxZ32ZFlq5b7ebeL/boQBmu941D7t5e3mLTnVYConIDw
+	V9QWzSslhn3OWFc0XM0iDAWnL6mzA1VcJavswKNVXwxi2YSJABtTJ7Q+VPvRs69V0czT68
+	vO4OX5WjyYiq1QgIQFo3b7GHga40hOk=
+Received: from loongson.cn (unknown [123.138.236.242])
+	by gateway (Coremail) with SMTP id _____8AxYdGvwPNqPmMeAA--.22907S3;
+	Wed, 11 Nov 2026 09:11:11 +0800 (CST)
+Received: from linux.localdomain (unknown [123.138.236.242])
+	by front1 (Coremail) with SMTP id qMiowJDxxMyswPNqH5wzAA--.12474S2;
+	Wed, 11 Nov 2026 09:11:10 +0800 (CST)
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+To: Vlastimil Babka <vbabka@kernel.org>,
+	Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>
+Cc: linux-mm@kvack.org,
+	loongarch@lists.linux.dev,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] mm/slub: Genericize x86-specific cmpxchg16b comment
+Date: Wed, 11 Nov 2026 09:11:08 +0800
+Message-ID: <20261111011108.29311-1-yangtiezhu@loongson.cn>
+X-Mailer: git-send-email 2.42.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261111-cma-multi-v2-1-4e2dddb2a2d8@kernel.org>
-X-Stat-Signature: ywpzdkrnyxd1b6u4tisehweq1hsu7ub7
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 89B8CC0009
-X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJDxxMyswPNqH5wzAA--.12474S2
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBj9xXoW7JF1rZry8AryDKFy8Kw4UGFX_yoWkWFbE9F
+	4fXr45Gr15JFZI9r12yF15uF1Y9r1kuanFgFW2vFy7JwnYqFy8XrWDZFW5CrWrWFsakrs3
+	CwsrWr9xGr17WosvyTuYvTs0mTUanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvT
+	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+	cSsGvfJTRUUUb78YFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+	w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+	W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4j6F4UM28EF7xvwVC2z280aVCY1x0267AKxVW8
+	JVW8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
+	xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v2
+	6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCF04k20xvY0x0EwI
+	xGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
+	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7
+	IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k2
+	6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
+	AFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8zwZ7UUUUU==
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794359389-964139
-X-HE-Meta: U2FsdGVkX19U6fJZBqytldrOkJsTKPYomlYxUBq2SjtQlFH2u4gi5fhQ4j16r3eVFgVcmDhYNTdoYFa83uFS1tqMZlZxwIqK8mDSrxnP0QHzZiKcLeQXPICK0R9Uu4vRDB2zMVOObvGuxJkNqJzQHT14AYENNUvufCtJ4oiWNFOi26uEr3hDsOAgklfF2Jb3tlJY/YjwONTohvGl2MgNo+Sk6nTxfSapnFBD5+lxCv9LIk46/Kv1f2E5XpxXKyYmIafPtgqCzozF6tXXzR8wQruWuOmndVCgGGa2vUkmLVmKQzGKezx+ziUCKmEdXGP99IJWpasEQH3eA72mm6lOzZ/46opcUt2ruXZaIup4AR7VAa1182IyDMayYUrZ32DUIKNrs5Wv2ts2zirHkcRyw9vs+J+drHg4fVh0vOTF24y7ftvIPI+pAsUhKxS8Nl2llx07XXqbGJX9941sGmI8kMF1Gr7qSNjfnK9G8T7hDBqWx5djMsNMwE/uQUoUoX6S54eZxO2+xG+l7bvMvzPtujZHtTVXVAhM0TysJThcTfVqEbyoAjz2wsFQXUsE5J0K++CevdTnE4a9iLw2w9Cw+Y/b6fjAibBWbndvFAcmapsxd9Fl/VpmYbO9MhZll3CW2oNAAlaN4uyp6wGAeFoSsoEtnleQdJt0jQnwRrCucYIdKtXze1N81QtdM1P7NwH1lry295y7U0Ok+Z0LVCEEtAApk1M6HDbPsgwQOZJjeIc3h8hSaI65rsPMu74oiQIBx3wc3g2e5xnuyHmIDFo4oNGBYSsWx63RxgGpYY1VYrYJXSAwUjr0qM7/V9NltteE1Yio+/65vgx3ZulcMhIHK80ovcbosbiA1hpY2wUt7f+FVZvSDSi/N1G97hgDXdJiam95Oj0cZg2kD3X7A64OxR2jaCSF0CR+blzzaOBOEMh/mGQsos1fV+Qr+THv5URghc7fwGIXd6TSEDPGhZR
- RwEZL/Z0
- UZU+dC/QK9Rr2Eo8e74xgi2q/5FLSHGEUmXQVveyqRz0IeUZQvf8Lrl/iZHCE3JNF5mCXOjqXj7EhK4fxeABGZNHn2K0XThPYPwwfqX6XqxVqH5o/iOZjsmV4fxdnx7HqXNBWJC/XPL4DAm4BzIQ9/Y0zka63vBCpkVN07lsyIK2DuuLUgDeku35GoGdQaPO9so06TbA665O8wnu8V14Fw+iDxIxs1G/HZiieDoSefBbeUy4V99p2BLeQ8m6IIsJdyrLLTzOCRp7QoyOICMtxd9TkDQ2LCee3JyPMc39o3945CpMxJ+ylPJMvpX3nvwXLWmH5q4ZbmlUx6NCzXV4Vsay1gZqEcVCLl7b8QbCJ5Q90GljQ/AZhDAATGClcxyis4h/K91LhsZY074LDdFD29Y2wFJPV9xJK6s/PWS9oQsSS4QBe2MX6pM0Afw==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 01A8F40005
+X-Stat-Signature: uiohnmrseqnc6zsp4xsbfmdp1pyfa551
+X-Rspam-User: 
+X-HE-Tag: 1794359478-299139
+X-HE-Meta: U2FsdGVkX19xKT2MXjbQQugwiQbgeycqFZ3DQqvZZWXzOvGLFGp8MEZ16CCidxQoy0677Zmpeo0sCgO052n7gNHOxyAba8VVezXb6NmWafISkmYWiyW4CXnuR7rBrm3TohaQSUC/nsGLM17VC2dBn221TjoH+B0Nb7kRhBS12+xr1EZI3vAiFJLmn0Kl3AaY55wNe6x03lpv/9gn/iCdJO1CKgTDY7ABfK0xt2HdfZ0h2muz3Zw34JYWIRfONARRelDvAguseMlsRuXAsScXZZOlj4g0LDFqpr3hG/Avyup0/sYnIinlUUQOmJ8zxntnmmhEDPF3+W0VthWxQROWFRCA2aujkJ3csyRC0p0Fd0GVBHUfzYfCR26twphzERGfmbZndvJxPMZ5nk/kJmR4wuEFBHjqYbyijQE3qACakvbBtSoX6uKAXmW/yc0LN5lzc9cFu2m+jMIZhtg1QOFMm+x98ETu4U+XFbpuYo3bzpcRB2akl3l+ZSRDWilHXdw2HfvIcyx1DGEszO6n5K3ShaQ0aJQzioCk/0MPg5NKjy/LWURT96w0O7vNHAoTo+qZLUGKMvz+mugRp8geD7g9AJM/8iEqWrioxS8bo/2+z3V9MXwgQnnE+94jQvxAJjqouXWpq7XjgtpUNdGidoZ9WMdiT3puwEwAXPYEoHBuHvOG6LMcWRQK6R+Fz1OrytZtaNTkdISuaU5LLxqhe4zVlvJNKanWPGh1ftvPT5vZpFZj9BclAG73nlHWCW1Hs8+bek+/bLQtb8eS/T0okm96WkSOJcu+rg5FKJ1Dv+bYcmPcq4lQEL/lD8kap3WeZ/dFo0yCiI3IgS3h9To5GAAqNsQ1jwVFC7jahIxmvkNes8d1nTn875QpOUVBFqKZ7aE2judEOvyDZSf2cQ3exCxKGhsiytRi8tYMWWZBCsx10dDANl/4JdOMFUcB+FX9md7O+aIV1QrlR2L6UzlOG1Q
+ kz6pXVPZ
+ UrcyWBn0JWktT2ODc2QDP1mRmGA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,45 +103,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 26/11/11 12:14AM, Mike Rapoport (Microsoft) wrote:
-> When cma_declare_contiguous_multi() cannot allocate a CMA area as a
-> single range, it falls back to collecting a list of up to CMA_MAX_RANGES
-> largest free ranges above 4G, reserves them in memblock and adds them to
-> cma->ranges.
-> 
-> The list and subsequently cma->ranges are supposed to be sorted in the
-> order of base addresses of the "allocated" ranges.
-> 
-> This implementation has two bugs:
-> 
-> * The allocation may fail even when there is enough free memory because
->   list_insert_sorted() sorts the list in the wrong order.
-> 
->   When the list is full, the largest range is evicted rather than the
->   smallest, the final list is not sorted by address, and the smallest
->   ranges are used first.
-> 
-> * the function may report success while it reserved less memory than
->   requested because sizesum accounts for ranges that were skipped.
-> 
-> And overall it is a lot of list management and open coded range
-> selection for no real gain.
-> 
-> Replace the current code with a loop that finds the largest free range
-> above 4G, reserves as much of it as needed and repeats until the entire
-> area is reserved or CMA_MAX_RANGES ranges are used.
-> 
-> After successful alocation sort the cma->ranges by their base address.
-> 
-> The new code scans free memory once for every range rather than once
-> for all ranges, so it is slightly slower, but it is way simpler and more
-> robust.
-> 
-> Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
-> Reported-by: Ivy Lopez <skunkolee@gmail.com>
-> Closes: https://lore.kernel.org/all/cover.1792032699.git.skunkolee@gmail.com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+In __kmalloc_nolock_noprof(), update the comment from x86-specific
+"cmpxchg16b" to generic "double-width atomic cmpxchg".
 
-Reviewed-by: Liam R. Howlett (Google) <liam@infradead.org>
+Suggested-by: Harry Yoo <harry@kernel.org>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+---
+v3:
+  - add missing Suggested-by tag for Harry
+  - use shorter commit message as requested
+
+ mm/slub.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 45e077c7526c..090302f1daeb 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -5589,8 +5589,8 @@ static void *__kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_f
+ 	if (!(s->flags & __CMPXCHG_DOUBLE) && !kmem_cache_debug(s))
+ 		/*
+ 		 * kmalloc_nolock() is not supported on architectures that
+-		 * don't implement cmpxchg16b and thus need slab_lock()
+-		 * which could be preempted by a nmi.
++		 * don't implement double-width atomic cmpxchg and thus need
++		 * slab_lock() which could be preempted by a nmi.
+ 		 * But debug caches don't use that and only rely on
+ 		 * kmem_cache_node->list_lock, so kmalloc_nolock() can attempt
+ 		 * to allocate from debug caches by
+-- 
+2.42.0
+
 
