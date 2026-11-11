@@ -1,118 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8FBD606A88F
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA469606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=FYJ36vzk
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=E0OFUO/P
 Received: by kanga.kvack.org (Postfix)
-	id E509A6B05CF; Wed, 11 Nov 2026 06:39:29 -0500 (EST)
+	id CCB416B05C0; Wed, 11 Nov 2026 06:40:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E01006B05D4; Wed, 11 Nov 2026 06:39:29 -0500 (EST)
+	id CA3986B05CD; Wed, 11 Nov 2026 06:40:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9E8F6B05CF; Wed, 11 Nov 2026 06:39:29 -0500 (EST)
+	id BB9496B05D6; Wed, 11 Nov 2026 06:40:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A256A6B05CF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:39:29 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 38FC0C02AB
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:39:29 +0000 (UTC)
-X-FDA: 85422642858.30.BB9A3B3
-Received: from mta0.migadu.com (out-166.mta0.migadu.com [91.218.175.166])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 499B020005
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:39:27 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FYJ36vzk;
-	spf=pass (imf31.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.166 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E36A6B05C0
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:40:35 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3BA9A1C29A2
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:40:35 +0000 (UTC)
+X-FDA: 85422645630.24.AB83F0D
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6310340009
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:40:33 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="E0OFUO/P";
+	spf=pass (imf04.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794397233;
+	b=rD73i06ZnNsKG1icZMGhYYNRFtUwDdGP6EmHhZKEIlnM9N5hcyVknGAtvnwbvgwwcmwjlq
+	IhzwoMiAfLh+77MwcvEi6Mn5VCUj9JG2/x/lrD4ABe271uWS1sGpsbrFi2p5TYATjOSGDo
+	oBP9fDOjFQh6o3O119ss5QW9PWu5vW8=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="E0OFUO/P";
+	spf=pass (imf04.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794397167;
+	s=arc-20220608; t=1794397233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ss6GPqajhnLoAGvpkwWgAL30Fbn2tVqWEm0t1Mamd/I=;
-	b=0u3MHg3AILY/hnm25gm30teqiUjFp00mywRlgpz2qCCeIkEZ+U2Bqlfl21lTSKtP5uZkiE
-	mWDGNcMRLBS5e80Ta88TtjQDLQZo1s/iiETvlJdMZ4NSTjO2xY6ONcBq7sVOMnuuxEVh/u
-	yNxnB/EYltxPRyEsxJkErqtO5uI9omI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794397167;
-	b=0jTEZkQe7W0TcY2/zzsRYH01SCBCECs9cmi6PNymuRPzYj6Z6dktM5mEubdUZc3U2Nd0YJ
-	54IGLkGYLkvvrFWRLCTdzJULeA12Z2AbsUBoY3/SmU+6n2haFGkrTlzp/4yBdVsEkC5O5a
-	pWIgKP6MCts5nUSd3Hwji9y69Kq/w3s=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FYJ36vzk;
-	spf=pass (imf31.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.166 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=PxRmG2FWyo+pFqNDGwdneDF6Wr5yBgEA/EARM77L5Wg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794397165; v=1; x=1795001965;
- b=FYJ36vzksOCCsexC4Nfc0EjBeGRz02DN2aWs5F+SXhhYb1uihrcW4LnX6Z7s7sylG5IMBCBm
- bHF7fJg2UO01tXG8ZRmWqkalW06PF9jYozU3pm4rIsnaV0yGASbqMBLttquRoIJ+iGyHLzqA8Np
- fG5mN9dypHX+/kIKrEZ8vrgc=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 997e08426fbd59bb;
-	Wed, 11 Nov 2026 11:39:25 +0000
-X-Mizu-Trace-ID: 997e08426fbd59bb
-X-Migadu-Flow: FLOW_OUT
-From: Usama Arif <usama.arif@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	apopple@nvidia.com,
-	byungchul@sk.com,
-	david@kernel.org,
-	gourry@gourry.net,
-	jannh@google.com,
-	joshua.hahnjy@gmail.com,
-	liam@infradead.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	matthew.brost@intel.com,
-	mhocko@suse.com,
-	pfalcato@suse.de,
-	rppt@kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org,
-	ying.huang@linux.alibaba.com,
-	ziy@nvidia.com,
-	kas@kernel.org,
-	hannes@cmpxchg.org,
-	riel@surriel.com,
-	shakeel.butt@linux.dev,
-	kernel-team@meta.com,
-	baolin.wang@linux.alibaba.com,
-	Nico Pache <nico.pache@linux.dev>,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev
-Cc: Usama Arif <usama.arif@linux.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH 3/3] fs/proc/task_mmu: account device-private PMDs as present in smaps
-Date: Wed, 11 Nov 2026 03:38:31 -0800
-Message-ID: <20261111113904.650722-4-usama.arif@linux.dev>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261111113904.650722-1-usama.arif@linux.dev>
-References: <20261111113904.650722-1-usama.arif@linux.dev>
+	bh=K3dVn9RGJzT01nbdl7Cqhpuv5ZORMA6dSnVCJ/1pKLI=;
+	b=hKq84FX7WBiJtHURtF17NE2dHYYXNMeYmPEW2FZYXcqN3IVNNbmbacDofn5Rrrq7JahP2o
+	mUG/yz49/yO0cm0XDKw0KE2IfAh/PkwgD/RVJgQ16xJmjmFZ1/oirxPE4OtGaexxoRq21B
+	CVg2SBcDwvEwYZX9ykbidW/R6Wcilh4=
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-33c10faf6easo56482eec.0
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 03:40:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794397232; x=1795002032; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=K3dVn9RGJzT01nbdl7Cqhpuv5ZORMA6dSnVCJ/1pKLI=;
+        b=E0OFUO/PuH6qWn0lRQmrTC7aAPe3MbJJgmyHdpYqCRFnJy6kDNvPmhIhbtpdcc/g80
+         /sCbNYYohr01m6EMJezQ2Ykh5UFAzeiJaq9UcfyyqgGvHwQfLAcFq7HwW1O6JU/wJyJo
+         5IxdLNAAT6Jzw4TqfRloGDMV4AqkLfvFhvNSyM2N/5jO+EyuvGbP2j/iFPm1vr83/07+
+         If1O9Sy+QpDpeiJTPqiQIJ4BqAqkMHSLPEussYhiIAnwfbotGO+ppVEU9MFTpXwTuWbc
+         3mz0Jd4O/h1BSYCTrgGpns13yOlDdaskyI7Ru8FFY9r3TsXzZOcXxy0DABu39HNzAIsW
+         S7TA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794397232; x=1795002032;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=K3dVn9RGJzT01nbdl7Cqhpuv5ZORMA6dSnVCJ/1pKLI=;
+        b=XKbkWajphyjEx2C4A97y61FRSKnV+GUXT8wGafrDU0T8FWgYdMTuF8Jehd9wxbu2Ag
+         OuQoK8lp+xTVq6UtTe9xDYiHuwvhh5k4F/GIlNtpFQ6nvVPI87B38MubgkWs6V8OIXFu
+         7bAxmmw2zgneh+4Tt2BRDkMnQmBMPO1f4AeTPkUxrkJiFIXLHqlT+Bx7d3qL1aM76T7t
+         l3UqnjPTE89UccIlNcskY58X2JK/3CDhfBCrbLOXo6JL0HoUm6eSrsiifT7lhSmmohWt
+         jJQFIg/w8F60JCEjEslmK7XLq/3BHRkU08T2YRsTGFNfJHn9XUSfEW3irgfX9NLR3vNg
+         B+BQ==
+X-Forwarded-Encrypted: i=1; AL+hErFzPkRZE4YDx9nZOSUcFa+sW5oD1ps/j7eWFKCr2OoPHhQmozLLKSXCFJn9PSwuaSn79vJaqZmg/w==@kvack.org
+X-Gm-Message-State: APuU4Z+xAoHDxxHIZi3Gjuo+tUP1dBjwM4pukVcpmorjSsYkY3AQdQN+
+	Wqf3WgCcK8SSjrLmIHZM/ZmQvL9NrugAOZKbN2u4bdqk7spf46mfZBzdZDmGZUFeOyE=
+X-Gm-Gg: AYBFou0x8QQD3MfJXdmEvw0gVGWMNyK3lFdifODpUO7fJV2G9mvCNO0gwXt5zbNtCi2
+	6bSpEV0lM6crhP9FcF7yRIeoAaFD9GYoV+Fvdx7Hnu3luvAsoPwd8i9acnPgfOUvgI/x8wcdtyh
+	mguH9iMGLjAVQWgx37ca0X2/nndAO4NX5pmj0B/tXPf/AjXVn8MhT6c/xhnti1F6WZIupj9ALyC
+	x3ODykxcMUmrT/oCMSYWvdbVyTevnEHzzZ+q84KQtZHOnlDtAXuc/V+GAiMqpSeHGSNe6+kPkkG
+	EYXfgmOxW829AkBGpwml6l+CQVGraJmGDyYpEECkRHXDg8SDP+aJ/nf2LT2yg67k0dRfYyBarnV
+	O+T745gcuVAVCMN+IQyZHiWtci+Tr40+fk1UCh8izGZ+rAr/ptvaSo8CTtlKqgxWL8SZ+rGRRPr
+	Chx0D3XYFl73DqwCrK/TCn9ProypIpD9PrqBKTPFWxR35oOU2qA5isQOlTuMUtQkco6EOepw47/
+	0p7vLDX9wfapf3DkGhdse4UjcCfB2wdRAVi42/pwt0ieX9ySM8nclWNxKGQRsNbO45PzyftdiZn
+	QWzs4qQNTQEVTY4J4LbZ6dvy3e18ExlV928GroM1KsedYENbmdH1Boy4VB650L2RiSLC
+X-Received: by 2002:a05:7022:3a86:b0:143:5c2a:e45f with SMTP id a92af1059eb24-1b3c01600d4mr3413598c88.0.1794397231833;
+        Wed, 11 Nov 2026 03:40:31 -0800 (PST)
+Received: from o6.lan ([2602:fce1:44f:115e::])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b1003fsm14128236c88.6.2026.11.11.03.40.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 03:40:31 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: t7x5xn9sbfuro1tncb7rxengu8epsmhw
-X-Rspamd-Queue-Id: 499B020005
+Subject: Re: [PATCH v2 3/3] docs: zsmalloc: describe statistics with
+ CONFIG_DEBUG_FS
+From: Xueyuan Chen <xueyuan.chen21@gmail.com>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Xueyuan Chen <xueyuan.chen21@gmail.com>, 
+ Minchan Kim <minchan@kernel.org>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <CAKEwX=NEw=T6xWuu3Pv+v3Yh1BvfkGKRj-Xd3xxn1Ci_fkA9AQ@mail.gmail.com>
+References: <20261109-zsmalloc_stat-v2-0-caee41684aba@gmail.com>
+ <20261109-zsmalloc_stat-v2-3-caee41684aba@gmail.com>
+ <CAKEwX=NEw=T6xWuu3Pv+v3Yh1BvfkGKRj-Xd3xxn1Ci_fkA9AQ@mail.gmail.com>
+Date: Wed, 11 Nov 2026 19:40:27 +0800
+Message-Id: <179439722709.2142163.401638033965414946.b4-reply@b4>
+X-Mailer: b4 0.16.0
+X-Stat-Signature: qm3s8f33gk5qpbjunse884t9u4bj3wpj
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794397167-110107
-X-HE-Meta: U2FsdGVkX18UJqznoTj/zsQVI6hK3slqLrywNgb6LaLyzOCqI/gsbdEqhGhkeP0d/Cr9j8WaRadFREmddpTaPd0UVKiwlRK+aRRv4iXW1Hz/LMWCg7E9+sg9n3TxITn+K5w5/l97xdCnLbLA1oSoxsgkJYsz1DGOofVubWvWtxXvPPntol+x0YFcJDidlpiFAcHW4I6lD/7EvB/vxGjrK8r1OfX+Rvvq49D9QW8S8fOK4WazAlH7Pdbp6Bvo+SgbDQbp75P/WCwXVeWjfn88ONhqPUB5zP2ZqlkKgE4RMv8ms9FE2fBOSzAOv7Pho3MP3d4M7dHb0EaBwlsWV+AMw/QIn5guLCnd+HDoXUdy9Axq+Y0sumpfqM8LDAANkbvk+rpo1Oidc09Pe6ypzBqS6JyOyuQ+T3/vw0FbA4jgWUCe9dwb1fsmn0VUvy7Z1Rn3c086D8+pCF0aS/DuWtE0tDYa+d2JwYBCcVd731xF0vjONGA+9VXoImnm/wHwGH+GPLHX2wVZ9Akw8BRCtZbiQ9gFxCeKXfRg9AIPE5NGH5Zqj7+ZxTQ9BwnjUHmlcJndkYEkQPFRawmSWZXz365D/zOH9fwruidSxZJLN7DIMnK3gSvQhyl3E9o3xY4/KD1rLQ6UVqOpFd5/2QooyUKVZiMyVk3E6aLYWdJ9HiFeJmxDYyObUB7uYFpUdANO2ULGBuot7JfUhG5EGJISYVdBt0ytLS4vKZZLXSR+MWhnONEUg/87v6cFTZcIzyi+c7Axdg+V+t0HgPNvZl5NaHP3bDATZJ58top9h5f8KFHmKAye9Eym0LQWOahY55wJp18abWPbVxIYo3voePYyCeYmpBkvHzBMfQ3aVttVFUMXMMrrrFlDG3g4JorXluKfaJSIb2HcqENz1fi4xWboAKBWx0guQAfdRUL0aZ0/OIpddlzp9obPbaZzuUDbewnzrkEF4p6l4EY5gQb0UnLrcI7
- E17HXTjp
- 5yQN/8VMODgpYeF3oeYj1tVxyGiIWUl73/S81FPeiBmDEmCCEBxisySFeQ+wqnIletBQg109z1b4ltt9QATT7HqSVsQVbniwGBMY/EFFLAE4Pcry5pxzaUwcrBOHgoSVRQ4a54YB2yJZTbnCcxln4/R+3SVeiYf5X0m3+m/GcB5LDCZnIVrjEE/H/CLgYpwUShvICfHRWsVVlYXvUaBYV7c9eCpI3kXOhCv49VwzYiDNL5d56NMEKWfsIT/GexbAYRuEq2p1I+IELsRJZh3320V6cbAPmHDG0YB7+54NKDlmpK/xa/k011dRSb4p85VFHxCWtbB+oMGQwfxx1EnAB2wzLNbSamjJ6vjIjlthmT7lIbI+IsVvb9xBSxQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6310340009
+X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,INCLUDES_CR_TRAILER,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794397233-568254
+X-HE-Meta: U2FsdGVkX1+P93w0vIIY5fnDE6k5Mh6+U2DCMw+N4Xr0ZtFeTptGuXosLCs4J4quhP95wVSQr2qY0/5/phQVQNylzyI5xQR8UUBMU0IZmXWQPhtqqaQt+Ff3E39mhJPrefCZ6nE4z25m+PH1zUkPxCgygUPRWbdmeCqYBefa6LnSswQjSH6g0/xau15NsktR+L2l3YZSo2a2cOO+Jw9fHmIY5UHNcL7C+G4ZDO5Mq9bfi5o/eKFF90biHgEhqRJNck3fSPINC/rxnK35MyA+V/gk62qobmSG9+mkh1alSWq1wf0/mGbKNVyhBvmOrLOeLK7l35WVeZKlUuPRxS+kv93yvp45ve3Vwh7t8/+iVZEsJcglrFN692Fb2pKprPA1vVf8OpbvOAdtagwhrjEvGir6W9ZEYgnlY8hP9f8lxZaJyakfTynkSUXyV8Ws0sA+k84WS0x5sJp8hO9fQ8DN3C/f08S9z4diRalxtfr8OVPRppiscKHn8IOyY13ZBELfsb/Sf0lzhOYmKk3UCkUntyQCDO5dOsZhJJ+Nh0xVUE8NWqOjUDSw1cYhYP0/3i8WyKI2Z6YxetF9T8ddMw8RwGF6zW9xtSV579z3cuE9zv1vw4vcXmitperXQsTgAEkRBppnbX3MCE9cAbtY5o4vNDzJrVtAdUCGy9RBO+POT9D+EVEcfbSH6rgU2kOner3qShzMh005ra4okMNvjU+BRVT3SW0yPuQEmAG/lk5VOTIbqcYOs0hYpyzLM7De78SMHjwyb1WuWgTp5Nt2RXzHy2kiaG0/aYf3QGp+fgaO/EGJwz3yIFlsxREAPOadyUlGHkBypPaBK2iCx/H3HlusqOmWugzp7H+w72lZXnjlp5UZf75goEnTqJHl53K1wDA5KJevEAuR8dTgfbTJimlMJbNipUrL2C3j2nUNd7RWZsYCgie1WNM9cRUgKX7Pjc5JqPq9KUXE03XKWbWrkhJ
+ qyvo/orq
+ GCB7dPwWqSiHHQO0U8G4loBOpnX8aoyw2xknnz0Z4EKCUUNemIAlKEnrmAEfeLZzph4lQ6hUNQLaETVPtXv3dvxb6aBZ7ttbGJEFJDywqCwKBodqTJOft5tzJyc+qO2U+NXjBXOgtNyfIfFLIW0MDnrIzpYqyLrAV/eDmpUNPI5JdcLQRvjmJRde8ntI18uJXgaafYFbhsZSURxkPqCx7sjg7B6kh+5NCUdEGocK0LTE3K3zfY/Ae2QCByA0sOAAyZWkPEIQLnR89GWAag2aTFFEgE28vlBdxd7Sd9IsBCc4sSXv8wXzdWGq3xOOmGXaK6fZmoxs5IvKqb9PLSwzZGGoYyaWuwuIR9p4QOlnGHyQSKIidvrlXLLY2xjcAfY/KgYDeM7L+0m117kFgcJrC8GxvzPmJE1PfDxLgFer3vAKhhalqQM65XauqkWmxTpBqc7QuRbM0Fb+YrvBpS0l5roOYNidKkal6Omv0IqnMFN4l1tFqWdfwXcqG2G1WS+3mY4l+mcOW+tEqMk+16aCl+GkR7YLW2hw0drsspJATZHpXgbWKibj17u3be9DTG6XDfv4wNwgNpBhddhE1Z4v3xUTqX83RaANZb5W/G7GVfseKcWQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,39 +132,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Device-private PMDs represent mapped pages, but smaps_pmd_entry()
-passes present=false to smaps_account(). That treats them like migration
-entries: mapcounts are ignored, PSS is charged in full, and exclusive
-mappings are accounted as shared.
-
-Match smaps_pte_entry() and mark device-private PMDs as present so
-smaps_account() uses mapcounts for PSS and private/shared accounting.
-
-Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
-Cc: stable@vger.kernel.org
-Signed-off-by: Usama Arif <usama.arif@linux.dev>
----
- fs/proc/task_mmu.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index c0d391186c2b8..ad97532fc1184 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1032,8 +1032,11 @@ static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
- 	} else if (unlikely(thp_migration_supported())) {
- 		const softleaf_t entry = softleaf_from_pmd(*pmd);
- 
--		if (softleaf_has_pfn(entry))
-+		if (softleaf_has_pfn(entry)) {
-+			if (softleaf_is_device_private(entry))
-+				present = true;
- 			page = softleaf_to_page(entry);
-+		}
- 	}
- 	if (IS_ERR_OR_NULL(page))
- 		return;
--- 
-2.53.0-Meta
+On 2026-11-10 08:03 -0700, Nhat Pham wrote:
+> On Mon, Nov 9, 2026 at 5:59 AM Xueyuan Chen <xueyuan.chen21@gmail.com> wrote:
+> >
+> > Zsmalloc statistics are now available when debugfs is enabled. Replace
+> > references to CONFIG_ZSMALLOC_STAT with CONFIG_DEBUG_FS in the English
+> > and Chinese documentation.
+> >
+> > Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> > Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> 
+> For the English documentation:
+> 
+> Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+Thanks!
+> 
+> (but I'm mildly certain the Chinese one is also correct :))
+> 
+Actually, I didn't look too closely at the Chinese doc. :)
+"通过" sounds a bit unnatural here. I'll change it to "启用" in v3.
 
 
