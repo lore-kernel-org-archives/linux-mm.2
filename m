@@ -1,102 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69292606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 04:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327D560A3804
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 04:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OZ7PzxqK
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=NlCU9cWV
 Received: by kanga.kvack.org (Postfix)
-	id 3A64C6B05B9; Tue, 10 Nov 2026 23:25:08 -0500 (EST)
+	id 3F81A6B05BB; Tue, 10 Nov 2026 23:27:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37DBD6B05BA; Tue, 10 Nov 2026 23:25:08 -0500 (EST)
+	id 3A9406B05BC; Tue, 10 Nov 2026 23:27:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BCED6B05BB; Tue, 10 Nov 2026 23:25:08 -0500 (EST)
+	id 2E5986B05BD; Tue, 10 Nov 2026 23:27:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 021C76B05B9
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:25:07 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 89060401D4
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:25:07 +0000 (UTC)
-X-FDA: 85421548254.29.527AAF0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 01C34C0003
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:25:05 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OZ7PzxqK;
-	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 03C8B6B05BB
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:27:02 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 874CC801E2
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:27:02 +0000 (UTC)
+X-FDA: 85421553084.18.6D4C087
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+	by imf14.hostedemail.com (Postfix) with ESMTP id AC411100002
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:27:00 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=NlCU9cWV;
+	spf=pass (imf14.hostedemail.com: domain of gopalmalaviya53@gmail.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=gopalmalaviya53@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794371106;
-	b=2hsJdnH1uEYBLF3VCAOE40qWV3zkx+AKxg1yYuOXmcsLsMYgGQ5JHBy93aD66094GU02d2
-	YDOFt8ipEZkPow6RI4WHD8GoA3r/SDwa6GU7Tph5fxAMbzKFt7adU0TbTbLz8j5fYxASUs
-	4V4RvtczYzYRod7r72BkX5fVOSBD/bk=
+	t=1794371220;
+	b=67yhYCeolr/rq8Aocx57qt42SJd6NY9Vd7V5tvbFcDQW9fDWBRpjs4fpZK4yNrysEfnk4u
+	TQll7ftFJws5QNtOrA+zc60fGyw5DsvJeageiP6ZmCYbXmarGUAuAjusk+RzGxfX2hdsfS
+	y5lxYy6l4As6B/t5RTqr1vwAJtqMHNU=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OZ7PzxqK;
-	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=NlCU9cWV;
+	spf=pass (imf14.hostedemail.com: domain of gopalmalaviya53@gmail.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=gopalmalaviya53@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794371106;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794371220;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZIGOfIqty5WmF9m/oFG68PzA/sTP+YnuJipwBQIjsAk=;
-	b=cFH9m8EfR00bwWwNWEmUuJDEvLs9jC64V7c26ApkMHhQ3pksVSNps7WxjOCXvR3spsIvqU
-	+fv0X7sKTtmN5dRmOPipsdikM3McPbZP9RcIdq0pIn3sGVzi04NfAyeANFASJ0YOrvhI8s
-	Ofd6yMfENRgnVsviJiwTkXeLZPj20/8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 103D461162;
-	Wed, 11 Nov 2026 04:25:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A4E1F0089F;
-	Wed, 11 Nov 2026 04:25:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794371104;
-	bh=ZIGOfIqty5WmF9m/oFG68PzA/sTP+YnuJipwBQIjsAk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OZ7PzxqKOxlm5xAfzYFww0chMklkLL3FTViiMh8or+Dp2kXFwTOT2RZ9Rd/vB8gzM
-	 QjSUbcU1fJY0BcB5ktDGUhra68ZuQbIsvaa0tgu46z+nkvwiGX4dJYjjzjXBkglnJ1
-	 cvRl/FkqcK5cu760SAha675YsLPeEG6yCu68DglbVWTpdOZ0iK1eiJtHIcVb8AQTK5
-	 La7NLYZNBYRcbEi/WM3I4zmjD+L9yfUjjWV0VfJPIZX8rn1nNr4Q/b/5zsjuYNm6PA
-	 jhzkc/qfYyFbXUQlBM5Hr4acckYAwGoQLO1KgRbAZER+CilVh/VOD3YrEAdc0xfyiV
-	 PsbwSqUydsviA==
-Message-ID: <sashiko-outbox-208280@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v2 24/25] Documentation: Add PISA architecture
- documentation
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Luigi Rizzo" <lrizzo@google.com>, "Luigi Rizzo" <rizzo.unipi@gmail.com>, "Joerg
- Roedel" <joro@8bytes.org>, "Will Deacon" <will@kernel.org>, "Robin Murphy" <robin.murphy@arm.com>, "Christoph
- Hellwig" <hch@lst.de>, "Marek Szyprowski" <m.szyprowski@samsung.com>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Vlastimil Babka" <vbabka@kernel.org>, "David
- Hildenbrand" <david@kernel.org>, "Jens Axboe" <axboe@kernel.dk>, "David S .
- Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>, "Jakub
- Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, "Danilo
- Krummrich" <dakr@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>, "Matthew
- Wilcox" <willy@infradead.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Jesper
- Dangaard Brouer" <hawk@kernel.org>, "Ilias Apalodimas" <ilias.apalodimas@linaro.org>, "Willem
- de Bruijn" <willemb@google.com>, "Kuniyuki Iwashima" <kuniyu@google.com>, "Joshua
- Washington" <joshwash@google.com>, "Harshitha Ramamurthy" <hramamurthy@google.com>, "Alexander
- Lobakin" <aleksander.lobakin@intel.com>, linux-mm@kvack.org
-In-Reply-To: <20261109182533.3594984-25-lrizzo@google.com>
-References: <20261003212241.3432303-1-lrizzo@google.com>
- <20261109182533.3594984-25-lrizzo@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 11 Nov 2026 04:24:57 +0000
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
+	bh=Y1pY2f18oXgCvPBL0khHJZDCXmLtKWWVDmpFe3/LPR8=;
+	b=J2QNvoApT4HniAAsKP8e5Qlp8xMfl37L5eiuz96FAvEQ3h3WSglHkLm29iGINvpYE9bSc6
+	+/U5afal7dBm2Mss57mu8cUXjXXF4RYbxhe3n22MwcPmLInXLs8Jvs3qoTO4cWkfTB8rj4
+	MSw3P5qPDGZoMYoddaVYgF/O5USIUKI=
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-1b3acec6677so4341231c88.1
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:27:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794371219; x=1794976019; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Y1pY2f18oXgCvPBL0khHJZDCXmLtKWWVDmpFe3/LPR8=;
+        b=NlCU9cWV9SaHQWyNFO9gOi2ROoS1WauKqBOo9zynaOQdWwHpnhh9McPVtx8Ptjoyr+
+         Y9CNojvTsdUvX9wwpsOOi0DEJrkFVu8Yuxct+hjgaqYwM3Z/eETssg1d3y+U7R8Ns2K7
+         /vdQD48BxwkZMHjWhBS7/ne+wisBbN4KtMCyd0KypG8anOYRyFH6K5BF21zxWo+caGOG
+         BbQsDGFtH6Jlw1pfKmqHkvYGh0q7GsDGjD8UDv77shkUSNR+O7NQmh11cMHax1E/+HRU
+         BvkUejiIyAnx9SauatYi8CLPb7vFb/WhWdiBM4V6iAT84HimzwsqPqJFWL5aPd0uD70z
+         51pQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794371219; x=1794976019;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Y1pY2f18oXgCvPBL0khHJZDCXmLtKWWVDmpFe3/LPR8=;
+        b=Kni9XT6sfTL1roiU+0EED5qVYL4x7Qg4AbinQdTi6vCfGqjVUFA7E1rdm+KRnrAaER
+         i+qMaMBB7n9umtHD1pqBgdDPSKvURib/syeFtA33KIuURdf+bbbDPSET8sa6czrgBYnm
+         eB6LBd5xAds9Wp+gA1U8t2JMW7yJOLo0lXvR36fjIr26IUvutSeNQIKSFTIDYRImBgm1
+         yWXZ/WOvb/Y4tuKNkWvlC/HoU4Jx/JUaGI7DqjZJFkPY/b9EUFEjQQEm1UEa9bPMCfbD
+         JQJMb6FziQMPWb2VyqR95LzdECm/BEpQUSKaL49CmQc+xjTg2M7onZU9gFbCVntTVmm8
+         0Z4g==
+X-Forwarded-Encrypted: i=1; AL+hErGcsYJecwhtEkIKlS2nVhLR+kZPynwebJ2xlNCYKp/yMcBqHN3G1zCMRJ+sFHTquQWWxNakh56t6g==@kvack.org
+X-Gm-Message-State: APuU4Z8+MQmlDOCwLSkgYxwtVpBAjiaO5JdF2nt2uFBejVMk1Y7AaL+6
+	h9ZlAuTPvw6BZu+opKCnBff0EsCa7YwUzM2FD+jxdueyDr7WxKZ30v2z
+X-Gm-Gg: AYBFou0E6bcbaeDL8SRPYZu7HaO8jWFhGwhNjF4RJTYp+MYUBXZGvbo+cKEDfIk3iXT
+	n7EUFyFj7dBbEzL25rsfapMQ3yd1TlANSwVOPs5tsRQ+i8tmPTgGvjsPJFPKLx+Dc0nRsu0mAQI
+	COlfyKdnlLII1GtX3mHovJR4GPKuclWD+EdmKdECFgdXuuJANuHNo57Obtrw8OTYPX4ylmihqTp
+	dq6VgXG3vVDDTC8kyhdNuFu1p2fxAhBBX9TE26ovO4HEbHnZAi3t0mLPfFiVGoldtsCsy+Ov1q3
+	SzPnQfoEtaq+zu/eutzPGMdhx4bpbpRHaNGeAgt2/EwEMlzd3lUl07rO1CLpEtKqXnwKQWBB50J
+	kcChwvyFjO7agwQXO1jmxy3HKVb5v1TqyEvqyE9Q4RKkKLgpdgnqHut3MUU0Hli1anYXp0HA1ay
+	odoBlzSB/SqNj1WFNKzGzLMl2NvjGu2Aw1JBBw1sC9JoHi6HWAgxCjxun4S2xCARf5JVeCJDV+b
+	dmZL+NkU/FEkfJwQg5mXWE77VEdmrpKUTHx9uKv851tlLp/w1CcIJlK0noHrPocuaEnTMaYftAS
+	jR4PRP1DRQA3g36fHIl/HgcB/DTDGaf5XEg/6pBxpnEGf5X2CX+D87h2L/aknYKfOQ==
+X-Received: by 2002:a05:701b:2302:b0:1b3:a26b:8b97 with SMTP id a92af1059eb24-1b3c0353171mr1289026c88.41.1794371219170;
+        Tue, 10 Nov 2026 20:26:59 -0800 (PST)
+Received: from LAPTOP-KD1TH5BD.tail375eb4.ts.net ([47.11.96.168])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5890e04sm11563252c88.2.2026.11.10.20.26.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2026 20:26:58 -0800 (PST)
+From: Gopal Malaviya <gopalmalaviya53@gmail.com>
+To: jack@suse.cz
+Cc: akpm@linux-foundation.org,
+	willy@infradead.org,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	regressions@lists.linux.dev,
+	fujunjie1@qq.com,
+	vishal.moola@gmail.com,
+	roman.gushchin@linux.dev,
+	tracekotae@gmail.com
+Subject: Re: [PATCH] mm/filemap: restart mmap readahead on sequential faults after many misses
+Date: Wed, 11 Nov 2026 04:26:39 +0000
+Message-ID: <20261111042639.191997-1-gopalmalaviya53@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <jwg2p4bjzkacnx6fkifkb5jbe7ah6btuecpcpulbkym6e23v6x@mh35p6yafmqi>
+References: <20261105192517.228523-1-tracekotae@gmail.com> <20261109091444.128521-1-gopalmalaviya53@gmail.com> <jwg2p4bjzkacnx6fkifkb5jbe7ah6btuecpcpulbkym6e23v6x@mh35p6yafmqi>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 01C34C0003
-X-Stat-Signature: 1gpafjkewjhwxj8iqkaegwu4b8g5hy7a
+X-Rspamd-Queue-Id: AC411100002
+X-Stat-Signature: w8rxehgkirhq919ri5gaxjjyaxpgwg93
 X-Rspam-User: 
-X-HE-Tag: 1794371105-264874
-X-HE-Meta: U2FsdGVkX1/x1m0KwDf3oaOpxdSEay7BQKykRTloRdDwjG0WKThkL0sZOKnpso/F95IsdaScGViCMIM8FIpzxpckVoDTBqB51F4Nm3ETlyiTffnaUQI59bJZx1fYW5KVc5YhRXbL6n7oQ+ya9dHFDcHe6X2B04OWN5EbxlCKptv/iHQHzNgL7WhSWzMsLDB5Ej2CEapXvyBJ6JZjAz+tUhhPkJpk6gHwIwpBcEJYOh080/XGosRL/EnvN20Lz9roSPas96wiOD37AJsEHYL/W1l/IKFFqHXnqQF5NVbajyVriMZF0HDHUwp6IbU0cB0i9RFQiER2uaDxXlWldGP2odQ+xOiWgXpGgHD8Q89urQIfPRooqKUPKjFRe1HjSZaPq4YkxlOl7LgBN2AXIQQhze7PS30Zgbl7hHzF3KY3HrOLAb5odPtyacy1J8FFq6t1s6LW0DFjjlzDPTMyrYhmJOyTupBnlABch9QLgAF1qD2lCsY6speYujRK/HOvGzSdD+Xjx44L6WoOgCzml/rLv/hLU8tZm4lFxycSkF0Ez+6mwTvbV8bS8E6Y3sPIbjsuHN+biq3k+ilkRyyiig+ilq3Rs8RA2dvLF9U5eVNNVTkVsQp4Mec6BAmJPoSrnoQHLKkV/YD2M4KxNH7nSclxajEjOXKAg84HPwkQw3eiKaFEwl+Q/i3nQ2ya0dDY8+hlqlMwgUKl4BElveAX91ZwDXv3/P7afsgdZjEW4EU1uae3/qRoDNPBDagOoprLbsmsM95GFrGAjh0cWd+08SwD6FK1Bo1AXgKdfQ+a89P006uTAx+6aYSONlNSe+Ey8qC2zaxjRxBNvOjiR4WNV1dAVtggE7Tso99BnpYO9aQKKdJK+9dhFhnDO/UbGuXXLyGEdmLPVT8nnB1wn1xAdABLPjzxqCZck1Yd+1F71+beD6j+ODgErxuRXAuK0vNfv66xryfTHroKohLag8ZUw72
- gaYC+AJw
- 9JgE3E1JvqWPXEg1ECvQKcwK3VRaIsr3dihii9k74HzDM+hA6uJ3wZNepi9RDcYgRdo2rf8WIHaFhPb5Xhd+vjJb4jDPkU2BPL4lMb6klOefeUesiDHifW5xqMLoYGix9TOR3gZfynmyuR/nzRr2DEVKr7/MioX4SJICboSL7P/y2qlts9C2kDLXPRkbaQz4+TGbfUlDlRruPSJRyj2D/xMy+cdxjrSjt7SFuvFb7Ct4OD8Rgw4zTI3KHj/CqhB3DkpfQyApAjR9eGZoRZFxBjEdWRZqN6vlMGmKUUYfxcmrpNrDSEw7Qm9A+JTCsVUhZXvCdQeJVUkeEXk+w6cOWYZlGk9lSYbk0RSKqTYxpCCEJcRVvNilUBLC0EeR4q4y2mYD4jNs/G/ImzLA78XUeudlSNlhKlKIIB1ZYQgw1eNzDpyzaWUwHIvOTn3Z4mYs+W807j4CxnZjD6BddAPmsP2/KHiAWrT5XDDARPnAsPLtIChcYXUoYOLTD5TRNPtXEsfm+Eb2XwFmn/aHLDRrnSygeRzmJ4GVcm7wv6xsV/QD4j8Xe2pyJ1WecDA66f9cpXxtndTw83xefFD7Ebn0/TAlgw6iZgo8onskORTqzON7f8MmOFN9RiYXcB5mptHIszhh42Ohh2wr5bO5J5riyl4S0Nl2qDvoP+dFi
+X-HE-Tag: 1794371220-498961
+X-HE-Meta: U2FsdGVkX19AFbwE4MX90NlwkeblHZc3VNL9eZ1FE4IkUqofgsw4+VGTDCvJ5zLI5lWlg2VqWlmP/x2uCxX7XHbkJmTUMvF0WzQVioByZlbj8x+7ieZwbDrXESjGrzfir2sW0jgs5mMV28Un/MfWu8dzKYS6AV9PpR+56/UYDT7m3B9mbHNt7zmRL+7I3cxjtHGUsWKlTUqf8Tgyakb+x+NUYf+saW1NCvTr+qcDrmreUTxLCZLa3xV+dsXgw9zZQL0xpGNzgU6mhnczfV8LL8sG3rGMGHn9FETBULpBPfDxFyglK69kIuQg3WpDgQ2LjBPjCObn4IbSPQwOu9ikA7WBbpewwX0FjngeZ/xltgGSBME+5iIGMUwpyHkcL6JrDmcbVpDrtTfr2cVLg9Aon4g44whJHBraOEz5VU+VFelb/dns5ZzadzUQhQUQaBiTfK0cjyZI1PsQJMdTvk4/QHVMe7FyXhiR3IJPetsEpukL8WcUzsxoqCyqmJOM48QWMy1uTyvDkqecK7+btEJk1CF/nXZMH7sKVDUjPf+TU+5Yh7Bx9BhTXwX5+43hp+w+P71b6KzSm4zlSeLmL3hKT3BK9tp7Aa5IL9mh0+bvsPM4ygf93weHx7K7LK9JRqM5ARaX3+463x7kz2tBqmFgBTFyzEuKMLXfmp82je3ijmwgfOYkkKZRrFHnOib3Xs51p2cXvyrFnGDya4Sq54mbNT3ZXt30Gpq1n08jL5DG3NhP4cYeE73a8SvgPmo1a2vi9tyrn1BHfzvlYuF6ZmhxGBLWFn16uwU5Wx8IOVVuOz1yRxereoG6mi8o5HHvKmWN+DGia4JMVNXP9UaP5/+qgbQX2V1pXj+tf/CnOMB+A/bAteopdLhFbCH7FVbUUgb/7cDyjK8Y8/XGTWldFLzw+Gw18uAgYxZZmOu9oOrEXSnSiYt0bSOp1xlfBzTdUYZQDHVT9YLycEKfBPYS1J+
+ 1pQ9cIuX
+ armE2U17rCCfdurgXMRI8VmQuEsNhXE+R+7CAM0WKrMCseuooKfIAAq+97SEY292mtxGw84h1HueIoTgEUWfceZ/A/Y6Ah00dfnEJaa6deTGEx82pKyiqlK9lJAC70sPvY47ppeMPMzUAOU60vga3LO0s0yp/X87gFF2BGGQ8uJcAbiiCXAZGTP8GLLh9ZwVdcIUXny0ABCw6uxhdqqNlLVhsn4T7NqXtkZI2fky7BCovQKIZQ89eIBMQ+JN85yaG6tiMWyb3tOq9JJVrfT1SlHJZgeMc9/EII1Hq1P+M89fAElF4zCcEqHS34zdhax/CzfQlJdaol7nWPJu3TZ2jG5kIE8/gxA0GuupnYMOXbbiQxE24lNCjEOrXnFnAyrCDbj4ghz+yVWK7IM5chrHmxoWNfef2PkyaFnm73kQDblqk0GNKtY6wiBXiFAVkWkQv5azJfUI4IkQVm9pjnCgef7igQOliTo9v6Ecnwe6H1oqypQc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,102 +129,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Low] docs: incomplete pisa.* boot parameter docs and wrong scrub_max
-  unit
-- [Low] docs: pisa.rst omits block I/O, page-cache folio, and user_pa
-  support
---
+On Tue 10-11-26 14:53:14, Jan Kara wrote:
+> I think this [1] looks like a nicer solution to your problem.
+>
+> [1] https://lore.kernel.org/all/20261109-mmap-miss-v1-1-8b44b33f3358@it.uu.se/
 
-commit cadce0626ec3fdede5eca92aaf3542cae769fd37
-Author: Luigi Rizzo <lrizzo@google.com>
-
-Documentation: Add PISA architecture documentation
-
-This commit adds architecture and runtime control documentation for the
-Pre-mapped IOVA Superpage Allocator (PISA) in
-Documentation/core-api/pisa.rst and lists the pisa.* kernel parameters in
-Documentation/admin-guide/kernel-parameters.txt.
-
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentat=
-ion/admin-guide/kernel-parameters.txt
-> index 0b3c140babd94..cb978469a7df3 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -5345,6 +5345,12 @@ Kernel parameters
->  	pirq=3D		[SMP,APIC] Manual mp-table setup
->  			See Documentation/arch/x86/i386/IO-APIC.rst.
-> =20
-> +	pisa.*=3D		[IOMMU] Pre-mapped IOVA Superpage Allocator (PISA)
-> +			tuning parameters (max_bits, max_pages, slots, max_idle,
-> +			idle_ms, reservoir_max, scrub_max, compact, wasted_pct,
-> +			old_ms, pcp_batch, user_max_4K_pages, scrub_migrate).
-> +			See Documentation/core-api/pisa.rst.
-
-[Severity: Low]
-Should this entry also include the pisa.decrypt boot parameter defined in
-drivers/iommu/pisa-alloc.c, and use [ARM64,X86-64] instead of [IOMMU] (which
-is not defined in the restriction tag list in kernel-parameters.txt)?
-
-In addition, this entry defers to Documentation/core-api/pisa.rst, which
-does not describe decrypt, max_idle, idle_ms, compact, wasted_pct, old_ms,
-pcp_batch, or scrub_migrate, and describes scrub_max as counting idle 2MB
-PISA pages even though pisa_scrub_alloc() accounts the budget in 4KB base
-pages ((unsigned long)used << order) and scrubs dirty blocks from
-partial_dirty and partial pages before idle pages.
-
-> diff --git a/Documentation/core-api/pisa.rst b/Documentation/core-api/pis=
-a.rst
-> new file mode 100644
-> index 0000000000000..6ed4bd9951f8a
-> --- /dev/null
-> +++ b/Documentation/core-api/pisa.rst
-
-[ ... ]
-
-> +  - ``/sys/devices/*/*/pisa_{coherent,rx_bufs,tx_bufs,tx_skb_heads}``
-> +    per-device entries that control whether a device uses PISA for coher=
-ent
-> +    allocations, RX buffers, TX socket page fragments, and small TX skb =
-heads
-
-[ ... ]
-
-> +- **User pages for MSG_ZEROCOPY** (``drivers/iommu/pisa-user.c``):
-> +
-> +  - ``madvise(MADV_PISA)`` migrates the present private anonymous pages
-> +    of a range into blocks of per-node ``DMA_TO_DEVICE`` allocators, so =
-that
-> +    zerocopy sends from them use the PISA window instead of per-send IOM=
-MU
-> +    mappings or hypervisor pinning. ``MADV_NOPISA`` migrates them back to
-> +    ordinary pages. Both are allowed through ``process_madvise()``.
-> +    Freeing the pages (``munmap()``, ``MADV_DONTNEED``, exit, reclaim)
-> +    returns the blocks to their allocators.
-> +  - ``/sys/module/pisa/parameters/user_max_4K_pages``: Soft cap on user
-> +    pages held in PISA blocks, in 4 KB pages (``max_pages`` counts PISA
-> +    pages). When non-zero, eligible pages are also migrated on
-> +    ``MSG_ZEROCOPY`` sends (best effort, non-blocking, skipping pages st=
-ill
-> +    referenced by in-flight skbs); 0 (default) disables both.
-
-[Severity: Low]
-Should these sections also document how pisa_rx_bufs, pisa_tx_bufs, and
-user_max_4K_pages apply to block I/O and page-cache folios?
-
-In drivers/iommu/pisa-user.c, user_pa[] maintains per-node allocators for
-DMA_BIDIRECTIONAL, DMA_TO_DEVICE, and DMA_FROM_DEVICE.  When
-user_max_4K_pages is non-zero and pisa_rx_bufs or pisa_tx_bufs is enabled on
-a block device or its parents, PISA also migrates pinned order-0 user pages
-for O_DIRECT bios in bio_iov_iter_get_pages(), allocates or migrates order-0
-page-cache folios in __filemap_get_folio_mpol(), ractl_alloc_folio(), and
-writeback_get_folio(), and skips blk-mq IOVA allocation for PISA pages in
-dma_iova_try_alloc().
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109182533.3594=
-984-1-lrizzo@google.com?part=3D24
+Agreed, it is simpler. I am dropping this patch, so the v2 I mentioned
+will not come. I have tested Alireza's patch with the reproducer from
+Trace's report and replied in his thread.
 
