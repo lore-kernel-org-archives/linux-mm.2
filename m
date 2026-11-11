@@ -1,162 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52B196070098
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 19:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A134606A333
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 19:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xgh/iYq3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Zx+nIfXZ
 Received: by kanga.kvack.org (Postfix)
-	id 7005E6B05B1; Wed, 11 Nov 2026 14:40:40 -0500 (EST)
+	id 4DCA26B05B3; Wed, 11 Nov 2026 14:40:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 689BC6B05B2; Wed, 11 Nov 2026 14:40:40 -0500 (EST)
+	id 4668E6B05B4; Wed, 11 Nov 2026 14:40:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52A7D6B05B3; Wed, 11 Nov 2026 14:40:40 -0500 (EST)
+	id 32EC36B05B5; Wed, 11 Nov 2026 14:40:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AF4F6B05B1
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:40:40 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 94EAD140337
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:40:39 +0000 (UTC)
-X-FDA: 85423855398.20.C740A39
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0AD416B05B3
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:40:45 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8B2C31203AF
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:40:44 +0000 (UTC)
+X-FDA: 85423855608.21.1ACC336
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D1AC340010
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:40:37 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Xgh/iYq3";
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 03FADC0006
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:40:42 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zx+nIfXZ;
+	spf=pass (imf22.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794426037;
+	s=arc-20220608; t=1794426043;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QlMNLrjFCKMvbIv5BxgSsbHdwfPDXIwUE7VZtJM3UGU=;
-	b=I8Eg6F960hnWiRh/FXcQSu0dq6iGh6wnucnVYNSAE3MRpwOv/8iVLA/BZ9dAH/n10l8QT2
-	LP/9k5gVqGKDja2oKPcP0iY5D9pa2rKdnuUTROUAg1/RWeINDUQ0TpmuGjPU7NqZPRpzb3
-	PSOPgxhot9iGCbkc20Pee103mxBw7vM=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Xgh/iYq3";
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=B9+U4iNiHz63kgEwzrgZfWzI7/jqnf7J3/4pv9aI/zc=;
+	b=rVJei+hEV55ygFdxXRD7zBF1aPbYfA6PalhhnYTQUyoIy0gqUggF6XSZWfE15EMJA3VWLG
+	q4FjKJGtPdeE5WsVeJ9YbBDLYjoySQccd+ovoQ2LfFjyvABVmj4vo3KrZyHyZB+IXq4HNH
+	z0Y2a0qfKwM4Fqb2frMNLd/nn33BY0Y=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794426037;
-	b=PYIphjGYV3DXc0jx5QXWIXiwSSJxDWVx1hPoOugqJtfwZKr8+BXq+flYm4v2rxDOIx4NTa
-	lUCdnWpJgBa0/Iwve2slwdVoRaARqMGvmCr5xv18moUAHBpXlGfXGx/mj43xqEMSmfS86B
-	sH+4Tbf+6hs7MTxsabD46Jn9qI8PW4I=
+	t=1794426043;
+	b=jjYQsatJ5wtRDFtW+125sGlHL1akfPKvgwSOTB63A0GY9ev+d94itmX9FyijTAlo5XAV+l
+	xiiUKTSZscV6WKAuJ+td5v7bw0e/zeAssMKpuyoFEm3+LDzoQxPNopkb8j3F0ORc7DKcTB
+	d0KtNufyVmsext8yMTMfo1x2y9v6ypg=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zx+nIfXZ;
+	spf=pass (imf22.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4DA4F65531;
-	Wed, 11 Nov 2026 19:40:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D89F1F00A0E;
-	Wed, 11 Nov 2026 19:40:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9A89065541;
+	Wed, 11 Nov 2026 19:40:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8279C1F00A0A;
+	Wed, 11 Nov 2026 19:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794426037;
-	bh=QlMNLrjFCKMvbIv5BxgSsbHdwfPDXIwUE7VZtJM3UGU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Xgh/iYq3vd67L6NTqm8caRRgqD3doSELAM90BwjbiVe2TuOfg5HU/nGnVnxM5ZViT
-	 xKFD0jmWf9ybwTYZReajidXaZZDdSRcocRYyTsFQaP+J1fTlYvExJ2byegLxqTg3Ob
-	 B+oiXrUeResJs9rVN/oF5nd17NJiD/wjpWH1qYpB6sgmWHtdr2ke7nHMRda46oPHPQ
-	 9kD3l9BYsuA8DIGTKGDv5q1jvOfzpsbdZVPPa5txyY/Q4DaN5TDhfIaSJbiLYAo6Rm
-	 Fb2PKqEN/CWk12hkxW8BDE0VwyAzozMeIqXzxgaEYJNEamhYXt3XiipU7S9ZQAyGbh
-	 ZlqWr9sTlgtXQ==
-Message-ID: <95682ddd-d200-4827-a009-77ee59d14f86@kernel.org>
-Date: Wed, 11 Nov 2026 20:40:17 +0100
+	s=k20260515; t=1794426042;
+	bh=B9+U4iNiHz63kgEwzrgZfWzI7/jqnf7J3/4pv9aI/zc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=Zx+nIfXZJ5nduKwV4Kohuy6/wPdBQ4ZIaJJqYxE+zuPQGTjFy0XKAB/vd5Nul6mWS
+	 dfbb8UYEW+trGtamk7bCAjRFBbU/f9x+NGE3/pvTn1LX17XvYSldT9RNfsRDtbg5ZF
+	 yMx9oiUTY1wuYeAu49os930Inq/rwkyDpMpahOZV4+zQhdZc6ZrMe2sWjWkNp9CnMJ
+	 5gwC/xRFPp8FsEMGuA0isPQ0XSW15BK4OQ2abwu82gu1KzNB6abF6XDM+IDpfsBueP
+	 tE2J47l2c9YtzO73s6ESRKnkVBC+VbnnD+c+f74bsv7iVifmphXZ9IdlkaBHomBLvZ
+	 RDQpI7pIY1AcQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: sashiko-reviews@lists.linux.dev, Alice Ryhl <aliceryhl@google.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
+ Howlett" <liam@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
+ =?utf-8?Q?n?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
+ <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Will Deacon
+ <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Mark Rutland
+ <mark.rutland@arm.com>, Daniel
+ Almeida <daniel.almeida@collabora.com>, Tamir Duberstein
+ <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Onur
+ =?utf-8?Q?=C3=96zkan?=
+ <work@onurozkan.dev>, Lyude Paul <lyude@redhat.com>
+Cc: linux-mm@kvack.org
+Subject: Re: [PATCH v5 1/4] rust: io: require freedom from plain accesses
+ for `SysMem`
+In-Reply-To: <sashiko-outbox-209186@kernel.org>
+References: <20261110-page-volatile-io-v5-0-a91ef252c24b@kernel.org>
+ <20261110-page-volatile-io-v5-1-a91ef252c24b@kernel.org>
+ <lAtM0NMr_K13f2Z2C_qDZsigOTH50qf6QuQZFFVh8k5-v2pkTO25UdKBCrSXWiHNHqhYUtZjNkwa-xsZraO9Og==@protonmail.internalid>
+ <sashiko-outbox-209186@kernel.org>
+Date: Wed, 11 Nov 2026 20:40:24 +0100
+Message-ID: <875wy3w40n.fsf@t14s.mail-host-address-is-not-set>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/13] mm/migrate_device: allocate THP deferred split
- heads
-To: Kiryl Shutsemau <kas@kernel.org>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Usama Arif <usama.arif@linux.dev>, Kairui Song <kasong@tencent.com>,
- Balbir Singh <balbirs@nvidia.com>, =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?=
- <jglisse@redhat.com>, Yu-cheng Yu <yu-cheng.yu@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>,
- Chris Mason <mason@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- "Borislav Petkov (AMD)" <bp@alien8.de>, Mark Brown <broonie@kernel.org>,
- "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
-References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
- <20261111-mason-migrate-et-al-fixes-v1-4-3d2454362e8d@kernel.org>
- <avTB6h61nXfvCXUS@thinkstation>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <avTB6h61nXfvCXUS@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: j7urujksw84oywon6kxbdez8sq8o7xt3
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: D1AC340010
-X-HE-Tag: 1794426037-769561
-X-HE-Meta: U2FsdGVkX1+DiuWaBmbSfHR5te8+vW8xmxQ6N8PtfOhgbWuA6xD6rNY1bjDDPoWBBFYElHv5RCUz7JSuok88PQs6kIUuozUpGsghSegFe2Tc9iakbICPQa5RLUDCWuCqW0vusWoG/W+2Z/GTY1hrroomei7egXsyUtbnO64dBXTKx/igmdK6v64IDKwBFVyMTu/Nu8wfLqann3ji/vKDmTRxZIiKEWetifSxlXEVe/3XY5KoJy4aiAFg7dmtrhr65q+S4U6FPRTLpcuwq2Ww6hqVGjaYi+z2+iAIcgQbHSSBubcgDeU4b+YmQvRQRsQoI4CXKuoXB8KJgC34DRCXj5dVU5BM3Qbyis2j4+KIxAC1JA0WMDAjBnzaUQHaV/ZO+3EdYOmXjI75phLzbhZrccY9p9i6zsANpF4Mx1re1qIwxURIwV6iC4xdI/53WZzBnIcIh9QYSqcBdceHyUsG9K8fp2WcmjP2+yiLFxZfAqDcXN62nK6qlamKPuzR+wSXbogJdM2cLZHU04HtPoJJosuE4XSQjIrdmhNDFjBBTSkl3cwkT14i9pW19A1CKinFBeQHOCSaDN4i7jm1CvR5vn57OQpmf9dqi4/WwL5hmSbQiuPhjDmOp9b1ot8A6V9wi2eGvZHK/+A2UdInX/VpI1325vZqHnJfc3zxeHlyMWx7jtYdEuFN7+xj0KnOVw+aPrjJDceAU1ZEhqLpbNTvVuCJlDhdfMV/eY3p7lqoIcXcNVk/JPv3pDtb5nXJAw0klHcDHJ3+ZnNfqGIzim+sUA0DdxCYvTvDdnavauPsk+1sW2+OEwIBrwydbDdM+h0RYxncRj48hSQlZ54PtLffWbz2yprw6X4vB9SYak+tSPfHl1oXbkm3AdEo3i6foi2P0n4HoCe5im/9nOoReU9BbJsN6phe5orL9UMcY7FwRzCAFGRWF+ZqLBgl/uPah4D55zXtYiezhF733LGm2rW
- rCdPJQNm
- QvXMlbtb/spimsaP3VqP8qHVI2p0hAB27jswoJ/S+MX+U6ZDG5ky+3GvBFePg+Uq9+hP+YF1glwmkWB0ZGw2dL04YekBe3EBmDyt9OZztKL4d0PFz1tuC0dAVXMQr81vSdTMVzORZen+6pdxLIiCA8HD0pGHrrx/wTajZGEXx/cKmsQNVdbhI9QRuu+dotrT0II7EoUO+ZAfiL/GNbh6ihm5KZJJVwastpc1BwFZYgk5WWGISFi3GY3UAt4E/4FJ/ElB7sQErsLOivv5pna2mS+FY4WQJIMvqU3KI3+R8zCQFshLDXwZMcBwSMGlW+x9aiWsapkGEUw28jaCPE0VN2v/8dIn8T1zFC4650AMSBXvLHljfDRy1vkHp+aC7UgHklv7gMe3asg/yny09bxukVTf6s1wST3XJne3r5MGiZXaVZF++2oWptWquTyh+QvbbN6EoJCExglzct41BW/DC6xHKQQ==
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: xmy3nkqxax75g3unedaaoj6owogxitqx
+X-Rspamd-Queue-Id: 03FADC0006
+X-Rspam-User: 
+X-HE-Tag: 1794426042-651609
+X-HE-Meta: U2FsdGVkX1+4m/NYSTQQ2WShq6PtDf5hO0vJmN9oW2WIJmB1Lx+nOEVt54JDY8p9VlNoMo2g1g5FbnROf5R/vdbQG7hqxgNeKwpz1ztGvbp4EmR/iwAnBXnJ3Sn1V47YnF6td7qbGqKzfYS1E0mMr3+Qk6g0A7syAyXJ81WAyN0gjZPx6B9LOZrMpj1FdZXmTs9X2lkNWHkBRTmjSiUfX0XZeACTxGv9bsZ53Au+muFcscX+uyzqp26xEYbyldUloZZPTfVlhLPo6r9Yw1bHEz3HJSbgL0p99IGLYW+MH9fSLcKuAGOLDKadbkXY5YwWsf2hqRGKzQLuqWK2j31uG0Y2812rXDf68j2XQ7iAlN/74Oydvh1h/jKGppA63c8Ly6BgXGT0Wm+0Vv+MngUygxSFfid2xAp/ijV/+sudl7vzYdD6QtmAUx7aYy33ei7yMsyW/IzlKQOzu5JFUaqwLGG3S2AeJYeSSjVBPtgovStDGK0JLLG/4dNyRZaVdx3wvriImJu5omDqwxJrJcmIPolvUCSUIBY4NVZj1BiA1InKvCu8AyIBogQ1+KxpQxkauXbQgPkdoNzD7qb7iRcaoKMwyqKuRAOdP6BPXnB9w2/K7faMBSa+HF5PyuZKNzxXRBuqy9xqrX2ZuV7YzCKrgyB7PQMO4gQEZR36jTAf+WHa7Ng3Q+xmJL6xqYOsMFBqWxA+fT6iEUG9KQ1IhoAiQULfNjjdxWGX4D9ODo8Hwypn9h6a1/lG1AAopGcbQ213b2HHbOucOW3kbyl70gStGxMPwYdQmF3pbd6yeq6JawvSf3CVbzG6c2dCyzxiobKRORjXgd26kDG13a1PPsfwOkCheAA0/xCKjJ3NT2tyoCK43i4LM9MjllmOvKpnhlNOwRuMWUyusN/61mitkYJUC+ny8Vf+dHo5v0A2+FpJ6ZDtpZtCX9bm5CpnTj4bY21OyAKIk/I9sluyJyKVhwD
+ l8fUsUR1
+ AoElJbIbO5hoyr3mx6NI/87IgBhyNNsEH6nLzTAZjzBoFp7dOGt1OHD7ylYWUYO62CuQhZGqntW0ygwFR0mDVGEIf/vU56DY37RqspKwLI2C7A0dfwxlr5HMvOzepPADfs3lySE1V3tXrp8t5aQqp/oR5flUfffvo5EgeaVxWqmhWq4/8TuKuPAoC+dPYDc2oDnfWDeLqXNJjFiQLySEeoBRyHHTVyL3z4ZhX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,48 +107,86 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/11/26 20:30, Kiryl Shutsemau wrote:
-> On Wed, Nov 11, 2026 at 06:13:18PM +0000, Lorenzo Stoakes (ARM) wrote:
->> From: Josef Bacik <josef@toxicpanda.com>
->>
->> A THP that device migration maps into an empty PMD can end up on the wrong
->> deferred split list when it is later queued for a deferred split.
->>
->> This occurs if the memcg has no heads yet (resulting in a warning if
->> CONFIG_DEBUG_VM is set), where deferred_split_folio() will then queue the
->> folio on the parent's list.
->>
->> Once a later THP fault in the same memcg allocates the heads,
->> __folio_unqueue_deferred_split() and the split path resolve folio_memcg()
->> to the memcg's own, now existing, list and take its lock.  They then
->> list_del_init() a folio that is linked on the parent's list, racing with
->> anything holding the parent's lock, and both lists' nr_items counts go
->> wrong.
->>
->> Resolve the issue by calling folio_memcg_alloc_deferred() after the charge
->> in migrate_vma_insert_huge_pmd_page() and falling back like a failed charge
->> if that fails, as __do_huge_pmd_anonymous_page() does.
->>
->> This was originally discovered by code inspection.
->>
->> Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
->> Cc: <stable@vger.kernel.org>
->> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
->> [ ljs: tweak commit message, remove unnecessary comment ]
->> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> 
-> mm-new already has this: "mm/migrate_device: allocate deferred split
-> sublists for new huge folios", same Fixes: tag.
-> 
-> Hm?
+<sashiko-bot@kernel.org> writes:
 
-I assume that's one from Andrew that he created after a security report (where I
-was CCed and the reporter didn't follow up), but he never sent it out officially.
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [Medium] rust: io: SysMem::new() no-plain-access invariant violated by
+>   callers
+> --
+>
+> commit 2301a5fd31bd2665dfd4001d0e9beab25a81725b
+> Author: Andreas Hindborg <a.hindborg@kernel.org>
+>
+> rust: io: require freedom from plain accesses for `SysMem`
+>
+> This commit adds a type invariant to SysMem and a safety requirement on
+> SysMem::new() requiring that no plain accesses are performed to the memory
+> region for the lifetime of the view.
+>
+>> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+>> index a877df11a03e0..3bc4be35e3554 100644
+>> --- a/rust/kernel/io.rs
+>> +++ b/rust/kernel/io.rs
+> [ ... ]
+>> @@ -1570,8 +1582,10 @@ impl<'a, T: ?Sized> SysMem<'a, T> {
+>>      ///
+>>      /// # Safety
+>>      ///
+>> -    /// `ptr.addr() .. ptr.addr() + KnownSize::size(ptr)` must be valid and aligned kernel
+>> -    /// accessible memory region for the lifetime `'a`.
+>> +    /// - `ptr.addr() .. ptr.addr() + KnownSize::size(ptr)` must be valid and aligned kernel
+>> +    ///   accessible memory region for the lifetime `'a`.
+>> +    /// - No plain access (see [`SysMem`]) to that memory region may be performed for the lifetime
+>> +    ///   `'a`.
+>>      #[inline]
+>>      pub unsafe fn new(ptr: *mut T) -> Self {
+>>          // INVARIANT: Per safety requirement.
+>
+> [Severity: Medium]
+> Does this new SysMem<'a, T> invariant conflict with the existing
+> SysMem::new() callers in Coherent and VMap?
+>
+> In rust/kernel/dma.rs, <&'a Coherent<'_, T> as IoBase<'a>>::as_view() is a
+> safe method that wraps the buffer in SysMem<'a, T> inside CoherentView<'a, T>,
+> while CoherentView::as_ref() and CoherentView::as_mut() hand out &'a T and
+> &'a mut T references for plain accesses over the same lifetime 'a:
+>
+> rust/kernel/dma.rs:CoherentView::as_ref() {
+>     pub unsafe fn as_ref(self) -> &'a T {
+>         // SAFETY: pointer is aligned and valid per type invariant. Aliasing rule is satisfied per
+>         // safety requirement.
+>         unsafe { &*self.cpu_addr.as_ptr() }
+>     }
+> }
+>
+> rust/kernel/dma.rs:<&'a Coherent<'_, T> as IoBase<'a>>::as_view() {
+>     fn as_view(self) -> CoherentView<'a, Self::Target> {
+>         CoherentView {
+>             // SAFETY: `cpu_addr` is valid and aligned kernel accessible memory.
+>             cpu_addr: unsafe { SysMem::new(self.cpu_addr.as_ptr()) },
+>             dma_addr: self.dma_addr,
+>         }
+>     }
+> }
+>
+> Any plain read or write through those references during 'a violates the
+> SysMem<'a, T> invariant even when no concurrent access occurs.  Similarly,
+> <&'a VMap<D, R, SIZE> as IoBase<'a>>::as_view() in
+> rust/kernel/drm/gem/shmem.rs calls SysMem::new() without VMap's invariants or
+> its SAFETY comment guaranteeing that no plain accesses occur during 'a.
 
-So let's review this one here. It's supposed to go through my tree either way :)
+The last bullet of the safety requirement for `SysMem::new` is not
+formulated correctly. It should state that no plain accesses may race
+with accesses performed through the view, not that all accesses are
+prohibited. I will fix this in the next version.
 
--- 
-Cheers,
+I will also update the safety comment on the call sites. The calls do
+comply with the requirement, as far as I can tell.
 
-David
+Best regards,
+Andreas Hindborg
+
+
+
 
