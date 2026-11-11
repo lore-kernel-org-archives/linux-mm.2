@@ -1,120 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD76760A2609
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 06:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC524606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 06:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=WjGorvLn
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hBzLaewE
 Received: by kanga.kvack.org (Postfix)
-	id C82236B00EF; Wed, 11 Nov 2026 01:33:47 -0500 (EST)
+	id 89DA06B00EF; Wed, 11 Nov 2026 01:42:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C598A6B05B0; Wed, 11 Nov 2026 01:33:47 -0500 (EST)
+	id 826916B05B0; Wed, 11 Nov 2026 01:42:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B97166B05B1; Wed, 11 Nov 2026 01:33:47 -0500 (EST)
+	id 714AF6B05B1; Wed, 11 Nov 2026 01:42:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FAC16B00EF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:33:47 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 043AF120212
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:33:46 +0000 (UTC)
-X-FDA: 85421872494.14.14A3048
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com [209.85.218.72])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 39085160002
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:33:45 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=WjGorvLn;
-	spf=pass (imf08.hostedemail.com: domain of 3Rwz0agkKCI4Bs9C5AszCy66y3w.u64305CF-442Dsu2.69y@flex--tarunsahu.bounces.google.com designates 209.85.218.72 as permitted sender) smtp.mailfrom=3Rwz0agkKCI4Bs9C5AszCy66y3w.u64305CF-442Dsu2.69y@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E1A36B00EF
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:42:42 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A227E801FD
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:42:41 +0000 (UTC)
+X-FDA: 85421894922.29.752557B
+Received: from mta0.migadu.com (out-203.mta0.migadu.com [91.218.175.203])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 6FE11140004
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:42:39 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hBzLaewE;
+	spf=pass (imf09.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.203 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794379360;
+	b=7KAPNFItmlLL9uZqCbiw75VFbLXEyzrCv0lxlk3lP8X2e659upvsHKJETCWLkyygmyELIQ
+	RSPwzQQuyjgkp8XEWL2kZcpcgQmDAy+gPCN5KllIc0tVnUa8NOY18Z1XVs9uHNy7GXq2kT
+	nxPaxzWsN5e9JM2KVVAraM5uULE3w5U=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hBzLaewE;
+	spf=pass (imf09.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.203 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794378825;
+	s=arc-20220608; t=1794379360;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N2mgW6LEnNu8wNmnoa3+p3F6g8tYE7yJEu2kZeiGcR0=;
-	b=iILQ7zjlhJY/6Y+q77tMhT3sXj+klGu5JtepMqfQwQWwmgIPi+kT9OwvXbzkD3zzjCxi2j
-	gFXNmFQiC/7Ttdkm23zDQQcjVcXV4Ks0Sd81pjIPcmRnyAmTWWedYuH4Tbbj9Hz2hto4EZ
-	mPovM/e1jjuoay6oIRIQf135yzx2eSc=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=WjGorvLn;
-	spf=pass (imf08.hostedemail.com: domain of 3Rwz0agkKCI4Bs9C5AszCy66y3w.u64305CF-442Dsu2.69y@flex--tarunsahu.bounces.google.com designates 209.85.218.72 as permitted sender) smtp.mailfrom=3Rwz0agkKCI4Bs9C5AszCy66y3w.u64305CF-442Dsu2.69y@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794378825;
-	b=5qes2MjXvo4q5HfxE1QL1vfIItNj8tPvT70pIhLF/hys4LBkfDlNEHpYONrb6aDFhAqCLn
-	ssm2AecBr1p6nB96jKnTpHaWcF0X0+Yc/Hu7W3lRWBlRvXfpLb0hJX4NUXm1nIr6eiOdSv
-	HzTg5r6A2NY9yxq/84z7/MDaKgJZpKE=
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c505eecba6cso70632866b.1
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:33:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794378824; x=1794983624; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=N2mgW6LEnNu8wNmnoa3+p3F6g8tYE7yJEu2kZeiGcR0=;
-        b=WjGorvLn/OgTvn6tyJB9G1DLszPzAVhouKc02RI6/iP30JFxXfd+TGZwZHkBMKvLbq
-         0GZYl7IJ/kHkjAR3HKDlkKq7q8u+7gi3EYI2n6h23wvsqud4QjgDHbIbVQSIP5g/5hcL
-         0+EqXEGuKJCZcsQaXgngoiDIuw3pN6TsqrywNylnEnJmPfqflJNDWXp24/+WdxjLKrhc
-         mDuT2szyCmOdyXhxLWXqBBc+JsNAKt9VBvqkJnK0LHlzj/3yMYSy0nP/fxfMkiyrKaj4
-         XGjRGI4Qb8voMmcX0geVZcI192PJq0JN2Ox9wE4//CHcgu5es/J5T+xv9A13jYNCSd4R
-         EGKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794378824; x=1794983624;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=N2mgW6LEnNu8wNmnoa3+p3F6g8tYE7yJEu2kZeiGcR0=;
-        b=19sY9uP8wUwmuUmZOjQYiLy3YFQbzZqhyHcboKXVXvkJSmvWRt7Fdto/gfph/GztXi
-         4Y9GBVJHXDg5TvsQWtzHQAFVrl7vSMKI1XNXCoJQklc+YcL/+eWdrOqCatADgDayLp9t
-         dKgSSDIekS8ODSimBZikhBfIPNXSr+lkjplDW00UD2PXcBRgdOXrvLY0llxTyfhlX31d
-         YKgZw4LaHdh8+h9g/a4tbODhiiP4oQpe/ssjqlaw11uRw8aqB6l2sLLQP38POLNJBrqb
-         uujc07MVB38YTayrimiZpt65qwvsaWD7vhRc8calCZ809hXWkrgzxEmtQwA7GGRSOZR7
-         uVOw==
-X-Forwarded-Encrypted: i=1; AL+hErF2FrWV2JL5c3tCXkmDAxBVcfmtFgkOT8WCRRFEKUdKu2EKT+sYTLRKVFnGKcRmV+2Eu6SZQuoWiA==@kvack.org
-X-Gm-Message-State: APuU4Z+Ge6cv9aK4tTxvQzvObn9qIE7nANKTrBmzVuBd3d0xHGZIVYaJ
-	xWT6nmAc9yTBEsYp8U/oqq1l4II/wJeklZ+YkJYgm2k2eLiZEmahScDxzI8cmaJRVjAtYER/w6y
-	NUlpwCl3d7Ylue+x/6Q==
-X-Received: from edgi9-n1.prod.google.com ([2002:a05:6402:a589:10b0:6b7:8226:b2f0])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:613:b0:6b1:ce0f:eb6b with SMTP id 4fb4d7f45d1cf-6b777700516mr806340a12.31.1794378823419;
- Tue, 10 Nov 2026 22:33:43 -0800 (PST)
-Date: Wed, 11 Nov 2026 06:33:42 +0000
-In-Reply-To: <179432329215.2329176.14453669404153142360.b4-review@b4>
+	bh=k6U4Lf0sQJqpZ8Y5fkLgnCWsQTx3ySVvc0oyFWLwhiM=;
+	b=3gTcAUnbUELif0l1Wa6YLgG+5tt2JnuKiMU0SI6cuSLOJzGlr4sp1ISVVbC+PC9I4GuIqH
+	bVckPjWkMvKNTY9vUIjPUmjH7P0Olr0PzGngAStVh3V3crvU+ZM2aAA79XnFczw8Vspe87
+	ZE+4u1SUlUAsO6wtC2rDdRSuzg3/B0A=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=vXg77LUbYrNd0DR1CbpFaG4lHflKsKnxztA7kz3pnTk=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794379358; v=1; x=1794984158;
+ b=hBzLaewEa9G1lqwnzWMoVeQSoEosEA0zFc2sZzegmXkO1Y0/9MFgJlmX0DCvORik6Srf8tM1
+ ERjzlwpyaTTmLjBU6lY8W3MJeJSN+3b530z7MED7ne0RMh0Um2iQXQx/arT4tPP1PQ+3nE2m4fW
+ NiH5GbPaA7blWqpKykofkJTI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id 72b31bd848cfcfdf;
+	Wed, 11 Nov 2026 06:42:37 +0000
+X-Mizu-Trace-ID: 72b31bd848cfcfdf
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 11 Nov 2026 14:42:25 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org,
+	akpm@linux-foundation.org, baohua@kernel.org, kasong@tencent.com,
+	shakeel.butt@linux.dev, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, david@kernel.org,
+	rostedt@goodmis.org, mhiramat@kernel.org, hannes@cmpxchg.org
+Subject: Re: [PATCH v2 2/4] mm/mglru: add PUD-level Bloom filter state and
+ generic helpers
+Message-ID: <avQOUTtiB90OdWHj@fedora>
+References: <20260901063755.1519710-1-hebaoquan@kylinos.cn>
+ <20260901063755.1519710-3-hebaoquan@kylinos.cn>
+ <atJuDwflq95pU14L@KASONG-MC4>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261110050202.529473-1-tarunsahu@google.com> <20261110050202.529473-7-tarunsahu@google.com>
- <179432329215.2329176.14453669404153142360.b4-review@b4>
-Message-ID: <9huzv763q3ll.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH v4 06/19] kho: kexec_metadata: Add the feature header
-From: tarunsahu@google.com
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, 
-	maz@kernel.org, will@kernel.org, David Matlack <dmatlack@google.com>, 
-	Alexander Graf <graf@amazon.com>, seanjc@google.com, jgg@nvidia.com, loganodell@google.com, 
-	arnd@arndb.de, dwmw2@infradead.org, baolu.lu@linux.intel.com, 
-	Bjorn Helgaas <bhelgaas@google.com>, oupton@kernel.org, alex@shazbot.org, 
-	gle.com@google.com, pbonzini@redhat.com, 
-	Andrew Morton <akpm@linux-foundation.org>, kevin.tian@intel.com, joro@8bytes.org, 
-	kvmarm@lists.linux.dev, linux-pci@vger.kernel.org, 
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, kvm@vger.kernel.org, 
-	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	skhawaja@google.com, sagis@google.com, linux-arch@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: fkmqcjwbfrfsxqnnsrfq765c5qe9d63k
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
-X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <atJuDwflq95pU14L@KASONG-MC4>
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Rspamd-Queue-Id: 39085160002
-X-HE-Tag: 1794378825-157470
-X-HE-Meta: U2FsdGVkX18iMWncTMKfveLj8bcXiTbe3WXVGZSQq6oA1wy7w426Hh1Ufk+oaKDHGLXlfbwUy1ulRpaj1fhG4uHheVjG3vxa8ATw5QeeCSHW5Skdsih9Bao9Tg4QZ95WhC/MpPFtVVfcUKzIDDUtRiQEVMhRK7Iv/SBu1eAnrZ2xoDqs0mfRNYD31cEikgsO6mn5m7/i1r5xCp24HH2kqNFIcRZH023AMPMh6BwmNzvaJTGUP7ozvY1CA9xXmVx7jmfMQDv3phAwvTQnoYXLC/sed7l9SyzMb77cmixF/QWZrTpU+e4lpoMjwEA5T4kzXSwGqnyIEkIy4yWF+SixPxZlFy7PJSlqLhwlxDtzZY5RrvofUE4IcKkjtxFEwtetORy0XMe0SYwYzkJn89s6N6Gi7MVE6HMp1IFURM+DORk+h//jHwscrKMn+vyg3jfmhn1Un2yNAp2JXFpUmUheDuYMadKCoT+p+D36mjle2vbW+t7Rq/WflUekiAZlZscM1aT7AU/6IJjka/DJtdKvmE4J4ISuh8JQf3wZCrl23VD5pczphH1YLSRNYn6WcDevMuVR3Rae82h7zOXmpn1x3zjoKafXiel6yYGf7w4tKTsze5Mz50q88J0QDzxB5kDeXzB2pMFpVwwTf44qdtUe7jvDdKxnHs+rqxQ9MHBONVCDfOY8XUhbbIb3wu5vIOAbgZU/70dKGrE7AbPVprVwDJBPrvGPZxV/UxORmc5QjH0KegCv5+ZfEBQWO/g8+G2+9nKtW/TjpYcaWZ8bPSAXxRQmYt5OG+X4ZS73JThwpFsxLPe3tuJLtuKaln6F4hx6GjEEt59Cx3J6L3Hn5k8+uBJfp2OL+lbAD1KxGiK5i1q3WEC8aEBx0loLRuHvyaARKlsQBblzttJ67fs6Wo5GsQfRRpxxRJeGBfUf3QEUFECyLw6gIICwUNUiCKRUU52b5N+xe7mevz2eKfWnMSL
- VU+Aox4x
- yGTY68Mhh+C8eMh+s/wTF9/xT9r9AT2ZZsXoZB1StjQpLLNc61k2QxgPDAxZ1d8MXkt0Hkb6RgfMC2sqdfc6qmWCPAjvERagrzfLKbihZiiQqKm9XRQTx4GuF9tu8Ghj8V1Gh7s5kUubNjmVPF/PH9uF9SzHfKY4G6bthLWtDk2xvK8dnBLX09udCHpfHhX4OGWGO1wPwylUXjbYjOAS9NY26Cb4U0+vw3ihdKAQvh1MrzMKTYTbIhHnTndCf0odZO7dp7Or63cu1GUElz+wtbPdii1lZh5GOSJ7jnBOZvDM7LGvAhE2J0t+0PLphWFeTQ/rcBMyn+Zxx2rdMzBjODP31Jq1UbokbXV66pSZYqJugIzXZxUmvh61tAM+Qy7+ZTKmGuXnOKp6TMIyQWnlgIja+5YvJaRXwPX02XUzTr6NBlo353TU5kV7VCGzfvxXkMftAZ10bLpCsNB1wsL7DMrtAzYjqGA8WsZ5oeOp2ajb+rW9icTBKdeT0rdCI2VBSHin1176KFPGCGTxelyjxiq8bzQhOUxD4pPl1KHb74by2UNRf3pz2LooZO5FooW1kH8p6xFZJTvzx96ZxOC+318k3xLdqycdcx48HQbIAhgvb+qDF0/NenX/eqxse6s6uRd8QHBR7bgDos7Eh9DfWw/+SRKdetv0exieDB+6FS6HeCKuyiy2UPU7BloDXQwYrkFMq
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6FE11140004
+X-Stat-Signature: j38yawy9nknngjcxt7eyf5dt4hbqqayh
+X-Rspam-User: 
+X-HE-Tag: 1794379359-764390
+X-HE-Meta: U2FsdGVkX1+sbVF1eq3ilCS0wgw+L9YXcsh3zOymAAKLjJpVb7tcYrHdkEG7Uh97BJ9jEr5ps6fS1HeUwu5NenrTnfuLCJ9OK6K6eYAT/dEA46ES8paw7jq8MnbkrXl6sln4s4OSVMoVlerR3jjIZkkUmLuJfH9tFokyq5M7U6gOd2oWLEBd+HZe/pzvsNdJXE80w5z7s0VIfg29lNpUITjnrf5gJUcD9A5XCDZ7kHfdk80ygyI31QP7D6QOEZmcN1h9/KiRQzQUOxz/Mox+y30J56fFn5LGKUNKoFKuI4KP65T7pNWFyAuvv7InVXq9uDAPfKaom0PmvzybmB9mq29W+aqPnBhBpE6WU4Jy2wuOQIfGBJaBcvV+6Uf7sMXuajkB5GJs6ySgmpqF48W0fClc3J89cNJoNlhpVps9NDScODnH8/D9JH365wjrk9HQjg8nvz0XjKqitxv/96Sn9SOOggxj65Z9pj+1VZhcsa+ABjOK2QEMr/EUMh3asJtcUr7mrzW1pZSBMan9jBsXJwolf0A/9+nCvNnyWTp2Dt3YePjq0B0aB8Is1QHteLnsSGz/JVbMcVl9d+vci5n2J1LbwtLgTHwqkOvSRX2jdAQjH+zKRA9uZNpj2Ss3xR+Iio3/suigVXCTQ2WB08zJ0foiJTk6sQc6rv0FYzM1KgtRHB7juLk2ku5DYNugaNAd5+82M0hmI/ILRfPPFsYTcFJ3ftGPMholBBhuV66IWzMaxsgBsB3denca3Q7BmgzO8YDikFclcnnzkbby4wSArP/V+Omsbbxq1sYUDgmVuVwCgQiWmyCsXKwQ70cvJAtkBJMYToPOTZw4qf2cRa13oJxRh1Qp/2BACwzhyAIVqT5KI76CeYRNBDY0TthX1PkhuHDVyFremRpqzMwnoNmT8wL5nPjsqURvUgK2YSmfo7s06z9KDt3gjaYbhqNJ+6hjb1Bvvw8vFrTP+XffTcO
+ NTFudrW8
+ mxrdMGBk7k64D3iw6C2s67dvDuJFqrHvfTjRAxj1jFqOozZnh4HW3i0m1WjMDD4xQNBA3zu8vNJ+70w5Gn2P/8gxH70p7Dc9H8Zdjzyhl4A1sAVD+hTKMtwmMQbO6cjVZM95xYgvXp/TM5Bz0Q4JClCCO/9FDMLVreRaHo6LJe3DDegbiFyKvyIHIN1d9iVhdUbNYO3niQvL1L0P4v3jvUO25zwzm6rxaD4ecvPxN8S2GNuzVe5S/+YYO21qbCVikX8Bdt9MC0l7Uygk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,98 +97,135 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Pasha Tatashin <pasha.tatashin@soleen.com> writes:
+Hi Kairui,
 
->> The kexec metadata subtree currently uses a monolithic u32 version field
->> to identify the metadata structure layout. Any change to the structure,
->> even an optional additive field, requires incrementing the version and
->> breaks compatibility between adjacent kernels.
->> 
->> Replace the u32 version field in struct kho_kexec_metadata with
->> struct kho_ser_hdr using DECLARE_KHO_SER. Later fields can be appended
->> under new feature indices without breaking compatibility across kexec.
->> Also make the 3-byte padding hole between previous_release and kexec_count
->> explicit as reserved[3].
->> 
->> During deserialization, validate the blob size against the header size
->> and reject unknown required features. A legacy v1 metadata blob is
->> ignored with a warning.
->> 
->> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
->>
->> diff --git a/include/linux/kho/abi/kexec_metadata.h b/include/linux/kho/abi/kexec_metadata.h
->> index e9e3f7e38a7c..316b3e5ad01b 100644
->> --- a/include/linux/kho/abi/kexec_metadata.h
->> +++ b/include/linux/kho/abi/kexec_metadata.h
->> @@ -18,28 +18,31 @@
->>  #ifndef _LINUX_KHO_ABI_KEXEC_METADATA_H
->>  #define _LINUX_KHO_ABI_KEXEC_METADATA_H
->>  
->> +#include <linux/build_bug.h>
->> +#include <linux/kho/abi/feature.h>
->>  #include <linux/types.h>
->>  #include <linux/utsname.h>
->>  
->> -#define KHO_KEXEC_METADATA_VERSION 1
->> -
->>  /**
->>   * struct kho_kexec_metadata - Kexec metadata passed between kernels
->> - * @version: ABI version of this struct (must be first field)
->>   * @previous_release: Kernel version string that initiated the kexec
->> + * @reserved: Reserved for structure alignment; must be zero
->>   * @kexec_count: Number of kexec boots since last cold boot
->>   *
->> - * This structure is preserved across kexec and allows the new kernel to
->> + * This structure is preserved across kexec and allows the target kernel to
->>   * identify which kernel it was booted from and how many kexec reboots
->> - * have occurred.
->> + * have occurred. Preceded by &struct kho_ser_hdr.
->>   *
->>   * __NEW_UTS_LEN is part of uABI, so it safe to use it in here.
->>   */
->>  struct kho_kexec_metadata {
->> -	u32 version;
->>  	char previous_release[__NEW_UTS_LEN + 1];
->> +	u8 reserved[3];
->>  	u32 kexec_count;
->> -} __packed;
->> +} __aligned(8);
->
-> Why __packed was not removed in the first commit? __aligned(8) should 
-> not be needed, given that it must follow DECLARE_KHO_SER which is 8-byte 
-> aligned.
+On 10/17/26 at 02:39am, Kairui Song wrote:
+> On Tue, Sep 01, 2026 at 02:37:53PM +0800, Baoquan He wrote:
+> > Rename the existing PMD-level filter array (filters -> pmd_filters) and
+> > add a second, coarser pair of PUD-level Bloom filters (pud_filters).
+> > The PUL filsters operate at 1GB (PUD) granularity, whose 512 PMDs would
+> > all fail the PMD-level filter - a general suppression of unnecessary page
+> > table walks. Cross-node empty walks are the most visible case: a foreign
+> > mm's PUDs have no young entries for this lruvec, so the entire PMD
+> > iteration is pure waste.
+> > 
+> > Generalize the Bloom filter helpers (test/update/reset_bloom_filter ->
+> > __test/update/reset_bloom_filter) to operate on a generic filters array,
+> > and add thin wrappers (test/update/reset_pmd_bloom_filter) that pass the
+> > PMD-level array, so the PUD-level pair can reuse the same hash,
+> > double-buffering and reset.
+> 
+> Hi Baoquan,
+> 
+> This is really nice idea, thanks! And sorry for the late response.
 
-because this structure is not naturally aligned and we have o add
-reserved[3] to make it aligned. So it will be ABI breakage. Adding
-the KHO_SER_HDR is also ABI breakage, So I kept both changes in the same patch.
+Thanks a lot for careful reviewing, and I am sorry I just missed it.
+Please see the reply at the bottom.
 
-For the __aligned(8) part, yes we can remove it, I will update it.
+> 
+> > 
+> > No behavior change yet; the PUD filters are populated and used by later
+> > patches.
+> > 
+> > Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
+> > ---
+> >  include/linux/mmzone.h |  6 ++++--
+> >  mm/vmscan.c            | 45 ++++++++++++++++++++++++++++--------------
+> >  2 files changed, 34 insertions(+), 17 deletions(-)
+> > 
+> > diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> > index f75daa6cd02d..faf28d35065d 100644
+> > --- a/include/linux/mmzone.h
+> > +++ b/include/linux/mmzone.h
+> > @@ -612,8 +612,10 @@ struct lru_gen_mm_state {
+> >  	struct list_head *head;
+> >  	/* where the last iteration ended before */
+> >  	struct list_head *tail;
+> > -	/* Bloom filters flip after each iteration */
+> > -	unsigned long *filters[NR_BLOOM_FILTERS];
+> > +	/* PMD-level Bloom filters flip after each iteration */
+> > +	unsigned long *pmd_filters[NR_BLOOM_FILTERS];
+> > +	/* PUD-level Bloom filters flip after each iteration */
+> > +	unsigned long *pud_filters[NR_BLOOM_FILTERS];
+> 
+> Or could we have macros like:
+> BLOOM_FILTER_LEVELS 2
+> BLOOM_FILTER_PUD 0
+> BLOOM_FILTER_PMD 1
+> 
+> (just personal flavor).
 
->
->> +
->> +/* Register kho_kexec_metadata with KHO serialization accessors */
-> here and in all other places, please remove this comment.
->
-Got it.
+Very great flavor, have taken it in my v3.
 
-~Tarun
+> 
+> >  	/* the mm stats for debugging */
+> >  	unsigned long stats[NR_HIST_GENS][NR_MM_STATS];
+> >  };
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 55d43ab54459..cd09c5b8af8c 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -2842,14 +2842,13 @@ static void get_item_key(void *item, int *key)
+> >  	key[1] = hash >> BLOOM_FILTER_SHIFT;
+> >  }
+> >  
+> > -static bool test_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq,
+> > -			      void *item)
+> > +static bool __test_bloom_filter(unsigned long **filters, unsigned long seq, void *item)
+> >  {
+> >  	int key[2];
+> >  	unsigned long *filter;
+> >  	int gen = filter_gen_from_seq(seq);
+> >  
+> > -	filter = READ_ONCE(mm_state->filters[gen]);
+> > +	filter = READ_ONCE(filters[gen]);
+> >  	if (!filter)
+> >  		return true;
+> >  
+> > @@ -2858,14 +2857,13 @@ static bool test_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long s
+> >  	return test_bit(key[0], filter) && test_bit(key[1], filter);
+> >  }
+> >  
+> > -static void update_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq,
+> > -				void *item)
+> > +static void __update_bloom_filter(unsigned long **filters, unsigned long seq, void *item)
+> >  {
+> >  	int key[2];
+> >  	unsigned long *filter;
+> >  	int gen = filter_gen_from_seq(seq);
+> >  
+> > -	filter = READ_ONCE(mm_state->filters[gen]);
+> > +	filter = READ_ONCE(filters[gen]);
+> >  	if (!filter)
+> >  		return;
+> >  
+> > @@ -2877,12 +2875,12 @@ static void update_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long
+> >  		set_bit(key[1], filter);
+> >  }
+> >  
+> > -static void reset_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq)
+> > +static void __reset_bloom_filter(unsigned long **filters, unsigned long seq)
+> >  {
+> >  	unsigned long *filter;
+> >  	int gen = filter_gen_from_seq(seq);
+> >  
+> > -	filter = mm_state->filters[gen];
+> > +	filter = filters[gen];
+> >  	if (filter) {
+> >  		bitmap_clear(filter, 0, BIT(BLOOM_FILTER_SHIFT));
+> >  		return;
+> > @@ -2890,7 +2888,24 @@ static void reset_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long
+> >  
+> >  	filter = bitmap_zalloc(BIT(BLOOM_FILTER_SHIFT),
+> >  			       __GFP_HIGH | __GFP_NOMEMALLOC | __GFP_NOWARN);
+> > -	WRITE_ONCE(mm_state->filters[gen], filter);
+> > +	WRITE_ONCE(filters[gen], filter);
+> 
+> So the helpers will be something like
+> test_bloom_filter(mm_state, level, ...), seems a bit cleaner?
 
->> +DECLARE_KHO_SER(kho_kexec_metadata, 72, 0, 0);
->>  
->>  #define KHO_METADATA_NODE_NAME "kexec-metadata"
->>  
->> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
->> index 6f1f55fe3181..2edd772bb6d3 100644
->> --- a/kernel/liveupdate/kexec_handover.c
->> +++ b/kernel/liveupdate/kexec_handover.c
->> @@ -1740,6 +1740,7 @@ static __init int kho_out_fdt_setup(void)
->>  
->>  static void __init kho_in_kexec_metadata(void)
->>  {
->> +	DECLARE_KHO_SER_HDR(kho_kexec_metadata, *fhdr);
->
-> Please don't do this, use kho_ser_hdr directly.
->
-> -- 
-> Pasha
+Yes, it makes code much cleaner. I wil use it in v3. Thanks again.
+
+Thanks
+Baoquan
 
