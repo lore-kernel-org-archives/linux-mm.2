@@ -1,176 +1,118 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B8560A3821
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 23:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D8D606A33D
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 23:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=aesMqvfB
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=SRU7+qtF
 Received: by kanga.kvack.org (Postfix)
-	id E17106B05BB; Wed, 11 Nov 2026 18:02:49 -0500 (EST)
+	id AE49C6B05BC; Wed, 11 Nov 2026 18:03:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEE446B05BC; Wed, 11 Nov 2026 18:02:49 -0500 (EST)
+	id ABB5A6B05BD; Wed, 11 Nov 2026 18:03:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C424C6B05BD; Wed, 11 Nov 2026 18:02:49 -0500 (EST)
+	id 9D2B16B05BE; Wed, 11 Nov 2026 18:03:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 88A1A6B05BB
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:02:49 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EE1A2A0493
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:02:48 +0000 (UTC)
-X-FDA: 85424364816.27.F9901A7
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012056.outbound.protection.outlook.com [40.107.209.56])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2090340009
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:02:45 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=aesMqvfB;
-	spf=pass (imf17.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.209.56 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794438166;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EFD66B05BC
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:03:17 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F2859160448
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:03:16 +0000 (UTC)
+X-FDA: 85424365992.04.2418044
+Received: from pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.155.198.111])
+	by imf23.hostedemail.com (Postfix) with ESMTP id CFEC514000B
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:03:14 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=SRU7+qtF;
+	spf=pass (imf23.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 35.155.198.111 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794438195;
+	b=8GepYNgUlipaTJ7jrJlZxhXGu8zXuIjsZa0d7f+rD9KVTFFilMlc7kuZQBeXHN4G1sDqz3
+	SpLCT88zmwfDr9LEtVS/alYN4OoIDC1SgCzVDEqnfimrCIevcxTj6tU4gulBUFyf3GIXZB
+	PVGUvk4fHpBCSjHOHzrNwjYezYQv+Xo=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=SRU7+qtF;
+	spf=pass (imf23.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 35.155.198.111 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794438195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s3BnHoE8kFAlaBkYu8qmnJVA1zvoFdsDfmIrlb1JmdE=;
-	b=PQ9KVaV97tSNu43Mb5Z5A0izNbwFc/ky398/P3AbvTgvl4AmmDM+MgFLiKIQPPjLievAyh
-	L1QQ7YezekCL359n5xQME0HIqTy4CKxK2opLjcC4y9yMtIun5x4UaCsEnyfQh73g2GdRXu
-	OfJNmhgE9yIY48WIfH11bA31DKTIS3g=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794438166;
-	b=qemTOYJ4eXJ2XFfzZQLZaY6mP8ywZjfvxPnavTWKWy4qChlp67pDwKkvDhU8QZfkdb+B82
-	JvjZWHK78bvPi9uCCRUWhd3QkJcoZLYwSAzHVrlRfdnbSuDAvgUdRO106QdU4B8PCtHP66
-	moKzJa6P0I7BrRdZ8tl73I3q9uP1s+g=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=aesMqvfB;
-	spf=pass (imf17.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.209.56 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=v8hmEOoHFrjQU8HYLljZu0i0v//V7P+hCJUbzS75t3T0GK+fmmgxMDo097qHalBm7qcuNZG15V5kHRaA0gXz9uuWnLmFaPt6U+dGFCO3xgw64ywzaSP6yuEu36QZrI0Q1uOY+ype6qHbNPYUxqsyaL5nHzEqjqo60Dx4cj4yjWndLvjh+GZxXD2V5cC4M/YvjbxhAQ3HCnFspmweAKHcMm0UL6thhVy134w0CuBsG1ucQjcAtkI9gy6P4Y9mJsk0reJO6KJpZzVQHJED0iuFWTUc4sOVPcTsdH/iO6OHXGP/T1E/jidqIEIt/Z8iQibIHbg83+ZfQl+NomxjnkaDIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=s3BnHoE8kFAlaBkYu8qmnJVA1zvoFdsDfmIrlb1JmdE=;
- b=BK8UFyzI7dMUQ1+P+WpLd6UKY122CXjLlzatuF+a4/XonuVnlI72TrwsXU4apBoyoIJy8gefuukr6lG+jij9c5/T7xY43RXQgjvv+ImLm7Q5lChojF8oBpMWZnRlOsQErTqG5q1jiUDzoxJw77w2/hGnN3MecXyRYVAZKaazDIh0E8E3cIUiiFPLDGZ2bQrOtHaxRLSjRfUt4SaeNAES63bhYpVjMXCa/T0TsObRIlEhEEn1rj06ZZDStcX38Q4e7CJQIKOba30VlIn3bhbyUplRu0gdG9NwuW4xQ218OLdy5NviOFlKVGDW3MLh+zpifWy5/kTbOF/t9Fu6pKHM1g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=s3BnHoE8kFAlaBkYu8qmnJVA1zvoFdsDfmIrlb1JmdE=;
- b=aesMqvfBtLjOg5S/PvvebWLOoAOyg43RVE5lipind+FK3p5uoSRSyz5rjHZF3CSKaCXcb9mg6NpnKy9dssZE28uxYrXtsoXJj2ZVyne3HkxqIUsWog4EnHo9KOvyz3PWRGcQE3Xf6gDrIwzOhsxV4PxnpeTS1vWXbf9/4uPI2G1xjc5gNLrclwMOGB2mHFBN5uHmzVpGMWUg5pinzce64PDNhM4n8PRE8mbJNvpsC9y0EM5wg8Qd1Y2oDKXu6b1Kdny5YqC9gai7QY8TitqumwXy2RjVq6YpSmlUjBjE+HjbjvtaV3JC+7G/7YuXGW6rNk4BUSXNxU8CZ4l+OvjGrA==
-Received: from CH3PR12MB9730.namprd12.prod.outlook.com (2603:10b6:610:253::9)
- by DS7PR12MB5936.namprd12.prod.outlook.com (2603:10b6:8:7f::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.8; Wed, 11 Nov 2026 23:02:33 +0000
-Received: from CH3PR12MB9730.namprd12.prod.outlook.com
- ([fe80::843d:c1f0:b2ed:4128]) by CH3PR12MB9730.namprd12.prod.outlook.com
- ([fe80::843d:c1f0:b2ed:4128%4]) with mapi id 15.21.0615.007; Wed, 11 Nov 2026
- 23:02:32 +0000
-Date: Thu, 12 Nov 2026 10:02:27 +1100
-From: Balbir Singh <balbirs@nvidia.com>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Nhat Pham <nphamcs@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Usama Arif <usama.arif@linux.dev>, 
-	Kairui Song <kasong@tencent.com>, =?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Christoph Lameter <cl@gentwo.org>, Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>, 
-	Chris Mason <mason@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, "Borislav Petkov (AMD)" <bp@alien8.de>, 
-	Mark Brown <broonie@kernel.org>, "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 04/13] mm/migrate_device: allocate THP deferred split
- heads
-Message-ID: <avTwlHT8x6A9sCGU@parvat>
-References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
- <20261111-mason-migrate-et-al-fixes-v1-4-3d2454362e8d@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261111-mason-migrate-et-al-fixes-v1-4-3d2454362e8d@kernel.org>
-X-ClientProxiedBy: ME0P300CA0013.AUSP300.PROD.OUTLOOK.COM
- (2603:10c6:220:20f::11) To CH3PR12MB9730.namprd12.prod.outlook.com
- (2603:10b6:610:253::9)
+	bh=pbZnjc0aH7SqSay+uNUOqZC70h/Fhs1yPbwPdK/7hRk=;
+	b=ODIoAQd5y90lC5UvtTS5n7+7Ge8fM5D+ELt3yASLTlhfMSX4LdvqRfmVoevuTGgdbhLj9S
+	GqU4Rd9CNFz6VdJg28v5lCGBO0mTlIoHjDoXysrK2bExk7lUSyXvs3UkByvGD4Wme+3e0l
+	I/W9A2eKVm0zeibBUOWx3aXzr5RKHeY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1794438194; x=1825974194;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=pbZnjc0aH7SqSay+uNUOqZC70h/Fhs1yPbwPdK/7hRk=;
+  b=SRU7+qtFcHAGUOQH8FmgxXEuNmtPJ9QhjdG52F7y7jws/hkfDmGti+oh
+   yvKijC7UqAp2yEGlkQB9K1tCUEhWXalC7zT01QLbR0lbe9SnoU0OjJrjw
+   y6KWCKmwQ3tZZJL7ah3G26tXW8vT4BOPJc9EjQLmeM1EZrFaUKhTXiEA3
+   By5zY0ZQWPfpNKfTTUjZY3oqxurULsyrt+vh1PGvwJHRExpUIHMm+Lobg
+   U6gC6mn65TUFLwg6UxPpTtAV+ONIesk3eoHkcfyNqJFC5FFMzJyT1tGNt
+   SOyyH7H2+YZa1sX0GK74mCcnCb56+hm5BceCxLk7KlREnKlDAkdmi1D+z
+   g==;
+X-CSE-ConnectionGUID: 3Lsv9MqRQ0+uXXjXKo9SdA==
+X-CSE-MsgGUID: ANK7tCt9TI+DkYa4xsb2Mw==
+X-IronPort-AV: E=Sophos;i="6.27,208,1787011200"; 
+   d="scan'208";a="33663271"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 23:03:13 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.111:5799]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.55.227:2525] with esmtp (Farcaster)
+ id 7b1afc33-599a-4b5d-a75f-31c09bfd95d7; Wed, 11 Nov 2026 23:03:13 +0000 (UTC)
+X-Farcaster-Flow-ID: 7b1afc33-599a-4b5d-a75f-31c09bfd95d7
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Wed, 11 Nov 2026 23:03:13 +0000
+Received: from ip-10-253-83-51.amazon.com (172.19.99.218) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Wed, 11 Nov 2026 23:03:10 +0000
+From: Alexander Graf <graf@amazon.com>
+To: <linux-kernel@vger.kernel.org>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>
+CC: The AWS Nitro Enclaves Team <aws-nitro-enclaves-devel@amazon.com>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy
+	<robin.murphy@arm.com>, <linux-doc@vger.kernel.org>, <iommu@lists.linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	<nh-open-source@amazon.com>, <linux-mm@kvack.org>, Jonathan Corbet
+	<corbet@lwn.net>
+Subject: [PATCH 21/40] nitro_enclaves: Document the slot pool
+Date: Wed, 11 Nov 2026 22:59:25 +0000
+Message-ID: <cb0d5adcf580f5fa3f1bfa4150040dedb4fc8eb5.1794393490.git.graf@amazon.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <cover.1794300002.git.graf@amazon.com>
+References: <cover.1794300002.git.graf@amazon.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9730:EE_|DS7PR12MB5936:EE_
-X-MS-Office365-Filtering-Correlation-Id: 758d449b-3917-4fae-f16a-08df4047de3c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|7416014|261026121527099003|261026140227099003|261028144727099003|261102123227099003|261021123027099003|261021121427099003|261022105027099003|4143699003|11063799006|56012099006|10067099003|22082099003|261009223027099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	aIi1sfOlhnkZJ7mfeCwceQ8T9J2RMG2mso5drecXzkSVwEtU+VDR2t/C8OnYw6QTSZ7uGkMqKxKVqNRGUuKBXe0+Ui7ZRbxOabI4tC4exzupBZMbeUYvBJfi6IYpgkK5wgmMSZPE+FLLY2njVJCvwxaKy04GdQ6HkwqJ5YaYmC++VgNxnSRXFwWTdmY5XQA2AeIzFjYoP/L9Bx91VJZ1wyHtnLV7ZM6qC4gRumhxv5Z/7u95xJ/4K3mDlGTwQrzTGY9xEq91qcALo5sZi+8r/ACsdGUvIAy/64a7qZhWMeOGuI7WqY6zsv2KPbgO0qHmKCbzKcZmyW+B8RVjMMr2TmGIoN6ryAH05sjA+MHwbAMI/54Tw+Oc4TCnkSGL//87f4Nv3npAGZSG/aRAqBrCwhBb2BZY3zQr0mCUNYZiYZxR7bMEohvr02iHqjPY7j5AmKSAfra46FQfnVq7kmOsYuOi281axG/U6o1WpZ+O+0O/eL+ihy7pMKHrgtD9520LRHGvgCDu3IxS0NCpWmPqqi6DRkPzhwl/eqrzODCidacGaK/3iHodzOt3dCp0v7bGiCWg1XM8ejHWmTFHLO77HsLy6yWR+lQ1/jd2jBrNOKJtyXD0sflAGwZcTDVzs3SbcEebx+/2GM6ZNDpICQv8NyNRVI2pTQFZDf7a+DnNtXw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9730.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(7416014)(261026121527099003)(261026140227099003)(261028144727099003)(261102123227099003)(261021123027099003)(261021121427099003)(261022105027099003)(4143699003)(11063799006)(56012099006)(10067099003)(22082099003)(261009223027099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?1XGVFRcJBpd1qllYqZnCzQTJGMyiWZa/4I5hapSG0Qf8CZ9dneCQhsk5IBdu?=
- =?us-ascii?Q?qaw9dpa5QbURyLUao49RqrCdXa0DqIpq7a9UFVzq2+DOQROm0eVNhpoBLtjk?=
- =?us-ascii?Q?/WU6aOEk604JRt6FplWgFBOFFGvCbyM1iXCvToenTe+AGgXV9pgjHItpzIvF?=
- =?us-ascii?Q?w1m12/x9U4LmX4Vo1RemzpHWgZxKXh4z37D+VNbjHMJReXcei9+Y93e6G9nG?=
- =?us-ascii?Q?E1C6hN0GCbmldRvQgamOboBDttWHIW1aEjZIbuJdOMae46S64a+VlwfJpF9R?=
- =?us-ascii?Q?A8rNHaky1KHJ9lXTN19qkPbwehJxAa9B9v8OBuYpXZD2geVGMmN6W6AtWW5f?=
- =?us-ascii?Q?+7vu9Nr8gKJcRAMmoyjtYa25J6k7RGqMKR7h9Iuk0w6qLPko1QxWinqcnQOU?=
- =?us-ascii?Q?C5+/vjlN/EJc73K/9xhJgKrv4mAktA4zWb4K8BAH+8PvZNJkMcthnDwS36kw?=
- =?us-ascii?Q?6qTzaXoJ/BUc4ciUBL6wSPL5GRbI2dtdTQRzfgxZ6S762hmY62w/aCF3ZiPH?=
- =?us-ascii?Q?I5T6ZWXE7ep80wFxJTc2dy0w4jl2KJaCKRz6R9vmb0E9kWQ5nbC8cGzCMlwD?=
- =?us-ascii?Q?gNSQXYVUs3LIIjC/7lHmzuw4RLeMgHTzGBTtapKpdR9C1rx62NwyyMivxqfO?=
- =?us-ascii?Q?dskgrXait2IohVefTNPLZNMlwp3QixoiJz9Bf7HS3Q3jWxwSnfgHtcq0s71y?=
- =?us-ascii?Q?C6h1n9y0FfwKWdqcROa6Fb/PN3DAYMdsa6XUTiexrjM/vvcx6fZoC7MlJOa+?=
- =?us-ascii?Q?dSUX/90qrUD6Y7TnMU/cTCZt8m/NPJvE4MTnCWB+AjWFhZmeJAqoK0z/Dk+d?=
- =?us-ascii?Q?lNj38nf9ED1FOTvhjh5T2qP8Ip4wxciMszrvVQMCQZ1TdSdQTfLk80NPspem?=
- =?us-ascii?Q?cjvmdL8viF9D/dXq60b3qfRS+wfbSof4YxDRESP/ibCjOlIOgiPrmsiihH75?=
- =?us-ascii?Q?DJlOGQN2LRfO6GP/R329P2/5lWf5XglP54w7x0HUdy+3LzN4k2uumGbPHmUe?=
- =?us-ascii?Q?Azw3pV/4/8b5tWI1k+aqltZROM/YYVD/GgUAislXkjkkZJfw+rrAQqkdeL+4?=
- =?us-ascii?Q?bJveP7FtJlD6mm1/nkubFrJ72reYIblkFzQFtjk77RPehY0SKETzKNza37Ze?=
- =?us-ascii?Q?f3C5NVseWM6ie1gkL5Bt0cxtT/ZojsOAllGAVMy7uociXJcbCnEWs4sHvNai?=
- =?us-ascii?Q?YmY+kzVqpmuuUvPHmK3khFvt5gT6gPsXregLqk/F+T2/P30pJx1a+y0G7KvS?=
- =?us-ascii?Q?+XlE4yT7OgTKJZ3rdFU1wSvkA7Y0Vs1XmnmmA6XEEsne3dt0l3euchsAmits?=
- =?us-ascii?Q?AkRpRzix55PUT1eL0xGathoqaOiw/uTo4elFoI+5ZvNtD9X9jHLfpUuQNWAd?=
- =?us-ascii?Q?XonE+pBnRwK6/ic7NAzH3sQ+cHnfDk0l2zHlC7rPlyZsDMJj85EPFXwzB+fY?=
- =?us-ascii?Q?y53IdzLAbfIWVOSFkmxvr05YE5IdFpao90E6odxQnswvmG7YSu6ob60FXLyv?=
- =?us-ascii?Q?c6RIj6brQYPJSkuis+7jF3eS7kpndhKQRzlXysWc1as4GaVYBfJ8Ke2SuSkz?=
- =?us-ascii?Q?0fPmGto34d+tvSnDo7+dgeL4WTIndtdjYbONDsbyTtODmQjHtbwFAQp1KOla?=
- =?us-ascii?Q?MC3OXGpwkfkKWekw9TKLEIS8WcBfk6OjSjncvYAZZQECei7JU2qEqj1F/ztj?=
- =?us-ascii?Q?y3RQs5AcQnN6UQT6SDIdW9OCdfHfIuLQv5womfUxjGgPjmIT+VXscBSByfQ+?=
- =?us-ascii?Q?KKt7IYGIOg=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 758d449b-3917-4fae-f16a-08df4047de3c
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9730.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 23:02:32.6757
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ajxrapcjq3Nm+c7bMi+anvswv3t4jvwltGTJCheLNtms4vIyLRoeH8s4u+apkhB+CO5D7YxhmSQ5vtsITbDbIA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5936
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2090340009
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D031UWA004.ant.amazon.com (10.13.139.19) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-Stat-Signature: 7mayyqxst81prcqdhr3u1oqqg65qaydf
+X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CFEC514000B
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 8x7qgs77xq9ubzxd9qskeq1zxywcbimx
-X-Rspam-User: 
-X-HE-Tag: 1794438165-807359
-X-HE-Meta: U2FsdGVkX19GnuAMoPy+3kxtpcXpDkRVBwUOYtsGKp19XQIaa74XsUUXQqi3KdvlEQtxWkq3u+UsyndLRaZ7aHW92ha5nuVA3+EAVYqE1JvH/zPy8j+qKMKZuwZVkF6f8Ig2ywwF2Yx40BIexd2gHEZHhLdLhWlQaLicpqUFiX5O93p58hbpAA5LBt9TYJG52w+bqKN6d9cNCxQghp94P4QzN3pHHNHZmEJNkWPGsPlURc+sDwGC/cZTbKor9DBul4rNkDeLolsqqwlnnq174ezyOeTYWWtQy8zTqyXOi+FNY8HkGkObbJ9TR2eoqtxA9E2TLFjd3rZv+waPocJLwajph3+x55IyA7BpMDNYdzuMtgqKu2oAzE7ajXccAOadO6ZfdohQDQxYPK8UbRiLB2ZUhNSCHEX6gx03/dCyoQSkbv257K2IjXhadINFuREaft5VakU4fWlcB+csu2Lbsit0Y40EBUmiPjbxU0DWwnmLJ9pxol/ItYejtwfykNeMIgYC82/4wv/7ZUlxc9qTQvAYO+d3TJK90a1m1Z/BVScXvnt8tlFM6lRU+to4cHhYhmGhn2CyhY/yJGKyjaJJ9OVtZ1vhfIl7uPApOtOWXYvcYD2QVupz9Sfbb4Ub3IP181bpu1NGZb9Z/US322oTdID8t64odVJTY3YYEcLVaWzBtpZG2+EMw0QAoBmy5oqX2tOnD3YMRTJpOkhnDNd5AVYT/IgiVNTEdJMaKw4X73IB/T7rsnNfDH7gONcB+DOraP2n0omY1rL/5ouX165AsBLIWD5vllPT1bqLcFwbMRcp1cpQGv/HBuvYH8w0BjjBReP3GU2hQG0PIN1rVrTCJfQNz3U3V9v0a7b+vQkJC1A7twMzyDJtHRkZthID3NiRAPCZjyd8AXNpOQPH4Lh3nKy6Df0TbK+0PJ3vi9HzVwOdU3+cWNXc0s7xR2Jm0g3QpNQ68r48p+fYOUbMTOr
- M+zhVrVE
- ZtLo/PNpTICGeZbb9bFA/xSrpE5V6JgLMbfepDlstbsTk5XznmFDjQU5Yv+hK6nJSr9pdQxlCQH6yIZG1mFeNet78FIosYg4tVpA5hHyNlRj+Zar3xdKNi9YpAlBxOCGhjttTWv+OBPsU/ODnHNULqjM1X2z2ieedhobC4i+UdkermcGQ5AZbL+wgBy3Z91hJq9aRcK049CruUosEiShVGnpPx5kr9bqnNiff0SGyrJEFQB5nCl4iZ815fyl7yORsRB6eFO069/1BRyaHOjuYYhIgiW8KCcKdoIj87PwiQKmTtACpg884I0dvAuZxk5VV5DFUI44fAZ8KnpsEhlhBUsqMaNzZAiQTqtt+VbAtFXuopfKWufN6qcoLOfZrie72oI+Vadaa9hs3TDXV+RiPLKbWLe1M5TLF72thJ+gubyOUsuouy10+skoorQf1oePXaK6ehEf+Dlt7q3Q8ziIodKGYqHVghAkxqNkPoqtxIx2wqFWLizzV1xEqE+ljVLJ89G0wrptCAaygJXFxFGFf+QwlzfijeJDMtlKLpAOdY8GTlOaJj73sKb/WHkfeirracRG1jKkYhpyDzqMQDwEzBgJaSg8L0HPnvSr5vENgbp8ltr+VIj0R2R6WYBd3eDlGwgu+
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794438194-97734
+X-HE-Meta: U2FsdGVkX19oN5BftE5lOLtXZ1Jy5odG40qkTclJDuk1s/Jp+POjmUtU5wZiTJB5oeZ5pCOKczaGmcUchhAXy5JGWqg7op7E6ZLQqUMZkRs4OoFMRdujjLosIGIdfUHxHpqa8VTOQdIj9GfmEseq4cUSD6jLY4TmGX9+svwmYgbohf2u07Xl7LQkeJlG34qt4AMbtYUaG0qruS4y3sKGGfVPwQsxt+14iKyk8Pm/yGJ81JIRbqEOC+spcW4lf/ofICpbMr4Df4Q8hbjLHemSAqWdUaG+9Y8iXQtaGCAeiMvvPi1UAPX76oyxbkaOYQKBtssIgW+1hX+2TlVqOUyZBnfpstcpImmwZYyPP/V54uqzycTlAjpykRM/aqgyb5zS5XKuGhUGoenF3F1JzhzhcP1c/8tIwfIZSJfzXoNTjl+DzJjhVyWWzks3XbBxsF+miOYGDMe8ahVZzrepnTi41JUi3nWt4Nt7yNlM3flKBIcsppVRCrOiz5e1Co5KJou/tZfMgyoHtCHKeskvQiZu/I7rqE//pYioBQASxX+YU6qwWbX95wpQUP7QOzkJYtqrd+HeclcqA5rpbs3O0iREM6JD/fTdSaJvqVai8X7pvqbC/shrDoDkt6dRMdz6Pue6NDMZLlkypYSwtNPYXAqDHYWqiF3Hi7UHQ7Pml/USh4sA1LFRNN0Wf1JDUtaD6M2v6Ti/JP8VTc6JDjnq6Becz7aKaaIcgU1/segiUGCNMpA+GnrToLkgDfR6SJMhe6fpFUdwGJKjNA1N3ZctSrE+E9DaRpWmg3KNFhWR8IELWCGK4XJpddWyPUxj+QBaz8nCrMu8mRhIsaaKNKHxjZazRhDdOkDgNpeGR9nQNUlv9KL4vnal4zcQU5noymVrJTFjhLZsVOcDH/V1J/smRSJDqaXhmAhM7+alYjIr3X9O86+66FxH7jlaExUsHMBy9UtV1brSEyHDdLCfOPf0jsH
+ enTHcsS6
+ zoYMjPmruUTbGNLo1vccmPkcgqwfVa2JDAxsRIuX0Tvy2wj0nUgEOxQV+Ff+Jbs76sg9KiWyvL6cDMc68/ChsWTtYidQEVVda0SDoH0LEDbo0AYxzVWhXUyhchuZlhgiwMtVQFQq+DLj1DCTMEYEWob3/AASCLUExqgUX0fExxuc/5/jDUzGYeq/jCXRqQt1gI65t0QMc0sAx193VV/AtZMjfdlY1Rx/Gx2bB8vKnpbzK6q/MXAzcos1vXmc78HKKLQrx43LPqY0cenv9qZ7reARkcaj+eX/otLMACQoDjaCZkORTboA7OECaaQNbTNfPT66VaG/jLv0CYbKrN0oPjK3ekmhFo7WPO5UOKxqzOOGbmCX7MyJSvVsS7C2J2TCadQzhnzmLGvYDWIyo0XWjD8mxVkBaVEzRjbwpBQFUb0V/rMKm7aOaC/azWZjES841qNSMpOdULgoUfSzTA31BbapiZf4y8sKgOasHKwjlhZq1fET3zPmps83PsMSC34cWnuT7TXIv2NtmBzf7e6x2cVgbmAmVFd8gQTra0NwoabgUr6pM3goyB9NpchRZQi3QbezNUEJ9S2EK+4F0aghfdVYKJSu2l6vXZJJtg7S9dTqF+/ugcGGzfuRQjnqiouK5UXYiqZvkWFNqQ+SL/gb+qx0hyC9aXy5Qd++F4ugl/PzMaSboosRaFcEKfESJFiV5ZjQPIEFeFU/Y8DE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,60 +121,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 11, 2026 at 06:13:18PM +0000, Lorenzo Stoakes (ARM) wrote:
-> From: Josef Bacik <josef@toxicpanda.com>
-> 
-> A THP that device migration maps into an empty PMD can end up on the wrong
-> deferred split list when it is later queued for a deferred split.
-> 
-> This occurs if the memcg has no heads yet (resulting in a warning if
-> CONFIG_DEBUG_VM is set), where deferred_split_folio() will then queue the
-> folio on the parent's list.
-> 
-> Once a later THP fault in the same memcg allocates the heads,
-> __folio_unqueue_deferred_split() and the split path resolve folio_memcg()
-> to the memcg's own, now existing, list and take its lock.  They then
-> list_del_init() a folio that is linked on the parent's list, racing with
-> anything holding the parent's lock, and both lists' nr_items counts go
-> wrong.
-> 
-> Resolve the issue by calling folio_memcg_alloc_deferred() after the charge
-> in migrate_vma_insert_huge_pmd_page() and falling back like a failed charge
-> if that fails, as __do_huge_pmd_anonymous_page() does.
-> 
-> This was originally discovered by code inspection.
-> 
-> Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> [ ljs: tweak commit message, remove unnecessary comment ]
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  mm/migrate_device.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index 9e19fadfa65c..9e5dab8e1b77 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -833,6 +833,13 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
->  		goto abort;
->  	}
->  
-> +	if (folio_memcg_alloc_deferred(folio)) {
-> +		count_vm_event(THP_FAULT_FALLBACK);
-> +		count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_FALLBACK);
-> +		ret = -ENOMEM;
-> +		goto abort;
-> +	}
-> +
->  	__folio_mark_uptodate(folio);
->  
->  	pgtable = pte_alloc_one(vma->vm_mm);
-> 
+An admin sizing a CMA reservation for Nitro Sandboxes needs to allow for
+the memory the driver donates to the slot pool as well as for the
+enclaves' own allocations. Document both halves of the pool: which
+device asks for them, what probe donates, how they grow, where the
+memory comes from and when it goes back.
 
-Could you also clarify, if it is just the nr_items accounting that is a
-concern?
+Signed-off-by: Alexander Graf <graf@amazon.com>
+---
+ Documentation/virt/ne_overview.rst | 31 ++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-Acked-by: Balbir Singh <balbirs@nvidia.com>
+diff --git a/Documentation/virt/ne_overview.rst b/Documentation/virt/ne_overview.rst
+index 3cfc50f788433..16d6b4a2771c7 100644
+--- a/Documentation/virt/ne_overview.rst
++++ b/Documentation/virt/ne_overview.rst
+@@ -215,3 +215,34 @@ An allocation lives until the last of the things holding it is gone: its
+ descriptor, its mappings, the regions given from it and the enclave it is the
+ info page of. So neither closing the descriptor nor unmapping takes memory away
+ from a running enclave.
++
++Slot pool
++---------
++
++The device keeps a record for every enclave slot it hands out. On a device that
++holds those records in parent memory the driver donates the memory for them
++before the device can allocate a slot at all, and that device draws the memory
++an enclave runs on from parent memory too. It counts both donations in slots: a
++record pool that holds so many records, and a memory pool that backs so many
++enclaves. Neither number on its own says how many enclaves can exist, because
++each one needs a record and the memory behind it, so the answer is whichever
++pool carries fewer. Such a device reports the highest number of slots it will
++grow to, the size and alignment of one donation to the record pool, the size of
++the base donation that pool hangs off, and how many slots one donation to the
++memory pool is worth. A device that holds the records itself reports no slots
++and takes no donation.
++
++The driver reads those numbers when it probes and donates the base run the
++device asked for and one run of the granularity it reported, which is the
++record pool an enclave needs to be created at all. Both runs are asked of the
++node the probe runs on first, through the allocator an enclave allocation uses,
++so a per-node CMA reservation there covers the pool as well as the enclaves. A
++run that node cannot serve comes from any node that has memory, because a run
++in the pool is read by the device alone. Probing carries on when a donation
++fails, with a warning naming the error. The memory pool starts at the number of
++slots the device backs without a donation.
++
++The device holds every donated page until it is told to let go, so the driver
++takes the whole pool back when a probe fails after donating, when it is unbound
++and when the machine shuts down, and the pages reach the allocator only after
++that has returned. Pages the device will not give back stay with it.
+-- 
+2.47.1
+
 
