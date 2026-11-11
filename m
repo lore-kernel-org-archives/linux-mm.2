@@ -1,92 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73419606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 10:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF9BC606A32A
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 10:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=RCLhcXa5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QEjJdJXj
 Received: by kanga.kvack.org (Postfix)
-	id 95C346B05B7; Wed, 11 Nov 2026 05:27:30 -0500 (EST)
+	id DF5766B05B3; Wed, 11 Nov 2026 05:30:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 933AC6B05B8; Wed, 11 Nov 2026 05:27:30 -0500 (EST)
+	id DA5B06B05B4; Wed, 11 Nov 2026 05:30:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8725D6B05B9; Wed, 11 Nov 2026 05:27:30 -0500 (EST)
+	id C94726B05B8; Wed, 11 Nov 2026 05:30:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 69AA76B05B7
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 05:27:30 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E01ED120246
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:27:29 +0000 (UTC)
-X-FDA: 85422461418.14.82A73CD
-Received: from va-1-113.ptr.blmpb.com (va-1-113.ptr.blmpb.com [209.127.230.113])
-	by imf30.hostedemail.com (Postfix) with ESMTP id EDB1280007
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:27:25 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=RCLhcXa5;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf30.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794392848;
-	b=iKq97eY5oR0MpFDU8R6BCnN7YJbdcoRd3SV1qGLHf20HX3vMVY+Ijlbg91r7ZLX125T3iT
-	8XVUmVP/XAj8O8lgq6XPZ0CKVGEkXHYWzdtb/Zct4/nk3NCARnq8qAPZSERqwSyqBlgxdN
-	2OIioEqROFxwzYz5mvw9NohTJuoUL0g=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AA3596B05B3
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 05:30:16 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 922A71C27B1
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:30:15 +0000 (UTC)
+X-FDA: 85422468390.08.94125D7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C424A10000B
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:30:13 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QEjJdJXj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794392848;
+	s=arc-20220608; t=1794393013;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+cZ0TkhgcyZX2/tGIJYKpizu09u/oOKdVnqqr23AXvE=;
-	b=FLLcUm3XcU+SyicWChnckk1tSJe/MdkrcbclZMFD0zisLLKLuRDmZmf2+8KSbgC3e+MC1x
-	0xxk+EzjBFQV0AIuC9/iiLdEYwYHm4tyuRy7/F49LmovG1+DzfEFoYvNRNJU6N7v12gItQ
-	5t0EdWyhEXO+bOJnotViptJyWhIfIR8=
+	bh=jOiHR4ad68Npg1NXZSugMmWFxLEASeXZ1K6QbTQKCRw=;
+	b=toDMk67eyj/NJZ9nPHaIbEOluhM39kYrWwIxlzNaCDfaxanDbRroeZCvSq0CJXgY8sPO5q
+	uWrUtS/Xo+E3QB+9czJzvZQs8NLYTm6PYvyBNYW0zXpMSVgC297PPFhURBnTdtz+WBJZ5W
+	sERazkXPqEm0gAtxsxRhtjXO/WF+cYA=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=RCLhcXa5;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf30.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1794392840; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=+cZ0TkhgcyZX2/tGIJYKpizu09u/oOKdVnqqr23AXvE=;
- b=RCLhcXa5MQfniyrwMiA7R2RvhztQGtFd1uCMdaPJTgKgIpLcp0NMsEGJsqoKZ9tcH11SmL
- e4/OyjxMvUUa35Mld9yhVK4P42mVZ6n9tGZbXJlgOth/8IaPyQVcBL45uT8j0QMSae0V6q
- gfRY5RaygQJw4acnLWjuAjQVzU4k2HGrFCYqmCud8PaXu/D3FeMSCqKZKRsdBjxSBsSCig
- DfFqe6WywIa8T088V3/oREw2YAM/hODO/TzT+ksnyp9iYH4PetyqztJETNdanq0bOF9ncI
- mRG8CIuo+wtTumnMgS8NbEtUJw2LPwNbRJNQoBjCGZ9tXN9hFWBKkAANnlDJag==
-X-Original-From: Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1794046188.git.zhengqi.arch@bytedance.com> <586d6c53ab7e4c64d6e89ad3cf0cf7e07dabbfaf.1794046188.git.zhengqi.arch@bytedance.com> <7abb3aa1-385a-422f-86bd-7aac9661c4d8@kernel.org> <423c9b28-ecf2-4fab-817d-2fb326690c73@linux.dev> <3a1a3bb5-0b01-4f20-aa0e-74a952544b8c@kernel.org>
-From: "Qi Zheng" <zhengqi.arch@bytedance.com>
-Date: Wed, 11 Nov 2026 18:26:58 +0800
-Content-Type: text/plain; charset=UTF-8
-To: "David Hildenbrand (Arm)" <david@kernel.org>, <muchun.song@linux.dev>, 
-	<osalvador@suse.de>, <akpm@linux-foundation.org>, <azpijr@gmail.com>, 
-	<lance.yang@linux.dev>, "Qi Zheng" <qi.zheng@linux.dev>
-Subject: Re: [PATCH v3 2/3] mm: gup: allow long-term pins of CMA-allocated HugeTLB folios
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QEjJdJXj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794393013;
+	b=SaTatgnIkD84oJNqSD5AgOlgks60OldCY8bnseeusUQsSj/rOuacYYZViJTABRQELjWDGo
+	i7La4s+Gk6Xze8VYqjN6VJrm+qqXU4ZmKGlrHR1qBDPdPjYAJ7rfG5eez3dl4jBuxsfrOu
+	7aUdRvMyLnNlMQntCNXMHohxnPay5Ag=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id F0EA2448D8;
+	Wed, 11 Nov 2026 10:30:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C75F91F00A06;
+	Wed, 11 Nov 2026 10:30:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794393012;
+	bh=jOiHR4ad68Npg1NXZSugMmWFxLEASeXZ1K6QbTQKCRw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=QEjJdJXjxc7Lur7NIFKjf55sh5sYArssTP8Vhpn9QBhF5GOPrlZ6OebMEWuma6wKx
+	 4vRXOpyYd5xdTJDEXZiVyTiVlmF5QADj9BSFmKHsUpjIOBcvmCMi3zXT2HmJ6QCoIo
+	 ZsvGLonn4K7ZQw+EeXWsiqS37DCeoSK8DQc0UU04k9ydoLmmARyrKNHTbVOOrfnFHW
+	 X/U6wJmqd97vSowvOi9ZTLvX4SVmsb26JUNLNZQuN4WyNYQuQpm+6GGaVC+5SILhsE
+	 7QEdy/Zdigj7BsBE1nC4KLIPM6L0Cg0zCO2HPnDbOtLZLAL82KzlKDgsYxXt6otr3h
+	 B9uJ9/xc9f0TQ==
+Message-ID: <ec39ce6d-e604-48ab-9582-04ff73d13c16@kernel.org>
+Date: Wed, 11 Nov 2026 11:30:09 +0100
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Cc: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
-	<stable@vger.kernel.org>
-X-Lms-Return-Path: <lba+26af44306+d27ef8+kvack.org+zhengqi.arch@bytedance.com>
-In-Reply-To: <3a1a3bb5-0b01-4f20-aa0e-74a952544b8c@kernel.org>
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Message-Id: <5f68ffba-9f56-4e31-9e7c-9d110f552efc@bytedance.com>
-X-Rspamd-Queue-Id: EDB1280007
-X-Rspamd-Server: rspam12
-X-Stat-Signature: yeiyr5dnebj6iyoef8pdmx9semb8f8y5
-X-Rspam-User:
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794392845-877061
-X-HE-Meta: U2FsdGVkX18Ps32/EVe2r5H3UCLnNLaRUQhus/JgePRWNyNoxxA6bIW3Iz1BxrfXcaMgzjbQTFSItTY8lVjtLISBL7o2+iAEepsAettAT1zfZCgn+6LtWa24xLJGrEWOPE5QpKsh+RACO+gfCMHFGSdbsWJpY3pQZ+oLCOaRMyjpgbs/n5fC6SGAgnWXfvxXirug25ulGVU/b0gPcZ4Qt5YATOcl04lg7JLQoqiamsOFMfLCa8vYeb/85amAEraHgTCcLeBClfTaRLb77V/SeJPh9wkjKOZSw+qJJK6e7YUt+s9NDVLkYgmtO8AJWg1rmd72dEJCajs1Iv2NZdyT3kkETEpngD7Klr7yVVg9U0WFj4b3nUHWS75FEDBU+XiF8niNcOFijS3xPp5FBfgWQiKOUWcrNU7kPQClALDJzZKlkVsNFninb9o84YJLBQBP2jXugKprmGCShpQ6DDFvpyKy+A7h4sdDQk3fQfcyoZTyaSyPV0t9h33vZS2Eeg/94W26oBFt5D3YwBnzHY0KO59idsnEQH4ZgJli9KQXpgjXwK02tw/jzLE48F1+j7obYZFeyEtzd2OUUjBOsaLbBhJz7wfvW///3h0m8CzrWOnnF7iBxivVWdUph4UIP8ePBXZG09QePTWoI8KhG+mjudhgFwdV7Im12uV2FAgsX8xcfS3ZNx3DUa9whaHMR02WBa5i7q1AdEqa/qUmelT5B6ofd/m5RBzYRePFVinUnh4WoOxYVrR6AvNWt18ecDdRYUgtzy/HGT5ywV+rorX54GvQqWrqGvJ8l55ECLfTH9H6cj/tcTNcSLU04ps/B1HwHC0JNwAmgcKbp+uXmogmerrFJHcI7XIPi2eWwtehA2D+L/n3DEMKf3zisJXnN5+WW0FdFUtuDQYDWGXSY4bBw6sAHWWANL9Hmo27WpzS4bpC658TMqd6RqlrRJ5QNhAR/0zXuosVGioFS67i6vW
- dzPSgoEl
- XWz0+BbXzGkiQmGpdifD/mchkO3qFvH67Nf4vbYwjePjKCA7EL+YSQfV37PZYgIql0uBIi5gIMKqX4a0c0WiKy/6iuSkxH/inIQgGaArEIY/OhD1fZgyw5gPQ9O1/lPztIGC0Lwopxtr2wbeAljC9dZ3OTNGECK7APelP0uGAayK3TODkwFVB7D2qp1J9QfD+sNkrnUibERJH1GI2WYvqqu8nX/OX8hJCbQQctguWni4O0XhH6nZq23ZWBuF8J7IfYOymKw31BtpFQXzUTKtoQmG8pVN6FDRfgds/xJxvh+fHgC8PGe7PZ+Og8vroxiVFla9Vf/oFEfwnmWdyjzYChIEKdYQ3U70YOPz/Ot0u0+lzba6UKjwjKxm4RZSCAYhL9GwKprf6xlAhBsbYfQdiV07hY/E/DMxzBig3AwEsLkTQviSn7zEYzOc2MW5QphD/GpuyBhou7jsHCD341JvWK03PCQW0RpR5IeebPp6vYVuQK6wQY8zNBJdwpw==
+Subject: Re: [PATCH RFC v2 3/8] mm, slab: rework KMALLOC_RECLAIM handling of
+ SLUB_TINY
+Content-Language: en-US
+To: Hao Li <hao.li@linux.dev>, Harry Yoo <harry@kernel.org>
+Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Conor Dooley <conor@kernel.org>,
+ Damien Le Moal <dlemoal@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20261024-slub_tiny_rework-v2-0-bf1419ab5ffd@kernel.org>
+ <20261024-slub_tiny_rework-v2-3-bf1419ab5ffd@kernel.org>
+ <auHcj2G78VkXy-Vz@fedora> <auycUvCC2mL_EQ1r@thinkstation>
+ <avE01iTQccxQnhl6@fedora>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <avE01iTQccxQnhl6@fedora>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C424A10000B
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: t547a3nsifioj9x69kwkaz96cx5pmnow
+X-HE-Tag: 1794393013-187930
+X-HE-Meta: U2FsdGVkX18+PqHSrwdlwYGDl74Mk3dq3l1Ckq+NYSlvXJ7MviqXOqFagpqs9WKVnqx5jMXcqgcFnGXqvjL687TDgRtVyUVwdpDC0CddlNl6vRtHK22YSavpUTHRKx6YvscSy+ObODii4vwaw1GGn2nvklx4/xIKfUgSy5OFyJQSwufRAHKixqfg6+nfVge4vZif2UuPn457ASm8W6WkrxWgAHkHDCLdVLxASzyZeyxEHi/FSXvkFrH//4jkXy0adUjANS9EqNamAQw9qJYC3S+J3J0ZYm+Ncu7Sz0llUxNlLIQWgi8PT/qZ5XfzFTEcVFzbAgX+g0CtIy48N3iHSJ864FPRQLnz+Fj6EaHWpBKjg11OdN9KbJsoqzI7+JaK13Fmk1COdYX+P84zA7+3pizzKZypre9MY6FTtsz4+aGbUhQmT/uwE+mt/6GKP25dsVKzI/lJYvjj1fKPSMbL2Zd/muqaA/7gA2eRIhu1qsZ2h8OxzJNdS/SGckCSle4MVXBb07ymu80KXV3lrxACy/xneVSMHq39Krj6uGA7FDdGJ2jr/ZklWk/3v9inhNIDcjMBQrEjMqJnmpgr+P8UqV4GuMSYF9hTIpbOueB5FM3o2ujxinV9StNT6LmJYLNFi8U6bEpC+vm1VkK2bEs4UkiZrs7cCOAx2O5OkLWtsxwG5W8COF+d4usT0trIkJIHXJnre/05pm6FpcSFZGSOSkscwW4fflAr8MTQyXXHtt1j+h2+r4hw512EPX0y3IiehuS6gCFSJem4hx1EhMikJh+mcARHrMUZp9sbRmhTg1T4Hg/IFCvMKhW9zozjzFbBt1sO3/3TL3/g3Re0Tha2qCY2+hgRzdqJWpITtMTT9oDlxKCo5uf9Ql9YPayo6hkeUPSlALW54E6Wuygyz7MXUJePasG1Z6CuJbiONMChUEVKdZ5lwlFb9kvd63lkit6eRpT5egGsQ7Y4vAB3tR8
+ cX9BSqXj
+ Gh0royN+l/pdF2pRLaDGkCdzYwN5f7qvQmjop6Kx+2pKmcfctpAl1IBXh2HCV828eneGHWfQcuPUQEiXuaA7JGexem1TcMeyeUkCi8E8AmxnLjIGb7KNLSqmmjYMkPZLtRVERvCalztYsUy5AEF2umaXRGQV8A0Hgqo9eKkhPdWZlK1N1zK5fHBW8ZVl55v2yR532WSGnOyAIbMqBMQw6AOOzDdg6DEn59kW2Whx4g7kyTiywTZpW6iLIOn0CDegBg4p9vfS13OAWK1dtJEygwFmyR37eprHvGRjRunT16z7lUsYQc+L1oRmiDA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,189 +142,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi David,
-
-On 11/11/26 3:43 PM, David Hildenbrand (Arm) wrote:
-> On 11/9/26 04:10, Qi Zheng wrote:
->>
->>
->> On 11/8/26 1:58 AM, David Hildenbrand (Arm) wrote:
->>> On 11/7/26 11:30, Qi Zheng wrote:
->>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>>>
->>>> Long-term pinning treats explicitly CMA-allocated HugeTLB folios as
->>>> unpinnable, causing unnecessary migration or pinning failures.
->>>>
->>>> These folios already own their CMA bitmap ranges, and memory blocks
->>>> overlapping CMA areas cannot be offlined. Allow HugeTLB folios with
->>>> HPG_cma to be pinned directly, including in ZONE_MOVABLE.
->>>>
->>>> Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic hugepages using cma")
->>>> Cc: stable@vger.kernel.org
->>>> Suggested-by: Muchun Song <muchun.song@linux.dev>
->>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->>>> Acked-by: Muchun Song <muchun.song@linux.dev>
->>>> Reviewed-by: Oscar Salvador <osalvador@suse.de>
->>>> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
->>>> ---
->>>>    include/linux/mm.h | 29 +----------------------------
->>>>    mm/gup.c           | 31 +++++++++++++++++++++++++++++++
->>>>    2 files changed, 32 insertions(+), 28 deletions(-)
->>>>
->>>> diff --git a/include/linux/mm.h b/include/linux/mm.h
->>>> index 2d0b8a4c9974f..75dd40265d3f4 100644
->>>> --- a/include/linux/mm.h
->>>> +++ b/include/linux/mm.h
->>>> @@ -2975,35 +2975,8 @@ static inline bool is_zero_folio(const struct folio *folio)
->>>>    	return is_zero_page(&folio->page);
->>>>    }
->>>>    
->>>> -/* MIGRATE_CMA and ZONE_MOVABLE do not allow pin folios */
->>>>    #ifdef CONFIG_MIGRATION
->>>> -static inline bool folio_is_longterm_pinnable(struct folio *folio)
->>>> -{
->>>> -#ifdef CONFIG_CMA
->>>> -	int mt = folio_migratetype(folio);
->>>> -
->>>> -	if (mt == MIGRATE_CMA || mt == MIGRATE_ISOLATE)
->>>> -		return false;
->>>> -#endif
->>>> -	/* The zero page can be "pinned" but gets special handling. */
->>>> -	if (is_zero_folio(folio))
->>>> -		return true;
->>>> -
->>>> -	/* Coherent device memory must always allow eviction. */
->>>> -	if (folio_is_device_coherent(folio))
->>>> -		return false;
->>>> -
->>>> -	/*
->>>> -	 * Filesystems can only tolerate transient delays to truncate and
->>>> -	 * hole-punch operations
->>>> -	 */
->>>> -	if (folio_is_fsdax(folio))
->>>> -		return false;
->>>> -
->>>> -	/* Otherwise, non-movable zone folios can be pinned. */
->>>> -	return !folio_is_zone_movable(folio);
->>>> -
->>>> -}
->>>
->>> Moving code while adding new stuff to it, please don't.
->>>
->>> Move code first, then modify it.
->>>
->>> I don't want to play "find the difference between two pictures" on a Saturday
->>> evening.
->>
+On 11/9/26 04:01, Hao Li wrote:
+> On Thu, Nov 05, 2026 at 03:19:01PM +0000, Harry Yoo wrote:
+>> 
+>> > Given that, would it make sense to
+>> > change this line to something like:
+>> > 
+>> > if (type >= KMALLOC_PARTITION_START && type <= KMALLOC_PARTITION_END &&
+>> > 	!slab_tiny_enabled)
+>> 
+>> Maybe you could send a patch as it's a separate issue from the patchset?
 > 
-> You resent your series way too fast.
+> Sure thing! I'll post it once vbabka's slab_tiny series lands.
 
-Got it.
-
-> 
-> Now we have discussions in to threads, congratulations ;)
-> 
->> ;), got it.
->>
->> I moved the code to resolve a build dependency.
->>
-> 
-> Why can't that be resolved differently? What is the dependency?
-
-The dependency is that the new check wants to use
-`folio_test_hugetlb_cma()`, which is a HugeTLB-specific inline helper
-from `include/linux/hugetlb.h`.
-
-`folio_is_longterm_pinnable()` currently lives in `include/linux/mm.h`,
-while `include/linux/hugetlb.h` already includes `linux/mm.h`. So I
-can't simply use `folio_test_hugetlb_cma()` from `mm.h`
-
-> 
->>>
->>>> +bool folio_is_longterm_pinnable(struct folio *folio);
->>>>    #else
->>>>    static inline bool folio_is_longterm_pinnable(struct folio *folio)
->>>>    {
->>>> diff --git a/mm/gup.c b/mm/gup.c
->>>> index 2b405cce2ca5c..f41701c603500 100644
->>>> --- a/mm/gup.c
->>>> +++ b/mm/gup.c
->>>> @@ -2216,6 +2216,37 @@ struct page *get_dump_page(unsigned long addr, int *locked)
->>>>    
->>>>    #ifdef CONFIG_MIGRATION
->>>>    
->>>> +bool folio_is_longterm_pinnable(struct folio *folio)
->>>> +{
->>>> +#ifdef CONFIG_CMA
->>>> +	int mt = folio_migratetype(folio);
->>>> +
->>>> +	/* These HugeTLB folios own the CMA memory, so they can be long-term pinned. */
->>>> +	if (folio_test_hugetlb(folio) && folio_test_hugetlb_cma(folio))
->>>> +		return true;
->>> More hugetlb hackery ... don't like that, sorry.
->>
->> Agree.
->>
->>>
->>> I think this just goes down to a problem we discussed a while ago that is
->>> independent of hugetlb: we'd need some way to identify that the the page was
->>> actually allocated by the CMA owner, and it's not just some other movable
->>> allcoation that ended up there.
->>>
->>> For something generic non-hugetlb thing, can't we call into CMA to ask whether
->>> the current chunk is marked allocated?
->>
->> The existing bitmap is set before allocation completes, so the range
->> may still contain borrowed movable pages. A set bit alone cannot
->> establish ownership.
-
-The more accurate code path is as follows.
-
-Assuming the 2M buddy allocation is successful, page P is borrowed from
-the 1G CMA area.
-
-Now, proceed to request a new 1G huge page:
-
-only_alloc_fresh_hugetlb_folio
---> alloc_gigantic_frozen_folio
-     --> hugetlb_cma_alloc_frozen_folio
-         --> cma_range_alloc
-                 /* set bitmap!! */
-             --> bitmap_set(cmr->bitmap, bitmap_no, bitmap_count);
-
-                 <time A>
-
-                 /* may fail */
-                 alloc_contig_frozen_range
-
-         /* set HPG_cma!! */
-         folio_set_hugetlb_cma(folio);
-
-At time A, for page P, a bitmap was set, but HPG_cma was not set.
-
-If a concurrent FOLL_LONGTERM pin uses the bitmap alone to determine
-ownership, it could incorrectly allow P to remain pinned. If
-alloc_contig_frozen_range() fails, cma_range_alloc() clears the bitmap
-bits, while the long-term pin on P remains.
-
-HPG_cma is set only after explicit CMA allocation succeeds. It records
-the folio's own CMA ownership, whereas a set bitmap bit can represent
-another allocation's in-flight reservation. Therefore, the bitmap
-alone cannot replace HPG_cma in this check.
-
->>
->> A generic query may need separate ownership tracking, such as an
->> owned_bitmap recording successfully allocated pages. Its updates and
->> lookups would also need to handle concurrency with fast GUP.
-> 
-> Or simply two bitmaps? "trying allocation - allocated"
-
-As a fix, perhaps this is a bit too complex? :(
-
-Alternatively, we could adjust the timing for setting the bitmap, though
-this might introduce new concurrency issues.
-
-Thanks,
-Qi
-
+It would be better if the fix preceded the series actually.
 
