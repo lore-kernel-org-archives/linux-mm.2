@@ -1,72 +1,72 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B141C606A88B
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBBE7606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ewLo9oO6
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GqzS3vcn
 Received: by kanga.kvack.org (Postfix)
-	id 26A5A6B05D1; Wed, 11 Nov 2026 06:19:03 -0500 (EST)
+	id 0963A6B05D2; Wed, 11 Nov 2026 06:19:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21BB36B05D2; Wed, 11 Nov 2026 06:19:03 -0500 (EST)
+	id 01F526B05D3; Wed, 11 Nov 2026 06:19:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 131236B05D3; Wed, 11 Nov 2026 06:19:03 -0500 (EST)
+	id E77AD6B05D4; Wed, 11 Nov 2026 06:19:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DDEE36B05D1
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:19:02 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6453F40279
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:19:02 +0000 (UTC)
-X-FDA: 85422591324.04.5D0BF01
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B30D76B05D2
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:19:06 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 46AAD1C2DE0
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:19:06 +0000 (UTC)
+X-FDA: 85422591492.30.B77B9F4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 84C4B140005
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:19:00 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ewLo9oO6;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794395940;
-	b=4BfmqOEWTP51nvoX5QSSiB4giEZaUM+vtNWlWGxnZ0GIPCjQijjBQapH6C18ITwYpSCMsB
-	hek0KvBw5Y8S+gA86p7RHW7Is6VbsTGHELx79Gxjb/ROJRzU3m1E72eV/ZCSdpvKVjgKDi
-	EPCZnyOw/9+jE3zSQYzNqJ0TWu20s9k=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ewLo9oO6;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8C5DF2000A
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:19:04 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GqzS3vcn;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794395940;
+	s=arc-20220608; t=1794395944;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jyQ9oXJqyRV2PK6xmrLBDNVxBhe05N3TbbbdEicnpsM=;
-	b=mI9S2cSWxw9Ylz5f6SS1axRY0WA3FrQ3iKXngHDKzN68FAbOydDhSYsAfE3L/+6pzoUOdt
-	N6JSTH07UUsPebwaPBsZP5hQUvFWw1DQdW07w8WXqjnnYN3iOzAJfXx8+hcvrCU07F7Pkt
-	aPRFYBl/3QsKQJOR9nMNlZgeBqFNL7k=
+	bh=qYip/S6YR8HP6EPMfD+DO9PeevjFwxYNpr2ap+wiblQ=;
+	b=FBFPxmMdYLS2QS7sgyhXFTCoopKWszRJ5tyhY6TkXPTB2492IvUZXWyXPOrDvQWxgJN5Wt
+	2R3Hr1GECvHp6JOh1bDk9eamuKdLisXK074k+IwUoe4UUC4hkMO3+TIW9mmXUvHhKUxvAx
+	FSGD+Rs809KRfLX6vDWZYNS96BA479I=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794395944;
+	b=D7s0OHcmlLrCSVgchMJeelbUZ8bUt/6xwIntEY+W5PDaFwKzmqOiZ0Y2GO2yqfd6jKsdXj
+	LtKUSB1QfdxbJnL/1w2dwSUGjfpRacANH0Fp7ULyZbX9ElSsYBnKeHOAD6D1ev5IzlLiSZ
+	JPlrg5m6YMXpNg0rTEybgEZNGIYeUHM=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GqzS3vcn;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C03CE45021;
+	by sea.source.kernel.org (Postfix) with ESMTP id D9F18438B3;
+	Wed, 11 Nov 2026 11:19:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 333081F00A06;
 	Wed, 11 Nov 2026 11:18:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9371F00A06;
-	Wed, 11 Nov 2026 11:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794395939;
-	bh=jyQ9oXJqyRV2PK6xmrLBDNVxBhe05N3TbbbdEicnpsM=;
+	s=k20260515; t=1794395943;
+	bh=qYip/S6YR8HP6EPMfD+DO9PeevjFwxYNpr2ap+wiblQ=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=ewLo9oO6TLopmAVEFkiTyD0JvqqL2S5hA/vr8gQqfQ9ijUq4G5DynSGkxODqE7Us8
-	 LhXrMUlllSQ0gjeQvGrDU978hZSQwkPlwv76hUJNeAsGOUcHzK4GhgOENOfu4OTCNl
-	 2mYL4CR7c0reeZ0ExxMmpkT14g5CMTj4IlTsqcv58VAZUCsE9fdL23s0Kt/smTTvHJ
-	 BmdfvSW1GLMVCh9NnH0D472+QKMsk3NL+HAcmNv2ed9ZGzlS+/J66zZ86NjJv5RDrq
-	 YOBnWAJA5zStaoFtpwoMGzk/XS2SU01pbNbMhJ6YT60Bxu9yfQdtChE+U2YS+cUrAt
-	 n7dlpzl9/WZPw==
+	b=GqzS3vcnCAk7RcM9m0TvajMcoWIE5tsCDTZDcdpms/zdOpMd0QJB+8k35zijIKLZ/
+	 9zMZaltBrIBk/p9iRKmL+q19QJxxJSkV3ewQwBIpTKZBwK9WP2DepzICMR5JH/Rfgb
+	 cxRWRVFpuNsMg1wugipdX3i36sBiYPJU+Km+w1Sh3SlIyRUAbg1+kNi0/VRpuax7jn
+	 kap/zpwjdpfDyIKPvnNqMuePwSyKJVfA2mFNJO6kaLwq8EuveY34RPGKhFDGjI5eJX
+	 fjk3pYjwjTrr8JpqdZaWbLH3WZnmoPAcxQUEL9vzgasoinjwD/Iy2Z5AlIfhdD6xt4
+	 GAckGa/L7Ow1w==
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v5 4/6] liveupdate: luo_flb: support incremental
- outgoing FLB publication
+Subject: Re: [PATCH v5 5/6] liveupdate: Add LIVEUPDATE_SESSION_FREEZE ioctl
+ to freeze sessions early
 From: Mike Rapoport <rppt@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: linux-kselftest@vger.kernel.org, rppt@kernel.org, shuah@kernel.org, 
@@ -74,25 +74,25 @@ Cc: linux-kselftest@vger.kernel.org, rppt@kernel.org, shuah@kernel.org,
  vipinsh@google.com, linux-kernel@vger.kernel.org, corbet@lwn.net, 
  dmatlack@google.com, kexec@lists.infradead.org, pratyush@kernel.org, 
  rdunlap@infradead.org, graf@amazon.com
-In-Reply-To: <20261105050053.3063001-5-pasha.tatashin@soleen.com>
+In-Reply-To: <20261105050053.3063001-6-pasha.tatashin@soleen.com>
 References: <20261105050053.3063001-1-pasha.tatashin@soleen.com>
- <20261105050053.3063001-5-pasha.tatashin@soleen.com>
+ <20261105050053.3063001-6-pasha.tatashin@soleen.com>
 Date: Wed, 11 Nov 2026 13:18:40 +0200
-Message-Id: <179439592041.425130.7284974054491864276.b4-review@b4>
+Message-Id: <179439592041.425130.6098227055493441109.b4-review@b4>
 X-Mailer: b4 0.16.1-dev
-X-Stat-Signature: z1qwirdxnbfuyeajcpkpba81doafnr13
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 84C4B140005
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8C5DF2000A
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1794395940-450246
-X-HE-Meta: U2FsdGVkX1+miWcpIAGvlh4QZg8cihnIKKWgfWMZ3jhAt+J5fPIqx1LKmRKlQON7V+ywvQr/Si9+7Ab8b2uY3TvoZV32/jhyC5tLua5cee0jW5jSvcoNzJy2ZGh8EMGfsJGwD6zv7pWcMiINfLhqeSmfTh2i9G79W4LPz3gmbN1K1EysZdpNUF00jRqKRla28tFAkGyGghLwt2uTRK+xvvzjIX80R2YydE5/L5Rli42zw/c3ZVWuAKmzmtse2HaGLeKlBlbgr/SjQm+xC7ZEm7wKEFdXJCK/ID8z4pywKsxqLN97eBSEzP6HPV8nAdmR1Lh/KdCEBPS+Tqam1ndmf8WFR7egwx2e571SQQ5fp+rYpjic1dkB+hW2T0HJhnnFA8CpW0Ng7FOGnP16PIB1vDI8UsfH1XbR+IiLa80NScrpRZitIOBCWW8+relQ7vCMBgXwbHu8nqd4Yzs+qmmSmYkS5GDWzSaA8n4V0We/T8LYXUqMN2DmsjMzioFwc79BBKin2wuJC6jgX/QwLWtBM2PYWmZQUOkztzuTPX4LHQ6zS+6HeS9/dhFqN99BnbrMi8ErGp9V1P0Yw+/1rIJ/HDejS0SP+mPNsaf6U7jhpX3pVjzMS82a4PQuoMO77vN+lRL98mJN+s8r/DO6xSkz1nqGL7jFd1QB8zKNUNI5yLhw6/CjgtYJSgugFEeXjCkiTFAwiWhcpaaC3RlLL9XyM7UjkCH2Iun5QVOPzsMuL1WFK+MxQ2VVNiktVmZeV54SfRlEIlXm56eKrmEw/iyL4qZOkZGwsLMG/4oLm/is4D9bGtbI2/MuFNC9OvIl7jTnPzXcOmHYwFgDbxa8cvJLYxSPGJWHJYYbUpza6zU30lAPWw0+rPsRyAiw7BU2fat9M8Xr87fOoWuT+wG4mBdeQYBjjL75VNkSt8e+aX5se51CXT9Ew/LwwC6zLhK3fT3M6tkbNSonjta040vGmhZ
- pzIgBxLZ
- 54wxavkRsQVcSxWEqzbOxs5XjQNwslQg9ttdeslAgOFqT1cDkoWvcrFcQY79coybQkA2bBgHiQDICGPw9EpQcI5Trp9u8Kvknq+JjoG6uzD5kOVl9poiI2R0JknIh5jrzPT714rsYsYOJb1JuSFrUZVt/KUDqCcxNZZPcW0YfL4Q9jOmMEQG7bqNA8XkcdUPMAC0VJOXB5YLmOPR5bYu+NjxhCKFCpIoB8BXFHJJPDu0nUjAReVAiSAAHF4m972w8MCOTRZLzRVUbG37rhGTRJ8/5hg+pukftlr/2JIDcCvGc7FkCwIEgMRGPANHUFsDOcpE5WMhMy5xaZ94=
+X-Stat-Signature: ae3391wj6ufbcub9jd67ynqn43b41cn4
+X-Rspam-User: 
+X-HE-Tag: 1794395944-833196
+X-HE-Meta: U2FsdGVkX186j+m67yd/h4BHM7x/jG9/FDcdwINPJKNiYVK4gsA1PgaKl7YohRziJUCiVRFeEevUOdnBlJTL4k8jkFUHGS30r/p7kgS/e5Cbe8Wm8MdbOIhgpliVWmKsDEONRVk7YUGDow9Iv1wYOUztdkpcmIgwO39nIdJ4dkITRTwLg4/0JP0J6R0Ip99Vv9trBCuA/mcE8kszOkarKQjhHzgKumqim/rXvkmKfbDTKpFBQWXwXW39Odm939Nf/w3XoWbDWttdU1F4ZWJMMPWVP5vv/yoSd4DEV8uGCKBhUiAHZCAo8zbv7llsbNQF4TtUJdD0GTa9mntqVc8VaheSZvAPb+EDlqdlSR+XqKRpzSyhpCIhC2/Rlgcju6RVmTmE/40ma+4WdczBPLRjXY82x2Z2rN8vtX9m0It4f7S7tSMrySVg6uQ93at03IHVElWh8X7qRNP/G4YxzxJV0U1VYcnf/GRUQLtEnh5DHT6SKCX1E5oSrJdCcCWHMJYNYPfCbYiD/VXHhQd6RPOf0HdyINMsbQxtoQeryuGttPOaDVQw4qOLgBY+KUqkIRMKZuKxA1tI81tuDK/o81Uawstt24wSOZkAELAKLRqJ+tx+Mop5nc54aKs+YAlfTbZNhi+8j6SCOkN8RgZm+eDECNEbLbKkbj0HNn4dLJ2CCJG0lLMQc8ULcduK63Udx+VX0w/6Bcs8oPBK+Wi1/3wOP9OI7Up9ejyTAsBN5yQ4/wEbh4MeXl+/etYVxFq9/dh8nYx31dLEJjNAjm5WCyGvprFbtXSJAoVt5EBDmZN05E7k5jXeHd2CtzHRlmJ4BeAT7Snmdsxe/uvu3fVwE+IPdg4bHY9l5KMF4gaP53vW/PgUUVTpymUl0gD2kqh8R2QYePB/XV41SslwdQ/pOnVlrKHYEWsLpviONbSABzY2g6VlyyqJVtdCwD4492ZNZFIxD1Lh0TZcf4HZMrY+LQs
+ aAdai6ph
+ HEOxE7edFkUq70B2q/JQt8I+w5fYfKw1XITwG0Iez5C4MprI/52Ni8qT0KaNOElsJ0JiYpma3fkrjIkUS/MJl0OtyS54CO5LK/Pii+4/OmFE/14wzZ4V/ucZcLhEuJcgiwZqI5MiO2XN3VfuvnvgeX6bCS2Tm/vpncxGah8FWFJ4qXXIWDk9hDS4r0hsahQU+oslZmXHvEzRP8oeTpDJz3eVFRt42ZpZpo7z1ZJiFhUgBS4whkKmqwrdAagofdh3OLITHv7Lvd2tLl+Pneqam9SC7bmI4+gr3+bq/3sQ7MC6lKOQwnU23Os6RD0sgszh3iCKX7xjVAaapk4M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,187 +103,94 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 Hi,
 
-> When a session is published to KHO via luo_session_publish_one() ahead
-> of reboot, any FLBs that its preserved files depend on must already be
-> present in the outgoing KHO FLB array so the KHO tree remains
-> self-consistent.
+> Currently, LUO sessions are frozen automatically only inside the
+> reboot(LINUX_REBOOT_CMD_KEXEC) pathway, where luo_session_serialize()
+> iterates through all outgoing sessions under global write locks and
+> freezes them serially during shutdown. On hosts running multiple
+> workloads that quiesce one by one ahead of kexec, userspace needs an
+> explicit per-session freeze point so each session can capture final file
+> state under its per-session mutex as soon as its workload pauses.
 > 
-> Currently, outgoing FLB metadata in luo_ser->flbs_pa is populated only
-> during reboot by luo_flb_serialize(), leaving luo_ser->flbs_pa empty
-> when sessions are published earlier.
+> Introduce LIVEUPDATE_SESSION_FREEZE on session FDs to freeze an outgoing
+> session early. The ioctl runs .freeze() across all preserved files in
+> the session and serializes their metadata. Once frozen, no additional
+> files can be added to the session, and subsequent freeze calls return
+> -EBUSY. Freeze is only valid on outgoing sessions and returns -EINVAL on
+> incoming ones.
 > 
-> Publish outgoing FLBs from luo_session_publish_one() via
-> luo_file_publish_flbs() -> luo_flb_file_publish() ->
-> luo_flb_ser_publish_one(), and drop the now-redundant
-> luo_flb_serialize() pass from liveupdate_reboot(). For each published
-
-Oh, my :(
-Why do we care about exact long call sequence here?
-
-> file, luo_flb_ser_publish_one() either appends a new luo_flb_ser entry
-> with count = 1 using smp_store_release() on header_ser->count or
-> increments the existing entry's count in place, keeping the serialized
-> count equal to the exact number of published files in KHO without
-> including uncommitted sessions or transient
-> liveupdate_flb_get_outgoing() references.
-
-Got tired here, the prose needs a lot of human touch.
-
-> FLB publication is one-way and never needs to unpublish: before reboot
-> it runs only when a session is committed, and a committed session never
-> unpreserves its files, keeping private->outgoing.count >= 1 until
-> reboot so flb->ops->unpreserve() is never called on a published FLB.
-> If more FDs using an already-published FLB are preserved later,
-> flb->ops->preserve() is not called again; file handlers update the
-> shared live object via liveupdate_flb_get_outgoing(). Consequently, FLB
-> handlers must:
-> - return a stable root KHO handle in argp->data from .preserve() whose
->   address does not change as FDs are added later;
-> - synchronize concurrent mutations to outgoing.obj with their own lock;
-> - support per-FD rollback when uncommitted sessions close without
->   disturbing already-committed entries.
+> By default (flags == 0), session lifetime remains bound to the session
+> FD: the session stays frozen while the FD remains open, and closing the
+> session FD before reboot (for example, to abort the session or on
+> process exit/crash) unfreezes it via .unfreeze(), unpreserves its files,
+> and reclaims all resources. During kexec, already-frozen sessions skip
+> the late auto-freeze and are published into the outgoing KHO subtree.
 > 
+> With LIVEUPDATE_SESSION_FREEZE_COMMIT set in
+> struct liveupdate_session_freeze.flags, the frozen session is committed:
+> it and its FLB dependencies are immediately inserted into the outgoing
+> KHO subtree via luo_session_publish_one(), and the session survives
+> close() with full ownership retained by LUO until reboot. Once
+> committed, closing the session FD (or another session failing to freeze
+> during reboot) never unfreezes or unpreserves the session, allowing
+> processes to hand off preserved state and exit prior to kexec.
+> 
+> Update the uAPI and core LUO documentation to describe session freeze
+> and commit semantics.
+
+Please teach your LLM to use shorter paragraphs, focus on why and don't
+list every implementation detail, but only important ones.
+
 > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 > ---
->  kernel/liveupdate/luo_core.c     |  10 +--
->  kernel/liveupdate/luo_file.c     |  16 +++++
->  kernel/liveupdate/luo_flb.c      | 111 ++++++++++++++++++++-----------
->  kernel/liveupdate/luo_internal.h |   3 +-
->  kernel/liveupdate/luo_session.c  |   2 +
->  5 files changed, 95 insertions(+), 47 deletions(-)
+>  Documentation/userspace-api/liveupdate.rst | 30 +++++++++
+>  include/linux/liveupdate.h                 |  3 +-
+>  include/uapi/linux/liveupdate.h            | 46 +++++++++++++
+>  kernel/liveupdate/luo_file.c               | 54 +++++++--------
+>  kernel/liveupdate/luo_internal.h           |  7 ++
+>  kernel/liveupdate/luo_session.c            | 77 ++++++++++++++++++++--
+>  6 files changed, 184 insertions(+), 33 deletions(-)
 >
-> diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
-> index 1b2bda22902d2..9fef5161a1f3d 100644
-> --- a/kernel/liveupdate/luo_core.c
-> +++ b/kernel/liveupdate/luo_core.c
-> @@ -219,18 +219,10 @@ late_initcall(luo_late_startup);
->   */
->  int liveupdate_reboot(void)
->  {
-> -	int err;
-> -
->  	if (!liveupdate_enabled())
->  		return 0;
+> diff --git a/Documentation/userspace-api/liveupdate.rst b/Documentation/userspace-api/liveupdate.rst
+> index cdd74627ab75b..d36537c556ccb 100644
+> --- a/Documentation/userspace-api/liveupdate.rst
+> +++ b/Documentation/userspace-api/liveupdate.rst
+> @@ -22,6 +22,36 @@ change, so compatibility is not guaranteed when kexec rebooting between
+>  different kernel versions. This is expected to change and stabilize in a future
+>  version.
 >  
-> -	err = luo_session_serialize();
-> -	if (err)
-> -		return err;
-> -
-> -	luo_flb_serialize();
-> -
-> -	return 0;
-> +	return luo_session_serialize();
-
-I suppose the wall of text above describes why you change this.
-
->  }
->  
->  /**
-> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-> index 988eb313a135f..611b9967a3a91 100644
-> --- a/kernel/liveupdate/luo_file.c
-> +++ b/kernel/liveupdate/luo_file.c
-> @@ -380,6 +380,22 @@ void luo_file_unpreserve_files(struct luo_file_set *file_set)
->  	kho_block_set_destroy(&file_set->block_set);
->  }
->  
-> +/**
-> + * luo_file_publish_flbs - Publish FLBs for all preserved files in a file_set.
-> + * @file_set: The file_set being published to the outgoing KHO subtree.
-> + *
-> + * Iterates through all preserved files in @file_set and ensures their
-> + * associated FLB metadata is published in the outgoing KHO FLB array before
-> + * the session itself becomes visible in KHO.
-> + */
-> +void luo_file_publish_flbs(struct luo_file_set *file_set)
-> +{
-> +	struct luo_file *luo_file;
+> +Session Freeze and Commit
+> +=========================
 > +
-> +	list_for_each_entry(luo_file, &file_set->files_list, list)
-> +		luo_flb_file_publish(luo_file->fh);
-> +}
+> +By default, LUO freezes active sessions automatically inside the
+> +``reboot(LINUX_REBOOT_CMD_KEXEC)`` syscall path, and an outgoing session's
+> +lifetime is bound to its open session FD: closing the FD before reboot aborts
+> +preservation and returns all resources.
 > +
->  static int luo_file_freeze_one(struct luo_file_set *file_set,
->  			       struct luo_file *luo_file)
->  {
-> diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
-> index cd715a7c1d992..6cd87a9f8307d 100644
-> --- a/kernel/liveupdate/luo_flb.c
-> +++ b/kernel/liveupdate/luo_flb.c
-> @@ -34,6 +34,15 @@
->   * This reference-counted approach ensures that shared state is saved exactly
->   * once and restored exactly once, regardless of how many files depend on it,
->   * and that its lifecycle is correctly managed across the kexec transition.
-> + *
-> + * Serialization: Outgoing FLB metadata is published into the KHO FLB array
-> + * incrementally as sessions are published to KHO (when committed early via
-> + * LIVEUPDATE_SESSION_FREEZE_COMMIT or during reboot). Because a committed
-> + * session never unpreserves its files, FLB publication is one-way: once
-> + * published, the FLB's .unpreserve() callback is never invoked and its root
-> + * KHO handle from .preserve() remains immutable in KHO, while later sessions
-> + * may still add or remove per-FD state in the shared live object under the FLB
-> + * handler's own synchronization.
->   */
-
-
->  
->  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-> @@ -72,6 +81,13 @@ static struct luo_flb_global luo_flb_global = {
->  	.list = LIST_HEAD_INIT(luo_flb_global.list),
->  };
->  
-> +/*
-> + * Serializes updates to luo_flb_global.outgoing.header_ser and .ser[].
-> + * Lock hierarchy:
-> + *   luo_register_rwlock -> private->outgoing.lock -> luo_flb_ser_lock
-> + */
-> +static DEFINE_MUTEX(luo_flb_ser_lock);
+> +Userspace may also freeze an outgoing session explicitly ahead of reboot via
+> +``ioctl(session_fd, LIVEUPDATE_SESSION_FREEZE, &arg)`` once it has finished
+> +preserving and modifying the session's files:
 > +
->  /*
->   * struct luo_flb_link - Links an FLB definition to a file handler's internal
->   * list of dependencies.
-> @@ -104,6 +120,36 @@ static struct luo_flb_private *luo_flb_get_private(struct liveupdate_flb *flb)
->  	return private;
->  }
->  
-> +static void luo_flb_ser_publish_one(const struct liveupdate_flb *flb, u64 data)
-> +{
-> +	struct luo_flb_header *fh = &luo_flb_global.outgoing;
-> +	u64 nr;
-> +
-> +	guard(mutex)(&luo_flb_ser_lock);
-> +	if (!fh->active)
-> +		return;
-> +
-> +	nr = fh->header_ser->count;
-> +	for (u64 i = 0; i < nr; i++) {
-> +		if (!strcmp(fh->ser[i].name, flb->compatible)) {
-> +			WRITE_ONCE(fh->ser[i].count, fh->ser[i].count + 1);
+> +- **Freeze** (``flags == 0``): Executes ``.freeze()`` on all preserved files in
+> +  the session under the per-session lock (allowing multiple sessions to freeze
+> +  concurrently), while keeping session lifetime tied to ``session_fd``. When
+> +  ``session_fd`` is closed before reboot (for example, to abort the session or
+> +  on process exit/crash), LUO runs ``.unfreeze()`` and ``.unpreserve()`` on all
+> +  files in the session and reclaims all resources. As long as ``session_fd``
+> +  remains open, the session stays frozen across any failed ``reboot()`` attempt;
+> +  at kexec time, already-frozen sessions skip the late auto-freeze step and are
+> +  published into the outgoing KHO subtree.
+> +- **Freeze and commit** (``LIVEUPDATE_SESSION_FREEZE_COMMIT``): Freezes the
+> +  session's files, immediately inserts the session and its FLB dependencies
+> +  into the outgoing KHO subtree, and commits the session so that it survives
+> +  closing ``session_fd`` with ownership retained by LUO until reboot. Once
+> +  committed, closing ``session_fd`` (or another session failing to freeze
+> +  during ``reboot()``) will neither unfreeze nor unpreserve the session,
+> +  allowing processes to hand off preserved state to LUO and exit prior to
+> +  kexec.
 
-An LLM says:
+Too wall-of-text'y, too much markup.
 
-  Why the WRITE_ONCE()? All writers hold luo_flb_ser_lock, and nobody reads
-  this before kexec.
-
-> +			return;
-> +		}
-> +	}
-> +
-> +	if (WARN_ON_ONCE(nr >= LUO_FLB_MAX))
-> +		return;
-> +
-> +	strscpy(fh->ser[nr].name, flb->compatible, sizeof(fh->ser[nr].name));
-> +	fh->ser[nr].data = data;
-> +	fh->ser[nr].count = 1;
-> +	/*
-> +	 * Ensure the serialized FLB entry is visible before exposing the
-> +	 * incremented count to concurrent KHO readers.
-> +	 */
-> +	smp_store_release(&fh->header_ser->count, nr + 1);
-
-An LLM says:
-
-  And this release store pairs with nothing.
+I'm stopping here until v6.
 
 -- 
 Sincerely yours,
