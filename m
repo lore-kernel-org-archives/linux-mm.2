@@ -1,104 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C0E606A330
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 16:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43DC606A331
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 16:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JOpmQDys
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hlZduhvx
 Received: by kanga.kvack.org (Postfix)
-	id C817A6B05B0; Wed, 11 Nov 2026 11:54:26 -0500 (EST)
+	id BE68E6B05B6; Wed, 11 Nov 2026 11:54:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C31E96B05B5; Wed, 11 Nov 2026 11:54:26 -0500 (EST)
+	id BBDBF6B05B7; Wed, 11 Nov 2026 11:54:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B21D56B05B6; Wed, 11 Nov 2026 11:54:26 -0500 (EST)
+	id AADC66B05B8; Wed, 11 Nov 2026 11:54:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 48BBA6B05B0
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:54:26 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C32F8A031A
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 16:54:25 +0000 (UTC)
-X-FDA: 85423436490.18.FD7C3E5
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf10.hostedemail.com (Postfix) with ESMTP id CEF2CC0002
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 16:54:23 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=JOpmQDys;
-	spf=pass (imf10.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 72F096B05B6
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:54:57 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DCE9B80347
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 16:54:56 +0000 (UTC)
+X-FDA: 85423437792.20.076F81D
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf01.hostedemail.com (Postfix) with ESMTP id E35D240002
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 16:54:54 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=hlZduhvx;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794416063;
+	s=arc-20220608; t=1794416095;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D0NO6skQHrEQV9uToLezs2xtI4SoBkJ0aZ39MACRQvg=;
-	b=iZJiKAHHpRosLT8KA8AlVHEkaNt3V/RZuXM4X0tEZNJGe9RQ8VC+V0EGp1gQmKB7Za9KqX
-	6GezJieXU5ISIkm7YW36+czFWJTOsxqmyZWWzpmcFzhcjOzRR1cBIrhXcaOieAsm6qw90t
-	eipCCElM1Pf9Sm8eOLnv+otHL59+nLg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794416063;
-	b=F62jmxUMpZsPeFwn3Rz8EHTUlOb9YNYeET5d2Yi/rX0MKiHdbmY2mPH+gH7g2Mi0oNTGE5
-	2UONX3WR8I7Ts2ilsSCVoxVWzILiQ3ElT9DqyYfKf/rtj7wJab21n/XFmHE5R4L0u8M7pX
-	R7U1poVAx4bL5iY+FQ2j9WvG1zwS/MQ=
+	bh=Bt8vCFJ78PDhrhf1lGPW3TnU1901Xv/Y93kmnDKVKUQ=;
+	b=IMUQ+dW9x/OkhB2zgJDD4b590uXJblIA2R2VuZm2tGgM/t0TyiGgSjcWMGhJp6F2GNQJmr
+	l/qt2YbJkfTCE3JBuBQNsrISG93GPJ32oFAsTRKCeuPbjGSMdVbHgadT8yebX6qABxYF24
+	j/d5bc1Nv9uWBRP0hv0J1V2s1EKprRc=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=JOpmQDys;
-	spf=pass (imf10.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4a208d93758so36384195e9.3
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 08:54:23 -0800 (PST)
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=hlZduhvx;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794416095;
+	b=ozS0VJhNdbf4ZHWP+PpGJ1vcs4WDBRlvkIMWVgkxNgq3H7iDJ57WYshELTc1/5Jg41V5Jv
+	xigilRxsbSU9FZKC39bzKF4oRAoFIPzRXWnj0IPYvMEGf69EBNOBLMm8UPOl45GVO7RFOy
+	X6XKrvy+dHIl4c5+2RmWb/cdpgqkZIs=
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-48dee593f18so2588370f8f.3
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 08:54:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794416062; x=1795020862; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1794416093; x=1795020893; darn=kvack.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=D0NO6skQHrEQV9uToLezs2xtI4SoBkJ0aZ39MACRQvg=;
-        b=JOpmQDysaQEyEMmnqYvGbYsOh6zBM6fii/3rCzt3OtJp1ywagyewjtidjhSdm6yyXb
-         4XJckHUrX2mZ8gaiNR+m8qhzoA2xT1wWaxHGj1mWW36J2IciiArY3GSoEOHFe0lFgywI
-         YBfIAz/zdPFrlAm+Ji3lzT5zFJElU4DKc0BOL1YX5mK2vCOZuw0WfkAevsWAEsN0uvbk
-         kc7YqobAqe5pYn5NPotyEZ0JF/0lfaVbMFZnwIXCp3dXwIRuRdNSE+Q7QwU/4k8WRBXh
-         ZrFwULPzJVeF0bxJJItD2Dskqf8+DFsOcDAwHfpAG904JkD6iKpF8iv+gDAWz11y9KTe
-         +xTw==
+        bh=Bt8vCFJ78PDhrhf1lGPW3TnU1901Xv/Y93kmnDKVKUQ=;
+        b=hlZduhvxMTQeS5cMqNs/n5aVvbHQdWJGYPsWxC38tQS0jDBQEnb8+wRPBM3BUc/Nod
+         z0QASCHWYoYJDl4S6l96KsMDR95KAdljDtG9yf+nvAYNGHleGW9/BPzp6dWcl6EhvnRB
+         essHsbuKCDeAbED0abNq8zdea0DSGSmRSNiepKK1O0QE3AyXc4arKY3ajigUC/s5sDT8
+         FeSGdZdhMjyC4CW0xDHk50DVmU3BiLSxciDAkkWUVods6CcmGGEXmA3vuG3FFEYsQCGz
+         8X3uNX7zuFlfSDRM3Q2V+glCPGQmiXbfkk0cwxwOkaHcS7ztQoi+O9jRwj4403LIKz0r
+         G8xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794416062; x=1795020862;
+        d=1e100.net; s=20260707; t=1794416093; x=1795020893;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=D0NO6skQHrEQV9uToLezs2xtI4SoBkJ0aZ39MACRQvg=;
-        b=yPCEBJfnRoTfJNAJva0C34cSQZCDM3UNs0y8+We+AGDH1xHZ4xmbpwCRCvkDB6xlwL
-         TqgQFbQ4mKzh51+HhoYw0ad5cVQE7p7nlN8jxhWQkX7RH0xUd5Oy1rX/kHBOqxmhIH+2
-         l34Yc1gXd3J2ohe5BjH0kLpmReNOMCPmv3GhgaSSxfYah7MQ3JLr2Hy9o1ceAfcBvi/H
-         iCR0j6RDxZR7NoXdPBwjeIkN0OHFI7QifdRKsrwE8R/Yl5XUtJJYIm9V5TB33CHCgV1i
-         uXze+zB9xfB5Z9MZnZXA781cLkcyw+iecf1iwjkDhVm1c0KRmOenvaYFrdO9Ef0pNENO
-         BYVA==
-X-Forwarded-Encrypted: i=1; AL+hErF5YJDQJ3uKtT5dco6+7a1f8XOfUJpS+Fr1q5c77eLxG+F4DR6IT9SJEyR04I85UWt2z5Oy2L5jtQ==@kvack.org
-X-Gm-Message-State: APuU4Z+h3MEvDRs+H9DDgpi4iN7YM9HtiQw2iiNpIXVhW195e6yQEvQp
-	1MQbNaNXOjqZa3Uj8whmSM6PPMtA/Gqw78ex/CMVhVmGPSbUBtucGoR9
-X-Gm-Gg: AYBFou2ahZ+T/YEZ4GzUU3WdZtgFP8IOYmQHneM2RgpvXf3SKQ9q8CUnrHN0R1yExdC
-	RM8IOf9sLRdKMVQMPUdBHlw5lKGfPnZNVAbljGZX5XVumQtP/9CKxCO4mJWGoCE/540cYdZqFgm
-	+LSv4PI4JWrrQnjXWacXe+DpVlSEtu7eu0lOCltn9HhLNwh9ktbmxh4a+FACn95dp/yQ/U/IrT5
-	rwsxJtDakf6cOvoq9n0Gu5l+Sk3YGae3cpABpwPc3GQ4ymcwM0OfCnDp4BhfdvJIGHukMTpJlAS
-	sWst10jsDVS6+7uCXTC6ssoywBFHDQ11Ax2XD87qHg+17WHS8ciId3TQPwEmvOFyIzdntEKnil4
-	/xyuPfdCG5j1tGSFmfz4I8LeredmNmPIKXES9nCJpPSM6Nmc6Q7+yS85zHwaCMSJE6tehOp1taq
-	PoRpUyjVK1Qe54xbDN4W/zvOaGqvJp6CxYgrPej1x74YV5zLELq1ejPV3k5pLsKgIbWGdyqY0Yn
-	NH0zaZ7OYIijLpnb/QwOt4oodY96Aei8b3I0d/sUS4sGQob2uVxK7IaaWM3YZ4wneoyu1D/+R1h
-	h7UcoIBGm0eJ8hIh/wvY1XQrjGCz5uNPN1zLIHLFG7AdaRwgCMnOKhgp9PnoHQYMtLdM
-X-Received: by 2002:a05:600c:354a:b0:4ba:6d8:df8f with SMTP id 5b1f17b1804b1-4ba0936f447mr55057305e9.15.1794416062148;
-        Wed, 11 Nov 2026 08:54:22 -0800 (PST)
+        bh=Bt8vCFJ78PDhrhf1lGPW3TnU1901Xv/Y93kmnDKVKUQ=;
+        b=eqce+vd9Ypf86lmNmi/XPCYa66/F4Lw9Pl79fpdx2IG/fP2XZ9lblw9WKAw1yJ8M5y
+         aPBdrdHrzg+V0usruyhFYzyOqNmaix/vXDG3VxrxhJ2R/TSximwqFl0HEpo6M1yjf260
+         +fcwhke/y9u+GwwFvBXjTnp/ZylocVEk5ZaPp0DwhJ9vrfD+tgSbTgDofgsttYkGn4xh
+         cLPZ7Va25wO0OrWsJM/2TAtn7oneyZCCr6D2zN1txLlqRCFlm56ZvuMsFjCNrZnokCYS
+         q9W1WwWqTPFrakDUF9Q1vA/OVroE3U8PeyoyZY53EviifzjjJ0CghNKAYH464nxWaP3A
+         hKhw==
+X-Forwarded-Encrypted: i=1; AL+hErGP8r9gldEu/Z7+P9YWGr7y8Ofspg2MGwo1CTTTiNGSy0QBM5oRP5miyVBS1gK5P+YTDRGSemUrUQ==@kvack.org
+X-Gm-Message-State: APuU4Z/RTCqhcQ34g60rA5Pc4pLZ1tEIzC2AWPjCy4xqttXFCuz3nY9I
+	mXhmThkNUTL4z+XADI35h2FAqkdnji41dLqeZkosuF+XH12IRP13wZAP
+X-Gm-Gg: AYBFou2/tFL/l4u/Mq+1X5aR3bOOvryd6uScv1L8Uh/jZBgMFVFbaQ7X5YFTZh7YIax
+	SxhJ763qqgtwOREajx+N3RVyDnHsmTLzyKzzj/bNH0g1WdaRwjeNaIV3qj7FSgFHGL8OFsGqTaI
+	yICjED2gIuW7lM/9bO3puPbbOZVDxF1I90tGD+B+2z5e5Snymy7h50n81KPBdhrWWiOhQ8NmYwG
+	9VgthdwJeq2VNIFevD/cfeH15WD0KqvmqnZlN5FF15vzSs/QRpv2hz0XeqTJ6Uua3LrevM4K7CX
+	UdgbjO26i287TTmXOHWN1+vSduH6KScfG46XAMIWhsP8A0af9qFan5N1UMT+BycUKbBjo1ZlTKA
+	bTlCpQ6Z0EEcKKEWIxwtXpt2T033Q4udZzMZhR3KflyHutJB5abazSsVq37T+zQ+kVmDh9xvUQZ
+	/UWj5Aeqi20PxsbZ3HprWe8mq7Rw2Oo2eNBwc2pHBLSOC0Qn+fKG2c1LBAnCHzTl8HiIGJX7a6t
+	BfH1vo43sMoUHNiR/deVvIiNKuKVZatA+fzukvo6zSsWgTLyEw1uATdpp4S5e+L5wvPZcW9ID6G
+	6L1pc7WLdeOyT0uc3PdRJNiAs8NOcd/qPA1FyDdAYJWIvVt4r7lVSTsSwokJgY0RkTUyYm8oQBs
+	Ivw6n7CxuFQYwkA==
+X-Received: by 2002:a05:6000:490a:b0:48b:a4b:5a2c with SMTP id ffacd0b85a97d-499c5783a79mr5463489f8f.3.1794416093393;
+        Wed, 11 Nov 2026 08:54:53 -0800 (PST)
 Received: from [172.31.15.113] (6.red-83-60-147.dynamicip.rima-tde.net. [83.60.147.6])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-498362eb158sm11708192f8f.36.2026.11.11.08.54.20
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49836c835fcsm11451395f8f.59.2026.11.11.08.54.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Nov 2026 08:54:21 -0800 (PST)
-Message-ID: <6a2c3f50-bce4-4214-8621-e0daa0637e91@gmail.com>
-Date: Wed, 11 Nov 2026 17:54:19 +0100
+        Wed, 11 Nov 2026 08:54:52 -0800 (PST)
+Message-ID: <8c221ebf-ccc0-4541-bdc7-ae216d149dae@gmail.com>
+Date: Wed, 11 Nov 2026 17:54:50 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] mm/huge_memory: don't warn when a page table blocks a
- huge pfn insert
+Subject: Re: [PATCH 4/4] mm/huge_memory: use the large-page PAT encoding for
+ huge pfn mappings
 To: Eliav Farber <farbere@amazon.com>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
@@ -117,25 +118,25 @@ Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
  Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
 References: <20261111140655.34281-1-farbere@amazon.com>
- <20261111140655.34281-4-farbere@amazon.com>
+ <20261111140655.34281-5-farbere@amazon.com>
 Content-Language: en-US
 From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261111140655.34281-4-farbere@amazon.com>
+In-Reply-To: <20261111140655.34281-5-farbere@amazon.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: bofxcb4c5ghi551segc7hqw5byfaw9j1
-X-Rspamd-Queue-Id: CEF2CC0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E35D240002
+X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794416063-173188
-X-HE-Meta: U2FsdGVkX1/XnoO0PoiMqkZIawvpEKB7WmYIgV5Itu7lLRMiLZbm7PPORLBPgoohy8ATV/g4KGcsVZkxfP/lvyv14/2A1DLOwRkKHMFdB8E70qbzhi87SZ3BZNYaDS0ypnXRXCDl6uJnj7P8cUz7MvRs330tYr6qwH1FvL3kjS5pdqaakWCD0FI9UoL7wg6/eYtWePnvrA6QGIKZuDZZ20ZUcjHx3X5xLi2Yszi6oVdlvtyoUGfP8F1y1R6iK+wVwKbXe7+6La7rmiFGUPJZc6ktLYJ34v3OiFe7a04yu/G/jXe7Xaf0ThewboZkBDNXV9OyEU8vG8Q8kryqq5h5t+9d2MKDIWnNaowcOFw5gBkUi2jS7RVCaNYd59+fTgWo3eyMdaAlQyDxCqc32SSrl1UiQFOrpdF9+gZkgxIuh0a6Ft9f0iU7NHR23E5dIzdAF3cYJCA2d4CbRXYYcgGiduwhmbyhYUensNLX90LCdEBqDASdtG4Yzi5ofFlPqkxWBSL+AejeZR42uVCuEToJ69edzsGvslW1CIk6B8PsOxoA9hppL2US+Bu6KX5bXgihSr77m5bISBsSnK5yWTHw/GB6b/UGdNfBzV78g6lI82Bffux2vRvcmX1Y0d0Mw0iO+3Mgt7XXKeLAkDOIhTVjL7FMrhPU23QGieHvghl4VEbJFxs5aOtukC18+uZBtar7wMPX5mU3eTInnlzF0ZjdlJOHaCFLu7JmbVBrHXcZyFCab777j2UfBWieHKJpbLkFUq/oAMbHTu8WLd9XIRNmu0DGrkhSEY5RnmWAWQZwOew28RCXFr8LjJNknLmBmNJbYF/Ll8/ApMoSxaW/LlpjndrMYkU7grU1afk6tqNds7l40H74M3I51qm4goVkK3THZve4Rt9z4jvSVNEQCzvxU0yiE+qH6HsVkbFnoGFwj6YHn5/ukV0MFF4gcf2IuQhAu/+61dvLc9BJJ0bP0/u
- 7Yuoqb3w
- pYOOHD1br3oX/EbwK0xp7iTt7hVVlKfMbV7IOZIaIftwhgLg8fh418GTOYngDSAbUlzoocj/YhTU3cFy6JsmWN/WQMOP3+7lJJUE1yozNkuEfJaoIHOux6cyeT8mP+AmzkN4m6vZikB6WnHN/zmOBm3e9x/MBVYqBiwuNegREITyl6jUEsAk3qDDkJXywLsR8/HiYqNkG4gwrhApUZNdXU+NKB2eDHNVh6iSqc61gU8lyHoI5Zkrotk6f4CZ80Ywmjt1QFBQbdmZ0utmOAOX2YSEs3rQJQ9pIl63KckMdTLMI3BSteDzN47nA5A0VerMS1OvtFfvlsPKEkjxKV6M9Sr/WrmTpIXMhwjbETqP/0DymXdhtoRJf4NQqWGQs+mcWNv8TChKHjT56S3vq37LHsQbEtwTar1Iwg6nx8Zxv2wh36ZtijaF7ztYdLO0LnQBuRVA+tCzJZ8GXhHUYOHwOkcgnkPzcYohdnTIz3AwGO2Jddw06YQOeCBF8BEsryoBqbrwRrjwmEjjhTOBa8UXdkpSq0uo4IIqcjyn8RhDTeJZTS1B03zA3a+aGVIby1DBWnf5HkMRHPY27ix7xq/UuH1yPTh9TRvccRZB44BUo1ecFBvw=
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 3h4iqpfihjt7ig5ghbunzcie3d9dymqx
+X-HE-Tag: 1794416094-274113
+X-HE-Meta: U2FsdGVkX1+l1TC/sMJwR7y0M547U0G36vIC3Yuc0UVnwB4T6p507keqcEveoJ3dnHSFUS93EKhabyRBEcA98P/WgDJ033Y9U6ba0GjW3knJi3WJxHuqg0ca6oLfVWv194KEj+nQVJFrAahR09iFEjwkaysSXpVhI4Z6BzSE5QNeDEP7nyBxMqGoVUbwjMscuT6xoWbTR1hlRSN0muEJGh8X2v8BFoO8z7fSHCiBsX2mdogHzlk5LV98OeVkjwWTDHM33b/SXmIllNi3UAlV+DaqSbYtHbiI/Gxo4Crm/154ETJTH5bA1dHcXnwqsNIOMXOEB+AA3h41hnbOLNZu5wRXr5Jc5ZBDNG1d+a7f54fq2D8kOmD53XMbZTRG/39VX5Cok+MAC5NOuQudPbQcBmhpcQWJYvhAJuMDLr2jfGnynb2pHbm6KsJUIJkpHUNIi2hE1xld10hxTIxk7QRDY6jTQSMmh1PRjPy/wcG2R9x9hykcPYumdDirvTmSJjRdX1W5NTjCrUzwMLzLp1GrZKa8devIVGoOk7gasDmNRZ6gQna1vx1WvzTpYA8Y8zWRN/MrN0tONpYHVf0VuOZDXncfDlWHWPPcL6RoPJlra7G7nPfOJgRdW8m6H0h9WgiYSYz9tstQg5B4gGJqecIDmVNKRtmd+B7JK7ZI6ivcfKiYPPCDOcjHjgsDAfPV0yK5cF9ZePC0GGSWLGX4aZBmRCda7QhfJXTpMCXsK04H4s7ut84+1UkQ4gEuE5gvVHeYWrTld5scPK/Hl/VIke9eExAa3YVHyjK/5uUJ55modFUZ5RPzUkH0Z6Wthg8TZTmDYoXk/Z4WwDVPO2heMjZR3O+/UkbDYbWNa4WtLVsIlPaIFOWl65mpm5RQzSIOYhIU3Pcy6IsnON1OrTnMurOWQZFMG3s7PTRjr5zFp8adr5tLGnNuvHOXGZoXdgGFPgzMLA5yeSjDPhkVlvtXqWt
+ YiVSeLL4
+ KHk0vL8jStkNR3TwLR5ENiGAIj6x1tYC+I2LaWCYwkkWGueYpu15ZdjaHtdbKX9GQ376y3nfqk/0Ah/saE3I9wNtzL0mQK0t1iM9RBIcfoV0N+W+c2bntlcBg7yU8a5E/8n1WDhq12e2EbXJzCGjlEruqoKmPRLvqGd1iHXJuvPa5LgCZltMFS7OLOJ23+hiLUs73qO79J1oae6D0kWQcLf0BTy/+pOzFuJqAYNysdkgDGF7UuoxvETOL/ynPSFEDf8qnR2FKYMvO3Qe4t9HmjdsNPZCn6x/88FKh0CwrWdYbviMleMShh1bXJF0Jffb8hko4h7899JyUWmqgOtQmE1LOBlWlBjl01FMp4jJYV/hjLQik8DZa+fz8uVL3TNCLrQy+e7PsygqcwLogXEDebnhM+6czXBj9SSPaOwlyhc6hiSYOer4BSva5giHu2jhEFhiZYoYKKwCWzWVnYV/ixml9LisBx/gw259pWcx9W37DGbhneKYvFWRgyboXiTNyy3qhl2v2oB6/pn6INff4fqOVijmT/d8wwZEdQyU7tCXUEoXMVvzdcBI7G+ct61o+FofmULI5avVTrGP+9Tuv7wJbWQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,29 +146,100 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/11/26 3:06 PM, Eliav Farber wrote:
-> insert_pmd() and insert_pud() treat a non-empty entry at their own level
-> as a leaf and compare its PFN against the one being inserted. A page
-> table installed by a concurrent order-0 fault also makes the entry
-> non-empty, and pmd_pfn()/pud_pfn() then report the PFN of that table,
-> which never matches. insert_pmd() warns unless the entry is the huge
-> zero PMD, and insert_pud() warns on any mismatch.
+> insert_pmd() and insert_pud() build the entry from the pgprot that
+> vmf_insert_pfn_pmd()/_pud() took from vma->vm_page_prot and passed
+> through pfnmap_setup_cachemode_pfn(). That pgprot carries the PTE-level
+> cache mode encoding, but x86 keeps the high PAT bit at bit 7 for a PTE
+> (_PAGE_BIT_PAT) and at bit 12 for a PMD or PUD (_PAGE_BIT_PAT_LARGE),
+> where bit 7 is _PAGE_PSE.
 > 
-> A VM_PFNMAP mapping with both ->fault and ->huge_fault can produce the
-> mixed orders: an order-0 fault installs a page table over an address
-> while a concurrent huge fault on the same address reaches insert_pmd().
-> Changing an mm's THP policy while another thread faults the same PMD,
-> for example with prctl(PR_SET_THP_DISABLE), is enough to do it.
+> A memtype that needs that bit, write-through or write-protected, loses
+> it: the cache mode index of the huge entry drops from 4-7 to 0-3, so a
+> write-through range is mapped write-back. The other x86 paths that build
+
+here contradicts the cover letter, shouldn't it say the same as the 
+cover letter since its the one right?
+
+> a large entry from a PTE pgprot convert it first, see populate_pmd() and
+> populate_pud().
 > 
-> Compare the PFN only for a leaf entry. A page table is not an error, so
-> take the existing out_unlock path, which returns VM_FAULT_NOPAGE and
-> lets the access refault onto the smaller entry.
+> Convert in the two huge pfn paths. Add a generic pgprot_4k_2_large()
+> that returns its argument unchanged, so that only architectures which
+> encode the levels differently have to define it, and x86's existing
+> definition is picked up.
 > 
-> Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
+> The folio paths keep using vma->vm_page_prot as is. They map
+> struct-page-backed memory, which x86 maps write-back.
+> 
+> Fixes: 6857be5fecae ("mm: introduce ARCH_SUPPORTS_HUGE_PFNMAP and special bits to pmd/pud")
+
+I think that 5cad465d7fa6 ("mm: add vmf_insert_pfn_pmd()") would fit 
+better, IMHO.
+
 > Signed-off-by: Eliav Farber <farbere@amazon.com>
+> ---
+>   arch/x86/include/asm/pgtable_types.h | 2 ++
+>   include/linux/pgtable.h              | 9 +++++++++
+>   mm/huge_memory.c                     | 4 ++--
+>   3 files changed, 13 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
+> index b1a669e775f4..b1ffd72e47ef 100644
+> --- a/arch/x86/include/asm/pgtable_types.h
+> +++ b/arch/x86/include/asm/pgtable_types.h
+> @@ -497,6 +497,8 @@ static inline pgprotval_t protval_4k_2_large(pgprotval_t val)
+>   	return (val & ~(_PAGE_PAT | _PAGE_PAT_LARGE)) |
+>   		((val & _PAGE_PAT) << (_PAGE_BIT_PAT_LARGE - _PAGE_BIT_PAT));
+>   }
+> +
+> +#define pgprot_4k_2_large pgprot_4k_2_large
+>   static inline pgprot_t pgprot_4k_2_large(pgprot_t pgprot)
+>   {
+>   	return __pgprot(protval_4k_2_large(pgprot_val(pgprot)));
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index 780fe849ff8b..112814d31f0c 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -1787,6 +1787,15 @@ void arch_sync_kernel_mappings(unsigned long start, unsigned long end);
+>   #define pgprot_mhp(prot)	(prot)
+>   #endif
+>   
+> +/*
+> + * Convert a pgprot built for a PTE so that it can be used in a PMD or PUD
+> + * entry. Only needed on architectures that encode attributes differently
+> + * between the levels; elsewhere the pgprot is used as is.
+> + */
+> +#ifndef pgprot_4k_2_large
+> +#define pgprot_4k_2_large(prot)	(prot)
+> +#endif
+> +
+>   #ifdef CONFIG_MMU
+>   #ifndef pgprot_modify
+>   #define pgprot_modify pgprot_modify
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 052c50dadc48..945d480c1512 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -1675,7 +1675,7 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
+>   			add_mm_counter(mm, mm_counter_file(fop.folio), HPAGE_PMD_NR);
+>   		}
+>   	} else {
+> -		entry = pmd_mkhuge(pfn_pmd(fop.pfn, prot));
+> +		entry = pmd_mkhuge(pfn_pmd(fop.pfn, pgprot_4k_2_large(prot)));
+>   		entry = pmd_mkspecial(entry);
+>   	}
+>   	if (write) {
+> @@ -1804,7 +1804,7 @@ static vm_fault_t insert_pud(struct vm_area_struct *vma, unsigned long addr,
+>   		folio_add_file_rmap_pud(fop.folio, &fop.folio->page, vma);
+>   		add_mm_counter(mm, mm_counter_file(fop.folio), HPAGE_PUD_NR);
+>   	} else {
+> -		entry = pud_mkhuge(pfn_pud(fop.pfn, prot));
+> +		entry = pud_mkhuge(pfn_pud(fop.pfn, pgprot_4k_2_large(prot)));
+>   		entry = pud_mkspecial(entry);
+>   	}
+>   	if (write) {
 
-LGTM:
-
-Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+the code LGTM in general.
 
 -- 
 cheers,
