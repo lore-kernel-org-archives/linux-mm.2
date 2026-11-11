@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87802606A8BE
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD9460A2607
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=fNGYio+K
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=c2oGCKHk
 Received: by kanga.kvack.org (Postfix)
-	id 478336B05B4; Wed, 11 Nov 2026 06:08:30 -0500 (EST)
+	id E644B6B05B5; Wed, 11 Nov 2026 06:08:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 404066B05B5; Wed, 11 Nov 2026 06:08:30 -0500 (EST)
+	id E15366B05B6; Wed, 11 Nov 2026 06:08:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3412D6B05B6; Wed, 11 Nov 2026 06:08:30 -0500 (EST)
+	id D52166B05B7; Wed, 11 Nov 2026 06:08:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 131226B05B4
+	by kanga.kvack.org (Postfix) with ESMTP id A88316B05B5
 	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:08:30 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 942A3160291
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:08:29 +0000 (UTC)
-X-FDA: 85422564738.21.2E16A67
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com [209.85.221.70])
-	by imf26.hostedemail.com (Postfix) with ESMTP id DBB1114000B
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:08:27 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=fNGYio+K;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf26.hostedemail.com: domain of 3qUz0agoKCHIlTeddUVehjWeeWbU.SecbYdkn-ccalQSa.ehW@flex--vdonnefort.bounces.google.com designates 209.85.221.70 as permitted sender) smtp.mailfrom=3qUz0agoKCHIlTeddUVehjWeeWbU.SecbYdkn-ccalQSa.ehW@flex--vdonnefort.bounces.google.com
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 434171C2C2F
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:08:30 +0000 (UTC)
+X-FDA: 85422564780.11.7BE7497
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 8F9CC80008
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:08:28 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=c2oGCKHk;
+	spf=pass (imf30.hostedemail.com: domain of 3q0z0agoKCHQnVgffWXgjlYggYdW.Ugedafmp-eecnSUc.gjY@flex--vdonnefort.bounces.google.com designates 209.85.128.69 as permitted sender) smtp.mailfrom=3q0z0agoKCHQnVgffWXgjlYggYdW.Ugedafmp-eecnSUc.gjY@flex--vdonnefort.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1794395308;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t9e5fiKyui+gLN6NGnueZPdNy7gU/9XjTaWNkCYpwsg=;
-	b=ScNWBprzkw3Usv3v2U2ipUymWH6kGOSW8pB4JrwyYdsp2glV5lOwc+Zw8VMoP4hJgv/uBV
-	y9/putKxnFOKmsqJc3/q93imtx59FVFPvVWoWkOfLSiJ90KT7fInjRJUKWkl17DDC9Rbto
-	1v9teytMbeQrybVAMoRumexNcn1kw6w=
+	bh=VViZS2bb3pZ4FEd6v4FhPEGdFU0OwPB+qGWSqpoqEsA=;
+	b=nII4SugjJhCzDaekMEEgOMc7JH8X+B5osvp6/lVINutE4WZFo4h4rJBv+3W/Z7NBic3aFx
+	P70vvj1fj5fjCItSVr5I116poX3xVklaoBJYof42nRcbSQohlaO/u+ILwB5CW5XgdGYlTJ
+	hHOnPe7PYS4rO5OrMY/EEv39PRuzr8s=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=c2oGCKHk;
+	spf=pass (imf30.hostedemail.com: domain of 3q0z0agoKCHQnVgffWXgjlYggYdW.Ugedafmp-eecnSUc.gjY@flex--vdonnefort.bounces.google.com designates 209.85.128.69 as permitted sender) smtp.mailfrom=3q0z0agoKCHQnVgffWXgjlYggYdW.Ugedafmp-eecnSUc.gjY@flex--vdonnefort.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1794395308;
-	b=WFK+QiqnBGtz6HcYGPFjCN+MtRR+x5XGlJUOUSS3tdRIbMSqVXObUC24VK6qKt7vpdGuSS
-	gbbYdECtX9TTPIkL5WtXhE/ZN2eMdLXM+OoRDTSugrplyXEhCgvs198OwqVYWZ3SYLZghY
-	qSYgv6MSqXjykRTm5t+CZBtZD63+ZLE=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=fNGYio+K;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf26.hostedemail.com: domain of 3qUz0agoKCHIlTeddUVehjWeeWbU.SecbYdkn-ccalQSa.ehW@flex--vdonnefort.bounces.google.com designates 209.85.221.70 as permitted sender) smtp.mailfrom=3qUz0agoKCHIlTeddUVehjWeeWbU.SecbYdkn-ccalQSa.ehW@flex--vdonnefort.bounces.google.com
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48e4d1e29f3so2932967f8f.3
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 03:08:27 -0800 (PST)
+	b=wck9li/2u4tZeK5U8h3DAjhJEuyLSk3aI0JZdbbVctOLzUe49SDP6QFVnWbkDL6CdNbvA/
+	VvySlTZA/hpcdtrY6jSKcKPyLUiUfz8ktA80AqpuaW7z07dU3vrunheIj3wPGXp4Vf0ezo
+	DRL9WZjQbKmCjId7JXUoDkpA0RhyYr0=
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a20fd059ddso22107245e9.0
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 03:08:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794395306; x=1795000106; darn=kvack.org;
+        d=google.com; s=20260707; t=1794395307; x=1795000107; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=t9e5fiKyui+gLN6NGnueZPdNy7gU/9XjTaWNkCYpwsg=;
-        b=fNGYio+K+c+Y30SRFIkHfIlMXp9vqVHAfzI92Rlwt3/XwG9IA5uhGctIp8FSYO5LpK
-         kilSM3VhYFR1ihFl4TvIb36J8yJmqew7G71sB1TFB/0un+BN7qam57TOpx+Miv5Ue8KP
-         3BR9pZWLZTRWuMpGazMQSr7F6fJrX9wGyWlrMbiXgqIpLJ3Mhrq2+7840IK4E5WUNkvg
-         Y2w/mHBnh0fc3MjK1b0jQdX9HHuqAmmczPyx8WP3sty7PrG8dApiHJQKGyUEqGG6y5T9
-         Se261k3qtynOUPF9prWVCsEBojguII1ijsegTaIjW1MQoBwpDhYaRMoYH9xZj7FYpbsI
-         O1BA==
+        bh=VViZS2bb3pZ4FEd6v4FhPEGdFU0OwPB+qGWSqpoqEsA=;
+        b=c2oGCKHkzbRQHmSA2LZQmNhNXnbuSJ+Dxx9EKfyijtSVkew3S/uevT/DpQIFj7fe24
+         kWfQu5dtO75f2aWlHJAa+R54pHF6FTykkuSO+P4TadXXiL43OCHwV9oFhH35nmW99kkZ
+         2yRfUlDRyUe3LpQN5gliqllUErXjwUTZkLYijnkDE8GOYOyKyAaFDpycSXeiIMfbmpQ+
+         3YNWxzyo+B8I1e6yhok1AjOYT9Naq1kh3N8gEZS4TYhGX6U0BKuuZca5dV61voN2IDT2
+         emwgvk1fjKx2aIdTrDA51w7OBF9342c/LcCWiVX/0gWtSLWshq+rCP2SvDAY02JnNzSS
+         N0Ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794395306; x=1795000106;
+        d=1e100.net; s=20260707; t=1794395307; x=1795000107;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=t9e5fiKyui+gLN6NGnueZPdNy7gU/9XjTaWNkCYpwsg=;
-        b=UdSuE7cGK2Ue8AYhh+1AEkTtOM/r9l9c+f6/cD8QSqdE6r7Q9cUM/ZPWC5eXVbTu2J
-         TOayeS0Vpo50uM2DfMP3zaSZu66Pk4ngTuMSoyNBANcWi/HdM7fp8tauJScZFrRBs6i/
-         QE3lVMSOwLBJd6zUHycXNkSYOmo7y+4mvK+/BoY28cH4u4ZoPuTICxXb0hatynIjFh+j
-         tCYQc81azbcEmttdt0h0Vv4uCg0bXtgm5zattu6KbYO7TPIfPUQ9pNmgaQ3nhZA3LtuT
-         P5Ryf3R+g5R6USN7FQvWKNd+QBTGqGJxcv+p84E8fK0XZKY1TcS3jEFc6B+7yecNvRn6
-         Wtgw==
-X-Forwarded-Encrypted: i=1; AL+hErGb3HA4hygMc9GX4H20KqKW5/Q8pCtnhj0C0iDZ2dsmZnr5NV2hw/4hwYM4A+Zl8wSoFiguzkBSlQ==@kvack.org
-X-Gm-Message-State: APuU4Z9lTKFSytcA88iLw7n76+k6igBpXOiZUW2gjZrkO8MRAyrYJFZH
-	FdKUW1yEyqf63eoW3V04cKVMsYN6j/J7A52bqlp0+3BoGCd7UGgJ6uHgckP24q7dvYhvAjkico8
-	WaqYs64XaXlGltnhFw2IcBQ==
-X-Received: from wrsb1.prod.google.com ([2002:a5d:45c1:0:b0:48c:753a:6283])
+        bh=VViZS2bb3pZ4FEd6v4FhPEGdFU0OwPB+qGWSqpoqEsA=;
+        b=uzj821lb55pBi/2fyDF2EWLX/zb4kBiGVekrzQB4RfaqG1YWlwE6atDG2Qkv9SQX9J
+         hDK+8KGwWHA6wDyv4xu2xlwLapuvEscjrRjFxKBd6V/6ywterK+2k6K33EGitrk2CwH+
+         0dwD7J0s/FwaXcEV1fSwZiNdTSfdB/7pheEIAvRmgWg63P8gMl6pXRCg8Xsp6dicTNEq
+         tys6tdLcS7rOOibtAK+I0JDmsJi55my6xvVqX/uT3KRpWYgLR/rlcJ0mgyTV30lkang7
+         kD3m7XAFZxdRrkkQLEZpKHc4YGZBKrIk6TAEFV6yfOE0BdjEvlg8tUt+/j+rwPWjRdqJ
+         PW6g==
+X-Forwarded-Encrypted: i=1; AL+hErEYLehsOtab4Wy9e2cprgsrUTGW8dXf7q++JYGSpucEsRUXuNs3faLyU/z71jnx44LS+uiLV0pbdw==@kvack.org
+X-Gm-Message-State: APuU4Z9bUcNjVyL5MX5h8UDUVIXYTtnUgUK6wx2qG+CXzLdSLZXxa83m
+	Ahq02Tb89JTMP5mlxbtN22ZU/AUmTbXwt0Z8iHLdiqQyCrFUfiRl6FTIFcpq+eLM3ecY1uCwyjw
+	UicEvqBlTnWUCoyFTFfez/w==
+X-Received: from wmgb22.prod.google.com ([2002:a05:600c:1516:b0:4b8:b187:f0cd])
  (user=vdonnefort job=prod-delivery.src-stubby-dispatcher) by
- 2002:adf:e194:0:b0:491:6a7:b4ac with SMTP id ffacd0b85a97d-499c7b1aea4mr3063798f8f.56.1794395305902;
- Wed, 11 Nov 2026 03:08:25 -0800 (PST)
-Date: Wed, 11 Nov 2026 11:07:33 +0000
+ 2002:a05:600c:3b83:b0:4a1:f377:5c6c with SMTP id 5b1f17b1804b1-4ba0935dbfcmr39556605e9.10.1794395307014;
+ Wed, 11 Nov 2026 03:08:27 -0800 (PST)
+Date: Wed, 11 Nov 2026 11:07:34 +0000
 In-Reply-To: <20261111110738.872947-1-vdonnefort@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261111110738.872947-1-vdonnefort@google.com>
 X-Mailer: git-send-email 2.56.0.542.g3ef89b7020-goog
-Message-ID: <20261111110738.872947-4-vdonnefort@google.com>
-Subject: [PATCH v3 3/8] dma-contiguous: Expose rmem_cma_ops
+Message-ID: <20261111110738.872947-5-vdonnefort@google.com>
+Subject: [PATCH v3 4/8] dt-bindings: reserved-memory: Add lendable-dma-pool
 From: Vincent Donnefort <vdonnefort@google.com>
 To: catalin.marinas@arm.com, will@kernel.org, rppt@kernel.org, 
 	akpm@linux-foundation.org, m.szyprowski@samsung.com, jenswi@kernel.org, 
@@ -99,19 +99,19 @@ Cc: mark.rutland@arm.com, robin.murphy@arm.com, hch@lst.de,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Vincent Donnefort <vdonnefort@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 376cmrmuqzyc5krracb1n6j5q7rmqr9r
+X-Stat-Signature: nui3636w5iqiwstg3u3siap6ps5bpbar
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DBB1114000B
-X-HE-Tag: 1794395307-896404
-X-HE-Meta: U2FsdGVkX1/D1eNhjGsq6q2pCNjTRjMc/fqBYNF1T0MrfUJllwMnQLU82wL0ByfEB8ympc0DFu4PQVR4L2WEoLVN9USSdBdqbjjC3NmQTG4RYX0ReNXGpBPaxOgzhAi67H+fTW1nOJsP1LeLLGRXA1AEvdWlF1g+k/rgn3M/abQM6gEjWnTbRtLdnhdv5gJDA3k9oj6PcQXKz7ReiyAF7QqeYFRhhz7NXVBbtFDAyN/iKWAqLHN1uoYV/a5+BttvCLEsnVUzhWq8WfIlTvu3jutwm6iTHkA/fQbGT89STYP0r/myzhWUNQ3DiiW1dyUrXfGCevFRRt8xDpkmSm4Yzj2BkbscedBF1UOVT0R2v7z/xGG1VUYnqnd+PSTAubAlimASE3yjTnT2vvE4xnTCbkHAB9rktjTOqca/O/qUFpzhSjkWgJB/MTA2QwTJLFwY777a24uXOHEI7obJ7QOHuApL3o4EDfhQI5Ujc8ZCCIdTtEsuP+6JTXCDfYMgQYX5t4m3u3aRqUcikMP4jvOthDy+XRLBOKo3NKVxi8RLXCdjXRdTFQIE+O/YtxSGZbN10hhPYEY2MGkzhvKfw9ZFd1Y80shWJq3diMktU9mHp1xwIt5dVIbX1dTH7brkVEVebEz8F06YuZ/VTnqITrVK/cfBO6J4cL/ckhzpuq5ai1VrSW9nuymYONuaXTNrTt1PhA6x7SNR91GVHk65qvzHfr6qSFsPT0MSnTzgpNUSk5AM4bVJH2UZGajpvOQKPJRf+hwCrD0KzqQdHcBzaG29H76lS6MLa9EH43qJmwRJJkmbirFMmVEd+DbMuhKc8eSZpxXaYu5r6+doud+mFJJYLqJQdeh+bSAGgWcbqOEIMxz5t4IoQdywCDOoq1hln5BZLgZdrtACEYFFfy95GqwPKZp8sFQ/Ui+DG7EtYF4vSd/r1n+cAdFnzxk+4SuMfEDEgVmix3eEvFtGTzdJKex
- Z1T8wlKg
- KQ+pW0p5Cu0bV+r/ogDWJW/2Y6FhhQKvNh8VeGmINj5hgNk4SDRjbIZ82vwMLwrLjbikRjP9UmrDe6UtotVbITtltTABtYoGBsnZBZIs67Xm7hqrP1Ihw2PTjUBUymeTpmyanmlPxVCF3xdT5/zF0gijcgixTrxoRcZoA+mMB+7Ych9tVrRmTynubB0zxk/JgwcqvgjPV7BcuQHY52MZ8SwwVo1lfFo/nfVHuQmGPU9uQj2tZu+dwEFm4/W4ec9VB6nTaQePNPFrKHvF3WPjNG8OHsZjM1UlXxKnjHQ09oi+BJqUZ/IQlJ3Az6tD7t7gs7PQe+NkMl5aWuzB/hewTrdfz3IxdDTmQbUNOoN46cIMsR/koe+vaNxdkOA9tKgZTFqwGlc+an5CPZ26S1g5P83QBgtJeERLfDEHIkt9ffb/c6ZyndGdp2yRWpY86R1rk4wVGQLRlxHnuFbbjhBBIrPp2/tePYuOdfFi5IQ8n1grwX54ilNg6bx5A+FJh7m/xB1pag8SywLeermS1K5Kl1BgounQDV6NFbY537xdQstPKuB3mws2aMISnpEG4BaIe+O4jLqxjWqH5HgCsdQnh5jhvueUO6bdyez5vjtySkkM/ukj5Y8jraW/OVi2I9mjqaVMeBpZjbPfJ9Vp5Vb9bh1FbkuVGzcj+YlZLhIs5zn5aKoxMliC8GqDZdq2Dp6XghUNA8TVGiTVNi8j5RSp/uXEXTetUzJr2xfGg
+X-Rspamd-Queue-Id: 8F9CC80008
+X-HE-Tag: 1794395308-94364
+X-HE-Meta: U2FsdGVkX1+BC3XvMgO+RtMwWBSFHylC2OqxILkrXsRPnsVnssL+GoMhXBzMec8jcSWSPsJ9agtoCRPqbXAh5Da/VgWKp2AT94xP2Yp7ViFDglixzPbvLSqT6uyZzsfhToo/dqiSRiS2LA5w8KCoZjVKyE0/m1nArJ/XVv1Ehza5Q2C3MDc1nxRyMfX1z9NgmD1vmz0eNKW1f+H0RE6oJIx3Knmy0vH/vd1V+T32qK/mwJzCIsOUdqpYRHbDtRPO0otEZJOYiRc+e49kz5VURWJfjBhnW7G+ndQ4y6GGVWeITaayuKop71kkTxDKhllZLgIu1rx/gCvAgkdy/4UlYRqS1yELaObx05btgF/szuf6A40LLCVsiI5wqUCkV6HXJXjgbct+4mA4j+ClQM/J2gHPY8aP2T8kcPwodn+bfoGxNy0s6ksfGIYaeD3UkI0iaBgylLIHA0BEQ9sRdVk4UJkORjmKpi5yqDM0bdWNOZRtjcjBiOWQN4Bs7zZe11l2ovofWhkLqgVOwx0aKJdppNR50+c1LvYVqwp05w8IhEpXXUuiG6W0yD2ioqHar7nRU1l8d58NOdo/Q275gzXQHRUtl0GYNAOHmg9GD1IOOIH+PN6wv/C7g0ZXdpMhOAZrgl/73Qve0H29oJyT7rHSbrfAlASLWkCFC9VIDY5diL1fxvibEWK9Ok+8gxpSxzOJNLZqe0L9+7mMD1P2rDQfV5erjMJn2nt1vcSyeoXsX9ISs+yYKGw0Dsz9JDZWIJnRkPwzVYw9K8BRUOaWLdeFvjCd+ucqe7EmxT9OzjNJcJNF/qmrZM7rZxjOW03W13scaKJTrmp51S0lgFTosmGBKxFLnJWLpzzHHX2sJ49pLLbJMI89SfbFyyHQsLBKzhjQU5dmcxjMYQT8SDNgrT/ydiHv6/9CTadfp+Wmk02FCKPIgO5v1HTvdMfFsvIuN9ARqQt+KyedaUXkOw2jKgq
+ b7VVSYiA
+ eBIpxfrz3npHy8CfIeRTRNZzw44pEjyRyWHjYrjXkGZicISXkMhxf55tyProRHKBqRS6+CoWSWIC/erEOln8n3/XjjndOQLpxWejeFpvnauM08OIU3JCaey+3pyZdQGPEbL9ZOe781yKVy2Yn4ObZWxkOYVKPxNIqHd6Rvi/NaCBSjUpFcb5HL+T1KW88d83JkwICh+LusrvezOx8w0oyYJ58wxb+z1I3qmjoRrHUcO6jMwH01ATMsFnYUBbDmBEIVjOr7Kezeex+rJez1BZ/WZcqjfutG6NQWf5qJGqp9pGnw3DUxqC6tHD1tHfVXpBEkDNWAW+IcbJeZyUMzHBa7lwgOhvTMltx1P7EuycFoFq8L+EiVmAOFl4NqpGcoe1iCUDEU3MX9hseNXvo8Oi8PEo9Bswi4pENK3RR7uj2hWIs1mXtVfPLBwGwkInQqBCKAtHE7ppysSd/3t3zmkzcftURe/VBf5bMLTVirIMUnDwCZ2DqOEdTiSJz73QH1L8hVA3KYmqXPbXoPZLTpioMzX5S0dr7QOahBZxVyp3yPyTJf7UUrwGSlen+y7F45exblRonC51BIK4F+gvsxPI6RL6dAk2t/OfIJj/B2VNOKIlhaxsOE/USCURsQVAWl0Yvl9ELmgTWe4pDoVpHBexr5JFr0/EqUUHVAYa/5W/sb9u1XjroSCSSU+Aj66SidNeACc4dAF7Gxdql/PshGO1L+8qGi3yEx1bgQKSmtRVN0L2yIDo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,55 +120,80 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Expose rmem_cma_ops via a kernel/dma-private header so the upcoming
-lendable-dma-pool reserved-memory handler can wrap the CMA callbacks
-instead of duplicating them.
+Add bindings for the "lendable-dma-pool" reserved-memory CMA pool, used
+to dynamically unmap pages from the kernel direct map before lending
+them to a secure world.
 
 Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
 ---
- kernel/dma/contiguous.c |  4 +++-
- kernel/dma/contiguous.h | 10 ++++++++++
- 2 files changed, 13 insertions(+), 1 deletion(-)
- create mode 100644 kernel/dma/contiguous.h
+ .../reserved-memory/lendable-dma-pool.yaml    | 58 +++++++++++++++++++
+ 1 file changed, 58 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/reserved-memory/lendable-dma-pool.yaml
 
-diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
-index 90937dc7c627..22d6e54aea35 100644
---- a/kernel/dma/contiguous.c
-+++ b/kernel/dma/contiguous.c
-@@ -46,6 +46,8 @@
- #include <linux/cma.h>
- #include <linux/nospec.h>
- 
-+#include "contiguous.h"
-+
- #ifdef CONFIG_CMA_SIZE_MBYTES
- #define CMA_SIZE_MBYTES CONFIG_CMA_SIZE_MBYTES
- #else
-@@ -578,7 +580,7 @@ static int __init rmem_cma_setup(unsigned long node, struct reserved_mem *rmem)
- 	return 0;
- }
- 
--static const struct reserved_mem_ops rmem_cma_ops = {
-+const struct reserved_mem_ops rmem_cma_ops = {
- 	.node_validate  = rmem_cma_validate,
- 	.node_fixup	= rmem_cma_fixup,
- 	.node_init	= rmem_cma_setup,
-diff --git a/kernel/dma/contiguous.h b/kernel/dma/contiguous.h
+diff --git a/Documentation/devicetree/bindings/reserved-memory/lendable-dma-pool.yaml b/Documentation/devicetree/bindings/reserved-memory/lendable-dma-pool.yaml
 new file mode 100644
-index 000000000000..9b1fdbfc794f
+index 000000000000..0b924d941b4d
 --- /dev/null
-+++ b/kernel/dma/contiguous.h
-@@ -0,0 +1,10 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _KERNEL_DMA_CONTIGUOUS_H
-+#define _KERNEL_DMA_CONTIGUOUS_H
++++ b/Documentation/devicetree/bindings/reserved-memory/lendable-dma-pool.yaml
+@@ -0,0 +1,58 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/reserved-memory/lendable-dma-pool.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+#ifdef CONFIG_OF_RESERVED_MEM
-+struct reserved_mem_ops;
-+extern const struct reserved_mem_ops rmem_cma_ops;
-+#endif
++title: /reserved-memory Lendable DMA Pool
 +
-+#endif /* _KERNEL_DMA_CONTIGUOUS_H */
++maintainers:
++  - Vincent Donnefort <vdonnefort@google.com>
++
++description: |
++  This indicates a region of memory meant to be used as a pool of DMA buffers
++  that can be dynamically unmapped from the kernel direct map (e.g. before
++  lending to a secure world such as via Arm FF-A).
++
++  On architectures where the direct map cannot be arbitrarily modified at
++  runtime (such as arm64 without BBML3 or without rodata=full), the operating
++  system ensures this pool is mapped using last-level (PTE) page table entries.
++
++  The reusable property must be set, and no-map must not be set.
++
++allOf:
++  - $ref: reserved-memory.yaml
++
++properties:
++  compatible:
++    const: lendable-dma-pool
++
++  linux,cma-default:
++    type: boolean
++    description: >
++      If this property is present, then Linux will use the region for
++      the default pool of the contiguous memory allocator.
++
++  no-map: false
++
++required:
++  - compatible
++  - reusable
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    reserved-memory {
++        #address-cells = <1>;
++        #size-cells = <1>;
++        ranges;
++
++        linux,cma {
++            compatible = "lendable-dma-pool";
++            reusable;
++            size = <0x4000000>;
++            alignment = <0x200000>;
++            linux,cma-default;
++        };
++    };
 -- 
 2.56.0.542.g3ef89b7020-goog
 
