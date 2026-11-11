@@ -1,94 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A90D8606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EADF7606A8A0
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=CeDjNYV+
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=vV5nh+mu
 Received: by kanga.kvack.org (Postfix)
-	id CE55C6B05B2; Wed, 11 Nov 2026 06:54:21 -0500 (EST)
+	id F08AD6B05B3; Wed, 11 Nov 2026 06:54:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBC916B05B3; Wed, 11 Nov 2026 06:54:21 -0500 (EST)
+	id EE08C6B05B4; Wed, 11 Nov 2026 06:54:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD2036B05B4; Wed, 11 Nov 2026 06:54:21 -0500 (EST)
+	id DF7506B05B5; Wed, 11 Nov 2026 06:54:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B2576B05B2
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:54:21 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 98478A799B
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:54:19 +0000 (UTC)
-X-FDA: 85422680238.10.513FD04
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 96BACC000E
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:54:17 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=CeDjNYV+;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C28386B05B3
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:54:46 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 53F62A029E
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:54:46 +0000 (UTC)
+X-FDA: 85422681372.27.DAC66C1
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf30.hostedemail.com (Postfix) with ESMTP id AEE3580004
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:54:44 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=vV5nh+mu;
+	spf=pass (imf30.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794398058;
-	b=ezKJz8ui5MZpAamratCM1ad38xArdf+09FgZgO0xM7HJXweQFN52q747RuD2e3EljnpDtD
-	uJce4WAmWu3UQZPcOfPg4IxJD6gVVtMbXz/C0qWy0EyO/UG+WGzPAip4v2hmPfzVrRgLfe
-	IB4UbdaYnMAHZVPa2w50KUym3MHQ+Eo=
+	t=1794398084;
+	b=0E1psHtuiR9dKfeZ17oMmZZb5p+oTZ+cup+OemdPmcS5HcYrqhTWxH964v52BH9GXYHq+S
+	05Az1oJHjLnYiDNi8j80SOPC8DOyiDqIfWjfZNgH1fvizzuZP2j/N81DVnYhLDG7IrRDLV
+	K4pHXRQJusUBMjMEqucNHo4IBVoE6WY=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=vV5nh+mu;
+	spf=pass (imf30.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794398058;
+	s=arc-20220608; t=1794398084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iRUIMS49hoSOEmD7qxA40rIo2Cj8FT0pTAOH5mtilWQ=;
-	b=Ffn7tgQzhGpsBac6rwwYBiEb8cGnCH9VFyU9nAItpojwyFmQh45FdIPVeu0ravrN1f7gUp
-	RMZVgNLFHE1q2ZZMieGRWsHuK69FPMrulkyixdW6Okh0jM019OnCZxgBeeG6foCs7qlp/f
-	N3kQk0UiWWDIcwcZZ5uNZwzJLSvgl/g=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=CeDjNYV+;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 857361576;
-	Wed, 11 Nov 2026 03:54:13 -0800 (PST)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C754C3F673;
-	Wed, 11 Nov 2026 03:54:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794398056; bh=vxb8GWA/SO+8jrDRzmH3YqjJX7cIOf8js4OHf9oUj8I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CeDjNYV+DU+n1kv8g/R00VkmjUistcizknOF0lJDila5M+/zvChfcilFDI4dD+a+t
-	 WTLpTd7uc0u4qY6x/s9XVKNMs+ViIfmYuQvFTnxCT/CNk/Ab8g/fXjU/BcBU6zQmPt
-	 ruup/KASfrX/MiGPuq4eBBsTGorRly6spqexOL4E=
-Date: Wed, 11 Nov 2026 17:24:13 +0530
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: catalin.marinas@arm.com, will@kernel.org, 
-	Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Linu Cherian <linu.cherian@arm.com>, linux-mm@kvack.org, kasan-dev@googlegroups.com
-Subject: Re: [PATCH V4 4/4] arm64/mm: Use pgdp_get() for PGD accesses
-Message-ID: <ohyhflzuoxdemccemutoosmj5hsfwylrlt6tvnyehulerk7gf3@ada6wu4zrzkp>
-References: <20261105043403.3326445-1-anshuman.khandual@arm.com>
- <20261105043403.3326445-5-anshuman.khandual@arm.com>
- <sashiko-outbox-200739@kernel.org>
+	bh=Ep5AJlsUvRo/Sl9Rg+NwP6D7Lq/wQPVEaLy1Gie9QQ4=;
+	b=WHYllmb9qLHWAYlJenNkzTRDGHYhYS6Yqzr4EEd/2tkqk8rFWv0z9Uc4wg6Oz0xQD27++T
+	5hG0m3OHhakD3f9IgcmTd8yMrhhLF6w7RwHHjfujYdDp5+0q/OfLfDO8MCISTWufteKqDm
+	mPuMNVO6h7uuA5GbsW3+Z+Bo2VxczTM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Ep5AJlsUvRo/Sl9Rg+NwP6D7Lq/wQPVEaLy1Gie9QQ4=; b=vV5nh+muii9KUwMXfoK65C9FPK
+	aNSl0OiG0j4I+LFXc7WeA74kYOFf834TBtI7qS+ZEF0cf7hSHSrnoI47iOSAXQPCAXQU9fne6O/8R
+	G2wk/XluU5ugbAZ7f5jU4JBscAk6nd/VyyPFhAk65/tq7U9wZjt9SJD8a8A/m2R6Cxj7l7C76kg9H
+	1KIPLAQYQ/Fv+JWvD04uouKwGYT/8gu4uHiCPUf9Bg4PxVdqeWdNvrfltP4AIW+MdO1/5WBfOmizl
+	DellelcAiKmJM9KaaC82wP83/72jAdgWurCb/I4tMo/beG16KgajqNT/PO+VCT1shIIGmoQlyuzr0
+	Arg3hVEA==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xR6u3-00DA6f-37;
+	Wed, 11 Nov 2026 11:54:12 +0000
+Date: Wed, 11 Nov 2026 03:54:00 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+	Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Eric Dumazet <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	netdev@vger.kernel.org, ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+	coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, 
+	linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
+	linux-sh@vger.kernel.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+	sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
+	Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org, 
+	Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH RFC 25/38] powerpc/crash_dump: check ioremap_cache() in
+ copy_oldmem_page()
+Message-ID: <avRXHYDKemkiDvoj@gmail.com>
+References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
+ <20261102-work-procfs-bugfixes-v1-25-59422ed3e465@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <sashiko-outbox-200739@kernel.org>
-X-Rspamd-Queue-Id: 96BACC000E
-X-Rspamd-Server: rspam12
-X-Stat-Signature: aoywom51shc3hawaamhj9f41bueirqpk
-X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794398057-157178
-X-HE-Meta: U2FsdGVkX18GWwzRD1mjDXcHlvNKE1yOiMro5ZVLbvQJ9DhimK46lp6qTniqpafCD92J8LyekzAXKy97q8eU2C3pSV9HN/RSmTI9nTg2dyHfxieWUcd7osw9jGzVrh2bxVU1V3VhyBRboJoD93SPgyMdbqBNV431viKOAD5MngPP7SFxXT9k8Oc3BSTYFm+33tI5jiKTDbCGL/wGUXDR5eh9tlwlLQ9+fbxSI1QISjITXbhh8gRzBLjA3vCPQj3J6NNfb0yaREG8fgmBRnT095baRcZR8F8/sUArHZr8n3mTpB9zHCHOYqrX6YFHN0EHTvjwlX3HCxKZ3+5s4LRz50JYGzuYL/JXns/hRo663oHtvACUgOpJxcoMdLFnVAxDbjSv97RRWHr1X3Peednhdra3m5E0XefLrs9td+YrUmjXB12MTuw/6tSGxndCWE7wsoHF2cFQEFLMF19etdcCywcwB/gJi2hpeeHP1+pBqG0awKNYvg6L0dnCp4G7Lhl+dl2L9j0knrhHGpCWre4Sxtk1KRtyG0erzvse+PqeYZgNnPx0ls1kjNyJBXWPTjiCeNi+5OVzzo4sd1vfcnTb2Iy1Kgl3CfOtNWnqC/SzSnn11zRjlroYoEJXsIeFFGD4a2SSNAt3VKmFaj+r9rk3xIf2g39bS8r0JZHqtFDi124n+DNreKYYJyfw1waZzkx7V9Fwg0N4Y/fo9GE8joXDBe9rPLoBonh/3AHNX4L+3NRhm7C6lFDgZeWf2Awu9UMbJiyQEuIgpJqjs6SK9M/BInRtp1d9tHrpk1OR+S1oj7Y6cZlwcM82qKdKfpJZaRFHDLtUVXsyf9ya1/9OC9A9zxvIl3zqrhRxhvXbc+9uRYLwMR0F8tZIAjt3YqG9EM3tdprYhqYJap4XZypX3suMKGca6pFfInpVjp0XKjYurwcV3tAys8AoJQrtCJHJSzpLV+2CCx7CJm/Jb7da1zm
- a3IV3WPN
- fSQLLBU7dy6HXeTorTOcSL3hAxUtTBCcFjqYEWc77E5dfzINzGxa4RXcXj/pt2WytvuPmrpVkcU91djYJl2XLwkNE8aiYBE6eAiB1C6j+3FWi+idym2CV6i6kN9eZnML0ajIQv+cHo7ENixU62ngQePI1xUXNp7kUlY4+95u+6eI1jrCRKMd2sO4/LMLy1rV/7Ahp/WZj6Mi3wbk+e/WGyh2wgTP7duFwtQKPvIB+ma5WevtPS9Try/8jLzFWg7s46tl4v9TODiMERR7oZPJb7t3S6K+aiU1qcnRpqJg0xJvrYAKJIfsr1ye6rdAYqijPOZS8H9oUQ0Knf91NcJqM7r0d/vERcH3tMLDHBXZ1ATdlg9gKe97vdIxSM1et991lGp76Uxpj7rBIR7u64N5EN6wSnfMR04tasCaFlhmmIh70Ut6NcFz5/VK0R1SaA5UTlDOuhKBF85O26hgf4QZgkxOpAz8wdcAIV35I1l93+hkU+Iw/UNr2Dpl1WSvQ/4lEOHYc4RA7KNJURuH1knMj7R5Gd9RAVqR8b56hxzwTxv9uYlzg3RhMaZ3tlDYhlwl675VUxvudbCm5a0IkunhI1mrT48Qan0O9Hxokj2EpXjKYSIF+XBVcq7tgaDT3cWj/pYy11H2iMXwkVaw=
+In-Reply-To: <20261102-work-procfs-bugfixes-v1-25-59422ed3e465@kernel.org>
+X-Debian-User: leitao
+X-Stat-Signature: 1mefekhqr8su4bs7g9fy85kzuyig7fa9
+X-Rspamd-Queue-Id: AEE3580004
+X-Rspam-User: 
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-HE-Tag: 1794398084-149384
+X-HE-Meta: U2FsdGVkX181hurWkvsJqdQHw1GGY715sq++UrUk9szxh2vESr1ujgF2GTTX04Nex8Wedss2JHpDkTsyew56PiBwXNwbEeAHwlO5uH/Pl9r7s0RhZXZ0mX6bCGHSIvalFDFYqvzbCHFeULyQBlMbtQ1LKKPc3Q5rS2ftEQYLWNTMEXPA22EwXHdvi8d/tE5/qQFX4X825GaYSmaMRgvCByY+G0ivN1R99OVvu4m/eTzsLuyNMmJOGYI2JA+fvlF3JqvrN/0123Rr+GxGdwLlhM2TYpxrYNGjwDYIBTkYdJ44Ipc61r1alDyLxuAdtG9rJLLqBlq5iHESmQbGIwZJCb3U/aAzIygNdK9i2FltdXnkibbKQ+5byt1sK11yqmnFX9Ldp8aHDUf7ONCdifqP45EZKtHRu5W3MMIDJ/5RqznYaDoexUw+YTwrNPqwGFNgMQ0L2aK7v+C9A0EvKgisX+Q49QDPH3eOqRVcAm9AnAFgCjfzFz3bOOVqq2GnSsCJeQeNG4WHBfxC7/KV9BQRnaghEz/Ft6kXmHcMjBOFQbaYCy7BSph0i82wwEs/tiP3AaMar8i0F7+YmiDPhymBuiRFVXwx2iVxKJ25nI5Dsc3JCes9oi1ARFAAtIxOqbo83uByguVGGjl9K5Gjmqi1KJpbUPPGD1pSMWVFH8wBJNBC3U+Ut5T90gIAvMUO0uP4/PWrU4YwnAj38ICMRNqAj+h/dS0cl/kAchvW0dm3q9VJfBS6/Ze5hgXn2j9P8KzKWZ9b1/ECX8JJibZ9EboMBefwdEK7qYblSJf/ygYyI71wm5jFg6QvQcHjVRsw/c/wl7a+hDrN/tv9ArNGJqSGhfuJMrBuggejMuTI+pcUf1gKgPOaCfApKzjm4An0e2s86jG/c/0PSBCgxdD0TcaVRsh78Uxze0YW11Q9Wj764i2TYTIq0WISXCtEIuUqUS9YjMV+rRymDDyeQowxev6
+ SuFtRegt
+ GOD3sAiUbUCCZtsKScJl4VCPZLq4qK6acdm/Dxo/2ji3QScHsbEjgvsIXpqXWc0+rGrMUV9fZ+TJiUkslI7ThJJdqJMVVnGm/awIPOHLWLBpzCmXnqXJEjfgTwloYd9GzYDe/mhLD+OExrbye+YO3gzBLMLunH4+39M6Owstt9UDIck/lVqe+DdAbeDenFkfnIzGKwCsYI/fItRLgqZjkwCXtgb2snOYbDAlQwuXG86y3VHDlmraoerrAcW89YdqkQLEnGxXmKovaSrfW8pYBS1TW9h3EL+hrjJ7r+1lJ1lzZKcO8GSBTOE2mh0z0E19GNgD96LuR1YCP+Agobi/2QOAP0RsdaUv4wQKJIyPAqMG3sSNh+u7PburBRMtQdWJXlaYgwPjn9BsMpAQknic6gb0kUcE+p2BcVE//
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,179 +117,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 06, 2026 at 04:34:47AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] arm64/mm: KASAN fault in p4d_offset_phys() during kasan_early_init()
-> --
+On Mon, Nov 02, 2026 at 03:21:40PM +0100, Christian Brauner wrote:
+> copy_oldmem_page() maps a page of the old kernel that isn't in the
+> linear mapping with ioremap_cache() and copies from it without checking
+> whether the mapping worked. If it didn't, the copy reads from an offset
+> into the NULL page. That oopses unless the copy happens to be a user
+> copy, whose exception table entries turn the fault into a short copy.
 > 
-> commit e9bf68a7a555b3c58c2a0a8736f337dde8136ab9
-> Author: Anshuman Khandual <anshuman.khandual@arm.com>
+> Return -ENOMEM like the other architectures do. read_from_oldmem()
+> turns that into -EFAULT like any other short copy.
 > 
-> arm64/mm: Use pgdp_get() for PGD accesses
-> 
-> This commit replaces READ_ONCE() with pgdp_get() for PGD accesses and moves
-> p4d_offset() and p4d_offset_phys() from arch/arm64/include/asm/pgtable.h
-> into arch/arm64/mm/mmu.c to avoid header include dependencies.
-> 
-> > diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> > index 5b5a85a0527d6..11015e1deb32f 100644
-> > --- a/arch/arm64/mm/mmu.c
-> > +++ b/arch/arm64/mm/mmu.c
-> [ ... ]
-> > @@ -2463,3 +2463,17 @@ pud_t *pud_offset(p4d_t *p4dp, unsigned long addr)
-> >  	return pud_offset_lockless(p4dp, p4dp_get(p4dp), addr);
-> >  }
-> >  #endif /* CONFIG_PGTABLE_LEVELS > 3 */
-> > +
-> > +#if CONFIG_PGTABLE_LEVELS > 4
-> > +phys_addr_t p4d_offset_phys(pgd_t *pgdp, unsigned long addr)
-> > +{
-> > +	VM_WARN_ON_ONCE(!pgtable_l5_enabled());
-> > +
-> > +	return pgd_page_paddr(pgdp_get(pgdp)) + p4d_index(addr) * sizeof(p4d_t);
-> > +}
-> 
-> [Severity: High]
-> Does moving p4d_offset_phys() (and pud_offset_phys() in the preceding patch)
-> out-of-line into arch/arm64/mm/mmu.c cause a translation fault during early
-> boot when KASAN is enabled with 5-level (or 4-level) page tables?
-> 
-> During early boot, __primary_switched calls kasan_early_init() before the
-> KASAN shadow region is mapped. Because any KASAN shadow check will fault
-> until kasan_early_init() finishes populating the early shadow page tables,
-> arch/arm64/mm/Makefile disables KASAN sanitization for kasan_init.o:
-> 
->     KASAN_SANITIZE_kasan_init.o := n
-> 
-> and set_swapper_pgd() in arch/arm64/mm/mmu.c is marked noinstr for the same
-> reason.
-> 
-> When kasan_early_init() populates the shadow page tables, it calls into
-> p4d_offset_phys() and pud_offset_phys():
-> 
->     kasan_early_init()
->       kasan_pgd_populate(..., early=true)
->         kasan_p4d_populate(..., early=true)
->           kasan_p4d_offset(..., early=true)
->             p4d_offset_kimg()
->               p4d_offset_phys()
->           kasan_pud_populate(..., early=true)
->             kasan_pud_offset(..., early=true)
->               pud_offset_kimg()
->                 pud_offset_phys()
-> 
-> Previously, p4d_offset_phys() and pud_offset_phys() were static inline
-> functions in arch/arm64/include/asm/pgtable.h, so calls from kasan_init.c
-> were inlined into kasan_init.o and compiled without KASAN instrumentation.
-> 
-> Now that both functions live in arch/arm64/mm/mmu.c, which is KASAN-sanitized,
-> the compiler emits KASAN shadow checks for their memory accesses (such as
-> pgdp_get(pgdp), p4dp_get(p4dp), and vabits_actual) before the early shadow
-> memory is mapped.
-> 
-> Should p4d_offset_phys() and pud_offset_phys() be marked noinstr or
-> __no_sanitize_address?
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20261105043403.3326445-1-anshuman.khandual@arm.com?part=4
-> 
+> Reported-by: Chris Mason <mason@kernel.org>
+> Fixes: 54c32021eb6f ("[PATCH] powerpc: Add arch-dependent copy_oldmem_page")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-The kernel does fail to boot with CONFIG_KASAN enabled and PGTABLE_LEVELS = 5.
-An example configuration would be as follows aka 'defconfig' with CONFIG_KASAN
-
-------------------------
-CONFIG_ARM64_4K_PAGES=y
-CONFIG_ARM64_VA_BITS_52=y
-CONFIG_ARM64_VA_BITS=52
-CONFIG_ARM64_PA_BITS_52=y
-CONFIG_ARM64_PA_BITS=52
-
-CONFIG_KASAN_SHADOW_OFFSET=0xdfff800000000000
-CONFIG_HAVE_ARCH_KASAN=y
-CONFIG_HAVE_ARCH_KASAN_SW_TAGS=y
-CONFIG_HAVE_ARCH_KASAN_HW_TAGS=y
-CONFIG_HAVE_ARCH_KASAN_VMALLOC=y
-CONFIG_CC_HAS_KASAN_GENERIC=y
-CONFIG_CC_HAS_KASAN_SW_TAGS=y
-CONFIG_KASAN=y
-CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX=y
-CONFIG_KASAN_GENERIC=y
-CONFIG_KASAN_INLINE=y
-CONFIG_KASAN_STACK=y
-CONFIG_KASAN_VMALLOC=y
-------------------------
-
-The following change fixes the problem. Although not sure if this is worth
-the churn. Earlier vesion V3 might be a better trade off where all generic
-pxdp_get() helpers were just copied over into the platform thus preventing
-subsequent header to C movement in the first place which caused this KASAN
-problem.
-
-------------------------
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 6a38de07e599..d0b3292ee18e 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -940,7 +940,7 @@ static inline void p4d_clear(p4d_t *p4dp)
-                set_p4d(p4dp, __p4d(0));
- }
-
--static inline phys_addr_t p4d_page_paddr(p4d_t p4d)
-+static __always_inline phys_addr_t p4d_page_paddr(p4d_t p4d)
- {
-        return __p4d_to_phys(p4d);
- }
-@@ -1057,7 +1057,7 @@ static inline void pgd_clear(pgd_t *pgdp)
-                set_pgd(pgdp, __pgd(0));
- }
-
--static inline phys_addr_t pgd_page_paddr(pgd_t pgd)
-+static __always_inline phys_addr_t pgd_page_paddr(pgd_t pgd)
- {
-        return __pgd_to_phys(pgd);
- }
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 1f56db9a946c..14e3b0387ed7 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -2452,7 +2452,7 @@ bool pmdp_test_and_clear_young(struct vm_area_struct *vma, unsigned long address
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_ARCH_HAS_NONLEAF_PMD_YOUNG */
-
- #if CONFIG_PGTABLE_LEVELS > 3
--phys_addr_t pud_offset_phys(p4d_t *p4dp, unsigned long addr)
-+phys_addr_t noinstr pud_offset_phys(p4d_t *p4dp, unsigned long addr)
- {
-        VM_WARN_ON_ONCE(!pgtable_l4_enabled());
-
-@@ -2466,7 +2466,7 @@ pud_t *pud_offset(p4d_t *p4dp, unsigned long addr)
- #endif /* CONFIG_PGTABLE_LEVELS > 3 */
-
- #if CONFIG_PGTABLE_LEVELS > 4
--phys_addr_t p4d_offset_phys(pgd_t *pgdp, unsigned long addr)
-+phys_addr_t noinstr p4d_offset_phys(pgd_t *pgdp, unsigned long addr)
- {
-        VM_WARN_ON_ONCE(!pgtable_l5_enabled());
-
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 780fe849ff8b..5e88015cdaac 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -511,14 +511,14 @@ static inline pud_t pudp_get(const pud_t *pudp)
- #endif
-
- #ifndef p4dp_get
--static inline p4d_t p4dp_get(const p4d_t *p4dp)
-+static __always_inline p4d_t p4dp_get(const p4d_t *p4dp)
- {
-        return READ_ONCE(*p4dp);
- }
- #endif
-
- #ifndef pgdp_get
--static inline pgd_t pgdp_get(const pgd_t *pgdp)
-+static __always_inline pgd_t pgdp_get(const pgd_t *pgdp)
- {
-        return READ_ONCE(*pgdp);
- }
-------------------------
+Reviewed-by: Breno Leitao <leitao@debian.org>
 
