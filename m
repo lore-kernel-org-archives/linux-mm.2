@@ -1,126 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBFB660A2601
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 04:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CEC160A260C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 04:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=CJ0SS3WN
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=K6/+4vRx
 Received: by kanga.kvack.org (Postfix)
-	id 14F966B05BC; Tue, 10 Nov 2026 23:39:10 -0500 (EST)
+	id 9E5306B05B1; Tue, 10 Nov 2026 23:44:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1279D6B05C7; Tue, 10 Nov 2026 23:39:10 -0500 (EST)
+	id 9BD656B05B3; Tue, 10 Nov 2026 23:44:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03CC66B05C8; Tue, 10 Nov 2026 23:39:09 -0500 (EST)
+	id 8ABA36B05B4; Tue, 10 Nov 2026 23:44:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CFE2C6B05BC
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:39:09 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5DD6A1201E7
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:39:09 +0000 (UTC)
-X-FDA: 85421583618.07.02AECCA
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8CF9140005
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:39:07 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=CJ0SS3WN;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf11.hostedemail.com: domain of chris@chrisdown.name designates 209.85.128.42 as permitted sender) smtp.mailfrom=chris@chrisdown.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794371947;
-	b=PDUvx+2tf4EKjhjgzRiRN/wWSYfCjBERGcnCw9kRdAi1zGuRb313GXxu4WV9e999yxFpbb
-	4Hd8TXlE5MEEMgNTc1us0bqenYzdVWcSgrIdSlLCoDydTovKZ/F1UC5K6T6/PMPzt/A5Wu
-	V6zy+cxE25H9wK5C78BW88kDVg+BViw=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CFF96B05B1
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:44:58 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B306D160208
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:44:57 +0000 (UTC)
+X-FDA: 85421598234.26.E515A09
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	by imf30.hostedemail.com (Postfix) with ESMTP id E011D80002
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:44:55 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="K6/+4vRx";
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf30.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.53 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794371947;
+	s=arc-20220608; t=1794372296;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Lvre1MX6Fv185E+vol1UoVO9hXcj6H5AcuzmOlcLq2I=;
-	b=rrntgX/y3Iizrv6lHmzoNZ3hIqOgK3kmCKXD/5V6+yJdba1aDgHeEQYLKSTwFt7IH1lIfT
-	MhqnhNSTWvV3+CFldENhwdMjuB/3VyQ7dGMGU9duW1cHYiv9lzxm+VFa8kooz2h3JToPkJ
-	YUNE9OyYQZUsRnXkQTGpji1I9Qwybh4=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=KoYYrzQCypT7hiVPNIFQ9/YTWNz1K37xLoWsOPOqb/g=;
+	b=chOOqdlqb35U1hBXVSDUBgvAnxu4iDJG3Z3rssLFg3O9iViH5+VPMVZGXo3FvDGckyUAJN
+	ne+gsPQMBZIQ1dydhQA1Afg3CX+Wtk61hak6iuv3458UrCVEl8nOLONCLFUqX0wFGZxpLJ
+	ASj2hl2WbJVLttOFL+T9HBC9Gw4BcFQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794372296;
+	b=CHGzd8nXYvO6KCC3FD+O87hXSSY/opLo32zYAGZM16MRgJ/jLhh3vVq08utRp8lBtoKHUl
+	ZJUhMlzNkcRldU3ozqGVeZ9T+cYvrCZqVGg6aiiHKk6jaQWzbAz4TomS1D9OahrEyd2+Ab
+	6y+RULuyRKoKaV4E16yFFExinsg/7h4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=CJ0SS3WN;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf11.hostedemail.com: domain of chris@chrisdown.name designates 209.85.128.42 as permitted sender) smtp.mailfrom=chris@chrisdown.name
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a20bdaf39cso29567325e9.1
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:39:07 -0800 (PST)
+	imf30.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="K6/+4vRx";
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf30.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.53 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3adac5b29ebso1648397a91.2
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:44:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1794371946; x=1794976746; darn=kvack.org;
-        h=user-agent:content-disposition:content-type:mime-version:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Lvre1MX6Fv185E+vol1UoVO9hXcj6H5AcuzmOlcLq2I=;
-        b=CJ0SS3WNyp/skwIS/nALBiNSqk6kpt7AaEbjiQBUN4KAjHEBoyMAt67vHKaFMboPEI
-         qD5Mtt89MEbOwt/mThHtoKdOZn+Caf07xhlKpySSk+sVkIUChnSbS5bUarGFj3Hi9Wa0
-         3XD3wJOrmMrOBvuKxsaY4A2z7zM5RGxIN4wVQ=
+        d=chromium.org; s=google; t=1794372295; x=1794977095; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=KoYYrzQCypT7hiVPNIFQ9/YTWNz1K37xLoWsOPOqb/g=;
+        b=K6/+4vRx+hrwvd+rov7YQqZUEI4+X8P+HTL8wPggzhxVeu5GYXamCW/0/UsOMH6XWm
+         6e/67H6TPj+XD7tJMIItfLf39cNtQD7v6uZM7Ll7/49WSo9sIc8Kh1RygLr9Haua7xmk
+         y/o27r4vSUFLNA0NuLgbt4OcYT92KQ7XCGm34=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794371946; x=1794976746;
-        h=user-agent:content-disposition:content-type:mime-version:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Lvre1MX6Fv185E+vol1UoVO9hXcj6H5AcuzmOlcLq2I=;
-        b=LMyJqiW9WsdHGSvNBIH4G9owsGtGd1zSFNpfyVxx/EtqcAQzRcXx+wE0xgdCJ/iT4Q
-         K+yXS1whsPl+vQk4EeGpS2fsNu9arcAZEHWhckY26uxFFvvdDzUVlz+sKNllVsTO1Pih
-         Am987DL0YcZAFPTCze1aa8BOLXlCZY3fv96EfLKJQ8ZZMyz2RSTYJ8qq42/kYsI62Q2V
-         j8zqQpxKEugaUbvs68sxtFLN4Ah7BFk0AYOpKqt5UayJrSGthI1SgKhm1UnI4WSEV3EB
-         fPNFeqn1XjvXnZoRYQVR18dAfN5F41w0r1nWtFyX7q78lb4a5CJm5mfsNaS4867XtUnC
-         sKUA==
-X-Forwarded-Encrypted: i=1; AL+hErE5FPuxWLuo28NJna3rOApnbroNQFPnrDo9JgVtWLypabUikMSXFljiqcye7/prZlyQaoU5ttY92Q==@kvack.org
-X-Gm-Message-State: APuU4Z9kTSiKF6YwWCByGCfhdInVT/nTF0/XpNK1DHvaaTRwEomarD4V
-	j/sURAt8i+7HzT0TevvN29nA7KQr7XJ4lZ/ELx0q3TLMQ1J7KOsXjA3r0YV4lOkcE+o=
-X-Gm-Gg: AYBFou1r1OW9MmwVUDunXSbWnXNZyeN7YLxkOM1l529Qd0sgqN1yw8ZcBKxNsE+SFnV
-	MByVqO9dGc8gfSckloMk0LBZ7LeZ2uaCRt1ZTzk9++EJWy6XZowOe+DeQu1Gr4bhdJKO3PW3ki6
-	0+im+Y21ROuZDpEgjwEmlFBStJDTglumzXGEi9TxXafErHCudXU7++DjeQFFip/8uGU1ChI1A/A
-	Duj9M6POUVQtuRGswjJVg9veMoVVaOFEPVtVmsGM9ElsyRgFw8PWlXySMCcWedQiidYEwjROIzO
-	9aIVziMUvOAFy2gh2wd4Qbsoz6GA3UomNi4faS/FMg7HdrlFOxtHCNBP4h5v2yis+9NMjwKJQQ2
-	ElsvSW/++AiEs4H6c9zP0opmUzk/fRn4U2hJlXbsyjgbACGhKgAn0epYQL9E24bAxQS7Ve7H9/U
-	kCm5d2v/Rk0O/I1FxbFFsX+QEWtP/8g6xyVbpVK5TibYOwukliiiBFygzWAwypX8eCahOKV05VZ
-	62WJvXm5aI0E+75ZvsEIolc0FFvk+l+UOfYPPmsGccwXqx01aTp84hTvnE1jg1yfB2+c7zYkdHr
-	GY1WmcOxwJkpShMsCQ7UwlI+sWu4iuNwM3YGEhql6rVNiiF1YaM3dxZyIvJI/xzDX7o5PkPm1Th
-	V5+mWocOoQQJ7XE9zloHWQ94ntIiDUAPPSZGZRsEYumHP5n9OLlXtbXvCgFBIm2TzwuRGSsPRrm
-	qM1xtYLFVW9QTKSwEqtdCX22xqZbzwR70zsLxa+ddxudSgkssJH5wj
-X-Received: by 2002:a05:600c:4f15:b0:4a2:190f:cf6a with SMTP id 5b1f17b1804b1-4ba093d4aacmr18204945e9.35.1794371945737;
-        Tue, 10 Nov 2026 20:39:05 -0800 (PST)
-Received: from localhost ([199.201.64.8])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ba01ff3428sm124440165e9.15.2026.11.10.20.39.04
+        d=1e100.net; s=20260707; t=1794372295; x=1794977095;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KoYYrzQCypT7hiVPNIFQ9/YTWNz1K37xLoWsOPOqb/g=;
+        b=beZBmBVv4j6IjZ73avr4jn4NO/ENfIz/nHnvrM3ks0FUst3ucL1g5p85HxOatZtHM5
+         LooYXnQQCBGcL9dIdHFr1biPqB+Gj3r7+rWzLH+mrn53Gg9rIsveEXndbFv2o5zkyIye
+         SbeQQlm5EfhhMULz+0yA9u69YlcIb6S3c0RA6DV6XSX9jRa4hXpyAwucyvJjjXcFs5pk
+         tEgO1EJe6t4ZsGb2K9Sypxnw25us1fdG+SAZG0HM3T5Qgrcyog3Zi2b3HB2qYoE2+Zuk
+         JyGxKKihua87ToxfgSA9T4FgmLgzDaXsAxDSwCm2CPQUsYwS1puxDmSP7ysENfSS93KJ
+         e0Og==
+X-Forwarded-Encrypted: i=1; AL+hErGpOeKnaM41dJIaAN/dIHPhknYe/BjJ2DE4lHpNG7B7WVjMouiJTwexhS3ueBOYbcYlnyR4hoseOw==@kvack.org
+X-Gm-Message-State: APuU4Z9zY5tOnxmRjYnXNQP5485ACT14Pcn/rrc+1vMZYFkxyDbloDe3
+	xDawEjNe9kSZLr5TgAQQx/7GLcmwbuaB9pGPl+eWfpHt1YqX3nNhCrgDpiYKmykG0w==
+X-Gm-Gg: AYBFou0S4bLhVlCIhxY5ffw/ErbznMjRJrXQYHSgWWuZuTrK1jN18w7kMhyO4TNC3xI
+	aGgSgkEEbSPH0QYNpVrugBpmgOG1iUUW0PDyWU0BNKBQKQ05X3TKV7RKGybYdotU+FPI2vt7d4/
+	WSiZJvO0SC1bAVFW9q5JXY+gu73WjYEczb+Bj/ivyV5HREZOswjOBfGlgOHf4ZMXzLw2+P2EFzg
+	SDNS9lofUXTs3cSbCixBJk74rtXIe4f2nYo1TBNfYQDaFiPohR5JDbS32oXsS62OazwDsxVYlhu
+	qmcP572ioTuwff5X7H5Gn/4BfIsLVyBzjcqIr/Z92lRLdaYZAVRSzSyQFyGVOvbGc0/LeQ7V4ae
+	5PU1jEZK03ADJgC+83EG2X7DGCYdkmr0euR9T2QnQKFv9mcQwW2jVFvvxn3aFANN9WuM3Qasm1w
+	yFWGECFc0e6hNBEUs7/KrVnuDCWd4m9vPqCd5Sa9VPCYHpG42Xp4Rwv6Wyq9TGHXejB2HDET1by
+	7+J5qe5HcH93+xI5TQlGzjmeUkz5/OYR417LUDTixwhUL+IdSeAGHVFTtWZaU/nwzO/RICRUBET
+	7iPTtV9PjP9La+aYxmnr8dF7ppR3c6vdGr1HG8fnB3YcRtQTpg5mCC4Vogh9Bt+WHPYRTw==
+X-Received: by 2002:a17:90b:17c8:b0:3ac:a521:95c with SMTP id 98e67ed59e1d1-3b182f1b3bamr1359541a91.58.1794372294543;
+        Tue, 10 Nov 2026 20:44:54 -0800 (PST)
+Received: from google.com ([2a00:79e0:2031:6:ad6a:b446:df00:78dc])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b17db5cc73sm2535622a91.10.2026.11.10.20.44.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 20:39:05 -0800 (PST)
-Date: Tue, 10 Nov 2026 20:39:02 -0800
-From: Chris Down <chris@chrisdown.name>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	Mark Rutland <mark.rutland@arm.com>,
-	Huang Ying <ying.huang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
-Subject: [PATCH] arm64: hugetlb: Prevent write fault livelocks on stale TLB
- entries
-Message-ID: <avPxZjjdBIlM_8_g@chrisdown.name>
+        Tue, 10 Nov 2026 20:44:53 -0800 (PST)
+Date: Wed, 11 Nov 2026 13:44:49 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
+	Richard Chang <richardycc@google.com>, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCH v2 08/11] zsmalloc: encode 1-based obj_idx so valid obj
+ is never 0
+Message-ID: <avPyH5Dbb0MI-JXQ@google.com>
+References: <20261110054836.1515030-1-senozhatsky@chromium.org>
+ <20261110054836.1515030-9-senozhatsky@chromium.org>
+ <avNJ0p1v6FZ-wnQE@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/2.3.3 (9073d26d) (2026-06-12)
-X-Rspamd-Queue-Id: 8CF9140005
-X-Rspamd-Server: rspam12
-X-Stat-Signature: wtufhu6ixjguq34bx4xachbhkqb9896e
-X-Rspam-User:
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+In-Reply-To: <avNJ0p1v6FZ-wnQE@google.com>
+X-Stat-Signature: 91etzoic1ppnu44e1cw4d1ckcosfhkzc
+X-Rspam-User: 
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794371947-11054
-X-HE-Meta: U2FsdGVkX1/TttrMyKG0fL1jVs1UIGnqm7KzYaA5mR/wHtNguhE6CzdW1kdlkn1pt+2YcWM+3YFU2srQQQ2EjvuY1yyWFzuFIwaGLP0gTxFt6EO6scmP85D7r1NsbP8O7ExS99C6rW1IiBPPbVOOk7+MR818uwYMyo6O8Wm1ni42dDjchYEdv9+RTjz6ZbAzGIwDmQ2b89kmSey4we/eY4gmOVuYD6kOj8c4XmRU0CasACxSD6JGlUsBEcs44Z0rS245cWl3UDxprThzKMcJBoMLcV7fBaDePaMFW6tjqNXAOMTZorMj+i5aNnn3W15IlOqS15masvqyZ0KjduSzjD39l/VOgqjRfEdRxIKnJDIs2Mz3ZnNzU4JmctlTOKjB9wIrZjMvqX9MjlhKEoepsiHOi80daav3WigCbicd46Hy1caIfM4D5YnAVSIxmSZ4NvnIJ6Ih7NeMt2qrJLa67U/J6IGnKWxUR4BIUcEEDDsxgfavpQbd9suA2yGH7GldW02MPkfCOCNdqywdOsYAO1ABCkhb5R4dh+ZKzAWdJwNwqL7tfPx4pkIsCJ57AFt5Bk5Je6KmFNY31r9UUtjMgSUOoLWbiUhneX+iazv/8+/wabUZgAHYf/sQ3xUTO3lwOpAsVtZLSRXABJXRoR33sgty12yLWZ9HFY77RsG2VEK9T8aQn+MWH2VWun0dqFJ6J5OACiopHBuO/uvYri0yg2zlYMcf0tAi2/mj0YMmxAQfFv+tIZ5ZG/+Kza+KLuHTLjDa6qL3ysInpmT4t4G9785p1Yq1sVj0HSW31AN/A7vxqqwmA9a7Ttm2XKyvX5Z5xsv+qhL+wTH6DixuX0yPcCgGMnQcGH57/BNjykTqcenOd+8jAL2zeuX6SzKpfo7n3pAtjn3LHKlXM+Xdi2OQKOEzoR+lB0q4+AYoYZiDmK9Y/YzckmOmzoOr66V2AwkIBd1QNHpgJ4uL6WhGuKm
- cwPE37nG
- 5XiloJl8ro1hYZZF3bjzLIXrjQsfsCs3ShrPci6L+IAlBbPQZ8Z6zPKptx/GR1s/iNlEhM+zF4Zw5yJnU3YoCKYe9SRSiuD8JBnTAYYSfBSzcoMUSiDoP3RIqO1LarW0Yn8LDfXLmxpHDgM7w7EHpn+epgdRthfgfydHof9WXYPIUABZVoAdfCOwF1pK3wRfLqDiYvcEHKdXM8Q8kwNPM5fRu0oHe05zUnhT1DmfGQqk7XOAjPuvpgA6RrcGKIMcky8Hhm34KhYDptlDgh/iNL4x7h/Uq4jOfMSGxYiqSPY/qi0u6GkqOTbZzGRomY6VtpVHUmOcT5vpWMmM44+LqjyNoyqet+SRDmFZG0lThD9N8qS7l9fGXGljr3Up5RvJ0gaGsTPBxMlJEbqXxaIweYYXREUS8uluBE339pR4GZ6e5CryHFKeDKsBZ5BR6yN1ySGB0iZMgLePTNtMZgx+gCZnpdy1p7X7+Udn/L6HuvLsIeTr3oHdEdEsWzvo0tvYnXSgdwfUv0NKdzriOlQAIjKTN7PtZAsNjmizOcs3JaiPLA386jb+aT+MYkQ9w6Qh+sMfUxHH+Nc5NMjes3OseNgA0OBwz8KNTmVIPvbNCjQP+IvuzdgOKUgEBNkEz+h5CucN+R3i0nLAok+s=
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E011D80002
+X-HE-Tag: 1794372295-443913
+X-HE-Meta: U2FsdGVkX19fjRDhQQbB1/rz6xvvsk2CUMit1eX9tNsAInkhmaa7bhLS9SANAcAIr3nFvNyzxae664Ka11r+dEW+J+KjJqil6Du+cSytHQGYjUE2gRGwn9juy7++MXL7pN9T/5yNu4pqeQ1EeO/8QSnRGNX2M6L5ZWlM30iHTmoUp1FPtWcm8V/lyajmto6xzYWnZHy5TX7hlrjc31+uOzRMAZH3OKGYCd72/KQE0H1qn0Uk3QXbK7IozvEVCsVjI9GYk628cgnrY3srSB0tt5La2bEkY+VpdcUDlqszP/W2+aMTEBWPbL34Nm5mxeGohnx4RlKXzG6ZB50o5YQxJ4TN+KKMkffp7svXKZyoZFiN7ZABeaEqtohMM5BPeZtcpbK14iL59tL8zU9oDTQB3PIt242598WCeEgguubcEcZsbkKsE307vYDFTUs+UasdVCJSB5iy83jGi+JVJxmJYv0XBjzoUby/71A9zmzm1bvugqgVocC116VqJ0L0txV932iFmkXnm196IFoomXMmRiwHyymqA2eLcklc2svRQ3B3aVtvSkaWmhzXfP5LINz63GZDiiVPl4IkOrzCka2b6pbYMHvBbNLRaprHHutDII7uiwcqHTo4BHcLzily0e3P6Rrz5GvIk0TCFx+22pO9nLc6h3pF/T9yF7OAlODguITFqBf2tbBlTdatM3QbUl5NQn+Ky7uOZ7DEWOQ4GkzNdqnVS1y/bG+EGBDBFKs2OvI+i5bp9w4gNpoCuwf7It2o5wYTjtX/rS4c+JIht574FlfNMJFf3UMTwWFz+6b42K9/+2d9CmUKo/6no5YepbGgMY9aOKM7uTWVs3oT+GCKJU2Hf30QafUOqjAubfauz2DxT1FQpUtyLBcTHHrNzF2JJDqurGjFEmpMRgbiBPXtOBWqC8gZPZ6HwTpXBS23p2C9w1oFAafUsH04B3Plmj03Dy9ej9fQeiVyCSz3kFD
+ 0WtQ2GUC
+ 9ZKyGDqYtnqoQO2WIA5Bjs2xJI2R6Dn7ebdKtRhTmnUs6okFLhB8wixqVpAOQXNYKFkYlz3vxw6wUSspn2DX2B93KfjC+v3COH7VODpiiuCiSm6vPh7kPUCtoD5j4JmNtFfZrjs8NTjkr++7++5Wc1DlP1sdLyi7gN2ZaZIbV38ZGQHFzhGUgyZfB4g2x/5YsFU9Mwv1xAEsFRnQ/F6wsIvgsomvIJDPQhag0ll02sbI/qVI6zjHuFZM4Kg0QOF/0QTfFAj43aQbWg7C2TIdHpV5mMr4T6Hcls6KHD+x4uRaJC5ZYsQOKwfSWMBpFWjhAuIcVyortGf6iTFtiu+U+1M3DrBIJ02DExKfA5vjd3ZL/nPNStKLLWY4c5cSrJjKz78LBejHKLYnOS6k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,92 +127,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-In Meta production, we have had tasks get stuck in a fault loop while
-using hugetlb on arm64. During my investigations I found that affected
-tasks share a private hugetlb page.
+On (26/11/10 16:44), Yosry Ahmed wrote:
+[..]
+> > Store obj_idx + 1 in obj, so that a valid obj is never 0, and adjust
+> > ZS_MIN_ALLOC_SIZE so that the largest index still fits.  Unlike a
+> > separate tag bit, this doesn't take any bits from obj.  zsmalloc did
+> > the same before handles moved to handle_cachep, see
+> > commit 67296874eb1c ("staging: zsmalloc: Ensure handle is never 0 on
+> > success").
+> > 
+> > Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> > ---
+> >  mm/zsmalloc.c | 19 +++++++++++++------
+> >  1 file changed, 13 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+> > index 3a6a7253fd01..aa436df0cc4d 100644
+> > --- a/mm/zsmalloc.c
+> > +++ b/mm/zsmalloc.c
+> > @@ -61,7 +61,8 @@
+> >   * Object location (<PFN>, <obj_idx>) is encoded as
+> >   * a single (unsigned long) handle value.
+> >   *
+> > - * Note that object index <obj_idx> starts from 0.
+> > + * Note that object index <obj_idx> starts from 0, and is encoded as
+> > + * <obj_idx> + 1 so that a valid encoded obj value is never 0.
+> 
+> Well, this may be a stupid question, but why not make obj_idx start at
+> 1?
 
-Looking at the stuck task states, I found the following ordering:
+I didn't write that code!  I just resurrected 67296874eb1c! Just joking.
 
-  CPU0                                 CPU1
-  ----                                 ----
-  read page
-  [read only entry cached in TLB]
-                                       write page
-                                       hugetlb_fault()
-                                         hugetlb_wp()
-                                         [reuse folio]
-                                         set_huge_ptep_maybe_writable()
-                                           set_huge_ptep_writable()
-                                         [flush local TLB only]
-
-  write page using stale entry
-  hugetlb_fault()
-    huge_ptep_set_access_flags()
-    [entry already writable, no flush]
-  retry write using stale entry
-  [fault indefinitely. well, that's not ideal!]
-
-The reason is that when a write fault makes a non-contiguous hugetlb
-entry writable, it only invalidates the local TLB. However, another CPU
-can keep the old read-only entry, so its write will fault even though
-the page table already permits it. hugetlb_fault() then finds nothing to
-change and leaves the stale entry in place, so the same write keeps
-going round in circles.
-
-This is particularly bad because, if the kernel is copying to user
-memory, the retry stays inside the kernel and the task can't act on the
-pending signal.
-
-It can even remain unkillable while holding locks across the copy,
-resulting in further failures. For example, a read into a hugetlb
-buffer can hold the pipe mutex and block other users of the pipe until
-the loop ends, causing cascading lockups across the machine.
-
-To fix this, when a write fault finds nothing to change in a
-non-contiguous hugetlb entry, let's invalidate the local entry.
-
-Fixes: cb1fa2e99955 ("arm64, tlbflush: don't TLBI broadcast if page reused in write fault")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Chris Down <chris@chrisdown.name>
----
- arch/arm64/mm/hugetlbpage.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
-
-diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-index 8e799c1fe0aa..ff1f53e435e1 100644
---- a/arch/arm64/mm/hugetlbpage.c
-+++ b/arch/arm64/mm/hugetlbpage.c
-@@ -429,9 +429,24 @@ int huge_ptep_set_access_flags(struct vm_area_struct *vma,
- 	VM_WARN_ON(!pte_present(pte));
- 	ncontig = num_contig_ptes(huge_page_size(hstate_vma(vma)), &pgsize);
- 
--	if (!pte_cont(pte))
--		return __ptep_set_access_flags_anysz(vma, addr, ptep, pte,
--						     dirty, pgsize);
-+	if (!pte_cont(pte)) {
-+		if (__ptep_set_access_flags_anysz(vma, addr, ptep, pte,
-+						  dirty, pgsize))
-+			return 1;
-+
-+		/*
-+		 * Another CPU may have made the entry writable without
-+		 * invalidating our stale read-only TLB entry. To avoid
-+		 * indefinitely faulting on this entry, flush it.
-+		 */
-+		if (dirty)
-+			__flush_hugetlb_tlb_range(vma, addr, addr + pgsize,
-+						  pgsize,
-+						  TLBF_NOWALKCACHE |
-+						  TLBF_NOBROADCAST |
-+						  TLBF_NONOTIFY);
-+		return 0;
-+	}
- 
- 	if (!__cont_access_flags_changed(ptep, pte, ncontig))
- 		return 0;
-
-base-commit: 067c5c24cef23d913b67eaaf71ae67e7169a6620
--- 
-2.54.0
-
+We use idx to calculate offset, we need it to start from 0:
+	off = offset_in_page(class->size * obj_idx)
 
