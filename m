@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7A1606A333
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 01:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B538A606A320
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 01:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SOTP3HHV
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mpg1UtT6
 Received: by kanga.kvack.org (Postfix)
-	id 968FC6B05B7; Tue, 10 Nov 2026 20:56:12 -0500 (EST)
+	id 9192A6B05B8; Tue, 10 Nov 2026 20:56:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93F7E6B05B8; Tue, 10 Nov 2026 20:56:12 -0500 (EST)
+	id 8CDED6B05B9; Tue, 10 Nov 2026 20:56:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87F4D6B05B9; Tue, 10 Nov 2026 20:56:12 -0500 (EST)
+	id 7BA8B6B05BA; Tue, 10 Nov 2026 20:56:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5006B6B05B7
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:56:12 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C19D71A01DC
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:56:11 +0000 (UTC)
-X-FDA: 85421172942.02.5D10BC8
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E5B46B05B8
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:56:13 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C668B1C08A4
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:56:12 +0000 (UTC)
+X-FDA: 85421172984.05.503DF35
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 307D11A0006
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:56:10 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SOTP3HHV;
-	spf=pass (imf19.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794362170;
-	b=zVF8BJrHOVbURSdrOCle2Z4uC7UhvnCYTXuVVNEDBluVCOy9xbxGIeZxGckMvAlnY4s1Vq
-	BRZNvmQtvQvYIrBMm7+24+11nBDPUvHRYeJRHeeqJ3kyHbIOz1Pr91hbUODHFI7FqDdnGq
-	veEFFDb+SVLmtVCoESRIM59cF3CNdkw=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SOTP3HHV;
-	spf=pass (imf19.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2751C180006
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:56:11 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mpg1UtT6;
+	spf=pass (imf16.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794362170;
+	s=arc-20220608; t=1794362171;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=U33p1bWUYQ2rMJhKB3AhFOc4JmHWhcjAfKKn9UYYW08=;
-	b=e9HmF7HRZINvXwEHpN4jkh2DOKj+4fKK3BhwZP9JxRWWkWajy+qhXm6MsU83O0oQ9hBX2r
-	BuQ/hJsGbM1XJQnCUtCqDcR2BXg1Xhvf23WFbew+wZ5T/nRk4mf/fJhDWf9rcMaww0dNP3
-	P/D1kU8oJguGG9WCCxf2/UdWVrC5a8o=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FRT2/+R9YmYPDM76NCkeURQmSSsjMxRjRdu/RF1CsXY=;
+	b=T+8suidkH1goEYTirAEdqiCt304Y0rVa3WDAVAOBegINs4YL4dvwV2hNOUelFg5DNFLkrF
+	grNXfTHCqMxfi1F/i0MSK2e8Gu3dMCtnDlfq4Q4GpXN3sVIRCwfJRUoWxMT0jVefsCTVw4
+	U3/0mwpuUbKSoSPDS4/6bbDcUNawyXU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794362171;
+	b=Q5OCyXTuPM8XZKe7L3R+OMTvGrvXhhKD2vhqRQMFUh3+rfq5I3otwGgbIekM+55UD8qB7W
+	jZqKGppR9Bd/NdBy/n86GAXjzE7bvrZSH9Vj0C7PVGWO0qjB/PE1I490a8/6p9znh6OsZ9
+	IIntnLiIuAAdRNdVdG2saeFZmkSdOWk=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mpg1UtT6;
+	spf=pass (imf16.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 411BF412CD;
-	Wed, 11 Nov 2026 01:56:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1B71F0089F;
-	Wed, 11 Nov 2026 01:56:08 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7D40346B24;
+	Wed, 11 Nov 2026 01:56:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E3341F0089F;
+	Wed, 11 Nov 2026 01:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794362169;
-	bh=U33p1bWUYQ2rMJhKB3AhFOc4JmHWhcjAfKKn9UYYW08=;
-	h=From:To:Cc:Subject:Date;
-	b=SOTP3HHV7YUQ350EbayIS9J8d/YQ86XYhp5JqV2Yt98M7khwvj3Ri7cbJes4lIcD+
-	 E3Sc538FKteqioboUMUW/wAmESPF99IAqazgCvvFUfGjlGrUkAQCJFH3+HaGjXObjl
-	 0DkuFe8xSZL5zYyshiuur3aJPRuDhUEKAlM9tlhLw9t/aHfLqhSJlBOupg/MYRj1cc
-	 UCcRfCv3pPex3tkkM1dcuK606Y63g++bOg1SQELN5/kZHGcdo6gXPIwqRi1V9WuURg
-	 tSRyVuROiMBe9bLXNVl98oWo4JY+8z8i3X5wCCXBepqXwnEflUHnSdPUGW5eccFEAp
-	 aMWtLdDYwiqgA==
+	s=k20260515; t=1794362170;
+	bh=FRT2/+R9YmYPDM76NCkeURQmSSsjMxRjRdu/RF1CsXY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=mpg1UtT6dT9eaqV2X2DduK6rF23aTMOHShI78LRfsnLuawPtMFs+v3lyxU2KCkAzv
+	 Me791F2G6OqP0+tNofh5dIhQjU2I8x4j48StC/PnArlXUL/VzochcCJOCszw6Wm472
+	 9AL0zDwr2YKGUCkdvckAvakA+O8RVVYaUHZYALq1+V5ypxDT84Q0VCSX374JY6a9n+
+	 zAZBylSQOUTdTw6NMgTTdwWCVppy82x/DsFM0wZ10scUCzsQSpNJTNLBubLJaUycri
+	 /XEz5ajHgnclAVzbO476rAjiQ+hzBjOcOBCgmKQKR8kpK9cx5wW7wJAgTC2voK6HXa
+	 Z4De0bYYEVmdA==
 From: Mike Snitzer <snitzer@kernel.org>
 To: Matthew Wilcox <willy@infradead.org>,
 	Jan Kara <jack@suse.cz>,
@@ -68,26 +68,29 @@ To: Matthew Wilcox <willy@infradead.org>,
 	linux-fsdevel@vger.kernel.org
 Cc: Chuck Lever <cel@kernel.org>,
 	Jeff Layton <jlayton@kernel.org>,
-	linux-nfs@vger.kernel.org
-Subject: [PATCH v11 0/7] mm, iomap, NFSD: stop DONTCACHE writes reading back shared pages
-Date: Tue, 10 Nov 2026 20:56:00 -0500
-Message-ID: <20261111015607.46338-1-snitzer@kernel.org>
+	linux-nfs@vger.kernel.org,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH v11 1/7] mm: move clearing the dropbehind flag of a found folio into a helper
+Date: Tue, 10 Nov 2026 20:56:01 -0500
+Message-ID: <20261111015607.46338-2-snitzer@kernel.org>
 X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20261111015607.46338-1-snitzer@kernel.org>
+References: <20261111015607.46338-1-snitzer@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 307D11A0006
-X-Stat-Signature: 5d6sxmhq7wm4fuf1w59pzefztsh36nii
+X-Rspamd-Server: rspam09
+X-Stat-Signature: x5euw4qaox3fkdd1rih1imdf5bndx64t
+X-Rspamd-Queue-Id: 2751C180006
 X-Rspam-User: 
-X-HE-Tag: 1794362170-231509
-X-HE-Meta: U2FsdGVkX1/xhAAdht6frVCYevvpxfFsK5FFuN5NG1xRy+TbMUgU/rvpdtN7u+Z5dWTz1qZj3S8s7U5wjHnqhVQfRXQBwBRp682guYPdsNO5tq1oFm0DGFpezeYRM7aPvLWx27idZOzaN1KK35TMkpEWuX8p6a0CMu3olo8kj2yxwNVmlgL/fMBX5ddY5zPXoBNzHUxHa/oVgtHAtYv5fOQ6BAbrJ+xAI3S8BmAOk6+ZkwPgk4moF5W11kYul1SU9/kmsYKQ82gWHUXmxM0qEFD1VCKNpU2Y8Kz0bA8Zaqbds8FXqKpvdFFzod/+z2A//BLpCIi2SIOcjF1FQwV9LDfEzW4X8Pp8Yk1Kq88WaW9fYpIyVgoEOoT3ObyGjuycEV1GHgZe62W2up8ewnF5AfXkXsxEYhomwqfnY1qaFWcUAORRXWiTcPxsSJuew7ZpgIVgzaGq5f1DmKpqf96dqrno8P7r5QZF3VLl+KFmi2JkBxyMqrzBOMQE0A295XxI8gInCOu0mjIXwKfmbBCPno/9kLQ/H9dL/o0RY+Jdrz5b5Jtb2t71+r6XetgKbPt7CJum0buSUpeMDkrBoNiMrfVq4Bvm6syB+8PLwIU2AxZDkyG43TdSmvTD+VuWMpyc+PSoJLehC9mlg7RahHK9PBWehvut/N1swiqTf/l4Uo/JRGdnmvimEFu35yiGymCuSI4H3Ca+UPE8l6t5TFolKdaeTpLhn/7PeYn4k7K8Mlc5ac87gvUYeIq9Fi0QfwHB+UmO+3vtHnjMj3OsaJgSMcG4/yy1dQutCbZWnx9XxBt1LI5iIecdb5dz2ssopVUXkHjbvnj/JkDRdotGVgjfK9igYxvfFTTM++fYvk8kUrksdcvgKK6RfG78ZRwLTWYSikDoxoayENTHnVZq6rL7h3zQ5IX/xZ4xdoS5BbbM/bQRwoPezWFxPUoyJrqHm+kwIYaDV4nqTsWfeNduwFf
- YFtKfDS+
- w3g7Y5bOSOZYVE3qn/PaWMCwe4E9lmsfk3i6lq5lBOsX7g1+X3cknuRCRvULn19WgIJUQQSr/s5Oz6Y/7FDeFNlcry7Fa4rCflvVxpzidzQ8Ky/yCu3Wq/4oLIrocP3xMJ5P5hyjK7LTkC8Dro/b0a9eg9MWYszWwmYWmBCgtM+8RBns9f7w3gabPybzGlmVrRwLPYOdwyFnOohag3SS5Bxoa6FfpfTZOr4HMBmoBTewSPnc=
+X-HE-Tag: 1794362171-4502
+X-HE-Meta: U2FsdGVkX18ID5XFrj0KqpH03jRAraC+NdVVSfrPfyF8w64/3z4i3zfoTmoCFcEdIcwPm65/qdMYa82AwpSRXdQDsEYsK4qr19ei7awE9DUgxllL3nIR+0JsuGDnnKyv2aMeWE7m/uZkOwUSLJQ7XZdhc0Sjm/fv39ARQ3lPOfsjkx1Pm44S+7EuaO/6PL5l3PBrdHDddD9ZR7k/CEptkZY6xk69q9aEPeaTlXiW97/ZxQQecwWfMcczjr1lUDrusuqEfJley23+idApGeFuo7NqUXWnFc1tca+Qq6joajgAWp2CYt3klfOwmij5MDLha4UdyW+wBfEsmVtMIFd3h1eYVZdNcEdR8JprEd9A2Fz+F41qnF8eDssdqlfOERy9LNDfDRwggKga5PlvVvo1JUQQJ0m72H7Vwqaj3Q/9xmt/HaPslzHaFMFCFAunoWIp9RwXTqfN/o9LlzY1cQS8uMn65rrt71dSIHo9PWHwGcOvP+CP6DmBb5GhqPJyZVufQHy0D8i1GbUQfYdGNz7LaWzRb50dq5gYLeMJlKn+YuuHVsSfKuK1J7MA5v0UPgne9EHPl/JJdiH4Ipz+x11wNPibQn92FEuzvfYf3xBnShzzOm4nfiYPiMOljcaABjQq/Kf+MFyMBsX+cXQrmXRmsk09l8gv9O/ZiDN70KdfS6ggtQ8L+ogkNkfO69yHTnikJsYdkeVtMegWUz4/9wNrqoD/dRRZjpIbF5ZzT5egpSfcqeJN2rszIzKNgxdoRbUVD+TZoFIl0OZZAEVcqyE2M79MTXQujWAsrrQvzP+a2ndJ353iex8LE40hF5EHfH6dARFEcCSZHZkAnLy3pqFnf2bulWNZDIVkU8oDo5CYcKHwyTg7d951NrSys3g7MZ2bkGMKDtz++ZV61ZOb87Tmf7Mix/qncSAXebV19xqGwmKK7bWccgHryuxd5qPB/TAvr4e0JYWdQU1fjCx5XMk
+ /OS0pbV8
+ Kqe1mUSWvpfpI1aQ4fXVyJXDB9HrbRepGkwxz77ip+DhnPEjLjGOT2pPszakL4dht3Kqml0CjjWxkMOZ0Txtok17UWXMoSeGziEAjNb7gCi0y+AbbH2j19DpwY3ESpbvHOa1JlO/cHUbebVXDkADK6rLTvSjGrRgCk/eC67TmJj1jHNY1/EO28qRZJLT0O/527APQlYLOKpLU83aLGg3pgX2nC47JEk/g0Ykdn4rjZPS33JhLUJWSMOBpFWoI+BRdc+6DBsSl1wO6jrc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,121 +99,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi,
+Move the code in __filemap_get_folio_mpol() that clears PG_dropbehind
+on a folio found by a cached lookup, and takes the folio off
+WB_DONTCACHE_DIRTY, into filemap_clear_dropbehind().  No functional
+change.  The next patch changes the helper.
 
-An RWF_DONTCACHE write is buffered IO: its data goes through the page
-cache, and writeback drops each folio once the folio is written back.
-A write that starts or ends inside a folio covers that folio only
-partially.  Usually another write covers the rest of the folio.  If
-writeback drops the folio before the other write writes its part, the
-other write must first read the folio back from disk.  32 threads
-writing interleaved records to one XFS file, 4 KiB pages, before and
-after 5/7:
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+---
+ mm/filemap.c | 33 ++++++++++++++++++++-------------
+ 1 file changed, 20 insertions(+), 13 deletions(-)
 
-  record  pwritev2() flags          4 KiB device       MiB/s
-  bytes                             reads per write
-                                    before   after     before  after
-  47008   RWF_DONTCACHE             0.97     0.0005    831     2281
-  47008   RWF_DONTCACHE|RWF_DSYNC   0.99     0.0005    601     1227
-  6000    RWF_DONTCACHE             0.97     0.0001    121      488
-  6000    RWF_DONTCACHE|RWF_DSYNC   0.99     0.0002     90      206
-
-47008 bytes is the transfer size of IO500's ior-hard, in which each
-rank writes interleaved records to one shared file.  Any record size
-that is not a multiple of the page size has the same problem.  6000
-bytes is a second example.
-
-The test program and script: https://lore.kernel.org/linux-nfs/atqJBS8MlYfeUU-t@kernel.org/
-
-- 1/7 moves code into a helper, with no functional change.
-- 2/7 fixes 88d6f128d06d ("mm: track DONTCACHE dirty pages per
-  bdi_writeback"), in v7.3: WB_DONTCACHE_DIRTY could drift.
-- 3/7 reports WB_DONTCACHE_DIRTY in the bdi debugfs stats.
-- 4/7 adds folio_mark_dropbehind() for a folio that is already dirty.
-- 5/7 keeps a partially covered folio until the write that completes it.
-- 6/7 lets a writer that syncs its own write complete those folios
-  itself, after the sync.
-- 7/7 makes NFSD do that for the misaligned ends of a direct-mode WRITE.
-
-Merging: Chuck suggested taking the series through the mm tree.  1/7 to
-6/7 apply cleanly to each of these mm branches:
-
-  mm-unstable  93d7a816a2df ("fs/proc/task_mmu: fix lost maps entries above 2^63")
-  mm-new       488f62a72b8e ("riscv: mm: fix concurrency in mark_new_valid_map()")
-  mm-stable    fa4ad798f6f6 ("Merge tag 'for-7.4-rc1-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux")
-
-7/7 needs the NFSD direct-mode changes that are in cel/nfsd-testing.
-The whole series applies to cel/nfsd-testing at f7ef2ce48812 ("SUNRPC:
-Load the GSS module by OID only when the mechanism is missing"), where
-each patch builds with W=1 with no warnings.  So 7/7 could follow in
-the nfsd tree once the mm part is merged.
-
-Changes since v10:
-- Two fixes, from sashiko's review of v10 6/7
-  (https://lore.kernel.org/r/sashiko-outbox-198089@kernel.org):
-  - 5/7: iomap decides whether a unit is an edge from what is left of
-    the whole write (iter->len), not of the current extent.  With blocks
-    smaller than the folio, an extent boundary can split a unit that the
-    write covers in full.  v10 then looked the unit up as two edges.
-    With IOCB_DONTCACHE_DEFER, nothing marked the unit, and it stayed
-    cached until reclaim.
-  - 6/7: filemap_dontcache_edge_complete() leaves a clean mapped folio
-    unmarked, as filemap_end_dropbehind() leaves a mapped folio.  v10
-    marked it dropbehind, but no writeback was to clean it.
-- The commit messages and code comments use different terms.  They say
-  RWF_DONTCACHE, DONTCACHE or dropbehind, and "the other write that
-  covers the rest of the folio".
-- 5/7 says that an RWF_DONTCACHE write goes through the page cache.  It
-  says that the kernel cannot know if another write will come, and what
-  stays cached when no other write comes.  It names IO500's ior-hard as
-  the source of the 47008-byte records, and adds the 6000-byte result.
-- 6/7 and 7/7 say which WRITEs NFSD syncs: a WRITE that the client
-  sends as FILE_SYNC or DATA_SYNC gets one vfs_fsync_range() over the
-  whole WRITE.  An UNSTABLE WRITE gets none.  7/7 also says that the
-  Linux client sends an O_DIRECT write that fits in one WRITE as
-  FILE_SYNC.
-- Christoph's Reviewed-by on 1/7.  Jeff's Reviewed-by of v10 is carried
-  on 2/7, 3/7, 4/7 and 7/7, where only comments changed.  It is dropped
-  from 5/7 and 6/7, which have the fixes above.
-- The review notes below the --- line are dropped.
-- Rebased on the current cel/nfsd-testing.
-
-v10: https://lore.kernel.org/linux-nfs/20261103211754.35352-1-snitzer@kernel.org/
-v9: https://lore.kernel.org/linux-nfs/20261024221152.6965-1-snitzer@kernel.org/
-v8: https://lore.kernel.org/linux-nfs/20261023024548.71123-1-snitzer@kernel.org/
-v7: https://lore.kernel.org/linux-nfs/20261020220346.28020-1-snitzer@kernel.org/
-v6: https://lore.kernel.org/linux-nfs/atbfEbgMU6UGkn2X@kernel.org/
-v5: https://lore.kernel.org/linux-nfs/20261019150725.1507-1-snitzer@kernel.org/
-v4: https://lore.kernel.org/linux-nfs/20261015233309.42999-1-snitzer@kernel.org/
-v3: https://lore.kernel.org/linux-nfs/20261001045502.48381-1-snitzer@kernel.org/
-v2: https://lore.kernel.org/linux-nfs/20260929231329.22018-1-snitzer@kernel.org/
-v1: https://lore.kernel.org/linux-nfs/20260929173423.16149-1-snitzer@kernel.org/
-
-Thanks,
-Mike
-
-Mike Snitzer (7):
-  mm: move clearing the dropbehind flag of a found folio into a helper
-  mm: take a folio off WB_DONTCACHE_DIRTY only if it was counted there
-  mm: expose WB_DONTCACHE_DIRTY in bdi debugfs stats
-  mm: add folio_mark_dropbehind() to mark a folio dropbehind and account it
-  mm, iomap: keep a partially covered page until a DONTCACHE write completes it
-  mm, iomap: let a DONTCACHE writer complete its shared pages itself
-  NFSD: drop a shared boundary page only once both WRITEs have written it
-
- .../filesystems/nfs/nfsd-io-modes.rst         |  18 ++
- fs/iomap/buffered-io.c                        |  30 ++-
- fs/iomap/trace.h                              |   3 +-
- fs/nfsd/vfs.c                                 | 107 ++++++++-
- include/linux/fs.h                            |   5 +-
- include/linux/iomap.h                         |   1 +
- include/linux/pagemap.h                       |  12 +
- mm/backing-dev.c                              |   6 +
- mm/filemap.c                                  | 207 ++++++++++++++++--
- 9 files changed, 358 insertions(+), 31 deletions(-)
-
-
-base-commit: f7ef2ce48812080b87572a2f0fdec93cb2d2a629
+diff --git a/mm/filemap.c b/mm/filemap.c
+index b04be64a5069f..437113addbddf 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1956,6 +1956,24 @@ void *filemap_get_entry(struct address_space *mapping, pgoff_t index)
+ 	return folio;
+ }
+ 
++/* Clear the dropbehind flag of a folio that a cached lookup found. */
++static void filemap_clear_dropbehind(struct address_space *mapping,
++				     struct folio *folio)
++{
++	if (!folio_test_clear_dropbehind(folio))
++		return;
++	if (folio_test_dirty(folio) && mapping_can_writeback(mapping)) {
++		struct inode *inode = mapping->host;
++		struct bdi_writeback *wb;
++		struct wb_lock_cookie cookie = {};
++		long nr = folio_nr_pages(folio);
++
++		wb = unlocked_inode_to_wb_begin(inode, &cookie);
++		wb_stat_mod(wb, WB_DONTCACHE_DIRTY, -nr);
++		unlocked_inode_to_wb_end(inode, &cookie);
++	}
++}
++
+ /**
+  * __filemap_get_folio_mpol - Find and get a reference to a folio.
+  * @mapping: The address_space to search.
+@@ -2087,19 +2105,8 @@ struct folio *__filemap_get_folio_mpol(struct address_space *mapping,
+ 	if (!folio)
+ 		return ERR_PTR(-ENOENT);
+ 	/* not an uncached lookup, clear uncached if set */
+-	if (!(fgp_flags & FGP_DONTCACHE) && folio_test_clear_dropbehind(folio)) {
+-		if (folio_test_dirty(folio) &&
+-		    mapping_can_writeback(mapping)) {
+-			struct inode *inode = mapping->host;
+-			struct bdi_writeback *wb;
+-			struct wb_lock_cookie cookie = {};
+-			long nr = folio_nr_pages(folio);
+-
+-			wb = unlocked_inode_to_wb_begin(inode, &cookie);
+-			wb_stat_mod(wb, WB_DONTCACHE_DIRTY, -nr);
+-			unlocked_inode_to_wb_end(inode, &cookie);
+-		}
+-	}
++	if (!(fgp_flags & FGP_DONTCACHE))
++		filemap_clear_dropbehind(mapping, folio);
+ 	return folio;
+ }
+ EXPORT_SYMBOL(__filemap_get_folio_mpol);
 -- 
 2.52.0
 
