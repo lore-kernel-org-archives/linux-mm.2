@@ -1,95 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADD0606A32A
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 07:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530A460A261D
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 07:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=GYsZL44i
+	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=rB1N/Jha
 Received: by kanga.kvack.org (Postfix)
-	id C57DE6B05BE; Wed, 11 Nov 2026 02:53:43 -0500 (EST)
+	id 74CCF6B05C0; Wed, 11 Nov 2026 02:53:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2DE86B05C0; Wed, 11 Nov 2026 02:53:43 -0500 (EST)
+	id 6D6D16B05C2; Wed, 11 Nov 2026 02:53:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1CF56B05C1; Wed, 11 Nov 2026 02:53:43 -0500 (EST)
+	id 59E2C6B05C3; Wed, 11 Nov 2026 02:53:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E3E06B05BE
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 02:53:43 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 10E3740213
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:53:43 +0000 (UTC)
-X-FDA: 85422073926.06.46E4670
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 33EB0100004
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:53:40 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=GYsZL44i;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 325776B05C0
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 02:53:48 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B727D16015E
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:53:47 +0000 (UTC)
+X-FDA: 85422074094.09.5DF31F2
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf05.hostedemail.com (Postfix) with ESMTP id DD779100008
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 07:53:45 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b="rB1N/Jha";
 	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf14.hostedemail.com: domain of chris@chrisdown.name designates 209.85.210.181 as permitted sender) smtp.mailfrom=chris@chrisdown.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794383621;
-	b=g7crjbc9RWfQ4BRF61Ie6hL6zLVvnFHPudfx0aKcfFFj8/KoW4q05fu+n7A9xDKbHvJqhK
-	aJMG30xRCqG8lfyQ9YdXdCS/tocSDUTwI8eedi5CHDGA77bSiG2w/onE4HgcEa2xTHpig1
-	poQKOXWDQ0wsFtRSFOZ0FG49yiJIFEY=
+	spf=pass (imf05.hostedemail.com: domain of chris@chrisdown.name designates 209.85.128.42 as permitted sender) smtp.mailfrom=chris@chrisdown.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794383621;
+	s=arc-20220608; t=1794383626;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sK/H9HvHFSTiGugEGJQyMUnIkFUyigqct4WxtQyCZAI=;
-	b=Hsv++vt9vGj0GBPssMEL0OuV8uf9ezFDQuUSBKwuv5AT734JCfd+te6I4KPv5kjEKKK8Fb
-	reitU8IaqJ9unUywfXDYAXTw757LFBA6GcyJJnMtCHaBxJzloAQoKWNkV9UvPB4+XNE940
-	aAJK4hln5UOQdv/nOaCVtseFdJ8o494=
+	bh=dTOr68dqd9pXsH3sDySoD8YNtJ+vod0XkUHzER129hw=;
+	b=G7CnsjSzNPPMntmulQY+9DLP/JIl+si7trD3+DBCqSeWFafegKEBfpKfBdidDHgzMfhUjt
+	VDY00sQqTOVathnYHtDKdyvisrtXvpDbpcvjJ9H5uXCDSm3eljMPz1X6t1p+OvaZwxdw8+
+	4i9yQbrfkDv1LY9SdI9bvM3ORN7kavE=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=GYsZL44i;
+	imf05.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b="rB1N/Jha";
 	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf14.hostedemail.com: domain of chris@chrisdown.name designates 209.85.210.181 as permitted sender) smtp.mailfrom=chris@chrisdown.name
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8b5c3288e6cso1266134b3a.3
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:53:40 -0800 (PST)
+	spf=pass (imf05.hostedemail.com: domain of chris@chrisdown.name designates 209.85.128.42 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794383626;
+	b=IJKSgi+OG6P/ZlYmvMYsd0geNraI4fu+YcSfZO5Z7J8XzbJ6r+zM6x1T7gWzaiHBh6mEJF
+	e2GI3Ugy5iwBLwuz6U5fwsW3VdCl5NLRHKA9cSdIQyAiE45QkP5lQW20YoOrMdmHWCAP+f
+	hCbaeor2fZc4Wpbd4IzPhdaGKjBjuF4=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a35ac4475dso19583205e9.2
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:53:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1794383620; x=1794988420; darn=kvack.org;
+        d=chrisdown.name; s=google; t=1794383624; x=1794988424; darn=kvack.org;
         h=user-agent:in-reply-to:content-disposition:content-type
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=sK/H9HvHFSTiGugEGJQyMUnIkFUyigqct4WxtQyCZAI=;
-        b=GYsZL44iPE8C25Qx6g0QijsCZmHaPaS6FHFRFq/6uIqj+fQYVyPRM34kBewdwZnO9K
-         JQBDDRtcgP+U4j6I41/qJuetCRGQd4nx1CjhWEk5/upGKoAb0Bmj30bjf2V74oQ3+EAr
-         D8+MtbC0xZGK8yr5sClSJEEnwetGLmDtEMtwQ=
+        bh=dTOr68dqd9pXsH3sDySoD8YNtJ+vod0XkUHzER129hw=;
+        b=rB1N/JhalleFDLvXZTG4Ut16fmGt58N301IiWlQsH1aoz7cgu6BVDfHUgm3lOPaPpd
+         JAHl2EM7XitBWM9ddAX1MnBYEFFqFIXElWJDeILkLp2dL/fqM8o2snjf4cGPZ0t4l/XI
+         a28fo7I3PpfGoKcpizqdQ8jcOndech2Hdqykc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794383620; x=1794988420;
+        d=1e100.net; s=20260707; t=1794383624; x=1794988424;
         h=user-agent:in-reply-to:content-disposition:content-type
          :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=sK/H9HvHFSTiGugEGJQyMUnIkFUyigqct4WxtQyCZAI=;
-        b=N7dTngU2hysxEyaREJmiOKRhuYW15iCPuWl05hz+jqjmMLJvewCEddvH68Qy0IFMdi
-         ozwrx2kp+Tryd0HC4WV1edrb+0ihVEtw40P5ZDxWx+Fq5yyieu5Ma91fZho6qJujspYK
-         Zf+k/sjyYpluiI+cyu8JbO11xO5/56fvXt0pyP0TKGbg41HDik1WXlR/cJya1dN1FQwr
-         7OIs2cBU7QOFLFRYgBVoaS0SKkFrvwe09NmQp5CEMrrAfgC5UWilj1kfBTpU8XU/pWSG
-         B6E4DIwA2ddgb6YzIvLFDi9i515UQdlZf2DtdJaj4uqredq7tmSZY54Cv2JjUndpImO+
-         CFKA==
-X-Forwarded-Encrypted: i=1; AL+hErGi9Zt8iY40qlgK8vGuo3Fmtyv/8D/bid/CF4jMawpRYOY2LsG1W5ok04yG1D5CKV/4LGWVUFKCLw==@kvack.org
-X-Gm-Message-State: APuU4Z//oGCx9XXMyfLM2mOF5xywtlufkw+gq1fUFMisuXYQu8pnBe1A
-	FJmMYHvDXweEsjpCK2kd/cMyowsBWbEBNYxgGwdAGVCiP9346xZwoUrb6agqqhfQ9m8=
-X-Gm-Gg: AYBFou0DtlbuQ72HK5uY+QsTgPMm/zF8wGDLahDv2j94djWblXh7rfAY3RpqD6+0HrJ
-	XBJQyotAZ8avQoxE8yGhNIOAX2U//AMr1gW15QCxGgE7zY8Le7S9Y5XuPnKL+5KE880cJgQ2bHq
-	SEaXEAzG20dmsM4yPBYczlRcrbjm+VCbAt4dL3C6sY1Eoa+6rpZCS242Cxj6Bek+8MaSiAXAK5y
-	kGSHnDEfW38/BDBjwpVcSB08v9SldsnqO5Prl8LOcEbX1zEblB/X3SBsOvcUZP9oFzSLx9gdYMl
-	wgTuTwOd0KBstJGV4ZPpKtgSuC8N68AjDJTcfqIRp4DCsNRqcgFiGcwcEaHRZM04U8Exz+8S+I4
-	reVu7SJ4ZEeed2KTcy72NBwLPTjKraMjtmHg3xrn+LwKv82TbxfOJIk2miNm2Qw5Dn4l4FZB6lZ
-	b6YIDzEv2SoSvUIXqP3ob4TTJnW4ny8MOrzSZ7Ac/LXSHkYXY+nifRcEPXI53YuwsDVdvfn+ERj
-	oVxOnESORcizEei9xa4KxzLTjanuUn8oVvig5RTu902xD96W4Rf1v7+pjAHIV7LAlJDOvMrbm18
-	afOd+v+2k/m6D+XexYY6OFALELe+SDzY4A/iG3BUqW3jXW08PvH29ki1F4GGIl3HAn4IC7Qu1yR
-	kT0DbDY/m7jmDAZIAFia4cZ396uM+PT8G2YN1WfjsyFohy5nxaQ+g2aasDK0FbFMDINe5+vlc5m
-	PWeFBIQS+yLaRvYmxNi+pFRlHUjsuXjrL0E+rtsNRai1AaEX4cVv9B4A==
-X-Received: by 2002:a05:6a00:2d2a:b0:8a0:1e49:71bb with SMTP id d2e1a72fcca58-8bc1ddf8792mr1803838b3a.57.1794383619946;
-        Tue, 10 Nov 2026 23:53:39 -0800 (PST)
+        bh=dTOr68dqd9pXsH3sDySoD8YNtJ+vod0XkUHzER129hw=;
+        b=dyh+c/WOKcfjrNSD+OFZ7uPIW8lNzC2cIFZLeoI9S6eYpFlM0GYCJ+38km/gokUnqb
+         QXSOUG9pB/UIFY5DXNjjqhxak6yWnNQBwDWS6nFynBIAOPQjKe7nqakUscLG4c+t7Y3f
+         +gmpyH09EVjygf+ZHn5pL2Pw4F8tLKrjPv1OK89yYA/Zq5NxYpRbFWdEAz8xvnhgWNFB
+         pI8KH6Bj+llWdDHhquQGSE9Wj+587Yai6QiEFcdg1242lsGrLl6fVhSxeDYG1TyCi3xC
+         5XWPs7c114kB9+3YqOSR47T0+QRoJe7IVTpQ2kgSX2+TLWyaWZIykOWJn47qq7Zdd7Ya
+         Tg9g==
+X-Forwarded-Encrypted: i=1; AL+hErESP2IQ8sE9yN5GjiVBB6zkEgh+3uXcmtJEcuZUN7gbQHmogCza04dzAGQA5J7E5sNlqUo06z8eUQ==@kvack.org
+X-Gm-Message-State: APuU4Z93Y+0QEhWpxpm2EfRBXaJHnRqFjB6Z6t643qFRdgS9kRA4zqBU
+	1yK92HcjqPGE8XxXlpX6DcAGJjt9av87tC6+HVpsM7yVgGM6kd1nNKwbEA2z+CXa1zk=
+X-Gm-Gg: AYBFou3DU7T2G1nboCaO6K4BFOgul3e+fSyJnXOagigPCYuALXJG4XSm9cI36zl5lDI
+	EONNbrCJvieR9yZfHb9GkRmYA1tJ1+rkoGn0K0/CkBGzxxYOvFjAzmYh2kb7FNObIG08BUHUh05
+	xlAFrB9LvuMRVCWTDtuwwEURG/id+TJJSQ32CJ1oxqYkXQkYJN4zZPEKMZ9iGXcnxlypXBw9LYx
+	/FR/idHBHgdW4DN0P8j8HzOU2girEmCVe+pNHopJH9jVREmRXqwVkxL/ZIaRiZCm5suFO5MG5EU
+	+d2obWjXEV+v0P1zRD370N0nwCLP7KImOKMtkHz4Xw+mr52KodeOwMjkqKEfolRHWiuwvfe/hCT
+	zu/6RHZ4EmKJUu2TOPPImzpLP9TOTl6Abk9jrHDzYbJEWSGD8n2ioKCsePi2KG9JWXRBBFaIRk6
+	eg25FHqAlFAgLeBZeOx2Twp3PGwO1gwf+MpeAGaxTlXjftIC6l4ne17xTFvgWV460M1BQRLEMZH
+	vAl0Vv1inNbic45uHIXDQurdwux3x9Sw+mr/f86N1/rsjuIeex0KmaV38LT0+hjL8swoWwwyllN
+	4YJ8guNZj6pVGMsG5Xo4CmdqCQOIl9f0NjBAm/s1U7ahYfYBhNU49d9BiQlG0BIyYi4DsezUOLw
+	eAGA6w+d/7WxqLW1L0QmwrsPzqaooIILz2AtHiz3oiW39TjC1e5lOevTx9q9lvX7O2fidZyqPPk
+	w2+bAvuZVkJTlK5T521h6tSxZDG0aHy5zm8mrLisNJEi0+GsW+DN4x
+X-Received: by 2002:a05:600c:a00d:b0:4a1:fa27:df7c with SMTP id 5b1f17b1804b1-4ba093acadfmr26469595e9.34.1794383624548;
+        Tue, 10 Nov 2026 23:53:44 -0800 (PST)
 Received: from localhost ([199.201.64.8])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baaa2a6c51sm1842597b3a.14.2026.11.10.23.53.38
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ba01ff3428sm138135715e9.15.2026.11.10.23.53.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 23:53:39 -0800 (PST)
-Date: Tue, 10 Nov 2026 23:53:35 -0800
+        Tue, 10 Nov 2026 23:53:44 -0800 (PST)
+Date: Tue, 10 Nov 2026 23:53:41 -0800
 From: Chris Down <chris@chrisdown.name>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>,
 	Mike Rapoport <rppt@kernel.org>,
@@ -100,9 +100,9 @@ Cc: Alexander Graf <graf@amazon.com>, Baoquan He <baoquan.he@linux.dev>,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [PATCH 7/9] kho: Report how much handover memory is preserved and
- restored
-Message-ID: <920192d01c6534b5754648e12840f73cdcfa73de.1794383544.git.chris@chrisdown.name>
+Subject: [PATCH 8/9] liveupdate: Expose the sequence number for consecutive
+ live updates
+Message-ID: <6f10302874805eccc3960531194c989cdd1588c4.1794383544.git.chris@chrisdown.name>
 References: <cover.1794383544.git.chris@chrisdown.name>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
@@ -110,19 +110,19 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1794383544.git.chris@chrisdown.name>
 User-Agent: Mutt/2.3.3 (9073d26d) (2026-06-12)
-X-Rspamd-Queue-Id: 33EB0100004
-X-Rspamd-Server: rspam12
-X-Stat-Signature: nyg83ay5skox7kuepnpqrdw8t5t77ku7
-X-Rspam-User:
+X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DD779100008
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1794383620-375410
-X-HE-Meta: U2FsdGVkX19Xp28l4KK0JisfNIETsLnuPY6RIzZR0yGvRzXETmCksffwXTo75+eYA8Pq5nlgFZd9+tSmz/A0xWVVMOQnXVkhrtI3xuIUlRVtAoQ2Dz/jqJ9h7M9CI7A22Et1NKESp18DmO4ty3mU9OJDDjAMNr+xUNO0np3OkqNTXnNtQ7vzKKX19NITePCJ61CbdRswq0VXnPw7/mxKdsVBFeZvY4stfyUJV0AK8j5Z9RaawPKWGVOi9EGsZn+d6uB7iHYwoLI4OovsgO7mVkD6rEtdEO0uIxMGZOJn8srnh848WmZB28W4MV+hlg8qJelF7k3Anmi++Ld5vdx3kVk2Eriv1bHKxQDuK1PbPrcVan80NlZgNwR972SMWjr6+c+u/4Hlbz0duA0N6wjonOuhiuqqQOqa6BAjen68WSyV2E29YVl0OhGAyzYdlDYqh84WVdfhL0L/1Pp3s6RD/OJ1y5eUC78hB2l+rxG5JtIeIvoIMk6/4acWYxriQRTIlK9KEvGd9ACgF6ylejUXPBD+MRnvCXgh/dCfGOOYmps8kqTvwdfGxx7UWveT++qerFSNEmofk9tzceplay9HukE6GUpzEotUfEEEhSPfw7KRVU4A3UagsHKQo2phdRcy6zTC8e2wKQ/XABCozI20fUkd2qc4KwHf7wesu5uWvbLGyetvl2rE2y44wXafLn6m9OQ8+jXls70OJ2PnNFXjgrRo5EK8uDaxmkFhpGBSUZseoOfZL2XQSaNLLUrUz5wVksdjIjkIkdCS0eySFqFJJZPwj8zh+q6eTFjKbMbQXzCMlwHllM+0jle5kdkwZpUQEk7zODL2G8f9M7cLsP+SEevFmBalx7i7c2H9L0KVfdiGoyzFhie1UMWx/rlE1yd90veAXJAPt7XwU/JXGM3bhY9dTpJFJUFcKZBxMCBMuR0/Vn3Xaz46PX2XsHlBQ4QNVMjsAMyR9x3A2y91P3H
- 2Frtuc9e
- CR91NKSNGtEv5vcRthS3TkUHqNCmQxKgH3kky85UCVNMFjp3E8oARPswylngus0Kg/eriaKvJzzrjF2wBbsgTs/Ruo23WV4MLeko/jnHPXeozbK6kCxnZ0ncgNKzDyFSlXYsjfso9AsDerEuj7zKNdzTanAUhGfC2n7O1w2r8+I9JcR0LKGFKQskIJmyj2ZDz4FRs8+AIyFKCwRJvf3vzani+GFQ8/K+kp8gUOvFg/dWdIrUailtTZ2VRA1yFXASwhKGmgemK/ASlG40X912iUgKn5uDs3iextZqV+8hJJ8I0mNQtjVuEZSr0zG8nAo5MrXu5Ag7l46qMwTv+tkvGCxW9+1qQNyzIOd6a3Myzh6qVlt7rJPYn50FkQE7XKHQrWcLnP1QvcdcrFpyF5rbDSusfMG0VocTSC1L/hwruqDojl5RRe/rl67cFHwItxmQE1jYfRV1zazXpDzoewb7nOu2hDrVlyXkrsDvxV1t2RZ7c2Rz1DOmma3Mk+zATGIeXfhmluQ48z5Di+Y/vnoLzr2h4FiVoPc5P4GP1KyjL6hrKLMHoQcQw4YiAiRhFgbI7PThuYD4Xz/oqrNLzHufnlBS9NFOy/qdp5R6F3oE75LP3MIcZrIXJqkDZEYAoFRFyCnWooxd+/IWkSSSS0/vyerZu05OWLG6dEqT8dpPh/Vw308Q=
+X-Stat-Signature: p974uehyqsztzhronhg5dbuaobmjak3f
+X-HE-Tag: 1794383625-554289
+X-HE-Meta: U2FsdGVkX1/grMJsJs4AStgGsuXRtzqfhjotWdWBgzbSawVDYfxIufZGzM+UcVtBGnl5n8ZFI4mUr1h8lpeCcEQoDLV8Ty7Cd82jvnaP/bDtxuO4+jCbyaeyfUtSYXaPEnoPSt7OGe0q3qxxh1vkeO78Xik/FllJL0MgRFtWCAjxP5Q/mfvHFIj9yaahMziR72czBA8KoOVXJG6rjwB30xlpu9FwKd4gHZ3g8MfBkWDb/cZjQxG79dp8hl3MKgF8BV6MG1X9siukIHqwl73u1Qfbr+e9p8pBq4jNPKYHqOvD3OAZv+ZuPxSvUssgtlspmqvgex+U1sTMCwFDTUrd5+krbYniBNYoqlfUbOEWfzSA0d4zgCN8KEIOiBdmWdtAMdHq/eZJunuzV/6/qAYCaZP3dI0TO/22rCx19cOhVallEUJRb7fQOCo6LUekJDVmrKMAxydlXwf5ZnxGQPjAjqhWmYDaYPxlup1Sfbr7gCtWs3iZPoi+FIQjorzR+MiRkgXa67MWUXnud7ZeQWyGGYxvOlafv6mRTdiqblz4xSmlve3uKlKFUggcPsnJyGhuX9IspALf5edZ+CvSYy9asfs+ygrHfZF9CLSdh8cwc43DSpx50jRxyTkeaeSTHZMRHq1yAM3Lzs/fASzm/wI8OMU2W5mOGX9biABG5qYlIyYloQtl907fdF4HSj3jgsGUWgH6H9n0/iyWsZNvspAI68I2NDbyPrDrsGozS2I1raGUHaWva781tPEvs2CcuDCAK3wqKiglnrDK/QkRtqhvRT7CgAwh/3t4aY43+V5tSLnWicBVnOTHbGlnIFJga02jAc9uWEktin3nB4FOTAT+PyIgKAD+nprG7unGSuNHsg0wLtns87PDhlUEyHbEahplDnKNfk6+T0VloCxEj3rrj8jPMlWd1dS9e4kZ32yTZM6HCSYjzR6yGKwLAPRjerut0leaw827Hy2ihp3EM/j
+ nVKjHWck
+ o3ETMCeUnPzg9lyNKnRvH3nilJ+VMotBhA7utYTibWP0YvozgJFLiptY08Q7KZ2nFNthKyAU/Z1zJAKRMmdIstI+/UDVQkwKVDqEhekVKwX4sYGEukVGXDEtS8luUyTaW/XAClBf1V6nCRjVNZkMqMv284/R5A1zgSzL1LAMAA3mUZWqkADNylJ4D/lXNrqXYJipE0r6R3Jr+VYNEMAqBPep/yF1dFKN0NfR0rBgw6aUDEr1yP9GtlFL4/oKECLQFhtG8i7DigqNJ6TS5+yIw7tbpnoAtTLwMlCASYbzNSr9nKjztsNpznSx+fSQOs34s8hPW2jb7FKRdKOzGk2vfYpkAFtddH7riQ2eSVvwDTjPTCcSoISbsUJ73qafhrWD1e+STXM+QQJcMEOaVFVDDIo+XubqjjOGqcN3JfAQQcMKa7T69DaEI6iPM2ljoQ6gddwMAbtp/GJJmBXrFvMZU5z/LxmoeahVRkfnKffvJO4dQRih3MrLji/zId7H9YBrGBY3Z9MqgU1O7yxvelzE8iXM27Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,129 +131,78 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Most memory the previous kernel preserved stays reserved until its user
-restores it through KHO, either to use it again or to free it. If
-nothing does, it stays reserved for as long as the kernel runs. On a
-hypervisor host that can be gigabytes, but amusingly nothing really
-shows it reliably. The host simply has less memory than it should, which
-is not exactly obvious.
+Export LUO's live update sequence number, so that fleet monitoring can
+compare hosts on their first live update with hosts that have been
+through several.
 
-All preserved memory is reserved in kho_preserved_memory_reserve(), and
-everything restored through KHO goes through kho_restore_page(), so KHO
-can count both easily. Let's add preserved_size and restored_size, in
-bytes, to /sys/kernel/kexec/kho_incoming/.
-
-For example, after a live update preserving a 64 MiB memfd:
-
-                     preserved_size  restored_size
-    before retrieval       67403776           8192
-    after retrieval        67403776       67395584
-
-The 8 KiB left are the incoming KHO FDT and LUO's FLB header.
+We want this because some bugs, like memory corruption, may only show up
+after several live updates in a row.
 
 Signed-off-by: Chris Down <chris@chrisdown.name>
 ---
- .../ABI/testing/sysfs-kernel-kexec-kdump      | 10 ++++++++
- Documentation/admin-guide/mm/kho.rst          |  3 +++
- kernel/liveupdate/kexec_handover.c            | 23 +++++++++++++++++++
- 3 files changed, 36 insertions(+)
+ Documentation/ABI/testing/sysfs-class-misc-liveupdate | 9 +++++++++
+ Documentation/userspace-api/liveupdate.rst            | 1 +
+ kernel/liveupdate/luo_core.c                          | 8 ++++++++
+ 3 files changed, 18 insertions(+)
 
-diff --git a/Documentation/ABI/testing/sysfs-kernel-kexec-kdump b/Documentation/ABI/testing/sysfs-kernel-kexec-kdump
-index 5636cd060cb2..2b9f9917d2d4 100644
---- a/Documentation/ABI/testing/sysfs-kernel-kexec-kdump
-+++ b/Documentation/ABI/testing/sysfs-kernel-kexec-kdump
-@@ -79,3 +79,13 @@ Description:	read only
- 		           the walk of its preserved memory map.
- 		"failed"   The kernel rejected the handover.
- User:		system monitoring
-+
-+What:		/sys/kernel/kexec/kho_incoming/preserved_size
-+What:		/sys/kernel/kexec/kho_incoming/restored_size
+diff --git a/Documentation/ABI/testing/sysfs-class-misc-liveupdate b/Documentation/ABI/testing/sysfs-class-misc-liveupdate
+index 608f788ef0fa..b0ba0f626793 100644
+--- a/Documentation/ABI/testing/sysfs-class-misc-liveupdate
++++ b/Documentation/ABI/testing/sysfs-class-misc-liveupdate
+@@ -24,6 +24,15 @@ Description:	read only
+ 		the underlying KHO handover.
+ Users:		system monitoring
+ 
++What:		/sys/class/misc/liveupdate/incoming/liveupdate_num
 +Date:		Nov 2026
 +Contact:	kexec@lists.infradead.org
 +Description:	read only
-+		Bytes preserved by the previous kernel and bytes restored
-+		through KHO, respectively. Both are 0 unless the incoming
-+		state is "revived".
-+User:		system monitoring
-diff --git a/Documentation/admin-guide/mm/kho.rst b/Documentation/admin-guide/mm/kho.rst
-index 9d74d4ce18b5..37a62daa7622 100644
---- a/Documentation/admin-guide/mm/kho.rst
-+++ b/Documentation/admin-guide/mm/kho.rst
-@@ -91,6 +91,9 @@ sysfs Interfaces
- ``/sys/kernel/kexec/kho_incoming/state``
-     Status of the incoming KHO handover.
- 
-+``/sys/kernel/kexec/kho_incoming/preserved_size`` and ``restored_size``
-+    Bytes preserved by the previous kernel and bytes restored through KHO.
++		LUO sequence number passed by the previous kernel. Reads 0
++		if no LUO state was handed over, 1 after the first live
++		update in a sequence, and increments with each update.
++Users:		system monitoring
 +
- See Documentation/ABI/testing/sysfs-kernel-kexec-kdump for the sysfs ABI.
+ What:		/sys/class/misc/liveupdate/incoming/sessions
+ What:		/sys/class/misc/liveupdate/incoming/files
+ Date:		Nov 2026
+diff --git a/Documentation/userspace-api/liveupdate.rst b/Documentation/userspace-api/liveupdate.rst
+index 39bbb91d0dd4..61c246371200 100644
+--- a/Documentation/userspace-api/liveupdate.rst
++++ b/Documentation/userspace-api/liveupdate.rst
+@@ -50,6 +50,7 @@ Monitoring
  
- debugfs Interfaces
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index dfd6fa7e4a71..fe6b66270124 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -110,6 +110,8 @@ struct kho_in {
- 	char previous_release[__NEW_UTS_LEN + 1];
- 	u32 kexec_count;
- 	enum kho_incoming_state state;
-+	unsigned long preserved_pages;
-+	atomic_long_t restored_pages;
- 	struct kho_debugfs dbg;
- 	struct kho_radix_tree radix_tree;
- };
-@@ -552,6 +554,7 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio,
- 		kho_init_pages(page, nr_pages);
+ Read ``/sys/class/misc/liveupdate/incoming/`` to monitor incoming
+ sessions and file retrievals without opening ``/dev/liveupdate``.
++``liveupdate_num`` gives the LUO sequence number for the current boot.
+ See Documentation/ABI/testing/sysfs-class-misc-liveupdate for the sysfs ABI.
  
- 	adjust_managed_page_count(page, nr_pages);
-+	atomic_long_add(nr_pages, &kho_in.restored_pages);
- 	return page;
+ See Also
+diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
+index ba174e9aae03..3ca7b3875247 100644
+--- a/kernel/liveupdate/luo_core.c
++++ b/kernel/liveupdate/luo_core.c
+@@ -441,6 +441,13 @@ static ssize_t state_show(struct device *dev, struct device_attribute *attr,
  }
+ static DEVICE_ATTR_RO(state);
  
-@@ -643,6 +646,7 @@ static int __init kho_preserved_memory_reserve(unsigned long key, void *data)
- 	info.magic = KHO_PAGE_MAGIC;
- 	info.order = order;
- 	page->private = info.page_private;
-+	kho_in.preserved_pages += 1UL << order;
- 
- 	return 0;
- }
-@@ -978,8 +982,26 @@ static ssize_t state_show(struct kobject *kobj, struct kobj_attribute *attr,
- }
- static struct kobj_attribute state_attr = __ATTR_RO(state);
- 
-+static ssize_t preserved_size_show(struct kobject *kobj,
-+				   struct kobj_attribute *attr, char *buf)
++static ssize_t liveupdate_num_show(struct device *dev,
++				   struct device_attribute *attr, char *buf)
 +{
-+	return sysfs_emit(buf, "%llu\n", (u64)kho_in.preserved_pages << PAGE_SHIFT);
++	return sysfs_emit(buf, "%llu\n", luo_global.liveupdate_num);
 +}
-+static struct kobj_attribute preserved_size_attr = __ATTR_RO(preserved_size);
++static DEVICE_ATTR_RO(liveupdate_num);
 +
-+static ssize_t restored_size_show(struct kobject *kobj,
-+				  struct kobj_attribute *attr, char *buf)
-+{
-+	u64 pages = atomic_long_read(&kho_in.restored_pages);
-+
-+	return sysfs_emit(buf, "%llu\n", pages << PAGE_SHIFT);
-+}
-+static struct kobj_attribute restored_size_attr = __ATTR_RO(restored_size);
-+
- static struct attribute *kho_incoming_attrs[] = {
- 	&state_attr.attr,
-+	&preserved_size_attr.attr,
-+	&restored_size_attr.attr,
- 	NULL
- };
+ #define LUO_INCOMING_ATTR_RO(_name)					\
+ static ssize_t _name##_show(struct device *dev,				\
+ 			    struct device_attribute *attr, char *buf)	\
+@@ -458,6 +465,7 @@ LUO_INCOMING_ATTR_RO(files_dropped);
  
-@@ -1785,6 +1807,7 @@ static void __init kho_mem_retrieve(void)
- 	kho_in.fdt_phys = 0;
- 	kho_in.radix_tree.root = NULL;
- 	kho_in.state = KHO_INCOMING_FAILED;
-+	kho_in.preserved_pages = 0;
- }
- 
- static __init int kho_out_fdt_setup(void)
+ static struct attribute *luo_incoming_attrs[] = {
+ 	&dev_attr_state.attr,
++	&dev_attr_liveupdate_num.attr,
+ 	&dev_attr_sessions.attr,
+ 	&dev_attr_files.attr,
+ 	&dev_attr_files_retrieved.attr,
 -- 
 2.54.0
 
