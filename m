@@ -1,98 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBBE7606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C46606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GqzS3vcn
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=honRTN4G
 Received: by kanga.kvack.org (Postfix)
-	id 0963A6B05D2; Wed, 11 Nov 2026 06:19:07 -0500 (EST)
+	id 5A4136B05B2; Wed, 11 Nov 2026 06:21:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01F526B05D3; Wed, 11 Nov 2026 06:19:06 -0500 (EST)
+	id 554E56B05B3; Wed, 11 Nov 2026 06:21:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E77AD6B05D4; Wed, 11 Nov 2026 06:19:06 -0500 (EST)
+	id 4434C6B05B4; Wed, 11 Nov 2026 06:21:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B30D76B05D2
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:19:06 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 46AAD1C2DE0
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:19:06 +0000 (UTC)
-X-FDA: 85422591492.30.B77B9F4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8C5DF2000A
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:19:04 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GqzS3vcn;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 1A3CF6B05B2
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:21:24 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A3A9916024F
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:21:23 +0000 (UTC)
+X-FDA: 85422597246.08.B6D6239
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C940220005
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:21:21 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=honRTN4G;
+	spf=pass (imf13.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794395944;
+	s=arc-20220608; t=1794396081;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qYip/S6YR8HP6EPMfD+DO9PeevjFwxYNpr2ap+wiblQ=;
-	b=FBFPxmMdYLS2QS7sgyhXFTCoopKWszRJ5tyhY6TkXPTB2492IvUZXWyXPOrDvQWxgJN5Wt
-	2R3Hr1GECvHp6JOh1bDk9eamuKdLisXK074k+IwUoe4UUC4hkMO3+TIW9mmXUvHhKUxvAx
-	FSGD+Rs809KRfLX6vDWZYNS96BA479I=
+	bh=wr9LUpNEHOOjAzDkbtOdFfPOarAUZcRS58IEDQefKL8=;
+	b=C7Wmu2N/bxC/f1bHzU9jNRJ6FKUXbV3mcv41G/+K7yCrLl31n4epr8kWJyefbeH1xmWx1G
+	bS2LqkwJnVOb6YfuhNCTF7fJTL8/rfNpgLnK5ps51XXpvPk1KRG3ieVYB8sTUD+XZ0jQrL
+	H2/Fe8G+EjIhTyA/JWooTb/NEYF2u0U=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794395944;
-	b=D7s0OHcmlLrCSVgchMJeelbUZ8bUt/6xwIntEY+W5PDaFwKzmqOiZ0Y2GO2yqfd6jKsdXj
-	LtKUSB1QfdxbJnL/1w2dwSUGjfpRacANH0Fp7ULyZbX9ElSsYBnKeHOAD6D1ev5IzlLiSZ
-	JPlrg5m6YMXpNg0rTEybgEZNGIYeUHM=
+	t=1794396081;
+	b=ttqTkA5fUujbK2h4gIMVqc/MbNdIJ4WgawHHrQfHbWTUifrjWj9N0ojew9O/UAZXcKKGXI
+	PaKPiIs7Sya9v9CtHmhzo84nqbBo7cUafIraAP6RJWQo13ZiAUtiDNs4WWs6LqUROdtzn/
+	1UtYWcWpFJngu7khGTcq4OnHlum53H4=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GqzS3vcn;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D9F18438B3;
-	Wed, 11 Nov 2026 11:19:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 333081F00A06;
-	Wed, 11 Nov 2026 11:18:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794395943;
-	bh=qYip/S6YR8HP6EPMfD+DO9PeevjFwxYNpr2ap+wiblQ=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=GqzS3vcnCAk7RcM9m0TvajMcoWIE5tsCDTZDcdpms/zdOpMd0QJB+8k35zijIKLZ/
-	 9zMZaltBrIBk/p9iRKmL+q19QJxxJSkV3ewQwBIpTKZBwK9WP2DepzICMR5JH/Rfgb
-	 cxRWRVFpuNsMg1wugipdX3i36sBiYPJU+Km+w1Sh3SlIyRUAbg1+kNi0/VRpuax7jn
-	 kap/zpwjdpfDyIKPvnNqMuePwSyKJVfA2mFNJO6kaLwq8EuveY34RPGKhFDGjI5eJX
-	 fjk3pYjwjTrr8JpqdZaWbLH3WZnmoPAcxQUEL9vzgasoinjwD/Iy2Z5AlIfhdD6xt4
-	 GAckGa/L7Ow1w==
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=honRTN4G;
+	spf=pass (imf13.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-36e2b1db9bfso51712eec.0
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 03:21:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794396080; x=1795000880; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=wr9LUpNEHOOjAzDkbtOdFfPOarAUZcRS58IEDQefKL8=;
+        b=honRTN4Gu8AQEpHclmCZRo98QjDgOJ8ai7Y3zRF7/9Q2A+7+jyNzPAOmzFAbXZYDpn
+         PcDZ5F+Es7MSZMnHozBREU8MKRj8Sa8l7kSqfql0rim20xRE1TKW7G/mCHH2M+UGAEmd
+         WdQvFYNaOfv/iBg3Z7B1/8+N6eVPuwrSToZQVQby3UxlRpRuFVAvARcv+9lxjCcxhP0n
+         rXT+VuG6ei+nAfSCFj9QW8HN10lQ93U54+A8EzafXeEXG3zi5zj/lTpd6jAhASWEv7Bq
+         paSJPceyfa1oSDR9FRF2iVuyZnd8XwQig7DBfVETQO6gAYJWuKjfPMJHHeWyBn2MctHI
+         Kdmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794396080; x=1795000880;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wr9LUpNEHOOjAzDkbtOdFfPOarAUZcRS58IEDQefKL8=;
+        b=tIQi1ceH7yTKQh4WCtBjzYljgcuwETh1Rux+yGsLrVDzkyU4QWjOgu3OCphoE9OlKV
+         18BOhlCH2m3zVF/575qzoa+902lkh4Oqswdf0kGfTxVcZE9votLjSHsDZMIsaHQFyL47
+         ApeCoG4cHpKrTtFplLjf/hu6ELdOPYhizayowi30OKf6qPw1jIuYGZpN8fmu1tHcYaaQ
+         1AcCXQuy2Y4i79I/0pd/7XV4kJFqerimtPm04j0w6U4d1zcLDnsjiHzYvqwdB2NEhqP6
+         FmCrK2PMsBoGR+VqsZ4gBn57R7WQAT+lc0pXOLqT5kZIa+V5kGH2u62EWo2ouZ9p1YWO
+         t1WQ==
+X-Forwarded-Encrypted: i=1; AL+hErHU2p5GQhp9m2mUPqdJ7QjI0yYU6kXIVohFeiwClYrRrE4r0b1ITLiKZ6NE7jaOJlqFSljDerManA==@kvack.org
+X-Gm-Message-State: APuU4Z83SvoEHejUm8hrgIxPrAoma2LpRaLZgLb2aaa4uQ/T0z2/wjap
+	YdRUQfoXVrAiOv0lmTep3Zz+nujnKzu9Oj2atoHoYFJT6EkfVGAmLkEi
+X-Gm-Gg: AYBFou1BMGRaeWiQaXqcsSjzYiIvR4IxncO7Qm9A2kltGEGan8ZEnNzIXJZRWDe1jms
+	c/oaMbTPlHbteVwt38lO2r8lbWHyYKeWiy0tqJF38IicusZIyJXTANj3xlxEGfgrIH5ETvck4kE
+	NA8AQS+diX6db3e6Z0or86T1XEsS5zhrsNBuGZYBJEAGj7szU+ip4Jil3JWxE8tUmfZdJAZB3J1
+	jPCuHyn3TUIIQTguZYb28Zu1OdPDoZG1fB5YGCPuI4QtySzzGqFbY3L3oPxYw1muGjMQK23S3d8
+	APRdcmceOUEVo87LW8zLhTcmM3/z6b5AVm1fuOn/VeLdZy/cvsov+uUJMcLhltNOZfmauCh+uFn
+	DlnHbjV8GztdnpZLkEuRcs+rRjCI+l0mrUPhqknwDu+UiBz0IYZTmUCIimePhAb7WzB39nEA8nX
+	ygQnDQJf3iGJz4lJUkdzpMLIa8lJARfE3kOlVYO2bpvh1k3zW/IMoyJczA2pdAK0FSBsv7zfDbZ
+	gF5d6aoShbnwH8+9u7ziR+dRYJqj6fgpWeszf+aE6gC7yWdqcOpUxIrgHXmOLfLz2G5+sR992wQ
+	EQkrVvvfyb6kBBhpe5sjCQu31iZybVACJqs4zhKGMmZuOieS8FiogNx1Gp12YBwPN1o=
+X-Received: by 2002:a05:7300:f547:b0:36a:13fd:b5c with SMTP id 5a478bee46e88-376854b73ddmr4138428eec.2.1794396079980;
+        Wed, 11 Nov 2026 03:21:19 -0800 (PST)
+Received: from o6.lan ([2602:fce1:44f:115e::])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-375212e7d24sm24474631eec.22.2026.11.11.03.21.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 03:21:19 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v5 5/6] liveupdate: Add LIVEUPDATE_SESSION_FREEZE ioctl
- to freeze sessions early
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: linux-kselftest@vger.kernel.org, rppt@kernel.org, shuah@kernel.org, 
- linux-mm@kvack.org, skhan@linuxfoundation.org, linux-doc@vger.kernel.org, 
- vipinsh@google.com, linux-kernel@vger.kernel.org, corbet@lwn.net, 
- dmatlack@google.com, kexec@lists.infradead.org, pratyush@kernel.org, 
- rdunlap@infradead.org, graf@amazon.com
-In-Reply-To: <20261105050053.3063001-6-pasha.tatashin@soleen.com>
-References: <20261105050053.3063001-1-pasha.tatashin@soleen.com>
- <20261105050053.3063001-6-pasha.tatashin@soleen.com>
-Date: Wed, 11 Nov 2026 13:18:40 +0200
-Message-Id: <179439592041.425130.6098227055493441109.b4-review@b4>
-X-Mailer: b4 0.16.1-dev
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 1/3] mm/zsmalloc: remove CONFIG_ZSMALLOC_STAT
+From: Xueyuan Chen <xueyuan.chen21@gmail.com>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Xueyuan Chen <xueyuan.chen21@gmail.com>, 
+ Minchan Kim <minchan@kernel.org>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <CAKEwX=M6dJMccGcDqp2S-66cbegdivnB6MqQRj6tQ2u18UH62g@mail.gmail.com>
+References: <20261109-zsmalloc_stat-v2-0-caee41684aba@gmail.com>
+ <20261109-zsmalloc_stat-v2-1-caee41684aba@gmail.com>
+ <CAKEwX=M6dJMccGcDqp2S-66cbegdivnB6MqQRj6tQ2u18UH62g@mail.gmail.com>
+Date: Wed, 11 Nov 2026 19:21:15 +0800
+Message-Id: <179439607522.2142163.11892098572560820648.b4-reply@b4>
+X-Mailer: b4 0.16.0
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8C5DF2000A
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: ae3391wj6ufbcub9jd67ynqn43b41cn4
+X-Rspamd-Queue-Id: C940220005
+X-Spam-Status: No, score=-14.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 7bgra7oezgqcsauu6giojh79yjse5ywk
 X-Rspam-User: 
-X-HE-Tag: 1794395944-833196
-X-HE-Meta: U2FsdGVkX186j+m67yd/h4BHM7x/jG9/FDcdwINPJKNiYVK4gsA1PgaKl7YohRziJUCiVRFeEevUOdnBlJTL4k8jkFUHGS30r/p7kgS/e5Cbe8Wm8MdbOIhgpliVWmKsDEONRVk7YUGDow9Iv1wYOUztdkpcmIgwO39nIdJ4dkITRTwLg4/0JP0J6R0Ip99Vv9trBCuA/mcE8kszOkarKQjhHzgKumqim/rXvkmKfbDTKpFBQWXwXW39Odm939Nf/w3XoWbDWttdU1F4ZWJMMPWVP5vv/yoSd4DEV8uGCKBhUiAHZCAo8zbv7llsbNQF4TtUJdD0GTa9mntqVc8VaheSZvAPb+EDlqdlSR+XqKRpzSyhpCIhC2/Rlgcju6RVmTmE/40ma+4WdczBPLRjXY82x2Z2rN8vtX9m0It4f7S7tSMrySVg6uQ93at03IHVElWh8X7qRNP/G4YxzxJV0U1VYcnf/GRUQLtEnh5DHT6SKCX1E5oSrJdCcCWHMJYNYPfCbYiD/VXHhQd6RPOf0HdyINMsbQxtoQeryuGttPOaDVQw4qOLgBY+KUqkIRMKZuKxA1tI81tuDK/o81Uawstt24wSOZkAELAKLRqJ+tx+Mop5nc54aKs+YAlfTbZNhi+8j6SCOkN8RgZm+eDECNEbLbKkbj0HNn4dLJ2CCJG0lLMQc8ULcduK63Udx+VX0w/6Bcs8oPBK+Wi1/3wOP9OI7Up9ejyTAsBN5yQ4/wEbh4MeXl+/etYVxFq9/dh8nYx31dLEJjNAjm5WCyGvprFbtXSJAoVt5EBDmZN05E7k5jXeHd2CtzHRlmJ4BeAT7Snmdsxe/uvu3fVwE+IPdg4bHY9l5KMF4gaP53vW/PgUUVTpymUl0gD2kqh8R2QYePB/XV41SslwdQ/pOnVlrKHYEWsLpviONbSABzY2g6VlyyqJVtdCwD4492ZNZFIxD1Lh0TZcf4HZMrY+LQs
- aAdai6ph
- HEOxE7edFkUq70B2q/JQt8I+w5fYfKw1XITwG0Iez5C4MprI/52Ni8qT0KaNOElsJ0JiYpma3fkrjIkUS/MJl0OtyS54CO5LK/Pii+4/OmFE/14wzZ4V/ucZcLhEuJcgiwZqI5MiO2XN3VfuvnvgeX6bCS2Tm/vpncxGah8FWFJ4qXXIWDk9hDS4r0hsahQU+oslZmXHvEzRP8oeTpDJz3eVFRt42ZpZpo7z1ZJiFhUgBS4whkKmqwrdAagofdh3OLITHv7Lvd2tLl+Pneqam9SC7bmI4+gr3+bq/3sQ7MC6lKOQwnU23Os6RD0sgszh3iCKX7xjVAaapk4M=
+X-HE-Tag: 1794396081-94503
+X-HE-Meta: U2FsdGVkX18oqLOpUABELZj55WD6Fd5jEoj938ehj6UmbLC8EHJxMYy9zkn4j7PvVNmGh3j4YI9dBTmhKR1jHBZhbaNBdvts/OREtW5aD4lLgWJoNtaPpqAcAEFccw8mPuOkQ2jkbIeO4c7/px8zzqz/Y6D2hIMf3L2inmCZP+BFlQLLt6D6eYcZ8LKDmLSg+ga/yNTFTK7BSbatjntEGZq3MB/QehB8pqLloF9QjYOByOavg79bXym5hcREi3LfXCDWY//1NK3JZchjvkrrkCP2wxnE5CO56kBuUzDZujyjzTdO+iq8QzicK8RP2gL44hb5NW4JSBdJlea7b3vrdc56kLN65zaLWUqnUh9lDQJh6RqBjYLmZHIG7c+W4gYPxix1Q1XkDxtkITD1/XZrs3yll4nq/6WdthNPI1QHtwKbYCaHLpVYuYunJsdsiJT7CFUD8Cws8Tf8Y6i+OTpHstPsfwbF12fQVF+xs9tDI3LSNy15ptSGivaJwVimmDAyFYTFwzJFLS4xZxpnjoEYKxxnjY0tQHry/7K0k1AhVau2uKqwWst8m/meGoeRVenJJBqlD0HlZ7jJsLhqigHAVa7JmP/2GDgaPNWmDGiVq+HB/1jQiAvmrcPZ37f9a7rSL89xyy7ooe9rsMEaIiJ3DiU0pM2Q0sCckBy2WY2g1xV7aqamrfoW04/JAGHr++hSpltTAEFpewPy6xLdfMThyunVcJIQohNxfCFSy4VES10ye7ccn63ex0KPR9x/VqhLLLKS9CTLxsc+79iCZXtKMCc/d+QeEiUs40K2yviCdzhJHfFHq4ygSsjlD2Nqdf2F+bTfSeZOuxomgOjNL5/zooZZChlWyvMKSnQ7z+X4+p5kmvJ9O/KyTLq2OtmES+ZjTp8EnGZcoXqDMtxdoDcd86uFYd92ZMlw3pF1j4Qqq8WeZuduFYNePequVZUtCRngJ6zpJCbroE9YStNpvwp
+ Mmg97ziJ
+ TPEOHJ0NcZ6sIKjUh9075QskqyJSUsPvePk62+W5TREpnLnD8nNLXv4y++erPsgi/goVsyL9ltxdNbPc394qETvvJX5Jx497vC8ivYyIk4Zz/16D83WMA6fpNA1a6imZNNX9ya2xR3koh95uG0iSEARCf6goS0VR8/IT1+ZfTMpJNdLamsvua495O69/cHupIlz9FEQJKrLJH9BfEAnek8jfxb0bRo7Khcpx0uSzf8k4Ni46cTpS+KwWbLwyKYFIIfIvs1K2jTGxCB8nheqCqKUcaRHEKQ1mwjmh36HYkOD8eNc8zZN0pcEGalyTd2/9jgaHPqZRXfHFurVrlK1FpWDpad9rHCqSwPQLBT8i58lsxfQudsljmrXQ9WMdw43J9YXtwL+12Aiud6iXS0k0A9uN6OEKAJ2tqJZ0vEeO97EPNwuKD4JK78fWzVi+OYCst1yCfy/tL2jAe+rujaGpEOAoRztus4Ham9mtmaREo9Bh5v1iMVd/udEuXHJxsQw06tnCn9eeiDFjNheJC9CuJtR66iVPDkCgPqkmD7N6pz0KsjQZS1AyhNX8yNLMW5v1l3eOktFM6Hc/cjjp/UnEfr/Ole9qFzHrdx4rhZNKJCX3hL8Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,99 +131,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi,
+On 2026-11-10 08:00 -0700, Nhat Pham wrote:
+> On Mon, Nov 9, 2026 at 5:59 AM Xueyuan Chen <xueyuan.chen21@gmail.com> wrote:
+> >
+> > CONFIG_ZSMALLOC_STAT only controls the debugfs interface. The class
+> > counters are updated regardless of this option.
+> >
+> > Remove the CONFIG_ZSMALLOC_STAT guards and rely on the debugfs API
+> > stubs when CONFIG_DEBUG_FS=n. Skip statistics setup silently when
+> > debugfs is unavailable.
+> >
+> > Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> > Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> > ---
+> >  mm/zsmalloc.c | 33 ++-------------------------------
+> >  1 file changed, 2 insertions(+), 31 deletions(-)
+> 
+> FWIW, LGTM:
+> 
+> Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 
-> Currently, LUO sessions are frozen automatically only inside the
-> reboot(LINUX_REBOOT_CMD_KEXEC) pathway, where luo_session_serialize()
-> iterates through all outgoing sessions under global write locks and
-> freezes them serially during shutdown. On hosts running multiple
-> workloads that quiesce one by one ahead of kexec, userspace needs an
-> explicit per-session freeze point so each session can capture final file
-> state under its per-session mutex as soon as its workload pauses.
-> 
-> Introduce LIVEUPDATE_SESSION_FREEZE on session FDs to freeze an outgoing
-> session early. The ioctl runs .freeze() across all preserved files in
-> the session and serializes their metadata. Once frozen, no additional
-> files can be added to the session, and subsequent freeze calls return
-> -EBUSY. Freeze is only valid on outgoing sessions and returns -EINVAL on
-> incoming ones.
-> 
-> By default (flags == 0), session lifetime remains bound to the session
-> FD: the session stays frozen while the FD remains open, and closing the
-> session FD before reboot (for example, to abort the session or on
-> process exit/crash) unfreezes it via .unfreeze(), unpreserves its files,
-> and reclaims all resources. During kexec, already-frozen sessions skip
-> the late auto-freeze and are published into the outgoing KHO subtree.
-> 
-> With LIVEUPDATE_SESSION_FREEZE_COMMIT set in
-> struct liveupdate_session_freeze.flags, the frozen session is committed:
-> it and its FLB dependencies are immediately inserted into the outgoing
-> KHO subtree via luo_session_publish_one(), and the session survives
-> close() with full ownership retained by LUO until reboot. Once
-> committed, closing the session FD (or another session failing to freeze
-> during reboot) never unfreezes or unpreserves the session, allowing
-> processes to hand off preserved state and exit prior to kexec.
-> 
-> Update the uAPI and core LUO documentation to describe session freeze
-> and commit semantics.
+Thanks for the review!
 
-Please teach your LLM to use shorter paragraphs, focus on why and don't
-list every implementation detail, but only important ones.
+> 
+> But I come from the perspective of large(r) server machines - I'd wait
+> for the feedback of embedded folks too :)
 
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> ---
->  Documentation/userspace-api/liveupdate.rst | 30 +++++++++
->  include/linux/liveupdate.h                 |  3 +-
->  include/uapi/linux/liveupdate.h            | 46 +++++++++++++
->  kernel/liveupdate/luo_file.c               | 54 +++++++--------
->  kernel/liveupdate/luo_internal.h           |  7 ++
->  kernel/liveupdate/luo_session.c            | 77 ++++++++++++++++++++--
->  6 files changed, 184 insertions(+), 33 deletions(-)
+I also tested the memory overhead. For a typical Android setup with
+one zram pool, the additional inode/dentry slab object footprint is about 2.11 KB.
+Even with 32 pools, it's only about 45.7 KB.
+
+I think this overhead is acceptable for embedded devices.
+
 >
-> diff --git a/Documentation/userspace-api/liveupdate.rst b/Documentation/userspace-api/liveupdate.rst
-> index cdd74627ab75b..d36537c556ccb 100644
-> --- a/Documentation/userspace-api/liveupdate.rst
-> +++ b/Documentation/userspace-api/liveupdate.rst
-> @@ -22,6 +22,36 @@ change, so compatibility is not guaranteed when kexec rebooting between
->  different kernel versions. This is expected to change and stabilize in a future
->  version.
->  
-> +Session Freeze and Commit
-> +=========================
-> +
-> +By default, LUO freezes active sessions automatically inside the
-> +``reboot(LINUX_REBOOT_CMD_KEXEC)`` syscall path, and an outgoing session's
-> +lifetime is bound to its open session FD: closing the FD before reboot aborts
-> +preservation and returns all resources.
-> +
-> +Userspace may also freeze an outgoing session explicitly ahead of reboot via
-> +``ioctl(session_fd, LIVEUPDATE_SESSION_FREEZE, &arg)`` once it has finished
-> +preserving and modifying the session's files:
-> +
-> +- **Freeze** (``flags == 0``): Executes ``.freeze()`` on all preserved files in
-> +  the session under the per-session lock (allowing multiple sessions to freeze
-> +  concurrently), while keeping session lifetime tied to ``session_fd``. When
-> +  ``session_fd`` is closed before reboot (for example, to abort the session or
-> +  on process exit/crash), LUO runs ``.unfreeze()`` and ``.unpreserve()`` on all
-> +  files in the session and reclaims all resources. As long as ``session_fd``
-> +  remains open, the session stays frozen across any failed ``reboot()`` attempt;
-> +  at kexec time, already-frozen sessions skip the late auto-freeze step and are
-> +  published into the outgoing KHO subtree.
-> +- **Freeze and commit** (``LIVEUPDATE_SESSION_FREEZE_COMMIT``): Freezes the
-> +  session's files, immediately inserts the session and its FLB dependencies
-> +  into the outgoing KHO subtree, and commits the session so that it survives
-> +  closing ``session_fd`` with ownership retained by LUO until reboot. Once
-> +  committed, closing ``session_fd`` (or another session failing to freeze
-> +  during ``reboot()``) will neither unfreeze nor unpreserve the session,
-> +  allowing processes to hand off preserved state to LUO and exit prior to
-> +  kexec.
+> Sergey, how do you feel about this direction? We've run the stats
+> collection (even before we select CONFIG_ZSMALLOC_STAT to expose the
+> stats to userspace) for eons, and it was never a bottleneck AFAICS in
+> our fleet...  And the stats files seem trivial, relatively speaking?
+> 
 
-Too wall-of-text'y, too much markup.
-
-I'm stopping here until v6.
-
--- 
-Sincerely yours,
-Mike.
 
 
