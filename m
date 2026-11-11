@@ -1,129 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5110E606A334
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 04:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D8A606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 04:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OIDzYVgk
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=UU/Lr0hn
 Received: by kanga.kvack.org (Postfix)
-	id 577B26B05B5; Tue, 10 Nov 2026 23:23:34 -0500 (EST)
+	id C325B6B05B7; Tue, 10 Nov 2026 23:24:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 528436B05B6; Tue, 10 Nov 2026 23:23:34 -0500 (EST)
+	id C09EB6B05B8; Tue, 10 Nov 2026 23:24:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F3936B05B7; Tue, 10 Nov 2026 23:23:34 -0500 (EST)
+	id B21D36B05B9; Tue, 10 Nov 2026 23:24:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 118786B05B5
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:23:34 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E17E2A70FF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:23:31 +0000 (UTC)
-X-FDA: 85421544222.26.81220C7
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2497E20005
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:23:30 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=OIDzYVgk;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of gopalmalaviya53@gmail.com designates 74.125.82.171 as permitted sender) smtp.mailfrom=gopalmalaviya53@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 938456B05B7
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:24:52 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 36CF5A7109
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:24:52 +0000 (UTC)
+X-FDA: 85421547624.24.176B146
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 55682180003
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:24:50 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="UU/Lr0hn";
+	spf=pass (imf16.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.51 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794371010;
+	s=arc-20220608; t=1794371090;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8TP2cltB6myhAN3zqq3XC6T8gNcR9V3LAoG3G2EM6wY=;
-	b=fjEuOhI4t7xy9Ksn+ciE/E7PKp7nAAAS1TUxMoLYR8Hnlwd3mBSuQW98XVxRLFl4NikzQP
-	3jFDIIt9BTNgKj9RK8TtQlXzU73+3QAuzY6CEGcO0Gh6Um2aOd2NLcxf45XcyryV5Kmh6k
-	ymYeGnrj0I1UjlVabliOge8qeIwHZ4A=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=OIDzYVgk;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of gopalmalaviya53@gmail.com designates 74.125.82.171 as permitted sender) smtp.mailfrom=gopalmalaviya53@gmail.com
+	bh=5+PpphlpajmWTe2u74lHALG+B1qJVE8FkqGWsdeseUE=;
+	b=MwVvTc7COL1Qn9qQU6bT25RHX157cVAp7Y+NQjHESmNWfridYnN8ABnwE9j5qL38A7HEuC
+	ABigdX1EGBNPP6UkjtwhTOZerrzJzAiapmJLlOeBMQ0CSUin9srQvViiQh95F6/RDVYwy7
+	P6wL7ovXi9QzSAnA1rY9AbWhLEEwXBg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794371010;
-	b=vFqyifRbfUGLoCIIZ2jD7CL6YuW0mjKRHG0d+ioj2Ko/qXnkin7Q/GT4EUEr0zqL8xE/3K
-	mGRKQ2x6YUcOoJINiCit4yR6tvad9A3vuCL19Soh77wSO6nUMmyhiEh+LRvWUAVTjPKB0H
-	XXigvlFxwh7T4KDWDCrQ7Fo6i/dTqKI=
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-37600b0db49so914007eec.1
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:23:29 -0800 (PST)
+	t=1794371090;
+	b=8knlD/5NDRZJtOV75IkYTnEMIknKRgGiKHv1n9/MNhtgHTnaZXkeH3WZWMz1TgpMTuE64k
+	4wWRsIVIjIRa5ZmfV3tsd6mDDdqqWfkAHxgIkI+omPtKdFVv24Mpw/33apIuh7JhNvUFXh
+	tM/Ng1J1KRZRq+/WTEoV/5VAg14tqEg=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="UU/Lr0hn";
+	spf=pass (imf16.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.51 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3ae1da332bcso1313083a91.2
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:24:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794371009; x=1794975809; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8TP2cltB6myhAN3zqq3XC6T8gNcR9V3LAoG3G2EM6wY=;
-        b=OIDzYVgkTL5FJOaBnBI87qw1y8gp6gbo4d3kZZIiGubr92/noBxxNbP+EF7f3ANvko
-         6ajL+b5NbjMg1iISuZdtAlsR8w3uItHvH864XDRtLTWsRGKUTNntV04h3uRX4vUqviFW
-         3Dm96dwtc6tRCPoJbHsWGde9D0cOP+GW7izaRqVc3L97BdJ+NMnzwFEnsUcCS+CgucFx
-         N0FENiixefqIoQvkYYqpgV7W8PpYYdNIXt6cjj0T7cT8LI1Wo+Dx0KI7/TcPCkzZS3+E
-         yZrXKtvRK1KYL0MajNEwejWEmThkz3pcpkCSeSqg58lFfOh6tF8WEBUsIEY3AMcMpvMy
-         GXkw==
+        d=chromium.org; s=google; t=1794371089; x=1794975889; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5+PpphlpajmWTe2u74lHALG+B1qJVE8FkqGWsdeseUE=;
+        b=UU/Lr0hnjURS38HGZ8kkkEp4Q0capsNofgLemstHQlGSLEQnsSPKik6D2/bRrmtu9M
+         NYTJ/42yklIrVZeYn6sbX0Teis63Urs6Hks6jUnuiyeoQpHJMPI0os6M8Qp0moYetQuJ
+         ANMD0wVkv1yKhGLlg1mU4yz4lk3+IbZj3sxtQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794371009; x=1794975809;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8TP2cltB6myhAN3zqq3XC6T8gNcR9V3LAoG3G2EM6wY=;
-        b=cEhN1iEe6mP6yFoH01kj2W9zyX3zLDcXvhFVsrueWp+02AOpzy52P/yS0JLsNDQ9LM
-         KIULhNuoP4HGw9AB1BrUTp/ncC8QyaCsjdGl1/ZX7YpwmvHn+gQ6RurlH/ZRg+3nJCoz
-         vOPpwwH8Ikt6ZbSZcwPzGRSz3CNDBptE+CNWLKTdwt8LOBN57O1fUn5kFKVv5YWDfewh
-         bObfCMycqyGLINGQnnXdiUif4MQnQLKdAV5XLCSX+NFH907BuvnanPj6ltW4d45tccCR
-         Obp1IXLfqrgb+9thUVxlKwmFp3pwViYtbN+QyH74lmQ/BhMRorws17oZUEYf+RXfpSgw
-         +RlQ==
-X-Forwarded-Encrypted: i=1; AL+hErHgveUcW7bhkzOIVzMJMcL2Zl325NiTote6umoCZAj+ZuycaAeRjgjgjvq4og3uinGxdjfIgcHnNA==@kvack.org
-X-Gm-Message-State: APuU4Z/yb5i8eNfvmds3Q30suBUGdi0DtkCVAAPUy8Q4t/de4D1Bojgb
-	7mSI9/8xUm2PcBt+qe4NsnsGBW4gVh2ndcqpSdgfI3AphAQkuzAILHly
-X-Gm-Gg: AYBFou1ZWyJjWXMFSdFB0cVq8DK7Yn1TXtfwQvtM3nL+Wboi0JzpKMQ+4KkfUIWcMCQ
-	MVYl9momjVr/ZcoIVoISYKEs8JqrSeHl9WvH9rWaZf/Jv5PmyrCbv8HSQl5ff2CXUpMxr+7KqkU
-	SSE0bCKEKTJbJCJXjZ+C0bQyL3svNV7qxUS1+fn5ZF14JxsehPqrmBPewarLjlfNdrzoU2OQHH4
-	cXBLldfFc1TJmzPaBx+lnUkkB9hk7DWVhSzQke6SLQuDrRUyo8Jg6uh7VtmF2mCk5icAhfskV7z
-	vxEJQbx15sJKHA2T7DqdKuhkf/Nb0CWmzqpkHPg+EGDACRatJAWzCTGaplpbIK157x8SBVXSR9X
-	j/cU0KLBlXMCm0qin1vTCv1i/vT/kt++3SH4FkOZusPym4dGMqEvkZtFRHBDOToU0Hu+RS1CS+I
-	mf7PhKtLULqE1de0ORLxr+F/hgA2VdrVTVCJYNIh+gtqvbS2KkwezyP4YKYOJsj7bbmXlke4hi6
-	nkI4HZ2rLOxQI131FgYiuCmOhierY9piWUa7eP0rLIhyP5T8QV8i6GDbJBW0gwDBhr/sUSbVG7+
-	ldO0unDn6n3pNu6un7KdB6yMSyV5went1vKuhd9y/TjcWsMSAYqai/5rl0SzuOBHTHfxDKCx4Gx
-	+4LPWCzeSvgQ=
-X-Received: by 2002:a05:7022:130d:b0:1b2:3e1d:17ee with SMTP id a92af1059eb24-1b3bef0a955mr1889024c88.9.1794371008492;
-        Tue, 10 Nov 2026 20:23:28 -0800 (PST)
-Received: from LAPTOP-KD1TH5BD.tail375eb4.ts.net ([47.11.96.168])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b11150sm15985536c88.5.2026.11.10.20.23.21
+        d=1e100.net; s=20260707; t=1794371089; x=1794975889;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5+PpphlpajmWTe2u74lHALG+B1qJVE8FkqGWsdeseUE=;
+        b=ZAd9eLjzKpOMqzOUBe4OCgU0vkKttDXE+UAyWsAESOWNIyOeLK4SP3XT+Mrv+jr/Lf
+         Spc/q5zs2iZKWa5pppC8Xv/JIzHYoG6HQRqSV32NrHxtumyRMmk8L7QXQnqOzbC8FHdC
+         kTEk2+e4LVSyjjMPDA0afr7kwPUK54ksxpL5BR1zURLG5/7nIaC3gytwfm1uAjh3Ctn7
+         jr05f5D8oxSqbpYOy4g1FYJiwaVefN6IhFD4qb5NlaMToMwFx5DHBf9eMvj+lULKY9Na
+         PP1oKW5x83/PJV00C1iFu5krWt98NzhgPDe2iMrIwtWWb67Hi7u3NSXLCVI7R90+wQ2y
+         435g==
+X-Forwarded-Encrypted: i=1; AL+hErFG0iSvb/G37EEz9IVMVkZ+tze9AKpemaH4dJG1wIT0U26daIypWjQX9+Ntk7QwmuKXbazGn/55dg==@kvack.org
+X-Gm-Message-State: APuU4Z9n+r6wtjF9qV+Fvw+iDn1N5TcaSoycfe97nioR4l/tvXHPPwmX
+	S5/pDHBmjigewaZU6s7yrQ3EcD3hz8JCVahcGej1UtchiuCh6MlZe3HxGaobR8w+/w==
+X-Gm-Gg: AYBFou3fEnEIJtDrPTvan00dGIyNqoIpe7Ud3iqeLY6gFqIQpc44QrmUgdPC6WLmdeB
+	LZnvF1qy9nw+ST2wC6quWiihGoYTn28gwdiv/sCouRDQYMmSs3p6kWF5NBAEB8jSMAfqF27vGI8
+	rt4+Hx3OvucdmrfX/AJvcjDwGlJTjMhEVQwIjp6G7wUUXUSCWUGwPx+1S46aFLGl1PqCebtO6m4
+	ehkcQWr4jrTsPEQwJezA1b5+3RF9H3hENqw2BisqcXUdr7focVJGa70BLrgkx7GojBx6AJZRxPh
+	+xJhi5iA98nVeftaGkzQxl6tL+p2rbZA8rdN35HxAZWQ4liFfpKcV5jhg34o0m9WD2WukH2ebJW
+	0lvBWjvXNTDFNSoszATsNJblAKpxhWsiGcrNY027nhDIaKbM1RApRI6//FEHcYWpYe9nHKzukkW
+	OnqsY95gVPENWyqwVj6vC6aezBhVVnCW5VFCS+UetYdynliFKViK2RH4VbcyGRvcrtB7kwwFWpz
+	9JpFkctpccQEw/RogsPggeDUVlp9RfSv1VuPMx4YzqFcV7GUUB6xijGR9s4lOY97uKFbz5bSR4I
+	rmGVLqFHi/LVXJtsPYUIyY57itpdnsZQ/kIlcpdiuHHThuPt1DHMOziNoe5SxPoJeSmgmA==
+X-Received: by 2002:a17:90b:3c44:b0:3b0:d365:f8ed with SMTP id 98e67ed59e1d1-3b182efb65bmr1194697a91.21.1794371089135;
+        Tue, 10 Nov 2026 20:24:49 -0800 (PST)
+Received: from google.com ([2a00:79e0:2031:6:ad6a:b446:df00:78dc])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b17dfb7a84sm2353036a91.2.2026.11.10.20.24.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 20:23:27 -0800 (PST)
-From: Gopal Malaviya <gopalmalaviya53@gmail.com>
-To: alireza.haddadi@it.uu.se
-Cc: jack@suse.cz,
-	willy@infradead.org,
-	akpm@linux-foundation.org,
-	vishal.moola@gmail.com,
-	fujunjie1@qq.com,
-	roman.gushchin@linux.dev,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	regressions@lists.linux.dev,
-	tracekotae@gmail.com
-Subject: Re: [PATCH] mm/filemap: let sequential faults restart mmap readahead
-Date: Wed, 11 Nov 2026 04:23:10 +0000
-Message-ID: <20261111042310.191979-1-gopalmalaviya53@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261109-mmap-miss-v1-1-8b44b33f3358@it.uu.se>
-References: <20261109-mmap-miss-v1-1-8b44b33f3358@it.uu.se>
+        Tue, 10 Nov 2026 20:24:48 -0800 (PST)
+Date: Wed, 11 Nov 2026 13:24:44 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
+	Richard Chang <richardycc@google.com>, linux-mm@kvack.org
+Subject: Re: [PATCH v2 08/11] zsmalloc: encode 1-based obj_idx so valid obj
+ is never 0
+Message-ID: <avPto_ATpOqET8af@google.com>
+References: <20261110054836.1515030-1-senozhatsky@chromium.org>
+ <20261110054836.1515030-9-senozhatsky@chromium.org>
+ <sashiko-outbox-207590@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2497E20005
-X-Stat-Signature: 4zo8s7iut93y5xtm438dksn1ra4zojkb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <sashiko-outbox-207590@kernel.org>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 55682180003
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: c5mgn7qmbi1naw5peine5pjpkobc47gj
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794371010-237346
-X-HE-Meta: U2FsdGVkX19I0OmDeyfeaj7o8gtoOiVWIpH+iNwRfC9n2W272wjrJI3pG0TMk1QIeRA5IK8bYDPYZ0mOuD4KWE25Xkn/06mB3qSfDft95iXU56xOx1FpOl8vaoifjh+K9V6JYgSFt1u/Mydiw1LtaUQSUY+CfhrxYN4/jRE2hHyJHlmPwW1NxusvObCmLUiSTVa8PkktB+NuEzIcgX3NlCdGkqa5XrQM/6hUM967AFs+FieuhPQoumq4ddaPR0yQh9EsejRokwc4t+gLdUQfy1bRTqGuY4jIU5WssSDV2vc8kqJKUfoYx5GnOQrAPsnCVBCV6xYJXKk9/3HMVEFn6GdTVDr2ykfTZCXVgIjm1ff7rpFN2EkmstsibjR88JUxHYLQJWdUnijWtF9EqIy6goTJy2HqAW/3QXtPd8AbY71flNCiVU56vvURnumoeQlxJrzPY2ZxMWmDUCjmTBAJMKjpfFP8aDAsMVz9w6MvRRXa7q0KHDXTH1Ia1znpYzsJm9Q4VxhVceYqtI7sgwXoQHRj8nCamEbx5LsFCLROisFHU2PRj4DkLntGAHxy4XYJH/RmiiLeERkQuzx6zARI3RNwVHoJFkdo5Q/k2bmCoKXtlG3dJyhKvJw8+zXFgmv4dXaWfX9Ddf2neBJTwdlRAGL/BQbyNCd5/ir6cvAphxSXMC6Am8beICA8cjprasJi0CX8Unw1veXyrY+16/DWSqDifpBwoXFyd5lJg3VzprwfzVuFH9vPew6cIcdNcb7+rADtPICagwx1m1fCot/rpdTJo79SNFMkqmD1crH8hJFLdVDRHr0LU9TqcoJ6ZTcJRieAl/YiCi3CzY5bmZjCcceYl+0OxgTrIrfnGUz8l3jKHhzmk4IQCS9wWVS2efL5wur+HJoXoAWzDyMZgXYWls9jgWs1fkyOPMMpRpqAoLvOzNyFRBLHK3oPYXSuMb+gAxRrA+gwTR8kc2CLUOv
- mSKRvAp9
- kaRDrKaG4qq2DFm+fywAXbto86IEluDf6n+UJMcn7t03SeljrvHzkdDqlzluNCM3/OcLBzR4/RDcGYAT5FqUsnpl/TohMuo6H73qRvQui+tZsmGLK0x/5HwDngR1npJhdC+gWrT2HM+hwzZLnJHdEbm1ehzogQVW6eiSI3BAdtFspCHSlch/Z7HnrYf7UxcAEQ0ecGM2tcLzUNypLgpc1GqNA300L7vwIR3ENNtwW3k1fcIYJxCHnGFd2WsfkBNU3011irWVPuSgERc/ogJqbmXvXUAHnpNX80aP0m735HVXJNUgpJ7p0SOgRoueRa8+wRqBhBAMzaoCzwLzUIeF8uBcpnTsV5+fWtER6lRrCs8i0yH2rRD0YtaHZ4adEAsbPjH5o0W+NwKogFXywSG3JmAOntJNpoin1ot48J79PrHqYqeDWuxqzyKNvDdozwuQ2ngEUhzg6MZMcxkHP9WtawcnhdCq3JACT2U8bxGw+1sRwcEyiGJNWSxmY3hZNIt882FU0
+X-HE-Tag: 1794371090-507060
+X-HE-Meta: U2FsdGVkX1/T4BWpubISyTSpyS86r9FBdbto93zHOBBYnxMgzPaqc3zTTLzXf1cH02KAwvnDlxWb4c6ngvOeIB43k65aRZL5Ep0lOt/MgQrT2xsCCeHZNXlQpayEWHRoxwZwHuQsYTU+bUiknQAP2sEEc+gU9zEQWU6KmzVkHc54eWbUOuXbxTOrdEi7+WXIyl8qB2XzyjiGOFyb44PCgnBY2/CHO65UQZ5DuO+aebi2rmEq48XMh7ciXa0EZHH2Yf7w37p05QD1ukawBVvGJXNMz7oKng4tFsp6AVYE4SBWcz7yj6jG8zoo0WDOyYrAnbGoFtUrl05xvzkF1twoZtgiwe/9RfRw9VEtVtqtpW1dRKL47zJTr22u0Q+zltZgUPkjUTjzZxrEfWCCiE1YtTSGK3fVf7eURPycl3FnJCiRMcz8C4acX+f5gG+FWmb7Kk1N7sOwHX3tnFDTkEdpxdMUx2GqJsGpKnRRXLErDTKZJdkMKcH0EugvHCD+H6asN8d3KZ9z/CY7ip8vx6SpM2OekwIyU8Y4O+945qjyFa/IIqTV60j5QrpRLmU8zldRf2pT6/ZqOrLvMcUyRWSG7dKTLGEPPMlBatYURpLrfPfXXrdCX3YcdZ23s9/Bx+JFjl8+KShoUe+X4eK3SVk0wcZzx55UARgh12KgpOiTOVLBXAkpz8oxPZc/DMLBpRHDgrb0P6rHuY00sPl/SNnRss83D+5H0PAcvBiu4aH0/Sqg4J35UU23xBKb8kl71yXRkWiQcIPLxmvyNlbqhAg4yoxrZ98XkIXQN1yLPtFEcLVikOOlOxX8TK7i9ahrWlcYi9b/bcpEi67QteynEROsaUM+XDIl0CwBh9IVBQPKii1Oux90tbUXZQ1biKhi17Q3S3XlrETEbW4knOc0G99NJnybfaOdfk0FVaXJ6rKpPlcePeDvwuq4/EmqA7rJ57tMIpPjfaE43kFiDhJe/YQ
+ Uk9SK7dh
+ taetQ3lcJ+pHNScbYR0Sdie8/hjNrV0igJz+8cQoIbb1mpSZAF4iCugpBD+7UBjYkpp9grVrL8jj1MrBVWJezrOhYCyfyDoLJjzM7209Uh5d9kbyGzLGFWQxKPVIB72al1WCb3d91RohO5fKlvksRSIUitdCH0fyuPNY4U43PuH2CezjSNwpwNVrW+8U/VUKvgHja8J/Nriq7QmpmrH48Fs3bEBYja5qFLtiU1n3oJQ3pCiquro1aBj0b5JsmGlxlMtRGO9zr4jsq4kuXS6IftJiEa9FPYhMZMX8U7rAPto6+mprC/sA3GEJEPf7HLC9UfJQ+rc3jCFtbSPlDU4vIlUIIJtcE9+03Aaiq0q5N6cSFCt5ojjsNcxAwmk0LxV18wiCMENN8IZht8T4qpxxYGdV88xTPxnoOWI5rWVXwN7eyn00=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,56 +126,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Alireza,
+On (26/11/10 18:37), sashiko-bot@kernel.org wrote:
+> > @@ -169,9 +170,6 @@
+> >  static_assert(ZS_OBJ_IDX_BITS >= ZS_PAGES_PER_ZSPAGE_BITS,
+> >  	      "zsmalloc: ZS_MIN_ALLOC_SIZE would exceed ZS_MAX_ALLOC_SIZE");
+> >  
+> > -/* ZS_MIN_ALLOC_SIZE must be multiple of ZS_ALIGN */
+> > -#define ZS_MIN_ALLOC_SIZE \
+> > -	MAX(32, (ZS_MAX_PAGES_PER_ZSPAGE << PAGE_SHIFT >> ZS_OBJ_IDX_BITS))
+> >  /* each chunk includes extra space to keep handle */
+> >  #define ZS_MAX_ALLOC_SIZE	PAGE_SIZE
+> >  
+> > @@ -189,6 +187,11 @@ static_assert(ZS_OBJ_IDX_BITS >= ZS_PAGES_PER_ZSPAGE_BITS,
+> >   *  (reason above)
+> >   */
+> >  #define ZS_SIZE_CLASS_DELTA	(PAGE_SIZE >> CLASS_BITS)
+> > +#define _ZS_MIN_ALLOC_RAW \
+> > +	DIV_ROUND_UP(ZS_MAX_PAGES_PER_ZSPAGE << PAGE_SHIFT, ZS_OBJ_IDX_MASK)
+> > +#define ZS_MIN_ALLOC_SIZE \
+> > +	MIN(ZS_MAX_ALLOC_SIZE, \
+> > +	    MAX(32UL, ALIGN(_ZS_MIN_ALLOC_RAW, ZS_SIZE_CLASS_DELTA)))
+> >  #define ZS_SIZE_CLASSES	(DIV_ROUND_UP(ZS_MAX_ALLOC_SIZE - ZS_MIN_ALLOC_SIZE, \
+> >  				      ZS_SIZE_CLASS_DELTA) + 1)
+> 
+> [Severity: Medium]
+> Should ZS_MIN_ALLOC_SIZE align _ZS_MIN_ALLOC_RAW to ZS_ALIGN instead of
+> ZS_SIZE_CLASS_DELTA?
+> 
+> Because _ZS_MIN_ALLOC_RAW uses DIV_ROUND_UP() with a non-zero numerator, it
+> is always at least 1.  On 16KB and 64KB page kernels, ZS_SIZE_CLASS_DELTA is
+> 64 and 256 respectively, so ALIGN(_ZS_MIN_ALLOC_RAW, ZS_SIZE_CLASS_DELTA)
+> rounds _ZS_MIN_ALLOC_RAW up to 64 or 256 and overrides the 32-byte floor in
+> MAX(32UL, ...), eliminating small size classes even when ZS_OBJ_IDX_MASK can
+> index 32-byte objects.  As noted in the comment above ZS_SIZE_CLASS_DELTA,
+> ZS_MIN_ALLOC_SIZE only needs to be a multiple of ZS_ALIGN.
 
-I had sent a different fix for the same regression [1], reported by
-Trace in [2]. Jan prefers yours, so I have dropped mine. I ran your
-patch, also with the v2 change you describe to Jan, through the tests
-I had: a KVM guest (x86_64, 2 vCPUs, 3 GiB), mm-hotfixes-unstable as
-of 2026-11-08, ext4 and XFS with 16 KiB blocks on virtio-blk,
-read_ahead_kb 128 unless noted.
+Hmm need to think about it.
 
-The reproducer from [2] (2000 single-page faults 1 MiB apart, then a
-64 MiB sequential read), major faults in the sequential part:
-
-                       base   as posted   with v2 change
-  ext4                16384           2                2
-  XFS, 16 KiB blocks   4096        4096                2
-
-Touching 1% of the pages of a cold 20 GiB file, larger than memory, in
-random runs of 1, 2 or 4 adjacent pages, MiB read from disk with the
-v2 change (first of two runs; the second was within 10%):
-
-                       read_ahead_kb 128     read_ahead_kb 8192
-                        base   with v2        base   with v2
-  random                 259       234        1057      1070
-  stride 2053 pages      271       236         992       992
-  random 2-page runs     257       373        1135      2538
-  random 4-page runs     240      1146        1200     57748
-
-The 4-page runs at read_ahead_kb 8192, which is what this guest's
-virtio-blk disk gets by default, read about 48 times more. As far as I
-can tell, each run now has two misses and up to two hits on the new
-window, so mmap_miss stays around MMAP_LOTSAMISS, and each time it is
-back at the limit the next random miss gets the full 8 MiB
-read-around. My patch ran into the same and kept mmap_miss at its cap
-on that path; something like that may help here, but you and Jan know
-this better.
-
-On the Fixes tag: with the commits of the series built one by one,
-commit 0b9c0aeba938 ("mm/filemap: count only the faulting address as
-a mmap hit") alone does not show the problem (1 major fault with the
-reproducer), and commit 9b0fcac3cfe7 ("mm/filemap: do not count
-FAULT_FLAG_TRIED retries as mmap hits") does (16384). [2] is the same
-regression, in case you want to add Reported-by and Closes tags for
-regzbot.
-
-I am happy to run these again on your v2. The tests were set up with
-the help of an AI assistant.
-
-[1] https://lore.kernel.org/all/20261109091444.128521-1-gopalmalaviya53@gmail.com/
-[2] https://lore.kernel.org/all/20261105192517.228523-1-tracekotae@gmail.com/
-
-Thanks,
-Gopal
+Those min-size-classes are never used anyway, e.g. compressing 16KB to 64
+bytes is just not happening often enough (if ever).
 
