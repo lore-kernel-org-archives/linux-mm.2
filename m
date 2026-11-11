@@ -1,110 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86919606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 15:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FB5B606A8A0
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 15:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=QkPGJIg2
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=CPe6sEoD
 Received: by kanga.kvack.org (Postfix)
-	id 90EC36B05BE; Wed, 11 Nov 2026 10:19:04 -0500 (EST)
+	id 592566B05C1; Wed, 11 Nov 2026 10:22:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E5E36B05BF; Wed, 11 Nov 2026 10:19:04 -0500 (EST)
+	id 56A806B05C6; Wed, 11 Nov 2026 10:22:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 823876B05C1; Wed, 11 Nov 2026 10:19:04 -0500 (EST)
+	id 481296B05C7; Wed, 11 Nov 2026 10:22:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E12B6B05BE
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:19:04 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DAD22160316
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 15:19:03 +0000 (UTC)
-X-FDA: 85423196166.24.5813E39
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CD8F6B05C1
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:22:28 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CE95F402F8
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 15:22:27 +0000 (UTC)
+X-FDA: 85423204734.07.1F1B743
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id BA1112000F
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 15:19:01 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=QkPGJIg2;
-	spf=pass (imf13.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	by imf26.hostedemail.com (Postfix) with ESMTP id EB8E4140005
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 15:22:25 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=CPe6sEoD;
+	spf=pass (imf26.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794410342;
-	b=Gf6leldFXwcw/lZQXpc2hEnbiTsaVeSbuoUL/+296yntjHIJYRcZ9LoWNvP/1P7hb5usG4
-	GzTP1T1H4nzXBIpFRC5BuxqmebBKvrzaVGuI4igVEDrbA2q3xrR8swwckwrcItmWuPP9rJ
-	NAnMKm845B4III9tNhrIxilxwN5Trf0=
+	t=1794410546;
+	b=SnHr0T6YCMeWzZOGhM75cBnXMEXQDsZzBqOrLbmIYRR0ltthVQ8uaGYspD4eTwk9QgQ+nu
+	MIUd8Mh9bEG2JXaVA65/A56yfBUaiva0p1H/XbktMRc6qkG/VXllM82cRgKup7DGB5QRRp
+	/Q28RI1eumkozyge1BFz7v1ytiAJqLg=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=QkPGJIg2;
-	spf=pass (imf13.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=CPe6sEoD;
+	spf=pass (imf26.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794410342;
+	s=arc-20220608; t=1794410546;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KRk3hY6OxrgIUUvXnGsk+3o0qrfqVOAaie3G63vpVoQ=;
-	b=D1lXySX9kpf2b7DhPMk+XWVpLT9+TRGrTYgUz8DrcTmZTqpRJmmYCCS9GrluqeU1Lum63q
-	LLbE5L4ZGSo9j/Ls5aM/ODaR8IR0G3MJh0YFbVSnSKGIT4q1JxSmB/5SzDeyCw3mkLnAf2
-	cGBajC8S9594MX14cJ0hgHfGPEEx1ks=
+	bh=mBSo8+i91CrACZrxGkLXrZpH+5L8K8Z5H9NJzXzfrR4=;
+	b=zYtNotGSp3ts4dNH3PnywEWlxoDR8QabmSgP4ZslTqxHf/4nbCi7JmusS7lCVsNFZfT51Q
+	VWTg5pqfQ2VsZTntoB/qrJXyJM/LLYqPxtnWBMCDXiu51SHgo0mpwtfHX8KFFxTH4egw+r
+	jXAEePIq2Sa+zNZ3S/gnIyGBy6UXxfg=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 75D3B1576;
-	Wed, 11 Nov 2026 07:18:57 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C1AC61576;
+	Wed, 11 Nov 2026 07:22:21 -0800 (PST)
 Received: from [10.43.20.72] (e126510-lin.lund.arm.com [10.43.20.72])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4F7853F632;
-	Wed, 11 Nov 2026 07:18:54 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D2A903F632;
+	Wed, 11 Nov 2026 07:22:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794410340; bh=K/XoUAuP8agS+YAJXtE2UoZzMy+glW6cZvjG+mAtTjI=;
+	t=1794410544; bh=mBSo8+i91CrACZrxGkLXrZpH+5L8K8Z5H9NJzXzfrR4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QkPGJIg2CJOeLzjtVDkULCNadPWNyrorR/1C3mAUX8c/pyOkkWvDHG9G3CGYEhMev
-	 qUJgES66VYZtNmeSHicJvJWPKlisEzf+05LgJxfpCQgOaimgsIvi/LnEu/6LHVJoQQ
-	 7r13JTYY6omaLAN2C8gYibM2JsE67D2KGh3HWRew=
-Message-ID: <fe64be42-03aa-43fc-bdcd-e6b581eb9984@arm.com>
-Date: Wed, 11 Nov 2026 16:18:50 +0100
+	b=CPe6sEoDXEq0CUSjZ6jny/Hfzg7F0nl2TvWdHaTVM/Z8om2nXFrbUEHiNinOsLi3G
+	 b+zM4dJw+QxdRaUrtNxakmzC6AiBkhYtoNt/T+Y94M/CGZNoMTkg+so51tIkMogts4
+	 Zp7PhvG4gHcOkBuMpB9jhCJKm3Tc9Y9pOp0sQA68=
+Message-ID: <0a48af69-d0a9-410e-9d10-389eed0827c9@arm.com>
+Date: Wed, 11 Nov 2026 16:22:13 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v10 04/22] arm64: Implement asm/kpkeys.h using POE
-To: sashiko-reviews@lists.linux.dev
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Ard Biesheuvel <ardb+git@google.com>, Andy Lutomirski <luto@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
+Subject: Re: [PATCH RFC v10 06/22] arm64: Disable EL2 trapping of POR_EL1
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-hardening@vger.kernel.org, Andrew Morton
+ <akpm@linux-foundation.org>, Ard Biesheuvel <ardb+git@google.com>,
+ Andy Lutomirski <luto@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
  "David Hildenbrand (Arm)" <david@kernel.org>, Jann Horn <jannh@google.com>,
  Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
  Kees Cook <kees@kernel.org>, Linu Cherian <linu.cherian@arm.com>,
  Linus Walleij <linusw@kernel.org>, Marc Zyngier <maz@kernel.org>,
- Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Maxwell Bland <mbland@motorola.com>, "Mike Rapoport (IBM)"
- <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Matthew Wilcox <willy@infradead.org>, Maxwell Bland <mbland@motorola.com>,
+ "Mike Rapoport (IBM)" <rppt@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
  Pierre Langlois <pierre.langlois@arm.com>,
  =?UTF-8?Q?Pierre-Cl=C3=A9ment_Tosi?= <ptosi@google.com>,
  Quentin Perret <qperret@google.com>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Ryan Roberts <ryan.roberts@arm.com>, Vlastimil Babka <vbabka@kernel.org>,
  Will Deacon <will@kernel.org>, Yang Shi <yang@os.amperecomputing.com>,
- Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org, x86@kernel.org,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, x86@kernel.org,
  Ira Weiny <iweiny@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
  Thomas Gleixner <tglx@kernel.org>
 References: <20261109-kpkeys-v10-0-aa6c4d9603bc@arm.com>
- <20261109-kpkeys-v10-4-aa6c4d9603bc@arm.com>
- <sashiko-outbox-207318@kernel.org>
+ <20261109-kpkeys-v10-6-aa6c4d9603bc@arm.com>
+ <3500936b-4177-4ba0-a9df-7eb9d9d75b0a@sirena.org.uk>
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 Content-Language: en-GB
-In-Reply-To: <sashiko-outbox-207318@kernel.org>
+In-Reply-To: <3500936b-4177-4ba0-a9df-7eb9d9d75b0a@sirena.org.uk>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ue4beonhs41pq7umdap5djn8kxf8rkm9
-X-Rspamd-Queue-Id: BA1112000F
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794410341-624877
-X-HE-Meta: U2FsdGVkX1+kkdt5ZdPZZ0upTVDT7sgER9Q76LlxxKM0gCyUlJ7gt80QUvJRh1PWPVHJDYNS3yFR+aw+O+8BDk7myBheEwhh8PGX+xmgdv6cUb+bdUZfEYbxZlss+6/TEE4ZQPMIihAXtOa1CbsefLtIOEQQYpZS1+Ojd1VYnhDGhB8Z3zvMrQ5P7yyQsmP3uU1mUXvrV3ZCzqIZCGYRX/b4P4SePZlo0//lm8rolLbn3a7Wjq2gX29zSJwJ6lJK/F0hY2Ki8pnXWsWuFwuHSbjslXk3niyYFSYo3c/9IhmmVnnxnBJM5MRzurYjQ4IIcoRpLR1yJFYsQ9spzF2OnmriTo2nxwz9syMI2qve6q/Ydl1r3WKEtbNZq5s/Q5pS40YVBq2Sk4pJgrHJVuxTdC43VnVzdwCaGtEJdx+Z01+UqiuLaQWOnSF+2esk26j7jiWA82WfEGqbsH8JUlJFxrYXg+m2aXgN0UBL3Kcu7f/L/AyqT804H3OW88PSWttmw4qC7F/PA1Nf7+z5VeDykGC3XP1hqexMWm9qZWwcpU917WUbwuiVw59tDtOyenolty1vzQJkNEotP5SeoIeKkkqqrRniyCB1EmZi0wmfLFMJvPlGXIlDmTfoMQSyfA4wX+khQvQsNTMjctuQUB4dFtVclV9+95SJ6t5F1xKZWYo2PcUwxezPOGc6Bu4vy5datgB4M6fZi1OKzbSGWOIAheP7fJB9elTP0d1vhMMQkbKPMpsX3rt5ACW564LX/qEVlhMW7qcQIRMpHAyIDdOdZbYYDirKS9gqcY5RoMprk8tH7Y52BhkeTfhJp+wFFD4PLhOMx7hnazSgE/xGQcH/XgsSKyX2UrDbvQgNGJON4VvdVPp65GXioaQHj2tsrBosjXo6eJRTEnolbFaNbS7CcIZAkAQszsVE+FqnTha2fJbsl1bMpQciYUFt4t1j6yaH0jdfImL+1P+P1XCk5Jc
- +uoZyCM+
- deu6dswa2wzxK50G2Fgq+wGZBBfWWZAQx6ZWlBuZDU6mGI61udV4GEFfAdB7Z31g+63oFDuME0tRvwgrOtJJCkIBm8/LZvDzO+VHLwHokLCvViZv9sWP/U4bXgCJUDMZlc6mXG05WVj+SkTvuTwfXyMeoWcVUNhEQJ/cFJhEo6mj9b2fhDRv6QOJ0WpcaIVZe4Yo2TZ10j/ZTx5kOsPeplVwNCAD+uFhWip5nNUDOoqUkB3GWnCfhU47ZdpfayTJyVSF2njnPexDSwZdas4/p19sfrjHZ3Nh0iWfIGsru2/u42RHZE4rjC000YWO2aqcxZS3fLkEJkFOGO5B6HBGN29Fc7E02lACyRX5bK70ZM+7PdC/bwelmseyLYw==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: EB8E4140005
+X-Stat-Signature: 195gjoc8yxz5wcnxqmwtjhrnyt3edphb
+X-Rspam-User: 
+X-HE-Tag: 1794410545-860118
+X-HE-Meta: U2FsdGVkX1+yzgKoDIktQgwl2l1L5hxuhtg87dMgFZmiTAFbWXEfAe4V3sjpxprahhUimeZ+6WG64TklsDyQazzbcsUsptudue6knG8UihLvv8KuTaO+V0RG+DWcy7mewT0+NZJ4Ebn7x/8e3lWF9+SDiwoKxTt9WtB8oAieSv/qARTV70wh15X+5CPbFCk8ODVAb6FfZ7rRLZNXPEnOSVzO14aRCBYqzFeC0J4h/Wtxh4V39s9/6OB/Tc5oha+90tqpUi6q9WCPV3KLSJHiJW8m8Y4cPVFC3pN/P/yukUaF4Zob+jVD12Kw6iUmD2/BK9W2D3pz28t4PP8U1HtuZJmoJpqQNEfov6DoX6ItzWeTSyOsyJHcI+b6PHVGJJEWMr1YMEFDKiWqlRXufCVWt8Zo/f19tjExlpsw1minKqWRcg0o3ChmMFA7lWS+comg7BAE/LULAMetkGq105o5HE4zDFl/pq8mZ/LSZtSSlIy1KBvnr3xwVup4rdc1BWl8e/1vxefXOIm6YT6j0oLX8dbMCItpHPgcblgs9kL9rUiY0ypKjOpuRej+PIB+ojqjzShzklqAsYEPuUoOXmd/CEUkN5Es/xGXxxizTsu3KADMe7gUNpjwNMlVFND9U9z3cBgIht/g0/TQFDvALF4M7HkZMgIm/lFAJHB/c1m0lX0zkMxniWc+Pf+0eZh8ZCZ879NfOnITL9LmJjhodPDRAE5BjgmUkL/XY1GpqfW//E/6HQkuc8rmGebwvw1S2nGPNHEeTMgP+2G1vqbovyw9m6wSJnIWPhvLTQVOk8VrGaV3kPczKNbgtDqEe0OsWDbvGRLf0/YjfmWYwzsWre0LKJZWkGR4jL7RXjzAa3A2HdIgc0TwEEnNgY3/6f2L5dVOoYMaQKlko2v4mCDaTfu0KzuIoc1dqaUJSFqSeIwS2irEqmcyxxjWjZNnq0wWn5+Xu8BGhQkadi9JbfQgJTs
+ mUijFeBV
+ tfIycwdxGPLQhLlhvUydcYV5Op+cfouUTsmZjWDwRi9bfM1BcvoRpdi/cKyfRIk2t2T69z760f7zxuyDTbhEhqdXhOTX2Uh+JfeHMGhVXgQK/KBt3QTqesoDlwibXD8txfEDjbsLMruXW+SD+Wl5XHU/14CsEcsVmcIzS/WCZcAkHPvaY8T6g06Kf3ALx3013KAkzAk0HJxQLgwjKzI6iAwA7etfYT3uJ9/gZeU8hJKi0hYaWRlDz+YMePUJBGY91mVQUEdbAs2iLpDKtWT1FwJ/Iu2lpjvoxYX8c/651gcr36ALaBUIBlM+O4xHfM5kXU7pN5oBy4WyO7HV7NIA5AlFRk548d8WkZ8hhORDM6kJbjA+NnN8wUY19yTaZpfliCLXhffYgFKevtNw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,70 +114,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/11/2026 17:02, sashiko-bot@kernel.org wrote:
->> [...]
->>
->> +#ifdef CONFIG_ARM64_POE
->> +
->> +static inline u64 por_set_kpkeys_context(u64 por, enum kpkeys_ctx ctx)
->> +{
->> +	por = por_elx_set_pkey_perms(por, 0, POE_RWX);
->> +
->> +	return por;
->> +}
->> +
->> +static __always_inline void __kpkeys_set_pkey_reg_nosync(u64 pkey_reg)
->> +{
->> +	/*
->> +	 * Writing to POR_EL1 potentially affects all memory accesses, so
->> +	 * use barrier() to ensure load/store instructions cannot be reordered
->> +	 * past the write.
->> +	 */
->> +	barrier();
->> +	write_sysreg_s(pkey_reg, SYS_POR_EL1);
->> +	barrier();
->> +}
->> +
->> +static __always_inline
->> +bool arch_kpkeys_enter_context(enum kpkeys_ctx ctx,
->> +			       struct arch_kpkeys_state *state)
->> +{
->> +	const u64 prev_por = read_sysreg_s(SYS_POR_EL1);
->> +	const u64 new_por = por_set_kpkeys_context(prev_por, ctx);
->> +
->> +	if (prev_por == new_por)
->> +		return false;
->> +
->> +	state->por = prev_por;
-> [Severity: Medium]
-> Should this block be guarded by CONFIG_ARCH_HAS_KPKEYS instead of
-> CONFIG_ARM64_POE?
+On 10/11/2026 16:29, Mark Brown wrote:
+> On Mon, Nov 09, 2026 at 03:58:31PM +0000, Kevin Brodsky wrote:
 >
-> include/linux/kpkeys_types.h only includes <asm/kpkeys_types.h> (for
-> struct arch_kpkeys_state) and defines enum kpkeys_ctx when
-> CONFIG_ARCH_HAS_KPKEYS is enabled:
->
-> include/linux/kpkeys_types.h:
->     #ifdef CONFIG_ARCH_HAS_KPKEYS
->     #include <asm/kpkeys_types.h>
->     #endif
->
->     #if defined(CONFIG_ARCH_HAS_KPKEYS) && !defined(__ASSEMBLY__)
->
->     enum kpkeys_ctx {
->     	KPKEYS_CTX_DEFAULT = 0,
->     	KPKEYS_CTX_COUNT,
->     };
->
-> Because CONFIG_ARM64_POE is enabled by default on arm64 and does not
-> select ARCH_HAS_KPKEYS until the later commit "arm64: Enable kpkeys",
-> when commit "arm64: Context-switch POR_EL1" includes <asm/kpkeys.h> in
-> arch/arm64/kernel/process.c, the build fails with incomplete type errors
-> for enum kpkeys_ctx and struct arch_kpkeys_state, breaking bisection.
+>> Make sure EL2 doesn't trap kernel accesses to POR_EL1 by setting the
+>> nPOR_EL1 bit in HFGRT{R,W}_EL2.
+> This wants a matching update in booting.rst as well for when the kernel
+> is booted at EL1.
 
-Will use CONFIG_ARCH_HAS_KPKEYS instead. The idea was that this
-implementation is POE-specific, but in fact another implementation would
-likely be runtime-selected so using the generic #ifdef makes more sense.
+Good catch, in fact POE requirements are completely missing from
+booting.rst. Will post a separate patch for what we already need
+upstream (i.e. POE at EL0), and then expand the section in this patch.
 
 - Kevin
 
