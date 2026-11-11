@@ -1,103 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D49606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 19:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60124606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 19:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P0TEn7bo
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CFLB/cPC
 Received: by kanga.kvack.org (Postfix)
-	id E0A776B05B8; Wed, 11 Nov 2026 14:43:54 -0500 (EST)
+	id 7FBAB6B05B0; Wed, 11 Nov 2026 14:49:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBB1E6B05B9; Wed, 11 Nov 2026 14:43:54 -0500 (EST)
+	id 7D2A56B05BB; Wed, 11 Nov 2026 14:49:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C35066B05BA; Wed, 11 Nov 2026 14:43:54 -0500 (EST)
+	id 6E8806B05BC; Wed, 11 Nov 2026 14:49:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E69E6B05B8
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:43:54 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3395716013D
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:43:54 +0000 (UTC)
-X-FDA: 85423863588.24.28AA1F3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A5286140005
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:43:52 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P0TEn7bo;
+	by kanga.kvack.org (Postfix) with ESMTP id 4A4C26B05B0
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:49:39 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DC4FC1603BE
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:49:38 +0000 (UTC)
+X-FDA: 85423878036.04.82DAB65
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D760DC0005
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:49:36 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CFLB/cPC";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794426232;
+	s=arc-20220608; t=1794426577;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6Uj72/TkNOSKLa/NvnCJF39YYiorN2RudsmWa61UIzo=;
-	b=IgSrX/A6uoFwFidlgg6wrZWDG5GCv8cp4H7I7sIoVNnmhPsG2yEjQYcvzq0JTOHDbUgQkT
-	Ndf3V63EyotHRLc/YiNS5LV7Lc3kfOaIDRpTYRcjcUtZNXD3zXuX86T1VXA7/6iVMvRbzq
-	HfXUGMUC8I14q89rtTxDa1wDE/bp6Gk=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P0TEn7bo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	bh=gVc6YM8M5IAHsgG4XamDTanrt4p9Rvguj7WxgEd5KeQ=;
+	b=6RPtquW8cvPLB1nKbCCA3KIoxn6pJOI0FpNgrMCPjYRCLa8taUp/Ry6gDFus4JR9gFcAcv
+	s1NTssJJGiMsohi+py7htwgYM+TKKeRh9TJDRjgsfYKK8klxfm7LaIXHnEqe/xTdUflcf2
+	qc5ELnCwKTfDH/Dx3ouDm/HvsoMiW/A=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794426232;
-	b=necR87PgXuprBxeNVQpnbwhl4Ktqd2sstNhoYolMMmK5/rVsIYJoK5yGHGfbNBpXFctcoJ
-	sGDyEwhK4uBmkmgoeA4cGJ55Vnbki6Z2lpAm/JGIdgOTn8bcYIaMQtvAsdkbM1q4l1F+C9
-	o9oVfJI4mxW+7QsCbDduZndem4t67+0=
+	t=1794426577;
+	b=d73CEA8nM2GNV0bEo0sG6E9W/n1IqezHDLh6YQmflY99G777XjPiMu6p12+LvFm7pU1V3v
+	OfaImDRg4bcENTwb3NVHXoEr5OVSeqqoCJ+TbIbhlfoGo5DMUxp8UbGzwmn6x3ULvaXB1J
+	B3mW1c7ZOevSXduFyE41RglkKCS8U78=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CFLB/cPC";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 41D4065551;
-	Wed, 11 Nov 2026 19:43:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E45F1F00A05;
-	Wed, 11 Nov 2026 19:43:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 030C745D4C;
+	Wed, 11 Nov 2026 19:49:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65EE31F00A07;
+	Wed, 11 Nov 2026 19:49:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794426232;
-	bh=6Uj72/TkNOSKLa/NvnCJF39YYiorN2RudsmWa61UIzo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=P0TEn7boxctwTXgjGvCCkHxSFAxUViGYhYp2RLKQzv3rCLNSA9j279J2TO4qYMp5M
-	 Are//SoG1FmYXNapiCZqdhWYiptsMIgQVO1lTTOcfRSG3Ngr8pS1xp3NKwMV63Sp1/
-	 ILvCg4F1GN7zIr0CNUUa9nq3jTAzTPvsDojCOcb7xaEakPpVeVCQCpcQ+LCe7uhZfd
-	 8na3XgjuKauR1u4s1VYEfS+qGSXxY3ponUyIJqkyh5kPRIcjudRYcSDfgzpPN510Of
-	 QAq69VbvOi8R/nnWj9AFrjeutEq6c9wSpVK8LpB4uIJB0YuvnhWk67PDa8JgxwBWTP
-	 XWHeMILzdw1Hg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: sashiko-reviews@lists.linux.dev, Alice Ryhl <aliceryhl@google.com>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun
- Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
- =?utf-8?Q?n?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Will Deacon
- <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Mark Rutland
- <mark.rutland@arm.com>, Daniel
- Almeida <daniel.almeida@collabora.com>, Tamir Duberstein
- <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Onur
- =?utf-8?Q?=C3=96zkan?=
- <work@onurozkan.dev>, Lyude Paul <lyude@redhat.com>
-Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 2/4] rust: sync: atomic: add atomic_per_byte_memcpy
-In-Reply-To: <sashiko-outbox-209187@kernel.org>
-References: <20261110-page-volatile-io-v5-0-a91ef252c24b@kernel.org>
- <20261110-page-volatile-io-v5-2-a91ef252c24b@kernel.org>
- <zJFQbYV67YWG-NtiQ0DX5nJ_8ddkkCuW7PYYnJDTumjlWS9_CnUvPigc1ieKk9xUcTCPH85viXhev1LXc5mMXA==@protonmail.internalid>
- <sashiko-outbox-209187@kernel.org>
-Date: Wed, 11 Nov 2026 20:43:39 +0100
-Message-ID: <8733t7w3v8.fsf@t14s.mail-host-address-is-not-set>
+	s=k20260515; t=1794426575;
+	bh=gVc6YM8M5IAHsgG4XamDTanrt4p9Rvguj7WxgEd5KeQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=CFLB/cPChRYUDHwlEFHTvMKQ/okKxzi0IRhO0GRhxiBRDDZnNScQyxbPO45ZWQ6zT
+	 PXncE585W0d7wWT2u3P+rDmhOotopn2mdO1EJF1peW1OhvmrVkH06SDOfnSFJiU5nM
+	 ZugV5YoAyQ0b5sUvEBEZiAlzOYNlhCSoZdQTe/tkZVsHjyxo0BiYZNVQGVFuOCHmhh
+	 O7ysLZ/d2PlmU+pIf/tHolLnKbhMJygw2KSRqpB7g3XzgV1FkZNIjbzIRYVKFFnRrT
+	 IoCOjjd+19UnCUQkHoH9rHLVjRiK+b44FcXcFmbBtnWHyxBTn4vcZ6rh/zQVNE2m2H
+	 yAJ/Io8JzD+tA==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.ams.internal (Postfix) with ESMTP id D8164198003A;
+	Wed, 11 Nov 2026 14:49:27 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Wed, 11 Nov 2026 14:49:31 -0500
+X-ME-Sender: <xms:x8b0asLLHLpPYXr9uSwDpgfI2VhUaWLEDu2DPUd2kMwCXhNHDfK98w>
+    <xme:x8b0aqkenIL07D2mznlyle-qTJlZYLapb1udmcB3z__LHytYYEDy1n-84bR3FZVtV
+    P-bBuR4-SpShMd3aIFwr6Z0As9QlBzII7o8f-acSYJX9pu0OyKB88ms>
+X-ME-Received: <xmr:x8b0aj1rPbFagLhK8QpcWu9e1gegKpofGHhSUV9WHylbRqmqwwoykWXNQQg>
+X-ME-Proxy-Cause: dmFkZTEdupPFVg3GK2wZR+bhvzM7lmON/H/kDh6eMRSZDwCb3j3MA/z6XpUq9kN9AFvMyS
+    zgxK6eXvhIO/RlMkjFBwb6NDEhcxkQGM+ACP2GZ/sgZgNDe6+uGo6DY8cKIOoSXxTC7CzQ
+    STnAxo1I132FTLSmWThy9YNRnudLY9EDMrsciu+IGf2CIyse2jIL7gv5MVc80vDitFJ4U+
+    mJa+1MgYj2BRB9R4oUsbobDR/aJklmz1wsXV6ESw+/XNvzptwzM9MY/mDWBfhH3chRy0QJ
+    y5U0sNSuNj1EezXb2QP44Q5Lkgpa6wR3t6023acNG9sJppH9oxwxd9eR591GcP2ppb1lH2
+    9S2G4kR3wtXvNPsWspIA/0Gd/QUWrd1DVm0HKb0D5bu2hcxrOSzvi3/rTYfdsZTfkRpmmQ
+    ezRHgRTtaXq25k0YNRxgHo7tv+NcwNnTKQJl/eLtG3FTo9aDwj95rA6naYiyotToUXuIRO
+    gaW5SPyZ3wu1koL57+YZGq3K6TVfBhDja32VftjmcnB5Hk9UaDGAuM1c/Y11dPYh5Ax/CQ
+    ofQjaluRH5K84DYLxfT6/EyFe0PJ3Tr8rtDbFnUcKraJd/EXdwJRER1axDZmeVoE08ZeWf
+    1EYf5iUDuodS6fzd0eEafO7mRGK62lmyyrmRDkWafHh/YcasbXTWAC55psmw
+X-ME-Proxy: <xmx:x8b0as8r9hmV9-rllvO-t9W7mqDVo1hVlvPS2-iC6U70Gss9wTIiGQ>
+    <xmx:x8b0amy95D9K4WfMPUW_Mst5o41jiuy7O38IVKV0QfTgG97LvQiXTA>
+    <xmx:x8b0aihkxcjWPXzq7khm-8R0inbu85QvxS_DuG6pVnBo_x-2nwjR_w>
+    <xmx:x8b0ahNIFlM4LySNmQR9QDrxQC_zmPDZWsDxcapk7bSeaLMiaHy1ZA>
+    <xmx:x8b0aganL4N1jqjRssI3B8_DwA4_oj-AQV7nrMh0J_eWvqwD2X9ht8Vs>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 11 Nov 2026 14:49:26 -0500 (EST)
+Date: Wed, 11 Nov 2026 19:49:25 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Harry Yoo <harry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
+	Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2 1/3] mm: page_alloc: add a watermark check that knows
+ the migratetype
+Message-ID: <avTEezDIsJBhsPmi@thinkstation>
+References: <20261102093939.3340540-1-kas@kernel.org>
+ <20261102093939.3340540-2-kas@kernel.org>
+ <auynaZkzdzL6Aeyo@thinkstation>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A5286140005
-X-Stat-Signature: oakgqmafk37tk6easj66u6g9498wg5ap
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auynaZkzdzL6Aeyo@thinkstation>
+X-Stat-Signature: m5smigb94yopm3imkuzbdnwiqogyxxwq
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794426232-651506
-X-HE-Meta: U2FsdGVkX1/mMeGumEIF/pYuivNuaSSfzC6ZIVOtz4KR1zNaWDeefHmSzEZdpgbUPQJOwkOt6gcwzI29JRcojJb3fYEvc4qgaImj+6nqy2rSfbz55IZ7Emja64OnzUBJHHYdd1rfAXYxFv3zOygB2j5WmHfYP9c51Ci8WWy8Prw+8ycqqHpxGxxs6pJ1PX22zSpp0a/rL7YmqCqFaQkCv5jq5/FdmvR4H3bSLXM+Bq+/GBlQkoqewd6p5YCVzhPS3CH0Cl/Dh4GxRA3auhnNCKSBEbY5rzFOiTtTOYz5FCVVurWtvBJiLZCuguVY/HgiG93QOG15oGSqD/uzEFejrkSCLrTxpHKxvrwqbWEC3O05WOUZz2yUeS+//9GJDUMyD3MMqnWIPu4ezINj+MDrOWVMeHTNuqlanqyLtbrOmZLMHqMCDMBQAB2KDsdN4tfc/48CupGNxxMPSbw6dHJv4fnZzkJGhqKd8E/GwzUBsIIG8YQUg1uOg28dNbsA44SLK53QnpKHutlfPvgnUeuIwwgP0hIhCliNx7dJWszXYm9+ul2emovDU3PNEWBsFuRwAaZpLE2nuzo9I+/9c8QSOeTTJibVqqi1KePLFtte2oNT26rmjoR/74SXnyQakiJkZ7LUPKudww9AXVCHisnwIkrU8fNOgpAHNW0iYEq06kkeBZIpZIIZ4BL3EeG7T85FFJJXKWhdrST0F+AZJD9vn+nXgAGikTwc0pSjhTjVfp5mYZBtrS+QIPdP69uUwzh3s66egsab2yjuRK++xSFbdXamjLBMZFH3mqmqkwqp4sdUEa/KLn7DUXOSPx6bA9zipYu2MOWTjLzlPEeDY6cyDy0KveVpPVsgiwM+9zNI26UjbMXUAVAq9VCjtyA4nxIjXlQ83W5wrNhPfdoge+Xy8ZtB7/6+GcxHSF2C7v7RmtT4UzFSbJdGfQqXrhFrCN6PzqQcOvplNIeEU/735f2
- QMT7/JeI
- S8KsiPh6M/YNcoe3Ae3503V30lXsbt1I//24Wg4DKQgctwMNJxfx8ODqyFEXgEhjKXHqLSc65FoqecfMhalM0+K6FNEKzU9I4fx/cKQunljBOVetNnML0QWs9gIkrMG93cIihO46yQoErHExsdSz1WjTkusbIRD/wZB2JkvgiJ7tA/Hen2jb4YBcc5mLsr4NORA5yzsiD9eQQCIT6h+sLyRMcXQXRrrfroUGiqetFuaVzjdncewoUFlVQSuMKGjDh6jNZPioHnonhcj3l6pEAz2kdP7G2q/BPqnkIuNqwGqmIhFeZMdzGL0+9yw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D760DC0005
+X-HE-Tag: 1794426576-801083
+X-HE-Meta: U2FsdGVkX1/qT7SP2NC3gk4OTy7t4s5nv7KXDhDDK6wnrwldNd2XsV8hXcsk9b0gBvgAaOE/EgDLUwEUKkLNsKwMA5nY//AC4ybgFGbXuuJ6ljCSyvjbO1S7QYwATR3X8WnIwAFDnsQmOt/rWnI5HeRYxem3GJxLmWbDukFOrZ6A+UlA/VSisj4IyUpZje7qvfnQV6tOrKGtNG6ODyxfJ5wI/IYOrIO2UgCGQDDArNarubLvQSU+5394y1UFuYj+GV1z7HL3c6YUsa8ReQ/nhoZA9lFIHl+YQmBLzOYUej1rxy+kjPi1yNkkh07bd22LycrWEMjmbN2CFpRiAQffTELoHmMDVfxN3dq7vdnh2Aw7UG5oIcCr4WhQk+rjZ94RcQ/bsVpg/PSn5g6fQuDMC0Z2kGKl93BzmaGmuOJsC6IF7JGoXGkj4mV2MOPNJB0GVicSExjhKqrI5CErOc+JXODJtv5vorNPUrlBH6BHusQZC3WbL4gOIwl8agb54bqdSZIVWTXhJ90wIL4/J4Zv0I+awKjUv1Qa0MJOaouU2DgdFoa0V2V4fzdReoZFYyabwRdyqbS8kanNnB+NNKTkSSF44BU+cICxU1tOXIo+k8q07aM8joD3SpojnwJm4m/Dwvc0Z5ehGcYpgIqJItsNhXi5Xn3XrudnTaMFNTyJNnilE2CCqScruhJYxxJkVIMg51WPVfwd5fom0I5uRwnb9c/0O82VaWp30QloBCxR6Db9pdXZ86dVElo9bqRCS4xucVX8K3KXKzKGw+MuBzm5m0pllRLxH7O620W/zWZpfcHq38VtUO6zBFEaVKUETpjiQxvxfO3AQXMTca7svkMN6znL2g9uMISUl1dD2t7KNGrYz8XevDEJOthumYsxQRYQrq5KT95jfg4DL+kDgaKgMZuH2O7AtnQB4TXuonC6u9xIuNFT7z40F2oYz+o90B9iQjzSADQikay/nWIxUQH
+ kG6C+juN
+ 233KkyZf0nWul488Jdq80At+AAFZUqEFpwaImdERtuTEeRiL2IflLxxZtTHJBrb+L+dw2FsPZNS88fZOKj1ub5R82QntbGvI6DzozCnJQra1sRFqNzY984jec1SmyoJGxTZIVp21dCYuu3o9zkj8nUzPe7g5SDJT7eylOUwseajlHAlOOOPP/jhaTUMtf4qL/hTEsX0PvXHpETyQxkJoEjYEuyhPDfO18O9dYqSAu9NN7AFAifYSPVUGoG+NRu2P92/xOdIAgfJZHQZCJ48Cn+q8/jXU9ZF8/hhps+tkW5bK70380B+sGHW7Y+oJbCvoEZalpi4wRTfTScHw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,90 +132,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-<sashiko-bot@kernel.org> writes:
-
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issues to consider:
-> - [Low] rust: sync: atomic: missing #[inline] attribute on
->   atomic_per_byte_memcpy()
-> - [Low] rust: sync: atomic: wrong core::ptr::copy() doc on
->   atomic_per_byte_memcpy()
-> --
->
-> commit cade864abc69fc627ff4e6283efdc3170c94fccf
-> Author: Andreas Hindborg <a.hindborg@kernel.org>
->
-> rust: sync: atomic: add atomic_per_byte_memcpy
->
-> This commit adds atomic_per_byte_memcpy() in kernel::sync::atomic, wrapping
-> the kernel's memcpy() to perform byte-wise atomic memory copies.
->
->> diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
->> index 6d27898add42c..cbcb081d8674e 100644
->> --- a/rust/kernel/sync/atomic.rs
->> +++ b/rust/kernel/sync/atomic.rs
->> @@ -848,3 +848,38 @@ pub unsafe fn cmpxchg<T: AtomicType, Ordering: ordering::Ordering>(
->>      // per LKMM.
->>      unsafe { Atomic::from_ptr(ptr) }.cmpxchg(old, new, o)
->>  }
->> +
->> +/// Copy `len` bytes from `src` to `dst` using byte-wise atomic operations.
->> +///
->> +/// This is the concurrent-safe counterpart of `core::ptr::copy()` (the equivalent of standard
->> +/// C's `memcpy()`). Because of the atomicity at byte level, when racing with another concurrent
->
-> [Severity: Low]
-> Should this documentation (and the commit message) refer to
-> core::ptr::copy_nonoverlapping() instead of core::ptr::copy()?
->
-> core::ptr::copy() is the equivalent of C's memmove() and permits overlapping
-> regions, whereas core::ptr::copy_nonoverlapping() corresponds to C's
-> memcpy() and matches the safety requirement below that src and dst do not
-> overlap.
-
-Thanks, this is correct. I will fix this.
-
->> +/// atomic access (or when a normal read races with an atomic read), or with an external access
->> +/// (from DMA or userspace), the behavior of this function is defined: the memory is copied at
->> +/// (at least) byte granularity.
->> +///
->> +/// Implementation note: this is currently implemented by the kernel's `memcpy()`, which is
->> +/// implemented in a way such that byte-wise atomic memory load/store instructions are used.
->> +///
->> +/// # Safety
->> +///
->> +/// Callers must ensure that:
->> +///
->> +/// - `src` is valid for atomic reads for `len` bytes for the duration of the call.
->> +/// - `dst` is valid for atomic writes for `len` bytes for the duration of the call.
->> +/// - The memory regions `src .. src + len` and `dst .. dst + len` do not overlap.
->> +pub unsafe fn atomic_per_byte_memcpy(src: *const u8, dst: *mut u8, len: usize) {
->> +    // SAFETY: By the safety requirements of this function, the following operation will not:
->> +    //  - Trap.
->> +    //  - Invalidate any reference invariants.
->> +    //  - Race with any operation by the Rust AM, as `bindings::memcpy` is a byte-wise atomic
->> +    //    operation and all operations by the Rust AM to the involved memory areas use byte-wise
->> +    //    atomic semantics.
->> +    //  - Copy between overlapping regions, which `memcpy()` does not support.
->> +    unsafe {
->> +        bindings::memcpy(
->> +            dst.cast::<kernel::ffi::c_void>(),
->> +            src.cast::<kernel::ffi::c_void>(),
->> +            len,
->> +        )
->> +    };
->> +}
->
-> [Severity: Low]
-> Should atomic_per_byte_memcpy() be marked #[inline]?  It is a non-generic
-> function in the kernel crate that forwards directly to bindings::memcpy(),
-> so without #[inline] callers in other crates cannot inline the wrapper
-> unless LTO is enabled.
-
-I will add the inline attribute.
-
-Best regards,
-Andreas Hindborg
+On Thu, Nov 05, 2026 at 05:06:39PM +0000, Harry Yoo wrote:
+> On Mon, Nov 02, 2026 at 09:39:34AM +0000, Kiryl Shutsemau (Meta) wrote:
+> > The high-order check in __zone_watermark_ok() accepts a free page of any
+> > migratetype.  Under ALLOC_NOFRAGMENT, a request below pageblock_order can
+> > only take a page of its own migratetype or claim a whole free block, so
+> > the check can pass when the allocation cannot succeed.
+> > 
+> > Telling those apart needs the request's migratetype, but not every check
+> > wants them told apart.  A check whether an allocation can be served now
+> > has to count only the pages it can take.
+> >
+> > A check whether there is enough free memory counts every migratetype:
+> > kswapd and kcompactd balancing a zone, order-0 thresholds, the
+> > slowpath's forecast whether reclaim and compaction can still make
+> > progress.  Reclaim and compaction work across migratetypes to free whole
+> > pageblocks.
+> 
+> nit: perhaps we could make the changelog above bit more concise.
+> 
+> I think the necessary bit here is "With defrag_mode, allocations cannot
+> steal a page from pageblocks of other migrate type, thus
+> __zone_watermark_ok() needs to take that into account."
 
 
+It is ALLOC_NOFRAGMENT, not defrag_mode: Normal zone allocations get it
+on the first attempt when DMA32 is populated, with defrag_mode off. And
+such an allocation can still claim a whole free pageblock of another
+migratetype.
+
+But fair, it can be shorter. A tighter version is below; it also says
+why kcompactd passes MIGRATE_MOVABLE.
+
+> nit: maybe let's set cc.migratetype and pass it?
+
+The value is not read there: __zone_watermark_ok_mt() uses the
+migratetype only under ALLOC_NOFRAGMENT, and kcompactd never passes it.
+kcompactd_node_suitable() makes the same call and has no compact_control
+to take it from.
+
+Thanks for the review.
+
+The new changelog:
+
+	The high-order check in __zone_watermark_ok() accepts a free page of any
+	migratetype.  Under ALLOC_NOFRAGMENT, a request below pageblock_order can
+	only take a page of its own migratetype or claim a whole free block, so
+	the check can pass when the allocation cannot succeed.
+
+	Only a check whether one allocation can be served now should count just
+	the pages it can take.  A check whether a zone has enough free memory
+	serves no single allocation and counts every migratetype: reclaim and
+	compaction free whole pageblocks across migratetypes.
+
+	Add __zone_watermark_ok_mt(), which takes the migratetype, for the first
+	kind:
+
+	  - the allocator fast path, zone_watermark_fast();
+	  - its recheck after node reclaim in get_page_from_freelist();
+	  - compaction's up-front check, compaction_suit_allocation_order().
+
+	__zone_watermark_ok() wraps it for the second kind.  kcompactd shares
+	compaction_suit_allocation_order() with direct compaction and passes
+	MIGRATE_MOVABLE, which is not read without ALLOC_NOFRAGMENT.
+
+	Declare both in mm/internal.h: nothing outside mm uses them.
+
+	Nothing reads the migratetype yet: no functional change.  Preparation for
+	making the high-order check honour ALLOC_NOFRAGMENT.
+
+Looks good?
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
