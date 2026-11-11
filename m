@@ -1,125 +1,125 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ECAA606C213
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 17:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0BA606A883
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 17:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=pps01 header.b=L+q+MG2X;
-	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=lionmail header.b=1pSg/Hb0
+	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=pps01 header.b=ozZsnQja;
+	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=lionmail header.b=Hv9wbNtf
 Received: by kanga.kvack.org (Postfix)
-	id 3F5C16B05CB; Wed, 11 Nov 2026 12:56:04 -0500 (EST)
+	id 6DB4B6B05CC; Wed, 11 Nov 2026 12:56:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3576D6B05CC; Wed, 11 Nov 2026 12:56:04 -0500 (EST)
+	id 666086B05CD; Wed, 11 Nov 2026 12:56:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D26F6B05CD; Wed, 11 Nov 2026 12:56:04 -0500 (EST)
+	id 52C626B05CE; Wed, 11 Nov 2026 12:56:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E55D06B05CB
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 12:56:03 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 859F2160369
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:56:03 +0000 (UTC)
-X-FDA: 85423591806.19.16FC29D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 26B556B05CC
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 12:56:05 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BD9461A03C2
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:56:04 +0000 (UTC)
+X-FDA: 85423591848.16.1C014F0
 Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0C740C0007
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:56:00 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=L+q+MG2X;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b="1pSg/Hb0";
-	spf=pass (imf10.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 39B1A1C000E
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:56:02 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=ozZsnQja;
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b=Hv9wbNtf;
+	spf=pass (imf20.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794419762;
+	b=jl6iUuj7m2W/prr3SLZTgTg2BDZFfga1XI034M/in5vdS8RHrE4d6WfzNp+27NGaIoma7+
+	QcLEd1NNoYleVK+50WziifTtBfMqalU4LiOBNnb0pAjFP/ftuui+EJ0qXnhM7ViO6aFOkR
+	kv2ICogh5cATwByCw/7P1RZwHm0UHL0=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=ozZsnQja;
+	dkim=pass header.d=columbia.edu header.s=lionmail header.b=Hv9wbNtf;
+	spf=pass (imf20.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
 	dmarc=pass (policy=none) header.from=columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794419761;
+	s=arc-20220608; t=1794419762;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O4/i2EgwZRht7H/ivL+S2kGFMBILOdVUz3uGWsdouUQ=;
-	b=Z6XL4aFXw+C1KzpKLqVv1sHlSrx2HVmUpyeki7ZaOTCe3Cene0AILBz9J7nuqmk6CXfG/k
-	qPsxPuqjRPbg0WLXauDkMMqFnvtNbyRXx9isQQuU8bQYcx5ZKwyUdEmbeu8tklIpm6rLhk
-	f3x3Ik7ye2mM763bokcgTooYgb3uttc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794419761;
-	b=Sy6mFDDhauxZQwB7Vd5IwdLaJ6Vs07w0hwguH4hYgDobWGQDOS8F0a/IRJVWIAiYVbSBq4
-	PuGbUWD5vbkHS8bfk2s9T6GIO3vFrgWRFqHiiP3UM3NLsnkWPQv9wxjKVslcw1JQeUP7aw
-	/xkvEr57fCAZcU5DCi7qpkowxuT40BM=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=L+q+MG2X;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b="1pSg/Hb0";
-	spf=pass (imf10.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-Received: from pps.filterd (m0167073.ppops.net [127.0.0.1])
-	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ABHYChe737271
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 12:56:00 -0500
+	bh=rLh94H+uowZr10Df0hSuV88QMtwxibroooekC03x3n4=;
+	b=vSWa8GrNL04HQHfNKTgvipUsYNhHbMrSquWBEenLIz+7z//WlaXyarrN6QMfdQe+OxcZjU
+	eyerKD7muUH3b1HEIhH4vK4xG+wHIRbou0Moxdqk7aNEMwLAl1yjJLJPS1+r3ptkFHw6+0
+	QqYj6cInUxzPI1yPfWh2Q9/XvfpSRG8=
+Received: from pps.filterd (m0167074.ppops.net [127.0.0.1])
+	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ABHYG72825555
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 12:56:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=O4/i
-	2EgwZRht7H/ivL+S2kGFMBILOdVUz3uGWsdouUQ=; b=L+q+MG2XoNuKY/IZsad6
-	soELIyEKZKjBGQipZvfNqhhUz0I5GLTo8piQ08fVpEzhXaEXUfvriTC3aJmovqL/
-	tKrgq+kR8i7QkCh8Hd0lZK3DNR/9BWJngEgeAN3glgzDEP4wzkgwc1JJT4+27etQ
-	kHR2cU0TN2ymHOLKFMEVqWtRzVGfUYiA0lW1kaPXF+b8+aXp6O7/qdIAfzyJONxW
-	YfQvpcCKW1ZMgv3IJ/XfdvWY/AfkyV2NE2R6nyp1TtqlunHxUEKa5X6G88mLAx7Z
-	gWKST56SjdGAabyk50imTHP6tZs13oxohjvTNVsyZghslaLZeJWsaYqp36risHdJ
-	fw==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4hvdjkd4j6-1
+	:message-id:mime-version:references:subject:to; s=pps01; bh=rLh9
+	4H+uowZr10Df0hSuV88QMtwxibroooekC03x3n4=; b=ozZsnQjaNao2IqvZc6Rp
+	p6roRzoRRGYKiG5ov5adX69nBBasWdEBDyp0z0QyW3Dp/b3FaDI9jOFWyzJ7L5lQ
+	kxUYD+50KoCWnx1pGiUz3eRe+M5/mXchhVX4ubsbfNylzlcFwWl+mD6Eif42+mRF
+	rKdRROP+hw0tztBTXHYMZX6Jpe3gMYBvddxoLc1Kkt+xFNw68pI7CNvwEjdbAFW/
+	Du6hbii6NLqESVcxNhy+YFzC9JFj/f3mtis+dqrI+tDhoQLu92QKRKICrg3iMEWI
+	H+gXgL1kR6iomPk3qpMmkE0HN8uaQHtiJV3D1vTihkcrm7Ig9CPKP0pODnHTmLn3
+	CQ==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4hvvaqrhge-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 12:55:59 -0500 (EST)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-5358515b4easo60203931cf.0
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:55:59 -0800 (PST)
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 12:56:01 -0500 (EST)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-542fc61841eso72320701cf.0
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:56:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=columbia.edu; s=lionmail; t=1794419759; x=1795024559; darn=kvack.org;
+        d=columbia.edu; s=lionmail; t=1794419760; x=1795024560; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=O4/i2EgwZRht7H/ivL+S2kGFMBILOdVUz3uGWsdouUQ=;
-        b=1pSg/Hb0vwzqID8z6vm5KZWnoiNCTxb5RXeg98x2jqh0WYLVsq31ZCZWiCfVEYG1e5
-         71isxazpDYmsrKQgzvWayabSGjj+kJHsTo/+S4abAoNKf2Chvlm9ikiLc1O39CAPdTCp
-         qJsS6kgZ5pCBRhBC5wLDYQD8Sc9HT/MEnD9FaxIINjz+nmpnkRRdbNF+Z2stP6xsflsL
-         FFBe3CrIXTrqi/0dW3JVjM8ugirRvOA7OF2sQdZuy9CQZS8jQ768af/CozlPn3fV8s2B
-         ENWhVBX1D9+c7cqfPEAPnRr63HigZI06Vr1kz1zCVL84MSwBagesxeWsZYPtCXv5yKBc
-         WgTw==
+        bh=rLh94H+uowZr10Df0hSuV88QMtwxibroooekC03x3n4=;
+        b=Hv9wbNtfXPOVVmadlxCsei2oi5MbG3d33Ccgl+DQUBgSPWjGo4Mn+MbBp9wF3VZXNy
+         vOFhQyIb7txtP6DQGfn55rRDuCcP6OAlJx2F+3zv87kd6A6mIhfARWjf8Smeg/pU3oJ8
+         QugJue0XHxMQIBokOrhfL1RlaGuf/FAieKhJP2gZ8cN5yjLTPzEopgOOIzWfoa+JEiW0
+         a8bDs0c0E1Mpi8mbmECJjZ4gOBn3zMGIcrLD6wNic60LDbjOHPupqjoGymIGkbFCZWAv
+         Ir0Rus11eF5WkHzzSEzL5DEWKDgtrRGCt8+Up0KVT6O+CmfnEajIINKW+wNjUWKbNT4W
+         YH7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794419759; x=1795024559;
+        d=1e100.net; s=20260707; t=1794419760; x=1795024560;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=O4/i2EgwZRht7H/ivL+S2kGFMBILOdVUz3uGWsdouUQ=;
-        b=IeoSVKteeA04PP/qA7trf1/h9FMq9ttxqLuxZu4WnHtUs/6AsfI95PktAor7Mf+xXq
-         WDkizTz544EKMadHTAVPOR/eB4MFEV82s3Z3v20pCcX2iNuC4rffUgSfL33QpdptjisB
-         QBzn19JuiCCxo6ZtyHzrdl0DvJQZngqOqZh5FPz8XJDgF9Gz8T1S6I4ksB245AoD6L42
-         bwbLIAMVTRLaVFmqrd2Q5BhC7XHiyOvg5Vwm0TLEw130gM2v7MGXnWJWcLtV3iqNdZeH
-         XFbaStRQhC3SS0VaFbqSnjgCjNui7Lm5wYgeyOpIjAd0MvDzZM6fWOOLkLXL1ZkxI3PZ
-         5XvQ==
-X-Gm-Message-State: APuU4Z8HOiztwTqVGy3wdJRNbZdl0NNC8z1HvfCF9T5XAZe2m4P8GWpz
-	GQxmaA2cUORqlLlHgHMwna/TjvU9JHOkxR9UIbMWqvGkJHKpfb8G8vTvYT7DD1+42L3zotLzG9x
-	ifvVEf+l6jybfpxAghTUx1emmfgjCfgEaGrOEE8253hO16Blg
-X-Gm-Gg: AYBFou3UMmwtUcBR2G3G118I9ncom4k7Wrf66bPIKgid0R+v0GUB4lzzTNwo/rFHJrD
-	ZOPSgl/5YY62h/JofebhyrYqtIPfPRoWsC6cD1Ar4brcWz9xWtriB/s8a4SKylAhCIsOIdoauzo
-	u9dk3fDLu4ahjhgaqZ0UQ3/EUHDngzcznahdOKwQlmZMJxtNZmv4O7IspCkVzKgds95sAQ+lOQT
-	U3Pu2rPV85Ih+2ijYhswjj9UeIuJgcwqxiZoIh+nyZDuTsFrFdam+/r69ffzMrax+4kFq8qAwMk
-	rw7uY5JsJA0GxUsP5K7Dkgrw7gmlbRSeDNIGSPtz2hSILM6BF4oVAaaZaDV63GGectQic+qBL9L
-	a481jKzDtxj7OOLVh0WWiYNuMyX7B7bt+cDRYvGTXxLqAeLW9WtdKKXY33DWkgvUpEgJkVK6ov/
-	FXjPkH6bu7jhSwjgdj9A==
-X-Received: by 2002:ac8:5713:0:b0:545:c5ec:fa3f with SMTP id d75a77b69052e-556c04f0896mr48125881cf.45.1794419759295;
-        Wed, 11 Nov 2026 09:55:59 -0800 (PST)
-X-Received: by 2002:ac8:5713:0:b0:545:c5ec:fa3f with SMTP id d75a77b69052e-556c04f0896mr48125181cf.45.1794419758662;
-        Wed, 11 Nov 2026 09:55:58 -0800 (PST)
+        bh=rLh94H+uowZr10Df0hSuV88QMtwxibroooekC03x3n4=;
+        b=gvJFIvrDFMJ90dqxtScgIw1aC+Y1cOkM6mtwrppDof+cu5rguVgdzsyy0fMQN8OJGo
+         cBkvefQrjvJoIIbwvP3j98/Q3Irvtw4ofDPOcMwdcDXZC+SySJCO2OCidZCU5s320KYM
+         wUhVLmsRe1DQqf+Apol/CD/+BQ/4jKfNR9B974dB06r0Pn9hFUBElJEaD0vCrQhNq5fm
+         mXsDTDe+4Zb85vNDrUymnSx+KmmLcpi/MbPXcn7+kNnm4DDCKjLZfCgd1RVsHhhLoyhk
+         XtvWlyJpLr7ljHrouHc6CypfrMlx9+3wMyaLRBYHcMdzO495DH3R644zIfKQpFvb4YKV
+         Anig==
+X-Gm-Message-State: APuU4Z9r20fdcAIUJLN1ubRHxnU3zolJphQxod+W+U2vqRScgP2X22Tz
+	/3pGqHfDF9t/ndVV9lmpWOuU7MXLm6xw/moLP5jpd0KUMW7zLpM6/qMzBDRS6U7JrffGu3EogNL
+	lliSJE4azSW0uS9nKvK/Wxe7hNLWNLS8sgubxQjCuoN0bs0qc
+X-Gm-Gg: AYBFou2YY44lVx/+ot5qegGV26Pu1lzkZ+KuESs8wVtbA8gKd7EAymKpbgpwICZXawS
+	a5VbuigAUujBnAikcegKmTmHrUHSGyC9NJFCeK1RRNJOUa6jsb6U7PmrVOzKCQQlOY4J8hfsifk
+	5BuGCttoI6rtQH0QbDQA/e/sm7WBtKlbPoCokbegE2VLDIJDe6duUSCqWGw1BkBNfJZVBJ816YW
+	zw7/wu/HdScKbHkfZ/uiTr4dAZ55ZehKJw429IWCnCf8BeTA3S0UE4YAE6Qu/7MFNk0IqDNo5BI
+	RFLt8dzV8j+nV6S88dnCqLgyOcEmTz+q5kcDwFhDCdB/CwK7Tyi1lFXMk0cpkJ5vAfiXXUoEKtE
+	D8n6BLQy81UMeG2EDmXzOTmDSvZtcVUkUzP7JHT8yKt0w9vRlN9uneh6u3QjIlB417i0Eskowas
+	0+FFWUcjjkMBoWo+P3XQ==
+X-Received: by 2002:a05:622a:1651:b0:537:dea7:adb1 with SMTP id d75a77b69052e-556bdce0a89mr46732711cf.4.1794419760664;
+        Wed, 11 Nov 2026 09:56:00 -0800 (PST)
+X-Received: by 2002:a05:622a:1651:b0:537:dea7:adb1 with SMTP id d75a77b69052e-556bdce0a89mr46732341cf.4.1794419760108;
+        Wed, 11 Nov 2026 09:56:00 -0800 (PST)
 Received: from [127.0.1.1] (dyn-160-39-33-242.dyn.columbia.edu. [160.39.33.242])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5550b93ee00sm54974231cf.16.2026.11.11.09.55.57
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5550b93ee00sm54974231cf.16.2026.11.11.09.55.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 09:55:58 -0800 (PST)
+        Wed, 11 Nov 2026 09:55:59 -0800 (PST)
 From: Tal Zussman <tz2294@columbia.edu>
-Date: Wed, 11 Nov 2026 12:55:12 -0500
-Subject: [PATCH 04/12] mm/migrate: keep the uffd bit when restoring a
- writable migration entry
+Date: Wed, 11 Nov 2026 12:55:13 -0500
+Subject: [PATCH 05/12] fs/proc/task_mmu: write-protect device-private THPs
+ in PAGEMAP_SCAN
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261111-uffd-state-fixes-v1-4-00713d368976@columbia.edu>
+Message-Id: <20261111-uffd-state-fixes-v1-5-00713d368976@columbia.edu>
 References: <20261111-uffd-state-fixes-v1-0-00713d368976@columbia.edu>
 In-Reply-To: <20261111-uffd-state-fixes-v1-0-00713d368976@columbia.edu>
 To: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
@@ -152,51 +152,51 @@ To: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
         linux-fsdevel@vger.kernel.org, Tal Zussman <tz2294@columbia.edu>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794419750; l=1718;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794419750; l=1653;
  i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
- bh=oJnm9FzYnu6qaz/PaR7bVgjlC0D/81eFAkcgURIt440=;
- b=bFUiMWTquKqFKlwBKZ89sJhyun4AHiRJEsk78WWUx1+sVlv6Qb4KBgPb6/z8x1kgBoXAvmIo6
- hJJcR37k5fyDamaO2atD6gtZHwsAKPDUG6Z4UbgtfLNFpXNaY3rhISm
+ bh=NMR1mZVf/ZZ1dsMSsUl85Q0wvIFNRvQkQz1f9feUbD0=;
+ b=BLkWdBWcFR7ZCJE0naCht5rRXOwRZShjmmEWgb1C0a0/hRfETNoET5Qey8Nyu32VSu0C6gbxs
+ gyF1eLl4PuWDGJEVmtlYVSl2O7uJ3n3l7j1NMSpNDb9jBfiLHhcZYAw
 X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
  pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
-X-Proofpoint-GUID: opTjDb1zQKBCRms5O_8iHRzrR9gYM71Z
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTExMDA3MSBTYWx0ZWRfX9+mCeCv/ZXNN
- SUSR+6+WFnXatPMoPq+vZnijl9IDswvF6I9Nzc0nupIl/uL13VdDsC9cj+ANIxreSpl95dIPvvn
- AVgBmJwR6JTgHoVkmkJLz390bmjcIvcXcrBDfxm9VjfrhRpDlzuoEdMtmu2pyOKnG3Kbr7H4hGb
- r0v2DXrl6iMvXK1B/ZSz3tuFpkfdiXzXVMAewQZQ9tGX8CvDLepk8jAuSspNC2tOPN7BoQ+F/Mp
- HT1/1qnldCxnqjVzU9L117Xk44aM/EJWtu332Gftvd/NqQA5glWyCL7GHu+56tUwIi7FTZrWGa6
- ZeqpWYgw27R5+66D5hvwf5W9/Mw0VVDaf85olGyK617s9O7bsi+D11G8mCFRXOJrzYnIUPcHqVj
- svTgelWepzjHIpZT5hCQq3ZYSjuHS3qPlyzt45yHohvP5SFLP69+sQalmmCzHM08+J3wRP26a+P
- +N9+Lr3Mq85yH1u9ZgQ==
-X-Authority-Analysis: v=2.4 cv=V/boQuni c=1 sm=1 tr=0 ts=6af4ac30 cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=GaPK54s0Se3oFqK5NkZy0g==:17
+X-Proofpoint-GUID: CT1xesRD94ocKP8z-W-BHKd0Wz6MpEfK
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTExMDA3MSBTYWx0ZWRfX+oNvyCUvWW8T
+ ijJfYOa3ElSEbm23lXTjv+v/C/VRnbKUn3JopPSqf3ZxAPCEfQZZreWv9lVqwrS+ZqMqePe3BCK
+ bs4ktUVXOwqEGhYoKEb9FQnFm2ndvF5MvwcK/YzLE0nM4aOok5Lt
+X-Proofpoint-ORIG-GUID: CT1xesRD94ocKP8z-W-BHKd0Wz6MpEfK
+X-Authority-Analysis: v=2.4 cv=dqFOmFg4 c=1 sm=1 tr=0 ts=6af4ac31 cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=GaPK54s0Se3oFqK5NkZy0g==:17
  a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=jHxIr1HyPKZ_Q5_91PL3:22
- a=7D-TeM2RRefI-p9tlh8A:9 a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTExMDA3MSBTYWx0ZWRfX1MRaLywIus9k
- kXI3nkr/IL+zIoxX2yZgQyJs2+xlhVPjY5TwmB13xt9p0XAq5AZKkw2RGqjC+/DBNPQaLjzREl+
- xjfq1AKb9+bJsixRVUIGEj6RmubXuCYvrONbCTd+p1wMHLffmbFE
-X-Proofpoint-ORIG-GUID: opTjDb1zQKBCRms5O_8iHRzrR9gYM71Z
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=azVShVRs0zEubeQ0wG0L:22
+ a=RyLRxA_qM0uo8G8YelwA:9 a=QEXdDO2ut3YA:10 a=uxP6HrT_eTzRwkO_Te1X:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTExMDA3MSBTYWx0ZWRfX8UG27hRq6Zk1
+ YLP3tEvqUW0w7EYKoIqclqN63HZh7CXa3Xps+BjxJXo80HOQ/+RYTrcW4ey9KBJlRRLOpWfafUY
+ Hahdh9CX3smCsnUiqSFg7m/YcVTgJhqVHCeuij3MKlprxbk2OCZMZ65bC0Agyp7TRnGYvEW7ue2
+ B6V4wcvOJZI+EqpQJNgIeTRdSR/vZirKV4vEGE4gGCDC0QSFYG+6YKS5oDOxR6PStGeqx6r2KPQ
+ /LA4kMTQnC++nFSXFY3Tpa/LH9Ovrc9nVLEbFxHFGPDK1z5Bp4+PUdTX8Fq98r2aNZVfHdvlNPK
+ KIlRrvKnIdOJ2Mi7CCZvDyS/UsJivvOuU4rU/4i/L15gQM4X5zzfftMgNNzaBWyrHXtsehBplp1
+ 41VMtH87JnuP2Wi9q2iln10sY9jR9LeISp75wtX0gD1aKiU/7QIjIl5v/uR2ifQHhCPxXb8x12X
+ TJxX2pnhD1Eqna7T40w==
 X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11963
  signatures=596817
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015 phishscore=0 adultscore=0 impostorscore=10
- suspectscore=0 spamscore=0 lowpriorityscore=10 bulkscore=10
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
+ malwarescore=0 suspectscore=0 adultscore=0 phishscore=0 bulkscore=10
+ clxscore=1015 lowpriorityscore=10 impostorscore=10 priorityscore=1501
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
  definitions=main-2611110071
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0C740C0007
+X-Stat-Signature: 43tfjoz34mnba5b61iaduzzigfniotoi
+X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 39B1A1C000E
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: ysetq9dzbjarasoakdefozibyn8w5ieh
-X-Rspam-User: 
-X-HE-Tag: 1794419760-61177
-X-HE-Meta: U2FsdGVkX18zF90Lo+EVtwNzhEUGNdwiNwpXZD4Z2P5kSeUQIlV+CFYthxZGrWJ6jnT9QUPCg9y+wCSbbVR8si+IxtYrvUPZUBBbkZaUVujwXQ7DXZAnRhdCWEkF3tEZfqN/1/Ssld6yeuggomomIEotnzbyagiEdgW848ttaKKDZSxXjQuMuoLA0ORg5EVz10LODg+b6KC/dNVU0xqYvgM5+aTbHoPSMi8tOcSTkkzqs5JvRYl9isjUhRhQ0nkYoLpuL8SXMPhngKRJRH0RGIf7swofP12+ZZGhLBLON/vOTnvmCwnUcVOiGTG6PL20yx1l2ZHu3YQaXo93xX4BnkeaTfYIy6FIK0mGy4tYGIsCNWuu/Hu45atpW15pDyMgYDyIcqTJGENv8H6mKEnX2MCQ04g9GS/J/mNB+YN6A1J8lZie2iajcepMzhlnMgUlwMf74AYpgXxjq2nY58HStv7Uvk31/JPIfXR/Ut8rt4o8Xf4uyJhCQKjLt1ZSZxnGygApOe0ZPWQ11n8nntU0a8SkYwZWPVf2yf7brqXy8uuyXezw+4p9ZYnHp8CAtRtIvbDW0261qD4s45N+56GvDNAM7AP9FWqIqfY1PtwtViXmf651n9qaHYG/WIs30bDUqoBvA2gJDp6pkpr6YZB+0bKVhgwK4CafOpbFsNcKISnLXZyhh8W4+09coCu3Kq7R3M5Dzcup1d486NhhnropPLu2cMZ2jE1G8U42/uPlmq7aaqrMijT4lWzgqHaszTOxj0Fiz7B44Ip0OK5mvM9cUH/tldwyIgUgX6VQIZvrczY7/E8ckxr3gvGBLnU5NUmh70Ppp5Bhf40TYdFtaYOAsJyOjslUeuiIG9gkOVOi/JURANxWCuV8gpZr+XgEVVxN6TXewnBfjBdpdzj1BkHyAQso3Asl5YI52c3IJI479DiIDNgW8ExuPNfzCC6MQDJrq8BUAv/6typiMt2yQ1z
- KNBw6SX9
- gifyPlAv9ZxpWan5QhMQqA+TdleVdvkTgTeJfZqoob0Js0BcUitRv7XqYlf6OKNPB3+U6GcyxngMC0RrXmug7FegR6XkxrwbcKiRzT/UyINOD6XW5mjHJNE/8z6Bnh12MeiSBmf9moF1/RL8ooxVIBfyUHpVRiJWexpq1sRGiUYbBpt4w0JQFJQ8sLj9xM3lubEyyH79t/OUDHjb6OTDyQrpsV6/kZNR9uInQPIP8MUquVlT14YVfikyk0oPobdDTE+KhCkQTMCoAruPqCtJuIdssLSeAyCutoHtHd15cLVjNZ3cYE3Cu4rILMlz4KgOtdZpJjYs3t/5XXy5vXEfuCvPQQfrMm1LW/1RDI6kfZx0DpRV083PIUZeFki72GAWm81vqmU13v3zrD69lT1MYPMUJJdVk1UF2l07vOam4T0oBiQRv3g6Pwyob0jfWuBlaWw8sQwOQJrmW7/Y=
+X-HE-Tag: 1794419762-904463
+X-HE-Meta: U2FsdGVkX1+lU/XdWQypuLr5+hVJjE6nRKizVbKSwVzIJ6QR5USxPzAymSVLv+iJci8Of/m478EiuPEpT5X5Hb5q90TN3vy/FQQXe5mG+JFrRFCWf+zreIXxv6WqSYKCHD6z4RIRhnXxuDYt003okYO/BkD0yYZ/gUrrO/VHr4YRG0Poa6xywZim+RuCUiS3dywnglgYGy4QdQcmrJDl1jo0nwXYb04U3HfOvvHjOhcY1ctRX3XTegdhb2/bZSDwpMXeyv+4JfjYMsZw0qHkZ0ciPBpISyK6iJ7pM2LM3BXlAw/N8vd2etFKWXnakryEXx2d15qI3XTU2dPakU576JDn3qIx8zXdLUBpmzLPF6z4AREnEaMuMut1ENQLTyvvwl8pxr9SjtxdwKgohhk/sOz7k23H9xgdltRldUEI/i0LcvoCnHRUTyh5TXjWrEc5lcDZpHOAzdTPz9JKxjBO2WZVgdIZgu8fbSiLEwRyFW8LD5LXFaLUorECmSDO0B85wJ58774XY9RH0y3DMV5LwK05rFPFnjImu7DKGUfHtI4LWYZ1vj9hf66RqThbl5oceDUhOD5E44b+T6mFyIgrFbKfX6vDVWcDVTDZV7x0BYnbn8aPZEBxeOxJ+u+vqUmv0n0X6rYXm08gC1UrbVbO3AGbdzz3UWol2Rz+6XSqqKdXTIvQzb7PQTYm6MfUxq4eWeGOr9KOB0oQ1oTUZzNqwOP//A5wO3TlOvwMICX0YJJrVVEfmWKwDY3GaM22+Q+4oFmzk9vfK3E/5nTck1Ai9rIzbrAWEvkgU80ioPUGn2yHnOpiTEYBofxQNe67a82Qb3WZqX1wogDMV75xo2x3+Z6o9mGubsTMNqdQlv64l5jattXVCE0ZC1oXoYdmPCGru2L42xW8qr3+x/Ubxu1Vwjrq633XbuGhgE7vsT111/V4K7tFBSo0obIPaj11ORy8ivifIprGm4MF1I4mc86
+ NSpx/Ukj
+ 85qDyBrP5rn9Zkmn+KcBRjS8NfEa3WBSMDfbywioe7k+YGm0YJ0gf0d+IZ+66kTq0Qa4SypNZXJCiYw//yLgFnaqNGcn91dlVBSq2MKjKqwQaC5Wp1zAajA6GPCHpC5J2LHALkQefMzHAwd2QuaBbOmC6bpek3wyEWZ+F46UVSSzPl8bPal4OhTxcz2vrdMIdJWIEU97GUGY5IzGo0ZGzZDh7Od+MKXUILEQLrK+sbcWyD41pnO9BDAb9dgCBzOeasNy5F3Fiju2uxOuUVq08cu6viZZTCQAQibjBzXMoAi5Xh6sVTvUbkc9PSQ0Rt7S7mJiFKGxbWtpYHinKfUw6sSc46smz1IdeXFIupbu5VYSlVx3mns9b50LE+BbgpCS+Xhq55jFrn8NOaq1iROT4zd44AvWG8q08I527+e1GGX82gv3q+jPCm8fYBF/72EweeIxn8d1Wg1/kCBUzJnX2Fd+Lll2btA5BWzll/4jNeXu7kKNBBbFbZLITPg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -205,44 +205,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-remove_migration_pte() makes the restored PTE writable for a writable
-migration entry, and only looks at the uffd bit of the entry otherwise.
-A writable migration entry that has the uffd bit set is therefore
-restored as a writable PTE without the uffd bit, and the page is no
-longer write-protected.
+PAGEMAP_SCAN with PM_SCAN_WP_MATCHING write-protects a huge PMD through
+make_uffd_wp_pmd(), which handles a present THP and a migration entry
+but does nothing for a device-private THP. The PMD never gets the uffd
+bit.
 
-An entry with the uffd bit set must be restored write-protected, whether
-the entry is writable or not. remove_migration_pmd() gets this right: it
-makes the PMD writable and sets the uffd bit as two independent steps,
-and pmd_mkuffd() write-protects the result. To fix it, do the same at
-the PTE level, where pte_mkuffd() write-protects the PTE as well.
+pagemap_thp_category() reports a non-present PMD without the uffd bit as
+written. A user tracking writes with async uffd-wp therefore sees every
+page of a device-private THP as written on every scan, whether it was
+written to or not. This requires a driver that migrates THPs to device
+memory.
 
-The only known path that created such entries is PAGEMAP_SCAN. Now that
-PAGEMAP_SCAN downgrades them like change_protection() does, we should no
-longer see them, so this change alone should not be visible to
-userspace. If another path ever creates a writable migration entry with
-the uffd bit set, the page now stays write-protected instead of losing
-the uffd bit.
+A device-private PMD must be write-protected like any other huge PMD. To
+fix it, pass it to set_uffd_wp_swp_pmd() as well, which downgrades a
+writable entry and sets the uffd bit. When the THP migrates back,
+set_pmd_migration_entry() carries the uffd bit over to the migration
+entry, so the write protection is kept.
 
-Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
+Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
 Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 ---
- mm/migrate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/proc/task_mmu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 28a8d7734735..d200f64b5f98 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -399,7 +399,7 @@ static bool remove_migration_pte(struct folio *folio,
- 
- 		if (softleaf_is_migration_write(entry))
- 			pte = pte_mkwrite(pte, vma);
--		else if (pte_swp_uffd(old_pte))
-+		if (pte_swp_uffd(old_pte))
- 			pte = pte_mkuffd(pte);
- 
- 		/* See do_swap_page(): restore PAGE_NONE for RWP */
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 53780a454432..752f1b13d47a 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -2524,7 +2524,8 @@ static void make_uffd_wp_pmd(struct vm_area_struct *vma,
+ 		old = pmdp_invalidate_ad(vma, addr, pmdp);
+ 		pmd = pmd_mkuffd(old);
+ 		set_pmd_at(vma->vm_mm, addr, pmdp, pmd);
+-	} else if (pmd_is_migration_entry(pmd)) {
++	} else if (pmd_is_migration_entry(pmd) ||
++		   pmd_is_device_private_entry(pmd)) {
+ 		pmd = set_uffd_wp_swp_pmd(pmd);
+ 		set_pmd_at(vma->vm_mm, addr, pmdp, pmd);
+ 	}
 
 -- 
 2.39.5
