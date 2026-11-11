@@ -1,94 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E880E60A260C
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 09:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D2E606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 09:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jfdjwyV7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N857zjfe
 Received: by kanga.kvack.org (Postfix)
-	id 0482E6B05E6; Wed, 11 Nov 2026 04:56:19 -0500 (EST)
+	id 6663A6B05DE; Wed, 11 Nov 2026 04:58:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01FC86B05E7; Wed, 11 Nov 2026 04:56:18 -0500 (EST)
+	id 6167E6B05E5; Wed, 11 Nov 2026 04:58:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9F9A6B05E8; Wed, 11 Nov 2026 04:56:18 -0500 (EST)
+	id 508A96B05E8; Wed, 11 Nov 2026 04:58:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B6BBE6B05E6
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:56:18 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 55C901C2C45
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:56:18 +0000 (UTC)
-X-FDA: 85422382836.16.35C2383
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A8763180004
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:56:16 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jfdjwyV7;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B3B96B05DE
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:58:09 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A3418A78C3
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:58:08 +0000 (UTC)
+X-FDA: 85422387456.24.5B8B1B4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B7F2240009
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:58:06 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N857zjfe;
+	spf=pass (imf27.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794390976;
+	s=arc-20220608; t=1794391086;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=diWWembtglhqYOPIvis4i129yRh0famPUXEo2wrIz2U=;
-	b=Rfh+0IQHdOJzQYFURc9bRdRnombKHVe4w8F7blQrV5gd0Lc8SRjJWOFN5JByALbelbFBN5
-	eGIRJYBOjNILFrxGQdjj56fcVdqFSw38Mmgn0o1N3KUvtFv6rApu2GOjwHZqe7QY4MSWt9
-	ev/M4O2RF95D1S/I+O4cF5jo2t4S/EA=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jfdjwyV7;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=x8WYaUyHEV3s5p2jssXz770F7CHpaoglZMsT5OswgdQ=;
+	b=GxuuKWEXNUJCJE18Ebk67HABKn2d83FHGdxYFU+wf2qHXgzap9DQTsuKnIiT77C3XUn+rb
+	7/9ikOmlWSlWQPkbeBFSjX9YFqsEueJyqmZc5fld7xjZrUtp1OMD07kUnHdc3In8cXWAzW
+	6A8Xlpslm/q+lQUOlkQbof1dwhfzqJ4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794390976;
-	b=ExOuEPPjYK8GqDrcQuxem2bGt9nYe+HgpsqB4fjMsjlT47QEztd/V2ydtyfw62VRE6HYgv
-	BdYxf9gNlgP0+2ORdWiyO2c9qFHpXGNWvefN5YVK2vhWXeGR8Wa+hixDErflE7+kXXx1I/
-	09EBEicmDzWHFLnTa1u/OK7rpDw8PwY=
+	t=1794391086;
+	b=1kivaQnZ48WvLe8V+mBI5X2oZbiHrDzDKIQ57rJ07WAuymGh9ef5Evf2jhrxol0hplxCjs
+	Sn4nuBnHzEs8ecjSm8v9cKRxNA8hmmg71mcNSV3jDpbWb0VctFEKJKtba+dVPbn4bjDGLg
+	TMn81xzFMQyT1hhjfsZgRM5G35Z1OlI=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N857zjfe;
+	spf=pass (imf27.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 34A2D60DC0;
-	Wed, 11 Nov 2026 09:56:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8389C1F00A07;
-	Wed, 11 Nov 2026 09:56:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E79C545E6F
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:58:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC5131F00A0B
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:58:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794390975;
-	bh=diWWembtglhqYOPIvis4i129yRh0famPUXEo2wrIz2U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jfdjwyV7bUSfgDZ02cMgBlkUPVzLsUIHBZpEZ9gjxJLEB7RQQotgrvJDisFBP2mGe
-	 1NHuCT0JkZNr+UP/Ybs26Lu+/9fKSssvhnCOKdmX7d9DcmfLg+SIOFKhUvkSfwW7ab
-	 HRtGRji2oHVakaCzi+qGkCEI7raAQ2t7BsCKCAhnGnHmFNCbzBewT2P0phoWMuaozQ
-	 cXI5F+lpiu9h/tgByfAOB+GrgTYhtXSaWyZXt4tt9baW75C+zFBV+IUEbq6Q60eMQw
-	 Co897B6NUq24lQqOADAhxfrdpeoY1uvOzL8cYDQ8MRlCFdEiVtHcAStNfURIKZ3Ovz
-	 pfm7uj1uJMbyA==
-Date: Wed, 11 Nov 2026 11:56:07 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: linux-api@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	shuah@kernel.org, linux-mm@kvack.org, skhan@linuxfoundation.org,
-	linux-doc@vger.kernel.org, vipinsh@google.com,
-	linux-kernel@vger.kernel.org, corbet@lwn.net, dmatlack@google.com,
-	kexec@lists.infradead.org, pratyush@kernel.org,
-	rdunlap@infradead.org, graf@amazon.com
-Subject: Re: [PATCH v5 0/6] liveupdate: Add LIVEUPDATE_SESSION_FREEZE ioctl
-Message-ID: <avQ7t_ijdR4nm-RO@kernel.org>
-References: <20261105050053.3063001-1-pasha.tatashin@soleen.com>
+	s=k20260515; t=1794391085;
+	bh=x8WYaUyHEV3s5p2jssXz770F7CHpaoglZMsT5OswgdQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=N857zjfelwJgxMwZgeMvdviy4yb25FhIkfYq9xYiegrSWPbwNMp0kTtnImQAwnhLx
+	 QKigHsKalH2vjAw/nxrSgVxbl8NitojaovS5jx9jR2An9toiCSIXjvbUVXXGo3LXRH
+	 x/2WHbp9K0hGTSnSvseQzBQIbwRiZLInhUZS7zbONYGXfBZwBJ6Bm/KzauvYrSPjT2
+	 GsA1dHR5bUM8ZsGunn5xNirPgvnmG9DBk1CS3Jq2WZrbl7pSA9AiQRRABBZXxIR24x
+	 xg9CYEYdZRbnT4xig27wGxrETP3lprjb5D18kPE1VNECuj/mqmgcVUI1gnkIM3/l8v
+	 qNv2GaBfHwwRg==
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-93e63ee7b4cso269965685a.2
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:58:05 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErFv9ODbQKdIm6dYK+gyzqIHXtdUCeUUVmcBB1ruBuqfjqZWBtNGhO4wIwKB4gzYYMjFZzDt8OJoeg==@kvack.org
+X-Gm-Message-State: APuU4Z/j312szu7+Ks2KbzG3C9PPfa5F8pMTeFdVBCkRuPfqN1ffJ7Ql
+	ESDAMUzhMwlFhIWMb4v8pBZvCpywbp9tRK0H7OLaY4FRFMT4ecSGmvBL+ovtw6MejcrzdCSY66E
+	0dYCALeW3oHEWaB0OfZ2vC7vatSjf8DI=
+X-Received: by 2002:a05:620a:2805:b0:93e:e425:229f with SMTP id
+ af79cd13be357-947b00ea38amr289814885a.77.1794391085076; Wed, 11 Nov 2026
+ 01:58:05 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105050053.3063001-1-pasha.tatashin@soleen.com>
-X-Stat-Signature: sigtddhctrgjn8ka9184ou73zc3ie6ro
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+References: <20261109-maintainers_mglru-v1-0-c25e6de60bcc@kernel.org>
+ <20261109-maintainers_mglru-v1-1-c25e6de60bcc@kernel.org> <20261109104142.c4e01c2e29ee9ead4056f354@linux-foundation.org>
+ <CAMgjq7Dd6UQWfBwex4vTLdxAhHKMfpmgTG9DB3MG+4+qig0Eig@mail.gmail.com>
+In-Reply-To: <CAMgjq7Dd6UQWfBwex4vTLdxAhHKMfpmgTG9DB3MG+4+qig0Eig@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 11 Nov 2026 17:57:53 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zrBB80iR+R0oi7BaLGNcw0sk_KNEFYns5G1WEsMXCQ2Q@mail.gmail.com>
+X-Gm-Features: AclHuK-Ghv2CWsuvoFAiqxBS_I6Udh_YXnqVh2xFzO-4R4-Vf_0ARb-xDyX3CmE
+Message-ID: <CAGsJ_4zrBB80iR+R0oi7BaLGNcw0sk_KNEFYns5G1WEsMXCQ2Q@mail.gmail.com>
+Subject: Re: [PATCH 1/2] MAINTAINERS: MEMORY MANAGEMENT - MGLRU (MULTI-GEN
+ LRU) update
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Lance Yang <lance.yang@linux.dev>, Ridong Chen <ridong.chen@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: A8763180004
-X-HE-Tag: 1794390976-792026
-X-HE-Meta: U2FsdGVkX180BTJ0Cp6doFU2Lx+sXZskJTT7ojicZirzuPZDbk/tSnqtKKu4z9m/dTThcxzP06WTPjg48Dlvya/3S2kJ4+YPGG5BQOFsERyFzDp2z+euXkf+rYDYJVYoI4Oa1cOlf+wqUHE40bNn85wBaOVSOvs8o4QPo43n2QMWIxHYlIvsM1jcZXR77CCk7Np3k04StpOmIQR4NDFcPDJvg19h2jSQMd8a1NpKyibb66Pv5yHIVgV4b1wpNqtFCXg9ZKQkbQASXBm7vq8a5OreVVOaoWIng0bsFOYb9m/Vv6HZ/IAMkpU3uyZk86mFGrrcMApcD7ddcdd/mdYcVM03pQE5EDx505UdlbkeQKEZtvZVcDfsqrXFG566ZAoYQ2tHEHbIWFrHLyUiaFAs2CF1SMvHJ3Tz5yqXKGedkZJR3rj4XUSvSZcxeKlmA3GPXbHc8pYXsFlPLLL0u1xWx3xZza0BuJiOQ9Q4FLWIGw8Bww4qg3bqZoZooU6/6KSGeuBeRSiXCFiffBn9Z8SDsxL0gwX/3gQWPN1nVPx6bys9Kvbpwfo1NP1U8q+iiRgIiCFHvyZWGsuF/4kDBA9dXKXpPXXeyNxCweVxFgezqlw1YEzIPYxitoe1sEQwzCsV3Sv0wk0T139Y6qHserlVyRy9GDuXIb1ANUpWQt47brnXBhBdfhNHsK9ZeAMW5yjZz5Sa1EdEYzNzPge6oUQFyL/xjLhRqdIdKVvkwQMUGwZP/eUrWIZk7edS9DHfPtjnsui6viqZl2slVzKqe4dqs4wpKPbc0hd7yDnMZni/21Sly1sHeFbFUx41p1xfzXiasItye54uFhYRewvuo5nJ++pR0a6ilt1GHUB1OMMsgX21FEIx9NvVd62W683ZJ2fNzK1bcCn/be8YlA2hne7YSIyJGsEHM6BvNkb2N/YJpYNMdEchN/uYjV0iG3LxGykkpXinSmR9mEkRWa5y76r
- JYVld5ok
- 8Gk+KRQ29C57hSnK0q7AudvoBRpO15tRiE6KyIyfRReleUhWM/hFmhuFCpojjyehw5WAzVoBN47CkZs7/vBtolpgsJQNFRA5e5VOroNEApCCiiJRNAQ+E3/GxKXsh/H7K+ciep0ENWeRM8ywsMl5kPliVf3pZzN/ErbOs4ZC+H66kQV7XOs2l3UsCWSK0xHlGKtt1gC7uOgvHfp7nTtd0ecJHscgpyxo2/5C5UjtvV/IWOZod3rOkvp9/eCXQrhs8IB/JnU2ZaiEMkXUQ1cpnrvjcSw97FPV8FSBpSaxEBGQLOFVepqNJ/yjDRDupfz9dNPI6B2pFqIvoaCgAKdDuVaSnHWqHIl2xD+7KsiHpo2FCwD6IsWK+A2XVHqGrQX5Byu73
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 8c7hpiemnn6iopo9f9z6313ox6bqgajs
+X-Rspamd-Queue-Id: B7F2240009
+X-Rspam-User: 
+X-HE-Tag: 1794391086-826057
+X-HE-Meta: U2FsdGVkX1/QLsAj6o0ZolyJPNq/W4JN/jpj5LNlkMW1wPswkyycvg1FebOu29xfo+cEdUc3BZ4yIjR8tjELSG2FBP/m8h0P0oV1VHEJrQpKN3gfBsTfhYLskz9i4qlJ9U2IsRy5mcinoRQEjxyWnPaqsKWLP/dCfQ+f+1zfERAAUdEadrJZPbORX9LfKedo6PD3uyiTbRepQnUgf9Di7rfjREjPqOimY4SxXf2V4AbDXZZT/P8VvNq8OKcZrQ4B+gsixzGisa5JQLtNMbT07RMt5X5lmvvMN3BXmVfcwf3yvuV9hU8kMqAmwFdL40W9K0QXtP9qhIUau3RMKcze6JAy/HSnKnTEUpLlXoIOHCjA/t5cOelEGWZXwIU9WbEKAHpioycNsEdP/bHkZhCjXK14g2Jp7ZkR5MPTc23hmpoFqDuxf574+ZktrdugyUNGsA+2pfYPVaihSDqFBPitkJLB/r/5aCxDgabbsTMAvy8P7tZGbxmFu1SJ5dYnmPL6aQYAQiulYW+yboQKWK+oIxwTYlA8Vp5SgATK8K8jb43AAzm9NOKtSQNFrGUEtDakd8NZ8PCKxVZMuY5L6UZknftuhpqBdJdVyb39OM3QXReVfLBd7MP303EILxpxtMyEIKQExwhOw3H8JttOkuvaskGgPs3nbrZstlDEWF8sAM+0taEjnBuMVIwu7hGOPCMumDbf2xr9aWhPZ5g03D0f5yTJQfg1SWRtZGmaHq9FAqy23QsdAxCa2Zx/Fq3SwRacAMRjvlyTWW+QjVNNAksvKp9GTJhjaHTLWA7qU6/XN6mX+kgxu7MvAkzlzjduxi/7JTWfQ4Ptp8mEfaQNds9F7n6WroYmiAyNjS6/LWyksTxNToEsWsP0TLhpz/QdCv+GMwazpc8Hb9pW8wPxZXhN8xhPnX5RtETwzezyyY0WEuZJoLGgBPAdhMTSDICwqg4ueAX0+fyh5jbKEuZEb13
+ GjeUKcHl
+ /ipE84NkyKPUeFTtLntmzy+izpociQ0ZOD6GSxvaofcRjw5UPyaHRi2Pz3WTTqHR/VLu1Mtw/BJlnmJEgeANYDRLRXC6YhCkOE/eFiBe14RpsJ1AD9FJyNkcvoPEaCXafeYScenNg5vHdr2DPxU1R5tQdt6VyibdVWNmJAWEL2N3EzijP3OyZnAjjlxi+wcOxZOcjOsF201nMg4gFUA9LOPLSe1IYJ87wuv2oeHwkicpnEFctvm74yJyKb0018wFR27kMVb8KxHWOP0tCtSkt42TtnJbvPBCAoQCEZKlJuPJs9R6dcHj1akrzmDVPIoYZv/2OT98XA2fSHN38CmFaMyClNfUtcstGCpwhtTzsdoVGP4bfCA5uCC9oqAhQ1X6WRMwPYLrZlwtoKqI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,141 +114,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-(adding linux-api@)
+On Wed, Nov 11, 2026 at 2:16=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> On Tue, Nov 10, 2026 at 2:55=E2=80=AFAM Andrew Morton <akpm@linux-foundat=
+ion.org> wrote:
+> >
+> > On Mon, 09 Nov 2026 19:31:53 +0100 "David Hildenbrand (Arm)" <david@ker=
+nel.org> wrote:
+> >
+> > > MGLRU is currently the only MM component without a dedicated componen=
+t
+> > > maintainer. Fortunately, Kairui and Barry have been actively
+> > > contributing to MGLRU and have volunteered to take on more responsibi=
+lity
+> > > by officially taking care of it.
+> > >
+> > > Given that Kairui is already an established MM component maintainer i=
+n
+> > > a related MM component (SWAP), add him as an MGLRU maintainer right a=
+way.
+> > >
+> > > For Barry, the idea is to transition him towards a component maintain=
+er
+> > > role over the coming months, starting by moving him to the top of the
+> > > reviewer list.
+> > >
+> >
+> > Yay, thanks guys.  It's been wonderful to see the rebirth of MGLRU over
+> > the past ~year.
+> >
+> > When do we get to remove the legacy LRU???
+>
+> That's on my radar :), though it will take some time and it's always
+> hard to give an exact timeline...
+>
+> Items I'm aware of to sort out besides the FG series, maybe we can try
+> to make MGLRU the default at some point during this process:
+> - Refault distance, otherwise we still have a major regression in
+> heavily overcommitted cases, also protects cross-memcg workingset
+> thrashing. I also have an idea to remove memcg id and node id field
+> from the shadow so it will have enough space to hold both the gen
+> number and distance, will post that in a few weeks hopefully.
+> - Memcg LRU vs. iterator (Ridong once tried to unify that, and it's
+> good to see there have been optimizations for memcg LRU itself
+> recently from Max).
+>   I also noticed recently that the Memcg's LRU reclaim balance is
+> somehow a bit broken, I'm not exactly sure why, nor a very major
+> problem, I will look into it later.
+> - Isolation protection (from Hui, not a very high priority, but still
+> on the list, we don't want premature OOM).
+> - IO cost & swappiness (Barry and I are still looking into this, with
+> an series posted).
+> - Page flags usage issue (FG cuts it down by 1, though it's still tight).
+>
+> We also have aging optimizations and async aging planned. I'm not sure
+> if we are missing anything else, but we are getting close and with a
+> sane todo list.
 
-On Thu, Nov 05, 2026 at 12:00:46AM -0500, Pasha Tatashin wrote:
-> Currently, LUO freezes outgoing sessions only inside the
-> reboot(LINUX_REBOOT_CMD_KEXEC) syscall path, serially under global write
-> locks, and binds every outgoing session's lifetime strictly to an open
-> session FD until reboot.
-> 
-> On hosts running many workloads (such as VMs or stateful daemons),
-> workloads do not all pause simultaneously inside reboot(): they quiesce
-> one by one ahead of the host kexec. Userspace needs an explicit
-> per-session freeze point to snapshot final file state (.freeze()) as
-> each workload pauses -- concurrently across sessions under per-session
-> locks -- along with a way to commit a frozen session into KHO so it
-> survives closing the session FD.
-> 
-> This series introduces LIVEUPDATE_SESSION_FREEZE on session FDs:
-> 
-> 1. Freeze (flags == 0):
->    Freezes all preserved files in the session under the per-session
->    mutex while keeping session lifetime tied to the session FD. The
->    session stays frozen as long as the FD remains open; closing the
->    session FD before reboot (for example, to abort the session or on
->    process exit/crash) runs .unfreeze() and .unpreserve() and reclaims
->    all resources. At kexec time, already-frozen sessions skip the late
->    auto-freeze step and are published into the outgoing KHO subtree.
-> 
-> 2. Freeze and commit (LIVEUPDATE_SESSION_FREEZE_COMMIT):
->    Freezes preserved files, immediately inserts the session and its FLB
->    dependencies into the outgoing KHO subtree in O(1), and commits the
->    session so it survives close() with full ownership retained by LUO
->    until reboot. Once committed, closing the session FD (or another
->    session failing to freeze during reboot) never unfreezes or
->    unpreserves it. This allows processes to hand off preserved state to
->    LUO and exit prior to kexec, and makes committed sessions immediately
->    visible in the outgoing KHO subtree before the host reboots.
-> 
-> Overview of the series:
-> - Patch 1 decouples luo_file_freeze()/unfreeze() from
->   struct luo_file_set_ser.
-> - Patches 2-4 add incremental KHO publication helpers for kho_block
->   (kho_block_set_it_append()), LUO sessions (luo_session_publish_one()),
->   and outgoing FLBs (luo_flb_ser_publish_one(), replacing the late
->   luo_flb_serialize() reboot pass).
-> - Patch 5 introduces LIVEUPDATE_SESSION_FREEZE and
->   LIVEUPDATE_SESSION_FREEZE_COMMIT and updates the LUO core and uAPI
->   documentation.
-> - Patch 6 adds selftests covering both uncommitted and committed session
->   freezes across unit and multi-session kexec tests.
-> 
-> This series is based on liveupdate/next commit d80a5528df4c ("Merge
-> branch 'lu-pci-preservation' into next").
-> 
-> Changelog:
-> v5:
-> - Rebase onto latest liveupdate/next.
-> - Replace reserved field in struct liveupdate_session_freeze with flags
->   and add LIVEUPDATE_SESSION_FREEZE_COMMIT so userspace can either
->   freeze a session while keeping it bound to its FD (rolled back on
->   close()) or commit the frozen session (inserted immediately into KHO
->   and retained by LUO across close() until reboot).
-> - Add incremental KHO publication helpers in kho_block, luo_session, and
->   luo_flb so committed sessions and their FLB dependencies are inserted
->   into the outgoing KHO subtree immediately on freeze, dropping the
->   separate luo_flb_serialize() pass at reboot.
-> - Keep luo_session_freeze_one() / luo_session_unfreeze_one() in Patch 1
->   rather than renaming them to luo_session_serialize_one() /
->   luo_session_unserialize_one() and back once luo_session_publish_one()
->   is introduced.
-> - Update Documentation/userspace-api/liveupdate.rst and kernel-doc
->   across kho_block, luo_flb, luo_file, and luo_session.
-> - Drop v4 Reviewed-by tag on the modified freeze and selftest patches,
->   and expand selftests to cover both uncommitted and committed freezes.
-> v4:
-> - Split out a preparatory patch that drops struct luo_file_set_ser *
->   from luo_file_freeze() / luo_file_unfreeze() and moves file_set_ser
->   handling into luo_session_serialize_one() /
->   luo_session_unserialize_one() (Suggested by Mike Rapoport).
-> - Few more nits from Mike.
-> v3:
-> - Renamed session->frozen to session->user_frozen, - Pratyush
-> - Added Reviewed-by's
-> v2:
-> - Rebased onto liveupdate/next (commit 27be83a12b24 ("Merge branch
->   'lu-pci-preservation' into next")) and split out early session freeze
->   into a standalone series (tmpfs preservation and its per-file user
->   argument plumbing were spun out into a separate series).
-> - Patch 1:
->   - Drop struct luo_file_set_ser * from luo_file_freeze() and
->     luo_file_unfreeze(), and rename the session helpers to
->     luo_session_serialize_one() / luo_session_unserialize_one() so all
->     of struct luo_session_ser is populated and cleared in one place
->     (Suggested by Pratyush Yadav).
->   - Unfreeze the session's files if luo_ucmd_respond() fails in
->     luo_session_freeze().
->   - Update remaining reboot-only wording in luo_file.c kernel-doc
->     comments.
-> - Patch 2:
->   - Add checks verifying that non-zero reserved bits and freezing an
->     incoming post-kexec session fail with -EINVAL.
-> Link: https://lore.kernel.org/all/20261015093816.2438942-1-pasha.tatashin@soleen.com/ # v1
-> 
-> Pasha Tatashin (6):
->   liveupdate: Move file_set_ser handling to luo_session_serialize()
->   kho: support incremental entry publication in kho_block
->   liveupdate: luo: serialize sessions via per-session publish helper
->   liveupdate: luo_flb: support incremental outgoing FLB publication
->   liveupdate: Add LIVEUPDATE_SESSION_FREEZE ioctl to freeze sessions
->     early
->   selftests: liveupdate: Add tests for LIVEUPDATE_SESSION_FREEZE
-> 
->  Documentation/userspace-api/liveupdate.rst    |  30 +++
->  include/linux/kho_block.h                     |   1 +
->  include/linux/liveupdate.h                    |   3 +-
->  include/uapi/linux/liveupdate.h               |  46 +++++
->  kernel/liveupdate/kho_block.c                 |  86 ++++++++-
->  kernel/liveupdate/luo_core.c                  |  10 +-
->  kernel/liveupdate/luo_file.c                  |  94 ++++-----
->  kernel/liveupdate/luo_flb.c                   | 111 +++++++----
->  kernel/liveupdate/luo_internal.h              |  16 +-
->  kernel/liveupdate/luo_session.c               | 178 ++++++++++++++----
->  .../liveupdate/lib/include/libliveupdate.h    |   5 +-
->  .../selftests/liveupdate/lib/lu_utils.c       |  21 ++-
->  .../testing/selftests/liveupdate/liveupdate.c | 107 +++++++++++
->  .../selftests/liveupdate/luo_kexec_simple.c   |  22 ++-
->  .../selftests/liveupdate/luo_multi_session.c  |  33 +++-
->  15 files changed, 612 insertions(+), 151 deletions(-)
-> 
-> 
-> base-commit: d80a5528df4cdee5871243e392da08c2d5c92e43
-> -- 
-> 2.56.0.398.g882cbad275-goog
-> 
+Thanks very much, Kairui. Besides the items above, I am also
+thinking about a few more:
 
--- 
-Sincerely yours,
-Mike.
+- Cross-memcg aging / look-around folio promotion (folios with
+large mapcounts across multiple memcgs still easily fall back to
+rmap walks today)
+- mmap_lock contention during aging (perhaps switching to VMA
+locks, as mmap_lock contention can cause jank in Android
+foreground UI)
+- Baoquan's PUD filter
+- Making MGLRU more friendly to Android foreground/background
+workloads
+
+Thanks,
+Barry
 
