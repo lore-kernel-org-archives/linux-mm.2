@@ -1,90 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D233606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C087606A337
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 11:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ietIUcB/
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zjXxQpVb
 Received: by kanga.kvack.org (Postfix)
-	id 8BB336B05B1; Wed, 11 Nov 2026 06:27:08 -0500 (EST)
+	id 38F906B00EF; Wed, 11 Nov 2026 06:29:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 892896B05B3; Wed, 11 Nov 2026 06:27:08 -0500 (EST)
+	id 33FE56B05B2; Wed, 11 Nov 2026 06:29:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D0E36B05B4; Wed, 11 Nov 2026 06:27:08 -0500 (EST)
+	id 27DA16B05B3; Wed, 11 Nov 2026 06:29:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 617156B05B1
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:27:08 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EBEC58028B
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:27:07 +0000 (UTC)
-X-FDA: 85422611694.28.5310CD9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3164040002
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:27:06 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ietIUcB/";
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 030D26B00EF
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 06:29:34 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 999A5A7B26
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:29:34 +0000 (UTC)
+X-FDA: 85422617868.16.4A4E1CA
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	by imf08.hostedemail.com (Postfix) with ESMTP id BBFF316000A
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 11:29:32 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=zjXxQpVb;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794396426;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1794396572;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3PMJZmw8MJh2mWVqw780qdUE6D8XJjqTBbqBroaGkaA=;
-	b=YByCIeBuk2p4PpfqH4v93/Pj7cRs+l05d6ykwDnKxHmn16qgFzZljFGi/Z6laZLNGLTdbn
-	+SCA6ScYTUK5Bo5EL5yRtdoptPchVvTburGWiXJWYRa+d17FnrlZwDV7UgW3P/KsEpOqbY
-	5nrNPosjfoweT9vwHjQg1w1ciFgM7PA=
+	bh=Q8gUr6YQpOMRYWSFdHxvUy3rBFE83YPVYbXBV1p9Los=;
+	b=N1CvYz24mQp2kAuQ1DNQ0iOiVNrh5VBnM/V7/0G2qEQlsx5gOucGVVbAY/HQekcYaJ2Vw8
+	dzXaaz8GGrnadB9f7w2Y/tU9kJunbWQg7+JMx9HtqCDVCD9HVzd0U2p1s5ePZrtOxo0nYP
+	lTpNoECAprICz0t7Bt7nJ/R0aRx2J3o=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ietIUcB/";
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=zjXxQpVb;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794396426;
-	b=oE61hTgveTOrQNdEbhAEN1pw8zzvckjTa9zLx0GgLL1N+FD+moh11+thrEia1RB4vfUtaV
-	AFnU5uS4CNH4Cvf+pdp89A1z+7fr1TyIJuM6o1tT7Oil+2AS2cy2vqDxjKB3gy9XwEIQ+P
-	Yuf5yl3s9VNNFFCHX1lygw3Uk5wLawQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 60BE541781;
-	Wed, 11 Nov 2026 11:27:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 482841F00A05;
-	Wed, 11 Nov 2026 11:27:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794396425;
-	bh=3PMJZmw8MJh2mWVqw780qdUE6D8XJjqTBbqBroaGkaA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ietIUcB/kWR5VleMqsja0T2FGslp2EcPHF9zkbs6CWGG/rbSrFVAC6EGFkNFQ8RHh
-	 uCCrm8WuKIVOkMYSwWSXfBs9uHjjf6ShymQJIbthifCCLALysO7MT4gzQi8AaiIm29
-	 q+c96idAHljaZdqatwKxH5tjgZBsbmJnrWJ2gXw9uDujaKfuWCZZqtXjZ5YgQliacP
-	 H9wZyyTHPVaC8ZwDwGde4bo39YOEOEi9yjXZq2CBNZG7hn3/QVDybEeWM0xcLav0Jw
-	 2SsVeOM+7eN/k9PbIRWExlAK5zTCyf5xCmViHxzQqo6BB7dMsZjfolH6aP8su1EQea
-	 07r98Ebv5CPKA==
-Message-ID: <sashiko-outbox-208876@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3] mm/highmem: refuse to copy hwpoisoned folios in the
- !copy_mc fallbacks
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Yuanhe Shu" <xiangzao@linux.alibaba.com>, akpm@linux-foundation.org, david@kernel.org
-Cc: =?utf-8?b?SHVhbmcsIFlpbmc=?= <ying.huang@linux.alibaba.com>, "Kaitao
- Cheng" <kaitao.cheng@linux.dev>, =?utf-8?b?R2FyZywgU2hpdmFuaw==?= <shivankg@amd.com>, vbabka@kernel.org, ljs@kernel.org, liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com, ziy@nvidia.com, wangkefeng.wang@huawei.com, tujinjiang@huawei.com, mgorman@techsingularity.net, chengkaitao@kylinos.cn, muchun.song@linux.dev, linux-mm@kvack.org
-In-Reply-To: <20261110112641.1196786-1-xiangzao@linux.alibaba.com>
-References: <20261110112641.1196786-1-xiangzao@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 11 Nov 2026 11:27:03 +0000
-X-Stat-Signature: c5bs5ikjwqjn7h5r6xx3z4bb8hfidq7p
-X-Rspamd-Server: rspam01
+	t=1794396572;
+	b=x8Mc+imQahalBl+dJxZ67BEDG7dDLPnlBL+8rpk+XN0TZTVgyv91ZItdsqMsOU8jCrxpxB
+	rmBE7/8jRSHenYEigy8l2IMKxpjyNj/QxDg/+37Y1Ce00hwsp/ISj4QPRgngp3XwlaMa9I
+	1PqWZWi/plfEOyEj+QMevxqpzKL/Fws=
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-36dc4797082so60754eec.2
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 03:29:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794396571; x=1795001371; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Q8gUr6YQpOMRYWSFdHxvUy3rBFE83YPVYbXBV1p9Los=;
+        b=zjXxQpVbmJvhhMY1O5kBFbzVUxQSO4ylCyt4huKIN6eUqWIpe6qSWmxeA5iMsKyPtG
+         jz5kG7lPARb6xVIDUAMvpbcsidI6T7taINe2Ju1k4s08hKbhQGODt0buEdjm0tIJeMPd
+         cjTPcpUTVf8bv7ewyn18c8giSIfVSOhzMIC+f5cM4OcSf4EJ2zK22wTNJRQcFDTNHNCr
+         Y9MJqzlSo2/wl6nNXUL4/gDrsWXDwKcx7i/6XfuJgm8bzhc48ceHMrKaH9wWkUNk23uT
+         bl3OUKT/rHpP+hg8ePqUSa5WDTAwDAOsih7Vk+Of4K+sv7ZAJBGHzO68P/Q8+qKFFcpo
+         Zw+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794396571; x=1795001371;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Q8gUr6YQpOMRYWSFdHxvUy3rBFE83YPVYbXBV1p9Los=;
+        b=zTvuyPjrbPAsaY/mnN1aGKYH3+6TklbKTy1Bd4ZVnJmdCab8vhj15smMKnBslD4ipo
+         rOpb0AbLJfBnWw4onp3CZejn3mAu/s8zH29xqB1EvM7rcmY9z4rPMdv0fwKsiEkZ7k4w
+         mnZccZkzbgUgHpdZNcCo3eCKx6QO3tiJO8GMLnewTErcuhAWQVR+bKQUo8vCMMvpBTsE
+         cf9GruTcVROLwMv+mcGX5rWYytOK8G1XGVoCqlvt0OqxUm31pObHz07IX3lTfRy7xJx+
+         pKzHT80sL/ZP/9LJLjUXU0Pr5A24Tuu0o9U/rctLEEBF/cK9gZbbXOFS27EI3+Hjl2Xa
+         MCtA==
+X-Forwarded-Encrypted: i=1; AL+hErHSyuVWZOzpqEqXjhG6aGnh8IhxZfZ59TigalYxmci6QDrCXxjGRAWFHP2rIvChtfYkA5FCc6AD5g==@kvack.org
+X-Gm-Message-State: APuU4Z98YGlhfxtxWu9+SoFv72w1+Izi6QxYTyl4/bK50Q8H8kTL62cv
+	BgQoo/FLSPjjZnj7w+vFLn0RJH5G7HeqmCaOXd2dEexhTs/3lOtkaC2C
+X-Gm-Gg: AYBFou3tTI2BtN+rMkgzo4tgGfb6yXQwCZSO3qgcvSRU93LnyUhJWoK6oJ9C9aP4Miu
+	nfO88xne/3BqKsPhEU11HtQPtTZ3zLY2DfcsgQYANGXu6Ercs/SNXo2maXlFQqRlo95aJ/4ntXk
+	Kg+HxFiQDopAZ2ZpkVBPbPJBxUsrgTlrSYidt3ZE88Egw0mhX6DW4ZDvupEK+AZGV2T/5QC2Bgw
+	FML7uCukAmmhkyrOXk6Cch3/xMzjYpxG1fYfhQ0eAMGWGsOX+5nmn2M++WLjq/NQyFFvxm2rDnw
+	wZNrxsVDtYpSyRcJ0Zr4Ilc5ipGQp1MaeV18BrTQTMnLyA9f5OpPayLW2wqeRkkBCMk+IqVZBvM
+	S8sU+jAb9HUQyWJVx2JtsWsMJHTnsRSVmvJVJ7is9cyfCmfJ/ff4K0JEdduyPiHvGek7/UhtVn2
+	f3pcXL8amJ+vGm75h+7pQLXDj05aHNZyW/o4RUN6ETIrAjXzzFyiQsi7INx1X8Pg14jLhm+sYHG
+	ZAj8dHbKT12YH0alNi/98Wu+QRFNDlvjH72/814U3q2vte7oWW1LgJndAn2+CzMCgaGjMJIZPhe
+	H0zPHhl8uJYpNFhLuaSWFtnDUtlyZnvsgODN+M6IzmryqP77SbKId35Mp3qt4zE6qfs=
+X-Received: by 2002:a05:7022:5f1c:b0:165:be2f:c56e with SMTP id a92af1059eb24-1b3c02e9530mr2733676c88.2.1794396571126;
+        Wed, 11 Nov 2026 03:29:31 -0800 (PST)
+Received: from o6.lan ([2602:fce1:44f:115e::])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b11346sm17527411c88.7.2026.11.11.03.29.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 03:29:30 -0800 (PST)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 1/3] mm/zsmalloc: remove CONFIG_ZSMALLOC_STAT
+From: Xueyuan Chen <xueyuan.chen21@gmail.com>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Nhat Pham <nphamcs@gmail.com>, Xueyuan Chen <xueyuan.chen21@gmail.com>, 
+ Minchan Kim <minchan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+In-Reply-To: <avPwLHMalD_kzD-z@google.com>
+References: <20261109-zsmalloc_stat-v2-0-caee41684aba@gmail.com>
+ <20261109-zsmalloc_stat-v2-1-caee41684aba@gmail.com>
+ <CAKEwX=M6dJMccGcDqp2S-66cbegdivnB6MqQRj6tQ2u18UH62g@mail.gmail.com>
+ <avPwLHMalD_kzD-z@google.com>
+Date: Wed, 11 Nov 2026 19:29:26 +0800
+Message-Id: <179439656670.2142163.17566683934241550445.b4-reply@b4>
+X-Mailer: b4 0.16.0
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 3164040002
-X-HE-Tag: 1794396426-624811
-X-HE-Meta: U2FsdGVkX195hoCY3DJ/mkL3UHJoi0ZDwyJOL6+5fduKWkJ293Dtr86Td/xalGeNgKT08ZzL/0vteWqjgo0Phu/9yl1ecWpaTg9WH5BxUAYtcroUh0gtv/1zwD5k5XnZ6lk52p/L0uTi1hqSiVBlC7gf6VMyfVdPiyhjP9CuapIOQPfpjfx0VLD5YvMBm5ykPly0uUF8bgM83w6Yl9WAwuDCBprE7skBBHzuulcFmLtg8gWhTB1MY/GGEJxYyD7U9LY/d4+cITT1zdnlwNRTQe0XUocKz2GKqq2eXVUZEH8gW8oDd1wCk6zzbjfvgsJeuKMLe6vzgcwOiORXj6YZ6MufbTgsGn2aiootVl2zNKKFVJLwhCezdqRw/ruJZ5+3+KwNg4AK0QMUGCQoanqwC15HzaH0OQqx8d0ZgzdyX6j4zIeyOeisJETHzToXhG8MSCJ5yzDVp8XW7kbnQiGCsEuqkLCzq1EfudyOoWo/j1YhgXNgSnl8diQ3ebus0wK0zt3M4DGl8xqKyDA51dYRYHS4Q8xO8A4tyxdirytQUWm3qv/PI6UYN616wOvS/xiciTLKEJ+USshOxntG34DxDIGlIrweylZ9Bc/HebZGPc/DmvpYbiLtwiLRRKgMzVTD2n7WqenU8RWPSRPb9ypnI4V6md4XOLbVZMvwlRTFf3vMTvOr1QeIThO0TuXtNcXaTMn0SNvWdvOFg/meJR80wwiaK4l4xYgE1TGfhniCal/lQ1bnbL95lQMntkm9t486BLu+1OYZSHGcaRIdmWuubhWfS1N+YWv3gcdPQ7lLyO2f4553L6iOkdW6CMZ/HF/A1CpefNe/LYH+vGX+R32HnyT2yANNWdRzJYKckIBlpuzvtsshMSnGQn2/4XdkoI0P3uesRUwfYs2oAbFy9dm+WU9FXOi+sXHFeFTYmQ6LUyYTnkaIbce9pjJrAH00GhOD5TlW/Yb4rOmtwgW+xUd
- i9ZIpQdp
- TVPdT/NuJA21mFwcB1BcYJTYIfj8/kBeaelqWvjIKWkUp2Xu8Jn79lMoEdJPf/G1jqoLGmQVCnKz9+2wz+FFUQK3qT/RwfCWx6G3jQbg9d/8bdXzHLpU7TZKwZ7uTX5y7unTKAz3Gac29wtkgkzHySxIIvgeVhojkUp62SUUSd3dlBQ4Gd5tRRjXJJT/O2/9GmDJLA1y/YSNGLsRwDsBMQKNKwwP9/sNSIOD/RRnMq1NHaLiskEcdsf8BwurH8dJFU3AyzJ17l8WK09MxxQB5D2pIgl3VDO/IdjG4gCKDxJwGeGi6MvEq0vJBOtMCjwta0jtX2/5b3uC1NRfbWiBwb5/ckz1HUzeXhLUg7nHGdAsuCALZcYNU0zngH9/ApGICw7OcKZ6e/crXdYhJMhQ9W4A3n6XFw71DMzcQNw6+7+cM3rRPMod9yUKYrj/1N4d+xodNn6p44KfzdQJQg09dMR8arHJuyYTkTDoINaZks1A3gPhUj1yQ5VPoYJ7CmLwDJ+1BeYh1mNnCGgeaTAgay0U6/cYC+1O+F3tVRHhpu7J4n1uL3R34/yGbez7McXQVYZDJIbQ8DxD8Nx0TlWWlZUz/kgJEXoGEe3cpvmBfhyLC3P9mqLebq8y9pvV+1Oy7zzCVqZ/8ril8TYsfbgUFWjIBP9Ss4nmo6PInA45sCu20DQAtBOexPRkNMdCSMnTb7waXbwY+kWSJru+xRdHsQBz2LVHaD1LJ3QOZgV5YxqxKNbeW0+ORwDnI6tFrKy7pImq93sVpu6lqLcDc71cOgEu8SOMh5UKjv1052tdiACSh5EHoZM8P80WETQ==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BBFF316000A
+X-Spam-Status: No, score=-14.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: oem17aqrpxbxnd465rtyahd4ka7hmyc8
+X-HE-Tag: 1794396572-628803
+X-HE-Meta: U2FsdGVkX1/qtWXyYGaIjE4wPdGZYoCS2B6P0cUWxwX6gM+oHunQ8ZcSfM0s8v7LZr83pUvWKaQe60GFSod7fcco71lS8li7hopx7lb3nj5S4m6+TTj6xnULPSMpEa/rVAnj7kK6wJo8Tsx5QG28f7BbO+QqsDqKzc/NYBbp9ucTpcZNmdlBmbrmE2rycQLNQ3CATXIyxguF05QR8vbHc3iGbbetUi+x+9FIbvu3WlmXq4m4AWFG9MfT3MaowJgWqEL49LFyNlKyxCdX5wHlmlqoOT+6sPb6Mv1rAEn8LSpmazBxSYi3lZtXC1mc1VM2AiFOXPpm23rYOz4R0kYbHdtZBwqwaTiBthArlR19ydaMjqqnFA/4xFjwMtv/GB4hsUqHIxff9RV35kNO+35fbouLT4Lkgh/wFsg14fFzgdqDAb44aG6TMRTF21n07wCqJJ/NN5aLHFOyDIe+BmdPdBhlXGreY2Wjh3rDbrTQOP7/br2gx3H8nIQ4uV6xWOLQJ6fV6uluv/ZeiOksMHxtCuLRQyUm5XUsgV4q81J0gamGhDdM1z0RlJ7wAR9K1MXVij5hR9T1BwanEPTb4XJCH/YqhOEeMNew+1Y3bsyNpdlx/eM9Y5+062oXs9vrYl6TyETm98NsvfEUmHRvvYqgt2FTWMDSB2Ao7wesBObk5kD7EBgaPD5B/tNvEGbkMGbO5KLJPs4sKYMNcc/QyV8ZpKpBxcr6AUMrUuJtnpSQCXkS6tgOsNB09F5t/KTAck1DG5ucqHEmJ2GA0XkPbxp61nR5iJi+mKEME9LQFcTpyile1yPF5ebTgE+bA3ovpcDyCMoYnwBioX8BQ7YHRmcvE+gpL7bXf815dwi6IcDmmplDy3sUpXcAO5Mr5Vch4W7CnFhGKZjTyc+irnyxnaFnGPEHZXxyAp7BOA0Twf3iVTgyfKcko8zIqZGfJXHHpIOp963KEhzE0+XN9oNLKe5
+ qiFgvJFL
+ L82XrUCXj9YGkqATZnWMql0oj0WdVkyRybzRJfmzrKAEWqB3yc+xkZpWpNo5nXbFb8dllcU0HquLJYNM1v5ZlzceS/y85LUG09eMFy4C0UsMqU2mzRUzzv3lvh9AZQYDBA4YS3zjiIlsJhctZUG5tdhRSOFZkzMSvpNt4AXMWa6GKDPUes/3L1lEEQ4l+5MIOUBuPA9T6ClqHq7ViuO5s7SL0zpgZKOcaSNQFAKyDVieN72T5RQufb98pAdy+MTmLJX87fEZ3OTZF78td6YWmAtuBtlFpxYdffBe3AloJRiaBlzp1z4tiVORpPeH67HMNg576A9chPfACNi8zexGpORyeIJZ7q2bXqjuKE/FGIjuEkGA9JmKRsyjy2onW7aAXl6u6ZGPuKAmn61VanSB6H58N+IXgkcXY+ONfREPSO80qMHPchk+W+lohCKFiVbbfsHFqIyrSYOwJZ18IZ5LFNifSEZNlvJpdlYgxSnamSAhsxjjQ6W+CJX0ci1JdUrrGfOu08pacuCuUfrkHoLQPve09hU5HplITVxHBV8hcnGcbNKY1N40nFryMZzK/jBw/L0tCZz/o03IFVEclwpF8mxYp/AE+Hg4DwU9keTKTH6FU+6Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,68 +129,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] mm/highmem: missing is_page_hwpoison() check in
-  copy_mc_to_kernel branch
---
+On 2026-11-11 13:35 +0900, Sergey Senozhatsky wrote:
+> On (26/11/10 08:00), Nhat Pham wrote:
+> > On Mon, Nov 9, 2026 at 5:59 AM Xueyuan Chen <xueyuan.chen21@gmail.com> wrote:
+> > >
+> > > CONFIG_ZSMALLOC_STAT only controls the debugfs interface. The class
+> > > counters are updated regardless of this option.
+> > >
+> > > Remove the CONFIG_ZSMALLOC_STAT guards and rely on the debugfs API
+> > > stubs when CONFIG_DEBUG_FS=n. Skip statistics setup silently when
+> > > debugfs is unavailable.
+> > >
+> > > Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> > > Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> > > ---
+> > >  mm/zsmalloc.c | 33 ++-------------------------------
+> > >  1 file changed, 2 insertions(+), 31 deletions(-)
+> > 
+> > FWIW, LGTM:
+> > 
+> > Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+> > 
+> > But I come from the perspective of large(r) server machines - I'd wait
+> > for the feedback of embedded folks too :)
+> > 
+> > Sergey, how do you feel about this direction? We've run the stats
+> > collection (even before we select CONFIG_ZSMALLOC_STAT to expose the
+> > stats to userspace) for eons, and it was never a bottleneck AFAICS in
+> > our fleet...  And the stats files seem trivial, relatively speaking?
+> 
+> Yeah I guess I'm fine with this change.
+> I think this can be just one patch.
+> 
+Yeah, Nhat had the same suggestion. I'll squash them into one patch in v3.
 
-commit 5b18d6f721e579b691687c6c8c6355f1e1a00b17
-Author: Yuanhe Shu <xiangzao@linux.alibaba.com>
-
-mm/highmem: refuse to copy hwpoisoned folios in the !copy_mc fallbacks
-
-This commit checks is_page_hwpoison(from) in the !copy_mc_to_kernel
-fallback implementations of copy_mc_user_highpage() and copy_mc_highpage()
-and returns PAGE_SIZE when the source page is marked hwpoisoned.
-
-Link: https://lore.kernel.org/r/877bjowf9i.fsf@DESKTOP-5N7EMDA/
-
-> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-> index d7aac9de1c8a4..c3240f70471d5 100644
-> --- a/include/linux/highmem.h
-> +++ b/include/linux/highmem.h
-> @@ -473,12 +473,18 @@ static inline int copy_mc_highpage(struct page *to,=
- struct page *from)
->  static inline int copy_mc_user_highpage(struct page *to, struct page *fr=
-om,
->  					unsigned long vaddr, struct vm_area_struct *vma)
->  {
-> +	/* Don't touch data that is already marked poisoned. */
-> +	if (is_page_hwpoison(from))
-> +		return PAGE_SIZE;
->  	copy_user_highpage(to, from, vaddr, vma);
->  	return 0;
->  }
-> =20
->  static inline int copy_mc_highpage(struct page *to, struct page *from)
->  {
-> +	/* Don't touch data that is already marked poisoned. */
-> +	if (is_page_hwpoison(from))
-> +		return PAGE_SIZE;
->  	copy_highpage(to, from);
->  	return 0;
->  }
-
-[Severity: Medium]
-Should the #ifdef copy_mc_to_kernel implementations of
-copy_mc_user_highpage() and copy_mc_highpage() also check
-is_page_hwpoison(from) before mapping and copying the source page?
-
-copy_mc_to_kernel() only catches hardware exceptions raised during the
-memory read and never inspects page flags.  On architectures that define
-copy_mc_to_kernel, copying a page with PG_hwpoison already set while the
-underlying memory remains readable (for example, an uncorrupted subpage of
-a poisoned hugetlb folio, an asynchronous patrol-scrubber notification, or
-on x86 when copy_mc_to_kernel() falls back to plain memcpy()) still
-succeeds and returns 0, silently consuming the poison and leaving the
-destination folio without PG_hwpoison.  When the source page does have
-physical DRAM poison, reading it also triggers an avoidable kernel-mode
-machine check and queues a redundant memory_failure_queue() work item.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110112641.1196=
-786-1-xiangzao@linux.alibaba.com?part=3D1
 
