@@ -1,98 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303A6606A330
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 02:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35680606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 02:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=o83sucRy
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nmu/QP69
 Received: by kanga.kvack.org (Postfix)
-	id 474B76B00EF; Tue, 10 Nov 2026 21:27:14 -0500 (EST)
+	id 2BAF66B05B1; Tue, 10 Nov 2026 21:41:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FE0C6B05B0; Tue, 10 Nov 2026 21:27:14 -0500 (EST)
+	id 26BFC6B05B2; Tue, 10 Nov 2026 21:41:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C6036B05B1; Tue, 10 Nov 2026 21:27:14 -0500 (EST)
+	id 184006B05B3; Tue, 10 Nov 2026 21:41:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CE706B00EF
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 21:27:14 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 00727A01F0
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 02:27:12 +0000 (UTC)
-X-FDA: 85421251104.11.48873F3
-Received: from mta0.migadu.com (out-51.mta0.migadu.com [91.218.175.51])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2432B20002
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 02:27:07 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=o83sucRy;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.51 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id D8E936B05B1
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 21:41:54 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 22600A01EE
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 02:41:53 +0000 (UTC)
+X-FDA: 85421288106.25.5D94EA8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 66FB0100005
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 02:41:51 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Nmu/QP69";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794364911;
+	b=LweSPH9mhXV7ZA+rcq3vTrAfm4HrCW4XbHVCUwz0PImtwSCnKrF4fp78kViV0wkEF0B+EX
+	ChPAYi3TdOFOuwUwiUCgw+LsubOU9dsWVDYTUDipKjrLMng02hac/4vP39uSgDbf8Nu7f3
+	0vje9P8yBpCSeRmvYtwPUGJ7K7zEZtQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794364030;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1794364911;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PhQURgUIcHKqh7HKNiSdZ1UHIXZTkSo2Cch6MWvnHLM=;
-	b=5mkrU4/CSb3FBdeaCy+rWCbnxJxION64AqY2yK0CkMb2+NRNXxnWtSJ4voMFzZ7+V6gwpw
-	DyJK8GWjvJpt8DKvZo8B+Bpdni+V9xhE2HA59CfQDQPlCu+EHcKEn9sChZGoNmdp0kTs0/
-	1LXgNOgO+fkxOf9EbXQY3Cp8+yB4Us0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794364030;
-	b=rrpqY3rDrZFMo1Xm96h92AGC9md+wHxHscqRp1uP977njG4lzXyBmUtOWHHOoO83sSoc2Z
-	NbGOb7vwDfcc9shRpEFKSYHUCun9SDqKcg/HGpGa+zQ07ThNAe0hS9WZ6ZvEehbe+j2UUv
-	fTrXqYpIMxN7pCVuYOga0p7Ih8jCZCw=
+	bh=95hXCrcZmE/WUVa4aoCK/ZoD63AwIy0CF7l5eRB1f60=;
+	b=2yJcIQJgsZu9HH1B4RrG34rzYeTfWcxSMWP/oTGFcxb+WSS85uNxshOQK0U0xhhCaKO/wx
+	TbxGu4MOfafF4md3+QDO8JY3PxKegyPmFOAkP/IXqd6xq2hAFhXVFELr5oqP0XV3L+YSJn
+	RTPU6CD0FG7c2RmkMpmFXfBKZgirE78=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=o83sucRy;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.51 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Wv9122kMEZf/lFR0DCpqumkP3VwnY7IyQl5g+ItEPc8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794364025; v=1; x=1794968825;
- b=o83sucRymj2LXoKiyVVIXK6LuAaOSvns2VtDfVRFXz0P/Q0LJGDkPV43/jk8YnXpMEaBMT1U
- eLwmiJYraKRvEYGWk7uFMJ+4RBKOb5oDnUmSEaw9Na7WvP6ANaOmGhQOsUejn05WeF4e8LnW5nG
- lcpBkPFkKKnLXZmXjjCrl0l4=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 6bcbf81a8ca16547;
-	Wed, 11 Nov 2026 02:27:04 +0000
-X-Mizu-Trace-ID: 6bcbf81a8ca16547
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <b66188b8-3b55-416c-a296-9313f94b5cfe@linux.dev>
-Date: Wed, 11 Nov 2026 10:26:59 +0800
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: hongfu.li@linux.dev, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Gerd Hoffmann <kraxel@redhat.com>, Dave Airlie <airlied@redhat.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Ackerley Tng <ackerleytng@google.com>,
- Daehyeon Ko <4ncienth@gmail.com>, Hongfu Li <lihongfu@kylinos.cn>,
- stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/hugetlb: charge hugetlb cgroup and memcg in
- alloc_hugetlb_folio_reserve()
-To: "Gregory Price (Meta)" <gourry@gourry.net>
-References: <20261110-for-alloc_hugetlb-1109-v2-1-25795ce44f80@kylinos.cn>
- <179431474443.789062.10429880669466859032.b4-reply@b4>
-From: Hongfu Li <hongfu.li@linux.dev>
-In-Reply-To: <179431474443.789062.10429880669466859032.b4-reply@b4>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: hbx9j1xinybij4mhewp1oimuimi5mkh6
-X-Rspam-User: 
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2432B20002
-X-HE-Tag: 1794364027-271626
-X-HE-Meta: U2FsdGVkX1+9OGaMghs8v4LWP30ouHxux8BvGsVZLihDSl0v/0MkLKNijQF8dEsGZxZ5cVLbhMDZx9Akb2WaMUPjKk+vlnHMr5nXOATiN93ZDoXNk1zRM4TB0e9fxS5cs+XcFYralSQoOExtAWDhy5qaw3g+iKqGtEnDBYXtedVw2eAaMNut2fL8xwggOM5PfL4WhV4dtjSrT35IrY0vAA39mjdQNmqJEQ8ISeH7rLeTToand5fbqs4L57whjVkokKyGzDJGsazd+2MhhWezzT2Ge6O4oGXRdQyLo8JpCKGEY14wiGGYFCDda2+lhfjDQ9yAnlG5udku/BLAybiFx6okqAb6FD5f/5YLan8itLsizHzpslvsBa8QzHrOqYEPfZnFtGZJrCnqoBhH5QnQsOp4v3vpr/XmIjwseCKmYTmrSCeB/EuP/hwlntTQbE+KyJQ5EGT2TWW/89pUlEkD6ovZ/BtKzmh8JObG/Qg/JTbl+qLMnAeA4UMMw7IrdFjU/uK87QlKDxq70bE+ht7Xcd+qZX7rFPU3hAlt2DYdQb6jFMUEh0fxhNEsxcdXyFI/GQpt63nu0ezt2gs3sauK9hnOwCcamYrwn0ppv8k/arUN1XXfF/pqRw+L+NQzOuX7/e4fdslVFicBtmDUTgjU3EuopRubY1VmsVbvBGL3PcwB59NGcjVj74x2cIv2ZfvN1hLzyx1M+b7XMACMCot8m2no6pH3m5LhV9ZXuUOVjHvNuON9ExNAHRYjid13vaxGSRCUx9pCjYuRR3xGEomX3MH0NqL8ic6rbnxnppk/ryPvHHKy5itnQWyerViNXwk8LiB+oPNZGLev9QtKVpqJI1wOCrpugucJ8FOBkhJp1Mo8PxVw7hKZrZMbLLsxovtsAKNglejagKVFLFmQvY/i02t0r+OoAGCzb2atul7xYRcXacPGIkJ+q+iKWQzEipixQg11LxKOJ7JrHRFPemi
- eAmc3xef
- /4xhHulLPVPLqrXQ0VMHpIi7gIP3AWtihiXVOZD1JDVU1Hr9K+DZIABPEzocYD4OUTmx2VOYe6AiH2Gz1MsOT2D8KvhAP14HNXjGbWterN+sycZTw+tXwEPoEwe9mVIWt24tokQvzUQfJO9eaa3+oGrsSlrQiqL7c3I7TLg3YadOb9wr+XuOERdkd0moePDYBue78rJIs4x5Gt/Q1C0ciUdy9hjT1WoluN++L1k56x6Z2DSR0QzjrOAwS/keqzTye0nljg/cseHQV/zmbkVsn1e9tXLGjA0//HGaeeTzDXajfuifZst6bNNFOzCK6JaBgML9tI5ZIxSNSD0uY0kuMIVcRb70i/HOtu0DyBomEB5023wvKQThBNExJgJIjDYlz7LdF1CB0Mzk+vMlC7x7WyXh25bz5lk0iZ0vU8dGatHbGGb6KcJWmkSaBVA==
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Nmu/QP69";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D012741905;
+	Wed, 11 Nov 2026 02:41:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3D51F0089F;
+	Wed, 11 Nov 2026 02:41:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794364909;
+	bh=95hXCrcZmE/WUVa4aoCK/ZoD63AwIy0CF7l5eRB1f60=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Nmu/QP69iQcqGFVQAz7hgdusoYdKepNkF3edTowwJDX2Cpjjx7IILMIGqles/b4zf
+	 b/XdXr0Gdn0zD3KENdMgZSB1G4Bdwge2IF9uei0yw23WlVOCkemhHW9XGv9EUEV5yf
+	 n/XL9sqOH2HvZtbZAcRi3nfRhoNAj4HYz9OL+qK4bafP75aRKn/wYFvD3R3BBik5po
+	 KnS2bCDxEw16nOwbNTF/tndxH9Vk3NcnMtBG1GG/l+rd1LnR81VnKqNH9Bx3oNDVeS
+	 P2EqyKjFlL7mksZZNWeEsULNwhxAcMd8Y23fNRN3e+74/iQkjhByJJXs6xLv46vtpf
+	 DwtE9qt1d+R5w==
+Message-ID: <sashiko-outbox-208107@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH v2 18/25] iommu/dma: Migrate user pages into PISA
+ for TX zerocopy
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Luigi Rizzo" <lrizzo@google.com>, "Luigi Rizzo" <rizzo.unipi@gmail.com>, "Joerg
+ Roedel" <joro@8bytes.org>, "Will Deacon" <will@kernel.org>, "Robin Murphy" <robin.murphy@arm.com>, "Christoph
+ Hellwig" <hch@lst.de>, "Marek Szyprowski" <m.szyprowski@samsung.com>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Vlastimil Babka" <vbabka@kernel.org>, "David
+ Hildenbrand" <david@kernel.org>, "Jens Axboe" <axboe@kernel.dk>, "David S .
+ Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>, "Matthew
+ Wilcox" <willy@infradead.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Jesper
+ Dangaard Brouer" <hawk@kernel.org>, "Ilias Apalodimas" <ilias.apalodimas@linaro.org>, "Willem
+ de Bruijn" <willemb@google.com>, "Kuniyuki Iwashima" <kuniyu@google.com>, "Joshua
+ Washington" <joshwash@google.com>, "Harshitha Ramamurthy" <hramamurthy@google.com>, "Alexander
+ Lobakin" <aleksander.lobakin@intel.com>, linux-mm@kvack.org
+In-Reply-To: <20261109182533.3594984-19-lrizzo@google.com>
+References: <20261003212241.3432303-1-lrizzo@google.com>
+ <20261109182533.3594984-19-lrizzo@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 11 Nov 2026 02:41:47 +0000
+X-Rspamd-Queue-Id: 66FB0100005
+X-Rspamd-Server: rspam12
+X-Stat-Signature: bm45i8am4aufa3kds8rnmuh7i3w7f7ai
+X-Rspam-User:
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794364911-497812
+X-HE-Meta: U2FsdGVkX1/znIKhnRa7PqnUwEJsrHww9IA+wP2WLFSFXppdZaPfJp/NwaQ4gsr/YyVvOodbRnc0SaxlzXu7IWxuIKG2+J2tXw+RQwzysSm1sokIhzc/EEQuBhrIMcL14XF/KdTi8K+VbLW49jErf4x1/rJQybgAPuPZTJkMFlamsjlAhCy1Et+b4quQ2Uw5djltIidqP+wpPlpgJI+1Kjg07jULSJukWP5J5BAQjk5GJycxRbUusz9OP1mPtmOS+EmMjGCmUoSYVnUhUVycWctnEzkwRk60ullcpscM4jCzAA6iHOd4p5WqK0Hn2dZVdeBrDKT1lTkHHJkEAn13o8YendzdLMyq+l6thgeSNgfkw/6QKfUaBi9bGr3XxFFL+eBYS4z0pLfMMKu9bkTgjfEvB/80lhKgQ0JbOYg2EtDFGH1GSn1CkuJmhmkktLDFPoYCUvyTKMJXjPvuN1DQ1f5qagxlxavNUMgHTlyj1rPhG9m4+2Lw9B0JlCprNI8KlrogWk9+RtdjE4hpEgAfYO7sHE2EXw6x193S2vbDdIA9fNUJWxG9nrPPsJbe49yTcODpqmVxGlHijckuOo+nxApizyKacAspYbEXfNFcvwz+CXoQijjeSDd0aygpFdXmjlkG/T4VFVzDWfuLs4kkO71Dsd5n9HCMv1t7HAfXHcRafXeOOV4ZbrAFSejmAmphsfjt4IstBHk2ODhp+icyddnRM58b64efJBO4R48A0aJoCivyazHoEip9XYUke+fJotQ3PBbB4KT23iJbHdn4HDs1P9Oil7TTmCnyELV5JHAh8mJPOkfFyIquD/jfJxJ58NDjtpQA+PnhEyNeWzWmthGkkM0YE/ML6nxbXldkZGnzrN0pvSeJ1pLY6AJoWfAJ0Hspv3FXYt2USopHX2CeLp+GEky23le4R9PSc9408au2vckKwIaQQ2IcW23DauFD+Q2jR6/Rmol41m5W+/J
+ M/l5VKZc
+ S4rw3yxkFENLQepf6JAJyuu5p8nuzj66P9g3Si+VDb6dKstvRHnFaaGlpAWkmxa9CUwA73zAhZBBX1SDR6NEWuto8ktlpy4BGNSWyYxsa00oLkBtTafKZQvTTSpwUod6e3ffmlQQ6yrNIU4kugIT+CkOanUZ3qD9mcbjlbSyN7p78lC2Z/E7E54plsLszu8EgOLUaaqaSjAdxXbcNyr9h0Zn/yWQaRs2W1IimrKMlLYv31MuvhEIV0d/4yjfCM55yaFmMwP6DEMzu72ccOCgkJJYC2c6KcMe3VWRe4s1GxKBRk/GWGFDCuYkdhCnKnaOPBpWAY4EVUZsqQ7tFvI6ZZYNPOO4lNMxO0KCCGeOPuQJZODqV3yd0yN3G+QsDzTS5JlvC4B4zYZUw0NQ8U5MCe/tmiYm/sm7MUpw1G56wBQtjB+3IGtH0O/uhG4FmVIOB2zZvAnZtvlLcTK18itFwFyO77xjP4IcyexCbz7SStmWH/iDQlym3otHgLmWTdA/u/CnkE0W2ffIE91I3WSr104XOvuamEh636OBS9/YXyVAg+viQBIpZ3TO2IdEkr7YoSWjeHEwU9BpTV3Zu0v6ePUVMZdjQgh/+JUlWBp/VuRWc+8NsngN8GJrPrhP5zH+6Sea0Ve9e55yQBjl28qVoXKJPIfaqeXcaFaiMgzzx0gaeRU/A0/3ZeB3pZQTcmi2zq1VzI+uh+CULB0qkOCZmmBr3elxnZKEeWj8EENhTzEd9BOE3/E5yIFSBd87arlHLjCcsr2ce/hzT6Rew01988jI9/9OmCr4nc6quosutlkDx1t7oFtsfNKzCZIX7cGZPxoRP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,75 +104,264 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
+Thank you for your contribution! Sashiko AI review found 5 potential
+issues to consider:
+- [High] iommu/pisa: unkillable PAGE_SIZE walk under mmap_read_lock in
+  pisa_madvise()
+- [High] mm/madvise: missing MADV_PISA definitions on alpha, mips,
+  parisc, and xtensa
+- [Medium] iommu/pisa: alloc_tag corruption via pgalloc_tag_swap() in
+  pisa_user_migrate()
+- [Medium] iommu/pisa: pisa_user_max_4k_pages not restored on error in
+  pisa_user_max_set()
+- [Medium] net: pisa_zc_iter() migrates user pages before checking
+  dst_tx_pisa_ok()
+--
 
-在 11/10/26 20:45, Gregory Price (Meta) 写道:
-> On 2026-11-10 14:05 +0800, Hongfu Li wrote:
->> From: Hongfu Li <lihongfu@kylinos.cn>
->>
->> alloc_hugetlb_folio_reserve() hands out a folio from the hugetlb pool and
->> consumes a global reservation, but unlike the fault path it never charged
->> the folio to the hugetlb cgroup or to the memcg.  Folios allocated for
->> memfd_pin_folios() through memfd_alloc_folio() were therefore silently
->> bypassing the accounting: they are never charged to the hugetlb cgroup
->> usage counter (hugetlb.<size>.current or hugetlb.<size>.usage_in_bytes),
->> so the limits (hugetlb.<size>.max or hugetlb.<size>.limit_in_bytes) are
->> bypassed.  In cgroup v2, with memory_hugetlb_accounting enabled, these
->> folios are also not accounted in memory.current and are not bounded by
->> memory.max.
->>
->> Charge the folios to both the hugetlb cgroup and the memcg, just like
->> hugetlb_alloc_folio() does.
->>
->> Test with a process that creates a hugetlb memfd and pins pages through
->> UDMABUF_CREATE. The counters were read while the folio was still pinned:
->>
-> ...
->> Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
-> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
-> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
->
-> one note below that is worth assessing but maybe not a blocker.
->
->> +		ret = mem_cgroup_charge_hugetlb(folio, current->mm,
->> +						gfp_mask | __GFP_RETRY_MAYFAIL);
->> +		if (ret == -ENOMEM) {
->> +			folio_put(folio);
->> +			/*
->> +			 * Skip uncharging hugetlb_cgroup since the charges
->> +			 * were committed to the folio and freeing the folio
->> +			 * would have cleared those up.
->> +			 */
->> +			return NULL;
->> +		}
-> This adds a new -ENOMEM condition on stable which may race subtly on
-> two tasks allocating against the same memory.max and cause failures.
-> In testing, it doesn't cause splats or anything, it may just cause
-> spurious allocation failures that fallback to other paths.
->
-> This implication may be worth a comment in the changelog.
+commit e8400c9a631094526a61a414ed9c1bc933634c72
+Author: Luigi Rizzo <lrizzo@google.com>
 
-Hi Gregory,
+iommu/dma: Migrate user pages into PISA for TX zerocopy
 
-Thanks for the review and the testing.
+This commit adds support for migrating private anonymous order-0 user pages
+into per-node PISA allocators via madvise(MADV_PISA / MADV_NOPISA) and
+automatically during MSG_ZEROCOPY transmissions.
 
-Agreed on the new -ENOMEM condition. It is a real behaviour change that
-affects stable kernels. I will add the following to the commit message
-in v3:
+> diff --git a/drivers/iommu/pisa-user.c b/drivers/iommu/pisa-user.c
+> new file mode 100644
+> index 0000000000000..a16909d429aca
+> --- /dev/null
+> +++ b/drivers/iommu/pisa-user.c
+> @@ -0,0 +1,278 @@
 
-memfd_pin_folios() can now fail because the memcg charge fails. Two
-tasks allocating concurrently against the same memory.max may see a
-spurious failure. That failure frees the folio, returns the global
-reservation, and undoes the hugetlb cgroup charge, so no accounting is
-left behind.
+[ ... ]
 
->
-> ~Gregory
->
--- 
-Best regards,
-Hongfu
+> +static int pisa_user_max_set(const char *val, const struct kernel_param =
+*kp)
+> +{
+> +	unsigned long max_pages;
+> +	int ret;
+> +
+> +	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+> +		return -EOPNOTSUPP;
+> +	ret =3D kstrtoul(val, 0, &max_pages);
+> +	if (ret)
+> +		return ret;
+> +	WRITE_ONCE(pisa_user_max_4k_pages, max_pages);
+> +	if (max_pages) {
+> +		if (!pisa_nodes[first_memory_node].pa[0][0])
+> +			return 0;
+> +		if (!pisa_user_init())
+> +			return -ENOMEM;
+> +		static_branch_enable(&pisa_user_key);
+> +	} else {
+> +		static_branch_disable(&pisa_user_key);
+> +	}
+> +	return 0;
+> +}
 
+[Severity: Medium]
+Does this leave pisa_user_max_4k_pages updated if pisa_user_init() fails and
+returns -ENOMEM?  Sysfs will report the new non-zero limit after the write
+failed, and a later madvise(MADV_PISA) call can then succeed in
+pisa_user_init() while pisa_user_key remains disabled.
+
+[ ... ]
+
+> +/* new_folio_t for migration into PISA memory. */
+> +static struct folio *pisa_user_new_folio(struct folio *src, unsigned lon=
+g private)
+> +{
+> +	struct pisa_user_mtc *mtc =3D (void *)private;
+> +	int nid =3D folio_nid(src);
+> +	struct page *page;
+> +
+> +	if (mtc->budget <=3D 0)
+> +		return NULL;
+> +	page =3D pisa_alloc(pisa_nodes[nid].user_pa, mtc->gfp);
+> +	if (!page)
+> +		return NULL;
+> +	if (pisa_meta_of_pfn(page_to_pfn(page))->flags & PISA_DECRYPTED) {
+> +		put_page(page);
+> +		mtc->budget =3D 0;
+> +		return NULL;
+> +	}
+> +	mtc->budget--;
+> +	return page_folio(page);
+> +}
+> +
+> +/* new_folio_t for migration out of PISA memory: allocators never serve =
+these. */
+> +static struct folio *pisa_user_old_folio(struct folio *src, unsigned lon=
+g private)
+> +{
+> +	return __folio_alloc_node(GFP_HIGHUSER_MOVABLE | __GFP_NOWARN, 0, folio=
+_nid(src));
+> +}
+> +
+> +/* Migrate the isolated folios on @list; failures are put back. */
+> +static void pisa_user_migrate(struct list_head *list, bool to_pisa, gfp_=
+t gfp)
+> +{
+> +	struct pisa_user_mtc mtc =3D { .gfp =3D gfp, .budget =3D LONG_MAX };
+> +	enum migrate_mode mode =3D MIGRATE_SYNC;
+> +
+> +	if (list_empty(list))
+> +		return;
+> +	if (to_pisa) {
+> +		mtc.budget =3D pisa_user_budget();
+> +		if (!gfpflags_allow_blocking(gfp))
+> +			mode =3D MIGRATE_ASYNC;
+> +	}
+> +	if (migrate_pages(list, to_pisa ? pisa_user_new_folio : pisa_user_old_f=
+olio,
+> +			  NULL, (unsigned long)&mtc, mode, MR_SYSCALL, NULL))
+> +		putback_movable_pages(list);
+> +}
+
+[Severity: Medium]
+Does migrate_pages() corrupt page allocation profiling counters when
+CONFIG_MEM_ALLOC_PROFILING is enabled?
+
+When a 2MB PISA page is allocated in __pisa_page_alloc() and split in
+split_page_compound(), pgalloc_tag_split() assigns __pisa_page_alloc()'s
+alloc_tag to all 512 blocks, and __pisa_free_page() recycles individual
+blocks without calling pgalloc_tag_sub().  However, migrate_pages() calls
+folio_migrate_flags() -> pgalloc_tag_swap(dst, src).  Migrating a user folio
+into a PISA block swaps __pisa_page_alloc()'s tag onto the old buddy folio
+(which is immediately freed, decrementing __pisa_page_alloc()'s tag while
+the PISA block is still allocated) and places the user folio's tag onto the
+PISA block, where it is never decremented when __pisa_free_page() recycles
+the block.  Migrating out via MADV_NOPISA similarly leaves
+pisa_user_old_folio()'s tag stranded on the recycled PISA block.
+
+[ ... ]
+
+> +int pisa_madvise(struct vm_area_struct *vma, unsigned long start, unsign=
+ed long end, bool to_pisa)
+> +{
+> +	gfp_t gfp =3D GFP_USER | __GFP_NOWARN;
+> +	struct folio_walk fw;
+> +	unsigned long addr;
+> +	unsigned int n =3D 0;
+> +	LIST_HEAD(list);
+> +
+> +	if (vma->vm_flags & (VM_SHARED | VM_IO | VM_PFNMAP | VM_HUGETLB))
+> +		return -EINVAL;
+> +	if (to_pisa && !pisa_user_init())
+> +		return -EOPNOTSUPP;
+> +	lru_add_drain();
+> +	for (addr =3D start; addr < end; addr +=3D PAGE_SIZE) {
+> +		struct folio *folio =3D folio_walk_start(&fw, vma, addr, 0);
+> +
+> +		if (folio) {
+> +			if (pisa_user_want(folio, to_pisa) && !pisa_user_busy(folio, 0) &&
+> +			    isolate_folio_to_list(folio, &list))
+> +				n++;
+> +			folio_walk_end(&fw, vma);
+> +		}
+> +		if (n =3D=3D PISA_USER_BATCH) {
+> +			pisa_user_migrate(&list, to_pisa, gfp);
+> +			n =3D 0;
+> +		}
+> +		cond_resched();
+> +	}
+> +	pisa_user_migrate(&list, to_pisa, gfp);
+> +	return 0;
+> +}
+
+[Severity: High]
+Can an unprivileged user stall a task in an unkillable loop holding
+mmap_read_lock by calling madvise(MADV_NOPISA) or madvise(MADV_PISA) on a
+multi-terabyte unpopulated anonymous mapping?
+
+Unlike walk_page_range_vma(), which skips empty PGD, P4D, PUD, and PMD
+entries at once, this loop steps by PAGE_SIZE across the entire [start, end)
+range and calls folio_walk_start() on every 4KB address without checking
+fatal_signal_pending(), and MADV_NOPISA reaches it even when
+pisa.user_max_4K_pages is 0.  Using walk_page_range_vma() or checking
+pisa_user_enabled() and fatal_signal_pending() would avoid walking empty
+page table levels and allow SIGKILL to abort the walk.
+
+> diff --git a/include/uapi/asm-generic/mman-common.h b/include/uapi/asm-ge=
+neric/mman-common.h
+> index ef1c27fa3c570..c4332db8e56ff 100644
+> --- a/include/uapi/asm-generic/mman-common.h
+> +++ b/include/uapi/asm-generic/mman-common.h
+> @@ -81,6 +81,8 @@
+> =20
+>  #define MADV_GUARD_INSTALL 102		/* fatal signal on access to range */
+>  #define MADV_GUARD_REMOVE 103		/* unguard range */
+> +#define MADV_PISA		210	/* move pages into PISA memory */
+> +#define MADV_NOPISA		211	/* move pages out of PISA memory */
+
+[Severity: High]
+Does mm/madvise.c fail to build on alpha, mips, parisc, and xtensa?
+
+Those four architectures do not include asm-generic/mman-common.h in their
+arch/*/include/uapi/asm/mman.h headers, while mm/madvise.c references
+MADV_PISA and MADV_NOPISA unconditionally.
+
+> diff --git a/net/core/datagram.c b/net/core/datagram.c
+> index ecc30a6f83023..40f20d0faa859 100644
+> --- a/net/core/datagram.c
+> +++ b/net/core/datagram.c
+
+[ ... ]
+
+> +static bool pisa_zc_iter(int *ret, struct sk_buff *skb, struct iov_iter =
+*from, size_t *length,
+> +			 const struct sock *sk, struct page **pages, int max_pages,
+> +			 unsigned int orig_len, size_t *start, ssize_t *copied)
+> +{
+> +	unsigned int i, nr;
+> +	ssize_t keep;
+> +
+> +	if (!pisa_user_enabled() || !user_backed_iter(from))
+> +		return false;
+> +
+> +	/* Move user pages into PISA memory, then look them up again. */
+> +	if (pisa_upgrade_user_pages(pages, DIV_ROUND_UP(*start + *copied, PAGE_=
+SIZE))) {
+> +		iov_iter_revert(from, *copied);
+> +		*copied =3D iov_iter_get_pages2(from, pages, *length, max_pages, start=
+);
+> +		if (*copied < 0) {
+> +			*ret =3D -EFAULT;
+> +			return true;
+> +		}
+> +	}
+> +
+> +	/* Only TCP (which sets skb->sk at transmit time) handles short appends=
+/-EXDEV. */
+> +	if (!sk || skb->sk)
+> +		return false;
+> +
+> +	/* Only plain MSG_ZEROCOPY ubufs (not io_uring/vhost/devmem). */
+> +	if (skb_zcopy(skb) && skb_zcopy(skb)->ops !=3D &msg_zerocopy_ubuf_ops)
+> +		return false;
+> +
+> +	/* Egress device must have pisa_tx_bufs enabled so the copy uses a PISA=
+ page_frag. */
+> +	if (!dst_tx_pisa_ok(__sk_dst_get(sk)))
+> +		return false;
+
+[Severity: Medium]
+Should pisa_zc_iter() check sk and dst_tx_pisa_ok(__sk_dst_get(sk)) before
+calling pisa_upgrade_user_pages()?
+
+Calling pisa_upgrade_user_pages() first migrates user pages into PISA even
+when the egress device has pisa_tx_bufs disabled, when sending over
+loopback or virtual devices, or when the socket is routed over IPsec
+(where __dst_tx_pisa_ok() excludes dst_xfrm(dst) to keep plaintext out of
+shared 2MB PISA pages).  Because __iommu_dma_map() checks is_pisa_phys()
+rather than dev->pisa_tx_bufs, migrating pages on a device with
+pisa_tx_bufs disabled also causes pisa_map_phys() to install 2MB PISA IOMMU
+mappings on that device.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109182533.3594=
+984-1-lrizzo@google.com?part=3D18
 
