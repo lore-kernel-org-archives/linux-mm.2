@@ -1,92 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B4D606A32A
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 22:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94026606A331
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 22:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QK/OdnK3
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=N9gTsIvA
 Received: by kanga.kvack.org (Postfix)
-	id EAD016B05B4; Wed, 11 Nov 2026 17:15:06 -0500 (EST)
+	id ABC9F6B00EF; Wed, 11 Nov 2026 17:18:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E84C96B05B5; Wed, 11 Nov 2026 17:15:06 -0500 (EST)
+	id A6D4F6B05B0; Wed, 11 Nov 2026 17:18:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC1966B05B6; Wed, 11 Nov 2026 17:15:06 -0500 (EST)
+	id 982C46B05B3; Wed, 11 Nov 2026 17:18:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BA3976B05B4
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:15:06 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 476CEA042E
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:15:06 +0000 (UTC)
-X-FDA: 85424244612.08.B900040
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8B901C000C
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:15:04 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QK/OdnK3";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 7A6C56B00EF
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:18:55 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 13E75A0461
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:18:55 +0000 (UTC)
+X-FDA: 85424254230.26.B2F3A69
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 45C301C0004
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:18:53 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=N9gTsIvA;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794435533;
+	b=8CLF/dHrEjGpfD+5r1aduB8ym9xQf5aLm5GGL9tEyZfxFVRujQ0kLZVCyxH/qauurutytj
+	rdUkkrEMtd0aF1VLKwMVEL47kK5i0RvdbqQyU1OhMF543PoBBWkNQm6SBAkJL73mkVgQM2
+	vE+EJa3MXjFFY/EtT/GUvLiGErY7SJo=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=N9gTsIvA;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794435304;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1794435533;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+rWa3fKy9Arj7VDl0kL/ONlqwlXF/miTng45hXgpW1w=;
-	b=bh/7FrDsBXO7ym4FEeQaUL8DDh/mtOT6/dzsjPxPjZGwWh5V2D44zHSzcnA23e4ciDsRxy
-	qiQx8IzC5h6O2tnTk2m3vnHLyNkD4ChZWnWtp1OPCxcuDe8jD9/wOMf3skMzmCLjbtIFuX
-	omP/t/XQpF3PZHYJZfQX9Skda30V97o=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QK/OdnK3";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794435304;
-	b=s0sgTNOYlQyIq+RLEa0hZP1Q9B3IpSVAUsUxZ2FpK3+hoz4FM63uzWuUSr9lfYuSA5HXcg
-	euhNOdI4z9oTMSJhk7wrBgP0NORQv/AJZEuat8MZBa6VKxpQCnawqEZa1kJFzBeccFEdIc
-	eOkveYANfNkvyIX+KVqNzbE+0yucg8k=
+	bh=YhV5+1cS0emO9WNIGDx6eBvv8/9J401vylAgxkfRXbk=;
+	b=MRGZDHBoQkqPGKhF7tGnaK/h9l7WSEIdRQLSfxpSqjia4ItPXvAy0Q5xDx1ilYSLRD/NEc
+	Ich/ZFF0TG81GtJYUw75dlvAUAF1+dxJpg/y8/3RURCx74/F99FQ3YGncBucFnQVt+ccZl
+	T93ltczpo1g3b2oS8Y7JMq+MY5b7aGE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B248141AB9;
-	Wed, 11 Nov 2026 22:15:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13EAF1F00A05;
-	Wed, 11 Nov 2026 22:15:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794435303;
-	bh=+rWa3fKy9Arj7VDl0kL/ONlqwlXF/miTng45hXgpW1w=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=QK/OdnK3HeXslVYKT0LdfX3ipfDdh7aBE3rXsIuOuyLXzCd/u09thXLxrouVnx3QY
-	 uTGPiZtndJLonHc8baoIFFXy0BphdAvjqJJ17wYLSDXR9G4zzgA7pa9lExhpC6EHZ4
-	 hCwb/8R34KvjMjECsTam8vSSgj0wEbJDA66kT8+ve2Ewry23zo7746dkEc3lkzRTFj
-	 SQFw2ZOSgHRTAfiobcjqKuxGdJ7N+orCcD3olMQ1VmOCT45jCbnMgz3C3WV6C/GLBa
-	 GFaSPjcR915Q05nZSZI0/YvJ9X47IHrqLcvRj1E0vUKsOZyL8OXq6C4OAIATLFyv2S
-	 +u/v7eyn5rECA==
-Message-ID: <sashiko-outbox-209775@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] mm/cma: simplify cma_declare_contiguous_multi()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?TWlrZSBSYXBvcG9ydCAoTWljcm9zb2Z0KQ==?= <rppt@kernel.org>, "Andrew
- Morton" <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>
-Cc: "Frank van der Linden" <fvdl@google.com>, "Ivy Lopez" <skunkolee@gmail.com>, "Lorenzo
- Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
- Hocko" <mhocko@suse.com>, linux-mm@kvack.org
-In-Reply-To: <20261111-cma-multi-v2-1-4e2dddb2a2d8@kernel.org>
-References: <20261111-cma-multi-v2-1-4e2dddb2a2d8@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 11 Nov 2026 22:15:02 +0000
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 8B901C000C
-X-Stat-Signature: udpwdany3nndikbnrw17ntjzrpkz36ch
+	by tor.source.kernel.org (Postfix) with ESMTP id D4F2D62F92;
+	Wed, 11 Nov 2026 22:18:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388ED1F00A05;
+	Wed, 11 Nov 2026 22:18:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1794435531;
+	bh=YhV5+1cS0emO9WNIGDx6eBvv8/9J401vylAgxkfRXbk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=N9gTsIvABmWA9FG/AxHE9BOkDd+PvfjEmh/9xkTi4E6r7N/z2bxN7nq40VisAO49F
+	 IgUSAQYdoqkEMhROZYKhYAJjC/XC2ncIl2uqCE9C4Ngoz2nsfjoacmgz3/SUlnrv7j
+	 f2Mcda/BOS1gCJ4w3EOHrh9rdEh2rSgXT1W+3JxY=
+Date: Wed, 11 Nov 2026 14:18:48 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Kiryl Shutsemau <kas@kernel.org>, "Lorenzo Stoakes (ARM)"
+ <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, David Rientjes
+ <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn
+ <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
+ <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, Joshua Hahn
+ <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
+ <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
+ Popple <apopple@nvidia.com>, Usama Arif <usama.arif@linux.dev>, Kairui Song
+ <kasong@tencent.com>, Balbir Singh <balbirs@nvidia.com>, =?ISO-8859-1?Q?J?=
+ =?ISO-8859-1?Q?=E9r=F4me?= Glisse <jglisse@redhat.com>, Yu-cheng Yu
+ <yu-cheng.yu@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, Dennis
+ Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter
+ <cl@gentwo.org>, Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>,
+ Chris Mason <mason@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, Mark Brown <broonie@kernel.org>,
+ "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, Josef Bacik <josef@toxicpanda.com>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH 04/13] mm/migrate_device: allocate THP deferred split
+ heads
+Message-Id: <20261111141848.11762f60e737c97c3a239fe1@linux-foundation.org>
+In-Reply-To: <95682ddd-d200-4827-a009-77ee59d14f86@kernel.org>
+References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
+	<20261111-mason-migrate-et-al-fixes-v1-4-3d2454362e8d@kernel.org>
+	<avTB6h61nXfvCXUS@thinkstation>
+	<95682ddd-d200-4827-a009-77ee59d14f86@kernel.org>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 45C301C0004
+X-Stat-Signature: ei1q3zudm6zcbn4oxunkw34dxfykkrcd
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794435304-689147
-X-HE-Meta: U2FsdGVkX1/rTekz7EyQR3zzDTUyyeLwNzxKBlhvFdnXwSuMbWPg/nMaO9Sbp+Og4TiR+xbSvipcQ+P33zakXXBG3S+4tj79Nd5X56RCXsIfngfE3Ig0of58fm/SvgcJHpvDZclsLaUWgPUwhNUTe49/etf5ThCMd3wtpzC69AkYwfs0MIZKRpz3djR6NHY8orc2vqFUKTRZpFkeRSzZhlHU809MnLiQG2aADFyTm+9UR4/aeos7aUQMY90Vt+020/wIcLEzj8RI4dGiDaQ65WlUN80QTeXzyVV6B9jRTDepEq3lXPJ3BJtXp81lDtpXnF3AXqRgZnjvO4Dm4VjU7sMt9SZeU6PgQ6fTrzkI4l3UahIlilQ+4WtSM/3z2DXSPlhPaRPwPOmL0lw8UeCHllPHaM2w8TWYB214mEFFHVAo6k0HsNbPEh6hImWc+IPUgDR1y5XOJmRMfm2krdb6d5V57WspeUUFSD+Qh+vbnjM/o/tSDspS69OITrXaTtWtcOJssrlyoJaVOPSuRslJlOdPNyR4zVDj7Hog0lDCFxLnMKI1fFYosOrG4ArjjFKaSF+qdndowY2TVsLvkSECuj8E19N6aicBPGp74V7fQleafO9vBg3MwL2F1ElJz6ccUCw14oqazxSmWbZCOryh8x2XaZaxx+NVqQ+3mW4m8uETS+KA71kNDBakqmxopHD47WuSYdLxlv1flBADPbVKbBi/TiUhtf2K6FUj7tDhZfnz88njl3EdAkfoghMh6irb4FyqYcPcbmz6jujSEZJ4dFfYVQ0DIHt+X0/zIZjkKhcOUrNpOamxG5PQFgBSltFjmMzoHRiZTx5bCQL8gigA66viIiSTk4LK0aKh66E0BIqcd7/BXeHPu69/+VCzKPjOIfuxAhk19xzQFPDvUrTBmwOTTkRG0hWVdoZnz55E6/kz3jadh3SrB/Ct83f99zf5if3qJWaE/NJ/m8xBE6h
- m4ru+Cob
- Y0zInFDx3ZkkSZ/cNW+g9MyxG4nDVXTFHLk/VuCJ6SS0UTsLx6wNeo//lI3tZiImhnJUMqaRPaCgyfzemiXqjMmtk+dwO9TlEOKHCgoDsqE6DCofDJ+zv7uM8GylBHMVxb1AkDkEus6ou1sjD3WbbZ5xVvqIRx8DwLvLBEGW8dQrz7QQhP0L2E+elOurzbze+745AvKfTR9zerVzfjU5e4V4FnrOn9uM8hHLz99AsbfOUKrU7S/Lqbn/vRx2Ral6lc7FS4bogassBBy16cDNh1zgGzJZ9H/Hp0vLSDn/vILO3MGdvUwdTI7Ro6CYowQn5767aX7Ytb4uLYOSkmYC+PWGtyXAs8YfrjXmxejBaqWml2wnDLusI7KLA4YTd0/YDw1rtKybnNvUBQsZ1Yolus+kyNPemc8vTPgdsHsEFbJ8oswlmv50AnEPq6gNkWOhemIfIOLdkFL9rIZg3Hn31VawfPSNdT3VO6gTGs9e3TuDe2rjZ6eXRG5Jq7nrUjK1dpEi4mpxPSPPXSEzTMLR+fXnkT7/eFUbDspFkIPXGcYn0hmGS7NSo4ITyFF1KhHpjy/YwPwzQpE6m3Q95NiFXmK+gTmhELCsfTnyp9a9Ci5rEQav5O1tHuobfLUUsLJ8STpBgU2f57elE99XQlf6R692meuuRgoFbqy1938M669LmCMw=
+X-HE-Tag: 1794435533-412098
+X-HE-Meta: U2FsdGVkX1/yAV5Uj36wYOBN2+VKi16B3uxWxr1+OypuJ9poaimgDMGoT7rgwO12ayx5XsT0buJBzomEfxr8wXPSKoHnobJqOZ3dIOtzHLbi3NXOK9KIKR2npvdnjvP3AaukRX8mHoZQvsdsLxGvKjJOk2LcGkSze8GFu1CmEVnIRbn6dZKzcGJnBybElXUwcPRQBEBo5BSkzhNlIjQWroUVtbEFqXyHmYmXapuPv25cd/988Y+Op2K2qoErFgrVQ2OLP9R2RL2UEQ3ehh7Ancb0MuECQQY+V7LkUUWFeD2V1tUils97y+KIzCHhJcVyyRGee+fwYxJjk8FfOth9hWrHxswNDnjmusoi6OZEaysx0QYNob8+f2Fy6eL6Dlrg4vChsT5bQEr40H5QFfB/buljHo+SDZ47jo0pCw/zesQQmdwIU07MHvMQVNBOCCbsphYPb67AEEwtjUG/8TvsEY6Xkxc8rBd7Utdte43XQDZ1IKsrAFapBXFT98faHJneUWN60w0AOS3i8ET6tlVRynUeWaWXOJ/DrQ+TJr5XKiIwzgCA2Nt8RAiRbWEzS265fJjWaepToY4t8A8SVvEZIbRhVTfCi8hKslya3P+qzeaYB2QN14vkM5ND21g/8C3TsAMxGQTIhg9aWhGm3SATmhj1aUWNReyaIDAueVSMPbrQHdCnEcK0eOZlvOSll1aTMy9UoQ2Trx8cqfoma/VchGg8BwuACEUi0EeWWQ4Yv7IIlVcdEIqkHFFQsy8AaQPZ2te9PfEmFzhS7SulpagBotuMS3mYynGhkAYUtXf5cP1eVfjw46KpseyYRJz7SU+FL6cu8BrTJfUVd2yMbR6ZVnto/t3dR3iRIE6FMzxUl1n9QYYDQ/4aBH1j+MeEjfDbMKmDKdQiw2xS9iQV4zcYzOQckdxGMVRjdEKKWJ1hQkSEgVgJrdpZ+c9pDNmEjSGAcMgx55ejLIrdVeaNvAx
+ R2+GQ28c
+ FoMFQ1YacFbyCWiFgH6cNBxZjMeubOh14wB4x4hzKE8Wa4Lvmwst+4pXSy286LUfUfV7U6QvOqefKli19ewrP8CQT4Palkf9qnCEhzrKbgz8jCZwS/MY8T7XR4hTTWThTe4DeemI8YNLh/WGHvV+PIPDQkz8rE22VDJ6wTN/jJclTJTt80Imwspr+NsyLtk18HuVkOEtdj4ZHcf0qnF38Q1WvBtLBFMtqFMXHFTt82fmqmaqkh3OZ3bN+I3p9MCH0oPyq/oAt0rgjnv51La30X7A0Xx5PFrHxvArbciXBHFb176gltzHJJU0ZgysUEi6zKeU83bNZFb6xKVILjnvVbUFDBkDTknXyyr9JYMRxGIYDwR22ja/MwAmZnO0A5fZnOIrx6eVOSucfAPs72QFqE/y9zU9PfzFcN845FNbF38EKpDXAphVCnqbu58ErLAGZ0Mw3flI485t5sdXgPuonhhURxmTjDFJFixy+e8eHa4Xmep/VDukbazoL6Q/6z89Pv7zaeGftf07qQqo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,62 +116,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] mm/cma: unguarded 64-bit SZ_4G comparison in
-  cma_find_free_range() on 32-bit
---
+On Wed, 11 Nov 2026 20:40:17 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 
-commit c3ad286c7568d10ee09caebdcdc606cff727c93b
-Author: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> On 11/11/26 20:30, Kiryl Shutsemau wrote:
+> > On Wed, Nov 11, 2026 at 06:13:18PM +0000, Lorenzo Stoakes (ARM) wrote:
+> >> From: Josef Bacik <josef@toxicpanda.com>
+> >>
+> >> A THP that device migration maps into an empty PMD can end up on the wrong
+> >> deferred split list when it is later queued for a deferred split.
+> >>
+> >> This occurs if the memcg has no heads yet (resulting in a warning if
+> >> CONFIG_DEBUG_VM is set), where deferred_split_folio() will then queue the
+> >> folio on the parent's list.
+> >>
+> >> Once a later THP fault in the same memcg allocates the heads,
+> >> __folio_unqueue_deferred_split() and the split path resolve folio_memcg()
+> >> to the memcg's own, now existing, list and take its lock.  They then
+> >> list_del_init() a folio that is linked on the parent's list, racing with
+> >> anything holding the parent's lock, and both lists' nr_items counts go
+> >> wrong.
+> >>
+> >> Resolve the issue by calling folio_memcg_alloc_deferred() after the charge
+> >> in migrate_vma_insert_huge_pmd_page() and falling back like a failed charge
+> >> if that fails, as __do_huge_pmd_anonymous_page() does.
+> >>
+> >> This was originally discovered by code inspection.
+> >>
+> >> Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
+> >> Cc: <stable@vger.kernel.org>
+> >> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> >> [ ljs: tweak commit message, remove unnecessary comment ]
+> >> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > 
+> > mm-new already has this: "mm/migrate_device: allocate deferred split
+> > sublists for new huge folios", same Fixes: tag.
+> > 
+> > Hm?
+> 
+> I assume that's one from Andrew that he created after a security report (where I
+> was CCed and the reporter didn't follow up), but he never sent it out officially.
 
-mm/cma: simplify cma_declare_contiguous_multi()
+oops, that's supposed to be commented out.
 
-This commit replaces the linked-list range collection in
-cma_declare_contiguous_multi() with a loop that repeatedly reserves the
-largest free memblock range above 4G and then sorts the resulting ranges.
+> So let's review this one here. It's supposed to go through my tree either way :)
 
-> diff --git a/mm/cma.c b/mm/cma.c
-> index f61d52796f4ef..f01850d13799f 100644
-> --- a/mm/cma.c
-> +++ b/mm/cma.c
+Patches are identical.  So I can say
 
-[ ... ]
+Tested-by: Andrew Morton <akpm@linux-foundation.org>
 
-> @@ -524,37 +474,71 @@ static int __init __cma_declare_contiguous_nid(phys=
-_addr_t *basep,
->  	return 0;
->  }
-> =20
-> +/*
-> + * Find the largest free range above 4G that can hold a part of a multi-=
-range
-> + * CMA area.
-> + */
-> +static phys_addr_t __init cma_find_free_range(phys_addr_t align,
-> +		phys_addr_t size_align, int nid, phys_addr_t *basep)
-> +{
-> +	phys_addr_t start, end, size;
-> +	phys_addr_t max =3D 0;
-> +	u64 i;
-> +
-> +	for_each_free_mem_range(i, nid, MEMBLOCK_NONE, &start, &end, NULL) {
-> +		if (start < SZ_4G)
-> +			continue;
 
-[Severity: Low]
-Does comparing start against SZ_4G trigger a
--Wtautological-constant-out-of-range-compare warning on 32-bit Clang W=3D1
-builds when CONFIG_PHYS_ADDR_T_64BIT is disabled?
+Based on Ada's supplied fix and reproducer. The report uses CONFIG_TEST_HMM
+and privileged guest setup; ordinary-user reachability through a production
+driver has not been established.
 
-When CONFIG_PHYS_ADDR_T_64BIT is not set, phys_addr_t is u32 while SZ_4G
-is 0x100000000ULL.  The previous code checked upper_32_bits(start) =3D=3D 0,
-and cma_alloc_mem() in the same file guards its SZ_4G check with #ifdef
-CONFIG_PHYS_ADDR_T_64BIT.
+Built matching pre-patch and patched 7.4.0-rc1 kernels and ran the same
+one-folio HMM migration test in each. The x86-64 KVM guest had 8 GiB RAM,
+one virtual NUMA node and four single-threaded vCPUs in one virtual socket.
+CONFIG_TEST_HMM, CONFIG_MEMCG, CONFIG_SHRINKER_DEBUG and CONFIG_DEBUG_LIST
+were enabled; KASAN was disabled.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111-cma-multi-=
-v2-1-4e2dddb2a2d8@kernel.org?part=3D1
+Both kernels migrated 512 pages to device memory and one huge folio back.
+After a partial unmap, normal THP allocation and freeing the migrated
+folio, the pre-patch kernel still reported one deferred-split entry on
+the root list. The patched kernel reported no entry. Both one-folio
+tests completed without a panic or warning.
+
+In two further bounded pre-patch guest runs, eight migrated folios were
+queued on the root deferred-split list. Both runs produced DEBUG_LIST
+"list_del corruption" warnings during folio release, with
+__folio_unqueue_deferred_split() in the trace. In the second run the
+warning occurred during a timed scan/removal trial. Neither run crashed
+or hung; no delay or fault injection was needed.
+
+The patched guest did not create misplaced root-list entries, so the
+concurrent scan test stopped at its setup check rather than running
+identical timed trials. These tests do not establish unprivileged
+production-driver reachability or privilege escalation.
+
 
