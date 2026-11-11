@@ -1,51 +1,51 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB8D4606A88D
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 15:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3F9606A8B5
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 15:12:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA0276B05C5; Wed, 11 Nov 2026 10:05:54 -0500 (EST)
+	id A13086B05B4; Wed, 11 Nov 2026 10:12:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C28E86B05C6; Wed, 11 Nov 2026 10:05:54 -0500 (EST)
+	id 9EB2F6B05B6; Wed, 11 Nov 2026 10:12:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACB726B05C7; Wed, 11 Nov 2026 10:05:54 -0500 (EST)
+	id 9273B6B05B7; Wed, 11 Nov 2026 10:12:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8985D6B05C5
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:05:54 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1A1211C375A
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 15:05:54 +0000 (UTC)
-X-FDA: 85423163028.08.CB1094F
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 735286B05B4
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 10:12:09 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E906E1202FA
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 15:12:08 +0000 (UTC)
+X-FDA: 85423178736.26.A7A9E07
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 4385C4000D
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 15:05:52 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 534BD4000E
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 15:12:07 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf04.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794409552;
-	b=OTczkIVri7icB2FVeomXfabTJjw+v9S5s2ubmQl2LkWY376v5O0geAPLFWaTTl1I21MSIB
-	99sMAHaGtBD/BS3TNhmxlUvEDJz420E1y1d8jWiem6HiV9iXrvVPQR3bvdNPLZ5Pl2+JkD
-	a6w21zrrXtjllkAuZOrodj8P7r7ArQ4=
+	spf=pass (imf27.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794409552;
+	s=arc-20220608; t=1794409927;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eTh/pZjfcHNyaYvHc1i0brd4au2XXqBxglcFJNmjPBo=;
-	b=YAmtEoiYJGqMhRCo9YdchSxA4+fzC6kx2MoXZkPeLMFeumSSWGtS3D4DssmKuKKdngfnY5
-	gZHB9lHc1s4DvnKJDGC+LYWIMQgachUFxXek8guwMbpO4Ohqx+GTUHwnUVCRWadT+Vt3wA
-	pPd1x3QH/AG7oo1Ic9CBNQyO1JPXKfA=
+	bh=dehBO8Yxo1qlGsyLOmGqdqT0CExk2sS3MX1Vk4oa/6A=;
+	b=YqGVARWdh/IOcKSziz57KCucYR2fVQq8JMmwjKd5Hh2x9sS0dMIeXpq+oT9Q4rq/zagmxR
+	uqIJR/1NvebUdR0QQpLtysnixiC/js6687jO819oPcAorujE7foXrIt/RertPo/BcZz8kz
+	9u9xrriucJQlwulNHO7ielmeTpt8DWA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794409927;
+	b=squ1ocC19GY7niEQi7YJoNrzLVbH8K77jpGQ6/9JvAX4shKfuxQTTJ9wHk4pgwP8zmP0Hk
+	JlM18lm6J2aUamPoIIpGV/u94qTgk4Or6C3OZiEap+1Kj1wB5prwpn1NEwG/nMQvoO9U8Z
+	O8sBs1ExLzvxDoagzjIgcN0zZU9u/Hs=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
+	imf27.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf04.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	spf=pass (imf27.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
 Received: by verein.lst.de (Postfix, from userid 2407)
-	id 484DC68D15; Wed, 11 Nov 2026 16:05:49 +0100 (CET)
-Date: Wed, 11 Nov 2026 16:05:48 +0100
+	id 52A7668D16; Wed, 11 Nov 2026 16:12:03 +0100 (CET)
+Date: Wed, 11 Nov 2026 16:12:02 +0100
 From: Christoph Hellwig <hch@lst.de>
 To: Christian Brauner <brauner@kernel.org>
 Cc: linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>,
@@ -63,27 +63,28 @@ Cc: linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>,
 	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
 	linux-usb@vger.kernel.org, Amir Goldstein <amir73il@gmail.com>,
 	linux-erofs@lists.ozlabs.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH RFC 11/41] failfs: use fc_init_pseudo()
-Message-ID: <20261111150548.GG10644@lst.de>
-References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org> <20261110-work-loop-pseudo-v1-11-4c998976c6c7@kernel.org>
+Subject: Re: [PATCH RFC 38/41] fuse: refuse files on pseudo filesystems as
+ passthrough backing files
+Message-ID: <20261111151202.GA11391@lst.de>
+References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org> <20261110-work-loop-pseudo-v1-38-4c998976c6c7@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261110-work-loop-pseudo-v1-11-4c998976c6c7@kernel.org>
+In-Reply-To: <20261110-work-loop-pseudo-v1-38-4c998976c6c7@kernel.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Queue-Id: 4385C4000D
-X-Rspamd-Server: rspam12
-X-Stat-Signature: d6twuyo4hrs1uqdgu5fccws5p9oskxgq
-X-Rspam-User:
-X-Spam-Status: No, score=-10.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794409552-174027
-X-HE-Meta: U2FsdGVkX1+zc8+YocIZCsmsNo+a50WVHdWaWybIZOJzaqy3IdI2Ghauz0pHVK2NtrcIpVZNNzWOFAE93bzK9e5s65JKfTq+HZxKe33ZV2tqmsQWFmWpf+ltpNpagtaYAKMUsmrXp6BQv8ZhIKRaNF6SAesQhhWBeYIzxad+9pnrgh7XKrsrRRyeTZuLea2V3PhVMk0iDSFsKwQxt2/iVZQQW1N7IJuA/VXGGd7xDbiUZ7JuDG7TsBmbBDMRKO3AvIGCd7NBkknKlvbnJBp/Taz+Oaebjti69FCUjLJWS1bJbEH6oes3SdRp29NXUT9eLo/CNrawWBEzO0xPUPLtLw5rOk5tfPHde5XwIi9ApzlLqoiUIIKkNMEBu2wVIZAY93vGD4iRVydh3AIBK6QeOdX0cTOWfn91gg76j+sT8dJXei/rsi1RHxAYg5U2FDY1I0ObF5rr2ZaGgscTa+7lpZQtCtGRAtSuYB8J8bLdqiXxWkO3ypEYGfm/WpBwqqffWhW+SSV5vCaeJmKL0rItyi5MJoLPsJiuVS5yqGQIw9barve43o+i3Wi7ijxxcOSGQv1G9PPK3HanaZA908n2iRHGGfyi2hR3E4FEJhMXicHeJ+342teuuGOXEcQoeh51WYvtCWxFccAXuZ/1daJMc/azHNk8OHKZ5GlMMVMResX0Rlt2QxhwgxxxJCLgyMwt0SIDNcwrSp0K5aoZB/JL4vYR/aFC+6ujYacEE0jNAs+IJmGot+C77pXYBq8dnubkO+oFiubQRmwWF8gX0LRAIZepkysy8R2xyi5p8uP2sJ5sdF4tXWxEVjzYYY4BOe7z50RKh3/mgNWdrf1HUra49DaMcpiI+BfmqRmDG+O970EvAonaT2N3UmY6h6Kawuh7Tz2gBEMVDpA0VSLejocFQPLpZ+R+xRE2adZR0anL88XMM1xrACSBE3ggcJNzgSOuIxrLuS611Rx1t+DQfG4
- xw8lCHGu
- Xk0EBGhWMdJTy78jrnnxgfN0EZd8a00reyft9/fhNjXH5RynA+J8MnjLUjI0FBEyWMudWLdUpRCj7Say9ztnu7DJod/ParWT7/QddLEq7dvzxpbqQE1VWd5aLm4qlZncUZta9xpXOD09piY+WNlCqTGkPW30PnJ3wsiih2l8jmg5O2AVVENke2Qpk6nTRgr6MkRgVerX+P1l3f8oVlw8ZKkR2ORNavWSrunlRZL+Vqya7wX+QjwhhVxHASfuLNRwb7/Trl4JZZb3wEg4=
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: hg9wifz8dx4scjxn8su8derizgqtmkot
+X-Rspamd-Queue-Id: 534BD4000E
+X-Rspam-User: 
+X-HE-Tag: 1794409927-286865
+X-HE-Meta: U2FsdGVkX1/w/5gcwl2mmGiJ/uMb+l7NURzJMP3IKTd8Tjd8tIBgMnXYY/LvZmzVU73mfvGweQGx9n8EDv0CGlwYORnGaLm5oZbwULAfLvv8ItP8nklAYDfWKtxgIJtvOrVImF925Vy+MszmIaVg1pEQhk3REmWkqNYJ12yCqN/Mv8K+ebnals4Or0zwfizvjAFag1AMQ2ToVQ6a8JU/yXB8zDqil9Sjved5gkqNqAAG6mPGMeNmG/y3I3FDzcNWVJVdgXO7BbrCiDJrt67ipBOWuF/v7WQZfrVOlMZ0dK2gtSuxUjtASvWF3/UmEeHPFN2qtrlfMgygjViKqR1Ox2Y3+u4HFJg3qVJ0zCz76CrG6O+7NCLwreU6a4ARy32a1/k1UpZCni9t/Nm0jAEucIf2OcdXB3uHfzKc1no1ADh6GH2gvttx+TALCnSURyQCdtLfb1EyA8je1oWc6mRVP62lX0X97V3aJD9759DkVNIdCfw5/CpH8FAm9j/lYbis3Lm3+54wey8anqZ3Szz53Ern6tX4BFbeuAu53lomdaDDLahy1E8c0tym5yDQWAacs2LJZ4fFRiqKmJ4XUjxRgbIZEsxhp89Zkf660/daRZTa+8X92wO8PAZY0SS1UZSC5d98MoFF4mWOTK0u+pYEEOLt5+/QzUZZkNCO5w9FMS50g6Nb+MOwtopBBn+8kqpgtCKC4NNQYc74RmC2N3LSsjidlgtLZ41U5JhC3BqrFDG1I4fFba2s3WLeuQHJb3zxCX8nSXEuXcWnRGiKp1jk5/A7vlIRmLn7qjgtyG0uFZtGBVS9ZAzFdq90l++NSynwiFe31lR/nK+6DznmE8Xdok1rgTKt06zODuz1HawhboklB1w6acQZil9CHS36oNQMLs78mK4VAztjQl5vDIjwJ85XWqGXQPr9Imcuy2MacVXT2r/Qd/DnQmcb6xa9DkCXcgRFbXwh/1Z0izwwBgD
+ RfRlrrgl
+ FKkkW4ewx/MACkRSmWqAxxauR1sqhf9nubSYVOYSxp5+MnJGXYpxIWlZjK+uOotvBRk/lPvMUtRtmSbWn7jFPAktEmq62sq9w5A5gDUqMV8ObBzO8r6VT5scNtA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,12 +93,8 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 10, 2026 at 10:14:27AM +0100, Christian Brauner wrote:
-> Initialize failfs as a pseudo filesystem instead of raising
-> SB_I_NOEXEC and SB_I_NODEV by hand. This adds SB_I_PSEUDO.
-
-Looks good:
-
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+I've seen setups where people use fuse to mediate access to sysfs
+sysfs in odd ways.  No idea if that's still around, but if so, this
+patch will break it.
 
 
