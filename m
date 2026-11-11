@@ -1,114 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DBE2606A339
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 14:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BBA8606A321
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 14:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=aSw1KnWA
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=Zh5XWbGn
 Received: by kanga.kvack.org (Postfix)
-	id 2B6D06B05B5; Wed, 11 Nov 2026 09:04:55 -0500 (EST)
+	id 2E2CF6B05B7; Wed, 11 Nov 2026 09:07:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 266F76B05B6; Wed, 11 Nov 2026 09:04:55 -0500 (EST)
+	id 292E26B05B8; Wed, 11 Nov 2026 09:07:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1582B6B05B7; Wed, 11 Nov 2026 09:04:55 -0500 (EST)
+	id 1825B6B05B9; Wed, 11 Nov 2026 09:07:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D1CE26B05B5
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:04:54 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CF424A7C51
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:04:52 +0000 (UTC)
-X-FDA: 85423009224.26.4B9A0D3
-Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9D07EC0008
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:04:50 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=aSw1KnWA;
-	spf=pass (imf22.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 52.42.203.116 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de";
+	by kanga.kvack.org (Postfix) with ESMTP id D6A1F6B05B7
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:07:10 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6E512802FC
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:07:10 +0000 (UTC)
+X-FDA: 85423015020.04.716260D
+Received: from pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.1.125])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 28CF410000B
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 14:07:07 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=Zh5XWbGn;
+	spf=pass (imf05.hostedemail.com: domain of "prvs=768118434=farbere@amazon.com" designates 44.246.1.125 as permitted sender) smtp.mailfrom="prvs=768118434=farbere@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794406028;
+	b=BIg+uvu7eMa6gXeasli8cmtcbLSXRX+C6lU4jLe84oMUMzKE2mEfAhoy6srUbHY6o2a43s
+	yKJnidtT9mt69a3VB4vr+EKMf1rR8JLW9nWW0XGA5K9K0HiGqX4Rxe0W2oKFNFrWGdGrov
+	4tVGNi4TF5q8GFo33zFODhhJiOrRqAU=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=Zh5XWbGn;
+	spf=pass (imf05.hostedemail.com: domain of "prvs=768118434=farbere@amazon.com" designates 44.246.1.125 as permitted sender) smtp.mailfrom="prvs=768118434=farbere@amazon.com";
 	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794405891;
+	s=arc-20220608; t=1794406028;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ajXEYqjwM+nCEIVJkZ6WILdonbk+OIty74QS6bYQ+DU=;
-	b=0rm/d98qG7lwJdeQMUSS6ys2//QAW7/ByM5AsJWiY3o00OqbtNnYT9x2ybpD9ak6KGKCEV
-	7z+zMt1IqWUzEjRfhcFgX7Kw1/zDmZpPvOh+NAL2by/FyflMl6e0/H+ZcUvSVRtK3UCpku
-	LuKFSKaAZJ3jDECK5VBKN/j141/tuyM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794405891;
-	b=5/TFA9LCxH3vdbZx4/YqK6n+SFId9DpCZE/LKWhsFndKyz3qNiZiRkzgBUcuPP9v5r1ZtY
-	xDNr3dsZtlNnimiE8TE+hgcFGlxpqfxuxCO11E2DqCyFw9p/xgnzRWV/2IYKoVCUZL3yOn
-	NUxMrbMYNZfB8aNpzt+e1rOg5eNs0as=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=aSw1KnWA;
-	spf=pass (imf22.hostedemail.com: domain of "prvs=7687a31a8=graf@amazon.de" designates 52.42.203.116 as permitted sender) smtp.mailfrom="prvs=7687a31a8=graf@amazon.de";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
+	 references:dkim-signature; bh=K2nNRLcpYTPb5gaqwgdSOeA/IdYOEH/Ikmqus0O+Qls=;
+	b=QIUot8ibspsRezHFMopqJH7RO4Sg4A3Rfx2bAhszBdofi6YOykDq8orcd5hJ/TK95UCK5p
+	EFPWsoI3yPiEr+KO1I0AF9eT9qClwq9DSZjbHEVbSP1Eek3usHABko5yuNn6UBST/38cYG
+	yQFlJcdEQ501scqGpAaSz854ZXR82xU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1794405890; x=1825941890;
+  t=1794406028; x=1825942028;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=ajXEYqjwM+nCEIVJkZ6WILdonbk+OIty74QS6bYQ+DU=;
-  b=aSw1KnWAg3YBBQp7jv+kqqX5BYSYpW7yCBk9DKqvFZuR0oWxmvRRNbvi
-   9YbsuDCos1MyvwM1s0dKQ/jBmkt7Q/3iF+jcC3rzbcl+Ws6+jpS3XjOQ5
-   2oq2Reta98Vk0MQQSB0JL2tUrl9KsII7d2NilKNOpfhUJoxMXH1NYGF3s
-   aDd+dP/Ph6KikGr1VdmXVI8bVsrDKU7kSf8R+a6WLbnUmMWDWGyVekIMX
-   NT8UrmIEXdVA51H1QZGJQGPoE8AK6oSAsZfGmtH0Xp7L67T81qYXOors9
-   F4fsUIdzJNNasYH1rfoC31tQn1rj/Cbs07hfAFPuQD3QQujV3wUPW4dSZ
-   w==;
-X-CSE-ConnectionGUID: mp+qsCQeQSa3lZBPareIIw==
-X-CSE-MsgGUID: OV2cOm+zQAGswQmM5sZIqw==
+  bh=K2nNRLcpYTPb5gaqwgdSOeA/IdYOEH/Ikmqus0O+Qls=;
+  b=Zh5XWbGnRx/Of1Gqu/sD5N4gPjzKimhPPquCSbffDhjhDFjFgvu76Plq
+   Ysv+r7OK27IKbE1iLpx6v+Wg5POCZ7PW4nuEzFSppQFK/UAfhE5domXfl
+   SWp2sPhHE9qFfKxICmAFHSeW0NefHtgujvPZGL6+sifKUwQ1j2SrvOBYc
+   HUAR5SGwQA0/ZNY0ACItbSCRSgVqlvjEwiD7kM/QPXkGQrW6ZmPb3aqxi
+   egNY/vVIhnKF+Zs/h3RQQDf1uf9J/BzphLvW2STy85Q2i8EpOU456tmJR
+   UN4zC5F9UUyRH6In+/GFgzERIHCJnLUclLM4XcbbJ2tgKaIuyoqtml0VD
+   g==;
+X-CSE-ConnectionGUID: G8P4hRZMTzy/IyI356dWfg==
+X-CSE-MsgGUID: c0RFt+J3Tli3GAOeA81K3A==
 X-IronPort-AV: E=Sophos;i="6.27,207,1787011200"; 
-   d="scan'208";a="33751363"
+   d="scan'208";a="33724742"
 Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 14:04:45 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:17225]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.31.142:2525] with esmtp (Farcaster)
- id 5ffd8552-4597-40d9-9dd4-121f17a20803; Wed, 11 Nov 2026 14:04:45 +0000 (UTC)
-X-Farcaster-Flow-ID: 5ffd8552-4597-40d9-9dd4-121f17a20803
+  by internal-pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 14:07:04 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.48:21398]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.50.212:2525] with esmtp (Farcaster)
+ id e07d0b7b-3834-4409-be63-1f6699e7212a; Wed, 11 Nov 2026 14:07:04 +0000 (UTC)
+X-Farcaster-Flow-ID: e07d0b7b-3834-4409-be63-1f6699e7212a
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Wed, 11 Nov 2026 14:04:44 +0000
-Received: from ip-10-253-83-51.amazon.com (172.19.99.218) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Wed, 11 Nov 2026 14:04:42 +0000
-From: Alexander Graf <graf@amazon.com>
-To: <linux-kernel@vger.kernel.org>, Marek Szyprowski
-	<m.szyprowski@samsung.com>
-CC: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>, Robin Murphy <robin.murphy@arm.com>,
-	<linux-doc@vger.kernel.org>, <iommu@lists.linux.dev>, Andrew Morton
-	<akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, "Mike
- Rapoport" <rppt@kernel.org>, <nh-open-source@amazon.com>,
-	<linux-mm@kvack.org>, The AWS Nitro Enclaves Team
-	<aws-nitro-enclaves-devel@amazon.com>
-Subject: [PATCH] dma-contiguous: support percentage sizes in cma_pernuma= and numa_cma=
-Date: Wed, 11 Nov 2026 14:04:40 +0000
-Message-ID: <20261111140440.43024-1-graf@amazon.com>
-X-Mailer: git-send-email 2.47.1
+ Wed, 11 Nov 2026 14:07:04 +0000
+Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
+ (172.19.116.181) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56; Wed, 11 Nov 2026
+ 14:07:00 +0000
+From: Eliav Farber <farbere@amazon.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+CC: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+	<baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, "Ryan
+ Roberts" <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
+	<usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Thomas Gleixner
+	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin"
+	<hpa@zytor.com>, <x86@kernel.org>, William Kucharski
+	<william.kucharski@linux.dev>, Vishal Moola <vishal.moola@gmail.com>, "Alex
+ Williamson" <alex@shazbot.org>, Peter Xu <peterx@redhat.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, Eliav Farber
+	<farbere@amazon.com>
+Subject: [PATCH 0/4] mm: fixes for huge PFN mappings
+Date: Wed, 11 Nov 2026 14:06:51 +0000
+Message-ID: <20261111140655.34281-1-farbere@amazon.com>
+X-Mailer: git-send-email 2.47.3
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D031UWC004.ant.amazon.com (10.13.139.246) To
+X-ClientProxiedBy: EX19D031UWA002.ant.amazon.com (10.13.139.96) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: ytwyn5wywggr65s6x5azaqx3ytpxi4b3
-X-Rspamd-Queue-Id: 9D07EC0008
+X-Stat-Signature: ppt4e8j77nt9x9eyg1hbwmoqztejknx7
 X-Rspam-User: 
-X-HE-Tag: 1794405890-88170
-X-HE-Meta: U2FsdGVkX1/J9uDwToDwt+9KNw9RkvqhuRWkNDKj0oB78D4uwbNorhreqMi5DuO2IJEVwtXVYF82XPOtoFVHKSqFWGrfQdw2zlPL9XfWStofnwtCA0cHRYYqZ1lu/qRc8kp0akOpsSdwlcP///bvsFakgRw9S75VgFrkEy4BLsMURF9cAMJ+9myS5p81HfbgBbQ0hYwIPl7l8OrzStS8oYkV2ZDLVqqcxW+PWezLrVJZ8+Qd9/4xmnOLNIafEx4+S+pYiaUL0IhhnNdA54qOf5b4qaC1QDGgdQfTruOhAzA1MK+jq7k/JJb//ldZR+bdTgrckEGuHNgihnIId/088Xv5p9+Eeq9C96Qi/H8U31cvsCK7WJYc1jqNfdE7beckktkKExVIerg1WclL6MUCeEfgFX2B6Th2OjiN3cjRrKKZcY1/jr0ytCYRO5RflGKtdP846HszOEga0bqleAQusTVGn1NxxbKEtU69t/XOX/poiAPZuEe+7JcWL+WuhG38NpWSuGbLZGScli3JUgQ0mymskhfUFiH6TcNhek1YdSSlgRwBYUJKM+XADFoEgARSt+CaPLroQdUALEpNtEUxSjH+ZVcGt9R+or5w+h7xNaj4yMJ5CMmLDN184vZ3wIY7b8C5pQlxrc/MwXS3MpJNdcTvy3H1euWCJWhr0ohAcf2uxmPH0L/E93pqLzO4WiIRm2FABX9E1AEYOx4CjiFPAw1nNjih3HHC5YpPWqngxaAXZmx/49NrRluZ3qTYKbLK5QWQL6n01/h0x98PQdiNE9VKtrzbHDAq2XlPHiWysYVk8azoSH/6gq1R1dyx75Bawm1zMD3xImzTlrOuGB5DkolDxcY+lad85y37jPGvbpNU+aPIEVfI2685M37aFP5pU1r3cfBm/bf9ZghL1Z0ElzO1x1K7Pc59+KlZj/Q2pWeywvXz4etFJLVUzx5un9GHd4s+N+DCidFUzyqq1yN
- 9mipP0e4
- 55BaKLsnpsJ+NhLtjmEa2H8UZj7di78//szpvpM/WYQ0xsPbVchr/8LVGJ7IO6SFMzUjGCeQH5DL7AHsPknO3XIaa1B467FEZVO7K66uJw3Qete+V1YoWcYqB6nlG4jOKt0j8DsjhZJGLXi/TuEpnW7pEmS8/+u93zeoDd9fgSLJ/vhP+iCM6y4rAz1TjoOHHu8Wuiw3hNPh4NTbnzE5Hczt8Pyzb7D9vfYnKUv+lg7aec/aZ+nLFpTBOWzsyc7lJqdgMg2UH0IOtLno1/XBroCZ8rUPh4hL1wRdhNjxU7QFnTwp+/CeeP5zr7wjZwl3hPrEr2L0Rd5rrbqPEMovii2MqfoCUOB7E8p736BmjzAPLmi6Nkk/5LweZF5azCQ6zweKS7JSfydq+8gWlVH2Vvo73RRgLA0ekK0pV/fmtgH/w0fPh2GWGtS6Gw5FZNjSsHFSG39OHcJxuLCaoXIgvC1z9GB8jDsXerSQgqsqEnECF/VSDSlgiyxXMoWm4m9pG0dRCW8mKLz1nx2fXVtgfh4sWZaXzyLfqFz8b0YEZmkHAO9TSbu3DPyYLZDZb3Xek3yz2pQ1ziQIIiVkTTBeWNwK6a4zDgR0vG4SsAA2nHeHm2Dp58iY+jRF4A+xYeE0vkHfRLvQHE3AsxaHtnErsMYHFySz0XcUIbAZa5gENIvRXzkjtzc0O9YVMKkE0sRa6zrRSyh0yS1KnwfA=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 28CF410000B
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794406027-395544
+X-HE-Meta: U2FsdGVkX1/FNr68ohAX0MUVy5TXtbIMHhHh90P5swqcHMYS9881ImjmoLqWCkNY/DinRyKQh/tfMoWql/zKVo1fBX6pyMI0NVqqx/DKMRspCCGstVfly1n4BWGN3GtvLN1083oOuLGfyH3q6TdaGaqZm7k/6WcZuEF5WK5F4rxLYY67yGl5uO70vDnMCOYoI8BrtOrFA/Z1z6BdPFGUw2vrsHYm0LAgDirOUarxUgHLtZZ6awf6CRvAb4qw98ImSv2Jrtpnms5hknOB9PLs4DUBwJsKRxRX6CzngGnoPSXiYqBt1RVKw5N9J/icbepBNZX2MQ3uZVwlIDY6TV+tcDeaD/yVRTTsRoMHu6G4kEd+2wh0GL4eSiuk9W15v8rVqsYQq1Aigq2bDRJ71YnPgv4v37FFka5mpj32RsjA939qirADZD4fQJqLIls19QUVWBYo4ZEFqQqcCDAW3QO9me/EmnFKU8fIfrMC/PGM0Kfw0mlO59XAii/kinYTLVEtUDHWTcG3v6r0jupsnzZm0GaSBgLiOzVaMQTOQ9OBh3Dc53oFY0Y3jT13+w01BIXiNGkYBWRd78dYOxiXRN6JZH2B2+8YUYtMwP4B/Wu/6iEa+NpX2ecRlsdPQis/gu6nDk0g9xdxsXMQZyt7H1AgWPsuFiqSAYP/+M0AeZAm4Q+JxrsTH90SVRgH5Lg1q8OPQcwYYuq5HUN1q8ts4dkvmOJY3lRhU2cV4lU4CyPlAYJz10kQKFRcU7Z52gUrjYNoQ7CuCIwS+NLt5f8zWWbu67WZo3+wX2inMbOSQguap6sIdqI0NH5Z5Ry7S0wP/oTReP49s7GglNHn5dbhjpK4T1m7xxXIXOMt/yFghQmeC1hRbuvKyjeGXDFOIRLTM5VRpfC2cNCwsPL44ykrrjTb4/avVMDdTWhpZCBKlMdMVlGhZ5YrlWNY6MDjKYUcD9teo/AgK/Z0OyTPr4L2p9f
+ kZC8x9Na
+ Fkuw6v/+y3US8yI2MOFtv7Repr9i4uFYrtgitK4dvrYnW45eajOmiYsN8E6Ppw76981KNJOXeNhoOVhflExdx1f3x7V9g1ehXXA0LVOsRGw4s4j97QfTr4gyVzSse/xt7b49yS0397gpvg5CggKyauqw+77g9BQ5RQBgM+7RQa1eQ4AH0r13oVjQ7zWpwSInvOExt+dTbsNz+X6ZQcaCRTrL9l59P1mzPmhk6dHvEAQwjG8Bp7YC5dJbKD/KhNZtN3daD/71QFCNFmWCfDkwNq5AiQ6P8rhWM3RSYdmefOkplptsKxg1zDe0CHXJi2ATbEek7bqoFbDqIoLFGGOpL+fN20DP+5nKsCYHH1qFe3ATyDkUgj+jBQC7yx+YFmE3HWCaa/p8Pui/EIFTxN4n41C9EaG7JuuqGqXGZlEdoJsL/d3s1T08XO4zi8DdpzHeulJqGHcwy8mIVh+HIH8ludYEEHFDxC9ObPR3SFzEJLicAJSIpEmzwHwnpv0+XJMz8TrCQ0dGMkXscgpM+tGCkSKUaHumdAuoPfxH2BYkliTMMf8XiUbB2Q9cwVVlxdYQ57n0aCJLz/LfaK9ispkWtOiSh4nn7JqN6T6ZuoZpIBwNJmCQ/m6jh34381gF9GaIwGA8Mf47POfnf/SLfUq6cXPeg8n3hHoI4H26kTiGSIo/5oxdJ0h+f48Cwd7qtBjmkADqdWw92vkkomNMTKjJGgbtYVz7B3BOH/KyiFa6kNZFxsrGjzeq0eDLmPUoF1NiIg7L+2T/nGZbQfDOYmsVgCgt6l5Hqtrlqe/C4UQ8NPqRrMYU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,357 +125,110 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-While CMA_SIZE_PERCENTAGE supports percentages for built-in defaults, the
-CMA allocation kernel parameters currently only take a fixed size argument.
-That makes it difficult to have a single system image that sizes its CMA
-allocation based on the available memory. To use CMA as backing pool for
-large, physically contiguous guest memory, I want to be able to say
-"allocate 90% of system RAM minus 1 GiB for CMA". Per NUMA node.
+Four independent fixes to the existing huge PFN mapping code. They are
+not dependent on each other and can be taken separately.
 
-Extend the CMA parser logic to accept command line options like this:
+Patches 1-3 are three symptoms of one race. A VM_PFNMAP mapping that
+provides both ->fault and ->huge_fault can take faults of different
+orders on the same entry, because the mm's THP policy is read early in
+each fault and is not held across it. Flipping it while faults are in
+flight, for example with prctl(PR_SET_THP_DISABLE), is enough: one
+fault takes the PTE path while another installs a PMD leaf over the
+same address, or the reverse.
 
-  cma_pernuma=80%, numa_cma=0:95%-1G,1:4G
+This is reachable today. vfio-pci has exactly that shape:
+vfio_pci_mmap_ops provides .fault, which reaches insert_pfn() for
+order 0, and .huge_fault, which reaches insert_pmd(); mshv_vtl_main and
+nvgrace-gpu are built the same way.
 
-To avoid incomplete allocations on parsing errors, check for them
-before actually allocating.
+  1. walk_to_pmd() asserts that the PMD is not a leaf. With
+     CONFIG_DEBUG_VM=y the losing fault hits that assertion instead of
+     recovering.
+  2. insert_pfn() treats a NULL return from the PTE map as an
+     allocation failure, so the losing fault reports VM_FAULT_OOM for a
+     mapping that is healthy.
+  3. insert_pmd() and insert_pud() compare the PFN of a non-empty entry
+     without checking that it is a leaf. A page table installed by a
+     concurrent order-0 fault makes pmd_pfn()/pud_pfn() report the
+     table's own PFN, which never matches, and the mismatch is warned
+     about. Under panic_on_warn that is fatal.
 
-Signed-off-by: Alexander Graf <graf@amazon.com>
----
- .../admin-guide/kernel-parameters.txt         |  64 +++++-
- kernel/dma/contiguous.c                       | 184 +++++++++++++++---
- 2 files changed, 217 insertions(+), 31 deletions(-)
+Patch 4 is unrelated to the race. insert_pmd() and insert_pud() build a
+huge entry from a pgprot laid out for a PTE. On x86 the PAT bit sits at
+bit 7 in a PTE and at bit 12 in a large entry, and bit 7 in a large
+entry is _PAGE_PSE, so the attribute is silently dropped: write-through
+degrades to UC and write-protect degrades to write-combining, which
+loses the write protection. Run the pgprot through
+pgprot_4k_2_large(), with a generic identity fallback for
+architectures that encode the levels alike.
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 0b3c140babd94..1ca82f8c29f97 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -862,10 +862,13 @@ Kernel parameters
- 			contiguous memory allocations and optionally the
- 			placement constraint by the physical address range of
- 			memory allocations. A value of 0 disables CMA
--			altogether. For more information, see
-+			altogether. The size is absolute; the percentage form
-+			is accepted by 'cma_pernuma=' and 'numa_cma=' only, and
-+			CONFIG_CMA_SIZE_PERCENTAGE sizes this area as a fraction
-+			of memory instead. For more information, see
- 			kernel/dma/contiguous.c
- 
--	cma_pernuma=nn[MG]
-+	cma_pernuma=nn[MG]|nn%[-nn[MG]]
- 			[KNL,CMA,EARLY]
- 			Sets the size of kernel per-numa memory area for
- 			contiguous memory allocations. A value of 0 disables
-@@ -875,14 +878,61 @@ Kernel parameters
- 			first try to allocate buffer from the pernuma area
- 			which is located in node nid, if the allocation fails,
- 			they will fallback to the global default memory area.
--
--	numa_cma=<node>:nn[MG][,<node>:nn[MG]]
-+			The size may also be given as a percentage (nn%) of
-+			each node's memory present at boot as seen by memblock;
-+			hot-added memory is not counted. It is evaluated at
-+			reservation time.
-+			A percentage of 0 reserves nothing, like an absolute
-+			size of 0. A value that does not parse, such as a
-+			missing size, text after the value or a percentage
-+			above 100, makes the whole parameter invalid: no node
-+			takes a size from it, and
-+			it does not fall back to mirroring the default area
-+			onto every node either. An absolute size takes
-+			priority over a percentage whichever order the two
-+			were given in. A 'numa_cma=' on the same command line
-+			still applies.
-+
-+			A percentage may be followed by a size to keep back
-+			from it, so cma_pernuma=95%-1G reserves 95% of each
-+			node less 1G. Keeping back at least as much as the
-+			percentage came to reserves nothing on that node, and
-+			warns as any other percentage resolving to nothing
-+			does. The size kept back belongs to the percentage: a
-+			later 'cma_pernuma=' percentage given without one
-+			keeps nothing back.
-+
-+	numa_cma=<node>:nn[MG]|nn%[-nn[MG]][,<node>:nn[MG]|nn%[-nn[MG]]]
- 			[KNL,CMA,EARLY]
- 			Sets the size of kernel numa memory area for
- 			contiguous memory allocations. It will reserve CMA
--			area for the specified node.
--
--			If it is setup together with upper 'cmd_pernuma='
-+			area for the specified node. A per-node size may also
-+			be given as a percentage (nn%) of that node's memory
-+			present at boot as seen by memblock; hot-added memory
-+			is not counted. It is evaluated at reservation time.
-+			A size of 0, absolute or percentage, is the same as not
-+			naming the node at all, so the node falls back to
-+			'cma_pernuma=' when that is given. An entry that does
-+			not parse, such as a node number of MAX_NUMNODES or
-+			more, a missing size, text after a size or a
-+			percentage above 100, makes the whole parameter
-+			invalid: no node named
-+			here gets an area, and there is no fall-back to
-+			mirroring the default area onto every node either. A
-+			'cma_pernuma=' on the same command line still applies.
-+
-+			A node may be named more than once. The last value of
-+			each form is the one kept, and an absolute size takes
-+			priority over a percentage for that node whichever
-+			order the two were given in, so numa_cma=0:4G,0:50%
-+			reserves 4G on node 0.
-+
-+			A percentage may be followed by a size to keep back
-+			from it, per node, so numa_cma=0:95%-1G reserves 95%
-+			of node 0 less 1G; see 'cma_pernuma=' above for what
-+			keeping back more than the percentage came to does.
-+
-+			If it is set up together with upper 'cma_pernuma='
- 			(unlikely), its size setting takes priority for the
- 			specified numa nodes.
- 
-diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
-index 90937dc7c627d..c04d50ee0f7c8 100644
---- a/kernel/dma/contiguous.c
-+++ b/kernel/dma/contiguous.c
-@@ -41,6 +41,7 @@
- 
- #include <linux/memblock.h>
- #include <linux/err.h>
-+#include <linux/math64.h>
- #include <linux/sizes.h>
- #include <linux/dma-map-ops.h>
- #include <linux/cma.h>
-@@ -135,45 +136,132 @@ EXPORT_SYMBOL_GPL(dev_get_cma_area);
- static struct cma *dma_contiguous_numa_area[MAX_NUMNODES];
- static phys_addr_t numa_cma_size[MAX_NUMNODES] __initdata;
- static phys_addr_t pernuma_size_bytes __initdata;
-+static unsigned int numa_cma_pct[MAX_NUMNODES] __initdata;
-+static unsigned int pernuma_pct __initdata;
-+static phys_addr_t numa_cma_sub[MAX_NUMNODES] __initdata;
-+static phys_addr_t pernuma_sub __initdata;
- static bool numa_cma_configured __initdata;
- 
--static int __init early_numa_cma(char *p)
-+/*
-+ * What numa_cma_parse() does with a string it accepts: NUMA_CMA_CHECK leaves
-+ * everything outside the function as it is, so a caller can validate the
-+ * whole string before NUMA_CMA_APPLY lets any part of it take effect.
-+ */
-+enum numa_cma_action {
-+	NUMA_CMA_CHECK,
-+	NUMA_CMA_APPLY,
-+};
-+
-+/*
-+ * Parse one numa_cma= string: a comma separated list of <node>:<size>, where
-+ * <size> is a size or <percent>%[-<size>]. Anything else fails the parse.
-+ */
-+static int __init numa_cma_parse(char *p, enum numa_cma_action action)
- {
- 	int nid, count = 0;
- 	unsigned long node;
--	phys_addr_t size;
--	char *s = p;
-+	phys_addr_t size, sub;
-+	char *s = p, *start;
- 
- 	while (*s) {
--		if (sscanf(s, "%lu%n", &node, &count) != 1)
--			break;
--
--		if (s[count] == ':') {
--			if (node >= MAX_NUMNODES)
--				break;
--			nid = array_index_nospec(node, MAX_NUMNODES);
--
--			s += count + 1;
--			size = memparse(s, &s);
-+		if (sscanf(s, "%lu%n", &node, &count) != 1 || s[count] != ':' ||
-+		    node >= MAX_NUMNODES)
-+			return -EINVAL;
-+		nid = array_index_nospec(node, MAX_NUMNODES);
-+
-+		start = s + count + 1;
-+		size = memparse(start, &s);
-+		if (s == start)
-+			return -EINVAL;
-+
-+		if (*s == '%') {
-+			s++;
-+			if (size > 100) {
-+				pr_warn("numa_cma: node %d percentage %llu%% > 100\n",
-+					nid, (unsigned long long)size);
-+				return -EINVAL;
-+			}
-+			sub = 0;
-+			if (*s == '-') {
-+				start = ++s;
-+				sub = memparse(start, &s);
-+				if (s == start)
-+					return -EINVAL;
-+			}
-+			if (action == NUMA_CMA_APPLY) {
-+				numa_cma_pct[nid] = size;
-+				numa_cma_sub[nid] = sub;
-+			}
-+		} else if (action == NUMA_CMA_APPLY) {
- 			numa_cma_size[nid] = size;
-+		}
- 
--			if (*s == ',')
--				s++;
--			else
--				break;
--		} else
--			break;
-+		if (*s == ',')
-+			s++;
-+		else if (*s)
-+			return -EINVAL;
- 	}
- 
--	numa_cma_configured = true;
- 	return 0;
- }
-+
-+static int __init early_numa_cma(char *p)
-+{
-+	int rc;
-+
-+	/*
-+	 * Per-node CMA is configured either way. Leaving the flag clear on a
-+	 * string this rejects would tell dma_numa_cma_reserve() that nobody
-+	 * asked for per-node areas, and on a CMA_SIZE_PERNUMA kernel it would
-+	 * then clone the default area onto every node.
-+	 */
-+	numa_cma_configured = true;
-+
-+	rc = numa_cma_parse(p, NUMA_CMA_CHECK);
-+	if (rc)
-+		return rc;
-+
-+	return numa_cma_parse(p, NUMA_CMA_APPLY);
-+}
- early_param("numa_cma", early_numa_cma);
- 
- static int __init early_cma_pernuma(char *p)
- {
--	pernuma_size_bytes = memparse(p, &p);
-+	phys_addr_t val, sub;
-+	char *start;
-+
-+	/* See early_numa_cma(): a rejected string still counts as configured. */
- 	numa_cma_configured = true;
-+
-+	start = p;
-+	val = memparse(start, &p);
-+	if (p == start)
-+		return -EINVAL;
-+
-+	if (*p == '%') {
-+		p++;
-+		if (val > 100) {
-+			pr_warn("cma_pernuma: percentage %llu%% > 100\n",
-+				(unsigned long long)val);
-+			return -EINVAL;
-+		}
-+		sub = 0;
-+		if (*p == '-') {
-+			start = ++p;
-+			sub = memparse(start, &p);
-+			if (p == start)
-+				return -EINVAL;
-+		}
-+		if (*p)
-+			return -EINVAL;
-+		pernuma_pct = val;
-+		pernuma_sub = sub;
-+	} else {
-+		if (*p)
-+			return -EINVAL;
-+		pernuma_size_bytes = val;
-+	}
-+
- 	return 0;
- }
- early_param("cma_pernuma", early_cma_pernuma);
-@@ -198,6 +286,33 @@ static inline __maybe_unused phys_addr_t cma_early_percent_memory(void)
- #endif
- 
- #ifdef CONFIG_DMA_NUMA_CMA
-+static phys_addr_t __init numa_cma_node_size(int nid)
-+{
-+	unsigned long spfn, epfn;
-+	phys_addr_t total = 0;
-+	int i;
-+
-+	for_each_mem_pfn_range(i, nid, &spfn, &epfn, NULL)
-+		total += (u64)(epfn - spfn) << PAGE_SHIFT;
-+
-+	return total;
-+}
-+
-+/*
-+ * A percentage of the node, less the size the boot line asked to keep back.
-+ * Keeping back more than the percentage came to reserves nothing.
-+ */
-+static phys_addr_t __init numa_cma_pct_size(int nid, unsigned int pct,
-+					    phys_addr_t sub)
-+{
-+	phys_addr_t size = mul_u64_u32_div(numa_cma_node_size(nid), pct, 100);
-+
-+	if (size <= sub)
-+		return 0;
-+
-+	return size - sub;
-+}
-+
- static void __init dma_numa_cma_reserve(void)
- {
- 	int nid;
-@@ -214,16 +329,37 @@ static void __init dma_numa_cma_reserve(void)
- 		int ret;
- 
- 		if (!node_online(nid)) {
--			if (pernuma_size_bytes || numa_cma_size[nid])
-+			if (pernuma_size_bytes || pernuma_pct ||
-+			    numa_cma_size[nid] || numa_cma_pct[nid])
- 				pr_warn("invalid node %d specified\n", nid);
- 			continue;
- 		}
- 
- 		/* per-node numa setting has the priority */
--		size = numa_cma_size[nid] ?: pernuma_size_bytes;
--		if (!size)
-+		if (numa_cma_size[nid])
-+			size = numa_cma_size[nid];
-+		else if (numa_cma_pct[nid])
-+			size = numa_cma_pct_size(nid, numa_cma_pct[nid],
-+						 numa_cma_sub[nid]);
-+		else if (pernuma_size_bytes)
-+			size = pernuma_size_bytes;
-+		else if (pernuma_pct)
-+			size = numa_cma_pct_size(nid, pernuma_pct, pernuma_sub);
-+		else
- 			continue;
- 
-+		/*
-+		 * A percentage of a memoryless online node, and a percentage
-+		 * entirely consumed by the size kept back, resolve to nothing
-+		 * to reserve. Say so, since the operator asked for memory.
-+		 */
-+		if (!size) {
-+			if (numa_cma_pct[nid] || pernuma_pct)
-+				pr_warn("node %d percentage reserves nothing\n",
-+					nid);
-+			continue;
-+		}
-+
- 		cma = &dma_contiguous_numa_area[nid];
- 		snprintf(name, sizeof(name), "numa%d", nid);
- 		ret = cma_declare_contiguous_nid(0, size, 0, 0, 0, false, name, cma, nid);
+How these were observed, since it differs between them:
 
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+Patches 1-3 were reproduced on x86_64 under QEMU with four threads
+colliding on one address of each PMD window of a VM_PFNMAP mapping
+while another thread flipped PR_SET_THP_DISABLE. With patches 1 and 2
+reverted and CONFIG_DEBUG_VM=y, that lands within three seconds:
+
+  kernel BUG at mm/memory.c:2392!
+  RIP: 0010:walk_to_pmd+0x188/0x190
+  Call Trace:
+   get_locked_pte+0x1b/0x70
+   insert_pfn+0x40/0x230
+   vmf_insert_pfn_prot+0x94/0x100
+   __do_fault+0x30/0xb0
+   __handle_mm_fault+0xbb2/0x1a90
+   handle_mm_fault+0x9b/0x270
+   do_user_addr_fault+0x15d/0x630
+
+and BUG() leaves mmap_lock held, so the system then wedges. With those
+two applied the race is survived, and patch 3's warning appears
+instead:
+
+  WARNING: mm/huge_memory.c:1649 at insert_pmd.isra.0+0x1d3/0x430
+  Call Trace:
+   vmf_insert_pfn_pmd+0xa6/0xf0
+   __handle_mm_fault+0x45b/0x1a90
+
+With all four applied the same test runs 51200 colliding faults with no
+BUG, no warning, no OOM and no incorrect data. Debug counters placed at
+each site in a throwaway tree confirmed the recovery path in patch 2 is
+taken rather than merely not crashing.
+
+Patch 4 was found by inspection rather than from a failure report. The
+in-tree ->huge_fault providers map write-back or uncached memory, and
+only write-through and write-protect set _PAGE_PAT, so I have not seen
+the dropped attribute in practice. The entry is still built from the
+wrong encoding, and a caller asking for write-protect would lose it
+silently.
+
+Found while adding huge_fault support for /dev/mem and UIO:
+https://lore.kernel.org/all/20261111113045.35368-1-farbere@amazon.com/
+That series is not a prerequisite for any of these.
+
+Tested on x86_64 under QEMU with CONFIG_DEBUG_VM=y. The race above needs
+a VM_PFNMAP mapping providing both ->fault and ->huge_fault, so the
+reproducer ran on these four patches applied on top of the /dev/mem and
+UIO series linked above, which gave it one to use; vfio-pci would serve
+the same purpose. This series on its own boots clean and was
+cross-built for riscv64, the other architecture selecting
+ARCH_SUPPORTS_PUD_PFNMAP, so insert_pud() and pud_leaf() are compiled.
+checkpatch --strict is clean on all four.
+
+Based on v7.4-rc2 (067c5c24cef2).
+
+Eliav Farber (4):
+  mm: drop the huge PMD assertion from walk_to_pmd()
+  mm: don't report OOM when a huge PMD race blocks a pfn insert
+  mm/huge_memory: don't warn when a page table blocks a huge pfn insert
+  mm/huge_memory: use the large-page PAT encoding for huge pfn mappings
+
+ arch/x86/include/asm/pgtable_types.h |  2 ++
+ include/linux/pgtable.h              |  9 +++++++++
+ mm/huge_memory.c                     | 20 ++++++++++++++++++--
+ mm/memory.c                          | 20 +++++++++++++++++---
+ 4 files changed, 46 insertions(+), 5 deletions(-)
+
 -- 
-2.47.1
+2.47.3
 
 
