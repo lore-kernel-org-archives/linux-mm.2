@@ -1,202 +1,134 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13BD2606A32E
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 01:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0009606A320
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 01:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=selector1 header.b=goW7FxMf
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=SsJnrqvh
 Received: by kanga.kvack.org (Postfix)
-	id B2B686B00EF; Tue, 10 Nov 2026 20:47:16 -0500 (EST)
+	id 07FFC6B05B1; Tue, 10 Nov 2026 20:48:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB5BD6B05B0; Tue, 10 Nov 2026 20:47:16 -0500 (EST)
+	id 030666B05B2; Tue, 10 Nov 2026 20:48:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 931196B05B1; Tue, 10 Nov 2026 20:47:16 -0500 (EST)
+	id E638F6B05B3; Tue, 10 Nov 2026 20:48:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A8F76B00EF
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:47:16 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B473A1401C8
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:47:15 +0000 (UTC)
-X-FDA: 85421150430.11.FD796E5
-Received: from YT5PR01CU002.outbound.protection.outlook.com (mail-canadacentralazon11021100.outbound.protection.outlook.com [40.107.192.100])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 6D6D3C0003
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:47:12 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=selector1 header.b=goW7FxMf;
-	spf=pass (imf22.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 40.107.192.100 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=none) header.from=efficios.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794361633;
+	by kanga.kvack.org (Postfix) with ESMTP id B5C396B05B1
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:48:43 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3AFB21401CD
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:48:43 +0000 (UTC)
+X-FDA: 85421154126.27.8D65AF8
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 47C88140003
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:48:41 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=SsJnrqvh;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of zhangbo0325@gmail.com designates 74.125.82.174 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794361721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NzFQ0uLbzGAE16W1pTfuAUsZiom7Kw0ytUEYZ0qp31M=;
-	b=KNTtRlGmYwnkYmcS/l+Zlsj79Whxvg6RbaBvA9iWWIRF2CIp2EhUVa+UomqvqCOE9M5lE9
-	y60Pu/5TCtJd/nvtR9drIykZViotWHlLUE/VqBMev8ONW9nWcWjX7IHO8WcrApuhqQ8nMm
-	0PMost2xFhC6jlT9jXpbcFUB/FqvvEw=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794361633;
-	b=zfqytQBxr2y8uVAZoiNt0qVN2KhejQl/YhK6vU2C11VGLK8WmPpLCoWNxVvBd/oMuvpLWV
-	6/t0unxWcPoelL3PNKPuTrVwTfdef/Nk0z2Wv0MpJdUlbY3dIXoGHc/xf9VWqDg5f/mIt8
-	lgKdRA+xRyVICmwT5Pd1VxJ9IfVPcWo=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=selector1 header.b=goW7FxMf;
-	spf=pass (imf22.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 40.107.192.100 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=none) header.from=efficios.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rU9TSAk13vq/t8P2Kh1kf17V6BpQOiEhjVPaYlb2HsXXKwITcz5pEJYV4Z+VypfbdtBOPRPQItmC0DZy1jJ9IysxVrkgm3kVZN7xbTGmqgP+Qt/rur3WnD4G8v+ny0MIuEDXqGB0Z4/0PfZM/ez7xmjKM/TlNe8yn23EiYs+D34Wo2IBEdONKdcP1X56kuO/Nh/fd0/XdngMNmxSH2gkX6wvEcIfDW2GSFvGJVtCwEEsiR2GxgOHV45XnMzqW7baW87SjkAgSASIrzEXOmedI4dqV3hVMO8kZQIDQbHAtHqh3XyvdyJfx58pW2WM4mvZWFLZtiaIV9CU8oY3X2gwzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NzFQ0uLbzGAE16W1pTfuAUsZiom7Kw0ytUEYZ0qp31M=;
- b=Ci+jPR+oAqSCB68ujoMyAjwD+niNAtopWLwDMY7clugJAoTXDLDyNSbl7K78ufCsyxQ0CWNkDkIjtuKzjXHQQVLMcKPa8QtmSoiiCHKABuAk7OMkmj4wbzr8VSNh/5AeAozRROW+fH92GkJ5BogBF1H7eG/pF90gK4XcodhfTPNUk5fl+AYL/WkQ6xAyMQbWOJuOmNgikFncTcdMNfBB39U1T5NLkTZtX7kw92fQ6VMv7cL8rmtiKF/dHKUEGMdW9xJqXfAyIcJZjGIlhRzPcdq/FYpicZLMfNqo92B/P4O142LTt7URunAAz91PJjsEYO6lDdJ5SGfDnZUqk5rcvA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
- dkim=pass header.d=efficios.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NzFQ0uLbzGAE16W1pTfuAUsZiom7Kw0ytUEYZ0qp31M=;
- b=goW7FxMfbzl434hu1zww68gm7hIM63+RGFVYnGgKdDuAduj0VORx9Ca8ZlI10248ASXcaEYCRVd5Exw6rD1HNzNdTDlIJlroNev7fNW4NXk3a0u4vDkxQ6pkhMrWzYMws1r91Lea0HQiKu3b3TxX0avxg0uJnbCpeDMWgojyxPzIaNqZnjHpwJdFnSG+no9qjM2hW10HpGjYhbCIybNzMZ6M9knjVVNmIn4ViZi8tsuQcq9pigDuvi3u43IaXS+Oa8LCvGouGvrWXOUojO9BX1dqROZf7R9+pBz0wrF7WfquLFQ8frwDWCyajzD+mq8Oi3EnPthIFkKtrQ8x8IIDKA==
-Received: from YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:1d0::10) by YQ1PR01MB679765.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c00:111::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Wed, 11 Nov
- 2026 01:47:08 +0000
-Received: from YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::6b9e:a901:67c5:7ddc]) by YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::6b9e:a901:67c5:7ddc%6]) with mapi id 15.21.0615.007; Wed, 11 Nov 2026
- 01:47:07 +0000
-Message-ID: <93c7bb90-a671-4769-ab4b-8c16c195e22b@efficios.com>
-Date: Tue, 10 Nov 2026 20:47:05 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v24 00/10] Hierarchical Percpu Counters for RSS
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Martin Liu <liumartin@google.com>, David Rientjes <rientjes@google.com>,
- christian.koenig@amd.com, Shakeel Butt <shakeel.butt@linux.dev>,
- SeongJae Park <sj@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, Christian Brauner <brauner@kernel.org>,
- Wei Yang <richard.weiyang@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Yu Zhao <yuzhao@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Mateusz Guzik
- <mjguzik@gmail.com>, Matthew Wilcox <willy@infradead.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Aboorva Devarajan <aboorvad@linux.ibm.com>,
- David Carlier <devnexen@gmail.com>, Andrew Morton
- <akpm@linux-foundation.org>, linux-mm@kvack.org,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, linux-doc@vger.kernel.org,
- Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
- <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
- Valentin Schneider <vschneid@redhat.com>,
- K Prateek Nayak <kprateek.nayak@amd.com>, Kees Cook <kees@kernel.org>,
- linux-trace-kernel@vger.kernel.org, Jan Kara <jack@suse.cz>,
- linux-fsdevel@vger.kernel.org, Oleg Nesterov <oleg@redhat.com>
-References: <20261105203639.1459524-1-mathieu.desnoyers@efficios.com>
- <88a96126-11be-41cc-ab0d-372d32189e79@kernel.org>
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Content-Language: en-US
-In-Reply-To: <88a96126-11be-41cc-ab0d-372d32189e79@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YQZPR01CA0045.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:86::17) To YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:1d0::10)
+	bh=f2RcHe64LeB/gnyTEhJrBfe4ypF50Xcw5AhrrNUhpVI=;
+	b=7LKIOx5O5Q8jmNFY5cYEM/qo1HhpRs9sWf1x2kgY+vKDCk2UusCuGHLWYiWi7EXCcYQ5y7
+	cEqtswdEUmf0U3gGYIAttF5XGmfdJIxyYccXVMrUzzrwl/CtX8lVFAYd4GbfQPetMhzD46
+	qtgav/uxbmPi685l1NvyX08aMnhi36w=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=SsJnrqvh;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of zhangbo0325@gmail.com designates 74.125.82.174 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794361721;
+	b=go0nLpUrTyOF4WJ6lKny8RDLWzSIPOzyps7zW5x+ACHkU1VTkHbr6NQA7gLYNhzuN1WEiB
+	Yp1NH31LKDPG+cC7J4WAX42edhqx2MTUiQBdqlvq9EpeCzKIXvwvfq7w9V04OZLbOE+J60
+	Gbc5oDtYmi2Um2ZhiM5kQfeGIn9p30c=
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-36a315ed211so3008438eec.0
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:48:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794361720; x=1794966520; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=f2RcHe64LeB/gnyTEhJrBfe4ypF50Xcw5AhrrNUhpVI=;
+        b=SsJnrqvhitSUw4/MwjjeN5DA5UrXOLB/1DDNQURqvJZ+woGQtv72nae6r401kRIlSO
+         E5Fwvp3pqtLy2mKLBfSgBOybe9AA+ohHDMkIlNboBB8cTf3pLoG2p6oJUV2KpZMpuvXl
+         vgf5nIaEG2ACqvbJ01wW7MS3rdhDtm8sYCsIqXBiKm2GTLEa+c6qlFd6CxAKCV031MQT
+         Qbv4MNMGeJWU7SKje3hG9giP+g8oZrC4IxITHKCHBoZVJ7Jf5AnitQgi7n3MNe5x3irA
+         5WUVeF49ooylKV94A+ySQ+FYNnyBk6jo9taQc2kuR7ZygCfJwBIwHUppFVzamA7FL/SG
+         aFsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794361720; x=1794966520;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=f2RcHe64LeB/gnyTEhJrBfe4ypF50Xcw5AhrrNUhpVI=;
+        b=ztvT9rBCdBylGXYRKQ9hxTIgRdMXZg+Dc+sxC/fUx4VNUhOu20VobsF1+SMpK+cA9Z
+         NG17iE6LfrJc2ByeHvvpmTJnpr8fRrKqBH5YUPk7cg71tRyOlCKyEurWXXAO2OW0PNah
+         rBV1VgJYgMZkJPFgq8LSIJD8H8LDQJNYhfm3ttbj5Uk2S0RhJBvyY3V/Wutu4FFzv7Nj
+         RJGwtM3X11wTzv5TAcwJjZO8hkKEWpCJ4lNAtqghRv2yeB/JBH5lVODWloPM1692ToVi
+         RX/wLgV7pAj8jlIPNUKgnq63AeLC7xyFrPVlVY7WgyLQ/XflFZ/IZ0FQp6yOqZMoDDWr
+         S6Xw==
+X-Forwarded-Encrypted: i=1; AL+hErGfwjij4QpyKUqfrhtCF58PxgFfLlwnU3eVWMnxb6bNDb3zmbh3UaDlUkTRrcxRdxVVDhWo6H8/cA==@kvack.org
+X-Gm-Message-State: APuU4Z92W0DpJZ/qmFwArHYZLov42ZIBWZkbh6JKJ3ffqokw9Y1EE+KW
+	5/VHr3yUqLRXvCQ1/pWzt1Ld6VyBKWV1VPgR5SBxR2o0I7TVCpoJ0XTW
+X-Gm-Gg: AYBFou0+3Ix2JOBNUIZ43Qjkx37T/6WqYz1M2HW4UZ1sP3DHep0O7OepW5lJzHsotOJ
+	z6fVn6Z4mByWPPrlhEx8tOtddCar/eAbj13iMPJdAQ1dDBM12GhxfJEO6VQLLavO+TV7gb6rmKm
+	9yRdcacMm2SLcwyESGAWykEUwrvu7/B1SnJFaT628cvPSpMRiAyngpocsB9p/RPGNaYHIpMz3YS
+	+cw2jdq6bvckx4wo/70DK5vAMZti8oUqfYxR/9CYdWL/K9rTj9PtwOb74lOioHqejbMTWhnNOWk
+	/v61w8OntY7Ny4tMv122bKj8zae4b/JzGtNo/qmvJFZDgKQT3Ig5TxRxahj/046353MEmxnUZOf
+	7TyJFaE9/rFDbdaw66XIjQs+ddLZESMl1A8w0J8+lwxJP5bclqwNMfmTrjEDZBg+sw1I8dRZ5tG
+	rG+Sky4TvLj0xg2ZK+LEWGQGI1xw16MRWFFfZR9FL6GDa+058CQWsnXmUY5PHqOWLVjqsGRlgIk
+	uzSseGZoOAmxxKbN+JCrAf5OObZKzNVnjBfyHaiLcYW11hOlWbrZuwjNfFX/0jNIQ6WopsY3jJU
+	+OFPYMPcvrQzc3OLktymV5fvI15MxECO5Bv9hKshtpX1m/w=
+X-Received: by 2002:a05:7301:e22:b0:36a:37:1404 with SMTP id 5a478bee46e88-37686d2fcd4mr1959136eec.13.1794361719645;
+        Tue, 10 Nov 2026 17:48:39 -0800 (PST)
+Received: from zhangbo56-PC.mioffice.cn ([43.224.245.235])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-375212e76e2sm11902533eec.24.2026.11.10.17.48.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2026 17:48:39 -0800 (PST)
+From: Bo Zhang <zhangbo0325@gmail.com>
+X-Google-Original-From: Bo Zhang <zhangbo56@xiaomi.com>
+To: Barry Song <baohua@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Hui Zhu <hui.zhu@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Yu Zhao <yuzhao@google.com>,
+	Kairui Song <kasong@tencent.com>,
+	Hui Zhu <zhuhui@kylinos.cn>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] mm/mglru: fix a no-op lru_gen_clear_refs() call in lru_lazyfree()
+Date: Wed, 11 Nov 2026 09:48:33 +0800
+Message-Id: <20261111014833.2661236-1-zhangbo56@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CAGsJ_4ybXskWKDLHkeeuVGirGaaZ8TdPEDX+xQXZcYmPMSjS=A@mail.gmail.com>
+References: <CAGsJ_4ybXskWKDLHkeeuVGirGaaZ8TdPEDX+xQXZcYmPMSjS=A@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: YT6PR01MB491026:EE_|YQ1PR01MB679765:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf5b19a5-03cd-4e1c-44b0-08df3f95b1b9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|23010399003|376014|1800799024|7416014|366016|18002099003|22082099003|6133799003|261009221227099003|3023799007|56012099006|261102123227099003|261009223027099003|261026121527099003|261021121427099003|261022113327099003|261022075727099003|261022105027099003|10067099003|261028144727099003|4143699003|261026140227099003;
-X-Microsoft-Antispam-Message-Info:
-	N0SAQB+06JrZEVmdmsdmx9TZr5jQ9sEjprBYcLeeWnA5WRywfmqjq7DW5shZQ6szkn8V/RgxtBHwQKGwgPnYMaDUmlLLdJwIcFKBtt+okSufxvxXYZC6G/Zd6l1wXcAp0fK0xc7Rvom+bxWoDUpy6+fPl88dazuXURblyCfoU3UxEn5cU5mKAjKmOiLgA7C13R06EaHB0R0H+nXwSVF6xISnZuUEcBsqmVr4gvatEEPTOEuxdfqz/e2/xB4UiFKZ7gJ0jkqSUDBdF6Rd760TGg1WZtRckcEGhTjKk3u8RltTGHADSwKgN5M3vdpUB6v8K3fo7wg+Lg2kJ01spasQ1CFMXKqTTRjeUJnrzmch3Y86eMYg2IDnprJzi9o0jgMSpM1j3NyzXGghp3zxTus1D7QMaKoQh8z77OnNB/RQPuE5nrTra84y1u26ImpqTiAdxa828rcjnG1eIWoozi/YMQh+Hj4ayOE6mgTaap29BlKfWVHkv7BCWEJXifCmAlQXhLMkJbV2GW+zHNlJb63j4iSOdN3qDgc0Frf0CzqYf87TsOxztLK/qEHbc1oTfqSyzCf2PVE3A6qHr9I4REgIt2lJCUPZSq4ylxhRUNgHP8Of7YWboZOgvb3K2fymp9u3ZI5Eyy5kCklTH7XeoWF70CYPfA//n7BZkx2nfhfAnsA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(23010399003)(376014)(1800799024)(7416014)(366016)(18002099003)(22082099003)(6133799003)(261009221227099003)(3023799007)(56012099006)(261102123227099003)(261009223027099003)(261026121527099003)(261021121427099003)(261022113327099003)(261022075727099003)(261022105027099003)(10067099003)(261028144727099003)(4143699003)(261026140227099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Wnc2aDJWMGQxOVVzZ1BBMU8zbTRpbUIvN2V3dGZ1R1lZNldQbmdZa1ZHR3NK?=
- =?utf-8?B?bHMrK2VWdzU5ZUpmajhZbDY1d1JKcUZudVpaY0dlOGNGek1JTjBXSXRLVFVy?=
- =?utf-8?B?WXpneUhNcm9PZVpNdXdUQ1pnaDZtQ243dEVGb3FJUEJRN1R5ZklrOHNVOHV2?=
- =?utf-8?B?dXZLam1SaGJpLzVneEtSRWZoQXlUUndPWUNONFhVdVZGWVZVZnRHT3BoQUc1?=
- =?utf-8?B?dFJaaHNmZ3NHdWFpaHM2MklHWTF2cG5HcVlveG92YmlEdEpRN0ZJNE1GdjhI?=
- =?utf-8?B?cWNuZEtKd2V6bGdkZnVBdUxWYXAraWcwUm5YT21hQlI3UTY1ZGxvZm5xMWdK?=
- =?utf-8?B?a215dHNtemgrQVNhemRQV0l6YkFybzJTV2EvQ0hNaS9BVDRiQUU0L2JCTy95?=
- =?utf-8?B?QlFHU2pnVENvUVMyS2M5alRNR1FPWTJRZFFOSlVoSmtCeFNyQVZTRUZRMlE4?=
- =?utf-8?B?RHg0M2FBUzdwM01lbFo5T2pNRVpUQ0l6WWg2eFliWnFkamYxS1RPSXBFOUlF?=
- =?utf-8?B?cXhGR0VQSXZVMDdLekkwWjNEbWFiZkFaaEwyRDF2VFZUM3JzcW5PZVZHd0E2?=
- =?utf-8?B?YUhGNGp3SzRXd1ZiUEprZ0lmOGQxZE1PK1kxWXRPUDByVHE3c0o1cC9vWTc1?=
- =?utf-8?B?U2JLbmlka0ZXT0k0ejJnVm1DVE5kY3o0ZndYWFJkQzY2Y0hGUFNsRys5Z2V4?=
- =?utf-8?B?WWJIeDJ1aTRlbmhzUEQxeWoveEkrTUZ0bzQ0R3AxS2xPSTh4TURZeDFDR3Vt?=
- =?utf-8?B?S0ZJK2xYSjdyeXVKNlhjVzFkK09DZlA0OTdNejNrRllRSEx2dDNvaEs1SGx3?=
- =?utf-8?B?bmNEeFdwOE9zd0pjRDNKcnRMNnUvdzZ6UDQ3cVNmd0lUbDhGRTA2VGlYenQ4?=
- =?utf-8?B?cjJRampJdXdGOHNPVEYyMHRybW1MSllOY3pQU0xGanh6c3pnUHYxRE9COFMw?=
- =?utf-8?B?Uyt5NUY1b0xzanhrZDhjNzU1SmpxWkFPNG9CcGpaeS9wbXZSQUk2K0Nra054?=
- =?utf-8?B?NjhHYWdkVGsrTGdlUFJ5eEk0eFRrZDNVWjEvKzcwaVREVStIYnBQZm9pa3hp?=
- =?utf-8?B?R0NLQkJHNVVRSU1lbkx1TXd5bmx4bGNuNG1nVkxqc1FJQURkT2gyU1BxLzl5?=
- =?utf-8?B?MzRhZGdWN2ljLys4eXRKYlhQZDNubCtFcGRld0N3bXk2S3Y5dDlQeHlFSmls?=
- =?utf-8?B?NWx0bHJFelc4UU1xeTc4d2dESDJkbEdEQUY5bnVNT3RncVRDY1lzcit1MVVz?=
- =?utf-8?B?Y1JIMnhYTk5ubnczaVl2OFJtenBrUlErUXRhbWFYWHBkZmZlNlRjVG9BaFlE?=
- =?utf-8?B?cGxjb3d0YkFzaVB4RWpoemRqNlVockNHeHgyZEN5aTYybDFvalNRQlNMVGk5?=
- =?utf-8?B?WmhEQXIxZW5nUHdEMzZuWGY4NUI5TStNNW9OeEN1TEplb0ZTYmxlSVh4QURh?=
- =?utf-8?B?UU9MVzNPWE9kOCtXRUcwdC85MXFMMUQ2S0RoRmY0R3hjTG5PVDliL0hjMGFn?=
- =?utf-8?B?MUFLbU1OWG1ZNUNDZmFSeEJvRk9kWjRWYnllZ21vMmROMkNtUElaYVduV0hD?=
- =?utf-8?B?a3AxVFNpbHUyUyt6YVQvSENaeTVkOWQ1SWM1cjBTdmRuUUJDTFlLdXBCa2ND?=
- =?utf-8?B?b0tFaFpORjhGTTZqVWR2VFZ6SjVQalhBekJEOVlCU1ZpOWhjMFNmdTJZR3FV?=
- =?utf-8?B?MGc4MEZocXJFVHh5K2ZBVmVQMCtsQklnNjdCSFFyY3RpaktEc1d5K3FGeXN1?=
- =?utf-8?B?cjkxL3ZOa256SjM5WmZNYUpFbTRNR1BaTmpNK0Jqb1ArYnBIbXNRYzZuTW5L?=
- =?utf-8?B?QUV3ZEhQSFNpNlVkRDVXRTgraU1OZnlEVU5JUHNkcXllbk1lY2ZUQllPdFdk?=
- =?utf-8?B?TmFrdndIRmpXdTZMSk9vbmxNWCtvZUY4OUxzdmZJdmlaWXM3WTZ5M21rVmJk?=
- =?utf-8?B?Y2NodEs1dk9CeWlHcDJnTVlxeElxYkVpWEV2SlZ5eDdpYUt0Y2Z1cnMxQy9y?=
- =?utf-8?B?aDBFdDNEMkJSdFVycDNsWEYybG1kbTh4RjJHRmZjYXJPZGVyL1pIQVdrYWtV?=
- =?utf-8?B?bEZkRTRrd0ZPSGxqaWswZ0ovcGNuK3d0Q2tXOGhkSFZER1RjV3pCRVFQMTRi?=
- =?utf-8?B?K0ZOcUwvWnRWWEZ0NUtoU3ZmWkFWNXVxNFRvMUNIU0o3Q0hVZkYzUmE1b25C?=
- =?utf-8?B?MjhUYXlEZTZJMlFIQk9lZ2kvdXRCSGZhemJ2UFV2K2ZBK2FncmRrNXlGYWpm?=
- =?utf-8?B?RUxIV3pkZEs3cFZuQXR4OHR3TWVqMGlsQWhxc0VQeUhxbXlXRnZXdkY3Mjdt?=
- =?utf-8?B?MTVSTjFtOUFiNk15dnA2ODB5NVptZng5blhwY1ovbCtuaGFXdVpnWGdid0Ft?=
- =?utf-8?Q?4VXIoWf0jQW9JBXWisvj1xm8WIBA8cBqqH4fe3VtfNmVg?=
-X-MS-Exchange-AntiSpam-MessageData-1: w4MEwiyPtW13qVF/qBueyW8jKqi2Q8epE34=
-X-OriginatorOrg: efficios.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf5b19a5-03cd-4e1c-44b0-08df3f95b1b9
-X-MS-Exchange-CrossTenant-AuthSource: YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 01:47:07.5417
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cgG/YPWJrDov7R20qWo3FtXbs7y+49qQidxRF+LYLAGMrHKGbztNK99n2L+SgWNewnjR47w23pT/1ss+ifShF/AvQQ7t8iVGyZMryqeMpbU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: YQ1PR01MB679765
-X-Stat-Signature: xum5az4n5aksbnm44mt5pdeoq7aeyhwu
-X-Rspamd-Queue-Id: 6D6D3C0003
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 47C88140003
+X-Stat-Signature: gd33otfbtnupqwtakid519kt35rtsd7q
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794361632-524135
-X-HE-Meta: U2FsdGVkX19rssXCOKTtrwdPJPThRu9MN65D1uTIOg6Fp2nGBaOXIyNEV9KDxtv5R3o2QkPZeSPERYJpr8Qjfpw/u4JjHGzRn3qO4jx9uF3udb8J3hxx6MpeHM6TxQbKgqWsaaUsX0l6d9ztllu5S7NBhKNyCJGvhGDPRNa5aUHI2ow72+zPL+CsDuNBpHAaOV+Sta1KJywKpNxX4Vyzt2hM5UCEwAXezCI3a9Kf/tr4OtnTUOPxg8i5goTD8xC97dBY4H7Wsn/BwAHZse8GfeN8R/D+mXblY4y1wGA5pOBWpNlP+4zHIXfhh0R9lG5WKogExgiElUvU2A9L1pGFpc6uiTxRpIRrSWAyNbS1A6W0CVO990qqRnGKWDlWE/Z5qNq9jc/t3ihftRDmCO185Ws0YozLgrzoCcnwxntXmhcv1dFRe+sqTfGKs6VOaEppDkJZPl3K51MA8oS/g+yRn4ccP4Nn7rlpHYs/gIqrFjYiVpxLkqdGX2rFb2yaZozewVPraycOl5UgNP3iBCh9/MFKEhzah/BpLdT81jL82ruvhV1bxctFN8+Zz1FlZmMcmAxH5iEfoiZ73HR5jI68mn8Z8u/tDq1CkAfeTmrEcjcXSQ/pZNuoDSAdGt1oCQ/uxehPzQUL1cYY4jxqeTYL0EGfTd9EKHOEkDfgMjO1aVjOd4VV80VOplK6wp69dnZ/XZKFpRf3J9qDdMKehrOQiAtuQSgChmTcid1eBJZDvkCrCXiO6YyyN6HAK21/c5EcY3RlrMWLSkhKNRDfwodkd52wAgoTeVCWOIkGjwSiZp4/cF5LhNBXa9Jy1diNfMuC+G8WDZR9usb6NuEWuVukgat1j4nu73E+sCbs0dOf0DKxOLjm+jOdxZTiqXLzEhK45dOFnZbkwds0/HZuvHIBKsDpiAg69xFco9QDOvUdNBZNutmcQs68gqPT5wZ2Oks1WA47d04+xxx/UpLNTlJ
- 1tBfc9Ll
- qHPrHH9W3My9Jy68oxNKbu9XXLCF+x+Z9mRRWkYSOLKrLKlUd6zGw9dOPHlwLqgaDBGwczzSgomuj62vCbCUEMLtOR339kmMTBMD3z1NDPleiMmoo26535USmc11eHw6gVG7RfeC5JWZdYSoxL4Q0+n7C1YmdfWsMBCfauUCGfgJx6bH6iFWCKebdAh5MtIRabEpp/QE6sQzzP1eUN7BSRIWYN1bfEXn7O6tPi9ET9hl7ikNGslG8OTRGPO5oLKze6fPT5v3Cv5hRiYQbRJKJgRvqdlBRLFicI9/JtO+85HDr/9N+q38+/IhZ9Na9C8QHEZjxL0P1+0E2d5D2AbqTHtyiGp9CoimO4+/pJfcyrD6LNtkfyen39h0fnCbjjD8KWMG/yB/gFJkJLS1Q4n88XvRjA1S9VOaWuVYPIzGiSaZFd18BEAKDykQ5aE9HvOJNq22A2GEY3AHyfufOvETYj9FWDLm5r6PeC7A+8m0kLmqHeY6c+3YJq8SGPSC/I2EaXqvyWp6IviSIN7A=
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794361721-329237
+X-HE-Meta: U2FsdGVkX19Mbwv14MwU9PW0mNWv2ya7KtSqwckMCBhcQFxCUR8bDZgxoN8aGxgavPj4UkFMwwdKxX4LzknaG8WQlN7hbQYMz96SkakIHYSjqCKQE33RWf7w+aZxiN3m6Q7t3kGVEPVN4RST4E3gBkpOTB5KHSQzNlY1Bl9aqjtJ3w2PW9ps13gLUSaJqRcXg5MNNjMCmpmh7HafXEzsQFDxg0WHkEspTfUoulcAPmQbmIXblODhz2ww3OkFRPxGNXDFkh2FlJxbmotTJ9Ku6ua6NAxn+xr8YFd3VGTzoQtobBVil7h1PUVLpi1B3EGZg82QVi/0QkBcpCkccuVeupjciyVOeGoP3s/6mAzePJEG/1EEz3Bpy014EZAjc32goZljxRdoAgLOxjR9lpudaWbHyXLu2elo292y8WV97ZblWo5z5eYjjxumZuLLiHvlYw0bpZXxYX04pOhuwJe9lrxA5/V99zuEEWR1BDXVYIgJfyPVXLKPUkL8aMDKXQAUCKSN3e2hY9ltWA5KjqT3+362OgRNHC2ZIkpMrzu21TDipChWZhQ/GtV8mZpGG3K+fGICONkzqYR+XJ+xEaTwGlAvB44kb7/xmr2qFxJ6/0DYqnPNCkbwFu0k/b6+ByhpYnAB/x1oYMH5yVi8QBl98HQ0nV3EmamCq+aY7M5uJX6SI9k+i1HkWa6UU160fY4ej2fpQDFnhdzzUoqHLN9rmXpuEY1IEDE7I48cHvlotLspfmlqC0AovOPE4wt6zYRm67dkO80YNAQV5EG2vtxsch+6NoX2NIEw4K2Lgj9fC4g3iMAU0FMCO028UemPq/HKomNNpSreFbHUycJZHzHHbeVJbnS5q8oA3kuvY8HYeMaf1mVMoXMvVELLUlEHFIlP66vf0rcO8p23TNBcfIse0VR61s2lOsdWxis2A1cOLvNXgDTTgfBKqAiC0hxcpEp0mFyhk8FPreABg4+8q7k
+ 4Zo18uSD
+ qjIQsQzlv/+8iA5AE4VZTSNyOjOG/G7ynXng5NOsYvrj78K93qboA5gSLkbFzWgWMJzEtrTSCIuLGenAGCpdTltDiNLHmWyMt/Mdg/LzpYrCS2p7oFrmnXxfVZR3tiS+ElzglEbJKa+5lddUtQOVaBPwNuIQ5fj62G6kTBZSPdpHpvxsJ8KQ8lEYngixit9Vp5+5h0N0H1mEEi+xLeZyCLRR0M3vcQ22sTSftwWQTqaov/A2do2QI9EYix0iuti+MqqfRKIT0Akav7N0J/irlUfIWr+eg0xmSmrYjLKrz/5YD+y0NZDHQwb8scsufYFjpsrnMckT/6W5TRboTM0SeIA+8LJbro/LUemO/yk95yzQlPP9hpjeq5hSX+kDqMg6hAR8PH7LEgT2LFracGSbEllKJ0meN/Xp10jHqo3tXNVOUyEcaYdS/DOQYaus+en+6rcpX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -205,184 +137,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Subject: Re: [RFC PATCH v24 00/10] Hierarchical Percpu Counters for RSS
-In-Reply-To: <88a96126-11be-41cc-ab0d-372d32189e79@kernel.org>
-
-On 2026-11-09 15:35, David Hildenbrand (Arm) wrote:
-> On 11/5/26 21:36, Mathieu Desnoyers wrote:
-[...]
-> I think we discussed other possible applications (IIRC Michal expressed concern
-> if a single user is sufficient motivation for these additional LOC). Did
-> anything result from that discussion that is relevant to v24?
-
-Yes. The next round adds a second user: the tmpfs size limit (the size=
-mount option).
-
-Today, each page charged to a tmpfs mount checks a struct percpu_counter
-with percpu_counter_limited_add(). That check takes no lock only while
-the mount is more than batch * nr_cpus pages below its size. At 384
-CPUs, this is 1.1 GB. A smaller mount, such as a 64 MB /dev/shm, takes
-the counter spinlock and sums all CPUs on every page.
-
-The next round adds a limit counter built on the tree. It keeps the
-limit strict, without a lock. fallocate() of one page at a time on a
-64 MB mount, in a 384-vCPU guest, in thousands of calls per second:
-
-   processes   before    after
-           1      209      481
-         384      124    53944
-
-Mounts of 2 GB and above lose 1 to 2% with 384 processes. These are
-patches 8 and 9 of the next round, right after the RSS patches.
-
-A later follow-up would use the comparison functions for the OOM killer
-task selection.
-
-[...]
->> Since commit f1a7941243c1 ("mm: convert mm's rss stats into
->> percpu_counter"), the RSS counters are struct percpu_counter with a
->> batch size of max(32, 2 * nr_cpus): their approximation error grows with
->> O(nr_cpus^2), up to 1.1GB per counter at 384 logical CPUs.
+On Mon, Nov 9, 2026 at 1:08 PM Barry Song <baohua@kernel.org> wrote:
+> However, real-world workload data would be helpful
+> to demonstrate the actual performance impact and make
+> the case more convincing.
 >
-> Okay, so that's a per-MM problem, not a per-system problem. On a large system
-> with many CPUs I'd have said "likel we don't care" :)
-
-Right. The error is per process, so a large system does not make it
-small compared to the process.
-
->> /proc/PID/status, /proc/PID/statm and the OOM killer moved to precise
->> sums (commits 82241a83cd15 and 5898aa8f9a0b), but the other readers
->> still use the approximation: the RSS high watermark (VmHWM, the
->> ru_maxrss reported as "Maximum resident set size" by /usr/bin/time -v,
->> taskstats), /proc/PID/stat (ps, top, monitoring agents), the taskstats
->> RSS-time integral (coremem, sampled at each tick), NUMA balancing and
->> the mark_victim tracepoint.  On the test machine below, the
->> /proc/PID/stat RSS of a test process was off by 17MB while
->> single-threaded, and by up to 134MB with 64 threads.
+> The patch itself makes a lot of sense in theory, though.
 >
-> What's the resulting impact of that (temporary) imprecision?
+> I'll arrange some tests with Android workloads and report
+> back once the data is available. If Hui already has some
+> data, it would be great if he could share it as well.
 
-It depends on the reader:
+Tested on a Xiaomi phone (android16-6.12 GKI with this fix backported,
+MGLRU enabled). The workload launches and scrolls 26 common apps for
+5 rounds; each run produces ~7-9M MADV_FREE pages. 3 runs per kernel,
+same system image, same sequence (fresh boot, then back-to-back), only
+the kernel differs:
 
-- The high watermark keeps it. update_hiwater_rss() stores the maximum
-   of the approximation, so a temporary overshoot stays in VmHWM and
-   ru_maxrss. /usr/bin/time -v and taskstats report that value.
-- The taskstats coremem integral adds the approximate RSS at each tick,
-   so the error accumulates.
-- /proc/PID/stat shows it as is to ps, top and monitoring agents. In
-   testing at 384 CPUs, it was off by 17 MB for a single-threaded
-   process, and by up to 134 MB with 64 threads.
-- NUMA balancing makes its decisions on it.
+                            without fix   with fix
+  workingset_refault_file      44.7M        29.0M   (-35%)
+  pgmajfault                   13.9M         9.0M   (-35%)
+  pgsteal (kswapd+direct)     100.9M        75.6M   (-25%)
+  cold launch (avg)           2436ms       2034ms   (-17%)
 
->> Precise sums cannot fix the high watermark or the RSS-time integral:
->> update_hiwater_rss() samples the RSS on every unmap path, and the
->
-> As a side-note, I absolutely hate update_hiwater_rss() on the unmap path.
+Without the fix, lazyfree folios keep their stale refs/PG_workingset
+and get protected instead of evicted. Since they sit on the file LRU,
+page cache is reclaimed in their place, which shows up as more file
+refaults and major faults.
 
-:) It is also why a precise sum is not an option there.
-
-[...]
->> Patches 1 to 5 replace struct percpu_counter for the RSS counters with
->> hierarchical per-cpu counters: per-cpu bytes carry into a tree of atomic
->> counters shaped at boot from nr_cpu_ids, with a fixed batch of 32, an
->> error bound in O(n*log(n)) and no global lock.
->
-> How does this interact with CPU hotplug?
-
-Like the per-cpu data of struct percpu_counter, the tree is shaped at
-boot from nr_cpu_ids. It is not reshaped on hotplug. The residual of an
-offline CPU stays in place. The precise sum still reads it, and the
-bound still holds. Patch 1 has a "CPU hotplug" section on this.
-
-[...]
->> Patches 6 and 7 keep the RSS counters of single-threaded processes exact
->> and without per-cpu memory: until a second thread shares the mm, the
->> task running on the mm adds to the bias of each counter without atomic
->> instructions, and other tasks add to its atomic bias, both read in O(1).
-[...]
->
-> What was the particular reason to special-case single-threaded apps? Do we
-> expect them in practice to really be that RSS heavy+dynamic such that it would
-> matter?
-
-The main reason is the cost of creating a process, more than accuracy.
-Every exec creates a new mm. Upstream allocates per-cpu memory for its
-RSS counters there, under the per-cpu allocator mutex. It also sums all
-CPUs when the mm goes away. Most processes are single-threaded and
-never need this per-cpu memory.
-
-With 64 processes spawning a static program on a 384-CPU host, 19% of
-the CPU time goes to these allocations and sums. Here is posix_spawn()
-of a static program which exits, in a 384-vCPU guest. The gain is over
-patches 1 to 5, to isolate the single-threaded mode, as the median of 3
-to 5 runs:
-
-   processes   gain
-           1   +22%
-          16   +26%
-          64   +42%
-         384   +22%
-
-In UnixBench with one copy, Process Creation gains 15%, Execl Throughput
-4% and Shell Scripts 6 to 9% (one sample each). With 384 copies, the
-results are within 5% of upstream, in both directions. A kernel build at
--j384 does not change.
-
-It also saves memory: at 384 CPUs, a single-threaded mm uses 1928 bytes
-instead of 8072. And a zeroed counter is a valid counter in this mode,
-so a static mm such as init_mm has working RSS counters without setup.
-
->> Patches 8 to 10 are the tools to tune the tree shape on other hardware:
->> the percpu_counter_tree.arity= and rss_stat_batch= boot parameters, and
->> a KUnit benchmark.  The default shapes were measured on one machine,
->> with up to 384 logical CPUs, so results from other hardware are welcome.
->
-> Hm, so that means one might have to fine tune these toggles to get the best
-> performance? That's a bit unfortunate.
-
-They are not meant to be needed. The tree shape is chosen at boot from
-nr_cpu_ids, and the RSS batch size is fixed. The parameters and the
-benchmark are there to check these defaults on other hardware, because
-I only measured them on one machine.
-
-[...]
->> 1. Is mm->rss_owner acceptable, or would you prefer current->mm == mm
->>    (without PF_KTHREAD) and an "activated" flag?
->
-> I'm afraid I'm the wrong person to ask that question. I'd have to look into the
-> details. If it's just a simple member, we likely don't care about the addition
-> memory footprint (if that's your main concern).
-
-OK, thanks.
-
-[...]
->> 4. Should the rss_stat tracepoint report the approximation, stay
->>    precise, or report both?
->
-> No strong optinion on that. Do we know who uses these and for which purpose?
-
-It was added for Android, to track the RSS of each process and detect
-memory spikes: commit b3d1411b6726 ("mm: emit tracepoint when RSS
-changes"). As far as I know, Perfetto reads it. Martin, would the
-approximation be fine for your use?
-
->> 5. Should the tuning tools be merged, built only with the benchmark
->>    config, or dropped later?  Who could run them on non-AMD, 4-socket,
->>    arm64 or POWER machines?
->
-> Is there some way to have it be an auto-tuning instead of requiring this tooling?
-
-The defaults are already automatic: the tree shape only depends on
-nr_cpu_ids. A finer heuristic could use the cache topology. I would
-rather get results from other hardware first, to see whether the
-defaults need it.
-
->> 6. Is tools/testing/hpcc the right home for the topology test?
-> Good question, I'd assume so.
-
-OK, it stays there.
-
-Thanks,
-
-Mathieu
+Tested-by: Bo Zhang <zhangbo56@xiaomi.com>
 
