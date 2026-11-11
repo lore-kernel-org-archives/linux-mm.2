@@ -1,77 +1,76 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C73F606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 22:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3387F60A5BFC
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 22:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OFzOCWMK
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OukkQprC
 Received: by kanga.kvack.org (Postfix)
-	id 40A246B05B5; Wed, 11 Nov 2026 17:00:13 -0500 (EST)
+	id 5697F6B05B7; Wed, 11 Nov 2026 17:00:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E0FB6B05B6; Wed, 11 Nov 2026 17:00:13 -0500 (EST)
+	id 519D16B05B8; Wed, 11 Nov 2026 17:00:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31F896B05B7; Wed, 11 Nov 2026 17:00:13 -0500 (EST)
+	id 457626B05B9; Wed, 11 Nov 2026 17:00:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AB5E6B05B5
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:00:12 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 836BB120428
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:00:12 +0000 (UTC)
-X-FDA: 85424207064.07.FD3C169
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0961F6B05B7
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:00:18 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7837440435
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:00:18 +0000 (UTC)
+X-FDA: 85424207316.04.A36935D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id AEA198000D
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:00:10 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OFzOCWMK;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id A17E412000B
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:00:15 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OukkQprC;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794434416;
+	b=bEFk/p3e1d6PNt8U/s9pt2gaVAQjx+Loo1RtAH0Vd1PwfnmeaGaEgtzvzjzMnQTorwKnTW
+	NVLVlDQwaqZ4DuarSowKr5WtDErXgnWFxKC8gtM/yRLFJn6Q0tbKGi1bYlJ+jYGyv8WF7W
+	WQ1kdiyalNdchBwHC5JFMbDvmn1A8EE=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OukkQprC;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794434410;
+	s=arc-20220608; t=1794434416;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=0OVdX8T4PZFsw4ZwfqMzWpXCj72B541hV845/DfqAEM=;
-	b=mWRHh1Bw/9MuuoVig0f5rzFo6ZsQjG5P3VKxfwGJqp7JCAHC+GixPsqB2LEOYHhuIVLibd
-	g0dssTBt9giQEH8ofOZF3pbxwIR52TqgrZqaUMrulJ0vxvzDKpVTJG/ksU5aAAF56LB1Rb
-	GkxokzV//6i07amMTddou0yeh2xHPTU=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OFzOCWMK;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794434410;
-	b=JNifh5JBS2f9Gous+/0nrM7ZV5oYhdHpRqQ5DQn/y8u0EoAFn5t8WgbP44TDJhXrY8ilHj
-	LafVX3v8Xh9pHQvJeo3SI0bMRJxcDA46DY9IqqgEBqKW4V5yZ/VvUHZdpIip2KIOtdEawk
-	YBMsutSeG0+4rG7knz5Qwm91XLESDAM=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Klp5K9ghajAt5QsaOTYOAUgTbWlX0z+ZRRZWnWqsMaw=;
+	b=Mj56Xi35btGehRFs0fHjAfDOhtrejrFeAvDhl1UDDRQ1evMA4PzqQZzrbRzI2l47B4BpIS
+	HF3yKVwcrg9M+NrEIPXkq2yWLu6v8FUqnmzYQNOy7jB/FjT1WVGkbHLCVZ+xIU6+Y18WYN
+	KDhnmiKucCvQDv/qwJ2yyoQ/zamSj2A=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3738163A66;
+	by tor.source.kernel.org (Postfix) with ESMTP id 2ACC163B04;
+	Wed, 11 Nov 2026 22:00:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 560B71F00A0C;
 	Wed, 11 Nov 2026 22:00:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE4881F00A05;
-	Wed, 11 Nov 2026 22:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794434409;
-	bh=0OVdX8T4PZFsw4ZwfqMzWpXCj72B541hV845/DfqAEM=;
-	h=From:Subject:Date:To:Cc;
-	b=OFzOCWMKtLuxtENYeZ7QoRpXvdv8f9TcbIZTC0tztvZy3Zr9poC6dnlnbqhO7GyPP
-	 C2T60v2kuEnzg0/1Wqy7Z//u8yowRRmO3jp0NVzHv9tTgcjn4C0PS3dCSTriPX7COE
-	 A1O5F20dGpWSv4yJSILFo4OEam9B5HjeEmNgXFA43VAQWXX+BnKuqmlNTW98pXIpdT
-	 0LtsqjcUSAKeWDgGElsVwNVo0ZYssvYq+1SndIjOYu6FAlCnyMbDgxtPnZNTXuSXFm
-	 Y8QE+HYVnHGAOCwmkIckeqyhAcJz3y/R30bdIaY9NbxCTW32+VI1SRdQ/PzOLFql9e
-	 Du8DxugwdrnAw==
+	s=k20260515; t=1794434414;
+	bh=Klp5K9ghajAt5QsaOTYOAUgTbWlX0z+ZRRZWnWqsMaw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=OukkQprCZ8BTWe49RBUt3YgTJeQJMbZKVPQeEVjdZrT9CznBowYaEM56Y0XnPfSMH
+	 ZMaS5pWq/tFHO7omypC1u7bOSQLrTYaz/WEFZLpLKdJ/v4Pwitnay1MgiS50XFz5od
+	 ba5BtleXPHSIMh0nEMl0Fcp77XW/rZ6VsChAK/xB11cv1YDG2Lcjyo6H7zDuIwvPIf
+	 Nhs7trqyi2rNwc1Sqjr4Ycr80XG7L/0NBr2dyeGO18KSR7lMyVk0IMq6Qk+3cedyAT
+	 x6bEm3XlcZBnHhWI/Tt+TzOAAdD7V94aPECfgkHCGZuzOt8nDNQEUZpdD+tWbzYPu/
+	 vFakotApI+kmQ==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Subject: [PATCH 0/3] mm: fix PTE table overruns with folded PMDs
-Date: Wed, 11 Nov 2026 22:59:58 +0100
-Message-Id: <20261111-pte_table_clamped_end-v1-0-2dbe339c487a@kernel.org>
+Date: Wed, 11 Nov 2026 22:59:59 +0100
+Subject: [PATCH 1/3] mm/userfaultfd: fix PTE table overruns in UFFDIO_MOVE
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAF7l9GoC/yXMSwqDMBSF4a3IHRuoEix1K0VCHiftFZuGJIog7
- r1pe2bf4PwHZSRGprE5KGHjzO9Q0bUN2acODwh21dRf+qGrE7FAFW0WKLvoV4RTCE4MN2Os9lJ
- 6XKl+Y4Ln/de9T3/n1cyw5Ruj8/wA3sDMhHkAAAA=
-X-Change-ID: 20261111-pte_table_clamped_end-69bbcaf44fe7
+Message-Id: <20261111-pte_table_clamped_end-v1-1-2dbe339c487a@kernel.org>
+References: <20261111-pte_table_clamped_end-v1-0-2dbe339c487a@kernel.org>
+In-Reply-To: <20261111-pte_table_clamped_end-v1-0-2dbe339c487a@kernel.org>
 To: Lorenzo Stoakes <ljs@kernel.org>, 
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
@@ -86,26 +85,26 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  "David Hildenbrand (Arm)" <david@kernel.org>, stable@vger.kernel.org, 
  Chris Mason <mason@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1006; i=david@kernel.org;
- h=from:subject:message-id; bh=4doLGZ+k/LEIRTS620iPxby3DjELTASeXofs3KT3y4U=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLK+PE2xFPCOMDjgLCXKLXR4H0+eto568Ya7O21jGWMKt
- nKe8wnpKGVhEONgkBVTZAkKvm/w8uW62mo3PmaYOaxMIEMYuDgFYCKHRRn+110rN70bEOEktOiD
- pdS2dSl2P1PfuVZvdSs42HRw0RXrW4wMS30PaU8v2JMx54+sQaPMd7f8nn0SDFWCqqYOoUKKQXt
- 4AA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3966; i=david@kernel.org;
+ h=from:subject:message-id; bh=RpUx0NpY9p/6F0IgQ+tlhR7lPz8pKjk2jjthdIXwa2k=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLK+PE15t2VBklWqZvTEmQ+EdnNohZnO6C+/b7rbatP3N
+ xYXc45f7ChlYRDjYJAVU2QJCr5v8PLlutpqNz5mmDmsTCBDGLg4BWAiFy8x/I++yXfxRKBCgr59
+ Ulqubce2U1USkyIPSK06ZWm4ktts001GhhdiYrznr1mv26KnHbhBZR7HSuaDbeGaTw2N8zrsji9
+ 0ZgMA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Stat-Signature: z1he7yxyhuhxojcrxa3fey4yunzjag5b
-X-Rspamd-Server: rspam01
+X-Stat-Signature: i571cwzuqmuopiw6ttad7xfttdr8tot9
+X-Rspamd-Queue-Id: A17E412000B
 X-Rspam-User: 
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: AEA198000D
-X-HE-Tag: 1794434410-164884
-X-HE-Meta: U2FsdGVkX18Oc2v34z6zWucKw8v8s/iNBvri/7CIEaey2NQZM/2geazfZfLqsYqHS3VbJjWDPF20casyHwfnQTt+DDHoaRiFZk71H6waSvJfPeX+L39fSI+nGwLSFgHpJE40I+tKA+okyLjhjdPuI3RiLK4lQqK5L661w6trORQaeX03JCQ3Uo5/A2Dvc7LUACy89rX8MUnYcehr9LxvJYCvgaCzRH8i3owvMukuN6uu+/2j+QQxGys1Nl0gu1/V9TgAVHfHzpiY3wPERunPjagvPevAJDqAfLuc8lDN0J0zo+LCeTuzJAjBYpu957/1jOBnlM1fAzOkiAx9V0nOFO6tzrU9Lf3g2I1HtG1puZhMFJh/1cqwgzeL6opIfgg4rEFB4PmdP0TmSdExSEaSZ7vGEYoNtn8l5vzZtgAST/Bw6DQGBibm5XjWJGYK0Ba0DCpL7M2V7qbGH367xLZPri9sludWAM8K7trtI8rS17bPMjfaGDS0IZ4IRx8EEK4lJf3mlbteeX18Fv61CaCaptUvi78ugSmin8aOZDMmiFgeV11OyPlhFbDddbsKq1G0ee5WzI7cpj5Ye8E58Ge+MMjT44rd047Ws4HK1s4oHp93JH2PvyI0TqidUbQEy0p0L0k2BEg2ImconZqTiIFXg4649yLKtzD0nohF+PunLa+02HtMquLRnc4vPDDMEOpWx4GHvvOytVGuV5uhgK62uOBgrotMevGCkDzf8eszv++rZWL2d0eNLwLgc3ZYKT3WHVWPmwHu6KjbCy25GQcM+PYkTAkWkc/gLmaAtPK5DAbPXs14Ru7clT7eQKO9ifrtWquogjhFRQ44Zb02aJ5SH2ab7YABeyd+or7hF9TypXP6kpvcKdVYlBzCH0kthfDF293MCy2kIJrbCm2ZPSs2svwRc1ANjEsFJ+iPOXodhUlyBJZOgqxLATTLxwIIh/onxhmkBNNcQM5EXlvIKsK
- wOGTmPTj
- EkrF0Trm+rJ7y1sE5WFuZIe4JTNb39/GJ5F5Q4dE4f+4xCs+12iHsBR3cqbdWRDAZxLAvKREmpdbhgoLgfM7sHxTj3ZgnqJcmYOAPhdb7QAfzssDkuSgDb1DS0Jztax749yrWNLb4h6rbCI/vjt6c7LXPhMVCoBOR6DqYjBmh8wAJ0/Ri+BbqxkPL2ebTtphxhSNUFftkYUJ3Eg+shUGZPTK9NXj8WDUgmsEL3kn/JSXC5H4nGb3gI3s6Pg==
+X-HE-Tag: 1794434415-486352
+X-HE-Meta: U2FsdGVkX1+kNSz7mmmy7YvUgP2jN+dhLIQ8zdPbySw61U3ioPAX9tFGgSCboAOGtbsc+YRBbNORX6ZMdP+sbMqwAIB4jdMhxPwmwMw59qTBJ3REQkhM6PfYZma6Qww77rvAc3iYoDStoqSEbMKaKvjsQOWPEmxKfVsazTqq2L1ojfiJH0B5wmQ3HI1Y1VlE2p21CDFWn/fqgWIz7RWRBA3JNFIdg7JozgLOltLnEkTsE01h+YvtJXRaHZNEXNJU4QJyzlwGnqAVqauKNRCApusnkBQSLSS7h30ZKJ+MRcPPN69HEHEDLVbxK2ck5kwHLz2VCB6VjOAcIpkuTb+JBROat7sh0DsRox7KHoeR6Ff1REtuxI0vlfer6Z595FegzC26ogeXyWzKcdZu/iZP0QVPx6rtpwtYuAc0TJi3bzp2WeIvQ9EvVJb/R6XkSn7SOs0Lf/W+HAt23xNSxlx1hGF0zo2jSHFxAXD3cZ3Av1IULFmu0RudkYwjoxBqM8sgLrjzO5snhXTO6odRXvRD306Yuzf0bWCJMmHlzPSV/9pAxi0o+TTh3y2iqzYYh2WczuqcRnjcDi3/1qSHmks9an0U+mSZ7EPlhyZ/TSgr+IDScZ4SzL5ENgkAIGrKNCjG5BehNgPsmqYrP1PQ/HUIKobbj4XgSoqGVaJ15E0Gf2hXdKU/hrUhQl8Lxu1mbVhZMhGfKwPjgtDmzDraw8ourk1PsPXAJUSY5TDsAlZfX6UtqA4u02LN+HaeuR7HTALb7REpcYO+O/1ZWhaFB1l0be3RRS0Y6c74R48fZJvNNpQ68dSRs7kY8PoIfGfrGs065rzMF7Tfr0Y15Xog8Vw1KQrc7Lpo/oD3GHk9dqfvBZbv3F1pN3cWLQYtOUzL+Ay45aYdLGg68qw07HIneF0hJWFklXiEqIahzOzWVlfT0kiV77qt8z1Sr0zQb/2hYrwsPkN7nX3ok0TX5HrcjYO
+ 0WUpEPg6
+ EwIX5PI9aUaPFB5ZB9EMFprWaxSyOgJ4DpXNhIHcKq82S1JSczPrt+On9Y5pQEFvnizgT4CaY8eLZrN2AJzv+F1+1BzloX9cmBybcBflOW1md61Xt5Qf8xEUnTheTC1fG7G510d/Tqp0qvOaK90lsxTGZDPLGz1Y09IRdl0q63C4G8gZP/pVYvW1lqrgKJCxHbp6OJ8aJs2pN8Rjh9osfbwrbZ/Zyg03xhBimhM28z0bJBArjdSA6+9PFMLJP8jNkRv8rPkEpFNJAPKrtGGgxAIPQmL7rZGg7c499
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,39 +113,110 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Fix 3 pmd_addr_end() abusers that can result in PTE table overruns with
-folded PMDs. Let's factor out a helper from a place where we
-recently stumbled over something related, and use it to fix these 3
-cases.
+With a folded PMD, pmd_addr_end() simply returns the supplied end.
+move_present_ptes() can therefore walk past the source or destination
+PTE table during UFFDIO_MOVE.
 
-I'd call these more urgent because they can corrupt memory, although
-folded PMDs are uncommon.
+pmd_addr_end() is only intended for page table traversal, in patterns
+like "next = pmd_addr_end(addr, end);". With folded PMDs, a higher level
+has already clamped the range to the PTE table.
 
-I'm planning on picking all 3 up.
+Folded PMDs are uncommon, but can occur even on arm64, for example
+with 64K pages and a 42-bit virtual address space.
 
+Extract the calculation from folio_pte_range() into
+pte_table_clamped_end() and use it to clamp both ranges. This preserves
+the wraparound handling from commit f681d4580d5c ("mm: fix address
+wraparound when scanning large folio PTEs").
+
+Fixes: 50944692052b ("userfaultfd: opportunistic TLB-flush batching for present pages in MOVE")
+Cc: stable@vger.kernel.org
+Reported-by: Chris Mason <mason@kernel.org>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
-David Hildenbrand (Arm) (3):
-      mm/userfaultfd: fix PTE table overruns in UFFDIO_MOVE
-      mm/rmap: fix PTE table overruns during batched unmap
-      mm/rmap: fix PTE table overruns during batched reference checks
-
  include/linux/pgtable.h | 24 ++++++++++++++++++++++++
  mm/memory.c             |  7 +------
- mm/rmap.c               |  4 ++--
  mm/userfaultfd.c        |  4 ++--
- 4 files changed, 29 insertions(+), 10 deletions(-)
+ 3 files changed, 27 insertions(+), 8 deletions(-)
 
----
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 780fe849ff8b7..66d369870a740 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -12,6 +12,7 @@
+ #ifdef CONFIG_MMU
+ 
+ #include <linux/mm_types.h>
++#include <linux/minmax.h>
+ #include <linux/bug.h>
+ #include <linux/errno.h>
+ #include <asm-generic/pgtable_uffd.h>
+@@ -1518,6 +1519,29 @@ static inline void arch_swap_restore(swp_entry_t entry, struct folio *folio)
+ })
+ #endif
+ 
++/**
++ * pte_table_clamped_end() - Limit a range to a single PTE table.
++ * @addr: Start address.
++ * @end: Exclusive end address.
++ *
++ * Only use pmd_addr_end() when traversing page tables, in a pattern like::
++ *
++ *     next = pmd_addr_end(addr, end);
++ *
++ * Higher levels already bound the range when PMDs are folded. Use this
++ * helper elsewhere to clamp the range regardless of PMD folding.
++ *
++ * Return: The exclusive end of the PTE table containing @addr, capped at @end.
++ */
++static inline unsigned long pte_table_clamped_end(unsigned long addr,
++		unsigned long end)
++{
++	const unsigned long pmd_end = (addr & PMD_MASK) + PMD_SIZE;
++
++	/* Compare inclusive ends to avoid wraparounds. */
++	return min(pmd_end - 1, end - 1) + 1;
++}
++
+ /*
+  * When walking page tables, we usually want to skip any p?d_none entries;
+  * and any p?d_bad entries - reporting the error before resetting to none.
+diff --git a/mm/memory.c b/mm/memory.c
+index ec3d9d99ccee2..ee792a2c0ccea 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4959,13 +4959,8 @@ static void folio_pte_range(const struct folio *folio,
+ {
+ 	/* Stay within the page table and VMA boundaries. */
+ 	const unsigned long pmd_start = addr & PMD_MASK;
+-	const unsigned long pmd_end = pmd_start + PMD_SIZE;
+ 	const unsigned long lower = max(pmd_start, vma->vm_start);
+-	/*
+-	 * We cannot use pmd_addr_end(), as it does not clamp reliably. To
+-	 * avoid wraparounds, compute using the inclusive end.
+-	 */
+-	const unsigned long upper = min(pmd_end - 1, vma->vm_end - 1) + 1;
++	const unsigned long upper = pte_table_clamped_end(addr, vma->vm_end);
+ 	const unsigned long offset = idx << PAGE_SHIFT;
+ 
+ 	/*
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 169f681f9849b..57650e6f040d1 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1266,8 +1266,8 @@ static long move_present_ptes(struct mm_struct *mm,
+ 	unsigned long src_start = src_addr;
+ 	unsigned long src_end;
+ 
+-	len = pmd_addr_end(dst_addr, dst_addr + len) - dst_addr;
+-	src_end = pmd_addr_end(src_addr, src_addr + len);
++	len = pte_table_clamped_end(dst_addr, dst_addr + len) - dst_addr;
++	src_end = pte_table_clamped_end(src_addr, src_addr + len);
+ 	flush_cache_range(src_vma, src_addr, src_end);
+ 	double_pt_lock(dst_ptl, src_ptl);
+ 
 
-base-commit: d369ba5a46c65c54b94c94713ca1fb4ad6a87ebf
-
-change-id: 20261111-pte_table_clamped_end-69bbcaf44fe7
-
---
-
-Cheers,
-
-David
+-- 
+2.43.0
 
 
