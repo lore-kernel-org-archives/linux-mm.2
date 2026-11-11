@@ -1,123 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEC7B606A320
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 04:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5110E606A334
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 04:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=NpTzVifF
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OIDzYVgk
 Received: by kanga.kvack.org (Postfix)
-	id C502B6B05B3; Tue, 10 Nov 2026 23:20:14 -0500 (EST)
+	id 577B26B05B5; Tue, 10 Nov 2026 23:23:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C00956B05B4; Tue, 10 Nov 2026 23:20:14 -0500 (EST)
+	id 528436B05B6; Tue, 10 Nov 2026 23:23:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF2896B05B5; Tue, 10 Nov 2026 23:20:14 -0500 (EST)
+	id 3F3936B05B7; Tue, 10 Nov 2026 23:23:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7709D6B05B3
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:20:14 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D69C81C24CE
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:20:13 +0000 (UTC)
-X-FDA: 85421535906.09.833B834
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 03C98180004
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:20:11 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=NpTzVifF;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf06.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.172 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 118786B05B5
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:23:34 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E17E2A70FF
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:23:31 +0000 (UTC)
+X-FDA: 85421544222.26.81220C7
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2497E20005
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:23:30 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=OIDzYVgk;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of gopalmalaviya53@gmail.com designates 74.125.82.171 as permitted sender) smtp.mailfrom=gopalmalaviya53@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794370812;
+	s=arc-20220608; t=1794371010;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tUypj32nZSwBas8qX97kQX7vq5hG+6Yam8/Va9N0Am4=;
-	b=n1najiP7MQrm3qm2SwEzt7L+T1PgYKE6V7dTx2ZQRzjMyuLHD11zbSnGVWhf/Gnx1ftIIh
-	Hf8F2fn60kMHYDfqdQMPly8BuehFukdUwK3MErBVOzh26bgi8goxk+t2PFHwHCyLrVsNOM
-	mm0ThVOxEcmP4RrjH2/G+gaQ5UD7LKk=
+	bh=8TP2cltB6myhAN3zqq3XC6T8gNcR9V3LAoG3G2EM6wY=;
+	b=fjEuOhI4t7xy9Ksn+ciE/E7PKp7nAAAS1TUxMoLYR8Hnlwd3mBSuQW98XVxRLFl4NikzQP
+	3jFDIIt9BTNgKj9RK8TtQlXzU73+3QAuzY6CEGcO0Gh6Um2aOd2NLcxf45XcyryV5Kmh6k
+	ymYeGnrj0I1UjlVabliOge8qeIwHZ4A=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=NpTzVifF;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf06.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.172 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=OIDzYVgk;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of gopalmalaviya53@gmail.com designates 74.125.82.171 as permitted sender) smtp.mailfrom=gopalmalaviya53@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794370812;
-	b=YpeStADrnr3hO1dUJIgwh5JX3ZGYUx6eCGMysTp4nlwZPjkJgziZJEPIkuEG15KV5/XkaG
-	MhCHRpf08ll+EN+UtdPItF9NVJe7ys4ligNoiJXNxCKeTWcBHImG4h3u49/cUJOM2mpEXq
-	kQ1MJQJCQr5oZCBQQEdf3dhGUJjzunk=
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-cdd4dafdce9so1130783a12.2
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:20:11 -0800 (PST)
+	t=1794371010;
+	b=vFqyifRbfUGLoCIIZ2jD7CL6YuW0mjKRHG0d+ioj2Ko/qXnkin7Q/GT4EUEr0zqL8xE/3K
+	mGRKQ2x6YUcOoJINiCit4yR6tvad9A3vuCL19Soh77wSO6nUMmyhiEh+LRvWUAVTjPKB0H
+	XXigvlFxwh7T4KDWDCrQ7Fo6i/dTqKI=
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-37600b0db49so914007eec.1
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:23:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1794370811; x=1794975611; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tUypj32nZSwBas8qX97kQX7vq5hG+6Yam8/Va9N0Am4=;
-        b=NpTzVifFyfUwmLvWd/HbernrMEu97PJYGgwLFg3B6IH9dJth8zT2Pr682mP7KIzasP
-         pZOzvNrrtNwrUsXOOa/EM2QO+Qw5uzCnC140XeOttTuSFGZClYs9+XK/2fyweiYsM+X4
-         Wvzm4jxUewr0zSjNgeRSANf9+DHV/zTSp7KQg=
+        d=gmail.com; s=20260707; t=1794371009; x=1794975809; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8TP2cltB6myhAN3zqq3XC6T8gNcR9V3LAoG3G2EM6wY=;
+        b=OIDzYVgkTL5FJOaBnBI87qw1y8gp6gbo4d3kZZIiGubr92/noBxxNbP+EF7f3ANvko
+         6ajL+b5NbjMg1iISuZdtAlsR8w3uItHvH864XDRtLTWsRGKUTNntV04h3uRX4vUqviFW
+         3Dm96dwtc6tRCPoJbHsWGde9D0cOP+GW7izaRqVc3L97BdJ+NMnzwFEnsUcCS+CgucFx
+         N0FENiixefqIoQvkYYqpgV7W8PpYYdNIXt6cjj0T7cT8LI1Wo+Dx0KI7/TcPCkzZS3+E
+         yZrXKtvRK1KYL0MajNEwejWEmThkz3pcpkCSeSqg58lFfOh6tF8WEBUsIEY3AMcMpvMy
+         GXkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794370811; x=1794975611;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tUypj32nZSwBas8qX97kQX7vq5hG+6Yam8/Va9N0Am4=;
-        b=SENxinFKoo1lJx/bA7oXT7Qh8nVjMcKoBgJ6VN71wA8i5+YHvtXIcHmgIzn/fqok9q
-         vlx6YUTHyRD5BvoqrOFHU0XyhFOrvCEnpvd0bVP0mPLIvAAYskkafhduRd2AvSAWGe5c
-         BMxeRNNve9yROiOVadbl988QukW9HlR8mOBYgHoSe/0PWVKdJ7E1kAQ38uRLHy6cXZhM
-         8rhyjFzyNpsjacdCkl+ZjMo+TgjuFfs+x2iQpKpt7mIHyBpkXngtGX4kZeNVTjqjMTJ3
-         5NYJl/81zeChg/de70KXBc8G3gQdNVlbdgYdqrEkO83Bqryqt9ej9jdkIUgr2W/9op91
-         tPhQ==
-X-Forwarded-Encrypted: i=1; AL+hErEmnSPfhwRCfe7o0n5+LdQBhrz/Dh8sXnpkjn/UYRQsBvqU9I92ZFaTdpaapscw8Aq5u0o+t/UsLA==@kvack.org
-X-Gm-Message-State: APuU4Z8rB2QPe5vX5ovI/f8BkWdeL2UhvH1dPWt0b+bUzxcuWLn0W6st
-	TZ6gSsJdV7HPxEhnE+YFN+ho2feTOOQ6MoZKkw8rZxdCVNeu/GCwoLlYsmSlQ5DyAg==
-X-Gm-Gg: AYBFou2yXGaN7iUQQxbI/NLvDFIXCINJdUAZAHRaYDBovpsZRsMboWhZRMN/cH5uTbu
-	Lp/5PG8KD9hte7Mz1QWvnTYJcAzvgHG03JABldAIK+ZGpRsLIf0oXUL+/fP8kHOeVQ2egy4ltO/
-	Squn4nPPXW+B470SwzQxJRtAjQN2v6FBE8dbEIhdO63YfgbmU2cun2bKa2YtmSgVB7CTcH/D8iS
-	F2hsD1ByJnDeSJSW1BetecUfAoKFiaIvlaNNzuoWudj80gIFzfrCpNUVPKKhp1mgU+4XV/KLWE6
-	BS5IIoA19wx+ahpLZ8+G0La8ttMMYWP76wmoYFm2U4qjZXzgNrJXd+Iq/DGPTivy7c7QaPv2yZo
-	MPrTIs1H/UZZuxuTZhhrIeMG4qWohY3RypMmGjE9/uRRvEzwSd9wYrsPjCNToR5tje+uABmgmiM
-	TPemkYrmAvNsoKz+zOSpu06hOneC4Pb94WgLoq77UqEqmkh4Jg95G2NPyU19eQmSkwgA7+sGpbr
-	94vBs2sXfYu23ayQqAYoJMQAE/94VOTm3QYo7uMl3s6JdIcq1JgHpMonjvQzD2jsW9SNZdqWK3g
-	lU37/oDbsGs4xyR6UfcROdDTVfMfNzpZvPaALK438vGVY5uHQU8s4MPUh7auuOfkGi1XhA==
-X-Received: by 2002:a17:90b:37c3:b0:3ab:413:49bc with SMTP id 98e67ed59e1d1-3b182ee2462mr1396102a91.37.1794370810775;
-        Tue, 10 Nov 2026 20:20:10 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:ad6a:b446:df00:78dc])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b17e0d0e16sm2532464a91.5.2026.11.10.20.20.08
+        d=1e100.net; s=20260707; t=1794371009; x=1794975809;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8TP2cltB6myhAN3zqq3XC6T8gNcR9V3LAoG3G2EM6wY=;
+        b=cEhN1iEe6mP6yFoH01kj2W9zyX3zLDcXvhFVsrueWp+02AOpzy52P/yS0JLsNDQ9LM
+         KIULhNuoP4HGw9AB1BrUTp/ncC8QyaCsjdGl1/ZX7YpwmvHn+gQ6RurlH/ZRg+3nJCoz
+         vOPpwwH8Ikt6ZbSZcwPzGRSz3CNDBptE+CNWLKTdwt8LOBN57O1fUn5kFKVv5YWDfewh
+         bObfCMycqyGLINGQnnXdiUif4MQnQLKdAV5XLCSX+NFH907BuvnanPj6ltW4d45tccCR
+         Obp1IXLfqrgb+9thUVxlKwmFp3pwViYtbN+QyH74lmQ/BhMRorws17oZUEYf+RXfpSgw
+         +RlQ==
+X-Forwarded-Encrypted: i=1; AL+hErHgveUcW7bhkzOIVzMJMcL2Zl325NiTote6umoCZAj+ZuycaAeRjgjgjvq4og3uinGxdjfIgcHnNA==@kvack.org
+X-Gm-Message-State: APuU4Z/yb5i8eNfvmds3Q30suBUGdi0DtkCVAAPUy8Q4t/de4D1Bojgb
+	7mSI9/8xUm2PcBt+qe4NsnsGBW4gVh2ndcqpSdgfI3AphAQkuzAILHly
+X-Gm-Gg: AYBFou1ZWyJjWXMFSdFB0cVq8DK7Yn1TXtfwQvtM3nL+Wboi0JzpKMQ+4KkfUIWcMCQ
+	MVYl9momjVr/ZcoIVoISYKEs8JqrSeHl9WvH9rWaZf/Jv5PmyrCbv8HSQl5ff2CXUpMxr+7KqkU
+	SSE0bCKEKTJbJCJXjZ+C0bQyL3svNV7qxUS1+fn5ZF14JxsehPqrmBPewarLjlfNdrzoU2OQHH4
+	cXBLldfFc1TJmzPaBx+lnUkkB9hk7DWVhSzQke6SLQuDrRUyo8Jg6uh7VtmF2mCk5icAhfskV7z
+	vxEJQbx15sJKHA2T7DqdKuhkf/Nb0CWmzqpkHPg+EGDACRatJAWzCTGaplpbIK157x8SBVXSR9X
+	j/cU0KLBlXMCm0qin1vTCv1i/vT/kt++3SH4FkOZusPym4dGMqEvkZtFRHBDOToU0Hu+RS1CS+I
+	mf7PhKtLULqE1de0ORLxr+F/hgA2VdrVTVCJYNIh+gtqvbS2KkwezyP4YKYOJsj7bbmXlke4hi6
+	nkI4HZ2rLOxQI131FgYiuCmOhierY9piWUa7eP0rLIhyP5T8QV8i6GDbJBW0gwDBhr/sUSbVG7+
+	ldO0unDn6n3pNu6un7KdB6yMSyV5went1vKuhd9y/TjcWsMSAYqai/5rl0SzuOBHTHfxDKCx4Gx
+	+4LPWCzeSvgQ=
+X-Received: by 2002:a05:7022:130d:b0:1b2:3e1d:17ee with SMTP id a92af1059eb24-1b3bef0a955mr1889024c88.9.1794371008492;
+        Tue, 10 Nov 2026 20:23:28 -0800 (PST)
+Received: from LAPTOP-KD1TH5BD.tail375eb4.ts.net ([47.11.96.168])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b11150sm15985536c88.5.2026.11.10.20.23.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 20:20:10 -0800 (PST)
-Date: Wed, 11 Nov 2026 13:20:06 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
-	Richard Chang <richardycc@google.com>, linux-mm@kvack.org
-Subject: Re: [PATCH v2 05/11] zram: check mem_limit before allocating
- zsmalloc object
-Message-ID: <avPshTNHkZ5O64Xf@google.com>
-References: <20261110054836.1515030-1-senozhatsky@chromium.org>
- <20261110054836.1515030-6-senozhatsky@chromium.org>
- <sashiko-outbox-207587@kernel.org>
+        Tue, 10 Nov 2026 20:23:27 -0800 (PST)
+From: Gopal Malaviya <gopalmalaviya53@gmail.com>
+To: alireza.haddadi@it.uu.se
+Cc: jack@suse.cz,
+	willy@infradead.org,
+	akpm@linux-foundation.org,
+	vishal.moola@gmail.com,
+	fujunjie1@qq.com,
+	roman.gushchin@linux.dev,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	regressions@lists.linux.dev,
+	tracekotae@gmail.com
+Subject: Re: [PATCH] mm/filemap: let sequential faults restart mmap readahead
+Date: Wed, 11 Nov 2026 04:23:10 +0000
+Message-ID: <20261111042310.191979-1-gopalmalaviya53@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261109-mmap-miss-v1-1-8b44b33f3358@it.uu.se>
+References: <20261109-mmap-miss-v1-1-8b44b33f3358@it.uu.se>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <sashiko-outbox-207587@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2497E20005
+X-Stat-Signature: 4zo8s7iut93y5xtm438dksn1ra4zojkb
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 03C98180004
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: pkecya51sryn9tg3mpzf6fd84w3qa94z
-X-HE-Tag: 1794370811-485395
-X-HE-Meta: U2FsdGVkX1/7r4jZitB9feOl8wWhFmUQ5IJ6BNAM0JJGMeKcSwR604/gdII0M+DVvG5E/tmjBCKJFqJ9mFkEopC4ZWM1dZxfZE6O2hfKVy8ZKDb7KQ4vJOvO3/D7x/rfJGnrb+viYI/SiBeY9Go0DQyJTdCvF7EsOhD/sgFYFA33mRO1dbpXpzDnCuJnnt0t4dsLOdLMMtSMRUK63YkcI9UshSyM77bJZD7zqMaiDcKwYsbeugRNL4psuMQ0RUCb/n7Pp6v0BXyCEs0E8DMdsDSqOZYK9hQkjmp3z1ZcMwfPUDf+oZlWsDvkXIpijVRp2sjscj+XIJ7KUYCCfkA4j43p0aIIQ8zKqBz36LqA1I4V73pAgmu//VRaQHqeqSRupdMRZoJuDvsfS1IGe42qB6m0bwy3OqNe9taINdLly7WQ8xVxhXVDel/y6VYN9dtvUgfmGowjSDeW0efabjFgfZgRVRTzOV/jBKZB3JJabLh08+Z0b+Hu/pQw/r5dDfiYe8Nxt8t347q12w7sH99/SFiZq9TuN2oTL5yB/lSoXQuwv17yUaDxMn535SlT9wJNi+sOlrN6cOwDoe7p4Sz+4teUXLhOpG5u+a/kCvGvBK4fHcFk8xEKgF8S+xOAg4ejIFcwDWam4Zx9y2i3fk+V0s5gSt7KWrJ4zc8tU2yxGbJK/6uV5GLJ9AAxqbkBjbSjBWUuL1z35yLJy1/7EvTP9C+l81Q8fa2wsnDeY6Vgxdu9x4S/9ztZYO16OIkaUoiu9ojswATtfi+r0BdYxxM8W7/puRS8OGo1pTGd4Ut7zPXzgd3G9nPqQ00i+soYib7weZPR0yXlDxt/AioaVlkTnB2QP9+XZ0xpeNX8P5MMYxQ2vrfwoP984iCUBoDRVlYvniDiGMXd2/xyK0v2Sh9+vUZdDQfwTmJaMu3/3mLk65Myb1mZIg2egeQP1oDwUHESVxa+La/NsdfCVHNl3XH
- dHcScavz
- ZkDB/Ty6nb0WpkGU1mbW/SeDJwGEBHv+scSFGOVghQMXGdxzuk6E3AN1X1iY2DZN/+dTwHM1NrTxMNLyMJPaPG4FEFi4wwOMTuy+j+7Bi8rzfhy4QNbs2tY1jEHHFtHu0vyh26huArrmNIoIk6OnKbO/FCdR6yF+MDe2RRAc4s5IWAOpCeA8Eqtlc5QhxAoh+8CpLCP/cRXhp4yzZ7He34azTfiZqLlFZ6146LC2wM/WQP72etvh3r2YAc9y+K0z5YFQaL+uzqNGuIexjN3L+rGb39Z9NX0fHlQw0mdsCFULYaOvP8LqMeb0eqVUC2R1yURZYhZ+Ql2WWOn0pkWkYmcrOTVBQgDlH9foo3ZO++Thm6xXrOJpei6j1BipPEPWVcMmiLb2016J9ccnMAKvldMK2T0Sb1FYTkpW/Bsropf/kxNA=
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794371010-237346
+X-HE-Meta: U2FsdGVkX19I0OmDeyfeaj7o8gtoOiVWIpH+iNwRfC9n2W272wjrJI3pG0TMk1QIeRA5IK8bYDPYZ0mOuD4KWE25Xkn/06mB3qSfDft95iXU56xOx1FpOl8vaoifjh+K9V6JYgSFt1u/Mydiw1LtaUQSUY+CfhrxYN4/jRE2hHyJHlmPwW1NxusvObCmLUiSTVa8PkktB+NuEzIcgX3NlCdGkqa5XrQM/6hUM967AFs+FieuhPQoumq4ddaPR0yQh9EsejRokwc4t+gLdUQfy1bRTqGuY4jIU5WssSDV2vc8kqJKUfoYx5GnOQrAPsnCVBCV6xYJXKk9/3HMVEFn6GdTVDr2ykfTZCXVgIjm1ff7rpFN2EkmstsibjR88JUxHYLQJWdUnijWtF9EqIy6goTJy2HqAW/3QXtPd8AbY71flNCiVU56vvURnumoeQlxJrzPY2ZxMWmDUCjmTBAJMKjpfFP8aDAsMVz9w6MvRRXa7q0KHDXTH1Ia1znpYzsJm9Q4VxhVceYqtI7sgwXoQHRj8nCamEbx5LsFCLROisFHU2PRj4DkLntGAHxy4XYJH/RmiiLeERkQuzx6zARI3RNwVHoJFkdo5Q/k2bmCoKXtlG3dJyhKvJw8+zXFgmv4dXaWfX9Ddf2neBJTwdlRAGL/BQbyNCd5/ir6cvAphxSXMC6Am8beICA8cjprasJi0CX8Unw1veXyrY+16/DWSqDifpBwoXFyd5lJg3VzprwfzVuFH9vPew6cIcdNcb7+rADtPICagwx1m1fCot/rpdTJo79SNFMkqmD1crH8hJFLdVDRHr0LU9TqcoJ6ZTcJRieAl/YiCi3CzY5bmZjCcceYl+0OxgTrIrfnGUz8l3jKHhzmk4IQCS9wWVS2efL5wur+HJoXoAWzDyMZgXYWls9jgWs1fkyOPMMpRpqAoLvOzNyFRBLHK3oPYXSuMb+gAxRrA+gwTR8kc2CLUOv
+ mSKRvAp9
+ kaRDrKaG4qq2DFm+fywAXbto86IEluDf6n+UJMcn7t03SeljrvHzkdDqlzluNCM3/OcLBzR4/RDcGYAT5FqUsnpl/TohMuo6H73qRvQui+tZsmGLK0x/5HwDngR1npJhdC+gWrT2HM+hwzZLnJHdEbm1ehzogQVW6eiSI3BAdtFspCHSlch/Z7HnrYf7UxcAEQ0ecGM2tcLzUNypLgpc1GqNA300L7vwIR3ENNtwW3k1fcIYJxCHnGFd2WsfkBNU3011irWVPuSgERc/ogJqbmXvXUAHnpNX80aP0m735HVXJNUgpJ7p0SOgRoueRa8+wRqBhBAMzaoCzwLzUIeF8uBcpnTsV5+fWtER6lRrCs8i0yH2rRD0YtaHZ4adEAsbPjH5o0W+NwKogFXywSG3JmAOntJNpoin1ot48J79PrHqYqeDWuxqzyKNvDdozwuQ2ngEUhzg6MZMcxkHP9WtawcnhdCq3JACT2U8bxGw+1sRwcEyiGJNWSxmY3hZNIt882FU0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,32 +132,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On (26/11/10 18:37), sashiko-bot@kernel.org wrote:
-[..]
-> [Severity: Low]
-> Can zram_can_store_page() return false when mem_limit is cleared to 0 at
-> runtime?
-> 
-> The write path does not hold zram->dev_lock, while mem_limit_store()
-> updates zram->limit_pages under it.  Because zs_get_total_pages() is an
-> external call, the compiler reloads zram->limit_pages afterwards:
-> 
-> CPU0                              CPU1
-> zram_write_page()
->   zram_can_store_page()
->     if (!zram->limit_pages)
->       /* sees non-zero limit */
->     zs_get_total_pages(...)
->                                   mem_limit_store()
->                                     zram->limit_pages = 0;
->     return pages <= zram->limit_pages;
->       /* pages <= 0 is false */
-> 
-> When at least one page is allocated in zram->mem_pool, disabling the limit
-> causes an in-flight write that was within the previous limit to fail with
-> -ENOMEM.  Reading zram->limit_pages once into a local variable with
-> READ_ONCE() avoids the second load.
+Hi Alireza,
 
-I guess I can READ_ONCE(), but this scenario is extremely unlikely.
-(I'm not even sure if anyone is using ->mem_limit.)
+I had sent a different fix for the same regression [1], reported by
+Trace in [2]. Jan prefers yours, so I have dropped mine. I ran your
+patch, also with the v2 change you describe to Jan, through the tests
+I had: a KVM guest (x86_64, 2 vCPUs, 3 GiB), mm-hotfixes-unstable as
+of 2026-11-08, ext4 and XFS with 16 KiB blocks on virtio-blk,
+read_ahead_kb 128 unless noted.
+
+The reproducer from [2] (2000 single-page faults 1 MiB apart, then a
+64 MiB sequential read), major faults in the sequential part:
+
+                       base   as posted   with v2 change
+  ext4                16384           2                2
+  XFS, 16 KiB blocks   4096        4096                2
+
+Touching 1% of the pages of a cold 20 GiB file, larger than memory, in
+random runs of 1, 2 or 4 adjacent pages, MiB read from disk with the
+v2 change (first of two runs; the second was within 10%):
+
+                       read_ahead_kb 128     read_ahead_kb 8192
+                        base   with v2        base   with v2
+  random                 259       234        1057      1070
+  stride 2053 pages      271       236         992       992
+  random 2-page runs     257       373        1135      2538
+  random 4-page runs     240      1146        1200     57748
+
+The 4-page runs at read_ahead_kb 8192, which is what this guest's
+virtio-blk disk gets by default, read about 48 times more. As far as I
+can tell, each run now has two misses and up to two hits on the new
+window, so mmap_miss stays around MMAP_LOTSAMISS, and each time it is
+back at the limit the next random miss gets the full 8 MiB
+read-around. My patch ran into the same and kept mmap_miss at its cap
+on that path; something like that may help here, but you and Jan know
+this better.
+
+On the Fixes tag: with the commits of the series built one by one,
+commit 0b9c0aeba938 ("mm/filemap: count only the faulting address as
+a mmap hit") alone does not show the problem (1 major fault with the
+reproducer), and commit 9b0fcac3cfe7 ("mm/filemap: do not count
+FAULT_FLAG_TRIED retries as mmap hits") does (16384). [2] is the same
+regression, in case you want to add Reported-by and Closes tags for
+regzbot.
+
+I am happy to run these again on your v2. The tests were set up with
+the help of an AI assistant.
+
+[1] https://lore.kernel.org/all/20261109091444.128521-1-gopalmalaviya53@gmail.com/
+[2] https://lore.kernel.org/all/20261105192517.228523-1-tracekotae@gmail.com/
+
+Thanks,
+Gopal
 
