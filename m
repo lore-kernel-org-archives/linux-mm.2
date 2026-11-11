@@ -1,159 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD3C6606A321
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 03:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0BBD606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 03:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=11nyelda
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mTm0px9h
 Received: by kanga.kvack.org (Postfix)
-	id 51D086B05B2; Tue, 10 Nov 2026 22:35:07 -0500 (EST)
+	id CCECC6B00EF; Tue, 10 Nov 2026 22:43:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F4AE6B05B3; Tue, 10 Nov 2026 22:35:07 -0500 (EST)
+	id CA5C16B05B0; Tue, 10 Nov 2026 22:43:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 332E56B05B4; Tue, 10 Nov 2026 22:35:07 -0500 (EST)
+	id BBBC76B05B1; Tue, 10 Nov 2026 22:43:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E8F846B05B2
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:35:06 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6BEC1A01F7
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 03:35:06 +0000 (UTC)
-X-FDA: 85421422212.06.0ACB41B
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013063.outbound.protection.outlook.com [40.93.201.63])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 336E4100008
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 03:35:03 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=11nyelda;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf05.hostedemail.com: domain of shivankg@amd.com designates 40.93.201.63 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794368103;
-	b=GZ+WYxDwQq7vpW2++9f8c07ANreITCs3rMbWRijQAa1KV1gmsemLaZqwQYMb6Ri2poE78m
-	/wqy9kOgK1wCixLU35RnZycYCOMGHC6pp3Eb8ZMSkVew3QiIFXD4RAOJs1eYCGYRQohKrF
-	wVU5KFohZWysssGR7mpRq1JqNYMNyrg=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=11nyelda;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf05.hostedemail.com: domain of shivankg@amd.com designates 40.93.201.63 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794368103;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E4436B00EF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:43:49 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5CE221C1556
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 03:43:47 +0000 (UTC)
+X-FDA: 85421444094.05.79A2E0D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A2E81C0005
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 03:43:45 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mTm0px9h;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794368625;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uRZuzCALYYn0kyXMscCwy6W1PH7kAxdyRjJUlsHCVUk=;
-	b=L9bxiiscGMTa9eur94lrvtl9IhsabJ8Gbk5uCLBveZhbH6qp7AJGvpsAfWH6a9+Uysj0hc
-	dbZocU+JBkeXsJ/GrzClKqtYY2V9M18+UpEGhLEnwkU6gBagpF0vvNfTl46fftVKlqiiYx
-	0kqJmzGZl5Q2390HQT5JNIwjZ8HNwOU=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CjrBBc0bngGSBdsSNfmuttzA09bOSGDjZ+mUfZvCYRJrmq2Wzwo8CerCT/qTYbj/iC7G7AqJRsLZQ5Z6RLsuSgSQT2RanG0wS0SuhT/IBdunFSfMwezpTmBJ61LugPhGmG+hEaERA798sqdss8q+Ai+Wy804XTOe/FQ15WUxtuByBv81qEeLrAxPHF7ZoBxVwiipX2c0jhN+M04DymsVC13esGWkk3tzvMqzz6UtR/gfEBwG2vDeAHUtZLknO1Qh/Ue30Ktq9KZwurAj15jUhKuw50VcisgsUC4/I4GhOfeP8evKtg1NIs1tQPMuLkry6DtWn/mzLCeyusgE78bpzQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uRZuzCALYYn0kyXMscCwy6W1PH7kAxdyRjJUlsHCVUk=;
- b=gHb2/BFznJSvgSc43rg75IZbqRGVyE2L/PRXQv9Yc3z+I6/c4bhlnrU9B2sg43Xo3TwBKRQR89GeAg4Awt83BhfgVi99YNakmFeD24I08bYtoB48ULZ1RL6LIff07iObSv5I2fN87Li39e2cxP4CFJzEWF48O+buxu7B6s2ptDGyH9CSZEqeKUHbNRVQKVO28cqS3F+QMT6CLPvSOP1hYMZ1vtbNMT1dVHlg+YxUgMMvmBZ0Hqd6xBdMua+gOjqCHzSXTTwCzqbwsXg5mfElvIyhxl+82EylsTA0hMYYID08qgXnu1eCEoBIvGTxbZTlempeVZmelP7G1yTRPv8/ig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uRZuzCALYYn0kyXMscCwy6W1PH7kAxdyRjJUlsHCVUk=;
- b=11nyeldati2waF07aPQ03qaY+m9+zR33vZ7T6FNm1UjPkGNb7CnlMtaYDAdK3gP3kwcF3z8hNK2OAWesyUtlV3lT2/aZlQFvuQmEgnhJ/uYyQwBEflwxxjn/tVh3anBsMiFKFXGHo57/djTly5JSKhTOCcabdu7qUA0Fmojr+hM=
-Received: from DSZP220CA0011.NAMP220.PROD.OUTLOOK.COM (2603:10b6:5:280::17) by
- DS0PR12MB6462.namprd12.prod.outlook.com (2603:10b6:8:c6::19) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.592.12; Wed, 11 Nov 2026 03:34:57 +0000
-Received: from DM3PEPF000265BB.namprd04.prod.outlook.com
- (2603:10b6:5:280:cafe::94) by DSZP220CA0011.outlook.office365.com
- (2603:10b6:5:280::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.9 via Frontend Transport; Wed, 11
- Nov 2026 03:34:57 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- DM3PEPF000265BB.mail.protection.outlook.com (10.167.23.248) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Wed, 11 Nov 2026 03:34:57 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Tue, 10 Nov
- 2026 21:34:57 -0600
-Received: from [127.0.1.1] (10.180.168.240) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Tue, 10 Nov
- 2026 21:34:53 -0600
-From: Shivank Garg <shivankg@amd.com>
-Date: Wed, 11 Nov 2026 03:34:34 +0000
-Subject: [PATCH v2 2/2] mm: remove unused folio refcount helpers
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20261111-unused-sym-core-v2-2-3edc7fb8581f@amd.com>
-References: <20261111-unused-sym-core-v2-0-3edc7fb8581f@amd.com>
-In-Reply-To: <20261111-unused-sym-core-v2-0-3edc7fb8581f@amd.com>
-To: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Matthew Wilcox <willy@infradead.org>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, Shivank Garg
-	<shivankg@amd.com>
-X-Mailer: b4 0.15-dev-47d62
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794368087; l=2154;
- i=shivankg@amd.com; s=20260518; h=from:subject:message-id;
- bh=M+/pny9yuCAqKJNhALtl0LQlutxxgfbmdI0JnRD5gJU=;
- b=xqXii487oOE8Wrsdjw6TLK7BLtNsQFkhj5x2rYDQ5k6N1B17ziNwrd9yb2k86gI523PpIRz+T
- seXrq0dF9zoADSH+8LQGxqPML98FXDEDMFX2XF2p/uA4nyNoN9HqmP+
-X-Developer-Key: i=shivankg@amd.com; a=ed25519;
- pk=2l2QGTeXuGkZTtfmx0nPQU8iFZfjYmX/ymMojitevx4=
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb09.amd.com
- (10.181.42.218)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PEPF000265BB:EE_|DS0PR12MB6462:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3dc66e5d-ad71-4cf5-5fb5-08df3fa4c221
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|7416014|1800799024|376014|82310400026|23010399003|261102123227099003|56012099006|11063799006|261021123027099003|261021121427099003|261009223027099003|10067099003|22082099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	d1KH74EFbxNCfIQeR/+9MgHEZo6eXzpJ/V1dbtUZ4MV4X3B/5iqENBYoVTm+VyRO/mxwdJ5VDYHHfMfb1eXik3RzPS94OmYvqzwnoViby6ks3xETFaR+RUUBv9jl7AWHrQf6CZ2Tt0nWwYDKb/7FcUoZlwX0B2nOqGetzuyT5YG8SM4G0KzwEwwX6nTVRcG8804cMDPkzx/xrtXXa6IUdpCDAla+w9726pruV6GGRWVXZ/00crjOszCxtbMiYZrkx1eO0yVGacvL95JKQ7oxAamScnXP7AwSzxiOgCiRhQ4OBjtYHTnhxEg+f68+az1PM0UjPJjoumjM4yx2kKy8JuNXc43V+qP1aZWnfTaHMAUvIU6V/cwwAldH6w2W+/uUi1WCfv3IlGtYvvoH1ugGMna+u6xP9xbkbyB257OVrud0X96jIsOs+nP55l0BXe+YnzIMvdK+6EjUCfIcyt8qbyTr1/u3VhDF9uk+t0YfnJSnvdtAcPrMj53TpQ8fX4FD/Zfw3oazifhSapynSPj63c0yFofbkwfhs4tP19XwgadpNfy6RriW7EmXn/nZ7IqAPE181JJXgKAPXcM0+euO4jckW6/3MJgjO6VGmoJd1vOTgN/ibQ5GVJmhi5XorjQGOpr/+wowwqnxS1SHvjG6v+gp/IZ8wq9qbafkuusfBJ+opQt/jAiMwEvmFVGGeyQg6wtdRBABe6UCRSjv6vMH5Q==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(7416014)(1800799024)(376014)(82310400026)(23010399003)(261102123227099003)(56012099006)(11063799006)(261021123027099003)(261021121427099003)(261009223027099003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	NcCXNQh2p5Fpca1MYul6moxUopldkCqNwUTgys3pumcDmjrB81fhZgfvL5wlMO8r85KD84OMrMl6JRq9YxnAgr9fPC6gNgBzxooqOAJ1k5054rPh0dMaYbobKqYS3V5s+Afk7rbRBxH/GVOpO+z8k+UMpfIO1+o2JdW57Hw1x72rgDiNjYKkgSsCu/O02T7msIEUmBbzNwz6ACzrVpqf2K2+8TpefvjRDNBgC1O00XStS8/TxZIaN9tK0kaRXwuDGE7gWI2uL3WA2AxVRWE0EcBdw1D5eLQ+ZDDdE4OQaC41bT5YkVbvedR/6D/D/IRba9xScptQwKwUISfKbrf38HLQSQ3jq3fCa5q8vyikxKG8Kb0p9YsQZja7Qydz4k/OobxScCVYNnwJBkEeQd/amd3NtxLiEkQBx3UY/0PO6kgGn/VwSQBW/3EwNkjMoQYF
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 03:34:57.3542
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3dc66e5d-ad71-4cf5-5fb5-08df3fa4c221
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DM3PEPF000265BB.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6462
-X-Stat-Signature: c6y3i9coqjphtj4xitq6yignrde75y9h
+	bh=S+rqQqYrT9yFpTdM21Tx4bknM2pwbSO2Dwgz2+bmKog=;
+	b=deT/p+mtxEXs6ySUyclFvw+pzoiHgK9hFxv8DFPkCOSFDyLt3Qtq584AFWzDMXVVYZaSm4
+	m0AyFnhuL6AnzIE64BJ041VdkCYI24CMHfHJWEByDC1o68Gbgv2BP+G0UE+vCEuuMh1mP/
+	dY+TFRDM5wxwo7AmzP75TfMLdG3RlrI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794368625;
+	b=MlsI4WB8dSChjRoyyQBhsS1lHTTAS1U+Ki+42JijfEm7owCyw+xvKhKpURC6KOYWNlXBHi
+	9PKtHj71AB6zyFsJjSnjUo3LcKvZ1WJMsggWEWs9ysc+gaB60kI/aafnLuAuwJ2gHYf+69
+	kkVhKGNUVAKjpj65thXNMbm9AGYHprw=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mTm0px9h;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0EC4040894;
+	Wed, 11 Nov 2026 03:43:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE351F00A0A;
+	Wed, 11 Nov 2026 03:43:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794368623;
+	bh=S+rqQqYrT9yFpTdM21Tx4bknM2pwbSO2Dwgz2+bmKog=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=mTm0px9hQxukgifXp/JR9YAFwSumMQuU4O2vZnNFuCDy9G7jEh633U/ahLzje1qhi
+	 /Y1RGJDd70YEKPY/zKEpxd90Aj27ARyV3AWuhtt2bi3w2DFDO0ZNIgK1mr12pNJQiO
+	 piURHjrf8TxXswtFrObGuO92q51LXHzt05Hfs8T+A+lL1p18+R9YI8awvdswGHohcB
+	 1t15pahnoQ4v1P99Ytx302h0I6mC0JqTpcmXx5+lKZkJ7PNC8JdBA/Ol2wrM/ydrAg
+	 jVvZlxafRdR2grK5cJ0YbJv1pmEYrvWTXZv0a1IXVTPfWDE0kdz6u+Mhvxv+ipMBTH
+	 3kCrxnAcUdVxA==
+Message-ID: <sashiko-outbox-208216@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH v2 22/25] net/gve: Use PISA memory for RX buffers
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Luigi Rizzo" <lrizzo@google.com>, "Luigi Rizzo" <rizzo.unipi@gmail.com>, "Joerg
+ Roedel" <joro@8bytes.org>, "Will Deacon" <will@kernel.org>, "Robin Murphy" <robin.murphy@arm.com>, "Christoph
+ Hellwig" <hch@lst.de>, "Marek Szyprowski" <m.szyprowski@samsung.com>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Vlastimil Babka" <vbabka@kernel.org>, "David
+ Hildenbrand" <david@kernel.org>, "Jens Axboe" <axboe@kernel.dk>, "David S .
+ Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>, "Matthew
+ Wilcox" <willy@infradead.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Jesper
+ Dangaard Brouer" <hawk@kernel.org>, "Ilias Apalodimas" <ilias.apalodimas@linaro.org>, "Willem
+ de Bruijn" <willemb@google.com>, "Kuniyuki Iwashima" <kuniyu@google.com>, "Joshua
+ Washington" <joshwash@google.com>, "Harshitha Ramamurthy" <hramamurthy@google.com>, "Alexander
+ Lobakin" <aleksander.lobakin@intel.com>, linux-mm@kvack.org
+In-Reply-To: <20261109182533.3594984-23-lrizzo@google.com>
+References: <20261003212241.3432303-1-lrizzo@google.com>
+ <20261109182533.3594984-23-lrizzo@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 11 Nov 2026 03:43:42 +0000
+X-Stat-Signature: gtkd4u54f1qng3z4ud7nxfbqkin99dzs
+X-Rspamd-Queue-Id: A2E81C0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 336E4100008
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794368103-925035
-X-HE-Meta: U2FsdGVkX1/PkFM5f6TLlc93L7jS8R4n8k24vInrkdmHxuJqKEV3/hkQgO5nIkl+qM9JRIf9b8M0t/mkHnvuQSIb/qXdBCwKJ/040xiUdR7dcHCytjWm7NHhqh/yHQWieWqt46dWTYzMnpbHfel+OFZNnauklSBkdgH+ZVbW1aa5msCQ+HSoHuoVARaoX48FtQGw4UgnqTK2Pl+4WJDzAaVbwIoV3qUFMPPA2CgUjXrVKNYbhEGp248kMyxr1KtVs5IMlF+GgVRJq5AVL1MvHI/f8PpQQDSV/262g60E7wInKgGqO5Yfk5+Ly6oADotQNwHTmAEW2r4ApoL/wijbJuQPCymbsIDV0Kk2jXMp2k8IbTT9wLQMxVaEl3Bxtykj6UlYFS1VHAzfav2SBcVsojPZB7TKuiaedII5W0jvX994OVt96WkWMJT8lLw0X/nni1xDADE1gBjrfCteeviV/y2F6Sy+Ao389AqpmDB/iYr6LpVlwSyTKdWalvQMiT9g+kL8ZuVDtDyutKTPLJzuC3ZyhnfdSd67LWCs6KxYdiv0EbKXlKtx12I1Dv5d9+ss4AsQX9rTRvvq1yfaERkXWX2JigNeIFCX49KF71hXx3BX+AvxD7diSxEV1VWKjhOuVdTrkuO/KbiBDPKZMts9bkv6Bb9NdtFTfdLEBaPeWLRk/W/cXXQXTGJG7zdm84ueP8P2Wrchqon4ETL9nJZwmfsFAIfbDVVwDVwBkjNul3dfHR3D3bEXp+esnT4CU7hAaF18pb9YsSuZtohxVhBqjzieOmPJ2mD9WLJhtVKoUFqDf41oehmkyr2M4tFUTWVEoYLu7djuJiByOwdqjKcNnn1/mZaDY4hdTEtBbeif64hJbc/v9KWxxwhFl1wzriG790QWvX3SGxHJmyy4dNgu74dY9DP4FDt+9amljFfYZTZRgOC7xjZxWnxBHwhFwH2aYoenWLNedMnSMlppc5l
- aSC5N/HV
- VoMirIvEKTm5yIKAGPbOWDOBzR0IPwSFeZbEgoTwWAqu+9bf8cEUA+27TZbYPHVsnY3axHATnKDn4lM7rcPKXezwuLULJfce+v9tZ9kPCI9QFSiYx+hYf3DrsGKuJvseuaKmII+pFHjfBjyrxKA8I1i4fhvowkxAOsAO8cbzSjob2vIiNQRtabzZINujZ2y4VXjw79KJGzEFDWYuZAVckTpBoIfVCCa2HmFtMyMrIpf8R+kUnL4tkaSh+v49OWQX4y1606pcMNxqmsOV+vRa+EDwi+dwef7YlVCb6SeJdgdwQRBke7hIse8oI4ZA53gwP1bsCmfBSRWEgDbh1ez0PJqizXe6dm9ZalVqDcPwZFbDB48OXElVxtBLowgiaamYI3ugxXxG3OBuPbuu+YS0aCBdna/lqiPU0MTUe3mEuqOe2aJMAp02AlHIqlEI6URYf2G4Uw8Wi6Q7ufyMhTQ0vIuwmSQ==
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794368625-592865
+X-HE-Meta: U2FsdGVkX18j3x6BFQL4Yzz8JKsEtuicYYkwO/w4MEohOTpAslpsfvuhFROCY0iRX3+XZou4Qbl9/sS5Tl9H9GRxGGAMMAV0swhllmtktCY9MFmfyNZSS7enzFszSKDh6GY4hVrzepSEwdL33ie9y8t9YoDhrkjfo7p/U2GRvmEBhihezNhdDKHJ4eT4cYJoRqjgfaBIlQKt4B4YfSgVaoFVT3XO42PZNl+2Lgtk7m8hSb/F2YreN7gzfXRu/67GID/5QQKPM5vYEDM6gJyJF/uwmBUnkNg3bvYPt1MWX5YKVuUXeeYdLKSlSMjvV8iB1b+pHtG8z4WN5SJFnSlrBYphlNEcaJvqLDiKOtbldTSIohexK0ubZ6YBAHSBVCzi8QuwZntKGskvqQNsxWsYJ8iTUQMCUPH7kgMtOm6Ce4MZCw5eheDvgW0uER10/20Je8elrt1ZaZVEMu0q8aGoAknaZAOyEOdlE4WxtYq6xpcK+Zzd6NFDMNzNGeQUzD6lvRPvaot+jMkI98uLXEbfkMCddbI0FyrL3pdAo0VfNRyMROcWXy5K1bkK0bUpvnV4F7nnSBfj9s6ceE8h9GnGtYk0XeIjmKCoIxO/+UHZmmssXhMDC17ZsimLzycluJ3fF/5I3prV2IElwj6GooImj2o00/a3JkzPW5+9gdhQCx3SFrEWrTp9miDSVmowjvFRK2xVHShPCFn8DYjWQH5GBsgGoc6KJJS6aJDCgAFIla86HLzelm+in13PORYsvP8W/Hf+XXy/WFAH+PdOvopAxb/NL47MzdW3Vg0tkHXU2VszgJclNlJPxvcjyWim5NXnwgqD++owP2KZ2pXiyoaerMll2RCEQA0rpEU3gwc2HoSm6H1vF2AH8iTmfoGWFJxsJcRR2OhenqIGmZv8JkAEzPYrc6oWwCuHBzM+SYOfnGb5KRm6YUCjoJb5dxqc572xE4JcjZLXDR1vmLCmNrE
+ /rsSqrCv
+ UEf+XKCYpVd/sKH9KzQ7bghdtUduvI4iyxvm8ADnEZ7pG8MOsYMJiflZRsCTMa3ZCu9H4xBOS+xfXTU7ZqjcdgKr2NItU+80OR2iNXZBJKx7ibW2m65TyqMmXgp1n4id9M1XgpMMAaiUvdu/G/KlWenxOvJmpUiuq5OcYZm28jpUOz47hFRTQAbK5auXR2gH/Wh8kBcrmahnZ0466sU3OabRqzVhWQ65jQ0NxNxKxGLTP6uDc+WibLsrjRQVdPQNB5qymUpFv4jAmfBOmRzXczH0I+CWzXTnaRwug8KRerf7pBaCnk796u6ZCBBHA9Ppnng6MmCxIa3F+uKcxg8l94qCVANFXvJrpoAYoz2woPe1iEYMrMOXkakapSozF9urC4LrTKafIqEAlJxLqsufhDl2DO8Mr5+gQ/3lZhUqQmuMmWeWTQhjWRMP984pejjB+M/BWI14pZ5jMUODU/4Bh2Oao98/1Epcwb3PLwK2Kfi1phT1m9efjCRXjQhcBjt+O/qQt1YgqfTrggv9DZnncCekyQBi7jGfM8RJrp5ZtwY6ZfGEnrf4kjivMEZz5c1ASDSklvw+Mf27JvQOlDIlpGdprVVTccC8HSrUX/bs+/nS0RqOzUWyQ45ePXX3JYqqkOlctt6hhgU2m+6railvzNq1RTgWbioEEcD08
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,76 +103,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-folio_ref_inc_return(), folio_ref_dec_and_test() and folio_ref_dec_return()
-have had no callers since they were added in commit c24016ac3a62 ("mm: Add
-folio reference count functions"). The last folio_ref_sub_return() user
-was removed in commit 38607c62b34b ("fs/dax: properly refcount fs dax
-pages").
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [High] net/gve: wrong GFP flags in gve_rx_alloc_buffer() via
+  gve_get_napi_enabled()
+- [Medium] net/gve: uninitialized new_info.can_flip copied in
+  gve_rx_refill_buffers()
+--
 
-Signed-off-by: Shivank Garg <shivankg@amd.com>
----
- include/linux/page_ref.h | 24 ------------------------
- 1 file changed, 24 deletions(-)
+commit 58fd34b0315f121e3fcc6437dac09650326d6a54
+Author: Luigi Rizzo <lrizzo@google.com>
 
-diff --git a/include/linux/page_ref.h b/include/linux/page_ref.h
-index 9f5c75d06f76..6fc20a49fa84 100644
---- a/include/linux/page_ref.h
-+++ b/include/linux/page_ref.h
-@@ -157,15 +157,6 @@ static inline void folio_ref_sub(struct folio *folio, int nr)
- 	page_ref_sub(&folio->page, nr);
- }
- 
--static inline int folio_ref_sub_return(struct folio *folio, int nr)
--{
--	int ret = atomic_sub_return(nr, &folio->_refcount);
--
--	if (page_ref_tracepoint_active(page_ref_mod_and_return))
--		__page_ref_mod_and_return(&folio->page, -nr, ret);
--	return ret;
--}
--
- static inline void page_ref_inc(struct page *page)
- {
- 	atomic_inc(&page->_refcount);
-@@ -213,11 +204,6 @@ static inline int page_ref_inc_return(struct page *page)
- 	return ret;
- }
- 
--static inline int folio_ref_inc_return(struct folio *folio)
--{
--	return page_ref_inc_return(&folio->page);
--}
--
- static inline int page_ref_dec_and_test(struct page *page)
- {
- 	int ret = atomic_dec_and_test(&page->_refcount);
-@@ -227,11 +213,6 @@ static inline int page_ref_dec_and_test(struct page *page)
- 	return ret;
- }
- 
--static inline int folio_ref_dec_and_test(struct folio *folio)
--{
--	return page_ref_dec_and_test(&folio->page);
--}
--
- static inline int page_ref_dec_return(struct page *page)
- {
- 	int ret = atomic_dec_return(&page->_refcount);
-@@ -241,11 +222,6 @@ static inline int page_ref_dec_return(struct page *page)
- 	return ret;
- }
- 
--static inline int folio_ref_dec_return(struct folio *folio)
--{
--	return page_ref_dec_return(&folio->page);
--}
--
- static inline bool page_ref_add_unless_zero(struct page *page, int nr)
- {
- 	bool ret = atomic_add_unless(&page->_refcount, nr, 0);
+net/gve: Use PISA memory for RX buffers
 
--- 
-2.53.0
+This commit allocates GQI-RDA RX packet buffers with pisa_rx_gfp(dev) when
+PISA RX buffers are enabled, and replaces plain pages when free PISA RX
+blocks are available.
 
+> diff --git a/drivers/net/ethernet/google/gve/gve_rx.c b/drivers/net/ether=
+net/google/gve/gve_rx.c
+> index 89f287b678bf0..85c243bbdeb33 100644
+> --- a/drivers/net/ethernet/google/gve/gve_rx.c
+> +++ b/drivers/net/ethernet/google/gve/gve_rx.c
+> @@ -4,6 +4,7 @@
+>   * Copyright (C) 2015-2021 Google, Inc.
+>   */
+> =20
+> +#include <linux/pisa.h>
+>  #include "gve.h"
+>  #include "gve_adminq.h"
+>  #include "gve_utils.h"
+> @@ -170,6 +171,8 @@ static int gve_rx_alloc_buffer(struct gve_priv *priv,=
+ struct device *dev,
+>  	dma_addr_t dma;
+>  	int err;
+> =20
+> +	if (rx->data.raw_addressing)
+> +		gfp |=3D pisa_rx_gfp(dev);
+>  	err =3D gve_alloc_page(priv, dev, &page, &dma, DMA_FROM_DEVICE, gfp);
+>  	if (err) {
+>  		u64_stats_update_begin(&rx->statss);
+> @@ -499,13 +502,19 @@ static void gve_rx_flip_buff(struct gve_rx_slot_pag=
+e_info *page_info, __be64 *sl
+>  	*(slot_addr) ^=3D offset;
+>  }
+> =20
+> -static int gve_rx_can_recycle_buffer(struct gve_rx_slot_page_info *page_=
+info)
+> +static int gve_rx_can_recycle_buffer(struct gve_rx_ring *rx,
+> +				     struct gve_rx_slot_page_info *page_info)
+>  {
+>  	int pagecount =3D page_count(page_info->page);
+> =20
+>  	/* This page is not being used by any SKBs - reuse */
+> -	if (pagecount =3D=3D page_info->pagecnt_bias)
+> +	if (pagecount =3D=3D page_info->pagecnt_bias) {
+> +		if (rx && rx->data.raw_addressing &&
+> +		    !is_pisa_page(page_info->page) &&
+> +		    pisa_has_free_blocks_rx(&rx->gve->pdev->dev, 0, rx->gve->numa_node=
+))
+> +			return 0;
+>  		return 1;
+> +	}
+
+[Severity: High]
+Can gve_rx_alloc_buffer() sleep in softirq context or pass GFP_ATOMIC in
+process context when selecting GFP flags via gve_get_napi_enabled(priv)?
+
+In gve_turnup(), NAPI is enabled, IRQs are unmasked, and napi_schedule()
+is called on all RX queues before gve_set_napi_enabled(priv) runs:
+
+drivers/net/ethernet/google/gve/gve_main.c:gve_turnup() {
+    ...
+		napi_enable_locked(&block->napi);
+		netif_queue_set_napi(priv->dev, idx, NETDEV_QUEUE_TYPE_RX,
+				     &block->napi);
+    ...
+		mb();
+		napi_schedule(&block->napi);
+	}
+
+	if (priv->tx_cfg.num_xdp_queues && gve_supports_xdp_xmit(priv))
+		xdp_features_set_redirect_target_locked(priv->dev, false);
+
+	gve_set_napi_enabled(priv);
+}
+
+With gve_rx_can_recycle_buffer() returning 0 to evict non-PISA pages even
+when pagecount =3D=3D pagecnt_bias, a NAPI poll running before
+gve_set_napi_enabled(priv) reaches gve_rx_refill_buffers() ->
+gve_rx_alloc_buffer() while gve_get_napi_enabled(priv) is still false.
+That passes GFP_KERNEL | __GFP_PISA_RW in softirq context, allowing the
+page allocator or PISA metadata initialization and page decryption to
+sleep in atomic context.
+
+Conversely, gve_adjust_config() -> gve_queues_mem_alloc() and
+gve_rx_queue_mem_alloc() pre-fill new RX rings in process context while
+the interface is up and gve_get_napi_enabled(priv) is true, passing
+GFP_ATOMIC | __GFP_PISA_RW and preventing PISA from blocking to initialize
+metadata or decrypt pages.
+
+Passing an explicit gfp_t parameter from gve_rx_prefill_pages()
+(GFP_KERNEL) and gve_rx_refill_buffers() (GFP_ATOMIC) into
+gve_rx_alloc_buffer() would avoid relying on gve_get_napi_enabled(priv).
+
+[ ... ]
+
+> @@ -987,12 +996,15 @@ static bool gve_rx_refill_buffers(struct gve_priv *=
+priv, struct gve_rx_ring *rx)
+>  				union gve_rx_data_slot *data_slot =3D
+>  						&rx->data.data_ring[idx];
+>  				struct device *dev =3D &priv->pdev->dev;
+> -				gve_rx_free_buffer(dev, page_info, data_slot);
+> -				page_info->page =3D NULL;
+> -				if (gve_rx_alloc_buffer(priv, dev, page_info,
+> -							data_slot, rx)) {
+> +				struct gve_rx_slot_page_info new_info;
+> +				union gve_rx_data_slot new_slot;
+> +
+> +				if (gve_rx_alloc_buffer(priv, dev, &new_info,
+> +							&new_slot, rx))
+>  					break;
+> -				}
+> +				gve_rx_free_buffer(dev, page_info, data_slot);
+> +				*page_info =3D new_info;
+> +				*data_slot =3D new_slot;
+>  			}
+>  		}
+>  		fill_cnt++;
+
+[Severity: Medium]
+Does copying new_info into *page_info overwrite page_info->can_flip with
+uninitialized stack memory?
+
+new_info is declared on the stack without initialization, and
+gve_rx_alloc_buffer() -> gve_setup_rx_buffer() only initializes page,
+page_offset, page_address, buf_size, and pagecnt_bias, leaving can_flip
+(and pad) untouched.  Previously, page_info was zero-allocated and this
+branch was only entered when page_info->can_flip was 0.
+
+When the next packet received into this slot takes the copybreak path in
+gve_rx_skb(), a non-XDP_PASS verdict, or a drop path in gve_rx(),
+page_info->can_flip is not updated, so the following
+gve_rx_refill_buffers() pass checks an uninitialized page_info->can_flip
+and can spuriously flip the buffer instead of checking whether it can be
+recycled.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109182533.3594=
+984-1-lrizzo@google.com?part=3D22
 
