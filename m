@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B771606A33F
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 09:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A6AA606A326
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 09:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BxHOTt66
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QQZJDCma
 Received: by kanga.kvack.org (Postfix)
-	id A27CE6B05B7; Wed, 11 Nov 2026 04:08:27 -0500 (EST)
+	id B3BFE6B05B9; Wed, 11 Nov 2026 04:10:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B1606B05B8; Wed, 11 Nov 2026 04:08:27 -0500 (EST)
+	id AED3C6B05BA; Wed, 11 Nov 2026 04:10:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 877D86B05B9; Wed, 11 Nov 2026 04:08:27 -0500 (EST)
+	id 9B4A56B05BB; Wed, 11 Nov 2026 04:10:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EE466B05B7
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:08:27 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 06FC380237
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:08:27 +0000 (UTC)
-X-FDA: 85422262254.26.5517BD7
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 61EFA6B05B9
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 04:10:20 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E3456120240
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:10:19 +0000 (UTC)
+X-FDA: 85422266958.05.E88C46D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4057E100005
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:08:25 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BxHOTt66;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794388105;
-	b=2z8qVpGvEsLs40Po5APR6SLtciCxEs5VmUn8HVDuK8+05Mamnut37AZoWPtne6F1+FV9aa
-	EFLT9eRNd15EyHWWvIHNiqARZHiTpO8pCY7gFvj3hAYrtxnhxNgqwSX+8svsP49TEPqJ7N
-	RtwaXlvXkgyBvnK3pDDcDRoE0zY+F6g=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BxHOTt66;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 2FFBE140005
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 09:10:18 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QQZJDCma;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794388105;
+	s=arc-20220608; t=1794388218;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=beCq0yEdS9NGRvXAH25NWBlijnEtfYCeuB+kkXj75ZA=;
-	b=tkf8FZYOQwQ9fXReZgp82qU2f0OlkPnt3d3MNkVjjIz+od2RD1/xPkmHCL3GJldA1XZLf9
-	FwdfkDKvqF3ZfCqa7aeqoc50FBSTZgkM4Db+Hj4bHOKbdOq/JdEC1UOPi3/28PpdbeXGVc
-	dnxLguExTCThjh9jy35KUBY5XJJrcjo=
+	bh=xH9l3vH/C4QDmuSYkhVbjVTYTvtMqxmFM17WSOqQ34E=;
+	b=JGsZVr7WFxa5U+q+G/7BUHOhpmHSQ2yYABPQ9Kp0xtHaSUsICmDdn3u0Qs1FUAmY95Fm9/
+	h3nTFDonIt8hw4PtHHc1fCH2oVVp99PRld6FWN1UtjaAGM86iqsXkj+koMxMFAkxWD10xu
+	HG8MLKmP0aFnOa9ewfBYS5DX8JYj6kQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794388218;
+	b=S4DbGD6sAoTtNa+Dg0pxIkKg/NgcIRTXq9knQ+w0Cc/jH8K6/zHV9RrD+acWOVRgXmua+y
+	dygo7WgprviF0Y0myDQh8EgvFzAaXVBdTHtPQr08UmaBWTbNc7v8Ya/3xoYgA+OF14cyxV
+	Ph/LEJQx2UYkkOCbwdlZu2u8MHL92/I=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QQZJDCma;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C0519637DC;
-	Wed, 11 Nov 2026 09:08:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9711F00A05;
-	Wed, 11 Nov 2026 09:08:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BA71663BD2;
+	Wed, 11 Nov 2026 09:10:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77FE21F00A05;
+	Wed, 11 Nov 2026 09:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794388104;
-	bh=beCq0yEdS9NGRvXAH25NWBlijnEtfYCeuB+kkXj75ZA=;
+	s=k20260515; t=1794388217;
+	bh=xH9l3vH/C4QDmuSYkhVbjVTYTvtMqxmFM17WSOqQ34E=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BxHOTt66uVPC3Wb/2B4DVOu6adBNeprM9i1Vl1vG0o5PiFeJDmWYYaxDhEY19Wxy+
-	 KY0/ARXkcgwR4OS+05SQGwgZg6n/7sN7/rRZmMihhYQ1vde1ajzknDX1E+hXHEO5hE
-	 RLm6yHt7lB5jAj2b3AI5iiKYWVeKyIWpzccl5gnBeekq6qW5w63uTgMxe2z8IrRoN/
-	 K98Tdyfx0qNhtpeebAOfy9GtApphmHtsQAydLSlOhhM+fmk+KnwkIaJigPbfdPR4Dd
-	 hjIM79US+3KYZMmH2oIOx788A1EOFYf1pLb2yaMlgfhRZpDPxGpgEhHdfwSwEdr7c6
-	 soz1f/4i/4JMw==
-Message-ID: <5445434f-078f-47d8-9851-dcc3712d18f1@kernel.org>
-Date: Wed, 11 Nov 2026 10:08:15 +0100
+	b=QQZJDCmaKacfblRcagLi02rbg4jcCBwjp9GW5ASiJ8taKOiX+os9eVBIIXUG8CZHs
+	 UP9BXvgSxs3gHLnqayo3DnLh2wb3rk/JbGvU6a2Io0b/Qu2Bd3x2ZmAk28LVJCpAk+
+	 ROfQ3iEyQKObZevE0BedWNZrvGK9ayUJyuyshutw3A7iSM3s91J3IqkZRMyQDb6FVn
+	 NlCjXqDr0jV4ZgvARvuY0guxenbSBTpwGYlUJhfJv1baYnkjQO1x0ZAR/uT0QPwIee
+	 ETXVJTcYUe87V8Vk3RT0Nw7bfpV2NeR7mTFNYEW/olNUeI4L4wYcR9EQ718KHiEL0y
+	 hRM9iGghejhlg==
+Message-ID: <d43cf7bd-6a6a-4102-95cc-cb236eb49e0d@kernel.org>
+Date: Wed, 11 Nov 2026 10:10:07 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] ksm: skip rmap_item allocation for non-zero pages
- under only_merge_zero_pages
+Subject: Re: [PATCH 1/4] ksm: add only_merge_zero_pages to merge only empty
+ anonymous pages
 To: "Xu Xin (vivo)" <xu.xin@linux.dev>
 Cc: akpm@linux-foundation.org, chengming.zhou@linux.dev, corbet@lwn.net,
  link@vivo.com, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -76,7 +76,6 @@ Cc: akpm@linux-foundation.org, chengming.zhou@linux.dev, corbet@lwn.net,
  tujinjiang@huawei.com, vbabka@kernel.org, xiao.wang@vivo.com
 References: <20261110074312.219847-1-xu.xin@linux.dev>
  <20261110074451.220524-1-xu.xin@linux.dev>
- <20261110074451.220524-2-xu.xin@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,21 +122,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261110074451.220524-2-xu.xin@linux.dev>
+In-Reply-To: <20261110074451.220524-1-xu.xin@linux.dev>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 5bihe719pgrkdmcidm3uuh9odgtujrr5
-X-Rspamd-Queue-Id: 4057E100005
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ag5o5mg9488zwbyk4n6jmgm3w9utet4t
+X-Rspamd-Queue-Id: 2FFBE140005
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794388105-660900
-X-HE-Meta: U2FsdGVkX1+SPar8GDQjk55m1uMedsAqONt7AXZJeqH1gTYWw6/trbfnYiruH/fOZPLFcRhQs3OVP6aFpcQ/KlU86AWprLvyQKv1J+vqqAE1SFSAWtCinL5gHbRYlglnaWS97gn7hNeS5qbDllus3iz9GsMMldC0/4Uy+VJoK9HGZ0odAl+eEc3OecG+NbUhIwiFLRFXcDyn5PXm7EAaRVou8FwMzxll2vfZtpEQbQZeqDDwwqMPQsJgmR+b7G5vLOqH0eWlJRWJfkyrMLxQNkflsDLg9GBhyh3fP94jpzT7uMHAyhMbsN8/HKAS+grZCcu7JTuKtqBljiE/jvEFmmIUUBL652YJHTC5c2kAxt8RjWMG+nqOtsSePBx91u0JxX+hpNU+UK4YzqTvK+CtLx+gpNKZOo4bX368GH+kRGiqMVKRGVXr0bW5o331vkFef4VrPy9NMi5NEFxXxAIyOftJqqkE1oTE5bnHk1digDpmBZ15jT4XisLNVCO44fqsQN1dhdRPWI1iR/34Uh7JGC/aNDEUpxzTn40Uo9nOtvYZA4uvIoZBaZoNNQnNoBO3TietLEYrjpwE6XM3ixiu6EhHoUMAcRTRrUckLe8dPLxThcRJtAfQSSfZcaqDt2rfSpovHcgQURikkyox5m3sLQvYbqVh+5x6kJcAEZgjuzde6WoNjrF/q7hWSByhzfD6LDVrYxUogShxC1rcMDF5jK2LTq1AgFyE+wbdfVnZygEgVL+JZVRjA320k/pA+RMFvDGMnlTMTJ/0iCzMvvTMhqkv7R8G3dMJRvtQdiMPNzBgjrqbZ+7xommkvUQaSQ6YiPFfUD6oZfuTaQjLxCwVjyMExJjX+ZuVTkQDk0n1El/D/d91193EDNJseUFisKDwZeLfjdShlRzo9x/Ib2zzAFtfNSQhdxCez3cAZhOd74+ZtT51cgYzDRwFg7LEnUYnGXAmSO8XATeGG8CYGlY
- hy+XywmL
- Q8DEp9lUTTe5g8KWOm9gDpy9qQ2ttgnNJebHWVlFS9AdT/uezHkWzhfW4k5HFptzgiSpS4thORIgc7Usb3xeQJWvsvcPPrvedmL7pBfBflFfW2MNO9O7Xr8ENkTWuGGPIA9sXr6elzg9okHSytdWVhBG6f9PLdlIImov7v1lbUFIEy+9l8ZtrKUdBAOz2rAHu9sxh6ASqEiCsGMyftGPBN34wTTn2gR6tovwtku4ulUo54ny0XxVbLE8NtdXACX59REzQ/GcXfuNRbiiui6e/vT7Qhidw+tjx1aUFLXjalTmvwx6eZ+Qjj6ieEgFYpdW9ZlPE0o5D8G4R6p4qCaJcPm/vzi86/InQDylo918k8MWtZvlW1aAEXG60W+dVsiY3tMwu
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794388218-907755
+X-HE-Meta: U2FsdGVkX1+itEERReMAtMg9LL98R1V1ySVjS76WX9MRIH9qjXwh+SXCOC/lNbxiYtQA1PFBDXISC4aIzBoBuQfTGNi7ClRfSJz4FeuRyMs7CKvW4j4rHJ/5ub6SgSDi77BQNPrZFXJXnbEtzGfbYYAo0qahAFGj9Ahhe18gw2ucB78/pex+hfbwiRr50ZPi/AC6CP3dvI3nTtAQuPWau+KUI/334ZJt93EkVI8p8KMCnx1OpmDsWKneQycpT9c8p9vkZZTGXXQGrDQD1cexA1JH/0v+zF7N8dsGh2XrbmT6CTlxtUpfq3cq8KfCEZH9uF1l2seONkqfn5hTYz5vkczBU//gxhrX6485auHI2TyXNbK/eNpTw99PVm5RytbMPqf9RotLhhoP1InilodFQU++EBDbGH5kpIkn9ii46R+YS+HurTtGNS6EBVugwkBlZBiNmk/dRoy+OyEBtik0K71QZ+lkhjFFStJP2n/5N4QAQSD99JlbEo8w86P7beCbSiB78DhtZrenfrfW3qD94UuLolmhasyqMY9ruiJrh/LScfiov+TaPvEBkC5va6pF9Sbe6UHEb7r0HqDQGb9lRiyvkHFpmBuWm8uzHrrcJL5aMZT8zk5RgbuxchT+JinAMl0MkC8A+dD0wtV9qAtLGRqDWGUBHOdGbKMZkvPica0J1Qmta48Np+XljdvTTPqwA87P0N23UmLe7yzRBSu/KrihomNPms319sXi4gPalI2gh5Dx+SqihPBHS9SZHe4ycU1SANyKrCgw9K1u+Ni9S82BhQ1cw0bxVwGt1F2LYKKADYadxbLUxkPo5tGdWM/N2fkTfQo+E10z2xYTFj4Bj18pCHRaaCDjiZmG8gdo82San8EjvQqTrMFSV9x9P40iBHHEiw8fBacgE5Oatoe8iGwR0f41aXl1yhBneMigzpGVD6gfZgN4jOuRbsx8/ywbOVczOLc/jrpJkQcYE7P
+ DNHCRjRj
+ sYK8F7jR5o6gHCzv0PloaLgyxFnIfoAS4bKdlnbPwHLjhWCvSTM1FV7BA0oEwbmd27ScZdzzn26lnnT6+Bp3v6O1juO+W++43ILe8Pp1trbh9JgZcZC/CWCXFHzNLjf9GgBPJBxuJ0q3NBqzXlwzlf9dD6HQ6JLH3lVQ3vJwMtrCfj8zFdBvI8h8uzhBMS8v0+LygjwV5T8W521aIm3YVuuanG6Uj0jau9Ud9AvDrOMR8a7HbjyidroxfOQ+eQPPK2qeF5UGPpxzMUvUggCEwW7BktDTbadpzGtGgNoxYk340XwZwv3WeS6rlF0B68u1798RFBVb6R/JMPphlW1OicgkWs2YnMTI7Pxdrs+7P093OBK/Abv/qHVrbykDtlVNJbZXURcLIwZfGEK1UbqMEj17j5bXowqBNADKocxu0cyy0GLk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,51 +146,70 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/10/26 08:44, Xu Xin (vivo) wrote:
-> When only_merge_zero_pages is enabled, ksmd only ever merges empty
-> (zeroed) anonymous pages with the kernel zero page. A page that carries
-> data can never be merged, yet the current code still allocates an
-> rmap_item for it in scan_get_next_rmap_item() before cmp_and_merge_page()
-> decides to skip it.
+> Add a new sysfs attribute, /sys/kernel/mm/ksm/only_merge_zero_pages,
+> which, when enabled, makes ksmd merge only empty (zeroed) anonymous
+> pages with the kernel zero page and skip the stable and unstable trees
+> entirely for pages that carry data.
 > 
-> On workloads with a large amount of non-mergeable anonymous memory this
-> is a real cost: every scanned non-zero page pays for an rmap_item
-> allocation, and the rmap_items accumulate in the per-mm pending list.
-> For example, a MySQL instance with hundreds of gigabytes of anonymous
-> memory (mostly buffer pool pages that cannot be merged) ends up with
-> ksmd creating rmap_item metadata for each candidate page; the metadata
-> overhead can wipe out any gain from the zero-page merging and even turn
-> the net benefit negative.
+> The attribute requires use_zero_pages to be 1, and the two are kept
+> consistent by symmetric constraints: it cannot be enabled while
+> use_zero_pages is 0 (-EINVAL), and use_zero_pages cannot be turned
+> off while it is active (-EBUSY). Both store handlers take
+> ksm_thread_mutex around their check-and-set so that a concurrent write
+> to the two attributes cannot leave use_zero_pages=0 and
+> only_merge_zero_pages=1, a state in which ksmd would scan and checksum
+> pages but never merge any. The new attribute can be changed at any time
+> and is only effective for pages merged after the change.
 > 
-> Add should_skip_non_zero_page(), called in scan_get_next_rmap_item() before
-> get_next_rmap_item(), which, when only_merge_zero_pages is enabled,
-> checks whether the candidate page is all zeros. A non-zero page is
-> skipped entirely: no rmap_item is allocated for it, and any stale
-> pending rmap_items below it are freed (as get_next_rmap_item() would).
-> The page is reported back to ksm_do_scan() as ERR_PTR(-EAGAIN), which
-> counts it as scanned and continues, so the pages_to_scan budget is
-> preserved.
+> Benefits in three aspects
+> =========================
+> - Memory saving:
+>   On memory-constrained systems such as Android and embedded devices,
+>   zero-filled anonymous pages are the largest source of duplicate
+>   anonymous memory. They are produced by userspace allocators: the
+>   zeroing of freshly allocated Java objects and buffers in the ART heap
+>   (new byte[]/int[], Bitmap buffers), calloc/memset in native code, and
+>   preallocated media buffers. Merging them with the kernel zero page
+>   frees a significant amount of physical memory, which matters as DRAM
+>   costs keep rising. With this enabled, we measured 100MB–300MB saving
+>   tested with several popular applications on aarch64 (Android).
 > 
-> The all-zero check (pages_identical() against the kernel zero page) reads
-> the whole page. For a non-zero page this is a net win: the extra page read
-> is cheaper than the rmap_item allocation and the stable/unstable tree
-> operations it would otherwise trigger.
+> - CPU overhead reduction:
+>   Merging only zero pages also reduces the overhead of ksmd. A page that
+>   is not merged with the zero page carries data and can never be merged
+>   with the zero page, so there is no point in searching the stable tree
+>   or inserting it into the unstable tree for it. Skipping those tree
+>   operations for data-bearing pages reduces both the CPU time and the
+>   rhashtable memory footprint of ksmd, which makes zero page merging
+>   practical on low-resource devices where full KSM scanning would be too
+>   expensive.
 > 
-> A page that is zero now but is written before cmp_and_merge_page() runs
-> is still handled correctly, because the checksum-based decision in
-> cmp_and_merge_page() (added by the previous patch) is the authoritative
-> one.
+> - Security:
+>   Finally, this shrinks the KSM side-channel attack surface: only zero
+>   pages are ever merged, so the sharing status of data-bearing pages is
+>   no longer observable through KSM timing side channels.
+> 
+> Note
+> =====
+> - Suitable for Android, embedded and low-memory devices, where zero-page
+>   deduplication is wanted but full KSM scanning is too costly, and reduced
+>   KSM side-channel exposure is desired. Many handset vendors may prefer
+>   this knob, which can be used as a default fallback policy.
+> 
+> - Not suitable for server and virtualization workloads containing many
+>   non-zero duplicate pages, where vanilla KSM provides better memory
+>   savings.
+> 
+> Signed-off-by: Xu Xin (vivo) <xu.xin@linux.dev>
+> Reviewed-by: Huan Yang <link@vivo.com>
+> Cc: Wang Xiao <xiao.wang@vivo.com>
+> ---
 
-I think we should get rid of any rmap items when merging the shared zeropage
-only. That might require more changes to the ksm code, but it really doesn't
-make any sense to have rmap items.
+See my reply to #2. I think the overall feature makes sense, but reusing all of
+KSM infrastructure just to deduplicate zero-filled pages looks suboptimal.
 
-Maybe we just want a separate KSM infrastrcture that only focuses on
-deduplciating shared zeropages in KSM: get a page, see if it is zero-filled. If
-so, try deduplciating with the shared zeropage. Done.
-
-Mangling this into the existing infrastructure might look easier but it just
-adds things like additional zero-page comparisons and (as Lorenzo points out)
-makes the code harder to understand + maintain.
+Please investigate how we could selectively reuse some pieces to just scan +
+dedulicate zero-filled pages, avoiding the whole rmap item stuff etc.
 
 -- 
 Cheers,
