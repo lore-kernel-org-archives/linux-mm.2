@@ -1,178 +1,116 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B8D606F6C8
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 22:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56368606A8BB
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 22:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=GCBgPRNh
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=NGOjZg1k
 Received: by kanga.kvack.org (Postfix)
-	id 65A746B05B2; Wed, 11 Nov 2026 17:47:54 -0500 (EST)
+	id 59AE06B05B7; Wed, 11 Nov 2026 17:49:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60B106B05C6; Wed, 11 Nov 2026 17:47:54 -0500 (EST)
+	id 524556B05BC; Wed, 11 Nov 2026 17:49:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FA5B6B05C7; Wed, 11 Nov 2026 17:47:54 -0500 (EST)
+	id 3ECA26B05C0; Wed, 11 Nov 2026 17:49:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FAFE6B05B2
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:47:54 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8F1B980416
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:47:53 +0000 (UTC)
-X-FDA: 85424327226.15.68D1947
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010012.outbound.protection.outlook.com [40.93.198.12])
-	by imf08.hostedemail.com (Postfix) with ESMTP id BC6E1160003
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:47:50 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GCBgPRNh;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf08.hostedemail.com: domain of apopple@nvidia.com designates 40.93.198.12 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794437271;
-	b=2V5Zy8VRGwTJsa9YYXsqvpzE3WJ2aE4GI8xnoVfJ1NymAEj5gs4TZ+IL8ptsP1wZMKKaCm
-	KjCmb1/Ljjtg1Hw46dQ6wolYYiOlW0Qt2QlyzCZfHOYY6useZ4vsYydJCBUQ4dspMG1zgz
-	hVJhgzw4sPCP0442nnEQb8EOMtz4yGY=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GCBgPRNh;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf08.hostedemail.com: domain of apopple@nvidia.com designates 40.93.198.12 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794437271;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 10A1A6B05B7
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 17:49:41 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 881F8402FB
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:49:40 +0000 (UTC)
+X-FDA: 85424331720.02.DF9956A
+Received: from mta0.migadu.com (out-248.mta0.migadu.com [91.218.175.248])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E8F3B20003
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:49:36 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NGOjZg1k;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.248 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794437377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bUuGXl7v/IvjjZlG6/l86Wsb20/evZCBhE5nrxrKyFs=;
-	b=pMcmygJXrwk6illuozy/FHmK1byxVleFE2v8BFEfPWwobxD94U6agO7Zl8z9yUVxETdU+n
-	UrcUcGNQ15U96/6cDI3Dtf7JNhqYjBUV3o0oOACA+7Y379dYj16P9Q4HUjSZhxmCMdox41
-	4llAwbKtN5uoalp+sl9VUHWZk4YsOkE=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=y4cTbbEjgbfYdw7Y25p5e2sRceC0uK0wpv8wAQAF9WZvhCULRcTjTk5EPK29W9dLjkInZ2MOK+wK8eFOO1YWj/EVLI4mQvzrAl2j/AVjz5SxLsqdODc8X6aQLahCC6LcFYCLD1mkunv/KB/G7MVpmsCPLC+rYVH4LpdR4/VX/N9GFAkZSFridD4Aq6x1tNMlrZBbLYRF1Bspcyqe1kpEd0AL946UobN58x5H0ifsdJxfrTA1IsJOb+bovGBk7+JDMFHcaBew4d3mHGJxsCyevJ7KdZumqVllBFcEk+WppVRLRe4J7xuoyaSD9aCVv93gq1xiyflQbaKB6VYNymLF4A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bUuGXl7v/IvjjZlG6/l86Wsb20/evZCBhE5nrxrKyFs=;
- b=bEFbxudT7lBa4fhKMhX42ss7tPVMOaX4I9coee9mGf+cIxo/jPz7SlUApWeSsVwUMZ9um/CbgW9qz5g1s4vMXph4GkQ8KpR0AsoJtDUpN6S4u7Q0pJdczGOMG6R1Swmkmcz8z0YJaYP7l1DKtGqk5VOCBkjjK350jmhy6JuIAwUzF73f7QEV4f1vnVCqgPU9lWvpZiYfdwho90Lzu3fWDhspKV3BEhEL4CT//Vsxm+kVNQ/g4elfoiVKKlQTUfLrlUHcNDSUxQzK31vEf1g9TcjOFKomSiW/gBPZyRhlj0cB/sKUAJx0k4QS4ueS/v2uk5Sq4YYDlbEXCD7mw0v+Eg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bUuGXl7v/IvjjZlG6/l86Wsb20/evZCBhE5nrxrKyFs=;
- b=GCBgPRNho7BrK4pQhIxY7hMhXX5XWL0Kl/0qlAMSPjAic0Mscquzecwdrvgww831rDutWl+nFjq9SiO43UslVGwElAmxT9Q1Hha7FAAVWaIbQJ/cQQuFkNlp/FmF88LXIi3HIRMzhSXypyGfrbDq0fpwD4cV5XcwBzVq98Ij2X+B0hd8aj07KA1TWdglk8z0J+LK081kKsns+LA8iaRTfB//0+7NvsKjMK4fMz4p4IdcK85Vy/CPBiKnRz6i/wI04isyCiGgL6xMqKL/plVNMitZWaLtaF/ph26IxsygC3U/TOgEdeweom8X1TFQ9wGIVa+uCNDDwOI001XMIQegxw==
-Received: from SA3PR12MB598757.namprd12.prod.outlook.com
- (2603:10b6:806:52d::14) by DM4PR12MB6136.namprd12.prod.outlook.com
- (2603:10b6:8:a9::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.9; Wed, 11 Nov
- 2026 22:47:39 +0000
-Received: from SA3PR12MB598757.namprd12.prod.outlook.com
- ([fe80::e206:100:5946:a777]) by SA3PR12MB598757.namprd12.prod.outlook.com
- ([fe80::e206:100:5946:a777%5]) with mapi id 15.21.0615.007; Wed, 11 Nov 2026
- 22:47:39 +0000
-Date: Thu, 12 Nov 2026 09:47:33 +1100
-From: Alistair Popple <apopple@nvidia.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Nhat Pham <nphamcs@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Usama Arif <usama.arif@linux.dev>, Kairui Song <kasong@tencent.com>, 
-	Balbir Singh <balbirs@nvidia.com>, =?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Christoph Lameter <cl@gentwo.org>, Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>, 
-	Chris Mason <mason@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, "Borislav Petkov (AMD)" <bp@alien8.de>, 
-	Mark Brown <broonie@kernel.org>, "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 08/13] mm/migrate_device: fix ksmd oops on a migrated KSM
- page
-Message-ID: <avTu3LmscsttRVRp@nvdebian.thelocal>
-References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
- <20261111-mason-migrate-et-al-fixes-v1-8-3d2454362e8d@kernel.org>
- <ef0432fc-2d00-4568-8087-cb39264620c1@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ef0432fc-2d00-4568-8087-cb39264620c1@kernel.org>
-X-ClientProxiedBy: SY6PR01CA0057.ausprd01.prod.outlook.com
- (2603:10c6:10:ea::8) To SA3PR12MB598757.namprd12.prod.outlook.com
- (2603:10b6:806:52d::14)
+	bh=vQue7jLFUdSGesUi+3B7mc2JziPrIDnIULtffQJGgvg=;
+	b=0DV0NmzxpSRF2ldyQbQnNr44R9nkZ3lrzOEu9KFTYJrKcmVtYOTTTzitf+rq7xOYM+ItPZ
+	ZK2EEQRA2p8lEqWKdDXGS7Mcdbxbg8GWfAb7CB5Q3VrALL5OEEMRJi7ewcj2ASkSV3dTGm
+	355QB3NAi11zDSBEeA0BYaEVX11sptc=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NGOjZg1k;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.248 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794437377;
+	b=vOSmUDk9DFb9mEafAZIXWNSMayq8O+yTz+cBPOUgAgt1fFQQDLaMcdKVEHKU6N1P/zM9/c
+	eXIqFM1EMDb3m3Bq5tSWsHkax2vtUlRAHYkQ/5baPEO1K2QKbgyQ/aRsuZaWDBjYeHTWLS
+	G1C4LtFV5NiDTab18+Tps5VmYKvPVok=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=TJQVUzglty5DBhKdqOJX7Uq+2tUl+AilQ8bRBeO+zoU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794437375; v=1; x=1795042175;
+ b=NGOjZg1kEgy3pz8LKNVfq9xcU6WU08nFKlG0U3hFRV46SsAguTFXlvwzbAckX2UtQ8gBRTcm
+ NMTDlX+JyjqrDjKcEJHtHyM1cfA9R1d8DeBSRuQjVllwxhNvPrnGRHsVvVN6RZZ+md/YzcF2nYp
+ uImjB4h8am86aMNefRqQVhlo=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 7aea4d3fde09893e;
+	Wed, 11 Nov 2026 22:49:34 +0000
+X-Mizu-Trace-ID: 7aea4d3fde09893e
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <aa4c71b6-f81d-4544-96fa-ed54e78b0de1@linux.dev>
+Date: Wed, 11 Nov 2026 22:49:34 +0000
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB598757:EE_|DM4PR12MB6136:EE_
-X-MS-Office365-Filtering-Correlation-Id: 02308fb4-a109-40bf-88a4-08df4045c9ad
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|23010399003|376014|22082099003|18002099003|11063799006|5023799004|56012099006|4143699003|261028144727099003|261021121427099003|261102123227099003|261026140227099003|261026121527099003|261022105027099003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	SCEVxJk3Hj+5IJ9gRfy6Mxo60p+k81MIgWAhZ3llH0Pm/t2fZf/pXqNlhjEVxLXuCxfeOvKCs2PcHv1Kq3GcOX9vFexdDCzrHtn6YkuYqdFuO1BYUbSuXPjUFLqPlwVVw0Ex9tcKxv1fCJj3gh8b7G6OUC6pnrW+qguWe8wttKCOINRtn+H9QV1nA5ZvV8gkqHmb5iNxSBO3gaJWrFE3/0NK5SscfoG3GIAq9zGzu9kDgeZ6m7GdXVN8cxMOFghJSy5emGSRAExeayR2n3Fg1XCR6VsPVHqtQSsA0AoCfeFBscUJwYHf1VxOTjFg20S+R/TW8ijx+JUTfml/C4nRvhnMxACZF/4Z1gLuS7rTNcJdMdrleHjMMV0dgQs74PoXtZkeshbbr2g+ScEvwp6n+VJn+TpWD2u3z4NhqW/jEceemiC4aOzeFk+UaXxPeh027RqdDY60FmsyT9pc7UKbMVUAeqK5b3AMyhYzDbG+H5lGllFXUqVQkYwdf1WDpKt6i7T7X7XMnlfymsjW/WBUR1VNSPp5hbK0QehV4GYxiAMtUnXwJINDTjGBduuekFX2xK9l/oNdhr6hbthy6pIhKO+H5DM9CZV8HZDEurBCUKtEMYP6PH3/alwUNgZOPFa16w2yYubDlErRh3OrtH6/6wfh+U/bMalIXz5HanaLAvY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB598757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(23010399003)(376014)(22082099003)(18002099003)(11063799006)(5023799004)(56012099006)(4143699003)(261028144727099003)(261021121427099003)(261102123227099003)(261026140227099003)(261026121527099003)(261022105027099003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?iTH5jtExl4VOvI7HR47krkbAing5fAzzcarvgJY2neeI5glwjncZWv5/n2o5?=
- =?us-ascii?Q?gKvWkqal+wgL7qAZAuRAoFsYawjn1dtIkHQPSHKZuUOBPxouiSXjXXgGbCQH?=
- =?us-ascii?Q?bgIfszIm04yrRPKOmEg0z+Kirnk/ZC46mWgh8W7u/YxMVhXK+sb+YU+PcYSq?=
- =?us-ascii?Q?RfMus9y7p9ufG8/8DzfIiiBaJTrIly6c7wvYZErI2xpNuQCIf7Nyi9Ww39/i?=
- =?us-ascii?Q?RoKemn+TtIJTSAVB8dD2rOs8WuZypJsrCOL5LBSEdtEEFzhg1wXFrEyOrl2P?=
- =?us-ascii?Q?PU4gzcsTmwPXOjoLj8gxcE/PNo27KbFHydZzqRSgmXu46T0DdJrmna630kOe?=
- =?us-ascii?Q?h15yZNa9koC2AOz1fP27GpnyshiDlTHlB/RvRP4fIZ8MU31SkIun8fsUoqLD?=
- =?us-ascii?Q?Lt0rbi3zCe5kP0rU7s6OmTGOmcx/zzVcPuUcNgDr5GNBL6J8UQ6+WEPVOM6L?=
- =?us-ascii?Q?E+Pd6N/O3zLcv5HzQOL4wW6XIKH4R6SbIXWfM1a0kz5SZ6mYCmjXwmEr/TOg?=
- =?us-ascii?Q?WP5BFo/7OHvsvqrLaDgUgyxZkXV+NOpqP0jVkG2DYwCfuFwX1JXX/ic08Gmt?=
- =?us-ascii?Q?fiLVALodcPsmDHM+juB611358V/a0eOgvLM/tJTRBBceyoh3kjizF4CMu3dc?=
- =?us-ascii?Q?8ZeqavrMsvcJKAyQxJsSV/P/2wkKOTcAX3Qu0CqLUbNvRetywfddxXp8FiQv?=
- =?us-ascii?Q?oBa+xKNukCHx5ZuwBeyPKPykEQihiHUwNvCn+ELLnKyuWrB2p/kicTmEHXJH?=
- =?us-ascii?Q?CUMnpgotglyDOH3W3jsIUJWNB912Yo4ZjXjzrs5FDa+sPQ2S1Y0G1Pcr8vUC?=
- =?us-ascii?Q?Pj0ZwY1LfYZLBa9qRAlh3bqNfri5YzW7kJQBs4c9d4sgVVRUBDthTEjwWA68?=
- =?us-ascii?Q?CRTzXTYBKu2+GuSHfj1dB6mDx9kB5Aqcedqm7Tu2mjvYhALlmAd3UjTx4eX0?=
- =?us-ascii?Q?Iz6iPIGrbQ3JkHEFOC0eb/+hZCimt17vDVzom5fsau+doUMcCQ5Q+whQ31tg?=
- =?us-ascii?Q?exnCS5lOKhiY+pq85JTjeNtfRTkaOMCmp57AgToZ+JkQX4LJk1LWMtY0Rv6L?=
- =?us-ascii?Q?Ax7wPg0H2v1RKCSnrSV8gaGpC5ErADUCKMX69Ik9lTGBi6DnSarzu9bFfRzE?=
- =?us-ascii?Q?UJ0jqYYWLEPIj189bCf0gAUtKWFevO40WB0MZF8ODiy+5jLBdzBHWAG8Zz+M?=
- =?us-ascii?Q?T9dSN5cHFrhsle9xAFhXSuEyXXQWhi3dIYe/CvG68A2XCEOwiGjuHof0Pfuv?=
- =?us-ascii?Q?I0sPzhQLRZmi6l+ZCiLvTAv1sewWitKzFZNvzI8ewSmEH6qC2YNUfL/53q5Q?=
- =?us-ascii?Q?ND7kdHFzzIPeiN/ruB+doe9daENSSR8fY3po5rXml6iuty7xBQ8XLRUen6Tz?=
- =?us-ascii?Q?ybvjVJu8orOMdn22RWDeGXxiiNuioMwL45Q4OI9Kzb0aTHVTb/UoHdXXZogH?=
- =?us-ascii?Q?3N5MJL2ZUoehEVo+Rb+4aE8SVV4s0KEd7IcLEkZgJClzGHdHjIMB/plbSUFV?=
- =?us-ascii?Q?NktKA8cXebryhiaOxBVhjtWC1mHi78FphzO4WMNrNEWy+Wv+CkiuMhyVRF45?=
- =?us-ascii?Q?AQv+GO6CHDEF4SKrqG0KEO3+LDVul1O+O9JBhRQ8bfkUUjRSF8/6ktn6IFo9?=
- =?us-ascii?Q?rI1RdlYI+pTKxLRLqlD8TxuNf+JYmZvbiNvV/dMX8n0Zpp26/UhM5HxRc1m8?=
- =?us-ascii?Q?aRkosZdoNbvuReiE4SWrHI83oJApE4aTXfXuSo0mk/udjoFcNoVhPQNfSKa7?=
- =?us-ascii?Q?G4oC5cvrOg=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 02308fb4-a109-40bf-88a4-08df4045c9ad
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB598757.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 22:47:39.1189
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bahZ+X2CljY6W+Yav3NviGmq4WrQyicFuv35c8t2EcgUDsos4zzlDCgsNMNjkLQWbG/Jj779l9TYMBTOC5CESw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6136
-X-Stat-Signature: m9r7i4y4nzwm9s4kqe8r5ckhywywnb19
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/13] mm/mmap: free gathered pages before MMF_OOM_SKIP
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Kairui Song <kasong@tencent.com>, Balbir Singh <balbirs@nvidia.com>,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>,
+ Chris Mason <mason@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Mark Brown <broonie@kernel.org>,
+ "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, stable@vger.kernel.org
+References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
+ <20261111-mason-migrate-et-al-fixes-v1-1-3d2454362e8d@kernel.org>
+Content-Language: en-US
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <20261111-mason-migrate-et-al-fixes-v1-1-3d2454362e8d@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BC6E1160003
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E8F3B20003
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794437270-114096
-X-HE-Meta: U2FsdGVkX1+dW4oTk7yfZAh+2M7sKPeVo6FAcOMBYJ+HeTYOQiSE6HeV6xiSIIr98bQFzdT68TiwyvTDrnE+4fYgCBoGxBBHhlWMUZYxWp0pwXj9Pr+cUxA0XXl0SpjgILYh03rf23ovzgD/jsCer6xVOzxfxS2BAVKH78TtaPWBieA31hZmgukbprjzcFh9foDPU3ljB1aLhiubc0x2TMO0tCghqlyNvz6zXipr6BJyz2peg0BdYCfmZ1yJ4zNrk8pKaU6bdLja+YBK+drJ/e9ZgriLLoL+iJjYq4v48FgpydUBfzNXzBDgyssJkKZflZPVgJANgsHTrUK6Rm4LOoWoERRihP9UImNFDZWQeYr4m9HarOngfvqFX+xDh/5jSwlaCfjEbN161roHP6gwVfo66QPv9r0e4H/Go3IEFhfHmemVj/e8UgY/uHdMFGT/QSkksoboXZfvlvGHC0vA5NaQVi7p3qWLN4Mz/ITKe0t0BWtHtgWfAwgvJdFQKXwLjadtYNH2r2ABqDLuY3B1OiVoyUpt9e1C0+FaNzgL2QE5mGcF7cwxvlguVPyyGKkgEF9/BULRJU1SbJgZ8frvuyZqFByNejErAsWLiDhyL0QCt6TMVBJdTs1sRkM/gmjUchkALTKhS/XusMc4If17+Nx2ZV0mY4B0nrxP54llkeBb1J2m3UL5giTItj/DQ1c1MZ7UQQteHYMrxuVtbxasSENARbU54G53zTypZX9gFFVlf3M4LKl9CZxNb5AiYmpfbjpVa0KC/hlVrQK3tvlhy58wW7kNpMZpmsoKJxBnkjvTI8Gapt+Oo00eAk1JgqLJQWfV5aOVua6IJh1uFbmI4nf5qMb6wEGf1GbAdn2i0nJ4PYwebfNLj/lESWCbNFoBNMOJz6FgTGiiZrNT6i/tL/wUcqN9KniHcrrlkGOL/EPjwuGdctkCTccoqEbE7a341smzONRkcr6vCtcFGQ6
- NI3IR0sS
- HNs5NQMOULgqwcTUqlkFvom03JFIjiVFBvzh6z4mn0C4bd11B1qJU3Q8AAw1TyUGy6IPltX498sG04UNAZFjNq+AGHCpLA+zviRpT8XSdF5fKR6P6+hjW1aXAWUtVxZLa9xujJf2m5mcjyxFvtMiNp5Ob5kuboLhwEYFH9Nkkkmm9rFAUUsTs3PnucGUUZDIfTdddtYgH4RtD5OAQiXKV6XYIk/KioUNLvrYjAUCdytylmLY5fhpk7TdDBm8MUzzbsU/CQ4EnMv0SysjDSASq0n7BHV7BKgidwfvlij223msWJin8ftPMR8VqiyQDZBxvoELhNXs9yDLq/omadIGytQP1gH1Wt+bF++x1q45rqw0JPKWQ75IBmbu7rmrNHfmS/eBI8lPqlRKVqpbkOVQDjIXSIOQYfdvjcvMRcmRh1WpX6WgFFab4ad3K9x6Tky4zAfC14evu098A7LPCrIqEHeU7XVOhVAPJKMlJeecJKqYJvvY9SPL3ObtqKH5jqAJTfZleW9uWmFXYEkopzyQNaOtGFLlRUyk0gFK/
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: j5m4yxa4tn6e61ui59bs57fnrm4qpr5j
+X-HE-Tag: 1794437376-28515
+X-HE-Meta: U2FsdGVkX18Pwh5VO2BZAYmq8JbqOoi8Mw31yf9n0kZZw8o6EK9uL3b0bOSpqSfVBSAoYNwKvVRBim7vpyBbo2uY+eYXZEcF9NtYnBeRDKdNJHr1jqMNy/hajp9hXhpq9EB3Mqbg6V9biYpAP6xYk19TvmWUKN/bN0OUytz0yKRPRb22fXTMVe8NQfqvlZWJAGbucXmySEbCcK6/gNQT9pm/RYF8fCR4rHKgimU6ZAd2VNCpj8q/9efkOpyG8t2oDoZ9w0KjiSLapZwomjSia2WVTYUO1jKRZITrIuxuL4uvwnE286yxUf5SaDqVsHUw8ZChu7VScqg56Cxl5Ot31BlUhLVB4VOFjufuTZujRSoD19zo4UdBKxXIeFPPE4zobCrPd8v+xZCqNM6Iw7tfoUeauenhZO45BlBdnwVdXHF1WjbOs2WbRvspZgT0xpJCvZShpQWenq8c0N+2TPgpgwffD23/XYtvHlKY1kM6V9rdOMhS5kBFZ9O0VbR+qyvGxZS80zANoWkBDCloGgvqV0VgQT4E8OA4Sjc3/E5BcDlCZUvSGnm7FRijyp0r31tkUd3SMmESUSqobdhGy4moO9SV8wGRItfObW+YsjPjuaxHi6Y/JKZAMgSOCa9WGA96wDC3KtYukuAyLEH+zCxI70YxkI/nBMrN3XVo5Ge3X3GWFz4/Vgby15/64dYWWf5FaM2MQ4ILYzj+0cksdVng+A4bkIW7Bp+cMkq1FHe23MUWXTFT+3L7oa/Gx0Od5gMFnwGuNvsEzRzDvPgczu3hAic5R4HSRyfZmzwZHqSsJrmXg0w+aGc6lv4eLZJvuQtRa/Z0GqhMNTLh6haaxFyn3uPMKVvaQmaTlBNSzL6TkhRyBSOGzaF/BpWV4+aHj05SnVwCrQUnTl99/6SCR8WZA/adyRoVFQkR19IYpH4QnFBwuitAXXEO8HRge66iq9s8HpoJDQNqqoRXY09IKDI
+ I3vH/oha
+ fXEAnkF1junhUrir/bWb7wGcJM3xiKuyddXggKmJv5A6y4DBD8mn6bwWI2wePYKfWUIZNyJdBCMLNncrJwGtujO46u3i3qn5uh8NXTyOc5NOvsQ2MN/0sKXxfKIfcdZJh6GrJh8IDmu5QBJUJaeqJyOUDzFPYgLigQ7la8ASVgymzlOT4veqiePmexExnnrKJti9v8h8JJofEILFT+Fpd1TP5qlmnpgEMyU/5yX1jHeEactTjoyufJRjUztAXIcmFcbWzo/BkXCwynZ7cqqvRDvhJ9XcbJgnRr0fFMP/RgYHpYjatKvNL47XvR55YzRwld0CNCHaHMhGoAJB9eeiDFkfv4MIl0OTztzcia9lciiigQ4Mi/RasaB+EkoYYO6zH+VZhLqpGqjycHg0uyzfhr6lwy+nxXAKP5b5VQcsgmRQe6gc3fH5g3DE+LGf8yKaLaw4h0E3pIfS6DnFXvjcodZVLMMX9rafHVx5gqXpV0zeyB1A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -181,57 +119,117 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-12 at 08:54 +1100, "David Hildenbrand (Arm)" <david@kernel.org> wrote...
-> On 11/11/26 19:13, Lorenzo Stoakes (ARM) wrote:
-> > From: Chris Mason <mason@kernel.org>
-> > 
-> > After a KSM page is migrated to device private memory, ksmd can oops,
-> > and KSM then stops until reboot. A process that maps the page can also
-> > loop in page faults when it next accesses the page.
-> > 
-> > The problem arises because KSM doesn't know not to try to look at device
-> > private memory that does not exist in the direct map.
-> > 
-> > Disallow this from happening by explicitly testing for this scenario in
-> > __migrate_device_pages().
-> > 
-> > Fixes: a5430dda8a3a ("mm/migrate: support un-addressable ZONE_DEVICE page in migration")
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Chris Mason <mason@kernel.org>
-> > [ ljs: tweak commit message, comment ]
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > ---
-> >  mm/migrate_device.c | 9 +++++++++
-> >  1 file changed, 9 insertions(+)
-> > 
-> > diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> > index 45e571dbfb4c..7ebd02ec303b 100644
-> > --- a/mm/migrate_device.c
-> > +++ b/mm/migrate_device.c
-> > @@ -1205,6 +1205,15 @@ static void __migrate_device_pages(unsigned long *src_pfns,
-> >  		}
-> >  
-> >  
-> > +		/*
-> > +		 * KSM doesn't know not to try to read device private pages, so
-> > +		 * disallow the combination.
-> > +		 */
-> > +		if (folio_is_device_private(newfolio) && folio_test_ksm(folio)) {
-> > +			src_pfns[i] &= ~MIGRATE_PFN_MIGRATE;
-> > +			goto next;
+
+
+On 11/11/2026 18:13, Lorenzo Stoakes (ARM) wrote:
+> The OOM killer can quickly trigger again after having selected a
+> victim. That victim might not have freed its memory yet, but its mm will
+> be marked MMF_OOM_SKIP by this point, so the OOM killer will ignore it.
 > 
-> In general, LGTM. I was just wondering if we could reject that earlier. because
-> apparently we already allocated a destination folio :)
-
-You could do it in migrate_vma_collect_pmd(), but that would prevent migration
-of KSM pages to DEVICE_COHERENT pages. DEVICE_COHERENT pages are always in the
-direct map and are by definition fine to look at, so I think it's better just to
-do the check here.
-
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-
-> -- 
-> Cheers,
+> This can cause the OOM killer to kill an innocent process when the first
+> might have freed enough memory to relieve the memory pressure.
 > 
-> David
+> Fix the issue by freeing the memory before marking the mm MMF_OOM_SKIP.
+> 
+> Note that the task which calls mmput() might not be the victim - if it
+> took a reference on the mm (e.g. ptrace), it may hold the last reference
+> and release it when it calls mmput().
+> 
+> Therefore we cannot rely on current to tell whether the mm belongs to an
+> OOM victim. Instead, partially revert commit b3541d912a84 ("mm: delete
+> unused MMF_OOM_VICTIM flag") to reinstate MMF_OOM_VICTIM, which
+> mark_oom_victim() sets on the victim's mm, and check that.
+> 
+> Reported-by: Chris Mason <mason@kernel.org>
+> Fixes: bf3980c85212 ("mm: drop oom code from exit_mmap")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+
+Makes sense, it will free an OOM victim’s pages before setting MMF_OOM_SKIP,
+avoiding unnecessary additional kills.
+
+Acked-by: Usama Arif <usama.arif@linux.dev>
+
+>  include/linux/mm_types.h | 2 ++
+>  include/linux/oom.h      | 9 +++++++++
+>  mm/mmap.c                | 9 ++++++++-
+>  mm/oom_kill.c            | 4 +++-
+>  4 files changed, 22 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 1ed35d258d2e..09e63ff12b04 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -2030,6 +2030,8 @@ enum {
+>  #define MMF_TOPDOWN		31	/* mm searches top down by default */
+>  #define MMF_TOPDOWN_MASK	BIT(MMF_TOPDOWN)
+>  
+> +#define MMF_OOM_VICTIM		32	/* mm is the oom victim */
+> +
+>  #define MMF_INIT_LEGACY_MASK	(MMF_DUMP_FILTER_MASK |\
+>  				 MMF_DISABLE_THP_MASK | MMF_HAS_MDWE_MASK |\
+>  				 MMF_VM_MERGE_ANY_MASK | MMF_TOPDOWN_MASK)
+> diff --git a/include/linux/oom.h b/include/linux/oom.h
+> index 00da05d227e6..a9390cb70541 100644
+> --- a/include/linux/oom.h
+> +++ b/include/linux/oom.h
+> @@ -76,6 +76,15 @@ static inline bool tsk_is_oom_victim(struct task_struct * tsk)
+>  	return tsk->signal->oom_mm;
+>  }
+>  
+> +/*
+> + * Use this helper if tsk->mm != mm and the victim mm needs a special
+> + * handling. This is guaranteed to stay true after once set.
+> + */
+> +static inline bool mm_is_oom_victim(struct mm_struct *mm)
+> +{
+> +	return mm_flags_test(MMF_OOM_VICTIM, mm);
+> +}
+> +
+>  /*
+>   * Checks whether a page fault on the given mm is still reliable.
+>   * This is no longer true if the oom reaper started to reap the
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index 7618e72766a5..4cb18b217048 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -1313,11 +1313,18 @@ void exit_mmap(struct mm_struct *mm)
+>  	/* update_hiwater_rss(mm) here? but nobody should be looking */
+>  	/* Use ULONG_MAX here to ensure all VMAs in the mm are unmapped */
+>  	unmap_vmas(&tlb, &unmap);
+> +
+> +	/*
+> +	 * Free the memory before marking MMF_OOM_SKIP so a re-triggered OOM
+> +	 * killer will only skip this mm if it's already freed all it can.
+> +	 */
+> +	if (mm_is_oom_victim(mm))
+> +		tlb_flush_mmu(&tlb);
+>  	mmap_read_unlock(mm);
+>  
+>  	/*
+>  	 * Set MMF_OOM_SKIP to hide this task from the oom killer/reaper
+> -	 * because the memory has been already freed.
+> +	 * because the memory has been already unmapped.
+>  	 */
+>  	mm_flags_set(MMF_OOM_SKIP, mm);
+>  	mmap_write_lock(mm);
+> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+> index 5d48bd862c27..9de57a23893c 100644
+> --- a/mm/oom_kill.c
+> +++ b/mm/oom_kill.c
+> @@ -752,8 +752,10 @@ static void mark_oom_victim(struct task_struct *tsk)
+>  		return;
+>  
+>  	/* oom_mm is bound to the signal struct life time. */
+> -	if (!cmpxchg(&tsk->signal->oom_mm, NULL, mm))
+> +	if (!cmpxchg(&tsk->signal->oom_mm, NULL, mm)) {
+>  		mmgrab(tsk->signal->oom_mm);
+> +		mm_flags_set(MMF_OOM_VICTIM, mm);
+> +	}
+>  
+>  	/*
+>  	 * Make sure that the process is woken up from uninterruptible sleep
+> 
+
 
