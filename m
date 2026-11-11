@@ -1,125 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87784606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 01:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8801606A31C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 01:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nsBkOnS+
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=1/RpaODb
 Received: by kanga.kvack.org (Postfix)
-	id 58B6A6B05B0; Tue, 10 Nov 2026 20:29:23 -0500 (EST)
+	id EDDF66B05B1; Tue, 10 Nov 2026 20:29:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53C466B05B1; Tue, 10 Nov 2026 20:29:23 -0500 (EST)
+	id EB5206B05B2; Tue, 10 Nov 2026 20:29:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42B1E6B05B2; Tue, 10 Nov 2026 20:29:23 -0500 (EST)
+	id DEF826B05B4; Tue, 10 Nov 2026 20:29:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0ED736B05B0
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:29:23 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 84D2614017C
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:29:22 +0000 (UTC)
-X-FDA: 85421105364.08.DAFA9A5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id E0FA640004
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:29:20 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nsBkOnS+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B8EE46B05B1
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:29:34 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 522E61C250B
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:29:34 +0000 (UTC)
+X-FDA: 85421105868.10.92B9CF0
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 17118160003
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 01:29:31 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="1/RpaODb";
+	spf=pass (imf08.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794360572;
+	b=DyCfBOwsO1Ie7O9YpvJ2rD+YDpHHHzi+f2O1zd6KeUbGsDiUjv19DtiO238MFcjys7759J
+	BQA8KVYWWN7ZyhLEoKTm91iKNIXQNTbf7c8/YkfpAQe5HgAzYzvHYGmc3cCdZNC1rEguI8
+	L+hQQQvyZtVaEDNlxrvEW7TdA4uYquQ=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="1/RpaODb";
+	spf=pass (imf08.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794360561;
+	s=arc-20220608; t=1794360572;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kJDtYQ5RM/nMy9qPHT1eQaGhKo9m/wZ8gDKiqQSYfNo=;
-	b=e2qJv+Yh2ygk22azNcQ06mDf87EvwsinpYhp7fv+Ej26Zrl6i+DcAkiNuYRQBSgrTTjC9H
-	+bmc5CwpCbohkzFbQ7WCI89RKuK7m55dw//FjJytKKoANrCbemUCjwQ7ju7u3BkxZsbkNB
-	VqSEE2zvreTqw8MDA/wRMe4eyCWCD4o=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nsBkOnS+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794360561;
-	b=p5uranpjLU8CUHzujLnJVKeN2BHQpr/PZiwKP0XcsQdGaB3kqic5zrrGeLeSqAdtS4Jqiz
-	AHYFtPV4n/rYHO5AdwSYUGg4dR7Wh/NAuUxRToxFRNHdyiCRup17pDFMmMVr3pVOY2liWa
-	DilwZRALlehkahqh55hegMiOAjz6dV4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DCC56446D7;
-	Wed, 11 Nov 2026 01:29:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 826431F0089F;
-	Wed, 11 Nov 2026 01:29:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794360559;
-	bh=kJDtYQ5RM/nMy9qPHT1eQaGhKo9m/wZ8gDKiqQSYfNo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nsBkOnS+I3Q6gFW6yrtdxkTfq4jtBsCUe3//dHOR2dLA/3s5qKJDc5TyIDrbtwpCI
-	 P0353Bwo4LZmGGMeb93HFXxbwlOSfnSRkY4wovT9NIDjmQzZyHYjFIA/paJVXajDMR
-	 ihjFuLV9AYj18OZ+Uhg6OhyNipSwyZh2norzxpbWhNDvczeRfSI64Z2n5I1MJI3D6C
-	 tuisH1NXT/GQFju70EAlv0tUcuhHPM1LeZVEjNlrgxxwttrzrn961pHV8w3TSqOxpy
-	 22BYiyDRqdJcKA5Xq78h0EuN2yrZQmZ3ZEgvUbuM1Y+8G2S27MpLlUTNXNoM1FrM7R
-	 Q1NtTqgVIC/uw==
-From: SJ Park <sj@kernel.org>
+	bh=WJO9J925Zyjd9oDjnhBcl5C5X6Z/lz/HeHH0GON15bE=;
+	b=l6ShLJjZx0ZbMWov3+88SoSB64LF2iaqFFyt+BQV5VieTrBfLJjZZogdGkEb//TysYiswT
+	DwWJD1QRHwUvfdCuCAfrjCAuG7SGrgwhU/0UElNcrHNt1v/e2ddT0NuEHpxMA8LNg+junn
+	95RnZv31wgZN47ONhKRFCdzmLEUNB74=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=WJO9J925Zyjd9oDjnhBcl5C5X6Z/lz/HeHH0GON15bE=; b=1/RpaODbmOCV8/voA+ETbz8wIS
+	D+MaCvQiwqxGlBmsaZVcjMWo9siecOysfznzNvNxLp32tCxNP8NmbhQuvNqu0b/Ab+/ny+6DrFa/U
+	QNXCMXOUZ1vY66BQIkkvwftL9xMoX6RbizU0ClULKa1/5GyZ4x9GUu/axBRuxtPJjS51a+PH4rxJo
+	vhNkn/CP5C7yNkY5/zW79XGdaRneCY/yvD633z0/1cJ4KfvClFbryn0+bHAuRTbvGxppTWSzm0jiU
+	0MWFg67+2eywVbIT4ZGFgHbtrKRWltpz4JvPmcqwVgKMCg2saBYPW0dASl2K3nRISJ3IvDnlS4rPE
+	lvO3aOoA==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xQx9W-00000005Nbn-0Ih6;
+	Wed, 11 Nov 2026 01:29:30 +0000
+Date: Tue, 10 Nov 2026 20:29:27 -0500
+From: "Liam R. Howlett" <liam@infradead.org>
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: SJ Park <sj@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 0/4] MAINTAINERS: remove my reviewerships, add CREDITS entry for THP
-Date: Tue, 10 Nov 2026 17:29:10 -0800
-Message-ID: <20261111012911.162135-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
-References: 
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] mm: only assert VMA locks if CONFIG_DEBUG_VM is set
+Message-ID: <dtmgkdxvqouwm2gipfccmnxjjm33qcamkjunh4cyqrf4si6ixi@g5uussz2eqwh>
+References: <20261110-tame-vma-asserts-v1-0-be293ff499a7@kernel.org>
+ <20261110-tame-vma-asserts-v1-2-be293ff499a7@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261110-tame-vma-asserts-v1-2-be293ff499a7@kernel.org>
+X-Stat-Signature: wcrhq9yqw695jdbounzbj6ayp9a9txmh
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E0FA640004
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: kms7e7g1f511gwmkk9u57b891jb4g5ad
-X-HE-Tag: 1794360560-306366
-X-HE-Meta: U2FsdGVkX18TM+sUoR7IniH8BCsa7PE0/8wFOy7Qe3xWrAq9BiR5EtYpw17tj8qsJovqRwhzdLOQ+Uf4uw1Tmf1aUpFeS7/u1LQ1lxX99SlAG/X35QFec3N0tPyQscGD5ZDGomaQEySI1NQ10sgQsG+s9qJSUo/J0oK5w2N7FOslbXiMTy3n3LpAF25Ggg3JKoMaDPu4bcT/J3rF0DSqKVWsiCVqLrW5qyNpPbWSu5Z0OFq1RTOHkPiTo5Z4NhjygqVA0v+j5taZrj/zy2Mbg3F7Wqc6ylgN6g9HkHaW8Jmt8/axbfHZTNkhHq0UMGx0q/ur/xaCDHpXoEUW+WBQLe+94eMPOH4BkAXfQm56jLLBGrXrKhey4PLSd3WHmGF++ZQqPNQpsQo0n2FFn4ylU6hp7wHRBEclsnjD5LyEx0/UvCuZH5YHD0qQ0OKTxDWbzhsUuzXakOzFdml/yl+aE/15U4Mmtd6ee7tKSv4ypAF+Ui9GH0paBu1pda5aRM0TIE42w1mnE1ix7d6UMalGJJ3eaMc3GIs4aIV47dw/IzHq+9cUEx5aJDhvSGLRnBfgxbHDopdoaB3MwKSH9IdOQxawmQ2vKv4dK+faGDxOhuKvlzPiF13+1K/M3vG60wKVx5nsycXD6AyAvbX3MWzaBzdewc2doMUjRSKm0be8BRo+sIQfY1Dh+kY7eRp35ZPEGTMOsW2kMv/1fPplontD5oa8AMZe5Q0F63vlSXwXBt4NTtdO5npmrvsHHEZLreDQ2QsWAUL0b256WDacCNbR8cyzY0+tqi7GSsuJia1aZpuOYayVMqSBqySHuGId4fs+OML4dxnFHSWcNtBdxaMViDYX5PSyuUigcGZS0+8mYbTg4aBuVU1IWMIuSU8kveIHCOsyW/cXhbA66g3Yi47sOqbkFvAEdjQ/+l+adQM53gj6J5KnLOLfoXB44F9o78wb+K21aMG1p5rUq54MLFO
- DCYHOzYN
- Icyx5A38snoAFhwf4vkQMO4PVW0twjc/yA5jZoBfQ0h2EV9teduGLWMMrH1cT1JNWYOqPNvm7V18anQGRvflK7wsvmx7YK7Ipqb5XvEXqrh0k0LfPqmfphOyGMvS7i9IpE4vgPSH7SmK5RanEGKn7fMifdBe/jmmz7KCa4acWivSOOXmapFT5hHr7Xw00ufZ1jto0HuR5NEwjj901naRGxPHv34/nMQnfnQ1vQCDgYyzCid8=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 17118160003
+X-Spam-Status: No, score=-13.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794360571-178178
+X-HE-Meta: U2FsdGVkX19CeA7hf2Yec15qrwUODnAOKBiVcsY95WNdWAPzRr67iYiw4zhfz20W69IhC7qkNl7IzSBG6yoQ4xSwvzkn6NC8kja+XXK85k+KJd84npSjLC1WIil9Typ9y07Mr4meJPr8CNmHs91QzfAukTwXt1WmgQQCP/17YQcpDmJyDrnfgt6YujChEQL2iGfwSariIMqkLlSiwH1azjsm0wFUUdyMRTT6k33aND4SV0X9Tlq/BdrUn1/bdxKKPQcke3T/3qpUDVk6SVk4D+HlmCAOs/G5rYTsqUAmYLKOr1qu3joUxdAlWfawMINF8Om8whiHGYq43dEF1067DLkG1QBWmDEgbijVa/lbXyWgqNFiKOu3fjdRg60eS1rvsFHfCQ6nLMScnGD8ZVGc1UayQMbWjhrUMdlTkAstxrzhZbrjITO7xNCNX/QMG/pnWV16KLgHaoVDz87OpAGPbpEDquFjxj/Xt2Q/TNtC3IlhvXTGDclGFMCCXxJxeuq82P/PSmI7fqybclNVGcWTVjo4AsQGBHq6zMcgxrfLGUD4A1olIhtR5wH+wQz1qKjXp4N6OhONaLRjreVFpwnKAhiHua+SjobBai1E/Nwfd8MXebs4sdb1IeGax5HmioRLplYUJBRScof1BIymSyv9PT677dQbzTeSfYEeaDeplRljHx12kXb8gYGTNj8KikkURo4SFVO1jJj5Fb5FAgzY7z4u45YU/1gPny40H59EOtH9eJLKpW6d2NJo4Owb3z+cEs6AFkniekqcy3pKklalSzAZBQ5wo7HT9XGoAW8azw6itXtBCEvWkx1cZ20UqLQGHvRSdxYX7xcb/spQrbIiIFNNxAyzaWWjNzwuwbNxniA71PeZWxHGhnjfx8WMFdBMPkZblw5h0fDY0BJdvFV1VTArnf5jBVCURsv0shngjZWxsGXznTUG4cxzfN1miH4SUBrpMJm1Gusm26k698G
+ E876LMIo
+ OGyWmmj/+w136PXuX372hnBZsyDY1+EeQl6BgzDgkF+ubd1Fyi2y3G9C7mEJOIQm1hz3Z3lu3CZx7gaUzj+Q7iROwJ4ZdNffx1p38sTK6aXMkBqJ6iYGal2a6TjYfx41wLAWc3Ni0Go4QAzXhrzbeMJI6yaklx9yyLT6droj6XJaMaI9v2S/JIWDUkwWywD2HVG5uL+QfObiiMRz+/V9RUzIprpNZ8Uw1JxAw5rZM0N0sSk6RjUxzveWc81L1IaT3DdHXjikxKMsZeUOCFQ+hUM9A8GZozRA8Rqvdn5CqDMagvf3znd7GOCaB3jLL3i0zT69+fqQwzsFzgoQk0Zmrx/5oEay+vVK4yKut7iin6GQ/812Jh4vw4blv6DIq4akT2yy49UMCYvFndPQ5cVA1nj7BapTj6izhxCC2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,35 +94,113 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 10 Nov 2026 12:03:06 +0000 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
-
-> Given the current throughput in the kernel resulting from AI-generated
-> series, I unfortunately lack the bandwidth to generally be able to offer
-> review except in those areas I maintain.
+On 26/11/10 04:57PM, Lorenzo Stoakes (ARM) wrote:
+> Similar to the mmap lock asserts, we have also asserted VMA locks
+> regardless of whether or not the kernel is a debug build or not.
 > 
-> I have separated the patches into areas maintained by David, Andrew, and
-> Alice + Danilo, so each can take the patches relevant to the subsystems,
-> for convenience.
+> Similarly, these are asserting basic assumptions about kernel code which
+> should never assert in production code.
 > 
-> Apologies for doing this, but given the current trends I'd like to do
-> something to make my inbox a little more manageable :)
+> Since all such bugs are generally asserted using VM_WARN_ON_ONCE() or
+> similar, it creates an odd and inconsistent situation where some
+> programmatic asserts are only checked under CONFIG_DEBUG_VM and some are
+> always checked.
 > 
-> Also add a CREDITS entry for THP, as, since Zi's rightful and well-earned
-> appointment as co-maintainer there, I have no fear of needing to step in
-> there, and so would like to record my time in that role.
-
-Thank you for your huge contributions, Lorenzo.
-
+> Since the intent is the same as any VM_WARN_ON_ONCE() check, do not assert
+> if CONFIG_DEBUG_VM is not set.
+> 
+> Implement by updating vma_assert_attached() and vma_assert_detached() to
+> use VM_WARN_ON_ONCE() rather than WARN_ON_ONCE(), and gating
+> vma_assert_[write_]locked() and vma_assert_can_modify() on CONFIG_DEBUG_VM.
+> 
+> nommu loses its CONFIG_LOCKDEP asserts if !CONFIG_DEBUG_VM in
+> vma_assert_[write_]locked(), but this doesn't seem to be a problem.
+> 
+> In addition, there were already inconsistencies - vma_assert_write_locked()
+> uses VM_WARN_ON_ONCE_VMA() and performs no actions if CONFIG_DEBUG_VM is
+> not set, and vma_assert_locked() looked up vma->vm_refcnt but also only
+> asserted if CONFIG_DEBUG_VM was set.
+> 
+> Therefore simply update these functions such that they're predicated on
+> CONFIG_DEBUG_VM and update their kdoc descriptions accordingly.
 > 
 > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-For the series,
+One nit, but not worth holding things up for.
 
-Acked-by: SJ Park <sj@kernel.org>
+Reviewed-by: Liam R. Howlett (Google) <liam@infradead.org>
 
+> ---
+>  include/linux/mmap_lock.h | 17 +++++++++++++++--
+>  1 file changed, 15 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+> index 9367430ee53c..bada7a03ddf4 100644
+> --- a/include/linux/mmap_lock.h
+> +++ b/include/linux/mmap_lock.h
+> @@ -354,9 +354,14 @@ int vma_start_write_killable(struct vm_area_struct *vma)
+>  /**
+>   * vma_assert_write_locked() - assert that @vma holds a VMA write lock.
+>   * @vma: The VMA to assert.
+> + *
+> + * Assert only if CONFIG_DEBUG_VM is set.
 
-Thanks,
-SJ
+These are stating what the code does at the very start of the function
+and I'm not sure the kernel docs needs to state the debugging behaviour.
 
-[...]
+>   */
+>  static inline void vma_assert_write_locked(const struct vm_area_struct *vma)
+>  {
+> +	if (!IS_ENABLED(CONFIG_DEBUG_VM))
+> +		return;
+> +
+>  	if (!IS_ENABLED(CONFIG_MMU)) {
+>  		mmap_assert_write_locked(vma->vm_mm);
+>  		return;
+> @@ -369,11 +374,16 @@ static inline void vma_assert_write_locked(const struct vm_area_struct *vma)
+>   * vma_assert_locked() - assert that @vma holds either a VMA read or a VMA write
+>   * lock and is not detached.
+>   * @vma: The VMA to assert.
+> + *
+> + * Assert only if CONFIG_DEBUG_VM is set.
+>   */
+>  static inline void vma_assert_locked(const struct vm_area_struct *vma)
+>  {
+>  	unsigned int refcnt;
+>  
+> +	if (!IS_ENABLED(CONFIG_DEBUG_VM))
+> +		return;
+> +
+>  	if (!IS_ENABLED(CONFIG_MMU)) {
+>  		mmap_assert_locked(vma->vm_mm);
+>  		return;
+> @@ -480,12 +490,12 @@ static inline void vma_assert_attached(struct vm_area_struct *vma)
+>  	if (!IS_ENABLED(CONFIG_MMU))
+>  		return;
+>  
+> -	WARN_ON_ONCE(!vma_is_attached(vma));
+> +	VM_WARN_ON_ONCE(!vma_is_attached(vma));
+>  }
+>  
+>  static inline void vma_assert_detached(struct vm_area_struct *vma)
+>  {
+> -	WARN_ON_ONCE(vma_is_attached(vma));
+> +	VM_WARN_ON_ONCE(vma_is_attached(vma));
+>  }
+>  
+>  static inline void vma_mark_attached(struct vm_area_struct *vma)
+> @@ -549,6 +559,9 @@ struct vm_area_struct *lock_next_vma(struct vma_rcu_iter *rvmi,
+>  
+>  static inline void vma_assert_can_modify(struct vm_area_struct *vma)
+>  {
+> +	if (!IS_ENABLED(CONFIG_DEBUG_VM))
+> +		return;
+> +
+>  	if (vma_is_attached(vma))
+>  		vma_assert_write_locked(vma);
+>  }
+> 
+> -- 
+> 2.56.0
+> 
 
