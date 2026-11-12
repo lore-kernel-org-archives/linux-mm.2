@@ -1,140 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E752606A8AF
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 10:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1544D606A885
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 10:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=tWCN2rWX;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=cniGN0eP;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=oJZZLYyR;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=WZ4QAStE
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RUCJ/Hji
 Received: by kanga.kvack.org (Postfix)
-	id 72C296B05B3; Thu, 12 Nov 2026 05:36:33 -0500 (EST)
+	id 339316B05B5; Thu, 12 Nov 2026 05:39:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 704646B05B4; Thu, 12 Nov 2026 05:36:33 -0500 (EST)
+	id 2EA1A6B05B6; Thu, 12 Nov 2026 05:39:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6198A6B05B5; Thu, 12 Nov 2026 05:36:33 -0500 (EST)
+	id 22B926B05B7; Thu, 12 Nov 2026 05:39:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 430826B05B3
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:36:33 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 37055C02DB
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:36:32 +0000 (UTC)
-X-FDA: 85426113024.20.03DD813
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3CF3240003
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:36:30 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tWCN2rWX;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=cniGN0eP;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oJZZLYyR;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WZ4QAStE;
-	spf=pass (imf27.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794479790;
-	b=JDnURk7MLKeFypZKHDvS0GI+BEVOsB9ddDl0JdX57sOQ9B0jvcn58YD1p3fwlO82VHfiKO
-	EZeFHZosxNj9Ejd3SCnH7F3Ntm3oLTQsEmxGe7qlvu/r5qCzJJJDAsRCEDbCwl6m5XdjzG
-	EvgVgCYjz25b9kZ2pW0Ls7COB9eefzg=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tWCN2rWX;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=cniGN0eP;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oJZZLYyR;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WZ4QAStE;
-	spf=pass (imf27.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 045236B05B5
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:39:07 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1E38F14053D
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:39:06 +0000 (UTC)
+X-FDA: 85426119492.04.1E1F5BD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 588A5140004
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:39:04 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RUCJ/Hji";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794479790;
+	s=arc-20220608; t=1794479944;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D/2XQ7ncDhSBVFrS9AI6XolCxT4hxWA0EjuRpadrVdI=;
-	b=6en9a2LCNTsUiizAWWkxkqEznVHYaC2rQU0sQVWscU2z+bJUyK7guDYRREMKzmcH/Fbln7
-	0MOG9/WYhduCFixuApClDGVQOiiam7ojlCYEchp+MhXqdVO4oNzf+nZ2WlZabaFfxk2mTW
-	jRtlBj6HF08ceLaeKLZt/7T4dDY1CBU=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E8A2B21C76;
-	Thu, 12 Nov 2026 10:36:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794479789; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=D/2XQ7ncDhSBVFrS9AI6XolCxT4hxWA0EjuRpadrVdI=;
-	b=tWCN2rWXg6Jc6hML+rU1RIt5XKgQfxl/g2XI1/mgon8qIZaTHQApi/R37OJvUSL2YIwSWJ
-	16Ls8dPn6SQQx396r9SMIBmN656Why4nSIsO2Dcq5G6y0m3/02Yj1ROSPOqMc1mMWvjRsJ
-	8LfzySu4Sl+wVI0a3B5QG7HF/ukk69k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794479789;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=D/2XQ7ncDhSBVFrS9AI6XolCxT4hxWA0EjuRpadrVdI=;
-	b=cniGN0ePsb+osUWCEq4BYyPuGoEI0GqMu9zJGCzrEAu9QLPtmlLdnKToVaebgW2JhLIRrR
-	bH8bWuPkJYtZPJDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794479788; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=D/2XQ7ncDhSBVFrS9AI6XolCxT4hxWA0EjuRpadrVdI=;
-	b=oJZZLYyReIEzYwEkcLWh37+a9w0I2bGWD+4SpK6Fd/dGf5c7UI2wgD41ZaTW3+pOqSSVmv
-	0Az5uLlUnr/634XcJUi8FuCsxMEeIbZ9XcivKpNA9RgvyGFxhbb+4NCK7hWRstDj4BVXSE
-	BgP34lMlYx+Q7jdSjaiFVkWYOFe17FI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794479788;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=D/2XQ7ncDhSBVFrS9AI6XolCxT4hxWA0EjuRpadrVdI=;
-	b=WZ4QAStES6ug3df4SVOPu4DwhaWzYh48R4ZUAH1bXsNAkS0mb58af8mNPw/rsrmay+0MDN
-	0pcMrcxVawTBV3AA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CC9B413432;
-	Thu, 12 Nov 2026 10:36:27 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id evncKKuW9WqpTQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 12 Nov 2026 10:36:27 +0000
-Date: Thu, 12 Nov 2026 10:36:26 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
-	Chris Mason <mason@kernel.org>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v3] mm/memory: refuse to map page cache folios that are
- not uptodate
-Message-ID: <avWWjD-SRRfgAWiS@pedro-suse.tail5790ac.ts.net>
-References: <20261111182445.656620-1-kas@kernel.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=oTUZWvCTLZ0AEWIKU42P0/UyH3jve/9SVlOYQoSE1jA=;
+	b=8rniyI0xAoALyNyF4Cx1ykBEMVYTULCTdzuMZHKj9vn1iWTngdyJIEhWYcHVaaogxAjGIo
+	+D79Ul3Bi6Y3wk4m46NuDJLa0a+t8qa6ykwrZNYqQLHunPHGIyqSJsPBIlNgDzc83cBEBq
+	neEe+xbDttur7Jy9h5vx3rvIq6aSP5I=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RUCJ/Hji";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794479944;
+	b=HISEFQ75vsDER33M1Q6jX0qPlb0Gx+XCu+eKdjx1bsvW0lmqcErYmvq7LXjPEVu95znwqK
+	dwrFN8Vu05bRej5vejnn/EJ8PmgfWWt3fpj4mUI6gQeKkFUNkT5XbhA9sV9Wwy2Xxk5nVN
+	TsQ1z/szfeMvjVE2X6ALgDI1Wec8epE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CF4EF63832;
+	Thu, 12 Nov 2026 10:39:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F2DA1F00A05;
+	Thu, 12 Nov 2026 10:38:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794479943;
+	bh=oTUZWvCTLZ0AEWIKU42P0/UyH3jve/9SVlOYQoSE1jA=;
+	h=From:Subject:Date:To:Cc;
+	b=RUCJ/Hji6vJbi9GeyfPR/yScaM67RJyJ07c4TUAVyvtrt157ri2exqt7V6+EpyBGm
+	 YU6yajCa1XYY1SVCLwHTnTFhR8d6f40hLZptj1bimg8BWaMH0AVK4JO/8vERHtPPwl
+	 cwdvYENODncQKxL5+xSw8Srk5YhxX5kNoO/2QEp3JKINk0mOc7D6ps84RBtRjDhwz/
+	 MTUReUGmjGn2BUh1muigy0WSxMy0MwVS4aCCIO9Bpz+auqEJAQd0vgrh75IYkxaow+
+	 0hXzLguDFgM+3DqRUU+WVo4qFXX+MwHn9A95thaTcg8gdaKIrwMyYSPplI43YZq2Gn
+	 cBva28lqN3/tQ==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Subject: [PATCH v3 0/5] kho: fix bootmem sizing
+Date: Thu, 12 Nov 2026 12:38:52 +0200
+Message-Id: <20261112-kho-bootmem-sizing-v3-0-f0c8d00295d5@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261111182445.656620-1-kas@kernel.org>
-X-Spam-Level: 
-X-Spam-Score: -13.30
-X-Stat-Signature: 7dapg59sqiiknehgw5djnotnztqotqmb
-X-Rspamd-Queue-Id: 3CF3240003
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33OSY7CMBAF0KsgrzF4gqR7xT0Qi3JSSQqIjcohY
+ lDuTkxvuqUWy1/D03+KhEyYxPfiKRhHShTDHOxyIaoOQouS6jkLo8xWa2XlqYvSxzj02MtEDwq
+ t3NRbwNoVYJwV8+OFsaHbG90ffnK6+iNWQ5byhYeE0jOEqsujyNRSWPeQBuS87ygNke/vVqPOz
+ scCo5ZKug1A4dRX2Vi3OyEHPK8ityI3GM1vw/1rmNnwqtZQWleUqvljTNP0AjBX9RkrAQAA
+X-Change-ID: 20261103-kho-bootmem-sizing-5d6aed47a243
+To: Jonathan Corbet <corbet@lwn.net>, Mike Rapoport <rppt@kernel.org>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>
+Cc: Alexander Graf <graf@amazon.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Chen Pei <cp0613@linux.alibaba.com>, George Guo <guodongtai@kylinos.cn>, 
+ Kexin Liu <liukexin@kylinos.cn>, Randy Dunlap <rdunlap@infradead.org>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Sourabh Jain <sourabhjain@linux.ibm.com>, kexec@lists.infradead.org, 
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
+ Mukesh Pilaniya <mpilaniy@redhat.com>
+X-Mailer: b4 0.16.1-dev
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794479790-136768
-X-HE-Meta: U2FsdGVkX1+C0cj63XkGRhlcqelyYYeONx6g9D0V7ATM3D4PyeOLMbSd2J9deEK4ogiIx5MGSw7FL/bXqQCBfZMtGY/+K8Yb3aRbX3n2vYiYmCwznIlLe+LK+dWlWmW4HR5CdGew1QaDM+MtPzQV6ACRo8uRcipRNOFh+MCw/AZI/aQLqujN9xej1UoJyq+VnjxOqtmotcw32b5LXokdHJdy0HxdjB2caYlhMJwVasjx1/ezyzMqIuVjuG0c6Z1HMxH4d7vPYkv6piseQ8CMYvSSGGCbH3JFNGe2Hf0r26xT5iuQ8kVmU9X3QASxYlpyGKf3qg/48I5jVYzfGcrWDgX/I90/clPAaARH5iSvusaN61yj+Kgl4OdX+SoSBDbcnASmcfIWhpUkLpF0lu1vH9YJy0+CcpXz6LD2N7SNGdjDSOT5+nonIs7Xbz7jGKgvz87fJEtOS02y/U9ToPfJD25+Fu17YEFQ4iRMua7aS3JSp0nNLLJxi3zC107eI91S3E3xnSjZMHB5cog/5JqrOBHhI2i4gftodWf6CqerH9JrcIP/dUFYnrC26zVbugsngaoqAOn+iLJdLP0tp8QMUj+5nLMc2eVn0F3esb+20EMX9LT8EOJs7uEt5QS0tXAis7oUHh1zSk2kg7DjPOc75OsMptiCJsfV9yaI//Mo9udTYbWR11/5rHZ68JGu6L2c4QRSpeAe7czRtKoy+lSdLc9qGSSSWAYwmGREWgkLHThEwYo6CozaxrLw1tcSMpfNSP1Z39V4ya6Pv63M/MSBxXv9li8RCiy1mYZtwiEuD8DJuWrNYNp6IAHqPbdAUuETGiEyf7Q72uzPzqEGBQ9LDuVTUONagvgS0jdqH5ndaP+Hki7XPNVdkswd0FLGjXrDsHMd19vuQB1LDbdLkRSYLQ1PsuDu4AHwgk64zY7JDfHNYjghwC7wfjk7kusYoQmGLnvR5TFZwo3IwuH6c7v
- 7+WYEa8T
- ly593G0LnO4ifUCZ4sAs0yH9eDJ78v2ScnwldesQI6raD5OzV2uH4K5V+O33V/5waCCM4tnFo4lG6yomF+BxdEGLafvPdgqef/SWJ4qf//xiAYrYBTu3JMyOywwbSdQxkc0tla/Q0VpZCLXMglf3jidwa/TVEzjrasCJp2LFmaLa6vAYV82ksT9L0mmScLncMaTMIRNMijOrS2uE5SBc+FtCHGPL/gp2BUjwWgnwrLNQaJAeDtO8brr61qtS76vIejPsCJFnOK2nSifOmhV7jIp647IkWxJqb4UQp
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 588A5140004
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
+X-Stat-Signature: bgh6y1faqzp89kb6q7yxhsjbugjyrwyn
+X-HE-Tag: 1794479944-821397
+X-HE-Meta: U2FsdGVkX1/IyhJejbq99j+3XaRuPugxgXwFBEzx2YWE+yADOn2lKtdgweB6uR/hEdwAgvo4/lDVbsvvk6eb269PFXXMTcim2mw7+UCRHV4GD9eAE+FltH9nUnkAfJY+25HQ41Tq7freZ3UHys0izo14g/x3F7uqGZAoFc1l/nxaAKy6kzJGo40cZA1Go6C4L8o7wnXR7vEvPBMobefOfo9sshxc+igklwraF4fwGajXxkkAYebZlOpotm4M9CkIikcYEeIfwO2GQnfT4xfBzXtrIR1bl+u8LkCQvxRV7Se0GchnzVND38CqB4O+HWlZihUlfBfzaMHgNRhygpvKuztWBkD8kMZnDDUreSS4rwR07KWP+slehWaTsSAdTaiUo8Oh7wGxNnCOnsIgn/12Dd+hnQhF8xrZ0I+kqOKKr+/DUhFkbTutUtAYKnHYF7bJgTuGin17Uce1J00HffLfFaBBB2lGUESPR+KnDggaQphtea5TDmJE92WOdy97wnoa2iCDzc1TTHg+83hr2uSX8nAisGARxLOkib59ZYVWIPQ+tLf/xCbIdLy4eW4yKfLqY4vxOU7/smFdBAQ4Rmi2PfTuudO7EYSa9ucrUpgR+SplzDalmPkbpmhO3JSWHrR+2aYmK58JVtExMx4SZGurj+C4PQIFOu5BWPGY/DWTkPwocDwnYGeKZdUiv8fmcmvayMa9voUBMF8zBVHTQKihfO1hDAzh8GoZh4abO4yqhR2BbIwIvKyxOFYWYbraiLRT3Ukkb9qBh5ogStSpHsVdpNNzU0P8w74GUjBu9ikKk88x9cuIBaT0gqJf6railygjjz3dTcOxY84gw9EQBMY5Zu+nPP4dXFYlulytluvJeVud9vFB7fMzDk43WkiJLlbuSBwTqffKXHY5CZfdfyqHDBl8MnaReA14XKgoKP6tblabHYcJ91f95jj3FfNHXH3YZNDU4q6rW7VinNw+xx2
+ A+LtqEr2
+ hr3LsRKghk85drNBCjgy+AZNNFoDa0NVPRXGzPkvpDv9dzSLD6V6GRdDvGj8q/5ub5kk+z927TP52yrx4vD3Ow0fyBCCzMQSEZWJXNxFKLJbjDlfhMVYzST13yl11CBbCo80PEGSGWMOCv/F1fW+wWtsfmr4W94KjT3skbiMnpTzEUUCJU9ddmDR9/zHo7QKBGHQkvO++dx7oCmswTkL/LU+88K3fRwp62p2H32KRHaapPsmodnP3gPrbK7RKVuzBlLN/W+q87+DkrP7sCs9AUSBpjqx9VhAne0RsDJhcjIGfyTuAevoO2m15+KBrxxEFn7W128Gaurznp6s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,38 +106,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 11, 2026 at 06:24:43PM +0000, Kiryl Shutsemau (Meta) wrote:
-> A page cache folio that is not uptodate holds data that was never read
-> in or cleared. shmem fallocate(2), for one, adds such folios and clears
-> them only on first use. Mapping one hands userspace whatever the memory
-> held before.
-> 
-> Each path that maps page cache checks for this itself: fault-around in
-> next_uptodate_folio(), a fault in filemap_fault() or shmem_get_folio().
-> Nothing in the mapping code does, so a caller that misses the check
-> leaks stale memory silently. MADV_COLLAPSE did exactly that with
-> fallocated shmem THPs until recently.
-> 
-> Warn and refuse the mapping in __do_fault() and do_set_pmd().
-> 
-> __do_fault() checks the folio ->fault() returned while it is still
-> locked. For CoW, that is the page cache folio that do_cow_fault()
-> copies from. do_set_pmd() covers MADV_COLLAPSE, which maps without a
-> fault.
-> 
-> do_shared_fault() then unlocks the folio for ->page_mkwrite(). A
-> filesystem that clears PG_uptodate on a folio in the page cache is
-> buggy, so that window gets no check of its own.
-> 
-> The fault gets SIGBUS, as for a folio that fails to read in.
-> MADV_COLLAPSE fails and leaves the range to be faulted in.
-> 
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+There were several reports about issues with KHO bootmem sizing.
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
- 
+The bootmem areas are sized from overlapping views of the memory reserved
+in memblock, so on NUMA systems memory allocated on a node is accounted
+twice and with CONFIG_NUMA=n the lowmem and the global areas are accounted
+once again in the area of node 0. Besides, the lowmem and the global areas
+are reserved even when they are empty.
 
--- 
-Pedro
+The first patch rejects kho_bootmem=0% that leaves KHO enabled without
+usable bootmem.
+
+The second patch makes kexec walk the bootmem areas in address order.
+Otherwise kexec on arm64 may fail if a small area at the top of the memory
+is the first in the list, and with smaller bootmem areas this becomes more
+likely.
+
+The third patch skips empty bootmem areas, the fourth one makes the
+lowmem, per-node and global areas cover separate parts of the reserved
+memory and the last one updates the documentation.
+
+---
+Changes in v3:
+- add a patch that rejects kho_bootmem=0%
+- set exact_nid in kho_reserve_bootmem_area() only for a valid node
+  (Mukesh)
+- free bootmem areas in forward order on error
+- add braces around multi-line for_each_node_state() body (Pasha)
+- add a patch that updates the bootmem documentation (Mukesh)
+- Link to v2: https://patch.msgid.link/20261104-kho-bootmem-sizing-v2-0-b0d1a834780f@kernel.org
+
+Changes in v2:
+- add a patch that walks bootmem areas in address order
+- update kho_bootmem_cnt directly in kho_reserve_bootmem_area() (Pratyush)
+- don't reserve the lowmem area if ARCH_LOW_ADDRESS_LIMIT covers all
+  memory (Pratyush)
+- extend the comment above bootmem_size_update() (Pratyush)
+- Link to v1: https://patch.msgid.link/20261103-kho-bootmem-sizing-v1-0-45aa74098f34@kernel.org
+
+---
+Mike Rapoport (Microsoft) (5):
+      kho: reject zero bootmem scale
+      kho: walk bootmem areas in address order
+      kho: skip zero-sized lowmem and global bootmem areas
+      kho: fix bootmem sizing
+      kho: docs: update description of bootmem regions
+
+ Documentation/core-api/kho/index.rst |  31 +++--
+ kernel/liveupdate/kexec_handover.c   | 225 +++++++++++++++++++++--------------
+ 2 files changed, 158 insertions(+), 98 deletions(-)
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20261103-kho-bootmem-sizing-5d6aed47a243
+
+--
+Sincerely yours,
+Mike.
+
 
