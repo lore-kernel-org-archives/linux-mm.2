@@ -1,170 +1,171 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37298606A333
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 10:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 713E5606A884
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 10:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I0TPDV43
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=Eo1k6Fem
 Received: by kanga.kvack.org (Postfix)
-	id 2F2606B05C5; Thu, 12 Nov 2026 05:43:15 -0500 (EST)
+	id 95BFE6B05C7; Thu, 12 Nov 2026 05:43:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C9E26B05C6; Thu, 12 Nov 2026 05:43:15 -0500 (EST)
+	id 932CD6B05C8; Thu, 12 Nov 2026 05:43:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DFDA6B05C7; Thu, 12 Nov 2026 05:43:15 -0500 (EST)
+	id 848436B05C9; Thu, 12 Nov 2026 05:43:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E6CBB6B05C5
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:43:14 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 78F15160496
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:43:14 +0000 (UTC)
-X-FDA: 85426129908.10.57ECD11
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C03A71C000A
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:43:12 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I0TPDV43;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 648F96B05C7
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:43:31 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BEA5312054C
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:43:30 +0000 (UTC)
+X-FDA: 85426130580.18.E7E3563
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 85DE41C0004
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:43:28 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Eo1k6Fem;
+	spf=pass (imf18.hostedemail.com: domain of cuiyunhui@bytedance.com designates 74.125.82.174 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794480192;
+	s=arc-20220608; t=1794480209;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dNp3udoHGBTm0oHVGK0tf8e5QbmrNR/x3XeLPS1gMFU=;
-	b=lg1Gce48i88P43yK/746f0V6ZgR22VX4kxDn8VJ3cdp6CVHk6joUCXMtLXwrnNbzqiOnAU
-	qWxLnJQiqVGL9c8YeiKhy4Klci/ZqzErdhb/dmGGQq5gGBNTccDhCsyKXx9V+Nxq/pbXSE
-	7IQtCyn0T2BLnELZHL/qTfx+fXzWoQY=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I0TPDV43;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=tKHbJSnTS/xgwwH8xY3FZeNU74t03Ua9SzHRVgCuNfk=;
+	b=Rh+imFyoGa1Ae2DOwR+8E8VbJTs9uKM0aa/XnU8ZzCOLGiRQV7TRscwd9JsAYy2yoAwYBt
+	KlducuGFTrjsVgfEQZABGajMyriiF0xfOQ3ZEEEmIgjWS8HT/gAiyPp9pWStNefrQuHFDM
+	lMcJUcNr6gXQXVDYd+zmbpSeRd4M9RY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794480192;
-	b=otHy3G0wENFoHaQzXSjE/eu9U5sXHapUpu4PUsaDSPPonG9XWRUYbXstg5rsLfMoEp3n/s
-	+0Oc86GLw/v1L6Z6K5nFweVly175jeFqFOy3L+7vMHKT2LZ66IceXAR5wDHiwWidp5Jv7F
-	cdpoh7l8o+TyT76fnfK8X6FD7+dGt5A=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4F75963319;
-	Thu, 12 Nov 2026 10:43:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 677411F00A05;
-	Thu, 12 Nov 2026 10:42:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794480192;
-	bh=dNp3udoHGBTm0oHVGK0tf8e5QbmrNR/x3XeLPS1gMFU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=I0TPDV43709xds1YjFciabcX8qY1kutyiqT4lX2KKlYro1DwODMPjRG7nVRyeYq66
-	 vbZLurqiksVuDaoY1LkD/b5xi6IUC05VrWqzoS8cg3dmM9nvkWpd4OgnlddW53//yA
-	 122d/AkBmYZZwYRJlhvhMXsS8VBFwcTE316zNFd+ifJo08ZSFBQlXmz7faIhXQ/gQ+
-	 D5NSx6U8O4FZXgtjJm9Q3eL7+2hksA9jy6WSRf07SPq4o97j9rpTcs6rKAst/0vPMl
-	 zHVfGezyt9McTCfCB2BTmdo44x/6PrUKOMOUdEqC7pTDwmEKnIu/+nlrdqSywBLRqG
-	 moyZYmFfXgPEw==
-Message-ID: <f5a411f7-ea17-451d-9c43-26a68464c6d2@kernel.org>
-Date: Thu, 12 Nov 2026 11:42:55 +0100
+	t=1794480209;
+	b=nlCkUrN+OxND0cxMVrbgizEmGPTls2VWZMlWrZ/dsO226h9GeSSpuiz/zhLFVG1hHYCFgu
+	r7tiLCwLV7KmmlqGaXu0VmmCqLEeqQohZohG9dViYhqkC4iHJiWTyuGrj9w1kocPS372W7
+	uEb4FzeQJJKBavac1n8F9a0/irxCZyg=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Eo1k6Fem;
+	spf=pass (imf18.hostedemail.com: domain of cuiyunhui@bytedance.com designates 74.125.82.174 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-3700ed8dbe3so7557070eec.0
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:43:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1794480207; x=1795085007; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=tKHbJSnTS/xgwwH8xY3FZeNU74t03Ua9SzHRVgCuNfk=;
+        b=Eo1k6FemUZbVWAOeQ0TTVnLdefEW6RnyhMusCbYI1xnCrwWoFY/1o/70S0cbdtr3KX
+         oHyrDGa7Dkz5IJk10Hf6SnWIhOF5GQFwwr3PIHvXB/XzYSebb9+ouufmBI3mfXwIsmem
+         mdziBTtTbJVgOoKr+qLS38j2+xA0YhhmsycpKW7Unm6KzkySuP/e8HcguNBm278WZ/ep
+         mxGOe4G8uPsVYN5XQ4bOKoF3o/MHQTnSB0nqndYw11WnDfwbos9H+JoKzF4Li92S9Hno
+         9Spz2zYVC6FC6YfQrtMM3F1kLyYlSMYypxdtpA35btT+3vjbEWtQYXdPg3FpFkNS/rPm
+         Zk9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794480207; x=1795085007;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=tKHbJSnTS/xgwwH8xY3FZeNU74t03Ua9SzHRVgCuNfk=;
+        b=14ZMMQbRQaQ0jjVBLteBbs7z6dwMhaEl6licC6o8VsOZvWpodtCoqUrmr0l5YHllce
+         X24OH+9NMsC9U1Eiyn5ELur7SNqfvaH3BWltkVfrpf5b/AHZgjAzFYpuwv+2ROKqpeaK
+         +eF5TrNrXorTZsEqNUcR28gHb4SzQ75mohTGPERzvrnJHANqdSpzfZ2vZ7A/hZGlwveD
+         T1NtoL9k01QmVoqBYTUomLiImocFVwpFLdLiFx5a0TCOEY/0DONAaPQwq0dX76ctvDfi
+         VwmraemfVPIVDAortZ0ffgDiKpOfWotiUelwxOE5Yp/6oExBr4e60JrjdOnQV18qMErY
+         CejQ==
+X-Forwarded-Encrypted: i=1; AL+hErHQbnW3AU125c1P1AqlI1Nf5fD3mQokc53CaWeEKTFZTuVfYyL6bsFvq1EySHZXMv/uXEF9vy3GLg==@kvack.org
+X-Gm-Message-State: APuU4Z97ep3XmYRQDpCZVVwhUXvigSYZCWZ/LPt1hpVcpSjOSDZA9j47
+	KmdTe7NbUcQ7JUZbXFtVy0pTAPp5hmn+zyGW5IVsbPnBhfLlbrSuF3G6wDY4iBN1hZo=
+X-Gm-Gg: AYBFou29RDHcJtwmDzi5q8qHdpdAsZBoVDgnVAXqoiILvcKY0/Kpr9ST3yRTzu/oHhi
+	E4LQvBw2KqoHdpdd2Dgp6GoLDmijnUOJ7z6gz+WZtUglyK0aXF/K5v8DzFsFF+uiXdirLWIOU7m
+	euDkHpHEsrUfRWWwnq8oB193khqth2Xf9QQcc3cw8TooqDjJ/ING3q9tlPS47KwlJNOtfjh0tuo
+	V9MO5y/yzcJdZHoSN+hJ2tCjiIEar9Tz8DtDsl/VchZwX9qy4Fyw680uBLAmkKBUabBs+BK2Dk+
+	LTEFWiWx90MjeYFOT1uz8wNNBS9HVOmFx37/3u8uOeBm5B4+WGV/06nFQFd2v9SYt+BxDPw0P8W
+	ye0Y2QAoDonmYOht5WDTkAjuNEVuaeevmrkl3m8azhUrkFEzPvnRAQaa8uytp9FtF9X4HEru3E6
+	4vVYDc9qQp6ku5lKSiUziedordpbbpRFzqyTLSrDNax7e0CvA1FY5MXxqH9DLaRGHoEKvLj2YMh
+	GP6BWyVsDyRPJej4TwAH9ChCbiF7ZmtjoVpBM63eyuzS/JNCDFVPK9kvmihuORZixhU3hWJHACz
+	upbDk6dJ5NV5luJdEsJrcP1gPJTsExsTjLrZEwRu5XPJGwBlqHuu52g8Qu3W8CInSNs=
+X-Received: by 2002:a05:7300:bf9c:b0:36e:1fbe:3571 with SMTP id 5a478bee46e88-3768366a461mr5368073eec.3.1794480207004;
+        Thu, 12 Nov 2026 02:43:27 -0800 (PST)
+Received: from FR9WL0RHKY.bytedance.net ([139.177.225.242])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3772121e654sm13228694eec.2.2026.11.12.02.43.08
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 12 Nov 2026 02:43:26 -0800 (PST)
+From: Yunhui Cui <cuiyunhui@bytedance.com>
+To: pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	dennis@kernel.org,
+	tj@kernel.org,
+	cl@gentwo.org,
+	oleg@redhat.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	martin.lau@linux.dev,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	jolsa@kernel.org,
+	emil@etsalapatis.com,
+	ihor.solodrai@linux.dev,
+	bjorn@kernel.org,
+	pulehui@huawei.com,
+	puranjay@kernel.org,
+	broonie@kernel.org,
+	cuiyunhui@bytedance.com,
+	dave@stgolabs.net,
+	david.laight.linux@gmail.com,
+	jszhang@kernel.org,
+	tglx@kernel.org,
+	conor.dooley@microchip.com,
+	thuth@redhat.com,
+	ajones@ventanamicro.com,
+	ben.dooks@codethink.co.uk,
+	rkrcmar@ventanamicro.com,
+	samuel.holland@sifive.com,
+	zong.li@sifive.com,
+	debug@rivosinc.com,
+	seanwascoding@gmail.com,
+	andybnac@gmail.com,
+	menglong8.dong@gmail.com,
+	cyrilbur@tenstorrent.com,
+	wangruikang@iscas.ac.cn,
+	atishp@rivosinc.com,
+	apatel@ventanamicro.com,
+	arnd@arndb.de,
+	nathan@kernel.org,
+	nick.desaulniers+lkml@gmail.com,
+	morbo@google.com,
+	justinstitt@google.com,
+	qingfang.deng@siflower.com.cn,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	bpf@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH v10 3/9] riscv: implement preemptible this_cpu read and write operations
+Date: Thu, 12 Nov 2026 18:41:43 +0800
+Message-Id: <20261112104149.38589-4-cuiyunhui@bytedance.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
+In-Reply-To: <20261112104149.38589-1-cuiyunhui@bytedance.com>
+References: <20261112104149.38589-1-cuiyunhui@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/9] mm: limit pagecache folio refcount when mapping
- pages
-To: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
- Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
- Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>,
- Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
- Robin Murphy <robin.murphy@arm.com>,
- Steve Sistare <steven.sistare@oracle.com>, John Hubbard
- <jhubbard@nvidia.com>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
- Josef Bacik <josef@toxicpanda.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
- linux-arch@vger.kernel.org, iommu@lists.linux.dev, netdev@vger.kernel.org,
- Chris Mason <mason@kernel.org>, stable@vger.kernel.org
-References: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
- <20261110-refcount_overflow_stable-v3-1-318625d63a98@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261110-refcount_overflow_stable-v3-1-318625d63a98@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C03A71C000A
-X-Stat-Signature: qa8b5mgmwi1sw4pb7y3skaq7s1gb348w
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: zhyxx4guxfreftub1tkip8mp81qx4n57
+X-Rspamd-Queue-Id: 85DE41C0004
 X-Rspam-User: 
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794480192-838896
-X-HE-Meta: U2FsdGVkX1+5uYoA0W56geg3QjiDJjrjec4+4BfTJ2kfQYLSulC2PciR+5LarXB0qqRsV/5AKRyvQJGxJugSAHrlWu+UjhEaDT5RPRiwEngf1iuEM3LXyQyfcAVFKg273s6FlAoGGTNAQhFHPcShEQ6OU298iN/EOqH5wVyC/+w3vfx95C9jKF39bfxQQAWOMuKPXyjpuvWcM1hOybz2KwrxsFmckV7N63kmyiEUlfzUQqBhUs8YysXMeeGQ10MVck0jF0PY5mJp+z3UqEc3sLUUzLtiQIW0/4VQzOV20xVQuE0GfrBSKNW9hTM5pef6SifcDCNLlTiKLdr2NcJ7ogzzYWjs7IYmpeTOEeqwLSisMDkIdvPPX7ezJvyVCKf2liPNd6sLiDx4NGBIZ5gB9BU701MOUOuACk+LCwpqIOwYzdpYwvkIQUvEpjRjFYFRDYTMwLXNdM0c/Uo/sZl9b7j2ye+c2PWeiltiEdFkEAa4UIVgVAwKe3VN07RstCDZYAPAK5tdi18l7bN3ZsJBHXFX2ldZyQ2WaraBxJKfW6nr18BUQfohbKEs5RV8A76bx1ZzsRjXZoAS0bgdF67sdnWuK48M6OJt1anoo1Ri9IL8woPhOGCRfxIVhwYGOv3DM16/H7M2QDJf/1+dnXR1J/4gSUq/K+oQyt+irPz78VEbWFCiMwbZkMb/u4y7g7W9HkfXJjTflVyxBl37+HQAQyjSx4Ium8aMMXXnf2CLJi8psJp7i3L+F2uwUmWa8RCp3KK/CSy6hKLSnlAqn0/qDJA/5OmxGBAvWM32YDL0cJdS9OlHM+e//mpFwM/HcVBsRICRezzc+zzzgCo7ocS5547CWrG8qwoA4vnMnjMUb1ceo/IDniE5aDYyMs1Frm4Sm53w5U6O7NYPbDkrsORKe7g+d6rPsAZ/NmrHdHaWC4JZkrui+8t/0jC4KQF84NjZGUmSmfwYGD+xCrCAQw2
- t/PZP/0d
- AaPpQcwf5TI/i8DKIgDZDH6JTVp7nqhJ20xoEFAoDyPC6BZiagGeGp9GpUP9qA6wWpBoVr10HcZige0si+DSdiybGwJyLykHCkekYW8HKg+3xs8huNsdL/Yp+GmZ3PtPs+ic5iD8t1xEUD+ySN2AtowunsBkL/C0U+gHZH3FrdWL3U2KIuMl8rLkRltSIEWF07+W+fJJmhWH9Jt8dnYc4n2KfQrh9YBs4aenYDQ+Nm9S9T+s5QDDiYN1KwTIHZhk6LCzpN3dz1KiwmbEvMCnENb+o6rhaPqSXIcVN8GIzjz0fB2FT2jFOktvx6FU9DpbhvS1mvNCFGq4d3/JFcEhFtKTQYvcpHauqOs3JBcFcErqPus4=
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794480208-208526
+X-HE-Meta: U2FsdGVkX1/eAqCAMFWW+5UNVWnOvnvGklkpchpX2+XMaMVliu7zrkrT/qPLx1S75jnpP7OLzVq8PDw8ntXgQZJDime+Wp+WHzzkmu3XIdp4kdZfBsljlObdjUnM1x4M1mevX4pcgVeq81kbrmPwFCC13HN9m1rY82NIV4VROEATixRqwBNS5nuiX3JLEI1GBsXXAzKSRjpxl15e/KnoIS3vDq4l4bHT5cJYKIzXfdcqfYo/ofbSZxMxCSG4CzinD/j1NCdIiA7aiWx/OhNZXDhC9a7TWD7oOoz16Aeg1+l0zCMdhY29WIYmerZ576yrGGV06dB/cjpJ7kHaukq/IzmwKbEQ4GKv0AjfpBcJsyTDB7IDAlAKQipI+ESQnmbNnJfUDbP//rNwR6Sclcw7iFsEw2nvzSQdIXET9IvRTWIVpOphUcFntdVcHTUYjJFeySjQ1HkJkE8gytgo8pX36uRCQWrGWVyQFgoHRhO6HUzKzjvdG8CHCo9Hw9XVR8M36tCk5GL47ByB5RahxeCVOUQ6Bjp2DQvTPo6suKBI19zdhALe+X7LdHh69s22idFvfQynw3+d/HsWKJ0wVbXNrvZGWVzEiEBjROVbSxgnOmC+84OVc2ASP+oZ0n7MlzxiOcVXHEOLblH7wZYBmD4CiR403zFYKCwTtYGBpI6SbYU6vG7LnkUeJ+FAWPFSO2jHye+T5f1vi2h7Vl24gFGZgGOKYNPKlmvo3iJmYYZyc0WcyT4m2/SMPzuJAbmkBANdO95aV2VkjmpJMs+J8fhZI8SVsBl8E962i5WeDsFIcWrbg+4B3wQl2jdFQgZgHiyeOyO0XPh58pMYd0CLAzsePNeElqqZIBZiNiNZ39cWzA6lIyfGBvA6Tlwutd7dKyNh3Z7v+0zNBi6+tdYXoFeuUJ13Y4kyScL5X1YSMiJJLkNTRx0KhDt68p1M4MsnLniY76cX79iRKO++xBQJep6
+ OElzsENe
+ oIfh73iHCYeaSP9k90BeeGLpgBVYJeG8kzrFePRVzklJisfsfZv96MKxFbhACLjvzWjxnDd2mfWKx4ZSRIEox7d5h3ngwxp6g7tmhl2zjU43TUiiUAY94xfq2MTCUWp82K60Bpz9cfrRylJa9VkE5zyEjmV//jEHUolEoAQtKtRq1BYoQLWDnmEQeHf4FOwQRVg2s/+VLnY+tw1xvqcb6h/Hr59GQMwEpKzxGKAagRl1djFjHzob2qJguhyQAlSPeyerjB+CxcyMmR3YRLaadMsxT5JY9kxS6lkOOY8u+/57CtO3eJ9vKzvF7A/M+kWx6UPavDoa3CoFjD6Ls3r1fMMWSF3QdJGdj5PV6tKdvilK1lzGlbpETYKruvThwH7SF2O5SelC3mjO9ECS56D8I0czFBpYVD9h5bUh5B6iDv7XmFoIH5r3BPLPBTqal5k1YVcEjZy4huBMJq/QHEJx1rF8K0c7BDf+w39F2qYGIyH71HjgaOJIKklpPHA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -173,22 +174,122 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
->  
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 9871b4f32a916..0f6d57432a7e5 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3968,6 +3968,11 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
->  		unsigned long end;
->  		vm_fault_t map_ret;
->  
-> +		if (unlikely(folio_ref_count_over_limit(folio))) {
-> +			folio_ref_dec(folio);
+Apply the recoverable per-CPU address handling to read and write
+operations.
 
-Going over this once more, I'll just use folio_put() here for consistency.
+Keep the address calculation and memory access in the same inline assembly
+block, and use naturally sized loads and stores while preserving the type
+semantics of the generic percpu API.
 
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+---
+ arch/riscv/include/asm/percpu.h | 85 +++++++++++++++++++++++++++++++++
+ 1 file changed, 85 insertions(+)
+
+diff --git a/arch/riscv/include/asm/percpu.h b/arch/riscv/include/asm/percpu.h
+index 59f7d44f7d3fe..ae7c123a48093 100644
+--- a/arch/riscv/include/asm/percpu.h
++++ b/arch/riscv/include/asm/percpu.h
+@@ -4,6 +4,7 @@
+ #define __ASM_PERCPU_H
+ 
+ #include <linux/bits.h>
++#include <linux/compiler.h>
+ #include <linux/stringify.h>
+ #include <linux/thread_info.h>
+ 
+@@ -52,6 +53,90 @@
+ #define __PCPU_GPRS_END							\
+ 	"sh zero, %[gprs]\n"
+ 
++#define __PCPU_OP_CONTEXT()						\
++	struct thread_info *__ti = (struct thread_info *)current;	\
++	unsigned long __off, __addr
++
++#define PERCPU_RW_OPS(load, store, sz)					\
++static __always_inline unsigned long					\
++__percpu_read_##sz(const void __percpu *pcp)				\
++{									\
++	__PCPU_OP_CONTEXT();						\
++	unsigned long val;						\
++									\
++	asm volatile (__PCPU_GPRS_BEGIN					\
++		load " %[val], 0(%[addr])\n"				\
++		__PCPU_GPRS_END						\
++		: [gprs] "=m" (__ti->pcpu_gprs),			\
++		  [off] "=&r" (__off), [addr] "=&r" (__addr),		\
++		  [val] "=&r" (val)					\
++		: [pcpu_offset] "m" (__ti->pcpu_offset),		\
++		  [pcp] "r" (pcp)					\
++		: "memory");						\
++									\
++	return (u##sz)val;						\
++}									\
++									\
++static __always_inline void __percpu_write_##sz(void __percpu *pcp,	\
++				       unsigned long val)		\
++{									\
++	__PCPU_OP_CONTEXT();						\
++									\
++	asm volatile (__PCPU_GPRS_BEGIN					\
++		store " %[val], 0(%[addr])\n"				\
++		__PCPU_GPRS_END						\
++		: [gprs] "=m" (__ti->pcpu_gprs),			\
++		  [off] "=&r" (__off), [addr] "=&r" (__addr)		\
++		: [pcpu_offset] "m" (__ti->pcpu_offset),		\
++		  [pcp] "r" (pcp), [val] "r" ((u##sz)val)		\
++		: "memory");						\
++}
++
++PERCPU_RW_OPS("lbu", "sb", 8)
++PERCPU_RW_OPS("lhu", "sh", 16)
++
++#ifdef CONFIG_64BIT
++PERCPU_RW_OPS("lwu", "sw", 32)
++PERCPU_RW_OPS("ld", "sd", 64)
++#else
++PERCPU_RW_OPS("lw", "sw", 32)
++#endif
++
++#define _pcp_wrap(op, pcp, ...)						\
++({									\
++	op(&(pcp), __VA_ARGS__);					\
++})
++
++#define _pcp_wrap_return(op, pcp, args...)				\
++({									\
++	__auto_type __pcp_ptr = &(pcp);					\
++									\
++	(TYPEOF_UNQUAL(*__pcp_ptr))op(__pcp_ptr, ##args);		\
++})
++
++#define this_cpu_read_1(pcp)	_pcp_wrap_return(__percpu_read_8, pcp)
++#define this_cpu_read_2(pcp)	_pcp_wrap_return(__percpu_read_16, pcp)
++#define this_cpu_read_4(pcp)	_pcp_wrap_return(__percpu_read_32, pcp)
++
++#ifdef CONFIG_64BIT
++#define this_cpu_read_8(pcp)	_pcp_wrap_return(__percpu_read_64, pcp)
++#endif
++
++#define this_cpu_write_1(pcp, val)					\
++	_pcp_wrap(__percpu_write_8, pcp, (unsigned long)(val))
++#define this_cpu_write_2(pcp, val)					\
++	_pcp_wrap(__percpu_write_16, pcp, (unsigned long)(val))
++#define this_cpu_write_4(pcp, val)					\
++	_pcp_wrap(__percpu_write_32, pcp, (unsigned long)(val))
++
++#ifdef CONFIG_64BIT
++#define this_cpu_write_8(pcp, val)					\
++	_pcp_wrap(__percpu_write_64, pcp, (unsigned long)(val))
++#endif
++
++#undef PERCPU_RW_OPS
++#undef __PCPU_OP_CONTEXT
++
+ #include <asm-generic/percpu.h>
+ 
+ #endif /* __ASM_PERCPU_H */
 -- 
-Cheers,
+2.39.5
 
-David
 
