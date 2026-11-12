@@ -1,140 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCBEA606A33A
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 14:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2364606A890
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 14:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=epD/pGIB
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=sDx0tnxA
 Received: by kanga.kvack.org (Postfix)
-	id 099D16B05C4; Thu, 12 Nov 2026 09:47:53 -0500 (EST)
+	id D6F516B05B2; Thu, 12 Nov 2026 09:50:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 070D26B05D6; Thu, 12 Nov 2026 09:47:53 -0500 (EST)
+	id D477D6B05B5; Thu, 12 Nov 2026 09:50:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC87F6B05D7; Thu, 12 Nov 2026 09:47:52 -0500 (EST)
+	id C84296B05C6; Thu, 12 Nov 2026 09:50:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BED746B05C4
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:47:52 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5E41E140608
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:47:52 +0000 (UTC)
-X-FDA: 85426746384.02.E4C996F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9AB421C000C
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:47:49 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="epD/pGIB";
-	spf=pass (imf18.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A53136B05B2
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:50:28 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B694BC029D
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:50:26 +0000 (UTC)
+X-FDA: 85426752852.13.CFE9E57
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E5EDD20004
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:50:24 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=sDx0tnxA;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf13.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794494870;
+	s=arc-20220608; t=1794495025;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zZkO3ck5ylqqxi0UIrlQRRScttZ5TDTGZ/TrwmDCCvM=;
-	b=SMxkKcDeFFokUDHeDuHyE/kKz+3TBEFe647pvguH21Fe5KH60HyZxHzF4XoaUGOdo1Gprn
-	u1HAbwdTuSOikpKPpUhAxwXWFcZCgnkYZa8fbYZS/ieB+S8vowlrpO+eU/dsj49xyuttGr
-	5l7q53k8cTQFgspKSuq0HPMBxfUoddk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794494870;
-	b=4tkfICH59o6ot+iKthiG8ShSr/8IQJtVC3i3Do+pJkJJWSHPreRTeOSYXkyontlpW6+MW1
-	+I1VkWJgjHDG7kH+sdAUf/KWtUlzp4eKxY8swsKR/OWeD0PyhtPmLqS+c62pYqPGrVv21s
-	AGkHfCW2+EuFM4/3vbkTgigSf6Memm4=
+	bh=HCXPmaCthBgEXTrlaPcclc3/LLYGCPmdnrH+YjDkVHU=;
+	b=L0cN7+z17aaaFfxrTdt9jT70Oa3alX+Dcaj0KcOOaBNSujUpmHYQU2SpJUh3vGc/Za1z2Y
+	UoWA+cdRjKE/G4k+r6LUr48bsslbFva9xSLYKvE2v711xpcOZMMYSkUBxxlZKrcp7Rg58O
+	ROHYqHV7EDNVB1udkFt9hlXisamrs20=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="epD/pGIB";
-	spf=pass (imf18.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794494869;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zZkO3ck5ylqqxi0UIrlQRRScttZ5TDTGZ/TrwmDCCvM=;
-	b=epD/pGIBUMPS8zjQ/M9OFPEoR70UQWV1Jl1vOdWBlhxmNGwSSK0KptMXZrYtIzz9nK+BO+
-	gSCadsu9XoX71K9bLl2sE8PsMayLri5T8mW5xljmCsOTp7wPuPkQeVMzvNPwoekjxZeDj+
-	jH5a5s1HSSxsxzAXjEyBXJLAmTIxzGM=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-674-kFSgUri8N5WvCNhojxkQGg-1; Thu, 12 Nov 2026 09:47:47 -0500
-X-MC-Unique: kFSgUri8N5WvCNhojxkQGg-1
-X-Mimecast-MFC-AGG-ID: kFSgUri8N5WvCNhojxkQGg_1794494866
-Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-3ad00533aa8so26271331fa.0
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:47:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794494866; x=1795099666;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zZkO3ck5ylqqxi0UIrlQRRScttZ5TDTGZ/TrwmDCCvM=;
-        b=mmhAg7V/mFQurOB7YAaYPK9S9HJNrZmMhvhi473l6D4W7PibyOucj+ccek1bJ6MkLT
-         NhzSe9KzcsCyjq/KDp0WdQpyjuj1WIplF6q/WSt5UYQ+jn5/d7u4Hrg0W7MLob39W2wr
-         ham5z+3rcO0FcGH+G2oWz+qj+MJ4yZ25nqFX7dnJ0C6okae8iz5fTiEAsQ3zvop7zuGk
-         fN88Txf1/3+M9y4kJYib02pNM4MOyV1gs66Ho87FBR/hAFIjaGJ21tH1urSEMZcdjTEs
-         qs0ScnQXn5WewQaVZVvF8/P3KJ2jRmHtTwKDwVtI1WgBJ+P9Tpqs2boRWnSld8KJLWB9
-         kAfQ==
-X-Gm-Message-State: APuU4Z8iGlugDCmVzXeJhuqash0XyJD0PcrCtacrca0OO3m1CfiqWyeQ
-	opQEoYQ68tEp8jDEHfjFvyierf7Mt+5nei2Ey6CecsLI3MuGct0rT07N19AkHUoSNpnSqvFSybm
-	dimSUWD3S+KETEakW7cCvZlxiBBwjKLlX4rU8nwB/xFWY4R3SC8M=
-X-Gm-Gg: AYBFou2trDJHCztsRsI72qs2+XAM5sp9hn3IAXi8kndztQMP7nNDTOKnnv2RxEF5UW+
-	5BuLvcvAb/vK08qPGfFzozxq+qgqSodbcxpLBGpzt9nM85JrUQdY+xDBADI0DlQRUI5EaTDiwXw
-	lN3offZrkWst3b+WJv3P3DLWw7OvIZVfhGXrlgKLoafIx4LRkIYJy24bbm/JoPKOyrFu29nzQQq
-	SWjFyO4EmMMlvpwVGMQ2VzaBQyiPjTsTAfDF2FBLGwZ2u4qBnMHq9jqT+IBTvpsG0jnAMERR7KS
-	5Fk9lPlqSdQGFHDNMoOoPNcbnWpEs/I3BzYzCm6Dq60Lk6bpg/hwgQsvAYu2iKNpW14TCHAqK0F
-	RAy7fsZVbNRMSvEFxcx+1ThMECasXOrbg7in5aVPy9HArkS5CCzwZIxV2Ks+q8FkL9eEHHKSSUi
-	pxVbP/
-X-Received: by 2002:a05:6512:2524:b0:5c1:57ee:1887 with SMTP id 2adb3069b0e04-5c15d62c702mr2219394e87.13.1794494866135;
-        Thu, 12 Nov 2026 06:47:46 -0800 (PST)
-X-Received: by 2002:a05:6512:2524:b0:5c1:57ee:1887 with SMTP id 2adb3069b0e04-5c15d62c702mr2219357e87.13.1794494865616;
-        Thu, 12 Nov 2026 06:47:45 -0800 (PST)
-Received: from [192.168.1.86] (89-27-86-246.bb.dnainternet.fi. [89.27.86.246])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5c157bab834sm1698450e87.45.2026.11.12.06.47.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Nov 2026 06:47:44 -0800 (PST)
-Message-ID: <b3689045-d735-451b-8cda-a29d7e79fe63@redhat.com>
-Date: Thu, 12 Nov 2026 16:47:43 +0200
+	imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=sDx0tnxA;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf13.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794495025;
+	b=PE39ysBbOwHr8/WgQMa1/q0kqERWE5ASP0qN1v+nVwjDbaQ5K/9RZQyoF/Sp4FsQn9YFzx
+	pgjGqyYovnrB5sgl31dgMD7ly3dn+GzyLApN9vdSmCXVxep37lWKABPkcumgXb/hHP4zRn
+	edlVCrwkAS8Y/rtNyuN/x8zL6F3LEFw=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 08CEC1516;
+	Thu, 12 Nov 2026 06:50:21 -0800 (PST)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6C3F63F673;
+	Thu, 12 Nov 2026 06:50:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794495024; bh=+s0Rk/mSeWGvdAKtOlpf42pJMk09UK6Tn3e1uY2y7+Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sDx0tnxAz6cFHnGuBZjLsrCMBsBbAbfeZPQMGJsLYhbLqDwLs2EUYLW7M8HzrRwBT
+	 CwHQoI3Nv0y7lpgl6aHYYeXHXJ52UPC/+Ls4yZu5IXB9sUTzbupU5lRlyJ0/hQBTim
+	 ShBwsGzEUr0BpshFL8STX2XSVIO/B4RQ0M8JyTSg=
+Date: Thu, 12 Nov 2026 14:50:19 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: Chris Down <chris@chrisdown.name>, Will Deacon <will@kernel.org>,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	Mark Rutland <mark.rutland@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH] arm64: hugetlb: Prevent write fault livelocks on stale
+ TLB entries
+Message-ID: <avXSK0zKGttR0dEJ@arm.com>
+References: <avPxZjjdBIlM_8_g@chrisdown.name>
+ <87ld6yn3vx.fsf@DESKTOP-5N7EMDA>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 00/12] migrate on fault for device pages
-From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
-To: Alexandru Elisei <alexandru.elisei@arm.com>
-Cc: linux-mm@kvack.org, dri-devel@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
- Leon Romanovsky <leonro@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@suse.cz>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>
-References: <20261103061629.972669-1-mpenttil@redhat.com>
- <avWpWBl1nPcRVmpQ@raptor> <79f33ab0-2e43-4efb-94d0-addaf40745ec@redhat.com>
-In-Reply-To: <79f33ab0-2e43-4efb-94d0-addaf40745ec@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: JWhWCzZgA27pUKTTIaNjPTwSyB2B7BmHMmTZGuPOhVk_1794494866
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9AB421C000C
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: sgd7bwdf5wtewdh96bohnk5gktqtphgg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87ld6yn3vx.fsf@DESKTOP-5N7EMDA>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E5EDD20004
+X-Stat-Signature: 3exq1dn4kc3pfgos7ehz47cunbq61bhf
 X-Rspam-User: 
-X-HE-Tag: 1794494869-759622
-X-HE-Meta: U2FsdGVkX1/evcqm57JCE4BmoFLqt4SKT7GjQVDekz8mn4Yce/AIkN49h/ywpfkgHfHbJdZUWSOdxMI/CmVaW1t4b5AsVNnH4O532/yyReBJJxjA+SMoAruRyLWW7P6eDT3drK87nQrQ5SVXzv9g5kypveE0ZdrJe/1rtXcSmKPVJJxSpfOvzgs+eEr/uCN07AeF8Cib0aIdD497MfTZPgvFUIUj1WWnrsF3AGveJAyAkotnJizH3hYw3tY7O54kcLuZajWxidHD6VfOhd71ygQ7ls2FKVhAG4gYLH74c2zsz77JzyCoue41f4kpom+Q8cCZT1RegBGkRQQWnee4LJCf+sbpz/L33GJWOVFkVbWO6C+yBiUUUQCtY5excM9pCJ5jD3mpY+zqcxQVi3NWKTo/5OaWUqBxOykeBuXvbOGujIlXZ3sqBrsxvYNhSoKh6P8zaaRN/Hw5Lh+YxyUWJnfnJAR4+ZuZJxZeIC5zCWcL+V3sBRUx0QBktgEkVhzn9sl2hX6GDJ/H5mejMEj4xi0O486BaOrKWQoSaxSyHLyLMZCaw5PCjdabJNp+8TgoQ+FO/B7P9FG3varuNUO+N2eI5vBuND1zmSgN/1kY2mOugPlpf6ZzaUcwVJrGt0j9tbr3KzOiLEjOrwYhb7ud6unUHUJZLfV7xi60qcG+h6iq5OsmzxqEtC8wB96ojyMIo2PPxyG/F+seNDGmg0bSugRUKAbjvRJM8W3cUDwuwn1AaFbUHb/mMDehL/nrsDqpCeRtHCK67oMURYW9HgrjKxlZ79Qju4g4oIax6Gi6rYhre47FnGNU5wAi7D8hGh/N8Yz8//bWy5Jx3jphIx+JBILw43VAs56RR6USkx8O3RR5Wy7/tlTe1OAxWwnTDyP+O8656o3tFTf0BgP3Kxs/FZoXf034A+7hF2xs660Wr1wedcRCkF1A5LfalZxwYul1gYrUrA4E7dDFHU9oVmC
- Wu9xxYnC
- kuz47d4BHvA4AI3LWLFcQ7EpaSZY4NuBpWbU8gL0bA7IbxNGz7ApQkIcz32kO0ZnV+Gz9vwGlekAnQAI9JkvWUSzw+qvC0UqeTtKTe1GJFY9eB521Q41ThPVJZVgQQxYJpxXrb1342yXj73aJoK1JQH9CDxffxspClktiGIAychZ7Qz2NoCQjlpSpm+aHpzSBdgX1rpwyGr1aAf6EUPdnedEu9Ifcn/Hlizd8+1oN0nMBsi22nsjkDvdTahOYSY51OeII7Ov5rqI0EDVJUdpomI/0pPhGiaIbjClN6GutBTtscwPyeKbxO+tROnO/PL5IGiLvCbB6ZbK+R4q2bJPmsII0yRGRJUvrnPNDJb+/RGIbU+RH/YAdecW0/M40eV3Nv5OB74K3n/Q2keW7sFtgXPd2lH5u9jgVFMLa
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794495024-846024
+X-HE-Meta: U2FsdGVkX1+6ZqUbgcWHyXujhywyHahoX3nb8AZOrpbPgiqBz2m0apG/CDsCiEwehi+3owsD0bK7Hf7C+DJdZfLsy3ZpQWG3ICKqSl2LqzWbdAJGuetIZn8KpnVoJtrmsTO0W7PidUmblWcQSoPaxDTUjdxZIXlghBpDfC57V/+n2Y2zeqCm8JUxK8dO0UxtKiOr8/iy8fmhiUZSKd2hJHoLG0iDSXBvHbwU4Ge/R4Ysg7j+b/HZNLEg4rwUIR78Sky+botXnzbFRLV2KRv7Aeovbjng/l1Xd1Ebkh4zSOuYBEVUy+bfr07JWfVUU7w1FeGqG8PfiqCpnAO6YkaRNXeTrkavGEBmQ3lVMVt7RtlcBUnUv8J2+U0pN7zAA6OLi7+h+5QtRy1/LF7IetYCbP1jh7q3LdYuDAnzlytlpbRzgV8xf2T92uynjsCVJat54hWyyq5USoOGnjA5es7wexwYjPRvnILuhKhgI0hkxiSKjaX4Qt/1zgAHlPvlR2mBLLnka5JeCarf79NmQXpUOfkSdguPRz6mKouniNsxycfQh7HBSoSTH6kUlNUTybOBWDetFxSUgXcyduX2faVQcqG72bO6a+JYsW96CuP7Aa2QBXKy/C5R8CB/KHTfb9kHqSLOrQGRsF2cVQ+INlD/+B3W4EFdvOgmQw5EfeEx0gMq/J3OAs3UCDJ29Vlt/2OBMTednPOdiVBx4pQPRoG7DjwutX4gzErJQXzw2HIgUNxT9Dsk2+L2sMiCxfwYkPhvrA6fOMuqDmzsapIjnEstkd0R0sn7Gfy5wtie384qDMUAGVHgEcwPgy2M241rWhWfrpfLVB8s4w1tzb+CKQy1BMVVjPT5DLaHgzJIN+GJIh/tbnLcBLTo8iYo4L7uq3L+egmMJVDuexMFeNOuqpI7f40frhf94KR3tDGw32nxz7mCQdWNuParDlAaN44CSs/NzT7QPjmhAXwnJUPrZtZ
+ ctjnuOSx
+ LZ1DdWA0vqxyTG0/96xZMVseh4nkA5EsJxAGuCEWdisuu+nxBi/iuJILh5G666mKvvQoAQSkcr1u5eAStUDrkcMyTnjUOM5g4bViLM6J2YVrnf8d6TCApe1zdYSYlorKGZ/GxRE+ISjrwzpiLuHRDfUL3PM46iVGd+i3v4Z4WRSQbEdAETILChNxcFS339aCvaU9V+MtKuN+T84jC5iZ9632xLGWyVyG/liVeqOzehRjeNszvjIPEWFGEhlnAmwVS7VuW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,92 +99,120 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Thu, Nov 12, 2026 at 11:08:02AM +0800, Huang, Ying wrote:
+> Chris Down <chris@chrisdown.name> writes:
+> 
+> > In Meta production, we have had tasks get stuck in a fault loop while
+> > using hugetlb on arm64. During my investigations I found that affected
+> > tasks share a private hugetlb page.
+> >
+> > Looking at the stuck task states, I found the following ordering:
+> >
+> >   CPU0                                 CPU1
+> >   ----                                 ----
+> >   read page
+> >   [read only entry cached in TLB]
+> >                                        write page
+> >                                        hugetlb_fault()
+> >                                          hugetlb_wp()
+> >                                          [reuse folio]
+> >                                          set_huge_ptep_maybe_writable()
+> >                                            set_huge_ptep_writable()
+> >                                          [flush local TLB only]
+> >
+> >   write page using stale entry
+> >   hugetlb_fault()
+> >     huge_ptep_set_access_flags()
+> >     [entry already writable, no flush]
+> >   retry write using stale entry
+> >   [fault indefinitely. well, that's not ideal!]
+> >
+> > The reason is that when a write fault makes a non-contiguous hugetlb
+> > entry writable, it only invalidates the local TLB. However, another CPU
+> > can keep the old read-only entry, so its write will fault even though
+> > the page table already permits it. hugetlb_fault() then finds nothing to
+> > change and leaves the stale entry in place, so the same write keeps
+> > going round in circles.
+> 
+> Good catch!  Thanks!
+> 
+> > This is particularly bad because, if the kernel is copying to user
+> > memory, the retry stays inside the kernel and the task can't act on the
+> > pending signal.
+> >
+> > It can even remain unkillable while holding locks across the copy,
+> > resulting in further failures. For example, a read into a hugetlb
+> > buffer can hold the pipe mutex and block other users of the pipe until
+> > the loop ends, causing cascading lockups across the machine.
+> >
+> > To fix this, when a write fault finds nothing to change in a
+> > non-contiguous hugetlb entry, let's invalidate the local entry.
+> >
+> > Fixes: cb1fa2e99955 ("arm64, tlbflush: don't TLBI broadcast if page reused in write fault")
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Chris Down <chris@chrisdown.name>
+> > ---
+> >  arch/arm64/mm/hugetlbpage.c | 21 ++++++++++++++++++---
+> >  1 file changed, 18 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+> > index 8e799c1fe0aa..ff1f53e435e1 100644
+> > --- a/arch/arm64/mm/hugetlbpage.c
+> > +++ b/arch/arm64/mm/hugetlbpage.c
+> > @@ -429,9 +429,24 @@ int huge_ptep_set_access_flags(struct vm_area_struct *vma,
+> >  	VM_WARN_ON(!pte_present(pte));
+> >  	ncontig = num_contig_ptes(huge_page_size(hstate_vma(vma)), &pgsize);
+> >  
+> > -	if (!pte_cont(pte))
+> > -		return __ptep_set_access_flags_anysz(vma, addr, ptep, pte,
+> > -						     dirty, pgsize);
+> > +	if (!pte_cont(pte)) {
+> > +		if (__ptep_set_access_flags_anysz(vma, addr, ptep, pte,
+> > +						  dirty, pgsize))
+> > +			return 1;
+> > +
+> > +		/*
+> > +		 * Another CPU may have made the entry writable without
+> > +		 * invalidating our stale read-only TLB entry. To avoid
+> > +		 * indefinitely faulting on this entry, flush it.
+> > +		 */
+> > +		if (dirty)
+> > +			__flush_hugetlb_tlb_range(vma, addr, addr + pgsize,
+> > +						  pgsize,
+> > +						  TLBF_NOWALKCACHE |
+> > +						  TLBF_NOBROADCAST |
+> > +						  TLBF_NONOTIFY);
+> 
+> IIUC, this is similar to fix_spurious_fault() for non-hugetlb folios.
+> Can we use similar logic?
 
-On 11/12/26 16:00, Mika Penttilä wrote:
-> Hi Alexandru!
->
-> On 11/12/26 13:56, Alexandru Elisei wrote:
->> Hi Mika,
->>
->> I want to help getting this series merged, and I've been familiarizing myself
->> with hmm and device migration, please bare with me if the questions I'm asking
->> are obvious or downright silly.
-> Thanks for the interest and willing to help! I am preparing a v18 of the
-> series and plan to post it early next week.
->
-> I try to answer your questions, there are quite a bunch of them!
->
->> On Tue, Nov 03, 2026 at 08:16:17AM +0200, mpenttil@redhat.com wrote:
->>> From: Mika Penttilä <mpenttil@redhat.com>
->>>
->>> Currently, the way device page faulting and migration works
->>> is not optimal, if you want to do both fault handling and
->>> migration at once.
->>>
->>> Being able to migrate not present pages (or pages mapped with incorrect
->>> permissions, eg. COW) to the GPU requires doing either of the
->>> following sequences:
->>>
->>> 1. hmm_range_fault() - fault in non-present pages with correct permissions, etc.
->>> 2. migrate_vma_*() - migrate the pages
->>>
->>> Or:
->>>
->>> 1. migrate_vma_*() - migrate present pages
->>> 2. If non-present pages detected by migrate_vma_*():
->>>    a) call hmm_range_fault() to fault pages in
->>>    b) call migrate_vma_*() again to migrate now present pages
->> Regarding both sequences, I'm trying to get a better understanding of what
->> the issue is. I assume the caller wants to fault in system memory, and then
->> migrate it to the device. Is that correct?
-> Yes that's the common thing to do.
->
->
->> In my analysis I'm also not going to refer to THPs, since that would make
->> things even more complicated than they are. I think we can come back to
->> THPs later if we think it would be useful.
->>
->> For the !pte_present() case:
->>
->> Sequence 1: hmm_range_fault() -> .. -> hmm_vma_handle_pte() handles
->> !pte_present() pages in two ways: faults in swap pages and device private
->> pages belonging to a different device, and waits on migration entries. Then
->> the migrate_vma_*() flow is used to migrate the range.
->>
->> Sequence 2: migrate_vma_setup() ignores !pte_present() page table entries
->> After this, the caller follows the same steps as in sequence 1 -
->> hmm_range_fault() faults in !pte_present() pages, and migrate_vma_*() is
->> called again to migrate the pages that were faulted in/waited on by
->> hmm_range_fault().
->>
->> Now, for the CoW case that you mentioned, I'm going to assume that the
->> caller wants write permissions otherwise nothing needs to be done:
->>
->> Sequence 1: hmm_range_fault() -> hmm_vma_handle_pte() records a fault
->> (hmm_pte_need_fault() returns HMM_NEED_FAULT | HMM_NEED_WRITE_FAULT),
->> handle_mm_fault() -> .. -> do_wp_page() breaks CoW and maps an exclusive
->> folio with write permissions, then the migrate_vma_* flow will take care of
->>
->> Sequence 2, migrate_vma_setup() installs migration entries for the page,
->> then migrate_vma_finalize() replaces the migration entries with device
->> private entries.
->>
->> Looks to me that for CoW pages, all that's needed is migrate_vma_*(), and
->> the subsequent calls to hmm_range_fault() and migrate_vma_*() are not
->> necessary. Is that your conclusion too?
-> For  a device fault: the driver want the data in device memory with the
-> permissions the device asked for. Your !pte_present() analysis matches;
-> note that pte_none() in anonymous vmas and the zero page don't need
-> hmm_range_fault() at all, migrate_vma_*() populates them directly.
-> That's why the common case is cheap with sequence 2, and only swap
-> entries, other devices private pages and migration entries need the
-> extra walks.
-> For cow with write intent migrate_vma_*() alone is enough.
+I think we should but that's something going forward, not as a
+backportable fix. I'll take this patch for now and we can look into
+wiring up something similar to fix_spurious_fault() for hugetlb.
 
-Is *not* enough meant to say
+Currently fix_spurious_fault() only handles pte/pmd faults, so we can't
+simply do this:
 
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index da5d04edf7c1..e0e582f264e8 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -6297,6 +6297,8 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
+ 	if (huge_ptep_set_access_flags(vma, vmf.address, vmf.pte, vmf.orig_pte,
+ 						flags & FAULT_FLAG_WRITE))
+ 		update_mmu_cache(vma, vmf.address, vmf.pte);
++	else
++		fix_spurious_fault(vmf, PGTABLE_LEVEL_PTE);
+ out_ptl:
+ 	spin_unlock(vmf.ptl);
+ out_mutex:
 
---Mika
+because the pgtable level is not known to the core code. We'd need some
+arch specific hooks and handle it in hugetlb.
 
+With Chris's fix we just miss one more retry before invalidation. But
+yes, having similar mechanism in the core code makes sense to me.
 
+-- 
+Catalin
 
