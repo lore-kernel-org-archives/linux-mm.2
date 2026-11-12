@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A10A606A32E
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 09:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F28606A8B7
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 09:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dK91/CBD
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UIE+jqZK
 Received: by kanga.kvack.org (Postfix)
-	id A031D6B05B1; Thu, 12 Nov 2026 04:08:29 -0500 (EST)
+	id C4E016B05CC; Thu, 12 Nov 2026 04:08:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DAE56B05BC; Thu, 12 Nov 2026 04:08:29 -0500 (EST)
+	id C24E66B05CD; Thu, 12 Nov 2026 04:08:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F0316B05CC; Thu, 12 Nov 2026 04:08:29 -0500 (EST)
+	id B3ABC6B05CE; Thu, 12 Nov 2026 04:08:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 617746B05B1
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:08:29 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F047C1C3CFF
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:08:28 +0000 (UTC)
-X-FDA: 85425891096.21.C0B1F09
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 2FC0C140002
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:08:27 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="dK91/CBD";
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794474507;
-	b=pOaUU8ZJvREd+yqIyJFeIfdmsOSEziGshMN4mZ4JkTryV6zNJHitDmVr26mBQf4XR9jsxK
-	yTJWPv2xY8r0auPauQe/Gd1pLWBDNimjpYroouOm59nX8cWd+4K+sfnzw4R+D8rSTW64yn
-	/1tMAFUu9DnmrXtJBFdKDGdm1MKtVUI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="dK91/CBD";
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 8649E6B05CC
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:08:36 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1F5421604DE
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:08:36 +0000 (UTC)
+X-FDA: 85425891432.26.EA57933
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 33914120006
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:08:34 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UIE+jqZK;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794474507;
+	s=arc-20220608; t=1794474514;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sT5JORa4hluQX/UGABU9ltevF9DMtn7AClnTuZFBi64=;
-	b=wXT5clWgT9DIOz+Lccy4jrI84Y3ZBrpuq0JMAkjh5/aE9urLNTM53TKOc6epuNoCclBAuR
-	X1LR2mIp4VTH5HzbClMdd8LZuFYYbzjLE/RpH0zAiQ7bhOnomamYDDuxQSMcOtomS9KgV9
-	cMifw6iDbEkPS4KuO3T2V+X2hasUXeI=
+	bh=d0TW5g+5gf+ItcPdOWLfpHX4VmIPTaVn9u8r31nhF/E=;
+	b=yXogDi/cVRlxy4LuOPfIKQHELADlPXuGIZDvYFT17bFvsHdB9uowS7X6mv3/x3bqVDraDk
+	Ph1Y7NgdPqYGDlGOkB09PDYi5A0NPLuAgLmK9i2yPHZ9pLAYOgZSzsvzEdewbZDjHIn8Vw
+	MPfyOuDaXMSGUzJx8KZ1jhMktx5GxMs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794474514;
+	b=I2ZjhRTFgaZBv6nkmuNjjg0ISY1ArO1ec4CULoBjr52Yltybms+hCnqIzl62tpM0vlA6gS
+	dMcvb8/s8PU4+W6nMW82EfF20qGn0u5AYg0OiCrm62uIrhl3vDJs4BLJHCmTwUjPSqmSMd
+	6bbE138Fa3DVZ3Qiv34hY5mSjS8OQ6w=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UIE+jqZK;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5610D4797D;
+	by tor.source.kernel.org (Postfix) with ESMTP id ABB4B6565D;
+	Thu, 12 Nov 2026 09:08:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01011F00A0A;
 	Thu, 12 Nov 2026 09:08:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4979C1F00A05;
-	Thu, 12 Nov 2026 09:08:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794474506;
-	bh=sT5JORa4hluQX/UGABU9ltevF9DMtn7AClnTuZFBi64=;
+	s=k20260515; t=1794474513;
+	bh=d0TW5g+5gf+ItcPdOWLfpHX4VmIPTaVn9u8r31nhF/E=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=dK91/CBDUKHnx4fnxpXkYT6g6EjYNWdbEfh28QaH4eiXnsV7Q65lDqVP7CnvE/zD7
-	 3PL8LPJSkPlTXKqXQzkgMcC6n9oadyiqPqaJ9OF34qhg86EiHvtApGY8+jOLYvnrYx
-	 qly7FN3cuvvW7NQV/qLx8+0BJlyHWHjTc5Iar9JQ0rKVKYAR9Bfm8GlYty1323KO0S
-	 J04aUVbMlpTo5op0oUgccIMziBFU87+0zggpYiSVWSQCj2jUOHloi27gGFT/Nd/ysB
-	 QdHoyqzJDffQdW6oAxuFCBOd4NijXG9eV0U6VyzlVUDPyQwZO+dbO9y81oIC2gPQRL
-	 gbnVwvLiJ/FEA==
-Message-ID: <a6da0f9b-c292-471e-8bf6-5f67b735591a@kernel.org>
-Date: Thu, 12 Nov 2026 10:04:51 +0100
+	b=UIE+jqZKYrrfRzCUJkrZMjAZk2iT+4AzaK39M6M3D3/SLhCgj65MkGDvs6u/InuwL
+	 p+SYWAtprInI/uTpnJZV/liEHwPI7EbU3xx7gP0pXYpGErDjbACmssL2pTRG91pJ7X
+	 DL/d4ADFb+TDAmC8EFy05ixD1V2CzAsINhjWcHRTbRlZfbkkGlnv924ADJldjo9P2l
+	 tz9iY/ErTV1OUvZVIiDUK972hNZ3t3Y5WLpgX9L00ZyuWOjaHfY0XaR8qLObnYnnFq
+	 0590rXJS85TJ9/5fIc2IPUjFjNC7pDzMgUJrIGSVMYlu/dZ+D9a0E+n+sl/xG1rVt9
+	 bdYucvLcBMoSA==
+Message-ID: <094479b1-a982-48f7-ac70-75260edc505f@kernel.org>
+Date: Thu, 12 Nov 2026 10:08:16 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 3/5] mm/memory-failure: Add a pre-online poison
- registry
+Subject: Re: [RFC PATCH 4/5] mm/page_alloc: Keep pre-online poison out of the
+ buddy allocator
 To: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>,
  Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron <jic23@kernel.org>,
  Dave Jiang <dave.jiang@intel.com>,
@@ -85,7 +85,7 @@ Cc: Ira Weiny <iweiny@kernel.org>, Li Ming <ming.li@zohomail.com>,
  Oscar Salvador <osalvador@suse.de>, Kiryl Shutsemau <kas@kernel.org>,
  Harry Yoo <harry@kernel.org>
 References: <20261010162017.62506-1-shaikhkamal2012@gmail.com>
- <20261010162017.62506-4-shaikhkamal2012@gmail.com>
+ <20261010162017.62506-5-shaikhkamal2012@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,21 +132,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261010162017.62506-4-shaikhkamal2012@gmail.com>
+In-Reply-To: <20261010162017.62506-5-shaikhkamal2012@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam06
+X-Stat-Signature: rt98ztrwny6mxdgwo9egk1po8qd4o77o
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 2FC0C140002
-X-Stat-Signature: jaacwiytm8c9s43qjpspnjxxmd4qnjas
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: 33914120006
 X-Rspam-User: 
-X-HE-Tag: 1794474507-130716
-X-HE-Meta: U2FsdGVkX1+Z/Tu5zxhdLeJCah0exqUterH4dHLyPaQq9FrFtx2yWtXIIJwTv/0KXiarTydTDEANy+mVLLbY8p6G0E9iUbfXoe1ddpS5vy3Pp5HriDlH67h4vB/3e3OqMLNPrmNdJmBZyU7yXFh4AumQmTiR7G0x1DmUbrL5aIQ/UkUFtU54zwOYmrTuzJlQaQPkPPRu2IADSO+sn/eUdC+qJcntITLf7A6sokTl0VKTJ7N4dW3Tq5EK8DERZVhW303g65+wgjn9vHkjIDTxoW8phBzbmnBTubhEL1JIBh/U56mz427vorQATOMLf/ZlNFDh211X2HlncMTpeq0vzUMWk09QhGeRZ2iDzqN+fgpMQxFmC1bBsRtdOIpo88hMy0S7+XlBnyu3JpSwi9WeqW+1LpnHdKUUUMQK8Zd+qJI1R0QjEtDaZPGJITcQW4uiehXh2KBjUCkxYqL/iaeYXQ3D3k3CkWLh0iy2jHNMvaycKAMQerA+yUto3YsaeLAGiBWLLuJznplMiLZ/qcRqMIJvfvKpzq6INZ37ZG5EqFEZ/DfceyZaBMakKd5PUeq0cPGSqCimDQKuKz0Q03c+4La1UO9/GUCjZLJ5DIxoXhGSqJVv6C+3Tkw/ug2fdiLEV0jZTdwzzFkA63P8b3ZNqGmscLD6oDAALJFzcfquihdCGw/3BGAn0tyo/YRj56xC19E2EywmESuVvVQ02vTXjo64GxNF5zPZjFT35nU4AlMSQkgJq8UnNyZ/+Ejrvu+e2xl0w+8hcLGm1j6CopmGCWEK/gcB/gmgPEeN98FWwgwrpS0uRGv7ORzul0EMS19zUZGBn3+LCoSQ819fGA2Ltxc49Bv0DmUaph/BhJHmjeha4llKmUphQAoF/+eqq0u40wXUj6KzfQUsidQos7LqfT5RfHYXE4qMme1zFhCK7UgxcV06Jndq4G2RiHJN5Zk+f2nNBpuO5tVMqa6gF/E
- NakR+L4v
- GE68XTmjS2lSIHz41NbFSINMb+JCdNmJP6UndfXYhLqO71yyDOXKqDVPGhNy0n5hzx1pfgCetZYK0DIagjKCnl5YRcw6FNZzLEgop5Jdnmeof4zfGPyP7Y/FK7jpmbugE3IlQUw5jsIrsZyQB78trRNMjv45Qp5oVoVWOrTnxYjBUUQlGLNF2v6arRF2gHg4FJK7Bu2/LunO/y+vf5VOkiTSwBbnnyjWWu1nv/Q771uyDrFv3b4K+8LBRKd6omlVJ7lP4WBpzCYJmrqKkjpKoJMqpxCRXeFXQdWQ3m/6jRfmh12S2ljXFa32IBEokE9TvsMZcA8VAdG/pdMLTY4SseGhHhGiVmMdYXHbXvtB8p6cZDAo=
+X-HE-Tag: 1794474514-598685
+X-HE-Meta: U2FsdGVkX1/f56WddW5PclFHeoJtY11udUBLmUtmipORL7oTfsS8YIeHz/xzIy7ERzq9ylW8SmnJwl2/n6MVcQ6rY/ZEwNpZPnC3a1UQ5eZ7mwsMHiUQt4LxqlsmvmGsUTbU0YKcosNUaxobS6uHnRiW6AlAAkE1G4ByUxDliuUHkbQZYL3I7Ls+IkgKfRGKRw8eJyJdw63ene2hr+jOgaEG2H3kLlTR1deCjvHIMfpVv9iXOauS25xSWXUeZ2WPlVtTuyUKN1IST/sf8QMNeN8qmwcDg54cWTLAe903vANqKonWdHaT01KhWpsbigY21n6pYukVFjMu9QldWT6Ok9GjNiXtEfxF75+3+EVeGQlaGAwyVlx2E+9JPFEg7p0zxFTmBse1lLac93y6xyrDP+C61S/nbu7AWd+ijz2z51dJuRhW1VPjefH7yjc5hfBFwMLJ8D8NyL/JgsV7Ee0z3pX+JmDWPcvvowFGzyipIZnu1eWYwhEshWDTb+xo6IiYPoq/WGBl5T20zGKPPzNhcMZhyONK6p5IhoC/+HK1YlVjLMTEPp3cDo3/sExcAUYhA8ja0+PabJIBJhAZmkoHpllYalw7yVG8lVlABDmCJJq4pIFeOEr1HYC67thNTuBP1uKnuRqa3M354B4x2GQovATanyG41OkIVT+KUxMKuFDgUpwP7O2wSnQc4F+kahFg6Jk6Vgb3MEYwLEvVOyN/NOzTfLcE3G3WjJCvyOZCvF5kicv08KDlS2K493DqA8XvPFODNnpoPMwukXqlre7kAw4MPKlZjb2qPDm/t6Gy3LG7eCS/66gOYKLUTl2OaSTgasGQdkoYJN+SSJyQHu5dwBlPmtOJmxRCHSVEbjK7Ik9SLF6fEgAiV+c8dTSl4ciCHL4FXQ6RCUI7Y7fVa68E9poThcbamJAen5BC1E0EG8blh+i9+HYR14WlKlg2FmfUAcCwzUH9zREsILIOIR/
+ ic3DGWes
+ tJOpFSveZoxBqQ2OKB+5KPG4cB/LA0RtGzC2eyvakkTkFym3ShKFvgzRceISs5zlDNgidKsg+GKEyZaICQtJepstzHCzMX/xiy/iyhyFWRMQqV+XPbQQGxXEvjFPhBePi5mkbFvCoqNZqdvVht4dozAnof5iznvloW6c4CUOR3jV6G2UzIbyf+HpI4li+F5t26VCAtwZA4fr42MmQGg2FN/B02qzw/Tjov5dKZ7ag1KgF/7cOcsNkqAYZu+bUyAtcaklIkice2PF6LqnfhXm00OdK1BsDzcF+SmMkSkevg2Ik0CV5lG2B2X2HJ89cKLNJatmtj9o0HyQiNt1Ef0CpHVr+uheLtWA4X8/kbBAVreMyF74KuUOYX8CWjkFbsUMXUWvMHH3FQ6gD99ylbuoJFEnn2A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,39 +157,73 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 10/10/26 18:20, Shaikh Kamaluddin wrote:
-> A frame can be known bad before its backing memory is onlined. A CXL
-> Type-3 device retains poison as DPA-based Media Error Records and can
-> report those records through GET_POISON_LIST after a reboot, kexec, or
-> device hotplug.
+> The inherited-poison path checks initialized blocks before releasing
+> them to the buddy allocator. CXL device poison discovered before
+> hot-added memory is onlined is recorded separately in the pre-online
+> poison registry.
 > 
-> CXL poison can be retrieved while a region is being prepared, before
-> dax/kmem calls add_memory_driver_managed() for the range. At that point
-> there is no initialized struct page on which memory_failure() can
-> operate. The poison information must therefore be retained until the
-> corresponding pages pass through memory initialization.
+> Extend __free_pages_core() to send a block to free_poisoned_block() when
+> it intersects either poison source. In free_poisoned_block(), withhold a
+> page when its PFN is registered as pre-online poison or its physical
+> address is present in the inherited-poison table.
 > 
-> Add a registry of sorted, nonoverlapping poisoned PFN ranges. Each
-> registration represents one owner and its independently managed memory.
-> For example, a CXL region registers the poisoned PFN ranges translated
-> from its device poison records and receives an opaque handle for that
-> range set. A second CXL region receives a separate handle for its own
-> ranges.
-> 
-> The owner uses its handle to remove exactly its registration after the
-> associated memory can no longer enter the allocator. Removing one CXL
-> region's registration does not affect poison ranges registered by
-> another region.
-> 
-> Keep each registered range set immutable and protect the registration
-> list with RCU. This keeps allocator-side lookups lockless while allowing
-> a registration to be removed safely after an RCU grace period. A later
-> patch will consult the registry before initialized pages are released
-> to the buddy allocator.
+> Pages identified by either source continue through
+> hwpoison_boot_page(), while clean pages are released through
+> accept_and_free_block().
 > 
 > Signed-off-by: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
 > ---
+>  mm/page_alloc.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index cca67a2702a4..57843df01b2a 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -33,6 +33,7 @@
+>  #include <linux/cpuset.h>
+>  #include <linux/folio_batch.h>
+>  #include <linux/memory_hotplug.h>
+> +#include <linux/memory-failure.h>
+>  #include <linux/nodemask.h>
+>  #include <linux/vmstat.h>
+>  #include <linux/fault-inject.h>
+> @@ -1601,12 +1602,14 @@ static void __meminit free_poisoned_block(struct page *page, unsigned int order,
+>  					  enum meminit_context context)
+>  {
+>  	unsigned long i, nr_pages = 1UL << order;
+> +	unsigned long pfn = page_to_pfn(page);
+>  
+>  	for (i = 0; i < nr_pages; i++) {
+>  		struct page *p = page + i;
+>  		phys_addr_t phys = page_to_phys(p);
+>  
+> -		if (range_contains_poisoned_memory(phys, PAGE_SIZE)) {
+> +		if (range_contains_poisoned_memory(phys, PAGE_SIZE) ||
+> +		    preonline_hwpoison_contains(pfn + i)) {
+>  			hwpoison_boot_page(p, context);
+>  			continue;
+>  		}
+> @@ -1652,7 +1655,8 @@ void __meminit __free_pages_core(struct page *page, unsigned int order,
+>  
+>  	/* First: a block parked by __free_unaccepted() never returns here. */
+>  	if (range_contains_poisoned_memory(page_to_phys(page),
+> -					   PAGE_SIZE << order)) {
+> +					   PAGE_SIZE << order) ||
+> +	    preonline_hwpoison_intersects(page_to_pfn(page), nr_pages)) {
 
-Oh no, another source of poison information. That doesn't sound like a good design.
+That looks rather hacky as well.
+
+I really don't want us to have various source of poison information that the
+page allocator + core-mm has to mess with. It's just very bad design.
+
+I made that clear in the last kexec attempt to do something similar.
+
+This likely belongs into memory onlining, which could online only the relevant,
+un-poisoned pageblocks.
+
+Not sure how it would best retrieve that information, but we should definitely
+not add more shaky hwpoison sources to random pieces of core kernel code.
 
 -- 
 Cheers,
