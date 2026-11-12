@@ -1,165 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54162606C71D
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 14:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8F6606A334
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 14:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=MePUV0PJ;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tYPab8lG;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=MePUV0PJ;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tYPab8lG
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jN/JIfZ7
 Received: by kanga.kvack.org (Postfix)
-	id 7522B6B05B3; Thu, 12 Nov 2026 09:06:10 -0500 (EST)
+	id E323A6B05B6; Thu, 12 Nov 2026 09:07:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 701A06B05B6; Thu, 12 Nov 2026 09:06:10 -0500 (EST)
+	id E09916B05B7; Thu, 12 Nov 2026 09:07:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A24A6B05B7; Thu, 12 Nov 2026 09:06:10 -0500 (EST)
+	id D46916B05B8; Thu, 12 Nov 2026 09:07:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 366BB6B05B3
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:06:10 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BCC861C39C7
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:06:09 +0000 (UTC)
-X-FDA: 85426641258.08.7B93E73
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B22BB160017
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:06:07 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MePUV0PJ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=tYPab8lG;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MePUV0PJ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=tYPab8lG;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf08.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794492368;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d26nC76YLz1Hx0CSfgosaWHEU4xoea2lRNFaxDZwsTA=;
-	b=JPpBC1QAK023ksG2odJjGLbASuSo6u+eeSgZqGFOnQB4BwG1eXWmuw5cTXRi9yjPkmBvZg
-	wQZSaF3Bil9gvJPfLKN77wW6J8zCP7bHKCX79EzQkVDKNzuLXksXVyFdzS/zhtz7u6szxu
-	z/+0eDm6iDoVC626BJOZl5vslkzdZyk=
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B10816B05B6
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:07:46 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 48574C05E9
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:07:46 +0000 (UTC)
+X-FDA: 85426645332.04.E73225E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 96C632000C
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:07:44 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jN/JIfZ7";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794492368;
-	b=8iC3a6h2TbejQmXFqJi2tcEBmuDsMnTXH5W/c3422gAQSvWkxwdpGl6+JYCYdbF45Wy/aX
-	wuELAaQMQWGKfeMRIwrQjK3d8LZrIP9Wzqz5uC4s0PBnu96j3irKaLEzkn/Y/bOyouxknS
-	+7yglKhOYD63k7PwK4GiortvE8Lu1pA=
+	t=1794492464;
+	b=cmK0eNzi8XhbIZ+xwMDfVFCnn+hAgJ+4yuM9EqzONV2Rs4HUyyujqZIC3puKVsV66e+O3l
+	2nhqoCSdfjhPqvZWtoW/ZXk4cTjTOViOO1JS0TRUAc47I/d5tFBZsU4WwlwMeK6UKuYEbw
+	dto/pjmj8vJiVkIBtly7JCYGaWt4wzg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794492464;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xz9PU9PMLrFr8ET01Qwe+PL/JTwp79ZzBWS/1CEhXCY=;
+	b=7AjIsm8khF4cfEmO4wdaH8l4RDUHPkZRgRhRyvSPrGJmdbI3OGWBS38UwsYbRVmPi/wBrJ
+	egjzl9izbfRiYuM7ZUI9dJhAHRk5MIRXBJywGiVtkxndBOQ1oqK85OPRdcE1GytdF7r3Ef
+	e3QCgL0CrGxMILLAg7t2dxlI6RXq87g=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MePUV0PJ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=tYPab8lG;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MePUV0PJ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=tYPab8lG;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf08.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 4F54321E32;
-	Thu, 12 Nov 2026 14:06:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794492366; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d26nC76YLz1Hx0CSfgosaWHEU4xoea2lRNFaxDZwsTA=;
-	b=MePUV0PJPVg6e87V3rI/oBHU/WVNpeN9fAmgxCGLxENx35oKrb0iEmR3T18rtLtVz1Vf+O
-	1G6UmmBLJXvaA1WYhfqBFsQOBOJ7IA2iBvpEpvVmXn/Cmsa4Thr80o0Lq+TtDYhKs5Kyab
-	qpmF+O8fmKXKFCYmnkRlnrBsSmTsSBg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794492366;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d26nC76YLz1Hx0CSfgosaWHEU4xoea2lRNFaxDZwsTA=;
-	b=tYPab8lGc7bR6d9kEE9FN38yDhbA+TLnfbS8qBFT3Rs/vxGIU/l099dpGQkmH3U6mcvPbG
-	SX8CzvRsGMGv8qBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794492366; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d26nC76YLz1Hx0CSfgosaWHEU4xoea2lRNFaxDZwsTA=;
-	b=MePUV0PJPVg6e87V3rI/oBHU/WVNpeN9fAmgxCGLxENx35oKrb0iEmR3T18rtLtVz1Vf+O
-	1G6UmmBLJXvaA1WYhfqBFsQOBOJ7IA2iBvpEpvVmXn/Cmsa4Thr80o0Lq+TtDYhKs5Kyab
-	qpmF+O8fmKXKFCYmnkRlnrBsSmTsSBg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794492366;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d26nC76YLz1Hx0CSfgosaWHEU4xoea2lRNFaxDZwsTA=;
-	b=tYPab8lGc7bR6d9kEE9FN38yDhbA+TLnfbS8qBFT3Rs/vxGIU/l099dpGQkmH3U6mcvPbG
-	SX8CzvRsGMGv8qBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8DBA813432;
-	Thu, 12 Nov 2026 14:06:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id RScNEcrH9WqvKgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 12 Nov 2026 14:06:02 +0000
-Date: Thu, 12 Nov 2026 14:06:00 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Steve Sistare <steven.sistare@oracle.com>, 
-	John Hubbard <jhubbard@nvidia.com>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
-	Josef Bacik <josef@toxicpanda.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org, 
-	iommu@lists.linux.dev, netdev@vger.kernel.org, Chris Mason <mason@kernel.org>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/9] mm: limit pagecache folio refcount when mapping
- pages
-Message-ID: <avXGtysfRk3uQpNu@pedro-suse.tail5790ac.ts.net>
-References: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
- <20261110-refcount_overflow_stable-v3-1-318625d63a98@kernel.org>
- <avW0HGjF6wuqn12T@pedro-suse.tail5790ac.ts.net>
- <86206f64-fefa-4a13-95bc-eddf756eecc8@kernel.org>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <86206f64-fefa-4a13-95bc-eddf756eecc8@kernel.org>
-X-Spam-Level: 
-X-Spam-Score: -11.80
-X-Stat-Signature: egijknk13zkzeqmfpjpfp6sspqu75y54
-X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B22BB160017
-X-HE-Tag: 1794492367-317568
-X-HE-Meta: U2FsdGVkX18uIarZZupWJt9CkYfB+FkoLwKYgPbAK/+q2wzszJbPGFNsPABH7VtlZqvfWsjkgLHQ0V0eoOu3YHaILBcx6g0IybXqvy44FWmMdEGPlZF3Fupgak85K5gn6jmBa+K8IlghLBD2+i3hgSjwDjXBQEMx9tAbvNJSwJdmomWozktg9YID6Jz8UK5RYmfP91p25dgp+VMoyFJzfX5UT8gaeTUS55sdfWMGdtupd9gCsXkKQIISqmY1tyU6vAx76EVP0oPffBStkrG1Bx9jAyrCAE6qYxVOdT/kwOc167nTZbRoKsp0V7cH/z4qktiaoC72uulQjgJgmn1Cr4iLzZf9Cm8VNzTWG+6vHJtODzy+YglELZcNnhsLK2Mqheu7blu38JrpB7WJarPCSwxZ1kFINIzi3ovv0bb1IYSUzGEpFvb7AJFXzEbnbFXEANfLPWLxgq+LxRg/yNYYD8VJRqmEG4x0KhtjP31h2GdcBBP7a0/h/ND/qegFIa3FjASG6xtitBOEF0RWncmUEx4a2p/gBknZymqrwH5kzgDTnOaSql/Z/3VoFyUz8tQBYZC816S02XAGQl1Z1BEwMvghEia5bKCpSowQwwtlx+ZIHtwa5skD2pvuxUT9+80BILaHVFEJKwKeqvvMD5uF0B9/FrV86eW+7gNmUokrRpi72FnkVHqQeOwZ6SjNEtg3pgiIkuSEkhBiPu7Xfb30L+vwFVHUVeIDGhX8kAIy+Gc5Q2BeCPZZclFKU/y+HUM3p6fZn+YEddk0GJxDqqFgFQzb/bIYe9eOijQDl2/iwQ/K8ZTdokfuQeK6B1hulkZTc1cuDMGH2Ab+TDgOdq/3uKtNHVBwWJn7jiJ/64mGRIZYApsyFcTlmWJkvEFiR+bVpDVj7E8kg1j3hEhuYI6tddJ3cO/X8Q62ZrvCJcjL6cmVvxB7zi69ZuiVQDqOMyKU2S6ZbUWmKy5lUiG0qnL
- 4QzoupDp
- TKlJafspe1xD4DKLlK6zQp06Jcm2Wl4VE20DQrdHgjjvbc/1ClE7NtCrH9CLFJ7+jyAEmn8dEaxHADwJSuPHSQuCc1I0jKZxzhY3er9vJ7OGI4K1nAjdZytjy3nxcMMCpa1ehNxTXiGugtjlt3xyo4RTUrUEJm0qqE8zfQS06Crlc/7sptfGv8meg9Zi1DuLUTHc+uhFGqGo21dNnVgHPWR+axFESlWChSGAWP2K6P2UiQI4HmJ6fqTDWW/Cj0oXD9WvpAjgHLApCr1E5nqQcuijUKJCElH3rG9HHSIlvNw0L/j8YEuDh9O4OhTSwHq5OxOXdx1GjmMSRcmVy3VevBmeRlQ==
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jN/JIfZ7";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B5E4140695;
+	Thu, 12 Nov 2026 14:07:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 989661F00A05;
+	Thu, 12 Nov 2026 14:07:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794492463;
+	bh=xz9PU9PMLrFr8ET01Qwe+PL/JTwp79ZzBWS/1CEhXCY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=jN/JIfZ7BRxEbHAO5f3tY3RgyXYn3oLhDS4jgBPgU+cqETIiYwKTcZLZhn2YwcF3V
+	 jaxcyJxALghtDVeJrZKzQnOGhbVUzxteGX5z4a0pbFGZNX1BBsjBj6s0JR+6fhgZ1m
+	 amp/vNfJWF7dZuva/Fna8okYE8KXsRabftIMtLoRjs4usWyaz/Ef2/C3vMjUvg6hdj
+	 gaibqQVrooLke3N7OfjFZ/Xgzax6vn2Qf34xqXOaIX7iHFnqzjRSBtaP8u/4r/g9wK
+	 hQx06SH6btKPVYBXnX1Arxk0zyDo6uGz0d6Hhmkh9/jJP/1nC3jn9OvadSPA1EQPWF
+	 Cg2NzElu+2SBQ==
+Message-ID: <sashiko-outbox-211264@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 2/4] mm: don't report OOM when a huge PMD race blocks a
+ pfn insert
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Eliav Farber" <farbere@amazon.com>, "Andrew Morton" <akpm@linux-foundation.org>
+Cc: "David Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam
+ R. Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
+ Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
+ Hocko" <mhocko@suse.com>, "Zi Yan" <ziy@nvidia.com>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Nico
+ Pache" <nico.pache@linux.dev>, "Ryan Roberts" <ryan.roberts@arm.com>, "Dev
+ Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama
+ Arif" <usama.arif@linux.dev>, "Kiryl Shutsemau" <kas@kernel.org>, "Thomas
+ Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>, "Borislav
+ Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>, "H.
+ Peter Anvin" <hpa@zytor.com>, x86@kernel.org, "William Kucharski" <william.kucharski@linux.dev>, "Vishal
+ Moola" <vishal.moola@gmail.com>, "Alex Williamson" <alex@shazbot.org>, "Peter
+ Xu" <peterx@redhat.com>, linux-mm@kvack.org
+In-Reply-To: <20261111140655.34281-3-farbere@amazon.com>
+References: <20261111140655.34281-1-farbere@amazon.com>
+ <20261111140655.34281-3-farbere@amazon.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 12 Nov 2026 14:07:42 +0000
+X-Rspamd-Queue-Id: 96C632000C
+X-Rspamd-Server: rspam12
+X-Stat-Signature: f8tpqzyku1fu71jjej3hjh1fi6341soz
+X-Rspam-User:
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794492464-220599
+X-HE-Meta: U2FsdGVkX1+KrYEmqWshVHOlhgG/JL99C6BzJ4bklxqFbx7pWX7TnMeVu1JaJVnHKQBD7Z7J4I71kGF07qlwUy19509eHvdEiO8AJe816v6y40U6WMknM4xwqM3T0TZztMXFNxCm4n35tJ0M2+NlgIK4q7ZtOqbg9/0R64YJY3QW2EYAbTjTQCvB0BvZDBSwdCWhdeLFxSf+oA4RqI/r6N/olDPEPblp4JJxF83wLAAaWB1gmPpUWwd7wXPiNwuonosCzxKG+AaDe92gmPu20c0WHWRK3qIESMDaduFgwevrKVSQTsGeqZop+PBFLinZt0ixCjUiupyxARhFiw7JxGCvp4XTXVd2N2GW8gK/azFs+SoS7IVHo4ek+rphPOZzyQ0ymLqAsLWXWjuD9XvnNY6QLappFY89Pih9uTR9T4vDtCDpp2eEKsbRy+5slVtD3Vo8ZaztVJawS4EXu2cZ/tHT7bHW8Bz12cDfUoERDFR7UG/Jq0Aq6ugc6PG6KpIFY7oMxpx1q0j0WVRSd5yOxjhfMiS+PIDs2dulMWNS5uFu8Gi/LHLHYtkR9aY1FaPnYjlZpVCsjiIsAcc3gUYrpfBA1v3lGg+qaGaD9ewi4bq/lTZOZvTUuVal0sWtZAl7lHzdAnE+IQ3xIJSqy6zJkTiXKa8Rh9N6VhtMwqgUBQOBLlOStNxqYQFOpAgMjvHBk9X/igSwJI6w9Zt5LCx1PNfxgPqKWHqbVnwh+JBqU5NwKYG1Z9TxUISMgZ+4K7semvVtAM71QpBKLeDq8GGFJ6YLCCYv4NxIMpK2RvbkolNnOx9qY/hp6BQoqTLSSgjjQ22rvBDySSrGmC92wXUZTLAIFjgboPYne4s5/ryBf1Q20BokuUBpW2c7nVtOD2PP/pHHfgnAMR1j7I4tpW/UQQ4TQI6NP8snj7LmmVFx09thSW/wfXMsVL4/TZ3DLdNdjXGfpYDMqGa3bgSX8eM
+ vajr6EcW
+ YpgRfsWZG4/4QdxWEqh6kuS0Jm3E1IcquLldVnwekT3exl7n7PVikciIHUyrShLGJayuESCDrmCULXQQUnosEWYnMDsjz933MEFE8i+u7YWRWvpXh6J1MrggmWp+TZIa3JIdO+OBj81m6EejRJh9TZrQc0E0RU4ZIPinPXhtfTpB+Z1c/HG/V+JQJezN3FpG33Jvy+GFBAlXmf0lEV1eqV0n1ZKyh8nkHbikCNhPtGqR5P/luRvVGSsWAdfhoBnEKbPaKaRmDCIqeopoIlZhuEoGBt/fuoto5dzEWj5TAyutYd9IbgS371IE/+fwLcbC+PSTjTs0OvYHHr/EdgEyWB4jRYRBW8ukXVjrfAUYLP6XfREzlVsiZhONA9C8OF9SuGqoK6Bebz3YRn3euTkL4CY2fmXm0rcM1P8aNQNv2olvXy4yZCYDRuywgBXU4+kddK8YIhhcNOB2Tm+mqRlwRIvEL0Mic4CLEzSRv01hp9TjcaY+nphgk6tV5YDLVQ4EsUOB374nA/ZkITNyS6eLx6kM9FHpe2dh+2uD7UXg4u8fVlR6OLf0CErT5l/BUlLF5iwgMRyTTbmjJxM4xzLnKmdA9JXZY0v+s+4T7Nnw3m9eOlefUJhooXlnMIDnPfXUdcyUsinoF8FZySkqXQ0vfZ3olDb3JbvsWDfTWnQoRTH6GPw5yJVHk3yl0fVtULjOjwC9p6kwoA+pKiB8KQx/9datj9EK7w+ciql/1CeMVHlAcp562cGupLVKAvpkLVgD8B/gTy2SL1J30PDdXdN9znUfbBGHH1p+EVrxXqlzgxBx/OliZ8PwlaKeUsWBQZz5RNkcK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -167,125 +103,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Thu, Nov 12, 2026 at 02:16:33PM +0100, David Hildenbrand (Arm) wrote:
-> > Mostly LGTM, with some comments:
-> > 
-> > Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-> 
-> Thanks for the review, Pedro!
-> 
-> > 
-> >> ---
-> >>  include/linux/mm.h | 35 +++++++++++++++++++++++++++++++----
-> >>  mm/filemap.c       |  6 ++++++
-> >>  mm/huge_memory.c   | 29 +++++++++++++++++++++++++++--
-> >>  mm/memory.c        | 33 +++++++++++++++++++++++++++++----
-> >>  mm/migrate.c       | 11 +++++++++++
-> >>  mm/userfaultfd.c   |  4 ++++
-> >>  mm/util.c          | 18 ++++++++++++++++++
-> >>  7 files changed, 126 insertions(+), 10 deletions(-)
-> >>
-> >> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> >> index 4608540e40d46..439cfe446cea4 100644
-> >> --- a/mm/huge_memory.c
-> >> +++ b/mm/huge_memory.c
-> >> @@ -1626,6 +1626,7 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
-> >>  {
-> >>  	struct mm_struct *mm = vma->vm_mm;
-> >>  	pgtable_t pgtable = NULL;
-> >> +	vm_fault_t ret = VM_FAULT_NOPAGE;
-> >>  	spinlock_t *ptl;
-> >>  	pmd_t entry;
-> >>  
-> >> @@ -1662,6 +1663,10 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
-> >>  		if (is_huge_zero_folio(fop.folio)) {
-> >>  			entry = pmd_mkspecial(entry);
-> >>  		} else {
-> >> +			if (unlikely(folio_ref_count_over_limit(fop.folio))) {
-> >> +				ret = VM_FAULT_SIGBUS;
-> >> +				goto out_unlock;
-> >> +			}
-> >>  			folio_get(fop.folio);
-> > 
-> > I see you use this pattern often. Would it make sense to have a
-> > bool folio_get_unless_overflow()?
-> 
-> I commented somewhere (in v2 I think) that I played with using
-> folio_get_checked() from #2, but didn't quite like it so I discarded it as
-> 
-> (a) it cannot be used everywhere here, as I'd need more functions to add
-> multiple references. next_uptodate_folio() also could use it as I would need yet
-> another temporary helper for a try_get().
-> 
-> (b) these changes here are going to get reverted fairly soon once I change the
-> way how mappings are refcounted (which is, unfortunately, not suitable for
-> stable, otherwise I wouldn't be throwing in this temporary change in the first
-> place)
-> 
-> So everything that is expected to stay in later patches uses the proper helper.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] mm: spurious VM_FAULT_OOM in insert_pfn() on concurrent PMD
+  zap or split
+--
 
-Alright.
+commit 0ac526524e0ffcc35b96005d118a4d79edeae689
+Author: Eliav Farber <farbere@amazon.com>
 
-> 
-> [...]
-> 
-> >>  
-> >> +		if (unlikely(folio_ref_count_over_limit(folio))) {
-> >> +			/* Skip this PUD; it can be faulted in later. */
-> >> +			ret = (dst_vma->vm_flags & VM_MIXEDMAP) ? -ENOMEM : 0;
-> > 
-> > A comment as to what's going on here with VM_MIXEDMAP would be useful. I guess
-> > the idea is that faulting on a mixedmap later will not necessarily hand you the
-> > exact same page fault result?
-> 
-> I can throw in a comment, yes.
-> 
-> [...]
-> 
-> >> +bool __folio_ref_count_over_limit(unsigned int ref_count)
-> >> +{
-> >> +	if (ref_count >= FOLIO_REF_COUNT_ADMIN_LIMIT)
-> >> +		return true;
-> >> +	/* Background threads must not consume admin reserves. */
-> >> +	if (current->flags & PF_KTHREAD)
-> >> +		return true;
-> >> +	/* Neither must interrupt contexts on behalf of the interrupted task. */
-> >> +	if (!in_task())
-> >> +		return true;
-> >> +	/* Capability checks are not safe with IRQs disabled. */
-> >> +	if (irqs_disabled())
-> >> +		return true;
-> >> +	/* Use the task's credentials, which filesystem overrides cannot change. */
-> >> +	return !has_capability_noaudit(current, CAP_SYS_RESOURCE);
-> >> +}
-> > 
-> > In case this function ever returns over limit, we probably want to log this
-> > in the kernel log. If this function gets the folio you could even print
-> > the problematic file offset/inode/filesystem/etc. Ratelimited of course.
-> 
-> You mean, if this function returns "true", right? Is printing always fine?
-> (e.g., irqs disabled?)
+mm: don't report OOM when a huge PMD race blocks a pfn insert
 
-Yes. As far as I know, it's always fine, even under NMI. But definitely fine
-with IRQs disabled.
+This commit updates insert_pfn() to walk to the PMD and check for a
+concurrently installed huge PMD leaf when pte_alloc_map_lock() returns NULL,
+returning VM_FAULT_NOPAGE instead of VM_FAULT_OOM.
 
-> 
-> > 
-> >> +EXPORT_SYMBOL_GPL(__folio_ref_count_over_limit);
-> > 
-> > I'm fairly sure this will break the build for a number of non-GPL drivers
-> > when calling folio_get() with CONFIG_DEBUG_VM=y.
-> 
-> You mean, breaking OOT drivers, right? I can switch to EXPORT_SYMBOL if that's a
-> concern.
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 09ae7e21ff0f5..509a984f17f8f 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -2803,10 +2803,25 @@ static vm_fault_t insert_pfn(struct vm_area_struc=
+t *vma, unsigned long addr,
+>  	struct mm_struct *mm =3D vma->vm_mm;
+>  	pte_t *pte, entry;
+>  	spinlock_t *ptl;
+> +	pmd_t *pmd;
+> =20
+> -	pte =3D get_locked_pte(mm, addr, &ptl);
+> -	if (!pte)
+> +	pmd =3D walk_to_pmd(mm, addr);
+> +	if (!pmd)
+> +		return VM_FAULT_OOM;
+> +
+> +	pte =3D pte_alloc_map_lock(mm, pmd, addr, &ptl);
+> +	if (!pte) {
+> +		/*
+> +		 * A concurrent ->huge_fault may have installed a PMD leaf over
+> +		 * addr, which pte_offset_map_lock() refuses to walk. The
+> +		 * mapping is fine, so let the access refault instead of
+> +		 * reporting a failed allocation.
+> +		 */
+> +		if (pmd_trans_huge(pmdp_get_lockless(pmd)))
+> +			return VM_FAULT_NOPAGE;
+>  		return VM_FAULT_OOM;
+> +	}
 
-I had the impression we had some stuff in-tree that isn't marked as GPL. But a quick
-grep shows that everything is either GPL or dual-licensed.
+[Severity: Medium]
+Can this still return a spurious VM_FAULT_OOM if the huge PMD leaf is split
+or zapped before pmdp_get_lockless() re-reads it?
 
-In any case, yes, this will quite possibly break debug builds for people OOT.
-I think folio_get() might be a bit too ubiquitous to do this to.
+CPU0                              CPU1
+insert_pfn()
+  pte_alloc_map_lock()
+    pte_alloc() -> 0
+                                  unmap_mapping_range()
+                                    ...
+                                      zap_huge_pmd()
+                                        pmdp_huge_get_and_clear_full()
+    pte_offset_map_lock() -> NULL
+  pmd_trans_huge(pmdp_get_lockless(pmd)) -> false
+  return VM_FAULT_OOM;            <-- spurious OOM
 
--- 
-Pedro
+pte_alloc_map_lock() expands to pte_alloc() followed by
+pte_offset_map_lock().  Only pte_alloc() allocates memory and can fail with
+OOM; pte_offset_map_lock() never allocates and returns NULL whenever the PMD
+is a leaf or pmd_none().  If a concurrent huge PMD is cleared back to
+pmd_none() (for example by unmap_mapping_range() or __split_huge_pmd())
+after pte_alloc() sees !pmd_none() and before pmdp_get_lockless(pmd) runs,
+pmd_trans_huge() is false and insert_pfn() triggers the OOM killer even
+though no allocation failed.
+
+Calling pte_alloc(mm, pmd) first (returning VM_FAULT_OOM on failure) and
+then pte_offset_map_lock(mm, pmd, addr, &ptl) (returning VM_FAULT_NOPAGE
+when NULL), as do_anonymous_page() and finish_fault() do, avoids re-reading
+*pmd.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111140655.3428=
+1-1-farbere@amazon.com?part=3D2
 
