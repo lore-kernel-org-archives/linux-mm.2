@@ -1,128 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D602D606A33E
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 15:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785F3606A338
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 15:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cmpxchg.org header.i=@cmpxchg.org header.a=rsa-sha256 header.s=google header.b=NoOZtZ42
+	dkim=pass (2048-bit key, unprotected) header.d=cmpxchg.org header.i=@cmpxchg.org header.a=rsa-sha256 header.s=google header.b=bBXIOsup
 Received: by kanga.kvack.org (Postfix)
-	id 00A676B05B8; Thu, 12 Nov 2026 10:16:57 -0500 (EST)
+	id 996566B00EF; Thu, 12 Nov 2026 10:28:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFDEF6B05BA; Thu, 12 Nov 2026 10:16:56 -0500 (EST)
+	id 96DBD6B05B0; Thu, 12 Nov 2026 10:28:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEC7F6B05BC; Thu, 12 Nov 2026 10:16:56 -0500 (EST)
+	id 887666B05B1; Thu, 12 Nov 2026 10:28:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BC5D76B05B8
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:16:56 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 262588054B
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 15:16:54 +0000 (UTC)
-X-FDA: 85426819548.25.34AC9B6
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id F32841C0005
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 15:16:51 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=NoOZtZ42;
-	spf=pass (imf21.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.172 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B0FF6B00EF
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:28:35 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 09D85C0616
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 15:28:35 +0000 (UTC)
+X-FDA: 85426848990.15.214AE3E
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
+	by imf10.hostedemail.com (Postfix) with ESMTP id DBCE8C0003
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 15:28:32 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=bBXIOsup;
+	spf=pass (imf10.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.161.45 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
 	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794496612;
+	s=arc-20220608; t=1794497313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gvq7UynjcI04qxrVBFRcfaa2pXFRPHXVoB6KooUQP78=;
-	b=doyXEST5+AOA8MWe/JCBT/nBUJokkbGdBKIwEc4BqA3OOUhrn9PVUotxgEE0Xodp7K99z/
-	Owg47IdjOIEyrltb2ihlQVF+jf+GfEaf3OjQTzAaE/HfczY8MaAHaGBsvDSBb+Kf+Ia8QJ
-	Mhg5XnvR34eDZ5BZJZ6BEVA9GIxWVk8=
+	bh=GrQWj8i0KMpWLvGJmSZCRH/S1lTxVViz3a0mVq2HUbU=;
+	b=JWgWV1kRIYGfFGm2ejicmgTxUB3gXkN3AIloQHKQXRvVRWHbPXnATBQU1IBTWXbZNhsglo
+	xMJIbWWyREnb8KKNVANbn03z5WLD9TfSFr2jubzMjeIlJzDMa1V5jsK8uxdh5agZKYFz2M
+	A2eVeec0SEbCgst+2dBSx72kZOMw+ek=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794496612;
-	b=flkjWMsjPihtmzfFVIVCFGL8QGGd68vVxqD80HFgYR3RP3SXIejmua/5PppbjGHz2nZhGZ
-	1O7gf1+4JyQLcU/LQy1FKduE5trnCRdiHXSW9hPnSW3Bd2njj5Ehd4ff1BkZlWEWMQRzef
-	L4kZcY/LnPareU/dBhmdZFhbkBO1DR8=
+	t=1794497313;
+	b=YyD/GY6f1eW8exXIyCibazmMhh+JONteQU6Dj07s2SmGDmhy+Eqz/sMJmuQJnaLGiLmeZl
+	EgHSKrcqykTbOrdEif9NHuwsQDk8rcPxZtsTlswIynNuBxkPRpjkhDTrZvdHxVgZyI1JCG
+	bKps1L+J0/RoWnwKne2+3DzDYaREVPY=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=NoOZtZ42;
-	spf=pass (imf21.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.172 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=bBXIOsup;
+	spf=pass (imf10.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.161.45 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
 	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-8b3b31a6290so13023627b3.2
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:16:51 -0800 (PST)
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-702fd86d674so2264901eaf.2
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:28:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1794496611; x=1795101411; darn=kvack.org;
+        d=cmpxchg.org; s=google; t=1794497312; x=1795102112; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Gvq7UynjcI04qxrVBFRcfaa2pXFRPHXVoB6KooUQP78=;
-        b=NoOZtZ42wXq8hOihD+5CptlJupu+TadJ5o6pjLPgo7+5Vp/VixetSlLX2Co3mmGDgZ
-         aplVx3Hfu4wiTPfg9Vk4POP0yHyTWkFhcc+A2Sc3cHjsE+dfwC92p4e11ppGNEeTTUUX
-         zPPDsP82fJOHgHuUb0eRvoToCp+13bf91PecgNo2HY73FGvsBU4ZWSR+ZSyk0POmmNSf
-         8rkqCyz2RHSBFbX99sR0Gwjrvgc7JOPZuOgVFeCEiB8YKzMVsfgoHsa3+TG2UMW4ZfsX
-         YWsC3dEDIS8aLtVIy+KV1eMmFutQYffwQ17FwXPDAOjetNTaN99GApNJZvUObhokzXJy
-         WhTg==
+        bh=GrQWj8i0KMpWLvGJmSZCRH/S1lTxVViz3a0mVq2HUbU=;
+        b=bBXIOsupQbv3Hu050tP/lWat+wiScOsAqq4zRl0SyQcW8m6R5fnCPEtK+dGqZuhoNa
+         fI9YkF3FCNA5wn0n3OVfvIhIEL3CVQjrerf/TikKoFLJzjgSjcJsHp7rRu1JFI/aEegj
+         HaaBG8Jtt1gYaWWCzZCg2+15eowlQ9adxq2uguN1zQebBi+nV+Q+ScZD30Ksvtm4FqWk
+         lNbeK8QvMILlWu4JjiKSxYaL8Rfjkuf74ucQQh98VwXocpxdZWVUQaQaSvuuiwXWl3PO
+         oKPJ2UK0z0wnaAcV1ZSWr+FErkZzRaX+pvZAbOtL9SZZNnSAMhASQSEc9SHaChHn8vzG
+         QMYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794496611; x=1795101411;
+        d=1e100.net; s=20260707; t=1794497312; x=1795102112;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Gvq7UynjcI04qxrVBFRcfaa2pXFRPHXVoB6KooUQP78=;
-        b=VFy0XKRi11kXK4s2lRGAATj9VLEJu0gywaT3+EqRIJ7JY0H6NQOEozvhVQvF2uZ7bM
-         NlpfSu8zRhwRWUvF879B/VH9KNHc9vHzuP+/VKOynDiEPqhzXwQOF6UpEdbm5BAcUaci
-         JZSkXJdZuPX/mBt1VvAPAutzwaJwBhHckLyCx/N4qhWZzNTN+tIYgdFe4g180m7ms8Yo
-         SuSLTSopTEVDHWdNDdsfgQ/zoExo31PmXuyom2hJv83GusvIri3gBYJFg0pN1rOt080m
-         ls2+K/5raj+c/Gv7Jdq9btJT+u+8Un32P/xdrs9q9p/5DYRB+UMWnbvlzGeTIrBMuHeJ
-         0krA==
-X-Forwarded-Encrypted: i=1; AL+hErE8ZFvGvbrbKl4DvBPmkbNBofvnfOCxRuih/aBGgpFUFpRhV7Xq0u8kzvofCsX69uUEPOlIX2DSOw==@kvack.org
-X-Gm-Message-State: APuU4Z9t4RRW/S/VZ5qdVAXpFPaTdFFmccJEVzt5/vpR6dIG4KzRv/x7
-	Si6wQz++HrA9l8/96DYzlDjrJWw+2y+dkAhw/TG97rk0t28faCXcsFWK2dHWMeuxYP5oz1eh1kb
-	KhN2X
-X-Gm-Gg: AYBFou2EcGliBqfVt9BegLQ8HuZK2+9I0r/UJGgerma2KRx85JLxaFKp24waWQkTCvv
-	lSIMZAUJHd/CaHMqjN/Dbc3uuO95/jN/2zH6Fqqo5B/4GwEzrPPp237flS/fX9wMQ8zwmV5JL3X
-	hoaVWQzavCEKRAtwBFklyJDgK6uIkfz/jnXEK+OOKDTPPMJbPSjVAdc7dj9tR4oOgOAh9kXFotA
-	64Evxi/nDrGBk/iMEUFcCCUIwrAKpXwHbLt8GWEkcjNHvd5K2FW+ONlMfm1fJtkhlh2cplte6rY
-	M3RMdULYudMGidbTQSSAV6mTLbi39T6cIdcX+2AgxTmYuQgHl5W0AuZpyMeeGWj2cLLj/qt3vjw
-	LnQKZYkh4yhc+7hTO/+gBVZ1PLEyeMqpRtM+DSN/bVyuQ6XqgOhO437ccCXuGL18KlIv3+LoQL/
-	fi0rVg/EPsqI1Co1v/ldzYJTI/jB+cMJA7dtiJ2K58pBwX1ghL645BfU7gSM2xxx47Ej4JMlnDS
-	j70CuMLXKkGIaSEF7r7zudFmcAcA9ncCM6PPCDDCW0Y/xI1w2mUsYEVMhyn0/Fi6rSAm49z8rTO
-	rZar29ksV7hsYfhsUa5AjD7e57LG
-X-Received: by 2002:a05:690c:4d0a:b0:8b3:37e3:7515 with SMTP id 00721157ae682-8b3a81a539amr35260977b3.67.1794496610737;
-        Thu, 12 Nov 2026 07:16:50 -0800 (PST)
+        bh=GrQWj8i0KMpWLvGJmSZCRH/S1lTxVViz3a0mVq2HUbU=;
+        b=ZC0nPunet5fAPRFRdnvwJGotxt0v6Y4HDLTPdujzUqG/qM4RLm2MgreQtSF4H04CiY
+         I6vlMq06K2eeHqov8bTQjm5UsAxyrFlORueS2xLtu0CRM78inHIXjRKdbr7rBWAvAsD7
+         NYl5lEfxqJcRPqxEOvn5dyRdW0ILVcND1l4p9Cj3bg3j2a2JgH6vqV8ImOCn8ljZf9+U
+         17juKKYI6jHGT/BLG+wT6ti5Lptevr8h9TNayyT6YfI8lx+RVPujcJZZDr351LJhgjTu
+         X6ytZ+Ay6E4RSaz4nP+u09dyO2a0RvngF4mzO667MRh4cJBT6I9inX2Tp/oL03N24BWT
+         DKCA==
+X-Forwarded-Encrypted: i=1; AL+hErGUu/nIn2w2v6QjAiQAULKb1ftfLm2QlDSc6OfJGf5rsCInozY35WtQpHdrEcNR4tDlIkvdKEoVHA==@kvack.org
+X-Gm-Message-State: APuU4Z81FbYNH1cDe0wgHtAXtYxrxvSGawXG+2fiOPE5FYJHXyI2u84O
+	lgt159xoTxswnBQJkM8iCywmJ07CxdBWOW+VII9Zj29RbAZ/h+ohh2Ch18i1aCH0ktnZ8bQah6w
+	Hdu/q
+X-Gm-Gg: AYBFou0OZTPGcXzgajzCIcR3poYyENjkFCKIBa2xrwDEz/odQcwe6nItI6X1RAdlOLn
+	EzZCzOyGuJrFp7zy+LtYW9OZ4Ts2ieOikIBI1fGeAL8LE+y2Naz8NLOT3wwY5peKFzAq1RaWN5D
+	p/lLZ6sGyzNVfqi+JjPFtuwMjdQW4S4gpd9oihXwEptXbd2U6qMgpnh6Yg+frs6t59GOL1zfmSa
+	dGd4NYRCm6WM8MydZKTRXrd47fK1vsSYeoz8tWGK0AH/CZMw8NtkIg2U1D8JSTEn6MHuE5h86qq
+	OpZxp6wsXZBQTbakmu0mhoXoenuP35GDdQP8OSEMfl2u7UNCjC1xcTHYr4VkiVkWbK4snec+1qZ
+	JD4pnZ9mAs0lQ4Scb7UWFVejyVGFVgT5AgLySm/fjZQa1UhUdwTNPoOw6ukwv2i60VtnGTwk6wB
+	krqc8cqUuovL7J5G9idm+1BPGw5hC3asDyaIlWERNm8csVMYjOHtVip2So7lsSiiVG6hRZ2zXwn
+	QFhf2va073VGYiRDpHR/1zuZWT7PMFngN1xHez9NvrXbmhzI5uK0ImYJ+ahVLo4LUouCyJbMdQu
+	yTHjeEP8V4MSYVxn+TWEJoUWaN2Js2ue8L5g1Wx0krExma1G6A==
+X-Received: by 2002:a05:690e:1519:b0:67c:23f2:41e4 with SMTP id 956f58d0204a3-67c67ee5aecmr3870192d50.27.1794496862680;
+        Thu, 12 Nov 2026 07:21:02 -0800 (PST)
 Received: from localhost ([2605:8600:200:14e3:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b3933c5a00sm72450787b3.16.2026.11.12.07.16.46
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67c58a0f312sm7504466d50.19.2026.11.12.07.21.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 07:16:47 -0800 (PST)
-Date: Thu, 12 Nov 2026 10:16:46 -0500
+        Thu, 12 Nov 2026 07:21:00 -0800 (PST)
+Date: Thu, 12 Nov 2026 10:21:00 -0500
 From: Johannes Weiner <hannes@cmpxchg.org>
 To: Shakeel Butt <shakeel.butt@linux.dev>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Dave Chinner <david@fromorbit.com>,
 	David Hildenbrand <david@kernel.org>,
 	Michal Hocko <mhocko@kernel.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>
-Subject: Re: [PATCH v2] mm: list_lru: fix NULL deref when a folio moves to
- the root memcg
-Message-ID: <avXYXjSJNOFa5K88@cmpxchg.org>
-References: <20261112061231.2469026-1-shakeel.butt@linux.dev>
+	Muchun Song <muchun.song@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Meta kernel team <kernel-team@meta.com>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Chris Mason <mason@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] memcg: flush nr_charged_bytes when the obj stock trylock
+ fails
+Message-ID: <avXZXMp_r5VVXS-W@cmpxchg.org>
+References: <20261112013220.4064478-1-shakeel.butt@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261112061231.2469026-1-shakeel.butt@linux.dev>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: F32841C0005
+In-Reply-To: <20261112013220.4064478-1-shakeel.butt@linux.dev>
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: d5z86bc151pni9oa9kct9wu9ka9rxqpy
+X-Rspamd-Server: rspam09
+X-Stat-Signature: gb4nnddmch4tnyhhfp56q4s4pq4nkzyf
+X-Rspamd-Queue-Id: DBCE8C0003
 X-Rspam-User: 
-X-HE-Tag: 1794496611-342605
-X-HE-Meta: U2FsdGVkX18TwpmPm/w9DNqJPjjsKi790/YuNE+4ipcsgPYLyu7PgAXEkajojLTHcBLjQjzm+bikgnV3OEhtpijxK9E6mJQ4Z/evIfB2AS48A+XWWn60LX/xKp10cf/msOc6puh+z2KJqsxL2pMhldSqlz2DjIhxLD/0LDbTHFrlDTyKABnMi8sDYbZ6uwOWBMdKikKuk5ksQ2Sx6Lxgb39ULQGZYJ1Skkg2zI7tLluhhvUFMoaJy0Crwf3fgX7lK0EvE/ocQPpf4l+HFR6X+2eY+39Zq3sEj7KfQJTXmmw0qIWN3noG7QZMSiDJnM5xnzsHqsmCmXVHPoIPh6ZlXyLHUmdUCxR5WVJniEfqZPAE5U/wj5P9L8Cn0LXiQ+5ibwsWrdStlal8ooFDK/080anpr1xlmktdDh/3ZOOJG/x7QQuv7vxIh6RBH9Wi20kKxPCkPUdK85ZfHZwpjvRadp+ZC+5ek1cQlBuugZ+/K9CosOSqj7DRvWQwrjyeb2ICZqu6BeBeFxoDzA1Dd9NE14uMq4R+N7X+AMngXLLdF6oizpqhciBnzGoWUaOnKuW2T/L+q04/0EDNOribLQ/viANNmTOu8fLPKDssUSliEmpXk9tjXg5MOH3+OKBZqNqYsibdWe2QMhMQEc9c5jYFDuwony24BwIjwO4F1nctHrjl+14a3LUVs/YOVDYLMaNnL09FRwkPEW9jsmnmcDcL57AAIIZZ5mD5OiU/I56XjMGcY//OvrfIvrScb6ReNq2Kw5VykzCpX1B129fBB41HXJpzKuLBRIhgsqi1VOYyNfhlfjI+qjDUMrNGF+lUe+BUXuFjI1vtT0vu+wfiect1pheJCw30U+bpoIvlwVaKNAsn/HKZRKEOg+D8uPYaC8B+qn2TlmINphvA6O7OEGXfLL3zFvFHKeQHv1tpZpYn+dNLyq6aVwoLi1PWf6sGurFs70hLvFtDGjl5/3KwrxD
- sRaeWWji
- bRWdS9i1G+KErw2eWNNXpueMaz+ftliyw+SYnJY/UfgF/DwcVtdGS/VsOQMGbyPcTSFU/hodrBnY98t7Fr4NkXul1WuHWwrRGbJU3uqLJNvYCoDPjXPF+G8Lr2q44qIyLe5pNMPHsvVXxlub9vbS0s/GT7Ds2ne8TQ4CeogzXtrBNBVF5ppPgJsusVxKJhTR/PPWIObMda0+8h1yZnAojzN5OEKqa2wO8y4YQhozHF6gtSIcq2QtKnc+9xN4C/aiHuTR7F5J740fvSJeLyuowae/wvMXN31PrL8EfRduaFGwgm0WUxs48mf4ocRNxuWFn/Q13QyVo9NA6PVkio/lYixYhqDTXJFtp86IsHxpch4Xi9IPa0cbpHTEQUj0iGW3WmC0besr//8ep6rxrP3v77plm66l+Cx8fSijZpWfX5ooij+FD93/0TUWZkfG7/0BXp+zaMte1svwHESau9THbxciTNpkKeQV/XLQW3rGUJV8eZ0AiWJwpt2McBb4QOiG8wf6Rt2euv2ZK1fYG78c4y3PPkQ==
+X-HE-Tag: 1794497312-891914
+X-HE-Meta: U2FsdGVkX187c+WvyL8OloY8GFyuzWCkyDzYkJrsCVO1txwf66Eom+HsmrSqTDbfgSuve2Z24iTsTxGswqFvRAZdIHPUf/G7mz2QiIuOgGIQT30QhBoBg1hSag5Rgmwk3JNCC+IXEkaprPIOcDVbIMCpw7muXWdyQaE862d3EhXOaAMkM9lC9Ym4sWEicrs7Iwu7eZUUZJmh4Kiqmdrv+02m/IwGnua2cTiDnbhWckmW8pYVr4aLxpG5F9i+XCDB2aHj//gOq3rPCcNFy2FT66ZSbH5ilpEaXvCWaJ+JqJIHUihA9fZKs7At2aXHvqqprUkSrz8W7qEGKSkKztlftnEiHWtQ048B1GoJNtIRi05Ek7RCezhMWR9QQ8S0XNYO5KwF7OjTfuowzBlZ6hylCHEk3BLHx+J0sXvPG+Ojw2QZA42ieyiPfjzzfkQSMz7jyT7Osj9kOsKvxNg4zJLjYBvodiMquELMQvh9cJxHxW2dYUY5JsCvO+wypdAmTHHxZV8Gj9/j+KS1OKtQd/RbU1VwaMZtYkH42faEYjeNH4Z956qSxYYs92Pm83AEQlaRSXeAGF1dlpyQs0qNdJyCPCVjteeRKpnZEcOzmuq0NOCMEl/UcT0dudEoRoH4PAQnXz/uYJwItniQ7T704bPo+P+NXT/dRkXwFrI2fn7VJZ6r/gXkM0Tub2I3ytKWQ9R7mUVy3VbDEVNWfwaEJauhjak7Ch3hZ/9v9p29VUUzrb9JDVDl5ezlpS26roGsRIHS3e74qJxQIGO60QIRmJnHklP2dEaXYrXR/2+mAsYpFe7JjSwKVAd8hAvE+7ktcPZ4vfWRp4jWZW4h2Hbs8sZm3HUYKxbqK/NQtraxOx5V4AtWka9H4ocanSCALls73M7TtlvUDtL0vQuaZzVjj1NNbYPUDU5ATL1yq2TLW/kBaNCwfnBd2F194awOctol0WQ5jtXByAkQtT4Uh4DBAIz
+ z6fz3blv
+ QLFWXpJzUj3O1ynu3COIyeNpgwPoQqTv5ADuRUkWx4KVZA57i2IjQ7QXV1UYMxs0Ogb4dP7F34YZ9IfuD2DpMQcQz4GZxk4KPQtmrX4bLNEvSx8DlngLv485K9CIWlYwCUpGa41oP/kbwMv7Mh9pXUA1jbA/QNmmY8ud14XJAT3fiFoWjuXL1RK5v2yG3Vo+qfxshhvITi0G3wmOk/N4yMS/p3EoWWLi9u0kWJ5NC4uSJWw0oH/seC8QYQvzkN5D3o4FFB1ux2gguGkYfnDI2pX2GwF0Bpdn5haTFUkhhzK/ejEWxameAkF0ys55N9UyKMQsSmT4LtrNBZnGk2P527G4Qou0fBy7ZwxcdFm4v+3QsghCN6BA39eWwQwm0+8ZoBPGrWyNfRJvkrx6q8f2+7mQnJzGJukGs4R4LC5JX4Xa4LPifNJeidPJhmQied2/Ns3xQHj4MNSy0r+/S3Shzxxk7prxTg31kP7apECUY6sgsQFIUXMnRYmLUaA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,37 +132,26 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 11, 2026 at 10:12:31PM -0800, Shakeel Butt wrote:
-> folio_memcg_list_lru_alloc() makes sure that a folio's memcg has its
-> own lists in a list_lru, such as the THP deferred split queue. It looks
-> up the folio's memcg twice: a fast path under RCU checks if the lists
-> exist, and a slow path takes a reference and allocates them. The fast
-> path returns early for the root memcg, which uses the global lists.
-> The slow path does not check for the root.
+On Wed, Nov 11, 2026 at 05:32:20PM -0800, Shakeel Butt wrote:
+> When interrupt code, such as an RCU callback in softirq, runs on top of
+> a task that holds the obj stock lock, its trylock fails and the bytes go
+> to objcg->nr_charged_bytes. Nothing empties that counter while every CPU
+> using the objcg keeps it in its stock, so it can grow without limit.
 > 
-> The memcg can change between the two lookups: when a cgroup is
-> removed, its folios are moved to the parent memcg. If the folio is
-> moved up to the root in between, the slow path gets the root, and
-> __memcg_list_lru_alloc() dereferences the root's parent, which is NULL.
+> Users see memory.current and the "kernel" field of memory.stat keep
+> growing while the cgroup's real usage does not. With memory.high or
+> memory.max set, the cgroup is reclaimed, throttled or even OOM-killed
+> for memory it does not use. The counter is 32-bit, so after 4 GiB it
+> wraps, and those 4 GiB stay charged to the cgroup and its ancestors
+> until reboot, even after the cgroup is removed.
 > 
-> Users see a NULL pointer dereference oops while a THP is allocated,
-> such as in a page fault, in khugepaged or at swap-in. tmpfs huge pages
-> are affected too, and for them the oops can also happen in reclaim,
-> for example in kswapd. The task that hits the oops is killed, or the
-> machine panics if panic_on_oops is set.
+> Fix it by uncharging the whole pages in nr_charged_bytes whenever the
+> trylock fails.
 > 
-> The race is narrow: the folio has to be moved up to the root right
-> between the two lookups. For example, its cgroup is directly below the
-> root and is removed, or has its memory controller disabled, at that
-> moment.
-> 
-> Fix it by checking memcg_list_lru_allocated() again in the slow path,
-> like the fast path does. It returns true for the root, which needs no
-> lists of its own.
-> 
-> Fixes: ae64f07a6a40 ("mm: list_lru: introduce folio_memcg_list_lru_alloc()")
+> Fixes: 200577f69f29 ("memcg: objcg stock trylock without irq disabling")
 > Reported-by: Chris Mason <mason@kernel.org>
 > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Cc: stable@vger.kernel.org
 
 Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
 
