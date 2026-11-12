@@ -1,108 +1,120 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60CA9606A323
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 18:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F08606A33A
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 18:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ipffv3fH
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=n5MkfNXX
 Received: by kanga.kvack.org (Postfix)
-	id E00AF6B05BC; Thu, 12 Nov 2026 13:16:41 -0500 (EST)
+	id CAA6F6B05B2; Thu, 12 Nov 2026 13:22:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD7CB6B05BD; Thu, 12 Nov 2026 13:16:41 -0500 (EST)
+	id C5B766B05B4; Thu, 12 Nov 2026 13:22:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9F746B05BE; Thu, 12 Nov 2026 13:16:41 -0500 (EST)
+	id B4AD06B05B6; Thu, 12 Nov 2026 13:22:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A0AC96B05BC
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:16:41 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2DCE8A78B2
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:16:36 +0000 (UTC)
-X-FDA: 85427272392.08.CA9F7D0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 7F8BE2000F
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:16:34 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ipffv3fH;
-	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 84B926B05B2
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:22:06 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 12DC51C411E
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:22:06 +0000 (UTC)
+X-FDA: 85427286252.09.EA30BFF
+Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com [209.85.160.69])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 51D92120005
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:22:04 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=n5MkfNXX;
+	spf=pass (imf29.hostedemail.com: domain of 3ygP2agsKCAks312rw12r22pxxpun.lxvurw36-vvt4jlt.x0p@flex--justinstitt.bounces.google.com designates 209.85.160.69 as permitted sender) smtp.mailfrom=3ygP2agsKCAks312rw12r22pxxpun.lxvurw36-vvt4jlt.x0p@flex--justinstitt.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794507394;
-	b=cp17RLLgL3GIyD/2LiiTtk+eaoEAvgKQeEqAiqnPvgT2gb6yt1X/yHlvHIeqdgfgkt/wuQ
-	mz5bD3Ld3bDJ/56Ufyq9SUadcOAA0L4vt0Up5YjTKWmbb+MXhhFOGVFbKivJUsOF4/qbTc
-	cggzxOjVTHW/KGvSLhqmg60yXngxhus=
+	t=1794507724;
+	b=BusJJ/jp+H8wGMhYu5oi9OBQH4jvXnTeaPY7qU2k2oqJp4NsEoVUnLfTHtJ++pTUE7rTsB
+	ItIBPh0NYCdl4hQHZ9RkxUFQcnkOb+xBMN805N3NKdiysPUUfjZPpNyJTMbJV8ZtdQT5wW
+	00nslw94ghvnQHb6KxpdXsFQMcLChbI=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ipffv3fH;
-	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=n5MkfNXX;
+	spf=pass (imf29.hostedemail.com: domain of 3ygP2agsKCAks312rw12r22pxxpun.lxvurw36-vvt4jlt.x0p@flex--justinstitt.bounces.google.com designates 209.85.160.69 as permitted sender) smtp.mailfrom=3ygP2agsKCAks312rw12r22pxxpun.lxvurw36-vvt4jlt.x0p@flex--justinstitt.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794507394;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794507724;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rBKkrearG6i6Y6Hx6cWO5uyYD6RIF5v8jY/+z72l5bk=;
-	b=W6r8WqVcNXmeJ9+dKSYdIKFpRojkYN5XK5kuNp/P/qNAtOxJJDODCY0+2EPsqT46cc3NmW
-	wHWgffkQbUWdjwtjsnKE4bsZc8iNRSXpD1YmF/xawrJQ0gbBHbDOmIdxqYRGLGx0rT+P7M
-	JXFLwP6K2a4oTr65H3YjVR4CmXJNM2E=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CD75044750;
-	Thu, 12 Nov 2026 18:16:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3706A1F000C4;
-	Thu, 12 Nov 2026 18:16:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794507393;
-	bh=rBKkrearG6i6Y6Hx6cWO5uyYD6RIF5v8jY/+z72l5bk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Ipffv3fHdJ0D6JBjTQGwRPY4tYmn1PQFrz2VYD0COSOdnp/DI5nuPU3ZRFDSjzDcl
-	 zuHOX03+QSgXSt0Wm2mnXs/bUqSFi6RELZONsgxQKLJF4YnZF9tusG29P2ZkmVZz+a
-	 qzuaCUgl2nPGzxn1tiIjtJBWQ5Ze4F7XNnG8jIsORxQJ+Z1YM+zFf1R+2W3CF/hSyC
-	 9ag8SfoA6Osw/x+TxgtsKs9OZY97i5uyIG1KBcVp8nSEuCOLjYglOzXxiViTdxaYFV
-	 wLPxEko30CB52PC2sdc7iul6myre3dkIaIBPtb6c+p0inDbZ4IIji3Ls9iUlU74hKU
-	 3gsxAzQEEHKxg==
-Message-ID: <sashiko-outbox-211681@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 10/13] mm/migrate_device: refuse to migrate shadow
- stacks
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?TG9yZW56byBTdG9ha2VzIChBUk0p?= <ljs@kernel.org>, "David
- Hildenbrand" <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "David
- Rientjes" <rientjes@google.com>, "Shakeel Butt" <shakeel.butt@linux.dev>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Jann Horn" <jannh@google.com>, "Pedro
- Falcato" <pfalcato@suse.de>, =?utf-8?b?TWF0dGhldyBXaWxjb3ggKE9yYWNsZSk=?= <willy@infradead.org>, "Jan
- Kara" <jack@suse.cz>, "Nhat Pham" <nphamcs@gmail.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Zi
- Yan" <ziy@nvidia.com>, "Matthew Brost" <matthew.brost@intel.com>, "Joshua
- Hahn" <joshua.hahnjy@gmail.com>, "Byungchul Park" <byungchul@sk.com>, "Gregory
- Price" <gourry@gourry.net>, "Ying Huang" <ying.huang@linux.alibaba.com>, "Alistair
- Popple" <apopple@nvidia.com>, "Usama Arif" <usama.arif@linux.dev>, "Kairui
- Song" <kasong@tencent.com>, "Balbir Singh" <balbirs@nvidia.com>,
- =?utf-8?b?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>, "Kiryl Shutsemau" <kas@kernel.org>, "Yu-cheng
- Yu" <yu-cheng.yu@intel.com>, "Dave Hansen" <dave.hansen@linux.intel.com>, "Dennis
- Zhou" <dennis@kernel.org>, "Tejun Heo" <tj@kernel.org>, "Christoph Lameter" <cl@gentwo.org>, "Peng
- Fan" <peng.fan@nxp.com>, "Josef Bacik" <jbacik@fb.com>, "Chris Mason" <mason@kernel.org>
-Cc: linux-mm@kvack.org, =?utf-8?b?Qm9yaXNsYXYgUGV0a292IChBTUQp?= <bp@alien8.de>, "Mark
- Brown" <broonie@kernel.org>, =?utf-8?b?RGVubmlzIFpob3UgKEZhY2Vib29rKQ==?= <dennisszhou@gmail.com>, "Rick
- Edgecombe" <rick.p.edgecombe@intel.com>
-In-Reply-To: <20261111-mason-migrate-et-al-fixes-v1-10-3d2454362e8d@kernel.org>
-References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
- <20261111-mason-migrate-et-al-fixes-v1-10-3d2454362e8d@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 12 Nov 2026 18:16:31 +0000
-X-Stat-Signature: 6iwnsm57j8tfqyro8kiyatosn75iodcx
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7F8BE2000F
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	bh=/9R53hS2lq3Ijq537Vl1ow/wvMt9akHjDmPhIy8wjS8=;
+	b=JKaLpS4a/LuL4fOKoMloJ1s+X142s08EK2CgkZy5Vu5U08w5wMp97CN6Dw5GssH19meQUP
+	bQ3aa2npixUJVs6KVOVkZd8ztTpghsUUoZSRx/Op7dy1aMRM7qs07PsvVmHJeTNq2zcapd
+	0smk5t4YxcoXiKcqMG5qUX9pvxHtUDg=
+Received: by mail-oa1-f69.google.com with SMTP id 586e51a60fabf-4574f1cac98so72881fac.3
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:22:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794507723; x=1795112523; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/9R53hS2lq3Ijq537Vl1ow/wvMt9akHjDmPhIy8wjS8=;
+        b=n5MkfNXX1CissKeu8eYMrt+FvRwwFltof7OMbh9vf9Lvb4J+mYRB1EGXeF74G176O6
+         LlKN9/YXwYfGIP2DSJ0AjpaL7ne6IjANZ4yHUK3KGifGeHvepohnLw0v2RqcerXBVzn6
+         EuyjOFgP4A8+1w16clSimbfVOsobRV5kC2EJx/LT4ca3j99Ih1iXG3rgL7vUTxx+gei/
+         fkNnrVIhmh56HQ+pmC837+wT5/N8xc/sDeWblFy5cc3bU+kn4AOYqqQIvEX3ggQTJv8N
+         OW44WdnSHwJ/qnxCGBvr0MJayP3tskyBBiRW41j3skgFFYkoTYjP20lyXXa7Ffe7Pc3F
+         HpxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794507723; x=1795112523;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/9R53hS2lq3Ijq537Vl1ow/wvMt9akHjDmPhIy8wjS8=;
+        b=yBfyXX8/82BiPMke7wtyGOhObgwWDrgkWF+ga0lYy5P7QjgW2tFdmOfJUuWaUMJPV+
+         QAKD7DvF1GwTroFd0q3upkydFEQQWAL7PCSpcPLCL1UV3v3WopLVpwddzsKVjTJv9PUH
+         YccMHINgn6yTtt/zOFsBMcbBkwb50NuKsm2aKoVkpPRM4sNtaWN0Dril1gGDegQzu/Ck
+         URSO2hmHFPJvD0YH/NOISjKaipsI6MRIA/96VY9xKVFzZoWoIxgLy2k/zW0GZAoCIoFk
+         vb3nK3YtD14Jg+nzYz3sNCOV6/q2jPAEg3wQU1D6zU2uas57KwNS76WdcU3dbgxz64d/
+         G/PA==
+X-Forwarded-Encrypted: i=1; AL+hErFY2qq9fU/rYdca/Ht0g5p3TUffZSXtvu1uewstQ7LTN6IGvRIXQASLtRJIQNQceWB1LSPFqlv/zw==@kvack.org
+X-Gm-Message-State: APuU4Z8XnMLvzK/p5cXdFwE1JZ5VQBqMmqOE8M6gCkbhPXdvy+a+fZRB
+	gJEojt0Dx6VXdhAQoBLsuLWZNdYY4Uhqq+7IxWSyQIoF8ocojkjemGT7vqd1bfcYQ0cShRNL7rQ
+	c61gfB1z6kpU5nvSNCznQiD99fg==
+X-Received: from iohf17-n2.prod.google.com ([2002:a05:6602:a5d1:20b0:9c7:6dd9:edb5])
+ (user=justinstitt job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6871:6687:b0:4a7:d759:9b8a with SMTP id 586e51a60fabf-4afdf7a6881mr466138fac.53.1794507722962;
+ Thu, 12 Nov 2026 10:22:02 -0800 (PST)
+Date: Thu, 12 Nov 2026 10:22:02 -0800
+In-Reply-To: <CAHk-=whAF3brA9Wrcf3KDhNn_653zhUsoqe1MSneYJWtS5505Q@mail.gmail.com>
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
+References: <20260914223212.i.829-kees@kernel.org> <20260914223219.901347-2-kees@kernel.org>
+ <20261112004039.GA523044@killaraus.ideasonboard.com> <avWNCC3_Ff0knO6J@devuan>
+ <CAHk-=wgYBrhvo2NAG_Ja-0ovPf=xO20Gcopv9Yrr1u=QVxECZw@mail.gmail.com>
+ <202611120905.DF88D9849@keescook> <CAHk-=whAF3brA9Wrcf3KDhNn_653zhUsoqe1MSneYJWtS5505Q@mail.gmail.com>
+Message-ID: <avYBdaCYclTyX9pX@google.com>
+Subject: Re: [PATCH 2/2] devres: Provide kmalloc_obj*-style API for devm_kmalloc
+From: Justin Stitt <justinstitt@google.com>
+To: Linus Torvalds <torvalds@linuxfoundation.org>
+Cc: Kees Cook <kees@kernel.org>, Alejandro Colomar <alx+linux-hardening@kernel.org>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, driver-core@lists.linux.dev, 
+	linux-hardening@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Geert Uytterhoeven <geert@linux-m68k.org>
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794507394-265332
-X-HE-Meta: U2FsdGVkX1+9+M9Q3B/Lg9WFGaFigz6xivuEYeBcJwbE1ahmsNWrgwTYINpSI8PJROkC36wuJzZJHWE9VrCv9Bp4GK2grOPO0us25FSmB3FI0ASOWu+8nYDtECWXbxQ+xBmOKVgnxh0QKfD0P+V18IN1fmVErsLeIsk3zSlGZYQRQdFqHPNYZBZ9W7fS0/twcM+vLKtW9WdzTbsxSCMAt6hBdcb6yMTMxd4GIW/y57Gj5qr3mjkw3hATUyl/66hiCrFORYqV0BdLBkcDgGEyHLiaEUkO6hBsrZ80U/FnI+spZ2595iTJ3XbGSY2wMcPOkpD90fogkMsM6jSbx66HCtoezaA33UE0BdKvF8w+c/Rnp7g9aBjAPgl4u1DG0CYXOExRM7jV5Ca8Q3f86sNTSlPRVuPOLHbhWUvjl8xxjgLzwkE53OHtq6GsHPVQnpVbj4I2eXncYY8gC9L9wCk2IjfW+1qC2NC/plqP17vrdC8n3eCDRA+gfRojSHrxd8zEMAShknwRTNKrnbA2wrwe6ctY3ENcENBGTqLnjhvOCsuCxN/EJdIk3NIt1Fiy+CEwRYMa/l2sdYj6FglAluQyR8gxvRK8HrIaEQN6sbW9ZjMht4QaGIhW1od9BDKG9tz/kK7qSmu2J9dwhIQUkgwiIpRNmuLcqtK+9xZ/6SaBdPsOYb811z1EUbCo/4RB5fn6MAvZAlF/LDdjNCzQAa9G90CrLUIah/4wXQmQJzqx7lxnW9D7IVR55WCIDRiETNF1aOq95kFSVSz5VK5vrn5iFBZ2cRPg41uW5Y5mWVYbUR4mmL0m683Lj5Arr/JbQSoG9rNVH2e7ChIijFc0P01f+C/VIBE0GceMeLLkMiajy2kUYcY1xqPrcBuVL5qMFrGCib3QMPLQW1eNvlNSxNurRgwyBTGpb4PNUEaPITZYY4e99rXwm8nwKjgVVq1vEZS2m6X4+D/qPUhC95QsMqt
- +YCt1AJk
- RIdtvoG5OE4eMjOEUW0PdYRon09+PxjflOTaxGxlEqJL4+FP0vSHTjbhHFr73y1Kd3R0IqV5w7S8mTOZ+n7AoelzCQTxfWEX2AfS9gopQ1pxqKK7uPM3QE9np7EfYOvrwP3G5dK5Q3JaS+LJXNtUU+Fqdp5wCsfexTTiZNRU3XC1DdQUKZIjac+1HxlYLLeVuwXrc3B+Tddi20zkbaw0659VITXPpO8fqHdFpN5GRyKO40pJF0+GlInLMbPynFD4xw7Zs0tQQwKcYaBDd0cq92Sc5FiKbLyeiocwR5qTvyOv0teANp4fySCXZGXY4aweEAUrkql1vMPMVB65VtuNOAz9+p9g0l4eIfZKfxa+KoA6j4TcPGFCzkVo97f64nBQEmxOCUv7gi5bKsoFUTfLAPO2PSlKg8rqmWfgdn2v/4pkXh53qNfRJWQwq2cgPhBwfGfe5WgXaK9tmZ5CNsdftpWVq8NfMftlSAFm94hnsqBkfStzH8LpeSqmMOsuZthOYpHYCYdKvkkgTlFmvOaizcQEWKP6sTBv0RJhtI4TtnxKvDWjD0yxP8T9XXRbbu05hZGjpn4Mj5kJcvrTmvhn17dXo0U8tV4KP7r1Uv9tPBptnwKeisYFS6gHkr49aDlzZuXsQNG4hZgpe6kdO7WbAZee8qF/HMpYLntrin54TeqwLsHCrRQtSfmIFhfB6vu3IQjrs/kelHZs3muvxV/wo+W8G9lGLy+1hkVD651EDqO8V/kMKdQEHiUmPmw==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 51D92120005
+X-Stat-Signature: yphaehnodo4yrxpo5i4ygp8hq5xngp45
+X-Rspam-User: 
+X-HE-Tag: 1794507724-175354
+X-HE-Meta: U2FsdGVkX1/nlpK3SKMckOLy1We/VUluC4O8tITm152Misnzzz00WjLCNwM5TJVkF8ZrYlph0ShZPlFXv/2KjcMM6hQhPOnuz1nP15w+BrZpLhFy+XwLIJoAQm/Q4rtHgh75NtWLqvnvFVMr+Im7cPyn9sdY4iOskYLTvYlgAqAuhNHqwYkK3FJkbT/XbKinMOxsEh9nPf4sYr31ZLH9qjUcCIfVl+v/42NMctJtLDJglmhN3TPGk29ykAfAMBactfsRyu7dvYemjbHAkiqlc/y+B2PkZV5jhX85KMpAB+xPs5oDpgqwWFOZl2RwTC7iYNBnmco5greo9/rq9L0PUyzFugh+2SXRhJRujYojYa87ri5lYRgpMepVsdYVd5Tyv44OEUmkkyPAYKqbOaXUFMRWiCRjfwl5O/fMwANJHcvyJF0Cv3FKEy9Lx8SQfRBc9G9cfX8pNS0lGlla16l0uaau2dC9uxuy6mBArmacEH5lPJn6AEvQopEz3cVakYUKDr6NfrEMCGEEkbVB2Npoiz5BGqrRMIzb60KOOXdhBUBBkUqr9LYD2FxFrgiv/l/9pgnFVAfm7uUowFUO4L2P/cYPTp5/+3cQXzJMZZzUTS6oyfBJMIYX445/sxsaJO7y5e9/WuNDbzU4ve8gpKc2Ystp4QVD/2qENvmRv0h6H5NOmGQdj7PZt8k0x8+DUr2LyUZKlFKntwkh35DU/AIEB7C8PvclqWf2+LG4qVXQnddqYaJ/A4LDC6Y542jseC1dFUxBbAABhfq41MyITHAXVLriS5lmN+0hq+SU5RLe0O52rLb8RLK3pFucc2voYIUKrxeBIGNp0S32l82DTfcFgZw3jhjBPFItLCAeR4yu2KUtOd2qW9OQqyE9BjVAcQF+izXjXkBwelgqzYLIX92VlsX7okh7QSqmbkc0KDrRIrbbz5wOwalonSne39KF45Qra4Luv10G6YEfH+XA0mO
+ D9pPxzU+
+ SLGMNTooP5l9aa/VSK83sgNJ4WgCxVlsfdv2FcRiXFQxSC0GcpREvRvAviRrk+o1Jf7xjW2OVfEEUIXgZJcVFsaWHCzK3t4+x0DEotbHDBJXEQoSdCSFlArR5klJd51wWaa80go15b2tg+QmDGsWFUIupGDikjwalNcPqmZDa1NV/IsvPcXfbgF0vDwET9H+ebYwuxAggPUierC3rPrrivmi4OEuS+Bg0uIDa3286TV/NYuRaG6TPF9H/j2rW0Z07+0JXzPGXUP3o6G2F/4rLaaleG1ufjBgYYH0NPsH5KGEVrYEPxQrTSqYh2rMJ0Z+c6GmtVhlRWNowkb3A/1ol94YiiZzqeKu2NiFkXFVub9vgHPzkeDjFyxJPROaeBEN5yMiZ23tRvjEMeJ266Fj703QX6hGqhDnYHpixFxjuWJ4oPmK59CxsuiISzpyVFtDlJs2RLMEVTvUHyMuA4/PYhKknNqmFqxzBCUyr0ay+QsNB84MBBi2SjdkBIXHNOpMv2BjixWFVjI5OpIO4CkJgo/omRqLJRpJqmdkuDy3xYtmnx/O+degJ+PbV1oEx79eoKJ3Drmqtp+JEQLfWenhrIESrvs/ynHZqVOU7ccsXQjbAOlPpf80pSEb0cVma46GSg8PiP2edcx5o1XlU67qsYI+oA1NePa0eliHL2JlAzwN0iHqsn/FHtoSFAq45JdNQqA3wEnKBbE/NW82uv6LcJE/6I/HlwQBsuHrOEMGfzdr7l6XdlfkitIgzQ2SHe9mLAb1sgdiBc4JHDWMucAf8rx2WUfhO2yrXsZuZUJqvKnUXJhSBUXIZvHB/Zrip3JhIuwLugPIpgN9sWt4woZLZ5cWV2W+yRG2NxJ4Wacw28alNmFeiVvxHKde5FuKDxhEy4AXLymbmQy5bmQixd3/9DSpRFA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,59 +122,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found no new issues
-in this patch, but noticed 1 related pre-existing issue it does not
-introduce:
-- [Critical] mm: out-of-bounds write in migrate_vma_setup() [1]
---
+Hi,
 
-commit a0bf8430c5e68cd904038ab8081c7bc9a9b0f7de
-Author: Chris Mason <mason@kernel.org>
+On Thu, Nov 12, 2026 at 09:23:18AM -0800, Linus Torvalds wrote:
+> On Thu, 12 Nov 2026 at 09:09, Kees Cook <kees@kernel.org> wrote:
+> >
+> > One thing Justin was poking at was adding a "strict" mode to typedef
+> 
+> Honestly, the sparse setup is superior. It does that 'strict' thing
+> (except it calls it 'nocast') _and_ it has 'bitwise' that is a nocast
+> that also disallows non-bit type checks (which is *very* useful for
+> things like "this is a big-endian value: you can only do bitwise
+> checks against other big-endian values).
 
-mm/migrate_device: refuse to migrate shadow stacks
 
-This commit rejects VMA device migration in migrate_vma_setup() when the VMA
-has VMA_SHADOW_STACK set.
+Cool. I wasn't super familiar with how sparse handled `nocast` and
+`bitwise` but your insights led me to look into it deeper. I'll take
+these learnings over to clang when I get around to implementing strict
+types :)
 
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index 0f2a2832e0bd1..c27f513ee46e3 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -759,6 +759,8 @@ int migrate_vma_setup(struct migrate_vma *args)
->  	/* The migrate_vma page walk has no hugetlb support. */
->  	if (!vma_is_mm_backed(vma) || vma_is_hugetlb(vma) || vma_is_dax(vma))
->  		return -EINVAL;
-> +	if (vma_test_single_mask(vma, VMA_SHADOW_STACK))
-> +		return -EINVAL;
->  	if (nr_pages <=3D 0)
->  		return -EINVAL;
->  	if (args->start < vma->vm_start || args->start >=3D vma->vm_end)
+> 
+> So the compiler addition may be worth it, but  even the "poking at" is
+> weaker than what sparse already does.
 
-[Severity: Critical]
-This problem wasn't introduced by this patch, but can migrate_vma_setup()
-write out of bounds on args->src and args->dst when given unaligned
-addresses [1]?
+Right but I suppose the benefit is that compiler-enforced things are
+caught vastly more often than sparse-enforced things. Plus, like I said
+above, maybe I can aim to reach relative feature parity with sparse's
+own analysis on this type of stuff.
 
-mm/migrate_device.c:migrate_vma_setup() {
-	const struct vm_area_struct *vma =3D args->vma;
-	long nr_pages =3D (args->end - args->start) >> PAGE_SHIFT;
+FYI, there's some prior design with `strong` typedefs [1] in the form of
+a wg14 proposal. I've also been keeping a close eye on that stuff as it
+develops because it's essentially strict/distinct types with a different
+name.
 
-	args->start &=3D PAGE_MASK;
-	args->end &=3D PAGE_MASK;
-    ...
-}
+[1]: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3320.htm
 
-nr_pages is computed before args->start and args->end are masked with
-PAGE_MASK.  For example, if args->start is 0x1fff and args->end is 0x3001,
-nr_pages is 1, but masking rounds the range to [0x1000, 0x3000), which spans
-2 pages.  When migrate_vma_collect() walks the aligned range, it writes past
-the end of the caller's args->src and args->dst arrays.
-
-[1] https://sashiko.dev/#/bug/linux-ca91ac03-4056-4cf8-8afb-0e516e08797f
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111-mason-migr=
-ate-et-al-fixes-v1-0-3d2454362e8d@kernel.org?part=3D10
+Justin
 
