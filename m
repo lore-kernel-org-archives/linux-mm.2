@@ -1,131 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D343606A323
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 07:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91D9C606A327
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 07:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IyGDU41B
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=L/2kehlt
 Received: by kanga.kvack.org (Postfix)
-	id 795886B05B3; Thu, 12 Nov 2026 02:45:22 -0500 (EST)
+	id AA6166B05B5; Thu, 12 Nov 2026 02:46:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7467D6B05B4; Thu, 12 Nov 2026 02:45:22 -0500 (EST)
+	id A56636B05B6; Thu, 12 Nov 2026 02:46:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 634EC6B05B5; Thu, 12 Nov 2026 02:45:22 -0500 (EST)
+	id 945EC6B05B7; Thu, 12 Nov 2026 02:46:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 362CB6B05B3
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:45:22 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BAEE51204B6
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:45:21 +0000 (UTC)
-X-FDA: 85425681642.11.81989A4
-Received: from mail-pj2-f9.google.com (mail-pj2-f9.google.com [74.125.227.137])
-	by imf12.hostedemail.com (Postfix) with ESMTP id CCDCC40003
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:45:19 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=IyGDU41B;
-	spf=pass (imf12.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.137 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EDCE6B05B5
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:46:17 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5D1101A054D
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:46:16 +0000 (UTC)
+X-FDA: 85425683952.24.F0D4CE7
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 587A6C0005
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:46:13 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="L/2kehlt";
+	spf=pass (imf22.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794469519;
+	s=arc-20220608; t=1794469574;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XonEwXskiTjcZGriLRKPr8S1lDz0l/ASP2xVg5gbydQ=;
-	b=ayGRQ4jxRGnO5NFvje/RNza3Mfe7AAINMTcIv098Oxnn31zEl7a4xJx6nl1PJWh67Ld79d
-	o64LMrFVGDE2X97XXm9gIzKr13DZwCfOz61QLa+zMXgcAO6/0m92GWMFxyyDr2+NcLhRPF
-	SswKK/dzHaUev/RhJ46GwDdai/hE+dY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794469519;
-	b=JX0Ii+jJ0QMByGuR8ZP4Ol9HpNJnGxFgrwgMr00ybaF5dGeUA1ECq22FiZuRXybHFFgqo8
-	hgtBj+UDwZULqWut0SzSKJreN3cd32typBid+wJPJ6pLVvMfse+s9OCmhpcrhdk59LcAPB
-	Au0S3zDvMLnpWVeSjOh2tzAs2Biu1II=
+	bh=U/4tUzC3TLD4FqI4xdC5pvsxvjza6A9soJUP+9C2920=;
+	b=Ypt8OnfdeTt2I8py1UzxQfouKaOl8LZHVsGr/9ckBliZnV8ZzMuYvLuZSInC0po4BudQEM
+	Iybskop2P1bCwT3GqtA6nn+PunpoGZEv/S4pn7qqnm1y8II+qeRxfJwIUbgme5tuv/KKl1
+	LBfJzcFJJ2S2jCKEsTHeEDUcm2fSbIw=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=IyGDU41B;
-	spf=pass (imf12.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.137 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj2-f9.google.com with SMTP id d9443c01a7336-2edeb82a918so1256205ad.1
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:45:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794469518; x=1795074318; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XonEwXskiTjcZGriLRKPr8S1lDz0l/ASP2xVg5gbydQ=;
-        b=IyGDU41BNkZGymaP/A+diV29nbSnilNw0NLM2V53zVo7BgBxr3ycwZM7ATh5Wbey0G
-         jkdAyZd6WO2k8PBFXuEiGWq9iy1NGvsjw0w1Bnq5Q8vSiyDCR5yeSE5X2KeE7SKkmEWu
-         jAd383Rc5JFbAI1Mgme4XWFtaVAL5vRO6M2AeGJEGC0Ixc4B0/2OsuIBnJtJ3L8nZh8+
-         I7PVxsFvdurpHckG8CgkM/WoQWHY28zqTZpgxZjnreoqlEY0cPdOZiydFhsA8Zc3geM9
-         TlW+sXdmQ/iO2eEyN4jLKXTBSyIHacdrU9taqtdP8JSjTMoYE4v90iOWSXm8yc4KsWy/
-         ii4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794469518; x=1795074318;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XonEwXskiTjcZGriLRKPr8S1lDz0l/ASP2xVg5gbydQ=;
-        b=i8ppAXeEUfW3E9GyAwkJMCVPmOH0M0T3Wx0yyMqeTvuoVXWXhwGqt7WXy5DYj+yinm
-         YYXYez0ssVBwnUl307AZOf6kNFyYbhelanPhZ+zZaQohITdJ4kFI6fRWFaEllvldfBKl
-         +Tw91+rvo+mq8gzetSBhoGtXy66+cwLJ0AAB8rMWpP3b9oIR5nU8OsROTxAx51Fb8gOw
-         Y8XjXHSek4dRivyGkGULYD7N0iUgm0WBPFcfy+9+XS26+ql+xGfeWqd6mVzT5mfoiaM3
-         ZdT4r9uZwF2aawA+cxppx4PgO+lkLJK8BtLAVC+ngcOnjZIKg2fx9SFrHxkWMHUu6tSV
-         ndHA==
-X-Forwarded-Encrypted: i=1; AL+hErETP1pwx6zI5kJwncQseXuaNYZEbqLpYOIkqaqLFFuwyC4HYUzgZdQ98r7H6m0Gt+anWS9R7MpI+A==@kvack.org
-X-Gm-Message-State: APuU4Z8OiRqvmI5aEwS8XuTW5R3hLETSbSFhoDZvI0wTHvI2ntiGXU6m
-	0PbxPstaQo3X6nlAQGwdpAxtbBjfLceaG10trLoTjWuBPsbro0mJZSYb
-X-Gm-Gg: AYBFou2ER2wMTfbvb4Yev4z+b3s0cZAe72im6dFOA0Ymsp4Dc5gzKN4LMSCqo55MtJy
-	vtR4uy5AmmrX9kN3xEcCX0gdPTNd+BlVcrVw4RL3I7hI9LH4Kf3TCLKOnsNVGPIEsd+o8Te49Yb
-	p47jq0tLQpGRDED442Nt8U8jk3aMMji/DGvwU0adqRxxkRyI4hx6FLX84VVGTtelryasFJtm6Za
-	H8F3ZkITLI+8MoOMt1cu+ntx14oY34JyQLZ/VhrAzqRnPXtEbmSc/4pvNFR6b3A1vZbCH+ynytg
-	0G/UH1aSL60xUBrQfTP4l9UV3CMXodcQyP34dyIG/unC6jCViGao4Y3HD/g5qund1r6tA9SMBXe
-	2VKpvy3Uy63stiOFrW5yK6cILcN9JpjbPFOw8VYtCs9v866Cq5Ea2Qm/sTggnWX4iyWnSzRnWNi
-	awapxzMl0Hub303TATm9N/jOFhpUj3pTMvbz3EmogXx9xIs0mDsGWmkfCgjh7KTjEnS83LNZPtY
-	7PUs+NW7dNIL3UGnQO7ijCJUezmcJA8oiVA65zi8xPZrBVOuydv7EMPgwfm/GX6lVn2LI86gdIx
-	wI5DQ8uX0Cws9SEm0hZ2iq1wcEojCQYnlkuy
-X-Received: by 2002:a17:902:fc4b:b0:2ed:dddf:8489 with SMTP id d9443c01a7336-2edf166fbbamr12780695ad.12.1794469518391;
-        Wed, 11 Nov 2026 23:45:18 -0800 (PST)
-Received: from [10.125.112.22] ([122.11.210.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2edb6dd2225sm30454285ad.56.2026.11.11.23.45.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Nov 2026 23:45:17 -0800 (PST)
-Message-ID: <eef4c5ee-2487-4668-bf24-742af6d71484@gmail.com>
-Date: Thu, 12 Nov 2026 15:45:09 +0800
+	imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="L/2kehlt";
+	spf=pass (imf22.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794469574;
+	b=o2fOQbmSlATmdJjvlynDHRVkwxA32mkkCSsJZ4/K48v8hj4V0G0v7KeK4KyqLY9sGLcR4d
+	nXLkCXLw/0rIsf1yUZKoeZSCgPMNrdGG0JGBrQnwwZMEm1zLdKi8Kpp9ST3Uah7757RO1W
+	rAxO/X4AqHQX8oa1i7CSwO9hzUz7CBc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794469574; x=1826005574;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=B8DZ8ac/lvdCsHwLYiCV00yrDKWFEEEp87wCEsDsqUc=;
+  b=L/2kehltJIULPlGHrN5nw+O56HQHrwvKw3pWal25jO1htsgHIScFLgnJ
+   QRt/OrzvrdVMUjPSaVfGh1a77fCKaqtAjCBdwABwH6YBU7OrjOD0K3Ilx
+   LOOcz0zqCtreq+PiqfvO3hW4E+lfxKs2OM0Yq8S0QpgEFLSc14VPcmmHk
+   XB4jH9kTjrLIzzJFXYzED6dOrPWHZQ9Oa3CVetG2PBONtE+0qLKAFS7/C
+   JYv7mj+TkOywh76DWSd+W+dqwr7bdRQK85adXGOl1RGaFZpHhu6I404YC
+   AYs8ZfnqBzrtO5zRrwajjs1eyN8srAI7KBkHXiRcHkqfOqy/2yw8TBQCp
+   Q==;
+X-CSE-ConnectionGUID: Td8lpQEjQvK+I/OfBSIxfw==
+X-CSE-MsgGUID: k5dDKdNqSHWWJd1EHmcPCw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11963"; a="3243967"
+X-IronPort-AV: E=Sophos;i="6.27,209,1787036400"; 
+   d="scan'208";a="3243967"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 23:46:12 -0800
+X-CSE-ConnectionGUID: Vp69MBqRQdu2Arofn2sCCw==
+X-CSE-MsgGUID: tgWbJ6xUQFC8hBm4R0ZRfQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,209,1787036400"; 
+   d="scan'208";a="9027153"
+Received: from carterle-desk.ger.corp.intel.com (HELO [10.245.244.5]) ([10.245.244.5])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 23:46:05 -0800
+Message-ID: <b77aecccce2dcf9bc42b1a6fccc62d06ccad4741.camel@linux.intel.com>
+Subject: Re: [Linaro-mm-sig] [PATCH v4 3/8] dma-buf: transfer memcg charges
+ via DMA_BUF_IOCTL_XFER_CHARGE
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Albert Esteve <aesteve@redhat.com>, Tejun Heo <tj@kernel.org>, Johannes
+ Weiner <hannes@cmpxchg.org>, Michal =?ISO-8859-1?Q?Koutn=FD?=
+ <mkoutny@suse.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+ <skhan@linuxfoundation.org>, Sumit Semwal	 <sumit.semwal@linaro.org>,
+ Christian =?ISO-8859-1?Q?K=F6nig?=	 <christian.koenig@amd.com>, Michal
+ Hocko <mhocko@kernel.org>, Roman Gushchin	 <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song	
+ <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey
+ <Brian.Starkey@arm.com>, John Stultz	 <jstultz@google.com>, "T.J. Mercier"
+ <tjmercier@google.com>, Christian Brauner	 <brauner@kernel.org>, Paul Moore
+ <paul@paul-moore.com>, James Morris	 <jmorris@namei.org>, "Serge E. Hallyn"
+ <serge@hallyn.com>, Stephen Smalley	 <stephen.smalley.work@gmail.com>,
+ Shuah Khan <shuah@kernel.org>, Randy Dunlap	 <rdunlap@infradead.org>,
+ Ondrej =?UTF-8?Q?Mosn=C3=A1=C4=8Dek?=	 <omosnacek@gmail.com>, Jens
+ Wiklander <jenswi@kernel.org>, Sumit Garg	 <sumit.garg@kernel.org>
+Cc: cgroups@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org, 
+	selinux@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	op-tee@lists.trustedfirmware.org
+Date: Thu, 12 Nov 2026 08:46:02 +0100
+In-Reply-To: <20261104-v2_20230123_tjmercier_google_com-v4-3-1819a017000b@redhat.com>
+References: 
+	<20261104-v2_20230123_tjmercier_google_com-v4-0-1819a017000b@redhat.com>
+	 <20261104-v2_20230123_tjmercier_google_com-v4-3-1819a017000b@redhat.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-2.fc43) 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/migrate: improve mlock tracking for PTE-mapped
- large folios
-To: Kiryl Shutsemau <kas@kernel.org>,
- "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: hughd@google.com, akpm@linux-foundation.org, ziy@nvidia.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, byungchul@sk.com,
- gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261110123218.1579490-1-chenwandun1@gmail.com>
- <5f9c449e-43b3-4732-9c14-8199418cace0@kernel.org>
- <avS7FfzvjieHufUE@thinkstation>
-Content-Language: en-US
-From: Wandun <chenwandun1@gmail.com>
-In-Reply-To: <avS7FfzvjieHufUE@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: c16p3mu3njudm1ctep4kwpcrg1rnhz5f
-X-Rspamd-Queue-Id: CCDCC40003
+X-Stat-Signature: 16415ocxdqmz5pkioo5o3cr81a3nod5y
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794469519-542776
-X-HE-Meta: U2FsdGVkX1/SEPf0oqejawwQIRjPLc7yBY8mpqClG1whl4zeEqKx3wnD1rZUkxSSHCpdfH5ix/B8VkmnQt2uphCuHrYe87tUP5Twrfg607cBdcwbJjqEinj4u53QKoNaXvIFsoARtiXSCmgnfWLTRSjwSTaQkWSHEMcC6kpkqEE9W/ShjjUnwWK8pZTisHoqn/Mq2zPHcQfIrRijyrR9AMtZfEkpPaaqiJYhVJ1nVUahnoeqWpGYzxKWeyw4zXDeDgnD8vbJvTY/vjowJoYJWw1E5pNhcLnnmUmciFBSM3iqvw0MQfilcOgQjGcYfu+3mH09qTIgHP9c8utEdvU0oOLuRNboPGy5zWb+pW//PsjuObxla77UV4MLTmGbnO4qymtfWeFckZd3NiLOXx/Fh3m9aY+43RI66P4G4bJ63nSPWahGKivUhzdGwx5U0Ovr7WYXbLRGZmfF1G9ocdcpcfbBo3eJkXgPwyvilJAXZrFANocvlbmenrU/flxyJ7JW0y78FG7057ntcU5CxbASkKh8D927JrWts/bpnehyPxSaPNGAgedFJepa2VkwCnO90htEqSeXx0FMyxUF3xGUYD0fWLTv7kTQsEWBIiZkHeo3bidslL9dZovjsvFf1LrFcGjB0fx4FcDRAID99btTv5wUxS1ndSjnEEfG3ThPP6JdQHJyYiJorDhf3vO7ErxJ/qZejlIHybYBFOpg41wdVdfeVkyKZKGzYsWkyDa3DpiQ4Om7UG2tOjRZSmk2YJzuqMIGxIpmj5GYaPwNr4pC9fp06N9A4HK5WFA9Kt+W1FasMlKcMCzbx7IFnujkAD8l+1vuUYiTqnAwP076GWojQSk0eXlmV3NcpW2HzZmR+jr6vqMpt5JWVDLpu523qgoFNB6dKlfpxD7G19cxZk7Bxa7UVDPvqlaWZVEWKZQyANxRFP+53mN3QHwGhFsAzpFtgdNaezcKgJbOwzVM/dZ
- dQJ4u79I
- HYpHgakfi1M8VUDmr5PQb0Ql1I83CVOUHzWHio5vg8CXKOBinOhThLn0hGzIuu0fZ2kfVDAdvJmOwa2QQqGp73XysNOIcqOdBPPTtxBOPBkjlhZ8QB8AM15mMaxgWC63YIrc4W6hwofn6SF405nxfErfhUW7MBgb2CfKgo6H61PVOQUAiaE+SaNHTmGwhi3erSPyuVV5WR1WU/ZG5bkm/xaFIRtWW6kTzJThF3tIke61tt1Ha/6Hk3bfPQ9X3MkPCUZ3GJmoeizGFCrBmyKsroOawVgoTaovCKI2+eqnm6Cu30D2QOEQ0x/5LJiefnq1ml8DPytwvqjsg0P+vOvMyd2c6Q/yj63opLxi79TIXpQfZzfJWwRcCsyMY9hLp6LYiQ0rTBjDeNThx9rZb9pWvinya6uGpNEoQCiBB0mGyyX+0y4lp46oA3yPaBvKXEfZvYd8QNp8/3GnQBNCsAa7alSmDckU7Y1d5oQmUKRO19hat8ePiGerMhi3rpoyLvK2VUh8d/Kru8s355M2odmWT15udl5+9x5vWtTKwovdVCfXdl0/+Q2AywSBvPR7EJemf46fGKDlR9Qvc4fTkcI1P/2fW2xSO/WFvuCwH
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 587A6C0005
+X-HE-Tag: 1794469573-644943
+X-HE-Meta: U2FsdGVkX18W6GkWXizpFXEU935Srn3KAMNXw0pSnbuDlywqnNG/++su0QGwdUQYCYJpdq3zeQ4lI2c8ZOuJPP+wMcQxLP1yTgHs1QUHaw2A214fa2F8C3j1jccyuL8OHRSEemSFIv5HF8eq5nzmOHLlCGemG0ABNWQPxHifMfJ3Nvv0sF19jKhXt649PQZDz0p6YocVWcrRLRPkSHC55eNOJGqLCPK6nCBN5rLBLQGe62NLpeslxhI7IMlk2ZSw3d851PpNcsg5VGDfH3934rpgwx45xEDEmY39XL0EvQOhHkjt3Ewh3lvRQa+12jT+poOuMa6UcDMxHremh0BaX4YLhyjyF35q686dfknBT78ArZMqDi9HVnepYmCyd0m/43Js9wNM+HLAEh93JyCxetxWnxs5LAVzDZxFvDHwkdnJVd5NC4syDy1gLSwTgze+ZDV7A82UWRwziMwN4eQ0dsLIvp8WQkOMMxnwE+v3Gmj61pA9FfwRszJzVoewRAPVYOpW9DF13p9yUvLqzd9rVgHkPKMjCRLyE704tKdhRVkeuB99GxwQBHUuel9z6CKDOWrabhlnOM8wDo47wRiERkG/mMfne1252SRw9GQHmrZupND5ks93bedecOz8sPBxHuvt8CXS51uAjNdGGi+obz3Taz65Z8c+ogIfJnfy9z2wMYsGOqrjf9UCT6uFCPZXU8+sGROAZlvYhpoxfDj6REgHxFPY18FnvVoqhlfJapS5dmtJM9uCsu8Vdm9DNo4KmWeH0bArSOSsY5scMN7U0qkgaAZwtRDpD3F0fqVFrh84MmgiGCyu1sbiiGUk6vr5LPtEDhP3E5oMp9EHlvUIKCMIrRt5U+oujJqyAqLSY9eXaKj7A/AZPBxbCsCGoWrg9DdnXCzKDS/i+nvxYKJjHyIJJdJkDp7z0rY2Cf49HNrk3CDZsSjHoD7rNGcF2w4zLJG0HPkgDEbXxx3JPWR
+ RZtrU1Tq
+ +Pa/0vhC3hj2lPDQrxIQSiLaLctuotmcMqiVJBX8P+r+VU/UAAcBaIv17lwRAFo9WFu7HiwMh/bNJhbt2TzJlfUM/uM4bStpqTS1OkzOITyF0yD16zI+3znoeeXCqS6jI0Rnog1TMVy++fmzTRMUKXNEs/sg0c93N+5VYcAuaxbn+tlZeWaT7fUURaixJ7jPQ0EK3d1oot0byjZJnYzSRWmH7QuNsqaj8ngz5tsJaN07kdkPUbJrfZAgyXcAE5QmvirbReKr9YF/2SL+Vut5MPaZ+yAUwCAs2pwvZtwFoUISkzMpMoHtEk5OdLDiek3eIm0AHUHj4HA8VFWqUL6siCZH8zll7BNhNiwXrFYT03Rwd7ZZAJFdFv4tbrS96VkAbziW76ZeSr7fMgSEAn0hUgRiElQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,104 +130,292 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Wed, 2026-11-04 at 12:09 +0100, Albert Esteve wrote:
+> dma-heap already supports charging a specific cgroup at allocation
+> time via charge_fd in DMA_HEAP_IOCTL_ALLOC. However, dma-bufs can
+> originate from any exporter (DRM, V4L2, etc.), and the allocator may
+> not know the final owner at allocation time.
+>=20
+> Add DMA_BUF_IOCTL_XFER_CHARGE to transfer a dma-buf's memcg charge
+> to a different cgroup after allocation. The target is identified by
+> charge_fd, which may be a cgroupfd or a pidfd.
+>=20
+> The transfer charges the new cgroup before uncharging the old one,
+> preserving the original charge on failure. Concurrent transfers are
+> serialized by the dma-buf reservation lock, so lockdep covers the
+> locking order of the charge path early. The transfer implementation
+> is generic (mem_cgroup_transfer_charge) and not dma-buf specific, so
+> it can be reused by other subsystems.
+>=20
+> Not all dma-buf exporters back their buffers with reclaimable system
+> memory. Some represent device registers, VRAM, or carved-out pools
+> where size is not a meaningful memory cost. The xfer ioctl returns
+> -EOPNOTSUPP for buffers whose memcg is not set. Exporters opt in by
+> passing a memcg through dma_buf_export_info at export time. Currently
+> only the system heap sets it, other exporters can opt in as needed.
+>=20
+> Usage example:
+> =C2=A0 int cg_fd =3D open("/sys/fs/cgroup/clients/app1", O_RDONLY |
+> O_DIRECTORY);
+>=20
+> =C2=A0 struct dma_buf_transfer_charge xfer =3D {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .charge_fd =3D cg_fd,
+> =C2=A0 };
+> =C2=A0 ioctl(dmabuf_fd, DMA_BUF_IOCTL_XFER_CHARGE, &xfer);
+> =C2=A0 /* charge now on app1's cgroup */
+> =C2=A0 close(cg_fd);
+>=20
+> Signed-off-by: Albert Esteve <aesteve@redhat.com>
+> ---
+> =C2=A0drivers/dma-buf/dma-buf.c=C2=A0=C2=A0=C2=A0 | 42
+> ++++++++++++++++++++++++++++++++++++++++++
+> =C2=A0include/linux/dma-buf.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 3 ++-
+> =C2=A0include/linux/memcontrol.h=C2=A0=C2=A0 | 13 +++++++++++++
+> =C2=A0include/uapi/linux/dma-buf.h | 26 ++++++++++++++++++++++++++
+> =C2=A0mm/memcontrol.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 42
+> ++++++++++++++++++++++++++++++++++++++++++
+> =C2=A05 files changed, 125 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
+> index 837666273550..3bd26fbb1109 100644
+> --- a/drivers/dma-buf/dma-buf.c
+> +++ b/drivers/dma-buf/dma-buf.c
+> @@ -540,6 +540,45 @@ static long dma_buf_import_sync_file(struct
+> dma_buf *dmabuf,
+> =C2=A0}
+> =C2=A0#endif
+> =C2=A0
+> +/* Transfer a dma-buf's memcg charge; see struct
+> dma_buf_transfer_charge */
+> +static long dma_buf_xfer_charge(struct dma_buf *dmabuf,
+> +				const void __user *user_data)
+> +{
+> +	struct dma_buf_transfer_charge arg;
+> +	struct mem_cgroup *memcg;
+> +	unsigned int nr_pages =3D PAGE_ALIGN(dmabuf->size) >>
+> PAGE_SHIFT;
+> +	int ret =3D 0;
+> +
+> +	if (copy_from_user(&arg, user_data, sizeof(arg)))
+> +		return -EFAULT;
+> +
+> +	if (!IS_ENABLED(CONFIG_MEMCG))
+> +		return 0;
+> +
+> +	if (arg.flags !=3D 0)
+> +		return -EINVAL;
+> +
+> +	memcg =3D mem_cgroup_get_from_fd(arg.charge_fd);
+> +	if (IS_ERR(memcg))
+> +		return PTR_ERR(memcg);
+> +
+> +	dma_resv_lock(dmabuf->resv, NULL);
+> +
+> +	if (!dmabuf->memcg) {
+> +		ret =3D -EOPNOTSUPP;
+> +		goto out;
+> +	}
+> +
+> +	if (dmabuf->memcg !=3D memcg &&
+> +	=C2=A0=C2=A0=C2=A0 !mem_cgroup_transfer_charge(&dmabuf->memcg, memcg,
+> MEMCG_DMABUF, nr_pages))
+> +		ret =3D -ENOMEM;
+> +
+> +out:
+> +	dma_resv_unlock(dmabuf->resv);
+> +	mem_cgroup_put(memcg);
+> +	return ret;
+> +}
+> +
+> =C2=A0static long dma_buf_ioctl(struct file *file,
+> =C2=A0			=C2=A0 unsigned int cmd, unsigned long arg)
+> =C2=A0{
+> @@ -590,6 +629,9 @@ static long dma_buf_ioctl(struct file *file,
+> =C2=A0		return dma_buf_import_sync_file(dmabuf, (const void
+> __user *)arg);
+> =C2=A0#endif
+> =C2=A0
+> +	case DMA_BUF_IOCTL_XFER_CHARGE:
+> +		return dma_buf_xfer_charge(dmabuf, (const void
+> __user *)arg);
+> +
+> =C2=A0	default:
+> =C2=A0		return -ENOTTY;
+> =C2=A0	}
+> diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
+> index 85dd747c9b36..b01149d26b44 100644
+> --- a/include/linux/dma-buf.h
+> +++ b/include/linux/dma-buf.h
+> @@ -507,7 +507,8 @@ struct dma_buf_attachment {
+> =C2=A0 * @priv:	Attach private data of allocator to this buffer
+> =C2=A0 * @memcg:	memcg to charge for this buffer's memory. Set only
+> for
+> =C2=A0 *		buffers backed by system memory where @size reflects
+> the
+> - *		actual allocation in bytes.
+> + *		actual allocation in bytes. Enables charge transfer
+> via
+> + *		DMA_BUF_IOCTL_XFER_CHARGE.
+> =C2=A0 *
+> =C2=A0 * This structure holds the information required to export the
+> buffer. Used
+> =C2=A0 * with dma_buf_export() only.
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index f8ec751b7d7b..af02d9777fe9 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -676,6 +676,11 @@ struct mem_cgroup *mem_cgroup_get_from_fd(int
+> fd);
+> =C2=A0bool mem_cgroup_reserve_dmabuf(struct mem_cgroup *memcg, gfp_t gfp,
+> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned int nr_pages);
+> =C2=A0
+> +bool mem_cgroup_transfer_charge(struct mem_cgroup **ptr_memcg,
+> +				struct mem_cgroup *new_memcg,
+> +				enum memcg_stat_item item,
+> +				unsigned int nr_pages);
+> +
+> =C2=A0void __mem_cgroup_uncharge(struct folio *folio);
+> =C2=A0
+> =C2=A0/**
+> @@ -1197,6 +1202,14 @@ static inline void
+> mem_cgroup_cancel_dmabuf(struct mem_cgroup *memcg,
+> =C2=A0{
+> =C2=A0}
+> =C2=A0
+> +static inline bool mem_cgroup_transfer_charge(struct mem_cgroup
+> **ptr_memcg,
+> +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct mem_cgroup
+> *new_memcg,
+> +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum memcg_stat_item
+> item,
+> +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned int nr_pages)
+> +{
+> +	return true;
+> +}
+> +
+> =C2=A0static inline void mem_cgroup_uncharge(struct folio *folio)
+> =C2=A0{
+> =C2=A0}
+> diff --git a/include/uapi/linux/dma-buf.h b/include/uapi/linux/dma-
+> buf.h
+> index e827c9d20c5d..0aaf2e7d593b 100644
+> --- a/include/uapi/linux/dma-buf.h
+> +++ b/include/uapi/linux/dma-buf.h
+> @@ -168,6 +168,31 @@ struct dma_buf_import_sync_file {
+> =C2=A0	__s32 fd;
+> =C2=A0};
+> =C2=A0
+> +/**
+> + * struct dma_buf_transfer_charge - Transfer a dma-buf's memcg
+> charge
+> + *
+> + * Any holder of a dma-buf file descriptor can perform a
+> + * DMA_BUF_IOCTL_XFER_CHARGE to attribute the buffer's memory
+> + * cost to a specific cgroup, or move it from one cgroup to
+> + * another.=C2=A0 The ioctl charges the new cgroup before uncharging
+> + * the old one atomically.=C2=A0 On failure the original charge is
+> + * preserved.=C2=A0 If the buffer has no existing memcg charge, the
+> + * ioctl returns -EOPNOTSUPP.
+> + */
+> +struct dma_buf_transfer_charge {
+> +	/** @flags: Reserved, must be zero */
+> +	__u32 flags; /* unused for now */
+> +	/**
+> +	 * @charge_fd: File descriptor identifying the target
+> cgroup.
+> +	 *
+> +	 * May be either a pidfd, in which case the charge moves to
+> the
+> +	 * memory cgroup of the referenced process, or a cgroupfd
+> obtained
+> +	 * by opening a cgroup v2 directory, in which case the
+> charge moves
+> +	 * directly to that cgroup's memory controller.
+> +	 */
+> +	__u32 charge_fd;
+> +};
+> +
+> =C2=A0#define DMA_BUF_BASE		'b'
+> =C2=A0#define DMA_BUF_IOCTL_SYNC	_IOW(DMA_BUF_BASE, 0, struct
+> dma_buf_sync)
+> =C2=A0
+> @@ -179,5 +204,6 @@ struct dma_buf_import_sync_file {
+> =C2=A0#define DMA_BUF_SET_NAME_B	_IOW(DMA_BUF_BASE, 1, __u64)
+> =C2=A0#define DMA_BUF_IOCTL_EXPORT_SYNC_FILE	_IOWR(DMA_BUF_BASE, 2,
+> struct dma_buf_export_sync_file)
+> =C2=A0#define DMA_BUF_IOCTL_IMPORT_SYNC_FILE	_IOW(DMA_BUF_BASE, 3, struct
+> dma_buf_import_sync_file)
+> +#define DMA_BUF_IOCTL_XFER_CHARGE	_IOW(DMA_BUF_BASE, 4, struct
+> dma_buf_transfer_charge)
+> =C2=A0
+> =C2=A0#endif
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 17fdefc56b97..3e717b5663c8 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -5752,6 +5752,48 @@ void mem_cgroup_cancel_dmabuf(struct
+> mem_cgroup *memcg, unsigned int nr_pages)
+> =C2=A0}
+> =C2=A0EXPORT_SYMBOL_GPL(mem_cgroup_cancel_dmabuf);
+> =C2=A0
+> +/**
+> + * mem_cgroup_transfer_charge - move a charge between memcgs
+> + * @ptr_memcg: pointer to the memcg to transfer from
+> + * @new_memcg: target memcg; caller must hold a reference
+> + * @item: stat counter to adjust
+> + * @nr_pages: number of pages to transfer
+> + *
+> + * Transfers @nr_pages of charge from *@ptr_memcg to @new_memcg and,
+> on
+> + * success, stores @new_memcg in *@ptr_memcg.
+> + *
+> + * Updates to *@ptr_memcg must be serialized by the caller.
+> + * Returns %true on success, %false if the charge against @new_memcg
+> + * failed.
+> + */
+> +bool mem_cgroup_transfer_charge(struct mem_cgroup **ptr_memcg,
+> +				struct mem_cgroup *new_memcg,
+> +				enum memcg_stat_item item,
+> +				unsigned int nr_pages)
+> +{
+> +	struct mem_cgroup *old_memcg =3D *ptr_memcg;
+> +
+> +	if (!new_memcg || mem_cgroup_disabled())
+> +		return true;
+> +
+> +	if (try_charge(new_memcg, GFP_KERNEL, nr_pages))
+> +		return false;
+> +
+> +	mod_memcg_state(new_memcg, item, nr_pages);
+> +	css_get(&new_memcg->css);
+> +	*ptr_memcg =3D new_memcg;
+> +
+> +	if (old_memcg) {
+> +		/* Uncharge old cgroup */
+> +		mod_memcg_state(old_memcg, item, -nr_pages);
+> +		if (!mem_cgroup_is_root(old_memcg))
+> +			refill_stock(old_memcg, nr_pages);
+> +		mem_cgroup_put(old_memcg);
+> +	}
+> +
+> +	return true;
+> +}
 
-
-On 11/12/26 03:01, Kiryl Shutsemau wrote:
-> On Wed, Nov 11, 2026 at 09:00:10AM +0100, David Hildenbrand (Arm) wrote:
->> On 11/10/26 13:32, Wandun Chen wrote:
->>> From: Wandun Chen <chenwandun@lixiang.com>
->>>
->>> Commit ab521b4142aa ("mm/rmap: improve mlock tracking for large folios")
->>> mlocks a large folio when all its pages are added in one rmap operation.
->>> However, when a PTE-mapped large folio is migrated, remove_migration_pte()
->>> restores PTEs individually, passing nr_pages = 1 to the rmap helpers. As a
->>> result, PG_mlocked is not set on the destination folio.
->>>
->>> Reclaim can restore mlock in try_to_unmap(), but Mlocked in /proc/meminfo
->>> remains undercounted until that scan occurs.
->>>
->>> Restore mlock once the full mapping has been restored in a locked VMA
->>> under one page table lock, rather than waiting for try_to_unmap() to
->>> restore the mlock state.
->>>
->>> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
->>> ---
->>>  mm/migrate.c | 10 +++++++++-
->>>  1 file changed, 9 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/mm/migrate.c b/mm/migrate.c
->>> index 94033c222e04..140e291d4587 100644
->>> --- a/mm/migrate.c
->>> +++ b/mm/migrate.c
->>> @@ -353,6 +353,7 @@ static bool remove_migration_pte(struct folio *folio,
->>>  {
->>>  	struct rmap_walk_arg *rmap_walk_arg = arg;
->>>  	DEFINE_FOLIO_VMA_WALK(pvmw, rmap_walk_arg->folio, vma, addr, PVMW_SYNC | PVMW_MIGRATION);
->>> +	unsigned long nr_ptes = 0;
->>>  
->>>  	while (page_vma_mapped_walk(&pvmw)) {
->>>  		rmap_t rmap_flags = RMAP_NONE;
->>> @@ -446,9 +447,16 @@ static bool remove_migration_pte(struct folio *folio,
->>>  			else
->>>  				folio_add_file_rmap_pte(folio, new, vma);
->>>  			set_pte_at(vma->vm_mm, pvmw.address, pvmw.pte, pte);
->>> +
->>> +			nr_ptes++;
->>>  		}
->>> -		if (READ_ONCE(vma->vm_flags) & VM_LOCKED)
->>> +		if (READ_ONCE(vma->vm_flags) & VM_LOCKED) {
->>> +			if (folio_test_large(folio) &&
->>> +			    nr_ptes == folio_nr_pages(folio) &&
->>> +			    !(pvmw.flags & PVMW_PGTABLE_CROSSED))
->>> +				mlock_vma_folio(folio, vma);
->>>  			mlock_drain_local();
->>> +		}
->>>  
->>>  		trace_remove_migration_pte(pvmw.address, pte_val(pte),
->>>  					   compound_order(new));
->>
->> I guess pte batching would be one way of handling it, but that requires more churn.
->>
->> The spirit is similar as in try_to_unmap_one(), where we count the number of
->> ptes in one VMA. For consistency, I would call it "ptes".
->>
->> @Kiryl, can you take a look?
-> 
-> Looks right to me. Agreed on "ptes".
-> 
-> With that adjusted:
-> 
-> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-
-I'll rename it to ptes and send a v3 with Reviewed-by tag.
-
-On pte batching: following the swap_pte_batch()/do_swap_page()
-precedent, restore could scan consecutive migration entries with
-matching flags and do one set_ptes() plus one folio_add_*_rmap_ptes();
-a full-folio batch would even set PG_mlocked for free via the rmap
-helpers.
-
-However, try_to_migrate_one() creates migration entries per-PTE with
-per-PTE flags, so restore batches will often be truncated by flag
-changes. For such folios the ptes counting in this patch remains the
-only way to restore mlock (it survives batching with a one-line
-change: ptes += nr). So I'd like to land this first and do the pte
-batching as a separate follow-up series.
+=20
+This has the same lifetime issue as patch 1. After a transfer, the
+buffer pins new_memcg until it is released, and with cross-process
+transfers the target may be removed before the
+buffer is. Since this helper is meant to be reused by other subsystems,
+would it be better to have it take and store an obj_cgroup from the
+start?
 
 Thanks,
-Wandun
+Thomas
 
 
-> 
->>
->> BTW, why don't we care about that in try_to_migrate?
-> 
-> try_to_migrate_one() unmaps the folio whether the VMA is VM_LOCKED or
-> not, so there is no mapping left to keep mlocked; removing the rmap
-> munlocks the source.
-> 
-> The mlock is rebuilt on the destination in remove_migration_ptes(),
-> which is the path this patch fixes.
-> 
-
+> +
+> =C2=A0/**
+> =C2=A0 * mem_cgroup_uncharge_dmabuf - uncharge a dma-buf from its memcg
+> =C2=A0 * @dmabuf: buffer to uncharge
 
