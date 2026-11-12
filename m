@@ -1,116 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54414606A321
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 02:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6FE606A324
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 02:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YzGrzmHr
 Received: by kanga.kvack.org (Postfix)
-	id 42A166B05B9; Wed, 11 Nov 2026 21:49:21 -0500 (EST)
+	id 90CFD6B05BB; Wed, 11 Nov 2026 21:50:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DA696B05BA; Wed, 11 Nov 2026 21:49:21 -0500 (EST)
+	id 8BD686B05BC; Wed, 11 Nov 2026 21:50:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C9C36B05BB; Wed, 11 Nov 2026 21:49:21 -0500 (EST)
+	id 7FB8C6B05BD; Wed, 11 Nov 2026 21:50:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EF6486B05B9
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 21:49:20 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4B7098028D
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:49:20 +0000 (UTC)
-X-FDA: 85424935680.28.1934A35
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 41ADA1C0005
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:49:15 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	spf=pass (imf18.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EAFD6B05BB
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 21:50:06 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2B16A047E
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:50:05 +0000 (UTC)
+X-FDA: 85424937570.03.166E631
+Received: from mta0.migadu.com (out-82.mta0.migadu.com [91.218.175.82])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BB96120002
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:50:03 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YzGrzmHr;
+	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.82 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794451758;
-	b=OxmCCHb8B6CAKxd2yjSQsMga5h1LoswHlPtHPLWZnTJzgUu1JbJs5kUcVPGWqN/p8Xitrb
-	GWCAWyIW9oz6G4X3bTCJirQthp4KOQcQFh8Gzf7KS1uCrWS69GmmOti7BbX8EpfjN5E4hA
-	HsyWV/UCr8HdfWOkUfIQjLRWrtwbroc=
+	t=1794451804;
+	b=ZsIPozYEu2F8MUkFYcKH1CbVFmsRFMiiovLFiocOp1NJWtoX9KtLIIw0mqwGrO8ZH296ZY
+	27vJOcQu5oGnbbzM/E+JmQtNMEuySaV2ZpFNesWVB3uM+lBZUhvdwpcHadvLPSxhqYWlnO
+	G4XW7ZiNYZiZ4CVkEe1bU1sa1fnoxEk=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn;
-	dmarc=none
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YzGrzmHr;
+	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.82 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794451758;
+	s=arc-20220608; t=1794451804;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3jxx6XwLUZhN+7SC2e3PbpaWgo2qbe+sSwZpVT16d+w=;
-	b=kK4EXhkoLKPmlJkbWmVgPnfSM9fXXEpDG32EBcaPuxSRC8la2dq1Xar851p/8XHPc0X4oR
-	niWnhe7yNexW/AXjhB5T//v0aGCe3D7YeLUhtSxKkY6NmBMoOrJKuuNQUFjawqcewVvGoy
-	GO2i/Bppoy6Nt1odN881iNRCc7XS0MY=
-X-UUID: 9faca40ede4311f19a56ed5b684f684d-20261112
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
-	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_LANG
-	HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN
-	HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
-	IP_TRUSTED, SRC_TRUSTED, SA_TRUSTED, SA_EXISTED, SN_TRUSTED
-	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_BAD
-	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
-	AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:1f9e1992-d73e-4b86-959b-ef39861e5e9d,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:8,RULE:Release_Ham,ACTION
-	:release,TS:18
-X-CID-INFO: VERSION:1.3.19,REQID:1f9e1992-d73e-4b86-959b-ef39861e5e9d,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:8,RULE:Release_Ham,ACTION:r
-	elease,TS:18
-X-CID-META: VersionHash:7db8b62,CLOUDID:13ee854e5e4b08c93db70135f9bf0105,BulkI
-	D:261104235446MKEMRFZO,BulkQuantity:10,SF:17|19|64|66|78|80|81|82|83|102|1
-	27|153|817|841|865|898,TC:nil,Content:-10|-8|-5|14|50|99,EDM:-3,IP:-2,URL:
-	0,File:nil,RT:nil,Bulk:40|20,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,S
-	PR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_OBB,
-	TF_CID_SPAM_FCD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 9faca40ede4311f19a56ed5b684f684d-20261112
-X-User: husong@kylinos.cn
-Received: from ctao-book [(114.244.3.119)] by mailgw.kylinos.cn
-	(envelope-from <husong@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1998482028; Thu, 12 Nov 2026 10:49:04 +0800
-From: Song Hu <husong@kylinos.cn>
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	apopple@nvidia.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	husong@kylinos.cn,
-	joshua.hahnjy@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	matthew.brost@intel.com,
-	ridong.chen@linux.dev,
-	shivankg@amd.com,
-	willy@infradead.org,
-	ying.huang@linux.alibaba.com,
-	ziy@nvidia.com
-Subject: Re: [PATCH] mm/migrate: don't move memcg NR_FILE_PAGES for swapcache
-Date: Thu, 12 Nov 2026 10:48:55 +0800
-Message-ID: <20261112024855.424402-1-husong@kylinos.cn>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <67275d3d-cc60-406c-a088-298b948d7577@kernel.org>
-References: <67275d3d-cc60-406c-a088-298b948d7577@kernel.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7Sw15fLJElTIXiA3Qe5WXtECxHOt5O6ombPZ3J8UKq8=;
+	b=s+lj3IIy1vRFnSqWgyyp0xLi1I+6nQYHAk+pOgQG5KPFwlDE0fBYP4Pgo3PmTLgE0/ND4i
+	+eEGFKV+5v0owRVx5QgxX+eNtEpin0fB2qVrUnKbL1s3DoAAFKaPH4ZilpD6hTvjenek9E
+	PUPTf5pyLx6dg3TikSZyzWg7vwQuVW4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=N31htkiw7FeFclqPnxejrLhX+YXxP1RzI9SGKIi5828=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794451802; v=1; x=1795056602;
+ b=YzGrzmHrmkAvLjtEQ0tx1a5d1kXvDK8yiijclYAhGn+60DKOnMsqbLOsMYqt5phJio+KFQAN
+ 9pDk96x/GnNjkNQq7jbH0xMRoq5RjkWr8Mlu2E4tZhBd2badnKnO+HvRkWWXn5zXo5SKnYuaLp6
+ y3MLawk8E9vPBsSqy+tpyeoE=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id 2bcdc9690615e9fb;
+	Thu, 12 Nov 2026 02:50:01 +0000
+X-Mizu-Trace-ID: 2bcdc9690615e9fb
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 41ADA1C0005
-X-Stat-Signature: qbkr855ndzf599p696ihfpgf8j5nmr41
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH] mm: list_lru: fix NULL deref when a folio moves to the
+ root memcg
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20261112024140.648088-1-shakeel.butt@linux.dev>
+Date: Thu, 12 Nov 2026 10:49:44 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Dave Chinner <david@fromorbit.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ David Hildenbrand <david@kernel.org>,
+ Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ Meta kernel team <kernel-team@meta.com>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Chris Mason <mason@kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <26CC0CD2-97FE-4842-AE51-605EC77AC91D@linux.dev>
+References: <20261112024140.648088-1-shakeel.butt@linux.dev>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-Stat-Signature: fc55gsqnr7sgnxzt1uqzgty8wn4dxjwp
+X-Rspamd-Queue-Id: BB96120002
 X-Rspam-User: 
-X-HE-Tag: 1794451755-315851
-X-HE-Meta: U2FsdGVkX18TKOaT7gknZqV1vRAjGWxWhzlBOYUGscFZX0vkvbf7K1sKmuoVBjjUZEQXN+oA+zBUJzjNxuYCvbcLOAyrp71I6I91QVNfaoi1L6GwPtoEk4JyrOohkSD9K7gTOH6epUwnZcaa5pAqSkKqJiSuQ/BS9F1akNl6xccc1VXUKqvZtnRkOBIxCx7YEpgExWk8CFcVoYjikD0CBX7nfwlOfOp0na/IIxCjPA2+QnrJJ9vNuLX+uTzQGiLZInngmUpf/G8h1tuiyLXoHBU42aJlRXbo8i1E++EhD95NLOCCqxEY7ohjPF2nqajgs/4ZvyVj+6lgV4SUEUHLXxyHfzzzVi/6Br8qvai6QKNwjVKKgU4PlhiWRUdBS/naC+De3940nyscnmsOI5tBNdxHytgOLd78DG+01NaPmyJIaV6iw7MTnW1LsKr1CF2/ykWhWGAE1QpWyHR2Ugjf/IRPBnxLqhaRIFQiUWewjXCWOV/C99Ip/PM0TZB14KpKAJoD+HK0n3dbosjr1NJHiGQHK6kkUpZhlM3FeA2X9Mgl7OoCBiZ7XIIzt60THbD22ZR2CednoMVBHkwp1vAqNU7GUy0qYoJzvJv7YvgquixTwMFOmDsrRLIoFnX0GM4Ebaoq/JSsfQrTv8nhpF+PSFYiVqWVr0XIo/r8C2X0540fSqPNtIs6REzESMKzNw0O+zF/xME9ateNQdPr619UuNZLr10JFoqjcf4BwWY4QSca0uTGvx5vrxkHMMeyb8s7no1tqJaMaF4WFaZ7HEOHmYJ7iHyGOC2AUc5At7r+7UeOKjilyfCOP4DUM5/+RpXhOrm70pAyPdY379iAtML5JRK1N9E2L3lUHkMIhDoBsnRPsAhguYUb68am0I4qhUrM6gwu2wQ5Bdbytf/DUQrnQX4HHifXgJNtE5OzF4Q1/ZDr+RoEaNRbgfWWlTwNI972/6ArAvWOE7+GQgS3A5T
- C34htrG9
- V7zYPNujUFCkhUqdiaGKodauxJu1fCGPJNlmIJ8jtlj3oScnbMC0etfrV89ehSFHnHxc0ZhTluu9+UA1EnvtHXPkMmO6G/3ySnaW6CsdKPpQFY+w/YQxfj6CB++GBH2V2CdekrU8Qgek+KCWHtfkOS0i9tcjyuR+VJChfcicFOalSh1s=
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794451803-908301
+X-HE-Meta: U2FsdGVkX1+JIYkGxEepcVTLYW2UyW9hCIqCFDZqVA+7g6KPcXcvD2l+VjkhBHmAfG2XP3jsbnb2m4d5twHLZT3zCRpaxFYAgRf+gGweeaFFcOvJlXG+LKPPBd0QY2kvDmht7milzAWcoRjcWIzL9O0J/yYLkMK3iCu5Vnk7BmY+OjDTTViB1lnwYWBPS3B+Fe4jz6E9FT/k1/VI44gDsU3R+ZG/rFYd/oZG7MxVFxatZTKS8icdxkun8XzWKfWR/OzfdbbC1qMcX36oQIXTG5ATfC14y6A8Sn2Ug2v5VmZObPI1A60WA43nAInwpqS82qMYm/s+9h86Ra4DtO3HwN/kmIEsOkjxaEvRxTNiqehwlYgciggWa7wFoO5DaWI6H2XFy6UHb2dsBT46laYFm0AMY099kve0cgaxusJ1GHwYWtCLsiqTgqoHKtRaLkB6+h9tfjnPFPLWjHiMocJBpRNz8nxz6mgW59IZeVDS3geJZC4FHAFKlF28yj91DruCXUpfDNRfUW90jerCe6P8l+sD+u6mImLE9y+01HvH0uNftwQsfe5b8vOeS6cCyWXOgFw/3eGHN+iBvgKQpDe3ekCcjU3IAdfdhXrrBKhGQXp0cqse4AGN8LOm0eSy0vohqB1ApXW/3Hr3/Dahw2o6jJqTiCyPMGUx85wfdbHjG8V01r/IwN+MmsZkiZZsMm4YuC49q/PrgYXpj2cbwVsezNQFLC03jfyDVcu9OnvT8YwKJIqbiggszgD0YNHjZUlk0/Wg9bondltl/nauiMqnu2H5Q1rKHWTMCel6ftcaeTIAv4wKtsKSyZaRexTvlu+K5+slJSnzaCJSbauaRFyHIBCwghfUs0YlKayzSLol5JE89yBjzV8/gZw9UeWkIEEJenOVhKWuVsnD64G1021Z2Y6JMevq9kTpq6JdGqAD2WHMYiOf+Ycsy47Z5M380xZWXJlSQvSDEOrwJgPG+13
+ 1SPW8wrh
+ 0YATvGOE92XyHcG0rvf8bYOhwtHrYiVEts5cYUA/0DGk9R7zl+o0MNwb6uOjkkMS12gN5Z+FaUcOMsawcBH2eriBpjv2j2QajcrJfpK+Kj0pg2tb4zjgiv5B0HsaFaBfxRLzX4g2t7NNMIo0ldyb8Do6+vpAbZa+BTEfcDPD2I08qxH+fMEHsGd4H5/by9HN4tI+8YuTNk2aob6dm7uIRyeygXfVVgJ+1NVrdTZt33zYCwkTB9s9PnmkPNS6U9U8fIENGAshvAqsHZzEZnhMBUTTQnNrt44QUtl7k8TwZLcD42vx6+Yf9tBFN6NiTwe48oSo2Q28Y3+drkpe/QSGJmor/IQio9vl69T/G2ydmlAZessjb7pvLzTiQFQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,138 +104,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> On 11/10/26 04:09, Zi Yan wrote:
-> > On Tue Nov 3, 2026 at 11:43 PM EST, Song Hu wrote:
-> >> NR_FILE_PAGES lives on both the node and the memcg plane for page
-> >> cache folios: filemap_add_folio() and filemap_unaccount_folio() charge
-> >> it to the folio's node and memcg, while __swap_cache_add_folio() and
-> >> __swap_cache_del_folio() maintain the node plane of NR_FILE_PAGES and
-> >> the memcg plane of NR_SWAPCACHE.  A folio in the swap cache therefore
-> >> carries no per-memcg NR_FILE_PAGES count: shmem folios drop their
-> >> memcg file accounting when swapped out, and anon folios never had any.
-> >>
-> >> The cross-zone arm of __folio_migrate_mapping() moves NR_FILE_PAGES on
-> >> both planes unconditionally.  For swapcache folios the memcg plane is
-> >> empty, so migrating one misaccounts it: the destination accrues
-> >> nr_pages that were never accounted there while the source counter
-> >> underflows.  The wrong counts persist until the memcg is destroyed,
-> >> but the aggregate in memory.stat stays correct, so the drift is easy
-> >> to miss.  NUMA balancing, migratepages, compaction and memory hotplug
-> >> can all migrate such folios.
-> > 
-> > It would be better to simplify the above like Joshua suggested.
-> > 
-> >>
-> >> Reproducer, on a 2-node QEMU guest with cgroup v2:
-> >>
-> >>   1. create a cgroup with memory.max = 50M and swap enabled;
-> >>   2. memset 128M of anonymous memory in it, so reclaim swaps most of
-> >>      it out;
-> >>   3. fork to raise the swap entry refcount, then fault the memory
-> >>      back in, so the resident folios are swapcache ones;
-> >>   4. migrate_pages(pid, node0 -> node1).
-> >>
-> >> "file" row of memory.numa_stat (bytes) after step 4:
-> >>
-> >>                     without this patch      with this patch
-> >>                       N0          N1          N0          N1
-> >>                      0 (*)  51691520         0           0
-> >>
-> >>   (*) the source counter has gone negative; negative values read as 0.
-> >>
-> >> Keep moving the node plane via mod_node_page_state() and skip only
-> >> the empty memcg plane, mirroring the swapcache exclusion the NR_SHMEM
-> >> handling in the same block already applies.  It accompanies
-> >> commit 4eef27af2932 ("mm/migrate: move NR_FILE_THPS on cross-node migration")
-> >> and commit c5eef2e03618 ("mm/migrate: move NR_KERNEL_FILE_PAGES on cross-node migration").
-> >>
-> >> Fixes: 0d1c20722ab3 ("mm: memcontrol: switch to native NR_FILE_PAGES and NR_SHMEM counters")
-> >> Signed-off-by: Song Hu <husong@kylinos.cn>
-> >> ---
-> >>  mm/migrate.c | 16 ++++++++++++++--
-> >>  1 file changed, 14 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/mm/migrate.c b/mm/migrate.c
-> >> index 28a8d7734735..bc60f6587d1b 100644
-> >> --- a/mm/migrate.c
-> >> +++ b/mm/migrate.c
-> >> @@ -690,8 +690,20 @@ static int __folio_migrate_mapping(struct address_space *mapping,
-> >>  		old_lruvec = mem_cgroup_lruvec(memcg, oldzone->zone_pgdat);
-> >>  		new_lruvec = mem_cgroup_lruvec(memcg, newzone->zone_pgdat);
-> >>  
-> >> -		mod_lruvec_state(old_lruvec, NR_FILE_PAGES, -nr);
-> >> -		mod_lruvec_state(new_lruvec, NR_FILE_PAGES, nr);
-> >> +		/*
-> >> +		 * Swapcache folios carry NR_FILE_PAGES on the node plane
-> >> +		 * only (their memcg footprint is NR_SWAPCACHE, see
-> >> +		 * swap_state.c), so move only the node plane for them.
-> >> +		 */
-> >> +		if (folio_test_swapcache(folio)) {
-> >> +			mod_node_page_state(oldzone->zone_pgdat, NR_FILE_PAGES,
-> >> +					    -nr);
-> >> +			mod_node_page_state(newzone->zone_pgdat, NR_FILE_PAGES,
-> >> +					    nr);
-> >> +		} else {
-> >> +			mod_lruvec_state(old_lruvec, NR_FILE_PAGES, -nr);
-> >> +			mod_lruvec_state(new_lruvec, NR_FILE_PAGES, nr);
-> >> +		}
-> > 
-> > Like Joshua said in another email, it will be more readable if
-> > NR_SWAPCACHE updates can be moved into the then branch above.
->
-> Can one of you write me the updated patch description? Thanks1
 
-Sure. Here's an updated commit message incorporating Joshua's
-suggestion to describe the accounting model first and then explain why
-migration gets it wrong.
 
-mm/migrate: don't move memcg NR_FILE_PAGES for swapcache
+> On Nov 12, 2026, at 10:41, Shakeel Butt <shakeel.butt@linux.dev> =
+wrote:
+>=20
+> folio_memcg_list_lru_alloc() makes sure that a folio's memcg has its
+> own lists in a list_lru, such as the THP deferred split queue. It =
+looks
+> up the folio's memcg twice: a fast path under RCU checks if the lists
+> exist, and a slow path takes a reference and allocates them. The fast
+> path returns early for the root memcg, which uses the global lists.
+> The slow path does not check for the root.
+>=20
+> The memcg can change between the two lookups: when a cgroup is
+> removed, its folios are moved to the parent memcg. If the folio is
+> moved up to the root in between, the slow path gets the root, and
+> __memcg_list_lru_alloc() dereferences the root's parent, which is =
+NULL.
+>=20
+> Users see a NULL pointer dereference oops while a THP is allocated,
+> such as in a page fault, in khugepaged or at swap-in. tmpfs huge pages
+> are affected too, and for them the oops can also happen in reclaim,
+> for example in kswapd. The task that hits the oops is killed, or the
+> machine panics if panic_on_oops is set.
+>=20
+> The race is narrow: the folio has to be moved up to the root right
+> between the two lookups. For example, its cgroup is directly below the
+> root and is removed, or has its memory controller disabled, at that
+> moment.
+>=20
+> Fix it by skipping the root memcg in the slow path too. The root needs
+> no lists of its own.
+>=20
+> Fixes: ae64f07a6a40 ("mm: list_lru: introduce =
+folio_memcg_list_lru_alloc()")
+> Reported-by: Chris Mason <mason@kernel.org>
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+>=20
+> ---
+> mm/list_lru.c | 10 ++++++++--
+> 1 file changed, 8 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/mm/list_lru.c b/mm/list_lru.c
+> index d1d256822ccc..566691ca3dd8 100644
+> --- a/mm/list_lru.c
+> +++ b/mm/list_lru.c
+> @@ -645,9 +645,15 @@ int folio_memcg_list_lru_alloc(struct folio =
+*folio, struct list_lru *lru,
+> 	if (likely(res))
+> 		return 0;
+>=20
+> -	/* Allocation may block, pin the memcg */
+> +	/*
+> +	 * Allocation may block, so pin the memcg. If the folio's cgroup
+> +	 * was removed after the check above, the folio has moved up to =
+a
+> +	 * parent memcg, which can be the root. The root uses the global
+> +	 * lists and has no parent, so skip it.
+> +	 */
+> 	memcg =3D get_mem_cgroup_from_folio(folio);
+> -	res =3D __memcg_list_lru_alloc(memcg, lru, gfp);
+> +	if (!mem_cgroup_is_root(memcg))
 
-NR_FILE_PAGES is accounted on both the node and memcg planes for page
-cache folios.  Swapcache folios are the exception: they keep
-NR_FILE_PAGES only on the node plane, while their memcg accounting is
-tracked as NR_SWAPCACHE.
-
-The cross-zone path in __folio_migrate_mapping() currently migrates
-NR_FILE_PAGES through mod_lruvec_state(), which updates both planes.
-This is correct for normal page cache, but wrong for swapcache folios
-because there is no memcg NR_FILE_PAGES state to move.  As a result,
-migration incorrectly increments the destination memcg counter and
-decrements the source one, leaving the per-memcg accounting incorrect
-until the memcg is destroyed.
-
-Reproducer, on a 2-node QEMU guest with cgroup v2:
-
-  1. create a cgroup with memory.max = 50M and swap enabled;
-  2. memset 128M of anonymous memory in it, so reclaim swaps most of
-     it out;
-  3. fork to raise the swap entry refcount, then fault the memory
-     back in, so the resident folios are swapcache ones;
-  4. migrate_pages(pid, node0 -> node1).
-
-"file" row of memory.numa_stat (bytes) after step 4:
-
-                    without this patch      with this patch
-                      N0          N1          N0          N1
-                     0 (*)  51691520         0           0
-
-  (*) the source counter has gone negative; negative values read as 0.
-
-Fix it by updating the node accounting directly for swapcache folios
-while leaving the nonexistent memcg NR_FILE_PAGES state untouched.
-Non-swapcache folios continue to use mod_lruvec_state(), preserving
-the existing behaviour.  This mirrors the existing swapcache handling
-for NR_SHMEM in the same block.  It accompanies
-commit 4eef27af2932 ("mm/migrate: move NR_FILE_THPS on cross-node
-migration") and commit c5eef2e03618 ("mm/migrate: move
-NR_KERNEL_FILE_PAGES on cross-node migration").
-
-Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Song Hu <husong@kylinos.cn>
-
-Thanks to Joshua and Zi for the helpful reviews.
+How about using memcg_list_lru_allocated() to check this, it's =
+consistent with
+the above check?
 
 Thanks,
-Song
+Muchun
+
+> +		res =3D __memcg_list_lru_alloc(memcg, lru, gfp);
+> 	mem_cgroup_put(memcg);
+> 	return res;
+> }
+> --=20
+> 2.53.0-Meta
+>=20
+
 
