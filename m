@@ -1,147 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5971606A891
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 18:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA73606A897
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 18:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=lrmo5/LJ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ijVUa1/3
 Received: by kanga.kvack.org (Postfix)
-	id 7B71A6B00EF; Thu, 12 Nov 2026 13:33:40 -0500 (EST)
+	id 7B92D6B05B5; Thu, 12 Nov 2026 13:34:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 741816B05B1; Thu, 12 Nov 2026 13:33:40 -0500 (EST)
+	id 742D06B05B6; Thu, 12 Nov 2026 13:34:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 609506B05B5; Thu, 12 Nov 2026 13:33:40 -0500 (EST)
+	id 6321F6B05B7; Thu, 12 Nov 2026 13:34:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 279696B00EF
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:33:40 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A3BFB14081D
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:33:39 +0000 (UTC)
-X-FDA: 85427315358.09.E06E00F
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	by imf30.hostedemail.com (Postfix) with ESMTP id BF14D80010
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:33:37 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="lrmo5/LJ";
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794508417;
-	b=6vYTfdZmJxYAz8btGbSdMn8U9vtEW5TX+pmnqqMPZMdk5bZdQCXItf1kjaepYqChOgZ3Rl
-	uyC6qorKfpsSvzWNI1i2a2Stk9mkmRV6pvx1POuOgfWMlCw3vM4JxLOYZO+7Aabib5ahNO
-	OHgph1QcYC+I6JUJ2AQdkCJnh4HNAHo=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="lrmo5/LJ";
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 3C0526B05B5
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:34:22 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3BC7814075A
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:34:20 +0000 (UTC)
+X-FDA: 85427317080.19.7CF9886
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 9C6C3C0003
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:34:18 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ijVUa1/3";
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794508417;
+	s=arc-20220608; t=1794508458;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E0X/oBNSd837oq8qemdGMRW3gOZl3XdynAbQm9FPXsA=;
-	b=Ei1omv7lku2nKSblPq/AF35UVyyVb/M2UoalHx02LxIZrARm3OWE+1f7ozfZZEaGHnlcdm
-	PcBGSLm36YMgDDYqi/bkQzoWJWW/PYBUIuqaJJonQxN+1nBvepyPtIr1J41WCJ/bMdG2fx
-	Q9Vbq4aJsOmBpNRg3OsWL+h2VjZDR50=
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-93f30660e69so4749985a.0
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:33:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1794508417; x=1795113217; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=E0X/oBNSd837oq8qemdGMRW3gOZl3XdynAbQm9FPXsA=;
-        b=lrmo5/LJQF3QJzWM8TScpf56F8Z5fouJYNacAXWGG/0QkTx2txRJmlR0NPBruqG69+
-         c0D8gn+9Omdmby1lI+1Hrl97O9HYiha1tBP03KiUlEDY76ipnsHsxHI8E2naa7IMR1gW
-         DaSnn0CV0dwGIzbDngHUc7Cvo7ECb5PeBQK31lojQJmXJ52nUpOA9rQlNtXjZiTEEmkU
-         QSKj2iFRcMmIQUjrAsU0y/Z3bv8WT7pC+1NhTEeKFRxE/zueOKIl5wpLqUHk5ukCLYjd
-         qWzuGSoTq7H5B6zz1W/JZnRfPONZPmaTKWjHs46CIMihP0xDFiBx7fbmonP9nlgfdgIK
-         RvLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794508417; x=1795113217;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=E0X/oBNSd837oq8qemdGMRW3gOZl3XdynAbQm9FPXsA=;
-        b=lfooaxtJD4PnBzNP2xZN6G1rFqM/bXJCzNP+YEeNusQWp45C6sjvuoqB03UDFPahWz
-         /mAU2c/Xou0nxubU5s1CCb+dJkv7mbHEeM5MfpnugtT8ncAIVAdRnJJNMx1xqSMU9Um5
-         zk2kY9/Qx6TpprghMeqtijflHi9OI3bkugS9vGc/dZvFb4pTMMwYNFIBMfvV1qhI8agU
-         DZUG5kj5qZ2EzbUZoVJGbCvFhP/GAdjqnUfmO4Wx1U+bTCq1FwwA3+Gq6TGJSwflaH3/
-         2p+cc6EvN2AUZB9705xV0w5Z7eQRo53dsLscUtAdxjViUaf0/Nn2PsO0s4/PzCZixTVq
-         5U/Q==
-X-Forwarded-Encrypted: i=1; AL+hErHK8wwPtWwXSuDRG0nQmlxDQC1sCmUdH5aISvvKmFapGKD2LL3DnAShUlCFmI3RcpPneP02qV3zIw==@kvack.org
-X-Gm-Message-State: APuU4Z91gTbILl+BRJYcQtcT8fEb1K62hm0bacq6ntu19jfU42+P0X1v
-	t6Dnwdo2p+vLLrCf1K7VUKhe6tBBj5h5o3M7pRTSFOG9XkRRphHq0FbDlWw8pEbApBU=
-X-Gm-Gg: AYBFou0/y8gBHzxWmkz1SIhsG9uyDWIznnAzLQsjN4/CIeb7bDGroxwYsaaa9lTlovu
-	zFBYnZ5xI1uSu8It+looTu08MonVeg2e/tIUz4xdvSAmO+R6FOOwjooFlYm7nC/EeTynIWiA+s6
-	uce2sWfN2OyGVPVpVXNMDsVkZ/XW63OZ/+3WNPUL6YltSAa9isdYNk46h5i0as0Yx2Ob6sPFiue
-	TzT4vgeF6v4WX/rTpqVxwnukpZViNzEOY2Lg0GwEmGuaxZVHcKNe2ua8DZHwcDTFJQqdlmUt41G
-	J52K9Ds5YMuKhpot+Giof9KFnNi/qeCOKWOa0HsqsbUrbbcW0LeGGdMj6M0qpsdtKurYfquNEzJ
-	i7OEFAyxa5IlKzP6n+RR6He6Jm4V/8KDcY+rw+Q2C/pR8Ygx1z98fZmZKmDUQdIobs7rZVnz0Bt
-	75/vD9gSLrZClI4ugs+c8fnVpYWFIhLVGDl1oxLILWA1fNPyCe9qNBSOyEoNBPlLtBP63CZwg4b
-	Bawg6A5u0uTlaj+oFOWGShsfA0w9aDLFok8VW3dvWR2bwueaHC/MVQORJ9yQw1v4V9lPMmP6Ze2
-	4ac0o+d+MiKbis1GV4yqS2ykuNZ5rfDSHtgJEio3JuzccZOZtMYGw+2YUFzswkeQowR+Xsef7n/
-	j3lG9txE=
-X-Received: by 2002:a05:620a:27d0:b0:945:ad43:1d59 with SMTP id af79cd13be357-9494bbef3b9mr40481685a.75.1794508416926;
-        Thu, 12 Nov 2026 10:33:36 -0800 (PST)
-Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23d456b2sm2035036d6.12.2026.11.12.10.33.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 10:33:36 -0800 (PST)
+	bh=S83ufdCuikPlcGyicMt7mpw+fBC8MVplA5DoPA/0lZw=;
+	b=qYIsi1sPxTMpcKYvp8KbTS9Qt+O1HEslSUte6hTC4Xder+4cgpnL3xsnNGr6QDGh8mP8Sg
+	b34dXBwIWozfs+y8uCcpvBcvKXWiOqO9cEvyuJu3ID9fM1V7SlNJj6A5Y9oWjA/vzfH7cZ
+	UDHjgKQvhCKCP1b5cz7b/0FzxhnCnGk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794508458;
+	b=o1MEHTkJj9rILsoli6+g4uwsO3Hpu2Fz2OPzIH5s+CJF7s5dbUQ1zOnpZta/BOBromYqwf
+	IeusCOwSDIAwBo4FVcwIMNoSWY1Mr9ospVo8EuNmlEnbDKxB9np7iKgIbqJIBi+aF5rzxP
+	u30yduw8FLbtRf6VNhX4GQx8yhuYoSQ=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ijVUa1/3";
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D2D9B409C6;
+	Thu, 12 Nov 2026 18:34:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877AC1F000C4;
+	Thu, 12 Nov 2026 18:34:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794508457;
+	bh=S83ufdCuikPlcGyicMt7mpw+fBC8MVplA5DoPA/0lZw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ijVUa1/34L3eHye3zw1zN/jAyO3526dLl8D+nYyREiy4hhDzOFJpJrb4r8+nEaUUx
+	 JBE0foYCokhvT3BCWxqXX2EMxkzVL6UklJzacnsibjmkOF7aAe6VjVcfSaixmhDat5
+	 xSEAZ92rm5t0S9ncbxiexT0z/XgwndpFr92CPMNhSCW5HIlziX+SNQjKmgdSWHicyt
+	 brSJvjlB+BP0Lgm8J16kaGtiezulqMucdc69bfguxXhXtWHsfXqv5K7UBRRbGM6JCy
+	 ADXCLZ3sWbMHVZuXxhQOivf3FZj+tl7zhkdQ8DHsio+K27kcFvUG64TnK0YU8zKulU
+	 y753u/meLtukA==
+Date: Thu, 12 Nov 2026 18:34:05 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, 
+	James Houghton <jthoughton@google.com>, Andrea Arcangeli <aarcange@redhat.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Balbir Singh <balbirs@nvidia.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	=?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>, Andrei Vagin <avagin@gmail.com>, 
+	Stephen Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>, 
+	Muhammad Usama Anjum <usama.anjum@arm.com>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Chris Down <chris@chrisdown.name>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	=?utf-8?Q?Miko=C5=82aj?= Lenczewski <miko.lenczewski@arm.com>, Michal Hocko <mhocko@suse.com>, 
+	Mike Kravetz <mike.kravetz@oracle.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 03/12] fs/proc/task_mmu: downgrade writable migration
+ entries in PAGEMAP_SCAN write-protect
+Message-ID: <avYApSoRMz7IZSox@gremlin>
+References: <20261111-uffd-state-fixes-v1-0-00713d368976@columbia.edu>
+ <20261111-uffd-state-fixes-v1-3-00713d368976@columbia.edu>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 12/13] percpu: search the whole reserved chunk
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
- Shakeel Butt <shakeel.butt@linux.dev>, 
- Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>, 
- Pedro Falcato <pfalcato@suse.de>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
- Gregory Price <gourry@gourry.net>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, Usama Arif <usama.arif@linux.dev>, 
- Kairui Song <kasong@tencent.com>, Balbir Singh <balbirs@nvidia.com>, 
- =?utf-8?q?J=C3=A9r=C3=B4me_Glisse?= <jglisse@redhat.com>, 
- Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>, 
- Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>, 
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
- Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>, 
- Chris Mason <mason@kernel.org>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- "Borislav Petkov (AMD)" <bp@alien8.de>, Mark Brown <broonie@kernel.org>, 
- "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, 
- Rick Edgecombe <rick.p.edgecombe@intel.com>, stable@vger.kernel.org
-In-Reply-To: <20261111-mason-migrate-et-al-fixes-v1-12-3d2454362e8d@kernel.org>
-References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
- <20261111-mason-migrate-et-al-fixes-v1-12-3d2454362e8d@kernel.org>
-Date: Thu, 12 Nov 2026 13:33:35 -0500
-Message-Id: <179450841509.482102.2272758511939089806.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: BF14D80010
-X-Stat-Signature: yg6kscr1847myuf4ca4ih33qnot8eizx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261111-uffd-state-fixes-v1-3-00713d368976@columbia.edu>
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: p8cwneyena6hmothpuscdqqx5om888k1
+X-Rspamd-Queue-Id: 9C6C3C0003
 X-Rspam-User: 
-X-HE-Tag: 1794508417-72708
-X-HE-Meta: U2FsdGVkX18GGeqY8TsL+wQ5yJ+TvV5YM12hZuYwywylnAygSV6qkbsI+XMzrZv7GndbcI4QgoELp4svCoEKkwq4NCq/5cpQOWc/3dC4/3V/VgQTKPmMhPMX+axeKe9Ml8C99wVbAFxo7EJVt2OLWu1gitgTpCsI/b/h98CZyw99Zzqrs7BUArrU+/E/T/UciLuebDdK6r7yF1N8NmzPu6GJ5cQKMySypMOPGk9GpdHOqtDC08rqX+/TZ8EL0Ktom7sWAS65ogJT0WeI27rFmquZtjVBjf6nkIdB7Vz2SD7wPtOm8kFmzlXKVGfObirhnTn9/HOzi9WfNU8OZ44U+igbfNjX6z9tiiuMXfUkLnyt50E4wzZcl3c6S868lU3W/fTpJQ8c0zVIBQg7Wgs6ajNJUj0qV0gmII6rEyH/JdQdaDUQpXTjBjfVZIWFTeY4CAiXBTeR6QBTlr/HnQE7oK7h6sZXOKpSM60Wo6e3zLyayChaa6CPFH8CY7N1UIOCMTNWpNNbVwNqWA0jeDRKiewgafwjY9HaaSy89VK7TRiMCYl6bXIwcEcJr3QvufIoO5pUAYj+L4tJtqY7DE/m0/OTE7o4HsJ88Coi7FUBbZvjxmLGapevlz+y7Jxd3n3usr3udRzX1EdYiixdm8e+hxGEsTsrDmB31QpnHUsDsIqydWj72M8TOf0a1h2xyWpzYZ/eOQCSukYNomwOI+p+OFg6azZfJ8VYYhw6WNfbwXubB0AhNeyMBcuJqg/0KLdyYGhgaHGvNMTArnO2LVPTvIKNM4eHGIGDxv/BCJZbBOyzoTCjxarfTKvqxwDqc7tfcVBkIYCo3FItx1gIRilpEcZhdyglQEHlkDZfxw7wYxK2nRx4ezlmgBpf+EY+nyYxk9vzxXIR1PCmnSLM2a2+5RgHn/knvXTwcd5iCYlwCn4gJBAxlDiMYjPYAcJCURGA+hahhHLxDeqnhYbyE1W
- f3s8xWF4
- RxxK6hVqigrwAkKkflZbO/NuolxLF+bu0pEQSNyMIx9GB4LOelappsws5HwEKcFbueTGJ5OUoWJDnavCfSnzrjd79bBpc0jXjS/uaKT7vtVlk2Ks11Rn0R2y55iSD5u08eFNa6lcLhDrJjugzu/4LBidyofJZGq55ofMJIPNa/xpgAZwYdIUDFyESgBZiFkzsx/LZGjkepuUldwEHxI0mka4BoNyH+ruvH0Qgr41Ocotmil69SdYryfb1ZK2gx0MlofbK+SwA9joWNm3Z+eK+p9Lc3afkujoDtmDoDE/F3kpSMlUJGcrUg8s/8cJW/wKvvE5IwYxShrhFT3wFRJHmJ/eHV5hjZ/C9bhKKS8Q8FbJuD0Yq9ur9hZjZwVqpg5eCXDM66fh747R0hT2WO9BM5pFEYqM9oXHCrS1s
+X-HE-Tag: 1794508458-632586
+X-HE-Meta: U2FsdGVkX1/gt528WtbkUQIpxRQURDEVfit0sRlTLJfzSYOQdyVlT8AqeZpFjzZhe8Wg7lMmZv6P8d0RUAsZwYhFBR7246xTQdocXdLihkIZ5EtgFJVJ4Bdg5hl5nxAtzEisJvdpxtkCRiaeTuHgKjlz53cvS5gBEYy/iegOdY+2z6kLNVzRIFwg5fIoI4ckrl56xhwGxSkKdDohKvyBkDMT5uCQgEInjF58twL373lDO+XqT1a1WXMOM8elZEaitbeXhk+OXQ+rmU6Uf2NyYyeb4YDZhaUZQpGYqAZL0SavEoTAH43PyCjbhpZi1D14pVdzqadFaWmSrmBqu27WR4t4nvqb+29FzIR9HRQDJ2zaqCB89PbV/s1XSMI9gQ5zfo/n9rQ4+KHp3FeB4Qxijjib7fuTpWtMQq8sKhS25jYbKGG9pgMdFm8Jq0LpXaELZcZ4omJVkrehUR5BsFUhj4E47zdRdpDquQMQm0ddXTIwMGL5V3CZLvWtu5AtlSoLCNm7A6LMmIblcc1U1xwRv7b2gdbXDRf3u7Uvl1xhyp7oyZCaFzaVlmuoPUzBOY9ZYHxpELG7O6WqYOubNejVqZs8Ffd1B0uJsv1Hr9qfo0OLYLxCphxLcCRvriP7HVe7OuiOull0x0I9tafDqJLnU/He3mJ7ENz1/QeBfjlyhq2j1DWtfQUKqPtDjP4suXEusQ2BdlhrHlScH5C7gdnLIXfoCf8r+tRB6pz5nxbQV4KKiqJDFyTqZwC2h5InqPATovSxFe9KsK611RRXvnYhdyV0yw9cFs/FIbAZu8e6IaJeuOCGu/VeI7ycoHuYEDVjUpEQD5cJ4IE9arv+nl2FD4Gn4R61DcvVj4zv/Hsx3axH+COv30SIDbcr+JHGtIHantvtmCV1cW8XWsBL403iW6g2YDila3ZRidzm+LaONG4div1J4q+SZNGzM0X4fCHHOrZZoHKZjfbhRl7T2GK
+ 0HNGEhZt
+ ukd3yo30DAhX+3/LFhh6J2AqGXscuyXtjKEuIqa3dUnIGM9TYI0YhwmyjKkZvvBgVi1Ge8tAa3+pIR29zbiDvWox3bpYmPSvMhKbxZKRU8kEFt0VV1aOcukEm6OxrkfEnq6zLr07QhuE768H6Y0tXZcL+KGuxuZCVcNPFOwk8Kc17uwJX+BawqoYMArvElxBvWxAy9H6AEN45NQfWJmzhdWnDaj9lGPclXGb5adj9Fzrdb3U0UM0ptPurd7fIkX1r/bOFXTKeXLK8ZCeNpaVl7UH4GLlZLprZ4lIhAbAngB+fqDPirWUPP16VZMvXvKj7Eqpl/w13PXfSiCe/HeFGpbiljASLPnl4I8FQra54AoqTmuKOdFgvnN30ShfF1LAasmEb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,41 +113,191 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-11 18:13 +0000, Lorenzo Stoakes (ARM) wrote:
-> Loading a module with static percpu data can fail with -ENOMEM even
-> though the reserved chunk has a free area that fits the data.
-> 
-> pcpu_find_block_fit() does not scan the allocation bitmap, rather it
-> tests the request against hints, starting with the contig_hint of the
-> chunk, which describes its largest free area. If that area is too small
-> once aligned, the search gives up even if a smaller free area fits.
-> 
-> Consider:
-> 
->     request:      256 bytes, aligned to 256 bytes
->     contig_hint:  260 bytes, starts 4 bytes after a 256-byte boundary,
->                   so 8 bytes remain after alignment
->     also free:    256 bytes, starts on a 256-byte boundary
-> 
-> Ordinarily this is fine as the allocator moves on to the next chunk or
-> creates a new one, but the static percpu data of modules can only come
-> from the reserved chunk.
-> 
-> Fix this by searching the allocation bitmap of the reserved chunk
-> directly rather than using hints.
-> 
-> Reported-by: Chris Mason <mason@kernel.org>
-> Fixes: 13f966373f92 ("percpu: skip chunks if the alloc does not fit in the contig hint")
-> Fixes: b4c2116cfae6 ("percpu: update pcpu_find_block_fit to use an iterator")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+On Wed, Nov 11, 2026 at 12:55:11PM -0500, Tal Zussman wrote:
+> PAGEMAP_SCAN with PM_SCAN_WP_MATCHING write-protects pages in a VMA
+> registered for async uffd-wp, and sets the uffd bit on non-present
+> entries as they are. An entry with the uffd bit set must not be
+> writable, so that the page is write-protected once it is mapped again.
+> change_protection() therefore downgrades writable migration and
+> device-private entries to readable ones first, but PAGEMAP_SCAN does
+> not.
+>
+> For a writable migration entry at the PTE level,
+> remove_migration_pte() restores a writable PTE without the uffd bit. So
+> if a page is under migration while PAGEMAP_SCAN write-protects it, the
+> write protection is lost. A user tracking writes with async uffd-wp
+> sees the page reported as written on the next scan although nothing
+> wrote to it.
+>
+> With CONFIG_PAGE_TABLE_CHECK, setting the uffd bit on a writable
+> non-present PTE or PMD also triggers a warning.
+>
+> To fix it, downgrade writable migration and device-private entries
+> before setting the uffd bit, as change_protection() does, at the PTE,
+> PMD, and hugetlb levels.
+>
+> Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+> ---
+>  fs/proc/task_mmu.c | 54 +++++++++++++++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 51 insertions(+), 3 deletions(-)
+>
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index 22361607020d..53780a454432 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -2395,6 +2395,38 @@ static unsigned long pagemap_page_category(struct pagemap_scan_private *p,
+>  	return categories;
+>  }
+>
+> +/* Downgrade a writable migration or device-private entry to a readable one. */
+> +static softleaf_t make_readable_softleaf(softleaf_t entry)
+> +{
+> +	if (softleaf_is_device_private_write(entry))
+> +		return make_readable_device_private_entry(swp_offset(entry));
+> +	if (!softleaf_is_migration_write(entry))
+> +		return entry;
+> +	if (folio_test_anon(softleaf_to_folio(entry)))
 
-Reproduced the exact issue.
+Hmm _seems_ a bit dubious. You identify a readable exclusive migration entry by
+checking whether its folio is anon?
 
-Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+But I guess because a writable migration entry can only come from a writable
+PTE, that implies anonexclusive. But you do need to explicitly say that.
 
--- 
-~Gregory
+Also we really do have to break this out as a helper. I see it's open coded in
+change_softleaf_pte(), change_non_present_huge_pmd() and
+hugetlb_change_protection().
 
+But maybe that can be a follow up...
+
+
+
+> +		return make_readable_exclusive_migration_entry(swp_offset(entry));
+> +	return make_readable_migration_entry(swp_offset(entry));
+
+This is all super compressed.
+
+I'd say add to leafops.h but break it up:
+
+	static inline softleaf_t softleaf_migration_mkreadable(softleaf_t entry)
+	{
+		const pgoff_t offset = swp_offset(entry);
+
+		VM_WARN_ON_ONCE(!softleaf_is_migration_write(entry));
+
+		/* A writable anon migration entry implies AnonExclusive. */
+		if (folio_test_anon(softleaf_to_folio(entry)))
+			return make_readable_exclusive_migration_entry(offset);
+		return make_readable_migration_entry(offset);
+	}
+
+	static inline softleaf_t softleaf_mkreadable(softleaf_t entry)
+	{
+		switch (softleaf_type(entry)) {
+		case SOFTLEAF_DEVICE_PRIVATE_WRITE:
+			return make_readable_device_private_entry(swp_offset(entry));
+		case SOFTLEAF_MIGRATION_WRITE:
+			return softleaf_migration_mkreadable(entry);
+		default:
+			return entry;
+		}
+	}
+
+> +}
+> +
+> +/*
+> + * An armed entry must not come back writable, so downgrade a writable
+> + * migration or device-private entry before giving it the bit, as
+> + * change_softleaf_pte() does.
+> + */
+> +static pte_t set_uffd_wp_swp_pte(pte_t pte)
+
+This is a contradictory name, you're interacting with softleaves, there's no such
+thing as a uffd swap entry :)
+
+I/we obviously have to go and fixup the naming (I didn't _quite_ finish the
+softleaf conversions I guess) but let's not propagate it.
+
+> +{
+> +	softleaf_t entry = softleaf_from_pte(pte);
+> +	pte_t newpte;
+> +
+> +	if (!softleaf_is_migration_write(entry) &&
+> +	    !softleaf_is_device_private_write(entry))
+> +		return pte_swp_mkuffd(pte);
+> +
+> +	newpte = softleaf_to_pte(make_readable_softleaf(entry));
+> +	if (pte_swp_soft_dirty(pte))
+> +		newpte = pte_swp_mksoft_dirty(newpte);
+> +	return pte_swp_mkuffd(newpte);
+> +}
+> +
+>  static void make_uffd_wp_pte(struct vm_area_struct *vma,
+>  			     unsigned long addr, pte_t *pte, pte_t ptent)
+>  {
+> @@ -2408,7 +2440,7 @@ static void make_uffd_wp_pte(struct vm_area_struct *vma,
+>  		set_pte_at(vma->vm_mm, addr, pte,
+>  			   make_pte_marker(PTE_MARKER_UFFD_WP));
+>  	} else {
+> -		ptent = pte_swp_mkuffd(ptent);
+> +		ptent = set_uffd_wp_swp_pte(ptent);
+>  		set_pte_at(vma->vm_mm, addr, pte, ptent);
+>  	}
+>  }
+> @@ -2467,6 +2499,22 @@ static unsigned long pagemap_thp_category(struct pagemap_scan_private *p,
+>  	return categories;
+>  }
+>
+> +/* Same as set_uffd_wp_swp_pte(), for a non-present PMD. */
+
+No need to say non-present. Naming it with 'softleaf' somewhere in there implies
+that. E.g. set_u
+
+> +static pmd_t set_uffd_wp_swp_pmd(pmd_t pmd)
+
+Same comment here, this is just hugely confusing.
+
+> +{
+> +	softleaf_t entry = softleaf_from_pmd(pmd);
+> +	pmd_t newpmd;
+> +
+> +	if (!softleaf_is_migration_write(entry) &&
+> +	    !softleaf_is_device_private_write(entry))
+> +		return pmd_swp_mkuffd(pmd);
+> +
+> +	newpmd = softleaf_to_pmd(make_readable_softleaf(entry));
+> +	if (pmd_swp_soft_dirty(pmd))
+> +		newpmd = pmd_swp_mksoft_dirty(newpmd);
+> +	return pmd_swp_mkuffd(newpmd);
+> +}
+> +
+>  static void make_uffd_wp_pmd(struct vm_area_struct *vma,
+>  			     unsigned long addr, pmd_t *pmdp)
+>  {
+> @@ -2477,7 +2525,7 @@ static void make_uffd_wp_pmd(struct vm_area_struct *vma,
+>  		pmd = pmd_mkuffd(old);
+>  		set_pmd_at(vma->vm_mm, addr, pmdp, pmd);
+>  	} else if (pmd_is_migration_entry(pmd)) {
+> -		pmd = pmd_swp_mkuffd(pmd);
+> +		pmd = set_uffd_wp_swp_pmd(pmd);
+>  		set_pmd_at(vma->vm_mm, addr, pmdp, pmd);
+>  	}
+>  }
+> @@ -2547,7 +2595,7 @@ static void make_uffd_wp_huge_pte(struct vm_area_struct *vma,
+>
+>  	if (softleaf_is_migration(entry)) {
+>  		set_huge_pte_at(vma->vm_mm, addr, ptep,
+> -				pte_swp_mkuffd(ptent), psize);
+> +				set_uffd_wp_swp_pte(ptent), psize);
+>  	} else {
+>  		pte_t old_pte, new_pte;
+>
+>
+> --
+> 2.39.5
+>
+
+--
+Cheers, Lorenzo
 
