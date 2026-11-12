@@ -1,89 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74731606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 06:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4846606A321
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 06:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SgGAGdzm
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=CV0mW+bm
 Received: by kanga.kvack.org (Postfix)
-	id 6198D6B00EF; Thu, 12 Nov 2026 01:07:10 -0500 (EST)
+	id C8C4E6B05B1; Thu, 12 Nov 2026 01:12:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F1E66B05B0; Thu, 12 Nov 2026 01:07:10 -0500 (EST)
+	id C15C56B05B2; Thu, 12 Nov 2026 01:12:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52EC26B05B1; Thu, 12 Nov 2026 01:07:10 -0500 (EST)
+	id ADE4A6B05B3; Thu, 12 Nov 2026 01:12:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 303B96B00EF
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:07:10 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AC5751C3C94
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:07:09 +0000 (UTC)
-X-FDA: 85425434178.17.2E08219
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 193B440004
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:07:07 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SgGAGdzm;
-	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 86D876B05B1
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:12:45 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EE9BB404CF
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:12:42 +0000 (UTC)
+X-FDA: 85425448164.23.FC3C993
+Received: from mta1.migadu.com (out-50.mta1.migadu.com [95.215.58.50])
+	by imf29.hostedemail.com (Postfix) with ESMTP id E36CF120005
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:12:40 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CV0mW+bm;
+	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.50 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794463628;
-	b=AR7HwGJXouWdlribU2k3w9Osz26Gp9I3bQxboiPMCrlCDX1N2UZh9B0f4gChmK8/Bszof8
-	SmkyHMB0Z6k7jLlKKyKWcJOCWRU0Mgvm5c8eHRUBIvnZq+/tpXrM37wjSbkIvu+0C3QFqm
-	FT0tjV3UwybnisN7by6vae6h5Nf+3E8=
+	t=1794463961;
+	b=6bei7Po5lc9xZG/u7RKOeKuqIP2j3JZCWnRZPjj3M/Cw7ptvMBpEMZQsL5WvkuSGN9J7/b
+	ldIlg5w2AF+ECk4t/5vpBJsm3455h79QrBd/8tKFKt/7hM5Gu60Hb+vaC2pwdz0TJva9Du
+	EN0f4lx6AO/o1iNs+JyCGIXHsJWMnns=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SgGAGdzm;
-	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CV0mW+bm;
+	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.50 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794463628;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gRIXRk3nJ6W4+3mJe1lvct3coGVmnoL/srO9QS4HR/8=;
-	b=khJCS1RUv57xeJ6LkJg7MnLTWhu4W8pTxblK5/3E7D4TE4lN46RJxbBcw/ohs0ZSlbtdPh
-	pNqBOQsN7Ac057cf6eEGDVaicPgXesJhAlW2izngcMUPx8cX1HpZUiXKe5b5RuQ/i/YXPt
-	u+zPKJISEPFG3feTpQiTHKFPRjNK3gg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5D55F60D1A;
-	Thu, 12 Nov 2026 06:07:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 416241F00A05;
-	Thu, 12 Nov 2026 06:07:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794463627;
-	bh=gRIXRk3nJ6W4+3mJe1lvct3coGVmnoL/srO9QS4HR/8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=SgGAGdzmlpeb9nZ8QDim04cFYdAdwKeCscZzBqqyBPvhwAMY/ZAlcwo6SrmB8Vd+W
-	 /pZTLe9i5ys0RJObqyvlli20yVUOk2v/ZDGrSmmEci2x7FnGjOG7+Et5ymoj0ZGZY+
-	 Il5+1rzTOwE/dqqq8kvrQFbVnU88DbdNwij4CD2Lkq7qzec1Mj/niB9MuVP5nSA1tx
-	 ODBBM3pOU28JZy7cJjaBs65Ac4p+vBm6i4YxubjYUyoNrNgYNkx5oqBGeESLsiOBfR
-	 lyv0Wm1ZSHUQeoU9C0URaXBeQYV48TErnhChx0CncipCu6MNlDc7xUzroIBHZxjyTf
-	 JBVgkG1TsRVPA==
-Message-ID: <sashiko-outbox-210496@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] mm: use memory barriers for non PMD-sized folios to
- sync
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Baolin Wang" <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org
-Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, harry@kernel.org, jannh@google.com, lance.yang@linux.dev, qi.zheng@linux.dev, pfalcato@suse.de, linux-mm@kvack.org
-In-Reply-To: <09736bc2e01bec0ca7436733078c82c7e0cc6627.1794376686.git.baolin.wang@linux.alibaba.com>
-References: <09736bc2e01bec0ca7436733078c82c7e0cc6627.1794376686.git.baolin.wang@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 12 Nov 2026 06:07:05 +0000
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 193B440004
-X-Stat-Signature: x7t6598c6fndsdcmzzehu3e13ga5w3wh
+	s=arc-20220608; t=1794463961;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=1+gXg/vjFn6nzZA2EVEP765YusEY5R4QCzjg5NvcKa0=;
+	b=YJVPh5eZahQNxfegVXDiSz3xq5Lh45Ebw+lPgQlX1D1mDjn4TILVK3QfAk6t/a55uR4xh/
+	eDluT/rMOD5pCi7BS0Y1nhZTbqnWN7PqpFotGnLPPgr8P/z+yiXSu4BG9LDeM+XyfDM+7S
+	YGg51oTSLyBYGutJ1VZhQM3DfYHB5Jk=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=5q5l1kzky20TOdvCOQkbVc5c+2wT9HJYJXXnkXqYupc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794463959; v=1; x=1795068759;
+ b=CV0mW+bmuW46y0b3t+nZ2OsdGfraTo0JvwQxnvSCV8iGpfduEaA/lvZiaE68xMfEcUjYINQK
+ T11ymgH/8LhOq1EYs178Y+jWessBXwc06WZVgzzprPUoyqroV90PEl0QDzcPae6uDM4MIsUjTtU
+ ikz/If4ez9/tY48GWylpZrvI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 42ff7a47c71756af;
+	Thu, 12 Nov 2026 06:12:39 +0000
+X-Mizu-Trace-ID: 42ff7a47c71756af
+X-Migadu-Flow: FLOW_OUT
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Dave Chinner <david@fromorbit.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Meta kernel team <kernel-team@meta.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Chris Mason <mason@kernel.org>
+Subject: [PATCH v2] mm: list_lru: fix NULL deref when a folio moves to the root memcg
+Date: Wed, 11 Nov 2026 22:12:31 -0800
+Message-ID: <20261112061231.2469026-1-shakeel.butt@linux.dev>
+X-Mailer: git-send-email 2.53.0
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: smxpzz7cry8ans8nik3xeu5np8ngi7w3
+X-Rspamd-Queue-Id: E36CF120005
 X-Rspam-User: 
-X-HE-Tag: 1794463627-371161
-X-HE-Meta: U2FsdGVkX1+gS9CcgVOtwwXgjOKzqC0TfIVRz6TtltQm3HnIsmkrzmdDjLeizpAi4fvhkm+9tQMI2QMEBepZN6RNNjKqAK3z9vX5I9FG1XQrn5HkfLkNLDBVasaQ+XFKRgcoqM/b9uBRYIZjES+mzX3qs3QtRWrIXGZxEMhXRLyHagvCtCRTPC/RPfvsmokpXgz9HgU1pIJGoo3xF93LPAgqtEIH5TMAFMIKJOYpd8UNYq5cc6y6piDbGnriXWkcL80vfTsWHBLnKD5Ky7GCVVJ+ibJf8ogHGATE2bqZlelYJeFh+dX2T3J7fuL3aLLAH6ON9NDhE8GL8Uno5Q5Z7JgzjBHcT0ISU02aLBpMC3UGqhNmXPAaZl5Wn/AGu0EEwe/pyK7Tfi0XNyAY9nWa2Ox3MBInGdvOOXfnT7+V7n80gBgo3a0DIpWkSCXPm2BFdzPUBO2gwediVFOhrf02U3/zUS8beSZ/sSQCLhep2C3jEC0g4jkC7qMNwkyJWzh0xn8c3InRkZCkC62iFm8AxvIxK9JTXH0BoJkq9udLtdnEt/O9G0s8Y+6wu7O7xctZoQIVl1Mmaq/OyEwo3E/6hzjC3vGnuBk4tjuy0KVGOBRYrnwevZAMgqA7r0k6fqDqMLN/cUD/GVuLyvCBs1mkYJiHy/vgYi3NOX08o5avTiixiIe7xbhn/jLRjEpuBuXpWNOtVFMO6hkPJyoeMOlYiIGngUSmD6g8zD1g6dMxobZoTNOLlRbPVHrJQjDU3zHZcAU6jN78gg3xCTLi6rCGQsyd7N3Sdilx+k0h5D8xgWNvmBIcR3/vlD72Z3bVaFPXRAxR5dqFtRNw3olRjEpMQeAz/iYnwDAgy63FRxjbU4n6voG7oZjrBNfLeiV+SjHAYurKzgupHQqZdZK2k9ZkhoJlweSa7uiivWk7LM0tYXVqQDOdZZL0Jp0umRAXG62LTpGoLCjPRtwzI3GNXNC
- qNwwHpOp
- moTvxxseDQLsQ0ew9XZ3jSIfHtmcbm0tTarlVIYykfOGcpyXZtttPzvDe5m6WHyDEE5ohQ0Hel3oXh+c47xwuuKwaJbDyb+dwZHpCGvj6YLtuQyY13Kd/Cos91OwN/uUZ0iSr7G7AGmlZyRhhicD9GD9G4cyrL2eLr/CfNcT2gmUk3zpdWJsS0SMM5R8XNKAx77czHOPSQ/NpZ1vSq73QwvEe1hKc4F3x7G//npX8h1Iwy3mTnxjWXaoJucWn4B2OD0gOmKntmjATpyunL3bqAE67otMYQP5EADEMgd0vtP6zWjVMvKiZ/AzsMfDSLweSWTb9WQrtvgkFqoUZUctcY5lzhBBqQmcNa9cYk/gPlBPdwhxVzp94FX53X9OPHIr8PyiBCbo3HH40NKOwLxjrd/Bxerk1lHWpdDx3wcT2OpKukarxdLRyyRqN8lYSfSfVeYtp7xITpfpWnw769SQAPmhE15iXI1TBfN68HqIAm+9rOfrRP2sCcpLP931otbnu08wtsFMAB8T32pFeJrXRCVvHfIFs0As7EJaE2xl2J3E5SGVXL7DI3bOCr+pyXWqrDSc+6AhxvBTZ3hhocOUzLar4zg==
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794463960-5913
+X-HE-Meta: U2FsdGVkX18xl+2RvPh8zgq3oF79ZfBQMSTBgSfYFARrgJgohv0NtmuchZZOJgmYr+bECoEd5TFSH7HOnnR2r+iip+iRm2FB1seTrbc8F5UWx4uKozcvDUORXAzdzKU+thCWQcSL8aISS2CEkTDQFsGD5efiISvSOJ4t4wI/uB7jvz4uqNULfzTwnQBAvDIJogCu4m1fTcZILYN1MkqdzqAisQXyJ2EcwQBYNcjZlQmVdI1K+zPTc6rF0g2mVnrqgENTdFqZwwLuzMi8HWdULGi0DqVP5xL8scxIvAsnWkRsm1MY75OX7IQ5A7ep5A7A+HVo56HkERTYE9TDb1p6LITJTGy+g5uXGQtfJeCxMdpmHq6yTul2C/hJcji6KFJ2PNGm9OiT22rOuavNKXR+UaXaQAbI8t1nfjiMm8YWH6R92qthlFNOd4fY6yxkS2/lmGNj/cFB4lMzGhjmJfG9Y8g75ZzPu1tfRDNZ9yAX5TUBNf0CV+0Ut78cKabXXtelrkYgUHfiOzKOe+qEQlSxM+d+5mibrbmDrfLpLFQsFxTI0fBEByRZu89Od+ZXZmlDdGd+lqQUmMrxP/N4H2zwPgng5QQInLRGzH048k/D87EQS9DH9M5epNBYsp50chkBwQsZNlNI7EPuGNDs+Zak4CHODRYs+tCMd5gYZxp16RAnmWE+6fDMO2CCV45q7eQJBelNH68pQLx4QMvW9yt0toeI+aattQk7Ysfd0LNugojoiDVD4hBoPp1dlP8ux9NNX4LXmHIV9K0clRwCXc2xrNY+zZJQwEsXiIhagGUNPy/N19k2LDqa6bTnwa2PGi5hT4LXHGMMFDImOaKLd/XmOwuPLGtaxvXbqmnQttODQuJ2Yfu5/rMD//3QM21Qe6TjqnGIZPWZyevzaZq9q5XLT+wA0gd2FivZFnoqsjZcO1xoE7i1qfLcplE7+pj+8G71mEUK7rnADTI0ZepfGBp
+ AjedHDgl
+ 4hyRetdguZgsWxVGZDSZ+Br8K1piyBnTiPn2XIZfR+lCQ6yhoeFHjsGnbGY9LR1j3Zb3UrQgvGSMepT8fjsRhJ/QTQrkT5o2TIBhazadsEOFT1RNyF9KPhV01Er/72MYi7jl+XwU49xNB8Vy4Gwl8XQgtppty/nnXW3nj4Z9dA708i00hhow5Sgx8uEBqROrQkvF9UPNNVU+JkgRrQ0yEnAXe4lrGFrN5RP3QOjDbW/NDOWpRfbcl0PM5yNonAZwpuqFILjnr1Rg0ooTdnCXFAzj8ZjJ3MIDqdRnfyykBsslqRQ7r6GUzm67UlO/Ld5emtev/58g77sNrl+M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,88 +97,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [High] mm: sync_with_folio_pmd_zap() triggers BUILD_BUG() when huge
-  leaves disabled
---
+folio_memcg_list_lru_alloc() makes sure that a folio's memcg has its
+own lists in a list_lru, such as the THP deferred split queue. It looks
+up the folio's memcg twice: a fast path under RCU checks if the lists
+exist, and a slow path takes a reference and allocates them. The fast
+path returns early for the root memcg, which uses the global lists.
+The slow path does not check for the root.
 
-commit 6fcd156071f8ff19dadc585e086208ca97feaaa2
-Author: Baolin Wang <baolin.wang@linux.alibaba.com>
+The memcg can change between the two lookups: when a cgroup is
+removed, its folios are moved to the parent memcg. If the folio is
+moved up to the root in between, the slow path gets the root, and
+__memcg_list_lru_alloc() dereferences the root's parent, which is NULL.
 
-mm: use memory barriers for non PMD-sized folios to sync
+Users see a NULL pointer dereference oops while a THP is allocated,
+such as in a page fault, in khugepaged or at swap-in. tmpfs huge pages
+are affected too, and for them the oops can also happen in reclaim,
+for example in kswapd. The task that hits the oops is killed, or the
+machine panics if panic_on_oops is set.
 
-This commit replaces the PMD lock in sync_with_folio_pmd_zap() with an
-smp_rmb() paired with an smp_wmb() in zap_pte_range() when synchronizing
-concurrent zapping of non-PMD-sized folios.
+The race is narrow: the folio has to be moved up to the root right
+between the two lookups. For example, its cgroup is directly below the
+root and is removed, or has its memory controller disabled, at that
+moment.
 
-> diff --git a/mm/internal.h b/mm/internal.h
-> index cd3675c044e0a..a277bf4841f80 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -592,6 +592,7 @@ void pmd_install(struct mm_struct *mm, pmd_t *pmd, pg=
-table_t *pte);
->   * sync_with_folio_pmd_zap - sync with concurrent zapping of folios
->   * @mm: The mm_struct.
->   * @pmdp: Pointer to the pmd that was found to be pmd_none().
-> + * @nr_pages: The number of pages in the folio.
->   *
->   * When we find a pmd_none() while unmapping a folio without holding the=
- PTL,
->   * zap_huge_pmd() may have cleared the PMD but not yet updated the folio
-> @@ -600,13 +601,30 @@ void pmd_install(struct mm_struct *mm, pmd_t *pmd, =
-pgtable_t *pte);
->   * against later mapcount reads. Skipping the PMD without synchronization
->   * could make folio unmapping code assume that unmapping failed.
->   *
-> - * Wait for concurrent zapping to complete by grabbing the PTL.
-> + * Wait for concurrent zapping to complete by grabbing the PTL for PMD-s=
-ized
-> + * folios, otherwise smp_rmb() is sufficient.
->   */
-> -static inline void sync_with_folio_pmd_zap(struct mm_struct *mm, pmd_t *=
-pmdp)
-> +static inline void sync_with_folio_pmd_zap(struct mm_struct *mm, pmd_t *=
-pmdp,
-> +		unsigned int nr_pages)
->  {
-> -	spinlock_t *ptl =3D pmd_lock(mm, pmdp);
-> +	if (nr_pages >=3D HPAGE_PMD_NR) {
-> +		spinlock_t *ptl =3D pmd_lock(mm, pmdp);
-> =20
-> -	spin_unlock(ptl);
-> +		spin_unlock(ptl);
-> +		return;
-> +	}
+Fix it by checking memcg_list_lru_allocated() again in the slow path,
+like the fast path does. It returns true for the root, which needs no
+lists of its own.
 
-[Severity: High]
-Does evaluating HPAGE_PMD_NR against the runtime nr_pages argument break
-the build when CONFIG_PGTABLE_HAS_HUGE_LEAVES is disabled?
+Fixes: ae64f07a6a40 ("mm: list_lru: introduce folio_memcg_list_lru_alloc()")
+Reported-by: Chris Mason <mason@kernel.org>
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+---
+Changes in v2:
+- Check memcg_list_lru_allocated() instead of mem_cgroup_is_root(), like
+  the fast path does, and update the comment to match (Muchun).
+- Link to v1: https://lore.kernel.org/20261112024140.648088-1-shakeel.butt@linux.dev
 
-When both CONFIG_TRANSPARENT_HUGEPAGE and CONFIG_HUGETLB_PAGE are
-disabled, HPAGE_PMD_SHIFT expands to a BUILD_BUG():
+ mm/list_lru.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-include/linux/huge_mm.h:
-#ifdef CONFIG_PGTABLE_HAS_HUGE_LEAVES
-#define HPAGE_PMD_SHIFT PMD_SHIFT
-#define HPAGE_PUD_SHIFT PUD_SHIFT
-#else
-#define HPAGE_PMD_SHIFT ({ BUILD_BUG(); 0; })
-#define HPAGE_PUD_SHIFT ({ BUILD_BUG(); 0; })
-#endif
+diff --git a/mm/list_lru.c b/mm/list_lru.c
+index d1d256822ccc..ca8de3793166 100644
+--- a/mm/list_lru.c
++++ b/mm/list_lru.c
+@@ -645,9 +645,16 @@ int folio_memcg_list_lru_alloc(struct folio *folio, struct list_lru *lru,
+ 	if (likely(res))
+ 		return 0;
+ 
+-	/* Allocation may block, pin the memcg */
++	/*
++	 * Allocation may block, so pin the memcg. If the folio's cgroup
++	 * was removed after the check above, the folio has moved up to a
++	 * parent memcg. That memcg may already have its lists, or may be
++	 * the root, which uses the global lists and has no parent. So
++	 * check again before allocating.
++	 */
+ 	memcg = get_mem_cgroup_from_folio(folio);
+-	res = __memcg_list_lru_alloc(memcg, lru, gfp);
++	if (!memcg_list_lru_allocated(memcg, lru))
++		res = __memcg_list_lru_alloc(memcg, lru, gfp);
+ 	mem_cgroup_put(memcg);
+ 	return res;
+ }
+-- 
+2.53.0-Meta
 
-#define HPAGE_PMD_ORDER (HPAGE_PMD_SHIFT-PAGE_SHIFT)
-#define HPAGE_PMD_NR (1<<HPAGE_PMD_ORDER)
-
-Because zap_pmd_range() and page_vma_mapped_walk() call
-sync_with_folio_pmd_zap() unconditionally, the compiler cannot eliminate
-the HPAGE_PMD_NR evaluation and triggers BUILD_BUG().  Guarding the check
-with IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) avoids evaluating
-HPAGE_PMD_NR when transparent hugepages are disabled.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/09736bc2e01bec0ca74=
-36733078c82c7e0cc6627.1794376686.git.baolin.wang@linux.alibaba.com?part=3D1
 
