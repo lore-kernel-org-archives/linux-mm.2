@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D07606A33B
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 22:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B674606A893
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 22:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cScRwwZn
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gTY84qd7
 Received: by kanga.kvack.org (Postfix)
-	id 44FF56B060C; Thu, 12 Nov 2026 17:54:39 -0500 (EST)
+	id D2A0E6B0610; Thu, 12 Nov 2026 17:54:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 427646B060E; Thu, 12 Nov 2026 17:54:39 -0500 (EST)
+	id D01D36B0611; Thu, 12 Nov 2026 17:54:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33F256B060F; Thu, 12 Nov 2026 17:54:39 -0500 (EST)
+	id C181D6B0612; Thu, 12 Nov 2026 17:54:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 09DDD6B060C
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:54:39 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7C6E6140D8E
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:54:38 +0000 (UTC)
-X-FDA: 85427973036.19.7ED17D9
+	by kanga.kvack.org (Postfix) with ESMTP id 95FB66B0610
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:54:54 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 264F5140729
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:54:54 +0000 (UTC)
+X-FDA: 85427973708.06.5EC98EE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id AE97040006
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:54:36 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cScRwwZn;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794524076;
-	b=W2DwhHp3as980oS8tIlHxFSfXxjqIM/OaXjCtHdVcePl7rx5xtkQaUy7dXf0uNJMw0iWcU
-	YH8RVtHRcVTkgiMIfTO1IvrDzjR68GAha2w7N72kXjmAVhzNI2n556LRfbzFiqjHfL8Gwx
-	qnRrky2OcTgWM1hbaLX07J8LDP3oX2I=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cScRwwZn;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6A87EC0006
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:54:52 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gTY84qd7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794524076;
+	s=arc-20220608; t=1794524092;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K1dZH1YvZhyh+cLEFUJEOBrlUWrIfda/lmT3nY2eVCc=;
-	b=I6MvQuKvVpZLm6oatWqAo+rSkIdwFyBQD+Owj4enIv47I1jYV6pelIf47t57M2EMxyvHig
-	iIKEfUn/gDDyXS2hTj3X+S41mNas9vmOjKLXt4792gVF8U/TjymoBy5yEu/8fCdcbbF0zO
-	qeBjvVFUwA8K/emSF8SWkMU5SKUHygo=
+	bh=pHhzsFK46xamHLjxn99YRGd8ys0XhYnUbLCGMyb//rs=;
+	b=kHQfQMc9F585P+aMkg2gEwB1kDnX/DQ+Gs0Tdg3jtX2DN9IFTnUF4t916orSstP+oUfT+f
+	K5GoSCCc1MuFhcIHbB3qpXKL+zM7wul0AoDj8j/iZgWrAIZ6PUrSUOhiJgGakWzmqcwr2u
+	R7QSD6rQjRIWzDh7IqgqO21wdjY2goA=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gTY84qd7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794524092;
+	b=qSIJwEs7vDNBZ8iqkJ7IRswZcNzwTwIiYDvHF19mUBd6eTClrmVDL2Z8eDLIZ/xAifU8PW
+	jhdZxaVjaJ5CQyHTds1/lZ+FRRu51npQDQXOsPiudd+Y66nD6ldVlztKFAPAq7UyQuEbzH
+	i1nfrBpVUyCWafFiHTlRJ4ja1hcJkPM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4E3A2611DF;
+	by tor.source.kernel.org (Postfix) with ESMTP id 00262605E7;
+	Thu, 12 Nov 2026 22:54:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A654C1F000C4;
 	Thu, 12 Nov 2026 22:54:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8901F000C4;
-	Thu, 12 Nov 2026 22:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794524076;
-	bh=K1dZH1YvZhyh+cLEFUJEOBrlUWrIfda/lmT3nY2eVCc=;
+	s=k20260515; t=1794524091;
+	bh=pHhzsFK46xamHLjxn99YRGd8ys0XhYnUbLCGMyb//rs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=cScRwwZnVKDY5k4lrXJBaqIB+uxLEnAOvxE85WolNlWGVAsRU9h8PW3BRF8n/DndM
-	 9HA2xConM66zJWXUn9LzGQ/yvWkswzV8ZshsXzYDkT52bKq/w8vamAhe/si8Wr73Q6
-	 zh63/N5jHEy/4VXmBqE7HBufCnJWZaAp5XtF3Rz/nOzIo3v/B2W0fVuIsff5EYm19Z
-	 8KDxl4709Kgpu4wP0rUR8p2GV/N2rYxOslykEnED8R1B7rtgNxXIJVBQvmzdizikA0
-	 B7rNwI/wmDwlKmP0d99vZ+Os11k4ujZNf5N/9+fdPhYQ6w+4ALN8vBGF/6HwqFTfiE
-	 8Paz4LbPqFjFQ==
+	b=gTY84qd7Kx3xPJVSlv0Vh6c6y421QqsRHJjtrv1m/Yy9rYUB7lVIMR2Q9+p3I4D8d
+	 Cd6DXTn1l1oR+10Zi+NGZMXZyh0Hi7gJx2OHUn0ZtgzoNNVgn/ezSAZWxcRyV3TqwE
+	 mtkGq7QEDVZ7DX04ybJibX7CyFzaqSRaKCKlwJzt7eGK4KTJ0VdZO0PZHWFRLHoFdL
+	 +eLyisbrDfaeVdxr+nB0qU/LfMLVaIRQhwQtLh2xk9inPb4kR52Jc8i7yiJuhg9b9P
+	 3xd8tMMPpSSiRP14qBEzFPjLpzLx2a7v0ZH3yV1K8bJ/3J3Vo1BsdqZsRNF0NkHbLu
+	 ckaA6vBpBW1kg==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 12 Nov 2026 23:53:22 +0100
-Subject: [PATCH v4 3/9] mm/mmu_gather: flush pending references early
- before the folio limit
+Date: Thu, 12 Nov 2026 23:53:23 +0100
+Subject: [PATCH v4 4/9] iommufd: fix cleanup when adding memfd folio pins
+ fails
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261112-refcount_overflow_stable-v4-3-ad3deef0bd23@kernel.org>
+Message-Id: <20261112-refcount_overflow_stable-v4-4-ad3deef0bd23@kernel.org>
 References: <20261112-refcount_overflow_stable-v4-0-ad3deef0bd23@kernel.org>
 In-Reply-To: <20261112-refcount_overflow_stable-v4-0-ad3deef0bd23@kernel.org>
 To: Lorenzo Stoakes <ljs@kernel.org>, 
@@ -106,30 +106,29 @@ To: Lorenzo Stoakes <ljs@kernel.org>,
 Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
  fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org, 
- iommu@lists.linux.dev, netdev@vger.kernel.org, 
- Chris Mason <mason@kernel.org>, stable@vger.kernel.org, 
- Pedro Falcato <pfalcato@suse.de>
+ iommu@lists.linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org, 
+ Jason Gunthorpe <jgg@ziepe.ca>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4551; i=david@kernel.org;
- h=from:subject:message-id; bh=M6ZE0TzsSadI7DldS4FZfDzB4hM5y3s4Zcai47p6Ir4=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLK+OWduvClSHzC3evXB9Lxt78xCsy8tnX7iAfebyKv7o
- 54JGJ3Y0FHKwiDGwSArpsgSFHzf4OXLdbXVbnzMMHNYmUCGMHBxCsBEuL8z/C9Y+PRZek/930u8
- 28Q3x/6aw+HzmDdG0HehxbomVkMPaz+G/znuRwKExbaphVsrmf5YcP5J553Tduz7/+Z7CF7LlWZ
- k5QMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3608; i=david@kernel.org;
+ h=from:subject:message-id; bh=fau3pBzKpQXLjgKtqqi0yzExsXgD+rlECuO7Pn/e1yI=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLK+OWfJhtdL7uhLDRC0Ci/bcInJYkF8q6oQt8/+GWc51
+ JawqDN0lLIwiHEwyIopsgQF3zd4+XJdbbUbHzPMHFYmkCEMXJwCMJGt3xn+O8cetij4uVtU8oRf
+ qCGz1BS7tZeaBNq/sjmlcTIZ/HKKY/hn2e/SwJmro3uEceW+PhXP5TmTz6kE/f4YvvhRyLEHv0W
+ 5AA==
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Stat-Signature: wp74kumddizq8qka9w6bktmdga33f1rb
-X-Rspamd-Queue-Id: AE97040006
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6A87EC0006
+X-Stat-Signature: 9rokm8fabknymq4hq5qb6p8ctqmbsj69
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794524076-159007
-X-HE-Meta: U2FsdGVkX19qQd0p9nfaffolLXh5IIB++E50o1pex7xGTmTCFfuBeUHR6W6MLHs62VWyOyp7CoKIb1KQWJqyyBB97O+fwmv8CSXGc6waFni5qK49m/7NYc31W1OcHVdAsqvXpJXRee7G4q8CB28b9CY6S8qqrOsE8dNXb8IJuHBd0y5PyJMyFr9ddR4EhwrvY1Yv1NrYxJ33wn9hNFDN49/1dQNIJJOSG4ZuGVP2MQoOEn8PIxxyMpCP+PAhLLl73tZ8oUJC1aK0o4TMxcBW9ZjHPbG9xPu6j+vGJ4EPX5+DV+mf7R4Zh9pUgwMER+JPQ+xglSj2gtEe4i0nn1ICBUpLt7AzjDadeH68WVZGEPe/wsZrT9OrwZDRnQEqlhW7oVXwNW4Y5ZfQZEaPiJeJHefTgvjubxXctE+aFWjhXw4IHtyIGzt1xklD2yJC/cfPAJJgOnFiLEA6qooP7aQOD73YdLmOR3Mf4Qw3hLCQjaJtoR46FcTNmrpZBObYpMh9LIyS5K+z3Pw5au5DD7HU0J2neHTFBXgiyBGBOMHrZTffxcgAYPGpVTTnTK2WdRkVtUAPXst4UnNSAvXN23f0aw8U3ABV+brU2eo8e9Vtqi2HDCpuxg6GcKfkdRn0ub0+irxcJ0b9a2PN2odyFnEhemU8rkwI0jcQGBCOgv4X/WaCPoGS/lbFM+G7xXK7QmS9Xqn/qZdqMJnmUnBGDxjM7unjf9FD/RRf79CCD6Ay4v0WgwixHEbhjz/fx2/8nsVAz6xGLStYF6BOkSPIPzbnzZLiL8gmk45i1NlQDh2CPJO5wWj5Bej+kBOePAk7L9y0oRIreF7b0g0y1rLZiJ7IaG2V4hODRbzcEo8PRVwjAKOTKKYMxybFYp5drSan5Kx2xLyLfCtP5WF6tkVenR0fhyJoZi5RpesTdgZnfXm/Ii4mES0o9h3xI8f6wJoFcrzfKPfbIe9TRDwKS50R4G1
- oyPfLwq6
- lvbQraYDDwE1ZghbuzWHKQE9xwF6oXyqNfafZG9sj6ENfSS2Zf3/5Lzj1eH1kgkWSHNz6XrXoHj2SNnR9+DlIiIA9nfb0gN5iwIrmCsANXoKnMMIi+i2Jbk92FESNnOwTWly2dKY9oTWJGocqd04K9hIKpz/StERRuDDiHSul08a46UUXgLKAvKcYefJfeRW5i9w4IPYcySQQT1zb+NqHmNcbLciepdF94G2k18LeC//iiSVXYqZsuGBtP8Q0Ceap434uZGBod9WqP4C9Ml8vo7fr5g36zzMLB+vki2zh2V/q+BtECVRPIKWkigYXg4JeUVuEywByusOX5pNSC4WTzqm2pryZxltO6Tltw5cgZqm6I/MOYSHej1y2c3AHTsTAAWZa83qOZXDdnT0=
+X-HE-Tag: 1794524092-155777
+X-HE-Meta: U2FsdGVkX18q5PDnH6m67UbneXXpfkQ7Fx2rwkMlzwcNrq3JOf0+5bcFg/WlAkiUBSOYgH0nmgr1icZoOaVBw12KGYTcuTcmV2ZfRbDWoLdrFnvrpOy85ZHYkKO/pIIem0iOikdNGSKzo6rqtNO0ut/uX7wmZQt+FGyHnAqpgUCqgIRLI1t6AN+M28Pv36LpITBPR+yvRzgJDYAWR/r8q9xCveYa5Qak43B6YcR6+VVJ/oAPNQzxxzMJToG8e0VwuJuoEmJ0gU6o5TF0hLN50VwzxZlLTZEJhJ3hI6Dgp9n9mRaXM/o7hH5Bz1oyJDqA2oaJBeJPG4/Gq7PedESxLQGsbvYFCeqNNWYRdcXySnrMlIrgrCnQDN+GP6rbQ3zyvIXf9TLajshURSDusoDn9ew3rJ+My+8DkTl4QvNX+O5moIL62z+nMTLRoE160ErynQV0vh6ukkFFkugnsQq8N4zmek9NKvcTqL/suoZqw3cLwMuJRR7Kyn79qdKMOxg5q9pX9EgSzbqGMCPe3Wu9G6sSytcRxNzv/yJryD0nt3KJyQtZXBQkMTg9OQGhSyXPwVAs+JbhAUq7jkclRHimSOslUyorOiRf7L5rZ2uHhROYyWH4WONxAq2C2pwcYLTQ+1MXdmEoQkVDQXaIOxG8zcxJ6Lru7Npp4ZA+HM2uZXSnze14eGRVNmHVvYXg5ebgJ+aQtE0SgkFr/JFXIf5VM2YJkBMReD7cPwAkLqdto8yyfQXVe8n87NwU66ImxLU0bldeqD1j32kErV5ys6dfSv9EBasFfwcn+yqFS1ibR1jsbIIcrE3xgtYOzFJUFlhxWfKpNCKMF8OcGNzV4E9G73zmVPdvsH+EGhNDlunwAQdpycD2SfFMIx10Amkjvob9y6que41VKvUfYp7Xbf4YH5PUZon3vHVx8GTsGQzbqyBNw3sCkuShZH2Sap2Zvq4a4UEOY+BSVYEuetK9rDp
+ O3N6sITh
+ swt/vEdyAqsdnKMzemvk4FkYYWHTVFmLyqTGP98GXOXUrcc4hMkaR3G2AaY3VBUJTCjQw1hV/18iT5ILxj8A2H52wMkg2VDXUtHYJgF3pST9eSkS/XpIbhmUeBGeym6yYvEiEuPWgKzhcG5vvpyKAQL4y207wOWcQUHbf5/e1D1awkVuN9Yx0Kl0g1m9l6hjqYudFGSc4ELI8WZ88G84k/Bg/C/qJuoALM1GOdtbDm75PbS5SURxjsQAnu3PuBsy/66zUeSF7cA15t5a2aHr5u/TZ2gjBXXSjRqUjnoJzjnU2YY7hjPzFbogXwTTk02i4tmg1t6+EKlimruaSedokCVSQjA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,108 +137,103 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When a task zaps mappings (e.g., MADV_DONTNEED), it can drop the PT lock
-and defer dropping the folio references. In the meantime, page faults
-can refault pagecache folios, creating more references for the same
-folios. These deferred references can build up over multiple VMAs.
+folio_add_pins() can fail after memfd_pin_folios() succeeded pinning a
+folio. Upcoming folio refcount limit checks will make this easier to
+trigger.
 
-Let's just request a flush after enqueueing folios whose refcount reached
-a certain threshold. Start flushing well before new references are refused,
-regardless of the caller's privileges.
+Let's fix three problems in the error handling:
 
-When returning "true" from __tlb_remove_folio_pages_size(), PTE zapping
-will flush the TLB before dropping the PT lock, but drop the references
-afterwards. Refaults can still race with that, but flushing early reduces
-the risk of letting others hit the limit.
+1. pfn_reader_release_pins() uses the allocated array size instead of the
+   number of folios returned by memfd_pin_folios(). With large folios,
+   cleanup can unpin uninitialized entries. Remember the number of returned
+   folios and use that during cleanup.
 
-This is a temporary measure until we have something better.
+2. pin_memfd_pages() returns on failure without releasing the pins acquired
+   by the current call. Release the per-page pins for folios already
+   expanded into the page array, and the single pins for the remaining
+   folios.
 
-Reported-by: Chris Mason <mason@kernel.org>
-Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
-Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
-Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+3. pfn_reader_next() returns on failure before updating batch_end_index,
+   even if the batch already contains successfully expanded folios. Update
+   it before propagating the error so cleanup releases those pins as well.
+
+Fixes: 92687c793644 ("iommufd: pfn_reader for file mappings")
 Cc: stable@vger.kernel.org
-Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- include/asm-generic/tlb.h |  4 ++--
- include/linux/mm.h        |  1 +
- mm/memory.c               |  4 ++--
- mm/mmu_gather.c           | 10 ++++++----
- 4 files changed, 11 insertions(+), 8 deletions(-)
+ drivers/iommu/iommufd/pages.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-index 3f4a180b48f3c..4bba02fd5d543 100644
---- a/include/asm-generic/tlb.h
-+++ b/include/asm-generic/tlb.h
-@@ -75,8 +75,8 @@
-  *  - __tlb_remove_folio_pages_size()
-  *
-  *    __tlb_remove_folio_pages_size() is the basic primitive that queues pages
-- *    for freeing. It will return a boolean indicating if the queue is (now)
-- *    full and a call to tlb_flush_mmu() is required.
-+ *    for freeing. It returns true when a call to tlb_flush_mmu() is required,
-+ *    either because the queue is full or a folio is near its refcount limit.
-  *
-  *    tlb_remove_page() and tlb_remove_page_size() imply the call to
-  *    tlb_flush_mmu() when required and has no return value.
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 383a5c2271d6b..0d00fc1838a01 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2232,6 +2232,7 @@ vm_fault_t finish_fault(struct vm_fault *vmf);
- /* Leave separate reserves for administrators and concurrent reference gains. */
- #define FOLIO_REF_COUNT_LIMIT		(INT_MAX - (1U << 26))
- #define FOLIO_REF_COUNT_ADMIN_LIMIT	(INT_MAX - (1U << 25))
-+#define FOLIO_REF_COUNT_FLUSH_LIMIT	(INT_MAX - (1U << 27))
+diff --git a/drivers/iommu/iommufd/pages.c b/drivers/iommu/iommufd/pages.c
+index 2f6153108add7..fcdbde007a9ab 100644
+--- a/drivers/iommu/iommufd/pages.c
++++ b/drivers/iommu/iommufd/pages.c
+@@ -781,6 +781,7 @@ struct pfn_reader_user {
+ 	struct file *file;
+ 	struct folio **ufolios;
+ 	size_t ufolios_len;
++	unsigned long ufolios_count;
+ 	unsigned long ufolios_offset;
+ 	struct folio **ufolios_next;
+ };
+@@ -800,6 +801,7 @@ static void pfn_reader_user_init(struct pfn_reader_user *user,
+ 	user->file = (pages->type == IOPT_ADDRESS_FILE) ? pages->file : NULL;
+ 	user->ufolios = NULL;
+ 	user->ufolios_len = 0;
++	user->ufolios_count = 0;
+ 	user->ufolios_next = NULL;
+ 	user->ufolios_offset = 0;
+ }
+@@ -843,6 +845,7 @@ static long pin_memfd_pages(struct pfn_reader_user *user, unsigned long start,
  
- bool folio_ref_count_over_limit_slowpath(const struct folio *folio,
- 		unsigned int ref_count);
-diff --git a/mm/memory.c b/mm/memory.c
-index f473df474f1b8..855d7d82ce9ce 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2076,8 +2076,8 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
- 	pte_unmap_unlock(start_pte, ptl);
+ 	offset >>= PAGE_SHIFT;
+ 	user->ufolios_next = user->ufolios;
++	user->ufolios_count = nfolios;
+ 	user->ufolios_offset = offset;
  
- 	/*
--	 * If we forced a TLB flush (either due to running out of
--	 * batch buffers or because we needed to flush dirty TLB
-+	 * If we forced a TLB flush (either to release batched
-+	 * references or because we needed to flush dirty TLB
- 	 * entries before releasing the ptl), free the batched
- 	 * memory too. Come back again if we didn't do everything.
- 	 */
-diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-index 9f353f0e2ef4d..e98397ac577c4 100644
---- a/mm/mmu_gather.c
-+++ b/mm/mmu_gather.c
-@@ -179,10 +179,7 @@ static bool __tlb_remove_folio_pages_size(struct mmu_gather *tlb,
- #endif
+ 	for (i = 0; i < nfolios; i++) {
+@@ -859,8 +862,12 @@ static long pin_memfd_pages(struct pfn_reader_user *user, unsigned long start,
+ 			} else {
+ 				int rc = folio_add_pins(folio, npin - 1);
  
- 	batch = tlb->active;
--	/*
--	 * Add the page and check if we are full. If so
--	 * force a flush.
--	 */
-+	/* Add the pages before deciding whether we need to flush. */
- 	if (likely(nr_pages == 1)) {
- 		batch->encoded_pages[batch->nr++] = encode_page(page, flags);
- 	} else {
-@@ -190,6 +187,11 @@ static bool __tlb_remove_folio_pages_size(struct mmu_gather *tlb,
- 		batch->encoded_pages[batch->nr++] = encode_page(page, flags);
- 		batch->encoded_pages[batch->nr++] = encode_nr_pages(nr_pages);
- 	}
-+	/* Flush pending references well before new references are refused. */
-+	if (unlikely((unsigned int)folio_ref_count(page_folio(page)) >=
-+		     FOLIO_REF_COUNT_FLUSH_LIMIT))
-+		return true;
-+
- 	/*
- 	 * Make sure that we can always add another "page" + "nr_pages",
- 	 * requiring two entries instead of only a single one.
+-				if (rc)
++				if (rc) {
++					unpin_user_pages(user->upages,
++							 upages - user->upages);
++					unpin_folios(user->ufolios + i, nfolios - i);
+ 					return rc;
++				}
+ 
+ 				while (npin--)
+ 					*upages++ = folio_page(folio, offset++);
+@@ -1251,14 +1258,14 @@ static int pfn_reader_next(struct pfn_reader *pfns)
+ 			return -EINVAL;
+ 
+ 		rc = pfn_reader_fill_span(pfns);
++		pfns->batch_end_index = pfns->batch_start_index +
++					pfns->batch.total_pfns;
+ 		if (rc)
+ 			return rc;
+ 
+ 		if (WARN_ON(!pfns->batch.total_pfns))
+ 			return -EINVAL;
+ 
+-		pfns->batch_end_index =
+-			pfns->batch_start_index + pfns->batch.total_pfns;
+ 		if (pfns->batch_end_index == pfns->span.last_used + 1)
+ 			interval_tree_double_span_iter_next(&pfns->span);
+ 
+@@ -1320,7 +1327,7 @@ static void pfn_reader_release_pins(struct pfn_reader *pfns)
+ 		if (!user->file) {
+ 			unpin_user_pages(user->upages + start_index, npages);
+ 		} else {
+-			long n = user->ufolios_len / sizeof(*user->ufolios);
++			const unsigned long n = user->ufolios_count;
+ 
+ 			unpin_folios(user->ufolios_next,
+ 				     user->ufolios + n - user->ufolios_next);
 
 -- 
 2.56.0
