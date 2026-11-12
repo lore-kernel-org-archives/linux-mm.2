@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2D5606A321
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 07:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C0D606A327
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 07:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RhlTASHM
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QCcCJ8x/
 Received: by kanga.kvack.org (Postfix)
-	id B9E0C6B05B0; Thu, 12 Nov 2026 02:54:11 -0500 (EST)
+	id 9EFAD6B05B1; Thu, 12 Nov 2026 02:54:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4E716B05B1; Thu, 12 Nov 2026 02:54:11 -0500 (EST)
+	id 9A06C6B05B2; Thu, 12 Nov 2026 02:54:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3D736B05B2; Thu, 12 Nov 2026 02:54:11 -0500 (EST)
+	id 81A8D6B05B3; Thu, 12 Nov 2026 02:54:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 896A96B05B0
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:54:11 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 130058056B
+	by kanga.kvack.org (Postfix) with ESMTP id 5E8506B05B1
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:54:12 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E4F2814028F
 	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:54:11 +0000 (UTC)
-X-FDA: 85425703902.16.596769D
+X-FDA: 85425703902.15.906D25C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 6DB2D40007
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:54:09 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RhlTASHM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794470049;
-	b=xSxE7EYfnBvjrYf/CEj/C2NzXlKP81ZFDImTbzpHfjNUBmrAPNkJ0AQfb+fYkMO1xSr7Lw
-	3OITAkM1N0qqSFkK92LhL7JFWWmmtsVdYSdTpsE8UeiV1C8G9B38l2OAu3TrLMYna5Qk+i
-	nmCtLCeEKWQxJr2q7RufGlUCIVDeWXw=
+	by imf20.hostedemail.com (Postfix) with ESMTP id 430871C0006
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:54:10 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QCcCJ8x/";
+	spf=pass (imf20.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794470049;
+	s=arc-20220608; t=1794470050;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+4s6DPtHecaIws8OsEjwA4Nb5nI6DVYgPSkzZcGuLcM=;
-	b=tWUHVkIB0cXtfGGaQWSn0jVPc0hME4f4F2AKJQ8dw5EOypCjHA6UAZMg58p4tK8SePe36+
-	q+WpqctWB/9ZGNqmuxBFdYY+mYsVi/wl2Eh80y6OvUgB/4+oRBgDIKAcH5bJYUSkkBjecS
-	fhAc3bDqyLiFTG2d+7+NbmPb1SDMUd8=
+	bh=srOQgDgWOAX6/I0jdHPGkFLTExl16V3iCD3iaXGFZbc=;
+	b=rCD1ebtqSx22wkQCZT5Bjc0Jd48cu4semnKMc4XLUKbLgwELp4BHd5nTXWXw1r6dET05bh
+	yV4KUNWz8tbVUWSMS5vZoYfIAQPuIvBc9s6CmHLb0zRryXfzCVa5/I1hXOu1kEE3wuqFnJ
+	8+w8tx4YHWt19HMNKYcPQTK+cVnlpDE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794470050;
+	b=OknGxCmHMdqESAFKNYB3gMCoT9eNXEVia5MPtCzZwypbR/DSqQpmJkBn9isMH9dBeQ9SDD
+	TuIijSlNBhCoKSdOpmsEj0l9FvXI5wgr1aTZmuAIx4lGbbgwWZD1wLmcfdF374YfXmnxau
+	XaBGyzu9lyFsI1oLQSIooUP9iw1VpmI=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RhlTASHM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QCcCJ8x/";
+	spf=pass (imf20.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8F3B242AE1;
+	by sea.source.kernel.org (Postfix) with ESMTP id 91C8041FE2;
+	Thu, 12 Nov 2026 07:54:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5741F00A05;
 	Thu, 12 Nov 2026 07:54:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD071F00A05;
-	Thu, 12 Nov 2026 07:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794470048;
-	bh=+4s6DPtHecaIws8OsEjwA4Nb5nI6DVYgPSkzZcGuLcM=;
+	s=k20260515; t=1794470049;
+	bh=srOQgDgWOAX6/I0jdHPGkFLTExl16V3iCD3iaXGFZbc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RhlTASHMzabC8bj4fEMXxIGzC6N7xi791Bo2ze7sQ2rLOukIlIefeX4XbztTCvb/v
-	 uF8pAVxBjc6hbq/CcfpuWdOdHCIOkv94Ht8jSgl5pc99Lo0sSknoA4gy86VoyBC4yA
-	 SpbuQ/kKhUqSKaYDJi/qpv9f4PSf+sFPL7vncH64nf320YaYh1KuZn4Al4qOGQrzSU
-	 PWypapSr5E6lhbdYWvxXJ2VtFjRDahrcUQYVvF2mV04MA1zVOpni8+OwnTOsNffHtY
-	 YviIPXKVcFI0y5Nn7riJPzx9L4mfLDjYnFAm7lDJ6Kr6FPrGvDZIprK+SWvO2vXPpO
-	 UDmKERlWLKYpQ==
-Message-ID: <sashiko-outbox-210638@kernel.org>
+	b=QCcCJ8x/RCBqNneH4WLnogtIy8nJ+mADSpqmiS2iU2yt3Xw6Xs6MXkn82gym9ZfmP
+	 SX1G7oQyisadY4glTOtkD1xYymXtm1VcBG5OxSLGm9kQvyKsLhKzECxIra+OnMFcnb
+	 pT8kFGSjTdDi89bK1GGi4+LgTX4UTKdcCBZGnRzYKnNHKQlY8w5GLm6HNS56oY+Onk
+	 dlXUpnsJiaJPethe3oXSPeKhUNGvEXwPrOJnuRZexggndWle5qryODtfXOcFqFiin0
+	 uPZBR12WOn43THE4p+5sdS1b+WNVQwlAxsoZrAe3v+w29UgtSN7RODONuyfCSCRB7i
+	 OMeEYVQtST4cQ==
+Message-ID: <sashiko-outbox-210639@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/9] kho: Make bootmem reservations visible to fleet
- monitoring
+Subject: Re: [PATCH 3/9] liveupdate: Make failed retrieves distinguishable
+ from dropped files
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Chris Down" <chris@chrisdown.name>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Mike
  Rapoport" <rppt@kernel.org>, "Pratyush Yadav" <pratyush@kernel.org>
 Cc: "Alexander Graf" <graf@amazon.com>, "Baoquan He" <baoquan.he@linux.dev>, "Jonathan
  Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, kexec@lists.infradead.org, linux-mm@kvack.org, kernel-team@meta.com
-In-Reply-To: <c41c639fc5f453d60a265ba42a233f2ea5b48319.1794383544.git.chris@chrisdown.name>
+In-Reply-To: <772c150d0a90139a327803cecf087f6865702753.1794383544.git.chris@chrisdown.name>
 References: <cover.1794383544.git.chris@chrisdown.name>
- <c41c639fc5f453d60a265ba42a233f2ea5b48319.1794383544.git.chris@chrisdown.name>
+ <772c150d0a90139a327803cecf087f6865702753.1794383544.git.chris@chrisdown.name>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 12 Nov 2026 07:54:07 +0000
-X-Rspamd-Queue-Id: 6DB2D40007
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 3ey6wen3spwe3ckg1qodop3xeuwfm4m1
-X-Rspam-User:
+Date: Thu, 12 Nov 2026 07:54:08 +0000
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 430871C0006
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794470049-86836
-X-HE-Meta: U2FsdGVkX190CiF0EArcg0FY5L6zUmjvwHbMD75NrwvCbCKvXt1tWARAbz+ep3VVSxOjavHu5nSy9hX+wYCMGeMYxUQbypT5nTUEYCkPcQo1r1ijFHIG4dDaJtoX9FGy56xWgb92aIg0280X9/aTSqp9zZh0fEABFxXpa/h7hVuCPUWKbk7IYFUfHrNI/RGTzsLs+AJnSp4KbitfpwHSMrE+sGedJf5zVFfJX+9jeIHtcB+473rd3LGugI6OBh/H5dswV5t0JaOv89FdRtmDSYZQjXlKQjbHS86p0cWjXqOTteux2W3NcilI5kadflVcMuCZzVlGzciJYgYdAa8detA0irGBVwXFkohOEK0KitVNEXrHkNNdaiN47VLgELVtd+dEeHhvsiKoe8rbO5AaZ18PatYdaA2Q0s2wZpqT/fmbfikzWKDb/QcGJQ8PcYmni5x4OeGppS/K55xjx443M4G4s9D9FNgwMd9nNGUpnUvDExJj1OPVxWjT8AtMIzbPzbT+c7Vs6cuaDbHyIohdsVlI4sqrJ1i5gImb1ar4GeKf+w8O6ZSrWkBPEqPiQ9L98i0xe/4jfa5jf10pkEFVJm9FjjiUZCXlKiXfhB85XwHbiOGqSESHYthJV1hQuq+bFjCur24Mlk528ajMQ1hSC8AYdoPbEU2JTxM/LYQMSF2sQfKTmAgb8TfFrLNYEYH11WvYeX6JH0fOOcfCs7BZJh+I03ILnRoz+92v1B5iLJmXQLulYVQ7BmrLeBKzX+/kJ7a8GxLPD+I17E0G6JJP+TilIEZvvZqtY/9u4sEYFm1+nIwRDsk8TnMvZXvMx0aT3Xs1iDBVWAJqGTCeJhCAvj95xG83ZzbRbQ5OhLtz5Ezq49eZTb2eV4T48N/D2cdOerxJ8dbx9kDXAbMxTTTCbATgpLxy+AFJ3rDZtW97fxoXpG+U1Mp3rG3ev0nrLQtxR7r1TWkzidsweU85pBp
- qbYdg57b
- Q7wWRZKJfFaHFXAyHylOiXwjFQvu6NPnXyiUhVvJciPLaRpz61sZjRjlKhQbAJc/UyFWQrL6UM25nWulF7dUMzxGja4jbAVIXzN0Dz6amX9AawJD53A1QC0PMYOAPJBOAgJUYWFyiw5DibWzXiPoFqsooHeZtwxbRmtXkau2LzZeKFaZRX65DY3FzEWYwXnlXlmkn6oG/jLr+mY2bB9DroSfbsciYAKILLdkg3p8nvbkDCATyxaLBu8y0zOMWsG7wi9EAm3q9C25UihQ3D6fd8UfcgNRtvNB2QKYvnY5ODlm56OlpiPRkjbG1nwPJfAxMFUE8JzvWOgLcn7dREB8yfd238bBNvowgjrWg++x/5rMNxj4h4q4qm6vH/QHLrA2/mZ/CdVOhIPSwElwzutXacnJDr9spTb+9hQn41t5tQtRAlQiH3/R+hKuBXXRSuTFDw3EEr2KQbVEO3J5AsDH5+kbl0sWdwHt9NC3YL1IxzFFjbZ9FRwfwyQptztMRqeZdzYI0UszYPBfeXMV0ukot2SrWJpBt48cGTkbimw8ldAv3lG9P3tEEVoPzeEqWp6qkfx7cTbx6q6x8W6Uo7hQeGKAx9s13Fjif6sNDefttIOk0l6VLW/exyV7r59JFywgoDIy93x+ZAoZfoWdH4PKUF7ofQbjkwlFwaj2zV9e8gQcq/yFjRCg3VTFrCsoN30d48cv9lYWU2tyl9eXFD/73qTCq5w==
+X-Stat-Signature: pm6zhzwa13z5m1zajwcas3hkiqrtjm51
+X-Rspam-User: 
+X-HE-Tag: 1794470050-949818
+X-HE-Meta: U2FsdGVkX1/Iyp36Ly5SXd9qHG/JHx1+yvKxp5ZntGEcRRAwJEsrhezfG/vWaWaekpwxDzsXKjX02zaCmLAXAh5X5uOFMKnxyrfSbLCxUdXhu/TwjODOqFlvezdyj9oK+Po0ywe09FrTMkyF2+zPtNH1cIwBk99r5rdE5WLeJnxGEodUeuQkwwMut8FhHOroeMtyoTgRSqhgWObGH0PesAY46WL0klIOTFJ0cESlHgMOvv3Zfjn+OcVgbhYL+H6Xn+SOFYKfSsT2sYLpSBEovOLiyVPW8GfbVujLLMrHG7gxYTm+CgoC65rwpre2WVd3SqzYyKUfqBQDXSM3LHKk3UvBL2CobaKFUe06vxPvhSNqkkQY/+vU8oHIqwQFGGh3rk3VWeWjd+gAxafTURNabapN6pwTo00kojWlefhCZFlOEcQrwt2hippyCSbrATLZS888yGN+oNH8LImjJMPnsH7unnf9pSqMJTqOW/BhPmQdcaethMn1KvhcKCfs8V2bQYGtn7C/nJqMawwnp5SuaQlGO2IthU4Vm3GYZXpRMQi+Eifutvcy8NmqJA+tKoYdr8EFg9NkUStLuBldny0CqhyKumTDh4rPcG/ObTh9S2rgIMyNUCGqdpDndVuVXBzhYD8cFEwxIyKeukRRunZheNpt9I41CamyUau7nH6Hk2dBcpe5WfkGvmCkfbDD99Mk/8m1NrsYB8/ghUcGIB1SyuCReEJKSo+xZqb8iUE6V98s/QhNu2/MXgVFdIJp5gLFtN8EKx3dZtKcUgawnyZfkWNXKZYDTexxaizAyv9CHXKz0TRyVc9aH+4N1Rb8s9pjhwToUr1GlIpM5HXhYXpmvUzQaeYZwZ2Byb3EzLdRRJ9vAGR0mm3shJJPjr/8pQ/o0NKHFJf27w9tBedvXH//cYn7+uAhgYZ5uMvmIjITraKZL6u9k3FYjFfjZJlodOvFjpOe0Nx4m2bJ+KuVo6Z
+ Ss26lpog
+ zLmXuKd4RYjCpXKaEpBWa90Ajto/ICSCc5J/JC1n69ZvI3NC1IJorkBoLP0doTKtctzMharqtf8/QqqUSHzmTpQlOckIaDkOTx1c+/t0//0b9SW40+CMv3jHpuIyx0o1SC0mC1sJO/Oj8+7vQo4uR6S90R9t3J5e53FKDC0ifaH4qnHO077MlqALehhUnxcKajMq5FU6pxFRXDvdElny2tiVbAL/c8G/+dYUjYGO8uIH0GduJK+7N0izLRYYNz9+stiaDx54p4184D7RUAr0Y0eGH7bfIykifA+qcGCI8vOr2HJ0GlVTVU8Zu0jmpua88BZqOLMjaTmfE5dShAixOECjKzap62bGNB+VkdOWdGyVIcIB62k7qYmX46+c/o5ksPXxmIDDDNa/RYdA/mFUo3lMv1VzFmYrs9M8FWxjsSED9xsjLtkyUI5kCgWBSVyfQX35uH8NXOLHUIHkjhZFdbirZ7ES3rFRgVR+oJaN50XOl6kWhFQJ/9Cq7ieJbXk+ma0/96noYdHde0oM7kl1SCewSyWrpPZzGLwb67FXHbheTiAiYDs+rz6TkoA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,81 +97,118 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found no new issues
-in this patch, but noticed 1 related pre-existing issue it does not
+in this patch, but noticed 2 related pre-existing issues it does not
 introduce:
-- [Critical] kho: scratch memory corruption on error path in kho_init()
-  [1]
+- [Critical] liveupdate: uninitialized file pointer in
+  luo_session_retrieve_fd() [1]
+- [High] liveupdate: pointer used as XArray index in luo_preserve_file()
+  [2]
 --
 
-commit 96d77d1af62b4778bf7f34ac023280de65f57337
+commit acd081aa3a5ef33bac09be5e151d1de15512ea3e
 Author: Chris Down <chris@chrisdown.name>
 
-kho: Make bootmem reservations visible to fleet monitoring
+liveupdate: Make failed retrieves distinguishable from dropped files
 
-This commit exposes the total KHO bootmem reservation size in bytes via a
-new read-only sysfs attribute at /sys/kernel/kexec/kho_bootmem_size.
+This commit exposes incoming live update deserialization state and session
+and file retrieval counters under /sys/class/misc/liveupdate/incoming/.
 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec=
-_handover.c
-> index 3046b89e5db49..21d77e29d2bb8 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -942,6 +942,21 @@ static void __init kho_reserve_bootmem(void)
->  	kho_enable =3D false;
+> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
+> index a39992da504fb..3aac1afa05c09 100644
+> --- a/kernel/liveupdate/luo_file.c
+> +++ b/kernel/liveupdate/luo_file.c
+> @@ -543,6 +543,16 @@ void luo_file_unfreeze(struct luo_file_set *file_set,
+>  	memset(file_set_ser, 0, sizeof(*file_set_ser));
 >  }
 > =20
-> +phys_addr_t kho_bootmem_size(void)
+> +/* Record the first retrieve result. A negative status is permanent. */
+> +static void luo_file_set_retrieve_status(struct luo_file *luo_file, int =
+status)
 > +{
-> +	phys_addr_t size =3D 0;
-> +	unsigned int i;
-> +
-> +	/* kho_init() can disable KHO without clearing kho_bootmem_cnt. */
-> +	if (!kho_enable)
-> +		return 0;
-> +
-> +	for (i =3D 0; i < kho_bootmem_cnt; i++)
-> +		size +=3D kho_bootmem[i].size;
-> +
-> +	return size;
+> +	luo_file->retrieve_status =3D status;
+> +	if (status > 0)
+> +		atomic_long_inc(&luo_incoming_stats.files_retrieved);
+> +	else
+> +		atomic_long_inc(&luo_incoming_stats.files_failed);
 > +}
+> +
+>  /**
+>   * luo_retrieve_file - Restores a preserved file from a file_set by its =
+token.
+>   * @file_set: The file_set from which to retrieve the file.
+> @@ -611,7 +621,7 @@ int luo_retrieve_file(struct luo_file_set *file_set, =
+u64 token,
+>  	err =3D luo_file->fh->ops->retrieve(&args);
+>  	if (err) {
+>  		/* Keep the error code for later use. */
+> -		luo_file->retrieve_status =3D err;
+> +		luo_file_set_retrieve_status(luo_file, err);
+>  		return err;
+>  	}
 
 [Severity: Critical]
-This problem wasn't introduced by this patch, but on the kho_init() error
-path referenced by this comment, can err_free_bootmem corrupt active memory
-during a KHO kexec boot [1]?
+This problem wasn't introduced by this patch, but can a positive return from
+fh->ops->retrieve() cause luo_session_retrieve_fd() to pass an uninitialized
+struct file pointer to fd_install() [1]?
 
-During a KHO boot (when fdt is non-NULL), early memblock allocations are
-served from the incoming kho_bootmem regions, and memblock_free_all()
-releases the remaining unallocated bootmem pages to the buddy allocator.
-While the normal path in kho_init() returns early when fdt is non-NULL
-before converting kho_bootmem to CMA, the error path frees every
-kho_bootmem region unconditionally:
+If fh->ops->retrieve() returns a positive value, luo_retrieve_file() returns
+without initializing *filep (and luo_file_set_retrieve_status() records it =
+as
+a retrieved file with status > 0).  luo_session_retrieve_fd() only checks
+for negative errors before installing the stack variable into the process
+file descriptor table:
 
-kernel/liveupdate/kexec_handover.c:kho_init() {
-    ...
-	if (fdt)
-		return 0;
-    ...
-err_free_bootmem:
-	kho_out.fdt =3D NULL;
-	for (int i =3D 0; i < kho_bootmem_cnt; i++) {
-		void *start =3D __va(kho_bootmem[i].addr);
-		void *end =3D start + kho_bootmem[i].size;
+kernel/liveupdate/luo_session.c:luo_session_retrieve_fd() {
+	...
+	struct file *file;
+	...
+	err =3D luo_retrieve_file(&session->file_set, argp->token, &file);
+	mutex_unlock(&session->mutex);
+	if (err < 0)
+		goto err_put_fd;
 
-		free_reserved_area(start, end, -1, "");
-	}
-	kho_enable =3D false;
-	return err;
+	err =3D luo_ucmd_respond(ucmd, sizeof(*argp));
+	if (err)
+		goto err_put_file;
+
+	fd_install(argp->fd, file);
 }
 
-If an initialization step such as kho_alloc_preserve() fails on a KHO boot,
-free_reserved_area() runs on pages that are either in use by early-boot
-allocations or already managed by the buddy allocator, causing
-use-after-free and double free memory corruption.
+luo_ioctl_retrieve_session() has the same pattern with luo_session_retrieve=
+().
+Any subsequent syscall on the installed fd dereferences the uninitialized
+stack pointer.
 
-[1] https://sashiko.dev/#/bug/linux-5ae80b0f-97ab-4112-a0a4-c767da72f4a8
+> @@ -624,7 +634,7 @@ int luo_retrieve_file(struct luo_file_set *file_set, =
+u64 token,
+>  			  luo_file->file, GFP_KERNEL));
+> =20
+>  	*filep =3D luo_file->file;
+> -	luo_file->retrieve_status =3D 1;
+> +	luo_file_set_retrieve_status(luo_file, 1);
+> =20
+>  	return 0;
+>  }
+
+[Severity: High]
+This problem wasn't introduced by this patch, but why does
+luo_preserved_files use raw kernel pointers from luo_get_id() as XArray
+indices [2]?
+
+kernel/liveupdate/luo_file.c:luo_get_id() {
+	return fh->ops->get_id ? fh->ops->get_id(file) : (unsigned long)file;
+}
+
+Both luo_preserve_file() and luo_retrieve_file() pass luo_get_id() directly
+as the index to xa_insert(&luo_preserved_files, ...).  Because XArray is a
+radix tree designed for dense small integer indices, indexing it by sparse
+64-bit pointer values forces the allocation of up to 11 levels of
+intermediate tree nodes per entry, wasting memory and risking OOM.
+
+[1] https://sashiko.dev/#/bug/linux-65e3446e-27d6-4415-82bb-0036dcc7aa0b
+[2] https://sashiko.dev/#/bug/linux-80cdb953-2e71-4aca-9067-108b66f83aaa
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1794383544.gi=
-t.chris@chrisdown.name?part=3D2
+t.chris@chrisdown.name?part=3D3
 
