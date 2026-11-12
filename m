@@ -1,103 +1,178 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3ED606A33B
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 05:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2642A606ABE7
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 05:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=HNkawzYM
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=gNOjmhQG
 Received: by kanga.kvack.org (Postfix)
-	id B0FBE6B05BB; Thu, 12 Nov 2026 00:36:05 -0500 (EST)
+	id 089F46B05B4; Thu, 12 Nov 2026 00:36:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC0BF6B05BC; Thu, 12 Nov 2026 00:36:05 -0500 (EST)
+	id 013336B05BE; Thu, 12 Nov 2026 00:36:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AFBA6B05BD; Thu, 12 Nov 2026 00:36:05 -0500 (EST)
+	id DF6996B05BF; Thu, 12 Nov 2026 00:36:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 70C866B05BB
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:36:05 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 04EC3403AF
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:36:04 +0000 (UTC)
-X-FDA: 85425355890.01.F25DF47
-Received: from mta1.migadu.com (out-112.mta1.migadu.com [95.215.58.112])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C02591C0005
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:36:02 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HNkawzYM;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf21.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.112 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B542A6B05BD
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:36:31 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D3A94C04EA
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:36:30 +0000 (UTC)
+X-FDA: 85425356940.15.94475CE
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	by imf28.hostedemail.com (Postfix) with ESMTP id EE04FC0003
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:36:28 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=gNOjmhQG;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.174 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794461789;
+	b=daOuyew7t9sf7Kdnm/38pXq2o7UCj+nwE+Wg/18orSOT0azMAr79524vV3dnJBvR7pqIjN
+	Y3DAESdGpv9rX9A26FXtgyGq7xB8rHeXGeXpZlbBn+1qRmLWc9xp7n8xbhoiMeUUFq1AST
+	MD5ky7bNQk4VcFw3k7pOFezbKBQyVWE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794461763;
+	s=arc-20220608; t=1794461789;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k8AP+xq4dYAYyrMO9g0Pz0/bdK8mpNBZ2jUYO824rg8=;
-	b=3B0Gk0hq6WGoDJj86CBBybW2ChcmRdXgRweojdhqn9636FCXK99O2nvxwcstA/FosDoL33
-	tg+FEjvJvwmdf7LZqAz9ihWZ418DV4zlJsOo6sjyMhLje78rSIepEsGw8XUKEAGotUJl/Q
-	2Vq+wnWQXu/LCtgneD3z7X4eTKt+BxM=
+	bh=e2soeXJ852281gC+OC2yZSX9G2s4v3lG9pbKt+VP0DM=;
+	b=I6FbwLB/SiBtLQ8NyfHGjDf9wvVL8NKg1POJAMirBDgY3BybS9wJ5xpyZrOloOzqnm1BVP
+	AyZP6Bv9fmh2mtNIAbRHxZtdDNmayfj1Y0n2LN4GZHzxYKhksSXAWfTdcCU5T+YqW5Ve7x
+	jU2dJBZyJ1vhktLsgcurXEU3yXOAwh4=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HNkawzYM;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf21.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.112 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794461763;
-	b=INI0HJyR/iDZxxDgDCwsKy7drcOUxmDxEAuSmqOIuNpiGhC+rGiulOFoal71/oyG9+wtf8
-	iilw4L1AZdk4a1e47C5Os5x5MVXQ4Gf6L7ahIzGu/w9GjZiZBWj5jVdG0F/PGO6SQJNHih
-	HQfSGqsHTY4+dvYXEjQt5R4oc1PW7EE=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=x4GKRsib95qKzxiK/K33Qhp7C36CJ5fXuaJlzwfX+K8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794461760; v=1; x=1795066560;
- b=HNkawzYMnTCJRuSEOUbsyEc9h1tV3hK4EMBv4Z+F++BKfFLU6fkrfZ46zsdkphwFKMKokX3L
- IgOcJajGctrrFzKYlx8Owdwo+2e22LI+EknDANjkmRWtLRtwi0RQMpD3zPyPZwKWPTu0DvW2tHa
- vsks10E8wIOz6QY5FTAafuXE=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 59eff83b8f1eaa97;
-	Thu, 12 Nov 2026 05:36:00 +0000
-X-Mizu-Trace-ID: 59eff83b8f1eaa97
-X-Migadu-Flow: FLOW_OUT
-From: Muchun Song <muchun.song@linux.dev>
-Message-Id: <040394E9-24D7-46D1-B2CE-251E6F7AFB74@linux.dev>
-Content-Type: multipart/alternative;
-	boundary="Apple-Mail=_2CBEFEB8-6775-4F47-B713-146B12E99856"
+	imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=gNOjmhQG;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.174 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-93e6eb77f0bso350311085a.3
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 21:36:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1794461788; x=1795066588; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=e2soeXJ852281gC+OC2yZSX9G2s4v3lG9pbKt+VP0DM=;
+        b=gNOjmhQGRh64pM34CBMJJWA7uz/toecgZj7qZKBClt6d6VKm+unfUOJuEHpy9GEQc7
+         5TD0G4QtJ2zmdKLVkz5GD8UjKcPFiTv6HTt+Hy7U6mL8hTNR+OHTthMP0TMV1iwXULs9
+         mUPLCFr+SED82wu+3W3BsKv+xpm6orQ1fGDUwFtO2lMpmDOtPS/wciyGf5nIAHgxkT4s
+         DT2NZockI8TZgf4TpJIHnBn8xtwyjonDqTELwcySSyw+vvJe9GDemZ383nMn8BYGiuXu
+         Fnr5cLF2+24vmIhfDqNaZkh+B55hGvkS4fnUM+P0Z2XjgntdzCcyh79rKKiGT2HSrPcb
+         ovMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794461788; x=1795066588;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=e2soeXJ852281gC+OC2yZSX9G2s4v3lG9pbKt+VP0DM=;
+        b=kNV1vtNTRQCvDLm7ecZd7gf6oCrf8o5Q4r1VoEP5jQvnKtp2eyrPH5npr3RZqMxGzx
+         s0R0d7dus37XeAX979sht8JcFytbw3uF8TErrroNRGGWPCP1Z/ZY/bzK2unun68cMysm
+         Elus+j3EwTGom6FfMEKV6XM479uNR5CeTsm9IfPGsbdyOonKMN1Q8CFsU+QqPTm/KQHU
+         IIitoCcZpQ3F+dEehInCfoJtm2FVzdbrWFEuA2X0IvvJfYW+q/29IyLVW2X3Z53WP64Q
+         zjR1JKvoDudlSDZNiUT2jqnsZFKJl5CR7Zh1avBibHYbj9csqdoK8sRg7HCt/PWX16Cp
+         nI0g==
+X-Forwarded-Encrypted: i=1; AL+hErF6SIAxr7YV0oG3onlH2QwczpKcN975cYZLnRmKJLdMKtGhymMm8UabJ+8zXPwIqAWWMt/4p7sd5w==@kvack.org
+X-Gm-Message-State: APuU4Z8e9ITKBmCNX693q1koPMlgvqeUwo9SRLRHOFYpdJwCEr0CwNX7
+	WRVUnDFOYnhUA6oCEMLicU7nWQz/1jYsS6zq0J19sVmKV8dT52IF3kQxHyLEVDCoJmE=
+X-Gm-Gg: AYBFou3NorCtYiSOw8FckzIOacCIAtzWUZWWnwNxgNQ4uzjYcPxt8mTPbZIG6Ozv73I
+	5OsiB8/dUeXS8SBm9EeuMRSkQmaXqsVzf5h5DNI7NCXStkemCNkT6z3Fu4G9MI8U2fP9ENkwnrR
+	xXH+60UdFbfQGrGcDJfwTLSwL2RYR/8esqF+kYJ33HybxUdgAsVkTs7trmiiuBqAY8RsJtex3NO
+	37jJ5HeeLL8wqkdkeEQTSem8p9hI8L2sGxoGLgG/88U6q1Jwuxj6nvoktYCkHUF02K3OETrReqo
+	9qosPgkHyzXXOT0rvxYq3tMA3ZcT/JJ1uxAOOIuHd2DeTonmOuEAeT+Elz/W/tmk+9cqBorrxfe
+	DxzGWGxbCTlQjSCZLSNu6JrEQx6dyDvpqnNzkcIfJ7R5JU2C3tVB6HL/5PdnyiSvhOEQbte/k+0
+	Up8/7iHWDIed/IHUHWKyEx2Zfi2bQwLdA9oksauUTsOXsnugL7V4I2S0N22QNT8x00+ys0FRND9
+	OQRCY2qwtB+vSnRm8927WqT9QE5wo4MWBWZO77I0O0tHbOJCBsNTdreDbWLRqmbrSv+oqdOf19M
+	4k/iWrd9FiJkbT/F0W0QMcHNdTa1nzIRZqmN6gGETfaLRFdI3TaxowAZ8N59vRrLhdrNgPElYjw
+	QRPl2wN4=
+X-Received: by 2002:a05:620a:4481:b0:93c:c2c2:40eb with SMTP id af79cd13be357-947b0046fb4mr764496385a.66.1794461787830;
+        Wed, 11 Nov 2026 21:36:27 -0800 (PST)
+Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9479e4fa312sm647786285a.0.2026.11.11.21.36.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 21:36:27 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v2 1/3] mm/hugetlb_vmemmap: fix lost HWPoison state during
- optimization
-Date: Thu, 12 Nov 2026 13:35:40 +0800
-In-Reply-To: <1E848BF4-4AB4-4656-8523-FAC6DD8FDAEA@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>,
- sashiko-reviews@lists.linux.dev,
- Andrew Morton <akpm@linux-foundation.org>,
- Miaohe Lin <linmiaohe@huawei.com>,
- David Hildenbrand <david@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>,
- Joao Martins <joao.m.martins@oracle.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Ingo Molnar <mingo@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- linux-mm@kvack.org
-To: Muchun Song <songmuchun@bytedance.com>
-References: <20261111093747.50048-1-songmuchun@bytedance.com>
- <20261111093747.50048-2-songmuchun@bytedance.com>
- <sashiko-outbox-209812@kernel.org>
- <1E848BF4-4AB4-4656-8523-FAC6DD8FDAEA@linux.dev>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C02591C0005
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,HTML_MESSAGE,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: yay5e9q3nbesz5zamk9ajq1bxkmipft1
-X-HE-Tag: 1794461762-441093
-X-HE-Meta: U2FsdGVkX1+E57Vl+Meexanp6AExkTU4x9wfUPwf1EB/xUv+WAM3bodkcnPbSfF1v/kSLekUmWGK9f3YrG9d797ALJr9dJY1adKIR24BADun8utfhoGFhy0ix+03BrAyr19Liwc9bE6HPpcUwwAaexv/jmhLHH25u4JfiP42ZLZ8FUPULcqY2DOL485WGo7F7JEYxZHw6PkVk91eM+/eNeT/eNq1klXCAVxQS97HA/03txs9yycDj1QYkG/A5gc3gwoXuOYMwUeJvVjrqL5K99Mr88LIb3O+ejrYdnXHgSvoDSmR0HCj0uf12SaYHnW3oNzXOvO2GrAZQa+gqrWK8erj8nbNAPlDkjYyCl9dAFJwpktWeHYvGenXVkYeFhA1G+SH1T0oSXv3oK9aQsSyDbfLL70apYqaiUPMIY4XW7LyHWnL7UyG8bDAM21yVZDrr0bGkmE+0MCmPt3b3Bo8EPmPZaA7tI7G3WFKV+RvzdpC6gzhjj/ttp+ZksajChlSB2PJ/u4uR2L+Z+xbzUB/jGg7lAuZSfELuvYEo9htUDU6CHigfynXQecX+/1InJF5rJit643mbLhPqq83z1pVlShJus3Luz35qmx0/5r0vr1JIhDe+X0NKg2/0Y8I/leyYNLEEQdbSyly3vDuRBtyXXhVcHFXHJuIcOiaY2M1KTeUtjPe/8AvCz7kW9rU1VgAczhpnfY0g7kdJcPGvjkXFh7LpPQrPLdVgjq19WtMXUc1w8T9E6yc7DiWI7RIp8QS/0GwEf40j7J/CbajCvNpra261jcTATP0++TiRv7nws2GTC3ee2zbUDuB5fwpMhG7Zn8GeHWq3wlA3wg2suzgCOqavqUxNM/Cw8tseYPYuooII5jC2qSnYJliMxr5haq14YyD84lMCCePSrpTouBzpnFsWCTdnlatnZE+R+Zmf0W3xUrv7rOSA2k5nmyjeJeLcAqvYHDDNWx52PPvb7r
- pcMKnQDy
- wbJQAciDQ4n1SKQRCbabqj8OP5CX6sq0RUxEMW1QT7AK41/9U1B9h4y1gyda+4RGezEcn9YuQZ1gROb37AH7i+0L9gxyYEyGmAFeAJl4GHokUi7H9CMPFhEFplNCvvxdRp815xfxeu3wFRNDw6IcVwqxj3ps5zTxXD5UFpSzYoDSoWiezouG+uayYKpXLfShDeBaWBCk6+AAxxPAVaVmzvaMhsXI4hBqzLY2WWDR/2XjSFk8yRFynhaIm0QWEj23rK9n5ae8i0N7TfMAgS2TR20AphfNWlo23KD+xpvChudK3ruCrF54+T6M4fje/P/wrd4HW/9SO1WNGnAOJbJAOG3GDeCXKiytaM9e0u3Wbzap6bQG8eRkoAp6C6+3pOQeG0XezsFkLUvxyQlDw3PGlv2ED5tlkSUsO58w6nsaRDMsap74zyLMpDDdL0V2qge8ppTHq6VTTbCq43y8axXBAJ1uy9itaOLV493yzXvRrIBIb2/kuN2PqIzna2hCO8KjovPW4mevffgGqczBK61gYwhCqPbxD+EnDjMdU/MSUSFZJguMckbPTrdZhnRC/W8JFmdBpYSlPSB5AoF9T3tmN9yAIWA==
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 08/13] mm: convert miscellaneous VMA flag tests to use
+ vma_flags_t
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+ Rik van Riel <riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+ Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+ Gregory Price <gourry@gourry.net>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Alistair Popple <apopple@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
+ Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>, 
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>, 
+ SJ Park <sj@kernel.org>, Rakie Kim <rakie.kim@sk.com>, 
+ David Rientjes <rientjes@google.com>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+ Arnaldo Carvalho de Melo <acme@kernel.org>, 
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+ Adrian Hunter <adrian.hunter@intel.com>, 
+ James Clark <james.clark@linaro.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+ John Johansen <john.johansen@canonical.com>, 
+ Georgia Garcia <georgia.garcia@canonical.com>, 
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+ "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
+ Roberto Sassu <roberto.sassu@huawei.com>, 
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
+ Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
+ Stephen Smalley <stephen.smalley.work@gmail.com>, 
+ =?utf-8?q?Ondrej_Mosn=C3=A1=C4=8Dek?= <omosnacek@gmail.com>, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ kvm@vger.kernel.org, damon@lists.linux.dev, 
+ linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+ apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
+ linux-integrity@vger.kernel.org, selinux@vger.kernel.org
+In-Reply-To: <20261105-late-2026-vma-flags-v1-8-0d3cd15ab75f@kernel.org>
+References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
+ <20261105-late-2026-vma-flags-v1-8-0d3cd15ab75f@kernel.org>
+Date: Thu, 12 Nov 2026 00:36:24 -0500
+Message-Id: <179446178440.482102.12362401790016415292.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Rspamd-Queue-Id: EE04FC0003
+X-Rspamd-Server: rspam12
+X-Stat-Signature: r9nk3beaffedgujd5owrrk9tshs1a71e
+X-Rspam-User:
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794461788-289631
+X-HE-Meta: U2FsdGVkX1/5KAloQNxlnTm1S7PqNFNL0ohaBwOqJSBBS6YeCOvtx7PSgCOf83iG2XebRM/1k/2JVNwBO/cT8M0iJVfHuEibDa6DB4fAMvapz4dA6L9GUgHkNkxX7blSXwR9F7z9oICHAbOv0fDeZClj4HucH4+ElINAkVm55+NIVX2QrOl9ksTUv0W43vKzq1hCSUbFLtmnl0RO3+rHm3nqLMz3a1qlub9tRlcuavBO8biWSHfPEjQAoSUdCYScteJfyyuCYJbq5Vm2cna+UqZ8ehgxGeb1N14VGlkLZIKQfUO/4rskhgewL9ETiIyYLFvDT6cLPyG7PEQHgzQm6lCEhlua6cAZ1rLmLeRGBqh8PUdMINsaA/r8jW2lDnOtAbDVkaV6rOO06McbwiHIBJPMsM8Bdyz9Epf98ygZp4+ZUsWCqwqBB86lLHhnuCu+gdyNEuiNHvaSoYKkDf/MYrE04LJPO4AVNIAvaLf9uztSjbW6ZXTMBzRrXZRdWBjvZhsMpsTTDtXfL+85E6riaJgVoY+4kOQIF/xE1tBftZ3ngClOQ65Xm7p3/8w4dbF0OVE6DLNJyWitDLNTQCBtZn70c+q664NxRrvYItm+tvrhxAEuZ9fNTVtdFsC/2GYRwcbh18A7xPfiHTQdaRjnCFK8vjCFf3tAufaklqki+rXqiuWXLxVU3BAC1PozzwdV6bm4synuWJErQsrT+yWihkJsXAXbob0IIJ+bRUIjjnrkH/yt/LXVtdHzcwej1WItA4wR+n4+We0YGubWKP+DgkaGJMukBWvgQRbxNMRwQP6tcVEeKqZnTW1ijd1aK7KOnOgIQ/X9DFJ22I57I/agulj+KHFfrG+vgHcxyzpeNk8Lvcs3S+Uv/gXqW9fAk0V9AlYYlyUnGtvjFnxn83WmX0HsLbd0UPj8JzVIrmLtuEqbFYCA9olXYFgcKK8QABwEutGntprivsRSA3mXW3R
+ zFXl8IBG
+ k2Gp+9yhVGYeAz901AYFl+p59bnLX3j4v6uyTOtgCj1+rHGZPzYjn7xQvp1AsOpUgR+NuEdLpdC3QGNpkePqjdF2sD6pJO2mypWezEIef9FSVSIQ+cQMWDSvXyHi7ux6giNjSMzA7sZV8m9/no7t5CJLWEAv+d2HGy0dFeGVGmtEPQ5jE0ljQObhUcUe9xlD/i8x7LuzHwUHV4w22+sSDRU09VUFPP+6aLlDLhg/JCxcwT6yELA14gCNCDDtGVJPjmd3KtfEr4+O+sD0+5eA3pLFKcb0m2Mq5IHm3Y8rKQBxCs3yGuvmzW8+QL14IAyJxmKKT4aLReUopUL3sazGAs3ED46efLyNw+n4qmtq0GfY93iXBauGYP+MnczC1XChBXZCrR3a2WZK42wxgQfFZAQrPi7cyBhNAyXA9l1oq09nWG742MsMSoHVTfY3ozvy879ObQocDMO+SNCQhp/6h5ZyAiaW/izOBhGoNt/k8lQw2d6SBfvGM3LBHQfIuye+V0FPujIc3vV340QVjF4rsostS/Xr/gHgQ8Gv/EL+HiQi+YP5IG3oHteVB7hu8puvyCIg1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,587 +181,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On 2026-11-05 21:30 +0000, Lorenzo Stoakes (ARM) wrote:
+> Replace use of the legacy vm_flags_t flags with vma_flags_t values in the
+> remaining straightforward VMA flag tests scattered throughout core mm, HMM
+> (and its test module), DAMON and the OOM reaper.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
---Apple-Mail=_2CBEFEB8-6775-4F47-B713-146B12E99856
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=utf-8
+Acked-by: Gregory Price (Meta) <gourry@gourry.net>
 
+-- 
+~Gregory
 
-
-> On Nov 12, 2026, at 10:59, Muchun Song <muchun.song@linux.dev> wrote:
->=20
->=20
->=20
->> On Nov 12, 2026, at 06:38, sashiko-bot@kernel.org wrote:
->>=20
->> Thank you for your contribution! Sashiko AI review found 1 potential
->> issue to consider:
->> - [Medium] mm/memory-failure: unserialized unpoison_memory() races =
-with
->> HVO head remap
->> --
->>=20
->> commit c0c1b7e9976626bf636152889fd9f5d88944d78b
->> Author: Muchun Song <muchun.song@linux.dev>
->>=20
->> mm/hugetlb_vmemmap: fix lost HWPoison state during optimization
->>=20
->> This commit introduces vmemmap_remap_rwsem to serialize HVO head page
->> remapping against HWPoison state updates in =
-get_huge_page_for_hwpoison().
->>=20
->>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
->>> index 78f0a13349cb3..164a02866fd59 100644
->>> --- a/mm/memory-failure.c
->>> +++ b/mm/memory-failure.c
->>=20
->> [ ... ]
->>=20
->>> @@ -2038,6 +2039,7 @@ static int get_huge_page_for_hwpoison(unsigned =
-long pfn, int flags,
->>> 	bool count_increased =3D false;
->>> 	int ret, rc;
->>>=20
->>> +	guard(vmemmap_remap)();
->>> 	spin_lock_irq(&hugetlb_lock);
->>> 	folio =3D page_folio(page);
->>> 	if (!folio_test_hugetlb(folio)) {
->>=20
->> [Severity: Medium]
->> Does unpoison_memory() also need vmemmap_remap_rwsem when clearing
->> PG_hwpoison and freeing folio->_hugetlb_hwpoison?
->=20
-> I think the following diff will fix this.
->=20
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index 164a02866fd5..abe92db14fbc 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -2814,6 +2814,7 @@ int unpoison_memory(unsigned long pfn)
->=20
->        ghp =3D get_hwpoison_page(p, MF_UNPOISON);
->        if (!ghp) {
-> +               guard(vmemmap_remap)();
->                if (folio_test_hugetlb(folio)) {
->                        huge =3D true;
->                        count =3D folio_free_raw_hwp(folio, false);
-> @@ -2830,6 +2831,7 @@ int unpoison_memory(unsigned long pfn)
->                                         pfn, &unpoison_rs);
->                }
->        } else {
-> +               guard(vmemmap_remap)();
-
-Sorry. This is unnecessary since we already hold a refcount to the =
-folio.
-
->                if (folio_test_hugetlb(folio)) {
->                        huge =3D true;
->                        count =3D folio_free_raw_hwp(folio, false);
->=20
->>=20
->> If a newly initialized hugetlb folio is poisoned by a =
-software-simulated
->> memory failure before HVO acquires vmemmap_remap_rwsem, =
-unpoison_memory()
->> can race with the head page remap:
->>=20
->> CPU0                                CPU1
->> hugetlb_vmemmap_optimize_folio()
->> down_read(&vmemmap_remap_rwsem)
->> ...
->>   vmemmap_optimize_pte()
->>     vmemmap_dup_page_from_list(old_head, ...)
->>                                   unpoison_memory()
->>                                     get_hwpoison_page(..., =
-MF_UNPOISON)
->>                                     folio_free_raw_hwp(old_head, =
-false)
->>                                     =
-folio_test_clear_hwpoison(old_head)
->>     set_pte_at(..., new_head)
->>     flush_tlb_all()
->>                                   /* new_head retains PG_hwpoison and
->>                                    * freed _hugetlb_hwpoison pointer =
-*/
->>=20
->> In get_hwpoison_hugetlb_folio(), passing unpoison =3D=3D true takes =
-the
->> folio_try_get(folio) branch even when =
-!folio_test_hugetlb_migratable(folio),
->> returning 0 on the frozen folio instead of -EBUSY:
->>=20
->> mm/hugetlb.c:get_hwpoison_hugetlb_folio() {
->>   ...
->> 		if (folio_test_hugetlb_freed(folio))
->> 			ret =3D 0;
->> 		else if (folio_test_hugetlb_migratable(folio) || =
-unpoison)
->> 			ret =3D folio_try_get(folio);
->> 		else
->> 			ret =3D -EBUSY;
->>   ...
->> }
->>=20
->> unpoison_memory() then sees ghp =3D=3D 0 and calls =
-folio_free_raw_hwp(folio,
->> false), which skips the folio_test_hugetlb_vmemmap_optimized(folio) =
-check
->> used when move_flag is true and frees the struct raw_hwp_page entries =
-from
->> old_head.  Once CPU0 installs new_head and flushes the TLB, the folio =
-still
->> has PG_hwpoison set and folio->_hugetlb_hwpoison pointing to freed =
-memory,
->> leading to a use-after-free or double free when the list is later =
-walked or
->> freed.
->>=20
->> --=20
->> Sashiko AI review =C2=B7 =
-https://sashiko.dev/#/patchset/20261111093747.50048-1-songmuchun@bytedance=
-.com?part=3D1
-
-
---Apple-Mail=_2CBEFEB8-6775-4F47-B713-146B12E99856
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html;
-	charset=utf-8
-
-<html aria-label=3D"message body"><head><meta http-equiv=3D"content-type" =
-content=3D"text/html; charset=3Dutf-8"></head><body =
-style=3D"overflow-wrap: break-word; -webkit-nbsp-mode: space; =
-line-break: after-white-space;"><br =
-id=3D"lineBreakAtBeginningOfMessage"><div><br><blockquote =
-type=3D"cite"><div>On Nov 12, 2026, at 10:59, Muchun Song =
-&lt;muchun.song@linux.dev&gt; wrote:</div><br =
-class=3D"Apple-interchange-newline"><div><meta charset=3D"UTF-8"><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><blockquote =
-type=3D"cite" style=3D"font-family: JetBrainsMonoNL-Regular; font-size: =
-13px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;">On Nov 12, 2026, =
-at 06:38, sashiko-bot@kernel.org wrote:<br><br>Thank you for your =
-contribution! Sashiko AI review found 1 potential<br>issue to =
-consider:<br>- [Medium] mm/memory-failure: unserialized =
-unpoison_memory() races with<br>HVO head remap<br>--<br><br>commit =
-c0c1b7e9976626bf636152889fd9f5d88944d78b<br>Author: Muchun Song =
-&lt;muchun.song@linux.dev&gt;<br><br>mm/hugetlb_vmemmap: fix lost =
-HWPoison state during optimization<br><br>This commit introduces =
-vmemmap_remap_rwsem to serialize HVO head page<br>remapping against =
-HWPoison state updates in =
-get_huge_page_for_hwpoison().<br><br><blockquote type=3D"cite">diff =
---git a/mm/memory-failure.c b/mm/memory-failure.c<br>index =
-78f0a13349cb3..164a02866fd59 100644<br>--- a/mm/memory-failure.c<br>+++ =
-b/mm/memory-failure.c<br></blockquote><br>[ ... ]<br><br><blockquote =
-type=3D"cite">@@ -2038,6 +2039,7 @@ static int =
-get_huge_page_for_hwpoison(unsigned long pfn, int flags,<br><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span>bool =
-count_increased =3D false;<br><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span>int ret, rc;<br><br>+<span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span>guard(vmemmap_remap)();<br><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	=
-</span>spin_lock_irq(&amp;hugetlb_lock);<br><span class=3D"Apple-tab-span"=
- style=3D"white-space: pre;">	</span>folio =3D =
-page_folio(page);<br><span class=3D"Apple-tab-span" style=3D"white-space: =
-pre;">	</span>if (!folio_test_hugetlb(folio)) =
-{<br></blockquote><br>[Severity: Medium]<br>Does unpoison_memory() also =
-need vmemmap_remap_rwsem when clearing<br>PG_hwpoison and freeing =
-folio-&gt;_hugetlb_hwpoison?<br></blockquote><br style=3D"caret-color: =
-rgb(0, 0, 0); font-family: JetBrainsMonoNL-Regular; font-size: 13px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">I think the following diff will fix =
-this.</span><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">diff --git a/mm/memory-failure.c =
-b/mm/memory-failure.c</span><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: JetBrainsMonoNL-Regular; font-size: 13px; font-style: =
-normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
-normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
-none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">index 164a02866fd5..abe92db14fbc =
-100644</span><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">--- a/mm/memory-failure.c</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">+++ b/mm/memory-failure.c</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">@@ -2814,6 +2814,7 @@ int =
-unpoison_memory(unsigned long pfn)</span><br style=3D"caret-color: =
-rgb(0, 0, 0); font-family: JetBrainsMonoNL-Regular; font-size: 13px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline =
-!important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ghp =3D =
-get_hwpoison_page(p, MF_UNPOISON);</span><br style=3D"caret-color: =
-rgb(0, 0, 0); font-family: JetBrainsMonoNL-Regular; font-size: 13px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline =
-!important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (!ghp) =
-{</span><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;guard(vmemmap_remap)();</span><br style=3D"caret-color: rgb(0, =
-0, 0); font-family: JetBrainsMonoNL-Regular; font-size: 13px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline =
-!important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (folio_test_hugetlb(folio)) {</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline =
-!important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;huge =3D true;</span><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: JetBrainsMonoNL-Regular; font-size: 13px; font-style: =
-normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
-normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
-none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline =
-!important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;count =3D folio_free_raw_hwp(folio, false);</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">@@ -2830,6 +2831,7 @@ int =
-unpoison_memory(unsigned long pfn)</span><br style=3D"caret-color: =
-rgb(0, 0, 0); font-family: JetBrainsMonoNL-Regular; font-size: 13px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline =
-!important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pfn, &amp;unpoison_rs);</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline =
-!important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</span><br style=3D"caret-color: rgb(0, 0, =
-0); font-family: JetBrainsMonoNL-Regular; font-size: 13px; font-style: =
-normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
-normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
-none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} =
-else {</span><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;guard(vmemmap_remap)();</span><br style=3D"caret-color: rgb(0, =
-0, 0); font-family: JetBrainsMonoNL-Regular; font-size: 13px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: =
-none;"></div></blockquote><div><br></div><div>Sorry. This is unnecessary =
-since we already hold a refcount to the folio.</div><br><blockquote =
-type=3D"cite"><div><span style=3D"caret-color: rgb(0, 0, 0); =
-font-family: JetBrainsMonoNL-Regular; font-size: 13px; font-style: =
-normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
-normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
-none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline =
-!important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (folio_test_hugetlb(folio)) {</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline =
-!important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;huge =3D true;</span><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: JetBrainsMonoNL-Regular; font-size: 13px; font-style: =
-normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
-normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: =
-none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline =
-!important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;count =3D folio_free_raw_hwp(folio, false);</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><blockquote =
-type=3D"cite" style=3D"font-family: JetBrainsMonoNL-Regular; font-size: =
-13px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><br>If a newly =
-initialized hugetlb folio is poisoned by a software-simulated<br>memory =
-failure before HVO acquires vmemmap_remap_rwsem, =
-unpoison_memory()<br>can race with the head page remap:<br><br>CPU0 =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CPU1<br>hugetlb_vmemmap_optimize_fol=
-io()<br>down_read(&amp;vmemmap_remap_rwsem)<br>...<br>&nbsp;&nbsp;vmemmap_=
-optimize_pte()<br>&nbsp;&nbsp;&nbsp;&nbsp;vmemmap_dup_page_from_list(old_h=
-ead, =
-...)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unpoison_m=
-emory()<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;get_hwpoison_page(..., =
-MF_UNPOISON)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;folio_free_raw_hwp(old_head, =
-false)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;folio_test_clear_hwpoison(old_head)<br>&nbsp;&nbsp;&nbsp;&nbsp;set_pte=
-_at(..., =
-new_head)<br>&nbsp;&nbsp;&nbsp;&nbsp;flush_tlb_all()<br>&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/* new_head retains PG_hwpoison =
-and<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* =
-freed _hugetlb_hwpoison pointer */<br><br>In =
-get_hwpoison_hugetlb_folio(), passing unpoison =3D=3D true takes =
-the<br>folio_try_get(folio) branch even when =
-!folio_test_hugetlb_migratable(folio),<br>returning 0 on the frozen =
-folio instead of =
--EBUSY:<br><br>mm/hugetlb.c:get_hwpoison_hugetlb_folio() =
-{<br>&nbsp;&nbsp;...<br><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span>if =
-(folio_test_hugetlb_freed(folio))<br><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span>ret =3D 0;<br><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span>else if =
-(folio_test_hugetlb_migratable(folio) || unpoison)<br><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span>ret =3D =
-folio_try_get(folio);<br><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span>else<br><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span>ret =3D =
--EBUSY;<br>&nbsp;&nbsp;...<br>}<br><br>unpoison_memory() then sees ghp =
-=3D=3D 0 and calls folio_free_raw_hwp(folio,<br>false), which skips the =
-folio_test_hugetlb_vmemmap_optimized(folio) check<br>used when move_flag =
-is true and frees the struct raw_hwp_page entries from<br>old_head. =
-&nbsp;Once CPU0 installs new_head and flushes the TLB, the folio =
-still<br>has PG_hwpoison set and folio-&gt;_hugetlb_hwpoison pointing to =
-freed memory,<br>leading to a use-after-free or double free when the =
-list is later walked or<br>freed.<br><br>--<span =
-class=3D"Apple-converted-space">&nbsp;</span><br>Sashiko AI review =C2=B7 =
-https://sashiko.dev/#/patchset/20261111093747.50048-1-songmuchun@bytedance=
-.com?part=3D1</blockquote></div></blockquote></div><br></body></html>=
-
---Apple-Mail=_2CBEFEB8-6775-4F47-B713-146B12E99856--
 
