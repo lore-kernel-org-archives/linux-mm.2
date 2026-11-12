@@ -1,82 +1,83 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6A6606A88F
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 12:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5BF0606A8AE
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 12:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=qNWVJIpV
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=pW1q9ZnK
 Received: by kanga.kvack.org (Postfix)
-	id 576046B05BB; Thu, 12 Nov 2026 07:56:53 -0500 (EST)
+	id 045096B05BC; Thu, 12 Nov 2026 07:56:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FE236B05BC; Thu, 12 Nov 2026 07:56:53 -0500 (EST)
+	id F34A16B05BD; Thu, 12 Nov 2026 07:56:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C67F6B05BD; Thu, 12 Nov 2026 07:56:53 -0500 (EST)
+	id DB0EA6B05BE; Thu, 12 Nov 2026 07:56:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 007D36B05BB
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:56:52 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6DD938056D
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:56:52 +0000 (UTC)
-X-FDA: 85426466664.08.6ED2896
-Received: from pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.35.192.45])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4793A140005
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:56:50 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=qNWVJIpV;
-	spf=pass (imf23.hostedemail.com: domain of "prvs=76985aab9=farbere@amazon.com" designates 52.35.192.45 as permitted sender) smtp.mailfrom="prvs=76985aab9=farbere@amazon.com";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794488210;
-	b=0eDz7p38z1PkOfUY+FLJ921i8wUm+4hUvu9IonX0JpsFtvKJ+TypcSpj5kGKcl0nKmABwR
-	mD9wQ0BUNM6U5hkUHD1++0dQZ7zKYJS2D08EgG2IQB7XSyWVutzIp5SsDsauy2QZ3mQMwG
-	kbrbYrGeREJVChV9UFQuUy2RcgPhlQk=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=qNWVJIpV;
-	spf=pass (imf23.hostedemail.com: domain of "prvs=76985aab9=farbere@amazon.com" designates 52.35.192.45 as permitted sender) smtp.mailfrom="prvs=76985aab9=farbere@amazon.com";
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CC7D6B05BC
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:56:54 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0CB59C058A
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:56:54 +0000 (UTC)
+X-FDA: 85426466748.26.383F2E1
+Received: from pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.13.214.179])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D7FD1180004
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:56:51 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=pW1q9ZnK;
+	spf=pass (imf16.hostedemail.com: domain of "prvs=76985aab9=farbere@amazon.com" designates 52.13.214.179 as permitted sender) smtp.mailfrom="prvs=76985aab9=farbere@amazon.com";
 	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794488210;
+	s=arc-20220608; t=1794488212;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=EVX+oMyzcXeSJ6bE2ZvvmvStnTsvmQJ+35dsaVluXZM=;
-	b=n2THYylNAZn51c67zu/XCsKsm962DrpMvgPpn6wnrj+5tve48Lkkso/fnJ20YIJ8yg0DvT
-	Tmj894To2QhS4phUjlwhyL/APOmjScHYPvQMCQFcIl5RfXTrqTurQCmzATlEQ66O6YVPb+
-	a+bMEYVHZ1TF0iaGPLh8CdbOfxCO2sA=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=J2tr6CmVJPxgvJcaHtBjGtsKyEj3R3TudMQySxquzWs=;
+	b=rqWqtQo+OHcipm4VIvCcAFnzKAPYncZU9YwcGTu87vgOKWAThk6uv9y2IywcTHOmi2ydTL
+	LFKL8pYyKhHFvNUaVpOccukG/Ws/ZoCAxNw+2mKc6Fhr7/UojIDlz285P8NkBbiNZB93XO
+	hCX1va9QOxml3TJFNPlyIbLU0uZrSYo=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=pW1q9ZnK;
+	spf=pass (imf16.hostedemail.com: domain of "prvs=76985aab9=farbere@amazon.com" designates 52.13.214.179 as permitted sender) smtp.mailfrom="prvs=76985aab9=farbere@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794488212;
+	b=EcWJwc9CqW7fXXtVox2tyaY4kw5qiBKt4gv8YkvsEHhBzsk8TAOxgbit+EjYyQtfyfo3dm
+	oNJ8DJfQYgz+EeZ4y0UacRf31Dh0Tbcar/rMmOfCiF5a5Z0TOyBQwcl3yVm4lYO0szWLUx
+	WKutgpMnD19wWE+2ipGNz8vD9ZD8QbE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1794488210; x=1826024210;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=EVX+oMyzcXeSJ6bE2ZvvmvStnTsvmQJ+35dsaVluXZM=;
-  b=qNWVJIpVVzzHiQQkClaoSD5rOpkuIfthPvne9qBSdg/hRsdJgK7Xq5vC
-   Ht4q4zQzzOGxoEv8Bj20k+uJQDcwTSMQi+3tes4DsXThFy+wNLbYriHAg
-   ckY5xh0RLotGdk+zo7Seud4Y4DKcj3Rcbm5JfdQPahZ1iOG+XEuhJgwIQ
-   jSsQ0S3qpC9cCcNZK78b+zYKs+rF9gyn/NT/0RmrFK08By8zl96MCTd36
-   Kv7pljXBXkC9niKHIssOTj7Yg/wACe5bmCoalHqRj0of9VO6vJ0vikeuy
-   XnaZx0PmKhtCdSM8qfGF2It3kbfSjVK9NpZBjgmHZBLdM5avK9Yg20bu1
-   Q==;
-X-CSE-ConnectionGUID: Jxrzf8HRTZK+/B1uhUDtZw==
-X-CSE-MsgGUID: n20t8zzdRVe3yPtKV5OymQ==
+  t=1794488212; x=1826024212;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=J2tr6CmVJPxgvJcaHtBjGtsKyEj3R3TudMQySxquzWs=;
+  b=pW1q9ZnKPgSiSyPJdNEEPWSJcWPxqIT4LGNhtMCYJfNMHSB+PPreEZZK
+   gR6JaG2VjqCqJYjZuY+BLKlIg8m9ehq5FJqQGnjeKem0kQTksobBmjOw1
+   Gi2Ntkj7A1hYlddXVQuwKPgLFGwzFKZ6Y4bSGqhfL4SFMx5BiGRdV8sD1
+   Cbv/dF/GKAauT6yb1qyuBYRXb6f2QKxeThd+aej1SSquBRL9/fQl4AOw+
+   8M9zylug2OfqsIMwYZz8j/bEXNbhdfnvL+n8q7FkFkic95EIkUXB6vmoR
+   pQVDk/DkJ7ezKDBFnsmdt3IMKiwBF68Z4ISp9atdO9tXYx5n1XkEsETuH
+   A==;
+X-CSE-ConnectionGUID: txv+//OAQemCHMTRkhRk8A==
+X-CSE-MsgGUID: AnSJ6e6KQEKwCNkr3FxRBQ==
 X-IronPort-AV: E=Sophos;i="6.27,209,1787011200"; 
-   d="scan'208";a="33584639"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 12:56:45 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.182:4196]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.16.231:2525] with esmtp (Farcaster)
- id 128accdf-40db-45a0-97a1-8996731a8517; Thu, 12 Nov 2026 12:56:45 +0000 (UTC)
-X-Farcaster-Flow-ID: 128accdf-40db-45a0-97a1-8996731a8517
+   d="scan'208";a="33788383"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 12:56:48 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:15137]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.10.61:2525] with esmtp (Farcaster)
+ id 7af3b9b8-e90e-4072-981a-146aa3fd39fb; Thu, 12 Nov 2026 12:56:48 +0000 (UTC)
+X-Farcaster-Flow-ID: 7af3b9b8-e90e-4072-981a-146aa3fd39fb
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Thu, 12 Nov 2026 12:56:45 +0000
+ Thu, 12 Nov 2026 12:56:47 +0000
 Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
  (172.19.116.181) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56; Thu, 12 Nov 2026
- 12:56:43 +0000
+ 12:56:45 +0000
 From: Eliav Farber <farbere@amazon.com>
 To: Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman
 	<gregkh@linuxfoundation.org>, David Hildenbrand <david@kernel.org>
@@ -85,29 +86,31 @@ CC: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
  Baghdasaryan" <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn
 	<jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, <linux-mm@kvack.org>,
 	<linux-kernel@vger.kernel.org>, Eliav Farber <farbere@amazon.com>
-Subject: [PATCH v2 0/4] mm, uio: huge PFN mappings for /dev/mem and UIO
-Date: Thu, 12 Nov 2026 12:56:34 +0000
-Message-ID: <20261112125638.12209-1-farbere@amazon.com>
+Subject: [PATCH v2 1/4] mm: add MMAP_PFN_TRACK action and pfn_range_track() for lazy PFN maps
+Date: Thu, 12 Nov 2026 12:56:35 +0000
+Message-ID: <20261112125638.12209-2-farbere@amazon.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261112125638.12209-1-farbere@amazon.com>
+References: <20261112125638.12209-1-farbere@amazon.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: EX19D031UWA004.ant.amazon.com (10.13.139.19) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4793A140005
-X-Stat-Signature: f6keqdy66p83fjqju5cbxsdoxphkj5jj
+X-Stat-Signature: qp8ztrindpq83yjje3ys3ysn74czk9x9
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1794488210-203911
-X-HE-Meta: U2FsdGVkX18mdc/40jQKrt3hETUkRYJRzklHbXNGFx4UAMsI6uzaImzZs8I+mEWXM994lAjW9TwrfKINk+gZAiFf4QyMaP2bS4h2rhoUrH1gEh4YfZFheZoHiDhU+/sIY+cC82glONuSAsL8HcJ1YdVYNwgZqUEONhhcBywHtHND1x0FC8gK9vNr5Wy337tfh3LKaBcS2Tn5VbAX6rgu9Uzr2oURJ/JdHV/2h9Gm7n8IJWwIVrIqqYm7vy8sWCPBLWwHEsKqZEM1yPqNg0FAVOQcJHFBwq+XPm70FjEY1LgvNdKL7edvf+bXk3If0XIeGNO6d4lXvQ6hWg3vCrYn01TQ7aGzI+Q3/REL9TifLoljTxn2NNo3nORA+FpF3+2pXLZtNrXwRdJ+Stw5D8+/CkurAeM9gpVm7WgkrwENDUrNFUYARDPffCxgiXtaZYAj+pguQa/2tpqHEycg0KPBRmpUdZjX/d/2y4WfSlN9kgvbIp7+1/fcSJ3Opwr7PTf6QRbSugWr9fcmmRwvaHQiObTPkWqTyoqUgF/0tnb49BH8Ef1ZG9YKcz/HrSq7u7PV4Q13NqgfbQu+35GKo+U1OifvtcAMV51iwCtUZn9CSBTerhPcxaEJDj6qhh+zi3zTexzx28Y9NjdNzqjzRd/bXGkNz1agRYfE7EOruNBgOS9cXyOjkGwNgaUUa31jQIVKXTuX5laAas9tVsTXIkeXAdZxmFxu0mSULYm3S97WRej8MDGfP10IjlJl98dfwIlsQnO2dU8x4FePTw90nIKBnk384AgXwe8T5+GiJS9GntVTlqqFncT/twfrtz0pkPy/NrcIHtyD6nkqMW3+iwd5tTlZA5fY2DsB7mou7bgb3VQzFcyFj++Adyz8349TuWzo1UotzmhwlypBBIDkk+nsMFqwFrMvxeTfvbiIZ2HfDNO39mCoBDVMdy/j8L9P+KyFtyBene+JtlAc/wXIZ1Q
- Y0L6FQeA
- UaILkix30GVcl3pBIOTUq5A2XD5oAnvTc2YxZS+SbIeMy6PY1v6wIHQwy6TVteHsLHi9w6+p7AQRDwO4Hmte7C1iBc8BOlMG8g0Y25QIvMwwBpfMN0JVHFScJGkgecZ17/eYpIPPJqd/tP/Bg5ej7WUPiPILEOV+hnS9h/MKhfDLCCIswlnx5Uscjb3cBN8geP88f1g/YbXEOHIVL5BhRLFzcH+VFHu7so2Ui/DKrv7euV/OhHlOYFuH5eomJn+4Y3PtGRCygBRB00zpq5TKyZz6q1e8k2XdjjYQo8ZOQG872qV06CM2l+BCGpGV22rGy/poo1ML3aw6WQUq/RCGTFqWl6/CZM+u8U60PVBVmN8wH0VkPfBSq6PdpPR76ZGr7vxiwb6Qc1BokulYsl9KOQtkibJJBM+Is6kqURVO63FkB2xcJXEr0pjw9iEgv7lK1Q+ISvT6z6aSEU+DPZmGpqEuxekCDvuiYeFDUF10v51rMhEDkmu5tLMuPWHyb8g1aM1upvpKGLue+Oc8Xt4On+MHyAq5wTI/6u0xwgyk8WJHSnDH2hQSyDh6jdRDx3OmqCoZsSXa/fNd8XSQEmTW2Xinr2IVRvk9E+p3tis0FUZnuuXM83jeD3Dit4WU3QFFmMCZPT4ZIoI1GIoh1ArDLdXg1e9JOzs6qduP5IwrVZ5n+UiUtpIsP+t83q0bYwSRE5CASzj8q54xhqoJDlGEY5C1JRH6qvLGnjn9V
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: D7FD1180004
+X-HE-Tag: 1794488211-142890
+X-HE-Meta: U2FsdGVkX18FY0wC32d0ePmEyH9lPCsqj7yI/BVv2KX6u3s2lXcNVKppKZHKw1/qFf8nIGPZ7zJjkeDgB4oaiI5BrD9QSALDBbGtBIUo26NUMPztSCipnyXvNU6iRMamYrKpZlZH7Xqon8d1N37BUB0FZbIaAbq1geK5+nKdXEThxt5n03R6B+qm7nxVROo7cAVoTYeD+F7NGiCRunLC6qOSqrp7OkByAjUY35NBdFphO/ai8LyuiZwQ8Akb6zJezREWb7c5gMtesR/0P0VVTh42BTi6beugQRHHWFg3ZYjpixJDBRHMPx1LLkq7jGfmCpvydDygDZ6dQLttNw+aSLl181lPA5LmFdpYpPhMCfqoWhXCzfng+03sAQiy/b3da1cib1NeJCk2QD6RGb+qoUCR3YEgHTRbuItgGy4JAsfex8j11imYIxBqXrrrZiqiOH8tWitwdPifqI6vwlBghp+LHPQpKUdqBSRus+8FHcyctIrMERqJ2uHiyRFGMpVTbnbBxv2EqSHWZqTuprJs7Wp0tTaF4URIHHh6dR8OFoBAilhDhqK0XOu7qphbYKPPYaxhFNcjQcrQQjbyh4SM6uoXWo5gR90vD5pdMFgGm3Ab7pkBd7LB2x6KWs2rq8MfBf1GoxVx5QVKLE5LGzOU4lz7o3WEVDjDP3aQvwJctOPYe2SeP52HRVpVCOvi4qtcyS9epDywV9Z9Wqg3fkAzfbG65R6yprMuMuU/d5x/a7aU6uvaFTWDj4eydPF7mTMI5ySDESZ8pZqH92dd6Ic23M9nKAjxL2ltPPnnWmkxoeZxUgMKfbqye913fo3DLz67tgqcROXVBHJtlJUgORWX4ccQcOnLdTdStmcp6aSWN4MeIAS8AAmEmgbYR3LTEwYyfgDILHn+2s/D6B4/IHdfMe3VhJaxLsocw9TAs2/WxFXh7Kj769yNM73tpl7bQxfiBbpSqBCd23MZ2+CRe6c
+ Fo0MLKzR
+ cF3qoQR8ua0FXKcwFJ/atsLHtFNfmW7n6ChVpfeEVGI9PrXy90njPklJx4/ae1iqkOci2jKxT5QmVUgkwVx9pzjuXZ/TTJbJX9VcZUM9EkJLzVDmcZF/2kK4Cvq9+TLHwmu8VVDTtVAH/RIHgFvM/1Y8h64T4APch/XdU2gNP/Exw/nuZqObEZMhLHKqv3eqE/TD4bQczCRs46cY36+2oBnxaWH8CndPgvcJepv4owBBXifQMvtSoV5AKdAPn+CbUxkPPjHcpXhlUmo69TbVgiOgW2RxWSKiMhbr5deUORPwg1yzQz6Ik7cStjms+FVizm3+eUb8xcJYKNVkHgYo7prYy7K66003CfEYffSFenDP4fmDTeWB7Xte4kDx8IP89ouVGajgupje7xKlNVaFF7rheGIDjs5HNPn58P7qDb9Jn7Nx5fM1JG0tvGyZtSkL5uQorRhCq0kl3QI/ryPtquo+74BqfO5J3eaTpiZ7h8R3lculdrTdD4kdea1wKNjzp9DVYQ9ly0NuKlIZ2TtsaX+7jQFUehfgjPXd2Jj33cbcNwKhWUeUPquZa+Qeb5/5py2qwDysQK+wgbJp8G8BdFvCzl+HOG5Ir3BHtI3KkTepKinQy844vTGqyYD18QLYY901iU62FW4OvgDNjKLCP22qGg/q9rSrBnMYMfrc8Pjx7wTTiYgY2A/6FM3DI7TCaDB9JfRX/qaRCVfumSUldhdlX+F9r6RdKLh2vvnbPyamuNvNSMboEN5AfoQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,194 +119,268 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-/dev/mem and UIO both hand large, well-aligned physical regions to
-userspace, and both populate them eagerly at mmap() time with
-remap_pfn_range(), that is with 4K PTEs however large and well aligned
-the region is. vfio-pci moved to fault-driven population in commit
-f9e54c3a2f5b ("vfio/pci: implement huge_fault support") and gets PMD and
-PUD mappings where alignment allows. This series does the same for
-/dev/mem and UIO, and factors out the logic vfio-pci open-codes so that a
-third driver does not have to repeat it.
+Drivers that expose a physical PFN range to userspace have traditionally
+used remap_pfn_range(), which both populates the page tables eagerly and,
+on x86, reserves the range's memory type in the PAT memtype tree via
+pfnmap_track() -> reserve_pfn_range() -> memtype_reserve(). That
+reservation is what lets the kernel detect and reject a second mapping of
+the same physical range with a conflicting cache attribute (e.g. WB vs
+UC/WC), which can otherwise cause data corruption or inconsistent cache
+state.
 
-Two things have to be solved to do this outside vfio-pci:
+Drivers that instead populate a PFN mapping lazily from a fault handler
+(via vmf_insert_pfn()/vmf_insert_pfn_pmd()/vmf_insert_pfn_pud(), e.g. to
+obtain huge PFN mappings on fault) get no such reservation: those helpers
+only call pfnmap_setup_cachemode_pfn(), a lookup-only wrapper that never
+reserves. Such mappings are therefore never registered in the PAT memtype
+tree and conflicting mappings go undetected.
 
-1. remap_pfn_range() reserves the range's memory type in the PAT memtype
-   tree, via pfnmap_track() -> reserve_pfn_range(). The vmf_insert_pfn*()
-   helpers only look the memory type up, they never reserve. A driver
-   that populates lazily therefore loses the conflict detection that
-   rejects a second mapping of the same physical range with a
-   conflicting cache attribute. Patch 1 adds pfn_range_track(), which
-   sets the VMA up as remap_pfn_range() would and reserves the range for
-   the VMA's lifetime, but leaves population to the fault handler. For
-   ->mmap_prepare drivers, where no VMA exists yet, it adds an
-   MMAP_PFN_TRACK action.
+Add pfn_range_track(): it sets up the VMA exactly as remap_pfn_range()
+would (VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP flags), reserves
+and tracks the whole VMA's PFN range for its lifetime by attaching a
+pfnmap_track_ctx to the VMA (released automatically on VMA teardown),
+but does not populate any page tables - population is left to the
+caller's fault handler. COW mappings are rejected, as the fault-driven
+vmf_insert_pfn*() helpers cannot populate them.
 
-2. The order dispatch itself: the window and alignment checks, and the
-   pfn_modify_allowed() check that vmf_insert_pfn_pmd() and
-   vmf_insert_pfn_pud() skip but the order-0 path performs. Patch 2 adds
-   vmf_pfn_order_ok() and vmf_insert_pfn_order(), split in two so a
-   driver can apply its own policy between the check and the insert.
+On architectures without PFN tracking (!__HAVE_PFNMAP_TRACKING) the
+reservation is a no-op, matching remap_pfn_range()'s notrack path; the
+VMA flag setup still happens.
 
-Patches 3 and 4 convert /dev/mem and UIO to use them.
+For drivers that use ->mmap_prepare, where no VMA exists yet, add an
+MMAP_PFN_TRACK mmap action and a mmap_action_pfn_track() helper. It sets
+up the VMA like MMAP_REMAP_PFN, and on completion tracks the range like
+pfn_range_track() instead of populating it. Mirror the new action type
+in the tools/testing/vma copy of the enum.
 
-Dependency on the huge-pfnmap mm fixes
-======================================
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+---
+ include/linux/mm.h              | 19 +++++++
+ include/linux/mm_types.h        |  1 +
+ mm/internal.h                   |  3 ++
+ mm/memory.c                     | 93 +++++++++++++++++++++++++++++++++
+ mm/util.c                       |  7 +++
+ tools/testing/vma/include/dup.h |  1 +
+ 6 files changed, 124 insertions(+)
 
-A VM_PFNMAP mapping that provides both ->fault and ->huge_fault can take
-faults of different orders on the same entry, because the mm's THP policy
-is read early in each fault and is not held across it. mm does not
-survive that race today. Patches 3 and 4 give /dev/mem and UIO exactly
-that shape, so they add two more reachable paths to it.
-
-The fixes are posted separately, as they stand on their own - vfio-pci,
-mshv_vtl_main and nvgrace-gpu already have the same shape:
-
-  [PATCH v2 0/4] mm: fixes for huge PFN mappings
-  https://lore.kernel.org/all/20261112051440.16140-1-farbere@amazon.com/
-
-This series wants them underneath it. Without them, a losing fault hits
-the walk_to_pmd() assertion under CONFIG_DEBUG_VM, reports VM_FAULT_OOM
-for a healthy mapping, or trips the pfn-mismatch warning in insert_pmd()
-when a concurrent order-0 fault has installed a page table.
-
-The write flag
-==============
-
-Patch 2 also passes the fault's write flag to vmf_insert_pfn_pmd() and
-vmf_insert_pfn_pud(), as the DAX and DRM ->huge_fault handlers do, rather
-than the literal false that vfio-pci passes. With write=false,
-insert_pmd() leaves a present read-only entry in place and returns
-VM_FAULT_NOPAGE, and wp_huge_pmd() splits the entry only on
-VM_FAULT_FALLBACK, so a store to a mapping that soft-dirty tracking
-write-protected faults forever. uffd-wp cannot apply here:
-vma_can_userfault() rejects a VM_PFNMAP vma at its mm-backed test.
-vfio-pci has the same problem today and has no ->pfn_mkwrite either;
-that needs a separate patch, which I have not written.
-
-The order-0 path takes the flag too, so the helper does not behave
-differently at different orders. A CPU store does not need it: the
-order-0 fault installs a read-only entry and the store faults again,
-where do_wp_page() -> wp_pfn_shared() upgrades it. A caller that faults
-a page in without retrying the access, fixup_user_fault() from an
-->access handler, gets no second fault. I have not been able to observe
-that combination failing on /dev/mem or on either UIO memtype, so this
-is consistency rather than a fix for an observed failure.
-
-Testing
-=======
-
-Tested on x86_64 at 7.4-rc2, and on arm64 at 7.3.4, which is what the
-test hardware runs. The four patches are identical in both trees.
-
-On arm64 Cortex-A75: a local selftest over UIO map0, UIO map1 and
-/dev/mem reports 64 passed, 0 failed and 3 skipped of 67, the skips
-being the soft-dirty case, which needs CONFIG_MEM_SOFT_DIRTY.
-tools/testing/selftests/mm/pfnmap.c passes 6/6 on /dev/mem and 6/6 on
-/dev/uio0, and a COW-specific test passes 6/6. dmesg is free of warnings
-and call traces. The fault counts are unchanged from v1 and confirm the
-huge path: 4 faults for four PMD windows where a 4K mapping needs 2048,
-2 for a two-window PMD-offset mapping, 1024 for a 4K-offset mapping of
-1024 pages, 2048 for a deliberately misaligned VA, and 0 on a second
-pass.
-
-x86_64 under QEMU, with a 4G ivshmem BAR as the test region and a small
-lab module exposing it through UIO:
-
-  functional suite, 30 checks                   30/30
-  the same plus MEM_SOFT_DIRTY, 31 checks       31/31
-  PTE/PMD race suite, 6 checks                  6/6
-  COW suite, 6 checks                           6/6
-
-The soft-dirty config turns what the other configs skip into two real
-checks, a PUD and a PMD write-protected store, which exercise the
-huge-order write-flag handling described above. The race and COW suites ran
-on this series with the fixes series above applied under it.
-
-The COW change in patches 3 and 4 was confirmed by building the same
-tree twice and changing nothing else. With ->fault left installed on the
-COW vma, eight threads racing a store and a read over 2000 rounds land
-
-  kernel BUG at mm/memory.c:2989!
-  RIP: 0010:vmf_insert_pfn_prot+0xfb/0x100
-
-and the guest then wedges, because BUG() in a fault path leaves
-mmap_lock held. With the separate COW vm_operations_struct the same run
-survives, 6/6. The intermediate shape - keeping ->fault but returning
-VM_FAULT_SIGBUS for a COW vma - is not enough either, and was observed
-raising a spurious SIGBUS on a healthy mapping at 200 rounds with
-four threads,
-because installing ->fault at all skips the recheck in do_fault() of a
-pte found cleared under the page table lock.
-
-Build-only checks, all with KCFLAGS=-Werror W=1:
-
-  m68k ColdFire, CONFIG_MMU=n            vmlinux links
-  riscv64, THP and UIO enabled           mm/ and drivers/uio/ build
-  tools/testing/vma                      29/29
-
-riscv64 is the only other architecture selecting
-HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD, and its defconfig leaves THP and UIO
-off, so both were turned on for that build.
-
-Two things none of this reaches: 1G PUD mappings anywhere but x86, as the
-test hardware has no suitable 1G-aligned region, and the huge zero folio
-fallback in patch 2, which needs STRICT_DEVMEM=n and has no check
-targeting it.
-
-Performance
-===========
-
-Unchanged from v1, where the numbers are tabulated; nothing in v2 touches
-the huge path. On arm64 the fault counts were re-measured and are
-identical: 128 faults for a 256MB /dev/mem region against 65536 for a 4K
-mapping, and 4 against 2048 for an 8MB UIO region. Against today's eager
-mapping the series cut mmap() by 95x on the 256MB region and 5.6x on the
-8MB one, total setup by about 12% on both, and the dTLB read-miss count
-by about 80x.
-
-Changes since v1
-================
-
-- Patch 2: the order-0 path passes the fault's write flag too, so a
-  caller that does not retry the access, fixup_user_fault() from an
-  ->access handler, is not left with a read-only pte.
-  vmf_insert_pfn_prot() keeps its signature; its body moved into a
-  static __vmf_insert_pfn_prot() taking mkwrite.
-
-- Patches 3 and 4: COW mappings get their own vm_operations_struct
-  defining only .access, instead of a COW test inside the fault
-  handler, which was not enough: installing ->fault at all skips
-  do_fault()'s recheck of a pte cleared under the page table lock.
-
-- Commit messages: corrected the L1TF claim in patches 3 and 4 -
-  mmap(PROT_NONE) above l1tf_pfn_limit() now succeeds, and nothing
-  fails later - and dropped patch 2's claim that uffd-wp can
-  write-protect such a mapping.
-
-- Patch 3: the commit message now also documents what the fault-time
-  range_is_allowed() re-check changes without CONFIG_IO_STRICT_DEVMEM,
-  where revoke_iomem() is a no-op.
-
-The write-flag and COW changes came from sashiko-bot's review of v1.
-
-v1: https://lore.kernel.org/all/20261111113045.35368-1-farbere@amazon.com/
-
-Eliav Farber (4):
-  mm: add MMAP_PFN_TRACK action and pfn_range_track() for lazy PFN maps
-  mm: add vmf_insert_pfn_order() and vmf_pfn_order_ok() helpers
-  mm/char-mem: implement huge_fault support for /dev/mem
-  uio: implement huge_fault support for physical mappings
-
- drivers/uio/uio.c               | 118 ++++++++++++++++--
- include/linux/mm.h              |  47 ++++++++
- include/linux/mm_types.h        |   1 +
- mm/char-mem.c                   | 108 ++++++++++++++++-
- mm/internal.h                   |   3 +
- mm/memory.c                     | 208 ++++++++++++++++++++++++++++----
- mm/util.c                       |   7 ++
- tools/testing/vma/include/dup.h |   1 +
- 8 files changed, 458 insertions(+), 35 deletions(-)
-
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 6af3b7008f1a..c11bdee1596a 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4752,6 +4752,23 @@ static inline void mmap_action_ioremap_full(struct vm_area_desc *desc,
+ 	mmap_action_ioremap(desc, desc->start, start_pfn, vma_desc_size(desc));
+ }
+ 
++/**
++ * mmap_action_pfn_track - helper for mmap_prepare hook to specify that the PFN
++ * range backing the entirety of a VMA should be tracked, but not mapped.
++ * @desc: The VMA descriptor for the VMA.
++ * @start_pfn: The first PFN in the range.
++ *
++ * The VMA is set up as for mmap_action_remap_full(), but no page tables are
++ * populated: the mapping is populated on demand from the driver's fault
++ * handler. Must not be used for a COW mapping. See pfn_range_track().
++ */
++static inline void mmap_action_pfn_track(struct vm_area_desc *desc,
++					 unsigned long start_pfn)
++{
++	mmap_action_remap_full(desc, start_pfn);
++	desc->action.type = MMAP_PFN_TRACK;
++}
++
+ /**
+  * mmap_action_simple_ioremap - helper for mmap_prepare hook to specify that the
+  * physical range in [start_phys_addr, start_phys_addr + size) should be I/O
+@@ -4973,6 +4990,8 @@ struct vm_area_struct *find_extend_vma_locked(struct mm_struct *,
+ 		unsigned long addr);
+ int remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
+ 		    unsigned long pfn, unsigned long size, pgprot_t pgprot);
++int pfn_range_track(struct vm_area_struct *vma, unsigned long addr,
++		    unsigned long pfn, unsigned long size);
+ 
+ int vm_insert_page(struct vm_area_struct *, unsigned long addr, struct page *);
+ int vm_insert_pages(struct vm_area_struct *vma, unsigned long addr,
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 1ed35d258d2e..b4dfc1b12c2e 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -821,6 +821,7 @@ enum mmap_action_type {
+ 	MMAP_SIMPLE_IO_REMAP,		/* I/O remap with guardrails. */
+ 	MMAP_KERNEL_PAGES,		/* Map kernel page range from array. */
+ 	MMAP_DISCONTIG_KERNEL_PAGES,	/* Map kernel discontig page range. */
++	MMAP_PFN_TRACK,			/* Track PFN range, map on fault. */
+ };
+ 
+ enum discontig_kernel_page_action {
+diff --git a/mm/internal.h b/mm/internal.h
+index e3f92883bf23..58a81f6041a9 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1546,6 +1546,9 @@ int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm);
+ int remap_pfn_range_prepare(struct vm_area_desc *desc);
+ int remap_pfn_range_complete(struct vm_area_struct *vma,
+ 			     struct mmap_action *action);
++int pfn_range_track_prepare(struct vm_area_desc *desc);
++int pfn_range_track_complete(struct vm_area_struct *vma,
++			     struct mmap_action *action);
+ int simple_ioremap_prepare(struct vm_area_desc *desc);
+ int map_kernel_pages_prepare(struct vm_area_desc *desc);
+ int map_kernel_pages_complete(struct vm_area_struct *vma,
+diff --git a/mm/memory.c b/mm/memory.c
+index ec3d9d99ccee..ab29ec719ae1 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3420,6 +3420,99 @@ int remap_pfn_range_complete(struct vm_area_struct *vma,
+ 	return do_remap_pfn_range(vma, start, pfn, size, prot);
+ }
+ 
++#ifdef __HAVE_PFNMAP_TRACKING
++static int do_pfn_range_track(struct vm_area_struct *vma, unsigned long pfn,
++			      unsigned long size)
++{
++	pgprot_t prot = vma->vm_page_prot;
++	struct pfnmap_track_ctx *ctx;
++
++	if (vma->pfnmap_track_ctx)
++		return -EINVAL;
++
++	/*
++	 * prot only receives the reserved cachemode here; the fault-time
++	 * vmf_insert_pfn*() helpers look it up again via
++	 * pfnmap_setup_cachemode_pfn().
++	 */
++	ctx = pfnmap_track_ctx_alloc(pfn, PAGE_ALIGN(size), &prot);
++	if (IS_ERR(ctx))
++		return PTR_ERR(ctx);
++
++	vma->pfnmap_track_ctx = ctx;
++	return 0;
++}
++#else
++static int do_pfn_range_track(struct vm_area_struct *vma, unsigned long pfn,
++			      unsigned long size)
++{
++	/* No PFN tracking on this arch; cachemode is left as-is. */
++	return 0;
++}
++#endif
++
++/**
++ * pfn_range_track - reserve and track a PFN range for a VMA without populating
++ * @vma: user vma to track the range for
++ * @addr: target page aligned user address to start at
++ * @pfn: page frame number of kernel physical memory address
++ * @size: size of mapping area
++ *
++ * Reserves the PFN range's memory type (PAT on x86) and attaches a tracking
++ * context to @vma for its lifetime, so that conflicting cache-attribute
++ * mappings of the same physical range are detected, but does not create any
++ * page table entries. Intended for drivers that populate the mapping lazily
++ * from a fault handler (e.g. via vmf_insert_pfn()), where the fault helpers
++ * only look up the cachemode and do not perform the reservation themselves. The
++ * VMA flags remap_pfn_range() would have set are set here too.
++ *
++ * Must cover the whole VMA. Must not be a COW mapping: the fault-driven
++ * vmf_insert_pfn*() helpers cannot populate one. Must be called with the mmap
++ * lock held for writing: it sets VMA flags and attaches the tracking context.
++ *
++ * Return: %0 on success, negative error code otherwise.
++ */
++int pfn_range_track(struct vm_area_struct *vma, unsigned long addr,
++		    unsigned long pfn, unsigned long size)
++{
++	int err;
++
++	if (vma_is_cow_mapping(vma))
++		return -EINVAL;
++
++	if (addr != vma->vm_start || addr + PAGE_ALIGN(size) != vma->vm_end)
++		return -EINVAL;
++
++	err = remap_pfn_range_prepare_vma(vma, addr, pfn, size);
++	if (err)
++		return err;
++
++	return do_pfn_range_track(vma, pfn, size);
++}
++EXPORT_SYMBOL_GPL(pfn_range_track);
++
++int pfn_range_track_prepare(struct vm_area_desc *desc)
++{
++	const struct mmap_action *action = &desc->action;
++
++	/* See pfn_range_track(). */
++	if (vma_desc_is_cow_mapping(desc))
++		return -EINVAL;
++
++	if (action->remap.start != desc->start ||
++	    action->remap.size != vma_desc_size(desc))
++		return -EINVAL;
++
++	return remap_pfn_range_prepare(desc);
++}
++
++int pfn_range_track_complete(struct vm_area_struct *vma,
++			     struct mmap_action *action)
++{
++	return do_pfn_range_track(vma, action->remap.start_pfn,
++				  action->remap.size);
++}
++
+ static int __simple_ioremap_prep(unsigned long vm_len, pgoff_t vm_pgoff,
+ 				 phys_addr_t start_phys, unsigned long size,
+ 				 unsigned long *pfnp)
+diff --git a/mm/util.c b/mm/util.c
+index 80f6c714844f..5332030ed370 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -1546,6 +1546,8 @@ int mmap_action_prepare(struct vm_area_desc *desc)
+ 		return 0;
+ 	case MMAP_REMAP_PFN:
+ 		return remap_pfn_range_prepare(desc);
++	case MMAP_PFN_TRACK:
++		return pfn_range_track_prepare(desc);
+ 	case MMAP_IO_REMAP_PFN:
+ 		return io_remap_pfn_range_prepare(desc);
+ 	case MMAP_SIMPLE_IO_REMAP:
+@@ -1583,6 +1585,9 @@ int mmap_action_complete(struct vm_area_struct *vma,
+ 	case MMAP_REMAP_PFN:
+ 		err = remap_pfn_range_complete(vma, action);
+ 		break;
++	case MMAP_PFN_TRACK:
++		err = pfn_range_track_complete(vma, action);
++		break;
+ 	case MMAP_KERNEL_PAGES:
+ 		err = map_kernel_pages_complete(vma, action);
+ 		break;
+@@ -1611,6 +1616,7 @@ int mmap_action_prepare(struct vm_area_desc *desc)
+ 	case MMAP_SIMPLE_IO_REMAP:
+ 	case MMAP_KERNEL_PAGES:
+ 	case MMAP_DISCONTIG_KERNEL_PAGES:
++	case MMAP_PFN_TRACK:
+ 		WARN_ON_ONCE(1); /* nommu cannot handle these. */
+ 		break;
+ 	}
+@@ -1633,6 +1639,7 @@ int mmap_action_complete(struct vm_area_struct *vma,
+ 	case MMAP_SIMPLE_IO_REMAP:
+ 	case MMAP_KERNEL_PAGES:
+ 	case MMAP_DISCONTIG_KERNEL_PAGES:
++	case MMAP_PFN_TRACK:
+ 		WARN_ON_ONCE(1); /* nommu cannot handle this. */
+ 
+ 		err = -EINVAL;
+diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
+index dc4927d26296..7bb7392c7fb5 100644
+--- a/tools/testing/vma/include/dup.h
++++ b/tools/testing/vma/include/dup.h
+@@ -455,6 +455,7 @@ enum mmap_action_type {
+ 	MMAP_SIMPLE_IO_REMAP,		/* I/O remap with guardrails. */
+ 	MMAP_KERNEL_PAGES,		/* Map kernel page range from array. */
+ 	MMAP_DISCONTIG_KERNEL_PAGES,	/* Map kernel discontig page range. */
++	MMAP_PFN_TRACK,			/* Track PFN range, map on fault. */
+ };
+ 
+ /*
 
 base-commit: 067c5c24cef23d913b67eaaf71ae67e7169a6620
 -- 
