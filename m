@@ -1,130 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D92EC60713E2
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 08:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B15606A88D
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 08:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jIHacxSG
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PsJ8kMUS
 Received: by kanga.kvack.org (Postfix)
-	id ED5B26B05C1; Thu, 12 Nov 2026 03:38:41 -0500 (EST)
+	id 981AF6B05CB; Thu, 12 Nov 2026 03:41:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EACC26B05C9; Thu, 12 Nov 2026 03:38:41 -0500 (EST)
+	id 932E96B05CC; Thu, 12 Nov 2026 03:41:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9C716B05CA; Thu, 12 Nov 2026 03:38:41 -0500 (EST)
+	id 821526B05CD; Thu, 12 Nov 2026 03:41:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B210A6B05C1
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:38:41 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 41B26A0500
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:38:41 +0000 (UTC)
-X-FDA: 85425816042.15.D0FCFBD
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 61A45C0003
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:38:39 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DBD96B05CB
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:41:07 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DB2221A010F
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:41:06 +0000 (UTC)
+X-FDA: 85425822132.05.4A7A462
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 1CEE4C0005
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:41:04 +0000 (UTC)
 Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=jIHacxSG;
-	spf=pass (imf10.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794472719;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dvTW0HYPuDs0zvfRlKwp5jFkeDKeUCmm+3AkWFYGUPc=;
-	b=SX2faAFAjCy+OS4WxZVppPMKjxgwfPGWNP/Aqk016SAp4wKZJlzsxD/tQ4WF4BezS314+z
-	6mlZ01s2ADwJO6uknwKzGO4wda9YnRZSxikmDdQ1jUzHykdG41Gb6RUtx+wlnH2I9j2EbQ
-	CiT97Pf9U4EZc01Jq1HUXcIiLv7TH2A=
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PsJ8kMUS;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794472719;
-	b=h9p54UYh6xcWgL27FAPsAbYhi4ELMm9hOLHIo+aKgIqtN6MhAJLwFFpTYjA5/4DOqeO43P
-	uT5E+SZ3rSqUU9shSCMI4uFT//RMiN98I3bzlDs8c7NTghvYiLEgmY2+d/LGVOkR5gKOXP
-	Lg+AkqKg8hUaW0fkOPjPQXAi5tcqTY8=
+	t=1794472865;
+	b=wB3b+kzINmEt5JMPoetZxnkyX+LZ4tf3p5M/V4PuziVJ38quE0GHvZWzljFC+s6TdeGkrt
+	WXMv9ph5y8uP43PCP2Z5t4FJEFu4j9lOBF0IxpJSOCCSPDsSvBrUgfkigrNr5M1ef4k7EO
+	d28zG8eLs6RhzwQzJaImhvnIjwbpG2E=
 ARC-Authentication-Results: i=1;
 	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=jIHacxSG;
-	spf=pass (imf10.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3b10ca4e3f9so2287200a91.0
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:38:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794472718; x=1795077518; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dvTW0HYPuDs0zvfRlKwp5jFkeDKeUCmm+3AkWFYGUPc=;
-        b=jIHacxSG1onuY15ypdA0qfXSq0NKvpyYFceaVaSZfITOLypbhyWlU9cpDI/cYOZgHc
-         iOO22YORmvtdr0A/yXZSEHBkUDJ6Gtb+aw+XS0yzYi3hHWtg+0YZnlHsPyem18sOkOuw
-         VyNnruO8JItTvpX2iSb8IljISw3R9op4O55h9cfWeUXKPlpL9ZQvuYvAIoJi9Gbgg+Kr
-         N7OwdLvsHwaIjnaJREAU5rukTpviiMGL9l5RYSNQcs5xUnT57z0Tag3rJLsvw0sf9ZHb
-         bepfby5v14F1nRFsrJ0kFQerIOnpzpiod76WUtG/m3F4kX/tXL21C9za7KIufA89mCh2
-         BdZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794472718; x=1795077518;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dvTW0HYPuDs0zvfRlKwp5jFkeDKeUCmm+3AkWFYGUPc=;
-        b=YsGv7EYgVnBcixq9sKNoAZibD9Y6mXvZAS3ItDa/7+MhjwExPvklI87XAGyzEVu5MY
-         fCmIG2Z3xRjhzkcSXRHG9ZTBIz2zbdxDCop5pOtAZsNuI2PL4JcjRhgH29JQTlGDj4yr
-         AGRPm5tJXqS8wplsRwABLenSPsrvwhz3W/o9CBx/q53RrzeBCaDfCcKId8CwuEZvEmaO
-         JNJBc9MknUg7k9WxwGXCYT2uO38NaYgGQaixDZUFEhsQhSB0c3vUnpc5lcLwVrNm4F0y
-         RxXd1frhSBJXfoy7JXLLJOJks5bOaBA0gbiw9wlyXZi6rs79dApZW/LmvE6BhRMbFpxx
-         52Gg==
-X-Forwarded-Encrypted: i=1; AL+hErG6DbpDkDIMjtZeV5UAFz9ohRylP84zhka1ClJyPRyp5f3b3N+UvgcpfJPdixoWMCqQuyVloi+nng==@kvack.org
-X-Gm-Message-State: APuU4Z9SPUmWpTHCXXBO3TexSeGzz9fI9Sc7Qf/+y3VIDha0AsbersNO
-	kLOQ9AJs7usg//vDw3z0x/3RhYrKLrh7Q/mi2nKzj4DO3B8s7uweonhx
-X-Gm-Gg: AYBFou32MLDpK2608Fw0EbFFgM5Aemcm4pG/nawmQZmPCNRkZ+VCvgMmiL7sMYjCcGl
-	d1ObdCQg1s3WX+79S4C7UltKN5QQpj8kRYK/x6X/XwP4ymjOQjDupCbgaA4/r8Vnlo+kLD06m3z
-	ZKP44oeYGgrLE6j4ZgEQt+z0JzXP/JrecL7dJ7iJyRBfo+pMMlF3/G6OldJ5XdYhUfgWu8JsVPK
-	K4v7FxdFPCWwyt0vcpsaC55S3QS85FFQttBnStJGQHQDMj3U3Wp7f4hRBv0Wn3z40lZFAood7te
-	svq6FSGlBjb4+42IVc/nvtXeTJ7BJxn9o09msfcAn9APwSNLdEB58CxKSMZBHOOvm4Hl/4rusKb
-	suCEZeC4jMeKMU4XNgzU9KQKTSLKouX2cFddj/qeGLjt4P703oF2PDWrN967vaOW2n5Rm33U08D
-	bdFO4K2phua0wFvpaRL4sbbdez3t6CwWqCAQ3LSWpTH+xGeTUvORN0AkY4uSjAb+hX8/utGSl4d
-	YdIpfrKBTN3x2bP0fGJpqNmlO75iVgFgN4pApr/acq8Tt2U98E9+BCARJ3MlPgaIYroqVutqCsb
-	1QuGeE/RMWEwXI2qwObTXX1uSDHbJZRu7AozOoVocl5q7eOuf45a2iLATzKQSjQp5epavWsKkw=
-	=
-X-Received: by 2002:a17:90b:1d0b:b0:3b0:bd53:8e5d with SMTP id 98e67ed59e1d1-3b182fb601fmr3766750a91.58.1794472718076;
-        Thu, 12 Nov 2026 00:38:38 -0800 (PST)
-Received: from KASONG-MC4 ([43.132.141.24])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197c8ab32sm3786590a91.13.2026.11.12.00.38.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 00:38:37 -0800 (PST)
-Date: Thu, 12 Nov 2026 16:38:20 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: David Hildenbrand <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Yu Zhao <yuzhao@google.com>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-Subject: Re: [PATCH] mm/mglru: deactivate anon folios into the oldest
- generation
-Message-ID: <avV52J2rD19cjM2J@KASONG-MC4>
-References: <20261112081928.3014946-1-ridong.chen@linux.dev>
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PsJ8kMUS;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794472865;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fthYHrOF+5dGTgn8Y4kE22m9q7Cd14oHg/PsNYTRC5E=;
+	b=aX7anLEPAgoHdJl1403SSvIHOw7GMBqXPur/oWoHrXRF/ZKkU5QWg1kxFHHakfmztTInGv
+	NhcEuFnQ1TlOA7qASPlvCNFfJE8T2OEENNyIrRwuMTnXc1x73/edhg/Fja/v8iVIHHjaA2
+	1R1yAPk4VRoP8PKjrty0fReyFW+8RWg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5027043927;
+	Thu, 12 Nov 2026 08:41:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB6A1F00A05;
+	Thu, 12 Nov 2026 08:41:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794472864;
+	bh=fthYHrOF+5dGTgn8Y4kE22m9q7Cd14oHg/PsNYTRC5E=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=PsJ8kMUSB3EGJHW5qVwks6Qbwv20bXjnqIFTIR1/ceR+LGf0okaQt5ej3o6UnAG9b
+	 NgCUKP1pJLcvkSnD6BTPbnRvYTZ6/dU4ahXisnoyn+tMutkCXjlfuWiil8rMgs30tE
+	 XdrjWQQgBiuz56RgSslBx2lTpeu0Z/yvVpB7hAJu67AyrU6+0bPx986QjCpCaY4lmS
+	 I8XJG8lbO5ethYZ4njetFgkB1YksOYlFQMwHOTo/Gxi1cvuS38g4iPYz+DJurvIy/D
+	 63hkpRkD9PzX8UJ+4XXJk9KARRtMb3MnFtGpt/bBkqjViDzamXuN+9TuRQnl9HuflR
+	 AHJnt9MR5zn8w==
+Message-ID: <8712ee27-85b0-4342-a3f5-7e9b4425b804@kernel.org>
+Date: Thu, 12 Nov 2026 09:40:57 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261112081928.3014946-1-ridong.chen@linux.dev>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 61A45C0003
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: ru5zydnbge4tfdtg8mmtt56pqs3geuin
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/3] mm: gup: allow long-term pins of CMA-allocated
+ HugeTLB folios
+To: Qi Zheng <zhengqi.arch@bytedance.com>, muchun.song@linux.dev,
+ osalvador@suse.de, akpm@linux-foundation.org, azpijr@gmail.com,
+ lance.yang@linux.dev, Qi Zheng <qi.zheng@linux.dev>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
+References: <cover.1794046188.git.zhengqi.arch@bytedance.com>
+ <586d6c53ab7e4c64d6e89ad3cf0cf7e07dabbfaf.1794046188.git.zhengqi.arch@bytedance.com>
+ <7abb3aa1-385a-422f-86bd-7aac9661c4d8@kernel.org>
+ <423c9b28-ecf2-4fab-817d-2fb326690c73@linux.dev>
+ <3a1a3bb5-0b01-4f20-aa0e-74a952544b8c@kernel.org>
+ <5f68ffba-9f56-4e31-9e7c-9d110f552efc@bytedance.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <5f68ffba-9f56-4e31-9e7c-9d110f552efc@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: zymqdujcms9qqyysi9soz6hr5bs37hpr
+X-Rspamd-Queue-Id: 1CEE4C0005
 X-Rspam-User: 
-X-HE-Tag: 1794472719-133918
-X-HE-Meta: U2FsdGVkX1/Ip+2YkkvdW/ludC86g3HD+FycGsXtXXBZ1U9ApaxUf1u2Wk3RJBUO5mvD1WB6o6Y9H35xH1x3dtern9k3Qiup98myeiJDP1xmHnyQatDVDqDJiMdjRhlSdS2PWxhVugNi9woT11JaGykCyXLWs5z4mlSuN87+zvhsmeXHckL7Vd+cBt1tp5SCOpFkLbwyx4X8SYUD9zX938vWkf2tCq97FWHf0E55ncwv3zcok0nj2wzrJ2T/gDQAubO7nnRzLFAqInun40vhkbQSYcsVB26XpHG0Et41p2y5qGYAkwUT7kxtCDCAtAt27/WtuCa5MITs0SWzWTVCIInx5HnFIJZ9O2cnB+ZyOLlosQS06yYU4g8aicLY9Z+4g4q26xrtgCzD0E4GDSi1AcmljXTV0reUu/lGVuTk8w/+EbdqfRrNEVmUwLYG+/2+HbckjJipD1V+dzBRzTDMKARAbR7CVTzX5EWtJjNdn+cybJv6BUgiaq3Zipf6bH6ddssbcFsvhUEAbX8ZvruG/c6OVC6tY6bcP5r3g6SXuA2b5SSfDMe/CUDiTQ98LeijrrzPX/O0SdVhrqkqztaLyrR1bM/aXV7dzVB4hrdOP3KAp7gfcFK1yvv4vIb7E0cZi7vJtmNFI9r6pkYiU9xEj78SwXL/Fcu1YGaBfKBqeGZsoZfx7viJrKazgbA/3KIsI/dwwuVXQYDwpCG8jEPfE8/4s/EhLkIogfVvVrUTWZqfSPoaYxSaastpymZe1k63IT5yg/tgXlCUfcbnl6lVwgOdlQSBel9+afLwazdRJXQ2agJ1FXPnZRdwGtDCe3mZppKRwvQ54jRuZFGvP5BpdIprf4//UrULud8zlqXKrZfX8zGXvYe00mNhB1hy0g2wYVbs52MNrIb62SSI18fXJBQsrT/Rr82CBu+okOobHpL7F3sIt3Z3gJD4MXzELTfRbiBdBf0b1PwlUOksyqj
- 2OmDo42l
- iOlpUe6WoiDQyO2bvJF2722GzfydaSUEvsKItSCCeu2lLPDhNDVZ1oyF7g8OLC1xGn1KAmsbUEYKRcp8PZnQECPbXG5fwwYLauJ98uQHc8Bocnh4KJTWNYSji9CBUfTaCr7Hx0tu2yAmEv9XqqshkvKJIDcxXxjQQ3ffEBpVXQAMZ4vpilD1r0rSZfMqMrR5KvjGXBUoOBm96lN2c7Xrn9J0lTd8WIln29TDwfKaf9DHXM4+CCmgEZXZaO6pRlFjKRGaK/ZCgamkPGxGsp6GNziAQKvT4FLiv0S6oC3si12A44qDZxZGk4uDq8/w97qawLcauGEhWV9AzHTfohxgIfN514PrPWUrVTF+D6aYfNMoDJm9QIcXG6R5p2g8H3wjFbED5ypyCoB6a6uzLY7c497IGKfi392zbwmhjNKqVwa5wiNIOqBiaZGFVjxfhyu6jttocc+OIpwct6JU=
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794472864-435582
+X-HE-Meta: U2FsdGVkX195LKA7HJNewth7bS9T/t3gcup/z9//qvdtwhnjDO3K60VLZhfOv6UFNqHGxU9s8Kr60JanKIVecj3o+JaGwihY8uFnrjzIVYHCZvb0pCgarXy13LPbdqz0Dcez6zYSfUY564G82Dr2jb0xo+Ww49qU0f5a8XFVEujkSV9fxCJQCg99kviPSckShFUV6ND48Ab4HuDSJoQtTTdVInVVMU8tSFru0KrCH0IOQCyFrypzALQzEvcsWOMA8ZoHZ8tnDo3J/WgrAnofQ/1Hpxf86pIdoZtwZnmt13KnQKO3ydlOZI90WxYb7C8YDTwsbEI203f9AW+75A4yLbjjJM/SJ8kKeQG0YAgkaX6JeOh+590l0rXzJvdVNtdjGMMtiQ13ZYEGvBRFrDp2s5hzx70cjWN0wbU0Tiv2BltekcPNaqcRkarrI3QYzewkpqaRpFsi9wzDAcS0D6SsRssZH44+BDpuLQsw+iq+4CmKhkiXmAJ0PQuvdJKyW1JrfrhmHG4pFVZsnRQRLO2WS9g+mmEMA9iWi//DlWFRAuPsh+p85+fTYCbuu7ptDoHyKVrPfN2KVJgSS4QHxMJ0oXjjcbZLPaH/nArew+tFkuTolxFwtltGBP2pQQrnqdTGPdISzOwuLuNoP2JlZ4rUKf8IXt9wv1T9nHmWyM5mrQZYoTBLNViqatyA0CoSc4q/u4cwDbvhZWHUj6vOEsjCOJBSxIuExXy7aKf3An02PHjSzE9OV7GO16n8G2DdPpsnnhoa7q66i9FYG1LRSdeShX9vJG9+EZaDUGkZzjRnbgQ3MGcoQqEUvs6T120p0hqjuDjGzVJJbKVQYAJnKlvPuouinsUXlq50pWKOW5rF1JaAFZzBXLDFNRAj2CkhxRss5iTy3h0RsPoDjlJlfcF0Z6dnj768FYwKxf8KnwDE/75t0aGhD3pI7rpZXlyoxdMVIbAGiiUXH0KL589K+hl
+ eFwHOYqL
+ 1/8JY5Qrtgs85uCC8zwihHWj5P8O32qQ44/EsfwW3tcl2t2JjcgFe0kBuvzkdwS6R83WNUT9hNSa+aywsJt5sbMAsnwdeKXShN/KnZuuHO7AoUQ5XWu/HcgFoLEWvhwz3R0wRCXoneEiERSu6/rjSGZlj7E3Jxlys0dmvdttiL8fwGyJ/dHs+q6lLXgEsa7ksIOr9KZBpK57fABMQ6PWa07CeBF0IkjOhMxTBjsIQC/j5xMb8j7Ktc9ur37aJrXmW0VMQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,83 +147,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 04:19:28PM +0800, Ridong Chen wrote:
-> From: Ridong Chen <chenridong@xiaomi.com>
+On 11/11/26 11:26, Qi Zheng wrote:
+> Hi David,
 > 
-> folio_deactivate() is used by MADV_COLD and DAMOS_LRU_DEPRIO to move a
-> folio towards eviction. lru_deactivate() does that by deleting the folio
-> from its LRU list, clearing PG_active and PG_referenced, and adding it
-> back with lruvec_add_folio().
+> On 11/11/26 3:43 PM, David Hildenbrand (Arm) wrote:
+>> On 11/9/26 04:10, Qi Zheng wrote:
+>>>
+>>>
+>>>
+>>
+>> You resent your series way too fast.
 > 
-> With MGLRU, lru_gen_folio_seq() places a swap-backed folio that is not
-> in the swap cache, i.e. an anon or shmem folio, into max_seq - 1,
-> regardless of its refs. That generation is active per
-> lru_gen_is_active(), so such a folio never reaches an inactive
-> generation, and a folio that has aged into min_seq + 1 is moved to a
-> younger generation instead. PGDEACTIVATE is still counted. Other folios
-> are not affected: with their refs cleared they are placed into the
-> oldest generation.
+> Got it.
 > 
-> On a 4-generation memcg, 64MB of aged anon memory in min_seq + 1 ends up
-> in max_seq - 1 after MADV_COLD, while 64MB of file memory in the same
-> generation ends up in min_seq.
+>>
+>> Now we have discussions in to threads, congratulations ;)
+>>
+>>> ;), got it.
+>>>
+>>> I moved the code to resolve a build dependency.
+>>>
+>>
+>> Why can't that be resolved differently? What is the dependency?
 > 
-> As a result, MADV_COLD can make anon memory less likely to be reclaimed.
-> It can be reproduced with a single process in a memcg with swap enabled:
+> The dependency is that the new check wants to use
+> `folio_test_hugetlb_cma()`, which is a HugeTLB-specific inline helper
+> from `include/linux/hugetlb.h`.
 > 
->   1) map two 64MB anon regions A and B and fault them in, A first;
->   2) age the memcg twice through /sys/kernel/debug/lru_gen, so that both
->      regions are in the same generation, min_seq + 1;
->   3) apply MADV_COLD to B only, A is the control;
->   4) reclaim the size of one region from anon only:
->      echo "64M swappiness=max" > memory.reclaim;
->   5) count the swapped out pages of A and B from /proc/self/pagemap.
-> 
-> B is expected to be swapped out instead of A. Three runs on mm-new:
-> 
->                      A swapped out        B (MADV_COLD) swapped out
->   before             16384 pages          15 ~ 128 pages
->   after              0 ~ 157 pages        16384 pages
-> 
-> Use lruvec_add_folio_tail() for MGLRU, which treats the folio as
-> reclaiming and adds it to the tail of the oldest generation, the same
-> place lru_deactivate_file() puts a clean file folio. The other folios,
-> which were added to the head of the oldest generation, are now added to
-> its tail as well, so they are reclaimed first as MADV_COLD intends.
-> 
-> Fixes: 081488051d28 ("mm/mglru: fix underprotected page cache")
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-> ---
+> `folio_is_longterm_pinnable()` currently lives in `include/linux/mm.h`,
+> while `include/linux/hugetlb.h` already includes `linux/mm.h`. So I
+> can't simply use `folio_test_hugetlb_cma()` from `mm.h`
 
-...
+It's all so hacky. :)
 
+core-mm shouldn't have to worry about hugetlb internals like
+folio_test_hugetlb_cma().
+
+>>>
+>>> A generic query may need separate ownership tracking, such as an
+>>> owned_bitmap recording successfully allocated pages. Its updates and
+>>> lookups would also need to handle concurrency with fast GUP.
+>>
+>> Or simply two bitmaps? "trying allocation - allocated"
 > 
->  mm/folio.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
+> As a fix, perhaps this is a bit too complex? :(
 > 
-> diff --git a/mm/folio.c b/mm/folio.c
-> index ea3adb6a89d7..c412d9b398e4 100644
-> --- a/mm/folio.c
-> +++ b/mm/folio.c
-> @@ -583,7 +583,16 @@ static void lru_deactivate(struct lruvec *lruvec, struct folio *folio)
->  	lruvec_del_folio(lruvec, folio);
->  	folio_clear_active(folio);
->  	folio_clear_referenced(folio);
-> -	lruvec_add_folio(lruvec, folio);
-> +	/*
-> +	 * For MGLRU, lruvec_add_folio() places anon folios that are not in
-> +	 * the swap cache into the second youngest generation, which is an
-> +	 * active one. Add the folio to the oldest generation instead, like
-> +	 * lru_deactivate_file() does for clean folios.
-> +	 */
-> +	if (lru_gen_enabled())
-> +		lruvec_add_folio_tail(lruvec, folio);
-> +	else
-> +		lruvec_add_folio(lruvec, folio);
+> Alternatively, we could adjust the timing for setting the bitmap, though
+> this might introduce new concurrency issues.
 
-Hi Ridong,
+I think we had that order reversed in the past. Likely a second bitmap would
+allow us to fix it fairly easily.
 
-One question here, why MGLRU/CLRU have to use two different ways to
-add the folio back?  Will this cause over aggressive reclaim of the
-folio?
+
+-- 
+Cheers,
+
+David
 
