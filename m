@@ -1,109 +1,171 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0707606A332
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 12:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D72606A331
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 12:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZoZIiH6H
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c7b2RtdT
 Received: by kanga.kvack.org (Postfix)
-	id 25E156B05D1; Thu, 12 Nov 2026 07:30:59 -0500 (EST)
+	id F32526B05C3; Thu, 12 Nov 2026 07:32:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 235606B05D3; Thu, 12 Nov 2026 07:30:59 -0500 (EST)
+	id EE1CF6B05DA; Thu, 12 Nov 2026 07:32:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 172276B05D8; Thu, 12 Nov 2026 07:30:59 -0500 (EST)
+	id DAAB26B05DB; Thu, 12 Nov 2026 07:32:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E752A6B05D1
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:30:58 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7E4D01C3DAA
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:30:58 +0000 (UTC)
-X-FDA: 85426401396.10.0DE9B77
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E193D14000D
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:30:56 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZoZIiH6H;
-	spf=pass (imf26.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id AB5326B05C3
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:32:20 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3C0AA160252
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:32:20 +0000 (UTC)
+X-FDA: 85426404840.22.0C66B03
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7223320007
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:32:18 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c7b2RtdT;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794486738;
+	b=cxv7wvJfjxgxSDgz3jfFTV09Pa5bia5Hw/SI2iNdDGM5uDeYiowItfdwjIGvGlf6trITlw
+	LFUtEwjq3Dga/Ay+eG7xMCzEV3rwMOKI5ACqeMj1kojx5MNPVGJFuApiDYg0xuqr68TaLf
+	y3ZRrmaHJQwiVKVaYShKE9N0sS9eLRE=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c7b2RtdT;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794486657;
+	s=arc-20220608; t=1794486738;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HuB4RVeq47mAjcl8ywAJJuIZDoqz1GrNEVj9QlG7uxw=;
-	b=q1YTuLcXribrHpT8DgNJKfhuS9716j+y5eZLozBC4VnGUbwHIdaEo2kdpKIz9RsCGkCPnI
-	Uj52v8d5xyIo4Lf4ZiqjM2IYhd3i2sOQn7gRyA5yqP8OFnj2PgpDJtdUjz7rYclWxJ6ULw
-	1irxaPSMi1WJIXm6n2BdmUFaUARH4n4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794486657;
-	b=SHeFHmzEgV4vvt5ZEXdCSBowiuL8T5WU4qD+mX14F3I25emNLM2PMTXh+3P+RIMlkiSraT
-	Sjfmb6ZBbYYirhKz+ZHeot2C3j2anbPGy7T/3Mp5uitMhbFnlmwGyffIjW6qUhbAyLqjGI
-	h9xvLnGmoaooQaOFdHHC88Xcncy8PhQ=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZoZIiH6H;
-	spf=pass (imf26.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=/0Nn7OA0YlSzxRYVQPnJYHdM+16KC7XB/f6ArytZHYI=;
+	b=NQcQDDkVPfinR0SW05jjKqLoYCpuq49Lk29jz34Ny7Hae0s3JSqcV7HGnqq+mPtyzEoVAb
+	t0Lzx4Dvvs8USfTMjdM9LXD9saE4sNrpF9SP4BA4QySmW5AxADpLpODDrRrHpKWOAZrKDT
+	anVYuIGpIJI71k80bs/G9+tjQIok1gY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5901260CFA;
-	Thu, 12 Nov 2026 12:30:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 554231F00A05;
-	Thu, 12 Nov 2026 12:30:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9E57D47038;
+	Thu, 12 Nov 2026 12:32:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925A91F00A07;
+	Thu, 12 Nov 2026 12:32:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794486656;
-	bh=HuB4RVeq47mAjcl8ywAJJuIZDoqz1GrNEVj9QlG7uxw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZoZIiH6HBScetwa2i+/gfRsMRzPNjlnFzRYqX614RkGLYaIh7eisZ0UhSXVmOzNkq
-	 iiX272073T1ij5rPy8CibUmRnV1euz0tpzgcXVIx3eDcITIHhL8T66yZ1MsaEHAhaK
-	 a6D6I9NwEaJtBwtFhozHjPzWWHNkBYwBOyqqHH2TWyhLsNN85OQdDlNcrEplKV/JIi
-	 QmRjxma+0DfCvJ+JIiYdEw8hVEyHxRtOCm3IIz+MLH5ddk/lEvVakgRBdVH/KEoXWL
-	 iDBeL+N7Ky7AyH4Ra0Lx20gvqYfQ/7PjHolDfUdoDHRcRVE0t8wq3FuDEDN0EFeo8G
-	 8DktUMMfP136w==
-Date: Thu, 12 Nov 2026 20:10:33 +0800
-From: Jisheng Zhang <jszhang@kernel.org>
-To: Yunhui Cui <cuiyunhui@bytedance.com>
-Cc: pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu,
-	alex@ghiti.fr, dennis@kernel.org, tj@kernel.org, cl@gentwo.org,
-	oleg@redhat.com, ast@kernel.org, daniel@iogearbox.net,
-	andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com,
-	martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev,
-	jolsa@kernel.org, emil@etsalapatis.com, ihor.solodrai@linux.dev,
-	bjorn@kernel.org, pulehui@huawei.com, puranjay@kernel.org,
-	broonie@kernel.org, dave@stgolabs.net, david.laight.linux@gmail.com,
-	tglx@kernel.org, conor.dooley@microchip.com, thuth@redhat.com,
-	ajones@ventanamicro.com, ben.dooks@codethink.co.uk,
-	rkrcmar@ventanamicro.com, samuel.holland@sifive.com,
-	zong.li@sifive.com, debug@rivosinc.com, seanwascoding@gmail.com,
-	andybnac@gmail.com, menglong8.dong@gmail.com,
-	cyrilbur@tenstorrent.com, wangruikang@iscas.ac.cn,
-	atishp@rivosinc.com, apatel@ventanamicro.com, arnd@arndb.de,
-	nathan@kernel.org, nick.desaulniers+lkml@gmail.com,
-	morbo@google.com, justinstitt@google.com,
-	qingfang.deng@siflower.com.cn, linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	bpf@vger.kernel.org, linux-arch@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: Re: [PATCH v10 0/9] riscv: optimize percpu access
-Message-ID: <avWsuYF7R5Qiowp_@xhacker>
-References: <20261112104149.38589-1-cuiyunhui@bytedance.com>
+	s=k20260515; t=1794486737;
+	bh=/0Nn7OA0YlSzxRYVQPnJYHdM+16KC7XB/f6ArytZHYI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=c7b2RtdTLtIz0vkgbAYrym+dG29Wb2E4K0rNtFnrkYrU7U6fWrjEz23dl6OtszE3b
+	 SOmtdAoZsy5KeKOC+/VgMAibVVUnSLCsG/PCeEvrEIGROultdLtfMDoMUL3i7GnApO
+	 Yn+9d3ZYvpy2IeNC/EQHse0nkLDcQ+M4G2h17s9JOyv9HNtR1VkRgNXvGKZXsxZQt3
+	 DN+pN2kYgktqaiCUbPuFjYjGbtBNIaeKQJEN6JuzuaeH5P+HGpIYYIxJgfMg+XUtDc
+	 bA2KtlhkNmPnQwEwbuwByZeYSjJOW7Vm7cpwCJ7Zdr1B0890spWvDOK3UsCv9zQk6v
+	 Zk+px+/0oaslg==
+Message-ID: <fa90c536-3b3a-417e-a09f-011a12e73048@kernel.org>
+Date: Thu, 12 Nov 2026 13:32:02 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261112104149.38589-1-cuiyunhui@bytedance.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E193D14000D
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 01/18] mm: free PG_rcu_free folios only after an
+ RCU grace period
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Jan Kara <jack@suse.cz>,
+ Hugh Dickins <hughd@google.com>, Christian Brauner <brauner@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Harry Yoo <harry@kernel.org>,
+ Miklos Szeredi <miklos@szeredi.hu>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, Oscar Salvador
+ <osalvador@suse.de>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ "Paul E. McKenney" <paulmck@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
+ Luis Chamberlain <mcgrof@kernel.org>,
+ Ilya Gladyshev <ilya.gladyshev@linux.dev>, Jaegeuk Kim <jaegeuk@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
+ kernel-team@meta.com
+References: <20261104130118.2507513-1-kas@kernel.org>
+ <20261104130118.2507513-2-kas@kernel.org>
+ <ecad7b3c-7244-425a-9413-04d49f221057@kernel.org>
+ <au2lsbDkyWt-To0C@thinkstation>
+ <aa2a1e32-9b1d-4545-b2e0-03d213593023@kernel.org>
+ <CAHk-=whnH5qLJH3Wd3bOxv--Ei6674Jo4iifGD_MqzyJg2Jm4g@mail.gmail.com>
+ <8504e28f-faeb-41e3-842e-0cb74d1a25ad@kernel.org>
+ <CAHk-=wihE=ioLKrwzz=WQSJg6HhB-syu4hqZ2QFwgnwYmmLEgg@mail.gmail.com>
+ <f39a0ec3-be81-43f0-91e8-145ec139b1bc@kernel.org>
+ <avWv-0LafPyo90ln@thinkstation>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <avWv-0LafPyo90ln@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 57z4reciz68mkfe1hjfq8cp9kjt61qbn
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7223320007
+X-Stat-Signature: gcr8rj5dn8798j3chidjrjox6pn7yorw
 X-Rspam-User: 
-X-HE-Tag: 1794486656-549208
-X-HE-Meta: U2FsdGVkX1/O8bmSY0dFraMmQjzfHcfsFHQpyc07scf5FmpL/2oDA6p408yKT6zf2w5LzjUEapUmLzr+SVCj0IE2L3ZwWGLp1KfDec8gtqc2icsTD4mKYkh5TNIuSgHUblNZhoiivYeGqY9/HWCgLc9XzeWJluf0Ah3f++Wl3nflPYZ2Ro6EtbjNzKbDzpaSzAHs+NMDmBBval5AzRlM5mEtstKmBkzoTuldfC7o5t2pc1N9Mjlysq5Y+7cbiwl83gaB8x/6dI9D9goK76xjySXPk/tsOrsGa2BoEWt9OI5pSTE5PeKrpDugNEnh5X39lay8p3f38x9aMFGisRmRKLyxnZCoLMTXK93mbXgzDQONLlULmMfEzxAqXiC916cqVm1B2nfhu7Kfl3+HM6OV7ft1aufe4cTfkUVwmoEUy1W2Ck0pRIDe9PvRqBmqB7KG0dMNnmzvPsVnn0zBakDmmP/1C4eowzWU1BqRapmFOqQBK5kLBWgR72AtqweIprgacDbIUozrC1TE2AVLQSX83n+FdA5W2YHYwk6c0aszOhrZW6y+bDdF927Sb/HprQ3a1LUw8MxUeRuBwW8DI6+ZW5/k0HGvShwO0fq0rRRJoiNDwtN433HDeUNrgzSHDkcnxYBJB1VPBY8a6I6Tw4YN41tTzRgIWd/hHoGcFVGFyUdLvt1/q8vvjBs2xsCxVaxMejNR20zdXuqb++etyIQ/r6+kE9ONsi5qpXXttbNrVYvMqVNtNAtqTUOWBtvQG+tVZScMcApmbd4kP8+svvKFAYc4b0W8eFaUdo5RIdedrBkLJhdGGIz5Ud5snEHrvWG9JP9QPqapPPyQ+KH8aOAhi7Pd51I1Lo3bNtVddErVKbuI1sSVpsIjcltHs0K5l7G8XDmxhuEXjaWASEKC5gne3MtCyaZz+rrF8jjzer9IqMelro2GYhiHE8Il+UWfVXkEO3g+1Lu8h/HFX6QMaTW
- nlTHHo9A
- rJBTKGcvgZcrQNuAC2ABMwisjB2gGP9PVMiIT0kCYWAuYLAVuCpyQg7JLTD4y9ko9S/8XHtheytA8hEKI3pOeRLE6DPiG9tUKllqP9Fd4UYPKBhQVCTc6n+SLwN1Hgxai4J8FtNGV6hA1a82zAyPgYlE/LqtLx7bnBElrXtkrbV7kbxTBe0+i37/YUcUrrdWtMOeiYkXWcpgrJJnNvKNPzNbRXQUv7w2ca/jbMeJ4cdtJHnguaij+/GvlwdptK/SuUF+rdgDWIYA89yM8LzNqn9bwSPkW843outfQGGwXqMRnLmw/ddwd25L3N1jpncmetj5THdQ07gunAGKwer/b3YEKE0BHAOkM6Na7Ox2n6kZboBGczdSBaQnSeelzNr16QEbC3lew60sgeAgPvpnVfBIZBK00Iup9kTvOZ9a+EljB3iOtroZFLVfJrhzvyVdtnGaT
+X-HE-Tag: 1794486738-182932
+X-HE-Meta: U2FsdGVkX18YElTS2Kynji4Bs61FiuzmEouUIsa8b8MJHsnMolgI0D4BP+UUgVRBHmQjjcfAe5rKl/OnILMHyg3eOi6qf9VqNOtw2TtQDI3OYIIHYEjb49vSs2WZ2FVaQ5PzK1xcGs7gtDvJYeokNgmZ+viMOLykSnEt4HIKEx55jC4Dtd4dcQpWPF+Fidebv2QR5Qgs5/OwBLnw//oYkmDN9kbR95no0H1mHwffu8p/1QUFKrSm9u8AV7xUWJzIas4LrUyE2UUdiM0BU7+uCF6elA2aN7k34BinrMmzcaK0DQyoCwdyD4KapS8e/bPA2M159VAR1GccBg0llcLNmUXPONwlSvcAOoLeXT4+4HFavP4n69Nq3FfZOlIMzeILFeb1vpJwrmUdkqrSrS+yIRlHclPSLBPWB/SzMk+GbgKgNSFR9Gp83CgwydtigD7yASfzm97155ljYFircYufgso+KLge3Iiw1Jh3EOJDymWu+Xj6BjlKVTOtZdFfj0s5hus+2K71tLmQy1xj73XaFbKDK5lB9MR1Zc1EcC17lW87nGyDsH3cbC0HuRotzj97W6xBnNmRa3XoDbG0HhwMarwVj67kZMaJ86Y6D2dUm+iVRsNLKyBsuptT5w0pVbKcZrirIs0TkJASwcZfhI9rgWz2+godeI81JhvFGR8TO1ELEDUGtFpDnMsFQvvNxHS2zwZuP/d7AMsaQKkaKgpRD9ja4R14UD9x/NUoIy1w2WxoLJgn1yXsbx5jIkb4HITPCUSIXdnH64Hs2865sK80uLxAmZolzYfBf22pAvYo9HXXj5CfiItgBNo4EjvoH7992G7fQGVVZs7GZkpq2aZeuy8QM22DLbt/Kg769ZcfU6hp0gOtj/s4NoilDja5/0280y85BLNGks2Iy5AHDdT7NbK3Pn6CpL5raKWcpHwk7/hsd2ys4Gub5vs7notz/i8Ow0i+MyCJlzAhy3Yp6Oz
+ CH8QqMyt
+ 42ZQTf3y5PLmPn7mp/B0iKuNCB0k1HTBSXsTg0N6DSI7WnKk88AfAb0Q2afzSy5vgH2SohwaQgnm12mtXXPuD/iJyYTtvvbjHRQuBEq9Kuy2xO/iDReU8gX2U4+rEUIs/QgvrsBrMbYHUCzBRVPRvIBLtSf1Ruz7b7NFLGVTAwtcfWrpa9XhFHKPf4+KkO5D/OlU8YPj/2Z7ZqDuJDve8pW1/9/hzcq2AcfX7NRuBTlLDfDQbgvyqr2iTNW5hjf4tKSnY9jUHwyAReBFJ39u44y+beftXOQQnXCoIZOQ3SSYLLjb09Bjr7/GT8hgDj+goAGHU27TQSrIuW1wu/nNCXdUhSmREoFcwzYWe6OMmwbjFO0D7LZMoiCcPH76GswjD1iwY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,134 +174,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 06:41:40PM +0800, Yunhui Cui wrote:
-> RISC-V has no asm/percpu.h, so this_cpu_*() read-modify-write
-> operations use generic fallbacks that disable local interrupts. Per-CPU
-> addressing also derives the current offset from the CPU number and
-> __per_cpu_offset[].
+On 11/12/26 13:26, Kiryl Shutsemau wrote:
+> On Wed, Nov 11, 2026 at 11:03:38AM +0100, David Hildenbrand (Arm) wrote:
+>> So I might be completely off, but what I imagine is that the memdescs will get
+>> RCU-freed (these are not pages), and once they are then getting freed, they will
+>> probably take the physical page with them.
+>>
+>> And freeing memdescs through RCU will likely be memdesc specific.
+>>
+>> I really don't know, Willy might know more about these plans.
 > 
-> Cache the per-CPU offset in thread_info and implement preemptible this_cpu
-> operations using recoverable GPR critical sections. Each operation records
-> the registers used to form its per-CPU address so exception return can
-> repair them if the task resumes on a different CPU. Use AMOs for
-> native-width operations. Use Zabha for 8-bit and 16-bit operations when
-> available, or a 32-bit LR/SC fallback otherwise. Finally, select
-> HAVE_CMPXCHG_LOCAL so common per-CPU counter users can use
-> this_cpu_try_cmpxchg().
+> Right: once the folio is allocated separately, the lockless read
+> dereferences it too, so it has to wait for the grace period along with
+> its pages.  The per-CPU batching and the waits in the allocator later
+> in the series do not depend on where the check sits.
 > 
-> The recoverable-GPR scheme follows the arm64 design. Only the protocol is
-> common, however: RISC-V uses a cached offset in thread_info, its own GPR
-> encoding and exception entry code, and AMO/LR/SC operation sequences.
-> Factoring these pieces into generic code would share little beyond the
-> field layout while coupling architecture entry paths, so keep the
-> implementation under arch/riscv.
-> 
-> As with arm64's SDEI path, independent NMI-like entry paths must
-> participate in the entry-state protocol directly. Keep the save, clear and
-> restore operations in common RISC-V assembly macros so SBI Supervisor
-> Software Events (SSE) can preserve an interrupted per-CPU operation. SBI
-> SSE support is developed separately and is not a dependency of this
-> series.
-> 
-> With CONFIG_PREEMPT_LAZY=y, GCC 15, the same linux-next base and
-> configuration, an in-kernel microbenchmark pinned to one CPU ran each
-> operation 2,000,000 times for 15 rounds. The table reports the median
-> empty-loop-adjusted time; lower is better.
-> 
->   operation                 v9 (ns/op)   v10 (ns/op)   change
->   this_cpu_read(u64)            5.668         0.333     -94.1%
->   this_cpu_write(u64)           5.668         0.395     -93.0%
->   this_cpu_add(u64)             8.002         8.004      +0.0%
->   this_cpu_add_return(u64)      8.335         8.004      -4.0%
->   this_cpu_xchg(u64)            8.278         8.004      -3.3%
->   this_cpu_cmpxchg(u64)        18.713        16.133     -13.8%
+> Until then the folio is the struct page, and __free_pages_prepare() is
+> the one place every page cache folio passes, so v3 keeps the check
+> there. 
 
-Hi Yunhui,
+If we go that way, don't make it effectively folio-centric in the
+implementation. That's what triggered my response in the first place.
 
-Thanks for this series. Could you plz run some benchmark to compare the
-performance between v9 and v10? We can use some benchmarks used in arm64
-version:
-https://lore.kernel.org/linux-arm-kernel/28978498-348e-4cfd-af72-1146a106e96b@arm.com/
+-- 
+Cheers,
 
-Something in my mind: hackbench, kernbench, sysbench-cpu, sysbench-mutex,
-sysbench-thread, perf/futex , perf/sched and perf/syscall.
-
-I will read the code during this weekend.
-
-Thanks
-
-> 
-> With the same configuration, vmlinux .text decreased from 14,369,618 to
-> 14,212,882 bytes (-156,736 bytes, -1.09%). percpu_counter_add_batch()
-> decreased from 330 to 228 bytes.
-> 
-> Changes since v9:
-> 
-> - Rework the this_cpu operations to remain preemptible using recoverable
->   GPR critical sections, as suggested by David Laight and Jisheng Zhang.
-> - Put the cached per-CPU offset first, then split the exception/fixup
->   infrastructure and operation classes into independently reviewable
->   patches.
-> - Keep GPR-state save and restore in reusable assembly macros for NMI-like
->   entry paths such as SBI SSE.
-> - Keep masked LR/SC cmpxchg operands XLEN-wide so RV64 high-byte and
->   high-halfword comparisons are not affected by LR.W sign extension.
-> - Force both halves of the AMOCAS.Q new value into fixed registers so the
->   implicit register pair remains valid when either half is zero.
-> - Use TYPEOF_UNQUAL() in wrappers and fully parenthesize this_cpu_write()
->   values.
-> 
-> Changes since v8:
-> 
-> - Drop the PIO helper patch, which has already been merged.
-> - Rename the first patch and update its changelog as suggested by
->   Davidlohr Bueso.
-> - Use value-returning AMOs instead of rd=x0 for CPU-local operations.
-> - Remove unnecessary memory clobbers from the new relaxed AMO and LR/SC
->   code.
-> - Use .option arch,+zabha for the Zabha inline asm, matching the
->   existing RISC-V cmpxchg implementation.
-> - Isolate arch_cmpxchg_relaxed() behind typed always-inline helpers to
->   avoid macro variable capture while preserving atomic instrumentation.
-> - Make the cmpxchg128 fallback use the already resolved per-CPU pointer,
->   avoiding the same macro variable capture.
-> - Copy the cached per-CPU offset from prev to next during context switch,
->   as suggested by Thomas Gleixner.
-> - Initialize secondary idle tasks in the common startup path, covering
->   parallel bringup and CPU hotplug, and remove the duplicate initialization
->   from smp_callin(), as reported by Sashiko.
-> - Select HAVE_CMPXCHG_LOCAL in a separate patch.
-> 
-> Yunhui Cui (9):
->   riscv: store percpu offset into thread_info
->   riscv: add infrastructure for preemptible this_cpu operations
->   riscv: implement preemptible this_cpu read and write operations
->   riscv: implement preemptible this_cpu void RMW operations
->   riscv: implement preemptible this_cpu add_return operations
->   riscv: implement preemptible this_cpu xchg operations
->   riscv: implement preemptible this_cpu cmpxchg operations
->   riscv: implement preemptible this_cpu cmpxchg128
->   riscv: select HAVE_CMPXCHG_LOCAL
-> 
->  arch/riscv/Kconfig                   |   1 +
->  arch/riscv/include/asm/asm.h         |  25 +-
->  arch/riscv/include/asm/percpu.h      | 701 +++++++++++++++++++++++++++
->  arch/riscv/include/asm/ptrace.h      |  15 +
->  arch/riscv/include/asm/switch_to.h   |   9 +
->  arch/riscv/include/asm/thread_info.h |   4 +-
->  arch/riscv/kernel/Makefile           |   1 +
->  arch/riscv/kernel/asm-offsets.c      |   4 +-
->  arch/riscv/kernel/entry-common.c     |  32 ++
->  arch/riscv/kernel/entry.S            |  10 +
->  arch/riscv/kernel/smpboot.c          |  10 +-
->  arch/riscv/net/bpf_jit_comp64.c      |   9 +-
->  12 files changed, 805 insertions(+), 16 deletions(-)
->  create mode 100644 arch/riscv/include/asm/percpu.h
->  create mode 100644 arch/riscv/kernel/entry-common.c
-> 
-> 
-> base-commit: ddfe51b0a0f5dc9e415cc2c8ad8db17532dd426b
-> -- 
-> 2.39.5
-> 
+David
 
