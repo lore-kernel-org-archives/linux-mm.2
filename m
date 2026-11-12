@@ -1,133 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1927B606A32A
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 18:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D64606A330
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 18:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=iiJEKnNz
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KC+yUsDl
 Received: by kanga.kvack.org (Postfix)
-	id 063FE6B05B6; Thu, 12 Nov 2026 13:52:59 -0500 (EST)
+	id 01EDA6B05B3; Thu, 12 Nov 2026 13:58:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F300E6B05B7; Thu, 12 Nov 2026 13:52:58 -0500 (EST)
+	id F11C76B05BB; Thu, 12 Nov 2026 13:58:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF7CA6B05B8; Thu, 12 Nov 2026 13:52:58 -0500 (EST)
+	id E00626B05BC; Thu, 12 Nov 2026 13:58:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B421F6B05B6
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:52:58 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 52967A85E3
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:52:58 +0000 (UTC)
-X-FDA: 85427364036.28.5A94DB4
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6CF5920002
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:52:56 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=iiJEKnNz;
-	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BEB5C6B05B3
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:58:17 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 553E71A0A72
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:58:17 +0000 (UTC)
+X-FDA: 85427377434.30.6BA49FD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C8F5480003
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:58:15 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KC+yUsDl;
+	spf=pass (imf02.hostedemail.com: domain of da.gomez@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=da.gomez@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794509576;
+	s=arc-20220608; t=1794509895;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hcSnrIWaKcLWPzgkvDFN69lIrdlqfIyxKv5P92W20vU=;
-	b=jdvqMEKt8d8iCUDk2HeJIsJTqcZkwjhgcsAQoF9wEKo+9Vyqxu+geYO5P9DrGNfc6AK1i2
-	3OqlDhgELNiXBfPv1LOZ6zBADn4EzbUA4D4K4hBdwvhX68/YhRb73zC1c6nM9OC8spMXpr
-	bZXSCxipYyYeTHc3aNBiJdpj5w1ePpc=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=iiJEKnNz;
-	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=elwXiRCfgreMBRymobwx3IbDMUTz5KC/o5TzRKRmPAk=;
+	b=ZwmIAMicjPrUE88gzT3yoHFNC6VovVjTpUnt1ePS2M7lU6VovjGUkBAzXMq99Y/CX3SX9u
+	8E7LGH7cMwJpXTx4xXqOgDPG0ITugfBsy/yv785RW6Eu/xPnGESVuXf4L4S5YCmvQak06+
+	bwi+p80RxqCptAH3P9jL65JjGVu/2cU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794509576;
-	b=NPoWBuQ/buV/1AXi5Gbyh7Zayzb6oOwwnmC+Ia+/XtiDxEhd8dFeVS5HRuG41pCaZVFBTg
-	Gyu50ftHIYMQkgZoKdhIYQWvt3Ei8NmxfN/XK0bsyCoD1iTy5l3lRUjKyULehcxL7YFQtM
-	XAPR/dIrogTwpVAKunaao3j9GnN3Vjw=
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-8b30477a320so2024837b3.1
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:52:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794509575; x=1795114375; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hcSnrIWaKcLWPzgkvDFN69lIrdlqfIyxKv5P92W20vU=;
-        b=iiJEKnNz2a2uF6kojN5c0cIYZuZD0IXN1/FZYY4VPdL6qKvlthnEYTnbqFtUx2kIBq
-         X7YHgReTRUD8pTHwfoaEBo+SnrW5TAsiFWOBQnmSuMNILi9S44cURuaURMuhCOi+Yg56
-         PDu07SGpA4vsKph54LYL6lDIlMU8CrN1hRBddUz1ZsxWVMOs33gPc53F0/DpM0W4dH+l
-         7KaWBXJOyW6wGBko5mZ03urVW+WN6itPbs4OZ/Qde/0ijNLeuwC9qKFg1FP2wQyqQMQ7
-         t/0WSdJFd7QTe6hqT9hbKNSPKiBvPxbJL9ijyyev2kY9Ic5gt566mQzbbOrsBNmnp56F
-         MEuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794509575; x=1795114375;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=hcSnrIWaKcLWPzgkvDFN69lIrdlqfIyxKv5P92W20vU=;
-        b=Id7dVKUTHu/2sdGCZJ3127xIy/hgncLpxSWlzjb0Yjt/siE460KOeCuVE/xP8YTOFz
-         YjKqxmvDMdPRtS8/vx0RfVN5iR2kFhBFto3JSldPfG4yDS4WUuP+ey3VUXJMyWGQB4sR
-         kLIc3KagXHQ7BAaQAZ8y99eSNO377ZFgGaASPCl88p8LqJ4Z/dw4cDLEjxVHZA1GpQ8M
-         BLAXcesMwp86Z0kuNz7YbyBDTSy+vg7q+znF3dXSngjSrwq9bYRQeakiaNV25H+GSHZM
-         KaiFhDmM8ncPCOcJceEeiwuo6d7d7yElGxCJKmbGsH9e4u/K4FnNEAm3kZ/JwK8dF4M5
-         Xo7A==
-X-Forwarded-Encrypted: i=1; AL+hErFq+gb32K7EMjAjA+DUtHbiFuou61RHBJiftp9c5yT3WKsu6LF3ddx5D/jo7RqSpJZ6cFvEvNZGOg==@kvack.org
-X-Gm-Message-State: APuU4Z/zxOmcCM/q8UEGdpK6JWizKPmLV7Is4pCD6vdAhsE8DkhnBGgl
-	imjSqBb5PPEzgHr49Ybmg8sw5IM6t5LeJafh84kEQOCIssZFkZaKMzxf
-X-Gm-Gg: AYBFou1Ompz2dU1Z8dSbtqwEwQEIzKBuYXBfMXpVIIlg2f6DkwuH8xgGVDDqFiINEDh
-	qGiRpf/HqIWDgdQEQU1HPsn95Dl2R9KVDSpxqMmZ69BoPE1xZjqM6NEOWINPicjCv+BEvVl/zY3
-	1TIEKi1ahr04l7nJpJAOy5vEj+zbW+13ciiTfkw9jB15yGbCKOgHOx0QjHuOlN5hY/gl2utgDK0
-	8CkFMU/dfzOq6l31vDwamE77Kt9iM8S/Xian72TVZV6sc0MfbtiL2RfiyH7UtbL20zJ8xCiP7xm
-	PG53k3aamRezh7GmP3eh/DZhUfgjneVMUTf8pFO3/mINjjV3fJJIonZBIoTNMyXnz5An1ajWVOp
-	cYPPCpilu/4TgtrJZiWNPh+/yuf5m2iKe3jCrnXMQF/aZgERlxwIJGaPaw50eUEwMWS2uVTgrQ8
-	VcZzoLtvokmIuA9olYFS9DcPV3e5ZXr50339ofnlypcmen9cE4sc3mqbbsVY8eAs5n5BTNp03mh
-	XAciCySWcM8hH/iQ/e+bdNwv1BWUh2AXp6WBdbuiL/lo60GyJDg7z+LDaKEZtnvzFiCRhltiAoS
-	xPVG3X/ryPad7OoGsjluhVghdF4nBF7oXVqOofIxrVs9OzaOekLBoTj696xBt9GgV9AMa4CTCO6
-	B7mfJfA==
-X-Received: by 2002:a05:690c:f03:b0:8b3:7f47:8ad4 with SMTP id 00721157ae682-8b4aa323f76mr2781817b3.41.1794509575553;
-        Thu, 12 Nov 2026 10:52:55 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:5f::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b4aa933d5esm2680387b3.19.2026.11.12.10.52.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 10:52:55 -0800 (PST)
-Date: Thu, 12 Nov 2026 10:52:54 -0800
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: "Gregory Price (Meta)" <gourry@gourry.net>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, 
-	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v2] mm/page_alloc: only skip kswapd nodes below their
- kswapd watermark
-Message-ID: <avYKuUJJNFylInRP@devbig011.atn3.facebook.com>
-Mail-Followup-To: "Gregory Price (Meta)" <gourry@gourry.net>, 
-	Johannes Weiner <hannes@cmpxchg.org>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20261110224432.2347606-1-joshua.hahnjy@gmail.com>
- <179446431092.482102.12227242887844422381.b4-reply@b4>
+	t=1794509895;
+	b=W65mJGD+4NBJqKF6Sx/98N6sL8OFEZDG61rYxgFq7vQv5wzf2n2KdPqEv7daMwnkBAl+/x
+	OFI3gNoy+2IqHkZ6RctNXsTSsbYVKVAq4Qa+XN+Dh5MlF5rZXZXO9FypHBSf6ohUZ3rMcW
+	Xe/phyoLLA4kMJKI5WVobqODuSuB0g4=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KC+yUsDl;
+	spf=pass (imf02.hostedemail.com: domain of da.gomez@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=da.gomez@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4F47C60E04;
+	Thu, 12 Nov 2026 18:58:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CEB41F000C4;
+	Thu, 12 Nov 2026 18:58:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794509895;
+	bh=elwXiRCfgreMBRymobwx3IbDMUTz5KC/o5TzRKRmPAk=;
+	h=From:To:Cc:Subject:Date;
+	b=KC+yUsDlDrOUZnIP1c9RvMynURJqoWO6B6KAUPOiDK5SQnFLN9x2aiGnfR68DTvYH
+	 F89dXdqnJyLAPkOBRAlhhQfE3om4e5dFexkJ4zLBfAphUW3lkLAVkDpkKe473wYZyg
+	 VFHHum6zxzRbdyZNgRNqq8KsOkEU+A3XQ+BL6v4pVv5eFaJhC7H0ebExtWrf3bSuAy
+	 wCpPqcjsJjU9/nh4YTLsIH6LMm9OOmbw/7NkGPdKK9lqD0KoJ9NxP2m7hr8upDhaTS
+	 36KNyQpre3MPyxT9eRAAt8d9UrY1MRwxGfqVoKypQKi+UQlR5hggg9McMpUIo16E/I
+	 cGXJbKCzDTmmQ==
+From: Daniel Gomez <da.gomez@kernel.org>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Daniel Gomez <da.gomez@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Julia Lawall <Julia.Lawall@inria.fr>,
+	Corinn Tiffany <corinn.tiffany@inria.fr>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Philipp Stanner <pstanner@redhat.com>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Samsung GOST <gost.dev@samsung.com>
+Subject: [GIT PULL] Rust XArray for v7.5
+Date: Thu, 12 Nov 2026 19:57:45 +0100
+Message-ID: <20261112185748.8877-1-da.gomez@kernel.org>
+X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <179446431092.482102.12227242887844422381.b4-reply@b4>
-X-Stat-Signature: xyfijk7k9itbz7ukrd8trki1s8xcpbbf
-X-Rspamd-Server: rspam01
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: oar83d558t79g7pmg1qc4ht5bstztoux
+X-Spam-Status: No, score=-28.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,INCLUDES_PULL_REQUEST,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: C8F5480003
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 6CF5920002
-X-HE-Tag: 1794509576-119039
-X-HE-Meta: U2FsdGVkX1/ROv0/2nGvECA01N3cKs0vF7mTdiIugAK7O0VdDIiY5ViP+JE9e3+dln9Ipa2lzr4pTr8BrB2dFzYKpAvmyGHJczrlfqBZ0DQKQ1Y5tU+U9cCJKfHKb6FDEIFZWWSOvXzSz0xVXZcoxO82UIDwgg8YH4gSBikFi8+bWOb+rr8ihrWQqFV1KDvJjWULSgn/kGBJ+695SOwTJfE/ezrCUB+EN4+s45pvSBx7rZjiKTV5bHexIsdwQviiDOqcREqMKHWN2s+MOTAaMLQ1ms6WSLVfWuJpMWOtGLyC0OoOyotm67tvxT5KvIi4eIFvND4v+sD0FfDD4RRpNEsMU815/e1dVTZEkJT/7xsv2jsvjVWTfU70cVnpnH4UZ/SKWhuF810pYQ7NzJzbtW8KFPsIfqP+Udm2ZtQk+NrMZnTVagV0hf5jgh0atsulIb88VM7OoIWk9IDhkcigDyuNmYfsW2cuZtds18K8gF8TdSpPdPg+Iw2hUT1r9lgnc1qb6v94yE65tG0PtpI554U8kgv+SOemJ5NkQxJPytVnGImuX9XS7hqo9gz7Tr389izW612fmZ6ySkXA3Vl0bnaueXWoxie4AfVKy1lUd7ew13pQZrAr/rq49bWK2qLnLtEnvNQEU1J5lgicEOjRN/s3y/dCCHuUnbQjPPiqnZIlf/Il2eMfTyfhogXPf0nygMqqIkfoUqFgMVpEp16lNXbovqBlu+9japvtjEWV2qb2e8rQ4lu4CdzcaViZynO+bVdSAZmgMAWOsjnnBjMZFzJ1maz5+SYM9JdleuJ7bqJ1p+CFXC7PiFfLM90RYLQHzHt2T95AXiKFe0j9S5HqfWrBzBEqzLz8ko4N91SaltOE+5jR4xjXOFLSCrI5D7jTIzuVx/4c126uwRiqHTHcz6MrBpBQxr+hSYE6ThaYOutYxB7RlqKweLqziNc7frgorsmtEnN0LqEQqTZeEvx
- T9WZuxbD
- TBAPgYppha+2sYbJZoPw/S0wxsU/w/Z/EULcClNaitq4hr971y+8xDNG1qWUh8rebMZ5dx0K/i10/NDUBB8QDZo/JDgV06q5DrrnSen9yAB9Pt6uCXS6T289RlbAq5MA4KUhD1oVGMFrYg08BPf9ky4fcojdatTTLiy2WmQQ+xdq5NxU2LEJ4iAKp9GrjWRxaggnMGQr8MGA0y+AZjlZGpjdqk6VOEH/i4g75xIo5FDwbMmHF59CVx8hCH2MfD5RMjZyATrIWFFxHPB93KYnct0ric3NPrt/NcJlIYEc3az1Suq0nvNW0GHF3YSixb62rwdkEiebuprqbBiAWEvUnmo3IN8kRvnvL3oVmXS8J1EhCOimSjvIOezUcF7ARiALogdAN+XWHHvuFlUSWrw8OM8Z0163RuRGduXsfCAdRHX9mUZQnzn36Q5DT8E7gpqGMzzAe5ghByIZkRSgS2OltP6dqHp1eB+zYT2xrTuWhdu+Htb+rjtusreWmYKvf8nrqR3x+Ldp9GoHcVrnYpqA+bq67v9pcS8ZYzz+6fifImr8x1pMWZuSINEvU6x3XR1jx93Q4vkEH8Q9kdYPR9ljQHgxYrgh9CmycBIve7D+p+UMSRbNdhdhg2QR7P1d/Ds8gI2NlrgzDnnSOQMPoAynQ4kchfh3ZF2CCdW8d
+X-HE-Tag: 1794509895-624818
+X-HE-Meta: U2FsdGVkX18SDbAo6vAQI2HFvpqSbsxuqP/nz775wZUaze43E/PHirNEJFA0pLLNza4x62zS3KKDlXNyEOs6NRhrHdWinjg4NANoxOxX5tdW+OQQd/fG2WYE4oZ1RyB17a00vir93TErncBoXVTomrbsYsrbKJ5KDY58VQ7AvP6HBngHa4ZrXY8gLpJ7bTotd4VInSi5A0kZ2kcVqZ3wuiFbftg162BFWmuly5HDFvEHs9mQufgb2On9f9LZAEXyiedz3CLb0RbSwXzdWJSuvP5lYGe6P6NR5APgtNy0kufyHf4dmrUJy+912aMUzWY1t1nk1mOQ7OVBzYsrwBckYOzB6PJEfbrjtjl6W9+q91IfjpKHDJeNZWHscSJaSeSW8fCpivMPAh+aEmg/1riUL/l9v5mG7BXQ/kkYOtJLDu+9hxQdzVPCKBMPzz4EsnQOhpTDeWtHH5cNyXfsR0fNGSm0jT+DneFiVwWA8KQzipswvG+KOD2mOfakw/LcbIWKhLvRkfV3q64hl9khalhOxSaCY90NXrfba9uVuvcez7rmBOCUMXDeQYvo9oW3X1vF1zHjcCCYA0zoT61u1vb35nnn4OnSaORFdGQkgB4EjuLiUldArlEmSA0wydzZZAG7Aom6BMoJ86iA2gRmugtKjASe/yZngSMXYiOxCiaj6difvyOiAQUfOh9sQ9OjDyH4aSASD+Kxu5Kvp9ByLUxUaochmzyqrS82N/dEYdSlwYrCC0w5SP0pc0rZ7nMEsHYNg9tKxke46skrfNzeev3bAqqAQnk40z+eTCT9+kisa6XdF6a5/kMRLuqHBHRZ5eKG1uscXCbBGGMG4taQvcEnZD7iIJ4wCBD6LMhnOZrymWz80dtogk8qOVyc9yC9Oh3TZf8a/RqtRNgIYVFbqyY827uVsz8ak91qC1LxdOEgr/lRPrh7V1b4XccHEpXWjhQd1HDB08R5hnFyuMEFwNX
+ kTiEV6/G
+ GVLP3S6jk/z4cF65FnpKm5JwjsDhTJ0uWD5FZdQgeu1szeis2/KXtUXLI5QSImdzhWLauT4hUuPjPRoTXPtNyvxDDHtQAwzn7TQBplgbK10nSYauSYuZTzhChNRJf3rK2KglNwHrJT4o+B3HzdaGFzmeQkbmADOjIyRS+uxd5cmUc9cWa/uJ2lF6bZHIsWZ26eLbtJFsxVNvzewJwy/oN1A84x1EYMXpT8vaLxfXZH/vxYcGbpJx+mrp+IDj43MbG/27tYGpMqmLyuTE0PRo+8rDFRbT+mjQURbdCnGMJd08KJLt9tqOfyCe5HSoEFQ8ciBT4tokutIA3EQmrs9soeMkJqkrsUTfNWcG2bftajHstMG/HxX+mlaMT7qaLoFMXf4U2zWhrnJ2EFIA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,60 +114,71 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 01:18:30AM -0500, Gregory Price (Meta) wrote:
-> On 2026-11-10 14:44 -0800, Joshua Hahn wrote:
-> > Commit 19c5fb83f2a4 ("mm: page_alloc: avoid kswapd thrashing due to
-> > NUMA restrictions") makes get_page_from_freelist() skip any node with an
-> > active kswapd on the first pass through the zonelist, so unrestricted
-> > allocations don't immediately consume the memory kswapd is freeing.
-> > 
-> > But kswapd is also woken for high-order requests. With THP defrag set to
-> > defer, each THP fault that fails on a fragmented node wakes kswapd at
-> > PMD order. kswapd reclaims a batch, wakes kcompactd, and sleeps until
-> > the next failed fault, so it stays awake much of the time even on a node
-> > with plenty of free order-0 memory. This means those order-0 allocations
-> > get directed elsewhere.
-> > 
-> > This was observed on some Meta production workloads running on 2-NUMA
-> > systems, where processes with a preference for node0 allocations
-> > continuously allocated order-0 pages on node1, despite node0 having
-> > hundreds of GB of free memory.
-> > 
-> > Only skip a zone with an active kswapd if it is also below kswapd's
-> > target watermark.
-> >
-> 
-> I feel this commit message could have been simplified further.
-> Brevity is the soul of wit.
-> 
->   patch (details) skips any node with kswapd running - assuming that
->   this means memory is low, but kswapd is woken for other reasons (e.g.
->   order-N allocation failures).
-> 
->   This results in fallback allocations under X conditions, which leads
->   to xyz performance isues.
-> 
->   Only skip nodes with kswap running if the node is under the relevant
->   low-memory watermark.
-> 
->   (test details)
+Hi Matthew,
 
-Thanks Gregory,
+As mentioned in [1], this replaces the earlier v7.4 PULL, which missed
+the merge window. This PR is rebased onto v7.4-rc2 (no changes), for the
+next merge window (v7.5). It has been in linux-next since next-20261102.
 
-I was going to ask to have the commit message updated as a fixlet but
-I think given the amount of change going in I will just send a new
-version with a more concise commit message to make it less confusing.
+Could you let me know by v7.4-rc5 whether you can pick it up?
 
-Thanks again, have a great day!
-Joshua
+[1] https://lore.kernel.org/all/20261030101626.0-da.gomez@kernel.org/
 
-> Otherwise this looks good to me.  Looking forward to the watermark
-> cleanup afterwards - i agree the change here is a bit ugly, but
-> probably preferable for the backport.
-> 
-> Acked-by: Gregory Price (Meta) <gourry@gourry.net>
-> 
-> -- 
-> ~Gregory
-> 
+Thanks
+
+The following changes since commit 7475ea8b58616b33c04afb976cf0fbaad9dd63fb:
+
+  Linux 7.4-rc2 (2026-11-08 16:22:20 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/da.gomez/linux.git tags/rxarray-v7.5
+
+for you to fetch changes up to 29f1617aa1dbd0803736403cd63c4965873fa621:
+
+  rust: rxarray: add rust xarray support (2026-11-12 10:14:36 +0100)
+
+----------------------------------------------------------------
+Rust XArray for v7.5
+
+Add a Rust implementation of the XArray (rust/kernel/rxarray.rs),
+introduced as an experimental Rust reference implementation [1] of
+lib/xarray.c, as discussed at LPC26 [2]. This lets Rust users, such as
+the null block driver and possibly Tyr (under evaluation), experiment
+with and evaluate both implementations.
+
+The goal is to evaluate whether Rust helps with the most common class of
+XArray bugs, misuse of the API by its callers, such as the long-dormant
+page cache corruption that almost blocked the LBS work [3]. The RFC v1
+cover letter has the full motivation, benchmark baseline and
+roadmap [4].
+
+This initial version supports store, load, load_mut and erase. It has
+been tested with the included KUnit tests and doctests on v7.4-rc2, and
+has been in linux-next since next-20261102.
+
+Outside of rust/kernel/rxarray.rs, this touches:
+ - MAINTAINERS: new XARRAY [RUST] entry, maintained by Daniel Gomez and
+   Matthew Wilcox, with Andreas Hindborg as reviewer.
+ - lib/Kconfig: new XARRAY_RUST option.
+ - rust/kernel/lib.rs: register the rxarray module.
+The C XArray implementation is unchanged.
+
+Link: https://rust-for-linux.com/rust-reference-drivers/ [1]
+Link: https://lore.kernel.org/all/20261009212431.0-da.gomez@kernel.org/ [2]
+Link: https://lore.kernel.org/all/A5A976CB-DB57-4513-A700-656580488AB6@flyingcircus.io/ [3]
+Link: https://lore.kernel.org/all/20260923-rxarray-next-v1-0-92eedf185649@samsung.com/ [4]
+
+Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
+
+----------------------------------------------------------------
+Daniel Gomez (1):
+      rust: rxarray: add rust xarray support
+
+ MAINTAINERS            |   12 +
+ lib/Kconfig            |   11 +
+ rust/kernel/lib.rs     |    2 +
+ rust/kernel/rxarray.rs | 1407 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 1432 insertions(+)
+ create mode 100644 rust/kernel/rxarray.rs
 
