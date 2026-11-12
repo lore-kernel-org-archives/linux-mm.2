@@ -1,106 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1C5F606A332
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 03:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4669A606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 03:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YMp28IOO
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=J8q9LXeV
 Received: by kanga.kvack.org (Postfix)
-	id B5F4C6B00EF; Wed, 11 Nov 2026 22:15:13 -0500 (EST)
+	id 489956B05B1; Wed, 11 Nov 2026 22:19:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B107A6B05B0; Wed, 11 Nov 2026 22:15:13 -0500 (EST)
+	id 439BB6B05B2; Wed, 11 Nov 2026 22:19:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A26696B05B1; Wed, 11 Nov 2026 22:15:13 -0500 (EST)
+	id 34F9E6B05B3; Wed, 11 Nov 2026 22:19:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C5536B00EF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:15:13 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EC6D51404AA
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:15:12 +0000 (UTC)
-X-FDA: 85425000864.29.205B4AB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 121FB40006
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:15:10 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YMp28IOO;
-	spf=pass (imf04.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 076386B05B1
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:19:02 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 73766C04B4
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:19:02 +0000 (UTC)
+X-FDA: 85425010524.17.A1F5B85
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by imf25.hostedemail.com (Postfix) with ESMTP id ED389A0003
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:18:57 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=J8q9LXeV;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf25.hostedemail.com: domain of evers_chen@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=evers_chen@163.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794453311;
-	b=pTBHmyg9peSZfUstAe9ehN3WbyCL9xxZ3xYp1UCINV0PR+VoOZ8mmFzp0DefJMZlcWEebv
-	OmxCKB+qgOxa5Gc7GDMsryWfjPPY5yAscbKCBjGw0T7CuzB2IxD/3uPwyRqc+T2UlFSQbN
-	OwTGlYAiQbI8vq8rY6wBtJMLboyFAE0=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YMp28IOO;
-	spf=pass (imf04.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	t=1794453540;
+	b=LIufzrks/bdZAxf56J1LoQb8tleszdxHUSXfbQOyS+XscxdG98bC3jFSac6SwDPL8gPw1i
+	9OJd5v9kkF3uqlSDDesb7GyNg5bTehuWhCcGy+VjypzvpKVQpcKtkJ8BtORUTncclm/NPu
+	qNfdQelBX4obRf/v2kvctGYkdbjZVt0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794453311;
+	s=arc-20220608; t=1794453540;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KukHHa4IpQLPx0nLghzyKli6Eignxu46dayWT5IB5Os=;
-	b=2d/C2q2wJGwanOvpMN0K1KWPfHi/Qcnw2EQC3ZOdMksiM6nd9+KQ0CzcFamLQ4gu719M7o
-	SZ3Bv8GL2rLJ+hQxVy9YJUmf6p2bo/qg+wg2bKY/lpvn08qpG/wGdwWhwDAjzUil3/fugL
-	3DkB0ZZ7FXJZP31x2s5uVpycDQ4duBE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2FB57633C0
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:15:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC2A41F00A05
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:15:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794453309;
-	bh=KukHHa4IpQLPx0nLghzyKli6Eignxu46dayWT5IB5Os=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=YMp28IOOkOpmgpjEGggQsJTj/xunkcm3xcqHrjlryVSThkdTDXotcTu4FfFa0ax2p
-	 F7troXbepBoldAXvDiVsdENhcjwbvVLP1lFJG5X3PwIdszLGdViBjHc7rJrIDDi2Iy
-	 90RJbnF+BfNiQSov7MpdqrAIjdtLCOy+89DAY5wx008BcDFOlCqJE1GtekWIf6th7U
-	 DdRMijID71R8bUcFNNrKPfeoyeUKL4WrQ5q6MzpZCL8xTxsONCvCMTGfVB/k+ExP8T
-	 sGKNeOHOVuzVAhTbh5wg+ppMUWE2fOo06qwUZTv5OnM6uMcemXdoSp1xnNP1DVRcXK
-	 Hwcb75x42hVuQ==
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c3f04e0e65fso561178366b.2
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:15:09 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErHI+PfMiuTLoX2iud6gZAizvTNKgKmXKh6Hy4NqONDdJ5G8KX0DQ4lEANKsepiMrRd7dd3byB7Zfg==@kvack.org
-X-Gm-Message-State: APuU4Z/AsPfzUO0ZZXJPWhEXe9yYSbx13ZqdJa/gKXqVxnB/5bre3q+3
-	N2PCVNRZY5tgpocQ+avjs+OSySNF/l0zTuoILm4HUhiC8LFjOVzqZ32/UDK8DBSfmZ2VTd+qnPD
-	cyuTxRBeJkf+BrgdX2hDC+lOZBMu9Ckw=
-X-Received: by 2002:a17:907:2d8f:b0:c50:5e10:71ae with SMTP id
- a640c23a62f3a-c5066afce46mr377456166b.17.1794453308567; Wed, 11 Nov 2026
- 19:15:08 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=OAJSZeu5S+BGy7vQFCxiIgP/IXx1ATwnYQxbK6vospE=;
+	b=sJITpBy9qaCUB+b5s0cL/l1ZZ7MEYCGikhTCiVxooumqNxEj5kiPVvaKlNDyRHMdhR6811
+	l6b9Xls0mRE8KsuQIsK1qCWBbZdWW2NFUusLXVl8YmrCsAb2hn23LQ3g8qXsjhlAScZMHS
+	+pvL4ZB10gXoRFW76EX2Y0Man08rJnw=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=J8q9LXeV;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf25.hostedemail.com: domain of evers_chen@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=evers_chen@163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=OA
+	JSZeu5S+BGy7vQFCxiIgP/IXx1ATwnYQxbK6vospE=; b=J8q9LXeVwUeilZTDiw
+	SwlVJGeycGVnVK3XJqd93QTe0PwTpKW3fXyBPJ3b0Ef2tfgDlUO8aTWtgIrvg0bS
+	LFLqRubPPuKxfXOlV+VRNsH3X8KZHD5FLmgI9KBJ6o8kUMDpIR3J1a+lTIrEONe+
+	YNUPP5YSGNsxrfSrL6851St7M=
+Received: from 5219-2604 (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgDnl6oRMPVqpjyfFQ--.50271S2;
+	Thu, 12 Nov 2026 11:18:46 +0800 (CST)
+From: Xionggui Chen <evers_chen@163.com>
+To: David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	chenxionggui@lanxincomputing.com
+Subject: [PATCH] selftests/mm: Handle implicit read permissions in madv_populate
+Date: Thu, 12 Nov 2026 03:18:11 +0000
+Message-ID: <20261112031811.56500-1-evers_chen@163.com>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261111092421.3771992-1-chenhuacai@loongson.cn> <20261111170600.GS1779021@noisy.programming.kicks-ass.net>
-In-Reply-To: <20261111170600.GS1779021@noisy.programming.kicks-ass.net>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Thu, 12 Nov 2026 11:14:57 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H6SYOjOw+owmStK7sr-HOiADC1zZ4Cii5hv1q+qYAUETg@mail.gmail.com>
-X-Gm-Features: AclHuK_e17qcvjrZPS0KZhv5Xdz0uZ2nPZtp3g7am9FbsyZNwEyKWIbkfxX2baU
-Message-ID: <CAAhV-H6SYOjOw+owmStK7sr-HOiADC1zZ4Cii5hv1q+qYAUETg@mail.gmail.com>
-Subject: Re: [PATCH] lib/smp_processor_id: Don't warn if there is only one CPU
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, 
-	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Tiezhu Yang <yangtiezhu@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: yo8k1sta6uzxxofp8e43fwh86f4f8mp7
-X-Rspamd-Queue-Id: 121FB40006
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794453310-430142
-X-HE-Meta: U2FsdGVkX19s2UZI2IvptHa5/XYKiVWGc7PxvLF4I3MZwq0YLHJV7PwHNUkKAK/VXxPXVkpBVj8+Z62FoNQbbo+whsTI+cD2t9wg3lrsLCo17A/9BHApPGX3gU0CdOxA7Anldytnbs1Vnqm+XwKUx0Tvd8ycyljdoqTrtfZd3TWhWTlWXBne+Pytz3LfzqYkljodn5IRPLc0PbuoCPiiChi9SX3tydovtZlK1UICgcCgrJWXmuXDWRfiSAh4xPJ3no265PSFUtloYyyAutxoUgoZxIZRlTG7WCFz83L58zQ7Vc5BzUfQs030BcaVE5y13N1pKNjAtsKSGKddss5V5O8enVfEF/gYy47yK3XN+rQfsXIty+ZaeD2W+QeXKlWW9nZ7Sq5BsDzDN1VRbdRGHY6KnWggaQKe4yYTLFXidhil/BtaiXwivqIm4+pXRdMXL798qDKkNEPhwI2QOwIIH9+l5e3XZ8pcsfS0EN93K3cMlYANvo9UTHFsWUl4K+s/iZu7H+KgqKYlfNhTACZ2NpAH+wNX81XS1+1naNsXpGUGFo1ZX4XKlREsxKgUupIgqb5th+WXzyMsQSzz2W0aj9Yv3Sfa1ZoHh9xNFWBvLrgwkH4dutZMx3A4KUUT/ZN4xjoN9bWGl2uj3XXYsXiU1aVaUr3zE9HFPhnKxhLOMxwtjNceB59Nk1VrQUB0u145c64tW4GbEMFFKkWR7OSQWAeu3Cm+DwJCOOLMgw1fTEoR1UEaQZqZaPclfYQAC/da7My+0+vnC4fKE/KX0h+Y/6UxrAi2ro+iOH3QSgq7FB2bWTWbEBgEBGTVB7yEeY1K+ZsocfTsrckjmnn65DZ6jvRfIc8CiovNjYnPOCYhadjpI2WvGWi04TEIOug6i455gi8b2F+nhWfgdoWHOA6d/fcFXyiUbljHqaMi50AxZAU/3Ef58WzwGTzPxZXK+NKt6GjQCUZJf5FpatbideZ
- IBoPlGi4
- lDG8D7B3C89Chqc9BCOM2InCAXNQE/UFhC2KTYbpQ8KjBE8H6NGb0SIe738y5OElThAZtCd00CaluA52uEXAkHFzksExcPlCvvqHblKzF2WAHOeuhdO8q/2rLRfoZg879yRzhfcbpQlYuff0nEwaoEnjy/fnLLIKJe3I//dFon2NheO3EUztJBIpKem0hKU3C3Qvtp+LCD1t9fjMJX3EGqC/PhBSMzV8AUomCDsztjQDUu+wXDyjYhy+0/N1PJbAfIGJd7N/rSMPohKvqGSs+lnTqlALMTaQSeQA4mIxrwYcmJS9yGD+qCyABBeUKdcgJE1NuFLkwgtBQbAxjy1UjiQdvU6q24MH+ZEXo3aq7eWdhEL691Oh3afNJ3Q2yaJ1qZDDm/AIenmTo1y4=
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCgvCgDnl6oRMPVqpjyfFQ--.50271S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCw4DtFWxuw1DGw4xAr45Awb_yoWrJr1kpF
+	yDJas0vF4rt3ZrA3yxAF17Xrn0yryIyayxXw1xJ3s0vwnxK345Kr47Ka48tFy8JFZ7Xw15
+	Ca98ZasFkw4DJaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jFnm_UUUUU=
+X-CM-SenderInfo: xhyh22pbfkv0i6rwjhhfrp/xtbC7BYpM2r1MBYfnQAA3b
+X-Rspamd-Queue-Id: ED389A0003
+X-Rspamd-Server: rspam12
+X-Stat-Signature: b4o1tjcsjd3cwohi75r1e1yuthm1xuba
+X-Rspam-User:
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794453537-316610
+X-HE-Meta: U2FsdGVkX1+yrcX431bDHdiKQ4QAFbIogk+VqB5YfM6VeuNl1bZ3rC9JgAEZROBWldRiIfPGsFIGAu0ELRxE2s94Y5Ti7MGXoIZlCAiH3E781g3mhUMFyHz+KsS9AwdWnwtTr2upyAuNRweK9GsWrFE8Ttf0QTHCENm+NBVvh/q99LWhVMu83H+1G3+OCVA/r8iRAJNN/IZYYSqWj2wFh0suzxbGvYUsKlchPXRzwlr6gs1kh/6Fla5bp5mXOnTx4zfg55bIsmsDD2gMlZ5EIMc/O0toRZO3vVjxlnWmEKLVCaZumEuLGST5hnE1tfe2rTNtuhywD6K13WjEwq6av6bHJJctCJygnKyiJtGZfhaO9ptSrVUlW/KT7QSAzeF0cnP1lZbakOjNhp7pvcOvsB3yK/gFP4WhCevMXBvIqWn5hYtdeMsnz6fD7s+a2B1Od9cNE+/Z38GkZi7KBn1ycWCJ2J6Etfw0dn9633Rgieoak1P4Pqfq3J6y4+D171I6WIPTTXH7m37Cq48EK5f5kH66hpN0GZtDwqsl9p1J5M6cuZgmB4gmH/2KB5n57nPGVtllaCBKuGhs9F9n/6/DAX1NLj37ll51R4cel0NXRIKbsszaF9j6XuJ354PHDAAmbTcocKqThnZvvx1kzi9FSQAVo0xl8fg3sMKvESpoojxRlY3iWZTJg0meNYupC29DOR+761trHLfW4aarX73NQxSGLzMdIcxxrvtO9W6A6rYe9fQK8ddAdXEgazzwAbAuC0hM/H2Hb9Rv0Fx7C0VZNpdwgRfUswxtrq/9z9hVl9+P2e05famD7icyJTIpJtRz/wRZ7ww5hDzl9IqTkHtanZ6Nkaskrc3yzCSszbbBPZyNrV2Ythdigo9MYiPNof65Snb6Y+v8lsxlXJxatTsV0mlgkFrtTy7WsaXrmB6/YHx48/a1ZuOC9gBrglycb/Dc0elKMeMg0BIGmIzyIJw
+ DpvyLZQS
+ /rph2jeWoxdYFHzBWJBFsMLgEJ8TjVtYXqKlq7WKkUtyUPr8JUaRI+NWPYiaVTyw9wGQ3qHlEX2NfQ0Br2mR2tIcZ2nZJ4l5P4V409DautxlptV9Il9MMedYeqFsgSo5kTFnYOJeIEnvJ4pnhlB3BkRim5CRSrgZuAcBLu05xsCfeUR629x5XY16tgEnBkeyhPOAnYn6XwgEpXR1k8PjwjXSs3mHwFRKzl7pyXjJsobwCaxnW26SIpVpRcfnla0lnCARaaYhnPZYMAFhwJr69GQuqF9BrjrqKPWu9EfIAcnhJF3k2DhNaLWNJywMlAN3UnzefPUBBi5HYMc0RKpMjopLKLLC/UNr9KZZukFcXrqt5cK9O9kjxxPEfzFaru5g4FoYB51DKTeC+gSYgL+YzrDeqavy4aR7O5W/V4atuMr2JLsgNpstsUzzdtbNZQSIgUFkirRXc+wGaI2wVpYmUMYY5P/PjCtivyutm3BaRx7huQo5mbKLrfDjTkA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,53 +97,141 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi, Peter,
+From: Xionggui Chen <chenxionggui@lanxincomputing.com>
 
-On Thu, Nov 12, 2026 at 1:06=E2=80=AFAM Peter Zijlstra <peterz@infradead.or=
-g> wrote:
->
-> On Wed, Nov 11, 2026 at 05:24:21PM +0800, Huacai Chen wrote:
-> > When CONFIG_DEBUG_PREEMPT is enabled on a Non-SMP (single-core) kernel,
-> > calls to smp_processor_id() in preemptible contexts trigger some false
-> > positive "BUG: using smp_processor_id() in preemptible" warnings, which
-> > are harmless noise because the process always executes on CPU 0 and CPU
-> > migration is impossible.
->
-> The check is still valid, you don't want to have any code that uses
-> smp_processor_id() outside of preempt_disable(). Such code would be
-> invalid on SMP, even when ran on UP.
-Thank you for your reply.
+The madv_populate selftest assumes that a mapping created with
+PROT_WRITE cannot be read, and expects MADV_POPULATE_READ to fail
+with EINVAL.
 
-At first I also think that smp_processor_id() should always be called
-in preempt disabled context, but after investigation, I found:
+However, some architectures, including RISC-V, may implicitly grant
+read permission to PROT_WRITE mappings. On such architectures,
+MADV_POPULATE_READ succeeds, causing the test to fail incorrectly.
 
-There are 5 existing skip conditions.
+Check the actual VMA permissions through /proc/self/maps and adjust
+the expected result accordingly.
 
-1. if (likely(preempt_count()))
-2. if (irqs_disabled())
-3. if (is_percpu_thread())
-4. if (current->migration_disabled)
-5. if (system_state < SYSTEM_SCHEDULING)
+Add a PROT_NONE test to verify that MADV_POPULATE_READ still fails
+with EINVAL for mappings without read permission.
 
-Condition 1 and 2 is to make sure smp_processor_id() is called in
-preempt disabled context, but Condition 3, 4 and 5 is not.
+On RISC-V with Linux 7.2.0, the original test fails 1 out of 16
+tests, while the updated test passes all 17 tests.
 
-Condition 5 can make sure no context switching since the scheduler
-hasn't begun to work, but Condition 3 and 4 can not.
+Signed-off-by: Xionggui Chen <chenxionggui@lanxincomputing.com>
+---
+ tools/testing/selftests/mm/madv_populate.c | 67 ++++++++++++++++++++--
+ 1 file changed, 63 insertions(+), 4 deletions(-)
 
-In other words, Condition 3 and 4 can only make sure the current
-execution will not be migrated to another CPU, and I think my new
-condition is exactly the same.
+diff --git a/tools/testing/selftests/mm/madv_populate.c b/tools/testing/selftests/mm/madv_populate.c
+index 7fce5d0b622b..818f99ee2004 100644
+--- a/tools/testing/selftests/mm/madv_populate.c
++++ b/tools/testing/selftests/mm/madv_populate.c
+@@ -69,10 +69,38 @@ static void test_prot_read(void)
+ 	munmap(addr, SIZE);
+ }
+ 
++static int mapping_is_readable(void *addr)
++{
++	FILE *maps;
++	char line[256];
++	unsigned long start, end;
++	char perms[5];
++	int readable = -1;
++
++	maps = fopen("/proc/self/maps", "r");
++	if (!maps)
++		return -1;
++
++	while (fgets(line, sizeof(line), maps)) {
++		if (sscanf(line, "%lx-%lx %4s",
++			   &start, &end, perms) != 3)
++			continue;
++
++		if (start <= (unsigned long)addr &&
++		    (unsigned long)addr < end) {
++			readable = perms[0] == 'r';
++			break;
++		}
++	}
++
++	fclose(maps);
++	return readable;
++}
++
+ static void test_prot_write(void)
+ {
+ 	char *addr;
+-	int ret;
++	int ret, readable;
+ 
+ 	ksft_print_msg("[RUN] %s\n", __func__);
+ 
+@@ -80,9 +108,19 @@ static void test_prot_write(void)
+ 	if (addr == MAP_FAILED)
+ 		ksft_exit_fail_msg("mmap failed\n");
+ 
++	readable = mapping_is_readable(addr);
++	if (readable < 0)
++		ksft_exit_fail_msg("Cannot determine VMA permissions\n");
++
++	errno = 0;
+ 	ret = madvise(addr, SIZE, MADV_POPULATE_READ);
+-	ksft_test_result(ret == -1 && errno == EINVAL,
+-			 "MADV_POPULATE_READ with PROT_WRITE\n");
++
++	if (readable)
++		ksft_test_result(ret == 0,
++				 "MADV_POPULATE_READ with readable PROT_WRITE mapping\n");
++	else
++		ksft_test_result(ret == -1 && errno == EINVAL,
++				 "MADV_POPULATE_READ with write-only mapping\n");
+ 
+ 	ret = madvise(addr, SIZE, MADV_POPULATE_WRITE);
+ 	ksft_test_result(!ret, "MADV_POPULATE_WRITE with PROT_WRITE\n");
+@@ -90,6 +128,26 @@ static void test_prot_write(void)
+ 	munmap(addr, SIZE);
+ }
+ 
++static void test_prot_none(void)
++{
++	char *addr;
++	int ret;
++
++	ksft_print_msg("[RUN] %s\n", __func__);
++
++	addr = mmap(0, SIZE, PROT_NONE,
++		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
++	if (addr == MAP_FAILED)
++		ksft_exit_fail_msg("mmap failed\n");
++
++	errno = 0;
++	ret = madvise(addr, SIZE, MADV_POPULATE_READ);
++	ksft_test_result(ret == -1 && errno == EINVAL,
++			 "MADV_POPULATE_READ with PROT_NONE\n");
++
++	munmap(addr, SIZE);
++}
++
+ static void test_holes(void)
+ {
+ 	char *addr;
+@@ -266,7 +324,7 @@ static void test_softdirty(void)
+ 
+ int main(int argc, char **argv)
+ {
+-	int nr_tests = 16;
++	int nr_tests = 17;
+ 	int err;
+ 
+ 	pagesize = getpagesize();
+@@ -280,6 +338,7 @@ int main(int argc, char **argv)
+ 	sense_support();
+ 	test_prot_read();
+ 	test_prot_write();
++	test_prot_none();
+ 	test_holes();
+ 	test_populate_read();
+ 	test_populate_write();
+-- 
+2.53.0
 
->
-> All code must be SMP ready.
-This is why I use "if (nr_cpu_ids =3D=3D 1)" rather than "if
-(!IS_ENABLED(CONFIG_SMP))".
-
->
-> Aside from that, nr_cpu_ids is the wrong number to check.
-Correct me if I'm wrong, do you mean checking num_online_cpus()?
-
-
-Huacai
 
