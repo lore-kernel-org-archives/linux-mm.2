@@ -1,136 +1,109 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE9D606A321
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 12:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A422606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 12:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Q6fg1hE6
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CsCxIx0m
 Received: by kanga.kvack.org (Postfix)
-	id F31746B05B5; Thu, 12 Nov 2026 07:11:58 -0500 (EST)
+	id ACA326B05BC; Thu, 12 Nov 2026 07:14:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE23B6B05B8; Thu, 12 Nov 2026 07:11:58 -0500 (EST)
+	id A7A816B05BD; Thu, 12 Nov 2026 07:14:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD1946B05BC; Thu, 12 Nov 2026 07:11:58 -0500 (EST)
+	id 969B86B05BE; Thu, 12 Nov 2026 07:14:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B4D086B05B5
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:11:58 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B1FCC1A05AA
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:11:57 +0000 (UTC)
-X-FDA: 85426353474.25.B1AA4C7
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf01.hostedemail.com (Postfix) with ESMTP id CF7584000E
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:11:55 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Q6fg1hE6;
-	spf=pass (imf01.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DD696B05BC
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:14:48 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5A1D0C0560
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:14:47 +0000 (UTC)
+X-FDA: 85426360614.28.85BB6E2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 9D075A0005
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:14:45 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CsCxIx0m;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794485685;
+	b=rgUPMEbOPngz7aM9qwv3kukyT9Sx1nxQNpZyQyy3hus3UA+MNqZ9cS66YFofTx6Du4tsiy
+	8rpbgICt7F0OBGY240dDpuAlm/Tjfe2Nh9ucaHGJD9qIaDXSQ7rbsawKnEDHbRG/gxr7dr
+	oNOcNZhUS3x5F5nyOkpS97udBi8JtLg=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CsCxIx0m;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794485515;
+	s=arc-20220608; t=1794485685;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xc3dkm2FkTj3bfcx1hRbhfim8mfu2/061yvWmQIUcIs=;
-	b=FwBU/YHdemJ7S6ndXMkUzKY5TrARBC4KOvpUO4SjDhEIXfBqOmsTTO8+gMLqFEtsBsRxei
-	mcQNAqqyb+rIgY/M0kuie9D+IIznKwM+8NMermOGEAN2+OVW9aP6wq8fxESbPod0n8Yhgr
-	ZKm0vJQGarY5Qi/eub8K0PPni8jryDA=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Q6fg1hE6;
-	spf=pass (imf01.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794485515;
-	b=NZoSQNBk7RZKyzu5vkQHgOB2FNdnMim4D0/StbhFWhpu+zOzt5QNdsI92InWYTFjVqE1ZH
-	3TrtOMKGUUq5tksigGp0DBQHqWDzeVprMpq/DboN2l+NALpeCQUkTZwmlEf70jSxY0sTzT
-	J3crm9U9JQVK84r9HAT1qBP9S5RafCA=
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6a642495d81so1192478a12.2
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:11:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794485514; x=1795090314; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xc3dkm2FkTj3bfcx1hRbhfim8mfu2/061yvWmQIUcIs=;
-        b=Q6fg1hE6rbolAzkfJUgTrh9cS989aTIHrCgK8rkiDP8o4DeyA+yFEIPJ0uF6YOsyE7
-         FXTN8LeHoBPdhY0q0HB7X6HObBII1gwHta1LZ4THMQ4JVOq8mvqVi7O42wUaCx2jS0Ss
-         nvSJjdsFkcCVt2d5zTwm/fNqFMAy6OJX7Mpq/mVzeBkuJPmTY2I5SeK5L1aFsTGC9Cou
-         aC5SJBhz6neUTsXt3FaEaFRW8RAdEjWe6TfLqzlrsvcPtyV87BYVz4znhkqSCnrFKj/o
-         VYl/vjTBDHkKjNjA37vCcYW8o1+Vb0aezy1kMIB/927Ax55fWdXlTKtTP4pvT7gBqk0r
-         AzNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794485514; x=1795090314;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xc3dkm2FkTj3bfcx1hRbhfim8mfu2/061yvWmQIUcIs=;
-        b=xbTLigPGELnpd5oDnRUkyaxxtgZtYDJnfLMDZPFcDERqoD5TLnljs4RZjWdSlb1BQX
-         QeLtYaIlAY4YolUQC7nxuEK17b/QnfrdQu0xWvO9sT1K09xoIYtX8gykZau9goduTiey
-         FJb6FAp6Ln+4gSDjG1+KzdocHZxR3TtSgbugNCAoJXdq1VnIanYuzULTCnieajv7CIaE
-         BsNgONBBGYWdGTxo2nLPSawPD+951MtKzsXd76BKV6py5JGTNJCsaM9EDMTzKCqmxlrH
-         3fdWg4Eje3wAJFU9a6lJwNUpUZ3P3/75rVYFfbmGsSxnV5kKVldD6bDfreY2+0+TKe+r
-         xbcw==
-X-Forwarded-Encrypted: i=1; AL+hErGSsOQLhnjbvc78HkaxJZJv/87AGfKCVx36LzCcpUP9tpehy+LTGEJT772W6ucA1DBmM9MYf5SpaA==@kvack.org
-X-Gm-Message-State: APuU4Z/jFxrziCV6wdnEKnYvpQgzIBIZlSkkHU333riWvcZgtWqPIpma
-	i7cx2bfZi+U8EtjrFJAJk5A4q+m22KqgXsxVCsNVimfUsznDG1dVv0se
-X-Gm-Gg: AYBFou3sxuRJkSyOwQYvxHO5zpRaJBQ2QQlM6pC58gIOm8kbvr3Tg7Esubjfds1SfdM
-	ppP47LLC3XETtfFmiayC40r2SkkNsBy9p8AAZrg0GO1YbIOWmmv4vD/eKEbi1JPzrfVK7yFVuEm
-	gUmGGBSKJsJdGo2W9uInt/J5FjHWnGqJEYdNoDQiOTW3sg6Nc+ppuZnPcQAnVe9qBZS3T5EfrEq
-	I4wdqsD1wd579M2x5YGysK1I7AgtJo5BbnR+1DvNC2x9smwFT4N3eA6qD4x9DSr59ftHcj366ZE
-	5RN0f7Tln5+Gdr6TZ+eqjzF9yCZObQOq8uXPezoKIS6RfvRH5UIprFqzVVtWPUr1zYVBdFyGlpk
-	r7aUsMt4zw4eYohFmV6wypx0OCKVCg2l/WYBD5NRQwgncFTbaJHsGGmvJ/uBtkFFzIaGvzIdfIJ
-	ETugqAnFQfNvczm7SRJkGpcQAbFTcK3yUp1ccGq4btsRM/kCXa471wtGKecAuE+rzTY82CnbNKj
-	9aKsEYjQp10B6WKnu+n1kt0AhlRKcLEu3hEdjNOprqWnGjVmQubr/XNyuBqdxQtnWkJGQ==
-X-Received: by 2002:a05:6402:450a:b0:6b5:875a:c2a0 with SMTP id 4fb4d7f45d1cf-6b7775eb13cmr3884877a12.24.1794485514349;
-        Thu, 12 Nov 2026 04:11:54 -0800 (PST)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b7834cdc23sm1610428a12.12.2026.11.12.04.11.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 04:11:53 -0800 (PST)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Thu, 12 Nov 2026 13:11:51 +0100
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Uladzislau Rezki <urezki@gmail.com>, Dev Jain <dev.jain@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-	linux-mm@kvack.org, Sashiko <sashiko-bot@kernel.org>
-Subject: Re: [PATCH v4 4/9] mm/vmalloc: BUG_ON() on an unaligned range in
- vmap_pages_range_noflush_walk()
-Message-ID: <avWtB-nWZUwLdQdP@milan>
-References: <20261110112546.261415-1-hao.ge@linux.dev>
- <20261110112546.261415-5-hao.ge@linux.dev>
+	bh=wSnWAvHtOMLFz4uzS2KYZ1SGi9EBgJHHln4xOPRtuRk=;
+	b=b5Cits1PqApkBte7oQBq3VPPxfFQFLE2IYmkSjWlRHlfHupTnVXzlZKi9jIRdKFaDozeFL
+	h2fjS3vM+t7/vcxtOZy1RkaMdCrR5YBJ7ISmUXfvx8aOH2A0aB27ssiPxWeySA+sfELstS
+	PTF7HJLaWh2jS6031nIhjOAuefjWmrk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 17FBD61255;
+	Thu, 12 Nov 2026 12:14:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F2E41F00A05;
+	Thu, 12 Nov 2026 12:14:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794485684;
+	bh=wSnWAvHtOMLFz4uzS2KYZ1SGi9EBgJHHln4xOPRtuRk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=CsCxIx0mR38bvlIFQiBxk6+Y9l6TgU4JRu2TXLPxpT1XJ38vOTZZbnd1ZUZe8XzPb
+	 dZATWSN8bWSnf0qiSj/ZV8qjWjo38tSH971twZOTE//E6H7RuMnWH6EZ83OrW7/kDw
+	 oid/SOUPKzABd6rrkVbxx5EYkuvgwW81uSn/A2OeHHZgYBQSEKwKF3jpQt8pHj+z3D
+	 HXyrC3HAd8WA+VnndLLwi9Oflq7MJ58ptZ+ulVlE2e/x1xoHcHSjCAVGIUAC4hxQGo
+	 4MqCwGhcqHsaFME19gmDjPiewxeNNV7+idvhLMxcj7jTNhpL7vEnW4qPnCkPZYmhwq
+	 ZmrmnDDcAZhlw==
+Date: Thu, 12 Nov 2026 12:14:32 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Michal Hocko <mhocko@suse.com>
+Cc: David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Nhat Pham <nphamcs@gmail.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Usama Arif <usama.arif@linux.dev>, 
+	Kairui Song <kasong@tencent.com>, Balbir Singh <balbirs@nvidia.com>, 
+	=?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Yu-cheng Yu <yu-cheng.yu@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+	Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>, Chris Mason <mason@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	"Borislav Petkov (AMD)" <bp@alien8.de>, Mark Brown <broonie@kernel.org>, 
+	"Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH 01/13] mm/mmap: free gathered pages before MMF_OOM_SKIP
+Message-ID: <avWsG-zmuniUFio7@gremlin>
+References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
+ <20261111-mason-migrate-et-al-fixes-v1-1-3d2454362e8d@kernel.org>
+ <avWmfXu39vtp0DM9@tiehlicka>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261110112546.261415-5-hao.ge@linux.dev>
-X-Stat-Signature: 6jri8pm5ym6hftwjzd8s5c7xm4j4r37u
-X-Rspamd-Server: rspam01
+In-Reply-To: <avWmfXu39vtp0DM9@tiehlicka>
+X-Stat-Signature: 3gbodp37ar89aocs64yjiks4exzxx37q
+X-Rspamd-Queue-Id: 9D075A0005
 X-Rspam-User: 
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: CF7584000E
-X-HE-Tag: 1794485515-813299
-X-HE-Meta: U2FsdGVkX18MaXSrK6ugTRuvZ5IDsc+qOQCcYGBrcAHz+2cTwRqc4hExQP7xAiw4wsgkecCzGIbLAZ2P6FUket6YUOnyJ+2zs5ggN+tFUWtYCvIfFroDq49h63edO1hKntqgHSb1BdwUznZnDs0zlZdVB8BWHD6nYAHaOraqP7OXOBtVY/C5T7A+o7a02Jlh0YwBVA8bsnF7AiJEG3fnyl+kdTWxhN3FUZddpBD9bPqPb4k5f5fzKDl93WiHyH+uQPvu+7EMsMxMNYrFcPJA+LnscXJVmd2GHicm9e8fVtAleHsBpqrQX7IUMB/8w41J0pmAsBDgW7UYQvbHaPOBphEgG+RYbLBPUdZVF0hU8QndECST3c/5wcxliaXd60VtanTBhZkaYWzNfIglVZRCgf/IQBCG8Ex7d+0uzucawHjo+waIqRK/REVr+guM7AFZ4LaxHUm/3tFvmoQ093wqb1iR/7ZCafjhABLYhBegIjdmM6abDD2uUApO7riRBJjC7F2cmD5imx+kEBoxMLcR7jJVWKbuzGNcahWX8kpxXDdYzwJiTRQ+79U5EtHtJheVpkjAle3BeNpn2H+iemaSeIZ6OCjmBnCQjL00IMPdS91LD++q7oMcW7RyVdUiaezQYCMECj7FubvCFMGs/wBZ3MGr4QKdfVyRCWROs83oL7Y7HxnrqXEKV1JQyEIr1MUv98BfJRa+mDRLMQxTc1VTV9SzYooFvi69YpOjb0pILxbN4TZ1Z3uCIf5WDC8y+uAP/K1UFTr4DMqZqEKpF0uVpQHJwFJAyPgBCNcaQlTU1eoyQs61cejAmG78eTLe7B1k6bKeF1AaSJAv8bJAv/VrH/JFRKYoshYiKyU3clLE6PVEwIPooIJiRo4RWG1465eOSeWoEllOC2v52GMtWksdmBn17nSeSQisEYIqC6MO5OZGjjpCszJtLI8xtFSMUob6xULnE30gC2VDaJT1X/4
- xsJXr9fW
- c3z3PdJ9sebkgO/XG5wI+JvSRpCSg7DT/MI/nMfG7LEYNRR6x6JwfqGP4zC4ZsQjqnxi8lzKQ/rNYRlufa3Uisf5yT2jzO7xl8K3f6CwNOkfaI2RmbPmWQ4goF7at7gT97HVE9wmqeVqxZjjh1VEEdj3uRDbguss1KBFTynQSJJX8W39VgAwCfpAqKUk2jJ7Uxu2gZdP8aw7X9RIgzpjzkreVaQdEsQYVbOenwjqrC4igv3j04En9ZLBJ3O0+aXeVzBN5w+tbiglNwtfM+cjNNMMoX2YjAGEsebABqZP4CNDUOV4/nmySCRn1Yg+c19f07au7/40oAJg3Tx9FrTPq8uxxNdhp8t9cFDg43ko+G8ubv41MaEi4q8lVdOQCWOzLB1SVw6J+AO5x4EgbBEWmQ3Xouhw0xUUlnMWZMQcFAXGoHNgEZ7tZcYMBrI4XdvZLGbF759tETJwDZRDLhb3fjp9ybPLwyZq8P9PwopSHaQGwU3jojyNXLOGkFLdHVrt/8SKxwUBjyyZffLFTrD8+bGLyey9LHC9Mk2IMZyFCEKjRKhFYuROZJYUf5ZtbBcdaqXKn9okNS6rlyKDXOXg1QJD7NiToqZZ+XUs61y7Yu0Na6JU=
+X-HE-Tag: 1794485685-354749
+X-HE-Meta: U2FsdGVkX1+XD/hzMwJd7TuOVUbrNqVpCmbrfKCQv7qi1+QoFo5ms9rHv4yMbzpT9exihyl4WbmerzsUnvDKmxLhGkXNQwW0MBqCn0YZZ+dhY/Oh7K1zUlcx8hpWC7nk5hOtQOlEMxK3y26XGvn8nYf6nAOZufKClbUFNwqA8HU4LzDC9P6ceeo7IQBbsRax3g2cyfUB+sx3zrz+NMzSGjXAx+t/MmcMe/19CvckI/H/oWBG35zG6HQImrsoYAcvzqZJ70e787G2PlctbOYvDVILEpUEh4/wwmAMUa4q/DjtLeovdYFSUp9jaZNehZMamJxP/GDAugSyhiz1CJjmwoZaqDiKZDsfS3Iv+deh7nAbVdwY2WD4lBA5h8lqHxhPPZYDgOxrQavYVv1iFnOh+lM9J6UJhc8s28L6QwMqU+64JhI4sSirCds3e/xdPL5QKSTznfz273siuOV3xMJLpKES3LjKdc/r/SpiVhxGamXm8puHtJE7cjw0V14mYb0VZ4QFI4yLxU90B7wIo0GGD+MbcaBGphNAa2oqHl8KlJ3aazZ0Zea6i3wq1goQxd8QHSvqGat9oOx9jqnjN2ziPCLaRqnzQf0B6TuHzdG7B5Gm7/7LAu5zJ1187JleauxUtCRCw3TsKs4BrZOjct7P7XnyZ4Tw8tVe+IcrcxqRZIljVxYl1YNwotVGKia3ZAzmTD6V0DMhm1qCtTvd/ePaA2p0KWtFOkAuZhUw8aOWexWcomgGQBvRp7RRn7leXsiubfAGqrfhPGmaeKNuZhXngQiSF5ciwtVXNPUh6DZ5w7ppjeOG4E47fYueo+8cyx55AtMNGIfPDoY12XLSpY67KtXDo59oD6ndhoWs7oeNY9nT5TLpVjEeAn+frE7Mt+ZQdF3BwKV1SemNzG9Zm2FXRtxHXp2TKD00cI0zP4IPE8F1E6KyLFikDOaDu3WEDuhUQMYyGlgQnhqOzoSIaGo
+ gG95eh9n
+ Ja4wJlkc12tPDA58qB8mELv/Mrf3xlOzrOXOBywC9Yjq6jdmBDKmn7lrqDwWdoOlIlyYnIkNecNfO4geWX4Sbdk7oieuHhoBMME3di4w/9jN7Rsy+omWokAmIYDJU+4A0VBUDhJIl2LLbAt4cSZBK0NiAUrc+m4+SayncFFdjWeznlJEKHNk/u8vpSZHif9DUoyEJDQ5onJtl3w89wSF6c/fvD60snbxpvDx682PkjIubTBH95OCL4I7CIBSQxpF8d/GW0730hOH7dPwK0IwTf575CMXsSGsyFj0VZgfDJxDKLA8nxSnFMuiMit0DPSAH7adx5iZ4Yqk/mZrVnpEL8DaIjuo1hIjexoOMYjiN6XpIk1XvbqjeOo3QxA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,38 +112,74 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 10, 2026 at 07:25:41PM +0800, Hao Ge wrote:
-> The pte loop of vmap_pages_pte_range() maps whole pages and stops
-> only when addr lands exactly on end.  An unaligned end lets addr
-> jump over it and the loop keeps mapping into whatever follows the
-> range.  An unaligned start maps the page below the range with its
-> first pte.  That corruption is impossible to debug afterwards, so
-> bug out on addr and end at the entry of
-> vmap_pages_range_noflush_walk().
-> 
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Signed-off-by: Hao Ge <hao.ge@linux.dev>
-> ---
->  mm/vmalloc.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 27f2674a5556..86fbb1d2b27a 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -698,6 +698,8 @@ static int vmap_pages_range_noflush_walk(unsigned long addr, unsigned long end,
->  	pgtbl_mod_mask mask = 0;
->  
->  	BUG_ON(addr >= end);
-> +	BUG_ON(!PAGE_ALIGNED(addr) || !PAGE_ALIGNED(end));
-> +
+On Thu, Nov 12, 2026 at 12:43:57PM +0100, Michal Hocko wrote:
+> On Wed 11-11-26 18:13:15, Lorenzo Stoakes (ARM) wrote:
+> > The OOM killer can quickly trigger again after having selected a
+> > victim. That victim might not have freed its memory yet, but its mm will
+> > be marked MMF_OOM_SKIP by this point, so the OOM killer will ignore it.
+> >
+> > This can cause the OOM killer to kill an innocent process when the first
+> > might have freed enough memory to relieve the memory pressure.
+> >
+> > Fix the issue by freeing the memory before marking the mm MMF_OOM_SKIP.
+> >
+> > Note that the task which calls mmput() might not be the victim - if it
+> > took a reference on the mm (e.g. ptrace), it may hold the last reference
+> > and release it when it calls mmput().
 >
-But why do we add this? We used to live without it and as far i see
-we have not gotten any report about any unaligned addresses un-maping.
+> I do not follow the reasoning here. MMF_OOM_SKIP is called after the
+> address space has been unmapped either by the last mmput or the
+> oom_reaper (or both when they are racing). Now all your patch does is to
+> call tlb_flush_mmu which I suspect is to release batched pages. But why
+> is that needed only for the oom victim and why there was no final flush
+> in unmap_vmas?
 
-The vmap allocator grantees that va->va_start/end have to be page
-aligned.
+Sorry maybe commit message isn't clear enough. I did have to pare these down
+from really massive ones.
+
+And yeah tlb_flush_mmu() is about freeing the batches.
+
+unmap_vmas() doesn't have a final flush, it relies on the caller to figure that
+out, and just batches up.
+
+And currently tlb_finish_mmu() comes after MMF_OOM_SKIP is set (in
+exit_mmap()), so at that point the memory is unmapped but whatever the last
+batch is isn't freed yet, and the batch can be large (PMDs are single
+entries if I recall correctly for e.g.).
+
+This only matters for the OOM victim, hence reinstating MMF_OOM_VICTIM, which
+made the patch _way_ smaller than the one proposed :)
+
+>
+> > diff --git a/mm/mmap.c b/mm/mmap.c
+> > index 7618e72766a5..4cb18b217048 100644
+> > --- a/mm/mmap.c
+> > +++ b/mm/mmap.c
+> > @@ -1313,11 +1313,18 @@ void exit_mmap(struct mm_struct *mm)
+> >  	/* update_hiwater_rss(mm) here? but nobody should be looking */
+> >  	/* Use ULONG_MAX here to ensure all VMAs in the mm are unmapped */
+> >  	unmap_vmas(&tlb, &unmap);
+> > +
+> > +	/*
+> > +	 * Free the memory before marking MMF_OOM_SKIP so a re-triggered OOM
+> > +	 * killer will only skip this mm if it's already freed all it can.
+> > +	 */
+> > +	if (mm_is_oom_victim(mm))
+> > +		tlb_flush_mmu(&tlb);
+> >  	mmap_read_unlock(mm);
+> >
+> >  	/*
+> >  	 * Set MMF_OOM_SKIP to hide this task from the oom killer/reaper
+> > -	 * because the memory has been already freed.
+> > +	 * because the memory has been already unmapped.
+> >  	 */
+> >  	mm_flags_set(MMF_OOM_SKIP, mm);
+> >  	mmap_write_lock(mm);
+>
+> --
+> Michal Hocko
+> SUSE Labs
 
 --
-Uladzislau Rezki
+Cheers, Lorenzo
 
