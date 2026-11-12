@@ -1,126 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E35D606A89E
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 16:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0BE860A263C
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 16:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cmpxchg.org header.i=@cmpxchg.org header.a=rsa-sha256 header.s=google header.b=sP0H+XlC
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QvQD9vk7
 Received: by kanga.kvack.org (Postfix)
-	id 5E5B56B05B0; Thu, 12 Nov 2026 11:26:53 -0500 (EST)
+	id E2EAF6B05B1; Thu, 12 Nov 2026 11:33:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56EB96B05C1; Thu, 12 Nov 2026 11:26:53 -0500 (EST)
+	id E05D16B05B2; Thu, 12 Nov 2026 11:33:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 436446B05C2; Thu, 12 Nov 2026 11:26:53 -0500 (EST)
+	id D1BBE6B05B3; Thu, 12 Nov 2026 11:33:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1ED156B05B0
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:26:53 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 95FC112060D
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:26:52 +0000 (UTC)
-X-FDA: 85426995864.21.22AE2CC
-Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 768331C0004
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:26:50 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=sP0H+XlC;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf18.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.45 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794500810;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A1B6A6B05B1
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:33:25 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1CF6AA8238
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:33:25 +0000 (UTC)
+X-FDA: 85427012370.04.A118404
+Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 0363910000B
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:33:22 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=QvQD9vk7;
+	spf=pass (imf05.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 74.125.224.54 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794501203;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zy2nREmykWs6qK0x39KiCj1K4H7Cbhg1tuWFyKfn2Lg=;
-	b=Ydz39UG5oy6sHzXB3BjaNTkOVb412qdIhC/L6PRqHnx7ie2P4fhcLyXY1VJtHmnmW1tpcs
-	9Wyre8ThAPpbuWRlAPU2CjVmd+VLPA6HA/1HsGxwCcLEM56DAtLebuCFwTzGdVoz/9Yo3W
-	+h29uyiUK37Ebn5THeMKGEDNIm7h+K4=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=sP0H+XlC;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf18.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.45 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794500810;
-	b=uRyfWeRWqSHSk0FKfu6tXbRIrK2R4ispdY3jSd5dde71Z28oj3RV6t5JIRZMZ0+FlkB7un
-	tp89pEV00E0BNxPhZEz8VFFKaBWs1byijn3wWdmBcyFUeO8uvBh2TjAjSimdnzc1xke1ge
-	kOO+v689hOTCx86GU2kZZjfo2R/XVY4=
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-67c6a0abc2eso2508461d50.0
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:26:50 -0800 (PST)
+	bh=dmjuPZ8BQZpeLS5NHfXu6uyM92RYmwsffX2PFFxEaPU=;
+	b=aQf/tp2icLfDmonA/DuSa60HVnMAWFk9h/hVcS95oFEv+bVJvd2/W5n2nnFF4fdMXipy1A
+	5PE1Ze+n7zysVISaI4HEDNgRVkGl3VgZcA6Y2GatY6fDqF2UcEHEW1YJkEYk5PNjmfhurj
+	mIlrrbOrUmkdH6JnEZQQGhdBHwv/1dg=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794501203;
+	b=tOKkynY6h97hDAPQck7WCSDrg0Cqe+tzv4vMEerH/TUkcqYx0DBo/9nJrtMLSRBB6H94JC
+	Kn0AjP/Yoi8M9PigtAN0764QEqQLlI+X/iY6sQLBHM3LZ22dx1cb/oDj+nZaij19aMFuy2
+	bITQxcZNDhcDdsHI3NlT4L6lCdbCda4=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=QvQD9vk7;
+	spf=pass (imf05.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 74.125.224.54 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-67bef6dd972so309733d50.2
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:33:22 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794501202; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZxMGgdcxCkyKxmARJc907EgHOR2L7Jx3UM0wPmBRlTvgf9964M2wSqYSjeZiOI2mY6
+         pNHdSfi1Z+9YiOjiu97TKy5qCzkY5Tlz2cG00AtyfKB68Rp+gYkCFZp8WdaRXfpEomZX
+         WEw/bpZlOz2s89TYD5clvSuAnqvoWDrR9BwjL7SS7+LXwcycNnAEhsZJ4eO6S2ye+zvQ
+         ClmFnb1x8a+RsqBlk8OTJsR+p0iEZTEWiIUoxJZChtUywG3HWijOQ7aSvXHrz0L0GYi3
+         faqIbXLNUJekgXbvYjoF6K3T43AeOqfXvOgD6LQwpNe0umhR3rs0LbO2KaTjFSH383Ap
+         q+9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=dmjuPZ8BQZpeLS5NHfXu6uyM92RYmwsffX2PFFxEaPU=;
+        fh=R2dxVHYYVDj9RNASr2LyBOh5hUePtkqlLKbt9Zq3IZs=;
+        b=GBTGSmlbPpduRKLhjewCW1UI+MmteuowqwqBBBOKbCHIJaRO/HpvzIIXRJuWIW/fQt
+         r1L/JzURMnFBVWEVfw4vtUQNOlHkKKAnjw3FDxg1d9zyVMFwxx4OHm7LY0oZQRkUArwf
+         wmVio/n4fc7a9U1/7svnLHQ/HyGXSeB0PM0P2eqV+fbYqXqPqNivwzq+kbs3X93nUCsh
+         LCiEtRmq4hpqheEr+Ik/mLvqLhgnVLW8b5DwWVRxT9ZX+8w8neKhy9P3Tc86CzoHcChC
+         ju1PIa8xdAQIKvuN7xiWCvpcchfkC1JD2+71q91e9rIsnKD8t6QCBfPr4w2CQVVkM2vT
+         gRyw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1794500809; x=1795105609; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=zy2nREmykWs6qK0x39KiCj1K4H7Cbhg1tuWFyKfn2Lg=;
-        b=sP0H+XlCEu4S/fWI2OwGKjWyUVe/QQQZuDsYYKwpL8nWeS5oefKy44GJKTaAAlDuxR
-         nt70F+aMAO9qhjtB02RTvMsphMMhYckIYqRyyJ0dygOUPcMfdXjSf2RGgv8oi+DM/D1b
-         SGXcoGH0Ou2bgAEBJ9dfmus2u4XOU/0HcNy+m53A2dUmq/Y+CRbWrnSHrbsxHuxXkZAf
-         KjtjK0AN3xGBEYRGfNcRyH2V1lrsQ4+KdNH52RSxnH7gHIIrgJL5gUFq4DYQnCMztS5o
-         KSpbznEGYsDrGjtN4sKzMGjGih/y0lsJOgAlzXR9sn3XhFd9eAIIXHGoOgpJeXUObUbe
-         DZrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794500809; x=1795105609;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20260707; t=1794501202; x=1795106002; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=zy2nREmykWs6qK0x39KiCj1K4H7Cbhg1tuWFyKfn2Lg=;
-        b=WyehXsP/qh+2FIdDrvjrYntLKxu2r/zfrZ7eg5eZWuLQuwPR2cNVUyk3EwmXyCahsC
-         6bRss15UP/stndAzyI1Bt3WtBJk8KTEeqW0pTjNyOG97faxJ48iURFbS3SHmCr1jxVtH
-         fFLFovLD22e1CjfZdB8N11UuP7X2qbWyNOYVg9KivxXB3fPWEe77jXCjllAMgvBp2Isj
-         6LPkIYbs6gYQGdMgh0MWUhBhVaRQHqqjBmC6Exu0SW+HmHoZG5NN54GFkze3Hj0F+zuR
-         rKaBrJEZwumQljCszkZQiFb78S9G9soHypP1wLfH4l/2JlfeEQBs/Rup1WxIrhXRN9sO
-         bVzg==
-X-Forwarded-Encrypted: i=1; AL+hErE+nSr85qs53vrs8phYGvzel6SO/1QQNYkd0spJvbS3rPEA2lYE6Yy0NABLHd3W083n7JkuUzMwAw==@kvack.org
-X-Gm-Message-State: APuU4Z+5KMUZV9UVpaeRuYbMRJuMazA9HiVhlWkhq4K5VQhZK+jl91m5
-	1s5Wq58TBbD29xhFrRYrd37L9rjK16E1DpOQyUCj+WUNYCQw9hAOTnS5m5/ij+vhrRk=
-X-Gm-Gg: AYBFou311wbOY+Qr2qhFzUN2IFxjTOFJYNtLatAgPCqQZhpR8k60CPsMaYHBmrZcbB0
-	sKy2IoD3xUU76te2t8J2KD/gAZtZBRHEpW90pUbY4F+s9Wl4Hqi2dSES9IDMmzXxUAAqzhQz+lB
-	rMyMCppJWkrgddh/Ui3Evmd1MR2H+sBs4PrqHmu4O3nJOemoMo1L3T21Bt+om7fZku4801A73DL
-	x5r+vlLmjlDsnudAiAacshAkS3GCM1AlywpVYXP+gGq0MPIfIQwlPIF0YzXYzrKsMsmTUgmLzaA
-	iZEOBYmRIGs3FJHIgL/cc7K3uJVbMukhxsS7EjeOMdKgdyoP1f9Oe17ozUvojzU6w01IssOpeXC
-	EWVNgp7AqiuAvyZ3im1Br7zOvnHsiA8RooPaXHbTdrby+fMIcJGIi+aoJ1Ra562Cv5DB2BNXxpM
-	kY09JaXZ56PsywLv03YSAfjixJQF2Qv9Osmsja1iRnWrvZMqfqWTb8c709mEL+y6kCgSN30e96X
-	HOTzKtU3oJrXBe/HQPjIoYAHwQnqkk1Li7mRAWxA64L6OA0UkFULO6EC8yDP1KxrfpejNH051G4
-	RxqsDyQGTL97HIsz3x99B2/aQj+5
-X-Received: by 2002:a05:690e:d01:b0:679:a2c3:b294 with SMTP id 956f58d0204a3-67c67ff20aemr3211748d50.83.1794500809370;
-        Thu, 12 Nov 2026 08:26:49 -0800 (PST)
-Received: from localhost ([2605:8600:200:14e3:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67c589cf1fcsm7627342d50.13.2026.11.12.08.26.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 08:26:47 -0800 (PST)
-Date: Thu, 12 Nov 2026 11:26:46 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net,
-	terrelln@fb.com, dsterba@suse.com, yosry@kernel.org,
-	nphamcs@gmail.com, chengming.zhou@linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-crypto@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, riel@surriel.com,
-	shakeel.butt@linux.dev, kernel-team@meta.com
-Subject: Re: [PATCH 2/2] crypto: deflate - use vmalloc() for stream workspaces
-Message-ID: <avXoxnMq6ns8AK0z@cmpxchg.org>
-References: <20261111153532.1036709-1-usama.arif@linux.dev>
- <20261111153532.1036709-3-usama.arif@linux.dev>
+        bh=dmjuPZ8BQZpeLS5NHfXu6uyM92RYmwsffX2PFFxEaPU=;
+        b=QvQD9vk7vfOtDIZdPGLqxKQBfowMbowFcxUty1IZVosQRJOee1btaQfOy/1hGyumsZ
+         3LuQQtFz/o5VY/EX/QHTAbUObgy0szNDM5sKoiHFyWBkf6cJumGFcMGhyn1P19Em0EbG
+         HFmwY6uz7R2TGx8MsNoX+8ajv5OVOnAJFkO81niEqYYySDR9qEFUX7zzfBxs9FqSDLSd
+         bMSm43kk/DUhffvr5w9wdcV2Y4aSeU9UPWMz4Pf7PtC1HaS4b5Qnxgre5Q9rfX8ux9ju
+         DhHi7h9SFjaKQmPvBt//wdNmfHqp8JeCsuQ2me4/7cBZl5PJnPeNprM/D4bjz7L0GYyD
+         KsQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794501202; x=1795106002;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dmjuPZ8BQZpeLS5NHfXu6uyM92RYmwsffX2PFFxEaPU=;
+        b=tMqeLMU9BWpdLvCYl/Xh3ttj4liuHCV870g+btk6SrELcbBZEog5l6hKuRKq1wgFEe
+         igSWuB4ihfZ1Y/vxpQnP2wZLEI5Tfj1NwYuIDeFCuJk1Y1HBejtq9g5QU1jkZKy49DWh
+         PD4wDnQZEvelJchjIODp6qIEOHVKNqkx+imbJB5TeQmQifTmeOJDxBzTzd3/lUnsyPif
+         KDBn7OAfKkv5THJ5LEIwpXvEeKpcsW0Z7UN8bvYnZdQ9H4v8SOdCvrYuWHooIHRMchaq
+         UIIXitr44P+UQkeAMlE3uqym9JxMXkvI8wKveiwHJlTbP+bXASBLnRxjBQ2wxGoADBSX
+         t7aA==
+X-Forwarded-Encrypted: i=1; AL+hErHdDZNcRNZt8VooZUXfumW9OfJ2ZE9YeSolbeV1NykdVOlOQ7/9CZsFg1m89mMN7yldrYmyTZ8ikA==@kvack.org
+X-Gm-Message-State: APuU4Z9g26uQ3jbj6IgB2xvyrtHXMRxbSa91VVryGqsGSKaSTT7uSUje
+	lMRcPp4xX02fVceaYICCxOQ7HChW6lN6lUCeECmFP8RlmXigFAk3MDl1NMTmEcFrj6LuICsIS1X
+	FZaVV/G0w4z1ynDSqCYoprGVCskqn7Gg=
+X-Gm-Gg: AYBFou1qUBFVlZqPWzc7/olSmGPFzYBNEoek5ASN8KP7kS+JqU1DpL7C8vRSBH2CvFN
+	8RjAbdXscUFth/bpKiNn1F4aVlosXPYr1/vVgqg8UHn7sz+MbM+JNRg7LlSCrgI+ZSLyH4jJRnV
+	WOWjrAf7Oqe4FeR0l1I+SiBFhX6N2YJCA1eIwkbFBmSt98o78IbbQJL+qrVb7U/x9sfhKd1zxit
+	UDoRFR52qvSG2YnOJmRVem88DNZpzaAfYKC5MnFFCc98G4sz3+j/CRvHeNLM8IEDpvlqPwGuqav
+	yMxlMteR0RBMq+PemX6Lc/Hbqpcs00iBOj5CkibrtVES60qHJ/reOpH3knkTdn0PDEho/4ch3Oc
+	/IHyZkgsvmmyqQJB3IeWqk9AI9C0aC/0NDzA=
+X-Received: by 2002:a05:690e:4002:b0:67c:f0d:82e1 with SMTP id
+ 956f58d0204a3-67d893bd8bdmr525d50.2.1794501201888; Thu, 12 Nov 2026 08:33:21
+ -0800 (PST)
+Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
+ Thu, 12 Nov 2026 08:33:20 -0800
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+In-Reply-To: <20261109000243.3936824-5-joelagnelf@nvidia.com>
+References: <20261109000243.3936824-1-joelagnelf@nvidia.com> <20261109000243.3936824-5-joelagnelf@nvidia.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261111153532.1036709-3-usama.arif@linux.dev>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 768331C0004
-X-Stat-Signature: n17s88ndhks3mycscyfmuskbm7k5wqko
+Date: Thu, 12 Nov 2026 08:33:20 -0800
+X-Gm-Features: AclHuK_FGWOWv4UbRIgbbmYPPnmJDJ_Hf17GfXM7QfUltDyC3SKn9TnbpoYkG1w
+Message-ID: <CAPAsAGxPCJ87akRFmcKWLW9qQ=zMYim+F6wnLeYmSP7CuEgMLw@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] kasan: Avoid an unrelated RCU warning in the
+ callback test
+To: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org, 
+	"Paul E . McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, 
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, Josh Triplett <josh@joshtriplett.org>, 
+	Boqun Feng <boqun@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
+	Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: rcu@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam06
+X-Stat-Signature: s34ptkkbyn6ebjubco6z5shji6747tg6
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 0363910000B
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794500810-43676
-X-HE-Meta: U2FsdGVkX198r2M5I+QYvAzUBzeF3WZWDttuz07QYd4cnsgPFy8VGp07WP80yc4tseItIAwIutEh01uk/OYhv8l+lEn3iM2KYdNYAo1/tH/qEY/EroClmk9lQjzhqfUnmF6fCdLmYAZ1srZhKZ1eaCtufk2Js60nUSR76EMJhGqJS74ac82KbBxeULEduvxAGxRl2JiW+pzpMYGSsM3d8yhFyH8Kd95lKcZqx85IE0/qsfdW5COXsMHRdCAoyX6+SD8ZE8SoSDqL0qlk0rdMtHxaakH8rHBF/wjhqipzhJ6NQeu66xaw8AQzqwnpS3TUJ48aW3G6jL1VE4iaWqUTDPFCtPo4zFuocogf7XDiPbNL8ma+YTaMMVqiRjgmkXKf4ujWZJmo5zfTuh23HJiQmIqwi4eCPtivf/gMpoyfsXC+OzAoYsWYIcbCk9Ky213jQX43Gl0+dzlgod72eQ7LmyFFGmDomfgiq//mRjIQuduuDlqWaNyHSKyspg5Y2V4x7jJ8Ejns7bpPZTEbZ9Qr+VkcJWR4fTRWzekIgtVxlMT4CId2Xl/MbgVAeaWBxnx5BU8IyVEYl34f6Sb0/ezFN9qJ/FEbS9xeWZLWZvgPuZOe7lsfbOHl8xTc+5M8jq5Mthlq6LZUVe024EYPoOgqa42ha1RMPovXZqmcQfaUsfFci/ZJfLcH4Qpb7kov48EhEY2D/K6BYt80bDEbtculZ/2P3hJY0QMC7nv4GmtqARPytK2Cswc3/8pxNqUeScSAIMNPYCuF73jbwgHpItojo8SabDHTXBWARAOOAtMRP+Rjv/jRZt5HduZp84Mk4UPaEn3Q1O8PuLfXX26rdMr+WS4AgKK58hri1JCE25dTWINXxAA0dkEnmaqnUgi4+1V6/8p3W9LeWvDO95pIb8+OcoD5/9IWim3Du9lRQ2LbvZTqEOFdScCXUNSILv3uZiAxNHDUiCBLr7FqsVookM/
- l8W16Bvi
- i6Ev9X4TIXExlFnhdbZ+4+huLwmm/bJDyTSqza3wwvwSQRYmVaHXMtUE/jMJTqkyXBZMxYdlACn6PYwXAY335TtPwIMjkTs8h6yLThxGMkkfUtw/x0+1fpSfZWx8vGfMiwWYE32aK6zvQbSt4KtV03mDZm5UcfLrp7FxzSZ+quSsZkBwaLoXh+gVtV9NoZXg1qJo7VZEP+dOX7abNNEP9Ky03QfpmwRoSJlts5K7T8ySrwz7V6TEJljI7WCA9FbSNrz4KGKvEIkxK2OG3WAStKd/EnSsdg2A1ndySx3XwlshaPZOSTxysu9o3roRHG7ZTTqoXE+ZacdbLjIX4f7iiV1cAknLbyObqq9jOYgqQj+K1XWJQxmLRjP5UmWTBKP1KdPVQtqQIMxqAX9lXGNHzOjbSTL8VQ/eOxKeJZqdONQxCmp0=
+X-HE-Tag: 1794501202-762909
+X-HE-Meta: U2FsdGVkX1+46iYyeTI1TpqEShToigL03Yzn/4olJ9kpz0wBky4CB3XRlB4NuccBA27SL+rT4/XcFPwYYMC2NZRKKCScMpJ7p5TfuOh5RsJLx9cpH7osdcdpX9ri39HE1r4grXoEqRNieV1CGvs9hFt3P3pTkn7OzDvZZCcZYtKBjKuFWHrlSX2SzDJAIygMsDOxd2tUHpyv48siEdYQG3lB1vEkAXpqdTAwnIlSzHe48ReuLB+wXtRKs/43IBUhGtCl7ShO6fbVZyGdjIq0PJ24qUHKDsbb1BX6P4ysqUL/LLvFzO1m3hF53JSUj0yNqIERmUaFysDK3Sv3A2PhfPWi8e/tGf9wQdR+AUSBypE1yKdiwbaETEdBEQtLjY0fH2BOqTKsVukTznLgfgoB3Isv6yagKMXysgH+m/Wc0p/V2NDz2SkuN8AEt4Nzfs0K5OYmAe0OXDgIiH4u4vn/oc8ke/hKfViPPNJw0cfkmi5/Imyrdd7wXZH/PJTdzGh7tnkZMjCeATARxIPcngRCNbn0NhDYrnOWovaqbh6P0kj994SiniZsjt7ioa4pMflZDwUr40AEO3wa/+jncHeNTw7ou/y4WJUEBE5hlKK0X4vX4/hMJ80VVUqXIqungEgmlYaU18SciixunZLfV+Arq0yDfNESzyC9/ZZXi26dBnDsnUWudFkPOSZYmCsQXsHWKRhrDCkYjy5aVwqBUnP0m/wXSF1TpvUMVeHd7blP1YWKLMxiWFXESOGBdLsnSccbHMnoh9+FhCsJ5Pxz1py1lXYHA8wpOBaYd+aeddkYX2vl+WBptSvsavq/ziKYItzAiQShvdE+SYZdF0T8oY/T8vbBNApelJhT6Sw02hhs96nXcknXCpBnBInnOdaMSmcJAX9DFk6ZvVvHP054tWgRud5N+6mdbLTDb0f8hMkx7Q20B3CNDOcNDgbftmst+ZdoU3qM875eqedg6Qhto5Q
+ PInH7xtP
+ vCQoX/a3V3VQ9h57iSsci0Yv0v627w+3PWnfNlN94GA0paEfPMDy1ImpiDD/q5sKlULElEwpdO4+c/8qzmTaqdDyG4kqzQ9evQlUghZgVRibDfiQQRl2159U7tshnsHjVChF/LIgfdMpfqX43Kk2ryccECntNQofoljJPiBFxmLimz9Y/lqi6b3514mWx543OTTySxc7Lyyj8IJ6Oz9aLIUTzfMMWHw8NJbcLV8dXllihc2uYBJ9CYMdHlj6/5j5AHHlhhi2aai2zhYkBbU55xZQDICNT22jeAz/D16cNhY68aJPQL9GxBTE0KQj8ODjKKy5Ps98bUUEr6pmAyzUoYxqjyiMizoOpPtJY+76DiEf8birXSQtIzAsJYga3LAgFijewlhEBWpLluzm3SoNza+VtDJ4jHaMhtXiMhz1aKld4Jy/1xQKDORZ1XZuSXlFsgmW8ZnHAsysen3XFTJEUSStAKDhYgYqYLsAGjK7rlnY5QCKG1aml2rEuLmY5NBNgXF0h
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,24 +150,21 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 11, 2026 at 07:07:40AM -0800, Usama Arif wrote:
-> The deflate acomp streams outlive the transforms that use them. One
-> stream is allocated during transform initialization; additional
-> per-CPU streams are allocated on demand. They are freed only when
-> the algorithm is unregistered.
-> 
-> In a 4 KiB-page x86-64 build, each stream requests 145,320 bytes.
-> If kvmalloc() succeeds via kmalloc(), it occupies an order-6 block
-> (256 KiB). vmalloc() needs 36 backing pages (144 KiB), 112 KiB fewer
-> per stream. Across 384 populated streams, that is 42 MiB less
-> workspace backing if all would have used kmalloc(). There is no such
-> gain when kvmalloc() already falls back to vmalloc().
-> 
-> Use vmalloc() and vfree() directly, as the crypto lz4 implementations
-> already do. This uses vmalloc address space, page tables and
-> bookkeeping; the figures above compare workspace backing only.
-> 
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+Joel Fernandes <joelagnelf@nvidia.com> writes:
 
-Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
+> rcu_uaf() passes a false protection condition to
+> rcu_dereference_protected(), which produces a suspicious-RCU-usage
+> warning before the intended KASAN failure occurs.
+>
+> The pointer refers to a fresh allocation that has not been published to
+> readers. State that protection condition explicitly, leaving the intended
+> tests intact.
+>
+> Test:
+> Built with CONFIG_KASAN_KUNIT_TEST=m
+> Booted Qemu guest (8 CPUs), ran modprobe kasan_test filtered to kasan.*rcu_uaf*
+>
+> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+
+Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
 
