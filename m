@@ -1,92 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C0D606A327
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 07:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0713606A32A
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 07:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QCcCJ8x/
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=trl+XZ4x
 Received: by kanga.kvack.org (Postfix)
-	id 9EFAD6B05B1; Thu, 12 Nov 2026 02:54:12 -0500 (EST)
+	id BEEA16B05B3; Thu, 12 Nov 2026 02:54:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A06C6B05B2; Thu, 12 Nov 2026 02:54:12 -0500 (EST)
+	id B9F426B05B4; Thu, 12 Nov 2026 02:54:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81A8D6B05B3; Thu, 12 Nov 2026 02:54:12 -0500 (EST)
+	id AB37F6B05B7; Thu, 12 Nov 2026 02:54:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E8506B05B1
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:54:12 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E4F2814028F
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:54:11 +0000 (UTC)
-X-FDA: 85425703902.15.906D25C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 430871C0006
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:54:10 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QCcCJ8x/";
-	spf=pass (imf20.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 91D386B05B3
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:54:49 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3C8761C35EC
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:54:48 +0000 (UTC)
+X-FDA: 85425705456.04.2B161D5
+Received: from mta1.migadu.com (out-85.mta1.migadu.com [95.215.58.85])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 479B2C0009
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:54:46 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=trl+XZ4x;
+	spf=pass (imf22.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.85 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794470050;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794470086;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=srOQgDgWOAX6/I0jdHPGkFLTExl16V3iCD3iaXGFZbc=;
-	b=rCD1ebtqSx22wkQCZT5Bjc0Jd48cu4semnKMc4XLUKbLgwELp4BHd5nTXWXw1r6dET05bh
-	yV4KUNWz8tbVUWSMS5vZoYfIAQPuIvBc9s6CmHLb0zRryXfzCVa5/I1hXOu1kEE3wuqFnJ
-	8+w8tx4YHWt19HMNKYcPQTK+cVnlpDE=
+	bh=AOyscFKrcf3HoEJx6DsofUhA5XV1u8geAqpYw/YcyDI=;
+	b=YTEJ0u/0MeBVgvs+OIN9leI13yjFQOHildc62WKyksxnFBgTju3eaQ1ZKjIJcn7oj911M2
+	01zW1gK9xUewFwI64Jawq3SCmYR1LoV6t8P61BW1/fgjIWEGFAvhkzstPvOevD4Imm6PDi
+	oFE8tuAh4OAQ3Pe2o/56qigStU86IWg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794470050;
-	b=OknGxCmHMdqESAFKNYB3gMCoT9eNXEVia5MPtCzZwypbR/DSqQpmJkBn9isMH9dBeQ9SDD
-	TuIijSlNBhCoKSdOpmsEj0l9FvXI5wgr1aTZmuAIx4lGbbgwWZD1wLmcfdF374YfXmnxau
-	XaBGyzu9lyFsI1oLQSIooUP9iw1VpmI=
+	t=1794470086;
+	b=JsnnRVhpf+rxfrpwqg3lDGZeCX319mDd6lD7BS0rhtbDPhklllOW7URAEQbnQY5q5LePSF
+	L4TPhOPAn5rBdfZ6w2CTTeBNXaRNbhdWI9FlCTEMPe/c8lCI9gqOSIT9GeZUm3shO0s4Q+
+	nm2tVlOUANR3a2bvxiB6wQyDvqWoWNQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QCcCJ8x/";
-	spf=pass (imf20.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 91C8041FE2;
-	Thu, 12 Nov 2026 07:54:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5741F00A05;
-	Thu, 12 Nov 2026 07:54:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794470049;
-	bh=srOQgDgWOAX6/I0jdHPGkFLTExl16V3iCD3iaXGFZbc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=QCcCJ8x/RCBqNneH4WLnogtIy8nJ+mADSpqmiS2iU2yt3Xw6Xs6MXkn82gym9ZfmP
-	 SX1G7oQyisadY4glTOtkD1xYymXtm1VcBG5OxSLGm9kQvyKsLhKzECxIra+OnMFcnb
-	 pT8kFGSjTdDi89bK1GGi4+LgTX4UTKdcCBZGnRzYKnNHKQlY8w5GLm6HNS56oY+Onk
-	 dlXUpnsJiaJPethe3oXSPeKhUNGvEXwPrOJnuRZexggndWle5qryODtfXOcFqFiin0
-	 uPZBR12WOn43THE4p+5sdS1b+WNVQwlAxsoZrAe3v+w29UgtSN7RODONuyfCSCRB7i
-	 OMeEYVQtST4cQ==
-Message-ID: <sashiko-outbox-210639@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/9] liveupdate: Make failed retrieves distinguishable
- from dropped files
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Chris Down" <chris@chrisdown.name>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Mike
- Rapoport" <rppt@kernel.org>, "Pratyush Yadav" <pratyush@kernel.org>
-Cc: "Alexander Graf" <graf@amazon.com>, "Baoquan He" <baoquan.he@linux.dev>, "Jonathan
- Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, kexec@lists.infradead.org, linux-mm@kvack.org, kernel-team@meta.com
-In-Reply-To: <772c150d0a90139a327803cecf087f6865702753.1794383544.git.chris@chrisdown.name>
-References: <cover.1794383544.git.chris@chrisdown.name>
- <772c150d0a90139a327803cecf087f6865702753.1794383544.git.chris@chrisdown.name>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 12 Nov 2026 07:54:08 +0000
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 430871C0006
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: pm6zhzwa13z5m1zajwcas3hkiqrtjm51
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=trl+XZ4x;
+	spf=pass (imf22.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.85 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=F1KV9kfLOuuKpASrj84EFbYg1WhgMuoDLqyIrj1tqDg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794470084; v=1; x=1795074884;
+ b=trl+XZ4xOQJCHNmSKbDaI/7F9e2Y0ilzx2oFKYKdUfKkHZ1DhCkki/6gxky811EDDsFADVXB
+ hXYSwyBOG9GDUOElAW2Fj+BzvDXp78y96zi4zzgg3zYPIsePgNk7I5AyYT5Chq8NbOGNVbCT6wk
+ j9tpRuvZM4hjsj5zOK8XPoNQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 30a148ff905e7f1e;
+	Thu, 12 Nov 2026 07:54:44 +0000
+X-Mizu-Trace-ID: 30a148ff905e7f1e
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 12 Nov 2026 15:54:34 +0800
+From: Hao Li <hao.li@linux.dev>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: harry@kernel.org, akpm@linux-foundation.org, cl@gentwo.org, 
+	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [PATCH] mm/slab: don't set SLAB_MAY_ACCOUNT for
+ KMALLOC_PARTITION_CACHES
+Message-ID: <avVnuWCQW56qznll@fedora>
+References: <20261111125628.375624-1-hao.li@linux.dev>
+ <e2d1dc9f-59ff-4dfb-8ca4-35c584d14b35@kernel.org>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e2d1dc9f-59ff-4dfb-8ca4-35c584d14b35@kernel.org>
+X-Stat-Signature: byxf46y68zckhhubajr6y6g3439eykz8
+X-Rspamd-Queue-Id: 479B2C0009
 X-Rspam-User: 
-X-HE-Tag: 1794470050-949818
-X-HE-Meta: U2FsdGVkX1/Iyp36Ly5SXd9qHG/JHx1+yvKxp5ZntGEcRRAwJEsrhezfG/vWaWaekpwxDzsXKjX02zaCmLAXAh5X5uOFMKnxyrfSbLCxUdXhu/TwjODOqFlvezdyj9oK+Po0ywe09FrTMkyF2+zPtNH1cIwBk99r5rdE5WLeJnxGEodUeuQkwwMut8FhHOroeMtyoTgRSqhgWObGH0PesAY46WL0klIOTFJ0cESlHgMOvv3Zfjn+OcVgbhYL+H6Xn+SOFYKfSsT2sYLpSBEovOLiyVPW8GfbVujLLMrHG7gxYTm+CgoC65rwpre2WVd3SqzYyKUfqBQDXSM3LHKk3UvBL2CobaKFUe06vxPvhSNqkkQY/+vU8oHIqwQFGGh3rk3VWeWjd+gAxafTURNabapN6pwTo00kojWlefhCZFlOEcQrwt2hippyCSbrATLZS888yGN+oNH8LImjJMPnsH7unnf9pSqMJTqOW/BhPmQdcaethMn1KvhcKCfs8V2bQYGtn7C/nJqMawwnp5SuaQlGO2IthU4Vm3GYZXpRMQi+Eifutvcy8NmqJA+tKoYdr8EFg9NkUStLuBldny0CqhyKumTDh4rPcG/ObTh9S2rgIMyNUCGqdpDndVuVXBzhYD8cFEwxIyKeukRRunZheNpt9I41CamyUau7nH6Hk2dBcpe5WfkGvmCkfbDD99Mk/8m1NrsYB8/ghUcGIB1SyuCReEJKSo+xZqb8iUE6V98s/QhNu2/MXgVFdIJp5gLFtN8EKx3dZtKcUgawnyZfkWNXKZYDTexxaizAyv9CHXKz0TRyVc9aH+4N1Rb8s9pjhwToUr1GlIpM5HXhYXpmvUzQaeYZwZ2Byb3EzLdRRJ9vAGR0mm3shJJPjr/8pQ/o0NKHFJf27w9tBedvXH//cYn7+uAhgYZ5uMvmIjITraKZL6u9k3FYjFfjZJlodOvFjpOe0Nx4m2bJ+KuVo6Z
- Ss26lpog
- zLmXuKd4RYjCpXKaEpBWa90Ajto/ICSCc5J/JC1n69ZvI3NC1IJorkBoLP0doTKtctzMharqtf8/QqqUSHzmTpQlOckIaDkOTx1c+/t0//0b9SW40+CMv3jHpuIyx0o1SC0mC1sJO/Oj8+7vQo4uR6S90R9t3J5e53FKDC0ifaH4qnHO077MlqALehhUnxcKajMq5FU6pxFRXDvdElny2tiVbAL/c8G/+dYUjYGO8uIH0GduJK+7N0izLRYYNz9+stiaDx54p4184D7RUAr0Y0eGH7bfIykifA+qcGCI8vOr2HJ0GlVTVU8Zu0jmpua88BZqOLMjaTmfE5dShAixOECjKzap62bGNB+VkdOWdGyVIcIB62k7qYmX46+c/o5ksPXxmIDDDNa/RYdA/mFUo3lMv1VzFmYrs9M8FWxjsSED9xsjLtkyUI5kCgWBSVyfQX35uH8NXOLHUIHkjhZFdbirZ7ES3rFRgVR+oJaN50XOl6kWhFQJ/9Cq7ieJbXk+ma0/96noYdHde0oM7kl1SCewSyWrpPZzGLwb67FXHbheTiAiYDs+rz6TkoA==
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794470086-126065
+X-HE-Meta: U2FsdGVkX1/nzwUapjshc01341/KD9nVFBA4CHyMJIk4pNo85DStVz9Y7I6OFN/xcJiPue3MTx3oR65S3MXb76BU1kx42qrMnO8dg68qV+ryXWOsdRM4cLk0pkolQM+60Ooado68Q1nrtBMxjL8IlU9CYUymuV+9qh4mQnvNWlRrc/NmsUD0hv4N4Vnq7wIeCHTCEhx/oDgSMzqiShBNK43ryXWdOM04vlXOyMjRjxnpctcuCN6fyVjg8nUpaf1/oagoF74Gft9YGCK5o9/uJzV4/LQNxC6jD9Bn/RLBC1FKbB1DRUJPZoooCv048gwEUtFxkkRPMcfunqTLChARgNhpMlHXNRT/yI420kxMYME1CgUt6WiXapLT8Mc4Rgso0OJ6yN06NKMU+dmpZ2s6rfUnmCGNwSJLQd3f+D54GJn9lzPxb+CPSqAgzHiDAvlUV2KLemRmlgf+d1XD1wS3tL5PNg7Idq704ndczWEzn1jcGcQws9DMuFK3TNye971y4019vV6+4vXdon4hS39HTZqD2HPDcs5ts7NJrSxeJpFMHyxGYibMC50Kq6fuN694Y67GDvyF9ks6CEyXij81G3PbCjYT2/RXQOiosvsHpDKLz8ZkMQHSSPKzyB63ze+JFaj8aTWyoTYRgQxofAN/SWXkglIIxyCbx3QrEu1rlZzTy9IVKXqpqMyi6YA2k6CT289XX6hWczs+JRRct5QYb+bnrY8mdVjgTHMLusbD3UIr683v3lLI89gza3u44BGd07SJT7VjVEOnRUyu/ZzynOOhUVpBn514+4cvn05SF8neeA4NuHDTu6huPQITjf8+S8nzZDKXb/JMeGnJ+mrpdrCYPC1ljHQO8YJYu5w4hBJ6N0FSake+846yC7xxmzkGlrfLNAgdGDMAL9nX3L0L5kW4kLPKk/9+eiy7SH5YbT1MQNVqW5yaoA3uxKeQg5DTQuMCicq5YYKrx0VLoMa
+ oBtmZOF3
+ TVB1ADekpoug6yseVaKw9yCa1CPWRG2fxTeF1A2EMecNsGoynUvXGMa9N563KoysocHiTTtalY0cxViTk0FAc8voO7IceY7fMeUXlKXdI2NSi2bfMK+RrU8IIjym5vrFvKByw1vntjPWNkvfKY+6BGzUE+PX5xtCBrsakbQRTX1qiPFRaDRCLIFRQUrfLPmdJAjsnkX2yU0L38pNbf0WEwX7/uC6FXcyyLjY7zAEX2NH2l+veyxvhtnMgz7hHpCmKJ1gUEk6WQNddDcdemr4XFLsZtxgPnNyy/ElEmN4hFwwEGubG8PyVHr/o/BAsw9/vf65z2Ys8VvLljv5BbfbBETfyoQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,121 +93,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found no new issues
-in this patch, but noticed 2 related pre-existing issues it does not
-introduce:
-- [Critical] liveupdate: uninitialized file pointer in
-  luo_session_retrieve_fd() [1]
-- [High] liveupdate: pointer used as XArray index in luo_preserve_file()
-  [2]
---
+On Wed, Nov 11, 2026 at 02:08:40PM +0100, Vlastimil Babka (SUSE) wrote:
+> On 11/11/26 13:49, Hao Li wrote:
+> > An allocation with __GFP_ACCOUNT set (without __GFP_DMA or
+> > __GFP_RECLAIMABLE) is redirected to KMALLOC_CGROUP and will never hit
+> > KMALLOC_NORMAL or KMALLOC_PARTITION_CACHES. Consequently, neither of
+> > these caches requires objcg slots in obj_exts.
+> > 
+> > While KMALLOC_NORMAL already skips setting SLAB_MAY_ACCOUNT,
+> > KMALLOC_PARTITION_CACHES still carries it unnecessarily.
+> > 
+> > Extend the check to skip KMALLOC_PARTITION_CACHES as well, saving
+> > unnecessary objcg slots in obj_exts.
+> > 
+> > Signed-off-by: Hao Li <hao.li@linux.dev>
+> 
+> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-commit acd081aa3a5ef33bac09be5e151d1de15512ea3e
-Author: Chris Down <chris@chrisdown.name>
+Thanks!
 
-liveupdate: Make failed retrieves distinguishable from dropped files
+> 
+> > ---
+> > This doesn't seem like a real bug to me, just a small waste of memory, so I
+> > didn't add a Fixes tag.
+> 
+> Hmm I'd add
+> Fixes: 7def2e8549e5 ("mm/slab: add cache_ and slab_needs_objcg() helpers")
 
-This commit exposes incoming live update deserialization state and session
-and file retrieval counters under /sys/class/misc/liveupdate/incoming/.
+Ah right, I mixed up Fixes with cc stable. Thanks for pointing it out!
 
-> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-> index a39992da504fb..3aac1afa05c09 100644
-> --- a/kernel/liveupdate/luo_file.c
-> +++ b/kernel/liveupdate/luo_file.c
-> @@ -543,6 +543,16 @@ void luo_file_unfreeze(struct luo_file_set *file_set,
->  	memset(file_set_ser, 0, sizeof(*file_set_ser));
->  }
-> =20
-> +/* Record the first retrieve result. A negative status is permanent. */
-> +static void luo_file_set_retrieve_status(struct luo_file *luo_file, int =
-status)
-> +{
-> +	luo_file->retrieve_status =3D status;
-> +	if (status > 0)
-> +		atomic_long_inc(&luo_incoming_stats.files_retrieved);
-> +	else
-> +		atomic_long_inc(&luo_incoming_stats.files_failed);
-> +}
-> +
->  /**
->   * luo_retrieve_file - Restores a preserved file from a file_set by its =
-token.
->   * @file_set: The file_set from which to retrieve the file.
-> @@ -611,7 +621,7 @@ int luo_retrieve_file(struct luo_file_set *file_set, =
-u64 token,
->  	err =3D luo_file->fh->ops->retrieve(&args);
->  	if (err) {
->  		/* Keep the error code for later use. */
-> -		luo_file->retrieve_status =3D err;
-> +		luo_file_set_retrieve_status(luo_file, err);
->  		return err;
->  	}
+> 
+> The question is whether cc stable as well. 7.3 LTS will be used for Android
+> and IIRC they have memory allocation profiling enabled. Not sure about
+> kmalloc partitions. Cc'ing Suren.
 
-[Severity: Critical]
-This problem wasn't introduced by this patch, but can a positive return from
-fh->ops->retrieve() cause luo_session_retrieve_fd() to pass an uninitialized
-struct file pointer to fd_install() [1]?
+Makes sense. If Android uses partitioned caches, then it looks like we should
+cc stable.
 
-If fh->ops->retrieve() returns a positive value, luo_retrieve_file() returns
-without initializing *filep (and luo_file_set_retrieve_status() records it =
-as
-a retrieved file with status > 0).  luo_session_retrieve_fd() only checks
-for negative errors before installing the stack variable into the process
-file descriptor table:
-
-kernel/liveupdate/luo_session.c:luo_session_retrieve_fd() {
-	...
-	struct file *file;
-	...
-	err =3D luo_retrieve_file(&session->file_set, argp->token, &file);
-	mutex_unlock(&session->mutex);
-	if (err < 0)
-		goto err_put_fd;
-
-	err =3D luo_ucmd_respond(ucmd, sizeof(*argp));
-	if (err)
-		goto err_put_file;
-
-	fd_install(argp->fd, file);
-}
-
-luo_ioctl_retrieve_session() has the same pattern with luo_session_retrieve=
-().
-Any subsequent syscall on the installed fd dereferences the uninitialized
-stack pointer.
-
-> @@ -624,7 +634,7 @@ int luo_retrieve_file(struct luo_file_set *file_set, =
-u64 token,
->  			  luo_file->file, GFP_KERNEL));
-> =20
->  	*filep =3D luo_file->file;
-> -	luo_file->retrieve_status =3D 1;
-> +	luo_file_set_retrieve_status(luo_file, 1);
-> =20
->  	return 0;
->  }
-
-[Severity: High]
-This problem wasn't introduced by this patch, but why does
-luo_preserved_files use raw kernel pointers from luo_get_id() as XArray
-indices [2]?
-
-kernel/liveupdate/luo_file.c:luo_get_id() {
-	return fh->ops->get_id ? fh->ops->get_id(file) : (unsigned long)file;
-}
-
-Both luo_preserve_file() and luo_retrieve_file() pass luo_get_id() directly
-as the index to xa_insert(&luo_preserved_files, ...).  Because XArray is a
-radix tree designed for dense small integer indices, indexing it by sparse
-64-bit pointer values forces the allocation of up to 11 levels of
-intermediate tree nodes per entry, wasting memory and risking OOM.
-
-[1] https://sashiko.dev/#/bug/linux-65e3446e-27d6-4415-82bb-0036dcc7aa0b
-[2] https://sashiko.dev/#/bug/linux-80cdb953-2e71-4aca-9067-108b66f83aaa
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1794383544.gi=
-t.chris@chrisdown.name?part=3D3
+> 
+> > ---
+> >  mm/slab_common.c | 10 ++++++----
+> >  1 file changed, 6 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/mm/slab_common.c b/mm/slab_common.c
+> > index 2befd24b4d09..f0ea1fa178e7 100644
+> > --- a/mm/slab_common.c
+> > +++ b/mm/slab_common.c
+> > @@ -1000,16 +1000,18 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_type type)
+> >  #endif
+> >  
+> >  	/*
+> > -	 * If memcg_kmem is enabled and this is a KMALLOC_NORMAL cache and not
+> > -	 * aliased with any other type, make sure it's never merged with any other
+> > -	 * cache.
+> > +	 * If memcg_kmem is enabled and this is a KMALLOC_NORMAL or
+> > +	 * KMALLOC_PARTITION_CACHES cache and not aliased with any other type,
+> > +	 * make sure it's never merged with any other cache.
+> >  	 *
+> >  	 * In other cases the kmalloc cache may end up being used for a
+> >  	 * __GFP_ACCOUNT allocation so mark it as such. The exception is a
+> >  	 * KMALLOC_NO_OBJ_EXT cache.
+> >  	 */
+> >  	if (!mem_cgroup_kmem_disabled()) {
+> > -		if (type == KMALLOC_NORMAL && KMALLOC_RECLAIM != KMALLOC_NORMAL)
+> > +		if (type >= KMALLOC_PARTITION_START &&
+> > +		    type <= KMALLOC_PARTITION_END &&
+> > +		    KMALLOC_RECLAIM != KMALLOC_NORMAL)
+> >  			flags |= SLAB_NO_MERGE;
+> >  		else if (!(flags & SLAB_NO_OBJ_EXT))
+> >  			flags |= SLAB_MAY_ACCOUNT;
+> 
 
