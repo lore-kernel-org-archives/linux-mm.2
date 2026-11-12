@@ -1,137 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA085606A323
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 07:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KmKFLwam
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B4B606A338
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 07:25:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EFB86B05B7; Thu, 12 Nov 2026 02:21:56 -0500 (EST)
+	id 17CBD6B05B9; Thu, 12 Nov 2026 02:25:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C6FE6B05B8; Thu, 12 Nov 2026 02:21:56 -0500 (EST)
+	id 155086B05BA; Thu, 12 Nov 2026 02:25:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B5D96B05B9; Thu, 12 Nov 2026 02:21:56 -0500 (EST)
+	id 06A546B05BB; Thu, 12 Nov 2026 02:25:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B3506B05B7
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:21:56 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 18564A0514
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:21:53 +0000 (UTC)
-X-FDA: 85425622506.27.39250FF
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 969C480007
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:21:50 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KmKFLwam;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf30.hostedemail.com: domain of mpilaniy@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpilaniy@redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D19006B05B9
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:25:27 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7638B80239
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:25:27 +0000 (UTC)
+X-FDA: 85425631494.21.621AAAA
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	by imf08.hostedemail.com (Postfix) with ESMTP id C101216000B
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:25:25 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf08.hostedemail.com: domain of 35Wn1agkbAOwgmnYOZZSfOddWR.UccUZSigSfQcbhSbh.Qca@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=35Wn1agkbAOwgmnYOZZSfOddWR.UccUZSigSfQcbhSbh.Qca@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794468111;
+	s=arc-20220608; t=1794468325;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1b6A2kvQgpqKkzxc5p2W/1olpXK4SEEz0O9LviTyyRY=;
-	b=ZBSKKbcfnVRgwKBfWgxu3XMJ98brh5yPwzzTBamqpgPiHKuePF2sf94J/o4m31nnXJ9fVx
-	kmiAhhvB3+WdDdPO4sZ3QiP2/3RhpJKUkXF0tmy+eulNoyc6KI0lnm146RKgTxXhcBEqyn
-	657wpPVIAdWhQ5EIORmREgGs+JtDQG0=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KmKFLwam;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf30.hostedemail.com: domain of mpilaniy@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpilaniy@redhat.com
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=wjEUB4xwOQ+z3iLncf90mEYp39goyjluFTd4fV3fH5g=;
+	b=DGxzxKnxQMvUbNXtg8pGddw3nilku3mhXT7CelKBKd1vnMNtsbsLrzPf5Yl1u/T6yadhmg
+	qBUaCLMeDU9poS2funljfpFZQYoFIg5ljorClOUEmpnF9EmsrQDKp7jc3GFK7+s5rKGjbx
+	DkSaFNKIUeLRClvjwve1ubKVPVEdZXE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794468111;
-	b=ZKgc3gdfIN8Zs/6kvI/+e3SVJJNQmc0lad5TUkTw6FHmpgdRmfECyvz/WBIZq1xTS500MZ
-	kuvbeQ/npDSk8IXKd+OOSTc2xa6O7pRTUq2pJ2Vvu0zFaK7+ExrtNZYZ63109bnqpMTVs5
-	42qI/vcv3UNXDT6v8WOL93jjiGscark=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794468110;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1b6A2kvQgpqKkzxc5p2W/1olpXK4SEEz0O9LviTyyRY=;
-	b=KmKFLwamsFcabz30kspuI1sgxCuBodO+FdRuTn2P5ordb4h9H+T1cdZbD5SKhywzoub53J
-	cS6Ee3jbQQNYwk1WsmbiIO7ug+Ekhq4pXecYs5egyZWgnmdqH112BoRfzvdjCZM2Ns8hHF
-	b9RSxrDJoT+7Gh+4EzKfuHbHZqS2a+A=
-Received: from mail-dl1-f71.google.com (mail-dl1-f71.google.com
- [74.125.82.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-504-LOpo-fdmMFuEvkSl-vdoxw-1; Thu, 12 Nov 2026 02:21:48 -0500
-X-MC-Unique: LOpo-fdmMFuEvkSl-vdoxw-1
-X-Mimecast-MFC-AGG-ID: LOpo-fdmMFuEvkSl-vdoxw_1794468108
-Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-139b62317d0so256864c88.0
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:21:48 -0800 (PST)
+	t=1794468325;
+	b=DD0+CoIY14WyOw49z3Q5K+GpSDHywXFbuka8nhBKUsWtBqLUcyCOPCdeM0n/nwHP5C5fHK
+	Sarlc3/8pX2kj2Oyw9N4JpaH/fpPUzr3VO++o2sr6d9yuz9d0lBui4Ujcjwh8X4hKCd7W1
+	aKMxleB225RwH03/ZCGMJeXp46Po6Pc=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf08.hostedemail.com: domain of 35Wn1agkbAOwgmnYOZZSfOddWR.UccUZSigSfQcbhSbh.Qca@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=35Wn1agkbAOwgmnYOZZSfOddWR.UccUZSigSfQcbhSbh.Qca@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-540537f959fso4463525b6e.0
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:25:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794468107; x=1795072907;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1b6A2kvQgpqKkzxc5p2W/1olpXK4SEEz0O9LviTyyRY=;
-        b=Uk8tuZrL0Mzv13MhRKljAp1q0rCYeIAOuST56qBPYnm+mJkhK7+LgJEead6MBGknRS
-         KSyZqbcJJzSYcEvkLH17wgOU8EQy9p9sGXDVuku1a71kE3mnjGaUFn9LYQTsrt07pkyq
-         Ls+fl1YnSB0oNtYwz05zTxPpwSyupKsQW8lzVCbuZ+RT7RGFmUph2RyrX1icG/0vCv3C
-         RnYYttMjn4FArMtYsM+g6Gts9eYO+/hkOh8xosDSKT+L6Mwf7SCa9MB8kHRnyGaGwghs
-         GUPQE7dv07WHbEECrcTu4oTAwaWGQTpM5TOk+Y8W/jYX8A7zpNvdZvUeHTftD3x6z1jn
-         rTWw==
-X-Forwarded-Encrypted: i=1; AL+hErF6jm4NN4hx23dbE5fRvGkvXTI/FGSADeaGZUDaquUfFEdpp1DIAza2oLMIrngBDqcXXneaHarF6Q==@kvack.org
-X-Gm-Message-State: APuU4Z9Kz63oaafknA2O5oBPXJPfwnMW0mkQQOkfroU8AG4Kcp+gFule
-	wj7Z6OhLWppQz0NkYFNy+a4vhezEb1HdCb4qfu7Jh7XifGEG8a/g88UaQ8DxaR8GeJP64VM2UZe
-	G+X+BdErnNn3+78CwruuADuRCIEQFyIqITu/BoZpRMnihcd4l21pQ
-X-Gm-Gg: AYBFou0kxXziS6XCbELunGpc3DIf2LYtOo4Ak///WNg/u29XyYyfpeu90Cwc80HOe4g
-	u3IgD4aAycSyP/1BgK2RS8adAYIN9HIjdLR6TP2nCOetmQRbPJ8yILAzrFfkNB0Cbnl91RLOv1R
-	/DevNdO5tFQIAnB+FLqX85XrxZXPXFjy76RCT1NM6WwH5nwtae9QnXXz3MMI51UV7D4VoAzRa76
-	nTg9m/9XWDYeTEiE2P6+otBKnNUwhDszRqe3te0RGHWE5NBVHtA7zVLYfQnFMpxyWBDCIqZDBXC
-	V0tQEwHc64xWQu/qOEXTwNhF24fxT9OG9N9sMUbg0SazpP9oIMb4caHMaHlmLc+Nk6PW86Rf/Qx
-	1eFT94fEvqJq0/pqIDMIJQKFH+W3EjaW0srtBkLlX51gW5/Gi4UXN/uQjVRv2mDqUB0CQR84=
-X-Received: by 2002:a05:7022:170a:b0:1b3:b3de:9232 with SMTP id a92af1059eb24-1b3c02f06bdmr4131953c88.9.1794468107325;
-        Wed, 11 Nov 2026 23:21:47 -0800 (PST)
-X-Received: by 2002:a05:7022:170a:b0:1b3:b3de:9232 with SMTP id a92af1059eb24-1b3c02f06bdmr4131931c88.9.1794468106682;
-        Wed, 11 Nov 2026 23:21:46 -0800 (PST)
-Received: from [192.168.1.102] ([117.207.221.165])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b2eeffsm22991575c88.9.2026.11.11.23.21.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Nov 2026 23:21:46 -0800 (PST)
-Message-ID: <6c57f062-345d-4bb4-9af9-213ef2912d76@redhat.com>
-Date: Thu, 12 Nov 2026 12:51:38 +0530
+        d=1e100.net; s=20260707; t=1794468325; x=1795073125;
+        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=wjEUB4xwOQ+z3iLncf90mEYp39goyjluFTd4fV3fH5g=;
+        b=CR3/wBwh1qLa1qvOm6g8CnCy8hkU/qx0tiINqO5RUFDZXGobq/mTEb4/66Pt3c1/6o
+         mn+D4WtffhIteyyjM9i0MW8P6aVE8Z3nwyWYfV8flofUaoO8Jh1Yt8gnI5ovQv1LY3/X
+         uzm3zRN+bQRq3s81uAt7KWhbU9vqOwC5a/43rrS0Du3n2vgCn1PNRZeeEMCbT5KMXkCC
+         xWlPUFEpD0KPSdERdzHHe/6drfgIbFfZDeGj7Pl8jTrUcs2s0AIPXcEOdWyy7Y9ZemoJ
+         QSOCoh352U3GyjIaG8l0gQBTCr52OtpEYsdiYJC/0H90h98hr9qrMNVGRuBNjvequbaG
+         vIjw==
+X-Forwarded-Encrypted: i=1; AL+hErF0jNitCVs2WmBHQbmKI5wdt/+MfTO1a2KB4ltFjNrcpzZN0zSfqDaWkfkOSbixLXJ7WYHHs94BbQ==@kvack.org
+X-Gm-Message-State: APuU4Z/EmUVdg3GbMcxyjw67zaegy+vsL7glZW/GvkHHLOh8sfcEHMvI
+	du4f2qMBT6w48si9GRvKvcBOxll9ByE01NvA5gq9iLaSXeyHzwWXrc1Par+3nJMoeYMYUZfVzXk
+	M6PJMLCU4o1i3v5A7n71ar1MFwy2uSlskmU8RJ8LYnSzNNR3EuOt1IxIHB4o=
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] kho: fix bootmem sizing
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Chen Pei <cp0613@linux.alibaba.com>, George Guo <guodongtai@kylinos.cn>,
- Kexin Liu <liukexin@kylinos.cn>, Sourabh Jain <sourabhjain@linux.ibm.com>,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20261104-kho-bootmem-sizing-v2-0-b0d1a834780f@kernel.org>
- <20261104-kho-bootmem-sizing-v2-3-b0d1a834780f@kernel.org>
-From: Mukesh Pilaniya <mpilaniy@redhat.com>
-In-Reply-To: <20261104-kho-bootmem-sizing-v2-3-b0d1a834780f@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 9kzxAYivaI4sVEkLkm4AnE6hOVgyDq10GVR_0TvphpE_1794468108
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 969C480007
-X-Stat-Signature: 57dcdpcahew4ywqmpz1pzpcrstkf43nf
+X-Received: by 2002:a05:6808:15aa:b0:4e8:e73e:e945 with SMTP id
+ 5614622812f47-56b9872af1dmr5151136b6e.63.1794468325005; Wed, 11 Nov 2026
+ 23:25:25 -0800 (PST)
+Date: Wed, 11 Nov 2026 23:25:24 -0800
+In-Reply-To: <20261109055455.536925-1-baoquan.he@linux.dev>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6af569e4.ad703688.70d19.3c73.GAE@google.com>
+Subject: [syzbot ci] Re: mm, swap: extendable swap devices (xswap phase I)
+From: syzbot ci <syzbot+ci2f12bcc59adcd0ab@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, baohua@kernel.org, baoquan.he@linux.dev, 
+	chengming.zhou@linux.dev, chentao@kylinos.cn, chrisl@kernel.org, 
+	corbet@lwn.net, david@kernel.org, hannes@cmpxchg.org, hebaoquan@kylinos.cn, 
+	kasong@tencent.com, klarasmodin@gmail.com, kunwu.chan@gmail.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, nphamcs@gmail.com, 
+	youngjun.park@lge.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam06
+X-Stat-Signature: m4m8791bb9jum73ayfdezmaqonrsujn4
+X-Spam-Status: No, score=-8.7 required=3.0 tests=BAYES_00,FROM_LOCAL_HEX,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: C101216000B
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794468110-155786
-X-HE-Meta: U2FsdGVkX19oNqJgoTR5eyF+VxB2ktusbE4/QEQDFEyuczV7Kx4JXWQ9VbSoAoeD8KjvOWwVjEwBQ/s2r5WTJ7A7ums0e0ia8id5bLPm2wwf3AB1Jl68S11HNnIbZfgmMx4xrdcwXPGYxGmPJmuD8ZPH3R8a32BhJtD+cPmk+w+a/ECt04CjGnkgdkYoL7BcaKy4pM1OYURyHEr57//Pnzzu178H/Cw0kSf8wo7+AiI1EF+msulaGzcjuwnTpflJ8YcHc+WxNHupR4d/fZBS4+sPK8lxHFWHr0f4suT25diJ4p74NDWakJqUo8b8qgrMACmxWghT5eCUY3wWMhDmuE4S7eGPYyMckKMyD8oai1KeMlpQHxWXN3LF3sASeYoYPDoGCIjXRvDT89Mkao4viwAuSMsMKDZzUeTdfhPSN45aGhs4yqnekMT8ypblp18EmlGeohLZanp+zCQvdb9RZ3HvWqaqr9xKlLv0+o+tE7vd8SzaRwNXjDv4mdOmQTEYDFnd/Vc1TSTGKaF+sz6bYEGLgfPPzsY8VHYkgTVCzYiSSforcmOg6fS5ZQzeqAUYdymCYLnd592GkIsOS8DzeLYsTaFbgzlTSPGdDZMnKTp/NDdacQdcD2+dN2nxOf5P3GrtOTmQZGayXHM0Ie3EZ2+WMUA/drz5sbhbzfcM9lmhVL3nP6T+kgfmXcOrwNDRdfZ75Vbz4xtvafkVWfvQNFh41F3JPk46QG3BA/5vcpy+KFSpQURVNY2O7/xaz6Tm6mqo6vUPbymdlhn6FAxxszSeMnh5up9GLjoMKtCrrIq0WRu9CIUiokBQo9xoSEgkeOUjKgS3vcDhYAIfQNydOYqxIviLX8/8cfCWwEetF3dSxg1iVPbpTpL/8JC7QX2BkDQZBH0GybcIt0koY3zDB4X2Ka3Xe/C1y8zWb87U4oUzxBzP9aQi4A27U7zUJXzULtcWrMpLqG4PD3sPxqk
- KWgRcU2u
- DqCi8+Cg6JXT7AGDdOl0izAw+WvblI3WmjpKLd0OTlfmYCeC2DM/02nDC/lYykHIcmluqZTnNIX4oa/1msVo0LkL1HvWLyka+tjtZhxFZ4qLFTgtsjGowo0R2dmgDwQNUxQUzpg1a7ynX/nq2BjS8zIBdZarnIaOy0atAV7bbCrkagJyS6XntVkkpJ5IJiAYLkTzaWP10LF6HwDNpFzMJgzRcGeOm4QFokUWfEt0iZupgH3b5Nl0KvW/KSLozAqQiCpdV3HZPTwTIogkSNmwosp3EyduORzQShoiBWwpc63SMxJ2NyA2JGUykf+578rCvMBnaFtknvGj8n7f3sNK/GpILMnROxMe06X1eFT4/dLS5D5IIawN9zOYUSvBkILdGljFZjNhIlwkv/VPJyRP3ht4O2t0Fzdx8qG9k
+X-HE-Tag: 1794468325-853433
+X-HE-Meta: U2FsdGVkX18TM5GnDLCtFbLPvP6a4tceJAzOCuUgaPPXMf3quRLtyxHpvQiVQEuR16Lsm0syZuAS+JsTYR2TD/idRsJ12fOgYqBkhFhYCdPmZuOZUj/nrdmGQCRWhQfVe0SQ3PGczQ7yTS3dMv2z4tI5/4lI8kpHUg//jWi00jc0Wv1RHmqgo0n3RCv+0crmWztdqi9nZmaSnXppFqKp8nBpaeCAH1nFHRxjg2JI6Y9AFDOaLsaLHRJ8TADaXs9+UEPypQSr9VdawnJI+MFZpgHKPwv1f8Rkm5vutJrArSu6rbZeyB6igE6h0svfzKoMvz2oRKaFQcnLebowyZ0Ex82Cnqapc1xwvsMC3YLslY/6mIyQ8wHh4nOS7UHS/1bkFdHjKeZDmJi/8RRSIf8BVVI0wwNbwcaMqhwfAQl/kXzF5QdIDs+a3c3Ti+2zvtCdHgs3jtee/Dl+KaWmrKYB7iJYKMNmsqDNPq9sOuyH7+Jf2Y0J4cNy6bWFtQVY3wPSh09+HcIh6uugz/MqOk+8Pe5hlNRRs4wryzaf0r408dDCe626TvOaLH8M2HLbqLUMFMJ5u9ucHO4EfAOJ3ATS4pCCKh5vyDawAxoJP+HkVPjQGw01ZBpdxL2/OrLEPaCUZf9Ea/yyrrWvtqUVGwEgyAhe4XwMhQeRTleKG2i6ZPibkabgkbpuVyA+88qR3VGuLing1xcxTWYsMwM67+kMRgL4wI4TS/bMgw6/BFNX0haYtDCdTUY0D7xWrjEAgmQBUdz86W9jUaPnIJQ8GlUDfsZ1pf2b6bbDigdYtuQvwouKlBN60+OSCr1d2dE7pvDFlxkQ98SFihwutpUg1NO+tWE3n+phP5QznrwM15i0K0yDh6/E+F/V1fuBUYUj/TM4ZlRXZugWkZOPnwC7OsCJZrFW/LwW1wNk6/J0TCaLSQrUHuzTiH/SU9TLVK9TgBFtAPvGH7MDexEn4qJrFHC
+ V3s6tTXV
+ 7DZ+P2qBgb5euBGp5SugB77+Qjf6L5xqajnN/TsCbHWE7z8euF72rxGlO/Ha3k5ExnW9Fep/EsBXpAOP6+2Ld3wObu6KA53ysPzVOrsRvpAW9zrOWUQDRtl29oMED9ae1o8T9IW9owZjtPWGWhNI5a3wHrv71ItnV9UsmgdijTeQvBb28VgjmdH84pMLuSmUSfrLs/TDOzp+YYFxXTGIbfSbJjXR77EQCm8/HSs+RDEfkinNeiWinVMaMFvfd2I/p3VWGir6bEgCwxPIEn6ighSM73GbPuLroKNkFXgmrZ9JG1WvPq88g28BJt0Z4n9aaaAJ/e0AW3Mk1mK/ca6SCxAurNau8NDJrvbFzVS7cdmBnCs1UYXdnuRIZ9K2bmV9Pm20IZy2RAvq4XmtPnfGtTXb/tQvfvdmMLcJWhxgT3u22F+54ayuL3ZoHs72ewErDKgbldN3zqQINyRs+mRINx2IWb4BycMUPLTKu/WTBoae1yftpbmSskXwy9JVQ9AfYgxUGMiFk08y6CZctLUCvXMQrN74IyrTjz9mM0DyQyFpmdTURE0c6f/DkAqgwYksEiL7a56etCRSTA/BqreSI+U8yycarTyxquZCx59bu+cetyQYmnLXsaQqZha5AyUnKE41fIdF7va9/m4kVLYRw55ecQO1UEV0Ze3lE6E/AEPMV/9Ulc25Zrdc+9+qnlHEXM/IpEfANntB0BnAgevsEtzd/cdsRKhWq33NN3z1498RUL09JYGBeYNXdKg7Ab04sP8jA4/YIq4Cjfz31NOKAniQByZad6iNsTclebqPtdRvGEDj8/uhO3CHAvRuOlEky1gc/Cq0b8aGsJMYKKpd/5QuielYqGHxLG0XPZ0amn1ib+eV/kQfgTt0M4cHETtW88rpU9YWX2JHZQO4tvNOIt1VAubr8T7sxblQuid+LvE1uaW0acSt0BUIVI9m65+10yL5yNhCRN7L80cNDH5KoTSEnXQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,196 +100,122 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Mike,
+syzbot ci has tested the following series
 
-On 04/11/26 10:20 pm, Mike Rapoport (Microsoft) wrote:
-> Bootmem areas are sized from overlapping views of the memory reserved in
-> memblock:
-> 
-> * the global area is sized from all reserved memory, including memory
->   allocated on specific nodes, so on NUMA systems everything allocated
->   on a node is accounted in both the global area and the area of that
->   node.
-> * per-node sizes are calculated after the lowmem and the global areas
->   are reserved. With CONFIG_NUMA=n all memblock regions belong to node 0,
->   so the lowmem and the global areas are accounted in the size of node 0
->   area and scaled once again.
-> 
-> As a result, bootmem is about twice bigger than it should be on NUMA
-> systems and about four times bigger with CONFIG_NUMA=n. On small systems
-> reservation of the bootmem may fail and then KHO gets disabled.
-> 
-> Make the areas cover separate parts of the reserved memory: the lowmem
-> area covers allocations below ARCH_LOW_ADDRESS_LIMIT, per-node areas
-> cover allocations above it on each node and the global area covers
-> allocations that are not bound to any node. Calculate all sizes before
-> reserving any of the areas.
-> 
-> With CONFIG_NUMA=n the global area becomes empty and it is not reserved.
-> 
-> If ARCH_LOW_ADDRESS_LIMIT covers all memory, as may happen on arm64, any
-> area can serve lowmem allocations, so don't reserve the lowmem area.
-The documentation still describes the old layout says __there is always
-a boot memory region per node plus one for node-less allocations__,
-which stops being true as soon as the global or the lowmem area is
-empty, and the lowmem area is not mentioned at all. So please update the
-documentation as well.
+[v5] mm, swap: extendable swap devices (xswap phase I)
+https://lore.kernel.org/all/20261109055455.536925-1-baoquan.he@linux.dev
+* [PATCH v5 01/19] mm: xswap support for zswap
+* [PATCH v5 02/19] mm, swap: refactor free_swap_cluster_info to take swap_info_struct
+* [PATCH v5 03/19] mm, swap: add VM_SPARSE cluster-array helpers for xswap
+* [PATCH v5 04/19] mm, swap: use a VM_SPARSE cluster array for xswap devices
+* [PATCH v5 05/19] mm, swap: widen swap_info_struct max/pages to unsigned long
+* [PATCH v5 06/19] mm, swap: add a sysfs interface to create xswap devices
+* [PATCH v5 07/19] mm, swap: refactor swapoff and add xswap_destroy
+* [PATCH v5 08/19] mm, swap: require zswap for xswap devices
+* [PATCH v5 09/19] mm, swap: use a stable id for xswap devices
+* [PATCH v5 10/19] mm, swap: let the command line set the xswap device size
+* [PATCH v5 11/19] mm, swap: add CONFIG_XSWAP_DEFAULT_MAX
+* [PATCH v5 12/19] mm, swap: let swapoff destroy xswap devices by name
+* [PATCH v5 13/19] mm, swap: add xswap grow trigger on cluster allocation
+* [PATCH v5 14/19] mm, swap: add debugfs counters for xswap
+* [PATCH v5 15/19] mm, swap: make xswap cluster_info accesses RCU-safe
+* [PATCH v5 16/19] mm, swap: prepare xswap_unmap_clusters for range shrinking
+* [PATCH v5 17/19] mm, swap: add xswap shrink trigger and defer it to a workqueue
+* [PATCH v5 18/19] mm, swap: do not give an xswap slot to a cgroup that cannot zswap
+* [PATCH v5 19/19] mm, swap: skip the overcommit probe when removing xswap
 
-Reviewed-by: Mukesh Pilaniya <mpilaniy@redhat.com>
+and found the following issue:
+BUG: unable to handle kernel paging request in swapoff
 
-> 
-> Bootmem sizes in MiB in x86 QEMU VMs, before -> after:
-> 
->                      CONFIG_NUMA=y     CONFIG_NUMA=n
->   1G,  1 node         176 ->   92       320 ->   80
->   4G,  1 node         508 ->  332      1264 ->  316
->   16G, 2 nodes       1268 ->  704      2944 ->  736
->   32G, 4 nodes       2296 -> 1224      5196 -> 1300
->   64G, 4 nodes       4344 -> 2248      9664 -> 2420
-> 
-> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-> Reported-by: Kexin Liu <liukexin@kylinos.cn>
-> Reported-by: George Guo <guodongtai@kylinos.cn>
-> Closes: https://lore.kernel.org/all/20260904025101.9959-1-dongtai.guo@linux.dev
-> Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> Closes: https://lore.kernel.org/all/20260922131217.698809-1-sourabhjain@linux.ibm.com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  kernel/liveupdate/kexec_handover.c | 93 ++++++++++++++++++++++----------------
->  1 file changed, 54 insertions(+), 39 deletions(-)
-> 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 5b1797d1289c8..c4b697a612f67 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -685,6 +685,7 @@ static unsigned int bootmem_scale __initdata = 200;
->  static phys_addr_t bootmem_size_global __initdata;
->  static phys_addr_t bootmem_size_pernode __initdata;
->  static phys_addr_t bootmem_size_lowmem __initdata;
-> +static phys_addr_t bootmem_size_node[MAX_NUMNODES] __initdata;
->  
->  static int __init kho_parse_bootmem_size(char *p)
->  {
-> @@ -754,29 +755,58 @@ static int __init kho_parse_bootmem_size(char *p)
->  }
->  early_param("kho_bootmem", kho_parse_bootmem_size);
->  
-> +static phys_addr_t __init reserved_mem_size(phys_addr_t limit, int nid)
-> +{
-> +	return memblock_reserved_kern_size(limit, nid) -
-> +	       memblock_reserved_hugetlb_size(limit, nid);
-> +}
-> +
-> +static phys_addr_t __init bootmem_scale_size(phys_addr_t size)
-> +{
-> +	return size * bootmem_scale / 100;
-> +}
-> +
-> +/*
-> + * The lowmem area covers allocations below ARCH_LOW_ADDRESS_LIMIT, per-node
-> + * areas cover allocations above it on each node and the global area covers
-> + * allocations that are not bound to any node.
-> + *
-> + * The reserved memory on a node and the total reserved memory include
-> + * lowmem, so it is subtracted from both.
-> + *
-> + * If ARCH_LOW_ADDRESS_LIMIT covers all memory, any area can serve lowmem
-> + * allocations and there is no lowmem area.
-> + *
-> + * All sizes must be calculated before any area is reserved, otherwise the
-> + * areas reserved first will be accounted in the sizes of the others.
-> + */
->  static void __init bootmem_size_update(void)
->  {
-> -	/*
-> -	 * If fixed sizes are not provided via command line, calculate them now.
-> -	 * Remove HugeTLB allocations from it because they never get allocated
-> -	 * from bootmem.
-> -	 */
-> +	int nid;
-> +
->  	if (bootmem_scale) {
-> -		phys_addr_t size;
-> -
-> -		size = memblock_reserved_kern_size(ARCH_LOW_ADDRESS_LIMIT,
-> -						   NUMA_NO_NODE);
-> -		size -= memblock_reserved_hugetlb_size(ARCH_LOW_ADDRESS_LIMIT,
-> -						       NUMA_NO_NODE);
-> -		size = size * bootmem_scale / 100;
-> -		bootmem_size_lowmem = size;
-> -
-> -		size = memblock_reserved_kern_size(MEMBLOCK_ALLOC_ANYWHERE,
-> -						   NUMA_NO_NODE);
-> -		size -= memblock_reserved_hugetlb_size(MEMBLOCK_ALLOC_ANYWHERE,
-> -						       NUMA_NO_NODE);
-> -		size = size * bootmem_scale / 100 - bootmem_size_lowmem;
-> -		bootmem_size_global = size;
-> +		phys_addr_t low_limit = ARCH_LOW_ADDRESS_LIMIT;
-> +		phys_addr_t lowmem, global, size;
-> +
-> +		if (low_limit >= memblock_end_of_DRAM() - 1)
-> +			low_limit = 0;
-> +
-> +		lowmem = reserved_mem_size(low_limit, NUMA_NO_NODE);
-> +		global = reserved_mem_size(MEMBLOCK_ALLOC_ANYWHERE, NUMA_NO_NODE);
-> +		global -= lowmem;
-> +
-> +		for_each_node_state(nid, N_MEMORY) {
-> +			size = reserved_mem_size(MEMBLOCK_ALLOC_ANYWHERE, nid) -
-> +			       reserved_mem_size(low_limit, nid);
-> +			bootmem_size_node[nid] = bootmem_scale_size(size);
-> +			global -= size;
-> +		}
-> +
-> +		bootmem_size_lowmem = bootmem_scale_size(lowmem);
-> +		bootmem_size_global = bootmem_scale_size(global);
-> +	} else {
-> +		for_each_node_state(nid, N_MEMORY)
-> +			bootmem_size_node[nid] = bootmem_size_pernode;
->  	}
->  
->  	/*
-> @@ -785,24 +815,9 @@ static void __init bootmem_size_update(void)
->  	 */
->  	bootmem_size_lowmem = round_up(bootmem_size_lowmem, BOOTMEM_ALIGNMENT_BYTES);
->  	bootmem_size_global = round_up(bootmem_size_global, BOOTMEM_ALIGNMENT_BYTES);
-> -}
-> -
-> -static phys_addr_t __init bootmem_size_node(int nid)
-> -{
-> -	phys_addr_t size;
-> -
-> -	if (bootmem_scale) {
-> -		size = memblock_reserved_kern_size(MEMBLOCK_ALLOC_ANYWHERE,
-> -						   nid);
-> -		/* Do not count HugeTLB pages. */
-> -		size -= memblock_reserved_hugetlb_size(MEMBLOCK_ALLOC_ANYWHERE,
-> -						       nid);
-> -		size = size * bootmem_scale / 100;
-> -	} else {
-> -		size = bootmem_size_pernode;
-> -	}
-> -
-> -	return round_up(size, BOOTMEM_ALIGNMENT_BYTES);
-> +	for_each_node_state(nid, N_MEMORY)
-> +		bootmem_size_node[nid] = round_up(bootmem_size_node[nid],
-> +						  BOOTMEM_ALIGNMENT_BYTES);
->  }
->  
->  bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
-> @@ -899,7 +914,7 @@ static void __init kho_reserve_bootmem(void)
->  	 * memoryless nodes, as we can not allocate bootmem areas there.
->  	 */
->  	for_each_node_state(nid, N_MEMORY) {
-> -		if (kho_reserve_bootmem_area(bootmem_size_node(nid),
-> +		if (kho_reserve_bootmem_area(bootmem_size_node[nid],
->  					     MEMBLOCK_ALLOC_ACCESSIBLE, nid)) {
->  			pr_err("Failed to reserve nid %d bootmem\n", nid);
->  			goto err_free_bootmem_areas;
-> 
+Full report is available here:
+https://ci.syzbot.org/series/88bad2a7-a1dc-4686-80c1-647e34e90e37
 
--- 
-Regards,
-Mukesh Pilaniya
+***
 
+BUG: unable to handle kernel paging request in swapoff
+
+tree:      mm-new
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
+base:      2dc0136b1fdac153434ab02778fcdb32db5d0dae
+arch:      amd64
+compiler:  Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+config:    https://ci.syzbot.org/builds/5c923c30-8b6d-49b4-8bbb-014cb85737f7/config
+syz repro: https://ci.syzbot.org/findings/f14c26d8-d891-4444-9227-d55cbaf2adb7/syz_repro
+
+BUG: unable to handle page fault for address: fffffffffffffffe
+#PF: supervisor read access in kernel mode
+#PF: error_code(0x0000) - not-present page
+PGD ff4b067 P4D ff4b067 PUD ff4d067 PMD 0 
+Oops: Oops: 0000 [#1] SMP KASAN PTI
+CPU: 1 UID: 0 PID: 5894 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:__do_sys_swapoff mm/swapfile.c:3743 [inline]
+RIP: 0010:__se_sys_swapoff+0x233/0x610 mm/swapfile.c:3719
+Code: 99 90 ff e9 42 ff ff ff e8 2a 99 90 ff eb 6f 4c 89 e0 48 c1 e8 03 42 80 3c 28 00 74 08 4c 89 e7 e8 72 c7 08 00 4c 89 64 24 10 <4d> 8b 24 24 66 43 c7 44 2f 04 00 00 43 c6 44 2f 06 00 4c 89 3c 24
+RSP: 0018:ffffc90003d1fde0 EFLAGS: 00010246
+RAX: 1fffffffffffffff RBX: 0000200000000000 RCX: c8af1e162af39c00
+RDX: 0000000000000000 RSI: fffffffffffffffe RDI: 00000000ffffff9c
+RBP: ffffc90003d1fee0 R08: 0000000000000003 R09: 0000000000000000
+R10: ffffc90003d1fd40 R11: fffff520007a3faa R12: fffffffffffffffe
+R13: dffffc0000000000 R14: fffffffffffffffe R15: 1ffff920007a3fc0
+FS:  00007f5ca62c96c0(0000) GS:ffff8882a7806000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: fffffffffffffffe CR3: 00000001023f4000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f5ca53a8f19
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f5ca62c9028 EFLAGS: 00000246 ORIG_RAX: 00000000000000a8
+RAX: ffffffffffffffda RBX: 00007f5ca5625fa0 RCX: 00007f5ca53a8f19
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000200000000000
+RBP: 00007f5ca5437f6d R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f5ca5626038 R14: 00007f5ca5625fa0 R15: 00007ffce4301208
+ </TASK>
+Modules linked in:
+CR2: fffffffffffffffe
+---[ end trace 0000000000000000 ]---
+RIP: 0010:__do_sys_swapoff mm/swapfile.c:3743 [inline]
+RIP: 0010:__se_sys_swapoff+0x233/0x610 mm/swapfile.c:3719
+Code: 99 90 ff e9 42 ff ff ff e8 2a 99 90 ff eb 6f 4c 89 e0 48 c1 e8 03 42 80 3c 28 00 74 08 4c 89 e7 e8 72 c7 08 00 4c 89 64 24 10 <4d> 8b 24 24 66 43 c7 44 2f 04 00 00 43 c6 44 2f 06 00 4c 89 3c 24
+RSP: 0018:ffffc90003d1fde0 EFLAGS: 00010246
+RAX: 1fffffffffffffff RBX: 0000200000000000 RCX: c8af1e162af39c00
+RDX: 0000000000000000 RSI: fffffffffffffffe RDI: 00000000ffffff9c
+RBP: ffffc90003d1fee0 R08: 0000000000000003 R09: 0000000000000000
+R10: ffffc90003d1fd40 R11: fffff520007a3faa R12: fffffffffffffffe
+R13: dffffc0000000000 R14: fffffffffffffffe R15: 1ffff920007a3fc0
+FS:  00007f5ca62c96c0(0000) GS:ffff8882a7806000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: fffffffffffffffe CR3: 00000001023f4000 CR4: 00000000000006f0
+----------------
+Code disassembly (best guess), 3 bytes skipped:
+   0:	e9 42 ff ff ff       	jmp    0xffffff47
+   5:	e8 2a 99 90 ff       	call   0xff909934
+   a:	eb 6f                	jmp    0x7b
+   c:	4c 89 e0             	mov    %r12,%rax
+   f:	48 c1 e8 03          	shr    $0x3,%rax
+  13:	42 80 3c 28 00       	cmpb   $0x0,(%rax,%r13,1)
+  18:	74 08                	je     0x22
+  1a:	4c 89 e7             	mov    %r12,%rdi
+  1d:	e8 72 c7 08 00       	call   0x8c794
+  22:	4c 89 64 24 10       	mov    %r12,0x10(%rsp)
+* 27:	4d 8b 24 24          	mov    (%r12),%r12 <-- trapping instruction
+  2b:	66 43 c7 44 2f 04 00 	movw   $0x0,0x4(%r15,%r13,1)
+  32:	00
+  33:	43 c6 44 2f 06 00    	movb   $0x0,0x6(%r15,%r13,1)
+  39:	4c 89 3c 24          	mov    %r15,(%rsp)
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
