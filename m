@@ -1,108 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A90D3606A33C
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 03:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Pg/fy7SQ
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13379606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 04:00:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B76C26B05B5; Wed, 11 Nov 2026 22:47:50 -0500 (EST)
+	id 1063F6B00EF; Wed, 11 Nov 2026 23:00:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B262C6B05B6; Wed, 11 Nov 2026 22:47:50 -0500 (EST)
+	id 0B76D6B05B0; Wed, 11 Nov 2026 23:00:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A15156B05B7; Wed, 11 Nov 2026 22:47:50 -0500 (EST)
+	id EE7F66B05B1; Wed, 11 Nov 2026 23:00:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A92C6B05B5
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:47:50 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6B169403E3
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:47:49 +0000 (UTC)
-X-FDA: 85425083058.30.F76AEAA
-Received: from mta1.migadu.com (out-106.mta1.migadu.com [95.215.58.106])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6C34AA0006
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:47:47 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Pg/fy7SQ";
-	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.106 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CFAB06B00EF
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:00:22 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 54B92A0472
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:00:22 +0000 (UTC)
+X-FDA: 85425114684.12.DB8BF7A
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 910C3100004
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:00:17 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	spf=pass (imf14.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794455267;
+	s=arc-20220608; t=1794456019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iwZKB7nwtPgPNz+YCvPlIwTeSdJDxh3u1WNVkxdvYlk=;
-	b=xjmdpfoipLnBA9tABpG6gcJk0mVuF6CmxJmjZx55N2ButQ+Y0l8E1jxxQEXlh2Wj5sY6PN
-	t26FwkTHWQt+A3CDkZORUzrgjNGpmk9JB4Bni9dyCGOheCx5io+ut+2dt8ttfkaQ1eLB4Q
-	eGewILH5rqc+earmqnaUXdPROHb+wQ4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794455267;
-	b=JY6Tpy6Vo7Vk+ID8wG3AX9xWV1cJWwATuNgGyjTujEMzjsDl9GPW1OSW/tFN9GewpG2E2E
-	P5Hq8njOZXs+1DijwH27jdYJjZvWEF32C9bwMnFHNfs8+XKJikAZnDwuWzZgTpNgvoug3q
-	1UVJTvN5XJw1qInaHaYCU7I/kyHQKgM=
+	 in-reply-to:in-reply-to:references:references;
+	bh=KNv41jA8q+1vr1ybXb+ci7oKXbVrazZL7oRggdFyj4o=;
+	b=O1dpb8tbl1cBkzAw1goRgQIwOxsQZcHr9YZkiQd+uLDSqU/e8JNVVBNsyMq5sMgM+CfALL
+	Qb2ZhTMMvVleqt68omuXTy6DWanNNlyZl5tJndFA0gUBHG2fxVdiFTFSMNf1Ziw3b+mvJT
+	rqv3M7RJ5BoEZ4nqGyJ5C7MC4FTSVr8=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Pg/fy7SQ";
-	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.106 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=OadfzCGW2WfZe3bKn2zs0QyfwtQX+wSf4CH5BaN2Vtw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794455266; v=1; x=1795060066;
- b=Pg/fy7SQkfATu7EVEkhbXVw4DwKfwKMto0NUPELfZ9AHXXR8xaAOlByyv+FN8K5l/dRzXkQL
- dfPCAwb6k9VOG0jSKXgv9YohjOi17WCLOY5hLDqrkMYDhboVmWszad9rSC+0FKMqOKXguOaensd
- 9MhvQArqYWMf97YkIr4S4FRo=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 64ab2262467329c6;
-	Thu, 12 Nov 2026 03:47:45 +0000
-X-Mizu-Trace-ID: 64ab2262467329c6
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=utf-8
+	imf14.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of yangtiezhu@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=yangtiezhu@loongson.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794456019;
+	b=fW+w+nyKFNAzmsyaf5VbmhWHvMgJ65iUY49tFrbv1+/zUUZeVEffjmc3Bj9FZQ2rGPRV/0
+	GWx0gi8Cr41ZlkCkVabIRmooNF4amN87oCU+iCxe0BD5NxUmNLDDosl9GVZuovu+SqYnmp
+	+8xOL1jXN1F2q5ZTDwXJOPAJMtIeWpo=
+Received: from loongson.cn (unknown [123.138.236.242])
+	by gateway (Coremail) with SMTP id _____8AxX9PLOfVqpsoeAA--.23129S3;
+	Thu, 12 Nov 2026 12:00:11 +0800 (CST)
+Received: from [127.0.0.1] (unknown [123.138.236.242])
+	by front1 (Coremail) with SMTP id qMiowJBx5czIOfVq6uEzAA--.13029S2;
+	Thu, 12 Nov 2026 12:00:09 +0800 (CST)
+Subject: Re: [PATCH] lib/smp_processor_id: Don't warn if there is only one CPU
+To: Huacai Chen <chenhuacai@loongson.cn>,
+ Andrew Morton <akpm@linux-foundation.org>, Ingo Molnar <mingo@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Huacai Chen <chenhuacai@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261111092421.3771992-1-chenhuacai@loongson.cn>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+Message-ID: <1c59d1d6-6ed2-f84e-49ce-2d1baeac6834@loongson.cn>
+Date: Thu, 12 Nov 2026 12:00:08 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v2 01/20] hugetlb: Don't restore vmemmap of non-HVOed
- folios on bulk restore error
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <11457D37-5AF9-46C2-95BC-CAD4B22741A1@linux.dev>
-Date: Thu, 12 Nov 2026 11:47:28 +0800
-Cc: akpm@linux-foundation.org,
- catalin.marinas@arm.com,
- David Hildenbrand <david@kernel.org>,
- fvdl@google.com,
- linu.cherian@arm.com,
- linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org,
- mark.rutland@arm.com,
- nikos.nikoleris@arm.com,
- osalvador@suse.de,
- rientjes@google.com,
- ryan.roberts@arm.com,
- sunnanyong@huawei.com,
- will@kernel.org,
- yuzhao@google.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B10D5832-7D7B-42E6-974C-6C394371108F@linux.dev>
-References: <491B482A-8177-447A-8CDB-AF83C13A5DEE@linux.dev>
- <20261021212738.321547-1-jthoughton@google.com>
- <11457D37-5AF9-46C2-95BC-CAD4B22741A1@linux.dev>
-To: James Houghton <jthoughton@google.com>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Rspamd-Server: rspam06
-X-Stat-Signature: k7qhz3mm87e31zsdu7kzin6nwpgb5g1g
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 6C34AA0006
+MIME-Version: 1.0
+In-Reply-To: <20261111092421.3771992-1-chenhuacai@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:qMiowJBx5czIOfVq6uEzAA--.13029S2
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBj9xXoW7GF45Jw47GrWxGrWfAr1kJFc_yoW3Xwc_KF
+	4S9rWUCrW0vrsxG3ZFga1UZF17Z3409a1kW347trW3Xwnrt348Jrs7K3Z3Zw43KryxJrZ5
+	Jan3Wr1avwn8AosvyTuYvTs0mTUanT9S1TB71UUUUjUqnTZGkaVYY2UrUUUUj1kv1TuYvT
+	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+	cSsGvfJTRUUUbfkYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+	w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+	WUJVW8JwA2z4x0Y4vEx4A2jsIE14v26F4j6r4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr1j6F4UJwAaw2AFwI0_Jrv_JF1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0c
+	Ia020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_
+	Jw1lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrw
+	CYjI0SjxkI62AI1cAE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
+	6r4UMxCIbckI1I0E14v26r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
+	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
+	0xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4
+	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AK
+	xVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUc0eHDUUUU
 X-Rspam-User: 
-X-HE-Tag: 1794455267-323774
-X-HE-Meta: U2FsdGVkX1/9BABEd/qtnUZzRU2w0E3D7Jwm+BMEuzSxQu9ny0hQTg34x36pD0l937lVVlZ9n5FSR1LrhGaxZWfgnhEZrc1Fw4q+OJPdLoNAFhHD2FPpBb4HqshR8K/MMdCrbNXTXtC5GMYfNQBXqdCRcW/DY2YGGNRmwVeDEifAnko3dLfoVD+3q1B9k0/E8NxOtZrlslmncDA319pa8OdTixW2X10qxfF0z36xxRbv2OtP7fnTT6+1Nv/0niJJ4oeUu3wSfyGQ+atQJFdAujjZiyICQ3lOoLBQMO7Ovtz9TFoCQ7SAEjlNb/F3KjNsn8uKeQlI1LNuwHGogsQIEicbAQ+OVD/vLfqZzTYfLX3iyj/8GPyb5RyNUcmurxq68YMnqw3+k74irTWH4qdQWIUKLjVe88DTizcj3neO064t3qppq4ONpYExMpnmxR7RzrcZnY/2UOzFe6Tw5yalk/wTAVQdtB9qQxifwGPaTT0VXCMupqo+heR8cWOH22WbTLFtOMZCiuFOFeCO3bg903TZsgQ067aGSDGxIQzxwoBY8oqZZSOR1FGASYSp/0+0fmEvf6W6VvA9z+aq6KOtyc+S6tGkmO10jXddRIXrKiHwCEDOwL3CiTailng942bMr7KQVROrwA3JS/0zcxveKs4M6bMcqWAydVXaz9HdAcdTMYyk8TZXlJeyPIkMievIYHvLsmcRyexTyTYZUDakpqKAn510NAbPb9pyZJvbnwcNfTrxIs8HhSKuIaOyzBvC/4e8kSyjE0YxDpERVkLVQY7kHMmE083uZxTEfqsAURf9w3Tj+C05h7C4Blf0D7JRhXL3zoGn/EcmDB8+TpaXbga99wjJo/QXXpyHLxoRc7Qzbs+mPe1JyagQOqZdmFl9hcjigpIY2DWQ2Dmruhc4lu8N5QDErhiz5/OsuX6TGHYldoRGrfaXt2ofUmgNu6ZaHBil5K1LvsCVHxn7X0R
- G5kWfCC2
- WbAAFxfQaKUtvqeyju0a2MYT9CUs34WPCL5BkTjv9OsmZ5/UKwRxZrS/nvEhyfp7yhsHTPcC6EQeKR0tjSdLXL/IkpIEpNuY9ag7MwBF2FnawI3cKfHuadF3+63PAmMARKlYr0NZCn49NefZb8ObMkW3nRCibiP3mOCGUsgCHOP746RWtIEGOMTwLHzEXD7VIXQfkT9woc+0o37jTRyAEBqj6fM4TEa2iLf59ddrOKYDvZqZtUPeQqLY1cMciQFBJErSJyQIvI0sNwGbo/s4zxBsuce9/0/4TZu+yvg0HYmsUvBhIZTx5+u3y/6B3CXoCUmdf
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 910C3100004
+X-Spam-Status: No, score=-7.0 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=no
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: ok3fhxde1nws5h6n1a88x9nqkey1r7ck
+X-HE-Tag: 1794456017-292677
+X-HE-Meta: U2FsdGVkX19fDi9Crdaltog8MymNjE+P+hyHfTSuhLTvQk7sKB7YyK6dHcC4X/Q5HawFjwpByIIzmvfwsEhQ1rihn7NCbFpdF5JBCXAlXTcJ06zR2ylmTmyO+RPTXDKIW2oqh8GwMYa7ak7bjg+5+XVojBk2SKMtwkLkQ3V9kZINz2we4e/8+EJCEdMSW0T/xrT5fkeOtR7YBJeXhiE5t8qd10jajFYcZezXOeVz7nvLDYu3FZ6nnKR6UH5f00cdcFvGo/lXFCShGfMQXUTj5KTKd55Kub3IhZ+VtfaD+D+gfJ1Qk3m3/ANo9cdiYumGgoEEr+ZDZUdKG2EtgXJIXLhkeEneLi8moz+MjJ6eNcJ77bKzftccae+VpII7vJzq9MFKjPNSa2p1+5+jgAnueTbV3Bh5b60VTeAM9/7vuXLtBIHHpGlp7G1Vd0Nj4RhNF5HSNyLv7YeMbPX9FK13uJhQ+BqNi4Svdlv1zMQnkTeaVM18bfC4G1bepeQ6SokEyAyhVLIH0OaZHJcxgUcUxrXSaPogbCRbgNuS54e958El/a1NKaxb6o+niXJlVdivzhJMnROfGUR123+SueFactJnivGRN26o3AKw/t6SbA32PsfOl1cgH9ukjpG3lj6ficr0YOSyd5HFb3K4q2MkSGf8POOIc+R1caVJFaTApU4k85YV9Wf2sT+mAPmxouZUcU5/rXAHZC7VELew5u9f4tIzOQZnnnBx+CydZ9rc2P+I1xcQuIMiJGwAoE/c5COPm+xJvJEM8uXDJs2Y61MCCzBG57dulPwDMn+j37keKhphqMeINdoYB9Dq4YRSJKkzpntrbkj78dlMRrp2l2m2PnQtA3Bj4ZHAfOunk1eL3/fVrnjWPjsGPSznXrgW/myytOlswyyy87GjyD0fGqRFzKioUwnUyHBywXTg1ysoC5vfCpVdSlxKg8NV/ormpPusMmvT4nf7JaY9vDLpEcz
+ UxC3wa4h
+ xmMJlNQVRD8CyPIJ2o4KZwuRDNOVxq+3c46XClYKDTBec/6J1ZMYv/ASuUzsvQecunRFDDs6tfilQLyjBpYx7oxyn7cBCOF9dPsdOLl+Gk/d7RUc5fbnG6+8Fz1xGX+wRV++hySYC4gttrvI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,126 +108,26 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On 11/11/26 5:24 PM, Huacai Chen wrote:
+> When CONFIG_DEBUG_PREEMPT is enabled on a Non-SMP (single-core) kernel,
+> calls to smp_processor_id() in preemptible contexts trigger some false
+> positive "BUG: using smp_processor_id() in preemptible" warnings, which
+> are harmless noise because the process always executes on CPU 0 and CPU
+> migration is impossible.
 
+...
 
-> On Oct 22, 2026, at 10:17, Muchun Song <muchun.song@linux.dev> wrote:
->=20
->=20
->=20
->> On Oct 22, 2026, at 05:27, James Houghton <jthoughton@google.com> =
-wrote:
->>=20
->> On Wed, Oct 21, 2026 at 2:33=E2=80=AFAM Muchun Song =
-<muchun.song@linux.dev> wrote:
->>>> On Oct 3, 2026, at 08:21, James Houghton <jthoughton@google.com> =
-wrote:
->>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->>>> index a1b51251103b..4dac7ed1df57 100644
->>>> --- a/mm/hugetlb.c
->>>> +++ b/mm/hugetlb.c
->>>> @@ -1613,9 +1613,14 @@ static void =
-bulk_vmemmap_restore_error(struct hstate *h,
->>>>             * page is made a surplus page and removed from the =
-list.
->>>>             * If are able to restore vmemmap and free one hugetlb =
-page, we
->>>>             * quit processing the list to retry the bulk operation.
->>>> +             *
->>>> +             * Folios whose vmemmap was never optimized (e.g. =
-because HVO
->>>> +             * failed when they were allocated) can be freed right =
-away;
->>>> +             * remove_hugetlb_folio() has already cleared their =
-hugetlb flag.
->>>=20
->>> Since you mentioned the hugetlb flag is cleared. So it's unnecessary =
-to clear it again.
->>>=20
->>>>             */
->>>>             list_for_each_entry_safe(folio, t_folio, folio_list, =
-lru)
->>>> -                     if (hugetlb_vmemmap_restore_folio(h, folio)) =
-{
->>>> +                     if =
-(folio_test_hugetlb_vmemmap_optimized(folio) &&
->>>> +                         hugetlb_vmemmap_restore_folio(h, folio)) =
-{
->>>>                             list_del(&folio->lru);
->>>>                             spin_lock_irq(&hugetlb_lock);
->>>>                             add_hugetlb_folio(h, folio, true);
->>>=20
->>> Something like following:
->>>=20
->>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->>> index 6a011b627986..1ab3e61f4704 100644
->>> --- a/mm/hugetlb.c
->>> +++ b/mm/hugetlb.c
->>> @@ -1616,21 +1616,31 @@ static void =
-bulk_vmemmap_restore_error(struct hstate *h,
->>>                * If are able to restore vmemmap and free one hugetlb =
-page, we
->>>                * quit processing the list to retry the bulk =
-operation.
->>>                */
->>> -               list_for_each_entry_safe(folio, t_folio, folio_list, =
-lru)
->>> -                       if (hugetlb_vmemmap_restore_folio(h, folio)) =
-{
->>> -                               list_del(&folio->lru);
->>> +               list_for_each_entry_safe(folio, t_folio, folio_list, =
-lru) {
->>> +                       list_del(&folio->lru);
->>> +
->>> +                       /*
->>> +                        * remove_hugetlb_folio() already cleared =
-the hugetlb flag
->>> +                        * for folios whose vmemmap was not =
-optimized, so they can
->>> +                        * be freed without restoring vmemmap.
->>> +                        */
->>> +                       if (folio_test_hugetlb(folio) &&
->>> +                           hugetlb_vmemmap_restore_folio(h, folio)) =
-{
->>>                               spin_lock_irq(&hugetlb_lock);
->>>                               add_hugetlb_folio(h, folio, true);
->>>                               spin_unlock_irq(&hugetlb_lock);
->>> -                       } else {
->>> -                               list_del(&folio->lru);
->>> +                               continue;
->>> +                       }
->>> +
->>> +                       if (folio_test_hugetlb(folio)) {
->>>                               spin_lock_irq(&hugetlb_lock);
->>>                               __folio_clear_hugetlb(folio);
->>>                               spin_unlock_irq(&hugetlb_lock);
->>> -                               update_and_free_hugetlb_folio(h, =
-folio, false);
->>> -                               cond_resched();
->>> -                               break;
->>>                       }
->>> +                       update_and_free_hugetlb_folio(h, folio, =
-false);
->>> +                       cond_resched();
->>> +                       break;
->>> +               }
->>>       }
->>> }
->>=20
->> Thanks, Muchun. :) I think it's slightly easier to read without the =
-second
->> folio_test_hugetlb(), like this:
+> Reported-by: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-Hi James,
+Hi all,
 
-Could you send it as a separate fix patch so that we could merge it =
-first?
+Just for reference, here is the related LoongArch patch that
+fixes the specific callers in cacheinfo and local TLB flush:
 
-Thanks.
+LoongArch: Fix preemptible warnings in cacheinfo and local TLB flush
+https://lore.kernel.org/loongarch/20261111113738.862-1-yangtiezhu@loongson.cn/T/#u
 
->=20
-> More clear, LGTM.
->=20
-> Thanks,
-> Muchun
+Thanks,
+Tiezhu
 
 
