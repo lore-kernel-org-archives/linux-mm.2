@@ -1,95 +1,173 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BDE606B0A1
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 14:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C66F606A89D
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 14:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iKXpz5BQ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GPJGh0mQ
 Received: by kanga.kvack.org (Postfix)
-	id 226986B05B2; Thu, 12 Nov 2026 09:30:39 -0500 (EST)
+	id A8D9B6B05D1; Thu, 12 Nov 2026 09:31:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FE4C6B05CF; Thu, 12 Nov 2026 09:30:39 -0500 (EST)
+	id A65286B05D2; Thu, 12 Nov 2026 09:31:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 114106B05D1; Thu, 12 Nov 2026 09:30:39 -0500 (EST)
+	id 97B3D6B05D3; Thu, 12 Nov 2026 09:31:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E3A476B05B2
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:30:38 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 77FF31C3E0A
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:30:38 +0000 (UTC)
-X-FDA: 85426702956.16.C1F500C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id DEB5C100010
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:30:36 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iKXpz5BQ;
-	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 6C5F86B05D1
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:31:57 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0AEFF1C3E38
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:31:57 +0000 (UTC)
+X-FDA: 85426706274.01.D6A2BAA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 30B6A120009
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:31:55 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GPJGh0mQ;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794493837;
+	s=arc-20220608; t=1794493915;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gsmy0r2PiQc6pLBgGT2iVgxiMmcutgitiTqzWpJ1o5Q=;
-	b=OQQq9+7n04sUHwTf8ZkZyK9EARs2BMbLGX7b/POzBcjbFMEH2/75vUj2mCp2Gq2Xcxfy/V
-	0va7RB/nkrMURNb7SICR2keepNYE65JU3qCOkVQXjMq2HtAp9iUvZqRZcfd2XXDCM3R07o
-	0va2vC8grCKj22jSRQT7s3PrNJ9e+Fs=
+	bh=qL8uHuX3QnsZ5VDS6Dz7mGSNJ+Qw6vdd/slrMNoAIKA=;
+	b=UfIlvlx23m3KGz84MFpchrWY3rM4rN0K2dAi+jeeBui2touYJCUlh7soFDa2Kfs/IFung3
+	eFSLUh9KXYj/7oMxitKSTwwizQmDcQuPZuYY6os1wsILa4iIGOlGV2opHTGbiU8H6kjqgd
+	sZB+Pur+CvnlQtttS7YJWSdwzK94yb4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794493837;
-	b=TQxCHql1CGJ0oJAQ1Mc2qxTueAm9w4DKjBiTFNtj5AwqwyJIGomQVYAULnGNbSYXR456bM
-	B0QmC7FeGSm23sLWs8s0KGYZwl0DhecbSy4beJnvKn0I8SWSNfwIt6+8qCgz7cAqedLE2A
-	+nzOftTqGPLMqtgQPLk3OEAAVmS+4pQ=
+	t=1794493915;
+	b=YwyO32mN3VavGOA9mLpKNC/HGNicjQBrylgdz77enYUPM8E342Ie5AaqmYDoKAeSK6O830
+	61n3BfB3lCkc0hs83HHdAkYeiAHOI/woBx+K2YoUcpPX/Vik6N2P0t8iT0gzGOY+zw3zhx
+	w2ISaRZR4K7kQRuLC5b84nnO1GM0CZQ=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iKXpz5BQ;
-	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GPJGh0mQ;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 547C9611F4;
-	Thu, 12 Nov 2026 14:30:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF411F00A05;
-	Thu, 12 Nov 2026 14:30:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5BF9547A80;
+	Thu, 12 Nov 2026 14:31:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED0B1F00A07;
+	Thu, 12 Nov 2026 14:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794493836;
-	bh=gsmy0r2PiQc6pLBgGT2iVgxiMmcutgitiTqzWpJ1o5Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iKXpz5BQspSTB/yVdyil9C8T9ubHWY8dy7Fu6HvyNLXCWgAFgZHlou8L1dRh1Zs75
-	 www38WX9HcC1KcjqWybnFDKl7yzmVBKK6cUPmp8Em6U8Ui/7b/3EPj8H1BV+l+kBGY
-	 vrhmK64tjy1wZk6jq1l7MtzWiGJvZLg6rtA3+mhY45dfu0YFjMfSHXp0Q6cum6PX5T
-	 yduq9ExJuohOhP8GXdZXpwItvJCZ44kgZcBnejO6MgeVYRY3gdF/g5wAxccms0lITo
-	 5Ld9jDkL6I+Hbfusrq/seuR5n0AT+URmssp/mgtRG7vGAz9wtH/ZacSq0i1OJu3inY
-	 A/ZYRCXukx7bQ==
-Date: Thu, 12 Nov 2026 14:30:34 +0000
-From: Harry Yoo <harry@kernel.org>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Meta kernel team <kernel-team@meta.com>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] memcg: flush nr_charged_bytes when the obj stock trylock
- fails
-Message-ID: <avXL3ZGyyiQpv4vG@thinkstation>
-References: <20261112013220.4064478-1-shakeel.butt@linux.dev>
+	s=k20260515; t=1794493914;
+	bh=qL8uHuX3QnsZ5VDS6Dz7mGSNJ+Qw6vdd/slrMNoAIKA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=GPJGh0mQr0iIywi1xK6YGtM++LzH5gKmiwWRk/EnY73REob9IoY6kKD2kjRit5NuQ
+	 qpCKoyGF5evmVOqDiFdO/iBXzFsGJNLGlbHO3xqyGfKWmUja0mkc+JARlV67F/VS3m
+	 ED8MuOYLsOkzOwLBf6PijVRAwyXOxIrEDHRTccN8Sx/5xthxqNLDxaI+qVDumcKzXu
+	 HH1oLUtanfgtu8dIToH107vmYlhQRsztMYYGF4hLaV0DBLVBZCWZjkRgq/I+0Ad/k0
+	 vZo0ZM0g2a9yHKmcZVucd0nDe9FvVQBR8Be5TI13/KkoP9N6fNDEN3H7l1nZd5V0p4
+	 7FchAVT3ZPcjQ==
+Message-ID: <42373222-8e37-4658-bebd-dd27230a1dfa@kernel.org>
+Date: Thu, 12 Nov 2026 15:31:30 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261112013220.4064478-1-shakeel.butt@linux.dev>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DEB5C100010
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/9] mm: limit pagecache folio refcount when splicing
+ into pipes
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
+ Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+ Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Steve Sistare <steven.sistare@oracle.com>, John Hubbard
+ <jhubbard@nvidia.com>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
+ Josef Bacik <josef@toxicpanda.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org,
+ iommu@lists.linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org
+References: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
+ <20261110-refcount_overflow_stable-v3-2-318625d63a98@kernel.org>
+ <avW3v-oLxcHXXNQD@pedro-suse.tail5790ac.ts.net>
+ <4ae22b7a-c160-4003-a029-8a20381d196f@kernel.org>
+ <avXFlI_5fhUvFyct@pedro-suse.tail5790ac.ts.net>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <avXFlI_5fhUvFyct@pedro-suse.tail5790ac.ts.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: h38kcx3mso5kwzwqg7h146ria6qz5onm
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: syk36x6y6zxf35gzgh7545o7qs3axmfg
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 30B6A120009
 X-Rspam-User: 
-X-HE-Tag: 1794493836-348387
-X-HE-Meta: U2FsdGVkX1966ZFhRKsVEpZf6gzRNEAkOzv5gHRFUgLieLIUGYUNbJ93t6XdUVgR/v2q12o7U4kbL/fn9anCSi8TB78xlSmpB2YN/3P9qr1MULAJnQ6Hbac0QqPgnOCRc/31fTOn3VUbFhk8yxflV+vxZUR6q1/FKIYFZuOJOL3825ZTTYei+F+g4lxmUU76lpKlwmPka2n4xNvHdKvHWVRAJAUMdn9SCGznJghLdMKt0rS+O1totFsAhTQZPfSta1fQvGvaqTpor39eR+yfaumg22MMr/qhECeRiKS3FuT1nkxFQvTSOAkYnk+3ZcEb0sX3mktMUA/EsKPfpdIIkJuMhBnkA/pmRELdaslQ+3sfkAjovmHWO1yNKb0ATEV4YEYWN1ijhm0430qH77nSgcX1I7AyIPLXLfMRyPlqw8wbewxOaWv2JzO0qKZ2udV3XjrJQBTJUOEhPu0cizS2coW/Kjdjh1SrMYEF81Y+/hsUrsq+xiMnKG7AnFdep2z7Lzzlp6leZvy7RdKpL/5r6HoTjOWKzNah+QRLkykwgMTkeRSFl4ok2x4hdQxgPWPEFyOnuYkK8lzn9eqUJUk4Wzo1VJRM8OuorPSKUk3x/4lKUxA4inoIscYOIY4H2faCltn0dNQC6TbNGjCtBFIJUi3dns6bTUxDalbjQQjWQ1YuIxUBFWRbx9hOCB+Z2yuAgOcSKAM9BjH/0iwgMxA11P+q27HzK9W6+c0p9UTxkm7R5awQJUj8EhpDQnUT7rQgdEwEUK8Q+2EDuDKwtGv1JO6bcH+hZ75XeNGBaGz9K8mVoPka01K4Wb0mJUB4nYk2BC+OLa1Ze2APgEIfIMynUHMizXtiBYOXvDM34tKCkYIUjuDqnp5wuHUGTspS+DQ7TLRdbA/PzYAXG7j45GYYJhl0PXsrVGpzdcz+80iBNOMSXOrNNDVcpvGd/u3V+TJoT0NJulgJC6xEGiRxScW
- NEaUtdMQ
- GeikoauomL1qDl+qT6A8ulomeIVXSoH0mWRBHQV8pjILEwJXlyZg4FIDddZf8jgEIQj/4NH8STeC4V2zvy/SIWqPjBwcLw3E+EGrKTxQrexkA7FQLataAIMqfJGXU4YPjE+jfmbcr1hgQiLS2EpWv1TlH6RnreFmPpNkXae9H0/TandigF8A+IVM6+etQKX5y8pWuUBubPU5rt5imFdk9RiSJaabiQ3Qky7lHceZhTpP8gOMCBdD837e0eW8nrjSBRuczj31vqCmB82HtIR2KQxAntIs8UvyTP9PVko+XcE3OG4iJJufeyRPbjRg5pr9BfFFf
+X-HE-Tag: 1794493915-310569
+X-HE-Meta: U2FsdGVkX19lHMouZqlUKI278hGMziw7RP+DAN9jLazU/jUxfSyAMs7E+ipLMkvTbrlwXULPzybmBP7llqyVgtTiTJnu9WBGc8wPBUwUwvOVeVnE29nhQKQLixawly26yXlvYBBa2MZ0e0US78TMLFnVuzHK9zkSLvBhHm10q8RazQneaq9a9QrAhJWREpUj4GgVG7+oVPqB16EQKGTYiwUwKOPkziY7tpa9fboqSq5gHXG22hurltiV0UZvPfSYPQ1ErvL0tq3pvi9yRS++eyKLDfhQf2rEOe+fX9BgLkJTAwhsJBfd3hJfn3oEThS2Ox4RDRF8+/2zTuNv/9dPq6Fo/6cM8nYYhMPoLjckIjbcxspQeS+oqvrQSCxf0kAFMw4DXBU51gUlWDiyFwrr+i0suLazq0DZs4QBa7CIgzOci5xmwHvjFLIauixmr60yEgSsFCgk3dCxy4EM4tSyUbUjjWr3mdhN+XhXHamdVLcWNXTZ9vCU70K3kgJ+6ZiAx1yeE7wUPsi541LQzoymT1cYhBtJteDpQCOUk6LILzDgJZaG4rC4Nag95VUGVW7YdNas6Myzi+oWDZyOWfOrbMrTxPxjwbkKfJtwivvlr8nEj3qhgCEuvz737dMkwoqsAWBkMH0qvoVcDak33FD11xoBxXGisquV54k+ZW26oKAI8uH0I6j4t+FK0R/28XiDyQiNKtn3uQ18nXYE8Jv0mMonWVZhOt4bl3gl8rFldOnlCUJo8fNv/HealvxskFPbD2GSUDJlnCSCn+sbsqGaiKcp0CLNpwXmGSlpJcWplflg1qul7/m4G4vsdvcP24/OqKgdwJrYC0RftCEr/j5gb/qNX3q7VsHEvcuhj7SfkplF3aoSzJK9I03n6oG2WLxmrGvsaYY00l9xa80YdGU7yvoSS5dJ3rvmsWQFm8lKsqjUuWzhCbBXluqfWXo6kfIMQq010q/AbRyBGjugQim
+ LCCZo1NN
+ A73kjCrpIPGZqjYd9VwcGk0qQNpOVyURedXxMrvAhMHZvw1qR5FRox/7rDQcSI7guAshKTC1iDfeg5P7Kx3Mv7eF5hXzm38bZmQg3wOxQgP6BM7Fnf1Ad94A1vzttjW7iamo9ftWALGcxf6Hz6rEwcMjXPN679SpzvXe83dNRxWBFp0qHNbyknBacy0NLsufR30wmQ35u/th/kaXsYOoq3rkk2wKhjoV+R5PJzlXQANrjuxhMWxWIsuPup9ViLXvNGpC20lQwmH2OMu0gZzl0wKeSiWtc5xI55JAZFvH+CRMPWADEJHtqC3XQL0mQXtGmb84CYOqUMPtvEag=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,51 +176,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 11, 2026 at 05:32:20PM -0800, Shakeel Butt wrote:
-> When interrupt code, such as an RCU callback in softirq, runs on top of
-> a task that holds the obj stock lock, its trylock fails and the bytes go
-> to objcg->nr_charged_bytes. Nothing empties that counter while every CPU
-> using the objcg keeps it in its stock, so it can grow without limit.
+On 11/12/26 15:00, Pedro Falcato wrote:
+> On Thu, Nov 12, 2026 at 02:24:09PM +0100, David Hildenbrand (Arm) wrote:
+>> On 11/12/26 14:09, Pedro Falcato wrote:
+>>
+>> [...]
+>>>
+>>> -EFAULT is a weird error code to return from splice, et al.
+>>
+>> We might be able to use ETOOMANYREFS (have to check if that could confuse
+>> callers), but IMHO EFAULT is good enough.
+>>
+>> What would be your suggestion?
 > 
-> Users see memory.current and the "kernel" field of memory.stat keep
-> growing while the cgroup's real usage does not. With memory.high or
-> memory.max set, the cgroup is reclaimed, throttled or even OOM-killed
-> for memory it does not use. The counter is 32-bit, so after 4 GiB it
-> wraps, and those 4 GiB stay charged to the cgroup and its ancestors
-> until reboot, even after the cgroup is removed.
-> 
-> Fix it by uncharging the whole pages in nr_charged_bytes whenever the
-> trylock fails.
-> 
-> Fixes: 200577f69f29 ("memcg: objcg stock trylock without irq disabling")
-> Reported-by: Chris Mason <mason@kernel.org>
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Cc: stable@vger.kernel.org
-> ---
+> ETOOMANYREFS I think is good, also EBUSY, EMLINK (though this would be weird)
+> or even a generic -EIO.
 
-Looks good to me,
-Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+So I used EFAULT because that's also what we currently return when
+generic_pipe_buf_get() fails through pipe_buf_get() in splice_pipe_to_pipe() and
+link_pipe().
 
->  mm/memcontrol.c | 2 ++
->  1 file changed, 2 insertions(+)
+If we want to return ETOOMANYREFS we'd likely have to special-case "<= 0" ref
+count and things get more complicated, as we'd have to return two different
+error cases.
+
+And then we'd still have the inconsistency with the above cases.
+
+I'll mention that I do not expect that we can trigger overflows in any
+reasonable setup once we changed the way page table mappings are refcounted.
+
+So for consistency with the existing checks I'd leave it at -EFAULT for now.
+
 > 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index f5f567f7d4a9..091401cecf39 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -3553,6 +3553,8 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
->  	int i, slot = -1, empty_slot = -1;
->  
->  	if (!stock) {
-> +		nr_bytes += atomic_read(&objcg->nr_charged_bytes)
-> +			? atomic_xchg(&objcg->nr_charged_bytes, 0) : 0;
->  		nr_pages = nr_bytes >> PAGE_SHIFT;
->  		nr_bytes = nr_bytes & (PAGE_SIZE - 1);
->  		atomic_add(nr_bytes, &objcg->nr_charged_bytes);
-> -- 
-> 2.53.0-Meta
+>>
+>>>
+>>> 			return spliced ?: -EFAULT;
+>>>
+>>> I don't know if there's much kernel code out there doing this, but I like
+>>> the trick :)
+>>
+>> There are a couple of thousands, but yes, one doesn't encounter it that often.
+>>
+>>>
+>>>
+>>> I'm confused. Why does this need to be done here?
+>>>  
+>>
+>> I have above:
+>>
+>> "stop filemap_splice_read() if we only spliced part of a folio, so we don't
+>> skip ahead to the next folio"
+> 
+> Yes, but is this a separate fix? A folio could be partially spliced previously
+> as well, no?
+
+I think that wasn't possible because splice_folio_to_pipe() never returned
+early. So it's only possible now once we fail to splice halfway through.
+
+> 
+>>
+>> Thanks a lot for the review!
+> 
+> You're welcome! :)
+> 
+> FWIW, you can add my
+> 
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> 
+> to whatever comes out of these nits :)
+
+Thanks! :)
 
 -- 
 Cheers,
-Harry / Hyeonggon
+
+David
 
