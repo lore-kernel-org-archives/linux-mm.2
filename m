@@ -1,112 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09827606A8AB
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 11:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D45606A334
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 11:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZEaim28R
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=JsLmb+4T
 Received: by kanga.kvack.org (Postfix)
-	id 3700B6B05E6; Thu, 12 Nov 2026 06:30:01 -0500 (EST)
+	id 7B7A06B05B0; Thu, 12 Nov 2026 06:30:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FA3C6B05E7; Thu, 12 Nov 2026 06:30:01 -0500 (EST)
+	id 740C16B05B4; Thu, 12 Nov 2026 06:30:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E8B26B05E8; Thu, 12 Nov 2026 06:30:01 -0500 (EST)
+	id 630856B05B8; Thu, 12 Nov 2026 06:30:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EDBB16B05E6
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:30:00 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8C4604053C
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:30:00 +0000 (UTC)
-X-FDA: 85426247760.03.A79711F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 947E6C0003
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:29:58 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZEaim28R;
-	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 403E46B05B0
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:30:39 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CC686C0551
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:30:38 +0000 (UTC)
+X-FDA: 85426249356.22.E306592
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+	by imf01.hostedemail.com (Postfix) with ESMTP id ED9FD4000E
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:30:34 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=JsLmb+4T;
+	spf=pass (imf01.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794482998;
-	b=pu9xmuuKI7tHPEXsR7rSR0QGS8xvPGc+MFLSmDZCRbg7lRae/aobrMrxlt47/E+33o5bvc
-	Gdf5G2DVm9ul8Mcx5WhpqkO6jYmuH5mgYmLRwNpYiYiiJb6Gd/Lkc/lX9XBAu3hPKbQWH4
-	035fIy3BIRV4/1RdlJ8v0oGFFRYsr/0=
+	t=1794483035;
+	b=PpbnYeHudmbvD+0PTrVgPK3C1sMSo4iKoC/3xLanPOq5Do83vFcKtt569b5A3ARE2mdl9l
+	vO2bYB9Nt8TbTyKu1HX6U/BBkf+C0Fbh/vj0i6EXr7ZmoUJd7B6ZEJthykE3sEpDbV95dZ
+	zKeMTtih2e18hpobuYYxQo8TBXRs5yE=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZEaim28R;
-	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=JsLmb+4T;
+	spf=pass (imf01.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794482998;
+	s=arc-20220608; t=1794483035;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aQt3sQWn6kEinu0EVH9z6KwTT7qLSz6YeVkphNhq1Qw=;
-	b=4mXsJ/848VfpyBmvl83yo1yQhzM1yTID4KCt833ypqSxAyFg0dGNn/Pd4EMcGBo9vYE4iL
-	6OWaiB1GO7qTeGz6upw4UbbjhVihPjf72c6DvdjmTLvHTWZ9uCOZH+wqHARjZBY27Quere
-	iqoPTJyUlnhUYdMXhrZWZi2n8bsyxro=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DA84C47A2A
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:29:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7271F0155D
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:29:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794482997;
-	bh=aQt3sQWn6kEinu0EVH9z6KwTT7qLSz6YeVkphNhq1Qw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=ZEaim28RYqaq+C//lihfDLxN33NDmUDam854qSUMg0aAHhVkGLpgFM2u63JB8AYdY
-	 ir9MI2zrr9gueQROVu1MKKM8n3lbgCgGT4A7GSjZP2SlBOT0HClFj+KJhbyAqTm9Vc
-	 P0YJsneYKXHMp8QuZmwP5aZvvswjNcGAhy+LihDvCvj5+X0OaLE/wzWG55tyBo/cFx
-	 fDxz6CGZGLqxi96k5IxU0BNepbndnSEvW+Udt9wRloHmIGnbNS3BSoPxgwSzkuMM8Q
-	 4VJeoaMo6zYsAnKilR0DSG6JIh7nsOkYnnasightx5sS8c2uq1AmQhfJ8cEl+0FfAN
-	 HXt8WAZnAkv8w==
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-93e503815adso338712085a.1
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:29:57 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErGlt+i4AtvkyLy/qiuTLvrnqU10nNSMMPWfADgSy4aG72X8oIgwuf+qkYvEfGswJTNaIB0yH/fjpw==@kvack.org
-X-Gm-Message-State: APuU4Z+v79BddLYca6XvaK37s/o8ahi8AyhFI0qleL2i6pYkNc9wnX1l
-	gdLUsNqlBwgvpN0PY/hJ4oLw3YlWsHLfmJCw69838zs90avSBfefCVbJp1nmLhitjrLHADcZnjR
-	v+da+aR7w0ZBDkToyMn9t3S3IPE2PmrQ=
-X-Received: by 2002:a05:620a:8018:b0:93f:4921:6965 with SMTP id
- af79cd13be357-947b00b3c2amr775889085a.61.1794482996962; Thu, 12 Nov 2026
- 03:29:56 -0800 (PST)
+	bh=8dtoPzgIAyTZmTJOXmbFfXRIYwlyrp1T0CX/jpuE8Sc=;
+	b=gbCC5YtbvWbTfgb2LiBwZbum/ShSdaP0P6FW+5R/GGmGzS5dQdBTmct5Ap88WVv3ew3j+o
+	QqTmK3wIrMLB1Br5MzpLyChqsXhT6RJZR72Ll+g46QvLx4dYHJOvZAojhlmKdfCwDXqYSw
+	MR0w6E6nalSP1Ht64ZTpVKKWVCfzJnw=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=8dtoPzgIAyTZmTJOXmbFfXRIYwlyrp1T0CX/jpuE8Sc=;
+	b=JsLmb+4Tk+a7iKdRyTfJwMH5VClwAn5+pSrMX5WFckZNZJu7p1WXAYf11555CnuG5DEsfGp9k
+	BeuE9orOg/o9PoYKmww8z59bwTSx0uEfbqY/D9m0WXNHqJpX6Jrt1Xgr1Ehv7eeqGmf6oDtQjc+
+	M7ICNe9Jlqzp2nRZ8ChCv3Q=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4jQJ8j2WsDzLlSW;
+	Thu, 12 Nov 2026 19:30:13 +0800 (CST)
+Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3A88440565;
+	Thu, 12 Nov 2026 19:30:29 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ kwepemk300003.china.huawei.com (7.202.195.93) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 12 Nov 2026 19:30:28 +0800
+Message-ID: <3ad97d52-9229-4b15-818e-4fcba66a0251@huawei.com>
+Date: Thu, 12 Nov 2026 19:30:27 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261111232603.9934-1-baohua@kernel.org> <20261111232603.9934-17-baohua@kernel.org>
- <sashiko-outbox-210424@kernel.org>
-In-Reply-To: <sashiko-outbox-210424@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 12 Nov 2026 19:29:46 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4y5G3U+grKw5pRJoQvtdd7LnEJDPPs+xOTN5JzUawhOJQ@mail.gmail.com>
-X-Gm-Features: AclHuK8TWfaCB6dw4xbPzg8qNYoschgIoS8z5RybB7ZZ36slXR8J7WXQfbKrMOQ
-Message-ID: <CAGsJ_4y5G3U+grKw5pRJoQvtdd7LnEJDPPs+xOTN5JzUawhOJQ@mail.gmail.com>
-Subject: Re: [PATCH v7 16/16] mm/mglru: Avoid scan anon while swapcache is low
- for GFP_NOIO allocation
-To: sashiko-reviews@lists.linux.dev
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, 
-	baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, hannes@cmpxchg.org, 
-	hui.zhu@linux.dev, kasong@tencent.com, kunwu.chan@gmail.com, 
-	liam@infradead.org, lianux.mm@gmail.com, linux-mm@kvack.org, 
-	liuxiang.277@bytedance.com, lyugaofei@xiaomi.com, mhocko@kernel.org, 
-	mhocko@suse.com, qi.zheng@linux.dev, ridong.chen@linux.dev, rppt@kernel.org, 
-	ryncsn@gmail.com, shakeel.butt@linux.dev, surenb@google.com, 
-	wangzicheng@honor.com, weixugc@google.com, yuanchu@google.com, 
-	zhangbo56@xiaomi.com, zhuhui@kylinos.cn, sidchintamaneni@gmail.com, 
-	Kunwu Chan <chentao@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: r6899pki1icndqgz8ppdpon7fuq9usq3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/3] mm: hugetlb: fix GFP mask propagation to CMA
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: Qi Zheng <qi.zheng@linux.dev>, <muchun.song@linux.dev>,
+	<osalvador@suse.de>, <david@kernel.org>, <akpm@linux-foundation.org>,
+	<azpijr@gmail.com>, <lance.yang@linux.dev>
+CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, Qi Zheng
+	<zhengqi.arch@bytedance.com>, <stable@vger.kernel.org>, "Oscar Salvador
+ (SUSE)" <osalvador@kernel.org>
+References: <cover.1794379433.git.zhengqi.arch@bytedance.com>
+ <1c5e8c4ae230dc238a16f2f42d65bffac6244ad3.1794379434.git.zhengqi.arch@bytedance.com>
+ <7def88b4-cba5-4e8b-9e68-6069c492b582@huawei.com>
+Content-Language: en-US
+In-Reply-To: <7def88b4-cba5-4e8b-9e68-6069c492b582@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemk300003.china.huawei.com (7.202.195.93)
+X-Stat-Signature: ueqbo457q59xj1n53c6nqd8r5gcpda5x
+X-Rspamd-Queue-Id: ED9FD4000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 947E6C0003
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794482998-737407
-X-HE-Meta: U2FsdGVkX1+ODjlRg182XikQrNeU4VJDw1xv/oxFJOTadtkeqzq6+z1HBc6VFDzMEuVbOGLpHBOsIfB3/mGxwt2+vOFi3NvG3VpGm+csyNxBIYpBpRbGaye72CfJ1Bi62/g4Z9OZ6g6b50C1/JVL7c4TqBOj52nK+NWYZnS0ZEwnNOo9+Jk3ITENmKszhHW7/ciAs8xB7/xO4VxY8VNvRKpgj5v1fGUnoUhLFVxiY2XeQOZi5Gm1qkXkBusoB65CbPrpWSayMVGxVR/48OEV0nX+busoH5EyINS+TYiYMwYhEaL+1LJFwJEbUNvwzHZ//Tx4ZM2ziT/1iYguK2dgSmcDR2AFFxIOHp5DC2/dKK6qDtQsrB9HQEXoTXi3fcIDOCBZCyrnu+N5ZPV33K/459BeXbeo2CtHGF9r+tXcjXBS+VvleLZlueOYon6JWHQ7UztwWR1Xf4n34Yw8TPQlj2QKX3zYHoQkBuPEjblkM/czHzXjWhlVGHLxK7ETaTZrh2VDa/fL3m7NgTeMbg2BhEkQIMbI9sRQHhDI1N+ClfYF2GX16IICeLdPHdqIgRZpQjnWCJgJ1vz0D0SNBhFZXffoRJcPUegfwnY2Culfb3SZ/i/ngT42xTyJXGXgdoqD2farW8+DPgCpQ7WRA6Y8BNFywOvWPPDJA7kwXKs5PsCvEwm+aG0IPxKJS12JU0VMCBgFw8ts6RSIXhCoqxpVgdoB2uHYKMHEwfclgbh0OdcFNodeaAxTmi0sO+qIXEgSkxYhAg921QZvi0Oswq4MFKuElnEA779cvljRw9Llx0RDqbZXTMDiNtQsClPlh+osrWsYm2xi3WEak1cm3aUNFRgBNDy8bMCRA1sLPjxgj7vZy0QkytNE3q6hEf3LjaAtFfrtmnmAHFtmzYwVC7XpUQQ6iVmhKderUFk9V4fM0WqepzLFb568Bby/44RT6tgUXVzaXvdttsZkQ8gq8Mr
- SIZSOKw2
- Oi4TDMKK1El+7yKA8qqR7T01Hc6R9zRVYsM5SKX5bUUFvkm9FfqO4hKntZgH8OdFGuFBSl+s6J4mssqr61q2rot6sWUNyaW+LPh9uEHGaClJ2dbVCW6tnvHimoO6JlF4gOfRNUYvl+PAsTjJzhaYOQmuMWrxbZJvj4jQYggYjIV5u6stt2212aFU1ZOqJQo1Zbpyx/jZzZjGS3xQJsqAG0ugTzbqdLQJWQgmt1fXNN3XmHzu4GlUbjIVHXb7ch/jMtwQrZJTj5TtbA8mvYRps1HQR+0EWwShTcH2ZRWQJ3/RFPBsvd1u51lM2ZixobYd+gKRFBi9Enw6Osfmgp+pXBpkOJ7mm1Tvu2zjoNY/pfjPpuCigj1aqpbw4D54ZpNUI8+hW4lR/mDIAvR5k5B2ZrNRjdr2UHp13atkE0uLjK5LFtpy18k5T5sgx7OFrHHZFNfV+B1TZODBiTCQcQyN08f0bQfuSS20ojBXHEhi0d3tE71fns2PnoX6P5dG6Ml2tfJlrhrcTZKxMUV7lAZeskEe1o4dHB/Y1FTzg
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794483034-774459
+X-HE-Meta: U2FsdGVkX19jDwNzwMMP/1UV8dnhSJOU77XUdvRsoHXakj1psmIVovei9o/onWvVDf/tUz4Js8siP/CHbvbOrn4y8Qfv6ZnFl6HZYPPpG84WW7S7Ir+thiII4aNPiuotTXH/xOYJSCiapu6tRD7I8qTMLallDmMh0Df1KmC77dO+H7Zl1COzQFWzXv7TgyMcRpVMoeSffY2hyqvTM8I8IVD9m/b0AdvUmLzRhIZOC0iipZLo4pt+L6tOQ68baoYtWFjtogGxt5i7Bi0GOSHDnP1ZFQ73rupcuCXkw3DvjP+8pdHBmUyQ3fmll3vwmpb0z2trzIORcexQiQc+/SJYAXOxrcbAHyN/6mH0/G4hyRwM7v8R4uhpBXXeIBJqXCZ+oE23CPYa6xo213BfdmGX3Mqcn0fdp1mJIfba1vIRPikIfUkqw2Zs44ZXjp1wItDXRQWAMMhlSYXFYmi/Q9B+pGBt/xdPnLNJIgfhhKbICgITyi6elppi13X+lB4zrHxsCNM0O6Hc0F0y10uPm//TRA+nyAJr3N37DYvbLlTzqz0oBu4onqgEQVX8Wkb98Q0aD5/YIQT88beTx19CpKnjFm9x0+MEVMb+dl5sm6im+zQhE8QbzBaQuf85TOWvSHSjUPH6ZEFTuiw28S6ltz3cqrXL4bv3yARxABZoUOE0Q4qMTg5E9UjTuZ216XQ7aSq5HttJo110HsRioUEfcjr76DXtnLmlzpR8ku4ySVmmxphYoX/rL1cvFyoiQ51bdKjncxhMftYTPbBxapK7V4EVOenZN8moaBT5TP7mYLxgJC59/xwXxC1RBG6y2VSBHkju3TKwTaGtDNkwyeZIlODNVce9tRWKdJ2Ljc7C82p8timHaiZ9MTrIgEER6pGZHIV4MdIgBMv8ZK4c+miEBoi4ziVRjK1we3KGFkrmjgK4RMdsA9/ocTEjYeqiQz3ezua/xhEJUuZ0Km5g/8D/tbC
+ A65I4Js6
+ adDIwAn2/GyDX2c5oliOCYlKgZJfkM9x5IN86ikFnIjnsVJi/Mp2w4tAoJbzQqVhqZoImP0G0FIbtXv4Ra32k7poKbFBwY8Th/DKAfnAROw7bwTWquJIh32vRfHbX/j6HzINBHWd1sEMZsKgJEG5dV7qlSduuugU+RG/TptS8QhgVxwr7XpgoRdsFRDb5ET1QQRwe2TJNiS9euucfoDsJUYMTp588DGhgGNOYmGzU0RCZSJF/SEtRV8dgpZKaxnQeMO9W1KijOHcsIdYkt1jpoZdgGY/kW9pyidFqRo1hyORAs8qm61qRyzb/qegECEw+laYaX9em2NTbkUTyjKRs5+kJWhMn6PDqcNUqMOAcxfZo/rCxddD+SRDgym54fsCtGgoCgu8iiX4kaF0G7l3iKvBUz2g7H+s31zZq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,140 +106,107 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 1:01=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [Medium] mm/mglru: stalled aging in try_to_shrink_lruvec() under
->   GFP_NOIO
-> --
->
-> commit c2e07c75b5549aa295c630747e1cecd7625269f0
-> Author: Bo Zhang <zhangbo56@xiaomi.com>
->
-> mm/mglru: Avoid scan anon while swapcache is low for GFP_NOIO allocation
->
-> This commit skips anonymous folio scanning in MGLRU when GFP_NOIO is set
-> and swapcache is low by checking can_reclaim_anon_pages() in
-> lruvec_evictable_size().
->
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index f36e9a379b62a..4fdbf0c2dcde0 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> [ ... ]
-> > @@ -4213,6 +4206,8 @@ static void lruvec_evictable_size(struct lruvec *=
-lruvec, struct scan_control *sc
-> >       int type;
-> >       unsigned long seq;
-> >       struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
-> > +     struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
-> > +     int nid =3D lruvec_pgdat(lruvec)->node_id;
-> >       DEFINE_MAX_SEQ(lruvec);
-> >       DEFINE_MIN_SEQ(lruvec);
-> >
-> > @@ -4220,6 +4215,8 @@ static void lruvec_evictable_size(struct lruvec *=
-lruvec, struct scan_control *sc
-> >       nr[LRU_GEN_FILE] =3D 0;
-> >
-> >       for_each_evictable_type(type, swappiness) {
-> > +             if (type =3D=3D LRU_GEN_ANON && !can_reclaim_anon_pages(m=
-emcg, nid, sc))
-> > +                     continue;
-> >               for (seq =3D min_seq[type]; seq <=3D max_seq; seq++)
-> >                       nr[type] +=3D lruvec_gen_size(lrugen, type, seq, =
-sc->reclaim_idx + 1);
-> >       }
->
-> [Severity: Medium]
-> Can zeroing nr[LRU_GEN_ANON] here while swappiness remains non-zero stall
-> MGLRU aging during GFP_NOIO reclaim?
->
-> When swap space is available and NUMA demotion is not, get_swappiness()
-> stays in 1..MAX_SWAPPINESS even when can_reclaim_anon_pages() returns
-> false. Because nr[LRU_GEN_ANON] is 0, evict_folio_lists() only scans file
-> generations, so min_seq[LRU_GEN_ANON] stays at max_seq - 3 and
-> try_to_inc_min_seq() clamps min_seq[LRU_GEN_FILE] to max_seq - MIN_NR_GEN=
-S:
->
-> mm/vmscan.c:try_to_inc_min_seq() {
->         ...
->         if (swappiness && swappiness <=3D MAX_SWAPPINESS) {
->                 unsigned long seq =3D lrugen->max_seq - MIN_NR_GENS;
->
->                 if (min_seq[LRU_GEN_ANON] > seq && min_seq[LRU_GEN_FILE] =
-< seq)
->                         min_seq[LRU_GEN_ANON] =3D seq;
->                 else if (min_seq[LRU_GEN_FILE] > seq && min_seq[LRU_GEN_A=
-NON] < seq)
->                         min_seq[LRU_GEN_FILE] =3D seq;
->         }
-> }
->
-> Once populatable file generations are drained, evict_folio_lists() return=
-s
-> 0 and try_to_shrink_lruvec() breaks out of the loop before setting
-> no_populatable, while should_run_aging() sees evictable_min_seq() at
-> min_seq[LRU_GEN_ANON] (max_seq - 3) and lru_gen_imbalanced() still counts
-> unreclaimable anon pages in old[LRU_GEN_ANON]. As a result, reclaim fails
-> to age from DEF_PRIORITY down to DEF_PRIORITY / 2 + 1 and then directly
-> evicts the youngest file generation (max_seq) without page-table aging or
-> tier protection.
-
-This is a similar performance concern to the ones raised
-earlier [1][2]. As mentioned in my earlier reply, it could
-be addressed by the approach Bo Zhang suggested to me
-off-list:
-@@ -5233,6 +5231,7 @@ static bool try_to_shrink_lruvec(struct lruvec
-*lruvec, struct scan_control *sc)
-                unsigned long orig_file, orig_anon;
-                DEFINE_MAX_SEQ(lruvec);
-                bool no_populatable;
-+               long scanned;
-
-                if (mem_cgroup_below_min(sc->target_mem_cgroup, memcg)) {
-                        need_rotate =3D true;
-@@ -5241,8 +5240,7 @@ static bool try_to_shrink_lruvec(struct lruvec
-*lruvec, struct scan_control *sc)
-
-                orig_anon =3D nr[LRU_GEN_ANON];
-                orig_file =3D nr[LRU_GEN_FILE];
--               if (!evict_folio_lists(nr, lruvec, sc, swappiness,
-MIN_LRU_BATCH))
--                       break;
-+               scanned =3D evict_folio_lists(nr, lruvec, sc,
-swappiness, MIN_LRU_BATCH);
-
-                if (should_abort_scan(lruvec, sc))
-                        break;
-@@ -5263,6 +5261,9 @@ static bool try_to_shrink_lruvec(struct lruvec
-*lruvec, struct scan_control *sc)
-                        should_age =3D true;
-                }
-
-+               if (!scanned)
-+                       break;
-+
-                cond_resched();
-        }
 
 
-[1] https://lore.kernel.org/linux-mm/CAGsJ_4xMUoTsPU-=3D_QVDqZ-p4Dt+vGJC5G8=
-hed3PWNAk3iv8Bw@mail.gmail.com/
-[2] https://lore.kernel.org/linux-mm/CAGsJ_4wFye_co4bnJwuaoyshZOE+gcWFthmWD=
-3r94dQgVHp8GQ@mail.gmail.com/
+On 11/12/2026 7:27 PM, Kefeng Wang wrote:
+> 
+> 
+> On 11/11/2026 2:46 PM, Qi Zheng wrote:
+>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>
+>> cma_alloc_frozen_compound() uses GFP_KERNEL, allowing direct reclaim
+>> during the first MPOL_PREFERRED_MANY allocation attempt even though
+>> the caller clears __GFP_DIRECT_RECLAIM.
+> 
+> MPOL_PREFERRED_MANY is only used for the partner allocator. Without your
 
->
-> Should get_swappiness() return 0 when !can_reclaim_anon_pages() instead, =
-so
-> swappiness is 0 consistently across try_to_shrink_lruvec(),
-> try_to_inc_min_seq(), should_run_aging(), and lru_gen_imbalanced()?
+Sorry, buddy allocation
 
-No. Please don't suggest hacking get_swappiness() again.
-It would cause a cold/hot inversion in inc_min_seq().
+> patches "mm: hugetlb: add CMA support for PMD-sized pages,"
+> cma_alloc_frozen_compound() is only used for huge page allocations. In
 
->
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111232603.99=
-34-1-baohua@kernel.org?part=3D16
+gigantic allocation
+
+> this case, I think we don't need the gfp flag, which is why I hardcoded
+> it, so there's no need for the Fixes tag; this patch should be part of
+> your new feature. Maybe I missed something?
+> 
+>>
+>> Pass the caller's GFP mask through the helper so CMA respects its
+>> reclaim constraints when trying the preferred nodes.
+>>
+>> Fixes: 9bda131c6093 ("mm: cma: add cma_alloc_frozen{_compound}()")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> Acked-by: Muchun Song <muchun.song@linux.dev>
+>> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+>> Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+>> ---
+>>   include/linux/cma.h |  2 +-
+>>   mm/cma.c            | 10 ++++++++--
+>>   mm/hugetlb_cma.c    |  4 ++--
+>>   3 files changed, 11 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/include/linux/cma.h b/include/linux/cma.h
+>> index 8555d38a97b1a..4539ea5f2c4e8 100644
+>> --- a/include/linux/cma.h
+>> +++ b/include/linux/cma.h
+>> @@ -53,7 +53,7 @@ extern bool cma_release(struct cma *cma, const 
+>> struct page *pages, unsigned long
+>>   struct page *cma_alloc_frozen(struct cma *cma, unsigned long count,
+>>           unsigned int align, bool no_warn);
+>> -struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int 
+>> order);
+>> +struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int 
+>> order, gfp_t gfp);
+>>   bool cma_release_frozen(struct cma *cma, const struct page *pages,
+>>           unsigned long count);
+>> diff --git a/mm/cma.c b/mm/cma.c
+>> index 9ec1d1fd5dff5..a7c47c0e7d070 100644
+>> --- a/mm/cma.c
+>> +++ b/mm/cma.c
+>> @@ -933,9 +933,15 @@ struct page *cma_alloc_frozen(struct cma *cma, 
+>> unsigned long count,
+>>       return __cma_alloc_frozen(cma, count, align, gfp);
+>>   }
+>> -struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int 
+>> order)
+>> +struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int 
+>> order, gfp_t gfp)
+>>   {
+>> -    gfp_t gfp = GFP_KERNEL | __GFP_COMP | __GFP_NOWARN;
+>> +    /*
+>> +     * The only caller of cma_alloc_frozen_compound() is hugetlb, and
+>> +     * hugetlb constructs its gfp mask via htlb_alloc_mask(), which 
+>> already
+>> +     * sets __GFP_COMP. Check here for usecases bypassing 
+>> htlb_alloc_mask().
+>> +     */
+>> +    if (WARN_ON_ONCE(!(gfp & __GFP_COMP)))
+>> +        return NULL;
+>>       return __cma_alloc_frozen(cma, 1 << order, order, gfp);
+>>   }
+>> diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+>> index cd6a64986278a..3e5a30571524a 100644
+>> --- a/mm/hugetlb_cma.c
+>> +++ b/mm/hugetlb_cma.c
+>> @@ -69,14 +69,14 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int 
+>> order, gfp_t gfp_mask,
+>>       }
+>>       if (hugetlb_cma[nid] && node_isset(nid, *nmask))
+>> -        page = cma_alloc_frozen_compound(hugetlb_cma[nid], order);
+>> +        page = cma_alloc_frozen_compound(hugetlb_cma[nid], order, 
+>> gfp_mask);
+>>       if (!page && !(gfp_mask & __GFP_THISNODE)) {
+>>           for_each_node_mask(node, *nmask) {
+>>               if (node == nid || !hugetlb_cma[node])
+>>                   continue;
+>> -            page = cma_alloc_frozen_compound(hugetlb_cma[node], order);
+>> +            page = cma_alloc_frozen_compound(hugetlb_cma[node], 
+>> order, gfp_mask);
+>>               if (page)
+>>                   break;
+>>           }
+> 
+
 
