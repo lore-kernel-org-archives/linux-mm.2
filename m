@@ -1,178 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8E2606A327
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 10:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7E2606A880
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 11:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=Lx3oOVyr;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=5Tucp5Ch
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XiANUSYq
 Received: by kanga.kvack.org (Postfix)
-	id B4B2A6B05B8; Thu, 12 Nov 2026 05:57:52 -0500 (EST)
+	id 3183D6B05B1; Thu, 12 Nov 2026 06:03:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B22A16B05B9; Thu, 12 Nov 2026 05:57:52 -0500 (EST)
+	id 2C9416B05B2; Thu, 12 Nov 2026 06:03:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EA666B05BA; Thu, 12 Nov 2026 05:57:52 -0500 (EST)
+	id 1B9166B05B6; Thu, 12 Nov 2026 06:03:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D4396B05B8
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:57:52 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0FC7D1604F6
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:57:52 +0000 (UTC)
-X-FDA: 85426166784.18.396FB98
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C5BE740005
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:57:49 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=Lx3oOVyr;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="5 Tucp5C";
-	spf=pass (imf12.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.157 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E778F6B05B1
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:03:43 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7A6DDA8084
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:03:43 +0000 (UTC)
+X-FDA: 85426181526.23.B201BF2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D013CC000C
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:03:41 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XiANUSYq;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794481070;
+	s=arc-20220608; t=1794481422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7Meslkpa8R+PBS0DyHZFPRgLYTJh3HuHkb0AOxumEFg=;
-	b=WUKNp/lptIWn2S6w8qlzYhAW6IEdTldJXAos4xVd4USsOPJTwqwgRk4i6nvoXFOZFIp2N0
-	FCuWyY9tqzneSP31fTMwLuQuwmAJJB03HcLtRpsFPcpso3GQFxNdsMTRZGjpITWTWWUhIl
-	kmM09YlxzRwxfgR+ILFD/waS9JkdYf4=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=Lx3oOVyr;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="5 Tucp5C";
-	spf=pass (imf12.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.157 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
+	bh=NL90eQvmf7oSmDtQxpeoM+o7UAHRN5i93I3Z8Hdt/Y0=;
+	b=GvIVSPgP38TiUGyFcyb148CiiOwEztt3MlHTPagViq1Nca420WcndOzIqbzN+94if8ItTT
+	mpKZU7c6x70YbkVXeixpohXUPI9DSPKsRZDz4KEGkHb293VwfO/qkc+4zOWT2Kntbv9nei
+	HgG93YEuWw81YZRzNZNaPLqJfh5w4g8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794481070;
-	b=377VxsnyFpnxPTxAJGoEuGTLtul3nUUIL6zb6mtn24ZQF+rMva+v8u3dvsOt4VhiIKmaQh
-	L9CE4rP4uJFGxk7TBbNIPOhYAvWAqGb4ryJo9obAUIpe9tOMaA/CZXcvSOaBya+vGZDb2C
-	S3KZopeS37NdvSssPp6SgYUd6/soPrs=
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id CE6727A012D
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:57:48 -0500 (EST)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Thu, 12 Nov 2026 05:57:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1794481059;
-	 x=1794567459; bh=7Meslkpa8R+PBS0DyHZFPRgLYTJh3HuHkb0AOxumEFg=; b=
-	Lx3oOVyr7xrldDhNotY/Y44ZUkWpUbS/Sw15HoBIt7zwVfFUJYzuhwJE6hHBi/f8
-	72PdLUrfif3QbiaqWlxNR28c8e/kBp2q3B8JS74VmKGEIA51P5NyNwQU9UU2U8DZ
-	5hOupRTbk/Bo1YRYVjiwE79692Z2HaOFkRbUqn04C0dAknhoZ/XF/BqXISN8djmK
-	nzQpQlDPCzLVKROdNaK/NAazeqQ5iP1EORfBNzaq7ok9xgR2qwyEFHaDlF4Y9AlF
-	XYa4+Lf5XVm+Qhxd+suZVmkwWbJXRviGrqHovHUmcPfLOq6ZV/oylQQuwfeVvML/
-	U7opSxQSF50d5vGuJszB5Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794481059; x=
-	1794567459; bh=7Meslkpa8R+PBS0DyHZFPRgLYTJh3HuHkb0AOxumEFg=; b=5
-	Tucp5ChVCBDjhl4dk5C7F5X3LVKTFsMP8gnn9x0MuH2+7jMPa4Nj+SIQT2DVG8uJ
-	u5wupJm5rdstAzMZZInODnyvvfpTJfSSXwspucG8yFOI18XQA+xNSYU8OspFIhSc
-	LO/T82B7R1uppnjALZIhacMzde9ZBYWKSQzN44nG7+0vSBMXLzlZpyo2vVWuFYH0
-	fE8J7L53cCmOZj5msmFb4hnFvbEATEFuLAZdCbui2G1dPgjuzrWnaKOAF5Kwkf9e
-	8FQ0yTD33WASXijjLCTz8CpmqYu/XHq6UATYTYTvybNI0UcKwDFTUQ2UkVbC+N6n
-	CdlnYUUoCZMBRuGIDFwhA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794481059; d=arndb.de;
-	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm2:rsa-sha256:fiTz6aoVXHYD+72JqyEG6MjflEVCpbhOCS9Ejq6mMuJdega
-	EYkUQAvu6U51hpXVQxQvadmHCah5+5P4JVgsRBSgsvqio25vTe9mxPXNkXHaOQYQ
-	JTnCwYnA25WFpcIbmYPRQty4OoT5gJWHxbSPqzylJUHXHhls8Utz0MOTZMWZjspE
-	1oz4WcFG/P0iHJSlZLReEZsFDZC/y7ySKrkvW8Jd/7mau4U3N8U8+Gd8jvhHDqhp
-	cUZX3VCQI7b50SS8zXo2vlsFLfSpuZ7iyh+mmi08wDHY5NMt/Fj7EvMcpZi+abBy
-	P0oFsWMomHe01vFw7zOt0M9AZ6onWVO51bMToSQ==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:QYGhyNrll/z2x43nzHbHMzcpokL6CuOf/GHVHHBnNG4=:9cBz8A60daXm+XxflR0ZEsASkUqul+qaMs0gX60bkz4=;
-X-ME-Sender: <xms:lZv1aulnwhqAVrU2ywlIhlQkx3jcr_mjJ1oOcF-oQALIJdbh9W2MSg>
-    <xme:lZv1agpofMLGq5k0IqsluYkWK-3JUTpfBoFK3L6DLiuUPYqcFGn2Enty4uF_-XQnJ
-    z94b6dWlBxsjyCv4Ip2kz_9V8gd6SZusy2huFR7jeXtsherYI7qUTdq>
-X-ME-Proxy-Cause: dmFkZTFPAb5ZVZzWlLcejKGx6E4VA3h8PqNfBXtLQtoFPOgpmgytfsUfOyDLCYXd2SSa4q
-    2EH8IJ2PPzcvWQUIF8rzpRv4eG4RNXvx0NBusK63EGFOtvbarh8wH0CGqL2blZX5LnwxGj
-    Bq7bb6BFYZpib28HfQC1ujCrw0Q8TBW7/48cz6euAfTCWQtTfGAuyvgN7GbpRZsmgRF2E4
-    TCaNzGWqT+dNqpflZRaBZXkZZtt4lBXqOUPXc/rjd4+dtSMM8lEb+r/hClV3R/o7Q+s5sd
-    1lcFl3GcCnNdnbplqVUVqfvmlm5/4bt3TMMk6ZNCk1/IOqRAfS2+h81eYDNbQMld/1X+lI
-    8+vvCIKZ1a4bZphSYeDPjCLmrTmXj+ipxN85OGTScj/sl7+Ut3TC/P8rMkVApR+7BygKid
-    SkK0hxv5G+rH+sog2zIEng3jqw0sOhQu7dCKfMZsvhYS/RJDLdeoB3JlbIKQ1Ys7dHJw2w
-    E1GTp+3yFqf73WGe3gAJZsZogHWBjRGFo1jLw+xcZHLP9MN34ZbJcYdMqQYR6DX3zmMqyt
-    U2s5m3k8BcCtol6aY9t+57PktWJnKsaEvlPS7qbnA2Qi397OHuVQYt2HBnl4g4gG0zdN1t
-    W74OFEbJGA5QHDn0M9LErHNZjmr7Zm0RyUqswJebH+zD/PZn3cfiGvgMm5gg
-X-ME-Proxy: <xmx:m5v1apYfRm6Zt7Y0f2U2u3xCBkE7OANuu7_SI_WuQKzpEBsoK_gakw>
-    <xmx:m5v1aqwe9cSnJzJz-zCoa-M5X9VKgGBOT0Z-GKILMaQBtdU6hxleOg>
-    <xmx:m5v1angYViALKmj2ClSkaSfBGAsOhh0oZTdF0LOqTWdiA7YmSiqtnA>
-    <xmx:m5v1ahr24wqldhEb8CE5VCD_MYmhCuogL16D5SqQjqcPObg2XEt3og>
-    <xmx:o5v1ag_90SnSwFh8o9nRP0b3a1tEHU8n2Te6e-_AnmGGK-27gNICHabi>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 82A8332A009E; Thu, 12 Nov 2026 05:57:25 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	t=1794481422;
+	b=wg6N3V4+JQCa5EeMvO4AxXoMgAAs8JlKg+P/OiYpGYGwWwEIa/JHvCqoqoJgeQIeNUOA03
+	SlKaNqJ8ykKz7+o8UaTLjdFL5xKnwR4P2t6GwVvT+KbDZzjhXSnUOiVxo4JMxhSwb7NHZJ
+	FBL5B7hH/gwYWAmXUuh31arSkIvbp9o=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XiANUSYq;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 49E11636B8;
+	Thu, 12 Nov 2026 11:03:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5611F00A05;
+	Thu, 12 Nov 2026 11:03:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794481421;
+	bh=NL90eQvmf7oSmDtQxpeoM+o7UAHRN5i93I3Z8Hdt/Y0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=XiANUSYq7HUgR/c8fZWcWOwFWGYAsb6pXFnpXvRjnFQxTRcAUMYmq+6ZWOxb9KxVu
+	 A+7besaPWCB77jQ2L0tbcs6iRrubXZDh3+KAtwB0fdzJLNTYRIWApVuaQzspqS/arT
+	 ZYJosfzUTYA6dEePxBX0urqKahp6brnwUIP07hkQKRMgyykdPtYzhN06uzcQ+9in0H
+	 SE8zMyJqBNEusSrkJzGxbHpgMc6JdtC3fo3vhfODgYPm5fSqvvXu2rKjwsFTB4O93W
+	 vkniD/z7ulBy94/T9SEIBdXebyfQLf5PhOf7Wst5nwNowc4bDvyNtsoC6cj1sLVARo
+	 o9/pSs42AsN4A==
+Date: Thu, 12 Nov 2026 11:03:29 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, 
+	James Houghton <jthoughton@google.com>, Andrea Arcangeli <aarcange@redhat.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Balbir Singh <balbirs@nvidia.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	=?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>, Andrei Vagin <avagin@gmail.com>, 
+	Stephen Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>, 
+	Muhammad Usama Anjum <usama.anjum@arm.com>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Chris Down <chris@chrisdown.name>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	=?utf-8?Q?Miko=C5=82aj?= Lenczewski <miko.lenczewski@arm.com>, Michal Hocko <mhocko@suse.com>, 
+	Mike Kravetz <mike.kravetz@oracle.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 11/12] mm/madvise: send UFFD_EVENT_REMOVE when installing
+ guard regions
+Message-ID: <avWW5t1BiD7pbzIZ@gremlin>
+References: <20261111-uffd-state-fixes-v1-0-00713d368976@columbia.edu>
+ <20261111-uffd-state-fixes-v1-11-00713d368976@columbia.edu>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AD8wiEBgakfZ
-Date: Thu, 12 Nov 2026 11:56:55 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
- "Linus Torvalds" <torvalds@linux-foundation.org>,
- "Christian Brauner" <brauner@kernel.org>
-Cc: "Matthew Wilcox" <willy@infradead.org>,
- "Kirill A. Shutemov" <kas@kernel.org>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Miklos Szeredi" <miklos@szeredi.hu>, "Amit Shah" <amit@kernel.org>,
- "Jan Kara" <jack@suse.cz>, "Zi Yan" <ziy@nvidia.com>,
- "Bernd Schubert" <bschubert@ddn.com>, "Hugh Dickins" <hughd@google.com>,
- "Baolin Wang" <baolin.wang@linux.alibaba.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
- linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
- virtualization@lists.linux.dev, Netdev <netdev@vger.kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- "Malin Jonsson" <malin.jonsson@est.tech>,
- "Richard Weinberger" <richard@nod.at>,
- "Geert Uytterhoeven" <geert+renesas@glider.be>, "Nishanth Menon" <nm@ti.com>,
- "Frank Li" <frank.li@nxp.com>
-Message-Id: <bf186643-780c-40e0-bde6-f2af90404a18@app.fastmail.com>
-In-Reply-To: <4d6a3d68-3fc7-446e-9f59-f61d7475e22e@kernel.org>
-References: <20261110145241.536019-1-kas@kernel.org>
- <20261110145241.536019-2-kas@kernel.org>
- <avNuQqLf9CG9dSsE@casper.infradead.org>
- <20261111-heimreisen-ungeziefer-empfunden-a892571f2c07@brauner>
- <20261111-thunfisch-wirbt-waldrand-822275b2d3b1@brauner>
- <CAHk-=wjPY=kfgnmtx4COEQjD5UzKx9m2-=KLGAZP4d=RKEH+pg@mail.gmail.com>
- <20261111-stumpf-montag-miterleben-c4e2feac8090@brauner>
- <CAHk-=wjGXBnme-N+HvbzHH40ftb7Suc=kZVT5cuintQWyMHJ7Q@mail.gmail.com>
- <e94bdf7c-eae6-4f64-bf93-0aeedca1a22e@app.fastmail.com>
- <32ad880e-5946-4703-9c6f-43ff59da39af@kernel.org>
- <3eb60948-8fc9-4682-87c2-c113e54e7d4e@app.fastmail.com>
- <4d6a3d68-3fc7-446e-9f59-f61d7475e22e@kernel.org>
-Subject: Re: [PATCH 1/4] virtio_console: copy pipe buffers in splice_write()
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qpcpr5s5t4893ma4bc75uaoswb55kiox
-X-Rspamd-Server: rspam01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261111-uffd-state-fixes-v1-11-00713d368976@columbia.edu>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: w96b8cc3cws3ypg99trsrxwn7oddod9c
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: D013CC000C
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: C5BE740005
-X-HE-Tag: 1794481069-128742
-X-HE-Meta: U2FsdGVkX19z6GpoTUgsr/jnRrtQcEPtN9a5g/HMMcdj8U+pXCT4LQeMogeARij/ZruYRzs//D7uhQOjmdR6520npiRc2JGiH49VNXFsfetDuJp7kdLKxtcXCsytjcx6ciXidhMEnwOUSRJmNmrobcHUuzS14+ylAuJnuk5snu7FEkvPU5N/FbNpi4Auh/s54xXg9zc/TjzkdL1F3LoBPuEocCnOAjvTmUj1WGFpc6VdKdRvgOITa7hu6hn8KUbmlBBgsLpnqkeCA/fWlkDvXYQC5nDD6OXqSuvWShRw+qDZHC7fBV7pfDrrA/pIas/xQB+8mbNbgmyBZFjqdbAeS4rwX6Wpgl7uYdt7JJoC4NIm9Zh7ghnmGgNONV95gJClBsNBm7makbrei7FNWwjXeIrjmF/CgvDqoRhJhkU0RRp69u3Xbx+dXo+oa7TJK6luOgdieK3QMDpOjN1Rpi/tvyduQTqVIWgRNAYi4ZW1nh9YAZ6L5ws26o1kK2DRu0+cods3KEyjlhfgOFyxOytiMb8+8dkICb+pqtPlKv0CuEebhOHt1jGewIBoO1GJUNHePLN4z+MHcP7prGtPNFSwtWK1/5nh/HIYocmKChPfRXnc1VRy9dg5fo8qF9G6kSl3GIlRR5HXdMN1drjWvNnIhri0I5b50aUiHwkrfPbF8MERq5P0PMSwCtbMCO3haFo6Y4Bvavs4WEY/nF9A8LbZQSX0cJGRnu1IWzVYwaKUyXEcGKUSvtYl5C0NGkzIiLEDT1xMFVI8+5snNBpRrMQDWmZZez7fRzkLwBxIcVLjHnifPkHKOtrWiDKVRLUlCQTQIUkIrZP4m8dyb/b0iuib11TA9ucNvxOq5ubsQLJ487ahczGL6bLBRVsDdx/9Ut5RBjpS+A6qwB31qinsCQZzBuTKUQF4Eriw+vXisIHQAwQbTnqkiAWbo374D3ApmfURGYLl7FZf4vDRKSDhkj3
- 4yDOC78U
- u6pt5txHLQmJ4a2i+KloQ9tXM4R56El52Selaw4E7rId/wqTLO2kFNqaleJJ1RkizxhySyC26xHF5FfGOKMZ6i44YntYXGrpM5qJniCAbULhH14HpNhwN+xxPPZAaaKMHlsLbg7GbTBkOQXXkZNzhpIb8k8swydIWxxzqSCort7tNe7jDXNChIWnHyypH2BVINmgJaDy4ZWKuy9aUtWhYJeMW025q1ENGeJZTH3iWuacD/WFrdPdVKH7ROU1aeXftsOuiMbI06OwDT+V2+XpU79t8Fw/KeYhVaGgvrG6rNuyMcXwYJihAg4qluCagmM+bPj297G6Cg75bUVYxGkTYHjzSqKoiFrhQzWQbVnQ1GQMnMe9jMUTobbUH9QU2W7PTVOuO5QKtlmgPzaX302NyH9SEXENoyaLE4KAY3m9RhUjQEJEl5F02RfQ6yBtKn2gEoC+5CU7+ugKi64eqAShuA5inwWKnYWnibIYl2nw/DkgoOd6viuA8qtsE47qtjxsfXsjwX/eRU3aLWaZyHQkaKwAvyMsrhX6q2DT/
+X-HE-Tag: 1794481421-61475
+X-HE-Meta: U2FsdGVkX18Vx/kJ6JOfIq7abpkz+7Fx6IndjmwpdSMWKGXsh+fVdO+xQVK9FZ2Yo6UItYEsj/Kd3krzjoGG5LbeFuAw2vmAim3LvrpDlqfWoLB4pI9vhMJcMvfCv501BCMVy1DZqyeq2i/R+UNyXjep8NEU8lpSFoic+onXO4gx96+LUDPhokZaD8r0JuceYOafSzhou97Vlz34YbV0RXuOGks+74tp1I98/UmT09r6TTnbMQucL175TdMV0vi0OWR3TA5kcPXQNSvosftYhIqcKR42dt6A0kVsM6wCczkLV5cOHOUPX09tXBR9r9qHQ0cnSy+U99yCPjztGEPGYPFEthTVJ6/ayLTBZf7HXVjeZGQZZZuaZSg903SRMPdo3llPSNLNTNruYShlnQOqyiwVwXNWBByK7S10oHhT5l/wrs0bC+jBel4tagQYOUWeLqDWAXFR57bk9rxluS78yUgiefVP6t/FV69VOq3fx97gdRAIiXruTrcLOgx93bbNK9YaN0RuZ8LHnO8sQt92iV7Gf83TXxVNoJGTzG7PKC8SNBrDg91y6Pok5ePEYblfTJxpUYPfu4MIs2/1xLpto84GOss4sTSW1m7ibRCG7TB+sNH3fLjsBF7ERwOEs4mEe44yF7EPcNQ9skIpu3VlXGigi9R3wl6ERtzBbT6Na/NZYl1Vvzv8ugLUOAKcJVO/TwxLbouxyn2hLTPBIOcPgcXCPlXhbSZHZVGxTZGnn//ur7UFTm/PnpIBWAkNKfol52KaOrn8uPdV/eSRzTXW1JAv4o0btiIJAsT+YwAWjdI6pnnPD2oQ2XVLOlVpxVI8j5xii626YFlWNzc++ME5cHXmRSVIOCX6Y6mhl6uzJE7uGfiae4pcTH0LlIkNPAT3EP9/hc17TQH6Pd+7RT3RHaMw9o5n+z+DxkRvS1/scQ/OXBJqeSUTk6AnONE+A+8efiYx7TVtc0Dbv8YMWuA
+ CEAmN6KB
+ i5s0C9hbrwsvfeIMtp0orjwbily4oV2mdABtSv5QmdwUs7XSHr9cXXFmN/B+B118dMC/iIJi0tSVtrGPXhpyUVQu/SaHex/vzl7+rxcEGeTouwe6616bTp7W7CucLb3pHsXG3b8sgH8Wzbrv0bIR6KiACy5gxkENbUjQMaT4DegEON2lKfjkQh5zhsXuPW3RJ7LsPXsToNS3Mbb4uXyMjsu8tizRmmFmVxzv4Rh18Cu/aE7tKCAzROJFXf7JDf8DXaeJvvYq5Pk2/osQferbTQtihfUbo6nQXKSLP8/ShJLRqVJz44iDMgZEV17PtxGhn8NTC+u7ZYSwuxshmafnnjig8AHlGsYFJ4V1jGz1K1KjgD5gVynhBxGATgUMBOoKdM/otR0L+yr4rFI/iExToyC+6+bTbFE/kk/HHuxYqcS3e/mw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -181,40 +113,95 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026, at 10:28, David Hildenbrand (Arm) wrote:
-> On 11/12/26 10:25, Arnd Bergmann wrote:
->> On Thu, Nov 12, 2026, at 10:09, David Hildenbrand (Arm) wrote:
->>> On 11/12/26 09:55, Arnd Bergmann wrote:
->>>>
->>>> I tried to push for what I thought was an aggressive timeline
->>>> last year, but that would still keep the Arm bits for a couple more
->>>> LTS releases and only gradually reduce the scope of highmem in the
->>>> meantime, removing support from architectures, file systems, and
->>>> drivers where possible. See https://lwn.net/Articles/1051010/
->>>> for a summary of my talk in Tokyo, including the slides and
->>>> a link to the video for anyone wanting more details.
->>>>
->>>> I also prepared a number of patches towards this, but have so
->>>> far not been great at following up to get them merged, sorry
->>>> about that.
->>>
->>> I think we can already start at removing CONFIG_HIGHPTE now, right?
->> 
->> Yes, I think my patch from two years ago still applies, see
->> 
->> https://lore.kernel.org/all/20241210160556.2341497-4-arnd@kernel.org/
->> https://lore.kernel.org/all/20241210160556.2341497-5-arnd@kernel.org/
->> 
->> If not, I can send you an updated version.
+On Wed, Nov 11, 2026 at 12:55:19PM -0500, Tal Zussman wrote:
+> MADV_GUARD_INSTALL zaps whatever is mapped in the range before
+> installing the guard markers. However, unlike MADV_DONTNEED and
+> MADV_REMOVE, madvise_guard_install() does not call userfaultfd_remove(),
+> so the userfaultfd manager is not told that the pages are gone.
 >
-> yes, please, that also brings it up to reviewer's attention :)
+> On an anonymous VMA, the zap drops uffd-wp and RWP protection along with
+> the pages. Writes and accesses to the range after the guard is removed
+> are then not reported, and the manager cannot know that it has to
+> protect the range again.
+>
+> To fix it, send UFFD_EVENT_REMOVE before zapping. Guard install on a VMA
+> registered with userfaultfd already takes the mmap lock instead of the
+> VMA lock, so we can drop the lock for the event and look the VMA up
+> again afterwards.
+>
+> As with MADV_DONTNEED, the call can now return -ENOMEM if the VMA goes
+> away while the lock is dropped, or -EINVAL if it is replaced by a VMA
+> that does not support guard regions.
+>
+> Fixes: 662df3e5c376 ("mm: madvise: implement lightweight guard page mechanism")
+> Closes: https://lore.kernel.org/linux-mm/3f4b0d1b.bbf84.1a1c55cb666.Coremail.18670333770@163.com/
 
-Ok, I have rebased my old patches to 7.4-rc2 now and pushed them to
+This report was super-synthetic AI slop
 
-https://git.kernel.org/pub/scm/linux/kernel/git/arnd/playground.git/log/?h=highmem-7.4
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
-I'll do some more build testing on this version before I post
-them to the list.
+Sorry I hate this.
 
-    Arnd
+Since this was already silently broken, I think the right solution is to simply
+disallow guard region installation for uffd-armed VMAs.
+
+I had the AI go look for users, and it seems nobody is relying on this (glibc,
+android, CRIU, etc.), and there's really no sensible world in which somebody's
+combining the two. So I think fine to do that.
+
+It was simply an oversight (reflex action is to disable new features for hugetlb
++ uffd)
+
+I'll send a patch separate from this, please drop it from the series.
+
+> ---
+>  mm/madvise.c | 23 +++++++++++++++++++++++
+>  1 file changed, 23 insertions(+)
+>
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index e8b05dc899f1..6413f0e65381 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -1166,6 +1166,29 @@ static long madvise_guard_install(struct madvise_behavior *madv_behavior)
+>  	if (!is_valid_guard_vma(vma, /* allow_locked = */false))
+>  		return -EINVAL;
+>
+> +	/*
+> +	 * Installing guards zaps the range, so report it to a userfaultfd
+> +	 * manager like MADV_DONTNEED does. The VMA can change while the mmap
+> +	 * lock is dropped for the event, so look it up again.
+> +	 */
+> +	if (!userfaultfd_remove(vma, range->start, range->end)) {
+> +		mark_mmap_lock_dropped(madv_behavior);
+> +		mmap_read_lock(madv_behavior->mm);
+> +		madv_behavior->vma = vma = vma_lookup(madv_behavior->mm,
+> +						      range->start);
+> +		if (!vma)
+> +			return -ENOMEM;
+> +		if (!is_valid_guard_vma(vma, /* allow_locked = */false))
+> +			return -EINVAL;
+> +		/*
+> +		 * The VMA may have been split while the lock was dropped.
+> +		 * Handle the part in this VMA. The remainder is handled by the
+> +		 * next iteration of madvise_walk_vmas().
+> +		 */
+> +		if (range->end > vma->vm_end)
+> +			range->end = vma->vm_end;
+> +	}
+> +
+
+(separate rant - that we have to a. know to do it and b. write duplicative
+open-coded crap like this is a perfect example of why uffd is such an utterly
+broken mm feature that should never have been merged...)
+
+>  	/*
+>  	 * Set atomically under read lock. All pertinent readers will need to
+>  	 * acquire an mmap/VMA write lock to read it. All remaining readers may
+>
+> --
+> 2.39.5
+>
+
+--
+Cheers, Lorenzo
 
