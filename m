@@ -1,137 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9326606A32A
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 17:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892D4606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 17:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=cTXSkAEO
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c7hFlUdc
 Received: by kanga.kvack.org (Postfix)
-	id C49586B05B5; Thu, 12 Nov 2026 12:29:21 -0500 (EST)
+	id 8C6B66B05B7; Thu, 12 Nov 2026 12:29:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD2DF6B05B7; Thu, 12 Nov 2026 12:29:21 -0500 (EST)
+	id 8503A6B05B8; Thu, 12 Nov 2026 12:29:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9A9B6B05B8; Thu, 12 Nov 2026 12:29:21 -0500 (EST)
+	id 6F1846B05B9; Thu, 12 Nov 2026 12:29:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EC316B05B5
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:29:21 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1B67F40661
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:29:21 +0000 (UTC)
-X-FDA: 85427153322.12.E094C46
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E5A5C1C0005
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:29:18 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=google header.b=cTXSkAEO;
-	spf=pass (imf20.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794504559;
-	b=UPceAO22CDB4wbIXJiSsIA0q963XluGwSCZwhGfp/A8Y9jpd/JA1nOLY5i62Ej6xZhJrLn
-	yU7Vy+eVYq4ioFJyzlz+rBHonAS8FZlfE+56vm4Fp4NCy+erZvEZt8rarU+TlK+pWAm18/
-	PZ2XQML1B87OdrdjLWWqBbx8xkgX/AY=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=google header.b=cTXSkAEO;
-	spf=pass (imf20.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 45FB96B05B7
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:29:29 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CD99F804F5
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:29:28 +0000 (UTC)
+X-FDA: 85427153616.04.BDC436D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0C76D180009
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:29:26 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c7hFlUdc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794504559;
+	s=arc-20220608; t=1794504567;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CPqL/jXjgacEff5dEPASqy6/Bbk+NnoKXgfKHY7JVag=;
-	b=eFtYhjJFyaa4/0ODkmFFZDsb+9hgeXeenoHzPr4C7qQ5CqKT651w+15nHTKtxcypNLsjEy
-	MBphI/WggPvScEU/nWxc9c1h0IsSRhUteBu4pxwW/UZhnbq0h91oQtvlGHyEGb7b2z+t1h
-	GomcxPXh6CT/SD1Se8p5rJN4/7i/N7M=
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6b5973a4b4cso54854a12.2
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:29:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1794504557; x=1795109357; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CPqL/jXjgacEff5dEPASqy6/Bbk+NnoKXgfKHY7JVag=;
-        b=cTXSkAEOSc+3xK+XaPRY0PbPRafbhZ3UrW5rj9Lfc1YbXfERBDRQH6Z8LVuLOdlvpr
-         NmgJQnNcmJhke3qTGyFuiJcX9bTwVR/hYuzNOnEWJFqau6ScJWiAgAJiKEbQiebro6zi
-         yblT6qc9Ofqk5lB3ooRxpVkv3eWdonfYu3QT8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794504557; x=1795109357;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=CPqL/jXjgacEff5dEPASqy6/Bbk+NnoKXgfKHY7JVag=;
-        b=JmUzexYY1wiikBWmfzbQK/FE1gjUGQyuYyTDOmMkZNN+prLI6nRHLGBscgd/JtbAEc
-         Bknu+wuEAHKjunoVet8FhURJTPOSNjglr5QmZFsK38favQjhBBZCna5xnSZbuJFJ+lOB
-         6kEDnr9dOL7mOYuG2Q7ATbsijgsVt5kqXscIliehlOIvMU+Wc+Ym40xg04zc0XNz62rj
-         A8vTK7+ON6UZs+GZb9Gwjpe2RbAuVcwLOPk4HQv8zxfU/mSAc9BCnaWDB8zc75+bxNia
-         Hpk7Lf/D+DX3ArePBIyurJJkoC5lbYGyYrOfsYA/RjCVK5A/dTNL28N9Xc3Qaths7y44
-         RKOQ==
-X-Forwarded-Encrypted: i=1; AL+hErF9epT+eVWBKzCn7R6Q8tyHSnuEilC4IpUbxULOLe+evLj0WTtzPQtea17pxQ7q4UI2zOATxyL2nA==@kvack.org
-X-Gm-Message-State: APuU4Z+PbJyAKOTxlw35xxiKnE7xz6IrVjAqyd++IFOXYVoUC1ManEmj
-	qw3KTli9tyzPxCoQvFgi4qwL93IqawK5eN6skuKdRQWRZvlOlkpXbU3+nHhwMp5eMc5HHao879p
-	Z2c1qOgtR3g==
-X-Gm-Gg: AYBFou0VYRgDQXMpmgDNzfnemTkfZQybt8inRL3waTOJNvIzr2KX2ywtEBQ/thE9HUn
-	SO5NagarBQvKAKulogn+4IBixUtpcpzkkJd0Te5PwY/8XQZnu0gNJfjXwrFwiJxt3dObI4e36Dy
-	wD8+ChaUx8Ns0Kor+oYjfiNwNGtoFix7xdMtkpai8mfQovjd76FkGvjaFzl5yTP/eXdHsU8Ukze
-	s24y36PpiACtE6DnI8DfXT9+SUrGK/aiYTEk6a2+2gBi/wJIUq8xmoVR2NpL1YSaikNI4xJSiiK
-	ulkTsaBxLonfeH4Nv/lnm6L2tjDIcC7O3UugTtEHB9TDk4HB8vNZRAuN0wuT7+zfScfDfrX8lcM
-	M8SnHNRdOfFG3FYR1yHhqHbdUFQivKKFRPMGSvOt5fVPJPW7CTGk9zx2rTVcPVKpET0luFljRST
-	Pkdk4rFZQACUI+FHNhnOKGCqpxc/BpPJto7hS69AhT39CKdGBHhypVbRqoR/Ejz9Ub3dNnemOuy
-	zJERkkBsmN/pQXtZc86GE47yy773DEuKGNwWtaV7KJFioGRPv63M1ORlRhfVPd14UoUS8o9ylxL
-	uD0ekty4oNW6eU5edl3JNrfLDOjwEx/SCYaDp3iWmzIWCHV5z00NtUDjoTBX0sIEP9tS+rvqdAX
-	U7JkWZQgDDhrwIbOxRLOqK7A=
-X-Received: by 2002:a17:906:dc89:b0:c46:d493:501a with SMTP id a640c23a62f3a-c5066b4f50emr613169766b.22.1794504557346;
-        Thu, 12 Nov 2026 09:29:17 -0800 (PST)
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com. [209.85.208.54])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c5095a5b93csm2056066b.5.2026.11.12.09.29.17
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Nov 2026 09:29:17 -0800 (PST)
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6b547d6c07bso57589a12.1
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:29:17 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErHi+syM5pfptz20xsUSVWuHtNRBL9GiaevWGIz/UARmJBE21EHf9w7AwStIsH9HtEMVG1B3SLuSKw==@kvack.org
-X-Received: by 2002:a17:907:2d9e:b0:c50:4b7a:de71 with SMTP id
- a640c23a62f3a-c5066c973bfmr611766466b.28.1794504214466; Thu, 12 Nov 2026
- 09:23:34 -0800 (PST)
+	bh=MZA4OFzaj3eAw5VAprKw61yeVsB5hZt4za95D/BJANg=;
+	b=hP3m0nMFcxEmNpTztt1G2yXj/EEUy53s6q1mz/9rkO3HqPkmfAjFIOnCZEq7mp4/sJdPWd
+	hpiR2nl+eV428B2kQjeUeNWzZJpltbqkL+wn8vZoWTuUWIjgw525sjmjEoDj0St/F2tZFe
+	wdYy+QKOu08RjFyJ237kPTgs1fuQaH0=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c7hFlUdc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794504567;
+	b=uyDpUSAIP1eRQliDUw32ao4RPQnHSsevoWAWPtiyOsFwH8hIkjtk90HnHuSyoMxcv1Cbm3
+	hKJ1feZE5iGOAcOEiev0I5kEr/8IUVacfYUjIIhvykyVBQ/2CK6y7V4y0fY1dT3XX11IEW
+	jwVk7k7FiQGr/+zU5fahY+LTN4xH4KY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7DBB561819;
+	Thu, 12 Nov 2026 17:29:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E7C1F000C5;
+	Thu, 12 Nov 2026 17:29:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794504566;
+	bh=MZA4OFzaj3eAw5VAprKw61yeVsB5hZt4za95D/BJANg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=c7hFlUdcGfKUf+hHVn2/yVYHZsVNy6kfPE9IT9ZZGeEfrLU6+boZ5EJZbTZl9T9mo
+	 MCgGah8anRUItmb4sYVgmSk5rGvcx9VOQ86EmE1pfcU+EzCnvoBLsTN4s2GpirY/kz
+	 lN9JMius9t6KWIr0b7xKmPe+Orr9jv7u/fmFzEjOLcKWdyYfBSjNpOsRW/V0mvGfp6
+	 nBa/rauB0XQa/hN1YRkkOqxxLYAjIDGAwIgaxpQgRUI26AkfHCpWK36TgGbKiBenCj
+	 razHIez4XGUaB9aXoddjLBMZb/axa9YTmSIPOfBOic7cVEupqmywbNSVj1U1naK1qI
+	 LULqu7VG4wSag==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Joerg Roedel <joro@8bytes.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Brian Starkey <Brian.Starkey@arm.com>,
+	John Stultz <jstultz@google.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Radu Rendec <radu@rendec.net>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+	kvmarm@lists.linux.dev, Oliver Upton <oupton@kernel.org>,
+	media-ci@linuxtv.org
+Subject: Re: [PATCH v9 02/14] mm: Zero memory during shared memory transitions
+In-Reply-To: <sashiko-outbox-199540@kernel.org>
+References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
+ <20261104164555.3555725-3-aneesh.kumar@kernel.org>
+ <sashiko-outbox-199540@kernel.org>
+Date: Thu, 12 Nov 2026 22:59:05 +0530
+Message-ID: <yq5av762gdr2.fsf@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20260914223212.i.829-kees@kernel.org> <20260914223219.901347-2-kees@kernel.org>
- <20261112004039.GA523044@killaraus.ideasonboard.com> <avWNCC3_Ff0knO6J@devuan>
- <CAHk-=wgYBrhvo2NAG_Ja-0ovPf=xO20Gcopv9Yrr1u=QVxECZw@mail.gmail.com> <202611120905.DF88D9849@keescook>
-In-Reply-To: <202611120905.DF88D9849@keescook>
-From: Linus Torvalds <torvalds@linuxfoundation.org>
-Date: Thu, 12 Nov 2026 09:23:18 -0800
-X-Gmail-Original-Message-ID: <CAHk-=whAF3brA9Wrcf3KDhNn_653zhUsoqe1MSneYJWtS5505Q@mail.gmail.com>
-X-Gm-Features: AclHuK_HNQpT4tCfX_FLYbv7PC35fGzeh8ZhM2vC9ghehMzLoLgyRTCdJiNaTCw
-Message-ID: <CAHk-=whAF3brA9Wrcf3KDhNn_653zhUsoqe1MSneYJWtS5505Q@mail.gmail.com>
-Subject: Re: [PATCH 2/2] devres: Provide kmalloc_obj*-style API for devm_kmalloc
-To: Kees Cook <kees@kernel.org>
-Cc: Alejandro Colomar <alx+linux-hardening@kernel.org>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, driver-core@lists.linux.dev, 
-	linux-hardening@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, justinstitt@google.com
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 1sd5xhh4k4myf3mhy596trsekt5j66o5
-X-Rspamd-Queue-Id: E5A5C1C0005
+Content-Type: text/plain
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 0C76D180009
+X-Stat-Signature: 4taoxng9wg7cb55y1q87debiquje5634
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794504558-72227
-X-HE-Meta: U2FsdGVkX1/7uZqKV8Zknc5RAN8c1DEjynDRxyXMPtst0J99C+76QqIXRcJJ9mq2i/BggYhT730Vu41P1XheNStMtEuM9P9dPPbBeeqoIfYISgtnHHRm9olO7GHFufFgcSNi8VdTXG2tRqEYMwB6CuQZnOJhqEMhQpfthjoLNJj2XsSimvmHJgM9KkmSLB90TfH0UL6grpDs0wa8NouUI6y013Hmkxaj+OI/aBPYKNuujjFw2T8OeQz4obilbYW+fTURUmW/62eTr/dQj4SppJ1cTlMbQjqQLJXqP7gy6N6QI7gpDnry8RHhPHqjC9fjK7kKdIe5lOq0Oa8Lij5XItXGLO/VDfBpX+B9N6a2J8GMArKLX6s7kC/3aw3fLV8jriKP14fjujrE4KHsjXoZTI+Va2ZTrLXlo32PU0vkMoFgsLsXAIozxdAwnfwxN6P6qD+IaVDGOZs6TgR6l+0qiu2Op0i6G2P/YvABq6tHvot4KMZOqavmlIk084AmG8uKyrN/GASqz8R4LZOqYsnGR1fBAPPm4sfVcjdTMyKrx3pSNtmoVKYRMzXTeEoF0Np1uWOQIsQmkY+2BlI7iFHV5M1B4fAklb+Yo80zqWEdZ4wRcmKwj1xRnfLi6k8xPTdzPbkkAgUnWVFKl10pgFc2rSbdH6Xse0tLz3rZMIquHi1MX3acUb2EPgPYv6S4nlPLtj+gWrIgwXYqEfTG+TumSyrmpzNgosuO5Wvs1CtKo7fbmMFWznz+C26IDiOCtSdTXgh7iPYX+hpMgH9h4LJJVsr/+V2W1i3WZUmh8fdnR/xAowWPuIeb8P/Cwt8nYgJvkOlLLuWN/J+ByEeDsFwLMl0zPIzbRmvHW2oOC61a/TiUPTRPzE+wIb/pgd58vE1Ft/J9cNUrpHuijx2Ydaxqwnx2EGffJYC2/DUDYQYDTw1RsiGVnof6DezH05B+FssXIde4n8xG/6EhoHDIvds
- l5uw1yJm
- FQu2udvn1AkwgfxD+VP3xQme2WkJVPX8/mjm6BF4TDXmh+hCZPZ9sxrKlBh9Jv1JhoUr0BLj2E5PDS9z2Xl5pcaX/Bs2oT3qqlfy+ZHrsjKD/y1mRUX1C7FusuFeOPRaTkyA94g/PHuQKd0z15njDa4aYFQunVlz7nRepQurYrNSJmoQY1ejU26kKVVq/RFSI/nKbxCIittAjyjTJMby3NCmEMqAM+/61N5efg6b6d7xsV5btWbNXYaEoxHHRD9JJeTKfnq96Hd6p5iGmsiPSU5mY7NP/hk3TSpnQN6bpx5ZPWs+osHZAxxPtnFd3IcHyyeqbS0bogcgcs2DQdpqwKBul7ifng9YrJdTIiuPNYdHI6EsJZdwc5+LNzMxqRy6/WQ2Si0CcanGy90yW88008fCTL1vR/6bi5v7iUFzVNbPE/2apiS2diD8Aq9zfk6CyEAoMSD5Bj+UwYZVLLq2j6gt2k+SiyJbOozjWe8rqhKrGEE/OG6j7qt6eyw53g+p2Bosft8Kn4c097dJsQeVzAVmOAj6nHDaFnpci
+X-HE-Tag: 1794504566-345649
+X-HE-Meta: U2FsdGVkX187IAhTXT+SdAng+bqyyTLThbnb2TQOUp3sgn/U7JdM66nIezZ025ovOXxrS7hP0zTWWQR8IyuvbZjjJprv/HsjIo0UtP6sKss7A19hd4dtXmrHFF4EY401hFJ+whH+ViGkWhrzcRSTzH5lSnkBu+l96IMAGIwoDDpmJFwy3Edpk3MlNq8rMw9oYI60zsV0whrGBEMiC4aR1A8DX2mrvjjBM27sB1jXWoOTCvLiZgJAli4/UA85hXawwGsEwGx4H3kqSlBgmK6zPHFsh00rGYWUCnguRz0hM5EkM0tfr7vHg9ENBrEXVFT9eCZZ0Klbxx0wwVAuKIrQYYH3TZNr7rVEY/AbjXds+0r51wACA0ZOZ+6ZsjCeQ+teAp3dGfdL3MLk6Sc9PO5IxF7iJqAhE26eMEQZT+tDLeLtdsDy88HjXZjuvGTEoj0RgTFJwp5qM0DYlYP1RJqHxrlxVU3dKWklFPj5UBo0Jy/dR3yo5JuGlH+GvvSQDayeQ1pAyqTAOLDZGSNI34WHffmiM027bSeClavS3PI53W0zjDgHbW4ajgUFtBCTj0Btd8q7uvFpUG3FoPozzxzKeTEp/23Ai1AkBCvssgcdAJ/a41h/lztRphJaLFIQZwKzO64PbLksBS2wbHr32eAGEOeAPXr//3aEJxRfQFwtI9kyc1hVXOkBsbX6PG3PZ4FcUYNwVKsns01DlLodB1BRtfCtAUwoeJy7kZQOBYYtNDH5hXQKstEUp6L1Q0mQFa1vGnWt2gU/FKugAj/7J0+rRX27c2rr4po/dwmTwIW3ZaQCOZjvTpNK87oZfuUVOzn9zW4fIIVA4LrykVUEJhaD2qpBqQRNGU1XRkkqgd/VJXvyaA8hRpFWJCM+Xsif6M5rmpXb0b7s4C3vv80qCbmrGbfX/q89L/79rcI+sWRh9eyBHSkMaQa3lzSuKKImsQOHse34gl/s2D5RRh1aTDT
+ q78rJD6g
+ 7wCNYuqiY04VKofOy7PD48w8jHEEqp4rgFWMp5mslx55RgZ9EIvRDanRJBvK4kJOzUfqe1vD1MhLt0N5WTGU3oLxKXhSO7aJIxL2tPVlFENd0GMoVkyV7D/IxNt6/RtslOPEGTTec+Ydu/FQC2xwZSX45+4qOr3qR3VwtKnNdGIknb/u7RirPyhlWiGW3FzD4EtVgGgLCfebIOeIb/CrvwzFTNZrcXwayAYCl2IypLear7aPaEy9RZRLssqgumbdo2dJlGM3BjY7UXL/LPhvhMEzPuJjZnVLXgEQsm6hpd//xEPD3d1+Qam2ELQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,23 +147,226 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 12 Nov 2026 at 09:09, Kees Cook <kees@kernel.org> wrote:
+sashiko-bot@kernel.org writes:
+
+> Thank you for your contribution! Sashiko AI review found 5 potential issue(s) to consider:
+> - [Critical] x86/hyperv: premature zeroing in hv_vtom_clear_present() before transition
+> - [High] Drivers: hv: uninitialized SynIC pages in hv_alloc_page() on non-CoCo VMs
+> - [High] dma-pool: dirty cache lines left on linear alias by set_memory_decrypted()
+> - [Medium] x86/mm: set_memory_decrypted() zeroes legacy VGA VRAM/MMIO in VGA_MAP_MEM()
+> - [Medium] powerpc/pseries/svm: set_memory_decrypted() zeroes private page before sharing
+> --
 >
-> One thing Justin was poking at was adding a "strict" mode to typedef
 
-Honestly, the sparse setup is superior. It does that 'strict' thing
-(except it calls it 'nocast') _and_ it has 'bitwise' that is a nocast
-that also disallows non-bit type checks (which is *very* useful for
-things like "this is a big-endian value: you can only do bitwise
-checks against other big-endian values).
+I used an LLM to review the CoCo implementations and suggest the correct
+sequence for clearing memory. Except on s390 and pKVM, memory must be
+cleared after it is converted to shared. The resulting patch is below,
+with comments explaining the architecture-specific differences.
 
-So the compiler addition may be worth it, but  even the "poking at" is
-weaker than what sparse already does.
+This needs review and acknowledgment from the relevant architecture
+maintainers.
 
-And the 'struct' model is honestly superior to both when it works -
-but can add extra overhead (but can also end up being nicer than both:
-instead of casting with special "I really mean it" casts, you can
-derefence the struct and get its value that way)
+modified    arch/arm64/mm/mem_encrypt.c
+@@ -17,6 +17,7 @@
+ #include <linux/compiler.h>
+ #include <linux/err.h>
+ #include <linux/mm.h>
++#include <linux/string.h>
+ 
+ #include <asm/mem_encrypt.h>
+ 
+@@ -42,8 +43,13 @@ EXPORT_SYMBOL_GPL(set_memory_encrypted);
+ 
+ int set_memory_decrypted(unsigned long addr, int numpages)
+ {
+-	if (likely(!crypt_ops) || WARN_ON(!PAGE_ALIGNED(addr)))
++	if (likely(!crypt_ops)) {
++		memset((void *)addr, 0, (size_t)numpages << PAGE_SHIFT);
+ 		return 0;
++	}
++
++	if (WARN_ON(!PAGE_ALIGNED(addr)))
++		return -EINVAL;
+ 
+ 	return crypt_ops->decrypt(addr, numpages);
+ }
 
-              Linus
+modified    arch/powerpc/platforms/pseries/svm.c
+@@ -54,14 +54,13 @@ int set_memory_encrypted(unsigned long addr, int numpages)
+ 
+ int set_memory_decrypted(unsigned long addr, int numpages)
+ {
+-	if (!cc_platform_has(CC_ATTR_MEM_ENCRYPT))
+-		return 0;
+-
+ 	if (!PAGE_ALIGNED(addr))
+ 		return -EINVAL;
+ 
++	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT))
++		uv_share_page(PHYS_PFN(__pa(addr)), numpages);
++	/* Sharing can replace the secure backing; clear the final mapping. */
+ 	memset((void *)addr, 0, (size_t)numpages << PAGE_SHIFT);
+-	uv_share_page(PHYS_PFN(__pa(addr)), numpages);
+ 
+ 	return 0;
+ }
+
+modified    arch/s390/mm/init.c
+@@ -130,6 +130,10 @@ int set_memory_decrypted(unsigned long vaddr, int numpages)
+ {
+ 	int i;
+ 
++	/*
++	 * uv_set_shared() exposes existing contents to the host; see the data
++	 * leakage warning in share() in asm/uv.h. Clear private data first.
++	 */
+ 	memset((void *)vaddr, 0, (size_t)numpages << PAGE_SHIFT);
+ 
+ 	/* make specified pages shared (swiotlb, dma_alloca) */
+
+modified    arch/x86/coco/tdx/tdx.c
+@@ -980,9 +980,6 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
+ 	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
+ 		return -EIO;
+ 
+-	if (!enc)
+-		memset((void *)vaddr, 0, (size_t)numpages << PAGE_SHIFT);
+-
+ 	if (enc)
+ 		atomic_long_sub(numpages, &nr_shared);
+ 	else
+
+modified    arch/x86/hyperv/ivm.c
+@@ -755,10 +755,6 @@ static int hv_mark_gpa_visibility(u16 count, const u64 pfn[],
+  */
+ static int hv_vtom_clear_present(unsigned long kbuffer, int pagecount, bool enc)
+ {
+-	if (!enc)
+-		memset((void *)kbuffer, 0,
+-		       (size_t)pagecount << PAGE_SHIFT);
+-
+ 	return set_memory_np(kbuffer, pagecount);
+ }
+ 
+
+modified    arch/x86/include/asm/set_memory.h
+@@ -52,6 +52,7 @@ bool set_memory_enc_stop_conversion(void);
+ bool set_memory_enc_stop_conversion(void);
+ int set_memory_encrypted(unsigned long addr, int numpages);
+ int set_memory_decrypted(unsigned long addr, int numpages);
++int set_memory_decrypted_nozero(unsigned long addr, int numpages);
+ 
+ int set_memory_np_noalias(unsigned long addr, int numpages);
+ int set_memory_nonglobal(unsigned long addr, int numpages);
+
+modified    arch/x86/include/asm/vga.h
+@@ -14,7 +14,7 @@
+  *	On the PC, we can just recalculate addresses and then
+  *	access the videoram directly without any black magic.
+  *	To support memory encryption however, we need to access
+- *	the videoram as decrypted memory.
++ *	the videoram as decrypted memory without clearing its contents.
+  */
+ 
+ #define VGA_MAP_MEM(x, s)					\
+@@ -22,7 +22,7 @@
+ 	unsigned long start = (unsigned long)phys_to_virt(x);	\
+ 								\
+ 	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT))			\
+-		set_memory_decrypted(start, (s) >> PAGE_SHIFT);	\
++		set_memory_decrypted_nozero(start, (s) >> PAGE_SHIFT);	\
+ 								\
+ 	start;							\
+ })
+
+modified    arch/x86/mm/mem_encrypt_amd.c
+@@ -309,9 +309,6 @@ static int amd_enc_status_change_finish(unsigned long vaddr, int npages, bool en
+ 	if (!cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
+ 		enc_dec_hypercall(vaddr, npages << PAGE_SHIFT, enc);
+ 
+-	if (!enc)
+-		memset((void *)vaddr, 0, (size_t)npages << PAGE_SHIFT);
+-
+ 	return 0;
+ }
+ 
+
+modified    arch/x86/mm/pat/set_memory.c
+@@ -2545,9 +2545,22 @@ EXPORT_SYMBOL_GPL(set_memory_encrypted);
+ 
+ int set_memory_decrypted(unsigned long addr, int numpages)
+ {
++	int ret = __set_memory_enc_dec(addr, numpages, false);
++
++	/* The finish callback must restore the shared mapping before clearing. */
++	if (!ret)
++		memset((void *)addr, 0, (size_t)numpages << PAGE_SHIFT);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(set_memory_decrypted);
++
++/* Device memory needs a decrypted mapping without writes to its contents. */
++int set_memory_decrypted_nozero(unsigned long addr, int numpages)
++{
+ 	return __set_memory_enc_dec(addr, numpages, false);
+ }
+-EXPORT_SYMBOL_GPL(set_memory_decrypted);
++EXPORT_SYMBOL_GPL(set_memory_decrypted_nozero);
+ 
+ int set_pages_uc(struct page *page, int numpages)
+ {
+
+modified    drivers/firmware/arm_rmm/rsi.c
+@@ -147,6 +147,7 @@ static int realm_set_memory_decrypted(unsigned long addr, int numpages)
+ {
+ 	int ret = __set_memory_enc_dec(addr, numpages, false);
+ 
++	/* The transition invalidates private contents; clear the shared mapping. */
+ 	if (!ret)
+ 		memset((void *)addr, 0, (size_t)numpages << PAGE_SHIFT);
+ 
+
+modified    drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c
+@@ -62,6 +62,7 @@ static int pkvm_set_memory_encrypted(unsigned long addr, int numpages)
+ 
+ static int pkvm_set_memory_decrypted(unsigned long addr, int numpages)
+ {
++	/* Sharing exposes the existing contents to the host; clear them first. */
+ 	memset((void *)addr, 0, (size_t)numpages << PAGE_SHIFT);
+ 
+ 	return __set_memory_range(ARM_SMCCC_VENDOR_HYP_KVM_MEM_SHARE_FUNC_ID,
+
+modified    include/linux/set_memory.h
+@@ -5,6 +5,10 @@
+ #ifndef _LINUX_SET_MEMORY_H_
+ #define _LINUX_SET_MEMORY_H_
+ 
++#include <linux/string.h>
++
++#include <asm/page.h>
++
+ /**
+  * DOC: Kernel page table permissions
+  *
+@@ -21,7 +25,8 @@
+  *
+  * When an architecture does not implement these APIs they succeed without
+  * doing anything, so a return value of 0 does not mean that the permissions
+- * were actually changed.
++ * were actually changed. set_memory_decrypted() also clears the range,
++ * including when no encryption change is needed. It is for normal RAM only.
+  *
+  * Callers that depend on the permissions being applied must ensure that the
+  * architecture supports the required operation for the target addresses. The
+@@ -186,6 +191,7 @@ static inline int set_memory_encrypted(unsigned long addr, int numpages)
+ 
+ static inline int set_memory_decrypted(unsigned long addr, int numpages)
+ {
++	memset((void *)addr, 0, (size_t)numpages << PAGE_SHIFT);
+ 	return 0;
+ }
+ #endif /* CONFIG_ARCH_HAS_MEM_ENCRYPT */
+
+
 
