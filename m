@@ -1,171 +1,142 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76E1C606A881
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 10:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4115660A6F78
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 10:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=b7rTwYyW
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mkyHKAu6
 Received: by kanga.kvack.org (Postfix)
-	id 874AB6B05CE; Thu, 12 Nov 2026 05:45:26 -0500 (EST)
+	id 6048C6B05CF; Thu, 12 Nov 2026 05:45:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84C0B6B05CF; Thu, 12 Nov 2026 05:45:26 -0500 (EST)
+	id 5B4666B05D1; Thu, 12 Nov 2026 05:45:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7623C6B05D1; Thu, 12 Nov 2026 05:45:26 -0500 (EST)
+	id 4F1A66B05D2; Thu, 12 Nov 2026 05:45:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F8DC6B05CE
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:45:26 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D3670A03C6
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:45:25 +0000 (UTC)
-X-FDA: 85426135410.05.7BF9CB3
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1257B40012
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:45:23 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=b7rTwYyW;
-	spf=pass (imf04.hostedemail.com: domain of cuiyunhui@bytedance.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794480324;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E8056B05CF
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:45:50 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CAD98A7E1B
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:45:49 +0000 (UTC)
+X-FDA: 85426136418.19.CE70B07
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E25021C000D
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:45:47 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=mkyHKAu6;
+	spf=pass (imf21.hostedemail.com: domain of elenchist.dev@gmail.com designates 209.85.161.45 as permitted sender) smtp.mailfrom=elenchist.dev@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794480348;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XnCYVNofTC0C6ktldCAu6GTGzm+Q8FA6+tvEuphsY/w=;
-	b=Yk9hn5K/rxdxG6b+ZWVDzhg2RNuESjtJyg8+4ZJvTcb9F+EDU5p2fTW8ku1GiXuJizaAfs
-	txpWEEAvR64w3He39Elwr2JIGNW1f3Wsr/hhPSBe7CUESuqy9o4OnolG4SB05BSGa8cRUr
-	BkgY5QpgYdxU24mXTZdV4MzSMxukQDc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794480324;
-	b=iOzyTsdPzCRWO2WQD5x9GRBI8pXIzU6gvzUli/XMH+WM6YXTKtYvWwLnwEq21FR+sOiVFT
-	lCGhj55iMzujAMkT0CD1C5j34M5nDAhkkWxIxrTJV6L30blFnwcE4iNLK/nMgJMLcMurWV
-	vOO9ASdzsCYVj9+KVmph2bGKhaMGnuQ=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=b7rTwYyW;
-	spf=pass (imf04.hostedemail.com: domain of cuiyunhui@bytedance.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-36dbde64409so8144303eec.0
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:45:23 -0800 (PST)
+	bh=ddYVXCpBhwQ+2ajmiZG9m0k4vsq/lXRN7BsHqaZoQkw=;
+	b=4sAp1tV2cGp0dhzJD81PAoJwXyk2ro7JSmDCcMjOcHXeHwk1FxbGFINBZJYJ+9DL9jCpDe
+	EKaxIXfFfCqgc0o+2vfaEWr3n0kz475fOSuJ456waMSUS5ASoWbjrPCs3u6tydqCYoQWVZ
+	2t11LyOCKuR2DAoFq09TFJVuWXoQxOE=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794480348;
+	b=c1GBCVolhN1WW+3kdO0kyFIblUqFoCJWF1/LJ92r4kBPZNodzZjk2EZ65dPIlKCtPUayC+
+	lM173oFGPmBboe+BvIL9cGeNeNGlrBB8IuDiiVjrXOy6qJJX8GQy9I80YZGFRq1iPnqf8A
+	TWUHHheyZQFLr3crZQmbE18lUU0oqFU=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=mkyHKAu6;
+	spf=pass (imf21.hostedemail.com: domain of elenchist.dev@gmail.com designates 209.85.161.45 as permitted sender) smtp.mailfrom=elenchist.dev@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-6fe4372c5f3so2393248eaf.3
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:45:47 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794480347; cv=none;
+        d=google.com; s=arc-20260327;
+        b=p/Nr1Lo4EI9vigyoWdzwljxNDemYoEPnLGqJdf4Zd3Kr3pxJ4J+JlLUF9eTwfEr/m9
+         zteIkQXKE4qgYCo/nlr1XNNbaLvB9fzNLRfbgmvLAEUPc9TLYQe0b/7y9P4rs3+oTwqY
+         YuKG5iT60aVfmHVFzfc9rm4Bf684h9Ah4y30LXLcebFjjr8Oe9CmygTzgym6zaLj/VqE
+         45S4qPDK7oj1qgue1UCzgCQpi28WvU2E8HavB6Le6jvddpn67L5tvaP8tSkHrVJUJm0a
+         GqhzJjhDTXz3f5/RxoRBrbSJd5YoONe8SZGmtaFDh02Q6OFoY7O4vZ731DMfbPz6nhTm
+         xKUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=ddYVXCpBhwQ+2ajmiZG9m0k4vsq/lXRN7BsHqaZoQkw=;
+        fh=aauW40gC5OKkNVBEKtv8wNsEvcO5h09fsbsKAWzyH20=;
+        b=XF/BNIxqJ41NJcGeXyWRdiZtAAz24/3CJp8bL4tL7sS1su3hu0TufIFnVw3rfyu43h
+         nSVDB8kv+x2JcY7wLA4Sc0Dtk70xiY8iFeD+VK4XBBSiHBE9LyaIBP+1c2dnxvz3w0JH
+         cL1CGFUI+yO1W2MkV6VnB+QQ4KjKvlIDks9pXYdYAgqGqIgTo0TLcJOGNkLTfqirhCav
+         RtW3aArX0nk6yFIBirf0NgoXJdG0Wdl5eVXCDibjz+FeL/5bw6vvPppVW2rXZhel9rry
+         Myon3+LNPscSS0YyEMMa1zFhW4FFmExnFtKFIike/0HFsKS3cQEAIGuezkcNuL1PX4b3
+         rs+A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1794480323; x=1795085123; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=XnCYVNofTC0C6ktldCAu6GTGzm+Q8FA6+tvEuphsY/w=;
-        b=b7rTwYyWv2KkFMpmSIFb+LnXW/21ABg+QscAhGT5NUMmA7qF7qQUVrm5x24fCn5Ptb
-         psfvP3je3B7HPT3Kz6sSB88qsEuiR/12pJZ2MyOxL1T9LMbgmYkDVnf7njrdDJZFt4HK
-         HuCafa74sxBdhhCiVRqwBQeEgFIHYdO+7ozgY5noXEEW7JB2Utib7yKp7bvAQDvLxPC3
-         YNpRZyt96pEFg6YEfbFMmdgocxM5ybTnBl++rpTvyyJMs02wYrK2X0lU/Q2Bu8t9rtbo
-         o+UesazJ2BdmWGoReL7ktyGT0g/QWQhp0vuYvUNb8l+T80NA+u/gbmgJ8PP+7kXTwp6R
-         l4lA==
+        d=gmail.com; s=20260707; t=1794480347; x=1795085147; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ddYVXCpBhwQ+2ajmiZG9m0k4vsq/lXRN7BsHqaZoQkw=;
+        b=mkyHKAu6d2Ra3bRYt8fOrR4bl52BIZLqgiN5ky1LkRn7d2GSCeVrr6Uqrgsod/xzRT
+         HMwNGSwM7jwof+eoSAsUtuyQjZCbv88b3ZE2KeUCEl8WbMEGWIlkLHCEyWhU+vNJG2Du
+         hnZ6wcHbCiyXbV1m9lGfMlk5Rp0NN7VqxlLL8GjQzIxz4amIe+R2ozBXcQvzmRKI/JVD
+         pq+X6XGEpvvjSF9/h2ynPpFbLRAfb2Zi3LdybWtJQu6a/CIyhVawoZ5bt/Xtcdn5a5PE
+         i6QOoCg4h3H9r1uopT4LbDyw2MQ0WouRqzKRcxb6hsmGuLf4eIzW+CSYPoehvIK6oCTx
+         EY7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794480323; x=1795085123;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=XnCYVNofTC0C6ktldCAu6GTGzm+Q8FA6+tvEuphsY/w=;
-        b=W6JcXYP/s1kSFNh4kgNSdxk7NLVeh9t0Fqo84/zTYUEmq2qRbvTD51lFtlaAFOGlFy
-         FhGmrT4snuNZgJNFhfY5zaA6jXi6Qzrn/Ib2AHOEL7BAHQuXTPmql0uvYVwWDAt+8rQU
-         Tb+/xMuubkso2mtW47LDGoU59cKzwIrbaQd4dCxQlko3IMAM/WX5UMs411rbPwFC9SeH
-         24VlPZ50DKg8TWojzwHyMN6HXmdOwmc9qI2pH6pBQHjqBPeoDPBLpJBc1u7RFtelEEMM
-         Y3Ze8tTu9CrwO/a+4Fk19cbPRzkzWDXo3ZpnkDl/vGYmhZh523S7N2FO7BvEVXN+VSMx
-         OVlw==
-X-Forwarded-Encrypted: i=1; AL+hErGx9WWw8J1UmiXhtYlZmoKC811K75qAWiHcADX/0oOkLTKr82s51msBcztTXsr3Nqfgjl+ozR1nHQ==@kvack.org
-X-Gm-Message-State: APuU4Z9GwYhJGjkFfWDNP07dSq+WVCBBSuicHes6KcUOSn/bmYE4z+hv
-	iIkOIlEKcm7s/NkvW+TVN2tseOUR6z9Ioi88fyM+1GLM3PnmD+tHE2Z9cMkgdUA3OLU=
-X-Gm-Gg: AYBFou0WjGGONmI/v+fHner0PNI4x+aHCeiht37nd1exl4ddXyoVcsU4PPcvdK9IpSu
-	ywKBjV7KPD7A4E1zuGYqCNe40BXIRU2nZVUVkfS2ZMWzkc6w9SzYDoIXnxDVHjqTG77rua2yDnI
-	YDZxlJBp7sEj8h/C++i6RLQco6s6NuTJj9tKQVds1rhTlUGpYjKQA0tfqc001DqyllegCQtGLbO
-	ZvGwRxpjhlDOOtBkp4VONbMv/u9Jn+wnEq1iEo8m0dlt2KE8VrLbn5movZ2PpcY6ghOwE5/oO2z
-	Jkl7B8rJl98w20O5uhn1Xi44qq8s9VOL7viDoW8MhCz+hPxUK/74fQoeMXONecqUzRzqdt9wxo7
-	um0lv4qQJmgIqZRBvqB49O4TJg4ofpu6gZ/+2R3aVKDaOQNHmZU3caEI1imii4iuRh2opxBU6uO
-	T3RNW/oIIEtT/fCKHmqD3EDI2RMyRgUT5y24mr2WNSFHjdlG67shNgMTiGu5lO+Wg+NZmEFdRPs
-	dcWmLQWkY5e55dkDt6/aZUHP9LVovVAn3TGBHmsebkMa9NLOc9HorNPOjJG0FP6RjGqTi9hZADt
-	TuJ5yfESmGJF6DHj1rbOu0i/w/q6FG4hjjpJGRWgAFcN+nfEjEh6SuZHmr7NFqUb/Vk=
-X-Received: by 2002:a05:693c:69c8:b0:369:fe81:a575 with SMTP id 5a478bee46e88-37686756684mr5116143eec.35.1794480322588;
-        Thu, 12 Nov 2026 02:45:22 -0800 (PST)
-Received: from FR9WL0RHKY.bytedance.net ([139.177.225.242])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3772121e654sm13228694eec.2.2026.11.12.02.45.04
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 12 Nov 2026 02:45:22 -0800 (PST)
-From: Yunhui Cui <cuiyunhui@bytedance.com>
-To: pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	dennis@kernel.org,
-	tj@kernel.org,
-	cl@gentwo.org,
-	oleg@redhat.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	martin.lau@linux.dev,
-	song@kernel.org,
-	yonghong.song@linux.dev,
-	jolsa@kernel.org,
-	emil@etsalapatis.com,
-	ihor.solodrai@linux.dev,
-	bjorn@kernel.org,
-	pulehui@huawei.com,
-	puranjay@kernel.org,
-	broonie@kernel.org,
-	cuiyunhui@bytedance.com,
-	dave@stgolabs.net,
-	david.laight.linux@gmail.com,
-	jszhang@kernel.org,
-	tglx@kernel.org,
-	conor.dooley@microchip.com,
-	thuth@redhat.com,
-	ajones@ventanamicro.com,
-	ben.dooks@codethink.co.uk,
-	rkrcmar@ventanamicro.com,
-	samuel.holland@sifive.com,
-	zong.li@sifive.com,
-	debug@rivosinc.com,
-	seanwascoding@gmail.com,
-	andybnac@gmail.com,
-	menglong8.dong@gmail.com,
-	cyrilbur@tenstorrent.com,
-	wangruikang@iscas.ac.cn,
-	atishp@rivosinc.com,
-	apatel@ventanamicro.com,
-	arnd@arndb.de,
-	nathan@kernel.org,
-	nick.desaulniers+lkml@gmail.com,
-	morbo@google.com,
-	justinstitt@google.com,
-	qingfang.deng@siflower.com.cn,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	bpf@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH v10 9/9] riscv: select HAVE_CMPXCHG_LOCAL
-Date: Thu, 12 Nov 2026 18:41:49 +0800
-Message-Id: <20261112104149.38589-10-cuiyunhui@bytedance.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
-In-Reply-To: <20261112104149.38589-1-cuiyunhui@bytedance.com>
-References: <20261112104149.38589-1-cuiyunhui@bytedance.com>
+        d=1e100.net; s=20260707; t=1794480347; x=1795085147;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ddYVXCpBhwQ+2ajmiZG9m0k4vsq/lXRN7BsHqaZoQkw=;
+        b=mCFSKT9d6tdYJ/2ripDYLVMnZufA7oTlW5XL5TjWUVaMkdbUDuq5pnM85sViym4SYm
+         kuU1xGPg4Hr1j5TDQwpJu2xTS/sUb1ViAj2RISRRJbYb2Pnqh/+DvQ+6KXqt3g/7/Nir
+         3n3KtQR8jwpw7WKysKFcLcUXzd4AXrY3uv5a7PA0Q6yjHsLoL+lzNVrwbhqe6rJa8ICt
+         fXcb7AdVvAx5vFQfRyodX6imIILbZlCfiA4j4LDPJyHc0D/N+FfE2LJP9lzeeZ3iSvrw
+         8QLWS2dVOqhOBTpx2T/n6N1Im2YEsG9+1GH0O5X7bsdcUSeXVxP9dYz+zWJusBjW70eJ
+         Cl/g==
+X-Forwarded-Encrypted: i=1; AL+hErFzD90UN9zp3So/0aHgGWgk3GSv/Ds6aCHZFEHMm3MAms4ZJOGNxk1LQDc7mBLclLA1+k+6CyOreA==@kvack.org
+X-Gm-Message-State: APuU4Z8oWA/p/jO+OKfmGjwHXTW1Fj7RZa7U+te9XuaZndrCpf2EFEem
+	WzHjT1C6KKwSMMe+Yj/JVCyGZ1Hpq/OJGH6+GcmbRrBzLo2DNUTl9sX1dWmz6cY2afgKAfoRlJN
+	5+7yvZg8e2qHgten58f5qqFgcpttA29U=
+X-Gm-Gg: AYBFou3VeuhYsCIy1wFYNrTnibc3a6qaqD7+ojfSCeENwITHCnThiXU6afLFwuXdWPx
+	88I6D6yDf+LWw0rSnEF/tpcVkVGaHDwjPWWGS8DOKCPVLNQaemyD55EgenPBfw6i/pKUiq4NDan
+	ku9aC5sl+DHp170vWjFShiasYOXl1KzUhbJO9APSvTE8okM+os9bOLFYxaCI1jNTOu3IujANV56
+	D8W2cIT9vS3Mz8ZX2N5U0MDRnC8IMCnr0N/5r3CeDFZYFMr0NB7yOjW3a98Vl7So4oXir+pmrXv
+	Hn6GxoUC7PcaOKvBvYEjM8kdxuJyTYfwkexCHDjYNx/Jw88JwQGcEGx0t4UeUU/p4VA2/vReM32
+	pkh5Xuxy+Ydg5CNzLxwlYHU2V6hbs7rhkcj5ZcQw=
+X-Received: by 2002:a05:6820:1621:b0:70d:77b7:6879 with SMTP id
+ 006d021491bc7-7191788d816mr3318135eaf.36.1794480346869; Thu, 12 Nov 2026
+ 02:45:46 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: tem1hd6gikw8owyfjt7tp6kkib6fybei
-X-Rspamd-Queue-Id: 1257B40012
+References: <avA1wXhTMs9eY2NF@chrisdown.name> <6B8E9261-3FF8-441B-8F47-7D35834A8D35@gmail.com>
+In-Reply-To: <6B8E9261-3FF8-441B-8F47-7D35834A8D35@gmail.com>
+From: elenchist <elenchist.dev@gmail.com>
+Date: Thu, 12 Nov 2026 19:45:34 +0900
+X-Gm-Features: AclHuK8UhlNcIj8rZxl-jPAQ-TNb4Ro929pQ1QbaMvl25O9AF4j0sdfra1fF6R8
+Message-ID: <CANYAW49zq97w7ptUO6xkXZ3e+CNMzWH7qxQ1bQu4an1L6_kXuw@mail.gmail.com>
+Subject: Re: [PATCH v2] mm: memcontrol: Don't lose track of exiting OOM victims
+To: Chris Down <chris@chrisdown.name>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Tejun Heo <tj@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Zhan Xusheng <zhanxusheng1024@gmail.com>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	regressions@lists.linux.dev, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: gspqcwktg9qtg896zngqkouarnxu55th
+X-Rspamd-Queue-Id: E25021C000D
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794480323-267483
-X-HE-Meta: U2FsdGVkX1/qG/qiJcKgAV8gBHElVwiF4kp+5izSxdXwIF1zeJAi8SgHz4hdOMJhAbv/X1AFvo8rONWKlPj42wAwR+dHrOginoIohYK/7XQW1nilb0jY4KcuMOB97ICaAEWTXaRQRnre92FG6oDvmbTC+DI+gB6aj5oMddd1waE9IlyxBqSSn6UBySKTGg5qZ5DfpK0iWQvsF1tn3s09o7tzWX5lPl1u7x1FP6yoXwmJPa8SfSg4XTQG5AEh6aVxSmQhF4BUhmXIp++ReU2ayTnBrXQcoqf4puzya9F4trrZsxGQ/fhZoD8RJZLnXHAXcLkOoUPiU4nRImlwly6Y6SakCDQuoiXvqAFisgd7p99VVublG2HZ855OHOILH8s84AkMbhqJYYWTwPVe0abJZZ084f9ujSDOlC8Ii/v7OR5FBDhcDGW4Dmkw4Wj/iI6k8HyP9hGm89zM+Jx/jt4lV/MNERdcnEIk01mvv5EtPUXps70LdxW2LD/EK8mFuwAMi2MgjTJJsH48kkFkY5mBB+2B7269dE+NNWTp7zgj8NyMWtIZ9IDZlaWlHGrhepzH9zXkdbD+UCiugovI9TdVSRRLy5uPYIxw3PJfblK0KLvoNNuLu1TJzkZx8r3VRGWjix9spx4CRUG9O1Gqio5Av/D1sAXPDvzgouMTki6/qFGHw2R19K3q2tjeIco+fS2Ch+kAE+qbzx/h9yyX/P8YtdHtC0D8e8KcNLc9Eax89BBnwP8aTdnBpd+VgQKkFbIe92UHlv7KedQ7bBjwdmx+CwNDpMnfrPlVaxIoUgZxD9GGkyMOSKESrKCk5mJG/FbtHWl7By1Jk0I/q1tPzOA12Lj6lo5/w7DxWwVDNtzF0Q6dFvNjsVA1FnyTEYRL76QZodOcwA4IzYXxeICfeX2Xn4bzeliOs+hNWMIcsnWmAU1oKbRZ6Q8SsW0xIdQ2rvXYwhC9Wxhtxudhaal7ZOg
- IpDSKJ2c
- SLpXpl6+kyEctxsDzX9MEHaf+WXVTiGZcrfxFlnjVU7Y+gJ6+JpYTlvH76AsAK20cRn1VQu9wex2v+aM1JHy+2Qim6cp38cCUgdfHzSvhan98okEDCExEMsEoJxA9LSSJ3TJ7G3G+cFdvyIHhhqUD/EWHgI2wolseHw6kEWdn/+w3DRooPfciuCfT0HuDQwq5BojgJfmdDHOOuV4uTo8/cJ6xUJ2fYMLCJKzwkSYf2j2VrxRyqOcpKXVssWpTs/Pvhr6+8FYWAQtXQECR6twdQkeSuY9EYGkzWgvC3HmLim8g6/QrQDVqlmY3ZGD3sSoFZI/LFFaNeCNezLX2/UlOjYwjcPmxyIVpcTV/oJ2ZrSImVs5QUE5R8NkE9sViSfQFx9kfxv2EnoADjP7ZabWLc/6CWubRaCWgUFW4ayxd2L+doLC/LrWHHc0o+ayJmCDSj5/wFKp/2tn7scf32wFrR2pcSV0HoHOPsG4IYHNe7kTyJL9ILAi9MBBw6Ti6eOvY6QHWPkQbuCbKtdjJu4mjcVAE3Vgi3cHgfciT
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794480347-479011
+X-HE-Meta: U2FsdGVkX1/8CbTo4A1eKYFudHGWh7wR9Y1PMBHqPmVLxkjmTe4FH8TuCuH7r1mPgbjkXpqkoW9Wk347sL3VrHDSjxLVHYdZQWOIqoFEVhns1Q5UEZGZ3sGF6qsKgBvmaAnadvDO6EXEZGmIHyfUSTRrKPelWqByhaUZM5ZI6XCWueBHs0omcY41yogDt3Zqpj7OBO9V7Gc5FplUeiH19kuh4saq+1uXSVy7bEvwGOrnaZHlZxxS+U3euSk0XAxfQnwczPfYsumutcPdq24nGdx26EIpoOHaa12hOssJbDo4kaUeedUpAgpAcyxYsnOHEHTvZ99tCfv2tKDAWL3J/+KQ/yXhEqPkpe1p0rd261sYi1bSA+Z8b+Tyn5aEiQZxIfsrLbbywA0kQNssCa1Z7c2yS22LQvzAmE+9bU8VKxKa7hyurtMgWVWCKF5rG6atmIGtDlS2MbOyCERL/JIQpu5t7LKnOQFwxLtyirZPeS6emB53wY6BlVRZ4ITwTIALqzDioXQ7DN8rbKjEIg0TJvKZc2hSt8Q/GbX/myJfEuDmbdPi/r05gLGqAyl+m9dV8LbhIqqMSiYXSU7gQdRFU/0NyrKIOb2f8MgziX4C3pcTq50fmzeD9IihB4Cv3AEiVeYjY3ZdyEioE10fi1PyoIokFW8sGhEirPXHHbY7mcjPcnm6Mi0LxXLj2Dodo8bFyxqHCEeRdxWBgW0h56OwE31YXE2PnYqyKYTCEst3yRY2/Za2Q6x+YBl0rIx1IEQ9cqaaeAAM0xc3BRJUOq6/0joLn5LW5OcIUgKP/Ge0nPn7iFGx8e7xJHbbeTFtBYmqNXDWyuONxIbyDjLEvuaDomyajFJ8fzUOKgj1+KQ0cssjRBMZ1fN54zHLBysihwdHyQpgae+VyC4SRjdW/DXfI78/gy0foS+IyAmYs6b4imrGth5XFdawy9SkvXGQ3xeK7KtHROI0TmaPFkdp8hS
+ BgXAivhF
+ q2r90oupeO3DH2Bk2KXSnBJ3pZm2ju1P+ODKXBIoVQMqSU1t6DvcdxOJU8Jk/25jaBfIYy/8Rcp76tk1dAMpDUQKtIglM6/XIrZ0Wy2hB13pyw2aK3RmbBS03ci/iGprIBbNOTQ89jXLdwILt7Gp624rTzq5Br8U/l5r6o73ilqyAWFIhZKP6BzGaSRYQoGfk0ChnJZHUo1XsmYgV8hvBpvVJqbQ7labjJgbjc45dfGeHleJHPzxdcyxDJgvxhn5W4EE4IUcqssTSEblWA5Z5jtMRF3WvngtnuB0pLJKPCYwReL97YXWibvcLTvDPs/ZzPk7L44tkB3iKZff2ePW89frrnbmV2I/l2+AC/3rfOSH/RRaMyWIAdWFYCD88FRF1ZV/xWxVw8Cklye+Ro0GfQSa8S3CBfDoKRTnIJXrmwesImb6nOmL/9KVVaeufZ3EvUaspH7chmHCwQGqmyslIwEzks0lm/rCiNppwYzYA5KYFryIwpePOzbcDSw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,31 +145,8 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Now that RISC-V provides this_cpu_cmpxchg(), select
-HAVE_CMPXCHG_LOCAL so mm/vmstat.c and lib/percpu_counter.c can use
-this_cpu_try_cmpxchg() instead of serializing per-CPU counter updates
-with local_irq_save() and local_irq_restore().
-
-Suggested-by: Davidlohr Bueso <dave@stgolabs.net>
-Link: https://lore.kernel.org/r/20260826010748.zphu3wh2hlm4t4o2@offworld
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
----
- arch/riscv/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index bde1f1885038f..458ef01e926a4 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -155,6 +155,7 @@ config RISCV
- 	select HAVE_ARCH_VMAP_STACK if MMU && 64BIT
- 	select HAVE_ASM_MODVERSIONS
- 	select HAVE_BUILDTIME_MCOUNT_SORT
-+	select HAVE_CMPXCHG_LOCAL
- 	select HAVE_CONTEXT_TRACKING_USER
- 	select HAVE_DEBUG_KMEMLEAK
- 	select HAVE_DMA_CONTIGUOUS if MMU
--- 
-2.39.5
-
+My mail client turned the backslashes in the reproducer into yen
+signs, sorry.  Every yen sign there should be a backslash: the printf
+format in overkill.c ends in backslash-n, and in run.sh each of the
+two "$" right after "echo" has a backslash in front of it.
 
