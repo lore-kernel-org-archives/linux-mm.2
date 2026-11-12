@@ -1,173 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75E0606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 13:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66DD606A888
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 13:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OWHHd/ls
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MmvF84R0
 Received: by kanga.kvack.org (Postfix)
-	id AF0026B05BD; Thu, 12 Nov 2026 08:16:56 -0500 (EST)
+	id D8FC76B05B2; Thu, 12 Nov 2026 08:21:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA0406B05BE; Thu, 12 Nov 2026 08:16:56 -0500 (EST)
+	id D67956B05B5; Thu, 12 Nov 2026 08:21:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 941396B05BF; Thu, 12 Nov 2026 08:16:56 -0500 (EST)
+	id CA4B36B05B8; Thu, 12 Nov 2026 08:21:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 604DB6B05BD
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:16:56 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E34AEA80F0
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:16:55 +0000 (UTC)
-X-FDA: 85426517190.08.782B57F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AA8216B05B2
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:21:07 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 509931C3C3C
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:21:07 +0000 (UTC)
+X-FDA: 85426527774.26.A90775D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 1BC38100006
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:16:53 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OWHHd/ls";
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9A2BE2000A
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:21:05 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MmvF84R0;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794489414;
-	b=Ex5VCOEu/9Yry5EFeBvOaZa2Umh5vHGci6JxHvL9ltK7sjtWnMcZ0j3j+g+G61hrEoh0FE
-	ybm4sNKDLN2q5UlhcBq/andHA7cw/ZfuHUgk3n8N4cEiOmrhoaS6neWL30I+HIRIVFN5nl
-	UUpPywFyyPVWHpp4OS1vcCiNCjDzI6c=
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794489414;
+	s=arc-20220608; t=1794489665;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i2Oes8RZDkSEXFI8H+2vd0Da2cFliXVxwNXn1JhwifA=;
-	b=fSG+iWyuAkUt79SYl9qzwhmjygv1YzpqolyJQE4/uHpd8Zf5mL+CDJZAgpO69HfYrfj9KL
-	5q5l0nFFQUC6P/0Ol6810AZ6cvznsgLFEGwchYXa1SBX7GcBq/6Am9vZo1Aj/Vly+Cq5Zz
-	JOsZiCoz+SRFywG1BxPWjTNEgRCzEao=
+	bh=2TVb8qDZ4KT/CTu1G3B1wlWvG0RXp8XP3qjnuNYzjOg=;
+	b=LqvSU/hLWEivtelDljpi1HpkANxSsT2wJnwfJu0JG6xuuv7nym+yozOBX2/DLWZj+KAZ4z
+	GP4FbXi8e9JDJOwZNPl8HC5I3laiNUtYyCcMcfzg+wkaQvhsHGUlflvKfHdUSDEYmrxGID
+	ESw7GMknoqOKQX2yGfmsecNXsqYFtQQ=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OWHHd/ls";
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MmvF84R0;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794489665;
+	b=b3CyIY339V+WKL+1EMtT5ONXKGAr0a5iPtJ8/+b9GD0PDMtBspqxMIDATo0Co+SGbXJRdL
+	FXfql759cDdEqmBQdPFc2nrXlnwhKOo5sllTzfnThjfTz1soB3A+I4rBfIxMNceU7W0WHN
+	QfadXMaEgKXUNozRd9o4aGW4ajfc+J0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 29259475DC;
-	Thu, 12 Nov 2026 13:16:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA5611F00A05;
-	Thu, 12 Nov 2026 13:16:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A8F5742DD6;
+	Thu, 12 Nov 2026 13:21:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D581F00A05;
+	Thu, 12 Nov 2026 13:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794489413;
-	bh=i2Oes8RZDkSEXFI8H+2vd0Da2cFliXVxwNXn1JhwifA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OWHHd/lsZYkX+Jq2T55F046KvGJkwVb6ZNJHRXrnIltU3y9ehCady9llvQYz7eT6C
-	 b6gwiEygyCndpaJIRyg+GavO8iI+YCfZ2Uwp35NT0l9voskGAjqZjcNzrW7ElwS9vq
-	 xA2xR8/J9T5ZBK4HMLhcLMY5URFYgvGfGjWh0b1z5FjYipbPVvuLhazpnlXmjoISp0
-	 28UuXxrC6BUTP/lTG8Y9aJkxGNLyQrFX3s04RL5B3nRopwvnht2pma59Ed4xyBMoWC
-	 GkpVbhIoxBJV+NY5ZH8W+H4wvUY/uz5MDTIPd+UxtdLDO+3fcrB0mm6Vh6AdesMpbH
-	 e/KSk7ObVX1PA==
-Message-ID: <86206f64-fefa-4a13-95bc-eddf756eecc8@kernel.org>
-Date: Thu, 12 Nov 2026 14:16:33 +0100
+	s=k20260515; t=1794489664;
+	bh=2TVb8qDZ4KT/CTu1G3B1wlWvG0RXp8XP3qjnuNYzjOg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MmvF84R0gtLndw24gzSFT3ub5yJmtlvjtQewwlBkOj3aPXQTksQ4drEzrc46OvL/z
+	 wo9GRa3UsS1F1xzmaEOQVjwk+tWBf2XT/7mCHBb8HSswe2CPaa8KtfXoHjL9Y0GbyO
+	 1efF5XqnKzznSG9DEGEO7OMYE2iaaSETCJ8OFamxUwQlBUJWVpDt1tjvUs4hkM1QL2
+	 IWFg+ih4NX2foIqjeWjsniqTNNlHAD8H5+koYNsWz+ArokDl49tjta/Dn88XnGLkGJ
+	 3S6OKico8mJafJNwprIMppBt+ZwOOYREUSFE9sMr0CwvZQk9NrRSiDsIISSMrUCwF/
+	 4a2UthzwC3fuQ==
+Date: Thu, 12 Nov 2026 14:20:58 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Jan Kara <jack@suse.cz>
+Cc: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>, 
+	Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, 
+	linux-mm@kvack.org, ntfs@lists.linux.dev, ocfs2-devel@lists.linux.dev, 
+	linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, linux-efi@vger.kernel.org, 
+	linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org, 
+	Karl Mehltretter <kmehltretter@gmail.com>, Dave Kleikamp <shaggy@kernel.org>
+Subject: Re: [PATCH v2 04/34] ext2: don't set SB_RDONLY after filesystem
+ errors
+Message-ID: <20261112-besorgen-nobel-handschuhe-fb3373259b5f@brauner>
+References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
+ <20261029-work-fs-sb_rdonly-v2-4-2f44f64f0b66@kernel.org>
+ <5qefa4mracb3x2z4vsdejmkyyfrhdcrixmmnooz4rzwcdfoejm@mqkvixj6afwp>
+ <20261110-kargheit-impfen-pausieren-881763d28b19@brauner>
+ <za33axmgzmuzsj3zmfeh43fkphtcsqtkhhrauwuvs7aiftelgp@dzl6z322st5f>
+ <20261112-wohncontainer-saurier-wonnen-91f30c3b3ae2@brauner>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/9] mm: limit pagecache folio refcount when mapping
- pages
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
- Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
- Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>,
- Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
- Robin Murphy <robin.murphy@arm.com>,
- Steve Sistare <steven.sistare@oracle.com>, John Hubbard
- <jhubbard@nvidia.com>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
- Josef Bacik <josef@toxicpanda.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org,
- iommu@lists.linux.dev, netdev@vger.kernel.org, Chris Mason
- <mason@kernel.org>, stable@vger.kernel.org
-References: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
- <20261110-refcount_overflow_stable-v3-1-318625d63a98@kernel.org>
- <avW0HGjF6wuqn12T@pedro-suse.tail5790ac.ts.net>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <avW0HGjF6wuqn12T@pedro-suse.tail5790ac.ts.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1BC38100006
-X-Rspamd-Server: rspam12
-X-Stat-Signature: sp1o5c56sgcwzc1nue8zpe5pwxois3up
-X-Rspam-User:
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261112-wohncontainer-saurier-wonnen-91f30c3b3ae2@brauner>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 9A2BE2000A
+X-Stat-Signature: darwr9hbusdab3bn7a395exo9tjdbafw
+X-Rspam-User: 
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794489413-343484
-X-HE-Meta: U2FsdGVkX19mYucdhIku8/UkcoXUP445drFHKiI1hNA07heM5WfyIPT0zTTkkL8UuET+6XptXYuBbiLR+TMyjgtcmk+w85uauTwRwbPzzW2DAMPySbw+wNOmG2NStgwhYgKuB8W/MCAWiPNgCSJN60F94PuMHU47gi3t9lwAVQznCXZ3fKx3pxjVcxveTnsDdQjojzSDWHT2vzZkmk4mfFZDjeTetaFYLARz7DR7cJT1T3vszQKK15yw681REi49mDYprFZqOV0t/KGAjI5+vmQxp3UCbPKBXuRRTeWj0IXUtQ9GiQHu4YSEVAusZEFDZYVrtK+vhG3SiQYNvczB1WNpLLjlEcrjiP6RJh9ELgrnC7Pl7i6P0BNlvKZr7gW54A3ETTjreMNfS1fxZR90fdlnVdxZpQk3briL3xDiJRpIQza9s0FDBJAoJplnVX7Sp4C4xbKeux3pvWnHw2WAz568fwATxOLBdfe5g/cgOJ8niDGOMqLddxV+/1uJeRAB+LPpapfkCKTucOO1xgfLD6FCLvOhUt1ABcFUtLeHtIwS68RB57oZstEHDGExGAbVZQONqQCkLsrUuD8cuosH9O7WTlDkrqFHdiAx5MNto4Jk7cZrxw020gl/4WLvt91w6XhUe945uCTxNrE0A1PnRg4W41aQUOq+FSq9FpaOHrubLXj0/yXByyTpm6qsGAriBifVxocgm7gmzZcsdSd9ZK8z9IlhOzfh6rAKGX3TyQiT8Yg9oEgiqdJ8KSqaqrv30JRnZzNdH4upjqBvZ/FdauFNAC9yZB91noTvW5FL3EvCjBtNLHsbQohgkIE8iQq0kQqaBMR8SVQgKbQiX8bqjmPoby/m3scXhGlpmmB8LGZxooj1D4MDzS4NL7QPBrYWHmw4ViTAN710K2chmzJ2zaloMJQoEteZH1wGjly0D1H/LHJyyNv74Ux+5mCWK2fg22LWoUFIUnOVJ5JNYvg
- tETGhIVx
- +pCPOZP4kreQwj41VUAxT6BPuw7wFMwhYAsZp8zjBL4AoV9cmcIewOJTipwKRz5DLXLL6/moqEKjm9PoM4ZikpgFwX7ALGrAclITR+X5AJ+jlBrWESecMlD2WWwJxl5/eREk2rfQ5Cv4CMr51dbhda1oJuUl7gIIWZQ5wmasJBYxkWUnCOeiRpvwU5iBC5ydi/N0EC2hr6NYZAM790taOSgr4J2UUyrE1iBAMFHfUAoQ5T2Fkdo/2CmoFz2eVXXQUwxo3GZLqrhIPIuJVYiNe7qChf0VG+mw6oJNJZNra/mXtuiTz+7arn0UOg07CZJfBoXYyKWNnlNOo2vnxCAaNVhAOWsOC0fAPZUHyHxxPjTiMP3S99fRSzylI1CMKeVgctZZ0sDmLx85sGvNO92IGXw3Qh84TKARMKCXbajQq+ahCp7b0frXidBZ4kLxRMfUuqdoNVWl8jAmalLXNHmbwn6b1JrXLleZ5wayV7xx9NQFrZ9w=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794489665-903727
+X-HE-Meta: U2FsdGVkX18Vw7ScuzYgTB/YsL7nUOayvIGmWj5UDzIRfnd7a87UyQacHP77Oa95Bo/M70+BuSulgn9d8y8sUIwD99rjreD3z2g0wRA5SncapGomwe7jspbfzvYEtWjeSzAENq7C4E8t8bSB9FmYxFFesOUf0ZxF/Jphcm3NLzYajb+uYrh1ltn70PYchJM4ewgCVcGL+k6KEJC/HTDErfSzKLlcpQMTkoj1KckJlXsvTvu84YGHFXXlylT12dzbwXUaLbYDDcjy3VJf/ytSp+PwXeZ1xf9Cqg16i5W1YlvQX3PnrCt8Jn7BRmUlXKoSPLf1wgDYk6XTr6huG+bUf2++K6ZlHcO54IZHhvM6InJzwByI+v8JlbX9cRilfGuae4sRfvOkT9R/ZOj1yMkY3inzzskggauxyhouXB1He4gINsy622BmFs53Suqf8Yd6QKFYSNiADd/R/OGeMQ5RB4tKR3ljENzbVQMqv7HAlYnNpHW4NWwrcsRSQootzkxpR7wpU3t96fBRQzIr0xmdlV4fXXAthBH1NGcrGCmaB8ED1vFAi7alQlrMX57A/zX+Targ8BTT7y/VmFVfrlREWk2D/6/KBXR6NWjvm9VpBhJz2OOnSNwG3dskbyVXQ/Mbn85pJNtnFYQ1D/50bL101UTuvYQcUMIyZobRuYDnVUZMmql2igEeLKY9ktWUQ8b/3LkEXEAKiAwBXxpa/2auDXbN7vhn8C+oBmQ3mD+tMQ1ioXD3ZYEdTg6sgcDu3WSlA0nKOKf6JMklpEzLnoOunRhPxWi6IKbcb6rK8KPVMjikal0VYx72bJicPLOwTtZY1aU1+8LGirziuwlxhbdhYZC1O7G9a+kXvJD8ANZSyEaKWXhFQd+XOwz9ml88iVahVYKct5bV2LjpkKKOuMHhNExyP/ZIKSkmU2aPRtKpO1kFK97qgW/ZPN7ykXtTuUvdwL2yUU8ygvpenYhP/GQ
+ iIVIp8jK
+ /AITyi0CbfEHOvsL6uSHImjc32bx8KK0t6BW3aVv5CftuEgKGh8QzmwGscPg6UVuL8Y2H0lhDNVYKvf47/GWXoLWVVTYYf++kq6iQZSgRaQUoNF3//GwtccdpldlLIN2Oyh3A9B3EWkk/ELPhXigZAs6+/ZOzFgo5GguRW2RJWyP/SjCcIcqIypR+PRtzge6FaqZEV9ZSeSCT8UiRzWTjH6kcbEoN1OroloylbQOAuEH0mUXWmhcPIi/J5D1vLrbbFSkIeJYwK0qGhyYsHJPByVRGlnvAcJweHS5zTMzMJDlEomBFJ1n6WObAC6VkVyZgocHHtVE4NaelOVMo0so68pxA5ER5yJRlsgOhLd0Lk6YJLS0mgKBVisiws5Qz5CRhy82WRA0ydLH7RnZCeASYRaRgGKoJ7lEFD7qFRMMYto8A8U0SdqlYzrK9QQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -176,197 +104,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> Mostly LGTM, with some comments:
-> 
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+On Thu, Nov 12, 2026 at 01:01:34PM +0100, Christian Brauner wrote:
+> Fwiw, this leaks the inode's anonymous tlocks. They're from TxLock which
+> is shared by all jfs mounts. txLock() also sets mp->lid and pinned the
+> metapages with metapage_nohomeok().
+>
+> So the helper would have to tear all of that down like txAbort() does
+> and drop the pins. Doable, I guess not sure if this belongs into the
+> series.
 
-Thanks for the review, Pedro!
+So ok, I tried to do this in a vm. With jfs.nTxLock=256 three rounds of
+error + umount leaked 163 tlocks and the next writer on a fresh jfs hung
+in txBeginAnon().
 
-> 
->> ---
->>  include/linux/mm.h | 35 +++++++++++++++++++++++++++++++----
->>  mm/filemap.c       |  6 ++++++
->>  mm/huge_memory.c   | 29 +++++++++++++++++++++++++++--
->>  mm/memory.c        | 33 +++++++++++++++++++++++++++++----
->>  mm/migrate.c       | 11 +++++++++++
->>  mm/userfaultfd.c   |  4 ++++
->>  mm/util.c          | 18 ++++++++++++++++++
->>  7 files changed, 126 insertions(+), 10 deletions(-)
->>
->> diff --git a/include/linux/mm.h b/include/linux/mm.h
->> index e6da76fbe8e83..6c7c29a086bd1 100644
->> --- a/include/linux/mm.h
->> +++ b/include/linux/mm.h
->> @@ -2229,9 +2229,36 @@ vm_fault_t finish_fault(struct vm_fault *vmf);
->>   *   back into memory.
->>   */
->>  
->> -/* 127: arbitrary random number, small enough to assemble well */
->> -#define folio_ref_zero_or_close_to_overflow(folio) \
->> -	((unsigned int) folio_ref_count(folio) + 127u <= 127u)
->> +/* Leave separate reserves for administrators and concurrent reference gains. */
->> +#define FOLIO_REF_COUNT_LIMIT		(INT_MAX - (1U << 26))
->> +#define FOLIO_REF_COUNT_ADMIN_LIMIT	(INT_MAX - (1U << 25))
->> +
->> +bool __folio_ref_count_over_limit(unsigned int ref_count);
->> +
->> +/**
->> + * folio_ref_count_over_limit - Check whether to refuse more folio references.
->> + * @folio: The folio.
->> + *
->> + * Check before adding page table mappings or other significant refcount users
->> + * to pagecache folios (!hugetlb), either before acquiring references or
->> + * afterwards with rollback if the operation is refused.
->> + *
->> + * Checking other folios does no harm.
->> + *
->> + * This check is an approximation; we leave some headroom such that concurrent
->> + * increments, batches, temporary references, or other bounded refcount
->> + * consumers are not a problem.
->> + *
->> + * Return: True if the caller should refuse the operation, false otherwise.
->> + */
->> +static inline bool folio_ref_count_over_limit(const struct folio *folio)
->> +{
->> +	const unsigned int ref_count = folio_ref_count(folio);
->> +
->> +	if (likely(ref_count < FOLIO_REF_COUNT_LIMIT))
->> +		return false;
->> +	return __folio_ref_count_over_limit(ref_count);
->> +}
->>  
->>  /**
->>   * folio_get - Increment the reference count on a folio.
->> @@ -2243,7 +2270,7 @@ vm_fault_t finish_fault(struct vm_fault *vmf);
->>   */
->>  static inline void folio_get(struct folio *folio)
->>  {
->> -	VM_BUG_ON_FOLIO(folio_ref_zero_or_close_to_overflow(folio), folio);
->> +	VM_WARN_ON_FOLIO(folio_ref_count(folio) <= 0, folio);
->>  	folio_ref_inc(folio);
->>  }
->>  
->> diff --git a/mm/filemap.c b/mm/filemap.c
->> index 9871b4f32a916..0f6d57432a7e5 100644
->> --- a/mm/filemap.c
->> +++ b/mm/filemap.c
->> @@ -3968,6 +3968,11 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
->>  		unsigned long end;
->>  		vm_fault_t map_ret;
->>  
->> +		if (unlikely(folio_ref_count_over_limit(folio))) {
->> +			folio_ref_dec(folio);
->> +			goto next;
->> +		}
->> +
-> 
-> It's a bit odd that you take a ref, only to check later if we're over the
-> limit, and ditch the folio. Could you move this to next_uptodate_folio()?
+I think txAbort() might be the wrong model. It only drops the pin when
+mp->lsn is set and doesn't free linelocks. So this would need a helper
+modelled on txUnlock().
 
-That might be even better (and avoids one conflict with Andrew's tree). Let me
-take a look.
+Fwiw, the BUG_ON() also triggers without this series. The error sets
+SB_RDONLY, sync_filesystem() bails at umount and nothing commits the
+anonymous tlocks. This series fixes that as a side effect because
+sync_filesystem() keeps running.
 
-> 
->>  		addr += (xas.xa_index - last_pgoff) << PAGE_SHIFT;
->>  		vmf->pte += xas.xa_index - last_pgoff;
->>  		last_pgoff = xas.xa_index;
->> @@ -4009,6 +4014,7 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
->>  					   mmap_miss - 1);
->>  		}
->>  
->> +next:
->>  		folio_unlock(folio);
->>  	} while ((folio = next_uptodate_folio(&xas, mapping, end_pgoff)) != NULL);
->>  	add_mm_counter(vma->vm_mm, folio_type, rss);
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 4608540e40d46..439cfe446cea4 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -1626,6 +1626,7 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
->>  {
->>  	struct mm_struct *mm = vma->vm_mm;
->>  	pgtable_t pgtable = NULL;
->> +	vm_fault_t ret = VM_FAULT_NOPAGE;
->>  	spinlock_t *ptl;
->>  	pmd_t entry;
->>  
->> @@ -1662,6 +1663,10 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
->>  		if (is_huge_zero_folio(fop.folio)) {
->>  			entry = pmd_mkspecial(entry);
->>  		} else {
->> +			if (unlikely(folio_ref_count_over_limit(fop.folio))) {
->> +				ret = VM_FAULT_SIGBUS;
->> +				goto out_unlock;
->> +			}
->>  			folio_get(fop.folio);
-> 
-> I see you use this pattern often. Would it make sense to have a
-> bool folio_get_unless_overflow()?
+> All the check
+> does is make syncfs() return without writing anything and make unmount
+> drop whatever the flusher hasn't gotten to yet. Which might be the goal
+> you're after?
 
-I commented somewhere (in v2 I think) that I played with using
-folio_get_checked() from #2, but didn't quite like it so I discarded it as
+I tried that too on fat and ext2. With the check and an umount right
+after the error new files are gone on both. If the flusher ran first
+nothing is lost. That's exactly what happens without this series. If
+writeback is allowed to finish nothing is lost either way.
 
-(a) it cannot be used everywhere here, as I'd need more functions to add
-multiple references. next_uptodate_folio() also could use it as I would need yet
-another temporary helper for a try_get().
+Skipping these superblocks in the flusher is no better. ext4
+effectively does that in its emergency state (ext4_writepages() bails)
+and the stuck dirty pages throttle everyone else from testing. with 1.4G
+stuck on ext4 a dd to ext2 on another disk crawled at ~1MB/s until ext4
+was unmounted (cf. [1]).
 
-(b) these changes here are going to get reverted fairly soon once I change the
-way how mappings are refcounted (which is, unfortunately, not suitable for
-stable, otherwise I wouldn't be throwing in this temporary change in the first
-place)
-
-So everything that is expected to stay in later patches uses the proper helper.
-
-[...]
-
->>  
->> +		if (unlikely(folio_ref_count_over_limit(folio))) {
->> +			/* Skip this PUD; it can be faulted in later. */
->> +			ret = (dst_vma->vm_flags & VM_MIXEDMAP) ? -ENOMEM : 0;
-> 
-> A comment as to what's going on here with VM_MIXEDMAP would be useful. I guess
-> the idea is that faulting on a mixedmap later will not necessarily hand you the
-> exact same page fault result?
-
-I can throw in a comment, yes.
-
-[...]
-
->> +bool __folio_ref_count_over_limit(unsigned int ref_count)
->> +{
->> +	if (ref_count >= FOLIO_REF_COUNT_ADMIN_LIMIT)
->> +		return true;
->> +	/* Background threads must not consume admin reserves. */
->> +	if (current->flags & PF_KTHREAD)
->> +		return true;
->> +	/* Neither must interrupt contexts on behalf of the interrupted task. */
->> +	if (!in_task())
->> +		return true;
->> +	/* Capability checks are not safe with IRQs disabled. */
->> +	if (irqs_disabled())
->> +		return true;
->> +	/* Use the task's credentials, which filesystem overrides cannot change. */
->> +	return !has_capability_noaudit(current, CAP_SYS_RESOURCE);
->> +}
-> 
-> In case this function ever returns over limit, we probably want to log this
-> in the kernel log. If this function gets the folio you could even print
-> the problematic file offset/inode/filesystem/etc. Ratelimited of course.
-
-You mean, if this function returns "true", right? Is printing always fine?
-(e.g., irqs disabled?)
-
-> 
->> +EXPORT_SYMBOL_GPL(__folio_ref_count_over_limit);
-> 
-> I'm fairly sure this will break the build for a number of non-GPL drivers
-> when calling folio_get() with CONFIG_DEBUG_VM=y.
-
-You mean, breaking OOT drivers, right? I can switch to EXPORT_SYMBOL if that's a
-concern.
-
--- 
-Cheers,
-
-David
+[1]: https://lore.kernel.org/r/ZEnb7KuOWmu5P+V9@ovpn-8-24.pek2.redhat.com
 
