@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B284606A33E
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 22:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6CA606A321
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 22:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HM4HKwBw
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jkL+ZB2a
 Received: by kanga.kvack.org (Postfix)
-	id 66D436B05F5; Thu, 12 Nov 2026 17:09:37 -0500 (EST)
+	id E0E736B05F9; Thu, 12 Nov 2026 17:09:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61E206B05F7; Thu, 12 Nov 2026 17:09:37 -0500 (EST)
+	id DE5E56B05FA; Thu, 12 Nov 2026 17:09:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5340B6B05F8; Thu, 12 Nov 2026 17:09:37 -0500 (EST)
+	id CFC526B05FB; Thu, 12 Nov 2026 17:09:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 283BF6B05F5
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:09:37 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9984BA0207
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:09:36 +0000 (UTC)
-X-FDA: 85427859552.30.10B3417
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id DC01580006
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:09:34 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HM4HKwBw;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AD3396B05F9
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:09:44 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 42946161C41
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:09:44 +0000 (UTC)
+X-FDA: 85427859888.08.A141F2E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7D9221C0007
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:09:42 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jkL+ZB2a;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794521375;
+	s=arc-20220608; t=1794521382;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Viwqy3ITQgBszpOy2nxIavh5Mt0ao4kMQc4DSQeToGo=;
-	b=Jp9E9cLoXf65EFZb3itLoHwOPSzoeKyY8dyFFATLpx3LHVRP0fPsMhmC8IgY2cC/2mIpK9
-	ML8EIE2OjWHMyggfl7aSpZyNiSX/zDLEnok2a2UkFais8JwEGWKtryu0WlXIpoqnlNskdb
-	2OtaLJjSoQVTBHci17LoTP+wkdm+oE0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794521375;
-	b=45ScIcDjawaWWm0czDUQt2sMyYi9AQPfa50hnaDFlZtFFMruZmwErpXKH3G8dOLhgSyuFO
-	7GzD8H6GKltA6bAOkmc5sXb9dJwYnAkUtPnF9zMUIQO2qpNXQtkcKzEgX5gW7msdp7c11Q
-	X/I/0zgxSl8gMrOxcUXPjjcfcqG8PYI=
+	bh=eKtXaU18XWDmrm51FUDVoZxTbd+Jzy0nR5+iJLVT/Yk=;
+	b=veLa/PFdlY8bJzvF/uKO7EwWI5OLR0S5T3+emrEWAWAD0BnSYI69xLCEL2rUyInwlx4alE
+	+LL2kCtcxb9YvxZ+jCiYWaRKCAgAoqvQortpf89VmN14tph1YsHIMnvhajcsuo8uDVrQYY
+	AhZaia7w3sAG1ExakKPNvPo5cr9i6ZQ=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HM4HKwBw;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jkL+ZB2a;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794521382;
+	b=GBOX0QnGC8YOOB9QKJVCW0r1FeiWOKke+rKj7rMqmkCIzID8d+PkvR3DpksctCAoyPiwmG
+	jgwsBD3JwQEVM7nKW2G3H4oK6pB0bPXUgs7/55V5X3WIkbmG1UqVzkFsa3NIFVzW7qT+Fr
+	e8AKb0yyOrTTT8HBYTcaa2LFKd7I3wI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 751506248D;
+	by sea.source.kernel.org (Postfix) with ESMTP id BF1774646C;
+	Thu, 12 Nov 2026 22:09:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B891E1F000C4;
 	Thu, 12 Nov 2026 22:09:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 555C61F000D4;
-	Thu, 12 Nov 2026 22:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794521374;
-	bh=Viwqy3ITQgBszpOy2nxIavh5Mt0ao4kMQc4DSQeToGo=;
+	s=k20260515; t=1794521381;
+	bh=eKtXaU18XWDmrm51FUDVoZxTbd+Jzy0nR5+iJLVT/Yk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=HM4HKwBwenX5LPu3liCUHEMsEalytKn7ys2DDGNSBAMroq/1dFf/rVUIYBjFEHEpI
-	 hE/fY4rJBXGrrTOlj+FZDCzgZ/BtsewXoNR8UtSzaKL3UkvJ1GnU2uIWtxs8CtmBBW
-	 0qUUCKuerr+2hwfE4QZ3r9yCnSLDgkteS96rugzAyzmanEYhnXcnUEsXjy0yK3Id9c
-	 1d7fVZqky1H5uWLL9Z3pHvNpyENJfo+QwEDcpD3mU4gm8mDkSdZS36INIPyHwx5f4d
-	 gwGCNlnn5K6jpoD06i27gE2QSn1Iab7gBi1sgmvAemRpMKmkZuQiuX4NtlNV7WUC/I
-	 p0yh9C0dDrLeg==
+	b=jkL+ZB2a4fUwx27qOVIEV+ckZQ/gSjMPP3h29FpAk4PlOjb9LirgSuhw4zlbzw+TM
+	 9Ys06V8UM5KILDGz4kcDcXHt+QdS6IwpIYUNxkrZqklga3AHuZI28CAqsvB6rRKJQy
+	 wQcEkO6mrSXip4E8TRbKqS4h6HYP8KFB6IJW4x5SDlh8OyCRis7XriaS13txq3yP1j
+	 VjXVrSbG1x1f/e5ytJhhy+FJeef365J72+LX8ayB4cIYe5oD5G+I9hI6Sh9TFxGJH+
+	 0jiRerzzmMrSsTaodVJVb8P7sjITxHF4ma/FIxHnXjPAMdZXmioymUii/zY17u1NVp
+	 yh2WD0W8m2Nkg==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 12 Nov 2026 23:08:59 +0100
-Subject: [PATCH 3/5] drm/i915/selftests: request read access for mmap
- access tests
+Date: Thu, 12 Nov 2026 23:09:00 +0100
+Subject: [PATCH 4/5] powerpc/spufs: consider vm_pgoff in
+ spufs_mem_mmap_access()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261112-access_shite-v1-3-988a5c470db2@kernel.org>
+Message-Id: <20261112-access_shite-v1-4-988a5c470db2@kernel.org>
 References: <20261112-access_shite-v1-0-988a5c470db2@kernel.org>
 In-Reply-To: <20261112-access_shite-v1-0-988a5c470db2@kernel.org>
 To: Lorenzo Stoakes <ljs@kernel.org>, 
@@ -90,28 +90,29 @@ To: Lorenzo Stoakes <ljs@kernel.org>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
- linuxppc-dev@lists.ozlabs.org, "David Hildenbrand (Arm)" <david@kernel.org>
+ linuxppc-dev@lists.ozlabs.org, "David Hildenbrand (Arm)" <david@kernel.org>, 
+ stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1199; i=david@kernel.org;
- h=from:subject:message-id; bh=UNHRKTPPJVrGYq3JL2OOfSiN8BE6XDeP4WdpR0zw48w=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLK+WfzXfSMdyle0+taS0KYbrY+ZzNvWegtJcp07d9F1o
- 8y9imPFHaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAExkkzEjw1dWKyPrzb+96jf5
- r53V6B4zxaXk36Gv5ozRBdwzOZ5LsDMyfDYz6l6worxt7dyFeduun10lZLpV2HND/cMu4aMaMY/
- 7uAE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1298; i=david@kernel.org;
+ h=from:subject:message-id; bh=PQPxNnQpVVFHjjbqHgG191KRAqKJhGnNL5teRs7niOM=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLK+WfwvmXrNbfL1DTr7E26IRJ7XFjTl6ms4FpmrJVG/6
+ pnretUTHaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAEzkURQjQ9dyu4gpkQX8Sr0C
+ BvVLG3omPVjE/fyifL1Ezg6x9ZxvgxgZpgskTX6gKFW7IzR7p2TykkUhix0bJs+usdJ6c5drnc1
+ CVgA=
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DC01580006
+X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7D9221C0007
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 3o6gg1qy9zp81tugtky981ptu465c5u7
-X-Rspam-User: 
-X-HE-Tag: 1794521374-655459
-X-HE-Meta: U2FsdGVkX1/Nz7bXePlhGt8ZnYmTNUzDl21yx06ifCbUsdyyDZqlYKL0KepyIAU+lnW+9RDopbSYEnSVAURk0FST5iDjFekTWYlPu4bLeFl93XnZVIeleQbJaqCsJeSbPKrSliC6CKDfTUQqE9Ur34D8dNsKYHMU2rhWdGPKevDRli76gOc97T/Bcoo/zLnfBiEq3FtcVpWzKU/Cx80azjCDmrlueVjpBa+zIG9KgTxi2UQoJe9KNPzxh/YVRPhqbPADDypm6ovnXsdgsI1UQNM4x2mkEakX4wfUJOCHi9wpcZNVMkbyTIyHD6n5JeautGWAVYmolRDgRJNqblGrUqGZwe6smtO2IGdw9vh810Rh96O22kjGgtAkBPApnb7vj+v2FR9Mi4wYItNfulldu/QGAMtNuIsvx7qfzq1EkN23goVIr0KoYMZvRWJxAFQic1aePCBiig69wAMowv1Xrtj9JsRvCnmkVDGtTWezpMqJ2At6e7Gr2symg8hH9KCVn/ArppHndV0VQ4xiQS0V7Qo4OytE3e4YThn3cxf62nYD+3Vfw58lt+3X1sHD/i3OuGLNnFxfFUNinWYpNn4COM+5Hajl3dPtYxHE8GVSVrM/CteypohSwdUsVmk3P3pl3H+Cr+AwtSuSmqT7ZE969/tB8fg6hb9KJIrAl5S/sVLZeBqZYvyHzngrqZcY68NIIqsGq2deFcOgwqfw2A6QS5UEcSC7+ZUw+kmxbTr715P3xIeZBSFppNU0PvyJomVxzKOy8kHZLn50B//G60k7krJJkeXeQQNZeCjbsN7tTiwuDh4UK5iMdHwkp3Y8vWghFtSgosJeJk+jTM/ZE90Lh9FCL8nBNJvNkKVOZcDGOpmrc5D+nUoktaDgAa2ChvCHcpjmZDfu4XnPjMcdAl9j4M0V+x1z7pi/uPQsX+xvr6XTL3xN5yPAjkrWEyT9t4XZguz9YCKZSB5srMh8uOC
- HwaMclEY
- 1++8Bi7CkXd10lHP+1E1+5WdakqWTZlxU3SR+YEH3O9xpDrf71CI2tMuFT8HG2JR+B0d4F8FhK5cVekb0l6qxT8VUJc/H2ENFjGOrR9dFkkot/kvpP1fq8EFjihxniFEeRUgYm6I9Uhl7W05MhHGZXNP518p33IIGTNhqxZz7e8+jvBImqWj8k3v8uQHJS+66G4Z3alvp1B0pyDKtcjxaOYXJOPqDDw0rJreMIIiAmelhvGpIMkS8N5BP5BhjgzYMaPcPu1sHusZgSX+kswtgszUKxgB+JQ1uMcGxCtQtQDDfR4t4Rt6PS49Rsoh8gTYqmcrU
+X-Stat-Signature: 7o6cgqhk9ajn1ge3qtzp8frnygg78rs3
+X-HE-Tag: 1794521382-62540
+X-HE-Meta: U2FsdGVkX19BoZw6w0nRn59cdq4aISv1yUGSB4F6unTJsrq4vXB7dFtPNUwap1EzrYGFE6rTvW/ox3c9pr66HEtufwKAlkYfGbSyKu8Fh3hWuDKog3e4M+5z7PW/OXfkloNMyX053dBaH9yoLNiEC4VedKxJWmnLfinZc0wrZmN8T/vyY+R5PCqD9SGutAl5STgs238NKrNklG02vRJcD88GLi+aeUnvt9f2a6SEEd8HGyn7SAaEF0PpTumoeKuokXUagAdgk3eIQI/hApAVapAG0pMDYz5ti7PctPXi3N+V+hIJeA5JuXP8hHt1YZ8IkEprVgc+nHxLQWEW7Wuz08GSGloIMxCDBLzvVRYrJwbadkku8NziGEHpgUIrczybMl8KrOTiTeHS8EThoLGPMVZkYFwAlC7vGK10XQjHDn+REPWbfJudVdeD8RGPvqjh1LxKI/88EkK/kU4z4iN5kFebnJgLa77oXXWLfdAAbFFyUL9xW6SYkhNjmNvTukSaTx0IH2Tfh3My5cWuUPkIV7ciJM8QuksduOcv2LpG3ysvcExcXS/7y9k4m6b1Ma6Z5wd5b0M83aXdg7J10OSNCDoLjUIug+AVWjdnFlp8n6CEp2JNnY2t/5nmRQQg82+5O8DV0kLAmXj3j6xfHuDASdeA29mV8uJ3R8PRcVKrusgyJA5VGiDp4dzhcma65NmT3E31kAVwUH5pFTBfxpO1oe0/BxbIPxiZhCVNQBkIfRnoQTAWNDVqEPS4y6cNRxxopH1hVvQC/XTMGiShcfb4p/dVXDyMXTNYsDSoGBbe8g2xbWzPwBSBLew2awtao03hRltMS+q1eYBjx8zpk2otK51TSvzPO1OFgz2doQuh2+LJSo7gk0swQt+OiYkKNp2lS8mvHxx1MgJPnT9kXVKSNMCCUBCf2kkV337ppl5L/fq9CsjYqHiyYzmbakoj0+UkXdwq6TxFDBMzNio+Lj1
+ fvaLv0l/
+ 2RobgMbY4CiktJXwssmQky6055v7Z0cmJlrgOZvzikJGuGo2KTGSiEL/kCjSM1oV88YuXbyUBtgI7OQAWenDtaBkV62T4ke6RoV/GVxq/Z/hdddEvV3UD/mwVDyu8NSi4UEUsEmY6I9jrAqCvS2b5JEloWbau9cjpodqUf9b3ONrNV9mTKTw5xCSJAZqLC58v/3L1CmKMXe3txn7GvihEIz/XvkZMX5OV2bfba8UvM/AsBYOeYsJYTuLewo4737ZOFJQlX+C0+ebcNWQeg8mKFdegf1BOadh9N/nhphpEEMlxD14n8TbOyKagGtWxJzoDM6Jg/zPtK+uaP0tfMJVU5w/ZmwBfhVyPjQMA+VmC/20cL+Yh9QqmTYOc1Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,31 +121,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-__igt_mmap_access() reads the buffer with access_process_vm() without
-FOLL_FORCE, but creates the mapping with only PROT_WRITE. Request
-PROT_READ as well so the test remains valid when we fix the ->access
-fallback to properly check VMA access permissions.
+spufs_mem_mmap_access() calculates the local store offset relative to the
+start of the VMA and ignores vm_pgoff. After VMA splits, debugger reads and
+writes access the wrong part of the local store. Mappings created with a
+nonzero file offset have the same problem.
 
-Fixes: 9f909e215fea ("drm/i915: Implement vm_ops->access for gdb access into mmaps")
+Properly take the vm_pgoff into account, just like spufs_mem_mmap_fault()
+already does.
+
+Fixes: a352894d0705 ("spufs: use new vm_ops->access to allow local state access from gdb")
+Cc: stable@vger.kernel.org
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c | 3 ++-
+ arch/powerpc/platforms/cell/spufs/file.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c b/drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c
-index 303be698891fd..d9c828032a1aa 100644
---- a/drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c
-+++ b/drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c
-@@ -1460,7 +1460,8 @@ static int __igt_mmap_access(struct drm_i915_private *i915,
- 	if (err)
- 		return err;
+diff --git a/arch/powerpc/platforms/cell/spufs/file.c b/arch/powerpc/platforms/cell/spufs/file.c
+index 98c47bafaf678..0a46d6f7178ab 100644
+--- a/arch/powerpc/platforms/cell/spufs/file.c
++++ b/arch/powerpc/platforms/cell/spufs/file.c
+@@ -248,7 +248,8 @@ static int spufs_mem_mmap_access(struct vm_area_struct *vma,
+ 				void *buf, int len, int write)
+ {
+ 	struct spu_context *ctx = vma->vm_file->private_data;
+-	unsigned long offset = address - vma->vm_start;
++	unsigned long offset = address - vma->vm_start +
++			       (vma->vm_pgoff << PAGE_SHIFT);
+ 	char *local_store;
  
--	addr = igt_mmap_offset(i915, offset, obj->base.size, PROT_WRITE, MAP_SHARED);
-+	addr = igt_mmap_offset(i915, offset, obj->base.size,
-+			       PROT_READ | PROT_WRITE, MAP_SHARED);
- 	if (IS_ERR_VALUE(addr))
- 		return addr;
- 	ptr = (unsigned long __user *)addr;
+ 	if (write && !(vma->vm_flags & VM_WRITE))
 
 -- 
 2.43.0
