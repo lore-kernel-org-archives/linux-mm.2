@@ -1,137 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7469606A332
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 21:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F46606A323
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 21:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=spicebrains-com.20260707.gappssmtp.com header.i=@spicebrains-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=XIeYufcU
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RpkJzhWG
 Received: by kanga.kvack.org (Postfix)
-	id 057D16B05E9; Thu, 12 Nov 2026 16:30:03 -0500 (EST)
+	id F1E8D6B05EC; Thu, 12 Nov 2026 16:47:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 008DE6B05EA; Thu, 12 Nov 2026 16:30:02 -0500 (EST)
+	id EF7496B05ED; Thu, 12 Nov 2026 16:47:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E614E6B05EC; Thu, 12 Nov 2026 16:30:02 -0500 (EST)
+	id DE58B6B05EE; Thu, 12 Nov 2026 16:47:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BA4BE6B05E9
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:30:02 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5097C1418F0
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:30:02 +0000 (UTC)
-X-FDA: 85427759844.26.A70B96A
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 590E01C0004
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:30:00 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=spicebrains-com.20260707.gappssmtp.com header.s=20260707 header.b=XIeYufcU;
-	dmarc=none;
-	spf=none (imf20.hostedemail.com: domain of master@spicebrains.com has no SPF policy when checking 209.85.167.182) smtp.mailfrom=master@spicebrains.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794519000;
-	b=iNy9RrJ5tZ8hWkPNXGcNX6uYIv91GsK641WNL7TRNrilkMEZT8jPYzDzRCcni2E9Eryuh3
-	fQRUWcw/+/DDKLD5BMcwQ2qm5dYrXxclBm4fsULwUNKF4xNhK7aaVka+T0HG8nh2WSrUsr
-	D87Cm486fwZwXUWuWS3D8su9wZcBNyg=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794519000;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A8A706B05EC
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:47:47 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 27942161C5A
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:47:47 +0000 (UTC)
+X-FDA: 85427804574.14.F1B7C8D
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6458B40006
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:47:45 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=RpkJzhWG;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794520065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QqRwfiYliDxxA78RCG3u2d8E1XEz8kdl0WNG2OT7+cQ=;
-	b=1bZ8aWCbmPp/EbOqWhf4jMu0MQRL/2131RDsgAFlAgcvh7ZHo6DG7cvZ9g9AG4/doDuKBc
-	+WDIR/FAqG1VBmxur8xev9mhL4jJ0ffCudgkCzMC1VIhAPV2yA8ScfcL9psetfBx9yIZrQ
-	hchp6uePMV+j6VPPjJGaY/YQ5GVMDSY=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=spicebrains-com.20260707.gappssmtp.com header.s=20260707 header.b=XIeYufcU;
-	dmarc=none;
-	spf=none (imf20.hostedemail.com: domain of master@spicebrains.com has no SPF policy when checking 209.85.167.182) smtp.mailfrom=master@spicebrains.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-4a451915d8aso261500b6e.2
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:30:00 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794518999; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bZl70UdRfGhwJVbYrUJaYv1Zf8VSDgkKYLvj29btVy3AYqS5vzonSiZjntKPxU2FeU
-         eiiEKLRWn3kT2z9IJDV8Z8wTsokdHVydzM6lvDJv066KB3l4UJK3GCEzuMZLDz5TqJLt
-         Zzh4/z7bNQ7CfP6c5y76eiJ6iGQ5p3DO99au4apdv62FsSNzRIiPQeiVaJarjfNDQEkX
-         Kb6o6Lupl/Kps2WutuWkLU/XG7AVVBvrRiWRgCS2opBRNrvvH7tMwAXmZ7ZoZjFD9Wb6
-         eY7f+i3j+75peznMZITwbb0W9qmw3/gYMZocKMTPhSgc+bwCHvubzEFxCqeEh75GSJjz
-         NYHQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=QqRwfiYliDxxA78RCG3u2d8E1XEz8kdl0WNG2OT7+cQ=;
-        fh=tiZAAAtjMuuaLvyJMfgqHDex4NVwrldMhQcyJMJeqQ4=;
-        b=EgY0hUxH/JHP0xWZakTSQU1HjpyK48MUKG8P3x7jx9FVvKIfamoQ0oK5BObHgTvHeB
-         ewbvtQlOnCCqd7df3bW3bBdINFa18XxnQ9c+govKNtBTuyMNuTQuEaGrodjSj9luvH3D
-         tcKzRG4TZ7EBn1MGWCssxnkRQ/2UKSVbSVDHfSNvngqx6J0Wa/4peMvwj0Rq6sR8/bYo
-         Q2j6w9Ie2XFWhkTslarURHW0tkoXUn+CNeybLfVZ7UwwJGtBD2WZBb6bUtRh9I++LWAx
-         FjojAtGuEKxDji9KG4U72dNjmhotU5ERxlZ1IftHOkMwsWbv0Qi8a1TUDpvKhTkWHbof
-         6EKA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=OtdlhKZ9G3DOjiAGL5mHW576xMlg85nEbvlb8HjXia4=;
+	b=ceuOOZspsIcZ5QFq/KMeC9c/WelOH9O3UgTlFGPZmcMPEshpKD+Cc8IdWkwdV0QcDQQipT
+	/KufHZo75F5G5/rqUDDF3tx5G4oNGoXw5R/ujyBHpvtRPVdd+Sb5x+0q0VSWdGjBQV1RF7
+	dG6t+dfKHsrqZo5I8/s9FyQGf9aKXsk=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=RpkJzhWG;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794520065;
+	b=2xVrJDSFlyfUHQAgiOIf9ome0CHzv2nb+iAgBhNcWTy67C3brn23rmbKZ8scQC73bs7kZs
+	FCHlNOos+/QPh9GyO8FsV7DVZ5Rv6pmtPPbc7GAb/ldWgLSWo/Jkqev7wY4hFgSvq1YuTq
+	+muS5eulOVGpe0wO7HuesUAS0r5p2AE=
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-8b0ca1ebc8bso4723077b3.2
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:47:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=spicebrains-com.20260707.gappssmtp.com; s=20260707; t=1794518999; x=1795123799; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QqRwfiYliDxxA78RCG3u2d8E1XEz8kdl0WNG2OT7+cQ=;
-        b=XIeYufcU8mTl9JCn9wHiVhVO0kchR+eoprYG/HM+FKIDFWgySrCqCaLyVGdvUfVRMY
-         zD1IP7pCPQoWDypIbABYTOtxjKRM6BClTE3rnOINzpBqEeIvwG/OHPb0xpdFOfSbJPqx
-         mVLnHMT5Y8cFwdMMJ7llyhaxWHWQbspHHExD36oLSB3kwzMgPB1A/PxE32rB3OGEZyqw
-         EKqomek0a/8Mo1zieRtohLGSnvnbDKZiYmD1f0ztGO87SBUtyHc0rStSzpwvg58nCuqo
-         Z4KWrly0M/BF6/hrjkEZHJhlKyI1fXJIDvg5t+H1oGLn1UpeSgUSixYotBwyI4HNqBYn
-         Fs3w==
+        d=gmail.com; s=20260707; t=1794520064; x=1795124864; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OtdlhKZ9G3DOjiAGL5mHW576xMlg85nEbvlb8HjXia4=;
+        b=RpkJzhWGF9yFApD9adZW4AwFvbD9wo6aRBLvhh+DissL3lqoScGK+kMuK4FagXUhaZ
+         +DNSIIsZvgV7QQSKBSC4S/VcoJ0FRNUCvnv0urpRNMH5LY9ytu31MLw5q4cAH7O2yhrF
+         oTxdqHJiVWcZffee03GCBqY5V4LO2xrxI7SQKQyerBwXfkSpDqar+ekJ1HbgwCaJUy3u
+         WibOkZJW6q+MYQKlzgzX6g9byQn74MVT7R9mXKQjaXcawDbB2xeBc6ehuzPQ08OqXHZo
+         XWxUk57TdAVHrfbvW2qhPjFWkrLNAsJRVAVhuN8A2xeiqTu6WIY74FHqSQLdREsnHpgI
+         7Azw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794518999; x=1795123799;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=QqRwfiYliDxxA78RCG3u2d8E1XEz8kdl0WNG2OT7+cQ=;
-        b=x/f0FVu7FF573eo3guthXLoPl9aXtF8uoF2VtK4vYQ1S4mMT+A/c+rwwQyAv7QzZKq
-         nEppKgH/e+rlyLaIdjsiYr9fTseoeilr3w1VAr5gXfiV0EEy0+0VQElVGzUtvULRs1Mb
-         vjjrNOGW159rAosjfKjJoff/l7rKW+ToJYgg4+L5ocqcyZkIy77X/Rbrf4a8rLY7+V36
-         GheFQmP9qQP4Nz8xYbsEwY/PmQ/gp96r8GWSDvNMYm8512teRhp1TGTbIgpEihQvGKL2
-         rlVgO3bU2LAyryvTP1dp+tnPYj4VV/WRBl4o/V7Q7a95NRwWXWJOidENn1PKsOFQUAGO
-         xkPA==
-X-Gm-Message-State: APuU4Z/D4Dc7ZCHsteyNynwQ2sn4EIqJxgPOoT+rpjl538kS1pZyRsJh
-	UJoMAi4ybJK3zcN5q3YUQQRpR2FAM0m2FcIvZQAWO/4nl0lwwYbFpmP6TgWl4W+RJTMNaEdYZsk
-	j5A4VfvdNtCSPOJ/Tq28iF0OBQtbMR5L3+KZcOB+phw==
-X-Gm-Gg: AYBFou32ekurQUI1sUlRGipBmIfZE2lwY1HHxha8elVXZT0TtpfszOrh24Aa1ZwugYc
-	uhhI4pebslLB3GM0nobvm9UCT2VoW8WCOf8j+QV0vKwLxt9pjB1En37i4rrFYfskLwXeysovzZn
-	3LV64iiz5jXg/OOn14V/bONS2QTaxkSOkWG6lwpPe2nDqNU4K80jDz2rPvvwNA9gOmikh7D8FSr
-	+XRz7UB3tyIyWHsykb7znq5lnpgNrudJ/+cdfPs2Uet2eAJOFpUM/1Q1Y/sE7/srBA9JtceWy1H
-	39BKWOxEuCqhs/HEtxGWJIWM2K7fIRefuKNc8V9ToOrdGjydwJu8VjWg0eMOIljhaXC+dsf/XaV
-	LiwRuMZ/mMBRrE54pPd2u5K6i/sq3stvu6/h2csw=
-X-Received: by 2002:a05:6808:1494:b0:55c:856:8216 with SMTP id
- 5614622812f47-56e64ce3f54mr462309b6e.37.1794518999227; Thu, 12 Nov 2026
- 13:29:59 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794520064; x=1795124864;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OtdlhKZ9G3DOjiAGL5mHW576xMlg85nEbvlb8HjXia4=;
+        b=mG02jdZeqPiUPxg/2xFJLu9a0ssBmtxzTKn34inOnUyoOMe1IKp6jvo74dH/0+8re+
+         ul9CnFuFNEFbRg2mENd/1ycLUBd3d4HCUdYamKBqofpQbe5emcQ+P2yqww6jroU2wH+N
+         O6HhADXSkxucvwi68tqHWsUe/0LDRg3R2kTZ7/eh5YbdshGEShzQFqLSOBCkx4iJjK/N
+         /W+WgBfiCfLHBP+JDsVsz4HQfEQt4TdXGa26GVa6cxWoWxm/kTznubRxg5VpmRDIJhsA
+         zL536Ml+L8FOJ53oO0uXGQTTl7L84SFVhT6miiXKLNoLBewT0C/0q7BT5Sg0AiU9lJfI
+         v/mQ==
+X-Forwarded-Encrypted: i=1; AL+hErHcuFgw/M813z1qGm463YITiZZnDZyT+1yCupwlPUd2TtdzSF0Ml8OQ42blPw2QDav6e+jbcYQ4Yw==@kvack.org
+X-Gm-Message-State: APuU4Z/8Tyieyl249RK0Wpl/bV9JhPkxLJJ+lOmg29DJkOAy/C4A3Ymd
+	U3XtsNm95SKu42ud2x6nyW5MI2I6In7IPmcPlS0u+kbn0QhimXAi6z5z
+X-Gm-Gg: AYBFou1zR2by6qRE25lMjYHGl7CpKN3iBuH3Z6QUPbZ/8U1vJpQ5lGNtaUEj29rmnf2
+	esGdjDpGlWRtswZYJTKGwrc85lIxnxaaQQFp0Zv4bMZ9/9+T6XUtC1Q1DJPtKBX12VTkxYi6ueQ
+	JfEju8XRNWn7khkBfNG2co2sDrpP3dYVFDGgDJGGQl2VdFC7TxSlatlT41FK0PiSMxJ/klzcB1x
+	blqXauouZ/MMGrKB7qBz/c9E626/OA0kh6YlsMWhJyT3HO5nGlStbX0nfyRL2P2LEfgiskHCqn4
+	CXdABw5qlkXsvLiyQ8JY3K2AtLjH6YEM4SI/zxjRbJgBQLI7lWDGz4mJXdoBv8OotGJam+k0HZH
+	WLcy2B+f+Q47xecLGSM5IU0PuRsqrHFXRLbS0+Ax5K9eIxPymSWxJk8Zx8Jj0ut2uPfBYdUIQHy
+	yVQ3+BmvxHTwEQR1KZ+u81SlYASF8Vjb0TAPFcTXHik/IB/DzR+/HZ9NIyELIwhrjbheqtXBy3E
+	iEZJehHDRBGfr0+dUus5xf268+++3H9hvUa51KvC7E6Y/NwGGiukfhianJRvmyHvtKy7CvU7pNK
+	5Oqs7AEBjZCEGkvgDVjAHXcr/+xuQg7gWbGJiykjWt66EjtroGoQwoTnUlk=
+X-Received: by 2002:a05:690c:e3ed:b0:8b1:f47:9c07 with SMTP id 00721157ae682-8b4aa25caf7mr6200957b3.25.1794520064454;
+        Thu, 12 Nov 2026 13:47:44 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:1::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b4aa931272sm5987177b3.16.2026.11.12.13.47.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 13:47:42 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Gregory Price <gourry@gourry.net>,
+	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Zi Yan <ziy@nvidia.com>,
+	"Jose A . Perez de Azpillaga" <azpijr@gmail.com>,
+	Daniel Hodges <hodgesd@meta.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH v3] mm/page_alloc: only skip kswapd nodes below their kswapd watermark
+Date: Thu, 12 Nov 2026 13:47:37 -0800
+Message-ID: <20261112214738.3002458-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <CAPy+2=yCzFKxPgzgKw7uCfwpd0BqWk_Mf+DSBY=ydTr_pdHr9g@mail.gmail.com>
- <fc81dd0f-4bc7-4064-97de-3b1af8c529b7@linux.dev>
-In-Reply-To: <fc81dd0f-4bc7-4064-97de-3b1af8c529b7@linux.dev>
-From: Konstantin Yagola <master@spicebrains.com>
-Date: Thu, 12 Nov 2026 23:29:48 +0200
-X-Gm-Features: AclHuK_asXhVDQKUit4vjoEY-G7m1l3yW4ErGDI9FFBzleNM7_lgCj7iBaNfmMQ
-Message-ID: <CAPy+2=wLaLiPhWeF+WVFG==+oiDJx0AHhHTQN7OaEL6_xQ6gLw@mail.gmail.com>
-Subject: Re: [BUG] alloc_tag: GPF in __pgalloc_tag_sub() during hibernation
- snapshot, page tag ref points into .orc_unwind_ip
-To: Hao Ge <hao.ge@linux.dev>
-Cc: linux-mm@kvack.org, "Rafael J. Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org, 
-	Suren Baghdasaryan <surenb@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 590E01C0004
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ybiuawcmmmpreztfw66xa798qzryncpz
-X-Rspam-User:
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794519000-373260
-X-HE-Meta: U2FsdGVkX19NEMJoPNIPE9j56JZtVd71nca2f/inBdD98VFnHPnnLnjM9CUIAVjR1Biq8enER1fXiMdndoc9EyJtks/Cur8F+x1AOv9Cs7EaPf7ZSIA37EjhoWVrfXpPwoiJfBZCnWGjpFqghSCqVyabQs2gg2OTDI8QLwlrPGbCGObERrB+skzjalZJeQHnX+pf6XsBwMCiH3HQ3NDc4xIqN72Pkbe1e0yjYGVRq/fXRjSFGNNi01mnIBetbX8lrcdXDeenuTyB2IffjhnkjK/hWzJYBLycv06lXvD2JmHdwp9HljIbG/cuTU1cjxV/M6txpeWiJ58mDeLAEeAEOy02hXGXZW8qVBUvtwWflCvyodUayMwTOVZwqEuXk9dtdcGWXgJBzuas6Dl8AEhcVk3Svxkz1BUCernFxZuUmZ4ccOT29oovYSp15IR2qGMxs9MfdRO73txzvDJqtzvmI65xOOiZg0XMzHqvL2hTQuROjyjC9SwYH3cWHAAoSwSD6H5JDX+8vwmPEytdFoUFLeGP5QvICU/qWJVMLMXERJrQNsiw/gZCipuEAjT/2TCKznvvO+S3GuCvEas9d2koAqjvoZGWuPJ2ap7dL5i/9QYGvJuz2cPWjTfdG77RLuBWitRvpBFLhMxVr5coQGtIhGsDGrfS8N1Av3LrHjGLrZzacg3bczJC8qKs+m/UBB+Q+IO8lv4v1BKm9Ntx7ouwQZQegnmEbuxWtVvrmxO96f0+DuJLU/GM+2CzuJS23YJtn9AcimOXaNIDkeWjyB09z+vCR65ssdTkmRNCyBfIKtvXIO+7ckaZ3ilXLc3O9TWj1kEvMIn44CLichvGu/E/TPI5G8RchHGpHfReqXH4UtbXXdat6ds+LAeV3qai+7NUCafyxVbV95wFzyQ3eqt7w0K1oIP87JQBm1bY8UsujCJwNWNfxlr8Yy1T6hg15Y20JOzmXzQJw0vdOu2lsxc
- xQ1pGETs
- 5xoFpvKClkLxOd/korCkry/6hrJ+PvE0tI1h4dBAh1Cq3FZl4jnHEB2ZZ+1UtTDXSU8Nr9OQf+pWOTYlF8+u80y9orVSOMCAbjII5iQxHfa20/mWnFYHvo8fHDejuwHfw1eNgM2ZF7rrnqIV7Ntf3cyhLt03iVgH58/NWT0v2Q1yF38UehA3fRy9l3Ag+wg4c61sWPLZDi6cEB/wNCvXB/0GZ3YPTahboKCjcwM4sD+cXmzZHBoqYsrhFPoejcBzy6LWlXu3lP/LduxX/3AO6+LrSodSLZ67TlWj3gDv85htW+4PmRg5CkdBO1JYaL7qPrjDd1441cdoblmQaXVjOr6ri3nhj0NUb2S9BCOfztx8N82Rf7Nyu+mZ2jdSIc8vG5TFT0TRl2zGPaYU7NQNQgct+wgNgYd5JfyuQNiOxHUHh2OGwhmDE0WKUtpsGe8kYJ6ynSOfhMFICieBae1wbrhU6O0qGNaPewo25ptkYLFJ1CBQ=
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6458B40006
+X-Stat-Signature: fabpsgi3hrs7993z6zxahj19kke1aozf
+X-Rspam-User: 
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794520065-366495
+X-HE-Meta: U2FsdGVkX1+ZjeC8HqYviqWvEIEeezJOPZ703/2SSUbBAPAaNhK3o2VIpdRjLFzbqcnf43dP23g8h+eNbzZkpdmeuLxeIZT7LSts30tCZhmmTQ9hsc63dpujGbQiPnmv7r99IpdzgBIgdDykm9m2cBGjD5rNYL+FaUY53twNWWknWMKQuioxHL3MfGTcEr/LmeXB7JdtAa36xEQQQN+6nLDnaVqCgg7UTQBJwZqwNwXcXu1SLkbVyXkIJcG3X/5PqE0Mqv9XIHRcB6k8VzSCJlf3jsQx5sQfkaZDaY/J7gyvss5ojVubZFMJh/N3WY4Pf4tDt6hHBF7K/eLxK+dwV9ZRv6as4wZDsufy47IVqO4upbdA0ssLGJLaxLB+dE/dLLxaPLhZAQ/h5JmRiMpctIFYN/MzZIrkRl+ZEFmiLlvD7ICdY1851JrXhwv0aQzfkmT8S+zpfJxvLv1qA17mJKCQr+aLJv5ivE+K8TXrT+HNZtJu429jRN4K15Ksw79Tyd2Ti014dy8rEV0aekPjL+TevTTRnHyqiE+SfhV9E0zg7VRGsRMefhjqFzBWGzXd91Srd7upAxNiBTpn0HXtiV9CXZ9aqNqWTgIKkOHeL21KDtm9+noLtyHrdNKIX13W1KYXtAgBMbTCRLTen536LFWHJA5gIt5D5P+a+nTQVNsIFg1VbStprvt632VXFRqC1EKnyrkxb2HPihIgho5NwEKPSvHaAZHHKziQE9ppma4pEncvUSKm2kC+wj2KU0ppWDFgW2TglKjktPHQn4RdONmzDsD17fa1/cPrWbsijKIvZdtFUpND+2ie3ui1ZaBt+zEnsn0EcqzKl2P8s6xNXkpLVnLDgjBRug/aAmLoQ9UlHUvxi3eQ+1iTWgCQllxeXBXDUQ/KjcMgwobwh99WKErwLQzVBoqOaJLzuhQbbqiEeGvOmzR78iEwoEeMFzR1sczZnxrzqOkyxCe8ynD
+ XsAiHVJo
+ YJI3dm2ZWGyWHkzpJqXKWzN8RL1cqyZuJTAaUxvWkNJoqZHZwrbMVNvYcy13yZrtyKseXdJOBcqAgmEVunYHiRfR0IYHWe/OxezRRZRZkdjrzzk5lmfvJXZULQQFiVy36I65k0gABLnWBIWKhRf+K09clK8pP3lP3NSRV88OwaPQs5M0Dy49z+OgGL+SHpDVKJerJpkiaEPL9FTex0t6hhFGdMxYftt120lEtruuVAgFAShUBa/Dk2Y6YgN5fFVAj3iKiwRa13beMsLjG2q+7kUL4UHz3baGd4PaLlHrEdb3RNnsEO4hAU8AM0IGmogi/jpUVHhAKde5ANaSe82tLpu8OUkdjbWr3yqj+bs2CtpdKl6mOJmiq4xkBYtOnTcqX1jzc+O4xl8klSSwGzahqRAYwSbSxfvxuFSKOpvuzwlShfCllMRzOKwuNNpSr1kgYqelmjrjMu5Qp6qlqGP/sGOz86dQwjXLiltxc8fq6bOlXLaYlqvenr9Z7Aq1hB0r2hfd5L/1MWXM7koIaKW4DkCw5nNBWlkxZfBpiK604nxAmEyxVzEWKUjHFBX5uFDxFI3rVD6mqsFTfhvyW84ER4NIX0z6sXfyge/J3dgRtNyhskC9hABE+Mm+NIoVq5vqU5V/5XShq6vmSqPCNEw1z3PQtF4ZmVA8iUG4isMz5Jb9ZCSf1LHwrbR3obsCFPKFnxTdBP8BSR6vYS58t1r0ZfHzEoOTLo/bYZiOX55OgXPMNeID0ECT9k2HPNCbLefdGkPyOeBrnTiny5vtJhboPxDtwLQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,66 +131,108 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Hao,
+Commit 19c5fb83f2a4 ("mm: page_alloc: avoid kswapd thrashing due to
+NUMA restrictions") makes get_page_from_freelist() skip any node with
+kswapd running to avoid piling on already-pressured nodes.
 
-thanks a lot for looking into this.
+This assumes that kswapd was woken to create free space, although kswapd
+can be woken up for other reasons, like higher order allocation
+failures. Thus, fragmented nodes with failed high order allocations will
+always wake up kswapd and direct order-0 allocations to the fallback
+path, even when there is free space.
 
-vmlinux: the crashing kernel is a NixOS build and is bit-for-bit
-reproducible. With Nix installed:
+This behavior was observed on 2-NUMA Meta production workloads where
+faults would pile on already pressured remote nodes while stranding
+memory on the relatively empty local node, causing unnecessary pressure.
 
-    nix build github:NixOS/nixpkgs/08d3a97586f6b6343b3b5e799980773629432610#linuxPackages_latest.kernel.dev
+Only skip nodes with kswapd running if the node is under the relevant
+low-memory watermark.
 
-./result-dev/vmlinux is the exact file (with debug_info,
-BuildID 8ceb20655c1e3f720b1b317dd5153cfe47001db2). It is prebuilt in
-cache.nixos.org, so it downloads (~256 MB) instead of compiling. If you
-don't use Nix, tell me and I'll upload the file somewhere.
+On a 2-NUMA VM with a 60G node0 and a 20G node1, with THP enabled=always
+and defrag=defer, I ran a process that prefers allocating on node0.
+With a fragmented node0:
+- Before the patch, 66% of faults were served from node0
+- After the patch, 100% of faults were served from node0
 
-Config and dmesg: I'm sending you a tarball off-list (too big for the
-lists): the kernel .config, the full kernel log of both crash boots up
-to "hibernation entry", and the assembled pstore records. MAC addresses
-and USB serial numbers are redacted, nothing else is changed.
+Fixes: 19c5fb83f2a4 ("mm: page_alloc: avoid kswapd thrashing due to NUMA restrictions")
+Suggested-by: Daniel Hodges <hodgesd@meta.com>
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Acked-by: Gregory Price (Meta) <gourry@gourry.net>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+---
+v2 --> v3:
+- Shortening cover letter, suggested by Gregory and Johannes
+- Collect signatures
 
-Other clues:
+v1 --> v2:
+- Added a Fixes tag and separated this from the other cleanup patches
+- Check zone_watermark_fast with no flag to match the call in
+  pgdat_balanced().
+- Calculates mark outside the zone_watermark_fast check to match the
+  style for the other zone checks.
+- Wordsmithing commit message to explain the unaddressed gap.
+- Yes, this is ugly. I have another series to clean this code up but
+  I wanted this to be a feature-minimal patch so that it could be
+  easily backported. Things will be much prettier once those are landed.
 
-1. A correction to my first mail: the 2026-11-07 boot had four
-   successful hibernate/resume cycles, not two (pstore only kept the
-   last ones). It crashed on the fifth hibernation. The 2026-11-09 boot
-   crashed on the second. No crash has ever happened on the first
-   hibernation of a boot.
+ mm/page_alloc.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-2. The overwritten entry is not random. In both boots it is a valid,
-   KASLR-relocated kernel pointer to the same image offset
-   (0xffffffff835ac1f0 after subtracting the offset, inside
-   .orc_unwind_ip). Whatever writes it seems to write a real kernel
-   address, the same one twice.
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 8532af052d74b..56121c3f9c4a7 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -45,6 +45,7 @@
+ #include <linux/mmu_notifier.h>
+ #include <linux/migrate.h>
+ #include <linux/sched/mm.h>
++#include <linux/sched/sysctl.h>
+ #include <linux/page_owner.h>
+ #include <linux/page_table_check.h>
+ #include <linux/memcontrol.h>
+@@ -3799,6 +3800,9 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+ 	struct zoneref *z;
+ 	struct zone *zone;
+ 	struct pglist_data *last_pgdat = NULL;
++	enum zone_watermarks kswapd_watermark =
++		sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING ?
++		WMARK_PROMO : WMARK_HIGH;
+ 	bool last_pgdat_dirty_ok = false;
+ 	bool no_fallback;
+ 	bool skip_kswapd_nodes = nr_online_nodes > 1;
+@@ -3866,16 +3870,21 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+ 		}
+ 
+ 		/*
+-		 * If kswapd is already active on a node, keep looking
+-		 * for other nodes that might be idle. This can happen
+-		 * if another process has NUMA bindings and is causing
+-		 * kswapd wakeups on only some nodes. Avoid accidental
+-		 * "node_reclaim_mode"-like behavior in this case.
++		 * If kswapd is already active on a node and the zone is below
++		 * its kswapd watermark for this request, keep looking for
++		 * other nodes that might be idle. This can happen if another
++		 * process has NUMA bindings and is causing kswapd wakeups on
++		 * only some nodes. Avoid accidental "node_reclaim_mode"-like
++		 * behavior in this case.
+ 		 */
+ 		if (skip_kswapd_nodes &&
+ 		    !waitqueue_active(&zone->zone_pgdat->kswapd_wait)) {
+-			skipped_kswapd_nodes = true;
+-			continue;
++			mark = wmark_pages(zone, kswapd_watermark);
++			if (!zone_watermark_fast(zone, order, mark,
++					ac->highest_zoneidx, 0, gfp_mask)) {
++				skipped_kswapd_nodes = true;
++				continue;
++			}
+ 		}
+ 
+ 		cond_accept_memory(zone, order, alloc_flags);
+-- 
+2.53.0-Meta
 
-   With debug_info the registers read as follows (faulting line
-   include/linux/alloc_tag.h:222, inlined into mm/page_alloc.c:1288):
-     RBX = address of the ref slot in page_ext:
-           ffff8f220292fbc0 (11-09), ffff8c3003325680 (11-07)
-     RDX = the stored codetag pointer (the bad value above)
-     RCX = [RDX+0x20], i.e. ORC table bytes read as tag->counters
-     RAX = -4096, so an order-0 page was being freed.
-   I don't have a memory image, so I can't tell whether neighbouring
-   slots around RBX were overwritten too.
-
-3. A suspect from the tainted side: the proprietary nvidia driver
-   (595.112.07) takes part in every hibernation with
-   NVreg_PreserveVideoMemoryAllocations=1. nvidia-hibernate.service saves
-   VRAM before the snapshot (about 770 MB written, 2.3 GB peak memory).
-   I can't rule it out as the writer.
-
-4. Every S4 resume logs "spd5118 ...: PM: failed to restore async:
-   error -6". Probably unrelated, but it happens on every resume.
-
-5. Since booting with sysctl.vm.mem_profiling=never there were three
-   hibernate cycles in one boot without a crash. Given point 1 that is
-   weak evidence.
-
-The crash is rare (once a week or less), so I can't reproduce it on
-demand. But I'm happy to run a debug kernel or extra options (for
-example MEM_ALLOC_PROFILING_DEBUG or page_owner) for a few weeks of
-normal use, if that helps.
-
-Thanks, KY.
 
