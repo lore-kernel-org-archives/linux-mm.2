@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06D28606A8BB
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 19:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02910606A327
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 19:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X2DcnQfi
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gWmPDlF1
 Received: by kanga.kvack.org (Postfix)
-	id A25D16B05D5; Thu, 12 Nov 2026 14:12:47 -0500 (EST)
+	id E70296B05D6; Thu, 12 Nov 2026 14:15:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D6576B05D6; Thu, 12 Nov 2026 14:12:47 -0500 (EST)
+	id E20116B05D8; Thu, 12 Nov 2026 14:15:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C5186B05D7; Thu, 12 Nov 2026 14:12:47 -0500 (EST)
+	id D10906B05D9; Thu, 12 Nov 2026 14:15:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6832C6B05D5
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:12:47 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CE088C0AE3
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 19:12:46 +0000 (UTC)
-X-FDA: 85427413932.10.907B568
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AC7F26B05D6
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:15:22 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 45124140CE7
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 19:15:22 +0000 (UTC)
+X-FDA: 85427420484.26.74D2A0B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 295C020002
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 19:12:45 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X2DcnQfi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8C0124000C
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 19:15:20 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gWmPDlF1;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794510920;
+	b=gMpyuqtVLoBIJNdOkxN4pfzuMAI2c977jrf3wfhdhoZ3dTRj7VvV8MEkG0HRi5z/rbNGyf
+	aAGwWus7RVWaO8TTiZra4SLQmIa5LCQ2Ka0UvYZO4HDUPV1vWTeie35ftuQxODC35tecje
+	TnGkkTJMjMK5ifLeTaPbh06pYUEuaO8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gWmPDlF1;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794510765;
+	s=arc-20220608; t=1794510920;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7j0/jh5K7WkVjbCX+ro6AcPTgGQkDu7OOgaa2OHvFf0=;
-	b=5cWOp/RvmA3XjU7Yy6Cwwo2eJo3VdFT/1zMlhahviOWc9GGEd110JoMNOdFrhI+yQ42Ls4
-	yhahTOidysncVCGKhYuCYnNneCjeIyWZ5k3tSD77/UcEaKUTCSKzNUlYNTx0qImPy3tKt9
-	J7GMWjUhdfiF1mtaTwQ/As7qYYNoaQM=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X2DcnQfi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794510765;
-	b=H+4faNlkzLsIArJTc6wP9NMTghyE2VEogc73CS5EBPIEW6mvFvqUz6PqkJBw5H3B4zek1U
-	d1lIp5uSrB13FnOsyE7u9jebVL5GyGW2VWj2NxGPdYaGD0egIOc6aqWU7fms/DDqVCsn5f
-	yHjtTR8G+5aN9NLAVvPHdNBTM4BRkpY=
+	bh=uQqZHDN7sbU6LhPjRDha9kLuoQ88Z7yb10zf83LJBxI=;
+	b=48ksxUdSVnBg0IwN6jcqvx9AVZ8Ix/an97EqJWHwQTxUIOIA134JOzXCzZthUJCoQWSqLX
+	rH8wMe/3GMx+tZx2cQA1xRBwlrWSBpy9KLTwI5eRGnXS6PWg1tyTe8kk3rlHUNTFWzQ5x7
+	AiuPJS0sbrFR9I2qGGRGOc2AWf8cqPI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5D63E40729;
-	Thu, 12 Nov 2026 19:12:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35DA01F000C7;
-	Thu, 12 Nov 2026 19:12:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BCEDA43967;
+	Thu, 12 Nov 2026 19:15:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B7C1F000C4;
+	Thu, 12 Nov 2026 19:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794510764;
-	bh=7j0/jh5K7WkVjbCX+ro6AcPTgGQkDu7OOgaa2OHvFf0=;
+	s=k20260515; t=1794510919;
+	bh=uQqZHDN7sbU6LhPjRDha9kLuoQ88Z7yb10zf83LJBxI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=X2DcnQfispasGV6jq7eKqrWXQYe9QdoB0WVIKnVBn+qVUXoDQaMa2JP35NqG0rUDZ
-	 Yrmii1CSQ2kC+kVMFrVPqXYqjbzLC+HPEtZK2S2L8c6rNB2GFxYyNJPZ5sRzmWjMFu
-	 +dIYoXUFT/gQ+opKnKXgubaf3HqIYUBd2dghgWCQthT19T/pjLsHIlhSv2PdGSxZ72
-	 Y6caRTdN4ASxjDMe8nlGd346MADQ4oacttKHM+fIxsG0Y7JqOVkTW9E8QoISZYwDzA
-	 cnXP1rnM8wHxMGKeIsrR63rxWcT49L3AMLJO5Cgb7ay9St5N9w6vYoCxGoRx1+yipR
-	 fXEha8CbDyJjw==
-Date: Thu, 12 Nov 2026 19:12:32 +0000
+	b=gWmPDlF1val16ZjKXedNPnCxMzpzAng/zfovWxeBLCayEGTOGGXxVM6X+Ll7q97eg
+	 cWVNr3znfkJuOln7L/5gSTA1SbO4ytS64tzUhmAFsXyS6DcbR66XqNdKczjDkGNKcV
+	 LsJfrOMF+q1iPixZLl0yJ1oGedZkvah1XfhqyteTfwr5QdwGSGYoGdrsiTK/fg31og
+	 6TWHhiHZ/Iv5HKOGDXpsqgIQQPVU+vS0KWntCndnK/xtEdHSdGVMARu9P8h7MLfW6B
+	 UbKMvS0IUQykAIChWVCk3U2V7NP9+NERWtYKYQvaYUAmPJOBKSwc3aHEayKyv28ONs
+	 mwbyYy33ozMew==
+Date: Thu, 12 Nov 2026 19:15:07 +0000
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: "Gregory Price (Meta)" <gourry@gourry.net>
 Cc: David Hildenbrand <david@kernel.org>, 
@@ -81,30 +81,29 @@ Cc: David Hildenbrand <david@kernel.org>,
 	Chris Mason <mason@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	linux-fsdevel@vger.kernel.org, "Borislav Petkov (AMD)" <bp@alien8.de>, 
 	Mark Brown <broonie@kernel.org>, "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 07/13] mm/migrate_device: look up fault folio after a
- split
-Message-ID: <avYPiLcx5okHyOZG@gremlin>
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 01/13] mm/mmap: free gathered pages before MMF_OOM_SKIP
+Message-ID: <avYQAYzkmS9Z8mcZ@gremlin>
 References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
- <20261111-mason-migrate-et-al-fixes-v1-7-3d2454362e8d@kernel.org>
- <179450492332.482102.8905567682196853763.b4-reply@b4>
+ <20261111-mason-migrate-et-al-fixes-v1-1-3d2454362e8d@kernel.org>
+ <179450279073.482102.1691484916250559829.b4-reply@b4>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <179450492332.482102.8905567682196853763.b4-reply@b4>
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 295C020002
+In-Reply-To: <179450279073.482102.1691484916250559829.b4-reply@b4>
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: ze35j6c97epwnm5qrc9bgf3bf3wwfxy4
-X-HE-Tag: 1794510765-215187
-X-HE-Meta: U2FsdGVkX18c7oCklLVbMNfS/iK0gg3V2sWd0jNT0OcU4w+Zk7UOEbzLmGs+A8vXvRgIr1fwum4QWRJXojZth5ajQhKHOZeHjPzEcAVGMewFndxhAO5qGP9BlLs5XjM2+5vtCfjSNC1lp1dnECA8tV/URi5aeP2EBFWvfWHCo5Wiv2wH3Xf/Pspc1+w9Ae5hL5HkubsChQVDVHr5oP8aFJEJgGkZR1C+xpmJlk6KwGf96q0zEGRDgbz5gIwvqRDojc8IByhVyzJxV8J3QEDDR7j/ZnRGrx0xELrp7FQ7AQftJDtFggLoG62Xpd07ew1QUMbCHq3/YiilP4qTLABpFhcvCpDhib6aEb4GIdfUlaAqVw65Dqaokjl3HTeAM7skf7zfLVXdVCzxOWG15r6854YhJdIOqFW4AM2cuEQjbzEjJHtyszKaoQ+5/PpO0HtHyMH0KWI3D5vYxMSxKw51row/2ypq5nin1wu4E2J/SRSJdbXe5zQczlo9WYyObJpxPxSoQUF3R2JntNQyeWPdErWubBz30Ts1m18NTNnxdoVa4EcfMuhBOSdx+7B0NpXf+Kd0oItt19ZuleBmCzkg287h3C1rOwsvjPLMPI26PwC6T+dP0IQCJ+7jmbQvJrqNb4Q2dNDlLkHGVC1gBifId8Abbx139RZGr3eLEc+Y5d2l0wUL7VbwHbFzjleohzU6QXQn9Qu/QxPEe/CiWcyAPYgKqm25MSnqmd9fY/Mes9/MZohjncNrr/Qhv7bQCG9LQuxhrz41H1cIXC2tFIdnGMPKRNXFsf625krFbjdL9+cuQ/AUfbgybQ3btwMhWG78e4wy7JewhZyphY3zlf2Na1jY+oncT8HXHPCKiwAqQ7/hQL3xLnhnuuRcS1mfCYPokqjLdfJEoCnOq6J/ThUyPOKGXDnu+ktH5s3JWfJIKOGcEgrovUgZaoz1TZG61UvLttaNyrMevkEEw2L0Jcr
- 3EoMwnbE
- 1G5QrU7sa57+4r2rg9j65MH/FQbIunjOcoiGZNFnLa42EOcirShEv3yfeOUzaz31XDHMk/XaKVDCHqGNSMsq6DK9z6+ax+3wYuVyqcRtrBKo7yUIiazhuDpTeVV8z07wpzajDNj/Ck9/xMsYfabs41YEcLSfoB7KDZydi/JnQzxc7m5wnRjpddvuzevxaIzY1YzG8GgoqXi9mFXFU5ZC6Igl/EONP0OKHbZ5MGziPJWKnqDnTwv3a6AX/kKqGh2WPsbSD0kjU4xU1zPupil/QOdcQXkHYe08j1yYYDEYshaxIp3nUd0kBf6eNKKXUR3RKR4TKCVmE88FZH8GCTQYFgp4dlsisAI3IA0OMaCneonEzaOjVBb5a1HhkVV/sZZ8DKnvAEwcPATiSRJmRpdlnVknnESeR7kgBmIildvMJSjN5+cC/kg7P+hpMX+Y7iVMFaXbvvuLbmE5vHmnrvOaPDCBxejYDBP7naw7S7NQXUNRe53qChsn82oyS0L2pe0p0sPCSZ0UoPZ1Z4TY=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 8C0124000C
+X-Stat-Signature: 566ex34phejaasa73e6je8tg4a79nj9s
+X-Rspam-User: 
+X-HE-Tag: 1794510920-82480
+X-HE-Meta: U2FsdGVkX1/rjewCWS04hNZ8HReabpw2enof64pempMHsN5nC92Rl76Tk0krEGSvjCYEXkpK4ctIo8RSWQN+YZeU9+7uuc611Dj+L9QLRAhkTNkG/XFXnua/dW65IPWbDKdWb15d5ri6d4oNGwfxTqyu7pCQXaKNtSWhdwF/ZhCpzVObxY/2EmoU1/CgobuijqkcnYtURjYCiJSkbudDcUqkMaQxoXNnHrOqkFiYhF0HSJtD43Qw224NahNpfoRhUBm2BBsNLKUn9WAcoZCwj8B76eMTFDCLXNKIJ2K67V3RNUMuXuiA0MBI3br+XXCy/64NBZUm+HgxtT95Bug2LvdIE/yrrD0TRqUEf/fA9rvWuCytDndKnqjDxy59Vsd6Zntb5TuptcX7aZbv8VvCZVecBZl4wx4TJ/YL/3awReWxyLCQXoVRcK6RRDt1O21FawbzmlJO9Zm8qkx3cRqY6+l8tVZZbgNbLFKMbjtRliaj9fylYq4/nSkReeghj4WapxCeX3wwyfgqm5lNgxs76OCEhvHEK4JKsqBBW1uTALkM5HGvqpsa4GcnGtdtq1n/zAuZACTSXYigWkz/1carFRvE4xtKR6HsDz+nilgT5V9wO2qUXG2FUC4wzPi4PXo2UtPjL3ZCSkSuI+bVMBpAzFXT+u7S8RJRc/oY5nES31S6JcFenfIBR/GiToUg0D9vndLh5C8jK98Ij9+QuQJIcoWaHZkIwADQi40iq1j++DFSDH61MqhOtGso2V54GECKbHrwkfrEJpV68bgY4oSvBxNxWrMn5VS5qsB3fsJTMCnFXSPlFJ6nkKWSnafAJ274tyvjahJywBsdOQwkM9vGCVDWotjitTr7tjQ3Ue60ptJl9Qi7ZuXLgIk9jkax8wQBsh1lN+wrlFQhzoFM3st1BIHM0Ti+laHGIRssMBQ4jEVpTI8sPI3fwBTCTTNdoLMQd51tIUZA0MvVG//RR9m
+ kmBKWKBS
+ dALs0HBj4ZIREiOTI+hxRMsDhc3KL61PkDUZHXcEPbKSaAy2QpxpBHC+4fNIsgoXhJcRHPpeOr0smC4R7lOuKChBqjYnM4h0xKJTfXnade8lpYPJgXGc5ZlSp9abZYbvQCcvvAKORxCJcLfWoMQYECDaFf6pVKQFIpMvjWmHTCoiPTlDJuA7O9fvT3EIMGdl9Gor3TaPaKdvT5aZ9pPy//lTfxp2mefukOF6xaMjn4PRBdpcqnQKU7oiZzkaW4b3kz9MRfuM43v1lnt9ILWkS1nplzkC4XjxRwk0qzrUGW+U/0pBju7Q6Qt0Z+vZ/KibzroCru227J08tlsZKb9cRfmpGDPjohn0OTkzJVYsBmaHQftedyeAB1GRNOhI5YGJP4jGtPVszBwSfcP9Xeza6RuBss1INT8NWYlmxt0NSB4pgzAtUNW0Wk4SZoWP2AdpoAWzQfU65cQVQNc8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,37 +112,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 12:35:23PM -0500, Gregory Price (Meta) wrote:
+On Thu, Nov 12, 2026 at 11:59:50AM -0500, Gregory Price (Meta) wrote:
 > On 2026-11-11 18:13 +0000, Lorenzo Stoakes (ARM) wrote:
-> > From: Josef Bacik <josef@toxicpanda.com>
+> > The OOM killer can quickly trigger again after having selected a
+> > victim. That victim might not have freed its memory yet, but its mm will
+> > be marked MMF_OOM_SKIP by this point, so the OOM killer will ignore it.
 > >
-> > migrate_vma_collect_pmd() looks up the folio of migrate->fault_page once,
-> > when it is entered, at which point the folio is locked.
+> > This can cause the OOM killer to kill an innocent process when the first
+> > might have freed enough memory to relieve the memory pressure.
 > >
-> > The fault folio is assumed not to change after this, however if
-> > migrate_vma_split_folio() splits a PTE-mapped large folio which contains
-> > the fault page, the fault page ends up in a different folio.
+> > Fix the issue by freeing the memory before marking the mm MMF_OOM_SKIP.
 > >
-> > Resolve the issue by looking up fault_folio again after each restart of the
-> > walk.
+> > Note that the task which calls mmput() might not be the victim - if it
+> > took a reference on the mm (e.g. ptrace), it may hold the last reference
+> > and release it when it calls mmput().
 > >
-> > Fixes: 022a12deda53 ("mm/migrate_device: handle partially mapped folios during collection")
+> > Therefore we cannot rely on current to tell whether the mm belongs to an
+> > OOM victim. Instead, partially revert commit b3541d912a84 ("mm: delete
+> > unused MMF_OOM_VICTIM flag") to reinstate MMF_OOM_VICTIM, which
+> > mark_oom_victim() sets on the victim's mm, and check that.
+> >
+> > Reported-by: Chris Mason <mason@kernel.org>
+> > Fixes: bf3980c85212 ("mm: drop oom code from exit_mmap")
 > > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> > [ ljs: pared down commit message ]
 > > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 >
-> Was able to reproduce this, and i think this also reveals (and fixes)
-> another bug in Nouveau (memory leak).  I think the Nouveau driver still
-> needs a patch, but this otherwise looks correct.
+> I was able to reproduce/observe the unfreed batch and the second victim
+> issue.  In the base series i could kill a second victim with the
+> in-flight oom in about 26/512 attempts, and 0/512 attempts with this
+> patch.
 
-I think there was also another in the series that touched nouveau actually
-also... worrysome :)
+This sounds a little like an episode of Dexter but thanks :))
 
 >
+> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
 > Tested-by: Gregory Price (Meta) <gourry@gourry.net>
 
-Thanks! :)
+Appreciated!
 
 --
 Cheers, Lorenzo
