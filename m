@@ -1,84 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34E5606A33D
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 09:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E4C7606A33A
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 09:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PKhHwF3j
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ig67/Q5U
 Received: by kanga.kvack.org (Postfix)
-	id BFDFC6B05B9; Thu, 12 Nov 2026 04:26:58 -0500 (EST)
+	id A2D086B05BB; Thu, 12 Nov 2026 04:28:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD6386B05BA; Thu, 12 Nov 2026 04:26:58 -0500 (EST)
+	id A04BB6B05BC; Thu, 12 Nov 2026 04:28:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AECA36B05BB; Thu, 12 Nov 2026 04:26:58 -0500 (EST)
+	id 8CC726B05BD; Thu, 12 Nov 2026 04:28:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F9CD6B05B9
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:26:58 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E34081C3CFD
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:26:55 +0000 (UTC)
-X-FDA: 85425937590.06.1190722
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EB616B05BB
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:28:34 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 57309A051F
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:28:32 +0000 (UTC)
+X-FDA: 85425941664.26.E99B567
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 189261C0008
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:26:53 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PKhHwF3j;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 89C2BC0002
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:28:30 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ig67/Q5U";
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794475710;
+	b=oATOepP5Zxn5fZ6fLvqiM6feBikPfNfGAuXepOfR0TtZOQPRCJ/E5dCjijTkt9hQTlwZd/
+	2vj1JobeYm07vIOAC7618148ECB90oP63Tx1JsgHzQuaF3REHM2kElEa87CFKo4q+9gVW6
+	i1CUENNl0m7VRHodoIKmevk09j4hEhI=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ig67/Q5U";
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794475614;
+	s=arc-20220608; t=1794475710;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6llN3WGsJ9HH0olCgh6YbKzYaA4IOfRnHqvyyuyt2z4=;
-	b=v3LrRLjdq/8DG0GUkGeUPFMB9IIQIJ4RjFih5qfxeR33QF0c50sURp6Yn2vGDpcL2sLBXi
-	G4wfFf+9RqA+b8uNudR5YWgr9mmM7OwLrfPX3CJhHGEAN3m6jMG9UXjLJHmmOzirS5JafJ
-	RtAfZ1R3Y951BWL1S9UE3VrA7chDFA4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794475614;
-	b=V8qt6bVz0lsRgFhHeOfsYqSx56rprvs59iYBVDaTEvWjJ0Pb+LrJlR71nSKy+oFN9KwuUD
-	5ZgTLpggK9NfGTPFAuOs8N4saBcmFUjzwU9MvTEbVMTMnkL38Hi6m/3O5xN4ZkdcFvnD8Q
-	fgmHdfiw0tD/1QkXn9fKo5ZP3KRyZtY=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PKhHwF3j;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=qhziwyxwKo5hta1/ka+DLwPNn82EMgx5i212ZpmjGxc=;
+	b=s3sLERTFDsuV1dM7lFhcth408bKGplBgKbVUPHp8SJbpp2dXEGNk/ESfrS8foynWtGVtK7
+	lHET5ODsTauDMJyVZV/bzTz9jrkR+mv9ZmxPbgUhTkMkbY6hwBtZLxy6SLZycZJNvafz7c
+	dtGWQLI0W3gMrobeSSWo2bxP0+P664o=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3D9C046929;
-	Thu, 12 Nov 2026 09:26:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684BC1F00A0B;
-	Thu, 12 Nov 2026 09:26:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EFFBC4006C;
+	Thu, 12 Nov 2026 09:28:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3221F00A05;
+	Thu, 12 Nov 2026 09:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794475613;
-	bh=6llN3WGsJ9HH0olCgh6YbKzYaA4IOfRnHqvyyuyt2z4=;
+	s=k20260515; t=1794475708;
+	bh=qhziwyxwKo5hta1/ka+DLwPNn82EMgx5i212ZpmjGxc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=PKhHwF3jHeR+K40Zwx1KzkLdBPuVfLLkSwb9frVG7uXK6WFgawSqR3KQldi7tr7iY
-	 KGRKzEoZ4gk5fE1MYCq2lzljvS+G+b0KJXvygqEpJQmPx1/4BMj8ZAmZtgcMaI83iP
-	 CvhYFFin/kHUZ1Dkh6NK6G+SHd1+ycJ+OGkFWtG25ABHxh7vwI5CCXvsy8eK7oumKH
-	 yjW9qm7ytfFqu1YUCKn6EmUjibHUov6WIsDLm94DFRarZkSIJRK8EeBeqV3CbD/4Gh
-	 GwXtz8FOole5V0AyUvJb9FyIJ3IUJyWZwIuIbwzcAeCcOcKQmiTLyUTIru6Nawwyqi
-	 EM2tz8rbQ2YIQ==
-Message-ID: <a1ee8e44-5a3b-4bef-aeff-eb19d354f767@kernel.org>
-Date: Thu, 12 Nov 2026 10:26:46 +0100
+	b=ig67/Q5UyR7u+l7reMcBd+/6d+1hZBrZuflvI8fVlnKGwRPGSovuLhYFlD2XwshDx
+	 k4tWIwIpZxgVS+CnHDuNFmwz2y0IQR3KTMb/WgVe+IP5VJD50E8CqJuLwUg4OFGy7J
+	 /TdABenpbG+NFE26X1Tm6gzyn6qutTdeFFLriGI/xhqj9QTek90gHYvZIWgj/2lFXG
+	 2LildKJmwvPv8iFpkgWQS+ehmyT34Fvl+PtVOquGQFCrgIzpmgEXqq5UL/M8eqPCDe
+	 GBAG5HSArBfaL5Jmk6mQ/h0lgMQxHl0tiz5Vcr7wEwYGUgZ9RYFsQdEK4W/u5oxatR
+	 EKcCPEcC8JG7g==
+Message-ID: <4d6a3d68-3fc7-446e-9f59-f61d7475e22e@kernel.org>
+Date: Thu, 12 Nov 2026 10:28:17 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] mm/khugepaged: release contended mmap read lock
- after scanning enough VMAs
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+Subject: Re: [PATCH 1/4] virtio_console: copy pipe buffers in splice_write()
+To: Arnd Bergmann <arnd@arndb.de>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Christian Brauner <brauner@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>, "Kirill A. Shutemov"
+ <kas@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Miklos Szeredi <miklos@szeredi.hu>, Amit Shah <amit@kernel.org>,
+ Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>,
+ Bernd Schubert <bschubert@ddn.com>, Hugh Dickins <hughd@google.com>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261110-khugepaged-latency-fix-v3-0-6eea743cf9a3@kernel.org>
- <20261110-khugepaged-latency-fix-v3-3-6eea743cf9a3@kernel.org>
- <avNrPKIoZ3JHiAjh@gremlin>
+ Andrew Morton <akpm@linux-foundation.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
+ virtualization@lists.linux.dev, Netdev <netdev@vger.kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ Malin Jonsson <malin.jonsson@est.tech>, Richard Weinberger <richard@nod.at>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, Nishanth Menon <nm@ti.com>,
+ Frank Li <frank.li@nxp.com>
+References: <20261110145241.536019-1-kas@kernel.org>
+ <20261110145241.536019-2-kas@kernel.org>
+ <avNuQqLf9CG9dSsE@casper.infradead.org>
+ <20261111-heimreisen-ungeziefer-empfunden-a892571f2c07@brauner>
+ <20261111-thunfisch-wirbt-waldrand-822275b2d3b1@brauner>
+ <CAHk-=wjPY=kfgnmtx4COEQjD5UzKx9m2-=KLGAZP4d=RKEH+pg@mail.gmail.com>
+ <20261111-stumpf-montag-miterleben-c4e2feac8090@brauner>
+ <CAHk-=wjGXBnme-N+HvbzHH40ftb7Suc=kZVT5cuintQWyMHJ7Q@mail.gmail.com>
+ <e94bdf7c-eae6-4f64-bf93-0aeedca1a22e@app.fastmail.com>
+ <32ad880e-5946-4703-9c6f-43ff59da39af@kernel.org>
+ <3eb60948-8fc9-4682-87c2-c113e54e7d4e@app.fastmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,21 +144,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <avNrPKIoZ3JHiAjh@gremlin>
+In-Reply-To: <3eb60948-8fc9-4682-87c2-c113e54e7d4e@app.fastmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: eu8bhpmrfmshbah7b6bu7kpujuasweu3
+X-Rspamd-Queue-Id: 89C2BC0002
+X-Rspam-User: 
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: ydsw8snjgimhtbgkejk3fb97hupwg65h
-X-Rspamd-Queue-Id: 189261C0008
-X-Rspam-User: 
-X-HE-Tag: 1794475613-503514
-X-HE-Meta: U2FsdGVkX19xYeeKE46b5SgGHpbPwVIIrYo0ainub9Z2Vt34RfcYLaceQcD9O+ssDpiwZ3naRr85KmZhaj7oN0dQ5ju+6NJywQ+gLpsXzQtrZF8o9g4Qbq+HjbPWVP1v8dMj4qdU252amKxW/i79tCA41BsmoTnXED3+Jv0xPROTgy5Xnvyy4GE4U8Y3JkZK5NKcVnJpcGJ0k6mfL8RcMN/IfHvNMo9uSzkayMzkTcy8qqEXnp6EFSBUWheIGKTrEwK4aVRwkPR3T2U/c4Gu45Zom4niseaya4qcYfGGXJRCxGw3cphJkTgywss+NghWHCGrU++K2FUZJDvrK6zjaC/U1f3YxHuv4AKal+mqt6fV7JBm+tzifjru2PLDuExxdrDg7NMWeRxfxFQPjCX1Aem1MLqSueM6Iumgi5hUcnnjjqsLcR7bEparmVpixpSm0flqMlbA7ww6Dh8Fn2ZvN3l2SMVxyuUpqyFa0Dss52/Jx5GW7YMrWAgeh6Dq7eexaFVGsez+0s1Hr1MRsCfKRsG0JvdfEK2Ll89Aydk40Gp/+QrUQdpqWLxgIDuusLbUPI88z8j4mMd+7hLFx6Y9/ynXxg62Uu4KW575zK2N9+B7OWFWUE4Wc2IZQ9G6FKIC2TZK2WWN1oAP3XyVjIvl+sn40sPMHTkAgB2i3lVKYNxyp/qXwZJAmZCIq6ilJJhBpjy8/33yDI3jCo2/sk6LszwLadxK/o11jYjwtXptlXIsC6Fl2Pz1f+whjK1469z3qfo+E1YHfhbWVBw++mCjgR8ZFIDrnVn/HHH//eWjvNuv7l4PDgEnYugAslxZ47PTDJWTkYzhyixQKsR9O+bHrM2fX/pkUN2KUMxvszuKUP+KTs3BZhBm8X8ugfVpkylkWhj0RbydSoaSVMkJAZkto8iDsYzMgmFR7Y46ye9BR2B2zgLZy6NU1k8G9G7Qf/VuzLRSNvLWU7Exb474gS0
- M0Bd8YGv
- 1y0/xLBy6HLTqKztJaSeAzEdC610N85VTevNX60ioHCEQoP3Xp65hMf6TRwyIA5SfH7Rvu0SmJ4N/uSwis8EYibeVY5VpZzsifrG/Gw55ywW72qXdp7vY0dMGkfe1wXXEAu2dUe9UyQKYtW1Znaoz7386GEfX+SXGrZVh+mhMj2h3MoWp6YdKBGKQ3llKHx8b6qGcqMmo2d5+LCwxqw8f82GRRNAEflQeinsMskr6MJp+bkYMPtCVKtQY8VzkvuTKO7qt
+X-HE-Tag: 1794475710-570903
+X-HE-Meta: U2FsdGVkX1/F6UmwVg/mpPA631OnIjH0AreXDd1FHSrvoJ9RCvnasxLRrDitSikxdfQAL2UZ2LC+HZ3ZiUceLZboR07m46pJtnsS8dAYL1fpwruuQX6AK4NxRk1eLENu1OOC/e7Gy/wi6hA0nDYDbdOFY6iWYGU2hLmmf5anRvmYrrZw5EvgM5BEDjaqdMf7adQ2UXhsLrgQvVu+W4zhAmxy8KA3y7UfFodp7mDeKtZTekZkSYtLLu1qVhmrunQFAMgbExOojHHp2SxfzIv06R3Ure6SlVdud3dzJHqytwKXxNB0Kw+VowMs6uR4taK96lkBzy0XUnjPor46FnJmu1cUFwZNZ6VGME88d/1HbpiWKt5wbpvSbx1dOclnpDmFkrCQnwMiy3cUpNoE4F8Ya6Jhs3wE5ujCcE0dwN4V0wbyc0bdGvbtKRk8Yeu0A0MO1QyJ5lt7cXL6WEGERoPBdee2irWPz+liiCVVekbjAWcrI78dR73gqi7GQRDUg3dDq9nS1jAjnR6zaf3MeoBf9NzmZJtmu7xMq1A6BrjewSay/9G5oATd9XUiYjrmuWr79A95+LPn2B6N0v7uzn5fTjBezdZRsIhXMrxzfyu5mY2XuTUEVlL4tH5Kb8v2Gmqlb7BdKo+1CUqjMgNhXR/vlb11xa2pbwWpgVuaIV6Plej47YKIWxQDapvkChO+/uy1+j4my+i7ghs9zBMEfuUDG07HNp+cdHPP+hjGoBg7wG5mHH6QB7EshUBHSXhYAm/mNdZIAMWnJjMsAQqIHlX6ZzP8wYrZtL2kE2WHUAT4rh7ojuggnDHcXylN12ZBEcSlNHNCBKpTUsaJilHV0WC52VwWq0h/0z8qd11yr9QNQicdaRhKVLqxDgMq5YTHSov2Agq/xcKpiJkoOMcYAyyuKNI6lM9nOZqCrYvyPDPIVKMWgOyzrU84A26RcLWUamyjah5ZnxxvXkchqgBadLu
+ WUTQ0Tbq
+ GwSl2HJHJYjOdVhyf84y8qz747R+DRi0kPo6V7fr42r1TiUJ5scp+xIMG/D0Rja6ST5xNeAKhEbl0n79Ze1XyzlV61h5yIBb78sr4PXciH6D4jORN0MJAxJMr3dLZqpEFPMK9D/dQMVM+lqZN790upieAudHWHmZwz93QD7zoiTen+67oh+4qRnrm5NQi7vYvL9NkBLaeE8g9ZQPZCqhp6j1lWXIYeN9I5IIJ5WQKim2sGGBiZ0fLlOu5Aeg52MTaN7WXhDLw7FRBJkNSPTO4G9Vwqn1okBobU4rfjJbDK7G2yqDrmRcyzcS1zilaM+U0x6PimKcKqTgCyDcnpupt/LeIc3wQqA8N5kxVY4btb54r54DNsq5WHXlaO74PbiXqklyNR+mMJd4UBhh3MK7ZJNeUrIYfgsQIoYrk8jTzpdfgNIv+vjoDqaOet0jwI8U7fCT+a7cQZOBzD3H4HhpR7ACREb0yDp0timVUU5XUkrnsn/1Xf1atpPqrZ+zHYCBYjHUp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,41 +167,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/10/26 20:09, Lorenzo Stoakes (ARM) wrote:
-> On Tue, Nov 10, 2026 at 05:19:13PM +0000, Lorenzo Stoakes (ARM) wrote:
->> khugepaged walks an mm's VMAs under the mmap read lock in
->> collapse_scan_mm_slot(), checking for ineligible VMAs first, and skipping
->> them if encountered.
+On 11/12/26 10:25, Arnd Bergmann wrote:
+> On Thu, Nov 12, 2026, at 10:09, David Hildenbrand (Arm) wrote:
+>> On 11/12/26 09:55, Arnd Bergmann wrote:
+>>>
+>>> I tried to push for what I thought was an aggressive timeline
+>>> last year, but that would still keep the Arm bits for a couple more
+>>> LTS releases and only gradually reduce the scope of highmem in the
+>>> meantime, removing support from architectures, file systems, and
+>>> drivers where possible. See https://lwn.net/Articles/1051010/
+>>> for a summary of my talk in Tokyo, including the slides and
+>>> a link to the video for anyone wanting more details.
+>>>
+>>> I also prepared a number of patches towards this, but have so
+>>> far not been great at following up to get them merged, sorry
+>>> about that.
 >>
->> It charges cc->progress 1 page against the /sys/.../pages_to_scan budget
->> when these are encountered, however only checking this budget once an
->> eligible PMD-spanning VMA is encountered.
->>
->> It can therefore hold the mmap read lock for a long time if there are a
->> large number of ineligible VMAs present in an mm, over which time no mmap
->> write locks (and thus no VMA write locks) can be acquired.
->>
->> Address this by checking whether the mmap lock is contended after 1-10
->> ms (depending on CONFIG_HZ), i.e. the granularity of jiffies. This is a
->> long time for a lock to be held, so is a reasonable compromise for
->> determining when best to do this.
+>> I think we can already start at removing CONFIG_HIGHPTE now, right?
 > 
-> Oops I left this in from the previous approach :)
+> Yes, I think my patch from two years ago still applies, see
 > 
-> Replace with:
+> https://lore.kernel.org/all/20241210160556.2341497-4-arnd@kernel.org/
+> https://lore.kernel.org/all/20241210160556.2341497-5-arnd@kernel.org/
 > 
-> 	Address this by checking whether the mmap lock is contended after 1024
-> 	VMAs scanned. This was measured to take around ~100 us on a fast
-> 	machine, and given VMA eligibility checking is a light operation, it is
-> 	likely this will remain at the same order of magnitude for slower
-> 	machines.
-> 
-> 	This therefore establishes a reasonable upper bound on how long a
-> 	contended mmap lock is held.
-> 
-> Thanks! :)
+> If not, I can send you an updated version.
 
-Fixing it up as I am applying :)
+yes, please, that also brings it up to reviewer's attention :)
 
 -- 
 Cheers,
