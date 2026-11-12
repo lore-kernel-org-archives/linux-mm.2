@@ -1,81 +1,85 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECCD606B389
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 08:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CDA66070783
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 08:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XG5g/nm+
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jqYvau3y
 Received: by kanga.kvack.org (Postfix)
-	id D6AC76B05C5; Thu, 12 Nov 2026 03:33:10 -0500 (EST)
+	id 5AB806B05C7; Thu, 12 Nov 2026 03:37:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1C546B05C6; Thu, 12 Nov 2026 03:33:10 -0500 (EST)
+	id 5828C6B05C8; Thu, 12 Nov 2026 03:37:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C31CA6B05C7; Thu, 12 Nov 2026 03:33:10 -0500 (EST)
+	id 498046B05C9; Thu, 12 Nov 2026 03:37:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C2416B05C5
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:33:10 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3BF83120523
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:33:10 +0000 (UTC)
-X-FDA: 85425802140.01.BF05A78
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 6F551C0004
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:33:08 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XG5g/nm+";
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C0DB6B05C7
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:37:07 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id ACC941A0517
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:37:06 +0000 (UTC)
+X-FDA: 85425812052.30.5169D3F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 0297FC0007
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:37:04 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jqYvau3y;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794472388;
-	b=PNC67/5vbw1phmORlh53VDhPv4zloVe/TFMEB3dEjUwz2RZrgTHgEm3jifofpu1A3fRHZx
-	9dQNyHKkoAr73ZDriiaBTDmjZKh/oxATZfyVVcnJD7Kpp5nnGG1VYPjGHY0MI4H/QZt331
-	c+EKan4hvAHA+cYYGpgtNFUyR/HIc0s=
+	t=1794472625;
+	b=lxpRkSTSPMDrJcois5UxxVeCGctO+Mm2xKCGRkO5Hvhd3qMOxAu3+GvCjlUAALoT2VMIKR
+	Vo4j+aJ+QyL0qGmtHG6dV5apzvsDNvrx5b9BzDN4S7lZv8F7EdMWL0WKWaZj0AfP1pCV59
+	KJAEWwBbYzkr+dD8wI18QvMuXSy7pyk=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XG5g/nm+";
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jqYvau3y;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794472388;
+	s=arc-20220608; t=1794472625;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wHiIDa6cL/vpsXtyC/9ShVCBR8lPrdKhQ+5jGKW/U9k=;
-	b=Fq1NtLcCHySd2FX0u6o7igCy65y2Z7Jmr0RR7MUIjvuSUnocxi3WOywdykdf/uHxrJpUSX
-	4+wsNnYN2wEtPXWEViOoNwgNmDNQZkb4Ip0t5YcXPBVrl0RRwJ75pA74fi5qmZ3fBhx9Gy
-	OWzp9oc+dnPym6AG0135ULGu6qOHcLA=
+	bh=/yEdPtHpJ1NtcQC60gYn0MUtGO5PcvthVLd0v02et/I=;
+	b=5yYxbRboMZOB+cfiPH0JxkSAo6sclrIXeJEK8pPaZLNUydVIrrbNSS3Aw+i/cSqTHt8Igs
+	lr6nhL6qAKuABgXIRbK9IDHjwe6O1YsAqjhFg/MDIzG4a+zVQSb+3nO2fsW116pOY99IEk
+	32XBSHx/TxO2bm0h5LX8JE484z6O7HA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CBE7D47901;
-	Thu, 12 Nov 2026 08:33:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C2451F00A05;
-	Thu, 12 Nov 2026 08:33:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7CBB6611FD;
+	Thu, 12 Nov 2026 08:37:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40DE1F00A13;
+	Thu, 12 Nov 2026 08:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794472386;
-	bh=wHiIDa6cL/vpsXtyC/9ShVCBR8lPrdKhQ+5jGKW/U9k=;
+	s=k20260515; t=1794472624;
+	bh=/yEdPtHpJ1NtcQC60gYn0MUtGO5PcvthVLd0v02et/I=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XG5g/nm+K513+nhn+5OndsG9mSGbSKzvtgyM6i/B1s7gs6BBtrMqbTQEB4nsUsb8Y
-	 oQBiqPksMq2HIM1slpfSCtELJa+h1P9qduLsmng/X+fuofsa/4TxFbTx0cExrAvgN0
-	 4TTPv5gaIf8qxki3ZocDSc0+llOvkYB7jVhO9XIdEtTU94MxWL1KPtuaXY4iuOgdz8
-	 RKNT/l5phTCXxGIXrMq6E0/2HZxwWuVJkRbC4XUORQ7Tzce4iD8P5Nbm8wSMdxKQf7
-	 f9Ov7BH49eJmcxU3WAtmhyUDUb/GRsfdxvJdFck11FIyh5fa3qVOAV3bQmQfuoeGC6
-	 I2uEMwAG3Da3g==
-Message-ID: <8fb62131-db10-491c-9839-a3835d7aaf32@kernel.org>
-Date: Thu, 12 Nov 2026 09:33:00 +0100
+	b=jqYvau3yOeSxB1kD7U3L2EBRpoOqvpE7k1VJV+6JuPIQNEtd9OKlj0k96CfLYRUmw
+	 k975HhQUdKJzCdMO/SYXH4ORvvUC7VKbCqcZlbKFVngVPOjniEojfCvoswjg2X1f4W
+	 AkWZsppHZgrlkxPj0Kkv2cEHcejVuJic610j9dC1GvTynDFVs3YGuqQ9pBMcWRBQID
+	 J9dtYWYeCi5vTSp+FKk5fEFFxs3T+WPl/iHlti8oBLV/UWpzvy3B9KXgYxZevgQ52X
+	 CalQuYCSTcxyR0EOiUzmQ/G2zhpd5OstOQgaL5U9Z5j5Dsr313YLlfpPJ3IFF/Kw6I
+	 ig5dG3E0hkQsQ==
+Message-ID: <a2ddd71c-7796-40a8-93df-f0c51aa65ca4@kernel.org>
+Date: Thu, 12 Nov 2026 09:36:57 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/shmem: drop the second folio batch from
- shmem_undo_range()
-To: Baolin Wang <baolin.wang@linux.alibaba.com>,
- Qiliang Yuan <qiliang.yuan@linux.dev>, Hugh Dickins <hughd@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Jan Kara <jack@suse.cz>,
- Qiliang Yuan <odys.yuan@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
- kernel test robot <lkp@intel.com>
-References: <20261111-bug-mm-shmem-undo-frame-v1-1-e50a95b8f9b2@linux.dev>
- <787a1ba3-df93-45f9-abe1-3fcdefbe41cc@linux.alibaba.com>
+Subject: Re: [PATCH v3 2/3] mm: gup: allow long-term pins of CMA-allocated
+ HugeTLB folios
+To: Frank van der Linden <fvdl@google.com>,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org,
+ azpijr@gmail.com, lance.yang@linux.dev, Qi Zheng <qi.zheng@linux.dev>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
+References: <cover.1794046188.git.zhengqi.arch@bytedance.com>
+ <586d6c53ab7e4c64d6e89ad3cf0cf7e07dabbfaf.1794046188.git.zhengqi.arch@bytedance.com>
+ <7abb3aa1-385a-422f-86bd-7aac9661c4d8@kernel.org>
+ <423c9b28-ecf2-4fab-817d-2fb326690c73@linux.dev>
+ <3a1a3bb5-0b01-4f20-aa0e-74a952544b8c@kernel.org>
+ <5f68ffba-9f56-4e31-9e7c-9d110f552efc@bytedance.com>
+ <CAPTztWb0XbjCxtihyp=Tx16Z_kjF+M8sa7YcUjvFv0WcS83MAg@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,21 +126,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <787a1ba3-df93-45f9-abe1-3fcdefbe41cc@linux.alibaba.com>
+In-Reply-To: <CAPTztWb0XbjCxtihyp=Tx16Z_kjF+M8sa7YcUjvFv0WcS83MAg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: cgh3k8mpegzk1q6dhqybztewuibmzya3
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6F551C0004
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794472388-718594
-X-HE-Meta: U2FsdGVkX1/Kfg64SYAvYVy4iDNVQ8UGucr5qjffO0C/lZLzdQeFFgrVbOVoFOqvM7pQq2a2sP0gk3IfEtCes24gvHtI91dZOrVYM3NH/bX0F1QXL80CWQLTLGk2vg/W03d3Mvpl4808YosHqralEk+86dD6FyGyBe9HR9Yde5yiRcms8zF6xwhP3ZVZbupnxyP51ARVD+2+evTv0zaCc4SQrOQUW2PIQGlOrb9CNeh/xb1hmw/6ssDaRI8S48u+3757CEmzsQNVlCJAVFMQ5rQtnOBn3mIiovVP/jx1XGXQjIUicbrlhRFdeoClrBqYCdyihgKlnp6sFqKVa/aY/mwSiKpg2pSu61qSronMj4MYcacWv/LL6pubuBqjTagufr2vhrJZurfGv7TT9QMvTomf77y2/36NFAPuXcGSV+yt8AIm316Ienw6sabYepOB6ZSs+h5z2xmJYrPVQNj6/h01Nup5YlZCaOEo90osa0tvmya1e8por73jFm2DfZdChjbqLjsM7i4YrqjKamv8o3QDNaLCfRat1EO5yal3lptKEZmE7K/YAJ3eewRmdijvz/eychdinceZZtgj/uJqROSF0pZ/+qrGlbaKQLmPpbgwcvGaGxgPSzHAcoaub3xIdo4KHTaV50SU8k8wPTh2WFJ9qOQrFEbm1vPifN3Y5h/VJI7B+FLPUoHRzG1PQ+Z5xHCdUcOUTVc9CCjCdAFvahPT7SU+mJLM5y72WMNW6gKWVRyPi0GQYzUizUb7lLv3xXlP9x/eb0ho/+6+cUvVEsNSN5mdVUy4y6J04Z8nkpLn7fnWIVWAXfdfICktoqydy7C9zKIhe26pTqZY15OZKAppHJhdx4qudj3x7W+V86oIKw1lIS6GaWMsfxFjNwOKHdnO9vFwRhafjO098Xc9F4wwjJdC6MuW+IgSyE8JpOZqKmDfYM5hCsS0Ivd9dAU4tEJQsyeKzK6rBouptqt
- vSZsTtMw
- vwYT7b7eVwoP44zlHoelQR0N8tqPp1tUaNR9s1EnbKiYwPZfkHvYvu+mp/UiJFnJLyEV0XEKXtP2EcZmh3+wN1eyupi5Tcclly7f25jmQKWl0aFNKrxaMMdkxoCS3YsKOHIhqOPK5RuyHh6+JJc1o16a+RPotFMuylM1V2QdUC038b8XKS9r5PSHyN2VZK1iFxGfwUOyNsqSxoWseWsBavtszesM09GkErr6gMoYIt7a84lL3toEZEJklJBrTVZ2iCXLEc+NJPtBEIJ4F4ngrC77g/9JoaBs1/lo070Adzqt6teh/jnEQRQxXdiqeLXAjQqelxbGN+Qwn0lOyuBfxWtlMcEAkVTB5jjQ38oBa14jt69qVshV2m9rFjeuCBKoyM1AKtA2agnyBMK04iHwEnaWwhqkngYKdxA6KJQ+/FJ2v95XfB2chZIlMHB13J5ANv45gyqQ2rN0Zx0o=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0297FC0007
+X-Stat-Signature: 3sqxdggd1e36yc6w4n39z8fkribgypob
+X-Rspam-User: 
+X-HE-Tag: 1794472624-961323
+X-HE-Meta: U2FsdGVkX1/NC574Yisu6jCHGHerqX9i5XMOBTchZnb0q/YICgVEpcpz14e6J05nNNGQOOUHaZ+NGG9shEX6ZqBh/+2kk387iCvx3mcWgUrTpD4F6FVW0t6fp6WZTtyn5+nJ+tTitdtuxHUBTe4S9iLG0rdMYJI30/NxcLwViRlxw5Ec6Or4BcrnllJlYuZ25s0E+DhbRYz+68PLld9wAAzlHU2/GsooxXoTsj0Styd7tir2kaaoaziWpv6PcV79E3fO+agj5zxkZfowI7ZC+lolEv34j7fn9ntgRs/wv1MlCgcDjrve1GEyudfKW5NeeMhi1EyPMBr+y2BIB/cYjgsAWcPNJScSTgZZDPRbASszUsYCAzGG9m9M94H5HS4C1E7w3z27VApaJO0W7T6jzL3UPdp7GdXpxPboNruB1H9HkEC39pbIaF+BSXstoPDCxhh+vw2pTwm+tlv+Iuhg6XMgu2GbVNcG8PZBjMSVUn2rVT64w0tTqtvbaB/e1IOJ/2A8RTaPxDW/XoV4aACRuTR+D9f5cO3n2UJ0kfDNlFYb4ZP0/7x/696imY44C+F5a5CSPi3j33K16okX8Y3U0G9kIaaxZICJtyR2sRPKoS5fQRg0IsQLVoTxim0rSPblykjzKueWGThRpwyhjkLaou35N+620PApOhFWLqap7fJyv59ix/yXP83jOk5bI1rOwGuIv5OolvfwdmsFUbJoZOIO9a/apHBCPMH1KMgqNRCDHnZIw2d4f+l6b+wyicwaBm+/tfMaW2Mpi0f0IY/vNCFIINYtEXonpsd85t/jsx8Te63qHkpLnZOrkLi6l03H/NjVkrjWaFOYEl5n49ArgkvrGfjtkMykgnYB9bLRDiu8SugPUW0tCQbJTcle+aIGZPmX04qSZuvkmlil1HEdsq4CKbTZv1ySwFuL91aK3mFj59mlnwyVPfT0tUEv9Swp6sKGnQGc2tiwl9mcRDj
+ om9dOGa0
+ qNPYoHn3wlZv5an/tBnIUg4WbpZy2y15cKbY4hLOyig8mE1FsqRiwj8Acu+/9hYogEFEP/P5FRrFAGTmnbV63hVn2v0cC3QlOAyav4Gj+XmuD9dJGUsQCxfF3nv7Dxg3s/mubIXc8Dk/bLPMQnLj37Em08wqoWfBBsA+pvUZ9AF16oVDYbguO4hN5nROL5S/T0Pe54u0pjmb/2ynmGgjWS8F0GqPAXCykonomk0UdX8KMQpJQjMKCSQeN7JSUAZnhNQTlKOLcQpP1NZzRdnLzywP1T1MYHW1Ujn1pA7m8V33HMdHlkZnWfh7mag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,42 +149,91 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/12/26 09:05, Baolin Wang wrote:
+On 11/11/26 23:26, Frank van der Linden wrote:
+> On Wed, Nov 11, 2026 at 2:27 AM Qi Zheng <zhengqi.arch@bytedance.com> wrote:
+>>
+>> Hi David,
+>>
+>> On 11/11/26 3:43 PM, David Hildenbrand (Arm) wrote:
+>>>
+>>> You resent your series way too fast.
+>>
+>> Got it.
+>>
+>>>
+>>> Now we have discussions in to threads, congratulations ;)
+>>>
+>>>
+>>> Why can't that be resolved differently? What is the dependency?
+>>
+>> The dependency is that the new check wants to use
+>> `folio_test_hugetlb_cma()`, which is a HugeTLB-specific inline helper
+>> from `include/linux/hugetlb.h`.
+>>
+>> `folio_is_longterm_pinnable()` currently lives in `include/linux/mm.h`,
+>> while `include/linux/hugetlb.h` already includes `linux/mm.h`. So I
+>> can't simply use `folio_test_hugetlb_cma()` from `mm.h`
+>>
+>>>
+>>
+>> The more accurate code path is as follows.
+>>
+>> Assuming the 2M buddy allocation is successful, page P is borrowed from
+>> the 1G CMA area.
+>>
+>> Now, proceed to request a new 1G huge page:
+>>
+>> only_alloc_fresh_hugetlb_folio
+>> --> alloc_gigantic_frozen_folio
+>>      --> hugetlb_cma_alloc_frozen_folio
+>>          --> cma_range_alloc
+>>                  /* set bitmap!! */
+>>              --> bitmap_set(cmr->bitmap, bitmap_no, bitmap_count);
+>>
+>>                  <time A>
+>>
+>>                  /* may fail */
+>>                  alloc_contig_frozen_range
+>>
+>>          /* set HPG_cma!! */
+>>          folio_set_hugetlb_cma(folio);
+>>
+>> At time A, for page P, a bitmap was set, but HPG_cma was not set.
+>>
+>> If a concurrent FOLL_LONGTERM pin uses the bitmap alone to determine
+>> ownership, it could incorrectly allow P to remain pinned. If
+>> alloc_contig_frozen_range() fails, cma_range_alloc() clears the bitmap
+>> bits, while the long-term pin on P remains.
+>>
+>> HPG_cma is set only after explicit CMA allocation succeeds. It records
+>> the folio's own CMA ownership, whereas a set bitmap bit can represent
+>> another allocation's in-flight reservation. Therefore, the bitmap
+>> alone cannot replace HPG_cma in this check.
+>>
+>>>
+>>> Or simply two bitmaps? "trying allocation - allocated"
+>>
+>> As a fix, perhaps this is a bit too complex? :(
+>>
+>> Alternatively, we could adjust the timing for setting the bitmap, though
+>> this might introduce new concurrency issues.
+>>
+>> Thanks,
+>> Qi
 > 
-> 
-> On 11/12/26 11:39 AM, Qiliang Yuan wrote:
->> shmem_undo_range() keeps a folio_batch and an array of FOLIO_BATCH_SIZE
->> indices on its stack. Removing truncated folios from the page cache in
->> batches added a second folio_batch to collect the folios to delete.
->>
->> That grows the stack frame by about 200 bytes, past the 1024 byte limit
->> of mips eyeq6_defconfig built with clang.
->>
->> Pass fbatch itself to delete_from_page_cache_batch() once the swap
->> entries are gone, as truncate_inode_pages_range() does. Undoing a failed
->> fallocate() only removes the folios that are not uptodate, so remove
->> those one at a time with truncate_inode_folio() as before.
->>
->> Stack frame of shmem_undo_range() built with clang 18:
->>
->>    config                before (bytes)  after (bytes)  change
->>    mips eyeq6_defconfig             928            720    -22%
->>    x86_64                           920            712    -23%
->>
->> Fixes: b97fbd541ecba ("mm/shmem: remove truncated folios from the page cache
->> in batches")
->> Reported-by: kernel test robot <lkp@intel.com>
->> Closes: https://lore.kernel.org/oe-kbuild-all/202611112032.TMyPU6Rm-
->> lkp@intel.com/
->> Signed-off-by: Qiliang Yuan <qiliang.yuan@linux.dev>
->> ---
->> David, this applies on top of b97fbd541ecba in shmem-7.5.misc; please
->> fold it in if you prefer.
->> ---
-> 
-> I think you should send out a complete v2, and David could queue your new version.
+> Yeah, ideally there would be a way to identify folios allocated
+> through cma_alloc. But that would probably require.. dare I say.. a
+> page flag. Trying to check bitmaps does seem too complex.
 
-Yes please. I'll drop the old patch from core.git. Should be gone later today.
+Why?
+
+You know it's a CMA region. And CMA regions are limited and static. Bitmap check
+is cheap.
+
+Pageflag likely won't happen ...
+
+In general, please, it's ok to send some hugetlb hacks (that make me angry) as a
+quick fix, but please do think about a proper way of handling that.
 
 -- 
 Cheers,
