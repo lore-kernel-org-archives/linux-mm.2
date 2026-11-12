@@ -1,91 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F28606A8B7
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 09:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F157606A327
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 09:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UIE+jqZK
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eHxjzh9f
 Received: by kanga.kvack.org (Postfix)
-	id C4E016B05CC; Thu, 12 Nov 2026 04:08:36 -0500 (EST)
+	id 796256B05BA; Thu, 12 Nov 2026 04:09:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C24E66B05CD; Thu, 12 Nov 2026 04:08:36 -0500 (EST)
+	id 76D5B6B05CE; Thu, 12 Nov 2026 04:09:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3ABC6B05CE; Thu, 12 Nov 2026 04:08:36 -0500 (EST)
+	id 683FD6B05CF; Thu, 12 Nov 2026 04:09:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8649E6B05CC
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:08:36 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1F5421604DE
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:08:36 +0000 (UTC)
-X-FDA: 85425891432.26.EA57933
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 49D8C6B05BA
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:09:51 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DBE65802CD
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:09:50 +0000 (UTC)
+X-FDA: 85425894540.20.901C472
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 33914120006
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:08:34 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UIE+jqZK;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 1D1C61C0006
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:09:48 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eHxjzh9f;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794474514;
+	s=arc-20220608; t=1794474589;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d0TW5g+5gf+ItcPdOWLfpHX4VmIPTaVn9u8r31nhF/E=;
-	b=yXogDi/cVRlxy4LuOPfIKQHELADlPXuGIZDvYFT17bFvsHdB9uowS7X6mv3/x3bqVDraDk
-	Ph1Y7NgdPqYGDlGOkB09PDYi5A0NPLuAgLmK9i2yPHZ9pLAYOgZSzsvzEdewbZDjHIn8Vw
-	MPfyOuDaXMSGUzJx8KZ1jhMktx5GxMs=
+	bh=j/okRcwCmJah376/pTXlDGHeTd3yv114IA7qsrwTRhM=;
+	b=CZMsI3nAmtWL2T9aiKYiujN2LriYUOfjo6LIRbP88oYnWGtiWsriz5PY2WgnneOqiTQiSa
+	blOQbtGtX6Y3fZrbNuOfXGXyhhYEH/2r7ZR/6ZZr4jq4CsdZz2wCZwwG+Nqu4zeYEaj0Kb
+	p04tEMfWn7M5PFgTCnucAoBBIWwJ0F0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794474514;
-	b=I2ZjhRTFgaZBv6nkmuNjjg0ISY1ArO1ec4CULoBjr52Yltybms+hCnqIzl62tpM0vlA6gS
-	dMcvb8/s8PU4+W6nMW82EfF20qGn0u5AYg0OiCrm62uIrhl3vDJs4BLJHCmTwUjPSqmSMd
-	6bbE138Fa3DVZ3Qiv34hY5mSjS8OQ6w=
+	t=1794474589;
+	b=ex7HIqUXt47CeRJXbePKF4RWO1x5glJyF+HvxwAWxxqs2kcTP5akp8I/p9YMkzw0vuVOI5
+	/X4Y7DUCaXElLDdiNSbAW+B6gbjw+s7uKGmZJrpb+ZrxCSyvyk6yMxJDtQ0eL1bbGOzaW6
+	/ASMEE6HjmoizK8ATg62RsXs4EEh/TY=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UIE+jqZK;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eHxjzh9f;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id ABB4B6565D;
-	Thu, 12 Nov 2026 09:08:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01011F00A0A;
-	Thu, 12 Nov 2026 09:08:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9D6BC65631;
+	Thu, 12 Nov 2026 09:09:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 307DE1F00A05;
+	Thu, 12 Nov 2026 09:09:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794474513;
-	bh=d0TW5g+5gf+ItcPdOWLfpHX4VmIPTaVn9u8r31nhF/E=;
+	s=k20260515; t=1794474588;
+	bh=j/okRcwCmJah376/pTXlDGHeTd3yv114IA7qsrwTRhM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UIE+jqZKYrrfRzCUJkrZMjAZk2iT+4AzaK39M6M3D3/SLhCgj65MkGDvs6u/InuwL
-	 p+SYWAtprInI/uTpnJZV/liEHwPI7EbU3xx7gP0pXYpGErDjbACmssL2pTRG91pJ7X
-	 DL/d4ADFb+TDAmC8EFy05ixD1V2CzAsINhjWcHRTbRlZfbkkGlnv924ADJldjo9P2l
-	 tz9iY/ErTV1OUvZVIiDUK972hNZ3t3Y5WLpgX9L00ZyuWOjaHfY0XaR8qLObnYnnFq
-	 0590rXJS85TJ9/5fIc2IPUjFjNC7pDzMgUJrIGSVMYlu/dZ+D9a0E+n+sl/xG1rVt9
-	 bdYucvLcBMoSA==
-Message-ID: <094479b1-a982-48f7-ac70-75260edc505f@kernel.org>
-Date: Thu, 12 Nov 2026 10:08:16 +0100
+	b=eHxjzh9fX6/euYdOb/lVF0eGeyRB12MW7G+QY46JREN7vpgh9olDCgsYLX/pAzEQX
+	 IGV5dxMZ7b0c/DriZU6Eme05voULqlWWyL3IXZnyQuLunihl0MdTtGN8aeINL0bNWG
+	 Vm79nqp0mr4XhYQNoFSuzkSP/JNGzToHNTIe1C4Q8AqHz6YasMr9/u7NXCsOdcxrmr
+	 qlsPUcih2RuGYOTdpHqFhif7yvJqhVUn10NeLQxRNQA1wgBo2pXA0iV8g9cNF8it3I
+	 BAI5M6gxZVmyY0MT0oebPTr+QHkn1U6hPQGcF4Fxua1lNp6LLOh76Ogg8tgrazzQuo
+	 l0nwe7VmuIDqw==
+Message-ID: <32ad880e-5946-4703-9c6f-43ff59da39af@kernel.org>
+Date: Thu, 12 Nov 2026 10:09:37 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 4/5] mm/page_alloc: Keep pre-online poison out of the
- buddy allocator
-To: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>,
- Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron <jic23@kernel.org>,
- Dave Jiang <dave.jiang@intel.com>,
- Alison Schofield <alison.schofield@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Dan Williams <djbw@kernel.org>,
- Miaohe Lin <linmiaohe@huawei.com>, Andrew Morton
- <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>,
- Breno Leitao <leitao@debian.org>
-Cc: Ira Weiny <iweiny@kernel.org>, Li Ming <ming.li@zohomail.com>,
- Richard Cheng <icheng@nvidia.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Oscar Salvador <osalvador@suse.de>, Kiryl Shutsemau <kas@kernel.org>,
- Harry Yoo <harry@kernel.org>
-References: <20261010162017.62506-1-shaikhkamal2012@gmail.com>
- <20261010162017.62506-5-shaikhkamal2012@gmail.com>
+Subject: Re: [PATCH 1/4] virtio_console: copy pipe buffers in splice_write()
+To: Arnd Bergmann <arnd@arndb.de>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Christian Brauner <brauner@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>, "Kirill A. Shutemov"
+ <kas@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Miklos Szeredi <miklos@szeredi.hu>, Amit Shah <amit@kernel.org>,
+ Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>,
+ Bernd Schubert <bschubert@ddn.com>, Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
+ virtualization@lists.linux.dev, Netdev <netdev@vger.kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ Malin Jonsson <malin.jonsson@est.tech>, Richard Weinberger <richard@nod.at>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, Nishanth Menon <nm@ti.com>,
+ Frank Li <frank.li@nxp.com>
+References: <20261110145241.536019-1-kas@kernel.org>
+ <20261110145241.536019-2-kas@kernel.org>
+ <avNuQqLf9CG9dSsE@casper.infradead.org>
+ <20261111-heimreisen-ungeziefer-empfunden-a892571f2c07@brauner>
+ <20261111-thunfisch-wirbt-waldrand-822275b2d3b1@brauner>
+ <CAHk-=wjPY=kfgnmtx4COEQjD5UzKx9m2-=KLGAZP4d=RKEH+pg@mail.gmail.com>
+ <20261111-stumpf-montag-miterleben-c4e2feac8090@brauner>
+ <CAHk-=wjGXBnme-N+HvbzHH40ftb7Suc=kZVT5cuintQWyMHJ7Q@mail.gmail.com>
+ <e94bdf7c-eae6-4f64-bf93-0aeedca1a22e@app.fastmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,22 +142,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261010162017.62506-5-shaikhkamal2012@gmail.com>
+In-Reply-To: <e94bdf7c-eae6-4f64-bf93-0aeedca1a22e@app.fastmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: rt98ztrwny6mxdgwo9egk1po8qd4o77o
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1D1C61C0006
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Queue-Id: 33914120006
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: f6t3ja6iip93zjctuud5tq3bdx3bnj3x
 X-Rspam-User: 
-X-HE-Tag: 1794474514-598685
-X-HE-Meta: U2FsdGVkX1/f56WddW5PclFHeoJtY11udUBLmUtmipORL7oTfsS8YIeHz/xzIy7ERzq9ylW8SmnJwl2/n6MVcQ6rY/ZEwNpZPnC3a1UQ5eZ7mwsMHiUQt4LxqlsmvmGsUTbU0YKcosNUaxobS6uHnRiW6AlAAkE1G4ByUxDliuUHkbQZYL3I7Ls+IkgKfRGKRw8eJyJdw63ene2hr+jOgaEG2H3kLlTR1deCjvHIMfpVv9iXOauS25xSWXUeZ2WPlVtTuyUKN1IST/sf8QMNeN8qmwcDg54cWTLAe903vANqKonWdHaT01KhWpsbigY21n6pYukVFjMu9QldWT6Ok9GjNiXtEfxF75+3+EVeGQlaGAwyVlx2E+9JPFEg7p0zxFTmBse1lLac93y6xyrDP+C61S/nbu7AWd+ijz2z51dJuRhW1VPjefH7yjc5hfBFwMLJ8D8NyL/JgsV7Ee0z3pX+JmDWPcvvowFGzyipIZnu1eWYwhEshWDTb+xo6IiYPoq/WGBl5T20zGKPPzNhcMZhyONK6p5IhoC/+HK1YlVjLMTEPp3cDo3/sExcAUYhA8ja0+PabJIBJhAZmkoHpllYalw7yVG8lVlABDmCJJq4pIFeOEr1HYC67thNTuBP1uKnuRqa3M354B4x2GQovATanyG41OkIVT+KUxMKuFDgUpwP7O2wSnQc4F+kahFg6Jk6Vgb3MEYwLEvVOyN/NOzTfLcE3G3WjJCvyOZCvF5kicv08KDlS2K493DqA8XvPFODNnpoPMwukXqlre7kAw4MPKlZjb2qPDm/t6Gy3LG7eCS/66gOYKLUTl2OaSTgasGQdkoYJN+SSJyQHu5dwBlPmtOJmxRCHSVEbjK7Ik9SLF6fEgAiV+c8dTSl4ciCHL4FXQ6RCUI7Y7fVa68E9poThcbamJAen5BC1E0EG8blh+i9+HYR14WlKlg2FmfUAcCwzUH9zREsILIOIR/
- ic3DGWes
- tJOpFSveZoxBqQ2OKB+5KPG4cB/LA0RtGzC2eyvakkTkFym3ShKFvgzRceISs5zlDNgidKsg+GKEyZaICQtJepstzHCzMX/xiy/iyhyFWRMQqV+XPbQQGxXEvjFPhBePi5mkbFvCoqNZqdvVht4dozAnof5iznvloW6c4CUOR3jV6G2UzIbyf+HpI4li+F5t26VCAtwZA4fr42MmQGg2FN/B02qzw/Tjov5dKZ7ag1KgF/7cOcsNkqAYZu+bUyAtcaklIkice2PF6LqnfhXm00OdK1BsDzcF+SmMkSkevg2Ik0CV5lG2B2X2HJ89cKLNJatmtj9o0HyQiNt1Ef0CpHVr+uheLtWA4X8/kbBAVreMyF74KuUOYX8CWjkFbsUMXUWvMHH3FQ6gD99ylbuoJFEnn2A==
+X-HE-Tag: 1794474588-422098
+X-HE-Meta: U2FsdGVkX18FU16fI2idxQ4GajEazcBS/O2aIDwcnyRuQ+NvmWHdJn6sOtV7HMpEwRXphSryev+yqbALpOxdj/T6hgwwmoeVV4a88XHu5gfbPyh8nqFtbVYNZ8pDiQLowiQGAMcP62uvKMRhRB2ks1+hEn+0zfgne/2Osb8/WSw3CqWjNDLuCLF0PkEdFNjfq61Ja4bjdsqS6xzmW9eYiOlmQRKphM+HYSjCmMqrVgx4jnNn6lGsCCr3+cXUSMXvQUzFxa5VDlzHTCxtMWP3IBIXJfih7eEp1MgXf0Xtj2gzHa9Qh6PAGV9ZVitcal0XV2m/cbX4wH4sBXG2Of7AaBr6YdonvUdh5FWrA7jhTDQhuHLlj2yBhDoOIfKhrVndCYted3QC454DjaoTL+3AaK8jsZM/jULcWPKTietLqQhjeRk+pK3gj1++kRQoMCiN5Iks54T4fXR3cXBaqPqotvMl3D3pebnT0ZxmZijW1dn0QK4QEw+ymDl/1NzNAPr/u6emyjcT6UBbTy4lC72fYeiAf2qJMTsMuheBy0cKFaT8UmR3MWGIdMp8QtX7f3w/n0HZ7+UzavZ96RP2xZhtsVCJWblFETvBftCPco9+zlDsgIfgR9iapWw96e1YY5OcFg9rH+GahM4Pdp64pJ5kl1GlQ8A19BoDbFKeJV1T+shDK5AAa94TK+M08pfJ/2/5EpUF+wwmECr/ucaPFQ5BcDBFzuQSxsjZMp+sdzdRQAHh1rnWa2RvL6hNMApIFMB6WibM/aPh2GYFJvxJsrIYTJLb1APs76nfe6c5OABXpgrVswxlUa9owCPOfWjAEA0eL2GavONjPBE7B8EKTfWLhjbQGkDQzZr5xtRzRewBDvS5NUBwsePK0bGjPvp+5v12mButsX8DJcT+D+V67sUOffrKLnoBeEqhPx4wjytbehLNveWJNRSkuUKegQV5NKsvB/flwtzEkIEbRRVSMMb
+ qkkPuBPK
+ xs8IAuUjCX3tWUjZuf0nllXW14LO8JeXQZVwNaleCyFbr0Bfq0iAa5enYHyv3ENo0y6zTU0ycxPwmYcJN8x2aGQ4BFrTDWVSmgonS/oUrnJHlir256tk9OtQAEl39IpcZKJbYqLb1L//TSgjLovuhm8i/0ebfjkYIZZtUlOnVaWd3zUKH68pRsBrgu4ChV2yR+7TSuCnOS7P8a9DYZY7RR4c0o2RaRdw9aVJlrC6KHr5AMTYnqukVb23cEtvfjD6FSiOYjBhN09eNuI7SAkXh8ihgq06Ea8qnXF/6ci3E0iMaOHrd7F666B0eszWiR9x7br8oQwMoU7LDIfOkYiKQ6TP/kiKhfwTM8/9yuCe4zNMDUwck3lq+oYvmK4j9bsvmoyTTkAOx0ADU1KrtqvVyXL7rF1okLv4gv4Et0k+NmKjb8cZsr8W5/M3tbkYXpPj1LdGyCDJNowJaF0hV4yIcRv76sH36cGY2an459nfRJU2ZHl745IQGZha2ZE02YPk3ssgw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,74 +165,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/10/26 18:20, Shaikh Kamaluddin wrote:
-> The inherited-poison path checks initialized blocks before releasing
-> them to the buddy allocator. CXL device poison discovered before
-> hot-added memory is onlined is recorded separately in the pre-online
-> poison registry.
+On 11/12/26 09:55, Arnd Bergmann wrote:
+> On Wed, Nov 11, 2026, at 20:26, Linus Torvalds wrote:
+>> On Wed, 11 Nov 2026 at 10:53, Christian Brauner <brauner@kernel.org> wrote:
+>>>
+>>> If that's the official new stance than I'm very happy.
+>>
+>> I definitely want to remove HIGHMEM entirely in the not too distant
+>> future. And before we remove it, we can most definitely document the
+>> fact that we will not be worried about insane users.
+>>
+>> And things like security issues count as "insane user": if you use
+>> HIGHMEM outside of controlled embedded setups or museum pieces you get
+>> to keep both pieces when it breaks.
+>>
+>> IOW, it's legacy. We should aim to not introduce *new* bugs to it, but
+>> if there are pre-existing bugs they very much count as "don't care",
+>> this will be removed soon.
 > 
-> Extend __free_pages_core() to send a block to free_poisoned_block() when
-> it intersects either poison source. In free_poisoned_block(), withhold a
-> page when its PFN is registered as pre-online poison or its physical
-> address is present in the inherited-poison table.
+> Agreed. There is also the option of adding Kconfig dependencies to
+> mark things that are known broken with highmem when we either know
+> that it is buggy, or we have a good reason to break something that
+> none of those remaining users should be using.
 > 
-> Pages identified by either source continue through
-> hwpoison_boot_page(), while clean pages are released through
-> accept_and_free_block().
+>> I think the only reason it wasn't removed a couple of years ago
+>> already is basically a few old 32-bit ARM platforms that still used
+>> it.
+>>
+>> Those platforms still exist, and I predict that they'll still exist
+>> next year, but if those users have to stay at the current LTS kernel,
+>> that's fine.
 > 
-> Signed-off-by: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
-> ---
->  mm/page_alloc.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+> I tried to push for what I thought was an aggressive timeline
+> last year, but that would still keep the Arm bits for a couple more
+> LTS releases and only gradually reduce the scope of highmem in the
+> meantime, removing support from architectures, file systems, and
+> drivers where possible. See https://lwn.net/Articles/1051010/
+> for a summary of my talk in Tokyo, including the slides and
+> a link to the video for anyone wanting more details.
 > 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index cca67a2702a4..57843df01b2a 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -33,6 +33,7 @@
->  #include <linux/cpuset.h>
->  #include <linux/folio_batch.h>
->  #include <linux/memory_hotplug.h>
-> +#include <linux/memory-failure.h>
->  #include <linux/nodemask.h>
->  #include <linux/vmstat.h>
->  #include <linux/fault-inject.h>
-> @@ -1601,12 +1602,14 @@ static void __meminit free_poisoned_block(struct page *page, unsigned int order,
->  					  enum meminit_context context)
->  {
->  	unsigned long i, nr_pages = 1UL << order;
-> +	unsigned long pfn = page_to_pfn(page);
->  
->  	for (i = 0; i < nr_pages; i++) {
->  		struct page *p = page + i;
->  		phys_addr_t phys = page_to_phys(p);
->  
-> -		if (range_contains_poisoned_memory(phys, PAGE_SIZE)) {
-> +		if (range_contains_poisoned_memory(phys, PAGE_SIZE) ||
-> +		    preonline_hwpoison_contains(pfn + i)) {
->  			hwpoison_boot_page(p, context);
->  			continue;
->  		}
-> @@ -1652,7 +1655,8 @@ void __meminit __free_pages_core(struct page *page, unsigned int order,
->  
->  	/* First: a block parked by __free_unaccepted() never returns here. */
->  	if (range_contains_poisoned_memory(page_to_phys(page),
-> -					   PAGE_SIZE << order)) {
-> +					   PAGE_SIZE << order) ||
-> +	    preonline_hwpoison_intersects(page_to_pfn(page), nr_pages)) {
+> I also prepared a number of patches towards this, but have so
+> far not been great at following up to get them merged, sorry
+> about that.
 
-That looks rather hacky as well.
-
-I really don't want us to have various source of poison information that the
-page allocator + core-mm has to mess with. It's just very bad design.
-
-I made that clear in the last kexec attempt to do something similar.
-
-This likely belongs into memory onlining, which could online only the relevant,
-un-poisoned pageblocks.
-
-Not sure how it would best retrieve that information, but we should definitely
-not add more shaky hwpoison sources to random pieces of core kernel code.
+I think we can already start at removing CONFIG_HIGHPTE now, right?
 
 -- 
 Cheers,
