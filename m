@@ -1,98 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12FD606A8B6
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 08:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7758E606A889
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 08:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=blR2ZZkc
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j5xXhGcP
 Received: by kanga.kvack.org (Postfix)
-	id D3CD06B05B6; Thu, 12 Nov 2026 03:49:56 -0500 (EST)
+	id 8D1CC6B05B0; Thu, 12 Nov 2026 03:50:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D13B66B05D6; Thu, 12 Nov 2026 03:49:56 -0500 (EST)
+	id 8A8F56B05B3; Thu, 12 Nov 2026 03:50:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C525E6B05D7; Thu, 12 Nov 2026 03:49:56 -0500 (EST)
+	id 7E69A6B05B4; Thu, 12 Nov 2026 03:50:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 989CF6B05B6
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:49:56 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 29C5414050D
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:49:56 +0000 (UTC)
-X-FDA: 85425844392.03.4935813
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7059440004
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:49:54 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=blR2ZZkc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794473394;
-	b=J1jA9OuehUJhyq2ost2QdyMlR56SuEPHNbo97aF87awJdPKs/1xSu9PKUGg0FRcf79N9FZ
-	ix5XtIabHxdufcxTTKSPhv47TwaLJ9PXtu2fwuFtt4GJPGsqzdlgk3vgsLKoVQ9efAW3Dk
-	8zxA+h468Pny6CTUgc5Pny73+Yiac6E=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DEB26B05B0
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:50:52 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5C3521C3219
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:50:51 +0000 (UTC)
+X-FDA: 85425846702.01.27CC064
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 850AE140009
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:50:49 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j5xXhGcP;
+	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794473394;
+	s=arc-20220608; t=1794473449;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OGChezwGEAs5VmxdKN/i88B/dah14lbYLutkEhF0lOY=;
-	b=RdcJ/+hPOkkEYGkemwqKLNuemScbe4ggYV1LDNEKJ0f7ZO1tqTI70ULjBwouWZQcuJIkj5
-	Bq31CMgn2JP14jrZJVQL531k+Rqc1nuHBAyCz8LP0T93BWPkM4rQcaOi2o39ePUfcO/I5H
-	Ap/PA6jhZd/aqmOPiwK01IaOIgEQSfM=
+	bh=TgmgKd/DyKlf9Jtf2sOIeUuR+eT0nZJ9AmuIRwu4FJg=;
+	b=gjZt8mmQK6qCAs0RmHmzrlDMFBKpAsUonRi8ovzpQpFPziQEDKRftrQYPelnysAVpscrYu
+	a0yPSEcKfvk0ZtLMWMgFA+3gpgoLXyPIhPJtJDLSYSt9tbtI5BOuwCM6bAdEiE1ltFjGMH
+	h4HbcpSB3yXAj9XliHosHUyu4sxCnBc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794473449;
+	b=1Dhovh0zOxjIPF4pxHGn6FrnEmGTEysjQwzsSyTzq8dNQOYNAkwxNM+arUUm/rfLCGYsfZ
+	UJh8iEceWR7b3FwHuBgMFNGcW46O9aZgqFi9IZRSHbbpjtPGGfiboAYYPE0FOjkDkecUHG
+	/2GUJPvhnVP1yX+b0EANMxi8lN4WIbM=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=blR2ZZkc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j5xXhGcP;
+	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AE97D43645;
-	Thu, 12 Nov 2026 08:49:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA7AE1F00A05;
-	Thu, 12 Nov 2026 08:49:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4A08663E32
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:50:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A3D1F00A0B
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794473393;
-	bh=OGChezwGEAs5VmxdKN/i88B/dah14lbYLutkEhF0lOY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=blR2ZZkcc/vDDO96F1pNxo2m29Sm1eEE58wpJKJVkHYo/oXT8bnVVxwZZly5gZt9q
-	 WjKhsecawJUo7hwiLqoB1tVNvATaSKrnCQij9ms9i4j046DyigYLVgzKpPVW/Tm32u
-	 DFsGgSAhvGZFpD7jZe6hMTEs8q6xFGpoAsvodr12hfkgt1d+rnYLrT4Zo91RMnmygO
-	 0yruuXkzYrHRiuER+joOHfZNGA23QqvNVf/8ozCvJuVQ3b+UfYkf9kKtv/5ozkNjEA
-	 SJWrIn3UVe4emvFMOq5MsjJhsAU82JyD7Ikm8arKDsaA71v1lyHUIdzvm0qEtUhFC4
-	 NtcmR0wFZxi0g==
-Date: Thu, 12 Nov 2026 10:49:46 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Mukesh Pilaniya <mpilaniy@redhat.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chen Pei <cp0613@linux.alibaba.com>,
-	George Guo <guodongtai@kylinos.cn>, Kexin Liu <liukexin@kylinos.cn>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 1/3] kho: walk bootmem areas in address order
-Message-ID: <avV9qoaPMBLCNOXD@kernel.org>
-References: <20261104-kho-bootmem-sizing-v2-0-b0d1a834780f@kernel.org>
- <20261104-kho-bootmem-sizing-v2-1-b0d1a834780f@kernel.org>
- <990cc079-70ab-4fcf-9974-679aaf07849e@redhat.com>
+	s=k20260515; t=1794473448;
+	bh=TgmgKd/DyKlf9Jtf2sOIeUuR+eT0nZJ9AmuIRwu4FJg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=j5xXhGcPvIioCturQTJcBFChT91tq0mZ8srQmggLxlI14nbEL5pCIMk4nbjJoxVco
+	 iZde+72CtGI1BY8Rr1NcspVQJqB7/msEossP2/KK8qFeZ49EQoOfkVwcDFBcblXJIz
+	 /u0he6NfCx8xsZ3qzKFEEWU9PEoHCTwAmHstCMup3SeF+6+I+UfbzeQzifnNK/hcsy
+	 Oz0P4d9K3xYKm+eDR5IY++/2x7ycbsOe8Vz1052nYjdYuuYtAstqpOFoGtVq1Jdzaj
+	 hK7wASCRmbR5One4EkZsxpVs0jVCsisFYqQOl2iHaNGt38l+8wDEGxCVk26Z84cEov
+	 r/gUqJXQ68FVA==
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-9441591aa5cso71005185a.1
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:50:47 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErEr2Zeq8eg/BJVR8ASdYb7ZNivdR5Z3ZiVzx+ERj3I7aYISF5YSWq6RUV32X2ea9kVgTGqSUIDVtw==@kvack.org
+X-Gm-Message-State: APuU4Z9pPtgXLIrznnvWGdnIaxphAbDOWT0fSooMdTkHhqUZx3/a84Ex
+	4BOQNwLf/nbDm33eG5+7AGJCsPO2001OpJQWWVB8Gehn2yCThfn/lNevL9KMR+Eec7q90BjHkgs
+	0aLSyDcELgKtWyfycPl9Kao1iWvQoQJY=
+X-Received: by 2002:a05:620a:2a01:b0:93f:231:9ff with SMTP id
+ af79cd13be357-949330d5136mr338513285a.27.1794473447348; Thu, 12 Nov 2026
+ 00:50:47 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <990cc079-70ab-4fcf-9974-679aaf07849e@redhat.com>
-X-Rspamd-Queue-Id: 7059440004
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ysmzuaqznrm9oxyju9g7hb4rbfcm5c11
-X-Rspam-User:
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+References: <20261112081928.3014946-1-ridong.chen@linux.dev>
+ <avV52J2rD19cjM2J@KASONG-MC4> <CAGsJ_4yibOkJmi9niJ8svu2NdEkZ5Qyf98VO6qMrJMa_9wGFgQ@mail.gmail.com>
+ <CAMgjq7Disoabm_4yyp60=AdaEH1RWfUpawc8vckV2e6c7g2RmA@mail.gmail.com>
+In-Reply-To: <CAMgjq7Disoabm_4yyp60=AdaEH1RWfUpawc8vckV2e6c7g2RmA@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 12 Nov 2026 16:50:36 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4z85u66MuK1ior30sQG4FjyAsZTwO+DCuLpD_DoXgRGtQ@mail.gmail.com>
+X-Gm-Features: AclHuK_JbBbTc7uJJnjqDd7xtYHR6W7Z1uxUQ58zOfeU92Ldv0UBDEv_UNuetu8
+Message-ID: <CAGsJ_4z85u66MuK1ior30sQG4FjyAsZTwO+DCuLpD_DoXgRGtQ@mail.gmail.com>
+Subject: Re: [PATCH] mm/mglru: deactivate anon folios into the oldest generation
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Ridong Chen <ridong.chen@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Yu Zhao <yuzhao@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: ythdz9es59p4qxz7nhwspoktim1ojaj9
+X-Rspamd-Queue-Id: 850AE140009
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1794473394-559673
-X-HE-Meta: U2FsdGVkX1/CfYWwcI6/u13JdPdsSbAUJ+/F10ccCZGqEv0j/BPOYGOnr8tV9CR84nOxwOlosEF+3OiZdTVurGFAXOo3T5XyjhNnNYpo3t2o9lNh6VcWblRJl5fyGxdR65YeJJZJwUXP/afUXcZd4pVdE6U4ISnOWI+/dUHV/rna0NsUl/aYQWjOXEtNaoYE6dMNmNb+zFSw++S0haaUE1K2Nn6kzQBqZ91JZr3l4Gh5rDERigMzJanac/zBcQGUx0f5ahmStfa1VMSl77p2zEwAIt1uymBJ55dTwI5/0JLPa34XoHPO9SGspAjuFxBk8XksZKTxRHihoS3et3bteGdGaWW8xQHFtWnrtF8dJyoM1FxaVWpvgpFDmQAhuf9XNa/djOkR9qQqkAV2MpOoBin6XlUz8JV3l4Epmp9DnzEbAIsij2Rd79FZ0xFdU3IBZG43uMf+DlX/sEJhnkA1T7zonM6HWsFsGXW4Oi/3kuRE8aaVgo2CskZK+bWMJEXPwIf1Krv/ySYuqUj9zFO5wY1R9Z7bXY+v9uDm6Lh9z6tuGgTHBQwanCfYJMjligl9a+agRS+GWptRC5GRtiaZeTy4kQ/FutzFnBPEebVkh4aOu4XwmbgCExVppEcBfog9VQrkW3azS0XVgpG7xAl1gLDNp/223AbRywQP9Z5ElCZzYwk7YyhBgHdqzm3w/F9l+MqnYw4ysQySVkM1qC7+dVfHNt311RYwIyIrplFUP67w0S+/mrtlIYV9MZQDNq7X4khAj4AhcnaWofYbArmuyIh607nx44osMjCLx4BNhQMFBwuYPbT4nv/kN7LCHZ5JQVVd2quK0XpHX1aTdgpOYB8f55a8ObOgBVZqafWaeEd6d5/gDPOQCjo8CZV5VaoCVHonX9tiB4vKZUQfftRoSE3DZP8nWzGBlUQwq1iDg2cKNTFhJPZR2aJRlEzB9KJfMY+mQIc0G1vPAYK9Rh7
- 12JJ5ELG
- 4o5eLyBfTv9dvF4II0k3HrSVgCtPX1okOFFlNPrVwDLPW14g/efd4skJZu6sfRge5stS/KI0gLTSGQ5HiAL0t2PonddTljGOA+LL9fVKcyybCRtm+Ml4ecPPC6tqLgfNh0FCPCwbkwsetOYV9p1RtpNZMJUclZRK0RcicZmZgChbikcK6uDhKSdj8Ny2TrIILGf9veFLLm5YnrbwCnr3dA5JYgTRawAjiHtDIzmiHD4aVwc0PhHNpTpM9+mTW0wzz0pFZG85d5CcJYh8xI65nZoGzvwOcbMBkcEkgJNhZWy1XhZOSKd+5i1ti1mJRfbsSFL2T1Z50ZnBdovWFzvzxzV8xxekXBmQqYvBxtpHapA4GNyWUHNvzK9b5XWVqBNClPpP4TuogagYD3WH2hAkTY18QTnlAZUvUtMKX5Aa0y52n+R5IqUzNVVeOFEi8NdOYrmTfaI45M6iV12Q=
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794473449-756854
+X-HE-Meta: U2FsdGVkX1/3XBGdtW2qzK6HaX5yf+ieTJxMeCBxmiHcF8X15CbILA0QDqyJh/GIlTCq6CmZsqTKq8kh4FhCT4zhc+slNOPSig0SgBbFyCwl/iymoxCMMprQ2G9jC8kn6nrs4ZC0MLuUg0BQKurlzzSCbnlJ0Pf0bwdlAWeHs0Oe01bbcgKsfTMKev4tJZBzYGgdm5hwVAo6cEu3KI6mKb0PvLxB8vN92jT8za1ft+KLRM4nT+c+2oWp6LG3sFexYHX0DGYc0yjP/epreX2t1rsyK8AnMHw9pPUv3TD+XJYFp4OVjRgKaRZiFTwkoHF2EpmPpkYHkx9wI+26yHZCGb9Uw1GoVigemC/e//5x2k33jf6+cNTQNcMesI2tzcojmzYaTZWxPJO5ezShpw+PgqaQ3onfPrTJZe3M51brGmkl5rPMzRfecVPBG2oSY5uuCQ5M6LMcu/e7lit7AnYA04AAkOKKYLN91o65p1WmEoYzUUajdtCv/QBe0QPBq6BzOiSOX0WyUJLW6t5+KcdiQ2zPbMRkPN4lEHur5JijJkARIkNbWJNCohJ/2GpD0jSopD6QOCL7nleasqIE/UqoOcDkYlzUm0c3QC6ibqado7C93mWYNsKuj4Jk1ON9Yp4anI6vh4r2FGBH5MIG8IaYOqCLBg30htB7YVlDWc2Saa0UfF4IW2n4ATk5MV8wwx3o83Ue2F7aBKs79FV69pOk9mXkfe2TCrCQZGR5tCXM7L1puSl+uT6BqcvMEon0G+GPnbM/chBADUseBC1UknoP1fNuIEYFSE6xdzhEl87h98jvsONscvaLYenNEtk8xQZOvwTXznF0pfgFNXeFoS3jgziD9LDi12LzlUdIv+fnaaJGPcdyvy3g3y8YdjeRDgaoUw+oViUlKkiQMMVeQWZX2adv/ucZexOAojdKJQ9ZQ16l0vxFptF0Q+vFupwv4k/eTPbkIhwlhgb+9B6TCrY
+ ZZbP7fPV
+ PH3i43atxJ7RqZ7yLr3Ncm8QrTDFAsZr7ScvR30FQdqF79+O8BDDTTdaVgind0+ZmhxVpgsbQi33UQjvPzXNTJkpbJtZLu8yWy5muVySCORolKbtgrZdR47Dj/U7nV8LUCmDW6Mjl3rwxSz+RDBq/pC12oanGpFwSQwZPGy0CjjMXuK77Byw9Ba2MWLaVhKDuDX0Dnbby2cKJ0DSeveOeLq27xXC6CHBTmNSo0m/pugH841JsS2EDPaFF7HHYqcArGlaC1MaHhv+k89cd6AiYKKr2zv+CUofheF43vpPrguBrETvic1rwFBLC6ns8WindvjBCTZxhB40ZKuQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,113 +114,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 12:02:05PM +0530, Mukesh Pilaniya wrote:
-> Hi Mike,
-> 
-> On 04/11/26 10:20 pm, Mike Rapoport (Microsoft) wrote:
-> > kexec_add_buffer() users may depend on the order in which memory holes are
-> > searched. For instance, arm64 places the kernel bottom-up and then
-> > requires the DTB to be above the kernel.
-> > 
-> > kho_walk_bootmem() walks the bootmem areas in the order they were
-> > reserved, so if the kernel lands in a small area at the top of the memory
-> > there is no room left for the DTB and kexec fails. For example, on an
-> > arm64 VM with 2G of RAM and kho_bootmem=8M,64M,64M, the lowmem area is
-> > reserved first at the top of the memory, the kernel image takes most of
-> > it and kexec fails with
-> > 
-> >   kexec_file(Image): Could not find any suitable kernel location!
-> > 
-> > Sort the bootmem areas by address and walk them in ascending order, or in
-> > descending order for top-down searches, like kexec_walk_resources() does.
-> > 
-> > Fixes: 3bdecc3c93f9 ("kexec: add KHO support to kexec file loads")
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > ---
-> >  kernel/liveupdate/kexec_handover.c | 57 ++++++++++++++++++++++++++++++--------
-> >  1 file changed, 46 insertions(+), 11 deletions(-)
-> > 
-> > diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> > index 6f1f55fe31819..2ac5d94f33fd4 100644
-> > --- a/kernel/liveupdate/kexec_handover.c
-> > +++ b/kernel/liveupdate/kexec_handover.c
-> > @@ -26,6 +26,7 @@
-> >  #include <linux/list.h>
-> >  #include <linux/memblock.h>
-> >  #include <linux/page-isolation.h>
-> > +#include <linux/sort.h>
-> >  #include <linux/unaligned.h>
-> >  #include <linux/vmalloc.h>
-> >  
-> > @@ -820,6 +821,14 @@ bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
-> >  	return false;
-> >  }
-> >  
-> > +static int __init kho_bootmem_cmp(const void *_a, const void *_b)
-> > +{
-> > +	const struct kho_bootmem *a = _a;
-> > +	const struct kho_bootmem *b = _b;
-> > +
-> > +	return cmp_int(a->addr, b->addr);
-> > +}
-> > +
-> >  /**
-> >   * kho_reserve_bootmem - Reserve a contiguous chunk of memory for kexec
-> >   *
-> > @@ -904,6 +913,9 @@ static void __init kho_reserve_bootmem(void)
-> >  	 */
-> >  	kho_bootmem_cnt = i;
-> >  
-> > +	sort(kho_bootmem, kho_bootmem_cnt, sizeof(*kho_bootmem),
-> > +	     kho_bootmem_cmp, NULL);
-> This only covers the case where this kernel allocated the areas itself.
-> On a KHO boot the array comes from the previous kernel. A kernel with
-> this series that is handed over from one without it therefore keeps
-> walking the areas in reservation order for every following
-> kexec_file_load, and the arm64 failure you describe comes back until the
-> next cold boot and vise versa because the ABI string is still
-> "kho-v4".
-
-If we were able to kexec from a kernel with no reservation ordering, the
-issue is not there, isn't it?
-
-And after a cycle of KHO boots to newer kernels we anyway can get to the
-point when bootmem is not large enough.
- 
-> > +static int kho_bootmem_walk_top_down(struct kexec_buf *kbuf,
-> > +				     int (*func)(struct resource *, void *))
-> >  {
-> >  	int ret = 0;
-> > -	int i;
-> >  
-> > -	for (i = 0; i < kho_bootmem_cnt; i++) {
-> > -		struct resource res = {
-> > -			.start = kho_bootmem[i].addr,
-> > -			.end = kho_bootmem[i].addr + kho_bootmem[i].size - 1,
-> > -		};
-> > +	for (int i = kho_bootmem_cnt - 1; i >= 0; i--) {
+On Thu, Nov 12, 2026 at 4:47=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
 >
-> kho_bootmem_cnt is unsigned, but the reverse loops in
-> kho_reserve_bootmem() and kho_bootmem_walk_top_down() start an int
-> counter at kho_bootmem_cnt - 1, which for a zero count is UINT_MAX
-> converted to int.  That conversion is implementation-defined; with the
-> current compilers it yields -1 and the loop body is skipped.
+> On Thu, Nov 12, 2026 at 4:42=E2=80=AFPM Barry Song <baohua@kernel.org> wr=
+ote:
+> >
+> > On Thu, Nov 12, 2026 at 4:38=E2=80=AFPM Kairui Song <ryncsn@gmail.com> =
+wrote:
+> > [...]
+> > > >  mm/folio.c | 11 ++++++++++-
+> > > >  1 file changed, 10 insertions(+), 1 deletion(-)
+> > > >
+> > > > diff --git a/mm/folio.c b/mm/folio.c
+> > > > index ea3adb6a89d7..c412d9b398e4 100644
+> > > > --- a/mm/folio.c
+> > > > +++ b/mm/folio.c
+> > > > @@ -583,7 +583,16 @@ static void lru_deactivate(struct lruvec *lruv=
+ec, struct folio *folio)
+> > > >       lruvec_del_folio(lruvec, folio);
+> > > >       folio_clear_active(folio);
+> > > >       folio_clear_referenced(folio);
+> > > > -     lruvec_add_folio(lruvec, folio);
+> > > > +     /*
+> > > > +      * For MGLRU, lruvec_add_folio() places anon folios that are =
+not in
+> > > > +      * the swap cache into the second youngest generation, which =
+is an
+> > > > +      * active one. Add the folio to the oldest generation instead=
+, like
+> > > > +      * lru_deactivate_file() does for clean folios.
+> > > > +      */
+> > > > +     if (lru_gen_enabled())
+> > > > +             lruvec_add_folio_tail(lruvec, folio);
+> > > > +     else
+> > > > +             lruvec_add_folio(lruvec, folio);
+> > >
+> > > Hi Ridong,
+> > >
+> > > One question here, why MGLRU/CLRU have to use two different ways to
+> > > add the folio back?  Will this cause over aggressive reclaim of the
+> > > folio?
+> >
+> > I guess that is because on mglru, that is lacing a way to add the folio=
+ to
+> > the head of the oldest generation for anon folios while CLRU can do
+> > that :-)
+>
+> Right, but lruvec_add_folio_tail also added the folio to the very tail
+> of the inactive / oldest list, could it be a gain or problem if we do
+> that too for CLRU?
 
-We never get here with kho_bootmem_cnt == 0.
- 
-> How about using this one.
-> 	for (unsigned int i = kho_bootmem_cnt; i-- > 0;)
-> 
-> Reviewed-by: Mukesh Pilaniya <mpilaniy@redhat.com>
+My gut feeling is that MADV_COLD says the memory is cold. it seems to
+make sense to do it all the same for both mglru and clru - to the tail
+of inactive(CLRU) or oldest gen(MGLRU).
 
-Thanks!
- 
-> -- 
-> Regards,
-> Mukesh Pilaniya
-> 
-
--- 
-Sincerely yours,
-Mike.
+not quite sure if userspace is expecting things like this. I feel it should
+expect this if it says it is cold?
 
