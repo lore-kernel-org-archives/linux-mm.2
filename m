@@ -1,110 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F49606A32D
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 10:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34A9606A335
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 10:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QI/UmdT3
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PYh2l7zK
 Received: by kanga.kvack.org (Postfix)
-	id 17F3E6B00EF; Thu, 12 Nov 2026 05:32:58 -0500 (EST)
+	id 0E78C6B05B1; Thu, 12 Nov 2026 05:35:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 130F26B05B0; Thu, 12 Nov 2026 05:32:58 -0500 (EST)
+	id 098E06B05B2; Thu, 12 Nov 2026 05:35:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01F706B05B1; Thu, 12 Nov 2026 05:32:57 -0500 (EST)
+	id EC9666B05B3; Thu, 12 Nov 2026 05:35:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BE0D26B00EF
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:32:57 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4CA901A0553
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:32:57 +0000 (UTC)
-X-FDA: 85426103994.23.60C4CD4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6D9C440007
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:32:55 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QI/UmdT3";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BF8936B05B1
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:35:20 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BE0F6C0527
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:35:19 +0000 (UTC)
+X-FDA: 85426109958.09.EAB2987
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	by imf16.hostedemail.com (Postfix) with ESMTP id E3C4F180003
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:35:17 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=PYh2l7zK;
+	spf=pass (imf16.hostedemail.com: domain of elenchist.dev@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=elenchist.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794479575;
+	s=arc-20220608; t=1794479718;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=usXX4h4ptjAbPKcbGL6f5kGI4AA8Y8wNoq1oFaSrO3g=;
-	b=8JGaALHjkMpCgRyiXSJuNqcZ+cnXmSibmnpi+IN9Bo9MyLVKSKeiZLrQ00GcIJYedlELXp
-	mj3+oPOiNOAsDUDBR8mv49x7VtNxT1+yUbO4p+yrk8Nh4sZCNE/UMftGEXhEXLaFCB8EBt
-	y2NJouYRwbLC7w7MKb2CLvNKUcTaoIo=
+	bh=WoymvwdfMBFoMyXW+9QTB+Y4rJogi+4Hn0MI83a+cw0=;
+	b=iN58/hzJcPmv+ToZm1v/GU9rhFAd2tD+CGy8nfT1ypsLR2Ieq7jWHVVx5qKJcPGljy7oEL
+	DrrZ2QahOgYgWw2Re+84QPQ6Hrbx8YOQHt2SjxZZquIHxiTy/y2v79LqmDtNA6C4dZDMG3
+	H31EiabOfFnwOn9jjCUHBb2Bqt6ULzo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794479575;
-	b=IjFMRG5SmPuTPj0UvjhrIDgRXteTL/9qLAhJjOdHcwIKWWCnEtu37qsm5IzLVuC0x+ERkh
-	oQ7arT+8SgOQCQEfdk4s8vQqOl/xK2GXu7TxyRnLGhIRyry6KPZTNmf1GUUn5PYQ4ZnBo5
-	fmYXt0X4cXA2K8xiANdHT8z3eJX3w+k=
+	t=1794479718;
+	b=Z41TUuf7hdJYO2yI+Y++rEEdgv7uqzdUBt5eMdPwVsOD28oeUgr9Zcxkx+saLhbzzGGvx0
+	4MnLmq6g0o15jmBaodWo4j9a4cVs1hYZ0+K/dmcKTwAHFPsX7BYzXMYlrJIRK497syJgih
+	pAP9ltSnIApFoymVvc6t5eA7dDTQoIc=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QI/UmdT3";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D005763BC7
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:32:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8833C1F00A11
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:32:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794479574;
-	bh=usXX4h4ptjAbPKcbGL6f5kGI4AA8Y8wNoq1oFaSrO3g=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=QI/UmdT3UdaYYFJwKq9PLDYmqIy+Dm51YxBLLHk8FgH8VqGoU5xPuprSEJbwTy+hc
-	 HmYblaUZaCbtx/lDEMrzkZ+If5xdzKyXqzKQQlMqGwLplz85hdRDhzJDCVTQWR4ec+
-	 1/KzDwpv+nbG87IqSs8dsqeJAOjL68BoniPbmENuhPEQdpyIOkxwSzbqmJD3le1pnW
-	 TJ5f2aZKgFJ6I9wFrpPp+mvZxuukv+t7XgTUbQiHmHCTsVD+KbP6PMfyA/7ozVHAgy
-	 2Kcv6vsxRR57T5RQ4nacAj3xMVryfcWtEJM5QVQokbzJ7+sOMCvvYMBKgaUkBkqyNL
-	 ldzBJKFM4eA9g==
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-945ae2daa68so87390985a.1
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:32:54 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErFHChfaq81hkmIMyUMbMEiraUiQ3UC8xLU9noRCR5gYz05JL3b8xQPbIonSXMARyIkwaYE5XXaCxw==@kvack.org
-X-Gm-Message-State: APuU4Z/QJUCvN8aPADUp8wJYg6x4kid0Af2eKsuq/hDxAvm34cqj1m6P
-	+LHfeGdwlQoP3lgb/qZhJTQcf4L+KOEjR1GmJh1kGs3yW+xcDH2B9BlxI6z/hFUMnB0FxMtDT7O
-	/KEFEyb+qtBrqT1jACY3eIlO7pCZnRE0=
-X-Received: by 2002:a05:620a:1722:b0:93e:5534:e63 with SMTP id
- af79cd13be357-94932d2b22fmr381798785a.13.1794479573803; Thu, 12 Nov 2026
- 02:32:53 -0800 (PST)
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=PYh2l7zK;
+	spf=pass (imf16.hostedemail.com: domain of elenchist.dev@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=elenchist.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3b179528d56so1114639a91.3
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:35:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794479717; x=1795084517; darn=kvack.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:content-type:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=WoymvwdfMBFoMyXW+9QTB+Y4rJogi+4Hn0MI83a+cw0=;
+        b=PYh2l7zKI7wz/m+SbAl0HthhQdZz1ZZUrz+mmqik4bVlR9I3C3XENgurWgdEhGpksV
+         roh5sAFVd94viXaG4igT+xqn6CnB+Zyq5YkVLnQBSi1AxXhYBNFhN878j6ySY5FyumEu
+         C1di0GLdEacvn5HSkXzhDxtRt7vDTMNLkW9Cg5U+kE73WlxhgW6NhVS3rjObyK/SY1Q9
+         QM8Wxv9bRKIf61O0mspPNpPR5cCaqolf5OP2wASuZdq3l41PTxoVtYvRi93uiXqLHntL
+         i8GS3r9rh2jOCG3MN9Y//18VM0NVVsU6KkcShFPRoFZaKHSwNj1DaB0jzC4gNx5saaMl
+         w37w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794479717; x=1795084517;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WoymvwdfMBFoMyXW+9QTB+Y4rJogi+4Hn0MI83a+cw0=;
+        b=GTq98mf40cTQd03BYtwGD+ZQLxty8MBqWHvPjEMPu3lu7wfWDdTR8Dn1Xqj/YS2ebN
+         +NRCOPhOTFpshBRrzhKwG0dW+YiBvXZ+OCPPR5Gz+YBNTjjEhU353I/dKPVc9+wMUe/x
+         3wo6rb4Kp3ppKioW4ORIha2emg+/gqxNxnH1DNvftvty12Av3kzsothw9uw1QnJu7ORZ
+         gCBNs/jRj/q4PlDTm/Cl4OKkPJTMQwgRESTvYLFO2VS/0KQE7IGqVeim/JqNwN/wZ5nG
+         qtW9RsUR1nbMImqAIuCUigCy4STkC0zvjlQAzBK3VJPy3zUcAmWzmx/uToJ+586poQcS
+         oZQA==
+X-Forwarded-Encrypted: i=1; AL+hErGcOQ5aGzHuSDhgovbExBejvq+64GimVljrEcgYHHZ/QSpOdXyyZOGTLDAMH5rgZISZxRWXUXGsIQ==@kvack.org
+X-Gm-Message-State: APuU4Z9WMr+2Y4St+jWhQ23DxRK1dIobqOAL/Vm7yYClQ/98tmSeCtJv
+	fVxWR+MVU2vbfkuiSe2g826HcAZ+0y6IwQO+AJNLf6lw4vD+hxgciOkE
+X-Gm-Gg: AYBFou3vOsV7QSXqpeLkLixugETLn+UFYfxY6T65ZzEYFMZHAEEU7CdREc2DKoD2cW7
+	j/gK6+ank/4TiAvEk11LVGh+9EwK/OJD3RCtHLhXOdBP+cjaHLTxFG0NvIlMJ0YoAK4kreroewD
+	A89Ru0Rj+GTsOR2hugtWRa9+eEmvV5NOQrG3X30v92+qNcQGc6R6BJ9iiyybLrb295Zhg7TU/SW
+	87UZZhe/FrIU/7gth2ddUHmhfOiI28J+/5yRINMU+XFcXt+ZwVvaRjVcQFaQ413I2NQCJON1yyg
+	64FipH8R0JP1FDSogljvvthEvSwDEf6J8xbwMQc+JpHtfeTEJx1l4EHj22McnOog9FC/kfsdgef
+	9/fGzaoJ3FerKYj01MO/o/8teSKsUOPZjM6j8+TDLuE9Tn8FjRB6rKqmrLPvWcyVdIa7sYLP0Kv
+	9po4tvCkpit12UZPE8a2edMcmSQ72ojV36KWdhqz+qiNNeIELkdEEXXnEL7kSNhKV46abPV9q9o
+	xhkPLh5bxz4Im6MAxXh5HdWnXpmT3vF6w7CSVBU6bGGirKMVOGvZFXjk3826JZoM3WqwXtEukxB
+	XB3Dx1OaCz2re/CjvNyaaHj+P9ftgLiN7lhg0xGTOp7wmxnVpkUizshg/Md6GtN0FaCw+oFs91M
+	jO4x8+A==
+X-Received: by 2002:a17:90b:4c4c:b0:3b0:e2a9:3466 with SMTP id 98e67ed59e1d1-3b182eebe65mr4740116a91.16.1794479716567;
+        Thu, 12 Nov 2026 02:35:16 -0800 (PST)
+Received: from smtpclient.apple (fs98a57cc9.tkyc008.ap.nuro.jp. [152.165.124.201])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197ce49d6sm4207584a91.4.2026.11.12.02.35.06
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 12 Nov 2026 02:35:16 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <20261111232603.9934-1-baohua@kernel.org> <20261111232603.9934-15-baohua@kernel.org>
- <sashiko-outbox-210422@kernel.org>
-In-Reply-To: <sashiko-outbox-210422@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 12 Nov 2026 18:32:41 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4ykeDu9XyyiNs9HBp2w--Pm7=oqs0=M5cPiypQ1qq9yTg@mail.gmail.com>
-X-Gm-Features: AclHuK9aqAZITWRqHh9yevkLq-9AApROjxfcJNRcSWL23zK1HDs8oSwCzxS8sEA
-Message-ID: <CAGsJ_4ykeDu9XyyiNs9HBp2w--Pm7=oqs0=M5cPiypQ1qq9yTg@mail.gmail.com>
-Subject: Re: [PATCH v7 14/16] mm/mglru: Avoid prolonged anon reclaim with swappiness=200
-To: sashiko-reviews@lists.linux.dev
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, 
-	baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, hannes@cmpxchg.org, 
-	hui.zhu@linux.dev, kasong@tencent.com, kunwu.chan@gmail.com, 
-	liam@infradead.org, lianux.mm@gmail.com, linux-mm@kvack.org, 
-	liuxiang.277@bytedance.com, lyugaofei@xiaomi.com, mhocko@kernel.org, 
-	mhocko@suse.com, qi.zheng@linux.dev, ridong.chen@linux.dev, rppt@kernel.org, 
-	ryncsn@gmail.com, shakeel.butt@linux.dev, surenb@google.com, 
-	wangzicheng@honor.com, weixugc@google.com, yuanchu@google.com, 
-	zhangbo56@xiaomi.com, zhuhui@kylinos.cn, sidchintamaneni@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
+Subject: Re: [PATCH v2] mm: memcontrol: Don't lose track of exiting OOM
+ victims
+From: elenchist <elenchist.dev@gmail.com>
+In-Reply-To: <avA1wXhTMs9eY2NF@chrisdown.name>
+Date: Thu, 12 Nov 2026 19:34:53 +0900
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>,
+ Tejun Heo <tj@kernel.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Zhan Xusheng <zhanxusheng1024@gmail.com>,
+ cgroups@vger.kernel.org,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ kernel-team@meta.com,
+ regressions@lists.linux.dev,
+ stable@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: dq4auf7seforszun7mgbw4rq33u94zjz
+Message-Id: <6B8E9261-3FF8-441B-8F47-7D35834A8D35@gmail.com>
+References: <avA1wXhTMs9eY2NF@chrisdown.name>
+To: Chris Down <chris@chrisdown.name>
+X-Mailer: Apple Mail (2.3864.700.51.1.1)
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: fozmtp1wotp9m1jie653cmkmg6fp1o7j
+X-Rspamd-Queue-Id: E3C4F180003
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6D9C440007
-X-HE-Tag: 1794479575-351451
-X-HE-Meta: U2FsdGVkX18oRmYXaAf2GwUOTKeGvwXWW+QW8nqjt24JZ5CST6q5qcap87vgCPBiUCPu3D0kKU5Ec+HupklnPPx6Fl9k69QDMby2MAMgiyTynH08YtyEoxtHOhRMp9nKXgaHIzurX5tof+ZHvt7VDeykLbtMBVNMMNCKlCgNf1kgNysxgBM9YqyXoWLDLrZeAdLl7mri7PUWM9uUxwRmH/v72Ja7prUF3hbaxO/5zWQuyrbYZ+kybuyMeqGlrR3SrREtwgSSVQmfk1HNrYT62x2Mgy2DapT+HEtECaAScE9KJMN7FGzL4GdV+Haueiojer2Sq3xZ+wEOa51tymUntI3nusxbrQFa35KDF6q5ut22VvXvEkE38A7oqLrlh5duBl5XRVxqYjN5vtWJqP6IlP1GM5Nim54ZF7Moyyd++It3Q1D6wOBsBxgIRqwWjvHqwjGvKh8aj3kYauKJJ1rOYCyf+xF8xNTrvEQxSksqQTGcFTJ3yehYCZFQ+XKcuvBKhsN17RKLmHcKovqFJN6e1J+yO0ByehDgZKMhUtG7PUdTfVS0jXY7n9xoPP+hXb49k3aO8njA2PP7KDWwe5KAvHvdkYNsoIQMoZtdj2sqCN9D/C/2SaF/aoRjB15h+v7IR9ZZvQ+nBeJSv+xEzIoyjtY+IqHBcqf5Aa340DHlaeYu1H9GRe8YdVZeF1d9nAaLejpsVShuU4Qys87M6b0xiwHrLFBWvPFLBUmbb4/7PCeU9jyTeUq5rOsTFxCNXpWOwht25DhjNrm/yjuTioA6xQYsot0IcKarxgjm5t+0rCH6jCkA1csCsNSTHCqjPhnxxAngZNU4XbZOTGgrXrdnJQs8J3zzyhRhuorzbqXKRwFmOAbJyY1dUwuS94QpSDl2zvNNmR5VLwMpXH8G4hi9jfIpHFemZEfsxT9XU/3LRnBwaUPHUQDg3D0rNZWjRrjree7Dlp4/KFgowHSSYJa
- EQNMJ+jE
- 92NmgMo7iMxB3eh96wiUrYFaVb7BeT6PgsWEfZ++3HBlcpuubScMoO0nLDsbLRJ8CanR2CPIF/rfrXs3p+Em7H9zHTCjBySa+/h/OWuP4fyyAjAcRTaAuWI1mPCQkl0ZanRvrD2/aU/UZ/tkAsUS9a88QUSZlpy0sBodC56Vo3FUjSO0d/IkigvVRuNx37j2GBjvO0KAHw/IMLdSkfx5MptiKfz0jzp6ZJDJ2+0iVuhGcEWlw7dkeRMZFivcw1hqR3Lzmwhrn2AnvenAWZFady+F7DtzTq6v9IL0Rn41l7gePgttoWV7IQ2CjWB1sIPlSHSYGwkgO6SOK6BdgY7EosY9Ld0J5GmjWVYqKdu16acLv60APw6IYdP0lLaDgBQciDNpYrAT62vsC7iHaTCZI1tQNlHG05VrpRPooOe85XJjmgJWw/1+mO6JDoujDvVcVcma9XCCCxjB9h+YTWS3NYhxKnQ==
+X-HE-Tag: 1794479717-992617
+X-HE-Meta: U2FsdGVkX1/Kt9siLBD4afsf7Y3sgYo+hrv+RxVks5uwDQ2xbD0Z+UZjpSakPW30xPAAw7xijeaCFW7w0awBOMS026G1fL6TU77U8XdMhDf1I6ggEdAAv8zfD7Z6oQQcgQDx8dhizgFekwBSuSooKQbf7TXjFWrHfy9x8eBlXe/YyDkuRK+Fb0X42DGeoDqcpK2NpY5AuQUqq9LPnoJPx2PJPIFyWYgeTIdYid/3HqF5zk4dfN3kb0QCTjZUElW5CZZNqsl6DVlGSeha7bcXFNsoO4MZgAEHXm3VFRG/XjDOoqHsqnpIwtvRSz+5j9x5DmcID/P3Ze43qVeyanA9aAWAexdsueckn+XjXA+BUvarUMOrS6py9cSIT/aPbOOzf45HgAYRT2P2IBdsXLvOiwOeqJdGHV4vjXuT9tYmWzW4TnwzxdydaFZhnmleipbC64Oxr6Mvyy8r5lzcw6gX8yWtaUp3n7gAG6qfP9gIcz1TtZQvMsmv+TO9hOV/OxGQRspzXCjI9DkqACVbv5D+1svCKe/PCzEQF/Kp32QfyoGVeVbpBbXxOrTG/raJYj8AisXNod4wte5IyDpnd0+POWKiw/6X56xNDbYUo6T72mfA5Ztr6EEyGguD1p/u2zAV9IOEO1k6DgQ4J20KvvG9IqGwI4e9gnzlaDkxq/j9v9E/oizEXmHhf7qkdywEOpEmAAYvc0BglfQ+W3w4MZfc6OrPdIHozwUz9DZbX1Y1vPZVygljAc3/WuAP+Lkjn6XTzvq5nHa5/TcR4Ox7QZUsWWVA7S07B+iHm1CQ0ApxX2c68gJL1+MeJbi/TSfQXUddpqrSp4tGV123zFxnjUUfOKaGigq7+ppJZmPj7ujoo9ljYUpD+rLE2n/pB+jSOcnMBhZiFhr3+GXtjC353WnJclnHWtpF/UlzlynbWtAZ6xsQfP34TqhQbp2BpUzDUZ1/4nLyKey5STEibjI7VG6
+ amfo08Yf
+ OK7TDG529pMU5KDK5cPSEqmVhMZxT9Nb6aZReoBgUOOcURafljul29/a0/mVmYDWUVE8JjLZauRj3aRCj4sp7Tgxg5R8WFqy8/Fw7k08OQrINAszThDpSNZM7H0tN/zBkafGxJ+6gbKUhoY6usUOtlUGilwgCbMrbCaGCFQKMxvbDXz9GMLW/7gtA0LBULeZJdprBGdn1tLgFjbDSacUpbnMbmvJ22megeb77X4+rpYR03DTVr/lUQPQv6xAoWdg63UsZMMK7/GOa9nimCEsDkru7axfM4IHcU6VVwL6fq1LxADquSpN2GFUnL8IT723CvBSjPtQOEPbfxCyzBdw8VsWkzdYfhhGKfp1tQIJ4Q/MSbymtYesaaMwQvOXctexBsKpqaXbb0UQeVHiQRyXLb3SN/K/hzv7SZF5s3/jgDaVgApqcuXDLRGXfQJN0i/I58xxPOFg5D481eNmjq6eQGgKR2UEHTkiF3xraVGmPbDS7xjA1ZThy1ilTOfNwqF6DCYmu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,287 +141,134 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 1:01=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
->
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issues to consider:
-> - [High] mm/mglru: commit Author and Signed-off-by use handle instead of
->   real name
-> - [Medium] mm/mglru: zero sc.priority in run_eviction() skews
->   lru_gen_balance_scan()
-> --
->
-> commit 8a29a76d461ffd04769caa1f7ed98ca18efe1fb3
-> Author: lyugaofei <lyugaofei@xiaomi.com>
->
-> > mm/mglru: Avoid prolonged anon reclaim with swappiness=3D200
-> >
-> > It has been observed that swappiness=3D200 can significantly slow down
-> > reclaim on some machines, with some workloads running 3x slower
-> > under MGLRU than under CLRU.
-> >
-> > This is because swappiness=3D200 currently results in file_factor=3D0.
-> > Give file reclaim a small factor at lower priorities, for example,
-> > when sc->priority < DEF_PRIORITY / 2.
-> >
-> > Signed-off-by: lyugaofei <lyugaofei@xiaomi.com>
-> > Co-developed-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
->
-> [Severity: High]
-> Per Documentation/process/submitting-patches.rst, both the commit Author
-> and the Signed-off-by trailer must use a known real full human name rathe=
-r
-> than an account handle ("lyugaofei").
+On Sun, Nov 08, 2026 at 12:41:37AM -0800, Chris Down wrote:
+> memory.events showed oom_kill 2 in three runs. In one of them the =
+first
+> process hadn't submitted the read yet when it was killed. The slow =
+read
+> just makes the window easier to hit.
 
-Let me change it to:
-Gaofei Lyu <lyugaofei@xiaomi.com>
+It doesn't need AIO at all.  A plain memcg OOM hits it most of the
+time: the victim only spends 10-20ms in exit_mmap(), and if the
+allocating task fails a charge again in that window, a second (and
+sometimes a third) task gets killed.
 
->
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index 2030c15c06674..a92b14190d733 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -4889,8 +4889,8 @@ static int get_tier_idx(struct lruvec *lruvec, in=
-t type)
-> >   * We don't calculate the scan cost, MGLRU uses lazy promotion, which =
-will
-> >   * cancel the scan budget natually.
-> >   */
-> > -static void lru_gen_balance_scan(struct lruvec *lruvec, int swappiness=
-,
-> > -             unsigned long total_scan, unsigned long nr[])
-> > +static void lru_gen_balance_scan(struct lruvec *lruvec, struct scan_co=
-ntrol *sc,
-> > +             int swappiness, unsigned long total_scan, unsigned long n=
-r[])
-> >  {
-> >       struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
-> >       u64 refault_rate[ANON_AND_FILE], anon_factor, file_factor;
-> > @@ -4947,7 +4947,12 @@ static void lru_gen_balance_scan(struct lruvec *=
-lruvec, int swappiness,
-> >       file_weight =3D nr[LRU_GEN_FILE] + nr[LRU_GEN_ANON] / size_bias;
-> >
-> >       anon_factor =3D (u64)swappiness * refault_rate[LRU_GEN_FILE] * an=
-on_weight;
-> > -     file_factor =3D (u64)(MAX_SWAPPINESS - swappiness) * refault_rate=
-[LRU_GEN_ANON] * file_weight;
-> > +     if (swappiness =3D=3D MAX_SWAPPINESS)
-> > +             file_factor =3D sc->priority < DEF_PRIORITY / 2 ?
-> > +                           refault_rate[LRU_GEN_ANON] * file_weight : =
-0;
-> > +     else
-> > +             file_factor =3D (u64)(MAX_SWAPPINESS - swappiness) *
-> > +                           refault_rate[LRU_GEN_ANON] * file_weight;
->
-> [ ... ]
->
-> > @@ -5891,7 +5896,7 @@ static int run_eviction(struct lruvec *lruvec, un=
-signed long seq, struct scan_co
-> >                       return 0;
-> >
-> >               lruvec_evictable_size(lruvec, sc, swappiness, nr_to_scan)=
-;
-> > -             lru_gen_balance_scan(lruvec, swappiness,
-> > +             lru_gen_balance_scan(lruvec, sc, swappiness,
-> >                                    nr_to_reclaim - sc->nr_reclaimed, nr=
-_to_scan);
-> >
-> >               if (!evict_folio_lists(nr_to_scan, lruvec, sc, swappiness=
-, MAX_LRU_BATCH))
->
-> [Severity: Medium]
-> Does passing sc from run_eviction() into lru_gen_balance_scan() cause
-> swappiness=3D200 via debugfs proactive reclaim to always calculate a non-=
-zero
-> file_factor?
->
-> lru_gen_seq_write() initializes sc on the stack without setting .priority
-> to DEF_PRIORITY, leaving sc.priority zero-initialized when passed to
-> run_cmd() -> run_eviction().  In lru_gen_balance_scan(), sc->priority <
-> DEF_PRIORITY / 2 (0 < 6) is then unconditionally true, so proactive
-> eviction with swappiness=3D200 always reclaims file pages instead of
-> preferring anonymous memory.
+Reproducer: memory.max=3D400M, no swap.  A holds 150M, B 100M, C 50M, =
+and
+T grows by 10M every 0.3s.  Only A should be killed.
 
-Well, I'm getting tons of complaints about
-lru_gen_seq_write(), even though it's just a debug
-interface that probably very few people actually use.
+---8<--- overkill.c
+/* A holds 150M, B 100M, C 50M; T grows by 10M every 0.3s up to 200M.
+ * Run inside a memcg with memory.max=3D400M. Only A should be killed. =
+*/
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
-If anyone is actually using it, please let me know.
-Otherwise, I think we should consider removing it in the
-long term. Both memcg and node already have proactive
-reclaim interfaces, so this one seems redundant and
-difficult to maintain.
+static char *volatile sink;	/* keep the stores */
 
-All Sashiko comments seem to suggest:
+static void hold(size_t mb)
+{
+	sink =3D malloc(mb << 20);
+	memset(sink, 1, mb << 20);
+}
 
-@@ -5955,6 +5956,7 @@ static ssize_t lru_gen_seq_write(struct file
-*file, const char __user *src,
-        struct blk_plug plug;
-        int err =3D -EINVAL;
-        struct scan_control sc =3D {
-+               .priority =3D DEF_PRIORITY,
-                .may_writepage =3D true,
-                .may_unmap =3D true,
-                .may_swap =3D true,
+int main(void)
+{
+	const char *name[] =3D { "A", "B", "C", "T" };
+	size_t mb[] =3D { 150, 100, 50, 0 };
+	pid_t pid[4];
 
-But I think this approach could introduce its own problems.
-Suppose we have four generations for both file and anon,
-and users use the debugfs interface to reclaim the oldest
-generation.
+	for (int i =3D 0; i < 4; i++) {
+		pid[i] =3D fork();
+		if (pid[i])
+			continue;
+		if (mb[i]) {
+			hold(mb[i]);
+		} else {
+			sleep(3);
+			for (int j =3D 0; j < 20; j++, usleep(300000))
+				hold(10);
+		}
+		pause();
+	}
+	sleep(10);
+	for (int i =3D 0; i < 4; i++) {
+		int st, dead =3D waitpid(pid[i], &st, WNOHANG) =3D=3D =
+pid[i];
 
-1. Even at DEF_PRIORITY, we can currently scan up to
-lrugen->max_seq - MIN_NR_GENS, which means the
-second-oldest generation can also be reclaimed. This
-somehow violates the user's request to reclaim only the
-oldest generation.
+		printf("%s %s=C2=A5n", name[i],
+		       dead && WIFSIGNALED(st) ? "killed" : "alive");
+		if (!dead) {
+			kill(pid[i], SIGKILL);
+			waitpid(pid[i], NULL, 0);
+		}
+	}
+	return 0;
+}
+---8<--- run.sh
+#!/bin/sh
+# cgroup v2, no swap, as root: gcc -O2 -o overkill overkill.c; ./run.sh
+CG=3D/sys/fs/cgroup/overkill
+mkdir $CG && echo 400M > $CG/memory.max || exit 1
+sh -c "echo =C2=A5$=C2=A5$ > $CG/cgroup.procs && exec ./overkill"
+grep '^oom_kill ' $CG/memory.events
+rmdir $CG
+---8<---
 
-2. With swappiness=3D1 or 200, if we run out of the
-preferred file or anon type in the oldest generation,
-we can fall back to the other type and reclaim all of
-its oldest generation, as we did before scan-budget mode
-was introduced. With the new approach, however, we stick
-to the preferred type at DEF_PRIORITY and don't fall
-back to the other type. As a result, evict_folio_lists()
-can return 0 earlier than it would with the fallback
-approach.
+Over-kill (oom_kill >=3D 2) per 20 runs, ThinkPad X1 Carbon Gen3
+(i5-5200U, 8 GB), x86_64.  "4a" is the same layout driven from a
+systemd-run scope with Python tasks; "C" is the program above:
 
-I guess the only way to address all these issues is to add
-a separate reclaim path for requests from
-lru_gen_seq_write(), with evict_folio_lists() handling
-these requests differently from regular reclaim to preserve
-the old behavior before this patchset introduced the
-budget-based model.
+  kernel                                      4a      C
+  6.8.0-149-generic (Ubuntu)                  0/20    -
+  7.0.0-42-generic (Ubuntu)                  19/20   19/20
+  v7.4-rc1                                   20/20    -
+  v7.4-rc1 + this patch                       0/20    0/20 *
+  v7.0 + 60f21a264930 + this patch            2/20    0/20
 
-Something like the following, though it would be very ugly:
+  * an earlier, longer version of the same program
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 4fe516d33703..24c6abe37189 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4745,7 +4745,8 @@ static bool isolate_folio(struct lruvec *lruvec,
-struct folio *folio, struct sca
- static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
-                       struct scan_control *sc, int type, int tier,
-                       struct list_head *list, int *isolatedp,
--                      unsigned long *scanned_seq)
-+                      unsigned long *scanned_seq,
-+                      bool cmd_proactive)
- {
-        enum node_stat_item item;
-        int zone_idx;
-@@ -4768,7 +4769,9 @@ static int scan_folios(unsigned long nr_to_scan,
-struct lruvec *lruvec,
-         * newest generation when under severe pressure, so hot folios are
-         * not evicted as soon as priority is raised.
-         */
--       if (sc->priority =3D=3D DEF_PRIORITY)
-+       if (unlikely(cmd_proactive))
-+               seq =3D lrugen->min_seq[type];
-+       else if (sc->priority =3D=3D DEF_PRIORITY)
-                seq =3D lrugen->max_seq - MIN_NR_GENS;
-        else if (sc->priority > DEF_PRIORITY / 2)
-                seq =3D lrugen->max_seq - 1;
-@@ -4966,7 +4969,8 @@ static void lru_gen_balance_scan(struct lruvec
-*lruvec, struct scan_control *sc,
- }
+v2 has the same code as v1, which is what I tested (identical tree
+after git am).  On v7.0 the patch also needs CSS_TASK_ITER_WITH_DEAD
+from 60f21a264930 ("cgroup, sched_ext: Include exiting tasks in cgroup
+iter"); only its cgroup hunks apply there, so that's what I used.  The
+2/20 left on that kernel look like a separate issue that mainline has
+already fixed.  On v7.0, MGLRU's page table walk in T's reclaim can
+hold an mm_users reference on A's mm (get_next_mm() used
+mmget_not_zero() until d14514c66cb9 "mm/vmscan: prevent MGLRU reclaim
+from pinning address space" in v7.1-rc1).  A's own mmput() is then
+not the last one, so A finishes exiting and drops out of the scan
+right away, and exit_mmap() runs later from mmput_async() in a
+kworker.  The next OOM picks B.  I traced 2 such over-kills in 40
+runs; with MGLRU page table walks turned off (lru_gen/enabled =3D
+0x0005) I got 0/40.  So a 7.0.y backport probably wants d14514c66cb9
+as well; it applies to v7.0 and v6.19 as is.  I haven't built v7.0
+with all three.
 
- static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
--                       struct scan_control *sc, int type, int swappiness)
-+                       struct scan_control *sc, int type, int swappiness,
-+                       bool cmd_proactive)
- {
-        LIST_HEAD(list);
-        LIST_HEAD(clean);
-@@ -4990,7 +4994,7 @@ static int evict_folios(unsigned long
-nr_to_scan, struct lruvec *lruvec,
+Zhan's series [1] is a different problem (thread groups migrated after
+their leader exited); v7.4-rc1 with it still gave 20/20 here.  The two
+patches change the same css_task_iter_start() line, so they will
+conflict.
 
-        tier =3D get_tier_idx(lruvec, type);
-        scanned =3D scan_folios(nr_to_scan, lruvec, sc,
--                             type, tier, &list, &isolated, &scanned_seq);
-+                             type, tier, &list, &isolated,
-&scanned_seq, cmd_proactive);
-        nr_isolated =3D isolated;
-        if (nr_isolated)
-                __mod_node_page_state(pgdat, NR_ISOLATED_ANON + type,
-@@ -5177,11 +5181,13 @@ static bool should_abort_scan(struct lruvec
-*lruvec, struct scan_control *sc)
- }
+Tested-by: elenchist <elenchist.dev@gmail.com>
 
- static long evict_folio_lists(unsigned long nr_to_scan[], struct
-lruvec *lruvec,
--                            struct scan_control *sc, int swappiness,
-unsigned long max_batch)
-+                            struct scan_control *sc, int swappiness,
-unsigned long max_batch,
-+                            bool cmd_proactive)
- {
-        int type;
-        unsigned long batch, scanned, total_scanned =3D 0;
+Adding the regressions list: a72f73c4dd9b is in v7.0 and was also
+backported to 6.19.9.
 
-+retry:
-        /*
-         * Scan both types with the given budgets; the caller checks if
-         * reclaim is satisfied after each pass.
-@@ -5191,8 +5197,13 @@ static long evict_folio_lists(unsigned long
-nr_to_scan[], struct lruvec *lruvec,
-                        continue;
+#regzbot introduced: a72f73c4dd9b
+#regzbot title: memcg OOM kills more tasks while the first victim exits
+#regzbot fix: mm: memcontrol: Don't lose track of exiting OOM victims
 
-                batch =3D min(nr_to_scan[type], max_batch);
--               scanned =3D evict_folios(batch, lruvec, sc, type, swappines=
-s);
-+               scanned =3D evict_folios(batch, lruvec, sc, type,
-swappiness, cmd_proactive);
+I used an AI coding assistant (Claude Code) to build the kernels, run
+the tests, analyse the traces and draft this mail; I have checked the
+results and the text.
 
-+               /* if it is a debugfs proactive reclaim, lend budget
-to the other type */
-+               if (!scanned && cmd_proactive && swappiness &&
-swappiness <=3D MAX_SWAPPINESS) {
-+               if (!scanned && cmd_proactive && swappiness &&
-swappiness <=3D MAX_SWAPPINESS) {
-+                       nr_to_scan[!type] +=3D nr_to_scan[type];
-+                       goto retry;
-+               }
-                nr_to_scan[type] -=3D min(nr_to_scan[type], scanned);
-                total_scanned +=3D scanned;
-        }
-@@ -5240,7 +5251,7 @@ static bool try_to_shrink_lruvec(struct lruvec
-*lruvec, struct scan_control *sc)
+[1] =
+https://lore.kernel.org/linux-mm/20261027144016.2582880-1-zhanxusheng1024@=
+gmail.com/
 
-                orig_anon =3D nr[LRU_GEN_ANON];
-                orig_file =3D nr[LRU_GEN_FILE];
--               scanned =3D evict_folio_lists(nr, lruvec, sc,
-swappiness, MIN_LRU_BATCH);
-+               scanned =3D evict_folio_lists(nr, lruvec, sc,
-swappiness, MIN_LRU_BATCH, false);
-
-                if (should_abort_scan(lruvec, sc))
-                        break;
-@@ -5896,7 +5907,7 @@ static int run_eviction(struct lruvec *lruvec,
-unsigned long seq, struct scan_co
-                lru_gen_balance_scan(lruvec, sc, swappiness,
-                                     nr_to_reclaim - sc->nr_reclaimed,
-nr_to_scan);
-
--               if (!evict_folio_lists(nr_to_scan, lruvec, sc,
-swappiness, MAX_LRU_BATCH))
-+               if (!evict_folio_lists(nr_to_scan, lruvec, sc,
-swappiness, MAX_LRU_BATCH, true))
-                        return 0;
-
-                cond_resched();
-
-However, this would make the code much more complex and
-probably isn't worth the effort for a rarely used debugfs
-interface, especially given that we already have proactive
-reclaim interfaces for both memcg and nodes.
-
-So perhaps we should simply set .priority =3D DEF_PRIORITY
-and live with the two less significant issues described
-above.
-
->
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111232603.99=
-34-1-baohua@kernel.org?part=3D14
 
