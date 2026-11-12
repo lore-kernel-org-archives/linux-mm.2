@@ -1,91 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A081560A3812
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 16:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085FD60A381E
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 16:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=l+Q1RsYq
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=PlplbDYY
 Received: by kanga.kvack.org (Postfix)
-	id BF0006B05B1; Thu, 12 Nov 2026 11:40:12 -0500 (EST)
+	id B53EA6B05BC; Thu, 12 Nov 2026 11:40:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA0F56B05BC; Thu, 12 Nov 2026 11:40:12 -0500 (EST)
+	id B050E6B05BD; Thu, 12 Nov 2026 11:40:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB68C6B05BD; Thu, 12 Nov 2026 11:40:12 -0500 (EST)
+	id A1B426B05BE; Thu, 12 Nov 2026 11:40:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FFD66B05B1
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:40:12 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3712B1A06B3
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7CD476B05BC
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:40:14 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1253A80629
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:40:14 +0000 (UTC)
+X-FDA: 85427029548.23.034EC55
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2C12240002
 	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:40:12 +0000 (UTC)
-X-FDA: 85427029464.02.5A1B8F4
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 707AF80010
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:40:10 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=l+Q1RsYq;
-	spf=pass (imf30.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=PlplbDYY;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794501610;
+	s=arc-20220608; t=1794501612;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C/y7Uwn+oYzUTWr8Qk21aG5gEd4/XpyC+An9k7mgPHU=;
-	b=ZD5qgnz9LqSMOotl7GRZr6GRKgOby9Pt8CXl1C4Gsce9iAFgndsHV8orlK8osL5DRygrHA
-	LUxnufaD3hPCOSV+SSxzXj5tJFrqIvN/rmw4fl34TZ7gnbU48coTJWfbRBT58NoVF6T15a
-	0jcG06ELkVI1XHNkLgA0zuwjw/sQzyw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794501610;
-	b=kc6gLU9w0GAwu2r/qBdvZDaZsl2X9BPe311edR9hgO+WeMWLehTZsoSbLDPpge9FTFYE7F
-	Rd/ydgGB8Mgbh/n2Lk2rxZcRoZvhcGqGg4Dh29f9L6kTFQhFyip3SgNNYnY8+wj6hqNX7/
-	5WiB0+XT2OavsWUcG8bIGnNi85QHTzc=
+	bh=gtnUQwywPg0HjDfSf6ZrnT5Doe5dkWtLl9mYnrnpV/w=;
+	b=kXrFEi74jDlWfDidFO6ys6IfQ/f0T6N3hECxTyfEq3HrB9/oectSePu2oC9LkoRTxuWunA
+	3BoLDxtE5/huBPtjHKyux6RkoNKB1yVRn/KZVCN+H3IzQ+Ka/kXDIiPS347TeOV/V0rLEq
+	X0AMN9HsfmgCJNKldf5MAjYZli6RC/A=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=l+Q1RsYq;
-	spf=pass (imf30.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7DE811516;
-	Thu, 12 Nov 2026 08:40:06 -0800 (PST)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 232B23F673;
-	Thu, 12 Nov 2026 08:40:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794501609; bh=OJf9vH/UgjbPnMOOD4wehtLjTNHfSY54RGcIkGkVj5A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=l+Q1RsYqmctClM4wHH70rhdR+HU8l3Kg7ueSQCCj6M/lsoXW/qFh42720oSelH2GM
-	 JhQXQQCr16wIWjJDJ2zx1hNlB/x3J6qZhH1su+womvkbU7Ez3JFeN0hyByCHApTd3o
-	 ZcLq8SbN47HvFupyhUkfKC4cIsm+8vL3/4W5TAJk=
-Date: Thu, 12 Nov 2026 16:40:05 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH] slab: allow sheaves for SLAB_NOLEAKTRACE caches
-Message-ID: <avXr5f2pe5lXpDN2@arm.com>
-References: <20261112-kmemleak_sheaves-v1-1-e40e3d73b253@debian.org>
+	imf01.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=PlplbDYY;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794501612;
+	b=Ga8n6ZDLZiaW/Nd327lXSk6p12WmW5e8jAyl2S4RwZ4owSLhK0ybT0CLZNNvle99Ic93H6
+	8YrS+wdBGXWWLVM6xsK1w6UEisJ94h6Xq6pZhfxDAkbj6BcEKJzu0FFPnxHueVwFAfTCGA
+	cS13FVKhKBAG/jhXlTBmT1BuO1DBSgg=
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-93f1e5d7450so443536285a.2
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:40:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1794501611; x=1795106411; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=gtnUQwywPg0HjDfSf6ZrnT5Doe5dkWtLl9mYnrnpV/w=;
+        b=PlplbDYYQUue0XGzsM5K3bP8H5s59s3jqW+52TrDxN1mybjvXsa1p9GwFOHYAIG72l
+         J598I/PHpVOyBQn9EWi9xINcQzoTy0mhpjqSQIH7Zo+EJ9sf4l0dZKAP73pZQVZeA1vg
+         F/B/LrkaGa2XYu5XIJfH5CcKryr1WwcbwKQVz7syVZiyTM77Wmc5Vor2WBdefQgSbtqL
+         MpPIG26MFw1jhbEoWFkWyg+W9z1npuvuSE3tpv3NOAk2fcqVTzK/Y4gc8rUu7ALgyX2/
+         mTg9Cu7rG+dvCwzOnmPi2uiWBeAh2bUHC6gWCQ45g33w8ZVyXNV/X9FNFFeLfVlDE7OV
+         dCog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794501611; x=1795106411;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gtnUQwywPg0HjDfSf6ZrnT5Doe5dkWtLl9mYnrnpV/w=;
+        b=fHLJmOUQjf+JLtDDmnK96gVxSvJCoerXRKhf7KkWv4T3fYeoPqsjs1ENq70UgIC1ih
+         Tlx7R+FbHAncRF07I6WHqkKKgzAlsrIcBP0OBTrpGWFNWc5H9upxHUGvK55ENdFW0XHG
+         HIeISPHGJzai9JCuqx4R3ogHQ1QZKKN7WYbhq8NWMvF/xICk4xBVIhcaAvYGOeu4Esnj
+         Nb0CuPKOvJfU+eNL7ogGk2T+naEBkysVSqraL9coIBrUv1NtJW45scpVAlkqNeCZv8Gr
+         02JOSIugHG0YUwggRS+6jEv9H2HFc3W7YSdnMlXflsQvnXys5E4ZVWwOrZbItuLyP70I
+         w0EQ==
+X-Forwarded-Encrypted: i=1; AL+hErFACNGhauBOpnJyg38YdXPrYfPYtkhPx51CqyS3knbx1yuibBPZYGyjPGwndY3ZUEuVbVjUCDuezQ==@kvack.org
+X-Gm-Message-State: APuU4Z8TU9u+Ww3HealyKtwNDNA03Y56BP2dt9Kz6dtL96MVTExTPdCn
+	BNEVCRB8xXJJ1q43MSmse8peHrctznwnunwKhNQLMv7mDuzzA7IhgV7XbjvmtARRAiA=
+X-Gm-Gg: AYBFou31vCSqOlWNV/C61CzsNQC0LNt9DfeAPOxhNH7VWlaxpT5+9MtTGDwp4mWILGt
+	NxMsxRhYIJYXuCzI7t8QVVSiHVOuNMSdZMQso/5IdcDjT3TfGwn2pdLuB6xpWSa44tlLVanJ+dZ
+	o/Sj/bnXc3MYoN0Gli3h2Cceau2ncEjhh4SHAmMQfnad8wrxFpdLH8bDztStYMBFCu7zTSbRwfE
+	WeGnX/I8eY4cSXdCandFuomE7eoEIjZ3Yh5yBjkmnaE3BjOPHfl39zIagtufDfBCSxXc76hen8s
+	vf1LyFXQBAwDsxSlTSJXVzT1rSg32MAiVSXRe4dyaglR2NrwQvPoyGmFerBHasDz3zqY0IhZZiW
+	er/DbSxgDCJ0HHdjwh/QCeUtenLk+75yRQgGwcItv7eQiFIuLVEe7jzp+53/pxhrAtdv5Rg3jv0
+	PzpL3KO6ShOcyHjB0WIvuCEjVI9+zQAr/JuLO8Ik92eDBvX2nTd8E9Zin9OCY2mlPvFtJ35p5Bq
+	LNOLn/55J5iS5zhfq6V6iQeqF3dhiBEauFs4R1w5nKxpAXstEXNVPZqSXsaxFKIvgq6vfFHqFIF
+	B/R0GI2rb8TZ14bu80GrdCDPK1rXe5bBgchsAmgpktqFC+Epb1UZKNZFVHYMcJlhgCnY1lkZXcz
+	bXn/B2oy3
+X-Received: by 2002:a05:620a:4626:b0:945:ad43:1d59 with SMTP id af79cd13be357-947b000d7a5mr1094709885a.75.1794501611290;
+        Thu, 12 Nov 2026 08:40:11 -0800 (PST)
+Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9479e7ffa11sm759904885a.43.2026.11.12.08.40.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 08:40:10 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261112-kmemleak_sheaves-v1-1-e40e3d73b253@debian.org>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: nr7pdio3sezftzr44383no8guhjih9cy
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 707AF80010
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 03/13] mm: cachestat: restart the walk after each entry
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, 
+ Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>, 
+ Pedro Falcato <pfalcato@suse.de>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+ Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+ Gregory Price <gourry@gourry.net>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Alistair Popple <apopple@nvidia.com>, Usama Arif <usama.arif@linux.dev>, 
+ Kairui Song <kasong@tencent.com>, Balbir Singh <balbirs@nvidia.com>, 
+ =?utf-8?q?J=C3=A9r=C3=B4me_Glisse?= <jglisse@redhat.com>, 
+ Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>, 
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+ Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>, 
+ Chris Mason <mason@kernel.org>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ "Borislav Petkov (AMD)" <bp@alien8.de>, Mark Brown <broonie@kernel.org>, 
+ "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, 
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+In-Reply-To: <20261111-mason-migrate-et-al-fixes-v1-3-3d2454362e8d@kernel.org>
+References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
+ <20261111-mason-migrate-et-al-fixes-v1-3-3d2454362e8d@kernel.org>
+Date: Thu, 12 Nov 2026 11:40:09 -0500
+Message-Id: <179450160935.482102.15213700511149025586.b4-reply@b4>
+X-Mailer: b4 0.17-dev
 X-Rspam-User: 
-X-HE-Tag: 1794501610-37558
-X-HE-Meta: U2FsdGVkX192RTuxxOdZXdMV3RcOAq4CWBL4RG7RMthKd4hFCvz2CD37jjiIesFiiNwlVK2e1BidlsRjKYl7V8Vcbkp3ZQOJ7h1ewpRyhQmF6yrFxKPLOGPbJVBORekeg7VGxvylu9Vml67cWoAoVzAo4rpDBeVwwA61sf883wRh0AqfIkVqAM+3zKrmd5um2Ygwtzn9aN50IMrdsc0N39hTHOZ4B6ZFTrkxh0i2NIj3QLdIg6vfKTlgxeY6ksXEv7KzQzMiEAwBw9QjtDkfyj0E0zVaYhMUx4tkYPWwA8Bp43l8DPIq4AnmZhiMDOsafF0OZjpJflWuSG1+EdMXJ1OYTOm4Rz5DtUczqt36OAT7HhniIYrR2rSbh+dwe8g6VOGtB1QA3qgEPz7AwOIACiTv7w6+SEdwX++Ev4PUqsEofBDocs526IY1jML9a5bj1j3IegUT3QDP+b8KL1+tamfmfNEhAdrXOGsGSFDQM2qkfh3yOMb0J1EcVHjxmhYsE9f1lQyg2ySG1l5ZZl/maaqx0dK2QLdAO0pyjp8YYAHc+h9Vw/Ljj5Re+8zmgL9m/hHdItTPbOP9F9A61/qWEjbWUo8Xr6N2ywJeeT9ehJ6X8LqI0Ouz4Rzrv+WlKveUtgBrcprHp2u39Ivg3D5hyvsLLlw6W4TiMTG7m2KtO3uKZGWm+oGL9TPRKAu1MZLPbf4FWHAZrXHtk9UdB75Pio9YWMEgrjRs29GS8g0ruPXgDU0q1DDp8nsYkQNCGKP8uQK/9IDKBWRFaafsCwqENSiWyGvbI+ezwbO1yjBryo7GaeANFd+64pfWpLk/Ve35qNpi8lPo/ZG+YTGNMEPBpKQGfQaGyFggGj7celm+vXA1Y/W8QprEPxL1smT6mv2757F2RoKSxxXC0JWYEQsItqa9TQTLygqIl22TNY5tzoJxl6GKN88rEfaGFhOlLq58WYUxnwixijqvAkiz+Mu
- sffYzUAE
- 0DkPd0HMuEssCfz5IFMJdem4DqFQyEiP0vr0i62dJTXInvcscJ1pmlnY192+x7K0wv64fxqKBGfIxf1+fEVDZK0I6vvYsket9bkJ9FeWpQaagSHPRRAyIu0GN/NJfDPZBy9byjal0Idsz7TFNZyOhVVPUZa4kbcncG5dyHXvX8+958R2g04UALXNTeq5kRije4EVRo7uKcm+a4cj40Aa/7RVnya7e8uGaEknmHM6ua3Ok4Af1Zv0dY4KWmnY2lTLGuxD+0mz1j0BE2iU+hFeHGRlSlxFkufjbcuUBC1vSZ1oy+N7mAo/COywA4jUmH3gfRSmu980viUCDigp51pMqZ7r+rINUxkXDyjZGr+xEL+IQz6rDjitoV36oBH2QZO0CuBzdmD79njZVlnBZHlKKPiSMSA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2C12240002
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 5adit8b8kpcp7ayt11risgy7x33dt733
+X-HE-Tag: 1794501612-686035
+X-HE-Meta: U2FsdGVkX1+feF3TvE41LT/pp2iYLvlSLVsW1efiRb2NxHlvBAyeyzWbJUjriRJDgPizTCfDLWxZoG+H6yOxDfbtZa0f7yHYk4oZac7+hR5zhLbmAzWdksH1jUdEX2oGI4bG3OIaDB8OxNK3vFw+aZwDfOlsKQTviwiYGC5nY+zdBPIOoMAfRUSyPXzMT23i33AHyF8YbK3X5vM7RxIeAO1fXsY5iUBY+N0OLKgkSeLzL5GVPKbCea2hWkpCpEPVfepqeSdThzTPgiv9qvXmkVA/RbySbq5fm1EY6r8fzkxS9WYWR/6AKMaxBvxJb5EUTTBnjAeMJ/7HONQDnyUrVeAm6wlb90w+ESmAvPI6YY1SHJAfQ2VgvcGPZKxd38jXF2z8j+njiCyfUXhpavA61FXGhDFY3IzVfnEbfF5MEv9EpW+8YqnIKnA3zl+224rhsoOzjbTF/9Jk5OLfti801547wckYqUttvMmyI/znyZHXJN1BzxEB9f1AegxoHVvBCkq27UkC0G6d7Dq5VZzgzj27iy1Fg86rkQcoAmkFWAPIfbIfh4ak2yA9Tlyo84rVvF5XHPInBKiRSC1m2Wbx2EDBKN/NW4iqWt5PkgaZeNys0snJumnpDIoF+dEAJlobwVCYltnZlFzgNiNlVFNo3aZ/3BcXpOJdgmUrABYRjRNSJgzRZd3pQL50QXMIv9+ke+obYEk5RbZtvDAr2eSDtzLKpvsrC1dZMxkHrEBt1QtIKNDTWUYeSabi88IoRpwc0psLTpvyRuvFzgOHI83Wb7vvDpafJnXFE8WgyQIV5Xdh2zVzcEnFL6g+zgCWC4UwdZ25PtPS7C4T4ZbkEBjGT3CmxuMtxf4xgmwJWMxNzfmZkgFn1rxAqhv9XnSK3QQ66VGVQGGtOnX3ctgfqOrTN7ys+frCfoZvQbxgMj66Sdgw7IqvjCSzW8b9GeAoIv3a+IhjZI+rT/iLZtRkN1k
+ Ho+afkvS
+ dpA+s3Xcd1f9dxCk4j06LyiCzi5ENTIQwVz4/b1SiamqQTnXBiVdcxUnTeun4SFyDiP2M4SMx46APupydl+toVH/V93vXv7SOp6SG3EwVQqKDkOuaz9i3yMv2Bsxt+ODstnTV01ZLWwTYOOthnrVY8GA0yxH5Z077MmsOLG962RbcOSvEdyG0TPIQk/wy/Jf93WLpubMJz6WMNe9HPAlos2nu5nZeHjrxBQdxZEE2+xEmVtfvBYpR6UExrTnL6AfZC0aLBRzw6YFK33M5+7RWGshoavH3ETw9JfjB/e3P4OLE6ToeHmOVn4AO/2jmR6GCWinp2QL0eB9eJAQAz4T5saDSYWlRngvP33gkbb3sGby02aTNg6MVSWJQ6BVgsWgMbOmMref4NnxI/7RDSaGdjqbTJnBxjJFEEt+G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,43 +150,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 02:04:18AM -0800, Breno Leitao wrote:
-> This is a patch that makes kmemleak cheaper to run, by letting
-> kmemleak's own metadata cache use a _new_ sheaves type. The flag only
-> makes that possible without recursion.
+On 2026-11-11 18:13 +0000, Lorenzo Stoakes (ARM) wrote:
+> From: Chris Mason <mason@kernel.org>
 > 
-> The cost today:
->   * every allocation kmemleak tracks needs one kmemleak_object from
->     object_cache. An RCU callback frees it later.
+> cachestat() can leave cached pages out of its counts. This happens if
+> the entry that the call has just counted is replaced by a larger folio
+> that starts in the same XArray slot.
 > 
-> Why that's slow:
->   * object_cache has no sheaves, so each of those allocations and frees
->     goes to the shared slab lists under n->list_lock.
->      - On meta's fleet kmemleak kernels, list_lock is the second most
->        contended lock, after kmemleak_lock.
->      - About 88% of that wait is RCU callbacks freeing kmemleak objects.
+> The issue is that filemap_cachestat() walks the page cache under the RCU
+> read lock, so racing concurrent collapse/split is possible.
 > 
-> Why sheaves aren't allowed:
->   * a sheaf is a kmalloc object. Tracking it makes kmemleak allocate
->     another kmemleak_object, which needs a sheaf, and so on.
+> Thus, an entry can be replaced immediately after the walk has returned
+> it. When that happens, the next xas_find() skips the sibling entries that
+> point to the slot of that entry, since ordinarily they belong to that
+> entry.
 > 
-> When I reported the recursion in [1], I suggested keeping
-> SLAB_NOLEAKTRACE caches away from sheaves, and commit e47c897a2949
-> ("slab: add sheaves to most caches") did that. It stopped the
-> recursion, but it took the sheaves away from the whole cache, although
-> only the kmemleak tracking of the sheaf itself recursed.
+> However a concurrent collapse_file() or __filemap_add_folio() (when
+> replacing a shadow entry) can store a larger folio in the slot, in which
+> case the sibling entries belong to the new folio and the walk still skips
+> them.
 > 
-> Commit 17c38c88294d ("slab: remove cpu (partial) slabs usage from
-> allocation paths"), from the same series, then left these caches with
-> no per-CPU caching at all.
+... snip ...
 > 
-> In hindsight, skipping kmemleak only for the
-> sheaf itself, as the new SLAB_ALLOC_NO_LEAKTRACE does, would have been
-> the better fix.
-> 
-> Link: https://lore.kernel.org/all/aW_NK2NXVgtuzCVH@gmail.com/ [1]
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+> Fixes: cf264e1329fb ("cachestat: implement cachestat syscall")
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> [ ljs: squashed 2 commits, fixed up comment in code, and commit message ]
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+
+-- 
+~Gregory
+
 
