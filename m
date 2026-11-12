@@ -1,152 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC8E606A333
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 11:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968C2606A32D
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 11:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=OuK0lMhi
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ku73Bd5y
 Received: by kanga.kvack.org (Postfix)
-	id 0CB3C6B05C2; Thu, 12 Nov 2026 06:44:05 -0500 (EST)
+	id BC93A6B05BA; Thu, 12 Nov 2026 06:44:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A3A16B05C3; Thu, 12 Nov 2026 06:44:05 -0500 (EST)
+	id BA1A06B05BB; Thu, 12 Nov 2026 06:44:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED5126B05CA; Thu, 12 Nov 2026 06:44:04 -0500 (EST)
+	id A93C96B05BC; Thu, 12 Nov 2026 06:44:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C291D6B05C2
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:44:04 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CE7341A0598
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:44:02 +0000 (UTC)
-X-FDA: 85426283124.08.9408A27
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C46AC120004
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:44:00 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=OuK0lMhi;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794483841;
-	b=MPdRYVk4t8wkHnKMYS9Bh/fiJTSH0F7oAitBpryrllOghIIPDI/RF/SOlinpL8Hr/GXZsN
-	Gwwek9FV9xrSVLySFVE9Zxzeksy0oEfSi2+tZQ6iBSynzColkXGwct+Sh8li4FTCENYVDj
-	wxioVvtWc03DpiFqqzoRIuuaM4KmDoY=
+	by kanga.kvack.org (Postfix) with ESMTP id 7E5456B05BA
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:44:48 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 16EE840547
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:44:48 +0000 (UTC)
+X-FDA: 85426285056.09.47D242A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 758B1A0002
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:44:46 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ku73Bd5y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794483841;
+	s=arc-20220608; t=1794483886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ha0beh8JKKzYfv/K+pKtKWX8urpG8eLvtCtoo4UumEo=;
-	b=ZLjcAd3BdK2nemYrHSLXpFltRfkqS3SMw57OddQ/T2rzaqM8u/t1i45rk6zO3KNGDRihr/
-	PyJq1h82jOEuL5K28Nb1go07mJxBberKdzrg6MF4Gmit6sRXeIi9Etw88Th9jxnbONUyKz
-	40KpTd6+XQRIXVXBjBm9dYZJnfNTs2k=
+	bh=29DfDf92HJiDUL83I37Z0UvfOScd+vQEdrJlJIoDRwA=;
+	b=aP9S+aRfENtsINJ0iWvxRl5dhyuu7X70e+ARE0pGb9ByCQkyepFVVfzM81UgFNTnWGwukP
+	EVlegfsqJ5h5BAbOB+fDpDbW0li24Qj33KAiuJSbWS7HZ2RAIkNQ3XM2VRPayWQjzkO7Ey
+	6OiqhX5UsoVeV7LldmRZwHS5z5uKtFM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794483886;
+	b=r9m/brb2DPfxI7AvmXAclQblWxRN0CCGdDn6HQLvwF8302lC73SG84izfKc+0j0KVg3YO/
+	jV8cir4l+Hp/iJhIw/EXSktpXmhKsuG8XyzSASJmsM4+GPg+1nM7evP1xBO31jHYG8IU9y
+	9gn70+cDovPJE/vBhmjzpw5Nu+nijIs=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=OuK0lMhi;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=mhocko@suse.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-492fcbfaa88so2798091f8f.3
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:44:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1794483839; x=1795088639; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ha0beh8JKKzYfv/K+pKtKWX8urpG8eLvtCtoo4UumEo=;
-        b=OuK0lMhiTC0brHarBKGBlxzOyN5YlImLYEwpOMaRWrEfRauSF4iVSPXAG/LSeu3cco
-         TnydHMdtUWXk3kHFRHX5pkpSfgwPMawDQUYaZ8k0khMHRa8CVGmQ2WibeHwX1agXzy/p
-         LmYkloyBSE0pbwyw/13afZ5aV3jwzkphg6s0rYKCMvu/C/rPjiiSDOPc8VXpsbjSu5tq
-         /XTo9H+kmLi5Xp5j2tCg9aCU27kNkKadGXVOnI4P8R2wJ83gIs5O1XyYlTCXcAIBqS7A
-         Y5ghELdvt1jjB9mo8i1OOPdZiLB4X1iLLBgOgjCLGikNBnsltt7JTgtAndQ8VI7rIeKW
-         izqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794483839; x=1795088639;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ha0beh8JKKzYfv/K+pKtKWX8urpG8eLvtCtoo4UumEo=;
-        b=UxkgQTd00OJ4Sf9qIFJ7dsAlYuFEK6AQzkvjQFsz+nlHmSIt5/+r31B1T2y5bYX+Gd
-         qz2lyX8nkIJwzir8ksU97mFg4VSqZG5rpPvo9XBr8aajT19xJbzhKLU34YDUSAt68WWi
-         JTsfe+2xWeyR0z1bDizGsxByytUR4frM0SvYo0sBo+guN1/EGMFyI7eT+tJByLOeQhpL
-         BEBWkmbyiWfJmT+fumjOYDoSxtP7FO/plTX3g5ddhwqah59EqfZ9bkG8XZTJxHclg8ex
-         4pRE2kjXB/OGVCnsL5oJQ3rSD3pRokWbTDMYLPspJuekvaPkr5/PDTIctTrfcObQ/dbe
-         MfWw==
-X-Forwarded-Encrypted: i=1; AL+hErFuH2CCrlbIVpkh+eUjWo797P9T/9bbVObuTgccXdIOzFM2rDuaGgBUIcMh/CwbqvuuAHWA5BIgIA==@kvack.org
-X-Gm-Message-State: APuU4Z9V4I0zE8uFguX22XqTSTib55gIkT+plEOFCXcL11e/GbklMWLP
-	eHcLoscP67hRxZ0fhtl27r/vC5nCKI2lBeIHLu6QZ2kcxMhwuP0d1/aw+7GfDeBHY/I=
-X-Gm-Gg: AYBFou0ao/DJOA0WbcwWy8zFH/R0+/+EWr7BjWqmeMhwcskTS/sNiXSic+Fc6ErI+6I
-	uym85PrlRxgeESV3Lqjoi36rB8u88aJHVzq3/QP7h5/GI+8FwijJK7jLh+0C6alcj+5NgahfO8A
-	yHbfC4ii0T0nEcvvpJ2+n6Eo2fYcqkeSvgJfjPNX331EB47IbBh+XnnznHtMhFbsnRTWdUNbyEC
-	LF5wVyEdkoJLmXB6opU+7l0mhgfs8RILCNlp4xaL74xedVgYUFjv0dxI7exYFzo6UBAThi95p07
-	s4BdrE0pjQwGnQ2yRqsWEnLUv88rmlRHfsaRqPPkUweuXDQo7pHnp/kUtRMAc2W7mRlUcUv6ZvD
-	3Snnc1vLVuSwdj0acygkoHnxwOChFCEje4QnBxMGb/ahOEV2ugMQsy+b4cpr9sTEXgngQzYf2l9
-	utiZta9IHbkoICvFx7o/Yt+kVAy3cctTFmWiF9PL8EUpmamxPwaH+pibSy+IWq/fNnFz+9CIV/Y
-	mMf8Ig9hSwkDuXpaAEZaaMtSNLDCGVvBmYXyaRIqYsBdouq+zUbyW0OpfyfkZ1JWBw63J+XMJhT
-	6PjVqyr8zZrVpsgks+RVtSPce1qFb6xjURomPsfpy1xql4hD+H0LKrUzDenEXOxv
-X-Received: by 2002:a05:6000:4a1e:b0:48e:7470:9eb9 with SMTP id ffacd0b85a97d-499c89861b0mr10174390f8f.43.1794483839022;
-        Thu, 12 Nov 2026 03:43:59 -0800 (PST)
-Received: from localhost (109-81-94-245.rct.o2.cz. [109.81.94.245])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-498366c4e07sm15559590f8f.49.2026.11.12.03.43.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 03:43:58 -0800 (PST)
-Date: Thu, 12 Nov 2026 12:43:57 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	David Rientjes <rientjes@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>, Nhat Pham <nphamcs@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Usama Arif <usama.arif@linux.dev>, Kairui Song <kasong@tencent.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Yu-cheng Yu <yu-cheng.yu@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>, Peng Fan <peng.fan@nxp.com>,
-	Josef Bacik <jbacik@fb.com>, Chris Mason <mason@kernel.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Mark Brown <broonie@kernel.org>,
-	"Dennis Zhou (Facebook)" <dennisszhou@gmail.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 01/13] mm/mmap: free gathered pages before MMF_OOM_SKIP
-Message-ID: <avWmfXu39vtp0DM9@tiehlicka>
-References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
- <20261111-mason-migrate-et-al-fixes-v1-1-3d2454362e8d@kernel.org>
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ku73Bd5y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DFF4665775;
+	Thu, 12 Nov 2026 11:44:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B0C1F00A05;
+	Thu, 12 Nov 2026 11:44:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794483885;
+	bh=29DfDf92HJiDUL83I37Z0UvfOScd+vQEdrJlJIoDRwA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Ku73Bd5yVw8b1EmirbB6jleUqSys9iYOVVK9yks/a5tGtyTHMJ0+fEGxF36zS0ytP
+	 5EpOVVxk15XxPb/5DZS6vYUkekBPm8w6U5948DFvNmm1vf4EpMwk1mORPS7MHUWRLH
+	 aKO93vIOStl3yHd146oBCCWPAdjvrKJg9/XlFy/Ab5+889DP/EIGy1J0E32/fZJpfu
+	 RTJH8/jbs2rDwlbUmROAZqWeVx4/st8JltKaOOCATmPu7rG77dd9k2XA1WGPJPY/Zg
+	 AKW9nE3UIc8YmGe+QVT3hnANsqYuVp3CS9r7ERYD8Gc9Np4g3yk+y02FZJCeCffOas
+	 6iJFhsZyXnoSQ==
+Date: Thu, 12 Nov 2026 11:44:34 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, 
+	James Houghton <jthoughton@google.com>, Andrea Arcangeli <aarcange@redhat.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Balbir Singh <balbirs@nvidia.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	=?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>, Andrei Vagin <avagin@gmail.com>, 
+	Stephen Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>, 
+	Muhammad Usama Anjum <usama.anjum@arm.com>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Chris Down <chris@chrisdown.name>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	=?utf-8?Q?Miko=C5=82aj?= Lenczewski <miko.lenczewski@arm.com>, Michal Hocko <mhocko@suse.com>, 
+	Mike Kravetz <mike.kravetz@oracle.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 07/12] mm/mremap: resolve uffd state when the context is
+ dropped, not during the move
+Message-ID: <avWmiBbDYmy8MKiu@gremlin>
+References: <20261111-uffd-state-fixes-v1-0-00713d368976@columbia.edu>
+ <20261111-uffd-state-fixes-v1-7-00713d368976@columbia.edu>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261111-mason-migrate-et-al-fixes-v1-1-3d2454362e8d@kernel.org>
-X-Rspamd-Queue-Id: C46AC120004
-X-Rspamd-Server: rspam12
-X-Stat-Signature: gb6gh9diozw3xs8hqtek6f8gg5ero3un
-X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794483840-720127
-X-HE-Meta: U2FsdGVkX1+rrvayUisaGyy5QvHPTpn+ZRLH9aqX9IcCQQfn24/sKFOYISP9GTv5WjX2KiulQXaMIwrn2bjHR6zZtiAu8+T11TMno81/LQexjurfBkD2QGk+camYa6t+FgoVumD10ahm6rlT2gDPaTdDJxd5+PT2hL5GxFnb1RN09fPFC3albrLlPhz0Ag9XDD0QxY9I6jinltxjKRvQLKPdAuS5Pnlekom4noONU+JaG7DAn4UrmNocL4Km2qZG8zlxAzcIhjgD+ApLq49d8B1OTUoGX5rI0XOty0Bz97RmTFqYNjj/C0DjWkaouCon5l7BZCcttketdPHiUP23CmFlpgU0AcoH5faQg105y1bnVnzma5uRf7KDqipTEXssLo4TKDVfMOrxTIvT1kDL4Zv/M4LzycswqObcERJDeJHAbNpWBoxdoJKOQNbwF+bz9YxW7o/bJLd523wmRAybTG62ODg0wRZVxxn2HzaphZO8NaWL9Ead15Z+Y7CfDC3k1xxK0rghBKD72HUtCGUteB9qmZ8GTjiQvNW1HuFmvZqQK2UVskzUSfKLu9+xxpBIf0J3mDPToRzYvTyDvzOR/7SqD/Hg+mjFB9qR0mCes8P0YGWtpkAAqseCIZwidI7G1qDpb6lMPPn5sIRm+wUUMZtgIKE+AqTcI+1ZAn1ipyFPV3WOgYh5xVXSZrypy9PecTeAkTGjKyqlOrqEy4ZiT2XLdv/rtqHbWFC+nq1NSC34QM8ivadLcMGXw5SH6z0RV5Zqd+OKJRrUad77jqzsxXhTcPt20IG2BGCi6SvgzfS2ZyThWNaY9nQ87Y4ZwPLw1X+JWhWlDM/XaJHuAqqrBZlYwDw5cYVuAgvQgQ8mmkDioNrx37fKMs33Lnv/z2Ku8uWhB3xjCXoBKiyiXsOsye7E0zDtmREYchS445f/Tce6Vn3CCOSrESCkD250hpS5Lee/DLZvZw6YaBsVp17
- iM0V/YUw
- 90VbFhqPpzYXY2OcAzhZbGP/T4HnOgLcVldqpqn6QpvMs/UEseLf+6BjcuqSIU8R5okkYcbSYDrEZMueophNkL7jnU9UAJCl5TgAgv+vRrNhe2yY8w+/6xD8q0vlBHsOmgMfSbIE6GQoPrM4Z17UBDwmEWLM7/qidEcquX3jn6YJcdPf29Sucd4BcGEuibmD9NL0R3JV4NNG9lf1nWyva+zRQhK3kn3U13tpXtDLSmnBmDQITcKnwJTwfHw/LmNmrXkwmXQPBI1QBcKjIGobzFYEG+Bw6u4yHOrSwE55OdqjTbi5EJ8odp9MJL7ps/YTnHjMVfelqYF5K38yUFTq0P7agBQHHfu3S1va2jPk9oRRXFWToPd9z8Wsy7jG2tPGGKBPUZQ6w+zHUZuK7fBkLQ/t7wEzks9cfYls5HcCgH3VleY/xIMj1R+59uNJAaSyMw2dIN74sor7Bk3drdI9SH9w6itfZK5LjZHWZtZXKBjfZJMsBdqkm8fAmOykWlE3Hlbf1PCYxVvDk5dcnboU5+kKfIeS/3zRXUgupzRnAaZG2ng8+sGOWuoGnoYIFTMs25c1xjOjBAD6VTaIJAWUdE015KOA/v8gO1BFZRBZeanbv10E2FZldobh9uajVlXX8wINu
+In-Reply-To: <20261111-uffd-state-fixes-v1-7-00713d368976@columbia.edu>
+X-Stat-Signature: o96fge4mnf9rwqaytxfutkbbfxn8r355
+X-Rspam-User: 
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 758B1A0002
+X-HE-Tag: 1794483886-14165
+X-HE-Meta: U2FsdGVkX1/Nir7gZWhooI2qWGPlGuwfyKfwEbNsv+OUTHcHiFzVP/fkp7WSfp42NAXYcRPZ3q6x+9ksnmkb8PomQFs7t/8lxhKlJZDgGdFZxizPN9ZTpMk+ibegrnz4HuVvmSF3mhMb4rL47UYc+qKPJaSr5EM9pNHS7OvxpmeN2zaHtjO++KR7bl6GCIrmKzrkfqxIex17QCFRYaIJHY2k1q43UKZegvtPO54nxQmkVl6Sg/VRnRHa+dYfIbEJpnOJ+bpKmxZjyn/tduHRe5D33VsDlsGN712fBk3bGUGgvcWRNvstPc9GA4rOctE4dKSBHMRpw997zt0AoAV7PVnPpKAM13E2MMDOs8ZKb6F7Xe/yQ6Rr3GnfgC4VUfZWrtrJOl/P+XUbvmNH2PYQY5GMr/F3LP1lartjwodwAxHY61m04IkwmqlAIjOu2HbvxowCRjFDg4aoQFI1cdlBtoeneJhhLKbnutIpp62vbj3EJ/YfYwpUS9dQfZ1VcBpTLgN/fwDZFN2Pwi5RfoAsIGTla8iRRI+9UldlLYHb6I3Av+bfleMPl6eOkH41iq4C26zlOeBVK2r8qmWEmOgo/YutJxB4bxGaMgjIh4KHiUjw2jEa/fN2RGptsLmbTQccFWUmpFP1+o3r9GAzGq7qPLYij8GC22u25vN1oHMNLFD4Zcuj/BsYpMYUMxqAdIXOsQn+lJmmCBHPf/c20jzvFV8CXnmB7IjH52J83gUX5YFW1ige62bY2eHGQsF/3Y/5Dl5nRaOLLEV9HRhWm5Yq8+iaNt+0W43xDeBvC34nkMeSnqWB6MRw+LmVC3fLJynTJMfGQhsVE4dJYKWEkRNw9uUNmaH9HA3TqS0geLYKcuMpvPzu7d5P1XRzR0nMMFk+BMNUSPccmGeo8bYoAykjwOXimn0SxMrpjH/Pdf/EygLYHXLJNbEiU1hLxqEf6rVErlvmhsyJyicJO1YOfL/
+ t0uItXgn
+ xTRDMA9tetaReyHeZbdSF/D4R4DipgCug0YjQPco2I4dJ3nh/BCMxlQv9h4k1TF7EZNvan9wXf9qj0b8wBFjdsYLPisiqL7bcHmD+/2WXsqUpnwQNFddydMNvXdPkyF0VQIf3i2WGwQ3vYYl1eG7p84eive136zCG9GRYB1TF42ZYLb4u8TvJX+o8WVcFzyjU/sojuQ8NeWvKZbzKdk6PRClaz4eZYLDElfZ1+P1Obmf8Qc+n8Qzn5sZwGgkAPevl9lx14qhC72/mAaCri7GPlAqqRdOEBr8/FomJl1lKt0G25+cqtCZ6buCj8c6qoljtqO2umfINi2KNnG9q/FPVgqQHDuLbdEBquzgo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,53 +113,261 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed 11-11-26 18:13:15, Lorenzo Stoakes (ARM) wrote:
-> The OOM killer can quickly trigger again after having selected a
-> victim. That victim might not have freed its memory yet, but its mm will
-> be marked MMF_OOM_SKIP by this point, so the OOM killer will ignore it.
+On Wed, Nov 11, 2026 at 12:55:15PM -0500, Tal Zussman wrote:
+> Without UFFD_FEATURE_EVENT_REMAP, the new VMA of an mremap() is not
+> registered with userfaultfd: mremap_userfaultfd_prep() drops the context
+> from it once the move succeeded. The uffd-wp bits, uffd-wp markers, and
+> RWP PAGE_NONE entries in the new VMA must be cleared as well.
 >
-> This can cause the OOM killer to kill an innocent process when the first
-> might have freed enough memory to relieve the memory pressure.
-> 
-> Fix the issue by freeing the memory before marking the mm MMF_OOM_SKIP.
-> 
-> Note that the task which calls mmput() might not be the victim - if it
-> took a reference on the mm (e.g. ptrace), it may hold the last reference
-> and release it when it calls mmput().
+> However, move_ptes(), move_huge_pmd(), and move_huge_pte() clear them
+> from each entry while moving it, before we know whether the move will
+> succeed. If a page table allocation fails halfway through, mremap()
+> moves the entries back into the old VMA, which is still registered,
+> without their uffd state.
+>
+> Writes to a WP range are then no longer reported, and an RWP range
+> becomes accessible without a fault. Nothing restores the protection
+> afterwards. This requires a page table allocation to fail in the middle
+> of mremap(), so it is rare.
+>
+> The uffd state must only be cleared once the move can no longer fail. To
+> fix it, leave the entries alone during the move and clear the uffd state
+> of the new VMA in mremap_userfaultfd_prep(), right before dropping the
+> context, using userfaultfd_clear_ptes() like unregistering does. A
+> failed move then puts the entries back as they were.
+>
+> This adds a second walk over the page tables of the new VMA, for VMAs
+> registered for WP or RWP without UFFD_FEATURE_EVENT_REMAP.
+>
+> Like unregistering, userfaultfd_clear_ptes() also asks for the PTEs to
+> be made writable again where that is safe (MM_CP_TRY_CHANGE_WRITABLE).
+> The old code only cleared the uffd bit and left the PTE read-only. For
+> private anonymous memory this saves the minor fault on the first write
+> to each page that was protected.
+>
+> However, this adds spurious minor faults on shmem and hugetlb. When
+> resolving, change_protection() rewrites every present entry in the range
+> with vma->vm_page_prot, so a page that was writable and not protected is
+> made read-only, and its first write after mremap() faults.
+> UFFDIO_UNREGISTER and UFFDIO_WRITEPROTECT already behave this way and
+> lead to the same spurious faults. This needs to be fixed in
+> change_protection() and will be done in a separate change.
+>
+> The entries no longer need per-entry handling during the move, so drop
+> uffd_supports_page_table_move(). Where the old and new addresses are
+> suitably aligned, move_normal_pmd() and move_normal_pud() can move whole
+> page tables of these VMAs again.
+>
+> clear_uffd_wp_pmd() has no users left, so remove it.
 
-I do not follow the reasoning here. MMF_OOM_SKIP is called after the
-address space has been unmapped either by the last mmput or the
-oom_reaper (or both when they are racing). Now all your patch does is to
-call tlb_flush_mmu which I suspect is to release batched pages. But why
-is that needed only for the oom victim and why there was no final flush
-in unmap_vmas?
+This reads a little schloppy, I wonder if it coudl be cut down a bit?
 
-> diff --git a/mm/mmap.c b/mm/mmap.c
-> index 7618e72766a5..4cb18b217048 100644
-> --- a/mm/mmap.c
-> +++ b/mm/mmap.c
-> @@ -1313,11 +1313,18 @@ void exit_mmap(struct mm_struct *mm)
->  	/* update_hiwater_rss(mm) here? but nobody should be looking */
->  	/* Use ULONG_MAX here to ensure all VMAs in the mm are unmapped */
->  	unmap_vmas(&tlb, &unmap);
-> +
-> +	/*
-> +	 * Free the memory before marking MMF_OOM_SKIP so a re-triggered OOM
-> +	 * killer will only skip this mm if it's already freed all it can.
-> +	 */
-> +	if (mm_is_oom_victim(mm))
-> +		tlb_flush_mmu(&tlb);
->  	mmap_read_unlock(mm);
->  
+>
+> Fixes: 0cef0bb836e3 ("mm: clear uffd-wp PTE/PMD state on mremap()")
+> Fixes: 763f43865fc4 ("mm: preserve RWP marker across PTE rewrites")
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+
+This LGTM and is secretly a cleanup which I love :) So:
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+> ---
+>  mm/huge_memory.c | 25 -------------------------
+>  mm/hugetlb.c     | 27 +--------------------------
+>  mm/mremap.c      | 46 +---------------------------------------------
+>  mm/userfaultfd.c |  1 +
+>  4 files changed, 3 insertions(+), 96 deletions(-)
+>
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 09176b290f76..468a49041b95 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -2616,18 +2616,6 @@ static pmd_t move_soft_dirty_pmd(pmd_t pmd)
+>  	return pmd;
+>  }
+>
+> -static pmd_t clear_uffd_wp_pmd(pmd_t pmd)
+> -{
+> -	if (pmd_none(pmd))
+> -		return pmd;
+> -	if (pmd_present(pmd))
+> -		pmd = pmd_clear_uffd(pmd);
+> -	else
+> -		pmd = pmd_swp_clear_uffd(pmd);
+> -
+> -	return pmd;
+> -}
+> -
+>  bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+>  		  unsigned long new_addr, pmd_t *old_pmd, pmd_t *new_pmd)
+>  {
+> @@ -2663,19 +2651,6 @@ bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+>  			pgtable_trans_huge_deposit(mm, new_pmd, pgtable);
+>  		}
+>  		pmd = move_soft_dirty_pmd(pmd);
+> -		if (vma_has_uffd_without_event_remap(vma)) {
+> -			/*
+> -			 * See __copy_present_ptes(): normalise the RWP marker
+> -			 * so the destination starts accessible instead of
+> -			 * taking a numa-hinting fault on first access. Only the
+> -			 * marker (protnone + uffd) needs it; leave other present
+> -			 * PMDs in the VMA untouched.
+> -			 */
+> -			if (pmd_present(pmd) && userfaultfd_rwp(vma) &&
+> -			    pmd_uffd(pmd))
+> -				pmd = pmd_modify(pmd, vma->vm_page_prot);
+> -			pmd = clear_uffd_wp_pmd(pmd);
+> -		}
+>  		set_pmd_at(mm, new_addr, new_pmd, pmd);
+>  		if (force_flush)
+>  			flush_pmd_tlb_range(vma, old_addr, old_addr + PMD_SIZE);
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index cb2de24affdc..97bd29925476 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -5168,7 +5168,6 @@ static void move_huge_pte(struct vm_area_struct *vma, unsigned long old_addr,
+>  			  unsigned long new_addr, pte_t *src_pte, pte_t *dst_pte,
+>  			  unsigned long sz)
+>  {
+> -	bool need_clear_uffd_wp = vma_has_uffd_without_event_remap(vma);
+>  	struct hstate *h = hstate_vma(vma);
+>  	struct mm_struct *mm = vma->vm_mm;
+>  	spinlock_t *src_ptl, *dst_ptl;
+> @@ -5179,31 +5178,7 @@ static void move_huge_pte(struct vm_area_struct *vma, unsigned long old_addr,
+>  	double_pt_lock(dst_ptl, src_ptl);
+>
+>  	pte = huge_ptep_get_and_clear(mm, old_addr, src_pte, sz);
+> -
+> -	if (need_clear_uffd_wp && pte_is_uffd_wp_marker(pte)) {
+> -		huge_pte_clear(mm, new_addr, dst_pte, sz);
+> -	} else {
+> -		if (need_clear_uffd_wp) {
+> -			if (pte_present(pte)) {
+> -				/*
+> -				 * See __copy_present_ptes(): normalise the RWP
+> -				 * marker so the destination starts accessible
+> -				 * instead of taking a numa-hinting fault on
+> -				 * first access. Only the marker (protnone + uffd)
+> -				 * needs it; leave other present PTEs untouched.
+> -				 */
+> -				if (userfaultfd_rwp(vma) && huge_pte_uffd(pte)) {
+> -					pte = huge_pte_modify(pte, vma->vm_page_prot);
+> -					pte = arch_make_huge_pte(pte, huge_page_shift(h),
+> -								 vma->vm_flags);
+> -				}
+> -				pte = huge_pte_clear_uffd(pte);
+> -			} else {
+> -				pte = pte_swp_clear_uffd(pte);
+> -			}
+> -		}
+> -		set_huge_pte_at(mm, new_addr, dst_pte, pte, sz);
+> -	}
+> +	set_huge_pte_at(mm, new_addr, dst_pte, pte, sz);
+>
+>  	double_pt_unlock(dst_ptl, src_ptl);
+>  }
+> diff --git a/mm/mremap.c b/mm/mremap.c
+> index fff0465f5e06..4564416a6994 100644
+> --- a/mm/mremap.c
+> +++ b/mm/mremap.c
+> @@ -198,7 +198,6 @@ static int move_ptes(struct pagetable_move_control *pmc,
+>  		unsigned long extent, pmd_t *old_pmd, pmd_t *new_pmd)
+>  {
+>  	struct vm_area_struct *vma = pmc->old;
+> -	bool need_clear_uffd_wp = vma_has_uffd_without_event_remap(vma);
+>  	struct mm_struct *mm = vma->vm_mm;
+>  	pte_t *old_ptep, *new_ptep;
+>  	pte_t old_pte, pte;
+> @@ -290,27 +289,7 @@ static int move_ptes(struct pagetable_move_control *pmc,
+>  		pte = get_and_clear_ptes(mm, old_addr, old_ptep, nr_ptes);
+>  		pte = move_pte(pte, old_addr, new_addr);
+>  		pte = move_soft_dirty_pte(pte);
+> -
+> -		if (need_clear_uffd_wp && pte_is_uffd_wp_marker(pte))
+> -			pte_clear(mm, new_addr, new_ptep);
+> -		else {
+> -			if (need_clear_uffd_wp) {
+> -				if (pte_present(pte)) {
+> -					/*
+> -					 * See __copy_present_ptes(): normalise
+> -					 * RWP PTEs so the destination starts
+> -					 * accessible instead of taking a
+> -					 * numa-hinting fault on first access.
+> -					 */
+> -					if (userfaultfd_rwp(vma) && pte_uffd(pte))
+> -						pte = pte_modify(pte, vma->vm_page_prot);
+> -					pte = pte_clear_uffd(pte);
+> -				} else {
+> -					pte = pte_swp_clear_uffd(pte);
+> -				}
+> -			}
+> -			set_ptes(mm, new_addr, new_ptep, pte, nr_ptes);
+> -		}
+> +		set_ptes(mm, new_addr, new_ptep, pte, nr_ptes);
+>  	}
+>
+>  	lazy_mmu_mode_disable();
+> @@ -334,25 +313,6 @@ static inline bool arch_supports_page_table_move(void)
+>  }
+>  #endif
+>
+> -static inline bool uffd_supports_page_table_move(struct pagetable_move_control *pmc)
+> -{
+> -	/*
+> -	 * If we are moving a VMA that has uffd-wp registered but with
+> -	 * remap events disabled (new VMA will not be registered with uffd), we
+> -	 * need to ensure that the uffd-wp state is cleared from all pgtables.
+> -	 * This means recursing into lower page tables in move_page_tables().
+> -	 *
+> -	 * We might get called with VMAs reversed when recovering from a
+> -	 * failed page table move. In that case, the
+> -	 * "old"-but-actually-"originally new" VMA during recovery will not have
+> -	 * a uffd context. Recursing into lower page tables during the original
+> -	 * move but not during the recovery move will cause trouble, because we
+> -	 * run into already-existing page tables. So check both VMAs.
+> -	 */
+> -	return !vma_has_uffd_without_event_remap(pmc->old) &&
+> -	       !vma_has_uffd_without_event_remap(pmc->new);
+> -}
+> -
+>  #ifdef CONFIG_HAVE_MOVE_PMD
+>  static bool move_normal_pmd(struct pagetable_move_control *pmc,
+>  			pmd_t *old_pmd, pmd_t *new_pmd)
+> @@ -365,8 +325,6 @@ static bool move_normal_pmd(struct pagetable_move_control *pmc,
+>
+>  	if (!arch_supports_page_table_move())
+>  		return false;
+> -	if (!uffd_supports_page_table_move(pmc))
+> -		return false;
 >  	/*
->  	 * Set MMF_OOM_SKIP to hide this task from the oom killer/reaper
-> -	 * because the memory has been already freed.
-> +	 * because the memory has been already unmapped.
->  	 */
->  	mm_flags_set(MMF_OOM_SKIP, mm);
->  	mmap_write_lock(mm);
+>  	 * The destination pmd shouldn't be established, free_pgtables()
+>  	 * should have released it.
+> @@ -434,8 +392,6 @@ static bool move_normal_pud(struct pagetable_move_control *pmc,
+>
+>  	if (!arch_supports_page_table_move())
+>  		return false;
+> -	if (!uffd_supports_page_table_move(pmc))
+> -		return false;
+>  	/*
+>  	 * The destination pud shouldn't be established, free_pgtables()
+>  	 * should have released it.
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index ad9d243dc64b..bf42fabb5afd 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -3161,6 +3161,7 @@ void mremap_userfaultfd_prep(struct vm_area_struct *vma,
+>  		up_write(&ctx->map_changing_lock);
+>  	} else {
+>  		/* Drop uffd context if remap feature not enabled */
+> +		userfaultfd_clear_ptes(vma, vma->vm_start, vma->vm_end);
+>  		userfaultfd_reset_ctx(vma);
+>  	}
+>  }
+>
+> --
+> 2.39.5
+>
 
--- 
-Michal Hocko
-SUSE Labs
+--
+Cheers, Lorenzo
 
