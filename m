@@ -1,148 +1,137 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67D4606A333
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 17:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9326606A32A
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 17:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=bchDkuTM
+	dkim=pass (1024-bit key, unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=cTXSkAEO
 Received: by kanga.kvack.org (Postfix)
-	id CFFF66B05B4; Thu, 12 Nov 2026 12:22:55 -0500 (EST)
+	id C49586B05B5; Thu, 12 Nov 2026 12:29:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB0F96B05B6; Thu, 12 Nov 2026 12:22:55 -0500 (EST)
+	id BD2DF6B05B7; Thu, 12 Nov 2026 12:29:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA0D06B05B7; Thu, 12 Nov 2026 12:22:55 -0500 (EST)
+	id A9A9B6B05B8; Thu, 12 Nov 2026 12:29:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 917FF6B05B4
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:22:55 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5D125A82C2
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:22:54 +0000 (UTC)
-X-FDA: 85427137068.14.6ACCF31
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6C5B140002
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:22:52 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=bchDkuTM;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7EC316B05B5
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:29:21 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1B67F40661
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:29:21 +0000 (UTC)
+X-FDA: 85427153322.12.E094C46
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E5A5C1C0005
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:29:18 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=google header.b=cTXSkAEO;
+	spf=pass (imf20.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794504172;
-	b=i0slOdHVmbSU2TVea4JavhtYElbKglRVavPb8DRqwotdDnWfKhyH1SJhdZDtTWJz03b5mt
-	PX6gSJMn15/TtwvoOUwuqOH0WcHIZHAunQ7K6qMHhDOQxjJMnPK0FaNik/82IPWF/Xrz2e
-	bXv2/iBJQ9lhcGEN2UV4LVgqL09BIGM=
+	t=1794504559;
+	b=UPceAO22CDB4wbIXJiSsIA0q963XluGwSCZwhGfp/A8Y9jpd/JA1nOLY5i62Ej6xZhJrLn
+	yU7Vy+eVYq4ioFJyzlz+rBHonAS8FZlfE+56vm4Fp4NCy+erZvEZt8rarU+TlK+pWAm18/
+	PZ2XQML1B87OdrdjLWWqBbx8xkgX/AY=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=google header.b=cTXSkAEO;
+	spf=pass (imf20.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794504172;
+	s=arc-20220608; t=1794504559;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a/JRN/xbf7qsdPvNLlS8GtXasJ+TiojxhhjDTwn3xLY=;
-	b=IUIRQ5YArXBZlLHm6NqRu9952lzmTX09qac6tr/t7JIqBVCI3WtAD0uGPxtdQpqg/dMAE/
-	k0zlQZlKHQrT+b8Ln3lszO9C36UvVpDv5lXNzsbk1rpXFFjgVspVJrq4yO9fFeTS9FMWK5
-	n+PAuhTjC4oLL/pgEA1+nSFI64VfHoQ=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=bchDkuTM;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-54f873cbe2aso45031681cf.0
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:22:52 -0800 (PST)
+	bh=CPqL/jXjgacEff5dEPASqy6/Bbk+NnoKXgfKHY7JVag=;
+	b=eFtYhjJFyaa4/0ODkmFFZDsb+9hgeXeenoHzPr4C7qQ5CqKT651w+15nHTKtxcypNLsjEy
+	MBphI/WggPvScEU/nWxc9c1h0IsSRhUteBu4pxwW/UZhnbq0h91oQtvlGHyEGb7b2z+t1h
+	GomcxPXh6CT/SD1Se8p5rJN4/7i/N7M=
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6b5973a4b4cso54854a12.2
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:29:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1794504171; x=1795108971; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=a/JRN/xbf7qsdPvNLlS8GtXasJ+TiojxhhjDTwn3xLY=;
-        b=bchDkuTMACsp7hHtL+627ExstGWe+/yJUugVcwgmIvK7sOnHSTYssECdJHbZuckvwT
-         VO3ZJGhz9S9nEzmcEJD9HTVjagl6nwCD1DSg4KSQ2dgI0Ok21Nyl+dSWeXto/Mw+VBVK
-         sHbKBqRtT70H1+Q1gVPzJITfn9uy/Pf4HAdg66BgzaXivauNQXh15OCxNLM1cm+Y3E2H
-         HZBVzPYMsPoEaMySDkgDx1XV6P3hVQHzffHRWlREX6LBGRun98PN9sGpH8AjR29+PNUM
-         QCEY7F7q9TC6DUYzL+OlpYjHsoWA4xY+XtpMX2VG8r1CVFz/GosGK8AF3JSpTwIjNlOE
-         WEig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794504171; x=1795108971;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=linuxfoundation.org; s=google; t=1794504557; x=1795109357; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=a/JRN/xbf7qsdPvNLlS8GtXasJ+TiojxhhjDTwn3xLY=;
-        b=UHdgPeglO2zUiHTw9ZBH7IVPoG3LK/I/297p5J+z03W2PMafXgODh+p47qvB3n3shv
-         a6MJUu69gtPoOHGSbjYxhAkB4kgXssgYayzP8MLp+wtVKPxgOUzpT5/a9RDh9S5vnh/4
-         soRLkB3Y8ZP/rxD97jmGyWsTB5vOXdAloodmzetl8RmL0Lg+MlxjhwiRm0tu0062HRKY
-         rXZmOoLCq2Wrh6DBJ7EE5O7VBT07yJSxaSlq6IFNJ/1m8mpY5h6Z7q9wHbQ03zyk1EZk
-         00/G/LJeFVQBLJXzYQRR4U1NtHdIPDWplnfwxQSvV3Rpj071ju0RbOUfNVgv1nsfLtg5
-         OLbA==
-X-Forwarded-Encrypted: i=1; AL+hErFycXoFtLo2VcIvpzCYudlj0KDX7WNmrLe2lgjeQ3Pwm8Z/Lag1IfXSfiV+xGQIbms8mNga0V3SLg==@kvack.org
-X-Gm-Message-State: APuU4Z+fjbJND91iq0ixKKURZSnb5QkvksLPDiCeKFm0DbjPweolVA+6
-	3jgsTIaT1bfksAhhqwVFYiyhxqecLW7k469oGTXY3N1lClOoj0cwKPHyzUOmq+mI9mk=
-X-Gm-Gg: AYBFou1z/oyRwyTPMwh+FOTopi5L2loBU9tWMFEOIXBPwCtS0eM180r/IT9uOpZWc3i
-	8XnzRendL3CUq2inygxqZy5m8vsMwKeNrKsM2xOekTyHv5qwEBZhQk0pLF0x2B8O+nM9tB59SRi
-	zp4lq4sUWKjvMZJR94sjnh4Ft3Lmv3KTnnC+WUvUPRTfvSDcKoca0PqZOHcjz/AZMuMRvvOFqXF
-	9c14NO8rGthacXy1a2h6DVDOP+U5vt4RuECHFimxZUz+BSR/Ksub0QY9KpTcrIynvCJOkCta8a2
-	hVU3wVru6zafPlKUND5+Ha6815PcQ86H7h2OVotIM4xBUwsGPgcERrxDRgNaW6I8C3DNrb6epi7
-	yRhp+uzBvs7FqMepe8xZ/cK+11bSiZeBCmv+64WH/+O/S/ON3QTOEJj6E1YpwI1mtQSBMeGcxSG
-	fNsaxvWcgHVEOlihYpsNopPe2zWP7XALQQSX0E3+8L6zN8ClZHujAK9s/9yAKY3skYWYd6j6Qyn
-	jnh+k3geGDp3PocPgbyrHf09vP3J6yiCC82/wPKQ1WjBHfX0mrheOAKOkv+rB0gPLS7xdEaSc1A
-	gEA4I2JRsL6ks9PxyQ7yqCAs2QSiBVDIQJ9V5eKKgJNKtGBBHKgrKzxwGILApiisNRgQ0kxvKvZ
-	sWPfOmVQ=
-X-Received: by 2002:a05:622a:180e:b0:536:64a3:aaca with SMTP id d75a77b69052e-55ac8e955b4mr521501cf.62.1794504171329;
-        Thu, 12 Nov 2026 09:22:51 -0800 (PST)
-Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23d93f10sm542436d6.30.2026.11.12.09.22.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 09:22:50 -0800 (PST)
+        bh=CPqL/jXjgacEff5dEPASqy6/Bbk+NnoKXgfKHY7JVag=;
+        b=cTXSkAEOSc+3xK+XaPRY0PbPRafbhZ3UrW5rj9Lfc1YbXfERBDRQH6Z8LVuLOdlvpr
+         NmgJQnNcmJhke3qTGyFuiJcX9bTwVR/hYuzNOnEWJFqau6ScJWiAgAJiKEbQiebro6zi
+         yblT6qc9Ofqk5lB3ooRxpVkv3eWdonfYu3QT8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794504557; x=1795109357;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=CPqL/jXjgacEff5dEPASqy6/Bbk+NnoKXgfKHY7JVag=;
+        b=JmUzexYY1wiikBWmfzbQK/FE1gjUGQyuYyTDOmMkZNN+prLI6nRHLGBscgd/JtbAEc
+         Bknu+wuEAHKjunoVet8FhURJTPOSNjglr5QmZFsK38favQjhBBZCna5xnSZbuJFJ+lOB
+         6kEDnr9dOL7mOYuG2Q7ATbsijgsVt5kqXscIliehlOIvMU+Wc+Ym40xg04zc0XNz62rj
+         A8vTK7+ON6UZs+GZb9Gwjpe2RbAuVcwLOPk4HQv8zxfU/mSAc9BCnaWDB8zc75+bxNia
+         Hpk7Lf/D+DX3ArePBIyurJJkoC5lbYGyYrOfsYA/RjCVK5A/dTNL28N9Xc3Qaths7y44
+         RKOQ==
+X-Forwarded-Encrypted: i=1; AL+hErF9epT+eVWBKzCn7R6Q8tyHSnuEilC4IpUbxULOLe+evLj0WTtzPQtea17pxQ7q4UI2zOATxyL2nA==@kvack.org
+X-Gm-Message-State: APuU4Z+PbJyAKOTxlw35xxiKnE7xz6IrVjAqyd++IFOXYVoUC1ManEmj
+	qw3KTli9tyzPxCoQvFgi4qwL93IqawK5eN6skuKdRQWRZvlOlkpXbU3+nHhwMp5eMc5HHao879p
+	Z2c1qOgtR3g==
+X-Gm-Gg: AYBFou0VYRgDQXMpmgDNzfnemTkfZQybt8inRL3waTOJNvIzr2KX2ywtEBQ/thE9HUn
+	SO5NagarBQvKAKulogn+4IBixUtpcpzkkJd0Te5PwY/8XQZnu0gNJfjXwrFwiJxt3dObI4e36Dy
+	wD8+ChaUx8Ns0Kor+oYjfiNwNGtoFix7xdMtkpai8mfQovjd76FkGvjaFzl5yTP/eXdHsU8Ukze
+	s24y36PpiACtE6DnI8DfXT9+SUrGK/aiYTEk6a2+2gBi/wJIUq8xmoVR2NpL1YSaikNI4xJSiiK
+	ulkTsaBxLonfeH4Nv/lnm6L2tjDIcC7O3UugTtEHB9TDk4HB8vNZRAuN0wuT7+zfScfDfrX8lcM
+	M8SnHNRdOfFG3FYR1yHhqHbdUFQivKKFRPMGSvOt5fVPJPW7CTGk9zx2rTVcPVKpET0luFljRST
+	Pkdk4rFZQACUI+FHNhnOKGCqpxc/BpPJto7hS69AhT39CKdGBHhypVbRqoR/Ejz9Ub3dNnemOuy
+	zJERkkBsmN/pQXtZc86GE47yy773DEuKGNwWtaV7KJFioGRPv63M1ORlRhfVPd14UoUS8o9ylxL
+	uD0ekty4oNW6eU5edl3JNrfLDOjwEx/SCYaDp3iWmzIWCHV5z00NtUDjoTBX0sIEP9tS+rvqdAX
+	U7JkWZQgDDhrwIbOxRLOqK7A=
+X-Received: by 2002:a17:906:dc89:b0:c46:d493:501a with SMTP id a640c23a62f3a-c5066b4f50emr613169766b.22.1794504557346;
+        Thu, 12 Nov 2026 09:29:17 -0800 (PST)
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com. [209.85.208.54])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c5095a5b93csm2056066b.5.2026.11.12.09.29.17
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Nov 2026 09:29:17 -0800 (PST)
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6b547d6c07bso57589a12.1
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:29:17 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErHi+syM5pfptz20xsUSVWuHtNRBL9GiaevWGIz/UARmJBE21EHf9w7AwStIsH9HtEMVG1B3SLuSKw==@kvack.org
+X-Received: by 2002:a17:907:2d9e:b0:c50:4b7a:de71 with SMTP id
+ a640c23a62f3a-c5066c973bfmr611766466b.28.1794504214466; Thu, 12 Nov 2026
+ 09:23:34 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 08/13] mm/migrate_device: fix ksmd oops on a migrated
- KSM page
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
- Shakeel Butt <shakeel.butt@linux.dev>, 
- Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>, 
- Pedro Falcato <pfalcato@suse.de>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
- Gregory Price <gourry@gourry.net>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, Usama Arif <usama.arif@linux.dev>, 
- Kairui Song <kasong@tencent.com>, Balbir Singh <balbirs@nvidia.com>, 
- =?utf-8?q?J=C3=A9r=C3=B4me_Glisse?= <jglisse@redhat.com>, 
- Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>, 
- Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>, 
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
- Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>, 
- Chris Mason <mason@kernel.org>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- "Borislav Petkov (AMD)" <bp@alien8.de>, Mark Brown <broonie@kernel.org>, 
- "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, 
- Rick Edgecombe <rick.p.edgecombe@intel.com>, stable@vger.kernel.org
-In-Reply-To: <20261111-mason-migrate-et-al-fixes-v1-8-3d2454362e8d@kernel.org>
-References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
- <20261111-mason-migrate-et-al-fixes-v1-8-3d2454362e8d@kernel.org>
-Date: Thu, 12 Nov 2026 12:22:49 -0500
-Message-Id: <179450416941.482102.7238369347030508170.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Rspamd-Queue-Id: 6C5B140002
-X-Rspamd-Server: rspam12
-X-Stat-Signature: r1fd6873c567dhexh4k449fexgarmc87
-X-Rspam-User:
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794504172-967693
-X-HE-Meta: U2FsdGVkX18JYwfjHqzeVpys8n4GrxWFXqJrVbMoyMkMS/g+Ref74R6WfgW9JUuFkvaBQe+HW3xwmFK5LGvta2DeH7bFPOa1tH071zLuEYC8jAe1xlnn3G/CVXHC/xXdm3Kj9CFgR5pq5xEMN/gW47YkqLbUg4Q8kTZA7Ml79s2AG0WdID5/4iz05y5JsvwFzWOnGe0JQy6d5br1utMPSg68yjyP/2ku1fIIDdygJiWZxVD4NXPeXSBhByGOhsRoZBSKDrvK/PD5kpKSTk1igdteITWiQyWaLIVRXgy+AfqExct9KPDMwSf6FhNU9JDw2021h9ychUFapJVZ4TIRpKtAIjbuRJIJuh4eZP2Kgfbhs+P2dQdTzp4GBUC6xaBWfQezTMbbYJrFG6TaJ6jOeW4ODbBEuuix+kEHF9UPSgjaZcuyl1q/Gg3muU5vGcw1+KbIsN/9iGTYjB8elZlA7SLhoaiaN6uPvHkAJlekjBH0l+7jjDOlsEVW4xqKr1q05WCY78B6ZOms+yVSsRhvlsy1nh41+DMGZjE7A3eMJBHf2zh/zPfMKvz4Yidx1EeNiTKOCbtHHIitZi+xckj64VbBE/9vVHPb6O0POKWTpETQtVPsZD9Ng9/in5327x+qfl/ztuJf9qM6gsecIERii/Z8atnPuufxxPD1QhmPR9GvG4Ysz9tbmnHvXMB7oamuuuMiLu/B9qfCL3IfvSo0/hCcE0tlodcHUDBWXyz64HLFd4sTNfMYtPS65JF7540AO2UB1b476kWIAB6ehYTT+9hxREvC5+pAtFkOfZL1EBvYXVSVE9elYz7zNg0x5zkza+vuVXOpkOX83u0p9RHPOVDODROt5HSVpGTm9Ob/QOYE85GELGjIMs17JYg219YSYXEbjwBjJY/qknCpKOf1ijJcy3vcZlLLRTvOMNW0pJ0L2+TRLGJMAQqvfScBQeR5HZX9ICmh1M+bcQsz0Tg
- o6e4GGpM
- W1MgO/qpslSfCfHZoQeoq/OjLA2eL4ftssv8OeuP54M7XHRckZsU21mktvfSZrgpuHeyJzwM+JnsIdsX6AIo8m+0XshTDV19TuZWiLZnnrGo4D2Q/SqXTFzaRvj9/4ka776hVRyUdamlgJEc9xHFEIQfK7l5SjUxXmLiqAOup8AZW7mshLu2FarSSalR62CNMVbOCoJiAhI3N1dTsfa6VmhM8ApisWcQa7lS4Nwqzfks6Q7t2SEQMFl8Wmdp853MV6Gs3vr77RuSTGb5pcFQ+VE9tF+hVIkmJFOLChWGAOzoVHHuWLTbixP9eN1fotmdYLkqUP80LCg4BOttEkU2myV64NzcQaRV9mvt4gvvdKvhp3/4tOh0Yb648MpNg2m2AP4b9xZflYhOge+KmTVd0tiQil7J5agiz6yea40A3nZjtTE2Yg0B98YCF8dVa3vlxVgbkAlrtdlX7XzpzryBorLfUNc1ubBdu1RxqPjcNSvv4RmSE/tUksMBb+Z+eMbEbT+5sy1dgTjPDLVmP5fwauK7VSD3P4H8nNxExHI5NLR8RvkYqF2NZvGPnTTH9dDFSMTXJ
+References: <20260914223212.i.829-kees@kernel.org> <20260914223219.901347-2-kees@kernel.org>
+ <20261112004039.GA523044@killaraus.ideasonboard.com> <avWNCC3_Ff0knO6J@devuan>
+ <CAHk-=wgYBrhvo2NAG_Ja-0ovPf=xO20Gcopv9Yrr1u=QVxECZw@mail.gmail.com> <202611120905.DF88D9849@keescook>
+In-Reply-To: <202611120905.DF88D9849@keescook>
+From: Linus Torvalds <torvalds@linuxfoundation.org>
+Date: Thu, 12 Nov 2026 09:23:18 -0800
+X-Gmail-Original-Message-ID: <CAHk-=whAF3brA9Wrcf3KDhNn_653zhUsoqe1MSneYJWtS5505Q@mail.gmail.com>
+X-Gm-Features: AclHuK_HNQpT4tCfX_FLYbv7PC35fGzeh8ZhM2vC9ghehMzLoLgyRTCdJiNaTCw
+Message-ID: <CAHk-=whAF3brA9Wrcf3KDhNn_653zhUsoqe1MSneYJWtS5505Q@mail.gmail.com>
+Subject: Re: [PATCH 2/2] devres: Provide kmalloc_obj*-style API for devm_kmalloc
+To: Kees Cook <kees@kernel.org>
+Cc: Alejandro Colomar <alx+linux-hardening@kernel.org>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, driver-core@lists.linux.dev, 
+	linux-hardening@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, justinstitt@google.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 1sd5xhh4k4myf3mhy596trsekt5j66o5
+X-Rspamd-Queue-Id: E5A5C1C0005
+X-Rspam-User: 
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794504558-72227
+X-HE-Meta: U2FsdGVkX1/7uZqKV8Zknc5RAN8c1DEjynDRxyXMPtst0J99C+76QqIXRcJJ9mq2i/BggYhT730Vu41P1XheNStMtEuM9P9dPPbBeeqoIfYISgtnHHRm9olO7GHFufFgcSNi8VdTXG2tRqEYMwB6CuQZnOJhqEMhQpfthjoLNJj2XsSimvmHJgM9KkmSLB90TfH0UL6grpDs0wa8NouUI6y013Hmkxaj+OI/aBPYKNuujjFw2T8OeQz4obilbYW+fTURUmW/62eTr/dQj4SppJ1cTlMbQjqQLJXqP7gy6N6QI7gpDnry8RHhPHqjC9fjK7kKdIe5lOq0Oa8Lij5XItXGLO/VDfBpX+B9N6a2J8GMArKLX6s7kC/3aw3fLV8jriKP14fjujrE4KHsjXoZTI+Va2ZTrLXlo32PU0vkMoFgsLsXAIozxdAwnfwxN6P6qD+IaVDGOZs6TgR6l+0qiu2Op0i6G2P/YvABq6tHvot4KMZOqavmlIk084AmG8uKyrN/GASqz8R4LZOqYsnGR1fBAPPm4sfVcjdTMyKrx3pSNtmoVKYRMzXTeEoF0Np1uWOQIsQmkY+2BlI7iFHV5M1B4fAklb+Yo80zqWEdZ4wRcmKwj1xRnfLi6k8xPTdzPbkkAgUnWVFKl10pgFc2rSbdH6Xse0tLz3rZMIquHi1MX3acUb2EPgPYv6S4nlPLtj+gWrIgwXYqEfTG+TumSyrmpzNgosuO5Wvs1CtKo7fbmMFWznz+C26IDiOCtSdTXgh7iPYX+hpMgH9h4LJJVsr/+V2W1i3WZUmh8fdnR/xAowWPuIeb8P/Cwt8nYgJvkOlLLuWN/J+ByEeDsFwLMl0zPIzbRmvHW2oOC61a/TiUPTRPzE+wIb/pgd58vE1Ft/J9cNUrpHuijx2Ydaxqwnx2EGffJYC2/DUDYQYDTw1RsiGVnof6DezH05B+FssXIde4n8xG/6EhoHDIvds
+ l5uw1yJm
+ FQu2udvn1AkwgfxD+VP3xQme2WkJVPX8/mjm6BF4TDXmh+hCZPZ9sxrKlBh9Jv1JhoUr0BLj2E5PDS9z2Xl5pcaX/Bs2oT3qqlfy+ZHrsjKD/y1mRUX1C7FusuFeOPRaTkyA94g/PHuQKd0z15njDa4aYFQunVlz7nRepQurYrNSJmoQY1ejU26kKVVq/RFSI/nKbxCIittAjyjTJMby3NCmEMqAM+/61N5efg6b6d7xsV5btWbNXYaEoxHHRD9JJeTKfnq96Hd6p5iGmsiPSU5mY7NP/hk3TSpnQN6bpx5ZPWs+osHZAxxPtnFd3IcHyyeqbS0bogcgcs2DQdpqwKBul7ifng9YrJdTIiuPNYdHI6EsJZdwc5+LNzMxqRy6/WQ2Si0CcanGy90yW88008fCTL1vR/6bi5v7iUFzVNbPE/2apiS2diD8Aq9zfk6CyEAoMSD5Bj+UwYZVLLq2j6gt2k+SiyJbOozjWe8rqhKrGEE/OG6j7qt6eyw53g+p2Bosft8Kn4c097dJsQeVzAVmOAj6nHDaFnpci
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,31 +140,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-11 18:13 +0000, Lorenzo Stoakes (ARM) wrote:
-> From: Chris Mason <mason@kernel.org>
-> 
-> After a KSM page is migrated to device private memory, ksmd can oops,
-> and KSM then stops until reboot. A process that maps the page can also
-> loop in page faults when it next accesses the page.
-> 
-> The problem arises because KSM doesn't know not to try to look at device
-> private memory that does not exist in the direct map.
-> 
-> Disallow this from happening by explicitly testing for this scenario in
-> __migrate_device_pages().
-> 
-> Fixes: a5430dda8a3a ("mm/migrate: support un-addressable ZONE_DEVICE page in migration")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Chris Mason <mason@kernel.org>
-> [ ljs: tweak commit message, comment ]
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+On Thu, 12 Nov 2026 at 09:09, Kees Cook <kees@kernel.org> wrote:
+>
+> One thing Justin was poking at was adding a "strict" mode to typedef
 
-Reproduced and tested the fix.  I validated in the base kernel that
-a migration could succeed and after this patch it cannot.
+Honestly, the sparse setup is superior. It does that 'strict' thing
+(except it calls it 'nocast') _and_ it has 'bitwise' that is a nocast
+that also disallows non-bit type checks (which is *very* useful for
+things like "this is a big-endian value: you can only do bitwise
+checks against other big-endian values).
 
-Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+So the compiler addition may be worth it, but  even the "poking at" is
+weaker than what sparse already does.
 
--- 
-~Gregory
+And the 'struct' model is honestly superior to both when it works -
+but can add extra overhead (but can also end up being nicer than both:
+instead of casting with special "I really mean it" casts, you can
+derefence the struct and get its value that way)
 
+              Linus
 
