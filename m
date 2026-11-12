@@ -1,97 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C685A606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 09:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1326F606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 09:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Lk4fh6uh
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V//olND7
 Received: by kanga.kvack.org (Postfix)
-	id E3FA26B05B1; Thu, 12 Nov 2026 04:23:15 -0500 (EST)
+	id 320366B05B3; Thu, 12 Nov 2026 04:24:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC9A76B05B2; Thu, 12 Nov 2026 04:23:15 -0500 (EST)
+	id 2D09D6B05B4; Thu, 12 Nov 2026 04:24:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB8E26B05B3; Thu, 12 Nov 2026 04:23:15 -0500 (EST)
+	id 1C03C6B05B5; Thu, 12 Nov 2026 04:24:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A52476B05B1
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:23:15 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4AE51404DE
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:23:15 +0000 (UTC)
-X-FDA: 85425928350.30.EDD8ADF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id ACC4940009
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:23:13 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lk4fh6uh;
-	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794475393;
-	b=DsH3G7lGZNfWz5Ku23II/f0UBGN5mt5vOqoagCSCaWeOTSdOKLmhx5cSfFGyFiidPcUdGJ
-	yktHg38xRgqtQ43TY8bcn8pDREboeg4PnOMHzfR+zNJ2SebOK7i+mHbk3+nkIpTp1GuLuP
-	WLY7abSRq6nUdzjuW/T26bxGYGHXsHo=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lk4fh6uh;
-	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E8CCE6B05B3
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:24:58 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8E11AA78CE
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:24:58 +0000 (UTC)
+X-FDA: 85425932676.29.1A0F687
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D210280006
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:24:56 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="V//olND7";
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794475393;
+	s=arc-20220608; t=1794475497;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=COtLWNA/6jmhBo0z5yMAfo9QrtLgCVfE5IORaIf3+y0=;
-	b=L2DqZz1jFWpbeto3MvFlabUiuCNp48anu6Lj7MJDh+FyaeEdmPjqJLUpmtnp/jt0see4zD
-	4WJGvVKUmLBVBcaiwPw10PITT+zOPP1KsPjSlF1bxXhcqE+gtTvX8hl0frhyEnfe+K8pYZ
-	DvbjC/3bm2Wzy5WuuX5wfWiHZhKoXjA=
+	bh=HkLpjqN2cmVM0+UHmNR+PdZ05HFeKD5qDle9ys44moo=;
+	b=50dwUPr7okh2/AjGe80WxQ5ntLtRziMte9C6Bkck7z5F1HXUffq5hpQXlHbosCIhHTS9/f
+	LNjqnm2QS16ERO4PsR2OOhKzATJha85Q/sqcQzVXuK6hbp/41hLq7oOT9FucROC1YVnJXR
+	4JXG3q//mmj7ATSLwjFcXs1lSzE8qx0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794475497;
+	b=wmqvgS0rLuKKnMcN0tjFbGBPSJuue7rtY7zhOzymo6BNAhui9ZHd6075r/7FEo9eBvuZFP
+	yUSz2QKYfjeUCiNqDVuhqdAg4X96PpO1c/8ZaCIgP16/Rf+NnWPR0wIk+CHgmbnNEOE/L8
+	ZKRqIoS21RqPYoaqohgzzuaQ32W6lAA=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="V//olND7";
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4834D62CC0;
-	Thu, 12 Nov 2026 09:23:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2ABF1F00A06;
-	Thu, 12 Nov 2026 09:23:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1119641893;
+	Thu, 12 Nov 2026 09:24:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54FE21F00A05;
+	Thu, 12 Nov 2026 09:24:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794475393;
-	bh=COtLWNA/6jmhBo0z5yMAfo9QrtLgCVfE5IORaIf3+y0=;
+	s=k20260515; t=1794475495;
+	bh=HkLpjqN2cmVM0+UHmNR+PdZ05HFeKD5qDle9ys44moo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Lk4fh6uhvdQFKXLCzlATpBN3Z7PdfBoxwcNAdDbfcX1qP/wElnNrdjWUZD48uAeyb
-	 PjVMHIs4sK62MoAvAI2wCoqHqu2Vu+GT95E6j8c+oMVVF6H7DLtby7fWvEcyeBOBTA
-	 6f7sTCixJv60UN2HYBXcao3yokBrl6yPVJgAZ9JV0559s+ShUeWqOxHln3Hik44V/I
-	 Vmes/612GaBJ9dMFCSU5okPkUc+9pcbWWSK8ZnLw4/rlSwcMyjGojguStEAkr73aUA
-	 dFmyUa0tdm3HKAyF0LGo22Jy22nLTGiEsoEvlsXyC2PbiRvG1jQfJneKiY6SwS+zf6
-	 ZKmQkzFwk+lEA==
-Message-ID: <sashiko-outbox-210869@kernel.org>
+	b=V//olND7eoKwNm+BDFcrlpJGqzqPc6PFEAru83yQUAVNgkWOzOwzCLv/V63KCp19c
+	 iTqpWpBAss3ehii8RhRCobeP7QDCXhwxnGz5RMRhQKxc576x+g+XlIb+/cP2GdOGfV
+	 S6CajcLlMCNYtBsjB4p9xTZYvDbXz+YsIemOt78DAZSaONiA5fKqRuifp3axLVPj3o
+	 /xyLNnkH7DFe/tktfE4QLPIzFIprrcuf2wh3WsnFX7LSSGe6RqG8+hRI/8toItNcr5
+	 zWOFiSbmaOGb7CgT/Cz1GMpPt0w8FGhCJ5x2CVPHdgnb6f2xmdkSLrFldQad2WnH0H
+	 wniIZ5nv8fQ+A==
+Message-ID: <sashiko-outbox-210873@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] [RFC] instrumented.h: mark instrument_write non-const
+Subject: Re: [PATCH] lib/smp_processor_id: Don't warn if there is only one
+ CPU
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Arnd Bergmann" <arnd@kernel.org>, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Marco Elver" <elver@google.com>, "Alexander
- Potapenko" <glider@google.com>
-Cc: "Arnd Bergmann" <arnd@arndb.de>, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
- Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Christian
- Borntraeger" <borntraeger@linux.ibm.com>, "Sven Schnelle" <svens@linux.ibm.com>, "Andrey
- Konovalov" <andreyknvl@gmail.com>, "Dmitry Vyukov" <dvyukov@google.com>, "Vincenzo
- Frascino" <vincenzo.frascino@arm.com>, "Steffen Eiden" <seiden@linux.ibm.com>, "Aleksei
- Nikiforov" <aleksei.nikiforov@linux.ibm.com>, "Andreas Grapentin" <gra@linux.ibm.com>, "Finn
- Thain" <fthain@linux-m68k.org>, "Peter Zijlstra" <peterz@infradead.org>, "Anshuman
- Khandual" <anshuman.khandual@arm.com>, "David Hildenbrand" <david@kernel.org>, linux-s390@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org
-In-Reply-To: <20261111092231.2027735-1-arnd@kernel.org>
-References: <20261111092231.2027735-1-arnd@kernel.org>
+To: "Huacai Chen" <chenhuacai@loongson.cn>, "Andrew Morton" <akpm@linux-foundation.org>, "Ingo
+ Molnar" <mingo@redhat.com>, "Peter Zijlstra" <peterz@infradead.org>, "Juri
+ Lelli" <juri.lelli@redhat.com>, "Vincent Guittot" <vincent.guittot@linaro.org>, "Dietmar
+ Eggemann" <dietmar.eggemann@arm.com>, "Steven Rostedt" <rostedt@goodmis.org>, "Ben
+ Segall" <bsegall@google.com>, "Mel Gorman" <mgorman@suse.de>, "Huacai Chen" <chenhuacai@kernel.org>
+Cc: linux-mm@kvack.org, "Tiezhu Yang" <yangtiezhu@loongson.cn>
+In-Reply-To: <20261111092421.3771992-1-chenhuacai@loongson.cn>
+References: <20261111092421.3771992-1-chenhuacai@loongson.cn>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 12 Nov 2026 09:23:11 +0000
-X-Stat-Signature: cycqyc45gmr6qosdd7imaxec85r7wa4g
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: ACC4940009
+Date: Thu, 12 Nov 2026 09:24:54 +0000
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794475393-662778
-X-HE-Meta: U2FsdGVkX19e3F3ONFZjUFx/fDD2mxDoSGuCdUzcbyNDp3HXPWXIA63nVRP20eNAtxMovpVNtn/QvVcNbYY/0AKa48OUKJK5OBxzqF23V67Cv9/Yg/kUsOdfSWgkzO7MWrSzbQtGLTpvbX2h9Lsfdt1T45a2AWfwReYvtWNtZODdRw3K8iyInwZSXgghzNwiS2fFcDAQGIOygkIkQxgUOESijv08giiTRO/SyU8BexaUwXoYhN+yBe1UVlEEzl4TwilwtPKN5mYwXCMb7GNzSVOyC6ZmrGaxfiJa3gu3WspUGevz6dgf8Rlfp0sqF/nesm4a36xuaHyG87cfOLAtjGZph65stOUNEfiH6fyvRdmeAEN0hnVjxPOhK473NRqScbBtYiErb6ulFWN0BSSZbRMdZ+044dGItptb4a8YedkL8OzJi2C4s6/UQVUbmP4l1wZJnJSROVnpm6u5ZmxuHbP0M9bWYBYiY6y9bkkHq/QCHfUB6JahA4fl0Di49lF3SH5uM97wbS8/FqqJcIxDE/fBre0Q4mFX/a6iIPjNbOebUncD7RHJLYOno9O0PEz82eC+dh47qF4iFMPDugyP2IW26XsxXgpPYI+vAvOe+eg1LZy47aY51SFhoZ0YzlVw8HMvFyWQYndnhQDa/CPq4VmoJn0DRs+7kQemqD03qBE/GmIdxV9Fk3NMOSyagt6ZRU4WvgzW+qFpdHJeq+NUhCvuXkRfw7prhrWv8sJRYtMl1e5NfamItF3u+Lp98MUZwwhiqD5hNIppDBvvQO8ExlekxOWbtp4clo6iRUZL0wvmXCJ72DLWOkWJ9D3sbeIpRlb/uG7OZa880Gyqy9jQ5fZTh4ematWpokFQGkaoKc0obOcEDJ6ldJNsabgIjmB4P3HBIAyXhEhk9tzocEaF8LFLCxx3gkknlMuKvtLJi4Xnj3/mKEjXdjysrnmEyMIRWCUfaV38l7wt82zKB9T
- mWXouIpC
- QHbfeBw3gh+Pi3hhn0ATVhYVAxQBoPzbLE26qnlPj8NU+6CDymLsTf3QobIBBk76kr8l3NB+HLtODdd18wpG9VvIRQri0xv/oXbp6mA4WBrY5Dy1w3oRS5qy7oK0flgK06MHqY3S9Vxg7BmAs0ImnMa5k18ndD5jcjSl13bDbEsbHULPYtD3iRiotiVMjbU87EwLw9dcXsfTRURUmDVcHKJInr0g8cOADAgm++aMpTtmDDHHl1Xxdo7vPiYuIqaiz2pC+zeV8pEDxOjOs1hrGlRpIgnnSB1guTGooCsoTrWd5+FF+NHowZlPnJynqhGLnywG8ye0y7+b+WbROY3HhOoTJDXhy36D1mxHWFHM/eGbikC3hmEGbwvKn90oPXgccfx9otIb3KgNR9B44mrxRyP0ItPuul5axqnNoZ3pAuGFz4POPocw4blLhBZmwbJHtSJ3WoQLbDbVpMJTrgoII5aB8/mh8+m4jt3JXQivYdW8Y3HYfHED7LnxSfZ96WYzsWdqLwzP+iZuPy254dgIYJQlFkBUkmiBPlHYYOXBu9fNa5MviDvrqm5NmONodFVRwckl1lYXpYMdwpJ9YQg8QrqQX3Iy0uqGfecUNV9PduZHAQ5eMO0viSKVpvxVtoIW7nRT5ZlV7TCaZZrOucznHR5dph+QsEUuZ1XprsBhw1bZ8jiQ1iDoL19ciw+hdnLF5v8kbddZWvwfRUdTLMdg7q4KHFA==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: jqm4t9pwmk5ta51hh7shygad95611g99
+X-Rspamd-Queue-Id: D210280006
+X-Rspam-User: 
+X-HE-Tag: 1794475496-425243
+X-HE-Meta: U2FsdGVkX1+6qIkz4x7xiXBUqn8MmmBOnppQbTMu3ZAhPaBn9jPSOSZnOdxqkcGOH9fFvmN+GIQSgbuMeBiF4D7PepbRfKlt0Y6r+gtgsGqFnqdY3zIpPzXL63BDlaGc6CJmXyMR5XmizAVLNDawdChihRrD29UHPmt9VZQ4/3tooF85fV5a98Wqy7xS6sQ+ghSQq7QD1yzd0QHRT161lmuNhpeIxwous1f6sVHGIIhc02MyubaC2qhNRtLTYJfYwcYFkXvnf3uINm58SmdqDdv072DiFYd461/7QL8mxfQ7KWKtq9KU6e3+Z1XMJwZo186vC+RAIKoXNA3bdzohCpYPrDsFJb/BZFbnrAsumMNUWLsRGY4qn8lXW443ty9dQIqhkZZEpdQ1t+7iHD6hKfEGL7MIBHkUxq9OnPAzk72Y6OKW8lX0ZPtYtuncxTpz8u0c08UX+23YtHzzYRfLHkv8VMc7nVu/71HPVTSXSQNTB/wBo90KpfxVL0JeMITxCuVxkdd+lHO4bczc/eKFvZODUB9vtV6nuKjzzGSzDvA89aTNYfn4pmV+EoX/dNif+GR9YPMTkuBbLWwZ9GvkaJHzCrpUz946lPN46jvicaCOZ3QNmRrS0LxynI3vN04CCXbphRtqXwfypH8LZ/E4a3hmepQ4jGHddZCfqP8YR91pST9rSYH/2ZYr+9padryEesKe0po4k9JtFyvG7ul7fMVF9CBhrqw4oIFWekudFKlyKuZw7ITxu7ph2b/tbX7TOrALd434thw18qbOKjwQDPfOOuT8ljwYh2ZQhBLVqu2Yc/koNUvb144g9GXWHndvN0Zrp2ZZMvAkIUWNzCSvro75dpr0+TB11uAa822HjUsy9LRAsHEGQzqavR8H02tI29Vblf9pWoswZ9TrhAszQGWrIrrwHjMkIgWq01Py0aaFUF79ZvNgCuTmXtzq7bzsR8ZuymzWwpuKzCywl3m
+ W7ZBOXKm
+ 4UTVuvFL3PTnebDbhQpMAAq2Y3oCIhWOa6ElMPJoDFoiw77k+u0KxLp23732r88vOo72VmqzpDsASJd3QJVWdtmqDmKTT6OKXAezcnuIrJ7HDW3428Nq1WhPOV+DItz6w5deR2hEc6qPyRWrPW9pKZ5zmHfCb4rlrsGAu7vksX/X0uOX6jY9xPWk0MGNhXpvdNUjmv3+9lirZmcUi7FkPbtk/7/LUqT/TOeYh4G5vfIQEXujxxd+yLsqNi5Vqv/H1fJbz9jerEGWzrjM/jdrWH4ouVI2hna8Kexw7gyD117blH0yI+ZfslYMNNj14QiBj9cJTiUfiBqvztrVBQXFYGldZ/4E4Lslr7NrKw+26fJYFcacfW/o6GuMHnTj3W+H7luofcmAOfwlBCb+9xtfypfPKnZeUZUskivuhoa/kFSmzuq6JDrAtdQbTf4wEiaKEzfNjZ92N4bri6+eDkPMP6D3a2drqojq32rCXQ8Y0qQtzbAJFs4dtVpQkOTnfh5tg691SA/4ooVLbq2jTAyWzTXlCCCaUkwfEMfUhGXvmAReJaydRMlx/fhRWp8jbV8Ms2JefI8Ajdi6ep+nx7RBR5+4d1+ZP5DzecULyz7iBFa+DyxS4BphlSvUNFg36MeH3EXuHJJhQhklZ5lk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,165 +99,105 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 2 potential
 issues to consider:
-- [Low] kasan: instrument_read_write() hides uninitialized variables
-  under KASAN
-- [Low] instrumented.h: inaccurate Fixes tag and RFC question in commit
-  message
+- [Medium] lib/smp_processor_id: check_preemption_disabled() disables
+  checks when 1 CPU
+- [Low] lib/smp_processor_id: missing Fixes trailer on stable bug-fix
+  commit
 --
 
-commit e49ee4fd80c81d953b77b9f3cd5a327db833a726
-Author: Arnd Bergmann <arnd@arndb.de>
+commit 0181ac5af2fbbf50ee4ee229425b805d588cbf1c
+Author: Huacai Chen <chenhuacai@kernel.org>
 
-> instrumented.h: mark instrument_write non-const
+> lib/smp_processor_id: Don't warn if there is only one CPU
 >
-> I got another instance of a -Wmaybe-uninitialized in ntfs, as this is
-> the only place that enables the warning:
+> When CONFIG_DEBUG_PREEMPT is enabled on a Non-SMP (single-core) kernel,
+> calls to smp_processor_id() in preemptible contexts trigger some false
+> positive "BUG: using smp_processor_id() in preemptible" warnings, which
+> are harmless noise because the process always executes on CPU 0 and CPU
+> migration is impossible.
 >
-> In file included from include/asm-generic/rwonce.h:26,
->                  from fs/ntfs3/file.c:10:
-> In function 'instrument_copy_from_user_before',
->     inlined from '_inline_copy_from_user' at include/linux/uaccess.h:184:=
-2,
->     inlined from 'copy_from_user' at include/linux/uaccess.h:222:9,
->     inlined from 'ntfs_ioctl_fitrim' at fs/ntfs3/file.c:78:6,
->     inlined from 'ntfs_ioctl' at fs/ntfs3/file.c:246:10:
-> include/linux/kasan-checks.h:38:27: error: 'range' may be used uninitiali=
-zed [-Werror=3Dmaybe-uninitialized]
->    38 | #define kasan_check_write __kasan_check_write
-> include/linux/instrumented.h:146:9: note: in expansion of macro 'kasan_ch=
-eck_write'
->   146 |         kasan_check_write(to, n);
->       |         ^~~~~~~~~~~~~~~~~
-> include/linux/kasan-checks.h: In function 'ntfs_ioctl':
-> include/linux/kasan-checks.h:20:6: note: by argument 1 of type 'const vol=
-atile void *' to '__kasan_check_write' declared here
->    20 | bool __kasan_check_write(const volatile void *p, unsigned int siz=
-e);
->       |      ^~~~~~~~~~~~~~~~~~~
-> fs/ntfs3/file.c:66:29: note: 'range' declared here
->    66 |         struct fstrim_range range;
->       |                             ^~~~~
+> Here are some of the trimmed log messages:
 >
-> The problem here is that copy_from_user() is called on an uninitialized
-> object, but the instrumentation passes the pointer into a function that
-> takes a const object. gcc deduces that any access to that object is
-> undefined behavior and warns about it.
+>   Call Trace:
+>   [<9000000000d33e28>] show_stack+0xf8/0x1c0
+>   [<9000000000d2fdac>] dump_stack_lvl+0x4c/0x78
+>   [<9000000002456fc0>] check_preemption_disabled.isra.0+0x100/0x110
+>   [<9000000002456ff8>] debug_smp_processor_id+0x18/0x40
+>   [<9000000000d31118>] init_cache_level+0x18/0x90
+>   [<9000000001adbe2c>] detect_cache_attributes+0x4c/0x640
+>   [<9000000001adc44c>] cacheinfo_cpu_online+0x1c/0x310
+>   [<9000000000d5ae04>] cpuhp_issue_call.constprop.0+0x94/0xd0
+>   [<9000000000d5b278>] __cpuhp_setup_state_cpuslocked+0x208/0x320
+>   [<9000000000d30148>] do_one_initcall+0x68/0x200
+>   [<90000000024711b8>] kernel_init_freeable+0x1fc/0x294
+>   [<900000000245824c>] kernel_init+0x20/0x134
+>   [<9000000002455b54>] ret_from_kernel_thread+0x24/0x1d0
+>   [<9000000000d31650>] ret_from_kernel_thread_asm+0xc/0x9c
 >
-> The only workaround I could come up with is to remove the 'const' keyword
-> from these annotations, which of course is not great either, as the
-> functions do not actually access the data at all.
+> This warning only exists for the !CONFIG_SMP build. This is because for
+> CONFIG_SMP cpuhp_issue_call() invokes callbacks in cpuhp_thread_fun()
+> which is a percpu thread, but for !CONFIG_SMP build it invoke callbacks
+> in the init process which is not a percpu thread. And there is such a
+> skip condition in check_preemption_disabled():
 >
-> This also found incorrect 'const' annotations in
-> arch/s390/include/asm/fpu-insn.h, which writes to those pointers.
+>     if (is_percpu_thread())
+>             goto out;
 >
-> Any ideas?
+> Since there is only one CPU for the !CONFIG_SMP, we can simply skip the
+> warning if (nr_cpu_ids =3D=3D 1) in check_preemption_disabled().
 >
-> Fixes: 33b75c1d884e ("instrumented.h: allow instrumenting both sides of c=
-opy_from_user()")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Cc: stable@vger.kernel.org
+> Reported-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 
 [Severity: Low]
-33b75c1d884e ("instrumented.h: allow instrumenting both sides of
-copy_from_user()") only renamed instrument_copy_from_user() to
-instrument_copy_from_user_before().  The const void *to parameter calling
-kasan_check_write(to, n) was introduced in 36e4d4dd4fc4 ("include/linux: Add
-instrumented.h infrastructure"), and __kasan_check_write(const volatile void
-*p, ...) was introduced in 7d8ad890dad0 ("mm/kasan: introduce
-__kasan_check_{read,write}").  Also, the "Any ideas?" question from the RFC=
- is
-still in the commit message.
+This commit is tagged for stable backporting to fix the !CONFIG_SMP warning
+exposed when is_percpu_thread() was made unconditional of CONFIG_SMP.
+Should it include a Fixes: tag such as:
 
-> diff --git a/include/linux/instrumented.h b/include/linux/instrumented.h
-> index a1b4cf81adc2a..d28aa6b0aeb8c 100644
-> --- a/include/linux/instrumented.h
-> +++ b/include/linux/instrumented.h
-> @@ -36,7 +36,7 @@ static __always_inline void instrument_read(const volat=
-ile void *v, size_t size)
->   * Instrument a regular write access. The instrumentation should be inse=
-rted
->   * before the actual write happens.
->   */
-> -static __always_inline void instrument_write(const volatile void *v, siz=
-e_t size)
-> +static __always_inline void instrument_write(volatile void *v, size_t si=
-ze)
->  {
->  	kasan_check_write(v, size);
->  	kcsan_check_write(v, size);
-> @@ -50,7 +50,7 @@ static __always_inline void instrument_write(const vola=
-tile void *v, size_t size
->   * Instrument a regular write access. The instrumentation should be inse=
-rted
->   * before the actual write happens.
->   */
-> -static __always_inline void instrument_read_write(const volatile void *v=
-, size_t size)
-> +static __always_inline void instrument_read_write(volatile void *v, size=
-_t size)
->  {
->  	kasan_check_write(v, size);
->  	kcsan_check_read_write(v, size);
-> @@ -92,7 +92,7 @@ static __always_inline void instrument_atomic_read(cons=
-t volatile void *v, size_
->   * Instrument an atomic write access. The instrumentation should be inse=
-rted
->   * before the actual write happens.
->   */
-> -static __always_inline void instrument_atomic_write(const volatile void =
-*v, size_t size)
-> +static __always_inline void instrument_atomic_write(volatile void *v, si=
-ze_t size)
->  {
->  	kasan_check_write(v, size);
->  	kcsan_check_atomic_write(v, size);
-> @@ -107,7 +107,7 @@ static __always_inline void instrument_atomic_write(c=
-onst volatile void *v, size
->   * Instrument an atomic read-write access. The instrumentation should be
->   * inserted before the actual write happens.
->   */
-> -static __always_inline void instrument_atomic_read_write(const volatile =
-void *v, size_t size)
-> +static __always_inline void instrument_atomic_read_write(volatile void *=
-v, size_t size)
->  {
->  	kasan_check_write(v, size);
->  	kcsan_check_atomic_read_write(v, size);
+  Fixes: 06ddd17521bf ("sched/smp: Always define is_percpu_thread() and sch=
+eduler_ipi()")
 
-[ ... ]
+> diff --git a/lib/smp_processor_id.c b/lib/smp_processor_id.c
+> index 94b3f6b195388..64901d33c0eee 100644
+> --- a/lib/smp_processor_id.c
+> +++ b/lib/smp_processor_id.c
+> @@ -19,6 +19,9 @@ unsigned int check_preemption_disabled(const char *what=
+1, const char *what2)
+>  	if (irqs_disabled())
+>  		goto out;
+> =20
+> +	if (nr_cpu_ids =3D=3D 1)
+> +		goto out;
+> +
+>  	if (is_percpu_thread())
+>  		goto out;
 
-> diff --git a/include/linux/kasan-checks.h b/include/linux/kasan-checks.h
-> index 3d6d22a25bdc3..90b878b876f5c 100644
-> --- a/include/linux/kasan-checks.h
-> +++ b/include/linux/kasan-checks.h
-> @@ -17,13 +17,13 @@
->   */
->  #if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
->  bool __kasan_check_read(const volatile void *p, unsigned int size);
-> -bool __kasan_check_write(const volatile void *p, unsigned int size);
-> +bool __kasan_check_write(volatile void *p, unsigned int size);
+[Severity: Medium]
+Does returning early when nr_cpu_ids =3D=3D 1 disable CONFIG_DEBUG_PREEMPT
+checks across the entire kernel on single-CPU systems?
 
-[Severity: Low]
-Does removing const from __kasan_check_write() suppress legitimate
--Wuninitialized and -Wmaybe-uninitialized warnings for callers of
-instrument_read_write() and instrument_atomic_read_write() when KASAN is
-enabled?
+check_preemption_disabled() also backs __this_cpu_preempt_check().  Even
+with a single CPU, preemptible code using __this_cpu_*() or per-CPU state
+via smp_processor_id() can be preempted on CPU 0 by another task that
+modifies the same per-CPU variable.
 
-When a local variable's address is passed to an external function taking a
-non-const pointer, GCC assumes the call may initialize the object.  Because
-instrument_read_write() and instrument_atomic_read_write() call
-kasan_check_write(v, size) before kcsan_check_read_write(v, size) and before
-the caller's read-modify-write operation (such as oldp in try_cmpxchg()),
-uninitialized read-modify-write operands will be treated as initialized by
-__kasan_check_write().
+In addition, nr_cpu_ids =3D=3D 1 is true at runtime on CONFIG_SMP=3Dy kerne=
+ls
+booted on a 1-vCPU VM or with nr_cpus=3D1, and on !CONFIG_SMP builds
+nr_cpu_ids is a compile-time constant 1, making the rest of
+check_preemption_disabled() dead code and undoing 2885daf47081
+("lib/smp_processor_id: Make migration check unconditional of SMP").
 
-07a1a6562ce2 ("kcsan: Silence -Wmaybe-uninitialized when calling
-__kcsan_check_access()") avoided the same fs/ntfs3/file.c warning for KCSAN=
- by
-keeping const volatile void * on the external function and wrapping the
-pointer in absolute_pointer() only in the write-only macros while leaving
-read-write checks unwrapped.
+The reported warning happens because cpuhp_issue_call() on !CONFIG_SMP
+invokes non-atomic hotplug callbacks directly in the calling task without
+migrate_disable(), and init_cache_level() in
+arch/loongarch/kernel/cacheinfo.c reads current_cpu_data instead of
+cpu_data[cpu].  Could this be fixed in cpuhp_issue_call() or
+arch/loongarch/kernel/cacheinfo.c instead of disabling
+check_preemption_disabled()?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111092231.2027=
-735-1-arnd@kernel.org?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111092421.3771=
+992-1-chenhuacai@loongson.cn?part=3D1
 
