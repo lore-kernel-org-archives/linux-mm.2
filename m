@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A816606D54E
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 14:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57310606A335
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 14:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SYw+Y5g5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f8mnD/IJ
 Received: by kanga.kvack.org (Postfix)
-	id 5D7046B05D3; Thu, 12 Nov 2026 09:34:25 -0500 (EST)
+	id 592116B05C0; Thu, 12 Nov 2026 09:39:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AEAD6B05D4; Thu, 12 Nov 2026 09:34:25 -0500 (EST)
+	id 542196B05C3; Thu, 12 Nov 2026 09:39:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C4D16B05D5; Thu, 12 Nov 2026 09:34:25 -0500 (EST)
+	id 40C206B05C4; Thu, 12 Nov 2026 09:39:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E9126B05D3
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:34:25 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CA36F1C1EB7
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:34:24 +0000 (UTC)
-X-FDA: 85426712448.30.49735C5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0C946180003
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:34:22 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SYw+Y5g5;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F31996B05C0
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:39:12 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7DA3E1201E1
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:39:12 +0000 (UTC)
+X-FDA: 85426724544.20.AA9E1CB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A9E8DC0006
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:39:10 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="f8mnD/IJ";
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794494063;
-	b=z8GAB/Ors5SJWjgIH+nXmKkLozMWqBmdnC4cORfaON2wqC2Js2RzRP69hvOvbAfZTdWVA0
-	UHa+MvvA1vKgWrw0am5D1JHPXs5TMLh2FRUR51kgEzXJ74+Qelor8OCEsBonRLHwPU2dTg
-	Rl4onIek663dulJvMEJ+/1h6FhuCz/s=
+	t=1794494350;
+	b=Lbd/kZ0cmouyQs1yEAyX/XcA4YQOtY9gG/rjF2WDK6S0N4EKmxietFDc1zclrEjK414nRi
+	qwPS1wrdraGcq44aqyNhweoQaEIGJHSVXYidrpidZUIz0/sYnsPtfuVtSKkUgOHDjnKkNb
+	hM6pJdQs8ULI//BFC1rZJL5HEXKx3Ls=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SYw+Y5g5;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="f8mnD/IJ";
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794494063;
+	s=arc-20220608; t=1794494350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PLmrGBLIWl1ASvJcUvds5+aGJW/ZT+3+4c5mJcBaLgo=;
-	b=i0tH9pDEG1EqaHKLy6Gtxssk2ckqU2IpqSvSv2N0FrKO3ChPiF4LTPh2yPH3QVBSUbgCMp
-	tncG+qoQyKifYvM028G1d3yah9IsddtrbBxcEgu4YboAnSqRz+TCI0fAxeMqi1aSSXNWnC
-	obcbYOxtwOGopZn0mvbG+M2Sgt8KtEc=
+	bh=JPCGNF/jEMU9xJrqkGIaHxvjMBqA0bWCrPxQL0nBrZo=;
+	b=C8nA9gnor7xYqnnGsrZv3F3OAC9az6IP2p7tkNjYpzkI/unXsE2cVCkfcm+S2a41C0Hlf8
+	L17DPdMEzX8aB9OeOf4deqK83ck6O4d6aR90DKrdOjrwkYJkNJDyboI1I4dJHdhCJheCnJ
+	NCFt2ycyv+k+W2VQ/B6VuTWx+2cpQzA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7DB9965871;
-	Thu, 12 Nov 2026 14:34:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0041F1F00A05;
-	Thu, 12 Nov 2026 14:34:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A38FC43BDA;
+	Thu, 12 Nov 2026 14:39:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38F651F00A0A;
+	Thu, 12 Nov 2026 14:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794494062;
-	bh=PLmrGBLIWl1ASvJcUvds5+aGJW/ZT+3+4c5mJcBaLgo=;
+	s=k20260515; t=1794494349;
+	bh=JPCGNF/jEMU9xJrqkGIaHxvjMBqA0bWCrPxQL0nBrZo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SYw+Y5g55tXcxGIospu8+1z27xVvAMZw2tjzdoMxe47TIMe5HetQl4QWdF133IPoA
-	 BqM8lDlHsw+Ml8XhmLUHSapr6iHdcLhIjTdUJnAsn0orTun1eVoTzA3PQtz0ukEGlM
-	 gkpiO6jR4DZ11dTsFVugUmSDuPCALrNu6vTXAHxcJfWtTMEPKDuUqjoS6X1bpUVWmB
-	 UjESldenidkLlsBrJiHX9zhr8BieGqomu7fS6eaZIYy1C+X8Vn/O9JOTTx+pWKPN4I
-	 eUkXXyZ5vaGujt+tbNOF3GL3aNTH7uvj/aDwXpA5WSXEwarSme664SeruGsnDjWeyE
-	 iwKfkLmMrDZDQ==
-Message-ID: <58ea8025-f8ba-4e48-83c1-b17998b80484@kernel.org>
-Date: Thu, 12 Nov 2026 15:33:57 +0100
+	b=f8mnD/IJDys4pA4TeVplHqPuVUfXqGCBlqTLjIenB7gApydQVzgQ7FKsApOjymKoG
+	 uoxlhVqbleJeLcQbHt5sG3/YCao8omJde+LI+Zry9Zf+D7eJQ43/cy9LfzDcI/BP6n
+	 59jf7Yk0E6oQ4ndx2WarOOMIOHOscf4lgBvg30XKqlVusvQHhnKQ56hfSOLHFXtqsO
+	 EvolT6DBDg4yO5pVhjYeYQQWWjGT7i8guvwpRcR7e7ysv6z3Wdrle0pzptbwklFN6w
+	 +hGHxd06iIp13iFBvUdxsoi8NV3KZFViRrZXNgUMAuxDnN60aj3/GIZ6wIZUduAG+I
+	 LxvkBDtRNAxDw==
+Message-ID: <1aa2d6a0-0104-4f94-821f-3a8a74636028@kernel.org>
+Date: Thu, 12 Nov 2026 15:38:45 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/9] mm/gup: limit pagecache folio refcount when
- grabbing references
+Subject: Re: [PATCH v3 1/9] mm: limit pagecache folio refcount when mapping
+ pages
 To: Pedro Falcato <pfalcato@suse.de>
 Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
@@ -101,10 +101,15 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
  Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org,
- iommu@lists.linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org
+ iommu@lists.linux.dev, netdev@vger.kernel.org, Chris Mason
+ <mason@kernel.org>, stable@vger.kernel.org
 References: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
- <20261110-refcount_overflow_stable-v3-5-318625d63a98@kernel.org>
- <avW7MFzYJJZ0B85d@pedro-suse.tail5790ac.ts.net>
+ <20261110-refcount_overflow_stable-v3-1-318625d63a98@kernel.org>
+ <avW0HGjF6wuqn12T@pedro-suse.tail5790ac.ts.net>
+ <86206f64-fefa-4a13-95bc-eddf756eecc8@kernel.org>
+ <avXGtysfRk3uQpNu@pedro-suse.tail5790ac.ts.net>
+ <2f9b90fd-fe50-4afa-ab59-0c4a00e5e276@kernel.org>
+ <avXMKH__gwi6BwVy@pedro-suse.tail5790ac.ts.net>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -151,21 +156,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <avW7MFzYJJZ0B85d@pedro-suse.tail5790ac.ts.net>
+In-Reply-To: <avXMKH__gwi6BwVy@pedro-suse.tail5790ac.ts.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: h9z556p48mumr1yxj9x4iq1rkfsadawi
-X-Rspamd-Queue-Id: 0C946180003
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794494062-753192
-X-HE-Meta: U2FsdGVkX1/ZnsqkphuEIbxKiqXlllBBJBYDEmDVSFltnGKarU5TG8bpgnevDKYUJkT2GIa1tUr0bGMMOsIcO8U/6WXAJWKqO4IUUS4IqH8VbcN4ISyqOIzfJSDOhgJRHh0S7n9HT1vJvtT2lguZREcW7Cc41VPqk7SPDhuswVFqeF94tOWo51Cdu0Joq8T/n7kWwrqo68EwNdiq7uSChvBVJ8mb0duOTQA5mh6mqmndAHFfXdIKxsRiE4MyV0wMmbFVTLjt4Wg/tHo7Pm60FWA6+TBnS0/MM9MQ3SIGM+v93tH8Y5WDIvMlLxyoh2mSzmd0S/hXLKfLwvIorM2M4mC1vofSUcQqK/ETqDCl7kNyBEQj1mfWNTDbrjTRpZ0Z+e99GXuDJ3akVSgQwQHxgLJVfOzpBR/D1IU0FfoGEfL4uE6rA6qm0FnI6AE8+jOaQnBNVkVUS1vdrTmBKX2HaXhdi+NXkclqoyo7o4ixpqYOnRxwhzRiJl1hQ9/ZUxPPFWhvJu0iMW+f//KMt3dEjyoBLScW2zMyAXUkPSvVTfpzYLrRamWPRGSBSQd5eblpNRqN5r0L1h11eRR8rj6Fl8/O+cXwnntkb7yAHWsEq5yz6aH0lPYAzNl3KnOAR3F7vHSLeZzu44BV+OoDICDS4yCg+KX0cu/5zLBfCXbJvbdgSzgVQdxXfHw3K2CpNDC+hFnS8XWuPN/2+YvF6isde0NmqiBu2ovaqKGdjSwB9Qo3ity0jHUbaToN2XPyjxdN+YQQTZVYRct8wBTv5xpuCrHgI4tIXOFBAFPNeS3Jjrb/R0N2meTukp9hCXWY+6h0VJdAFK08ThPzdZhka1KyqBvUE4xgnKLWKpbae9Jc2PwkVuI6GeSivTp7/NvFXmto/DM183V8Tnz9dBvXTAXSKFkNDsdfIZJRAX0RAOax4+QwPuCQEGRaBAKzhuzQEe2mIeXqylFX+PJw3Ndx2uI
- 3tuEWyIT
- 8o4+qJlU64zYM816n6+fO5VjWQlm7bWsm1FbMcbFBNVuaHoyucxP8atijPT+WJJvOIuTDrr4StwO+DFDtNihwPHUEfpmeD75hux+6jhHLeCmX2J/h3F/vd5rnlqI8xFAj6RxA20ejBDKsHHOTh3pWH7TW7AjCAYe6EP3p9UEXHmJf0wIoNwchQ6oSZehYFCjgPdDAl+Yj/9c8OYiHysUNegTTUYGzZCEe5IUrEUo76kIsAyw9ZStjsRdfGJgneZOBl+42oscTBuaWs2a6e25hOnqHqa0HXpd8OOauNC22qLRTHVbgRSmi4rE5Zn9IRL2IMsOFAnt9Qx/xHgEs/5eVVUq7hy+8cXmnkpHRFIy12nBR2reYppf4iWur5f74LbsNOh6w
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: A9E8DC0006
+X-Stat-Signature: w8umhsmbi7upkz685gijqwzjgo3pw78f
+X-Rspam-User: 
+X-HE-Tag: 1794494350-277887
+X-HE-Meta: U2FsdGVkX18+szrsjE3BsEuLDnQWcT5v7gfHvAxqMM0oKhlVo9nqF7Cvh+3NN0lIY2zlTs7WILt+HzoZXDUs0oh2mf0c/7S6Hxn2IWjVwYbh4h5Tw2SI8u0n8WVsgXoXl6T8ow7BWRhlQonVb7sCRwN+CIq6vmlN0EwhrVdmTZEqnH9XweLX0HbaX8tZj3bf/VIVGkAHYAwpARTGukSjsiLOASVOhTamOuHUkHpxqxUmaO+zs2QRFFb8Gam7kS+17dYEuECUd5tvUcc/6Smy51l1M6x+IurMiCKzC+9jwiQQH2+IgZCHOADPQjET+VTTZvscMMzIU1AhvF36+CJUAHPZue7p/hx8xyHWchMSkPDILmGFMB+e13mqU2xzDs8oi0TtiWeu6TKfxPiDM/CVB0IJjCRd7ja71cxSn0JoKBnogTDaSwkTlWagnHpgPLUHoujXjhrQcekgdxK6fp8pRmYU/ftHIpP/R160bZLXDEocL2xgLfT+CaipXK+d/M1P8w+vYAAxZaWNjhnuLChczTAvDnk0ZHeBJlpBW6HG9ZV7faux7bMQOReEqLjZzmbbK7DBf2nA1TRf6isbrwFrVUA+50P2gAhggon6DL66VXOAkkKANEaZ2r9Q9gjW/pw/UGOEyDIrhevJstFlX2jEVODomo3QY0fCNCS5Ljuunt/E0tUUbayAprLhpr49OmyKWh3XZyEdcDnVvWuWO9olt3VXzraPjav5r+MoayYDGKhxjbt/sJ8zGsbhNhqnrxOOCBdyfuJPaTWmjJfn4SesqHkR6qjnzYKWefol87GbpEMs2XfHa9OwOP+8hMJ6e35cUALwAVuaPeYE1vSrLP1GsY6pwmny6SXHoMEBe5qfOnbFfGyepolllMke5wnLUpOlPuziV0/MNwKF3v0S2AfCUC4PcMTZ2/uCzT8tzgALN4QlbLiKDFdp+g4dRn43Nv9LRIe3knQ78HHBWCsVuTd
+ uDzRrHmK
+ JrxGKyEnIVnPBqkyG4n/PHBy7gEArA8gIsjiCDXzG2oF78xUHcsJp+uakk7AnsRr9spaMgrpp9YUkItefTi1/wm0WpyPPL3kqJEL8c90gVrCtORlbBBfnhYGpIqjv3H8wzzijnS/D/kXYl0aMGCmNthldOfIMBJOWtpgNXF86CGHt4jGU4P2i4fPeB7IwSmlFlnSDqTvCwnkOIGRI2krUun8yMUFBgMiGsNmJYOog4g1LCFbqt0pjuOKAVrRDfeI/ziEC6d7h042ZEDrVS5qGxedwksPqNh0x9YhpQBzuv2iCWICH7BVYS+fV1iFtF+2bj5hQj6YiWU1jAlo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,30 +179,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/12/26 14:12, Pedro Falcato wrote:
-> On Tue, Nov 10, 2026 at 09:35:45PM +0100, David Hildenbrand (Arm) wrote:
->> Let's add a folio_ref_count_over_limit() check in fast and slow GUP
->> before acquiring additional references or pins.
+On 11/12/26 15:26, Pedro Falcato wrote:
+> On Thu, Nov 12, 2026 at 03:16:00PM +0100, David Hildenbrand (Arm) wrote:
+>> On 11/12/26 15:06, Pedro Falcato wrote:
+>>>
+>>> Alright.
+>>>
+>>>
+>>> Yes. As far as I know, it's always fine, even under NMI. But definitely fine
+>>> with IRQs disabled.
+>>>
+>>>
+>>> I had the impression we had some stuff in-tree that isn't marked as GPL. But a quick
+>>> grep shows that everything is either GPL or dual-licensed.
+>>>
+>>> In any case, yes, this will quite possibly break debug builds for people OOT.
+>>> I think folio_get() might be a bit too ubiquitous to do this to.
 >>
->> Keep it simple and use the check for all folio types.
->>
->> Also propagate try_grab_folio() errors when grabbing additional
->> references in __get_user_pages() and in memfd_pin_folios(), so hitting
->> the limit returns -ENOMEM instead of -EFAULT and -EINVAL, respectively.
->>
->> Keep the existing invalid-refcount warnings.
->>
->> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
->> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
->> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
->> Cc: stable@vger.kernel.org
->> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> Thinking again, folio_get() should not be affected, it rightfully only checks
+>> for a refcount underflow (when we exceed the limit + headroom). So only
+>> try_get_page() is affected, which OOT very likely doesn't use.
 > 
-> Same points about funny weird inefficiency applies, in any case:
+> Aha, yes, you're right. I mixed up your folio_get() change. Would it make sense
+> to VM_WARN_ON() on this as well, or does the <= 0 check cover us already?
 
-Yes, thanks. Adding a second function that consumes folio+refcount was easy, so
-I did that in patch #2.
+<=0 is sufficient for folio_get(). There are valid cases where we can exceed the
+limit into the rather large headroom (e.g., reaching the limit through page
+table mappings, then performing harmless read/write that take bounded references
+for a short time).
 
 -- 
 Cheers,
