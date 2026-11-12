@@ -1,100 +1,161 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6576606A8B1
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 13:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62AE606A880
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 13:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gPVSqwts
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uHd+VGGZ
 Received: by kanga.kvack.org (Postfix)
-	id D79316B05C4; Thu, 12 Nov 2026 08:30:48 -0500 (EST)
+	id DA0D16B05C6; Thu, 12 Nov 2026 08:30:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2B4D6B05C5; Thu, 12 Nov 2026 08:30:48 -0500 (EST)
+	id D51AB6B05C7; Thu, 12 Nov 2026 08:30:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C18F76B05C6; Thu, 12 Nov 2026 08:30:48 -0500 (EST)
+	id C67906B05C8; Thu, 12 Nov 2026 08:30:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A11886B05C4
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:30:48 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B001D1405BA
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:30:47 +0000 (UTC)
-X-FDA: 85426552134.05.1D7A942
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 132C2120015
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:30:45 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gPVSqwts;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794490246;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 92E116B05C6
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:30:59 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1E4321A05F4
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:30:59 +0000 (UTC)
+X-FDA: 85426552638.15.0FF7E3B
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2B8711C0004
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:30:57 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=uHd+VGGZ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf20.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794490257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TIJ/B4xCXlnMR973pp/iagBmP0zyby+RS+bYxCX6O/A=;
-	b=0g93t4QJiuoK7gxPrF8fiYEJqI6l0HJ0gU3oGqO+h/fGttnk7g4QFZsoootu0dLy+ZVhnV
-	SkcJKQ/sy1aq2QA91QCIEVcB5hJ2hlPyIcQe6cpHOi+3zUnF7vTro0SQHkGapn/rFxVUbU
-	wgzGQ9qqvGGt5COJ0siHbycUtGKEjss=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gPVSqwts;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794490246;
-	b=mUOnBPMix7wvF9uJbpWJFjy0t68Bpj1enW9cvkk9tCuE3rqlW8Twb2+Gv602JPF6rXex25
-	CQn6VaGqRvR7dQ2gAjRH0dcYVO4/t5ipPNT7j57tfHB0ulvpXnVZj5lPg7o+VaNzDWPynZ
-	AEkadOBa4N4+za3DdQqlh4ghAud1iQs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 09BE441332;
-	Thu, 12 Nov 2026 13:30:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA581F00A06;
-	Thu, 12 Nov 2026 13:30:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794490244;
-	bh=TIJ/B4xCXlnMR973pp/iagBmP0zyby+RS+bYxCX6O/A=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=gPVSqwtsS4+iVC1025PcArimiK7ZsHRGSfLl/9vWj0OFRDu3FHfI2SLPjoziXSFGd
-	 tCksDvCxQdG6NdNpsUcKUfbfZFW61q1znvRx0Qpmku3wmIYklPB4XX6DhKQYXGaKsu
-	 Xbu8aacc3lRj6gAcSN/lrVVf01PuoNk5mZjnlcQJFKlFMAcHSyCTa73yoMurgPflNC
-	 +UAz8LhHJ0LNk3h5Bm4EgtdH5kI6Vqv03I2ajqOCLPe4CMU3GGMoZS/guUm46MlYOd
-	 hXbG+m9rvuttdDpzt4Bx5O6QJ2qbbqx/z/Rw2dFI2uULXT/u3EvIyRvFjV0WfHh5Rq
-	 hE44LMljP4V9g==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  Pratyush Yadav <pratyush@kernel.org>,
-  Alexander Graf <graf@amazon.com>,  Andrew Morton
- <akpm@linux-foundation.org>,  Chen Pei <cp0613@linux.alibaba.com>,  George
- Guo <guodongtai@kylinos.cn>,  Kexin Liu <liukexin@kylinos.cn>,  Randy
- Dunlap <rdunlap@infradead.org>,  Shuah Khan <skhan@linuxfoundation.org>,
-  Sourabh Jain <sourabhjain@linux.ibm.com>,  kexec@lists.infradead.org,
-  linux-doc@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  linux-mm@kvack.org
-Subject: Re: [PATCH v3 1/5] kho: reject zero bootmem scale
-In-Reply-To: <20261112-kho-bootmem-sizing-v3-1-f0c8d00295d5@kernel.org> (Mike
-	Rapoport's message of "Thu, 12 Nov 2026 12:38:53 +0200")
-References: <20261112-kho-bootmem-sizing-v3-0-f0c8d00295d5@kernel.org>
-	<20261112-kho-bootmem-sizing-v3-1-f0c8d00295d5@kernel.org>
-Date: Thu, 12 Nov 2026 14:30:40 +0100
-Message-ID: <2vxzjymigosf.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=S1xZYGW3sp4V9GD5hAamXepdrQgJ2mYyugoBZizhATM=;
+	b=8eN0MvdgaL60hIxqHcZt+nATEPNN7hf0vhGN/b49x8J5FrsX0tnCkCkVlEpQ0pMAZ1X6x6
+	eRcT+CK49wdn1eMLwUdrbx3x97kQNGaA3Ap31V+JwYoIOwGm0NW/PhIPVCatRlFnJgv3jZ
+	Sprg0o4F2h4j2NQTOaO5Wh8+SOAdixY=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=uHd+VGGZ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf20.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794490257;
+	b=kxBsjpxB66cwsjwf4B6To+hUEYh+kGu9gXmv+fM3q8V9XdOQzB5xFy/tqYqdpUDGpQIaBk
+	thneOjo2Uep/VqeJ6k6WDniP3zJbNphDvlgaw2J60tCLFzcHh1KdUF8Woqz8GNzu0IW7lW
+	P2upRqJW9+SF9fhBCdonwHuNKn52qWw=
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-490f38e9688so762484f8f.0
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:30:56 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794490256; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mlfaXDUo1aEty/P2+2/58wjz7ISSUik76srdTvS5iqqOAeNQe9kPPrX78GurMaaJ1f
+         9LXhqa+qCeiyNMeDmKV7PwJNC0x3us2c/20flvhrIGZpJxE+XsqB/Enn+gNTkiaFBagR
+         /Kauku54M25k+F9CukUZVV+bgt6G6e3LTpGiox6hK9nLWuGpKDXLnd71mRAWcda11fcR
+         tnswZieWrTL9AO4frTvgIye5Rjqopk6ykZYPshsttXHFbNfU7ZH/WY9AUlr/AeMFlshZ
+         5JDqod8QSz5st2MI24KLSVpQm50S/RKhlBuRcVpcUElvE4whi4LwGty20j4+33T1C7ij
+         Ox6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=S1xZYGW3sp4V9GD5hAamXepdrQgJ2mYyugoBZizhATM=;
+        fh=TV9+3Y6htsIam4H2yxpvK9LLO1Yuc8/H84V2EoeXgtw=;
+        b=haXCUOG/lY3gDIr6PmyfsRZ8AcgQ9SiZ6Lv70s8/CYH1g1a3Dy7fkZFmKhfaWxvjmo
+         Sbu8BM4hHowmrYsjlofKHZ9+bqSupu3/UzYrWkp25NytGTaCadQQIG7lQgKGguTmF3ok
+         RfjsL43nV/pMw4yyEOOpSF7bCwpI+w9qrNJpllZTLxulQkhFnQu40Z5OdCrA139nxkoF
+         aAwCxIVc5BGwtZenjBcryPDNLV/cqMFpn+ReE82bba4cpn7xJVQIf0qDyfitqntfl6pg
+         9QvsuyEd0ZV8Hm5s7MSmjU+y/REQsgpXyJHdq+mRol6jmPw99Y0VI3AI8pGpXcsWQ1JI
+         opzw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794490256; x=1795095056; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=S1xZYGW3sp4V9GD5hAamXepdrQgJ2mYyugoBZizhATM=;
+        b=uHd+VGGZrZ1mP5gnhbFmqVftxHpTEenu5jjXKaWTChRRTWxi1vq+bRgY/LabKtJscB
+         UD9EQGNKu+XCqnb91/RuCfEKjV6rCelc/HJ06Ppwdmal1fc2omP6qk0pDcHTTcU7roAk
+         w8p9x1qpBLKne/tts1+u7zKiDkf58dt8emnj+4jdSLbfvFN8GrPTGq+5C32Dv/Pt1AIA
+         57h7xDxHNYh4lm3hpFEoCCWzM5y8bwKBYPuVzy6ePVK+Mj3xWHrqAsJrn2fZc3XIR8IN
+         fz5SntyU6MLWtJhgUy0/8deaN2MLn7MpglZ3TgZVrH8P6Fh5h0yjf2Nx0LokRZFSBBu+
+         5YDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794490256; x=1795095056;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=S1xZYGW3sp4V9GD5hAamXepdrQgJ2mYyugoBZizhATM=;
+        b=1+fw1ENfWXs/IyNPtuD0PrYpV5nzJ4UlE9keBs3Wj5hx5+zKbp2If2HKgJR0kzMq0p
+         rzn02nLOu0SAGmUEM/K3hsjdooH6zKwB8UJ3+TdRlIhjcu3YMtYobwdeLaqVmSihlSYW
+         lmxcvaFCkRPzKPZscrBfpCZ4x/ArOnXxXPztItVUkmeHJOZFOHplxqG+GrN2HxY1MzHI
+         lVSiloC31X9u+qKAMo7wedb98JWFKTAypSO5AyFhsQXdgT+yqpqbMsEM5y9Gf76NkFWj
+         fvQYjHGlq5Dtr45rUB0+RD9p8FAeygNKEZ566z2IDPMqH+MmD0M6UNzKes9CnhuOaLtP
+         ss3w==
+X-Forwarded-Encrypted: i=1; AL+hErHsfwXxIhl15hELpxozg+2QZ35m2isWZggIo0JUK5OJBzM7RkPNfCShSEpCP5mSd/tQVrlwApQYng==@kvack.org
+X-Gm-Message-State: APuU4Z/8S6Jjr+5PksC/Txxo/OW9HyppAaWK7+NvUPPI3SrTdJl966NT
+	/tROEKZDJY9ksuYzfvic3AJsCB1hJ0CkBkpQr3ayxLZoDZTj5b4iWJ8B/KQof9VqSaXT0PbcVTY
+	QQiXJ4gjXydKKgDSxUiAl+e6lVvPAMs8=
+X-Gm-Gg: AYBFou2+qGi/93Uhf9ezgSddD1Lb/OvD5cSNyOj1+G1X4o/gpjmXR1/YCvhp0rxcU+w
+	uNw3KToGWmYvzvOiHrO9HErpDVQg9idC3tyYDECgahlq4rMpdEYcNuYEjJ8LmipgbxRdCHdA1d+
+	alCBBovQWUgsHRYjJezahC4hYdNlq/BEe2fSVGSqPwxiSHO/ZBp9FPL9VvME0/7CVG4daEWvFa8
+	Orj0OOaEhkD5+n4kOvhi74qBSvj8qElvkZZQn3SOJ687YbLGrv6rMM09kTTAEshSuDDFmwD6mP6
+	UWU9POUH9lICwCtvCnppDrpmo5+pxmfWr4E+lfgxYeqCxpj6hdwWdPyQxZqymq7xyNSIVOJJB4B
+	ciZZFZzlQhFRdcLwm8yVTaB1CeV/FqsHc4koZpTdP7jv0HOkr+63xNxrIdaRIktsNC2sFFP8wiI
+	ZAoMp0HiVOJAkLcZ7Ll1i5j57kssNP20leL2efP0xR3uszdJbAuK8OGoZm/BCohJVHN0nmh4c8r
+	Q==
+X-Received: by 2002:adf:e00e:0:20b0:491:632f:2c8f with SMTP id
+ ffacd0b85a97d-49afe168872mr4263229f8f.2.1794490255492; Thu, 12 Nov 2026
+ 05:30:55 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org> <20261111-mason-migrate-et-al-fixes-v1-2-3d2454362e8d@kernel.org>
+In-Reply-To: <20261111-mason-migrate-et-al-fixes-v1-2-3d2454362e8d@kernel.org>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Thu, 12 Nov 2026 06:30:43 -0700
+X-Gm-Features: AclHuK_EMQbfmXamV3TaIqS6catb5--28CKUD5GkvfpyfyoaKenoCKPieGjScZg
+Message-ID: <CAKEwX=MDNW=tj5cfSrAN=VG-NEd2cax6f7QHcPfGDc1vTix+TQ@mail.gmail.com>
+Subject: Re: [PATCH 02/13] mm: cachestat: count each page only once
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Usama Arif <usama.arif@linux.dev>, Kairui Song <kasong@tencent.com>, 
+	Balbir Singh <balbirs@nvidia.com>, =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>, 
+	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, Peng Fan <peng.fan@nxp.com>, 
+	Josef Bacik <jbacik@fb.com>, Chris Mason <mason@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	"Borislav Petkov (AMD)" <bp@alien8.de>, Mark Brown <broonie@kernel.org>, 
+	"Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 132C2120015
-X-Stat-Signature: 519jgiqrh5efp1jkm9hk3orc4eiawwor
+X-Rspamd-Queue-Id: 2B8711C0004
+X-Stat-Signature: 17k43igkkzsfotq1mjaz4mgfzyegi5hw
 X-Rspam-User: 
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794490245-704598
-X-HE-Meta: U2FsdGVkX1/NcolJWOHOI8LJvPY1NkmJY2H8Jxh2OD4PVB5tAfc6x/9uD/j7z7OODdua45ziOE9yl+z2uKWrBfa8zY96Lz9AUaLsA1Y2chnEUcXODGkS5BUNEGKcB7XV4VAsFQeDh9JJmE14M5QvYXa/h4dnB9yHNzR0xc59G3LBcfJJ+UmflKyOtbPxRxhi0Iwj4MB7RN959vKtwEfsXUe97wwmtPM9VrRbwxaU4lOteLVazWVAqRKFUccc7p0inAPPgi2K0/hsy9vDd8gykARm+HDm/fWZGP8tI/kd+Pl8uk/VxlqN8b8/PHl//Xqle9xu9ddVaIP7EmrI7hwGYb2I+SdA/nWbdNSvTToRQpNPoddSWQvOZVy8w0asGCfOQpKZTQXNx3Kg5gGj1+boso8fiKE1qLn1eHz/OeYdGyjB+m4cPsggKjb2jvKIgBMEpx0NuLNzdEEeMs2iEPrI3kMHFVWqqF1yu2T9OsyhX9DPdAa6xKEeG5tb2KolqM4+4h/PfqCoWJZYUVOFNhgT68kGKAhBQy97W9YlfrzGfduFUOnxQbD9gwL+0yLZwHBrYr7bz/cvdQDyZJN8+HBNBRAe68gpp+LsRILGqZBUCJ6RSPCzPw3lU5PVuvGC7X1RaZKTGNpWFtPTozbH1GHYNzb4PlbYCOK+g8J40E5zNAOmlZwJKBVpldZ6lBgm9o5lBMvUvOaJDYP2hJ7zEQOzf6ifKpL+Ny4xczNSdrgTpj5n0oZkDrAPKxjsS9rtIU6byWbAM0iwwOHcH2xbacFprX9N/p1wYAYBw9gauqyVNkJa9e9tAKpXeOMuHqq1dJ989nFuG8aa8xEIoINJgUhS8XQKEdfkRKw6/YaI16rVIADaRa7v6NU5vmx6xLriG8GWy3sh2VBTYvF3QBOTULXRkJ52vuy2OTPEp9Mtdug3IATBbs/llJVhds9VxBQHyoV/mrbxpytDiMKw9Es6C7V
- f4syi/Lo
- b9AGVzqjD3tX5hPgAzq2NOpzACNqKxlocLrWw5APxWqB9POwdMP/O3jdBfvdJzbyOuQuQ0E0EOTR7T2XdJwTttN/0KmUwga09vAa1wPitefOgM8Wju+J/E0V3MwcY1DqbKlMGlcnN3q/V6gmPZej1auwqXJb1W58Anj030Q2nMdS0mIq9OGv6PsaNae1WG4rRnEHv3X3usvGs+T0EdWcoU0u+sFKwns4nFjA4mIJ2dC3y+l8=
+X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794490256-890383
+X-HE-Meta: U2FsdGVkX182emPmm/2fMT6KpKgQ40ziIpdqtoha/3zbefCzJuQx4YefgRa79AAaX06blfnq2Yi0lClVz6kwb5mbUp/0Brv+qza35m3hRBbzuccPfiLJ87PcQxelx8LujfSDT4244oaHLzEeq3XPr9JJPed3gs5wYHPmi+W6a31x/JsyGhe6NKlhu70KavUJXruVFVS2b1lDnJpH8TXa4RsSFGE9oKs4q+4LprLbIiRw4LS/Gozs7i4tbxea7tA1anW+KASHpT9iVGRSZo3hQAt6k+0LW07Q77Su7Xx3Wd/+19PQK2fEJFSjzjwBSLLEOTVHMEOVSjzxJ1I+1UNK+hnwvZpseiBekSttrI1DJCen0gDEji73NlawgP3Vau5FRqROjdk8yklLYIR+cgG70+AX2q2YPqxhfGQAOv/GTobCPZ90I3caHRv5EnmPYpuXdUjRO8frnQUsiqSmWRezf4Fzut3JP7n8NwJg8chvU0e+uublZaKOBnlpy3awYsomFO0fyrW9RILLyPyDw6ZpfycGrZoTEidiVDXSGeR42SU/B5ahSxzB9R1OLmsnQaVDaOr4jqjU+559a90K+rzA8atZS+632R65x561bT7YVa+IkdzCAJyARQgHvLQaSj1xtVQ02h/qRAzorTTg0M8tZbD9rfKVbc8qU0pT/crtZbDiN740pZ0TefBZkLjKr5IWaE379Mw7T7TGieuQVC4shURfEhufrKEcZMYNM8EHalOQB2dANxRM8u3EnbBB6cKCAfU9pxzU8s4o4gyEa4G2JDSJfJYa0k1fe+gRM7LT5W8y1pCk9jGCMXjDVvAyMrOWg1IzuZJh11x63nf9TAX0umvdR8LMnxBpl9tXqEL59f3glwTkYdQVeyCCx+Py2uFOzTAh81ti9YLgmNOyH9B6BOUa793u8LgYzp4H7yI+HEUqZP3ijZGA6hyjZXf6oifEU6N8+Mruy0MZ15mERwb
+ NBPR4++C
+ 4czPEH0/wWHqJ+at2ZMf0E/GJo3csd2wm983BWnGvWWF+zDio7CaOdwhsiQxIwVAJca6dZfSAvuPUAYg+35pXC7nyRQv994kFi+KXkVWtHeN4csdTMntfABsMI2fEWFN2ZbKYOUc/ix4LSlTzd3yOSxE6JDDzJj8pf2Gmf0yzaZwIf5rtcNUmyek7e98cI4EnXz3R7jzgPfjUd9wsLzmPRp/xnCfrcRMccNTQY5XNrHm+OAH306nKVZLnaHVsXlTqp7oOndYWZrco94ngz21qH5ap0ZKtFptWwePgo034g1sP2PHhDe8H2OWRJHjBg6N9Q98K1sNmNXqaWkUzB2yXpaklDqqUM7akaGL/8M/Jg0J35jq/VPMxz4EXuakhdWnzSYKvAIXjn8AKWfCxaunjnMRNLWsg2ih/tQspMa4bQh6wdZlFBC3O9UahP+ViFScwfolhRdhrzyqBX5P8IrpIXXyu6WYe1wYcZ0O8Qk//GhzJKMi6fYLsyBIsFtJ8NWiYT7ILSQIAsKaNAigtqJXCBtGYIw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,22 +164,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12 2026, Mike Rapoport (Microsoft) wrote:
-
-> kho_bootmem=0% sets bootmem_scale to 0, and then the bootmem areas are
-> sized using the explicit sizes that default to 0. KHO remains enabled,
-> but there is no usable bootmem to load the next kernel.
+On Wed, Nov 11, 2026 at 11:14=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.=
+org> wrote:
 >
-> Reject zero scale the same way zero explicit sizes are rejected.
+> From: Chris Mason <mason@kernel.org>
 >
-> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> It turns out that filemap_cachestat() can unwittingly return incorrect
+> page counts, if large folios are present.
+>
+> This can occur due to underflow - nr_cache is nearly 2^64 on a 64-bit
+> kernel if the input range starts more than 64 pages into a folio that is
+> split during the call.
+>
+> It can also occur due to pages after a large folio being skipped if the
+> range starts in its second or later XArray slot and the call reschedules =
+at
+> that folio.
+>
+> Finally it can be caused by pages being counted twice due to folios in th=
+e
+> range being split or collapsed during the call.
+>
+> filemap_cachestat() walks the page cache under the RCU read lock only,
+> and for each entry it counts the pages that lie in the range. It does
+> not track how far it has counted, so the counts are only right if the
+> walk returns each index once.
+>
+> But a large folio can be split during the walk, or small folios can be
+> collapsed into a large one, and the next entries then cover indices that
+> were already counted.
+>
+> Resolve the issue by tracking the current index as one past the last inde=
+x
+> in the folio, and explicitly using xas_set() to set the current position =
+in
+> the XArray.
+>
+> Additionally, add a check for folio_last_index reaching or exceeding
+> last_index and break out of the loop if so.
+>
+> Fixes: cf264e1329fb ("cachestat: implement cachestat syscall")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> [ ljs: updated to use curr_index, fixed comments, updated commit message =
+]
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+Thanks, Chris and Lorenzo, for taking a look at this!
 
-[...]
-
--- 
-Regards,
-Pratyush Yadav
+Acked-by: Nhat Pham <nphamcs@gmail.com>
 
