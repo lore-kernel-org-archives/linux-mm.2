@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C66F606A89D
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 14:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A816606D54E
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 14:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GPJGh0mQ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SYw+Y5g5
 Received: by kanga.kvack.org (Postfix)
-	id A8D9B6B05D1; Thu, 12 Nov 2026 09:31:57 -0500 (EST)
+	id 5D7046B05D3; Thu, 12 Nov 2026 09:34:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A65286B05D2; Thu, 12 Nov 2026 09:31:57 -0500 (EST)
+	id 5AEAD6B05D4; Thu, 12 Nov 2026 09:34:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97B3D6B05D3; Thu, 12 Nov 2026 09:31:57 -0500 (EST)
+	id 4C4D16B05D5; Thu, 12 Nov 2026 09:34:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C5F86B05D1
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:31:57 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0AEFF1C3E38
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:31:57 +0000 (UTC)
-X-FDA: 85426706274.01.D6A2BAA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 30B6A120009
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:31:55 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GPJGh0mQ;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 2E9126B05D3
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:34:25 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CA36F1C1EB7
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:34:24 +0000 (UTC)
+X-FDA: 85426712448.30.49735C5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0C946180003
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:34:22 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SYw+Y5g5;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794494063;
+	b=z8GAB/Ors5SJWjgIH+nXmKkLozMWqBmdnC4cORfaON2wqC2Js2RzRP69hvOvbAfZTdWVA0
+	UHa+MvvA1vKgWrw0am5D1JHPXs5TMLh2FRUR51kgEzXJ74+Qelor8OCEsBonRLHwPU2dTg
+	Rl4onIek663dulJvMEJ+/1h6FhuCz/s=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SYw+Y5g5;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794493915;
+	s=arc-20220608; t=1794494063;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qL8uHuX3QnsZ5VDS6Dz7mGSNJ+Qw6vdd/slrMNoAIKA=;
-	b=UfIlvlx23m3KGz84MFpchrWY3rM4rN0K2dAi+jeeBui2touYJCUlh7soFDa2Kfs/IFung3
-	eFSLUh9KXYj/7oMxitKSTwwizQmDcQuPZuYY6os1wsILa4iIGOlGV2opHTGbiU8H6kjqgd
-	sZB+Pur+CvnlQtttS7YJWSdwzK94yb4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794493915;
-	b=YwyO32mN3VavGOA9mLpKNC/HGNicjQBrylgdz77enYUPM8E342Ie5AaqmYDoKAeSK6O830
-	61n3BfB3lCkc0hs83HHdAkYeiAHOI/woBx+K2YoUcpPX/Vik6N2P0t8iT0gzGOY+zw3zhx
-	w2ISaRZR4K7kQRuLC5b84nnO1GM0CZQ=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GPJGh0mQ;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=PLmrGBLIWl1ASvJcUvds5+aGJW/ZT+3+4c5mJcBaLgo=;
+	b=i0tH9pDEG1EqaHKLy6Gtxssk2ckqU2IpqSvSv2N0FrKO3ChPiF4LTPh2yPH3QVBSUbgCMp
+	tncG+qoQyKifYvM028G1d3yah9IsddtrbBxcEgu4YboAnSqRz+TCI0fAxeMqi1aSSXNWnC
+	obcbYOxtwOGopZn0mvbG+M2Sgt8KtEc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5BF9547A80;
-	Thu, 12 Nov 2026 14:31:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED0B1F00A07;
-	Thu, 12 Nov 2026 14:31:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7DB9965871;
+	Thu, 12 Nov 2026 14:34:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0041F1F00A05;
+	Thu, 12 Nov 2026 14:34:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794493914;
-	bh=qL8uHuX3QnsZ5VDS6Dz7mGSNJ+Qw6vdd/slrMNoAIKA=;
+	s=k20260515; t=1794494062;
+	bh=PLmrGBLIWl1ASvJcUvds5+aGJW/ZT+3+4c5mJcBaLgo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=GPJGh0mQr0iIywi1xK6YGtM++LzH5gKmiwWRk/EnY73REob9IoY6kKD2kjRit5NuQ
-	 qpCKoyGF5evmVOqDiFdO/iBXzFsGJNLGlbHO3xqyGfKWmUja0mkc+JARlV67F/VS3m
-	 ED8MuOYLsOkzOwLBf6PijVRAwyXOxIrEDHRTccN8Sx/5xthxqNLDxaI+qVDumcKzXu
-	 HH1oLUtanfgtu8dIToH107vmYlhQRsztMYYGF4hLaV0DBLVBZCWZjkRgq/I+0Ad/k0
-	 vZo0ZM0g2a9yHKmcZVucd0nDe9FvVQBR8Be5TI13/KkoP9N6fNDEN3H7l1nZd5V0p4
-	 7FchAVT3ZPcjQ==
-Message-ID: <42373222-8e37-4658-bebd-dd27230a1dfa@kernel.org>
-Date: Thu, 12 Nov 2026 15:31:30 +0100
+	b=SYw+Y5g55tXcxGIospu8+1z27xVvAMZw2tjzdoMxe47TIMe5HetQl4QWdF133IPoA
+	 BqM8lDlHsw+Ml8XhmLUHSapr6iHdcLhIjTdUJnAsn0orTun1eVoTzA3PQtz0ukEGlM
+	 gkpiO6jR4DZ11dTsFVugUmSDuPCALrNu6vTXAHxcJfWtTMEPKDuUqjoS6X1bpUVWmB
+	 UjESldenidkLlsBrJiHX9zhr8BieGqomu7fS6eaZIYy1C+X8Vn/O9JOTTx+pWKPN4I
+	 eUkXXyZ5vaGujt+tbNOF3GL3aNTH7uvj/aDwXpA5WSXEwarSme664SeruGsnDjWeyE
+	 iwKfkLmMrDZDQ==
+Message-ID: <58ea8025-f8ba-4e48-83c1-b17998b80484@kernel.org>
+Date: Thu, 12 Nov 2026 15:33:57 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/9] mm: limit pagecache folio refcount when splicing
- into pipes
+Subject: Re: [PATCH v3 5/9] mm/gup: limit pagecache folio refcount when
+ grabbing references
 To: Pedro Falcato <pfalcato@suse.de>
 Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
@@ -103,10 +103,8 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
  fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org,
  iommu@lists.linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org
 References: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
- <20261110-refcount_overflow_stable-v3-2-318625d63a98@kernel.org>
- <avW3v-oLxcHXXNQD@pedro-suse.tail5790ac.ts.net>
- <4ae22b7a-c160-4003-a029-8a20381d196f@kernel.org>
- <avXFlI_5fhUvFyct@pedro-suse.tail5790ac.ts.net>
+ <20261110-refcount_overflow_stable-v3-5-318625d63a98@kernel.org>
+ <avW7MFzYJJZ0B85d@pedro-suse.tail5790ac.ts.net>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -153,21 +151,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <avXFlI_5fhUvFyct@pedro-suse.tail5790ac.ts.net>
+In-Reply-To: <avW7MFzYJJZ0B85d@pedro-suse.tail5790ac.ts.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: h38kcx3mso5kwzwqg7h146ria6qz5onm
+X-Stat-Signature: h9z556p48mumr1yxj9x4iq1rkfsadawi
+X-Rspamd-Queue-Id: 0C946180003
+X-Rspam-User: 
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 30B6A120009
-X-Rspam-User: 
-X-HE-Tag: 1794493915-310569
-X-HE-Meta: U2FsdGVkX19lHMouZqlUKI278hGMziw7RP+DAN9jLazU/jUxfSyAMs7E+ipLMkvTbrlwXULPzybmBP7llqyVgtTiTJnu9WBGc8wPBUwUwvOVeVnE29nhQKQLixawly26yXlvYBBa2MZ0e0US78TMLFnVuzHK9zkSLvBhHm10q8RazQneaq9a9QrAhJWREpUj4GgVG7+oVPqB16EQKGTYiwUwKOPkziY7tpa9fboqSq5gHXG22hurltiV0UZvPfSYPQ1ErvL0tq3pvi9yRS++eyKLDfhQf2rEOe+fX9BgLkJTAwhsJBfd3hJfn3oEThS2Ox4RDRF8+/2zTuNv/9dPq6Fo/6cM8nYYhMPoLjckIjbcxspQeS+oqvrQSCxf0kAFMw4DXBU51gUlWDiyFwrr+i0suLazq0DZs4QBa7CIgzOci5xmwHvjFLIauixmr60yEgSsFCgk3dCxy4EM4tSyUbUjjWr3mdhN+XhXHamdVLcWNXTZ9vCU70K3kgJ+6ZiAx1yeE7wUPsi541LQzoymT1cYhBtJteDpQCOUk6LILzDgJZaG4rC4Nag95VUGVW7YdNas6Myzi+oWDZyOWfOrbMrTxPxjwbkKfJtwivvlr8nEj3qhgCEuvz737dMkwoqsAWBkMH0qvoVcDak33FD11xoBxXGisquV54k+ZW26oKAI8uH0I6j4t+FK0R/28XiDyQiNKtn3uQ18nXYE8Jv0mMonWVZhOt4bl3gl8rFldOnlCUJo8fNv/HealvxskFPbD2GSUDJlnCSCn+sbsqGaiKcp0CLNpwXmGSlpJcWplflg1qul7/m4G4vsdvcP24/OqKgdwJrYC0RftCEr/j5gb/qNX3q7VsHEvcuhj7SfkplF3aoSzJK9I03n6oG2WLxmrGvsaYY00l9xa80YdGU7yvoSS5dJ3rvmsWQFm8lKsqjUuWzhCbBXluqfWXo6kfIMQq010q/AbRyBGjugQim
- LCCZo1NN
- A73kjCrpIPGZqjYd9VwcGk0qQNpOVyURedXxMrvAhMHZvw1qR5FRox/7rDQcSI7guAshKTC1iDfeg5P7Kx3Mv7eF5hXzm38bZmQg3wOxQgP6BM7Fnf1Ad94A1vzttjW7iamo9ftWALGcxf6Hz6rEwcMjXPN679SpzvXe83dNRxWBFp0qHNbyknBacy0NLsufR30wmQ35u/th/kaXsYOoq3rkk2wKhjoV+R5PJzlXQANrjuxhMWxWIsuPup9ViLXvNGpC20lQwmH2OMu0gZzl0wKeSiWtc5xI55JAZFvH+CRMPWADEJHtqC3XQL0mQXtGmb84CYOqUMPtvEag=
+X-HE-Tag: 1794494062-753192
+X-HE-Meta: U2FsdGVkX1/ZnsqkphuEIbxKiqXlllBBJBYDEmDVSFltnGKarU5TG8bpgnevDKYUJkT2GIa1tUr0bGMMOsIcO8U/6WXAJWKqO4IUUS4IqH8VbcN4ISyqOIzfJSDOhgJRHh0S7n9HT1vJvtT2lguZREcW7Cc41VPqk7SPDhuswVFqeF94tOWo51Cdu0Joq8T/n7kWwrqo68EwNdiq7uSChvBVJ8mb0duOTQA5mh6mqmndAHFfXdIKxsRiE4MyV0wMmbFVTLjt4Wg/tHo7Pm60FWA6+TBnS0/MM9MQ3SIGM+v93tH8Y5WDIvMlLxyoh2mSzmd0S/hXLKfLwvIorM2M4mC1vofSUcQqK/ETqDCl7kNyBEQj1mfWNTDbrjTRpZ0Z+e99GXuDJ3akVSgQwQHxgLJVfOzpBR/D1IU0FfoGEfL4uE6rA6qm0FnI6AE8+jOaQnBNVkVUS1vdrTmBKX2HaXhdi+NXkclqoyo7o4ixpqYOnRxwhzRiJl1hQ9/ZUxPPFWhvJu0iMW+f//KMt3dEjyoBLScW2zMyAXUkPSvVTfpzYLrRamWPRGSBSQd5eblpNRqN5r0L1h11eRR8rj6Fl8/O+cXwnntkb7yAHWsEq5yz6aH0lPYAzNl3KnOAR3F7vHSLeZzu44BV+OoDICDS4yCg+KX0cu/5zLBfCXbJvbdgSzgVQdxXfHw3K2CpNDC+hFnS8XWuPN/2+YvF6isde0NmqiBu2ovaqKGdjSwB9Qo3ity0jHUbaToN2XPyjxdN+YQQTZVYRct8wBTv5xpuCrHgI4tIXOFBAFPNeS3Jjrb/R0N2meTukp9hCXWY+6h0VJdAFK08ThPzdZhka1KyqBvUE4xgnKLWKpbae9Jc2PwkVuI6GeSivTp7/NvFXmto/DM183V8Tnz9dBvXTAXSKFkNDsdfIZJRAX0RAOax4+QwPuCQEGRaBAKzhuzQEe2mIeXqylFX+PJw3Ndx2uI
+ 3tuEWyIT
+ 8o4+qJlU64zYM816n6+fO5VjWQlm7bWsm1FbMcbFBNVuaHoyucxP8atijPT+WJJvOIuTDrr4StwO+DFDtNihwPHUEfpmeD75hux+6jhHLeCmX2J/h3F/vd5rnlqI8xFAj6RxA20ejBDKsHHOTh3pWH7TW7AjCAYe6EP3p9UEXHmJf0wIoNwchQ6oSZehYFCjgPdDAl+Yj/9c8OYiHysUNegTTUYGzZCEe5IUrEUo76kIsAyw9ZStjsRdfGJgneZOBl+42oscTBuaWs2a6e25hOnqHqa0HXpd8OOauNC22qLRTHVbgRSmi4rE5Zn9IRL2IMsOFAnt9Qx/xHgEs/5eVVUq7hy+8cXmnkpHRFIy12nBR2reYppf4iWur5f74LbsNOh6w
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -176,76 +174,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/12/26 15:00, Pedro Falcato wrote:
-> On Thu, Nov 12, 2026 at 02:24:09PM +0100, David Hildenbrand (Arm) wrote:
->> On 11/12/26 14:09, Pedro Falcato wrote:
+On 11/12/26 14:12, Pedro Falcato wrote:
+> On Tue, Nov 10, 2026 at 09:35:45PM +0100, David Hildenbrand (Arm) wrote:
+>> Let's add a folio_ref_count_over_limit() check in fast and slow GUP
+>> before acquiring additional references or pins.
 >>
->> [...]
->>>
->>> -EFAULT is a weird error code to return from splice, et al.
+>> Keep it simple and use the check for all folio types.
 >>
->> We might be able to use ETOOMANYREFS (have to check if that could confuse
->> callers), but IMHO EFAULT is good enough.
+>> Also propagate try_grab_folio() errors when grabbing additional
+>> references in __get_user_pages() and in memfd_pin_folios(), so hitting
+>> the limit returns -ENOMEM instead of -EFAULT and -EINVAL, respectively.
 >>
->> What would be your suggestion?
+>> Keep the existing invalid-refcount warnings.
+>>
+>> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+>> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+>> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+>> Cc: stable@vger.kernel.org
+>> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > 
-> ETOOMANYREFS I think is good, also EBUSY, EMLINK (though this would be weird)
-> or even a generic -EIO.
+> Same points about funny weird inefficiency applies, in any case:
 
-So I used EFAULT because that's also what we currently return when
-generic_pipe_buf_get() fails through pipe_buf_get() in splice_pipe_to_pipe() and
-link_pipe().
-
-If we want to return ETOOMANYREFS we'd likely have to special-case "<= 0" ref
-count and things get more complicated, as we'd have to return two different
-error cases.
-
-And then we'd still have the inconsistency with the above cases.
-
-I'll mention that I do not expect that we can trigger overflows in any
-reasonable setup once we changed the way page table mappings are refcounted.
-
-So for consistency with the existing checks I'd leave it at -EFAULT for now.
-
-> 
->>
->>>
->>> 			return spliced ?: -EFAULT;
->>>
->>> I don't know if there's much kernel code out there doing this, but I like
->>> the trick :)
->>
->> There are a couple of thousands, but yes, one doesn't encounter it that often.
->>
->>>
->>>
->>> I'm confused. Why does this need to be done here?
->>>  
->>
->> I have above:
->>
->> "stop filemap_splice_read() if we only spliced part of a folio, so we don't
->> skip ahead to the next folio"
-> 
-> Yes, but is this a separate fix? A folio could be partially spliced previously
-> as well, no?
-
-I think that wasn't possible because splice_folio_to_pipe() never returned
-early. So it's only possible now once we fail to splice halfway through.
-
-> 
->>
->> Thanks a lot for the review!
-> 
-> You're welcome! :)
-> 
-> FWIW, you can add my
-> 
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-> 
-> to whatever comes out of these nits :)
-
-Thanks! :)
+Yes, thanks. Adding a second function that consumes folio+refcount was easy, so
+I did that in patch #2.
 
 -- 
 Cheers,
