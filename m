@@ -1,110 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A25606A327
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 18:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A64606A33B
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 18:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IfekWsu3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IHTOA7me
 Received: by kanga.kvack.org (Postfix)
-	id 02CF36B05B9; Thu, 12 Nov 2026 13:44:34 -0500 (EST)
+	id E5EC96B05B1; Thu, 12 Nov 2026 13:45:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0042A6B05BA; Thu, 12 Nov 2026 13:44:33 -0500 (EST)
+	id E361D6B05BC; Thu, 12 Nov 2026 13:45:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5F666B05BB; Thu, 12 Nov 2026 13:44:33 -0500 (EST)
+	id D51AD6B05B1; Thu, 12 Nov 2026 13:45:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BE3246B05B9
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:44:33 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 54542160681
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:44:33 +0000 (UTC)
-X-FDA: 85427342826.27.B2F4FFE
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B7F5D6B05B1
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:45:38 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AC0B7A8655
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:45:37 +0000 (UTC)
+X-FDA: 85427345514.30.10C1D83
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id AD0441C0008
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:44:31 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IfekWsu3;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794509071;
-	b=jsaj5lna+ay0VbviSr0QwJ31S2fUfUGpC2e11vTwE6k55bzbepw62IZKrjNK/9qirZ4Z79
-	f44Zu/mo3F51aSD4XJgluEVUVYAx0xYJynrGlgS77LtGEXUtNZP22xG31xiYET70D6Ka/U
-	Aur4pF34i7i9qjWxftEROpZeos+um74=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IfekWsu3;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0E46440006
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:45:35 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IHTOA7me;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794509071;
+	s=arc-20220608; t=1794509136;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RVyxm9yaGZWP8LbX6unRU3C9T3kyos1eNHeAHWcUH10=;
-	b=1bSNhsoEbcFJ6gwaw7EaqyUKumj2TudTwWOOBmIYIhbIziOiHSG3z8WRCnDQ5qmaQ4LNqV
-	bj/SWwbfxZMO9d3VugJWC0rtoUAILO8jl7PmLxZpglGByOjmpepJjTzA1x/ae4OKCgzqVs
-	z7EvKvtcdEtn6gqkxb/NPn0PnTkEmlE=
+	bh=1QMrnQVo4O5SnIGabJN3wrTnW6MusZ0h5giYV4GIf1o=;
+	b=T+Q6zV0hpTUPMr0wWF7IbYjZATdT7jJIbz4rNTyp23xbGw3aqg2CXQGJbkv87grYxGxMdK
+	vztZ09AKEWcFXeRm7iCXE9r/f/Xb7UsGnMgJ9efkrnnqMFeYkz2OOVZmxVGOTryYwGdGul
+	SqbJuUeh4EOTmBQAOab0lG5kjzbdx7o=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IHTOA7me;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794509136;
+	b=0Lk0W7jgrdkYT6CISgOFr0izPDC7GPFSHu5oUhqXx+JmuChByi/s40++lrtS3xkbjTOfgt
+	0139eOvMw+3VTNq71KsZbzQKEnURErjlvNtzznPKPvVo6SkgHwofIjfLYwZg5DxRQ9I0o1
+	emPCgmKVuy3+Q8Y5MKh+73knjp9f4qY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 98043401BE;
-	Thu, 12 Nov 2026 18:44:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 290661F000C4;
-	Thu, 12 Nov 2026 18:44:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 33A9543851;
+	Thu, 12 Nov 2026 18:45:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1E451F000C4;
+	Thu, 12 Nov 2026 18:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794509070;
-	bh=RVyxm9yaGZWP8LbX6unRU3C9T3kyos1eNHeAHWcUH10=;
+	s=k20260515; t=1794509135;
+	bh=1QMrnQVo4O5SnIGabJN3wrTnW6MusZ0h5giYV4GIf1o=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=IfekWsu39i1JQlysaLelamEDce3mX/T7a+MM6jLQ23+ntbG4nbY0G5S/Lv4HVkhb8
-	 hANWWpY4XTjPFEj3opi/JbeRPS5SEAFmg8zTDptkYUJq7aeaOULxWSvaTxhnsRlm90
-	 CMO4SkFhguxwYJTQvhELQzwZHqcDrOpHeBHrkfNaeNu2KlfTNfW5VbPkUPn9tovxzp
-	 it55e/HuR5X/w88jMgBdYZjxKr2A16hdeczwJeF+FGxBsmewlBwKwhwpP8JzCTzWuo
-	 MVVy99BtjxSiUbQyAdl0bEID+QtaMXFY55LZHLd30/BnwjGy+QubFLS5yOIjpH7RI7
-	 eHg0AiNXWaZUg==
-Date: Thu, 12 Nov 2026 18:44:18 +0000
+	b=IHTOA7mej2k1aqlGQe0o2vMpa5Gw7UtlZwRhFQLZhUTCPvjZO46VWVXtxm6J6aWPb
+	 3DA2ss0NGpmaXuWwx3qDKIjM/7mIIpHQUFiHQ7rul2sbAYCgDUI/bRmUDwuzf6EvuP
+	 9APyFHKZhwk3J4J7QsFpl5djiJQLpgor+vvJZ35Xmo8RtVotrYFuFGP8WmlO7kgFsU
+	 8X4wJpKybcr5WqKLmdjUpPSVvmZv4My+ZLM1BpHQEc0/E/ehaBGmkKGVt/Vt1V711D
+	 /4XVd6l+Os/5iSG4YtWxiiYY5FJ7ra3yGPlaTOAxvcFVzd0T1aJKMtBVEoGPFQqmlU
+	 d2sk8BPTykwBQ==
+Date: Thu, 12 Nov 2026 18:45:23 +0000
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, 
-	James Houghton <jthoughton@google.com>, Andrea Arcangeli <aarcange@redhat.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Balbir Singh <balbirs@nvidia.com>, 
+To: "Gregory Price (Meta)" <gourry@gourry.net>
+Cc: David Hildenbrand <david@kernel.org>, 
 	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
 	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	=?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>, Andrei Vagin <avagin@gmail.com>, 
-	Stephen Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>, 
-	Muhammad Usama Anjum <usama.anjum@arm.com>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Nhat Pham <nphamcs@gmail.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
 	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Chris Down <chris@chrisdown.name>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	=?utf-8?Q?Miko=C5=82aj?= Lenczewski <miko.lenczewski@arm.com>, Michal Hocko <mhocko@suse.com>, 
-	Mike Kravetz <mike.kravetz@oracle.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 04/12] mm/migrate: keep the uffd bit when restoring a
- writable migration entry
-Message-ID: <avYG7CtQ52v3I8tF@gremlin>
-References: <20261111-uffd-state-fixes-v1-0-00713d368976@columbia.edu>
- <20261111-uffd-state-fixes-v1-4-00713d368976@columbia.edu>
+	Usama Arif <usama.arif@linux.dev>, Kairui Song <kasong@tencent.com>, 
+	Balbir Singh <balbirs@nvidia.com>, =?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Christoph Lameter <cl@gentwo.org>, Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>, 
+	Chris Mason <mason@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, "Borislav Petkov (AMD)" <bp@alien8.de>, 
+	Mark Brown <broonie@kernel.org>, "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH 13/13] percpu: queue the balance work on an unbound
+ workqueue
+Message-ID: <avYJKR8fiETjd9sy@gremlin>
+References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
+ <20261111-mason-migrate-et-al-fixes-v1-13-3d2454362e8d@kernel.org>
+ <179450887590.482102.12180028123925629664.b4-reply@b4>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261111-uffd-state-fixes-v1-4-00713d368976@columbia.edu>
-X-Stat-Signature: b4ecdwisrizoipnwxpju6e4m79qdhx93
-X-Rspamd-Queue-Id: AD0441C0008
+In-Reply-To: <179450887590.482102.12180028123925629664.b4-reply@b4>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 0E46440006
+X-Stat-Signature: m4d7t1rriu58cgbmtfyzcfnwstw7xqnn
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794509071-712984
-X-HE-Meta: U2FsdGVkX1+FjGoNt0g8EQeyUJH0y18BA9xFP8Vunl5gvisC+qK24+26m3BZGiSsm6ZHx7TyOoLsBYQlV4wK3uHs5LOT6eMzCOkY2pTmPqEuYiM2He07NeKSrYKC1ZEivKw2PD2za2JgBM+f6LIWro/OZ3e5WIXlfZuulFbYSgjaBC36ajFzJFul5c/RJy5K3Geb7A2Oxv1zCp8HU7oPM+cCb28dcaXKbue2jizZsVxpIpJnwBgOi19c82FA0C8cBjh6d89omRPOpYP7ZjdaxPG6xpVIjWwcKNGXm7WtwWQtQgC78FQGG5pUBYu0Jy2sLNEdWH37yYMTHkQYL0Fk9xaDqbQzUbAHcY4f32qGZ9J5ekaCmhiWJM/rFUno9idtrtGHtfBgpqbiGouxvN/KstJQ1q1GpCNEjHlhBEHN4RCcDN/uCBZzEBy3oBdciN+usDeK14nJ3yT8ciBgsrIwQgXWMABm2AMaMQ6xSSMJZH82k0PsANnz8jWMgN9eegQFRzUhlD/8ozahPNBaNwSnLgoKC+ahKSVXcdJYjlGlxxK0K3gNw3rCfL6EBou3iFnzTD9qy8zzLOKfAEAFEOBH5TYt2ysiP9b9hBst4k+i3GciGCPAmkIoqY4NGhf5Sylj1LGsljOiHlUOlBBlrodVfS+F45R47nvRFSgANr87u7cQp7MBUpTVhZfw/CEV6MB2CZZ2qH/TLE0x5n96aBpVlq0/jNBivg1/tFPv6Nn2ErQeEYbDrvONbJ8mtkbaXMgvRK9wgrLmUHzkrAMlPb7ZyT9clZZwUvzsK1LvIFtaSdQABS4K10QwpzF6rq2oeemdHbQLB8ExBZJwgLrzlms05Zp4QxFrypKIECXVMbaJKtTV2zuuLmuLlBCjoEdoeIcCyBAPXXN69JgG5NPZQpcRHbEM0V+wOc1kUXGH0iD+3b0Wtr2KZ5S+g2p160MhewoJmJ/5BCuFy3WBYUdCcsu
- bxJE9i+8
- eoPxVdL9nT89V34e5pGQNWisns+oKN7mCGgnGiiRz0LFfp5SXJbBgN6ZP5U0h6656Zep9+JCVZF7r1By+jI3exx1FbYQTJFmOO+1f9bANov30DcEGsN5x8v7ZCZgVUfTp+lOslVk5BP0FtseV+tGLxEyclJMMz7hxQykinRZI4nt3iMeQLYYPdfBX8OH5x5VjJQKegfxX/ankvGg6xa0tgR5orVNGiSsYH27R78pjGseU0eoG0x6FxdzQeuSKnJ7y5hTrzneNa54sEUi7eD8w6dX66bPcTvZD0Hdu7GPNyYxIRJBxu/CLFg9tj4t/5npx3dHC73bykq64UwgVLhaGRDBDDwmSRqR6XCUp
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794509135-632208
+X-HE-Meta: U2FsdGVkX1+7G3meetUgwpW7Qv1axgXJ9838q53ZU2hLvLKCIae1zehaHWI6gyrrYKJi9BhKpvXiOTFRqKV7a5sPpBlJ+5SgudD3YnDtrk/g2biySHp/iEID1rM9lRslJvpsWUY0cSIHKZMiPqmkY8ZmoKoNmwwidLuzjsNFRUUccMKOqWtBcji2jyZFAk7yQ2tnzg/gUFLhlHTZWxQE8/zq3ZPdv8/+4eTjcIyxeuArveCRhlX+jXMXYZ7pSiA2u6oxs+B2B6BLY+lTQQsV09E0te9omxerIF4RTTRBmVLgcG7EfQTkcCURY3zNxV2NrkSICMW+ZkK48JjPr4OLqzM3TpdQ/HoqfavpV/5gCvfdxCsl9giWi3hGDITsn5Z+xzikWDzm7AmHgx4aD38Zmn7JtEPGNXn8oLbOpt+e4DtF2mThMyz2bhHdJRMURw7inAPNAeHdNcxx7XLJO11BNZ9fJMqx1K3dGF09WRLOzw0RDc/42sSnvDWAa8un9dTR3HRETALOPTkknTaxcYE/w8/3gViwHOFit8gF60uZEREXRFshMXaZuz94HuBh4EP+UtBLl3xUB4x3kENj+Fc5RMcdpBwby7fi7ah1gYyhJQwk5nOatHW8OOxVRtXYQk5fVoXbWQBbUB5AmRXWyyFWtGRZQbLsnY6PodKD1HHR9vekRvYnhqJqS2fepEuW6ZiuIxamcGSe81Lk6afDx/2s3j0bMaHZmvT+uUaVrOrXFXikqu/THorD3qNJC5AR/R+pc8m+IFVOGvAcAqlrVH9Afvt8uAXjbfdXbmSspyckreQNlFPmiYNRTE8gz+g4b+IMN7gbONZnO1piHZINna0l2BGOmjd1OAFuqcpQfIZwjPwxy3qkSI0A64IbYD8OHhc5n64gTdKpBAJ01NXDc5dxUuNCQsdIb5M3yCBRq60mUX5b6Qj8nOAL0cGe11ABK2yOwXCnnh6NFNQSqv8RJTA
+ wgcl5yM+
+ hHAMd/ujY5KNr4LgvjHm4vXMeVSVhzN2EtIc0bRQyldt8SRVlWZf9HO1EzoAEBqQVFc0C1DWoMhedyS3IJZw4l+Mbdp1gT5RDOpMu3op1nFZTlCqQZPg6PQGRNl2a+XZD4h0glCXe+hvs3CRT7ppQ7fH09J3Qq6K0VvEGpegIYNyweVz7rjiWUia0QlI4rry/rHc5p5qDiy4Ek7DkmUJwYZBd5Rt/05mVBlPaZ9cvU47lggiPOvQ8WNUO+hcLMMHOLaxKgMMw++tPBSFl1zS6t3khRNh59Yh5rZEnIKVDaH5oMT7WaCQHu9R0MkWC5YmAB7AZbuHtccazQJXe0T9uhVIkqw23kziQ/FG27UHmSBj2xo6JAPMwYU5tss0NX7SU6/w3GqEauW5b43U4ecdHTv2t9BMx6s6finMv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,81 +113,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 11, 2026 at 12:55:12PM -0500, Tal Zussman wrote:
-> remove_migration_pte() makes the restored PTE writable for a writable
-> migration entry, and only looks at the uffd bit of the entry otherwise.
-> A writable migration entry that has the uffd bit set is therefore
-> restored as a writable PTE without the uffd bit, and the page is no
-> longer write-protected.
-
-The UFFD WP bit is such a terrible, invasive, broken piece
-of... engineering :)
-
-Notice, again, the hallmark of an utterly broken abstraction - every user
-just has to happen to know to handle each of your weird edge cases every
-single time they happen to interact with anything that touches it.
-
-I do hope we never merge something as bad as this again.
-
+On Thu, Nov 12, 2026 at 01:41:15PM -0500, Gregory Price (Meta) wrote:
+> On 2026-11-11 18:13 +0000, Lorenzo Stoakes (ARM) wrote:
+> > From: Chris Mason <mason@kernel.org>
+> >
+> > A burst of small atomic per-CPU allocations can fail with -ENOMEM while the
+> > machine has free memory and idle CPUs, as atomic per-CPU allocations are
+> > only served from pages that are already populated, and those can be used up
+> > before a worker gets to populate more.
+> >
+> > Consider:
+> >
+> >     caller on CPU 1                     kworker bound to CPU 1
+> >     ===============                     ======================
+> >     allocates 8 bytes, which leaves
+> >     one empty page and 4088 bytes
+> >       schedule_work()                   woken, waits for CPU 1
+> >     allocates 8 bytes, 1023 times
+> >     next allocation: "no space left"
+> >     gives up CPU 1                      populates pages
+> >
+> > The allocator keeps a few empty populated pages in reserve, and the work
+> > item pcpu_balance_work refills them.
+> >
+> > pcpu_alloc_noprof() queues the work item using schedule_work(), so only a
+> > worker bound to the CPU of the caller can run the work item.
+> >
+> > The issue is that the caller keeps that CPU - a task keeps it for the rest
+> > of its time slice, and a softirq keeps it until the softirq ends.
+> >
+> > In that time the caller can use up the reserve, resulting in an atomic
+> > per-CPU allocation failing.
+> >
+> > Fix the issue by queueing the work item on an unbound workqueue so that
+> > another CPU can populate pages while the caller keeps allocating.
+> >
+> > Fixes: 1a4d76076cda ("percpu: implement asynchronous chunk population")
+> > Signed-off-by: Chris Mason <mason@kernel.org>
+> > [ ljs: tweaked commit message, comment ]
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 >
-> An entry with the uffd bit set must be restored write-protected, whether
-> the entry is writable or not. remove_migration_pmd() gets this right: it
-
-Sigh :)
-
-> makes the PMD writable and sets the uffd bit as two independent steps,
-> and pmd_mkuffd() write-protects the result. To fix it, do the same at
-> the PTE level, where pte_mkuffd() write-protects the PTE as well.
+> Reproduced with a cpu hammering atomic percpu allocations with preempt
+> disabled. Results are pretty cool.
 >
-> The only known path that created such entries is PAGEMAP_SCAN. Now that
-
-Wait what? :)
-
-How does a read-only scan of entries create softleaf entries?
-
-I think this should be explained in the commit message :)
-
-> PAGEMAP_SCAN downgrades them like change_protection() does, we should no
-> longer see them, so this change alone should not be visible to
-> userspace. If another path ever creates a writable migration entry with
-> the uffd bit set, the page now stays write-protected instead of losing
-> the uffd bit.
+> In about 1 second of hammering allocations with the full 13 patch series:
 >
-> Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
-
-This seems like a super-weird fixes target.
-
-BTW I've noticed you've not been cc'ing stable, is that on purpose? No
-autosel in mm so we do need to do that on stuff intended to get backported.
-:)
-
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
-
-The change itself seems reasonable, as cursed as the reason for it is, so
-with the fixes target confirmed + commit message updated:
-
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-> ---
->  mm/migrate.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>                         Base       Patch
+> Successful Allocs      1,188      131,072
+> Failed allocs          4,097         0
+> balance worker runs      0          169
+> successful retries       0         4,096
 >
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 28a8d7734735..d200f64b5f98 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -399,7 +399,7 @@ static bool remove_migration_pte(struct folio *folio,
+> Micro-bench obviously, but pretty stark difference.
 >
->  		if (softleaf_is_migration_write(entry))
->  			pte = pte_mkwrite(pte, vma);
-> -		else if (pte_swp_uffd(old_pte))
-> +		if (pte_swp_uffd(old_pte))
->  			pte = pte_mkuffd(pte);
->
->  		/* See do_swap_page(): restore PAGE_NONE for RWP */
+> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+
+Thanks, that's great!
+
+I will include that in commit msg on respin.
+
 >
 > --
-> 2.39.5
+> ~Gregory
 >
 
 --
