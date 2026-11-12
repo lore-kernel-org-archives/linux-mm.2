@@ -1,72 +1,72 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7C1606A8BF
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 11:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B984F606A337
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 11:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dHY9/lJM
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Lv0uE8rD
 Received: by kanga.kvack.org (Postfix)
-	id C24176B05B8; Thu, 12 Nov 2026 06:30:45 -0500 (EST)
+	id DF8E86B05BE; Thu, 12 Nov 2026 06:30:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD4AF6B05BA; Thu, 12 Nov 2026 06:30:45 -0500 (EST)
+	id D82506B05C0; Thu, 12 Nov 2026 06:30:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC41C6B05BE; Thu, 12 Nov 2026 06:30:45 -0500 (EST)
+	id C71EA6B05C2; Thu, 12 Nov 2026 06:30:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8826E6B05B8
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:30:45 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1D16DC053B
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:30:45 +0000 (UTC)
-X-FDA: 85426249650.08.DC6050A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A67DC6B05BE
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:30:52 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2A3CA14055E
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:30:52 +0000 (UTC)
+X-FDA: 85426249944.25.C6B8103
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 77CD7C0003
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:30:43 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b="dHY9/lJM";
-	spf=pass (imf10.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794483043;
-	b=TuV6AEIWjFESZ0GZXVj6cp8L9nOA+3t1lkHx01JZu5WH+vrJo8quL3aM4G1Vb1frFcp3kn
-	QOP8VrxyzhvyIDC9CJwiCgvVoFRKDVQ8tn2ynffqSm0c4et/9N2jBEriUzCEpUV05/zln7
-	3smop9jPOTwjfO3bnEmSm1e5frDorMg=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b="dHY9/lJM";
-	spf=pass (imf10.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 702521C0002
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:30:50 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=Lv0uE8rD;
+	spf=pass (imf18.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794483043;
+	s=arc-20220608; t=1794483050;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TH0+wCv5ifM8REH9nQg/3agFqlZ5DUFIscm/3LxWRo0=;
-	b=D6HTKCvJAfpaagckMTfa3Yg1l6ZDPWBGpIen8+nVDm2zl95BE1tVlGKH60O+RFip5qOWkx
-	KfTBcuUJkugr+E7oJWNTppXM9u+xTlr3BuORNBnhoZTAX8h2Rk9t7EWn1YbMGvvLEvLc1l
-	ZMF2x9H19RrbBziLX2jgTddcjTAOroU=
+	bh=4VQE+wCw+63cnThzXfE5m3Wkr677M0OSU+v7x8jQn64=;
+	b=q9ymkithQJ4iPSrTLykIJs55GYlckyQcxLbQvQ1Zzo0877NmVOIh+NrEbBIU7Xc5aT2CU4
+	HKYSZOjUQqYzyU17l+nLKpm2zJcpJrqTAQXE5STJspanHsR/SkaGzJaJs5MlpQJOPS7WRx
+	3HDC6kihCQgtZsow9JFVTy7voL6MfuI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794483050;
+	b=ArqQFibAM+lJX9dn+oTC2U3qAUZofiq8Pt2Y/sxErRffR4c3jeecwla0wYukLLLtFJOFvY
+	bPp6pqJIuq5uKR9YYDHNqrSxqmXDYzHKGXKRTqxVhVoJi2iyr+q8I317atjJFh3gp9djlz
+	jcE6PQomoUGokzEyooJ6bM4OR0YZ0Ao=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=Lv0uE8rD;
+	spf=pass (imf18.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B582E4180A;
-	Thu, 12 Nov 2026 11:30:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 797931F00A0B;
-	Thu, 12 Nov 2026 11:30:37 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B6BEA40AE9;
+	Thu, 12 Nov 2026 11:30:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758841F00A09;
+	Thu, 12 Nov 2026 11:30:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794483042;
-	bh=TH0+wCv5ifM8REH9nQg/3agFqlZ5DUFIscm/3LxWRo0=;
+	s=k20260515; t=1794483049;
+	bh=4VQE+wCw+63cnThzXfE5m3Wkr677M0OSU+v7x8jQn64=;
 	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=dHY9/lJMFRTkdoK0UtBygoZvi0viJvrQDXFX2s5FvKi786pb0Fxhon1g90q0LAJNn
-	 PENqDFIZIbjRAr6env65rzcSprlxQbjXkDe0p4+7/+w1cPdM9UvcoaclCxkmEnvx/L
-	 oE9DKvkZ2ClL78AeiJ7MU1YcU2e6+Dliu2fKS7trzQcaY8LOeI391uTkm+viM/MxVy
-	 WDMDLV/0R+iz9jXmxmDqgcXL1XCSVSjY8aMO+Og+0+8IwKBzCv70WgbblclOZGVhak
-	 6d/l5yZ3gEYyAKuzNgCi7t9AcEuUPoxh/sg66l5EHUZ40X4td6nIxtPKl+gGBVsMFH
-	 3yeE/40xoNEGw==
-Content-Type: multipart/mixed; boundary="===============1184916852212940912=="
+	b=Lv0uE8rD32wyRfV5sPXfxmly+/H4WSct6DgNgB+borGLOHQHrPLIX+nDFWq8WIR5a
+	 6AtC7CnbNeLwvde/cSjhKEvSpenf4t0Wu4NTtXot75V8BVGl2rFunUOcGyNsN4UI68
+	 wNERe8a2KaEWMchf+DBb8Bs1DvhulbUFaoAuvnrKGZEac6tb6LCixMCO2ciI45WqCn
+	 5rzApcOojjQxqR7Be5XjATEt71gD58xH7QXIWmI8trxikOKPyX7zLM0t/f/t7TwpTp
+	 molNGWnrHSHxcdMFd0azahw83gPRaA1oGx6MU/a7XQjmmEtHkAo1P+T8dMYcy21pbm
+	 BNy/IJvPTGAsw==
+Content-Type: multipart/mixed; boundary="===============8011434571142281874=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Message-Id: <a0cf14f466cffe1ae1e1138e7ea4466152c96c1b89ba8268a5923a0d13534f28@mail.kernel.org>
-In-Reply-To: <20261112104149.38589-6-cuiyunhui@bytedance.com>
-References: <20261112104149.38589-6-cuiyunhui@bytedance.com>
-Subject: Re: [PATCH v10 5/9] riscv: implement preemptible this_cpu add_return operations
+Message-Id: <9c88485e232da5a503d56c83b14b7765e672fd0c4ccc92686c342cec03c8e350@mail.kernel.org>
+In-Reply-To: <20261112104149.38589-10-cuiyunhui@bytedance.com>
+References: <20261112104149.38589-10-cuiyunhui@bytedance.com>
+Subject: Re: [PATCH v10 9/9] riscv: select HAVE_CMPXCHG_LOCAL
 From: bot+bpf-ci@kernel.org
 To: cuiyunhui@bytedance.com, pjw@kernel.org, palmer@dabbelt.com,
 	aou@eecs.berkeley.edu, alex@ghiti.fr, dennis@kernel.org,
@@ -90,19 +90,19 @@ To: cuiyunhui@bytedance.com, pjw@kernel.org, palmer@dabbelt.com,
 	linux-mm@kvack.org, bpf@vger.kernel.org, linux-arch@vger.kernel.org,
 	llvm@lists.linux.dev
 Cc: ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Thu, 12 Nov 2026 11:30:37 +0000 (UTC)
-X-Stat-Signature: 3s8kmdysqene3ws6ob3f9guhqrxnhdji
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 77CD7C0003
+Date: Thu, 12 Nov 2026 11:30:44 +0000 (UTC)
 X-Spam-Status: No, score=-13.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
 	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794483043-972254
-X-HE-Meta: U2FsdGVkX1/rJAkPaQvuf3lEXKjgxcqRoY1o4vhQ/Iph1kwfZ6jdG0KdEyFKbJ1QXhrVw386YaHv2qjzkbR4Yt3SoNtV4WlFo9QxjWlk6Qkf/yxxTkvgCqlMPUi3XJVky4hm0swRikJqkMwgR9t6dHtvY2rymswuaVsAJLX5Psnk3Lpvxdu52lGHV9rHdwvvQPdSd/y57eOZ/lUQc397wT8S2V+Em1l9xrXMgW38hs280wBoMhVDLls/9b3D1i8QZMRmoYVVVj63x2dFL124OXXZvee9nR7NY4V+a5kYtgKd5jC/QYIf/Z5M+QXaCCbf7muoGHQ1zOrhN2NC+SptkxwF5YtZT3fa/yPKl5zYCLxernHvdt/Zd2HsuzhGfTAKX1FimzEi7bcB/2TlVlMi6Q07cocXwqL8VzsorXRhRXrZ57RxKQLyyJf2lggOC2Pxp+0YoD+8hbK+5c62FNUVyKCPOqYxa/+3OcSnQbyQ6uOujTi2+gAEca8ag3NdrqKa7IdkXIUixbakwIP5yMQXsGLUCnn5wBIJ4htmFdmSYZ56r4Yn0H8x10pyX8ch0NxRBTiT5oo2y3dGUN8bDChiDNJ/cEjyoyISFFdN0SYsJjA47a5CulS+sFHnnQlFZsLjpfNBm/B2Uabc+lZtk3QIVeb91n9qon17m1VK2B22pRO9dchl3Qo+DD/qRMUu/9r6QaSvPqdv9nzNgsd4yeXPM5Ct/5IUisXNqNTVj8/WOTxt3mibZhjKurs8Ff/1x1RQkbjrpd+2dVFxvYWTiAgIfL9Gu0/5tYAO1ScypcXWQ9WEHlHNZYvyX4hFAfZ/P+ThSYPtwF8V4keZUWXEWI//WmniszHP0UDQspYhUsbik5+ndgI9omxqDLnJZ2HsFLb3q7VZrEuLI9SNXFjHIEaqTsQv/twkjoYXrEEFvH0fmpPk/nwdJDcdNbrkQsRuxPYK6AmJqI0tTq2lY/Y0848
- rakBwxZU
- ByyR2Ua8OMNUDeRbBNBF8hdmhVMWM73OIDI7ywd6ksw2vPJFCHoHSqojRyClJiQmfPchHwBlyYYgwL00hgXecl+/0MO991o/NjB+Vd2WAYKEB2/YLohXlGwRc7kjF6ZO+KDb+uvov/bH0i0fP9u8xrg69OgXBwDR2/5HXpI00djaSY6LUYwUbwbiUdfCHQA0QV6sb9PtJeIP35dfsuLbxXldzeQhKQqOtYg6GtP3v3CZ1Rn8Km1FjUICkrkmgno0rQHPYVpsr0rpvQLTIoG+6w91NtfvveCJsc1aVLAMlQOu5KKwjlg1Ck9gb7JCu8cksgsP+78tPLTiNa63qKFTn7lwm1/t+4ibzdCHoeZRfvtYUCk5AyelhPlnlSAcAXCKh9K/4YHc4Fpkyizn3yY4KNqf/Kdi4xDCdgBIfkq92+yxESFgnrHYQc4ZZY9RaIHUS4GuMrNgAVWZmxAiSa0gSreDWHEMFEBCytTP6hzD7lvAOZ9rHNJqOq4lcvFe89duvvBGSS0emsjbDMaGRgcyl8xUGT8/cI2RxV+L+pzH8QalI8xXcodcDH7LwlJbNky+bab5a0UPvuper4DQap9GzcMPc8BCawJltTVtyA5KG1P+QvrZzUEQiYNBmwe9hYDUzmpEp
+X-Rspamd-Server: rspam09
+X-Stat-Signature: oyag699msbpgncpo8dwumoxkwxf5h9x9
+X-Rspamd-Queue-Id: 702521C0002
+X-Rspam-User: 
+X-HE-Tag: 1794483050-843714
+X-HE-Meta: U2FsdGVkX18gg8+Ub7ZX/hdtI25sKYUSVS+zFpGZT5nmzdTJGeBLsscSYbqubzSSb9UouWMmSzFsLa2Hx8RxBIXKf0sr9fgQI7Ae6qYlfTUbykzyPFlnotZaK16VeJaflK3hp0jP2n5+8h2bLBbj3xHa99FlpIlGT+yP+vNzyT79hbaJCe+mx/9EkSWpzmywPC0L4a7FCzMtnxhs+Vzhnk82fa4gY4zoO0oJ1P6/SreupwuZCwGwGmsORw4hvV32UyXGB/ZxALV3qW+3rZkSMazOwPuTDPAb9w/IzXOcTyxCdUgKQLtYHSM11WOrA9rp0KeyMeAIxk/kLImmxlnBcycmlC0kLE7rCkBGsjmbGLg7eHzNUW4NzwR6Tiv+F2jZg3T0VgE6EyLCmIEP18VdDpUnHgRMxu5rxR6xnGjDEZ19l4hZhi0Bgt73q/G65emS8/cGylawYp3tYCaRlLwIwxxiD60XvDHXekcvuda2R5algVL5NckQGssNlRVGpnFXC4+VOxTrUgNqjaysme0W6QcV/OMddiiVSfSUTKKtX9om/d9pdQd0Wk3peWo+6T5XznthF93X1Kup4Gh0Rad5BdxEWR101fQGwyQqA7Rh2V1KxdPXwk1ONmKIsgXTv8WlEeWRlUVl5nGXSW9vcSFtn8hqLDBj/WybpKmRHjTUrO5B4W+b3R0qhacKqMlAThyrghde/OmhSgUT1ydx2pQE3g4Wy0e4lxAtd29isaOgVu+Iuxyexnz54Y+qVdBgbbL+AYqPAOPiulUcj+lNO2ZCoPyMHWUW/2iCvgcYhkWonrEePrv5XtdZuNocIYwcxqRIVoImNoK29PMrJFyh19MwyTdDxOxdEYmu5T0Tcdq4CcjMkE6MQryxA/DnwX1Xh4Mgms4zNsP7vYPSeFOO7GEum+BSkuU88pr7XAGbGzSSgy0tiwP3VWiVXiH/l8kNVRCVm7YBglxnHhyY4F+F7uQ
+ dFgcnkHh
+ w2rkQC/wE5uZqICYs7lmlVZBQCwDmc0E2Oj0vgJiOyUq14Gv4c/hfNblU6jaZl9ad8byC02RH4HePJ25C95wja1l7T+eUpLHb27Pa5FhwRD1vTVnLBCApNoEEoR9DhSEWL+T5yerrhkwS9wFIkUuF/O48DHJ4zRm1HdSU7Cf5J76OA2thrwSrLLhV4MxEoMAHH0YCHPY58yjkeVCSETZeiatNNg0YhFWI0v2AmI/jdfqBqeBBaIz3672Q8Ojz1wS/0adUKDU8Et4NSFK4pQCG1u044Do5b6zQr+daVFksAEZgyLZWtvxH++qUP02vC/tkqOMUUrJ7XOUFBxwYryvxxsl36KCUK3bYRFmgSY3JpztbPnNi9w4iOmOSiSOF9LYmTKH+lvf+X85N2gLR2jhWedkNCrKTIxICuTyeB4tuskx/KTeYUOo8CPiuAis1ZH1YuWcuVo/Is6QvGVNac/ZMoEW2BvKShrhuiqm6jBjQV5yXMKLDsW6voB1GyW+ONEvYCVFHKMq6rRAnhpEdjKee6JRt4rXDfFLyMgXZZdYRvL8YLRiGGmwbjF8RX/1juFHGyQw/G879f+j86JidQG2uc1VOXURrfwSf002yUF/gcdI5J8WLlRruTJJgOZl+ZIyNvDK8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,58 +111,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============1184916852212940912==
+--===============8011434571142281874==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-> riscv: implement preemptible this_cpu add_return operations
+> riscv: select HAVE_CMPXCHG_LOCAL
 
-TL;DR: Nit only: the riscv this_cpu add_return helpers duplicate the 32/64 and
-8/16 code and the field mask; could they use the existing macro-generated
-pattern like neighbouring ops? Not a bug.
+TL;DR: Nit only, no runtime problem: selecting HAVE_CMPXCHG_LOCAL on riscv may
+need the cmpxchg-local arch-support.txt feature table updated from TODO to ok
+in the same patch.
 
-> diff --git a/arch/riscv/include/asm/percpu.h b/arch/riscv/include/asm/percpu.h
-> --- a/arch/riscv/include/asm/percpu.h
-> +++ b/arch/riscv/include/asm/percpu.h
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -155,6 +155,7 @@ config RISCV
+>  	select HAVE_ARCH_VMAP_STACK if MMU && 64BIT
+>  	select HAVE_ASM_MODVERSIONS
+>  	select HAVE_BUILDTIME_MCOUNT_SORT
+> +	select HAVE_CMPXCHG_LOCAL
+>  	select HAVE_CONTEXT_TRACKING_USER
 
-[ ... ]
+This isn't a runtime problem, but should the feature table be updated in
+this patch as well?
 
-> +static __always_inline u32
-> +__percpu_add_return_amo_case_32(void __percpu *pcp, unsigned long val)
-> +{
-[ ... ]
-> +	return ret + (u32)val;
-> +}
-> +
-> +#ifdef CONFIG_64BIT
-> +static __always_inline u64
-> +__percpu_add_return_amo_case_64(void __percpu *pcp, unsigned long val)
-> +{
-[ ... ]
-> +static __always_inline unsigned long
-> +__percpu_add_return_8_16(void __percpu *pcp, unsigned long val,
-> +			 unsigned int bits)
-> +{
-> +	__PCPU_OP_CONTEXT();
-> +	const u32 field_mask = GENMASK(bits - 1, 0);
+Documentation/features/locking/cmpxchg-local/arch-support.txt is keyed on
+this Kconfig symbol and still lists riscv as TODO:
 
-This isn't a bug, but the add_return helpers repeat code that the rest of
-this header generates with macros.
+    |       riscv: | TODO |
 
-__percpu_add_return_amo_case_32() and __percpu_add_return_amo_case_64() are
-identical apart from the width and the .w/.d suffix.  Inside
-__percpu_add_return_8_16(), the amoadd.b and amoadd.h asm blocks are
-identical apart from the suffix and the (u8)/(u16) casts.  The field mask is
-rebuilt with GENMASK(bits - 1, 0) even though PERCPU_8_16_GET_MASK(sz)
-already exists.
-
-The neighbouring __PERCPU_AMO_OP_CASE and __PERCPU_8_16_OP_CASE helpers take
-the width and suffix as macro parameters.
-
-Could the add_return variants be generated the same way (taking sz/sfx, and
-using PERCPU_8_16_GET_MASK), so the 32/64 and 8/16 copies don't need to be
-kept in sync by hand?
+Nothing later in the series changes it.  Other riscv patches that select a
+feature symbol update the matching arch-support.txt in the same commit, for
+example d1f014012571 ("riscv: enable HAVE_IOREMAP_PROT").  LoongArch
+selected the same symbol without updating the table, and it needed a
+follow-up in 0c4c9abbf68b ("Documentation/features: Mark cmpxchg-local as
+supported on loongarch").  Would changing the riscv row to "ok" here keep
+the table accurate?
 
 
 ---
@@ -170,5 +154,5 @@ AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
 See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
 CI run summary: https://github.com/kernel-patches/bpf/actions/runs/43205409812
---===============1184916852212940912==--
+--===============8011434571142281874==--
 
