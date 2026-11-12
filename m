@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB9E606A893
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 09:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ADF6606A337
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 09:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=NJQ4BvBf
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=iAEgSvXe
 Received: by kanga.kvack.org (Postfix)
-	id 42DCF6B05B8; Thu, 12 Nov 2026 04:03:26 -0500 (EST)
+	id A48596B05C3; Thu, 12 Nov 2026 04:03:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DE9E6B05B9; Thu, 12 Nov 2026 04:03:26 -0500 (EST)
+	id 9F85B6B05C4; Thu, 12 Nov 2026 04:03:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CD8B6B05C3; Thu, 12 Nov 2026 04:03:26 -0500 (EST)
+	id 8E6FD6B05C5; Thu, 12 Nov 2026 04:03:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0937F6B05B8
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:03:26 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 99F4514050A
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:03:25 +0000 (UTC)
-X-FDA: 85425878370.24.940754A
+	by kanga.kvack.org (Postfix) with ESMTP id 68BCB6B05C3
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:03:34 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0AB7D14050D
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:03:34 +0000 (UTC)
+X-FDA: 85425878748.03.BC31E8C
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id AC8661C0008
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:03:23 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=NJQ4BvBf;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf18.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
+	by imf09.hostedemail.com (Postfix) with ESMTP id 3AAAB14000D
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:03:32 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=iAEgSvXe;
+	spf=pass (imf09.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794474204;
-	b=6eFxIGRn52HUd5sQNJgTSOhVr3+W99o2GzBk7hqhe18VS2B51R5RteBvKw7OkgRu7+DmsZ
-	K/EhkF9qirh7Lhj9YzKNIpG+xB4rr/n/XwW3KiSyTi7PFvnNPk70PIuBWDT546dtZgQe4B
-	of1lE43801nArHHg7RvrpGhDP6oU0xU=
+	t=1794474212;
+	b=X/hi5aKrc5pXe1GAAk5wxv9Jyb5xsFPVbJ4ZYYsUlo63iWJTpht+QZT73htuDa9f5FbpFy
+	vUuUHNpTEI6IjaFfr7od1fzyVcPuo8RPNBKabFGhkDbjPeFmph8s5xnKcLrQcVXmj3zsCB
+	qEq7wWAK9u1qhy2Mkouztwzy4qex9Zo=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=iAEgSvXe;
+	spf=pass (imf09.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794474204;
+	s=arc-20220608; t=1794474212;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZPvNr3mZonc2DF68bCIP/ucq9mR3dRYykiaNISklMLs=;
-	b=42SV+L29v60VPjbZ1d5fzoP5zoa4y3VrR/YcLAqe8sBlCeYYQMGBy+nM24ZV5RpgVWEYb+
-	sJRXlyaC5KPwTfXMofqpdedvZPzg7M332+Q6eJ6dbYjIBO5ViJpJgW4FC5W3ez/rCZxrWs
-	tTtY9SWQRGcjFSSOE+PsJPZ3FQI9BCo=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=NJQ4BvBf;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf18.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
+	bh=O88YpmLyBaL0GDW/HqJr/4Rg7GIIxRNNQP9aX2FDqgo=;
+	b=sgeZLT24J/tjf2obJSnCljZTLfbJQoeg7oyLteLNb0eD4TbEJNfcLapZVaFGjk0mhQsBYb
+	JgXREG5QNAeUkfbWW7K19c6t4ZQQIlnRVMY84N0q0PZcgbAQ5K0tsb3OEXR5adT7Ao+DKX
+	SfC8F41maEK0J3HUGd+odSavoVbcqC8=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CD1B7339;
-	Thu, 12 Nov 2026 01:03:19 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4E09C339;
+	Thu, 12 Nov 2026 01:03:28 -0800 (PST)
 Received: from a081061.arm.com (unknown [10.163.169.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 2FD1D3F632;
-	Thu, 12 Nov 2026 01:03:14 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 910C43F632;
+	Thu, 12 Nov 2026 01:03:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794474202; bh=iDc8VYXRuayG1421sMnA6tNhOgvIr0UOwFtSDUy3iIk=;
+	t=1794474211; bh=3odyGGmkLwYaY8M4LOJ/DQPeRwp4YOqebnO21NAILuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NJQ4BvBfwqXuu+JQb6LFfPIh4nX5n3/0+MzBSS04lBhBKO7/L1jOSWLR8VIcfQE1A
-	 j1AZz1ObGzOrz9c1UxNIG2nESE+7TvotYYj4EUsR+T1gr6+4fn5lw1AfdU5iq+3rOt
-	 C+7bRrmN6ry+celZHFLerDmLtBALhQZMP59rXAGg=
+	b=iAEgSvXe8QbzirTjb+g+yaD+tZMr0kmqLkov4TCo5rn21C1IDZjYwZ8iDq7Fx79aT
+	 Hc2/lpw3OwkhHph2Ad7OJ7WNx7flNNRvF4z0F3XGQpaWrszsVQn2+5tjK7X5R0yEmt
+	 cLGQ5b733G+r8IKCbf6EubQG40kDRb1Lpf3G9TiY=
 From: Sarthak Sharma <sarthak.sharma@arm.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -81,27 +81,27 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: [PATCH 2/4] selftests/mm: detect masked PFNs in allocate_transhuge()
-Date: Thu, 12 Nov 2026 14:32:48 +0530
-Message-ID: <20261112090250.334344-3-sarthak.sharma@arm.com>
+Subject: [PATCH 3/4] selftests/mm: factor out THP split helpers
+Date: Thu, 12 Nov 2026 14:32:49 +0530
+Message-ID: <20261112090250.334344-4-sarthak.sharma@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261112090250.334344-1-sarthak.sharma@arm.com>
 References: <20261112090250.334344-1-sarthak.sharma@arm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AC8661C0008
-X-Rspamd-Server: rspam12
-X-Stat-Signature: cj1pubj6k9rao7qntpi15uj8uba7qthh
-X-Rspam-User:
+X-Stat-Signature: yzdc7e5h3j79wnhjy9c4gwwey4dobd4a
+X-Rspamd-Queue-Id: 3AAAB14000D
+X-Rspam-User: 
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794474203-552668
-X-HE-Meta: U2FsdGVkX195FZPxfAMIUH3E98g0bBCMvYdDovV2zrFgLFx2HeGljoelEQ1E7sVdU7Bqt1QbpWc+FN16dyINVp5zzbaVmT9+peXWIrEOX1Zyo4q5LeZu2f5nbuurK+jmy1/9pBRaR4sDSma2ZvCxBlEfo2h3HABi0zBgvJ6gc372pmtQ4Jv0vpGyMEqtMUuZrGl5Jy10tn28scKHJAQAT1fiRUUJ6eiFDid6hzAgU1acc0NJlMgRyWwbfd7znAtcBj6c7WD8KdT1nY7ME9mnele9G+V3WC++ForQTOL2XRFC0YAuzrlnTuu661p8Llrls+pEAEEvca/4fgyFH2kZroK3oqeacDC+MTHT9vEcrL0JldNH2iUlSfOGfMYUYHFEo9zmAKpcZZOruZHdsawXrRNslTi8v2ETS/8xHA0dlip0VfcCIEJQq3/rS9bFTlvD0FNm0opsX6LcQ44aCGvMdpgCjZdG/JMeJAXI73u3spJkkWZtpWdsOd1ju6ALn1YewMC7S9Hp1kq8gL2euN0goeLmWB2Kl+IZTMjcMnWsXlT4uJjA1jziUVDctT9flBmY68rbQahalwUC78pvzS1Wyev5gej2ehDAA8INcaERDmKSjF6/6nCXomhk/VPd7Y23I4W3mYxN+3MgplrUkQFJ/8hWOocNX/zLl04b3zBjBJVEBf2C7NTtdF/FsLK95ahR0LkOTqY30IFYJcRRJNcUnJkFhLDAt1oLbr582uwzKzuEwm+vgTc0yWORUzQB7DK0a6phkcnKswY3ojFgZEpZ1QzilNRvhl4poTFJ+vhNAqLziTkj9tA24ZxcZRiDGy4LDTeqC3QJ8nBVReO56u1dbDPRQQMwpA5/d6CKB7JaDFCOLgC3mkjQmz3eY0J4lXkq+uvxFx2aNdaOpQEqj9EfOJckcS7SG8rh9EmbR3Q0ZJxFVGdDsCVjbFGy6owbYaUQbDFV7mFQMJaDuTaMOJs
- Au5vEQ4o
- g2i14ODgebcbGPDXaPFPozS4sLpepLcXkOlgn/SXKBhwG+89dHN35/UiXraGF1RvM0rrHER6DVNIFpBIVbCEBNfRGyn6jq3j1P3ontKqK13lM2RdRFNkTp7PRapViZoqusEPVJs4H4yPtrvzMEUA+y+g9mWKyjOiQvZASDWYQzh1DvCTZZXWxxQAJat4Npx1xp2wmg9sSpnkCLRHN3dLzRbb/YtOzxUXadBqeQepqZRZQ9cfSDZ1G+gfwO8VOePL7PHmw8eNTVRkvnmYOQQ1152sfuXM5d+TkhQDOOW5c0OgvmU92HIDHegnOHE0ODYBNzZSbE9oZPr7D/UfybOwNzu+vkdbKZNuRUqV0txg8wKLkP8FFtp8KQagSSKQqwvv+bpMdeV0olKLghl3cccSzRqnYrWJ/qHf1NT8olnrSk/E8XCVFNA3CClzDJqKdoKaNpVg5
+X-HE-Tag: 1794474212-26237
+X-HE-Meta: U2FsdGVkX1/+zCot5QgcaraxkEbfc+bzjN/qQkPiTVzQzfGUWRmCec7Ngtb+H8vmgbtX52JbPPaJWT7piEVvIqWxZjjXKxfSZKeoBnw73c1+izy2SV1PJVzn5x2u0RoxVteBEJB/0LWLncPTb5HxmLrCyfh9naehfVs4RQF31hhvmXrbg4ATh2lzU8jrEYKN7YzTwerqVAnFO5Ka0rL5u+tIeldlHNLTG9wN/KDRoMTKkOMnQ5gLtsic8b4XHdbFHqaLNzHWpLKGI7xmUkcIeFuTLE3HTGfE5c0EVNNFrEO/2Qlht6kacsz5HxQJqM2HQi3bwIH/L4NTtEjUMSsGMpsl40fmY386f4eyPgZymTjWe6FQA9YFaMOXmPwRcKF+JDBsGEVoCXxTWQqtkNV+Al33uY7kpPJDJMUBEUKoA7M8hySdRF54Zg8iZSTfRIy8ed8d4wGnaZiahyOn54oIU84mhd/qCqjGumoCmGMR5kW21kHRZre42lHrI7LvTnCnwn4Msu1LMsaNVSh3Rw63dCnq6PXksbWcx7LRCxLFFluRuuaGi3MlysCpfG48zCaFwpTiNYOMz3UBoIbP6pEQjzWPs3lPvOb8120+6OPzTZozEa876EbJmrijDwhGVqRRiaSszjeatpzikWQOvFyaI9EA+Zwcsgz0Vj5d/5pwC3EGhhSEjIItQIxNOvK0eDLSDxcwJ6fm1wrBYRjzWlD1xO+pWKKYLjiRXAukcT+qjAdDABP0SShedZa8Y6Mk9a9bpZMqzDQe9HYUmAJKtrRDtMYEOUF5zJ8hWxgUd9XOHsXgo3ZywXiE8E71KS/CSQpNFILt7BNZHZBpSQExpZt6Bn8RACol8jqQ+URnUoH6qbt7vTLGC/y8/ACabJ3qmHrmAc68TRdx6PJLHPA5oP3AwHpqRl6YfjgWUyiYtkG30yJaRFaVM0cjdcKQ0pamMmRA2uIXK/Yt7McqHHznkOj
+ 0Rt/lk3z
+ C8eWUtS1R6RuOKtBSIxbhhzJCS+23UfOZEnBHliZq1tKlSqis/qfEPzMfo8jROEHegjK7wIh+sKZthk9gjeTnMHQxMssRkoETySQ79MvnkwRgpKrmCe7VXFnz6XUrGUjqUZnvYP9oNQl2UcxgPxIv0/M7Nz5KPyc2ThK4uqQfETAezgzCrjXbCDJH7AafbnWSEixNWA/KGaJHwBchkgNyPVIhxqLZtMXH1ZxFsqP0sV+B6GXJXn99cf/etA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,116 +110,236 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-allocate_transhuge() uses pagemap PFNs to determine whether a THP
-was allocated. But pagemap PFN returns zero PFNs when the caller
-is not allowed to read them (without CAP_SYS_ADMIN). Currently
-this looks like a normal THP allocation failure.
+split_huge_page_test.c contains helpers to split huge pages using
+the split_huge_pages debugfs interface. A later patch adds a THP
+compaction selftest and needs the same functionality.
 
-When both pagemap entries are present but their PFNs are zero,
-return -EACCES since the THP size and alignment cannot be verified.
-In case of a base page fallback, the second entry won't be present
-and thus it will still return -1 indicating a THP allocation failure.
+Move write_debugfs() to vm_util.c. Add wrappers for splitting
+process mappings, mappings with an offset within folio and file
+backed folios. Also add a helper to check if the debugfs interface
+is available.
 
-Update ksm_tests.c to skip the test when pagemap PFNs are
-unavailable. While here, use a common cleanup path and
-add the missing close(pagemap_fd).
+Update split_huge_page_test.c to use the shared helpers and
+also remove the unused SMAP_PATH definition.
 
 Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
 ---
- tools/testing/selftests/mm/ksm_tests.c | 26 +++++++++++++++++---------
- tools/testing/selftests/mm/vm_util.c   |  9 +++++++++
- 2 files changed, 26 insertions(+), 9 deletions(-)
+ .../selftests/mm/split_huge_page_test.c       | 45 +++------------
+ tools/testing/selftests/mm/vm_util.c          | 56 +++++++++++++++++++
+ tools/testing/selftests/mm/vm_util.h          |  6 ++
+ 3 files changed, 69 insertions(+), 38 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/ksm_tests.c b/tools/testing/selftests/mm/ksm_tests.c
-index 9e6e1633d0b5..9f97ce28e72a 100644
---- a/tools/testing/selftests/mm/ksm_tests.c
-+++ b/tools/testing/selftests/mm/ksm_tests.c
-@@ -10,6 +10,7 @@
+diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+index 33a2473327bb..330a453e6402 100644
+--- a/tools/testing/selftests/mm/split_huge_page_test.c
++++ b/tools/testing/selftests/mm/split_huge_page_test.c
+@@ -8,7 +8,6 @@
+ #include <assert.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+-#include <stdarg.h>
  #include <unistd.h>
- #include <fcntl.h>
- #include <stdint.h>
-+#include <errno.h>
- #include <err.h>
+ #include <inttypes.h>
+ #include <string.h>
+@@ -28,14 +27,8 @@ uint64_t pmd_pagesize;
+ unsigned int pmd_order;
+ int *expected_orders;
  
- #include "kselftest.h"
-@@ -521,6 +522,8 @@ static int ksm_merge_hugepages_time(int merge_type, int mapping, int prot,
- 	unsigned long scan_time_ns;
- 	int pagemap_fd, n_normal_pages, n_huge_pages;
- 	const uint64_t hpage_size = pmd_psize();
-+	int status = KSFT_FAIL;
-+	int64_t pfn;
+-#define SPLIT_DEBUGFS "/sys/kernel/debug/split_huge_pages"
+-#define SMAP_PATH "/proc/self/smaps"
+ #define INPUT_MAX 80
  
- 	if (!thp_is_enabled()) {
- 		ksft_print_msg("Transparent Hugepages not available\n");
-@@ -551,7 +554,13 @@ static int ksm_merge_hugepages_time(int merge_type, int mapping, int prot,
- 	n_normal_pages = 0;
- 	n_huge_pages = 0;
- 	for (void *p = map_ptr; p < map_ptr + len; p += hpage_size) {
--		if (allocate_transhuge(p, pagemap_fd) < 0)
-+		pfn = allocate_transhuge(p, pagemap_fd);
-+		if (pfn == -EACCES) {
-+			ksft_print_msg("Pagemap PFNs are unavailable\n");
-+			status = KSFT_SKIP;
-+			goto out;
-+		}
-+		if (pfn < 0)
- 			n_normal_pages++;
- 		else
- 			n_huge_pages++;
-@@ -563,13 +572,13 @@ static int ksm_merge_hugepages_time(int merge_type, int mapping, int prot,
- 
- 	if (clock_gettime(CLOCK_MONOTONIC_RAW, &start_time)) {
- 		ksft_perror("clock_gettime");
--		goto err_out;
-+		goto out;
- 	}
- 	if (ksm_merge_pages(merge_type, map_ptr, map_size, start_time, timeout))
--		goto err_out;
-+		goto out;
- 	if (clock_gettime(CLOCK_MONOTONIC_RAW, &end_time)) {
- 		ksft_perror("clock_gettime");
--		goto err_out;
-+		goto out;
- 	}
- 
- 	scan_time_ns = (end_time.tv_sec - start_time.tv_sec) * NSEC_PER_SEC +
-@@ -581,12 +590,11 @@ static int ksm_merge_hugepages_time(int merge_type, int mapping, int prot,
- 	ksft_print_msg("Average speed:  %.3f MiB/s\n", (map_size / MB) /
- 					       ((double)scan_time_ns / NSEC_PER_SEC));
- 
-+	status = KSFT_PASS;
-+out:
-+	close(pagemap_fd);
- 	munmap(map_ptr_orig, len + hpage_size);
--	return KSFT_PASS;
+-#define PID_FMT "%d,0x%lx,0x%lx,%d"
+-#define PID_FMT_OFFSET "%d,0x%lx,0x%lx,%d,%d"
+-#define PATH_FMT "%s,0x%lx,0x%lx,%d"
 -
--err_out:
--	munmap(map_ptr_orig, len + hpage_size);
--	return KSFT_FAIL;
-+	return status;
+ const char *pagemap_proc = "/proc/self/pagemap";
+ const char *kpageflags_proc = "/proc/kpageflags";
+ int pagemap_fd;
+@@ -70,25 +63,6 @@ static int check_after_split_folio_orders(char *vaddr_start, size_t len,
+ 	return status;
  }
  
- static int ksm_merge_time(int merge_type, int mapping, int prot, int timeout, size_t map_size)
+-static void write_debugfs(const char *fmt, ...)
+-{
+-	char input[INPUT_MAX];
+-	int ret;
+-	va_list argp;
+-
+-	va_start(argp, fmt);
+-	ret = vsnprintf(input, INPUT_MAX, fmt, argp);
+-	va_end(argp);
+-
+-	if (ret >= INPUT_MAX)
+-		ksft_exit_fail_msg("%s: Debugfs input is too long\n", __func__);
+-
+-	ret = write_file(SPLIT_DEBUGFS, input, ret + 1);
+-	if (ret)
+-		ksft_exit_fail_msg("write_file(%s): %s\n", SPLIT_DEBUGFS,
+-				   strerror(-ret));
+-}
+-
+ static char *allocate_zero_filled_hugepage(size_t len)
+ {
+ 	char *result;
+@@ -132,8 +106,7 @@ static void verify_rss_anon_split_huge_page_all_zeroes(char *one_page, int nr_hp
+ 	disable_khugepaged(one_page, len);
+ 
+ 	/* split all THPs */
+-	write_debugfs(PID_FMT, getpid(), (uint64_t)one_page,
+-		      (uint64_t)one_page + len, 0);
++	split_huge_pages(one_page, len, 0);
+ 
+ 	for (i = 0; i < len; i++)
+ 		if (one_page[i] != (char)0)
+@@ -181,8 +154,7 @@ static void split_pmd_thp_to_order(int order)
+ 	disable_khugepaged(one_page, len);
+ 
+ 	/* split all THPs */
+-	write_debugfs(PID_FMT, getpid(), (uint64_t)one_page,
+-		(uint64_t)one_page + len, order);
++	split_huge_pages(one_page, len, order);
+ 
+ 	for (i = 0; i < len; i++)
+ 		if (one_page[i] != (char)i)
+@@ -269,8 +241,7 @@ static void split_pte_mapped_thp(void)
+ 	}
+ 
+ 	/* Split all THPs through the remapped pages. */
+-	write_debugfs(PID_FMT, getpid(), (uint64_t)page_area,
+-		      (uint64_t)page_area + page_area_size, 0);
++	split_huge_pages(page_area, page_area_size, 0);
+ 
+ 	/* Corruption during mremap or split? */
+ 	for (i = 0; i < page_area_size; i++) {
+@@ -306,7 +277,7 @@ static void split_file_backed_thp(int order)
+ 	char opts[64];
+ 	ssize_t num_written, num_read;
+ 	char *file_buf1 = NULL, *file_buf2 = NULL;
+-	uint64_t pgoff_start = 0, pgoff_end = 1024;
++	unsigned long pgoff_start = 0, pgoff_end = 1024;
+ 	int i;
+ 
+ 	ksft_print_msg("Please enable pr_debug in split_huge_pages_in_file() for more info.\n");
+@@ -355,7 +326,7 @@ static void split_file_backed_thp(int order)
+ 	}
+ 
+ 	/* split the file-backed THP */
+-	write_debugfs(PATH_FMT, testfile, pgoff_start, pgoff_end, order);
++	split_huge_pages_file(testfile, pgoff_start, pgoff_end, order);
+ 
+ 	/* check file content after split */
+ 	status = lseek(fd, 0, SEEK_SET);
+@@ -536,16 +507,14 @@ static void split_thp_in_pagecache_to_order_at(size_t fd_size,
+ 	 */
+ 	if (offset == -1) {
+ 		for (split_addr = addr; split_addr < addr + fd_size; split_addr += pmd_pagesize)
+-			write_debugfs(PID_FMT, getpid(), (uint64_t)split_addr,
+-				      (uint64_t)split_addr + pagesize, order);
++			split_huge_pages(split_addr, pagesize, order);
+ 
+ 		expected_orders[order] = fd_size / (pagesize << order);
+ 	} else {
+ 		int times = fd_size / pmd_pagesize;
+ 
+ 		for (split_addr = addr; split_addr < addr + fd_size; split_addr += pmd_pagesize)
+-			write_debugfs(PID_FMT_OFFSET, getpid(), (uint64_t)split_addr,
+-				      (uint64_t)split_addr + pagesize, order, offset);
++			split_huge_pages_with_offset(split_addr, pagesize, order, offset);
+ 
+ 		for (i = order + 1; i < pmd_order; i++)
+ 			expected_orders[i] = times;
 diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index 8ef226107d78..9942bbea7837 100644
+index 9942bbea7837..b64c651f753e 100644
 --- a/tools/testing/selftests/mm/vm_util.c
 +++ b/tools/testing/selftests/mm/vm_util.c
-@@ -534,6 +534,15 @@ int64_t allocate_transhuge(void *ptr, int pagemap_fd)
- 		  (uintptr_t)ptr >> (pshift() - 3)) != sizeof(ent))
- 		ksft_exit_fail_msg("read pagemap\n");
- 
-+	/*
-+	 * Both entries present means that a THP has been allocated. But if
-+	 * their PFNs are masked, we cannot verify the size and alignment of
-+	 * the THP
-+	 */
-+	if (PAGEMAP_PRESENT(ent[0]) && PAGEMAP_PRESENT(ent[1]) &&
-+	    !PAGEMAP_PFN(ent[0]) && !PAGEMAP_PFN(ent[1]))
-+		return -EACCES;
+@@ -18,6 +18,12 @@
+ #define PAGEMAP_PATH "/proc/self/pagemap"
+ #define KPAGEFLAGS_PATH "/proc/kpageflags"
+ #define MAX_NR_ORDERS 20
++#define SPLIT_DEBUGFS "/sys/kernel/debug/split_huge_pages"
++#define INPUT_MAX 80
 +
- 	if (PAGEMAP_PRESENT(ent[0]) && PAGEMAP_PRESENT(ent[1]) &&
- 	    PAGEMAP_PFN(ent[0]) + 1 == PAGEMAP_PFN(ent[1]) &&
- 	    !(PAGEMAP_PFN(ent[0]) & ((1 << (hpage_shift - pshift())) - 1)))
++#define PID_FMT "%d,0x%lx,0x%lx,%d"
++#define PID_FMT_OFFSET "%d,0x%lx,0x%lx,%d,%d"
++#define PATH_FMT "%s,0x%lx,0x%lx,%d"
+ 
+ unsigned int __page_size;
+ unsigned int __page_shift;
+@@ -1105,6 +1111,56 @@ int unpoison_memory(unsigned long pfn)
+ 	return ret > 0 ? 0 : -errno;
+ }
+ 
++static void write_debugfs(const char *fmt, ...)
++{
++	char input[INPUT_MAX];
++	int ret;
++	va_list argp;
++
++	va_start(argp, fmt);
++	ret = vsnprintf(input, INPUT_MAX, fmt, argp);
++	va_end(argp);
++
++	if (ret >= INPUT_MAX)
++		ksft_exit_fail_msg("%s: Debugfs input is too long\n", __func__);
++
++	ret = write_file(SPLIT_DEBUGFS, input, ret + 1);
++	if (ret)
++		ksft_exit_fail_msg("write_file(%s): %s\n", SPLIT_DEBUGFS,
++				   strerror(-ret));
++}
++
++bool split_huge_pages_supported(void)
++{
++	int fd;
++
++	fd = open(SPLIT_DEBUGFS, O_WRONLY);
++	if (fd < 0)
++		return false;
++
++	close(fd);
++	return true;
++}
++
++void split_huge_pages(void *addr, size_t len, int order)
++{
++	write_debugfs(PID_FMT, getpid(), (unsigned long)addr,
++		      (unsigned long)addr + len, order);
++}
++
++void split_huge_pages_with_offset(void *addr, size_t len, int order,
++				  int offset)
++{
++	write_debugfs(PID_FMT_OFFSET, getpid(), (unsigned long)addr,
++		      (unsigned long)addr + len, order, offset);
++}
++
++void split_huge_pages_file(const char *path, unsigned long start,
++			   unsigned long end, int order)
++{
++	write_debugfs(PATH_FMT, path, start, end, order);
++}
++
+ static unsigned long shmall, shmmax;
+ 
+ void __shm_limits_restore(void)
+diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
+index ef8fe76d4c61..efd3a2be945d 100644
+--- a/tools/testing/selftests/mm/vm_util.h
++++ b/tools/testing/selftests/mm/vm_util.h
+@@ -118,6 +118,12 @@ bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
+ 			int kpageflags_fd);
+ bool is_range_backed_by_order(char *start, size_t len, int order,
+ 			      int pagemap_fd, int kpageflags_fd);
++bool split_huge_pages_supported(void);
++void split_huge_pages(void *addr, size_t len, int order);
++void split_huge_pages_with_offset(void *addr, size_t len, int order,
++				  int offset);
++void split_huge_pages_file(const char *path, unsigned long start,
++			   unsigned long end, int order);
+ 
+ int uffd_register(int uffd, void *addr, uint64_t len,
+ 		  bool miss, bool wp, bool minor);
 -- 
 2.53.0
 
