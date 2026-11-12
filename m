@@ -1,93 +1,148 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE46D606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 08:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21F7606B59A
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 08:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=PbWsbuTx
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=r768wm9Q
 Received: by kanga.kvack.org (Postfix)
-	id C98DD6B05D2; Thu, 12 Nov 2026 03:46:10 -0500 (EST)
+	id DD4266B05C0; Thu, 12 Nov 2026 03:47:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4A316B05D3; Thu, 12 Nov 2026 03:46:10 -0500 (EST)
+	id DAB976B05CA; Thu, 12 Nov 2026 03:47:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5F846B05D4; Thu, 12 Nov 2026 03:46:10 -0500 (EST)
+	id CC25E6B05D4; Thu, 12 Nov 2026 03:47:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B55F6B05D2
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:46:10 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1B1A3C04DF
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:46:10 +0000 (UTC)
-X-FDA: 85425834900.14.6DC5B71
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 17A731C0002
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:46:06 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=PbWsbuTx;
-	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794473168;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B0586B05C0
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:47:19 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1F3C44046E
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:47:19 +0000 (UTC)
+X-FDA: 85425837798.13.3B7311E
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 2D11640003
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:47:17 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=r768wm9Q;
+	spf=pass (imf07.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794473237;
+	b=uowygNvJ/nBtbvCbCHCnIXIkrvbgZaCrmxUQWx5EIzYgsdzb5tgZpc3dtZjLcsiEqJVQNS
+	q840Zn9PPvi+5p87+T3MoJWTrP7Patlh1nH+Fuoj4PXC3UKFRCBpvPVu5Saf246rtsavOY
+	kpP5Zn3ejO48PK+uSuwin4tNsHE7bRg=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=r768wm9Q;
+	spf=pass (imf07.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794473237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=41nsNdC3zdMjNaUNJgC+leDUiMtoCdh+/HNf/Dul+ro=;
-	b=hJtqotBA8IQm0vkQjFZwmPPLsU+6namLkplj9nvpPg5Dd0DGjasGyANh5RUMqlyyQzIPLz
-	UFR140RQsQuhAL0DKGPZBQkDCqmaWHN5ZBzAxKMH5NKYtyVo8YgB9W/CiWyEHoKNhPHFQi
-	fzV+MSH8xu84K7UWO4GGuDZXouH76lQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=PbWsbuTx;
-	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794473168;
-	b=wlWxU0Ro5TJbkFZBNFyjbsHW9feJ4cIDz8OwPyCtx1eor7RdEcpZIL1/779GD+aKPBNxyj
-	aQkLVxArOdbimhqdY2GLY7lID8qSSbpNQzm09x9PDb6lGZ16Lt6hFmHV6X9EXAyRuTbGx9
-	vQRGYhQH44pJPI5Hjz7O7ghLNDruVCY=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1794473163; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=41nsNdC3zdMjNaUNJgC+leDUiMtoCdh+/HNf/Dul+ro=;
-	b=PbWsbuTxFR3Gf9eWQ9Rfn2G4msjHKi8/9yltpuhpSE8Wc9/chBT41b+lkzDD9rrgzUi9TYeP6PtwGOo6G8p+0FYfIcmoTvLrJAd+0zWaFXZw8cJ9/ecf0jo0zdpqqUw8dfHkfHqODEFBCzkNWI/NiHAuE4qQAUORLrrixMjUZwE=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R281e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0XEbXuRi_1794473160;
-Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XEbXuRi_1794473160 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 12 Nov 2026 16:46:01 +0800
-Message-ID: <6722b853-3a80-439d-aee8-712011965d49@linux.alibaba.com>
-Date: Thu, 12 Nov 2026 16:46:00 +0800
+	bh=kVtvjLNQqVhAbmabkyBPJW5OAK7r3mnKjNng1ZW6k8Q=;
+	b=YeICEiWM0xQMtXJRyPWCcCkvFlAj6YE1qMbeANESBqMeYVWIpoUQNxrBEBnI/zGlZ0uiNf
+	rVOaqyS14u77QtgCxKXcEceQ2wCKUQefRSOOEcep4tE9CMj6XHCYOPwZt6BwhVXHzuAO4f
+	lHgEiZOFTCzw7Op3bqatQEhBvTfYBEo=
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c4cb6834eaaso646291766b.2
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:47:16 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794473236; cv=none;
+        d=google.com; s=arc-20260327;
+        b=FDji7zhndTZzmSqMMdcZG1klih2g+QZK5m+FqATFrtmm2jaKhMPsMH2ImUIUjQA9b3
+         zWMQmYP9ws5swNBXEjFpZu7+LhFno2DfWrfOZ+oulFQLkFrq6FRfJVGBzjmahyaam3hw
+         b7T3YGJrFxyxdjgWTsVICZb9fKUr6gmSzbNnU+bW53rCHhMoZf57F5FW4x4M3AbSNwuu
+         vnq943lm6S+BUkTFYysYyFTTgJU5CqXcNiVh8g8a0IgJCZ6PO13LuQ+jTfpJ4ChsCsR+
+         V3NaE/eDhnUhlE2METEdDQtDBmtDX9S2iKv2BNMY3y8Mb0/5CBav8a9Kas8d13eqjD9C
+         fsig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=kVtvjLNQqVhAbmabkyBPJW5OAK7r3mnKjNng1ZW6k8Q=;
+        fh=pfgUFwcmIc32fnWhW+lRfuOUqqYQM3n+khqMRrzhTSg=;
+        b=sX61LfvuHCCcc7WlioydSv81m0aaFWruP2Lsqfr/5FH+R1qzclwoWPM81oheczy7cH
+         bc1OHC+lzoKcmNDgnvPXY3GQzkHAvyPbSOTneA1ipkLjXppIwKwDg2242G3hvML24Aju
+         C1C9aWZ1hRC7K+5cG27hAX0rGchm0kIojOfYpfY74lGw3UQFUFLe0Csi48h7163fJYu3
+         9p9Vrr6gRrHMf9qObzGIVYwRa0r2dCKki8mcIyM8SUXZOhCisecu1pddG61Ini2A1pWR
+         Pdxnv4gS0hA+kYiGtVJWpQZEh/bTwe4fy5Qslu2VxalsRwLV9nRiCdyy+Ql2FcLY1jTZ
+         Xaaw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794473236; x=1795078036; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kVtvjLNQqVhAbmabkyBPJW5OAK7r3mnKjNng1ZW6k8Q=;
+        b=r768wm9Q6OHCQzSP9aH+QgCO41gHByJFHQWMui6ftgboHVWzIUu78I2dOPH8C8sd5g
+         djmwQv10Z/h7j4XNX6ONH45mMxPUwWA4QsyAKT2D6PId9e6t7JZC1vVRxihTGtekaUFQ
+         aNO4+fIQKgM+ASZFVRmaAU9hU+iUlPB4bZJ+km0ONgC+X/uYLs8TK8IBvEsgtaW3BMTl
+         kOnzN9oIjQeO7MrMX0mEZmzXNswMhvj9VLq83BiYKSqpAonYlqUNAds0QS6BtpQE/GYG
+         AnC8q1pOJzkA9THztS7cX5KvitXgzB2oPhKM/Ahdzc2kvkhaxq7Lz0bpKHevW1nmRMnv
+         xevQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794473236; x=1795078036;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kVtvjLNQqVhAbmabkyBPJW5OAK7r3mnKjNng1ZW6k8Q=;
+        b=KRPTTBXe4gkqCtlet/ORqoEsTkVwW5HP5Kw3KOn67yLIxj69uNN0LasYt1m0d8mvUN
+         o1Um6t8s3keMj3TonR4LY3fdMSjZCn6XaO4C5sYweDKg5jBDb7+7YogCCEAaIHm1BTKn
+         eOyISeaFRqbPnZFfoOmyyzzecSLqRCLdTvigF5twwycyMfFhgcKVPD6VwX8Eb5GGqvZE
+         zJwkpZ7xBveJusL0yumrYb9xcWqd7j/agXK2zuwQ6hQzfwBxIXbSTGDLgK3qILDIz/VU
+         ehpsmU5kunFLfD/7xUkigLVnAaO5JhHrzVucw0qVPFVj6vb3HhZ86NO1YznK3Y/XJd4j
+         zO8Q==
+X-Forwarded-Encrypted: i=1; AL+hErHwtJXFUp+8+kJ8NXkJ7OBPYf1PyTyfs/MM2eao7LwixxGSFKJn0lzurNSGAdvRVMrcuNVoL+rBwg==@kvack.org
+X-Gm-Message-State: APuU4Z8UlhcelYAjDCl7nV99h2HHSe+5wqfg5t6NNH4WdGHbyEEfcGtg
+	nDJo9e3W1PVp2RiiODs3DAj2YwKn9sMXN5Q+XOLzLTt+9WHTG85ZM7ATgCsulC5Ju7GX9Q1FLOd
+	BBxqMId2K+17LSCU6m9MkkkCdpiA29CM=
+X-Gm-Gg: AYBFou2oeeof8WIosB8ny9W8UEkwJPogHdIE+f1d5VICmohh7GJSPjcTJ8C/zoFim7s
+	GtgftpLHQAnpP2q4SxJ+1q8d/Fo3Z4QqtCPXPa+e69EwMB1Cmwxgdq98uLBIbxhSVnQN+VU2TVB
+	VB8LhQGZvCclfleKZNZZbxrJiSNeRfDmXxsC8nXm/OWMtilmRVF3n9rG8p6tjHlc2NSiFLovckf
+	eJmkP47PuU91E06v6cvkpxSUCZxfyb8WJ/8jGNQIqGKDWegM5zevFrf1s6iNNk9TvSikGGkUirO
+	IspTOLpOpeZHuY9DbxcWgIWQ4/FeV0DL4sLulsk1rmWPxWRe/mo8LYA1M3jS6wZcu3hke85Ox/W
+	2Pw1hPvmzhTgWUK1mbvKQgDOnz2gKHRwlrcXZ1k9atr+WhZlaBIqWp6RfSPxlB/d4Iq5zZg==
+X-Received: by 2002:a17:906:f59c:b0:c44:16ad:c31d with SMTP id
+ a640c23a62f3a-c50668b84bemr390386166b.4.1794473235463; Thu, 12 Nov 2026
+ 00:47:15 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: mglru: splice all generations when reparenting a
- memcg
-To: Kairui Song <ryncsn@gmail.com>, Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>, Barry Song <baohua@kernel.org>,
- Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Noah Feldt <noah@feldt.systems>,
- stable@vger.kernel.org
-References: <20261111000913.22943-1-shakeel.butt@linux.dev>
- <CAMgjq7B+PE-Tw_v3bKYzNOTaT6+0_fn8gW7sNpMwzP1tPGbDug@mail.gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <CAMgjq7B+PE-Tw_v3bKYzNOTaT6+0_fn8gW7sNpMwzP1tPGbDug@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6brr3uis666o53au5tdqmethdigahrt8
-X-Rspamd-Server: rspam01
+References: <20261112081928.3014946-1-ridong.chen@linux.dev>
+ <avV52J2rD19cjM2J@KASONG-MC4> <CAGsJ_4yibOkJmi9niJ8svu2NdEkZ5Qyf98VO6qMrJMa_9wGFgQ@mail.gmail.com>
+In-Reply-To: <CAGsJ_4yibOkJmi9niJ8svu2NdEkZ5Qyf98VO6qMrJMa_9wGFgQ@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Thu, 12 Nov 2026 16:46:38 +0800
+X-Gm-Features: AclHuK_EcloF2JvrHuKv7xoNWQwKzuk5RGeSJlKLhscR6ySvKSoZqdKqRDkMuSU
+Message-ID: <CAMgjq7Disoabm_4yyp60=AdaEH1RWfUpawc8vckV2e6c7g2RmA@mail.gmail.com>
+Subject: Re: [PATCH] mm/mglru: deactivate anon folios into the oldest generation
+To: Barry Song <baohua@kernel.org>
+Cc: Ridong Chen <ridong.chen@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Yu Zhao <yuzhao@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 4bqeps8ywhdsodxp9j4u41ykxcm1zot6
+X-Rspamd-Queue-Id: 2D11640003
 X-Rspam-User: 
-X-Spam-Status: No, score=-24.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 17A731C0002
-X-HE-Tag: 1794473166-968648
-X-HE-Meta: U2FsdGVkX1+pqNaLWmAXVEqnjGnl3240AUH4dJkBIUwZWJlwvERmyZZC3NlGmvli+JfrKBm4O/DxO+yKFJ0MnchriqzJXy0H/BCUNoLyZnqEhwzKvnuK5EIRAYgJAODfyoD9Vdx61b1UWAhsUNpVaOVrtcOGpgQL/f9YNvJcUUhQWAN42Y8TiZNIySEgtdHIhlfeyEhWCMQUta901vt5uQ0sHepw586xdMXwxvM8n2zX5518awUnf6fkdL5rUd4P63ZprpxCXiplreahxSX8xN7QI916diR6aR9lLewY2nJS0MH8sKM1Ovq/YLMF0FwIo5h9ISgoBTBuVqbPFIPndBWsnhO2jFaNQdS8no6YgYAOakw5JvZaOhZCnS8RSt4qUX5UAQ0guXe30QdTuYRv3R6SnSFqttBIyZK4KpMxOr4kfAOoT6jg2Q3uIlWuBvU+rPeMsd9dfLm+OziTMC2WvJeqDPJ2qUzJiTLpOc1mDgWtTrHNkCkLCGMakQk3QnYEsNq0Ljeh9HGPJS21sbqAr1v14Yu1B5g6urDObNxz/N8DRBWrKq8pGW5Hsy2v3bq2rcTEu1GuvvIoxf+S4TgdtrUvzlm+mWVoMbRPqPK6am49M8VMKJQavII662BvHbHtrUbHXqaWYQL8MRiiTpbM88IkT70v65LC/4HbOivmNt0kGXoJK665S0DY/h/kkIeZdF49iHGT1RuYOTOFzyfn0PeUNkfuHb9VwV6HM+XiMsxc2xuqxTUGxb+R8mkaaJwaSEDL3iSU9ukL7Nq6hX8XtmWLkuvlmmdxoswhl723+VMVCL91BZDq+zUwxCXMZf2bmNA0n1H2A5/eOMBnO+D5t2CN5R8JUJMbOQvw0Z8Wrolq6MIbKaFvKSpbfAweyEyk9vFqUXsZe0MIOluIm/BzN+Ty3yrk1kCkolkuB/UakehqM0lIXKRqRcWd39tZFFPPhj2Wwu4N1P2IkfneXFQ
- WZ9XxgUr
- 7AYOCjjwYoY9lj5sgfQLSf4VFPj9uLhyT/crXCKJ/lap2/K6yJ8WCnKY06MIMRHP0SbUZlLuedHCCJFogHLhXtcFtOJhOZByRGYV+U1n6K1geMES9DHYjhPiesAACm7yHLOz6f9mY/0HFeqNtRneF1FZXmBP2QPRxuTp2RcZbQeeLbIE4i7qV5IEVccsYcB4klEWfMMXl+tgXZg8Jdv+pZil6peb+79DmuxOZIqUNDPv5LzmhEnnmWwqfSmEAWcG0kEFfZK6d3NIpM/c1BDu9cJY1JudQKjHsSnJV4Rw8zmuevYr9ksKcwMQxBZE1YrlA4u3PSoXuU8E3sEWjVsTPXAGmIZml/147B/Pb
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794473237-144319
+X-HE-Meta: U2FsdGVkX1/oZT2Ec1spGutmywX6GkZpG/UfJwNk8fzhz1DoV0JlOADlYPrPVEHO0aGCut5Y5PnNV32mTp37iYlwhotNZTLtYLnK2eI7mnQiXO6D0vo+Jo06s4akPJMWEKHhsAhZpCGW9lSrY4vq15LGUVzDC/DNgUVzeYdVnPttjPqpSwwKjpSbvGRKGzZwHzoQGqAXsechi5zpNGPxu+3GptxQTUe9T6Nly8s/RfKZ8x+CUZ7cRlQmZa7hihGqopK1kcyngdUP/ffGTbJ1j/bIgRJ9pMYtrDn44ZMxJxDRQibHI2/EjWOuXG5HdJzIlsX4d0qefNZ4+uMybJOEOcHGYOoWTU5KQ/2lkoRQ82zDtaFid3CDi7LThE51a+N4aKSDyV2ot97XKt7opLbbtdpqmpDf/JkE/MVM0kKikt0bgpglUjjRJbnV82h6kI9RxSTLsmiEvK0RxXV1ROE+tL+xoTaz+NL5DkVkdsPTPEjFGPRiBeZ5oki7A24BW2IEoPc0vos+b6HsXcVM8dsR94/j0HP6oya8DUH2lXrC97wrWPhYImyixXCbJdyD9qYiQRRJ1+C7Pj1hzV0GPjtjPxUiOiw/ombvjhm71zIP1g+3k4CbW9PFeo6WJenY9+bW+aYEIy4ne+GwxOO0EaGZDXW7RRty9nJ8M+KqrF6tOpvzhgrpR6ncSZCJ+QvbvAzQnrX0t5czwPPfSt3VtxgVHaXJrib12zl894Lm9TEXJkufNa3Ml/0YPJ3IdU3P+OTE8VuLVLcP/FHSSh4qC3CCr9/RDbdFInUeGk6gkG60d5QNmxXTZtScwv01uXiO7mXPXrRI6YwNBfAO6Hpmr8jul9OgOcKFzCnPa3X2Dy51k9ChZfQM0O3y9xYS/iMbW2G9f4DXB8XUSCuUgqxmTBaqdmVa9tO5KMY0flXG+q3nH2Inw58ieFVc46hEUhFfCUDpLIXPw9v0oJUcXRO8tnO
+ PA0XnGs9
+ ccfIJWdFvt5tuBUb7EZoufCmxq+kufexIkIHCVAzbmcGivDmwZFCbrX+CYloXZvq/PSBwIdFNsM7KlDv1GS3lHmFsXJHXLvYeAVTdoq9GAWFdXYFD+QfkvbPYmOZ4ObT5B1280+Dl8YQKv/ExuIzRwIddsUyVNljhV6Vk8GTXbAwRBTcVFI1J9luYZl4GjfTVE/S9BFqnNdseLFatvOru7oZPMHVY7BBnwYeZs/xMn5BiadPqLr6mYOMWCqxG/wSnbq06RgwfVS+rrapDGengvWEDTU0s97FLAvK1k2EkB5H8sdUvG9kYlF7FvMAi1yHCyg/QbjyxNEVAHZSCK+478BY6vE1RwH7HFmLRHgsvbTetTQVgWE9qozSCiq0f4BVEpsQvdXX5R7Ok2HTAE0xgL9sRf+2FNgzX7qq3K4UNqM4jh/8N5qmQHILHvfkuGXjyPo3M
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,74 +151,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Thu, Nov 12, 2026 at 4:42=E2=80=AFPM Barry Song <baohua@kernel.org> wrot=
+e:
+>
+> On Thu, Nov 12, 2026 at 4:38=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wr=
+ote:
+> [...]
+> > >  mm/folio.c | 11 ++++++++++-
+> > >  1 file changed, 10 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/mm/folio.c b/mm/folio.c
+> > > index ea3adb6a89d7..c412d9b398e4 100644
+> > > --- a/mm/folio.c
+> > > +++ b/mm/folio.c
+> > > @@ -583,7 +583,16 @@ static void lru_deactivate(struct lruvec *lruvec=
+, struct folio *folio)
+> > >       lruvec_del_folio(lruvec, folio);
+> > >       folio_clear_active(folio);
+> > >       folio_clear_referenced(folio);
+> > > -     lruvec_add_folio(lruvec, folio);
+> > > +     /*
+> > > +      * For MGLRU, lruvec_add_folio() places anon folios that are no=
+t in
+> > > +      * the swap cache into the second youngest generation, which is=
+ an
+> > > +      * active one. Add the folio to the oldest generation instead, =
+like
+> > > +      * lru_deactivate_file() does for clean folios.
+> > > +      */
+> > > +     if (lru_gen_enabled())
+> > > +             lruvec_add_folio_tail(lruvec, folio);
+> > > +     else
+> > > +             lruvec_add_folio(lruvec, folio);
+> >
+> > Hi Ridong,
+> >
+> > One question here, why MGLRU/CLRU have to use two different ways to
+> > add the folio back?  Will this cause over aggressive reclaim of the
+> > folio?
+>
+> I guess that is because on mglru, that is lacing a way to add the folio t=
+o
+> the head of the oldest generation for anon folios while CLRU can do
+> that :-)
 
-
-On 11/12/26 2:13 AM, Kairui Song wrote:
-> On Wed, Nov 11, 2026 at 8:10 AM Shakeel Butt <shakeel.butt@linux.dev> wrote:
->>
->> Noah reported list_del corruption on single-node hosts running 7.2.11,
->> which already has commit bf4ade7dbd76 ("memcg: keep folio's objcg same
->> as its node"). The bad pointer is an MGLRU list head in a freed
->> mem_cgroup_per_node:
->>
->>    slab mem_cgroup_per_node start ff31bfa36a3c9e00 pointer offset 528 size 1920
->>    list_del corruption. next->prev should be ffacf881ccc70e08, but was ff31bfa36a3ca010. (next=ff31bfa36a3ca010)
->>
->> When a memcg goes offline, __lru_gen_reparent_memcg() moves its MGLRU
->> lists to the parent. It moves only the generations (gens) from min_seq
->> to max_seq, and it puts each list at the same index in the parent.
->>
->> A folio's gen in folio->flags can be ahead of the list it is on. In the
->> parent, the same index can stand for an older gen, so the folio's gen
->> can end up older than its list. Once the parent's min_seq passes that
->> gen, sort_folio() puts the folio on the list for max_seq + 1, where it
->> stays until the next aging.
->>
->> If the parent goes offline before that aging, the folio is not moved to
->> the grandparent. It stays on the parent's list after the parent is
->> freed, and the next list_del() on it touches freed memory. This needs
->> two cgroups on one branch to go offline one after the other, such as a
->> container and then its pod.
->>
->> The parent always has MAX_NR_GENS gens at this point, so every index is
->> valid in it. Move all MAX_NR_GENS lists, not only the gens from min_seq
->> to max_seq.
->>
->> A reproducer that drives these steps through the lru_gen debugfs file
->> gets a KASAN use-after-free on the freed mem_cgroup_per_node without
->> this patch, and no report with it.
->>
->> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
->> Reported-by: Noah Feldt <noah@feldt.systems>
->> Closes: https://lore.kernel.org/all/20261110132853.71228-1-noah@feldt.systems/
->> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
->> Cc: <stable@vger.kernel.org>
->> ---
->>   mm/vmscan.c | 12 +++++++++---
->>   1 file changed, 9 insertions(+), 3 deletions(-)
->>
->> diff --git a/mm/vmscan.c b/mm/vmscan.c
->> index 6a1af9b92349..902616a3b755 100644
->> --- a/mm/vmscan.c
->> +++ b/mm/vmscan.c
->> @@ -4751,19 +4751,25 @@ void max_lru_gen_memcg(struct mem_cgroup *memcg, int nid)
->>    * The same generation has different meanings in the parent and child memcg,
->>    * so this compromise method will cause the LRU inversion problem. But as the
->>    * system runs, this problem will be fixed automatically.
->> + *
->> + * Move all MAX_NR_GENS lists, not only the gens from min_seq to max_seq.
->> + * An earlier reparenting can leave a folio whose gen is older than the list
->> + * it is on. Once min_seq passes that gen, sort_folio() puts the folio on the
->> + * list for max_seq + 1, where it stays until the next aging. If that list
-> 
-> "sort_folio() puts the folio on the list for max_seq + 1" seems not
-> very accurate as MAX_NR_GENS - MIN_NR_GENS == 2, could be any stale
-> gen outside [min_seq, max_seq], right?
-
-+1. The comments are not easy to understand. IIUC, the problem is that 
-the folio's gen can fall outside lruvec->[min_seq, max_seq], potentially 
-causing the folio to be left behind on a memcg that is about to be freed.
-
-But, yes, the fix is correct. So,
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Right, but lruvec_add_folio_tail also added the folio to the very tail
+of the inactive / oldest list, could it be a gain or problem if we do
+that too for CLRU?
 
