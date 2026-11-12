@@ -1,104 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F73606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 16:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E35D606A89E
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 16:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=BqQLHNlY
+	dkim=pass (2048-bit key) header.d=cmpxchg.org header.i=@cmpxchg.org header.a=rsa-sha256 header.s=google header.b=sP0H+XlC
 Received: by kanga.kvack.org (Postfix)
-	id 9FF926B05B7; Thu, 12 Nov 2026 11:24:16 -0500 (EST)
+	id 5E5B56B05B0; Thu, 12 Nov 2026 11:26:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AF716B05BF; Thu, 12 Nov 2026 11:24:16 -0500 (EST)
+	id 56EB96B05C1; Thu, 12 Nov 2026 11:26:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C7016B05C0; Thu, 12 Nov 2026 11:24:16 -0500 (EST)
+	id 436446B05C2; Thu, 12 Nov 2026 11:26:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 656AB6B05B7
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:24:16 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0120D40630
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:24:15 +0000 (UTC)
-X-FDA: 85426989312.01.8FF39F5
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 69C9D1A0006
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:24:12 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=BqQLHNlY;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf19.hostedemail.com: domain of alexandru.elisei@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=alexandru.elisei@arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1ED156B05B0
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:26:53 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 95FC112060D
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:26:52 +0000 (UTC)
+X-FDA: 85426995864.21.22AE2CC
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 768331C0004
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:26:50 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=sP0H+XlC;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf18.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.45 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794500654;
+	s=arc-20220608; t=1794500810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6Xx9ll4KiRlZN5Q7aztt0nmyG6Z2FwPKVYZ86wY/LHw=;
-	b=Gm/APK1KevghZvUtNHPpI9idKyMJlVNKhEtgRYbEEAJqi7Do9ti2qMyuTzDDiWxrxDN7BX
-	AOaSs8AphbcQeIA1O/wDPQz/gA9n4q0O5LNswQrA+Kdm433QoOTd5pZ2Ix9RLnM8qeQwov
-	G1yyZ6ipJtPtZFxgIFk1x6jxr4Zqe60=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794500654;
-	b=O+VHnksn+6IfuZgJQdTeDcSgCqPQOEnBVlzzJhrWvn8d545O5EXRm/yqf1lRpMtwOMYdr4
-	v5LkV/JUdv3YnDFeFfyxFlFOx+KNZ2BzZpadSah/qFLgbsdB52GyMSW+2q19Fx527j+9h9
-	hixrX+UvT/8cov2HIOpnKr4MjVqHFy4=
+	bh=zy2nREmykWs6qK0x39KiCj1K4H7Cbhg1tuWFyKfn2Lg=;
+	b=Ydz39UG5oy6sHzXB3BjaNTkOVb412qdIhC/L6PRqHnx7ie2P4fhcLyXY1VJtHmnmW1tpcs
+	9Wyre8ThAPpbuWRlAPU2CjVmd+VLPA6HA/1HsGxwCcLEM56DAtLebuCFwTzGdVoz/9Yo3W
+	+h29uyiUK37Ebn5THeMKGEDNIm7h+K4=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=BqQLHNlY;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf19.hostedemail.com: domain of alexandru.elisei@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=alexandru.elisei@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 69EC11516;
-	Thu, 12 Nov 2026 08:24:08 -0800 (PST)
-Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0F8FA3F673;
-	Thu, 12 Nov 2026 08:24:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794500651; bh=1Zrocjmf5KDVgs9C8TWM+FCvnpiEFAfhwrLPqAEVgUs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BqQLHNlYEL+MGcY7ChdyVQ7siuvacMh/KJ7dkXQfKvojNWvmYw/fDWZ9Ui9lqm7F3
-	 9jsLTQTkZVACGQn88QQYjBHPS96QiYQAoGd6prS231FJxAvj7b4bc6yFRmNPKYKITA
-	 nPX92trHEYqZSAzvnLx+fsCkWZKwWfoOkTWDUUFU=
-Date: Thu, 12 Nov 2026 16:24:05 +0000
-From: Alexandru Elisei <alexandru.elisei@arm.com>
-To: Mika =?utf-8?B?UGVudHRpbMOk?= <mpenttil@redhat.com>
-Cc: linux-mm@kvack.org, dri-devel@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	David Hildenbrand <david@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
+	imf18.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=sP0H+XlC;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf18.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.45 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794500810;
+	b=uRyfWeRWqSHSk0FKfu6tXbRIrK2R4ispdY3jSd5dde71Z28oj3RV6t5JIRZMZ0+FlkB7un
+	tp89pEV00E0BNxPhZEz8VFFKaBWs1byijn3wWdmBcyFUeO8uvBh2TjAjSimdnzc1xke1ge
+	kOO+v689hOTCx86GU2kZZjfo2R/XVY4=
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-67c6a0abc2eso2508461d50.0
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:26:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1794500809; x=1795105609; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zy2nREmykWs6qK0x39KiCj1K4H7Cbhg1tuWFyKfn2Lg=;
+        b=sP0H+XlCEu4S/fWI2OwGKjWyUVe/QQQZuDsYYKwpL8nWeS5oefKy44GJKTaAAlDuxR
+         nt70F+aMAO9qhjtB02RTvMsphMMhYckIYqRyyJ0dygOUPcMfdXjSf2RGgv8oi+DM/D1b
+         SGXcoGH0Ou2bgAEBJ9dfmus2u4XOU/0HcNy+m53A2dUmq/Y+CRbWrnSHrbsxHuxXkZAf
+         KjtjK0AN3xGBEYRGfNcRyH2V1lrsQ4+KdNH52RSxnH7gHIIrgJL5gUFq4DYQnCMztS5o
+         KSpbznEGYsDrGjtN4sKzMGjGih/y0lsJOgAlzXR9sn3XhFd9eAIIXHGoOgpJeXUObUbe
+         DZrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794500809; x=1795105609;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zy2nREmykWs6qK0x39KiCj1K4H7Cbhg1tuWFyKfn2Lg=;
+        b=WyehXsP/qh+2FIdDrvjrYntLKxu2r/zfrZ7eg5eZWuLQuwPR2cNVUyk3EwmXyCahsC
+         6bRss15UP/stndAzyI1Bt3WtBJk8KTEeqW0pTjNyOG97faxJ48iURFbS3SHmCr1jxVtH
+         fFLFovLD22e1CjfZdB8N11UuP7X2qbWyNOYVg9KivxXB3fPWEe77jXCjllAMgvBp2Isj
+         6LPkIYbs6gYQGdMgh0MWUhBhVaRQHqqjBmC6Exu0SW+HmHoZG5NN54GFkze3Hj0F+zuR
+         rKaBrJEZwumQljCszkZQiFb78S9G9soHypP1wLfH4l/2JlfeEQBs/Rup1WxIrhXRN9sO
+         bVzg==
+X-Forwarded-Encrypted: i=1; AL+hErE+nSr85qs53vrs8phYGvzel6SO/1QQNYkd0spJvbS3rPEA2lYE6Yy0NABLHd3W083n7JkuUzMwAw==@kvack.org
+X-Gm-Message-State: APuU4Z+5KMUZV9UVpaeRuYbMRJuMazA9HiVhlWkhq4K5VQhZK+jl91m5
+	1s5Wq58TBbD29xhFrRYrd37L9rjK16E1DpOQyUCj+WUNYCQw9hAOTnS5m5/ij+vhrRk=
+X-Gm-Gg: AYBFou311wbOY+Qr2qhFzUN2IFxjTOFJYNtLatAgPCqQZhpR8k60CPsMaYHBmrZcbB0
+	sKy2IoD3xUU76te2t8J2KD/gAZtZBRHEpW90pUbY4F+s9Wl4Hqi2dSES9IDMmzXxUAAqzhQz+lB
+	rMyMCppJWkrgddh/Ui3Evmd1MR2H+sBs4PrqHmu4O3nJOemoMo1L3T21Bt+om7fZku4801A73DL
+	x5r+vlLmjlDsnudAiAacshAkS3GCM1AlywpVYXP+gGq0MPIfIQwlPIF0YzXYzrKsMsmTUgmLzaA
+	iZEOBYmRIGs3FJHIgL/cc7K3uJVbMukhxsS7EjeOMdKgdyoP1f9Oe17ozUvojzU6w01IssOpeXC
+	EWVNgp7AqiuAvyZ3im1Br7zOvnHsiA8RooPaXHbTdrby+fMIcJGIi+aoJ1Ra562Cv5DB2BNXxpM
+	kY09JaXZ56PsywLv03YSAfjixJQF2Qv9Osmsja1iRnWrvZMqfqWTb8c709mEL+y6kCgSN30e96X
+	HOTzKtU3oJrXBe/HQPjIoYAHwQnqkk1Li7mRAWxA64L6OA0UkFULO6EC8yDP1KxrfpejNH051G4
+	RxqsDyQGTL97HIsz3x99B2/aQj+5
+X-Received: by 2002:a05:690e:d01:b0:679:a2c3:b294 with SMTP id 956f58d0204a3-67c67ff20aemr3211748d50.83.1794500809370;
+        Thu, 12 Nov 2026 08:26:49 -0800 (PST)
+Received: from localhost ([2605:8600:200:14e3:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67c589cf1fcsm7627342d50.13.2026.11.12.08.26.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 08:26:47 -0800 (PST)
+Date: Thu, 12 Nov 2026 11:26:46 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net,
+	terrelln@fb.com, dsterba@suse.com, yosry@kernel.org,
+	nphamcs@gmail.com, chengming.zhou@linux.dev,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Lyude Paul <lyude@redhat.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH v17 00/12] migrate on fault for device pages
-Message-ID: <avXoJSGh5xjGFgod@raptor>
-References: <20261103061629.972669-1-mpenttil@redhat.com>
- <avWpWBl1nPcRVmpQ@raptor>
- <79f33ab0-2e43-4efb-94d0-addaf40745ec@redhat.com>
+	linux-crypto@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, riel@surriel.com,
+	shakeel.butt@linux.dev, kernel-team@meta.com
+Subject: Re: [PATCH 2/2] crypto: deflate - use vmalloc() for stream workspaces
+Message-ID: <avXoxnMq6ns8AK0z@cmpxchg.org>
+References: <20261111153532.1036709-1-usama.arif@linux.dev>
+ <20261111153532.1036709-3-usama.arif@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <79f33ab0-2e43-4efb-94d0-addaf40745ec@redhat.com>
-X-Stat-Signature: ggtj1pp3iipj8fadt5urouy7e73n9fxk
+In-Reply-To: <20261111153532.1036709-3-usama.arif@linux.dev>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 768331C0004
+X-Stat-Signature: n17s88ndhks3mycscyfmuskbm7k5wqko
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 69C9D1A0006
-X-HE-Tag: 1794500652-808669
-X-HE-Meta: U2FsdGVkX1+1hYELyu7nu4nias2ClWt8+VyjQgfoBhD213mas4UarRoziNSlVPXGn02il/orpaMCmRdYRWTDE420mJ5xcw4mA8Oh2+WBhhZ8KK0qYDnjj6hJWGFW1V2M2jiZz9INh6eyTEYO0/N0epZ1RY29PgsyyXqydSBjwiSPySg9SreWGsuj4s33lC5piQTzEiarffuoEOlkWrAnn6KPDNkyeCmrN0beSENpZRqp07nJbOwBMC/mBV5rPgEtm5fCUck7Obkx7ofVzx8K/kNAkqpzzbprqg4emzkF5UVEEq+J9APNTOFVamDK4QQ3nB6eC4OB7WFn3xosL6eiWG4NjvtmEzZ2qbHziDZ7YRYaSColDrRJZO+N/+OLjtgatFV8XnTn7FabW06JbeBA1NBc2T3NKPrfl5tuR3ELVsP2pV1A0sALu5LcIuZxcVTRWFQSXdVGbTH6eLumv+AQTjZtZeL/L1GwjhQa/JD/pp8/bWfIgJ+4FOXtwKMVcNJypHrk/ThkVJnYWqHO5E4/1lTxxvCuGr7puR1/YvA6ieQs2H08Mo1xWyvOLYDxHVIpS3qeRej7mTj7b6goJ3QC/fgCIQ4brypOqWZcM8SV5yKuIMuNSVBE+5pkBkTvn45ZA8Y59fiZxOH+sWtdHAiMGhOM1nFLP1R06ZX/erJSb0/1uvk/7B3MrSkcAOe/nbtEto/y3+WQioT4wwoWvxFPUknrHB6tB87pxlbl83AkP1Bqw6IWOUALzJFUHLUkIJTEBN2uP94i7gG10nVXZX9yfKtVeWoGZZfM85f9WJER3uBeZqUkR9RrIOUMvqW+usr3rx5DLgCZqu0cgk6vjPUSHLgYSh0cHNB6XTyoOHwmZoZZWyB8zQHMUeoZbfDcFjoCzepJ4D0mA5IQau5LkuoP8qXZtoqNp63aiXk2TO4cpoJsL7hurlVtRQQVv9nNaojQwyJ46ddtdO7ttGHLFCK
- IXQi1OwX
- Ccs4xUtUHIKPZCj7BsN1Rx3+Dh/3k569ZoS9u85U/NliU3RhyMTSekfswnCe27bb1YZM1UIKKa7feAKH/ZBIh4R2yC7+vZpFJLx6yranYX0S/7WkLIqysoYuOUCw4yuKnfV1QkLNVmu/gj43IP/BD3RaanXaFRUuNecvD4AJyepRRQ8EWD8vhqvy6L5BjXRUm/EbhUbPgM1wii31bmGsjgUCtaCdb2sBXEXI07lOcHLQZypSTnjYuW5UQ59ghpfehlr9q
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794500810-43676
+X-HE-Meta: U2FsdGVkX198r2M5I+QYvAzUBzeF3WZWDttuz07QYd4cnsgPFy8VGp07WP80yc4tseItIAwIutEh01uk/OYhv8l+lEn3iM2KYdNYAo1/tH/qEY/EroClmk9lQjzhqfUnmF6fCdLmYAZ1srZhKZ1eaCtufk2Js60nUSR76EMJhGqJS74ac82KbBxeULEduvxAGxRl2JiW+pzpMYGSsM3d8yhFyH8Kd95lKcZqx85IE0/qsfdW5COXsMHRdCAoyX6+SD8ZE8SoSDqL0qlk0rdMtHxaakH8rHBF/wjhqipzhJ6NQeu66xaw8AQzqwnpS3TUJ48aW3G6jL1VE4iaWqUTDPFCtPo4zFuocogf7XDiPbNL8ma+YTaMMVqiRjgmkXKf4ujWZJmo5zfTuh23HJiQmIqwi4eCPtivf/gMpoyfsXC+OzAoYsWYIcbCk9Ky213jQX43Gl0+dzlgod72eQ7LmyFFGmDomfgiq//mRjIQuduuDlqWaNyHSKyspg5Y2V4x7jJ8Ejns7bpPZTEbZ9Qr+VkcJWR4fTRWzekIgtVxlMT4CId2Xl/MbgVAeaWBxnx5BU8IyVEYl34f6Sb0/ezFN9qJ/FEbS9xeWZLWZvgPuZOe7lsfbOHl8xTc+5M8jq5Mthlq6LZUVe024EYPoOgqa42ha1RMPovXZqmcQfaUsfFci/ZJfLcH4Qpb7kov48EhEY2D/K6BYt80bDEbtculZ/2P3hJY0QMC7nv4GmtqARPytK2Cswc3/8pxNqUeScSAIMNPYCuF73jbwgHpItojo8SabDHTXBWARAOOAtMRP+Rjv/jRZt5HduZp84Mk4UPaEn3Q1O8PuLfXX26rdMr+WS4AgKK58hri1JCE25dTWINXxAA0dkEnmaqnUgi4+1V6/8p3W9LeWvDO95pIb8+OcoD5/9IWim3Du9lRQ2LbvZTqEOFdScCXUNSILv3uZiAxNHDUiCBLr7FqsVookM/
+ l8W16Bvi
+ i6Ev9X4TIXExlFnhdbZ+4+huLwmm/bJDyTSqza3wwvwSQRYmVaHXMtUE/jMJTqkyXBZMxYdlACn6PYwXAY335TtPwIMjkTs8h6yLThxGMkkfUtw/x0+1fpSfZWx8vGfMiwWYE32aK6zvQbSt4KtV03mDZm5UcfLrp7FxzSZ+quSsZkBwaLoXh+gVtV9NoZXg1qJo7VZEP+dOX7abNNEP9Ky03QfpmwRoSJlts5K7T8ySrwz7V6TEJljI7WCA9FbSNrz4KGKvEIkxK2OG3WAStKd/EnSsdg2A1ndySx3XwlshaPZOSTxysu9o3roRHG7ZTTqoXE+ZacdbLjIX4f7iiV1cAknLbyObqq9jOYgqQj+K1XWJQxmLRjP5UmWTBKP1KdPVQtqQIMxqAX9lXGNHzOjbSTL8VQ/eOxKeJZqdONQxCmp0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,33 +129,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Mika,
-
-On Thu, Nov 12, 2026 at 04:00:09PM +0200, Mika Penttilä wrote:
-> Hi Alexandru!
+On Wed, Nov 11, 2026 at 07:07:40AM -0800, Usama Arif wrote:
+> The deflate acomp streams outlive the transforms that use them. One
+> stream is allocated during transform initialization; additional
+> per-CPU streams are allocated on demand. They are freed only when
+> the algorithm is unregistered.
 > 
-> On 11/12/26 13:56, Alexandru Elisei wrote:
-> > Hi Mika,
-> >
-> > I want to help getting this series merged, and I've been familiarizing myself
-> > with hmm and device migration, please bare with me if the questions I'm asking
-> > are obvious or downright silly.
+> In a 4 KiB-page x86-64 build, each stream requests 145,320 bytes.
+> If kvmalloc() succeeds via kmalloc(), it occupies an order-6 block
+> (256 KiB). vmalloc() needs 36 backing pages (144 KiB), 112 KiB fewer
+> per stream. Across 384 populated streams, that is 42 MiB less
+> workspace backing if all would have used kmalloc(). There is no such
+> gain when kvmalloc() already falls back to vmalloc().
 > 
-> Thanks for the interest and willing to help! I am preparing a v18 of the
-> series and plan to post it early next week.
-
-The series is big, and as far as I can tell the MM people are hard at work
-reviewing bug fixes. It might be better to wait a while, to give people a
-chance to have a look? I know that if I see a series being reposted often,
-I am less inclined to review the patches since probably a new iteration
-will be posted soon. But I can only speak for myself, you know best.
-
+> Use vmalloc() and vfree() directly, as the crypto lz4 implementations
+> already do. This uses vmalloc address space, page tables and
+> bookkeeping; the figures above compare workspace backing only.
 > 
-> I try to answer your questions, there are quite a bunch of them!
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 
-Thanks for your replies, it's going to take me a while to digest them.
-Despite the silence, I'm working on it!
-
-Thanks,
-Alex
+Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
 
