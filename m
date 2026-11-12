@@ -1,140 +1,165 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E63606A88F
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 14:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B65606A8AB
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 14:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BRXE3kNL
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=gJlFM33D;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=LisWq/Fp;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=gJlFM33D;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=LisWq/Fp
 Received: by kanga.kvack.org (Postfix)
-	id 65C0F6B05B3; Thu, 12 Nov 2026 09:00:22 -0500 (EST)
+	id 991766B00EF; Thu, 12 Nov 2026 09:01:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60C9A6B05B4; Thu, 12 Nov 2026 09:00:22 -0500 (EST)
+	id 942636B05B4; Thu, 12 Nov 2026 09:01:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D3656B05B5; Thu, 12 Nov 2026 09:00:22 -0500 (EST)
+	id 7E3056B05B5; Thu, 12 Nov 2026 09:01:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 11C926B05B3
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:00:22 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8AE88160583
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:00:21 +0000 (UTC)
-X-FDA: 85426626642.22.71BA356
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id DEF781A0013
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:00:18 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BRXE3kNL;
-	spf=pass (imf19.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 497D26B00EF
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:01:09 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BF8D91405D4
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:01:08 +0000 (UTC)
+X-FDA: 85426628616.04.99BC4D9
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 8940780010
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:01:06 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gJlFM33D;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="LisWq/Fp";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gJlFM33D;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="LisWq/Fp";
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794492066;
+	b=ac+aeByAA0Xi7dz8LADU+Kr45PbTkM6XnieQm/mTo5tOMMLt8GTjYthrfkaHj9f9aLppkk
+	IoiMvYnJMYXAuGPO9uz9c2QLQhiORwpp4PWkkjkI+0AjEREKcRo5IUQmlK9C+lPMsO8yax
+	pprBzG8yDZ+CFC3Q6oqk8yV6vgVSXK0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794492019;
+	s=arc-20220608; t=1794492066;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6+ivU7mK+Dgb7S5flnTbZ+VQO4kALIdPVWhZrABAacU=;
-	b=nf3w6VVtVVUxstnQuqZJudJjbibOeveD/9aQ0200LUx05aThBs6HALMjt1lzypFyPtY9x4
-	L9sY24wXFafBxkRP99wQBTGkmBz7b/1RD9OezXTXAShdaLGDQSxs3k/wE9hQiU2pnU69JQ
-	51zPZ7egjqJExMSSdun6e6QzOvrsXPk=
+	bh=WTNMIFQg7vEsr/bVsx6max9Hp2mlrFDIwp0Z0arBhBY=;
+	b=XcrY/C0n0zS0bYt0/H0gIvC94/BDn/Pb4RU9+2nI0ueebIneOJlMRJKvqXU1JuHwanGh9R
+	IUfYPkyIfrffVyZmbk1w9mmp+F9Rh9uikZuS8hKb1i0ADO6/rXb5JRaw7YFXKg2itolOhA
+	Gd6dYIJfBgKtFFAgpjJoCsltkeNkYgI=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BRXE3kNL;
-	spf=pass (imf19.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794492019;
-	b=bKiiHmjNIFKTD/Dz/o6HKQNT8d4RgWio6pYlNgbXPI1rie2C6XbnYWVUwM77JmmZf0m5OY
-	WLKmUQSwmhD0C4H/Wo0y3E++cA8PfR/kDg/jhTZ+Xwa0JrrW78dEbxHUVFKFCSyAUg2YZR
-	E9zMIJzDPZYrcnv6YK2wXjRCdoTtUcw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794492018;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gJlFM33D;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="LisWq/Fp";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gJlFM33D;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="LisWq/Fp";
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0DD6A21E32;
+	Thu, 12 Nov 2026 14:01:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1794492065; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6+ivU7mK+Dgb7S5flnTbZ+VQO4kALIdPVWhZrABAacU=;
-	b=BRXE3kNLcyVkL0Z/NeGbGBpf82pwkqrqsHoLo3OmoKKQoQBDHWqKSNOCKs6WPXpozR9Ips
-	A4juiVQGqxqD0l6oj7m+wtXTHRu7mqUNlBQmWjKBDnA+I61oCnc5EkVXcFnRx3TDJVYglu
-	KDjbEGO7O7NBk9vCmnVV9mtb0CuXDME=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-439-WJOGCxZQOme-14YUNxKZQg-1; Thu, 12 Nov 2026 09:00:14 -0500
-X-MC-Unique: WJOGCxZQOme-14YUNxKZQg-1
-X-Mimecast-MFC-AGG-ID: WJOGCxZQOme-14YUNxKZQg_1794492013
-Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-5c14cc3cf00so2218137e87.1
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:00:13 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794492013; x=1795096813;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6+ivU7mK+Dgb7S5flnTbZ+VQO4kALIdPVWhZrABAacU=;
-        b=tHTrzYn9T/O3qyXLpawkFevUIlrNzVGRN9TE1teeXHz2hxTKcPmDO32rJSMJZejHRD
-         CYFvvi3kQBsVfmwRwauWM0Fx8c7hxcOl989sUiqefhE+Q3CTQ9WMZO8zuwmEHp+KhLsR
-         t8u+Y6qCtYqRO7wNTKmmf6zr2JN1WHOa5BS5ib3/hyWuTZ8XTSgd7q4sS29v5aFy+wB/
-         xvh92aYV3M9kAvk76EIod6tVYIE+8IOKEwv0bUKEsgXwgiswlhtXm4w5EfC9gDmXhJEA
-         vYJmKJ2zvEY+mKs11PzDldC8TMqzDGS6/HJ4VrKAc30fN0uPt5Y0cP8BJ7wksO7wzIv2
-         qJ+g==
-X-Gm-Message-State: APuU4Z8h2ovKziv831TzWE6N7J0obMBZzf361nlEbpcZl4tfQDJRFm2r
-	5WObvNcJGVukkkfYQ1GGyF7U0NR0jfPSlIF1ob+pe/8WeuDkUu/LrqXdy6Zaw64aCImFdhYA232
-	+aINRnVHOMUO0YP5C6iu4YtJPXiUAVDZ2/zOM3sDH2ckeyaZNf8Q=
-X-Gm-Gg: AYBFou0xQx0qRcaMQ83M1DYW/aIKGJ78z4oTCDKomoXW2xWnIM8od23orqnI08qYmrZ
-	e6l3zlNbs99r9Tx/5KtDk8jjjNxME1Kq92m83Klta8n0RrVniaT/yTjTU4UkFP/KarXOdD8BERv
-	5ve7BCGwSGWuTX19lBmCY9wa+xNHvCbbrd5b5hOYRxSbh8ss5tzX/Kwbd0mzUg3MrnVKa4SAnTP
-	lmZk0hLI2wQetviyKuCwBcrA9mTex0XqP2zyVakQUPzR4YBWVk/LOyV8+90lzNMg27QFxOhjKwu
-	ONh/pRk6MtLedYN5aDT/DUUodKqg6xjZ3n3/dcVcyifIWH7a+EGx5ybtFOP1WmpkWxmqdzVuWoe
-	7wdCdVTUBaaXX098Mrgcc1fHeDYM+yCU17Ar2U+ZiRnZHfys3c6U5OYZV/MhDtToQqALAJdSoIJ
-	PIkLrV
-X-Received: by 2002:a05:6512:2520:b0:5c0:cba:57d6 with SMTP id 2adb3069b0e04-5c15d5452a2mr2031596e87.9.1794492012340;
-        Thu, 12 Nov 2026 06:00:12 -0800 (PST)
-X-Received: by 2002:a05:6512:2520:b0:5c0:cba:57d6 with SMTP id 2adb3069b0e04-5c15d5452a2mr2031556e87.9.1794492011587;
-        Thu, 12 Nov 2026 06:00:11 -0800 (PST)
-Received: from [192.168.1.86] (89-27-86-246.bb.dnainternet.fi. [89.27.86.246])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5c157ba563asm1761149e87.13.2026.11.12.06.00.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Nov 2026 06:00:10 -0800 (PST)
-Message-ID: <79f33ab0-2e43-4efb-94d0-addaf40745ec@redhat.com>
-Date: Thu, 12 Nov 2026 16:00:09 +0200
+	bh=WTNMIFQg7vEsr/bVsx6max9Hp2mlrFDIwp0Z0arBhBY=;
+	b=gJlFM33DOlLsXo/fMz8rj/qpJNd1/LAfw06dbMqIfLoc4IuQh9/RzMXaHgeNvRN5r4o0B4
+	DgqDCnXzADpLagRmMbfxO/HW+Bg9xItuDkWUO82GFfItmNejFrXZhBUW2oHpytiyUlvPP+
+	TNvMTYoYQXGAiLUv3uBgb7s2eQv/WNU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1794492065;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WTNMIFQg7vEsr/bVsx6max9Hp2mlrFDIwp0Z0arBhBY=;
+	b=LisWq/Fpj8SqT6u2xIBros+39GjGe1Tr75xCt4eKCv/fmjYu3CJDOJW1YNVOTyGrVDIuJq
+	vZrJ+kiUtvHXFUCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1794492065; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WTNMIFQg7vEsr/bVsx6max9Hp2mlrFDIwp0Z0arBhBY=;
+	b=gJlFM33DOlLsXo/fMz8rj/qpJNd1/LAfw06dbMqIfLoc4IuQh9/RzMXaHgeNvRN5r4o0B4
+	DgqDCnXzADpLagRmMbfxO/HW+Bg9xItuDkWUO82GFfItmNejFrXZhBUW2oHpytiyUlvPP+
+	TNvMTYoYQXGAiLUv3uBgb7s2eQv/WNU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1794492065;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WTNMIFQg7vEsr/bVsx6max9Hp2mlrFDIwp0Z0arBhBY=;
+	b=LisWq/Fpj8SqT6u2xIBros+39GjGe1Tr75xCt4eKCv/fmjYu3CJDOJW1YNVOTyGrVDIuJq
+	vZrJ+kiUtvHXFUCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5F9A4134A0;
+	Thu, 12 Nov 2026 14:01:01 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id M0T5C53G9WrPJQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 12 Nov 2026 14:01:01 +0000
+Date: Thu, 12 Nov 2026 14:00:59 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
+	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Steve Sistare <steven.sistare@oracle.com>, 
+	John Hubbard <jhubbard@nvidia.com>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
+	Josef Bacik <josef@toxicpanda.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org, 
+	iommu@lists.linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 2/9] mm: limit pagecache folio refcount when splicing
+ into pipes
+Message-ID: <avXFlI_5fhUvFyct@pedro-suse.tail5790ac.ts.net>
+References: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
+ <20261110-refcount_overflow_stable-v3-2-318625d63a98@kernel.org>
+ <avW3v-oLxcHXXNQD@pedro-suse.tail5790ac.ts.net>
+ <4ae22b7a-c160-4003-a029-8a20381d196f@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 00/12] migrate on fault for device pages
-To: Alexandru Elisei <alexandru.elisei@arm.com>
-Cc: linux-mm@kvack.org, dri-devel@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
- Leon Romanovsky <leonro@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@suse.cz>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>
-References: <20261103061629.972669-1-mpenttil@redhat.com>
- <avWpWBl1nPcRVmpQ@raptor>
-From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
-In-Reply-To: <avWpWBl1nPcRVmpQ@raptor>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: OgZtydcnszDAkLb1zLuDtg2LuG7IGlwi-H5C17ms0FE_1794492013
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: qqaf69pxhmqkgreqc69pyqrb4c65szf4
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: DEF781A0013
-X-HE-Tag: 1794492018-875586
-X-HE-Meta: U2FsdGVkX19n+gmr3hpVL0j+chGgPaXEOIpyt36FeqUCY7JGMw+q7A5xX5BdgwGntYH0xSeUGKlnrkNgt/qKa/Y74vTwUEogTmOWNCAxl2sbJLSpzDGMXUle6WDBPIkkmG9A/4i8A1iLKUfrGmslGYtT452uaAzM5FLeEYN5irSFTyVlUF2rXsB8PDLwr2gwPuIJeG/jfv9he9i1MZSZOHEU/Q7ZNmyVl93vc8ZGCp0QXNc9oaMhw7d7GKubcsRwPKSsI2HFFv5JdjF8D+i818JSZU31fI+6t99QVP6JThZajeQQ5KlMduXKIj6RJgav1N5x5RUSbyGiWSCJG97VIKSVszDyL7SEWc1e0b9B5vBQSKnLBjzZxmGoGL14MrWoIj31RKpji/G7QnzFaPmc9wzfGGgrxuvLbg4MFAObLy1la47LHopxA25MUr9KdGkBRKVLdVnnqXv1Sn8O7bxpLyCLjmKLQrrcbm6ei64c3CN2CaNj3+lwOoq/PDxiKm/DklW+hny3bE/8yHyISm5X87xMYas9sB7F2Uk6ik3lKo/2XIHeKaXL2qOUMq1uXM+1gCGE8Yb5u3DDtavvsWS9t1iQ7rcXRHi1CT1MlClkz7FWvrjsyjp67kyvsqVWDdMQNqkTOCD49yqrljc64gMGqYfSL1xd0Y7vfhSKpypV9uQY3/vcT25Ph1R7QQBKc0gsHFzulkrf99WOpeg9XSbD5Wjx0/o7UcPHLMo8L46KmxlCLWmIAy2f1G4KWeHKidlqXBBcYtt78T2nHiD+zDwvR/nvg74q7qUPHuzIVrEuPZTn+cwCEWTPSEYAvxpmaEn0gPw2XKoHK5j4tKcUzipgsTvidekHOThdiDQl79ezwaPJkVQXibiEYjIl6uLJXFtPLhI+CStfrf+7R26CHuyAPG97O1f65x5P5Oy55oVqsFJM3K0AjOWC9Y93rOyTz+9tv7tbbwYwT9uMDo/Leox
- nN/YAxOk
- 6oGA8o14oHpV5WuivagmosHURcNG+i09dbBpLdot4PkeB8mix7YODo8A6FuRjjP6rzIo1fR+KEhbparaG2xYrtr0TcJ9bWv+UE15M+sD5poNWHiq9Q2pVzLgRf7XgeZGxItH6TDTcnlzR1h1j+xgMsrxvgH5+jR+thJT118Zp+bksnOpRJozK9WBBLUp9kTQ3JAn0X3DSYox5dKYVYzxj6le1mWOJwXGqpwL/1yrRTlqV6iOgGw5TzB8HrXwzjbLy/dJS+morlvx13tPwbOBrwGgqKK/puGXAThRl/2obAxkBD2ZMjrXnctvIupyDXB+VLUa/FCQa790EvvDZ0uJHGKO1FNzUT+F1qh7sOQMqEQgVJYV/5cT+jQbkVb6XfC7P23UYVQvOuXtcJvqWFUdMDeZiJTeJY4XaD6wt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4ae22b7a-c160-4003-a029-8a20381d196f@kernel.org>
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Spam-Score: -12.01
+X-Rspamd-Queue-Id: 8940780010
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 8ofs7136atwibqqezfzss5kos1o7x7br
+X-Rspam-User:
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794492066-515823
+X-HE-Meta: U2FsdGVkX18Hd/jo3a5N1jo9NjQxSBFVIv7qEwT0T7XvtkNNa+3cs3zHtSYkgqkz6GZU+EwWqUbxqCJkilVzDGm8hX46gDKWuslJNgmJ0sj0OqVNYYgzAHwFXWvR2PqnD3i6jC1RceZ72yiqKha309k0QZ7QMlfsdUrlZPVvfPT0hEoE2z+NtrXZPZRBrz27F4THZ6mAcf03efMVeAgO9spcpeQ1SXXLSnYr5dApAJOzlrYjjGycCM58WuuYV99Lu8FpaUjyitDH3q6DUKaVab93SJqd+J5/xOCYhvGD2ksQgynz5cKzL4egM5DHnMJOJ/grSCVjjLTzDUgzxQ3KQIWIzrjsF1b3hs5XnvKmrHw+WXjiujfSn+nJWFpAADSxtt+nVNFZJdh+oj1FBECeL4pw/b6hxIAfk99rDTbFF+ivn4VUdIGdyHRg+M6bDI2tyP4Yx88/+7D4c+dEUZ6Ew3b2TSedmEk1yTduvHODW+XrPZjOrWSboDshng9AZM0zxeDRKeU0vlbHjUv5psFBA94UxnxjqvjBwWgT+9/p4gxoh6Ieya0jDqhC6iy4ZCdBsHXJVCZVYgfxgZ8Mw76X2o6D+AmMo7re0dQBewgPXtr1hSvfo4YisHnwqdE/V7gHNAcClhjgI1L6tmoQl4RVBoZ32Oc8rGkwbsLNnR/BXLUjeC3gjtS/aWWr4NnBHMsCIo4//dlPw+MlZRwiBZb9tbbBQZ4Ww2SOT9fpgoqTLvxcbRt0qij7hwEnuUfWlqED7+j2ccj23k1IXtnKXw27jopklGA5pC/1A+XPXrj5QtskMxgi2Nof8eS72R0PSVyY9paR5jIaHJbdaCqyB4PV7lm3Od9AYbj+RvWhF1BmIjAKMj79yOMf8RJ/Uc4z0YluILmIZHCdA4a10yEH3hWC7vsMvOyfU9MnlPufvQ1x0NfgbW+C3yBDCln7W7NNkvSf09o5a6waTKOv+S1RAxB
+ t+qp8ikq
+ /y34M/WHvaxrPNhMb6I+JPjwdhPfR+aOTrZF7zDVksOBs+3x/uCIE2GKIpOm01IZHlwTbzPf79rr5yQxRvPKGmyPjUQOjEgdJJ55lLveGREnfCewlCuuXN8js4G17F+rD8o0Ua4/UtaHSpj7gmZttf67Ni2Jlj2uYAZ+NvOyGodg3nPCS9qIUrA+RYwAwJD5AMsR2ckQcisu9xanExjR98qasocMDOW54zpsuxBHP9fHicaiJ1bAXRw1ohjDooZqBGNkZjmsm5KSZ1bp4Mq4xxH4qYmk90lzQ9oHVIexNQT/nv4eRGCgw3bv5YHr9a+joehegUQzZh7oTtLZvEPDvDJ+t8t0Oxp57K46o648AJ8iGGyZ75sa5ej60neTq7EhQvYFWppdE02i1MhUT6nOKaHDML7jiGLXh3VWO2h5x0Xl9k9P2Oniv+4hur0uHERFLQ0R534sKC7gX2U8+YJzXbqNiSz/x866ezCQ38l+dS+w7vwpJp/d7zAtmaalntl+XZH/FddAHcm4z10J6CByN4nD8Lr8lrGt1UE3S9CC0Qp7i2BY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,314 +168,164 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Alexandru!
+On Thu, Nov 12, 2026 at 02:24:09PM +0100, David Hildenbrand (Arm) wrote:
+> On 11/12/26 14:09, Pedro Falcato wrote:
+> > On Tue, Nov 10, 2026 at 09:35:42PM +0100, David Hildenbrand (Arm) wrote:
+> >> Similar to mapping pagecache folios into page tables, let's reject
+> >> additional references when splicing folios into a pipe if the refcount
+> >> is at its limit, similar to how we handle it during GUP.
+> >>
+> >> This will prevent more cases of possible folio refcount overflows with
+> >> large pagecache folios.
+> >>
+> >> Introduce folio_get_checked() for checked reference acquisition when
+> >> the caller already holds a reference. It warns and fails on a non-positive
+> >> refcount and rejects additional references at the limit.
+> >>
+> >> Use folio_get_checked() in splice_folio_into_pipe() and
+> >> fuse_ref_folio(), returning -EFAULT on failure, like we already do for
+> >> pipe-buffer duplication. Similarly, make try_get_page() use it instead.
+> >>
+> >> Likely try_get_page() should be renamed (or removed) later, as it doesn't
+> >> match the folio_try_get() semantics and is confusing.
+> >>
+> >> If we hit the limit after splicing some data, return the number of bytes
+> >> already spliced. Teach the callers to handle errors, and stop
+> >> filemap_splice_read() if we only spliced part of a folio, so we don't
+> >> skip ahead to the next folio.
+> >>
+> >> The check in try_get_page() also covers pipe-buffer duplication by tee()
+> >> and partial pipe-to-pipe splicing.
+> >>
+> >> Note that we deliberately will not fall back to the slow path of copying
+> >> the folio, particularly as the folio might have an invalid refcount. If
+> >> it is ever really required, we can revisit.
+> >>
+> >> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+> >> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+> >> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+> >> Cc: stable@vger.kernel.org
+> >> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> >> ---
+> 
+> [...]
+> >> index 0f6d57432a7e5..e6e73e37f3ea4 100644
+> >> --- a/mm/filemap.c
+> >> +++ b/mm/filemap.c
+> >> @@ -3047,10 +3047,11 @@ generic_file_read_iter(struct kiocb *iocb, struct iov_iter *iter)
+> >>  EXPORT_SYMBOL(generic_file_read_iter);
+> >>  
+> >>  /*
+> >> - * Splice subpages from a folio into a pipe.
+> >> + * Splice subpages from a folio into a pipe. Return the number of bytes spliced,
+> >> + * or -EFAULT if we cannot splice from the folio.
+> > 
+> > -EFAULT is a weird error code to return from splice, et al.
+> 
+> We might be able to use ETOOMANYREFS (have to check if that could confuse
+> callers), but IMHO EFAULT is good enough.
+> 
+> What would be your suggestion?
 
-On 11/12/26 13:56, Alexandru Elisei wrote:
-> Hi Mika,
->
-> I want to help getting this series merged, and I've been familiarizing myself
-> with hmm and device migration, please bare with me if the questions I'm asking
-> are obvious or downright silly.
+ETOOMANYREFS I think is good, also EBUSY, EMLINK (though this would be weird)
+or even a generic -EIO.
 
-Thanks for the interest and willing to help! I am preparing a v18 of the
-series and plan to post it early next week.
+> 
+> > 
+> >>   */
+> >> -size_t splice_folio_into_pipe(struct pipe_inode_info *pipe,
+> >> -			      struct folio *folio, loff_t fpos, size_t size)
+> >> +ssize_t splice_folio_into_pipe(struct pipe_inode_info *pipe,
+> >> +			       struct folio *folio, loff_t fpos, size_t size)
+> >>  {
+> >>  	struct page *page;
+> >>  	size_t spliced = 0, offset = offset_in_folio(folio, fpos);
+> >> @@ -3063,13 +3064,15 @@ size_t splice_folio_into_pipe(struct pipe_inode_info *pipe,
+> >>  		struct pipe_buffer *buf = pipe_head_buf(pipe);
+> >>  		size_t part = min_t(size_t, PAGE_SIZE - offset, size - spliced);
+> >>  
+> >> +		if (!folio_get_checked(folio))
+> >> +			return spliced ? spliced : -EFAULT;
+> > 			return spliced ?: -EFAULT;
+> > 
+> > I don't know if there's much kernel code out there doing this, but I like
+> > the trick :)
+> 
+> There are a couple of thousands, but yes, one doesn't encounter it that often.
+> 
+> > 
+> >> +
+> >>  		*buf = (struct pipe_buffer) {
+> >>  			.ops	= &page_cache_pipe_buf_ops,
+> >>  			.page	= page,
+> >>  			.offset	= offset,
+> >>  			.len	= part,
+> >>  		};
+> >> -		folio_get(folio);
+> >>  		pipe->head++;
+> >>  		page++;
+> >>  		spliced += part;
+> >> @@ -3094,9 +3097,10 @@ size_t splice_folio_into_pipe(struct pipe_inode_info *pipe,
+> >>   * Return: On success, the number of bytes read will be returned and *@ppos
+> >>   * will be updated if appropriate; 0 will be returned if there is no more data
+> >>   * to be read; -EAGAIN will be returned if the pipe had no space, and some
+> >> - * other negative error code will be returned on error.  A short read may occur
+> >> - * if the pipe has insufficient space, we reach the end of the data or we hit a
+> >> - * hole.
+> >> + * other negative error code will be returned on error; -EFAULT will be returned
+> >> + * if acquiring a folio reference fails and no data has been spliced.
+> >> + * A short read may occur if the pipe has insufficient space, we reach the
+> >> + * end of the data, hit a hole or hit a folio refcount limit.
+> >>   */
+> >>  ssize_t filemap_splice_read(struct file *in, loff_t *ppos,
+> >>  			    struct pipe_inode_info *pipe,
+> >> @@ -3154,7 +3158,7 @@ ssize_t filemap_splice_read(struct file *in, loff_t *ppos,
+> >>  
+> >>  		for (i = 0; i < folio_batch_count(&fbatch); i++) {
+> >>  			struct folio *folio = fbatch.folios[i];
+> >> -			size_t n;
+> >> +			ssize_t n;
+> >>  
+> >>  			if (folio_pos(folio) >= end_offset)
+> >>  				goto out;
+> >> @@ -3170,13 +3174,15 @@ ssize_t filemap_splice_read(struct file *in, loff_t *ppos,
+> >>  
+> >>  			n = min_t(loff_t, len, isize - *ppos);
+> >>  			n = splice_folio_into_pipe(pipe, folio, *ppos, n);
+> >> -			if (!n)
+> >> +			if (n <= 0) {
+> >> +				error = n;
+> >>  				goto out;
+> >> +			}
+> >>  			len -= n;
+> >>  			total_spliced += n;
+> >>  			*ppos += n;
+> >>  			in->f_ra.prev_pos = *ppos;
+> >> -			if (pipe_is_full(pipe))
+> >> +			if (pipe_is_full(pipe) || *ppos < folio_next_pos(folio))
+> > 
+> > I'm confused. Why does this need to be done here?
+> >  
+> 
+> I have above:
+> 
+> "stop filemap_splice_read() if we only spliced part of a folio, so we don't
+> skip ahead to the next folio"
 
-I try to answer your questions, there are quite a bunch of them!
+Yes, but is this a separate fix? A folio could be partially spliced previously
+as well, no?
 
->
-> On Tue, Nov 03, 2026 at 08:16:17AM +0200, mpenttil@redhat.com wrote:
->> From: Mika Penttilä <mpenttil@redhat.com>
->>
->> Currently, the way device page faulting and migration works
->> is not optimal, if you want to do both fault handling and
->> migration at once.
->>
->> Being able to migrate not present pages (or pages mapped with incorrect
->> permissions, eg. COW) to the GPU requires doing either of the
->> following sequences:
->>
->> 1. hmm_range_fault() - fault in non-present pages with correct permissions, etc.
->> 2. migrate_vma_*() - migrate the pages
->>
->> Or:
->>
->> 1. migrate_vma_*() - migrate present pages
->> 2. If non-present pages detected by migrate_vma_*():
->>    a) call hmm_range_fault() to fault pages in
->>    b) call migrate_vma_*() again to migrate now present pages
-> Regarding both sequences, I'm trying to get a better understanding of what
-> the issue is. I assume the caller wants to fault in system memory, and then
-> migrate it to the device. Is that correct?
+> 
+> Thanks a lot for the review!
 
-Yes that's the common thing to do.
+You're welcome! :)
 
+FWIW, you can add my
 
->
-> In my analysis I'm also not going to refer to THPs, since that would make
-> things even more complicated than they are. I think we can come back to
-> THPs later if we think it would be useful.
->
-> For the !pte_present() case:
->
-> Sequence 1: hmm_range_fault() -> .. -> hmm_vma_handle_pte() handles
-> !pte_present() pages in two ways: faults in swap pages and device private
-> pages belonging to a different device, and waits on migration entries. Then
-> the migrate_vma_*() flow is used to migrate the range.
->
-> Sequence 2: migrate_vma_setup() ignores !pte_present() page table entries
-> After this, the caller follows the same steps as in sequence 1 -
-> hmm_range_fault() faults in !pte_present() pages, and migrate_vma_*() is
-> called again to migrate the pages that were faulted in/waited on by
-> hmm_range_fault().
->
-> Now, for the CoW case that you mentioned, I'm going to assume that the
-> caller wants write permissions otherwise nothing needs to be done:
->
-> Sequence 1: hmm_range_fault() -> hmm_vma_handle_pte() records a fault
-> (hmm_pte_need_fault() returns HMM_NEED_FAULT | HMM_NEED_WRITE_FAULT),
-> handle_mm_fault() -> .. -> do_wp_page() breaks CoW and maps an exclusive
-> folio with write permissions, then the migrate_vma_* flow will take care of
->
-> Sequence 2, migrate_vma_setup() installs migration entries for the page,
-> then migrate_vma_finalize() replaces the migration entries with device
-> private entries.
->
-> Looks to me that for CoW pages, all that's needed is migrate_vma_*(), and
-> the subsequent calls to hmm_range_fault() and migrate_vma_*() are not
-> necessary. Is that your conclusion too?
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-For  a device fault: the driver want the data in device memory with the
-permissions the device asked for. Your !pte_present() analysis matches;
-note that pte_none() in anonymous vmas and the zero page don't need
-hmm_range_fault() at all, migrate_vma_*() populates them directly.
-That's why the common case is cheap with sequence 2, and only swap
-entries, other devices private pages and migration entries need the
-extra walks.
-For cow with write intent migrate_vma_*() alone is enough.
-migrate_vma_setup() doesnt break cow: it collects the shared page
-through its read-only pte, so there's no MIGRATE_PFN_WRITE, and
-try_to_migrate() unmaps all its mappings, so finalize installs a
-read-only device private entry. 
+to whatever comes out of these nits :)
 
-The device still cant write; a write then has to go through
-migrate_to_ram() and break cow in system memory, and migrate again. To
-get an exclusive writable copy on the device, cow has to be broken
-before collectin, i.e. hmm_range_fault() with HMM_PFN_REQ_WRITE first,
-then migrate: two walks. With this series that's one walk,
-HMM_PFN_REQ_FAULT | HMM_PFN_REQ_WRITE | HMM_PFN_REQ_MIGRATE (or
-MIGRATE_VMA_WRITE for migrate_vma_setup() users), and only the
-now-exclusive page is migrated.
-
->
->> The problem with the first sequence is that you always have to do two
->> page walks even when most of the time the pages are present or zero page
->> mappings so the common case takes a performance hit.
-> This is the first mention of the zero page. Is the caller specifying
-> HMM_PFN_REQ_WRITE? That makes a difference, because it triggers fault
-> handling for the zero page, and that's an extra walk. Can you give more
-> details here?
-
-Good question on the zero page. With a read request it need no fault:
-migrate_vma_*() populates it like pte_none(), and the HMM walk collects
-it the same way. With HMM_PFN_REQ_WRITE it's write-faulted first, in
-sequence 1 and with this series alike; the difference is that the series
-faults and collects in the same walk.
-
-
-> Let's count page table walks when a page is mapped with a valid entry, and
-> with the required permissions. Let's say N is the number of mappings for
-> the page (equivalent to the number of VMAs that map the page):
->
-> hmm_range_fault() -> .. -> hmm_vma_handle_pte() does one page table walk,
-> migrate_vma_setup() does N page tables walks, to replace all valid mappings
-> of the page with migration entries, migrate_vma_finalize() does N page
-> table walks, to replace the migration entries with device entries.
->
-> In total 1 + 2*N walks. Best case scenario, N == 1 (PageAnonExclusive()),
-> that's three walks.
->
-> Do you have any data regarding how often the best case scenario happens?
-> That's what you seem to be referring to in your comment.
->
-> Now let's count the number of walks for a !pte_present() page mapped in P
-> VMAs, where P != N: one from hmm_range_fault(), if the entry is not a
-> migration entry, another walk in the fault handler, then 2*P walks from the
-> migrate_vma_*() flow.
->
-> If it's a migration entry, it requires 1 + 2*P walks, PLUS waiting on
-> migration to complete, which cannot be skipped.
->
-> If it's a swap entry, it requires 2 + 2*P walks, PLUS waiting on swap.
->
-> If it's a device private entry belonging to a different device, it requires
-> 2 + 2*P walks, plus waiting on the device to sync the memory with the
-> device in migrate_to_ram().
->
-> To summarize:
->
-> pte_present()	1 + 2*N walks
-> migration entry	1 + 2*P walks + waiting on migration
-> swap entry	2 + 2*P walks + waiting on swap
-> device private	2 + 2*P walks + waiting on device->memory sync
-On counting: the 2N (or 2P) rmap walks that replace the mappings with
-migration entries and then device entries are inherent to migrating the
-page and are the same in all variants. What differs is the number of
-page table walks over the range: sequence 1 allways does two
-(hmm_range_fault(), then migrate_vma_setup()), sequence 2 one if
-everything is present and three otherwise, and the HMM walk one, with
-faults handled in place and the walk resuming from the faulting
-address.  The saving is per range walk, so it scales with the range.
-
-I don't have data on how often the best case happens. The motivation
-came from earlier prototyping of migrate on fault on the current
-interfaces, where the extra walks showed up in perf traces. For the
-typical SVM case of private anonymous memory without fork the pages are
-exclusive (N == 1) or not yet populated, but I haven't measured a
-distribution.
->
->> The second sequence is better for the common case, but far worse if
->> pages aren't present because now you have to walk the page tables three
->> times (once to find the page is not present, once so hmm_range_fault()
->> can find a non-present page to fault in and once again to setup the
->> migration). It is also tricky to code correctly. One page table walk
-> Valid entry, the page is mapped in N VMAs: migrate_vma_*() does 2*N walks,
-> best case scenario (PageAnonExclusive) two walks.
->
-> !pte_present, the page is mapped in P VMAs:
->
-> migrate_vma_setup() -> migrate_vma_collect() will always do one page table
-> walk, regardless of what it finds, valid or invalid entries.
-> migrate_vma_collect() ignores !pte_present() entries, and they will not
-> trigger new walks in the next steps in the migrate_vma_* flow. Worst case
-> is that all the pages are !pte_present(), that's one walk to find them all
-> which I would say it translates to zero extra walks for an individual page.
->
-> For hmm_range_fault(), it's the same situation as above: 1 + 2*P or 2 + 2*P
-> walks.
->
-> To summarize:
->
-> pte_present()	2*N walks
-> migration_entry	1 + 2*P walks + waiting on migration
-> swap entry	2 + 2*P walks + waiting on migration
-> device private	2 + 2*P walks + waiting on device memory->memory sync
->
-> I agree with you, this second sequence is better for the common case.
->
-> I think it would interesting to know:
->
-> 1. Is there a relationship between N and P, and if there is, what is it?
-> Are they equal, on average? I doubt it. Is a !pte_present() page likely to
-> be mapped in more VMAs than a pte_present() page, or fewer?
->
-> 2. What is the likelyhood of P being equal to 1 (PageAnonExclusive)? That
-> would be interesting to know because the larger P is, the contribution of
-> that extra walk (or two walks) to the total time becomes less and less
-> significant.
->
-> 3. How does the time to do the walk compare to the time spent waiting on
-> migration, or waiting on swap, or waiting on device to memory sync? How
-> often each of them happen? I have a hunch that these will tend to dominate
-> the total time.
-Yes, when a page needs swap-in, a migration wait or a device sync, that
-wait dominates..
-The walk saving matters on the common device fault path, with small
-ranges (one page per fault in the nouveau patch) and present or
-unpopulated pages: one walk instead of two, and without sequence 2's
-three when part of the range isn't present. But the main point is one
-call that faults and collects consistently, instead of two with a window
-in between where the range can change.
-
-I don't have data on N and P. For private anonymous memory without fork
-or KSM both are normally 1, but I haven't measured it.
->> could costs over 1000 cpu cycles on X86-64, which is a significant hit.
->>
->> We should be able to walk the page table once, faulting
->> pages in as required and replacing them with migration entries if
->> requested.
->>
->> Add a new flag to HMM APIs, HMM_PFN_REQ_MIGRATE,
->> which tells to prepare for migration also during fault handling.
->> For the migrate_vma_setup() call paths, new flags, MIGRATE_VMA_FAULT,
->> and MIGRATE_VMA_WRITE are added to tell to add fault handling to migrate.
->>
->> An extra benefit of migrating with hmm_range_fault() path
->> is the migrate_vma.vma gets populated, so no need to
->> retrieve that separataly.
->>
->> This series avoids the problems in current collecting implementation,
->> where racing MADV_DONTNEED could make the collecting arrays overflow.
-> Can you provide more details here? How does it happen?
-migrate_vma_collect_pmd() drops the pte lock to split a large folio and
-restarts with [start, addr) already appended to src[]/dst[]. If a racing
-MADV_DONTNEED zaps the range and frees the pte table meanwhile, the re
-start takes the hole path from start and append [start, addr) again,
-writing past the arrays. "mm/migrate_device: don't collect a range
-twice" in Lorenzo's batch fixes that instance; this series collects into
-the address-indexed hmm_pfns and fills src[] only lastly, so re-walking
-cant overrun. Also, the correct pages are collected with the re-walk
-with this series(rollback takes care of the old ones).
-There are couple other defects the series fixed along the way.
->> This is achieved mainly by having a rollback mechanism and
->> populating the collecting array as the last step.
->>
->> Tested in X86-64 VM with HMM test device, passing the selftests.
-> Have you tested that this series doesn't regress other architectures?
-
-Only tested on x86-64 (VM with test_hmm, and nouveau on a GP102). The
-code is arch-independent, but it isn't tested elsewhere.
-
-
->
->> The main goal of this patchset is to provide a new feature,
->> migrate efficiently on fault, and not directly improve performance
->> of current migrate_vma_setup() (which is now routed thru
-> I'm a bit confused by what 'on fault' means in this context? Userspace
-> accesses a device entry, access that causes a fault, or using
-> hmm_range_fault()? I assume the latter, but it pays to make sure.
->
-> Also, can you define efficiently? Usually that's related in some way to
-> performance, but immediately you say that the series doesn't aim to improve
-> performance.
-
-"On fault" means a device fault: the driver services a GPU fault with
-hmm_range_fault(HMM_PFN_REQ_FAULT | HMM_PFN_REQ_MIGRATE) and migrates
-the page while handling it. "Efficiently" was the wrong word: I meant
-faulting and collecting in a single walk, instead of two or three calls
-with a window in between. I'll reword the cover letter.
-
->> hmm_range_fault()) callers. That said, the migrate throughput tests
->> from the selftests show that there is at least no regression for
->> current migrate_vma_setup() callers.
-> If the premise of the series is to reduce the number of page table walks in
-> the !pte_present() case, then I think benchmarks that show a performance
-> improvement would make a compelling case for this approach.
->
-> Some thoughts, if I may:
->
-> - Perhaps the existing test is not the right test to highlight the
->   performance gains?
->
-> - Perhaps there are other parts of the migration process that dominate the
->   walks? If so, maybe we should be focusing our attention on those?
->
-> - Perhaps the series adds overhead that reduces or cancels the gains from
->   reducing the number of walks?
-
-I don't have a benchmark showing a gain: nouveau had no migrate on fault
-to compare against, and the selfftest throughput tests use
-migrate_vma_setup() on present pages, so they can only show there's no
-regression, including from the extra work in the HMM walk. Also, any
-help with new tests is greatly welcome :). My primary focus atm is
-getting the final corner case details sorted out in the core and
-addressing sashiko; with v18  i hope being there. 
-
-
-> Thanks,
-> Alex
-
-Thanks,
---Mika
-
-
+-- 
+Pedro
 
