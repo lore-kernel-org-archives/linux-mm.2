@@ -1,139 +1,148 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D772A606A337
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 18:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E014606A335
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 18:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Xer+SKnf;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=ABAXOl/I;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=n2Uq6tBL;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=/IYPJ4AW
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=Nu/oJH5Y
 Received: by kanga.kvack.org (Postfix)
-	id D452A6B05B0; Thu, 12 Nov 2026 13:41:08 -0500 (EST)
+	id E08096B05B4; Thu, 12 Nov 2026 13:41:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF5306B05B2; Thu, 12 Nov 2026 13:41:08 -0500 (EST)
+	id DB9356B05B7; Thu, 12 Nov 2026 13:41:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE39A6B05B4; Thu, 12 Nov 2026 13:41:08 -0500 (EST)
+	id CCF2A6B05B8; Thu, 12 Nov 2026 13:41:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 88C406B05B0
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:41:08 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EE3B5A83F6
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:41:07 +0000 (UTC)
-X-FDA: 85427334174.20.C2B9934
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf12.hostedemail.com (Postfix) with ESMTP id ABC7C40005
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:41:05 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Xer+SKnf;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ABAXOl/I";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=n2Uq6tBL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/IYPJ4AW";
-	spf=pass (imf12.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A36FC6B05B4
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:41:21 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 185A84084F
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:41:21 +0000 (UTC)
+X-FDA: 85427334762.25.8C4297B
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 1E5C0C0004
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:41:18 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="Nu/oJH5Y";
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794508879;
+	b=vhNEMNlLY5kKFvq37nnulSpDv3pm1kGJJ2BaHxD1aa9aCjWhyAy5FWN+Zt7eTKyrJQuK7R
+	YjKZNjhYIhHEbttGs5JheO8D7OHRGx1AhE88mN6LCNNA/vRtiSb8XhRUehAND10wbaq42B
+	NSK19tf+/FCRBiU0vJkBPmu4qOQxX4U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794508866;
+	s=arc-20220608; t=1794508879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=znMZ7NR6/YszQuPkJzBKuINXsXo8b7XNMf7NgTqswQM=;
-	b=dgWTJ7EyMltzazLnPYSjD0x4GlFfSxSe78f9RQY/N1TK0rh32eK+wMLvNpV74V5Py9yMok
-	2Afo1G0ZTwxlYXMR5yqarR8dUWLJOqNfsGWrV1YYDfb9YHHhGwSJutrw2gR5R3qkseehVe
-	jVjtnx7zhgq3jawGVFONEY7baKst5Ow=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794508866;
-	b=riW47id5hufJOD6NnRauo5bUWKneSkWmsykhuDN0K1QhsQk7IudMXHeL0HFaSvDa3UGzT2
-	jbfPSBPNpjD9zodqBo2FH63H2NmZ9Lvjp8WoMyoBsyyfKvqWe/Ynq+ltjjh2uq8KKk0nzT
-	JbwbLNr4VLw2VsWu0yaEv48iEOacjPA=
+	bh=UiA1ssc1fM8eBuo2DnRY95RNeWhnyd0r69dfKPpEwvw=;
+	b=tznSbFun0CENbjyHL1BPJlTbp37DAHb4jPjgQV+QX59b7G8tziiVdAeNXtWUli7dJ/CpSj
+	ooW+7vxiUmMfjBXOhpHMsZMW7Bl1AXuAC2AUcdGK/lasMfWggDuYb8gf9vpLUcE8pYmapo
+	wdbu9Bs/TkJbh9H1SRqolTmR/ow/Usg=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Xer+SKnf;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ABAXOl/I";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=n2Uq6tBL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/IYPJ4AW";
-	spf=pass (imf12.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 16EE321F6F;
-	Thu, 12 Nov 2026 18:41:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794508864; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=znMZ7NR6/YszQuPkJzBKuINXsXo8b7XNMf7NgTqswQM=;
-	b=Xer+SKnfXtKA0r2HBJMEwYrkKmiTMQlvHLYwnj7DWg7E639+BPuNRUj6xja+KuuiDKEtiQ
-	iRVToRsEy0XZ1+nbrIGT/DkfxtRvAZXEGferZBlSCjI/kAtbHwYICgjvD6d8+NrHogs8T7
-	6To5ZO3HSUP7ONT/pGVd0g5Sm02LDQE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794508864;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=znMZ7NR6/YszQuPkJzBKuINXsXo8b7XNMf7NgTqswQM=;
-	b=ABAXOl/IBFMv8A6QcWIqId6viw0hK4qpYIOTYUS8OFeUKJw694QzNLqBGaoYfv1zHWK2Zh
-	hFYccdVV/wxWFGDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794508862; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=znMZ7NR6/YszQuPkJzBKuINXsXo8b7XNMf7NgTqswQM=;
-	b=n2Uq6tBLVztNF4B/wsNj0QDn8VmW/gpUgKe56S+ix8oOenI3lvIfQtsgN7pALFLOUOGfUY
-	DXFG+rvwCr/1DbtiLNl/USvtb/oIfi/M+5pCZNRa+QLiWGs3hk509kr6dYTzW6RvG7S4Ml
-	L0bW0y6ViRwxSQtJbHYZaGZcnKoFahw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794508862;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=znMZ7NR6/YszQuPkJzBKuINXsXo8b7XNMf7NgTqswQM=;
-	b=/IYPJ4AWbcndQSjG1CUMvpOXlmc0P4EgiEOWcieSTerKH3MlaTda6rEmL9pQk3RDY/Pmyv
-	Zhq4z3ZWPft5GWAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CD25413432;
-	Thu, 12 Nov 2026 18:41:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 7Ub7KT0I9mrURwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 12 Nov 2026 18:41:01 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 3ABCE22B88; Thu, 12 Nov 2026 19:40:53 +0100 (CET)
-Date: Thu, 12 Nov 2026 19:40:53 +0100
-From: Jan Kara <jack@suse.cz>
-To: mohamedalibouhaouala@gmail.com
-Cc: willy@infradead.org, jack@suse.cz, corbet@lwn.net, 
-	skhan@linuxfoundation.org, rdunlap@infradead.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v2] docs: filesystems: update VFS locking documentation
-Message-ID: <3aaboixwh6lpo4s67dv7lssqj2vwlp4qp5cq2ysimqi36r3bm2@fb5lmoo33ktf>
-References: <20261111160516.30458-1-mohamedalibouhaouala@gmail.com>
- <20261112162129.77610-1-mohamedalibouhaouala@gmail.com>
+	imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="Nu/oJH5Y";
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-93f3c8958d5so5258385a.2
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:41:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1794508878; x=1795113678; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=UiA1ssc1fM8eBuo2DnRY95RNeWhnyd0r69dfKPpEwvw=;
+        b=Nu/oJH5Y+Ywo4sNgVhYIcWVZnsoZStaPhPZCUxJjHd2G18m4yIrk5S28HIqcQnNpu7
+         Ta0jgZn34CryglTOEcox1u8+Q05wK5vx7yn1n932nP8R5DsJs+1k/VyyUiYW7wpCmshn
+         CdCdDtNrIKZJJbAgi3Lr1igOrCsHO8Eq3kEwZKGOgkQ+hnkZf9SjH9us6fEFhqqvfmio
+         FgkxuJqAB1KBSrxXBOoRa9XJ7j35POXTY5Ph2CGS1tYbs6oGpcLbiV7BeSFwUybYFsgz
+         E4mRfPckPjawWbzOfUZlR72og3JW8Df6GIY6MrF966HCGwB/kJcoSucaR7b74zJgPe57
+         KZhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794508878; x=1795113678;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UiA1ssc1fM8eBuo2DnRY95RNeWhnyd0r69dfKPpEwvw=;
+        b=ubASWfRh6I+crFB1yqxkenky56WU8wwzpywUx/Tiwg/CFjXUffl0DE3nnKaFpZZ2Ci
+         h0FYaWq20QBOsSc+VQv18o8ldler8Ws5LDXeUdRu+Cs9rzKF7Rhg4PhlRYINv1ErOrJL
+         rBVKWMn9lK8O9wzUsb5usqmrJrYXq3UtBLizgcBzHzWeCuROWP6nncsyueE8nQSILA4r
+         WKG531wjQpQsXeOBvRSxI0UfVrZ0tFVoqUnfk8Lv/jPAZ88ir3uSl3puBBeHDdntrAhl
+         4GgxsAl8ZLscsMt2REAJCynQuJatlR9Pa7F8Sl684b/AU00WG2q4iyl0cC3PiEhh+C8b
+         8nyg==
+X-Forwarded-Encrypted: i=1; AL+hErF5I1tzWgBuiMyNXzPR3vml4kbXYxAesGW6glLepAXmX1Hmm9xNddjzrMYBxZFWfLBJK+Z0e21Xpg==@kvack.org
+X-Gm-Message-State: APuU4Z+8Z2wXYa8B9KmcrFfQXH265KjnFDCp1Nt/ri6+msX9lvOH8pyI
+	i/A204f+BlfQc5OUvndASzqDwqHF/CwDuNazgtZ+d+6ZCKALRtPDp6/TzFRL1pji/R0=
+X-Gm-Gg: AYBFou05YAvanIjULj/7ds+UD/gaDtEA66sfxCnA/iATCQPiFLzPF+zPYpv1eScLRv5
+	Wg1R4IIqVRIuSlIc3nDSYdB3c/H5p7NJLkeoivDOs323p2zgsb3cnpJ3SDM1pgUH6o/9//lTczR
+	NmqHjcTUUDPidAO7ca+h9NnF+ddjOvUnomEN0c+OLsc0RzuYZmgi4BMyIBYhz4la9z1FHC83Hsr
+	5iMcFyVoZlWzph7lqBx7OHDXh8qheXFor9Fw7/fV2JftebzKe4XbmAyiKWZ21hUUJlmXb1tTLdw
+	TB8HwKMevMBfRkTxRvredhawubZouLylX3qZG9o5dtCyX5ypXoZGBvXovrIcRxbPLVn0HYi4Mwu
+	JB9aPSXcAg7eD0RsTmtjSg1kYfsHzATSnGwjrFd69CpU93c5xKgoB2qFueyfgSYyoSizwqhx/ou
+	brfZAV5b4IcsEQjxq7+U3O39duF3M0Dr3o94fVIs/lDUNStN7ZcqS5T1tJ5q/UJ2LPRdyv8kA6h
+	nsZqSnBu7p0tDImoe4srOulcuwk6VGDWeaW2lxrH46ODgNXNiJ9P95RCkBNXspNKRdaZyIvIvVO
+	HjQ0VRz5d3GLDRqirpIZfcb/iDkJgT2GsNCeTYTd6Cy/ca2ujNyLyWsC5X8sX4TvA8RKgi6AmKh
+	Ygg0Zt9c=
+X-Received: by 2002:a05:620a:472b:b0:93e:f9ba:690f with SMTP id af79cd13be357-9494bc84c75mr45006885a.73.1794508878117;
+        Thu, 12 Nov 2026 10:41:18 -0800 (PST)
+Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9494c3600adsm4935085a.42.2026.11.12.10.41.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 10:41:17 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261112162129.77610-1-mohamedalibouhaouala@gmail.com>
-X-Rspamd-Action: no action
-X-Spam-Score: -13.01
-X-Spam-Level: 
-X-Stat-Signature: b5nfgkjceizhdhqsxbmopsbh3n1op4bz
-X-Rspamd-Queue-Id: ABC7C40005
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 13/13] percpu: queue the balance work on an unbound
+ workqueue
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, 
+ Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>, 
+ Pedro Falcato <pfalcato@suse.de>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+ Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+ Gregory Price <gourry@gourry.net>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Alistair Popple <apopple@nvidia.com>, Usama Arif <usama.arif@linux.dev>, 
+ Kairui Song <kasong@tencent.com>, Balbir Singh <balbirs@nvidia.com>, 
+ =?utf-8?q?J=C3=A9r=C3=B4me_Glisse?= <jglisse@redhat.com>, 
+ Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>, 
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+ Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>, 
+ Chris Mason <mason@kernel.org>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ "Borislav Petkov (AMD)" <bp@alien8.de>, Mark Brown <broonie@kernel.org>, 
+ "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, 
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+In-Reply-To: <20261111-mason-migrate-et-al-fixes-v1-13-3d2454362e8d@kernel.org>
+References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
+ <20261111-mason-migrate-et-al-fixes-v1-13-3d2454362e8d@kernel.org>
+Date: Thu, 12 Nov 2026 13:41:15 -0500
+Message-Id: <179450887590.482102.12180028123925629664.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Rspamd-Queue-Id: 1E5C0C0004
+X-Rspamd-Server: rspam12
+X-Stat-Signature: bqk4cnoz1jtyossbqmetoii79g7on7jb
+X-Rspam-User:
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794508865-200636
-X-HE-Meta: U2FsdGVkX1+BqctyIkpxLVmmUjTTgLpBAp/g/3IiwkewQyVCysnwKEPER4BUS6Z2zuRm0cQ/Tlq6B37OzevshjFDpqtxFTSLLbWmB5vCnGL8ScESKx4K1uk7X6K7LgEn0j40aM3PY/qLhL6FAOgRH3w47lgAPIecI6Rtq6kQqSyFgLNFD+ZAJu2K2ibnNDczTrdR1wX8uUTHW/teNBclN/hJxaYbHY+DelZJEp2DfyCGPtQYM6KAKbrmM2SKCoFWhPd9DNpdIpFb1IyjDYlY5AvUMPwCyXjGFb+txb2kQF603W8adSZ2tkPkk1Yry59aG1f1ukDXTQPAVj38RR6NMPcxrQbPOdZO8Dgspajl55QW6PIlh8HQmA/gG63F3XDGrX69aFvC1+oXXmr474w51WXdD094/czglyqCQOO+6YBaNRVJz9zgFrLNVycUctHj6774TSOT3OnGQVSbm0WT/RbYKS+5VG5M6lrGhqoN8fo63WFVfQYiFXePL1FFvUDGyazihEMfxXwfWy5+spPJ3sRmWhF974oxLXUyqD0uamdzCqTcxi4T2yBXYPN5hId+NXplMTjI/8289VDJ3Pz0QWHqOrP8kwWjdAxtQtAr98vILXFn5cAsY/KuBHvAG1sOfPkQbjvd1q+8OrnquYy91s+YuvAe3GLlFm763es6Wwd8WnocYbm/aU5oiTh9/CuQaC/lu9Fv+2NlP6a8OIZqey+8BFJEi39jTBJ7nrVe6WxDiS4vi6yMvC+/ECLO1ZgB5isXuVml+eCS6aSAwoJHR695qYBouwKprigL2wysL9wjDq50/hL/f78XF9TzrfyI4JHzOUp7eLRyvs9mgix7f4uzYUnbSp7WCAJNjAGLddj2QdWO98xVWBWaVPao+BzQVxR5Q6QPv+GLK71nfZj+e8c4nq21rbOkLb/MCWH7X2eZ0qpW2/wfScbXrTwpS+vtYRZg3y6w3J//S0Uiwik
- dDxBL5qd
- S9jB2B1m1NqXxNs8+SkS+d+2hcrVGvVinA65e7+9SI+bbthsHb3FtwoBhFkiiTYqguSh/t9fMPlax8mqOVM+Upgfge8EAZn2vTVpbmx5XgW5cNco/jexstjtOnYlBQARpAMP1N4obW51M1/aokX3q3P9F1o22NRwJAdhO3WMq7BFCLaP3J5AtCXmlzxMYTbpXSE2/VuwstkShVLKJt4bwjuX9du0KPO/5L8DmLOANjbGImScxn1C5QYehF4m78QbPfOL45wBeaZ9TpdNLb68lFhotzeVH7nD44jiqxANN/2hR/0FIdtrZ3vzNyt/u+WB13kjRelklm8km2WsBQOng4aulIyErCC7+gIu/mp5ZOH8ySN0=
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794508878-291264
+X-HE-Meta: U2FsdGVkX1/OKoLIuald+bX+ERDGfKvDY1Q4Dhtbch6l7pmLxlgueUoU+8Lt42O2v/tRvfz5WrxHJWD0bOVTEK/zxI2tstNwVEEAgT9WtLciMjXseKChtuNqpf2UfnHJEipHwRs0M74xmEyRG37ahBD4m+glPvpBWRCCHtgy/3Z8tZTdupqTDh+8AHHVFVxPgBb5n4613pHwAU23H2I4y4YwXwH5zQg/vuVc/csm1QyDSsovGGawp+/dhe7SDKRNVJO8qkFth0sG+llFGOOaIdm8JavlXmJ8gM6DnwJuVgXHJPxPbDIfZjME7Qbzjr2j+2YXvonfqUuq1AjxIjcZI9MXkiW06zvc6cw+0Pcxab+18GMe/hKf+KZq/DCtMstP0nVmjYDzykVj+BkyW7eXLzjMW1ZbinshqJwNGyCd9si6GCLXwX69Mm0dfdCGYDjrqMptkZL9EbwTMXjK0tB7gCH0R1/Rw3mKG4iyps5lhaClsdaVbMa/10a0vis+Nxdf9GD5+qR3Clfj+T1731AR924HPNflYiGOa5gPFmF9ikpu1ScFTZe6fIYdgGQLQTpCuUxP9GX4rvuM9UGCmjGZlEj+egBi5w+wcmDXVwTxk/D+Vc4MGNVqmX1uAx/rZzfypwd9DinvdDuVAaTKE6CdeMBY0/pP5lls+Q4Q+JfYVijdm/LdELJ+V8XlC/8EkjtH5x0I7gJhBiJT3i6nLWYafEDQyiXDSLLNzThhumk6wOUpSG7/zCa8tgFq00nE7s0A4qbeU+wIfgholOzdzPpYSFlJg5VosWT6p0AGRp61iMRCr+GgZzUwrmlo6+mrhn4syqrdWnH7w2UAFL0NA743S/8wNPifXqIyXeEZmQu7CqreDudc1aNQkrPMbivv5el6GxIonOR+AeanNBnyolfCp99w2PrDTGidC1iWOG37iSEkUL4fIhJWC8Wf04WaFU1LQs47dct8wqv2r1PrtUo
+ kofmjcBS
+ o38vPWP34K0bxJYlGenyLKmsBJSzQca3MbHJnRcFpzuYJG8MSn3pWdKjMhPfdviRKYrurCRrgXvzLL8PJyIrAl3E68Gjp8hUTJw6rkBYAP8SQOsD+ztc7sC9AZ9cb1gporQuhreeJaEQvFA2Locn6QktoAqb3rEKxjxxLifsL33Lm564DMNFI0j67Kv/+DlzAq5Hm3A1O97/fTexd7dTzbUhuaNMwqKKqfrefy5U7IsIwNbBjWyUsCKexMJYmJP/NB17P6IxMgl0FrZqSqKNG1dl6njOO2m14dOZyiYntcxzQALp5PzmtJKFt02aW3CDhRZWubdF3GYWb8JWPnO8LDB1gXAI8zCeNbFQFBWOvFETV382mOUEwo6zrqt5XMlTJsz5ho7kO6yuC5fuVERXbIxJovvrmX1TT2qyUqhg3cbotxR+JWCKTrz1XKEMQRtW7fZDUBoF18+vnt3LUgkTq4Z77iGZZwYTxl3ZdG4pQgWTHqPRG9CeDwl5vcmd1KA4aI80aFbg/Xk3ODXQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,119 +151,62 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu 12-11-26 17:21:29, mohamedalibouhaouala@gmail.com wrote:
-> From: Mohamed Ali Bouhaouala <mohamedalibouhaouala@gmail.com>
+On 2026-11-11 18:13 +0000, Lorenzo Stoakes (ARM) wrote:
+> From: Chris Mason <mason@kernel.org>
 > 
-> Update outdated VFS operation prototypes in locking.rst to
-> match their current definitions.
+> A burst of small atomic per-CPU allocations can fail with -ENOMEM while the
+> machine has free memory and idle CPUs, as atomic per-CPU allocations are
+> only served from pages that are already populated, and those can be used up
+> before a worker gets to populate more.
 > 
-> Add the missing d_prune and sync_inode_metadata callbacks,
-> and correct the signatures of existing operations.
+> Consider:
 > 
-> Update the locking table to include sync_inode_metadata.
+>     caller on CPU 1                     kworker bound to CPU 1
+>     ===============                     ======================
+>     allocates 8 bytes, which leaves
+>     one empty page and 4088 bytes
+>       schedule_work()                   woken, waits for CPU 1
+>     allocates 8 bytes, 1023 times
+>     next allocation: "no space left"
+>     gives up CPU 1                      populates pages
 > 
-> Signed-off-by: Mohamed Ali Bouhaouala <mohamedalibouhaouala@gmail.com>
+> The allocator keeps a few empty populated pages in reserve, and the work
+> item pcpu_balance_work refills them.
+> 
+> pcpu_alloc_noprof() queues the work item using schedule_work(), so only a
+> worker bound to the CPU of the caller can run the work item.
+> 
+> The issue is that the caller keeps that CPU - a task keeps it for the rest
+> of its time slice, and a softirq keeps it until the softirq ends.
+> 
+> In that time the caller can use up the reserve, resulting in an atomic
+> per-CPU allocation failing.
+> 
+> Fix the issue by queueing the work item on an unbound workqueue so that
+> another CPU can populate pages while the caller keeps allocating.
+> 
+> Fixes: 1a4d76076cda ("percpu: implement asynchronous chunk population")
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> [ ljs: tweaked commit message, comment ]
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Looks good. Feel free to add:
+Reproduced with a cpu hammering atomic percpu allocations with preempt
+disabled. Results are pretty cool.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+In about 1 second of hammering allocations with the full 13 patch series:
 
-								Honza
+                        Base       Patch
+Successful Allocs      1,188      131,072 
+Failed allocs          4,097         0
+balance worker runs      0          169     
+successful retries       0         4,096
 
-> ---
-> v2:
-> - Use the contributor's full name in the author and sign-off fields.
->  Documentation/filesystems/locking.rst | 18 +++++++++++-------
->  1 file changed, 11 insertions(+), 7 deletions(-)
-> 
-> diff --git a/Documentation/filesystems/locking.rst b/Documentation/filesystems/locking.rst
-> index f7363ad770c7..a6a011858ada 100644
-> --- a/Documentation/filesystems/locking.rst
-> +++ b/Documentation/filesystems/locking.rst
-> @@ -26,6 +26,7 @@ prototypes::
->  	int (*d_delete)(struct dentry *);
->  	int (*d_init)(struct dentry *);
->  	void (*d_release)(struct dentry *);
-> +	void (*d_prune)(struct dentry *);
->  	void (*d_iput)(struct dentry *, struct inode *);
->  	char *(*d_dname)(struct dentry *dentry, char *buffer, int buflen);
->  	struct vfsmount *(*d_automount)(struct path *path);
-> @@ -80,8 +81,8 @@ prototypes::
->  	int (*getattr) (const struct mnt_idmap *, const struct path *, struct kstat *, u32, unsigned int);
->  	ssize_t (*listxattr) (struct dentry *, char *, size_t);
->  	int (*fiemap)(struct inode *, struct fiemap_extent_info *, u64 start, u64 len);
-> -	void (*update_time)(struct inode *inode, enum fs_update_time type,
-> -			    int flags);
-> +	int (*update_time)(struct inode *inode, enum fs_update_time type,
-> +			    unsigned int flags);
->  	void (*sync_lazytime)(struct inode *inode);
->  	int (*atomic_open)(struct inode *, struct dentry *,
->  				struct file *, unsigned open_flag,
-> @@ -173,6 +174,7 @@ prototypes::
->  	void (*destroy_inode)(struct inode *);
->  	void (*dirty_inode) (struct inode *, int flags);
->  	int (*write_inode) (struct inode *, struct writeback_control *wbc);
-> +	int (*sync_inode_metadata)(struct inode *inode, struct writeback_control *wbc);
->  	int (*drop_inode) (struct inode *);
->  	void (*evict_inode) (struct inode *);
->  	void (*put_super) (struct super_block *);
-> @@ -196,6 +198,7 @@ free_inode:				called from RCU callback
->  destroy_inode:
->  dirty_inode:
->  write_inode:
-> +sync_inode_metadata:
->  drop_inode:				!!!inode->i_lock!!!
->  evict_inode:
->  put_super:		write
-> @@ -255,7 +258,7 @@ prototypes::
->  				loff_t pos, unsigned len, unsigned copied,
->  				struct folio *folio, void *fsdata);
->  	sector_t (*bmap)(struct address_space *, sector_t);
-> -	void (*invalidate_folio) (struct folio *, size_t start, size_t len);
-> +	void (*invalidate_folio) (struct folio *, size_t offset, size_t len);
->  	bool (*release_folio)(struct folio *, gfp_t);
->  	void (*free_folio)(struct folio *);
->  	int (*direct_IO)(struct kiocb *, struct iov_iter *iter);
-> @@ -265,7 +268,7 @@ prototypes::
->  	bool (*is_partially_uptodate)(struct folio *, size_t from, size_t count);
->  	int (*error_remove_folio)(struct address_space *, struct folio *);
->  	int (*swap_activate)(struct swap_info_struct *sis, struct file *f, sector_t *span)
-> -	int (*swap_deactivate)(struct file *);
-> +	void (*swap_deactivate)(struct file *);
->  
->  locking rules:
->  	All except dirty_folio and free_folio may block
-> @@ -455,14 +458,15 @@ prototypes::
->  	ssize_t (*write) (struct file *, const char __user *, size_t, loff_t *);
->  	ssize_t (*read_iter) (struct kiocb *, struct iov_iter *);
->  	ssize_t (*write_iter) (struct kiocb *, struct iov_iter *);
-> -	int (*iopoll) (struct kiocb *kiocb, bool spin);
-> +	int (*iopoll)(struct kiocb *kiocb, struct io_comp_batch *,
-> +			unsigned int flags);
->  	int (*iterate_shared) (struct file *, struct dir_context *);
->  	__poll_t (*poll) (struct file *, struct poll_table_struct *);
->  	long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);
->  	long (*compat_ioctl) (struct file *, unsigned int, unsigned long);
->  	int (*mmap) (struct file *, struct vm_area_struct *);
->  	int (*open) (struct inode *, struct file *);
-> -	int (*flush) (struct file *);
-> +	int (*flush) (struct file *, fl_owner_t id);
->  	int (*release) (struct inode *, struct file *);
->  	int (*fsync) (struct file *, loff_t start, loff_t end, int datasync);
->  	int (*fasync) (int, struct file *, int);
-> @@ -475,7 +479,7 @@ prototypes::
->  			size_t, unsigned int);
->  	ssize_t (*splice_read)(struct file *, loff_t *, struct pipe_inode_info *,
->  			size_t, unsigned int);
-> -	int (*setlease)(struct file *, long, struct file_lock **, void **);
-> +	int (*setlease)(struct file *, int, struct file_lease **, void **);
->  	long (*fallocate)(struct file *, int, loff_t, loff_t);
->  	void (*show_fdinfo)(struct seq_file *m, struct file *f);
->  	unsigned (*mmap_capabilities)(struct file *);
-> -- 
-> 2.43.0
-> 
+Micro-bench obviously, but pretty stark difference.
+
+Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+~Gregory
+
 
