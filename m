@@ -1,205 +1,164 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B925606A323
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 12:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D11C8606A339
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 12:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=l1WaKbmq
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=gQmcfq7i;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=/oJcuEkS;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=gQmcfq7i;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=/oJcuEkS
 Received: by kanga.kvack.org (Postfix)
-	id 8CCD46B05B4; Thu, 12 Nov 2026 07:55:01 -0500 (EST)
+	id F110B6B05B8; Thu, 12 Nov 2026 07:56:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87E516B05B8; Thu, 12 Nov 2026 07:55:01 -0500 (EST)
+	id EC1A26B05B9; Thu, 12 Nov 2026 07:56:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71F686B05B9; Thu, 12 Nov 2026 07:55:01 -0500 (EST)
+	id D89426B05BA; Thu, 12 Nov 2026 07:56:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B6846B05B8
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:55:01 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AAE0A160518
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:55:00 +0000 (UTC)
-X-FDA: 85426461960.09.D38777A
-Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 2FCE7140005
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:54:56 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=l1WaKbmq;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf26.hostedemail.com: domain of "prvs=76985aab9=farbere@amazon.com" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=76985aab9=farbere@amazon.com";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794488097;
-	b=TjYrOCzhSYV3qYjDMI1vBRGGJSn8gELpp+V3fFFFYluZcJvocZm8PN0t/FJcC9lvC78xg1
-	dI1N+yP/UYWKWY1V578ZXIgOdFPIgwcmLgzRXarfiZzjGw2VvtxeiCv8VPIgMCMOxmZABp
-	A5n5P5wxX4I3Bd2vll8mON47nBAoUIA=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794488097;
+	by kanga.kvack.org (Postfix) with ESMTP id AC94D6B05B8
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:56:07 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4E95A160506
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:56:07 +0000 (UTC)
+X-FDA: 85426464774.14.6719B86
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 0DB728000B
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:56:04 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gQmcfq7i;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/oJcuEkS";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gQmcfq7i;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/oJcuEkS";
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794488165;
+	b=zt1IPiy9QsDRzwmonGozfuJ63r6x0Cc9xYWGgWoM0h1zTEPo8Dn9AabkUBf3PvFUi9FRB7
+	kHNTvTyzzs0Xzt24d1li1gEajNfPnFjWj+aLRydtJDBeKtKsaSzzm8HOGy3koUSpqg8Qo8
+	zonvM3WjVzT9xe46o+xGJReWTZw2M6k=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gQmcfq7i;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/oJcuEkS";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gQmcfq7i;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/oJcuEkS";
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794488165;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cT07MwAZ31iG2qQnhnLOufnjI+hhcrZ5UWBkfiIyCaQ=;
-	b=HtRCeD54/538LHgP2tdB8pFJxCdnjYZ3LcbLiKHJoeSSlYm89hQURnTJe0UlnGc+HJEnLh
-	fLjImrWukGIKdB7kT4BGlMXqNdckLqp+unnOEhrQpk3RX+3/qtKX0HROgfH9fb5c6MA4uS
-	2Ol06r+XlNeyjMi/PoSx9ENWCtvpUXE=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=l1WaKbmq;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf26.hostedemail.com: domain of "prvs=76985aab9=farbere@amazon.com" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=76985aab9=farbere@amazon.com";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1794488097; x=1826024097;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=cT07MwAZ31iG2qQnhnLOufnjI+hhcrZ5UWBkfiIyCaQ=;
-  b=l1WaKbmq/kIfaCJppgHnbBUf1a/8ta+vzSUmLjZXqhnGTncODEAlEOJt
-   oqJnNqOonbyUZ1dJpD0YRJ2aOkHn+/8PAwo5NX14h9VGG2UzTSbV1srVz
-   Gd3BdtsnxRJNfLhdmBeDUyJdRIkTWqWaxCbezkGxWbHtVdPmD4d0cYW24
-   E+UyQzgnb3Yyqhe0LRl1UEz2erj+fMm1p/4ZQxvezev11MSoROwCejqtr
-   2i1m8q8cKof8TJDR493dr7UcihFJCv/xY9h4mdy+27zDMuCnCDwrV+0y/
-   +BCFMlSYiTx31fl3Fwd8hDEwt4qJDJNvfDKPNoRbaMSZtXagX5PoqMMtE
-   A==;
-X-CSE-ConnectionGUID: yzKGrteSR5OEhSbPU8kaag==
-X-CSE-MsgGUID: I4USynOiR/+QidwktaefZw==
-X-IronPort-AV: E=Sophos;i="6.27,209,1787011200"; 
-   d="scan'208";a="33839204"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 12:54:53 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.111:22661]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.50.212:2525] with esmtp (Farcaster)
- id 9f41ed55-50ce-4f24-bf04-8a21de9e5817; Thu, 12 Nov 2026 12:54:52 +0000 (UTC)
-X-Farcaster-Flow-ID: 9f41ed55-50ce-4f24-bf04-8a21de9e5817
-Received: from EX19EXOUWA002.ant.amazon.com (10.250.64.216) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Thu, 12 Nov 2026 12:54:52 +0000
-Received: from BYAPR08CU003.outbound.protection.outlook.com (10.250.64.238) by
- EX19EXOUWA002.ant.amazon.com (10.250.64.216) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56
- via Frontend Transport; Thu, 12 Nov 2026 12:54:52 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ey+e4mr+8iNaDq8CIW8BhZlFakwEYMeGj/p65F+3ouTCLF9olYSjji6VjfuxMxWP1JWQ1OH5DXt90tOnqBwn9CRuUEqSEljPoFqudwYuO+lPJij8QfY3Oo+kg0+4GvuzcIzNkJhmasxbwqPgv8iUguCNwDgslKOt8+qrvw7zeuhfzQElF5xIkIJsPcVMuG0ZquZkH77rXWVXQrvY5QuC8L4Z2B+UQGlBZ5nE2IztWMb9ACx7H+MsbKIuQSpfFjLY1XkhuM6IYBUgT3FztK4ECTC6EIUBx1AJVpwzFsyMIZ+QlLhP2GkfIJN/Ka6XCGYfDIGiHrTQGd9byMfd+PCPOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cT07MwAZ31iG2qQnhnLOufnjI+hhcrZ5UWBkfiIyCaQ=;
- b=TCXvtBRSRDapBiE2QNNW3eMIWq1jVzwglAhe7/7aswF72Af7n8mYpFncEP/BLFGVYbzrvImvjIbqDJH4kyN2LzKyF/nojTsY6ArUvN15VuxSdNpOJjBFyk/+GMuMxlpeWbJh1e3+yYms72zMPjWD45kVyiRHc1ktB/fPXj1nXjMmXnKCKypIOSiTTNHKwVd/A4eRHBUfDKkHcFEiC88eOybXPVjy+Z0f80mAOj3sLr0StBDAQZnEORKPeuSOZrck7o5ZL6lefzLFxlvBCvblgJp2c52lxwW2t2d98K5QMl303O9EHbUXAPD0CA6jm8T6kOo1RgGsFWwaGO9r3AwFlg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amazon.com; dmarc=pass action=none header.from=amazon.com;
- dkim=pass header.d=amazon.com; arc=none
-Received: from BY3PR18MB4722.namprd18.prod.outlook.com (2603:10b6:a03:3c9::19)
- by DSAPR18MB502825.namprd18.prod.outlook.com (2603:10b6:8:519::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.9; Thu, 12 Nov
- 2026 12:54:49 +0000
-Received: from BY3PR18MB4722.namprd18.prod.outlook.com
- ([fe80::e307:5f61:2694:b219]) by BY3PR18MB4722.namprd18.prod.outlook.com
- ([fe80::e307:5f61:2694:b219%4]) with mapi id 15.21.0592.009; Thu, 12 Nov 2026
- 12:54:49 +0000
-From: "Farber, Eliav" <farbere@amazon.com>
-To: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>
-CC: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato
-	<pfalcato@suse.de>, "linux-mm@kvack.org" <linux-mm@kvack.org>
-Subject: RE: [PATCH 4/4] uio: implement huge_fault support for physical
- mappings
-Thread-Topic: [PATCH 4/4] uio: implement huge_fault support for physical
- mappings
-Thread-Index: AQHdcqUAHQJHkOyYG0qEf8E1pCW3YQ==
-Date: Thu, 12 Nov 2026 12:54:49 +0000
-Message-ID: <BY3PR18MB4722857A1FE8395B9AAD5CEEC6702@BY3PR18MB4722.namprd18.prod.outlook.com>
-References: <20261111113045.35368-1-farbere@amazon.com>
- <20261111113045.35368-5-farbere@amazon.com>
- <sashiko-outbox-209833@kernel.org>
-In-Reply-To: <sashiko-outbox-209833@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BY3PR18MB4722:EE_|DSAPR18MB502825:EE_
-x-ms-office365-filtering-correlation-id: 482e5e5a-16b6-4139-330e-08df40bc2329
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|23010399003|6133799003|22082099003|261009223027099003|18002099003|261022075727099003|261022105027099003|261021121427099003|261102123227099003|261028144727099003|261026121527099003|261026140227099003|56012099006|10067099003|11063799006|4143699003|38070700021;
-x-microsoft-antispam-message-info: Su2tIDbXA0N+ImqNaQPSwAlnPNNkW1rzvPd3ssxfWAfwoDlaWCKEzU3VmzWO6jKrSywrSgSJg32YFEd2tuRlWtk34rEPn2MUli1noorFcXlwBG21Z9yokQo71KRr6WsxCb8uorGupeZwY+j5eapnKPfmnnGwAKPGjUV7cAHo87plpB/lOaJOkDDwHp38xEX7ikuc2pn4/S8qiGyMaAZf/+NhyR/YFVG0r6PgXszhDbEUflXxV+k9ACSURZKP8BPoDwqNZ4Vjnk1eA1zW+b2bi3j3A/nsf2gsdbxym4B+DhBFrO9BNdG1DUD6mGAv41j+fc3FQndyoRoXmbzPXYKrhlwG2idjHJLiXGScncfCaB6D7b4k6lnxcewd3YhuWx+qZqsqQP3F4E5bqEWbDTzIRiV2kXYOk69tOn58seYNmtIiNYyfa/u9pUcOLvehDUXkyjmm8f2tSACkakGCgPGM2tshmsEJHIKbu699FbpI8vJmPMpxz4/YSsbpkNePKEjb9STtrhUEHcB9C+1bQ161xJHCxDLhn7WiEI21Vlp3DnG1Xwfk7UoiHjg4AIcKqE+wEfJ63hbRTGxAQKZo5D9yBweOsrruJ92wiAsmoLpVseUhXKG0OcBkpjySPNf+Ek6Wt9k9k43use9xg+/Z7BhK95IMIHU5EkCNSQb9G5pL0a6uEaK5C8ssBHAcRp0ggUTnseqe6d1qtboxQtwpQLyccA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY3PR18MB4722.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(23010399003)(6133799003)(22082099003)(261009223027099003)(18002099003)(261022075727099003)(261022105027099003)(261021121427099003)(261102123227099003)(261028144727099003)(261026121527099003)(261026140227099003)(56012099006)(10067099003)(11063799006)(4143699003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TzlxQVg2THJMNEhUZGNOSXZDaHdCM0pvSm1Ga284anQ5ZUZrOURkRUVaYkVP?=
- =?utf-8?B?WTR1dkh5aXR0dkRTRFZaR2thZUl5THlyNE9wdUtQRFlGN2tlb09Od1ArWWdM?=
- =?utf-8?B?cjJZZEVHVHRTSmlFcUxiVHg4bGZTZyszY3l2UUc5a0lyRG1UVk4rdG81RmtB?=
- =?utf-8?B?Z3BoZno2WTBxZ1ZiYnZSMmMrWDV3eFRIVG5rUnV1bHlDQmRlMnZJZEhjMzk3?=
- =?utf-8?B?UmlwSk1OekRiUlRNZEFORmFLZUxJMXU1S1JDUzZpMXJHUllSTnlCUE4yc2VE?=
- =?utf-8?B?N00vL1c3WnoxWERLSHRmU2pEYkZZa24yTU1Sc0NPV3BkWGwxV1RyS0R0RHpJ?=
- =?utf-8?B?eVFwK0NZQmgyanM1aVkxWkxZajlPMTBTdE56MHZ3M2NYdTdjOG9LTHkyN1dQ?=
- =?utf-8?B?NjBNV2V6NFAwMVZ3YnRONGJlb1BxQUx4Sy9DTHRpL3dkRkhHY1pDcEVuaDg3?=
- =?utf-8?B?UFFlR0JlaXZiUnF4YVBhYldTUi9TakxLWVI1QzNURDRNWkJCWUtsckF5MUJY?=
- =?utf-8?B?NzNVYmE1UEs4bE9sRnpyL2hSeWFySG9Oc2hGVlhmN2xvVW11bUlmYVNYbjg1?=
- =?utf-8?B?VytMRDZDR2wxdm4vZHEvb3RiMEl2VEhHNkxsUy9YeER6UmN3RmpZd2hYNWtu?=
- =?utf-8?B?NUUxSC9xOU05MXBDNXc4Q3N0VGdjWGlrKzREMUtieUVKR05uZ1RTcXdRdW53?=
- =?utf-8?B?bXo5Vk1GenFMZ0hhWUxNcE1GTWI3S2FRZXVlWC9kM1NaUm9pd0JJS2JlWm5E?=
- =?utf-8?B?RVR4V2xRczJxelhBVEowUUZCOG1yZWM2NXppTnF1UTBLTzhKdDVXZGhQRnZu?=
- =?utf-8?B?ZnA4SlVCQUpwVEE5ZUhlRWpxK1pFRHkrSHpyOGl4KzVxbHMzeWhielhIU0VZ?=
- =?utf-8?B?UWxLN0JJbDBGcVRvNVdFckRDOUV4cXQxb3B6Zk9ObGxzR2pFb1dCOGxZREdj?=
- =?utf-8?B?cG5aQ09La0dxL0MzaEtBT3ZBVzZicGY2dXlmR1JRM0JQcmhwTGdMTVpEanFh?=
- =?utf-8?B?S2ExQWZyNTVPT1Q2dnE4RyttaWQybDlwR0hyMVkxajNYODhmWDlKbitOR0ZH?=
- =?utf-8?B?Vlg3RUlhSldjZVVwQWwwZDBNb2t0dDEwOWlGaEw0Y2RPUjVndGF2TXl6UlZq?=
- =?utf-8?B?cjFwOVR4Q29SMEVNNFcwdnlBQUx0U3h2UDZHZjJZMUxKaGk2bGZ3Qkp0SWov?=
- =?utf-8?B?R3pXQWE0dUlqRlQvMmhOTW4yb0JZbFdsaCtXRThHcUNvb09xOHRaUmZTMmx5?=
- =?utf-8?B?OXlieVpodkJONUlCOTJFdXh4ZVB6eUN4OHRYZFJkTmZtSlhxdmZxbGNwdjZn?=
- =?utf-8?B?Rm5FRVcxUWY3TjBtb2RaSEp0L3ZWMUd5U01rd083cnJFTnhETDhrVHV1ZjVx?=
- =?utf-8?B?THkvT3VvYVFydm9TVEFCQkJ3ZTVoODhqRTFmQ3kyRVc0bmVZSXoxTEFlSE1K?=
- =?utf-8?B?aW8xcStaMjVPdTUvN0loYTh5L3Fya2EwZi9RcWdQc3YwMWZSL3hGMCt4dElG?=
- =?utf-8?B?dC9OcDdNcHpBZWZUN1V2WUVLaDdJU0VBVWYzL1FxVm91S2Z3RzBGVjE0L1Qv?=
- =?utf-8?B?bWlpWlhOeGlFSkpoc054RTkrd1VQZjNLc2FablNkMU5NQUNqZmdYNTJiT3VO?=
- =?utf-8?B?b0trVjh5clFjTHNNeXgyVjZtNk04d3dubEhkMGUzTXJrc3JOcXh0c0JzT3lF?=
- =?utf-8?B?YU81RmFSWFc1UDdpNkJYYTRzL2ZQMC9teHNPZkVKbW55WHZoZCtTUFY5dlp4?=
- =?utf-8?B?L3RNMXJFT1YyZFdHNWVndlE1MndDbmVtRU9UUlhaa3I1OGlvejYzMFdnVHJG?=
- =?utf-8?B?d2lERWRYc2Y0SE9QMUx5bG1VSXUyL29USDNqdVU4NmF4YjNDVlBHeEpaUXRX?=
- =?utf-8?B?L2ZZZDNLMlFQbGRKOERzRFhRbUlDNVFpQzFrRFhSaUtlaGNTQ3hCeEZNSHVW?=
- =?utf-8?B?WHZJeGt6SzVtNHQyKytwTFhIRkszaHBtUXJhbWc5ZmJ2dWVnMGxtV0lJYUk4?=
- =?utf-8?B?NmdzT0U1RndjRkFYTVJMQ2pZeVFLYmQrdm5veVcrc1V4M2FvT2F6bUhoOWky?=
- =?utf-8?B?aS83K2VJM2M3K2U1RUtuOFR2Wkswa1hvdEZpWG9OYnYvcWtDQXM2NHdYZHQ1?=
- =?utf-8?B?bXR2QmZLM3BLa3dXZnhZRjU4YWsyMlBOeHJlWklmb0w0S3BEempqd1RDQlA0?=
- =?utf-8?B?L0FwODBlMG1xb2ZYTnBDWmYyejlvMXVWdDRmQTY5WXBmSk1vQ2Fya3Y3WDhW?=
- =?utf-8?B?TGJmQkFkc2lHK3BXMEx1Z0xWanZyT3pTZk9PZVZrWmhuSzNaazVFT29KS25X?=
- =?utf-8?Q?u4CEI84by/AOwUH8w9?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	bh=3n5/J6tgPD1XWb4Tmws4RfbYXoguOaRXVVFkrEMc68s=;
+	b=0wj6kKrb/tUnXqLbKc/bw72nevSMx0IYQ1ghKwH27CucwiN7mlKgQVM3wXb2VZT6eFwJgF
+	TWVjtCvyXATk1ICcX8YR1INBG+DC2YFSYPeyWkEmvxpSTakOrc/e7kHH5fNd8KmYXPjkAS
+	wsGGKztNWBuziw3TG4B9p0loW3a6Lv4=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 50EA521D92;
+	Thu, 12 Nov 2026 12:56:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1794488163; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3n5/J6tgPD1XWb4Tmws4RfbYXoguOaRXVVFkrEMc68s=;
+	b=gQmcfq7im2QWNWRBnuekveq94mEqspY1fJQBVjwCi5XjA/1EBRLnMKXSNTJC0M+Fa31Iiu
+	BOYo7gBeBqQwmA0YBpRcgGhI2lY4Xtv7XrtuZXytIcVZfMbU9uIKUfnIStmCKpZpjMhsOi
+	LS5KKK0oQ6WgyvUOU67vQ+sI/EqZRrE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1794488163;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3n5/J6tgPD1XWb4Tmws4RfbYXoguOaRXVVFkrEMc68s=;
+	b=/oJcuEkSIU/2wwr9Bfk9gr2Ktf3IqO9l2JXtsaqeU1sbkLNCar6iB2EeLyBnOrBy6G4ghS
+	r6BAm/4Hn5IQ+DAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1794488163; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3n5/J6tgPD1XWb4Tmws4RfbYXoguOaRXVVFkrEMc68s=;
+	b=gQmcfq7im2QWNWRBnuekveq94mEqspY1fJQBVjwCi5XjA/1EBRLnMKXSNTJC0M+Fa31Iiu
+	BOYo7gBeBqQwmA0YBpRcgGhI2lY4Xtv7XrtuZXytIcVZfMbU9uIKUfnIStmCKpZpjMhsOi
+	LS5KKK0oQ6WgyvUOU67vQ+sI/EqZRrE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1794488163;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3n5/J6tgPD1XWb4Tmws4RfbYXoguOaRXVVFkrEMc68s=;
+	b=/oJcuEkSIU/2wwr9Bfk9gr2Ktf3IqO9l2JXtsaqeU1sbkLNCar6iB2EeLyBnOrBy6G4ghS
+	r6BAm/4Hn5IQ+DAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 310A413432;
+	Thu, 12 Nov 2026 12:55:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ro7mNV639WoZYAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 12 Nov 2026 12:55:59 +0000
+Date: Thu, 12 Nov 2026 12:55:57 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
+	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Steve Sistare <steven.sistare@oracle.com>, 
+	John Hubbard <jhubbard@nvidia.com>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
+	Josef Bacik <josef@toxicpanda.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org, 
+	iommu@lists.linux.dev, netdev@vger.kernel.org, Chris Mason <mason@kernel.org>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/9] mm: limit pagecache folio refcount when mapping
+ pages
+Message-ID: <avW0HGjF6wuqn12T@pedro-suse.tail5790ac.ts.net>
+References: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
+ <20261110-refcount_overflow_stable-v3-1-318625d63a98@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: qNXCK5NjE8C08VzEZGkEt4q8/YBot75CYA/NSd4h1GG8RUs0BepKqkPwULQepTV9EOlHDtKR8UXXM52AcfqD5SxzG96RZkspaSSvu2nJjLF383sp4p+Hn/eU9T1ZNgAPFRxhV9yMFyD36SiZLNqMaVK7RUT98+xJjCrqRabpJY1oDkuyy9MlnxAm+KJRLSbv8dd1YaIJL5ZbQmncNzqgp1P0dxSeU4+QeB2sRpkCYvYu+HcSIU1HGcHhm52SHCaZx/oeTUvRxRTt564NwonZtp9WB+SZP05qAteFHXrcOcBJoJXIpUIFIEzWZJgXcvNMZEeCVBwg4D5dZCGK4Pw5xA==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BY3PR18MB4722.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 482e5e5a-16b6-4139-330e-08df40bc2329
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Nov 2026 12:54:49.7558
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 5280104a-472d-4538-9ccf-1e1d0efe8b1b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: tkGTrk5VBza0dcPzNOIeHP9U+26Iq5x/qG0Hl4Toiulgy3ZBYKrpT+zW81QqxhN8wV8zYMor9dtv/W+nc2K9jw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSAPR18MB502825
-X-OriginatorOrg: amazon.com
-X-Rspamd-Queue-Id: 2FCE7140005
-X-Rspamd-Server: rspam12
-X-Stat-Signature: wa1yj9wtsw45m6syu1shmyxq6f9d4794
-X-Rspam-User:
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794488096-749874
-X-HE-Meta: U2FsdGVkX19B0N+v6Ss6NiA4hGKRmuARdxgLL3nZdJJDA2xLaV5qLMlxx/5QsHMrNDr3PiZua1Kt6LHKf5WOMjUgoCHKh028u6xvMn+qWfr3h59jxoV3qfJmvx8TxL0YUahda2qiPKedL0v9HNInguE+Xksnse6ZyxKr5xz7G/kki2atmrJL4C29zwwmnuB/cVW+llsy4kaIz8jYo28cLw4gPtv/HUlzbt3W5gLGc6/q+2KbEy03tK0AHfyGMkWiE/gvgq7xVoIhlIut+OZ9FqY/LjMeTP1oz1bULj5jFlKH12O3qh5HQKrP4UZL4SyEWlJQmfnp0u7xehQlxByQzNqyUOgp6WuWKy5zoPsm5X89uDfXCSLVloQBY7wsyRwhtCjTObCArVA67thRj25ZT8vzLMfP9mcEsZX6VF0ixuEJU1b9cL+p4mIxASQxEVNN97INXIhgxai7o7wOE7A9NdTMe1lIbsMG3DyoU3UJxd2Nqcqm2jnSJmzQkRSPLIFDDdba74K0kNJjLVBoonCY07JTBA/oiaFfpnqxD85+Fd1JsCJ9B2VLN/wDcO/MJRjUQrCbgjRrXOWzqezasCTawTBUulNTnwkKEkfLmOTEuXi6nniNhG1t+iaVp5+vN4sN+Tzeb9iIt4+6w4MnklgXbw2NTFCsr1gzgb4AL2O0WC032UNFE7nzBAQiAUzDxPNHdxiS1o+2vRDVT06kHRxzDYa4hTGm/vYP1imb1/hMoESvHGQ06+0pa/F3dYbmubCoRtdy9iNwKjd+HgW3QxDkaKyCdB6VQNz+rlyUK7oQZvMBm/VFeY1w5aZyTMt13SPeronGDaklsSD1qU787B0e1r5uAkabF179AgXWQSzRoR1vo0y8+Ss6LwHG88V55ZRshEz+EfE1viTB6WvOVZ/IeIRR+P6A1Gya4jdlkYOJFWFZaU8QerQcxnE59oKi3LCvJg0Bsb08ddmXOT28r9L
- 0BSCDyzl
- bjQ6OAUxU761RX7DuBI0kuPyuw9WpHCMf8f99XNvYMuZdPlUFjz/b2XChuCF6anJWYSxdOeSsUwqCmyYgrzhBcrgorIqxcFTQCM3QnAoDh8kQxNf4d9Pori3hqUnw3xi3wJ8etgv3b2W4DkpNArtMMddQgxcICjZL4OLZmgxZ7lwVGwDNPj5UR0xMDmiSOAIgZDF6AwN0hnSiIFBk43g1ftckGSbKY+bmjXFoIG6sE3IRSqPDxnpu/Q0yXOuyYxrnlN+WrxtuDj+goeKXYmZ9VME/fUHG0s2IbjBNK9VBXTese5BsU9xUS7Nw4areiELki7oBzK10AtWj4yAVFqK6QHTohJbyW9mUNwnApwBmgOjYOAArrwzDgGPuf41iCr1AedPFQ2F4+NJgrVIt4C4qcHVoBF8KJxOYpcGh64uayMd+bvSaUyKQFwO2Nj72xJQpONKihoaFIR/l2polsow6J2O2rYU/h/484U3AAxo4tJZsTpWiw8tk+eWwM8pbAXaUkKBwr9lF2NpGZqqyXPONm85526Z/4W6OCFcBZ0eLv7j32TrVRCJje0K2jk/+O/gCEMMu6GOiK6aaP8/izxHVXY0MCIM6s4gxV8LbmrkuVh1ZRfuXbYPPpkf6WZ1Qd7Xv/p6SYfjDsaV7KRw8KURtBtr9j+UI7fH82J6lLVuHlBjHIQMW72PzJ9zBxS0iQRWvSY0/wEBEXKVwG0ZzhGMOPNUTFAWcQfPnwqWPlHnlMhjCtI6d81SlwVE9sQLMWt2gNMhmQ/BQf2PZ6Arx96RcjqdHVvkyrcjr9RUduuwQCQmWtcUAZ9/ut0UnWUJTL/0QlvUQtttgOqzA/FaRCGSvOjGPkVyC055ekYzPzn0zL57/8KPXO6rMou2jRqz5EHKDX92U4vytsahh/4iYkIjpczoe9TXl81oP1qJL/5M4moSC2wftF7HpbgLd6+3GSqiQ0KTm8IhshGG/jWIQlp3lIKa+Cymc
- hfGONftD
- PQxK0PMzK3RvlRt0wUASjVdLVpb/Xu1aAkkbWqUvd4d2Wq5cBLFc+RaCPfwRj/mBejuG9+f1PDk9/nmqj3/Si8lA/GDGAralbFm26KVqgNL0ibr20+2BfP2nfD2lwIHu8dxq4w5OUE/uCYdyVZO81mtgD7qYmUm8xzw3nK+y6GYw/MehsgApuKwQHCzFxyr82YHaAzcrnwH1O1QgNxTIxA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261110-refcount_overflow_stable-v3-1-318625d63a98@kernel.org>
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Spam-Score: -12.01
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0DB728000B
+X-Stat-Signature: 5yr6fmwpkhzqij7hse3eadnhwd4ytem9
+X-Rspam-User: 
+X-HE-Tag: 1794488164-613448
+X-HE-Meta: U2FsdGVkX19k6bwgU91QMg0jTSDoBVDWklXDzkZ/nozw0r5LCcpvKsB3A91azL6nhTeJSP3qrkIhqlhLME4xNn7pwBEUm+iqiB9RQJR3n0ft/zytIHb6gddq9G/FMAOfkJAwufIMJbblhzyQ5k13E6voRjkXG/4i13M30fhWpZ9lnytPYkdJ3cWllHEWwI3tON6hesE/tamk0iDZu4vd7f6ZV/3SVVhQb2USooznzyEcdHYEcI3n60EYCYYaqNIhm6omEYdqctTy0khs+84h9v7X60evXpVBJ+XECoTcY3AGfjakSlOFJ8JC7nCzPuGXOl1ZTx8tJ3FYn9Uz/cGWL+EbAOOwYJlwrKOrKboCm1kNTnio1zBvBYySRRFs2JXED+XDk1Fxda2ks4t0DxrLRCo7JhQ1Rix8rdOtUKqRz+K+sTQtCOmqe6fSUxZkpkbld028ch1jKVBUeI/E2o1enrVPutOWjCF0xgFnSs255946ubWyqh0SspjMpTehv/X+9Zd72jNijhWMOjwfoN6pJc8FR9e3dUKaPYh/mR1C1JDCFt24P7mq3tY17lhN1TfAfA/JR7Jrpv6Qbz9mL4jBpFYJdJcC11X71E3XflNZOPPh+P6p3SUihfEPKRqIdF5P6I2R899cdHX5Dfggl93p4zYglgbmQJOiqyK2GTDv39LO1I45XSxyMtTLXbNC7+qMw8hUa01DEE7e3CQ+6pb4ZDBf7lovg2mOgI3q5If7heVdh8kONKon+M/4ppM10w/ZcTPMYiDI7/cPIcNq302LnVtAEhUGw3uuyiqCjK7/Jva3w8i88xTU/Ik5Ymxq0CHPwgzy3WI0b3P0a6er4JsWLlugvXbcfv3ka43ORVxY650wNA6zXb4F7dweBlojjdAV10/CKD+iNyJqDorZbZ+nnJhd0zdIl8NxkShVbOTHwA/FrQcoSNs+2Xb+H6XQJHhvFvz4+1ckf3a6msEd9HB
+ d2xgrZXD
+ XMcj2vKrhFnNuIwb1WiElSNogkC2C40ZUtSBz434ZWihxbLQlHnqGy6KBHEXi/6JJJ2fkov/AgyNvAKqF78uX0EGXZpCU1rMuIyNr2hkWvLpQCGGuJ1rw+pVDs2dOYSe828yHt0ptsS2DtmiWzW3F1xk3JcIsE41hW8U6CmzqdrWinJaFDFXiYoEpzL6uEydwWY/qWthPfbPuR7PIZEfXS69pd/jmybqbILM/TR9QY/dHLQ/HhDG+d+jW7s37u3LwecBjitXL95nhEvT4LRl9w9y4hvbTGYwQ5XNfQqRYJQcbiG4BXAuQvWNcNG1EKyNLna25LUDkfGaEv4Lso/UaQiob/V6Ns8ZOOGe2RF90wI26prOIGnqBOUOQ2geXcCOJhe0gl2C9a+fwPGrpyAm/Ln/t6PhyDkinkrVx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -208,32 +167,438 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-T24gMTEvMTEvMjYsIFNhc2hpa28gQUkgcmV2aWV3IHdyb3RlOg0KPiBbU2V2ZXJpdHk6IEhpZ2hd
-DQo+IENhbiBpbnN0YWxsaW5nIHVpb19waHlzaWNhbF92bV9vcHMgb24gYSBDT1cgbWFwcGluZyB0
-cmlnZ2VyIGEga2VybmVsDQo+IEJVR19PTigpIHdoZW4gYSBjb25jdXJyZW50IGZhdWx0IG9ic2Vy
-dmVzIGEgdHJhbnNpZW50bHkgY2xlYXJlZCBQVEU/DQpbLi4uXQ0KPiBTaG91bGQgQ09XIG1hcHBp
-bmdzIGtlZXAgdXNpbmcgYSB2bV9vcHMgc3RydWN0dXJlIHRoYXQgb25seSBkZWZpbmVzDQo+IC5h
-Y2Nlc3MgPSBnZW5lcmljX2FjY2Vzc19waHlzPw0KDQpZZXMsIGFuZCB2MiBkb2VzIHRoYXQuIEkg
-cmVwcm9kdWNlZCB0aGUgaW50ZXJsZWF2aW5nIHlvdSBkZXNjcmliZSB3aXRoDQplaWdodCB0aHJl
-YWRzIHJhY2luZyBhIHN0b3JlIGFuZCBhIHJlYWQgb3ZlciAyMDAwIHJvdW5kczoNCg0KICBrZXJu
-ZWwgQlVHIGF0IG1tL21lbW9yeS5jOjI5ODkhDQogIFJJUDogMDAxMDp2bWZfaW5zZXJ0X3Bmbl9w
-cm90KzB4ZmIvMHgxMDANCiAgQ29tbTogcGZubWFwX2Nvdw0KDQphZnRlciB3aGljaCB0aGUgZ3Vl
-c3Qgd2VkZ2VzLCBzaW5jZSBCVUcoKSBpbiBhIGZhdWx0IHBhdGggbGVhdmVzDQptbWFwX2xvY2sg
-aGVsZC4gL2Rldi9tZW0gaGFkIHRoZSBzYW1lIGJ1Zywgc28gcGF0Y2ggMyBnZXRzIHRoZSBzYW1l
-DQp0cmVhdG1lbnQuDQoNCllvdXIgbWlkZGxlIHBhcmFncmFwaCBzYXZlZCBtZSBhIHdyb25nIGZp
-eC4gQSBDT1cgdGVzdCByZXR1cm5pbmcNClZNX0ZBVUxUX1NJR0JVUyB3YXMgbXkgZmlyc3QgYXR0
-ZW1wdCwgYW5kIGl0IHByb2R1Y2VzIGV4YWN0bHkgdGhlDQpzcHVyaW91cyBTSUdCVVMgeW91IHBy
-ZWRpY3QgLSBvbiAvZGV2L21lbSBpdCBmaXJlZCBhdCAyMDAgcm91bmRzIHdpdGgNCmZvdXIgdGhy
-ZWFkcywgbW9yZSByZWFkaWx5IHRoYW4gdGhlIEJVR19PTi4gQm90aCBkcml2ZXJzIG5vdyBnaXZl
-IENPVw0KbWFwcGluZ3MgYSB2bV9vcGVyYXRpb25zX3N0cnVjdCBkZWZpbmluZyBvbmx5IC5hY2Nl
-c3MsIHNvIC5mYXVsdCBhbmQNCi5odWdlX2ZhdWx0IGFyZSBOVUxMIGFuZCBkb19mYXVsdCgpIGtl
-ZXBzIGl0cyByZWNoZWNrIHVuZGVyIHRoZSBwYWdlDQp0YWJsZSBsb2NrLiBUSFBlbGlnaWJsZTog
-MSBvbiBhIFBNRC1hbGlnbmVkIENPVyBtYXBwaW5nIGlzIGdvbmUgd2l0aCBpdC4NCg0KPiBbU2V2
-ZXJpdHk6IE1lZGl1bV0NCj4gQ2FuIGEgcmVtb3RlIHdyaXRlIHRvIGFuIHVudG91Y2hlZCBwYWdl
-IGZhaWwgd2l0aCAtRUlOVkFMIGFmdGVyDQo+IHNvZnQtZGlydHkgYml0cyBhcmUgY2xlYXJlZCB2
-aWEgL3Byb2MvPHBpZD4vY2xlYXJfcmVmcz8NCg0KRml4ZWQgaW4gcGF0Y2ggMiBmb3IgYm90aCBk
-cml2ZXJzOiB2bWZfaW5zZXJ0X3Bmbl9vcmRlcigpIG5vdyBwYXNzZXMgdGhlDQpmYXVsdCdzIHdy
-aXRlIGZsYWcgb24gdGhlIG9yZGVyLTAgcGF0aCB0b28uIEkgY291bGQgbm90IHJlcHJvZHVjZSB0
-aGUNCi1FSU5WQUwgaXRzZWxmIC0gc2VlIG15IHJlcGx5IG9uIDMvNC4NCg0KVGhhbmtzLA0KRWxp
-YXYNCg==
+On Tue, Nov 10, 2026 at 09:35:41PM +0100, David Hildenbrand (Arm) wrote:
+> With large file folios, overflowing the folio mapcount and refcount
+> became possible more easily. For anon folios it is currently not really
+> an issue: each large anon folio can only be mapped once into a process; on
+> 4k kernels it would be more processes than usually allowed on a system,
+> and on 16k or 64k kernels the processes alone would consume hundreds of
+> GiB. Something to be sorted out at some point, but it's not as urgent.
+> 
+> Being able to overflow the refcount is not really big news, but it's about
+> time that we do something about it because some modern technology might
+> find ways to abuse it :)
+> 
+> One of the enablers for that was commit ddc58f27f9ee ("mm: drop tail page
+> refcounting"), however, file thp support was added later.
+> 
+> File folios can be mapped multiple times into the same process, allowing
+> for processes to hold many references to the same folio.
+> 
+> As a short-term solution, let's introduce two folio refcount limits:
+> one for ordinary consumers and one for admins. Leave some headroom
+> before the refcount goes negative, which we really don't want (having
+> the mapcount go negative is also not expected).
+> 
+> Start reporting SIGBUS if we run into limits. When restoring mappings
+> from migration entries, instead zap the pte/pmd entry. We allow for
+> slightly exceeding the limit to keep things simpler.
+> 
+> During fork(), prefer not copying page table entries over failing fork.
+> Export __folio_ref_count_over_limit() right away as that will be needed
+> from fuse code next. Use has_capability_noaudit(current, CAP_SYS_RESOURCE),
+> so filesystem credential overrides do not affect access to the admin
+> reserve, and to not generate auditing messages simply because we access
+> optional reserves.
+> 
+> Don't grant access to the admin reserve from kernel threads, from
+> interrupt context, where "current" is just the interrupted task, or with
+> IRQs disabled, as even unaudited capability checks can take locks.
+> 
+> This is far from ideal, but better than all easy alternatives we can
+> backport comfortably. For now it fixes the big problem: letting
+> the refcount (+mapcount) go negative and cause trouble.
+> 
+> This is only a temporary fix. Keep the mapping checks explicit and
+> separate from reference acquisition: most are expected to disappear when
+> we rework the underlying refcounting.
+> 
+> Check order 0 folios as well for consistency: each
+> folio_add_file_rmap*() and folio_dup_file_rmap*() needs a prior check.
+> 
+> Adjust the check folio_get() to just check for invalid refcounts and
+> drop folio_ref_zero_or_close_to_overflow(): we really don't want
+> negative refcounts or negative mapcounts. Convert to VM_WARN_ON_FOLIO as
+> we touch it.
+> 
+> Also, just document -EHWPOISON for copy_present_ptes() while at it.
+> 
+> Note: When zapping file migration entries, uffd-wp is preserved using PTE
+> markers, but uffd-rwp protection is lost because there is no corresponding
+> marker. try_to_unmap() already has the same problem when unmapping file
+> folios, so we'll happily ignore it.
+> 
+> Note2: For now we don't let migration or PTE table collapse exceed any
+> limits. Admins can always refault, and if we are already operating in
+> admin reserves, something is already off.
+> 
+> Reported-by: Chris Mason <mason@kernel.org>
+> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+> Acked-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Mostly LGTM, with some comments:
+
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+
+> ---
+>  include/linux/mm.h | 35 +++++++++++++++++++++++++++++++----
+>  mm/filemap.c       |  6 ++++++
+>  mm/huge_memory.c   | 29 +++++++++++++++++++++++++++--
+>  mm/memory.c        | 33 +++++++++++++++++++++++++++++----
+>  mm/migrate.c       | 11 +++++++++++
+>  mm/userfaultfd.c   |  4 ++++
+>  mm/util.c          | 18 ++++++++++++++++++
+>  7 files changed, 126 insertions(+), 10 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index e6da76fbe8e83..6c7c29a086bd1 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2229,9 +2229,36 @@ vm_fault_t finish_fault(struct vm_fault *vmf);
+>   *   back into memory.
+>   */
+>  
+> -/* 127: arbitrary random number, small enough to assemble well */
+> -#define folio_ref_zero_or_close_to_overflow(folio) \
+> -	((unsigned int) folio_ref_count(folio) + 127u <= 127u)
+> +/* Leave separate reserves for administrators and concurrent reference gains. */
+> +#define FOLIO_REF_COUNT_LIMIT		(INT_MAX - (1U << 26))
+> +#define FOLIO_REF_COUNT_ADMIN_LIMIT	(INT_MAX - (1U << 25))
+> +
+> +bool __folio_ref_count_over_limit(unsigned int ref_count);
+> +
+> +/**
+> + * folio_ref_count_over_limit - Check whether to refuse more folio references.
+> + * @folio: The folio.
+> + *
+> + * Check before adding page table mappings or other significant refcount users
+> + * to pagecache folios (!hugetlb), either before acquiring references or
+> + * afterwards with rollback if the operation is refused.
+> + *
+> + * Checking other folios does no harm.
+> + *
+> + * This check is an approximation; we leave some headroom such that concurrent
+> + * increments, batches, temporary references, or other bounded refcount
+> + * consumers are not a problem.
+> + *
+> + * Return: True if the caller should refuse the operation, false otherwise.
+> + */
+> +static inline bool folio_ref_count_over_limit(const struct folio *folio)
+> +{
+> +	const unsigned int ref_count = folio_ref_count(folio);
+> +
+> +	if (likely(ref_count < FOLIO_REF_COUNT_LIMIT))
+> +		return false;
+> +	return __folio_ref_count_over_limit(ref_count);
+> +}
+>  
+>  /**
+>   * folio_get - Increment the reference count on a folio.
+> @@ -2243,7 +2270,7 @@ vm_fault_t finish_fault(struct vm_fault *vmf);
+>   */
+>  static inline void folio_get(struct folio *folio)
+>  {
+> -	VM_BUG_ON_FOLIO(folio_ref_zero_or_close_to_overflow(folio), folio);
+> +	VM_WARN_ON_FOLIO(folio_ref_count(folio) <= 0, folio);
+>  	folio_ref_inc(folio);
+>  }
+>  
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 9871b4f32a916..0f6d57432a7e5 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -3968,6 +3968,11 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
+>  		unsigned long end;
+>  		vm_fault_t map_ret;
+>  
+> +		if (unlikely(folio_ref_count_over_limit(folio))) {
+> +			folio_ref_dec(folio);
+> +			goto next;
+> +		}
+> +
+
+It's a bit odd that you take a ref, only to check later if we're over the
+limit, and ditch the folio. Could you move this to next_uptodate_folio()?
+
+>  		addr += (xas.xa_index - last_pgoff) << PAGE_SHIFT;
+>  		vmf->pte += xas.xa_index - last_pgoff;
+>  		last_pgoff = xas.xa_index;
+> @@ -4009,6 +4014,7 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
+>  					   mmap_miss - 1);
+>  		}
+>  
+> +next:
+>  		folio_unlock(folio);
+>  	} while ((folio = next_uptodate_folio(&xas, mapping, end_pgoff)) != NULL);
+>  	add_mm_counter(vma->vm_mm, folio_type, rss);
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 4608540e40d46..439cfe446cea4 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -1626,6 +1626,7 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
+>  {
+>  	struct mm_struct *mm = vma->vm_mm;
+>  	pgtable_t pgtable = NULL;
+> +	vm_fault_t ret = VM_FAULT_NOPAGE;
+>  	spinlock_t *ptl;
+>  	pmd_t entry;
+>  
+> @@ -1662,6 +1663,10 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
+>  		if (is_huge_zero_folio(fop.folio)) {
+>  			entry = pmd_mkspecial(entry);
+>  		} else {
+> +			if (unlikely(folio_ref_count_over_limit(fop.folio))) {
+> +				ret = VM_FAULT_SIGBUS;
+> +				goto out_unlock;
+> +			}
+>  			folio_get(fop.folio);
+
+I see you use this pattern often. Would it make sense to have a
+bool folio_get_unless_overflow()?
+
+>  			folio_add_file_rmap_pmd(fop.folio, &fop.folio->page, vma);
+>  			add_mm_counter(mm, mm_counter_file(fop.folio), HPAGE_PMD_NR);
+> @@ -1688,7 +1693,7 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
+>  	spin_unlock(ptl);
+>  	if (pgtable)
+>  		pte_free(mm, pgtable);
+> -	return VM_FAULT_NOPAGE;
+> +	return ret;
+>  }
+>  
+>  /**
+> @@ -1758,6 +1763,7 @@ static vm_fault_t insert_pud(struct vm_area_struct *vma, unsigned long addr,
+>  		pud_t *pud, struct folio_or_pfn fop, pgprot_t prot, bool write)
+>  {
+>  	struct mm_struct *mm = vma->vm_mm;
+> +	vm_fault_t ret = VM_FAULT_NOPAGE;
+>  	spinlock_t *ptl;
+>  	pud_t entry;
+>  
+> @@ -1783,6 +1789,10 @@ static vm_fault_t insert_pud(struct vm_area_struct *vma, unsigned long addr,
+>  	if (fop.is_folio) {
+>  		entry = folio_mk_pud(fop.folio, vma->vm_page_prot);
+>  
+> +		if (unlikely(folio_ref_count_over_limit(fop.folio))) {
+> +			ret = VM_FAULT_SIGBUS;
+> +			goto out_unlock;
+> +		}
+>  		folio_get(fop.folio);
+>  		folio_add_file_rmap_pud(fop.folio, &fop.folio->page, vma);
+>  		add_mm_counter(mm, mm_counter_file(fop.folio), HPAGE_PUD_NR);
+> @@ -1798,7 +1808,7 @@ static vm_fault_t insert_pud(struct vm_area_struct *vma, unsigned long addr,
+>  	update_mmu_cache_pud(vma, addr, pud);
+>  out_unlock:
+>  	spin_unlock(ptl);
+> -	return VM_FAULT_NOPAGE;
+> +	return ret;
+>  }
+>  
+>  /**
+> @@ -2093,6 +2103,11 @@ int copy_huge_pud(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
+>  	if (page) {
+>  		struct folio *folio = page_folio(page);
+>  
+> +		if (unlikely(folio_ref_count_over_limit(folio))) {
+> +			/* Skip this PUD; it can be faulted in later. */
+> +			ret = (dst_vma->vm_flags & VM_MIXEDMAP) ? -ENOMEM : 0;
+
+A comment as to what's going on here with VM_MIXEDMAP would be useful. I guess
+the idea is that faulting on a mixedmap later will not necessarily hand you the
+exact same page fault result?
+
+> +			goto out_unlock;
+> +		}
+>  		folio_get(folio);
+>  		/*
+>  		 * TODO: once we support anonymous pages, use
+> @@ -5223,6 +5238,16 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct folio *folio
+>  	if (!(pvmw->pmd && !pvmw->pte))
+>  		return;
+>  
+> +	if (!folio_test_anon(folio) && unlikely(folio_ref_count_over_limit(folio))) {
+> +		/* Leave the file mapping absent so it can be faulted in. */
+> +		pmd_clear(pvmw->pmd);
+> +		if (arch_needs_pgtable_deposit())
+> +			zap_deposited_table(mm, pvmw->pmd);
+> +		update_hiwater_rss(mm);
+> +		add_mm_counter(mm, mm_counter_file(folio), -HPAGE_PMD_NR);
+> +		return;
+> +	}
+> +
+>  	entry = softleaf_from_pmd(*pvmw->pmd);
+>  	folio_get(folio);
+>  	pmde = folio_mk_pmd(folio, READ_ONCE(vma->vm_page_prot));
+> diff --git a/mm/memory.c b/mm/memory.c
+> index c9d64170e47ab..977e037388963 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -1168,7 +1168,10 @@ static __always_inline void __copy_present_ptes(struct vm_area_struct *dst_vma,
+>   * consecutive pages of the same folio by copying them as well.
+>   *
+>   * Returns -EAGAIN if one preallocated page is required to copy the next PTE.
+> - * Otherwise, returns the number of copied PTEs (at least 1).
+> + * Returns -ENOMEM if the file folio refcount is too high and the PTE must
+> + * be copied.
+> + * Returns -EHWPOISON if copying a page fails.
+> + * Otherwise, returns the number of processed PTEs (at least 1).
+>   */
+>  static inline int
+>  copy_present_ptes(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
+> @@ -1186,6 +1189,16 @@ copy_present_ptes(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
+>  
+>  	folio = page_folio(page);
+>  
+> +	if (!folio_test_anon(folio) && unlikely(folio_ref_count_over_limit(folio))) {
+> +		if (dst_vma->vm_flags & VM_MIXEDMAP)
+> +			return -ENOMEM;
+> +		if (userfaultfd_pte_rwp(dst_vma, pte))
+> +			return -ENOMEM;
+> +		/* Preserve uffd-wp protection when faulting the page back in. */
+> +		cond_install_uffd_wp_ptes(dst_vma, addr, dst_pte, pte, 1);
+> +		return 1;
+> +	}
+> +
+>  	/*
+>  	 * If we likely have to copy, just don't bother with batching. Make
+>  	 * sure that the common "small folio" case is as fast as possible
+> @@ -1367,9 +1380,9 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
+>  		/*
+>  		 * If we need a pre-allocated page for this pte, drop the
+>  		 * locks, allocate, and try again.
+> -		 * If copy failed due to hwpoison in source page, break out.
+> +		 * Other errors abort the copy after releasing the page table locks.
+>  		 */
+> -		if (unlikely(ret == -EAGAIN || ret == -EHWPOISON))
+> +		if (unlikely(ret < 0))
+>  			break;
+>  		if (unlikely(prealloc)) {
+>  			/*
+> @@ -1399,7 +1412,7 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
+>  			goto out;
+>  		}
+>  		entry.val = 0;
+> -	} else if (ret == -EBUSY || unlikely(ret == -EHWPOISON)) {
+> +	} else if (ret == -EBUSY || ret == -ENOMEM || unlikely(ret == -EHWPOISON)) {
+>  		goto out;
+>  	} else if (ret ==  -EAGAIN) {
+>  		prealloc = folio_prealloc(src_mm, src_vma, addr, false);
+> @@ -2474,6 +2487,8 @@ static int insert_page_into_pte_locked(struct vm_area_struct *vma, pte_t *pte,
+>  	if (unlikely(is_zero_folio(folio))) {
+>  		pteval = pte_mkspecial(pteval);
+>  	} else {
+> +		if (unlikely(folio_ref_count_over_limit(folio)))
+> +			return -EOVERFLOW;
+>  		folio_get(folio);
+>  		pteval = mk_pte(page, prot);
+>  		if (mkwrite) {
+> @@ -5754,6 +5769,9 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
+>  	if (unlikely(folio_test_has_hwpoisoned(folio)))
+>  		return ret;
+>  
+> +	if (unlikely(folio_ref_count_over_limit(folio)))
+> +		return VM_FAULT_SIGBUS;
+> +
+>  	/*
+>  	 * Archs like ppc64 need additional space to store information
+>  	 * related to pte entry. Use the preallocated table for that.
+> @@ -5816,6 +5834,9 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
+>   * @page: The first page to create a PTE for.
+>   * @nr: The number of PTEs to create.
+>   * @addr: The first address to create a PTE for.
+> + *
+> + * For file mappings, the caller must check folio_ref_count_over_limit()
+> + * before installing PTEs.
+>   */
+>  void set_pte_range(struct vm_fault *vmf, struct folio *folio,
+>  		struct page *page, unsigned int nr, unsigned long addr)
+> @@ -5982,6 +6003,10 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
+>  		goto fallback;
+>  	}
+>  
+> +	if (!is_cow && unlikely(folio_ref_count_over_limit(folio))) {
+> +		ret = VM_FAULT_SIGBUS;
+> +		goto unlock;
+> +	}
+>  	folio_ref_add(folio, nr_pages - 1);
+>  	set_pte_range(vmf, folio, page, nr_pages, addr);
+>  	type = is_cow ? MM_ANONPAGES : mm_counter_file(folio);
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index a5ac7192f0578..e241a594c3eed 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -385,6 +385,17 @@ static bool remove_migration_pte(struct folio *folio,
+>  		    try_to_map_unused_to_zeropage(&pvmw, folio, old_pte, idx))
+>  			continue;
+>  
+> +		if (!folio_test_anon(folio) && !folio_test_hugetlb(folio) &&
+> +		    unlikely(folio_ref_count_over_limit(folio))) {
+> +			/* File contents remain available for a later fault. */
+> +			pte_clear(vma->vm_mm, pvmw.address, pvmw.pte);
+> +			cond_install_uffd_wp_ptes(vma, pvmw.address,
+> +						  pvmw.pte, old_pte, 1);
+> +			update_hiwater_rss(vma->vm_mm);
+> +			dec_mm_counter(vma->vm_mm, mm_counter_file(folio));
+> +			continue;
+> +		}
+> +
+>  		folio_get(folio);
+>  		new = folio_page(folio, idx);
+>  		pte = mk_pte(new, READ_ONCE(vma->vm_page_prot));
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index 169f681f9849b..89853c157fa91 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -373,6 +373,10 @@ static int mfill_atomic_install_pte(pmd_t *dst_pmd,
+>  		goto out_unlock;
+>  
+>  	if (page_in_cache) {
+> +		if (unlikely(folio_ref_count_over_limit(folio))) {
+> +			ret = -ENOMEM;
+> +			goto out_unlock;
+> +		}
+>  		folio_add_file_rmap_pte(folio, page, dst_vma);
+>  	} else {
+>  		folio_add_new_anon_rmap(folio, dst_vma, dst_addr, RMAP_EXCLUSIVE);
+> diff --git a/mm/util.c b/mm/util.c
+> index 80f6c714844f2..a5140b3b70f33 100644
+> --- a/mm/util.c
+> +++ b/mm/util.c
+> @@ -791,6 +791,24 @@ int folio_mc_copy(struct folio *dst, struct folio *src)
+>  }
+>  EXPORT_SYMBOL(folio_mc_copy);
+>  
+> +bool __folio_ref_count_over_limit(unsigned int ref_count)
+> +{
+> +	if (ref_count >= FOLIO_REF_COUNT_ADMIN_LIMIT)
+> +		return true;
+> +	/* Background threads must not consume admin reserves. */
+> +	if (current->flags & PF_KTHREAD)
+> +		return true;
+> +	/* Neither must interrupt contexts on behalf of the interrupted task. */
+> +	if (!in_task())
+> +		return true;
+> +	/* Capability checks are not safe with IRQs disabled. */
+> +	if (irqs_disabled())
+> +		return true;
+> +	/* Use the task's credentials, which filesystem overrides cannot change. */
+> +	return !has_capability_noaudit(current, CAP_SYS_RESOURCE);
+> +}
+
+In case this function ever returns over limit, we probably want to log this
+in the kernel log. If this function gets the folio you could even print
+the problematic file offset/inode/filesystem/etc. Ratelimited of course.
+
+> +EXPORT_SYMBOL_GPL(__folio_ref_count_over_limit);
+
+I'm fairly sure this will break the build for a number of non-GPL drivers
+when calling folio_get() with CONFIG_DEBUG_VM=y.
+
+-- 
+Pedro
 
