@@ -1,103 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72326606A32A
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 10:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F49606A32D
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 10:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yfmx3/iC
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QI/UmdT3
 Received: by kanga.kvack.org (Postfix)
-	id 7758D6B05C3; Thu, 12 Nov 2026 05:13:00 -0500 (EST)
+	id 17F3E6B00EF; Thu, 12 Nov 2026 05:32:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74CF26B05C4; Thu, 12 Nov 2026 05:13:00 -0500 (EST)
+	id 130F26B05B0; Thu, 12 Nov 2026 05:32:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 662736B05C5; Thu, 12 Nov 2026 05:13:00 -0500 (EST)
+	id 01F706B05B1; Thu, 12 Nov 2026 05:32:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A25B6B05C3
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:13:00 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BE7A7A8064
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:12:59 +0000 (UTC)
-X-FDA: 85426053678.05.56CD60F
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BE0D26B00EF
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:32:57 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4CA901A0553
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:32:57 +0000 (UTC)
+X-FDA: 85426103994.23.60C4CD4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 2A7D612000A
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:12:58 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Yfmx3/iC";
-	spf=pass (imf29.hostedemail.com: domain of alx+linux-hardening@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx+linux-hardening@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794478378;
-	b=MZMAGTU+iLMZU7pq+ydYssa+D0xio36N+5YwnkF6tZ7x7pDanlH1LqcyqEEt4IAm3bd4uK
-	yWp1S06X2/QF3l0X3E3PROeAqXnZEtOMR1qb/88nSySvO4xPqorfMNDmFHcAan9AiUqeC4
-	edgnzdB8Yyy74wfrRJB0u0AWyN3b0T0=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Yfmx3/iC";
-	spf=pass (imf29.hostedemail.com: domain of alx+linux-hardening@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx+linux-hardening@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id 6D9C440007
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:32:55 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QI/UmdT3";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794478378;
+	s=arc-20220608; t=1794479575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a4Hiwgo7R+HZm4bqUhmJ5Y10eCIYQ+s+J5vOxQfUPYk=;
-	b=SYJZT3yDRdNiWmCAO+PXKDFPwqPGTrHRrGpfD+tTR8x/8/Dbxj8g3Tywc1MVnrDjsLsmMg
-	63Yx/XnSeIkmbzyR3NNxl/yvjEzxCvxToNHkv2n9Anv6y7DW+O+apkEKbz9HTClhjGP8Ip
-	8dESBkEa/n24ohSgCHZ0DZPCP/KZy5M=
+	bh=usXX4h4ptjAbPKcbGL6f5kGI4AA8Y8wNoq1oFaSrO3g=;
+	b=8JGaALHjkMpCgRyiXSJuNqcZ+cnXmSibmnpi+IN9Bo9MyLVKSKeiZLrQ00GcIJYedlELXp
+	mj3+oPOiNOAsDUDBR8mv49x7VtNxT1+yUbO4p+yrk8Nh4sZCNE/UMftGEXhEXLaFCB8EBt
+	y2NJouYRwbLC7w7MKb2CLvNKUcTaoIo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794479575;
+	b=IjFMRG5SmPuTPj0UvjhrIDgRXteTL/9qLAhJjOdHcwIKWWCnEtu37qsm5IzLVuC0x+ERkh
+	oQ7arT+8SgOQCQEfdk4s8vQqOl/xK2GXu7TxyRnLGhIRyry6KPZTNmf1GUUn5PYQ4ZnBo5
+	fmYXt0X4cXA2K8xiANdHT8z3eJX3w+k=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QI/UmdT3";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4291365659;
-	Thu, 12 Nov 2026 10:12:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B837E1F00A05;
-	Thu, 12 Nov 2026 10:12:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D005763BC7
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:32:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8833C1F00A11
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794478377;
-	bh=a4Hiwgo7R+HZm4bqUhmJ5Y10eCIYQ+s+J5vOxQfUPYk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Yfmx3/iC/7XtkB87cVZUt+yQ4qrcZxoz5n2K/zeQh5PybM8KDx7GSTbpdn0CBfUat
-	 8fhbQHgcRoBqhQdIY5LSKJ9+pKm7SpKTtQhY1cR7ZzbGRRSc6zPu4tohQzA7pOwQL3
-	 sjOiqNKz8zc03lqdij4x1Bp6X9jNWSwLxR/0SuiepQPmPeN//gYR8VIPrimvfe0Dc/
-	 6sLopGM8zQ+51e1IU6qLm1vjenouGD3zZMEiBCxvxCu4absUCiMSeSUhb/4KgW5dFH
-	 k6XRaz5uyrKziJ1ClqBRisgmdsRmVEFgVEJk/s/O0hnb4vKKjerHwGNfwAaaoo+rhf
-	 C7SVOe9aZdsvQ==
-Date: Thu, 12 Nov 2026 11:12:48 +0100
-From: Alejandro Colomar <alx+linux-hardening@kernel.org>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Linus Torvalds <torvalds@linuxfoundation.org>
-Cc: Kees Cook <kees@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
-	driver-core@lists.linux.dev, linux-hardening@vger.kernel.org, 
-	Lorenzo Stoakes <ljs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 2/2] devres: Provide kmalloc_obj*-style API for
- devm_kmalloc
-Message-ID: <avWNCC3_Ff0knO6J@devuan>
-References: <20260914223212.i.829-kees@kernel.org>
- <20260914223219.901347-2-kees@kernel.org>
- <20261112004039.GA523044@killaraus.ideasonboard.com>
+	s=k20260515; t=1794479574;
+	bh=usXX4h4ptjAbPKcbGL6f5kGI4AA8Y8wNoq1oFaSrO3g=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=QI/UmdT3UdaYYFJwKq9PLDYmqIy+Dm51YxBLLHk8FgH8VqGoU5xPuprSEJbwTy+hc
+	 HmYblaUZaCbtx/lDEMrzkZ+If5xdzKyXqzKQQlMqGwLplz85hdRDhzJDCVTQWR4ec+
+	 1/KzDwpv+nbG87IqSs8dsqeJAOjL68BoniPbmENuhPEQdpyIOkxwSzbqmJD3le1pnW
+	 TJ5f2aZKgFJ6I9wFrpPp+mvZxuukv+t7XgTUbQiHmHCTsVD+KbP6PMfyA/7ozVHAgy
+	 2Kcv6vsxRR57T5RQ4nacAj3xMVryfcWtEJM5QVQokbzJ7+sOMCvvYMBKgaUkBkqyNL
+	 ldzBJKFM4eA9g==
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-945ae2daa68so87390985a.1
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:32:54 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErFHChfaq81hkmIMyUMbMEiraUiQ3UC8xLU9noRCR5gYz05JL3b8xQPbIonSXMARyIkwaYE5XXaCxw==@kvack.org
+X-Gm-Message-State: APuU4Z/QJUCvN8aPADUp8wJYg6x4kid0Af2eKsuq/hDxAvm34cqj1m6P
+	+LHfeGdwlQoP3lgb/qZhJTQcf4L+KOEjR1GmJh1kGs3yW+xcDH2B9BlxI6z/hFUMnB0FxMtDT7O
+	/KEFEyb+qtBrqT1jACY3eIlO7pCZnRE0=
+X-Received: by 2002:a05:620a:1722:b0:93e:5534:e63 with SMTP id
+ af79cd13be357-94932d2b22fmr381798785a.13.1794479573803; Thu, 12 Nov 2026
+ 02:32:53 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="l52whvkkcz7sedlr"
-Content-Disposition: inline
-In-Reply-To: <20261112004039.GA523044@killaraus.ideasonboard.com>
-X-Stat-Signature: brae8memyigeuedxuwqmzrk3w9emhrsp
-X-Rspamd-Queue-Id: 2A7D612000A
+References: <20261111232603.9934-1-baohua@kernel.org> <20261111232603.9934-15-baohua@kernel.org>
+ <sashiko-outbox-210422@kernel.org>
+In-Reply-To: <sashiko-outbox-210422@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 12 Nov 2026 18:32:41 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4ykeDu9XyyiNs9HBp2w--Pm7=oqs0=M5cPiypQ1qq9yTg@mail.gmail.com>
+X-Gm-Features: AclHuK9aqAZITWRqHh9yevkLq-9AApROjxfcJNRcSWL23zK1HDs8oSwCzxS8sEA
+Message-ID: <CAGsJ_4ykeDu9XyyiNs9HBp2w--Pm7=oqs0=M5cPiypQ1qq9yTg@mail.gmail.com>
+Subject: Re: [PATCH v7 14/16] mm/mglru: Avoid prolonged anon reclaim with swappiness=200
+To: sashiko-reviews@lists.linux.dev
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, 
+	baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, hannes@cmpxchg.org, 
+	hui.zhu@linux.dev, kasong@tencent.com, kunwu.chan@gmail.com, 
+	liam@infradead.org, lianux.mm@gmail.com, linux-mm@kvack.org, 
+	liuxiang.277@bytedance.com, lyugaofei@xiaomi.com, mhocko@kernel.org, 
+	mhocko@suse.com, qi.zheng@linux.dev, ridong.chen@linux.dev, rppt@kernel.org, 
+	ryncsn@gmail.com, shakeel.butt@linux.dev, surenb@google.com, 
+	wangzicheng@honor.com, weixugc@google.com, yuanchu@google.com, 
+	zhangbo56@xiaomi.com, zhuhui@kylinos.cn, sidchintamaneni@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: dq4auf7seforszun7mgbw4rq33u94zjz
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794478378-820101
-X-HE-Meta: U2FsdGVkX1/w5m7wfVg6KlzRtwIv7E2Eh1GUa6QLu52xlWDk8HW/EVBgaRjoIdl4hN6EUeFKA5N3WiaFfBWoWG8ij5NfvD1w1oa4dZhL7Ux5xzs9I7RiNYsSHB9vXEfJ+HHIk2MIEzSVjwZqe409c5tvCZvaBd4WzqIclBjSi5foYkUbjJAvfyBeHAUvdDzV8sREcxfqKeEmFeSDB1938ZpcJXBt8/Hr/KcX3jKCsB7bMlgoqr0i0pqUjyRqMs/1zGVZLR3o1RHFqRq3t3Syb+xXyVqbjKNafnlcAyuxHDuOKW6OI09maMV9k9wAniv8AnINtixQkxyvjmim0v40EJwxwjlO5JTKAJKDQSlK/tC0QqhWPl375qXM3yG7Kn0ti0W4hT3dVwM8dTr3tF9cMoNRVoFY96QDLVifCC84YtkW4j96fiHau118LWbFv0EMj/ZEh/sZti367mMXSnxXwcfp/EtpujRdq8sHPVsB3bfP+MFDcDg/g+JmXkl3vzzRc6XXEQiyxYYvlXI3wMkFwU5UQkdu1YEdI3RZqIjNpZRtRwzqqHs6ay1aNYtnmRuqamMOT2rktDOsCCho0y79MsVPs5xsg9WRdXlCtV3rCN943d6g4tOBMyiL5P+WJiQzPPXXWcQ+AFWIFqQLvSHXeNSgbKYRX8QgSZJAyD+ZsatHINQ5bKJSfHPyhIgzN50Rg3thoAiEZXDwGaf62J9t9Pkgs4iSXUTmW/K5/isxW7SIKCqOJ8hslwW1WR6fFp9LIen7cfyATrLPJofOejvkCzrfiJUBOFuYCwmku6ccF6hO5gYT4HcGDJxAWwMvJwrl23pbBsnyuV4vqtEv6DL67rcLu9V/Lu3tQ8nshOUHyAmeD9DYJpb2RUg9FfoQ/2AmN5d04ilp5iwXvmcG/lcA8gJjyFzp59kk283bARJ1rCWgAC0O1K3SqY+krWqOVc95nxIrp9xIYDuvEMERU9f
- 2MGwtoh0
- dgMDZ9mThfO1y8wWja83FUXsMz8aQ8IrGBne+1wo73JiBulVYr+1TWi9z6qxpcl1D0hXeUTpdZXrlxBs0gvMw9cOJAH4ecRptmHHM7pZcAdqH7xbaINN4qlHjGj+aR0PVQW06auRjQ2H3n/gCpfOdA4qY910LDMNxZANhdF+G753RasRSgR16jh4Ebyve4J77GVa2CCUZwYcwFYMMhUiyWnUHYVoWw5ZywrwxAfM/wBrrW6mG1lM/5voj3Y2geTLCRtQT/jUANacIHm+0h8bZSfZp5D8KJrkVpHqpbX8rdGl0F6J6B+AkF12IYs3fXu88XbIb4WxInAGkFu0qT1WGH4sVPNgNgUGE7ljZr/uou9rQOAfSqAE15LjdU+Qydy0753eX7RMUqRuu/Une+12aSvltjeFFKN4LQFux78+UekTu8SuUb1jV7rN9IQiTcexdcZ1ptadu6fHPjMgeEKuVWz3QNplwQxpfH5Ek0xrbvesLotJH7TPqxd/NFw5ZUODddqjn030Eu44TcypecRbwKtCubJo2Nb4Q16+yWkRra/ald28YsD6tnhnhbF8DV1G3+ESjHCoyURMsEISMNmpF7juwsa7Mj7tpIWRQFljnC2vEgBdAi8r6mOSWt04CZAqonlWrHZJq5FSsJ4pi7rS7KZwUuoHSHRuVMN6wmVU6ZhS6xhCC8Nr4Skd18Q==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6D9C440007
+X-HE-Tag: 1794479575-351451
+X-HE-Meta: U2FsdGVkX18oRmYXaAf2GwUOTKeGvwXWW+QW8nqjt24JZ5CST6q5qcap87vgCPBiUCPu3D0kKU5Ec+HupklnPPx6Fl9k69QDMby2MAMgiyTynH08YtyEoxtHOhRMp9nKXgaHIzurX5tof+ZHvt7VDeykLbtMBVNMMNCKlCgNf1kgNysxgBM9YqyXoWLDLrZeAdLl7mri7PUWM9uUxwRmH/v72Ja7prUF3hbaxO/5zWQuyrbYZ+kybuyMeqGlrR3SrREtwgSSVQmfk1HNrYT62x2Mgy2DapT+HEtECaAScE9KJMN7FGzL4GdV+Haueiojer2Sq3xZ+wEOa51tymUntI3nusxbrQFa35KDF6q5ut22VvXvEkE38A7oqLrlh5duBl5XRVxqYjN5vtWJqP6IlP1GM5Nim54ZF7Moyyd++It3Q1D6wOBsBxgIRqwWjvHqwjGvKh8aj3kYauKJJ1rOYCyf+xF8xNTrvEQxSksqQTGcFTJ3yehYCZFQ+XKcuvBKhsN17RKLmHcKovqFJN6e1J+yO0ByehDgZKMhUtG7PUdTfVS0jXY7n9xoPP+hXb49k3aO8njA2PP7KDWwe5KAvHvdkYNsoIQMoZtdj2sqCN9D/C/2SaF/aoRjB15h+v7IR9ZZvQ+nBeJSv+xEzIoyjtY+IqHBcqf5Aa340DHlaeYu1H9GRe8YdVZeF1d9nAaLejpsVShuU4Qys87M6b0xiwHrLFBWvPFLBUmbb4/7PCeU9jyTeUq5rOsTFxCNXpWOwht25DhjNrm/yjuTioA6xQYsot0IcKarxgjm5t+0rCH6jCkA1csCsNSTHCqjPhnxxAngZNU4XbZOTGgrXrdnJQs8J3zzyhRhuorzbqXKRwFmOAbJyY1dUwuS94QpSDl2zvNNmR5VLwMpXH8G4hi9jfIpHFemZEfsxT9XU/3LRnBwaUPHUQDg3D0rNZWjRrjree7Dlp4/KFgowHSSYJa
+ EQNMJ+jE
+ 92NmgMo7iMxB3eh96wiUrYFaVb7BeT6PgsWEfZ++3HBlcpuubScMoO0nLDsbLRJ8CanR2CPIF/rfrXs3p+Em7H9zHTCjBySa+/h/OWuP4fyyAjAcRTaAuWI1mPCQkl0ZanRvrD2/aU/UZ/tkAsUS9a88QUSZlpy0sBodC56Vo3FUjSO0d/IkigvVRuNx37j2GBjvO0KAHw/IMLdSkfx5MptiKfz0jzp6ZJDJ2+0iVuhGcEWlw7dkeRMZFivcw1hqR3Lzmwhrn2AnvenAWZFady+F7DtzTq6v9IL0Rn41l7gePgttoWV7IQ2CjWB1sIPlSHSYGwkgO6SOK6BdgY7EosY9Ld0J5GmjWVYqKdu16acLv60APw6IYdP0lLaDgBQciDNpYrAT62vsC7iHaTCZI1tQNlHG05VrpRPooOe85XJjmgJWw/1+mO6JDoujDvVcVcma9XCCCxjB9h+YTWS3NYhxKnQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,212 +113,287 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
---l52whvkkcz7sedlr
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-From: Alejandro Colomar <alx+linux-hardening@kernel.org>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Linus Torvalds <torvalds@linuxfoundation.org>
-Cc: Kees Cook <kees@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
-	driver-core@lists.linux.dev, linux-hardening@vger.kernel.org, 
-	Lorenzo Stoakes <ljs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 2/2] devres: Provide kmalloc_obj*-style API for
- devm_kmalloc
-Message-ID: <avWNCC3_Ff0knO6J@devuan>
-References: <20260914223212.i.829-kees@kernel.org>
- <20260914223219.901347-2-kees@kernel.org>
- <20261112004039.GA523044@killaraus.ideasonboard.com>
-MIME-Version: 1.0
-In-Reply-To: <20261112004039.GA523044@killaraus.ideasonboard.com>
-
-[CC +=3D Linus]
-
-Hi Laurent, Linus,
-
-> Date: 2026-11-12 02:40:39+0200
-> From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+On Thu, Nov 12, 2026 at 1:01=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
 >
-> Hi Kees,
->=20
-> On Mon, Sep 14, 2026 at 03:32:17PM -0700, Kees Cook wrote:
-> > Mirroring the type-based allocation now in use for the kmalloc family of
-> > APIs, provide the same for the devm_kmalloc family of APIs. This will
-> > allow for future plumbing of type information (e.g. alignment) into the
-> > underlying allocations. This immediately gains type check on return
-> > values (instead of the prior "void *" return type).
-> >=20
-> > Signed-off-by: Kees Cook <kees@kernel.org>
-> > ---
-> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > Cc: Danilo Krummrich <dakr@kernel.org>
-> > Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-> > Cc: <driver-core@lists.linux.dev>
-> > Cc: <linux-hardening@vger.kernel.org>
-> > ---
-> >  include/linux/device/devres.h | 102 ++++++++++++++++++++++++++++++++++
-> >  1 file changed, 102 insertions(+)
-> >=20
-[...]
-> > +#define devm_kmalloc_flex(DEV, VAR_OR_TYPE, FAM, COUNT, ...) \
-> > +	__devm_alloc_flex(devm_kmalloc, DEV, default_gfp(__VA_ARGS__), \
-> > +			  typeof(VAR_OR_TYPE), FAM, COUNT)
-> > +
-> > +/* All devm_kzalloc aliases for devm_kmalloc_(obj|objs|flex). */
-> > +#define devm_kzalloc_obj(DEV, P, ...) \
-> > +	__devm_alloc_objs(devm_kzalloc, DEV, default_gfp(__VA_ARGS__), typeof=
-(P), 1)
-> > +#define devm_kzalloc_objs(DEV, P, COUNT, ...) \
-> > +	__devm_alloc_objs(devm_kzalloc, DEV, default_gfp(__VA_ARGS__), \
-> > +			  typeof(P), COUNT)
->=20
-> I was recently made aware by Geert of an unfortunate side effect of the
-> default GPF_KERNEL argument. I've fixed a memory leak in the imx8-isi
-> driver by using devm_kzalloc_objs() as follows:
->=20
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/driver=
-s/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> index 0ae5f35e017c..9373a5256224 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> @@ -488,7 +488,8 @@ static int mxc_isi_probe(struct platform_device *pdev)
->=20
->  	isi->pdata =3D of_device_get_match_data(dev);
->=20
-> -	isi->pipes =3D kzalloc_objs(isi->pipes[0], isi->pdata->num_channels);
-> +	isi->pipes =3D devm_kzalloc_objs(dev, isi->pipes[0],
-> +				       isi->pdata->num_channels);
->  	if (!isi->pipes)
->  		return -ENOMEM;
->=20
-> So far, so good. However, the following code also compiles:
->=20
-> 	isi->pipes =3D devm_kzalloc_obj(dev, isi->pipes[0],
-> 				      isi->pdata->num_channels);
->=20
-> (note the *obj* instead of *objs*) because the third argument is
-> interpreted as gfp flags. It's clearly a bug, but one that the compiler
-> doesn't catch. The typo is easy to make.
->=20
-> Sparse catches the issue:
->=20
-> drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c:491:22: warning: inco=
-rrect type in argument 3 (different base types)
-> drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c:491:22:    expected r=
-estricted gfp_t [usertype] gfp
-> drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c:491:22:    got unsign=
-ed int const num_channels
->=20
-> I'm however not sure if build bots report sparse warnings or only
-> errors.
->=20
-> Is this an issue you're aware of, and do you think it should be
-> addressed ?
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issues to consider:
+> - [High] mm/mglru: commit Author and Signed-off-by use handle instead of
+>   real name
+> - [Medium] mm/mglru: zero sc.priority in run_eviction() skews
+>   lru_gen_balance_scan()
+> --
+>
+> commit 8a29a76d461ffd04769caa1f7ed98ca18efe1fb3
+> Author: lyugaofei <lyugaofei@xiaomi.com>
+>
+> > mm/mglru: Avoid prolonged anon reclaim with swappiness=3D200
+> >
+> > It has been observed that swappiness=3D200 can significantly slow down
+> > reclaim on some machines, with some workloads running 3x slower
+> > under MGLRU than under CLRU.
+> >
+> > This is because swappiness=3D200 currently results in file_factor=3D0.
+> > Give file reclaim a small factor at lower priorities, for example,
+> > when sc->priority < DEF_PRIORITY / 2.
+> >
+> > Signed-off-by: lyugaofei <lyugaofei@xiaomi.com>
+> > Co-developed-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+>
+> [Severity: High]
+> Per Documentation/process/submitting-patches.rst, both the commit Author
+> and the Signed-off-by trailer must use a known real full human name rathe=
+r
+> than an account handle ("lyugaofei").
 
-Indeed, this is a known problem of these macros.  I reported it in March:
-<https://lore.kernel.org/lkml/abhGS0n_RsUG97Ni@devuan/>
+Let me change it to:
+Gaofei Lyu <lyugaofei@xiaomi.com>
 
-The link contains a detailed report of the issue, and why it happens.
-
-There is not a single cause of this bug, but rather a combination of
-several of them.
-
-I suggest removing kmalloc_obj() entirely, and using kmalloc_objs()
-always, with a second argument of 1 when we want a single object.  This
-would remove the risk of that typo.  That is, instead of:
-
-    int *p =3D kmalloc_objs(int, 42);
-    int *q =3D kmalloc_obj(int);
-
-we should do
-
-    int *p =3D kmalloc_objs(int, 42);
-    int *q =3D kmalloc_objs(int, 1);
-
-I also suggest having default arguments without variadic macros.  The
-way to do that is using empty arguments.  Linus complained that it hurts
-his eyes, but it really makes these macros much safer.
-
-That is, instead of
-
-	int *p =3D kmalloc_objs(int, 42);
-
-we should do
-
-	int *p =3D kmalloc_objs(int, 42,);
-
-By having an explicitly empty third parameter, we'd be asking explicitly
-for the default value, which the compiler can verify, compared to having
-to guess whether we asked for it or we just forgot about its existence.
-
-Any of these two changes would already reduce the chances of this bug
-significantly, but if we apply both, it's almost impossible to have it.
-
-Another issue with that macro is accepting an expression instead of a
-type name.  Consider the following mistake:
-
-    p =3D kmalloc_objs(42, *p);
-
-The compiler can't catch that we swapped the order of arguments
-accidentally, and will allocate a wrong number of objects (whatever
-happens to be in *p, if already initialized, else we might be lucky and
-get an uninitialized diagnostic).  If we require that the first
-parameter is a type name, it will preclude that problem.
-
-Please let me know if any of these changes is wanted, and I can prepare
-some patches.
-
-
-Have a lovely day!
-Alex
-
->=20
-> > +#define devm_kzalloc_flex(DEV, P, FAM, COUNT, ...) \
-> > +	__devm_alloc_flex(devm_kzalloc, DEV, default_gfp(__VA_ARGS__), \
-> > +			  typeof(P), FAM, COUNT)
-> > +
-> >  static inline __realloc_size(3, 4) void * __must_check
-> >  devm_krealloc_array(struct device *dev, void *p, size_t new_n, size_t =
-new_size, gfp_t flags)
+>
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 2030c15c06674..a92b14190d733 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -4889,8 +4889,8 @@ static int get_tier_idx(struct lruvec *lruvec, in=
+t type)
+> >   * We don't calculate the scan cost, MGLRU uses lazy promotion, which =
+will
+> >   * cancel the scan budget natually.
+> >   */
+> > -static void lru_gen_balance_scan(struct lruvec *lruvec, int swappiness=
+,
+> > -             unsigned long total_scan, unsigned long nr[])
+> > +static void lru_gen_balance_scan(struct lruvec *lruvec, struct scan_co=
+ntrol *sc,
+> > +             int swappiness, unsigned long total_scan, unsigned long n=
+r[])
 > >  {
->=20
-> --=20
-> Regards,
->=20
-> Laurent Pinchart
->=20
+> >       struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
+> >       u64 refault_rate[ANON_AND_FILE], anon_factor, file_factor;
+> > @@ -4947,7 +4947,12 @@ static void lru_gen_balance_scan(struct lruvec *=
+lruvec, int swappiness,
+> >       file_weight =3D nr[LRU_GEN_FILE] + nr[LRU_GEN_ANON] / size_bias;
+> >
+> >       anon_factor =3D (u64)swappiness * refault_rate[LRU_GEN_FILE] * an=
+on_weight;
+> > -     file_factor =3D (u64)(MAX_SWAPPINESS - swappiness) * refault_rate=
+[LRU_GEN_ANON] * file_weight;
+> > +     if (swappiness =3D=3D MAX_SWAPPINESS)
+> > +             file_factor =3D sc->priority < DEF_PRIORITY / 2 ?
+> > +                           refault_rate[LRU_GEN_ANON] * file_weight : =
+0;
+> > +     else
+> > +             file_factor =3D (u64)(MAX_SWAPPINESS - swappiness) *
+> > +                           refault_rate[LRU_GEN_ANON] * file_weight;
+>
+> [ ... ]
+>
+> > @@ -5891,7 +5896,7 @@ static int run_eviction(struct lruvec *lruvec, un=
+signed long seq, struct scan_co
+> >                       return 0;
+> >
+> >               lruvec_evictable_size(lruvec, sc, swappiness, nr_to_scan)=
+;
+> > -             lru_gen_balance_scan(lruvec, swappiness,
+> > +             lru_gen_balance_scan(lruvec, sc, swappiness,
+> >                                    nr_to_reclaim - sc->nr_reclaimed, nr=
+_to_scan);
+> >
+> >               if (!evict_folio_lists(nr_to_scan, lruvec, sc, swappiness=
+, MAX_LRU_BATCH))
+>
+> [Severity: Medium]
+> Does passing sc from run_eviction() into lru_gen_balance_scan() cause
+> swappiness=3D200 via debugfs proactive reclaim to always calculate a non-=
+zero
+> file_factor?
+>
+> lru_gen_seq_write() initializes sc on the stack without setting .priority
+> to DEF_PRIORITY, leaving sc.priority zero-initialized when passed to
+> run_cmd() -> run_eviction().  In lru_gen_balance_scan(), sc->priority <
+> DEF_PRIORITY / 2 (0 < 6) is then unconditionally true, so proactive
+> eviction with swappiness=3D200 always reclaims file pages instead of
+> preferring anonymous memory.
 
---=20
-<https://www.alejandro-colomar.es>
+Well, I'm getting tons of complaints about
+lru_gen_seq_write(), even though it's just a debug
+interface that probably very few people actually use.
 
---l52whvkkcz7sedlr
-Content-Type: application/pgp-signature; name="signature.asc"
+If anyone is actually using it, please let me know.
+Otherwise, I think we should consider removing it in the
+long term. Both memcg and node already have proactive
+reclaim interfaces, so this one seems redundant and
+difficult to maintain.
 
------BEGIN PGP SIGNATURE-----
+All Sashiko comments seem to suggest:
 
-iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmr1kRoACgkQ64mZXMKQ
-wqnFkw//auHnN2vErNki0HxNo/v/DxKacndGhaD1gjlvZ17kHd7QrS7rh03uK44/
-3JD96vW7Z7g1/Hm0cu+j4jx0A8Sw6FbuqUTNU8MxTBYjgtTCNUoqHBJvS+ltbuJn
-zFCpENgoctzObQiPLgL7KeEz2a0kUN1tTxTY9WeldL+Zq9CPOChtWVYLdJToke5n
-Ho2/sRndWnGTPTNLKbgaB2YaBbHHBkcNgYeO7J4H3gzkpaFzqU8WlBFX/snbki7n
-he/JQP7kSIenbsUhcV1PzMfMaH3xP0E+qXK1Gla/J4y8qqwpe+bPWTEnHbgwrx0E
-dsgC1DoCLwXwMTJw3efjsut5zFh0YtMtH5CX+8S7Fto1u6y3nVvYD45ie7xTlFc8
-IYDxLb2JEoSBhtPXIIg5HK7yIVIhwDBcaTOvrm9aJP+um556Nm0GRu5hxRHl7pOK
-+cenvuXCc0DRsYgwTxH/bnSDh3aBva2op42VGmdgDEh1xm/4HC4y3X5Z6EYLGiSV
-JXLfqoUh/FrmlVMRp1OcMvUrAn4QkDQbumWcHTNDtaIfezP4PbNerwK9M/FsflFG
-SD1JTaSOAOXlEHn8HgnqgvpBYco6DAV9HYG6i+kP9fvPWQkUr3xC1fUp2qylhk1C
-pspEDaquGj62LlF+VSz0h4VktU968CI3/vzOr4A7tV00Rd67qCI=
-=0siK
------END PGP SIGNATURE-----
+@@ -5955,6 +5956,7 @@ static ssize_t lru_gen_seq_write(struct file
+*file, const char __user *src,
+        struct blk_plug plug;
+        int err =3D -EINVAL;
+        struct scan_control sc =3D {
++               .priority =3D DEF_PRIORITY,
+                .may_writepage =3D true,
+                .may_unmap =3D true,
+                .may_swap =3D true,
 
---l52whvkkcz7sedlr--
+But I think this approach could introduce its own problems.
+Suppose we have four generations for both file and anon,
+and users use the debugfs interface to reclaim the oldest
+generation.
+
+1. Even at DEF_PRIORITY, we can currently scan up to
+lrugen->max_seq - MIN_NR_GENS, which means the
+second-oldest generation can also be reclaimed. This
+somehow violates the user's request to reclaim only the
+oldest generation.
+
+2. With swappiness=3D1 or 200, if we run out of the
+preferred file or anon type in the oldest generation,
+we can fall back to the other type and reclaim all of
+its oldest generation, as we did before scan-budget mode
+was introduced. With the new approach, however, we stick
+to the preferred type at DEF_PRIORITY and don't fall
+back to the other type. As a result, evict_folio_lists()
+can return 0 earlier than it would with the fallback
+approach.
+
+I guess the only way to address all these issues is to add
+a separate reclaim path for requests from
+lru_gen_seq_write(), with evict_folio_lists() handling
+these requests differently from regular reclaim to preserve
+the old behavior before this patchset introduced the
+budget-based model.
+
+Something like the following, though it would be very ugly:
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 4fe516d33703..24c6abe37189 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4745,7 +4745,8 @@ static bool isolate_folio(struct lruvec *lruvec,
+struct folio *folio, struct sca
+ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+                       struct scan_control *sc, int type, int tier,
+                       struct list_head *list, int *isolatedp,
+-                      unsigned long *scanned_seq)
++                      unsigned long *scanned_seq,
++                      bool cmd_proactive)
+ {
+        enum node_stat_item item;
+        int zone_idx;
+@@ -4768,7 +4769,9 @@ static int scan_folios(unsigned long nr_to_scan,
+struct lruvec *lruvec,
+         * newest generation when under severe pressure, so hot folios are
+         * not evicted as soon as priority is raised.
+         */
+-       if (sc->priority =3D=3D DEF_PRIORITY)
++       if (unlikely(cmd_proactive))
++               seq =3D lrugen->min_seq[type];
++       else if (sc->priority =3D=3D DEF_PRIORITY)
+                seq =3D lrugen->max_seq - MIN_NR_GENS;
+        else if (sc->priority > DEF_PRIORITY / 2)
+                seq =3D lrugen->max_seq - 1;
+@@ -4966,7 +4969,8 @@ static void lru_gen_balance_scan(struct lruvec
+*lruvec, struct scan_control *sc,
+ }
+
+ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+-                       struct scan_control *sc, int type, int swappiness)
++                       struct scan_control *sc, int type, int swappiness,
++                       bool cmd_proactive)
+ {
+        LIST_HEAD(list);
+        LIST_HEAD(clean);
+@@ -4990,7 +4994,7 @@ static int evict_folios(unsigned long
+nr_to_scan, struct lruvec *lruvec,
+
+        tier =3D get_tier_idx(lruvec, type);
+        scanned =3D scan_folios(nr_to_scan, lruvec, sc,
+-                             type, tier, &list, &isolated, &scanned_seq);
++                             type, tier, &list, &isolated,
+&scanned_seq, cmd_proactive);
+        nr_isolated =3D isolated;
+        if (nr_isolated)
+                __mod_node_page_state(pgdat, NR_ISOLATED_ANON + type,
+@@ -5177,11 +5181,13 @@ static bool should_abort_scan(struct lruvec
+*lruvec, struct scan_control *sc)
+ }
+
+ static long evict_folio_lists(unsigned long nr_to_scan[], struct
+lruvec *lruvec,
+-                            struct scan_control *sc, int swappiness,
+unsigned long max_batch)
++                            struct scan_control *sc, int swappiness,
+unsigned long max_batch,
++                            bool cmd_proactive)
+ {
+        int type;
+        unsigned long batch, scanned, total_scanned =3D 0;
+
++retry:
+        /*
+         * Scan both types with the given budgets; the caller checks if
+         * reclaim is satisfied after each pass.
+@@ -5191,8 +5197,13 @@ static long evict_folio_lists(unsigned long
+nr_to_scan[], struct lruvec *lruvec,
+                        continue;
+
+                batch =3D min(nr_to_scan[type], max_batch);
+-               scanned =3D evict_folios(batch, lruvec, sc, type, swappines=
+s);
++               scanned =3D evict_folios(batch, lruvec, sc, type,
+swappiness, cmd_proactive);
+
++               /* if it is a debugfs proactive reclaim, lend budget
+to the other type */
++               if (!scanned && cmd_proactive && swappiness &&
+swappiness <=3D MAX_SWAPPINESS) {
++               if (!scanned && cmd_proactive && swappiness &&
+swappiness <=3D MAX_SWAPPINESS) {
++                       nr_to_scan[!type] +=3D nr_to_scan[type];
++                       goto retry;
++               }
+                nr_to_scan[type] -=3D min(nr_to_scan[type], scanned);
+                total_scanned +=3D scanned;
+        }
+@@ -5240,7 +5251,7 @@ static bool try_to_shrink_lruvec(struct lruvec
+*lruvec, struct scan_control *sc)
+
+                orig_anon =3D nr[LRU_GEN_ANON];
+                orig_file =3D nr[LRU_GEN_FILE];
+-               scanned =3D evict_folio_lists(nr, lruvec, sc,
+swappiness, MIN_LRU_BATCH);
++               scanned =3D evict_folio_lists(nr, lruvec, sc,
+swappiness, MIN_LRU_BATCH, false);
+
+                if (should_abort_scan(lruvec, sc))
+                        break;
+@@ -5896,7 +5907,7 @@ static int run_eviction(struct lruvec *lruvec,
+unsigned long seq, struct scan_co
+                lru_gen_balance_scan(lruvec, sc, swappiness,
+                                     nr_to_reclaim - sc->nr_reclaimed,
+nr_to_scan);
+
+-               if (!evict_folio_lists(nr_to_scan, lruvec, sc,
+swappiness, MAX_LRU_BATCH))
++               if (!evict_folio_lists(nr_to_scan, lruvec, sc,
+swappiness, MAX_LRU_BATCH, true))
+                        return 0;
+
+                cond_resched();
+
+However, this would make the code much more complex and
+probably isn't worth the effort for a rarely used debugfs
+interface, especially given that we already have proactive
+reclaim interfaces for both memcg and nodes.
+
+So perhaps we should simply set .priority =3D DEF_PRIORITY
+and live with the two less significant issues described
+above.
+
+>
+> --
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111232603.99=
+34-1-baohua@kernel.org?part=3D14
 
