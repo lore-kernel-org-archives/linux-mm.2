@@ -1,148 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E014606A335
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 18:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A25606A327
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 18:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=Nu/oJH5Y
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IfekWsu3
 Received: by kanga.kvack.org (Postfix)
-	id E08096B05B4; Thu, 12 Nov 2026 13:41:21 -0500 (EST)
+	id 02CF36B05B9; Thu, 12 Nov 2026 13:44:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB9356B05B7; Thu, 12 Nov 2026 13:41:21 -0500 (EST)
+	id 0042A6B05BA; Thu, 12 Nov 2026 13:44:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CCF2A6B05B8; Thu, 12 Nov 2026 13:41:21 -0500 (EST)
+	id E5F666B05BB; Thu, 12 Nov 2026 13:44:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A36FC6B05B4
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:41:21 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 185A84084F
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:41:21 +0000 (UTC)
-X-FDA: 85427334762.25.8C4297B
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 1E5C0C0004
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:41:18 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="Nu/oJH5Y";
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BE3246B05B9
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:44:33 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 54542160681
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:44:33 +0000 (UTC)
+X-FDA: 85427342826.27.B2F4FFE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id AD0441C0008
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:44:31 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IfekWsu3;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794508879;
-	b=vhNEMNlLY5kKFvq37nnulSpDv3pm1kGJJ2BaHxD1aa9aCjWhyAy5FWN+Zt7eTKyrJQuK7R
-	YjKZNjhYIhHEbttGs5JheO8D7OHRGx1AhE88mN6LCNNA/vRtiSb8XhRUehAND10wbaq42B
-	NSK19tf+/FCRBiU0vJkBPmu4qOQxX4U=
+	t=1794509071;
+	b=jsaj5lna+ay0VbviSr0QwJ31S2fUfUGpC2e11vTwE6k55bzbepw62IZKrjNK/9qirZ4Z79
+	f44Zu/mo3F51aSD4XJgluEVUVYAx0xYJynrGlgS77LtGEXUtNZP22xG31xiYET70D6Ka/U
+	Aur4pF34i7i9qjWxftEROpZeos+um74=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IfekWsu3;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794508879;
+	s=arc-20220608; t=1794509071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UiA1ssc1fM8eBuo2DnRY95RNeWhnyd0r69dfKPpEwvw=;
-	b=tznSbFun0CENbjyHL1BPJlTbp37DAHb4jPjgQV+QX59b7G8tziiVdAeNXtWUli7dJ/CpSj
-	ooW+7vxiUmMfjBXOhpHMsZMW7Bl1AXuAC2AUcdGK/lasMfWggDuYb8gf9vpLUcE8pYmapo
-	wdbu9Bs/TkJbh9H1SRqolTmR/ow/Usg=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="Nu/oJH5Y";
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-93f3c8958d5so5258385a.2
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:41:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1794508878; x=1795113678; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=UiA1ssc1fM8eBuo2DnRY95RNeWhnyd0r69dfKPpEwvw=;
-        b=Nu/oJH5Y+Ywo4sNgVhYIcWVZnsoZStaPhPZCUxJjHd2G18m4yIrk5S28HIqcQnNpu7
-         Ta0jgZn34CryglTOEcox1u8+Q05wK5vx7yn1n932nP8R5DsJs+1k/VyyUiYW7wpCmshn
-         CdCdDtNrIKZJJbAgi3Lr1igOrCsHO8Eq3kEwZKGOgkQ+hnkZf9SjH9us6fEFhqqvfmio
-         FgkxuJqAB1KBSrxXBOoRa9XJ7j35POXTY5Ph2CGS1tYbs6oGpcLbiV7BeSFwUybYFsgz
-         E4mRfPckPjawWbzOfUZlR72og3JW8Df6GIY6MrF966HCGwB/kJcoSucaR7b74zJgPe57
-         KZhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794508878; x=1795113678;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UiA1ssc1fM8eBuo2DnRY95RNeWhnyd0r69dfKPpEwvw=;
-        b=ubASWfRh6I+crFB1yqxkenky56WU8wwzpywUx/Tiwg/CFjXUffl0DE3nnKaFpZZ2Ci
-         h0FYaWq20QBOsSc+VQv18o8ldler8Ws5LDXeUdRu+Cs9rzKF7Rhg4PhlRYINv1ErOrJL
-         rBVKWMn9lK8O9wzUsb5usqmrJrYXq3UtBLizgcBzHzWeCuROWP6nncsyueE8nQSILA4r
-         WKG531wjQpQsXeOBvRSxI0UfVrZ0tFVoqUnfk8Lv/jPAZ88ir3uSl3puBBeHDdntrAhl
-         4GgxsAl8ZLscsMt2REAJCynQuJatlR9Pa7F8Sl684b/AU00WG2q4iyl0cC3PiEhh+C8b
-         8nyg==
-X-Forwarded-Encrypted: i=1; AL+hErF5I1tzWgBuiMyNXzPR3vml4kbXYxAesGW6glLepAXmX1Hmm9xNddjzrMYBxZFWfLBJK+Z0e21Xpg==@kvack.org
-X-Gm-Message-State: APuU4Z+8Z2wXYa8B9KmcrFfQXH265KjnFDCp1Nt/ri6+msX9lvOH8pyI
-	i/A204f+BlfQc5OUvndASzqDwqHF/CwDuNazgtZ+d+6ZCKALRtPDp6/TzFRL1pji/R0=
-X-Gm-Gg: AYBFou05YAvanIjULj/7ds+UD/gaDtEA66sfxCnA/iATCQPiFLzPF+zPYpv1eScLRv5
-	Wg1R4IIqVRIuSlIc3nDSYdB3c/H5p7NJLkeoivDOs323p2zgsb3cnpJ3SDM1pgUH6o/9//lTczR
-	NmqHjcTUUDPidAO7ca+h9NnF+ddjOvUnomEN0c+OLsc0RzuYZmgi4BMyIBYhz4la9z1FHC83Hsr
-	5iMcFyVoZlWzph7lqBx7OHDXh8qheXFor9Fw7/fV2JftebzKe4XbmAyiKWZ21hUUJlmXb1tTLdw
-	TB8HwKMevMBfRkTxRvredhawubZouLylX3qZG9o5dtCyX5ypXoZGBvXovrIcRxbPLVn0HYi4Mwu
-	JB9aPSXcAg7eD0RsTmtjSg1kYfsHzATSnGwjrFd69CpU93c5xKgoB2qFueyfgSYyoSizwqhx/ou
-	brfZAV5b4IcsEQjxq7+U3O39duF3M0Dr3o94fVIs/lDUNStN7ZcqS5T1tJ5q/UJ2LPRdyv8kA6h
-	nsZqSnBu7p0tDImoe4srOulcuwk6VGDWeaW2lxrH46ODgNXNiJ9P95RCkBNXspNKRdaZyIvIvVO
-	HjQ0VRz5d3GLDRqirpIZfcb/iDkJgT2GsNCeTYTd6Cy/ca2ujNyLyWsC5X8sX4TvA8RKgi6AmKh
-	Ygg0Zt9c=
-X-Received: by 2002:a05:620a:472b:b0:93e:f9ba:690f with SMTP id af79cd13be357-9494bc84c75mr45006885a.73.1794508878117;
-        Thu, 12 Nov 2026 10:41:18 -0800 (PST)
-Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9494c3600adsm4935085a.42.2026.11.12.10.41.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 10:41:17 -0800 (PST)
+	bh=RVyxm9yaGZWP8LbX6unRU3C9T3kyos1eNHeAHWcUH10=;
+	b=1bSNhsoEbcFJ6gwaw7EaqyUKumj2TudTwWOOBmIYIhbIziOiHSG3z8WRCnDQ5qmaQ4LNqV
+	bj/SWwbfxZMO9d3VugJWC0rtoUAILO8jl7PmLxZpglGByOjmpepJjTzA1x/ae4OKCgzqVs
+	z7EvKvtcdEtn6gqkxb/NPn0PnTkEmlE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 98043401BE;
+	Thu, 12 Nov 2026 18:44:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 290661F000C4;
+	Thu, 12 Nov 2026 18:44:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794509070;
+	bh=RVyxm9yaGZWP8LbX6unRU3C9T3kyos1eNHeAHWcUH10=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=IfekWsu39i1JQlysaLelamEDce3mX/T7a+MM6jLQ23+ntbG4nbY0G5S/Lv4HVkhb8
+	 hANWWpY4XTjPFEj3opi/JbeRPS5SEAFmg8zTDptkYUJq7aeaOULxWSvaTxhnsRlm90
+	 CMO4SkFhguxwYJTQvhELQzwZHqcDrOpHeBHrkfNaeNu2KlfTNfW5VbPkUPn9tovxzp
+	 it55e/HuR5X/w88jMgBdYZjxKr2A16hdeczwJeF+FGxBsmewlBwKwhwpP8JzCTzWuo
+	 MVVy99BtjxSiUbQyAdl0bEID+QtaMXFY55LZHLd30/BnwjGy+QubFLS5yOIjpH7RI7
+	 eHg0AiNXWaZUg==
+Date: Thu, 12 Nov 2026 18:44:18 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, 
+	James Houghton <jthoughton@google.com>, Andrea Arcangeli <aarcange@redhat.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Balbir Singh <balbirs@nvidia.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	=?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>, Andrei Vagin <avagin@gmail.com>, 
+	Stephen Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>, 
+	Muhammad Usama Anjum <usama.anjum@arm.com>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Chris Down <chris@chrisdown.name>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	=?utf-8?Q?Miko=C5=82aj?= Lenczewski <miko.lenczewski@arm.com>, Michal Hocko <mhocko@suse.com>, 
+	Mike Kravetz <mike.kravetz@oracle.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 04/12] mm/migrate: keep the uffd bit when restoring a
+ writable migration entry
+Message-ID: <avYG7CtQ52v3I8tF@gremlin>
+References: <20261111-uffd-state-fixes-v1-0-00713d368976@columbia.edu>
+ <20261111-uffd-state-fixes-v1-4-00713d368976@columbia.edu>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 13/13] percpu: queue the balance work on an unbound
- workqueue
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
- Shakeel Butt <shakeel.butt@linux.dev>, 
- Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>, 
- Pedro Falcato <pfalcato@suse.de>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
- Gregory Price <gourry@gourry.net>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, Usama Arif <usama.arif@linux.dev>, 
- Kairui Song <kasong@tencent.com>, Balbir Singh <balbirs@nvidia.com>, 
- =?utf-8?q?J=C3=A9r=C3=B4me_Glisse?= <jglisse@redhat.com>, 
- Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>, 
- Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>, 
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
- Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>, 
- Chris Mason <mason@kernel.org>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- "Borislav Petkov (AMD)" <bp@alien8.de>, Mark Brown <broonie@kernel.org>, 
- "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, 
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-In-Reply-To: <20261111-mason-migrate-et-al-fixes-v1-13-3d2454362e8d@kernel.org>
-References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
- <20261111-mason-migrate-et-al-fixes-v1-13-3d2454362e8d@kernel.org>
-Date: Thu, 12 Nov 2026 13:41:15 -0500
-Message-Id: <179450887590.482102.12180028123925629664.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Rspamd-Queue-Id: 1E5C0C0004
-X-Rspamd-Server: rspam12
-X-Stat-Signature: bqk4cnoz1jtyossbqmetoii79g7on7jb
-X-Rspam-User:
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794508878-291264
-X-HE-Meta: U2FsdGVkX1/OKoLIuald+bX+ERDGfKvDY1Q4Dhtbch6l7pmLxlgueUoU+8Lt42O2v/tRvfz5WrxHJWD0bOVTEK/zxI2tstNwVEEAgT9WtLciMjXseKChtuNqpf2UfnHJEipHwRs0M74xmEyRG37ahBD4m+glPvpBWRCCHtgy/3Z8tZTdupqTDh+8AHHVFVxPgBb5n4613pHwAU23H2I4y4YwXwH5zQg/vuVc/csm1QyDSsovGGawp+/dhe7SDKRNVJO8qkFth0sG+llFGOOaIdm8JavlXmJ8gM6DnwJuVgXHJPxPbDIfZjME7Qbzjr2j+2YXvonfqUuq1AjxIjcZI9MXkiW06zvc6cw+0Pcxab+18GMe/hKf+KZq/DCtMstP0nVmjYDzykVj+BkyW7eXLzjMW1ZbinshqJwNGyCd9si6GCLXwX69Mm0dfdCGYDjrqMptkZL9EbwTMXjK0tB7gCH0R1/Rw3mKG4iyps5lhaClsdaVbMa/10a0vis+Nxdf9GD5+qR3Clfj+T1731AR924HPNflYiGOa5gPFmF9ikpu1ScFTZe6fIYdgGQLQTpCuUxP9GX4rvuM9UGCmjGZlEj+egBi5w+wcmDXVwTxk/D+Vc4MGNVqmX1uAx/rZzfypwd9DinvdDuVAaTKE6CdeMBY0/pP5lls+Q4Q+JfYVijdm/LdELJ+V8XlC/8EkjtH5x0I7gJhBiJT3i6nLWYafEDQyiXDSLLNzThhumk6wOUpSG7/zCa8tgFq00nE7s0A4qbeU+wIfgholOzdzPpYSFlJg5VosWT6p0AGRp61iMRCr+GgZzUwrmlo6+mrhn4syqrdWnH7w2UAFL0NA743S/8wNPifXqIyXeEZmQu7CqreDudc1aNQkrPMbivv5el6GxIonOR+AeanNBnyolfCp99w2PrDTGidC1iWOG37iSEkUL4fIhJWC8Wf04WaFU1LQs47dct8wqv2r1PrtUo
- kofmjcBS
- o38vPWP34K0bxJYlGenyLKmsBJSzQca3MbHJnRcFpzuYJG8MSn3pWdKjMhPfdviRKYrurCRrgXvzLL8PJyIrAl3E68Gjp8hUTJw6rkBYAP8SQOsD+ztc7sC9AZ9cb1gporQuhreeJaEQvFA2Locn6QktoAqb3rEKxjxxLifsL33Lm564DMNFI0j67Kv/+DlzAq5Hm3A1O97/fTexd7dTzbUhuaNMwqKKqfrefy5U7IsIwNbBjWyUsCKexMJYmJP/NB17P6IxMgl0FrZqSqKNG1dl6njOO2m14dOZyiYntcxzQALp5PzmtJKFt02aW3CDhRZWubdF3GYWb8JWPnO8LDB1gXAI8zCeNbFQFBWOvFETV382mOUEwo6zrqt5XMlTJsz5ho7kO6yuC5fuVERXbIxJovvrmX1TT2qyUqhg3cbotxR+JWCKTrz1XKEMQRtW7fZDUBoF18+vnt3LUgkTq4Z77iGZZwYTxl3ZdG4pQgWTHqPRG9CeDwl5vcmd1KA4aI80aFbg/Xk3ODXQ=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261111-uffd-state-fixes-v1-4-00713d368976@columbia.edu>
+X-Stat-Signature: b4ecdwisrizoipnwxpju6e4m79qdhx93
+X-Rspamd-Queue-Id: AD0441C0008
+X-Rspam-User: 
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794509071-712984
+X-HE-Meta: U2FsdGVkX1+FjGoNt0g8EQeyUJH0y18BA9xFP8Vunl5gvisC+qK24+26m3BZGiSsm6ZHx7TyOoLsBYQlV4wK3uHs5LOT6eMzCOkY2pTmPqEuYiM2He07NeKSrYKC1ZEivKw2PD2za2JgBM+f6LIWro/OZ3e5WIXlfZuulFbYSgjaBC36ajFzJFul5c/RJy5K3Geb7A2Oxv1zCp8HU7oPM+cCb28dcaXKbue2jizZsVxpIpJnwBgOi19c82FA0C8cBjh6d89omRPOpYP7ZjdaxPG6xpVIjWwcKNGXm7WtwWQtQgC78FQGG5pUBYu0Jy2sLNEdWH37yYMTHkQYL0Fk9xaDqbQzUbAHcY4f32qGZ9J5ekaCmhiWJM/rFUno9idtrtGHtfBgpqbiGouxvN/KstJQ1q1GpCNEjHlhBEHN4RCcDN/uCBZzEBy3oBdciN+usDeK14nJ3yT8ciBgsrIwQgXWMABm2AMaMQ6xSSMJZH82k0PsANnz8jWMgN9eegQFRzUhlD/8ozahPNBaNwSnLgoKC+ahKSVXcdJYjlGlxxK0K3gNw3rCfL6EBou3iFnzTD9qy8zzLOKfAEAFEOBH5TYt2ysiP9b9hBst4k+i3GciGCPAmkIoqY4NGhf5Sylj1LGsljOiHlUOlBBlrodVfS+F45R47nvRFSgANr87u7cQp7MBUpTVhZfw/CEV6MB2CZZ2qH/TLE0x5n96aBpVlq0/jNBivg1/tFPv6Nn2ErQeEYbDrvONbJ8mtkbaXMgvRK9wgrLmUHzkrAMlPb7ZyT9clZZwUvzsK1LvIFtaSdQABS4K10QwpzF6rq2oeemdHbQLB8ExBZJwgLrzlms05Zp4QxFrypKIECXVMbaJKtTV2zuuLmuLlBCjoEdoeIcCyBAPXXN69JgG5NPZQpcRHbEM0V+wOc1kUXGH0iD+3b0Wtr2KZ5S+g2p160MhewoJmJ/5BCuFy3WBYUdCcsu
+ bxJE9i+8
+ eoPxVdL9nT89V34e5pGQNWisns+oKN7mCGgnGiiRz0LFfp5SXJbBgN6ZP5U0h6656Zep9+JCVZF7r1By+jI3exx1FbYQTJFmOO+1f9bANov30DcEGsN5x8v7ZCZgVUfTp+lOslVk5BP0FtseV+tGLxEyclJMMz7hxQykinRZI4nt3iMeQLYYPdfBX8OH5x5VjJQKegfxX/ankvGg6xa0tgR5orVNGiSsYH27R78pjGseU0eoG0x6FxdzQeuSKnJ7y5hTrzneNa54sEUi7eD8w6dX66bPcTvZD0Hdu7GPNyYxIRJBxu/CLFg9tj4t/5npx3dHC73bykq64UwgVLhaGRDBDDwmSRqR6XCUp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,62 +113,83 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-11 18:13 +0000, Lorenzo Stoakes (ARM) wrote:
-> From: Chris Mason <mason@kernel.org>
-> 
-> A burst of small atomic per-CPU allocations can fail with -ENOMEM while the
-> machine has free memory and idle CPUs, as atomic per-CPU allocations are
-> only served from pages that are already populated, and those can be used up
-> before a worker gets to populate more.
-> 
-> Consider:
-> 
->     caller on CPU 1                     kworker bound to CPU 1
->     ===============                     ======================
->     allocates 8 bytes, which leaves
->     one empty page and 4088 bytes
->       schedule_work()                   woken, waits for CPU 1
->     allocates 8 bytes, 1023 times
->     next allocation: "no space left"
->     gives up CPU 1                      populates pages
-> 
-> The allocator keeps a few empty populated pages in reserve, and the work
-> item pcpu_balance_work refills them.
-> 
-> pcpu_alloc_noprof() queues the work item using schedule_work(), so only a
-> worker bound to the CPU of the caller can run the work item.
-> 
-> The issue is that the caller keeps that CPU - a task keeps it for the rest
-> of its time slice, and a softirq keeps it until the softirq ends.
-> 
-> In that time the caller can use up the reserve, resulting in an atomic
-> per-CPU allocation failing.
-> 
-> Fix the issue by queueing the work item on an unbound workqueue so that
-> another CPU can populate pages while the caller keeps allocating.
-> 
-> Fixes: 1a4d76076cda ("percpu: implement asynchronous chunk population")
-> Signed-off-by: Chris Mason <mason@kernel.org>
-> [ ljs: tweaked commit message, comment ]
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+On Wed, Nov 11, 2026 at 12:55:12PM -0500, Tal Zussman wrote:
+> remove_migration_pte() makes the restored PTE writable for a writable
+> migration entry, and only looks at the uffd bit of the entry otherwise.
+> A writable migration entry that has the uffd bit set is therefore
+> restored as a writable PTE without the uffd bit, and the page is no
+> longer write-protected.
 
-Reproduced with a cpu hammering atomic percpu allocations with preempt
-disabled. Results are pretty cool.
+The UFFD WP bit is such a terrible, invasive, broken piece
+of... engineering :)
 
-In about 1 second of hammering allocations with the full 13 patch series:
+Notice, again, the hallmark of an utterly broken abstraction - every user
+just has to happen to know to handle each of your weird edge cases every
+single time they happen to interact with anything that touches it.
 
-                        Base       Patch
-Successful Allocs      1,188      131,072 
-Failed allocs          4,097         0
-balance worker runs      0          169     
-successful retries       0         4,096
+I do hope we never merge something as bad as this again.
 
-Micro-bench obviously, but pretty stark difference.
+>
+> An entry with the uffd bit set must be restored write-protected, whether
+> the entry is writable or not. remove_migration_pmd() gets this right: it
 
-Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+Sigh :)
 
--- 
-~Gregory
+> makes the PMD writable and sets the uffd bit as two independent steps,
+> and pmd_mkuffd() write-protects the result. To fix it, do the same at
+> the PTE level, where pte_mkuffd() write-protects the PTE as well.
+>
+> The only known path that created such entries is PAGEMAP_SCAN. Now that
 
+Wait what? :)
+
+How does a read-only scan of entries create softleaf entries?
+
+I think this should be explained in the commit message :)
+
+> PAGEMAP_SCAN downgrades them like change_protection() does, we should no
+> longer see them, so this change alone should not be visible to
+> userspace. If another path ever creates a writable migration entry with
+> the uffd bit set, the page now stays write-protected instead of losing
+> the uffd bit.
+>
+> Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
+
+This seems like a super-weird fixes target.
+
+BTW I've noticed you've not been cc'ing stable, is that on purpose? No
+autosel in mm so we do need to do that on stuff intended to get backported.
+:)
+
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+
+The change itself seems reasonable, as cursed as the reason for it is, so
+with the fixes target confirmed + commit message updated:
+
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+> ---
+>  mm/migrate.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index 28a8d7734735..d200f64b5f98 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -399,7 +399,7 @@ static bool remove_migration_pte(struct folio *folio,
+>
+>  		if (softleaf_is_migration_write(entry))
+>  			pte = pte_mkwrite(pte, vma);
+> -		else if (pte_swp_uffd(old_pte))
+> +		if (pte_swp_uffd(old_pte))
+>  			pte = pte_mkuffd(pte);
+>
+>  		/* See do_swap_page(): restore PAGE_NONE for RWP */
+>
+> --
+> 2.39.5
+>
+
+--
+Cheers, Lorenzo
 
