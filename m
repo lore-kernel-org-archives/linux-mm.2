@@ -1,100 +1,133 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50242606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 01:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261A3606A32D
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 01:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=ZUR1Pivf
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=F+m434hx
 Received: by kanga.kvack.org (Postfix)
-	id 517786B00EF; Wed, 11 Nov 2026 20:49:10 -0500 (EST)
+	id 408336B05B0; Wed, 11 Nov 2026 20:50:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C81C6B05B0; Wed, 11 Nov 2026 20:49:10 -0500 (EST)
+	id 3B9006B05B1; Wed, 11 Nov 2026 20:50:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38F886B05B1; Wed, 11 Nov 2026 20:49:10 -0500 (EST)
+	id 2A8AE6B05B2; Wed, 11 Nov 2026 20:50:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1043F6B00EF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 20:49:10 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 97C67140493
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:49:09 +0000 (UTC)
-X-FDA: 85424784018.26.C75314B
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 8F3E2A0005
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:49:07 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ZUR1Pivf;
-	spf=pass (imf25.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 047266B05B0
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 20:50:39 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8A6B512041C
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:50:39 +0000 (UTC)
+X-FDA: 85424787798.06.3281E1C
+Received: from sonic311-31.consmr.mail.ne1.yahoo.com (sonic311-31.consmr.mail.ne1.yahoo.com [66.163.188.212])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7D5091C0004
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:50:37 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=yahoo.com header.s=s2048 header.b=F+m434hx;
+	spf=pass (imf20.hostedemail.com: domain of casey@schaufler-ca.com designates 66.163.188.212 as permitted sender) smtp.mailfrom=casey@schaufler-ca.com;
+	dmarc=pass (policy=none) header.from=schaufler-ca.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794448147;
-	b=H/SLTPjFgNiRWxvLm9YSXCqhJZ8L0JP6VP9nUSvJoLoEXp7VJ04fFtwVM4iUAQZXva7qVU
-	RlOcQxu9XMyRV656Nwot7GlNTDFBgrKjJ6AdgKNbOl+F/ZJT79Oz1J+wnMRL3ABWIxyM/B
-	O2nXBbIkL+2J6jzHDqjz9XaSv2K9Gf0=
+	t=1794448237;
+	b=NuD+nl9WDPF3+MOgpBD1Oj0cdQYMXvLVYQvU6r1q52LTZ7ayaV/HRGEDML5IJkYCSAxXLq
+	65FsT8RF8WQe4EvYZvdhBhJJGkZIxLDLpUa17zUDN78bzdaJoMX/zsmvmgVb8Xg4dYDdIw
+	A0hbRPqP8A99Hc1idIN/qcm2EAVQMKY=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ZUR1Pivf;
-	spf=pass (imf25.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=yahoo.com header.s=s2048 header.b=F+m434hx;
+	spf=pass (imf20.hostedemail.com: domain of casey@schaufler-ca.com designates 66.163.188.212 as permitted sender) smtp.mailfrom=casey@schaufler-ca.com;
+	dmarc=pass (policy=none) header.from=schaufler-ca.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794448147;
+	s=arc-20220608; t=1794448237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8vIz8xYau+WtFrk0xTr9b5QoDkJ8T5uH0TopCPW+Ht0=;
-	b=L/rC++HspHdjRVK+JnVNHMtiaL9v531MmSlmGHr7YtOtPz8GlvjluT0AuFYD1Z5d4xZm9E
-	XUcCRxyBquZc8Zr43K99ENAAWZQ+JOSnhvYvbLZxBYEKqSvHXiYPj6z1MdstZO1H485Qsg
-	9r9QtJz8pa6wc+bCUy14YwMsitYNRTo=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=8vIz8xYau+WtFrk0xTr9b5QoDkJ8T5uH0TopCPW+Ht0=; b=ZUR1Pivf7YfAPwvJVMDDsk3Jzp
-	0grOW/HpN24mmm5CWYJw548vD7py3YwdfURplC+tK3WNgHgaeIg97N5X5IGC60uprIDaFcaXyldV0
-	2DDUf82sallNIesdaI5ir+Q5DxcH4WUNSi3ZaXYfklmnu+JhczffaiyoWlhpis9DDh7ke2D0Wnm1/
-	E8ejpeBozWlDmjGCvrWyNho5YVnSCC5MJdfvxhCr1tpAItxFYwXbla0UNRiy8fC7NOVOGZgzTMGDD
-	cy9/lqEVBA9tJCrOPHsaM7rk7Dslgfi23hgjhP/gtg02gehiZhyG+jNlFvmxiYZaacJUI0k6lYz0T
-	MxJBZESQ==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRJvz-00000008RjV-3qVJ;
-	Thu, 12 Nov 2026 01:49:03 +0000
-Message-ID: <e6f8e81b-3c49-4112-b119-778fb8b89f38@infradead.org>
-Date: Wed, 11 Nov 2026 17:49:02 -0800
+	bh=O8h9fybdyu+Al7CdWlfRBQ6LgqQutaBSF+Rc2HGjCVE=;
+	b=7POYg3H3bqBVdJS8ZzpJYbeMKRoVBpXt0SyohATUZjpjfphlLObCEsEVzFsf+Ot/L/jU6s
+	T9kYMHFJHlOKJQi2sqkDK0SDI/2oguEp7JZysakdWe2K70+E5bhcUHnpk9abUHfWw8tFyE
+	I3xRN0cXZuhx8DzFocZUoNKe2ml4sVc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794448235; bh=O8h9fybdyu+Al7CdWlfRBQ6LgqQutaBSF+Rc2HGjCVE=; h=Date:Subject:To:Cc:References:From:In-Reply-To:Content-Type:From:Subject:Reply-To:Content-Type; b=F+m434hxnazo+znIsDN87b1q6q2BjDXrSK85l4sPO4/7/Nv6ouklEMGBpfrTHUnO8eGiNQoV5Bbw/uB3JZACliQBg8PtdTRYRP97HHZoegx3ArYwH69kAdVaUPkV7WcyNd89YKs91cZCwmWeziNsUM+FCRLahqzZW3a6Ku8pvIiJlMO/7XaKbdkzRicymfmmSk9XFsFNG+fkHI8UO70pZ1hFT9v2XQiwRrAslvpHUFbDR+3rpTT4Ikh/N/oSBL0qRMnhxDrBkdI0Mmku6tTsyJWpgcJjSTSvBuepznmh0kGiP8yElqSHRAm6ov8qvVTBbZJZj+71HtVfmpD+WAp7XA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794448235; bh=cB6ms4YZu3OSr7Oj5Ktyy9vRYllWqlKKBSjCDtAOhd3=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=Wh5tO+A7k6l9RAB9CmF+7nFPpV+s7vwQOvHRCpB836zmpk+EmZdiT1obFQYb3eEYUV/ZZrDMNSGrpqiSFrVBvEAP1+BcX3bVXL8AkZe5aM0djERGyxVy+oivb40ItIA89tHRP/kW5BzO7GaPGZrOTfFkDQF1HHnKQVH/ifoH5PYTL/BXjLkbPViq5JKecTMlRIryhz3iU6NkOHkP1F3oliaijdeTD+Tk00HCA4w802Q1PFZvsZSndMk6hlb4A1wMRPh3z4tVeu12oZckS5JIJR1ywCFknBKWBE+hVxojbZ57Qr3RCaKJrua5vLBD1s/SnsdmRZ+/JLOhUlVDaAQyJw==
+X-YMail-OSG: zqmnDtkVM1n5t6ueog55b_vkFHSYM5E1qoECEJywzBr3UwiKAfUIVI_o6w7R9SH
+ CQ1t93f4qyBpZEcVGjU2OBO9C0Of8.lRAD_UtcVdUMSf6_GiG98G7rNXb1ZhUGsyYLDyJE5oLG69
+ MPpknxdoviNcfunvMa.q1ATsxUiRNZaaYFEtaSi7o3ARz3uzFbYwa4zXUFVTxVNR1M4yEm8E_vMu
+ CX3lc6b1b0MWbnmh3DAeGebLmTpZwI12LuF9QH7MRRpV.Y7YkiPkkooycQl42qWPa_ZCsKSCVnTi
+ cfYjzn7ZtEqmGYVjYEY1kEbVCA4JoS5GMMDKMoO39G5YhBugROnX2jrgGh0AwdwAby30.ZBxmd.l
+ S62hS2hlPvIDoPxGhzS2whxCcIZrt8XbiUGRsBq2lfu8t9x.TIubZ4wIiRqzfDYoZIwioLDCjm6k
+ .cljRFJEOnSix_ImX_sSyVP7eQAAEJ1GsHeUHb7atzAIHDlw0lV7YT_EQZaDbjuCghjYyGwMa7FJ
+ LxdRDFOXlr05WMcbROqV0a4sd0J7UyT01rGVa2p8mqlfg_ZPSk1p0.zKLMJDr5A1o8n0sxe4LbiR
+ qbREBgT6XAwECEJNbNHKO1YTM4iOmevp8GvnGDd6MDNapigfFoPwfu59SMy7zYd9LO3Z8_0VkIJt
+ aPlGTgcyxBF.v1wQggIdb30_WaSmydGJlcGPdQ03irHq2wrwxiCoQO6IJUZEr0jypo3mUQnAGyDG
+ k9vUUntKtCsyi.w0t_vFjR1T1M3Z6Xk5RLKDL9njS7LNW.CupQSEmNQ1GkX7kSwPFQP21HwmyMsp
+ i9SdJowJ0s5y.bw2SrHxrP7sM6YbNToNL5ZVELMODpe5VuCBtDWl7VcCxYMmahr5455.ZE_hGmHs
+ LrmFJx1uQ46OcZ2Ii956498sukETOy0INQsrtoq.ypS01I6QTO8GSI7rVFeq81ZNfcHhvUGJ06ME
+ B8yJmeeVBase_8cBDx_Yk7y0xRppCWZz9S9bNwiHzQcmhSHJ99JaTf4E0zOIsgLWqU5tZh4wLZKp
+ MnYneLIuBkBNwjBcYTuKXcpCwff8fTcsfan2g9ag6_HRqbKvb3lqTrnQRPIG.IGMBIXdu4D1HB2r
+ Ygn65JHFmN1QF2ROBGshwilsGajQNSqHXHgx.co9RO5Evfjv8vx67t__1ew7rn3sc1C.7W_m4N4M
+ cSR8SYdV43PcknGSee9yB1x8pWannWLYRUROzisZnoPLwDPX1S0a5pIeYojUo9jnHaAdfaOw5IJs
+ bc0nB3tQZQ.0b782FrYX_n_pf05DxifKK1hrJ0OqXSo23BlRt.p63_4auT8X4tq9HTs9fxQLg0OA
+ ydi2BtTIKopjFdQtWH0NOUC1U6_wILbgtZfZnlVsbVhHJ7Tk.UZGmAVff_vQl8b4id5D4T9jwtS9
+ 8nKfk1Ghey2tqeZDF9SgVACRH_x6kJa81R1e4J_83TMyBY4Ays_MTt39YbFzXRfBMRqG0I92h9IS
+ Xl4i4wMK_gUqmjpP0P_oaDsTzptxLp7NMOmOY3T81w3i60pQpmuYMvggEU3dv.ebRC4Brat.KcXq
+ ZyjrZ4BouQUvapbNSNNP1Y253sBId7Ys37DryRT0fCsyFp6LIN0DYA1xElaICSH34S2v84muDGZe
+ .CGRnjEo0Q2679LeUfRrG7eDmdHtGbtXa02kyQjntuOc7VrR9y8jRUHqkLiiITgSdxH1QGB5PWuQ
+ ARpFP1xjX3OHKFGeQd7o8WX3xDhKeppcWAPJEhIosno79RY0IQ4.4JX7WCaXgDYbj6BL4okuPPnu
+ 9CEiWKr_A1oRBHcXo_t2XyX1N2Jd1tPqjLAB1WY0vIGe1SVdGRdRloM6.RT24mU1pbFP4DjeRn1w
+ _aXrAymHoztvd7BVNk78MI6f1URU2iBFJ6msmP6JgXQac5cfrtvlS9yn2eohnwEPfv__IKNy26n1
+ mYs7i0yOvj6LH9jEvBJfejsFOAeuf8LBdL.MbTk8ZZiVorhzaxO81Zf4PRAQwZfM29CLtP5dAKbb
+ klVicXy3HgsPrMZiM94qTb2yOlO2WSLEgrPS_2Vx31FNEHJNJpuKXHkfgTtKgjLPmpCr4Taq44yO
+ KB8vbaoDybAHzNwFN22pWQG3NDp.x8aciLmMT8fUQgwMgW8NlLKb6ErL7ChYlwsHUhzhzMbUfvnT
+ 2bA6QlHpoN4OcRsGeb2ygbIpUCMhvL1tqClAnkg41oGlCJa3crNRCKKeXXqZBarf9KzLHJa8i581
+ 0YgHHROuHzbtZ8GRm6ggBoLbsrITMfTGKIshO9uwpGYYxl6nVscbC6LtZUsxlV5iP8t8XsYi.ga0
+ EDsRWYHlK
+X-Sonic-MF: <casey@schaufler-ca.com>
+X-Sonic-ID: 4e6572e0-628c-4102-8309-f6caa349ac8e
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.ne1.yahoo.com with HTTP; Thu, 12 Nov 2026 01:50:35 +0000
+Received: by hermes--production-gq1-fd7994565-9vhlr (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 15d81e1a8a6348ae9dcd84771e3b8196;
+          Thu, 12 Nov 2026 01:50:33 +0000 (UTC)
+Message-ID: <41617b0a-90d9-484e-a143-78e2a92e872c@schaufler-ca.com>
+Date: Wed, 11 Nov 2026 17:50:30 -0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/40] nitro_enclaves: Add support for Nitro Sandboxes
-To: Alexander Graf <graf@amazon.com>, linux-kernel@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Arnd Bergmann <arnd@arndb.de>
-Cc: The AWS Nitro Enclaves Team <aws-nitro-enclaves-devel@amazon.com>,
- Shuah Khan <skhan@linuxfoundation.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>, linux-doc@vger.kernel.org,
- iommu@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- nh-open-source@amazon.com, linux-mm@kvack.org,
- Jonathan Corbet <corbet@lwn.net>
-References: <cover.1794300002.git.graf@amazon.com>
+Subject: Re: [apparmor] [PATCH RFC 19/41] smack: use fc_init_pseudo() for
+ smackfs
+To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
+Cc: linux-efi@vger.kernel.org, Jan Kara <jack@suse.cz>,
+ Amir Goldstein <amir73il@gmail.com>, linux-nvme@lists.infradead.org,
+ fuse-devel@lists.linux.dev, linux-mm@kvack.org,
+ target-devel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ Chris Mason <mason@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ linux-s390@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+ linux-scsi@vger.kernel.org, xen-devel@lists.xenproject.org,
+ driver-core@lists.linux.dev, Jann Horn <jannh@google.com>,
+ selinux@vger.kernel.org, apparmor@lists.ubuntu.com,
+ Josef Bacik <josef@toxicpanda.com>, linux-block@vger.kernel.org,
+ ocfs2-devel@lists.linux.dev, Alexander Viro <viro@zeniv.linux.org.uk>,
+ linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
+ linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-security-module@vger.kernel.org, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Casey Schaufler <casey@schaufler-ca.com>
+References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
+ <20261110-work-loop-pseudo-v1-19-4c998976c6c7@kernel.org>
 Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <cover.1794300002.git.graf@amazon.com>
+From: Casey Schaufler <casey@schaufler-ca.com>
+In-Reply-To: <20261110-work-loop-pseudo-v1-19-4c998976c6c7@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 4n1urpf8zzwgkyq847tfc9t9j7szucfa
-X-Rspamd-Queue-Id: 8F3E2A0005
+X-Mailer: WebService/1.1.26943 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7D5091C0004
+X-Stat-Signature: tgjrky7c5yosz7omxuabc61d6mhgd6hc
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-10.1 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794448147-974477
-X-HE-Meta: U2FsdGVkX18/H7BSPP2N9QJ/J0zyR3B05D2u0XnvY/9sIIEcItNwYNUfoFzluViueqCLvaB4iRdrdhcc/ab1RNcb5wVRp/zVSLTb5UImB6LLLpOBDSh/hsWwBM6xWUJuccVscpqks989hePUYURg+ovoonU+hpRISGK8zZjy6/D1ZLVTHi8XrvmHBZPuIOzmxJND5y2xcLeo3Ti+5A+rK9Yyjv3TL9ykkY/je4D6FDDAoyWeXXJMd+3dCEl0U41WJdpUyOBKpV7uk1oobpqireuHrYYTEVLqtun132yEuJJp+2QxBIqVgUl8jcuSUyaWQ7BEZsN5QNAyKzpusP4PO0/s+xlvDG2aU0bQQOfXqiBvMMLW6Ral7wXKQi9OrB1fdR0Bk07aRenfl8gMln601tCPG6BV2d7UyPPFDwjVIqivnzLpwCRKaawgFflnqH70E130cGdM9df9Fj5V1jp7rKdztdbIez1gE/EwQlEW8yka7oJ+tbskySxKi3KWjK7iiYBK1Qx/8ksrzuLGa6KN8R4sVUD9GGLj8OxHStw4RlJ4mtWhYsaDQpabQQ7kfFbwRx8IEklcUCqBvpftVkDjawdzx3lrVl8wUXNXvlbQdeqaVICWuN3zBGzRc0Exve3W+8Dgc0S9Vl/uCCK1Fy1cbl4fmBolwAQyi/Sk+Yy+rddNwlDyUBUw5Igba45dP6orvdyyf+KFnvLfySSjGxb9jYnzR60gtd3y1Qsgvh8eSwqIkJVhL1mfYsWaWfhy9ntKMMGF9wQ6OT0WztL9HqVxf2sCvvO7b/o6Oi8f+Z5oWCG8aZLy2gX+7S8S6/W3pd7dDJhc4OCKN12KgbaAgcl7fds0IJ9qinUB17iEHyY912cRRBQHcbkSsodVE48sbGbdjvQLEvjN0pl3DD56B2lWLyvlXNkZXMfkXfKbTLkrpFhWFUfj6OAy+BmevNQV2EzM2jlXyj5cxtSWlNauKQG
- 8sT5is2k
- 8C8N3cS+ZsYnbJKDP0yp+dbAwJ44TZXdGwz/hn7INBuv6dHASyQdg+s96tc27J0dv+YAScBVnYdCCqklDKisEMPZr5NGv2tqY9WzMD7cdiYcqjdYGneqvGoANlQ2ypoW9calVxnovKAySSxq9xGAEv2LCAJ0JBu5QtBg5WTVZpBVkowUybsqCwBUow7BIpX/44mfz+87x3xPLcZtny50mzfhCBy/gf6O7/xxVQaQzWdvJsBGOoLHqo/G5hQ3aZT7OqxQ+kcxD3OhRdo6oBv4ciYZ3c37zJqIy9Tsd4U0EBoeKj15OSRbsifQrRWZud6iVyrithyw6Gl9TctJQyeTXjqPc4w==
+X-HE-Tag: 1794448237-299051
+X-HE-Meta: U2FsdGVkX1/yzpADgxFQxEArflwmiYmBbTbfKApDh7RxoCLrCnnd4m2q8qNdJM51O3BRp+aFDO59v8acoDuaH49l/nUaK1D+J/hCsLVilDbSMhi5xQzK06C2LojNXTMfMmDE0dpiNbImjBQlqas776ZQX8WibULl86DD59vlLs292NH4sSkJq4MFvJf4wQrs0s9k0XUJhAyXXCve4tCxmK09w9kxzqpBQMn6DcOVn5ZtzfumkGPVvPX1BiayHgD6e55Rw1Gwa78Wy8NUMnNEq/N/TOnw0UAYbYsSli4R7Sgs0bDTw7BJHer5e9pgp6xsT4JIlKbLTs3lWe2z3WnVyeCs9W2nUZw1RtV+kYrz2LSVAbJyu1t9V2nYHN/36nzrh74O7iNEnPftybur1DKVJnWkNYM2R7UDIph6itTzocL1pISFPhsx9xihxyZdk5ugc1IrEW8udeqkKGHqDc4jhg36qMxcvb/UDl0na/asxZvk5BgV66C0wT63AoGqA+7J7fbuYMSb3Onm6RkzLstDkEa3HuZgO/lYZC416ZHTG7AOXerwNRetjtfdubBV0loADW105nJDz+PwCyP2pPl7BTzWh0/gZyscsjbHZLkkqgp7IVoosrlSaMBf55oAO42mJQJQgb8lfhjfCWNzZbASdjHf7BYYoZ9DVK0Zu6xmej25joFq0XZgUSIcrQchuXtUlSM+vIWCueJfoSXSoD/nVggWCqUGHfXaoV0mOsRpe9BrDRQltMMCv4ANcTDRutUuzpP+Ys95E9YZKol1LxPkKswv0orG5xJxmyitYE5qT2l3nhS4bdmwZA7IDm+lExYcOtqMRrCJEre/3AKuKlSF9Pxy+hyCySCOwmjgr17jOw3Oh5Nl8V+wo4O2nLNTQH1pnBZQOpLS10uDzdhvR7p0Eu21OAgsk/G6xQ/P0SYSyFT9aiqnjye5v2N6GeojOxur+aR9SX5K6ZT7TUv8NrH
+ z8Ph7tbB
+ 96+2sRpLNzjKgMlWn6Uex1ig2A9y1Dkz5yzDG55zCbFs9FHWLISe41XWrM86PFfFx5ICKklL9XttTe+cGhi9H5LE1BgSqkbfJ7cdeu2lWEkdnwJF/W4o480BOr5w3v+RT7nmZmzdueBnnpTzUkICRipMKo1spW6AK02uOWJcC1RvY7qSvRqOpOLgCsIVOXDvpCNr8tFVBP+iSFtkcVbIoY2A7GOUzQTVuAKfpWWys0cryEJL1bn2c9SbSc5fs2ATj4NHlnl4g4sFG6l8uY0ADlC2SmOhmb70c4LviDruJ5QPtDbUZ4o3EhWiHf7iH+stFxYD5LUihhN5rr5c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,97 +136,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On 11/10/2026 1:14 AM, Christian Brauner via AppArmor wrote:
+> Initialize smackfs as a pseudo filesystem. This raises SB_I_PSEUDO and
+> also SB_I_NOEXEC and SB_I_NODEV. smackfs never holds executables or
+> device nodes.
+>
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
+Please include me at least as a CC on Smack patches.
+I ain't dead yet. Nonetheless,
 
-On 11/11/26 2:41 PM, Alexander Graf wrote:
-> 
-> Alexander Graf (40):
->   nitro_enclaves: Allow the CPU pool to span NUMA nodes
->   nitro_enclaves: Add NE_ADD_ANY_VCPU
->   nitro_enclaves: Expose CPU pool state under sysfs
->   nitro_enclaves: Document multi-NUMA CPU pools
->   dma-contiguous: add dma_get_numa_cma_area() accessor
->   nitro_enclaves: Allocate physically contiguous enclave memory
->   nitro_enclaves: Add NE_MEMORY_SHARED
->   nitro_enclaves: Add NE_ADD_MEMORY_REGION
->   nitro_enclaves: Document the memory pool
->   nitro_enclaves: Add NE_CREATE_VM2 with a launch flag word
->   nitro_enclaves: Add NE_ENCLAVE_PCIE_MODE launch flag
->   nitro_enclaves: Name the device's error codes in the UAPI header
->   nitro_enclaves: Log a reached device limit at info level
->   nitro_enclaves: Add NE_SET_INFO_PAGE
->   nitro_enclaves: Document the info page in the memory pool
->   nitro_enclaves: Turn the command reply into a per-command union
->   nitro_enclaves: Add the slot pool donation commands
->   nitro_enclaves: Donate memory for the slot pool
->   nitro_enclaves: Add the slot pool growth commands
->   nitro_enclaves: Add a helper to grow the slot pool
->   nitro_enclaves: Document the slot pool
->   nitro_enclaves: Expose slot pool state under sysfs
->   nitro_enclaves: Add the device add command
->   nitro_enclaves: Add NE_ADD_DEVICE
->   nitro_enclaves: Read the interrupt multiplexer geometry at probe
->   nitro_enclaves: Donate a bitmap page per multiplexed vector
->   nitro_enclaves: Dispatch multiplexed interrupts to per-queue bindings
->   nitro_enclaves: Add NE_SET_NOTIFY_EVENTFD
->   nitro_enclaves: Report the device's info notification
->   nitro_enclaves: Count multiplexed interrupts under debugfs
->   nitro_enclaves: Map the doorbell window at probe
->   nitro_enclaves: Add NE_SET_VRING_CALL
->   nitro_enclaves: Assert the layout of the ioctl argument structs
->   nitro_enclaves: Pass on the Nitro Sandbox launch flags
->   nitro_enclaves: Add NE_ENCLAVE_DIRECT_MODE
->   nitro_enclaves: Add NE_ENCLAVE_PCIE_HOTPLUG_MODE
->   nitro_enclaves: Add NE_ENCLAVE_CPU_OVERCOMMIT_MODE
->   nitro_enclaves: Add NE_GET_CAPS
->   nitro_enclaves: Add NE_UPDATE_DEVICE_CONFIG
->   nitro_enclaves: Document the driver side of Nitro Sandboxes
-> 
->  .../sysfs-devices-virtual-misc-nitro_enclaves |  232 +
->  Documentation/virt/ne_overview.rst            |  256 +-
->  MAINTAINERS                                   |    1 +
->  drivers/virt/nitro_enclaves/Kconfig           |   19 +
->  drivers/virt/nitro_enclaves/ne_misc_dev.c     | 4832 +++++++++++++++--
->  drivers/virt/nitro_enclaves/ne_misc_dev.h     |  206 +-
->  drivers/virt/nitro_enclaves/ne_pci_dev.c      | 1568 +++++-
->  drivers/virt/nitro_enclaves/ne_pci_dev.h      |  599 +-
->  include/linux/dma-map-ops.h                   |    7 +
->  include/uapi/linux/nitro_enclaves.h           | 1182 +++-
->  kernel/dma/contiguous.c                       |   36 +
->  samples/nitro_enclaves/ne_ioctl_sample.c      |   10 +-
->  12 files changed, 8282 insertions(+), 666 deletions(-)
->  create mode 100644 Documentation/ABI/testing/sysfs-devices-virtual-misc-nitro_enclaves
-> 
-> 
-> base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+Acked-by: Casey Schaufler <casey@schaufler-ca.com>
 
-That's 7.4-rc1, but I can't get this series to apply cleanly to
-7.4-rc1 or linux-next...
-
-IMO it would be better if the series applied to something
-newer than 7.4-rc1.
-
-> prerequisite-patch-id: 542b3d78fda912095b75a49becd1b93109befdbc
-> prerequisite-patch-id: 318368e966c1925652b7976948f435d42b87c72f
-> prerequisite-patch-id: eb35b5d713e7f50f6d1d02310c9afe10b1628fc6
-> prerequisite-patch-id: 223bf6e60620ca8fe72f3ff6f3bd3f5839cdd6d5
-> prerequisite-patch-id: e5305ce0515a02f7f88e72adf02c6a2bee2fd2e0
-> prerequisite-patch-id: 759b5920f842d70e675770608d9088639c10559e
-> prerequisite-patch-id: e1837df37663da3d3ce53afa4594828b2d602152
-> prerequisite-patch-id: f0d4302bd36f94de95951a0db1ae9eb9747076aa
-> prerequisite-patch-id: 41159b92e250fef705be52f714b6e2761a2cd1f7
-> prerequisite-patch-id: a0c3a56907acac2297c800209faa2849a8df0e48
-> prerequisite-patch-id: a80a95bd682b540be5760e8fdf7044379fe32d61
-> prerequisite-patch-id: 9c01e0fecd6810f3448582715c87cd3dd7a6cdf1
-> prerequisite-patch-id: b94dfc8bb1039740d88a30535445bb7b3dd1fe74
-> prerequisite-patch-id: bd76f15728dc0ee2ca3417cd95a6b23a7d63e91f
-> prerequisite-patch-id: 0c60f1574b590f68885a25760017e9ff87752f66
-> prerequisite-patch-id: 63dff43da52934a6e6f5e65c3e235a7114b6b4dc
-> prerequisite-patch-id: af52cf938525874cadd6d879aa76495e563876d2
-> prerequisite-patch-id: f53ee22764b5f13708cacd3e48a59a82d71a270c
-> prerequisite-patch-id: 258b8c18168db49aacbda5156e33978b539666ab
-
--- 
-~Randy
-
+> ---
+>  security/smack/smackfs.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
+> index a72bc7fabea9..4a56bbeaeca3 100644
+> --- a/security/smack/smackfs.c
+> +++ b/security/smack/smackfs.c
+> @@ -25,6 +25,7 @@
+>  #include <linux/magic.h>
+>  #include <linux/mount.h>
+>  #include <linux/fs_context.h>
+> +#include <linux/pseudo_fs.h>
+>  #include "smack.h"
+>  
+>  #define BEBITS	(sizeof(__be32) * 8)
+> @@ -2880,6 +2881,7 @@ static const struct fs_context_operations smk_context_ops = {
+>   */
+>  static int smk_init_fs_context(struct fs_context *fc)
+>  {
+> +	fc_init_pseudo(fc);
+>  	fc->ops = &smk_context_ops;
+>  	return 0;
+>  }
+>
 
