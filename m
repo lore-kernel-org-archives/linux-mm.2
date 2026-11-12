@@ -1,176 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57310606A335
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 14:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C5E4606A886
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 14:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f8mnD/IJ
+	dkim=pass (1024-bit key) header.d=goodmis.org header.i=@goodmis.org header.a=rsa-sha256 header.s=dkim1 header.b=7Lle77wt
 Received: by kanga.kvack.org (Postfix)
-	id 592116B05C0; Thu, 12 Nov 2026 09:39:13 -0500 (EST)
+	id 40E316B05CE; Thu, 12 Nov 2026 09:41:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 542196B05C3; Thu, 12 Nov 2026 09:39:13 -0500 (EST)
+	id 398526B05CF; Thu, 12 Nov 2026 09:41:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40C206B05C4; Thu, 12 Nov 2026 09:39:13 -0500 (EST)
+	id 2879F6B05D2; Thu, 12 Nov 2026 09:41:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F31996B05C0
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:39:12 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7DA3E1201E1
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:39:12 +0000 (UTC)
-X-FDA: 85426724544.20.AA9E1CB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A9E8DC0006
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:39:10 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="f8mnD/IJ";
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794494350;
-	b=Lbd/kZ0cmouyQs1yEAyX/XcA4YQOtY9gG/rjF2WDK6S0N4EKmxietFDc1zclrEjK414nRi
-	qwPS1wrdraGcq44aqyNhweoQaEIGJHSVXYidrpidZUIz0/sYnsPtfuVtSKkUgOHDjnKkNb
-	hM6pJdQs8ULI//BFC1rZJL5HEXKx3Ls=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="f8mnD/IJ";
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 02DEC6B05CE
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:41:06 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 85D47A7AE2
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:41:06 +0000 (UTC)
+X-FDA: 85426729332.08.6F0FBC0
+Received: from relay.hostedemail.com (unirelay03 [10.200.18.66])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C23A080005
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:41:04 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794494350;
+	s=arc-20220608; t=1794494464;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JPCGNF/jEMU9xJrqkGIaHxvjMBqA0bWCrPxQL0nBrZo=;
-	b=C8nA9gnor7xYqnnGsrZv3F3OAC9az6IP2p7tkNjYpzkI/unXsE2cVCkfcm+S2a41C0Hlf8
-	L17DPdMEzX8aB9OeOf4deqK83ck6O4d6aR90DKrdOjrwkYJkNJDyboI1I4dJHdhCJheCnJ
-	NCFt2ycyv+k+W2VQ/B6VuTWx+2cpQzA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A38FC43BDA;
-	Thu, 12 Nov 2026 14:39:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38F651F00A0A;
-	Thu, 12 Nov 2026 14:38:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794494349;
-	bh=JPCGNF/jEMU9xJrqkGIaHxvjMBqA0bWCrPxQL0nBrZo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=f8mnD/IJDys4pA4TeVplHqPuVUfXqGCBlqTLjIenB7gApydQVzgQ7FKsApOjymKoG
-	 uoxlhVqbleJeLcQbHt5sG3/YCao8omJde+LI+Zry9Zf+D7eJQ43/cy9LfzDcI/BP6n
-	 59jf7Yk0E6oQ4ndx2WarOOMIOHOscf4lgBvg30XKqlVusvQHhnKQ56hfSOLHFXtqsO
-	 EvolT6DBDg4yO5pVhjYeYQQWWjGT7i8guvwpRcR7e7ysv6z3Wdrle0pzptbwklFN6w
-	 +hGHxd06iIp13iFBvUdxsoi8NV3KZFViRrZXNgUMAuxDnN60aj3/GIZ6wIZUduAG+I
-	 LxvkBDtRNAxDw==
-Message-ID: <1aa2d6a0-0104-4f94-821f-3a8a74636028@kernel.org>
-Date: Thu, 12 Nov 2026 15:38:45 +0100
+	bh=F6bxHc314f0pSGilfckKFkymUMzhIgGl/FSU7UjQCE0=;
+	b=tAPWH91W91qYiSVCnaKAX2kIUop9yFOC3VXIX6jWdQHLJooIbM4v6nCncnePjRuMW8tRGw
+	aou54mfSZ0Q+FKt1Yc3M6lerPyRx6hh5jLEnzgIHe20VHW9ASKTKlYiRr77/cKVVPgqJye
+	pCvrgGKBNGrUWZkstz1IBV9szqe5WL8=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794494464;
+	b=7SlVU6N6a0sKIRCOO6S4+h3wGjsFZY0R1eqnCQ6wDJpq5fpjgJV295F7cSFMsUY0moekZT
+	OkUj2wGivpHmS9FgFu4NX+vbjeCWZswLcK5JK2t9kVpcGo6NLCeGuRYGM1vwM+Xdbt2boR
+	EGyYfQYuloiExJaba8YLzzWsN28G54Q=
+Received: from omf11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 61E59A0600;
+	Thu, 12 Nov 2026 14:41:03 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf11.hostedemail.com (Postfix) with ESMTPA id 7486120029;
+	Thu, 12 Nov 2026 14:41:00 +0000 (UTC)
+Date: Thu, 12 Nov 2026 09:40:59 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Huacai Chen <chenhuacai@kernel.org>, Huacai Chen
+ <chenhuacai@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, Ingo
+ Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, Vincent
+ Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
+ <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, Mel Gorman
+ <mgorman@suse.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Tiezhu Yang <yangtiezhu@loongson.cn>
+Subject: Re: [PATCH] lib/smp_processor_id: Don't warn if there is only one
+ CPU
+Message-ID: <20261112094059.18f66c2a@fedora>
+In-Reply-To: <20261112081348.GB2668804@noisy.programming.kicks-ass.net>
+References: <20261111092421.3771992-1-chenhuacai@loongson.cn>
+	<20261111170600.GS1779021@noisy.programming.kicks-ass.net>
+	<CAAhV-H6SYOjOw+owmStK7sr-HOiADC1zZ4Cii5hv1q+qYAUETg@mail.gmail.com>
+	<20261112081348.GB2668804@noisy.programming.kicks-ass.net>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/9] mm: limit pagecache folio refcount when mapping
- pages
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
- Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
- Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>,
- Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
- Robin Murphy <robin.murphy@arm.com>,
- Steve Sistare <steven.sistare@oracle.com>, John Hubbard
- <jhubbard@nvidia.com>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
- Josef Bacik <josef@toxicpanda.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org,
- iommu@lists.linux.dev, netdev@vger.kernel.org, Chris Mason
- <mason@kernel.org>, stable@vger.kernel.org
-References: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
- <20261110-refcount_overflow_stable-v3-1-318625d63a98@kernel.org>
- <avW0HGjF6wuqn12T@pedro-suse.tail5790ac.ts.net>
- <86206f64-fefa-4a13-95bc-eddf756eecc8@kernel.org>
- <avXGtysfRk3uQpNu@pedro-suse.tail5790ac.ts.net>
- <2f9b90fd-fe50-4afa-ab59-0c4a00e5e276@kernel.org>
- <avXMKH__gwi6BwVy@pedro-suse.tail5790ac.ts.net>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <avXMKH__gwi6BwVy@pedro-suse.tail5790ac.ts.net>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A9E8DC0006
-X-Stat-Signature: w8umhsmbi7upkz685gijqwzjgo3pw78f
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX185GOKywlFFlJfCTu3GxCWoVw39LGNYJ3Y=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=F6bxHc314f0pSGilfckKFkymUMzhIgGl/FSU7UjQCE0=; b=7Lle77wtMD9XB5uNMnPNfCLzHiiosc8uuejeHnPqjrF+I3kqvpWIKnLekAFD0uOo4csitFNoA9P3BBVVhYArdSCu8BPjBe9hCHCOh8+8WKRVtNY/Fn7QR5+FOVRBvJPCXJDMmGy6sb741H+WW3LnywUXpxfvfezikBKoQm6VhFI=
+X-HE-Meta: U2FsdGVkX19IKkfz9o5zVeyJW6LTZJfRx+zf0zFmoWrkA+CgZhlvPgDsEFUw8vC7dAGijfephlT3VbMn5qaLhVg3SaSPTtDte1bPrQzltXp/DXqNqcCeFXOLxGJNeo/fuZkm7ewWABHZvDxRM2nK0a8TNxWLaIxzotl5EC5ebEuwrpxeMx4ip4kiJLG+2wh19POc+bU9wU9LKF2euAM6BwDS52MpDr7yT7RfshrYPSnVgfps2TXYEEhk6zTX8Y5IbWvf2J2Bx/nRl/BkKjB0bYBmoiykDJbr98+C0/wwgtahHGMXkX/vevsSXceWJHlAsGXf7c5hGoG1nzdfHMrX2eIv9JTurj0SeQVWoK/TmZhVe45cIP1UlszO/vVYxDUd
+X-HE-Tag-Orig: 1794494460-530483
 X-Rspam-User: 
-X-HE-Tag: 1794494350-277887
-X-HE-Meta: U2FsdGVkX18+szrsjE3BsEuLDnQWcT5v7gfHvAxqMM0oKhlVo9nqF7Cvh+3NN0lIY2zlTs7WILt+HzoZXDUs0oh2mf0c/7S6Hxn2IWjVwYbh4h5Tw2SI8u0n8WVsgXoXl6T8ow7BWRhlQonVb7sCRwN+CIq6vmlN0EwhrVdmTZEqnH9XweLX0HbaX8tZj3bf/VIVGkAHYAwpARTGukSjsiLOASVOhTamOuHUkHpxqxUmaO+zs2QRFFb8Gam7kS+17dYEuECUd5tvUcc/6Smy51l1M6x+IurMiCKzC+9jwiQQH2+IgZCHOADPQjET+VTTZvscMMzIU1AhvF36+CJUAHPZue7p/hx8xyHWchMSkPDILmGFMB+e13mqU2xzDs8oi0TtiWeu6TKfxPiDM/CVB0IJjCRd7ja71cxSn0JoKBnogTDaSwkTlWagnHpgPLUHoujXjhrQcekgdxK6fp8pRmYU/ftHIpP/R160bZLXDEocL2xgLfT+CaipXK+d/M1P8w+vYAAxZaWNjhnuLChczTAvDnk0ZHeBJlpBW6HG9ZV7faux7bMQOReEqLjZzmbbK7DBf2nA1TRf6isbrwFrVUA+50P2gAhggon6DL66VXOAkkKANEaZ2r9Q9gjW/pw/UGOEyDIrhevJstFlX2jEVODomo3QY0fCNCS5Ljuunt/E0tUUbayAprLhpr49OmyKWh3XZyEdcDnVvWuWO9olt3VXzraPjav5r+MoayYDGKhxjbt/sJ8zGsbhNhqnrxOOCBdyfuJPaTWmjJfn4SesqHkR6qjnzYKWefol87GbpEMs2XfHa9OwOP+8hMJ6e35cUALwAVuaPeYE1vSrLP1GsY6pwmny6SXHoMEBe5qfOnbFfGyepolllMke5wnLUpOlPuziV0/MNwKF3v0S2AfCUC4PcMTZ2/uCzT8tzgALN4QlbLiKDFdp+g4dRn43Nv9LRIe3knQ78HHBWCsVuTd
- uDzRrHmK
- JrxGKyEnIVnPBqkyG4n/PHBy7gEArA8gIsjiCDXzG2oF78xUHcsJp+uakk7AnsRr9spaMgrpp9YUkItefTi1/wm0WpyPPL3kqJEL8c90gVrCtORlbBBfnhYGpIqjv3H8wzzijnS/D/kXYl0aMGCmNthldOfIMBJOWtpgNXF86CGHt4jGU4P2i4fPeB7IwSmlFlnSDqTvCwnkOIGRI2krUun8yMUFBgMiGsNmJYOog4g1LCFbqt0pjuOKAVrRDfeI/ziEC6d7h042ZEDrVS5qGxedwksPqNh0x9YhpQBzuv2iCWICH7BVYS+fV1iFtF+2bj5hQj6YiWU1jAlo=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C23A080005
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_SANE_2 autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: ggspiqat5q5jxiangschfnbcziu94f94
+X-HE-Tag: 1794494464-140757
+X-HE-Meta: U2FsdGVkX18RPQCp1rTpoq3kRQxmPmEyKPYwnZVVqHKDOL+KRDwNA9EKrHXB8agbbqNJ2QuMbZ+4koU/DZ0E0TYjsHHOOLqnFN3Vu+5JuWhM+zfR+LX4PSS9FI0IS2W2jReTVeBDSqWuYFA8L53pAFTlF8LLIelVTWIi4RruKzdn6dKhvQXd4l7q9YpiJOgPqvOIRt856TfZdkSP6h/ic8nLiGI3pVsVFSZOrzQcYuTI+atkmwpzhJH0LrVhK0v+OSiTqv6KExGjTeGG+PPatNVmRcxl+fWrAiHRpLMt6XBTaS+WTl5OU9bvYFJjSwtmIy+8p4BsbUL1FS1ryOPvnGb6pjHn91/pnp3iBxtzP+p11eoKbKAEfAMnM+WTajzZeyMsaHSMTW9lV2+bzOFtSRoJlz328c5DY+Ayg5P+xZu8yNlL37MhEwcSCtTR7vxl6vJdntQJ2Dp7lbgMJ7OsGLBCaQD0Y8ptGNHpXyhEzQKqg4QOtv3O56q4sed3/+qmJlJ/gU28qRNxDb6F8LkQ6CcVygUJf75miSwbVEm3wktws9nBh5dXSZXlKUzy5L4T/1xib7Y1tH0esED8VcfnrQZfvJ76SdcpEj29Y33yUKz7MsmXrasSb24BVj8WlYZ3ov9etqb+up3K3Lu+iMK7i9nli1kQSgkstQd6O5S2+LcuGPnIukCi341pZiyjynxAMB1kWEY+B+BAJKEJmvTgTqu2bzHFOLPOBSBlJm5hnJco3G7WgmzoTqEvap+qJvrIwTCvO2naKffXVJ1wSYGXfokAj590d+hHrKyxHJKq8fBiMWFZg7CKk+34bkXFRYGNsYrOAhIpARvWtSJi8taJAERSapGelNee9IjuZT7cCltGj8dnh1cfoC7zw1uH5AWF4KeYeNOE45mLZB0ObqbfA7+vN2MwcwmnlyTgpkaoi4al0cWVL0S1TBwUgoUQ+CaHR6ml2rzsD1QytwwKZI1
+ po8Htq42
+ e6CrmYAe6B6SIkoCPSlSZ7F45n7lB9jklMHRbzomo1+XpwXUh42XP8Tgp5ZheptQvu/FEYKupZB450CiRafYBrnCzCyk4f1OoDB27Bin12pvYZjajJJYvO0Zka7P7/Wn2X6iQyqQOaOTbJjFkHnSlcuTffJ2bBuL/xKtRbIpMo+xsP/oqDwVmIZD/lKbHOBOVWnoJ9S7FMWd7110=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,37 +95,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/12/26 15:26, Pedro Falcato wrote:
-> On Thu, Nov 12, 2026 at 03:16:00PM +0100, David Hildenbrand (Arm) wrote:
->> On 11/12/26 15:06, Pedro Falcato wrote:
->>>
->>> Alright.
->>>
->>>
->>> Yes. As far as I know, it's always fine, even under NMI. But definitely fine
->>> with IRQs disabled.
->>>
->>>
->>> I had the impression we had some stuff in-tree that isn't marked as GPL. But a quick
->>> grep shows that everything is either GPL or dual-licensed.
->>>
->>> In any case, yes, this will quite possibly break debug builds for people OOT.
->>> I think folio_get() might be a bit too ubiquitous to do this to.
->>
->> Thinking again, folio_get() should not be affected, it rightfully only checks
->> for a refcount underflow (when we exceed the limit + headroom). So only
->> try_get_page() is affected, which OOT very likely doesn't use.
-> 
-> Aha, yes, you're right. I mixed up your folio_get() change. Would it make sense
-> to VM_WARN_ON() on this as well, or does the <= 0 check cover us already?
+On Thu, 12 Nov 2026 09:13:48 +0100
+Peter Zijlstra <peterz@infradead.org> wrote:
 
-<=0 is sufficient for folio_get(). There are valid cases where we can exceed the
-limit into the rather large headroom (e.g., reaching the limit through page
-table mappings, then performing harmless read/write that take bounded references
-for a short time).
+> num_possible_cpus() is what I was thinking of. Notably, there is no
+> requirement that the CPU bitmap is dense. You can have nr_cpu_ids at 256
+> and use 255 for your boot CPU. It would be completely daft to do so, but
+> it is still valid.
 
--- 
-Cheers,
+Hmm, I was under the impression that there would always be a CPU 0.
 
-David
+Is it possible to boot with a non zero CPU setup?
+
+-- Steve
 
