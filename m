@@ -1,104 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE229606A882
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 10:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A163960A2630
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 10:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=pbt9KG9r
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=oIl0fASP
 Received: by kanga.kvack.org (Postfix)
-	id C265E6B05B4; Thu, 12 Nov 2026 05:07:40 -0500 (EST)
+	id C02B36B05BE; Thu, 12 Nov 2026 05:09:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BAFEF6B05BF; Thu, 12 Nov 2026 05:07:40 -0500 (EST)
+	id BB2476B05C1; Thu, 12 Nov 2026 05:09:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A78746B05C0; Thu, 12 Nov 2026 05:07:40 -0500 (EST)
+	id AA1CA6B05C2; Thu, 12 Nov 2026 05:09:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B3D96B05B4
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:07:40 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D2FD3120548
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:07:39 +0000 (UTC)
-X-FDA: 85426040238.30.68724C5
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf06.hostedemail.com (Postfix) with ESMTP id D0E8B180009
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:07:37 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=pbt9KG9r;
-	spf=pass (imf06.hostedemail.com: domain of azpijr@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 80F8A6B05BE
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:09:05 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 11B1AA04DC
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:09:05 +0000 (UTC)
+X-FDA: 85426043850.08.EF70D18
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 150F4140005
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:09:02 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=oIl0fASP;
+	spf=pass (imf23.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794478057;
+	s=arc-20220608; t=1794478143;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WSyMz69A6pUqMMIP1tdJeB+vvEVUhzDjG6WadbBU72w=;
-	b=Fna8IqjNRk+FFEGWWO4SulxR+WZrSnVQdtsHhEXy820Ka8r7mVW/LHCsjvzWv99AZMopb3
-	sce5cTHKOAlm5YiBlcSXwsyN/ORGOIYW8k2s3L1t4m6NP0K0+i9NabiyyXVQMXH9fmwxQj
-	D5lvggy+R9XRFHpopVBRU8HMnKqgadw=
+	bh=xPCtd0ewEaMYLBvmRKUfVVx6VAZUS9abtar/G6UrVBQ=;
+	b=rYiYYQyyT+uJE2GQYMuC8NQc4XJ5AoSOV9Vtv9gUnJmWkTqLCrEK+hxIRH5lY82Le/5Sqs
+	mk3tkORX2pfGNqtrnpWEhn9uUwDdT81If403cMRBpQzbvV2c5hFaAA4UQ0y60XA7EawH8w
+	SIeBjOBO4/2YSdDR+5KQew2nH5HWaO4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794478057;
-	b=UrjEblQ+5c3tb9ImGXphArEZ9ZiXxB+NlMm71l7LA5C9DxqHOKFeWCl03ki5IPOgGP5Mff
-	/A4hJ/6uNxlun+/D2R4HdRrqfmNK3e8bP5xWQ+aOy5lW9+Z4dNKiZBSBcpofNEo86yxyKe
-	MISlJ0a4me1+wRuHsqib2+SjFYwCYk4=
+	t=1794478143;
+	b=R0FadeqgRl7gclZVxxYWpRATH9eH+MsteQLBXHIACFr7cHSHnVgHXsZj76bfnSOYSHKuY8
+	7PTvvZYpMEMcxgWNEt5hIp1P6w2ZUep6bJPUfs3yvlGWL8qhHnkG2naJAIkNrnlOzx5uN9
+	+Doj5V1xcg3+vqxdlIUuGSzcAONGoxs=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=pbt9KG9r;
-	spf=pass (imf06.hostedemail.com: domain of azpijr@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=oIl0fASP;
+	spf=pass (imf23.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6b7221c0f2cso4007608a12.3
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:07:37 -0800 (PST)
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-491aaed7565so2393482f8f.2
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:09:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794478056; x=1795082856; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1794478142; x=1795082942; darn=kvack.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=WSyMz69A6pUqMMIP1tdJeB+vvEVUhzDjG6WadbBU72w=;
-        b=pbt9KG9rJugluXdsIfGY3oZRQQDpLthwWffv1kGMb5OQWlqy2fMKqdXVYgCTj82zgQ
-         5YbOqCWfcgwj5er45xfS0BE/mazO66KkrECsjEjBfNvNA9Cyn1+ZgOeGSmWZxM3xROQR
-         ltJCk5t62vSjTTfrmQhouKEd8L+SMCMi7sN7fIEwUP5Aan9CRUcI40xm0jagVrmoYt5i
-         0oXi8JHugUnx4RuKpLy5oMFAC2v5PKp+6hAytXNANgeHVZ5929T6Z2ojBBMAPD9rgXx7
-         ivTZQSs8nCj5Lh/l2ftbUS45NQdU8JCVoPUjbhMvH3AY1luJt/++TPw69hLf6VoINr18
-         48/A==
+        bh=xPCtd0ewEaMYLBvmRKUfVVx6VAZUS9abtar/G6UrVBQ=;
+        b=oIl0fASPgDP1JTUFcmBv4LVCstfNKw/qnXH9POiVTPnx3fSpx9W6do6wvfgmW210e3
+         6lGU+OeJXGNUyTU8nwMfM12kv+TdmHq7Zz+EmJlcvgZznXDP84zL2Jh11+F2wpyIG72T
+         o/ldfD0SdRrIC7CWLc1lfqbj8bsuPmQ5VrQit1YYbXKsUyP1hK41YANxHA7eNqpPtQi5
+         Vi94tYLlliU5AlMThVISkp/GF2JCFn/IcCLnI+0+TwtcJ9sy61MRIieVDqexQXKTuvov
+         /bv7DWlqMDyD6rA1HzLu8bQ2FDjzLWKxcb0ygQul4whqErIucYp8ULbkyIoSmtYBuQSj
+         jmXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794478056; x=1795082856;
+        d=1e100.net; s=20260707; t=1794478142; x=1795082942;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=WSyMz69A6pUqMMIP1tdJeB+vvEVUhzDjG6WadbBU72w=;
-        b=c88bUY/Ni42O/Gvc6/gPVpOPZX/Rb9j22+tfv7K8HNFSfSybmcUoOTJjVuNqe/Z+Ql
-         sGO0Te7PI+YT6gXJPHDnJVHiTak1CFozGCc2Fu3OzkP33q+JO7TKvUbZjCPkXan6THNp
-         g4txndHpE1U5nRuupI8ZJ0bYaT7xj5nKKsDgPD/s1twhbotk4CZxqYLx8v3b89wj7Dg9
-         qMf85JoFTW3Dax4HwtICSoRBG1/QghskJOf5Wj+M0n2o8UFTH1r57gk5bgSWGtjrU6RC
-         Pke4Bmk/3fs3HgzWStfW6XwNw6vdaCuFWbQRaqm5fdVWBNBEsZbQsJS+lbymNa/DImrd
-         s80A==
-X-Forwarded-Encrypted: i=1; AL+hErG2RCRg5e2G1qCJR2jc1My2i1aqYEWE3AVz2syhSNCWUE61eSMal9Y3t5sot/b4JUXGof8iNlOnow==@kvack.org
-X-Gm-Message-State: APuU4Z/ozWASc2nEUS4RjhqZ7uzJBMwuEeLF0Cp/gdjvUdySn8PdoJYN
-	tE/0GLCoIN9ryw37HdFQ9Bz+OPyiFoCsG1c+aiy20Kw1/EfEDrmkuT4i
-X-Gm-Gg: AYBFou35AMkz0GJ8i3hpG0jeTqkcI4Vf+GY+bkM++23WO21g97xUNaUKACV2ixa/Mll
-	F/GsVnzY/bfUQTKop/k3quXq3DFWUpPbizKfjH5Ui2eYF2r7bVqkEtskyLytQ6kOJk706jCzn/7
-	1r70O0dOoeFAp4j3T0H94oRGPzcKHGLTlEAmLaBAY89cA4f6kRwgurhVRdQbvwcRKCzwdoiqQg0
-	/uQyIcIrI8zezIrHOZzzZE9BYFZjyR2rpT5OgSMpEpFUyc/6kGCVYH5ad2Cg3Po7VjGZkF4EoeY
-	ssAdmbvUhqjFEDASgPtMBBcEawl5SwExRcYwdrK9VB+VVq0wIkIL+u4AxOasfH0jExy/zLTEvjR
-	JeiCzYC6EpfZ3q08uW8HAJO7X/cWdX8D6P4/7FU7ZqIlw82RNTbPi7HDT0QU61YjZnGyZuUr9hV
-	PyE+4Si/NGw1ydRu2QaQAACCPC/PrQFkOx6QEKmbwzggKaX5TEwKtVy+8Lpervi/U/pknJWuQ81
-	Sp7bUosTmb7hN8Ei1G0hFF7JCL9A2+IR4eK5pzsSjTPLY8pFmg/w50azqM6O22Zu83UqzoczeEI
-	nKB3Vb46P/7kTs3Vhh1SBrRf
-X-Received: by 2002:aa7:c1c4:0:b0:6b5:8579:5404 with SMTP id 4fb4d7f45d1cf-6b7773edf1emr2460162a12.9.1794478056131;
-        Thu, 12 Nov 2026 02:07:36 -0800 (PST)
+        bh=xPCtd0ewEaMYLBvmRKUfVVx6VAZUS9abtar/G6UrVBQ=;
+        b=mvEI0DhNN2qglOGTXPl1ZRJurS7VsaoJCOk0D2jaqXhpe0rYb0XYs+Ev5zMBtJil0e
+         gCVsVYYRpSMVN+whdql+1MIi62xQXYtTbHqBX8dLKcdmWvEdW4whtsCfwT+kx6jMs26t
+         cmEtyPRaz079jUxgTkhzmnoiiVL3NY9eogr3OoLwMsnr8f0sj/TNLfs5xPSg81VtEnsc
+         z/I2P7E7PkEMEm/7NQwonxrSYigJwE2YDvNxBIcJR+SgclEBS8cIsrkSeH/d2+JwsoOg
+         hTTujZGpxJ6NTXUJshEDgXRI+EpT/SIHHlEjUaHvXFzXXBcIItrYJqEme+zFlLZrmGD+
+         b6eg==
+X-Forwarded-Encrypted: i=1; AL+hErHlUW6MMB8BhcZ8Iz4m12FGV84o+/J0vSeR0kJhXkycs2vv0McrMWSa+B77kROGF0s/50jTFVe9/w==@kvack.org
+X-Gm-Message-State: APuU4Z/WW+POvjpckMvGj9JHmwHBeG/4OnVON7BNL5PMl4uVwCAUhMhr
+	0XoheZ6t+cR/Pg2A4nDwJ0YPaBflzoA8QO4MmRVvtpAAYnlhVY1BxxmJ
+X-Gm-Gg: AYBFou2aD2gRLVfTvMNdZWO9bpzKkdMmS6HL7ANweEO8E/pn+xI7hmq1QXPsQ+xDGGR
+	K82S8AjVH61UO4rDB7GW+KdN18GsdgRzcgqzyhLYp9LtpgrsNTHndWL/RJHmTCV6++KRZtWj4kq
+	teSpNKrFHc6D93TwKxehyfxRBie0kzBcMpw3vcDSXo9rRB92r8FZHFK2T7DCPDh8HiNuV+Z88WI
+	tAXRIWpE/y8+m/A0ei7YvFAwZvBA3dOm25LB6StyndTOM5fuKIRETt+GiNZA3UzVctWoKAXCjOw
+	ttXQKCFtGmHvvLeQFw2p3okN5wCq5kgk5Vy/SoyOtkrmCwTx4xg8HSbYqFcJ0blsX7dEmdPfl62
+	dVcLKe/ZZ6qi60w6C3z2UjVwNl2K41ORcKPcs0hVO/AtAhczJ6cIFI758Kx4zFAxaJkKz0inzH5
+	0gfj+ZRiPBQvFGHI3xGERWLWN7g98Gk8XJDYNzZ92HItIkkH9hb7NIP8V/ZxSiWu+s/b3Ez/GF0
+	3txtgeyJutuVEmO0WcrCGE1yy/K88W88qJnEtxOoGHXIM1n/8yIYsXyvFi5eIhJDzyEqqEy3Rb6
+	xsv7iwIjcb0dYLKy62wE2P7K
+X-Received: by 2002:a05:6000:4b06:b0:48e:7026:5243 with SMTP id ffacd0b85a97d-499c7270e9cmr8410567f8f.20.1794478141350;
+        Thu, 12 Nov 2026 02:09:01 -0800 (PST)
 Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-498363df7a5sm16175142f8f.37.2026.11.12.02.07.34
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4983600bd6esm16211466f8f.28.2026.11.12.02.08.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Nov 2026 02:07:35 -0800 (PST)
-Message-ID: <5411dadf-0df5-445f-a3a5-8d67489c7eb1@gmail.com>
-Date: Thu, 12 Nov 2026 11:07:33 +0100
+        Thu, 12 Nov 2026 02:09:00 -0800 (PST)
+Message-ID: <048ba947-e63c-4361-8982-b40372d4f062@gmail.com>
+Date: Thu, 12 Nov 2026 11:08:58 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] mm: don't report OOM when a huge PMD race blocks a
- pfn insert
+Subject: Re: [PATCH v2 4/4] mm/huge_memory: use the large-page PAT encoding
+ for huge pfn mappings
 To: Eliav Farber <farbere@amazon.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>
@@ -117,25 +117,25 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
  Matthew Wilcox <willy@infradead.org>, Peter Xu <peterx@redhat.com>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20261112051440.16140-1-farbere@amazon.com>
- <20261112051440.16140-3-farbere@amazon.com>
+ <20261112051440.16140-5-farbere@amazon.com>
 Content-Language: en-US
 From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261112051440.16140-3-farbere@amazon.com>
+In-Reply-To: <20261112051440.16140-5-farbere@amazon.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-8.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: g4crrr4wztt3bnapeqbi4z7oo9kzzeir
-X-Rspamd-Queue-Id: D0E8B180009
+X-Stat-Signature: s8hxddy3o91rfcq77i19dfomdkrr57jw
+X-Rspamd-Queue-Id: 150F4140005
 X-Rspam-User: 
-X-HE-Tag: 1794478057-281030
-X-HE-Meta: U2FsdGVkX198t3YcwpNshJdudu4Epes59vb51ArMZXh0Sc7YVOnPfbfu2jIoRr70xjCu4ExYEexMzgJh3cts7Ng9DdkXw+j288VnokgUHaxY+vuYEDxRk8aYE1/R333QxyQbYgJk7X8qQzuWZBVaK/02C97zExnNh4Il10W0rnLYrNeu0YYTcIXnnYrkdMuvwXNJlm1a7K9YLmabAOqdEPpDqfFJtHS6jD6v4NfnoHU+L3fSTFG1HkB2jWP+dVjBLyCpG3oesLiB4cy+/Dlj2oqiV1onFQuDdTZww3zFVsEKJEp3xahXIiq3x+YCQp+SWqmK2UVLLVBPe83luRAAcJhZzwtAuP+V+joz5XgIRAtydXrh3UDctfCpdipk+zhVOPKQ+Xeg8uXTSTyS2ErWgYknuP9ZepJtSLhcWTeZKZ923ZaAvqpBKf/AT4znBRxYUNFS8DsxAyT2Fu+qroTh9yadNcJrlWyQNZq8YC4Q9MeRR6aFYgkOuu/SYTjmYnktIuoYLB5/TLo9aJ+KXIomw3eMij+gulX70x+fmhFM2QTJJcF0ExP/YW0yM+hqN1odYsNd64WAWN3JhabZbvhp2RLZfs7kLsbxSWJMn8t4j+f6TGfHGlxsZ1KlO48CSMhk9SPaWj5sgDeuYDZM7TOGrtUgk8gdveuoxsc0SesugBJJei2LbwlGLDzMuAzebw6cwrUpbd+jIutSAi0KusOP9Bnhaly+XXsM9vk7fVIvRVWqkSA1ocC6wENN6x/opea3jOoBWZRK0fsCggADGE5tjB4cRik86yipMJurfCdIkv65g9698ZTv16AVUkgdrNsdIoYWEdMtHQFqYUm06HscIVOezuwmr9ZfhpT9leZa1YlbY3ki/g4hbVMGjbiWduMvu874Alcw+YIcXB9+oEMXttz7muyHWZJRJZdBvI/8anE/UczEXrTe5MvqsYIkV82yiXQwBFTfu/ORaKsnLuX
- uJ6PK5ec
- hFJxDFoHc0UU2eMCtV6V3TqEFt7gaDkTEe5lHwyD9CseSQxDLT2YF7/0oMVoxvFPRYJ2vxHyrl3VApKhgYdGaknyTS3MT+zCnmjhxLbM+taBaYwnJOSJiwMumBAsjgAnDzRTpMJsCh+3ejzTEMVvu/FLz5z09ss2ybuwIN4+eilrSjbyVmlurEASMu+XtOuHSFj32tgYEEALSSINfW/R60FDiZ6AUAMlvj68Bk19ewpb1U1FMJXlVENXkBLoVZsWdy+/mSmUpjcn3zklN7uI2/7v1QF126bxTDbZUsRYgsX0u6xIesLHXXVGnDFSsoUVgkjWvmNrnF9JVDjN132Impo4Vp3iA7CY90Elqnvke5l7/HPn51JTSagUg+PAajhTDAI/Y4LCCxj/cREyLOn31TcxuBOm9K6zLLbmrGBdT+3+tTBQduREBOeedVw5nDKCvdPpJrR076G+6hQlgQZ1+FxgrvgQUOFkSOtx6kdWd/hkyvMBhE5N0QYnLB4phGm/l62r6N4IYdfvlVkcHHyrkLWjAihKxWxGOTEDZK5kbcnU0Svn6kcjyJAsmPA==
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794478142-863163
+X-HE-Meta: U2FsdGVkX1+H/zqRPTrzsmNEXiV53I1VDXJb3K4V4nFfJuvXduo6+IdkTV1dzQTWKy+Cebk8QNoane7wYiZJEUxn60ILN5bLE9Dfm0BSCR4p7gedeEgN47vyeKM3UKG0RlxwyVUXKCIW4yAdJFJzFDHkr/sC0pbQ4BJFuovxiEjCBYUVHgALH15eMIze+dhoDfNuiSM1hlyzO5fsdKSzsU0nJ5uOhInmbRXDnrSNc+RF/i170zCxjW/Zgw8qkBMcSOtaBY0m6iW4R9PIslx56YGfXw9yEOug2yQsR4eCG69PwAm5RvE0UcIzj4Znq38V2Em9rnF3GVw1RpZsca2r5CmHniJw5fA9tnE9lIDUN9x5Ls8IQR4Joegy2Par1KhzgJUVveOvLyaiaG+ZpiQM428GNjy3ntaHq3URwK/Y1lYBDIPrhucPyKUUDDCUCljPrXP+X/PdZDxFzmPnQKml9IeoBDAkPqv5DxlvIJKweGA+wH0YRGNUDdyxSK1TB8HX254K4gbBZsvu8JEGA+rsDO4TcGr45Lc/a7jZTWkuhm5wNmugGVMz13Yx1/JH3w3r/eOqi2A/O8fzvNN1QKCfXpNYuMqyeAZlR/twkcKGUl91cucqhw9wCzVCtG1EeS++cHZaseLTxVEI8X0672TnUWzRt2EWaRQdfqmDVMTv11RXgCAsVZ+3EXSQPxsSEy4GJadA/VJ6QuyK1qpATyZYaIdRxEt1pYb/dHAh8wvcUVntJNwYCxr9dBbSYAG/U2BCHdx2RmLtZeQwAn7xhruknOzXBhHXIShMlRio5J1L90yY0KIYiWFUkFvZ9bmii4i9S9larh1GWv56Qft7O6kw15b9h6yPp08f54Hcs64lySeyZD7LenOiYYV21UJ8X0temTcK/KYSC6kDNhRXKAn4CF5qo0Yq1autujhBYebIayednL2YU8oaIPemaP8UFyDx5YIu1EcS6Gjya1QPOB2
+ PaI7jZSQ
+ JV8Hz99O4Jp4ESSSSRcIpw540u+eT5flA/FWNrzUMBS9juCgPbhrdYMuKrl9bfvy8Yd1fh/jq7RRkFa0m6ltF+vDmSpB7eTy44VzhEiajNKsRhECqfMVS5o9dmjvZULupuWXSYd6i5vWgO7A+YlSNTwHVOIa6SiknBecvGJPU3i9Am3DaFYzLkSlUmlVcLwMoTNkgtGhzHdONWLiC4SIHlFg8TBmPQaQQIW0W/IC423C4pOlyab07WmJ5+jOqDp7CUAJNKgXCfMeNv8s1/RgaRlhPm7qCsNU/tlqNZE1I6AKOMzi2yfut2eI4Ai8ig8Ha5pGpeAcCuCPocNKZgn5a1jMhyb1bzsyOYdxtByrzdCKPHGNhI7eD+oloC4cU9yAL1pSKGlxOYHDQ7ashHSW0yQFtGzuBKgAbtqjJ5fQNNUVUstg+ui3qsD8AfBF05vKUD0yGEftD9hv7hBfQL26yHZGqWuu0GkKJVgvTRZco3JAMuC7boATtOxYhG3PmL1Q0xDh8DuS329jFispRWKKP1/0oxApBysf4+zoacEFYgjxbWFy96sK7KYyTNlnTLF5IyQCaqZJwoa0ushM89unB2zebkJRh2IGTcCwMxefnk3PnIfc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,26 +145,30 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/12/26 6:14 AM, Eliav Farber wrote:
-> insert_pfn() maps the PTE with get_locked_pte() and treats a NULL return
-> as an allocation failure. pte_offset_map_lock() also returns NULL when
-> the PMD is a leaf, which a VM_PFNMAP mapping with both ->fault and
-> ->huge_fault can hit: an order-0 fault that passed handle_pte_fault()'s
-> pmd_none() check can reach insert_pfn() after a concurrent huge fault
-> installed a PMD leaf over the same address. The task then takes a
-> VM_FAULT_OOM for a mapping that is perfectly healthy. Changing an mm's
-> THP policy while another thread faults the same PMD, for example with
-> prctl(PR_SET_THP_DISABLE), is enough to produce the mixed orders.
+> insert_pmd() and insert_pud() build the entry from the pgprot that
+> vmf_insert_pfn_pmd()/_pud() took from vma->vm_page_prot and passed
+> through pfnmap_setup_cachemode_pfn(). That pgprot carries the PTE-level
+> cache mode encoding, but x86 keeps the high PAT bit at bit 7 for a PTE
+> (_PAGE_BIT_PAT) and at bit 12 for a PMD or PUD (_PAGE_BIT_PAT_LARGE),
+> where bit 7 is _PAGE_PSE.
 > 
-> get_locked_pte() cannot tell the two apart, because pte_alloc_map_lock()
-> folds the allocation and the map into one call. Walk to the PMD,
-> allocate, and map as three steps, so that only a failed allocation
-> returns VM_FAULT_OOM. A NULL from the map returns VM_FAULT_NOPAGE and
-> the access refaults, which is what a PMD leaf, a PMD that is not present
-> and a bad PMD that __pte_offset_map() cleared all want.
+> A memtype that needs that bit, write-through or write-protect, loses it:
+> the cache mode index of the huge entry drops from 4-7 to 0-3. With the
+> PAT slots Linux programs, write-through (slot 7) becomes UC (slot 3),
+> and write-protect (slot 5) becomes write-combining (slot 1), which loses
+> the write protection. The other x86 paths that build a large entry from
+> a PTE pgprot convert it first, see populate_pmd() and populate_pud().
 > 
-> Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
+> Convert in the two huge pfn paths. Add a generic pgprot_4k_2_large()
+> that returns its argument unchanged, so that only architectures which
+> encode the levels differently have to define it, and x86's existing
+> definition is picked up.
+> 
+> The folio paths keep using vma->vm_page_prot as is. They map
+> struct-page-backed memory, which x86 maps write-back.
+> 
+> Fixes: 5cad465d7fa6 ("mm: add vmf_insert_pfn_pmd()")
 > Signed-off-by: Eliav Farber <farbere@amazon.com>
-> Suggested-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
 LGTM:
 
