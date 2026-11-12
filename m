@@ -1,104 +1,149 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B65D60A261F
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 17:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08701606C356
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 17:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=elhci1b6
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=ETjTwNqL
 Received: by kanga.kvack.org (Postfix)
-	id 523026B05BB; Thu, 12 Nov 2026 12:33:05 -0500 (EST)
+	id 290086B05B3; Thu, 12 Nov 2026 12:35:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FB366B05BC; Thu, 12 Nov 2026 12:33:05 -0500 (EST)
+	id 267D76B05BD; Thu, 12 Nov 2026 12:35:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 411E96B05BD; Thu, 12 Nov 2026 12:33:05 -0500 (EST)
+	id 17F216B05BE; Thu, 12 Nov 2026 12:35:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 174156B05BB
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:33:05 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8AAB31C3F21
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:33:03 +0000 (UTC)
-X-FDA: 85427162646.20.1B42353
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id DF20840013
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:33:01 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=elhci1b6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of alx+linux-hardening@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx+linux-hardening@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E41896B05B3
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:35:30 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6D4F6A82E2
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:35:30 +0000 (UTC)
+X-FDA: 85427168820.26.35FC61C
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6D6B114000A
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:35:28 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ETjTwNqL;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794504782;
-	b=tg1ukF8SRiGJJwSbBSmgehBbjoEmQzvERfdZ12X27kQExdb8NmnwZNEDmg1/xKEs6H8P5w
-	nZTD0FTiNpFBaCiMzTP1c05w+eTL03UjqOVWKjnWTKYQ9uhYN7d9Ae+LvUOPbeWWuRhhGq
-	d8WaqalJX88ZkbSFx0AJrF3r9rvGy5c=
+	t=1794504928;
+	b=YugM9+gL2YlQR5CjCPbm8pbvM1ZEtkujc+hJKMznq30rcPcvKbmfk8wp0lMrd8Ipv4d3RL
+	TMDExs82cN7PjU8XVyoV0Xl+lsbMrLHw7VfvLP3bWSP69lKZZ+tKuJI/zIgC6++EOQbS9M
+	FvE0LMsYXFy65IvpTu7BF0sqTUqoAdQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794504782;
+	s=arc-20220608; t=1794504928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ijLAFKTpy2rO1cmzfktYDhNmrdiTCs2qOQ9IyeBu0gU=;
-	b=HxDCoy9Vzrye6G7/awza2QKhGXtiyfCyY7oxGjDe0qOJ2SPV71h66EKnWMYqxAIUUiWKWa
-	DTDKsOEk4GQqDUPFmdsP2SwquH7M27Ynd+K3m+vxKGnv2ou25JPVcaE9Ufdd3HrAMjfNGZ
-	IFwgP86FvAgPkiMNFkglt+ppy56AryA=
+	bh=wY/udgzoTMSU7LblXILhhflOgeGfM9mMJ7q98JCWr+4=;
+	b=K4nxRNUM1t/mmv2Iez8Ow0Tbn4BD52MQ9Zo+S1gXtIHxhZg/yehAnGgvooZgo0kzrWGiI9
+	ZzpjanbHT9AGM4u61jF7B/un9YLWDLOvgyaT8D9Erz0kP8IKNlqMtZVft/w+je1ufaX7MH
+	YwlyWF3Mr+iFpoc1GpG3eX8nrCUZ/Ao=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=elhci1b6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of alx+linux-hardening@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx+linux-hardening@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 51DA160D47;
-	Thu, 12 Nov 2026 17:33:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE9A1F000C4;
-	Thu, 12 Nov 2026 17:32:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794504781;
-	bh=ijLAFKTpy2rO1cmzfktYDhNmrdiTCs2qOQ9IyeBu0gU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=elhci1b6GnKtBWt0nQTZvjUTh92Tkc0Atzo7j8Uh/tHub/ME65zeo1xQsu/jIpVp8
-	 5IJ/EkDpmZ7RUIaOyASBzPSETZCCEWYV5ZcE6YlUymvq6CVKiBSoHYE2l4QOYdjen+
-	 53LJsT1qg38aLYwSdA8k3QDgypHmRMmasM6uGKYCo06YUiVUQt8SK4b+DQF1kZ3Uha
-	 tpHmLS6jsp1PvpcklB4To0trHT7m70w3vUlpaSWJvNSCRoNIypW1bho53PTEbdYrpg
-	 C5FiY50vSOtCQKOBkAn0E5jzUUTLNPXpkEYW1MclJlLcpRSkKAs0s2GWQb6e7FNs+Y
-	 pZQL8t+07nmAg==
-Date: Thu, 12 Nov 2026 18:32:54 +0100
-From: Alejandro Colomar <alx+linux-hardening@kernel.org>
-To: Linus Torvalds <torvalds@linuxfoundation.org>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Kees Cook <kees@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, driver-core@lists.linux.dev, linux-hardening@vger.kernel.org, 
-	Lorenzo Stoakes <ljs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 2/2] devres: Provide kmalloc_obj*-style API for
- devm_kmalloc
-Message-ID: <avX3Y08tF8Z0C4LH@devuan>
-References: <20260914223212.i.829-kees@kernel.org>
- <20260914223219.901347-2-kees@kernel.org>
- <20261112004039.GA523044@killaraus.ideasonboard.com>
- <avWNCC3_Ff0knO6J@devuan>
- <CAHk-=wgYBrhvo2NAG_Ja-0ovPf=xO20Gcopv9Yrr1u=QVxECZw@mail.gmail.com>
+	imf26.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ETjTwNqL;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-53664b4860bso44105291cf.1
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:35:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1794504927; x=1795109727; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=wY/udgzoTMSU7LblXILhhflOgeGfM9mMJ7q98JCWr+4=;
+        b=ETjTwNqLUOKpQG3O5/JHRK5KQ91Nnr1Jvc6HbwZ4IgSEeYdDGmPQczJvmpd42/xj3S
+         OcHV/JFMh3UHAUz355KJhtAYti54gMsTH6ZMWkYnOpNi55UXUzfXgy36QiCyTjlys9c3
+         wG9MaiYNL6NEF7+G7viIBWwAS8+9YLXKO0Wr/eXOeYqoqe6PS1lL4dLveiOimx736EZq
+         vt6/b1tU8eOtCJ6Lp9Q4ceKMJrfxzNlFiM9OhEEO7oa82YijIW9/9Uxus9XYijFNCxAW
+         oou/NNAbCLecw5D/UMPcJml36CcBwQAhkbRylRT16soe0pDFuZuOsLREZQ8/S7S/JpNx
+         DT8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794504927; x=1795109727;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wY/udgzoTMSU7LblXILhhflOgeGfM9mMJ7q98JCWr+4=;
+        b=Jh5fATAULcFcI4KvbRgfpnGXGs4463kI6BAuAQP/tCyOwXjR4Ea2TUnHlwq6YzEvVG
+         AZrZqNVlpj2nFxGr+j91x6FPMtsm4a8JfgmsKSgakdfW2Xfwouf6iJgB1aEyE4yRfXDE
+         EfSy1nzSiE1WXen4J3maY2L87BX6CVqgDXEIjZppKaxh+MoirqwLliEG6F5yA8nY4pmH
+         ksz979lSRxsh3tkdI2Y+vHGrP4ahITScuRv1buy4eG6gF7IkxhSX1BXyh6LTWA/DONGg
+         CfTPcW9mBzHlI/tpoIZ9XzBwvbGRfHOiofhwf6NBFQFi4+wOnIbPtJFSPycRpohlzMgz
+         hA0Q==
+X-Forwarded-Encrypted: i=1; AL+hErHZ+Ie/ZVe/n9HR82NzIMeJ/Q7J+BPyz538FhRjo0yGXyUWXziMAx3xw1K9JB5HNlN7Dtu2xrWLXg==@kvack.org
+X-Gm-Message-State: APuU4Z/cTRqZirCgvBjvSd4nJSlGqWUT86r6CyGgpxNRESOzNUVOft7c
+	e3DKcR0d4DzrcQ0XMJbT+iGe67mmZ+owMtvHTRJExkGWf+kXoKs3CzIuo4SeaQi0pXo=
+X-Gm-Gg: AYBFou12bB92NZB4VG+ffgCILYDM7Y1/0Smq2gU0/vbSCq3QPaK2dgww7bASXc8pqww
+	GXqvlzGFsmmtDVwBn2NgOpAD0gm1VPKaCTGqwIGiOm+Lp+f5XCgOrD7ueetM4zJca5K8iOSrTSd
+	hQLWqIh/euZjmVhmzEGolsr4QcwZr3LeVIrnCcTP6dtM0xiA0Iy8w6tJUQOk/DNAQuXCv9GKjgS
+	ZmzsBDVl8zSnhqkIzHI9YyTLGSfdIup0WlSrtUpBHXBXyTP7Lpj7jfsILSOJ1PSj8PQwiUpB2YD
+	LQapuw2b8DFmmAZrWmuGD+BWAZaV02lRYyl933Jxpnb2J6+KdvW7YuVygzqiaxWMCx3g0Zwjn5N
+	bGZFxJI5NYRLoqYezGeLFzUdsQO6U3DNOsgPPkeSZh7o1kHFvKbIOix3kKeWLXJpx3ci1VtAzEw
+	/vgz7RQMkjx/DF1DO0qd1UE6gvKLzcyTCIRTdszX7CBYgS6soGYxWsV8ndfOOU1IU9fPNSoKyCR
+	0AJdNenFDmOGjUH0wx1CgCFsTWX8svl4llrvQfNSMFGVYNQVPCdqIaq4CtxEI52yYEwFoGAnhsi
+	4dzmo6KvR68uwRNbMMAqnTcmdQySCY42QpxKrCQcUXPp4CszYPjzxWu9c23H30Nc/h5aTUgpHLo
+	kzqmQK+4=
+X-Received: by 2002:ac8:5a0f:0:b0:535:a5f9:752c with SMTP id d75a77b69052e-55ac95894d0mr1164321cf.75.1794504927563;
+        Thu, 12 Nov 2026 09:35:27 -0800 (PST)
+Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23d5e579sm847456d6.17.2026.11.12.09.35.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 09:35:25 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="o4pnicbxuhqys6k7"
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wgYBrhvo2NAG_Ja-0ovPf=xO20Gcopv9Yrr1u=QVxECZw@mail.gmail.com>
-X-Rspamd-Queue-Id: DF20840013
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 07/13] mm/migrate_device: look up fault folio after a
+ split
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, 
+ Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>, 
+ Pedro Falcato <pfalcato@suse.de>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+ Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+ Gregory Price <gourry@gourry.net>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Alistair Popple <apopple@nvidia.com>, Usama Arif <usama.arif@linux.dev>, 
+ Kairui Song <kasong@tencent.com>, Balbir Singh <balbirs@nvidia.com>, 
+ =?utf-8?q?J=C3=A9r=C3=B4me_Glisse?= <jglisse@redhat.com>, 
+ Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>, 
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+ Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>, 
+ Chris Mason <mason@kernel.org>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ "Borislav Petkov (AMD)" <bp@alien8.de>, Mark Brown <broonie@kernel.org>, 
+ "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, 
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+ Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
+In-Reply-To: <20261111-mason-migrate-et-al-fixes-v1-7-3d2454362e8d@kernel.org>
+References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
+ <20261111-mason-migrate-et-al-fixes-v1-7-3d2454362e8d@kernel.org>
+Date: Thu, 12 Nov 2026 12:35:23 -0500
+Message-Id: <179450492332.482102.8905567682196853763.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Rspamd-Queue-Id: 6D6B114000A
 X-Rspamd-Server: rspam12
-X-Stat-Signature: pwjyfd6sehmkujzrtcc3x6epi4ye5qwn
+X-Stat-Signature: mojg614xfd8d45g1t9tdbtct4s9zescg
 X-Rspam-User:
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794504781-523377
-X-HE-Meta: U2FsdGVkX19lhXnwjFGy+Ign7KwzyZ2tu+HFBiGFPkYM99V6ng1yuvbvJZUt/5S0Ns/dSTfe1oUSwmMWv+aADoHt/f4S1PUsE3V8bzV2xi9h1+Vw65WzBjRh+qDqmzNiuzY3Pt5jTiLLL3gsqK41uuB3NiYMGzjmYtzHdW8EkAGjGsCmfWEclPd3EhF4ENrQAfD2EeKAb7TY1HvY0Lm7s1vUEgyGwyfC2G4d+Bws3GChFKyYq1S/5f9KQ9F2N/8T8JP/ICG6YxJ0oiACsu/SWry12vyj6WIMnfG00S/t77MUxrB+TK6Q7dh8AKal4uU+DZlKNznbzi8bPMfy0PUvuRoTwGTDN8T4YETxlp2kTQBUYpC69poHWuUmVTauR0NLH9TP7yMxA4E6b3cQZ6XGZrQY8HSKnbWP6oSprCkYYxWvsS4NZCCkWOtQgAGCy6FzIoWknJLyiBGOQCpPhJA2nbjTMFFsQaSMnQCYdcQymQwOwZ8QzEMixh/0ABcTXRZn5j0o8m0m0gzqft1sWJ1J8xru5iNIKV6rfFF8Qfei6KisL8r0CMALhbFF/ozk6QDi8Jt6/M7LDSG/qR0Ksci0K3DN9sT4n7QcS4zPog1SMEQ1q065g2LygWaGgGT6CjsX+/6f2GPBq2vZqF6tkMd7+SDBEOAmbt0lY9jKCN/RA2ZKXF6/XpMCjdTGBjMJx3m0w5yu3V51aEjyrBQg1YwCzUdwcV4eT7OK95BFlWlEjJDoCzjNmjjvzmZ9HWL76g3bl1HoltRcw2LZjniO9qv8luNIrYupGOzda3kCwiiGlNuaWFdZb/HAey/iUQh9/mpEpiOW3pPA5eW6ec3wP59cQ/l8zYp7FVm27Yx3teU7wVoTZMyM1XDPmY41W03c1YZTk+FV7IOCPIxHc2vsxuV25VykzzUyfiVEzUN7Dv37psilcGl2uuhEcWdXWgZmU2RRbIZykWc03dCHfyfBYXA
- lrgpA+zk
- aKRWx+4m1G8Ng5z/8yzO25gtIOul1wV5opjYCTux/438OSIRcwjwO7NGKtO6F33DqKEN9AB4byC6y7KmP6j7DNgTNO1AFDyYxfQE7x4FMJt9nqvU8stfDG8xegBc3ZbAc/DFdlDyQn7+HWMEh3B0YqxY1BNrVpnUvhvHogY/V0UZUdOLU8+SFY57Xv1zD/8MYJtaxLjxNhS/rXBfG9RG4tLUunHt1GztCqA3oon3wEHH7H8EfOBQ/meX7rzz6yIMueQwQc79RHplCGlRMb7H6LRUf0JXLqw6YeOS5oQRlJn5CU2NyqRTzci/Si29QeOyFWFROzjvDWfX1wZLHyu/yNEQp+o7Y6Qbks0mBVGVqh+BhAFFvj+E0FAJ5y8F+sWTd/IbgAcu0Ml7GS9wSljYb/bqqGo/Xj0+VBpb/iCwHjF3gWIuLm8YQ4jeoqIebIXu7vQWwKbqfnZDGiTJbhC6uO0tsyXcTsSJuzrL9H/gRE+R4b9BwGzHAsWBWRGe2p5IlroAUk2xvtHSADv8xJkOuUHGV0Faj8NXBKoTOi8gVjAgxQbYEnqrwYIfTR6V6IX66puX1Qk1ZdnxvAonniJ39htFjz9/FE+O5/hVZT+eF5aDFuk81c4yuFuai9IxDhKnux1izk1/Zgy2sjuf7eBhuct8cNG1V8aX0qPkOO//GwtrM9iRK22lhSAq7oIfXFjHX1stjM1jVQ+D+pK9oKgcyimSwZy9LTDhbqe6L7FxG/07nmhpmRDjxKq5bmsVhJT0I3ZmgwqluqpoFOba6vKVRi1Xj5A==
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794504928-969620
+X-HE-Meta: U2FsdGVkX1+FdCyNcAWDtwCj9zdwFzJKIqmL9mzrRov4iGW7yIlaANsxXKSAUV4ntGifWjl6yc4FG4MaqbEo3a0xfvLw4hQAyRubBnETsR29O4sJi1imJJinLWY5N+B7E0LR7he0JPf48UftIPW76CMc4K+R+X8cz3QxDUqe4Uno123TN34I6Zn/LWebWGnnjEqxG+1QW0swj1TiTsiJutENlMVgQTkShhC/9AXUtQOTIAZvMR/RvpjW4vbdHBkFaMDJvAIJX4xBq1opUc6MryEnKkxDdytT2zIbVUwE991tnW5YMTsFh2REMzFaeIX/SeMc+Bwg3QR+PTEjzre2ZYLe9Am5EgmwvpvA1yHwMH427uELIXoHgGY55q9Z0YEMbSeJLkW9tfqE8dh5liypG07iOy4gkSn35Ux0M0mq9AcefqjNnZ9GwduodNyWgJXZnLSMfXHST18JG3KN5itET/EkNHuKAcqou7ZTOm7cDQN3HQgPia5PEUmF5TP4JHigSrVem3Ec3NT3qx3hgiePYRY4KLjJrB8nv9IyTXg3YOjHaMiScceGJZxs4nX7M1XmbVDWVRH5e0hO1/yx27yDZkzcllaVHxtkh9oNSvGViTSis3xJPoun6E4PANrAJvxPl8CK9RtOppBS089gzx+UyQtX3pbt2qKN6PtLA2LyUBmWMU3ontQ3w1coYvURD9bFs6+3I25p5EAZAfjKkX2GIpfTnMfoVRfzVee120Z+eLvf8WyUFQsi2p1HlrMG69yOcuCHIB/ZLo9/L+zsiEUZ7R665Hxngx2Ym3kgx5N4k030Vcp1lg8+YVIX7a2EHz6ADPmEp4YYxlOQLi+ft2EcxQIhQjrNFKvAV/GfJDril87zASZIM8k/Bk3qMPibMT3RB1c9FpC9Yq6ocb+CBTBmgRklfk/kjWcAg2SbQlUltolThyAirCt7vcypw4hc2E9QmDyBCNak8OmEHBL4Amk
+ CgTjmxzV
+ K1u67TwyGBNtlDWsO/3TovbKjcKY8R1N+UogCLt6gALbgvD4osKh8C0si6ATiGKGATC6yzsaOJ2AN0+yf6oRROMia5DPjXIlm3qzYWOPIUY2FB55xclH0Ed80EUdYyY8deGKP645sRBn7Fz+QN1rIZ8QWF2bL1qIfm1WbPomcxhfhot6rSQstwPfHuK0xmBT/R6dH2REDuzE5RdpP5w9DPAgp/5in19ERBDGvO0yty9gFPJ3/IDDiluEqjs4pAD6mJquKSSEWmDgQKmtE7kEk17sh3rSVNYRg5GF1oD2gXsJAFWPs/TXDA8exyocNoxxp+uJLbD460gCC+tZIlhWxgc6hOwQ/JvNMCRFy2pDn+KW2RDvYOs/PzMBH7IeFo/nZo4TBLMkOM1VWrAQZd6BeMdKoAGyhshKw06XCyJUNRA1OJTwmfYh10vom116Y2BIzOkSC0KVKI/uLflzLp6wb7nBfXPgmu8PVb2QMpo6aVoDsiKC9CBvTtv6/Pr/oIGQ2keptAp/PeEzXW/y8hJ1yBHwQFL9Vl0rhv8tjNGixyINGcZQ+AmOpbHYihImtD2yZ9X1Vp/lpkdiPfR/Z9IxiH7X3BDXOvozy+hoFHscgLFnYgoevuTz8VXSELQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,103 +152,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On 2026-11-11 18:13 +0000, Lorenzo Stoakes (ARM) wrote:
+> From: Josef Bacik <josef@toxicpanda.com>
+> 
+> migrate_vma_collect_pmd() looks up the folio of migrate->fault_page once,
+> when it is entered, at which point the folio is locked.
+> 
+> The fault folio is assumed not to change after this, however if
+> migrate_vma_split_folio() splits a PTE-mapped large folio which contains
+> the fault page, the fault page ends up in a different folio.
+> 
+> Resolve the issue by looking up fault_folio again after each restart of the
+> walk.
+> 
+> Fixes: 022a12deda53 ("mm/migrate_device: handle partially mapped folios during collection")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> [ ljs: pared down commit message ]
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
---o4pnicbxuhqys6k7
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-From: Alejandro Colomar <alx+linux-hardening@kernel.org>
-To: Linus Torvalds <torvalds@linuxfoundation.org>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Kees Cook <kees@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, driver-core@lists.linux.dev, linux-hardening@vger.kernel.org, 
-	Lorenzo Stoakes <ljs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 2/2] devres: Provide kmalloc_obj*-style API for
- devm_kmalloc
-Message-ID: <avX3Y08tF8Z0C4LH@devuan>
-References: <20260914223212.i.829-kees@kernel.org>
- <20260914223219.901347-2-kees@kernel.org>
- <20261112004039.GA523044@killaraus.ideasonboard.com>
- <avWNCC3_Ff0knO6J@devuan>
- <CAHk-=wgYBrhvo2NAG_Ja-0ovPf=xO20Gcopv9Yrr1u=QVxECZw@mail.gmail.com>
-MIME-Version: 1.0
-In-Reply-To: <CAHk-=wgYBrhvo2NAG_Ja-0ovPf=xO20Gcopv9Yrr1u=QVxECZw@mail.gmail.com>
+Was able to reproduce this, and i think this also reveals (and fixes)
+another bug in Nouveau (memory leak).  I think the Nouveau driver still
+needs a patch, but this otherwise looks correct.
 
-Hi Linus,
+Tested-by: Gregory Price (Meta) <gourry@gourry.net>
 
-> Date: 2026-11-12 08:34:13-0800
-> From: Linus Torvalds <torvalds@linuxfoundation.org>
->
-> On Thu, 12 Nov 2026 at 02:13, Alejandro Colomar
-> <alx+linux-hardening@kernel.org> wrote:
-> >
-> > I suggest removing kmalloc_obj() entirely, and using kmalloc_objs()
-> > always, with a second argument of 1 when we want a single object.  This
-> > would remove the risk of that typo.
-> >
-> > I also suggest having default arguments without variadic macros.  The
-> > way to do that is using empty arguments.  Linus complained that it hurts
-> > his eyes, but it really makes these macros much safer.
->=20
-> No to both. These are both "make the code worse to catch errors that
-> the compiler should have been able to catch anyway".
+-- 
+~Gregory
 
-I don't agree that the code is worse.  It's _different_, just like Rust
-forces one to write different code in order to make certain bugs trivial
-to reject.  But I don't think having to write malloc_objs(T, 1) is
-objectively worse than malloc_obj(T).
-
-But let's agree to disagree.
-
-> If you *really* want to catch them, make "gfp_t" be a 'struct'. That
-> way even compilers without things like the restricted types that
-> sparse has will catch at least that one.
-
-Yes, that's a third alternative, which Kees and I discussed some months
-ago in Prague as a mitigation.
-
-> I did that many many years (argh, decades - I'm old) ago to catch all
-> the 'pte_t' etc issues when rewriting the MM layer, and it works very
-> well.
->=20
-> It's going to be somewhat painful, but ti might be worth it. People
-> who only use GFP_xyz flags to pass them around wouldn't notice.
-
-Indeed, I don't volunteer for writing this patch.  :)
-But yeah, it would also work.
-
-
-Have a lovely night!
-Alex
-
---=20
-<https://www.alejandro-colomar.es>
-
---o4pnicbxuhqys6k7
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmr1+EYACgkQ64mZXMKQ
-wqlMCw/8D8u1QGJxQwMLy0ohBNrNNSiwG+9uYTovzBcTZNUribjecgVSktGCQgCd
-o+kAvS4NRBmheiua/UIF9dZ1UV7Vdn1tzPIV8EQj7/mRvQy88KKwrrZXy1DCUTuo
-sNDTbAcOzuRnrTIBl1TkQvPo4zc6YbWeDh+v+ZMkelU8jU/lx5tj0XtC1LPgnI5w
-vrkXOSgyCWO9OnljQL8A68U5u3vsSdbXt9wHXyOjmFUAo8Pfu8dvhT+gv7bKAJrt
-PE9W4sMXLWaYMDjpbCSHS/4t6REVcSspzh7g9YkVXGXAKDkps5YQrJbH5eeGMG0k
-6iTxucLbzRrNck24w662nPeGWwYA6b6pn0JW4riCZfxKHTpMBY/XdlrcOWT8RBn8
-PQNSJH9/txKdRQghBIK4yCxhW+y1x1slic57adqPizBJAW6AdzVPlYVaTZOeKE4E
-ppg+JQ77XLA2BTtd+ROkTJdDAycc9fwrhY5bnpAzEzQeuojymLW3bYQZ54jxTmXc
-k5qFDyKnNKtvIVCNfelZtmExZpPBFozOr5BYZ2lo0xounJKyu+j2ynNUZeH45oxj
-+ZQBvzb7NEPFMee/5zkcb9odWebSaZ468E10YYPH51AkNtFmoN2SOSyVpzmmbT/w
-fShkHI5qPzCw/J+mGgtPOmMgQN8BvD/kZTsr+SFo1Y0GDEmNWnA=
-=GL7T
------END PGP SIGNATURE-----
-
---o4pnicbxuhqys6k7--
 
