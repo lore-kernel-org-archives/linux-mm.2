@@ -1,90 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F442606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 05:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D574606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 05:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=As6qJfBH
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NF3GK7Tv
 Received: by kanga.kvack.org (Postfix)
-	id EEB326B05BB; Thu, 12 Nov 2026 00:01:17 -0500 (EST)
+	id 6AE126B05BC; Thu, 12 Nov 2026 00:01:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC2E16B05BC; Thu, 12 Nov 2026 00:01:17 -0500 (EST)
+	id 65E0C6B05BD; Thu, 12 Nov 2026 00:01:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFFA16B05BD; Thu, 12 Nov 2026 00:01:17 -0500 (EST)
+	id 573D26B05BE; Thu, 12 Nov 2026 00:01:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BC3846B05BB
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:01:17 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 54D11160464
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:01:17 +0000 (UTC)
-X-FDA: 85425268194.29.C98DB6B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B33974000B
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 209306B05BC
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:01:18 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 39D3A1204B2
 	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:01:15 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=As6qJfBH;
+X-FDA: 85425268110.10.02774A8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8F85140007
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:01:13 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NF3GK7Tv;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794459673;
+	b=oVL3ldJdAeQD0ZFqVfwxNfIRXMKqvZXUHvGjdwNSns+itupvrFwbP3g+yhxZEKXS50GqUT
+	5uO0WYpzGjHDnv5SC9xNhs4H0bXIQYJQ71FZGt2/NxCoGlfockxtLKNPcbXtZ2CEnLzd+h
+	ZT+fl8bE7A/v9spnga2wa2tWIAnsy0E=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794459675;
+	s=arc-20220608; t=1794459673;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mHMtwsXZN22EheGNlxc4OW2+q1ft1+YDDglDvmWZdfo=;
-	b=7Rkbypz6lEOOveObLPvqoASS7bhMubHk+LELh4rHbaDxtrDlpVr+Pr5rZczLwgJtJ865Ve
-	+XZt603lbCH9xaQ2qNHK3uh6alfMrkVMbTS6SuDL+1YpOlqs5cZDi2SbAJpPdQbUBBoeA1
-	p0ExYV4PJc7d09RPiD133p//Bj+k+fk=
+	bh=YriIOWi+f6N7xVmSrTP7l2Pcqi5PR6AxNrD0QNmaqPk=;
+	b=y6DuRY9rbNardgVfTd59f0uyjMTklYRJqNwnNnIQhRrE5bJF9K095dURz7PSKXTU/T24iu
+	hczXe4ZbN4SS6INaovFFNIjj2fU3xeIHiSrIPsTYbmNUkdC8fmJGHrJgdKcGwXcOrC1bYw
+	i8jdI+BHMvJqa4L4jXD44noa7bTShBE=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=As6qJfBH;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NF3GK7Tv;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794459675;
-	b=7XbpNqyicKvICKyh6U+Xt5cN8o/CRQIdCtQ1G+fAhOmKp3ZmwPSJsU9KamUDZzkFYjQmkG
-	gWI508LvYe0CDWG3n0yeEcfhJsXtre9JzY/XP9Y+Fbre6ExbPRLsvMyvhKD2EA51nxf5zL
-	kvCTo5SV6HFS43/rxYt55fDGoRbsziM=
+	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0AAF645AA8;
-	Thu, 12 Nov 2026 05:01:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D01C1F00A05;
+	by tor.source.kernel.org (Postfix) with ESMTP id 30435637DA;
 	Thu, 12 Nov 2026 05:01:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 537BD1F00A05;
+	Thu, 12 Nov 2026 05:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794459674;
-	bh=mHMtwsXZN22EheGNlxc4OW2+q1ft1+YDDglDvmWZdfo=;
+	s=k20260515; t=1794459673;
+	bh=YriIOWi+f6N7xVmSrTP7l2Pcqi5PR6AxNrD0QNmaqPk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=As6qJfBH3t7jKAI/ibp4pP2RMaTMcVZ7P5s+EU/tknNFxAnu+u0u1M5ErQF00tbzI
-	 ocVRWz45r2PnVt9di39U6TZWiUnRCpLMINwhudbkuhxM/GLnoDHXO723+X6/kCfjHI
-	 +wNabXkKtjnZrU4spZz90h4ZYW/W8qk1Whme/yxurLWlpVQyItF7dpwWHPDB2x+wfN
-	 23qkyS5PwrGgnsNGuMRio72cBmi9YAJF+0ICbbnQGbgWXNS2A3i55jBLxBPXtKNglT
-	 u93A8PFzBCdtuGfZazj7UY3DGFuhDyMbcaPBJjtiiFNBQD9sJfMk2VXh3RU1Iuk+aC
-	 6ypLmhV212Zhw==
-Message-ID: <sashiko-outbox-210423@kernel.org>
+	b=NF3GK7TvfeOsSft5XtL9n7hD1MMh+XgqXEjEN0zxVqghFDCNbYbb5Bv7UQdQoEv2I
+	 //VXdu+YeDyuNKYyECopuC4C6YcViooZXahYCRytRX50FWXmrmWMFvy9BQYxE1e3L3
+	 HRnOBXL/f5015AfeSKaiDexVDOGDKCaHhWIBWUhv91SzMRh+VdBPCjS5ZMG8iOD6rz
+	 wHKuOA6CguM+F1DMLyj/v50GKdz5y02eSgVzbp3/YRSnxD6Uw2u+LpjyCqGY0rSxlX
+	 9VDrsqHYhuZFUdVHqkV/nL+l6FHjWWrBCPDtEZS6GyJAyuyAvr7jwLkwDz7nrOcRck
+	 dreawx3mVGqJg==
+Message-ID: <sashiko-outbox-210422@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 15/16] mm/mglru: Make swappiness=1 file reclaim more
- aggressive
+Subject: Re: [PATCH v7 14/16] mm/mglru: Avoid prolonged anon reclaim with
+ swappiness=200
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?QmFycnkgU29uZyAoWGlhb21pKQ==?= <baohua@kernel.org>, akpm@linux-foundation.org
 Cc: axelrasmussen@google.com, baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, hannes@cmpxchg.org, hui.zhu@linux.dev, kasong@tencent.com, kunwu.chan@gmail.com, liam@infradead.org, lianux.mm@gmail.com, linux-mm@kvack.org, liuxiang.277@bytedance.com, lyugaofei@xiaomi.com, mhocko@kernel.org, mhocko@suse.com, qi.zheng@linux.dev, ridong.chen@linux.dev, rppt@kernel.org, ryncsn@gmail.com, shakeel.butt@linux.dev, surenb@google.com, wangzicheng@honor.com, weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com, zhuhui@kylinos.cn, sidchintamaneni@gmail.com
-In-Reply-To: <20261111232603.9934-16-baohua@kernel.org>
+In-Reply-To: <20261111232603.9934-15-baohua@kernel.org>
 References: <20261111232603.9934-1-baohua@kernel.org>
- <20261111232603.9934-16-baohua@kernel.org>
+ <20261111232603.9934-15-baohua@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 12 Nov 2026 05:01:13 +0000
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B33974000B
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Date: Thu, 12 Nov 2026 05:01:09 +0000
+X-Rspamd-Queue-Id: 8F85140007
+X-Rspamd-Server: rspam12
+X-Stat-Signature: eiwm9fgsgep1jk6tu7pxrr3hkny53c3p
+X-Rspam-User:
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: cda86r1ooixnnqic9f394gc7jttn55yy
-X-HE-Tag: 1794459675-148038
-X-HE-Meta: U2FsdGVkX18qjnkPpDRnI4ctWgsITqKGApMnJgFBiQ5mVNMxCCHMa1wDnJ767ycnGIEZsQpKatOKg+mOdPI4WA4f18hi/yPJdgIzepwUjDF2BI6+963/WS1LlFZgrLEdwVpEkIIzxSLdQyXtJix6DCAAHNa5OV/MQC4JjTYl51BaloYd93AcVh8y/YupJiyDfzvE5Bn/BG8iP7X9Bz0E81AHFdfrxxlrU5COeJvu+k9SK5Qvt61SnVYS8rqnrVFwyN9mNzJlKqJJnJiWRcs87fqdqh2f3TpiVwhy2lJ5KuNoj3RfzCXrwT68nI1I7pnoCzo2x2MTWkCABqI1ZYjgywMZtKsZX9nWG8R3Rsdd3TVW747i5WtgQFMpgjlrQ+6CerDHXaVJqZxRUON7z1Qvx69krNJnDu5yl6btj18lE7TK3Rqmm8RsMFH/hT/ZhfdC0Q0kbBtfLHnhPwCDiUoCXEc9iE85Gjn7kzppTAowXF0XXmK5Ed337E8SJRnTolPmLyEQpI0dZyeYuriqtESfAMIdUZlUQX4O/c7TBscCNzzh653QPQ+/MBLQUql9ZZwC2VfeqilSJa5xGXNV3HJxtQVU+77utPkM3W5w3Jo+ND5W0A6nJ4HYWL3fEdYRCJnj5fjQ9uVSH6CdQ1BofJ3/2E8I3xHMqvNsj70Q3dtgmLQBnz1i3jW/gGpTttqcQHw3wyHUJFAJ4cEoqkFltn2DzEoyAPE9ng7Z010RA997fWlxXk8v09mhOlznidb+7a8qqqOOKsvBEaOZC7jbyasdwL45NY47T0BqqdfgfITFw+ASxc8NMUg+I88nCZWtCOKTzVXgMYgH+O5qb9LWLueyvbADN9LUvDKmboltPHPRLAWnFUb7QkWtBcSOEBXJ0htxk9YCc1sNDEOKo3mBV/QVrYbTS5BRITw6uob7IFJq4tatr1cbFDoL4mkIEJloFOb1J8Lz0y2IDJt1vdfI3jf
- DnQgSrYx
- +b29UShkI40LOrnXm4mc9ZVBf1HWEsyt2kCM5Yrg2+7MstMM07DHIB6AmI1NpXSrBO0eVoxgVcbzkm+zUf5nZvmbz4CTEtFGvVh6Gf1JuDcLmsDSSmgafkSUt5I8V+Yxdfm25v0eAM5njaPE89IUPtn6H+2h1f1tsSQd36oJxyhvF6y9eLyBW5Pe9Bv8TMEocQjL+mzELbXglhGiDZDX4PIBNKiO0hnB/I7cmeM90yo0oTY3rf549JnXL3UcMolJv6KJxhQJvzZgnsvfBfRabHwtNyyzlQMd9wUGSQkTB5NgfwrfAS+qQpsGDy0ASWMAJZXFeY9jLPGTJ4O7URHgE8k/0nehhV2chLfG6r52K+0Me39A6MUDNkXBmA5N9KAOcz832qt3eqmff/Yy/Fi/Khi/2EXRIwZsj4hIOX8X+FrGz9YHM+Ako+5z3WKimSkEPMLuatlld6yItku72GtXroBXQ0xh1PinrljWqXwMNN14smpe28O4yuwRsyEBGMdCskQtThFrk2HMP2XHmVvjScgGqP2OlHcjxLT5KdGt2bpHxssc2SVzTHEXiIk8bcvVDJ8fcpfLZKwppPxjY5ftt/FnemnE0bqqYOSMMJk32doakbMyt6gLn7o93CHnDpcFPx34wz1KIo9kxUCTUt6C9L2sVMAXumBNMxDLaDsLrAfCfr5Plx7tksH6ykK3+clGwwqIM20najZnw1i8=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794459673-199305
+X-HE-Meta: U2FsdGVkX1/NggIiu+/YV/sEG1jBinmLOaOf/BFC7RJfAmVwlZcg/TuZMc4yZWNUhvabaEdkyQwh51gD3zWHVi6OT1xHnvyca9Oy/fMGwumWZjP6Irm/Td8J67urHNTpSQ6/t5zUwCRbYVaDcKBeDEbxJPayLLxEo4Js3s8yZRoVZS49hEBkoClGOuQ4hUjQTjm1jKNl6ToOwb3Fd0EonQVmpAiWvGQQs92G36bn8irLnSDdACGyMdecitlE3+LsRS9+xV9+/k4DdSrb4DhWufqLHEDrh2EeDWF7lOheJOhGA4oNz0a784XM9yxDS3eJNpbk+03a1U/0dJEGrBPT8OqX18kSNNR9CXxYb3dF0tfVRzaLu7SEWNUpeb+EwZ4wvkWKboirWUGy4RDMOuSVyg2h3dG6NtROSsAdbDUCCS1yDMHRjNxOG4AsGCTLkmljLCssaWPD0RuFfAaJPeI/MBYkbfd3/3z8+GiTwzDpIh3LPZcDaaolWLEoQ4nonfzfbrO3GPdDUHqkjoD8zjtJnvMcFzrpbmkMIFmQMhNFytu2CcKpiirpmoFHIlamEbbGxcR3pR+kqxvPRupnW3D6Z1a6Z17N1UU2bee/lUT/UbubKbTkat8w/K3wdRY5u9ZpItc4AQSRy4D+Ic+8z5KkVPInyXkpLet03xu63Xkf9QQONRDVHFElPYW08oNHxbUdqEKlS1kUnJbPoJtqbvbnlpjGZqKOjntRoPxcnyVGsSQlpYdGK0WHXSPqVy/uHaZ3tOzHrXh5CfcSydllT1qB5LeG+VnE433mbsK1cZxGdSbR2ehX4Ex4jt9UifVlYP7/DW4c50l5LWyyZXxnWwQ9fle9Xyo++2a9dm5R4MGHGXg4PNoxCs6unKcN/nNmsqJWaZQGmmIIoFwLIer/H7QaDXDaHTkDRspy8yZoNvDuFP21ZaDAz9w02Z2yuEJY3LoYcbuIFDy4JEVzICeKnuj
+ nIh+EGef
+ IFfcoVR0k9mubdWK89F4MLyHE5Z/JyW+fZty3z1C87xmJwi/or+NNz/eUdINTMfl13ZoA8i+su+bmwCgxhEKvwk8VFQRYqmCfZw4y6s2gm8PSmg8pGvlfyt7330cKLY4Sv0EzpW8YB/T09l9iP7U83Lsp3YvbaONbeTIslJokTPhQ7ycwfJ/D7T2ElUPS+WJCbTXRa+SzhYTQfAHe8feCJwFmtS4qggr4DnuhxesKDUNpa0x866crCe4kxbElL48FTqvekNMw1N202ZKpl8TXEt3iiiE/a/xfA94RbsQDJ1sIIfNeoH5liqvBL1zXmbxZGIfF+tCtK6uumQk80pXYeYZ/uQraHDUmlBIuw1eEBWt56zGPw/DqTaZZKtOwnxuSYfdZM8yw9fu0HB9C5Km50f56vsRc5tHrKVHVLFH5tP3pDYzYo8EXh7DdtrgXW3MRbIXGJP0F6TkuhxYaBKHp0YVUiGYVGIJy5KwGLFl+LopdQqvM8jHgtAEXv05T07CllfKlWgZfWFSPkJkzfellKF//kji//BQ7qLpbRePd9tX9YoV6GMAcVPVgVR4eJCK5Sh8S2Wiz2mmXkF43QdkDkPu40r9WsykHkwlKMbnQ6MdW8RuJto2dcTWwrzyTJfYebUWwXERxymYj0lruilHv/ZqGPkWhYqb7IUnGhgJ1a3SnaKjO93l+EIMWyAXYiMOXMJWHLrIX5Ayj5IwAfFbhTgf9+VsFp7pvCq147OTI8/fk3nVyZeA3ALtr+onR9SoGPH7n9Op0woZ52O0sWAb29SgqkiQx9dBVD96nb92+teyb9bIF9FaNiwFES4fdOQzN3OA2Ddn9F/GTo+VBAY0DidVZG9gwoxqXoG+3SjrTH1B6+pHhaMJMxTHtrQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,54 +94,97 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] mm/mglru: missing sc.priority init for lru_gen_balance_scan()
-  via debugfs
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [High] mm/mglru: commit Author and Signed-off-by use handle instead of
+  real name
+- [Medium] mm/mglru: zero sc.priority in run_eviction() skews
+  lru_gen_balance_scan()
 --
 
-commit cf50aabb1ef5db31c58a09226fe4dbb55149d981
-Author: Barry Song (Xiaomi) <baohua@kernel.org>
+commit 8a29a76d461ffd04769caa1f7ed98ca18efe1fb3
+Author: lyugaofei <lyugaofei@xiaomi.com>
 
-mm/mglru: Make swappiness=3D1 file reclaim more aggressive
+> mm/mglru: Avoid prolonged anon reclaim with swappiness=3D200
+>
+> It has been observed that swappiness=3D200 can significantly slow down
+> reclaim on some machines, with some workloads running 3x slower
+> under MGLRU than under CLRU.
+>
+> This is because swappiness=3D200 currently results in file_factor=3D0.
+> Give file reclaim a small factor at lower priorities, for example,
+> when sc->priority < DEF_PRIORITY / 2.
+>
+> Signed-off-by: lyugaofei <lyugaofei@xiaomi.com>
+> Co-developed-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 
-This commit sets anon_factor to 0 in lru_gen_balance_scan() when swappiness
-is 1 and sc->priority is above DEF_PRIORITY / 2, making file reclaim more
-aggressive at normal reclaim priorities.
+[Severity: High]
+Per Documentation/process/submitting-patches.rst, both the commit Author
+and the Signed-off-by trailer must use a known real full human name rather
+than an account handle ("lyugaofei").
 
 > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index a92b14190d733..f36e9a379b62a 100644
+> index 2030c15c06674..a92b14190d733 100644
 > --- a/mm/vmscan.c
 > +++ b/mm/vmscan.c
-> @@ -4946,7 +4946,11 @@ static void lru_gen_balance_scan(struct lruvec *lr=
-uvec, struct scan_control *sc,
->  	anon_weight =3D nr[LRU_GEN_ANON] + nr[LRU_GEN_FILE] / size_bias;
+> @@ -4889,8 +4889,8 @@ static int get_tier_idx(struct lruvec *lruvec, int =
+type)
+>   * We don't calculate the scan cost, MGLRU uses lazy promotion, which wi=
+ll
+>   * cancel the scan budget natually.
+>   */
+> -static void lru_gen_balance_scan(struct lruvec *lruvec, int swappiness,
+> -		unsigned long total_scan, unsigned long nr[])
+> +static void lru_gen_balance_scan(struct lruvec *lruvec, struct scan_cont=
+rol *sc,
+> +		int swappiness, unsigned long total_scan, unsigned long nr[])
+>  {
+>  	struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
+>  	u64 refault_rate[ANON_AND_FILE], anon_factor, file_factor;
+> @@ -4947,7 +4947,12 @@ static void lru_gen_balance_scan(struct lruvec *lr=
+uvec, int swappiness,
 >  	file_weight =3D nr[LRU_GEN_FILE] + nr[LRU_GEN_ANON] / size_bias;
 > =20
-> -	anon_factor =3D (u64)swappiness * refault_rate[LRU_GEN_FILE] * anon_wei=
+>  	anon_factor =3D (u64)swappiness * refault_rate[LRU_GEN_FILE] * anon_wei=
 ght;
-> +	if (swappiness =3D=3D MIN_SWAPPINESS + 1)
-> +		anon_factor =3D sc->priority <=3D DEF_PRIORITY / 2 ?
-> +			      refault_rate[LRU_GEN_FILE] * anon_weight : 0;
+> -	file_factor =3D (u64)(MAX_SWAPPINESS - swappiness) * refault_rate[LRU_G=
+EN_ANON] * file_weight;
+> +	if (swappiness =3D=3D MAX_SWAPPINESS)
+> +		file_factor =3D sc->priority < DEF_PRIORITY / 2 ?
+> +			      refault_rate[LRU_GEN_ANON] * file_weight : 0;
 > +	else
-> +		anon_factor =3D (u64)swappiness * refault_rate[LRU_GEN_FILE] * anon_we=
-ight;
+> +		file_factor =3D (u64)(MAX_SWAPPINESS - swappiness) *
+> +			      refault_rate[LRU_GEN_ANON] * file_weight;
 
-[Severity: Low]
-Does the sc->priority <=3D DEF_PRIORITY / 2 check always evaluate to true w=
-hen
-lru_gen_balance_scan() is called from the debugfs eviction path
-(lru_gen_seq_write() -> run_cmd() -> run_eviction())?
+[ ... ]
 
-lru_gen_seq_write() allocates sc on the stack without initializing
-.priority, so sc.priority is 0 and anon_factor is never zeroed out for
-swappiness=3D1 during debugfs proactive eviction.  Should lru_gen_seq_write=
-()
-initialize .priority =3D DEF_PRIORITY in sc (as commit "mm/mglru: balance a=
-non
-and file scan budget by refault rate" noted in its commit message)?
+> @@ -5891,7 +5896,7 @@ static int run_eviction(struct lruvec *lruvec, unsi=
+gned long seq, struct scan_co
+>  			return 0;
+> =20
+>  		lruvec_evictable_size(lruvec, sc, swappiness, nr_to_scan);
+> -		lru_gen_balance_scan(lruvec, swappiness,
+> +		lru_gen_balance_scan(lruvec, sc, swappiness,
+>  				     nr_to_reclaim - sc->nr_reclaimed, nr_to_scan);
+> =20
+>  		if (!evict_folio_lists(nr_to_scan, lruvec, sc, swappiness, MAX_LRU_BAT=
+CH))
+
+[Severity: Medium]
+Does passing sc from run_eviction() into lru_gen_balance_scan() cause
+swappiness=3D200 via debugfs proactive reclaim to always calculate a non-ze=
+ro
+file_factor?
+
+lru_gen_seq_write() initializes sc on the stack without setting .priority
+to DEF_PRIORITY, leaving sc.priority zero-initialized when passed to
+run_cmd() -> run_eviction().  In lru_gen_balance_scan(), sc->priority <
+DEF_PRIORITY / 2 (0 < 6) is then unconditionally true, so proactive
+eviction with swappiness=3D200 always reclaims file pages instead of
+preferring anonymous memory.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111232603.9934=
--1-baohua@kernel.org?part=3D15
+-1-baohua@kernel.org?part=3D14
 
