@@ -1,162 +1,117 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04C2606A894
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 13:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1A47606A330
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 13:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=rSVlAVBA;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=K/0F5ksR;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=eCAG9TQz;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=+Ip1OpXF
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Ir+GhsOF
 Received: by kanga.kvack.org (Postfix)
-	id AE9196B05B0; Thu, 12 Nov 2026 08:13:01 -0500 (EST)
+	id 175606B05B1; Thu, 12 Nov 2026 08:14:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A99886B05B3; Thu, 12 Nov 2026 08:13:01 -0500 (EST)
+	id 14CA06B05B2; Thu, 12 Nov 2026 08:14:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 960CE6B05B7; Thu, 12 Nov 2026 08:13:01 -0500 (EST)
+	id 062F16B05BB; Thu, 12 Nov 2026 08:14:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B5C56B05B0
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:13:01 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F0AA61A0310
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:13:00 +0000 (UTC)
-X-FDA: 85426507320.08.2878FF5
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 0890F180007
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:12:58 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rSVlAVBA;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="K/0F5ksR";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eCAG9TQz;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+Ip1OpXF;
-	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D713F6B05B1
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:14:11 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6182D160518
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:14:11 +0000 (UTC)
+X-FDA: 85426510302.20.EF34707
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 6D68B40005
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:14:09 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Ir+GhsOF;
+	spf=pass (imf11.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794489249;
+	b=wGu3cRK+uoo72vTl0XiuGeOMW8doQsDaeTl4+/7IKY3OCcWVRt7IgfDLHNQ3nfr6grXSe/
+	MooGzTpWKKbLZhpH5SjBAdEAx3toI8VHylkdJLLLQ0bgvYA7y6qrKErQ3Yy8DEdm6O789S
+	U6ineE+2s4alH/JEcE5eD6Yj+W+cwiE=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Ir+GhsOF;
+	spf=pass (imf11.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794489179;
+	s=arc-20220608; t=1794489249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OHN1jM98e/rDidDGGpuhhKAQmbd/D3xE71tgIR8sZI0=;
-	b=Xp3cTwQEcKzzRI66iRfRR5/4bdeaJ4BYHNraKKdBoxyyuTfYFV4VvWFaa1VPui7dB8D867
-	FLqhTwgGTTKJG/683ZZy/iYdiEKap9o4j2xZkmKMmmRNavo6i65UMeqq3fUJpljAfPxE0+
-	te3QtkiZBhgdxsmvoF2KeiUPLw100ts=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rSVlAVBA;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="K/0F5ksR";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eCAG9TQz;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+Ip1OpXF;
-	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794489179;
-	b=faBrsXKbZfLnCCqviQ+6w9K0rMFkaXfl2NK1QwkdrkRCsN9g7OET28jOfQfKLva51F5Me3
-	EYZOfq7BGv6HJ4wXZbH/UG8XOSIHpT9K6v+mL1k5+7sI3lvmJ1s9JrjFdYHZmF2wgReYIa
-	L6U5iUrpVCJrh/US/8+hH9JDYb4ekXk=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E1EF31F444;
-	Thu, 12 Nov 2026 13:12:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794489178; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OHN1jM98e/rDidDGGpuhhKAQmbd/D3xE71tgIR8sZI0=;
-	b=rSVlAVBAuFTbEKmNvga87CMsJiAzR6P2jK3iBgYEhwBBW7M/FRgIUozQfpxdflyln1UAQp
-	nh/gLnT58Yone9jFxprqcuST6euBhfXwojj4XxZKxY2ib/aoz/ZcNwGsAiJl0dYmgVkpuJ
-	gBoMyEljV8teWIdoq//KYCj7hBdu09E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794489178;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OHN1jM98e/rDidDGGpuhhKAQmbd/D3xE71tgIR8sZI0=;
-	b=K/0F5ksRV1fcZHji05HSZ765KfchtCSSErL2Vc/yTWA97NFYFFH1L56VKvf8XZ8/7prJlo
-	l2ViLDN25EO0J/Cw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794489177; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OHN1jM98e/rDidDGGpuhhKAQmbd/D3xE71tgIR8sZI0=;
-	b=eCAG9TQzbbdiUHGqQ1rrVJEmK+TN0G3+jagjuKjYTTIdr/zfnlkgnGKDrHhDB+qsmiM45I
-	Qmg5DK+Lv5CsnkHrL42cmj3p+tWJHH5eQhYAjpj+mzYDP0xxT18QNS23th4uQzxyrgBu+3
-	iwu/iIfrKhdftLrAvrnzr7MufKezlbs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794489177;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OHN1jM98e/rDidDGGpuhhKAQmbd/D3xE71tgIR8sZI0=;
-	b=+Ip1OpXFy6x05CiEfWql/dw5z+HEyAEHtC4MFasKsOyOvnZvX7onaetbPN6Pdx2GKW08xv
-	vkL63C9JoRlmD7Dg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4EF8A134A0;
-	Thu, 12 Nov 2026 13:12:54 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 3PJECFa79WqQcgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 12 Nov 2026 13:12:54 +0000
-Date: Thu, 12 Nov 2026 13:12:52 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Steve Sistare <steven.sistare@oracle.com>, 
-	John Hubbard <jhubbard@nvidia.com>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
-	Josef Bacik <josef@toxicpanda.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org, 
-	iommu@lists.linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 5/9] mm/gup: limit pagecache folio refcount when
- grabbing references
-Message-ID: <avW7MFzYJJZ0B85d@pedro-suse.tail5790ac.ts.net>
-References: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
- <20261110-refcount_overflow_stable-v3-5-318625d63a98@kernel.org>
+	bh=yRd8+Huvlp5plhQTndzEeeQ6oPa/Jct92yGvLHnpzEw=;
+	b=oV9jcPskK+PbkdblOrAxG1zdGtn9MNy/U4bTN/ip/0clh4pi0hq7dD5Q9nyBq0wCaYUcuk
+	tHxueZtDV94udmK4GfIienzQayl1jtfZ5lw5rtd1NG5gBP3QU/j7ECW1nPuh4eMnLII/y1
+	DruHalmlaIXURAEv9dEKIvqatdSmILE=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5389C1576;
+	Thu, 12 Nov 2026 05:14:05 -0800 (PST)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 215A13F632;
+	Thu, 12 Nov 2026 05:14:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794489248; bh=w1bnY+Ps4zITYTRUimdbVrN0cNHgFPf1y5ifSbYb950=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ir+GhsOFl4eXFwGT7DY570KXtbzdF31B+5y++WKx8y5Mt8D9PCavJtunWAPhq11FQ
+	 3y9F+FQeN7oJYgE6McH1/9bBfmGxPdH3wzJzX2m8BupRfTjtvOMcJ34FftvP/WD6se
+	 sCtXi4bJ4nt0qiwC4fHQYnZSriQiUhYjZrdlfgEs=
+Date: Thu, 12 Nov 2026 13:14:01 +0000
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>, linux-hardening@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ard Biesheuvel <ardb+git@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
+	Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
+	Linu Cherian <linu.cherian@arm.com>,
+	Linus Walleij <linusw@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Maxwell Bland <mbland@motorola.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Pierre Langlois <pierre.langlois@arm.com>,
+	=?iso-8859-1?Q?Pierre-Cl=E9ment?= Tosi <ptosi@google.com>,
+	Quentin Perret <qperret@google.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org, x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
+Subject: Re: [PATCH RFC v10 07/22] arm64: Initialize POR_EL1 register on
+ cpu_resume()
+Message-ID: <avW7mVh-s90SdUYN@e129823.arm.com>
+References: <20261109-kpkeys-v10-0-aa6c4d9603bc@arm.com>
+ <20261109-kpkeys-v10-7-aa6c4d9603bc@arm.com>
+ <be361be8-c5ad-4ff7-a6db-7b0815bfe1d0@sirena.org.uk>
+ <avNH_AdvK9AqvfF7@e129823.arm.com>
+ <7b92f7c8-1543-447e-8ef3-aba608141699@arm.com>
+ <6808f3a6-1c12-4cb2-a109-30704d812490@sirena.org.uk>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261110-refcount_overflow_stable-v3-5-318625d63a98@kernel.org>
-X-Spam-Score: -11.80
-X-Spam-Level: 
-X-Stat-Signature: f9g536k4158r8bpmih4xrxidic115z4k
-X-Rspamd-Server: rspam01
+In-Reply-To: <6808f3a6-1c12-4cb2-a109-30704d812490@sirena.org.uk>
+X-Stat-Signature: rd4g76cceouj7gw74f6qo959kz7nu6tr
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6D68B40005
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 0890F180007
-X-HE-Tag: 1794489178-451601
-X-HE-Meta: U2FsdGVkX192sRxu6i4MV0vHLvbzITS+ZQNYb32nyO+T3xPitC6juLEf7xI9Eb0BCCS501jampFuwsKb76Z7Zjxxt+o+bGgy33E6LvPF7Q44qqyeYjwyzvjCCKA7ShBXMSd+lSBTpDJgEW039yfY1SJbzm84b/iyL0QG0QV59W65FcknTWdeXt4HL8dKX0aYHtb4lSD6vTJno8yhHm+6HNsc5XowIbugI8pAr6ZX04LWLN55e68tf48x1ijYv5QaBvIqhXtex8RZCvaDfJLg+8ZS/Dw7FR3eF/oaIiQigsJB1ZHn5PJaptbEqsF2Ge9XvW160nw6o9aybAJ7Lbuq6SieCXxGrgZ1JZJT2Fr6lK37J5Eh1YAyYwtkM9TBCznwFMxFzRRNuzXhZwDOxBbCg3ZrcsKIZkZLFn9g4AbCRaYkCgCxIrMCWOjI1hQVLbsovtJKs+fNpOK0RTDtZt/rsQwHCWpRcjrigIEEJhHart4iM8ep6zS5QdwszOAK0vke0NVMM+ewOrGbRqnanMG7Whfkvd3pvbeLJgX3VWXsvTg7BNvNefF2lQqti+B5UKQs5njosYh5uB2WP3UCZlpSCM6oIf09gkZl+dA6ps7Vj63w8wwuAEiXsxLT7U6vIE0KHxjsoU+M9xSjDPMJzjQxsp8iKvF/0Ju+63MyrAVLRpivZx4Ll+H7sNU79PZt+WcC+yMzG/XdDn2tvVT9IiX5FVeDjNu3Iru5v+1yW45MJrPltqTM4r8r5panYS2DN8jaavNXibLf1FcnELlA/HLMJxehnBiTYb6LugfD3ozZIl10Z/Ycujm6qv4+BQ8pTO7doycERg/fYCzvamKtFcbQ3KqK4Vihtr3l94cscICKSaPhFLYaSDCkWgKn04t2rMjZpQoA+oVWu5hM9komk3wI6bOxCLM7Wpvl1pe2X7KmUSXnu6q3NHinU90LTj6eCLofdo2X87MxgeJ7DW6ip7I
- Y7DOIg3L
- Jbv0qe1OLmDaYMPCU+lYDUjisY5SGSFxXOT3tSY6lW54f9K8YXmmwPzr9Rp5zedFkWiiEhA3ZlgojkCR6IKpaDsN2cUZYvTo14c1gWyfM5ycfiY/AV9rgH2/zJ38YuP9EF/VE9XIIe3p5Xrz4peX8kQpW0QtHLKNaY3wYEzaRFA0XzxlUROKOawFcnw4lmrQBKgqgl59fwTFQ+DEJUoCJ34ZY1dKnM/QrbaNpQ2F+PNzTXN5QubkW4VOxLRfYl938qiwOMrqzC/JueoCgUR9PD82Js/YyJCHJcOBbqR4eGP11uy9kTo0RiFycn2GqErdNiYrg1h/d+Jk3N58GItHkur0R6RjymS2Aw4iHp+6Sf7CnALpi6dEJ7cUyXgFrRiyqu3OP
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794489249-159964
+X-HE-Meta: U2FsdGVkX1+KnBra1M6ybCsKrv2oVo0yHMae89MomB03qD8LL3AuiY03UFtFgo6/3FUmyPa4L+Jwi94xfQQVVPGAjBmYB+XQ4YVAsbmIfGw3zQg/Hgqt4/8lOiX0WRQD4fpdiEhuASQL5gIY2RTkG89UeYFUMiL67zUR5GMHgUGUpOSByl/beCElefNZ/N7YUa7cbBKcfhrUzK2ernmGWj1tBMPyCASiSAAIUXGjXEP/9HxVAJ5ocMAWQzKVDdGcONF5BDkA0jBLzB6CSW8Uzl9ORtgfd463PGNyrvHaPWaGoDkS5tgPNBvkyU1iiF4BQKpTsifNbMap3efNwH8/rEIeI91R0h4xudkurWDYAygCNow5a2n3q28v6+bZaVPq53T1DHK2aJU/tsqRvztrDXpwW9M0s4h3Y8glB9StPJJ37kgW+V2uI0/gMjRRcrw8jVB85OTGADulTem23Ih9BsVISo+VAFDQPYOiKxp6eqxHt1S9wFWPaCHaMaBdZ0cg6iSpEGyh+KspgZKnC47WFAG9AIU71EmjmTKqYMgYS7oMSuaZ5GYIMXUB21slgQMXX3TFm69roYvfuWuFL60aRknUZiDloHzLZcmSyDKA10Hv4z+6oo1Z2cxWPOgSvj879KDOxF4rQdUC/sQX3y3iFx2NsBnVjqtxda4JlCw+A+O0ACYGw1ELaNpkZXoZ4epSO8AD0MNdKlMHdVNzoqLj5nYg4IfCdoFNTGlCC2CvxTmrMJpSlKxA+KT5sxeyueV3jcxQt3WaTkxelPP8ZZ4m3vBS1Bd03G7/y+o202h8M8g6zc9HzT0jK3C8iSzs68F4yPYDwVFgxp0w58owTY+Boki4y5gKSGhPJz2pvc7J42FImobgfyzqgjg4en27LkVYjxZUDTCo/ckb4p9orm931sMMDYGrgnDsCRRLjCe/eiHAtz64bZ6wVE3WBd5SlUMmmHZxd2EEExIYM1rjtp/
+ AxEFlTX2
+ CsWTyAbr6mFMaSBTTLb2PEwYjsU7Z8Tq2I3OIqCLhzUc8a+hSJ6Hpms039GB5fgzs6+tiLGM5s2lFBBgy1Nz4vyt1iqsKBPItrb5ydez4+hA+6lgLV2A6yKdChUId5qkfJZStuCsoJEhMd6lUUVtus+aDDI+ObqItiXyrA4MNkvpJQPEyVzCanCHY854uursp2HgVvXqBGMNUQhx2daZH1N5kajtPUO8Z5Ue6nhA6Bh5uRTki08ZHOdiU9BETBOXNLMWSh+0jrx0Ew0OZc3h3da/nfsw8IKXhSm1Ql2UW2fhW4Hf/TNAFSXuK98xyErec0JyLD6LAMJBaZBtBHomQwgVkMDsHqyalBBmQH6X3szNiiazIykQarYtkjRsvaptyGp0Q7DwQPg2gz5U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,29 +120,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 10, 2026 at 09:35:45PM +0100, David Hildenbrand (Arm) wrote:
-> Let's add a folio_ref_count_over_limit() check in fast and slow GUP
-> before acquiring additional references or pins.
+On Thu, Nov 12, 2026 at 01:02:16PM +0000, Mark Brown wrote:
+> On Thu, Nov 12, 2026 at 01:38:13PM +0100, Kevin Brodsky wrote:
+> > On 10/11/2026 17:36, Yeoreum Yun wrote:
 > 
-> Keep it simple and use the check for all folio types.
+> > > Thanks. seems required to isb() after initialising SYS_POR_EL1.
 > 
-> Also propagate try_grab_folio() errors when grabbing additional
-> references in __get_user_pages() and in memfd_pin_folios(), so hitting
-> the limit returns -ENOMEM instead of -EFAULT and -EINVAL, respectively.
+> > Agreed (as Sashiko reported as well). Presumably that means we also need
+> > an ISB after writing to POR_EL1 in cpu_enable_poe(), as that's basically
+> > the same situation.
 > 
-> Keep the existing invalid-refcount warnings.
-> 
-> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
-> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
-> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Possibly just have one before writing TCR2_EL1 rather than for each of
+> the indvididual features, that's harder to mess up?
 
-Same points about funny weird inefficiency applies, in any case:
-
-Reviewed-by: Pedro Falcato <pfalcato@suse.de> 
+I'm not sure that's necessarily better, as we'd end up executing an isb()
+even when POE or other features aren't enabled.
+Wouldn't it be better to execute an isb() only when needed?
 
 -- 
-Pedro
+Sincerely,
+Yeoreum Yun
 
