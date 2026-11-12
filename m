@@ -1,96 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 821D0606A881
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 06:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F671606A33E
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 07:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=MSaSPZrw
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=owLrm7cB
 Received: by kanga.kvack.org (Postfix)
-	id 8E66D6B05BF; Thu, 12 Nov 2026 01:57:06 -0500 (EST)
+	id 543E86B05C1; Thu, 12 Nov 2026 02:00:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 870B66B05C0; Thu, 12 Nov 2026 01:57:06 -0500 (EST)
+	id 4D37A6B05C2; Thu, 12 Nov 2026 02:00:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 737D56B05C1; Thu, 12 Nov 2026 01:57:06 -0500 (EST)
+	id 3E3AB6B05C3; Thu, 12 Nov 2026 02:00:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 448D76B05BF
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:57:06 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B84EAA0513
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:57:05 +0000 (UTC)
-X-FDA: 85425560010.12.465BBCB
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf17.hostedemail.com (Postfix) with ESMTP id F33B440002
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:57:00 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=MSaSPZrw;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 150AC6B05C1
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:00:41 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9481C1404ED
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:00:40 +0000 (UTC)
+X-FDA: 85425569040.28.3909B96
+Received: from mta0.migadu.com (out-105.mta0.migadu.com [91.218.175.105])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 5A48FA0005
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:00:38 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=owLrm7cB;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.105 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794466623;
+	s=arc-20220608; t=1794466838;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JO6FW3tawApcJIwTTcR4zJNDJEYR841HkFnpVbs8+pI=;
-	b=mxO0+JROiAAUPiQWogbW2uTGw9fER4MDXsKPT50LaydkYZHmWr3ajV9eqT+3LVB10HqgYY
-	wjQ5sDo8TeqkyqG+Tblu7PxHnii+Y70bTU9qn+RRb7e9i+hyc5ySTHRdy4PvimxwKSMlpF
-	gXRwboJYVGmYRhK/K3zNbkG3VCCHb8Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794466623;
-	b=GpEWQTb5tMqynVPFh/hWOnQRkGRHVEYJeihAcMWZ9Czzqw+Cxgb8VqfyHkPYhsiVMmObba
-	W3Lkj69eUEQPJdEO4CK7eHiszSObB2Le16jJpo64zNc7Z7e2bFr9tjYGpGsbhviTKUs9O1
-	9ZHdKZxX2JCcNnuzpTuEmkArlBZHNUM=
+	bh=J4xIggD0g8SlhhtdOwMFrAXrBVevW/MmjFyooXoSNeE=;
+	b=mKwUmWFy8Z0y3zDYtifcVFeL6dX1Vfcz22TJUPo1hjWZbmTssgNoTdPCAdJP+94/GFb7RS
+	nLKL+94S0jxzw7YhVsZ/vZO/KXYKpr9ipX8uwaF3HSpqg19alHQzdZ9prh1fflOe3kHt6S
+	ZfOAM31Yp/ld4XkhkpSk6RmYlPouzwM=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=MSaSPZrw;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1794466616; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=JO6FW3tawApcJIwTTcR4zJNDJEYR841HkFnpVbs8+pI=;
-	b=MSaSPZrwSImpTjQeit7lfj3V7ivitCBnkn4/es+8mH5j77EqkfPublLS0WOasMlSPZoSZtVAY98yov4tdN23/CzsvVFv8s+eyQXgStJ9m8xndSdXNLNOKY/ECSMSRzBmNNVeRn8p4gfKrElg//KP+JJhkSwXDG7DMyVdYJE+Dls=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R601e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0XEbCXrk_1794466612;
-Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XEbCXrk_1794466612 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 12 Nov 2026 14:56:54 +0800
-Message-ID: <dc7e9478-6f03-4ee9-bf41-ebfc4a8f7edb@linux.alibaba.com>
-Date: Thu, 12 Nov 2026 14:56:52 +0800
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=owLrm7cB;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.105 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794466838;
+	b=FSznt8Vbkz7Pm5lOT0S7/wyPblFO5Q7XMXqzxONF/9EJFaOo+K2HhojqZQaMUW8Ezwg5Js
+	NseaNDckB7JX4Rq+7HiMmeSDq1yAUtmeNb8cbFhIKVW/Hs7P6+FRk3ECde/lhSzZRb4hbi
+	z+NrmzLpiPthSmoSCnLLWltpYZlKVlI=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=IWVkZhORY9imY5FneS+keJKgSYCeTxoJHysJ7YNaF+Y=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794466836; v=1; x=1795071636;
+ b=owLrm7cBfzN1UV7R16E1C54SoQ6uEbb9iF8oE9Q5nwcgoWHQirDw5gp7jkGwGjeLafzaGCP1
+ Te46sEi7bhxP9cwDDRW2wHBKzqLnYx5iq1pmrfxW0YYJxKqEKpde6mzEEQo7PWPyTvt+znR0GhH
+ xNDE2eDuB7safnAL4u5eo6JM=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 5f9d5e168c7f5611;
+	Thu, 12 Nov 2026 07:00:23 +0000
+X-Mizu-Trace-ID: 5f9d5e168c7f5611
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <4ad546a2-66c5-4b74-a221-d9e8c1006c73@linux.dev>
+Date: Thu, 12 Nov 2026 15:01:48 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm/huge_memory: prevent losing PG_waiters in
- __split_folio_to_order()
-To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Ye Liu <ye.liu@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261110-fix-split_folio_to_order-race-v4-1-cc5042f33408@nvidia.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20261110-fix-split_folio_to_order-race-v4-1-cc5042f33408@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: hoswspkoyiynbyofx8k4w8yc6qyh3azg
-X-Rspamd-Queue-Id: F33B440002
+Subject: Re: [PATCH v4 6/9] mm/vmalloc: only flush the cache after the vmap
+ succeeded
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Uladzislau Rezki <urezki@gmail.com>, Dev Jain <dev.jain@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ Sashiko <sashiko-bot@kernel.org>
+References: <20261110112546.261415-1-hao.ge@linux.dev>
+ <20261110112546.261415-7-hao.ge@linux.dev>
+ <CAJuCfpHReBDoXj_U3Dy2hksj63KyHNBm4gS+wtR_ywidyJ8mfw@mail.gmail.com>
+Content-Language: en-US
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <CAJuCfpHReBDoXj_U3Dy2hksj63KyHNBm4gS+wtR_ywidyJ8mfw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5A48FA0005
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794466620-354847
-X-HE-Meta: U2FsdGVkX1/pFXg/vR3gMQTVfiWa702AaqM5zrzojMMCG3ThHoxCciZ89/ESxvv3rXxiiyJVq4EVoCsfKuzdxZTfuwGGh7iGJjXHnFKbAP0L/TmCaKG46cILx2HtIdTmQK6rc9OQPw7tTPyqaY9JK2nItn/USedwuU02IrISSwd6xoWpoKx8/I0bsiPxHsScVm4wWmbo17uU+iKfge+RHi3K4K0QodIXl8UF8z4/shv5o2wqara2Ydbvs1HlLMJAT5KcOkUjK7p0CvvtYqiAXOaZ50A4jvu1oigWv1ViaA0yk5xTrFjf5mIVMsvmTZFVzyhVDXIlwRQ2uTKB6+8fMbWpk+cRUdERo6S4DaE304y1G/lNEyMrkiT4zVmBjSWFPfUlYUWtY78bGdSOAK/IAqI4IhKn3wzBVYg3KZgWIv4VLc+TgEdnRGpRTIUENEFMkHJJGSDRHm650Z2AqktMBqBiakhIHGbZ2+HCrmRA2Fz+FmxrqzOCEruIco5chGIo725i5SEu7As/CYqSWKW+JFJtWX4QO0VgDvV0f+5ICY6cBWTGlJ1PWtj41yPSWX1NQuU9+cjM7425t/WdVpZUeaimv39r3VihriT6Xwsno2cfyr2ZMD0pcPmIIC2xm9/oxMx9fHBqaO2tyiGjB8Yi4wEylD0fDQK/eXVW18dS/1+xhH3YyoZXJuCqhcBNzQkG2nPV8PyeQdwHNxcUXOnelkNyct8QZqRGmxAJZTAF6bTIv9VUVUxPu9KcHfHrqn6I9lJhauhBEAQ5/isWa3vFSMybfrlgSTy7xOhZS5IvtzweuP43pFO1JUk1c8opGog2FSwixONX47yn5UvSHIdrxa6Jnrid8dtYsdnkgJzFBOiDVLMAh1EiXnFNJtRrlFZv4p4ygoEVob97mVy6XWvgIT+nf959tCgpPcBcAzYJn/67+CHgMZYG9VsJWLID9kfDEuW1YJ60hTB0xZmnjny
- 1bmICYtf
- Gw8Qfi9lO0NSTV00AkU49H3eymqjggbLqmZKf1B1YawA/t6AuOEQ7XevW+WzDnpvVtKI8J7sENApu3U5sQLbrRHQw2piCHfW/INWGkOBTJ9IL6pqhelq4k1BXKLr32n1DAR+BcoSqS/RpuoFpn6PB2fFxuGKAyVndDhgo6K2Z6HojH9cCaqVGCxnfX8hoKLztF3XW/2Fu04TN0A8eSgM+4MLTDHOQW8Zo9IvV5RoeBqFJgjS7Sx1xNWMyxEI7rYAz4fHc2siQ9G9vfFHoXvYjDYIay3Q9Uwrolk6nPmj/pOwpO2HUdyYMDhyg2Tr3Vf0NpcDg871+hxhBY7lgkcE33HB+wivdNxo2ckb8tAsn/aBbzzLP1Prz4uA6wvKfHFS9kB4gffksIL+Uzr0=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: 78gwn5kch3cqx9osfjagtnhip6is7rxp
+X-HE-Tag: 1794466838-251252
+X-HE-Meta: U2FsdGVkX1+UH8h4GxPpStaVpmqtZRwDVM13gWpBp/jVCR56hgNsysX/Bf/wM+6psrbQ2iJdsW9dSCCXM62ak0Nuaa1rST30lQAtq8c/pXaj7DBfq6SOuXu0lkHn5jMQ3OOkset5jebi50Fy8PeE7Vj4nyvXKOk1dpaUpX1G1gcdmSGUsegF8KpsZGh9bBvjsboBWAOi3Q0WzxOvVYNq5z7eMZeh6Vqmuw6RqaMr829L/bI/4mYG73rXVAOXclQ9G09F5YodB2ev8RLvQplllKnnfXkLzIv9td6jLZWgzThpHFZbqGtm2hqKEwSZm0ynkTjAUOjZIKj9n74lmTQ2dXIVpDROLoF2E0BcxOVCpzg5j7C3/K1yZbevXSuRWt99AtFM9oS71U69QIAEHKuE6Fj4pAgz1WEHOq00JAOdOBrR35+YLHsWyHWk7zw0fxaa6H8XnbLqeUZLPTmrdJqYJhSzUNu9xaLrfwQRqnScPdCN4W3BYvnONo87qXI0OgL1PMNFYisyK+ocI2qhUgHDuulaHIoY612ahl0xODuruue5R2AD8TUdmLpeDS37UYcppGlNogxajjY0IRCG1anFxqAWpPwC3yCiHn1zcFy4rnvFaK9wjBsPaHjb8VhByZcCOc4BfM50GRWNuMgYDFMBpLeHoMp02Xu8PwU3zvw6TQ3bCiOZpfcdFP8tvk3ssssgadRr4PCDZLpJF6kDNAHrWnh05NufcLOwGpEs/L0PvqfnO4nY5Q0qew0u1RgB7QBq8Zp5emXY7MZZjXAYggSwu/kS73i5t9paRkyLC/rkVTnZKRoY0ZrP4IicNlWXhyxZIp0JvxaAuGb3ijCyopQTgL6ZV5ZNpmytkXZ0gnk1ZzuPUfiF7yT3lYQS/Fd/O2H8pT9foXoeU/FF/cyH+/NakAHAeUkXhU9doFrrONxo3He5ID+MzJbvoXox1dS7tSuzjPzGIbi9PyDb/qC7jeu
+ WhrTTefr
+ pBSM/ouR2SktuGsfnGBkSahDi3sBUWGkH0KtfY668OepIaetn0KvLadZM7jKxQ6RykCjrQZ16rwktTUxecF6sKeu3xTjQt6mE2DW+2N/IcjfHwAnKLQu9ECRsXP7ZX239HJBM62Tx2WwOdHjsUBIlQcHRyFTXJKNr3beJAlI9BO9Cbm90HjjFqwxqdOd6l4o9OTEcKtBgGUQZplWsU543pOI8zNIW4JjTGLEuA+EgL/d4kNCNBQjzoqmoD//GyBwmkWPGYmo1ebca8BIarcNKb9Hdhxz8GCV+lPJ341NQcGUntvNm4j6asy+Tdifvn/rP2J8EtIxDDbZ0bO97RAElSKu+xhzCI4o55nsLs4hkMP5gm00DgheIXo0o19cu6/N+smXGSgEoCtCPF5wOlEyUlTJzwA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,68 +111,63 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 11/11/26 11:19 AM, Zi Yan wrote:
-> __split_folio_to_order() calls prep_compound_page() on each new head page
-> to create a compound page after clear_compound_head(). prep_compound_page()
-> uses non atomic __SetPageHead(). It is mostly OK, since the folio is locked
-> and frozen and no one else is supposed to modify the folio's flags.
+On 2026/11/12 08:30, Suren Baghdasaryan wrote:
+> On Tue, Nov 10, 2026 at 11:25 AM Hao Ge <hao.ge@linux.dev> wrote:
+>>
+>> vmap_page_range() and __vmap_pages_range() call flush_cache_vmap()
 > 
-> However, code calling migration_entry_wait() can reach the folio by PFN,
-> then access its flags. It is because softleaf_entry_wait_on_locked() used
-> by migration_entry_wait() sets PG_waiters concurrently without taking a
-> reference and the frozen refcount during split cannot block it. Meanwhile,
-> __SetPageHead() does a plain read and write, so PG_waiters atomically set
-> by softleaf_entry_wait_on_locked() will be lost if the set happens after
-> __SetPageHead()'s read and before its write.
-> 
-> One example code interleaving:
-> 
-> CPU0: __split_folio_to_order(new_order>0)  CPU1: do_swap_page()
-> 
-> 1. clear_compound_head(new_head)
->     new_head->compound_info = 0
->     (page_folio(new_head) == new_head now)
-> 
->                                             2. migration_entry_wait()
->                                               softleaf_to_folio(entry)
->                                               page_folio() -> new_head
->                                               (not the old head any more)
-> 
-> 3. prep_compound_page(new_head, new_order)
->       __SetPageHead(new_head)
->         tmp = new_head->flags.f  <-- load; PG_waiters == 0 in tmp
-> 
->                                             4. folio_set_waiters(new_head)
->                                               set_bit(PG_waiters, &flags.f)
->                                               enqueue on waitqueue, sleep
-> 
-> 5.     new_head->flags.f = tmp | (1UL << PG_head)
->         <-- store; overwrites step 4, PG_waiters == 0 again
-> 
-> Later, folio_unlock(new_folio) sees no PG_waiters, skips folio_wake_bit(),
-> and CPU1 can remain blocked indefinitely.
-> 
-> Fix it by setting PG_head along with other flags in new_folio->flags before
-> smp_wmb() and clear_compound_head(). The remaining compound page metadata
-> is set after clear_compound_head(). In that way, after
-> clear_compound_head() makes new_folio visible, nothing overwrites the
-> PG_waiters from softleaf_entry_wait_on_locked() by modifying
-> new_folio->flags non-atomically.
-> 
-> While at it, use data_race() to suppress the KCSAN issue reported by Ye
-> Liu's patch (the second Closes) on reading folio->flags in
-> __split_folio_to_order().
-> 
-> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
-> Reported-by: David Hildenbrand <david@kernel.org>
-> Closes: https://lore.kernel.org/all/DMHE8BEEER1H.2BIY52NXATPIA@nvidia.com/
-> Reported-by: Ye Liu <ye.liu@linux.dev>
-> Closes: https://lore.kernel.org/all/20261029-data_race_huge_mem-v1-1-112e331291c1@linux.dev/
-> Fixes: c010d47f107f6 ("mm: thp: split huge page to any lower order pages")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
+> New vmap_pages_range_batched() function has the same issue, so needs fixing too.
 
-Make sense to me.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Ack. will do next version.
+
+> 
+>> before they even look at the error code. A failed mapping is never
+>> used, so the flush is pointless at best.
+>>
+>> According to the Sashiko review it is worse than pointless on UML:
+>> flush_cache_vmap() there is flush_tlb_kernel_range(), which syncs the
+>> PTEs into the host OS. Flushing a half-installed mapping therefore
+>> leaves host mappings behind for a range that was just freed again.
+>>
+>> Only flush when the mapping, and for vmap_page_range() also the KMSAN
+>> metadata, is fully set up.
+>>
+>> Reported-by: Sashiko <sashiko-bot@kernel.org>
+>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+>> ---
+>>  mm/vmalloc.c | 8 ++++++--
+>>  1 file changed, 6 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>> index 0565cbfe325c..3f98056f8c7e 100644
+>> --- a/mm/vmalloc.c
+>> +++ b/mm/vmalloc.c
+>> @@ -369,10 +369,12 @@ int vmap_page_range(unsigned long addr, unsigned long end,
+>>
+>>         err = vmap_range_noflush(addr, end, phys_addr, pgprot_nx(prot),
+>>                                  ioremap_max_page_shift);
+>> -       flush_cache_vmap(addr, end);
+>>         if (!err)
+>>                 err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
+>>                                                ioremap_max_page_shift);
+>> +       if (!err)
+>> +               flush_cache_vmap(addr, end);
+>> +
+>>         return err;
+>>  }
+>>
+>> @@ -758,7 +760,9 @@ static int __vmap_pages_range(unsigned long addr, unsigned long end,
+>>         int err;
+>>
+>>         err = vmap_pages_range_noflush(addr, end, prot, pages, page_shift, gfp_mask);
+>> -       flush_cache_vmap(addr, end);
+>> +       if (!err)
+>> +               flush_cache_vmap(addr, end);
+>> +
+>>         return err;
+>>  }
+>>
+>> --
+>> 2.25.1
+>>
 
