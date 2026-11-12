@@ -1,147 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26CC2606A32E
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 15:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5617606A883
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 15:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Km+hHmE1
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=oUjcnM5G
 Received: by kanga.kvack.org (Postfix)
-	id 469F16B05B7; Thu, 12 Nov 2026 10:51:23 -0500 (EST)
+	id CF6156B05B8; Thu, 12 Nov 2026 10:51:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41AAB6B05B8; Thu, 12 Nov 2026 10:51:23 -0500 (EST)
+	id CA6D96B05B9; Thu, 12 Nov 2026 10:51:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30C226B05B9; Thu, 12 Nov 2026 10:51:23 -0500 (EST)
+	id BE3D96B05BA; Thu, 12 Nov 2026 10:51:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 109BE6B05B7
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:51:23 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A2F591C3E38
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 15:51:22 +0000 (UTC)
-X-FDA: 85426906404.27.2FD8472
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B508180005
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 15:51:20 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Km+hHmE1;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794498680;
-	b=U9B5x/a4VbVcJkeJWvnFwVrFnE2HmXxEzwVK32sbRLBtbH8TLeweWwe91s6DuU3YWfNOcv
-	OgTfWIhmihN/Er+k6/Yg4mntjXTlguo00dCcqSAG9yZaEX7M30i3XT7ncpL82ah1cIM6JZ
-	cVVqRvF0ZtzAXeyvYP+i/pr2mZMaTdo=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794498680;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A28C86B05B8
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:51:28 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3A1D3405F1
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 15:51:28 +0000 (UTC)
+X-FDA: 85426906656.22.66F3AC7
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 623AA1C0004
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 15:51:26 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=oUjcnM5G;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf21.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794498686;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SHdxAN7HZz6R7h3iP2OmBErMKSektM89NlydJ5odNjM=;
-	b=w0069uXHYiB25rRZz9uyeAe6bBNtwW5QClzwVWF4amaa8I51NcHkFO1TDm2Z6cZ8ZDb8lc
-	q1LuV+HsJHd37eUlcBmYkz0QY+jn68W30lFSESuW8IR7Xp3V8ylH+49J+eN3IOvzYqsDwU
-	EpZbCkx/X8QXFC490hfwRklpQK26uq4=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Km+hHmE1;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8a39e5161c1so3380413b3a.3
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:51:20 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794498679; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WmzW1+YVVCwhz6z/Qf5mpI6Djlbom92o+RobOCqCDamqIsC8ARlWj4LJdMMmiPybfI
-         5+bAVNXHfl34qQLrE6pGC0J7BJkQmzrYSJVgwTbRWI+/oL57uYylWQ3hQ71AUJvStwC2
-         a8ee5z80/srThxWPQj3fjV7nllIa7AJ7q1ALGtUBLYDuefVUj/v5HUlAq4wy2MZ3eE7i
-         sTwO3ZEky1ygbLkp8A3M6+74RGGxqAKA90H0qT5bugkMgFViiC4zxFxzGbXOojAHjSTm
-         l1jNhTBhMEjh/hcOo/mMb8WoLdUFNEMtXKwUE23sf8UI7N5rGeoN1MkxrUlt+zsX0vez
-         0nWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=SHdxAN7HZz6R7h3iP2OmBErMKSektM89NlydJ5odNjM=;
-        fh=X5t8rxpZSUbnIfYt0bFkP1JTuyNXWqqvD67HxFlq7h8=;
-        b=ocJxDCf3rLOPWxfbyF3gi2eR8xq4eeAgQbsHUMOLiOShTvcJq259w8VUCu/f9J6UFW
-         2JruNuswXjlX7pHkDB7+wXMXtgiCKerJrpGZ00hv+6kWDKKdNGYnrp6isLDxB3qoM1bW
-         I48HKWiHWeoFWGTMP5w/Gfe4VLwA63wEwS2/doxUBv9gfApmCwRsGOxE5VPD7BWXfcgH
-         5G3BE1wHQMfnf7J9NtXpw+y5lwuaDHLXyxITS+6momwH/aaLrmQpmi9nPoNopXAY7DGM
-         Zz4544VhWkH7jVI+5uc8E1p4G9ifS3Yx/T4r8jSAUfGDKuXV5wRzXgi7sP022Np/Iv3k
-         9Czw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794498679; x=1795103479; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=SHdxAN7HZz6R7h3iP2OmBErMKSektM89NlydJ5odNjM=;
-        b=Km+hHmE12h0xUR9fxge6XWf97sHzAG0MnQ+N2/I/IH+Qg7frfYhwcH3r79nh6ivJlJ
-         4ZZ/D+mhyciT1WrMNVL5K26UwcZt04JKG2Kvtol/TjFWe2ZnySyw/JMy+Czp1FYsrDGh
-         DndL5KknJIyAmW9sdCZxUSqLSDUYGCjZ611hI+stsmiaChIDUcEZcYVvXe3jIoq0IXIu
-         ltL5ugfUAVmtY2l4m4UTN2zRSqBo1/nPvcQun8srVuXVhiK6D5d4vB51ORCQHqBLizzj
-         MucAsaosIW64xYJ7Q9M+6ZlD3KKL39SlppUqAYYrMLBrm5mmFl6tSpwAfLAHFK5o6ojA
-         WjtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794498679; x=1795103479;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SHdxAN7HZz6R7h3iP2OmBErMKSektM89NlydJ5odNjM=;
-        b=ArBwnMPgoQNFe6o9FFu7H/e+irKc6rkmKr2QfQ1fAfwXdBQbLxGEmvqmINSNZ/C3cE
-         RN7l9cqoTEiNlgXfSWrCxjJTKYiZ/YfaL8QmleKyv0tD+mQe7OBiNnx16kng9OdO6O3d
-         CBaQYkEctd8HBgSBb7rXtHT2WUDUmwZN/W8YXfRQbnUudVGHEdStV/tGCNDkd+EdSd82
-         9cqgrbUom7jnG/NlP6j400IZXe2UI/abpXB9kcipREdcqyqAsh/LUxi+j4udcux5S7Il
-         T4B4aArDdgG7I86e/lCBRPBhnXLvvMZRUgSj4HEjcFcmcbNuxqe72iRaGvVk5rVOow0o
-         qMvg==
-X-Forwarded-Encrypted: i=1; AL+hErGENS9kcIl3dcsdKDJemN46I3LcZ/n6xjW2hpwcfa1YX73PHXzfyU+esnIMMJjdxSWFS6svOmYRKw==@kvack.org
-X-Gm-Message-State: APuU4Z/fIb+hxcax59AV6+JY8q34LfV53xL4kq0n+RywxXm+OdAfNDdk
-	sZ2D/nJ4scVvjVDwGZW3VLg9y7s2LQHAwTPxOVdnMtRf0oQHv1EGu8qPIeWmBX1zWcVCEK6uQN+
-	uQJ2GCEESA7pVIrPNiEQ6AkGVW43qrDs=
-X-Gm-Gg: AYBFou2aoZUm8h5NgFt1JY95RdD+ddmw37Uvlc0viw0lLaq1Tp5eW9klXaCypP0xlfY
-	yyZiodlI+gYOidh3x7G+U9XjPUec6ZCTbDuJV5elxHvBsje76zvIRERnl72EW0Ar3A5tWAA0K8M
-	kZirA3j4j/FECdLcLLTk86/w/lldIa/k9tozoZKHtw4BgEIOUvTJo+cEL1qeV0sjs2sCC11iJvg
-	XZJTNGpsYvFN5+cSRrpKnocQ6Nzs7d5UURouh9iKUZQ2CN453UwH3QoW969VpIiyQNd/8KkQhJW
-	C2YgDoTSknx1TpWsZbEbpbrX3OJglvc9IqaF+lTPmRK8cbuwKVMVni7mpUXoFTKFIb04veogths
-	7DZZfEFNa6NRijK6Bemu1y/x4vqHFs+QvqQt5wC9hiVcFPTTpqFISX1lAINA/7pbnJ86U9w==
-X-Received: by 2002:a05:6a00:4f90:b0:8a0:4493:50b3 with SMTP id
- d2e1a72fcca58-8beb1fd9e3cmr15135b3a.2.1794498679329; Thu, 12 Nov 2026
- 07:51:19 -0800 (PST)
+	bh=UxBkeTu2DJirZGWSp/mREpz7BgJGoSDfzOYmt9Hxv20=;
+	b=m+sbwoIbfKj0y+1mSWmR51iW+vkCPDJN9Pn2t+JDmD/gUs7/M4//RytJKPaE6zOCn16Von
+	m2GTcAE3RsqF4NP5C7MXBLnwvwxYylts/DBFAlBEDtnOGPI4y1zor13brE24/TFZyN7KUF
+	Yo56hemfa3wjKwsB16Eq9qlcgCvwxN4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794498686;
+	b=m9gswqjB+hQVWv/t48KGtVSM5O1A39uhL4RfdKd+qWynDqTcYxDOBZd5IZ/4sQonV+pm3w
+	Nb3Kg3YBo6BfRZmGzXNu3b3FvUxzoj1TcVbFUtbyrbqRhNByp/kQEeCkF+RSPk4Mwq5Hrp
+	Cv6T9iV54DjF6E24IjOL7ULxAdEc7mY=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=oUjcnM5G;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf21.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 48F331516;
+	Thu, 12 Nov 2026 07:51:22 -0800 (PST)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0CCA13F632;
+	Thu, 12 Nov 2026 07:51:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794498685; bh=jPK6Mju/7uxku40iuWsPgD5FdGQZ3PgDxQ5h5XG1PXk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oUjcnM5Gf8YQG1taf3fYwINVsbWZUaLEgU5uqHHesHdt6Vd/4eFvFI4mAzQxS06Hz
+	 KycnaOiVhow+nOf7GwJ1GPHykbRwuG4HjEfy8ghNtN8Z+/wrW+iBViJ3EjENebROeV
+	 ykKfAeFA8BzZZnIqn16AxxVBR8Prp2xtY2VvWfLQ=
+Date: Thu, 12 Nov 2026 15:51:19 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, vlad.wing@gmail.com, harry@kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH] mm: kmemleak: drop kmemleak_lock in scan_block() when it
+ is contended
+Message-ID: <avXgd-aE8QazfR1G@arm.com>
+References: <20261112-kmemleak-scan-lock-break-v1-1-95808108d03c@debian.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261112075827.255602-1-hui.zhu@linux.dev> <avVx_1BEP7fIzGDK@KASONG-MC4>
- <avV0IbvSx4iuv0tF@tiehlicka> <7718d4d0-58bf-4281-8256-fa726f753159@linux.dev>
-In-Reply-To: <7718d4d0-58bf-4281-8256-fa726f753159@linux.dev>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Thu, 12 Nov 2026 23:50:41 +0800
-X-Gm-Features: AclHuK-DauIlr6X0qTL4R9gghp2Up-lZkVCGGgcBB0M_Z_UKEKTL-VonoqZxN1c
-Message-ID: <CAMgjq7CUMuNSdCXZ7_kDdo9+0BFvPNHuO=mq=ct_Q5YUyyckvQ@mail.gmail.com>
-Subject: Re: [PATCH] mm/mglru: check need_resched() in fill/drain_evictable()
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: B508180005
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ucc87pij5usy8g9jcphrb53b4ii71qh7
-X-Rspam-User:
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794498680-608581
-X-HE-Meta: U2FsdGVkX18aethuNXdchVD3yq7K4LpR0WXGWtH5oaZSlAv6aZGlRsevWvBrcz66zqcDWH7qjHzMb5W5gzolnfeLlll/EzyPRq/R/ONaIKLmg2GJR5LUfO9YzUMEbORZjvM9Ts1Kr6JY73xv6ezWIDan0W9gqzDEOoJwW6EpX5kTI5xj0y8sEivIjZBtdc6myA6n79LXfY/nFaIbApwBqGXeWiJOsFNm+3Qvu39Plb6s0NJUMp84b2KtHL8fM/ZCj1f9qdLQ8r+DGyPQSFG2E7KbNW+grADaurVxG5q+tim1I8mJkRy3cIeKevinrS6WgffI06te6VmXbuMpOP4Scsb6xq4YEaDrvGOUmyX3nnlIH4f5PLx2i6WoWKwMsWhBjfogfaLJzGtCsWMbaDML1FQ0S7xGzU0a6xnf6yaNccmc39kMl+TvJfacuBcuU5qL1E+5RpZ5dj9dPVyPc+bflWun2TQ7bsitdBtMjJKza+tr9hQ2kLzMf5wavu8TCnDojhGm8r5AW4k8++RLAC0veDe7ZdPQeJqsyiEc+P9xg0dRzYogZgOhDKeWKFTSR8Yp2nAlsWXfzcPbdN5M95S10qSN4K/QEwtyAZ78/aXcP2FR7NdRd33xQYGopnvjDu00kkkN5U+YChxQgNPqE03ynjYqB2KOC7voTjUbDIj3qh2eLeBKEuYI7zLKOrYrsbMvLCLWyj436c8TegoRM9gPLIw7joFDTIlFVAiajAUiVqPgDraG/X5vLsnvEQC+OB3j7idULThDIEk36WHZU4EVcDKEryWT8EYqTDrENwTlkjMIK0At2axeusA6EU/+UR+MMEDred6Z9A7M5MInhgMBn6Fio+iCRj8s15ukMOnoSUJssWwnL8u8IysEs6Y5d7BiaVGc0M5xZsnV2YNt9R/y5bZdYb9CV8SQwcNQveiPpY6Nn7VF8XG14mYev0sKHhVVp884vkHVWyoDddGuv8M
- 5Q1GlDrQ
- aEEMxOVfkN4Wp+luZlbtDqtma3GI+KOxoTVcEMxQ+PwUfdp4u1nXET3mC1Z1utUDmpbfPuqXrjMiZlwjUkAVi6gnjqWxeeKNJX5MbarR6FD6J+aKeA2HwtzGe5NH69WMWdoVqVtZBMgoErh7vJe+PUITmytbIvedlfwb/HEvkZ9BfmlzDH0M6XEjHGnNRSgl6PkjwWdP3MClKD2zRviGqgf0L+9RgLkYFkN97gzG7uhTWtTPS3i2XwK/CLDRHdEQFqpNKaRf25zntX9A3UX2OU2DSLma1DOWdSOa5Aw4J3EAMBFBPCqKse0z3QozOSE7m4jSO7XYFiwJT0X67fbn0lcHkV+mJDW0kyCV8jJswaNtpggCKRDxyc21zdsYPp8B+dYvmUvBGKcw1JysSFEZu2nn9pzYn2QGJheJIJfuwZvxYR0JKpLEx0tEsIVwN0+K8ZvBdpZKxyAeCfkXJUXsZfHKNKJnmrCZggQDuf4UVax1WVELv/RmZ3GnfxCzoQsogFtdyK86fg5HIkWq/wadGCO3X79CLZGXBKT7wmOzbp3AuXVieOhjQfW7Eqke/ENaUx/gp5dyrLJpQU3/4Z8hQB67AeW9xbOakECK+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261112-kmemleak-scan-lock-break-v1-1-95808108d03c@debian.org>
+X-Stat-Signature: 134b9587au83fzbbfhm9fmj6rhkzw9fk
+X-Rspam-User: 
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 623AA1C0004
+X-HE-Tag: 1794498686-333041
+X-HE-Meta: U2FsdGVkX19/tZqDWPFYRFkg/6daUAByLHJj5YGzybmjEWiEZvYk1GuQf3yvQsCbuDctQFXnulru3qiUPUj8VVxnsRNe8DJz4HI1+4MNfeZkLN1GplWCpALieel4W3jW6dgueEfVY16RlF//NZas1tYnB+SEgF6oIYqe4iMHVqwGsISsw6JxHzkPy+zxTj0hBlSloENljeKtr8L4gtoFbGu4ZsclcVHMOQ282OtkRYvvOdnLHJWQQLTEQ+UXgQW7jMOtuR7p87s9Evs6UvaACY5rmP8QX2UYwjgZCxrntEM/YEpnJu2qOhfpk/EcFABkZlOP+hA4X7yOTJJV2G0E6Uakjm23cDXYNlkks+iDNzcePJw1DEc5u8Yqs0gRbO/322aB9gHspkojTftVP8JIB1pgp6ylxfahBacPI8KqfRzvbK5S/lYHSOnjobWaykfLQt8nbP659z6OXRtePIDOXIp/pkgV1+I7dL+kvoiXYPMMzBqj/P7hpH53KWQNhwpAx2HgoqsQ3QLHCnGuQfgvGufS70oCxlWrjihGKEjTdd7+JtX0VNPcm0muhf11r44at2ECvvpAsrCsESUY8WQMIs3AZDsW666hOlTzFC1F7mYVoNZIS7dGwGS689eR13SwDJ/fKnpQ/2IrsC0nuVsMMLeOBHE5VXBA/eIZo2TZOF5rcqgcZ4CsEuAEP1sOZ0tAQDA1045r4fTmoqA3YONf/9G3Lk45jgF5l16NYTrWk0kYV3TNpQgPHRuzCAvsoQx/44ALyzU1o8caCk04a1WOX5L29CcZj0jux16vF1HsLJwTmgIgyB6TH1WWug0Xaby8ccLhDIaE6VkUuEQ16g3AGxEuAk8beTkO+YapMoOZzbExnvl4BzcU2v3idnqNJCv3kkiRA5aZDSVISlf9x6RhhLAfSWZaqAPeyQyK9tm1JeX/rIS1VsA6vmRbNVbNm0aVSIbrb8Z5E8batwJSNVa
+ depZcA3p
+ hjGEPlT6h+dF4oUJQ3jNYOKuuM+nUx33/+KaCoCc8G5Bgl734iTjua4hGwwx52QhfwmrAbWW2Q+OAK0sxiEtGizcaj3pbyCz9aANt/J4Q26BgoqXIeKh1YxCB34LpyASJ5dbAQT2BH19Wi23sWejIUHRtR/qWJciC6sW459hzm0JUq/cLUESvkDnyAZMBqNCuxbzKIRhNxx6vQKR2EbVfNo+3in/IQ46Luwc4UKbCf9zF4BbZypI7Oj8uP8gSg69tmsNN4Z8aA3YYxPwC4QWvbaicyFS9Txb2DWDz+Q2Y65KL3e/nxAH/jsmjPDeUlUfHhFA/q+fc4POcbSHknYYXtDIdMVvusipGONnOeJ0vfOV9DcOQlG9VJ2Nueotr5zsjLQO7iJNQs8fsDrSTeu3bBuJpyg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,99 +92,58 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 5:01=E2=80=AFPM Hui Zhu <hui.zhu@linux.dev> wrote:
->
-> Hi Michal and Kairui,
->
-> 2026/11/12 16:09, Michal Hocko:
-> > On Thu 12-11-26 16:03:54, Kairui Song wrote:
-> >> On Thu, Nov 12, 2026 at 03:58:27PM +0800, Hui Zhu wrote:
-> >>> From: Hui Zhu <zhuhui@kylinos.cn>
-> >>>
-> >>> lru_gen_change_state() migrates folios in batches of up to
-> >>> MAX_LRU_BATCH (4096) folios under lruvec_lock_irq().  A full batch
-> >>> keeps local interrupts off for up to about a millisecond, and CPUs
-> >>> contending for the same lru_lock spin with interrupts disabled for
-> >>> that long.
-> >>>
-> >>> The caller already reschedules between batches, but a batch itself
-> >>> only ends after 4096 folios.  Stop it early when a resched is
-> >>> pending; the caller restarts the migration where it left off.  A
-> >>> remote resched_curr() sets TIF_NEED_RESCHED directly in the target's
-> >>> thread_info, so the flag can still be set with interrupts off.
-> >>>
-> >>> This follows walk_pud_range(), which already pairs need_resched()
-> >>> with a MAX_LRU_BATCH cap, and commit 6e9be217a3ce ("mm/mglru: use a
-> >>> smaller batch for reclaim").
-> >>>
-> >>> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> >>> ---
-> >>>   mm/vmscan.c | 6 ++++--
-> >>>   1 file changed, 4 insertions(+), 2 deletions(-)
-> >>>
-> >>> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> >>> index 6a1af9b92349..47f2cb25eb46 100644
-> >>> --- a/mm/vmscan.c
-> >>> +++ b/mm/vmscan.c
-> >>> @@ -5533,7 +5533,8 @@ static bool fill_evictable(struct lruvec *lruve=
-c)
-> >>>                     success =3D lru_gen_add_folio(lruvec, folio, !act=
-ive);
-> >>>                     VM_WARN_ON_ONCE(!success);
-> >>>
-> >>> -                   if (!--remaining)
-> >>> +                   /* stop early to shorten the irq-off section */
-> >>> +                   if (!--remaining || need_resched())
-> >> Hi Hui,
-> >>
-> >> I've been thinking about a different design, what if we just
-> >> delete the `--remaining` check completely, and check
-> >> spin_is_contended on the lruvec and need_resched()?
-> >>
-> >> In the optimal case we don't need to keep lock/unlock the lruvec
-> >> at all so this is faster. And it still avoids lock contention or
-> >> blocked schedule, and it might be even more responsive as we are
-> >> release the lock earlier on contention.
-> I like the spin_is_contended() idea and will add it.  This file
-> already uses it (lru_gen_look_around() bails out if the PTL is
-> contended), and security/keys/gc.c uses exactly this combination in a
-> long list walk under a spinlock.
-> > Wouldn't this result in too much lock bouncing in the end? Would it mak=
-e
-> > sense to reduce the batch instead?
-> >
-> This worry is fair.  Under sustained contention each yield costs an
-> unlock, a requeue and a restart (microseconds), while one folio move
-> costs a few hundred nanoseconds, so the migration could slow down by
-> tens of times, with cgroup_lock and cpus_read_lock held for all of it.
-> Requiring a minimum of work per hold bounds this: only honor
-> spin_is_contended() after MIN_LRU_BATCH folios in the current hold.
-> Each hold then moves at least ~64 folios (~15us), and a waiter still
-> waits only ~15us instead of the ~1ms of a full MAX_LRU_BATCH batch.
->
-> I'd still keep the batch cap itself as a backstop, though.  Both
-> triggers are event driven: with interrupts off the local tick cannot
-> set TIF_NEED_RESCHED, so it takes a remote wakeup targeting this CPU,
-> and spin_is_contended() takes somebody grabbing this lru_lock.  On a
-> quiet system neither may ever fire, and one batch becomes the whole
-> lruvec: 100GB of 4K folios is ~25M of them, i.e. seconds of irq-off
-> inside a single rcu_read_lock() section, enough for an RCU stall. And
-> toggling MGLRU on a quiet machine is a common case.
->
-> Reducing the batch alone would also work and is simpler, but it pays
-> the unlock/relock round trip even when nobody is waiting, and on a
-> loaded machine the unconditional cond_resched() every small batch
-> stretches the whole switch more than yielding only when somebody
-> actually wants the lock or the CPU.
->
-> So how about all three combined, like jbd2_log_do_checkpoint() does
-> (batch cap || need_resched() || spin_needbreak()):
->
->      if (!--remaining || need_resched() ||
->          (moved >=3D MIN_LRU_BATCH && spin_is_contended(&lruvec->lru_lock=
-)))
->          return false;
+On Thu, Nov 12, 2026 at 03:48:01AM -0800, Breno Leitao wrote:
+> kernel_lock is a damn hot lock, used on allocations, free, NET_RX, etc.
 
-Do we really need the `moved` counter? Other than that it looks good
-to me. Thanks!
+Nit: s/kernel_lock/kmemleak_lock/
+
+> It is also used on the scan, so, while scanning, most of the system is
+> mostly waiting for the lock.
+> 
+> On meta fleet, this is, by far, the most contented lock. This is not
+> a big deal, because very few hosts run with kmemleak enabled, but,
+> I think we can do better here.
+> 
+> scan_block() takes kmemleak_lock once per block and keeps it, with
+> interrupts disabled, for up to MAX_SCAN_SIZE bytes: 512 words, each
+> needing up to two object tree lookups. Every allocation and free in the
+> system needs the same lock to insert or remove its object, so each of
+> them can wait for a whole block.
+> 
+> Keep taking the lock once per block, but in auto scan mode, check every
+> 64 words whether anybody is waiting for it and, if so, breathe (aka
+> release it and take it again so that the waiters go first)
+> 
+> Releasing the lock is seems safe because it only keeps the object trees
+
+Nit: s/is//
+
+> stable during each lookup, and scan_block() does not use an object found
+> under it past the word being processed.
+> 
+> Tested in an arm64 KVM guest with 48 vCPUs, KASAN and lockdep, running
+> stress-ng sock, fork and dentry workers on 8 CPUs during five scans.
+> The kmemleak_lock wait times of the other CPUs, from the lock_contended
+> and lock_acquired tracepoints:
+> 
+>                    average     p99     p99.9
+>   no scan            3.7us    <16us    <32us
+>   scan, before      15.8us   <256us   <512us
+>   scan, after       11.7us    <64us   <256us
+> 
+> The cost is a slower scan, as the scanner now queues behind the
+> waiters: the five scans took 179s instead of 118s.
+> 
+> This patch does not change interactive users (echo scan > kmemleak in
+> debugfs), given current != scan_thread, and scan_breathe() will not be
+> called.
+
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+
+I looked in the past of getting rid of kmemleak_lock on the scanning
+path but I couldn't find an RCU variant of rbtree that guarantees it
+won't miss lookups.
+
+-- 
+Catalin
 
