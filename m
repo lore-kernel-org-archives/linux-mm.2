@@ -1,137 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3A3606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 22:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF1A606A33D
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 22:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KkJPMBad
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=ib1q3vLs
 Received: by kanga.kvack.org (Postfix)
-	id CE93A6B05F7; Thu, 12 Nov 2026 17:19:44 -0500 (EST)
+	id 8B5866B05F0; Thu, 12 Nov 2026 17:50:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC0706B05FE; Thu, 12 Nov 2026 17:19:44 -0500 (EST)
+	id 866AF6B0602; Thu, 12 Nov 2026 17:50:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BAF1F6B0603; Thu, 12 Nov 2026 17:19:44 -0500 (EST)
+	id 77C796B0603; Thu, 12 Nov 2026 17:50:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 96C326B05F7
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:19:44 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 31DFB1A1CB3
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:19:44 +0000 (UTC)
-X-FDA: 85427885088.06.B48F737
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 52C8E80004
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:19:42 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KkJPMBad;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of maz@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=maz@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 42A426B05F0
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:50:43 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5106881EBC
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:50:40 +0000 (UTC)
+X-FDA: 85427963040.05.C2AF530
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 83DC380002
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:50:38 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ib1q3vLs;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794521982;
+	s=arc-20220608; t=1794523838;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MdFOkR9T1vyvJTEbm/GmyrakOZfYhcZ9ZgO9mPMwqgE=;
-	b=2K9U+6VubagL6WLTZXdE9wsuI7X2sSqzuAzeo2g9U+h/UPRIFi321DdioBv8+4I7IB7fpD
-	LN5b2+FrMjOKsbOKMkLczz5qUGW4RxlLfqCkUH1TJ0i2OXo+QEI11A7JW+yUDtJjOIG9QX
-	UK72Mot8GdMgGRxUg44deitO6vU+HyQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794521982;
-	b=CUeIDvaTubqsHr8zEFH496G8Kjb70fhRHGs62uBgWD0YPfn0kWk+yDu70dW4RhVNQTZ5Cd
-	CwYldYhtLIGFzYD9rhHWg8Zue9hwhEXBKEISfYJqnc5YZToedjsI5YnXaAVjQ/gubzKhK1
-	ZFAfWN/jfmbSvMY4JwGTAi5zUFnrrMI=
+	bh=0TqqnxQNVR9PGz0qsU/cytTwrDEZUDTjkuJZAfCjgjk=;
+	b=I0Jo05Kf35Z+dDI+f1QLXctLSwLPaK0CSZdeSQ+pzw3mQO0xDkPTQS/HjSZOGvTKUT9CTH
+	knMYsEXUMh9DgYO4ZcAYmBcijonxTggqAWuE+jP/wuZqoZ+snrXn3L4k1SOBD3nEF1koRw
+	4NO0FPCHbkfQCSiXoAW8q626153ogqs=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KkJPMBad;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of maz@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=maz@kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ib1q3vLs;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794523838;
+	b=OvJkdtsjOsrQ8ZZtcA+kyIVZfFmEVQizMbhPQpZEcHtDjwLxBGjppZK5WH0CMhqqK4ppLV
+	so3pKeF4TGzxsF/Frts/vb6Qb2jFbsxWHwdIDXAoAO5QvkYx9qASvm6GpL+1fo3TXGk1Pc
+	mFqM6DMhjNqwlTD4uln4nvSjA2CX+d4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 62DEC4376C;
-	Thu, 12 Nov 2026 22:19:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A31C1F000C4;
-	Thu, 12 Nov 2026 22:19:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794521981;
-	bh=MdFOkR9T1vyvJTEbm/GmyrakOZfYhcZ9ZgO9mPMwqgE=;
+	by tor.source.kernel.org (Postfix) with ESMTP id E394A6248B;
+	Thu, 12 Nov 2026 22:50:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B0321F000C4;
+	Thu, 12 Nov 2026 22:50:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1794523837;
+	bh=0TqqnxQNVR9PGz0qsU/cytTwrDEZUDTjkuJZAfCjgjk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=KkJPMBadtLEVv4ypOglQwOiufTUuvQXpZInKdUsDfVLX5m16RASaLRZGF3Pfpwq5k
-	 Z3l76XFR6I6l2Ruv8Kj3Nwk4AFyFkGuK9xYfnJeQQTscKJVWq3zctGaoNQdWQbyQZM
-	 JTfhw6EKmkNKKAx4UaeNOGU3vdAc9pBpcDvKS3OVMw3C+ZTuYa3o9nolv7dXk4a7kM
-	 FNCFi6+G/UdRgo8wHU+FMyG3JGJMXBoJe6ln/FqhEDt8uoLumgEFgCtVUE6ufwZEUz
-	 22ZFh7iknY4Ssw62qkkSZGpWu/c5KtAOmDmY1R2c/TjcUPFbtZo/AbBjdVW5PwfokN
-	 nqgy8nw1bs8qA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xRd8r-0000000F2ee-31UM;
-	Thu, 12 Nov 2026 22:19:38 +0000
-Date: Thu, 12 Nov 2026 22:22:52 +0000
-Message-ID: <87ld6x8zb7.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev,	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>,	Mike Rapoport <rppt@kernel.org>,	Pasha
- Tatashin <pasha.tatashin@soleen.com>,	Pratyush Yadav <pratyush@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,	Christian =?UTF-8?B?S8O2bmln?=
- <christian.koenig@amd.com>,	Jason Gunthorpe <jgg@ziepe.ca>,	Joerg Roedel
- <joro@8bytes.org>,	Marek Szyprowski <m.szyprowski@samsung.com>,	Robin
- Murphy <robin.murphy@arm.com>,	Steven Price <steven.price@arm.com>,	Sumit
- Semwal <sumit.semwal@linaro.org>,	Suzuki K Poulose
- <suzuki.poulose@arm.com>,	Thomas Gleixner <tglx@kernel.org>,	Will Deacon
- <will@kernel.org>,	Russell King <linux@armlinux.org.uk>,	Benjamin Gaignard
- <benjamin.gaignard@collabora.com>,	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,	Mark Rutland <mark.rutland@arm.com>,	Radu
- Rendec <radu@rendec.net>,	"T.J. Mercier" <tjmercier@google.com>,	Madhavan
- Srinivasan <maddy@linux.ibm.com>,	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,	Shrikanth Hegde
- <sshegde@linux.ibm.com>,	Alexander Gordeev <agordeev@linux.ibm.com>,	Gerald
- Schaefer <gerald.schaefer@linux.ibm.com>,	Heiko Carstens
- <hca@linux.ibm.com>,	Vasily Gorbik <gor@linux.ibm.com>,	Christian
- Borntraeger <borntraeger@linux.ibm.com>,	Sven Schnelle
- <svens@linux.ibm.com>,	Ingo Molnar <mingo@redhat.com>,	Borislav Petkov
- <bp@alien8.de>,	Dave Hansen <dave.hansen@linux.intel.com>,	x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,	Kiryl Shutsemau <kas@kernel.org>,	Rick
- Edgecombe <rick.p.edgecombe@intel.com>,	"K . Y . Srinivasan"
- <kys@microsoft.com>,	Haiyang Zhang <haiyangz@microsoft.com>,	Wei Liu
- <wei.liu@kernel.org>,	Dexuan Cui <decui@microsoft.com>,	Long Li
- <longli@microsoft.com>,	Paolo Bonzini <pbonzini@redhat.com>,	Vitaly
- Kuznetsov <vkuznets@redhat.com>,	Andy Lutomirski <luto@kernel.org>,	Peter
- Zijlstra <peterz@infradead.org>,	dri-devel@lists.freedesktop.org,
-	iommu@lists.linux.dev,	linaro-mm-sig@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org,	linux-media@vger.kernel.org,
-	linux-mm@kvack.org,	kvmarm@lists.linux.dev,	patches@lists.linux.dev
-Subject: Re: [PATCH v9 14/14] irqchip/gic-v3-its: Preallocate VPE L1 tables
-In-Reply-To: <yq5ah5huoteu.fsf@kernel.org>
-References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
-	<20261104164555.3555725-15-aneesh.kumar@kernel.org>
-	<86zevn1c9a.wl-maz@kernel.org>
-	<yq5ah5huoteu.fsf@kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	b=ib1q3vLs3nrjWX3UOR0N6gf6I7Izk3R5STAMgmrEseBFZ2+/2ZtaLtD/xHRZV48+g
+	 gdu2jbJ8rJ/E34iojbyi7lQ7kFgGmF1BapDESUJnU73YEDTFck/8O2UKwr2aOQ+6xK
+	 RkXUOhwUwQIlfXlLqJw9puz+w0Be+j12bJXOqOak=
+Date: Thu, 12 Nov 2026 14:50:36 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: =?ISO-8859-1?Q?J=E9r=E9my?= Jean <Jeremy.Jean@oss.cyber.gouv.fr>, David
+ Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev
+ Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
+ <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau
+ <kas@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] mm/khugepaged: reject shmem collapse ranges beyond
+ i_size
+Message-Id: <20261112145036.97f74a828755d5b9178a3e3a@linux-foundation.org>
+In-Reply-To: <avYBFPhB46XWAG4A@pedro-suse.tail5790ac.ts.net>
+References: <20261112142335.2749597-2-Jeremy.Jean@oss.cyber.gouv.fr>
+	<avYBFPhB46XWAG4A@pedro-suse.tail5790ac.ts.net>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: aneesh.kumar@kernel.org, linux-coco@lists.linux.dev, akpm@linux-foundation.org, baoquan.he@linux.dev, rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org, catalin.marinas@arm.com, christian.koenig@amd.com, jgg@ziepe.ca, joro@8bytes.org, m.szyprowski@samsung.com, robin.murphy@arm.com, steven.price@arm.com, sumit.semwal@linaro.org, suzuki.poulose@arm.com, tglx@kernel.org, will@kernel.org, linux@armlinux.org.uk, benjamin.gaignard@collabora.com, Brian.Starkey@arm.com, jstultz@google.com, mark.rutland@arm.com, radu@rendec.net, tjmercier@google.com, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, ritesh.list@gmail.com, sshegde@linux.ibm.com, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, kas@kernel.org, rick.p.edgecombe@intel.com, kys@mi
- crosoft.
- com, haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com, longli@microsoft.com, pbonzini@redhat.com, vkuznets@redhat.com, luto@kernel.org, peterz@infradead.org, dri-devel@lists.freedesktop.org, iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, patches@lists.linux.dev
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
-X-Stat-Signature: 75tkoqeagywdbwpwyz59rpu6hgw3qbzm
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 83DC380002
+X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 52C8E80004
-X-HE-Tag: 1794521982-8557
-X-HE-Meta: U2FsdGVkX1+pR2Xm6PyX5SaiW+cCVq65NoyMrRgAUdlOwmAD1Qhbj9LX+7Io0ZtSpWpPZJCC8V+SzXFwPNFael2jBhYwhP+15oHz0fZdyBdjAdhHAWCdIdM2gmoiRtL0cJXcZQ9HLy/Lg389XO5k+OYl3UWHQ6YUh86KP3kjCDasstGYotm9XGmsO7VKdOIOnv9cK0AhiyOJrTqYJZgSjEHUEQX4Ph3b8FSb+S/18DtUcra+j3sXOKtoAYdbqkTkymhIVxjFh9QGBs3wmwEh3r3EzlDRefqKHl/goAxPQUCiPff5AP2BtWxc0IwNIp6gG3T8EOCgrL7iUeJXX9qFcF0VvjjQepB4CUOMUnMcBuTZ6QXFBnYqsgJQv2JX9/cyaAUFmiK9pN9nj7dFpNpVwQrThi5Z3+ly/8voUSIEFkEO2MzZT7bV9+OYZ7HeZpVPk+qIIc3OTJ4TBBguQOxZru8+sGCsYnfiQgHk5HfDXvxTmFcdJCyOOhSPF6mqONtGwAaZFLzoXZxjCMsV0TeAGYO69iKRGheGsV/eUGjdcupDP1Vu/tetiF+Ab01GS9i5uGeDYk9zNd0bWEajpDka+tPCZjjvGVJbzO2qbXtlQlNUGw03n7YzZfEg5GL6F8VkfdWQtOcEK2Goh8n4kPeALBl5VPtf+KKBy2eptT8hmvDRFBq44s4Ec8Gkwz+E3ELPhYhh5OqMFxDo5voKBuDD/oP7CwdIHF7YmTm003W1A2MWqVpX1MpYWRiJSWgDAV0nk3GJ7PVKokv1w9u7Y3myVn5nUjcy+4+0PYoWU/POC86XGtURrUUHvp9AHO9Hl3Q4HKz+Wb128RLr4u/sUq9RvNWqjcDwZR2zb8fOUPPMkmb98D2MY8QjuopsLb0Ej9h0eBtqzrZX59HkINWWq8AK5+tAQ2yGLAy5xOFLh7uSoNgK7X464aSVeBeqHHwK9s+GyhyEZtRMuFmwlYawjvI
- OtQvIDRC
- CV1jejqZEbvM4ZLX2NwuI0o3Z6H7rBVrJxdtFaZnEqsb59dC8zzabGAnMEdI6D6jh13TxAqIIA7potZz9NJQQJuatcYXmbar2F73Ih1GVWyRvo58QtOMSIXMU/MocfbRV5UUBzKnZg7Iwcqz80ef7OOhzoxHhqiMYsOioDmtzmuU9foejXQzhu5F88PFkU3TXzMIcZTLx5b/GZU6e3Mw8+OZuhJz1Z7LFiYscn+1UNC/NuuzYCg5dkY5n8VBo1qKcUHzoAlK5IS6NV8qO1DkgjfxJRcPYB7z/kNUsNQtHAQWzfBE27teVnMSfm+xiKzFK5olN
+X-Stat-Signature: wf5qnt1rf3nx1jxikbnsai15kxq6p1nw
+X-HE-Tag: 1794523838-720937
+X-HE-Meta: U2FsdGVkX1/6I96/Aik2ONqxunwzU+fB9++W+Wpc+16lWTYdLYdQH+Ci3WSMWGpXbTuPFpefjxoP+4tWrh/N7YKAkdHx8WlBjGA2U4XAOY3jAhzytl0LLw8UfOuG8+ZSvP8+0JV3SC4Tmlcl3fmtPlLhQOfbORRly0rnLPCuGLUbecgUd9pMG2wY+GlPKF8QRZRk9dk8jAjSCUphIQk831FtKWiQ6JI6/LpKQly0jV4QRN7hzfJ2kYgxMXjWojhwKg1uCkeq0FLyvxfYcyJhyvDHlScDx69QQ7kUkGdjsckpWwvTKx5G7Mpon5WJ8mnMwAIVbIODTG3hnJmcvC/iMxGogdpWWIikPGZeYAd6Cp0ypsx6qMUVVYcw0E5XGROSPyUzoXCp4uFBrV1bIogas5ICSywVDN0h5iJfnrcd1GEH2R06FC0Ix6Jq/v5+aTmDnqz/yo6zFvQ03xOHSENiF0dSE/DKs8/uuRIee72ndBu9ocjUbox98Y8+Fi+qh8wvFy6vjma6g2mYR6twA/UzOuCl8x7F6fUIj4jcUNERg8zrWKxMS5uwoF4oNOLWoynKeR3+r0anErzrkkm+5Xi6O6yx9X9dTOSpGvu7NpNhjKa27ZPPcK5mbvtwW1+0XbYBhLRnJu+6HnYsnkUS/KajTHgByj9TSWZupdamDTMJ9+zoXnMj2Gsgqym3YuYivn1tiNISRIimPNCGEddmL6+mk/ihe5nKkOltz51fBHT7IDNZjEn6EDNoZJyIAIxdZckjGmDHrMRgbWHovxyTqSDgNKYoqmt2IvEeHgts9acixynjALGoKbl1536ji+D+9G5DU8uWhkPyGBUWslulByBZJ3+ABH6/VsaI+o174Iwp/KhJa0fNbpZdgiMLpiMUVELD4pIQTKNNsUOYKcr/9E6mDfi4DJwZjvSdNxdd/E2KjTtL2lGbFWDv+bRIZmhtv/AzDCJtIk1gKcMmmq8zLwX
+ p9I+dNpu
+ 5NukgfQVAXzQaeegZutjcwrKD/T3WU16doBa3KO0uIUOwyGwLYSTCXWozEL8UvTfKKwUVCzAxPy00ekNmtFa3zKLaxKP+wSjextTL+4Q59gWfE37rpDKRO5EjK72U1CU7KjYlSYLG9sINDOxnDoA3MOSnR3wgUHfhC8d8CI5qvv88cfT7jTGFQgXvkE5DglpjhPs9YXnJmrCVFg76DgwHVKvmktPq1uvje4NsshMDqk/QatBgMntp1yp4zdo0WTvJJL+qsSET/QI6PpCUkPucU+D1+hBqDztk5znQH0uNhjfNk1J/FRfStoJhUYfCX7L6eIdPrwY5So66GB/1Rvylvi5Rb5TRYzShMMpiA0cPm9wXU5Wv7LVWBIJjXrOgZJOVbI7TwZLGIR4HUdpR9isjnjj742VXSVl/xXLxV41gycORr2xUlJT5VvdMQw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,50 +100,39 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 06 Nov 2026 15:45:29 +0000,
-Aneesh Kumar K.V <aneesh.kumar@kernel.org> wrote:
-> 
-> Marc Zyngier <maz@kernel.org> writes:
-> 
-> > On Wed, 04 Nov 2026 16:45:55 +0000,
-> > "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
-> >> 
-> >> VPE L1 tables are allocated from the CPU-starting callback, where sleeping is
-> >> not allowed.  Remove the page allocation from this atomic path.
-> >> 
-> >> Use a blocking allocation for the boot CPU and record the resulting table
-> >> order.  Allocate a page of that order from the sleepable CPU hotplug prepare
-> >> stage for each secondary CPU.  Consume the preallocated page only when the CPU
-> >> cannot inherit an existing redistributor or ITS table.
-> >> 
-> >> Reclaim unused preallocations after the CPU reaches the online state, and from
-> >> the prepare-state teardown when CPU bring-up aborts.
-> >
-> > No. The way to do it is to move the ITS probing out of the
-> > non-sleepable CPU hotplug path.
-> >
-> > I proposed a potential hack at [1] (which I find far more palatable
-> > than this proposal), but the real fix is to probe the ITSs as
-> > devices.
-> >
-> 
-> Could you share a bit more detail on what you have in mind?
-> 
-> Are you suggesting that we create a platform device for each ITS and
-> initialize it through the driver's probe callback, while the rest of the
-> GIC initialization stays in the existing early boot path?
-> 
-> Would that mean the main GIC is operational during early boot, while
-> ITS-dependent features, such as MSI delivery and direct injection, become
-> available after the ITS devices probe?
-> 
-> Is that the split you have in mind?
+On Thu, 12 Nov 2026 18:11:35 +0000 Pedro Falcato <pfalcato@suse.de> wrote:
 
-Yes. Then once this is done, all the tables become normal DMA
-allocations, for which there should already be adequate support.
+> On Thu, Nov 12, 2026 at 02:23:35PM +0000, J=E9r=E9my Jean wrote:
+> > MADV_COLLAPSE lets collapse_file() treat absent shmem pages as holes
+> > filled with zeros. It does not check i_size, which allows one present
+> > page to become a huge mapping that covers the whole collapse range,
+> > including pages beyond EOF. This makes those pages writable. A later
+> > file extension can expose their contents after F_SEAL_WRITE.
+> >=20
+> > Hold inode i_rwsem in read mode while collapsing shmem so i_size
+> > cannot change. Reject a collapse if its page range extends past
+> > i_size rounded up to PAGE_SIZE. Keep i_size_read() outside the
+> > page-cache XArray lock because its 32-bit SMP reader is not IRQ
+> > safe.
+>=20
+> I don't think this is an issue. shmem/tmpfs purposefully maps with large =
+pages
+> across i_size, and collapsing across i_size is a feature, not a bug.
+>=20
 
-	M.
+hoo boy, this again, See
+https://lore-kernel.gnuweeb.org/linux-mm/nwkpojnictbg6jicccpxyfi63ol4tmfajr=
+lx24u5xxoxx7lv5f@jkw3o7j6tlfs/T/
+and enjoy.
 
--- 
-Jazz isn't dead. It just smells funny.
+It's not good that this sequence permits non-zero data to be exposed in
+areas which ftruncate() created - the ftruncate() contract says it
+doesn't do that.
+
+J=E9r=E9my , you haven't explained why this matters.  Is there some
+userspace code which is encountering problems because of this?
+
+Why did you propose cc:stable backporting?
+
+Thanks.
 
