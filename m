@@ -1,108 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81C1D60A2612
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 13:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04C2606A894
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 13:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=khBws98a;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=mHH8HdDL;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=yudfpQVa;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=7Cp2h/U/
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=rSVlAVBA;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=K/0F5ksR;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=eCAG9TQz;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=+Ip1OpXF
 Received: by kanga.kvack.org (Postfix)
-	id 9D3B36B05B4; Thu, 12 Nov 2026 08:10:54 -0500 (EST)
+	id AE9196B05B0; Thu, 12 Nov 2026 08:13:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AB306B05B6; Thu, 12 Nov 2026 08:10:54 -0500 (EST)
+	id A99886B05B3; Thu, 12 Nov 2026 08:13:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C1AA6B05C1; Thu, 12 Nov 2026 08:10:54 -0500 (EST)
+	id 960CE6B05B7; Thu, 12 Nov 2026 08:13:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 667116B05B4
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:10:54 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EC45BC02CB
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:10:53 +0000 (UTC)
-X-FDA: 85426501986.26.C3D8E72
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B5C56B05B0
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:13:01 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F0AA61A0310
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:13:00 +0000 (UTC)
+X-FDA: 85426507320.08.2878FF5
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf21.hostedemail.com (Postfix) with ESMTP id BCE011C000F
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:10:49 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=khBws98a;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=mHH8HdDL;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=yudfpQVa;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="7Cp2h/U/";
-	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 0890F180007
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:12:58 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rSVlAVBA;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="K/0F5ksR";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eCAG9TQz;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+Ip1OpXF;
+	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794489050;
+	s=arc-20220608; t=1794489179;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+8mRoBCnrHPzd0XMYMn4r/3hQsLQpAk4ZKwYYX5EH9U=;
-	b=0018AchAW43CiuoNpBj6oUbs2VEBuz6flvADnP5bhSuyRLUaAn5wz4o8wo0P/wCiDyhWJc
-	iT4Y432Qq9rHckR5VZFgeiH4N0U0nUqyhaq9QN+fipF/S/UXVLOv0DCWd1uFdOBpuMt3cf
-	ojCQCTwDhkGNYQf/WttvslqJQ70VhDo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794489050;
-	b=ti9lZ9rBhQb2O0ePog47Wp8o+mmvqYM3z2J8gues0Q2dWzxIbRLb+3ebLkgRJRBjf5EJx9
-	7tYQmYcj5a7vcRzDF5OyZUIPtoee5W60OQnpuhuCC/cOUaL4V+bbZO+DG+qhbx5Wu2k3OC
-	Q3yit9MiJ05KE5F76iPkFukBoe3Tp/c=
+	bh=OHN1jM98e/rDidDGGpuhhKAQmbd/D3xE71tgIR8sZI0=;
+	b=Xp3cTwQEcKzzRI66iRfRR5/4bdeaJ4BYHNraKKdBoxyyuTfYFV4VvWFaa1VPui7dB8D867
+	FLqhTwgGTTKJG/683ZZy/iYdiEKap9o4j2xZkmKMmmRNavo6i65UMeqq3fUJpljAfPxE0+
+	te3QtkiZBhgdxsmvoF2KeiUPLw100ts=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=khBws98a;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=mHH8HdDL;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=yudfpQVa;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="7Cp2h/U/";
-	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rSVlAVBA;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="K/0F5ksR";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eCAG9TQz;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+Ip1OpXF;
+	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794489179;
+	b=faBrsXKbZfLnCCqviQ+6w9K0rMFkaXfl2NK1QwkdrkRCsN9g7OET28jOfQfKLva51F5Me3
+	EYZOfq7BGv6HJ4wXZbH/UG8XOSIHpT9K6v+mL1k5+7sI3lvmJ1s9JrjFdYHZmF2wgReYIa
+	L6U5iUrpVCJrh/US/8+hH9JDYb4ekXk=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 09F411F444;
-	Thu, 12 Nov 2026 13:10:47 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E1EF31F444;
+	Thu, 12 Nov 2026 13:12:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794489048; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1794489178; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+8mRoBCnrHPzd0XMYMn4r/3hQsLQpAk4ZKwYYX5EH9U=;
-	b=khBws98aZjch3SldFhWFgxIKHIoBpABBaU0SJRAUEqItnJsjesSSAI4wfIj2NbaxCEp1N7
-	QKlSlgtZ5CR6TKfRKHtSh8AXrxsoc7/Yotf3B1Dj/rckCBE3u/mxRsAvVgo/OjkR+xfDA6
-	AeXPIke5G4rWKyYc/F04/97pTtOxsIU=
+	bh=OHN1jM98e/rDidDGGpuhhKAQmbd/D3xE71tgIR8sZI0=;
+	b=rSVlAVBAuFTbEKmNvga87CMsJiAzR6P2jK3iBgYEhwBBW7M/FRgIUozQfpxdflyln1UAQp
+	nh/gLnT58Yone9jFxprqcuST6euBhfXwojj4XxZKxY2ib/aoz/ZcNwGsAiJl0dYmgVkpuJ
+	gBoMyEljV8teWIdoq//KYCj7hBdu09E=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794489048;
+	s=susede2_ed25519; t=1794489178;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+8mRoBCnrHPzd0XMYMn4r/3hQsLQpAk4ZKwYYX5EH9U=;
-	b=mHH8HdDLqRNSqcMwIMyKygIYFS0GA5cFHrjAdNKHhRQDxU1Z7p2zWp30YXa+jvpkyL6jsp
-	V/G2TP1NxsfjFiCQ==
+	bh=OHN1jM98e/rDidDGGpuhhKAQmbd/D3xE71tgIR8sZI0=;
+	b=K/0F5ksRV1fcZHji05HSZ765KfchtCSSErL2Vc/yTWA97NFYFFH1L56VKvf8XZ8/7prJlo
+	l2ViLDN25EO0J/Cw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794489047; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1794489177; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+8mRoBCnrHPzd0XMYMn4r/3hQsLQpAk4ZKwYYX5EH9U=;
-	b=yudfpQVaf+kxwOs+11zVQzCk5i4AUkcNOg3fl6b2qVYqM5R8F9AA+lK+1JJ1Zf/bybP7Uo
-	29HyzcXedyLuhvYaIPNISzZMCr3g1bcEaGOKl1fRNcJSohuXxd1Jeue/sFqdWqMmSRFFf6
-	3qdsSr2voULTS+/ciJuUBItmT5YQe/I=
+	bh=OHN1jM98e/rDidDGGpuhhKAQmbd/D3xE71tgIR8sZI0=;
+	b=eCAG9TQzbbdiUHGqQ1rrVJEmK+TN0G3+jagjuKjYTTIdr/zfnlkgnGKDrHhDB+qsmiM45I
+	Qmg5DK+Lv5CsnkHrL42cmj3p+tWJHH5eQhYAjpj+mzYDP0xxT18QNS23th4uQzxyrgBu+3
+	iwu/iIfrKhdftLrAvrnzr7MufKezlbs=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794489047;
+	s=susede2_ed25519; t=1794489177;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+8mRoBCnrHPzd0XMYMn4r/3hQsLQpAk4ZKwYYX5EH9U=;
-	b=7Cp2h/U/VD0DipB87nndzauJZ/s+pnOBVrvC5P2Ve2lAhEszUWWwSC6LDlKKDMkRkDI9ld
-	DiXEgaNGlc1cSaCw==
+	bh=OHN1jM98e/rDidDGGpuhhKAQmbd/D3xE71tgIR8sZI0=;
+	b=+Ip1OpXFy6x05CiEfWql/dw5z+HEyAEHtC4MFasKsOyOvnZvX7onaetbPN6Pdx2GKW08xv
+	vkL63C9JoRlmD7Dg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4E87D134A0;
-	Thu, 12 Nov 2026 13:10:43 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4EF8A134A0;
+	Thu, 12 Nov 2026 13:12:54 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Gr4vB9O69WpOcAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 12 Nov 2026 13:10:43 +0000
-Date: Thu, 12 Nov 2026 13:10:41 +0000
+	id 3PJECFa79WqQcgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 12 Nov 2026 13:12:54 +0000
+Date: Thu, 12 Nov 2026 13:12:52 +0000
 From: Pedro Falcato <pfalcato@suse.de>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Lorenzo Stoakes <ljs@kernel.org>, 
@@ -132,33 +132,31 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
 	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
 	Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org, 
-	iommu@lists.linux.dev, netdev@vger.kernel.org, Chris Mason <mason@kernel.org>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 3/9] mm/mmu_gather: flush pending references early
- before the folio limit
-Message-ID: <avW6vTgrnBRn0Xnc@pedro-suse.tail5790ac.ts.net>
+	iommu@lists.linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 5/9] mm/gup: limit pagecache folio refcount when
+ grabbing references
+Message-ID: <avW7MFzYJJZ0B85d@pedro-suse.tail5790ac.ts.net>
 References: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
- <20261110-refcount_overflow_stable-v3-3-318625d63a98@kernel.org>
+ <20261110-refcount_overflow_stable-v3-5-318625d63a98@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261110-refcount_overflow_stable-v3-3-318625d63a98@kernel.org>
-X-Rspamd-Action: no action
-X-Spam-Score: -12.01
+In-Reply-To: <20261110-refcount_overflow_stable-v3-5-318625d63a98@kernel.org>
+X-Spam-Score: -11.80
 X-Spam-Level: 
-X-Stat-Signature: 3oubgzr4r978gcu81qxs9qd6d5isgpy1
-X-Rspamd-Queue-Id: BCE011C000F
+X-Stat-Signature: f9g536k4158r8bpmih4xrxidic115z4k
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794489049-779360
-X-HE-Meta: U2FsdGVkX198FLoC/7oM7ZRtUDnAt33kyRgXHIZbbugBjV/mWD5crwbuZboW1liXhR3p2Q6ORStEljnN4Wr88Bt5c06JdMaNM3/7sULsXnCqhKns25FryDKWdsFKtKj47iMCGD23OCUu53JZWkN3PMpn7PY5tBqSON+9GpVHGBsj+yx05WDQa+24Nx/qdqZCZDMoaA/MQNcSWoyqeKNnlqHbtkLP8/EYqovOkojY5mpJWlbF1YbugGrFJ47btgL0GJJ3vXOdrqdzNRm2PAlg/Sek4VnPzpqvJHKTTfthekzr/wtvFKeNMUGwDx98Z9JMujxoeaI8vOkfd0u9Ic7YSYKIf2snib5vKHcg4jb/VhU1ZNn+qWNnbwrd04uyc8/8sjdee1NVLbPxWh9N2Mey7/wlEe/NQWt6X5Y7YbSsnbtkh5rdXPBTm3/m96xd2nI5aQM7DwBZDNF2blCCCdZxy7wFt1vKxR2e8V7rxHggtK59Hbhxh+LYymA9YydtvlQrw2Wwpd6CSJRuqxCFDfPc+YlSj+McR3AWIQqDvdU7hfHLc/tju/a9AiAoNGkTzi+7z2BzlN6zcnqR7fQ5erahHB4qOIAO+inMtr+Yh5Nt/0zr8LOzWhLUdhxntz3GoV5poUhjjVviDmFgvFNIKXlLHfjNzaoUeq6fHlYnbveB+0xMQ+LaoOA6q5/wibIKJoHAYO9x6ZCEHiZZ2LZXGYUs/39bRHUvPHJHbds61e3rpzeYsCtdATUkKVKU2BTGfm3NPtFlNdK9JN4h/RVukdc8tQa2bmlSE13lg8OLvRJwxJ06dSKJ69c2KtmfkoCMnG19DU/06nVaNyheXgz13o+JTO1SO3w2vApfmm8yPhRJJwOaeb3tdasguai8yM2pNI7nDxnoPRLLTAGMK1Q5k6UDEKBj3Y7Egc7J2u9BymhrrGAgMsY3ytIi6NL5VPJ5bxNdjXXzKEiu4g2aDkDFDwL
- KfLPIa7S
- 5l9rV0tSs3NPfJCjD9H12mmSg33Vha35FIcptsXxod9G+G/vDeu5oMBWKM4jIXDrRGiSqA1FE+DuCsK+au4cFx8EwsqDIlql+HTye6ZECQkr6rbwk2Gxh5LxHKKQjLeFFZ+G9YXqcj+EYyd8KbEEWQC1kq4GpUw+UOh/HWqSlLrsBt1MTdC5m8VrrLeE0CfJr3FacKx9i1lD1IsfrtdGJrcUfESnjeBD4Zuu6DbKJfbrDX1DMR3irawV3RhpuDZDG3geEw4gBmZedfuBm+iOoFMsD/kUYk30p8E+k91I6+o0stpSlSGYq+Aj9MEo8Nm8oA0n1fEMym4ue94f7GzfIxVPGQTGm2SosUhIBerHL1z+ILgJMm0Zn+4djb0mXwHC+qazw2fXvAA2GTvUuiuJELORSvgQsLho556ffgdNlEk/zyos0YFAiffA6WA==
+X-Rspamd-Queue-Id: 0890F180007
+X-HE-Tag: 1794489178-451601
+X-HE-Meta: U2FsdGVkX192sRxu6i4MV0vHLvbzITS+ZQNYb32nyO+T3xPitC6juLEf7xI9Eb0BCCS501jampFuwsKb76Z7Zjxxt+o+bGgy33E6LvPF7Q44qqyeYjwyzvjCCKA7ShBXMSd+lSBTpDJgEW039yfY1SJbzm84b/iyL0QG0QV59W65FcknTWdeXt4HL8dKX0aYHtb4lSD6vTJno8yhHm+6HNsc5XowIbugI8pAr6ZX04LWLN55e68tf48x1ijYv5QaBvIqhXtex8RZCvaDfJLg+8ZS/Dw7FR3eF/oaIiQigsJB1ZHn5PJaptbEqsF2Ge9XvW160nw6o9aybAJ7Lbuq6SieCXxGrgZ1JZJT2Fr6lK37J5Eh1YAyYwtkM9TBCznwFMxFzRRNuzXhZwDOxBbCg3ZrcsKIZkZLFn9g4AbCRaYkCgCxIrMCWOjI1hQVLbsovtJKs+fNpOK0RTDtZt/rsQwHCWpRcjrigIEEJhHart4iM8ep6zS5QdwszOAK0vke0NVMM+ewOrGbRqnanMG7Whfkvd3pvbeLJgX3VWXsvTg7BNvNefF2lQqti+B5UKQs5njosYh5uB2WP3UCZlpSCM6oIf09gkZl+dA6ps7Vj63w8wwuAEiXsxLT7U6vIE0KHxjsoU+M9xSjDPMJzjQxsp8iKvF/0Ju+63MyrAVLRpivZx4Ll+H7sNU79PZt+WcC+yMzG/XdDn2tvVT9IiX5FVeDjNu3Iru5v+1yW45MJrPltqTM4r8r5panYS2DN8jaavNXibLf1FcnELlA/HLMJxehnBiTYb6LugfD3ozZIl10Z/Ycujm6qv4+BQ8pTO7doycERg/fYCzvamKtFcbQ3KqK4Vihtr3l94cscICKSaPhFLYaSDCkWgKn04t2rMjZpQoA+oVWu5hM9komk3wI6bOxCLM7Wpvl1pe2X7KmUSXnu6q3NHinU90LTj6eCLofdo2X87MxgeJ7DW6ip7I
+ Y7DOIg3L
+ Jbv0qe1OLmDaYMPCU+lYDUjisY5SGSFxXOT3tSY6lW54f9K8YXmmwPzr9Rp5zedFkWiiEhA3ZlgojkCR6IKpaDsN2cUZYvTo14c1gWyfM5ycfiY/AV9rgH2/zJ38YuP9EF/VE9XIIe3p5Xrz4peX8kQpW0QtHLKNaY3wYEzaRFA0XzxlUROKOawFcnw4lmrQBKgqgl59fwTFQ+DEJUoCJ34ZY1dKnM/QrbaNpQ2F+PNzTXN5QubkW4VOxLRfYl938qiwOMrqzC/JueoCgUR9PD82Js/YyJCHJcOBbqR4eGP11uy9kTo0RiFycn2GqErdNiYrg1h/d+Jk3N58GItHkur0R6RjymS2Aw4iHp+6Sf7CnALpi6dEJ7cUyXgFrRiyqu3OP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -167,31 +165,26 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 10, 2026 at 09:35:43PM +0100, David Hildenbrand (Arm) wrote:
-> When a task zaps mappings (e.g., MADV_DONTNEED), it can drop the PT lock
-> and defer dropping the folio references. In the meantime, page faults
-> can refault pagecache folios, creating more references for the same
-> folios. These deferred references can build up over multiple VMAs.
+On Tue, Nov 10, 2026 at 09:35:45PM +0100, David Hildenbrand (Arm) wrote:
+> Let's add a folio_ref_count_over_limit() check in fast and slow GUP
+> before acquiring additional references or pins.
 > 
-> Let's just request a flush after enqueueing a pagecache folio whose
-> refcount reached a certain threshold. Start flushing well before new
-> references are refused, regardless of the caller's privileges.
+> Keep it simple and use the check for all folio types.
 > 
-> When returning "true" from __tlb_remove_folio_pages_size(), PTE zapping
-> will flush the TLB before dropping the PT lock, but drop the references
-> afterwards. Refaults can still race with that, but flushing early reduces
-> the risk of letting others hit the limit.
+> Also propagate try_grab_folio() errors when grabbing additional
+> references in __get_user_pages() and in memfd_pin_folios(), so hitting
+> the limit returns -ENOMEM instead of -EFAULT and -EINVAL, respectively.
 > 
-> This is a temporary measure until we have something better.
+> Keep the existing invalid-refcount warnings.
 > 
-> Reported-by: Chris Mason <mason@kernel.org>
 > Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
 > Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
 > Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
 > Cc: stable@vger.kernel.org
 > Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Same points about funny weird inefficiency applies, in any case:
 
 Reviewed-by: Pedro Falcato <pfalcato@suse.de> 
 
