@@ -1,133 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261A3606A32D
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 01:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A19606A88C
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 01:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=F+m434hx
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LDmVtL2F
 Received: by kanga.kvack.org (Postfix)
-	id 408336B05B0; Wed, 11 Nov 2026 20:50:40 -0500 (EST)
+	id EC2D66B00EF; Wed, 11 Nov 2026 20:56:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B9006B05B1; Wed, 11 Nov 2026 20:50:40 -0500 (EST)
+	id E9B146B05B0; Wed, 11 Nov 2026 20:56:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A8AE6B05B2; Wed, 11 Nov 2026 20:50:40 -0500 (EST)
+	id DD8166B05B1; Wed, 11 Nov 2026 20:56:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 047266B05B0
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 20:50:39 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8A6B512041C
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:50:39 +0000 (UTC)
-X-FDA: 85424787798.06.3281E1C
-Received: from sonic311-31.consmr.mail.ne1.yahoo.com (sonic311-31.consmr.mail.ne1.yahoo.com [66.163.188.212])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7D5091C0004
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:50:37 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=yahoo.com header.s=s2048 header.b=F+m434hx;
-	spf=pass (imf20.hostedemail.com: domain of casey@schaufler-ca.com designates 66.163.188.212 as permitted sender) smtp.mailfrom=casey@schaufler-ca.com;
-	dmarc=pass (policy=none) header.from=schaufler-ca.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794448237;
-	b=NuD+nl9WDPF3+MOgpBD1Oj0cdQYMXvLVYQvU6r1q52LTZ7ayaV/HRGEDML5IJkYCSAxXLq
-	65FsT8RF8WQe4EvYZvdhBhJJGkZIxLDLpUa17zUDN78bzdaJoMX/zsmvmgVb8Xg4dYDdIw
-	A0hbRPqP8A99Hc1idIN/qcm2EAVQMKY=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=yahoo.com header.s=s2048 header.b=F+m434hx;
-	spf=pass (imf20.hostedemail.com: domain of casey@schaufler-ca.com designates 66.163.188.212 as permitted sender) smtp.mailfrom=casey@schaufler-ca.com;
-	dmarc=pass (policy=none) header.from=schaufler-ca.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C15796B00EF
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 20:56:52 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5CA18A7FCC
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:56:52 +0000 (UTC)
+X-FDA: 85424803464.28.770B06A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9DFE520003
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:56:50 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LDmVtL2F;
+	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794448237;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1794448610;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O8h9fybdyu+Al7CdWlfRBQ6LgqQutaBSF+Rc2HGjCVE=;
-	b=7POYg3H3bqBVdJS8ZzpJYbeMKRoVBpXt0SyohATUZjpjfphlLObCEsEVzFsf+Ot/L/jU6s
-	T9kYMHFJHlOKJQi2sqkDK0SDI/2oguEp7JZysakdWe2K70+E5bhcUHnpk9abUHfWw8tFyE
-	I3xRN0cXZuhx8DzFocZUoNKe2ml4sVc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794448235; bh=O8h9fybdyu+Al7CdWlfRBQ6LgqQutaBSF+Rc2HGjCVE=; h=Date:Subject:To:Cc:References:From:In-Reply-To:Content-Type:From:Subject:Reply-To:Content-Type; b=F+m434hxnazo+znIsDN87b1q6q2BjDXrSK85l4sPO4/7/Nv6ouklEMGBpfrTHUnO8eGiNQoV5Bbw/uB3JZACliQBg8PtdTRYRP97HHZoegx3ArYwH69kAdVaUPkV7WcyNd89YKs91cZCwmWeziNsUM+FCRLahqzZW3a6Ku8pvIiJlMO/7XaKbdkzRicymfmmSk9XFsFNG+fkHI8UO70pZ1hFT9v2XQiwRrAslvpHUFbDR+3rpTT4Ikh/N/oSBL0qRMnhxDrBkdI0Mmku6tTsyJWpgcJjSTSvBuepznmh0kGiP8yElqSHRAm6ov8qvVTBbZJZj+71HtVfmpD+WAp7XA==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794448235; bh=cB6ms4YZu3OSr7Oj5Ktyy9vRYllWqlKKBSjCDtAOhd3=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=Wh5tO+A7k6l9RAB9CmF+7nFPpV+s7vwQOvHRCpB836zmpk+EmZdiT1obFQYb3eEYUV/ZZrDMNSGrpqiSFrVBvEAP1+BcX3bVXL8AkZe5aM0djERGyxVy+oivb40ItIA89tHRP/kW5BzO7GaPGZrOTfFkDQF1HHnKQVH/ifoH5PYTL/BXjLkbPViq5JKecTMlRIryhz3iU6NkOHkP1F3oliaijdeTD+Tk00HCA4w802Q1PFZvsZSndMk6hlb4A1wMRPh3z4tVeu12oZckS5JIJR1ywCFknBKWBE+hVxojbZ57Qr3RCaKJrua5vLBD1s/SnsdmRZ+/JLOhUlVDaAQyJw==
-X-YMail-OSG: zqmnDtkVM1n5t6ueog55b_vkFHSYM5E1qoECEJywzBr3UwiKAfUIVI_o6w7R9SH
- CQ1t93f4qyBpZEcVGjU2OBO9C0Of8.lRAD_UtcVdUMSf6_GiG98G7rNXb1ZhUGsyYLDyJE5oLG69
- MPpknxdoviNcfunvMa.q1ATsxUiRNZaaYFEtaSi7o3ARz3uzFbYwa4zXUFVTxVNR1M4yEm8E_vMu
- CX3lc6b1b0MWbnmh3DAeGebLmTpZwI12LuF9QH7MRRpV.Y7YkiPkkooycQl42qWPa_ZCsKSCVnTi
- cfYjzn7ZtEqmGYVjYEY1kEbVCA4JoS5GMMDKMoO39G5YhBugROnX2jrgGh0AwdwAby30.ZBxmd.l
- S62hS2hlPvIDoPxGhzS2whxCcIZrt8XbiUGRsBq2lfu8t9x.TIubZ4wIiRqzfDYoZIwioLDCjm6k
- .cljRFJEOnSix_ImX_sSyVP7eQAAEJ1GsHeUHb7atzAIHDlw0lV7YT_EQZaDbjuCghjYyGwMa7FJ
- LxdRDFOXlr05WMcbROqV0a4sd0J7UyT01rGVa2p8mqlfg_ZPSk1p0.zKLMJDr5A1o8n0sxe4LbiR
- qbREBgT6XAwECEJNbNHKO1YTM4iOmevp8GvnGDd6MDNapigfFoPwfu59SMy7zYd9LO3Z8_0VkIJt
- aPlGTgcyxBF.v1wQggIdb30_WaSmydGJlcGPdQ03irHq2wrwxiCoQO6IJUZEr0jypo3mUQnAGyDG
- k9vUUntKtCsyi.w0t_vFjR1T1M3Z6Xk5RLKDL9njS7LNW.CupQSEmNQ1GkX7kSwPFQP21HwmyMsp
- i9SdJowJ0s5y.bw2SrHxrP7sM6YbNToNL5ZVELMODpe5VuCBtDWl7VcCxYMmahr5455.ZE_hGmHs
- LrmFJx1uQ46OcZ2Ii956498sukETOy0INQsrtoq.ypS01I6QTO8GSI7rVFeq81ZNfcHhvUGJ06ME
- B8yJmeeVBase_8cBDx_Yk7y0xRppCWZz9S9bNwiHzQcmhSHJ99JaTf4E0zOIsgLWqU5tZh4wLZKp
- MnYneLIuBkBNwjBcYTuKXcpCwff8fTcsfan2g9ag6_HRqbKvb3lqTrnQRPIG.IGMBIXdu4D1HB2r
- Ygn65JHFmN1QF2ROBGshwilsGajQNSqHXHgx.co9RO5Evfjv8vx67t__1ew7rn3sc1C.7W_m4N4M
- cSR8SYdV43PcknGSee9yB1x8pWannWLYRUROzisZnoPLwDPX1S0a5pIeYojUo9jnHaAdfaOw5IJs
- bc0nB3tQZQ.0b782FrYX_n_pf05DxifKK1hrJ0OqXSo23BlRt.p63_4auT8X4tq9HTs9fxQLg0OA
- ydi2BtTIKopjFdQtWH0NOUC1U6_wILbgtZfZnlVsbVhHJ7Tk.UZGmAVff_vQl8b4id5D4T9jwtS9
- 8nKfk1Ghey2tqeZDF9SgVACRH_x6kJa81R1e4J_83TMyBY4Ays_MTt39YbFzXRfBMRqG0I92h9IS
- Xl4i4wMK_gUqmjpP0P_oaDsTzptxLp7NMOmOY3T81w3i60pQpmuYMvggEU3dv.ebRC4Brat.KcXq
- ZyjrZ4BouQUvapbNSNNP1Y253sBId7Ys37DryRT0fCsyFp6LIN0DYA1xElaICSH34S2v84muDGZe
- .CGRnjEo0Q2679LeUfRrG7eDmdHtGbtXa02kyQjntuOc7VrR9y8jRUHqkLiiITgSdxH1QGB5PWuQ
- ARpFP1xjX3OHKFGeQd7o8WX3xDhKeppcWAPJEhIosno79RY0IQ4.4JX7WCaXgDYbj6BL4okuPPnu
- 9CEiWKr_A1oRBHcXo_t2XyX1N2Jd1tPqjLAB1WY0vIGe1SVdGRdRloM6.RT24mU1pbFP4DjeRn1w
- _aXrAymHoztvd7BVNk78MI6f1URU2iBFJ6msmP6JgXQac5cfrtvlS9yn2eohnwEPfv__IKNy26n1
- mYs7i0yOvj6LH9jEvBJfejsFOAeuf8LBdL.MbTk8ZZiVorhzaxO81Zf4PRAQwZfM29CLtP5dAKbb
- klVicXy3HgsPrMZiM94qTb2yOlO2WSLEgrPS_2Vx31FNEHJNJpuKXHkfgTtKgjLPmpCr4Taq44yO
- KB8vbaoDybAHzNwFN22pWQG3NDp.x8aciLmMT8fUQgwMgW8NlLKb6ErL7ChYlwsHUhzhzMbUfvnT
- 2bA6QlHpoN4OcRsGeb2ygbIpUCMhvL1tqClAnkg41oGlCJa3crNRCKKeXXqZBarf9KzLHJa8i581
- 0YgHHROuHzbtZ8GRm6ggBoLbsrITMfTGKIshO9uwpGYYxl6nVscbC6LtZUsxlV5iP8t8XsYi.ga0
- EDsRWYHlK
-X-Sonic-MF: <casey@schaufler-ca.com>
-X-Sonic-ID: 4e6572e0-628c-4102-8309-f6caa349ac8e
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.ne1.yahoo.com with HTTP; Thu, 12 Nov 2026 01:50:35 +0000
-Received: by hermes--production-gq1-fd7994565-9vhlr (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 15d81e1a8a6348ae9dcd84771e3b8196;
-          Thu, 12 Nov 2026 01:50:33 +0000 (UTC)
-Message-ID: <41617b0a-90d9-484e-a143-78e2a92e872c@schaufler-ca.com>
-Date: Wed, 11 Nov 2026 17:50:30 -0800
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [apparmor] [PATCH RFC 19/41] smack: use fc_init_pseudo() for
- smackfs
-To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
-Cc: linux-efi@vger.kernel.org, Jan Kara <jack@suse.cz>,
- Amir Goldstein <amir73il@gmail.com>, linux-nvme@lists.infradead.org,
- fuse-devel@lists.linux.dev, linux-mm@kvack.org,
- target-devel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Chris Mason <mason@kernel.org>, Christoph Hellwig <hch@lst.de>,
- linux-s390@vger.kernel.org, linux-erofs@lists.ozlabs.org,
- linux-scsi@vger.kernel.org, xen-devel@lists.xenproject.org,
- driver-core@lists.linux.dev, Jann Horn <jannh@google.com>,
- selinux@vger.kernel.org, apparmor@lists.ubuntu.com,
- Josef Bacik <josef@toxicpanda.com>, linux-block@vger.kernel.org,
- ocfs2-devel@lists.linux.dev, Alexander Viro <viro@zeniv.linux.org.uk>,
- linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-security-module@vger.kernel.org, bpf@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Casey Schaufler <casey@schaufler-ca.com>
-References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
- <20261110-work-loop-pseudo-v1-19-4c998976c6c7@kernel.org>
-Content-Language: en-US
-From: Casey Schaufler <casey@schaufler-ca.com>
-In-Reply-To: <20261110-work-loop-pseudo-v1-19-4c998976c6c7@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.26943 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
-X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7D5091C0004
-X-Stat-Signature: tgjrky7c5yosz7omxuabc61d6mhgd6hc
+	bh=5jotAfjUQKZzmN9NNL+HNgueiGV8Iqsno2VVPILj99I=;
+	b=UOd1gAUgrLGGdRib/NwLJgoHcp5vG8piMz2SaSqnmeua3Aody5wvbVJYrx41z3rQ4Q3tNV
+	CaxeIX9ubiaqAvjUcOcow7v/URcYNqVDTUIUk/Of+4vVRBObLIXHIzHqNTtWzJfbDwRJxo
+	Sh/j6WaHbWBMraBVVb0Zv/lydPcmeHY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794448610;
+	b=LJ6bSPh9mWy94HHjFuBVVddAxauk3U926cRsRORAZrGK/4MqwGRo8WHOK5yWMLfD9tp8f0
+	9Qaz/o3k7Cscc6wkXyWWqHmKXd6xOvzNJPBu3iYl3WJMRmJZyhYdOSarOKkSs+uLT3js1E
+	Z4xbJ07RDXxufoQ54A2hLrHg+2GPQUM=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LDmVtL2F;
+	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 67D3F633B8;
+	Thu, 12 Nov 2026 01:56:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9891F00A06;
+	Thu, 12 Nov 2026 01:56:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794448609;
+	bh=5jotAfjUQKZzmN9NNL+HNgueiGV8Iqsno2VVPILj99I=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=LDmVtL2FQOakLI7PWOcytJhp1AAu4emz95L1lKl7oTszbpBbC9KmxqcmSjqxDTgro
+	 DV/NMz3+8hXpQcIaET3WvcOB6+YdQ6S+rmmzEDHuYFL9YV4k3kVgcQzQpQM26rErI6
+	 aG1pFpwtVyQu6wyb2iUaw2rkSdOJolKu8RzxRSf+GueJR/JVSZsdon3iZ9adcB7VHT
+	 AZgRUezIG+j7ifhEQvvqs9zE4Fdlbr1xPcSGEVM6E0HQGenXLmKwBoyoByAeARxfRf
+	 Y4NeWqiH7VDB7K1C5g5R968NUGZIxmUa8s9T5G2uK3P29/tIQGXCJ3sjj0UDS/uci8
+	 3qXWNTa9w0IXA==
+Message-ID: <sashiko-outbox-210121@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v11 4/7] mm: add folio_mark_dropbehind() to mark a folio
+ dropbehind and account it
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Mike Snitzer" <snitzer@kernel.org>, "Matthew Wilcox" <willy@infradead.org>, "Jan
+ Kara" <jack@suse.cz>, linux-mm@kvack.org, "Christian Brauner" <brauner@kernel.org>
+Cc: "Chuck Lever" <cel@kernel.org>, "Jeff Layton" <jlayton@kernel.org>, "Anna
+ Schumaker" <anna@kernel.org>
+In-Reply-To: <20261111015607.46338-5-snitzer@kernel.org>
+References: <20261111015607.46338-1-snitzer@kernel.org>
+ <20261111015607.46338-5-snitzer@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 12 Nov 2026 01:56:48 +0000
+X-Stat-Signature: td68yrcp3momyuqxh9hbjq5oy7nbrr7z
+X-Rspamd-Queue-Id: 9DFE520003
 X-Rspam-User: 
-X-HE-Tag: 1794448237-299051
-X-HE-Meta: U2FsdGVkX1/yzpADgxFQxEArflwmiYmBbTbfKApDh7RxoCLrCnnd4m2q8qNdJM51O3BRp+aFDO59v8acoDuaH49l/nUaK1D+J/hCsLVilDbSMhi5xQzK06C2LojNXTMfMmDE0dpiNbImjBQlqas776ZQX8WibULl86DD59vlLs292NH4sSkJq4MFvJf4wQrs0s9k0XUJhAyXXCve4tCxmK09w9kxzqpBQMn6DcOVn5ZtzfumkGPVvPX1BiayHgD6e55Rw1Gwa78Wy8NUMnNEq/N/TOnw0UAYbYsSli4R7Sgs0bDTw7BJHer5e9pgp6xsT4JIlKbLTs3lWe2z3WnVyeCs9W2nUZw1RtV+kYrz2LSVAbJyu1t9V2nYHN/36nzrh74O7iNEnPftybur1DKVJnWkNYM2R7UDIph6itTzocL1pISFPhsx9xihxyZdk5ugc1IrEW8udeqkKGHqDc4jhg36qMxcvb/UDl0na/asxZvk5BgV66C0wT63AoGqA+7J7fbuYMSb3Onm6RkzLstDkEa3HuZgO/lYZC416ZHTG7AOXerwNRetjtfdubBV0loADW105nJDz+PwCyP2pPl7BTzWh0/gZyscsjbHZLkkqgp7IVoosrlSaMBf55oAO42mJQJQgb8lfhjfCWNzZbASdjHf7BYYoZ9DVK0Zu6xmej25joFq0XZgUSIcrQchuXtUlSM+vIWCueJfoSXSoD/nVggWCqUGHfXaoV0mOsRpe9BrDRQltMMCv4ANcTDRutUuzpP+Ys95E9YZKol1LxPkKswv0orG5xJxmyitYE5qT2l3nhS4bdmwZA7IDm+lExYcOtqMRrCJEre/3AKuKlSF9Pxy+hyCySCOwmjgr17jOw3Oh5Nl8V+wo4O2nLNTQH1pnBZQOpLS10uDzdhvR7p0Eu21OAgsk/G6xQ/P0SYSyFT9aiqnjye5v2N6GeojOxur+aR9SX5K6ZT7TUv8NrH
- z8Ph7tbB
- 96+2sRpLNzjKgMlWn6Uex1ig2A9y1Dkz5yzDG55zCbFs9FHWLISe41XWrM86PFfFx5ICKklL9XttTe+cGhi9H5LE1BgSqkbfJ7cdeu2lWEkdnwJF/W4o480BOr5w3v+RT7nmZmzdueBnnpTzUkICRipMKo1spW6AK02uOWJcC1RvY7qSvRqOpOLgCsIVOXDvpCNr8tFVBP+iSFtkcVbIoY2A7GOUzQTVuAKfpWWys0cryEJL1bn2c9SbSc5fs2ATj4NHlnl4g4sFG6l8uY0ADlC2SmOhmb70c4LviDruJ5QPtDbUZ4o3EhWiHf7iH+stFxYD5LUihhN5rr5c=
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794448610-101940
+X-HE-Meta: U2FsdGVkX18yrryJllpI+fcyMN8o/7Nw1yS3iL64seM6jMym4o7FS9ppdL8cdDZhWnaBeg1wm+A/uxytyCLI4De7wRtcQtApNvrIHUzR6+bN7NKPY2+2EEqCOjg0ZCtQQh/NzppxI2NeRWgaIlhwAggDcYiJI0IxEwxAgNeWJFjmY/PtU3LBYx07zzBDXZhd4WCYsVbO2vl+6lEXJY+Ou78ZCyxZx89Se8lUfKr1iBslrn3ZxCdjqI7/GVlaamWVFnAyRL5jGpaKB69fFIPAGGKq9p08gHjxLxvzd0zEdB9NHKX+mSw219rt1TK0CFBcLVm8aoOWdALJAnOpx4Txo3uI1Cvgj1r/9qkjqElYX+kxI/3y/7Bb00zar/d2IDzTQjNPlIzVOIXvLyhxwU2rjMoYJIc5gkjgofpyTcz5y6HMFJ746o/EtzvAbWyJziVy/yxQdqjMLWzZstd+eEYaTeW4fjorxpebdH32pD1bMwNZBRxWJZkYPZR4meoNmbJhPtKzb5Txm1jrhk8xPKhH31fYBU/SgigZ/KmonNIsVGOl8rg/waKISF+HCK7atW89MQZ6d2SvGsdRj0chxErlMEQf1GUaGqrEaX+9n5Lscz60XDHNMaj3JXqrOlNFQ7Z8mRcJuM/JKhYRQELua52fLS5zuEn1pu5sUDh6PgSFBEnPPgEv98xDJE88z3ikKTvzoqf4W8nwBs2cy1/6PAQI/9EpLm7MOmbVQN53kCl18XOQWkNCjCQThlM+jsQ1K1/kEwGK8Lkic7JF/tfO8KOhzQek+Du/EBOYFaPYFyrjR4E8wTKAQYZfhNHUlt3GZa1GXMN53is1bbuJanTt2O1smUYswGd5FVCHxzZVMyD9NvfcVT30F6JhotvHD50SMQY7zI0VT1DNBEva0fJJsEtpiVlDwEj5QWtuwAs6viDEf2xt3d+te/uNooXc/OBDvEkFbKyhQkf8bWABTsL9mH9
+ 8LIs0MaB
+ HJkTKK+kRv5epz1KhmGU6gFNCDTUEBP9jDmfjvSzWaIW13Qkpk/xM++uviIYgMvQai21yxpzjR8qqt1vCWTqNVmV6QiNRMAj+pIFRxXo46+iyq2PogIoZUmMi9NRaApnw0DdDtIPLlWvg9ZvsM41nxo4HBjGA23cZDscRmVYlVjN0WOjLXILd9f5/f2GZIENRiaBpMvWSc6e/W+yJWUF0yxVnPHEn5yYz+dMjrmYsdScYOgW0tWnOjQ1SsDWYgydaVCKRpJrZNU38vvVtAhPmZcsutyZlcZMhUt8a9XzOokCc9zq3pLaRl5RvydJM9fBeQEkgmHv4/5cFrndCngioawdUwxOmr4f0GZrA99bS5s5VuUKrtCASNwjSWXjAqSBP33MPu6eE3nx8MqNEMxalQwfejLyR4u1g2yVSY6xChDLb/xjeb7MNxq7REH8r0blIKs5hphJVrvGEMQZU6/17b5NplLqWTlLA6gLCSXKYszFfHx/2BCgTuN52N1QfVUPIUeAS1quUOViVA4tB/4Hi0/IgAETGI48TsWgz+njf/+YG6GlYXe4qQe+7nYfrPuKcfmfEdj/1Z53Ycdo+zvzWC6Zjfet8eQlHG3nbq6hZRSLYdzcUIhRhUMYT4Zx48K1yVtqY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,42 +94,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 11/10/2026 1:14 AM, Christian Brauner via AppArmor wrote:
-> Initialize smackfs as a pseudo filesystem. This raises SB_I_PSEUDO and
-> also SB_I_NOEXEC and SB_I_NODEV. smackfs never holds executables or
-> device nodes.
->
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] mm: double WB_DONTCACHE_DIRTY accounting in
+  folio_mark_dropbehind()
+--
 
-Please include me at least as a CC on Smack patches.
-I ain't dead yet. Nonetheless,
+commit 99c7597afc26e4465bf2ced6117179f389f8476b
+Author: Mike Snitzer <snitzer@kernel.org>
 
-Acked-by: Casey Schaufler <casey@schaufler-ca.com>
+mm: add folio_mark_dropbehind() to mark a folio dropbehind and account it
 
-> ---
->  security/smack/smackfs.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
-> index a72bc7fabea9..4a56bbeaeca3 100644
-> --- a/security/smack/smackfs.c
-> +++ b/security/smack/smackfs.c
-> @@ -25,6 +25,7 @@
->  #include <linux/magic.h>
->  #include <linux/mount.h>
->  #include <linux/fs_context.h>
-> +#include <linux/pseudo_fs.h>
->  #include "smack.h"
->  
->  #define BEBITS	(sizeof(__be32) * 8)
-> @@ -2880,6 +2881,7 @@ static const struct fs_context_operations smk_context_ops = {
->   */
->  static int smk_init_fs_context(struct fs_context *fc)
->  {
-> +	fc_init_pseudo(fc);
->  	fc->ops = &smk_context_ops;
->  	return 0;
+This commit adds folio_mark_dropbehind() to set PG_dropbehind on a locked
+folio and account it in WB_DONTCACHE_DIRTY if the folio is already dirty.
+
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 98ce955404127..a54d0fbd37222 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -1654,6 +1654,38 @@ void folio_end_dropbehind(struct folio *folio)
 >  }
->
+>  EXPORT_SYMBOL_GPL(folio_end_dropbehind);
+> =20
+> +/**
+> + * folio_mark_dropbehind - mark an existing folio dropbehind
+> + * @folio: the folio, locked by the caller
+> + *
+> + * Mark @folio so that the writeback that cleans it drops it.  If the fo=
+lio
+> + * is already counted as dirty, which with the i_pages lock held means b=
+oth
+> + * PG_dirty and the dirty tag are set, add it to WB_DONTCACHE_DIRTY so t=
+hat
+> + * the clean that subtracts it leaves the counter balanced.
+> + */
+> +void folio_mark_dropbehind(struct folio *folio)
+> +{
+> +	struct address_space *mapping =3D folio->mapping;
+> +	unsigned long flags;
+> +
+> +	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
+> +
+> +	if (folio_test_dropbehind(folio))
+> +		return;
+> +	if (!mapping || !mapping_can_writeback(mapping)) {
+> +		folio_set_dropbehind(folio);
+> +		return;
+> +	}
+> +	xa_lock_irqsave(&mapping->i_pages, flags);
+> +	folio_set_dropbehind(folio);
+> +	if (folio_test_dirty(folio) &&
+> +	    xa_get_mark(&mapping->i_pages, folio->index, PAGECACHE_TAG_DIRTY))
+> +		wb_stat_mod(inode_to_wb(mapping->host), WB_DONTCACHE_DIRTY,
+> +			    folio_nr_pages(folio));
+> +	xa_unlock_irqrestore(&mapping->i_pages, flags);
+> +}
+> +EXPORT_SYMBOL_GPL(folio_mark_dropbehind);
+
+[Severity: Medium]
+Can this double-account WB_DONTCACHE_DIRTY when racing with an unlocked
+dirtier on a folio that still has a leftover PAGECACHE_TAG_DIRTY mark?
+
+__folio_cancel_dirty() clears PG_dirty and uncounts the folio without
+clearing PAGECACHE_TAG_DIRTY in mapping->i_pages.  Because callers such as
+zap_present_folio_ptes() -> folio_mark_dirty() -> filemap_dirty_folio()
+dirty mapped folios under the PTE lock without holding the folio lock,
+they can set PG_dirty before acquiring mapping->i_pages.xa_lock:
+
+CPU0 (holds folio lock)           CPU1 (holds PTE lock)
+__folio_cancel_dirty(folio)
+  folio_test_clear_dirty(folio)
+  folio_account_cleaned(folio)
+  /* PAGECACHE_TAG_DIRTY stays set */
+                                  filemap_dirty_folio(mapping, folio)
+                                    folio_test_set_dirty(folio)
+folio_mark_dropbehind(folio)
+  xa_lock_irqsave(&mapping->i_pages)
+  folio_set_dropbehind(folio)
+  /* PG_dirty && TAG_DIRTY both set */
+  wb_stat_mod(..., WB_DONTCACHE_DIRTY, +nr)
+  xa_unlock_irqrestore(&mapping->i_pages)
+                                    __folio_mark_dirty(folio, mapping, ...)
+                                      xa_lock_irqsave(&mapping->i_pages)
+                                      folio_account_dirtied(folio, mapping)
+                                        if (folio_test_dropbehind(folio))
+                                          wb_stat_mod(...,
+                                            WB_DONTCACHE_DIRTY, +nr)
+                                            <-- counted twice
+
+When the folio is later cleaned, folio_clear_dirty_for_io() or
+folio_account_cleaned() only subtracts folio_nr_pages(folio) once,
+leaving WB_DONTCACHE_DIRTY permanently inflated and causing
+wb_check_start_dontcache() to trigger extra writeback.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111015607.4633=
+8-1-snitzer@kernel.org?part=3D4
 
