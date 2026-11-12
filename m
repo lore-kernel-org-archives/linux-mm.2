@@ -1,109 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 773C7606A335
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 09:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38EE1606A327
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 09:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=amazon.it header.i=@amazon.it header.a=rsa-sha256 header.s=amazoncorp2 header.b=W57px+Te
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=r4AZbjvV
 Received: by kanga.kvack.org (Postfix)
-	id 825066B05BB; Thu, 12 Nov 2026 04:42:25 -0500 (EST)
+	id 549CF6B00EF; Thu, 12 Nov 2026 04:48:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FD016B05BC; Thu, 12 Nov 2026 04:42:25 -0500 (EST)
+	id 4FA266B05B0; Thu, 12 Nov 2026 04:48:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7127B6B05BD; Thu, 12 Nov 2026 04:42:25 -0500 (EST)
+	id 437B06B05BD; Thu, 12 Nov 2026 04:48:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 510F46B05BB
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:42:25 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D97DC1A010F
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:42:24 +0000 (UTC)
-X-FDA: 85425976608.24.5743CCF
-Received: from pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.155.198.111])
-	by imf21.hostedemail.com (Postfix) with ESMTP id AA3301C0004
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:42:22 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=W57px+Te;
-	spf=pass (imf21.hostedemail.com: domain of "prvs=769decef9=dipiets@amazon.it" designates 35.155.198.111 as permitted sender) smtp.mailfrom="prvs=769decef9=dipiets@amazon.it";
-	dmarc=pass (policy=quarantine) header.from=amazon.it
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1EBA66B00EF
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:48:19 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9C1ED160482
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:48:18 +0000 (UTC)
+X-FDA: 85425991476.07.20052B1
+Received: from mta1.migadu.com (out-76.mta1.migadu.com [95.215.58.76])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 52D3BC0003
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:48:16 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=r4AZbjvV;
+	spf=pass (imf28.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.76 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794476896;
+	b=DlXU7D3ShkdTpcuY4cWJsXslcdpIiG8ZwEmHdsjYxd7nTGlEpJBEcNMgnD8nijIqacVyfE
+	Z9v4YwQz5vzDUE9wPhXajlrDx3OJAJ7oqET1UHAtXiW1c9jscnL8AD18FdjVyh4Po2LMbe
+	Rgtqr44PbJlpVHZIken4kLqyqB9PaO4=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=r4AZbjvV;
+	spf=pass (imf28.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.76 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794476543;
+	s=arc-20220608; t=1794476896;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=5FhPhptoiDnbvGobJSg/2oYz4NalMfRC1p+IyPS8BeI=;
-	b=6607/QeHSUV2RfmasNUYEmiczwA/OK0esu9SBdmhikJ84bKyPyKWOOr5uJAlNZ+18x1off
-	3NEjq9Km0Ve9D4IQatVEHc3W5jJwxvopg8ScDohBW/f8x9Knzy6+UYWILrw/A7NraATGcs
-	tqrvmIbCEK5ODW1Xt5ppiKF9EU2KIh4=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=W57px+Te;
-	spf=pass (imf21.hostedemail.com: domain of "prvs=769decef9=dipiets@amazon.it" designates 35.155.198.111 as permitted sender) smtp.mailfrom="prvs=769decef9=dipiets@amazon.it";
-	dmarc=pass (policy=quarantine) header.from=amazon.it
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794476543;
-	b=Bbrwy2JvY1b/wK8KVoHor730bMuxYfnavKkUA7p9a7h/PD062HPyLvv1MKKYRlAS3EEwm+
-	R6kiJ+L9LGMUyIQLmpyqzt6LhIoQdakgMXnXsiCMFTMFQhJo4Bp10OXuLWjEO0nJaNYvI/
-	HJrxJA4t4faD2uQbAO+dEKPmRteZvQg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.it; i=@amazon.it; q=dns/txt; s=amazoncorp2;
-  t=1794476542; x=1826012542;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=5FhPhptoiDnbvGobJSg/2oYz4NalMfRC1p+IyPS8BeI=;
-  b=W57px+Te0+mIsygB9ENiCJIxVjOskwOJDEwZ+6UOKWJ68H9D5xhGbhc8
-   +8pci46EllQNhW6BH1cNI6rB3GkcD/ndHLNUh0bBLq9KaNn5iicN0VJKl
-   BaDw+Uef/xbPe/3he9FsbzgzQIzhBL7KXEgFqbwqzhkNB9KyJfYgyy1wd
-   s0NjEmSxZxmXvAXglKipaJkStxr4YeaZvoppSgMkSsW7Wubcvib4GlOe0
-   PYyQhA0fq3wmNTGDMb59lXg32u7lYn/dmwuWgr8LFDZY0xJFQ9LLnr8so
-   OcpR6xRBZRTu6cPWKQWZrYA/pCRL9gyqrMjbfrs2QMe1Bpn4yVs1SbrUh
-   w==;
-X-CSE-ConnectionGUID: pG+pAsDBRd2ZShkzIRXO2g==
-X-CSE-MsgGUID: FQuDohEITmWX7HRwKQviZg==
-X-IronPort-AV: E=Sophos;i="6.27,209,1787011200"; 
-   d="scan'208";a="33702422"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 09:42:18 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:3788]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.16.231:2525] with esmtp (Farcaster)
- id 191c253e-7415-4cf6-b337-d056f3a4794f; Thu, 12 Nov 2026 09:42:18 +0000 (UTC)
-X-Farcaster-Flow-ID: 191c253e-7415-4cf6-b337-d056f3a4794f
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Thu, 12 Nov 2026 09:42:18 +0000
-Received: from dev-dsk-dipiets-1b-77b833da.eu-west-1.amazon.com
- (10.253.66.177) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56; Thu, 12 Nov 2026
- 09:42:16 +0000
-From: Salvatore Dipietro <dipiets@amazon.it>
-To: <stable@vger.kernel.org>
-CC: <dipietro.salvatore@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
-	<linux-mm@kvack.org>
-Subject: [STABLE 7.3.y] 0e05a469c294 ("mm/page_alloc: avoid direct reclaim and compaction for costly __GFP_NORETRY allocations")
-Date: Thu, 12 Nov 2026 09:42:05 +0000
-Message-ID: <20261112094205.994560-1-dipiets@amazon.it>
-X-Mailer: git-send-email 2.50.1
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=wkrWrfCSO0Aw1I2CW8QTg9DVaeNot/5RTAx8jWCHJxs=;
+	b=eGbIT28P+5r9W/nxQ1DhZD9yedDEDnBh+8I5W3bek3NcF5GfFtsylud3glK1vfGc5RhrzX
+	rNb4K+omD/m8iF1FCIWlPewwwjcZiEQTPmlmTwUgxcLUUL2vC5yr8mtYXBMwnaPuA4Yaq8
+	f5MjUlNfugXE2Pji/tZzhwARhiymDyc=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=wkrWrfCSO0Aw1I2CW8QTg9DVaeNot/5RTAx8jWCHJxs=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794476894; v=1; x=1795081694;
+ b=r4AZbjvV0E9i2FBpqS64xupVfHp/F/l06JO8qkcXV577W0kkdOo6TNNY//SLge2/zM/C0YtF
+ QxS2IykLrBmb634GozuZly3e4Juq9ckdpsA53AgsOJ4fIUrR26RBeJq8EuuOdGivwVIFVRV228U
+ bbP4P5qSaqopx7tYtpx286Zk=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id ae0cc7bf42fa743d;
+	Thu, 12 Nov 2026 09:48:14 +0000
+X-Mizu-Trace-ID: ae0cc7bf42fa743d
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <fc81dd0f-4bc7-4064-97de-3b1af8c529b7@linux.dev>
+Date: Thu, 12 Nov 2026 17:49:45 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: EX19D031UWC002.ant.amazon.com (10.13.139.212) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: k6gurguqkhtsyeddwt844axutbpxe4cq
-X-Rspamd-Server: rspam01
+User-Agent: Mozilla Thunderbird
+From: Hao Ge <hao.ge@linux.dev>
+Subject: Re: [BUG] alloc_tag: GPF in __pgalloc_tag_sub() during hibernation
+ snapshot, page tag ref points into .orc_unwind_ip
+To: Konstantin Yagola <master@spicebrains.com>
+Cc: linux-mm@kvack.org, "Rafael J. Wysocki" <rafael@kernel.org>,
+ linux-pm@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>
+References: <CAPy+2=yCzFKxPgzgKw7uCfwpd0BqWk_Mf+DSBY=ydTr_pdHr9g@mail.gmail.com>
+Content-Language: en-US
+In-Reply-To: <CAPy+2=yCzFKxPgzgKw7uCfwpd0BqWk_Mf+DSBY=ydTr_pdHr9g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: oupchbjhkirhjjk14t8cnyqow73hx71j
+X-Rspamd-Queue-Id: 52D3BC0003
 X-Rspam-User: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: AA3301C0004
-X-HE-Tag: 1794476542-694513
-X-HE-Meta: U2FsdGVkX1/O5AOZkSTkqMrJ8IXZamCT8NZS0NJF8cOQTflcAm98jytRCbRPTf42AZEapAWLJfSgz4MKePtXDos6HDTl9vTCfVlhsNszDR5aYwqAlXc1XB1mL5GDx9Lk9j9B+xWZvWuMQEJyRSJi+4aAUVeHzQE38EkUDYrxoBQzWxpzry39Nsh/MAPBXqapvl0yA5LmHZ3vM6txJmTwRzRQgjE1bzAyJTvM3KNFTTJDBZ5pA01BKFIv/pcALjHiW7EMAPhC1aSHVUGksYi9xoVN5rIbES3YsUvIAsVg1syiSFBnP5EbKkS/K3huQeb2dJ6Kk3fpBMezYPZcfjqhMKfaJSY+qTv6PacjbafCkbA/+5sAzqMZvzLwyz6LQlKxzhhGksV0YBgYTKJSHlE5TNZ6l/QcLNFsHIn7RaJp+fCdzuq5CQaMQv2kYCxb55u4eY1tVrsV2v1yeYlo1Hr/uFYHs9eYvMdwD9GT5tYjmW6mnWcrXICp2XI33dp2NHggO95d7JpoEfzQiSq+G3XkhyvLvBqdWno7KB6Gk4TIHskJakchHD2mkeWN7r9rPxpR+R2K8zZgice5Ba7CD9MoBtros88OMa+joD9BQCfS9XAse6tqHO3dMIyIpVYEFd7QfrqkBPWP+NwZUEUJPgPG1wuZbPr3VsRyqmd9W8bk8bTd2lJX9pCsvu42Y5KWDlu9jUxCcl/wCQFqKtIMCIVKRzIw3jmH8MS0BKKQAnW9z0B92qv0hv2YifYZveUUHmcBWidAvkdifH57ZDfEFoStiw6cHhoVS1ktVoX+Fi4UXsXDtaRm+dQchRF4FWUM26kYmSSntxUsH8iJzaBPSbAD4V4FokbqXTpt7Ie54IyO4PmGoP/QMZ4ShVmfPibBL2zCaiYEr2AGk1qT6lp+mtltlcwrQ8ZI1i2MksBT1V+L/+oH38O7zt6rBcnSRX7o/92PEkg58/BPC4Kd0mNcxff
- GRkallL4
- WY+vhrh0fRxOEB57JpljEq5kTydGR2eopgWw740LXqz67fXRvNw/IWiHEsWBYe+6RrSM0g9RaxJ6Gwbrd2tFkvaOTqhODixli0XvkXNE7nvdiGqIJdt6kRF3tl1kgJMWBZ8p0egOICRE/G1bsnDCjns7ZYaejeqQWOEBi4N8gOTS/JfVly9iTlQ4ercS8wnQ0v1ytBvX/rp5MBwbs0rwa4h1XG2FtKZfOq/fdN5zJKS597j9lUDc0HS2OyeIB8bdt2gsUyoXYZfz2+OLAqgyEPS1pm3BIm1PSYa+tlyRMJQTDOs9m/iTc4gBC5ZN9gcRiMVqec/xaq6Tx47VZmKcYgit6AcesogKYx+TEl4yzXPPmo5AdcKOwvfb/rFOArIRYc8nRbKXxbgDh5OiuZRvAXWpXoaJwVDMMJM33rqpLO5ELvI2SeDoc4FRaANYXD9pPM9D95Up8JwQclGgmmcbb13itd0JHJsVYLLPitkEm71hvk/vsxUeJwV1oH3cCT+UpNXOGuhHevHOljgYyHu4JI453ppRDpQiCjUx8bMOo4GP6z6Vc1fayiujoNnbBwXWNJONLeyPQkvQtpEnNeMWlWZJWRb3qQXeTty/+TGVESr72IIYLosmr9hhFH0w6/dBjFrJfjXmgJBiJGYWCPhsXIvHFhmJexxS2WPrDuxPbK4bY6dYNk++QYKodY7mcrqBTyOejycqd9BKPlitxjOXSpk8THQ==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794476896-530391
+X-HE-Meta: U2FsdGVkX1/T6YNFww7HHuiMNmYlHCJdHDS86ryOVexUC/cEvTGuQJsAY/dKONFj9pyeNg9SB2tvv+JqdSb+8CgH6rOEW3sEkPZU81w+9GrF7veCY3gAgdV+72lfzmWqnxG6Yf7RuIYxfv+UfIsBpJ/mCXZRtaJJtM9zqvo9AvxdDBD8TKWSktK0tex8QCt1TfOKta09kDI1eaqwe67FADo2n8v04DmCtalEEtJ4rUOiX75bMJXIS4HwiJ7zNa4Dz4lOyBq6+2uxbidFpVcgbaecjV1wq+fG5FQSjWnalPwaH9om83Zo0TCVr/qWzNafsPJ/WPQ3niFapFCI+N3tJF9WNS3FXiGhCSg5onSo2Ry+kcbEQWUSm8sI9R0MPW3zcv4USfsLF1DwfZnFhs5nR70XYzEXfcblM6DILvmdvgIXtU200+gZpRVxuRySkbATnMhuAElQKfhKEq6cqY7/0Y7mprLY8Jm9VJLWbiMigu73pTEgxyFzWIKp1wWQvx5NJc/+npFNR6YGh7dMbPJorshP7p787N1OIy0TWxWGtjTg+3bVFu02q4pDcioY0oqa+Rlge0cNXC7Z1p8db6aYucCrzQidtYKdzsNUxGuvGfJ7Ka+wZutp1/VX7RxtBKYtbRP1kMUucFkCRHFGTwPQ6jmL3eiDIDdtKp96FDg5ztq9whrDK0Un56ddEhttO1lYXeG/xGXZ0ZFIscwSe14L5e7AXHcQcHss+oPKloGg42HbVnNorJBe4JRL8Iv6EtDelCGN8Dq7QXz1QQQ1/WWnlHMIOY9HrTTw5wsRCp0TY2hU6PP51s2k+7TKp8dxPSUtV1dvtBcrGxXm7clotufUAEe852BnqKTAUcTNjUmJbMp5vtzlmhfvRr7o12a9pe/qSvmP698huua4Z9eYJaFjD7dpvJyupQN8TuqUFwzHiGnm8FdCZ9sId82ijGz9maeVboVElEfHSDQILg07/GU
+ nS3XRKor
+ aAtQj0wlWKVTdlRXnawORXCrXnONOFV5PQYBN+oRGPxDdoXTCCYQocq8ucVhGmYGwlD7MzDGfArzfs8YzOAp5pxQ4mnVdlD57MPE5ubrEculZnIlsLKMaMK+HJL3I+BELDfM7rxaTPBxhCo6ZhXU4EQ0JGXSe09xnyuCbMb6ZP4ee7yJBWhATd9VNAIf8xXo2iqa1+GfGyppoQ0836fP7QfXYHI5H1lWCVazV743xBO/8g0+/ljXOr2Z3vu0W9qcEIZCv+pY20vDpF5ClSIetrBowgPAdPt0u4vKEA4oXo7qWffIWi5CK/TAXiYAmTOKbuMXiV8xEYxGw/uqTVOs84YJmiUJ5JJCi7AJ3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,31 +95,134 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Hi Konstantin
 
-Hi,
+On 2026/11/9 16:45, Konstantin Yagola wrote:
+> Hi,
+>
+> my laptop sometimes fails to hibernate: the screen goes dark, the fans
+> keep spinning and only a forced power-off helps. It happened twice this
+> week on 7.3. Both times pstore caught the same crash: a GPF in
+> __pgalloc_tag_sub() while hibernate_preallocate_memory() reclaims
+> memory for the image. Both times it was the second or third hibernation
+> of the same boot, after successful S4 resumes. It is not every time:
+> one boot went through six hibernate/resume cycles without a problem.
+>
+> Taint first, honestly: P (nvidia), O (openrazer) and S (CPU undervolt
+> via MSR). I know S makes any report suspicious, so here is why I think
+> this is a software bug and not random corruption:
+>
+>  - RCX is fe20d545fe20d545 in BOTH crashes, byte for byte, across two
+>    different boots with different KASLR offsets;
+>  - RDX (the codetag pointer taken from the page) minus the KASLR
+>    offset is the same in both crashes: 0xffffffff835ac1f0;
+>  - in vmlinux of this build that address is inside .orc_unwind_ip,
+>    not an alloc_tag. The faulting code is
+>
+>        mov  rcx, [rdx+0x20]    ; tag->counters
+>        add  gs:[rcx], rax      ; <-- GPF
+>
+>    so "counters" is just ORC table bytes read as a percpu pointer.
+>
+> So a page's tag reference ends up as a valid, KASLR-adjusted kernel
+> pointer to the wrong place. My guess is that page tag refs get out of
+> sync with the tags across a hibernate/resume cycle, but I have not
+> verified that.
+>
+> Setup: Razer Blade 16 (RZ09-0483, BIOS 2.03), i9-13950HX, 32 GB RAM,
+> NixOS, kernel 7.3.0 (nixpkgs build, CONFIG_MEM_ALLOC_PROFILING=y,
+> ..._ENABLED_BY_DEFAULT=y, not compressed, no _DEBUG), hibernation to a
+> 48 GB swapfile on btrfs inside dm-crypt, /sys/power/disk = platform.
 
-Please apply to 7.3.y:
+Thanks for the excellent report and especially for the disassembly work;
+Sorry for the delayed reply.
 
-  0e05a469c294 ("mm/page_alloc: avoid direct reclaim and compaction for costly __GFP_NORETRY allocations")
+Based on your configuration, we are using page_ext mode: the codetag pointer
+is stored in page_ext. page_ext is allocated via the page allocator as well.
 
-It fixes a regression from 5d8edfb900d5 ("iomap: Copy larger chunks
-from userspace"), in since v6.6: PostgreSQL pgbench on XFS runs at
-0.38x throughput. Andrew and Vlastimil agreed to restore its
-Cc: stable [1], but it was merged without the tag.
+From your disassembly analysis above, we can see the issue is triggered because
+the address stored in a page_ext has been overwritten.
 
-It depends on 6ee3d87b9408 and fe21f930d1e6, already queued for 7.3.
+Where those 8 bytes live page_ext (normal pages from the buddy, GFP_ZERO'd at early
+boot, before any driver loads),  layout as below:
 
-I'll send backports for 6.18.y, 6.12.y and 6.6.y separately.
++---------------+---------------+-------------+-------------+
+|     ref(pfn1)  | ref(pfn2)      |       ...          | ref(pfn k)  |
++---------------+---------------+-------------+-------------+
+|   &tag_a        | &tag_b         |                     |  &tag_k     |
++---------------+---------------+-------------+-------------+
 
-[1] https://lore.kernel.org/all/1fc0caa5-43b1-487f-94cf-0d1aff4c03fd@kernel.org/
+I'm wondering whether an out-of-bounds write from an adjacent page might have clobbered it.
+Are there any other clues available? Could you share where I can get the matching vmlinux,
+kernel config and dmesg?
 
-Thanks,
-Salvatore
+Thanks
+Best Regards
+Hao
 
-
-
-AMAZON DEVELOPMENT CENTER ITALY SRL, viale Monte Grappa 3/5, 20124 Milano, Italia, Registro delle Imprese di Milano Monza Brianza Lodi REA n. 2504859, Capitale Sociale: 10.000 EUR i.v., Cod. Fisc. e P.IVA 10100050961, Societa con Socio Unico
-
-
-
+>
+> Workaround: sysctl.vm.mem_profiling=never on the command line. I cannot
+> reproduce this on an untainted kernel: it happens about once a week,
+> and with the workaround I will not see it at all. If there is something
+> cheaper to collect (a debug option, a printk, a check right after
+> resume), I am happy to run it.
+>
+> Crash 1 (2026-11-09), assembled from pstore:
+>
+> Oops: general protection fault, probably for non-canonical address
+> 0xfe20646ff042c545: 0000 [#1] SMP NOPTI
+> CPU: 3 UID: 0 PID: 458460 Comm: systemd-sleep Tainted: P S         O
+>     7.3.0 #1-NixOS PREEMPT(lazy)
+> Tainted: [P]=PROPRIETARY_MODULE, [S]=CPU_OUT_OF_SPEC, [O]=OOT_MODULE
+> Hardware name: Razer Blade 16 - RZ09-0483/SO690, BIOS 2.03 06/04/2024
+> RIP: 0010:__pgalloc_tag_sub+0xcc/0x170
+> Code: e8 79 f4 08 00 48 85 c0 74 eb 48 03 05 9d 09 d2 01 48 8b 10 48
+> 89 c3 48 85 d2 74 1b 44 89 f0 48 8b 4a 20 48 c1 e0 0c 48 f7 d8 <65> 48
+> 01 01 48 8b 42 20 65 48 ff 48 08 48 c7 c7 00 19 c3 ac e8 fb
+> RSP: 0018:ffffcfcdc517b4d8 EFLAGS: 00010287
+> RAX: fffffffffffff000 RBX: ffff8f220292fbc0 RCX: fe20d545fe20d545
+> RDX: ffffffffac3ac1f0 RSI: 0000000000000001 RDI: 0000000002bafbc0
+> RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
+> R10: ffff8f299ed9d260 R11: 0000000000000000 R12: fffff39ed5d7de00
+> R13: 0000000000000000 R14: 0000000000000001 R15: ffffcfcdc517b5e8
+> Call Trace:
+> <TASK>
+> free_unref_folios+0x18f/0x830
+> shrink_folio_list+0x63e/0x1090
+> evict_folios+0x154/0x5f0
+> try_to_shrink_lruvec+0x132/0x260
+> shrink_one+0xc0/0x1a0
+> shrink_node+0xb9e/0xdd0
+> do_try_to_free_pages+0xbf/0x480
+> try_to_free_pages+0xf6/0x1f0
+> __alloc_frozen_pages_noprof+0xa00/0x18d0
+> alloc_pages_mpol+0xbc/0x180
+> alloc_pages_noprof+0x3b/0x90
+> alloc_image_page+0x2d/0xb0
+> preallocate_image_memory+0x30/0x64
+> hibernate_preallocate_memory+0x257/0x391
+> hibernation_snapshot+0x9c/0x4c0
+> hibernate.cold+0x10d/0x495
+> state_store+0xc3/0xd0
+> kernfs_fop_write_iter+0x18a/0x230
+> vfs_write+0x25d/0x470
+> ksys_write+0x73/0xf0
+> do_syscall_64+0x114/0x5c0
+> entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> </TASK>
+> Kernel panic - not syncing: Fatal exception
+> Kernel Offset: 0x28e00000 from 0xffffffff81000000
+>
+> Earlier in that boot: "ACPI: PM: Waking up from system sleep state S4"
+> at 28492 s, crash at 83620 s.
+>
+> Crash 2 (2026-11-07): same RIP, same RCX, RDX ffffffffbc1ac1f0 with
+> Kernel Offset 0x38c00000 (same address after subtracting it), but this
+> time in kswapd0, 7 s after "PM: hibernation: hibernation entry". Two
+> successful S4 resumes earlier in that boot (121257 s, 192472 s).
+>
+> Full pstore dumps and the vmlinux of this build are available if
+> useful.
+>
+> Thanks, KY.
 
