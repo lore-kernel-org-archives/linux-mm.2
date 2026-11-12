@@ -1,89 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1297606A8AE
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 08:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE46D606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 08:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O/G0E/GO
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=PbWsbuTx
 Received: by kanga.kvack.org (Postfix)
-	id 16DE56B05CE; Thu, 12 Nov 2026 03:42:20 -0500 (EST)
+	id C98DD6B05D2; Thu, 12 Nov 2026 03:46:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11EB76B05CF; Thu, 12 Nov 2026 03:42:20 -0500 (EST)
+	id C4A316B05D3; Thu, 12 Nov 2026 03:46:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 035266B05D1; Thu, 12 Nov 2026 03:42:19 -0500 (EST)
+	id B5F846B05D4; Thu, 12 Nov 2026 03:46:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D18886B05CE
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:42:19 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6857F160478
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:42:19 +0000 (UTC)
-X-FDA: 85425825198.18.386C478
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id CDDABC0006
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:42:17 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O/G0E/GO";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B55F6B05D2
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:46:10 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1B1A3C04DF
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:46:10 +0000 (UTC)
+X-FDA: 85425834900.14.6DC5B71
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 17A731C0002
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:46:06 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=PbWsbuTx;
+	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794472937;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1794473168;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ial8iAsSa5eOrYsCj4SMZLA9EuKpEQEbZW4C+PxDTJA=;
-	b=ycbssD4yBbAJr3XPptxMifhTpYZQk1oKDKML9dEEpwSfuwBfnvow3iU5MivrmRyue/t3b6
-	Une+XTQ4gIZQU1CUC03Q0uszwtPuAI+tWgyRQgPBdeUSPPEHTtW7pcw2oBvu0is2vg+2uS
-	8aRY4sYAdfLsY2u/Iqf9vmpf8s63/nw=
+	bh=41nsNdC3zdMjNaUNJgC+leDUiMtoCdh+/HNf/Dul+ro=;
+	b=hJtqotBA8IQm0vkQjFZwmPPLsU+6namLkplj9nvpPg5Dd0DGjasGyANh5RUMqlyyQzIPLz
+	UFR140RQsQuhAL0DKGPZBQkDCqmaWHN5ZBzAxKMH5NKYtyVo8YgB9W/CiWyEHoKNhPHFQi
+	fzV+MSH8xu84K7UWO4GGuDZXouH76lQ=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O/G0E/GO";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=PbWsbuTx;
+	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794472937;
-	b=1epOQ4lUor3fTCnPvHcijKr5RngeEDAqfRQHa+4LqqYZx72h5rktARPdvZGclyI+akPNRs
-	pW2EarmM8mJHnyEjGYrp9qNrVzT5p7tuFUb7nCTNArUBKWtLlR1FqkUGQ21fGv+p5zULqQ
-	7e8IS177TW7OvJzIe5yTDR8EcZuItTc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2A8F641450;
-	Thu, 12 Nov 2026 08:42:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7D31F00A05;
-	Thu, 12 Nov 2026 08:42:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794472937;
-	bh=ial8iAsSa5eOrYsCj4SMZLA9EuKpEQEbZW4C+PxDTJA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=O/G0E/GOhzhWvj3+aPjuf/R81zEodFSmOd/3hcJXfsGxzBO9PPKa9mlTwPJcax3iB
-	 OdVCU1tSe9ntSNCMaNVqhAKbp00jbrwhPiLDlraF8pCZsdU08OTlvBi2e/a1g26EZb
-	 959/ReDHNObr+I8FCl+MWYtz9BJ+FZIllaNxscVo9Z/V3p8sLQx+aaN9ITpw347yhS
-	 qPSC7uFh8akjso25gvhq3e10LYYf3z4Vlcq2hPhORVs68vxkSyaGUhwfD+kbHW2fSO
-	 rFnl+8q2KMWAH5ZzLblj2XKbL3h7faSTarrZrWPG1dLixZjTGLEgdnnvgpAVgTMt0u
-	 Xn0VDYHJDiHBw==
-Message-ID: <sashiko-outbox-210762@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] mm/compaction: Mark concurrent compact_considered
- accesses
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Zhu Jun" <zhujun2@cmss.chinamobile.com>, akpm@linux-foundation.org
-Cc: vbabka@kernel.org, hannes@cmpxchg.org, ziy@nvidia.com, rostedt@goodmis.org, mhiramat@kernel.org, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, syzbot+212c2d1f47994035cf7f@syzkaller.appspotmail.com
-In-Reply-To: <20261111084205.80997-1-zhujun2@cmss.chinamobile.com>
-References: <20261111084205.80997-1-zhujun2@cmss.chinamobile.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 12 Nov 2026 08:42:16 +0000
+	t=1794473168;
+	b=wlWxU0Ro5TJbkFZBNFyjbsHW9feJ4cIDz8OwPyCtx1eor7RdEcpZIL1/779GD+aKPBNxyj
+	aQkLVxArOdbimhqdY2GLY7lID8qSSbpNQzm09x9PDb6lGZ16Lt6hFmHV6X9EXAyRuTbGx9
+	vQRGYhQH44pJPI5Hjz7O7ghLNDruVCY=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1794473163; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=41nsNdC3zdMjNaUNJgC+leDUiMtoCdh+/HNf/Dul+ro=;
+	b=PbWsbuTxFR3Gf9eWQ9Rfn2G4msjHKi8/9yltpuhpSE8Wc9/chBT41b+lkzDD9rrgzUi9TYeP6PtwGOo6G8p+0FYfIcmoTvLrJAd+0zWaFXZw8cJ9/ecf0jo0zdpqqUw8dfHkfHqODEFBCzkNWI/NiHAuE4qQAUORLrrixMjUZwE=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R281e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0XEbXuRi_1794473160;
+Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XEbXuRi_1794473160 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 12 Nov 2026 16:46:01 +0800
+Message-ID: <6722b853-3a80-439d-aee8-712011965d49@linux.alibaba.com>
+Date: Thu, 12 Nov 2026 16:46:00 +0800
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: mglru: splice all generations when reparenting a
+ memcg
+To: Kairui Song <ryncsn@gmail.com>, Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Barry Song <baohua@kernel.org>,
+ Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Noah Feldt <noah@feldt.systems>,
+ stable@vger.kernel.org
+References: <20261111000913.22943-1-shakeel.butt@linux.dev>
+ <CAMgjq7B+PE-Tw_v3bKYzNOTaT6+0_fn8gW7sNpMwzP1tPGbDug@mail.gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <CAMgjq7B+PE-Tw_v3bKYzNOTaT6+0_fn8gW7sNpMwzP1tPGbDug@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 6brr3uis666o53au5tdqmethdigahrt8
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CDDABC0006
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: bih6333qoaoq87h14ogjbcq9e3caq7b7
-X-HE-Tag: 1794472937-790951
-X-HE-Meta: U2FsdGVkX1/gbla9Tw57FjRsQLIz5EBk0fIgEm0chkrUht00AT9dzRdUqdqgbTTY1GsCFfAHk0+O9TUOrpOQZtZMdv3MGrSv2oRg9u48FjjMMrO2V4RtOlNw9jwV90+2GsvJD4yJBCq2z3c/9LNMEnkxSwxeagjMucFPBfNcf6UEn0Lpu5TPAE+NbwO7XXjepiKcL/BMyDPA01/hmdSMevSyEsXBo/cW5WN5W/u5ypPNjUzXNMXPvIlLCmSz0kJsvDTW9aAeqEXHoIdcHE6AzX/UwC+rgYaZfpM8kbOflKU8VnyuZ2b6Y9BfnEm/0K1G826YZ/pVAKvgXzVQIZZamX9P9xXpksBHkLUkCvmSnS1mqm5QTsEILOAgld6pHjf4IpasHXbhUIY9qfV5dhDMO+YhazgfmmjTa0rznOQCccMChUid1haIT4dRt/ux8+cPnsL0Ld+YJWrkV79mm1tFNCOHvCNMKr8It2Tw+3HZZfgX+337DuK0At4C0FmNYO7FeQquAYd/ILN1X/BNLUl6OE6DaykILmsFHIYx+JAmmyhJuefbdPU4xARGECWpYxh2HHVLu//RI/dDn+GW+7kVwkWR+CiS8d0NqUVzh1oKtE4WjWv1PEiHdfdNmuB+Ay0mdbL/DsdC2IuGYEoDcy5d0CVX+bZQZGUyIvNtWR4ybZX8jWANc9rSQUM8lPA9Qm1a9ZNdQo3KamsQpdHY2cNRpu2MXpT+xsIDWnzcej1At0z14RNpvIBjzKh5QlVJtCJO2ciWIrhsPim6msFqlrHq1JiVJz82ocQOwBO69MkbwH15yqcwe4YMs61wRCtu+cKLpOKOojKri/oUKNDy0QiPBzQp/2jWACRSLD0CQV2zatio+y82z1C9GMCNaZbA5j2r5j/EXagpZ4JDNqOmu2bg8ayD5JyBhZp0FX1HIzH2X14njIjbiBGhI3oGlOvF/TMhfvF0ALo0ZsbCkvmRDe2
- oJXwlxbx
- HbZLzSXFKpsEm/Q/k7jQE7jx9CUwvu0IDXvlftPLix68m8XYwZDwVnNPbmTjdL5sGNu1EN8rRSpq0POoFiyOEeVBsnYuqVNUAZRq7+Rn4CfrRL/3NIZPF5Zq1Av9otORmip2s31EWPrSK7GfFrB6MArI0bF332ntgdp6s5YPV2PEVoVFmNLaHE1Sfgo8rOo16QdXh7agu1HTXF9UsiPtJEsu+nKvxg1LBFlQtgtnf2XFQt+QzEcraQH6jHy8BUlicVpmGmxcmjsONylLDrRGb3pBabcql9E+Y0JTgXBvnq0UtBA5GLHyFiR+KjsFmehcFp04gNQL4qc1vl8wn90AuKZwdG5rF7X8JFYYKBJm+uw+akEclXd/45JwisAFLZpmwMVALNE8w7cuZST4WGsHGRC4D7XtUZTIb5jkTcGDQWiXP6iVjdQ+Q16S6+h7as5QptfnA4VtoTFQ6IFAwftY2zCW4vEpr5xVfxZ66k+Np/ONW3oiQkO2OcPitCpFw9KK/FA0aLTEIhagAtqw/dsE7nBgjJSoynxDvVc9HRSpYCr9hrRUZLx39pOwe07pizWYNrxB9YavxzMnEXa1fEuuH1Kqop8dpJou7UaJcYtx5p3CKRm4YQipmvSdHu21c31L10lXmf8ccFZb1y5tJx+wy0G39SLNBtNovlh10xMbuekHJ+BIAqCa6GIyRIHsyBtzSEJea3pjSDUPxABq22bhHM4DTE6l8TjkSmu9KR98kOUSjMk6+yE787BmOSuzQx9ZIoaskrI6o2UKzhPE=
+X-Spam-Status: No, score=-24.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 17A731C0002
+X-HE-Tag: 1794473166-968648
+X-HE-Meta: U2FsdGVkX1+pqNaLWmAXVEqnjGnl3240AUH4dJkBIUwZWJlwvERmyZZC3NlGmvli+JfrKBm4O/DxO+yKFJ0MnchriqzJXy0H/BCUNoLyZnqEhwzKvnuK5EIRAYgJAODfyoD9Vdx61b1UWAhsUNpVaOVrtcOGpgQL/f9YNvJcUUhQWAN42Y8TiZNIySEgtdHIhlfeyEhWCMQUta901vt5uQ0sHepw586xdMXwxvM8n2zX5518awUnf6fkdL5rUd4P63ZprpxCXiplreahxSX8xN7QI916diR6aR9lLewY2nJS0MH8sKM1Ovq/YLMF0FwIo5h9ISgoBTBuVqbPFIPndBWsnhO2jFaNQdS8no6YgYAOakw5JvZaOhZCnS8RSt4qUX5UAQ0guXe30QdTuYRv3R6SnSFqttBIyZK4KpMxOr4kfAOoT6jg2Q3uIlWuBvU+rPeMsd9dfLm+OziTMC2WvJeqDPJ2qUzJiTLpOc1mDgWtTrHNkCkLCGMakQk3QnYEsNq0Ljeh9HGPJS21sbqAr1v14Yu1B5g6urDObNxz/N8DRBWrKq8pGW5Hsy2v3bq2rcTEu1GuvvIoxf+S4TgdtrUvzlm+mWVoMbRPqPK6am49M8VMKJQavII662BvHbHtrUbHXqaWYQL8MRiiTpbM88IkT70v65LC/4HbOivmNt0kGXoJK665S0DY/h/kkIeZdF49iHGT1RuYOTOFzyfn0PeUNkfuHb9VwV6HM+XiMsxc2xuqxTUGxb+R8mkaaJwaSEDL3iSU9ukL7Nq6hX8XtmWLkuvlmmdxoswhl723+VMVCL91BZDq+zUwxCXMZf2bmNA0n1H2A5/eOMBnO+D5t2CN5R8JUJMbOQvw0Z8Wrolq6MIbKaFvKSpbfAweyEyk9vFqUXsZe0MIOluIm/BzN+Ty3yrk1kCkolkuB/UakehqM0lIXKRqRcWd39tZFFPPhj2Wwu4N1P2IkfneXFQ
+ WZ9XxgUr
+ 7AYOCjjwYoY9lj5sgfQLSf4VFPj9uLhyT/crXCKJ/lap2/K6yJ8WCnKY06MIMRHP0SbUZlLuedHCCJFogHLhXtcFtOJhOZByRGYV+U1n6K1geMES9DHYjhPiesAACm7yHLOz6f9mY/0HFeqNtRneF1FZXmBP2QPRxuTp2RcZbQeeLbIE4i7qV5IEVccsYcB4klEWfMMXl+tgXZg8Jdv+pZil6peb+79DmuxOZIqUNDPv5LzmhEnnmWwqfSmEAWcG0kEFfZK6d3NIpM/c1BDu9cJY1JudQKjHsSnJV4Rw8zmuevYr9ksKcwMQxBZE1YrlA4u3PSoXuU8E3sEWjVsTPXAGmIZml/147B/Pb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,56 +95,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found no new issues
-in this patch, but noticed 1 related pre-existing issue it does not
-introduce:
-- [Medium] mm: data race in compaction_deferred() [1]
---
 
-commit 065fba640e4d4df80527a642f4adcbe5f31c8683
-Author: Zhu Jun <zhujun2@cmss.chinamobile.com>
 
-mm/compaction: Mark concurrent compact_considered accesses
+On 11/12/26 2:13 AM, Kairui Song wrote:
+> On Wed, Nov 11, 2026 at 8:10 AM Shakeel Butt <shakeel.butt@linux.dev> wrote:
+>>
+>> Noah reported list_del corruption on single-node hosts running 7.2.11,
+>> which already has commit bf4ade7dbd76 ("memcg: keep folio's objcg same
+>> as its node"). The bad pointer is an MGLRU list head in a freed
+>> mem_cgroup_per_node:
+>>
+>>    slab mem_cgroup_per_node start ff31bfa36a3c9e00 pointer offset 528 size 1920
+>>    list_del corruption. next->prev should be ffacf881ccc70e08, but was ff31bfa36a3ca010. (next=ff31bfa36a3ca010)
+>>
+>> When a memcg goes offline, __lru_gen_reparent_memcg() moves its MGLRU
+>> lists to the parent. It moves only the generations (gens) from min_seq
+>> to max_seq, and it puts each list at the same index in the parent.
+>>
+>> A folio's gen in folio->flags can be ahead of the list it is on. In the
+>> parent, the same index can stand for an older gen, so the folio's gen
+>> can end up older than its list. Once the parent's min_seq passes that
+>> gen, sort_folio() puts the folio on the list for max_seq + 1, where it
+>> stays until the next aging.
+>>
+>> If the parent goes offline before that aging, the folio is not moved to
+>> the grandparent. It stays on the parent's list after the parent is
+>> freed, and the next list_del() on it touches freed memory. This needs
+>> two cgroups on one branch to go offline one after the other, such as a
+>> container and then its pod.
+>>
+>> The parent always has MAX_NR_GENS gens at this point, so every index is
+>> valid in it. Move all MAX_NR_GENS lists, not only the gens from min_seq
+>> to max_seq.
+>>
+>> A reproducer that drives these steps through the lru_gen debugfs file
+>> gets a KASAN use-after-free on the freed mem_cgroup_per_node without
+>> this patch, and no report with it.
+>>
+>> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
+>> Reported-by: Noah Feldt <noah@feldt.systems>
+>> Closes: https://lore.kernel.org/all/20261110132853.71228-1-noah@feldt.systems/
+>> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+>> Cc: <stable@vger.kernel.org>
+>> ---
+>>   mm/vmscan.c | 12 +++++++++---
+>>   1 file changed, 9 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index 6a1af9b92349..902616a3b755 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+>> @@ -4751,19 +4751,25 @@ void max_lru_gen_memcg(struct mem_cgroup *memcg, int nid)
+>>    * The same generation has different meanings in the parent and child memcg,
+>>    * so this compromise method will cause the LRU inversion problem. But as the
+>>    * system runs, this problem will be fixed automatically.
+>> + *
+>> + * Move all MAX_NR_GENS lists, not only the gens from min_seq to max_seq.
+>> + * An earlier reparenting can leave a folio whose gen is older than the list
+>> + * it is on. Once min_seq passes that gen, sort_folio() puts the folio on the
+>> + * list for max_seq + 1, where it stays until the next aging. If that list
+> 
+> "sort_folio() puts the folio on the list for max_seq + 1" seems not
+> very accurate as MAX_NR_GENS - MIN_NR_GENS == 2, could be any stale
+> gen outside [min_seq, max_seq], right?
 
-This commit marks concurrent reads and writes to zone->compact_considered
-with READ_ONCE() and WRITE_ONCE() to avoid KCSAN data race reports.
++1. The comments are not easy to understand. IIUC, the problem is that 
+the folio's gen can fall outside lruvec->[min_seq, max_seq], potentially 
+causing the folio to be left behind on a memcg that is about to be freed.
 
-> diff --git a/mm/compaction.c b/mm/compaction.c
-> index a049415512c67..2ac6af7c1ee59 100644
-> --- a/mm/compaction.c
-> +++ b/mm/compaction.c
-> @@ -126,7 +126,7 @@ static unsigned long release_free_list(struct list_he=
-ad *freepages)
->   */
->  static void defer_compaction(struct zone *zone, int order)
->  {
-> -	zone->compact_considered =3D 0;
-> +	WRITE_ONCE(zone->compact_considered, 0);
->  	zone->compact_defer_shift++;
-> =20
->  	if (order < zone->compact_order_failed)
-> @@ -142,15 +142,16 @@ static void defer_compaction(struct zone *zone, int=
- order)
->  static bool compaction_deferred(struct zone *zone, int order)
->  {
->  	unsigned long defer_limit =3D 1UL << zone->compact_defer_shift;
-
-[Severity: Medium]
-This problem wasn't introduced by this patch, but should concurrent
-accesses to zone->compact_defer_shift also be marked to avoid a data race
-[1]?
-
-Multiple CPUs performing page allocations under memory pressure call
-defer_compaction(), compaction_deferred(), compaction_defer_reset(), and
-compaction_restarting() concurrently without a common lock, reading and
-updating zone->compact_defer_shift via plain C accesses.  This causes KCSAN
-warnings and can corrupt compaction deferral limits.
-
-[1] https://sashiko.dev/#/bug/linux-b61fd78e-8874-42f5-bbe1-bcd3914879cc
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111084205.8099=
-7-1-zhujun2@cmss.chinamobile.com?part=3D1
+But, yes, the fix is correct. So,
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
