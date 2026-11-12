@@ -1,90 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69689606A324
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 05:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A72606A327
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 05:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kukPlTcG
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mNZCgTOx
 Received: by kanga.kvack.org (Postfix)
-	id 3A0B26B05B5; Thu, 12 Nov 2026 00:01:07 -0500 (EST)
+	id 91EA36B05B6; Thu, 12 Nov 2026 00:01:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DB386B05B6; Thu, 12 Nov 2026 00:01:07 -0500 (EST)
+	id 8F61E6B05B7; Thu, 12 Nov 2026 00:01:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C9E26B05B7; Thu, 12 Nov 2026 00:01:07 -0500 (EST)
+	id 80BD56B05B8; Thu, 12 Nov 2026 00:01:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DD72E6B05B5
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:01:06 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6B1E41C3C97
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:01:04 +0000 (UTC)
-X-FDA: 85425267648.26.92D75C4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id CA74812000C
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 615ED6B05B6
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:01:07 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 957161A03B9
 	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:01:02 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kukPlTcG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+X-FDA: 85425267564.03.45A662F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id EC2DA20008
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:01:00 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mNZCgTOx;
+	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794459662;
+	s=arc-20220608; t=1794459661;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G/7S3+t1B6488CGpAD0rgeoX4/NzsTi4W1NyYTehGxk=;
-	b=S/+q0p+VlUXB3bzFAM8tnlO5vqlrISkNPguYXLvnKrmGfSKf3q2IXdBU1nGmC7PUHRrOrP
-	OQGwgQ3xO35tkxiZEgt4SowZeqlBGghgsCp3HuAybTD1chJNggvg9SmFfDaTRud2F4fNfV
-	FyUrgB+KxM1cyts2aCFH0bkUsKRhEWE=
+	bh=WqqSUDjemosKfMXFJs1dg5brBqMf+3gFKrO43tuFE2w=;
+	b=O45XUXCmzC5ZTNmvTSgNM9sIUeD/3+5TjyRAUZrz6GeYPkRjKvoDVIVUzvRyApvckuRO0w
+	mLqwhznsKaX7R1xwgOQILq3v/1MV+RuXZkeap9lZQl137toVLWFzFdXRiBZORoEhjXuPNi
+	04wqP71XCLGYjSOw3zv6cysT2KgGNMQ=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kukPlTcG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mNZCgTOx;
+	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794459662;
-	b=3YhNxIDzcbUcTJdmUG7ANMEStEtLFGJda1Zj2uvPrxGk2gKHDa+Ixo293yHpUp1/QRh0nS
-	GwuIC/cFXeV9OAgm/HhQ0bMrySWD9xCYR0TqnZ23hmDxZswSeV8g3E6GPuVAVdqECXdNMa
-	OPBaXwHW1dENdgUj3e+SSX6g+FOLs/4=
+	t=1794459661;
+	b=7fvNQsGKBsHymy9BCm8drd9lStCojxlA19i5IBgy70e3jo5YOJbQ5+G2AAyQcJrviKMF0Y
+	shG3BSy3oXPVDAM3sCws/tIM+nZfa8+k6xRIS+i4+cwPfZJalNJ+QKqNobHJ0LKutSofjK
+	Eu81soXmr2D6cDvP7h/GnYjJHe7LcqI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6E198632EF;
-	Thu, 12 Nov 2026 05:01:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE951F00A05;
+	by tor.source.kernel.org (Postfix) with ESMTP id 83F4663033;
 	Thu, 12 Nov 2026 05:01:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 905811F00A05;
+	Thu, 12 Nov 2026 05:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794459662;
-	bh=G/7S3+t1B6488CGpAD0rgeoX4/NzsTi4W1NyYTehGxk=;
+	s=k20260515; t=1794459660;
+	bh=WqqSUDjemosKfMXFJs1dg5brBqMf+3gFKrO43tuFE2w=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kukPlTcGw+hI3ojrKB7BOsRs/5G0PkLbRZhCNgivLHpjJ8tWrnTO6C1/GKcy2ouJF
-	 OvR//ZHDgPkRpDtCROjBZicWzJ3gvKxyGbbX9mvjH46MffsrEby66D2y31wnDHsa/A
-	 lg1U5KwlKF34HxFXgp+pLV2WsXaA1mkze5gF7mUn/IzEozdCFqJLdKIWD0VkOd3nrK
-	 7q2ZjLdqQgaJigRlNdA8UziuYXTdrwVliKRzCTfC7bdSndks20TsecrnGhVlxcn89Z
-	 DO9J1kgggmpyEsm6S+t5qnM3Nq0LBEZSTE4N2wHVs+yspTnoAi3mHdwZsA9p6OaqjH
-	 i7PmPahEbmoZQ==
-Message-ID: <sashiko-outbox-210413@kernel.org>
+	b=mNZCgTOxgK1BNaLSGKQqSm95RcbYRuTvWMFkQuIue/r670gUlYddhyK/ZsAgIyEGZ
+	 28iuIHt++Ir2me/i46LbPeKosDsR+aZ3lqskLmRwRJhPeRbkhqGjcZAFx2RSOr41cV
+	 l25f5I5HjbO5Y3HuaDKDohLiLZkAhsgYFQGzUKh1sCnEZsM1/8vVKuj+69ZySzOS47
+	 wvlqmK3Z/E2ixy5DBAzvah0FS99mspCTQzJPLz+SRV+nFKkfIWWAmMlIcStI28EtLi
+	 rKD3ri69D81Xa9UllJfV0qM9cEdsBXFUU5U6IhsiZoH40fcaPknGCTv9oBZXhZkxNx
+	 QHv7TGcrJgvCw==
+Message-ID: <sashiko-outbox-210412@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 05/16] mm/mglru: skip zones above reclaim_idx instead
- of rotating them
+Subject: Re: [PATCH v7 04/16] mm/mglru: lift the forced protection of
+ reclaimer
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?QmFycnkgU29uZyAoWGlhb21pKQ==?= <baohua@kernel.org>, akpm@linux-foundation.org
 Cc: axelrasmussen@google.com, baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, hannes@cmpxchg.org, hui.zhu@linux.dev, kasong@tencent.com, kunwu.chan@gmail.com, liam@infradead.org, lianux.mm@gmail.com, linux-mm@kvack.org, liuxiang.277@bytedance.com, lyugaofei@xiaomi.com, mhocko@kernel.org, mhocko@suse.com, qi.zheng@linux.dev, ridong.chen@linux.dev, rppt@kernel.org, ryncsn@gmail.com, shakeel.butt@linux.dev, surenb@google.com, wangzicheng@honor.com, weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com, zhuhui@kylinos.cn, sidchintamaneni@gmail.com
-In-Reply-To: <20261111232603.9934-6-baohua@kernel.org>
+In-Reply-To: <20261111232603.9934-5-baohua@kernel.org>
 References: <20261111232603.9934-1-baohua@kernel.org>
- <20261111232603.9934-6-baohua@kernel.org>
+ <20261111232603.9934-5-baohua@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 12 Nov 2026 05:01:00 +0000
+Date: Thu, 12 Nov 2026 05:00:57 +0000
+X-Stat-Signature: zdmmewy6hwobi87amweszcw1dmshtc9w
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CA74812000C
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: mm9te7pfkj8od43jtzrjfxpk6bsq3nnt
-X-HE-Tag: 1794459662-181040
-X-HE-Meta: U2FsdGVkX195RGyAUz94Tcu0zfYaxUaiqqW67vWLLlrQc2wNrpU8DcDXUvGkPAO+qznMAhEAt+7I0nk0NiQ1El41S5J0Xen9zln4H41sKphuzm3gAi2PlIdY/3H8BFCru/1Zs9gImhRwr3+S70dBjKRmBSwF71EPTkJMCr3MOHjAiJAiobIVoaT+LiZx0NtGuE/Fz75xtb57Bp9wemmhbgin7oITMrXPm1dNPBSByxYxJk5KWhFbxCQm+Hbg9EqzgiWcB5oYdeGWDyTqN7DKtWwhjvoIpTXhtgcXz4e+VWhpk06kZETMTbKlRK1xtR6F2d0ekairZluYBr1PlhBvubPUuo6ooVIqnAZJlQjPnAChzxKbBpXSkS5+eZfh3UKT+/NzP9l/fXJeAtoJedv5+k5HPgqm8c/64+SD0ws7pTvkkXfkPtvorHah6C/vsg9F1+GRhKuI2iGRsgNLn8Mz/3cV7Ja1qiSST4W1O9ofKvuPD2//jsSN2YqDTdtygj9e/EGBahYnXccw+t7/R0b4lxltMneYo8dmd0R0BpkoB351VzSfVkgDqR5KZbEvh72tgzD5iyiSxREjTJAn7Mo6QYd1W+o4hpgwtuCnlwEhiC9TThXzaUwBjh/LpmQVOcQkmtfrbIVDDbtAXlxKqKZDpTXTijEc/5VbMY5mz1eXAhBWAxHoPxJkuOmnY/x4gYroElvrJK+nVxtpymNuxAvdSS/lWjvbHPJGFqwrqTVe+zDB+NPei1JVDkxJrQiKTQtXCIohVTzpNNATsAP9I12BOb2YDOabj4AvuJg3VENCtJqZoxvU8SybFzuhhxKs9iVYetjKQGt1+az9DJjzGpic4XT2uxUQPrEXYaQT1nal/eigKYObGH/DaUxPRpBHF78IigOYxJUWDsa8YDsH5s38ZaqoZKxYYgv6jRZ1uLF1oa/a29R2UBQ8Ejd1x25n0NLGS9iiJdBjBUfC/2thL1O
- 1gcGuK1R
- dnorr3EID8OggeHE/snaUhyGHWtN+1QTyjpLF2lD9+n+AXZtzz4lE15EWcB9lFEbD2LaJO2+bBwgjyIGyXVmgeRUvgIQsSnEIfBETMI3KTvaGcgD48xVrSxiR5+83kYvoFCnCdPfKO/G2svOjccqyjgUcaOYTyph/J7TwPFqO5tFTiLZq3JBe2RL/KjwwaChVZWtgC2N4JCnQPvb+svJgl5k+o+m3UcmvM8fpXCHkapsX7rsx/Ez9CHVYqWoJKQWtAvGQVkkGDXqDLzwnt3gZwee3CBJsCgB6aMLZJf+9l3Dt61hP6B4MAXKc+MrIeSyM4oyIGj4OzElOofddtymdtxa7MdgQU6uIqLpbH3VmdE2pwaOJJo2lxgDLizNdp0ElPBvaZMstCS3Nq+jyYSR5Q22Kgjz8wauTYVVXrVttdMLoBW452RXG/jRiMoUJhrz0KkfuIBlK9DIyS9NzTp4k9wD0WT/N1T47uJpX50W0dFHu35DEposd98WA+O7M0hi66qZgjIC7lZnrlH0mqEsZSbyetMdghrvQkVm8g/2OHGrlMxSJnBcndXj/ChZ93s3BCYnLIpUVs8C4sq9ihQRdGZQ2Lz+x7D3QnbwnZxtH5MvjTu24ZXsRBST6VP8VN/xJZI8z/v8QI1pBDiHIM6BBEdRNB0dwbcIKrTdoJBQ6T3CNOhXdU/yVri+TuZsFJkaqtp19iirf4p4AK0X3gdIqlPdQZZLYRKL/mRkUX9q81xLoAAMtFgkTrQgcWhBbWupA2VhLnxFETrHob4vFppiR/QfR14+Lin3/3CNi
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: EC2DA20008
+X-HE-Tag: 1794459660-247666
+X-HE-Meta: U2FsdGVkX18LsGwu4O1gN/mXlfBD84iy9ZP15X4Ot2DrOp2deEJxwxNBz5ZP31uirOLRQ146v+pjOS4DQes0SJ49y/TzyqMqGXC0HIaN22BFcAmbyLHQPRlI5Diet8LRVCvBwSczEi4ORVKaAz5oIb227+4hrVYWtwxAsA77Son5EJJRp60EkzBgBiRzYvTQreCMxkzrRCuMA3kPKhgXvlpDSyTy0wDxyWkRI41i1MCCl613AsOvx6qnAzNbbxWnf5h7t185CWivY7DOs/q3KLaRWkUS4AnLZEY+nRo0QqK44s9q0n7mqTTntsBtpcOc36jXaLNihXKs2XnmLM1RR5tiFg0siReI+OP+e9JrJ8C/h4vxZms8RqFX1PqERJEQrZfMNJZmSp+bxd0xaNOsbp9uwUAow05e/LWjBOFLniqQ9dktEC9/X4Z+ERMzUhKREMf+k+EJt3sAI2OaaddD5747vEkOaJ1s2rLUQLTAwNwAcfEvkOZKowr4C44ayGjseqq13xRiz7lN4+0x/+GyH1nVncLEGhzURTW2MeYtWpcIr/C8jVmrUUDMSr/JpnE+b8j1NleRyWJXhnoKhvNmNf2IMRUMCpcK5umo/ypeAZr9aDPdHGt/mmoeK3PY7IUQBEeBC4LAIeVsvLIO1iAg2N4aSRXkpVS3XF1Km+gNvhrlZPDbRkz+X4eHVS9ObGEufSFmNKGAyrDmHohfoBA1PUm5XsWGOGkxPyFQKdfIPUYE6H6UAas1oY7gEErpfQqyjfJpuGS8avcOEjUEql9WTmAoajC+csKUW+ssPEsVi5eQ5kO8W0C6vs/vbIqQTjfpphppZJ0hDBHC26hfQs6ld8QQ4nk5zcp3OHSYDtiY0dXo7ZgOwYnYfk/Neu5y23NgSTPqlo91TBwkivYgplD0X9MTOwf8a9DVstvU4emnrpJdJdIVw/TF9wnWQpgcuDz0iMYRvVdq8OautHI5B+a
+ Qv5IHgl8
+ MOIH1Pxi6xRFXmZVCn/e+hcRnxTYHOWFaU8UlYogdzxSW/P+7da0OHDkFJJVKGjDtobLFzzflzeHp972GY72QGdavgsahgaUCCRxhEobB/EN1NErk/U9Zdb373/X908QmN5F9EL5grwQivdWwDxj4wqAS83h3v7c9tdtr0kHfSHcJ8uhFiYt9F+v+5kH3XCr2XTajeljLrE9FSdfuVjcDta+LDD0jN7CBPTgAY0QBwJjCqQja1n6YMS5rsq/kqVZGfuXDKLLr0VkItsEuh+hXHNNnBLmJo8DTUFwrZsAQfna0H7O/x9lVM6af2lWpgkT4cDVr1Hv/E9POeYfPgS+80+LU284Zbiuep8tFV5TGrVVS/vtrNI1OJJouvXe6/hD1TK2b3p1fDLLHB1YyoFNqAYbTbkYshJFJx25n7PPrRDlRcHHoVYje9h7jhrHWV3HDQ/A5GSTlIAmUITszoknzqoX918j4hGgBIjoJwDamXWZZYvwlJNh0Cp0hLWcihblrht6tPtzrDRhpIPTOioBeasyDBxTQxJ42FKzCLhO4ty1Uf+hd2BtRASaBWPKbwDFv3sGCbZlTsiFjKkUIio7rBob054mEemnamC0bhLDikIipWOAQ4sgdaQ/y4kgtQI/FxFx1ibUEI8RoX5ROpVULzz8X/7s6MSLtJowmjTt215pHvIf4Z0172IPzsM1l34/hnsDFWW9I6sqmauE93vznPsWBb/i6tc27QdbBeBHR6Ae+dOPPfDlj2PdIDQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,127 +96,64 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [High] mm/mglru: pinned min_seq in try_to_inc_min_seq() stalls aging
+- [Low] mm/mglru: run_eviction() evicts up to max_seq due to sc.priority
+  =3D=3D 0
 --
 
-commit a9558af5b6eefdf9bb9a64058218b290ef8ecc66
+commit cd86952996e1243807567af19d65b021c3573888
 Author: Kairui Song <kasong@tencent.com>
 
-mm/mglru: skip zones above reclaim_idx instead of rotating them
+mm/mglru: lift the forced protection of reclaimer
 
-This commit restricts scan_folios() and lruvec_populated_min_seq() to zones=
- up
-to sc->reclaim_idx instead of scanning and rotating folios in higher zones.
+This commit drops the MIN_NR_GENS early return in scan_folios() and
+extends the raised-priority scan bound up to max_seq so reclaim can
+proceed when aging cannot keep up with pressure.
+
+Link: https://github.com/ryncsn/emm-test-project/tree/master/file-anon-mix-=
+pressure [1]
+Link: https://lore.kernel.org/linux-mm/20260428-mglru-reclaim-v7-0-02fabb92=
+dc43@tencent.com/ [2]
+Link: https://lore.kernel.org/linux-mm/20260502-mglru-fg-v1-0-913619b014d9@=
+tencent.com/ [3]
 
 > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 51c2ee66b3ee8..273aa8c56bec8 100644
+> index 20199232dd70c..51c2ee66b3ee8 100644
 > --- a/mm/vmscan.c
 > +++ b/mm/vmscan.c
-> @@ -3992,7 +3992,7 @@ static bool inc_min_seq(struct lruvec *lruvec, int =
-type, int swappiness)
-> =20
->  /* Similar to lruvec_evictable_size, return the oldest populated seq of =
-the type */
->  static unsigned long lruvec_populated_min_seq(struct lruvec *lruvec, int=
- type,
-> -					      unsigned long max_seq)
-> +					      int zone_limit, unsigned long max_seq)
->  {
->  	int gen, zone;
->  	unsigned long min_seq;
-> @@ -4003,7 +4003,7 @@ static unsigned long lruvec_populated_min_seq(struc=
-t lruvec *lruvec, int type,
->  	min_seq =3D READ_ONCE(lrugen->min_seq[type]);
->  	while (min_seq <=3D max_seq) {
->  		gen =3D lru_gen_from_seq(min_seq);
-> -		for (zone =3D 0; zone < MAX_NR_ZONES; zone++) {
-> +		for (zone =3D 0; zone < zone_limit; zone++) {
->  			if (!list_empty(&lrugen->folios[gen][type][zone]))
->  				return min_seq;
->  		}
-> @@ -4026,7 +4026,7 @@ static void try_to_inc_min_seq(struct lruvec *lruve=
-c, int swappiness)
->  	/* Requires at least MIN_NR_GENS gens for basic functionality */
->  	seq =3D lrugen->max_seq - MIN_NR_GENS;
->  	for_each_evictable_type(type, swappiness) {
-> -		min_seq[type] =3D lruvec_populated_min_seq(lruvec, type, seq + 1);
-> +		min_seq[type] =3D lruvec_populated_min_seq(lruvec, type, MAX_NR_ZONES,=
- seq + 1);
->  		if (min_seq[type] > lrugen->min_seq[type])
->  			seq_inc_flag =3D true;
->  	}
 
 [ ... ]
 
-> @@ -4780,24 +4773,22 @@ static int scan_folios(unsigned long nr_to_scan, =
+> @@ -4771,18 +4782,24 @@ static int scan_folios(unsigned long nr_to_scan, =
 struct lruvec *lruvec,
->  	 * when under pressure to respect swappiness more and reduce IO cost.
->  	 */
 >  	if (sc->priority =3D=3D DEF_PRIORITY)
-> -		min_seq =3D lrugen->min_seq[type];
-> +		seq =3D lrugen->min_seq[type];
+>  		min_seq =3D lrugen->min_seq[type];
 >  	else
-> -		min_seq =3D lruvec_populated_min_seq(lruvec, type, lrugen->max_seq);
-> +		seq =3D lrugen->max_seq;
-> =20
-> -	gen =3D lru_gen_from_seq(min_seq);
-> +	seq =3D lruvec_populated_min_seq(lruvec, type, sc->reclaim_idx + 1, seq=
-);
-> +	gen =3D lru_gen_from_seq(seq);
->  	max_gen =3D lru_gen_from_seq(max_seq);
-> =20
-> -	for (i =3D MAX_NR_ZONES; i > 0; i--) {
-> +	/* Scan eligible zones in descending order. */
-> +	for (zone_idx =3D sc->reclaim_idx; zone_idx >=3D 0; zone_idx--) {
+> -		min_seq =3D lruvec_populated_min_seq(lruvec, type, lrugen->max_seq - M=
+IN_NR_GENS + 1);
+> -
+> -	if (get_nr_gens(lruvec, type) =3D=3D MIN_NR_GENS)
+> -		return 0;
+> +		min_seq =3D lruvec_populated_min_seq(lruvec, type, lrugen->max_seq);
 
-[Severity: High]
-As reported by KunWu Chan on RFC v5 [1], does skipping zones above
-sc->reclaim_idx in scan_folios() while try_to_inc_min_seq() still checks all
-MAX_NR_ZONES stall aging during zone-constrained reclaim (for example,
-GFP_DMA32 reclaim when ZONE_NORMAL is populated)?
+[Severity: Low]
+Can debugfs proactive eviction via lru_gen_seq_write() -> run_eviction()
+now scan and evict folios up to lrugen->max_seq instead of stopping at
+the requested target seq?
 
-When an lruvec has MAX_NR_GENS (4) generations, lrugen->min_seq[type] starts
-at max_seq - 3.  Because scan_folios() no longer rotates folios in zones ab=
-ove
-sc->reclaim_idx, any folios in those zones keep try_to_inc_min_seq() from
-advancing lrugen->min_seq[type] once eligible zones are drained.
+lru_gen_seq_write() leaves sc.priority zero-initialized (0 !=3D
+DEF_PRIORITY), and run_eviction() loops while seq >=3D
+evictable_min_seq(min_seq, swappiness).  When one evictable type has no
+folios in generations <=3D seq while the other still has min_seq <=3D seq,
+scan_folios() takes the sc->priority !=3D DEF_PRIORITY branch and evicts
+folios from newer generations up to max_seq, where sort_folio() also
+bypasses tier and reference protection when min_gen =3D=3D max_gen.
 
-In should_run_aging():
-
-mm/vmscan.c:should_run_aging() {
-	...
-	if (evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS > max_seq)
-		return true;
-
-	/* try to avoid aging, do gentle reclaim at the default priority */
-	if (sc->priority =3D=3D DEF_PRIORITY)
-		return false;
-
-	/* better to run aging even though eviction is still possible */
-	return evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS =3D=3D max_seq;
-}
-
-With min_seq pinned at max_seq - 3, evictable_min_seq() + MIN_NR_GENS never
-reaches max_seq, so should_run_aging() returns false and scan_folios() drai=
-ns
-eligible zones down to the youngest generation max_seq where sort_folio()
-disables tier protection and workingset promotion (min_gen =3D=3D max_gen).
-
-Even with the follow-up commits in this series (commit "mm/mglru: Run aging
-when pages are rare outside the youngest gen", commit "mm/mglru: Run aging
-when one type has no populatable folios", and commit "mm/mglru: Restrict
-eviction accounting to eligible zones"), at priorities above DEF_PRIORITY /=
- 2
-scan_folios() caps seq at max_seq - 1 and evict_folio_lists() returns 0 once
-older generations are empty in eligible zones, causing try_to_shrink_lruvec=
-()
-to break out before calling should_run_aging() until priority drops to
-DEF_PRIORITY / 2 and scans max_seq without tier protection.
-
-[1] https://lore.kernel.org/r/CAN_Opa-AScm9=3DEeXO_Uy8VjbQ=3DbqY9P++rFP8H1R=
-hUB4dOt6xw@mail.gmail.com
+The commit message of later commit "mm/mglru: balance anon and file scan
+budget by refault rate" in this series notes setting .priority =3D
+DEF_PRIORITY for the debugfs scan_control, but that initialization is
+missing from the code.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111232603.9934=
--1-baohua@kernel.org?part=3D5
+-1-baohua@kernel.org?part=3D4
 
