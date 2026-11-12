@@ -1,98 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C45A7606A323
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 02:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FC33606A332
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 02:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=o8IXSB74
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=rwD7SgQf
 Received: by kanga.kvack.org (Postfix)
-	id E6D076B05B1; Wed, 11 Nov 2026 21:34:05 -0500 (EST)
+	id 5F0196B05B3; Wed, 11 Nov 2026 21:42:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1F276B05B2; Wed, 11 Nov 2026 21:34:05 -0500 (EST)
+	id 57A346B05B4; Wed, 11 Nov 2026 21:42:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D33FB6B05B3; Wed, 11 Nov 2026 21:34:05 -0500 (EST)
+	id 4422B6B05B5; Wed, 11 Nov 2026 21:42:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B37996B05B1
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 21:34:05 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 383FD404A1
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:34:04 +0000 (UTC)
-X-FDA: 85424897208.15.6FD160E
-Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 4057840003
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:33:58 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=cmss.chinamobile.com header.s=default header.b=o8IXSB74;
-	spf=pass (imf04.hostedemail.com: domain of zhujun2@cmss.chinamobile.com designates 111.22.67.137 as permitted sender) smtp.mailfrom=zhujun2@cmss.chinamobile.com;
-	dmarc=pass (policy=none) header.from=cmss.chinamobile.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 12EBE6B05B3
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 21:42:09 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 76C7D1404AC
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:42:08 +0000 (UTC)
+X-FDA: 85424917536.11.DBC881B
+Received: from mta0.migadu.com (out-248.mta0.migadu.com [91.218.175.248])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 69AA420002
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:42:06 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=rwD7SgQf;
+	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.248 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794451326;
+	b=4Jh0B+FXuTVXL+VK1EgQsVMWrRGv+4PJchgNSzPyEp8l7Eg8A8qAQXOKfkiNCkowDXvRF/
+	ldt3bKXzMxzgrEIHe4u1+H2Q3pubJPutkW2vdsFPQpiE7aQozmrKM1gURNX94gkkktFHf4
+	bMCMXMHApNnfw2mEhIKXwoc/5SX9r0Y=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=rwD7SgQf;
+	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.248 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794450842;
+	s=arc-20220608; t=1794451326;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LYKihU0pHL2+b602qOoekQ9OcZw08O4XsCNRkmiBQCw=;
-	b=v1cwkOI9ORR9frGIegeD4YvKmbfMy6qyZhCmSbsAOBy7O5vW0/RUKZOJ0HBEsB50gEJVc+
-	+NhGvi8NLHVrM533751KBy3/9ALcrzh0WdIe/L0cBx07QmlOshjxdqQRCyUs9rW4Nqpb+L
-	Ll5QLzqnXjT2ilo7ceTNVs9kCe8dXjc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794450842;
-	b=Q6EjuhtfSJszs5mGKJ8v2HIBP+1PMhlz2eZAvMYiRd3jMxa9rSfk9kKBVNVtj/2JOfHv+z
-	XQFYKFNLvKgBUSJ0//jM7PG0v7UssZjm7mom1KKPhlXlRNnYD/I0WjICgsF14xDoDSv0+W
-	8KzOuXnsBlPGpeh/OS1EmjcUAuL22dw=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=cmss.chinamobile.com header.s=default header.b=o8IXSB74;
-	spf=pass (imf04.hostedemail.com: domain of zhujun2@cmss.chinamobile.com designates 111.22.67.137 as permitted sender) smtp.mailfrom=zhujun2@cmss.chinamobile.com;
-	dmarc=pass (policy=none) header.from=cmss.chinamobile.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=o8IXSB74wmd+uc8pmDKp0Au1EuB6498W7FTB1CVqxoUxpCvwQzgDx480XrVHgoxUba8nIfdpSSwwo
-	 eyxOHkeqx+HSCuZvD3sQjncuMFx0JE0ejB3HOdF00XSnPNBLAA2z1exn9dgJBjtWBMz/D3yHF81QyS
-	 gQHnQTaxt5dNv4Mg=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app08-12008 (RichMail) with SMTP id 2ee86af5258d60a-7c876;
-	Thu, 12 Nov 2026 10:33:51 +0800 (CST)
-X-RM-TRANSID:2ee86af5258d60a-7c876
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from devin-VMware-Virtual-Platform (unknown[10.55.1.72])
-	by rmsmtp-syy-appsvr10-12010 (RichMail) with SMTP id 2eea6af5258da4f-eeee5;
-	Thu, 12 Nov 2026 10:33:50 +0800 (CST)
-X-RM-TRANSID:2eea6af5258da4f-eeee5
-From: Zhu Jun <zhujun2@cmss.chinamobile.com>
-To: baolin.wang@linux.alibaba.com
-Cc: akpm@linux-foundation.org,
-	hughd@google.com,
-	david@kernel.org,
+	 in-reply-to:references:dkim-signature;
+	bh=/8c9L7Aa/+KfdpEEVA0L9SAbBuPuYRG32gKLgx+Xt9s=;
+	b=k8jGuSiDLKO/eHlI+63jFi+CmWNV5m6QUiyE/acFfTdf/nJX/fS4lA7NZ8bEkVBlbkbzIB
+	nW90/645JeIV1SLjDmUtudVl71KU/WM7HqRqVZFgkA6R8nhtn8DQnm4b574tswdUtj8ULE
+	XoT8956nYesmuMMrhmSmdO0hkL64v28=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=Q4lNDug3J+65+63Wa+IbdOW7P2vunUh/rpySJhsCY98=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794451324; v=1; x=1795056124;
+ b=rwD7SgQfEgC6rrV7WWPKH2gzBLQnBD/r6eSY4vKwzGhih90hbrvU1BAYLMJiPU7kZQMKXqQ7
+ a0kwMSsPo96P6r5rbAtQStjQ/es2Hn4JQGftK2u7cLu2n59w//YJucpi4k0YpnABPVeHjSG9eJM
+ mOS4vPP2kZiHUpWZRJ4wi9cY=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id cfce15ccbfb00ccc;
+	Thu, 12 Nov 2026 02:42:04 +0000
+X-Mizu-Trace-ID: cfce15ccbfb00ccc
+X-Migadu-Flow: FLOW_OUT
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Dave Chinner <david@fromorbit.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Meta kernel team <kernel-team@meta.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	zhujun2@cmss.chinamobile.com
-Subject: Re: [PATCH] shmem: Serialize fallocate progress with writeout
-Date: Thu, 12 Nov 2026 10:33:49 +0800
-Message-ID: <20261112023349.118385-1-zhujun2@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <1291b635-6dd1-4887-bfb7-075eee45b7f6@linux.alibaba.com>
-References: <1291b635-6dd1-4887-bfb7-075eee45b7f6@linux.alibaba.com>
+	Chris Mason <mason@kernel.org>
+Subject: [PATCH] mm: list_lru: fix NULL deref when a folio moves to the root memcg
+Date: Wed, 11 Nov 2026 18:41:40 -0800
+Message-ID: <20261112024140.648088-1-shakeel.butt@linux.dev>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 5o75pz3tbreo7gpwyan3469wg3ofm6ok
-X-Spam-Status: No, score=-6.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no
-	version=4.0.1
-X-Rspamd-Queue-Id: 4057840003
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 69AA420002
+X-Stat-Signature: f3ij5ehbi4qjt553q9xnqrfx4wej7zfj
 X-Rspam-User: 
-X-HE-Tag: 1794450838-481330
-X-HE-Meta: U2FsdGVkX1/7cIsB5i9sFuOP9jt1B0EOgQnjqvb8v9lq8yGeBoTKoJ5Clp5+EtVCHCRt7L3c0Pl8cn38NzGUJZwztejmPXkr8v8ktHAxqWFCvobT7zIrJZpZj5HLW7X5sTQSAHz1OAR23t58F1+K22h6XaTLYHdgqM20DeGVfE+Ca5suapYuOCOD0ifClQD3fcfi+JI0Xh53iPd436+8HFspNUv6x9EDQmJjUGldDV7FqVt/QDK7JzUMnDZlzqlRQQH0laA9GH1h1Eunw6Mx9FyDUkAqHfd9YX0R67Fv3C613/x3gxo2gWSGNHNSUWkbxcP4ONxr+IUkr160D3ebWJNZ2Spqb2fdyc7NgtgH1nIgnb1W54Qx0uksyRr6qacPxvN4+UF3L4I/2+y+d5BA+cJC+kmCBanYEWCmWVdg3Hw7SuE49YDNqfKnK8gzGEvqV+0N9s3W5D6ngecJzGEMQGCuS+s9VIu+Nvq6c/xp0gPrfAq07JuuOUlwUHwvHIGQVyWVjND2ojrGTvuWFf3VYsUj0QWY+c0DIunlBmhX1S6ebP4pvIGKYXnT3EgzRAu0fwipHsazMaG/k67KyRZcQw7I/R7x7IEnTTHBorH+ddaE7StuOzvrbFoPIPV2TYyN15B2V/9iPEhYIHjmntfIvnRIEDxf92eAyTiK4vo5GeIkjPllGzOjCH66eoMZ5irXrenM7Z+tnYgvngq7HNFSmzAOI0u2mL/qvX8TuUR4GdTyQpy2L2RhRKo4jSazHmknDHKleLq8e9isRs446vlKxMHt3jf2TpAZ08QigBHrccPH8+QhNOc7xZLTdU4BB6O49+xfIdJUm+2o4HEiwAwGcKSYmf3XQ1gXA5iKXtmrUffMIOCx2McsaBKHIYxEG5EFF1BqXFNbF31wsqCtzqxQc1lRBkSvRcPopz/eUh/RLWKFbhLtWEPMb2BATBl95w9UAEoAheyZtA/k/LgHWPN
- v2/IcppZ
- wqA3+Q7MwU/vM9K/az1hoRRxicbkJ5g02//JNRJMDxUz+zHgt1dckrGFf/pYkUBa5NdHSjzzp5boTHoLNyv/t2X11EUQFUwnV6uVvE82CE3wpyycXGd70fTqZCF4RSoUWCcLT7mmhIDYWOrj0qUQV3WfDqd8GmeqCmyE7pawnSdVrw7ry0HX2Xp+fDUe4ifZHEXUmsXwlyNeGN18D7GH82QihZA0kBIqUiswAOsDTQZSxiGjCmEgGJUIQsNHvj4/ahxsgSfpjttImpDS8oO3HqHUchVetSipFk1z9GKMm1SStcGyWKjkeK0vqlJ4pP6JCKEyj
+X-HE-Tag: 1794451326-696194
+X-HE-Meta: U2FsdGVkX1/F58UT6uMTkjoaOlnhHJ2r89Ri5DYZP9a7yD8cpUncSjvhfgeBl+WVX7u9k4P1hmeCVrL2Q8ypYxPHgnkQVms9OdMEbgiV+tCM7n+0rKfd2Skg3vAGsgyW0TSUwL9CpkWeCKEcFeEVZP6RMF7PYZpf4S1XnRT8NCVDjNwHLlVpAlTl2MBS+Umw19BVtFZ7+YdtkBZOENmJDmdl6HXy3U9Pe+J/aMpVJ0TqdbvfXsrPnF6mGpISiAO/hAZeB+tk/fRSnySonKcxvlzFPMCONfgVM7yBcHs51uncbEkbU1hPlQvJgBmzwqM8WPGtirrCCH4Rkx7dKkXXjupSObWbYZZCRwas63goswUBOPyry0cwh9vbgb734t3AAtYpi0pTZodz4vAwP1A6bAwVouTm1afJKSrzEs8YDrsc8pHZpnqGkzx5CTH2Axp0lTANk3ACZRVRXcqygVAmo0eGScXP3Rs6SyQKdcLppW6QjD6CtC8xQeKMnV3baaLssS6dp+g8O4hZ9W86uVCjjxT0uDz8kC4pXP3DX37N8XLCx1/4uCBdelRMkjKACMHJ7TZsLWT+jcPQbR2vPkQ7CfXt9PALHx+qyBb01TbhuIMPa73fQm90VAlol8YqX5jAPYU9isawpBUzsleIlG5Dv7aAp/W7Mt9uo6/8bWyohKS539nMFPcXIa10aPfuo1rp9txaul+BlqurdJ454SVZ+fcBEAw876nnnYatBMXcfmAX9cz77hKZI/vIJ3QOwvLv3h8nqKYzhCZVOprIIlIv93svNafhYLWixpxDcmoTcjKkZy+arVTKDYgRTSLAogRnkTsn8YOeRcbUNSGsUeYRusMpDphWukCc0FqmNS8eGXuItKmaBYG0Ju4zvWcE9WWaM6E02V90SUP2c+U2nMXzIZidVbpVLTw/J9IByLVhjbksJBMEYwAaKJeCASLC+BD1lGzdMaiVjvGLNLzDKTV
+ 7yEwMk3q
+ vjMhac3CZx0t0JEh8AUYcBa0nP/iWzBt/Bn3GLvtUWbJzaQL/sU0fv3ogeOzhilmbfFIkDBn2wvGp/w2D6To9IV8+mNLleNiQxyWOxg+vVHZ7lblyJG/54/1B9h+lct6dtYHShjB5jCYSWQqns7M541+RXZj8yzToIAcodtigbJQSsreZQ5zNrcJu4vrnlksXEcMurdaQ3Q4CBFhysIG4tHCH9Sdi+Gvojs6axS9Zc1zYYwPPPKA1QXk/Ftt+gkxCJsjAQ9vpkwZWbhNv7R6hfnCvRl6aKSdQH5bTc6QgNqkyAUXgwYamusoeeSf+XEDaO3eP7j1mEYHXdo8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,30 +98,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Baolin,
+folio_memcg_list_lru_alloc() makes sure that a folio's memcg has its
+own lists in a list_lru, such as the THP deferred split queue. It looks
+up the folio's memcg twice: a fast path under RCU checks if the lists
+exist, and a slow path takes a reference and allocates them. The fast
+path returns early for the root memcg, which uses the global lists.
+The slow path does not check for the root.
 
-The KCSAN report I referred to is:
-https://syzbot.org/bug?extid=aae8bd56cc1c38d50ec4
+The memcg can change between the two lookups: when a cgroup is
+removed, its folios are moved to the parent memcg. If the folio is
+moved up to the root in between, the slow path gets the root, and
+__memcg_list_lru_alloc() dereferences the root's parent, which is NULL.
 
-Full report:
-https://syzbot.org/text?tag=CrashReport&x=16888bf5580000
+Users see a NULL pointer dereference oops while a THP is allocated,
+such as in a page fault, in khugepaged or at swap-in. tmpfs huge pages
+are affected too, and for them the oops can also happen in reclaim,
+for example in kswapd. The task that hits the oops is killed, or the
+machine panics if panic_on_oops is set.
 
-At the reported revision, the conflicting accesses are the store to
-shmem_falloc.next in shmem_fallocate() and the load of that field in
-shmem_writeout().
+The race is narrow: the folio has to be moved up to the root right
+between the two lookups. For example, its cgroup is directly below the
+root and is removed, or has its memory controller disabled, at that
+moment.
 
-I have not demonstrated a user-visible failure beyond the KCSAN warning,
-and I have not reproduced this race locally. The VM tests I ran had no
-swap, so they do not validate concurrent swap writeout.
+Fix it by skipping the root memcg in the slow path too. The root needs
+no lists of its own.
 
-I used i_lock to serialize the accesses, but I have not established that
-the algorithm requires a consistent snapshot of the progress counters.
-The report alone does not justify adding those locks. I will revisit
-READ_ONCE()/WRITE_ONCE() for the shared accesses, while retaining the
-existing writeout-side locking for i_private and counter updates.
+Fixes: ae64f07a6a40 ("mm: list_lru: introduce folio_memcg_list_lru_alloc()")
+Reported-by: Chris Mason <mason@kernel.org>
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-Thanks for the review,
-Zhu Jun
+---
+ mm/list_lru.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
+diff --git a/mm/list_lru.c b/mm/list_lru.c
+index d1d256822ccc..566691ca3dd8 100644
+--- a/mm/list_lru.c
++++ b/mm/list_lru.c
+@@ -645,9 +645,15 @@ int folio_memcg_list_lru_alloc(struct folio *folio, struct list_lru *lru,
+ 	if (likely(res))
+ 		return 0;
+ 
+-	/* Allocation may block, pin the memcg */
++	/*
++	 * Allocation may block, so pin the memcg. If the folio's cgroup
++	 * was removed after the check above, the folio has moved up to a
++	 * parent memcg, which can be the root. The root uses the global
++	 * lists and has no parent, so skip it.
++	 */
+ 	memcg = get_mem_cgroup_from_folio(folio);
+-	res = __memcg_list_lru_alloc(memcg, lru, gfp);
++	if (!mem_cgroup_is_root(memcg))
++		res = __memcg_list_lru_alloc(memcg, lru, gfp);
+ 	mem_cgroup_put(memcg);
+ 	return res;
+ }
+-- 
+2.53.0-Meta
 
 
