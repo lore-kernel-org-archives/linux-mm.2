@@ -1,112 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 829C0606A321
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 17:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0BF6606A332
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 17:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=awUCTYpT
+	dkim=pass (2048-bit key) header.d=cmpxchg.org header.i=@cmpxchg.org header.a=rsa-sha256 header.s=google header.b=QwrQFl/i
 Received: by kanga.kvack.org (Postfix)
-	id 9674D6B05B2; Thu, 12 Nov 2026 12:09:56 -0500 (EST)
+	id 106FF6B00EF; Thu, 12 Nov 2026 12:12:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F0776B05B3; Thu, 12 Nov 2026 12:09:56 -0500 (EST)
+	id 0B7356B05B0; Thu, 12 Nov 2026 12:12:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B8126B05B4; Thu, 12 Nov 2026 12:09:56 -0500 (EST)
+	id EE7DF6B05B3; Thu, 12 Nov 2026 12:11:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 58EEF6B05B2
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:09:56 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AC3F1C0687
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:09:55 +0000 (UTC)
-X-FDA: 85427104350.09.7F18014
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0FD5140005
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:09:53 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=awUCTYpT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C47D66B00EF
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:11:59 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 67C2C1C3F0A
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:11:59 +0000 (UTC)
+X-FDA: 85427109558.03.15FB182
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4F8B74000A
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:11:57 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="QwrQFl/i";
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf11.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.176 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794503394;
+	s=arc-20220608; t=1794503517;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JQz1mAG4FwwJpOtTSrz+KeRLlzMJvENpxMLZke3zOIA=;
-	b=vpvn7084yYqM9Jv6zRBTCBYyUK3dBEG2wxqqVqrGjiJMSm2ApLx8acbGJY4y7ZKjSYa0he
-	cTwlUzJp/nVxQhKbagjrrZ/vOXW0oBr840Dg875zEyGrMNctVrrJ154dMFNzQNyIcAWfN0
-	yn0CGoBHYJ0y4+Tv4CLJq5LRFW95r50=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=awUCTYpT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
+	bh=3KCRPd7UwqaiMFRIx4N7MG3QRVArn5qzACfVK+4/t80=;
+	b=KVOxvSyie76NfJLYQmyRs+BRbvKoENWyyrke4ZAm1rFtvFSEXXYrn4kj6gOpT+afFTZWva
+	cv7tv3ibh9kXbdIwD+Z6Wnlsk2zA6netdfn1DqdLX3L9vnDr1u7TyrhPEXhBAGgpzUP0tJ
+	ksHq9RjMKw+A/LNPx+4Aj3kOM1Pbvog=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794503394;
-	b=qjv4dMIztn8FsiN/4qcnjTFIQJxfOgFY4HAR2jFGumPSK9lMiej1iDtbelddPbsimeYMc1
-	56uaT+bX0WYA8QPFV+G5ElCBayEQ+4AHyalGeBCz81NIdC2Mzyld4YGZSQZwcApclOl4Eo
-	0DqfAEYuZ4cxNMtXkcIcIUOMQY0eP5w=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 770F862303;
-	Thu, 12 Nov 2026 17:09:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A801F000C4;
-	Thu, 12 Nov 2026 17:09:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794503393;
-	bh=JQz1mAG4FwwJpOtTSrz+KeRLlzMJvENpxMLZke3zOIA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=awUCTYpTsL/Oqe6fVjS9VAtu1JcOzy/ql79vB7BsSjY2uKsKiaHY/Acj8eAp4GSv7
-	 e2YXOuKtoTEentofTPEmJdAma196fYP7qDeIgA97OToCwOhpz5uN7yk1e712OJxDHL
-	 24aLHcenx9e0ZM2r69lH7TO5CohTbnvw2lC/noUnpF8F0V9751gXt77lOpolk3gwvf
-	 VJpQwFBK5zHuosDMEMb6msCer633TwwVNaK3cGSmaEHudN6tdWc+HJMp0dyGlSYI+A
-	 x51go4dIRkKaSkbxkP+ZPxnOy4n8s7A53NYiNXDGwOmRBb8MAMG+1stdufFWxX/R3s
-	 DEaXKLRxo35iQ==
-Date: Thu, 12 Nov 2026 09:09:52 -0800
-From: Kees Cook <kees@kernel.org>
-To: Linus Torvalds <torvalds@linuxfoundation.org>
-Cc: Alejandro Colomar <alx+linux-hardening@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	driver-core@lists.linux.dev, linux-hardening@vger.kernel.org,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Geert Uytterhoeven <geert@linux-m68k.org>,
-	justinstitt@google.com
-Subject: Re: [PATCH 2/2] devres: Provide kmalloc_obj*-style API for
- devm_kmalloc
-Message-ID: <202611120905.DF88D9849@keescook>
-References: <20260914223212.i.829-kees@kernel.org>
- <20260914223219.901347-2-kees@kernel.org>
- <20261112004039.GA523044@killaraus.ideasonboard.com>
- <avWNCC3_Ff0knO6J@devuan>
- <CAHk-=wgYBrhvo2NAG_Ja-0ovPf=xO20Gcopv9Yrr1u=QVxECZw@mail.gmail.com>
+	t=1794503517;
+	b=InXtGIUJs80TaKIXRkg0nvadf5+MvoGl7maXfkQZUUuM7a2Ilv2a/WFGbJBkpSHzxomXk9
+	IYRO3BOCQmSfXstuF+KwXVQf7WMuOALqUwe3eyDz1FTcy422eGX557yEbaZYGecYfDy3Df
+	fewTYJndp1mCKopp3FN7lZinb+97zW4=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="QwrQFl/i";
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf11.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.128.176 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-8b309147589so1110857b3.1
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:11:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1794503516; x=1795108316; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3KCRPd7UwqaiMFRIx4N7MG3QRVArn5qzACfVK+4/t80=;
+        b=QwrQFl/iOuXHTTw/uSJerm3wiIFUZbJhzBiCosYUEc8t9ZmSCFEGB1UU2RcFcKAIQU
+         /Ww1ABgH70TOABxc1FJFd4xaUTkBHekBG4JG9sJlsuHHywc9el4OlVru2yMl4CVl55Bi
+         x9Fh1nb52jJMov81rJbl3yva4gOx0d3X2rmSVkqeeo8Kf2Ml21k0qpcOzNdb/f6YJ0pI
+         y4ygydbmIEqn4DMVLYnXs1K3uwWTXoky0bNXk87iJsO4EzisrIxAAIdrHnLk1zS4FXp6
+         pna2G1fGXTjfgqTca31n9WnoLkF1QxPNo5s6lJluJrvhNc9B3uuEEePU+ImQznSsn2CC
+         RlEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794503516; x=1795108316;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3KCRPd7UwqaiMFRIx4N7MG3QRVArn5qzACfVK+4/t80=;
+        b=KquZkJbLdXdCk+OkrTwgPPiOByvM6VjmowEhi85Cia7zuAxYTaGzb/5/rMnyqSYOkV
+         /AdE6Zz4FSlW+2hdDIPwm2QxP18UMPpGlYoI47D1fE8llc0pjb6o7VzYb5YSbrUoN4Km
+         EEwbqpMk/4N3mFWL3ulDVoQM867hVpaGThoz+aj6ldCQmoy1ypsYebJF3cz8A2k3vbk2
+         b3GD7HyVnZzVqkO388GO2QN490f9I/rS/zT/OtHPGY8Xf4ki3DTLClKETwgOAC3KL9vh
+         5Kuz6PmjQ9+glgoRYjJYGQmKVpFXOBXUB/popvmEr2nBiDbOAGh46d24ejUigucQS+s2
+         sa1A==
+X-Forwarded-Encrypted: i=1; AL+hErG186jKbIKPvXHJPPOWHDQEds7b6vzUw8bAjcZhalUFbzwCzF0PcSlaqEmrKODbk2Tltz4zx0EKSA==@kvack.org
+X-Gm-Message-State: APuU4Z8w7nQZEukT+Z15kV3L4oMn7gDxoFYiHkkPb5rhSbnekNTRMa6N
+	fCvookxwH2xHnmR0NXsQvKun4Hvi6Gzen6W5I7etMYgR5th1cyrFRuFL7PNdPVB5oAUfc/pS1nV
+	Lt8qcgXk=
+X-Gm-Gg: AYBFou3yJpJoYVffKb1pLpyEfz2UND2fkfeDzCOHzOJf8uu4nyqMykdKfC9mWm0/eEI
+	dJAKXiAPKyMZxyutBCTijgd/BLxCZWSJkJvlHt2Nx0eKzA1aEzJLu4O1wLIJOTBss409vZ4Jm2c
+	vgZPB99Z7JimNpuE+Xj2rdMjM9oAnCwor2weFBmFsIjUAhD8nFdPcuaDF/7yDz0+rvPgIRO6UpA
+	RDrUwrkS2c+Ap45mCKqcIZnl5oTpEZU4BO/WWWiBImKzZj/Jb/lG3aelr2lW7mT+uKHuu1IBObZ
+	iKbePrYZNeeZy7xio/QkapuGEL7SUG4LSV/aCyHDcdaxLgBDW6BLfftVgL/8RYTwZabCbuD3Ixi
+	U+sdwQ2oBHxfkVfTWA4tUnozr08S/Ghb+Vgvfw5HGXYzsUDW2m/3xHDy3p+Romtx9XOyfRFLXTN
+	3gv7n0KO0Kj6CRAYTzZ3dRpqo3dlC/pSogXxwqzaXvHFknbjzfFHQc843cIQJvH+UtJs1NHa4iL
+	v6VVBdVvfM2cl7SxDz+1WyuWtq02ebqWrozTmYMgepyTRbzY5jSDSZsKUWN9ZrIa8NuFUWVKSFw
+	0xd37cMqRZw8MBlJ1ErwmFMvHjO7
+X-Received: by 2002:a05:690c:e1d2:20b0:882:b4b2:c49 with SMTP id 00721157ae682-8b4aa23f086mr1270387b3.18.1794503516202;
+        Thu, 12 Nov 2026 09:11:56 -0800 (PST)
+Received: from localhost ([2605:8600:200:14e3:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b4aa9fae24sm252827b3.41.2026.11.12.09.11.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 09:11:50 -0800 (PST)
+Date: Thu, 12 Nov 2026 12:11:47 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Chris Down <chris@chrisdown.name>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Zhan Xusheng <zhanxusheng1024@gmail.com>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v2] mm: memcontrol: Don't lose track of exiting OOM
+ victims
+Message-ID: <avXzU0coRUkBdPWC@cmpxchg.org>
+References: <avA1wXhTMs9eY2NF@chrisdown.name>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHk-=wgYBrhvo2NAG_Ja-0ovPf=xO20Gcopv9Yrr1u=QVxECZw@mail.gmail.com>
+In-Reply-To: <avA1wXhTMs9eY2NF@chrisdown.name>
+X-Stat-Signature: e68oufuqqpwdy7w8qpe8mpiy9djrwstq
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0FD5140005
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 3xgknn9kybuokxwkoekzh4ywxnghwytz
-X-HE-Tag: 1794503393-879616
-X-HE-Meta: U2FsdGVkX1/Ft5aj8L2B/lGxfbdn8ap1rRMd5FzVegzGprB+92AMXV3VGPMcrc+r9sO/zDnzXVP60bSgxiwCCgOV7w7iJidhU0dZyfhfS+N1AwnM8+hmkK+77gR8NAi5UzQb7Tfjz8RWD3un8tQLnYl4zGc0n7ekcg/8BFjcFdN8T/5So72DeoTvDTQbxpa1utSrPrpv2+iTTT3mBdmAXpIDnlqZR9edaY2ZfDIB0tdzxjbRp850FgQGWBqVliz8AwZ7bK+MSPLZjWO3XkF5GE/vlksZpPuAHb+364+Ropdcn3WLTBY7jpok0LLPn43AqmzXDX/fxZuUDF6DiKdi8C3pOabgLrWm/Q0BPlXBCeFV3RGVBRS6kjjI5Rb30W7MnEA+CNayZHnRI3bRbHPor+y7IVRs4j+u5e3s02BBjTglgDWDKBg2EzpoJKo/UjfBnKlE45ll73yB5dhC8LUOfxi3+PdSbwr0cR2qbpLvaIq1gopq4aROWJCce5k5JrwGI0xH4IG9uGtHhvQ4IWPLNvrYy4J+dp31h8ajcqBJTsjQV5R3lQGK9/TQ7HbFfhGj1Ka5chjOE6IgjWjAm/eaGFS1l6yVTsg4dz810UV7VMN4yoXllAygzxql8VmF2SnW+tjbGhav4Ln4ZCxneU/UOO63qz/LOu0i6ajRLXWa8i5Ntm9Evam602dx8r4XXOZiEN/ADKOTICVcVpzdluY+piH2mtGIcXgnMRq7gB5GCjtcpKqvz1ZxLkswwB2b2yfnUPZCeCc5u8CajAC4Dv7OcmFMeEiCqczpelDnT9sM7BUlYxt7RKwLzQ0q6kZN5wX8h/6ZKkGeIY1P/IC2hgM324yNrZ+XNTTX/egf9/uJ6zvZCh5400o5EI4Pz5looL9RjfrBuaVqjmbDW/o6oClGs+d8dfU0gIpIsohKYwW0diyWBLiRmi5kEO5a0nUCefz5A8jIsWrV6mzcUBwWnd7
- 2TZ2Uyr4
- 67ECVGhuhM31EzTqsC1ZrzNIGERaTpM9hNi/Leld1WJczxug9s/zOXZh5e6zIApmlZ9EnTrAC31UKV86JLaNoTjxGMZK2LAbIPJd2CHpeJnxB7AVgwQ7NkdKbAUY/vwMjGWl9oM2r6WoKL5FpKe4sKD+ULCoHZAn+G594lyiM8Ekzw5qBs6WixIXOePk2po0alN1jeCYdPXk4U5Mxu/5zGifchG1DQarSxJSznZwHH9nKEz66ipYxq/5TZ6ELNinIMuMJ5ajmW31bSIb5o9Xbymi3FKiJwzsYLcmn1+r9iNlLRk4ELEyeuN6JrG7x80lgWtUJakEYZYIsEEwsAwZ7dkat+udy9Y5Nl+Hiriq1s8UCK9Ky1Ij0JCupwas1c82xuAFO5hrpmJQXKZn2QasmCDWUKi/1pfvGw5Epx/K36RpuonC4Mbf6sVOmNc0L/WSycdU0
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4F8B74000A
+X-HE-Tag: 1794503517-665427
+X-HE-Meta: U2FsdGVkX18tuHILviWEmoS2MTga1Dk9Fyzi7TTbnqkLcVnX0NYAieT0I/BKUkPIeMJVvU8JKNvtFTSmHmId/0xUp4VnfTgyF7DShysjMq1vMRShgwr7TMApkxpfR1dXxlBeFYlR6UsCdNIgc/Qs6N9zk4MWgSrnSNQJvLAaIgXzWnmxiMy4OVBqq5Aj3fQ4JZYNRP428bFwqS2ea9L6r1sr7ekspL9wdmoQMecy0VM+hFLkeAzo9JFuJJJPdn+Jv++puQ7D+88gWzFEuRxIYXBWotn7IF3Evk9N/ag1GYzSk0HzvZ3Lnlf/TVHhqvXUCpGGfwpMyNArmDDqQWx672YYK2Agm/E3/e7u/LkHkg6PIRAnEHpj0s59gz2JMp0M6dRATk2eZsJpEULbwk7UevhihRREedfESTcCvp4BOJp1fSRkjMRuU3dq/mHyuNfo2FtPhkNDcEB2IkYV3SG0rS7lu+29Xb7l3XbYfvyBNJV4XWHMAiipfTM08E0mNS/lhZHV06by0woIJoEysQOQ7kcV0wNScISDHSWI+LzhR/LDJL156dnRCNthL/k0N5ey2JSAkFD6Ia6+E0av2FLGpQpDdu8USmHkdsNE5Rlkpo24STDJu2P2qpm8xLCogMKZRkhorKriF2kQk4/LNgQVr+N11b+qkIhgb/zR4wT7PEissPwKi2mEWNXrnFaFiLosIulilMG2y1vNGQMvxFGri/jW6Mb7w5mRy2tPsgxRmNawtPNS369HWEYTUEMTyiPBrqkT8xL20yN8pZd3kKPIIUmC2qr/lHDJjEfqgkffnWIqmPH4E4Vge2Gv7lFhFvDX6hGoRtr4UGNnpvLx4tuHmoYX2e7uOj5kk1POm/ugECWKII951Ekklfn3geiwMIjSIWuUXrcM8tAZKC+h0RGQJgGzKy/Jr+1gtqw6g3iH5bFmMTxpzbEH97zMse152NY/g+xCzBQDJB4bOY+UWlm
+ 8Np8q7qL
+ kYamnKnHDMIwmPwQpoTIjUrdC4prpEKrRxCxbfRpyBC7N42FtYyd3E7uScm2CBlgpAiyLdUL2Pg5OvRprhr1rJ5TyPCNrDnj4f7JMWOvvG4DRrjZfuJvHrjZ4Gie4nOSofgzAi+03qzvY92eYlWvdM+UFq+TTwDf8Vr7d3qf1u/SU8cp9LxJKiA+lmYnf6ZKi1cSkKVl23x3/zx7JoyKr8moobqM/NB/T4ALOl22FfDTD3H/pTS46njXCQQgoFcH+IVi/HaPGfPzqFIKcTlE+Gb8rENu2raVPft2WSOKMdZII15N8J0yIRliAQvlLXtNMcgkPgrWY+d59om/BICbQ3yQjywIwWeFqy5w+oo2D5wjRy55O3tgN42r5IBmpwM7NjSQG2LnRZjj9Rr92NLB21IurHvULsgF5BKZP/D3Bo+Tl4l93VCqH7xq7jT9In1Fbr522AjKj9TkVyVE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,46 +132,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 08:34:13AM -0800, Linus Torvalds wrote:
-> On Thu, 12 Nov 2026 at 02:13, Alejandro Colomar
-> <alx+linux-hardening@kernel.org> wrote:
-> >
-> > I suggest removing kmalloc_obj() entirely, and using kmalloc_objs()
-> > always, with a second argument of 1 when we want a single object.  This
-> > would remove the risk of that typo.
-> >
-> > I also suggest having default arguments without variadic macros.  The
-> > way to do that is using empty arguments.  Linus complained that it hurts
-> > his eyes, but it really makes these macros much safer.
+On Sun, Nov 08, 2026 at 12:41:37AM -0800, Chris Down wrote:
+> When oom_evaluate_task() comes across a victim we've already killed, it
+> backs off until the victim's mm has MMF_OOM_SKIP. This gives the victim
+> a chance to free some memory before we kill anything else. However,
+> since commit a72f73c4dd9b ("cgroup: Don't expose dead tasks in cgroup"),
+> css_task_iter skips exiting tasks once signal->live reaches zero. That
+> happens before exit_mm(), so a single-threaded victim can disappear
+> from the memcg scan while it still has all its memory.
 > 
-> No to both. These are both "make the code worse to catch errors that
-> the compiler should have been able to catch anyway".
+> This can kill another process when the first kill would have been
+> enough to recover, and we've seen it happen in production. If the
+> second victim is in a cgroup with memory.oom.group enabled, the extra
+> kill can take down the whole workload.
 > 
-> If you *really* want to catch them, make "gfp_t" be a 'struct'. That
-> way even compilers without things like the restricted types that
-> sparse has will catch at least that one.
+> In tests I used a 64 MiB memcg with swap disabled. I started a process
+> that faults in 44 MiB of anonymous memory, submits a 4 KiB direct AIO
+> read to null_blk, and goes to sleep. I set null_blk to take 10 seconds
+> to complete the read so the victim would have to wait for it in
+> exit_aio(). Two seconds after starting the first process, I started a
+> second one that tries to fault in 40 MiB.
 > 
-> I did that many many years (argh, decades - I'm old) ago to catch all
-> the 'pte_t' etc issues when rewriting the MM layer, and it works very
-> well.
+> The 40 MiB allocation hits memory.max partway through and triggers an
+> OOM kill. The OOM killer picks the first process, which has more
+> resident memory. With the read still pending, the victim blocks in
+> exit_aio() before it can tear down its address space.
 > 
-> It's going to be somewhat painful, but ti might be worth it. People
-> who only use GFP_xyz flags to pass them around wouldn't notice.
+> memory.events showed oom_kill 2 in three runs. In one of them the first
+> process hadn't submitted the read yet when it was killed. The slow read
+> just makes the window easier to hit.
+> 
+> The cgroup iterator hides these tasks so that cgroup.procs doesn't
+> show processes that waitpid() may already have reaped. That's fine for
+> cgroup.procs, but the OOM scan needs to see a victim even after its last
+> thread has started exiting. We already have CSS_TASK_ITER_WITH_DEAD
+> for sched_ext, so use it for mem_cgroup_scan_tasks() as well.
+> 
+> With this applied, OOM selection backs off while the first victim still
+> has memory to free. The 40 MiB allocation completes and memory.events
+> shows oom_kill 1 in three test runs.
+> 
+> Fixes: a72f73c4dd9b ("cgroup: Don't expose dead tasks in cgroup")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Chris Down <chris@chrisdown.name>
 
-One thing Justin was poking at was adding a "strict" mode to typedef
-that gets us a new native type that follows all the same rules as its
-underlying type, but refuses implicit casting. That way you get stuff
-like gfp_t or pid_t that still works sanely but refuses to take values
-from non-matching types (i.e. it would catch this case). It's handy for
-the Overflow Behavior Type work too (for similar reasons). e.g.:
-
-typedef __distinct unsigned int pid_t;
-
-or something like that. Then you don't need the accessors like we have
-for the struct-style wrappers.
-
--Kees
-
--- 
-Kees Cook
+Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
 
