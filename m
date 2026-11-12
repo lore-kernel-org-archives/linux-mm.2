@@ -1,106 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25AB6606A32E
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 03:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73BE606A324
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 03:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=JfCOlgZK
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RFdDyQ0e
 Received: by kanga.kvack.org (Postfix)
-	id 3D07A6B00EF; Wed, 11 Nov 2026 22:46:07 -0500 (EST)
+	id D96196B05B2; Wed, 11 Nov 2026 22:46:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35A906B05B2; Wed, 11 Nov 2026 22:46:07 -0500 (EST)
+	id D45456B05B3; Wed, 11 Nov 2026 22:46:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 222A36B05B3; Wed, 11 Nov 2026 22:46:07 -0500 (EST)
+	id BBF876B05B4; Wed, 11 Nov 2026 22:46:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EBDD36B00EF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:46:06 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 901426B05B2
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:46:10 -0500 (EST)
 Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7D90D1603B8
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:46:06 +0000 (UTC)
-X-FDA: 85425078732.03.F0A55D1
-Received: from mta0.migadu.com (out-233.mta0.migadu.com [91.218.175.233])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 686BC180004
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:46:04 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JfCOlgZK;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.233 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B348080409
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:46:09 +0000 (UTC)
+X-FDA: 85425078858.03.047016F
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	by imf30.hostedemail.com (Postfix) with ESMTP id BD0F680003
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:46:07 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=RFdDyQ0e;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794455164;
+	s=arc-20220608; t=1794455167;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q54ZgYaX8BjdWBFfmk04kAiTzB08DOd9/jUUeigtfjc=;
-	b=3J8J5skGD/Y8cZ0YoTIcEBVvkbPeOq+ChrdN+528IahJa1xP8SWF1eeP96Yg7SnlO1MHtF
-	yD6ixTLdE3EppJ+Xd1TNVxM/pUshN4pcEHDCLIoA3p48iSr203iD0fYkc5NFB0ceE472tQ
-	Lh97PY8oYLwNfmeun46W0H11B2Vx+0o=
+	bh=JdZEQXD1LnxY/7fSoWWoTeFvDJfFMcLXYTDCBTSvcT4=;
+	b=z+IxlLxsckwZuiQG5zr8kPDFRdQ1cxCUP8i+npTj9hSxNHauDDP9iGpr5/W/FRHXK/BGgS
+	glM4IwY7VPsSOQ77/79T7VfVK2cxlfGj4v1peDdlZeaBmlx6Ggjq/DD27HZwzH7WcAkWOy
+	oj67urHhb23iomPxHrZVjkUOO4c8AFk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JfCOlgZK;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.233 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=RFdDyQ0e;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of shaikhkamal2012@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=shaikhkamal2012@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794455164;
-	b=BocpU4Ae4QwDWexJ4LOHWczbrA0D8WX5KLxW508vO+WHv4Aa/O4mVYcmLvTNRDi4ygf60v
-	y3DBspCxfK6wSGLOYmiH8TRM0cAlTOgMiJIwQBljgZgAAmcWpudvStApgB9SDKwW+VV9Di
-	Q/n6fuUOxJFBSrdCuVYR/4NMX3dxyRo=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=uUF3fmeZqYTyfU8Q2e2uhi8JIMAFbE1pwH9DFp8fOB8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794455162; v=1; x=1795059962;
- b=JfCOlgZKx+qSQRlgo8qJNrSqQcpxWW5l3NlJiskBbfyE+OxcdqfoOY7+UY3M0Slhj8HSp3Kn
- s0hDW5+dNFvsAR4jZ28h2u5p3XPgrBzEL8SV/p8JQL7ZBKye6Kxs1QsbjEiuKPE/EtPwYYncpVl
- ZYd94v25peKsm5sOT23kXx9k=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 71c781794d33c4e8;
-	Thu, 12 Nov 2026 03:46:02 +0000
-X-Mizu-Trace-ID: 71c781794d33c4e8
-X-Migadu-Flow: FLOW_OUT
-From: Muchun Song <muchun.song@linux.dev>
-Message-Id: <7C857138-E17C-40E8-9F72-6FD3E3AB493D@linux.dev>
-Content-Type: multipart/alternative;
-	boundary="Apple-Mail=_59036DDD-4E62-4B5C-B6EB-875A19D0062F"
+	t=1794455167;
+	b=E+4pZmKG98G3ivN8xQYNl/MVbB6vZYmQCID3ww/YMKl8FbpQP6y4fAnRS6dET4uXfvO6Ao
+	OqCw/0K6R+OpABT5Oa4MjJ9JOTRrpTkpFQKFsWIMRyEC64nCMhJguv47x5EwkwLpEInH2t
+	s6oEu5FkymHiRzTZII4O6i1VovQgDvU=
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso2933742eec.0
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:46:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794455166; x=1795059966; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JdZEQXD1LnxY/7fSoWWoTeFvDJfFMcLXYTDCBTSvcT4=;
+        b=RFdDyQ0eI35YSownCfAskhhGVkxs1EjPHOyjYjeD35h0xGxWWOvAUjqWv3Va6Xbl6f
+         2V1zFw0MuNsxCexFgAngyb2cyA5FEKWRMwxQOpmu5berX3r+f9XN69bzJ+yoxd/0q5OJ
+         gta6VfUZThMcwe6kwQj1+T4LTY80lgU8a1BRE/k8BiYSSfQeduITdWjkeePrMQbudhWT
+         68TqEkqUeialD2NjlfxNOYysK6FOELflz6klR2g6zksaFm/eIlcN0hE7XGT8iFPRGmbw
+         dk+MlX3tYeB1Br932aFqaBMSnr3HQIiC4y+C8M1BTxj523Seu234KH4MknmfkWWyIJ+o
+         qP9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794455166; x=1795059966;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JdZEQXD1LnxY/7fSoWWoTeFvDJfFMcLXYTDCBTSvcT4=;
+        b=Tc29Y+X8czvRVEUUvMC/kJW8S/L32q14m84NO7Pmb0oUPVHNFrVUtT3mRRjBduOF0K
+         lDuvjXqJkJbfONt2BSL29WWdLUoNUbSgxpV5IDz5VNAzxNVkreLnQUvviXH+1LTwH8y3
+         zNRIr9wt8CBw39tbTn8YM4tsu2E6CQSHkHk7nTMwn5KU/P2Bj+nWNih5TCumiVzmeDGe
+         c0f6DdEeO6yQ1vA0EcEhM/d8Uaxe1HXqzwjgRd/4AHXs/RY1NmXCi7emQfZbqs1z4Ny3
+         007f2BJIRRSPdv1TdWRh6DTDYY4D8X62OaNKu5O9gItk8pfoN86ooCfTeVASV295V56C
+         UMSQ==
+X-Forwarded-Encrypted: i=1; AL+hErEi9jJxnfskd9WP7cJnEZVAEkT/DZ2loiNoEt7A9I3k51vcImo0Gn7Une2ihM7rLxTjTdgasgx7pA==@kvack.org
+X-Gm-Message-State: APuU4Z9smshcvu3CesNfQ3ukY6o0OZm/PV0OJFICnkdi4Rib8Yiaxzb+
+	E039DnSsoUGqVA41PkYOYJC31bmUzwT3PaDleCrefb2On9AIKea/lqYw
+X-Gm-Gg: AYBFou3iYSr58F6CenD2xITSIPl3hL0t9KfgKxJpBcf8VHYPoK1XY4Gr8LIkDpjdML8
+	sxWE+2DFiWrct8gbgFfhioTDez4JCxJVAUK7asMbfPC7XKs7BLe6NH9Wms3wPF30DONqVuAXNLf
+	2Kc12TQiNIofH6mnNQyOgzdBl4wrXr4q/4l/3M1YUrt7uEU8OutI2itRyqYOjBMfWOxNjaFsyrs
+	1C4VBcJVxF47gvFeQXSsRssoG2MjfBy/jPdSjHZT4IJz5pjmFrWYA64JUXi5MQxh7i3D/JRqWnM
+	79uCqjvV4cru/PW/xw0ZsIsB8p2NhWDn796NSe3tO6BmSPE3vau2yF6Cda++h2krtFeVyNhuhjg
+	4J+HOH5XlCkAQURDdteHMOCouLDZzle0qgtuGZ+y02IRiwvTC7/XO0N38T5DgaHbpYrc0LVcXzO
+	CGYvygxkieBbxbsrX+Xpi7iZIPQJN6VdwTMDpDedgSuE1QYWqFhWGm5z05vJVPqDFklIh4w+3+a
+	UhJAl2fahcVDhRrcnwGGWp7Mv3463YngivnfCyO3dsCEmijEUs04OudyfgRuT+dGbv8QIh0Xkls
+	8q7nDvVxeMOLPDqT+kkAF7RNNwn5TA==
+X-Received: by 2002:a05:7022:7e82:b0:17e:ee5f:6715 with SMTP id a92af1059eb24-1b3c0329d7emr4637526c88.27.1794455166079;
+        Wed, 11 Nov 2026 19:46:06 -0800 (PST)
+Received: from localhost ([27.7.22.22])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3b5b2fc09sm43137065c88.10.2026.11.11.19.46.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 19:46:04 -0800 (PST)
+Date: Thu, 12 Nov 2026 09:16:01 +0530
+From: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
+To: Richard Cheng <icheng@nvidia.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dan Williams <djbw@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Breno Leitao <leitao@debian.org>, Ira Weiny <iweiny@kernel.org>,
+	Li Ming <ming.li@zohomail.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Kiryl Shutsemau <kas@kernel.org>, Harry Yoo <harry@kernel.org>
+Subject: Re: [RFC PATCH 5/5] cxl/region: Register device poison before
+ exposing RAM
+Message-ID: <avU2eZwBnHGvSPUf@acer-nitro-anv15-41>
+References: <20261010162017.62506-1-shaikhkamal2012@gmail.com>
+ <20261010162017.62506-6-shaikhkamal2012@gmail.com>
+ <atCGJHmnk8Ll8pA_@MWDK4CY14F>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v2 01/20] hugetlb: Don't restore vmemmap of non-HVOed
- folios on bulk restore error
-Date: Thu, 12 Nov 2026 11:45:47 +0800
-In-Reply-To: <11457D37-5AF9-46C2-95BC-CAD4B22741A1@linux.dev>
-Cc: akpm@linux-foundation.org,
- catalin.marinas@arm.com,
- David Hildenbrand <david@kernel.org>,
- fvdl@google.com,
- linu.cherian@arm.com,
- linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org,
- mark.rutland@arm.com,
- nikos.nikoleris@arm.com,
- osalvador@suse.de,
- rientjes@google.com,
- ryan.roberts@arm.com,
- sunnanyong@huawei.com,
- will@kernel.org,
- yuzhao@google.com
-To: James Houghton <jthoughton@google.com>
-References: <491B482A-8177-447A-8CDB-AF83C13A5DEE@linux.dev>
- <20261021212738.321547-1-jthoughton@google.com>
- <11457D37-5AF9-46C2-95BC-CAD4B22741A1@linux.dev>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <atCGJHmnk8Ll8pA_@MWDK4CY14F>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: BD0F680003
+X-Stat-Signature: daa9k161wbo3jr14438j6xexspo4x116
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 686BC180004
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,HTML_MESSAGE,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: bqsaapetgxszaz8yk9xbcgks9buukz6x
-X-HE-Tag: 1794455164-832339
-X-HE-Meta: U2FsdGVkX1+vc8YjSr3BWrObUaec7XIvLkajpE65/ruh56pFoAW5R272mb5jHdzT3iz0Eo88SEDaT71oppPbcZChtoNQDJ30y+Hn7E7jjflZXsSgw8Q1sIGeUqZlvWG3/weFeCgAMJ+TrVdGILeu86jJ8K9r5WhU1DfmusR5m78aDwR5HgsSELNSEzaYogMWWzlTaYa3OJEIX12ZH5qyAJC68tu/gdHvQMHSHO85eJ0xLI1LCkG8uYKZ9Tw/a0AHZhucTpmJ0+2rSCKpjMtOl7ncka3woUz+Df8EtgkRriUigcIoMSMigqrCX2NTdkqc3LTFZhGEi3FhAFmRkLK4czpifNslbJ4rEoKOz5TJ9XvcvQGzVX/MjyAEDFAClG0LngwxN2izp9wJjLHNcEyJt1wLemlB8BuuY8oJu8Ez0h4Ni7IU9g4hj3ADYEzQ+HkFj+9AtSoaGKoK4GEv9zLznBvGLPqEXViwPiYvU/xzoR9WfyRw90YwVOhX5gAB0+mc2wYCmyWAJ2WH7UvpWN3j/B7x176iAUSKs6W75tqk4ntbGfN2PjfqI6RxLKF3ZmCQDH1Qji8j4JCEAOHB4rwj8+YKLePPSo1XgnGYh0AqA7WeY2lwr0FszycP9//2CsTGd/BIRejIaF27n4rCcsYDPKaEXtFozTdpPYxwezP7/RcPxpusJJyu0RI12dMLp2bJAmbI+HI9WEgxS/NqpTV2YCyEph+u6i8ddMNY4RgjCYy27mcbi0N9lO4TlFquHg52Fdfr0Hb4gIvB7TyRlXF1rzm2CqjsdZLiA5CuNdiQwoo3InRIcB3MA12ywLmDxZu/8Ptuv66tmrCm0104MmGwtQ0+RhdZTdcFsyMQq2mepJqxYR9c7twWRwn3MtWFT91Q9ueHS9dbGp869iCIzop2GudcAxn99FpuadiTHtblxBkACQasjRGdGglOMhkZR/346TO+AS9/tvuqsUNu4xA
- aWUsckkv
- Bfdpxmc6qf+Jt/U0jOeKk7QdCxEpC3LY84NcQ4EZ44U+fhOOEpqj5OceqTizelweHtRYia7+kafiKvsk5VF0FwPHb4bJk8pqegS0uMi+ddvpGnQQxGx7cT8wOaswHh6TE8SeZam5EPd6WdXVCIkai9O15DA6BvAqXXDPEUPb/CFFiaSztwClVtn3LUIFC7YDUYQqTYnXrU3PFDBANIW+HQbsaUQNrjAS3mdbxax7CoVpmKk7Cr4STWLD78G7GRbmyfbsnpnZDOZPeA9AxZqShNbVAQ0c63+3InuvT2LM79yd/bhbvWh3OI4S8aS34QMNHxzBvYFk/jjcfCibZnmL+5lNR6l31e1E62be77muyZ0h+hFK/dt9UbqgX8RZIacbgCyw4GJXhF3cabi8=
+X-HE-Tag: 1794455167-976939
+X-HE-Meta: U2FsdGVkX1/5X6FsL08E8JgfuBFeGUr8/BiKMu6LoIbF8UNXuk5sQ3awckYj7rU49T1YfYfQa/cgBLb/EGoupAm9cWibz3ma1aOxlQOyRoFg72Ku4x4LE3bJFD4PHbH6I68VtWmn9nWj3usMXplIodAsJcqzD0GDWiTKwgy0iP+IzeV2PVp8OQdCkcUXupZUWA5sfsffBFdCgVsUgbd8uOgNrNzIYbA3VG5HlY8caLAR4qEXpQ2LE+wMqbRPv5TID1DnWydRp/Sih4YqFPB/qswirUZLsEOUhPwEg40Av25e7nBKdSlJstBrfb5RXRwVHClOhWS2r3dKXCHcEq/roYb1LdkSoZZAVC52BjekHvIL7W8OJYmShLMPZ9pvum1rmAVw6/qZFIBMz6vM+pMCtxX6vavCSq47OiH5a1vt4oUJ2ja8Iks6CRZ095NtconvdWjj4akXeBbkWEPInW5RgzUaO7Z+mKhqj7uP6PWa9rFJo3wp/R+PKfx5/04Vk7eLSx351a6GoABtjkGlSGUiGDGjYcJ3NWn3orIVJZC1YTOCwzff49V4XfO9aNc67ZY6MzNRAN417BmfLMyPpJox1kciZcy/Yek5lY/CWavb55dYZEOmWcLfVlxH13fa9/2NweNI4cGMtBzOIt5BJ05bvRoNYi4jKen/ZjCBYxyqFawwYidmqgkseCF1Gm/sl4gJ+dPvOvh3uo+OcyHI0NzbzGPOzoRuqd5tE0kU8jF5J0BXtc16zZrP/PFA9ednhLAarRN7uHsuA0vIuVK/WyLN1lsZOBVcw7CciNDE+tihJ5D+9ZgCLOPgjk0TeBZafJbZFzPevut1kRx99TukQCBkzdHXkHBWmU12zHkMGs/o3AEbzvj/9xC5J5VGUXoWBcy/c08gBRVz2r8NRrxDzWs6b+KGrVcj6s6xJvXIVskFhB6CEtRcrUAXtw5RPEKo2ooUCY7EtjNGVH3vEr0YgF0
+ voGCjhmt
+ pvxtGREGnUEhr0PIDvQhyIN9ownv3Mjs+AQj/pezss7c4vKVGNxXanrv+CAKbMK6pqebV7qSOCa1MxNRXM7pgqNbHCyBh2xfk50PuNm81AE5KQAdlNVzkwymOBv5b14LnxPh/o1v5rPh4LX3ld3TZKK0/NvdgiVGE5Ag68wCiPMCs1Asnsc2RqYfWgelkjtK/GLyLCwI4t/YI/E+VhCM1VyaGQe3PjpFOMTorEugaahBVlu9eU9Q+uM8ga7L3KIIwlguyRlE7kgcXOp44FhxXlqyeFZmVIP6w33kgF0rHLKn4yr95jIZmpbJc2nh7sEz6RhyazGqo2kdevgP0e7MnoUwJC2YeyWv4YfRVkxfjTKkcXinEiaPffSdIWhC72Kgsmjoa1SqyjmffqzcFJFBbQ2R6eR7DvwHqpdPd5FOU8m37vrq/7Mr8/w0YEPQRWU6t8GIlcGN8S71wfp5YGlms1cGuITl7LCbsx6GEj1rFj9nVI187kyc+NwI4qBgThtDrhmg/+gAyj/jIa3cVytxrB60GAMhUi5ZaFbvxmBoB7BfUgIoPkJWP1wpgpU/y1ZxUh7qxCBImEhEYY9k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,478 +144,427 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Thu, Oct 15, 2026 at 03:59:13PM +0800, Richard Cheng wrote:
+> On Sat, Oct 10, 2026 at 09:50:13PM +0800, Shaikh Kamaluddin wrote:
+> > The trigger_poison_list interface may retrieve poison after CXL memory
+> > is already online, which is too late to prevent known-bad frames from
+> > entering the page allocator.
+> > 
+> > During RAM-region probe, retrieve a poison-list snapshot for each
+> > participating endpoint decoder. Validate each record against the
+> > decoder's assigned DPA range, translate its poisoned DPA units to HPA
+> > and PFN, and collect the affected PFNs in an xarray. Coalesce consecutive
+> > PFNs and register the resulting ranges with the pre-online hwpoison
+> > registry before creating the DAX region.
+> > 
+> > When Get Poison List is supported, abort region probe if the list is
+> > incomplete, malformed, or cannot be translated. If volatile poison-list
+> > retrieval is unsupported, preserve the existing behavior and warn that
+> > poison cannot be withheld before memory onlining.
+> > 
+> > Signed-off-by: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
+> > ---
+> >  drivers/cxl/core/region.c | 322 ++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 322 insertions(+)
+> > 
+> > diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+> > index c72524923b38..e3ffa77927df 100644
+> > --- a/drivers/cxl/core/region.c
+> > +++ b/drivers/cxl/core/region.c
+> > @@ -14,6 +14,7 @@
+> >  #include <linux/string_choices.h>
+> >  #include <cxlmem.h>
+> >  #include <cxl.h>
+> > +#include <linux/memory-failure.h>
+> >  #include "core.h"
+> >  #include "mce.h"
+> >  
+> > @@ -3038,6 +3039,323 @@ int cxl_get_poison_by_endpoint(struct cxl_port *port)
+> >  	return rc;
+> >  }
+> >  
+> > +/*
+> > + * Device-reported poison is gathered at RAM-region probe, before the range
+> > + * reaches dax/kmem, and registered with the pre-online registry so the
+> > + * frames it covers are withheld when the memory is onlined.
+> > + */
+> > +static int cxl_poison_store_pfn(struct xarray *pfns, u64 hpa)
+> > +{
+> > +	return xa_err(xa_store(pfns, PHYS_PFN(hpa), xa_mk_value(1),
+> > +			GFP_KERNEL));
+> > +}
+> > +
+> > +static int cxl_poison_store_hpa(struct cxl_region *cxlr, struct xarray *pfns,
+> > +				u64 hpa)
+> > +{
+> > +	struct cxl_region_params *p = &cxlr->params;
+> > +	int rc;
+> > +
+> > +	/* Outside this region: not ours to withhold. */
+> > +	if (!cxl_resource_contains_addr(p->res, hpa))
+> > +		return -ERANGE;
+> > +
+> > +	rc = cxl_poison_store_pfn(pfns, hpa);
+> > +	if (rc || !p->cache_size)
+> > +		return rc;
+> > +
+> > +	/*
+> > +	 * An extended linear cache makes the same DPA visible a second time
+> > +	 * at hpa - cache_size. Match the translation used by the
+> > +	 * cxl_general_media and cxl_dram trace events.
+> > +	 */
+> > +	if (WARN_ON_ONCE(hpa < p->res->start + p->cache_size))
+> > +		return -ERANGE;
+> > +
+> > +	return cxl_poison_store_pfn(pfns, hpa - p->cache_size);
+> > +}
+> > +
+> > +static int cxl_poison_record_to_pfns(struct cxl_region *cxlr,
+> > +				     struct cxl_memdev *cxlmd,
+> > +				     const struct cxl_poison_record *record,
+> > +				     struct xarray *pfns)
+> > +{
+> > +	struct cxl_region_params *p = &cxlr->params;
+> > +	u64 raw = le64_to_cpu(record->address);
+> > +	u64 units = le32_to_cpu(record->length);
+> > +	u64 dpa = raw & CXL_POISON_START_MASK;
+> > +	u8 source = raw & CXL_POISON_SOURCE_MASK;
+> > +	u64 length, end, step, cur;
+> > +
+> > +	if (!units ||
+> > +	    check_mul_overflow(units, (u64)CXL_POISON_LEN_MULT, &length) ||
+> > +	    check_add_overflow(dpa, length, &end))
+> > +		return -EPROTO;
+> > +
+> > +	/*
+> > +	 * A corrected error never reaches the poison list, so every record
+> > +	 * is uncorrectable. Only a failure of the device's own media is
+> > +	 * withheld: External poison was written by the host into healthy
+> > +	 * media and a rewrite or Clear Poison recovers it, and Injected
+> > +	 * poison is a test artifact. Withholding either would make a
+> > +	 * recoverable state permanent.
+> > +	 */
+> > +	if (source != CXL_POISON_SOURCE_INTERNAL) {
+> > +		dev_dbg(&cxlr->dev, "%s: dpa %#llx source %u not withheld\n",
+> > +			dev_name(&cxlmd->dev), dpa, source);
+> > +		return 0;
+> > +	}
+> > +
+> > +	/*
+> > +	 * Translate once per unit of HPA contiguity rather than per 64
+> > +	 * bytes. Consecutive DPAs within an interleave granule map to
+> > +	 * consecutive HPAs, and a granule no larger than a page lies within
+> > +	 * one page, so stepping by min(granule, PAGE_SIZE) from an aligned
+> > +	 * start reaches every page the record covers.
+> > +	 */
+> > +	step = clamp_t(u64, p->interleave_granularity, CXL_POISON_LEN_MULT,
+> > +		       PAGE_SIZE);
+> > +
+> > +	for (cur = ALIGN_DOWN(dpa, step); cur < end; cur += step) {
+> > +		u64 hpa = cxl_dpa_to_hpa(cxlr, cxlmd, max(cur, dpa));
+> > +		int rc;
+> > +
+> > +		/* Not mapped by this region; nothing here to withhold. */
+> > +		if (hpa == ULLONG_MAX)
+> > +			continue;
+> > +
+> > +		rc = cxl_poison_store_hpa(cxlr, pfns, hpa);
+> > +		if (rc)
+> > +			return rc;
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int cxl_region_collect_decoder_poison(struct cxl_region *cxlr,
+> > +					     struct cxl_endpoint_decoder *cxled,
+> > +					     struct xarray *pfns)
+> > +{
+> > +	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
+> > +	struct cxl_poison_snapshot snapshot;
+> > +	int rc;
+> > +
+> > +	rc = cxl_poison_snapshot_init(cxlmd, &snapshot);
+> > +	if (rc == -EOPNOTSUPP) {
+> > +		dev_info(&cxlr->dev,
+> > +			 "%s: no Get Poison List support, nothing withheld\n",
+> > +			 dev_name(&cxlmd->dev));
+> > +		return 0;
+> > +	}
+> > +	if (rc)
+> > +		return rc;
+> > +
+> > +	rc = cxl_get_poison_by_decoder(cxled, &snapshot,
+> > +				       CXL_POISON_QUERY_PREONLINE);
+> > +	if (rc == -EFAULT) {
+> > +		/*
+> > +		 * The device keeps no poison list for volatile ranges, which
+> > +		 * CXL r3.2 8.2.9.8.4.1 permits. Online the region as today.
+> > +		 */
+> > +		dev_info(&cxlr->dev,
+> > +			 "%s: no volatile poison list, nothing withheld\n",
+> > +			 dev_name(&cxlmd->dev));
+> > +		rc = 0;
+> > +		goto out;
+> > +	}
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	/*
+> > +	 * Withholding from a partial list would online the region on the
+> > +	 * belief that every bad frame had been named.
+> > +	 */
+> > +	if (snapshot.truncated ||
+> > +	    (snapshot.device_flags & CXL_POISON_FLAG_OVERFLOW)) {
+> > +		dev_err(&cxlr->dev, "%s: poison list incomplete\n",
+> > +			dev_name(&cxlmd->dev));
+> > +		rc = -EOVERFLOW;
+> > +		goto out;
+> > +	}
+> > +	if (snapshot.device_flags & CXL_POISON_FLAG_SCANNING) {
+> > +		dev_err(&cxlr->dev, "%s: media scan in progress\n",
+> > +			dev_name(&cxlmd->dev));
+> > +		rc = -EBUSY;
+> > +		goto out;
+> > +	}
+> > +
+> > +	for (u32 i = 0; i < snapshot.nr_records; i++) {
+> > +		rc = cxl_poison_record_to_pfns(cxlr, cxlmd,
+> > +					       &snapshot.records[i], pfns);
+> > +		if (rc)
+> > +			break;
+> > +	}
+> > +out:
+> > +	cxl_poison_snapshot_destroy(&snapshot);
+> > +	return rc;
+> > +}
+> > +
+> > +static unsigned int cxl_count_poison_ranges(struct xarray *pfns)
+> > +{
+> > +	unsigned long index, previous = 0;
+> > +	unsigned int nr = 0;
+> > +	void *entry;
+> > +	bool first = true;
+> > +
+> > +	xa_for_each(pfns, index, entry) {
+> > +		if (first || index != previous + 1)
+> > +			nr++;
+> > +		first = false;
+> > +		previous = index;
+> > +	}
+> > +	return nr;
+> > +}
+> > +
+> > +/*
+> > + * The xarray holds each PFN once and xa_for_each() walks them in ascending
+> > + * order, so runs of consecutive indices are exactly the sorted,
+> > + * nonoverlapping ranges preonline_hwpoison_register() requires.
+> > + */
+> > +static int cxl_pfns_to_ranges(struct xarray *pfns,
+> > +			      struct preonline_hwpoison_range **ranges_out,
+> > +			      unsigned int *nr_ranges_out)
+> > +{
+> > +	struct preonline_hwpoison_range *ranges;
+> > +	unsigned long index, previous = 0, run_start = 0;
+> > +	unsigned int nr_ranges, nr = 0;
+> > +	void *entry;
+> > +	bool first = true;
+> > +
+> > +	nr_ranges = cxl_count_poison_ranges(pfns);
+> > +	if (!nr_ranges) {
+> > +		*ranges_out = NULL;
+> > +		*nr_ranges_out = 0;
+> > +		return 0;
+> > +	}
+> > +
+> > +	ranges = kvmalloc_array(nr_ranges, sizeof(*ranges), GFP_KERNEL);
+> > +	if (!ranges)
+> > +		return -ENOMEM;
+> > +
+> > +	xa_for_each(pfns, index, entry) {
+> > +		if (first) {
+> > +			run_start = index;
+> > +			previous = index;
+> > +			first = false;
+> > +			continue;
+> > +		}
+> > +		if (index == previous + 1) {
+> > +			previous = index;
+> > +			continue;
+> > +		}
+> > +		ranges[nr++] = (struct preonline_hwpoison_range) {
+> > +			.start_pfn = run_start,
+> > +			.nr_pages = previous - run_start + 1,
+> > +		};
+> > +		run_start = index;
+> > +		previous = index;
+> > +	}
+> > +	ranges[nr++] = (struct preonline_hwpoison_range){
+> > +		.start_pfn = run_start,
+> > +		.nr_pages = previous - run_start + 1,
+> > +	};
+> > +
+> > +	WARN_ON_ONCE(nr != nr_ranges);
+> > +	*ranges_out = ranges;
+> > +	*nr_ranges_out = nr;
+> > +	return 0;
+> > +}
+> > +
+> > +static void cxl_unregister_device_poison(void *data)
+> > +{
+> > +	preonline_hwpoison_unregister(data);
+> > +}
+> > +
+> > +static int cxl_region_register_device_poison(struct cxl_region *cxlr)
+> > +{
+> > +	struct cxl_region_params *p = &cxlr->params;
+> > +	struct preonline_hwpoison_range *ranges = NULL;
+> > +	struct preonline_hwpoison *handle;
+> > +	unsigned int nr_ranges = 0;
+> > +	unsigned long nr_frames = 0;
+> > +	struct xarray pfns;
+> > +	int rc = 0;
+> > +
+> > +	lockdep_assert_held(&cxl_rwsem.region);
+> > +	lockdep_assert_held(&cxl_rwsem.dpa);
+> > +
+> > +	/* The region may have been decommitted while the lock was dropped. */
+> > +	if (p->state < CXL_CONFIG_COMMIT)
+> > +		return -ENXIO;
+> > +
+> > +	if (test_bit(CXL_REGION_F_NORMALIZED_ADDRESSING, &cxlr->flags)) {
+> > +		dev_info(&cxlr->dev,
+> > +			 "normalized addressing, poison not translated\n");
+> > +		return 0;
+> > +	}
+> > +
+> > +	xa_init(&pfns);
+> > +
+> > +	for (int i = 0; i < p->nr_targets; i++) {
+> > +		struct cxl_endpoint_decoder *cxled = p->targets[i];
+> > +
+> > +		if (!cxled->dpa_res || !resource_size(cxled->dpa_res))
+> > +			continue;
+> > +		rc = cxl_region_collect_decoder_poison(cxlr, cxled, &pfns);
+> > +		if (rc)
+> > +			goto out;
+> > +	}
+> > +
+> > +	if (xa_empty(&pfns))
+> > +		goto out;
+> > +
+> > +	rc = cxl_pfns_to_ranges(&pfns, &ranges, &nr_ranges);
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	rc = preonline_hwpoison_register(ranges, nr_ranges, &handle);
+> > +	if (rc == -EOPNOTSUPP) {
+> > +		/* No poison tracking in this kernel; nothing to withhold. */
+> > +		rc = 0;
+> > +		goto out;
+> > +	}
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	for (unsigned int i = 0; i < nr_ranges; i++)
+> > +		nr_frames += ranges[i].nr_pages;
+> > +	dev_warn(&cxlr->dev,
+> > +		 "withholding %lu frame(s) reported poisoned by the device\n",
+> > +		 nr_frames);
+> > +
+> > +	rc = devm_add_action_or_reset(&cxlr->dev, cxl_unregister_device_poison,
+> > +				      handle);
+> 
+> Hi Shaikh,
+> 
+> I think you are trying to propose the architecture as the following ?
+> - CXL region driver collects the device's poison info and owns the registration
+> - MM use the registration to keep poisoned pages out of the page allocator
+>   when memory is onlined
+> - DAX/kmem adds and removes the corresponding system RAM
+> 
 
---Apple-Mail=_59036DDD-4E62-4B5C-B6EB-875A19D0062F
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=utf-8
+Yes, that's how the RFC works today. If we go with Dave's suggestion below,
+only the first point changes: CXL only provides the entries, and MM owns
+them.
 
+> The registration belongs to the driver, but the memory that needs it can
+> outlive the driver binding.
+> 
+> Unbinding the driver doesn't necessarily remove the memory. If some mem blocks
+> are still online, removal of the range can fail.
+> When driver cleanup removes the registration, MM loses poison info of those
+> memory blocks as well.
+>
 
+You're right. If any block is still online, dev_dax_kmem_remove() can't
+remove the range and leaves all its blocks in place, but the devm action
+still drops the entries. Blocks that were online are fine, their bad
+frames are already marked. The problem is a block that was offline: it
+can be onlined later, and its bad frame then goes to the buddy.
 
-> On Oct 22, 2026, at 10:17, Muchun Song <muchun.song@linux.dev> wrote:
->=20
->=20
->=20
->> On Oct 22, 2026, at 05:27, James Houghton <jthoughton@google.com> =
-wrote:
->>=20
->> On Wed, Oct 21, 2026 at 2:33=E2=80=AFAM Muchun Song =
-<muchun.song@linux.dev> wrote:
->>>> On Oct 3, 2026, at 08:21, James Houghton <jthoughton@google.com> =
-wrote:
->>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->>>> index a1b51251103b..4dac7ed1df57 100644
->>>> --- a/mm/hugetlb.c
->>>> +++ b/mm/hugetlb.c
->>>> @@ -1613,9 +1613,14 @@ static void =
-bulk_vmemmap_restore_error(struct hstate *h,
->>>>             * page is made a surplus page and removed from the =
-list.
->>>>             * If are able to restore vmemmap and free one hugetlb =
-page, we
->>>>             * quit processing the list to retry the bulk operation.
->>>> +             *
->>>> +             * Folios whose vmemmap was never optimized (e.g. =
-because HVO
->>>> +             * failed when they were allocated) can be freed right =
-away;
->>>> +             * remove_hugetlb_folio() has already cleared their =
-hugetlb flag.
->>>=20
->>> Since you mentioned the hugetlb flag is cleared. So it's unnecessary =
-to clear it again.
->>>=20
->>>>             */
->>>>             list_for_each_entry_safe(folio, t_folio, folio_list, =
-lru)
->>>> -                     if (hugetlb_vmemmap_restore_folio(h, folio)) =
-{
->>>> +                     if =
-(folio_test_hugetlb_vmemmap_optimized(folio) &&
->>>> +                         hugetlb_vmemmap_restore_folio(h, folio)) =
-{
->>>>                             list_del(&folio->lru);
->>>>                             spin_lock_irq(&hugetlb_lock);
->>>>                             add_hugetlb_folio(h, folio, true);
->>>=20
->>> Something like following:
->>>=20
->>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->>> index 6a011b627986..1ab3e61f4704 100644
->>> --- a/mm/hugetlb.c
->>> +++ b/mm/hugetlb.c
->>> @@ -1616,21 +1616,31 @@ static void =
-bulk_vmemmap_restore_error(struct hstate *h,
->>>                * If are able to restore vmemmap and free one hugetlb =
-page, we
->>>                * quit processing the list to retry the bulk =
-operation.
->>>                */
->>> -               list_for_each_entry_safe(folio, t_folio, folio_list, =
-lru)
->>> -                       if (hugetlb_vmemmap_restore_folio(h, folio)) =
-{
->>> -                               list_del(&folio->lru);
->>> +               list_for_each_entry_safe(folio, t_folio, folio_list, =
-lru) {
->>> +                       list_del(&folio->lru);
->>> +
->>> +                       /*
->>> +                        * remove_hugetlb_folio() already cleared =
-the hugetlb flag
->>> +                        * for folios whose vmemmap was not =
-optimized, so they can
->>> +                        * be freed without restoring vmemmap.
->>> +                        */
->>> +                       if (folio_test_hugetlb(folio) &&
->>> +                           hugetlb_vmemmap_restore_folio(h, folio)) =
-{
->>>                               spin_lock_irq(&hugetlb_lock);
->>>                               add_hugetlb_folio(h, folio, true);
->>>                               spin_unlock_irq(&hugetlb_lock);
->>> -                       } else {
->>> -                               list_del(&folio->lru);
->>> +                               continue;
->>> +                       }
->>> +
->>> +                       if (folio_test_hugetlb(folio)) {
->>>                               spin_lock_irq(&hugetlb_lock);
->>>                               __folio_clear_hugetlb(folio);
->>>                               spin_unlock_irq(&hugetlb_lock);
->>> -                               update_and_free_hugetlb_folio(h, =
-folio, false);
->>> -                               cond_resched();
->>> -                               break;
->>>                       }
->>> +                       update_and_free_hugetlb_folio(h, folio, =
-false);
->>> +                       cond_resched();
->>> +                       break;
->>> +               }
->>>       }
->>> }
->>=20
->> Thanks, Muchun. :) I think it's slightly easier to read without the =
-second
->> folio_test_hugetlb(), like this:
+> I don't have a good idea how we should re-design the ownership here, maybe
+> we can discuss about it.
+>
 
-Hi James,
+Hand the poison info to MM when the memory is added. The driver's
+registration only has to live until add_memory_driver_managed().
+At that point MM copies the registered ranges inside the added
+range and keeps them with the memory blocks (or the memory group
+dax/kmem already registers), and frees them when the memory is
+removed. After that the driver binding doesn't matter. Hook A
+already makes its decision at add time, so both hooks would read
+MM's copy.
 
-Could you send it as a separate fix patch so that we could merge it =
-first?
+Does that sound right? If so I'll do it this way in v2.
 
-Thanks.
-
->=20
-> More clear, LGTM.
->=20
-> Thanks,
-> Muchun
->=20
->>=20
->> 	list_for_each_entry_safe(folio, t_folio, folio_list, lru) {
->> 		list_del(&folio->lru);
->> 		/*
->> 		 * remove_hugetlb_folio() already cleared the hugetlb =
-flag
->> 		 * for folios whose vmemmap was not optimized, so they =
-can
->> 		 * be freed without restoring vmemmap.
->> 		 */
->> 		if (folio_test_hugetlb(folio)) {
->> 			if (hugetlb_vmemmap_restore_folio(h, folio)) {
->> 				spin_lock_irq(&hugetlb_lock);
->> 				add_hugetlb_folio(h, folio, true);
->> 				spin_unlock_ire(&hugetlb_lock);
->> 				continue;
->> 			}
->> 			spin_lock_irq(&hugetlb_lock);
->> 			__folio_clear_hugetlb(folio);
->> 			spin_unlock_irq(&hugetlb_lock);
->> 		}
->> 		update_and_free_hugetlb_folio(h, folio, false);
->> 		cond_resched();
->> 		break;
->> 	}
->>=20
->> Applied this in the v3.
-
-
---Apple-Mail=_59036DDD-4E62-4B5C-B6EB-875A19D0062F
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html;
-	charset=utf-8
-
-<html aria-label=3D"message body"><head><meta http-equiv=3D"content-type" =
-content=3D"text/html; charset=3Dutf-8"></head><body =
-style=3D"overflow-wrap: break-word; -webkit-nbsp-mode: space; =
-line-break: after-white-space;"><br =
-id=3D"lineBreakAtBeginningOfMessage"><div><br><blockquote =
-type=3D"cite"><div>On Oct 22, 2026, at 10:17, Muchun Song =
-&lt;muchun.song@linux.dev&gt; wrote:</div><br =
-class=3D"Apple-interchange-newline"><div><meta charset=3D"UTF-8"><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><blockquote =
-type=3D"cite" style=3D"font-family: JetBrainsMonoNL-Regular; font-size: =
-13px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;">On Oct 22, 2026, =
-at 05:27, James Houghton &lt;jthoughton@google.com&gt; wrote:<br><br>On =
-Wed, Oct 21, 2026 at 2:33=E2=80=AFAM Muchun Song =
-&lt;muchun.song@linux.dev&gt; wrote:<br><blockquote =
-type=3D"cite"><blockquote type=3D"cite">On Oct 3, 2026, at 08:21, James =
-Houghton &lt;jthoughton@google.com&gt; wrote:<br>diff --git =
-a/mm/hugetlb.c b/mm/hugetlb.c<br>index a1b51251103b..4dac7ed1df57 =
-100644<br>--- a/mm/hugetlb.c<br>+++ b/mm/hugetlb.c<br>@@ -1613,9 =
-+1613,14 @@ static void bulk_vmemmap_restore_error(struct hstate =
-*h,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;* page is made a surplus page and removed from the =
-list.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;* If are able to restore vmemmap and free one hugetlb page, =
-we<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;* quit processing the list to retry the bulk operation.<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<=
-br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* =
-Folios whose vmemmap was never optimized (e.g. because HVO<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* =
-failed when they were allocated) can be freed right away;<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* =
-remove_hugetlb_folio() has already cleared their hugetlb =
-flag.<br></blockquote><br>Since you mentioned the hugetlb flag is =
-cleared. So it's unnecessary to clear it again.<br><br><blockquote =
-type=3D"cite">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;list_for_each_entry_safe(folio, t_folio, folio_list, =
-lru)<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if =
-(hugetlb_vmemmap_restore_folio(h, folio)) {<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if =
-(folio_test_hugetlb_vmemmap_optimized(folio) &amp;&amp;<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;huge=
-tlb_vmemmap_restore_folio(h, folio)) =
-{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;list_del(&amp;folio-&gt;lru);<br>&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;spin_lock_irq(&amp;hugetlb_lock);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add_hugetlb_f=
-olio(h, folio, true);<br></blockquote><br>Something like =
-following:<br><br>diff --git a/mm/hugetlb.c b/mm/hugetlb.c<br>index =
-6a011b627986..1ab3e61f4704 100644<br>--- a/mm/hugetlb.c<br>+++ =
-b/mm/hugetlb.c<br>@@ -1616,21 +1616,31 @@ static void =
-bulk_vmemmap_restore_error(struct hstate =
-*h,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp;&nbsp;&nbsp;* If are able to restore vmemmap and free one =
-hugetlb page, =
-we<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;* quit processing the list to retry the bulk =
-operation.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;list_for_each_entry_safe(folio, t_folio, folio_list, lru)<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if =
-(hugetlb_vmemmap_restore_folio(h, folio)) {<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;list_del(&amp;folio-&gt;lru);<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;list_for_each_entry_safe(folio, t_folio, folio_list, lru) =
-{<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;list_del(&amp;fo=
-lio-&gt;lru);<br>+<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* =
-remove_hugetlb_folio() already cleared the hugetlb flag<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* for =
-folios whose vmemmap was not optimized, so they can<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* be =
-freed without restoring vmemmap.<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if =
-(folio_test_hugetlb(folio) &amp;&amp;<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;hugetlb_vmemmap_restore_folio(h, folio)) =
-{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spin_lock_irq(&amp;hugetlb_lock);<br>=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add_hugetlb_folio(h, folio, =
-true);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spin_unlock_irq(&amp;hugetlb_loc=
-k);<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} else {<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;list_del(&amp;folio-&gt;lru);<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue;<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>+<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if =
-(folio_test_hugetlb(folio)) =
-{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spin_lock_irq(&amp;hugetlb_lock);<br>=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__folio_clear_hugetlb(folio);<br>&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp;&nbsp;&nbsp;spin_unlock_irq(&amp;hugetlb_lock);<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;update_and_free_hugetlb_folio(h, folio, =
-false);<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cond_resched();<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;}<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;update_and_free_=
-hugetlb_folio(h, folio, false);<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cond_resched();<=
-br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></blockquote>=
-<br>Thanks, Muchun. :) I think it's slightly easier to read without the =
-second<br>folio_test_hugetlb(), like =
-this:<br></blockquote></div></blockquote><div><br></div><div>Hi =
-James,</div><div><br></div><div>Could you send it as a separate fix =
-patch so that we could merge it =
-first?</div><div><br></div><div>Thanks.</div><br><blockquote =
-type=3D"cite"><div><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">More clear, LGTM.</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">Thanks,</span><br style=3D"caret-color: =
-rgb(0, 0, 0); font-family: JetBrainsMonoNL-Regular; font-size: 13px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">Muchun</span><br style=3D"caret-color: =
-rgb(0, 0, 0); font-family: JetBrainsMonoNL-Regular; font-size: 13px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: =
-JetBrainsMonoNL-Regular; font-size: 13px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-orphans: 2; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><blockquote =
-type=3D"cite" style=3D"font-family: JetBrainsMonoNL-Regular; font-size: =
-13px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><br><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span>list_for_each_entry_safe(folio, t_folio, folio_list, lru) =
-{<br><span class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span><span class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span>list_del(&amp;folio-&gt;lru);<br><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span>/*<br><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-converted-space">&nbsp;</span>* remove_hugetlb_folio() =
-already cleared the hugetlb flag<br><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-converted-space">&nbsp;</span>* for folios whose vmemmap =
-was not optimized, so they can<br><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-converted-space">&nbsp;</span>* be freed without =
-restoring vmemmap.<br><span class=3D"Apple-tab-span" style=3D"white-space:=
- pre;">	</span><span class=3D"Apple-tab-span" style=3D"white-space: =
-pre;">	</span><span =
-class=3D"Apple-converted-space">&nbsp;</span>*/<br><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span>if =
-(folio_test_hugetlb(folio)) {<br><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span>if =
-(hugetlb_vmemmap_restore_folio(h, folio)) {<br><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span>spin_lock_irq(&amp;hugetlb_lock);<br><span class=3D"Apple-tab-span"=
- style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span>add_hugetlb_folio(h, folio, =
-true);<br><span class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span><span class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span><span class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span><span class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span>spin_unlock_ire(&amp;hugetlb_lock);<br><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span>continue;<br><span class=3D"Apple-tab-span" style=3D"white-space: =
-pre;">	</span><span class=3D"Apple-tab-span" style=3D"white-space: =
-pre;">	</span><span class=3D"Apple-tab-span" style=3D"white-space: =
-pre;">	</span>}<br><span class=3D"Apple-tab-span" style=3D"white-space: =
-pre;">	</span><span class=3D"Apple-tab-span" style=3D"white-space: =
-pre;">	</span><span class=3D"Apple-tab-span" style=3D"white-space: =
-pre;">	</span>spin_lock_irq(&amp;hugetlb_lock);<br><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span>__folio_clear_hugetlb(folio);<br><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	=
-</span>spin_unlock_irq(&amp;hugetlb_lock);<br><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span>}<br><span class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span><span class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span>update_and_free_hugetlb_folio(h, folio, false);<br><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span>cond_resched();<br><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space: pre;">	</span>break;<br><span =
-class=3D"Apple-tab-span" style=3D"white-space: pre;">	=
-</span>}<br><br>Applied this in the =
-v3.</blockquote></div></blockquote></div><br></body></html>=
-
---Apple-Mail=_59036DDD-4E62-4B5C-B6EB-875A19D0062F--
+> Best regards,
+> Richard Cheng.
+> 
+> 
+> 
+> 
+> > +out:
+> > +	kvfree(ranges);
+> > +	xa_destroy(&pfns);
+> > +	return rc;
+> > +}
+> > +
+> > +static int cxl_region_scan_device_poison(struct cxl_region *cxlr)
+> > +{
+> > +	int rc;
+> > +
+> > +	/* Nothing would consume the result. */
+> > +	if (!IS_ENABLED(CONFIG_MEMORY_FAILURE))
+> > +		return 0;
+> > +
+> > +	ACQUIRE(rwsem_read_intr, region_rwsem)(&cxl_rwsem.region);
+> > +	rc = ACQUIRE_ERR(rwsem_read_intr, &region_rwsem);
+> > +	if (rc)
+> > +		return rc;
+> > +	ACQUIRE(rwsem_read_intr, dpa_rwsem)(&cxl_rwsem.dpa);
+> > +	rc = ACQUIRE_ERR(rwsem_read_intr, &dpa_rwsem);
+> > +	if (rc)
+> > +		return rc;
+> > +
+> > +	return cxl_region_register_device_poison(cxlr);
+> > +}
+> > +
+> >  struct cxl_dpa_to_region_context {
+> >  	struct cxl_region *cxlr;
+> >  	u64 dpa;
+> > @@ -4262,6 +4580,10 @@ static int cxl_region_probe(struct device *dev)
+> >  					p->res->start, p->res->end, cxlr,
+> >  					is_system_ram) > 0)
+> >  			return 0;
+> > +		rc = cxl_region_scan_device_poison(cxlr);
+> > +		if (rc)
+> > +			return rc;
+> > +
+> >  		return devm_cxl_add_dax_region(cxlr);
+> >  	default:
+> >  		dev_dbg(&cxlr->dev, "unsupported region mode: %d\n",
+> > -- 
+> > 2.43.0
+> > 
 
