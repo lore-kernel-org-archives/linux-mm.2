@@ -1,87 +1,81 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 919BE606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 08:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECCD606B389
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 08:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nB63p4Uq
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XG5g/nm+
 Received: by kanga.kvack.org (Postfix)
-	id AA7226B05C3; Thu, 12 Nov 2026 03:29:46 -0500 (EST)
+	id D6AC76B05C5; Thu, 12 Nov 2026 03:33:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A57316B05C4; Thu, 12 Nov 2026 03:29:46 -0500 (EST)
+	id D1C546B05C6; Thu, 12 Nov 2026 03:33:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96DF46B05C5; Thu, 12 Nov 2026 03:29:46 -0500 (EST)
+	id C31CA6B05C7; Thu, 12 Nov 2026 03:33:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7218C6B05C3
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:29:46 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 62112C049E
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:29:45 +0000 (UTC)
-X-FDA: 85425793530.13.1F3C6A5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A3DEDA0005
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:29:43 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nB63p4Uq;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C2416B05C5
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:33:10 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3BF83120523
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:33:10 +0000 (UTC)
+X-FDA: 85425802140.01.BF05A78
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6F551C0004
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:33:08 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XG5g/nm+";
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794472183;
-	b=nYzreRqyqTTCutI53Db10jw2XdBYH/PW4BtqLUWqCBbovQNv0FQPn4T8U5Cq+eAlURrWVU
-	h7sxzxXijvYvBejfs1CNDg+26mOSElEDMcNHpP7iClW7pnJoFeU7pp5V0ffvoRAiAZcDDf
-	EulxCOF/A1eVjU741Yt3F9lm4tISXQY=
+	t=1794472388;
+	b=PNC67/5vbw1phmORlh53VDhPv4zloVe/TFMEB3dEjUwz2RZrgTHgEm3jifofpu1A3fRHZx
+	9dQNyHKkoAr73ZDriiaBTDmjZKh/oxATZfyVVcnJD7Kpp5nnGG1VYPjGHY0MI4H/QZt331
+	c+EKan4hvAHA+cYYGpgtNFUyR/HIc0s=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nB63p4Uq;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XG5g/nm+";
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794472183;
+	s=arc-20220608; t=1794472388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LfFnO2mmUljHjiUSB+JHkBBNtfs+CR7s4DuaVxb5rYE=;
-	b=M6wweRYE5CG6T5TU8/xCCNaHpZqX8AB926vPuUiMBbFFM97doK9mYfpczE70Fqap2ILaex
-	fzE5JpxmRTdIXNIIhmx3H7+nI8/LLgjxofB8+k93cIi0o/Gu+QjTtFrCogGKjfFABCsQ9p
-	WqbqEXsrEp7GLX7b0J/9ICEwZAoQyRc=
+	bh=wHiIDa6cL/vpsXtyC/9ShVCBR8lPrdKhQ+5jGKW/U9k=;
+	b=Fq1NtLcCHySd2FX0u6o7igCy65y2Z7Jmr0RR7MUIjvuSUnocxi3WOywdykdf/uHxrJpUSX
+	4+wsNnYN2wEtPXWEViOoNwgNmDNQZkb4Ip0t5YcXPBVrl0RRwJ75pA74fi5qmZ3fBhx9Gy
+	OWzp9oc+dnPym6AG0135ULGu6qOHcLA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id ECF1663779;
-	Thu, 12 Nov 2026 08:29:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B3C1F00A05;
-	Thu, 12 Nov 2026 08:29:37 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CBE7D47901;
+	Thu, 12 Nov 2026 08:33:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C2451F00A05;
+	Thu, 12 Nov 2026 08:33:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794472182;
-	bh=LfFnO2mmUljHjiUSB+JHkBBNtfs+CR7s4DuaVxb5rYE=;
+	s=k20260515; t=1794472386;
+	bh=wHiIDa6cL/vpsXtyC/9ShVCBR8lPrdKhQ+5jGKW/U9k=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=nB63p4UqxR5h4UfW+jPSLXJ9RSk5E++eyt78k0yGCrFFQubEByGzJJTsvvAIcFmms
-	 OTd91A2zREUxuBnSe3GBaBsWFmJch5SNaIrRhdP/xzwh57B8zzy7AfoXpGmI76ENu6
-	 oTY55ShnnxhYfEEtLsQZ2AzbAeWVeV+2Q3n8cu5/eNnbVZuJ1NSVreWqdCU2zfKDJH
-	 IbBVHqVWbvANm1i2jExZM1aLhezYUoJ/ECUS+v4TESKabMov/y/rV5pRxdbV2GlYxe
-	 czituN0+d4ncn6yOw5K51uDdaaGcC8gmRH9qbjHbi9ST1SQF6DLQ4j/0R8yJXvddbB
-	 TSIE6DH6AEPnw==
-Message-ID: <33b2549e-f033-42e5-82c4-a72cb0f92324@kernel.org>
-Date: Thu, 12 Nov 2026 09:29:35 +0100
+	b=XG5g/nm+K513+nhn+5OndsG9mSGbSKzvtgyM6i/B1s7gs6BBtrMqbTQEB4nsUsb8Y
+	 oQBiqPksMq2HIM1slpfSCtELJa+h1P9qduLsmng/X+fuofsa/4TxFbTx0cExrAvgN0
+	 4TTPv5gaIf8qxki3ZocDSc0+llOvkYB7jVhO9XIdEtTU94MxWL1KPtuaXY4iuOgdz8
+	 RKNT/l5phTCXxGIXrMq6E0/2HZxwWuVJkRbC4XUORQ7Tzce4iD8P5Nbm8wSMdxKQf7
+	 f9Ov7BH49eJmcxU3WAtmhyUDUb/GRsfdxvJdFck11FIyh5fa3qVOAV3bQmQfuoeGC6
+	 I2uEMwAG3Da3g==
+Message-ID: <8fb62131-db10-491c-9839-a3835d7aaf32@kernel.org>
+Date: Thu, 12 Nov 2026 09:33:00 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] mm/rmap: fix PTE table overruns during batched
- reference checks
+Subject: Re: [PATCH] mm/shmem: drop the second folio batch from
+ shmem_undo_range()
 To: Baolin Wang <baolin.wang@linux.alibaba.com>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
- Lokesh Gidra <lokeshgidra@google.com>, Barry Song <baohua@kernel.org>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Chris Mason <mason@kernel.org>
-References: <20261111-pte_table_clamped_end-v1-0-2dbe339c487a@kernel.org>
- <20261111-pte_table_clamped_end-v1-3-2dbe339c487a@kernel.org>
- <c31cc8a0-c098-4784-a843-f13f51914094@linux.alibaba.com>
+ Qiliang Yuan <qiliang.yuan@linux.dev>, Hugh Dickins <hughd@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Jan Kara <jack@suse.cz>,
+ Qiliang Yuan <odys.yuan@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+ kernel test robot <lkp@intel.com>
+References: <20261111-bug-mm-shmem-undo-frame-v1-1-e50a95b8f9b2@linux.dev>
+ <787a1ba3-df93-45f9-abe1-3fcdefbe41cc@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,21 +122,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <c31cc8a0-c098-4784-a843-f13f51914094@linux.alibaba.com>
+In-Reply-To: <787a1ba3-df93-45f9-abe1-3fcdefbe41cc@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: cgh3k8mpegzk1q6dhqybztewuibmzya3
+X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6F551C0004
 X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A3DEDA0005
-X-Stat-Signature: uw85u1cynp7f87hprbwuuyhojespx6pc
-X-Rspam-User: 
-X-HE-Tag: 1794472183-709680
-X-HE-Meta: U2FsdGVkX1+gCWmwcLTdTxwI0iktDaXNwFiedZnBkkX6bknmH8j5fO6VsC0/ucVGyOobW25j26yUCzjc04nvM8Dc+GK6IEL7Mu+uj31oSilm5H5deMpUWSrCQOmM1M9BB4LpUWrBWDmJc0wSyky5Dgmjoj2u6Z5rHpBpXShVUaOW1UHONYIBaNVGf9EXOPyfScb0MZ+k5N80DJFqwbMSkwvezIPiFxyN0D50OHYjtYrhl/dbFbjCa1Uhe/h3Cv8Mp0N2Lqqwahqfwz2thQdro7DYZwUbMf8/PxZJQ9F/xez9WQ3VfWpp9dhFb7gGWM1FtCyLooBcfjzaeJoq1gtkFzvUR312FpJdx/G5IBkqzr+Z970yygVY38zC0IZPROL2c37uSBnLfv9mZRCeOJa4G8kYbOl6dB88wMfB4V/XojiJoEh4HF7U8VyhC9yYJAYqrp8FjPXyx+XBH9CCqIzM0MNysnRMiIP37b+zNrWO+iVAntJqW6eSkfEBi5GpOxBUhf1ooP7+yg60f4I2JHyfalAgYU9CbfgSTcLZl4/SwazxEh5amTYiYh/pF/jlu+8kNaW6faGR4M44lWCk7xi1PfRoxtmKNXzNuT7dShl8heQHjsDD2Ya6OZbX5H7qCFPfgVtXNgSFb/fQmoQVsn4AZ070Iiwa5THuPIU1wI7NJnLJCTQykI1JOVvJuL1htS/wLQVawY2LMagH4hIqcPf4Zm8ZlnG0eSw1xLbFuQ2nkn+urSuajZ9Dw5Y/SuTwqh4hIH7NgMOtj2c7HDFGvmNe6FgmfzrCTdWMQo9PC12RLd+JVQzdMQDAoC3oHvI7fBmtmcBSjPgrA14LQcBDuJ1ICJh0Vgb3U373DthoAj0kF0FrOurvT2zCvlxtKNzbO6OCRryko3mGg8TA1GWLpYf3XSMOu5B17nq5GXnWvbN67XNyyqEA+lwtTKiVfgrN77SLXERuu4bVTtFUTlEN6sL
- 0eLcz6YY
- n4jeNdadFsSAq3OaNW92rvCOwmZn1JB7JykH2hTSvKHMTeMy5Yev8w8Sr0BJVRZIRCOTV1leNosK4mknQV8LH1rlHTQpAEKXpE3lQSV3sHqSRPO5cqkBOrdjhFFsU1vFvgnburMbbMmunWdWkWvTG9qblLHcNRe8V5thuZatlDKJV5gRah1JrjAFAkD3bZd/sFyJtJr33EUOu5xiUmmAX0WdmGERJRGHArvwH5xfXZ1E2hyvtjtnuVj8oUhIaoI8x/ZAFgyk6zS7CH5nlsZKU7oqJGZLH03Be/E82Sc69piWQYUAVHTCgzkXCKg==
+X-HE-Tag: 1794472388-718594
+X-HE-Meta: U2FsdGVkX1/Kfg64SYAvYVy4iDNVQ8UGucr5qjffO0C/lZLzdQeFFgrVbOVoFOqvM7pQq2a2sP0gk3IfEtCes24gvHtI91dZOrVYM3NH/bX0F1QXL80CWQLTLGk2vg/W03d3Mvpl4808YosHqralEk+86dD6FyGyBe9HR9Yde5yiRcms8zF6xwhP3ZVZbupnxyP51ARVD+2+evTv0zaCc4SQrOQUW2PIQGlOrb9CNeh/xb1hmw/6ssDaRI8S48u+3757CEmzsQNVlCJAVFMQ5rQtnOBn3mIiovVP/jx1XGXQjIUicbrlhRFdeoClrBqYCdyihgKlnp6sFqKVa/aY/mwSiKpg2pSu61qSronMj4MYcacWv/LL6pubuBqjTagufr2vhrJZurfGv7TT9QMvTomf77y2/36NFAPuXcGSV+yt8AIm316Ienw6sabYepOB6ZSs+h5z2xmJYrPVQNj6/h01Nup5YlZCaOEo90osa0tvmya1e8por73jFm2DfZdChjbqLjsM7i4YrqjKamv8o3QDNaLCfRat1EO5yal3lptKEZmE7K/YAJ3eewRmdijvz/eychdinceZZtgj/uJqROSF0pZ/+qrGlbaKQLmPpbgwcvGaGxgPSzHAcoaub3xIdo4KHTaV50SU8k8wPTh2WFJ9qOQrFEbm1vPifN3Y5h/VJI7B+FLPUoHRzG1PQ+Z5xHCdUcOUTVc9CCjCdAFvahPT7SU+mJLM5y72WMNW6gKWVRyPi0GQYzUizUb7lLv3xXlP9x/eb0ho/+6+cUvVEsNSN5mdVUy4y6J04Z8nkpLn7fnWIVWAXfdfICktoqydy7C9zKIhe26pTqZY15OZKAppHJhdx4qudj3x7W+V86oIKw1lIS6GaWMsfxFjNwOKHdnO9vFwRhafjO098Xc9F4wwjJdC6MuW+IgSyE8JpOZqKmDfYM5hCsS0Ivd9dAU4tEJQsyeKzK6rBouptqt
+ vSZsTtMw
+ vwYT7b7eVwoP44zlHoelQR0N8tqPp1tUaNR9s1EnbKiYwPZfkHvYvu+mp/UiJFnJLyEV0XEKXtP2EcZmh3+wN1eyupi5Tcclly7f25jmQKWl0aFNKrxaMMdkxoCS3YsKOHIhqOPK5RuyHh6+JJc1o16a+RPotFMuylM1V2QdUC038b8XKS9r5PSHyN2VZK1iFxGfwUOyNsqSxoWseWsBavtszesM09GkErr6gMoYIt7a84lL3toEZEJklJBrTVZ2iCXLEc+NJPtBEIJ4F4ngrC77g/9JoaBs1/lo070Adzqt6teh/jnEQRQxXdiqeLXAjQqelxbGN+Qwn0lOyuBfxWtlMcEAkVTB5jjQ38oBa14jt69qVshV2m9rFjeuCBKoyM1AKtA2agnyBMK04iHwEnaWwhqkngYKdxA6KJQ+/FJ2v95XfB2chZIlMHB13J5ANv45gyqQ2rN0Zx0o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,39 +145,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/12/26 08:25, Baolin Wang wrote:
+On 11/12/26 09:05, Baolin Wang wrote:
 > 
 > 
-> On 11/12/26 6:00 AM, David Hildenbrand (Arm) wrote:
->> With a folded PMD, pmd_addr_end() simply returns the supplied end.
->> folio_referenced_one() can therefore walk past the PTE table when
->> checking references to a large folio.
+> On 11/12/26 11:39 AM, Qiliang Yuan wrote:
+>> shmem_undo_range() keeps a folio_batch and an array of FOLIO_BATCH_SIZE
+>> indices on its stack. Removing truncated folios from the page cache in
+>> batches added a second folio_batch to collect the folios to delete.
 >>
->> Folded PMDs are uncommon, but can occur even on arm64, for example
->> with 64K pages and a 42-bit virtual address space.
+>> That grows the stack frame by about 200 bytes, past the 1024 byte limit
+>> of mips eyeq6_defconfig built with clang.
 >>
->> Use pte_table_clamped_end() to clamp the range to the PTE table and
->> VMA boundaries.
+>> Pass fbatch itself to delete_from_page_cache_batch() once the swap
+>> entries are gone, as truncate_inode_pages_range() does. Undoing a failed
+>> fallocate() only removes the folios that are not uptodate, so remove
+>> those one at a time with truncate_inode_folio() as before.
 >>
->> Fixes: 52e054f71840 ("mm: rmap: support batched checks of the references for
->> large folios")
->> Cc: stable@vger.kernel.org
->> Reported-by: Chris Mason <mason@kernel.org>
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> Stack frame of shmem_undo_range() built with clang 18:
+>>
+>>    config                before (bytes)  after (bytes)  change
+>>    mips eyeq6_defconfig             928            720    -22%
+>>    x86_64                           920            712    -23%
+>>
+>> Fixes: b97fbd541ecba ("mm/shmem: remove truncated folios from the page cache
+>> in batches")
+>> Reported-by: kernel test robot <lkp@intel.com>
+>> Closes: https://lore.kernel.org/oe-kbuild-all/202611112032.TMyPU6Rm-
+>> lkp@intel.com/
+>> Signed-off-by: Qiliang Yuan <qiliang.yuan@linux.dev>
+>> ---
+>> David, this applies on top of b97fbd541ecba in shmem-7.5.misc; please
+>> fold it in if you prefer.
 >> ---
 > 
-> LGTM.
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> 
-> BTW, the 'end' calculation for the batch operation in lru_gen_look_around()
-> could also use the pte_table_clamped_end() helper. But this can be a follow-up.
-> 
-> end = min(addr | ~PMD_MASK, vma->vm_end - 1) + 1;
+> I think you should send out a complete v2, and David could queue your new version.
 
-Cool, can you send a cleanup patch? I'd pick it up once these patches are upstream.
-
-I'll move these into core.git today, so you can send against that for-next later
-today.
+Yes please. I'll drop the old patch from core.git. Should be gone later today.
 
 -- 
 Cheers,
