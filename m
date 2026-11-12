@@ -1,90 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661D2606A323
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 05:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26AD7606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 05:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i5nfBbpb
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CE6YXn7b
 Received: by kanga.kvack.org (Postfix)
-	id 945C86B05B9; Thu, 12 Nov 2026 00:01:12 -0500 (EST)
+	id EEAA66B05BA; Thu, 12 Nov 2026 00:01:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91E246B05BA; Thu, 12 Nov 2026 00:01:12 -0500 (EST)
+	id E74A76B05BB; Thu, 12 Nov 2026 00:01:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76FAF6B05BB; Thu, 12 Nov 2026 00:01:12 -0500 (EST)
+	id DB0EA6B05BC; Thu, 12 Nov 2026 00:01:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 465A06B05B9
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B4E716B05BA
 	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:01:12 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B4D81140141
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:01:08 +0000 (UTC)
-X-FDA: 85425267816.24.45F29A1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id DB288140008
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:01:06 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i5nfBbpb;
-	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4DE0F16046A
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:01:12 +0000 (UTC)
+X-FDA: 85425267984.03.D810565
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 99B3418000E
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:01:10 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CE6YXn7b;
+	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794459670;
+	b=12eijwFyaUzYG/Y2LUJQH/K1QiuAFQ7Cb6P729l3FRPiilcyPsub9KDVauVyxssq/9xPLv
+	I93tsanuXVacZx4WoDTj4s4lkF0DQ2V65VWADOxWDIAZg9wQTHRJdV5zI3Va0yuneYLFOw
+	Sn00uq14/NOIYLsJI50l8kwQ9G1WpAE=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CE6YXn7b;
+	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794459667;
+	s=arc-20220608; t=1794459670;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jcZ7x1zM+wLnMggYQ7g6vUZ5Zu0U6ywlPhVdWyX162w=;
-	b=E3/j9VfPFQG6yI3IDyJuUVZ6bbVX9LeEfepNnrjNGayAYhvuFvl9w90CCVi8A5BqPTvPpz
-	uFiiOUwuzllfNEBCeZJhewp1FjOD3h21sy6UbFRusrZm95n5MSoeRsBzB+9FcW6A4gIhwQ
-	IOOLzfVnRXjBGx5/83rs7dGo2CHZ7cg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794459667;
-	b=1hSq9zx5/sM09rt89wJbCOuxjqnErgx9CY6RdcaSkkuaYo/4P1ro3m1OnICwfw+oOZ0fy4
-	9Wm63XqaAHyXnzqznNEh2ojLdMkvYdPm7quxP5OTqdrHWzYZUrvlL7y7Z7DJ4B3ZgjupyH
-	CBIk7zpmGSgO7O2Knjr5FI+fR9CI4h8=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i5nfBbpb;
-	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=rGnqvBfwv1GuzgofDivUXLxhCclkpqt3OTX1NYXZgCg=;
+	b=GfQWV31+dcZ9y0AhG+SEpiEwS8Qe/fy+yLAYMLaKa78fAuUN9ga0+iPtoirobNZmBNekhy
+	r+LTRbidHVBUg6qSj9kI6nN4Jijh1W5yB8gycJdrh8tmwbhi9oIQ/aBqpPIH9D0yxGlDI/
+	9lvEcBMXVeLLKwim0xzJJ++12jYjA48=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 60EBA6375E;
-	Thu, 12 Nov 2026 05:01:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C48D81F00A05;
-	Thu, 12 Nov 2026 05:01:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E3A4C43439;
+	Thu, 12 Nov 2026 05:01:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B7D11F00A05;
+	Thu, 12 Nov 2026 05:01:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794459666;
-	bh=jcZ7x1zM+wLnMggYQ7g6vUZ5Zu0U6ywlPhVdWyX162w=;
+	s=k20260515; t=1794459669;
+	bh=rGnqvBfwv1GuzgofDivUXLxhCclkpqt3OTX1NYXZgCg=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=i5nfBbpbunkaLyn1y31f5aIgw0LzBViJlIoCOuTY6AnTQcnFh43YwxE2UOkJgn8U8
-	 TqXFR9jcTFRouozGKnvjTaaiUvDEOF6HzmINyTY3rToqaRA/cIlQ3FsSvoHUmrtRTX
-	 YUzJC/yl05MXrEpSmky/urybnuR89JUIB08slM3D8fZcmrPwvH9jekHPM6eQ1zmGSl
-	 7tGK8Q5lMfBrQCluoh55+SVb/a8MBG3oaUZR3QGg0LMx2Zt2iMO7vsSJW5k0SlKLoD
-	 Tg755esCoJod1V7+fDJrXqdpTFv8Rg4OYJY3WDqbsczKZxU/KDjwHGcv/O2TELG27i
-	 kQ4bJt+9sRikA==
-Message-ID: <sashiko-outbox-210418@kernel.org>
+	b=CE6YXn7bKsphjp6X4RUj+o8yYThu4S1WjytVLPUav9DUmivny2qiLJErTxBlUAhlP
+	 1Cde7MzHMXfg/MvZQyo+i1hAq1tw0Lht+9DCtJyejOXXKIxWnJh/8eoOmD6BfNhIh2
+	 RwklVmnwKiTZXeWv5pzCc7OKdMnLj1fGazNp3QI6hnE4RCxXRxxR+NOORa6dYDp8Pt
+	 Uvg2fqsBipG7xyYi9sDEtNrUO+B3Afi2hySmrMu7NThyDPWSqrNOxiAzG0WSFw7E/2
+	 fiD0eCxlLjBt5TqwdAIueQ53vT3397zDB7eUL5Rh7kf4+ZW/gP+betR80D8EkqeDJW
+	 UOq18IhjWFdAA==
+Message-ID: <sashiko-outbox-210420@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 10/16] mm/mglru: Run aging when pages are rare
- outside the youngest gen
+Subject: Re: [PATCH v7 12/16] mm/mglru: Restrict eviction accounting to
+ eligible zones
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?QmFycnkgU29uZyAoWGlhb21pKQ==?= <baohua@kernel.org>, akpm@linux-foundation.org
 Cc: axelrasmussen@google.com, baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, hannes@cmpxchg.org, hui.zhu@linux.dev, kasong@tencent.com, kunwu.chan@gmail.com, liam@infradead.org, lianux.mm@gmail.com, linux-mm@kvack.org, liuxiang.277@bytedance.com, lyugaofei@xiaomi.com, mhocko@kernel.org, mhocko@suse.com, qi.zheng@linux.dev, ridong.chen@linux.dev, rppt@kernel.org, ryncsn@gmail.com, shakeel.butt@linux.dev, surenb@google.com, wangzicheng@honor.com, weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com, zhuhui@kylinos.cn, sidchintamaneni@gmail.com
-In-Reply-To: <20261111232603.9934-11-baohua@kernel.org>
+In-Reply-To: <20261111232603.9934-13-baohua@kernel.org>
 References: <20261111232603.9934-1-baohua@kernel.org>
- <20261111232603.9934-11-baohua@kernel.org>
+ <20261111232603.9934-13-baohua@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 12 Nov 2026 05:01:04 +0000
-X-Stat-Signature: tfh6i91hb3j167bnyyhueh78wqgdogek
-X-Rspamd-Queue-Id: DB288140008
+Date: Thu, 12 Nov 2026 05:01:08 +0000
+X-Stat-Signature: 95x3hb85w395ymcnfq3pmcaoy3arrfa7
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 99B3418000E
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794459666-242455
-X-HE-Meta: U2FsdGVkX1+OAnX8TSf+8mNFXby51j6ubnA49fkWqxTh7R3UPNVOYiAC9zzxBl41fQ5gY33QTy8Jl+8cpjc0DkTexsCUM6aOBzgzh5G/Sxmb5ATd9vir5zA5zdDuhguRfE0Ge9dmjFe9UbqRXcAAeAW5tbIeFxoy/yR+2X6A7PG8BYF0sgmyB2EarHx2UU7OkB+vCRpyGMNHUzf79QNLYkKB7QhhOqlgTNpBggd1vKs6SGUhcISGyia6Q7+uqGLpF/SLOEgGk8TmIqCpEgpmYIJ/Nny+obQ8vH3x5WJlqri6Sb+WPkPQHLN0av72E8CF1G27dGV7a/8TeyWSkXDZlFvD4K8/6Cf0OEXxgVd6r9gdyC1otse/R1u1BwKWYRBuAW37hLeAvK549g3djLfuUCTaW1TU8TOKg+mYG2nIo/S0QY+5TalV3PecCttLFLny5DwZCQfKnM8QMv9oLp0SmIswj9Gx9k4bdXh0ZVVFe/1OT4URr+3+5TpyNaHDJWWIz78Dt3TKnQdtKTKD1OZ93pID5d5IbGBv0hNkAjYYBcog/95vJGjtUxn+AAT+TF7H67X3w8iaKLdeI+0/yKp211DkCtZ3ijvF3mNwSveGcJzXrnkkQQuqKlzwIpIQsOhAdiUVlw+kwfyGHccHVAjjwqED3soipnTDtV8OP7zRh837HrkAoDeuDS8c8OBRCi+r9JnNoZBspUucANsViHz3SVx5FUj6ESedYczgSaLChxy06nSs+nnwcNPPZO8UyAT4u3fHaATo1XL46iSOPo6Y8wgrdiyeLCKfTZUJT1NzmAmEjTLq0h/ykTHf2D12LMIDDiyTRZxGNGa0yLYto8Kk++4JMQyF62H5y+rw8G5R/T4jQJwjON3lv00zbzOBPv1qX07tR5ET27AfUR0LFNXFwi80ockw5sjGekVIHMBY05dElAcz/oCHyiM2L9PN4WJ/OMNWDLObagJEXQnUSQj
- 2ZfoDBwW
- X3fx4zrRXJ9iORpKGSezyaX0utrsAVELDkdFQXa4uC7BKJTIb7YkjJZ1Vjjlu5UBCePqVDXsCG/DgQJWLh5cT5Q8+7CPQZz8+R6WgkFvQb6x2BvJZaq7hcfI9MzuNILdVDM0uN68Mi4U9/P5D3R1Jw4+G9ITrNNGCK/oEaRrtvYsy5jnBqAfpIq3bHnL3uZXzM4It+keNMn8YJhOx1e9XHQY0QdM3KPfjFvAbnjn7/5ZoSp73/TUf5eQbGBKFc8JvkBLfH+YrNFt8RQTKf+ZiKuIJNdL5zbYBW0/CyUUwddxVMhwiCFaFTURJZZio1f6TV5PrJyxaWNSjqLzQ62xM+OmN/LhPDsSNxEiNVqIvofBtWi8+N5uwTePXnAED0rAqB25kO8iLDThf+Wvguia0C29y3q/zDLatqJiNMc9VjAYR9B+JcdSZtMLoauKT2EsRpDPJt18jKWU3t3W3gvipERg1eWFBwMsna0b/UY53+/jl0lsCzQIb50pzbUDT2+1xJtymSwu5FFD77wiE+L2A/6Wc5RoU7brXR0b3cTOWRbI4qGTdSS7ws3TEGsLJA/h6lA698n5mcr7LgRslAMYqUczEsRucGVj9BSv4wB5lFA0sOi8zjjLtzPW69Rp+u8ugJJ9LXbolSF+PKrhpBqVloa8urGuzqPpCSHx6Xgxzv0MTE3dNOu9AA+RHUU0d2RZY+BZ/SmszVdN7eQT30ZZhyfgag0e6REkmhlmt
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794459670-862065
+X-HE-Meta: U2FsdGVkX18d+Fx35FD5gibHB4cf8kjGY6lnum7x1ty3XP72NNkhZRxQnATzCDSh5I2dcVhCAUzxeXAYGVjrAtG7Q4eCpn/8BPM8r9ZO93yf9y1jMnxycwRIsSeAhYQA5rxG/GuxMRQiqgJSHD3Grt8O1RLPC4yD6mAlihdJGJGt04fSewkbdMpuobDZk22gnMorm7PWqzUVTuGazspkmHr5XilBDWSjGt0zr+FSZ/cTUKe/Qbq1X745nmRhuycz1yY1jiTVlDBR8+TZs4sXBi4+rE9ndFanygpIrGtJ573SzvtFMlK0Dqks4+xH02uw04EZcnE0rk1nKs/j8qu/huneBUkJhb2diHLVWVK0e5212loIm0a9AQ21bg8XE2URwImemRQf/MxhQXLAQAOndg668Li+NLMDXe1uAaFTrGeeSwqsRyknUusrexzM3Oz7UfliJ7SozkDv5g4ui8aZWzdFs3Ia4RzcJUo+ZNkG9tk3GNpCK/C7+tRNrwvYZqMLmbWr2iHR0i8G9hEtcMm8jbEjIhXM7I71Uq/sv1S9XJRPUJ5ks4wN3Y1Jwn5ZiLc7gYEzXAD61kpUfXxxJVjTQXbaJHnYCCDSU0ugbnnVLosjQsJNxGLJPxSrGRXoyj1vfdCH4Dzk8c7P62SHGfQyOgSC+CEEaB8SUznA8u1Ch1Tn86LjjZzOsxIm3fRRsUkqpCZJjx5/A7GpmQdYlTLfo63D/bmgZLVZ7oatnSeELRxHOBk0k0ED+dSxFxGDrAIbkV0oHVVph3+umbCyhYX7gX0sxG5LmoivQJwyQC7zWacx/GzTzF/AB2LTo+jIiixDmUpAW/aq2imYiHUYrU9CaVP1yRNkYfbognmL68EDUwaDeC2/0YFUUFBRshUw1RcIzddmLz6j+XCUzcL9tfFep1mgqGRKNelegwdBX2O2OKguCmO/FJQ8/ZUGPuFmJhbrvO7hREAi6oSfpI2Q0Eg
+ YnIgcFQT
+ EfbH7ZxJy0LR7JkSSFPoIa6ajandV9xe3hdFTfoGmQIQhILlT0gk5niO3tzWZ97aaUZqVoVbPoSvkJNlMLZ93XXEi2cWatr1H6cEhPBbWEBRnBUk1aSoKSRO6XOfEjkVJHH6Y0jTUdBeIginJqXbPE7HugGmcRk/2jQKOgKJHPLQg518G2SjzkD27StZ416CD1/Wg2ygCBA78zLPtrGPo1wnUAjZxxrsKej0n6Ue1ATjFENvMapb/92mUtZGP4RxTYp6fjg2m76eOgqLKDDqapfUdjb2Wc4togakUXykwKatjTp4CtKBCNy91YwV2HgdykPaSILjjTxf8HkLQ044/XZlzBlCScfGoq1HfYsX/xgIemOOZP+kTGopeb5Mk4ZFPN9Vm6QTATlGUfLiB3ugOWSKiPnWdV4qVnqEFOILec/NiS9dLOZHliKBkDhdP3ChrXugcEE1u8jiCCx8lmMJuvpo5wtmZr04dQeqmvjcn5Ed1DsxBJrg6sgTgN6k8IbMqCltiGTwUbV37rrhTEyVutUQoPFDvQjWXhtwHfqki89nZlN4yjgULzzTzgdt+QbqtrG5xmgGWgWHCGu/BbIIsgyM6y77Ye32lg2apvo+g1Yd+v4YHI4CJ+zcRgC7uEq4xMU/a3q9yjLI5qkdRq9eFONTHFItn0HbqF5hUifr4+HQnhrQgY9837jWZY/I6KtCCFrInNe8iCimLvmw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,39 +96,97 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [High] mm/mglru: single-word handle used in commit Author and
-  Signed-off-by trailer
+- [High] mm/mglru: premature OOM kill in lru_gen_age_node() on
+  zone-constrained reclaim
 --
 
-commit e3df19968a61ac9c4f39eb92e538d862f157c5ad
-Author: lyugaofei <lyugaofei@xiaomi.com>
+commit 169c51ce627ac19052dda882e181615f7e7c984d
+Author: Barry Song (Xiaomi) <baohua@kernel.org>
 
-> mm/mglru: Run aging when pages are rare outside the youngest gen
->
-> Run aging when the total number of pages outside the youngest
-> generation across both types falls below 1/MAX_NR_GENS of the number
-> of pages in the youngest generation. For extreme swappiness values
-> such as 1 and 200, also consider the balance of the corresponding
-> type.
->
-> This improves reclaim efficiency, especially at extreme swappiness
-> values, while reducing system time.
->
-> To avoid the overhead of aging, we only allow imbalance-based aging
-> when the reclaim priority is low enough that we might reclaim the
-> youngest generation.
->
-> Signed-off-by: lyugaofei <lyugaofei@xiaomi.com>
-> Co-developed-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+mm/mglru: Restrict eviction accounting to eligible zones
+
+This commit restricts lruvec_evictable_size() and lru_gen_imbalanced() to
+count only zones at or below sc->reclaim_idx by adding a max_zone
+parameter to lruvec_gen_size().
+
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 41dd77652c82f..8b77e6bc1d519 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4207,8 +4207,8 @@ static void set_initial_priority(struct pglist_data=
+ *pgdat, struct scan_control
+>  	sc->priority =3D clamp(priority, DEF_PRIORITY / 2, DEF_PRIORITY);
+>  }
+> =20
+> -static void lruvec_evictable_size(struct lruvec *lruvec, int swappiness,
+> -				  unsigned long nr[])
+> +static void lruvec_evictable_size(struct lruvec *lruvec, struct scan_con=
+trol *sc,
+> +				  int swappiness, unsigned long nr[])
+>  {
+>  	int type;
+>  	unsigned long seq;
+> @@ -4221,7 +4221,7 @@ static void lruvec_evictable_size(struct lruvec *lr=
+uvec, int swappiness,
+> =20
+>  	for_each_evictable_type(type, swappiness) {
+>  		for (seq =3D min_seq[type]; seq <=3D max_seq; seq++)
+> -			nr[type] +=3D lruvec_gen_size(lrugen, type, seq);
+> +			nr[type] +=3D lruvec_gen_size(lrugen, type, seq, sc->reclaim_idx + 1);
+>  	}
+>  }
+> =20
+> @@ -4230,7 +4230,7 @@ static bool lruvec_is_sizable(struct lruvec *lruvec=
+, struct scan_control *sc)
+>  	unsigned long total, sizes[ANON_AND_FILE];
+>  	int swappiness =3D get_swappiness(lruvec, sc);
+> =20
+> -	lruvec_evictable_size(lruvec, swappiness, sizes);
+> +	lruvec_evictable_size(lruvec, sc, swappiness, sizes);
+>  	total =3D sizes[LRU_GEN_ANON] + sizes[LRU_GEN_FILE];
+> =20
+>  	/* whether the size is big enough to be helpful */
 
 [Severity: High]
-The Author header and the first Signed-off-by trailer use the single-word
-handle "lyugaofei" instead of a full real human name, which does not meet
-the Developer's Certificate of Origin requirements in
-Documentation/process/submitting-patches.rst.
+Can restricting lruvec_is_sizable() to sc->reclaim_idx trigger a premature
+global OOM kill in lru_gen_age_node() during zone-constrained reclaim when
+lru_gen_min_ttl is enabled?
+
+In balance_pgdat(), kswapd sets sc.reclaim_idx =3D highest_zoneidx and runs
+kswapd_age_node() -> lru_gen_age_node() before kswapd_shrink_node():
+
+mm/vmscan.c:lru_gen_age_node() {
+	...
+	do {
+		struct lruvec *lruvec =3D mem_cgroup_lruvec(memcg, pgdat);
+
+		mem_cgroup_calculate_protection(NULL, memcg);
+
+		if (!reclaimable)
+			reclaimable =3D lruvec_is_reclaimable(lruvec, sc, min_ttl);
+	} while ((memcg =3D mem_cgroup_iter(NULL, memcg, NULL)));
+	...
+	if (!reclaimable && mutex_trylock(&oom_lock)) {
+		struct oom_control oc =3D {
+			.gfp_mask =3D sc->gfp_mask,
+		};
+
+		out_of_memory(&oc);
+
+		mutex_unlock(&oom_lock);
+	}
+}
+
+Because user LRU pages are allocated from the highest zones and kept out of
+lower zones by lowmem_reserve, a wakeup with a constrained highest_zoneidx
+(such as ZONE_DMA or ZONE_DMA32) can find fewer than 1UL << sc->priority
+evictable pages in zones 0..sc->reclaim_idx in every memcg.
+lruvec_is_sizable() and lruvec_is_reclaimable() then return false for all
+memcgs, causing lru_gen_age_node() to invoke out_of_memory() with
+GFP_KERNEL even when higher zones have plenty of reclaimable memory older
+than min_ttl.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111232603.9934=
--1-baohua@kernel.org?part=3D10
+-1-baohua@kernel.org?part=3D12
 
