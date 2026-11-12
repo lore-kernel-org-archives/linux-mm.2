@@ -1,138 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A046606A899
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 06:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 821D0606A881
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 06:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TUsoBkOE
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=MSaSPZrw
 Received: by kanga.kvack.org (Postfix)
-	id 6DB2D6B05BD; Thu, 12 Nov 2026 01:48:43 -0500 (EST)
+	id 8E66D6B05BF; Thu, 12 Nov 2026 01:57:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68C896B05BE; Thu, 12 Nov 2026 01:48:43 -0500 (EST)
+	id 870B66B05C0; Thu, 12 Nov 2026 01:57:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57E226B05BF; Thu, 12 Nov 2026 01:48:43 -0500 (EST)
+	id 737D56B05C1; Thu, 12 Nov 2026 01:57:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 32E9C6B05BD
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:48:43 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BDA101204F0
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:48:42 +0000 (UTC)
-X-FDA: 85425538884.27.160BD39
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3F46C180006
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:48:40 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TUsoBkOE;
-	spf=pass (imf16.hostedemail.com: domain of mpilaniy@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpilaniy@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794466120;
-	b=6vjYMeIbMB+teuT6IWSYCFj4IUevdcCFUt/C4FVKWrE+04o0RNx/VhDJ8qoaKQEHqjuGuh
-	3neqP1yiI6eH5z7UKA+DkE6BCmZICgrqSMDeRoRkbGC3qAcDelY5gXu6m7uCL7VVnQ8R/k
-	gQdtszl0knwBtZw3rGL5Iq3IK3PQbmI=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TUsoBkOE;
-	spf=pass (imf16.hostedemail.com: domain of mpilaniy@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpilaniy@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 448D76B05BF
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:57:06 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B84EAA0513
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:57:05 +0000 (UTC)
+X-FDA: 85425560010.12.465BBCB
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	by imf17.hostedemail.com (Postfix) with ESMTP id F33B440002
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:57:00 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=MSaSPZrw;
+	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794466120;
+	s=arc-20220608; t=1794466623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LUQ//7qrgsHJhp2cav+kGCJj/I5E804GKbiJn2Jl/fc=;
-	b=tXuP9Nk9gp13V0Qu6VDdSEmQhWjgj1Ki/GAF+B/iCHGc52rR0G7JbaCSdWJ9PMr0DeDqiw
-	eZCUH9j9YXJ7hggoR2H2SUmc8NfzUqQgrIXBBdsbW/27Wv5gF+nlzN/Xdvc624ymjhBln+
-	rQx1m+g4GK5jyKwtW42J3Fctokd4J24=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794466119;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LUQ//7qrgsHJhp2cav+kGCJj/I5E804GKbiJn2Jl/fc=;
-	b=TUsoBkOE+XBFJKFbCZ3Lj3rAZ83IYq2mT+0eF35yZAQt0Q50TGrlKRbq3he4WudNpMutHF
-	6elBylqD75AW77QqxkfXt8aBhSGhwSnkvpMxWZI2M5hJDU9bkNS+4Bb6wgkA9D49LjjFl6
-	KlaGBP7+MwhNZb21q340TrPDEezj80E=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-369-ShYzANR4PjOULiFO7BXSbQ-1; Thu, 12 Nov 2026 01:48:38 -0500
-X-MC-Unique: ShYzANR4PjOULiFO7BXSbQ-1
-X-Mimecast-MFC-AGG-ID: ShYzANR4PjOULiFO7BXSbQ_1794466117
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3b0f667a666so5495684a91.2
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:48:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794466117; x=1795070917;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LUQ//7qrgsHJhp2cav+kGCJj/I5E804GKbiJn2Jl/fc=;
-        b=k3WXbocztrGxGrEInIR1ObuqAfngpJwRHzU0kMlwHXXT3JgvLLei8em++++7hKt34i
-         OOvWUOWaoHzPEeXcnC6KCa5I/H84EY5sIjHdGLecXFUuOJ8rwL2aXAy2greQ8kcHS+Hr
-         SvALTr2UCtDItDjr89izepVrjxQaASBQYHTWvnD6cd8RLzd89BFCRor0He8FkD+orO6h
-         4TTXnH12meQMrFHt5aBOL5ioK7G5F11AMz6IwTBgq2nNCz8mbMhZSC6HbTAxmg7XuOT3
-         aLrJUsjt5S5UhAzuBWHzSTEj48bEUuONc5+AEsZUG89pr8NF9yRre5IGPiiI3xkaEAZM
-         2VbA==
-X-Forwarded-Encrypted: i=1; AL+hErH4UjgFPjMo5JY+JMUhhQQ8ilytARWcccrhVY3SAjTX3kwOsHIyVrfJLHaSUB/W0zrqZMUaLXJ38g==@kvack.org
-X-Gm-Message-State: APuU4Z8jbzD7M4UnFdtxnrWqazhFAm7XwYzPNb1OY+I9Vpx9eBKkRPWZ
-	XxLNaO0uOZxvTOb+r5CKynyfAhKrOHZZj98Llw2MQ1xOD4kt6JS1BfnUCIE015cTjgIh34SbAXh
-	bceWAOU88Asx+UUhBydHkOJAYDLLh577fYdofmFgjQcawb5FsCfID
-X-Gm-Gg: AYBFou0m8H6PXkqlHugRW46oXXB7Oxo+SnXLSBw8BSAQkgNQipQ5pUQlY4qBlMCW6HZ
-	9rkcrSx28QMADanOPa46SDQdkgLNr2FvqPZRWatxrF8vh3on6et8raDLRxzAv0O5JJ5CHfYaaL2
-	erXF5IDg1zvFgnKJkyIzhNSzRHzMFTw1UwDGzlFd0JtOrzBXcSimx0ip6Hm8CufOKr7icBCLtsx
-	i+RIGz8n5zx68LoeZ6rAYhZbVpdPwS0PaQfe+tofzzhKCBpVWQWIquQmx23ZfJfUpwuON6Ltb1H
-	dRr0XXxXvQwMPzOpoWOe6lSH2rj1TMJS4xZKxqYUhiszg4xqHcLjspYYazTbKTfoFimaBQszBNe
-	/KjvImUdm/U4aNF+93yRrit+A/k38TTVs7KV8ffXDIkKS0vOZkyncjWTN0vsafSCY0AFl7U0=
-X-Received: by 2002:a17:90b:1f86:b0:3a8:185:cf40 with SMTP id 98e67ed59e1d1-3b182e6eb74mr4989602a91.10.1794466117059;
-        Wed, 11 Nov 2026 22:48:37 -0800 (PST)
-X-Received: by 2002:a17:90b:1f86:b0:3a8:185:cf40 with SMTP id 98e67ed59e1d1-3b182e6eb74mr4989576a91.10.1794466116545;
-        Wed, 11 Nov 2026 22:48:36 -0800 (PST)
-Received: from [192.168.1.102] ([117.207.221.165])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197d32ea0sm2902565a91.15.2026.11.11.22.48.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Nov 2026 22:48:36 -0800 (PST)
-Message-ID: <9b290d87-1413-4981-a296-9d37552e8913@redhat.com>
-Date: Thu, 12 Nov 2026 12:18:28 +0530
+	bh=JO6FW3tawApcJIwTTcR4zJNDJEYR841HkFnpVbs8+pI=;
+	b=mxO0+JROiAAUPiQWogbW2uTGw9fER4MDXsKPT50LaydkYZHmWr3ajV9eqT+3LVB10HqgYY
+	wjQ5sDo8TeqkyqG+Tblu7PxHnii+Y70bTU9qn+RRb7e9i+hyc5ySTHRdy4PvimxwKSMlpF
+	gXRwboJYVGmYRhK/K3zNbkG3VCCHb8Y=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794466623;
+	b=GpEWQTb5tMqynVPFh/hWOnQRkGRHVEYJeihAcMWZ9Czzqw+Cxgb8VqfyHkPYhsiVMmObba
+	W3Lkj69eUEQPJdEO4CK7eHiszSObB2Le16jJpo64zNc7Z7e2bFr9tjYGpGsbhviTKUs9O1
+	9ZHdKZxX2JCcNnuzpTuEmkArlBZHNUM=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=MSaSPZrw;
+	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1794466616; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=JO6FW3tawApcJIwTTcR4zJNDJEYR841HkFnpVbs8+pI=;
+	b=MSaSPZrwSImpTjQeit7lfj3V7ivitCBnkn4/es+8mH5j77EqkfPublLS0WOasMlSPZoSZtVAY98yov4tdN23/CzsvVFv8s+eyQXgStJ9m8xndSdXNLNOKY/ECSMSRzBmNNVeRn8p4gfKrElg//KP+JJhkSwXDG7DMyVdYJE+Dls=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R601e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0XEbCXrk_1794466612;
+Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XEbCXrk_1794466612 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 12 Nov 2026 14:56:54 +0800
+Message-ID: <dc7e9478-6f03-4ee9-bf41-ebfc4a8f7edb@linux.alibaba.com>
+Date: Thu, 12 Nov 2026 14:56:52 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] kho: skip zero-sized lowmem and global bootmem
- areas
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Chen Pei <cp0613@linux.alibaba.com>, George Guo <guodongtai@kylinos.cn>,
- Kexin Liu <liukexin@kylinos.cn>, Sourabh Jain <sourabhjain@linux.ibm.com>,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20261104-kho-bootmem-sizing-v2-0-b0d1a834780f@kernel.org>
- <20261104-kho-bootmem-sizing-v2-2-b0d1a834780f@kernel.org>
-From: Mukesh Pilaniya <mpilaniy@redhat.com>
-In-Reply-To: <20261104-kho-bootmem-sizing-v2-2-b0d1a834780f@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: o5l-xDfrnkmi9u10jd3utMj-5BSSfteQhXdPNjK98TA_1794466117
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v4] mm/huge_memory: prevent losing PG_waiters in
+ __split_folio_to_order()
+To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Ye Liu <ye.liu@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261110-fix-split_folio_to_order-race-v4-1-cc5042f33408@nvidia.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20261110-fix-split_folio_to_order-race-v4-1-cc5042f33408@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: tucw1xt31rezrhef6tz48qn8sgs8rfnr
+X-Stat-Signature: hoswspkoyiynbyofx8k4w8yc6qyh3azg
+X-Rspamd-Queue-Id: F33B440002
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3F46C180006
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794466120-959777
-X-HE-Meta: U2FsdGVkX18EIPH0T5aQKDiOW8Bbu6taPRmq+i0Uke279eTHNI9fGqNXJSIJdPzIc1/xdxlpqb05OIzbhrpomHjurM1AdprIN6+DZlkMHAT0kcpzFSY5b1M/BpYaxGEJDofD1YOF7bzlsUnmgp6U/W9Fff45pzQO9kjg/upcRThkNyy1Xas8lZhjmB6175KlGikTVI+KO2ZACPAgZY5uMAPY0mBFVDN5IBKT1SgfMzC2wGVwm2zBUgKvWgE6cnxkRTl1Ff5BSh8bT40BjU6LbbQ6h1Sq073DYgjlxqL2mOMrX+ybu8pNO+kaDedhWLTvBHg/Qh9OeNf57gIR/YmkEicLpa7kSLmT6G/SgGLbs7Ci6c/cUg3kXwQoGNX77oQH6/NhWVIb6qNT/u8JnN1ApnxSpLQK1OG61zGFDPkA/lxHX3RyQyKNXExAql2mhybjesAYy5ysGI6b8Bqo+HjdAZYwfwoUazPp4Drt5hg2uGbdnijNLSMKTYojL6se+SdYUQDZMHnya4Lx5XdVuju+4E82UIXvzVUB3iCpI82Kei7o2UF5qPjNAMe+2OLtxHfXklrwS+88WNFUO8GXJPJNrtVubfVMXAqLqL/2W+x94Bc/lgcQdIqmkxbCifsOi5rn0qLj9ASM9MRMsKffrNiC/tFZoOBvwnxNkulyPYrWGcNsQZA3IvjMcyDIPK+vaNE656Mbcn2s4d3iO3OCumBud1fAtn1knicXzYlZZ+gfxFCfTcDsSl9aOpYI7FCb9Nm1FHGf6CF8gj9/iOfBnJHspTzUl6OYTtyTlL4xKud9JoQ2VYgWhXdzkmPH1suX4KLWHcgFagmF6XFvzIDzygeDN2DhD6fiK5A3/KnOemqBXT0Klmhz17NGMC3/NBtgrWtvvqRCJuB2FeOA19AAeRhEEYwuU5pBQhtTlTB7bdqv9vjLABxxOMRq0w9LHFr6DDyeWqO+QcWu9EdzMZ2EEdi
- 33/8gpUw
- jcW91R+gVTUpjjbHMPFCiJXqFBhzl1eTdbnoAg4Ks1lFXNftoy9C7cIOkJKWwDhdps/gYEWpVbZCYUD5zVvn5bkpu1fj8HJ6Kr9vTk5/n0mt8yFdXaNKYxxObv456Zaw0CYXXM/SOOczQd3fxmrpRsVXDG6yAqz4a5I/XQmJNT3C+OPPubR7TcxWBvsIWO6T3TKYb6eCaAZROo+PubOk1HyLs+6ZKE6Qz9HXmINIJLrJBNtU1GmpBGm3QiymOxTMZ/Zn7fEqNRpGYRSH/ZuCuzxGtJjb/L2fgrMTo+qmNYHLR+cRpxYKamvXHrr8TCutlOOvLmJltyGoAhUgNIGAG5Xx1smdU7m52U7WRrdGCvO+U9DPyFmIlzMg/edRQMMuk8M+Jpwz9nS4fXUoR2kJ/HwmdVKHaON+2hwKf
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794466620-354847
+X-HE-Meta: U2FsdGVkX1/pFXg/vR3gMQTVfiWa702AaqM5zrzojMMCG3ThHoxCciZ89/ESxvv3rXxiiyJVq4EVoCsfKuzdxZTfuwGGh7iGJjXHnFKbAP0L/TmCaKG46cILx2HtIdTmQK6rc9OQPw7tTPyqaY9JK2nItn/USedwuU02IrISSwd6xoWpoKx8/I0bsiPxHsScVm4wWmbo17uU+iKfge+RHi3K4K0QodIXl8UF8z4/shv5o2wqara2Ydbvs1HlLMJAT5KcOkUjK7p0CvvtYqiAXOaZ50A4jvu1oigWv1ViaA0yk5xTrFjf5mIVMsvmTZFVzyhVDXIlwRQ2uTKB6+8fMbWpk+cRUdERo6S4DaE304y1G/lNEyMrkiT4zVmBjSWFPfUlYUWtY78bGdSOAK/IAqI4IhKn3wzBVYg3KZgWIv4VLc+TgEdnRGpRTIUENEFMkHJJGSDRHm650Z2AqktMBqBiakhIHGbZ2+HCrmRA2Fz+FmxrqzOCEruIco5chGIo725i5SEu7As/CYqSWKW+JFJtWX4QO0VgDvV0f+5ICY6cBWTGlJ1PWtj41yPSWX1NQuU9+cjM7425t/WdVpZUeaimv39r3VihriT6Xwsno2cfyr2ZMD0pcPmIIC2xm9/oxMx9fHBqaO2tyiGjB8Yi4wEylD0fDQK/eXVW18dS/1+xhH3YyoZXJuCqhcBNzQkG2nPV8PyeQdwHNxcUXOnelkNyct8QZqRGmxAJZTAF6bTIv9VUVUxPu9KcHfHrqn6I9lJhauhBEAQ5/isWa3vFSMybfrlgSTy7xOhZS5IvtzweuP43pFO1JUk1c8opGog2FSwixONX47yn5UvSHIdrxa6Jnrid8dtYsdnkgJzFBOiDVLMAh1EiXnFNJtRrlFZv4p4ygoEVob97mVy6XWvgIT+nf959tCgpPcBcAzYJn/67+CHgMZYG9VsJWLID9kfDEuW1YJ60hTB0xZmnjny
+ 1bmICYtf
+ Gw8Qfi9lO0NSTV00AkU49H3eymqjggbLqmZKf1B1YawA/t6AuOEQ7XevW+WzDnpvVtKI8J7sENApu3U5sQLbrRHQw2piCHfW/INWGkOBTJ9IL6pqhelq4k1BXKLr32n1DAR+BcoSqS/RpuoFpn6PB2fFxuGKAyVndDhgo6K2Z6HojH9cCaqVGCxnfX8hoKLztF3XW/2Fu04TN0A8eSgM+4MLTDHOQW8Zo9IvV5RoeBqFJgjS7Sx1xNWMyxEI7rYAz4fHc2siQ9G9vfFHoXvYjDYIay3Q9Uwrolk6nPmj/pOwpO2HUdyYMDhyg2Tr3Vf0NpcDg871+hxhBY7lgkcE33HB+wivdNxo2ckb8tAsn/aBbzzLP1Prz4uA6wvKfHFS9kB4gffksIL+Uzr0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,160 +99,70 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Mike,
 
-On 04/11/26 10:20 pm, Mike Rapoport (Microsoft) wrote:
-> The lowmem and the global bootmem areas can have zero size, for example
-> when none or all of the memory is below ARCH_LOW_ADDRESS_LIMIT, or when
-> either of those areas is explicitly set to zero with kho_bootmem=.
+
+On 11/11/26 11:19 AM, Zi Yan wrote:
+> __split_folio_to_order() calls prep_compound_page() on each new head page
+> to create a compound page after clear_compound_head(). prep_compound_page()
+> uses non atomic __SetPageHead(). It is mostly OK, since the folio is locked
+> and frozen and no one else is supposed to modify the folio's flags.
 > 
-> For a zero-sized allocation memblock returns an address without reserving
-> anything, and that empty area is recorded in kho_bootmem. If there is no
-> memory below ARCH_LOW_ADDRESS_LIMIT, allocation of the empty lowmem area
-> fails and KHO gets disabled.
+> However, code calling migration_entry_wait() can reach the folio by PFN,
+> then access its flags. It is because softleaf_entry_wait_on_locked() used
+> by migration_entry_wait() sets PG_waiters concurrently without taking a
+> reference and the frozen refcount during split cannot block it. Meanwhile,
+> __SetPageHead() does a plain read and write, so PG_waiters atomically set
+> by softleaf_entry_wait_on_locked() will be lost if the set happens after
+> __SetPageHead()'s read and before its write.
 > 
-> Extract a helper that checks for zero size and allocates memory from
-> memblock, and use it to skip empty areas the same way as empty per-node
-> areas are skipped.
+> One example code interleaving:
 > 
-> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-> Reported-by: Chen Pei <cp0613@linux.alibaba.com>
-> Closes: https://lore.kernel.org/all/20261026131851.9942-1-cp0613@linux.alibaba.com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> CPU0: __split_folio_to_order(new_order>0)  CPU1: do_swap_page()
+> 
+> 1. clear_compound_head(new_head)
+>     new_head->compound_info = 0
+>     (page_folio(new_head) == new_head now)
+> 
+>                                             2. migration_entry_wait()
+>                                               softleaf_to_folio(entry)
+>                                               page_folio() -> new_head
+>                                               (not the old head any more)
+> 
+> 3. prep_compound_page(new_head, new_order)
+>       __SetPageHead(new_head)
+>         tmp = new_head->flags.f  <-- load; PG_waiters == 0 in tmp
+> 
+>                                             4. folio_set_waiters(new_head)
+>                                               set_bit(PG_waiters, &flags.f)
+>                                               enqueue on waitqueue, sleep
+> 
+> 5.     new_head->flags.f = tmp | (1UL << PG_head)
+>         <-- store; overwrites step 4, PG_waiters == 0 again
+> 
+> Later, folio_unlock(new_folio) sees no PG_waiters, skips folio_wake_bit(),
+> and CPU1 can remain blocked indefinitely.
+> 
+> Fix it by setting PG_head along with other flags in new_folio->flags before
+> smp_wmb() and clear_compound_head(). The remaining compound page metadata
+> is set after clear_compound_head(). In that way, after
+> clear_compound_head() makes new_folio visible, nothing overwrites the
+> PG_waiters from softleaf_entry_wait_on_locked() by modifying
+> new_folio->flags non-atomically.
+> 
+> While at it, use data_race() to suppress the KCSAN issue reported by Ye
+> Liu's patch (the second Closes) on reading folio->flags in
+> __split_folio_to_order().
+> 
+> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
+> Reported-by: David Hildenbrand <david@kernel.org>
+> Closes: https://lore.kernel.org/all/DMHE8BEEER1H.2BIY52NXATPIA@nvidia.com/
+> Reported-by: Ye Liu <ye.liu@linux.dev>
+> Closes: https://lore.kernel.org/all/20261029-data_race_huge_mem-v1-1-112e331291c1@linux.dev/
+> Fixes: c010d47f107f6 ("mm: thp: split huge page to any lower order pages")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
 > ---
->  kernel/liveupdate/kexec_handover.c | 66 +++++++++++++++++---------------------
->  1 file changed, 30 insertions(+), 36 deletions(-)
-> 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 2ac5d94f33fd4..5b1797d1289c8 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -829,6 +829,26 @@ static int __init kho_bootmem_cmp(const void *_a, const void *_b)
->  	return cmp_int(a->addr, b->addr);
->  }
->  
-> +static int __init kho_reserve_bootmem_area(phys_addr_t size, phys_addr_t end,
-> +					   int nid)
-> +{
-> +	phys_addr_t addr;
-> +
-> +	if (!size)
-> +		return 0;
-> +
-> +	addr = memblock_alloc_range_nid(size, BOOTMEM_ALIGNMENT_BYTES, 0, end,
-> +					nid, true);
-The low memory and global areas are reserved with NUMA_NO_NODE, but
-kho_reserve_bootmem_area passes exact_nid = true for them as well.
-memblock only uses the flag for a valid node So Pass
-numa_valid_node(nid) instant of true.
 
-Reviewed-by: Mukesh Pilaniya <mpilaniy@redhat.com>
-
-> +	if (!addr)
-> +		return -ENOMEM;
-> +
-> +	kho_bootmem[kho_bootmem_cnt].addr = addr;
-> +	kho_bootmem[kho_bootmem_cnt].size = size;
-> +	kho_bootmem_cnt++;
-> +
-> +	return 0;
-> +}
-> +
->  /**
->   * kho_reserve_bootmem - Reserve a contiguous chunk of memory for kexec
->   *
-> @@ -840,8 +860,8 @@ static int __init kho_bootmem_cmp(const void *_a, const void *_b)
->   */
->  static void __init kho_reserve_bootmem(void)
->  {
-> -	int nid, i = 0, max_nr_bootmem;
-> -	phys_addr_t addr, size;
-> +	int nid, max_nr_bootmem;
-> +	phys_addr_t size;
->  
->  	if (!kho_enable)
->  		return;
-> @@ -861,66 +881,40 @@ static void __init kho_reserve_bootmem(void)
->  	 * reserve bootmem area in low memory for lowmem allocations in the
->  	 * next kernel
->  	 */
-> -	size = bootmem_size_lowmem;
-> -	addr = memblock_phys_alloc_range(size, BOOTMEM_ALIGNMENT_BYTES, 0,
-> -					 ARCH_LOW_ADDRESS_LIMIT);
-> -	if (!addr) {
-> +	if (kho_reserve_bootmem_area(bootmem_size_lowmem, ARCH_LOW_ADDRESS_LIMIT,
-> +				     NUMA_NO_NODE)) {
->  		pr_err("Failed to reserve lowmem bootmem\n");
->  		goto err_free_bootmem_desc;
->  	}
->  
-> -	kho_bootmem[i].addr = addr;
-> -	kho_bootmem[i].size = size;
-> -	i++;
-> -
->  	/* reserve large contiguous area for allocations without nid */
-> -	size = bootmem_size_global;
-> -	addr = memblock_phys_alloc(size, BOOTMEM_ALIGNMENT_BYTES);
-> -	if (!addr) {
-> +	if (kho_reserve_bootmem_area(bootmem_size_global,
-> +				     MEMBLOCK_ALLOC_ACCESSIBLE, NUMA_NO_NODE)) {
->  		pr_err("Failed to reserve global bootmem\n");
->  		goto err_free_bootmem_areas;
->  	}
->  
-> -	kho_bootmem[i].addr = addr;
-> -	kho_bootmem[i].size = size;
-> -	i++;
-> -
->  	/*
->  	 * Loop over nodes that have both memory and are online. Skip
->  	 * memoryless nodes, as we can not allocate bootmem areas there.
->  	 */
->  	for_each_node_state(nid, N_MEMORY) {
-> -		size = bootmem_size_node(nid);
-> -		if (!size)
-> -			continue;
-> -
-> -		addr = memblock_alloc_range_nid(size, BOOTMEM_ALIGNMENT_BYTES,
-> -						0, MEMBLOCK_ALLOC_ACCESSIBLE,
-> -						nid, true);
-> -		if (!addr) {
-> +		if (kho_reserve_bootmem_area(bootmem_size_node(nid),
-> +					     MEMBLOCK_ALLOC_ACCESSIBLE, nid)) {
->  			pr_err("Failed to reserve nid %d bootmem\n", nid);
->  			goto err_free_bootmem_areas;
->  		}
-> -
-> -		kho_bootmem[i].addr = addr;
-> -		kho_bootmem[i].size = size;
-> -		i++;
->  	}
->  
-> -	/*
-> -	 * Nodes that needed no bootmem were skipped, so fewer areas than
-> -	 * initially estimated may have been reserved.
-> -	 */
-> -	kho_bootmem_cnt = i;
-> -
->  	sort(kho_bootmem, kho_bootmem_cnt, sizeof(*kho_bootmem),
->  	     kho_bootmem_cmp, NULL);
->  
->  	return;
->  
->  err_free_bootmem_areas:
-> -	for (i--; i >= 0; i--)
-> +	for (int i = kho_bootmem_cnt - 1; i >= 0; i--)
-Check the First patch comment on this.
-
->  		memblock_phys_free(kho_bootmem[i].addr, kho_bootmem[i].size);
-> +	kho_bootmem_cnt = 0;
->  err_free_bootmem_desc:
->  	memblock_free(kho_bootmem, max_nr_bootmem * sizeof(*kho_bootmem));
->  err_disable_kho:
-> 
-
--- 
-Regards,
-Mukesh Pilaniya
-
+Make sense to me.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
