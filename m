@@ -1,96 +1,131 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2364606A890
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 14:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A8F606A337
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 14:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=sDx0tnxA
+	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=Q2CrUZIO
 Received: by kanga.kvack.org (Postfix)
-	id D6F516B05B2; Thu, 12 Nov 2026 09:50:28 -0500 (EST)
+	id E92246B00EF; Thu, 12 Nov 2026 09:59:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D477D6B05B5; Thu, 12 Nov 2026 09:50:28 -0500 (EST)
+	id E6A146B05B0; Thu, 12 Nov 2026 09:59:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C84296B05C6; Thu, 12 Nov 2026 09:50:28 -0500 (EST)
+	id D59286B05B1; Thu, 12 Nov 2026 09:59:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A53136B05B2
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:50:28 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B694BC029D
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:50:26 +0000 (UTC)
-X-FDA: 85426752852.13.CFE9E57
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E5EDD20004
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:50:24 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=sDx0tnxA;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf13.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ACDE76B00EF
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:59:51 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 496551C3E5B
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:59:51 +0000 (UTC)
+X-FDA: 85426776582.21.BC08AAF
+Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5C4A2100009
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:59:49 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Q2CrUZIO;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794495025;
+	s=arc-20220608; t=1794495589;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HCXPmaCthBgEXTrlaPcclc3/LLYGCPmdnrH+YjDkVHU=;
-	b=L0cN7+z17aaaFfxrTdt9jT70Oa3alX+Dcaj0KcOOaBNSujUpmHYQU2SpJUh3vGc/Za1z2Y
-	UoWA+cdRjKE/G4k+r6LUr48bsslbFva9xSLYKvE2v711xpcOZMMYSkUBxxlZKrcp7Rg58O
-	ROHYqHV7EDNVB1udkFt9hlXisamrs20=
+	bh=mWI7ugCczmlr7WYE/mOm+2XZ65nCDibs51EgikULhns=;
+	b=dtamYmmBmdkSutdtXkffF62bTqO+TJgsExkTq3Bh2dtD7Gaz7XLlm1+AY95wSWC04cNnHX
+	7/U6uyEgxNmvLmtDJWxcna4LaQ64bKXh1jyFnhOqa8qUBuGSHT9oMGF37+zITFPCjiQ4Rh
+	oxvJBnVe0r1kFaPHFrYfBSP9RolH8jk=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=sDx0tnxA;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf13.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Q2CrUZIO;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794495025;
-	b=PE39ysBbOwHr8/WgQMa1/q0kqERWE5ASP0qN1v+nVwjDbaQ5K/9RZQyoF/Sp4FsQn9YFzx
-	pgjGqyYovnrB5sgl31dgMD7ly3dn+GzyLApN9vdSmCXVxep37lWKABPkcumgXb/hHP4zRn
-	edlVCrwkAS8Y/rtNyuN/x8zL6F3LEFw=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 08CEC1516;
-	Thu, 12 Nov 2026 06:50:21 -0800 (PST)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6C3F63F673;
-	Thu, 12 Nov 2026 06:50:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794495024; bh=+s0Rk/mSeWGvdAKtOlpf42pJMk09UK6Tn3e1uY2y7+Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sDx0tnxAz6cFHnGuBZjLsrCMBsBbAbfeZPQMGJsLYhbLqDwLs2EUYLW7M8HzrRwBT
-	 CwHQoI3Nv0y7lpgl6aHYYeXHXJ52UPC/+Ls4yZu5IXB9sUTzbupU5lRlyJ0/hQBTim
-	 ShBwsGzEUr0BpshFL8STX2XSVIO/B4RQ0M8JyTSg=
-Date: Thu, 12 Nov 2026 14:50:19 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Chris Down <chris@chrisdown.name>, Will Deacon <will@kernel.org>,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	Mark Rutland <mark.rutland@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
-Subject: Re: [PATCH] arm64: hugetlb: Prevent write fault livelocks on stale
- TLB entries
-Message-ID: <avXSK0zKGttR0dEJ@arm.com>
-References: <avPxZjjdBIlM_8_g@chrisdown.name>
- <87ld6yn3vx.fsf@DESKTOP-5N7EMDA>
+	t=1794495589;
+	b=45iCEO7skqqXxi3h1TH5/HasNOJ1KI7wctVIR6etLpSX48KNY9SycUV9ebU5mXlc2Kip4s
+	wZ2tMSwLSQOpUk/dPtYOseeaXJHeKDSw2TSg6GbUEBocCX+fubhUk15BDzQoHNteG3YO9m
+	dOIHCPttVejGyUPo/4VxSeLGvR0YMo8=
+Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-97ccbba8e86so1176514241.3
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:59:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1794495588; x=1795100388; darn=kvack.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=mWI7ugCczmlr7WYE/mOm+2XZ65nCDibs51EgikULhns=;
+        b=Q2CrUZIOEGPb/Eo1H2YWGFveCjRzwHr+knlT4wkrAH4TLZuFkeba4az9Cxi5P2NPqS
+         72wJgqsgARNNIQYDBXA2Z8w03mINydaHdnf8SRriC6/FuOBiJE9pADcXKj4kSVkEUJ26
+         SYXYObfNh1oMV2piKnPYmPdPKIl5uZmYTr0pTCr2fMGFUQdJm8kZcGYf/wcMwAJQfV4j
+         ClyZL03aCvEGFYqP0/O7fLKYyvVAKr1DvJo0onXfH/Wq8D5v+difu5kQTSzUwqnU7El5
+         uwLvP4kxztGSEmNVPv5I3WNw0JDIMHtfDg18OQ2x0HLOltiEX07Bfg0PPRz/1B2rN0sK
+         Mtxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794495588; x=1795100388;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mWI7ugCczmlr7WYE/mOm+2XZ65nCDibs51EgikULhns=;
+        b=Zc4UfNG16kwQgeg6Em662wCo9HbWoGbNfA83sT4GctgTs9xHBnV5avt4P8SW6djxC+
+         GgrZFH03VN1U0E8Z8udHWNTeBJ82qfjgXAD7bTEWsDQgkoVF6mly31DvRS9yB0HvJsV6
+         uLMl1+QjPlR+4YR3lgQ9FjNiSwq2656b7Tk2pYStEJ8gefrCjMAt9vDCPxhmWjc/bihe
+         j+bK2J5XEChyGEFdj+vxEUeuKuwXzFtA47lEF9gIRAj6+tdtkc0ajSlm2f65JWQ5D7E3
+         XZ89wA7+Wy+iBC9byusrOkU6F6Q32igCfjfEfqpzxVF9UQdZ+BphqgV2p/LcXBdMsWfh
+         jApw==
+X-Forwarded-Encrypted: i=1; AL+hErGJhc0AfKpE8LRsiNDK9J0dTJW5pwaJ0J/9jVTleJRfBy44ztUT1L/BqZu7E7yDrdEwvwmOhNcGlA==@kvack.org
+X-Gm-Message-State: APuU4Z/aljEznX8bbwVGdElbQOzFuYM9LfPWCA6wytX7gjwQGdr+mdxN
+	QbCvvrvcljQ+khn8EGYdn+YwM6Brc+3wE7aFBB1qNvQYxUXMf2QZlxHOBOZwwprRJrs=
+X-Gm-Gg: AYBFou2+Xpnhr5BgTYDLAXd80XCmA4rEMgWfZ9KEnDgSubbba1vfaAATHNSUIN9MJwt
+	2a6iRHXlHM3RMBFdYaJRG0Kq84V3DTg735Y8tZmandcs92kZdxtALmx3YYImzEnxWkUn1yRjGYy
+	Xexdccpec3LXf0quh6VKRDB8RzTco/kKXnHZPk1mJK41bZXTWc9HDt48F/Yc70SiPoF6PQSKz0n
+	nSTXYmyw0uDQyQHGmscqcUXyj6+VdsEsHQVyJT4B6drMVAuhft4nKgNHUN+I70DIn9e2GQew9EU
+	T0e/zLTCWAsHUvyG2xIpzgfGX6uTpljo4PdXsAtMf2c7d26fwyCtFL0rer7bUZRjrSel1cGBdLN
+	u1KAgARVxKdCqTkX0p0Tx/Yu6gbcgdR41rCuMynDNtIcWMxaMNnwh4MCAsfR3tebvznbdT+Tsay
+	DK8pS2xiasz16idlvbSKHpn00HF9IDBqW/EeYitl+jjOvhNlHsucPjjWDWt9gqjC/8fGE1p8nKp
+	5I3uxmWiuCzQmzseT2Yx1HXP8ZZyEVVtuc1AnQKVQ1KIaNP2tHg/rDypYqOeW1UXlxP/JRT2NXH
+	OY/QHtns63t7xYxT1U+lMyvupdx+j1AhwTM/ifAV7cPyM2tg1i1YZdn87yT7Xj+ne2PNBMjBRDQ
+	IloIjDuEdWjoecFuVV2vuWZEhRgXB5oM=
+X-Received: by 2002:a05:6102:f11:b0:7c3:8150:83e7 with SMTP id ada2fe7eead31-7d4fb24dcfdmr2020028137.9.1794495588205;
+        Thu, 12 Nov 2026 06:59:48 -0800 (PST)
+Received: from localhost (64.167.245.35.bc.googleusercontent.com. [35.245.167.64])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d302239188sm5739554137.2.2026.11.12.06.59.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Nov 2026 06:59:47 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87ld6yn3vx.fsf@DESKTOP-5N7EMDA>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E5EDD20004
-X-Stat-Signature: 3exq1dn4kc3pfgos7ehz47cunbq61bhf
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 12 Nov 2026 09:59:46 -0500
+Message-Id: <DMTBLFVSOEYG.K5WAQC5KN7IQ@soleen.com>
+Cc: "Alexander Graf" <graf@amazon.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Chen Pei" <cp0613@linux.alibaba.com>, "George
+ Guo" <guodongtai@kylinos.cn>, "Kexin Liu" <liukexin@kylinos.cn>, "Randy
+ Dunlap" <rdunlap@infradead.org>, "Shuah Khan" <skhan@linuxfoundation.org>,
+ "Sourabh Jain" <sourabhjain@linux.ibm.com>, <kexec@lists.infradead.org>,
+ <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-mm@kvack.org>
+Subject: Re: [PATCH v3 1/5] kho: reject zero bootmem scale
+From: "Pasha Tatashin" <pasha.tatashin@soleen.com>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>, "Jonathan Corbet"
+ <corbet@lwn.net>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Pratyush
+ Yadav" <pratyush@kernel.org>
+X-Mailer: aerc 0.22.0-39-g5d7784875be2
+References: <20261112-kho-bootmem-sizing-v3-0-f0c8d00295d5@kernel.org>
+ <20261112-kho-bootmem-sizing-v3-1-f0c8d00295d5@kernel.org>
+In-Reply-To: <20261112-kho-bootmem-sizing-v3-1-f0c8d00295d5@kernel.org>
 X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5C4A2100009
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794495024-846024
-X-HE-Meta: U2FsdGVkX1+6ZqUbgcWHyXujhywyHahoX3nb8AZOrpbPgiqBz2m0apG/CDsCiEwehi+3owsD0bK7Hf7C+DJdZfLsy3ZpQWG3ICKqSl2LqzWbdAJGuetIZn8KpnVoJtrmsTO0W7PidUmblWcQSoPaxDTUjdxZIXlghBpDfC57V/+n2Y2zeqCm8JUxK8dO0UxtKiOr8/iy8fmhiUZSKd2hJHoLG0iDSXBvHbwU4Ge/R4Ysg7j+b/HZNLEg4rwUIR78Sky+botXnzbFRLV2KRv7Aeovbjng/l1Xd1Ebkh4zSOuYBEVUy+bfr07JWfVUU7w1FeGqG8PfiqCpnAO6YkaRNXeTrkavGEBmQ3lVMVt7RtlcBUnUv8J2+U0pN7zAA6OLi7+h+5QtRy1/LF7IetYCbP1jh7q3LdYuDAnzlytlpbRzgV8xf2T92uynjsCVJat54hWyyq5USoOGnjA5es7wexwYjPRvnILuhKhgI0hkxiSKjaX4Qt/1zgAHlPvlR2mBLLnka5JeCarf79NmQXpUOfkSdguPRz6mKouniNsxycfQh7HBSoSTH6kUlNUTybOBWDetFxSUgXcyduX2faVQcqG72bO6a+JYsW96CuP7Aa2QBXKy/C5R8CB/KHTfb9kHqSLOrQGRsF2cVQ+INlD/+B3W4EFdvOgmQw5EfeEx0gMq/J3OAs3UCDJ29Vlt/2OBMTednPOdiVBx4pQPRoG7DjwutX4gzErJQXzw2HIgUNxT9Dsk2+L2sMiCxfwYkPhvrA6fOMuqDmzsapIjnEstkd0R0sn7Gfy5wtie384qDMUAGVHgEcwPgy2M241rWhWfrpfLVB8s4w1tzb+CKQy1BMVVjPT5DLaHgzJIN+GJIh/tbnLcBLTo8iYo4L7uq3L+egmMJVDuexMFeNOuqpI7f40frhf94KR3tDGw32nxz7mCQdWNuParDlAaN44CSs/NzT7QPjmhAXwnJUPrZtZ
- ctjnuOSx
- LZ1DdWA0vqxyTG0/96xZMVseh4nkA5EsJxAGuCEWdisuu+nxBi/iuJILh5G666mKvvQoAQSkcr1u5eAStUDrkcMyTnjUOM5g4bViLM6J2YVrnf8d6TCApe1zdYSYlorKGZ/GxRE+ISjrwzpiLuHRDfUL3PM46iVGd+i3v4Z4WRSQbEdAETILChNxcFS339aCvaU9V+MtKuN+T84jC5iZ9632xLGWyVyG/liVeqOzehRjeNszvjIPEWFGEhlnAmwVS7VuW
+X-Stat-Signature: z7a61o5aougkkfek4nxddopg1rszmm4r
+X-HE-Tag: 1794495589-541609
+X-HE-Meta: U2FsdGVkX1+xWYnSa+ywTCJqAH82pPzFY6utMwCohYUWVri2GynjdlUA9gXFMFbtheq46sLlSnYsQfZlLLSqRHGoNln6pSXNDiQGtNjpbaB25i3sCxY8EBVC4bm0u7ZZbM7Brs3+NJ/w2+fImTf76ObraSY1NC16IFgeNYQTyer2MGTyFsU2k9vluutiz4iOKPRVN+DLEQeTuR2XH6n2wsd6a2IMcCBlSKjeR9Ft+5BjduuycrByrISnja7EqfrKyDiaUaYJR/MscmlbRfSfXx70yeT/BLJ0NyCq+CmZ1vkP8zWoykVuCbBzDASpgogagNATHQ4AjvF1Fuyoyguv+4anrM3G438Y4UZcxrAv2i+vOX70zIY/udwHzDaFeCYrC/K7Q29fwVgc/0D0Dse5lnCLso3LAPQbXIQb7vMGmZ6CaMRdfGUmhiZ97F/L5HIBuWeKj3QJiU2TW5efMDfQITTl6TKm6wbHHUgyqJ8jHi/qsNCwWZitputkPchHqmlrM4nRr/e6dbZoca3dmBC3d+1/Ca0MUcrIYMffWogCnDD+/bR24RbeJQnU2IqrefqAd/ABo8QpPHMU78P2n+IyLvuTHCDhBzeV9rKJkVa76UZEhyFUObHC6ykQmWd1rq+FgaJyPPQoW69D1XBfi9OXH9AdAGCQlNPRTxxXxmklarETGNEaNVzFBdJ/6/rBcOERJz4atCDbjXipCPJq9dwdUjvH26BfVhkTSNVJRaJtNoRpjTZ8rSUVch5D6yvb+rikhRocwlngPqM0Oh2a7Yy/Tj/1vDBpSgOCxjXfGQO0g589Po9XfHitnPgwpKe5zfrCfoFn5gaF5dqS9DqYPHSPZhD7uV+xxH4LRjipOOdcuzF5nFSAlMl3jLbvcABQKsL+F+Dcn2voXRLo/e1XToENgKynbfcWP/TYDP71s5MaLrY1BOLRgkbUXzgZuL0D50SLuK7H1C767uV6LhDe4k9
+ 7u4hwU9D
+ zLnn6uRCYrh48/a3x8FUBceEmKHKCsGqlHh+b5uz0dc+sAclpScjaFvFQrsSyMmZCKJYOMc53UWeILNPs43l3Esos4lbB2C1jCo2/1cS/HX4zf8iup4o371KusDzpHbdsUiuPVqNmG2jbxruVaZuEzWwxnuBXu1LkNbJwhal26QiSiScZ3ShvmFEeKRWKm3VkbTHBjJ1RNF0bFvkKwcbDoRa7wqUvjAVyJH4q2phgBT6QtUno6cESD0wTYInRNkjBNxBrT8b3rZRZgzkOuw5ByK00ghAomAUKqYXLAJ52oKVYkZ9hT9eKq/tdffx46RtwPELveg0R59M/JYOfR1MoSxXB90faU89HXKhvaldL1SN1tgN02uKkDvf7Ytpu4pY00TneHFkaTRoxUJtmsIQQ2jZKqOsYP9GaRfQIr4Yg07Nht0iRTb2nOczjJQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,120 +134,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 11:08:02AM +0800, Huang, Ying wrote:
-> Chris Down <chris@chrisdown.name> writes:
-> 
-> > In Meta production, we have had tasks get stuck in a fault loop while
-> > using hugetlb on arm64. During my investigations I found that affected
-> > tasks share a private hugetlb page.
-> >
-> > Looking at the stuck task states, I found the following ordering:
-> >
-> >   CPU0                                 CPU1
-> >   ----                                 ----
-> >   read page
-> >   [read only entry cached in TLB]
-> >                                        write page
-> >                                        hugetlb_fault()
-> >                                          hugetlb_wp()
-> >                                          [reuse folio]
-> >                                          set_huge_ptep_maybe_writable()
-> >                                            set_huge_ptep_writable()
-> >                                          [flush local TLB only]
-> >
-> >   write page using stale entry
-> >   hugetlb_fault()
-> >     huge_ptep_set_access_flags()
-> >     [entry already writable, no flush]
-> >   retry write using stale entry
-> >   [fault indefinitely. well, that's not ideal!]
-> >
-> > The reason is that when a write fault makes a non-contiguous hugetlb
-> > entry writable, it only invalidates the local TLB. However, another CPU
-> > can keep the old read-only entry, so its write will fault even though
-> > the page table already permits it. hugetlb_fault() then finds nothing to
-> > change and leaves the stale entry in place, so the same write keeps
-> > going round in circles.
-> 
-> Good catch!  Thanks!
-> 
-> > This is particularly bad because, if the kernel is copying to user
-> > memory, the retry stays inside the kernel and the task can't act on the
-> > pending signal.
-> >
-> > It can even remain unkillable while holding locks across the copy,
-> > resulting in further failures. For example, a read into a hugetlb
-> > buffer can hold the pipe mutex and block other users of the pipe until
-> > the loop ends, causing cascading lockups across the machine.
-> >
-> > To fix this, when a write fault finds nothing to change in a
-> > non-contiguous hugetlb entry, let's invalidate the local entry.
-> >
-> > Fixes: cb1fa2e99955 ("arm64, tlbflush: don't TLBI broadcast if page reused in write fault")
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Chris Down <chris@chrisdown.name>
-> > ---
-> >  arch/arm64/mm/hugetlbpage.c | 21 ++++++++++++++++++---
-> >  1 file changed, 18 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-> > index 8e799c1fe0aa..ff1f53e435e1 100644
-> > --- a/arch/arm64/mm/hugetlbpage.c
-> > +++ b/arch/arm64/mm/hugetlbpage.c
-> > @@ -429,9 +429,24 @@ int huge_ptep_set_access_flags(struct vm_area_struct *vma,
-> >  	VM_WARN_ON(!pte_present(pte));
-> >  	ncontig = num_contig_ptes(huge_page_size(hstate_vma(vma)), &pgsize);
-> >  
-> > -	if (!pte_cont(pte))
-> > -		return __ptep_set_access_flags_anysz(vma, addr, ptep, pte,
-> > -						     dirty, pgsize);
-> > +	if (!pte_cont(pte)) {
-> > +		if (__ptep_set_access_flags_anysz(vma, addr, ptep, pte,
-> > +						  dirty, pgsize))
-> > +			return 1;
-> > +
-> > +		/*
-> > +		 * Another CPU may have made the entry writable without
-> > +		 * invalidating our stale read-only TLB entry. To avoid
-> > +		 * indefinitely faulting on this entry, flush it.
-> > +		 */
-> > +		if (dirty)
-> > +			__flush_hugetlb_tlb_range(vma, addr, addr + pgsize,
-> > +						  pgsize,
-> > +						  TLBF_NOWALKCACHE |
-> > +						  TLBF_NOBROADCAST |
-> > +						  TLBF_NONOTIFY);
-> 
-> IIUC, this is similar to fix_spurious_fault() for non-hugetlb folios.
-> Can we use similar logic?
+On Thu Nov 12, 2026 at 5:38 AM EST, Mike Rapoport (Microsoft) wrote:
+> kho_bootmem=3D0% sets bootmem_scale to 0, and then the bootmem areas are
+> sized using the explicit sizes that default to 0. KHO remains enabled,
+> but there is no usable bootmem to load the next kernel.
+>
+> Reject zero scale the same way zero explicit sizes are rejected.
+>
+> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers"=
+)
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  kernel/liveupdate/kexec_handover.c | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
+>
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec=
+_handover.c
+> index 6f1f55fe31819..b30ba686cb301 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -703,16 +703,22 @@ static int __init kho_parse_bootmem_size(char *p)
+>  	if (p[len - 1] =3D=3D '%') {
+>  		/* unsigned int max is 4,294,967,295, 10 chars */
+>  		char s_scale[11] =3D {};
+> +		unsigned int scale;
+>  		int ret =3D 0;
+> =20
+>  		if (len > ARRAY_SIZE(s_scale))
+>  			return -EINVAL;
+> =20
+>  		memcpy(s_scale, p, len - 1);
+> -		ret =3D kstrtouint(s_scale, 10, &bootmem_scale);
+> -		if (!ret)
+> -			pr_notice("bootmem scale is %d%%\n", bootmem_scale);
+> -		return ret;
+> +		ret =3D kstrtouint(s_scale, 10, &scale);
+> +		if (ret)
+> +			return ret;
+> +		if (!scale)
+> +			return -EINVAL;
+> +
+> +		bootmem_scale =3D scale;
+> +		pr_notice("bootmem scale is %d%%\n", bootmem_scale);
+> +		return 0;
 
-I think we should but that's something going forward, not as a
-backportable fix. I'll take this patch for now and we can look into
-wiring up something similar to fix_spurious_fault() for hugetlb.
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>=20
 
-Currently fix_spurious_fault() only handles pte/pmd faults, so we can't
-simply do this:
+>  	}
+> =20
+>  	/* parse ll[KMG],mm[KMG],nn[KMG] */
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index da5d04edf7c1..e0e582f264e8 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -6297,6 +6297,8 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
- 	if (huge_ptep_set_access_flags(vma, vmf.address, vmf.pte, vmf.orig_pte,
- 						flags & FAULT_FLAG_WRITE))
- 		update_mmu_cache(vma, vmf.address, vmf.pte);
-+	else
-+		fix_spurious_fault(vmf, PGTABLE_LEVEL_PTE);
- out_ptl:
- 	spin_unlock(vmf.ptl);
- out_mutex:
 
-because the pgtable level is not known to the core code. We'd need some
-arch specific hooks and handle it in hugetlb.
 
-With Chris's fix we just miss one more retry before invalidation. But
-yes, having similar mechanism in the core code makes sense to me.
 
--- 
-Catalin
+
+--=20
+Pasha
+
 
