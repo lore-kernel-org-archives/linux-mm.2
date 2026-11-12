@@ -1,138 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22AA9606A324
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 06:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76BE7606A323
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 06:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EiRz0mJG
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HHJx6bCv
 Received: by kanga.kvack.org (Postfix)
-	id 117E46B05B2; Thu, 12 Nov 2026 01:32:19 -0500 (EST)
+	id 8E86D6B05B0; Thu, 12 Nov 2026 01:36:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EFFD6B05B9; Thu, 12 Nov 2026 01:32:19 -0500 (EST)
+	id 872806B05B6; Thu, 12 Nov 2026 01:36:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 005A06B05BA; Thu, 12 Nov 2026 01:32:18 -0500 (EST)
+	id 73A376B05B9; Thu, 12 Nov 2026 01:36:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D01B56B05B2
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:32:18 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 656A380427
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:32:18 +0000 (UTC)
-X-FDA: 85425497556.19.CE51F1D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id DE3F6A0006
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:32:15 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EiRz0mJG;
-	spf=pass (imf25.hostedemail.com: domain of mpilaniy@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpilaniy@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 44C716B05B0
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:36:49 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 47330A8020
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:36:48 +0000 (UTC)
+X-FDA: 85425508896.09.01E7C14
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5C1C4100009
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:36:46 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HHJx6bCv;
+	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794465136;
-	b=dwRIf5D8rc/HSj0EJq9uMgHVO3B4U2IvYeG67++xV5f0DXu5WW2vEj3VPTRdyx2RGSmCD5
-	Hp0IzSPSammy2XsbZm3klWW5xR5xsiC/1v/OomL+ebGw8PpZJfQUXUIBTo8XN5T6byTesx
-	t4lfg22XbiAgiftnaOpcvMAFFCKPKfY=
+	t=1794465406;
+	b=moE5QYg0A3TVVPMzDHzum63rg/SgXYz4iQ2SA6RkADdiI3jytMRmR9RX05CN6r6AI45Baz
+	v+1Fn8x/4xPfZpBGwwH2z7CUhOnCf1PJu/1I9M7YahfG/dvnrHsfnHzKVBWggezGQ4CEva
+	ZIYF/sV+uXBJqWXp3KNZj5DiutUEJyc=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EiRz0mJG;
-	spf=pass (imf25.hostedemail.com: domain of mpilaniy@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpilaniy@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HHJx6bCv;
+	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794465136;
+	s=arc-20220608; t=1794465406;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lNjzCkgXtfexLjozyq2Y9l2D4DehQKcLgP4hhpEJaxk=;
-	b=dJ5Allym14Fyx4OzBt10oEhV5HmuSuyAa8wJjIGzGdDJ63KXl1Y1ALQZMJbNNjMs6/8QDX
-	M6x7s4wUgRAc35EQkLTvncZrbc1CX3/HUDuFnre0Wz8PhW7eu0C6L2mTVUmqqDry+OsyLG
-	WfmITzNUBU7DwZln79axrMVYETHX7r8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794465135;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lNjzCkgXtfexLjozyq2Y9l2D4DehQKcLgP4hhpEJaxk=;
-	b=EiRz0mJGQCB3AlumGLarDCSSjb2e9Dg7ocBk+JVriOYSc4nhRmIwxTRCTOURxM1au2fyF4
-	JM25U7uKtWRb0QwQ0Lc9ZUja/KA0/H3hSf9dMNaQsJkQ4DTrLzP+dm6ktyEWk12ySg23lG
-	0FpmELz/sQIY7T8iO28PJm4FxhwOgBE=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-594-QZL5_R7lNreYPp3eC82tDA-1; Thu, 12 Nov 2026 01:32:13 -0500
-X-MC-Unique: QZL5_R7lNreYPp3eC82tDA-1
-X-Mimecast-MFC-AGG-ID: QZL5_R7lNreYPp3eC82tDA_1794465133
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ac0ae43900so3651587a91.0
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:32:13 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794465132; x=1795069932;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lNjzCkgXtfexLjozyq2Y9l2D4DehQKcLgP4hhpEJaxk=;
-        b=yCzUcI+WkJjl6cFwNdWrmOdkZbyO43XhjAb+luppQ7SMonqxehc71490KVWgOeXvjI
-         Agi/zvyQjDLDvBvESUkNSJBckKvjrgPDwyskUq0Qs5vWrlU0G9YHto8FKngAurfmi2C1
-         WfDNMrq3XSGvLJhZqwtGs3t8ewO7zp3isDBBpW2Fca1ZFq4EhtUaOZY+FUMviWBuoG7g
-         KnkpD8saTCfMvzaJEzIpKF66T0ucHH1TASt+rR910a8eBChERNdSllRMAXlVSJVWTMwh
-         yug93qYeYL6IjPf2f40xApnevDE75yxkc/Sx/G/y0s6wlVzhcEQmsTLwxjB0AH91l4Lt
-         TkiA==
-X-Forwarded-Encrypted: i=1; AL+hErEiV/FJSA8zKUx5mbx8323O04r2hn3N08MMnK4uz1Z8gMf56k31rkZubu2WLYmvSruBc6ihD9/GEg==@kvack.org
-X-Gm-Message-State: APuU4Z/vyx5SpllGHkEkLs4QEXGqRh1KUIOjw+38/g0FDvV9pERAaCPE
-	QNFNg6eshKatAZLaNzBbooR0L9QBzANExfxsNET4Ri3zwtZzBkSh4CaiZrOI9DjnyhcbAtMpyD/
-	z9BS4vjXVe7G7OSHzcYNwzUHJEiziLi/SyZ90tuWGHFUfyTqhFcAD
-X-Gm-Gg: AYBFou0BnYgai9poSUH8Ep1Y4OQbWkdtQwbaClqjiZWi03zLk5dBMq5aGxvxJv1XQRo
-	lMXTqRRAVWy4C24we/AEirARNJnVTw+PnuFvqUB+IWbgIXo6v942JAB9H1kov3i8A805NZlbHXp
-	eddD/Zor73m4uglz11gOxczgOABuccodIZWLAwMY8UHcSN5oumuXNY3iuP4s0thyP2OsupZqXU3
-	d0J3uW0rGsWrQEzPXDGrJXPx1iMqP7kZqATMeZna8HuR98kll9lkcN2XWUihYzS1pBkjkeOU56f
-	roKYv7l78PtV5ep7/9FIgD89ZQ7jr70fQTIVr0H/r5gFCaqiY9LLylqHctHhiIXiViT7Qe9X2KK
-	IYUWonyPQXP6048a1aL3+ks7jxtdwwBn7k4V/oqIWl0FBFsR5LvSeKIRl5MX6/2ghKafjpQbgwO
-	mFsDblF+GMOMEc7KQyOljtcGhpURMuaXBuAWk7ab3GnuBQVw==
-X-Received: by 2002:a17:90b:37c3:b0:3ab:413:49bc with SMTP id 98e67ed59e1d1-3b182ee2462mr4497391a91.37.1794465132349;
-        Wed, 11 Nov 2026 22:32:12 -0800 (PST)
-X-Received: by 2002:a17:90b:37c3:b0:3ab:413:49bc with SMTP id 98e67ed59e1d1-3b182ee2462mr4497373a91.37.1794465131889;
-        Wed, 11 Nov 2026 22:32:11 -0800 (PST)
-Received: from ?IPV6:2001:4490:489d:4213:2481:b5a5:59e1:8f87? ([2001:4490:489d:4213:2481:b5a5:59e1:8f87])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197ce49d6sm3019469a91.4.2026.11.11.22.32.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Nov 2026 22:32:11 -0800 (PST)
-Message-ID: <990cc079-70ab-4fcf-9974-679aaf07849e@redhat.com>
-Date: Thu, 12 Nov 2026 12:02:05 +0530
+	bh=+RtrIdqsqTNoB8Tp2YQ6uO0c75jIeI1mGbAx+/hHzPc=;
+	b=AQSauEaHfQLvblm+UnShU4PUE/cCRy019WlSyAQ1yaxxHQLLfMtRol8Usmi3E+IwWpDnEq
+	XD8rag+cp+iDLQ0CwiCoEMCtssNIR0GpQj0aVYaTzOxZsDtT2wjxLkPwtQwaBD965sAXb+
+	516kGgPfPSNI2nERVDr/k/WAwpHI9oc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BF6F4475FF
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:36:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A9F1F00AD2
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:36:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794465404;
+	bh=+RtrIdqsqTNoB8Tp2YQ6uO0c75jIeI1mGbAx+/hHzPc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=HHJx6bCvvrYAcj4XzMKhYe5PCtP7UJmHVk5/AxixS1L/qgS7HPfBJAKbUwjLjYe4j
+	 KECeDwuK9/sViJWgtXu7yQzNnBp+OwFyS3uJwaPVTECSUivfkevd5dXpkeSaTZ8VYV
+	 1IAjWsqmVgo/2cjdfb7fSRDYlxoe9HmRJNE+9K3qN12KyaJNRzfeo1ld2XwGPlv8nu
+	 rFeDc3h6IULVgvdQbpcJ34+cTVkooBxQH9SB+/g9/U8dbu5upZp4rgw4DoZkajKrZL
+	 4SYXR+eMiP8S25df2dJxTNm3keBbwzfLQZbi3pa8yCYzo+qbuwqk4UFZTdZIWNnq4O
+	 TEiXO9hKy5ZnQ==
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-93f259cdc86so349491485a.3
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:36:44 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErHmJeIt+GMafRfhraXPklOIvh5/Zeri64hSE9yCoXyk0IH1h5Xqq6YjeTbDwktyG1cx3hJbRoSxDA==@kvack.org
+X-Gm-Message-State: APuU4Z/kD4DbbX/mgNbvlzBDQRnEthYJkKb9EY4L6J4FYPQ9UXYrvs1D
+	3rzzU9mGeYhCg5KGFbsViKO5oBKDPf1bBHNrsAB3AgORwZ4PAwCI1pDIJe0e/gcJxA7opRs0b6n
+	23lYxGOrOnIKdPkJ2FTh/e5wuOpU+7ps=
+X-Received: by 2002:a05:620a:4691:b0:93e:f0b9:505a with SMTP id
+ af79cd13be357-947b007767dmr785468385a.58.1794465403716; Wed, 11 Nov 2026
+ 22:36:43 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] kho: walk bootmem areas in address order
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Chen Pei <cp0613@linux.alibaba.com>, George Guo <guodongtai@kylinos.cn>,
- Kexin Liu <liukexin@kylinos.cn>, Sourabh Jain <sourabhjain@linux.ibm.com>,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20261104-kho-bootmem-sizing-v2-0-b0d1a834780f@kernel.org>
- <20261104-kho-bootmem-sizing-v2-1-b0d1a834780f@kernel.org>
-From: Mukesh Pilaniya <mpilaniy@redhat.com>
-In-Reply-To: <20261104-kho-bootmem-sizing-v2-1-b0d1a834780f@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: o679xcybNHtvQ8ovj9xLUvDZysuhN8CYskvmXmt8bfs_1794465133
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xqoxq3zyiem4tmmtzjjoce6xnry9z6cg
-X-Rspamd-Queue-Id: DE3F6A0006
+References: <20261111232603.9934-1-baohua@kernel.org> <20261111232603.9934-6-baohua@kernel.org>
+ <sashiko-outbox-210413@kernel.org>
+In-Reply-To: <sashiko-outbox-210413@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 12 Nov 2026 14:36:31 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xMUoTsPU-=_QVDqZ-p4Dt+vGJC5G8hed3PWNAk3iv8Bw@mail.gmail.com>
+X-Gm-Features: AclHuK9M4cCTbrxDsGbrpPPHixNCymAyYzZTrljomY5vQZE61WTqm7Y65AMrlfk
+Message-ID: <CAGsJ_4xMUoTsPU-=_QVDqZ-p4Dt+vGJC5G8hed3PWNAk3iv8Bw@mail.gmail.com>
+Subject: Re: [PATCH v7 05/16] mm/mglru: skip zones above reclaim_idx instead
+ of rotating them
+To: sashiko-reviews@lists.linux.dev
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, 
+	baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, hannes@cmpxchg.org, 
+	hui.zhu@linux.dev, kasong@tencent.com, kunwu.chan@gmail.com, 
+	liam@infradead.org, lianux.mm@gmail.com, linux-mm@kvack.org, 
+	liuxiang.277@bytedance.com, lyugaofei@xiaomi.com, mhocko@kernel.org, 
+	mhocko@suse.com, qi.zheng@linux.dev, ridong.chen@linux.dev, rppt@kernel.org, 
+	ryncsn@gmail.com, shakeel.butt@linux.dev, surenb@google.com, 
+	wangzicheng@honor.com, weixugc@google.com, yuanchu@google.com, 
+	zhangbo56@xiaomi.com, zhuhui@kylinos.cn, sidchintamaneni@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: dt6j9prpzy5xyfeg5jxd8p5zokcmhi5u
+X-Rspamd-Queue-Id: 5C1C4100009
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794465135-869177
-X-HE-Meta: U2FsdGVkX1+Px86O+jeovB3nszdK15RylwyNDFzYOqVG5MQ3tBa407xb+3MTUHuNmRGPJuAMMXmHODJH6auwao4V1ttZTY7vX/l1Z8Do1WDzaT2PNLkPATxYdst5K8Q9ZU/D9PznQJrsPH4VVmqw1nTm+2nxx3NTvHfBqqwGTQ/ZMODTSX0wQv7209eJA4qSuf2sb97WVvohCZs/joDHrg1lUNh2OqeOlhpjJKR4fjfkrsznN+M2WUXtywKin9dZtt654Mb2EkRgEmmFu5BW3ejmAVIg97741/sWsHdDwvBKf78Ke22bu6JtLg7/tFylJHYKJeTw51e9xdwKC9jBC68pwqd6o9EmsRCtpach2lvgtmRvTBInGjFPRa02PzLKbAPvfdhaDiILiw5JMVktbFIn9S9ZStOUwiHpUQFrk3/K+4Mk+wkbJ16Xh68dIApVmGouSpYS+MyxSXfpknCGL+YMkP2pooD+2F512Jtvnc1y96GOl4JXMghSDkHBlS7aR4VUKRCxpyxx63hTUTJ2XJ2nTNJlkcFtomKpHuNWgLB72OL7XkcYaynUy5OksxPjvXkTN5qXfc0QzF/YZh8EcrO4s+ylJckqMlQyiN67/xhZAF2aDOefl2BIXGbe7MewjjyhD4yrU4bFzlei29VYw4p7mCLBruJOr7r7i653lhc2BsQlSc51N/6ag8ZxPoPnG0lryCbIJ78ifH/7Q5E2ze/okn2liJfEpctpuxfS3EhQgx3XxcITIebnCR6pS65jV8GkyyURd4iQ8zLXTeU5+AuyVXRkLGAt1NOXtn9FFO6Ql8sWAzEp5KQ6MqPYE4bHkMUYgMtKAjDObmlVDq5kUd9lYowgdU6eeN/1u8wx97pae/Jg0FiGRtxU6k/t0mvZ5cTYHvnJorULJfORu0PhOAEJQdV4vQSDYhvqALDt3mBDA+RBKHMtPi/oegx1pnIYSZBpplUOUYn9m+YZe8q
- mi+EHjWp
- 4IsYM7HZ+H+FBZMsK+gax12oBs0xkAE6rxH1cadI5/JM8Uk4m6kC+Aq0HYuCWNyxenZTgsbrkOQZ+qeynnEmIZoY80r0FxtG+sME6p/MhfREHZdy3DMTJR/W4T0kmWBdd5QMa4PC5Uxs4TuQYltNHu0N2mGBZK7lneY05f2n9F2MSNFA5jH6tHKr/jUDRGqDa4YnkOSTapav3e9Xg9ZTqDoe0NQ3dZaNSikhKVYsIjuQyhPx0A1SHRsMki9fWGVLTOypeY55pyPZUL1g/a6u9f0KQ0Z71m4Z8IHz+U8oiKcHpuei6sJEHL9tkQ6HA7wwLpB0Q4M68qYSGyLjELzhts/80OKYD3Y+kOEBUQwxK5+J0ScTBn5m5ngQF0JIpOliqPqRIvCADz6Ag9EQ=
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794465406-981728
+X-HE-Meta: U2FsdGVkX1862Nah06FgrI+vTf2cKoTe3Owtn66WgXta5RPR6C7ccZ+eCh9ChsHBOP4Zp6Xki6hxS9GvTM7K5FzMqanyJLSG8VOnf6kMWDQebYCI8zHqqccJRn9/B54RKJ+Lo7dgpiAFh+7nqq1iG8gWINtJmWNQyyjEnEfrl4+M5VL8ZyOOX9SqLtFGQRo1bzPcWlnVvhp4uGkp4IdOzts+VWyLWQnOyTDmhT7iKs9jqGt9QHk+yEcdpIX98XFYAvdQXfcRkLW9vOprTbTSNX/jl0VSDZ8ya0/mM9F9xooxY674lV2s0G1c8AVmBsQ0/8Bf4/5Ay1t6yC7OfWg4jJbIKNEsHpNr0RkKRDe+ERyYwsR4HQXbAQANgZselVlwz0ZtBGtBwIlVxbJVW4zT2eMxKCF5UKq+ZgNI4lbIK5a6vsSAY4Rb9j4rptXzHSl7F+U2b+QH6vlySO7t7td0TO6qNwf+NSK+wgaUxacsVylWy1yc1VlKAyGrNMXNT2IIfbxBZ4as6tIxG3fX0A0ZkbzUOtllwVqe1n7YSE2jZNB5PDBZRgNAeKU0y3E4Ad//Jew8k2DDTEFsWvniHdG/m6xoXHIV4iUlpI2Uhm65WKamOMBIvl2ECOKssuqvQSxYKwu1R7WK57/Gpnl5OrS7AKYKrsz6UFyqfhHTzIF9LWvcmeNR80a6siiaB8oz4K0mK5ICF7+QaRVJ3FbWC1xGJdNEVVupcHj+c3Rkn5eevU2A4WmMaeFi8OIE1yq9dzfOM5jLEtmNJUoeqK73EtpkpzUADsutKv/2BjD2j5oCf3y6nxVI2BFdRQV2ko/hMhPd5d5cIhoinDvdhvQTbN/lFj3yrRyiPHZFF+zn8imLJ/Wb/1dWu/i3ITGOsOoJIzu8cmbNamItOJd+DWYt+hkVjJSCEM47ExnvZoysSV6ww3kEB3vX9y29T2f2wJjevqABsUxXF1Q32r9qjORtvdP
+ 4atrGq+0
+ bRP/fxZ7YbIbGc4grHXuN7eX/cGb3QV8oqj5O761SyWTRVPuT1FPBlqm7ja8DByy2TehgFE4V+darnjA8Gyq1lPaKq/LeqnFxMFCW72GpChbh8Sz3UuAtGxl+T6I4DgoFd77aL9/jq/MTl0+f1mSKHOg8T9qDcdUz6Sxp8zOiZvMGTOOizBvj9yShDCkF2yPeDT2qJNFvnp34doB9sXgpZ0DbEsPIoXd1f07UV0/9BTaV7bFAmqd8QQURrPje6s/rv+RMNqGNIwJjHqSv+bdV2Vk9E9XEbSfL+AJefNZH805mrzxtTTyynEtInGwgd8IYErmLZHnpcYxsoj/HwBt2S4hr5o9xtWVuXbJSwOOCBAF4h6Cxvm2Dkadea5IqHMyDa7ww7Zr0UV2L4QfvOXBWPr536Yzt6cWWgCSqqx9qCtLdXwPeSeqPvr/LvA1AvornZWbtzsVW4oXJDZM4dViN5V7gy2o3pKcDgmob3Tl6yXPodZpm9MBnf10RHKQnSz5N0+CK+gi6Sy3UEFSS3xgkWFI5yalgF6CXtihG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,160 +114,259 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Mike,
+On Thu, Nov 12, 2026 at 1:01=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
+>
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [High] mm/mglru: pinned min_seq in try_to_inc_min_seq() stalls aging
+> --
+>
+> commit a9558af5b6eefdf9bb9a64058218b290ef8ecc66
+> Author: Kairui Song <kasong@tencent.com>
+>
+> mm/mglru: skip zones above reclaim_idx instead of rotating them
+>
+> This commit restricts scan_folios() and lruvec_populated_min_seq() to zon=
+es up
+> to sc->reclaim_idx instead of scanning and rotating folios in higher zone=
+s.
+>
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 51c2ee66b3ee8..273aa8c56bec8 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -3992,7 +3992,7 @@ static bool inc_min_seq(struct lruvec *lruvec, in=
+t type, int swappiness)
+> >
+> >  /* Similar to lruvec_evictable_size, return the oldest populated seq o=
+f the type */
+> >  static unsigned long lruvec_populated_min_seq(struct lruvec *lruvec, i=
+nt type,
+> > -                                           unsigned long max_seq)
+> > +                                           int zone_limit, unsigned lo=
+ng max_seq)
+> >  {
+> >       int gen, zone;
+> >       unsigned long min_seq;
+> > @@ -4003,7 +4003,7 @@ static unsigned long lruvec_populated_min_seq(str=
+uct lruvec *lruvec, int type,
+> >       min_seq =3D READ_ONCE(lrugen->min_seq[type]);
+> >       while (min_seq <=3D max_seq) {
+> >               gen =3D lru_gen_from_seq(min_seq);
+> > -             for (zone =3D 0; zone < MAX_NR_ZONES; zone++) {
+> > +             for (zone =3D 0; zone < zone_limit; zone++) {
+> >                       if (!list_empty(&lrugen->folios[gen][type][zone])=
+)
+> >                               return min_seq;
+> >               }
+> > @@ -4026,7 +4026,7 @@ static void try_to_inc_min_seq(struct lruvec *lru=
+vec, int swappiness)
+> >       /* Requires at least MIN_NR_GENS gens for basic functionality */
+> >       seq =3D lrugen->max_seq - MIN_NR_GENS;
+> >       for_each_evictable_type(type, swappiness) {
+> > -             min_seq[type] =3D lruvec_populated_min_seq(lruvec, type, =
+seq + 1);
+> > +             min_seq[type] =3D lruvec_populated_min_seq(lruvec, type, =
+MAX_NR_ZONES, seq + 1);
+> >               if (min_seq[type] > lrugen->min_seq[type])
+> >                       seq_inc_flag =3D true;
+> >       }
+>
+> [ ... ]
+>
+> > @@ -4780,24 +4773,22 @@ static int scan_folios(unsigned long nr_to_scan=
+, struct lruvec *lruvec,
+> >        * when under pressure to respect swappiness more and reduce IO c=
+ost.
+> >        */
+> >       if (sc->priority =3D=3D DEF_PRIORITY)
+> > -             min_seq =3D lrugen->min_seq[type];
+> > +             seq =3D lrugen->min_seq[type];
+> >       else
+> > -             min_seq =3D lruvec_populated_min_seq(lruvec, type, lrugen=
+->max_seq);
+> > +             seq =3D lrugen->max_seq;
+> >
+> > -     gen =3D lru_gen_from_seq(min_seq);
+> > +     seq =3D lruvec_populated_min_seq(lruvec, type, sc->reclaim_idx + =
+1, seq);
+> > +     gen =3D lru_gen_from_seq(seq);
+> >       max_gen =3D lru_gen_from_seq(max_seq);
+> >
+> > -     for (i =3D MAX_NR_ZONES; i > 0; i--) {
+> > +     /* Scan eligible zones in descending order. */
+> > +     for (zone_idx =3D sc->reclaim_idx; zone_idx >=3D 0; zone_idx--) {
+>
+> [Severity: High]
+> As reported by KunWu Chan on RFC v5 [1], does skipping zones above
+> sc->reclaim_idx in scan_folios() while try_to_inc_min_seq() still checks =
+all
+> MAX_NR_ZONES stall aging during zone-constrained reclaim (for example,
+> GFP_DMA32 reclaim when ZONE_NORMAL is populated)?
+>
+> When an lruvec has MAX_NR_GENS (4) generations, lrugen->min_seq[type] sta=
+rts
+> at max_seq - 3.  Because scan_folios() no longer rotates folios in zones =
+above
+> sc->reclaim_idx, any folios in those zones keep try_to_inc_min_seq() from
+> advancing lrugen->min_seq[type] once eligible zones are drained.
+>
+> In should_run_aging():
+>
+> mm/vmscan.c:should_run_aging() {
+>         ...
+>         if (evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS > max_se=
+q)
+>                 return true;
+>
+>         /* try to avoid aging, do gentle reclaim at the default priority =
+*/
+>         if (sc->priority =3D=3D DEF_PRIORITY)
+>                 return false;
+>
+>         /* better to run aging even though eviction is still possible */
+>         return evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS =3D=
+=3D max_seq;
+> }
+>
+> With min_seq pinned at max_seq - 3, evictable_min_seq() + MIN_NR_GENS nev=
+er
+> reaches max_seq, so should_run_aging() returns false and scan_folios() dr=
+ains
+> eligible zones down to the youngest generation max_seq where sort_folio()
+> disables tier protection and workingset promotion (min_gen =3D=3D max_gen=
+).
+>
+> Even with the follow-up commits in this series (commit "mm/mglru: Run agi=
+ng
+> when pages are rare outside the youngest gen", commit "mm/mglru: Run agin=
+g
+> when one type has no populatable folios", and commit "mm/mglru: Restrict
+> eviction accounting to eligible zones"), at priorities above DEF_PRIORITY=
+ / 2
+> scan_folios() caps seq at max_seq - 1 and evict_folio_lists() returns 0 o=
+nce
+> older generations are empty in eligible zones, causing try_to_shrink_lruv=
+ec()
+> to break out before calling should_run_aging() until priority drops to
 
-On 04/11/26 10:20 pm, Mike Rapoport (Microsoft) wrote:
-> kexec_add_buffer() users may depend on the order in which memory holes are
-> searched. For instance, arm64 places the kernel bottom-up and then
-> requires the DTB to be above the kernel.
-> 
-> kho_walk_bootmem() walks the bootmem areas in the order they were
-> reserved, so if the kernel lands in a small area at the top of the memory
-> there is no room left for the DTB and kexec fails. For example, on an
-> arm64 VM with 2G of RAM and kho_bootmem=8M,64M,64M, the lowmem area is
-> reserved first at the top of the memory, the kernel image takes most of
-> it and kexec fails with
-> 
->   kexec_file(Image): Could not find any suitable kernel location!
-> 
-> Sort the bootmem areas by address and walk them in ascending order, or in
-> descending order for top-down searches, like kexec_walk_resources() does.
-> 
-> Fixes: 3bdecc3c93f9 ("kexec: add KHO support to kexec file loads")
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  kernel/liveupdate/kexec_handover.c | 57 ++++++++++++++++++++++++++++++--------
->  1 file changed, 46 insertions(+), 11 deletions(-)
-> 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 6f1f55fe31819..2ac5d94f33fd4 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -26,6 +26,7 @@
->  #include <linux/list.h>
->  #include <linux/memblock.h>
->  #include <linux/page-isolation.h>
-> +#include <linux/sort.h>
->  #include <linux/unaligned.h>
->  #include <linux/vmalloc.h>
->  
-> @@ -820,6 +821,14 @@ bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
->  	return false;
->  }
->  
-> +static int __init kho_bootmem_cmp(const void *_a, const void *_b)
-> +{
-> +	const struct kho_bootmem *a = _a;
-> +	const struct kho_bootmem *b = _b;
-> +
-> +	return cmp_int(a->addr, b->addr);
-> +}
-> +
->  /**
->   * kho_reserve_bootmem - Reserve a contiguous chunk of memory for kexec
->   *
-> @@ -904,6 +913,9 @@ static void __init kho_reserve_bootmem(void)
->  	 */
->  	kho_bootmem_cnt = i;
->  
-> +	sort(kho_bootmem, kho_bootmem_cnt, sizeof(*kho_bootmem),
-> +	     kho_bootmem_cmp, NULL);
-This only covers the case where this kernel allocated the areas itself.
-On a KHO boot the array comes from the previous kernel. A kernel with
-this series that is handed over from one without it therefore keeps
-walking the areas in reservation order for every following
-kexec_file_load, and the arm64 failure you describe comes back until the
-next cold boot and vise versa because the ABI string is still
-"kho-v4".
+I'm not sure why this is marked as high severity, as it
+seems more like a performance concern. Also, when we
+scan the youngest generation, tier protection and
+workingset promotion are no longer needed, as the
+folios are already in the youngest generation.
 
-So, sorting once in kho_memory_init_early after kho_bootmem is
-mapped would make the invariant independent of the producer.  When the
-previous kernel does have the sort this is a no-op, but the consumer
-cannot tell which kernel recorded the array, because the ABI string is
-the same.
+Actually, I created a silly test case that forces
+GFP_DMA32 for anon folios:
 
-> +
->  	return;
->  
->  err_free_bootmem_areas:
-> @@ -2081,20 +2093,40 @@ int kho_fill_kimage(struct kimage *image)
->  	return 0;
->  }
->  
-> -static int kho_walk_bootmem(struct kexec_buf *kbuf,
-> -			    int (*func)(struct resource *, void *))
-> +static int kho_bootmem_walk_one(struct kexec_buf *kbuf,
-> +				const struct kho_bootmem *area,
-> +				int (*func)(struct resource *, void *))
-> +{
-> +	struct resource res = {
-> +		.start = area->addr,
-> +		.end = area->addr + area->size - 1,
-> +	};
-> +
-> +	/* Try to fit the kbuf into our KHO bootmem region */
-> +	return func(&res, kbuf);
-> +}
-> +
-> +static int kho_bootmem_walk_top_down(struct kexec_buf *kbuf,
-> +				     int (*func)(struct resource *, void *))
->  {
->  	int ret = 0;
-> -	int i;
->  
-> -	for (i = 0; i < kho_bootmem_cnt; i++) {
-> -		struct resource res = {
-> -			.start = kho_bootmem[i].addr,
-> -			.end = kho_bootmem[i].addr + kho_bootmem[i].size - 1,
-> -		};
-> +	for (int i = kho_bootmem_cnt - 1; i >= 0; i--) {
-kho_bootmem_cnt is unsigned, but the reverse loops in
-kho_reserve_bootmem() and kho_bootmem_walk_top_down() start an int
-counter at kho_bootmem_cnt - 1, which for a zero count is UINT_MAX
-converted to int.  That conversion is implementation-defined; with the
-current compilers it yields -1 and the loop body is skipped.
+diff --git a/mm/memory.c b/mm/memory.c
+index fe72e66c9c2e..350ac4a834e6 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1251,7 +1251,7 @@ static inline struct folio
+*folio_prealloc(struct mm_struct *src_mm,
+        if (need_zero)
+                new_folio =3D vma_alloc_zeroed_movable_folio(vma, addr);
+        else
+-               new_folio =3D vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, vma,=
+ addr);
++               new_folio =3D vma_alloc_folio(GFP_USER | __GFP_DMA32, 0,
+vma, addr);
 
-How about using this one.
-	for (unsigned int i = kho_bootmem_cnt; i-- > 0;)
+        if (!new_folio)
+                return NULL;
+@@ -5053,7 +5053,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+        if (!folio) {
+                /* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO
+devices and zswap */
+                if (swap_entry_synchronous(si, entry))
+-                       folio =3D swapin_sync(entry, GFP_HIGHUSER_MOVABLE,
++                       folio =3D swapin_sync(entry,
+GFP_HIGHUSER_MOVABLE | __GFP_DMA32,
 
-Reviewed-by: Mukesh Pilaniya <mpilaniy@redhat.com>
+thp_swapin_suitable_orders(si, vmf) | BIT(0),
+                                            vmf, NULL, 0);
+                else
 
-> +		ret = kho_bootmem_walk_one(kbuf, &kho_bootmem[i], func);
-> +		if (ret)
-> +			break;
-> +	}
-> +
-> +	return ret;
-> +}
->  
-> -		/* Try to fit the kimage into our KHO bootmem region */
-> -		ret = func(&res, kbuf);
-> +static int kho_bootmem_walk_bottom_up(struct kexec_buf *kbuf,
-> +				      int (*func)(struct resource *, void *))
-> +{
-> +	int ret = 0;
-> +
-> +	for (int i = 0; i < kho_bootmem_cnt; i++) {
-> +		ret = kho_bootmem_walk_one(kbuf, &kho_bootmem[i], func);
->  		if (ret)
->  			break;
->  	}
-> @@ -2110,7 +2142,10 @@ int kho_locate_mem_hole(struct kexec_buf *kbuf,
->  	if (!kho_enable || kbuf->image->type == KEXEC_TYPE_CRASH)
->  		return 1;
->  
-> -	ret = kho_walk_bootmem(kbuf, func);
-> +	if (kbuf->top_down)
-> +		ret = kho_bootmem_walk_top_down(kbuf, func);
-> +	else
-> +		ret = kho_bootmem_walk_bottom_up(kbuf, func);
->  
->  	return ret == 1 ? 0 : -EADDRNOTAVAIL;
->  }
-> 
 
--- 
-Regards,
-Mukesh Pilaniya
+In this case, the current patchset still performs much
+better on MGLRU than using CLRU.
 
+MGLRU
+*** Executing round 0 ***
+set swappiness to 60
+
+real 1m57.803s
+user 25m34.833s
+sys 6m8.024s
+
+
+CLRU:
+*** Executing round 0 ***
+set swappiness to 60
+
+Endless....(CLRU can't finish the kernel build at all)
+
+If we do want to trigger aging earlier when evict_folio_lists()
+returns 0, rather than waiting until the priority drops to
+DEF_PRIORITY / 2, Bo Zhang shared an idea with me off-list
+that might address this issue.
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 9f759d213614..3721725852b3 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4033,8 +4033,6 @@ static void try_to_inc_min_seq(struct lruvec
+*lruvec, int swappiness)
+
+        /* see the comment on lru_gen_folio */
+        if (swappiness && swappiness <=3D MAX_SWAPPINESS) {
+-               unsigned long seq =3D lrugen->max_seq - MIN_NR_GENS;
+-
+                if (min_seq[LRU_GEN_ANON] > seq && min_seq[LRU_GEN_FILE] < =
+seq)
+                        min_seq[LRU_GEN_ANON] =3D seq;
+                else if (min_seq[LRU_GEN_FILE] > seq &&
+min_seq[LRU_GEN_ANON] < seq)
+@@ -5233,6 +5231,7 @@ static bool try_to_shrink_lruvec(struct lruvec
+*lruvec, struct scan_control *sc)
+                unsigned long orig_file, orig_anon;
+                DEFINE_MAX_SEQ(lruvec);
+                bool no_populatable;
++               long scanned;
+
+                if (mem_cgroup_below_min(sc->target_mem_cgroup, memcg)) {
+                        need_rotate =3D true;
+@@ -5241,8 +5240,7 @@ static bool try_to_shrink_lruvec(struct lruvec
+*lruvec, struct scan_control *sc)
+
+                orig_anon =3D nr[LRU_GEN_ANON];
+                orig_file =3D nr[LRU_GEN_FILE];
+-               if (!evict_folio_lists(nr, lruvec, sc, swappiness,
+MIN_LRU_BATCH))
+-                       break;
++               scanned =3D evict_folio_lists(nr, lruvec, sc,
+swappiness, MIN_LRU_BATCH);
+
+                if (should_abort_scan(lruvec, sc))
+                        break;
+@@ -5263,6 +5261,9 @@ static bool try_to_shrink_lruvec(struct lruvec
+*lruvec, struct scan_control *sc)
+                        should_age =3D true;
+                }
+
++               if (!scanned)
++                       break;
++
+                cond_resched();
+        }
+
+> DEF_PRIORITY / 2 and scans max_seq without tier protection.
+>
+> [1] https://lore.kernel.org/r/CAN_Opa-AScm9=3DEeXO_Uy8VjbQ=3DbqY9P++rFP8H=
+1RhUB4dOt6xw@mail.gmail.com
+>
+> --
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111232603.99=
+34-1-baohua@kernel.org?part=3D5
 
