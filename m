@@ -1,147 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D71A0606A883
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 16:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BDCA606A882
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 17:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=R3gU4r/E
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NbgThZtq
 Received: by kanga.kvack.org (Postfix)
-	id 02D426B05B8; Thu, 12 Nov 2026 11:59:57 -0500 (EST)
+	id ADFF56B00EF; Thu, 12 Nov 2026 12:02:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1FCD6B05BE; Thu, 12 Nov 2026 11:59:56 -0500 (EST)
+	id A90F96B05B0; Thu, 12 Nov 2026 12:02:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0F5F6B05BF; Thu, 12 Nov 2026 11:59:56 -0500 (EST)
+	id 97F346B05B1; Thu, 12 Nov 2026 12:02:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BBB436B05B8
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:59:56 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1D8D51C3478
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:59:56 +0000 (UTC)
-X-FDA: 85427079192.07.4CD8580
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 2860DC000B
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:59:54 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="R3gU4r/E";
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.172 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 714856B00EF
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:02:07 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0B48C804EB
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:02:07 +0000 (UTC)
+X-FDA: 85427084694.25.03FB2D9
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 8C98E2000D
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:02:04 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NbgThZtq;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf31.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794502794;
+	s=arc-20220608; t=1794502924;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b7AojsWQdmnu8z7CsRmtwQ/iZVkZjTk5+I2/AfHY1s0=;
-	b=5f8N9Grr4aX4SK5JHy73o1/xUEWbKrIXLt0NJu84q7QNz9NpLHqTZRue+KgsM2/Gse2SYF
-	86hosj0R4XnraO12rUMNEjGDKhRdZG7RYpQBD0vRkxSmv0PAZ3RnEBquNXuMa2tlsuiv+E
-	oCsUit2LBdufO4DYkV1JNpTcVcgUBXc=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="R3gU4r/E";
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.172 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	bh=DmDJ9JjueJiTO4ILc4vU5r+iyjWb6VUgLE0oIyUYePo=;
+	b=lbYGb0f3gJAjb0bmaN5rpcNFAES6AmReaztS9U+hjRl6Y5fvt/n5BSMtK8FEyNyH3/RhkZ
+	R4ADmcsvCSNwIsqv2o8l/oa7tYx5/8XlHdmudwsq+8YQyIib3shD7gB46PeHbYyzvela+3
+	IP5RrTyCULE2UPLd4R/iDReFks3juOE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794502794;
-	b=fwy/qjfxN/RDmdgtZ5rgbkpb7Dx8xLKs+/jlWKE74ct2gMzxL4h1ptmL+yYVnmOgudu2VF
-	AZOCDf6u7rixHwb/93/tPW8n4irDOFeMJ02sa45IpWHz+8VPxFie2MVUlaad4kSRGA868Y
-	1wvXZsi2aeJDp0xcr5XuFHythSHYgDg=
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-93a40a9a01aso142303485a.0
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:59:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1794502793; x=1795107593; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=b7AojsWQdmnu8z7CsRmtwQ/iZVkZjTk5+I2/AfHY1s0=;
-        b=R3gU4r/EnuDtdz3ackHA94qB1bsh45HIUfwBmo1sfNeaZkeNY0afKBlHekSBYKPvnJ
-         sCFsl15baILC1dY1GXl29NBPOGuaBdG7jyi6wuN5AUYqmwJmtQAOZ9Tz5CEMyg1JBWBI
-         1yqI4M01qfhAKXpKQDQYLUiJ6BLY+QcH6U3+cyta8HMmGtyF46gx8w/lVnUYdXNx8MK4
-         cwhb9JEsqRkRZEqYxaXKzhve7F3HZSLK36NA1MxkOeh6LDHm8+XOyqJWDiXpVRs+vqQT
-         eauc7eQYtjAElPl5TbKMW7MKalxXCwWPyhSD371LZbhOeDCf2nILtkDTXGA9JyNNcuEn
-         wtdw==
+	t=1794502924;
+	b=6OlOMhypSYMYdmfdJks+1TGEHaoiHzXOf/PdVAeFWwSWbKuIjOlzVaEx1L8s8D6SVIlWKX
+	O5FG1PAOV5G78pjySJHCVJfHmUXqIkGSXhlBkc83Iz9y9A6v6BIHtq5sgSxOO/2hKAI6im
+	wFoht6N+zHwRXVe7ir8CP5wa53lXFAo=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NbgThZtq;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf31.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794502923;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DmDJ9JjueJiTO4ILc4vU5r+iyjWb6VUgLE0oIyUYePo=;
+	b=NbgThZtqeFV9bx4CyRB1XE7qvaI5ffj8VnlmJRSQyIOkZpqST/MEjNnesHF+mWyarNagVM
+	nb+AxKQZAnRCZWuFSMIoC7Cm153N6Mhzk+YvNFFqfdu+HxhvESgHTCsehIlUukaU9/zDss
+	BJZYl6pvFoQFsmhJknXEQs28gSl9kH4=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-685-oOLb6kVuM_KGeRJVW6DTog-1; Thu, 12 Nov 2026 12:02:02 -0500
+X-MC-Unique: oOLb6kVuM_KGeRJVW6DTog-1
+X-Mimecast-MFC-AGG-ID: oOLb6kVuM_KGeRJVW6DTog_1794502921
+Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-5c157d39385so6295e87.2
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:02:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794502793; x=1795107593;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=b7AojsWQdmnu8z7CsRmtwQ/iZVkZjTk5+I2/AfHY1s0=;
-        b=UP8XCNa8VYrcxNP3CdFo7iD1CHB80T6P3mhWC3y1ALU4iiJnQS1iLYr8/ndniGMlmv
-         SiBmyl7f+qoIYZb8GujPhxBNrJFi7i8ZgrtbM6697S5m8zNfsTob6Y8qYj9Nm/glsMMW
-         TTHuSoCC9Nq4UDGHDjcTc1hQ3K4BF+irl7OxU5tw6B4Lm4j/ED7n/mpBgYMMkqShQ97t
-         Y8NMjEuFyel5KmirT4HF76B8dw1Mi5PIn0kIpdJrr3tOi6SpguBgwzh+B7NsmziATFER
-         EWTSapY8e+j5iYfTDHDAUQCdMeg7jqALfjqwZACYOY92Z+RTzold9iy6txr5MCTOj3um
-         ooPQ==
-X-Forwarded-Encrypted: i=1; AL+hErG6uTHO1Ws6eshh4dmdOyuj/QF8IR4osxFgw/hzlm6MZDySw8RDWm+7j0OzJAJs2n/IDB1vg0fz3A==@kvack.org
-X-Gm-Message-State: APuU4Z+flVhn53L6ZndU23Jed7Fn5SM//1Rz02/m/f/P0s5niQegeKqV
-	89BxC9Yz6iohvPx/LuszZldv12+emLjr2YL/nWiXeTvxm2Kmddk0i/dqDfUO2oymK9g=
-X-Gm-Gg: AYBFou0rDbMWliRP7ziZh682gKsbTjM4Vaw6rw8wUnFHrzzPYE16wFX2j/iUI2D5Wwe
-	fa40hXzEXjtIpT4YajGzldbXfri98pg4aqzW1HAsjI5PVEso75WOvyslw+rAs6RbiKJhV8SNpsr
-	3pABAD9XsUuG57sEO8RLO+lDQPGmvhjiw/XhhmEkHH2THK0H0f7dkI+9zAgAVcQIQNSgyzf7f+W
-	94k8Z73dADH78r4cfelmaocRHf/7HRCYif13tAfYmLeJhdiAs/ieak69ImMnEcyZLjUDqEtibzx
-	ksXLv6JB2aoXqj2/bC3uQJ+yWzWITaPY1yNju3ajSJWTEuG17INmJAECJiyVnE0qQEkNzmJmIcu
-	oWv1IVuZ2okiSEj14B7sCKD8zKZ53gnv2d+KQq333PV3S3w+cI7fVLXynjQjx8gcePE7oR8KrV/
-	toavx3D/O1CQ40ffpxBmAoq/1w7becwNH5biObPmfJfzBK312IXBShCS2XAMXDBvd9mdFvlt8W1
-	9D3/M6r3ysOxs6VX9HNYzJ8rOz15r3c3M48uBX8KX5meBAJnzIbu61SEP98cKnxa2N2IjKx/vI6
-	+pwSRuZQI6T4ynRBLJbx6JSQnXDpeu27vDjvUW+CM7zFMT6suqSOoiq639o3sCrBgHw20e1iUlj
-	dojTPicQ=
-X-Received: by 2002:a05:620a:6088:b0:945:f5c0:a630 with SMTP id af79cd13be357-94932e8795amr549937885a.40.1794502793241;
-        Thu, 12 Nov 2026 08:59:53 -0800 (PST)
-Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-94935073633sm220651485a.37.2026.11.12.08.59.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 08:59:52 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794502920; x=1795107720;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DmDJ9JjueJiTO4ILc4vU5r+iyjWb6VUgLE0oIyUYePo=;
+        b=JJ335doHm9W20urQhnOs7beg3bLF/XJooxu9ah3dLlPR9/fNQkcJ/Td1T9KIMppzZE
+         1jFv8S9Hx8P7vVpQ+TOpfUNMQfAzPKXzilxGGOoIXLKogqwLDgh3kU4l2BYiS82G0EI6
+         JRqlATcLaGGAZp1uXLXhInNOT+1w3G30NxbLQOODj6gexjk08enc2vBeA3GknIbUSAcl
+         ITuOIUyUDsIiMC//NgtYakJ/YLSmevIp/lScS2zkxs9AfGn8NAb2TtiO86SL/dwF0jkB
+         YHa0iAXUZq4TWNc3QZ609mvs1Al+u0Ha1JaYNx5ySH7ofshPMJziTz25FuYfAxAjJ/wX
+         6EAA==
+X-Gm-Message-State: APuU4Z8P95Gi/O/SqEfn51xwaY45O6tl49iDgNCuFlBrZZ0taqb6liJi
+	/L7SxrrON3UuYp5zD8L3roQ6+jBr1MOlB+KqQP7tN71n99Ekl20xmDa361s2bKMhmEnZri+59o0
+	wZj8KW9ZP69JOvAzEQl4bIZx+bI6JWxIgsEi7ASrYGkr/Vv46ATM=
+X-Gm-Gg: AYBFou0iEwOCu3dxcgR9RDWo9eWkPy6q8pKEbA3J3T6W2843sI9CxX2xssEE1qkbMId
+	MSXSMRR/pbCyWTePaq8xVR5YaO5lbsQTyaaeKCfJI3Bh8mCyd6g/bnyaTxZaCZLuf9Qoi9v7mMC
+	cFPXyMuaXyMmoCPCN58zFysqYDkdixxXzSOliuGu3N7T40oG+h35IPlvjxEae/6Tlrql94MA3DC
+	wsvAVK5cZnmDLiBCEQYCWSqzDONXh7ek/GgcyR67yIhLZOyNZRWlriI2PQlIfabek0qFiHOSPs4
+	Ue4cxu8bXKj6hlDII+sTdyLEXVMri+M495JlXdIX7KB3AqXp/ueewezCpWHIfQKcXSxeAvxtvH/
+	A36uHx9Zq3dgdd1gj8gKPhAqIwHE3fnLqKrs7rD9hCMvDU4qnmls1nx5jWrbycnEvoiiFPgHQ+o
+	h98lQX
+X-Received: by 2002:a05:6512:398b:b0:5c1:4e2d:58ea with SMTP id 2adb3069b0e04-5c15d5f1e4emr2155726e87.53.1794502920594;
+        Thu, 12 Nov 2026 09:02:00 -0800 (PST)
+X-Received: by 2002:a05:6512:398b:b0:5c1:4e2d:58ea with SMTP id 2adb3069b0e04-5c15d5f1e4emr2155701e87.53.1794502920105;
+        Thu, 12 Nov 2026 09:02:00 -0800 (PST)
+Received: from [192.168.1.86] (89-27-86-246.bb.dnainternet.fi. [89.27.86.246])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5c157bab834sm1779330e87.45.2026.11.12.09.01.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Nov 2026 09:01:59 -0800 (PST)
+Message-ID: <ec4431f1-e70d-477c-b09a-eedc35d97691@redhat.com>
+Date: Thu, 12 Nov 2026 19:01:58 +0200
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 01/13] mm/mmap: free gathered pages before MMF_OOM_SKIP
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
- Shakeel Butt <shakeel.butt@linux.dev>, 
- Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>, 
- Pedro Falcato <pfalcato@suse.de>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
- Gregory Price <gourry@gourry.net>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, Usama Arif <usama.arif@linux.dev>, 
- Kairui Song <kasong@tencent.com>, Balbir Singh <balbirs@nvidia.com>, 
- =?utf-8?q?J=C3=A9r=C3=B4me_Glisse?= <jglisse@redhat.com>, 
- Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>, 
- Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>, 
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
- Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>, 
- Chris Mason <mason@kernel.org>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- "Borislav Petkov (AMD)" <bp@alien8.de>, Mark Brown <broonie@kernel.org>, 
- "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, 
- Rick Edgecombe <rick.p.edgecombe@intel.com>, stable@vger.kernel.org
-In-Reply-To: <20261111-mason-migrate-et-al-fixes-v1-1-3d2454362e8d@kernel.org>
-References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
- <20261111-mason-migrate-et-al-fixes-v1-1-3d2454362e8d@kernel.org>
-Date: Thu, 12 Nov 2026 11:59:50 -0500
-Message-Id: <179450279073.482102.1691484916250559829.b4-reply@b4>
-X-Mailer: b4 0.17-dev
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v17 00/12] migrate on fault for device pages
+To: Jason Gunthorpe <jgg@nvidia.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: linux-mm@kvack.org, dri-devel@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ David Hildenbrand <david@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Lyude Paul <lyude@redhat.com>,
+ Danilo Krummrich <dakr@kernel.org>
+References: <20261103061629.972669-1-mpenttil@redhat.com>
+ <avWpWBl1nPcRVmpQ@raptor> <79f33ab0-2e43-4efb-94d0-addaf40745ec@redhat.com>
+ <avXoJSGh5xjGFgod@raptor> <20261112164752.GA3692174@nvidia.com>
+From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
+In-Reply-To: <20261112164752.GA3692174@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 4ErMtRLfJG77k5sTzeaEM1UXOLlRYjqkLJ6S4gIIykk_1794502921
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 5pfy19rodf4a9kkcdcg71grqqi5ooyxb
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2860DC000B
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: m7zuwwgtr91qdrusu777g11wwsbrut9a
-X-HE-Tag: 1794502794-987281
-X-HE-Meta: U2FsdGVkX1/ivLBm6sIGz+O93HpJPorDbZYRbpawPt2zhdYRZAg/fUTdlDINMfprBl6pYceJZJ3jCopLgHgI/Phm+zIdgDPv5b1DOc+S9PecE6nBuFFkImxPW1WNhTMIHjebN1G1OeExU2PSYWS4SasdCkLl8doc1ZAKqcS3t57YQ482JBMfwo2T/D0sMXNCM7tf+w5oaK2lVwsavC2JZMrdBWKjZ5oxs6LT+RAImK8Zx3FCmrXe75OiKeqZpekKTRzPLyC5uPC+lno0VoQa0MloewmswIibF1bHxGLBfMGM1MdnxfmTQZ5p6kuAkq9Tq0Ks3LsdLhMR5FD6/3gMIaJWrJgtAjupJcbMqeuW0IfdvRT6mWyYSxrJqqFMNWbxIhXvuQj7Xi8xvrHvLk2QHxpbfvNLCxsrlp8UejtM0VvYl4oNpVGnWA3BYtlMhIp3M1BxdLbMpPoYY08iEcclvWIcE5G5LUawy/5NmT61SQSS9h7umFcM1UR8ZRPDtAMq2Z98GATc6G3dql0xwjQPyUUYaxd1yobwXCFEORYo2goUL+A0P85IKzGG61Or7OoWpShtNY/GXxHW8DaEten3fRRFISA8nnQ03fSzGlyEzqGX/8DDUsaTCmZpJK2ZvXbcfQNLSDsDD7xJmqEtdbGXjpziVrWpRJ1geLJA7Mai4SKcYuAu7qV/vSJ5eFjSlYMcPgjrqrOCpDKPnDB5p/3lGhnOyeDUpTievQpZ3jv5Lk5bJJr4UVVS4HjUV5JvGYyTf6fSM23Cb6F3oGJVH6VDVD75vJdAlnbup30BPVSEGm2QnZTszjwmSXY9BrIQ+mI5rmYhW6seUkNPwsaEYgLjr0OcxYXMhDjT/YA5brmoswTdznBNe1XkRWk9r4xoudTmC3KwAjApOzoNEbedy+zFyE7Db44cC+NWICUYZvtJRYj5WoVyP4KT9NV5WOQj6ztP7ZehHd1hyl5q1KTXbLW
- HQRBbygo
- FrEREiZ5voviBVVqN8j6Og5ckuBNaWRfc6ocdU2LBwqREwDs9UR5bx8P8wQ1gQtuLD35DFypc6UjupOVwtODbJh6s8Jp73b1FLQzQO6UZxj89Wn6u6lyujRco42GYcSTqyLsw4xN74Lkze6dh0u4T7sPfATFShtG28b0acFw/6gYfXQ58fiTW2aYztGdjAIhLD6C5k/3/6FbKo6U/iQizmzkWX3KFng639fT5u+rhuNro+cSJnRplES18WsjpGr0I3r/7L71gZTIExa2g7lqed2CNS9ZUg539TCHTRy2aVN4kBsDTLt/uiV/X4vOpfVwfsfbxjN5excbSWj00LQeULx7bRu2Qwdd65sru/D6MlUCUpxpz69d2LihXhVHuBZhQLnmslBViKaeTAisKQhngZtmi6e66J1hiJpLh+370CXtPXcFJ8FE9V7L4IEveEecFeCB888Mw3sXlFxA=
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8C98E2000D
+X-HE-Tag: 1794502924-923644
+X-HE-Meta: U2FsdGVkX1/F2yIoWG8oeyseGggYMiNhytU8kd6iilRWHTbSdjgZoaF2U5Q5PRlTG9BA9v67EcJYyVKrictIryRueqKxoXySQfRB0mWBkFqO1vYi4o+KpiKmBCJx+RMo9GxJxkW3qgZt5Va6s70O9xqc/ujeTpPo8WrcErdydqdTX37lNTkBBvVCT3Y2OoIfZYTXp1CaPc+Wl+nR3VZqCA6qAtg5NxbnxpURJebeNlg0rs2L5gumxz5kA5NmVzKCKq1qOIYURMdMXH19tnysn3K8bb/KgWo4ypHlNembwbyvJXvhyPGhntQVP8F2ogRA9qHhwSSl4HVAJ25lfrhSD5Pj4pEldjRtNkRo2pyIUglAL0tdXhLISZxE58clPYJ/vn6TfBUipsfJj8XFEk3a6sfIRT4dagJOHyVm60OnLkZ7Mv10qT5au7JzUIRDYfBPEns4oCOc0mLkKQRibW7/PqMFgsLgJrF+JpZHMFtBtONmU9dKNIMhgCn5z44tn0wITDicc+Y3BPQmh2r1kj6Jlb1hxWlhUvRbOB4IAgNcCMPX6WSeUAWp5FRsuGHiFm8Q5E7kRVtO8so9h7rj2WzeB66CC1UeX3FrbXRsa77vjYvAM2P0dEcu4RgauIujAbu50cjteowYG/ytrz7HVU4YtSyboxRvctV+IdHTd/WpIIPtfF0bbTTSasqVqhgJphyw14TY/T+Tdc0kKwyoBBk2sMSk89LT2ezkqKpGrrX954eaTDpBANzi5t2zRixFn6I2LkxKEgSXe8D2i5SacgyRZok3uSrVI21bUPeHbFUBBxRluYSqEqVmh6BCbMYeB3rKnNFqK0MTCtXGeh3XwM+s8XY0mwVxXGbbqQN6NFoWsOD2968iMbhfGRptOf+zil9l7zMgusQqBx0RyHf1XlFH1/A0E1zAiGbmYXNt0aT8LIYAnBk2rh7rcpnQ7WB5Vs3wZ9mbCnsuSGqGtS2Gxgg
+ INQmW/TD
+ nKRAJk+vKrGbInfo24hngjYoALuATymlsi8/8SH63IkCY3Gczo61sgwJ299v8Ti/Sppicdj8fLYAlmciEayIExF4aVbVLaajwLmaeoesYjZrVhVTFUY7ERuR5X4kzSSlwzZTEtzQSxakYhZWLPjeLnMXDltZzWn2K2/kQkct4U8qj6kI1WJVA0W5XFmRHVI3OrKjNUS3g82VPb4pe8NKtHuIm7IXzXXsMSEWH48qNiAgOVd3xd0kWF3pSfbRc7Y9E2yNgZm2s7CS1TYAdVlw6Tapifhfdna2ROrOXGrq84X6nWGvCS6uVp8bo+xPQb4mnI93Z0h8aScWWYNF9ADguqOI3TZGNNFK9N4Bck+ULbm8WLz8/lT5EjG5PBcNQuCQvmUaQqzTPnlKufHg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,39 +144,39 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-11 18:13 +0000, Lorenzo Stoakes (ARM) wrote:
-> The OOM killer can quickly trigger again after having selected a
-> victim. That victim might not have freed its memory yet, but its mm will
-> be marked MMF_OOM_SKIP by this point, so the OOM killer will ignore it.
-> 
-> This can cause the OOM killer to kill an innocent process when the first
-> might have freed enough memory to relieve the memory pressure.
-> 
-> Fix the issue by freeing the memory before marking the mm MMF_OOM_SKIP.
-> 
-> Note that the task which calls mmput() might not be the victim - if it
-> took a reference on the mm (e.g. ptrace), it may hold the last reference
-> and release it when it calls mmput().
-> 
-> Therefore we cannot rely on current to tell whether the mm belongs to an
-> OOM victim. Instead, partially revert commit b3541d912a84 ("mm: delete
-> unused MMF_OOM_VICTIM flag") to reinstate MMF_OOM_VICTIM, which
-> mark_oom_victim() sets on the victim's mm, and check that.
-> 
-> Reported-by: Chris Mason <mason@kernel.org>
-> Fixes: bf3980c85212 ("mm: drop oom code from exit_mmap")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-I was able to reproduce/observe the unfreed batch and the second victim
-issue.  In the base series i could kill a second victim with the
-in-flight oom in about 26/512 attempts, and 0/512 attempts with this
-patch.
+On 11/12/26 18:47, Jason Gunthorpe wrote:
+> On Thu, Nov 12, 2026 at 04:24:05PM +0000, Alexandru Elisei wrote:
+>> Hi Mika,
+>>
+>> On Thu, Nov 12, 2026 at 04:00:09PM +0200, Mika Penttilä wrote:
+>>> Hi Alexandru!
+>>>
+>>> On 11/12/26 13:56, Alexandru Elisei wrote:
+>>>> Hi Mika,
+>>>>
+>>>> I want to help getting this series merged, and I've been familiarizing myself
+>>>> with hmm and device migration, please bare with me if the questions I'm asking
+>>>> are obvious or downright silly.
+>>> Thanks for the interest and willing to help! I am preparing a v18 of the
+>>> series and plan to post it early next week.
+>> The series is big, and as far as I can tell the MM people are hard at work
+>> reviewing bug fixes. It might be better to wait a while, to give people a
+>> chance to have a look? I know that if I see a series being reposted often,
+>> I am less inclined to review the patches since probably a new iteration
+>> will be posted soon. But I can only speak for myself, you know best.
+> It is at v17 and it is still getting high severity sashiko errors
+v14 was first that sashiko managed to review. There was a regression in
+last posting, but also false potsitives, and sashiko reports same issue
+then 3-4 times, so the reality is not that bad. 
+>
+> I've been ignoring it until this improves..
+>
+> You really need to run sashiko locally and not rely on the upstream one.
+>
+> Jason
 
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
-Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+--Mika
 
--- 
-~Gregory
 
 
