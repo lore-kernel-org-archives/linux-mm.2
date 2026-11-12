@@ -1,116 +1,149 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55859606A31C
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Nov 2026 23:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5766E606A33A
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 00:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=cii2UW+7
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=WHyXxKf8
 Received: by kanga.kvack.org (Postfix)
-	id 6B9D46B05F9; Wed, 11 Nov 2026 18:38:49 -0500 (EST)
+	id 5D1E06B05B0; Wed, 11 Nov 2026 19:01:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66A9D6B05FB; Wed, 11 Nov 2026 18:38:49 -0500 (EST)
+	id 582546B05B1; Wed, 11 Nov 2026 19:01:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5589F6B05FC; Wed, 11 Nov 2026 18:38:49 -0500 (EST)
+	id 449FE6B05B2; Wed, 11 Nov 2026 19:01:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D13B6B05F9
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 18:38:49 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 98E6F1203A9
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:38:48 +0000 (UTC)
-X-FDA: 85424455536.06.7D3CA2B
-Received: from mta0.migadu.com (out-79.mta0.migadu.com [91.218.175.79])
-	by imf29.hostedemail.com (Postfix) with ESMTP id F1970120006
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 23:38:44 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cii2UW+7;
-	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.79 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794440326;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1195B6B05B0
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:01:03 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8C3EF160497
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:01:02 +0000 (UTC)
+X-FDA: 85424511564.12.599F372
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8B5461C000E
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:01:00 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=WHyXxKf8;
+	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794441660;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FBtMya5JHiIoe+mvC9LpyA8nsmCcAGgftQwnt4hAqeI=;
-	b=H0ref9jiNi1kibmVK5qiY7thMWBCBtPahojxtiWxdtGlpBHMnEU20fF+nVow5iLqtoO/m9
-	RZbtaBk1KebfBsCjfXM4praxJryEmnUfo85baLS3DtRECAhNB7u0QAQ+sL3Tuo/SSDKkqL
-	vIG0atFEY2y8cXsTrh1aMXZKSSp5Mx4=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cii2UW+7;
-	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.79 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794440326;
-	b=LmCbuFmrvvBtQowapPLX1/jdZoleFwcPHDCPSOUhhXASVzYPFuDZbURTbfw53DtLAxzvYH
-	vpaiXcl2A5h7bZL7CafkdbLCZEjGEbAg3zehc7Eam2VtKUM2HC5O3JKtkQPsFBa835rx2I
-	aRdh3kDX0Popgq3/4ZRBVyAjkH9XySw=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=n4XGoevqqrbLPiJf0WVzjodKBgKSfEnOAs+PZZo3dNg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794440321; v=1; x=1795045121;
- b=cii2UW+7VcxrIVAWlCPVxc2A7k2LTA3p/TddiEUWVZc4+BUMo6mGN2irt4FP7mJoecm0BhLU
- yTLvkBYJJl7IaDDKdMTfb8bnEE4craruu464TSTbjJiZTaWR8fiCHC2lC4dM1J2JKz+ahIVeFrz
- zfvhBY1EHDqzCn2idFHrM/VI=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id b7a6aef2bc15d97d;
-	Wed, 11 Nov 2026 23:38:41 +0000
-X-Mizu-Trace-ID: b7a6aef2bc15d97d
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <9b795d3a-1818-4265-a364-58fba139c651@linux.dev>
-Date: Wed, 11 Nov 2026 23:38:39 +0000
+	bh=/+sJZZbZo2UcO+Nr8+QxFylA7K/BaXAtaD89aBd6sd0=;
+	b=h6CJzJ6PPAIMiSwPtc58UDcMpABgfViRKDN/TAfEwyKmLSdJbTkouXA/sCeffiRPv+5xaI
+	Z7KzhPRQ/d1F3HpskY33egP7MB2wGWWG2C6rT76KVE9L0B5PvCR7+RJhkv5tfM/qLGh+Lj
+	z2Ebz0WT8rB3wdY8+8ql6+NmRemMayw=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=WHyXxKf8;
+	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794441660;
+	b=2Ojhm6Cyg7CqtBURCQzc2syZmJL9erY61IinIZKz/fm1f7a9bHyXK+goPdIbU/nDgdG7uX
+	lYVyEmW4MoCscZl36SHJvSchGJtMvuglPvyHIs2g6nD+tCrYIkWo/jfpPqAz8csSmzalaK
+	SRVTvXArI4rRZfwzpTxW7/yBBITZLTw=
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-5383c97c8cfso36711cf.1
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 16:01:00 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794441660; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HZat93pndnA3YVPgpth7VL/QB1QWGtRDAvs3y/EYA4e1WMDvBaZd5NMmoBUTQ51/yi
+         s2k6h2jXPypUvDdoayAEWbwptvJSvCCOSuEMNgXwRKWyPLWVTypq4UW9em5Z4u+pMhyT
+         d24Fgxp99VZ2Ob17IbZQ51Bu75NXJvhOrn55iqB1V+QMmbSS6qFWAX/bgerOUSL36dQw
+         dHJkEOkNt1C3qOtM5+k2a2r07SZ2m/nvHfZc/dBo+LTaEpqrsLSdYKwkWJysbhjLDt7e
+         RoXKyQYtFsJz6xSX+ZkOIRxHdqLi43EE3j91TicQtHiqZLOjpbrM15HkKmxPUAIg6fBm
+         U7ig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/+sJZZbZo2UcO+Nr8+QxFylA7K/BaXAtaD89aBd6sd0=;
+        fh=We3dBG+p47xMKlUUkYbmGnwdf6xOZjgbvYSwmkpFONo=;
+        b=rvvWp3ovBqq/kVkvhlOGd8pUpleQCUfSBw6hQ9fjMEON8SOKJavR/Ul/tXnuvO2exC
+         uVZUaF1Lj3YM1Dy4LbNy5eH5tK6ZLs4kYLsLPbQYZQnFGQiVSCeBkr1pqSBNvehq6nFm
+         OAgDKGnUr8eY1kaBauWTU+XOhI4f5NgfvqnVZ/kckEj4MriJxte3F2IqcC10wWJzLlwv
+         nP2YoMW9fnxgz0u8o3kEuuoAHiXhnMI3ZJxkb0WS/ZhwU0CX35gqiUzz+VLlJJoTS5qd
+         LCSfIH3XF9Rz86LjwDutB+lzxqCN8zxx6293Ht90WlOVpA6/JJcxbUwbxfx547T0/cjI
+         Kk2A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794441660; x=1795046460; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/+sJZZbZo2UcO+Nr8+QxFylA7K/BaXAtaD89aBd6sd0=;
+        b=WHyXxKf8TpM8zg9Xi6sBF3Q/GcDrF34lmM+8jM/MHKh23FlvLWuOckkpFRzHDtoD8Q
+         4orWvmOM7JdOjanxHLMnlQzPULGpJXqSeGJtoYbNmL05ng15A6HU3Dkf8VoLoC73yOFZ
+         IiLkL5Fp/Hm1BujquX9/5LMJ0EiNiSvQG/s+av3Dl7BZuyA8ZUdzDu2IGPku4j2gVou4
+         y0hUtuUNfT60sO2dutqwaFdrYihXcFrBAEFURC4IYuD6Pk+d5BEid7oT/alJXzO/sGN1
+         wWMinN/XvW29V/4XJ0QRcMrMqRsF2sOUNbRYySSdwQfhxwLHlUrH9HBdx8Hg4SVv0SYC
+         9dcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794441660; x=1795046460;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/+sJZZbZo2UcO+Nr8+QxFylA7K/BaXAtaD89aBd6sd0=;
+        b=YhI7Tdi1NMOmMlgwkjjAcDb0x6zqPg+98hKxH6zWV41bXjuO58WJghHvuaLHeTfUQ9
+         PMbTkuCVf+KvC3Ju7BPD6dcvJUo2bpSnBdfHlp+YuAMV1A8651ZGEuBg0oyiOCbcRnfy
+         CqsAl5KIe7c5FXJjXDv4+nEnZxFXGBK5vYI7n2vgG6DJE4Fi53OKH4J3ssh2rqwDZ6zK
+         VpLRDHwc0enQVJ3SHqrVcALtl7IqfWimtWyyMsN1Qkd0TvFv6VVWJm9f1TUbBhobyq7n
+         GzFcMdPMFI/2Q6+l9xvaZmD5rgrFe3h1y2k2ZKb0Ijn65u2XbZBzSWloEfN9ItnTiU1C
+         tLaA==
+X-Forwarded-Encrypted: i=1; AL+hErHWe1x9tjVUMeaP+0ojRBxZ+aSO6d2jtiFc6H9F9a4nFXKKWUUQBLo8a2fQhgOeulipAbJPWzonjg==@kvack.org
+X-Gm-Message-State: APuU4Z/f7Mr/Iq/yD00mfivytu+2B/kVzSF8kkUEfNAwsKqE/1p9t1Ci
+	KGcRyepTzCDxcNWGAmn/LFTRBo0sxUxEk+vTVRLRNoqdE936Q48NQRy4MbJYgTdhaLBh88YT05N
+	d5YNhTISm4HLqTRM94kMF5lBJg+n3jtc3rVP6ULvE
+X-Gm-Gg: AYBFou0xlhiASJpJhr+3Ge3otgQ0aCCf3TAOM1brnCcQZjYqHN2fwW6z0YU3n+pNb/r
+	G8/cC11dVwfthk4MaD8VFfrDXk609tjIxacCS0c1rjWa+q9vod1/tdVcxMNmfwUq31LV3E0z1yh
+	W56SzxOcvtrMcB0wOA47GmGAzXJVR3sbnxqRxg3kPxv5K+lnFZPKoOUc5UC9aqbaRUebeu+IFM8
+	X1LUGXjTaVw22siHLCegBMBQfM7H6os/HNMnPQehr9zeC90IPaUcIsdXXQG688KUDqusO/RnMl8
+	2wv3CjK0xp7FvN9QcIritI8KGOr+Xmn7KQFjOZaRjuI/I2EYjaNknfnJskDVTlNeuOnL7aeze5T
+	Rl2VdX8m+Kte2spcSKaAVxRDE66M4E6EMj9ZCZwbbell+hFDYE54rBWKit7mVbxUCDA2sFXTGr4
+	o7QPtxW3XpUXw5Hz1QLJ72h0eY2Q==
+X-Received: by 2002:a05:622a:514c:b0:52f:8389:29e0 with SMTP id
+ d75a77b69052e-5596742d03cmr7885161cf.0.1794441657704; Wed, 11 Nov 2026
+ 16:00:57 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/13] mm: cachestat: restart the walk after each entry
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Kairui Song <kasong@tencent.com>, Balbir Singh <balbirs@nvidia.com>,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>,
- Chris Mason <mason@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, "Borislav Petkov (AMD)" <bp@alien8.de>,
- Mark Brown <broonie@kernel.org>,
- "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
- <20261111-mason-migrate-et-al-fixes-v1-3-3d2454362e8d@kernel.org>
-Content-Language: en-US
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <20261111-mason-migrate-et-al-fixes-v1-3-3d2454362e8d@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 4k36sjgaazfcnbpaym6s8exn9zb6bztf
+References: <20261110112546.261415-1-hao.ge@linux.dev> <20261110112546.261415-4-hao.ge@linux.dev>
+ <f416f84a-03de-49fd-ab67-d86ed4dec633@linux.dev>
+In-Reply-To: <f416f84a-03de-49fd-ab67-d86ed4dec633@linux.dev>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 12 Nov 2026 00:00:45 +0000
+X-Gm-Features: AclHuK9BKDPw8mqltXLLAZPx2uW3RHH6cpnOYo4JgG_IF10oXVJ9B3sYkpkOZaI
+Message-ID: <CAJuCfpEO6F5g43=uR=PmNmZwRXDzLjT_4CfE7UUZmt7iebgjfg@mail.gmail.com>
+Subject: Re: [PATCH v4 3/9] mm/vmalloc: BUG_ON() on an unaligned range in vmap_range_noflush()
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Uladzislau Rezki <urezki@gmail.com>, Dev Jain <dev.jain@arm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Dmitry Vyukov <dvyukov@google.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, Tejun Heo <tj@kernel.org>, 
+	Shrikanth Hegde <sshegde@linux.ibm.com>, Alexander Potapenko <glider@google.com>, 
+	Marco Elver <elver@google.com>, Dennis Zhou <dennis@kernel.org>, Christoph Lameter <cl@gentwo.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: ioneis45ndujay7sdb1x9uhiw7thjpod
 X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspamd-Queue-Id: F1970120006
-X-HE-Tag: 1794440324-152418
-X-HE-Meta: U2FsdGVkX18KhcaxWtQTZ1BxjScfTDcMXLP6GtaWbvYTp1je5GfW26JqNmPbll0Rw3n1SbGJPtqG1y/64VYz5ktjZAm6qUfn3ZPGwmyAPpP9bI/CyHWfd4Y/mZ3g7VrFyuqfTpvIceMf/d0UH65ANOQgwcRDo6FYMlNXZBozh2wKJNwh6VYsC4gwceuEEKFaxl1SSrfsBs0NHNN+lzJoKMOyLv3peEJeOu1K/3uIEv0OHXO6IzxQez9Lk3GAWeKllRW85Qxd6G03e6nA/rzpD8K3EB3wtOH1y9IGUinz9H2YR5+7YlgQ7X/bkl8umWKJj7aj5GkXe6XXl5HSDA6lbRQbv0ivxyKV61CR6u/ZdPo+FGIy6FKL7dnEqEheZ1/c/63T5JKZDEl15AIKf1gJ1cy02jCIfJ1clVzh31EIIRNBkbJzZnVe3UnZnZoA05g4LqmWXZmrTV2qBAA69r7HEpIYsTaYtOaMIUNfZp74tSCrTY5TOu4+BROhZXvEEJoq18eA9Ppf+I56DU/aq28YD4naGImj/iBTlCYuodykhcqhHi2Oe29uJLNTn2iVspdLiXfay+WOqU9SxJxjISjQKgG2EJpBOLdlwkAEK/pzvwpga5dSMcjlJNjQ8KgT2mg6Xc/lFcPz88Li6XUUMv7uxXh/F/pvuziLqubB64zl09KAvzmILvSgU10cY83p+xh0ZhTACv7AqDcfc+8qlmBducGlZyOq1eV0pVjtFvJFdoWk2tvsZF0rVQP5X2qbqbgc45J4j1Ub3conlttfm5OshHKlt+5Mqbn34tUCHri9x6U0+xloq0qijtqLPY6Wr4KYfpYD1ru0ZvNdgUWUqCHN0HJ3fhh8XzLOZJBYMvqPyoNMP9zS+610J1HFTxjCHQTc2FpxcLEaVaXCUah6U59tM9ZVCtFJusdgs9Y0gfxc80N+KePBCgexxMhf7pX3NdhkhTHkVT0ToX5dNe6v829
- Y/0fc8fY
- CGsY9pTMgl8Y4jKOyK6G4SGrqmRdEKb8enRJwqBDOXpSe0dGCZR3o6WjtnQNKyCqqfGYf4wlzov1+5UNw56aT25w7gqB7VI5SpMFvR0WqdKQHbYgwfwygHwmD/TXbo+VYnGJWsMpiNvdAO2S5h1g266FZVBjqg9ZwZ+2/PYFQjhS4y93kxEuPsVFiW4HIGsoEcN1Ewno/PxAn2hB3L7cNps18M92NO32vnm0q1HwZBTIXeeGqsatrorbiwUOc6YiHmk1jcA7RiGQI3hQlO5tsPGRxAB/vpWA5i4zWToRkSIRaof/YGrwi3Ei2dvqQNeOW8LMpiCa7TdrRANxCDNH5KYiIFnaVtIT3Yg8q4tq821gpmx9PU6rsHMDT7w==
+X-Rspamd-Queue-Id: 8B5461C000E
+X-HE-Tag: 1794441660-273345
+X-HE-Meta: U2FsdGVkX19hS/vNHydcGMkJPXt6d5k9oE+XLb3nEDPFSRSeTiMpNjF2BOQ4H7FnqPsngC8qpZvjaoZ+WZ32gV6kEAvBDqloKGxQLok5foNm7iFATAcn0UuVx7tQ/IA78H2fEtgIWgpAzTFn4uRuKbM+11eDK6Hq2VPOZmwh/i9qBIjflU2k2PF1l9MUQz3IvQctz8LftEP1EWKAdshJjyi94fqdIHI7T+5GQbYxNMMNkgF5XIA9WWBfPVZFrVZh6oBMr+BOO7rVFTNLMH4xOTgoGPOfYP7VebpJJ6WaEYAkh8HW0b2ohHG1R5QKSEGvmC/ZrKluAIUgpyCpqGM+EbsrPSHddOJzAAUGT6DZR67Sx4gMclLsk4x/YCx2G0FDlsCJnKPFqcx3PpxT31Ss4/+JKqPGU6ENErQEXX4eMd/tXQix8FsxpuFvxkBkqEi5CBhNgjucEdVtNbJFQpJ/lcrGzgysuhG+v8EZ9TMOwmmv7dJGHIP0e1QG7bjMBgeU54q9xkovA0ltqELP5lrSpNaXNMTgKLMWpsfkjDSU2FXsFVIk/Nv0ZdV3JoUlmMC6RWwtm/vtjwVCnFVcWnqgKxYDShvGdrwQH6n2zcYlQMJhfjjZ0cOiWcDbcZ8CTA85zO9wjZ2eYWn1dpenGzXSJKZ2MvuRR7tbIepXpQeBHoky6uJM/LzGffhAqWtAGpYoCaqecTv8bcl0F3rY+XKzBxckOgC0BL8XLD1686Gj8l7bepWvhS9hDJ0I0b/+le9Kb8+/sQcmUJHPNKgFBRLohC8OXGfJIg+bQMOJ1yvM6nAQwEcEXXBthfE2QHjTJ6ggsS/N+qaHWQE2Fk08rS/8mH6g4+jiwOw4gBrUTLpjp19cbUkzEwXBSVGg3w2V5jWctpUfhmm0Tn9NpfzXnUfXuif6VivX/rzS0gKryI8D+huiPKCy8X9z7mzkX8P4xdYFNXM9381vGf1eyk3FLVb
+ flf69Dqw
+ OwDoiHeyOZ1EsQn3twFGR0J+ESTcdk0qvQt2rVkGVd29+UQgKAwYYeQPit8K4clFAOOVBoC07LFfCdsc1p9CUpvaVxv+AivJ9HsERAOERbDFvlHaT5GfMG6q4ipm8tBKUf4lC3iRMR9zsRI0hziMot0d7iBSU2VprkDzjjo8Bx1YrNY/PmhrB+X2DUmUwVCtaphHXzwZb4smISvEnSZsxlbkhx/tQ4EQGrIdqP8bFNMSkNX4aDbmudA/Jhrouq7wbPXeAZBn7GgYhxTuL+CWt2V2blg0iNL+tuZa4HBgLYgO3IQIyRRI/pcZ+fQOGE+Jp8aEzUUpMTmG/OxXqQlrKo+c/IfAYWjG1PyBGi4Efmg9rUkk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,87 +152,129 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Tue, Nov 10, 2026 at 12:26=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
+>
+>
+>
+> On 2026/11/10 19:25, Hao Ge wrote:
+> > commit a739e6b557af ("mm: vmalloc: WARN_ON if mapping size is not
+> > PAGE_SIZE aligned") put the check in vmap_pte_range(), which is too
+> > late, because the upper levels may already have installed page
+> > tables for a range that is rejected anyway.
+> >
+> > The pte loop maps whole pages and stops only when addr lands
+> > exactly on end.  An unaligned end lets addr jump over it and the
+> > loop keeps mapping past the range.  An unaligned start maps the
+> > page below the range and usually misses end too.  Such a range is
+> > never a legitimate request, and the corruption it leaves behind is
+> > hard to attribute to the caller afterwards, so bug out on addr and
+> > end at the entry of vmap_range_noflush() and drop the check from
+> > vmap_pte_range().
+> >
+> > Signed-off-by: Hao Ge <hao.ge@linux.dev>
+> > ---
+> >  mm/vmalloc.c | 4 +---
+> >  1 file changed, 1 insertion(+), 3 deletions(-)
+> >
+> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> > index 093b8d5f7b0e..27f2674a5556 100644
+> > --- a/mm/vmalloc.c
+> > +++ b/mm/vmalloc.c
+> > @@ -125,9 +125,6 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long=
+ addr, unsigned long end,
+> >       unsigned long size;
+> >       unsigned int nr_pages;
+> >
+> > -     if (WARN_ON_ONCE(!PAGE_ALIGNED(end - addr)))
+> > -             return -EINVAL;
+> > -
+> >       pfn =3D phys_addr >> PAGE_SHIFT;
+> >       pte =3D pte_alloc_kernel_track(pmd, addr, mask);
+> >       if (!pte)
+> > @@ -347,6 +344,7 @@ static int vmap_range_noflush(unsigned long addr, u=
+nsigned long end,
+> >        */
+> >       might_sleep();
+> >       BUG_ON(addr >=3D end);
+> > +     BUG_ON(!PAGE_ALIGNED(addr) || !PAGE_ALIGNED(end));
+>
+> I know BUG_ON() is ugly and it was not my first choice either, but I
+> have not figured out a better way to handle __vunmap_range_noflush().
+>
+> If an unaligned range is passed to it, the pte loop may clear PTEs
+> adjacent to the range. Say a caller passes [3, 12) while [0, 3)
+> belongs to somebody else. The loop operates on whole pages, so it
+> starts at the page containing 3 and clears [0, 3) with it. That
+> silently corrupts a live mapping, and the corruption is not detected
+> until the owner touches the page. Bugs like that are nearly
+> impossible to debug afterwards.
+>
+> It is not feasible for __vunmap_range_noflush() to just return an
+> invalid-argument error upfront. Its job is to clear PTEs, and an
+> early return leaves the residual PTEs behind.
+>
+> I also thought about warning and returning -EINVAL on the map side
+> and keeping BUG_ON() only in __vunmap_range_noflush(), but the
+> rollback kills that idea.
+>
+> int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+>                 pgprot_t prot, struct page **pages, unsigned int page_shi=
+ft,
+>                 gfp_t gfp_mask)
+> {
+>         int err;
+>
+>         if (WARN_ON_ONCE(page_shift < PAGE_SHIFT))
+>                 return -EINVAL;
+>
+>         if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC))
+>                 page_shift =3D PAGE_SHIFT;
+>
+>         err =3D vmap_pages_range_noflush_walk(addr, end, prot, pages, pag=
+e_shift);
+>
+>         /* Undo the PTEs installed before the failure. */
+>         if (err)
+>                 __vunmap_range_noflush(addr, end,
+>                                        gfpflags_allow_blocking(gfp_mask))=
+;
+>
+>         return err;
+> }
+>
+> If the walk WARNs and returns -EINVAL for a bad range, the undo
+> above passes that same range to __vunmap_range_noflush(), and we
+> BUG right after the WARN. vmap_page_range() runs into the same
+> thing on its error path.
+>
+> So the map side cannot warn while the unmap side BUGs, the rollback
+> drags the rejected range into the unmap anyway. And the unmap side
+> cannot warn and skip either, that leaves the stale PTEs.
+>
+> Also, these checks are the last line of defense. All in-tree callers
+> pass page aligned, non-empty ranges, and I am not aware of anyone ever
+> hitting this line. So for correct code the BUG_ON never fires at all,
+> no user will ever see it. The only one who can trip it is the developer
+> who just passed the bad range, and for him a stack trace right at the
+> spot is much better than chasing a silent corruption afterwards.
+>
+> I settled on BUG_ON here. It may not be an ideal solution, but if anyone
+> has a better idea or alternative approach, please let me know.
+> I would greatly appreciate it.
 
+I don't see a better way to handle this situation but I would add a
+WARN_ON_ONCE() alignment check at the beginning of vmap_page_range()
+too because it is used in some of the exported functions like
+ioremap_page() and pci_remap_iospace(). If someone passes an unaliged
+address to these functions your change would turn a warning+function
+failure into a panic.
 
-On 11/11/2026 18:13, Lorenzo Stoakes (ARM) wrote:
-> From: Chris Mason <mason@kernel.org>
-> 
-> cachestat() can leave cached pages out of its counts. This happens if
-> the entry that the call has just counted is replaced by a larger folio
-> that starts in the same XArray slot.
-> 
-> The issue is that filemap_cachestat() walks the page cache under the RCU
-> read lock, so racing concurrent collapse/split is possible.
-> 
-> Thus, an entry can be replaced immediately after the walk has returned
-> it. When that happens, the next xas_find() skips the sibling entries that
-> point to the slot of that entry, since ordinarily they belong to that
-> entry.
-> 
-> However a concurrent collapse_file() or __filemap_add_folio() (when
-> replacing a shadow entry) can store a larger folio in the slot, in which
-> case the sibling entries belong to the new folio and the walk still skips
-> them.
-> 
-> Consider:
-> 
->     cachestat                         collapse
->     =========                         ========
->     count a 64-page folio in slot 8
->                                       store a 512-page folio in slot 8,
->                                       with sibling entries in slots 9-15
->     xas_find() starts at slot 8
->     and skips slots 9-15
->       /* 448 pages are never counted */
-> 
-> Also consider:
-> 
->     filemap_cachestat()                  __filemap_add_folio()
->     ===================                  =====================
->     counts the shadow entry in slot 0
->                                          slot 0: a folio of 32 pages
->                                          slots 1-31: siblings of slot 0
->     xas_find() skips slots 1-31
->       /* 31 pages are never counted */
-> 
-> Essentially the fact that large folios might be present means we cannot
-> safely continue the XArray walk, and must reset the iterator each time.
-> 
-> Fixes: cf264e1329fb ("cachestat: implement cachestat syscall")
-> Signed-off-by: Chris Mason <mason@kernel.org>
-> [ ljs: squashed 2 commits, fixed up comment in code, and commit message ]
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  mm/filemap.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 7c05e4fad081..c4e82891767b 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -4731,10 +4731,11 @@ static void filemap_cachestat(struct address_space *mapping,
->  		if (folio_last_index >= last_index)
->  			break;
->  
-> -		if (need_resched()) {
-> -			xas_set(&xas, curr_index);
-> +		/* Collapse or new folio spanning shadow entries needs reset. */
-> +		xas_set(&xas, curr_index);
-> +
-
-I imagine this will be a performance hit for the call, as each entry now
-needs a traversal from the xarray root. Might be good to callout in commit
-message. But is the right thing to do.
-
-Acked-by: Usama Arif <usama.arif@linux.dev>
-
-
-> +		if (need_resched())
->  			cond_resched_rcu();
-> -		}
->  	}
->  	rcu_read_unlock();
->  }
-> 
-
+>
+> Thanks
+> Best Regards
+> Hao
+>
+> >
+> >       start =3D addr;
+> >       pgd =3D pgd_offset_k(addr);
 
