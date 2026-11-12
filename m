@@ -1,120 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97E1606A899
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 22:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E67606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 22:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FvnwKqpc
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=iR7XBPOd
 Received: by kanga.kvack.org (Postfix)
-	id 18C166B05FA; Thu, 12 Nov 2026 17:09:54 -0500 (EST)
+	id D78C56B05FC; Thu, 12 Nov 2026 17:13:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 13D026B05FC; Thu, 12 Nov 2026 17:09:54 -0500 (EST)
+	id D50376B05FE; Thu, 12 Nov 2026 17:13:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 051916B05FD; Thu, 12 Nov 2026 17:09:53 -0500 (EST)
+	id C69156B05FF; Thu, 12 Nov 2026 17:13:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CE6736B05FA
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:09:53 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C5007141CAF
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:09:52 +0000 (UTC)
-X-FDA: 85427860224.12.B1E7F53
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id F1BB3180002
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:09:50 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FvnwKqpc;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C57F6B05FC
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:13:16 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6A1F31A1DC9
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:13:15 +0000 (UTC)
+X-FDA: 85427868750.25.309ECB4
+Received: from mta0.migadu.com (out-47.mta0.migadu.com [91.218.175.47])
+	by imf11.hostedemail.com (Postfix) with ESMTP id DA76140005
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:13:11 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iR7XBPOd;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.47 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794521391;
+	s=arc-20220608; t=1794521593;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8gsRbuJEJwCTcibbrdQQs2WldoOZg99Pqbz3RTzOTVo=;
-	b=d5vjQ7tZjhtA0se43MA8yZvk90QYS+8eO7E4yT/CCPS6Im35yhnMH5qi+SJgc2AZlVyQjR
-	MAtwe1QqHCjEZdGHeQssiu4+yQgcqSHV4PJ0QFuka7ogVdvLfANzRQ0a0v1PtSWkqBETSI
-	BXss9MChzva7vMSKH0o4t3PfsZjcGV0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794521391;
-	b=2b3HWlELEI6CLAQEEqspXmtbImlqWTcXrGDgGTn8n/Bui16e9r+dX/YjqGfIC7ZbHl4j8m
-	APqMWxH/9n/DDV5Z5uVy7qV2RrhvqfTvGVFLWI/hOEyKrlondrXnmsTABJgZUewIxFzNyK
-	zB7qhbFVWW6NNexKDJRm1it375ROgpA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=kTdo+kO/ZFnoi8WBOH10hGoTbRODmVYIrrHV4RIL5fA=;
+	b=qy9SYISzI6Br4anMy/L83AFE/s8wUGCChL4MoZTbel9TSIXl4to3vFyfl3NgW4GqZqmx5f
+	P0I0yFBMc7LQcTJW63IquJ2G6r3VpZl5QG6ZmIQ610EEonKwYSsWYMNu4mBirzvnsHkjbl
+	mLCXSvbhnseLRLOgeJTIJhU2aU8X5Mw=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FvnwKqpc;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 460904642C;
-	Thu, 12 Nov 2026 22:09:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 365FB1F000C7;
-	Thu, 12 Nov 2026 22:09:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794521390;
-	bh=8gsRbuJEJwCTcibbrdQQs2WldoOZg99Pqbz3RTzOTVo=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=FvnwKqpcKcEmQoEVSAantOP8U3nowBSKBswXy/Vr/QSEPlk1X0ZZdZLar0FQ88wsw
-	 KDlF+Bz5dPMWSERxJ1zqJ10doktkm+0dbYjflp67dUutw1XEHjbllq+cSkwDBm6sEM
-	 0f9kE/pM1lhAY7MHRP57/G2xZA1ZMLn7vR3Q1Fy7j/f94jocRIuv8SzIKm+kDNAVIH
-	 W2AbY9cNRdpRMxwKO9wfnL7LPiHd0Lfnf+zzrN21K7bD4jjn3mVXuzvlDeqWRAuPf+
-	 rSrIP3Wf/U16flzgKesDUi9UCP67ABHRto7bKZsh6V5Nav+ALWhllSRvdH23vWJ9fK
-	 //489VV0Jz70w==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 12 Nov 2026 23:09:01 +0100
-Subject: [PATCH 5/5] mm: check permissions and bounds for vm_ops->access
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iR7XBPOd;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.47 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794521593;
+	b=wSoupKM2O3/XnrN3mVCU1fshEp/rIhfzrjaBjG1ClbHUWC/jrZ6oXulU45Y/2Das9Jh+uT
+	I2iLxuuMSzwMdbvSpMH75KefZD/7BQ/anG87mJhlCob55+YrpJlKvwWUn7rDmUqS15wc6R
+	qu+juGjlnJU2Ix1w79bmQFBLbp2KYM4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=SBKlid3rP+qCHPEj+Z0hRqE3CyPPTMKLsXSlj3BJE+c=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794521588; v=1; x=1795126388;
+ b=iR7XBPOdi3PTUoK8KvDULKvhl1s0yUfDr3wya71qgiyzwKCjIDkDl0ZTPE9cr3hZwBpTxpvR
+ JrxqBrBaKEYyJlvv3JvUFcATIr1HWVQ1uwTOSoEhD7KT3HFT3Dn8sarewk15ez6bu9ZAg70JjKa
+ es9oipdh1wku6YxiS7Lc9ldo=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 140af9af48ba9318;
+	Thu, 12 Nov 2026 22:13:08 +0000
+X-Mizu-Trace-ID: 140af9af48ba9318
+X-Migadu-Flow: FLOW_OUT
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Dave Chinner <david@fromorbit.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Meta kernel team <kernel-team@meta.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Chris Mason <mason@kernel.org>
+Subject: [PATCH] mm: list_lru: don't use a new memcg's lists for an offline memcg
+Date: Thu, 12 Nov 2026 14:12:48 -0800
+Message-ID: <20261112221248.3512447-1-shakeel.butt@linux.dev>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20261112-access_shite-v1-5-988a5c470db2@kernel.org>
-References: <20261112-access_shite-v1-0-988a5c470db2@kernel.org>
-In-Reply-To: <20261112-access_shite-v1-0-988a5c470db2@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>, 
- Willy Tarreau <w@1wt.eu>, Jani Nikula <jani.nikula@linux.intel.com>, 
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
- Rodrigo Vivi <rodrigo.vivi@intel.com>, 
- Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, Chris Wilson <chris@chris-wilson.co.uk>, 
- Matthew Auld <matthew.auld@intel.com>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
- Shrikanth Hegde <sshegde@linux.ibm.com>, Rik van Riel <riel@redhat.com>, 
- Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
- linuxppc-dev@lists.ozlabs.org, "David Hildenbrand (Arm)" <david@kernel.org>, 
- stable@vger.kernel.org, Felix Kuehling <Felix.Kuehling@amd.com>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- Chris Mason <mason@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3284; i=david@kernel.org;
- h=from:subject:message-id; bh=rMQFgIk3QDIpBHKVD0wAYIXGnRD6cxdJbOe6QfU1m24=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLK+WfyXWNI/bfusvAaWxGWvQhmcd6d/KfNWsdG4HKLxR
- 53BMNy5o5SFQYyDQVZMkSUo+L7By5fraqvd+Jhh5rAygQxh4OIUgIkoaTD8z+FZYK9gU7Xpzhff
- ncV3j5ZUmdun3LVefrx8vvRLHoYgFYbf7JOuhR7dwn5p26sZIjbvf4QH6rQu3+/Df+hmeXU32/4
- iZgA=
-X-Developer-Key: i=david@kernel.org; a=openpgp;
- fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 66qkhwb6s38eixk75hu1twdpsxx94xzw
-X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: F1BB3180002
 X-Rspam-User: 
-X-HE-Tag: 1794521390-307895
-X-HE-Meta: U2FsdGVkX18q3wvHEZ/woU/6413JLHUrR1Ny+g3tClGoy/KlDS0jhsQrZLbJjtUui976l70hB1l1bEpgQbH+bKc2CVRDNRbQW5u0qlMXzYzV+KKrC3ZU7UA4/Xyyu9Ct7gziNsC+H1huJzqbCexGeWarYoz66CQx9YPgT/2EUI6y1ninFEX0+PYsm1M3BSbbYkgm0K2W0CaD/KUO+f6B/CBpc2Rc9YCVopRcKYIoBjhpm5Vzstnlbz8MvmLtzGPU4j6jjFxCWql31LaCWU+io8JfFkkV+/AWp7G92qCgy8pDbumf6jMIWbwIBn2uZCOr0qsHsZRACNnV2KqyXDMhA4RN8vHzcyxO0/LvM8o9eZd5UL9FW2RO+2U2UBetlgwIricjjagfC/yZS51W4vNrEUiFR+26+w7DgdSiA0I+zDKXnsJ04jq3kgRJs5GdXaBAyhhUFDWnKUxj7971HCZofl/Xv20tamq0SzokoEZHtPrOsOWdUlTAZyioSImpckwBcKMzE+BDa8GtW2hWyq58DzEAvVt3kuvElYXT/BSda54vPfhqKuv1TXTZhiNotM3omdfBEZ01KtJeqSOT/tudnFqIYVjRVGYqmTXcgjlFt/+dYGXPIoWBJk4qVJLHjRj50fnTMGGdOJKqUKrxHG9im3r2LUDYinBL1CLfVdotcnxsCxsw8Jmq+ZivNtBHO044JKSOf+0dJUbFBsVsp9Cn/IGsSHnIneJKkJipmZkai7Ne7qgwxe0tKhJQ695VKsRZBxgJUStfSpFZmoSQXf+dwmpozIMyqfCUKMK5LhnfUg4vCx2kX/hu/eO35OCsXnFVGLxVu/8zXL3euAIShiqEs58kvjOntHKjFqLDnxXFgeRA774qzDzZuoaHXI4Q0Ni5ALgzFqBocwHDLFCfM3IY9V46JSYd9CmLN3q1BXEupR9FMzG8wHHcWhwiAmMBd7+Z4HUgkszU4lxO46FzaoH
- gsZrkulg
- 7tGdvr+XncRibJGaNjGy4qq4QEPSlbZz73ZiF93RORR1HFoArUKI8JitW8E1iazpcATcgK0q06vSuiurtH8TCLyuEIV3BGm6dQVYkwZXmhoaNYAkHd6w03ZyjPbcY1OfzIQ/6CdpGpTYolywd67zPwYlbFcr6hy1SLo0JK1EAfWKlIJEGLcSfipKROT1rpKaJY1bnKK/tWYtHaGiJ31pAmPsU2Ef3bdZqjWMrbZdqnyvpjCz4KaQZMp1/BQO1NT6v+9779jbODeSQErboWF/+WPUcvpgMmlerzol/tLb+gaNP6E3f01s9mGfPvWVlASJfzmytzd7stG7qJry7mHmOE2jdg3/1LszgBsHbZKPRn8/sL6zvXqY+29tVvxgiD3LEjb29cUOfStCl62ec0u6TURU59KHIqhjQeO0+HxckxhpELhjXw+KM7ag9lA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DA76140005
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: zo7ri5ku4oiuj9ggmktpmzzi739ote64
+X-HE-Tag: 1794521591-616833
+X-HE-Meta: U2FsdGVkX18ufQQSoS4L2kS3RgFhn24jqwNa7rLwk+ADBeSJ1dVaugTgDNLN0eyF3PBDLfDHX45jrVtOtKGShNfgKOAI6ZjU68kT1edYROqX7NcHQIh9aoYwcOkvO8b9yndHhyHrLlJrTnJQlyTtbZshc+2YAwnkU4YdXjXoF8BCAcANJxx6wfewJmcWBuat0Om5I2VCC3yJ93e67BheYSyfLG4HKRrcd0+xTm8MKLn1Ki55YCmKL0UZyKjqYFzdbNiestLcxVeV49QFJsoiKpBIt2yGHq0emMsQ58KgfdihWHd5SM3rC+vA4FH8em3IQOppaPZufz7lnvvmsD5hNWCkQniftLjb08MAvV6nW2549c1fzoxVptydRgzI8M8C6YBgbq9LyQXoriBQWRtOhdVeWqgEBW4Z2dCMWG+enE5heKkvr511f3w0LzqwSUQDiH4aUuV4P2VJKWCtsTR+A7mWofIEEHY86TwttQtzd0m6Hl6BMWEE5hl9y+9x9y+S6LnFmNYRAkgmpYRWIZm++fC2xC/b2mStHPiRVGSi7ptbPE4rQA8OjRfhnup3j54XE0EEPl9cW5gasEn/6Op2puytU+fEb+EmJ491uGgi3I1bwEE8nJQPuLBfX8yjV+TBPmJ4ZEwlEP9rY309+LlXOkCDgCDV1Hrkjon3O6cjSCk11jHRjC7ne3q+OS4lLRGGQI7jDQ33jqJzsf0wdsZ7Naj13K2d5nFqj/638DZqG4OxA/8XmVa6dzQZGxofZHZyTLtV6RSOx8AOnO9x1PighOGYB8iJEyOIurrfFNnJCD/kwSldWejqvLt5ffXePZFZ6XchBF0PdexboN+Uo+JQQmRRcWS2dJf921GkXK80htVX9X0FDBiNK92aaC/kQC22p9f9OxaT/ghgSazPx0m3yDLtRo0dagOGsljjA8JoH/UznYnFE/gBP3WoPM/GOscJMawz/y/CXTJb+4pvhLL
+ RXzLi3KR
+ +KMrUmGFYxSMuqtbUpDB2Ii9zN0PggMPb/iDx2ucmEERKzircPgdl2emzAoI/RYidrQk5jkKM0nuTBmlwhBHRc92ceD3nILw74/fC750/s9xRKWSlzjFTVAKhi/+uHcCfaN1L2B3XBdpmnJ67rhC3dJV7OOENksF3W4Hdel9O2SlfDrdLOZG2uMzyKYqA3s9gesg0B7oLi5bxBDS44KU7IsebmemOZDukT+eIv88pWXzegTjJA6EE9AdN99VuwvRoF9kfkYn0ISkCug6+UeHxs+HIwIMOi24N7aH75ammlJxkIKmq7deRerEhF8upXZq/sgVrU5+xIDiU/bE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,93 +98,121 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-GUP rejects VM_IO and VM_PFNMAP mappings early. __access_remote_vm() then
-falls back to vm_ops->access without checking VMA permissions and without
-limiting the request to the VMA size.
+A memcg's list_lru lists are found by its kmemcg_id, which is its
+private ID. Offlining a memcg moves its lists to the parent and frees
+the ID right away, with no RCU grace period. The next new memcg can get
+the same ID and allocate its own lists at that index.
 
-Consequently, /proc/<pid>/mem can bypass protections even without
-FOLL_FORCE, or cross into another mapping without checking its
-permissions.
+A caller that holds only the RCU read lock, such as
+__folio_unqueue_deferred_split(), can still hold the offline memcg. If
+it is preempted until the ID is reused, it then locks the new memcg's
+list and unlinks a folio that now sits on the parent's list, without
+holding the parent's lock. A concurrent change to the parent's list can
+then leave a pointer to a freed folio on it.
 
-Check VMA permissions before calling ->access and limit each request to
-the current VMA. Implement similar access permission checks as GUP,
-however:
- (1) Reject writes to CoW mappings because the callbacks access backing
-     memory directly and cannot handle CoW.
- (2) Allow forced writes to non-CoW mappings with VM_MAYWRITE.
+Users see list corruption reports, crashes or silent memory corruption
+when memory cgroups are removed and created while THPs are freed, on
+kernels with preemptible RCU, which is the default on x86 and arm64.
+They can also see a warning from memcg_reparent_list_lru_one() when the
+new memcg is removed, because the wrong unlink made its count negative.
 
-This intentionally breaks forced writes through legacy amdgpu PROT_NONE,
-MAP_PRIVATE debugger mappings. The workaround in commit fa5239f2af98
-("drm/amdgpu: workaround failed COW checks for Thunk VMAs") cleared
-VM_MAYWRITE to avoid CoW, but debugger writes still succeeded by
-exploiting the missing access-permission checks fixed here. Reads remain
-supported. Userspace must use MAP_SHARED instead; ROCm 5.5.0, released
-in May 2023, already does so.
+Fix it by recording the owning memcg in each list_lru_memcg, and by
+treating the index as empty when its lists belong to another memcg. The
+lookup then moves up to the parent, whose list holds the folio.
 
-Link: https://github.com/ROCm/ROCT-Thunk-Interface/commit/fea44fab6e84eda52fcf6b419b35600c18f4c022
-Fixes: 272ddc8b3735 ("proc: don't use FOLL_FORCE for reading cmdline and environment")
-Cc: stable@vger.kernel.org
-Cc: Felix Kuehling <Felix.Kuehling@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Simona Vetter <simona@ffwll.ch>
+Fixes: 28e98022b31e ("mm/list_lru: simplify reparenting and initial allocation")
 Reported-by: Chris Mason <mason@kernel.org>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
- mm/memory.c | 25 +++++++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
+ include/linux/list_lru.h |  2 ++
+ mm/list_lru.c            | 18 +++++++++++-------
+ 2 files changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/mm/memory.c b/mm/memory.c
-index d4370c1b331c9..9872f289c1e49 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -7362,6 +7362,7 @@ EXPORT_SYMBOL_GPL(generic_access_phys);
- static int __access_remote_vm(struct mm_struct *mm, unsigned long addr,
- 			      void *buf, int len, unsigned int gup_flags)
+diff --git a/include/linux/list_lru.h b/include/linux/list_lru.h
+index a450fffe1550..6ef5bc539606 100644
+--- a/include/linux/list_lru.h
++++ b/include/linux/list_lru.h
+@@ -38,6 +38,8 @@ struct list_lru_one {
+ 
+ struct list_lru_memcg {
+ 	struct rcu_head		rcu;
++	/* owning memcg, only compared and never dereferenced */
++	const void		*memcg;
+ 	/* array of per cgroup per node lists, indexed by node id */
+ 	struct list_lru_one	node[];
+ };
+diff --git a/mm/list_lru.c b/mm/list_lru.c
+index ca8de3793166..560190d5b348 100644
+--- a/mm/list_lru.c
++++ b/mm/list_lru.c
+@@ -72,12 +72,15 @@ static int lru_shrinker_id(struct list_lru *lru)
+ }
+ 
+ static inline struct list_lru_one *
+-list_lru_from_memcg_idx(struct list_lru *lru, int nid, int idx)
++list_lru_from_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg)
  {
-+	const bool force = gup_flags & FOLL_FORCE;
- 	void *old_buf = buf;
- 	int write = gup_flags & FOLL_WRITE;
- 
-@@ -7401,15 +7402,35 @@ static int __access_remote_vm(struct mm_struct *mm, unsigned long addr,
- 			if (gup_flags & FOLL_ANON)
- 				break;
- 
-+			if (write) {
-+				if (!vma_test(vma, VMA_MAYWRITE_BIT))
-+					break;
-+				if (!vma_test(vma, VMA_WRITE_BIT) && !force)
-+					break;
-+				/*
-+				 * In contrast to GUP, we historically allowed
-+				 * FOLL_FORCE write access to non-CoW mappings.
-+				 * However, we must always reject CoW mappings
-+				 * as we cannot CoW here.
-+				 */
-+				if (vma_is_cow_mapping(vma))
-+					break;
-+			} else if (!vma_test(vma, VMA_READ_BIT)) {
-+				if (!force || !vma_test(vma, VMA_MAYREAD_BIT))
-+					break;
-+			}
++	int idx = memcg_kmem_id(memcg);
 +
- 			/*
- 			 * Check if this is a VM_IO | VM_PFNMAP VMA, which
- 			 * we can access using slightly different code.
- 			 */
- 			bytes = 0;
- #ifdef CONFIG_HAVE_IOREMAP_PROT
--			if (vma->vm_ops && vma->vm_ops->access)
-+			if (vma->vm_ops && vma->vm_ops->access) {
-+				bytes = min_t(unsigned long, len, vma->vm_end - addr);
- 				bytes = vma->vm_ops->access(vma, addr, buf,
--							    len, write);
-+							    bytes, write);
-+			}
- #endif
- 			if (bytes <= 0)
- 				break;
-
+ 	if (list_lru_memcg_aware(lru) && idx >= 0) {
+ 		struct list_lru_memcg *mlru = xa_load(&lru->xa, idx);
+ 
+-		return mlru ? &mlru->node[nid] : NULL;
++		/* Lists at a reused index belong to another memcg. */
++		return mlru && mlru->memcg == memcg ? &mlru->node[nid] : NULL;
+ 	}
+ 	return &lru->node[nid].lru;
+ }
+@@ -91,7 +94,7 @@ lock_list_lru_of_memcg(struct list_lru *lru, int nid,
+ 
+ 	rcu_read_lock();
+ again:
+-	l = list_lru_from_memcg_idx(lru, nid, memcg_kmem_id(*memcg));
++	l = list_lru_from_memcg(lru, nid, *memcg);
+ 	if (likely(l)) {
+ 		lock_list_lru(l, irq, irq_flags);
+ 		if (likely(READ_ONCE(l->nr_items) != LONG_MIN)) {
+@@ -132,7 +135,7 @@ static inline bool list_lru_memcg_aware(struct list_lru *lru)
+ }
+ 
+ static inline struct list_lru_one *
+-list_lru_from_memcg_idx(struct list_lru *lru, int nid, int idx)
++list_lru_from_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg)
+ {
+ 	return &lru->node[nid].lru;
+ }
+@@ -313,7 +316,7 @@ unsigned long list_lru_count_one(struct list_lru *lru,
+ 	long count;
+ 
+ 	rcu_read_lock();
+-	l = list_lru_from_memcg_idx(lru, nid, memcg_kmem_id(memcg));
++	l = list_lru_from_memcg(lru, nid, memcg);
+ 	count = l ? READ_ONCE(l->nr_items) : 0;
+ 	rcu_read_unlock();
+ 
+@@ -502,11 +505,10 @@ static void memcg_reparent_list_lru_one(struct list_lru *lru, int nid,
+ 					struct list_lru_one *src,
+ 					struct mem_cgroup *dst_memcg)
+ {
+-	int dst_idx = dst_memcg->kmemcg_id;
+ 	struct list_lru_one *dst;
+ 
+ 	spin_lock_irq(&src->lock);
+-	dst = list_lru_from_memcg_idx(lru, nid, dst_idx);
++	dst = list_lru_from_memcg(lru, nid, dst_memcg);
+ 	spin_lock_nested(&dst->lock, SINGLE_DEPTH_NESTING);
+ 
+ 	list_splice_init(&src->list, &dst->list);
+@@ -602,6 +604,8 @@ static int __memcg_list_lru_alloc(struct mem_cgroup *memcg,
+ 			if (!mlru)
+ 				return -ENOMEM;
+ 		}
++		/* Set before the lists are published, and never changed after. */
++		mlru->memcg = pos;
+ 		xas_set(&xas, pos->kmemcg_id);
+ 		do {
+ 			xas_lock_irqsave(&xas, flags);
 -- 
-2.43.0
+2.53.0-Meta
 
 
