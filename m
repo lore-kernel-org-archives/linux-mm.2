@@ -1,91 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17488606A32A
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 18:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F15606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 18:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=EbBhSSYh
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jIyJXJHC
 Received: by kanga.kvack.org (Postfix)
-	id 34FCC6B05B6; Thu, 12 Nov 2026 13:15:35 -0500 (EST)
+	id BDD136B05B1; Thu, 12 Nov 2026 13:16:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 301766B05BB; Thu, 12 Nov 2026 13:15:35 -0500 (EST)
+	id B8E176B05B3; Thu, 12 Nov 2026 13:16:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23E9B6B05BC; Thu, 12 Nov 2026 13:15:35 -0500 (EST)
+	id AA4BB6B05B4; Thu, 12 Nov 2026 13:16:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F1CD46B05B6
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:15:34 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 656331A07E5
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:15:34 +0000 (UTC)
-X-FDA: 85427269788.27.8783587
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1666240012
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:15:31 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=EbBhSSYh;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf07.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794507332;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ec7ksqE5j1xr/gXWS49S8KE9vtv5SLUNhac3dhFnc4w=;
-	b=4v7kGaCNz1HhiblMD1ypsh110XKiUISTdHTqnqyj6G4hlSZ3fmKX5LqpRho6SfGAshVCuL
-	fYZA2fUUvmgWNBiVrCIY+LCVOgLput0o4hgoaaL9+RU1MSkbqDzfWAwtHghiGD1wuh47ZK
-	kMLYHeXeNIRmVx669gjWgaimzhpRxfM=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=EbBhSSYh;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf07.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 766346B05B1
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:16:29 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DC325A072D
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:16:28 +0000 (UTC)
+X-FDA: 85427272056.19.EEEE0C5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3A105180008
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:16:27 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jIyJXJHC;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794507332;
-	b=S1e46EuyaoNNz5+QRCffjja68S1vIC0IPKE1nerKnu/GicgfYfgIxVFzzvY4eFTDrCrswS
-	I8ApW3711McAlH//Fybhu5m1kfqJplid9clB4pD44+qw2cvCSmJNL3hZFA/yH1PJBXLcSj
-	LA4BLWJuMV8OWqim84WjWRJGdjXX9GI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Ec7ksqE5j1xr/gXWS49S8KE9vtv5SLUNhac3dhFnc4w=; b=EbBhSSYhiUr1r4pefun4FGpnsq
-	7/UasVlP4zd+Edl+hqoAfKFDoBMx6RUk3SkmaEreYrp8HRCjKawMZ6kPRbsEnCchjYhPh4TSbJe+w
-	sMFLgYz5pt6qdb69Ccngi2KjlR0uUqDTkbMZzAGEyDQSvbW2rU/W3Gdgnjny5bBXqfJzLZXILUXyt
-	+Fd7BK5GjiV3yJTkv23yOJD5eGo4qCLs+Bx9ASpYsEbcKZyQ5Lz2hhrywwhP7J90NjG9g8V3RCmaF
-	dkA08F0PMUFNwewouccIs8GGboV+wJLKdn7UQcswQk+zATK5qQBL5JAkaPfCVBiSjFU5/4M1A3Wvg
-	YFlgFTvA==;
-Received: from willy by casper.infradead.org with local (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRZKb-0000000A4en-2Sbf;
-	Thu, 12 Nov 2026 18:15:29 +0000
-Date: Thu, 12 Nov 2026 18:15:29 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Jan Kara <jack@suse.cz>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	William Kucharski <william.kucharski@oracle.com>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>
-Subject: Re: [PATCH RFC] mm/filemap: fix lseek() skipping a new large folio
-Message-ID: <avYCQdIFg5EejtDG@casper.infradead.org>
-References: <20261110-lseek_hole-v1-1-c089c960b846@kernel.org>
- <wkpls4kiwl3ktyu5ekahlchabnaqq45o4tgv26cmrs552ljse4@oczec23ankdt>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <wkpls4kiwl3ktyu5ekahlchabnaqq45o4tgv26cmrs552ljse4@oczec23ankdt>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1666240012
-X-Stat-Signature: ca4so87aipbjoe9rskh315wn3uw4eipb
+	t=1794507387;
+	b=U83P5baeDHDDYDCIFDf7E+v9pSQBdyqauSqAU47iHLKSBwiD0RBH4vOVwn85c2kyvNTlZo
+	cmWOogaK7+j6F2DA4j+QhIcyfkNhrcNyPJyuX76Oh23r7T1gP4wIvqISAwITkmi6Az9BY7
+	IDAh/AJezRFCXNvpcrYR0i2CupXrHao=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jIyJXJHC;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794507387;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IjjBfepTHESBzybKek48HWdLoC2qHVxXikPtLv9Tp1I=;
+	b=oEiRJ58x4kQB039SfiNhwT5v5lNP2NmAZHhlrBDjNnF3kuAJl4l1rnnYKYboryKpOWXyNq
+	uwp1racAtot2nSJpQmQ6Acp4eCJRacyV5kbXhsjwOQYeTHqRM6oZVgfgJJCz4Bn8MSzkGV
+	uGrpHUTYRf3JuIjXYr3NqFCxRE+ZL3E=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5D77D448DB;
+	Thu, 12 Nov 2026 18:16:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3EE31F000C5;
+	Thu, 12 Nov 2026 18:16:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794507386;
+	bh=IjjBfepTHESBzybKek48HWdLoC2qHVxXikPtLv9Tp1I=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=jIyJXJHCqbOqmG+izvjlOBnXlE7wOm1n8z5PhVlSeO4vWUGat4EtZBY6jVaUafyuU
+	 J3Iu3moi1JxstdxBWLplr2o1UKn/gvwBVUAeeOk34mSykefqHj/6+Xik1wjXo9TiFW
+	 WPRM3rc8TN49IV8dyc0x6nuarOtdJUrTSyexIEUXcfX2e5aF03pb2+oy+zBI1LF7pr
+	 hVLj8v3nZLMeaRHBE+wMT4CtgfS7dUMPKIy8LO0d4XWsSBuhIno68rJ2Xqc1BwK/f+
+	 LK+YvBeHVhWFhk7K5ffg+lwn+TRAcvZvgibJjGJvu89QX+ekYKgM/+0cFR3R+QLua9
+	 nNgT7QRDhbcvA==
+Message-ID: <sashiko-outbox-211675@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 04/13] mm/migrate_device: allocate THP deferred split
+ heads
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?TG9yZW56byBTdG9ha2VzIChBUk0p?= <ljs@kernel.org>, "David
+ Hildenbrand" <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Vlastimil
+ Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "David
+ Rientjes" <rientjes@google.com>, "Shakeel Butt" <shakeel.butt@linux.dev>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Jann Horn" <jannh@google.com>, "Pedro
+ Falcato" <pfalcato@suse.de>, =?utf-8?b?TWF0dGhldyBXaWxjb3ggKE9yYWNsZSk=?= <willy@infradead.org>, "Jan
+ Kara" <jack@suse.cz>, "Nhat Pham" <nphamcs@gmail.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Zi
+ Yan" <ziy@nvidia.com>, "Matthew Brost" <matthew.brost@intel.com>, "Joshua
+ Hahn" <joshua.hahnjy@gmail.com>, "Byungchul Park" <byungchul@sk.com>, "Gregory
+ Price" <gourry@gourry.net>, "Ying Huang" <ying.huang@linux.alibaba.com>, "Alistair
+ Popple" <apopple@nvidia.com>, "Usama Arif" <usama.arif@linux.dev>, "Kairui
+ Song" <kasong@tencent.com>, "Balbir Singh" <balbirs@nvidia.com>,
+ =?utf-8?b?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>, "Kiryl Shutsemau" <kas@kernel.org>, "Yu-cheng
+ Yu" <yu-cheng.yu@intel.com>, "Dave Hansen" <dave.hansen@linux.intel.com>, "Dennis
+ Zhou" <dennis@kernel.org>, "Tejun Heo" <tj@kernel.org>, "Christoph Lameter" <cl@gentwo.org>, "Peng
+ Fan" <peng.fan@nxp.com>, "Josef Bacik" <jbacik@fb.com>, "Chris Mason" <mason@kernel.org>
+Cc: linux-mm@kvack.org, =?utf-8?b?Qm9yaXNsYXYgUGV0a292IChBTUQp?= <bp@alien8.de>, "Mark
+ Brown" <broonie@kernel.org>, =?utf-8?b?RGVubmlzIFpob3UgKEZhY2Vib29rKQ==?= <dennisszhou@gmail.com>, "Rick
+ Edgecombe" <rick.p.edgecombe@intel.com>, "Josef Bacik" <josef@toxicpanda.com>
+In-Reply-To: <20261111-mason-migrate-et-al-fixes-v1-4-3d2454362e8d@kernel.org>
+References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
+ <20261111-mason-migrate-et-al-fixes-v1-4-3d2454362e8d@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 12 Nov 2026 18:16:24 +0000
+X-Stat-Signature: zbqhjpdg5xw3x964y7fw7i3o8e65nzso
 X-Rspam-User: 
-X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794507331-715806
-X-HE-Meta: U2FsdGVkX1+jnyKG32LpcjCueGZ1mYYr3z67/lL7hCHhYIimHQBP3zqk7iprkNlnAsZy6E652H1iI6FlEO1rqAX3CKnuXq4K5FYq7SROPOU+9Kt7SmFqHcpAyua+LopgX49j+lKolEnR9Wg8je6QB1dYAA4PodETbzPtpde86jWQT6P7rOi4ER1FEo7mesHcP3XrKF9ve9RCgnh7ttnRlkO+kGoj/m2mMPJsjTgRE/jnsM4VTYnpQm75j4nrH8urSSaEY+yZyYCT1B2/YDe8AStVYlnEEtxmssjCdKcSVs2/ey7i1l7HvQ1dy7oipXfYQc7b44ZmaovxJiLd5lyZSRTQ9+49SZT6tZjGkVLKI4fid2CbLCl6LeODk05cKDFIDq+2LaBjBOwnH9pcTaNq/kjB7Wobg9ru+L9QO/jpvAnDnbo+EQCopC2uHdkV+Xz41PofcE8qdNaoHtDiregT6GbvdzdqBh40TqsRTaDl4vtMKns7ipH9gAa0lQDeSmuA3hgdQzn9w4OvunBdw/AngaXARyz5+8frqralXQYYVK4g66tNeYCVJ1WC7dzvTE7Xlnxs19mSLLN9cMgo2IOABl2k80UFiVsFnV4e2E6fw4uqsaQi8Zqo7R0e/lQRr8N0gZHROeotNDWEfO8BeVc/OhqRy4L0VEJO8iBJNWCKCxarnzezQcg8PlPg5g/p9b3Iw9UUVCgXKQfhi91Z4n/QYv06YLehz3dxDoR7i58mv0kyZ4M2hcKK4CKMjacDrd7KGIwOM7OCfBOlYWCsSqxm/AqpyUQS8hj/+yjnDb1v38kP3Z0p7THlizayZaiRvZQTzASFtvv/iM9UgORyf+IQd5ic6kMde4k0rWuuvsjMv0/4764jgQi8hOq+e4YXe0GtJpJYuIDyHN3uWNvdcI/aCEfPvvSBFNaznlULWc4s/9RgRGcmXn4aacHk/8qd/vO9t6JuFZQ5Krl2rIF6Kvs
- PPTnxbvE
- u5Gp7MWouNYxIGVXQUgMOYD82+J8Wp+Jk9UPu0VjUNQrqPxqCA+2vnwnnkuX45fz6SLxRIMOm/9JFfbSuFasmcfY/4jfaa178EKw+Y+qma2rWbqKx2z5NqBPxWeNfvQ6PDbVTIG3QeBcxZWt0OlJLm83L148k+TUMJMv/6wNpRrIy+E1+KOwsDDM9TVG1JUDdIkgwtdMChCHjboEUEf+SmQjMARZycGX6pUKIkSVJscmG1inzkx/qZ8jn7Q==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3A105180008
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794507387-206598
+X-HE-Meta: U2FsdGVkX19BYxkAok6XUol/9iWP3Svq7kwq53352dtXPyll80UWMA4gWIDPQ9sIvjklhs/vJVgo9I5nZ6L601h0/fb9zqrRbiGz69T+Be03QUDedbkdRwkcEmuPOFP+PQWTF9Lq2HeEcDVZ805A8ws1zokSgU1To83fSv0ucpRnykooFXiJZ+JKds8maXUhMBqKINMjoD7NS/58M8izsuF6FZYzXqSJj2IBslLFOKPnNRBGgJPTdSaqcX9lOqJS5LDPsAml8ZMqmA8qekQeoQxQYJyOahpPfMMcbU9eTKXrozPIv2DErRcAXyfmEk5QaGAWabBqVgNy8AHBk2GTykODnZlseRCnOCTDx5jcnRM3YKJrcck5AD/fKJqKu5pktdgc2CB+O1ZCTEGLb54MPUurRrYYtjnF9v57GeNKkq+WdNUvsmlarlUInHkK7pnt3SjNOdnNzasGCTLTrB6S0JKo8Hg+O2TAyhk+SZVEcXxuNB2h1b/ZYjGu4F+/7pW5bE9+uwh6s7KvvB9eJk6hUpcQwN1QZHyQ5gY31J4/UHLk/ZhtZBhspqSmJjq7IoM0RLmrH+eY9dSX2J+UcMx7lzYP0aNoXs6HtUzODMa21giE0S4oWLe6l5JngL+BQrtTt3+lvKgUWPLYk4KnQDlDZKFahyuDIxM5nSKvJKCUCgllDU6mbgj+mzD8Gtua3Eqmx38fMYRZSgg/zDifm5t8yi37GhSXGqLjp1/KO63YUQG6JQ4CVNYHUDg2y79Hg0QXWmt+XSJI8S4e451/GJZJQSRpQYXJzNzTyMAqw6gE1DZJIWw1jd2E8o1UMWogR4WOM91cYkgN9anHppiqsdkSigqyxSyKF1/QcBEwOnhFpCfMyBBRBf3a5X/O/gehsxjcbDZtTt++STkupcozXVHgcOaqgpuv7kBdB9uMEUZSrS2DYKPLgug5jMt0AEN4K9GHEFraytiq3U9a3gvLQd/
+ ZjyitXaK
+ VJmuhys6FmqBVQpcr32PZOWgZosi4u82TfaAJHuwQ3qdCprU60YKlHXYV1obfksChztgyNLPj2nm4Sp0t98mv/95GihyzdEHXCdKdGiCM4X2oKZXqz7EkoesgxMyxyfYqcmVwEotjYgiTm87Hd/bc1bCjAuB0Kbq1Kh26TEEWFlIJcqO/JW6XDnx4L0SCg1apDmC0CjnR0XXP4kMbikFyWqzYrhPwpfnk41dev1Gv99jNuwQgBNbKun4Stzl2RV6fmcuSOlEo6Jp3zmnRzKhEMqsF01gAuW+RM5C9h7t24kQTRzT43wKDETDEdDl79+1/9/kJHZNVESBoonScFaAJZp1CWekkmF7AjgkKW2rxlTPacJJ94JcU+yBxE57Mzh+HcrjnP5rgCyukGzZCJaeoHa4+oj8y/bBH5J8ZvrELWL8YLpmlP3ZN2iVzAE1LRcIGhc0xswyNxVpGRlNvCuz41kIHpkwa5NBBsYYFnZBUahTI6IoUiU8PNr30f8rtmriIA7LSfb5MsD51Kn096o88IO3rnpMvXMZ33PuS+8nVccMdcSepaZDVGwf81ocKSh8nrOFSdZ5e09S8WCSXyUXH41sOyN32onKbIAIw7PY7AvmjptAFmVhD0yR9MQnWVydi8uADd/1LE6Prufwejc3v3BATJdeCYN4XAGr6K30w2KpbLlV0LF6ghHrLflLDMaVt36Xt+j3vjPJk+fl9SXRfhRSvOPmTkt6KjpBmBnhkL3hM1irxHkwhzQ3HEON/GVosKyqrioxrbIwK2XQpl62qolivhGi+qtB7TXGr2d0HwjjYNQuId+NaZl/x9Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,15 +110,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Wed, Nov 11, 2026 at 12:45:45PM +0100, Jan Kara wrote:
-> I just find it unfortunate that we have to play complicated games like
-> these for such a simple operation as sequentially iterating over all folios
-> in a mapping. And it is not a first bug of this nature trigered by
-> compaction. So longer term I believe we need to provide saner apis
-> shielding pagecache users from these nasty details.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] mm/migrate_device: duplicate folio_memcg_alloc_deferred() call
+  and dead store
+--
 
-I think the long-term fix is to switch to the maple tree as the backend
-of the xarray.  Then there is only one slot for any folio and we should
-be able to unambiguusly iterate over all present folios.
+commit fe6e0150a0f9ab0dcf43e8c18734d603b5d63191
+Author: Josef Bacik <josef@toxicpanda.com>
+
+mm/migrate_device: allocate THP deferred split heads
+
+This commit calls folio_memcg_alloc_deferred() after charging the folio in
+migrate_vma_insert_huge_pmd_page() and falls back if the allocation fails.
+
+> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> index 7919e04abc1c5..edcc13edbf6af 100644
+> --- a/mm/migrate_device.c
+> +++ b/mm/migrate_device.c
+> @@ -840,6 +840,13 @@ static int migrate_vma_insert_huge_pmd_page(struct m=
+igrate_vma *migrate,
+>  		goto abort;
+>  	}
+> =20
+> +	if (folio_memcg_alloc_deferred(folio)) {
+> +		count_vm_event(THP_FAULT_FALLBACK);
+> +		count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_FALLBACK);
+> +		ret =3D -ENOMEM;
+> +		goto abort;
+> +	}
+> +
+>  	__folio_mark_uptodate(folio);
+> =20
+>  	pgtable =3D pte_alloc_one(vma->vm_mm);
+
+[Severity: Low]
+Does this duplicate the folio_memcg_alloc_deferred() check that commit
+ccb36031e6c7 ("mm/migrate_device: allocate deferred split sublists for new
+huge folios") already added immediately above?
+
+mm/migrate_device.c:migrate_vma_insert_huge_pmd_page() {
+    ...
+	/* The charged memcg needs its own sublist before deferred splitting. */
+	if (folio_memcg_alloc_deferred(folio)) {
+		count_vm_event(THP_FAULT_FALLBACK);
+		count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_FALLBACK);
+		goto abort;
+	}
+
+	if (folio_memcg_alloc_deferred(folio)) {
+    ...
+}
+
+This calls folio_memcg_alloc_deferred() twice in a row.  In addition,
+setting ret =3D -ENOMEM before jumping to abort is a dead store because the
+abort label clears MIGRATE_PFN_MIGRATE and returns 0 without reading ret.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111-mason-migr=
+ate-et-al-fixes-v1-0-3d2454362e8d@kernel.org?part=3D4
 
