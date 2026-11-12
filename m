@@ -1,91 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01906606A321
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 15:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A024E606A323
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 15:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.a=rsa-sha256 header.s=20201203 header.b=NXiLHoKt
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lN0NhBYF
 Received: by kanga.kvack.org (Postfix)
-	id 0136B6B05B0; Thu, 12 Nov 2026 10:00:01 -0500 (EST)
+	id 25DC96B05B1; Thu, 12 Nov 2026 10:00:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F05ED6B05B1; Thu, 12 Nov 2026 10:00:00 -0500 (EST)
+	id 1C0176B05B3; Thu, 12 Nov 2026 10:00:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF4FE6B05B3; Thu, 12 Nov 2026 10:00:00 -0500 (EST)
+	id 0AF846B05B4; Thu, 12 Nov 2026 10:00:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B416A6B05B0
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:00:00 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AC704A8225
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:59:58 +0000 (UTC)
-X-FDA: 85426776876.27.BD2DAC1
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 00F89C0004
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:59:56 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=NXiLHoKt;
-	dmarc=pass (policy=none) header.from=lwn.net;
-	spf=pass (imf10.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C60256B05B1
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:00:01 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4CC8016059D
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 15:00:01 +0000 (UTC)
+X-FDA: 85426777002.10.BB930E6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 45B2F1C0002
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:59:59 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lN0NhBYF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794495599;
+	b=xs81+AOtZfjuafHcPjcnKKF3eC47OUNSnZFIjnWiJXUybPUorN9kjm9InX6gu14RgsCISk
+	61fC8FCJLpN6+MxaAcWH8bmZltQyNPpFQ3wFcj+n3NWt66QN1V2IquE+Uf9O/hIz+eGDRE
+	B8IxatijSFnup0/R1b1+j3G42JzjlZg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794495597;
+	s=arc-20220608; t=1794495599;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=46aJ+NZelMiSr8EhCGm9t3xZEQJS5co1bb36uQP2WSw=;
-	b=JmI+Jv8omz6t60w+7AXg/rSdZRBbl4wJu+Oa9Vt3n1L0qek+dQcRkRycjgqSDEH9VbSbuB
-	ycwXxUfYaahvp43JMRRxERWPFIaWN+FBfTjqOWyoQ+PZSVjjhsaob2FTdl4FPYSmiPkjSy
-	zNrAlYE9oF6PwTXSX6FuYf5UMZP3MFo=
+	bh=92f73/9CRUvx1XycGVQ0WiOmwZv9qXnh6P99S8eFYaw=;
+	b=cnqlzpNxMLkQgQ/tQzHt1LV6drChhM4X6VvQiZP0WcjhbcLd7buyxBfIC4m9SnKbbJU1FL
+	Ryh6F5t8C2busD5seVyfNOYr+L48V+BWRa/hD2eykwTK6bdquuAwTFSpaSJ7/hR0f9yMP2
+	ZxLa3+ZSPVobauRHDZ3QduA8wRb/DMw=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=NXiLHoKt;
-	dmarc=pass (policy=none) header.from=lwn.net;
-	spf=pass (imf10.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794495597;
-	b=j14A5deu2VB9GhetJXc/10/LvFZ0g8ixcuEDj8ip/a2lVEPNt39HoIL8YdXhmvEohhiRvo
-	9GjJTdBYGw+/ta/zNjZL0Zvt6WDTyoX66ozQV8CcBk9Eu5Qn6gq7hiJ3+eps76KE3ojKX+
-	wb63JWdLO8LXZ+yagMHm5D+v2XE5A+8=
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 11E5B41099
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1794495594; bh=46aJ+NZelMiSr8EhCGm9t3xZEQJS5co1bb36uQP2WSw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=NXiLHoKtFO2RgHx7eYlhrXUtXMV5x5VNuCRyC6gAdstMKcNRxFsLQQn19fUFgroDk
-	 QmkyyQnlu6xdG1SudH0IHLgz9yHS4NfRTRGPcd3gMN9o3GS8t7du3Ds4dhNlJEuTic
-	 SZNZzeU7Qtgr3L+ngVufeLJjterSxycCFcEDM8J4xVjct4qu8NpBjKK6o/GuSqSgy9
-	 NA42OWDMxNYmD/d3vbTXAC6ccmySFCXuhZg0kcDvgtxl3rZGTr2W5MKR85iMrcLr8U
-	 QP6sZgXUYEDrMccS4M1wB2rxEDah4ibJCdIunLXCJPsy82kTXwwjWs7R6RLzYqY340
-	 VRCUuXHjk23HQ==
-Received: from localhost (unknown [151.38.237.230])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 11E5B41099;
-	Thu, 12 Nov 2026 14:59:53 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>, Bagas Sanjaya
- <bagasdotme@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v2] Docs: mmap_prepare: don't italicize structs
-In-Reply-To: <20261102175619.2274135-1-rdunlap@infradead.org>
-References: <20261102175619.2274135-1-rdunlap@infradead.org>
-Date: Thu, 12 Nov 2026 07:59:50 -0700
-Message-ID: <87zeve5c49.fsf@trenco.lwn.net>
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lN0NhBYF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B1D1060E90;
+	Thu, 12 Nov 2026 14:59:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2AF41F00A06;
+	Thu, 12 Nov 2026 14:59:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794495598;
+	bh=92f73/9CRUvx1XycGVQ0WiOmwZv9qXnh6P99S8eFYaw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=lN0NhBYF6MSKjwH4qYrBxBtqWs0Srd63fM+L/w2MB8LbaCOatU+NrC7u46gDPBkeg
+	 pnlQhsC0EhtKTFXG2APIyZ8Rx9dSVCz+PudoDUDo2d3D0EZV5nk1C0umAptzosneHe
+	 +tMYIslnzpPAUpz3+myupN1WYH5W/mm2+W8nzBy4tyTyYbaziFBJFr3VIpgb1IitdX
+	 hASwn853Zb6lDdRl11B6IQGOcajCwcxixVDlsa2Zn6FMDj1+/dNr6KbduVQ1gsPxke
+	 zudTNMlTNCdNmWO9R6vGZot73PY0mVnrbobchYXKN5/kcwppN2tmE+t1EiT64Gb5C+
+	 zToVuovfuptdA==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 6E27C198003A;
+	Thu, 12 Nov 2026 09:59:47 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Thu, 12 Nov 2026 09:59:54 -0500
+X-ME-Sender: <xms:YtT1an4cxLHamg5sYIcUVoA0XrEkaAEGbO6Ar5TZXRLLHdST1ac3hw>
+    <xme:YtT1aoL6UqLIiqvXjyDEvc1EkEq8-L3J1rBlN8paZ18P2DDsllZQGtA-3z4XcwXep
+    wspR9RrWKz9zfJGNooamnjEKjy7G4ng2Y9KY_KLDFWt4KvgsHvGmQ>
+X-ME-Received: <xmr:YtT1auuYmqeLlOqp9qgg-q4x4paBIcUo1VV2zHMrTGvVlv4cOMbqGLCGI7s>
+X-ME-Proxy-Cause: dmFkZTFFtf/isF8asN8syO9R8D7ImZyw9S7EENZhVbdmJZv7Bj/fwggTGDjuxjfSxGmHz9
+    SfzDwNAGDgi5AT/uPeOC8SB5U2EOL8l1kHKnEd4mgcL3Y0LUEnmx1xI+31otE1VjQpc08O
+    FE5QBUYl1ongapLPYt0Fyv6XJ5nPUh0jZOR3rZXkzxWk25xwnsuP92sP5+bzwUJrFWnK5a
+    vyUeFTvyf9WPujspMEYtJYg4pzMCdGbEWNmGUUkEVezxbNQyIVxy17II162e3fpBiYxt/p
+    aSyjFkkjDsIlLoMD2f90shIQsscdG37PL4qpVypIvNMnV9nUF80ntJOfAasqedfc/atFtc
+    VphcJ14tpA1Bfd9IBgIorTFzlAeQWy+5cRtH1MrIQkPOigKp2ziYFQOtNHZumpNwe5nWEy
+    zx77jPFCTMhuc4rng8RA0LX2ED6xHo7kuPmu9eVqppgr82LYaJk5mbMu9pthsb7OZ3eA/q
+    Wv1RrAPmaa617bdA7Dmayy19Md2uvj7iVZSS6l60n9kDnzN+FYOj4DJuPSiAAVz+O0zHRT
+    FWf/IdLf6ih9P36lTu9IcQfCUTdCR0UG8vpq+tqDLGSWFRuTflDT4+KVVIhpo3U5kZI71J
+    0SJ8SrW1kAKhJlZD1+5tj1z1rUWRxHsq2I2DE9bEqKs8XGjMB+5Uxfyl0nQQ
+X-ME-Proxy: <xmx:YtT1alz6SDp3LuNY3ZUeZk0KVT4aOTM3ZWDhVtbiqqxnwkFuuxvKOQ>
+    <xmx:YtT1apWEhU8LI9rRlHDUgds2yXnk1DtbwdXaMlJZUbzFmujZUimcbw>
+    <xmx:YtT1agc3nLYmgY9ypCkK8kPPjwZHbPaEEGj-E-MWdfFSKBUYKw3cVg>
+    <xmx:YtT1ag4WUAc0Nbno7wpewdcw-F7dQW3zajg5kIhM_qS4mpYbDFIQwQ>
+    <xmx:YtT1ak3ahUq9KmPoSl3PHStBCmLcEAsi9l3NOy1sOQv17Lp7MvqOp0gc>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 12 Nov 2026 09:59:46 -0500 (EST)
+Date: Thu, 12 Nov 2026 14:59:45 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Jan Kara <jack@suse.cz>, Hugh Dickins <hughd@google.com>, 
+	Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Harry Yoo <harry@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Oscar Salvador <osalvador@suse.de>, "Liam R. Howlett" <liam@infradead.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Ilya Gladyshev <ilya.gladyshev@linux.dev>, 
+	Jaegeuk Kim <jaegeuk@kernel.org>, linux-mm@kvack.org, kernel-team@meta.com
+Subject: Re: [RFC PATCH v2 09/18] mm/memory-failure: handle folios with
+ PG_rcu_free
+Message-ID: <avXURJ6gUjDC6861@thinkstation>
+References: <20261104130118.2507513-1-kas@kernel.org>
+ <20261104130118.2507513-10-kas@kernel.org>
+ <sashiko-outbox-199102@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 00F89C0004
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: u4jfb5oc3x3t1x1b575n8pnm3o6rc1ge
-X-HE-Tag: 1794495596-726012
-X-HE-Meta: U2FsdGVkX1/hC89QVuqcMs3WvZzAdc5+2T9+4bm2epY3/oWV/6PYgGt8YwYoBb20lTt2+DJpoACdhaOCY3IPybIY9180pwd48s834rMD1yPhqeRuFrqccuDfLq4bJWjm4ESXHE4DaKCuAADn1FUtFnkKGn+m6hqvTiJ6yvM6m+rktpZt1ngDXygAq0z+mM9l4lAn9iRMKYsZWreHHu+3iaIPQfv8lAUWLz7kIxsRu/8Jqe9KzbYt5X8v95PDH99X2kqsiNa7kPV0dpurS1H5RoqnI3xI3ODuLJIOy9Yi4AYbptp0nOhofYf2PEDDS4Swker14PrCmtRyeIwRaJOw0DZQmIsRhnnmZVDIn72Jo4526cyZh0SLTJgNcMvp35HAfOlMYhnWqgGf2k4bh4XN5tWT7I9EaEpXwBzlxg3UElX3sQc8g8NGWLLYOuOjXgTzO/UOhNY6DTae6FSXd6j4JJQIsJPLhFDr8Fe1r/hYrArZgIWLFzsG1kKFhk7m+vWhbmfHAA91hi5clod1vg1L17wOyD/CLpm3dfNEKjHG4ANoW09hwKRXMvfInITKj8N8UJjbPCs8rMTPufPV4sTpdLT2U9F2lrov4wDuBDzvpehNT8/YcG5vwELw2l5RuGXvhBaHCnLQbhpImgBa8e9uWTon7obaBu58KCfqflIpPMPbzbEviq0SHnfqjU1MLUNUghL8FbK68B9WY7mRlISJPq4YbW1Mbt8NQYl3MJbgpn0spWtwaCxZhAm9i/xGNF/U7gk6q5kYdCu36/4v5U9T9zRdXASiYJqFzNJs13B7Pf0OBbRKwj1yvqD0WH2y+gYbeqslSLP/IhNuM6MsgrDycYGQFYUsaSNUA4cnyYZaCU7PAQEeAlwD4dZCB/IM9Jyp0pAevNHz0TbQqYGphQBECq8xBgNZSFcZ5cKHzm6jkDbrW8lcVFDiuro/eSobrGOSBqpwSCsAEjYqHqmlGz8
- o5aUp+L2
- V7sFTCRN7gm68w/QStMC3OeN0nmsm4C9EVNfPAjgyw8kjXK4Q2bFj96XRsSX15TrHzR0xbMuUC9+qIqSGM112nVnMRjuCyu+FvWsH1HDyx1OGBcpXr7nPWS7a9H6IcB5UWJz7gMts5K8jQy2yUn9XgpJ0b07tmjceaZtfpVLv+lMxTddhzkf1DE6utYqbnUKTIGx0YlnICeNlMQ7VHiGCw+uPh0qzWIPvvwBH3I2gQqQuitwhhnF61hdyDCStQq6XNSHAGzu/hRxvfd/mEQMEff7ai4HqCyZDmXHGT76ZUzQZ3X44DO63VWItmQxV1Fb5CnyuISeFarKoTCTgb83cz8foRla/Q/cNuG/QXnDoyNrtC528pJRGIv5zaBCurdkhf4VHyxMZ9grzhog2H50WhlbYk7YQniF/BtnGlBCTHBS9hKqwY3XQbMZs9cd76DIfzYY+OGJQaM9Q9UKSYaUpMBskJtqQQJr6jBZtaGTKkiaaOENcdUtPKHDRs77ny0RE89yz00rCetlozh9/i1a82A5mp68qGngBmE/5LOyRKGvjyMxjZc2SWkKk30SrJ71okaxyIBEi3BVcHYZ1Cgt//S2p604P1EmrfqdMPDUeEvqHWc6G/HEWKKtQTcapbXo/AYek
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <sashiko-outbox-199102@kernel.org>
+X-Rspamd-Queue-Id: 45B2F1C0002
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 9duw1p35f4ezbwz4wy3wegwdoj9kja1w
+X-Rspam-User:
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794495599-141620
+X-HE-Meta: U2FsdGVkX19hPneVqaftjeXHix9fuey3SbaPIRi1NhYFH6mLa/Yfzvp5WLqhTDAraPHYJ2xLa3QOQaPI0iizD7whI2lIiezOYHhgfQr/Q+NrcwqTe7epWtO/5MiynWpgbg1qno3zZ9fuSyrnxhpfvSFcYlBE6aEhCiS3dgGtYNwPjq5SIvrByWi4FLSxQISj67hA+nikdLaPzxLG2Wie0pQ1oxwJBFWwVc0Kv1rR7AArVgOc0c30xdlED8Tdb+c73KU9EiBJ9kb+3uZn60KcSD0QGd346qb6oihUPWr9H31zDD1TvtJStdTOBYtaIzcW8d5pUwKflCBPdpuhan+6+ttIZs6G2Btu81gNdwtrkODH8qb+nFglGJE4Y4nqorpmrr0NY1ICfDlhnycCue7qGUQbq1m81ODCCCbyPfkegOyUxPqdX7wL5G8yLcNUehWj6gGwNfb+oKisyMDIXt7Dgsf18DcMBXUmRFURK31sJufmQvUoRSVKFvrnBK0Tsh1xlKmGvpDu04qvoUa0kcGiJB4lViK8QveAr8aAx5ngF/b7ZsNwLWqr8V46i30wdKI4v0fNhulamm+reLhjElK07xQY6hO8zrA3ek5lPAg7j+xktwXJFjuUQjLJJ+ofzTyVVHWNKA12xzz5uP+6gKBhRV2zyK2uJUSXuywFvCUlEVAjUN6XimUZ/sslEKsokGt25ccGC8NR1YvE/Hhgc73sDnYpoz2lOvSrc4z4Iv+jIplZ9JY47QKfUBDcqeW6/VjdTCK6VE3e5nsE5ptGIsjh9wTgqZQDMc4c/wjP7b/JEK+AuBTIfx4eeKOdiVL5S4bIgF/Gf+fxlGHY/d61TP3eLIN6gCxl/ZFR/39187Mtq3FPJOIdzRFijHWQlFZP/8iJe66o8NszbxXjtgDmC4kFfyrD1RRexxycHyDsD9xZRfmy5QZ9c3pR8z4/a0X/uXDL1BTPPlGcEJeqYmSHhR/
+ JRNzWyZy
+ gzneVXkeQPD4BQtpgrNGkVZpbYOxVWEsVqHpt2hgNVfZasH+0jdQ9FeLbfmIjrZNjNORzUpFeYLglWPwrBWk4YVTqjeBIpmteCtW9MV3SdR5rSb94T3WHFQNYiW3Kg/ERGuct0d7/b343LFWsmMZ5zhQgf6ylk+qa0ZfZIY2gpFD0sx6Wvd+2r5FsPtXrL139DsEF0ptkhoFE8/n40FFiuAIELaclxomIO6BtA/J9ybGbbqFfqsiuVbVa9E9fDqieQ7R8O40E1oqw0q+NUREHEJ+EE8e1s13d5wYNGy3FF3Ulmed99raO/LSWFmMnaBvoUq1r3KrBdUawn4gXvmqNy7WO+im6DCEcyplhhJdk2G6qkbNN3z10GabHJ/IUPXYOdda5yrFb53B/VRAckAptEL4KeYJgNmu37bD9LCHPhOkKnXo53Q2wFlI//xnXcnGFc6Z3ECE3CgmxKqzd8+40VvE3FgZqpSqEx2ZsY9vdf9g2BbrPLibDPAY18KIJNjXNwwuqzgbTIqC+O5wYiwvZo6HGNQuK7bJg3S3OSKZJSWYsU/CJYCvZYpZAvF4YaCK+bjAQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,29 +141,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Randy Dunlap <rdunlap@infradead.org> writes:
+On Thu, Nov 05, 2026 at 01:03:41PM +0000, sashiko-bot@kernel.org wrote:
+> - [High] mm/memory-failure: unsafe RCU wait in memory_failure() already-poisoned path
 
-> Using a single quote mark `struct xyz` causes the html output to be
-> produced as italic. Omit the quote marks so that kernel-doc's automarkup
-> can make the "struct xyz" bold monospace ("code" style") in the
-> generated html.
->
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Acked-by: Bagas Sanjaya <bagasdotme@gmail.com>
-> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-> ---
-> v2: fix one more instance of unneeded single quotes
->
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Cc: linux-mm@kvack.org
-> Cc: linux-doc@vger.kernel.org
-> Cc: Jonathan Corbet <corbet@lwn.net>
->
->  Documentation/filesystems/mmap_prepare.rst |    8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+In v3 PG_rcu_free stays set until the grace period ends, so the first
+case does not happen.  v3 waits there unconditionally anyway: the path
+already sleeps, and the test looked at a folio it held no reference to.
+The second case is real for shmem; v3 checks PageHWPoison() on each
+page in the lockless copy.
 
-Applied, thanks.
+> - [High] mm/memory-failure: mf_free_rcu_pages() skips sync while rcu_free_pages() runs
 
-jon
+The window between the last put and the deferral is the put_page() race
+memory_failure() has without this series.  For the counter, v3 drains
+without checking it: the drain waits for the works in flight and starts
+no grace period when nothing waits.  The per-cpu half does not happen:
+get_hwpoison_page() drains the per-cpu lists before get_any_page().
+
+> - [Medium] mm/memory-failure: order-0 PG_rcu_free page dropped after setting PG_hwpoison
+
+By design: the free drops a poisoned order-0 page, as it does when the
+last put races with memory_failure() without this series.  The page is
+never reused.
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
