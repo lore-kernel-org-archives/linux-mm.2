@@ -1,147 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE07C606A336
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 16:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A081560A3812
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 16:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=ttzzEc+F
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=l+Q1RsYq
 Received: by kanga.kvack.org (Postfix)
-	id B501E6B05BA; Thu, 12 Nov 2026 11:37:57 -0500 (EST)
+	id BF0006B05B1; Thu, 12 Nov 2026 11:40:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B28916B05BB; Thu, 12 Nov 2026 11:37:57 -0500 (EST)
+	id BA0F56B05BC; Thu, 12 Nov 2026 11:40:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A190D6B05BC; Thu, 12 Nov 2026 11:37:57 -0500 (EST)
+	id AB68C6B05BD; Thu, 12 Nov 2026 11:40:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 654736B05BA
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:37:57 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D9F181A06BC
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:37:56 +0000 (UTC)
-X-FDA: 85427023752.05.57A8D18
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D597120007
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:37:54 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=ttzzEc+F;
-	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794501475;
-	b=NL0MASImHBruUsKgQU1c81/FZHGc2+Mfo84j7Qo4+xiu4xHBbX0D3qW2RgbKriIyZv4twt
-	tPhlYqpx+etkO8ZgTrG3poiMC2WS0P4+QJQ4W7i3CzOSgM3S5z9627zPDmfs/DVwkJajQZ
-	Ml5J+zQq2Kfs7H34/wcgP3CBcCV7HLA=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=ttzzEc+F;
-	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 8FFD66B05B1
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:40:12 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3712B1A06B3
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:40:12 +0000 (UTC)
+X-FDA: 85427029464.02.5A1B8F4
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 707AF80010
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:40:10 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=l+Q1RsYq;
+	spf=pass (imf30.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794501475;
+	s=arc-20220608; t=1794501610;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nvjirMgHIxC88ZUFqPd+mUQ9zs5Wq4hvPV8uQmDh82Q=;
-	b=4LD6xdZMjSAwiDHi1jCw30zcuWzIf2AsEpd6DMstYaTAHf4o5AUTUQsRe+uRlU/I6FPDFy
-	8qKKCVztBF9aXiLgG5vqIGz9UIGVSVoD2C8Lgiv5A5jNj8puHkRy3bHzE5tkksy2DJiZIJ
-	LcwsgRIZeSicahn1eQ7OFL0eORKsE+o=
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-945e6d9ceeaso382880085a.0
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:37:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1794501474; x=1795106274; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=nvjirMgHIxC88ZUFqPd+mUQ9zs5Wq4hvPV8uQmDh82Q=;
-        b=ttzzEc+FkH0CxyidUE9ezbKWLPC9XhyFYFP8L9FlmIWEVSBcdE7MO0ai/KN8Xply5e
-         qQBM0nw4AXnn1lvrdsHG2uUfE/oKIeuyHCKk4D9uHO3elJst/h+TpO237jxCRNNO9xhx
-         uP/yoYE/1SyAZ29p0csBVHWbY/enR0LUzwZ9QsZBXsyFCgjZyUo3MiFFyczyQG3ovx3u
-         otsP+6AF0XHJeaeC/ahdFQWks69uUzs26qkDakJ0mEVI5ptsXfV81szyJVZ158iOdylQ
-         h+GPvAJDNXj1oc9kz4MHweIoKUhrneyZNNMcbDvo8/F7Qb6Yys3DOnIkU8vpP8B4qa1q
-         o4Iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794501474; x=1795106274;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nvjirMgHIxC88ZUFqPd+mUQ9zs5Wq4hvPV8uQmDh82Q=;
-        b=scBRYnmycLC1if9o0GcombFPeb8Iqurgzc6eLfiyx5PLhVicW50nYeQ96sgZlDTqQE
-         ql1aXoBPxoCvYMuB4VwqUh/9u644xBv0nKYpXOB3P6oR1JpLSAMygxHh3kd3pnABZaNa
-         Wzspu2Lf3OmMpGjktTE6snZFgq1iUNumlUbysRCN8BA7UhdDwrlzKLgCygEuLG0lCh7T
-         24qZv1ykNbYmReQgFOD++CRyS7wnHUab5Fp3SkebBI/jrtNYRTPu1XyZNOKE2myt/D+9
-         euoN87uSzYHl1hOJNuVCfDqRH2YYjTGdZqg6FAa78ZQA2O0sGyIn8YDHGR92Bo0JXaOI
-         Rhbw==
-X-Forwarded-Encrypted: i=1; AL+hErE7bnnhQPt2bpcTDPzf0fSvdLneHUbrcJ8jqPfpXcaYKRkNWZ/sC3wNOxa04y7Lz73W1L5v0KEE6A==@kvack.org
-X-Gm-Message-State: APuU4Z+OgLMEpUtJCq5sNu5pXCf1BKt15aqACfoZusqxUmJbaoIfoQ4P
-	oQjX+mmTiM/Kn+Gj3KE4RhdXuTGlIjxID6aYAAbLl8D9unmyBHBw+Knxyftbqxd9deU=
-X-Gm-Gg: AYBFou3EdxrNkMhFoPYiPFGbsimhHGrGqopA0lakaVmZLgA3b6y9H3SqKdYWfY6WS4j
-	DiS7TjgxjUlYxC2ndwXQF08bRprE155Ft92LWKY5cIxqofV88EExmjzoWTWkc1XLSk0+YNqKwCQ
-	eTJ3nblu00NTflN6iqtaK7Aqsak6l552FT5yv5P0SQi2DEVJ13iXedKKBgkmI4uaJIcAJNv2vE0
-	3tALfsL/diaOO0nXhL7rtxj4ExQnvAsxMLyCp5ZUlgH9DHe9paDRlfVoByED9XgUhmie+zh80JV
-	KCiALduhoiSvIvr+EJlc12N3pTO2YAbPxv/u8/F3qyKM7lBC3wNM+LWlbj3JuhnleN6su4qJ0v1
-	tKhCkwk0EfL0ZoS9ct282nXpSc/5gquDogQA2gZ6LxLLkR6+WXFN71BxvTcucYMdB/qEvsx31Y3
-	Z8ZTreZROs3bzLac1aVCMHrT9JVaq6H90GeAmr2VTJLQISiqpZqlGOborHuQ0I8OYqRi7P+q4Hz
-	TJGj4GkZl7KpesYBcW5TFDebREfOet9y/cmDZWZfL12AbtNPhnqmvpogl/sVGlkxaxXBidRVQ67
-	dZLMICcNdpSBTcPV66zHRqEUC85nUPdtt0TB9aELNb5C0pQMuTtJ5gAAojxbMko4sKrpks5DlEO
-	8pQBXqK8=
-X-Received: by 2002:a05:620a:28d0:b0:93f:1e3c:4a3d with SMTP id af79cd13be357-947aff8c925mr1038556485a.46.1794501473963;
-        Thu, 12 Nov 2026 08:37:53 -0800 (PST)
-Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f02df0333sm51261056d6.27.2026.11.12.08.37.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 08:37:53 -0800 (PST)
+	bh=C/y7Uwn+oYzUTWr8Qk21aG5gEd4/XpyC+An9k7mgPHU=;
+	b=ZD5qgnz9LqSMOotl7GRZr6GRKgOby9Pt8CXl1C4Gsce9iAFgndsHV8orlK8osL5DRygrHA
+	LUxnufaD3hPCOSV+SSxzXj5tJFrqIvN/rmw4fl34TZ7gnbU48coTJWfbRBT58NoVF6T15a
+	0jcG06ELkVI1XHNkLgA0zuwjw/sQzyw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794501610;
+	b=kc6gLU9w0GAwu2r/qBdvZDaZsl2X9BPe311edR9hgO+WeMWLehTZsoSbLDPpge9FTFYE7F
+	Rd/ydgGB8Mgbh/n2Lk2rxZcRoZvhcGqGg4Dh29f9L6kTFQhFyip3SgNNYnY8+wj6hqNX7/
+	5WiB0+XT2OavsWUcG8bIGnNi85QHTzc=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=l+Q1RsYq;
+	spf=pass (imf30.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7DE811516;
+	Thu, 12 Nov 2026 08:40:06 -0800 (PST)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 232B23F673;
+	Thu, 12 Nov 2026 08:40:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794501609; bh=OJf9vH/UgjbPnMOOD4wehtLjTNHfSY54RGcIkGkVj5A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=l+Q1RsYqmctClM4wHH70rhdR+HU8l3Kg7ueSQCCj6M/lsoXW/qFh42720oSelH2GM
+	 JhQXQQCr16wIWjJDJ2zx1hNlB/x3J6qZhH1su+womvkbU7Ez3JFeN0hyByCHApTd3o
+	 ZcLq8SbN47HvFupyhUkfKC4cIsm+8vL3/4W5TAJk=
+Date: Thu, 12 Nov 2026 16:40:05 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH] slab: allow sheaves for SLAB_NOLEAKTRACE caches
+Message-ID: <avXr5f2pe5lXpDN2@arm.com>
+References: <20261112-kmemleak_sheaves-v1-1-e40e3d73b253@debian.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 02/13] mm: cachestat: count each page only once
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
- Shakeel Butt <shakeel.butt@linux.dev>, 
- Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>, 
- Pedro Falcato <pfalcato@suse.de>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
- Gregory Price <gourry@gourry.net>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, Usama Arif <usama.arif@linux.dev>, 
- Kairui Song <kasong@tencent.com>, Balbir Singh <balbirs@nvidia.com>, 
- =?utf-8?q?J=C3=A9r=C3=B4me_Glisse?= <jglisse@redhat.com>, 
- Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>, 
- Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>, 
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
- Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>, 
- Chris Mason <mason@kernel.org>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- "Borislav Petkov (AMD)" <bp@alien8.de>, Mark Brown <broonie@kernel.org>, 
- "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, 
- Rick Edgecombe <rick.p.edgecombe@intel.com>, stable@vger.kernel.org
-In-Reply-To: <20261111-mason-migrate-et-al-fixes-v1-2-3d2454362e8d@kernel.org>
-References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
- <20261111-mason-migrate-et-al-fixes-v1-2-3d2454362e8d@kernel.org>
-Date: Thu, 12 Nov 2026 11:37:52 -0500
-Message-Id: <179450147215.482102.15685424149106944496.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Stat-Signature: fd3k8zmaou9tcjxi3dii9se6jqbo5ksp
-X-Rspamd-Queue-Id: D597120007
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261112-kmemleak_sheaves-v1-1-e40e3d73b253@debian.org>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: nr7pdio3sezftzr44383no8guhjih9cy
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794501474-376879
-X-HE-Meta: U2FsdGVkX18hJWs7ZjAev017LkmiPl5MiwDA1UN0BDqdJIXVkMbUDKTIjqu0lK282G5AfNtVY2zb+oM0E1yQsy35dphuqwwoFvtLYi8j2yTVhsBUJD1HF5Ma+xvC9yKDy2QfX6PxiH/dL3nt2uCASJP/UixIK+Brta5KvPz2kSvOaWyx9SyPSlb8J6F7wMzgO1x/0rTobpCfiEHReyQlpBAaeP3/mfLLvu6PeM2/mtYTDDbWdgnbKT2Q9nYYd7gUWekYy7Zlc1UR4Jw+BBn211UHL9FTfQ8AUrUM4WaE9K383O7yj/p/aXH3Q86GK7MvQ0AhqRt8l5QtEhmvRmbw3KZ55qN3bCMdQvYxO1hsgLhwv2pBi7GLpscukUHK6Km2hchEG79hlMPGcofMV15CE9IE5sXToepTkKTM3eqpQ+JVAZ58xY7SvZ7h1x7w1X7NR9D6POeBayyMo6zYAmYe727gAvCsrxkWnck3a5G8uMIXTuw5CKruoWBu4toSMAG6qPEM9NviAwTV++bKgSOoCSmCziRUlGK/jB1ZaBGD/lLm9OLpULvYvrCb+vjlowhhId5GVXpmvEePzoKCGoaBS2iIFbOSCdaAkPnstso3AtZNSAJdzQ0i/GeuWAKsQinwq4h62xerRvwEHIkRZ/WgWW+owM5ScmWv2HIHHgOcaSmuze9j8JvNVADupge84oB2NJmRywhwppF28cKK4FMoAmPgBiQLKi187n5zGeAAsSFVefZnZfZGcORpM9WB7aMO5nH45Dc/oR63CRhbDlENQikAII1bIgJV18bQ5cOR36t/dN+ZZdz5BxY62XRXCXXrIb9/zNAr3eJv2yyvWXKcSg2jLrGbKnKp5ck0zHfDcgkqcQWSuilbhEC0w9v8n2Dch5ABjQeg+X3S9+8cLcy7bPZhXB1ijSoMmzZ9W+PJHGLdTihx9lHGMxSxpbe9UK1moUB03jckUbRhWbXt3Zd
- VPQJGc9F
- 68uQGOM2DWQEqNSvN5qdFmPmdk0CZO8PkogcvD0nB7i0ohS01/D+o880DBV/culsXw8hclhJlrDNS/80rUFgtfJ+9GAFi2CVwB3j7dWDW/abmCF/Z90vGS61qLu6h+2iFdKimZminqzxJ7umWnBhLa6HvWuR9vWDW1NfdMtESHs7SLskbHkDyGsFhKWfK6mBYOCfJI4TapPa1eIHx3xATya2dD6TTF19jl0HfDuj75OVQzskkB2AIGJOyne1Zxz+5AR+jSxOr3adA4HnYY4DKsIt7VlBl2sdzHA9qM+lhMygqzJ5TH4llmSZT98DlHSyM1Do61X08UBf/6IVSn/eJNhjd1avqU+AcU4yGjcM3QWThsws9LN/GzfE8xxShUmI5Q5M2Bv/OOhgHTN8h7RLXE4gkvc98c1Z+Hg41
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 707AF80010
+X-Rspam-User: 
+X-HE-Tag: 1794501610-37558
+X-HE-Meta: U2FsdGVkX192RTuxxOdZXdMV3RcOAq4CWBL4RG7RMthKd4hFCvz2CD37jjiIesFiiNwlVK2e1BidlsRjKYl7V8Vcbkp3ZQOJ7h1ewpRyhQmF6yrFxKPLOGPbJVBORekeg7VGxvylu9Vml67cWoAoVzAo4rpDBeVwwA61sf883wRh0AqfIkVqAM+3zKrmd5um2Ygwtzn9aN50IMrdsc0N39hTHOZ4B6ZFTrkxh0i2NIj3QLdIg6vfKTlgxeY6ksXEv7KzQzMiEAwBw9QjtDkfyj0E0zVaYhMUx4tkYPWwA8Bp43l8DPIq4AnmZhiMDOsafF0OZjpJflWuSG1+EdMXJ1OYTOm4Rz5DtUczqt36OAT7HhniIYrR2rSbh+dwe8g6VOGtB1QA3qgEPz7AwOIACiTv7w6+SEdwX++Ev4PUqsEofBDocs526IY1jML9a5bj1j3IegUT3QDP+b8KL1+tamfmfNEhAdrXOGsGSFDQM2qkfh3yOMb0J1EcVHjxmhYsE9f1lQyg2ySG1l5ZZl/maaqx0dK2QLdAO0pyjp8YYAHc+h9Vw/Ljj5Re+8zmgL9m/hHdItTPbOP9F9A61/qWEjbWUo8Xr6N2ywJeeT9ehJ6X8LqI0Ouz4Rzrv+WlKveUtgBrcprHp2u39Ivg3D5hyvsLLlw6W4TiMTG7m2KtO3uKZGWm+oGL9TPRKAu1MZLPbf4FWHAZrXHtk9UdB75Pio9YWMEgrjRs29GS8g0ruPXgDU0q1DDp8nsYkQNCGKP8uQK/9IDKBWRFaafsCwqENSiWyGvbI+ezwbO1yjBryo7GaeANFd+64pfWpLk/Ve35qNpi8lPo/ZG+YTGNMEPBpKQGfQaGyFggGj7celm+vXA1Y/W8QprEPxL1smT6mv2757F2RoKSxxXC0JWYEQsItqa9TQTLygqIl22TNY5tzoJxl6GKN88rEfaGFhOlLq58WYUxnwixijqvAkiz+Mu
+ sffYzUAE
+ 0DkPd0HMuEssCfz5IFMJdem4DqFQyEiP0vr0i62dJTXInvcscJ1pmlnY192+x7K0wv64fxqKBGfIxf1+fEVDZK0I6vvYsket9bkJ9FeWpQaagSHPRRAyIu0GN/NJfDPZBy9byjal0Idsz7TFNZyOhVVPUZa4kbcncG5dyHXvX8+958R2g04UALXNTeq5kRije4EVRo7uKcm+a4cj40Aa/7RVnya7e8uGaEknmHM6ua3Ok4Af1Zv0dY4KWmnY2lTLGuxD+0mz1j0BE2iU+hFeHGRlSlxFkufjbcuUBC1vSZ1oy+N7mAo/COywA4jUmH3gfRSmu980viUCDigp51pMqZ7r+rINUxkXDyjZGr+xEL+IQz6rDjitoV36oBH2QZO0CuBzdmD79njZVlnBZHlKKPiSMSA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,49 +94,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-11 18:13 +0000, Lorenzo Stoakes (ARM) wrote:
-> From: Chris Mason <mason@kernel.org>
+On Thu, Nov 12, 2026 at 02:04:18AM -0800, Breno Leitao wrote:
+> This is a patch that makes kmemleak cheaper to run, by letting
+> kmemleak's own metadata cache use a _new_ sheaves type. The flag only
+> makes that possible without recursion.
 > 
-> It turns out that filemap_cachestat() can unwittingly return incorrect
-> page counts, if large folios are present.
+> The cost today:
+>   * every allocation kmemleak tracks needs one kmemleak_object from
+>     object_cache. An RCU callback frees it later.
 > 
-> This can occur due to underflow - nr_cache is nearly 2^64 on a 64-bit
-> kernel if the input range starts more than 64 pages into a folio that is
-> split during the call.
+> Why that's slow:
+>   * object_cache has no sheaves, so each of those allocations and frees
+>     goes to the shared slab lists under n->list_lock.
+>      - On meta's fleet kmemleak kernels, list_lock is the second most
+>        contended lock, after kmemleak_lock.
+>      - About 88% of that wait is RCU callbacks freeing kmemleak objects.
 > 
-> It can also occur due to pages after a large folio being skipped if the
-> range starts in its second or later XArray slot and the call reschedules at
-> that folio.
+> Why sheaves aren't allowed:
+>   * a sheaf is a kmalloc object. Tracking it makes kmemleak allocate
+>     another kmemleak_object, which needs a sheaf, and so on.
 > 
-> Finally it can be caused by pages being counted twice due to folios in the
-> range being split or collapsed during the call.
+> When I reported the recursion in [1], I suggested keeping
+> SLAB_NOLEAKTRACE caches away from sheaves, and commit e47c897a2949
+> ("slab: add sheaves to most caches") did that. It stopped the
+> recursion, but it took the sheaves away from the whole cache, although
+> only the kmemleak tracking of the sheaf itself recursed.
 > 
-> filemap_cachestat() walks the page cache under the RCU read lock only,
-> and for each entry it counts the pages that lie in the range. It does
-> not track how far it has counted, so the counts are only right if the
-> walk returns each index once.
+> Commit 17c38c88294d ("slab: remove cpu (partial) slabs usage from
+> allocation paths"), from the same series, then left these caches with
+> no per-CPU caching at all.
 > 
-> But a large folio can be split during the walk, or small folios can be
-> collapsed into a large one, and the next entries then cover indices that
-> were already counted.
+> In hindsight, skipping kmemleak only for the
+> sheaf itself, as the new SLAB_ALLOC_NO_LEAKTRACE does, would have been
+> the better fix.
 > 
-> Resolve the issue by tracking the current index as one past the last index
-> in the folio, and explicitly using xas_set() to set the current position in
-> the XArray.
-> 
-> Additionally, add a check for folio_last_index reaching or exceeding
-> last_index and break out of the loop if so.
-> 
-> Fixes: cf264e1329fb ("cachestat: implement cachestat syscall")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Chris Mason <mason@kernel.org>
-> [ ljs: updated to use curr_index, fixed comments, updated commit message ]
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Link: https://lore.kernel.org/all/aW_NK2NXVgtuzCVH@gmail.com/ [1]
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
-Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-
--- 
-~Gregory
-
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 
