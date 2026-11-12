@@ -1,176 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8705A606A321
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 09:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34E5606A33D
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 09:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=OOUgwSFQ;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=NVWaEgIO
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PKhHwF3j
 Received: by kanga.kvack.org (Postfix)
-	id 82C636B05B7; Thu, 12 Nov 2026 04:26:26 -0500 (EST)
+	id BFDFC6B05B9; Thu, 12 Nov 2026 04:26:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DD5F6B05B8; Thu, 12 Nov 2026 04:26:26 -0500 (EST)
+	id BD6386B05BA; Thu, 12 Nov 2026 04:26:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A5436B05B9; Thu, 12 Nov 2026 04:26:26 -0500 (EST)
+	id AECA36B05BB; Thu, 12 Nov 2026 04:26:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A8216B05B7
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:26:26 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B91B6802CD
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:26:25 +0000 (UTC)
-X-FDA: 85425936330.08.B76C4BA
-Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 8D53E20002
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:26:23 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=OOUgwSFQ;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="N VWaEgI";
-	spf=pass (imf31.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.147 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F9CD6B05B9
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:26:58 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E34081C3CFD
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:26:55 +0000 (UTC)
+X-FDA: 85425937590.06.1190722
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 189261C0008
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:26:53 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PKhHwF3j;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794475583;
+	s=arc-20220608; t=1794475614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lu9VyNMW3mU5a5OEl9u5/3DZxAvGGfoqPTt/S5UCjdA=;
-	b=lX8f0xrKypR7p3Yta6Mf3oC0unwkHdrNHDUe6hk8I+qjNGGoKdq0DgZTVCJBM80Qm4qq/I
-	frngElc9f98D4Q9PCR9dxOpbGDyzC3FQR0prCIWKP7Ad1KL1xA6lhRBEQ3OMkgJLCq7iyl
-	UefROI+ZSBRIsSVOEo8b1ODUw9u+wpI=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm2 header.b=OOUgwSFQ;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="N VWaEgI";
-	spf=pass (imf31.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.147 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
+	bh=6llN3WGsJ9HH0olCgh6YbKzYaA4IOfRnHqvyyuyt2z4=;
+	b=v3LrRLjdq/8DG0GUkGeUPFMB9IIQIJ4RjFih5qfxeR33QF0c50sURp6Yn2vGDpcL2sLBXi
+	G4wfFf+9RqA+b8uNudR5YWgr9mmM7OwLrfPX3CJhHGEAN3m6jMG9UXjLJHmmOzirS5JafJ
+	RtAfZ1R3Y951BWL1S9UE3VrA7chDFA4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794475583;
-	b=UPENwBbE/DUJpxL3Q04ZtANnfDRE4P//gdpvUgt5JHfk7sxnxJE/ZGPzJiCShRYJkLHP6L
-	9d8mMpwvsA3zFsmkHwZiQApjZpAk49419hjuyB3yygzuAcIF2dBtq6rRV/UEW9s9iQ+bmF
-	94bx4K44UZZ405htct41xECb++VwJ4k=
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfout.stl.internal (Postfix) with ESMTP id AED961D0025A
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:26:22 -0500 (EST)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Thu, 12 Nov 2026 04:26:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1794475573;
-	 x=1794561973; bh=Lu9VyNMW3mU5a5OEl9u5/3DZxAvGGfoqPTt/S5UCjdA=; b=
-	OOUgwSFQfbLVJHu/UOI1xbxzxT29rpy6sRLNcFMwVTBXzHNs1EcuKtWWiF0p0vMV
-	pwgQH1sGEyg8X9BWJj9Z/NzKcXfcrv69W+X1rEzPCKgCj0h2bl3L3ihPDe2oLjYY
-	zobAf3odv5III8Y4tHRH4h7KI6Zu2YAP1UhQkG7TLYGIF7ij7jyaOKtlnwbncIBt
-	YYijyIAjywbzRp3ltvL9VcQ+OgsMOskRjbN5gFQ7kHc6RKUvcDzTn9Bv2ou+3eMQ
-	+moij8YDdCQz1xPUNUyDy748IUxc03Vs5IiimdOyBTWHHVLADFFEPPRw9kr247dq
-	eA1g8xF4ovQHK5pm56sqRA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794475573; x=
-	1794561973; bh=Lu9VyNMW3mU5a5OEl9u5/3DZxAvGGfoqPTt/S5UCjdA=; b=N
-	VWaEgIOJNaSA6tI7c9inqYnE1uxJ1vlT9Fjg51KVxZqxAtQIwJxYCc+Yxxb7rrfn
-	lqi1becGt5OevebJBN8V0kD4rsO7nanl9iJhWpW39+wqAcVowfsRChKO9vZj3XwM
-	7NhuZpLuKr+pKPwEUlXfEC8HTZXygCfCxcVDP5ySwWAwgTE1ocLPnQU9k3YbVcrg
-	8qPDj48hZiFbBg3pVGUGyWsocTCPYj+vZnwsb7ciMOC3xtR6G8+2aCSAIkSBkIfF
-	MDY35u/n4XM4lh+7S50G0rTFS8IvB0y7JNUhkRyoe1XrzafTLgNWCU6E0BQ2ICEU
-	o1x08xFRSCGrwAhYDzLTQ==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794475573; d=arndb.de;
-	mf=PGFybmRAYXJuZGIuZGU+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm2:rsa-sha256:dgoVgyIvKbzbhyVYXe+Je5CtmtwztLNha+/UJ9/YrxJfIAu
-	YIhqhxSed54sX9FGDzm3Jm5jfqbUuFKE5UtKrwS5mZzxI29J2VME51rXegY571NR
-	nl3krbw1RKhyL4Q7sCdTlVLbRiheMNBCT9XLJsvguRYKBQXZVQOGfnq3cyHav/YO
-	luz7q+IC+8qRDyjdcz8dShZOowIT4RIeOsWs3kySZLHH+3aCqxr0gxw15M0eKlN6
-	dkBJCBWhVXW/+OjUMaFAWzctfjyGBnwBqiIL3lLqhDG9Utk0cyeMTFLEWi5fXptT
-	i+yjUUFq2eM49+aX+Uxpvao/M5gisaunnzLNawg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:lHtQvLsWKEfUdBxf+XVyTOgUlpH79KXAE43pmsNxrkU=:Zt3fqEzGcC9UmMEpGQAYwZ0fmVAGINXNyxE6QV2Knis=;
-X-ME-Sender: <xms:J4b1aszZnXXmJXycTKT68GToSThX6hRpgSLl_4I6u4n_9y0ijscfDA>
-    <xme:J4b1arHXgXG0E3ZLvA7HJOwMoR1J3526nRnSxn39ymzynPVz3tcJjXoKQqdwOqpDJ
-    AeT-pkeNEL1EAxxeIv_exqlwG8lFva3ZbqaIZ3tJwi6d46YBYeiMr6m>
-X-ME-Proxy-Cause: dmFkZTFWfgeeGR8mo+0U7OOkwDrigGQ4sGgOFZOIt6DyKqatgGiIKMzD3PV2KmRP46YBiF
-    NN7VF9RNbZITkPsgZWpSOFDs2Hsgp/9VR+G7lO3+PQKbSnfTnKJELeW/wMgoAW5UIhwmdD
-    NSL49KegZyyd7iwPktON7yNbn9dxeoKfVhWM9t2Io9/1BIHEHKTR0WotbG6kr8eFh2z+1b
-    csxbAPpRQXO2C4GVfNYOGDOiPXISwylHCy4FaZ7cR6oRi/vJtPkZHGg3mRklsb0kNGxOVd
-    DNAGk5hP/cEFOfJdJHRax64lA7dWq1eHZmhIG5RrznsMXvnmtyPlQ334MKerO1ZX5NuqBV
-    GKnK5TATlSIwk4cWKGycpyTUodNZKF7vM4JxgjSDyU5c3JZMA/00XtklF92iMVX2n35r1M
-    D/1BnTxNkAJQYU6IHiZtnAi+F9Kc5txc7hseFdo5PA6gwuLLPcpiIgVACKdGaO06xjKt6+
-    eDS6tHC5JLF0NyKlfrEblcX91WlQ2m0ahg+JEq12dOeKhFtHqe72OYrIJRxH9aVIg4H37T
-    QC9Hsu2aYqgpvUxhfN9yptOYqfhbjSb7ExkyhKIO3SlLEus47FmO1j/M7VmkJjnZFvCjAd
-    +wpeLaOzhd2kTOw74kwWkYpnUq7IGz2Ntd9IYIHxAihCXh+HKjeLVoMLwTQg
-X-ME-Proxy: <xmx:LIb1anFpYFUFUsNVtoim2Rg7LU1Tm3N1l3d1uUOvZWcowJ5OmXznLw>
-    <xmx:LIb1autSZclqgSgCMjcYXfz7f3-TG4EIJFu13rcYRYlFv3xXvuqTzA>
-    <xmx:LIb1akvxIJ80Do08wt6yzER2CcaT4RkBEgb7xl8huakw9lE5eJlL1w>
-    <xmx:LIb1avHZkyKCDYHXN5bL4LY8EPvrUmq0Rhqocr6RmLq2C_LNQVrCwA>
-    <xmx:NYb1ag6y-0KJmsy4GI_oyZKqDIFupBSr4UE9rN5CDa5GuRRBsmAx6rWK>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 1E26232A0099; Thu, 12 Nov 2026 04:25:59 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	t=1794475614;
+	b=V8qt6bVz0lsRgFhHeOfsYqSx56rprvs59iYBVDaTEvWjJ0Pb+LrJlR71nSKy+oFN9KwuUD
+	5ZgTLpggK9NfGTPFAuOs8N4saBcmFUjzwU9MvTEbVMTMnkL38Hi6m/3O5xN4ZkdcFvnD8Q
+	fgmHdfiw0tD/1QkXn9fKo5ZP3KRyZtY=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PKhHwF3j;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3D9C046929;
+	Thu, 12 Nov 2026 09:26:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684BC1F00A0B;
+	Thu, 12 Nov 2026 09:26:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794475613;
+	bh=6llN3WGsJ9HH0olCgh6YbKzYaA4IOfRnHqvyyuyt2z4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=PKhHwF3jHeR+K40Zwx1KzkLdBPuVfLLkSwb9frVG7uXK6WFgawSqR3KQldi7tr7iY
+	 KGRKzEoZ4gk5fE1MYCq2lzljvS+G+b0KJXvygqEpJQmPx1/4BMj8ZAmZtgcMaI83iP
+	 CvhYFFin/kHUZ1Dkh6NK6G+SHd1+ycJ+OGkFWtG25ABHxh7vwI5CCXvsy8eK7oumKH
+	 yjW9qm7ytfFqu1YUCKn6EmUjibHUov6WIsDLm94DFRarZkSIJRK8EeBeqV3CbD/4Gh
+	 GwXtz8FOole5V0AyUvJb9FyIJ3IUJyWZwIuIbwzcAeCcOcKQmiTLyUTIru6Nawwyqi
+	 EM2tz8rbQ2YIQ==
+Message-ID: <a1ee8e44-5a3b-4bef-aeff-eb19d354f767@kernel.org>
+Date: Thu, 12 Nov 2026 10:26:46 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AD8wiEBgakfZ
-Date: Thu, 12 Nov 2026 10:25:28 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>,
- "Linus Torvalds" <torvalds@linux-foundation.org>,
- "Christian Brauner" <brauner@kernel.org>
-Cc: "Matthew Wilcox" <willy@infradead.org>,
- "Kirill A. Shutemov" <kas@kernel.org>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Miklos Szeredi" <miklos@szeredi.hu>, "Amit Shah" <amit@kernel.org>,
- "Jan Kara" <jack@suse.cz>, "Zi Yan" <ziy@nvidia.com>,
- "Bernd Schubert" <bschubert@ddn.com>, "Hugh Dickins" <hughd@google.com>,
- "Baolin Wang" <baolin.wang@linux.alibaba.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
- linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
- virtualization@lists.linux.dev, Netdev <netdev@vger.kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- "Malin Jonsson" <malin.jonsson@est.tech>,
- "Richard Weinberger" <richard@nod.at>,
- "Geert Uytterhoeven" <geert+renesas@glider.be>, "Nishanth Menon" <nm@ti.com>,
- "Frank Li" <frank.li@nxp.com>
-Message-Id: <3eb60948-8fc9-4682-87c2-c113e54e7d4e@app.fastmail.com>
-In-Reply-To: <32ad880e-5946-4703-9c6f-43ff59da39af@kernel.org>
-References: <20261110145241.536019-1-kas@kernel.org>
- <20261110145241.536019-2-kas@kernel.org>
- <avNuQqLf9CG9dSsE@casper.infradead.org>
- <20261111-heimreisen-ungeziefer-empfunden-a892571f2c07@brauner>
- <20261111-thunfisch-wirbt-waldrand-822275b2d3b1@brauner>
- <CAHk-=wjPY=kfgnmtx4COEQjD5UzKx9m2-=KLGAZP4d=RKEH+pg@mail.gmail.com>
- <20261111-stumpf-montag-miterleben-c4e2feac8090@brauner>
- <CAHk-=wjGXBnme-N+HvbzHH40ftb7Suc=kZVT5cuintQWyMHJ7Q@mail.gmail.com>
- <e94bdf7c-eae6-4f64-bf93-0aeedca1a22e@app.fastmail.com>
- <32ad880e-5946-4703-9c6f-43ff59da39af@kernel.org>
-Subject: Re: [PATCH 1/4] virtio_console: copy pipe buffers in splice_write()
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/3] mm/khugepaged: release contended mmap read lock
+ after scanning enough VMAs
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261110-khugepaged-latency-fix-v3-0-6eea743cf9a3@kernel.org>
+ <20261110-khugepaged-latency-fix-v3-3-6eea743cf9a3@kernel.org>
+ <avNrPKIoZ3JHiAjh@gremlin>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <avNrPKIoZ3JHiAjh@gremlin>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: abqyanydnt8fg1t5tb34fdfdzwimni9k
-X-Rspamd-Server: rspam01
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: ydsw8snjgimhtbgkejk3fb97hupwg65h
+X-Rspamd-Queue-Id: 189261C0008
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 8D53E20002
-X-HE-Tag: 1794475583-961199
-X-HE-Meta: U2FsdGVkX1/hgLacgji4wTVnv6FZav430KlZSK2ieWouf9jNQyjZjOJTg2eIcDpBKFcZwh8SBY4o2ImMaBracyYGSUp16ZxZxOa/WxkDLY0iRAFGipY99j/a9KBEL+1LsUHrxdi7GtuWXs8/wuCEs/qvFvAmabNXAermCbcmogTkzOg1XRJDARGU4MBKjAibypD+F2KGWTUIUhGIUnXhCumVoJkmpsPlteHwD+6bLDyyJtLML1zkeD+lKT00TlvE/dgBy9xdYWIhOlJfQKYtcoI36nWP5q93sAg5mcinQOoFwXHi0OcwgaOoTopb42lzqQCg3FDfSWvZE/c4uEtANiiGJoTYveeavsvTWsJdOb2FVkVCRh+a6ho0zkx/b2+KogvX2vI1TiErArDq/i3NmPAJ/3bYAePDNWIExvTrEcLS7NXB+nxkDdY9MqL43gW4ChlO4n9dIUGusafBEB+1gcCFDLXMk72mw2NobpJGCuSkLmB/+MLz4g9KkCsTsKVmLO5pdQbFggXjqnLhzn9OuJKqEsfRI/GJWeBnNfyQK6/ypKfup6WYqvU8dlrr+0kJqM0nvueZ0z1lx1ku6h0roHS9R8Vj4wkOOJbl2JvBiqbM0/jjuyLB7C6MO8YpKWX4lzvc96AyLSVqOsmyFvxr1d7wXEKezB3SwNwJGPixg76Ns7mrf6Gy+x/Yv8eFX/pvE4KIL44wfI+cUUvIIJiFMtKmUU2QCge/3ZniCchVfcJo5SlaEgQ5rQhiR2YfNL6IpuVeSjfNqUnhtygfVoaqcId+s+P/L4X2P8PgZo2Txk5UQxE/eVmI+eKvZsCaz0cZbW05qb93pr+3GWwKBHkqvXG973g3lHn6gbUNgmM8dnFWbbGpNH9HV+CviAgZeeV23B27y/VUWKysrOof4W97B91aAN4GRKqRKpZi1ntm3tuQVpL5T6CSqzkXHVkxJjM2SSyEzUmiCo7CkWKwL3e
- ovNpf3a+
- eY1xZQ0csYLX/jzz+X1cKYEeq/UXQnoS6qRcY891VJZlY1VqMR9LN9COtzLv2J2pGxSQ3rLywWEV4iX/cmE8TJm5YjIdirtWgRuyt0HsjI/ssPJxx2JTZUvIzwxSb3foVMJ6oWoIGmtYi1kGWvVch3fv1Eo+fkuoH2l5QtZmhny3LFy44P+E4FSgapDf468D+6miU9LtaqEyXhTI7zl5kTDkNjPn3n2mUxEdLhELfDZcc5v5vnIZpzT8lP28xYwhsScXWy79zvtGQS4RAei0h8mgLVxBzGUI/0iUSJve5vWJwV01jKvgzPFiFKHLpZFlP9+reeTxEDvrA5YPHfPR0djg3+AcCDbt6r16KO1JFueySe13U1aNNvy0DB8c/xWPrlHZFMiARLP2itG4D59IacF0EswZiop/uh8HpW+NcqrqkjApc6Xbf3rXGj7jyUEGhTtLwBfsjRW/JmlHtec4XVhgQ91mO9Z/ptXCn1hGPOUtElLE7H1u498brmKgvAsRxGrPUpUxlV/LZbUbaCvue0uqXCRsC9sVrpOJX
+X-HE-Tag: 1794475613-503514
+X-HE-Meta: U2FsdGVkX19xYeeKE46b5SgGHpbPwVIIrYo0ainub9Z2Vt34RfcYLaceQcD9O+ssDpiwZ3naRr85KmZhaj7oN0dQ5ju+6NJywQ+gLpsXzQtrZF8o9g4Qbq+HjbPWVP1v8dMj4qdU252amKxW/i79tCA41BsmoTnXED3+Jv0xPROTgy5Xnvyy4GE4U8Y3JkZK5NKcVnJpcGJ0k6mfL8RcMN/IfHvNMo9uSzkayMzkTcy8qqEXnp6EFSBUWheIGKTrEwK4aVRwkPR3T2U/c4Gu45Zom4niseaya4qcYfGGXJRCxGw3cphJkTgywss+NghWHCGrU++K2FUZJDvrK6zjaC/U1f3YxHuv4AKal+mqt6fV7JBm+tzifjru2PLDuExxdrDg7NMWeRxfxFQPjCX1Aem1MLqSueM6Iumgi5hUcnnjjqsLcR7bEparmVpixpSm0flqMlbA7ww6Dh8Fn2ZvN3l2SMVxyuUpqyFa0Dss52/Jx5GW7YMrWAgeh6Dq7eexaFVGsez+0s1Hr1MRsCfKRsG0JvdfEK2Ll89Aydk40Gp/+QrUQdpqWLxgIDuusLbUPI88z8j4mMd+7hLFx6Y9/ynXxg62Uu4KW575zK2N9+B7OWFWUE4Wc2IZQ9G6FKIC2TZK2WWN1oAP3XyVjIvl+sn40sPMHTkAgB2i3lVKYNxyp/qXwZJAmZCIq6ilJJhBpjy8/33yDI3jCo2/sk6LszwLadxK/o11jYjwtXptlXIsC6Fl2Pz1f+whjK1469z3qfo+E1YHfhbWVBw++mCjgR8ZFIDrnVn/HHH//eWjvNuv7l4PDgEnYugAslxZ47PTDJWTkYzhyixQKsR9O+bHrM2fX/pkUN2KUMxvszuKUP+KTs3BZhBm8X8ugfVpkylkWhj0RbydSoaSVMkJAZkto8iDsYzMgmFR7Y46ye9BR2B2zgLZy6NU1k8G9G7Qf/VuzLRSNvLWU7Exb474gS0
+ M0Bd8YGv
+ 1y0/xLBy6HLTqKztJaSeAzEdC610N85VTevNX60ioHCEQoP3Xp65hMf6TRwyIA5SfH7Rvu0SmJ4N/uSwis8EYibeVY5VpZzsifrG/Gw55ywW72qXdp7vY0dMGkfe1wXXEAu2dUe9UyQKYtW1Znaoz7386GEfX+SXGrZVh+mhMj2h3MoWp6YdKBGKQ3llKHx8b6qGcqMmo2d5+LCwxqw8f82GRRNAEflQeinsMskr6MJp+bkYMPtCVKtQY8VzkvuTKO7qt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,30 +148,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026, at 10:09, David Hildenbrand (Arm) wrote:
-> On 11/12/26 09:55, Arnd Bergmann wrote:
->> On Wed, Nov 11, 2026, at 20:26, Linus Torvalds wrote:
+On 11/10/26 20:09, Lorenzo Stoakes (ARM) wrote:
+> On Tue, Nov 10, 2026 at 05:19:13PM +0000, Lorenzo Stoakes (ARM) wrote:
+>> khugepaged walks an mm's VMAs under the mmap read lock in
+>> collapse_scan_mm_slot(), checking for ineligible VMAs first, and skipping
+>> them if encountered.
 >>
->> I tried to push for what I thought was an aggressive timeline
->> last year, but that would still keep the Arm bits for a couple more
->> LTS releases and only gradually reduce the scope of highmem in the
->> meantime, removing support from architectures, file systems, and
->> drivers where possible. See https://lwn.net/Articles/1051010/
->> for a summary of my talk in Tokyo, including the slides and
->> a link to the video for anyone wanting more details.
->> 
->> I also prepared a number of patches towards this, but have so
->> far not been great at following up to get them merged, sorry
->> about that.
->
-> I think we can already start at removing CONFIG_HIGHPTE now, right?
+>> It charges cc->progress 1 page against the /sys/.../pages_to_scan budget
+>> when these are encountered, however only checking this budget once an
+>> eligible PMD-spanning VMA is encountered.
+>>
+>> It can therefore hold the mmap read lock for a long time if there are a
+>> large number of ineligible VMAs present in an mm, over which time no mmap
+>> write locks (and thus no VMA write locks) can be acquired.
+>>
+>> Address this by checking whether the mmap lock is contended after 1-10
+>> ms (depending on CONFIG_HZ), i.e. the granularity of jiffies. This is a
+>> long time for a lock to be held, so is a reasonable compromise for
+>> determining when best to do this.
+> 
+> Oops I left this in from the previous approach :)
+> 
+> Replace with:
+> 
+> 	Address this by checking whether the mmap lock is contended after 1024
+> 	VMAs scanned. This was measured to take around ~100 us on a fast
+> 	machine, and given VMA eligibility checking is a light operation, it is
+> 	likely this will remain at the same order of magnitude for slower
+> 	machines.
+> 
+> 	This therefore establishes a reasonable upper bound on how long a
+> 	contended mmap lock is held.
+> 
+> Thanks! :)
 
-Yes, I think my patch from two years ago still applies, see
+Fixing it up as I am applying :)
 
-https://lore.kernel.org/all/20241210160556.2341497-4-arnd@kernel.org/
-https://lore.kernel.org/all/20241210160556.2341497-5-arnd@kernel.org/
+-- 
+Cheers,
 
-If not, I can send you an updated version.
-
-     Arnd
+David
 
