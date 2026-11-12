@@ -1,83 +1,83 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF1F606A323
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 05:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B2A606A327
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 05:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=ZPbGqmMX
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=P94Xi3X4
 Received: by kanga.kvack.org (Postfix)
-	id AE76A6B05B2; Thu, 12 Nov 2026 00:14:58 -0500 (EST)
+	id C6E236B05B5; Thu, 12 Nov 2026 00:15:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABF326B05B3; Thu, 12 Nov 2026 00:14:58 -0500 (EST)
+	id C45906B05B7; Thu, 12 Nov 2026 00:15:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AE8A6B05B4; Thu, 12 Nov 2026 00:14:58 -0500 (EST)
+	id B34606B05B9; Thu, 12 Nov 2026 00:15:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 714466B05B2
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:14:58 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 68F0814042A
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:14:57 +0000 (UTC)
-X-FDA: 85425302634.01.D2E2BEB
-Received: from pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.13.214.179])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 38DFA100003
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:14:55 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=ZPbGqmMX;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 82DFA6B05B5
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:15:04 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 21A9C16046A
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:15:04 +0000 (UTC)
+X-FDA: 85425302928.13.C0624E8
+Received: from pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.12.53.23])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E67721C0004
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:15:01 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=P94Xi3X4;
 	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf05.hostedemail.com: domain of "prvs=76985aab9=farbere@amazon.com" designates 52.13.214.179 as permitted sender) smtp.mailfrom="prvs=76985aab9=farbere@amazon.com"
+	spf=pass (imf20.hostedemail.com: domain of "prvs=76985aab9=farbere@amazon.com" designates 52.12.53.23 as permitted sender) smtp.mailfrom="prvs=76985aab9=farbere@amazon.com"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794460495;
+	s=arc-20220608; t=1794460502;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M4/2JvgJOG5HlY3nX1goOy1ausz+pub3HY5HFXA2L+4=;
-	b=lx2ygrpv9PQQKOTDxAG/dmSu6bbKjUsc9fFZYQ6LCeCEJCJ6b5bVDw/5Iq2m49TH08F4GP
-	J9ZHMqrE+0av+SbMcOP8h0mhFOl/BzS37eFhQqempKEbp5jvNf6n0yiUKFBxYis5RtcfPB
-	rwyw/pKXpZ3fk2eoVwmcnSoKBNx+AeE=
+	bh=8rfSGSkxIfkOmnWsHXfluOeh5Z9UW/hnjrCjmA9e3OM=;
+	b=ft6z9F9obnwOujPZLyPR5HZHiIYJnypcQ1ywwd2T7LVKk+AB0lcTjjozxHlahpT+7KwDqt
+	KRJPSKkAK9EKJ2TKNoVWStFoPjK8KgDjbl4igGhrN5J3K30m6m4/T+TywMKfpU2vF31FVL
+	VuuWFmXAssDiYfmb7Rzrqd/LdB9c5PQ=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=ZPbGqmMX;
+	imf20.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=P94Xi3X4;
 	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf05.hostedemail.com: domain of "prvs=76985aab9=farbere@amazon.com" designates 52.13.214.179 as permitted sender) smtp.mailfrom="prvs=76985aab9=farbere@amazon.com"
+	spf=pass (imf20.hostedemail.com: domain of "prvs=76985aab9=farbere@amazon.com" designates 52.12.53.23 as permitted sender) smtp.mailfrom="prvs=76985aab9=farbere@amazon.com"
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794460495;
-	b=2J4xsqt6UT9Pe3BtC+Wz9AFN0+UYiYfIHwYjqv0OkBMsdiTMWXvZ691kqU1zchHTp37qd7
-	BRElM2z/tSn43ijV+cTnQEUTholmhec9vYhMevmqG3UeTUnBB7J4M2aqrWBAtV/tDdZQDS
-	NJVCPG4SZCjk1PDRLbBVk+voh7gRKmY=
+	t=1794460502;
+	b=aU2Zfy0SA9rMUHlao55Mkn8jPeLnNobvZTuMR6s0/LmAgYyXuCrw4mrunfVRHXU5qZIk5j
+	2t0SZivlwJu/Ex5wjUMadDOZW5TqfwjwWN7EPPioFxIYen1kjr7MDWlCGUKEEo67oFbNP2
+	5/S2wnQR36HoloytSWfEKAhQKdfae8M=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1794460495; x=1825996495;
+  t=1794460502; x=1825996502;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=M4/2JvgJOG5HlY3nX1goOy1ausz+pub3HY5HFXA2L+4=;
-  b=ZPbGqmMXF8LEKMBHr6iOQ/Nhi1+e2B2m90WZbgQLPj+3NssslD3ON7iw
-   q2mN3feADKMzGmpGF/blSixCouKkcL6+Ov+N90nY/ownsyNeCBY0szx8+
-   AA7Nz3ZtFuB5yZf8klDPZD9cxiYbjp8M/acqSfHlzTtwsEpPgrgh77COA
-   3i7hewNqzKBiIwxozlUdiMLUuUr/NaBFoq+8NBBdadp/RsfeLD+Z5xsEv
-   f3vK3tduT42CM1iz1+hyZwZqlkSTBVzitCxm4hjhCNjs6zeqWTmM/6seH
-   h2u/E4tpZgvHlC9KikA/u4Rks/h6LZgG+Qvfmn+ieHcOPH/nEeUcGtYCB
-   g==;
-X-CSE-ConnectionGUID: WnvE7toySZ69JPTZ+ZyMFw==
-X-CSE-MsgGUID: Xlb5CAEcQrKeT6sdCXy/2g==
+  bh=8rfSGSkxIfkOmnWsHXfluOeh5Z9UW/hnjrCjmA9e3OM=;
+  b=P94Xi3X4YRHyB3KUKD8XLB9hurjep0w49nNT04CqbvcPpo7OeI0xId5f
+   1hrQkU4bDwIBiNh5rMswh4ojNC8GPzUfVA5P/2NlGRexN1phY2MFoyrJE
+   YrMI+l4ZAyHXXwsgDz/Pd5q4s8qJd5l4FQVL4bi6a611cJwjxV9lwhnq0
+   ZyjaYia/ARSwjDFYCESF4eMa4XCcRD3sZwJwFWZ7PNFJeecc1HTtw3XbV
+   TDs73RK2TYhoamvibiN8dy/ZI7vJM0UacBMftsftFmhUprsx0kULZUtWH
+   tSIVjNcaU7yMLU7JiocId/TLfkp9pm8rHmNvmjuG6kxl1rsUUjiIcMk3S
+   Q==;
+X-CSE-ConnectionGUID: GF1K5NqyRTKIENaSMqBImQ==
+X-CSE-MsgGUID: TOsHFUtKRaOsUsJWXgndgQ==
 X-IronPort-AV: E=Sophos;i="6.27,209,1787011200"; 
-   d="scan'208";a="33759945"
+   d="scan'208";a="33650572"
 Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 05:14:54 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.111:12731]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.50.212:2525] with esmtp (Farcaster)
- id d97f51c0-ccc4-46f3-b7a8-86dc99864a2b; Thu, 12 Nov 2026 05:14:53 +0000 (UTC)
-X-Farcaster-Flow-ID: d97f51c0-ccc4-46f3-b7a8-86dc99864a2b
+  by internal-pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 05:14:58 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.236:2589]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.12.127:2525] with esmtp (Farcaster)
+ id a305790e-e190-4555-8e59-2a4cbae2ff0f; Thu, 12 Nov 2026 05:14:58 +0000 (UTC)
+X-Farcaster-Flow-ID: a305790e-e190-4555-8e59-2a4cbae2ff0f
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Thu, 12 Nov 2026 05:14:53 +0000
+ Thu, 12 Nov 2026 05:14:58 +0000
 Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
  (172.19.116.181) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56; Thu, 12 Nov 2026
- 05:14:49 +0000
+ 05:14:53 +0000
 From: Eliav Farber <farbere@amazon.com>
 To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
 	<david@kernel.org>, Zi Yan <ziy@nvidia.com>
@@ -96,9 +96,9 @@ CC: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
  Xu <peterx@redhat.com>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
 	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, Eliav Farber
 	<farbere@amazon.com>
-Subject: [PATCH v2 1/4] mm: drop the huge PMD assertion from walk_to_pmd()
-Date: Thu, 12 Nov 2026 05:14:37 +0000
-Message-ID: <20261112051440.16140-2-farbere@amazon.com>
+Subject: [PATCH v2 2/4] mm: don't report OOM when a huge PMD race blocks a pfn insert
+Date: Thu, 12 Nov 2026 05:14:38 +0000
+Message-ID: <20261112051440.16140-3-farbere@amazon.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261112051440.16140-1-farbere@amazon.com>
 References: <20261112051440.16140-1-farbere@amazon.com>
@@ -108,19 +108,19 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: EX19D031UWC001.ant.amazon.com (10.13.139.241) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 38DFA100003
-X-Stat-Signature: ph8x568z4tsg6efrxc4apiouyprzegjh
 X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E67721C0004
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794460494-218882
-X-HE-Meta: U2FsdGVkX18jP9yj3Wc5bAhaRNxAmztI7OQnubuYmbZOe1pzTvKFw5zt9HgiT4jZ5ErI385wDGGbtYUqliOUBCgeyHBKJYP/v8hnpYePklexgRO6F8OgHNTPMl8+IXMAwiRJpy8b5+sagTJZPwOKqKUamGcir4g4GTI7tCticwZHJtyks7xECws00/q+9KfMM1jErTRKz6X/FAXoT+RKQ+KRqTXEhtxtQr1qgven0E+M/t7y08eoifidVnB/xDfAEiw5ZepyDbsBfeuzBdxtAKMnvJ99en27gpsnnRVEY230l/DC86LBUmneTKLW//g4E+kYvMAPoG5Mu4W8mpRhGTwSVDiJ0gVajmle/2QFRukIEdrAmK0/vJeYZLj0T6uH/wOa8NQbTPCagYVVyaFn9h1cCgVBrzgc0hOxhOkeLBLBrJ8zivx6gUF77IMVG4C+nfhyUA1/TSvsC8wNxIHq31wmVvlNVR5vmUZBQqYT+4pEdF/gfLybylIsDl8JfvARSqcogfaWwcXEnNaAl23B3cQ4dkQYtRJlDEK8WUBMaoXm/IcrNEG/2bbXDuIkjzj+A4WLxC9yFuNIVXF1ABeV444ZHl0PU0ECjXVe7d9zIXMzyZjgLq5q4gIB2vfDXVPjkPTAhKxMLZxx9UQcEuB5OzfZxp/13PV3iyxbmN0Y3Ln7RNg/BGg9guzWIdI942Mkt+By/rhqnrXj8W3wOylgsKLb4uGzJjWZ+rGUJTDLf/Q+JaxIjQBLoIWWywPwi7sAkT34K/PGdOZ2I468zWyrI8j7bba7fWvZqHqB3GYblAI2LnD4LiXci9OXem9knc4AjJNonrWUrW/IZxRk+Dbe+LGA5RslI41eeKtzduMSe3jaS/UKbbUBKryFFTYyhomJ9VWiC+qtHqNjOVn7bKROsO7fFUDMS1tYrvEaA7kfSzBzbXBADw/zno1DdjscuCkKKygR5mdH+gX4itFeeQh
- XtuVM8gn
- og/pDakK4E4pz+jEcLxgah7ObLV6xHgBq40EGo4bNJwd49KhiBwJBkwkLC+X5PqnQAsLJmEBLlbMzquLVNFA5CMo5k2D4Z8FR3s2T0kf9m9EFHBmEx/VpntKI4xRo78ioTxjH92r0ye50EPLPd0RahUA/0x4ZhUiwwDQznCSL9dShf2qNTKTLb3RV+L5+uqGUnw/52tQ/eGGu3NAi2eaceVjkDBqDKEaYkH2jgh5hw3JbFeMGRnxiyx3WykWVb9QOUznUAb8mT3RxbdGPRc89boFNF837vDGpUNtWH5DyJdMb6DaEQl2xjEwYJHScQ2t51YMDXaAnrQAIAxen1272GxLTbYBOMdOiJ1/Hl5+eDCO8sqFTWM6dAE86hzN+9ta5PFvyTG3tl66CEhUU1IIJ+0DJw/KeCMsummwdXndW4FWKFuO+5ECenmhULkM+jjgY87vYZn2qowiMFK9WjHhNQLHawH9pEJo1O10upMV3rlL/C+u7KOAMT0XFDlJQliR+QvZTsfr3QXpaa9ahAROm2tHTCv0n/OVCH/nCVKS6vviBXkNvMjXlAWAoQ6gY1Q5vZkrSgGHUpwgIAtqIkv8l/HQx9lgHLegld3aTasvNRtZjLmdS7vpFQqYRIt8Z1/e2GNkuzfD+WdJCFHLV2axXxzOgQRca/DjgZvAqerLTyEhjWSTTbPJ+VALKTdXUuYzm/IdZAz0PCLcCoBKGpUGWXb90EpwMW46KVRD0WhV2tblnGTTowUMGk+Cc+ATCto1jS6bh4HJEnngTv+PsMwLGJBAP6ZlE/uK73Gc9aAcbMwaLxYiNfv/l6cGpZMzU4MAv486NTTGo+ThY6PuT9QTejhgRF7oIO0iwOAqr
+X-Stat-Signature: pdk5cbaz9ofirdama33m3o48ed4gaxsp
+X-HE-Tag: 1794460501-438837
+X-HE-Meta: U2FsdGVkX18u1z3vnrI99jEaYOniwrECm9gQYUySSANVyu8E9S6DGV8F1UqI8EAVIwJbMGP77EQOGojG2ArPzMKh88dhw3L7TTj9apyJv/rA8T9NO3csP6hSx26rvYih9l+RCOiZX9Mmf41/G15FH7dCkDx2sMRDZ+NOsPSkRXy7qOy0uv7EDwuPJuYfas4Rz1xgqKzwU2WtEVPrN4a/Y+uEbmXNyvaymx1ikzniekBXx5+K5Oy/K7b/7qvsLYSYnvnSxi7RQv2gEl1FGM+Ep2tbIrOreBvtU+H9Hv2xoK5gLLn6YUrTC0EMoHdsxrtsDqMz8RzA3zts2f1a0gz/qin+H2muwSO5Tnxb95S/W66yca3cO9bAy9Bc12zIgYYqq2C+wFgLQqUwKZJalojyyMrr+pqx7WLYTtKiNd0VBxs0KT+eL53muH0Cuh9QZsGFiB4ZXToGahtFArz0HmgOuKYNTUbD8rSy4NVk5jLnzmkQ4/j1pXFhWxbNy8gwxON3kRZaRO5K8re+7fOC9fMl1jC9tluohJDG7LdE3Ui/BoTgsx0q09rCSmuXYLlUgbRZrfDyD03E3I/OBAwsmH2NLC+Cac7XbetHX4KaTXIRzVGD95qOXNDwjxHxm3hBZBjtKoQivGSW/LpknFCcxac16yHJLMisyzVXQEVAeM0C94nEcPxZnn8uUCSivkvsQGeGEGS+a0vxsOAfrCnMst7lXTmnTixH5asH8bN2YtANh/ostLoWFNC43Oq1OJlIhvLbv8/FWM/CwmUFezHdcS+HozoVOTocPmlgK3Z11xk3hGA8tLBWIv5ujsnq5qGT2qrbk7pYcTWN+HShVlfEOh0j+3sels7QnbHFH9z9lN4aGOTmFyivdl4Ysg4KoOl+SkpgPfsSMYCj+YeLTPa0da7wxhGz7WL4mSAmsfxkKU1ONpPthwYrbiKHTqfMCa71zaQIFOs2EnCAQTpLscJLe5D
+ hN2bsVBH
+ yPj45NzCaSnewJ1WvMTv8y4S1JGoGJeiiD8tsp7gVZRPglvJGiGtRPo5w3Ly8PAhw9CinMiEKvQProSM9w9Sq2bulJ5xsGKhsK4tus8SxjYRvQ+i8KtChrA51PffAiEPPSrmuemfUVgkiOpnHuOZYak0uKuz9HZnbnOhQ8rQwfvVk1xQiMYpWrWItaf/Fm9MaCnILdK4T/swqp5pZpjShu/QjkxCQS9dcjhT8WZgOtGmB/BM894P4bsIlKUvMXmbBGAUtRfgWgAMk8gWxfsTKk9YruidCIuE+WjSXqhnCxjd0Ee7cSOhnk/AekxLEoO6WEfvZjTGlIlqX+Z9AtsAlYsGCrtPL0ReA3MA/mxxBwvpDDzIR2zKeI50thoNRjivReQ1D2pnxpp501xW9jbu/M7UDDiQpodzeMVqA74kDbZ5zF2bCH7MObGd4ydgD2UX5AFBI0+Hn+3i4WIr9fPDrkgDX0NvDXTZ784hUlWeF687oV2VsZBGoGrGsj7d9TCYIo4wf6CoTQLYA+f3JcUAO4hn538Y9crJ04HCbmJtmReOH47cUKOoJ00GVeQqqZWlHAQ4n4PoMdu7AOHUspSF7c+RwtQ1OYkIiCXbuRctxJ83gy8GXswdPx8iPMLle6PaXOqOfVhhYHRSsLF7RqGE2iG9wC+q8tXAGPehnYUWA0rb1FE16UWvQZDkPeYcTo1dY2AlB/MGiv+WPjX+AN+YiVa1rxq8KFkzhSN4Z9YqAIFayeZEH6TsHJcFfV+/9oJi0h2pPZIPCZMgIvjmm0nO1ElmsVrxcjis2KJvlOFcLM5XENl0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,42 +129,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-walk_to_pmd() asserts that the PMD it returns is not a huge entry. That
-held when commit c2febafc6773 ("mm: convert generic code to 5-level
-paging") added the assertion: nothing installed a huge PMD over the
-mappings its callers walk.
+insert_pfn() maps the PTE with get_locked_pte() and treats a NULL return
+as an allocation failure. pte_offset_map_lock() also returns NULL when
+the PMD is a leaf, which a VM_PFNMAP mapping with both ->fault and
+->huge_fault can hit: an order-0 fault that passed handle_pte_fault()'s
+pmd_none() check can reach insert_pfn() after a concurrent huge fault
+installed a PMD leaf over the same address. The task then takes a
+VM_FAULT_OOM for a mapping that is perfectly healthy. Changing an mm's
+THP policy while another thread faults the same PMD, for example with
+prctl(PR_SET_THP_DISABLE), is enough to produce the mixed orders.
 
-ARCH_SUPPORTS_HUGE_PFNMAP changed that. A VM_PFNMAP mapping whose driver
-provides both ->fault and ->huge_fault can have a PMD leaf installed by a
-concurrent huge fault over the same address, so a caller can observe one
-and BUG on CONFIG_DEBUG_VM=y.
-
-The walk does not need the invariant. pmd_alloc() only allocates when the
-PUD is empty and otherwise returns pmd_offset(), so a leaf is returned
-rather than overwritten. Every caller already copes with one, because
-they all reach pte_offset_map_lock(), which refuses to walk a leaf and
-returns NULL: insert_pages() turns that into -EFAULT, get_locked_pte()
-passes the NULL to its callers, and insert_pfn() returns a fault code.
+get_locked_pte() cannot tell the two apart, because pte_alloc_map_lock()
+folds the allocation and the map into one call. Walk to the PMD,
+allocate, and map as three steps, so that only a failed allocation
+returns VM_FAULT_OOM. A NULL from the map returns VM_FAULT_NOPAGE and
+the access refaults, which is what a PMD leaf, a PMD that is not present
+and a bad PMD that __pte_offset_map() cleared all want.
 
 Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
 Signed-off-by: Eliav Farber <farbere@amazon.com>
-Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+Suggested-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 ---
- mm/memory.c | 1 -
- 1 file changed, 1 deletion(-)
+v2: Split pte_alloc_map_lock() into pte_alloc() followed by
+    pte_offset_map_lock(), so that only a failed allocation returns
+    VM_FAULT_OOM and a NULL from the map returns VM_FAULT_NOPAGE. v1
+    called pte_alloc_map_lock() and then re-read the PMD with
+    pmd_trans_huge() to tell the two apart, which left the non-present
+    and bad-PMD cases reported as OOM. Suggested by Jose A. Perez de
+    Azpillaga.
+
+ mm/memory.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
 diff --git a/mm/memory.c b/mm/memory.c
-index ec3d9d99ccee..0f54ee0a6d88 100644
+index 0f54ee0a6d88..05ae87518206 100644
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -2384,7 +2384,6 @@ static pmd_t *walk_to_pmd(struct mm_struct *mm, unsigned long addr)
- 	if (!pmd)
- 		return NULL;
+@@ -2866,10 +2866,24 @@ static vm_fault_t insert_pfn(struct vm_area_struct *vma, unsigned long addr,
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	pte_t *pte, entry;
+ 	spinlock_t *ptl;
++	pmd_t *pmd;
  
--	VM_BUG_ON(pmd_trans_huge(*pmd));
- 	return pmd;
- }
- 
+-	pte = get_locked_pte(mm, addr, &ptl);
+-	if (!pte)
++	pmd = walk_to_pmd(mm, addr);
++	if (!pmd)
++		return VM_FAULT_OOM;
++
++	if (pte_alloc(mm, pmd))
+ 		return VM_FAULT_OOM;
++
++	/*
++	 * A concurrent ->huge_fault may have installed a PMD leaf over addr,
++	 * which pte_offset_map_lock() refuses to walk. The mapping is fine, so
++	 * let the access refault instead of reporting a failed allocation.
++	 */
++	pte = pte_offset_map_lock(mm, pmd, addr, &ptl);
++	if (!pte)
++		return VM_FAULT_NOPAGE;
++
+ 	entry = ptep_get(pte);
+ 	if (!pte_none(entry)) {
+ 		if (mkwrite) {
 -- 
 2.47.3
 
