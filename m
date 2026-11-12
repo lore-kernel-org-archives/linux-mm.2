@@ -1,120 +1,149 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F08606A33A
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 18:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46BC2606A333
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 18:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=n5MkfNXX
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=e6/01VVI;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=JKFgCgCE;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=kxZGdmGV;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=cyGRGs1M
 Received: by kanga.kvack.org (Postfix)
-	id CAA6F6B05B2; Thu, 12 Nov 2026 13:22:06 -0500 (EST)
+	id 192396B05B0; Thu, 12 Nov 2026 13:27:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5B766B05B4; Thu, 12 Nov 2026 13:22:06 -0500 (EST)
+	id 16A786B05B2; Thu, 12 Nov 2026 13:27:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4AD06B05B6; Thu, 12 Nov 2026 13:22:06 -0500 (EST)
+	id 031996B05B4; Thu, 12 Nov 2026 13:27:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 84B926B05B2
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:22:06 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 12DC51C411E
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:22:06 +0000 (UTC)
-X-FDA: 85427286252.09.EA30BFF
-Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com [209.85.160.69])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 51D92120005
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:22:04 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=n5MkfNXX;
-	spf=pass (imf29.hostedemail.com: domain of 3ygP2agsKCAks312rw12r22pxxpun.lxvurw36-vvt4jlt.x0p@flex--justinstitt.bounces.google.com designates 209.85.160.69 as permitted sender) smtp.mailfrom=3ygP2agsKCAks312rw12r22pxxpun.lxvurw36-vvt4jlt.x0p@flex--justinstitt.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794507724;
-	b=BusJJ/jp+H8wGMhYu5oi9OBQH4jvXnTeaPY7qU2k2oqJp4NsEoVUnLfTHtJ++pTUE7rTsB
-	ItIBPh0NYCdl4hQHZ9RkxUFQcnkOb+xBMN805N3NKdiysPUUfjZPpNyJTMbJV8ZtdQT5wW
-	00nslw94ghvnQHb6KxpdXsFQMcLChbI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=n5MkfNXX;
-	spf=pass (imf29.hostedemail.com: domain of 3ygP2agsKCAks312rw12r22pxxpun.lxvurw36-vvt4jlt.x0p@flex--justinstitt.bounces.google.com designates 209.85.160.69 as permitted sender) smtp.mailfrom=3ygP2agsKCAks312rw12r22pxxpun.lxvurw36-vvt4jlt.x0p@flex--justinstitt.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D37D36B05B0
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:27:55 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 638F1A8469
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:27:55 +0000 (UTC)
+X-FDA: 85427300910.12.D408909
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf14.hostedemail.com (Postfix) with ESMTP id E9688100004
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:27:52 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="e6/01VVI";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JKFgCgCE;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kxZGdmGV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cyGRGs1M;
+	spf=pass (imf14.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794507724;
+	s=arc-20220608; t=1794508073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/9R53hS2lq3Ijq537Vl1ow/wvMt9akHjDmPhIy8wjS8=;
-	b=JKaLpS4a/LuL4fOKoMloJ1s+X142s08EK2CgkZy5Vu5U08w5wMp97CN6Dw5GssH19meQUP
-	bQ3aa2npixUJVs6KVOVkZd8ztTpghsUUoZSRx/Op7dy1aMRM7qs07PsvVmHJeTNq2zcapd
-	0smk5t4YxcoXiKcqMG5qUX9pvxHtUDg=
-Received: by mail-oa1-f69.google.com with SMTP id 586e51a60fabf-4574f1cac98so72881fac.3
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:22:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794507723; x=1795112523; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/9R53hS2lq3Ijq537Vl1ow/wvMt9akHjDmPhIy8wjS8=;
-        b=n5MkfNXX1CissKeu8eYMrt+FvRwwFltof7OMbh9vf9Lvb4J+mYRB1EGXeF74G176O6
-         LlKN9/YXwYfGIP2DSJ0AjpaL7ne6IjANZ4yHUK3KGifGeHvepohnLw0v2RqcerXBVzn6
-         EuyjOFgP4A8+1w16clSimbfVOsobRV5kC2EJx/LT4ca3j99Ih1iXG3rgL7vUTxx+gei/
-         fkNnrVIhmh56HQ+pmC837+wT5/N8xc/sDeWblFy5cc3bU+kn4AOYqqQIvEX3ggQTJv8N
-         OW44WdnSHwJ/qnxCGBvr0MJayP3tskyBBiRW41j3skgFFYkoTYjP20lyXXa7Ffe7Pc3F
-         HpxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794507723; x=1795112523;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/9R53hS2lq3Ijq537Vl1ow/wvMt9akHjDmPhIy8wjS8=;
-        b=yBfyXX8/82BiPMke7wtyGOhObgwWDrgkWF+ga0lYy5P7QjgW2tFdmOfJUuWaUMJPV+
-         QAKD7DvF1GwTroFd0q3upkydFEQQWAL7PCSpcPLCL1UV3v3WopLVpwddzsKVjTJv9PUH
-         YccMHINgn6yTtt/zOFsBMcbBkwb50NuKsm2aKoVkpPRM4sNtaWN0Dril1gGDegQzu/Ck
-         URSO2hmHFPJvD0YH/NOISjKaipsI6MRIA/96VY9xKVFzZoWoIxgLy2k/zW0GZAoCIoFk
-         vb3nK3YtD14Jg+nzYz3sNCOV6/q2jPAEg3wQU1D6zU2uas57KwNS76WdcU3dbgxz64d/
-         G/PA==
-X-Forwarded-Encrypted: i=1; AL+hErFY2qq9fU/rYdca/Ht0g5p3TUffZSXtvu1uewstQ7LTN6IGvRIXQASLtRJIQNQceWB1LSPFqlv/zw==@kvack.org
-X-Gm-Message-State: APuU4Z8XnMLvzK/p5cXdFwE1JZ5VQBqMmqOE8M6gCkbhPXdvy+a+fZRB
-	gJEojt0Dx6VXdhAQoBLsuLWZNdYY4Uhqq+7IxWSyQIoF8ocojkjemGT7vqd1bfcYQ0cShRNL7rQ
-	c61gfB1z6kpU5nvSNCznQiD99fg==
-X-Received: from iohf17-n2.prod.google.com ([2002:a05:6602:a5d1:20b0:9c7:6dd9:edb5])
- (user=justinstitt job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6871:6687:b0:4a7:d759:9b8a with SMTP id 586e51a60fabf-4afdf7a6881mr466138fac.53.1794507722962;
- Thu, 12 Nov 2026 10:22:02 -0800 (PST)
-Date: Thu, 12 Nov 2026 10:22:02 -0800
-In-Reply-To: <CAHk-=whAF3brA9Wrcf3KDhNn_653zhUsoqe1MSneYJWtS5505Q@mail.gmail.com>
+	bh=Hv9UIEUvYmMSPwrYv3iIOvnG7+l+Ogro4OESJIENxQQ=;
+	b=UB1JmxmmWqwic9wo1478E8qjTAs8ROLLtS2zFxqszFLfITpgpKS5wQ6+aUyHgT6c/DT/0z
+	z0sqdlOMYutScuqKX+zjDYb1NyGWFw1UeilXexPPutKxyd6lV8BSe0uUWRVu3mbxJimW/n
+	qFAjhivGnPmQfbBVLoUl8xp4/S8h/hg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794508073;
+	b=gQZ7FB8522xrnuzm0CPmA42UR/94T+x2bJWXEBPEbX8+HqU3YRO5rBkEfbQ6K4kBPgquWe
+	GhP9yvDIXq7LKfCjo7G9afAhRm3FIAN0AVbgATRW5hRnGPlfi4Fp5VIp0ErifADEq9p2a3
+	wDbcd5qJVuPFS5pyAIj8HIodTZoo3UI=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="e6/01VVI";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JKFgCgCE;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kxZGdmGV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cyGRGs1M;
+	spf=pass (imf14.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4F76B21FCC;
+	Thu, 12 Nov 2026 18:27:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794508071; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Hv9UIEUvYmMSPwrYv3iIOvnG7+l+Ogro4OESJIENxQQ=;
+	b=e6/01VVIe4Eoa9+1/J7QeoE8tJvMFYzqpI7eed/XMFDfEGv0ZBx92EqMAGL0kex0thnIgX
+	7hO79eLpVE3ULudnw4ezodj8GOE6dlLhXUVSGG6DRx9x7jo3axRZ2UnzdgKK84H8D7UVx/
+	xBOV3HcxgUKYK8epq94CHpbN6FssET8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794508071;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Hv9UIEUvYmMSPwrYv3iIOvnG7+l+Ogro4OESJIENxQQ=;
+	b=JKFgCgCE2VNnrpfKenNMRtLJQTIhZEuchH7ULiHwujiyIxSN3/7SaEJ2ru/dXvWb037Nv4
+	h2i8JkBqPWJZOuBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794508070; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Hv9UIEUvYmMSPwrYv3iIOvnG7+l+Ogro4OESJIENxQQ=;
+	b=kxZGdmGVEk7kYZ9MFrlYE8iutOevbnNtC2b1oeBGXKp3yaQE2b7zDRzrkyQcStLu0G/AXF
+	PUIIVk0bBy0tM5jgKfuEchwTFJ4In1OfoersvWw8XWiUU9554plbM8AoIzzKGDnIKrM0FV
+	QTN0kGmOxYQToqopETyNpUfh53B8mlM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794508070;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Hv9UIEUvYmMSPwrYv3iIOvnG7+l+Ogro4OESJIENxQQ=;
+	b=cyGRGs1MIdQjdHlPziOth72EDxmxowfR+Uwmkuk8sT8fOaJxgTs7DSJ4UvZn/CZ1W+X64e
+	X2UYhoVzoaiPtlCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EBEDC13432;
+	Thu, 12 Nov 2026 18:27:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Egd8MSUF9mrZOgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 12 Nov 2026 18:27:49 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id 744ED22B7F; Thu, 12 Nov 2026 19:27:45 +0100 (CET)
+Date: Thu, 12 Nov 2026 19:27:45 +0100
+From: Jan Kara <jack@suse.cz>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	Jan Kara <jack@suse.com>, Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
+	linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, linux-mm@kvack.org, ntfs@lists.linux.dev, 
+	ocfs2-devel@lists.linux.dev, linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, 
+	linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org, 
+	Karl Mehltretter <kmehltretter@gmail.com>, Dave Kleikamp <shaggy@kernel.org>
+Subject: Re: [PATCH v2 04/34] ext2: don't set SB_RDONLY after filesystem
+ errors
+Message-ID: <7rm43pfkasky5th4fs65qdt4l2d6j3togha56idrqhs4524qca@u7socb57rg3v>
+References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
+ <20261029-work-fs-sb_rdonly-v2-4-2f44f64f0b66@kernel.org>
+ <5qefa4mracb3x2z4vsdejmkyyfrhdcrixmmnooz4rzwcdfoejm@mqkvixj6afwp>
+ <20261110-kargheit-impfen-pausieren-881763d28b19@brauner>
+ <za33axmgzmuzsj3zmfeh43fkphtcsqtkhhrauwuvs7aiftelgp@dzl6z322st5f>
+ <20261112-wohncontainer-saurier-wonnen-91f30c3b3ae2@brauner>
+ <20261112-besorgen-nobel-handschuhe-fb3373259b5f@brauner>
+ <20261112-aktivieren-datteln-assimilieren-062b8257ed49@brauner>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20260914223212.i.829-kees@kernel.org> <20260914223219.901347-2-kees@kernel.org>
- <20261112004039.GA523044@killaraus.ideasonboard.com> <avWNCC3_Ff0knO6J@devuan>
- <CAHk-=wgYBrhvo2NAG_Ja-0ovPf=xO20Gcopv9Yrr1u=QVxECZw@mail.gmail.com>
- <202611120905.DF88D9849@keescook> <CAHk-=whAF3brA9Wrcf3KDhNn_653zhUsoqe1MSneYJWtS5505Q@mail.gmail.com>
-Message-ID: <avYBdaCYclTyX9pX@google.com>
-Subject: Re: [PATCH 2/2] devres: Provide kmalloc_obj*-style API for devm_kmalloc
-From: Justin Stitt <justinstitt@google.com>
-To: Linus Torvalds <torvalds@linuxfoundation.org>
-Cc: Kees Cook <kees@kernel.org>, Alejandro Colomar <alx+linux-hardening@kernel.org>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, driver-core@lists.linux.dev, 
-	linux-hardening@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Geert Uytterhoeven <geert@linux-m68k.org>
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 51D92120005
-X-Stat-Signature: yphaehnodo4yrxpo5i4ygp8hq5xngp45
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261112-aktivieren-datteln-assimilieren-062b8257ed49@brauner>
+X-Spam-Level: 
+X-Spam-Score: -11.30
+X-Rspamd-Server: rspam06
+X-Stat-Signature: nwxef3zcimhsyzy5eu4ahwp5q4nnp9qe
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: E9688100004
 X-Rspam-User: 
-X-HE-Tag: 1794507724-175354
-X-HE-Meta: U2FsdGVkX1/nlpK3SKMckOLy1We/VUluC4O8tITm152Misnzzz00WjLCNwM5TJVkF8ZrYlph0ShZPlFXv/2KjcMM6hQhPOnuz1nP15w+BrZpLhFy+XwLIJoAQm/Q4rtHgh75NtWLqvnvFVMr+Im7cPyn9sdY4iOskYLTvYlgAqAuhNHqwYkK3FJkbT/XbKinMOxsEh9nPf4sYr31ZLH9qjUcCIfVl+v/42NMctJtLDJglmhN3TPGk29ykAfAMBactfsRyu7dvYemjbHAkiqlc/y+B2PkZV5jhX85KMpAB+xPs5oDpgqwWFOZl2RwTC7iYNBnmco5greo9/rq9L0PUyzFugh+2SXRhJRujYojYa87ri5lYRgpMepVsdYVd5Tyv44OEUmkkyPAYKqbOaXUFMRWiCRjfwl5O/fMwANJHcvyJF0Cv3FKEy9Lx8SQfRBc9G9cfX8pNS0lGlla16l0uaau2dC9uxuy6mBArmacEH5lPJn6AEvQopEz3cVakYUKDr6NfrEMCGEEkbVB2Npoiz5BGqrRMIzb60KOOXdhBUBBkUqr9LYD2FxFrgiv/l/9pgnFVAfm7uUowFUO4L2P/cYPTp5/+3cQXzJMZZzUTS6oyfBJMIYX445/sxsaJO7y5e9/WuNDbzU4ve8gpKc2Ystp4QVD/2qENvmRv0h6H5NOmGQdj7PZt8k0x8+DUr2LyUZKlFKntwkh35DU/AIEB7C8PvclqWf2+LG4qVXQnddqYaJ/A4LDC6Y542jseC1dFUxBbAABhfq41MyITHAXVLriS5lmN+0hq+SU5RLe0O52rLb8RLK3pFucc2voYIUKrxeBIGNp0S32l82DTfcFgZw3jhjBPFItLCAeR4yu2KUtOd2qW9OQqyE9BjVAcQF+izXjXkBwelgqzYLIX92VlsX7okh7QSqmbkc0KDrRIrbbz5wOwalonSne39KF45Qra4Luv10G6YEfH+XA0mO
- D9pPxzU+
- SLGMNTooP5l9aa/VSK83sgNJ4WgCxVlsfdv2FcRiXFQxSC0GcpREvRvAviRrk+o1Jf7xjW2OVfEEUIXgZJcVFsaWHCzK3t4+x0DEotbHDBJXEQoSdCSFlArR5klJd51wWaa80go15b2tg+QmDGsWFUIupGDikjwalNcPqmZDa1NV/IsvPcXfbgF0vDwET9H+ebYwuxAggPUierC3rPrrivmi4OEuS+Bg0uIDa3286TV/NYuRaG6TPF9H/j2rW0Z07+0JXzPGXUP3o6G2F/4rLaaleG1ufjBgYYH0NPsH5KGEVrYEPxQrTSqYh2rMJ0Z+c6GmtVhlRWNowkb3A/1ol94YiiZzqeKu2NiFkXFVub9vgHPzkeDjFyxJPROaeBEN5yMiZ23tRvjEMeJ266Fj703QX6hGqhDnYHpixFxjuWJ4oPmK59CxsuiISzpyVFtDlJs2RLMEVTvUHyMuA4/PYhKknNqmFqxzBCUyr0ay+QsNB84MBBi2SjdkBIXHNOpMv2BjixWFVjI5OpIO4CkJgo/omRqLJRpJqmdkuDy3xYtmnx/O+degJ+PbV1oEx79eoKJ3Drmqtp+JEQLfWenhrIESrvs/ynHZqVOU7ccsXQjbAOlPpf80pSEb0cVma46GSg8PiP2edcx5o1XlU67qsYI+oA1NePa0eliHL2JlAzwN0iHqsn/FHtoSFAq45JdNQqA3wEnKBbE/NW82uv6LcJE/6I/HlwQBsuHrOEMGfzdr7l6XdlfkitIgzQ2SHe9mLAb1sgdiBc4JHDWMucAf8rx2WUfhO2yrXsZuZUJqvKnUXJhSBUXIZvHB/Zrip3JhIuwLugPIpgN9sWt4woZLZ5cWV2W+yRG2NxJ4Wacw28alNmFeiVvxHKde5FuKDxhEy4AXLymbmQy5bmQixd3/9DSpRFA==
+X-HE-Tag: 1794508072-94086
+X-HE-Meta: U2FsdGVkX19QtJkf4k8VizbdW4ogmovVj+8So4lloahzyELFJnX7HAibi4+sUghv5VPwTBwUCTk+mINFdfw9DP2mU3PHDxXswzke3Jh/3sEOnLUMyLqMhNOlqDdQH6MJ+/837h/hR7hSAfGbxTlDX3T+TZDk7c7fEZbm3X5GSqfw5OxqFWeN/lgN6OOkylBMNfsF45+YnP18bRb+Eneg2srpqwnrJ5sFqmJ6y4y5xSG906geOEQ1QDkoA072JL6HKRuvoJn852beNQG1MPJJMRsziaPrD1izOzHAzKZ3aRzIIsEUUTdWlhVcH30z7H/CeSJOl02v7XDEFmjx4qBij+GFz8QAiXeAUC3R+apcXVsd4411S1rQNokeqCXK9Sf55okgJnAU/7BsTg1B3DqSCTxbHdRiXSIRvkMMsmqY4RwAk45K0EhRLUL/yWGhjrH9SDEpOb0cBNmkz/QKxhBtrpsPDsEZsIaYK9LdDC4wjXO4Z/jM+rU77bTNCGUHsJuA2JJ7woNOsa1XGhLMlRldVnPyexdMsd9yXCKCq4GXVcIzJ8yH3WvMBr6a7Uu/niBRdSSWrAsSnsZ32MOIMVImA3Dg5ysjNU1YxNTSEBDsKE8eG5w/UY2L8rliIAWSzXmTMnLrfECdJ+WvLXdP9cSsqpwRbTahBOd5zV33PBJPAIFV7E+uzjk3KN36lBuXhg48Xa6NbzSWnvhSWu45j3zMzXz0+4/3InYFEFSpb24Beg4ItpPUK94KIOamYorB7CZ+usP03WlhQq6EcQdFPs/cfjqjJ1cdpbTqBV1YlI7dze6hDkgrwHof3P6w/D+qx5vyRJguuXLWYpy/qEW+Qe9jjEInpS0KheiGzoine15UGnm6KRv6Hug27nptiCzMd3hg5pqC3HZM8XwwW7rusgOf71kbBuDcONHCLUZkawsk8lIl2XGyRPUy4zwilN3tmi+x+8ZCwlqvLd2zLrYbkiY
+ kC1dkyKt
+ jOpXUo5SOOm9s6vuu3xMw4bv5wk3VS7/mgAv1VH/sPun4rBS/VW2NsdO++jvu3+RIfvY89T5MvjbubsHMkz8MBW2fCkcheJQPXDh576pEADPyrGkvXpJkyBgQJHQkhfS5tJMv1qjNaa2zt+LG1T/mIeItpvCmIOH8K16LlOjPMTI3Zsp8FuDQzbpPmZepgDGvyMeSdiXbqY7bdto5Es/vXhEDew8fqMh1cQltY48ETPBQsO//OZoefnDI1fXIVBIC9JvOpu95oe4XZXuYbbKrx56qqeRS+7lxoifbIBin/t8TmhMFiOvZ4hH7MshZN11HY5c8mVy4E3tFWzSUdjaABUhHrCJOF0AGVz5UXxIpt0UN/SahV8VXHvrX/Ae530FYg9FUFjjYQCwI0E2EEbLKV19TcyfUipt0Ct+yCoN8mT1dyhHKHDYbPUJSHA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,40 +152,635 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi,
-
-On Thu, Nov 12, 2026 at 09:23:18AM -0800, Linus Torvalds wrote:
-> On Thu, 12 Nov 2026 at 09:09, Kees Cook <kees@kernel.org> wrote:
-> >
-> > One thing Justin was poking at was adding a "strict" mode to typedef
+On Thu 12-11-26 18:03:55, Christian Brauner wrote:
+> Ok, so if I understood you correctly the changes below should be
+> implementing what you ask, @Jan.
 > 
-> Honestly, the sparse setup is superior. It does that 'strict' thing
-> (except it calls it 'nocast') _and_ it has 'bitwise' that is a nocast
-> that also disallows non-bit type checks (which is *very* useful for
-> things like "this is a big-endian value: you can only do bitwise
-> checks against other big-endian values).
+> It's a diff against v2:
+> 
+> - jfs: free the anonymous tlocks when evicting an inode the way
+>   txUnlock() does. That's also a mainline fix.
+> 
+> - fs: sync_filesystem() and sync(2) skip a superblock in the emergency
+>   state. syncfs(2) and Q_SYNC return EROFS.
+> 
+> - fs: refuse to freeze a superblock in the emergency state. Otherwise
+>   freeze doesn't sync anything anymore and the flusher keeps writing to
+>   the frozen filesystem.
+> 
+>   That means, FIFREEZE and dm suspend with lockfs now fail with EROFS on
+>   an errored ext2, fat etc. I think you said that you expect freeze to
+>   fail anyway. I think that's right.
+> 
+>   The exfat, ntfs, btrfs and ext4 shutdown ioctls then have to skip the
+>   freeze after an error.
+> 
+> - ext2, fat, affs, ufs and hfs: drop the ->write_inode() refusals.
+>   Otherwise the flusher writes data and bitmaps but never the inodes.
+> 
+> - ext2, jfs, nilfs2, ocfs2 and ubifs: their ->sync_fs() checks are dead
+>   now and go.
+> 
+> - ubifs: drop dirty folios and inodes after an error. Without the sync
+>   at remount the flusher otherwise hits ubifs' asserts after a remount
+>   to read-only.
+> 
+> With that nothing is synced on request after an error anymore.
+> 
+> syncfs, fsync and Q_SYNC return EROFS without writing anything and
+> sync(2) and umount skip the filesystem's own sync.
+> 
+> The flusher and the block device flushes in sync(2) and
+> kill_block_super() still write. So what ends up on disk is the same as
+> on mainline today:
+> 
+> Is that what you had in mind?
 
+Wow, that was quick! Indeed this looks like what I had in mind and I like
+the result. Thanks for implementing it so quickly.
 
-Cool. I wasn't super familiar with how sparse handled `nocast` and
-`bitwise` but your insights led me to look into it deeper. I'll take
-these learnings over to clang when I get around to implementing strict
-types :)
+								Honza
 
 > 
-> So the compiler addition may be worth it, but  even the "poking at" is
-> weaker than what sparse already does.
-
-Right but I suppose the benefit is that compiler-enforced things are
-caught vastly more often than sparse-enforced things. Plus, like I said
-above, maybe I can aim to reach relative feature parity with sparse's
-own analysis on this type of stuff.
-
-FYI, there's some prior design with `strong` typedefs [1] in the form of
-a wg14 proposal. I've also been keeping a close eye on that stuff as it
-develops because it's essentially strict/distinct types with a different
-name.
-
-[1]: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3320.htm
-
-Justin
+> diff --git a/fs/affs/inode.c b/fs/affs/inode.c
+> index 009245ad6c99c..c7de9c793ab8f 100644
+> --- a/fs/affs/inode.c
+> +++ b/fs/affs/inode.c
+> @@ -173,8 +173,6 @@ affs_write_inode(struct inode *inode, struct writeback_control *wbc)
+>  
+>  	pr_debug("write_inode(%llu)\n", inode->i_ino);
+>  
+> -	if (sb_emergency_ro(sb))
+> -		return -EROFS;
+>  	if (!inode->i_nlink)
+>  		// possibly free block
+>  		return 0;
+> diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+> index 2063075906c8f..7f88eeb8afc57 100644
+> --- a/fs/btrfs/ioctl.c
+> +++ b/fs/btrfs/ioctl.c
+> @@ -5165,6 +5165,11 @@ static int btrfs_ioctl_shutdown(struct btrfs_fs_info *fs_info, unsigned long arg
+>  	if (btrfs_is_shutdown(fs_info))
+>  		return 0;
+>  
+> +	/* After an error there is nothing to flush and freezing fails. */
+> +	if (flags != BTRFS_SHUTDOWN_FLAGS_NOLOGFLUSH &&
+> +	    sb_emergency_ro(fs_info->sb))
+> +		flags = BTRFS_SHUTDOWN_FLAGS_NOLOGFLUSH;
+> +
+>  	switch (flags) {
+>  	case BTRFS_SHUTDOWN_FLAGS_LOGFLUSH:
+>  	case BTRFS_SHUTDOWN_FLAGS_DEFAULT:
+> diff --git a/fs/exfat/super.c b/fs/exfat/super.c
+> index 67b34cfce247c..b47816f70bb33 100644
+> --- a/fs/exfat/super.c
+> +++ b/fs/exfat/super.c
+> @@ -176,6 +176,11 @@ int exfat_force_shutdown(struct super_block *sb, u32 flags)
+>  	if (exfat_forced_shutdown(sb))
+>  		return 0;
+>  
+> +	/* After an error there is nothing to sync and freezing fails. */
+> +	if ((flags == EXFAT_GOING_DOWN_DEFAULT ||
+> +	     flags == EXFAT_GOING_DOWN_FULLSYNC) && sb_emergency_ro(sb))
+> +		flags = EXFAT_GOING_DOWN_NOSYNC;
+> +
+>  	switch (flags) {
+>  	case EXFAT_GOING_DOWN_DEFAULT:
+>  	case EXFAT_GOING_DOWN_FULLSYNC:
+> diff --git a/fs/ext2/dir.c b/fs/ext2/dir.c
+> index c2c9fc2d0b273..e17bbc7598c14 100644
+> --- a/fs/ext2/dir.c
+> +++ b/fs/ext2/dir.c
+> @@ -445,9 +445,6 @@ static int ext2_handle_dirsync(struct inode *dir)
+>  	err = filemap_write_and_wait(dir->i_mapping);
+>  	if (!err)
+>  		err = sync_inode_metadata(dir, 1);
+> -	/* The change is done, an error made us read-only in the meantime. */
+> -	if (err == -EROFS && sb_emergency_ro(dir->i_sb))
+> -		err = 0;
+>  	return err;
+>  }
+>  
+> diff --git a/fs/ext2/inode.c b/fs/ext2/inode.c
+> index 5c4831f8f45d2..dd28637c60737 100644
+> --- a/fs/ext2/inode.c
+> +++ b/fs/ext2/inode.c
+> @@ -1483,14 +1483,10 @@ int ext2_write_inode(struct inode *inode, struct writeback_control *wbc)
+>  	uid_t uid = i_uid_read(inode);
+>  	gid_t gid = i_gid_read(inode);
+>  	struct buffer_head * bh;
+> -	struct ext2_inode *raw_inode;
+> +	struct ext2_inode * raw_inode = ext2_get_inode(sb, ino, &bh);
+>  	int n;
+>  	int err = 0;
+>  
+> -	if (sb_emergency_ro(sb))
+> -		return -EROFS;
+> -
+> -	raw_inode = ext2_get_inode(sb, ino, &bh);
+>  	if (IS_ERR(raw_inode))
+>   		return -EIO;
+>  
+> diff --git a/fs/ext2/super.c b/fs/ext2/super.c
+> index a39e0564e3852..c4ac0f8f96de3 100644
+> --- a/fs/ext2/super.c
+> +++ b/fs/ext2/super.c
+> @@ -1287,10 +1287,6 @@ static int ext2_sync_fs(struct super_block *sb, int wait)
+>  	struct ext2_sb_info *sbi = EXT2_SB(sb);
+>  	struct ext2_super_block *es = EXT2_SB(sb)->s_es;
+>  
+> -	/* Nothing may be written after an error made us read-only. */
+> -	if (sb_emergency_ro(sb))
+> -		return 0;
+> -
+>  	/*
+>  	 * Write quota structures to quota file, sync_blockdev() will write
+>  	 * them to disk later
+> @@ -1353,9 +1349,7 @@ static int ext2_reconfigure(struct fs_context *fc)
+>  	int flags = fc->sb_flags;
+>  	int err;
+>  
+> -	/* Nothing may be written after an error made us read-only. */
+> -	if (!sb_emergency_ro(sb))
+> -		sync_filesystem(sb);
+> +	sync_filesystem(sb);
+>  
+>  	new_opts.s_mount_opt = ctx->vals_s_mount_opt;
+>  	new_opts.s_resuid = ctx->s_resuid;
+> diff --git a/fs/ext4/ioctl.c b/fs/ext4/ioctl.c
+> index e8e579498c990..ce0e0ebdded61 100644
+> --- a/fs/ext4/ioctl.c
+> +++ b/fs/ext4/ioctl.c
+> @@ -821,6 +821,10 @@ int ext4_force_shutdown(struct super_block *sb, u32 flags)
+>  	ext4_msg(sb, KERN_ALERT, "shut down requested (%d)", flags);
+>  	trace_ext4_shutdown(sb, flags);
+>  
+> +	/* After an error there is nothing to flush and freezing fails. */
+> +	if (flags == EXT4_GOING_FLAGS_DEFAULT && ext4_emergency_ro(sb))
+> +		flags = EXT4_GOING_FLAGS_NOLOGFLUSH;
+> +
+>  	switch (flags) {
+>  	case EXT4_GOING_FLAGS_DEFAULT:
+>  		ret = bdev_freeze(sb->s_bdev);
+> diff --git a/fs/fat/inode.c b/fs/fat/inode.c
+> index afd73dc4ba9a8..2779583c64423 100644
+> --- a/fs/fat/inode.c
+> +++ b/fs/fat/inode.c
+> @@ -963,9 +963,6 @@ static int fat_write_inode(struct inode *inode, struct writeback_control *wbc)
+>  {
+>  	int err;
+>  
+> -	if (unlikely(sb_emergency_ro(inode->i_sb)))
+> -		return -EROFS;
+> -
+>  	if (inode->i_ino == MSDOS_FSINFO_INO) {
+>  		struct super_block *sb = inode->i_sb;
+>  
+> @@ -1961,9 +1958,6 @@ int fat_flush_inodes(struct super_block *sb, struct inode *i1, struct inode *i2)
+>  		ret = writeback_inode(i2);
+>  	if (!ret)
+>  		ret = sync_blockdev_nowait(sb->s_bdev);
+> -	/* The change is done, an error made us read-only in the meantime. */
+> -	if (ret == -EROFS && sb_emergency_ro(sb))
+> -		ret = 0;
+>  	return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(fat_flush_inodes);
+> diff --git a/fs/hfs/inode.c b/fs/hfs/inode.c
+> index 71f7ddf60fb27..7e590e1308eac 100644
+> --- a/fs/hfs/inode.c
+> +++ b/fs/hfs/inode.c
+> @@ -479,17 +479,6 @@ int hfs_write_inode(struct inode *inode, struct writeback_control *wbc)
+>  	int res;
+>  
+>  	hfs_dbg("ino %llu\n", inode->i_ino);
+> -	if (unlikely(sb_emergency_ro(inode->i_sb))) {
+> -		/* Keep the headers in sync with the nodes writeback still writes. */
+> -		if (inode->i_ino == HFS_EXT_CNID)
+> -			hfs_btree_write(HFS_SB(inode->i_sb)->ext_tree);
+> -		else if (inode->i_ino == HFS_CAT_CNID)
+> -			hfs_btree_write(HFS_SB(inode->i_sb)->cat_tree);
+> -		else
+> -			return -EROFS;
+> -		return 0;
+> -	}
+> -
+>  	res = hfs_ext_write_extent(inode);
+>  	if (res)
+>  		return res;
+> diff --git a/fs/jfs/inode.c b/fs/jfs/inode.c
+> index 8ee227006d2fb..4a27d6a7ffdc9 100644
+> --- a/fs/jfs/inode.c
+> +++ b/fs/jfs/inode.c
+> @@ -172,6 +172,16 @@ void jfs_evict_inode(struct inode *inode)
+>  	clear_inode(inode);
+>  	dquot_drop(inode);
+>  
+> +	/*
+> +	 * Writeback commits the anonymous transactions of allocations. If the
+> +	 * filesystem went read-only without a sync, e.g. after an error,
+> +	 * nothing did.
+> +	 */
+> +	if (ji->atlhead) {
+> +		WARN_ON_ONCE(!sb_rdonly(inode->i_sb) &&
+> +			     !sb_emergency_ro(inode->i_sb));
+> +		txAbortAnon(inode);
+> +	}
+>  	BUG_ON(!list_empty(&ji->anon_inode_list));
+>  
+>  	spin_lock_irq(&ji->ag_lock);
+> diff --git a/fs/jfs/jfs_txnmgr.c b/fs/jfs/jfs_txnmgr.c
+> index 083dbbb0c3268..85192dd4461a4 100644
+> --- a/fs/jfs/jfs_txnmgr.c
+> +++ b/fs/jfs/jfs_txnmgr.c
+> @@ -2581,6 +2581,74 @@ void txFreelock(struct inode *ip)
+>  	TXN_UNLOCK();
+>  }
+>  
+> +/*
+> + *	txAbortAnon()
+> + *
+> + * function:	free the anonymous tlocks of an inode that is evicted
+> + *		before writeback committed them, e.g. because an error made
+> + *		the filesystem read-only.
+> + *
+> + * A page that carries nothing but uncommitted changes isn't written home.
+> + * A page that is also waiting to go home with committed changes (mp->lsn)
+> + * goes home with both, after an error the superblock is marked dirty.
+> + */
+> +void txAbortAnon(struct inode *ip)
+> +{
+> +	struct jfs_inode_info *jfs_ip = JFS_IP(ip);
+> +	struct linelock *linelock;
+> +	struct metapage *mp;
+> +	struct tlock *tlck;
+> +	lid_t lid, next, llid, k;
+> +
+> +	/* txQuiesce() and jfs_sync() commit under the commit_mutex */
+> +	mutex_lock(&jfs_ip->commit_mutex);
+> +
+> +	TXN_LOCK();
+> +	lid = jfs_ip->atlhead;
+> +	jfs_ip->atlhead = jfs_ip->atltail = 0;
+> +	list_del_init(&jfs_ip->anon_inode_list);
+> +	TXN_UNLOCK();
+> +
+> +	for (; lid; lid = next) {
+> +		tlck = lid_to_tlock(lid);
+> +		next = tlck->next;
+> +		mp = tlck->mp;
+> +
+> +		if (mp && (tlck->flag & tlckPAGELOCK)) {
+> +			/* undo txLock()'s metapage_nohomeok() */
+> +			hold_metapage(mp);
+> +			if (!mp->lsn)
+> +				clear_bit(META_dirty, &mp->flag);
+> +			TXN_LOCK();
+> +			mp->lid = 0;
+> +			TXN_UNLOCK();
+> +			_metapage_homeok(mp);
+> +			put_metapage(mp);
+> +		} else if (mp) {
+> +			/* the xtree root in the inode, it isn't written anymore */
+> +			TXN_LOCK();
+> +			if (jfs_ip->xtlid == lid)
+> +				jfs_ip->xtlid = 0;
+> +			else
+> +				mp->lid = 0;
+> +			TXN_UNLOCK();
+> +		}
+> +
+> +		TXN_LOCK();
+> +		llid = ((struct linelock *) &tlck->lock)->next;
+> +		while (llid) {
+> +			linelock = (struct linelock *) lid_to_tlock(llid);
+> +			k = linelock->next;
+> +			txLockFree(llid);
+> +			llid = k;
+> +		}
+> +		txLockFree(lid);
+> +		TXN_UNLOCK();
+> +	}
+> +
+> +	mutex_unlock(&jfs_ip->commit_mutex);
+> +}
+> +
+>  /*
+>   *	txAbort()
+>   *
+> diff --git a/fs/jfs/jfs_txnmgr.h b/fs/jfs/jfs_txnmgr.h
+> index ba71eb5ced567..e9a7547afd3f6 100644
+> --- a/fs/jfs/jfs_txnmgr.h
+> +++ b/fs/jfs/jfs_txnmgr.h
+> @@ -288,6 +288,7 @@ extern struct linelock *txLinelock(struct linelock *);
+>  extern void txFreeMap(struct inode *, struct maplock *, struct tblock *, int);
+>  extern void txEA(tid_t, struct inode *, dxd_t *, dxd_t *);
+>  extern void txFreelock(struct inode *);
+> +extern void txAbortAnon(struct inode *);
+>  extern int lmLog(struct jfs_log *, struct tblock *, struct lrd *,
+>  		 struct tlock *);
+>  extern void txQuiesce(struct super_block *);
+> diff --git a/fs/jfs/super.c b/fs/jfs/super.c
+> index 1926019b10949..4dcc1b28e51d0 100644
+> --- a/fs/jfs/super.c
+> +++ b/fs/jfs/super.c
+> @@ -372,7 +372,6 @@ static int jfs_reconfigure(struct fs_context *fc)
+>  	if (ctx->resize && sb_emergency_ro(sb))
+>  		return -EROFS;
+>  
+> -	/* After an error this only commits what was queued before it. */
+>  	sync_filesystem(sb);
+>  
+>  	/* Transfer results of parsing to the sbi */
+> @@ -667,10 +666,6 @@ static int jfs_sync_fs(struct super_block *sb, int wait)
+>  {
+>  	struct jfs_log *log = JFS_SBI(sb)->log;
+>  
+> -	/* After an error only freeze and umount write out the log. */
+> -	if (sb_emergency_ro(sb))
+> -		return 0;
+> -
+>  	/* log == NULL indicates read-only mount */
+>  	if (log) {
+>  		/*
+> diff --git a/fs/nilfs2/super.c b/fs/nilfs2/super.c
+> index edb7d379ecbdf..e2d7865e4b378 100644
+> --- a/fs/nilfs2/super.c
+> +++ b/fs/nilfs2/super.c
+> @@ -530,10 +530,6 @@ static int nilfs_sync_fs(struct super_block *sb, int wait)
+>  	struct nilfs_super_block **sbp;
+>  	int err = 0;
+>  
+> -	/* Nothing may be written after an error made us read-only. */
+> -	if (sb_emergency_ro(sb))
+> -		return 0;
+> -
+>  	/* This function is called when super block should be written back */
+>  	if (wait)
+>  		err = nilfs_construct_segment(sb);
+> diff --git a/fs/ntfs/super.c b/fs/ntfs/super.c
+> index 7bc79b7766396..660fd145731fd 100644
+> --- a/fs/ntfs/super.c
+> +++ b/fs/ntfs/super.c
+> @@ -2271,6 +2271,11 @@ int ntfs_force_shutdown(struct super_block *sb, u32 flags)
+>  	if (NVolShutdown(vol))
+>  		return 0;
+>  
+> +	/* After an error there is nothing to flush and freezing fails. */
+> +	if ((flags == FS_SHUTDOWN_FLAGS_DEFAULT ||
+> +	     flags == FS_SHUTDOWN_FLAGS_LOGFLUSH) && sb_emergency_ro(sb))
+> +		flags = FS_SHUTDOWN_FLAGS_NOLOGFLUSH;
+> +
+>  	switch (flags) {
+>  	case FS_SHUTDOWN_FLAGS_DEFAULT:
+>  	case FS_SHUTDOWN_FLAGS_LOGFLUSH:
+> diff --git a/fs/ocfs2/super.c b/fs/ocfs2/super.c
+> index 6541294641da2..0600203931c42 100644
+> --- a/fs/ocfs2/super.c
+> +++ b/fs/ocfs2/super.c
+> @@ -403,10 +403,6 @@ static int ocfs2_sync_fs(struct super_block *sb, int wait)
+>  	if (ocfs2_is_hard_readonly(osb))
+>  		return -EROFS;
+>  
+> -	/* Nothing to flush or commit after an error. */
+> -	if (ocfs2_is_soft_readonly(osb))
+> -		return 0;
+> -
+>  	if (wait) {
+>  		status = ocfs2_flush_truncate_log(osb);
+>  		if (status < 0)
+> diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+> index f469e6e18e4ca..75118a8359495 100644
+> --- a/fs/quota/dquot.c
+> +++ b/fs/quota/dquot.c
+> @@ -777,6 +777,10 @@ int dquot_quota_sync(struct super_block *sb, int type)
+>  	int cnt;
+>  	int ret;
+>  
+> +	/* An error made the filesystem read-only. */
+> +	if (sb_emergency_ro(sb))
+> +		return -EROFS;
+> +
+>  	ret = dquot_writeback_dquots(sb, type);
+>  	if (ret)
+>  		return ret;
+> diff --git a/fs/super.c b/fs/super.c
+> index 0855c96b95b5c..edc767d816597 100644
+> --- a/fs/super.c
+> +++ b/fs/super.c
+> @@ -2291,6 +2291,16 @@ int freeze_super(struct super_block *sb, enum freeze_holder who, const void *fre
+>  		goto retry;
+>  	}
+>  
+> +	/*
+> +	 * After an error nothing gets synced anymore while the flusher may
+> +	 * still write, so a new freeze can't give a stable filesystem. Joining
+> +	 * a freeze that is already in effect above is fine.
+> +	 */
+> +	if (sb_emergency_ro(sb)) {
+> +		deactivate_locked_super(sb);
+> +		return -EROFS;
+> +	}
+> +
+>  	if (sb_rdonly(sb)) {
+>  		/* Nothing to do really... */
+>  		WARN_ON_ONCE(freeze_inc(sb, who) > 1);
+> @@ -2313,6 +2323,9 @@ int freeze_super(struct super_block *sb, enum freeze_holder who, const void *fre
+>  
+>  	/* All writers are done so after syncing there won't be dirty data */
+>  	ret = sync_filesystem(sb);
+> +	/* An error while we waited for the writers means nothing was synced. */
+> +	if (!ret && sb_emergency_ro(sb))
+> +		ret = -EROFS;
+>  	if (ret) {
+>  		sb->s_writers.frozen = SB_UNFROZEN;
+>  		sb_freeze_unlock(sb, SB_FREEZE_PAGEFAULT);
+> diff --git a/fs/sync.c b/fs/sync.c
+> index da1b35bd4445b..e282040b83e71 100644
+> --- a/fs/sync.c
+> +++ b/fs/sync.c
+> @@ -39,8 +39,9 @@ int sync_filesystem(struct super_block *sb)
+>  
+>  	/*
+>  	 * No point in syncing out anything if the filesystem is read-only.
+> +	 * After an error made it read-only nothing is pushed out anymore.
+>  	 */
+> -	if (sb_rdonly(sb))
+> +	if (sb_rdonly(sb) || sb_emergency_ro(sb))
+>  		return 0;
+>  
+>  	/*
+> @@ -73,14 +74,14 @@ EXPORT_SYMBOL(sync_filesystem);
+>  
+>  static void sync_inodes_one_sb(struct super_block *sb, void *arg)
+>  {
+> -	if (!sb_rdonly(sb))
+> +	if (!sb_rdonly(sb) && !sb_emergency_ro(sb))
+>  		sync_inodes_sb(sb);
+>  }
+>  
+>  static void sync_fs_one_sb(struct super_block *sb, void *arg)
+>  {
+> -	if (!sb_rdonly(sb) && !(sb->s_iflags & SB_I_SKIP_SYNC) &&
+> -	    sb->s_op->sync_fs)
+> +	if (!sb_rdonly(sb) && !sb_emergency_ro(sb) &&
+> +	    !(sb->s_iflags & SB_I_SKIP_SYNC) && sb->s_op->sync_fs)
+>  		sb->s_op->sync_fs(sb, *(int *)arg);
+>  }
+>  
+> @@ -157,6 +158,9 @@ SYSCALL_DEFINE1(syncfs, int, fd)
+>  
+>  	down_read(&sb->s_umount);
+>  	ret = sync_filesystem(sb);
+> +	/* An error made the filesystem read-only. */
+> +	if (!ret && sb_emergency_ro(sb))
+> +		ret = -EROFS;
+>  	up_read(&sb->s_umount);
+>  
+>  	ret2 = errseq_check_and_advance(&sb->s_wb_err, &fd_file(f)->f_sb_err);
+> diff --git a/fs/ubifs/file.c b/fs/ubifs/file.c
+> index 99dd52715eee9..4eae6c2ae2eea 100644
+> --- a/fs/ubifs/file.c
+> +++ b/fs/ubifs/file.c
+> @@ -898,6 +898,13 @@ static int do_writepage(struct folio *folio, size_t len)
+>  
+>  	folio_start_writeback(folio);
+>  
+> +	/* Nothing gets written after an error, drop the folio. */
+> +	if (unlikely(c->ro_error)) {
+> +		err = -EROFS;
+> +		mapping_set_error(folio->mapping, err);
+> +		goto out;
+> +	}
+> +
+>  	block = folio->index << UBIFS_BLOCKS_PER_PAGE_SHIFT;
+>  	for (;;) {
+>  		blen = min_t(size_t, len, UBIFS_BLOCK_SIZE);
+> @@ -918,6 +925,7 @@ static int do_writepage(struct folio *folio, size_t len)
+>  		ubifs_ro_mode(c, err);
+>  	}
+>  
+> +out:
+>  	ubifs_assert(c, folio->private != NULL);
+>  	if (folio_test_checked(folio))
+>  		release_new_page_budget(c);
+> @@ -997,6 +1005,10 @@ static int ubifs_writepage(struct folio *folio, struct writeback_control *wbc)
+>  		goto out_unlock;
+>  	}
+>  
+> +	/* After an error do_writepage() drops the folio. */
+> +	if (unlikely(c->ro_error))
+> +		return do_writepage(folio, len);
+> +
+>  	spin_lock(&ui->ui_lock);
+>  	synced_i_size = ui->synced_i_size;
+>  	spin_unlock(&ui->ui_lock);
+> diff --git a/fs/ubifs/super.c b/fs/ubifs/super.c
+> index f041fe434d3b9..2d71274e89ad0 100644
+> --- a/fs/ubifs/super.c
+> +++ b/fs/ubifs/super.c
+> @@ -312,6 +312,12 @@ static int ubifs_write_inode(struct inode *inode, struct writeback_control *wbc)
+>  		return 0;
+>  	}
+>  
+> +	/* Nothing gets written after an error, drop the change. */
+> +	if (unlikely(c->ro_error)) {
+> +		err = -EROFS;
+> +		goto out;
+> +	}
+> +
+>  	/*
+>  	 * As an optimization, do not write orphan inodes to the media just
+>  	 * because this is not needed.
+> @@ -327,6 +333,7 @@ static int ubifs_write_inode(struct inode *inode, struct writeback_control *wbc)
+>  			err = dbg_check_inode_size(c, inode, ui->ui_size);
+>  	}
+>  
+> +out:
+>  	ui->dirty = 0;
+>  	mutex_unlock(&ui->ui_mutex);
+>  	ubifs_release_dirty_inode_budget(c, ui);
+> @@ -473,14 +480,6 @@ static int ubifs_sync_fs(struct super_block *sb, int wait)
+>  	if (!wait)
+>  		return 0;
+>  
+> -	/*
+> -	 * Nothing gets written after an error. Fail only here, after the
+> -	 * !wait return: sync_filesystem() gives up at the first error and
+> -	 * would skip sync_inodes_sb().
+> -	 */
+> -	if (c->ro_error)
+> -		return -EROFS;
+> -
+>  	/*
+>  	 * Synchronize write buffers, because 'ubifs_run_commit()' does not
+>  	 * do this if it waits for an already running commit.
+> diff --git a/fs/ufs/dir.c b/fs/ufs/dir.c
+> index 78c8839211153..e96174b738b4c 100644
+> --- a/fs/ufs/dir.c
+> +++ b/fs/ufs/dir.c
+> @@ -64,9 +64,6 @@ static int ufs_handle_dirsync(struct inode *dir)
+>  	err = filemap_write_and_wait(dir->i_mapping);
+>  	if (!err)
+>  		err = sync_inode_metadata(dir, 1);
+> -	/* The change is done, an error made us read-only in the meantime. */
+> -	if (err == -EROFS && sb_emergency_ro(dir->i_sb))
+> -		err = 0;
+>  	return err;
+>  }
+>  
+> diff --git a/fs/ufs/inode.c b/fs/ufs/inode.c
+> index ed5d98c8bfca2..c9ff8673fa668 100644
+> --- a/fs/ufs/inode.c
+> +++ b/fs/ufs/inode.c
+> @@ -828,8 +828,6 @@ static int ufs_update_inode(struct inode * inode, int do_sync)
+>  
+>  int ufs_write_inode(struct inode *inode, struct writeback_control *wbc)
+>  {
+> -	if (sb_emergency_ro(inode->i_sb))
+> -		return -EROFS;
+>  	return ufs_update_inode(inode, wbc->sync_mode == WB_SYNC_ALL);
+>  }
+>  
+> diff --git a/include/linux/fs/super.h b/include/linux/fs/super.h
+> index 0fa6eaa93d44d..51810fe95a835 100644
+> --- a/include/linux/fs/super.h
+> +++ b/include/linux/fs/super.h
+> @@ -190,8 +190,8 @@ static inline bool sb_rdonly(const struct super_block *sb)
+>  
+>  /*
+>   * An error made the filesystem read-only. Check this wherever sb_rdonly()
+> - * gates a write but never where it describes the mount, e.g. in freeze_super()
+> - * and thaw_super(). It can get set while the superblock is frozen.
+> + * gates a write but never where it describes the mount, e.g. in the read-only
+> + * shortcuts of freeze_super() and thaw_super(). It can get set while frozen.
+>   */
+>  static inline bool sb_emergency_ro(const struct super_block *sb)
+>  {
+> diff --git a/tools/testing/selftests/filesystems/sb_rdonly/emergency_ro_test.c b/tools/testing/selftests/filesystems/sb_rdonly/emergency_ro_test.c
+> index de442b8ee7099..44e92a98477c3 100644
+> --- a/tools/testing/selftests/filesystems/sb_rdonly/emergency_ro_test.c
+> +++ b/tools/testing/selftests/filesystems/sb_rdonly/emergency_ro_test.c
+> @@ -481,9 +481,13 @@ TEST_F_TIMEOUT(emergency_ro, freeze_error_thaw, 120)
+>  			"a modification did not fail with EROFS");
+>  	}
+>  
+> -	/* freezing still works and doesn't leave writers blocked */
+> -	ASSERT_EQ(ioctl(rootfd, FIFREEZE, 0), 0);
+> -	ASSERT_EQ(ioctl(rootfd, FITHAW, 0), 0);
+> +	/* a new freeze is refused and doesn't leave writers blocked */
+> +	ret = ioctl(rootfd, FIFREEZE, 0);
+> +	EXPECT_EQ(ret, -1);
+> +	EXPECT_EQ(errno, EROFS);
+> +	ret = ioctl(rootfd, FITHAW, 0);
+> +	EXPECT_EQ(ret, -1);
+> +	EXPECT_EQ(errno, EINVAL);
+>  	ret = run_child(modify_all, self->mnt, prefd);
+>  	if (ret == -ETIMEDOUT)
+>  		self->wedged = true;
+> 
+> -- 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
