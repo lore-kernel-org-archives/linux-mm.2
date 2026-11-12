@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60952606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 00:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C90606A324
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 00:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b7oworxH
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mrWiPdJh
 Received: by kanga.kvack.org (Postfix)
-	id 7B8956B05BB; Wed, 11 Nov 2026 19:31:24 -0500 (EST)
+	id EE4306B05BD; Wed, 11 Nov 2026 19:31:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 790526B05BC; Wed, 11 Nov 2026 19:31:24 -0500 (EST)
+	id E94F96B05BE; Wed, 11 Nov 2026 19:31:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67F196B05BD; Wed, 11 Nov 2026 19:31:24 -0500 (EST)
+	id DAB6C6B05BF; Wed, 11 Nov 2026 19:31:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 40BC86B05BB
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:31:24 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BB2F4803F6
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:31:23 +0000 (UTC)
-X-FDA: 85424588046.12.2AFB578
+	by kanga.kvack.org (Postfix) with ESMTP id C0A4A6B05BD
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:31:29 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5758A804C7
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:31:29 +0000 (UTC)
+X-FDA: 85424588298.11.20D6636
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 27A2340003
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:31:22 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b7oworxH;
+	by imf24.hostedemail.com (Postfix) with ESMTP id C1ADA180005
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:31:27 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mrWiPdJh;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794443482;
+	s=arc-20220608; t=1794443487;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sM9FfP0zyszmMrgXJ0phgeLchPzm+/kuKHgm7FbXyLo=;
-	b=dE+/a0TV8KNW2Ur9XcsbsFN/QYFCQhWrsZ1FHdND327I5Pk0fArPUp7TFFiozxgKSgVTGB
-	1FexE9om1GI0ejOrkU+niO9WOR/dHo7vJ8ZVtkuuXpTDFPI2/qaHeGnPPmyM30dRcKxjhs
-	Y4YYZzifvAnj6WKpcEvo+GpsY4/Tu0c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794443482;
-	b=ku4RkWqORKNrMD0ElleRjnJd7EX5Q8PsVsN5PrAPbX6dAESI4lYdfClmFcBudnC18YxWKg
-	0dEfs0qwK+FYfCGbCKwOWI7c75dqxkIUBXSDYKMaQV55Yuw4kBMVcXLByF31rUoQqR/w4S
-	vxoZ0TWlNe0x2bTodkuDZjlP6ZE4XWc=
+	bh=9S+6EWuhGnazR//mbqE63p2Ta/W9cmMlZEk741JVhmw=;
+	b=Gdi12qXKMSKuxZ5MeYZY4BzU/TQpMYaRn4NYO+qpIkN3ufHYTqCodRsGyjXKG4cA5JYYWO
+	0qgWVt271IHASZ6TnBi0/hxIQ9pw5KO6QBviyvae64x6XyeZXurZNa/xRwlzUdTBvEJ5wg
+	VzYw35gMxCIXZJ8VCk+zqWMLrNPbfE8=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b7oworxH;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mrWiPdJh;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794443487;
+	b=58mJafDYD+5rGKn0z+3mFqdMTeUByi2BqxyZMzSwTqmS+6NtRCG4vkVsGPgBeBECYtut4i
+	c4s8nsYsfoM7YSkoLt9cg6RkZBT3MGw5y5qux6VNplhCwqg2o5GibyV9qSJKUGDjoSDZTz
+	RmqVYzax9Djt3dS/6u7CQLtawcqq2q4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C05FA633BF;
-	Thu, 12 Nov 2026 00:31:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869381F00A05;
-	Thu, 12 Nov 2026 00:31:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 636D160052;
+	Thu, 12 Nov 2026 00:31:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 743251F00A06;
+	Thu, 12 Nov 2026 00:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794443481;
-	bh=sM9FfP0zyszmMrgXJ0phgeLchPzm+/kuKHgm7FbXyLo=;
+	s=k20260515; t=1794443487;
+	bh=9S+6EWuhGnazR//mbqE63p2Ta/W9cmMlZEk741JVhmw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=b7oworxHXPHYvhLTDqK5HshSAhlCDtckAZGdB75jVM/OF9eGX9G6zrrrYyUf6Oy+t
-	 3XKp3COx88PfmVzzWKWPD+gfhSf6jxV5k4FvvbEqMhZzwK0g2VSSwg5UDxKqCaoNGM
-	 83OXjt6jRpTVyaulUa3gd8+hSwmK6MXtGqarQBsLuaJmdggNAftWy49Y/Pl8dNpO8b
-	 nP63N2JgqckUyHCBcYF6jLTiNkp3KEjdB+gu6zM/RPWwnDkZ3ztZG7Kvey3/QmlTUE
-	 fvfQosLMUti2eINt52oxI0yi804ppbl6IMCM+F25mSiS3OXcG2Zx8EO+GXdlT80G61
-	 Gsi4SjdY7+dIg==
-Message-ID: <sashiko-outbox-209944@kernel.org>
+	b=mrWiPdJhaqCza1/1sKjJRctS+Tx+RhPrix0WaN4ThJJcTOzoUJZSgZX/nmuNOiPl1
+	 Rm+YK4M01c7VW9nPXRbkuyJpLPf/fjUiMSQGvvEyBacPpZPvAHxDlR/4TDcd0UYp0n
+	 MN5p5MRBcWsheu4s7K25e1ysEAJGbBoV9nf28d13GRGrKwq9drszEJcbe2aGo/L/OE
+	 2IYAQQLuhQTFVnH92SJAOGmWJwd6fT9AEXIO9fa+hopZjGq3Idw/mzk6uXKawKOLUr
+	 UgbOXn1GWghuYdLYjVYcLrhkAN2jCXtMBKvMPh8fx8opFoNTAXPDGCu57CCEB5uh6N
+	 96vfOyPb1GIHA==
+Message-ID: <sashiko-outbox-209946@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 12/19] mm/shmem_luo: Retrieve tmpfs files into a file
- created by userspace
+Subject: Re: [PATCH v4 14/19] selftests/liveupdate: Test which tmpfs files
+ can be preserved
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "David Matlack" <dmatlack@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org
 Cc: "Alexander Graf" <graf@amazon.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Baolin
@@ -75,24 +75,24 @@ Cc: "Alexander Graf" <graf@amazon.com>, "Andrew Morton" <akpm@linux-foundation.o
  Dunlap" <rdunlap@infradead.org>, "Samiullah Khawaja" <skhawaja@google.com>, "Shuah
  Khan" <skhan@linuxfoundation.org>, "Suren Baghdasaryan" <surenb@google.com>, "Vlastimil
  Babka" <vbabka@kernel.org>
-In-Reply-To: <20261111002358.1842967-13-dmatlack@google.com>
+In-Reply-To: <20261111002358.1842967-15-dmatlack@google.com>
 References: <20261111002358.1842967-1-dmatlack@google.com>
- <20261111002358.1842967-13-dmatlack@google.com>
+ <20261111002358.1842967-15-dmatlack@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 12 Nov 2026 00:31:20 +0000
-X-Stat-Signature: yeqhkk5zftjm4bmuuyk7hiceehjukgf9
+Date: Thu, 12 Nov 2026 00:31:23 +0000
 X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C1ADA180005
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 27A2340003
-X-HE-Tag: 1794443482-735332
-X-HE-Meta: U2FsdGVkX1873U+WRuGM7kR20VFUHcvX+0nfk8rkdYeShuYxAjms19MQMRi4VOn93TXnaOY8wcaovbVqaS5iDuWNtXKsn3aUAkCxzhBAZV3wfys8twA5yGJz5Rhc01+xI+tlRazOt5rwU4locftwWHT6K2hXm7x21Gyg7Tc/8OXBK2pOWgUyOyBBK2KEC613WPt8jdcmSIDNl1LawpV8t+alvey1z9LAg1jP7CwY2QNqsmJrtttbgaBYiXkPzD6Qh0DsuIKXSTuiGchRBWKWG/fmbQii4bF0q6yGAkAsizj++3lpScPGa35WHvUaEghBlSpH1cztvPaiU6k/YvfU9WYGvNCnY3yu1DUCbIEE7EbMi4i+9qgNW0/cnZChPkgDiZPd2TuOpSWA4Rb6Dr1bJ5FThgo2H4gdaHjmDE0Fg0gq9FQACw64xSmouR71/WaFzeArWqprq2HHQ3xCC+IKUZup1WCG8Jg9gmHtBKv4EpgPOB07UybbBgeI29g89PbuYTE5GDjROrH/jYXo4VZoG32fFrwD4PtbH30jogPTCPVHhfPW1Vg3P2ZgW14UtlaI0k06GBGjVMdjAMjz8GvttPcVrlKJVckh9NmIDpPOt0SKRWlSPH8Tf8coI0i6KijmJpcs3+f5VeowCCNqmNmsCXF9Tukox9txwwLiVyQf1uGKdZKg1lybd+WmzZ6sUw6XDadmhs5s4esMTmc8Hio5kDCJQ4sPFNCbCMN0iHdhj+bLXVOBl1H1Vg3Pmw7HtfxJvYHgz6xOQuBirAbaBmnCW2+IiY8ZRAorPrGwMGSiK31mDJVxTpwYB2IEifUfGmK0ca4QwK113q7gxGkuJ8lBTLWDfqUQtYPYuwEZCFIqMDTWdY9XUgAiWp4X5oOHxXM/CE0Cx+Eq9RKxs4YYEaq/dE5wgaFqb0RYplbUveDh2XBSQvWEjSyYG8idTrY2tvvfFghYQXaLtZDJXod/FsL
- J3alZk0h
- 5WaBcrnFpy3kzClDfUcPrX98BZanKtVsig+Phg3EsicS9PnjWI9WsnBdVSSmu9+Kr7L2OjyUcsOPqPAjREUXBaGpc4b9OyLchQGYtzl0PSm+D44MwVpqn0gt0d/SG0zAnG9Drh+xzyhqY0uKSEvj3cWLbM3ICl5Wqfnoq8mZHXOROvF9ZpqYSfImkWp6Bz7sgZSfy4VfB3oA4cwzhpFwidz41AIIV2Cr7i+KhpHPxyl+n6rilV6DZ2HzdfKXwShkxol9ozaGmhrRQL/slLalEhvYXuJOG5QAJy8nt1SfZeN8ODLAEw3wNjIR3sNn3BLkdB03/B5zx26RwY2iefPj5cUWPHW+cX4rmOjb5AzhKXNlCFlqSiylxl9XrtRb+IgIlAeP65Ip1GHviyThjorYONdV/UmNB9pQGLCFMo3Q8PZNy7kRovN2UAMyKbnjGAxXfJMUtKYmBavUt6WvEzOsGSDZdgHFCjYd9uqw0KNj84b1a3qN+oZWiPaiO2PxOHDRB8q/Yr06q1lZTYUC2UFX/anRs9pM7yoDX8jF1TjXxMK6wLXW89S9Z2oXecxBHr2nN8l1fbMkUdPKkcElsv0FYjxPKd7EjPFUA5EFo9ZJdtD5nlKK+i8uSf6Vfej6FfMGJPERmIRFnmsmaSjc=
+X-Stat-Signature: b8n8gey5815f5iabnf4mk9e1g4n41ssm
+X-HE-Tag: 1794443487-393184
+X-HE-Meta: U2FsdGVkX18rDynhy6NBlS099dVL7q01ldpy3EXetNwLxx3/SrZwxG45hKf45nrIBw0UHt/Z2ZWcXcRf7dwNaZKrCmNfdXG6NRvhF90+VHIZCbWnaQeSEq6bJn7v+8KP0cGQbGId7r2BxmVwR1T0xt4pvZVW5vz/jl+FHDLsEPTlpYVPwx4r1Z9uPztduuWuiKKs2gYKSlsxeMWQQdJHCYOPl5y/ytULQgx7lbKqV0GrpM2sZZa0DEy0YpE1tj9KqZb096kD4c66FMrji47iMvCM/c4C4Kzkoi3zZdwp4eVIQXX8hNIerv5gYTgQkbdfw9OZeloFTk8jJFnNf69eNIEx1bAoVf5fFO5eyfZC8ILk4X0UYJzgcvaAlMx81i4wxty5HlIQE9PcvFfKLIA77PcH+60yyTQdFG6qO0WEmrTRmWeOxqE0ZSu9d6w8H5/yVTZ/iS3OPu+v1U7y2n97eTxNYVQ1qebbyd3ZH3FcFJwVfsN2zQWhuTGtxkQuLwqJ9KdneGAO02XfG9VnE+utDQxL8GPqWFfbas0VXCYE7Fk+yaucgriV5FKjnXUX9nd2A3ysk6fE9D+fPIbSLGtqGDcmWoTzUWp+itIsXgMc2dc5DdA02wVKqlE8K/hrwZBKRStv3/4mkAu+zlWbwRzRit6Qxxg8Y82OyEZWRnz5DLXwUY262Tz5AZR0pkcBxTJBWsLirJP0LuG55hYu4PKf6yAGGSOPuLB1oljy5H6WrzizUqRq6Dj9WKbkJIQ4fcB+T5TiGqYO33AXBfJOHEOTrEAyTvkkW1wmO20/2PmyoWddKyiWo92ktf7s3iiYqfuyhwsMSFk/bj2DwYEVfqx2J0DaU41Yd0B/V9cSQBS8PDLMrbrtabCnAGRS1iePJts27f702o3bb+GYmBzL2pSvHBLP907kxLGFuzGP7aellAJZ3jonKAhoaDvgrk/FVps6+3wqjyILn6luMm6bWbN
+ XQC5G5VU
+ dED6sbBEahcmcFjyFiPZ8YeIcUtjI+r9wHM/fCHyIUjM1whZBvht7pWmreZYNvXXZKJBbIXYVwn0O+KEIaGNYZQe2O7hjc3lcp+WOoD+av5G3/PKxfBoY90AdHHMD9ddcIm2GEe+87n1838LR1mOJ6HvygpPj6r8UOv6cQlRoFZt//wEtHjjD5oygWi8ArATmPdwZvdedXWRdMfpnRNa0EiaoWmUQ126tZ4KXwImhPOEptiK+7DZXdcSnj6+BYRUoaZEYBkIGU6aefy4jvC15rn1JA90fgE4Pg6VYyJw2Z+veX0KnJ/ffXP2zPSZCWOrnN35pQwVUia0V118DuNxaIgVniPG4VhSy0QD5wd5K872+s0cFmEQsAEgbg3kfKwJaVk16zArptxvN+WpBbLMtvOfoIlnISCxBzL5OBhDb7268otbLlR2J8Iyzx5VscqCBdpjBmPLCR4Snb3zCnEZl9rs27prx905tgN5+ftjqhw97NUcUQ9mdFlgGUXblgxT6PRrQPDCO45S54gDtJMdX9m5Fkg2ge7CkjYVMZVbhLKhziYb8fXJcJW3QxHRK+WxXIAKyx0lKdI+YjCFatkh1NyCUwg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,187 +102,98 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Medium] mm/shmem_luo: tail pages dropped on folio split in
-  shmem_luo_retrieve_into()
-- [Medium] mm/shmem_luo: race with khugepaged/MADV_COLLAPSE in
-  shmem_luo_retrieve_into()
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] selftests/liveupdate: leak of mkdtemp() directory in
+  preserve_tmpfs_setup()
 --
 
-commit 780f293994f8e014ce055385564e7193d31d8556
+commit a1db86a2ad704903057c01aec8aee9743875c417
 Author: David Matlack <dmatlack@google.com>
 
-mm/shmem_luo: Retrieve tmpfs files into a file created by userspace
+selftests/liveupdate: Test which tmpfs files can be preserved
 
-This commit adds support for retrieving preserved tmpfs files into a
-userspace-created file on a tmpfs mount via LIVEUPDATE_SESSION_RETRIEVE_FD,
-and adds SHMEM_LUO_FLAG_TMPFS to distinguish tmpfs files from memfds.
+This commit adds selftests verifying which tmpfs files can be preserved by
+liveupdate and checking that a preserved file's size remains frozen until it
+is unpreserved.
 
-> diff --git a/mm/shmem_luo.c b/mm/shmem_luo.c
-> index bdf90aac5820f..7242664ee4aee 100644
-> --- a/mm/shmem_luo.c
-> +++ b/mm/shmem_luo.c
+> diff --git a/tools/testing/selftests/liveupdate/liveupdate.c b/tools/test=
+ing/selftests/liveupdate/liveupdate.c
+> index 4c4272167635b..3d943b5672e6b 100644
+> --- a/tools/testing/selftests/liveupdate/liveupdate.c
+> +++ b/tools/testing/selftests/liveupdate/liveupdate.c
 [ ... ]
-> @@ -577,6 +603,86 @@ static int shmem_luo_restore_folios(struct file *fil=
-e,
->  	return err;
+> @@ -574,4 +583,298 @@ TEST_F(liveupdate_device, preserve_memfd_with_arg)
+>  	ASSERT_EQ(close(mem_fd2), 0);
 >  }
 > =20
-> +/*
-> + * Restore a preserved tmpfs file into the file that userspace passed in=
- the
-> + * retrieve argument.
-> + */
-> +static int shmem_luo_retrieve_into(struct liveupdate_file_op_args *args,
-> +				   struct shmem_luo_ser *ser)
+> +#define NOBODY 65534
+> +
+> +FIXTURE(preserve_tmpfs) {
+> +	char dir[32];
+> +	int luo_fd;
+> +	int session_fd;
+> +	bool mounted;
+> +};
+> +
+> +FIXTURE_SETUP(preserve_tmpfs)
 > +{
-> +	const struct liveupdate_shmem_retrieve_arg *arg =3D args->arg;
-> +	struct inode *inode;
-> +	struct file *file;
-> +	int err;
+> +	self->luo_fd =3D -1;
+> +	self->session_fd =3D -1;
+> +	self->mounted =3D false;
 > +
-> +	if (!arg)
-> +		return -EINVAL;
+> +	self->luo_fd =3D open(LIVEUPDATE_DEV, O_RDWR);
+> +	if (self->luo_fd < 0 && errno =3D=3D ENOENT)
+> +		SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
+> +	ASSERT_GE(self->luo_fd, 0);
 > +
-> +	CLASS(fd, target)(arg->fd);
-> +	if (fd_empty(target))
-> +		return -EBADF;
+> +	self->session_fd =3D luo_create_session(self->luo_fd, "preserve-tmpfs");
+> +	ASSERT_GE(self->session_fd, 0);
 > +
-> +	file =3D fd_file(target);
-> +	inode =3D file_inode(file);
+> +	strcpy(self->dir, "/tmp/luo-tmpfs-XXXXXX");
+> +	ASSERT_NE(mkdtemp(self->dir), NULL);
+> +	if (mount("tmpfs", self->dir, "tmpfs", 0, "size=3D1M"))
+> +		SKIP(return, "Failed to mount tmpfs: %s", strerror(errno));
+> +	self->mounted =3D true;
+> +	ASSERT_EQ(chdir(self->dir), 0);
+> +}
 > +
-> +	/* Like the preserved file, the file must be on a tmpfs mount. */
-> +	if (!shmem_file(file) || shmem_inode_on_internal_mount(inode))
-> +		return -EINVAL;
-> +
-> +	if (!(file->f_mode & FMODE_WRITE))
-> +		return -EBADF;
-> +
-> +	/* Fill the file like a write, which also takes these locks. */
-> +	file_start_write(file);
-> +	inode_lock(inode);
-> +
-> +	err =3D -EPERM;
-> +	if (IS_IMMUTABLE(inode))
-> +		goto unlock;
-> +
-> +	err =3D -EINVAL;
-> +	if (i_size_read(inode) || !mapping_empty(inode->i_mapping))
-> +		goto unlock;
-> +
-> +	err =3D liveupdate_claim_file(args, file);
-> +	if (err)
-> +		goto unlock;
-> +
-> +	err =3D file_modified(file);
-> +	if (err)
-> +		goto unclaim;
-> +
-> +	/* The preserved state is consumed from here on. */
-> +	args->retryable =3D false;
-> +
-> +	/*
-> +	 * The folios are past the end of the file until i_size is set below,
-> +	 * so reads, page faults and memfd_pin_folios() don't see them, and
-> +	 * they can be removed again if adding one fails.
-> +	 */
-> +	err =3D shmem_luo_restore_folios(file, ser);
+> +FIXTURE_TEARDOWN(preserve_tmpfs)
+> +{
+> +	if (self->session_fd >=3D 0)
+> +		close(self->session_fd);
+> +	if (self->luo_fd >=3D 0)
+> +		close(self->luo_fd);
+> +	if (chdir("/"))
+> +		return;
+> +	if (self->mounted)
+> +		umount2(self->dir, MNT_DETACH);
+> +	rmdir(self->dir);
+> +}
 
-[Severity: Medium]
-Can khugepaged or MADV_COLLAPSE race with shmem_luo_restore_folios() if the
-target tmpfs file is mmap()ed?
+[Severity: Low]
+Does FIXTURE_SETUP(preserve_tmpfs) leak the self->dir directory in /tmp when
+mount() fails?
 
-shmem_mmap_prepare() does not take inode_lock(inode), and
-shmem_luo_retrieve_into() checks mapping_empty() but not mapping_mapped().
-Unlike shmem_fallocate(), which leaves newly allocated folios beyond i_size=
- as
-!uptodate, shmem_luo_retrieve_folios() marks each restored folio uptodate
-before unlocking it on the LRU:
+When FIXTURE_SETUP() exits via SKIP(), kselftest_harness terminates the test
+child before clearing *_metadata->no_teardown, so FIXTURE_TEARDOWN() does n=
+ot
+run:
 
-CPU0                                  CPU1
-shmem_luo_retrieve_into()
-  inode_lock(inode)
-  args->retryable =3D false
-  shmem_luo_restore_folios()
-    shmem_luo_retrieve_folios()
-      /* restores folio at index 0 */
-      shmem_add_to_page_cache()
-      folio_mark_uptodate(folio)
-      folio_unlock(folio)
-                                      madvise(..., MADV_COLLAPSE)
-                                        ...
-                                          collapse_file()
-                                            /* sees uptodate folio at 0,
-                                             * treats indices 1..511 as
-                                             * holes without checking
-                                             * i_size, installs 2M folio */
-      /* restores folio at index 1 */
-      shmem_add_to_page_cache()
-        --> returns -EEXIST           <-- permanent retrieve failure
-
-Neither collapse_file() nor try_collapse_pte_mapped_thp() acquires
-inode_lock(inode) or checks i_size_read(inode) when a shmem folio is already
-uptodate:
-
-mm/khugepaged.c:collapse_file() {
+tools/testing/selftests/kselftest_harness.h:__TEST_F_IMPL() {
     ...
-			if (xa_is_value(folio) || !folio_test_uptodate(folio)) {
-				xas_unlock_irq(&xas);
-				/* swap in or instantiate fallocated page */
-				if (shmem_get_folio(mapping->host, index, 0,
-						&folio, SGP_NOALLOC)) {
-					result =3D SCAN_FAIL;
-					goto xa_unlocked;
-				}
-				/* drain lru cache to help folio_isolate_lru() */
-				lru_add_drain();
-			} else if (folio_trylock(folio)) {
+			fixture_name##_setup(_metadata, self, variant->data); \
+			/* Let setup failure terminate early. */ \
+			if (_metadata->exit_code) \
+				_exit(0); \
+			*_metadata->no_teardown =3D false;
     ...
 }
 
-In addition to causing shmem_add_to_page_cache() to fail with -EEXIST after
-args->retryable is set to false, try_collapse_pte_mapped_thp() can install a
-huge PMD into userspace page tables while i_size is still 0, exposing folios
-before the retrieve finishes.
-
-> +	if (err) {
-> +		shmem_truncate_range(inode, 0, (uoff_t)-1);
-> +		goto unclaim;
-> +	}
-> +
-> +	i_size_write(inode, ser->size);
-
-[Severity: Medium]
-Can a folio split during shmem_luo_restore_folios() drop the tail pages of a
-restored large folio because both i_size and SHMEM_I(inode)->fallocend are =
-0?
-
-shmem_luo_retrieve_folios() unlocks each restored folio and places it on the
-LRU while subsequent iterations allocate XArray nodes and charge memcg and
-quotas with GFP_HIGHUSER_MOVABLE and GFP_KERNEL. If page reclaim or migrati=
-on
-splits an already-inserted large folio before i_size_write() runs,
-__folio_freeze_split_file() computes the EOF index from i_size and
-shmem_fallocend():
-
-mm/huge_memory.c:__folio_freeze_split_file() {
-    ...
-	end =3D DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE);
-	if (shmem_mapping(mapping))
-		end =3D shmem_fallocend(mapping->host, end);
-    ...
-}
-
-Because both i_size and info->fallocend are 0, end is 0, so every split
-sub-folio with new_folio->index >=3D 1 is treated as beyond EOF, removed fr=
-om
-mapping->i_pages, and freed, silently corrupting the retrieved file. Setting
-SHMEM_I(inode)->fallocend before shmem_luo_restore_folios() (as
-shmem_fallocate() does) would prevent splits from discarding pages past
-i_size.
+Calling rmdir(self->dir) before SKIP() when mount() fails avoids leaving the
+temporary directories behind in /tmp.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111002358.1842=
-967-1-dmatlack@google.com?part=3D12
+967-1-dmatlack@google.com?part=3D14
 
