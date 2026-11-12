@@ -1,110 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA73606A897
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 18:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D772A606A337
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 18:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ijVUa1/3
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Xer+SKnf;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=ABAXOl/I;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=n2Uq6tBL;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=/IYPJ4AW
 Received: by kanga.kvack.org (Postfix)
-	id 7B92D6B05B5; Thu, 12 Nov 2026 13:34:22 -0500 (EST)
+	id D452A6B05B0; Thu, 12 Nov 2026 13:41:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 742D06B05B6; Thu, 12 Nov 2026 13:34:22 -0500 (EST)
+	id CF5306B05B2; Thu, 12 Nov 2026 13:41:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6321F6B05B7; Thu, 12 Nov 2026 13:34:22 -0500 (EST)
+	id BE39A6B05B4; Thu, 12 Nov 2026 13:41:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C0526B05B5
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:34:22 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3BC7814075A
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:34:20 +0000 (UTC)
-X-FDA: 85427317080.19.7CF9886
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9C6C3C0003
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:34:18 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ijVUa1/3";
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 88C406B05B0
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:41:08 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EE3B5A83F6
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:41:07 +0000 (UTC)
+X-FDA: 85427334174.20.C2B9934
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf12.hostedemail.com (Postfix) with ESMTP id ABC7C40005
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:41:05 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Xer+SKnf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ABAXOl/I";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=n2Uq6tBL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/IYPJ4AW";
+	spf=pass (imf12.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794508458;
+	s=arc-20220608; t=1794508866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S83ufdCuikPlcGyicMt7mpw+fBC8MVplA5DoPA/0lZw=;
-	b=qYIsi1sPxTMpcKYvp8KbTS9Qt+O1HEslSUte6hTC4Xder+4cgpnL3xsnNGr6QDGh8mP8Sg
-	b34dXBwIWozfs+y8uCcpvBcvKXWiOqO9cEvyuJu3ID9fM1V7SlNJj6A5Y9oWjA/vzfH7cZ
-	UDHjgKQvhCKCP1b5cz7b/0FzxhnCnGk=
+	bh=znMZ7NR6/YszQuPkJzBKuINXsXo8b7XNMf7NgTqswQM=;
+	b=dgWTJ7EyMltzazLnPYSjD0x4GlFfSxSe78f9RQY/N1TK0rh32eK+wMLvNpV74V5Py9yMok
+	2Afo1G0ZTwxlYXMR5yqarR8dUWLJOqNfsGWrV1YYDfb9YHHhGwSJutrw2gR5R3qkseehVe
+	jVjtnx7zhgq3jawGVFONEY7baKst5Ow=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794508458;
-	b=o1MEHTkJj9rILsoli6+g4uwsO3Hpu2Fz2OPzIH5s+CJF7s5dbUQ1zOnpZta/BOBromYqwf
-	IeusCOwSDIAwBo4FVcwIMNoSWY1Mr9ospVo8EuNmlEnbDKxB9np7iKgIbqJIBi+aF5rzxP
-	u30yduw8FLbtRf6VNhX4GQx8yhuYoSQ=
+	t=1794508866;
+	b=riW47id5hufJOD6NnRauo5bUWKneSkWmsykhuDN0K1QhsQk7IudMXHeL0HFaSvDa3UGzT2
+	jbfPSBPNpjD9zodqBo2FH63H2NmZ9Lvjp8WoMyoBsyyfKvqWe/Ynq+ltjjh2uq8KKk0nzT
+	JbwbLNr4VLw2VsWu0yaEv48iEOacjPA=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ijVUa1/3";
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D2D9B409C6;
-	Thu, 12 Nov 2026 18:34:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877AC1F000C4;
-	Thu, 12 Nov 2026 18:34:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794508457;
-	bh=S83ufdCuikPlcGyicMt7mpw+fBC8MVplA5DoPA/0lZw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ijVUa1/34L3eHye3zw1zN/jAyO3526dLl8D+nYyREiy4hhDzOFJpJrb4r8+nEaUUx
-	 JBE0foYCokhvT3BCWxqXX2EMxkzVL6UklJzacnsibjmkOF7aAe6VjVcfSaixmhDat5
-	 xSEAZ92rm5t0S9ncbxiexT0z/XgwndpFr92CPMNhSCW5HIlziX+SNQjKmgdSWHicyt
-	 brSJvjlB+BP0Lgm8J16kaGtiezulqMucdc69bfguxXhXtWHsfXqv5K7UBRRbGM6JCy
-	 ADXCLZ3sWbMHVZuXxhQOivf3FZj+tl7zhkdQ8DHsio+K27kcFvUG64TnK0YU8zKulU
-	 y753u/meLtukA==
-Date: Thu, 12 Nov 2026 18:34:05 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, 
-	James Houghton <jthoughton@google.com>, Andrea Arcangeli <aarcange@redhat.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Balbir Singh <balbirs@nvidia.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	=?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>, Andrei Vagin <avagin@gmail.com>, 
-	Stephen Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>, 
-	Muhammad Usama Anjum <usama.anjum@arm.com>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Chris Down <chris@chrisdown.name>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	=?utf-8?Q?Miko=C5=82aj?= Lenczewski <miko.lenczewski@arm.com>, Michal Hocko <mhocko@suse.com>, 
-	Mike Kravetz <mike.kravetz@oracle.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 03/12] fs/proc/task_mmu: downgrade writable migration
- entries in PAGEMAP_SCAN write-protect
-Message-ID: <avYApSoRMz7IZSox@gremlin>
-References: <20261111-uffd-state-fixes-v1-0-00713d368976@columbia.edu>
- <20261111-uffd-state-fixes-v1-3-00713d368976@columbia.edu>
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Xer+SKnf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ABAXOl/I";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=n2Uq6tBL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/IYPJ4AW";
+	spf=pass (imf12.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 16EE321F6F;
+	Thu, 12 Nov 2026 18:41:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794508864; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=znMZ7NR6/YszQuPkJzBKuINXsXo8b7XNMf7NgTqswQM=;
+	b=Xer+SKnfXtKA0r2HBJMEwYrkKmiTMQlvHLYwnj7DWg7E639+BPuNRUj6xja+KuuiDKEtiQ
+	iRVToRsEy0XZ1+nbrIGT/DkfxtRvAZXEGferZBlSCjI/kAtbHwYICgjvD6d8+NrHogs8T7
+	6To5ZO3HSUP7ONT/pGVd0g5Sm02LDQE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794508864;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=znMZ7NR6/YszQuPkJzBKuINXsXo8b7XNMf7NgTqswQM=;
+	b=ABAXOl/IBFMv8A6QcWIqId6viw0hK4qpYIOTYUS8OFeUKJw694QzNLqBGaoYfv1zHWK2Zh
+	hFYccdVV/wxWFGDg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794508862; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=znMZ7NR6/YszQuPkJzBKuINXsXo8b7XNMf7NgTqswQM=;
+	b=n2Uq6tBLVztNF4B/wsNj0QDn8VmW/gpUgKe56S+ix8oOenI3lvIfQtsgN7pALFLOUOGfUY
+	DXFG+rvwCr/1DbtiLNl/USvtb/oIfi/M+5pCZNRa+QLiWGs3hk509kr6dYTzW6RvG7S4Ml
+	L0bW0y6ViRwxSQtJbHYZaGZcnKoFahw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794508862;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=znMZ7NR6/YszQuPkJzBKuINXsXo8b7XNMf7NgTqswQM=;
+	b=/IYPJ4AWbcndQSjG1CUMvpOXlmc0P4EgiEOWcieSTerKH3MlaTda6rEmL9pQk3RDY/Pmyv
+	Zhq4z3ZWPft5GWAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CD25413432;
+	Thu, 12 Nov 2026 18:41:01 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 7Ub7KT0I9mrURwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 12 Nov 2026 18:41:01 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id 3ABCE22B88; Thu, 12 Nov 2026 19:40:53 +0100 (CET)
+Date: Thu, 12 Nov 2026 19:40:53 +0100
+From: Jan Kara <jack@suse.cz>
+To: mohamedalibouhaouala@gmail.com
+Cc: willy@infradead.org, jack@suse.cz, corbet@lwn.net, 
+	skhan@linuxfoundation.org, rdunlap@infradead.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v2] docs: filesystems: update VFS locking documentation
+Message-ID: <3aaboixwh6lpo4s67dv7lssqj2vwlp4qp5cq2ysimqi36r3bm2@fb5lmoo33ktf>
+References: <20261111160516.30458-1-mohamedalibouhaouala@gmail.com>
+ <20261112162129.77610-1-mohamedalibouhaouala@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261111-uffd-state-fixes-v1-3-00713d368976@columbia.edu>
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+In-Reply-To: <20261112162129.77610-1-mohamedalibouhaouala@gmail.com>
+X-Rspamd-Action: no action
+X-Spam-Score: -13.01
+X-Spam-Level: 
+X-Stat-Signature: b5nfgkjceizhdhqsxbmopsbh3n1op4bz
+X-Rspamd-Queue-Id: ABC7C40005
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: p8cwneyena6hmothpuscdqqx5om888k1
-X-Rspamd-Queue-Id: 9C6C3C0003
-X-Rspam-User: 
-X-HE-Tag: 1794508458-632586
-X-HE-Meta: U2FsdGVkX1/gt528WtbkUQIpxRQURDEVfit0sRlTLJfzSYOQdyVlT8AqeZpFjzZhe8Wg7lMmZv6P8d0RUAsZwYhFBR7246xTQdocXdLihkIZ5EtgFJVJ4Bdg5hl5nxAtzEisJvdpxtkCRiaeTuHgKjlz53cvS5gBEYy/iegOdY+2z6kLNVzRIFwg5fIoI4ckrl56xhwGxSkKdDohKvyBkDMT5uCQgEInjF58twL373lDO+XqT1a1WXMOM8elZEaitbeXhk+OXQ+rmU6Uf2NyYyeb4YDZhaUZQpGYqAZL0SavEoTAH43PyCjbhpZi1D14pVdzqadFaWmSrmBqu27WR4t4nvqb+29FzIR9HRQDJ2zaqCB89PbV/s1XSMI9gQ5zfo/n9rQ4+KHp3FeB4Qxijjib7fuTpWtMQq8sKhS25jYbKGG9pgMdFm8Jq0LpXaELZcZ4omJVkrehUR5BsFUhj4E47zdRdpDquQMQm0ddXTIwMGL5V3CZLvWtu5AtlSoLCNm7A6LMmIblcc1U1xwRv7b2gdbXDRf3u7Uvl1xhyp7oyZCaFzaVlmuoPUzBOY9ZYHxpELG7O6WqYOubNejVqZs8Ffd1B0uJsv1Hr9qfo0OLYLxCphxLcCRvriP7HVe7OuiOull0x0I9tafDqJLnU/He3mJ7ENz1/QeBfjlyhq2j1DWtfQUKqPtDjP4suXEusQ2BdlhrHlScH5C7gdnLIXfoCf8r+tRB6pz5nxbQV4KKiqJDFyTqZwC2h5InqPATovSxFe9KsK611RRXvnYhdyV0yw9cFs/FIbAZu8e6IaJeuOCGu/VeI7ycoHuYEDVjUpEQD5cJ4IE9arv+nl2FD4Gn4R61DcvVj4zv/Hsx3axH+COv30SIDbcr+JHGtIHantvtmCV1cW8XWsBL403iW6g2YDila3ZRidzm+LaONG4div1J4q+SZNGzM0X4fCHHOrZZoHKZjfbhRl7T2GK
- 0HNGEhZt
- ukd3yo30DAhX+3/LFhh6J2AqGXscuyXtjKEuIqa3dUnIGM9TYI0YhwmyjKkZvvBgVi1Ge8tAa3+pIR29zbiDvWox3bpYmPSvMhKbxZKRU8kEFt0VV1aOcukEm6OxrkfEnq6zLr07QhuE768H6Y0tXZcL+KGuxuZCVcNPFOwk8Kc17uwJX+BawqoYMArvElxBvWxAy9H6AEN45NQfWJmzhdWnDaj9lGPclXGb5adj9Fzrdb3U0UM0ptPurd7fIkX1r/bOFXTKeXLK8ZCeNpaVl7UH4GLlZLprZ4lIhAbAngB+fqDPirWUPP16VZMvXvKj7Eqpl/w13PXfSiCe/HeFGpbiljASLPnl4I8FQra54AoqTmuKOdFgvnN30ShfF1LAasmEb
+X-HE-Tag: 1794508865-200636
+X-HE-Meta: U2FsdGVkX1+BqctyIkpxLVmmUjTTgLpBAp/g/3IiwkewQyVCysnwKEPER4BUS6Z2zuRm0cQ/Tlq6B37OzevshjFDpqtxFTSLLbWmB5vCnGL8ScESKx4K1uk7X6K7LgEn0j40aM3PY/qLhL6FAOgRH3w47lgAPIecI6Rtq6kQqSyFgLNFD+ZAJu2K2ibnNDczTrdR1wX8uUTHW/teNBclN/hJxaYbHY+DelZJEp2DfyCGPtQYM6KAKbrmM2SKCoFWhPd9DNpdIpFb1IyjDYlY5AvUMPwCyXjGFb+txb2kQF603W8adSZ2tkPkk1Yry59aG1f1ukDXTQPAVj38RR6NMPcxrQbPOdZO8Dgspajl55QW6PIlh8HQmA/gG63F3XDGrX69aFvC1+oXXmr474w51WXdD094/czglyqCQOO+6YBaNRVJz9zgFrLNVycUctHj6774TSOT3OnGQVSbm0WT/RbYKS+5VG5M6lrGhqoN8fo63WFVfQYiFXePL1FFvUDGyazihEMfxXwfWy5+spPJ3sRmWhF974oxLXUyqD0uamdzCqTcxi4T2yBXYPN5hId+NXplMTjI/8289VDJ3Pz0QWHqOrP8kwWjdAxtQtAr98vILXFn5cAsY/KuBHvAG1sOfPkQbjvd1q+8OrnquYy91s+YuvAe3GLlFm763es6Wwd8WnocYbm/aU5oiTh9/CuQaC/lu9Fv+2NlP6a8OIZqey+8BFJEi39jTBJ7nrVe6WxDiS4vi6yMvC+/ECLO1ZgB5isXuVml+eCS6aSAwoJHR695qYBouwKprigL2wysL9wjDq50/hL/f78XF9TzrfyI4JHzOUp7eLRyvs9mgix7f4uzYUnbSp7WCAJNjAGLddj2QdWO98xVWBWaVPao+BzQVxR5Q6QPv+GLK71nfZj+e8c4nq21rbOkLb/MCWH7X2eZ0qpW2/wfScbXrTwpS+vtYRZg3y6w3J//S0Uiwik
+ dDxBL5qd
+ S9jB2B1m1NqXxNs8+SkS+d+2hcrVGvVinA65e7+9SI+bbthsHb3FtwoBhFkiiTYqguSh/t9fMPlax8mqOVM+Upgfge8EAZn2vTVpbmx5XgW5cNco/jexstjtOnYlBQARpAMP1N4obW51M1/aokX3q3P9F1o22NRwJAdhO3WMq7BFCLaP3J5AtCXmlzxMYTbpXSE2/VuwstkShVLKJt4bwjuX9du0KPO/5L8DmLOANjbGImScxn1C5QYehF4m78QbPfOL45wBeaZ9TpdNLb68lFhotzeVH7nD44jiqxANN/2hR/0FIdtrZ3vzNyt/u+WB13kjRelklm8km2WsBQOng4aulIyErCC7+gIu/mp5ZOH8ySN0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,191 +142,119 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 11, 2026 at 12:55:11PM -0500, Tal Zussman wrote:
-> PAGEMAP_SCAN with PM_SCAN_WP_MATCHING write-protects pages in a VMA
-> registered for async uffd-wp, and sets the uffd bit on non-present
-> entries as they are. An entry with the uffd bit set must not be
-> writable, so that the page is write-protected once it is mapped again.
-> change_protection() therefore downgrades writable migration and
-> device-private entries to readable ones first, but PAGEMAP_SCAN does
-> not.
->
-> For a writable migration entry at the PTE level,
-> remove_migration_pte() restores a writable PTE without the uffd bit. So
-> if a page is under migration while PAGEMAP_SCAN write-protects it, the
-> write protection is lost. A user tracking writes with async uffd-wp
-> sees the page reported as written on the next scan although nothing
-> wrote to it.
->
-> With CONFIG_PAGE_TABLE_CHECK, setting the uffd bit on a writable
-> non-present PTE or PMD also triggers a warning.
->
-> To fix it, downgrade writable migration and device-private entries
-> before setting the uffd bit, as change_protection() does, at the PTE,
-> PMD, and hugetlb levels.
->
-> Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+On Thu 12-11-26 17:21:29, mohamedalibouhaouala@gmail.com wrote:
+> From: Mohamed Ali Bouhaouala <mohamedalibouhaouala@gmail.com>
+> 
+> Update outdated VFS operation prototypes in locking.rst to
+> match their current definitions.
+> 
+> Add the missing d_prune and sync_inode_metadata callbacks,
+> and correct the signatures of existing operations.
+> 
+> Update the locking table to include sync_inode_metadata.
+> 
+> Signed-off-by: Mohamed Ali Bouhaouala <mohamedalibouhaouala@gmail.com>
+
+Looks good. Feel free to add:
+
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
 > ---
->  fs/proc/task_mmu.c | 54 +++++++++++++++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 51 insertions(+), 3 deletions(-)
->
-> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> index 22361607020d..53780a454432 100644
-> --- a/fs/proc/task_mmu.c
-> +++ b/fs/proc/task_mmu.c
-> @@ -2395,6 +2395,38 @@ static unsigned long pagemap_page_category(struct pagemap_scan_private *p,
->  	return categories;
->  }
->
-> +/* Downgrade a writable migration or device-private entry to a readable one. */
-> +static softleaf_t make_readable_softleaf(softleaf_t entry)
-> +{
-> +	if (softleaf_is_device_private_write(entry))
-> +		return make_readable_device_private_entry(swp_offset(entry));
-> +	if (!softleaf_is_migration_write(entry))
-> +		return entry;
-> +	if (folio_test_anon(softleaf_to_folio(entry)))
-
-Hmm _seems_ a bit dubious. You identify a readable exclusive migration entry by
-checking whether its folio is anon?
-
-But I guess because a writable migration entry can only come from a writable
-PTE, that implies anonexclusive. But you do need to explicitly say that.
-
-Also we really do have to break this out as a helper. I see it's open coded in
-change_softleaf_pte(), change_non_present_huge_pmd() and
-hugetlb_change_protection().
-
-But maybe that can be a follow up...
-
-
-
-> +		return make_readable_exclusive_migration_entry(swp_offset(entry));
-> +	return make_readable_migration_entry(swp_offset(entry));
-
-This is all super compressed.
-
-I'd say add to leafops.h but break it up:
-
-	static inline softleaf_t softleaf_migration_mkreadable(softleaf_t entry)
-	{
-		const pgoff_t offset = swp_offset(entry);
-
-		VM_WARN_ON_ONCE(!softleaf_is_migration_write(entry));
-
-		/* A writable anon migration entry implies AnonExclusive. */
-		if (folio_test_anon(softleaf_to_folio(entry)))
-			return make_readable_exclusive_migration_entry(offset);
-		return make_readable_migration_entry(offset);
-	}
-
-	static inline softleaf_t softleaf_mkreadable(softleaf_t entry)
-	{
-		switch (softleaf_type(entry)) {
-		case SOFTLEAF_DEVICE_PRIVATE_WRITE:
-			return make_readable_device_private_entry(swp_offset(entry));
-		case SOFTLEAF_MIGRATION_WRITE:
-			return softleaf_migration_mkreadable(entry);
-		default:
-			return entry;
-		}
-	}
-
-> +}
-> +
-> +/*
-> + * An armed entry must not come back writable, so downgrade a writable
-> + * migration or device-private entry before giving it the bit, as
-> + * change_softleaf_pte() does.
-> + */
-> +static pte_t set_uffd_wp_swp_pte(pte_t pte)
-
-This is a contradictory name, you're interacting with softleaves, there's no such
-thing as a uffd swap entry :)
-
-I/we obviously have to go and fixup the naming (I didn't _quite_ finish the
-softleaf conversions I guess) but let's not propagate it.
-
-> +{
-> +	softleaf_t entry = softleaf_from_pte(pte);
-> +	pte_t newpte;
-> +
-> +	if (!softleaf_is_migration_write(entry) &&
-> +	    !softleaf_is_device_private_write(entry))
-> +		return pte_swp_mkuffd(pte);
-> +
-> +	newpte = softleaf_to_pte(make_readable_softleaf(entry));
-> +	if (pte_swp_soft_dirty(pte))
-> +		newpte = pte_swp_mksoft_dirty(newpte);
-> +	return pte_swp_mkuffd(newpte);
-> +}
-> +
->  static void make_uffd_wp_pte(struct vm_area_struct *vma,
->  			     unsigned long addr, pte_t *pte, pte_t ptent)
->  {
-> @@ -2408,7 +2440,7 @@ static void make_uffd_wp_pte(struct vm_area_struct *vma,
->  		set_pte_at(vma->vm_mm, addr, pte,
->  			   make_pte_marker(PTE_MARKER_UFFD_WP));
->  	} else {
-> -		ptent = pte_swp_mkuffd(ptent);
-> +		ptent = set_uffd_wp_swp_pte(ptent);
->  		set_pte_at(vma->vm_mm, addr, pte, ptent);
->  	}
->  }
-> @@ -2467,6 +2499,22 @@ static unsigned long pagemap_thp_category(struct pagemap_scan_private *p,
->  	return categories;
->  }
->
-> +/* Same as set_uffd_wp_swp_pte(), for a non-present PMD. */
-
-No need to say non-present. Naming it with 'softleaf' somewhere in there implies
-that. E.g. set_u
-
-> +static pmd_t set_uffd_wp_swp_pmd(pmd_t pmd)
-
-Same comment here, this is just hugely confusing.
-
-> +{
-> +	softleaf_t entry = softleaf_from_pmd(pmd);
-> +	pmd_t newpmd;
-> +
-> +	if (!softleaf_is_migration_write(entry) &&
-> +	    !softleaf_is_device_private_write(entry))
-> +		return pmd_swp_mkuffd(pmd);
-> +
-> +	newpmd = softleaf_to_pmd(make_readable_softleaf(entry));
-> +	if (pmd_swp_soft_dirty(pmd))
-> +		newpmd = pmd_swp_mksoft_dirty(newpmd);
-> +	return pmd_swp_mkuffd(newpmd);
-> +}
-> +
->  static void make_uffd_wp_pmd(struct vm_area_struct *vma,
->  			     unsigned long addr, pmd_t *pmdp)
->  {
-> @@ -2477,7 +2525,7 @@ static void make_uffd_wp_pmd(struct vm_area_struct *vma,
->  		pmd = pmd_mkuffd(old);
->  		set_pmd_at(vma->vm_mm, addr, pmdp, pmd);
->  	} else if (pmd_is_migration_entry(pmd)) {
-> -		pmd = pmd_swp_mkuffd(pmd);
-> +		pmd = set_uffd_wp_swp_pmd(pmd);
->  		set_pmd_at(vma->vm_mm, addr, pmdp, pmd);
->  	}
->  }
-> @@ -2547,7 +2595,7 @@ static void make_uffd_wp_huge_pte(struct vm_area_struct *vma,
->
->  	if (softleaf_is_migration(entry)) {
->  		set_huge_pte_at(vma->vm_mm, addr, ptep,
-> -				pte_swp_mkuffd(ptent), psize);
-> +				set_uffd_wp_swp_pte(ptent), psize);
->  	} else {
->  		pte_t old_pte, new_pte;
->
->
-> --
-> 2.39.5
->
-
---
-Cheers, Lorenzo
+> v2:
+> - Use the contributor's full name in the author and sign-off fields.
+>  Documentation/filesystems/locking.rst | 18 +++++++++++-------
+>  1 file changed, 11 insertions(+), 7 deletions(-)
+> 
+> diff --git a/Documentation/filesystems/locking.rst b/Documentation/filesystems/locking.rst
+> index f7363ad770c7..a6a011858ada 100644
+> --- a/Documentation/filesystems/locking.rst
+> +++ b/Documentation/filesystems/locking.rst
+> @@ -26,6 +26,7 @@ prototypes::
+>  	int (*d_delete)(struct dentry *);
+>  	int (*d_init)(struct dentry *);
+>  	void (*d_release)(struct dentry *);
+> +	void (*d_prune)(struct dentry *);
+>  	void (*d_iput)(struct dentry *, struct inode *);
+>  	char *(*d_dname)(struct dentry *dentry, char *buffer, int buflen);
+>  	struct vfsmount *(*d_automount)(struct path *path);
+> @@ -80,8 +81,8 @@ prototypes::
+>  	int (*getattr) (const struct mnt_idmap *, const struct path *, struct kstat *, u32, unsigned int);
+>  	ssize_t (*listxattr) (struct dentry *, char *, size_t);
+>  	int (*fiemap)(struct inode *, struct fiemap_extent_info *, u64 start, u64 len);
+> -	void (*update_time)(struct inode *inode, enum fs_update_time type,
+> -			    int flags);
+> +	int (*update_time)(struct inode *inode, enum fs_update_time type,
+> +			    unsigned int flags);
+>  	void (*sync_lazytime)(struct inode *inode);
+>  	int (*atomic_open)(struct inode *, struct dentry *,
+>  				struct file *, unsigned open_flag,
+> @@ -173,6 +174,7 @@ prototypes::
+>  	void (*destroy_inode)(struct inode *);
+>  	void (*dirty_inode) (struct inode *, int flags);
+>  	int (*write_inode) (struct inode *, struct writeback_control *wbc);
+> +	int (*sync_inode_metadata)(struct inode *inode, struct writeback_control *wbc);
+>  	int (*drop_inode) (struct inode *);
+>  	void (*evict_inode) (struct inode *);
+>  	void (*put_super) (struct super_block *);
+> @@ -196,6 +198,7 @@ free_inode:				called from RCU callback
+>  destroy_inode:
+>  dirty_inode:
+>  write_inode:
+> +sync_inode_metadata:
+>  drop_inode:				!!!inode->i_lock!!!
+>  evict_inode:
+>  put_super:		write
+> @@ -255,7 +258,7 @@ prototypes::
+>  				loff_t pos, unsigned len, unsigned copied,
+>  				struct folio *folio, void *fsdata);
+>  	sector_t (*bmap)(struct address_space *, sector_t);
+> -	void (*invalidate_folio) (struct folio *, size_t start, size_t len);
+> +	void (*invalidate_folio) (struct folio *, size_t offset, size_t len);
+>  	bool (*release_folio)(struct folio *, gfp_t);
+>  	void (*free_folio)(struct folio *);
+>  	int (*direct_IO)(struct kiocb *, struct iov_iter *iter);
+> @@ -265,7 +268,7 @@ prototypes::
+>  	bool (*is_partially_uptodate)(struct folio *, size_t from, size_t count);
+>  	int (*error_remove_folio)(struct address_space *, struct folio *);
+>  	int (*swap_activate)(struct swap_info_struct *sis, struct file *f, sector_t *span)
+> -	int (*swap_deactivate)(struct file *);
+> +	void (*swap_deactivate)(struct file *);
+>  
+>  locking rules:
+>  	All except dirty_folio and free_folio may block
+> @@ -455,14 +458,15 @@ prototypes::
+>  	ssize_t (*write) (struct file *, const char __user *, size_t, loff_t *);
+>  	ssize_t (*read_iter) (struct kiocb *, struct iov_iter *);
+>  	ssize_t (*write_iter) (struct kiocb *, struct iov_iter *);
+> -	int (*iopoll) (struct kiocb *kiocb, bool spin);
+> +	int (*iopoll)(struct kiocb *kiocb, struct io_comp_batch *,
+> +			unsigned int flags);
+>  	int (*iterate_shared) (struct file *, struct dir_context *);
+>  	__poll_t (*poll) (struct file *, struct poll_table_struct *);
+>  	long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);
+>  	long (*compat_ioctl) (struct file *, unsigned int, unsigned long);
+>  	int (*mmap) (struct file *, struct vm_area_struct *);
+>  	int (*open) (struct inode *, struct file *);
+> -	int (*flush) (struct file *);
+> +	int (*flush) (struct file *, fl_owner_t id);
+>  	int (*release) (struct inode *, struct file *);
+>  	int (*fsync) (struct file *, loff_t start, loff_t end, int datasync);
+>  	int (*fasync) (int, struct file *, int);
+> @@ -475,7 +479,7 @@ prototypes::
+>  			size_t, unsigned int);
+>  	ssize_t (*splice_read)(struct file *, loff_t *, struct pipe_inode_info *,
+>  			size_t, unsigned int);
+> -	int (*setlease)(struct file *, long, struct file_lock **, void **);
+> +	int (*setlease)(struct file *, int, struct file_lease **, void **);
+>  	long (*fallocate)(struct file *, int, loff_t, loff_t);
+>  	void (*show_fdinfo)(struct seq_file *m, struct file *f);
+>  	unsigned (*mmap_capabilities)(struct file *);
+> -- 
+> 2.43.0
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
