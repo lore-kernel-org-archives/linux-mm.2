@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F24BB606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 00:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A10E1606A326
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 00:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NwSxaQ/o
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dU6Qomvo
 Received: by kanga.kvack.org (Postfix)
-	id A29916B05BF; Wed, 11 Nov 2026 19:31:31 -0500 (EST)
+	id A9F386B05C2; Wed, 11 Nov 2026 19:31:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A01DA6B05C0; Wed, 11 Nov 2026 19:31:31 -0500 (EST)
+	id A765F6B05C3; Wed, 11 Nov 2026 19:31:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 917816B05C1; Wed, 11 Nov 2026 19:31:31 -0500 (EST)
+	id 965EF6B05C5; Wed, 11 Nov 2026 19:31:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 729346B05BF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:31:31 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F3D27C021D
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:31:30 +0000 (UTC)
-X-FDA: 85424588340.12.5D78099
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A4896B05C2
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:31:34 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1308B8046B
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:31:34 +0000 (UTC)
+X-FDA: 85424588508.08.AA0C52A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5E0CA140004
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:31:29 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NwSxaQ/o";
-	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794443489;
-	b=Bgq1/HuqYqvxBDUkrxhZfPcoBUfU++so3l77SF0T8A3OXXUKoyH2BP5CnBvWRT+O0Hv9qx
-	4i1J8HcyPgibtWAAo4F3fR5CFAork2bGt1ABVuxoDwZ0ZvoRPj9o6MOLiIEnFxudQjAGMu
-	GLavKILhWpLgvR10gvgRA5ogcRUmdWY=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NwSxaQ/o";
-	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 798DFC0006
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:31:32 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dU6Qomvo;
+	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794443489;
+	s=arc-20220608; t=1794443492;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FurFPSzwc0egprFnhFtYfPmavub2m/6Uyid/nz3wO00=;
-	b=TLhwVlo4U7OTMRMoYaH5JY6RkAOwEtnkUGTKp082VlFQuqAPQDetevwgXYKF55hgMjWT4n
-	psllzFo3gG+7PcEQsaSinDwqMhAHMC2mpjm3oOxm3ldknlOW5zvzms7kNrN15oMR90CBgk
-	fcbw9v2a2gZFo6tHNp7IrgELe8lD1xo=
+	bh=9QsDcs9BukL2agpXizeKuZOTHpSFdpbs8oTRRuetMCI=;
+	b=itH1M6y9xaNpLQbpojKwt4Rl6aoVq1ImlhOO5FSkCwWKiFK1ugqKrd0Nh4cAiFGnp4vP0c
+	bgMDeYB5sHOLfM5xr63W8aSBfTDTFk01migDn+fQ0Ivr45/qzFJMTwJm/x0xkbXnxa/YZQ
+	ckUO+4yrCrcDQREAl+dk8PGSGzbd7Hk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794443492;
+	b=mTHRY/DMu4p5RntdFLsOTHzHhSmaX95kQpYIzn3gQCTe43HiXO0zbh8UvZTMhuzsh6RMUw
+	Y8qjxgue5DN+bCNmcgT8/pQGYGgIdxvP9QWexhxWjRcybZlsRHFaTOsG6LUSLZ5AUDzhY+
+	xCimNpT1ogYmKQxx+es+0T8tVmlhO98=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dU6Qomvo;
+	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B075F41AB0;
-	Thu, 12 Nov 2026 00:31:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9390D1F00A05;
-	Thu, 12 Nov 2026 00:31:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C20C440C4C;
+	Thu, 12 Nov 2026 00:31:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF94E1F00A06;
+	Thu, 12 Nov 2026 00:31:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794443488;
-	bh=FurFPSzwc0egprFnhFtYfPmavub2m/6Uyid/nz3wO00=;
+	s=k20260515; t=1794443491;
+	bh=9QsDcs9BukL2agpXizeKuZOTHpSFdpbs8oTRRuetMCI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NwSxaQ/oJ9DbDzdZV+/IcVPuula2/1J+b2taj5ynnpwvfJsu4dz8WeeOGJLlbLimh
-	 Yl7YESJ+FEfYgWxfbBShQvzu6lCGeSTZbu3tbOwnsCZ1baH2f4/FK0nXVdvkFiKkJ4
-	 DP4UzXACxa+j7GyOtPtqrmk7DKVKC8CzPmpEaQRxJQdCFIEnzyDPmp9hD1pKyEmkfv
-	 7pYrSgAIoARu4C62yYocoFEioUb8Bk+wO0nKFIY16GVyoylcT1cHZqcjmelyMm0dRC
-	 OQAnMfIEqKAXzHsmyRkPBqLBR/TgRLKWYU3HGKsqk4wD9OZeomZnSRLE/RSqHmkpc5
-	 Txwf4v224PGfg==
-Message-ID: <sashiko-outbox-209947@kernel.org>
+	b=dU6QomvoRuz71qdgtA3fqLSG2EJ9ncBowqwUeNlG4AuYl65gUTUTL0RCNX/lmKNYx
+	 e4Ltxu4XICbO6T9AZdmlzAPY/jnUoY6PfwjPzEPQ7J1dNrc0MlCuas5dDjRIthP7WP
+	 SsNfcpaJ61U+HNO9ZosDiOom6XrL2v7LxgKJ+z0jd3irr2AVwBAxjoDoDMsQDoLbFX
+	 2Fc8F+43IMYlXFayO3QTAspotMUYzJDbw1X1Hzu++l9jHye5VJBl4gaDCeBRo++LMR
+	 sqWLgOWKkM9nc/BgQi/rCTD/2VJR4bP9uH+wxpgx74rDUIG1Yu3mdJLKjcWSNfYSJj
+	 S++NLWFF7lqYg==
+Message-ID: <sashiko-outbox-209949@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 15/19] selftests/liveupdate: Add a test for
- retrieving tmpfs files
+Subject: Re: [PATCH v4 17/19] selftests/liveupdate: Test the targets of
+ retrieved tmpfs files
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "David Matlack" <dmatlack@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org
 Cc: "Alexander Graf" <graf@amazon.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Baolin
@@ -75,24 +75,24 @@ Cc: "Alexander Graf" <graf@amazon.com>, "Andrew Morton" <akpm@linux-foundation.o
  Dunlap" <rdunlap@infradead.org>, "Samiullah Khawaja" <skhawaja@google.com>, "Shuah
  Khan" <skhan@linuxfoundation.org>, "Suren Baghdasaryan" <surenb@google.com>, "Vlastimil
  Babka" <vbabka@kernel.org>
-In-Reply-To: <20261111002358.1842967-16-dmatlack@google.com>
+In-Reply-To: <20261111002358.1842967-18-dmatlack@google.com>
 References: <20261111002358.1842967-1-dmatlack@google.com>
- <20261111002358.1842967-16-dmatlack@google.com>
+ <20261111002358.1842967-18-dmatlack@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 12 Nov 2026 00:31:27 +0000
-X-Stat-Signature: yi3e67oogno58drwhsoymqkexwmcnb1e
-X-Rspamd-Queue-Id: 5E0CA140004
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
+Date: Thu, 12 Nov 2026 00:31:30 +0000
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794443489-852057
-X-HE-Meta: U2FsdGVkX18GuzuscK/IJKh4IKFFtaxytsv6rBwOvdkKuTBe+FbTnN9lE1GsRPLXQPAaVXwng4CIHrHzLvwf7heMqVCGuWZnR2iaZmDTTLvDoXoW6u+G77TyzeueHuQson0N2BwvbqvSgkg43e19XNAbzDxT+gnO9l/oR3Rq6oYBbzNvvbnUW89t6ZF1U7rrVJfBgKdlqspBDv2lcV1RtUEbwqKk1bX9QMKhWyoA3pbdCrXiITipligocerzNbeTtUk+blApL29AEmH1EVEvO53jN00vALAK5r0nKwSTZwWRUQID6EC3mxVrTmZ6o8Lu6jy30GGaV39JBSlmNDU1Rxws6L//D6PdvJL4iSTbfmkwffFL7ceCKReM4daL9pB0dYoYyPN/duPOLRm1LtVO+BsQmtOZjEK9IMrm5gpVbbmaV/mO97/PuCmtZpl6pNfEVVU5dNE9vMaKejkQMSURZlzTdHtaVRlhklfastJhKC5S05exgmGSDxgfxjqQsSEnSM6SxeGJJ/GDsJARlKMOhvP6PdV7XNHfJUe2CbKLRT8Qmb02CEsjJwyni9rhmTufSC1wBG+T8Rjv/aBv9YqDZ38ao9KurVRj4M+GdkW4F7OCP+bAG362jXPW4G2PLqSPvqI+tKOO/BJy28n49IceoYLj+oEpKB1zYPRsaM/tRXcKUDqSGMmU7FiE063oQ9cwrkNPXtDAB+1uhABO/fdBA2KMZxg/9fJylRs9DDwYCFUSzPn8EcoEWBCELj91wNrNMEk2p3w6F+dcUjMN20TSnLf8HOqQibLmri3WVkKMPYd01xQT5KphzNTOYwZwfiIwk9fU7JOhNvHNWeRAe8MHKmXfrOujMymBtIWjRzZs7jXbRBScALnrMFK7kZr+DQzI58wobQPWG+ieXv2HhLjOo0rxIFnEdIqQg18dbnVEMpI1WkulMXzfZlpiL3a1hBt7eIQnysJT+OZ7ZkE9Nzp
- Sm86RDVK
- 9zu1xukLmNBevTuN6lbNn1KFJcXJcSJyfVEOGOJ/G3kv3LubKdzMx04mN0k3AbEDz/RksurWy5KXDb0IYrebi84iET/VnYZftZYJi2/SsxMvuTIIt6amN76LTRgPms2X3zNYwZgEUi81zWaz5X85LXRxVfjYZiNaxyod/4J7jnVE6q7LWwCkHNUGFU3/q105kzNnc5P7hHS5aV6QqIXrcEAeqE7SlSnYcPgcNUoWA5tvx7NSLT0yqYHsx4ZEL2h22NPwHnkFpIEas8iE+fs3vUQq/lQDirPXzKm3iCpI0uQL3AxeO1FM7V0hf6dPo8+bmnXsms34AD2t57bbVWj/j1SuIgnuLiv2kbmYvMbaaZM+KYESXRtBj05VXvo56NFEvzzeawBP27qUoURQ9P/9VeGeonH2J0qvxpwaub+sIW+EdlfE8yWrkGK1GVE7gtwWkiEcF9NYUAG8K4HeSOq9W8jstUKmE3oKqSBx6fhZ/6JibgLi1D4S1XVIaaSdg9s/z0EoIldOTkIEHLSVYPXOmK9Wqk3lBNIrlOxzUCWcXSFdamHHzfcnmHxuq975g/wEPcmkoshNGqpmsPzq3/6V7Rcx0NA==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 9p5c8tm1ks9cymbricypw5ocbsku6dtt
+X-Rspamd-Queue-Id: 798DFC0006
+X-Rspam-User: 
+X-HE-Tag: 1794443492-736288
+X-HE-Meta: U2FsdGVkX1+5osGXSwsh2xeKtipXohoUThT1NzPj2hSX1Eg/tA8iyjc/s+xBv04H4w+6zmaQNl9+AP49ST+pI443AMSi8zK4mFDZt0OiX4xXbJiTbDIYJN6SZ10Lksfq6RcAc3DvLr4aI9Sj8EmANQb+DJsEKaJ8l+EvYBz2jxQ3kJ05DM9up0tjGcLGgt1zED2dKHtsbLDpLi3tzoKZAp7xzG6iwgAv2RwZwJEAYsB9t+v6DpUSRbo19yZrH/wmrw1m6qLO/Xa9H4mXUGryB6m6rzacsa5vXBbGwJ19GrS2m1uQwsolSc84vPNc7UDqJm6DHs5QDQgSvJebKzI1EFVvuLMS/XBJNHDIb3A+HsoDFrgDEUyIj/XH9QfhIJkO6kO7vpyEFZnYNrBQbWVR24Hp51HcxhF3Cb02oPlqte+7DUoPLbKrK9qmsKPWkIYHRHFPnsHax8HNr9ONFKQO3Zftyh396ldvxnXLSIfaMwVwNxKT3UfKX9RYwucdT/DZfZebBttSCA9F+WiaeW8/pb78DF/iVE0pEJf5Dks3J0SqofiH83JWTN2/EKRq+U1MpTLsq82hUouzzvbN+BfZc00udmOsmwyunoqCLMHaVPSi05w5WeIGpUqW6mrqIJsWkmRh6I+qj4odr0rru0rZKBrSNgjo3s5inSF1ONXcJOLTvr7LRcaIMxb4EY7lgBQLPpUt6VHBXrPyeuUM/fCMk34jdoHaQC4PeKgKeaYgKvv/VatIb0VzUh9yxofevNuw5Pch+KqWz7A59Vz2JRCsQwo3NnXWKC/DDE/7baf+aFlHabit4MolpKG2Ow+o9jzGaofyMo8s+9y1XjiioNRV7etUznH9QgctjqGqGurV63dldZ+TM7p/b1uKD6QWszN8KQVCf+PUKQdOPvC26idNrnPyuL6Da4OPCf8KnY9UFNKP+btNitaLG6/vFHtxadEuN4KQe/3xq5+tFZ8n0qC
+ ns7yt/1Z
+ V0FmqPvrC05fh5DxLxLXyeLeIT90NpR5v4Yjz7MxdeFnSEpnCsDNgAfbwYBxG45wLJiSO2tFrlS9HZNISjkXwZkt8H5Swdqel+1kzDXiItoVznfB4QTXNAvAswTPO7QG0/BkuKTfVDUWye3YhuStcyyEPPL3n70azV98Ys6IqH+dZEyquc7gbzJzEkuzM0XsFjxecehtcIirWDZ59GpytO1oU5BaBP7ubhovvMUeqS+50sJNcEnWWQ9vvYU7wigzEprooOURSWZ4MTE9YLKrPJY0v9q+xCqw1icTTGAkD1+IMcBJSBAlAUAV3rU1tC+xOTxq1MA7EJgT0745EFH+0+K4LoQbJiewu0DaEGha1jf3msb1kXWC/DUYXHIJW11iduzRzYjL74zR6OcY3PK1oD/fbLWdWQBzHN3D660lygAjRQ1mj8tBQ2xPvlyJpqA6RsQEHpA/gH/MJ+DFLEOxcDdhLqMsiGg9T3oS9DJ5edC4bCXPpZ6r1+arbkWTZkAiYa8EsasRoCrFi/ymojrcnRXAf4+K1XZuLangJrNML2fcVgeAPBbITcAkXCmCPil12zDYxABrSErXErCvGElHJS/011g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,61 +104,43 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Low] selftests/liveupdate: do_fcntl() breaks build on 32-bit generic
-  unistd archs
+- [Low] selftests/liveupdate: fd leak in start_exe() if second pipe2()
+  fails
 --
 
-commit 0645310fa3a030d5078797e4ea9657a80cb11ec5
+commit 98f191f06f9c7f70ee35d49607af5263f3c0db2b
 Author: David Matlack <dmatlack@google.com>
 
-selftests/liveupdate: Add a test for retrieving tmpfs files
+selftests/liveupdate: Test the targets of retrieved tmpfs files
 
-This commit adds luo_tmpfs, a kexec test for preserving tmpfs files and
-retrieving them into a file on a tmpfs mount.
+This commit adds test cases to luo_tmpfs verifying the requirements on the
+target file into which a preserved tmpfs file is retrieved, including open
+modes, file emptiness, filesystem type, immutability, unprivileged access,
+and running binaries.
 
 > diff --git a/tools/testing/selftests/liveupdate/luo_tmpfs.c b/tools/testi=
 ng/selftests/liveupdate/luo_tmpfs.c
-> new file mode 100644
-> index 0000000000000..4e6e035e84339
-> --- /dev/null
+> index 91a607752ee28..2d6dd8f0e138a 100644
+> --- a/tools/testing/selftests/liveupdate/luo_tmpfs.c
 > +++ b/tools/testing/selftests/liveupdate/luo_tmpfs.c
-> @@ -0,0 +1,728 @@
 
 [ ... ]
 
-> +/* nolibc doesn't have these, so use syscall() where needed. */
-> +static int do_fcntl(int fd, int cmd, long arg)
+> +static int start_exe(const char *path, pid_t *pid)
 > +{
-> +	return syscall(__NR_fcntl, fd, cmd, arg);
-> +}
+> +	char *const argv[] =3D { (char *)path, EXEC_ARG, NULL };
+> +	char *const envp[] =3D { NULL };
+> +	unsigned char err =3D EIO;
+> +	int in[2], out[2], status;
 > +
-> +static int do_mount(const char *source, const char *target, const char *=
-type,
-> +		    unsigned long flags, const char *data)
-> +{
-> +	return syscall(__NR_mount, source, target, type, flags, data);
-> +}
-> +
-> +static int do_statfs(const char *path, struct statfs *buf)
-> +{
-> +#ifdef NOLIBC
-> +	return syscall(__NR_statfs, path, buf);
-> +#else
-> +	return statfs(path, buf);
-> +#endif
-> +}
+> +	if (pipe2(in, O_CLOEXEC) || pipe2(out, O_CLOEXEC))
+> +		return -errno;
 
 [Severity: Low]
-Does calling syscall(__NR_fcntl, ...) unconditionally in do_fcntl() break
-kselftest builds on 32-bit architectures that use
-include/uapi/asm-generic/unistd.h (such as 32-bit RISC-V)?
-
-Those architectures only define __NR_fcntl64 and __NR_statfs64, not
-__NR_fcntl or __NR_statfs.  Should do_fcntl() guard the raw syscall with
-#ifdef NOLIBC and call libc fcntl() otherwise, matching do_statfs() right
-below it?
+Does start_exe() leak in[0] and in[1] if pipe2(in, O_CLOEXEC) succeeds and
+pipe2(out, O_CLOEXEC) fails?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111002358.1842=
-967-1-dmatlack@google.com?part=3D15
+967-1-dmatlack@google.com?part=3D17
 
