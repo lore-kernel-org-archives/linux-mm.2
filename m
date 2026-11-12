@@ -1,113 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965C3606A321
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 11:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA33E606A884
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 11:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=nGqxesdb
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n73BoZfW
 Received: by kanga.kvack.org (Postfix)
-	id B885D6B05B1; Thu, 12 Nov 2026 06:51:20 -0500 (EST)
+	id DAD4E6B05B0; Thu, 12 Nov 2026 06:52:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B38CF6B05B2; Thu, 12 Nov 2026 06:51:20 -0500 (EST)
+	id D5E5C6B05B3; Thu, 12 Nov 2026 06:52:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2A246B05B7; Thu, 12 Nov 2026 06:51:20 -0500 (EST)
+	id C4D4D6B05B6; Thu, 12 Nov 2026 06:52:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 76CE06B05B1
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:51:20 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 08DCF14055F
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:51:19 +0000 (UTC)
-X-FDA: 85426301520.29.E96B89D
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2109C40003
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:51:17 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=nGqxesdb;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf12.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+	by kanga.kvack.org (Postfix) with ESMTP id 91A286B05B0
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:52:59 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2963A140573
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:52:59 +0000 (UTC)
+X-FDA: 85426305678.15.3F525EC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 75609160007
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:52:57 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n73BoZfW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794484278;
+	s=arc-20220608; t=1794484377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=g7FWRyAWx3iB3hlRZqVCNdy5X/7Do0taWr0Tn8+qOx8=;
-	b=TUYY4kBuoTgTXOtVVE5iR98M21dDkd/w8gyYe3wLNq1onQh/bD/KWsHl+uxItQWHAKrUYL
-	J+YNs32dF2veBwRHJMEEIciBcWrYq7twz63uLVjrfOWK8k6Vu7wqugiaWd7iORr0E/C9cr
-	MKFux0ZyDWbaMzx+2SqZmRYN/y8uUF0=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mwn/H1ULONfD3r8MGUfyFZepAjOONqSHtVOfwqC7R44=;
+	b=RgSBhybI0Q0KHQK7yh4IsYNqxu4E0gIOpxmWFOBoehpXRq12atpE/gc/10CbpPLRhsKoSY
+	uHWRS6WtFPwAgo70AO/Sr8c2ne5MtT8qpwkoM9x9wnvVd5D7U8na6hq17uuQcb/JqhLBfh
+	ZiLDzvb6rMsB1RLZxIKibO2XnATYXXw=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=nGqxesdb;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf12.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n73BoZfW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794484278;
-	b=FtpFMk8/bNuMAB8gCVRv1jsC/VBKjgoc2y6omEgiOpunY7VIbsKB7PkVpIGQxae3nePWzq
-	uyU+kNMoC05+No1+uf0ABzvH5WbEF7H4SmiPgTXp596tVckUqK0rbEWaEN4zNZ6oXGPYwk
-	mwp9pexhYMK3tiRn+eTfAL2LHVjAFJs=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=g7FWRyAWx3iB3hlRZqVCNdy5X/7Do0taWr0Tn8+qOx8=; b=nGqxesdbR6d9Ua9L5bkKBBOjTh
-	QgctO79YpZ67I/sIEPJREr9odbEn46+T5jArFC2qvjaSlHzKVoJFT68z5nEpJ2m3KSD8cX6e4q+0E
-	4LVcnUroWVuHJwVAi+imRMbSvxMcbw1DtgNOxDad6JaHMTLv8vTq3qvi/JpJJr1XokqiU6NTKVlNk
-	BuxgTME0IfkiV5dHsySQOwRX7AsDfbolv/zREnYR71PAsDy3EZEfwbiu/1hWBfRHLngjklD6cjZPe
-	Rnm7TogyRoZwEA5xHu3Z65nis7i7sKT/asvrrP/oEpqs676c4vzajclvUX9pWeRKs6Zvh6t/AQc8j
-	uenTHG0w==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xRTKg-00DwvO-2J;
-	Thu, 12 Nov 2026 11:51:10 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Thu, 12 Nov 2026 03:48:01 -0800
-Subject: [PATCH] mm: kmemleak: drop kmemleak_lock in scan_block() when it
- is contended
+	t=1794484377;
+	b=XslDIbnUmm/EowkchNpvUV26+yYqm+Sdu6NAPdZv6TOL9psaffBN0SKLO5qNXri13UQd00
+	Ru9OY1I+cd0l00LlVlegFqk91FOq7B+9wzF31o6Oibv95qRTMnxp+jwjrn+Ivn1v3U+Phw
+	qFatIVzPm6yWeptLs+wTtnjoDgo6nyg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A98B446A6C;
+	Thu, 12 Nov 2026 11:52:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69AFC1F00A06;
+	Thu, 12 Nov 2026 11:52:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794484376;
+	bh=mwn/H1ULONfD3r8MGUfyFZepAjOONqSHtVOfwqC7R44=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=n73BoZfWq97QkN/EzmbuARqlOgkw571PAQbg9exHKtPkxPfLWofEF3xx49ExQI0+5
+	 NP7AVrlK+9cNoWfkzTQe8yBsYysMxwPj7QUvfullML+BTgnwt+niwBFJ4djUkPZJhj
+	 u6DmKuJ63HSV8sLPOkQLGdgtwRQ6RQpEjkwL8WSFEcC5i1lk/REmtDn0ONN8B0fZFp
+	 KWkLDbCPyrj8njpmsNXUwgIiAnGNXbD/W3krNa+IIu6u5Jasv+5pY51IpfMF9/2E1L
+	 EJxh+zfJfG5qrKbAwulb0FfxElREfauArGku1EH6kDQbGoA0jT0iwqZaeqUalrXJE5
+	 nEFAmwZULpIuQ==
+Date: Thu, 12 Nov 2026 11:52:46 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, apopple@nvidia.com, 
+	byungchul@sk.com, david@kernel.org, gourry@gourry.net, jannh@google.com, 
+	joshua.hahnjy@gmail.com, liam@infradead.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, matthew.brost@intel.com, mhocko@suse.com, 
+	pfalcato@suse.de, rppt@kernel.org, surenb@google.com, vbabka@kernel.org, 
+	ying.huang@linux.alibaba.com, ziy@nvidia.com, kas@kernel.org, hannes@cmpxchg.org, 
+	riel@surriel.com, shakeel.butt@linux.dev, kernel-team@meta.com, 
+	baolin.wang@linux.alibaba.com, Nico Pache <nico.pache@linux.dev>, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] mm: don't PTE-batch a swap-in over a
+ hardware-poisoned subpage
+Message-ID: <avWn47ADwJwP3DWz@gremlin>
+References: <avRqaatdOUunxrcZ@gremlin>
+ <20261111183917.1093166-1-usama.arif@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261112-kmemleak-scan-lock-break-v1-1-95808108d03c@debian.org>
-X-B4-Tracking: v=1; b=H4sIAHGn9WoC/x3MywqAIBCF4VeJWTeQRtdXiRZmYw2WhUIE0rtnn
- d23OH+EQJ4pQJ9F8HRx4MMliDwDvSq3EPKcDLKQtUhDu9O+kbIYtHK4Hdri5D83U9eKlkypZQX
- pfnoyfP/pYXyeF+laqspqAAAA
-X-Change-ID: 20261111-kmemleak-scan-lock-break-7b9818ef3c25
-To: Catalin Marinas <catalin.marinas@arm.com>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, vlad.wing@gmail.com, 
- harry@kernel.org, kernel-team@meta.com, Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3656; i=leitao@debian.org;
- h=from:subject:message-id; bh=5T6aw43QawtVXoj03pz2K45DQEaN5hI2WF6eNsaihxk=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq9agrMcaniPNKq+f+xzNvrI/ZBfuc29YpGKNtc
- sAnAZOJ/nSJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCavWoKwAKCRA1o5Of/Hh3
- bRw9EACJvTJW9K5mhUfirEyEVQ7Lx169JsyzK8Pr3C3zk4+GuqS1zUsehkhFsfBw4NPj50QHuZY
- rOoLy6jTBW53IJp+y49qmaIcq4PflE8OFKmcN+HXWjotnfNMgkba+Es9AM5iAAQjXo4CqpSvsGw
- JFa92bugEDjpOtSE2ypXIZ/yo1ikNPHZJpZEiZL2Td5N9pZhm63fUDHq25lR5KWPzQiCHfBzRG1
- G1Co7fSMivFc4a+QPe+GRdkvoyo/V6yDLstg0XLnhejUI/Sk0bvdWltBziLhNgVqq4IxT4XhGwJ
- OuNkZUalLv/eMHTyQ12KmpPd59Dsx+NooOpCv9COmBzFiTAQRPCkzeihgx75dM2kiOixvAu3pxy
- uhjODEH59TxiYxICL/kC4Qrj+OcsToEJVpsdu7GThI+9NrMKHlcfVAm/H6DQt4tImOxCr19UK4c
- uuDtrBNMbAncBqme2egCrCrxABykQb7BWBmNdwMe/w1u3HTojKQpA5oL1RbkJ+UxuI3g6Vz7AVN
- u07eok+uVTMf2I0fexXIYzaU4FsbIYfhJHoGZx65zkUo4B1OO/r5a3FvrbzZzS525RIbOKJNu0Y
- XDJqHj3boK7l81n7AnCDbtAceVcgiol7/zq91i441F+RkOarNH94tKOKrHSqqSDbBWTj7mGkxam
- cmE63B5CpL/q1aQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261111183917.1093166-1-usama.arif@linux.dev>
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2109C40003
-X-Stat-Signature: 4xbbjnkrf1p4xaguwq3ppco9uenemb9a
+X-Rspamd-Queue-Id: 75609160007
+X-Stat-Signature: 674x1dxkk4beg8ceasmo1heq1z748sx4
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794484277-730520
-X-HE-Meta: U2FsdGVkX1+IqbRSw+coFla51aQgMGMJiNIlCZ2mr5CAyI7xMYU9uOCODXNLF/MBJYM6ki3quhC4ILJ6gCgPr5vbJ/KB78GTeFYqpaTyZf2TCOq9PnfBHHB+FUJh0vxnzLJeAaAI+DRABIS5bda5CS2asj0P8WMO3oHFbKl8ijJZChDh7Hobnu4P5RwH79TJUnJB/o2MqoQ/BD0hWNikGe6HhEoOUwIAgtHfjRY6nVYauRnjuuS1CasGPGFtssxp5a0GuOVYcYsYreH3y+vBnMPW5/jUDmLQNcom7g31fd6hnj0rNtLReRIVJzQvxyVv/uzwN4VkpYsXyal9MfnJnJaYBZQuZFOpLmkjHd3mpeo5obUk3MilGQrljp5gS0B8Sk26nQq5SEEbKZk0qerr0tE3PIfzx38lf7gPN3kIaPRvWkNGsCCTkDzERe0nOmesAP3cLNzyM4XijN0hdGZ0huomDcBu11pxLVusIc3EDyeXWxDN2HjubCM9SrH62pbFN2lvseJ5i4sbaNSB2VJi1ZWGGZGAcsh6ibpBQeHs9cwf1fk88dTq1ahNN+kKzmiwlW6M5U8itvIrs99SHZT7160EKQl6ckWuYPpVNf9Wp4qgKZeGSI3bA9tUht8OwxaLJ+i7qwEvdt59E1fBhWbQ6xR9Le43kzL0EseDS62pA0mlgi63mTyBluGq+I5PR7UZoAgghVDsl2CngM9WpOxGs470G196tcfKXuT7JDOWOMm6WsWs010nWm+tAO3MIrS5vDy/vGsi3mq69KZwisVDhgcrTC7pgWpVFoi5EixDLjqVKGg6ymHMxNZdmqFA7sWVvd2v06QneRC/jQoSZlFEAIpgJM/vd6Y8XmwnfTcEYXvudovOFTk+wnh2ek0HyBaIfIX7z5uWIGYm43HEvggrRxONVEuqi3erFGTjQLc+Oj7Dnc/Rxyxk6Xuatorr+BxRMbogCATq6pfzlZHUHxq
- 3ye8fBBx
- idJ9hPFZeqVBSLTuB+PiBm0cykivJyj8fDlz5yLfWVJGCm/QyQ6f3gBt2/tqYES1wSNbk5xvCAzKnWa6/EnWTVbRfQ/QCl4dLd+hO7i6NyWq10hmd2hVMe9dMGa9aY8E5mhe0G9chvcLiX5Uvo7FsXR8kUN9eGoCq3vHB17loztPQwk55ymGlht8iPrysh1yDA8m1m2fbOlnJBoqFoS8nQhZdmvsZBDTCjhLbbgXaSMJFiVPIJNBrNBh5edOdmtCs+K5Sv0HsNCv9laNXW/a7+qCq5kq8xzSxG8CSbO07RhmUkTOd3TrALoUXGKd/TuLmrhO7ih7t99MgXDjzoWgf7R0lgFU9X8tCD1N4AAsGh/ofqs8OvxsPeE8kIOtxZ2mUkMQ8IKvJMDUdaHgbJaToRg0VNw==
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794484377-355397
+X-HE-Meta: U2FsdGVkX1/a3mCgbpYaRiSpqupz8PnsovBY26uZ5/ZvKRPekHVJUzXYQWUtRd1tdhPVQ5BoJKivH1Q4QwopcXt1F8d4jisoPyeKBGrqooIt/ATg+758Uag5RVHNaD4EreNWEGr7WI6aYW1EzgIF14R0j1P1pfBBjvPhDj9EXZO7fZGFh3TMVTeKWd/+k83b4hkLzStE2HTZmO5WqGN/T4EQecJE7G/8ZmJw9Hl/uAkaYU5X8CpaSq+2b+nfKWzxxIoxNM+4YJZq9l3nEW7K49kbkC5fuNaulREMTzQjZ2FJo1cAeeSC2IiW3bb8e+PgnHN7OdJ87VoEkcSXfF3nHonVx/DROGiW5HxLfRFl+K5KYdcbFbkPhauud8RpU+5c/l/RTkgMIu+XH52BB4+TqmPImuoAvULqbdo/6L0W36WJsTR1j2+EAUo3jH0cgsk3+gtm3vqOgEDgdiCvb2dBtlIf0RIJvXDWnnAIF8dF7uQqZe2gHJoC+Xwe0FvvMjB49eoQGx3e4X/eYAYXRF0fJp2BFplTGEqPgwysuU7KsyoMOEAew6vlkDIvTQidxSuu/1HXBfknZonwz+1WfVduw00qmWtrkQ8CFWJ2Pym38mryUh9Y4TDb8ixB4XfV9XZHHucdDgn2hrQ3qrRGUtakta8ME2TpoK45vAzJ9H6gaz9djGyN4iiGs1mYjA1Q/nvQEyueZRkUYizENL+njGbpkbUghQv9nYmHfFPUMGKrZNTFl+eArT8yBtIMCzTO4X3kA4DCYESey5ThBG5cTmRFhEVTqmu9GRnUCYyAwUE7Otu0yzkboU6MMx0EKPLHYUaNIh7Psut+wSVb8VVrILoLI8sZN41DHarbaCdRMNS+t/0r52+ZArahPV4TQTEfn1KjEPhCpPAe4cgGnycrz0bvn6CT1eIEfiOP4ItfyBFuLp6VPOZLuViCwjVVZneHujIlrv01YXbFW/50mg3JUNZ
+ 3PePg35u
+ 8BjAIjgCJozYYDICaGSoHwAGtIrgJ7Uanvwpfs83GjNaCK7AseBbJsOOkuiFAOHnxrp7d+7p+DQYutJEaohsTXpXPQI3TRWL0o1j7yFGTNl88GL/b5pfCOE4vs6nS5JZs1+YArTEBVTuW99oC43m4PIB8k6GQp3ekK3IJwUl8LzcDRUT2U8WN870g3EyP1nNzWfcruPR4DOLuLTFSUk9rFOnLaBZ+P66k11+Y2v4KAO705S0gTlGWORQu237cFgSqik08NsHUru/iepfUCxJr/qBaPfGnpXlh+pLLjR0W/XqJIbHM4zpnwggLjHlLOlt6sDUggOSKUPZYvJvV/iH/OqNYvb23MRrlCoIR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,103 +102,137 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-kernel_lock is a damn hot lock, used on allocations, free, NET_RX, etc.
-It is also used on the scan, so, while scanning, most of the system is
-mostly waiting for the lock.
+On Wed, Nov 11, 2026 at 10:39:17AM -0800, Usama Arif wrote:
+> On Wed, 11 Nov 2026 13:18:36 +0000 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+>
+> > On Wed, Nov 11, 2026 at 03:38:29AM -0800, Usama Arif wrote:
+> > > do_swap_page() checks PageHWPoison() on the faulting page, but the
+> > > large-folio batching path then maps the rest of the folio without looking
+> > > at the other subpages. A poisoned subpage that is not the one being
+> > > faulted gets mapped anyway, and the fault that would have reported it
+> > > never happens.
+> > >
+> > > Skip batching for such a folio and let each page take its own fault,
+> > > where the existing check catches it.
+> > >
+> > > Scan the subpages rather than testing the folio-level PG_has_hwpoisoned:
+> > > memory_failure() sets PageHWPoison() on the subpage first and only sets
+> > > the folio flag much later, and the bail-outs in between - for example
+> > > get_hwpoison_page() losing a page lifecycle race - return with the
+> > > subpage marked and the folio flag never set.
+> > >
+> > > Fixes: 508758960b8d ("mm: swap: entirely map large folios found in swapcache")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> > > ---
+> > >  mm/internal.h | 15 +++++++++++++++
+> > >  mm/memory.c   |  4 ++++
+> > >  2 files changed, 19 insertions(+)
+> > >
+> > > diff --git a/mm/internal.h b/mm/internal.h
+> > > index cd3675c044e0a..e61c02f4019b0 100644
+> > > --- a/mm/internal.h
+> > > +++ b/mm/internal.h
+> > > @@ -28,6 +28,21 @@ struct folio_batch;
+> > >  int __copy_remote_mm_str(struct mm_struct *mm, unsigned long addr,
+> > >  		void *buf, int len, unsigned int gup_flags);
+> > >
+> > > +/*
+> > > + * Check every page of the folio for HWPoison, rather than relying on the
+> > > + * folio-level PG_has_hwpoisoned, which memory_failure() can leave clear.
+> > > + */
+> > > +static inline bool folio_has_any_hwpoisoned_page(const struct folio *folio)
+> > > +{
+> > > +	long nr = folio_nr_pages(folio);
+> > > +	long i;
+> > > +
+> > > +	for (i = 0; i < nr; i++)
+> > > +		if (PageHWPoison(folio_page(folio, i)))
+> > > +			return true;
+> > > +	return false;
+> > > +}
+> > > +
+> > >  /* mm/workingset.c */
+> > >  bool workingset_test_recent(void *shadow, bool file, bool *workingset,
+> > >  			    bool flush);
+> > > diff --git a/mm/memory.c b/mm/memory.c
+> > > index d477a4f986bc8..4b7d456332200 100644
+> > > --- a/mm/memory.c
+> > > +++ b/mm/memory.c
+> > > @@ -5158,6 +5158,10 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> > >  		    swap_pte_batch(folio_ptep, nr, folio_pte) != nr)
+> > >  			goto check_folio;
+> > >
+> > > +		/* Let a poisoned subpage take its own fault. */
+> > > +		if (folio_has_any_hwpoisoned_page(folio))
+> > > +			goto check_folio;
+> > > +
+>
+> Hello Lorenzo,
+>
+> Thanks for the reviews!
+>
+> >
+> > Hm, isn't scanning every single page in the folio potentially quite costly
+> > here?  I thought the point of batching was to improve performance overall?
+>
+> Swapping in requires checking every subpage, so there would be a cost.
+> I guess trading it off for correctness :(
 
-On meta fleet, this is, by far, the most contented lock. This is not
-a big deal, because very few hosts run with kmemleak enabled, but,
-I think we can do better here.
+(we don't say subpage apparently :)
 
-scan_block() takes kmemleak_lock once per block and keeps it, with
-interrupts disabled, for up to MAX_SCAN_SIZE bytes: 512 words, each
-needing up to two object tree lookups. Every allocation and free in the
-system needs the same lock to insert or remove its object, so each of
-them can wait for a whole block.
+Yeah but the cost is now paid by literally everybody...
 
-Keep taking the lock once per block, but in auto scan mode, check every
-64 words whether anybody is waiting for it and, if so, breathe (aka
-release it and take it again so that the waiters go first)
+And...
 
-Releasing the lock is seems safe because it only keeps the object trees
-stable during each lookup, and scan_block() does not use an object found
-under it past the word being processed.
+>
+> >
+> > It seems broken to have stuff potentially interact with hwpoison but then
+> > to only set the folio-level flag much later?
+> >
+>
+> PG_has_hwpoisoned lives in the second page, so memory_failure() only
+> sets it once it holds a folio reference, otherwise it could race with a
+> THP split. If get_hwpoison_page() can't get a reference,
+> memory_failure() gives up with only the subpage marked. The comment
+> above folio_set_has_hwpoisoned() in memory_failure() says that is fine:
+>
+>   Don't need care about the above error handling paths for
+>   get_hwpoison_page() since they handle either free page
+>   or unhandlable page.
+>
+> But a large folio that is briefly off the LRU, e.g. isolated by
+> reclaim, takes those paths too and can still be mapped afterwards.
 
-Tested in an arm64 KVM guest with 48 vCPUs, KASAN and lockdep, running
-stress-ng sock, fork and dentry workers on 8 CPUs during five scans.
-The kmemleak_lock wait times of the other CPUs, from the lock_contended
-and lock_acquired tracepoints:
+...now you're narrowing this cost to literally a vague edge case.
 
-                   average     p99     p99.9
-  no scan            3.7us    <16us    <32us
-  scan, before      15.8us   <256us   <512us
-  scan, after       11.7us    <64us   <256us
+Can we not just do the scan _only in this case_?
 
-The cost is a slower scan, as the scanner now queues behind the
-waiters: the five scans took 179s instead of 118s.
+>
+> > Also why are we swapping out folios containing hwpoison pages? Shouldn't we
+> > migrate away from the hwpoison? :) (I'm not really familiar with the hw
+> > poison stuff)
+> >
+> >
+>
+> The error hits a folio that is already in the swap
+> cache, e.g. while reclaim has it off the LRU to write it out, and
+> get_hwpoison_page() fails for any folio that is off the LRU. Normally
+> memory_failure() would split the folio and isolate the bad page (for
+> an uncorrected error there is nothing to migrate; that is soft
+> offline). Here it does neither, and the folio stays in the swap cache
+> with only the subpage marked.
 
-This patch does not change interactive users (echo scan > kmemleak in
-debugfs), given current != scan_thread, and scan_breathe() will not be
-called.
+Yeah this just seems like the swapcache code being broken in general.
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- mm/kmemleak.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+>
+> While looking at this I also noticed that the fallback drops a freshly
+> read (not yet anon) folio from the swap cache and frees it with the
+> poisoned page in it. We should actually actually also check folio_test_anon()
+> before checking folio_has_any_hwpoisoned_page().
 
-diff --git a/mm/kmemleak.c b/mm/kmemleak.c
-index 1bca27787df625..da6d1dcdd6f6ad 100644
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -112,6 +112,7 @@
- #define SECS_FIRST_SCAN		60	/* delay before the first scan */
- #define SECS_SCAN_WAIT		600	/* subsequent auto scanning delay */
- #define MAX_SCAN_SIZE		4096	/* maximum size of a scanned block */
-+#define SCAN_LOCK_BATCH		64	/* words between lock waiter checks */
- 
- #define BYTES_PER_POINTER	sizeof(void *)
- 
-@@ -1539,6 +1540,18 @@ static int scan_should_stop(void)
- 	return signal_pending(current);
- }
- 
-+/*
-+ * Release kmemleak_lock and take it again if anybody is waiting for it, so
-+ * that allocations and frees do not have to wait for a whole block.
-+ */
-+static void scan_breathe(unsigned long *flags)
-+{
-+	if (raw_spin_is_contended(&kmemleak_lock)) {
-+		raw_spin_unlock_irqrestore(&kmemleak_lock, *flags);
-+		raw_spin_lock_irqsave(&kmemleak_lock, *flags);
-+	}
-+}
-+
- /*
-  * Scan a memory block (exclusive range) for valid pointers and add those
-  * found to the gray list. Return non-zero if the scan was interrupted.
-@@ -1561,6 +1574,14 @@ static int scan_block(void *_start, void *_end,
- 			break;
- 		}
- 
-+		/*
-+		 * Only the background scan thread breathes, scans requested
-+		 * through debugfs keep the lock and finish sooner.
-+		 */
-+		if (current == scan_thread && ptr != start &&
-+		    !((ptr - start) % SCAN_LOCK_BATCH))
-+			scan_breathe(&flags);
-+
- 		kasan_disable_current();
- 		pointer = *(unsigned long *)kasan_reset_tag((void *)ptr);
- 		kasan_enable_current();
+Ugh lord, how much crap is handled improperly re: hw poisoning. Such a mess...
 
----
-base-commit: 793807ca13bf3072fc6d16ce6d90e9ab9beff2a5
-change-id: 20261111-kmemleak-scan-lock-break-7b9818ef3c25
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
-
+--
+Cheers, Lorenzo
 
