@@ -1,92 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23DA8606A338
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 03:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1C5F606A332
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 03:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=hdevINua
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YMp28IOO
 Received: by kanga.kvack.org (Postfix)
-	id 49D676B05BF; Wed, 11 Nov 2026 22:08:23 -0500 (EST)
+	id B5F4C6B00EF; Wed, 11 Nov 2026 22:15:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 476156B05C0; Wed, 11 Nov 2026 22:08:23 -0500 (EST)
+	id B107A6B05B0; Wed, 11 Nov 2026 22:15:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B3CF6B05C1; Wed, 11 Nov 2026 22:08:23 -0500 (EST)
+	id A26696B05B1; Wed, 11 Nov 2026 22:15:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 161676B05BF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:08:23 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AF30480497
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:08:22 +0000 (UTC)
-X-FDA: 85424983644.03.4D02880
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by imf27.hostedemail.com (Postfix) with ESMTP id DA1E440007
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:08:19 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=hdevINua;
-	spf=pass (imf27.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7C5536B00EF
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 22:15:13 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EC6D51404AA
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:15:12 +0000 (UTC)
+X-FDA: 85425000864.29.205B4AB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 121FB40006
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:15:10 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YMp28IOO;
+	spf=pass (imf04.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794452900;
-	b=vKaClR4d3pYEKB/33iNF9Or4Br462b5UZNULu9jxBm+7sSgSqvsd4rVI7X0TmSoRlSqi3M
-	ZZVtZ2H6gaSwmJQOvcdZgjxmJyhMd9rc07GGOf61Hydg2/R4TOIWVvvrLdLQdSi9nZrpA1
-	KYhQ9NaTNfzvQ/fVpjjaXhxZeKDSV+A=
+	t=1794453311;
+	b=pTBHmyg9peSZfUstAe9ehN3WbyCL9xxZ3xYp1UCINV0PR+VoOZ8mmFzp0DefJMZlcWEebv
+	OmxCKB+qgOxa5Gc7GDMsryWfjPPY5yAscbKCBjGw0T7CuzB2IxD/3uPwyRqc+T2UlFSQbN
+	OwTGlYAiQbI8vq8rY6wBtJMLboyFAE0=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=hdevINua;
-	spf=pass (imf27.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YMp28IOO;
+	spf=pass (imf04.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794452900;
+	s=arc-20220608; t=1794453311;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0hASrZa3KsQ/rJDPLJgE3hfFDgP737Rr5tw+ZVyeGEQ=;
-	b=O7/vpGqeAjOSMUyZ7mxQ/vgVAkWmO/e+fq2hQuya+RphtGH7I5iTIXWD2w1gDT8in1jLTM
-	uoucak+Oydo1v8xb4GHnVXlZgca7w32BOYzXpFlSv3NwxsCy4llDdkqlUj4j3PIduHJD8c
-	UZXiL6cPybj/llr3zTtJhZfeE/+eCOs=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1794452896; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=0hASrZa3KsQ/rJDPLJgE3hfFDgP737Rr5tw+ZVyeGEQ=;
-	b=hdevINuaBVEfHEJlhzzsXC9ClAz0O4Xdst4xJ50eJLBfWR8gHTU+wPkcytGkP0mpHTrZ3Fh9n4DZOEcEG+YcLOk0NhZMLSlc4FSpfFbcTKT1sj5+Qu19OAicXvYrpVqDJIk95oBwnzAOeFLsCd1+0ey/QIeAy3Ruucp7S8jMAVw=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R691e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0XEaUfqM_1794452884;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0XEaUfqM_1794452884 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 12 Nov 2026 11:08:14 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Chris Down <chris@chrisdown.name>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,  Will Deacon
- <will@kernel.org>,  linux-kernel@vger.kernel.org,  kernel-team@meta.com,
-  Mark Rutland <mark.rutland@arm.com>,  Andrew Morton
- <akpm@linux-foundation.org>,  Muchun Song <muchun.song@linux.dev>,  Oscar
- Salvador <osalvador@suse.de>,  David Hildenbrand <david@kernel.org>,  Mike
- Kravetz <mike.kravetz@oracle.com>,  linux-arm-kernel@lists.infradead.org,
-  linux-mm@kvack.org
-Subject: Re: [PATCH] arm64: hugetlb: Prevent write fault livelocks on stale
- TLB entries
-In-Reply-To: <avPxZjjdBIlM_8_g@chrisdown.name> (Chris Down's message of "Tue,
-	10 Nov 2026 20:39:02 -0800")
-References: <avPxZjjdBIlM_8_g@chrisdown.name>
-Date: Thu, 12 Nov 2026 11:08:02 +0800
-Message-ID: <87ld6yn3vx.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=KukHHa4IpQLPx0nLghzyKli6Eignxu46dayWT5IB5Os=;
+	b=2d/C2q2wJGwanOvpMN0K1KWPfHi/Qcnw2EQC3ZOdMksiM6nd9+KQ0CzcFamLQ4gu719M7o
+	SZ3Bv8GL2rLJ+hQxVy9YJUmf6p2bo/qg+wg2bKY/lpvn08qpG/wGdwWhwDAjzUil3/fugL
+	3DkB0ZZ7FXJZP31x2s5uVpycDQ4duBE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2FB57633C0
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:15:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC2A41F00A05
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:15:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794453309;
+	bh=KukHHa4IpQLPx0nLghzyKli6Eignxu46dayWT5IB5Os=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=YMp28IOOkOpmgpjEGggQsJTj/xunkcm3xcqHrjlryVSThkdTDXotcTu4FfFa0ax2p
+	 F7troXbepBoldAXvDiVsdENhcjwbvVLP1lFJG5X3PwIdszLGdViBjHc7rJrIDDi2Iy
+	 90RJbnF+BfNiQSov7MpdqrAIjdtLCOy+89DAY5wx008BcDFOlCqJE1GtekWIf6th7U
+	 DdRMijID71R8bUcFNNrKPfeoyeUKL4WrQ5q6MzpZCL8xTxsONCvCMTGfVB/k+ExP8T
+	 sGKNeOHOVuzVAhTbh5wg+ppMUWE2fOo06qwUZTv5OnM6uMcemXdoSp1xnNP1DVRcXK
+	 Hwcb75x42hVuQ==
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c3f04e0e65fso561178366b.2
+        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:15:09 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErHI+PfMiuTLoX2iud6gZAizvTNKgKmXKh6Hy4NqONDdJ5G8KX0DQ4lEANKsepiMrRd7dd3byB7Zfg==@kvack.org
+X-Gm-Message-State: APuU4Z/AsPfzUO0ZZXJPWhEXe9yYSbx13ZqdJa/gKXqVxnB/5bre3q+3
+	N2PCVNRZY5tgpocQ+avjs+OSySNF/l0zTuoILm4HUhiC8LFjOVzqZ32/UDK8DBSfmZ2VTd+qnPD
+	cyuTxRBeJkf+BrgdX2hDC+lOZBMu9Ckw=
+X-Received: by 2002:a17:907:2d8f:b0:c50:5e10:71ae with SMTP id
+ a640c23a62f3a-c5066afce46mr377456166b.17.1794453308567; Wed, 11 Nov 2026
+ 19:15:08 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Stat-Signature: okuo1yjubbcxrsew8p6p4ns7pdztg48n
+References: <20261111092421.3771992-1-chenhuacai@loongson.cn> <20261111170600.GS1779021@noisy.programming.kicks-ass.net>
+In-Reply-To: <20261111170600.GS1779021@noisy.programming.kicks-ass.net>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Thu, 12 Nov 2026 11:14:57 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H6SYOjOw+owmStK7sr-HOiADC1zZ4Cii5hv1q+qYAUETg@mail.gmail.com>
+X-Gm-Features: AclHuK_e17qcvjrZPS0KZhv5Xdz0uZ2nPZtp3g7am9FbsyZNwEyKWIbkfxX2baU
+Message-ID: <CAAhV-H6SYOjOw+owmStK7sr-HOiADC1zZ4Cii5hv1q+qYAUETg@mail.gmail.com>
+Subject: Re: [PATCH] lib/smp_processor_id: Don't warn if there is only one CPU
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Huacai Chen <chenhuacai@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, 
+	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Tiezhu Yang <yangtiezhu@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: yo8k1sta6uzxxofp8e43fwh86f4f8mp7
+X-Rspamd-Queue-Id: 121FB40006
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DA1E440007
-X-Spam-Status: No, score=-24.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794452899-260321
-X-HE-Meta: U2FsdGVkX1/oqunMuiOIiimDlmZu1Ercv1Pse7RMltGeLOISpKqlE3bTuDvgE9mk5knGLmAwcRElcz85h7UY8QkrCipbG9Nzpg4tZnXezYMeQT8QoA4h8AaCQ8hpsS2+JorU6Kv3ZijxAEhbiRocv44RP7bFIoviRfJLUL68+I4YkBoR2ZUfySWWyT4vmBd8oT/SW4sYGnwlr4YIKLUzSn2ipXumQxS2HHCGiiwnVvorhvZWhzGkt2RncNp3kg73DB1oz5M+X/5zg6hzQ5BYo6ad0EE5X59PX7foi/7OELHyg7kOnClQDt8St5hyvHYyt0KRLEDnB1GfGFiv04u9TvGNJzSz1fNY9zJlFFuCyTNSfJlGUSJi0qm5qL7fb1ZdRas9H29WidTLlAg6kE8mm2/N3z3RIM5Nr6YEWeBYkxV2hKh2+l5DynJOZTc3kfZVlTOr8N/Wf7PRjCIPsR00QmQ7f1YNj9NK76MybvtdhXKfZdlFsuWJhuEauQveV7+AqXBC9GxBBZPyMpRyeIn6M1see0b/h8Zzd4SlvK++uq8ntcsdO+yLX8OvYNEmaGXynSDptPq5FBqYHESyB4HcQgkhTDFMbwa5zuaysAwc7A+4gz278a00u0OmYjXzhUbWfMeS1zgN7NdxIhROyyRzjxDBjVd2ULlKO/8/XUXB8rnREQ+GXaDvWBLm7gAhLeGSJj8Nhc6hbPRfY3PKvvojDmXvlFPpmn8+pybvdzD94Squkf+3tAptshh7WrVU2sv7i3enRjCtTkY/c3s1KTOPNMesmGjCnrhf+LidwYJev60Cdw4rp8mGcDdDMXBK8rU1UnBLpo34thUlUlarfCpLVE4Zy1kTa718K+Q99vKu8Y6vTEShX4Wk3zvqogV5LaDXCb7Ki4srlf15rEEpX0CGqtRfLXblwj+n80MN5vehC8Uz8WyijQp5vtlVu0AVVGq/y9Qav7Ju2WNdkeB1JZg
- XpYmQzi/
- jCds5CKX9PWmEUqrWnbUwjAOCiDQTfvGj4j4We/mH4j7IaqVBtAaJ7XP62SHSdc9c7vg8usV30DZEwsd65ZcCwZtuYqamT9vfupAuOEaTMj0Zm+JPJlMvyCgDfrpX7YNT1NcbMk93eZPuqiXa8Rl7aU5GGuXCqWCDGA5C9IXRVWLGDJDX7wmScHz3D4l8VdHXvj+kwxcWd3b9APz/zrudz2M8psqjOpavURJX0ED/y5oy9GAAWrHiwf/9ToXPN6RoxJ16zCpiDQ9VkmVt9uilmg2mC9KHMZa8nE2abyMdMV/+OwU=
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794453310-430142
+X-HE-Meta: U2FsdGVkX19s2UZI2IvptHa5/XYKiVWGc7PxvLF4I3MZwq0YLHJV7PwHNUkKAK/VXxPXVkpBVj8+Z62FoNQbbo+whsTI+cD2t9wg3lrsLCo17A/9BHApPGX3gU0CdOxA7Anldytnbs1Vnqm+XwKUx0Tvd8ycyljdoqTrtfZd3TWhWTlWXBne+Pytz3LfzqYkljodn5IRPLc0PbuoCPiiChi9SX3tydovtZlK1UICgcCgrJWXmuXDWRfiSAh4xPJ3no265PSFUtloYyyAutxoUgoZxIZRlTG7WCFz83L58zQ7Vc5BzUfQs030BcaVE5y13N1pKNjAtsKSGKddss5V5O8enVfEF/gYy47yK3XN+rQfsXIty+ZaeD2W+QeXKlWW9nZ7Sq5BsDzDN1VRbdRGHY6KnWggaQKe4yYTLFXidhil/BtaiXwivqIm4+pXRdMXL798qDKkNEPhwI2QOwIIH9+l5e3XZ8pcsfS0EN93K3cMlYANvo9UTHFsWUl4K+s/iZu7H+KgqKYlfNhTACZ2NpAH+wNX81XS1+1naNsXpGUGFo1ZX4XKlREsxKgUupIgqb5th+WXzyMsQSzz2W0aj9Yv3Sfa1ZoHh9xNFWBvLrgwkH4dutZMx3A4KUUT/ZN4xjoN9bWGl2uj3XXYsXiU1aVaUr3zE9HFPhnKxhLOMxwtjNceB59Nk1VrQUB0u145c64tW4GbEMFFKkWR7OSQWAeu3Cm+DwJCOOLMgw1fTEoR1UEaQZqZaPclfYQAC/da7My+0+vnC4fKE/KX0h+Y/6UxrAi2ro+iOH3QSgq7FB2bWTWbEBgEBGTVB7yEeY1K+ZsocfTsrckjmnn65DZ6jvRfIc8CiovNjYnPOCYhadjpI2WvGWi04TEIOug6i455gi8b2F+nhWfgdoWHOA6d/fcFXyiUbljHqaMi50AxZAU/3Ef58WzwGTzPxZXK+NKt6GjQCUZJf5FpatbideZ
+ IBoPlGi4
+ lDG8D7B3C89Chqc9BCOM2InCAXNQE/UFhC2KTYbpQ8KjBE8H6NGb0SIe738y5OElThAZtCd00CaluA52uEXAkHFzksExcPlCvvqHblKzF2WAHOeuhdO8q/2rLRfoZg879yRzhfcbpQlYuff0nEwaoEnjy/fnLLIKJe3I//dFon2NheO3EUztJBIpKem0hKU3C3Qvtp+LCD1t9fjMJX3EGqC/PhBSMzV8AUomCDsztjQDUu+wXDyjYhy+0/N1PJbAfIGJd7N/rSMPohKvqGSs+lnTqlALMTaQSeQA4mIxrwYcmJS9yGD+qCyABBeUKdcgJE1NuFLkwgtBQbAxjy1UjiQdvU6q24MH+ZEXo3aq7eWdhEL691Oh3afNJ3Q2yaJ1qZDDm/AIenmTo1y4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,101 +109,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Chris Down <chris@chrisdown.name> writes:
+Hi, Peter,
 
-> In Meta production, we have had tasks get stuck in a fault loop while
-> using hugetlb on arm64. During my investigations I found that affected
-> tasks share a private hugetlb page.
+On Thu, Nov 12, 2026 at 1:06=E2=80=AFAM Peter Zijlstra <peterz@infradead.or=
+g> wrote:
 >
-> Looking at the stuck task states, I found the following ordering:
+> On Wed, Nov 11, 2026 at 05:24:21PM +0800, Huacai Chen wrote:
+> > When CONFIG_DEBUG_PREEMPT is enabled on a Non-SMP (single-core) kernel,
+> > calls to smp_processor_id() in preemptible contexts trigger some false
+> > positive "BUG: using smp_processor_id() in preemptible" warnings, which
+> > are harmless noise because the process always executes on CPU 0 and CPU
+> > migration is impossible.
 >
->   CPU0                                 CPU1
->   ----                                 ----
->   read page
->   [read only entry cached in TLB]
->                                        write page
->                                        hugetlb_fault()
->                                          hugetlb_wp()
->                                          [reuse folio]
->                                          set_huge_ptep_maybe_writable()
->                                            set_huge_ptep_writable()
->                                          [flush local TLB only]
->
->   write page using stale entry
->   hugetlb_fault()
->     huge_ptep_set_access_flags()
->     [entry already writable, no flush]
->   retry write using stale entry
->   [fault indefinitely. well, that's not ideal!]
->
-> The reason is that when a write fault makes a non-contiguous hugetlb
-> entry writable, it only invalidates the local TLB. However, another CPU
-> can keep the old read-only entry, so its write will fault even though
-> the page table already permits it. hugetlb_fault() then finds nothing to
-> change and leaves the stale entry in place, so the same write keeps
-> going round in circles.
+> The check is still valid, you don't want to have any code that uses
+> smp_processor_id() outside of preempt_disable(). Such code would be
+> invalid on SMP, even when ran on UP.
+Thank you for your reply.
 
-Good catch!  Thanks!
+At first I also think that smp_processor_id() should always be called
+in preempt disabled context, but after investigation, I found:
 
-> This is particularly bad because, if the kernel is copying to user
-> memory, the retry stays inside the kernel and the task can't act on the
-> pending signal.
->
-> It can even remain unkillable while holding locks across the copy,
-> resulting in further failures. For example, a read into a hugetlb
-> buffer can hold the pipe mutex and block other users of the pipe until
-> the loop ends, causing cascading lockups across the machine.
->
-> To fix this, when a write fault finds nothing to change in a
-> non-contiguous hugetlb entry, let's invalidate the local entry.
->
-> Fixes: cb1fa2e99955 ("arm64, tlbflush: don't TLBI broadcast if page reused in write fault")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Chris Down <chris@chrisdown.name>
-> ---
->  arch/arm64/mm/hugetlbpage.c | 21 ++++++++++++++++++---
->  1 file changed, 18 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-> index 8e799c1fe0aa..ff1f53e435e1 100644
-> --- a/arch/arm64/mm/hugetlbpage.c
-> +++ b/arch/arm64/mm/hugetlbpage.c
-> @@ -429,9 +429,24 @@ int huge_ptep_set_access_flags(struct vm_area_struct *vma,
->  	VM_WARN_ON(!pte_present(pte));
->  	ncontig = num_contig_ptes(huge_page_size(hstate_vma(vma)), &pgsize);
->  
-> -	if (!pte_cont(pte))
-> -		return __ptep_set_access_flags_anysz(vma, addr, ptep, pte,
-> -						     dirty, pgsize);
-> +	if (!pte_cont(pte)) {
-> +		if (__ptep_set_access_flags_anysz(vma, addr, ptep, pte,
-> +						  dirty, pgsize))
-> +			return 1;
-> +
-> +		/*
-> +		 * Another CPU may have made the entry writable without
-> +		 * invalidating our stale read-only TLB entry. To avoid
-> +		 * indefinitely faulting on this entry, flush it.
-> +		 */
-> +		if (dirty)
-> +			__flush_hugetlb_tlb_range(vma, addr, addr + pgsize,
-> +						  pgsize,
-> +						  TLBF_NOWALKCACHE |
-> +						  TLBF_NOBROADCAST |
-> +						  TLBF_NONOTIFY);
+There are 5 existing skip conditions.
 
-IIUC, this is similar to fix_spurious_fault() for non-hugetlb folios.
-Can we use similar logic?
+1. if (likely(preempt_count()))
+2. if (irqs_disabled())
+3. if (is_percpu_thread())
+4. if (current->migration_disabled)
+5. if (system_state < SYSTEM_SCHEDULING)
 
-> +		return 0;
-> +	}
->  
->  	if (!__cont_access_flags_changed(ptep, pte, ncontig))
->  		return 0;
+Condition 1 and 2 is to make sure smp_processor_id() is called in
+preempt disabled context, but Condition 3, 4 and 5 is not.
+
+Condition 5 can make sure no context switching since the scheduler
+hasn't begun to work, but Condition 3 and 4 can not.
+
+In other words, Condition 3 and 4 can only make sure the current
+execution will not be migrated to another CPU, and I think my new
+condition is exactly the same.
+
 >
-> base-commit: 067c5c24cef23d913b67eaaf71ae67e7169a6620
+> All code must be SMP ready.
+This is why I use "if (nr_cpu_ids =3D=3D 1)" rather than "if
+(!IS_ENABLED(CONFIG_SMP))".
 
----
-Best Regards,
-Huang, Ying
+>
+> Aside from that, nr_cpu_ids is the wrong number to check.
+Correct me if I'm wrong, do you mean checking num_online_cpus()?
+
+
+Huacai
 
