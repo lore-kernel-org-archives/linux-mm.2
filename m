@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F78606A326
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 00:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F36606A321
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 00:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DEOCs/+z
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KpMV8KKy
 Received: by kanga.kvack.org (Postfix)
-	id 08C5A6B05B2; Wed, 11 Nov 2026 19:31:11 -0500 (EST)
+	id 60A6E6B05B7; Wed, 11 Nov 2026 19:31:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03C376B05B7; Wed, 11 Nov 2026 19:31:10 -0500 (EST)
+	id 5E2486B05B8; Wed, 11 Nov 2026 19:31:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E94DF6B05B8; Wed, 11 Nov 2026 19:31:10 -0500 (EST)
+	id 4D1096B05B9; Wed, 11 Nov 2026 19:31:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C37D36B05B2
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:31:10 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1265B804CE
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:31:10 +0000 (UTC)
-X-FDA: 85424587500.01.A820146
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 70BB61C000A
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:31:08 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DEOCs/+z";
-	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BC6A46B05B7
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:31:11 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3AFE61C3CAC
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:31:11 +0000 (UTC)
+X-FDA: 85424587542.18.6EDC96B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 83FE21C0004
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:31:09 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KpMV8KKy;
+	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794443468;
+	s=arc-20220608; t=1794443469;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xlKJOxJwDcDpLQLhphR53KExe+VBxV3WdYySoxbnvIQ=;
-	b=ZcupY5X3J6P45wV2GEz0WFdD7ghU7eiMjOtbfO6Us1OhEx0JLugQXq6cEnWyOt0L6DSBV/
-	uFqw15DRAVXYXDl/QhVXof5nv9BOoh1T2D5D6zI/Qif3CG5FpMKt3vIZuqqcielRfxyAJD
-	F4+BTUVur0bU43h6mkCfYmth4fVbltA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794443468;
-	b=BRkc9QxMbtSsugT8gFA5d753qTwyKUr61j+tpcMaeUUjobC7QwD/9DFJCMPQ7VstA4KQ8c
-	8Ba+njIfLHDVWJGABru2dH5erQqyYIDzgagRU4EFBr1sRoYeo06bWThpq984TxdDn4U2jz
-	Hj1cSmerd3BcCpUUZDBPCvKwG+lKjQk=
+	bh=1EWFO17EH5oEfTbKye5xe/8R6ziLPWTGMHOqE213Ii8=;
+	b=qRRu2x8cMbjzoRT2ALGtz8JslR3Pvq0Zt5ohU2pTrppW22PRfVUvIzPQ6TWgvsGhc8QYn7
+	qeJpogiOKF/AgsnTOjoEU8LowIwo/ZMl2JfxyJ4Wi2wK273IWQh3e/MkjQ1K5dVJ7juZZW
+	3xz4lPP+CadGIarEp8Re5ymf7DX0WMg=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="DEOCs/+z";
-	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KpMV8KKy;
+	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794443469;
+	b=ZHDriko2sHAdx3IdNlBczmGkxJ1zufnwz30PX7XS0er5wMmdINrJpvzJheIhLpbZdN/q8l
+	en6xeFXzEeGoeD65y41c1pDMDH5Mk1GAwSggHFvr3xXq4imqZEhXVFGEf8NIrgsw+neqGE
+	XRiYZMp+dOHOT28B+AttoQiTsij5hFw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 271F060052;
+	by sea.source.kernel.org (Postfix) with ESMTP id 790D0411D7;
+	Thu, 12 Nov 2026 00:31:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5787E1F00A05;
 	Thu, 12 Nov 2026 00:31:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC02F1F00A05;
-	Thu, 12 Nov 2026 00:31:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794443466;
-	bh=xlKJOxJwDcDpLQLhphR53KExe+VBxV3WdYySoxbnvIQ=;
+	s=k20260515; t=1794443468;
+	bh=1EWFO17EH5oEfTbKye5xe/8R6ziLPWTGMHOqE213Ii8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=DEOCs/+zFVM192K2WMD+q0DOyl/z//SCCLcXpZHm/s42i42mIs4YP1ZYIaZC4/m6U
-	 DfO3fvbGCcuOehyg3lfbYjJ6pBeywejxOjQkjW1n1bSJnxeJSY2zOdx8sqODlembuG
-	 wsnDSBUd2oWvLC7DIC5uFfDoDk1bs1gDjtm/o0v/SEfeOflti6+a8mDf6lnz/3KEP8
-	 9PZMunPdzUuQW0uSJcbMD6Zxp1367PclMF37eEZ/l1W7rKEEXCWmgbAgsY/kL/4nC+
-	 anBO2xOl3mcdvnQ8hByZ+Um972jprtoABszUYDazNHMOcU0I4tgBlG6MszAbLk+mIf
-	 +MPO6LnJtzILg==
-Message-ID: <sashiko-outbox-209934@kernel.org>
+	b=KpMV8KKy3ExuPz8BSRcFqJoM649LkHNNm3AjBPoHebwZhovEBnuWJv0kTsTkHLDPt
+	 vmteyTfkrXtm7gQtzW0nprpYezjzRXmcoJp/7W+HVxZ0p3qx8N+vvES9mIF+t3kTt9
+	 3NgLvzrfJHhu6PASnPCpUeoqW6XIo/2BUgyAllDb0lESL3i98DKBTxFuqQ8AU9FeEG
+	 nkHBq+SB26NuHjl+kUi4dWxeSsMrKhagvsoYg7j4fDg7bgSYRriBxUw69krukYGmXb
+	 Ho8Sp9u04yjdQrpa5iyFU7b0qpGUA9La0fcCLclGdZ5DF7Jn4udDnbrEsSEowW+DrP
+	 5VGLKwjMR9tHQ==
+Message-ID: <sashiko-outbox-209935@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 02/19] liveupdate: Pass user argument to file
- preserve and retrieve
+Subject: Re: [PATCH v4 03/19] selftests/liveupdate: Add tests for preserve
+ and retrieve user argument
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "David Matlack" <dmatlack@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org
 Cc: "Alexander Graf" <graf@amazon.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Baolin
@@ -75,24 +75,24 @@ Cc: "Alexander Graf" <graf@amazon.com>, "Andrew Morton" <akpm@linux-foundation.o
  Dunlap" <rdunlap@infradead.org>, "Samiullah Khawaja" <skhawaja@google.com>, "Shuah
  Khan" <skhan@linuxfoundation.org>, "Suren Baghdasaryan" <surenb@google.com>, "Vlastimil
  Babka" <vbabka@kernel.org>
-In-Reply-To: <20261111002358.1842967-3-dmatlack@google.com>
+In-Reply-To: <20261111002358.1842967-4-dmatlack@google.com>
 References: <20261111002358.1842967-1-dmatlack@google.com>
- <20261111002358.1842967-3-dmatlack@google.com>
+ <20261111002358.1842967-4-dmatlack@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 12 Nov 2026 00:31:05 +0000
-X-Stat-Signature: 5qf9b1gjp9kupnkz5esz9k9p7ba5y1eg
-X-Rspamd-Queue-Id: 70BB61C000A
+Date: Thu, 12 Nov 2026 00:31:06 +0000
+X-Stat-Signature: f9g7jqia537ch4yyzc1jfj4fd3p69e7z
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1794443468-896531
-X-HE-Meta: U2FsdGVkX1+4aDjjSu5vnsMdi15omyyopeUIjmmnPsvajgKEDGjPgkuQk+HZsYElVxsl2Mv0SxofNt6K3sSXSwQY2ff3I98bh/8Yi0FRKTsLOy/Iwk/0QrZaUuvSLZv7/n0fhD8NxgtkXh6Q0aXwVNjrBinbouAebqJn/Y4OWh+8cFw5ALCsDboG3jq2X6z3wvg7eUtpocOf/t1Wgb5Fu9ScFCPecZlDjWziK+IZf+EF3lEsyDYCQeGFS38oxnYcJmlGyVKJAAGZ/WsKc+afgS5e8hv8e08hH71bmlaU+oPt7gaMTcD7YjW34s38+mcSwaZXr6kehhxfuKhQzfg6WWk6KpPbNYX1cFncRARlf9qyFekAalo+UHArSNXeTdBRxVVY7hnqP7S753SqvZCxPtld9zH5PSIz5u8rz/fdeatjxC25gQkEeR7AiTHICVHJnNl9EfNLvPxgim2OLfVjJMb8e06z1ua0N+vOE+SMIS2nlcQVjXRau0RcExehlrug59+7xU7RHsYaD/qekj7w0fUU70ktzhzRkz5Mp8uWl8B/Wf0IgfFLNKKneQPmjq/aFLXW4VGJ+T4OKc9Wt/7a/RWnliWTaupIAFM1CAUdE1X0Gx32D5aLbsgb0UvA1nvBcX2tepOPhef5UCzYkiIzyppGQA5N9U4CZQCciilCvCrk+ptUubJK52IEs90zdZ/flZ4d8yiJEZc/HLHma+buTXHE9kID1j6G7s1oXwluIptK8gLkGG4sJSAib6oKdbypjdTzHLt1xGBQP9iWt2buA8q2SZORr2MFIyZtu4PV/QR4yYXUkmixu03yep3lsTuIigZc+Mt5a5pUkDf81XNc/ECgJp2ESjhuVrXZzgQyEfzOQ0vPbKMHsX4o5epbEn6lHLQWMqzN4rWtr0NR6uUcyHFfnRHsSpajXDgYc/UWsI7E2qvRZDcm5nW4KUeqQXzZQn5GaedrplFLGPTSCFb
- RxqEgs9K
- EJGRMtIgty8z6UVjU6OAsy3aYBt98c/KuBHtQ/qDbP3o4jm6nB2jb0Jg3o2U0frQfGVml0mB6Co2O5GG+sLM+YCl6xXoiz+mYfou68DutoyahPuAXh36AMzXupGnpHWmYKvWkIFEdaDvHJ54ya1zseAyjj2Xi4WuDdMfCvw7X0uCE+UrzAhV+yihCHUEb4hbXOHAMEACPg7oTkPNlRDN3MB005PvKs1s4+m1Xbactj22O50RznixPfldCknADSjX2upqN21t1P0R3B+lHFCQw+AoGC37Mt7T/FwIJE7Wh+uLGDHQEWN2dKdrmmsVIoBhzQXlMh2nM1oCIkPJOrTN78QMnWW0gGFx3QZyDYKUZ1yQwzJOCFdWwK8bl9b/DDFQu9ckED2LCo3ZAy1i4MX4aRohv6YCJgtnbDbcVVqHRUlnuuOaP5i10Aq+0w/8xKvLYz4W5PE2T/KVREIXDy+xli6M7yWGz6beCvTDkQV6iXQtA1uaxnXoHY8TZaRhNo/NULN6byb0723j54PPRRYLr5VZOj6hOiAwHHqmpKfsTKGIrToVe7LF9gXkScyaJJjGE5nyV2mpDG+PXL72Bs6/xAOBxGwpiI9Nqx+o+7/e8bo/iODYxkX+SRF6FD7CRNikskouqcJzLikAgp1s=
+X-Rspamd-Queue-Id: 83FE21C0004
+X-HE-Tag: 1794443469-609586
+X-HE-Meta: U2FsdGVkX19okC9zGEUzvdQhxKCSdk9u8QUMQXzEeH66sr3IDLYYT5eQ8d1/vsv39UnPp9j5E761/eBRatXCWi6r3vRQd6ws/R8yKDBx68KlKOen+S50kSE/9OEly1/MxWrZB78wuZypaKxw6XWiPcqTU0A4mClOmC9+8UFrHEPOuUT9AjEllB2SLbGhxINDtPJdf/zoxi9yQEwaWrhY/U2bbGYF7whdAiCi5UwyCeKl4z32+VX8xoh70rO0FY3+feUoZHmdT8AyFeO4HLsSQeWUo4YnrKXOovzsLUcF1gl6G7MsMCM7fiAjX7ybVGzJAt3iI0SFuJhLgTCN1Rq53oDnltK1h1Qbp+aeLDImxVA86bg5Vn4yXgllXM1Dx6capUYVVbrFdWLrNWGmVUmWMj8RYR/TtOfC1JmxQdnvjfF4N0dH7c4g+rgzsaSvNCHvvS7hy+zkVRhjmBvC/ARITAi1wtTWuHflwJaCkkFq+3gJ6gh30wAvecT5dKnD41q8SMLGEhMIdiQxFDz4xJ4iOwlIpxphXMtungMMlO2fZZZ3SEIXrSx5KVvl9jOCwPjtvh1c6ZQxTUEhuMYcm33yNpmTag4X0g4PY32VVQMb/VFrdMVDqNoy7rA0CzvfVDVof03lreBBnylBML2SCuYTZH7ooXbFBsD/CgFR72V/xsW/GRVyQKaXYPuRsgoarmd0TEy/WHqaPhv+OTynKKobkgvIvXUN3Sa1VeOrIpgrBJZwpZjXGdNybIaDKtvv5kyLoz7pxiGV6Y++IvvekBzSJSfxgnviNFzKgHxlECOHOc9PqZfu3CTvw6/UY6b1sQpudkwlxEBwmbeph8C9q55wSq+upnJw9TviuF9jwhDzL0dUGeeUIsjztjy7q24QsvwAFTVf+hVdDFXF/X7C02nUjfc/RHRPC7g0rhuKCEm1orvVgkbKXibMd8Efb+FpP5Zkt4L/biJHsz7QamhNGcd
+ lkyDxSFd
+ QVEQ8MxPtT/4I8Kbe3McHTzNb9SQiG49Bi6Q03P0OSbtY0A5OtVHAMW1mftUeLQyQkIMXPfJfSGDDnj5VP5R/X/VpPeQzC4SJ8gqTsdSpfwFruhDUQ8f3n07TumqJV6hVHYzADKLH/y1MbSrm/duF9THSYgaR8D3QFJ+QTigL60K7x7MxK0JLtdBqsX9k5xAsRs865fmvErTpi7sEtnjLl7B5Cf+rTQv4bGMtwZqcNq89LyjPLibeyaBnC94CNeRxNOyIHXj9If57pkaR6RG7VFz2DpV4MW8HA50t5PbBv4gDM5RGtbWd8+UY/A6HdFlPUtiDBGXEPyUzvn3N5mtf0QqWaAZkkPpmUAat2VrCuR+XFYTOm4JyPEyWf7dMNBkp9NHCrmTyjlg67X5z/AqDTLQ1Kzr8aMHRFMRFDjfL85qGYJws/hvOjeHvlJUS9/Bcq1THE8omnijz2ggk3SYxs3zu7nB+miK+vQnmYZyVjcshmCz+2OVgMOzKLivn+eCqV09jKVp2geAOlIBywUGPNTSgoCv4Ci468lfJ8+FEVEqYPWnwTLmqkZl/aoT02OQsNRSkqzfkJbz+xZQLFD+gPxuCeATd/U1rFmg0BRA27WUlWeEuIb+APF/Hv8D4HkwGeErlMMe+l0ZfrMk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,78 +102,74 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Low] liveupdate: pass NULL instead of 0 for arg in
-  liveupdate_get_file_incoming()
-- [Low] liveupdate: initialize __free(kfree) karg at kmalloc() in
-  luo_copy_user_arg()
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] selftests/liveupdate: zero min_arg.arg in
+  preserve_memfd_with_arg()
 --
 
-commit ce30d6f92617722b3b0681f0c0fa88542091865b
+commit 1a8c90d14c1496a0314a67c567059709fa28b4ba
 Author: Pasha Tatashin <pasha.tatashin@soleen.com>
 
-liveupdate: Pass user argument to file preserve and retrieve
+selftests/liveupdate: Add tests for preserve and retrieve user argument
 
-This commit extends liveupdate file preservation and retrieval ioctls to
-accept a handler-specific user argument structure, validating and copying it
-into struct liveupdate_file_op_args for the handler callbacks.
+This commit adds libliveupdate helpers for passing a user argument to
+LIVEUPDATE_SESSION_PRESERVE_FD and LIVEUPDATE_SESSION_RETRIEVE_FD, along
+with a preserve_memfd_with_arg test case covering memfd argument handling.
 
-> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-> index a42b60356d523..1437630d435e6 100644
-> --- a/kernel/liveupdate/luo_file.c
-> +++ b/kernel/liveupdate/luo_file.c
+> diff --git a/tools/testing/selftests/liveupdate/liveupdate.c b/tools/test=
+ing/selftests/liveupdate/liveupdate.c
+> index 2dedd5fc2534f..4c4272167635b 100644
+> --- a/tools/testing/selftests/liveupdate/liveupdate.c
+> +++ b/tools/testing/selftests/liveupdate/liveupdate.c
 [ ... ]
-> @@ -202,11 +203,43 @@ static bool luo_token_is_used(struct luo_file_set *=
-file_set, u64 token)
->  	return false;
+> @@ -530,4 +531,47 @@ TEST_F(liveupdate_device, preserve_many_files)
+>  	ASSERT_EQ(close(session_fd), 0);
 >  }
 > =20
-> +static int luo_copy_user_arg(const void __user *uptr, const void **argp,
-> +			     const struct liveupdate_arg_spec *spec)
+> +/*
+> + * Test Case: Preserve MemFD with User Argument
+> + *
+> + * Verifies that passing a non-zero user argument to memfd preservation =
+fails
+> + * with -EOPNOTSUPP, while passing a zero argument or using the minimum =
+struct
+> + * size without the arg field succeeds.
+> + */
+> +TEST_F(liveupdate_device, preserve_memfd_with_arg)
 > +{
-> +	void *karg __free(kfree) =3D NULL;
-> +	u32 user_size;
-> +	int err;
+> +	struct liveupdate_session_preserve_fd min_arg =3D {};
+> +	int session_fd, mem_fd1, mem_fd2;
 > +
-> +	if (!uptr)
-> +		return 0;
-> +	if (!spec->size)
-> +		return -EOPNOTSUPP;
+> +	self->fd1 =3D open(LIVEUPDATE_DEV, O_RDWR);
+> +	if (self->fd1 < 0 && errno =3D=3D ENOENT)
+> +		SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
+> +	ASSERT_GE(self->fd1, 0);
 > +
-> +	if (get_user(user_size, (const u32 __user *)uptr))
-> +		return -EFAULT;
-> +	if (user_size < spec->min_size)
-> +		return -EINVAL;
-> +	if (user_size > PAGE_SIZE)
-> +		return -E2BIG;
+> +	session_fd =3D luo_create_session(self->fd1, "preserve-arg-test");
+> +	ASSERT_GE(session_fd, 0);
 > +
-> +	karg =3D kmalloc(spec->size, GFP_KERNEL);
-> +	if (!karg)
-> +		return -ENOMEM;
+> +	mem_fd1 =3D memfd_create("arg-memfd-1", 0);
+> +	ASSERT_GE(mem_fd1, 0);
+> +
+> +	/* Non-zero arg is not supported by memfd handler */
+> +	EXPECT_EQ(luo_session_preserve_fd_arg(session_fd, mem_fd1, 0x1111, 1),
+> +		  -EOPNOTSUPP);
+> +
+> +	/* Legacy struct size (up to token) should zero-fill arg and succeed */
+> +	min_arg.size =3D offsetof(struct liveupdate_session_preserve_fd, arg);
+> +	min_arg.fd =3D mem_fd1;
+> +	min_arg.token =3D 0x1111;
+> +	ASSERT_EQ(ioctl(session_fd, LIVEUPDATE_SESSION_PRESERVE_FD, &min_arg), =
+0);
 
 [Severity: Low]
-Could karg be defined and initialized at the kmalloc() call instead of
-being initialized to NULL at the top of luo_copy_user_arg(), following the
-Cleanup API convention for __free() variables?
-
-[ ... ]
-
-> @@ -995,6 +1052,6 @@ int liveupdate_get_file_incoming(struct liveupdate_s=
-ession *s, u64 token,
->  				 struct file **filep)
->  {
->  	return luo_retrieve_file(luo_file_set_from_session_locked(s),
-> -				 token, filep);
-> +				 token, 0, filep);
->  }
->  EXPORT_SYMBOL_GPL(liveupdate_get_file_incoming);
-
-[Severity: Low]
-Should this pass NULL instead of 0 for the const void __user *arg
-parameter to avoid a Sparse -Wnon-pointer-null warning?
+Should min_arg.arg be set to a non-zero value before this ioctl() call?
+Because min_arg is zero-initialized on the stack, min_arg.arg is already 0
+in userspace, so this check would still pass even if the kernel ignored
+min_arg.size and read the trailing arg field from userspace.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111002358.1842=
-967-1-dmatlack@google.com?part=3D2
+967-1-dmatlack@google.com?part=3D3
 
