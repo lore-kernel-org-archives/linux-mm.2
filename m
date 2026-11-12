@@ -1,101 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55416606A321
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 09:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B60A606A893
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 10:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Y0Zd/7k7
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eBvXpv/9
 Received: by kanga.kvack.org (Postfix)
-	id 6E1B96B05B0; Thu, 12 Nov 2026 04:56:52 -0500 (EST)
+	id DA1F16B05B6; Thu, 12 Nov 2026 05:02:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B8D26B05B1; Thu, 12 Nov 2026 04:56:52 -0500 (EST)
+	id D525C6B05B7; Thu, 12 Nov 2026 05:02:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A82B6B05B4; Thu, 12 Nov 2026 04:56:52 -0500 (EST)
+	id C41726B05B8; Thu, 12 Nov 2026 05:02:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D6896B05B0
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:56:52 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AED28A02C3
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:56:51 +0000 (UTC)
-X-FDA: 85426013022.15.7CF74A5
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CA526B05B6
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:02:25 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8D1C5160483
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:02:24 +0000 (UTC)
+X-FDA: 85426027008.17.F9CDCAC
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 382EBA000B
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:56:49 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Y0Zd/7k7";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf15.hostedemail.com: domain of aesteve@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794477409;
-	b=RLS64fAFvSOu4U0E1JR1pibhkL7mqtY4nA8n1CW4DaUvxB794zdgi5F2SUtmkP2cOtPpZZ
-	2wxmPbHXdV0Z59McfbHaht/xEF2Hvr9DtCtUgi8VoPXi3rN0h1fmNz96TqhHEv0ENApRNv
-	SMtRvhSKhmXh9nsG5IpRLrQV3xcSAlQ=
+	by imf18.hostedemail.com (Postfix) with ESMTP id 1DE6A1C0008
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:02:21 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="eBvXpv/9";
+	spf=pass (imf18.hostedemail.com: domain of aesteve@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794477409;
+	s=arc-20220608; t=1794477742;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=USgqRYo1pzMpiu0iJQxs9uW5L1POEPPKTWq3pDYoKws=;
-	b=MNZ7GMG1+CMxkC5o+vDVcI0GRO9ReuGyQh0W8oNoB9CnaeNDjgyKO87z8i9DQ7Up7NwhBr
-	PAtLS35MRK9Jv2nHobhsgITYGa8Kcgn8/2zlhfweYLMwZd4QzcbuJ6oh4jn5kocJURI+ai
-	a4EKlEVU3qJ46jT3xp+wcUPLpIwgKsY=
+	bh=ku69CJLRXzwwOsA6G2xqy4VdyNyzfbNSiJBSoeXd84w=;
+	b=5OhYxfv7G3Q/ZWs03kVPpdnwN1/5wtPQLeK1cfl2P0tkeYaN9TQwJ5HLKwGm+bRGIBA+sM
+	aHywCE+5a3HsOjkTAkV9Wx2sDGdNORwUy2YPD6vce+boCFZSsEK/4pQdN8EiY6qMv4bs73
+	m4/wa4rvVR+e8XqkMhlEjwbwL+STj7w=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794477742;
+	b=AwC98+5vgPcQsu1nupLFecL59S2MWrPNLVM1O+Pm4riwZunwm8ybr0+LOGgezk6QWFhcEi
+	hh7bku0xeXxdml1TrxOF2icTYRNTHPuFSgKKEUSl4N/71ohqtkefmylb4mnqeP8Y1Ky/rL
+	Bw4zrDQOWS0Q4AGHnhTV2XwG0/4DG30=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Y0Zd/7k7";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf15.hostedemail.com: domain of aesteve@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="eBvXpv/9";
+	spf=pass (imf18.hostedemail.com: domain of aesteve@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794477408;
+	s=mimecast20190719; t=1794477741;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=USgqRYo1pzMpiu0iJQxs9uW5L1POEPPKTWq3pDYoKws=;
-	b=Y0Zd/7k71E6bKwP4hNtI5g08C/GANImnn45gax5Wr+FZB/DXLUd0ivAtV7V7leit8uRtlV
-	JqbcEK+RBuYuqUNq++k/qQMXh815WH6l2SbqW7LBWavtUdbc8gx0mkxuqF6ZxuA0y627B4
-	o0b0lW9UHpiOkR1trg5u43Fb432bO+A=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ku69CJLRXzwwOsA6G2xqy4VdyNyzfbNSiJBSoeXd84w=;
+	b=eBvXpv/91ElvSiIqIDTuwTEIGZodPjBovCs8FY39z63CbvfIma2/9Iveem5jB2BbtFVC/r
+	GwI8wwoXqqr1gSjLoUX1r+wcBoIeWsrhAzqWhnssnYiQy5H+WtiERUnocuCAHUqEHHFh8u
+	vZpGnbt09LMbf7dEDMg8dAeSKyumEMs=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-656-nw2kOspXOCSJqcCT3rxlBw-1; Thu, 12 Nov 2026 04:56:45 -0500
-X-MC-Unique: nw2kOspXOCSJqcCT3rxlBw-1
-X-Mimecast-MFC-AGG-ID: nw2kOspXOCSJqcCT3rxlBw_1794477404
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-490ab0a20ebso3064679f8f.1
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:56:45 -0800 (PST)
+ us-mta-154-K7TgZRD5NKmLcMtQlLFviA-1; Thu, 12 Nov 2026 05:02:20 -0500
+X-MC-Unique: K7TgZRD5NKmLcMtQlLFviA-1
+X-Mimecast-MFC-AGG-ID: K7TgZRD5NKmLcMtQlLFviA_1794477739
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a211bff50bso27397045e9.2
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:02:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794477404; x=1795082204;
+        d=1e100.net; s=20260707; t=1794477739; x=1795082539;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:from
          :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=USgqRYo1pzMpiu0iJQxs9uW5L1POEPPKTWq3pDYoKws=;
-        b=X85VbAWVmtWm1EfQBPrKF2zg+zbdNlgwwBPP3gz+Iz26wtbw+HyOVmWqwaf9E8i0wC
-         nFrQay5X7orpciXHqo7iWabcT7fpEDOq3mhvn8cExpwDfK3q1w+o2gk9FcrvncRydh98
-         m4bhFA5z3zXqEKv69bkHhu9SDZ1hBvhwH9jdT2C0Hkkys5MXHi84dOItqPvgg86QnuLR
-         E4UCH6lMR4uNJAcWSzUj+FOVlVJ64rsNxjPb1cfQJA7fjqFG2ca3noaH2a79r0llwLI6
-         EItZbkAMuiPTuGDiqPku7evm3v6jyU8pw0BgIY6LZa9mrqLoakXhSNeoJoJqsHTOLBYW
-         dktw==
-X-Forwarded-Encrypted: i=1; AL+hErFgLJZrzxftnRAfdpZBwHmpRuY73hZaCvjSBiI5U8tr35rUFfOr2Sl54ru32B9i9kFkXGgIZWfIbQ==@kvack.org
-X-Gm-Message-State: APuU4Z/+O49yb+wfH+eKxF+YP7D9qtOwAdJND4uvNQh81sbL2TcqAxgi
-	vTp5cAXUfx6s0c+HYM3fzCCq9mJgqVZIPvGCaP/Xv1xbO0nyfnEhMB2jULqpZjDK8JOHiZL1WzV
-	SD0iId+bzsySNWRnoctgLkR1bTsOT5ItvVQaVvWlk84IW1Jp7fM1p
-X-Gm-Gg: AYBFou0RJHDJltPOLWQDBCl98D7QElQeBxtCInRYroz9IF0m40DgwhUH2yKBIux1jwF
-	V92hRPFY3qZT0gLwkh38idiWGbAc2WxssZH49tabqwCwugXyLZBFyF3kftzmmo1fSN+mkST9Rae
-	nxdX4fwD9bqNWzSK3eQsRscdKOJt8BmLg6SUp1uGzqot6xS/GgKd3J/J0bsy1uPUqNT2GGCxAUx
-	aEvH866rraLr1njHuQ9KvfkYXWfEBEiGZUCJoMLvpJTUyQOPJFHz/3RLv6Ywaq1ANlK7Y6SJ2ae
-	1S+rl/1Ql3BdeHwah/AdWQgT5QpKiLuS/4yCyPJBEowxHEQ4YrFBdJVArupzDY3Ndfp1IYBvpRJ
-	E7GZY6z8IwWsN36a9mHuPM2ewNj6JDTm1JgKDNmDvFcA=
-X-Received: by 2002:a05:6000:4210:b0:48d:ff0d:cfa5 with SMTP id ffacd0b85a97d-499c8a7b6aamr8720964f8f.47.1794477404106;
-        Thu, 12 Nov 2026 01:56:44 -0800 (PST)
-X-Received: by 2002:a05:6000:4210:b0:48d:ff0d:cfa5 with SMTP id ffacd0b85a97d-499c8a7b6aamr8720905f8f.47.1794477403631;
-        Thu, 12 Nov 2026 01:56:43 -0800 (PST)
+        bh=ku69CJLRXzwwOsA6G2xqy4VdyNyzfbNSiJBSoeXd84w=;
+        b=wGrENdP85CoGyl1Txb4Q7vxJ+xKG650X23Glnz1xtEZv4e20qXvkOCtJRdaLN77XM7
+         h9MHhgT7FhYXfVEb9oZ46k4Tnfphv0oeG/a8ADLdrwC6Y4mIJ5AoLrmY8S2lrtJ7wKNm
+         YWoVhTDb67cNcw/99HF823utheJzdVYNxQbGsFDJGAR9KpXBjTR4dIuA8uwrhX9cs41y
+         9O3/15nOfO9efWMroyVgCoLRzqBu8RYT/wjKrWv8IrKtjoNTuSDB2augPlNTnzUIvaTr
+         HafIda/njyCyBVFOuztVrB4XvJvrVD5SNizjYveMqZzvCtXOi9fm1EtUldpYq0jiXCkw
+         u1MA==
+X-Forwarded-Encrypted: i=1; AL+hErGSNsUBWfB43/P3KAEsJHac0gSUtMWB70/VC3NwCefRF4hPvoBRZycRUJ9jRO6JEs3TiOrpZkOm3Q==@kvack.org
+X-Gm-Message-State: APuU4Z8Dmc8FCpDORpeVogJ559e19hYIH8eS5Lcfmh2KwpLlsxMixYRT
+	bUhRub9H3Lbt8sDT7Ov7a8D9RIsPEhFXehQ0HU57BgpgHSAcbPFk5Lpp+ww0ZzbNo8S3qmksRK5
+	RbAcqQ1eOzJjEGTWPNBR3JVtc7ipV6rmbZBNtfbyxqo9RdROuunHU
+X-Gm-Gg: AYBFou1ASYvAvCdBeofeF4e6VTu/G4bX4ZQNHTJebYsMferdm6FwMDa8na4dPJNzgO6
+	jxPM7OeWzOO414eVnqYNC4c093emWiQaqmDBDa/SoY4iCpO2v073YlORYaaj0hL9v6DzzXP4ohU
+	TIqF95Te9CrqE0vGncARI30EQy/kqkwYClfWpuyK2KhI8eji/cMuQYZ/otzYJjEfzOHD8l7VUsj
+	vSV673B3DjZXL7P8g4twVvOvpXgGmeB9B5omUeS3U2qOKEXeXvVvxgwMiT1TfOP07vU37BoLSi0
+	kqQUJDribcWGllVCziMba71lcRq9NgTgDr8t1/dh54W3OKJhHDMzREfNScsb3Iov9XF92ObAKw4
+	9fk4C+6StgJ8L5KAnUDyZOsUvAngD35IxIAwDiEFcZdM=
+X-Received: by 2002:a05:600c:4f84:b0:4a1:e92b:ae4a with SMTP id 5b1f17b1804b1-4ba093b9a3cmr86690345e9.21.1794477738938;
+        Thu, 12 Nov 2026 02:02:18 -0800 (PST)
+X-Received: by 2002:a05:600c:4f84:b0:4a1:e92b:ae4a with SMTP id 5b1f17b1804b1-4ba093b9a3cmr86689595e9.21.1794477738330;
+        Thu, 12 Nov 2026 02:02:18 -0800 (PST)
 Received: from localhost ([139.47.30.142])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-498362eb158sm15464916f8f.36.2026.11.12.01.56.42
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4983284c99bsm15755230f8f.7.2026.11.12.02.02.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 01:56:43 -0800 (PST)
-Date: Thu, 12 Nov 2026 10:56:42 +0100
+        Thu, 12 Nov 2026 02:02:17 -0800 (PST)
+Date: Thu, 12 Nov 2026 11:02:16 +0100
 From: Albert Esteve <aesteve@redhat.com>
 To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
 Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
@@ -126,33 +126,33 @@ Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
 	linaro-mm-sig@lists.linaro.org, linux-mm@kvack.org,
 	linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
 	linux-kselftest@vger.kernel.org, op-tee@lists.trustedfirmware.org
-Subject: Re: [Linaro-mm-sig] [PATCH v4 2/8] dma-heap: charge dma-buf memory
- via explicit memcg
-Message-ID: <avWNWnXCXm1sUYch@aesteve-thinkpadp1gen8.rmtes.csb>
+Subject: Re: [Linaro-mm-sig] [PATCH v4 3/8] dma-buf: transfer memcg charges
+ via DMA_BUF_IOCTL_XFER_CHARGE
+Message-ID: <avWOqDLI1xmfBqn2@aesteve-thinkpadp1gen8.rmtes.csb>
 References: <20261104-v2_20230123_tjmercier_google_com-v4-0-1819a017000b@redhat.com>
- <20261104-v2_20230123_tjmercier_google_com-v4-2-1819a017000b@redhat.com>
- <3fdad4e17008cd59bc528ab22e34c0c913a6d50f.camel@linux.intel.com>
+ <20261104-v2_20230123_tjmercier_google_com-v4-3-1819a017000b@redhat.com>
+ <b77aecccce2dcf9bc42b1a6fccc62d06ccad4741.camel@linux.intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <3fdad4e17008cd59bc528ab22e34c0c913a6d50f.camel@linux.intel.com>
+In-Reply-To: <b77aecccce2dcf9bc42b1a6fccc62d06ccad4741.camel@linux.intel.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: bHX8GAFRtCuhKeiYPPv7aQ7YSmkM-Ft23tICTKqK-zk_1794477404
+X-Mimecast-MFC-PROC-ID: ROJwql5cryRI95lp5Hrjj_DBkiw0jEVaJGQ69E3TfoM_1794477739
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 382EBA000B
-X-Rspamd-Server: rspam12
-X-Stat-Signature: dj4qjfu3f8rwujdutzz49ems8hh1z91n
-X-Rspam-User:
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 8i6u5czgiwspd68gfwoh5aoqna67pbi5
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794477409-974674
-X-HE-Meta: U2FsdGVkX18PNphQbeN37ZweccG68ROsfUxkxYf1A5dZMSdcaETk0+O3bOTaZMe6cmnBBuEaOGFcuW11qPIU8xy5eVY5g/LAp0q5EoFQS72FhsMg+EUwyDrZ+Dye+JGHw5PyBhltV5lYN65Oz18IfWvasAbiIjpfU1XBG6d0GBNSKAQeqMKFvyecu+e4lhagzpl+E10IV4/wHBN+cns6e1gJvDnu2w0XRRIhO9keg/J6znlXUbIX1aQuCTQu4D848D6LFlY5aSW78Z3P7aHk9LdxL+WVnpcm3eFOh6/c0Jjaif+tLvh733j/0Xm7eMXQPYKwBe+R8ohgDCYTIcO7SSQxbL0y9yE1C6igdvYcgqTpji5BB8TVVSpuqBElH/SN+qYcCazmVomWKZLiy1C+dTfbbbf1AHer2cBGNhdbp36PtbQbNLGJfNwcRaZDxjJoPk5ie6Y+MzDbxnIxEHAps8B1EYtAToRGK03b1gT0b9DFgdm+kMj1VzNSB37dnDg3NlTJOPKNSk1pEZNjse+84tp4C1P9vHkmp5JRWLqKlN0pyD7I2sT2QfnfGGo11AigWJFgRAdTneFulS6yNmaynlUBHI//3cKsMyxnZEy9A9HG+hcRzi9xcSNi3etMJy2goyJu4mIOjraqgQ3bp/n9uDPvy/foSbCH3ZTebAm5A9C3ukQeJlO8zsFDMmhx1Y9ZXteo0l6FsppH/ZTaNkeN7Y+iZfE7Dt1MKsOgyUZTrqTiIrTn0hlQZhFfVzVlgUv8uuWfV/VxWji50rJ+oZUfr2OoXdFkLxTMcGr/TEXRBtGNChEnnFaypwlbTWw5qXw0c5siIOglRdfuVrhT8/P0KZJ0PcYX0it+Q7xGc1LlIgx84x6zbuLnvEQFBRk5+ZmcdqKbbIPBUF3wKnKnj90PSsCPEhV/1/E4RhghiIxBoF0GlBZcZVHsAkPHGuWoMazOHLHQZtRLGYDM//xhldz
- 5iXq2VPF
- YBG2DWbQLjt9P66zHQITzLqUXabPuAubGvnuFVBuS4w0zxmHH2D77n03jjemn/yESaijZUBU5FwwaVYmB2EntS18tJ2O9LJKZPsynh0a8ONY7EDPf8qqs6akVi1AyoPAoQ6uCrVcGK5nz/vdXOhQRpwlUG+vbJYEPKJ0Lu6SEybzcFbuUmc5rjb19fExwBp4iUQOjH9QpufvdSSqG0TjgoFkiT9DG/M8HA8puOspAFHWqMfcwnba+BbBJoGeH2W7QNTT+DK9zf3ylW44tEFwp9NqmYW99Pq6xbUa2Fr92Az7EPqIouBS9ygz+7GJD2QB/OXYJnrIfxwiYVv5pSCS8eHYW83U+IgCO2KJm4Mi8ysp8Sp77tugZY9nRgmRNCqJr/95+waYtiDElv+N+dG2ssosIwvB/zC13s5hohDGdH2K3GWVczJQF0Y4Cm7bhlp26q/0Pwz0zaDFZSdvjj6Rd6hM34TBU6hJjzPuKL4wkT7d6AjkKMkWajQmoWkFQNM/k3o3saTv1xa1IVlcdByIjmBuwO7/F9KqYnwyeeCW1lQjb4g6oPHCGwaw9zu0QQWL4zpYgd4bC5knn5t4TQaxSV5Q0bKCDlCvTxoD266fKyqygZUk=
+X-Rspamd-Queue-Id: 1DE6A1C0008
+X-Rspam-User: 
+X-HE-Tag: 1794477741-80005
+X-HE-Meta: U2FsdGVkX19AQwo2X15onl2k4isylRnhzTCrm/DpQ2IqpSVshYMDQFb/VDhFBHgCWGab/+HN2z3w7VEVZTuHihPGGvBTzVAv9jmxampCIDZMcjxzyzaKyAauNUyhhnKRSidSRGeoxmyWC8E+Pz0EMNpyqXRShg2yTUjMPdPWwEdLJDg/cRRXcPKFg+4MQdS/ge/Xtxy4idMTyggNkeJP5c84qRaOIQScszmX4qJH4mm4Xjn9Y92GxmC4OtfZPKSX+DMCIQRsdJ1lYJ4yKzP6IKo/+tW8pPcGM9NeFJ8Y1CdXK5CyF9sXcRMheR6kseV0OtqZ2GVLxMwDtU+CsZmRCMo3iKQTdPKOoXBw/x8q77kDU4Xs8qFq0PnWFI4LjdbBYmBnw5E9DG/DTOY0Pd4f2ELNA/zaGO64BMEzgOdm/9BKVjQ2C88sMZLrbYsWhjIKFqND2ccCqZ0KHDzqto4jD1kOdVs3W3HcRfoyzwoVwRUSjjl/k6lyxa14kgST0RhPmhAUw6vyJYcEsBAtNKHJ04AhWm0VojDm1qIEM+OgFeGe3DzYLLvQHHlIfRfLaywzp8RSHnOwevbo2QPeX2HweH5ZZde9/kgaf7WCaT8/1P0TuJQATvV9iZXXnMd5SsyxlwpHuhYO1jaAXEY5tNs2//JR4RzNj6typU029NF9aMxqm5rmytYXNuqCzgnMvULw9T3oC/jGFlX+qlBB5XQfnnmazUCO3nNnlecJiQZbBd4igC2KtTTt//uyqWlCNz6ZQ3+mpg+p4GoOOKLxyW3C0Lon9rdosFRwMZRH+k8++Wg33N3IGpSS6pW7x+V2qY5MrXJiXuwCir0xoK/oGJ6k35Vjgi3bWJQ/WqzAq0KJl1q2K5jUYrUJVfoWtxB2/qLz4Cf/01R5mCPGzop8ho1E3g6vB+tZF8J8XnRgvrAmxpMW0AKyVEN6ok3pzpX2JT9vj4ZTSUqhg9ZQnkOnT03
+ ns8xwnL1
+ 0LLZH3sQXXsk2/L12/PG6s2EzBVPPa0qcqYUZ8j3xKLIP8Nm1gYrn+CimvGJcZnNSA8YwLDvCloIsfUBHjhxHKh8lAPtP3bALB+CiD4AxkxKkrsH69iyJubFIQ2ZtQOkxDbn115GPkT4qHrOqJkLJsnH1DPO8A8YCCTKfqb998Yoqnm0pq1VWIlCDn5ki7zGW1HoteIZ8BAC8gAUESMBauaffEJNBxO5laJzEq2pBmCApZuPm+7GCnNhrXrvXS3MCewQC4/2N5b2EmLT2xg3tkRp9Y0Gl2jgruLXnHgiQ2GubGNpyzvL0K6re+bDyW7yVp+ZTCO1fpRSVYBLFgXI57yoASFQttWFnsZJ11JZiLZcn1UnM7w2lXspRxR1bLYVu/+iIJnqih6kqE3PgaWVsCCk/s2pNMoNai1lS0Gb4nA4czf+KM1YWAI41F7E4Yc+NL8k7eAx4JPlyxR9JTfj/q+HVZuZ5+3piR9QoUwqHlaCBYXdT9bspS77aOoUmrw+1cfE/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,516 +161,296 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 08:42:18AM +0100, Thomas Hellström wrote:
+On Thu, Nov 12, 2026 at 08:46:02AM +0100, Thomas Hellström wrote:
 > On Wed, 2026-11-04 at 12:09 +0100, Albert Esteve wrote:
-> > On embedded platforms a central process often allocates dma-buf
-> > memory on behalf of client applications. Without a way to
-> > attribute the charge to the requesting client's cgroup, the
-> > cost lands on the allocator, making per-cgroup memory limits
-> > ineffective for the actual consumers.
+> > dma-heap already supports charging a specific cgroup at allocation
+> > time via charge_fd in DMA_HEAP_IOCTL_ALLOC. However, dma-bufs can
+> > originate from any exporter (DRM, V4L2, etc.), and the allocator may
+> > not know the final owner at allocation time.
 > > 
-> > Add charge_fd to struct dma_heap_allocation_data. When set to
-> > a valid pidfd or cgroupfd, DMA_HEAP_IOCTL_ALLOC resolves the target
-> > task's or cgroup's memcg and charges the buffer there via
-> > mem_cgroup_reserve_dmabuf() inside dma_heap_ioctl_allocate(). The
-> > resolved memcg is passed through dma_buf_export_info so that
-> > dma_buf_export() stores it and updates the MEMCG_DMABUF stat.
-> > Without charge_fd, and with the mem_accounting module parameter
-> > enabled, the buffer is charged to the allocator's own cgroup.
-> > The __GPF_ACCOUNT flag is removed from system heap allocations
-> > to avoid double counting.
+> > Add DMA_BUF_IOCTL_XFER_CHARGE to transfer a dma-buf's memcg charge
+> > to a different cgroup after allocation. The target is identified by
+> > charge_fd, which may be a cgroupfd or a pidfd.
 > > 
-> > Usage examples:
+> > The transfer charges the new cgroup before uncharging the old one,
+> > preserving the original charge on failure. Concurrent transfers are
+> > serialized by the dma-buf reservation lock, so lockdep covers the
+> > locking order of the charge path early. The transfer implementation
+> > is generic (mem_cgroup_transfer_charge) and not dma-buf specific, so
+> > it can be reused by other subsystems.
 > > 
-> >   1. Central allocator charging to a client at allocation time.
-> >      The allocator knows the client's PID (e.g., from binder's
-> >      sender_pid) and uses pidfd to attribute the charge:
+> > Not all dma-buf exporters back their buffers with reclaimable system
+> > memory. Some represent device registers, VRAM, or carved-out pools
+> > where size is not a meaningful memory cost. The xfer ioctl returns
+> > -EOPNOTSUPP for buffers whose memcg is not set. Exporters opt in by
+> > passing a memcg through dma_buf_export_info at export time. Currently
+> > only the system heap sets it, other exporters can opt in as needed.
 > > 
-> >        pid_t client_pid = txn->sender_pid;
-> >        int pidfd = pidfd_open(client_pid, 0);
+> > Usage example:
+> >   int cg_fd = open("/sys/fs/cgroup/clients/app1", O_RDONLY |
+> > O_DIRECTORY);
 > > 
-> >        struct dma_heap_allocation_data alloc = {
-> >            .len         = buffer_size,
-> >            .fd_flags    = O_RDWR | O_CLOEXEC,
-> >            .charge_fd   = pidfd,
-> >        };
-> >        ioctl(heap_fd, DMA_HEAP_IOCTL_ALLOC, &alloc);
-> >        close(pidfd);
-> >        /* alloc.fd is now charged to client's cgroup */
-> > 
-> >   2. Default allocation (no pidfd, mem_accounting=1).
-> >      When charge_fd is not set and the mem_accounting module
-> >      parameter is enabled, the buffer is charged to the allocator's
-> >      own cgroup:
-> > 
-> >        struct dma_heap_allocation_data alloc = {
-> >            .len      = buffer_size,
-> >            .fd_flags = O_RDWR | O_CLOEXEC,
-> >        };
-> >        ioctl(heap_fd, DMA_HEAP_IOCTL_ALLOC, &alloc);
-> >        /* charged to current process's cgroup */
-> > 
-> > Current limitations:
-> > 
-> >  - Single-owner model: a dma-buf carries one memcg charge regardless
-> > of
-> >    how many processes share it. Means only the first owner (and
-> > exporter)
-> >    of the shared buffer bears the charge.
-> >  - Only memcg accounting supported. While this makes sense for system
-> >    heap buffers, other heaps (e.g., CMA heaps) will require
-> > selectively
-> >    charging also for the dmem controller.
+> >   struct dma_buf_transfer_charge xfer = {
+> >       .charge_fd = cg_fd,
+> >   };
+> >   ioctl(dmabuf_fd, DMA_BUF_IOCTL_XFER_CHARGE, &xfer);
+> >   /* charge now on app1's cgroup */
+> >   close(cg_fd);
 > > 
 > > Signed-off-by: Albert Esteve <aesteve@redhat.com>
 > > ---
-> >  Documentation/admin-guide/cgroup-v2.rst |  5 ++--
-> >  drivers/dma-buf/dma-buf.c               |  5 ++++
-> >  drivers/dma-buf/dma-heap.c              | 28 +++++++++++++++++---
-> >  drivers/dma-buf/heaps/cma_heap.c        |  3 ++-
-> >  drivers/dma-buf/heaps/system_heap.c     | 21 +++++++++++----
-> >  drivers/tee/tee_heap.c                  |  3 ++-
-> >  include/linux/dma-buf.h                 |  4 +++
-> >  include/linux/dma-heap.h                |  3 ++-
-> >  include/linux/memcontrol.h              |  7 +++++
-> >  include/uapi/linux/dma-heap.h           |  7 +++++
-> >  mm/memcontrol.c                         | 47
-> > +++++++++++++++++++++++++++++++++
-> >  11 files changed, 120 insertions(+), 13 deletions(-)
+> >  drivers/dma-buf/dma-buf.c    | 42
+> > ++++++++++++++++++++++++++++++++++++++++++
+> >  include/linux/dma-buf.h      |  3 ++-
+> >  include/linux/memcontrol.h   | 13 +++++++++++++
+> >  include/uapi/linux/dma-buf.h | 26 ++++++++++++++++++++++++++
+> >  mm/memcontrol.c              | 42
+> > ++++++++++++++++++++++++++++++++++++++++++
+> >  5 files changed, 125 insertions(+), 1 deletion(-)
 > > 
-> > diff --git a/Documentation/admin-guide/cgroup-v2.rst
-> > b/Documentation/admin-guide/cgroup-v2.rst
-> > index a3265a4a953e..66ddba678784 100644
-> > --- a/Documentation/admin-guide/cgroup-v2.rst
-> > +++ b/Documentation/admin-guide/cgroup-v2.rst
-> > @@ -1663,8 +1663,9 @@ The following nested keys are defined.
-> >  		structures.
+> > diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
+> > index 837666273550..3bd26fbb1109 100644
+> > --- a/drivers/dma-buf/dma-buf.c
+> > +++ b/drivers/dma-buf/dma-buf.c
+> > @@ -540,6 +540,45 @@ static long dma_buf_import_sync_file(struct
+> > dma_buf *dmabuf,
+> >  }
+> >  #endif
 > >  
-> >  	  dmabuf (npn)
-> > -		Amount of memory used for exported DMA buffers
-> > allocated by the cgroup.
-> > -		Stays with the allocating cgroup regardless of how
-> > the buffer is shared.
-> > +		Amount of memory used for exported DMA buffers
-> > allocated by or on
-> > +		behalf of the cgroup. Stays with the allocating
-> > cgroup regardless
-> > +		of how the buffer is shared.
+> > +/* Transfer a dma-buf's memcg charge; see struct
+> > dma_buf_transfer_charge */
+> > +static long dma_buf_xfer_charge(struct dma_buf *dmabuf,
+> > +				const void __user *user_data)
+> > +{
+> > +	struct dma_buf_transfer_charge arg;
+> > +	struct mem_cgroup *memcg;
+> > +	unsigned int nr_pages = PAGE_ALIGN(dmabuf->size) >>
+> > PAGE_SHIFT;
+> > +	int ret = 0;
+> > +
+> > +	if (copy_from_user(&arg, user_data, sizeof(arg)))
+> > +		return -EFAULT;
+> > +
+> > +	if (!IS_ENABLED(CONFIG_MEMCG))
+> > +		return 0;
+> > +
+> > +	if (arg.flags != 0)
+> > +		return -EINVAL;
+> > +
+> > +	memcg = mem_cgroup_get_from_fd(arg.charge_fd);
+> > +	if (IS_ERR(memcg))
+> > +		return PTR_ERR(memcg);
+> > +
+> > +	dma_resv_lock(dmabuf->resv, NULL);
+> > +
+> > +	if (!dmabuf->memcg) {
+> > +		ret = -EOPNOTSUPP;
+> > +		goto out;
+> > +	}
+> > +
+> > +	if (dmabuf->memcg != memcg &&
+> > +	    !mem_cgroup_transfer_charge(&dmabuf->memcg, memcg,
+> > MEMCG_DMABUF, nr_pages))
+> > +		ret = -ENOMEM;
+> > +
+> > +out:
+> > +	dma_resv_unlock(dmabuf->resv);
+> > +	mem_cgroup_put(memcg);
+> > +	return ret;
+> > +}
+> > +
+> >  static long dma_buf_ioctl(struct file *file,
+> >  			  unsigned int cmd, unsigned long arg)
+> >  {
+> > @@ -590,6 +629,9 @@ static long dma_buf_ioctl(struct file *file,
+> >  		return dma_buf_import_sync_file(dmabuf, (const void
+> > __user *)arg);
+> >  #endif
+> >  
+> > +	case DMA_BUF_IOCTL_XFER_CHARGE:
+> > +		return dma_buf_xfer_charge(dmabuf, (const void
+> > __user *)arg);
+> > +
+> >  	default:
+> >  		return -ENOTTY;
+> >  	}
+> > diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
+> > index 85dd747c9b36..b01149d26b44 100644
+> > --- a/include/linux/dma-buf.h
+> > +++ b/include/linux/dma-buf.h
+> > @@ -507,7 +507,8 @@ struct dma_buf_attachment {
+> >   * @priv:	Attach private data of allocator to this buffer
+> >   * @memcg:	memcg to charge for this buffer's memory. Set only
+> > for
+> >   *		buffers backed by system memory where @size reflects
+> > the
+> > - *		actual allocation in bytes.
+> > + *		actual allocation in bytes. Enables charge transfer
+> > via
+> > + *		DMA_BUF_IOCTL_XFER_CHARGE.
+> >   *
+> >   * This structure holds the information required to export the
+> > buffer. Used
+> >   * with dma_buf_export() only.
+> > diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> > index f8ec751b7d7b..af02d9777fe9 100644
+> > --- a/include/linux/memcontrol.h
+> > +++ b/include/linux/memcontrol.h
+> > @@ -676,6 +676,11 @@ struct mem_cgroup *mem_cgroup_get_from_fd(int
+> > fd);
+> >  bool mem_cgroup_reserve_dmabuf(struct mem_cgroup *memcg, gfp_t gfp,
+> >  			       unsigned int nr_pages);
+> >  
+> > +bool mem_cgroup_transfer_charge(struct mem_cgroup **ptr_memcg,
+> > +				struct mem_cgroup *new_memcg,
+> > +				enum memcg_stat_item item,
+> > +				unsigned int nr_pages);
+> > +
+> >  void __mem_cgroup_uncharge(struct folio *folio);
+> >  
+> >  /**
+> > @@ -1197,6 +1202,14 @@ static inline void
+> > mem_cgroup_cancel_dmabuf(struct mem_cgroup *memcg,
+> >  {
+> >  }
+> >  
+> > +static inline bool mem_cgroup_transfer_charge(struct mem_cgroup
+> > **ptr_memcg,
+> > +					      struct mem_cgroup
+> > *new_memcg,
+> > +					      enum memcg_stat_item
+> > item,
+> > +					      unsigned int nr_pages)
+> > +{
+> > +	return true;
+> > +}
+> > +
+> >  static inline void mem_cgroup_uncharge(struct folio *folio)
+> >  {
+> >  }
+> > diff --git a/include/uapi/linux/dma-buf.h b/include/uapi/linux/dma-
+> > buf.h
+> > index e827c9d20c5d..0aaf2e7d593b 100644
+> > --- a/include/uapi/linux/dma-buf.h
+> > +++ b/include/uapi/linux/dma-buf.h
+> > @@ -168,6 +168,31 @@ struct dma_buf_import_sync_file {
+> >  	__s32 fd;
+> >  };
+> >  
+> > +/**
+> > + * struct dma_buf_transfer_charge - Transfer a dma-buf's memcg
+> > charge
+> > + *
+> > + * Any holder of a dma-buf file descriptor can perform a
+> > + * DMA_BUF_IOCTL_XFER_CHARGE to attribute the buffer's memory
+> > + * cost to a specific cgroup, or move it from one cgroup to
+> > + * another.  The ioctl charges the new cgroup before uncharging
+> > + * the old one atomically.  On failure the original charge is
+> > + * preserved.  If the buffer has no existing memcg charge, the
+> > + * ioctl returns -EOPNOTSUPP.
+> > + */
+> > +struct dma_buf_transfer_charge {
+> > +	/** @flags: Reserved, must be zero */
+> > +	__u32 flags; /* unused for now */
+> > +	/**
+> > +	 * @charge_fd: File descriptor identifying the target
+> > cgroup.
+> > +	 *
+> > +	 * May be either a pidfd, in which case the charge moves to
+> > the
+> > +	 * memory cgroup of the referenced process, or a cgroupfd
+> > obtained
+> > +	 * by opening a cgroup v2 directory, in which case the
+> > charge moves
+> > +	 * directly to that cgroup's memory controller.
+> > +	 */
+> > +	__u32 charge_fd;
+> > +};
+> > +
+> >  #define DMA_BUF_BASE		'b'
+> >  #define DMA_BUF_IOCTL_SYNC	_IOW(DMA_BUF_BASE, 0, struct
+> > dma_buf_sync)
+> >  
+> > @@ -179,5 +204,6 @@ struct dma_buf_import_sync_file {
+> >  #define DMA_BUF_SET_NAME_B	_IOW(DMA_BUF_BASE, 1, __u64)
+> >  #define DMA_BUF_IOCTL_EXPORT_SYNC_FILE	_IOWR(DMA_BUF_BASE, 2,
+> > struct dma_buf_export_sync_file)
+> >  #define DMA_BUF_IOCTL_IMPORT_SYNC_FILE	_IOW(DMA_BUF_BASE, 3, struct
+> > dma_buf_import_sync_file)
+> > +#define DMA_BUF_IOCTL_XFER_CHARGE	_IOW(DMA_BUF_BASE, 4, struct
+> > dma_buf_transfer_charge)
+> >  
+> >  #endif
+> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > index 17fdefc56b97..3e717b5663c8 100644
+> > --- a/mm/memcontrol.c
+> > +++ b/mm/memcontrol.c
+> > @@ -5752,6 +5752,48 @@ void mem_cgroup_cancel_dmabuf(struct
+> > mem_cgroup *memcg, unsigned int nr_pages)
+> >  }
+> >  EXPORT_SYMBOL_GPL(mem_cgroup_cancel_dmabuf);
+> >  
+> > +/**
+> > + * mem_cgroup_transfer_charge - move a charge between memcgs
+> > + * @ptr_memcg: pointer to the memcg to transfer from
+> > + * @new_memcg: target memcg; caller must hold a reference
+> > + * @item: stat counter to adjust
+> > + * @nr_pages: number of pages to transfer
+> > + *
+> > + * Transfers @nr_pages of charge from *@ptr_memcg to @new_memcg and,
+> > on
+> > + * success, stores @new_memcg in *@ptr_memcg.
+> > + *
+> > + * Updates to *@ptr_memcg must be serialized by the caller.
+> > + * Returns %true on success, %false if the charge against @new_memcg
+> > + * failed.
+> > + */
+> > +bool mem_cgroup_transfer_charge(struct mem_cgroup **ptr_memcg,
+> > +				struct mem_cgroup *new_memcg,
+> > +				enum memcg_stat_item item,
+> > +				unsigned int nr_pages)
+> > +{
+> > +	struct mem_cgroup *old_memcg = *ptr_memcg;
+> > +
+> > +	if (!new_memcg || mem_cgroup_disabled())
+> > +		return true;
+> > +
+> > +	if (try_charge(new_memcg, GFP_KERNEL, nr_pages))
+> > +		return false;
+> > +
+> > +	mod_memcg_state(new_memcg, item, nr_pages);
+> > +	css_get(&new_memcg->css);
+> > +	*ptr_memcg = new_memcg;
+> > +
+> > +	if (old_memcg) {
+> > +		/* Uncharge old cgroup */
+> > +		mod_memcg_state(old_memcg, item, -nr_pages);
+> > +		if (!mem_cgroup_is_root(old_memcg))
+> > +			refill_stock(old_memcg, nr_pages);
+> > +		mem_cgroup_put(old_memcg);
+> > +	}
+> > +
+> > +	return true;
+> > +}
 > 
-> This doesn't sound right. Graphics buffers exported as DMA buffers are
-> typically charged elsewhere, like gpu_active, and a transfer of their
-> charge would likely stay in that key? To be consistent, shouldn't this
-> be related to dma-heap memory and called dmaheap or something similar.
+>  
+> This has the same lifetime issue as patch 1. After a transfer, the
+> buffer pins new_memcg until it is released, and with cross-process
+> transfers the target may be removed before the
+> buffer is. Since this helper is meant to be reused by other subsystems,
+> would it be better to have it take and store an obj_cgroup from the
+> start?
 
-Although this work initially targeted dma heaps only, in its current
-form is meant to stay generic (while solving the central allocator
-problem). The memory exported as dma-bufs has no memory.stat of its
-own, and an exporter allocating plain pages (e.g., V4L2) has nowhere
-else to report it.
-
-> We should have a tighter definition of exactly what memory is to be
-> registered here.
-
-Yes, I will be more specific and clearly state that an exporter
-whose memory is already accounted must not opt in. That also
-naturally disallows transfers.
-
-> 
-> Also says "Stays with the allocating cgroup regardless of how the
-> buffer is shared", which isn't correct after the series? Perhaps that's
-> changed in a later patch.
-
-I missed updating the text after having added XFER_CHARGE to the
-series. I'll fix the wording in this patch and mention the transfer
-in the next one.
-
-BR,
-Albert
+Agreed. I will switch to obj_cgroup through the series.
 
 > 
 > Thanks,
 > Thomas
 > 
 > 
-> 
-> 
-> >  
-> >  	  workingset_refault_anon
-> >  		Number of refaults of previously evicted anonymous
-> > pages.
-> > diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
-> > index 1c6b9cee7ac2..837666273550 100644
-> > --- a/drivers/dma-buf/dma-buf.c
-> > +++ b/drivers/dma-buf/dma-buf.c
-> > @@ -714,6 +714,7 @@ struct dma_buf *dma_buf_export(const struct
-> > dma_buf_export_info *exp_info)
-> >  	struct dma_resv *resv = exp_info->resv;
-> >  	struct file *file;
-> >  	size_t alloc_size = sizeof(struct dma_buf);
-> > +	unsigned int nr_pages = PAGE_ALIGN(exp_info->size) >>
-> > PAGE_SHIFT;
-> >  	int ret;
-> >  
-> >  	if (WARN_ON(!exp_info->priv || !exp_info->ops
-> > @@ -750,6 +751,7 @@ struct dma_buf *dma_buf_export(const struct
-> > dma_buf_export_info *exp_info)
-> >  	dmabuf->size = exp_info->size;
-> >  	dmabuf->exp_name = exp_info->exp_name;
-> >  	dmabuf->owner = exp_info->owner;
-> > +	dmabuf->memcg = exp_info->memcg;
-> >  	spin_lock_init(&dmabuf->name_lock);
-> >  	init_waitqueue_head(&dmabuf->poll);
-> >  	dmabuf->cb_in.poll = dmabuf->cb_out.poll = &dmabuf->poll;
-> > @@ -771,6 +773,9 @@ struct dma_buf *dma_buf_export(const struct
-> > dma_buf_export_info *exp_info)
-> >  
-> >  	DMA_BUF_TRACE(trace_dma_buf_export, dmabuf);
-> >  
-> > +	if (dmabuf->memcg)
-> > +		mod_memcg_state(dmabuf->memcg, MEMCG_DMABUF,
-> > nr_pages);
-> > +
-> >  	return dmabuf;
-> >  
-> >  err_file:
-> > diff --git a/drivers/dma-buf/dma-heap.c b/drivers/dma-buf/dma-heap.c
-> > index 8a6c2b6e0cc6..7bd416ae2c23 100644
-> > --- a/drivers/dma-buf/dma-heap.c
-> > +++ b/drivers/dma-buf/dma-heap.c
-> > @@ -10,6 +10,8 @@
-> >  #include <linux/device.h>
-> >  #include <linux/dma-buf.h>
-> >  #include <linux/dma-heap.h>
-> > +#include <linux/memcontrol.h>
-> > +#include <linux/sched/mm.h>
-> >  #include <linux/err.h>
-> >  #include <linux/export.h>
-> >  #include <linux/list.h>
-> > @@ -78,6 +80,7 @@ static struct dma_buf
-> > *dma_heap_ioctl_allocate(struct file *file, void *data)
-> >  	struct dma_heap_allocation_data *heap_allocation = data;
-> >  	struct dma_heap *heap = file->private_data;
-> >  	struct dma_buf *dmabuf;
-> > +	struct mem_cgroup *memcg = NULL;
-> >  	int fd;
-> >  	size_t len;
-> >  
-> > @@ -90,15 +93,34 @@ static struct dma_buf
-> > *dma_heap_ioctl_allocate(struct file *file, void *data)
-> >  	if (heap_allocation->heap_flags &
-> > ~DMA_HEAP_VALID_HEAP_FLAGS)
-> >  		return ERR_PTR(-EINVAL);
-> >  
-> > +	if (heap_allocation->__padding != 0)
-> > +		return ERR_PTR(-EINVAL);
-> > +
-> > +	if (heap_allocation->charge_fd) {
-> > +		memcg = mem_cgroup_get_from_fd(heap_allocation-
-> > >charge_fd);
-> > +		if (IS_ERR(memcg))
-> > +			return ERR_CAST(memcg);
-> > +	}
-> > +
-> > +	if (!memcg && mem_accounting)
-> > +		memcg = get_mem_cgroup_from_mm(current->mm);
-> > +
-> >  	len = PAGE_ALIGN(heap_allocation->len);
-> > -	if (!len)
-> > +	if (!len) {
-> > +		mem_cgroup_put(memcg);
-> >  		return ERR_PTR(-EINVAL);
-> > +	}
-> >  
-> >  	dmabuf = heap->ops->allocate(heap, len, heap_allocation-
-> > >fd_flags,
-> > -				     heap_allocation->heap_flags);
-> > +				     heap_allocation->heap_flags,
-> > memcg);
-> >  
-> > -	if (IS_ERR(dmabuf))
-> > +	if (IS_ERR(dmabuf)) {
-> > +		mem_cgroup_put(memcg);
-> >  		return dmabuf;
-> > +	}
-> > +
-> > +	if (memcg && !dmabuf->memcg)
-> > +		mem_cgroup_put(memcg);
-> >  
-> >  	fd = get_unused_fd_flags(heap_allocation->fd_flags);
-> >  	if (fd < 0) {
-> > diff --git a/drivers/dma-buf/heaps/cma_heap.c b/drivers/dma-
-> > buf/heaps/cma_heap.c
-> > index 3fb4b946c91a..04de88b468a8 100644
-> > --- a/drivers/dma-buf/heaps/cma_heap.c
-> > +++ b/drivers/dma-buf/heaps/cma_heap.c
-> > @@ -281,7 +281,8 @@ static const struct dma_buf_ops cma_heap_buf_ops
-> > = {
-> >  static struct dma_buf *cma_heap_allocate(struct dma_heap *heap,
-> >  					 unsigned long len,
-> >  					 u32 fd_flags,
-> > -					 u64 heap_flags)
-> > +					 u64 heap_flags,
-> > +					 struct mem_cgroup *memcg)
-> >  {
-> >  	struct cma_heap *cma_heap = dma_heap_get_drvdata(heap);
-> >  	struct cma_heap_buffer *buffer;
-> > diff --git a/drivers/dma-buf/heaps/system_heap.c b/drivers/dma-
-> > buf/heaps/system_heap.c
-> > index c8959eadc71d..2bd245e1eab8 100644
-> > --- a/drivers/dma-buf/heaps/system_heap.c
-> > +++ b/drivers/dma-buf/heaps/system_heap.c
-> > @@ -17,6 +17,7 @@
-> >  #include <linux/err.h>
-> >  #include <linux/highmem.h>
-> >  #include <linux/mem_encrypt.h>
-> > +#include <linux/memcontrol.h>
-> >  #include <linux/mm.h>
-> >  #include <linux/set_memory.h>
-> >  #include <linux/module.h>
-> > @@ -388,8 +389,6 @@ static struct page
-> > *alloc_largest_available(unsigned long size,
-> >  		if (max_order < orders[i])
-> >  			continue;
-> >  		flags = order_flags[i];
-> > -		if (mem_accounting)
-> > -			flags |= __GFP_ACCOUNT;
-> >  		page = alloc_pages(flags, orders[i]);
-> >  		if (!page)
-> >  			continue;
-> > @@ -401,11 +400,13 @@ static struct page
-> > *alloc_largest_available(unsigned long size,
-> >  static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
-> >  					    unsigned long len,
-> >  					    u32 fd_flags,
-> > -					    u64 heap_flags)
-> > +					    u64 heap_flags,
-> > +					    struct mem_cgroup
-> > *memcg)
-> >  {
-> >  	struct system_heap_buffer *buffer;
-> >  	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
-> >  	unsigned long size_remaining = len;
-> > +	unsigned int nr_pages = PAGE_ALIGN(len) >> PAGE_SHIFT;
-> >  	unsigned int max_order = orders[0];
-> >  	struct system_heap_priv *priv = dma_heap_get_drvdata(heap);
-> >  	bool cc_shared = priv->cc_shared;
-> > @@ -416,10 +417,15 @@ static struct dma_buf
-> > *system_heap_allocate(struct dma_heap *heap,
-> >  	struct page *page, *tmp_page;
-> >  	int i, ret = -ENOMEM;
-> >  
-> > -	buffer = kzalloc_obj(*buffer);
-> > -	if (!buffer)
-> > +	if (!mem_cgroup_reserve_dmabuf(memcg, GFP_KERNEL, nr_pages))
-> >  		return ERR_PTR(-ENOMEM);
-> >  
-> > +	buffer = kzalloc_obj(*buffer);
-> > +	if (!buffer) {
-> > +		ret = -ENOMEM;
-> > +		goto cancel_charge;
-> > +	}
-> > +
-> >  	INIT_LIST_HEAD(&buffer->attachments);
-> >  	mutex_init(&buffer->lock);
-> >  	buffer->heap = heap;
-> > @@ -473,11 +479,14 @@ static struct dma_buf
-> > *system_heap_allocate(struct dma_heap *heap,
-> >  	exp_info.size = buffer->len;
-> >  	exp_info.flags = fd_flags;
-> >  	exp_info.priv = buffer;
-> > +	if (memcg)
-> > +		exp_info.memcg = memcg;
-> >  	dmabuf = dma_buf_export(&exp_info);
-> >  	if (IS_ERR(dmabuf)) {
-> >  		ret = PTR_ERR(dmabuf);
-> >  		goto free_pages;
-> >  	}
-> > +
-> >  	return dmabuf;
-> >  
-> >  free_pages:
-> > @@ -498,6 +507,8 @@ static struct dma_buf
-> > *system_heap_allocate(struct dma_heap *heap,
-> >  	list_for_each_entry_safe(page, tmp_page, &pages, lru)
-> >  		__free_pages(page, compound_order(page));
-> >  	kfree(buffer);
-> > +cancel_charge:
-> > +	mem_cgroup_cancel_dmabuf(memcg, nr_pages);
-> >  
-> >  	return ERR_PTR(ret);
-> >  }
-> > diff --git a/drivers/tee/tee_heap.c b/drivers/tee/tee_heap.c
-> > index 007c00156520..83e2fbd6960b 100644
-> > --- a/drivers/tee/tee_heap.c
-> > +++ b/drivers/tee/tee_heap.c
-> > @@ -167,7 +167,8 @@ static const struct dma_buf_ops tee_heap_buf_ops
-> > = {
-> >  
-> >  static struct dma_buf *tee_dma_heap_alloc(struct dma_heap *heap,
-> >  					  unsigned long len, u32
-> > fd_flags,
-> > -					  u64 heap_flags)
-> > +					  u64 heap_flags,
-> > +					  struct mem_cgroup *memcg)
-> >  {
-> >  	struct tee_dma_heap *h = dma_heap_get_drvdata(heap);
-> >  	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
-> > diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
-> > index 23ec0ff23fba..85dd747c9b36 100644
-> > --- a/include/linux/dma-buf.h
-> > +++ b/include/linux/dma-buf.h
-> > @@ -505,6 +505,9 @@ struct dma_buf_attachment {
-> >   * @flags:	mode flags for the file
-> >   * @resv:	reservation-object, NULL to allocate default one
-> >   * @priv:	Attach private data of allocator to this buffer
-> > + * @memcg:	memcg to charge for this buffer's memory. Set only
-> > for
-> > + *		buffers backed by system memory where @size reflects
-> > the
-> > + *		actual allocation in bytes.
-> >   *
-> >   * This structure holds the information required to export the
-> > buffer. Used
-> >   * with dma_buf_export() only.
-> > @@ -517,6 +520,7 @@ struct dma_buf_export_info {
-> >  	int flags;
-> >  	struct dma_resv *resv;
-> >  	void *priv;
-> > +	struct mem_cgroup *memcg;
-> >  };
-> >  
-> >  /**
-> > diff --git a/include/linux/dma-heap.h b/include/linux/dma-heap.h
-> > index 648328a64b27..2d69f8432bd2 100644
-> > --- a/include/linux/dma-heap.h
-> > +++ b/include/linux/dma-heap.h
-> > @@ -23,7 +23,8 @@ struct dma_heap_ops {
-> >  	struct dma_buf *(*allocate)(struct dma_heap *heap,
-> >  				    unsigned long len,
-> >  				    u32 fd_flags,
-> > -				    u64 heap_flags);
-> > +				    u64 heap_flags,
-> > +				    struct mem_cgroup *memcg);
-> >  };
-> >  
-> >  /**
-> > diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> > index 4d1e82cf0833..f8ec751b7d7b 100644
-> > --- a/include/linux/memcontrol.h
-> > +++ b/include/linux/memcontrol.h
-> > @@ -671,6 +671,8 @@ int mem_cgroup_charge_hugetlb(struct folio*
-> > folio, gfp_t gfp);
-> >  int mem_cgroup_swapin_charge_folio(struct folio *folio, unsigned
-> > short id,
-> >  				   struct mm_struct *mm, gfp_t gfp);
-> >  
-> > +struct mem_cgroup *mem_cgroup_get_from_fd(int fd);
-> > +
-> >  bool mem_cgroup_reserve_dmabuf(struct mem_cgroup *memcg, gfp_t gfp,
-> >  			       unsigned int nr_pages);
-> >  
-> > @@ -1178,6 +1180,11 @@ static inline int
-> > mem_cgroup_swapin_charge_folio(struct folio *folio,
-> >  	return 0;
-> >  }
-> >  
-> > +static inline struct mem_cgroup *mem_cgroup_get_from_fd(int fd)
-> > +{
-> > +	return ERR_PTR(-EOPNOTSUPP);
-> > +}
-> > +
-> >  static inline bool mem_cgroup_reserve_dmabuf(struct mem_cgroup
-> > *memcg,
-> >  					     gfp_t gfp,
-> >  					     unsigned int nr_pages)
-> > diff --git a/include/uapi/linux/dma-heap.h b/include/uapi/linux/dma-
-> > heap.h
-> > index a4cf716a49fa..bfcd1c25bc7e 100644
-> > --- a/include/uapi/linux/dma-heap.h
-> > +++ b/include/uapi/linux/dma-heap.h
-> > @@ -29,6 +29,11 @@
-> >   *			handle to the allocated dma-buf
-> >   * @fd_flags:		file descriptor flags used when allocating
-> >   * @heap_flags:		flags passed to heap
-> > + * @charge_fd:		optional pidfd or cgroupfd whose cgroup
-> > should be
-> > + *			charged for this allocation; 0 means charge
-> > the calling
-> > + *			process's cgroup when the mem_accounting
-> > module parameter
-> > + *			is enabled, or skip charging otherwise
-> > + * @__padding:		reserved, must be zero
-> >   *
-> >   * Provided by userspace as an argument to the ioctl
-> >   */
-> > @@ -37,6 +42,8 @@ struct dma_heap_allocation_data {
-> >  	__u32 fd;
-> >  	__u32 fd_flags;
-> >  	__u64 heap_flags;
-> > +	__u32 charge_fd;
-> > +	__u32 __padding;
-> >  };
-> >  
-> >  #define DMA_HEAP_IOC_MAGIC		'H'
-> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > index e53dd7eebc3b..17fdefc56b97 100644
-> > --- a/mm/memcontrol.c
-> > +++ b/mm/memcontrol.c
-> > @@ -5661,6 +5661,53 @@ void mem_cgroup_flush_workqueue(void)
-> >  	flush_workqueue(memcg_wq);
-> >  }
-> >  
-> > +/**
-> > + * mem_cgroup_get_from_fd - resolve a memcg from a cgroupfd or pidfd
-> > + * @fd: file descriptor (cgroupfd or pidfd)
-> > + *
-> > + * Tries @fd as a cgroupfd first; if that fails, tries it as a
-> > pidfd.
-> > + * On success returns a referenced memcg pointer. On failure returns
-> > + * an ERR_PTR.
-> > + */
-> > +struct mem_cgroup *mem_cgroup_get_from_fd(int fd)
-> > +{
-> > +	struct cgroup_subsys_state *css;
-> > +	struct mem_cgroup *memcg;
-> > +	struct cgroup *cgrp;
-> > +	struct task_struct *task;
-> > +	struct mm_struct *mm;
-> > +	unsigned int pidfd_flags;
-> > +
-> > +	cgrp = cgroup_get_from_fd(fd);
-> > +	if (!IS_ERR(cgrp)) {
-> > +		rcu_read_lock();
-> > +		css = cgroup_css(cgrp, &memory_cgrp_subsys);
-> > +		if (!css || !css_tryget_online(css)) {
-> > +			rcu_read_unlock();
-> > +			cgroup_put(cgrp);
-> > +			return ERR_PTR(-ENOENT);
-> > +		}
-> > +
-> > +		memcg = mem_cgroup_from_css(css);
-> > +		rcu_read_unlock();
-> > +		cgroup_put(cgrp);
-> > +		return memcg;
-> > +	}
-> > +
-> > +	task = pidfd_get_task(fd, &pidfd_flags);
-> > +	if (IS_ERR(task))
-> > +		return ERR_CAST(task);
-> > +
-> > +	mm = get_task_mm(task);
-> > +	put_task_struct(task);
-> > +	if (!mm)
-> > +		return ERR_PTR(-ESRCH);
-> > +
-> > +	memcg = get_mem_cgroup_from_mm(mm);
-> > +	mmput(mm);
-> > +	return memcg ?: ERR_PTR(-ENOENT);
-> > +}
 > > +
 > >  /**
-> >   * mem_cgroup_reserve_dmabuf - charge a memcg for a dma-buf
-> > allocation
-> >   * @memcg: memcg to charge (may be %NULL)
+> >   * mem_cgroup_uncharge_dmabuf - uncharge a dma-buf from its memcg
+> >   * @dmabuf: buffer to uncharge
 
 
