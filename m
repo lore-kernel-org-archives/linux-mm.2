@@ -1,94 +1,156 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F05606A327
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 20:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E406D606A33B
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 21:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=O0f92Jl/
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dJqXFZoN
 Received: by kanga.kvack.org (Postfix)
-	id 242CA6B05E6; Thu, 12 Nov 2026 15:59:22 -0500 (EST)
+	id CCA806B05E8; Thu, 12 Nov 2026 16:21:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F2826B05E7; Thu, 12 Nov 2026 15:59:22 -0500 (EST)
+	id C53FB6B05E9; Thu, 12 Nov 2026 16:21:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E1886B05E8; Thu, 12 Nov 2026 15:59:22 -0500 (EST)
+	id B1BE46B05EA; Thu, 12 Nov 2026 16:21:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D17906B05E6
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 15:59:21 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6780FA9BE9
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 20:59:21 +0000 (UTC)
-X-FDA: 85427682522.02.F7ADB1F
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 434BB140005
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 20:59:19 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="O0f92Jl/";
-	spf=pass (imf26.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794517159;
-	b=VuQHtoNscBNFLO2ktsR5d80GaTTPw442v0nOdf/Z4Eb/wafToxVxoXU6CMA1xFDsZgE0tk
-	+7BVoD26z7tWFMkVoRTsWq0Xf/qKhkHw26YFr+CFAviCyq3CR76SXpX9XrNc8yyQGq88kS
-	DkleyJX8sMHJMagILjNyHGn387EtwdU=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="O0f92Jl/";
-	spf=pass (imf26.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794517159;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 83FD26B05E8
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:21:02 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 13DA01A17BB
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:21:02 +0000 (UTC)
+X-FDA: 85427737164.20.43C2081
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2896340007
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:20:59 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=dJqXFZoN;
+	spf=pass (imf11.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794518460;
+	b=CqM1yW4LH/3CcEUoYzbzEcIFKrub/H5O7bNjIbvpe4a9M4vVH1x6GahF48BTNsV+lbibXd
+	3W4co9wOzdXIBeWsLkm9YCJjvaLd1bk5CU+cDcd7xX1e4P0RKNhA8fX3UkrNWNhRH22VjL
+	vRaMEZV7ViAF1n5tZ1WwAoeNSdHJ/20=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=dJqXFZoN;
+	spf=pass (imf11.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794518460;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DWxW0v3Yp3gUIU8y20wR7hKoi5jJwchqtRdIOf3GtkQ=;
-	b=Zw93ZCLyEe3l9PLdHTuWvffyKzg0Z6c+ckC6S9kHXrAbhLOqghlG3dP/K11ETOd8mkX+G6
-	JzkUeDVB6/7o5fBcF2n8UaYOEpZbKXfv33ExwOagVpnCDiTlWJFykFXNfKTyOgNmM3qkO9
-	MO8Ll9OI2RKI8d++NGoQdJBWyHCTQKY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=DWxW0v3Yp3gUIU8y20wR7hKoi5jJwchqtRdIOf3GtkQ=; b=O0f92Jl/Q7JNZC57lF2m123DO3
-	ZdljTMVUMMcWHgd354KPoiCaWYtR04IXtmDeLHs6jL3Hdw3NkGid7JuqrfD86VbShMe5qKFqG93lM
-	xPF0YfPpe6x7snQwKe93O4nUpuJQDwf4pXzje+EttCMdg12x3aOO8xmD5pspmuKCclG34iCVYOwQ+
-	0v3xQyOPAZWqClKkdiqhJYvDJrZmPhbvDlbOH9pq1mAHshLNcKkV+ue/9dzolAZ3QZ1mlsXmhgQo9
-	lc8z1ev5qYOT8qaSHOzu4YTatxSk1r8nfbEkVXuvy3sw9HSfRdDhFTHgzZAKIn4B1lYTKIlUsMdt1
-	ywLEKeNA==;
-Received: from [38.23.173.23] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRbt7-0000000B2ea-2awE;
-	Thu, 12 Nov 2026 20:59:17 +0000
-Date: Thu, 12 Nov 2026 15:59:10 -0500
-From: "Liam R. Howlett" <liam@infradead.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Tal Zussman <tz2294@columbia.edu>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/madvise: disallow guard region installation in
- uffd-armed VMAs
-Message-ID: <63skl724i2jss7itcq63fbojykh462s3voi6to52ze6v3unp35@kgakyccedf64>
-References: <20261112-disallow-uffd-guard-install-v1-1-bcf8b1aaa72e@kernel.org>
+	bh=3+bQ1zQpnSC2gph5DKJ41cDVxSj9AD/66mgtcKZOk5Q=;
+	b=ZxjSiD/i3E6WRmrkVZyxc5/v8FKboICloo/WI68vNNniCAHuvNUtia8IQWwi5JcNidMnwI
+	4pq1lbauokhPuYq7ApUUnYm1Uj3DswqpxonPl+VOixrJOmhib2Mg0l5m8Wr/bh2T07R9Bd
+	Hf40C7EWMHKxtf1G71wsdMciFiiwAoc=
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-492fcbfaa87so108163f8f.3
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 13:20:59 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794518458; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ivj2iRwYxX0IaKw8sbCcpEA6GZJBATA+ZL1mpnnH+Ytf6kW5A55l27hydeFyRLdmsU
+         WocBzyIsCnGFg2TdQ8C8b6HBjOa3oqc5xOk4+ntS49svEnOl1uUNSX+s5Sw9e9Ar3PZA
+         FzekIB66TrGwftAzAMpTPqAX/RGGrVzPewXqyw1MTY1JeZnPVnt3t/Hxq/JxOSa9YerL
+         Y9Fomr3vVfdHdENYnWXrQtqclAJ5UHGmO3QAFard7wcgJ+Axv8RIY+IBqNc43n4sQhm7
+         orHsVj03a4+HRn7FVJzBVD95X7UzvZG1s9e+ZiF8PhnuutjvQGl1Ku8/3vSxghLWjm7s
+         oCvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3+bQ1zQpnSC2gph5DKJ41cDVxSj9AD/66mgtcKZOk5Q=;
+        fh=AgTULX8jDcY4xkZ+E72BuJqdLhgBqBptsAe4z0cLsHo=;
+        b=EKIXHrlKZNvLmar3znB6SYUGTa1evTkTUIsk5Ajx6URin9akQCUVlvwLwDnVqNLGzu
+         HpmD5cvloUCYSJWodCdqOjd7ZMjpS7jFtgAi9PHNpt+FgZFlXanSnAugnFCPgJwCeeHR
+         QLMBaN/gQw6CDhTVioJ3eRgwv+jUNn7YeOHgqFUfOw+tutsxe/VFCW/bHEzgDuOyL0ci
+         OVOw4ZYjXHaWe9xwqtxPjM8kFJ6vfnWAYik7UFKuu0xMF8Z1jcU9INJ8FBqHuJvH31ra
+         HLcaPEhNh2iNmtaaYjY0ijDwTM16KfNMeM+P+8stOPIx48wgG1sV7WmKR2IkdVauILA7
+         QGEQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794518458; x=1795123258; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3+bQ1zQpnSC2gph5DKJ41cDVxSj9AD/66mgtcKZOk5Q=;
+        b=dJqXFZoNuWd1Oq6x92f00VY1tIoWZ+KledpsAsErAyvPRqWkm4F6mPR723BAmkhZzm
+         iwapfmpul350uF7G1YlDUbK4lwHoWWs80UeGrm5+aCsmK85P6NuNMMKDx/NsaMC0nnq6
+         DNvhYUwPNiiRJ1Dk1jb5nG5vQ33JuHgWCc3zDoTTN6HZux/ZdlVUzz2dxVt0MSPHdMSX
+         zusbSDjDPp7vkxUGoWRH76J6e8P4KB/Ygjq+X47d2FWFKqgo8wG+FFHvhH1qse/8z1PK
+         qb74XL3vZmD8CKUECivq3nTJG3fqZRUAolyojuTmdG73sd+LaBZBSsBbQdD8GTddBkDo
+         CU9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794518458; x=1795123258;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3+bQ1zQpnSC2gph5DKJ41cDVxSj9AD/66mgtcKZOk5Q=;
+        b=n4ei7x4X+voBDBRNPKlPC1ZWHhy6h7Xb95fV9+2yCmX92KyqD0TaRjhhMzdzHhyEPk
+         7K/MVvfVU/zQuL+9Odocol+/QKgHoGH7R1hcL2egCdo6+pXtGm19h87IKLhF3o9o06Pu
+         yn5X+nJsL6bNvZxYnhD+Vkhvf0lKdVvLrXX+FihjB0CXTDLljIvjZHmWTUS1PxiZHycF
+         SApcmUuwzGuC3eC+Vv6aNHPHf2EuFiPfndm5WDOpuTW8H6RRKbDWaX+I0k3FIZNeWvg9
+         jag4lIpfnUmmIXm1Z6rTaK2L7+KcsOhOL4kgyGjNTIunxo5ZQ3Or/nGOj6r+SkqDQrph
+         XSgw==
+X-Forwarded-Encrypted: i=1; AL+hErGprBum6qQt7oAnDKqxtf28yi/vTphrK8VxxrYCZBVPSVYGpqzYkrp6J0zy6quyU1HTY3EnvtUGXw==@kvack.org
+X-Gm-Message-State: APuU4Z/m6+NVbjXZRzW1rC4aYE48xaBb2Z3Nq7OcjdolnXqSLOhW9lUg
+	/SIkMyTmi0NTiEq7k1bwWOVUdVrHan/dClu7kciANU72InybLOq2484AliefNTL6cMjw5WkSS+D
+	GbOW//zu7/4iGxOGN46CqbbEX2rzqzJk=
+X-Gm-Gg: AYBFou01U7MVeesEgSvi5Q7uQ2v69SLsrG0QVswCj/GwAGAZRsHpzeE/ZTHMIfWPioa
+	a72u5goW10rYY6ZSZ5NTBBeR1gA7RjS1TItOqQ6opoJ4hKwYh5eyavPYo0TATh8m+QE2hMoblR5
+	MCSljSu2F5ZqQ6Kqv9PeHck6lhle81nx8f51Osr0IdK/vJ5YAv27zjqRL5ZuY5FHDZSVrq0d8fy
+	E9mpbA3NXMBKwW0sER9drH/up1Gh5S2HT3y44xvIIKVBS/E+vnIprDdwkMh9SgFlIDQqiaO1pHn
+	OF6QUDBslCdymkZPStQXd8jjvBTRK1/DXRBQ5qvwtQYpNvbncg01J7TBom9UbTdlDa55wzSzlLB
+	VRdxoZ9h1f11BcPP2mkX3vgMGOLK0qzzFrjh8rTB2lo9hR8B/kqmeDpkItgeBueW0s+lfn57UaE
+	WyIeaF6GOvE3o0/aXYpkbPfDJqPDITWuTcy8R694k=
+X-Received: by 2002:a05:6000:4553:b0:492:d8c2:7fcc with SMTP id
+ ffacd0b85a97d-49c7316495amr847969f8f.11.1794518458411; Thu, 12 Nov 2026
+ 13:20:58 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261112-disallow-uffd-guard-install-v1-1-bcf8b1aaa72e@kernel.org>
-X-Stat-Signature: bg4smpminww9fkht81d81mbbcfretz97
-X-Rspamd-Queue-Id: 434BB140005
+References: <20260813-migrate-rmap-batch-v2-0-3c5424c555c7@amd.com>
+ <CAJnrk1ZkhvyGLUyZrf_gA3XBv1XTfHArGOMgqr=5XbSCBJHz4Q@mail.gmail.com> <2ed65a57aaa676a59651abd671f18dc9b55f9195.camel@amd.com>
+In-Reply-To: <2ed65a57aaa676a59651abd671f18dc9b55f9195.camel@amd.com>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Thu, 12 Nov 2026 13:20:45 -0800
+X-Gm-Features: AclHuK8puMc590udg5ez_riNBORT-fzpcDwPqPA6P2g1nr93_9dn3rTPcwxK2Vc
+Message-ID: <CAJnrk1ZjM+cs1XH=fhmGW1-EtthW52hoqxua1dw43mopXCW6pA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/7] mm: batch rmap walks during large folio migration
+To: "Garg, Shivank" <shivankg@amd.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"kmanaouil.dev@gmail.com" <kmanaouil.dev@gmail.com>, "rppt@kernel.org" <rppt@kernel.org>, 
+	"weixugc@google.com" <weixugc@google.com>, "byungchul@sk.com" <byungchul@sk.com>, 
+	"rakie.kim@sk.com" <rakie.kim@sk.com>, "vbabka@kernel.org" <vbabka@kernel.org>, 
+	"harry@kernel.org" <harry@kernel.org>, 
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, "riel@surriel.com" <riel@surriel.com>, 
+	"david@kernel.org" <david@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"matthew.brost@intel.com" <matthew.brost@intel.com>, "surenb@google.com" <surenb@google.com>, 
+	"rientjes@google.com" <rientjes@google.com>, "kinseyho@google.com" <kinseyho@google.com>, 
+	"Rao, Bharata Bhasker" <bharata@amd.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"gourry@gourry.net" <gourry@gourry.net>, "ziy@nvidia.com" <ziy@nvidia.com>, 
+	"usama.arif@linux.dev" <usama.arif@linux.dev>, "dev.jain@arm.com" <dev.jain@arm.com>, 
+	"jannh@google.com" <jannh@google.com>, "liam@infradead.org" <liam@infradead.org>, 
+	"mhocko@suse.com" <mhocko@suse.com>, "ljs@kernel.org" <ljs@kernel.org>, 
+	"lance.yang@linux.dev" <lance.yang@linux.dev>, "joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>, 
+	"apopple@nvidia.com" <apopple@nvidia.com>, "fvdl@google.com" <fvdl@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: eq19fpmy3t8cxzy9o1z5r4jf6fxof95j
+X-Rspamd-Queue-Id: 2896340007
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-13.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794517159-997883
-X-HE-Meta: U2FsdGVkX18xOBCfLl5eAkA02k7R0YEDLZNnXoj9N1UgWWHnd4VfwTO4E47xySFpW4e48/5/1p77q6OKr1jckZbqGR0xr9xbEmrWvy0nMTrDxTEnX2dNtzvrLuNaGBpxH4acN0iZpimaWlF6xqj5GfSN8jIYn/5iI4hQtpPc4R01np5H0nBwmUrl3QvTxv0/dZXFddAtd3rrYfa8WILd+526gXfzMzEJVdyHqOeekzcN/xgAMh0HJ5JaWvcBOMj42aCNmCRCn/qK3NHxJ9aIaLFhzd0OsJLV3OS4xe4SoTsLvNUoa6X5CGcGlRe7Xyzitzso0kM45binfyPvknrDHpngtCPZGHu+P+zV0UVF6HkLIZVMwaB6KWmHPh2kDLuJiQD4EDTSpR9fwBPA+D5LrGAbt++wHvVH4RTrPvF8r2bParMzQRHs9HBYEpaWAoNuj04L/isv6yoqDg/URiesGJ0Fd5/LoOtZZFLVc3+1g0UHv6bpuEcG7kGm8RsLQGEaiYwSg1zBgEp9Ci2Tr4fMP1/JD1YbZshb3kTugUb4bp0OQuGvLy33tKHIXqhNWsEjm5eDHY0/vT6XH/QjSxvEm/xCPI02awGFlqsjKzbbEtBdQAb9mR1F3x9MQoEomulBE/utmpWEF9CKCXmh2U6InF8Ni8ro+HEkYFB9zhquv5zpvdCz885Nc06iioZaN/IcEK4OS4WrcujaGLNNf7w2h2MHkBrAJWLtluOgkqan/ETRtW1+Df9PobxPRPnNAW7ts03O3uUZc2ywhdT6xQZnHe6BM7s9bsU576hNWteHrfrY1eHQ/qZAp++Yw9AXW4IpwtAN/izTjKOQIkkWBWX49mx6/23nKo6y7UhJ07715uZhbxiPsIewghV/3mOwvQG/QzRxFp/mHSHQOav7mtrN/kuV8+Cs0dcGIXC8Q5X7Lbu9FuSrHbBPxkopbpvbj4jR2t43m7Gx/XHRJJ+Lzdl
- jxtPvKNT
- y5TAq9L0oHFiGnXN3aM/z06sr6yVP+aKLOEMz5wv2q1bB1A32zJmE/TJqEHFY03wWSERLwLM/TMKTXzFoH9KMZLaWJqjxrJfmrQlr+KBCn4wBCe/oSZ5fsXi+RmwYQp0rXJTf50GlfLouz8T6QAyKKdiM4q0CUqr1KfvVp/Gss6Gs4kEn3+NQgHhDnPFWnRBid4yWfZgCbedngYhH2ek7ftFcKdahBJoQQGNx7pb9Kx3T0woo/uYMhwYixFKRZeeHyK+PdLXtaxA7cvAAOhKHq0fVwzmP5j3/G24G/tBnC2MSzoAnYoMPoKuiwjORUu68haUGBal5fRn48aGXJqVyhaJp+lhrK41Lnv8b4xR0ZQ5jqd4=
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794518459-81886
+X-HE-Meta: U2FsdGVkX1/KtslHOcjNZ30crQ2nGjAD7hqEHrGCJ80FYFfjduxxgv64+YvRvYlsaG4KCnV5p68ezxJP2eb0R/q3aghsSPyKhDiiUke1BRVPP1tQFokfza0YQ8iN5LtuOjYSwPftxJZIMmy8/s697nXicFve8jtu5kvqNazBPmKtbl3mfwIpIGnYFwsBzNkJQ2llv7mdxscE8WCQwzLbppeaqg+Ls3OQJmYFl7TVFE/WNgQofCP9Z1l8va6Lv6z93mrPLuOpkpgE1pt2Lpud8/EKtuph4S3lBag5OdTKsixkHLICOJ4CXhUY9z8I8mVg2VH5pkwb2cafeWcleplpLFXSy5xJb3qv3ybQUf4AdY2y3AEF8Tpy8DOK5ggVh0F27hVuh9n1P2h0xbcksedSfk4u++yzglN8FCSl6lM29LBlY/s/XTXjezydAXgr/jxNVif2XLvVBAGf/Or2doeH8nPPSSrvonDbJT3naHC6zQs43xReU9heTlkP8cinGfH1hwHPIE2KCxWgOwARTwR869rUfOpEXOTiAJxW29mjmjZT3oVbsK3862f7yNV047cwKgdSfPJLfPUrfBgWdBBDUNzqj0Lx7e/z0YV1cSqssW86npqlygFi8Et0vkNxYxtVHdzsaww4USsyNZoMtJvHmPpQm+OW0SCXtESDuZPMb1BoPKMkxYtkjIa+JfADcJCJ3UtdkEV7bmhM+kNbbYq3UWyIc27AON3YA9B5xOpJdZwOuwMZ5dbKysts1/16g+llSmdJ8k73TeVLCJXFRQmMqIGt+o+PTr8nMqQDeztN+rLaNS/xhWzKD8Eb1bNw6IgSRU4ZCvHjkxi80f9EzH5M5Sd42K7RRSoQq9xNWe+yF+bezNjojnwjIE/3i5urX3J5RpDaWggd365x4Utd52H4OqLA75YA8NVv3J/pp6No8xY+7zG0idhhgvU8ih8j/6uh4JjRv7juvmqu+eXX/p5
+ 37JzdJKD
+ ddADd/x2ey8z+IHFk69I2d7/2LZBNVAZvzaUiEaT9+NDJIIEH1uqVlJCx4Pl+lehzO+E0PyE+RpK3lFaSj2ky0ByaEKigDSaBSPbZakPqkGiu80ZSdWCHCEtiT8pyaOumK3OTgx/WNk7+mBFRDgb4iMgJJYQmctt3ucaW+Be27QhvafQAdtxvNm6NDf5bJIjN3KXcFcbKrT78jOk5KHblBDXaTjBC/3H1RabHY82tmuM0G0o40soSTgdllXqL+G5jprnUK2VhrzrNdGfdVhkmNWY2rmvWrR+G7Wrvs5KL9SehnewSj3FHgmmJbx1DYSVjZHmzBxven4Pz70I5OaGRcMDP4A7mKvhwakj18VbrQGufcwTjQY+6j0EbmVkvdW3nGM/fPkvgl5GpLXDjYoT1M52FEE4Tu7CFlg3UaqsIqQV9ehKtOr9tpJ1VrUrEeiwDT9k6R8Xba1ZUb31C6rFw9YxU9oLnjK6iBqhu3MAix+dbaIT6O3i66BOgck6ILW0CA8LPDLWHB0zOSJMtuUkfnGiYxmeRJyaD/JKuEJaEIeZO14k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,118 +159,111 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 26/11/12 05:38PM, Lorenzo Stoakes (ARM) wrote:
-> In order to establish guard regions, guard markers are installed in the
-> page tables of a mapped VMA.
-> 
-> However, problems arise when one tries to combine this with registering a
-> VMA for userfaultfd, as such operations may themselves need to install page
-> table markers such as uffd-wp.
-> 
-> When this installation is attempted the guard marker prevents these markers
-> being applied, which can lead to unexpected results (especially if the
-> guard regions are later removed.)
-> 
-> This is especially problematic because guard region installation causes the
-> regions to be zapped first, meaning that the removal of userfaultfd-tracked
-> ranges will not be logged in this case.
-> 
-> Therefore, disallow this.
-> 
-> This makes sense as conceptually, guard regions mark a part of a VMA as
-> effectively unmapped at the page table level, and removing the markers is
-> like mapping the VMA again, over which operation uffd markers would in any
-> case be lost.
-> 
-> Only check for this on installation, as a VMA can be registered for
-> userfaultfd after guard regions are established.
-> 
-> In this case, the guard regions cannot have new markers installed, and no
-> faults can occur in the guard regions, until they are removed, at which
-> point everything should function normally.
-> 
-> A survey of open source users indicates nobody is relying on installing
-> guard regions in uffd-armed VMAs. Software including glibc, android,
-> tcmalloc and CRIU were checked.
-> 
-> Fix the selftest to reflect the change.
-> 
-> Fixes: 662df3e5c376 ("mm: madvise: implement lightweight guard page mechanism")
-> Reported-by: Tal Zussman <tz2294@columbia.edu>
-> Closes: https://lore.kernel.org/all/20261111-uffd-state-fixes-v1-9-00713d368976@columbia.edu/
-> Closes: https://lore.kernel.org/all/20261111-uffd-state-fixes-v1-10-00713d368976@columbia.edu/
-> Closes: https://lore.kernel.org/all/20261111-uffd-state-fixes-v1-11-00713d368976@columbia.edu/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+On Wed, Nov 11, 2026 at 11:37=E2=80=AFAM Garg, Shivank <shivankg@amd.com> w=
+rote:
+>
+> On Tue, 2026-11-10 at 16:08 -0800, Joanne Koong wrote:
+> > On Wed, Aug 12, 2026 at 9:24=E2=80=AFPM Shivank Garg <shivankg@amd.com>=
+ wrote:
+> > >
+> > > Migrating a PTE-mapped large folio currently walks the folio's rmap
+> > > one page at a time. It does so twice per migration:
+> > > 1. try_to_migrate_one(): Replace present PTEs with migration entries
+> > > 2. remove_migration_pte(): Restore migration entries to working PTEs.
+> > >
+> > > For a folio with N contiguous PTEs, each walk repeats page_vma_mapped=
+_walk()
+> > > and the associated operation per subpage of the folio. (256 iteration=
+s
+> > > for 1M folio).
+> > >
+> > > This series enables both walks to process a batch of consecutive PTEs
+> > > that map the same large folio and do some refactoring and clean up on
+> > > the way.
+> > >
+> > > Performance:
+> > >
+> > > AMD EPYC ZEN 3, 2-socket system (1 node per socket).
+> > > move_pages() migrating 1 GB from node 0 -> node 1, throughput
+> > > in GB/s:
+> > >                        batch-         batch-restore
+> > > folio     vanilla       restore-only   + unmap         restore%   res=
+tore+unmap%
+> > > 4K        2.96=C2=B10.15     3.02=C2=B10.14      2.99=C2=B10.17      =
+   +2.2%    +1.0%
+> > > 64K       5.99=C2=B10.10     6.12=C2=B10.08      7.65=C2=B10.16      =
+   +2.2%   +27.7%
+> > > 256K      6.48=C2=B10.09     6.67=C2=B10.08      9.23=C2=B10.14      =
+   +2.9%   +42.4%
+> > > 1M        6.76=C2=B10.10     6.98=C2=B10.10      9.74=C2=B10.19      =
+   +3.1%   +44.0%
+> > > 2M       10.50=C2=B10.20    10.44=C2=B10.16     10.67=C2=B10.21      =
+   -0.5%    +1.6%
+> > >
+> > > In plain migration, the folio copy itself dominates the cost, so thes=
+e rmap walk
+> > > savings are only partly visible end-to-end.
+> > >
+> > > When the folio copy is batched-copy and offloaded to DMA engine [1], =
+the copy is
+> > > no longer the bottleneck and rmap-walk batching translates into much =
+larger gains:
+> > >
+> > > This series + [1], DMA Offload on PTDMA (DCBM), 16 channels:
+> > >
+> > >                     batch-copy                      dcbm+restore
+> > > folio    vanilla    -offload(dcbm)  dcbm+restore    +unmap          (=
+rmap batch impact)
+> > > 4K       3.05=C2=B10.13   2.76=C2=B10.11       2.77=C2=B10.12        =
+2.74=C2=B10.09
+> > > 64K      5.85=C2=B10.11  10.66=C2=B10.27      11.56=C2=B11.45       1=
+7.55=C2=B10.56
+> > > 256K     6.26=C2=B10.08  13.64=C2=B12.73      13.68=C2=B10.16       3=
+4.76=C2=B10.57       (2.54x)
+> > > 1M       6.58=C2=B10.08  14.25=C2=B10.07      15.27=C2=B10.77       4=
+4.28=C2=B10.27       (3.11x)
+> > > 2M      10.61=C2=B10.24  65.26=C2=B10.96      65.25=C2=B11.65       6=
+5.66=C2=B10.87
+> > >
+> >
+> > Hi Shivank,
+> >
+> > Are you planning to send a v3 of this series? My reason for asking is
+> > because batching the unmap also fixes an existing issue where when
+> > try_to_migrate_one() unmaps a PTE-mapped anon mTHP one PTE at a time,
+> > the folio looks partially mapped partway through and gets flagged for
+> > deferred split. My mTHP underused shrinker series [1] makes this more
+> > common since every underused mTHP split will now go through this path,
+> > which makes this bug a blocker for the series. More context can be
+> > found in [2], which was my attempt to fix this bug, but then David
+> > suggested we fix it in a better way by batching, and Zi pointed me to
+> > this series.
+> >
+> > Thanks,
+> > Joanne
+> >
+> > [1] https://lore.kernel.org/linux-mm/20261103212004.1356327-1-joannelko=
+ong@gmail.com/
+> > [2] https://lore.kernel.org/linux-mm/20261109220958.2071687-1-joannelko=
+ong@gmail.com/
+>
+>
+> Glad to hear this series helps your use case.
+>
+> Yes, I'm working on v3. I slowed down on it because it depends on
+> Optimize anonymous large folio unmapping series [1], which hasn't been
+> merged yet.
 
-Reviewed-by: Liam R. Howlett (Google) <liam@infradead.org>
+Thanks for the context.
 
-> ---
->  mm/madvise.c                               |  4 ++++
->  tools/testing/selftests/mm/guard-regions.c | 12 ++++++++----
->  2 files changed, 12 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index 0214efd2a014..268731e90f12 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -1156,6 +1156,10 @@ static long madvise_guard_install(struct madvise_behavior *madv_behavior)
->  	if (!is_valid_guard_vma(vma, /* allow_locked = */false))
->  		return -EINVAL;
->  
-> +	/* Guard markers are incompatible with UFFD markers. */
-> +	if (userfaultfd_armed(vma))
-> +		return -EINVAL;
-> +
->  	/*
->  	 * Set atomically under read lock. All pertinent readers will need to
->  	 * acquire an mmap/VMA write lock to read it. All remaining readers may
-> diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
-> index 02f69244f9a4..97da54dcf3a4 100644
-> --- a/tools/testing/selftests/mm/guard-regions.c
-> +++ b/tools/testing/selftests/mm/guard-regions.c
-> @@ -1476,7 +1476,7 @@ TEST_F(guard_regions, cold_pageout)
->  	ASSERT_EQ(munmap(ptr, 10 * page_size), 0);
->  }
->  
-> -/* Ensure that guard pages do not break userfaultd. */
-> +/* Ensure that guard regions cannot be installed in uffd-armed VMAs. */
->  TEST_F(guard_regions, uffd)
->  {
->  	const unsigned long page_size = self->page_size;
-> @@ -1526,10 +1526,15 @@ TEST_F(guard_regions, uffd)
->  	reg.mode = UFFDIO_REGISTER_MODE_MISSING;
->  	ASSERT_EQ(ioctl(uffd, UFFDIO_REGISTER, &reg), 0);
->  
-> -	/* Guard the range. This should not trigger the uffd. */
-> +	/* Now try to guard, should fail with EINVAL. */
-> +	ASSERT_EQ(madvise(ptr, 10 * page_size, MADV_GUARD_INSTALL), -1);
-> +	ASSERT_EQ(errno, EINVAL);
-> +
-> +	/* Once unregistered, we should be able to guard the range. */
-> +	ASSERT_EQ(ioctl(uffd, UFFDIO_UNREGISTER, &range), 0);
->  	ASSERT_EQ(madvise(ptr, 10 * page_size, MADV_GUARD_INSTALL), 0);
->  
-> -	/* The guarding should behave as usual with no uffd intervention. */
-> +	/* The guarding should behave as usual. */
->  	for (i = 0; i < 10; i++) {
->  		char *curr = &ptr[i * page_size];
->  
-> @@ -1537,7 +1542,6 @@ TEST_F(guard_regions, uffd)
->  	}
->  
->  	/* Cleanup. */
-> -	ASSERT_EQ(ioctl(uffd, UFFDIO_UNREGISTER, &range), 0);
->  	close(uffd);
->  	ASSERT_EQ(munmap(ptr, 10 * page_size), 0);
->  }
-> 
-> ---
-> base-commit: 4318887a3efa4c53d6f083ccfd7105b809a3ac65
-> change-id: 20261112-disallow-uffd-guard-install-a5294129ad7b
-> 
-> Cheers,
-> -- 
-> Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> 
+>
+> If it helps, I can send v3 sooner, addressing the v2 comments, rebase
+> on the current tree, and split into unmap-side and restore-side series
+> for easier review.
+
+That would be great! The unmap side is the part that fixes the
+deferred split issue for me.
+
+Thanks,
+Joanne
 
