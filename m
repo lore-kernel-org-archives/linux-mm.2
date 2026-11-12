@@ -1,149 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78D5606A321
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 00:56:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=perfloop.ai header.i=@perfloop.ai header.a=rsa-sha256 header.s=google header.b=RoNda6i+
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433EC606A326
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 01:04:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF34B6B00EF; Wed, 11 Nov 2026 19:56:01 -0500 (EST)
+	id 3899A6B00EF; Wed, 11 Nov 2026 20:04:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7D306B05B0; Wed, 11 Nov 2026 19:56:01 -0500 (EST)
+	id 33A666B05B0; Wed, 11 Nov 2026 20:04:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91EB46B05B1; Wed, 11 Nov 2026 19:56:01 -0500 (EST)
+	id 2537F6B05B1; Wed, 11 Nov 2026 20:04:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CD296B00EF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 19:56:01 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DB5441C286D
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:56:00 +0000 (UTC)
-X-FDA: 85424650080.20.443CD5E
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C44F2180004
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 00:55:58 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=perfloop.ai header.s=google header.b=RoNda6i+;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=quarantine) header.from=perfloop.ai;
-	spf=pass (imf06.hostedemail.com: domain of ts@perfloop.ai designates 209.85.167.174 as permitted sender) smtp.mailfrom=ts@perfloop.ai
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794444959;
+	by kanga.kvack.org (Postfix) with ESMTP id EB4836B00EF
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 20:04:28 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 51F141C3C15
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:04:28 +0000 (UTC)
+X-FDA: 85424671416.08.E73943C
+Received: from spam01.hygon.cn (unknown [101.204.27.37])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 43D9B160007
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:04:25 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of qiuzhiteng@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=qiuzhiteng@hygon.cn;
+	dmarc=pass (policy=none) header.from=hygon.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794445466;
+	b=AVLeWZyOkxZTwRSBoYXgJk/JS+buRAgqOpW0Q4zMWn1pE7zQRxo91SJ2O+mRn90oVTNpED
+	OT/N4UMoV4oEpiwdh8vztxR2+wKui6Ekm9glN7Uh5Vyzki5xbxAyZ/JMYsP1MdA/a/RWJz
+	qCJeXo6V1iFFwSigpxGxijfL1CxJ5FE=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of qiuzhiteng@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=qiuzhiteng@hygon.cn;
+	dmarc=pass (policy=none) header.from=hygon.cn
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794445466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bGlo5KpYncJxMag4TeoNCPiBlXpzDdXv/wZ8+6Y+c9w=;
-	b=4p5aHk5aP7Sv9j4gNQesj0TsFviOu/Gg0r2h8Lcf8E90U4dxMwBQ5foYQo4itBufvbrmrE
-	N+YP7lVz/Rl3MUTurkTcj//72BRv5Qo0kvTjM5t4LZTebpUnqMg3LeFKMeyqnOivtPAwa5
-	gVqBeok/UairUI8wD9WlIX/R0+9lTns=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794444959;
-	b=4JObhUZ6dIWmh8NVEg9seOkvTC2KpLu/k5EXLdMrCOgA+LBdIvjP7Vt6SeBFyGH4Ytgw9D
-	9mmEv3NODbcpW6OomGlNkvf+PtnyDAtVniV0Qn71OuVDdcO8nXIQ+jepWWLuwHkw3AU6iW
-	2ZEwtXBvYh8g1qerjULAjqG4iqzKeXM=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=perfloop.ai header.s=google header.b=RoNda6i+;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=quarantine) header.from=perfloop.ai;
-	spf=pass (imf06.hostedemail.com: domain of ts@perfloop.ai designates 209.85.167.174 as permitted sender) smtp.mailfrom=ts@perfloop.ai
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-53c156ba662so1925114b6e.1
-        for <linux-mm@kvack.org>; Wed, 11 Nov 2026 16:55:58 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794444958; cv=none;
-        d=google.com; s=arc-20260327;
-        b=EZohRfh1YjqFrIW7P4LUUqlYLCMhOuX6jnAUijJO+fk4UDNDklSFlbBIvlEVPCK2Gg
-         CEbuq5zhsbivvx0ziEIm4FnkH9IeIFu74Lhxc5XMZ6J0unStp3kuJL6W2JiARknKvj4J
-         +cc90ab0H3qPb5vg7f+i2DWLjJ9mbb5ujzW2Ml+/CWIyCVouFMGwVGtEUNGXLoAF20ij
-         SvTcIvEhLZxIv1kx6XuigKv1XwnNKKlzreeYqnN9iZU00Pr3TPn5n8XryXwO8Js66R69
-         DK++rsri6sjfhy4M5xViwBJP7qtn6Ck3QDogrk90ZGjB5fgTiH2C1lH07NbBZgeVe4dh
-         OMuw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:dkim-signature;
-        bh=bGlo5KpYncJxMag4TeoNCPiBlXpzDdXv/wZ8+6Y+c9w=;
-        fh=UV9mG69UvDialvglRFoBWIHT3d+w9RJj9JiRjjS45uo=;
-        b=MmS/m8PeIdz4sZSDGcIbQSFRJhErElW91WRM+OjrqKNmPxFL/Qbb31TV9voMCb1kAK
-         fwC6TskFF4x6U13SRWGUMhEETbo4pL108eIDG5J7Ypow0fZFa1D7d4c6HN1U1h95Zfrj
-         weRxmQ16WdJDP5oziQx2VkGOqrDeHgHHxi9r/ngsm+Z9UaQThDtwZyBs2vM4llhq0ARH
-         5FWMEJWo/V7ouQWmDtUv83FRDdvqG5Pa9ZADS2bYx7av0IuQulNQvCUFhJZbyxre9JR+
-         1KPULZxYRY7vKUkxrlrIM99q7nAOqMZ8xeXVRjrlDlimNJo1YIPmkk0BrwYZV8xlVqqg
-         5zew==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=perfloop.ai; s=google; t=1794444958; x=1795049758; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:mime-version:references:in-reply-to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=bGlo5KpYncJxMag4TeoNCPiBlXpzDdXv/wZ8+6Y+c9w=;
-        b=RoNda6i+B4Dd8cMsV+qD7zKERcWrmyoWOhoxxO87pJPUA5MT5+/kjCSIxe6I/Vh0Zo
-         1xcs3t3Xi+ncSOhAqOI8oW3LCMGss7JYLcL7zFo96Euvw8eA8+Xt+JHd1TVWbcGu6iXa
-         EooLR43jzythtDWxK6nhpmJ1DCnvKlzqVNTRQuhgpz2u8056UM9e9Q+M1jzlIgPOsPC3
-         28xiKMgo758gQvx+n4i5Sn3ihqTnlNTZ9Jz1PilH5Iqei3ZE8+sbA88a4Nf694F5dgAL
-         I2e0JuyZOhb1J3yQS59ozui0QNHHQhEzl4uyYw30Ot0p9Kvb3hcNUobE1goXzuBBLUDV
-         OSow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794444958; x=1795049758;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:mime-version:references:in-reply-to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bGlo5KpYncJxMag4TeoNCPiBlXpzDdXv/wZ8+6Y+c9w=;
-        b=yIbn7eXmZQ2/6uGc10WlhEHKiIU9qh8TtzpR8sqFjk1glRhrd6jt9HAed62TV1PYwQ
-         q+9Fu2uYzuYnNd1YTmJPbgd/cSrxsKPdSIvA57tQCWjmpPOCXt2BBBk/e8JPLPUGvcDU
-         7PO1l1033oXXVZOx3FwON2FyZuZMQBL9lx77VQkMRWukAJXXdX6SdI3OWV5pqcdQ492/
-         mdHoLjgIHoqbDtBafWDGg1KT5p0wReMmn8sXTRIVFcfSpS5xAKZ/5Zzq5foBZze71Tup
-         WZzoJLVT7z8nFXdetyLxBImlntCJoa+G9zhFsRLikp1JDIlQ3gBUQ6GIx04gN/AA16UJ
-         s1aA==
-X-Forwarded-Encrypted: i=1; AL+hErGg57GXKKXTTl/jIzh2KJkboKHZ743r9XvA/kOfOv/T79cyKpWILDmGlkERmEd1JvPUBDv16elUBQ==@kvack.org
-X-Gm-Message-State: APuU4Z9wt8/+VNPay2DN0oTnqHZE+jQIaUlxxyFeAtsUF42MK++FhpSi
-	pXZN/W+lILkgZ7C6Apfhv4ZYa2V3m3Jjan6Des0HWznN2rtTw4JuW3u1FbWITkwk07o2RVhGW9T
-	D1fOYRjb6ihQt4hqKsWlaI92pa8LFDAeZiewIEjAmBJI=
-X-Gm-Gg: AYBFou23qdnI2NWvaZp8mf/K6Icq3ejeHaXPibeXbFvR1IN5IbvyE82HmdfLTCA5eXi
-	ABx73S1BB0uN/XT5sX/7EtR6dW8ZZUPs6DiwHO60KUmwPH6ky/1DcLNzKmuQHBeKbxZ0hybItWB
-	gKtiUvIoSFMDWn6U+cbKI0XMX/Q3x14J0eokivZd9ai3qTkmul8oUyVPfzEBhM6ON5rLJcx44yM
-	lsoDGf43Akj9HIkDTxG9mL6IK6MjrwGXmVft8mnJuDWB+oyLNYGhBTXaXGzz3xCwrWMCyIDYW2g
-	ADMkFS1H2zYnoRJsutrHw6+uu4jzE+iIfVrx+TBl1CS4RP/JiQYTAsDBJkCzM3awGZSTKWh4+0B
-	Cfk8LWvQziRGfqBup7te0Bp6vhe7ok5bKF2vCvUNQ3WA9LkEDHVJPWOf99Fa1JDivq1lk9+ExEh
-	cYpu48gS3GLWRWCyrIweWBCZZwm23XyzB1afCEDIUuCQstx/ZC4ZilYa1HEiZh7NNoMZyjtnZyM
-	JuFJxejmm2ZmqZDNJ2fivSEtPGKq/y2rVovHShY968swWWLQ/LVdZCUO60+qDnD2GJ7kyEWyT5m
-	Xp3IwNPfMewGFlqE6sU=
-X-Received: by 2002:a05:6808:1a02:b0:564:22ae:a68c with SMTP id
- 5614622812f47-56b968c7f46mr3958629b6e.13.1794444957543; Wed, 11 Nov 2026
- 16:55:57 -0800 (PST)
-Received: from 202080787392 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 11 Nov 2026 16:55:56 -0800
-From: =?UTF-8?Q?Tom=C3=A1s_Senart?= <ts@perfloop.ai>
-In-Reply-To: <CAO9r8zP1o+L-akRDJx80bgGj8bf9rdN09t5upPfkduSmNKwpKQ@mail.gmail.com>
-References: <20261112-zswap-zero-limit-v1-1-19f33081b09e@perfloop.ai> <CAO9r8zP1o+L-akRDJx80bgGj8bf9rdN09t5upPfkduSmNKwpKQ@mail.gmail.com>
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=godrn0AcTpKNoux8k0g+v99edPET2QoTMO3KwbRZ7w8=;
+	b=BN8gicVUmFOu678DkJ6T9OwY0BCxvXvJwXWY26Vg/DXUhFeuuDEnmfiEP2HNTssprIp9EV
+	e5vEbaC1A/zpbUTmnVDgeGMr946jY7DmKl9FQpJ10J+79bzXcV4SP3QcYw/VTGVBZly9cx
+	ie2TtJPqf5Mc5gExNeyZWOCwzECqrEA=
+Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jQ2GM51XNzVcB5;
+	Thu, 12 Nov 2026 09:04:11 +0800 (CST)
+Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jQ2GK48TJzVcB5;
+	Thu, 12 Nov 2026 09:04:09 +0800 (CST)
+Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
+	by maildlp1.hygon.cn (Postfix) with ESMTPS id D9B8BDC2D;
+	Thu, 12 Nov 2026 09:04:01 +0800 (CST)
+Received: from qiuzhiteng-2U-Workstation.hygon.cn (172.25.64.90) by
+ cncheex04.Hygon.cn (172.23.18.114) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Thu, 12 Nov 2026 09:04:09 +0800
+From: Zhiteng Qiu <qiuzhiteng@hygon.cn>
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@kernel.org>
+CC: Ying Huang <ying.huang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn
+	<joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
+	<gourry@gourry.net>, Alistair Popple <apopple@nvidia.com>, Xin Hao
+	<xhao@linux.alibaba.com>, Dave Hansen <dave.hansen@linux.intel.com>, Yuan
+ Zhong <zhongyuan@hygon.cn>, Shifei Ge <geshifei@hygon.cn>, Jianyong Wu
+	<wujianyong@hygon.cn>, Shijie Huang <huangsj@hygon.cn>, Yibin Liu
+	<liuyibin@hygon.cn>, Fengyu Wang <wangfengyu@hygon.cn>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, Zhiteng Qiu <qiuzhiteng@hygon.cn>
+Subject: [PATCH v4] mm/migrate: don't batch the TLB flush when there is nothing to batch
+Date: Thu, 12 Nov 2026 09:03:57 +0800
+Message-ID: <20261112010357.2739389-1-qiuzhiteng@hygon.cn>
+X-Mailer: git-send-email 2.51.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 11 Nov 2026 16:55:56 -0800
-X-Gm-Features: AclHuK8o7gpgV7y1WpVmcJ6YTUQp2s3lnYXN5gQ-xE1Y6TctG_9wPrkhGrG_MY4
-Message-ID: <CAEEBa3VA2vycMaRCe4K-qnO3SGCuvAqhECmjmk6PQC3xxERiLw@mail.gmail.com>
-Subject: Re: [PATCH] mm: zswap: honor zero cgroup limits after successful reclaim
-To: yosry@kernel.org
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, nphamcs@gmail.com, 
-	roman.gushchin@linux.dev, tj@kernel.org, chengming.zhou@linux.dev, 
-	mkoutny@suse.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	mhocko@kernel.org, shakeel.butt@linux.dev, muchun.song@linux.dev, 
-	cerasuolodomenico@gmail.com, linux-kselftest@vger.kernel.org, 
-	shuah@kernel.org, cgroups@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: shcf8suo4pzdgapg4xd7umedf9hffbeb
-X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: cncheex06.Hygon.cn (172.23.18.116) To cncheex04.Hygon.cn
+ (172.23.18.114)
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C44F2180004
-X-HE-Tag: 1794444958-572050
-X-HE-Meta: U2FsdGVkX19ydwBaMau+qPeiwCdAklLKe+e+S8txx6nJNX93CtEvgsFmPb1EYrrwFhGArZYFDk+oDug0wPPDLYch4XJesAxoyvK+wq01x/JaD5I/E8h8TITGclDaS2KgVbgz7Tp7EbeIe5Vs4NnDT2dVvyDxX5GhGv0B4CkRKYnGq6PzyNMmzOJEMyKVhj58UW0vDrfgneiNvxYU4FT0EA+ntIKrQu0HbUlPnOYeSO+3KbkLsPCi4Xac4i38AVtepww3zYt1XN6Jn0+0jqS8BA6tntSNVfDWYwxMgJLPf7Bxzi+DvjdToz85KdI++mzjO6poKO9mQOqgaGPzRQVnACQCrhegNkfLN7RLB0wcNoWQCRALun1l2ZYxUxInvwGJhjs4QhQ0cFiuY2DrWtF10DUgSh5w5BG+grtCZZL90XfW0PI2Zym7Ml3XfvrSlz2u3CpNrnrj2lMv0bnVG1WoAYv+B4uodWaLlohG7B8gPbOhOm8dvZd6WxCTmmLKtGaIE7aoezLYYxThw+IU8zDzfdT23/k7nmdoimj4VIrzB6sDbCj1+qn9+MS4BVl9gAH6w8CYamzjrlLIqNy0AYmYDhBUR/bCmzvD03TnnpHtyevx2d0pPyDxy8IVXhrqG9UnQ+uiaT5sVI+b6MiOOoSc1jZdZJqtrxyzTewQ4TC8FgjR3ikz5h3VoFE31jJDHnKzINLqFCFXZ2Fhvd/5QckQoF94so/yD9/5bACm/inKznlNo0WYY+UF+rWT5WzGlK8H3olivsT4ExBWswxm+EJyN4coRafHgMVLt1DBtIDMI9y8q3mJzbXH6u123Ap0s2/vwDH/1kEIDKlWrEHEfYogA98oZo+e7h3QzWw3+M5vOKyJ/rnEvx1ofJTKVB6c1auNqNmEBQMnrkVRKpFV7ZJ19aKWWm8i5e8IQq7w6/wQ7cIYcBL38QT/mhbtOp8d6ZJQuJ+nojzooMYehmcNFVS
- v12qIGmi
- QNHUUGU5wop5V9wthvGmiGQ677jdjZyAUiMnL4QNaHnsiZci2jgsxW1vj/e5eA9jwTaeLbOv35w2Q9gzsOiDHJAykxcx9xCz5yhU/bG89GW3COBE7vXLaXRA8kE8N6UzzvDszrgu2+Ebol+/pk207dqqdxg8AiknuqNhO91jylpdljtN3661BNP9YhH9dZawLgUNieDUJXvYg7le4HKGV7AoEPvEE/uL5aoCKTquG1t4Vie111eACJluCd06kRg1Fr251dlnousxW+FWAnRv+iBGwZPLKtZjTDaN5GrsTGqCZiPCLmsYezTX+3iZ7ZgwPQzjdMAlEgDYcHIZ70xBNv5Nap0Bjhx3k7L34WiTMiEkuHrta/aqCw2rQuAr9zWfMkuWvJy2yf//5XHc=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 43D9B160007
+X-Stat-Signature: wc6grt84j8w7wnb5y5knd66mcigb5atm
+X-Rspam-User: 
+X-HE-Tag: 1794445465-273848
+X-HE-Meta: U2FsdGVkX1+MRF4XxeGrMxVu2WKQ+bmZjtkOw5fY3Pqb7fc44a3OYg+B5j1KVVsX+D2yhpqNILa5LeQRNOTqJ9urX11qnbotnsgcTyv86djhlaOEuQRMMtPbQwOBtF3x4pCGQt2ONAVngwEd4oJRdjw444gvMdH6e6K6OlWR0mLvv0Ornbz4kcyQSIMiMN45ge5d3SRvKhkyVS3x7ry8CBXStGB02vqLo3AaZY3yNImJFvRvsbdxlLknFi4fVwLw+51qMFy4w0pKMhFDMNg1cjtZ4UuomJ4xzOwAsC72lhMzhW5cdzIjVpxeK0rlxkP1LoMyB6gfm5OBrcE/Ul8dl8VBGEWigRUxp3Ph0i8xAkrdJ+8ImKILE4CHR9HJCpOdeEL/SSxp/Plnt7Mh5F9s+tD6UR9b87XPZ7x4nGUubPpTInULluPrKWO+qPQddBkMLwSV1jlrFVxVL6/dZ8wupmWLPwcmm13cIGkPCrJ+kpOa7yoyImY+iB4JUTz78ivNIMfR5mc1SP5nPM2MP1IaTO2rg0QZcXPFpt8GS/XoBx5Zjz/lfUFK8zh6ezFfbTj8RlrdrX3MH2ILkBdsGOAY56nWAnhnNSkDiIDiEl6j1+kL/J7vw3c4yzpRCvGXWXK8/a88TS1zWWZJjpsD4yV8Jr653w4MP5JhsVfjroFBGIIUjwE60vD9eS9FspJQYedkSCN7QBuHWYF/adq37mg6aQHgTzf+d8VDTQiakbmyg0IeN1BimzeWrXnhtqvbQ4YvjZeSazdWTIR9gU0hpJ64kWVit2iipioD7JlytSvt1wkzDBuF2+tVHDmlOEk1VzxoAjif0SiVQH0sfV+aK7HvOoF4HOtW0SJ/zla1+Ee3P7OqCA+R79qzN2FyHYI2WmdzeSQnmTqO5GO39jD8GRUWHLT6mep8g0NJdGROaOV51+eOGwUpS8IwNntThbHSOFAtPR8wUZPS7826nH5JhoN
+ 31Ew+lLv
+ YB2TGVAiiaIkBjDKbDa+hwRpNzGJOj71EPWy2Oylg7wn6UO/rl9k7ja4StRvb+fHdD8fJgCwj0cb0cg1SbTqoVCI21d76dPHQMcuuYUpwzj8LhNNjAOT1jFaMwr8pmvCJqUou+7qdfe5ySuoKZkOM2GtLAQdsJqftjBkydj24QhUr1rOaVAOO8mLn5IHhjAMcUIUaA2JonxnS2HmK+x3LmJUFXERtpRRAE0TpaMFv2d1/JrwZIy7c9noXeo+ZLg1/zRv4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,17 +98,161 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 12:28 AM Yosry Ahmed <yosry@kernel.org> wrote:
-> Why is that a problem? Setting memory.zswap.max to 0 while the cgroup
-> has active swapping processes is naturally racy. The limit can be set
-> to 0 right after we check it again anyway?
+NUMA balancing migrates one folio at a time, but since commit
+7e12beb8ca2a ("migrate_pages: batch flushing TLB") it still unmaps
+with TTU_BATCH_FLUSH like any other MIGRATE_ASYNC migration.  When the
+batch contains one small folio mapped only once, there is nothing to
+batch, and the batched unmap can leave mm->tlb_flush_batched pending,
+so the NUMA scanner's next change_pte_range() can call flush_tlb_mm()
+before changing the PTE table.  With migrations running concurrently,
+that state keeps being refilled, and on this workload the scanner
+often flushes the whole mm as it walks the PTE tables.
 
-Agreed on the race, this doesn't try to fix it.
+This slows scanning and keeps mm->tlb_flush_pending raised longer.  On
+x86, a migration that unmaps a PROT_NONE PTE while
+mm->tlb_flush_pending is set gets true from pte_accessible() and needs
+a flush too; with batching, the resulting arch_tlbbatch_flush() is a
+full flush.  The two feed each other.  In one run, 33% of the
+migrations overlapped a scan pass, although passes covered only 9% of
+the time.
 
-The case here is different: with the limit already at 0, every store
-writes back an old entry and then stores the new page anyway, until
-the pool drains. It's bounded, so if it's not worth a special case,
-happy to drop it.
+On a 2-socket, 384-CPU x86 machine without INVLPGB, with v7.3, a
+120 GiB anonymous working set on 4 KiB pages and 384 threads (three
+balancing on/off pairs per kernel):
 
-Tom=C3=A1s
+                                     v7.3          patched
+  throughput loss from balancing     13.0-16.5%    0.5-6.3%
+  TLB interrupts per migrated page   202-210       12.7-13.6
+  average scanner mmu_gather time    ~90 ms        ~6.7 ms
+
+The mmu_gather times were measured in separate instrumented runs.
+
+So don't ask for a batched flush when the batch holds a single small
+folio that is not mapped shared; try_to_migrate_one() then uses
+ptep_clear_flush() for each PTE it encounters.  Large folios retain
+their existing flush behavior.  migrate_pages_batch() computes the
+flags, since it knows how many folios it is migrating.  PMD-mapped
+THPs are not affected, since set_pmd_migration_entry() flushes them
+regardless of TTU_BATCH_FLUSH.
+
+Signed-off-by: Zhiteng Qiu <qiuzhiteng@hygon.cn>
+---
+Changes in v4:
+ - Compute the try_to_migrate() flags in migrate_pages_batch() with a
+   helper and pass them to migrate_folio_unmap() instead of a bool, as
+   suggested by David.
+ - Go back to v2's check, limited to small folios, using
+   folio_maybe_mapped_shared() as Zi suggested.  folio_mapcount() would
+   stop being a good hint for large folios once try_to_unmap() batches
+   them better (David).
+ - Shorter comment (Zi).
+
+Changes in v3:
+ - Use folio_mapcount() for the check, as Ying suggested.
+ - Cut the changelog down.
+
+Changes in v2:
+ - Pass the try_to_migrate() flags directly and use single_folio in
+   the VM_WARN_ON_ONCE(), as suggested by Ying.
+ - Rewrote the changelog after looking into why b99a342d4f11 does not
+   avoid the flush here.
+
+v3: https://lore.kernel.org/r/20261109122915.2150586-1-qiuzhiteng@hygon.cn
+v2: https://lore.kernel.org/r/20261107143456.1590658-1-qiuzhiteng@hygon.cn
+v1: https://lore.kernel.org/r/20261106041628.1177963-1-qiuzhiteng@hygon.cn
+
+The table was measured on v7.3 with the same check as v4.  On mm-new
+with v4, three balancing on/off pairs gave a 1.9-2.9% loss and
+13.2-14.6 TLB interrupts per migrated page.
+
+I re-ran the tests on v4: mm/migration selftests 6/6, LTP move_pages
+and migrate_pages 14/14, 30 minutes with compaction forced every 30 s,
+and 4.5 hours of NUMA balancing racing with fork(), MADV_DONTNEED and
+move_pages(), 4 of them on a CONFIG_DEBUG_VM kernel, all without
+warnings.  Splitting partially mapped 2 MiB THPs during NUMA migration
+still gets the batched flush (0.115-0.120 TLB interrupts per migrated
+page), and 64 KiB mTHP and a MAP_SHARED mapping shared by two processes
+behave like base.
+
+No Fixes: tag, as this is a performance trade-off that has been there
+since v6.3 and nobody has reported it as a regression.  Happy to add
+one if you think it should have one.
+
+ mm/migrate.c | 29 +++++++++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
+
+diff --git a/mm/migrate.c b/mm/migrate.c
+index cb699ea59d33..8eb14b0a5d73 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1218,11 +1218,28 @@ static void migrate_folio_done(struct folio *src,
+ 		folio_put(src);
+ }
+ 
++/*
++ * Batching the TLB flush only helps when the rmap walk can clear more than
++ * one PTE.  A single small folio mapped once has nothing to batch, and the
++ * batched unmap would leave mm->tlb_flush_batched pending.
++ */
++static enum ttu_flags migrate_ttu_flags(struct folio *folio,
++					enum migrate_mode mode,
++					bool single_folio)
++{
++	if (mode != MIGRATE_ASYNC)
++		return 0;
++	if (single_folio && !folio_test_large(folio) &&
++	    !folio_maybe_mapped_shared(folio))
++		return 0;
++	return TTU_BATCH_FLUSH;
++}
++
+ /* Obtain the lock on page, remove all ptes. */
+ static int migrate_folio_unmap(new_folio_t get_new_folio,
+ 		free_folio_t put_new_folio, unsigned long private,
+ 		struct folio *src, struct folio **dstp, enum migrate_mode mode,
+-		struct list_head *ret)
++		enum ttu_flags ttu, struct list_head *ret)
+ {
+ 	struct folio *dst;
+ 	int rc = -EAGAIN;
+@@ -1344,7 +1361,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+ 		/* Establish migration ptes */
+ 		VM_BUG_ON_FOLIO(folio_test_anon(src) &&
+ 			       !folio_test_ksm(src) && !anon_vma, src);
+-		try_to_migrate(src, mode == MIGRATE_ASYNC ? TTU_BATCH_FLUSH : 0);
++		try_to_migrate(src, ttu);
+ 		old_folio_state |= FOLIO_WAS_MAPPED;
+ 	}
+ 
+@@ -1835,9 +1852,11 @@ static int migrate_pages_batch(struct list_head *from,
+ 	LIST_HEAD(unmap_folios);
+ 	LIST_HEAD(dst_folios);
+ 	bool nosplit = (reason == MR_NUMA_MISPLACED);
++	bool single_folio = list_is_singular(from);
++	enum ttu_flags ttu;
+ 
+ 	VM_WARN_ON_ONCE(mode != MIGRATE_ASYNC &&
+-			!list_empty(from) && !list_is_singular(from));
++			!list_empty(from) && !single_folio);
+ 
+ 	for (pass = 0; pass < nr_pass && retry; pass++) {
+ 		retry = 0;
+@@ -1924,8 +1943,10 @@ static int migrate_pages_batch(struct list_head *from,
+ 				continue;
+ 			}
+ 
++			ttu = migrate_ttu_flags(folio, mode, single_folio);
+ 			rc = migrate_folio_unmap(get_new_folio, put_new_folio,
+-					private, folio, &dst, mode, ret_folios);
++					private, folio, &dst, mode, ttu,
++					ret_folios);
+ 			/*
+ 			 * The rules are:
+ 			 *	0: folio will be put on unmap_folios list,
+
+base-commit: 56b90edee105e976d4870b9a048e6965dc0eac56
+-- 
+2.51.0
+
+
 
