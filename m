@@ -1,103 +1,84 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E4C7606A33A
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 09:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6446606A327
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 09:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ig67/Q5U
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fo4I2LHA
 Received: by kanga.kvack.org (Postfix)
-	id A2D086B05BB; Thu, 12 Nov 2026 04:28:34 -0500 (EST)
+	id 85C426B05BC; Thu, 12 Nov 2026 04:30:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A04BB6B05BC; Thu, 12 Nov 2026 04:28:34 -0500 (EST)
+	id 833FD6B05BD; Thu, 12 Nov 2026 04:30:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CC726B05BD; Thu, 12 Nov 2026 04:28:34 -0500 (EST)
+	id 722466B05BE; Thu, 12 Nov 2026 04:30:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EB616B05BB
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:28:34 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 57309A051F
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:28:32 +0000 (UTC)
-X-FDA: 85425941664.26.E99B567
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BB9D6B05BC
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:30:41 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 43645C02AA
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:30:39 +0000 (UTC)
+X-FDA: 85425946998.14.1A3C14F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 89C2BC0002
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:28:30 +0000 (UTC)
+	by imf10.hostedemail.com (Postfix) with ESMTP id 44961C000B
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:30:37 +0000 (UTC)
 Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ig67/Q5U";
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794475710;
-	b=oATOepP5Zxn5fZ6fLvqiM6feBikPfNfGAuXepOfR0TtZOQPRCJ/E5dCjijTkt9hQTlwZd/
-	2vj1JobeYm07vIOAC7618148ECB90oP63Tx1JsgHzQuaF3REHM2kElEa87CFKo4q+9gVW6
-	i1CUENNl0m7VRHodoIKmevk09j4hEhI=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ig67/Q5U";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fo4I2LHA;
 	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794475710;
+	s=arc-20220608; t=1794475837;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qhziwyxwKo5hta1/ka+DLwPNn82EMgx5i212ZpmjGxc=;
-	b=s3sLERTFDsuV1dM7lFhcth408bKGplBgKbVUPHp8SJbpp2dXEGNk/ESfrS8foynWtGVtK7
-	lHET5ODsTauDMJyVZV/bzTz9jrkR+mv9ZmxPbgUhTkMkbY6hwBtZLxy6SLZycZJNvafz7c
-	dtGWQLI0W3gMrobeSSWo2bxP0+P664o=
+	bh=0e9G5NVEpupIHAFHHKTSoDANySvZv3eOPYAS0FitsYQ=;
+	b=nuAcE1AvlYNeIwD9hoIv2cugYbIUoNCzUouE40sWugfVtzg0GuvZgpJwstbxcaV4fLCqWR
+	2rnOlZVKd3ALsVe6QdGnCGhvdl1IYrtReYYbuOhAn1gLOCRVzwiBORRlUTyP1N1Yirak7b
+	GjkZjS8+7zG4V25P/rQli73u3ewLRtY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794475837;
+	b=oOf7vxKbfu36RBp9Pl5WXjlBauyC2Et8rggBYw2ToApjNmVU3uhREY12gH8ord7wRCl95A
+	64HvmFm4FS9NBaWBPkSknVX4k0itSmwliluTB5pc/BAzwnFJJ9/hHI46ghqUi6UWtA1mKX
+	gQoottwjknhK3krv+lDkYfU/NqNnLaU=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fo4I2LHA;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EFFBC4006C;
-	Thu, 12 Nov 2026 09:28:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3221F00A05;
-	Thu, 12 Nov 2026 09:28:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6BA334086B;
+	Thu, 12 Nov 2026 09:30:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E6AC1F00A05;
+	Thu, 12 Nov 2026 09:30:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794475708;
-	bh=qhziwyxwKo5hta1/ka+DLwPNn82EMgx5i212ZpmjGxc=;
+	s=k20260515; t=1794475836;
+	bh=0e9G5NVEpupIHAFHHKTSoDANySvZv3eOPYAS0FitsYQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ig67/Q5UyR7u+l7reMcBd+/6d+1hZBrZuflvI8fVlnKGwRPGSovuLhYFlD2XwshDx
-	 k4tWIwIpZxgVS+CnHDuNFmwz2y0IQR3KTMb/WgVe+IP5VJD50E8CqJuLwUg4OFGy7J
-	 /TdABenpbG+NFE26X1Tm6gzyn6qutTdeFFLriGI/xhqj9QTek90gHYvZIWgj/2lFXG
-	 2LildKJmwvPv8iFpkgWQS+ehmyT34Fvl+PtVOquGQFCrgIzpmgEXqq5UL/M8eqPCDe
-	 GBAG5HSArBfaL5Jmk6mQ/h0lgMQxHl0tiz5Vcr7wEwYGUgZ9RYFsQdEK4W/u5oxatR
-	 EKcCPEcC8JG7g==
-Message-ID: <4d6a3d68-3fc7-446e-9f59-f61d7475e22e@kernel.org>
-Date: Thu, 12 Nov 2026 10:28:17 +0100
+	b=fo4I2LHA0zZl3knSLUeE0hRwvNc8XGv3Rg43/4BSErdYyntyj/sQ6Ouwk/u11bS7I
+	 lsd8aAtZ5KVuS/TOcdCMY1l0D5xG2QF+dCvVihKbdwVK7N3JRwqwfW8KsjxGkZySse
+	 4ZA7s454jngOb6cVLoif5+oUxq5/+u6K0dDYnCtCYqw1Hs4zUpg7/RFD1oObuBjR0M
+	 Fl9uqQEooRA7IxoJdZ9McqawAogG/BgIM4ZH1/dZy2b/SAlSMkuvf6BagIu1seecRL
+	 RiyMUUys9qpxM0hUIK0qtH3POk8zrhtTFEap/7Ahh/fFFPfBz0fig0/ImKOB2KxQhy
+	 clRzy5PKMQUKw==
+Message-ID: <cb492eeb-62d8-4a31-9b67-1ef2ac77c381@kernel.org>
+Date: Thu, 12 Nov 2026 10:30:29 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] virtio_console: copy pipe buffers in splice_write()
-To: Arnd Bergmann <arnd@arndb.de>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Christian Brauner <brauner@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>, "Kirill A. Shutemov"
- <kas@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Miklos Szeredi <miklos@szeredi.hu>, Amit Shah <amit@kernel.org>,
- Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>,
- Bernd Schubert <bschubert@ddn.com>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
- virtualization@lists.linux.dev, Netdev <netdev@vger.kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- Malin Jonsson <malin.jonsson@est.tech>, Richard Weinberger <richard@nod.at>,
- Geert Uytterhoeven <geert+renesas@glider.be>, Nishanth Menon <nm@ti.com>,
- Frank Li <frank.li@nxp.com>
-References: <20261110145241.536019-1-kas@kernel.org>
- <20261110145241.536019-2-kas@kernel.org>
- <avNuQqLf9CG9dSsE@casper.infradead.org>
- <20261111-heimreisen-ungeziefer-empfunden-a892571f2c07@brauner>
- <20261111-thunfisch-wirbt-waldrand-822275b2d3b1@brauner>
- <CAHk-=wjPY=kfgnmtx4COEQjD5UzKx9m2-=KLGAZP4d=RKEH+pg@mail.gmail.com>
- <20261111-stumpf-montag-miterleben-c4e2feac8090@brauner>
- <CAHk-=wjGXBnme-N+HvbzHH40ftb7Suc=kZVT5cuintQWyMHJ7Q@mail.gmail.com>
- <e94bdf7c-eae6-4f64-bf93-0aeedca1a22e@app.fastmail.com>
- <32ad880e-5946-4703-9c6f-43ff59da39af@kernel.org>
- <3eb60948-8fc9-4682-87c2-c113e54e7d4e@app.fastmail.com>
+Subject: Re: [PATCH v3] mm/memory: refuse to map page cache folios that are
+ not uptodate
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Pedro Falcato <pfalcato@suse.de>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Hugh Dickins <hughd@google.com>, Chris Mason <mason@kernel.org>,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20261111182445.656620-1-kas@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -144,21 +125,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <3eb60948-8fc9-4682-87c2-c113e54e7d4e@app.fastmail.com>
+In-Reply-To: <20261111182445.656620-1-kas@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: eu8bhpmrfmshbah7b6bu7kpujuasweu3
-X-Rspamd-Queue-Id: 89C2BC0002
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794475710-570903
-X-HE-Meta: U2FsdGVkX1/F6UmwVg/mpPA631OnIjH0AreXDd1FHSrvoJ9RCvnasxLRrDitSikxdfQAL2UZ2LC+HZ3ZiUceLZboR07m46pJtnsS8dAYL1fpwruuQX6AK4NxRk1eLENu1OOC/e7Gy/wi6hA0nDYDbdOFY6iWYGU2hLmmf5anRvmYrrZw5EvgM5BEDjaqdMf7adQ2UXhsLrgQvVu+W4zhAmxy8KA3y7UfFodp7mDeKtZTekZkSYtLLu1qVhmrunQFAMgbExOojHHp2SxfzIv06R3Ure6SlVdud3dzJHqytwKXxNB0Kw+VowMs6uR4taK96lkBzy0XUnjPor46FnJmu1cUFwZNZ6VGME88d/1HbpiWKt5wbpvSbx1dOclnpDmFkrCQnwMiy3cUpNoE4F8Ya6Jhs3wE5ujCcE0dwN4V0wbyc0bdGvbtKRk8Yeu0A0MO1QyJ5lt7cXL6WEGERoPBdee2irWPz+liiCVVekbjAWcrI78dR73gqi7GQRDUg3dDq9nS1jAjnR6zaf3MeoBf9NzmZJtmu7xMq1A6BrjewSay/9G5oATd9XUiYjrmuWr79A95+LPn2B6N0v7uzn5fTjBezdZRsIhXMrxzfyu5mY2XuTUEVlL4tH5Kb8v2Gmqlb7BdKo+1CUqjMgNhXR/vlb11xa2pbwWpgVuaIV6Plej47YKIWxQDapvkChO+/uy1+j4my+i7ghs9zBMEfuUDG07HNp+cdHPP+hjGoBg7wG5mHH6QB7EshUBHSXhYAm/mNdZIAMWnJjMsAQqIHlX6ZzP8wYrZtL2kE2WHUAT4rh7ojuggnDHcXylN12ZBEcSlNHNCBKpTUsaJilHV0WC52VwWq0h/0z8qd11yr9QNQicdaRhKVLqxDgMq5YTHSov2Agq/xcKpiJkoOMcYAyyuKNI6lM9nOZqCrYvyPDPIVKMWgOyzrU84A26RcLWUamyjah5ZnxxvXkchqgBadLu
- WUTQ0Tbq
- GwSl2HJHJYjOdVhyf84y8qz747R+DRi0kPo6V7fr42r1TiUJ5scp+xIMG/D0Rja6ST5xNeAKhEbl0n79Ze1XyzlV61h5yIBb78sr4PXciH6D4jORN0MJAxJMr3dLZqpEFPMK9D/dQMVM+lqZN790upieAudHWHmZwz93QD7zoiTen+67oh+4qRnrm5NQi7vYvL9NkBLaeE8g9ZQPZCqhp6j1lWXIYeN9I5IIJ5WQKim2sGGBiZ0fLlOu5Aeg52MTaN7WXhDLw7FRBJkNSPTO4G9Vwqn1okBobU4rfjJbDK7G2yqDrmRcyzcS1zilaM+U0x6PimKcKqTgCyDcnpupt/LeIc3wQqA8N5kxVY4btb54r54DNsq5WHXlaO74PbiXqklyNR+mMJd4UBhh3MK7ZJNeUrIYfgsQIoYrk8jTzpdfgNIv+vjoDqaOet0jwI8U7fCT+a7cQZOBzD3H4HhpR7ACREb0yDp0timVUU5XUkrnsn/1Xf1atpPqrZ+zHYCBYjHUp
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: n6g5coue16ir666ikx5zw944x6onq7be
+X-Rspamd-Queue-Id: 44961C000B
+X-Rspam-User: 
+X-HE-Tag: 1794475837-254167
+X-HE-Meta: U2FsdGVkX19Y0zkiHkR6YTlKxl97vFbqAvADkVeSo0KjEnbN4GYsl9IgWJEGK7sL/diTI49FuYA4TUMj8TbYUzqyp+kWIbngSbiRDsPOZlEA79Iub9Fj3jzVvkxncI41otAXX8Hi0wa1lsYXJG8mDhDCBqXETvsOBxWVgYfe7SOuLhQ8YEEw7rRneb2Mdi62wTyPuvIDOQvqRK+TdzE1tYRNVzjk29fhU4P7OGUWSooxG/m54z1uQPWXNHjZ8htaqP0bfuwHhVdGxN3j3vEIv3j9XtJlfUxgV/felZPVDfgDqRku8umH0j9yjJedtduqyd4fiPHIfWemdSi85cWuBcnZD3U3Bt/r9v14F40uIIehmYIfMRHQ7usHOkbXZ1wB3Z4ruO+hEnk2A7twCC/B3DrR3txCkkVc2ZKfkS2QfrtbNtnz3mg50ibN7lBAaFh2iK0xqTNgXRLL2Cx2MNLOMYNC+xKAIIen08NmfQOF67B4tVf8DRINvQD/7+5xS9fDSsi1uYAa3k/UqMOQObDw2bPggksvAspbCfDxo+GGhY02kFf1tieLyPlnwaVakOR1XLZd+HX4t+c4e811de6KLpyjwCXsIO0X42sRGjky8rV7jOtEJp69czfXsasp1A/7GAc9u4F0McmwVK5djubOp+LfW0gtFnQCVQo4wf/SP2ZfTVG8pZulPWNUkuc2HwzMt/LNsTxSTlMbbv18/8AQFUyjgH8WNjwKq9kW6AEi5ewpP+HFo0Lpoaha8ejjS3Ex2MsjNjMlzNSQV9KosMpQk8lfj9ou/EKG8PEqBKb5GgxuM41QOuRzs0L5voDz2VcwE/ERrhzf2tFqAzORlNhkfXv2z071maJK3X5KYNunqgMJ/n9IiC8y6csHkYFX+tXiP8h0b5WyMM7J416YAWgw/sxxbOspfYqeq9tI/twNIJgeTuW4b9RXK0lAtwXI5i2309mtrnOoiYnmM9DyBrs
+ 7Q8U2V1C
+ EaZ7u7bflGKfUI/dICZZzXyYmOg5nIln6UfyVlr4pSN4V+nzmpFJ5nyCzi5m7FVVF++jPmXxDESqYS2WjpCwKnjPQo4A4vq3NtWc7/ftZte0P1tIwuHJctE9hb2Z5afg4IU6Hg5s/qCUByuLvrkDBIoCkWbXHVGZhOXpumdonuovDyyTT9WtF4oDprZTPwIYJzDPnkl4cCIGctgGnFEFVUjvE02OitgQNtj6JroLU3AVgeAhS2vB2IvVHWad9JAencYeDqsiqTQdm7iessDGwSHpvX3rBnwj+7FIR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -167,32 +148,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/12/26 10:25, Arnd Bergmann wrote:
-> On Thu, Nov 12, 2026, at 10:09, David Hildenbrand (Arm) wrote:
->> On 11/12/26 09:55, Arnd Bergmann wrote:
->>>
->>> I tried to push for what I thought was an aggressive timeline
->>> last year, but that would still keep the Arm bits for a couple more
->>> LTS releases and only gradually reduce the scope of highmem in the
->>> meantime, removing support from architectures, file systems, and
->>> drivers where possible. See https://lwn.net/Articles/1051010/
->>> for a summary of my talk in Tokyo, including the slides and
->>> a link to the video for anyone wanting more details.
->>>
->>> I also prepared a number of patches towards this, but have so
->>> far not been great at following up to get them merged, sorry
->>> about that.
->>
->> I think we can already start at removing CONFIG_HIGHPTE now, right?
+On 11/11/26 19:24, Kiryl Shutsemau (Meta) wrote:
+> A page cache folio that is not uptodate holds data that was never read
+> in or cleared. shmem fallocate(2), for one, adds such folios and clears
+> them only on first use. Mapping one hands userspace whatever the memory
+> held before.
 > 
-> Yes, I think my patch from two years ago still applies, see
+> Each path that maps page cache checks for this itself: fault-around in
+> next_uptodate_folio(), a fault in filemap_fault() or shmem_get_folio().
+> Nothing in the mapping code does, so a caller that misses the check
+> leaks stale memory silently. MADV_COLLAPSE did exactly that with
+> fallocated shmem THPs until recently.
 > 
-> https://lore.kernel.org/all/20241210160556.2341497-4-arnd@kernel.org/
-> https://lore.kernel.org/all/20241210160556.2341497-5-arnd@kernel.org/
+> Warn and refuse the mapping in __do_fault() and do_set_pmd().
 > 
-> If not, I can send you an updated version.
+> __do_fault() checks the folio ->fault() returned while it is still
+> locked. For CoW, that is the page cache folio that do_cow_fault()
+> copies from. do_set_pmd() covers MADV_COLLAPSE, which maps without a
+> fault.
+> 
+> do_shared_fault() then unlocks the folio for ->page_mkwrite(). A
+> filesystem that clears PG_uptodate on a folio in the page cache is
+> buggy, so that window gets no check of its own.
+> 
+> The fault gets SIGBUS, as for a folio that fails to read in.
+> MADV_COLLAPSE fails and leaves the range to be faulted in.
+> 
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> ---
 
-yes, please, that also brings it up to reviewer's attention :)
+Thanks!
+
+I'll wait a bit for more review brefore applying.
+
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
