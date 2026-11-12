@@ -1,117 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E14606A327
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 12:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21714606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 12:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mykMNeh5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QprEbjuf
 Received: by kanga.kvack.org (Postfix)
-	id 6DDEB6B05B0; Thu, 12 Nov 2026 07:00:27 -0500 (EST)
+	id 448986B05B9; Thu, 12 Nov 2026 07:01:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B60C6B05B1; Thu, 12 Nov 2026 07:00:27 -0500 (EST)
+	id 41FDA6B05BD; Thu, 12 Nov 2026 07:01:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F3636B05B9; Thu, 12 Nov 2026 07:00:27 -0500 (EST)
+	id 35D1A6B05BE; Thu, 12 Nov 2026 07:01:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E51FF6B05B0
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:00:26 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 09DE912057C
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:00:26 +0000 (UTC)
-X-FDA: 85426324452.24.E41177A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 6D81FC000F
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:00:24 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mykMNeh5;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 11D346B05B9
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:01:44 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B1D7B14055F
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:01:43 +0000 (UTC)
+X-FDA: 85426327686.20.E47009B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C27C210000E
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 12:01:41 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QprEbjuf;
+	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794484901;
+	b=hhGOvVg+oWe7/yzC5WTqqAIeKVI0DbxQHGmupPtOS/3J+ZDWTvMI+/z/g2wfEYHtsD2wYv
+	hsOcaMphsmGu3nVA5kIu60q7pBqmkL72/AzcjGd85HIYEkSqNGvzseRKz0re7siMz5AxbN
+	q73ewx1jwjbLolfnClf96nXXN/eGt2o=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QprEbjuf;
+	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794484824;
+	s=arc-20220608; t=1794484901;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wTN3UxTT/XXw7NH/F07ZSE1+SznsV7bVJZdXlw3Sm0E=;
-	b=5O+XW2RcQkp0irLfIHPki84ucMEZWRiafIlput8lEWnJiJrzfMc2gKXjbgLC89TdzX6eba
-	9COjo/MqjvHN9uXV3d3kpfUEcCYtKqSnNPmOwoeuLlAEAJbye14gEy8WpJhWyeujDYu/Ub
-	bEyiQGmDxkhoeeIG5pcefAEyACeCrq8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794484824;
-	b=AibzNPp0CEEatdQwCOpSg0eJzlPc2+LH3BvtrEZxep0YXsQkk1WoNUQs3ACqf+AiJUJdIZ
-	Obp7MPm4jrOHi9YzgizA/gxVqOOMUhDIPvCout84pyLU+uGo7j/V/3nFPux34jy/sChCit
-	TXTvR19u5AAyx12CPt4XLwx9Av4b49Q=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mykMNeh5;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=54I5bKtP4WSw79RGADSyevDuBquelpIbRaI3K1RVgo8=;
+	b=OviOkt594fR9Sfg9ZV/NoSb4jrsAUjvKlCxx+Y26wmiFIhSefRlR8k/SHViFlYXMCo9fWC
+	0sxx+yh0pAZFa7X95OcpOJ+BReWmKRBU4ZT9lP+L2O15vbmkgTr0sZL6/rvMf4pArA4+IP
+	lpEJWP7xzK7E8U+3qG9e0jjqRGMO62w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E06B163950;
-	Thu, 12 Nov 2026 12:00:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869391F00A05;
-	Thu, 12 Nov 2026 12:00:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 00B2547325;
+	Thu, 12 Nov 2026 12:01:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFA7E1F00A06;
+	Thu, 12 Nov 2026 12:01:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794484823;
-	bh=wTN3UxTT/XXw7NH/F07ZSE1+SznsV7bVJZdXlw3Sm0E=;
+	s=k20260515; t=1794484900;
+	bh=54I5bKtP4WSw79RGADSyevDuBquelpIbRaI3K1RVgo8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mykMNeh5BtXxUerEKT1YuKhyGYJ7QWD8IG5KpF4NuP4taMISSoglro4vnkkgm5jw7
-	 WQS/4vwRcKImTEfxhMYZ5wbg4cf0zsqSfNSCuEwHpTxLLpdEiTkzuh28KNZeLAVJNg
-	 ZfCkbQmePV1CQjWwx2EMjuLDIhpJighraQGEfBeHC2UHTK/MwHz7f2oBCj4SrVNuE8
-	 h5IIE+hXfIdS625oF8CuXci5blOoZ0531mmkrv2ibJ2+zxzA7PXsQSYWh5mHmJWrB0
-	 v/bWt32FVQ52/8TNJggbPdO6bVuM9pAUdH6G57AlDfNOf/PKeeT3jQZcm5rv//GblC
-	 jWyGILzZ6HoIw==
-Date: Thu, 12 Nov 2026 14:00:11 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andreas Larsson <andreas@gaisler.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Malin Jonsson <malin.jonsson@est.tech>,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>,
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michal Simek <monstr@monstr.eu>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Nishanth Menon <nm@ti.com>,
-	Lucas Stach <l.stach@pengutronix.de>
-Subject: Re: [PATCH v2 5/6] arch/*: increase lowmem size to avoid highmem use
-Message-ID: <avWqSw2YrUmfAX62@kernel.org>
-References: <20261112112528.1116405-1-arnd@kernel.org>
- <20261112112528.1116405-6-arnd@kernel.org>
+	b=QprEbjufNb+tvrOa7rBrGmxplqbmNy39Rmf2KUfr+AHg8IrdqKnppWAi/6c1jQ5lw
+	 1qQwMsR8fpHwFmAmOjHt6xx/GSD6lfIfUEbOqwxFxYqpUqqxaGguK/FgeQ9b4yse7n
+	 X5Gu+V8HvIKolxJnQl0GAY0dMopIoY1Zswfa1hVJnxH54H1V2CcTIR0C3XNIO1kYQQ
+	 jb08MOlodWLAKvfmxQBVrfP5uY0qBjF050j5MxuY9KrdgN1iuTLU+0ziIbWc5XAA1N
+	 31t4iwXyBD3El+zm85fqmePh/BsB9Y9+wkUwIt81ymt+t2A7BgUdE1+/gxOp3PTE+D
+	 sGRcdsQZ5uAtA==
+Date: Thu, 12 Nov 2026 13:01:34 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Jan Kara <jack@suse.cz>
+Cc: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>, 
+	Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, 
+	linux-mm@kvack.org, ntfs@lists.linux.dev, ocfs2-devel@lists.linux.dev, 
+	linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, linux-efi@vger.kernel.org, 
+	linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org, 
+	Karl Mehltretter <kmehltretter@gmail.com>, Dave Kleikamp <shaggy@kernel.org>
+Subject: Re: [PATCH v2 04/34] ext2: don't set SB_RDONLY after filesystem
+ errors
+Message-ID: <20261112-wohncontainer-saurier-wonnen-91f30c3b3ae2@brauner>
+References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
+ <20261029-work-fs-sb_rdonly-v2-4-2f44f64f0b66@kernel.org>
+ <5qefa4mracb3x2z4vsdejmkyyfrhdcrixmmnooz4rzwcdfoejm@mqkvixj6afwp>
+ <20261110-kargheit-impfen-pausieren-881763d28b19@brauner>
+ <za33axmgzmuzsj3zmfeh43fkphtcsqtkhhrauwuvs7aiftelgp@dzl6z322st5f>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261112112528.1116405-6-arnd@kernel.org>
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 1ww39q5o3ba8htgc7mtym3hqxk6d5raz
-X-Rspamd-Queue-Id: 6D81FC000F
+In-Reply-To: <za33axmgzmuzsj3zmfeh43fkphtcsqtkhhrauwuvs7aiftelgp@dzl6z322st5f>
+X-Stat-Signature: 73u68bqotumun74azfcej8e6xq1npuia
 X-Rspam-User: 
-X-HE-Tag: 1794484824-874486
-X-HE-Meta: U2FsdGVkX19D24k4bqy83BTaAvPVYIhaOTqTjnrkSAcLy2LGWBOJ19ZkjOKQG4NT5YOKyUVXtwgL5cKaTEBRSs+gyZ5mr09V7Ai0xIvvxnovN8RIOEIn+5QbCtXRa6ZkHKKvzeHoaniSfUcbj+cCI1leZ2bBs48R3bCe68lnReK+52wF9/co+oOwF1/6xCXqUmuBICUau2Hmyje5dM/Te2exDeW4Hv2Nx+M8s4yc96/ago0FPtEb6qQUubLZslpJOkUcrxaW3oKAad7Ph43MBtPhRWEl9f4B9K5oPNIRQ2EJTzRwyJJC+61YCCYW/fmManP9nIYHl344vAAW37Sxl8uMVgbPyK2w6EPfJd3jEipQflLJOnWY56HDru9Xl4g2iXzBRrAsAy55txRSIf2TIWs62S8BspK3WWvjsAt7sDoDAA2UH0bfBHTkp1tshSMfc6j5r26LbEeC+SseN88LPk+HTpcbjEeJW5BsfeB9Q9ugUbltuuB4tvfJV07rw5mA3rUf0+ThTsOD/fzeBB2ONrl/esctxklw4PH8lN9t0q4d58QrNK8JxNxVzRuuqPz6w9Z5GejOuDBR8xLFTnPStCYLAkbGlphXh/gfF8nhoJ/AD7kbpAD7f4U4WdgRj0n7gAhUldhnPrPpCP9GhiJkhhFrzvz28mhPFU0ax/rZk5OJzVsb28/o1/Z3iz2hWlzmkPv8+4RwLGsc33pLf4eBT9dfunpmsMBwTP9beUI4cW02cUAQVZa3PE/6XQqCZLR35Tifyo4bNZGOn3gsxli+ITj6qwFtRz6DmsTOHcunNqxlOBR54ckIqGKtOdQfv380Kut5QpVQ1hyWJwt/beW6oqd4WH1+3rrx2IXS44v0z8I24vQTybGcWXDpSEDlC1AFStEfUZY6Zx3fcB80OIOmSvPa0yzIkqAlnAPvGBHlTkgA/gfd89S7mhcSUnvRqujhFyHX/dreUZhQBsur/nk
- pDO4dgiD
- 44f0mp7yO9esuiEUmvoFxxTiSN/elfNF3mephYalJ5QX4WC2LoXdpI8I0h9/ySuujviMqXkxD6TwDQ6VfUHzYaamlmCxtYtFUsuGiuXjXmeyjD3KRKfEV+GNIwM/TWy+KUa7rF7Jyl7Mojp2V2mZ65fHsMcpA+6puWn9XT2saulXRycILUPXP+QB6CQoJEM2/alBa8TGIjahBj6+Mj4jg58tUed76pnrc7ZcOoYvB+tmWZ8ZbAItRaCBjNNx9LmEDvUcCKYO6TUbNjT51hbwP3MKgDgyzSkcEWhr0DnSiEYCz+0o5f6jJIPeNx20AHjNWEhjAwVNG6EjlymWmR7NppBlKyQ066i+rKFLQ
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C27C210000E
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794484901-432249
+X-HE-Meta: U2FsdGVkX19PEON+Wa1sRNlwxquGsSvTvwq0CxtEe6P3deyX8E+0LhlM29P64KOCnCIgVIEGUynFugCHhxoXIkpVuXvt2qq0GKOmJ53oTq8/Pc8uJpMoFvU6aYMSfYjc5aVMJ1dWSZJdftA2xkkfFg5cWHmEHQIZgWpmd9h2+Ta0MLjenA8S/TlKvuAo07Lw+nJlbNc/jEzBkF9K+b2lps6B4w1non7CQku2CJbljXLJAeu9M9J/kzDdXvB4PY7dtruju4fp/qlyetz6xpT0LfsUDqIG6wiNUNXfALnnwPrz3Rafsk19eBjhVNwSxu0T5rb2nOP9pJj2rbYpkKuNMgyTb0Twy6GToDc8GwdHiq4Wq/ZA+/nmKx+6AS+HgNtLCHOvvePbg2uKN2KTx2G5S9TENMDWmpX+Ge9mNb6fU4XLC7FQ3naJdNXVLgj5gRlyk6wXi2inmSiCXmndIIz6hQcdby7TH1FP0fdtQ24EQxnpSGOVoIwjJuLeMeNsj5TtjKX3XwzOATe/l2KatFAhw3VI3Xxls/uVN66dKhHlbjLyWLfTjkImMTin1ybA5vPHH2p9HMUbc+phPJrT13TDVKZv5a8JqJWlF08fd7TmmHvlmtP1yFaYKxW6eSLpjKPy9CSM/hez+MC9CNAvzMQZRjlP8cWyHshdbajQETF0zP6mC77cAtVS9UdmSHlMIpg6yNeUHZVU/tm10k+pmjQfrKZQ/GNEusZvfD9IfLgKPDU/WG+4HFS/7MimFRsRGZ/uxsz5buTMAd1PzhEI+gg0Ut9iNsmbhN+LIKRxycvoRsDxV8O7APC3/cWy9jVrpHlRD7fe9thQH4Rn4aukeoqU1za8PyoDIJPKuvms+zVHUvVFbD5mmj91U351cocPkUwHsTePJammhWjKSNT/OAHV6PVyP2Px5fLwQ4paEZdIdgBQ3puWWN5XAanLrIEzp+Agd+1ej7yr2dw6qHQNB5J
+ KqWtplaI
+ bIv/HL2PlXl/AO8SDL42f/SZLK9TJBHpRfAuLVTVUnc3Jnx2Kq2kC1pBG+tssz3s27nRSqCJDDjTEs5/5OG/un/qRp8a2L7W8C++ricW4/lCMybKhvCpqdnqWTLSRRsTs1SzDdeAHXV+dwt2OBadOLZJRPBnsNkPX8H/EsAdG0wHxtMQYnIUmVgX6xmK6Rvqwo62VWnrJatQyT1Adkea7vK6gQ+CkHRa8Zi63X1qn83eEBKrugMJHnUBejiDXFkhDOdvv3vIKysjwMVuENzuTMhGOCB+Yk2T67/y1f/xliBrrRYIuzSFricLmUzfBajQhMoH9GGEd0qfne/avBnwuH8oF+vgkjR0yXG86gsQluIdc7zEw8VqvEXIn34856gAWDE6Xp67HyG3iGQA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,41 +103,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 12:25:27PM +0100, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> Most of the common 32-bit architectures (x86, arm, powerpc) all use the
-> default virtual memory layout that was already in place for i386 systems
-> in the 1990s, using exactly 3GiB of user TASK_SIZE, with the upper 1GiB
-> of addresses split between (at most 896MiB) lowmem and vmalloc.
-
-...
-
-> Based on the above observations and the discussion at the kernel summit,
-> change the defaults to the most appropriate values: use 1GiB of lowmem on
-> non-highmem configurations, and either 2GiB or 1.75GiB of lowmem on highmem
-> builds, depending on what is available on the architecture.
+On Wed, Nov 11, 2026 at 03:15:11PM +0100, Jan Kara wrote:
+> OK, so instead of BUGing in jfs_evict_inode(), shouldn't JFS just do
+> something like:
 >
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> -	BUG_ON(!list_empty(&ji->anon_inode_list));
+> +	if (!list_empty(&ji->anon_inode_list)) {
+> +		WARN_ON_ONCE(!sb_emergency_ro(inode->i_sb));
+> +		/* This needs helper in fs/jfs/jfs_txnmgr.c */
+> +		TXN_LOCK();
+> +		list_del_init(&ji->anon_inode_list);
+> +		TXN_UNLOCK();
+> +	}
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Fwiw, this leaks the inode's anonymous tlocks. They're from TxLock which
+is shared by all jfs mounts. txLock() also sets mp->lid and pinned the
+metapages with metapage_nohomeok().
 
-> ---
->  arch/arm/Kconfig                            |  5 ++++-
->  arch/arm/configs/aspeed_g5_defconfig        |  1 -
->  arch/arm/configs/u8500_defconfig            |  1 -
->  arch/arm/configs/vt8500_v6_v7_defconfig     |  2 --
->  arch/arm/mach-omap2/Kconfig                 |  1 -
->  arch/microblaze/Kconfig                     |  9 ++++++---
->  arch/microblaze/configs/mmu_defconfig       |  1 -
->  arch/powerpc/Kconfig                        | 14 +++++++++-----
->  arch/powerpc/configs/44x/akebono_defconfig  |  1 -
->  arch/powerpc/configs/85xx/ksi8560_defconfig |  1 -
->  arch/powerpc/configs/85xx/stx_gp3_defconfig |  1 -
->  arch/x86/Kconfig                            |  4 +++-
->  12 files changed, 22 insertions(+), 19 deletions(-)
+So the helper would have to tear all of that down like txAbort() does
+and drop the pins. Doable, I guess not sure if this belongs into the
+series.
+
+> So that JFS doesn't block everybody else? Because conceptually, once sb is
+> marked as emergency read-only, we really want to stop writeback so letting
+> sync_inodes() run seems moot.
+
+Meh, but a check in sync_filesystem() doesn't stop writeback? The
+flusher doesn't know about the emergency state and keeps calling
+->writepages() and ->write_inode().
+
+And kill_block_super() calls sync_blockdev() after
+generic_shutdown_super() so everything in the bdev mapping
+(FAT, bitmaps, inode table blocks) gets writeback anyway. All the check
+does is make syncfs() return without writing anything and make unmount
+drop whatever the flusher hasn't gotten to yet. Which might be the goal
+you're after?
+
+> Argh, also NFS I assume. OK, that won't be easy to get rid of AFAICT (we
+> generally don't have mount available there).
+
+So nfsd_setxattr() takes write access to the export's mount via
+fh_want_write(). So this would get EROFS from the VFS. Afaict it's
+ecryptfs and IMA? ima_fix_xattr() only checks IS_RDONLY().
 
 -- 
-Sincerely yours,
-Mike.
 
