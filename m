@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 914E2606A89A
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 10:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB91606A888
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 10:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZlMHficu
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YiiROZ3c
 Received: by kanga.kvack.org (Postfix)
-	id 9A2036B05B8; Thu, 12 Nov 2026 05:39:17 -0500 (EST)
+	id 842AE6B05B9; Thu, 12 Nov 2026 05:39:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 979846B05B9; Thu, 12 Nov 2026 05:39:17 -0500 (EST)
+	id 819A26B05BA; Thu, 12 Nov 2026 05:39:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88F5B6B05BA; Thu, 12 Nov 2026 05:39:17 -0500 (EST)
+	id 6BBC26B05BB; Thu, 12 Nov 2026 05:39:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 551656B05B8
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:39:17 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D422E12053D
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:39:14 +0000 (UTC)
-X-FDA: 85426119828.12.453A69B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 309974000A
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:39:13 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZlMHficu;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794479953;
-	b=2HPo0KF56OJhP6fnslgOMo914eeZ37jWOrV0Oj3xeYB3FT2RLVLJtJRsxoIqa+VYtw5OUL
-	jt0SZr2jTtknedg/2hAnCceJCrKiVMv/A5jJR26cKYULL9aVseLnuDgymIg68+N3vmFvGw
-	g9KU+nmxuHmELKXxDbXpZxhVQzXbPy0=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZlMHficu;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 38DCF6B05B9
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:39:19 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A7E9D16047F
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:39:18 +0000 (UTC)
+X-FDA: 85426119996.23.9DCFB27
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id EEA66180009
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:39:16 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YiiROZ3c;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794479953;
+	s=arc-20220608; t=1794479957;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pQGWp2+wbRGJ+dC6yywFPAL6siNGmTYONc9+D5I1sYo=;
-	b=uc75LqDqhlX5IYQOYuxD7KYkmJzkVBd/Z7bBY3eZQ/lCbSBbQmDxPH0CV/43q5v9Wx2c1e
-	cjRYpeTAIYyIGyyMn8aFkc0ODpXKII2SPFX6mtDp87dPwKaY9MvO+lE+Brljeb6kPm8XXA
-	k9UNtBOM6XcmHUwebsovJwlO/Ss8yuk=
+	bh=bWRG9mq5c0zudy8yzUdur6pFFwDbg0IZ+6kaZgluVLQ=;
+	b=tRJc6y4jfC06++pO5dZxwzsOfeBA4PqScHdFUwDGEWha9Ohijrg3W2cgl2rqJ1lWHdiEAM
+	bk3KBulDr4IP4aPwt0rU7jpmqludp1L7GWuaUdQwJ9dZqg5Z/61kpgf84BlYSVwMCQngjX
+	61ibvRa7Ic0b93LmDxDl2Nt2ncxLDxg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794479957;
+	b=w8GoU8JLHQmFr/lYtJyxEXvHROZHbdW3C/augbOlcWohJJ5M1z2L+3Zf1RzLGN21DJIhTG
+	AK7+J+PmqnB8WVNeVegvZ2vn5j0Bo5TKhse43OodegNXcN37Extei+zzRmCpZMOiCPsesx
+	XImpTIk6rbK5eOn1yLJX3E/Vu+X8X4k=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YiiROZ3c;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 08F3742BA4;
+	by tor.source.kernel.org (Postfix) with ESMTP id 952CD63A5A;
+	Thu, 12 Nov 2026 10:39:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C061F00A05;
 	Thu, 12 Nov 2026 10:39:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D0E1F00A06;
-	Thu, 12 Nov 2026 10:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794479951;
-	bh=pQGWp2+wbRGJ+dC6yywFPAL6siNGmTYONc9+D5I1sYo=;
+	s=k20260515; t=1794479956;
+	bh=bWRG9mq5c0zudy8yzUdur6pFFwDbg0IZ+6kaZgluVLQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ZlMHficuQjiF6MUrwFLyug43w6wSJLMXFXJ6483iQndymcjhhAAViAWQJbFhd4X/J
-	 YAKZ4oVQkU4wzxZPKyo7Lh/L4k2hTlTn832X4g4pWzN1lbU0Q38BiDwIkPKyI1hSGT
-	 3/GSdegMs9Pq+ao7m2WJjdCYNpwqOScJdnsGW44R9XeVQOT26uSeMVcv2tHvIFNLRi
-	 7YXkh557+OZEOrvSZ5smwJXhKQOXvSVZChfyATRm2gOA4EpRr8SMb+FLoxjSUo32y4
-	 4fWuopt3h3Ak5sPo6P/CwDjq/0AFdcLtt8VoojhKDgHjrJJZTmjg2Tw1TWWfzwvQUO
-	 ry/DzWvp4wEGA==
+	b=YiiROZ3cKFwEsmv/gaH+0ZzA+ApxCkE8LSgohRoc7zn2sawnCN40m+wmKbMhtJW+L
+	 prDkmksozAzOpV+vtBhenY31ISzHgT3ZecPebQXQPbINiS5S+0RFXEV8ZYpPExIAvv
+	 bSo7f/aSMTDacB3UwsQivWCoQRjvWpxqqnGC5NrZD5Jmw3PCTy69/qdjHGdIEJZOia
+	 9F07LE+lVOBP9RBWHXNeNRrbaX45LTJp6mdI6lvw+n43VlNjzeU+7UEWBu1NfqyUYj
+	 5VNa3SGPrgd6M88pnXeh98m2BO+9THUqVRGuoD/gnxO+2DDyQm5vPEQwGjnxDE7Vlh
+	 juAuFAxk2t6HA==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Thu, 12 Nov 2026 12:38:54 +0200
-Subject: [PATCH v3 2/5] kho: walk bootmem areas in address order
+Date: Thu, 12 Nov 2026 12:38:55 +0200
+Subject: [PATCH v3 3/5] kho: skip zero-sized lowmem and global bootmem
+ areas
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261112-kho-bootmem-sizing-v3-2-f0c8d00295d5@kernel.org>
+Message-Id: <20261112-kho-bootmem-sizing-v3-3-f0c8d00295d5@kernel.org>
 References: <20261112-kho-bootmem-sizing-v3-0-f0c8d00295d5@kernel.org>
 In-Reply-To: <20261112-kho-bootmem-sizing-v3-0-f0c8d00295d5@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>, Mike Rapoport <rppt@kernel.org>, 
@@ -84,19 +85,19 @@ Cc: Alexander Graf <graf@amazon.com>,
  "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
  Mukesh Pilaniya <mpilaniy@redhat.com>
 X-Mailer: b4 0.16.1-dev
-X-Stat-Signature: swx73ofwetmbpdf73fioq4pfi6ty7zyu
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 309974000A
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: EEA66180009
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1794479953-907250
-X-HE-Meta: U2FsdGVkX19reEKPOmIzAuBPD5cYhUzmj2N7eJc8L6FozVxZJX020wapTVckA9zLBXs0D9eugWGssrGYQhX3e0zBygcMTs2dKg3WximEYbUA5qHbfqo05fEExIY7HU6rm+GFoApNQF1SZZX6JaPXgmxiy0Z+wDaTRXr1/50qrMYssavz7iATE++aEYgkg1aVoVfEIvOZpQ/fKd4LKtn98P2bzfDffxNCzLTwRf1aumKBz6f0m7NkECpb+Bg1ig5JTdO0p0F9ncoJocg6fx2oTU28rUMiYwhoPm3p8520YO/6KM8WU89PcjNhta2EQnEv0clRvWohfl7cduOHkioVBQIxa3pwHqwORjq83Hsj6XVLxvXArVuMoXIy2vZ3e95xQGxG5Lzo0CsQn1yqFoYt314MXtXtXGus8OxPqZku88+VEQ4BxUoOFyU8LjHMCHAKdmJFsTJHWh/G7bNSs1xwGekgmOPTix/HmQ85PX5Ud+XsxnJqND/PdPLBrlqFtpAoJ5JuGpQcY804jB2jilBKIINPITj5096ovWUWSd5GaLv0BYhBHcN7UT2mZc1U5WUGWTc/d7eHbAlHr2/s8MaH1/qksEHcZl+/1CVxlzV+hI2NVznCFkrg2V2ZOXKMKBRqFegBRRWKBiSdgkjzstvMXckgZaLFYZaz0/WlvtjgnmwRl/lD9Cptv6Z10eKCjhUuO1lkXQCTEVRwsrBojTXzlfg9pKVas+7SBEjubIi2NyoFbpGJ6aAokkEJLOZCFjsG76+cPox/ejBKxb63rPYx0DakzZl559Y3b+4wkpqgMBdtfYOV7cQnyo6PG0AFbyDluviG7EV3joARSk+LAIyVdT23Tq9zaz+bvQbJm9YaNzjJVtHa5eVhm6yM47q1NfnQEu9uqZq333ffUW1GQkQ8TW6qeVLO5ovc9MQ84zRrMiz/WNg04qZEcuOetsJGOEirmBFRxqmcaFi3HjpgvxQ
- KvIKywSP
- zGmDlRgjF+WEcPDtUXtglyh+SLmkYEY3wyKE/4AWKiY64zb4vm9Wxj7PppTqxMIx4YDkPuNNDZ4vU25yxdTucWwK49E5y9XU8ySxtJ/lQNvPwcQyqINlkg8KpC1iPZcf0mn5v/YWkS6ztS6SQGv8E4xqlSNI3PZrBK8zYtE/lt+VAgSJ50I6mUPBeuTzZE6WuFVo3M8GYHNdceIp6u5iTQZwqTqw4Up25u+RBr72sDwodDI4xR8JbH0c9YgMs98jI4ky+9hreEOBRp0OpEtcCZ8rcpSeo1oPrT7fM9q0jRRiuRmdWSJvkBA2ZQ3PlUmXEcSIpYAzS8nbSk+qBgLsrgiYBfwZ8r3xYssUD
+X-Stat-Signature: rdoymbepjnwcajp4hkhbhp35m5uyfjdw
+X-Rspam-User: 
+X-HE-Tag: 1794479956-929784
+X-HE-Meta: U2FsdGVkX1/2VDJKyOimzpgVrfYaOO2rh9xxj/BBTyQXuttobbkNC4b566aL4APw4zYWLa+vg8YeMPEofUrwPzMdhkVTyamc9jJ6hMOptoCsAFgs5Uv5mjiUwPzaz/Y5m+1F+G40dYIHnJrHaeoYdWD5hJ7XygPYz/GKg16+azHa28xnlKiaSz1jZ7EdYow35jqRGoXH45dNhbIXsVTZz9Mp3EKtS53SasAC1BYhYG35yzh/OSRlN0ONk4kDuT1bUBLpDVJvvN9pK6h8KojnPmyUz7EcYhQXVE3pdRiCsbYGcdzunwEgXKP8XmQpaS0BFxyBSCccP/Q3/tvCzRQKIWhaAT+pEfKiygDqzqHoNAYRRKnvnWWeBOMgEXYYQ3+zEdfIJ1Xx77LAt0winy1GaKE3eI22ZTwa0YidPFYjHNCsOXixPMD5hJCnQ6jlmRZFPdJ+n+SfPJiXe/T2S0jkTGynJ85bvYIkW1xxeSXzSZV57/tVy739uiTbJE+5N4ID0CxENkMItN9bsIlszVX+8MCsQCNKhHxlhjoRBTRBx6tJqa159W1/yFxuZ4lENPIdMaCRMb6a5Qkpr0He6MxsnbcXYHT7/ParOpvryDW9W2iJOnuj5pzkhmP8P0/MSWHjVbjzAdgVCpqMsIKH+boVuMi4GaCDASdiRLfj+IRm3rjzt6MPZhXW48c4+Z1lVhuvIkdpIBf13oqdUUjBh93ww0XfYNEsxAjU3cy794TeaZ9f2kbuNdd+6s8YSxrR/5HryQta6EMleGHvxRfcz0S3jz6kd/6y0eoEyoMksVBhkaIrLedjpsHs6mE3jp99RoVq4CYJabH/7KZjFoY8jIazutNkbFd4MjnQBtfyAQ8Ae2oUBn4O4Hgtki5q3aA1Btjm+lFEAwONURrQ9qJHTiS7A3Gi7YDuZYgt+BLHCG78k01EnPL1TgkKlF9pxYEX43KWjav/wYCYXXdiP1tmITy
+ Cenz/bM1
+ u4z9+Q9YXEuJhA2hZkxCKX/E1JsLLld/gBKEywuAby+LWTt14avy0J6x6Lj239TK9fbrFQ1DdkVMFIMs0mA6jAkFjURSoHPD4JKz+uX0st9u1KFdpKGFIySQL/XhYqhO0QgaoCJEAiKcXe7fdTCdObepDIja1Y3upWYMliWGG8jM0thNSqZPnj1Bmx1x6+6iEJmjDGAYTnRAgh1dAR1LE/cduGyFXpxRO61qxGuIE1FSNp2RSypgFMzCKoUstQ+1UGXCwevIGKnyuCFX+LfPbLG6SpuseKDCoPImFVYsnJzDMhWGKY/1u9VHe+sQaHWzAozJp3j3fpzFIDZCXE6sZQtMoRT4IaqUkSJVGD8IRI+A4evd1krpep7c7RQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,132 +106,148 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-kexec_add_buffer() users may depend on the order in which memory holes are
-searched. For instance, arm64 places the kernel bottom-up and then
-requires the DTB to be above the kernel.
+The lowmem and the global bootmem areas can have zero size, for example
+when none or all of the memory is below ARCH_LOW_ADDRESS_LIMIT, or when
+either of those areas is explicitly set to zero with kho_bootmem=.
 
-kho_walk_bootmem() walks the bootmem areas in the order they were
-reserved, so if the kernel lands in a small area at the top of the memory
-there is no room left for the DTB and kexec fails. For example, on an
-arm64 VM with 2G of RAM and kho_bootmem=8M,64M,64M, the lowmem area is
-reserved first at the top of the memory, the kernel image takes most of
-it and kexec fails with
+For a zero-sized allocation memblock returns an address without reserving
+anything, and that empty area is recorded in kho_bootmem. If there is no
+memory below ARCH_LOW_ADDRESS_LIMIT, allocation of the empty lowmem area
+fails and KHO gets disabled.
 
-  kexec_file(Image): Could not find any suitable kernel location!
+Extract a helper that checks for zero size and allocates memory from
+memblock, and use it to skip empty areas the same way as empty per-node
+areas are skipped.
 
-Sort the bootmem areas by address and walk them in ascending order, or in
-descending order for top-down searches, like kexec_walk_resources() does.
-
-Fixes: 3bdecc3c93f9 ("kexec: add KHO support to kexec file loads")
+Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
+Reported-by: Chen Pei <cp0613@linux.alibaba.com>
+Closes: https://lore.kernel.org/all/20261026131851.9942-1-cp0613@linux.alibaba.com
 Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 Reviewed-by: Mukesh Pilaniya <mpilaniy@redhat.com>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- kernel/liveupdate/kexec_handover.c | 57 ++++++++++++++++++++++++++++++--------
- 1 file changed, 46 insertions(+), 11 deletions(-)
+ kernel/liveupdate/kexec_handover.c | 66 +++++++++++++++++---------------------
+ 1 file changed, 30 insertions(+), 36 deletions(-)
 
 diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index b30ba686cb301..df4a972a860da 100644
+index df4a972a860da..bbc9e644addc9 100644
 --- a/kernel/liveupdate/kexec_handover.c
 +++ b/kernel/liveupdate/kexec_handover.c
-@@ -26,6 +26,7 @@
- #include <linux/list.h>
- #include <linux/memblock.h>
- #include <linux/page-isolation.h>
-+#include <linux/sort.h>
- #include <linux/unaligned.h>
- #include <linux/vmalloc.h>
- 
-@@ -826,6 +827,14 @@ bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
- 	return false;
+@@ -835,6 +835,26 @@ static int __init kho_bootmem_cmp(const void *_a, const void *_b)
+ 	return cmp_int(a->addr, b->addr);
  }
  
-+static int __init kho_bootmem_cmp(const void *_a, const void *_b)
++static int __init kho_reserve_bootmem_area(phys_addr_t size, phys_addr_t end,
++					   int nid)
 +{
-+	const struct kho_bootmem *a = _a;
-+	const struct kho_bootmem *b = _b;
++	phys_addr_t addr;
 +
-+	return cmp_int(a->addr, b->addr);
++	if (!size)
++		return 0;
++
++	addr = memblock_alloc_range_nid(size, BOOTMEM_ALIGNMENT_BYTES, 0, end,
++					nid, numa_valid_node(nid));
++	if (!addr)
++		return -ENOMEM;
++
++	kho_bootmem[kho_bootmem_cnt].addr = addr;
++	kho_bootmem[kho_bootmem_cnt].size = size;
++	kho_bootmem_cnt++;
++
++	return 0;
 +}
 +
  /**
   * kho_reserve_bootmem - Reserve a contiguous chunk of memory for kexec
   *
-@@ -910,6 +919,9 @@ static void __init kho_reserve_bootmem(void)
- 	 */
- 	kho_bootmem_cnt = i;
+@@ -846,8 +866,8 @@ static int __init kho_bootmem_cmp(const void *_a, const void *_b)
+  */
+ static void __init kho_reserve_bootmem(void)
+ {
+-	int nid, i = 0, max_nr_bootmem;
+-	phys_addr_t addr, size;
++	int nid, max_nr_bootmem;
++	phys_addr_t size;
  
-+	sort(kho_bootmem, kho_bootmem_cnt, sizeof(*kho_bootmem),
-+	     kho_bootmem_cmp, NULL);
-+
+ 	if (!kho_enable)
+ 		return;
+@@ -867,66 +887,40 @@ static void __init kho_reserve_bootmem(void)
+ 	 * reserve bootmem area in low memory for lowmem allocations in the
+ 	 * next kernel
+ 	 */
+-	size = bootmem_size_lowmem;
+-	addr = memblock_phys_alloc_range(size, BOOTMEM_ALIGNMENT_BYTES, 0,
+-					 ARCH_LOW_ADDRESS_LIMIT);
+-	if (!addr) {
++	if (kho_reserve_bootmem_area(bootmem_size_lowmem, ARCH_LOW_ADDRESS_LIMIT,
++				     NUMA_NO_NODE)) {
+ 		pr_err("Failed to reserve lowmem bootmem\n");
+ 		goto err_free_bootmem_desc;
+ 	}
+ 
+-	kho_bootmem[i].addr = addr;
+-	kho_bootmem[i].size = size;
+-	i++;
+-
+ 	/* reserve large contiguous area for allocations without nid */
+-	size = bootmem_size_global;
+-	addr = memblock_phys_alloc(size, BOOTMEM_ALIGNMENT_BYTES);
+-	if (!addr) {
++	if (kho_reserve_bootmem_area(bootmem_size_global,
++				     MEMBLOCK_ALLOC_ACCESSIBLE, NUMA_NO_NODE)) {
+ 		pr_err("Failed to reserve global bootmem\n");
+ 		goto err_free_bootmem_areas;
+ 	}
+ 
+-	kho_bootmem[i].addr = addr;
+-	kho_bootmem[i].size = size;
+-	i++;
+-
+ 	/*
+ 	 * Loop over nodes that have both memory and are online. Skip
+ 	 * memoryless nodes, as we can not allocate bootmem areas there.
+ 	 */
+ 	for_each_node_state(nid, N_MEMORY) {
+-		size = bootmem_size_node(nid);
+-		if (!size)
+-			continue;
+-
+-		addr = memblock_alloc_range_nid(size, BOOTMEM_ALIGNMENT_BYTES,
+-						0, MEMBLOCK_ALLOC_ACCESSIBLE,
+-						nid, true);
+-		if (!addr) {
++		if (kho_reserve_bootmem_area(bootmem_size_node(nid),
++					     MEMBLOCK_ALLOC_ACCESSIBLE, nid)) {
+ 			pr_err("Failed to reserve nid %d bootmem\n", nid);
+ 			goto err_free_bootmem_areas;
+ 		}
+-
+-		kho_bootmem[i].addr = addr;
+-		kho_bootmem[i].size = size;
+-		i++;
+ 	}
+ 
+-	/*
+-	 * Nodes that needed no bootmem were skipped, so fewer areas than
+-	 * initially estimated may have been reserved.
+-	 */
+-	kho_bootmem_cnt = i;
+-
+ 	sort(kho_bootmem, kho_bootmem_cnt, sizeof(*kho_bootmem),
+ 	     kho_bootmem_cmp, NULL);
+ 
  	return;
  
  err_free_bootmem_areas:
-@@ -2087,20 +2099,40 @@ int kho_fill_kimage(struct kimage *image)
- 	return 0;
- }
- 
--static int kho_walk_bootmem(struct kexec_buf *kbuf,
--			    int (*func)(struct resource *, void *))
-+static int kho_bootmem_walk_one(struct kexec_buf *kbuf,
-+				const struct kho_bootmem *area,
-+				int (*func)(struct resource *, void *))
-+{
-+	struct resource res = {
-+		.start = area->addr,
-+		.end = area->addr + area->size - 1,
-+	};
-+
-+	/* Try to fit the kbuf into our KHO bootmem region */
-+	return func(&res, kbuf);
-+}
-+
-+static int kho_bootmem_walk_top_down(struct kexec_buf *kbuf,
-+				     int (*func)(struct resource *, void *))
- {
- 	int ret = 0;
--	int i;
- 
--	for (i = 0; i < kho_bootmem_cnt; i++) {
--		struct resource res = {
--			.start = kho_bootmem[i].addr,
--			.end = kho_bootmem[i].addr + kho_bootmem[i].size - 1,
--		};
-+	for (int i = kho_bootmem_cnt - 1; i >= 0; i--) {
-+		ret = kho_bootmem_walk_one(kbuf, &kho_bootmem[i], func);
-+		if (ret)
-+			break;
-+	}
-+
-+	return ret;
-+}
- 
--		/* Try to fit the kimage into our KHO bootmem region */
--		ret = func(&res, kbuf);
-+static int kho_bootmem_walk_bottom_up(struct kexec_buf *kbuf,
-+				      int (*func)(struct resource *, void *))
-+{
-+	int ret = 0;
-+
-+	for (int i = 0; i < kho_bootmem_cnt; i++) {
-+		ret = kho_bootmem_walk_one(kbuf, &kho_bootmem[i], func);
- 		if (ret)
- 			break;
- 	}
-@@ -2116,7 +2148,10 @@ int kho_locate_mem_hole(struct kexec_buf *kbuf,
- 	if (!kho_enable || kbuf->image->type == KEXEC_TYPE_CRASH)
- 		return 1;
- 
--	ret = kho_walk_bootmem(kbuf, func);
-+	if (kbuf->top_down)
-+		ret = kho_bootmem_walk_top_down(kbuf, func);
-+	else
-+		ret = kho_bootmem_walk_bottom_up(kbuf, func);
- 
- 	return ret == 1 ? 0 : -EADDRNOTAVAIL;
- }
+-	for (i--; i >= 0; i--)
++	for (int i = 0; i < kho_bootmem_cnt; i++)
+ 		memblock_phys_free(kho_bootmem[i].addr, kho_bootmem[i].size);
++	kho_bootmem_cnt = 0;
+ err_free_bootmem_desc:
+ 	memblock_free(kho_bootmem, max_nr_bootmem * sizeof(*kho_bootmem));
+ err_disable_kho:
 
 -- 
 2.53.0
