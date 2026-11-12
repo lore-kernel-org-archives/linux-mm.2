@@ -1,97 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFACD606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 19:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C670606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 19:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TR+LDZyn
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jUA8Avn0
 Received: by kanga.kvack.org (Postfix)
-	id 68C5C6B05BD; Thu, 12 Nov 2026 14:00:56 -0500 (EST)
+	id 7069C6B00EF; Thu, 12 Nov 2026 14:03:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63CEC6B05BE; Thu, 12 Nov 2026 14:00:56 -0500 (EST)
+	id 6B8076B05B0; Thu, 12 Nov 2026 14:03:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57AA76B05BF; Thu, 12 Nov 2026 14:00:56 -0500 (EST)
+	id 5A7936B05BC; Thu, 12 Nov 2026 14:03:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 25B056B05BD
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:00:56 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A6E0CA8850
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 19:00:55 +0000 (UTC)
-X-FDA: 85427384070.21.9DBE4C9
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 318056B00EF
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:03:29 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A9062A0B42
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 19:03:28 +0000 (UTC)
+X-FDA: 85427390496.25.E49F186
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id DEB831C000A
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 19:00:53 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TR+LDZyn;
-	spf=pass (imf20.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id BB24D18000C
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 19:03:26 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jUA8Avn0;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794510054;
+	s=arc-20220608; t=1794510206;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XSazvgQX+Qmd6+1HZzV4RWQVLrPIoD/3reVpBuAHRK0=;
-	b=QqBySHO/PCH9Dl1zc1Xx90VogkwFQBwoZ/0Ck5t8HUdiKbuRvVEnapNTvXmusyQdauwILo
-	cENnGaTpY1TZzl8BYzkwBI3U+P+TklbYVXRJkbJmJ3/y1DivxlCBnH6+4oePOZbzXybtkh
-	cznuoyEykpojUBDgMM6GVYpK/Bw/Bu0=
+	bh=BKmPHjD7F+lAu5Y1PmUklxdmbSrVzMFLB6y7wwm9rn4=;
+	b=191WedGjB7GhiFSFBWyT2hn8sXpRxx4T5hlDhhcuQGaDU3sYH6wtN811i0TaniOsDLJLS4
+	CHsyVwFPTYvuz2j0KTx7t6jamt2BNAsh7o1azmxE5CfXgW/5xg9VIEMQr4yLhn/5AsBLUW
+	T+zN4NnvjH62+HSRIfSN7kzgKyd/Oc8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794510054;
-	b=8H1VFc3a74lU5Jaq6ajGulcppAsNBjDJO25B+WfjSXPoHSWTnIhdryEEQxjwRO0YRXjSuX
-	NSeFHm9tZXCeMDWEuOpGf/Wqv0k0QSI2USKpQOmlDQq9S+kUQJQP0esu9Um1cmQikaMKno
-	InRHfMuHYiYR7K5Q/PXDCC4X9z98Wnc=
+	t=1794510206;
+	b=7JipsFpSPRxmDpIXfHkXIEgAwoNXVEfhVjZE1agazN2gPBXujhTPaLPE+GkYYN+ZziQaqJ
+	kmIPlXMfLGQb0GXblbM3hsva/qcmuKNUNxnI2XQ3h/LCaxygugY7zWPoNFdkxq/wXYDuLQ
+	kVfxfUzD+jNkauWsLnjjNBZIGU5nQEU=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TR+LDZyn;
-	spf=pass (imf20.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jUA8Avn0;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0AD0940F19;
-	Thu, 12 Nov 2026 19:00:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD97B1F000C4;
-	Thu, 12 Nov 2026 19:00:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F05AD404EC;
+	Thu, 12 Nov 2026 19:03:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B3621F000C4;
+	Thu, 12 Nov 2026 19:03:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794510052;
-	bh=XSazvgQX+Qmd6+1HZzV4RWQVLrPIoD/3reVpBuAHRK0=;
+	s=k20260515; t=1794510205;
+	bh=BKmPHjD7F+lAu5Y1PmUklxdmbSrVzMFLB6y7wwm9rn4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=TR+LDZynPGXmBcvY97hLMt6nUSCCRxQxa1gWgXFLQqbta/zpUmWlUi1Gro7xFd39e
-	 v5B31ZUrUpjiXBVWGjKyuFeHKvtJH/VPNmCcGRYuYuaQkltJ+LR9b48B/9BxbshEsb
-	 mUaAS15IJ2UU0fO0bfkr8YQxsHtxjwdE1qtjzhnVtF9Z6ZefkPHK8LkBPd4H2k7Gra
-	 aS/WHsiLN1kPqDVEs/czCQfC+SzQ456M7VKmS2A2vG6+uXbYy2QsnXAUEdV3fiN3m8
-	 AqXp0SmXvV6IxF1Z/rq8n4BJ0k473ptZWS2J6I9CiN0iNpJHEAwwzIFU9TXSzFCLRN
-	 14oNpXifxbwiw==
-Date: Thu, 12 Nov 2026 14:00:51 -0500
-From: Mike Snitzer <snitzer@kernel.org>
-To: sashiko-bot@kernel.org
-Cc: Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
-	linux-mm@kvack.org, Christian Brauner <brauner@kernel.org>,
-	Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
-	Anna Schumaker <anna@kernel.org>
-Subject: Re: [PATCH v11 4/7] mm: add folio_mark_dropbehind() to mark a folio
- dropbehind and account it
-Message-ID: <avYM41SXJgRMWb2V@kernel.org>
-References: <20261111015607.46338-1-snitzer@kernel.org>
- <20261111015607.46338-5-snitzer@kernel.org>
- <sashiko-outbox-210121@kernel.org>
+	b=jUA8Avn0OjggNIl/nRhZLsftG1CcIsE+P07qqfFSyNsEQTVpwK0yFjIsaw9V+7rk4
+	 i7S3HPu3az0GPuU9xPZzMQBHQQr1nbT2UsRxik+CnjdlyZxOq+1XDs7tzT78aPPKpG
+	 7bJnBFcXUMXzoEBBMDroROB8HmzksqS/gmG9vmOaxHNz91DXBwz06sMNkD2KXVe/Af
+	 +r3SD42o6nZLXHKB2Ze/w/ZUePNrC5Gr5fOlM3gqBuvYU7iZ/jLKLGtD5jIYuPZ5hX
+	 oFS2PKujVTNdUmnXUYpniuAoB2acN92bEYS+2D0wJXcdaGfISyfJfLHpcsCJ74fxye
+	 WYPVlA8ScGQuA==
+Date: Thu, 12 Nov 2026 19:03:13 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Nhat Pham <nphamcs@gmail.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Usama Arif <usama.arif@linux.dev>, 
+	Kairui Song <kasong@tencent.com>, Balbir Singh <balbirs@nvidia.com>, 
+	=?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Yu-cheng Yu <yu-cheng.yu@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+	Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>, Chris Mason <mason@kernel.org>, 
+	linux-mm@kvack.org, "Borislav Petkov (AMD)" <bp@alien8.de>, 
+	Mark Brown <broonie@kernel.org>, "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: [PATCH 10/13] mm/migrate_device: refuse to migrate shadow stacks
+Message-ID: <avYJ-CxBEpdO1Wmu@gremlin>
+References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
+ <20261111-mason-migrate-et-al-fixes-v1-10-3d2454362e8d@kernel.org>
+ <sashiko-outbox-211681@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <sashiko-outbox-210121@kernel.org>
+In-Reply-To: <sashiko-outbox-211681@kernel.org>
+X-Stat-Signature: hhbnjpbnxzyobtqrn1xpwwm5zmhp8rmy
+X-Rspamd-Queue-Id: BB24D18000C
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: dqxap77p5ptwxypnzphinogn1pgr3knn
-X-Rspamd-Queue-Id: DEB831C000A
-X-Rspam-User: 
-X-HE-Tag: 1794510053-187586
-X-HE-Meta: U2FsdGVkX1/NsMZHOG/ZUgVaNX1iv78whG1hqNh+MCQKS/oTGGhXhQNZgotC5C2bN1JJMYpaqMPKKBtSt8sm4ZMqolSL0MVzbFLTDn7/H13JHEDX/Jpy2JllUoRTmWIQeoWLV6gik2b7uOmxqi7IgCawMidYf05dIEb2o/k7wJXbn+6M3N9zY1n4zz0Si1tYNXxpjhZVgjFypp6r5seJ5VV5huK86Mb3AAJOBOxOO3TOtSBQIsWL1YlFeDLyZUBkVJXyETahDWHPblOtnhT4WIWYfHVfpmW/5LEAMDhnPmcHlUyFqlpN7zpX7Sg2zHms214deS1DQjC4zfrWfKXxXHVy1PVYE8RJZu+anzxHqBsy44pphD9MXwJi8s7ITWEJINyralJVkRePZdYdY/Vxl3AVhgz2AAyXoJbId2TxQbjgPQnYyXht6xOS43ii6Ny+7CozBPCxDvGuvy5b2jwZEZ0SLlDiIDH0icD8zhnfFmYFH8t9nMQsjzuB9xnuTqyvne6sT4gMZIC0ZRKc91OuSIsmUFZ1S4B5uGbD+kVDVEHbhcTwcWnDavrhRW0a6P1yMfHSp1ZDJZrx6xevG9bjZev8PR0LN81+EJhDe1BRGJWsSWsFkfmVlwO2fEdSL2njmxfh5muk1wNc/TXjDaRK6OjtMgeHWaEiHbP2brFSh546aOndn6XTmX3aVoxjHkc6MLZJCmS4q4ENRX7ikTuKt75VRuL3Lh/Zw2bCSR66U9w54Ce5ICsKzTQvO6Tficm2UG5SalHeE54C/CE0umzsR8A4VelY9h1Mp9Fbq6fXuKu38BqX8jWj9ZmES/Nust2X4oZrShSi3+1rZIAJIwARCziDr9p5G4y+IMC65Fx75BkAzFEzAxaSy9l91Fji7pCxoRC3ZU9xB6sqz0zJGjQr99NNvDcWmDY5USdvnc7jV/lkCVvycG8gQ5wL5XWoeReUKv+Gx60ITg0hdTKFPXS
- 9MmjnULu
- /lsh6bHrkReqLZ8eicVIQCqFgo3J4hR4N20lZHuGEyhmvNxaRGsMEAq1UQghCxZcDgIBC436LIUrU/Gw9dJj1aVGjGBQwlpBd3ebl4d25Pq1NtHmRO8m5y/Grzuyx9NJtT/NaP9v493wBet7BxrUy2+ZQ9cUmU7OjykFt7PO4pwX9hfmgGJal3Zz1R++wzs035ihbGyJO568Cpv1GgvTn89XHwEKOAHtwpmRv6KuUCzyJoVtf3nSjUYgQ/mC9lGDhk/8LDzAizpZDqtqFx4ykS67+eUZPOYSbCaCfOuf59iIh9ioXrX1DMOri5EUrTGJDHStmLbzILB8oAOOgdQG8eIk0gjIUYTkro4bIdFv6ppsQgykf9NDoMeD4cMd42YLV55/hfkFmFm0kThxnDUUTsnC5gPco8xNoY8r4
+X-HE-Tag: 1794510206-482545
+X-HE-Meta: U2FsdGVkX19e+iVQlA4PKWMeNCQ0j0NFtk+1hPe7nfbvg02onoJEZo4JiH3MfB8wenBM17omdLy/sm7BpSFHp5U6n8amMd8od8LeCuKrAWafyzex/KIzAK20q+spo970Nw+T7HLP8oc6ALzeWrwu1WtCO2O/NmWlY+c15iB30w3L6/zfKk0r/ER90oW00mAZx9qQbKB3sT0ZdVnNOeRu11/jfiOpMqwWqqk8k4Vmw805TTMw7YFCaZ/0z7yYAs9/pxyjofnjNSt1IZe0/Eek68F0NfLKWj3h4/vhUsx0zHovsqeaFIXhf7kaVVZw6EIhgDTyRA57lQUlhhAtVzoqoR1mJZ/WaIswsTCxZZ31Y098BmNEg0mA9Jzr9qPOgioD2b2tfNWeyb84ukr+Zb+nsHZdptL9T9sdG/xlOIaVG3S9+unGzALhP1h1CMOOoQZsuTMswt6cg3ZK1RnISmZvFKWiJcJQok7ooGv2JASAyHLfONAFfpoq3lUdw2mqdYCOUilwj9qm+RRq0mymyckISyuFa/pG1xdPw7QiSCjCS9NGa+E7nMcg0tjE6OBvU/Ajs+jjj6K1DO/7EYYo5rd0VAkTdOOkwThBxzMmLtPQZUzUqCbNitH3GykTqs8sT2ZlihSMyLyRxgIM5jauV3udT1fbNjGHTFh5I+QP1avFuKwAtFLtp1gyIpA2VLxigoQbte1c13k395vdhRFFPjfkhEkZfhQTYAT8fobTN2fNl1xuwFseMTZXWdCGQbwQfjC514/n7MJzISs6YoXLsspoQkTF2Lbt63sX4cviLCDvlfjU8jmkKW6SJgCxzj/J3DZtiiLxicSlJg0krkNErLsgIh6SMuKCZpvy00jLIyylb1OTn+EXRhK6P8yCM5QsnClQ0xOzxdDJBhG40jIB3j0sICAhVuZlKjMYY09XHnaaO1IESxw9yZ818Y8NnL+TcaM3HsZUuxMsDeXvARVnOYr
+ Ts3/Y1/P
+ cqiwOpaA8X3fxmfIMoKmH81F8vIg8BVlndGZ2qQ6BgcVElhQGlda214i0kYeXYUBw/cyP6z4o1aOK8T218drUKqv8qsB/R+pgCwYaZWiIARoXkzYGiiGwOLfpU/hCvVkVbgrGUG7Yz7okOuA6/HVjoF1IVvFWiw07YuugbHskmGPuNt0ruPY2oG3IktrKfgI3Gv06w8YRFZmkaiDWL1bhjNee8IWOI6zHD8S+aV54ozUpnScbnFoMYolCNgQVsIyndmVn1BcjhKhFIUmjlKxwT1hizi2/v/uTIrSLLKzuRgLWwACPKT4q28u5Bwct8WPZJcyGzClaZMo8kgoOFj9IaxL4QnKbYwMOC0NxlZob6+NT6qE7aU1x5H4IYG1gGFb7P8yBDV/PJ+ny8kjwC7L5pjrNQDuBfbQunmWsA9huCpsSXb9Ufu5wSDvPDW84nDM6eqCzxIqB7Dq2eUuEFV/Vxe8sMgSQUADjQa0n1rbE8m3NVE4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,167 +114,81 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 01:56:48AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [Medium] mm: double WB_DONTCACHE_DIRTY accounting in
->   folio_mark_dropbehind()
++cc Roman
+
+Roman - see below - I was under the impression mm was not supposed to receive
+'unrelated to this patch but' reports? Did something change?
+
+Thanks!
+
+On Thu, Nov 12, 2026 at 06:16:31PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found no new issues
+> in this patch, but noticed 1 related pre-existing issue it does not
+> introduce:
+> - [Critical] mm: out-of-bounds write in migrate_vma_setup() [1]
 > --
-> 
-> commit 99c7597afc26e4465bf2ced6117179f389f8476b
-> Author: Mike Snitzer <snitzer@kernel.org>
-> 
-> mm: add folio_mark_dropbehind() to mark a folio dropbehind and account it
-> 
-> This commit adds folio_mark_dropbehind() to set PG_dropbehind on a locked
-> folio and account it in WB_DONTCACHE_DIRTY if the folio is already dirty.
-> 
-> > diff --git a/mm/filemap.c b/mm/filemap.c
-> > index 98ce955404127..a54d0fbd37222 100644
-> > --- a/mm/filemap.c
-> > +++ b/mm/filemap.c
-> > @@ -1654,6 +1654,38 @@ void folio_end_dropbehind(struct folio *folio)
-> >  }
-> >  EXPORT_SYMBOL_GPL(folio_end_dropbehind);
-> >  
-> > +/**
-> > + * folio_mark_dropbehind - mark an existing folio dropbehind
-> > + * @folio: the folio, locked by the caller
-> > + *
-> > + * Mark @folio so that the writeback that cleans it drops it.  If the folio
-> > + * is already counted as dirty, which with the i_pages lock held means both
-> > + * PG_dirty and the dirty tag are set, add it to WB_DONTCACHE_DIRTY so that
-> > + * the clean that subtracts it leaves the counter balanced.
-> > + */
-> > +void folio_mark_dropbehind(struct folio *folio)
-> > +{
-> > +	struct address_space *mapping = folio->mapping;
-> > +	unsigned long flags;
-> > +
-> > +	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
-> > +
-> > +	if (folio_test_dropbehind(folio))
-> > +		return;
-> > +	if (!mapping || !mapping_can_writeback(mapping)) {
-> > +		folio_set_dropbehind(folio);
-> > +		return;
-> > +	}
-> > +	xa_lock_irqsave(&mapping->i_pages, flags);
-> > +	folio_set_dropbehind(folio);
-> > +	if (folio_test_dirty(folio) &&
-> > +	    xa_get_mark(&mapping->i_pages, folio->index, PAGECACHE_TAG_DIRTY))
-> > +		wb_stat_mod(inode_to_wb(mapping->host), WB_DONTCACHE_DIRTY,
-> > +			    folio_nr_pages(folio));
-> > +	xa_unlock_irqrestore(&mapping->i_pages, flags);
-> > +}
-> > +EXPORT_SYMBOL_GPL(folio_mark_dropbehind);
-> 
-> [Severity: Medium]
-> Can this double-account WB_DONTCACHE_DIRTY when racing with an unlocked
-> dirtier on a folio that still has a leftover PAGECACHE_TAG_DIRTY mark?
-> 
-> __folio_cancel_dirty() clears PG_dirty and uncounts the folio without
-> clearing PAGECACHE_TAG_DIRTY in mapping->i_pages.  Because callers such as
-> zap_present_folio_ptes() -> folio_mark_dirty() -> filemap_dirty_folio()
-> dirty mapped folios under the PTE lock without holding the folio lock,
-> they can set PG_dirty before acquiring mapping->i_pages.xa_lock:
-> 
-> CPU0 (holds folio lock)           CPU1 (holds PTE lock)
-> __folio_cancel_dirty(folio)
->   folio_test_clear_dirty(folio)
->   folio_account_cleaned(folio)
->   /* PAGECACHE_TAG_DIRTY stays set */
->                                   filemap_dirty_folio(mapping, folio)
->                                     folio_test_set_dirty(folio)
-> folio_mark_dropbehind(folio)
->   xa_lock_irqsave(&mapping->i_pages)
->   folio_set_dropbehind(folio)
->   /* PG_dirty && TAG_DIRTY both set */
->   wb_stat_mod(..., WB_DONTCACHE_DIRTY, +nr)
->   xa_unlock_irqrestore(&mapping->i_pages)
->                                     __folio_mark_dirty(folio, mapping, ...)
->                                       xa_lock_irqsave(&mapping->i_pages)
->                                       folio_account_dirtied(folio, mapping)
->                                         if (folio_test_dropbehind(folio))
->                                           wb_stat_mod(...,
->                                             WB_DONTCACHE_DIRTY, +nr)
->                                             <-- counted twice
-> 
-> When the folio is later cleaned, folio_clear_dirty_for_io() or
-> folio_account_cleaned() only subtracts folio_nr_pages(folio) once,
-> leaving WB_DONTCACHE_DIRTY permanently inflated and causing
-> wb_check_start_dontcache() to trigger extra writeback.
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20261111015607.46338-1-snitzer@kernel.org?part=4
+>
+> commit a0bf8430c5e68cd904038ab8081c7bc9a9b0f7de
+> Author: Chris Mason <mason@kernel.org>
+>
+> mm/migrate_device: refuse to migrate shadow stacks
+>
+> This commit rejects VMA device migration in migrate_vma_setup() when the VMA
+> has VMA_SHADOW_STACK set.
+>
+> > diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> > index 0f2a2832e0bd1..c27f513ee46e3 100644
+> > --- a/mm/migrate_device.c
+> > +++ b/mm/migrate_device.c
+> > @@ -759,6 +759,8 @@ int migrate_vma_setup(struct migrate_vma *args)
+> >  	/* The migrate_vma page walk has no hugetlb support. */
+> >  	if (!vma_is_mm_backed(vma) || vma_is_hugetlb(vma) || vma_is_dax(vma))
+> >  		return -EINVAL;
+> > +	if (vma_test_single_mask(vma, VMA_SHADOW_STACK))
+> > +		return -EINVAL;
+> >  	if (nr_pages <= 0)
+> >  		return -EINVAL;
+> >  	if (args->start < vma->vm_start || args->start >= vma->vm_end)
+>
+> [Severity: Critical]
+> This problem wasn't introduced by this patch, but can migrate_vma_setup()
+> write out of bounds on args->src and args->dst when given unaligned
+> addresses [1]?
 
-This is the third time sashiko has raised this race: as v9 3/6, as v10
-4/7 and now as v11 4/7.
+I don't like big buts and I can deny! As above, I thought we disabled this?
+>
+> mm/migrate_device.c:migrate_vma_setup() {
+> 	const struct vm_area_struct *vma = args->vma;
+> 	long nr_pages = (args->end - args->start) >> PAGE_SHIFT;
+>
+> 	args->start &= PAGE_MASK;
+> 	args->end &= PAGE_MASK;
+>     ...
+> }
+>
+> nr_pages is computed before args->start and args->end are masked with
+> PAGE_MASK.  For example, if args->start is 0x1fff and args->end is 0x3001,
+> nr_pages is 1, but masking rounds the range to [0x1000, 0x3000), which spans
+> 2 pages.  When migrate_vma_collect() walks the aligned range, it writes past
+> the end of the caller's args->src and args->dst arrays.
 
-But I've finally fixed it, I now have a Kunit test that reproduces this
-race and have verified it is now fixed with the following changes.
+This is silly. It's not critical. Nothing in-tree does this.
 
-Will post v12 shortly.
+If internal kernel stuff does incredibly stupid things then incredibly stupid
+things happen. We can't nanny everything endlessly.
 
-folio_mark_dropbehind() will now return early for mapped folios, here is
-the incremental change on v11 4/7 that I'll be folding into v12's 4/7:
+A monolithic kernel means that the function and its callers are considered
+together.
 
-  @@ -1651,7 +1651,8 @@ EXPORT_SYMBOL_GPL(folio_end_dropbehind);
-    * Mark @folio so that the writeback that cleans it drops it.  If the folio
-    * is already counted as dirty, which with the i_pages lock held means both
-    * PG_dirty and the dirty tag are set, add it to WB_DONTCACHE_DIRTY so that
-  - * the clean that subtracts it leaves the counter balanced.
-  + * the clean that subtracts it leaves the counter balanced.  A mapped folio
-  + * is left unmarked.
-    */
-   void folio_mark_dropbehind(struct folio *folio)
-   {
-  @@ -1662,6 +1663,15 @@ void folio_mark_dropbehind(struct folio *folio)
+If an out-of-tree module does it then it's your fault for using an out-of-tree
+module (ugh EXPORT_SYMBOL()'d).
 
-        if (folio_test_dropbehind(folio))
-                return;
-  +     /*
-  +      * Through its page table, a mapped folio can be dirtied without the
-  +      * folio lock, and PG_dirty set before the folio is counted: with a
-  +      * stale dirty tag it would be counted twice.  The folio lock keeps
-  +      * an unmapped folio unmapped.  filemap_end_dropbehind() does not drop
-  +      * a mapped folio either.
-  +      */
-  +     if (folio_mapped(folio))
-  +             return;
-        if (!mapping || !mapping_can_writeback(mapping)) {
-                folio_set_dropbehind(folio);
-                return;
+>
+> [1] https://sashiko.dev/#/bug/linux-ca91ac03-4056-4cf8-8afb-0e516e08797f
+>
+> --
+> Sashiko AI review · https://sashiko.dev/#/patchset/20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org?part=10
 
-And for 6/7, filemap_dontcache_edge_complete() will skip every mapped
-folio -- not just clean ones.  Incremental that'll be folded into v12's 6/7:
-
-  @@ -1757,8 +1767,8 @@ EXPORT_SYMBOL_GPL(filemap_dontcache_edge_completes);
-    * @pos: any byte offset within the folio
-    *
-    * Call once the write, and any sync of it, is done.  A dirty folio is marked
-  - * for the writeback that cleans it, and a clean unmapped folio is dropped now.
-  - * A clean mapped folio stays cached, as filemap_end_dropbehind() leaves it.
-  + * for the writeback that cleans it, and a clean folio is dropped now.  A
-  + * mapped folio stays cached, as folio_mark_dropbehind() leaves it.
-    */
-   void filemap_dontcache_edge_complete(struct address_space *mapping, loff_t pos)
-   {
-  @@ -1773,10 +1783,12 @@ void filemap_dontcache_edge_complete(struct address_space *mapping, loff_t pos)
-                goto out;
-        /* Writeback in flight was submitted unmarked and would not drop it. */
-        folio_wait_writeback(folio);
-  +     if (folio_mapped(folio))
-  +             goto out;
-        if (folio_test_dirty(folio)) {
-                folio_mark_dropbehind(folio);
-                kick = true;
-  -     } else if (!folio_mapped(folio)) {
-  +     } else {
-                /*
-                 * Drop it now, unmarked: a mark cleared outside the i_pages
-                 * lock could miss a store that counts the folio.
-
-Thanks,
-Mike
+--
+Cheers, Lorenzo
 
