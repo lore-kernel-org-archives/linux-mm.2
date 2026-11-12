@@ -1,92 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A19606A88C
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 01:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83FB606A88E
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 01:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LDmVtL2F
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=faUooxKv
 Received: by kanga.kvack.org (Postfix)
-	id EC2D66B00EF; Wed, 11 Nov 2026 20:56:52 -0500 (EST)
+	id CA2566B05B0; Wed, 11 Nov 2026 20:57:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9B146B05B0; Wed, 11 Nov 2026 20:56:52 -0500 (EST)
+	id C79A16B05B1; Wed, 11 Nov 2026 20:57:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD8166B05B1; Wed, 11 Nov 2026 20:56:52 -0500 (EST)
+	id BB8006B05B2; Wed, 11 Nov 2026 20:57:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C15796B00EF
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 20:56:52 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5CA18A7FCC
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:56:52 +0000 (UTC)
-X-FDA: 85424803464.28.770B06A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 9DFE520003
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:56:50 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LDmVtL2F;
-	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 902656B05B0
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 20:57:51 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 861FAA0239
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:57:49 +0000 (UTC)
+X-FDA: 85424805858.03.7DE2AD0
+Received: from mta1.migadu.com (out-244.mta1.migadu.com [95.215.58.244])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4839420003
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:57:47 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=faUooxKv;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.244 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794448610;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1794448667;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5jotAfjUQKZzmN9NNL+HNgueiGV8Iqsno2VVPILj99I=;
-	b=UOd1gAUgrLGGdRib/NwLJgoHcp5vG8piMz2SaSqnmeua3Aody5wvbVJYrx41z3rQ4Q3tNV
-	CaxeIX9ubiaqAvjUcOcow7v/URcYNqVDTUIUk/Of+4vVRBObLIXHIzHqNTtWzJfbDwRJxo
-	Sh/j6WaHbWBMraBVVb0Zv/lydPcmeHY=
+	bh=gM036Lz3o4zVMa1LHZqyXfXI7ctHVwdatuzaP+xuoQk=;
+	b=7WhZgn8VOzu6xDxXUNTKPa195tZWvhuxGabaTfY7HhQ+VvvFXg/j6WEW69fgT6gvPEerM6
+	AZjz3W+5CLuC/ZQYU8+FRACXI4ue0ukNRrluEgPreGh5IiR+XIs3tF8c8cNVTx0d3hbekS
+	/k9li1oA+7H7gmhJEa3Qqekog5EU4xk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794448610;
-	b=LJ6bSPh9mWy94HHjFuBVVddAxauk3U926cRsRORAZrGK/4MqwGRo8WHOK5yWMLfD9tp8f0
-	9Qaz/o3k7Cscc6wkXyWWqHmKXd6xOvzNJPBu3iYl3WJMRmJZyhYdOSarOKkSs+uLT3js1E
-	Z4xbJ07RDXxufoQ54A2hLrHg+2GPQUM=
+	t=1794448667;
+	b=fKtDKO3NeQl96208s32uLQq2zwW3Q4o72pFywA0y6samvLt8jfrv0xjHiZaWKEZ89rqMHA
+	v5XemwAVuIALKqOvT0HuQsPiy224VY7XFoyDBtftWit7EPHjifTl5LcmQL1z4IZLlWmn2N
+	VTmNaf012tc6H0moJuU6IHA3okrKDgk=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LDmVtL2F;
-	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 67D3F633B8;
-	Thu, 12 Nov 2026 01:56:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9891F00A06;
-	Thu, 12 Nov 2026 01:56:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794448609;
-	bh=5jotAfjUQKZzmN9NNL+HNgueiGV8Iqsno2VVPILj99I=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=LDmVtL2FQOakLI7PWOcytJhp1AAu4emz95L1lKl7oTszbpBbC9KmxqcmSjqxDTgro
-	 DV/NMz3+8hXpQcIaET3WvcOB6+YdQ6S+rmmzEDHuYFL9YV4k3kVgcQzQpQM26rErI6
-	 aG1pFpwtVyQu6wyb2iUaw2rkSdOJolKu8RzxRSf+GueJR/JVSZsdon3iZ9adcB7VHT
-	 AZgRUezIG+j7ifhEQvvqs9zE4Fdlbr1xPcSGEVM6E0HQGenXLmKwBoyoByAeARxfRf
-	 Y4NeWqiH7VDB7K1C5g5R968NUGZIxmUa8s9T5G2uK3P29/tIQGXCJ3sjj0UDS/uci8
-	 3qXWNTa9w0IXA==
-Message-ID: <sashiko-outbox-210121@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v11 4/7] mm: add folio_mark_dropbehind() to mark a folio
- dropbehind and account it
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Mike Snitzer" <snitzer@kernel.org>, "Matthew Wilcox" <willy@infradead.org>, "Jan
- Kara" <jack@suse.cz>, linux-mm@kvack.org, "Christian Brauner" <brauner@kernel.org>
-Cc: "Chuck Lever" <cel@kernel.org>, "Jeff Layton" <jlayton@kernel.org>, "Anna
- Schumaker" <anna@kernel.org>
-In-Reply-To: <20261111015607.46338-5-snitzer@kernel.org>
-References: <20261111015607.46338-1-snitzer@kernel.org>
- <20261111015607.46338-5-snitzer@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 12 Nov 2026 01:56:48 +0000
-X-Stat-Signature: td68yrcp3momyuqxh9hbjq5oy7nbrr7z
-X-Rspamd-Queue-Id: 9DFE520003
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=faUooxKv;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.244 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=yKaM/QiUACyjX+qdRyFbfdqOOL/98E7TZUDAFfd2x+A=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794448665; v=1; x=1795053465;
+ b=faUooxKv0kNDG903OFqeLVR1EGlcLCvX6gWu51FNniszxFnwsJRj5rGAm7y/bHE8ac1WigCr
+ iDvPEllng7LoA7eG/DEUYyRb5kIo+/sIiNMhc3QOjJiyRL6/RdQLVeBFDwTiki0Zty3V4VAEiuZ
+ hFjJVN1i5g23LdUhIj29ewqc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 41d9010a3529e826;
+	Thu, 12 Nov 2026 01:57:45 +0000
+X-Mizu-Trace-ID: 41d9010a3529e826
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <5e2733ee-7a25-430f-bdda-f89fc5856e5d@linux.dev>
+Date: Thu, 12 Nov 2026 09:57:35 +0800
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+User-Agent: Betterbird (macOS/Intel)
+Subject: Re: [PATCH v3] mm/mglru: fix a no-op lru_gen_clear_refs() call in
+ lru_lazyfree()
+To: "Liam R. Howlett" <liam@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Yu Zhao <yuzhao@google.com>, Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>,
+ stable@vger.kernel.org
+References: <20261109021611.22247-1-hui.zhu@linux.dev>
+ <4xqyzrl4lbxwbky22lc5k5mcvusudg75z6hspjokfoghp3dny3@rjuukqzxiuyv>
+Content-Language: en-US
+From: Hui Zhu <hui.zhu@linux.dev>
+In-Reply-To: <4xqyzrl4lbxwbky22lc5k5mcvusudg75z6hspjokfoghp3dny3@rjuukqzxiuyv>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 5m716j8dkfqbx5g8hxzggh1rnpdakn61
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794448610-101940
-X-HE-Meta: U2FsdGVkX18yrryJllpI+fcyMN8o/7Nw1yS3iL64seM6jMym4o7FS9ppdL8cdDZhWnaBeg1wm+A/uxytyCLI4De7wRtcQtApNvrIHUzR6+bN7NKPY2+2EEqCOjg0ZCtQQh/NzppxI2NeRWgaIlhwAggDcYiJI0IxEwxAgNeWJFjmY/PtU3LBYx07zzBDXZhd4WCYsVbO2vl+6lEXJY+Ou78ZCyxZx89Se8lUfKr1iBslrn3ZxCdjqI7/GVlaamWVFnAyRL5jGpaKB69fFIPAGGKq9p08gHjxLxvzd0zEdB9NHKX+mSw219rt1TK0CFBcLVm8aoOWdALJAnOpx4Txo3uI1Cvgj1r/9qkjqElYX+kxI/3y/7Bb00zar/d2IDzTQjNPlIzVOIXvLyhxwU2rjMoYJIc5gkjgofpyTcz5y6HMFJ746o/EtzvAbWyJziVy/yxQdqjMLWzZstd+eEYaTeW4fjorxpebdH32pD1bMwNZBRxWJZkYPZR4meoNmbJhPtKzb5Txm1jrhk8xPKhH31fYBU/SgigZ/KmonNIsVGOl8rg/waKISF+HCK7atW89MQZ6d2SvGsdRj0chxErlMEQf1GUaGqrEaX+9n5Lscz60XDHNMaj3JXqrOlNFQ7Z8mRcJuM/JKhYRQELua52fLS5zuEn1pu5sUDh6PgSFBEnPPgEv98xDJE88z3ikKTvzoqf4W8nwBs2cy1/6PAQI/9EpLm7MOmbVQN53kCl18XOQWkNCjCQThlM+jsQ1K1/kEwGK8Lkic7JF/tfO8KOhzQek+Du/EBOYFaPYFyrjR4E8wTKAQYZfhNHUlt3GZa1GXMN53is1bbuJanTt2O1smUYswGd5FVCHxzZVMyD9NvfcVT30F6JhotvHD50SMQY7zI0VT1DNBEva0fJJsEtpiVlDwEj5QWtuwAs6viDEf2xt3d+te/uNooXc/OBDvEkFbKyhQkf8bWABTsL9mH9
- 8LIs0MaB
- HJkTKK+kRv5epz1KhmGU6gFNCDTUEBP9jDmfjvSzWaIW13Qkpk/xM++uviIYgMvQai21yxpzjR8qqt1vCWTqNVmV6QiNRMAj+pIFRxXo46+iyq2PogIoZUmMi9NRaApnw0DdDtIPLlWvg9ZvsM41nxo4HBjGA23cZDscRmVYlVjN0WOjLXILd9f5/f2GZIENRiaBpMvWSc6e/W+yJWUF0yxVnPHEn5yYz+dMjrmYsdScYOgW0tWnOjQ1SsDWYgydaVCKRpJrZNU38vvVtAhPmZcsutyZlcZMhUt8a9XzOokCc9zq3pLaRl5RvydJM9fBeQEkgmHv4/5cFrndCngioawdUwxOmr4f0GZrA99bS5s5VuUKrtCASNwjSWXjAqSBP33MPu6eE3nx8MqNEMxalQwfejLyR4u1g2yVSY6xChDLb/xjeb7MNxq7REH8r0blIKs5hphJVrvGEMQZU6/17b5NplLqWTlLA6gLCSXKYszFfHx/2BCgTuN52N1QfVUPIUeAS1quUOViVA4tB/4Hi0/IgAETGI48TsWgz+njf/+YG6GlYXe4qQe+7nYfrPuKcfmfEdj/1Z53Ycdo+zvzWC6Zjfet8eQlHG3nbq6hZRSLYdzcUIhRhUMYT4Zx48K1yVtqY
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4839420003
+X-HE-Tag: 1794448667-361707
+X-HE-Meta: U2FsdGVkX1/rBhRt+45mH83Lcuw49fTvyJf2w1MoUocJoONh9C/z2sMOFj4QAAuvBXmKhQihd8hRp7aWWPkZo07enMCpYSQkionP9OXEvIzcwO0cRrI26ZB8AwLwLsVtTR2HicFo+jkPk+Sg4vDnJpX4l1ExpsvQp7ymhp8t4PhkHrNevWzmywPg59ZHZAhgIJeD2ck6VMiF9MY8VqYO4x/U+OiIfmNEQZjhNuqzklWWBzj+PPGbbDZIpqSL0Uo4ug53cyv4z6L0dCmQ5RGSGIwSAY9A40eDqNMyNYQQnndQUKw8VaiAcB+v5JvoIhoQMNdNcQ7jeGiX/lLMHvh67THWMtEvF193/r/PosFAwGMQ6EHrKcAXskBSDLay6JYxPSc9mQgFiTae3Z5qhXvdfWFU3lkq+q5NSIGk8yddsyg1tGPSlKEKWMXG6nIEGgfVzsjAh2hBAGe5FXxEdQ9S6Csj18QjAYRcUtjF0bBdzJxMp5xfp7ovFOf34PE0lAkBEDnZCSBJpAhGHCXqTulesoMxNUzMkjAbdmTMmywuJ6QtXt+nEMuguEysroKcehK2K86aMe7AIljb526Xwgkd2o28Qks1pEY8S8/6+TYPEuGqh7ni/xd2Z5cym5gg+y5MruSXe398k97P/NhTTZzl/XTciQ8SWepkhh/M2cyFA5Tdju4+cTBxVO/ybGmgHLV+eNk1UVEaDrzIzz9nEYznxcNwQiXvCa/1EwN6luG+djW6XuBU8gbz0o4n/GbYADuO6kaBk6jvS/s03NG6ttiK8g1G9kdl9UQqS1LdmTfQ9+9U7+vJnlMoNPvM5DI4F9qC93cNskfNxSPxGBMJUySPNXJoUi/vMz27ayKvnHHZ4Z1P7XcAR3GuRmwbHgIGaqRvS4XAFsRhmr0NI+SyLX3Fzlq9E1njQSw8eEfTv+GOMLqm3m0YfeyoyjlvEeYzJ/wpDSx+6Jo3u8WqnjKuRGY
+ DLuWHGNY
+ +8c0DPZTPGjJYrYjGNbyEkptYUy2126mTDEaRxMVQXdlsb4e7Vr1JnxoKbQQiB8uaWqj+2/YhHIpGU1iNL58Q8YQQxydjaYN5Hr2YrVmq9XiaxI5zzHYwiv/4l2Cg6MxmY4Wn6RjETiY9ZQJXgJ+wP2J+61/1K7PFIXOBfZG+5dO0a61JVMVWFg5yWl8xJ13rN6tA3YBdQHijQ49MhvI3SB5ul81zFOPYJS5cSgKYEPLBfcyO2oGEWGi4M2r95sdJwbnwdE3+MHO0C0nZjJLDkXpGyKxsxTf5LiwrRzrlJ0GiLn2zyLRD23M4sYS0aGt5va3UdVumyXxZGPTfS+JTflHhK1d+GGDGRV3S+0ieWlwGE9uKbBLfiSGTnkw/Ewp69390zlL6GOtfqR9dtSen9kcBhw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,102 +101,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] mm: double WB_DONTCACHE_DIRTY accounting in
-  folio_mark_dropbehind()
---
+2026/11/12 01:21, Liam R. Howlett:
 
-commit 99c7597afc26e4465bf2ced6117179f389f8476b
-Author: Mike Snitzer <snitzer@kernel.org>
+> On 26/11/09 10:16AM, Hui Zhu wrote:
+>> From: Hui Zhu <zhuhui@kylinos.cn>
+>>
+>> lru_lazyfree() calls lru_gen_clear_refs() after lruvec_del_folio(), but
+>> lru_gen_del_folio() has already cleared LRU_GEN_MASK, so folio_lru_gen()
+>> returns -1 and lru_gen_clear_refs() exits at its "gen < 0" check without
+>> clearing the refs or PG_workingset.
+>>
+>> A MADV_FREE folio therefore keeps the state it had before madvise(2),
+>> even though madvise_free_pte_range() has already cleared the accessed and
+>> dirty bits of its PTEs.  lru_gen_folio_seq() places it one generation
+>> younger, and PG_workingset puts it in the last tier, so sort_folio()
+>> promotes and protects it instead of evicting it and charges it to
+>> lrugen->protected[], which read_ctrl_pos() uses to balance anon against
+>> file reclaim.  __folio_inc_gen() clears the refs but not PG_workingset,
+>> so this repeats every time the folio reaches the oldest generation.  If
+>> the folio is redirtied first, ttu_anon_lazyfree_folio() keeps it and
+>> lru_gen_eviction() packs the stale state into the shadow entry, so a
+>> later refault is promoted to the youngest generation.
+>>
+>> Call lru_gen_clear_refs() while the folio is still on the generation
+>> list, as deactivate_file_folio() and folio_deactivate() already do.  Its
+>> return value only says whether the folio is in the oldest generation,
+>> which lru_lazyfree() does not need because it re-adds the folio below.
+>> Keep folio_clear_referenced() unconditional: the classic LRU needs it,
+>> and it also covers the folios that lru_gen_clear_refs() skips.
+>>
+>> Fixes: cc8ec7be78ff ("mm/mglru: optimize deactivation")
+>> Cc: stable@vger.kernel.org
+>> Suggested-by: Barry Song <baohua@kernel.org>
+>> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+>> Reviewed-by: Barry Song <baohua@kernel.org>
+> One nit..
+>
+> Reviewed-by: Liam R. Howlett (Google) <liam@infradead.org>
+>
+>> ---
+>> Changelog:
+>> v3:
+>> Add Cc: stable@vger.kernel.org and pick up Barry's Reviewed-by.
+>> No code change compared to v2.
+>> Per the thread discussion, the __lru_gen_clear_refs() refactor will be
+>> sent as a separate cleanup after this fix lands.
+>> v2:
+>> Call lru_gen_clear_refs() before lruvec_del_folio() instead of
+>> open-coding the flag clears; drop the lru_gen_enabled() branch and
+>> the comment (Barry Song).
+>>
+>>   mm/folio.c | 6 ++----
+>>   1 file changed, 2 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/mm/folio.c b/mm/folio.c
+>> index 35e242b48870b..ea3adb6a89d75 100644
+>> --- a/mm/folio.c
+>> +++ b/mm/folio.c
+>> @@ -597,12 +597,10 @@ static void lru_lazyfree(struct lruvec *lruvec, struct folio *folio)
+>>   	    folio_test_swapcache(folio) || folio_test_unevictable(folio))
+>>   		return;
+>>   
+>> +	lru_gen_clear_refs(folio);
+> Since you're not checking the return here, you could use
+> folio_set_lru_refs(folio, 0);
+> folio_clear_workingset(folio);
 
-mm: add folio_mark_dropbehind() to mark a folio dropbehind and account it
+Thanks for the review.
 
-This commit adds folio_mark_dropbehind() to set PG_dropbehind on a locked
-folio and account it in WB_DONTCACHE_DIRTY if the folio is already dirty.
+That is exactly the shape we agreed on for the follow-up cleanup in
+this thread, Barry's __lru_gen_clear_refs() draft. I would still keep
+v3 as it is, for two reasons.
 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 98ce955404127..a54d0fbd37222 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -1654,6 +1654,38 @@ void folio_end_dropbehind(struct folio *folio)
->  }
->  EXPORT_SYMBOL_GPL(folio_end_dropbehind);
-> =20
-> +/**
-> + * folio_mark_dropbehind - mark an existing folio dropbehind
-> + * @folio: the folio, locked by the caller
-> + *
-> + * Mark @folio so that the writeback that cleans it drops it.  If the fo=
-lio
-> + * is already counted as dirty, which with the i_pages lock held means b=
-oth
-> + * PG_dirty and the dirty tag are set, add it to WB_DONTCACHE_DIRTY so t=
-hat
-> + * the clean that subtracts it leaves the counter balanced.
-> + */
-> +void folio_mark_dropbehind(struct folio *folio)
-> +{
-> +	struct address_space *mapping =3D folio->mapping;
-> +	unsigned long flags;
-> +
-> +	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
-> +
-> +	if (folio_test_dropbehind(folio))
-> +		return;
-> +	if (!mapping || !mapping_can_writeback(mapping)) {
-> +		folio_set_dropbehind(folio);
-> +		return;
-> +	}
-> +	xa_lock_irqsave(&mapping->i_pages, flags);
-> +	folio_set_dropbehind(folio);
-> +	if (folio_test_dirty(folio) &&
-> +	    xa_get_mark(&mapping->i_pages, folio->index, PAGECACHE_TAG_DIRTY))
-> +		wb_stat_mod(inode_to_wb(mapping->host), WB_DONTCACHE_DIRTY,
-> +			    folio_nr_pages(folio));
-> +	xa_unlock_irqrestore(&mapping->i_pages, flags);
-> +}
-> +EXPORT_SYMBOL_GPL(folio_mark_dropbehind);
+folio_set_lru_refs() is only defined under CONFIG_LRU_GEN, so the
+open-coded version needs a new stub in mm_inline.h. That turns this
+one-spot fix into the header change we planned for the cleanup patch.
 
-[Severity: Medium]
-Can this double-account WB_DONTCACHE_DIRTY when racing with an unlocked
-dirtier on a folio that still has a leftover PAGECACHE_TAG_DIRTY mark?
+The two calls are also unconditional, so on the classic LRU every
+lazyfree folio would lose PG_workingset too, which upstream never did
+before cc8ec7be78ff. Barry and Kairui just agreed to take this patch
+as a clean backport for stable, so that CLRU behaviour change should
+go into the cleanup patch with its own justification.
 
-__folio_cancel_dirty() clears PG_dirty and uncounts the folio without
-clearing PAGECACHE_TAG_DIRTY in mapping->i_pages.  Because callers such as
-zap_present_folio_ptes() -> folio_mark_dirty() -> filemap_dirty_folio()
-dirty mapped folios under the PTE lock without holding the folio lock,
-they can set PG_dirty before acquiring mapping->i_pages.xa_lock:
+lru_gen_clear_refs() is self-gated on gen >= 0, so the call is a
+no-op for folios that are not on a generation list, and the return
+value it computes shares the cacheline lruvec_del_folio() touches
+right after. I will send the cleanup, with the open-coded clearing
+and the stub in one place, once this lands.
 
-CPU0 (holds folio lock)           CPU1 (holds PTE lock)
-__folio_cancel_dirty(folio)
-  folio_test_clear_dirty(folio)
-  folio_account_cleaned(folio)
-  /* PAGECACHE_TAG_DIRTY stays set */
-                                  filemap_dirty_folio(mapping, folio)
-                                    folio_test_set_dirty(folio)
-folio_mark_dropbehind(folio)
-  xa_lock_irqsave(&mapping->i_pages)
-  folio_set_dropbehind(folio)
-  /* PG_dirty && TAG_DIRTY both set */
-  wb_stat_mod(..., WB_DONTCACHE_DIRTY, +nr)
-  xa_unlock_irqrestore(&mapping->i_pages)
-                                    __folio_mark_dirty(folio, mapping, ...)
-                                      xa_lock_irqsave(&mapping->i_pages)
-                                      folio_account_dirtied(folio, mapping)
-                                        if (folio_test_dropbehind(folio))
-                                          wb_stat_mod(...,
-                                            WB_DONTCACHE_DIRTY, +nr)
-                                            <-- counted twice
+Best,
+Hui
 
-When the folio is later cleaned, folio_clear_dirty_for_io() or
-folio_account_cleaned() only subtracts folio_nr_pages(folio) once,
-leaving WB_DONTCACHE_DIRTY permanently inflated and causing
-wb_check_start_dontcache() to trigger extra writeback.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261111015607.4633=
-8-1-snitzer@kernel.org?part=3D4
+>
+>>   	lruvec_del_folio(lruvec, folio);
+>>   	folio_clear_active(folio);
+>> -	if (lru_gen_enabled())
+>> -		lru_gen_clear_refs(folio);
+>> -	else
+>> -		folio_clear_referenced(folio);
+>> +	folio_clear_referenced(folio);
+>>   	/*
+>>   	 * Lazyfree folios are clean anonymous folios.  They have
+>>   	 * the swapbacked flag cleared, to distinguish them from normal
+>> -- 
+>> 2.43.0
+>>
 
