@@ -1,154 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E605160A5BDA
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 11:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3B9E606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 11:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=f8PKmcO3;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Qc8cqb2R;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=f8PKmcO3;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Qc8cqb2R
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kcej4SeG
 Received: by kanga.kvack.org (Postfix)
-	id 1B3196B05B0; Thu, 12 Nov 2026 06:21:47 -0500 (EST)
+	id B09D26B05C7; Thu, 12 Nov 2026 06:25:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18BC16B05B4; Thu, 12 Nov 2026 06:21:47 -0500 (EST)
+	id AE0D66B05C8; Thu, 12 Nov 2026 06:25:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A18A6B05C4; Thu, 12 Nov 2026 06:21:47 -0500 (EST)
+	id 9F7166B05C9; Thu, 12 Nov 2026 06:25:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DAA866B05B0
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:21:46 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5C59780524
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:21:46 +0000 (UTC)
-X-FDA: 85426227012.19.40191FB
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 2E0D220006
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:21:44 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=f8PKmcO3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Qc8cqb2R;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=f8PKmcO3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Qc8cqb2R;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf31.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 781BC6B05C7
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 06:25:47 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 161F616051B
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:25:47 +0000 (UTC)
+X-FDA: 85426237134.17.83D9ADD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8C25F2000B
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 11:25:45 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kcej4SeG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of arnd@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=arnd@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794482504;
-	b=UNfa+ZNW364Ho6+U3HX00fdI7nxmJc3v8clyUceQ0Jrr48um5HJLBAVP+ILXB0f3GXBoWt
-	W9kn85g62kIBxRvtmybMd6NrXUv3akh4PDDGPhTLFhu3WbFllWmq5yj6wiQJBdj67n707E
-	WWSYr62JGzXeg0QB8i7MtX9tWxkPg+M=
+	t=1794482745;
+	b=AlGVQApgwUfxVHQyqayevdveMcp3h0S/eEKQUsX0Lcha5bnnZMirn/xJqyRDgaxCWBBTQ3
+	NaRy9ChiYqk1dwDWYoWBWuEowlLKkGmvi+q9rH8T27MiP3AFFw8tctpajzAU9GtQpEwDGn
+	OEwma21wQUIc5BLsEdBDOsnoi3Un1KE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794482504;
+	s=arc-20220608; t=1794482745;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b68hR85FMy64ZLKPI+SkETJKcoWTtrleDFFCwxd3C7E=;
-	b=hMXe+onxYWWOsVV3uqrVhmSBGEp27u0FPugKb7sXgvtktAEBlRnfOLMFdR4FiwAtTguESZ
-	wvON/P0Hf7YGUgBzgUAdhKHeFknqy8CpZaam9wBKkyph+nPRhOXn8yInrLALxjg8SGzsGa
-	qLGIn70TwDnrzC5z7dnjYU84/8T/ryU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=nyAii04iv1TnyOOBwPCAP2EPWogK/SwQRxxQEJCCSUM=;
+	b=PiTs8F7hrhrEOEcwDM3d1XWOe1rJvOrnmd1JzX8R+dtwxS4OsGs+YwXwjmdJdJp6dSkvC5
+	7IekWGQ7gRZgyWRV/QXkIVcmaKJZAD1mUnh+zshRTqAmhAWOmTc+j4ppz5hd3qogrofS2o
+	LNMx+oZJp9R1fBRrF/j1J3cfSa2iF70=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=f8PKmcO3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Qc8cqb2R;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=f8PKmcO3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Qc8cqb2R;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf31.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 83E481F74D;
-	Thu, 12 Nov 2026 11:21:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794482502; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b68hR85FMy64ZLKPI+SkETJKcoWTtrleDFFCwxd3C7E=;
-	b=f8PKmcO3THEm97E0clNHriq4Z64U95UVpQJKVzAHSFQsf2uA8U5cIRr+Kz2zuNFySoOqlP
-	3/9gmJ7WZkgL7nmxglnkqVcbIcqwyepaDSFJL9+m2XXYD4mn0Yp/i1+4uEaZ+yUYK3bBAO
-	Z/Zk+ThUwR6EC8Xo9kGfRh86noaXH6Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794482502;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b68hR85FMy64ZLKPI+SkETJKcoWTtrleDFFCwxd3C7E=;
-	b=Qc8cqb2RCIXsDmnVlLXr1Rg/oe9HO72E9kGX41HXI6G+yK09O6MWVLkmK8wuduiymKcucb
-	szOlGWoh9SGsTfDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794482502; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b68hR85FMy64ZLKPI+SkETJKcoWTtrleDFFCwxd3C7E=;
-	b=f8PKmcO3THEm97E0clNHriq4Z64U95UVpQJKVzAHSFQsf2uA8U5cIRr+Kz2zuNFySoOqlP
-	3/9gmJ7WZkgL7nmxglnkqVcbIcqwyepaDSFJL9+m2XXYD4mn0Yp/i1+4uEaZ+yUYK3bBAO
-	Z/Zk+ThUwR6EC8Xo9kGfRh86noaXH6Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794482502;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b68hR85FMy64ZLKPI+SkETJKcoWTtrleDFFCwxd3C7E=;
-	b=Qc8cqb2RCIXsDmnVlLXr1Rg/oe9HO72E9kGX41HXI6G+yK09O6MWVLkmK8wuduiymKcucb
-	szOlGWoh9SGsTfDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D635A134A0;
-	Thu, 12 Nov 2026 11:21:39 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id fxoaJEOh9WodfQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 12 Nov 2026 11:21:39 +0000
-Date: Thu, 12 Nov 2026 11:21:38 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Jann Horn <jannh@google.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Nhat Pham <nphamcs@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Usama Arif <usama.arif@linux.dev>, 
-	Kairui Song <kasong@tencent.com>, Balbir Singh <balbirs@nvidia.com>, 
-	=?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Yu-cheng Yu <yu-cheng.yu@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
-	Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>, Chris Mason <mason@kernel.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	"Borislav Petkov (AMD)" <bp@alien8.de>, Mark Brown <broonie@kernel.org>, 
-	"Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 01/13] mm/mmap: free gathered pages before MMF_OOM_SKIP
-Message-ID: <avWgulaWoKBfIFlo@pedro-suse.tail5790ac.ts.net>
-References: <20261111-mason-migrate-et-al-fixes-v1-0-3d2454362e8d@kernel.org>
- <20261111-mason-migrate-et-al-fixes-v1-1-3d2454362e8d@kernel.org>
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kcej4SeG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of arnd@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=arnd@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 16973639FD;
+	Thu, 12 Nov 2026 11:25:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 300D51F00A05;
+	Thu, 12 Nov 2026 11:25:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794482744;
+	bh=nyAii04iv1TnyOOBwPCAP2EPWogK/SwQRxxQEJCCSUM=;
+	h=From:To:Cc:Subject:Date;
+	b=kcej4SeGNio953kxVJadAgWpMDZMpkWZMd+hDFdcbwBD6YqxOi5/s7jcM3dn5qkSo
+	 JFjFFCvvWKdz0/D/1LD7AfJxJtAvjrb04S93zIylNgx499dpN+NQzloWAY3IS00PNX
+	 ToYfTeKT9AfjBIh/2/JCQ81cMF4nF8JdQ1YgKhO3z3Kktfl6XBnC2mXQC5Rf4jyLim
+	 a1Ar7lPvE18Ei+2zQ8KLCKzraZ0pFf7T7mxc8wFRF7N0eo1VNdCzDQiEsxnUr4MWL9
+	 O/jp1yId0/ROUbt1HXRPmXoqR1BggR72fUy+EYYXcSYsvO7uJLDMn8zIE51FGdcUnE
+	 GisdYH+T+tgPQ==
+From: Arnd Bergmann <arnd@kernel.org>
+To: linux-mm@kvack.org
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andreas Larsson <andreas@gaisler.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Malin Jonsson <malin.jonsson@est.tech>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	x86@kernel.org
+Subject: [PATCH v2 0/6] mm: highmem cleanups
+Date: Thu, 12 Nov 2026 12:25:22 +0100
+Message-ID: <20261112112528.1116405-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261111-mason-migrate-et-al-fixes-v1-1-3d2454362e8d@kernel.org>
-X-Rspamd-Action: no action
-X-Spam-Score: -12.01
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 2E0D220006
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8C25F2000B
 X-Rspamd-Server: rspam12
-X-Stat-Signature: kk8cx4zkyc9t41xkfik4kyrmq4ah6po5
+X-Stat-Signature: bkkb638xmqwp6sqgycrhzrozrad5zucd
 X-Rspam-User:
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794482504-544038
-X-HE-Meta: U2FsdGVkX1+Z9HhdFfmaUtzQu/YUxdeHl4TnvegNKcm8PNr2WTvrqwPcG+FIskU4jD4Bjucy13BEGUG0IvfErAJG1s9XlNgG23SbaG2rFzgFmL0JNcHseZQOH+l3jt9j8VfVhTR58sh2bMcRFWnrmmDxioDA/Id23rst3CY88FLCH7tYp0LVhPRtcXrWHRoTvrOkGNMQpbljcOFiQZQAFHji7YQQZk8JR+fF+nJ9aLVfihD4UfNx8wx/eWC2OqjwhhLdwoQHbIGc0sdbj1FvfNIHQVTNecgp0+/2GtB/Iw3JCh/3ke7vs2RRbnIWF+bIkz8YxqY056PF8/mp13zGxRvJiYxtBpMDPsmjXTBZuplU582L1ZSQR51+X+wV9YwhC9cAakT3Zs/QlMUa8HBP4CGr5wvTN6VFznJf/OHr5XEu/Bff0jNn6MEV+2M8F5jA5YwgoIFslGAm9GT139ZCgxvNw5EVu3DuKHNMbgUNs3IfWFHUXVlEVOi9l9HAYXpCdaiMSspMdQSW8jUX6P5d28ZOjPyqV9gXA7hjgnJGGO48ho0D8Y7xZj+ADS3lkXcrloSY4ekpQU/j+7Wv6AIWsf1Wyw4ej6OL4AgyDc006YVKrMOr5JLeE3Fmirt5/l9Ye7Tt/gWaFjXgqbPqs9OtvZBlAHEnD0VYsSQPXDxMENefzEdIeDzwVg0wEVC2Z11j/pVfaJstFGWgpvz3gaijaHFIlDsFVyPR7v2EGs/tRvisfEalylvrjHhwiO9jfkxdndLBaajTKZRnfk0tXY8uoL/cU2vlFgGAeq4pMOm6aPo7+S3WpPe9NDJVDtDfwJGMmljHGcG0Rrh0eUvuf9d55ULu+OWq64+yoXlaNl0OsiT0yRASvDyuuwz5cgQ35v9e/8pmAPQF7TYGY/eOsrU+1TmZ6SYQ+WLIrrX8DYEFOadn50f87je3S65ViUq4S57vqm/NlMZA2iJ+eZVf4HU
- lmKIDn1i
- aYoLFhu/zQnBm2w2FZMxs9YCx0owH68pDhFQalGwX8jBPmuJ8RUgs8VwndgSaXHmWqJ1yp5l5sGKP6UXQQl48MxOZYsL6PiFUjRQO0hXRmrNb1a4sCs334N/nF8SIk1bVFspjqqiBiVDVwH3g4sqAqEAHcBtG9fc6Gm22+1enouQ2RpDdO62rFLeeYzq065s8Aw0Cvouwmh20tsgKLlZmRwsinidDvtK8OrxqQRywDY7RrrXTu13jOO+qdYju2ovX/rhvONAqMnC3PqLnDckw6lBoI31M7T63GGOnC1R81RTHsTyxPlQkt/7uhSpwOjO/yttY+uMUdjmdbawYwAXsCTJqBNyim6PQC1e9EpVI6OGbypFQEIN/1VovoQpNEELPYAQaVM8mVzoEUSZ7COYLXdT3+9o3Sak2m3/cFuwDuRKeEYZgBQERoYtME/wJjblwh/RiHUEGb+jYQ/OWptBHbN8lDVnAx3iWigkZFc/ywmUcuxlUEruXG9m5TlPvIJCPAIe906FvwBJP9k3hrjJXkQemIcFFD6ClxkXaXxYz3YvQy4To8GY61slRpHHaYUGbGuAa/Lu5g75I+zRdgzz6o3awO0YC2Da+D4FH
+X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794482745-961261
+X-HE-Meta: U2FsdGVkX18Ag7lOsfCDkKRYJRvqVxSPy0iu8YKQVwVMlanQzSp5K9/syD6BGD+2TV2To9COIrPB7rDeHDai9dcD2yQVpISTHIgVMBFIfmGF0wpM1G/Iz+/yxBnDaoTEqDZfc2NK5w3wvprHJsr6qfRF1WtpBoLmWiah2nT5GTUBl9edd9h9SG+GgJh9Jol3B+xl8+9mESEgegqnthIjtl20GtSjyAqvuyi9kMLyLZcxKWaYxVTo9sOg9CugevlKDUphN6JDXg5Dtssaq5JsZLqfdQ1mrgMmHlku4g7Re9RhoL/ia7QdX2hmhB0IpkRpEMcKgn+B5lxuxv6vJ5BZBxu8Up0rMGY0L5qN2duNsO62FDU/kzJ/1j2C0pe22+c8Arb8NMzVaafF3FIK614ZSdzsQRWNyUP9fXyXdahpbjeak0DtJi0SLTu/n5xpo0HajZDMwCCN0jF4XXrQyiSk9hXNEEB9Y1QV1ITfWV7N2ZJltJ+dJPfp00kx9Y5Z7H0Il6Iy9EZRYJiqI+Vxod0xsmnccjhmLx7CJYRKSUL5qaEFg47KTAINegqlkw8FE8E8MKkWY2l5yyFWzI+Uyf8KP9+766QGvyrQHLgOjhYLjphXuvDtuWuq+Ac2MtD4O13WuLzcT9OIF3Gv6OQPKWBtI/hWHkJg3oZNeWrIzSjoYwA9s1Hx5Xy8xH4JXWwtbuxOCYayTACxBXzBQIsfzaFB8ow0jit+194zU4mUqdBADf+ZyXy6HfL1sD4Pk/w9spCsW5/f2vnO4+K5aN8s2TrJBiBTeNvyqGRBBx2IaRLr6mWbNltzC0em/pm2gJym3af3IMzL2GJQeuOnXHzvteEeB01jqnoOv8Htldve0q2HnM5F71+7NQ1yS668s8075RVkeFhY+MdYNy2VZfIDsQ0QN1jtsnkCCHjrW4vGCiSIyuzvyfhMiG63QhdBjEhWxk3WSMij+MSDW5B1hQxGJ1P
+ ZcgZnkxX
+ nSYbdJr28pc2Okx+yaTHRMbQyAMAr43AuYcKodRsP+zk4O8KCn68Y8P2gikowrd/2X04KHaFbFcG0OrIUq6v6IS70UfYPloK9jq3vNZeLATFn6H+wwYIWjP/VAVCF79sGxo8tuK6lOBVHABvLEjvZxWge85Iv1GcoO8GyPJQNDMt2Y8DjlR6p2vkZ6N6PdjY9ZxTnozt2xJ7iXS7/PKP8waCbzFNSM1L2mnEA2vXw1cfsCllvXfpJERr2Svt6RGIAFzCc0G8J7sF1EFXpTZ6NQwceMfPxcKpoUYoZT2bGP95uXVwXVaRdnypcF6boWoP6yTEtUmz83yVffToOhyz5E9IMlgSbjVOeXsiOcjpk7/VdWt9orjXKi//7HJPt993GwtAWi6iR88VBUVydNgMxx3BHg4ORBaq4QzG5nXtHWmurT+kfOw3N5BaKiBn5qrYBi9MKzHKT2guLsgmT2l9c+lPzVmgF2y1wJPFFxzlmek8XvAWUMphx5OjNk1xemobbq8kM2V2LWvt6l3uaqKw7CR3Lcd63+rB5rrYhQSw5D1ILgSPlZ5wNT6pbLqUg2ceaTS8WHJ+MhiYdbhU8fiJ5WaMwF52ybW2m4mFhiTysIFVSGfYPjoGiO5LGEjl6Io/ISl4jcZoZ1GzFE/L8Cfy0kjdwUdYA4joOhRNxmHywFy3F+WF4XEYiZ1mMrWHuY0jocgh9CKKifJ87ainmwO/DdA/LzNOuvUHDKjhWXMc3al5uqo28+J750ouDr/5drZrVAa8Rl7twAPH6yszc9GdLQoJpMpE5Hv8e1GcGxUhZEQKDfUPO5S1VY8r8XWK/Kf3Bf7QCCzn8c8S7OfLBJSCfjuvf6Q0Kln3tgbPx28VyJLCDrR9JPSTnnAra+yMh3467RDjZS0Fix+EHiJQNBYulSH1V7I6Oi+RHsL6KkPid/fWWgT4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,93 +107,123 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 11, 2026 at 06:13:15PM +0000, Lorenzo Stoakes (ARM) wrote:
-> The OOM killer can quickly trigger again after having selected a
-> victim. That victim might not have freed its memory yet, but its mm will
-> be marked MMF_OOM_SKIP by this point, so the OOM killer will ignore it.
-> 
-> This can cause the OOM killer to kill an innocent process when the first
-> might have freed enough memory to relieve the memory pressure.
-> 
-> Fix the issue by freeing the memory before marking the mm MMF_OOM_SKIP.
-> 
-> Note that the task which calls mmput() might not be the victim - if it
-> took a reference on the mm (e.g. ptrace), it may hold the last reference
-> and release it when it calls mmput().
-> 
-> Therefore we cannot rely on current to tell whether the mm belongs to an
-> OOM victim. Instead, partially revert commit b3541d912a84 ("mm: delete
-> unused MMF_OOM_VICTIM flag") to reinstate MMF_OOM_VICTIM, which
-> mark_oom_victim() sets on the victim's mm, and check that.
-> 
-> Reported-by: Chris Mason <mason@kernel.org>
-> Fixes: bf3980c85212 ("mm: drop oom code from exit_mmap")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-Looks good, thank you!
+This is an updated series from what I posted last year [1], sorry for
+taking way longer with this than I had planned. Linus brought it up today,
+which triggered me to rebase the earlier patches and post it again.
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+At LPC 2025 [3], we got rough consensus on the plan to keep the
+funcationality present for the time being but instead reduce the scope
+of highmem in the kernel as much as we can without hurting users.
 
-> ---
->  include/linux/mm_types.h | 2 ++
->  include/linux/oom.h      | 9 +++++++++
->  mm/mmap.c                | 9 ++++++++-
->  mm/oom_kill.c            | 4 +++-
->  4 files changed, 22 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index 1ed35d258d2e..09e63ff12b04 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -2030,6 +2030,8 @@ enum {
->  #define MMF_TOPDOWN		31	/* mm searches top down by default */
->  #define MMF_TOPDOWN_MASK	BIT(MMF_TOPDOWN)
->  
-> +#define MMF_OOM_VICTIM		32	/* mm is the oom victim */
-> +
->  #define MMF_INIT_LEGACY_MASK	(MMF_DUMP_FILTER_MASK |\
->  				 MMF_DISABLE_THP_MASK | MMF_HAS_MDWE_MASK |\
->  				 MMF_VM_MERGE_ANY_MASK | MMF_TOPDOWN_MASK)
-> diff --git a/include/linux/oom.h b/include/linux/oom.h
-> index 00da05d227e6..a9390cb70541 100644
-> --- a/include/linux/oom.h
-> +++ b/include/linux/oom.h
-> @@ -76,6 +76,15 @@ static inline bool tsk_is_oom_victim(struct task_struct * tsk)
->  	return tsk->signal->oom_mm;
->  }
->  
-> +/*
-> + * Use this helper if tsk->mm != mm and the victim mm needs a special
-> + * handling. This is guaranteed to stay true after once set.
-> + */
-> +static inline bool mm_is_oom_victim(struct mm_struct *mm)
-> +{
-> +	return mm_flags_test(MMF_OOM_VICTIM, mm);
-> +}
-> +
->  /*
->   * Checks whether a page fault on the given mm is still reliable.
->   * This is no longer true if the oom reaper started to reap the
-> diff --git a/mm/mmap.c b/mm/mmap.c
-> index 7618e72766a5..4cb18b217048 100644
-> --- a/mm/mmap.c
-> +++ b/mm/mmap.c
-> @@ -1313,11 +1313,18 @@ void exit_mmap(struct mm_struct *mm)
->  	/* update_hiwater_rss(mm) here? but nobody should be looking */
->  	/* Use ULONG_MAX here to ensure all VMAs in the mm are unmapped */
->  	unmap_vmas(&tlb, &unmap);
-> +
-> +	/*
-> +	 * Free the memory before marking MMF_OOM_SKIP so a re-triggered OOM
-> +	 * killer will only skip this mm if it's already freed all it can.
-> +	 */
-> +	if (mm_is_oom_victim(mm))
-> +		tlb_flush_mmu(&tlb);
+The short summary is a three stage process:
 
-I see there's a different tlb_flush_mmu() call below (in the actual function).
-Is tlb_flush_mmu() idempotent?
+ 1. Nudge users towards using a larger lowmem zone with the
+    CONFIG_VMSPLIT_* options if at all possible.
+
+ 2. Drop most __GFP_HIGHMEM allocations and corresponding kmap()
+    calls from the kernel, leaving only the subset that is likely
+    to contain the majority of the actual allocations.
+    Specifically we will keep anonymous and regular file backed
+    user mappings, zsmalloc, and huge pages.
+
+ 3. In a few years, also drop the page cache allocations and leave
+    perhaps only zsmalloc using a much simpler interface.  I suggested
+    five years as the time until we do this, but the timing depends a
+    lot on how the first two stages work out in practice, and how long
+    the remaining highmem users plan to keep updating their kernels.
+
+This series implements stage 1, mostly using Kconfig changes to the
+default settings but leaving the traditional behavior as a CONFIG_EXPERT
+choice in Kconfig. With the new defaults, most installations that use
+highmem today with 1 GiB or 2 GiB of system RAM will see all of their
+RAM in the lowmem zone after upgrading their kernels. My estimate is
+that instead of 80% to 90% of maintained embedded 32-bit systems, this
+should cover over 98%.
+
+As I don't actually have hardware in the category that still needs
+highmem, I tested this using a qemu-system for Armv7 and PPC6xx running a
+Debian userland with all combinations of VMSPLIT and HIGHMEM options. I
+ran some kernel builds on the Arm guest to ensure that the new options
+don't cause functional or performance regressions for regular workloads
+that don't exceed the virtual address space. I also ran some tests
+with Firefox and was positively surprised to see that this still works
+on the VMSPLIT_2G_OPT configuration without highmem, though it gets
+close to both the address space and lowmem size limits.
+
+As I had to change the powerpc version a bit for the rebase, this
+current version is entirely untested, but I hope that Richard and
+Christophe are able to help out there, as they both understand this
+code better than I do.
+
+The change to use VMSPLIT_3G_OPT by default on Armv5 means that I could
+include a patch to no longer support highmem at all on VIVT caches,
+as suggested by Jason Gunthorpe. I also included the patch to drop
+HIGHPTE support now, as suggested by David Hildenbrand.
+
+The patches from this series are available in [4] for testing.
+
+     Arnd
+
+[1] https://lore.kernel.org/all/20251219161559.556737-1-arnd@kernel.org/
+[2] https://lore.kernel.org/all/CAHk-=wjPY=kfgnmtx4COEQjD5UzKx9m2-=KLGAZP4d=RKEH+pg@mail.gmail.com/
+[3] https://lwn.net/Articles/1051010/
+[4] https://git.kernel.org/pub/scm/linux/kernel/git/arnd/playground.git/log/?h=highmem-7.4
+
+Arnd Bergmann (5):
+  ARM: remove support for highmem on VIVT
+  mm: remove ARCH_NEEDS_KMAP_HIGH_GET
+  ARM: drop CONFIG_HIGHPTE support
+  mm: drop HIGHPTE support altogether
+  arch/*: increase lowmem size to avoid highmem use
+
+ arch/arm/Kconfig                            | 17 ++--
+ arch/arm/configs/aspeed_g5_defconfig        |  1 -
+ arch/arm/configs/gemini_defconfig           |  1 -
+ arch/arm/configs/multi_v5_defconfig         |  1 -
+ arch/arm/configs/mvebu_v5_defconfig         |  1 -
+ arch/arm/configs/u8500_defconfig            |  1 -
+ arch/arm/configs/vt8500_v6_v7_defconfig     |  2 -
+ arch/arm/include/asm/highmem.h              | 56 +-------------
+ arch/arm/include/asm/pgalloc.h              |  8 +-
+ arch/arm/mach-omap2/Kconfig                 |  1 -
+ arch/arm/mm/cache-feroceon-l2.c             | 31 +-------
+ arch/arm/mm/cache-xsc3l2.c                  | 47 ++---------
+ arch/arm/mm/dma-mapping.c                   | 12 +--
+ arch/arm/mm/flush.c                         | 19 +----
+ arch/microblaze/Kconfig                     |  9 ++-
+ arch/microblaze/configs/mmu_defconfig       |  1 -
+ arch/powerpc/Kconfig                        | 14 ++--
+ arch/powerpc/configs/44x/akebono_defconfig  |  1 -
+ arch/powerpc/configs/85xx/ksi8560_defconfig |  1 -
+ arch/powerpc/configs/85xx/stx_gp3_defconfig |  1 -
+ arch/x86/Kconfig                            |  4 +-
+ include/linux/hugetlb.h                     |  5 +-
+ include/linux/mm.h                          |  1 -
+ include/linux/pgtable.h                     |  9 ---
+ mm/highmem.c                                | 86 +++------------------
+ 25 files changed, 50 insertions(+), 280 deletions(-)
 
 -- 
-Pedro
+2.53.0
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Malin Jonsson <malin.jonsson@est.tech>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: linux-mm@kvack.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: x86@kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
