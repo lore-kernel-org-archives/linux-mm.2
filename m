@@ -1,171 +1,170 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C10606A896
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 10:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37298606A333
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 10:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=fG0Y1uuO
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I0TPDV43
 Received: by kanga.kvack.org (Postfix)
-	id 1E0B76B05C4; Thu, 12 Nov 2026 05:43:13 -0500 (EST)
+	id 2F2606B05C5; Thu, 12 Nov 2026 05:43:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B8736B05C5; Thu, 12 Nov 2026 05:43:13 -0500 (EST)
+	id 2C9E26B05C6; Thu, 12 Nov 2026 05:43:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 080AE6B05C6; Thu, 12 Nov 2026 05:43:13 -0500 (EST)
+	id 1DFDA6B05C7; Thu, 12 Nov 2026 05:43:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D7A256B05C4
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:43:12 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1497D1604FA
+	by kanga.kvack.org (Postfix) with ESMTP id E6CBB6B05C5
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 05:43:14 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 78F15160496
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:43:14 +0000 (UTC)
+X-FDA: 85426129908.10.57ECD11
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C03A71C000A
 	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:43:12 +0000 (UTC)
-X-FDA: 85426129824.27.61AC0DB
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 0B2861C000A
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 10:43:08 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=fG0Y1uuO;
-	spf=pass (imf18.hostedemail.com: domain of cuiyunhui@bytedance.com designates 74.125.82.176 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794480189;
-	b=fR/B0XKt8dz4I53OVbK8T8AmWoM0C6frcK7b/5/+F0fnHUI1azd5Nw56lvtD/AwFQTVzHC
-	ZHA8ivDK377C5zDTSX/8SnjhwEOEb+bDUugTGFP3Y2UKmvNqj/kF3uW0Pe8S0IADYeOamQ
-	ik52yWsJsw0zshnCu/bJAkDDBlJtnls=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=fG0Y1uuO;
-	spf=pass (imf18.hostedemail.com: domain of cuiyunhui@bytedance.com designates 74.125.82.176 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I0TPDV43;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794480189;
+	s=arc-20220608; t=1794480192;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FW2hvTJ6oKMdB56KMNh0AgfhMqiRWnu0NMMSe8aH5CM=;
-	b=bR1gZ0BR6XkY9XMIPYZLOU+ylXYniAdB1ESPOczBCCq2FUAt0aSpkZnnqPFrYmQ+XEoBcb
-	+2LDkGa++uexVCyOE7W8UiiJEQd5/aArtbdyUrE5BsZiVwSQhMlI7HQiRQO9sI3G533fZP
-	M6gK03cuGfi79QOe9xcC5HVX1bQRDPs=
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-36a315ed211so776772eec.0
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:43:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1794480188; x=1795084988; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=FW2hvTJ6oKMdB56KMNh0AgfhMqiRWnu0NMMSe8aH5CM=;
-        b=fG0Y1uuOs4EsxzUBh49cnxm+SNszVcJSWaIGHgTepxBkEPSRy174uqZqwRenYHbG7I
-         A3wYL9fPrmTk+SPLkQzlo+J14oZAE5APYzeDHurY+kNgSs2c8WoQSJS4f0LJZwvmniSM
-         jdLxwjEBE1ikF+2f+XUKpBp0ulFe0hQJJ65kh3U2rddm4zn6Ppv+e586+TlXhCrSuM8p
-         NdPLM/t/1tsA0gKkTZzUBHVZbz32KPFsQRiLEh32JNUBF91Sms/4JVUCZUykg4ps69p6
-         ewvj3uwMQiYfR/NCnLLZ1KZBbAdJYsElwyURf9xzo7R9lNOxNfAjrt2GwJYshq/yyNTP
-         QeCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794480188; x=1795084988;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=FW2hvTJ6oKMdB56KMNh0AgfhMqiRWnu0NMMSe8aH5CM=;
-        b=Cys+5zluTi2LDWgFiDQutFFYPiN7Milj4uEIlkxh2PIZnPKpASYozJFMszDDhhJf8z
-         kwHBlw3UZQmo41qjcZtn/ixceHseSj7LDQD4RUlxxJSN2IQhSiVERTSdYsoD6OoSfAZo
-         HZd0CYtT9VL9li5vfOgppCJqGZJlU4iIffIfAwjrmnA5Ml4vbcCMsv8fIdDHW9XzONUS
-         0i3jXBuB1y0rmnqsWi+EL0aSwHetpROro7/hx17MmK9MLoCZYhjuaDsfEjzB2CQyCHXG
-         BOqWHNGpP8haSlJMf0jIPOCtWrpoC1Asft5T+8SXqHGd1TjiW7H1OCiQuDEG3CTXWdFB
-         qSYA==
-X-Forwarded-Encrypted: i=1; AL+hErEij6wOOWmh9z8/D3p2NZTEnAWfx2ArsGG1IK5yrAYnsJqORQqhrRqdvb/zaCcvpcB6yy6Tj7SrVA==@kvack.org
-X-Gm-Message-State: APuU4Z8a4niCfJlzm9OTDwP9zeKx5ID1gN0zyjk67jM9pAM/IXK6bLs7
-	6y7mA4Bvu/DuYqpqcfCq4C4GD8QTTw7u4tS2y8l4ROwWO4Rz6fIPpl/csTS18teCjF4=
-X-Gm-Gg: AYBFou3gcPHZM+JH1p+C81X0bT7x4bP/qc3f/xttzTvA9C9qrF+RpZ5ClohSzV+vYdQ
-	GDX4pRewL7YFKZvAe6MyJoBHO5fc0ugLhT8AYSX16sE5srDsPgR8H3bLzkoTYQk7u2T/Psyjujt
-	3li7gjxRWdg+NO1zzDS2muGJh/azh6fyKvEFbXjk9PriF+DBV0k1y6qiBsawVNB8Q0VoQBNy4n1
-	6Hi2CU5vYaaGLTTnbuq3sY0I+2ik1kLP66H97DZ7aWeUZLJSVef2SvX2OTV1bHhbYy/eVOGsMBw
-	bWiWa5KhQHfkqew+YHAz7mnb132n45Zv7xih20JkQ4rX5I1thRfBrTtFXvmxekNzhyDZ5rlfWpB
-	z8RvTdGNdYI3WdHRK0j2eZU/jhWPlnY4ufQ+YVSA7oquICAK+XFXY0vuY97Z3Vn2pgD4BnKEkdh
-	MCmWqf5LX4HXrsxJGVjC3nvgx2+aFvOygOOBg1tCfndybRlqFpLeOzNQyI5HyQkOn8Egz3G3SQ0
-	RS093VRqlCuA2YsXzDzv0VonUtm4wcYuZ41/kq2KexPoOaq4gJ+MA1joGb7+sFSd/Yz0cPrlJwx
-	SY0KNc/nvey13yWa3C8Ka2u2CKMkaAx3mUWwlkeP5apelMIdI0JYXttDyzUCPzz3hDg=
-X-Received: by 2002:a05:693c:639a:20b0:358:c5c9:2661 with SMTP id 5a478bee46e88-377dfd840aamr1856019eec.10.1794480187470;
-        Thu, 12 Nov 2026 02:43:07 -0800 (PST)
-Received: from FR9WL0RHKY.bytedance.net ([139.177.225.242])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3772121e654sm13228694eec.2.2026.11.12.02.42.47
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 12 Nov 2026 02:43:07 -0800 (PST)
-From: Yunhui Cui <cuiyunhui@bytedance.com>
-To: pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	dennis@kernel.org,
-	tj@kernel.org,
-	cl@gentwo.org,
-	oleg@redhat.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	martin.lau@linux.dev,
-	song@kernel.org,
-	yonghong.song@linux.dev,
-	jolsa@kernel.org,
-	emil@etsalapatis.com,
-	ihor.solodrai@linux.dev,
-	bjorn@kernel.org,
-	pulehui@huawei.com,
-	puranjay@kernel.org,
-	broonie@kernel.org,
-	cuiyunhui@bytedance.com,
-	dave@stgolabs.net,
-	david.laight.linux@gmail.com,
-	jszhang@kernel.org,
-	tglx@kernel.org,
-	conor.dooley@microchip.com,
-	thuth@redhat.com,
-	ajones@ventanamicro.com,
-	ben.dooks@codethink.co.uk,
-	rkrcmar@ventanamicro.com,
-	samuel.holland@sifive.com,
-	zong.li@sifive.com,
-	debug@rivosinc.com,
-	seanwascoding@gmail.com,
-	andybnac@gmail.com,
-	menglong8.dong@gmail.com,
-	cyrilbur@tenstorrent.com,
-	wangruikang@iscas.ac.cn,
-	atishp@rivosinc.com,
-	apatel@ventanamicro.com,
-	arnd@arndb.de,
-	nathan@kernel.org,
-	nick.desaulniers+lkml@gmail.com,
-	morbo@google.com,
-	justinstitt@google.com,
-	qingfang.deng@siflower.com.cn,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	bpf@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH v10 2/9] riscv: add infrastructure for preemptible this_cpu operations
-Date: Thu, 12 Nov 2026 18:41:42 +0800
-Message-Id: <20261112104149.38589-3-cuiyunhui@bytedance.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
-In-Reply-To: <20261112104149.38589-1-cuiyunhui@bytedance.com>
-References: <20261112104149.38589-1-cuiyunhui@bytedance.com>
+	bh=dNp3udoHGBTm0oHVGK0tf8e5QbmrNR/x3XeLPS1gMFU=;
+	b=lg1Gce48i88P43yK/746f0V6ZgR22VX4kxDn8VJ3cdp6CVHk6joUCXMtLXwrnNbzqiOnAU
+	qWxLnJQiqVGL9c8YeiKhy4Klci/ZqzErdhb/dmGGQq5gGBNTccDhCsyKXx9V+Nxq/pbXSE
+	7IQtCyn0T2BLnELZHL/qTfx+fXzWoQY=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I0TPDV43;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794480192;
+	b=otHy3G0wENFoHaQzXSjE/eu9U5sXHapUpu4PUsaDSPPonG9XWRUYbXstg5rsLfMoEp3n/s
+	+0Oc86GLw/v1L6Z6K5nFweVly175jeFqFOy3L+7vMHKT2LZ66IceXAR5wDHiwWidp5Jv7F
+	cdpoh7l8o+TyT76fnfK8X6FD7+dGt5A=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4F75963319;
+	Thu, 12 Nov 2026 10:43:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 677411F00A05;
+	Thu, 12 Nov 2026 10:42:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794480192;
+	bh=dNp3udoHGBTm0oHVGK0tf8e5QbmrNR/x3XeLPS1gMFU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=I0TPDV43709xds1YjFciabcX8qY1kutyiqT4lX2KKlYro1DwODMPjRG7nVRyeYq66
+	 vbZLurqiksVuDaoY1LkD/b5xi6IUC05VrWqzoS8cg3dmM9nvkWpd4OgnlddW53//yA
+	 122d/AkBmYZZwYRJlhvhMXsS8VBFwcTE316zNFd+ifJo08ZSFBQlXmz7faIhXQ/gQ+
+	 D5NSx6U8O4FZXgtjJm9Q3eL7+2hksA9jy6WSRf07SPq4o97j9rpTcs6rKAst/0vPMl
+	 zHVfGezyt9McTCfCB2BTmdo44x/6PrUKOMOUdEqC7pTDwmEKnIu/+nlrdqSywBLRqG
+	 moyZYmFfXgPEw==
+Message-ID: <f5a411f7-ea17-451d-9c43-26a68464c6d2@kernel.org>
+Date: Thu, 12 Nov 2026 11:42:55 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: yj8h5woyedn36nubqhefwqqfup7s4mz3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/9] mm: limit pagecache folio refcount when mapping
+ pages
+To: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
+ Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+ Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Steve Sistare <steven.sistare@oracle.com>, John Hubbard
+ <jhubbard@nvidia.com>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
+ Josef Bacik <josef@toxicpanda.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
+ linux-arch@vger.kernel.org, iommu@lists.linux.dev, netdev@vger.kernel.org,
+ Chris Mason <mason@kernel.org>, stable@vger.kernel.org
+References: <20261110-refcount_overflow_stable-v3-0-318625d63a98@kernel.org>
+ <20261110-refcount_overflow_stable-v3-1-318625d63a98@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261110-refcount_overflow_stable-v3-1-318625d63a98@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C03A71C000A
+X-Stat-Signature: qa8b5mgmwi1sw4pb7y3skaq7s1gb348w
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0B2861C000A
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794480188-195747
-X-HE-Meta: U2FsdGVkX1/ZUqj2vpxnTpVyJ+cEtbRZ2N0/ZhnUMXRfkgFRJxFW7OsLXjRmnGuK9Npymrg+g3jXiW1DMPxzWCQRyBnFUA9R1HPFEgaLlvbvN2kJuAwromxKd+50m+1vYXKH+QHYRijwPD0oOLHBUStIaaMr2cJ5TeDANPJnYzO8fWBNUx0A9UCu0oVKr1Y81UUGnRH5VHaXtc7S60bEyAkTrWsHmh0SCe0sK5a8FeSRJwzYLR3QByY3FwH4XzAB7hipvxMwq7Qjm2ZoPMHh3lttXdGW9QRjsvwYDk4Zsvb5BCJGezFDq9eKzlY1q5E05pcL5cvwVgtOIErWaNbaZm8X64Ik2sfAp0ujLgxv8KMeRnAhn2qxGSEq+QGlj5LlRXShp2j4S9d0+oa9kFKlp3w2lIn87WGvzLhgMW4Sa7GSonhG5ElRgav4KyIeFksyqHcu74nZYSetSoyo5L7UNFJMOxy0uEhsLCZ0LPAyUl2BmO8qr+ZnYwhJCWiS6VohjWUTjkubmbv593zLIWQ5SsWdTk7dd6iFGqo8jWTZh579uBVRxQFCDBpa9t3iTyRjeZdZnvjHsnzLeUzy6cVGg2/dog2DIciQKKojqkxdcdReclTY2vg4DzM/DMXltsR8iMuKOee8owk4oDp8qGJEpovXp/woD4EXBr7KkheVQNHpEVxgyk/0yfPWhNMR5vY7Ibv8XMjgSkYDwa7KzVHLvTtN7rt6+FAOtlPk+jqY5tUx8rnzVWRLtw+SRje5s3L5wH3TjJVTg2iz/cSWjS4EoOjqA1pew7m+WKPlIYE2X5BpTM2jUlorVTUDo2lQVWV7y0qCSIQd/VK4WzC6fPlKUxFdeNfyxfYoKcdihtvsRu3HYPZjrC344B1ehan3WsGpoytYtg/N42bg7OtUoUws8TeJl3p4iCndEzztc9U6dNJhs3LwA42aaOAdjUdsitEPx5HgWKQg9tnniehhaH1
- TthL0UGh
- Ezb7Y3dBDFmUd0gR1j+tcExzoDty7qxLwVhCHOxBFj6zVp1ILWCYtw+/pLEO3TJ6uqWQuXZXpJwXjIoF0OdwLv4xr0m0SET/UqDkWVY0x/Bx9u1WW6IzyEkc93MyO693BkdRhOvP0voWn4+glrTtIUFZz8/Sfwx9UMUDS2Y1NkGifxMkEjKZz78Qv8dxqRaexKEhs+LB07mqDcr4DRpENHzNcEi/tke8HvLXMLPk5p0/t4nxQaKxg5zDVUYfXMIO4FfxZ5RWyY7EBIBaAQ+uM4I9Kjl9rFIg9n4z4UVECkrIaBPi7zu4LIPwmKwGsn7xlcXQuJdqHble2giKTFiOQpNqlivyIYqm/xveLxfT0LAV/exkOJUyuDoWd1LcUurkb5inhiRuHmchUZJ+8itsfKycYVqjMckKm1GK+oXSeVzUuFcqdrecjJvBJKblgEYf8HEvudq8FB5DsUhJWRX+abYkcutVGF0i0uZXw6rLOl0SP9Vyafni/VMCMua9uRQHHy4wU
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794480192-838896
+X-HE-Meta: U2FsdGVkX1+5uYoA0W56geg3QjiDJjrjec4+4BfTJ2kfQYLSulC2PciR+5LarXB0qqRsV/5AKRyvQJGxJugSAHrlWu+UjhEaDT5RPRiwEngf1iuEM3LXyQyfcAVFKg273s6FlAoGGTNAQhFHPcShEQ6OU298iN/EOqH5wVyC/+w3vfx95C9jKF39bfxQQAWOMuKPXyjpuvWcM1hOybz2KwrxsFmckV7N63kmyiEUlfzUQqBhUs8YysXMeeGQ10MVck0jF0PY5mJp+z3UqEc3sLUUzLtiQIW0/4VQzOV20xVQuE0GfrBSKNW9hTM5pef6SifcDCNLlTiKLdr2NcJ7ogzzYWjs7IYmpeTOEeqwLSisMDkIdvPPX7ezJvyVCKf2liPNd6sLiDx4NGBIZ5gB9BU701MOUOuACk+LCwpqIOwYzdpYwvkIQUvEpjRjFYFRDYTMwLXNdM0c/Uo/sZl9b7j2ye+c2PWeiltiEdFkEAa4UIVgVAwKe3VN07RstCDZYAPAK5tdi18l7bN3ZsJBHXFX2ldZyQ2WaraBxJKfW6nr18BUQfohbKEs5RV8A76bx1ZzsRjXZoAS0bgdF67sdnWuK48M6OJt1anoo1Ri9IL8woPhOGCRfxIVhwYGOv3DM16/H7M2QDJf/1+dnXR1J/4gSUq/K+oQyt+irPz78VEbWFCiMwbZkMb/u4y7g7W9HkfXJjTflVyxBl37+HQAQyjSx4Ium8aMMXXnf2CLJi8psJp7i3L+F2uwUmWa8RCp3KK/CSy6hKLSnlAqn0/qDJA/5OmxGBAvWM32YDL0cJdS9OlHM+e//mpFwM/HcVBsRICRezzc+zzzgCo7ocS5547CWrG8qwoA4vnMnjMUb1ceo/IDniE5aDYyMs1Frm4Sm53w5U6O7NYPbDkrsORKe7g+d6rPsAZ/NmrHdHaWC4JZkrui+8t/0jC4KQF84NjZGUmSmfwYGD+xCrCAQw2
+ t/PZP/0d
+ AaPpQcwf5TI/i8DKIgDZDH6JTVp7nqhJ20xoEFAoDyPC6BZiagGeGp9GpUP9qA6wWpBoVr10HcZige0si+DSdiybGwJyLykHCkekYW8HKg+3xs8huNsdL/Yp+GmZ3PtPs+ic5iD8t1xEUD+ySN2AtowunsBkL/C0U+gHZH3FrdWL3U2KIuMl8rLkRltSIEWF07+W+fJJmhWH9Jt8dnYc4n2KfQrh9YBs4aenYDQ+Nm9S9T+s5QDDiYN1KwTIHZhk6LCzpN3dz1KiwmbEvMCnENb+o6rhaPqSXIcVN8GIzjz0fB2FT2jFOktvx6FU9DpbhvS1mvNCFGq4d3/JFcEhFtKTQYvcpHauqOs3JBcFcErqPus4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,275 +173,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-RISC-V does not provide architecture-specific this_cpu operations, so
-read-modify-write operations use generic fallbacks that disable local
-interrupts. Disabling preemption around each architecture-specific
-operation would avoid the interrupt-off region, but would still add
-preemption-count bookkeeping and a reschedule check to the common path.
+>  
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 9871b4f32a916..0f6d57432a7e5 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -3968,6 +3968,11 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
+>  		unsigned long end;
+>  		vm_fault_t map_ret;
+>  
+> +		if (unlikely(folio_ref_count_over_limit(folio))) {
+> +			folio_ref_dec(folio);
 
-Use the recoverable-GPR scheme employed by arm64 so the operations can
-remain preemptible. Record the registers used for per-CPU address
-generation and repair them on exception return if the task migrated.
+Going over this once more, I'll just use folio_put() here for consistency.
 
-Exception entry saves and clears the active state so handlers can use
-per-CPU operations independently. Keep this protocol in common assembly
-macros so NMI-like entry paths which bypass handle_exception, such as SBI
-Supervisor Software Events, can preserve an interrupted operation.
-
-The existing exception return path clears LR/SC reservations, so an
-interrupted LR/SC sequence retries after its saved address is repaired.
-
-Suggested-by: David Laight <david.laight.linux@gmail.com>
-Link: https://lore.kernel.org/r/20261108213254.67805ef0@pumpkin
-Suggested-by: Jisheng Zhang <jszhang@kernel.org>
-Link: https://lore.kernel.org/r/avG07pmpcLGkq5i-@xhacker
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
----
- arch/riscv/include/asm/asm.h         | 19 ++++++++++++
- arch/riscv/include/asm/percpu.h      | 43 ++++++++++++++++++++++++++++
- arch/riscv/include/asm/ptrace.h      | 15 ++++++++++
- arch/riscv/include/asm/thread_info.h |  1 +
- arch/riscv/kernel/Makefile           |  1 +
- arch/riscv/kernel/asm-offsets.c      |  2 ++
- arch/riscv/kernel/entry-common.c     | 32 +++++++++++++++++++++
- arch/riscv/kernel/entry.S            | 10 +++++++
- 8 files changed, 123 insertions(+)
- create mode 100644 arch/riscv/kernel/entry-common.c
-
-diff --git a/arch/riscv/include/asm/asm.h b/arch/riscv/include/asm/asm.h
-index 06ac38f733b0a..57af10a936d9b 100644
---- a/arch/riscv/include/asm/asm.h
-+++ b/arch/riscv/include/asm/asm.h
-@@ -81,6 +81,25 @@
- 
- /* Common assembly source macros */
- 
-+/*
-+ * Save and clear the active per-CPU GPR state on exception entry. Entry
-+ * paths which bypass handle_exception, such as SBI Supervisor Software
-+ * Events (SSE), must pair this with pcpu_gprs_exit around their handlers.
-+ */
-+.macro pcpu_gprs_entry tsk regs tmp
-+	lhu \tmp, TASK_TI_PCPU_GPRS(\tsk)
-+	REG_S \tmp, PT_PCPU_GPRS(\regs)
-+	sh zero, TASK_TI_PCPU_GPRS(\tsk)
-+.endm
-+
-+/*
-+ * Restore the saved state before resuming the interrupted context. tmp must
-+ * contain PT_PCPU_GPRS from the interrupted frame.
-+ */
-+.macro pcpu_gprs_exit tsk tmp
-+	sh \tmp, TASK_TI_PCPU_GPRS(\tsk)
-+.endm
-+
- /*
-  * NOP sequence
-  */
-diff --git a/arch/riscv/include/asm/percpu.h b/arch/riscv/include/asm/percpu.h
-index faf9a75ec66d7..59f7d44f7d3fe 100644
---- a/arch/riscv/include/asm/percpu.h
-+++ b/arch/riscv/include/asm/percpu.h
-@@ -3,12 +3,55 @@
- #ifndef __ASM_PERCPU_H
- #define __ASM_PERCPU_H
- 
-+#include <linux/bits.h>
-+#include <linux/stringify.h>
- #include <linux/thread_info.h>
- 
-+#include <asm/asm.h>
- #include <asm/current.h>
-+#include <asm/gpr-num.h>
- 
- #define __my_cpu_offset (((struct thread_info *)current)->pcpu_offset)
- 
-+#define PCPU_GPR_PCP_SHIFT	0
-+#define PCPU_GPR_PCP		GENMASK(4, 0)
-+#define PCPU_GPR_OFF_SHIFT	5
-+#define PCPU_GPR_OFF		GENMASK(9, 5)
-+#define PCPU_GPR_ADDR_SHIFT	10
-+#define PCPU_GPR_ADDR		GENMASK(14, 10)
-+
-+#define __PCPU_GPR_NUM(gpr)	".L__gpr_num_" gpr
-+
-+#define __PCPU_GPRS_VALUE						\
-+	"("								\
-+		"(" __PCPU_GPR_NUM("%[pcp]")  " << " __stringify(PCPU_GPR_PCP_SHIFT) ") | "	\
-+		"(" __PCPU_GPR_NUM("%[off]")  " << " __stringify(PCPU_GPR_OFF_SHIFT) ") | "	\
-+		"(" __PCPU_GPR_NUM("%[addr]") " << " __stringify(PCPU_GPR_ADDR_SHIFT) ")"	\
-+	")"
-+
-+#define __PCPU_GPRS_ASSERT_DISTINCT					\
-+	".if ((" __PCPU_GPR_NUM("%[pcp]") " == " __PCPU_GPR_NUM("%[off]") ") || "	\
-+	      "(" __PCPU_GPR_NUM("%[pcp]") " == " __PCPU_GPR_NUM("%[addr]") ") || "	\
-+	      "(" __PCPU_GPR_NUM("%[off]") " == " __PCPU_GPR_NUM("%[addr]") "))\n"	\
-+	".error \"PCPU GPRs overlap\"\n"				\
-+	".endif\n"
-+
-+/*
-+ * Mark a region where the per-CPU offset and address registers may need to
-+ * be rewritten by exception return after migration.  The three registers
-+ * must remain distinct for the whole region.
-+ */
-+#define __PCPU_GPRS_BEGIN						\
-+	__DEFINE_ASM_GPR_NUMS						\
-+	__PCPU_GPRS_ASSERT_DISTINCT					\
-+	"li %[off], " __PCPU_GPRS_VALUE "\n"				\
-+	"sh %[off], %[gprs]\n"						\
-+	REG_L " %[off], %[pcpu_offset]\n"				\
-+	"add %[addr], %[pcp], %[off]\n"
-+
-+#define __PCPU_GPRS_END							\
-+	"sh zero, %[gprs]\n"
-+
- #include <asm-generic/percpu.h>
- 
- #endif /* __ASM_PERCPU_H */
-diff --git a/arch/riscv/include/asm/ptrace.h b/arch/riscv/include/asm/ptrace.h
-index addc8188152f7..ceff8f63bc866 100644
---- a/arch/riscv/include/asm/ptrace.h
-+++ b/arch/riscv/include/asm/ptrace.h
-@@ -53,6 +53,8 @@ struct pt_regs {
- 	unsigned long cause;
- 	/* a0 value before the syscall */
- 	unsigned long orig_a0;
-+	/* Active preemptible per-CPU operation, if any. */
-+	unsigned long pcpu_gprs;
- };
- 
- #define PTRACE_SYSEMU			0x1f
-@@ -145,6 +147,19 @@ static inline unsigned long regs_get_register(struct pt_regs *regs,
- 	return *(unsigned long *)((unsigned long)regs + offset);
- }
- 
-+static inline void regs_set_register(struct pt_regs *regs,
-+				     unsigned int offset, unsigned long val)
-+{
-+	if (unlikely(offset > MAX_REG_OFFSET))
-+		return;
-+
-+	/* Register x0 is represented by the first, read-only slot. */
-+	if (offset)
-+		*(unsigned long *)((unsigned long)regs + offset) = val;
-+}
-+
-+void noinstr riscv_pcpu_regs_fixup(struct pt_regs *regs);
-+
- /**
-  * regs_get_kernel_argument() - get Nth function argument in kernel
-  * @regs:       pt_regs of that context
-diff --git a/arch/riscv/include/asm/thread_info.h b/arch/riscv/include/asm/thread_info.h
-index f10ba62b61016..51c4076763c1b 100644
---- a/arch/riscv/include/asm/thread_info.h
-+++ b/arch/riscv/include/asm/thread_info.h
-@@ -63,6 +63,7 @@ struct thread_info {
- 	long			user_sp;	/* User stack pointer */
- 	unsigned long		syscall_work;	/* SYSCALL_WORK_ flags */
- 	unsigned long		pcpu_offset;
-+	unsigned short		pcpu_gprs;
- #ifdef CONFIG_SHADOW_CALL_STACK
- 	void			*scs_base;
- 	void			*scs_sp;
-diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
-index f54c336bf547c..bf786d5dd4de3 100644
---- a/arch/riscv/kernel/Makefile
-+++ b/arch/riscv/kernel/Makefile
-@@ -52,6 +52,7 @@ obj-y	+= alternative.o
- obj-y	+= cpu.o
- obj-y	+= cpufeature.o
- obj-y	+= entry.o
-+obj-y	+= entry-common.o
- obj-y	+= irq.o
- obj-y	+= process.o
- obj-y	+= ptrace.o
-diff --git a/arch/riscv/kernel/asm-offsets.c b/arch/riscv/kernel/asm-offsets.c
-index f4f7ee976cd94..38f246a691c60 100644
---- a/arch/riscv/kernel/asm-offsets.c
-+++ b/arch/riscv/kernel/asm-offsets.c
-@@ -39,6 +39,7 @@ void asm_offsets(void)
- 
- 	OFFSET(TASK_TI_CPU, task_struct, thread_info.cpu);
- 	OFFSET(TASK_TI_PCPU_OFFSET, task_struct, thread_info.pcpu_offset);
-+	OFFSET(TASK_TI_PCPU_GPRS, task_struct, thread_info.pcpu_gprs);
- 	OFFSET(TASK_TI_PREEMPT_COUNT, task_struct, thread_info.preempt_count);
- 	OFFSET(TASK_TI_KERNEL_SP, task_struct, thread_info.kernel_sp);
- 	OFFSET(TASK_TI_USER_SP, task_struct, thread_info.user_sp);
-@@ -130,6 +131,7 @@ void asm_offsets(void)
- 	OFFSET(PT_STATUS, pt_regs, status);
- 	OFFSET(PT_BADADDR, pt_regs, badaddr);
- 	OFFSET(PT_CAUSE, pt_regs, cause);
-+	OFFSET(PT_PCPU_GPRS, pt_regs, pcpu_gprs);
- 
- 	OFFSET(SUSPEND_CONTEXT_REGS, suspend_context, regs);
- 
-diff --git a/arch/riscv/kernel/entry-common.c b/arch/riscv/kernel/entry-common.c
-new file mode 100644
-index 0000000000000..023d856b1679b
---- /dev/null
-+++ b/arch/riscv/kernel/entry-common.c
-@@ -0,0 +1,32 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <linux/bitfield.h>
-+#include <linux/compiler.h>
-+#include <linux/percpu.h>
-+
-+#include <asm/current.h>
-+#include <asm/ptrace.h>
-+
-+/*
-+ * If the interrupted context had an active per-CPU operation, rewrite its
-+ * saved offset and address registers for the CPU on which it will resume.
-+ */
-+void noinstr riscv_pcpu_regs_fixup(struct pt_regs *regs)
-+{
-+	unsigned long pcpu_offset = __my_cpu_offset;
-+	unsigned long gprs = regs->pcpu_gprs;
-+	unsigned long pcp;
-+	unsigned int reg_pcp;
-+	unsigned int reg_off;
-+	unsigned int reg_addr;
-+
-+	reg_pcp = FIELD_GET(PCPU_GPR_PCP, gprs);
-+	reg_off = FIELD_GET(PCPU_GPR_OFF, gprs);
-+	reg_addr = FIELD_GET(PCPU_GPR_ADDR, gprs);
-+
-+	/* pt_regs offset zero represents x0, followed by x1 through x31. */
-+	pcp = regs_get_register(regs, reg_pcp * sizeof(unsigned long));
-+	regs_set_register(regs, reg_off * sizeof(unsigned long), pcpu_offset);
-+	regs_set_register(regs, reg_addr * sizeof(unsigned long),
-+			  pcp + pcpu_offset);
-+}
-diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
-index 628b85e3915a7..65298ac828959 100644
---- a/arch/riscv/kernel/entry.S
-+++ b/arch/riscv/kernel/entry.S
-@@ -198,6 +198,8 @@ SYM_CODE_START(handle_exception)
- 	REG_S s4, PT_CAUSE(sp)
- 	REG_S s5, PT_TP(sp)
- 
-+	pcpu_gprs_entry tp sp s0
-+
- 	/*
- 	 * Set the scratch register to 0, so that if a recursive exception
- 	 * occurs, the exception vector knows it came from the kernel
-@@ -281,6 +283,14 @@ SYM_CODE_START_NOALIGN(ret_from_exception)
- 	move a0, sp
- 	call riscv_v_context_nesting_end
- #endif
-+	REG_L t0, PT_PCPU_GPRS(sp)
-+	beqz t0, .Lpcpu_regs_restored
-+	move a0, sp
-+	call riscv_pcpu_regs_fixup
-+	REG_L t0, PT_PCPU_GPRS(sp)
-+.Lpcpu_regs_restored:
-+	pcpu_gprs_exit tp t0
-+
- 	REG_L a0, PT_STATUS(sp)
- 	restore_userssp s3, a0
- 	/*
 -- 
-2.39.5
+Cheers,
 
+David
 
