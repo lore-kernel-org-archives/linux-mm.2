@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ADF6606A337
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 09:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD024606A8B4
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 09:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=iAEgSvXe
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=lH2D+Z8d
 Received: by kanga.kvack.org (Postfix)
-	id A48596B05C3; Thu, 12 Nov 2026 04:03:34 -0500 (EST)
+	id CB9D36B05C4; Thu, 12 Nov 2026 04:03:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F85B6B05C4; Thu, 12 Nov 2026 04:03:34 -0500 (EST)
+	id C6A3C6B05C5; Thu, 12 Nov 2026 04:03:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E6FD6B05C5; Thu, 12 Nov 2026 04:03:34 -0500 (EST)
+	id B34586B05C6; Thu, 12 Nov 2026 04:03:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 68BCB6B05C3
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:03:34 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0AB7D14050D
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:03:34 +0000 (UTC)
-X-FDA: 85425878748.03.BC31E8C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 83F8F6B05C4
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 04:03:44 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 156E21C3CFF
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:03:44 +0000 (UTC)
+X-FDA: 85425879168.16.2068A99
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 3AAAB14000D
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:03:32 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=iAEgSvXe;
-	spf=pass (imf09.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794474212;
-	b=X/hi5aKrc5pXe1GAAk5wxv9Jyb5xsFPVbJ4ZYYsUlo63iWJTpht+QZT73htuDa9f5FbpFy
-	vUuUHNpTEI6IjaFfr7od1fzyVcPuo8RPNBKabFGhkDbjPeFmph8s5xnKcLrQcVXmj3zsCB
-	qEq7wWAK9u1qhy2Mkouztwzy4qex9Zo=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=iAEgSvXe;
-	spf=pass (imf09.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf31.hostedemail.com (Postfix) with ESMTP id 5EE432000B
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 09:03:42 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=lH2D+Z8d;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf31.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794474212;
+	s=arc-20220608; t=1794474222;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O88YpmLyBaL0GDW/HqJr/4Rg7GIIxRNNQP9aX2FDqgo=;
-	b=sgeZLT24J/tjf2obJSnCljZTLfbJQoeg7oyLteLNb0eD4TbEJNfcLapZVaFGjk0mhQsBYb
-	JgXREG5QNAeUkfbWW7K19c6t4ZQQIlnRVMY84N0q0PZcgbAQ5K0tsb3OEXR5adT7Ao+DKX
-	SfC8F41maEK0J3HUGd+odSavoVbcqC8=
+	bh=bfFED5wr1Gi/u3g1VjyKYj5gqmOAy1fX/7Q8JL8oA44=;
+	b=ujVq4NWk9mhDJa0kGAaltR9saKWtaOdICBrzbvH8xbMgBsvjqnSLJIcXYQIU5Ep4pda7Yv
+	4h3Bj3PToWODymgKTShx+0OJO28xf5ohU1M0UrRAPNyU7JXAdACIUVKz4wHIiaJSeUjOEv
+	iZtdl9CQciPASDc8p9ob5wvNXQO1ydY=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=lH2D+Z8d;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf31.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794474222;
+	b=ATLCXMu1Cl/dETAnINEGP5okS1Cd80x2EB5QU40v0eCFZhl164zf8A0sgzjLtkWGNgnuk8
+	tPaxsE5yLJwU3ECa323n9EHmWEUOpyuZTQFI/N+pnBpruMA+YpmJ3CUBdXFdYKC+7nXguW
+	WzDTOTcukhJcJlWG5LsgL2OjWq+s3mQ=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4E09C339;
-	Thu, 12 Nov 2026 01:03:28 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6F7E1339;
+	Thu, 12 Nov 2026 01:03:38 -0800 (PST)
 Received: from a081061.arm.com (unknown [10.163.169.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 910C43F632;
-	Thu, 12 Nov 2026 01:03:23 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 2FA103F632;
+	Thu, 12 Nov 2026 01:03:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794474211; bh=3odyGGmkLwYaY8M4LOJ/DQPeRwp4YOqebnO21NAILuE=;
+	t=1794474221; bh=5iAvOQTpt9gk5MMxQSEmlDpVMvlgNN9go7ByTGre++Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iAEgSvXe8QbzirTjb+g+yaD+tZMr0kmqLkov4TCo5rn21C1IDZjYwZ8iDq7Fx79aT
-	 Hc2/lpw3OwkhHph2Ad7OJ7WNx7flNNRvF4z0F3XGQpaWrszsVQn2+5tjK7X5R0yEmt
-	 cLGQ5b733G+r8IKCbf6EubQG40kDRb1Lpf3G9TiY=
+	b=lH2D+Z8dlONG/cWPX5ssVxZ8T5K2DcY5baTrSphflvBNku80FH69PmmoTmKhYrrSc
+	 HRgzHRFwmboGH3HDJxNTD2+SGG3/85MjQ9yZCQ3AxcXd1Fvn+kQawMfkLxo2zSfIfV
+	 H1JYzh/CZ74TK7bK8BFv3SC53pmf04iwfBlEFnu4=
 From: Sarthak Sharma <sarthak.sharma@arm.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -81,27 +81,27 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: [PATCH 3/4] selftests/mm: factor out THP split helpers
-Date: Thu, 12 Nov 2026 14:32:49 +0530
-Message-ID: <20261112090250.334344-4-sarthak.sharma@arm.com>
+Subject: [PATCH 4/4] selftests/mm: add a THP compaction selftest
+Date: Thu, 12 Nov 2026 14:32:50 +0530
+Message-ID: <20261112090250.334344-5-sarthak.sharma@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261112090250.334344-1-sarthak.sharma@arm.com>
 References: <20261112090250.334344-1-sarthak.sharma@arm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: yzdc7e5h3j79wnhjy9c4gwwey4dobd4a
-X-Rspamd-Queue-Id: 3AAAB14000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5EE432000B
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794474212-26237
-X-HE-Meta: U2FsdGVkX1/+zCot5QgcaraxkEbfc+bzjN/qQkPiTVzQzfGUWRmCec7Ngtb+H8vmgbtX52JbPPaJWT7piEVvIqWxZjjXKxfSZKeoBnw73c1+izy2SV1PJVzn5x2u0RoxVteBEJB/0LWLncPTb5HxmLrCyfh9naehfVs4RQF31hhvmXrbg4ATh2lzU8jrEYKN7YzTwerqVAnFO5Ka0rL5u+tIeldlHNLTG9wN/KDRoMTKkOMnQ5gLtsic8b4XHdbFHqaLNzHWpLKGI7xmUkcIeFuTLE3HTGfE5c0EVNNFrEO/2Qlht6kacsz5HxQJqM2HQi3bwIH/L4NTtEjUMSsGMpsl40fmY386f4eyPgZymTjWe6FQA9YFaMOXmPwRcKF+JDBsGEVoCXxTWQqtkNV+Al33uY7kpPJDJMUBEUKoA7M8hySdRF54Zg8iZSTfRIy8ed8d4wGnaZiahyOn54oIU84mhd/qCqjGumoCmGMR5kW21kHRZre42lHrI7LvTnCnwn4Msu1LMsaNVSh3Rw63dCnq6PXksbWcx7LRCxLFFluRuuaGi3MlysCpfG48zCaFwpTiNYOMz3UBoIbP6pEQjzWPs3lPvOb8120+6OPzTZozEa876EbJmrijDwhGVqRRiaSszjeatpzikWQOvFyaI9EA+Zwcsgz0Vj5d/5pwC3EGhhSEjIItQIxNOvK0eDLSDxcwJ6fm1wrBYRjzWlD1xO+pWKKYLjiRXAukcT+qjAdDABP0SShedZa8Y6Mk9a9bpZMqzDQe9HYUmAJKtrRDtMYEOUF5zJ8hWxgUd9XOHsXgo3ZywXiE8E71KS/CSQpNFILt7BNZHZBpSQExpZt6Bn8RACol8jqQ+URnUoH6qbt7vTLGC/y8/ACabJ3qmHrmAc68TRdx6PJLHPA5oP3AwHpqRl6YfjgWUyiYtkG30yJaRFaVM0cjdcKQ0pamMmRA2uIXK/Yt7McqHHznkOj
- 0Rt/lk3z
- C8eWUtS1R6RuOKtBSIxbhhzJCS+23UfOZEnBHliZq1tKlSqis/qfEPzMfo8jROEHegjK7wIh+sKZthk9gjeTnMHQxMssRkoETySQ79MvnkwRgpKrmCe7VXFnz6XUrGUjqUZnvYP9oNQl2UcxgPxIv0/M7Nz5KPyc2ThK4uqQfETAezgzCrjXbCDJH7AafbnWSEixNWA/KGaJHwBchkgNyPVIhxqLZtMXH1ZxFsqP0sV+B6GXJXn99cf/etA==
+X-Stat-Signature: m1btptow6agdxwum586pk3q6u6tkurjd
+X-HE-Tag: 1794474222-189684
+X-HE-Meta: U2FsdGVkX18cSJzUtnWfCbRXCErN7XvJAueQT7Wuh5oSlXGFjUJBA/TzrvIhZnOF4PYnRDhUcKZHOxxKtMaWYOlY9vmUN7Yyl1PWxY2ueIJtFUje8qHvfmxh/Ky9T8ZiautvS+jMYftCHwBHveejtLZv/s9HeZx+4yZZiY0B969TMHta1IYgoYOWYIeh5TvtlpPIZ3BEiU32xsypMDrSGn4/kqmYI1h1NU42kfSAEgf9xEZqbAB6y2GWTXMK4pSJMaqLQzv0FNUrUK2QbTq4bj0s/aGpnY5yMo0Pew7xmJhDoGq6Et92w3EM3Am2OVys3o9Wz/xvflkfdkyM8usGBkJWoC9oB7jkjYxvop6aa9olaQ0+ta4CkzP3xCpJdoyDeIrN+v1DTlxw1VNTaQU7eMXgp/kgyxYUEhyDhyim5ljlarYOnpYMAjetzT5DOiOpUED/FUx/IocDK2rp5JEJr7vTD14wIJNsvFhtRrsI4u99bwYrMUEnHnjO9gv5AUc7LgKNzBO0Z1hw6PXh9AidmB2GGArLY1INrEoL42Ojth+c1CxWCzckMEcqXSkvZeFzfc9ww3jmY9ZnJ5oYRb0bByjU9S8SEy0cAol3HrvMg4CHIMOwp7vT1X0AEgDresO/xI34Hu6eB4wJJqpdZ2eN/Q9f4A3vZXTpx7OpfyJ7Mq+Gv0aVfRPsQpb5tNQOKxNhMhtdaGWqM7IT6pQmisfQ8hLc00/BJB7i6Zb72nbcMAz75MTOLjltPC9wkzQJM/U+kHPQv45tRR1BGn+/gMU52x40OnIptb8SHD0kqaVUunKS/QkwHYOidRW1AWi048rLCMFrIRoSdvDErhnYrXLzlas2WeYbJDj5gQHgF3di5GD3AWUgcunNAjF8kPQozmkL0JlKjSwQatSGYLUH1tyweL+UmUe4/qpw2sDRq0kYCjLc3VXHf1qFVrChSn+P8fuitotXl5d4Vc58iouAM+W
+ Qpk0Z/Gv
+ +cQnT62TF72q/otOmj6HqLI3IvPI/psBQZnSWsbrA6upiFCVNBhI+ptaPfwxwt5H/9xgNx4AyeMyfSOHIe4tV+RrJkxL9M7pLx4vEE/9ArZ8dWY8yXDHIdC+an7jTw+DxzIf882ZTaJ0tmYBklwt9B/v792a8fkuD9Zd6fPzXf1S+b6ruM5KNBIxQUD9LO1AB5U79lXHY1T2d8nuH4ovsLHb1cKCcM+SX69o6C+n5igspSjpP+IlNee9zqdquGjKQXFXnRZtna14P8AKf/keoAz1o+gz08AEJIiasTCz7Z+EZGVr+je6i4OGeVu5yFkLV0krzZn0X2m45GYU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,236 +110,311 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-split_huge_page_test.c contains helpers to split huge pages using
-the split_huge_pages debugfs interface. A later patch adds a THP
-compaction selftest and needs the same functionality.
+Add a selftest to check whether THPs can be recovered through
+memory compaction after fragmenting memory.
 
-Move write_debugfs() to vm_util.c. Add wrappers for splitting
-process mappings, mappings with an offset within folio and file
-backed folios. Also add a helper to check if the debugfs interface
-is available.
+Read the PMD size during runtime. Use a fixed max test size
+of 32 GiB and calculate the number of max THPs based on PMD size.
 
-Update split_huge_page_test.c to use the shared helpers and
-also remove the unused SMAP_PATH definition.
+Save existing THP settings and restore them at exit. Configure THP
+for MADV_HUGEPAGE mappings, enable only the PMD sized order and set
+defrag to madvise so that synchronous compaction is performed for the
+test mappings.
 
+Allocate as many THPs as possible, until allocation falls back
+to base pages or the max test size is reached. If the max test
+size limit is reached, skip the test because retry allocations
+could use free memory and not recover memory through compaction.
+
+Record the starting PFN of every allocated THP. Split the allocated
+THPs to order 0 using the split_huge_pages debugfs interface and
+verify the split using pagemap and kpageflags. Keep the final base
+page from each THP mapped and discard the rest.
+
+Retry the same number of successful THP allocations in a new mapping,
+while keeping the retained pages mapped. Count a THP as recovered
+through compaction if it uses a PFN which was previously used in the
+initial THP allocation. After retrying, check if every retained page
+is still resident. If not, skip the test since the range could have
+been freed through swapping and not through compaction. If more than
+half of the initial THP allocations are recovered, pass the test.
+Otherwise fail the test.
+
+Skip the test if PMD sized THPs are unavailable, the test is not
+running as root, split_huge_pages interface is unavailable,
+the pagemap PFNs are masked or the mapping is too large for the
+address space.
+
+Add the test to Makefile, run_vmtests.sh and list it in MAINTAINERS.
+
+Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
 ---
- .../selftests/mm/split_huge_page_test.c       | 45 +++------------
- tools/testing/selftests/mm/vm_util.c          | 56 +++++++++++++++++++
- tools/testing/selftests/mm/vm_util.h          |  6 ++
- 3 files changed, 69 insertions(+), 38 deletions(-)
+ MAINTAINERS                                 |   1 +
+ tools/testing/selftests/mm/Makefile         |   1 +
+ tools/testing/selftests/mm/run_vmtests.sh   |   2 +
+ tools/testing/selftests/mm/thp-compaction.c | 215 ++++++++++++++++++++
+ 4 files changed, 219 insertions(+)
+ create mode 100644 tools/testing/selftests/mm/thp-compaction.c
 
-diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-index 33a2473327bb..330a453e6402 100644
---- a/tools/testing/selftests/mm/split_huge_page_test.c
-+++ b/tools/testing/selftests/mm/split_huge_page_test.c
-@@ -8,7 +8,6 @@
- #include <assert.h>
- #include <stdio.h>
- #include <stdlib.h>
--#include <stdarg.h>
- #include <unistd.h>
- #include <inttypes.h>
- #include <string.h>
-@@ -28,14 +27,8 @@ uint64_t pmd_pagesize;
- unsigned int pmd_order;
- int *expected_orders;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 4d74ad879ecf..eb0b46a361dc 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17946,6 +17946,7 @@ F:	mm/mm_slot.h
+ F:	tools/mm/thpmaps
+ F:	tools/testing/selftests/mm/khugepaged.c
+ F:	tools/testing/selftests/mm/split_huge_page_test.c
++F:	tools/testing/selftests/mm/thp-compaction.c
  
--#define SPLIT_DEBUGFS "/sys/kernel/debug/split_huge_pages"
--#define SMAP_PATH "/proc/self/smaps"
- #define INPUT_MAX 80
+ MEMORY MANAGEMENT - USERFAULTFD
+ M:	Andrew Morton <akpm@linux-foundation.org>
+diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+index 06d3d0350a9a..ac39e2afd59f 100644
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -90,6 +90,7 @@ TEST_GEN_FILES += pfnmap
+ TEST_GEN_FILES += process_madv
+ TEST_GEN_FILES += prctl_thp_disable
+ TEST_GEN_FILES += thuge-gen
++TEST_GEN_FILES += thp-compaction
+ TEST_GEN_FILES += uffd-stress
+ TEST_GEN_FILES += uffd-unit-tests
+ TEST_GEN_FILES += uffd-wp-mremap
+diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+index cb5c7cccb585..a3fdc23c9cfe 100755
+--- a/tools/testing/selftests/mm/run_vmtests.sh
++++ b/tools/testing/selftests/mm/run_vmtests.sh
+@@ -448,6 +448,8 @@ if [ -n "${MOUNTED_XFS}" ]; then
+     rm -f ${XFS_IMG}
+ fi
  
--#define PID_FMT "%d,0x%lx,0x%lx,%d"
--#define PID_FMT_OFFSET "%d,0x%lx,0x%lx,%d,%d"
--#define PATH_FMT "%s,0x%lx,0x%lx,%d"
--
- const char *pagemap_proc = "/proc/self/pagemap";
- const char *kpageflags_proc = "/proc/kpageflags";
- int pagemap_fd;
-@@ -70,25 +63,6 @@ static int check_after_split_folio_orders(char *vaddr_start, size_t len,
- 	return status;
- }
- 
--static void write_debugfs(const char *fmt, ...)
--{
--	char input[INPUT_MAX];
--	int ret;
--	va_list argp;
--
--	va_start(argp, fmt);
--	ret = vsnprintf(input, INPUT_MAX, fmt, argp);
--	va_end(argp);
--
--	if (ret >= INPUT_MAX)
--		ksft_exit_fail_msg("%s: Debugfs input is too long\n", __func__);
--
--	ret = write_file(SPLIT_DEBUGFS, input, ret + 1);
--	if (ret)
--		ksft_exit_fail_msg("write_file(%s): %s\n", SPLIT_DEBUGFS,
--				   strerror(-ret));
--}
--
- static char *allocate_zero_filled_hugepage(size_t len)
- {
- 	char *result;
-@@ -132,8 +106,7 @@ static void verify_rss_anon_split_huge_page_all_zeroes(char *one_page, int nr_hp
- 	disable_khugepaged(one_page, len);
- 
- 	/* split all THPs */
--	write_debugfs(PID_FMT, getpid(), (uint64_t)one_page,
--		      (uint64_t)one_page + len, 0);
-+	split_huge_pages(one_page, len, 0);
- 
- 	for (i = 0; i < len; i++)
- 		if (one_page[i] != (char)0)
-@@ -181,8 +154,7 @@ static void split_pmd_thp_to_order(int order)
- 	disable_khugepaged(one_page, len);
- 
- 	/* split all THPs */
--	write_debugfs(PID_FMT, getpid(), (uint64_t)one_page,
--		(uint64_t)one_page + len, order);
-+	split_huge_pages(one_page, len, order);
- 
- 	for (i = 0; i < len; i++)
- 		if (one_page[i] != (char)i)
-@@ -269,8 +241,7 @@ static void split_pte_mapped_thp(void)
- 	}
- 
- 	/* Split all THPs through the remapped pages. */
--	write_debugfs(PID_FMT, getpid(), (uint64_t)page_area,
--		      (uint64_t)page_area + page_area_size, 0);
-+	split_huge_pages(page_area, page_area_size, 0);
- 
- 	/* Corruption during mremap or split? */
- 	for (i = 0; i < page_area_size; i++) {
-@@ -306,7 +277,7 @@ static void split_file_backed_thp(int order)
- 	char opts[64];
- 	ssize_t num_written, num_read;
- 	char *file_buf1 = NULL, *file_buf2 = NULL;
--	uint64_t pgoff_start = 0, pgoff_end = 1024;
-+	unsigned long pgoff_start = 0, pgoff_end = 1024;
- 	int i;
- 
- 	ksft_print_msg("Please enable pr_debug in split_huge_pages_in_file() for more info.\n");
-@@ -355,7 +326,7 @@ static void split_file_backed_thp(int order)
- 	}
- 
- 	/* split the file-backed THP */
--	write_debugfs(PATH_FMT, testfile, pgoff_start, pgoff_end, order);
-+	split_huge_pages_file(testfile, pgoff_start, pgoff_end, order);
- 
- 	/* check file content after split */
- 	status = lseek(fd, 0, SEEK_SET);
-@@ -536,16 +507,14 @@ static void split_thp_in_pagecache_to_order_at(size_t fd_size,
- 	 */
- 	if (offset == -1) {
- 		for (split_addr = addr; split_addr < addr + fd_size; split_addr += pmd_pagesize)
--			write_debugfs(PID_FMT, getpid(), (uint64_t)split_addr,
--				      (uint64_t)split_addr + pagesize, order);
-+			split_huge_pages(split_addr, pagesize, order);
- 
- 		expected_orders[order] = fd_size / (pagesize << order);
- 	} else {
- 		int times = fd_size / pmd_pagesize;
- 
- 		for (split_addr = addr; split_addr < addr + fd_size; split_addr += pmd_pagesize)
--			write_debugfs(PID_FMT_OFFSET, getpid(), (uint64_t)split_addr,
--				      (uint64_t)split_addr + pagesize, order, offset);
-+			split_huge_pages_with_offset(split_addr, pagesize, order, offset);
- 
- 		for (i = order + 1; i < pmd_order; i++)
- 			expected_orders[i] = times;
-diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index 9942bbea7837..b64c651f753e 100644
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -18,6 +18,12 @@
- #define PAGEMAP_PATH "/proc/self/pagemap"
- #define KPAGEFLAGS_PATH "/proc/kpageflags"
- #define MAX_NR_ORDERS 20
-+#define SPLIT_DEBUGFS "/sys/kernel/debug/split_huge_pages"
-+#define INPUT_MAX 80
++CATEGORY="thp" run_test ./thp-compaction
 +
-+#define PID_FMT "%d,0x%lx,0x%lx,%d"
-+#define PID_FMT_OFFSET "%d,0x%lx,0x%lx,%d,%d"
-+#define PATH_FMT "%s,0x%lx,0x%lx,%d"
+ CATEGORY="thp" run_test ./folio_split_race_test
  
- unsigned int __page_size;
- unsigned int __page_shift;
-@@ -1105,6 +1111,56 @@ int unpoison_memory(unsigned long pfn)
- 	return ret > 0 ? 0 : -errno;
- }
- 
-+static void write_debugfs(const char *fmt, ...)
+ CATEGORY="migration" run_test ./migration
+diff --git a/tools/testing/selftests/mm/thp-compaction.c b/tools/testing/selftests/mm/thp-compaction.c
+new file mode 100644
+index 000000000000..8935f1968a6d
+--- /dev/null
++++ b/tools/testing/selftests/mm/thp-compaction.c
+@@ -0,0 +1,215 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <sys/mman.h>
++#include <stdint.h>
++#include <stdlib.h>
++#include <unistd.h>
++#include <fcntl.h>
++#include <errno.h>
++#include <mm/hugepage_settings.h>
++#include "vm_util.h"
++#include "kselftest.h"
++
++int mmap_flags = MAP_ANONYMOUS | MAP_NORESERVE | MAP_PRIVATE;
++#define PROT_RW (PROT_READ | PROT_WRITE)
++#define MAX_TEST_SIZE (32ULL << 30)
++#define MAX_THP_RETRIES 3
++
++size_t pmd_size;
++
++static int compare_pfns(const void *a, const void *b)
 +{
-+	char input[INPUT_MAX];
-+	int ret;
-+	va_list argp;
++	uint64_t pfn_a = *(const uint64_t *)a;
++	uint64_t pfn_b = *(const uint64_t *)b;
 +
-+	va_start(argp, fmt);
-+	ret = vsnprintf(input, INPUT_MAX, fmt, argp);
-+	va_end(argp);
-+
-+	if (ret >= INPUT_MAX)
-+		ksft_exit_fail_msg("%s: Debugfs input is too long\n", __func__);
-+
-+	ret = write_file(SPLIT_DEBUGFS, input, ret + 1);
-+	if (ret)
-+		ksft_exit_fail_msg("write_file(%s): %s\n", SPLIT_DEBUGFS,
-+				   strerror(-ret));
++	return (pfn_a > pfn_b) - (pfn_a < pfn_b);
 +}
 +
-+bool split_huge_pages_supported(void)
++static void *mmap_hpage_aligned(size_t len)
 +{
-+	int fd;
++	void *ptr;
 +
-+	fd = open(SPLIT_DEBUGFS, O_WRONLY);
-+	if (fd < 0)
-+		return false;
++	ptr = mmap(NULL, len + pmd_size, PROT_RW, mmap_flags, -1, 0);
++	if (ptr == MAP_FAILED) {
++		if (errno == ENOMEM) {
++			ksft_test_result_skip("Cannot reserve enough virtual address space\n");
++			ksft_finished();
++		}
++		ksft_exit_fail_perror("mmap");
++	}
++	ptr += pmd_size - (uintptr_t)ptr % pmd_size;
 +
-+	close(fd);
-+	return true;
++	return ptr;
 +}
 +
-+void split_huge_pages(void *addr, size_t len, int order)
++int main(void)
 +{
-+	write_debugfs(PID_FMT, getpid(), (unsigned long)addr,
-+		      (unsigned long)addr + len, order);
-+}
++	size_t len, max_thps, nr_initial = 0;
++	size_t nr_recovered = 0;
++	int pagemap_fd, kpageflags_fd, pmd_order;
++	void *initial, *retry, *p, *last_page;
++	struct thp_settings settings;
++	uint64_t *initial_pfns;
++	int64_t ret;
 +
-+void split_huge_pages_with_offset(void *addr, size_t len, int order,
-+				  int offset)
-+{
-+	write_debugfs(PID_FMT_OFFSET, getpid(), (unsigned long)addr,
-+		      (unsigned long)addr + len, order, offset);
-+}
++	ksft_print_header();
 +
-+void split_huge_pages_file(const char *path, unsigned long start,
-+			   unsigned long end, int order)
-+{
-+	write_debugfs(PATH_FMT, path, start, end, order);
-+}
++	if (!thp_available())
++		ksft_exit_skip("Transparent Hugepages not available\n");
 +
- static unsigned long shmall, shmmax;
- 
- void __shm_limits_restore(void)
-diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-index ef8fe76d4c61..efd3a2be945d 100644
---- a/tools/testing/selftests/mm/vm_util.h
-+++ b/tools/testing/selftests/mm/vm_util.h
-@@ -118,6 +118,12 @@ bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
- 			int kpageflags_fd);
- bool is_range_backed_by_order(char *start, size_t len, int order,
- 			      int pagemap_fd, int kpageflags_fd);
-+bool split_huge_pages_supported(void);
-+void split_huge_pages(void *addr, size_t len, int order);
-+void split_huge_pages_with_offset(void *addr, size_t len, int order,
-+				  int offset);
-+void split_huge_pages_file(const char *path, unsigned long start,
-+			   unsigned long end, int order);
- 
- int uffd_register(int uffd, void *addr, uint64_t len,
- 		  bool miss, bool wp, bool minor);
++	if (geteuid())
++		ksft_exit_skip("Run this test as root\n");
++
++	pmd_size = pmd_psize();
++	if (!pmd_size)
++		ksft_exit_skip("Reading PMD pagesize failed\n");
++
++	if (SIZE_MAX - pmd_size < MAX_TEST_SIZE)
++		ksft_exit_skip("Required mapping is too large for this architecture\n");
++
++	pmd_order = sz2ord(pmd_size, psize());
++	if (!(thp_supported_orders() & (1UL << pmd_order)))
++		ksft_exit_skip("PMD sized THPs are not supported\n");
++
++	if (!split_huge_pages_supported())
++		ksft_exit_skip("split_huge_pages debugfs interface unavailable\n");
++
++	thp_save_settings();
++	thp_read_settings(&settings);
++
++	settings.thp_enabled = THP_MADVISE;
++	settings.thp_defrag = THP_DEFRAG_MADVISE;
++
++	for (int i = 0; i < NR_ORDERS; i++)
++		settings.hugepages[i].enabled = THP_NEVER;
++
++	settings.hugepages[pmd_order].enabled = THP_INHERIT;
++	thp_push_settings(&settings);
++
++	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
++	if (pagemap_fd < 0)
++		ksft_exit_skip("Unable to open pagemap\n");
++
++	kpageflags_fd = open("/proc/kpageflags", O_RDONLY);
++	if (kpageflags_fd < 0) {
++		close(pagemap_fd);
++		ksft_exit_skip("Unable to open kpageflags\n");
++	}
++
++	ksft_set_plan(1);
++
++	len = (size_t)MAX_TEST_SIZE;
++	max_thps = len / pmd_size;
++	initial = mmap_hpage_aligned(len);
++	initial_pfns = calloc(max_thps, sizeof(*initial_pfns));
++	if (!initial_pfns)
++		ksft_exit_fail_msg("Couldn't allocate initial PFNs array\n");
++
++	/*
++	 * Try to allocate as many THPs as possible and keep them
++	 * allocated
++	 */
++	for (nr_initial = 0; nr_initial < max_thps; nr_initial++) {
++		p = initial + nr_initial * pmd_size;
++
++		for (int i = 0; i < MAX_THP_RETRIES; i++) {
++			ret = allocate_transhuge(p, pagemap_fd);
++			if (ret == -EACCES) {
++				ksft_test_result_skip("Pagemap PFNs are unavailable\n");
++				ksft_finished();
++			}
++			if (ret >= 0)
++				break;
++		}
++		if (ret < 0) {
++			if (madvise(p, pmd_size, MADV_DONTNEED))
++				ksft_exit_fail_perror("MADV_DONTNEED");
++			break;
++		}
++	}
++
++	if (!nr_initial) {
++		ksft_test_result_skip("Failed to allocate any THPs\n");
++		ksft_finished();
++	}
++
++	/*
++	 * If no fallback is observed, retry allocations could use untouched
++	 * free memory instead of recovering memory through compaction.
++	 */
++	if (nr_initial == max_thps) {
++		ksft_test_result_skip("Reached max allocation without failure\n");
++		ksft_finished();
++	}
++
++	/*
++	 * Split all allocated THPs to order 0, keeping only the final base page
++	 * from each THP
++	 */
++	for (size_t i = 0; i < nr_initial; i++) {
++		p = initial + i * pmd_size;
++		last_page = p + pmd_size - psize();
++
++		if (!is_backed_by_folio(p, pmd_order, pagemap_fd, kpageflags_fd)) {
++			ksft_test_result_skip(
++				"Initial range is not backed by a resident PMD sized folio\n");
++			ksft_finished();
++		}
++
++		initial_pfns[i] = pagemap_get_pfn(pagemap_fd, p);
++
++		split_huge_pages(p, psize(), 0);
++		if (!is_backed_by_folio(last_page, 0, pagemap_fd, kpageflags_fd)) {
++			ksft_test_result_fail("Failed to split THP to order 0\n");
++			ksft_finished();
++		}
++		if (madvise(p, pmd_size - psize(), MADV_DONTNEED))
++			ksft_exit_fail_perror("MADV_DONTNEED");
++	}
++
++	qsort(initial_pfns, nr_initial, sizeof(*initial_pfns), compare_pfns);
++
++	/*
++	 * Retry to allocate THPs in a separate mapping
++	 */
++	retry = mmap_hpage_aligned(nr_initial * pmd_size);
++	for (size_t i = 0; i < nr_initial; i++) {
++		p = retry + i * pmd_size;
++
++		ret = allocate_transhuge(p, pagemap_fd);
++		if (ret == -EACCES) {
++			ksft_test_result_skip("Pagemap PFNs are unavailable\n");
++			ksft_finished();
++		}
++		if (ret >= 0) {
++			uint64_t pfn = ret;
++
++			if (bsearch(&pfn, initial_pfns, nr_initial,
++				    sizeof(*initial_pfns), compare_pfns))
++				nr_recovered++;
++		} else if (madvise(p, pmd_size, MADV_DONTNEED)) {
++			ksft_exit_fail_perror("MADV_DONTNEED");
++		}
++	}
++
++	/* Check if the last page left from each initial THP is resident */
++	for (size_t i = 0; i < nr_initial; i++) {
++		uint64_t entry;
++
++		last_page = initial + (i + 1) * pmd_size - psize();
++		entry = pagemap_get_entry(pagemap_fd, last_page);
++
++		if (!PAGEMAP_PRESENT(entry)) {
++			ksft_test_result_skip("Retained page is not resident\n");
++			ksft_finished();
++		}
++	}
++
++	close(pagemap_fd);
++	close(kpageflags_fd);
++	free(initial_pfns);
++	ksft_test_result(nr_recovered > nr_initial / 2,
++			 "Recovered %zu of %zu THP ranges after splitting\n",
++			 nr_recovered, nr_initial);
++	ksft_finished();
++}
 -- 
 2.53.0
 
