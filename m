@@ -1,100 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67941606A321
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 08:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80415606A338
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 08:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e0QsxdfR
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=SfQpNE2V
 Received: by kanga.kvack.org (Postfix)
-	id 781A16B05BB; Thu, 12 Nov 2026 03:17:10 -0500 (EST)
+	id 95B5A6B05BD; Thu, 12 Nov 2026 03:19:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 732ED6B05BC; Thu, 12 Nov 2026 03:17:10 -0500 (EST)
+	id 8E5396B05BE; Thu, 12 Nov 2026 03:19:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 648366B05BD; Thu, 12 Nov 2026 03:17:10 -0500 (EST)
+	id 7ACE06B05BF; Thu, 12 Nov 2026 03:19:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4945C6B05BB
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:17:10 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4075E404CB
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:17:09 +0000 (UTC)
-X-FDA: 85425761778.05.4DB53F3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7EA00160007
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:17:07 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e0QsxdfR;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 594D56B05BD
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 03:19:53 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B4798120513
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:19:52 +0000 (UTC)
+X-FDA: 85425768624.18.72CB679
+Received: from mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B5AF91C0007
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 08:19:50 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SfQpNE2V;
+	spf=pass (imf21.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794471591;
+	b=5FYgApDjh7pdfmkDtLZLHHPcQBOv6wgY9VLjiFXuzeGKdJiPQK2nZIeCGMQYQle9N9LhMi
+	jSlvfmcnHad4eERDrJfzsVfTnvVISC60tE/Wxx40TucTHeAdENZFI71aGNNt+RACX3KYwK
+	3Qdt+bWUl/GotXqiwuLyDQPQiJk8vjI=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SfQpNE2V;
+	spf=pass (imf21.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794471427;
+	s=arc-20220608; t=1794471591;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=6nvYO01y5mKHUhkA/waTaNTnklLNaQwBCR/GbfrB9VI=;
-	b=pXODiYHIBLoKjbwpXtMRc3QgntULViMn444STIj/bUQ8D/1djlk00yKccRnTUQld/hXNDD
-	ZCk6fpmxuzDRxeEWtYl3pciIgXg23PoQrbkU16RU5dGXj3wAyfc99cMOq6qP03P6kxxK4c
-	3z7xyeuvwMSv/Ec9NVPDuiyfhUWtoEg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794471427;
-	b=vxz+Fx3GF8iRE5H3Ko+cnRiPHlwwRFtO1ypiUOA/5WASIXELpU3Mffz2VAqZa4EpTcrCW7
-	J9NelZ+IvAvhZpCk4BFlAcFwDayMTpHu5yXu1zg5B0FPjC3SBva5itcYt6wzQSrluOcKxe
-	jcIEyUuuA69UvnDSbBfrTp0qY06lTBM=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e0QsxdfR;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AB8F243F7F;
-	Thu, 12 Nov 2026 08:17:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 773571F00A05;
-	Thu, 12 Nov 2026 08:17:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794471426;
-	bh=6nvYO01y5mKHUhkA/waTaNTnklLNaQwBCR/GbfrB9VI=;
-	h=From:Date:Subject:To:Cc;
-	b=e0QsxdfRYSDsk8pqZMMWR+h9FbnIeSwmMvhseYhCFiEaOsT98+9fJXWqppdFGb4pL
-	 ZJrR4gGlZI1sRDWbpFnPMr123JoMCat7K0t7BDufzYXQ3AmDIhkqRdM68XYTOfaY4k
-	 xEz6khtWErdnXBHzh/Tq7E7CIsEvYngkI+f9/0LjiAvaS2uNTMQjko+IVJxa0X9dRJ
-	 wEegdryK6TY9OLB3LCfg/KkgIiwPYtweGaUTz2/B/5yTiKeL+XLitu44zvReGcRayz
-	 rzpVwXTM7rOlxIYy2CoBpg14QExR6/Nj5vWYnyBEVdEYGwl0MUMHjZq6b5V+o4nM/d
-	 84tpRwVo4wBvQ==
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Thu, 12 Nov 2026 10:16:57 +0200
-Subject: [PATCH v3] mm/cma: simplify cma_declare_contiguous_multi()
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=F8QZgOdwJOQNroHwVPxnHhYXS0/8CxhTeQW2i2TWYhM=;
+	b=8Z593IbUNg7/kHBGhZI4whA54PQnj95SdguTb0mS37U39E7vxS3Pzb/gEY8ThQL20cheBk
+	YvxXmNRkrVTwHp/4wUNmdm82NIoikegbypWiVZUXS8ZBxvMGgo4TpeHPvNQdfytrSEcVwW
+	qSoGK128jXc1d5mKZvBYewDy7d7GDPY=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=xwZLJxSxd+oyLwrA+ywp9Z3Hse+KBPkDnLf51AGaCvk=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794471589; v=1; x=1795076389;
+ b=SfQpNE2VNQM2NX8/USSumPib0sst4z8rfdbRzO4/Aw0fQdPngxja/ZB2KYYZzPjU60c8TH2a
+ 0S57oe26zbsaaHNWm2zhjXrLpXk6vtt9xTTCSC8ftBMTtiQ+5lbauutu70vAbPhBpw8zCmNttn1
+ BXMSq9k02P7FdgM2i2/hz6Xg=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id f982562d78f503d3;
+	Thu, 12 Nov 2026 08:19:48 +0000
+X-Mizu-Trace-ID: f982562d78f503d3
+X-Migadu-Flow: FLOW_OUT
+From: Ridong Chen <ridong.chen@linux.dev>
+To: David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Yu Zhao <yuzhao@google.com>,
+	Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Ridong Chen <ridong.chen@linux.dev>,
+	Ridong Chen <chenridong@xiaomi.com>
+Subject: [PATCH] mm/mglru: deactivate anon folios into the oldest generation
+Date: Thu, 12 Nov 2026 16:19:28 +0800
+Message-Id: <20261112081928.3014946-1-ridong.chen@linux.dev>
+X-Mailer: git-send-email 2.34.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261112-cma-multi-v3-1-663407328e0a@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22Oyw7CIBBFf6VhLVqwbdCV/2Fc8Ji2aAEDtNE0/
- Xehbmri8k7OuXdmFMBrCOhczMjDpIN2NoXjrkCy57YDrFXKiJa0IaRssDQcm3GIGrctY8Aq0da
- nE0r800OrX2vX9fbNYRR3kDEXZELwAFh4bmWfT8a4aA7G4NGGyMUAmel1iM6/14cmkrv+bU8EE
- 1zWFXBogEoiLw/wFoa98x3K4xPdqIRsVZrUCqhSSlBOFftRl2X5AHF8ixMUAQAA
-X-Change-ID: 20261106-cma-multi-ff88e84bf599
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>
-Cc: Frank van der Linden <fvdl@google.com>, Ivy Lopez <skunkolee@gmail.com>, 
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Oscar Salvador <osalvador@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org
-X-Mailer: b4 0.16.1-dev
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7EA00160007
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: ywq9u7ybumeeqkkobogjyrnh6maeybwa
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B5AF91C0007
+X-Stat-Signature: ouhs1ue1iiug7mhx3yqqq3yowbtand9c
 X-Rspam-User: 
-X-HE-Tag: 1794471427-360347
-X-HE-Meta: U2FsdGVkX18517ILL1HHRgRvNZnG79vtEeQqIIcaEOe3sBxekho/4720tqtwXHBWqjEACEgXmD2GxnMOAjOUpb7JSbtM19NmXW4iF++mRycDx/TgUDh62S2vVZCdf8eEGZpHsz/dODQPytGD0rzIoGjoWI38v684dHQbPRKjezPvtI882EchEbKciqQjBgUannvGjVSVNfHDig2aRDE8bJhsd1r/9a2CQziWoCMOZz2CuHzS7XqfDKtKBW24X1Rb5Vxt7atw6muMOCF4JY4yksuNjYexXAxQTGi9nb7WCmioiDAJuffZZziAi1JaQEbs66Varn3y8oSENdWr+Elec7vxUp6T2ZYnGteq8ZzKCKGwuLNyrGqPNLXyPFyCHVbsIFULly4H6f8xicNfEDow+FMufxhIhizxzplUmJawue/ApVR9YQe9W0UY4804Pg+az33n3v5yFqe5KCThnFrmmANnk26hshmlxa2S+V8xu8BSbsTarbBJDkRxgCg3e8pbABkCqey8QfjaKdGVtOkQHvcG274a2XGZdaoXbHZeCFjP8p5FBxw8xKSEqdGwkqN+jbBJwWQERo+ATAI7mBA+A/W5/4JvLABc3iX+40HskiMnPUDl37DVdbkIOJoHdqAhDXjtWH2CX//V8rpi/WyYq6uLkW3HSV9vpYNpiHGKD/yPUM5PQuYJHY72WouDXeN2v4I1a/TsiE9p3lt+R2F7V/Khfx7sgpdnjX83H4iISujxBLWt1954HRwu1JElCAJ+NbzsX0r7dZK4/DrPSTgcNaUkZj+eDFVuBg51Kh3OokWZ08u9gkUNdd6V8EJXRNDZg2K4ce/IN13aM2wz/dIss94aRsBtxBVACY9+JZQ9G0EIxcaJu3abl1wyDms+syRkPf/hfx7m+JXJmyeKcshtiQeiuHbERcLQjrSrxfFIZXm/F2+dPuZe0pwtAgtgaPFHNlHZD+62m4FOD2JOI6C
- rZIU7sWE
- BP8+ivqHaEe0oC59dlwFQwSu/z9mozGh/tmRqmiJe0rkg5NjF9Ka5iA+YWNQLrvX+f8C1LyyYMPah2DFQCeGiY9v7PatJKBLSKxUJgIvNYfb3Ud+rNkyhUWcMsq5zPJBGUVL1drXj9SIxptaJ7rT3EnNdZf4aarualJLEF/yv3I1saZt65Re1ypkcrxPIkZsIH5EyF74D0OXj0D1thnUHRiBcURYDP9s0YCPcDZu1IU3GIl3Ni59ojR759poG670SLq3LfHeuiBSyiIP5eH07J7KrFQV9RoHM2HEcWnyi6bKwXpgnGbpgXLCksdozASTWTCwFL7tcCyKU6yPJZkv4DhvRGxcIOOij+Bxk+5p32yO9U7+it6erZ6cS2tHZDpfeLfEh1XLtvzaql2ebY6yb8QhoGa6Josf/HPixAe/ZYXUX+c0afs+KEQwJXKzkVX+IliCR5h0ry0LFdcg=
+X-HE-Tag: 1794471590-709295
+X-HE-Meta: U2FsdGVkX19618rEYCHLP2EQOG5vS4anarECHtRhpBCwvvZ9YBmJEfW6C7Y5ldPxjezaX0ETHxkafXiiFZ7Vmm52LlBeYe7M8Hgnhxrf+dv2ZstXgUbXdyV9rcR0hiEByUo7LiNdoIfq5k77//iPEe0rW3be6OKjZ+nDGsGjoD4D+1LRWeLSGH8y+idP2wUDq+zyu811gz9ZLN6FN1jZqy5xiayzWtHHfW3uc0SbAMWZhyRJUB4i70baoL+0v8iuqpPC2vwNa6cwF1m+TShTxISiGh7TUq23krCV48QcZAcl/Wii/W4RKX5Imk3hOfp3MgLxKQ7a3mPMvjZCAVeVDwsKVvE5eLyMGbQRqglTVX+oRR6JBUfSqpDvuqpvbVKIYITpumpg3/jaoFG7McT1nzakTN4unhQv/PJDoi/ADMvatM1fq7YU0TljMTt3ByPjAZZ8XwliCt0d20zBr2Idnjo+B4N6wimWd82sh8QCmZoTst7F84uYWV9qeG7QgatG6SoECSuX4QeAH+h1NJe8tdsQNALsIrHjWY0ww8BWub3CyQT4x4amolMhxeiz4IIS4Rvzt3ky4YjG468Mt6RzPJ82WPZduhmj3Ne45Hgx2Road6fTdYgFVpmfJHILHcQARyoJftguxQS9q83nAay0sYo2lmMA/XWOXHG8DnRd4KY/2ooL59WC3vlkAohOT19LQFaXitRsvof4+nurAUIK7l+gzD40+2XltjU9c+mM5Vp+Inoy1O1J/OfNfnhZ0LojHA+0plTK+JE9KVlcqom8ME/yC6mnloCfzdGx3bVZtXwyWhOsU0+Fm2HVjjgnBF9RMtO3nZxTWUoX17YTKtzyxUlN7H36uTzMNQLathUc/nzCGXCqHkDZZ7pZPr5kx/dxp0xIGeNlzaQDpbDTe4lRv9UiluOQo0AUT901DftE2jfZIx3FadF6zTI/LiPWGUvWzfoidDoy9oOdWJ4OX1T
+ fNC8eKVo
+ oOaqMIMv6KxTOymFSMVQxljB+l18yLCqs0zPxJ/3hsRQ+01TmZ8WqJGS5pX3gv1yhWXfasmsQ5pHQui4WDvgjp3xiOPFCautTpyguKdU4XxBplfaIq/uM/rZwITHdZmNa1A6RKimiZtwLpmh03/iJWGbzhaGsxekL1d9vPBpzcem16XTaD6lbDaN/H4siBYV262uS0uWUG3FHlTw5N1ER8I3rVIjrIt+G96w0JwuTsLLwGILxVNq+xG/hk894diaAssDI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,407 +107,185 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When cma_declare_contiguous_multi() cannot allocate a CMA area as a
-single range, it falls back to collecting a list of up to CMA_MAX_RANGES
-largest free ranges above 4G, reserves them in memblock and adds them to
-cma->ranges.
+From: Ridong Chen <chenridong@xiaomi.com>
 
-The list and subsequently cma->ranges are supposed to be sorted in the
-order of base addresses of the "allocated" ranges.
+folio_deactivate() is used by MADV_COLD and DAMOS_LRU_DEPRIO to move a
+folio towards eviction. lru_deactivate() does that by deleting the folio
+from its LRU list, clearing PG_active and PG_referenced, and adding it
+back with lruvec_add_folio().
 
-This implementation has two bugs:
+With MGLRU, lru_gen_folio_seq() places a swap-backed folio that is not
+in the swap cache, i.e. an anon or shmem folio, into max_seq - 1,
+regardless of its refs. That generation is active per
+lru_gen_is_active(), so such a folio never reaches an inactive
+generation, and a folio that has aged into min_seq + 1 is moved to a
+younger generation instead. PGDEACTIVATE is still counted. Other folios
+are not affected: with their refs cleared they are placed into the
+oldest generation.
 
-* The allocation may fail even when there is enough free memory because
-  list_insert_sorted() sorts the list in the wrong order.
+On a 4-generation memcg, 64MB of aged anon memory in min_seq + 1 ends up
+in max_seq - 1 after MADV_COLD, while 64MB of file memory in the same
+generation ends up in min_seq.
 
-  When the list is full, the largest range is evicted rather than the
-  smallest, the final list is not sorted by address, and the smallest
-  ranges are used first.
+As a result, MADV_COLD can make anon memory less likely to be reclaimed.
+It can be reproduced with a single process in a memcg with swap enabled:
 
-* the function may report success while it reserved less memory than
-  requested because sizesum accounts for ranges that were skipped.
+  1) map two 64MB anon regions A and B and fault them in, A first;
+  2) age the memcg twice through /sys/kernel/debug/lru_gen, so that both
+     regions are in the same generation, min_seq + 1;
+  3) apply MADV_COLD to B only, A is the control;
+  4) reclaim the size of one region from anon only:
+     echo "64M swappiness=max" > memory.reclaim;
+  5) count the swapped out pages of A and B from /proc/self/pagemap.
 
-And overall it is a lot of list management and open coded range
-selection for no real gain.
+B is expected to be swapped out instead of A. Three runs on mm-new:
 
-Replace the current code with a loop that finds the largest free range
-above 4G, reserves as much of it as needed and repeats until the entire
-area is reserved or CMA_MAX_RANGES ranges are used.
+                     A swapped out        B (MADV_COLD) swapped out
+  before             16384 pages          15 ~ 128 pages
+  after              0 ~ 157 pages        16384 pages
 
-After successful alocation sort the cma->ranges by their base address.
+Use lruvec_add_folio_tail() for MGLRU, which treats the folio as
+reclaiming and adds it to the tail of the oldest generation, the same
+place lru_deactivate_file() puts a clean file folio. The other folios,
+which were added to the head of the oldest generation, are now added to
+its tail as well, so they are reclaimed first as MADV_COLD intends.
 
-The new code scans free memory once for every range rather than once
-for all ranges, so it is slightly slower, but it is way simpler and more
-robust.
-
-Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
-Reported-by: Ivy Lopez <skunkolee@gmail.com>
-Closes: https://lore.kernel.org/all/cover.1792032699.git.skunkolee@gmail.com
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Liam R. Howlett (Google) <liam@infradead.org>
-Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+Fixes: 081488051d28 ("mm/mglru: fix underprotected page cache")
+Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
 ---
-Changes in v3:
-- Skip the search when CONFIG_PHYS_ADDR_T_64BIT is not set to avoid
-  clang warnings on 32 bits.
-- Link to v2: https://patch.msgid.link/20261111-cma-multi-v2-1-4e2dddb2a2d8@kernel.org
 
-Changes in v2:
-- make size_mb const
-- Link to v1: https://patch.msgid.link/20261106-cma-multi-v1-1-054eae6e2c1c@kernel.org
----
- mm/cma.c | 269 +++++++++++++++++++--------------------------------------------
- 1 file changed, 81 insertions(+), 188 deletions(-)
+This patch was developed with the help of an AI coding assistant
+(Claude).
 
-diff --git a/mm/cma.c b/mm/cma.c
-index f61d52796f4ef..1733c418320ae 100644
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -23,8 +23,8 @@
- #include <linux/sizes.h>
- #include <linux/slab.h>
- #include <linux/string.h>
--#include <linux/string_choices.h>
- #include <linux/log2.h>
-+#include <linux/sort.h>
- #include <linux/cma.h>
- #include <linux/highmem.h>
- #include <linux/io.h>
-@@ -310,56 +310,6 @@ int __init cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
- 	return 0;
- }
- 
--/*
-- * Structure used while walking physical memory ranges and finding out
-- * which one(s) to use for a CMA area.
-- */
--struct cma_init_memrange {
--	phys_addr_t base;
--	phys_addr_t size;
--	struct list_head list;
--};
--
--/*
-- * Work array used during CMA initialization.
-- */
--static struct cma_init_memrange memranges[CMA_MAX_RANGES] __initdata;
--
--static bool __init revsizecmp(struct cma_init_memrange *mlp,
--			      struct cma_init_memrange *mrp)
--{
--	return mlp->size > mrp->size;
--}
--
--static bool __init basecmp(struct cma_init_memrange *mlp,
--			   struct cma_init_memrange *mrp)
--{
--	return mlp->base < mrp->base;
--}
--
--/*
-- * Helper function to create sorted lists.
-- */
--static void __init list_insert_sorted(
--	struct list_head *ranges,
--	struct cma_init_memrange *mrp,
--	bool (*cmp)(struct cma_init_memrange *lh, struct cma_init_memrange *rh))
--{
--	struct list_head *mp;
--	struct cma_init_memrange *mlp;
--
--	if (list_empty(ranges))
--		list_add(&mrp->list, ranges);
--	else {
--		list_for_each(mp, ranges) {
--			mlp = list_entry(mp, struct cma_init_memrange, list);
--			if (cmp(mlp, mrp))
--				break;
--		}
--		__list_add(&mrp->list, mlp->list.prev, &mlp->list);
--	}
--}
--
- static int __init cma_fixed_reserve(phys_addr_t base, phys_addr_t size)
- {
- 	if (IS_ENABLED(CONFIG_HIGHMEM)) {
-@@ -524,37 +474,75 @@ static int __init __cma_declare_contiguous_nid(phys_addr_t *basep,
- 	return 0;
- }
- 
-+/*
-+ * Find the largest free range above 4G that can hold a part of a multi-range
-+ * CMA area.
-+ */
-+static phys_addr_t __init cma_find_free_range(phys_addr_t align,
-+		phys_addr_t size_align, int nid, phys_addr_t *basep)
-+{
-+	phys_addr_t start, end, size;
-+	phys_addr_t max = 0;
-+	u64 i;
-+
-+	/* no point searching if the system can't addres above 4G */
-+	if (!IS_ENABLED(CONFIG_PHYS_ADDR_T_64BIT))
-+		return 0;
-+
-+	for_each_free_mem_range(i, nid, MEMBLOCK_NONE, &start, &end, NULL) {
-+		if (start < SZ_4G)
-+			continue;
-+
-+		start = ALIGN(start, align);
-+		if (start >= end)
-+			continue;
-+
-+		size = ALIGN_DOWN(end - start, size_align);
-+		if (size > max) {
-+			max = size;
-+			*basep = start;
-+		}
-+	}
-+
-+	return max;
-+}
-+
-+static int __init cma_range_cmp(const void *a, const void *b)
-+{
-+	const struct cma_memrange *cmr_a = a;
-+	const struct cma_memrange *cmr_b = b;
-+
-+	return cmp_int(cmr_a->base_pfn, cmr_b->base_pfn);
-+}
-+
- /*
-  * Create CMA areas with a total size of @total_size. A normal allocation
-- * for one area is tried first. If that fails, the biggest memblock
-- * ranges above 4G are selected, and allocated bottom up.
-- *
-- * The complexity here is not great, but this function will only be
-- * called during boot, and the lists operated on have fewer than
-- * CMA_MAX_RANGES elements (default value: 8).
-+ * for one area is tried first. If that fails, the area is assembled from
-+ * up to CMA_MAX_RANGES of the biggest free memblock ranges above 4G.
-  */
- int __init cma_declare_contiguous_multi(phys_addr_t total_size,
- 			phys_addr_t align, unsigned int order_per_bit,
- 			const char *name, struct cma **res_cma, int nid)
- {
--	phys_addr_t start = 0, end;
--	phys_addr_t size, sizesum, sizeleft;
--	struct cma_init_memrange *mrp, *mlp, *failed;
-+	const unsigned long size_mb = (unsigned long)total_size / SZ_1M;
-+	phys_addr_t size, remaining, size_align;
- 	struct cma_memrange *cmrp;
--	LIST_HEAD(ranges);
--	LIST_HEAD(final_ranges);
--	struct list_head *mp, *next;
--	int ret, nr = 1;
--	u64 i;
-+	phys_addr_t start = 0;
- 	struct cma *cma;
-+	int nr = 0;
-+	int ret;
- 
- 	/*
- 	 * First, try it the normal way, producing just one range.
- 	 */
- 	ret = __cma_declare_contiguous_nid(&start, total_size, 0, align,
- 			order_per_bit, false, name, res_cma, nid);
-+	if (!ret) {
-+		pr_info("Reserved %lu MiB at %pa\n", size_mb, &start);
-+		return 0;
-+	}
- 	if (ret != -ENOMEM)
--		goto out;
-+		goto err;
- 
- 	/*
- 	 * Couldn't find one range that fits our needs, so try multiple
-@@ -572,151 +560,56 @@ int __init cma_declare_contiguous_multi(phys_addr_t total_size,
- 	 * aligned to @align, and a size that is aligned to
- 	 * both @align and @order_to_bit, things will work out.
- 	 */
--	nr = 0;
--	sizesum = 0;
--	failed = NULL;
--
- 	ret = cma_new_area(name, total_size, order_per_bit, &cma);
--	if (ret != 0)
--		goto out;
-+	if (ret)
-+		goto err;
- 
- 	align = max_t(phys_addr_t, align, CMA_MIN_ALIGNMENT_BYTES);
--	/*
--	 * Create a list of ranges above 4G, largest range first.
--	 */
--	for_each_free_mem_range(i, nid, MEMBLOCK_NONE, &start, &end, NULL) {
--		if (upper_32_bits(start) == 0)
--			continue;
--
--		start = ALIGN(start, align);
--		if (start >= end)
--			continue;
-+	size_align = max_t(phys_addr_t, align, PAGE_SIZE << order_per_bit);
- 
--		end = ALIGN_DOWN(end, align);
--		if (end <= start)
--			continue;
--
--		size = end - start;
--		size = ALIGN_DOWN(size, (PAGE_SIZE << order_per_bit));
-+	remaining = total_size;
-+	while (remaining && nr < CMA_MAX_RANGES) {
-+		size = cma_find_free_range(align, size_align, nid, &start);
- 		if (!size)
--			continue;
--		sizesum += size;
--
--		pr_debug("consider %016llx - %016llx\n", (u64)start, (u64)end);
--
--		/*
--		 * If we don't yet have used the maximum number of
--		 * areas, grab a new one.
--		 *
--		 * If we can't use anymore, see if this range is not
--		 * smaller than the smallest one already recorded. If
--		 * not, re-use the smallest element.
--		 */
--		if (nr < CMA_MAX_RANGES)
--			mrp = &memranges[nr++];
--		else {
--			mrp = list_last_entry(&ranges,
--					      struct cma_init_memrange, list);
--			if (size < mrp->size)
--				continue;
--			list_del(&mrp->list);
--			sizesum -= mrp->size;
--			pr_debug("deleted %016llx - %016llx from the list\n",
--				(u64)mrp->base, (u64)mrp->base + size);
--		}
--		mrp->base = start;
--		mrp->size = size;
--
--		/*
--		 * Now do a sorted insert.
--		 */
--		list_insert_sorted(&ranges, mrp, revsizecmp);
--		pr_debug("added %016llx - %016llx to the list\n",
--		    (u64)mrp->base, (u64)mrp->base + size);
--		pr_debug("total size now %llu\n", (u64)sizesum);
--	}
--
--	/*
--	 * There is not enough room in the CMA_MAX_RANGES largest
--	 * ranges, so bail out.
--	 */
--	if (sizesum < total_size) {
--		cma_drop_area(cma);
--		ret = -ENOMEM;
--		goto out;
--	}
--
--	/*
--	 * Found ranges that provide enough combined space.
--	 * Now, sorted them by address, smallest first, because we
--	 * want to mimic a bottom-up memblock allocation.
--	 */
--	sizesum = 0;
--	list_for_each_safe(mp, next, &ranges) {
--		mlp = list_entry(mp, struct cma_init_memrange, list);
--		list_del(mp);
--		list_insert_sorted(&final_ranges, mlp, basecmp);
--		sizesum += mlp->size;
--		if (sizesum >= total_size)
- 			break;
--	}
- 
--	/*
--	 * Walk the final list, and add a CMA range for
--	 * each range, possibly not using the last one fully.
--	 */
--	nr = 0;
--	sizeleft = total_size;
--	list_for_each(mp, &final_ranges) {
--		mlp = list_entry(mp, struct cma_init_memrange, list);
--		size = min(sizeleft, mlp->size);
--		if (memblock_reserve(mlp->base, size)) {
--			/*
--			 * Unexpected error. Could go on to
--			 * the next one, but just abort to
--			 * be safe.
--			 */
--			failed = mlp;
-+		size = min(size, remaining);
-+		if (memblock_reserve(start, size))
- 			break;
--		}
--
--		accept_memory(mlp->base, size);
-+		accept_memory(start, size);
- 
- 		pr_debug("created region %d: %016llx - %016llx\n",
--		    nr, (u64)mlp->base, (u64)mlp->base + size);
-+		    nr, (u64)start, (u64)start + size);
- 		cmrp = &cma->ranges[nr++];
--		cmrp->base_pfn = PHYS_PFN(mlp->base);
-+		cmrp->base_pfn = PHYS_PFN(start);
- 		cmrp->early_pfn = cmrp->base_pfn;
- 		cmrp->count = size >> PAGE_SHIFT;
- 
--		sizeleft -= size;
--		if (sizeleft == 0)
--			break;
-+		remaining -= size;
- 	}
- 
--	if (failed) {
--		list_for_each(mp, &final_ranges) {
--			mlp = list_entry(mp, struct cma_init_memrange, list);
--			if (mlp == failed)
--				break;
--			memblock_phys_free(mlp->base, mlp->size);
--		}
--		cma_drop_area(cma);
-+	if (remaining) {
- 		ret = -ENOMEM;
--		goto out;
-+		goto err_free_ranges;
- 	}
- 
-+	/* allocate from lower addresses first */
-+	sort(cma->ranges, nr, sizeof(cma->ranges[0]), cma_range_cmp, NULL);
-+
- 	cma->nranges = nr;
- 	cma->nid = nid;
- 	*res_cma = cma;
- 
--out:
--	if (ret != 0)
--		pr_err("Failed to reserve %lu MiB\n",
--			(unsigned long)total_size / SZ_1M);
--	else
--		pr_info("Reserved %lu MiB in %d range%s\n",
--			(unsigned long)total_size / SZ_1M, nr, str_plural(nr));
-+	pr_info("Reserved %lu MiB in %d ranges\n", size_mb, nr);
-+	return 0;
-+
-+err_free_ranges:
-+	for (int i = 0; i < nr; i++)
-+		memblock_phys_free(PFN_PHYS(cma->ranges[i].base_pfn),
-+				   PFN_PHYS(cma->ranges[i].count));
-+	cma_drop_area(cma);
-+err:
-+	pr_err("Failed to reserve %lu MiB\n", size_mb);
- 	return ret;
- }
- 
+The reproducer, run as root in a memcg with swap enabled and debugfs
+mounted, e.g. "mkdir /sys/fs/cgroup/t; ./reclaim-order /sys/fs/cgroup/t":
 
----
-base-commit: b3710a1d0f145a4f6f1d44fdaff56a6af8cffe89
-change-id: 20261106-cma-multi-ff88e84bf599
+  // SPDX-License-Identifier: GPL-2.0
+  /*
+   * Two 64MB anon regions, A (hot) and B (MADV_COLD). Reclaim 64MB via
+   * memory.reclaim (swappiness=max -> anon only). Report how much of each
+   * region was swapped out (mincore can't see swap; use /proc/self/pagemap).
+   */
+  #define _GNU_SOURCE
+  #include <sched.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <stdint.h>
+  #include <string.h>
+  #include <unistd.h>
+  #include <fcntl.h>
+  #include <sys/mman.h>
 
---
-Sincerely yours,
-Mike.
+  static unsigned long long memcg_id;
+  static const char *cg_name;
+
+  /* force one aging step on node 0 of our memcg via debugfs */
+  static void aging(void)
+  {
+  	FILE *f = fopen("/sys/kernel/debug/lru_gen", "r");
+  	char line[512], cmd[128];
+  	unsigned long max = 0, s, x1, x2, x3;
+  	int in = 0, fd, len;
+
+  	while (fgets(line, sizeof(line), f)) {
+  		unsigned long long id; char path[256];
+  		if (sscanf(line, "memcg %llu %255s", &id, path) == 2) {
+  			in = !strcmp(path, cg_name);
+  			if (in) memcg_id = id;
+  			continue;
+  		}
+  		if (in && sscanf(line, " %lu %lu %lu %lu", &s, &x1, &x2, &x3) == 4)
+  			max = s;
+  	}
+  	fclose(f);
+  	len = snprintf(cmd, sizeof(cmd), "+ %llu 0 %lu 200 1\n", memcg_id, max);
+  	fd = open("/sys/kernel/debug/lru_gen", O_WRONLY);
+  	if (write(fd, cmd, len) != len) perror("aging");
+  	close(fd);
+  }
+
+  static long swapped(char *p, size_t sz)
+  {
+  	int fd = open("/proc/self/pagemap", O_RDONLY);
+  	long n = 0;
+  	for (size_t off = 0; off < sz; off += 4096) {
+  		uint64_t e;
+  		pread(fd, &e, 8, ((uintptr_t)(p + off) / 4096) * 8);
+  		if (e & (1ULL << 62))
+  			n++;
+  	}
+  	close(fd);
+  	return n;
+  }
+
+  int main(int argc, char **argv)
+  {
+  	const char *cg = argv[1];
+  	cg_name = strrchr(cg, '/');
+  	size_t sz = 64UL << 20;
+  	char buf[256], *a, *b, *d;
+  	cpu_set_t set;
+  	int fd;
+
+  	CPU_ZERO(&set); CPU_SET(0, &set);
+  	sched_setaffinity(0, sizeof(set), &set);
+  	snprintf(buf, sizeof(buf), "%s/cgroup.procs", cg);
+  	fd = open(buf, O_WRONLY); dprintf(fd, "%d\n", getpid()); close(fd);
+
+  	a = mmap(NULL, sz, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
+  	b = mmap(NULL, sz, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
+  	d = mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
+  	madvise(a, sz, MADV_NOHUGEPAGE); madvise(b, sz, MADV_NOHUGEPAGE);
+  	/* A is faulted in first, so without MADV_COLD it is the older one */
+  	for (size_t i = 0; i < sz; i += 4096) a[i] = 1;
+  	for (size_t i = 0; i < sz; i += 4096) b[i] = 1;
+  	d[0] = 1;
+  	madvise(d, 4096, MADV_COLD);	/* drain lru_add */
+  	/* two agings: clear young bits of both A and B, both end at min_seq+1 */
+  	aging();
+  	aging();
+  	madvise(b, sz, MADV_COLD);
+  	madvise(d, 4096, MADV_COLD);
+
+  	snprintf(buf, sizeof(buf), "%s/memory.reclaim", cg);
+  	fd = open(buf, O_WRONLY);
+  	if (dprintf(fd, "64M swappiness=max\n") < 0)
+  		perror("memory.reclaim");
+  	close(fd);
+
+  	printf("hot A swapped: %5ld pages   cold B swapped: %5ld pages  (of %zu)\n",
+  	       swapped(a, sz), swapped(b, sz), sz >> 12);
+  	return 0;
+  }
+
+ mm/folio.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/mm/folio.c b/mm/folio.c
+index ea3adb6a89d7..c412d9b398e4 100644
+--- a/mm/folio.c
++++ b/mm/folio.c
+@@ -583,7 +583,16 @@ static void lru_deactivate(struct lruvec *lruvec, struct folio *folio)
+ 	lruvec_del_folio(lruvec, folio);
+ 	folio_clear_active(folio);
+ 	folio_clear_referenced(folio);
+-	lruvec_add_folio(lruvec, folio);
++	/*
++	 * For MGLRU, lruvec_add_folio() places anon folios that are not in
++	 * the swap cache into the second youngest generation, which is an
++	 * active one. Add the folio to the oldest generation instead, like
++	 * lru_deactivate_file() does for clean folios.
++	 */
++	if (lru_gen_enabled())
++		lruvec_add_folio_tail(lruvec, folio);
++	else
++		lruvec_add_folio(lruvec, folio);
+ 
+ 	__count_vm_events(PGDEACTIVATE, nr_pages);
+ 	count_memcg_events(lruvec_memcg(lruvec), PGDEACTIVATE, nr_pages);
+
+base-commit: 2dc0136b1fdac153434ab02778fcdb32db5d0dae
+-- 
+2.34.1
 
 
