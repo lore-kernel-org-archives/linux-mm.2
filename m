@@ -1,101 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6FE606A324
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 02:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D16E606A31C
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 02:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YzGrzmHr
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=qsZFiTQz
 Received: by kanga.kvack.org (Postfix)
-	id 90CFD6B05BB; Wed, 11 Nov 2026 21:50:06 -0500 (EST)
+	id 8D12D6B05BD; Wed, 11 Nov 2026 21:59:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BD686B05BC; Wed, 11 Nov 2026 21:50:06 -0500 (EST)
+	id 8A9486B05BE; Wed, 11 Nov 2026 21:59:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FB8C6B05BD; Wed, 11 Nov 2026 21:50:06 -0500 (EST)
+	id 7BFAB6B05BF; Wed, 11 Nov 2026 21:59:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EAFD6B05BB
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 21:50:06 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2B16A047E
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:50:05 +0000 (UTC)
-X-FDA: 85424937570.03.166E631
-Received: from mta0.migadu.com (out-82.mta0.migadu.com [91.218.175.82])
-	by imf13.hostedemail.com (Postfix) with ESMTP id BB96120002
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:50:03 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YzGrzmHr;
-	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.82 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B8256B05BD
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 21:59:32 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 36DAFA8033
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:59:30 +0000 (UTC)
+X-FDA: 85424961300.14.FF09012
+Received: from mta1.migadu.com (out-220.mta1.migadu.com [95.215.58.220])
+	by imf24.hostedemail.com (Postfix) with ESMTP id EE779180005
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:59:27 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qsZFiTQz;
+	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.220 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794451804;
-	b=ZsIPozYEu2F8MUkFYcKH1CbVFmsRFMiiovLFiocOp1NJWtoX9KtLIIw0mqwGrO8ZH296ZY
-	27vJOcQu5oGnbbzM/E+JmQtNMEuySaV2ZpFNesWVB3uM+lBZUhvdwpcHadvLPSxhqYWlnO
-	G4XW7ZiNYZiZ4CVkEe1bU1sa1fnoxEk=
+	t=1794452368;
+	b=N+FywD1jCg/j4I9mI5zHLfUIERW7vk7bTGjUQGeJnKZJQXWWSex1KXqDTCJg3751VaP6RT
+	m17VJmy2awEAAar85QHYwGuNmKHkHe6CpltjC2Q0KgZlZpzOdVn5oJ3K3FmEqJ/1cZwtGn
+	psYoMRnnbpYCtuMX/3EBZTU8jmKqwZU=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YzGrzmHr;
-	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.82 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qsZFiTQz;
+	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.220 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794451804;
+	s=arc-20220608; t=1794452368;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7Sw15fLJElTIXiA3Qe5WXtECxHOt5O6ombPZ3J8UKq8=;
-	b=s+lj3IIy1vRFnSqWgyyp0xLi1I+6nQYHAk+pOgQG5KPFwlDE0fBYP4Pgo3PmTLgE0/ND4i
-	+eEGFKV+5v0owRVx5QgxX+eNtEpin0fB2qVrUnKbL1s3DoAAFKaPH4ZilpD6hTvjenek9E
-	PUPTf5pyLx6dg3TikSZyzWg7vwQuVW4=
+	bh=0J11tLi8SfFmSWAqFUDP4HJVX5c9ZbamsLUfA0GsiEY=;
+	b=3MJzmSLITKLqJYoZgaKkM6QUOmAyLDonZW5o8QaZUOXrLz2dOk9HJi/Oigu4gQChTPteVB
+	neRriCItqZ7kpzJKfYVXDhTy6E2YcgPmgPtwyIs/1vV6TUHAuKkeuwvg3GYXIjTFBeqDgf
+	TTGNPyQX+5kRQVPjqPkJMmn4naozzRo=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=N31htkiw7FeFclqPnxejrLhX+YXxP1RzI9SGKIi5828=;
+DKIM-Signature: a=rsa-sha256; bh=WMBj19dOUDYdPyz+QJ76elqBaDh3uyu1qhcDOGOiJYY=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794451802; v=1; x=1795056602;
- b=YzGrzmHrmkAvLjtEQ0tx1a5d1kXvDK8yiijclYAhGn+60DKOnMsqbLOsMYqt5phJio+KFQAN
- 9pDk96x/GnNjkNQq7jbH0xMRoq5RjkWr8Mlu2E4tZhBd2badnKnO+HvRkWWXn5zXo5SKnYuaLp6
- y3MLawk8E9vPBsSqy+tpyeoE=
+ t=1794452366; v=1; x=1795057166;
+ b=qsZFiTQzAvIE5Syb/Uv58dNdA2ZLlSwSeK6iY6+DhavGovhmFqnemAAiK8laTM/rygbVGn4U
+ o6pN+ZGqoNylSGBmdLpqTvKUk6faDpcYlztbOBMFWSy1B/OdS7/STUtGdVr4uHC5ECWasVo/NVP
+ zudpxAhHYjH2ejh9Zp6zsk98=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 2bcdc9690615e9fb;
-	Thu, 12 Nov 2026 02:50:01 +0000
-X-Mizu-Trace-ID: 2bcdc9690615e9fb
+Received: by mta11.migadu.com with ESMTPS id 50165d57d30e2034;
+	Thu, 12 Nov 2026 02:59:26 +0000
+X-Mizu-Trace-ID: 50165d57d30e2034
 X-Migadu-Flow: FLOW_OUT
 Content-Type: text/plain;
-	charset=us-ascii
+	charset=utf-8
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH] mm: list_lru: fix NULL deref when a folio moves to the
- root memcg
+Subject: Re: [PATCH v2 1/3] mm/hugetlb_vmemmap: fix lost HWPoison state during
+ optimization
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261112024140.648088-1-shakeel.butt@linux.dev>
-Date: Thu, 12 Nov 2026 10:49:44 +0800
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Dave Chinner <david@fromorbit.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
+In-Reply-To: <sashiko-outbox-209812@kernel.org>
+Date: Thu, 12 Nov 2026 10:59:08 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Miaohe Lin <linmiaohe@huawei.com>,
  David Hildenbrand <david@kernel.org>,
- Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Qi Zheng <qi.zheng@linux.dev>,
- Meta kernel team <kernel-team@meta.com>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- Chris Mason <mason@kernel.org>
+ Mike Rapoport <rppt@kernel.org>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Joao Martins <joao.m.martins@oracle.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Ingo Molnar <mingo@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ linux-mm@kvack.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <26CC0CD2-97FE-4842-AE51-605EC77AC91D@linux.dev>
-References: <20261112024140.648088-1-shakeel.butt@linux.dev>
-To: Shakeel Butt <shakeel.butt@linux.dev>
+Message-Id: <1E848BF4-4AB4-4656-8523-FAC6DD8FDAEA@linux.dev>
+References: <20261111093747.50048-1-songmuchun@bytedance.com>
+ <20261111093747.50048-2-songmuchun@bytedance.com>
+ <sashiko-outbox-209812@kernel.org>
+To: sashiko-reviews@lists.linux.dev
 X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Stat-Signature: fc55gsqnr7sgnxzt1uqzgty8wn4dxjwp
-X-Rspamd-Queue-Id: BB96120002
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: EE779180005
+X-Stat-Signature: iswxcxz6qcs9tpydyk6xd651641bbmmt
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794451803-908301
-X-HE-Meta: U2FsdGVkX1+JIYkGxEepcVTLYW2UyW9hCIqCFDZqVA+7g6KPcXcvD2l+VjkhBHmAfG2XP3jsbnb2m4d5twHLZT3zCRpaxFYAgRf+gGweeaFFcOvJlXG+LKPPBd0QY2kvDmht7milzAWcoRjcWIzL9O0J/yYLkMK3iCu5Vnk7BmY+OjDTTViB1lnwYWBPS3B+Fe4jz6E9FT/k1/VI44gDsU3R+ZG/rFYd/oZG7MxVFxatZTKS8icdxkun8XzWKfWR/OzfdbbC1qMcX36oQIXTG5ATfC14y6A8Sn2Ug2v5VmZObPI1A60WA43nAInwpqS82qMYm/s+9h86Ra4DtO3HwN/kmIEsOkjxaEvRxTNiqehwlYgciggWa7wFoO5DaWI6H2XFy6UHb2dsBT46laYFm0AMY099kve0cgaxusJ1GHwYWtCLsiqTgqoHKtRaLkB6+h9tfjnPFPLWjHiMocJBpRNz8nxz6mgW59IZeVDS3geJZC4FHAFKlF28yj91DruCXUpfDNRfUW90jerCe6P8l+sD+u6mImLE9y+01HvH0uNftwQsfe5b8vOeS6cCyWXOgFw/3eGHN+iBvgKQpDe3ekCcjU3IAdfdhXrrBKhGQXp0cqse4AGN8LOm0eSy0vohqB1ApXW/3Hr3/Dahw2o6jJqTiCyPMGUx85wfdbHjG8V01r/IwN+MmsZkiZZsMm4YuC49q/PrgYXpj2cbwVsezNQFLC03jfyDVcu9OnvT8YwKJIqbiggszgD0YNHjZUlk0/Wg9bondltl/nauiMqnu2H5Q1rKHWTMCel6ftcaeTIAv4wKtsKSyZaRexTvlu+K5+slJSnzaCJSbauaRFyHIBCwghfUs0YlKayzSLol5JE89yBjzV8/gZw9UeWkIEEJenOVhKWuVsnD64G1021Z2Y6JMevq9kTpq6JdGqAD2WHMYiOf+Ycsy47Z5M380xZWXJlSQvSDEOrwJgPG+13
- 1SPW8wrh
- 0YATvGOE92XyHcG0rvf8bYOhwtHrYiVEts5cYUA/0DGk9R7zl+o0MNwb6uOjkkMS12gN5Z+FaUcOMsawcBH2eriBpjv2j2QajcrJfpK+Kj0pg2tb4zjgiv5B0HsaFaBfxRLzX4g2t7NNMIo0ldyb8Do6+vpAbZa+BTEfcDPD2I08qxH+fMEHsGd4H5/by9HN4tI+8YuTNk2aob6dm7uIRyeygXfVVgJ+1NVrdTZt33zYCwkTB9s9PnmkPNS6U9U8fIENGAshvAqsHZzEZnhMBUTTQnNrt44QUtl7k8TwZLcD42vx6+Yf9tBFN6NiTwe48oSo2Q28Y3+drkpe/QSGJmor/IQio9vl69T/G2ydmlAZessjb7pvLzTiQFQ==
+X-HE-Tag: 1794452367-103043
+X-HE-Meta: U2FsdGVkX18tYOLDMuvsljXZpnpYNsMD645tXby6bAmjTt0pztJ+x7bklAB/frF9w67xWN4+iTy/mvKQdiGTz1gZFvX/5YLwfnmWCQB6zRWxTGYG3pjwKAxuALE96e9RWLWLjBnxRUmhxcz7FKyh4HR/zXGDymL90D8ExGDKo24tkKsd3RIxHB0DfHF/irlMRXQISe9wvyMLjNkbLPeo9VyUX6M+etUUrhCles1MgeaHMmU48aR6lsUyRgI5G/RixByY+MvGPSVnCr/Z9gFsnWbC0KnF7XapvmoyqzH2oNm27qcSNO1banodiI8RzAXocz573BqDEZpyavjpWKbrqdKdR7rivieuiAybI9CvRL2PB0UfKN3nVkhkiAfJ4idCsSjJcSnon8h1mAUGD+2Dj2eQPGSgeBx/xo1lChB9WO5dwJQdopVDTn8vH7YtndLdUvm70OEW1znDsQCMcX63U5M3UQQHfjynliNmP7tyXDKHwv/MyEcezMAYXTyuLKRUP2cDQ+VnmPiadc2mlRlk7KpMy3RA4nXY9/j2jyGFPxIbSaUUJdy3nv7A8t++fHfREuGpce7doqN4gVdz2CyhevWRZOTfQmPMgaLS92j38zO9HzWJuqAn7fwLB/nv4RoZbtMMjQtGPUtUJPU4HAckH3TWaoIRJT56KEsZfrOWn6colaLyNSCnZNd9jRzF4I6hv3xU0K7+2ifTJ7QG2tbXgRSyiODxWex5ez+gzDjiL8Nn4yoBnNZUiTGmEKaf8sVd46+RYdITXcF0vEawzNvL07ldG4XCK/0cKVcDba51ocxIkycuh7ZZ/cGXBrMOeIZ3ECzGikaYxi5uHrOg8k+26yERnHubfZKOIcCFibJNk2MdGRwdigDIDt7u3wKi3sZ89pEoMa0D39jBJAUVrTwDwGlusTDjq4enRNvVfB0TdyzuZ7RJ0LNpwDQ7WwfEAtqx/6pySqVG4IA4a2YSp9j
+ mmNk9RRr
+ 2h5O+MfqkqZJ08VS8SxTB32P64DB+vkc7ltWgikPQFADjXMIucbD3uJp4m7Bs/ZEywUMlufLJ1BBre7DVO7n6pS4di0nxxx9Ju0tq6t95mCR5YID9HMzaMEibZaZqaq5HUOIh5ufpkkgtTM65rzjBY+3N2FYj2oO5H6J87wzXNVgShhMn/WpkaoP5QdIYVxOlSa8uVLS1tY/Tai8rV8t2JlVizAOk0fxoRf6d+zRR0fn4AHSQjx483xUWqzBp5lHNVBwln3h9C7fS5G75kNoUPMr8NURirngKJkmFO7T+NhQJV2J3beQYsUYaMK5I0kaTxSdwIrs0ljlVvshv0oh3b31xd8X0TrtUhZpWrPwz82vUn/ZQE/4YxaFYGk7Uwjih12BWQBcLVl/IWNVOqt09mHWkRKNJ9eEoQhNo/obZtNi885dCI9Ewfe+Tr43CEEtUwBEhDm+6xb2n8o928AoIU24qwLg5gJUmd0M9TU/dpGbOvEU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,80 +109,129 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-> On Nov 12, 2026, at 10:41, Shakeel Butt <shakeel.butt@linux.dev> =
-wrote:
+> On Nov 12, 2026, at 06:38, sashiko-bot@kernel.org wrote:
 >=20
-> folio_memcg_list_lru_alloc() makes sure that a folio's memcg has its
-> own lists in a list_lru, such as the THP deferred split queue. It =
-looks
-> up the folio's memcg twice: a fast path under RCU checks if the lists
-> exist, and a slow path takes a reference and allocates them. The fast
-> path returns early for the root memcg, which uses the global lists.
-> The slow path does not check for the root.
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [Medium] mm/memory-failure: unserialized unpoison_memory() races =
+with
+>  HVO head remap
+> --
 >=20
-> The memcg can change between the two lookups: when a cgroup is
-> removed, its folios are moved to the parent memcg. If the folio is
-> moved up to the root in between, the slow path gets the root, and
-> __memcg_list_lru_alloc() dereferences the root's parent, which is =
-NULL.
+> commit c0c1b7e9976626bf636152889fd9f5d88944d78b
+> Author: Muchun Song <muchun.song@linux.dev>
 >=20
-> Users see a NULL pointer dereference oops while a THP is allocated,
-> such as in a page fault, in khugepaged or at swap-in. tmpfs huge pages
-> are affected too, and for them the oops can also happen in reclaim,
-> for example in kswapd. The task that hits the oops is killed, or the
-> machine panics if panic_on_oops is set.
+> mm/hugetlb_vmemmap: fix lost HWPoison state during optimization
 >=20
-> The race is narrow: the folio has to be moved up to the root right
-> between the two lookups. For example, its cgroup is directly below the
-> root and is removed, or has its memory controller disabled, at that
-> moment.
+> This commit introduces vmemmap_remap_rwsem to serialize HVO head page
+> remapping against HWPoison state updates in =
+get_huge_page_for_hwpoison().
 >=20
-> Fix it by skipping the root memcg in the slow path too. The root needs
-> no lists of its own.
+>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+>> index 78f0a13349cb3..164a02866fd59 100644
+>> --- a/mm/memory-failure.c
+>> +++ b/mm/memory-failure.c
 >=20
-> Fixes: ae64f07a6a40 ("mm: list_lru: introduce =
-folio_memcg_list_lru_alloc()")
-> Reported-by: Chris Mason <mason@kernel.org>
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> [ ... ]
 >=20
-> ---
-> mm/list_lru.c | 10 ++++++++--
-> 1 file changed, 8 insertions(+), 2 deletions(-)
+>> @@ -2038,6 +2039,7 @@ static int get_huge_page_for_hwpoison(unsigned =
+long pfn, int flags,
+>> 	bool count_increased =3D false;
+>> 	int ret, rc;
+>>=20
+>> +	guard(vmemmap_remap)();
+>> 	spin_lock_irq(&hugetlb_lock);
+>> 	folio =3D page_folio(page);
+>> 	if (!folio_test_hugetlb(folio)) {
 >=20
-> diff --git a/mm/list_lru.c b/mm/list_lru.c
-> index d1d256822ccc..566691ca3dd8 100644
-> --- a/mm/list_lru.c
-> +++ b/mm/list_lru.c
-> @@ -645,9 +645,15 @@ int folio_memcg_list_lru_alloc(struct folio =
-*folio, struct list_lru *lru,
-> 	if (likely(res))
-> 		return 0;
->=20
-> -	/* Allocation may block, pin the memcg */
-> +	/*
-> +	 * Allocation may block, so pin the memcg. If the folio's cgroup
-> +	 * was removed after the check above, the folio has moved up to =
-a
-> +	 * parent memcg, which can be the root. The root uses the global
-> +	 * lists and has no parent, so skip it.
-> +	 */
-> 	memcg =3D get_mem_cgroup_from_folio(folio);
-> -	res =3D __memcg_list_lru_alloc(memcg, lru, gfp);
-> +	if (!mem_cgroup_is_root(memcg))
+> [Severity: Medium]
+> Does unpoison_memory() also need vmemmap_remap_rwsem when clearing
+> PG_hwpoison and freeing folio->_hugetlb_hwpoison?
 
-How about using memcg_list_lru_allocated() to check this, it's =
-consistent with
-the above check?
+I think the following diff will fix this.
 
-Thanks,
-Muchun
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index 164a02866fd5..abe92db14fbc 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -2814,6 +2814,7 @@ int unpoison_memory(unsigned long pfn)
 
-> +		res =3D __memcg_list_lru_alloc(memcg, lru, gfp);
-> 	mem_cgroup_put(memcg);
-> 	return res;
+        ghp =3D get_hwpoison_page(p, MF_UNPOISON);
+        if (!ghp) {
++               guard(vmemmap_remap)();
+                if (folio_test_hugetlb(folio)) {
+                        huge =3D true;
+                        count =3D folio_free_raw_hwp(folio, false);
+@@ -2830,6 +2831,7 @@ int unpoison_memory(unsigned long pfn)
+                                         pfn, &unpoison_rs);
+                }
+        } else {
++               guard(vmemmap_remap)();
+                if (folio_test_hugetlb(folio)) {
+                        huge =3D true;
+                        count =3D folio_free_raw_hwp(folio, false);
+
+>=20
+> If a newly initialized hugetlb folio is poisoned by a =
+software-simulated
+> memory failure before HVO acquires vmemmap_remap_rwsem, =
+unpoison_memory()
+> can race with the head page remap:
+>=20
+> CPU0                                CPU1
+> hugetlb_vmemmap_optimize_folio()
+>  down_read(&vmemmap_remap_rwsem)
+>  ...
+>    vmemmap_optimize_pte()
+>      vmemmap_dup_page_from_list(old_head, ...)
+>                                    unpoison_memory()
+>                                      get_hwpoison_page(..., =
+MF_UNPOISON)
+>                                      folio_free_raw_hwp(old_head, =
+false)
+>                                      =
+folio_test_clear_hwpoison(old_head)
+>      set_pte_at(..., new_head)
+>      flush_tlb_all()
+>                                    /* new_head retains PG_hwpoison and
+>                                     * freed _hugetlb_hwpoison pointer =
+*/
+>=20
+> In get_hwpoison_hugetlb_folio(), passing unpoison =3D=3D true takes =
+the
+> folio_try_get(folio) branch even when =
+!folio_test_hugetlb_migratable(folio),
+> returning 0 on the frozen folio instead of -EBUSY:
+>=20
+> mm/hugetlb.c:get_hwpoison_hugetlb_folio() {
+>    ...
+> 		if (folio_test_hugetlb_freed(folio))
+> 			ret =3D 0;
+> 		else if (folio_test_hugetlb_migratable(folio) || =
+unpoison)
+> 			ret =3D folio_try_get(folio);
+> 		else
+> 			ret =3D -EBUSY;
+>    ...
 > }
-> --=20
-> 2.53.0-Meta
 >=20
+> unpoison_memory() then sees ghp =3D=3D 0 and calls =
+folio_free_raw_hwp(folio,
+> false), which skips the folio_test_hugetlb_vmemmap_optimized(folio) =
+check
+> used when move_flag is true and frees the struct raw_hwp_page entries =
+from
+> old_head.  Once CPU0 installs new_head and flushes the TLB, the folio =
+still
+> has PG_hwpoison set and folio->_hugetlb_hwpoison pointing to freed =
+memory,
+> leading to a use-after-free or double free when the list is later =
+walked or
+> freed.
+>=20
+> --=20
+> Sashiko AI review =C2=B7 =
+https://sashiko.dev/#/patchset/20261111093747.50048-1-songmuchun@bytedance=
+.com?part=3D1
 
 
