@@ -1,106 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F671606A33E
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 07:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F91660A2610
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 07:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=owLrm7cB
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=PWFGoF5c
 Received: by kanga.kvack.org (Postfix)
-	id 543E86B05C1; Thu, 12 Nov 2026 02:00:41 -0500 (EST)
+	id 8E3556B00EF; Thu, 12 Nov 2026 02:15:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D37A6B05C2; Thu, 12 Nov 2026 02:00:41 -0500 (EST)
+	id 86D2C6B05B0; Thu, 12 Nov 2026 02:15:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E3AB6B05C3; Thu, 12 Nov 2026 02:00:41 -0500 (EST)
+	id 735246B05B1; Thu, 12 Nov 2026 02:15:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 150AC6B05C1
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:00:41 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9481C1404ED
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:00:40 +0000 (UTC)
-X-FDA: 85425569040.28.3909B96
-Received: from mta0.migadu.com (out-105.mta0.migadu.com [91.218.175.105])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 5A48FA0005
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:00:38 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=owLrm7cB;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.105 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AC346B00EF
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:15:51 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C7C061A052A
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:15:50 +0000 (UTC)
+X-FDA: 85425607260.06.592C874
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3CCFF1C0004
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 07:15:45 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=PWFGoF5c;
+	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794467748;
+	b=0e6ZGVlUe5qq+uhUU6bUWnq6eFneWRPKW2auT52Zj+PvZMTIASR8WxVc2VUKe6m1TAuScw
+	Z2ycO7x2R2o18yRlpMngWZEwfH+r0Q3o0VBGOHUCdYZVP5DGujsx8MaqILal2f567gkduO
+	N/T/xS8G9jDu7/DtZq2uvKiZ3tDIw8g=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=PWFGoF5c;
+	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794466838;
+	s=arc-20220608; t=1794467748;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J4xIggD0g8SlhhtdOwMFrAXrBVevW/MmjFyooXoSNeE=;
-	b=mKwUmWFy8Z0y3zDYtifcVFeL6dX1Vfcz22TJUPo1hjWZbmTssgNoTdPCAdJP+94/GFb7RS
-	nLKL+94S0jxzw7YhVsZ/vZO/KXYKpr9ipX8uwaF3HSpqg19alHQzdZ9prh1fflOe3kHt6S
-	ZfOAM31Yp/ld4XkhkpSk6RmYlPouzwM=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=owLrm7cB;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.105 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794466838;
-	b=FSznt8Vbkz7Pm5lOT0S7/wyPblFO5Q7XMXqzxONF/9EJFaOo+K2HhojqZQaMUW8Ezwg5Js
-	NseaNDckB7JX4Rq+7HiMmeSDq1yAUtmeNb8cbFhIKVW/Hs7P6+FRk3ECde/lhSzZRb4hbi
-	z+NrmzLpiPthSmoSCnLLWltpYZlKVlI=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=IWVkZhORY9imY5FneS+keJKgSYCeTxoJHysJ7YNaF+Y=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794466836; v=1; x=1795071636;
- b=owLrm7cBfzN1UV7R16E1C54SoQ6uEbb9iF8oE9Q5nwcgoWHQirDw5gp7jkGwGjeLafzaGCP1
- Te46sEi7bhxP9cwDDRW2wHBKzqLnYx5iq1pmrfxW0YYJxKqEKpde6mzEEQo7PWPyTvt+znR0GhH
- xNDE2eDuB7safnAL4u5eo6JM=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 5f9d5e168c7f5611;
-	Thu, 12 Nov 2026 07:00:23 +0000
-X-Mizu-Trace-ID: 5f9d5e168c7f5611
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <4ad546a2-66c5-4b74-a221-d9e8c1006c73@linux.dev>
-Date: Thu, 12 Nov 2026 15:01:48 +0800
+	bh=4r9XXFTO8ZQmRlSOe0BepTMvXqZOcL+GZ1GXT5k3Ep8=;
+	b=PeYDvrxxyMmW4aOG7qMz3lb0RJHY1PM6l21HBaXI6fOsePM+RKx/9R47qzsVX3EXpOPnIe
+	FDV/5kz6+wdqHL5gdhm54mnB9HmYTujYbrIKiYbJmGOrfchYLSFbCP5n3DUkY9VUQ7KBMS
+	CMje+k50PFKuLyPrH12mGGtMg6FQO0A=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1794467742; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=4r9XXFTO8ZQmRlSOe0BepTMvXqZOcL+GZ1GXT5k3Ep8=;
+	b=PWFGoF5cnjqGeA7lczyyZ5NPyzyeyZuU8Bh1KwEdFsfvos1tLTR3rwhHyI2UAYl+zcT5OwG0KZP2vxuygprSTrBMnZQSHeTjQY/+l+wEGXMq33ZlOXey3bUPyvoVB9rUidzgyUnf0TNjlsamEOFTL08sXdvUi0FeX9uRv7ZtloA=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R431e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=20;SR=0;TI=SMTPD_---0XEbBYxb_1794467739;
+Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XEbBYxb_1794467739 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 12 Nov 2026 15:15:40 +0800
+Message-ID: <df38cd19-9554-4183-984c-70287e821de8@linux.alibaba.com>
+Date: Thu, 12 Nov 2026 15:15:39 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 6/9] mm/vmalloc: only flush the cache after the vmap
- succeeded
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>, Dev Jain <dev.jain@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org,
- Sashiko <sashiko-bot@kernel.org>
-References: <20261110112546.261415-1-hao.ge@linux.dev>
- <20261110112546.261415-7-hao.ge@linux.dev>
- <CAJuCfpHReBDoXj_U3Dy2hksj63KyHNBm4gS+wtR_ywidyJ8mfw@mail.gmail.com>
-Content-Language: en-US
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <CAJuCfpHReBDoXj_U3Dy2hksj63KyHNBm4gS+wtR_ywidyJ8mfw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 1/3] mm/userfaultfd: fix PTE table overruns in UFFDIO_MOVE
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
+ Lokesh Gidra <lokeshgidra@google.com>, Barry Song <baohua@kernel.org>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Chris Mason <mason@kernel.org>
+References: <20261111-pte_table_clamped_end-v1-0-2dbe339c487a@kernel.org>
+ <20261111-pte_table_clamped_end-v1-1-2dbe339c487a@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20261111-pte_table_clamped_end-v1-1-2dbe339c487a@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: zf43sd14es68rjzyq8qibpycxs739d5d
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5A48FA0005
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3CCFF1C0004
+X-Spam-Status: No, score=-24.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: 78gwn5kch3cqx9osfjagtnhip6is7rxp
-X-HE-Tag: 1794466838-251252
-X-HE-Meta: U2FsdGVkX1+UH8h4GxPpStaVpmqtZRwDVM13gWpBp/jVCR56hgNsysX/Bf/wM+6psrbQ2iJdsW9dSCCXM62ak0Nuaa1rST30lQAtq8c/pXaj7DBfq6SOuXu0lkHn5jMQ3OOkset5jebi50Fy8PeE7Vj4nyvXKOk1dpaUpX1G1gcdmSGUsegF8KpsZGh9bBvjsboBWAOi3Q0WzxOvVYNq5z7eMZeh6Vqmuw6RqaMr829L/bI/4mYG73rXVAOXclQ9G09F5YodB2ev8RLvQplllKnnfXkLzIv9td6jLZWgzThpHFZbqGtm2hqKEwSZm0ynkTjAUOjZIKj9n74lmTQ2dXIVpDROLoF2E0BcxOVCpzg5j7C3/K1yZbevXSuRWt99AtFM9oS71U69QIAEHKuE6Fj4pAgz1WEHOq00JAOdOBrR35+YLHsWyHWk7zw0fxaa6H8XnbLqeUZLPTmrdJqYJhSzUNu9xaLrfwQRqnScPdCN4W3BYvnONo87qXI0OgL1PMNFYisyK+ocI2qhUgHDuulaHIoY612ahl0xODuruue5R2AD8TUdmLpeDS37UYcppGlNogxajjY0IRCG1anFxqAWpPwC3yCiHn1zcFy4rnvFaK9wjBsPaHjb8VhByZcCOc4BfM50GRWNuMgYDFMBpLeHoMp02Xu8PwU3zvw6TQ3bCiOZpfcdFP8tvk3ssssgadRr4PCDZLpJF6kDNAHrWnh05NufcLOwGpEs/L0PvqfnO4nY5Q0qew0u1RgB7QBq8Zp5emXY7MZZjXAYggSwu/kS73i5t9paRkyLC/rkVTnZKRoY0ZrP4IicNlWXhyxZIp0JvxaAuGb3ijCyopQTgL6ZV5ZNpmytkXZ0gnk1ZzuPUfiF7yT3lYQS/Fd/O2H8pT9foXoeU/FF/cyH+/NakAHAeUkXhU9doFrrONxo3He5ID+MzJbvoXox1dS7tSuzjPzGIbi9PyDb/qC7jeu
- WhrTTefr
- pBSM/ouR2SktuGsfnGBkSahDi3sBUWGkH0KtfY668OepIaetn0KvLadZM7jKxQ6RykCjrQZ16rwktTUxecF6sKeu3xTjQt6mE2DW+2N/IcjfHwAnKLQu9ECRsXP7ZX239HJBM62Tx2WwOdHjsUBIlQcHRyFTXJKNr3beJAlI9BO9Cbm90HjjFqwxqdOd6l4o9OTEcKtBgGUQZplWsU543pOI8zNIW4JjTGLEuA+EgL/d4kNCNBQjzoqmoD//GyBwmkWPGYmo1ebca8BIarcNKb9Hdhxz8GCV+lPJ341NQcGUntvNm4j6asy+Tdifvn/rP2J8EtIxDDbZ0bO97RAElSKu+xhzCI4o55nsLs4hkMP5gm00DgheIXo0o19cu6/N+smXGSgEoCtCPF5wOlEyUlTJzwA==
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794467745-497951
+X-HE-Meta: U2FsdGVkX19yrz2Zaal9xKNKRJV2hJTn7iT/SUPXpS49uc2uOJxHzdf4dPkDe7Ea3ValGyh7vIm7ZLcYrFvX5jZ6L2SRi1lz+1Ax//NSoRpJzikXzfjBDiHYK3afrtsXnBk4JJ6GPFUlDUgZLEpDBFMuhMfcXydFv483L/YzZnplfN1ERmn3CKR4WNbvzXkS95xqsGVzB8dd2cg7GweuIWMejuc7kQotjOUZXWDmyL4LAvmEv6EK/NbcRi/satT5p3XT9j6Uicwt6XeWysQT2a08MnXruqHdp9wqiudxVd/GD2TwQf6YX/yxrpX2KN9bVLnx2VD3uyxh58CH4sTHa5gumD0wZwFjRSg54aLmmhK5bXzb/qgA1uPYRyuqBLY4c28h8z3wQDK8R9ElShbq+oyIIGhJ4gmdbVdP10xEaOAoZOYOgXvvBAOlXi7Xhdv5OSsVbykk0LeVawhgD0hZnXLOt1Zf3Qr889FMtwkEfh2yqEVJuIPq848c3fbQepfC2wAX0LxOk/WhMzxjUf6WzgOz3nk7CEKarOD2qnGBbTKzcbDJ8DMCcMwkVgAlLkCZ1XybcxjgeXWnvS78liryCKInTUONtLSXEb8rmZHkDPOxWp5V35plG08WAb7im7Bryu2wONTf1Vn8htpvXbMkJq4pSsWdIAmF5XuirsWREFX48gEzYQxiBYOmSzfjG6CebRHSaQk/l8+z4/YyxuJaF3vAzFCIdgIUEyCDx+ZbmgiP+wiuhG2RsV1qDIiHNby3doYJo8uusRuqsfJolmKo1teTPI8Tu434J/OYecWZ5bc5kEcLn2Jso4NIAGXI9iRRkrHSpj0yuJigkvYs+WPa1ou8hPeNjjXzLE8hJtxe3NDppg0d3AgV8gK1P4t1OjC3yI0lsiHN+vYrFoBceGaIUl9eCwACAJr5SKbiHH9PImjfe6lisV7CSABxj+/DMQ9sE19VvKg/dM0w1EP0Lij
+ FfVPlfJs
+ kbpZUeWdC91n6TMF1ztOTs6UpGaBqeyXEcNHoHuAt2inAvbhQyHg9Gg8L8Znk411hFS2MUpKH9QOUDJw/Oskgkr2GLcKs4hoW2zPsIGohDTiully094goO8RdcCjQe/FKGvx54h80O5RtCOo1KOAuHQXges5cC1NBq+rZeuvK2VH2BbqZKlJvL0ZYaLlFyj0HhWRge6FkKjUwIIAi4Ig6X1jdxzq6/ZhzRYgP2fcPCLDwImGJ0m8/nIYWPrRBZQl4ZH0MdWr6OX57q+GvVf+hEBLvzLkwgIvep/Mq/MJb2cTkrUmPGmz6v8y1zYN5h6WC14uy+02sBt8UQfVtAN6pphgZJp2vVPyI2VYuKPlaAmemqB9rZqJpvG8v9w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,63 +101,72 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 2026/11/12 08:30, Suren Baghdasaryan wrote:
-> On Tue, Nov 10, 2026 at 11:25 AM Hao Ge <hao.ge@linux.dev> wrote:
->>
->> vmap_page_range() and __vmap_pages_range() call flush_cache_vmap()
+On 11/12/26 5:59 AM, David Hildenbrand (Arm) wrote:
+> With a folded PMD, pmd_addr_end() simply returns the supplied end.
+> move_present_ptes() can therefore walk past the source or destination
+> PTE table during UFFDIO_MOVE.
 > 
-> New vmap_pages_range_batched() function has the same issue, so needs fixing too.
-
-Ack. will do next version.
-
+> pmd_addr_end() is only intended for page table traversal, in patterns
+> like "next = pmd_addr_end(addr, end);". With folded PMDs, a higher level
+> has already clamped the range to the PTE table.
 > 
->> before they even look at the error code. A failed mapping is never
->> used, so the flush is pointless at best.
->>
->> According to the Sashiko review it is worse than pointless on UML:
->> flush_cache_vmap() there is flush_tlb_kernel_range(), which syncs the
->> PTEs into the host OS. Flushing a half-installed mapping therefore
->> leaves host mappings behind for a range that was just freed again.
->>
->> Only flush when the mapping, and for vmap_page_range() also the KMSAN
->> metadata, is fully set up.
->>
->> Reported-by: Sashiko <sashiko-bot@kernel.org>
->> Signed-off-by: Hao Ge <hao.ge@linux.dev>
->> ---
->>  mm/vmalloc.c | 8 ++++++--
->>  1 file changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->> index 0565cbfe325c..3f98056f8c7e 100644
->> --- a/mm/vmalloc.c
->> +++ b/mm/vmalloc.c
->> @@ -369,10 +369,12 @@ int vmap_page_range(unsigned long addr, unsigned long end,
->>
->>         err = vmap_range_noflush(addr, end, phys_addr, pgprot_nx(prot),
->>                                  ioremap_max_page_shift);
->> -       flush_cache_vmap(addr, end);
->>         if (!err)
->>                 err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
->>                                                ioremap_max_page_shift);
->> +       if (!err)
->> +               flush_cache_vmap(addr, end);
->> +
->>         return err;
->>  }
->>
->> @@ -758,7 +760,9 @@ static int __vmap_pages_range(unsigned long addr, unsigned long end,
->>         int err;
->>
->>         err = vmap_pages_range_noflush(addr, end, prot, pages, page_shift, gfp_mask);
->> -       flush_cache_vmap(addr, end);
->> +       if (!err)
->> +               flush_cache_vmap(addr, end);
->> +
->>         return err;
->>  }
->>
->> --
->> 2.25.1
->>
+> Folded PMDs are uncommon, but can occur even on arm64, for example
+> with 64K pages and a 42-bit virtual address space.
+> 
+> Extract the calculation from folio_pte_range() into
+> pte_table_clamped_end() and use it to clamp both ranges. This preserves
+> the wraparound handling from commit f681d4580d5c ("mm: fix address
+> wraparound when scanning large folio PTEs").
+> 
+> Fixes: 50944692052b ("userfaultfd: opportunistic TLB-flush batching for present pages in MOVE")
+> Cc: stable@vger.kernel.org
+> Reported-by: Chris Mason <mason@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>   include/linux/pgtable.h | 24 ++++++++++++++++++++++++
+>   mm/memory.c             |  7 +------
+>   mm/userfaultfd.c        |  4 ++--
+>   3 files changed, 27 insertions(+), 8 deletions(-)
+> 
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index 780fe849ff8b7..66d369870a740 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -12,6 +12,7 @@
+>   #ifdef CONFIG_MMU
+>   
+>   #include <linux/mm_types.h>
+> +#include <linux/minmax.h>
+>   #include <linux/bug.h>
+>   #include <linux/errno.h>
+>   #include <asm-generic/pgtable_uffd.h>
+> @@ -1518,6 +1519,29 @@ static inline void arch_swap_restore(swp_entry_t entry, struct folio *folio)
+>   })
+>   #endif
+>   
+> +/**
+> + * pte_table_clamped_end() - Limit a range to a single PTE table.
+> + * @addr: Start address.
+> + * @end: Exclusive end address.
+> + *
+> + * Only use pmd_addr_end() when traversing page tables, in a pattern like::
+> + *
+> + *     next = pmd_addr_end(addr, end);
+> + *
+> + * Higher levels already bound the range when PMDs are folded. Use this
+> + * helper elsewhere to clamp the range regardless of PMD folding.
+> + *
+> + * Return: The exclusive end of the PTE table containing @addr, capped at @end.
+> + */
+> +static inline unsigned long pte_table_clamped_end(unsigned long addr,
+> +		unsigned long end)
+> +{
+> +	const unsigned long pmd_end = (addr & PMD_MASK) + PMD_SIZE;
+> +
+> +	/* Compare inclusive ends to avoid wraparounds. */
+> +	return min(pmd_end - 1, end - 1) + 1;
+> +}
+
+Thanks. The helper makes the code more readable.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
