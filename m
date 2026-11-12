@@ -1,100 +1,116 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9213F606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 02:44:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=la/PIxbG
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54414606A321
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 02:49:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 866DE6B05B7; Wed, 11 Nov 2026 21:44:32 -0500 (EST)
+	id 42A166B05B9; Wed, 11 Nov 2026 21:49:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 818046B05B8; Wed, 11 Nov 2026 21:44:32 -0500 (EST)
+	id 3DA696B05BA; Wed, 11 Nov 2026 21:49:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 706296B05B9; Wed, 11 Nov 2026 21:44:32 -0500 (EST)
+	id 2C9C36B05BB; Wed, 11 Nov 2026 21:49:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BFE86B05B7
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 21:44:32 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1BDB716045C
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:44:30 +0000 (UTC)
-X-FDA: 85424923500.01.96A68CA
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B4EE720002
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:44:27 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="la/PIxbG";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794451468;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=yeaVwFNeO2sel+/+5zINqdWOxKX5ex5fpz6CbBnNn7A=;
-	b=wyN8r0TmLEhA8ZS2YpYt/4m6PPBT4PYKCcwMdDUnz6xzyS5r/2kWOeBD3Et70ofzMuk9Jp
-	mCsNjGFRpyifp3wZ4mweibLArl27DYgIIIw10oANFR7AyPNJKvyKyrYijcQ38ifmiBzkmn
-	OiEoiZMJVlhLQg5/Pd+UlRpklPNkNLI=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EF6486B05B9
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 21:49:20 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4B7098028D
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:49:20 +0000 (UTC)
+X-FDA: 85424935680.28.1934A35
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 41ADA1C0005
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:49:15 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	spf=pass (imf18.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794451468;
-	b=UEHzG8MC2ypA8A72lk37uulBaIfERe+9vez5x7hSa7IbCVgmGN+Dy93L6F98PyICj4wnCh
-	6vSG90PF0ZyngaTmE1a44eGnwVFwx6k/8IfwjL08Buv/0gka7blTTmdIi1+omHpBOU8FW6
-	ozbWauZ/1M+qjI09lv6tQ6FPPWua7IA=
+	t=1794451758;
+	b=OxmCCHb8B6CAKxd2yjSQsMga5h1LoswHlPtHPLWZnTJzgUu1JbJs5kUcVPGWqN/p8Xitrb
+	GWCAWyIW9oz6G4X3bTCJirQthp4KOQcQFh8Gzf7KS1uCrWS69GmmOti7BbX8EpfjN5E4hA
+	HsyWV/UCr8HdfWOkUfIQjLRWrtwbroc=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="la/PIxbG";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794451467; x=1825987467;
-  h=date:from:to:cc:subject:message-id;
-  bh=5lTfnERKSyF5QCm796HvS2k6W5w9UZNZTPutv5zIuJA=;
-  b=la/PIxbGovzi9b+Kvc76RsKMVV3trxzw93rhTodiZUf+Szop/spL6i4I
-   ENpKAljxNo3K9odg4ADI7ahZWl93IeRrfXt46sxgvDo2zSuWedI/Bk7vl
-   HlNoSuNyNPNsSHHCisbzY5icL3eEyHmPFZ8efnTp1SbyEjJyVhlLUc7hQ
-   LA84zOo7Iwxym58lXHtyIymBovaTbl2h7UZjW1tDiO/NvriEXlFeRAqc2
-   SoNqarL5wslBHr3lJnr54qVmpF32g0R6V37yzzkAZ8OnrImmUKVy/SfUi
-   X6ZT/EpfMZIMZkHpc2zBqtwH0PKj2klyA8Zjc7GHh6s5vcqC1bYGAHDrT
-   w==;
-X-CSE-ConnectionGUID: kLyjj9yLTkW/eGsq1y5jiA==
-X-CSE-MsgGUID: gifQkv/0RNyhw2LKgkbNcw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11963"; a="3236446"
-X-IronPort-AV: E=Sophos;i="6.27,208,1787036400"; 
-   d="scan'208";a="3236446"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2026 18:44:26 -0800
-X-CSE-ConnectionGUID: M9R8s4TBQzeFOkdqHpK+Fg==
-X-CSE-MsgGUID: 6O3HiteBRPmcWCVILj/RNA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,208,1787036400"; 
-   d="scan'208";a="8880399"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 11 Nov 2026 18:44:25 -0800
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xRKnW-000000010IL-0i3G;
-	Thu, 12 Nov 2026 02:44:22 +0000
-Date: Thu, 12 Nov 2026 10:44:21 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>,
- Mark Brown <broonie@kernel.org>
-Subject: [linux-next:master] BUILD SUCCESS WITH WARNING
- 793807ca13bf3072fc6d16ce6d90e9ab9beff2a5
-Message-ID: <20261112104421.RkR72fpe-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Stat-Signature: cprrfb7kht5fp5qh4axfcboy1jmdhibk
+	imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794451758;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3jxx6XwLUZhN+7SC2e3PbpaWgo2qbe+sSwZpVT16d+w=;
+	b=kK4EXhkoLKPmlJkbWmVgPnfSM9fXXEpDG32EBcaPuxSRC8la2dq1Xar851p/8XHPc0X4oR
+	niWnhe7yNexW/AXjhB5T//v0aGCe3D7YeLUhtSxKkY6NmBMoOrJKuuNQUFjawqcewVvGoy
+	GO2i/Bppoy6Nt1odN881iNRCc7XS0MY=
+X-UUID: 9faca40ede4311f19a56ed5b684f684d-20261112
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
+	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_LANG
+	HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN
+	HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
+	IP_TRUSTED, SRC_TRUSTED, SA_TRUSTED, SA_EXISTED, SN_TRUSTED
+	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_BAD
+	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
+	AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:1f9e1992-d73e-4b86-959b-ef39861e5e9d,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:8,RULE:Release_Ham,ACTION
+	:release,TS:18
+X-CID-INFO: VERSION:1.3.19,REQID:1f9e1992-d73e-4b86-959b-ef39861e5e9d,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:8,RULE:Release_Ham,ACTION:r
+	elease,TS:18
+X-CID-META: VersionHash:7db8b62,CLOUDID:13ee854e5e4b08c93db70135f9bf0105,BulkI
+	D:261104235446MKEMRFZO,BulkQuantity:10,SF:17|19|64|66|78|80|81|82|83|102|1
+	27|153|817|841|865|898,TC:nil,Content:-10|-8|-5|14|50|99,EDM:-3,IP:-2,URL:
+	0,File:nil,RT:nil,Bulk:40|20,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,S
+	PR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_OBB,
+	TF_CID_SPAM_FCD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 9faca40ede4311f19a56ed5b684f684d-20261112
+X-User: husong@kylinos.cn
+Received: from ctao-book [(114.244.3.119)] by mailgw.kylinos.cn
+	(envelope-from <husong@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1998482028; Thu, 12 Nov 2026 10:49:04 +0800
+From: Song Hu <husong@kylinos.cn>
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	apopple@nvidia.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	husong@kylinos.cn,
+	joshua.hahnjy@gmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	matthew.brost@intel.com,
+	ridong.chen@linux.dev,
+	shivankg@amd.com,
+	willy@infradead.org,
+	ying.huang@linux.alibaba.com,
+	ziy@nvidia.com
+Subject: Re: [PATCH] mm/migrate: don't move memcg NR_FILE_PAGES for swapcache
+Date: Thu, 12 Nov 2026 10:48:55 +0800
+Message-ID: <20261112024855.424402-1-husong@kylinos.cn>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <67275d3d-cc60-406c-a088-298b948d7577@kernel.org>
+References: <67275d3d-cc60-406c-a088-298b948d7577@kernel.org>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 41ADA1C0005
+X-Stat-Signature: qbkr855ndzf599p696ihfpgf8j5nmr41
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B4EE720002
-X-HE-Tag: 1794451467-408274
-X-HE-Meta: U2FsdGVkX18fk+okDWaTgybWR97mUc0Ij0tmpw7IB2aI5L/wyBZcJUZLx7Mf2kWUN7Gn1jLgP/0aziDwkqyCTZZxFShFXsyUrSEsb4+zy1kY18hiAVQW46+ngqG6O5hwW9YH8slMK7IItOPRn9dp+4nTu97eK//NjxDOohajIobMyPwlBhmcuwdMoYP86nShGVGl2XxthgOjiyIrKjbi4uAHnj+me2hgOBbHrOzy9TLGfwmvg67Zwm3rQ+k+ecfYAYPDDdDZAqv9SXUpdwbwxzIkPEscqm63FmDR5gRzN0AtVK4UlDOx/0vC4isvVXvD/VK/HZ62UcnDlq7sf9VChb5A9VzzdJMXCTprimWKdQZ0NKzrCbAjDMebsXVvqSfsXn+tl7UA2O68LsBsM6my5v5/r27L2ZqCYtDc9tHF76e8nK5j1VJQyGCgp1JcPa9mNCW8g2Oi2rSeFoUXzbvmIBsvsKjQt6PCI8na5gdqeFQPIEhBx5eDnAQ9s5DOKg2BtRbicCXF59d0d0lW7dv0WdmA3K/AoEHg86kP2N2Ep3WFuuxnmOd6pt5wxBoXw2ZwpEX+RIIbCAqk2/s+EsGEwN2tvNzjBQF4T/LdkjRmTi95GO24OE/x+BA9gcmwe9JKW9IcBremyDx/vt95ZfhYuoApkm77tPY2o3kLiD2VPTmlLNmLoIDt3ovWg5KnU0iTdrEvHjlVn7/giojxxaEB8hZ+xoUH2ZqTcCXuAMjzvHUHZTQkDawS14Ms9vXWc/vNL4R1asDcD5EHBoehN+BxFQOn4u4KD4hZ6Kmkpaq3iA81yk3i7nUzAtYhAWEVO2nsGg2J4gjL3bb6Lh6SZXnhHahLPQbTvkqSIPquMjkzmYe3wXYaHa1c2iBMssdS01fehLdzxkui9GAOXVLYlxmQUbd4LkqfW5Qo1cq9KqbNEMpG6wVCMujCNyk6ieqOLc9Usg75y5S+vR3S1sSWeCT
- zHeB5bTS
- UArs6zFTwKsTLrKfWQG5GDnI4L0219kJXslVynXAe5V0iqDZ7TX3mXj2IQ9oc1cn3sDLlsQQzzrXCB604m6929Ub49VBbKz3C4lRzWjVRi5a7msGuApKNP0S3LrR4aU6cVBYzpU+I4xWOwjQKLl3y0lc9FqnWL8SAu/73lCczdAM+14ZMVJceP50iM42YPjYVYy3irKrJa8U6IaBDDV+haKWOQi8j5+rKGvKq
+X-HE-Tag: 1794451755-315851
+X-HE-Meta: U2FsdGVkX18TKOaT7gknZqV1vRAjGWxWhzlBOYUGscFZX0vkvbf7K1sKmuoVBjjUZEQXN+oA+zBUJzjNxuYCvbcLOAyrp71I6I91QVNfaoi1L6GwPtoEk4JyrOohkSD9K7gTOH6epUwnZcaa5pAqSkKqJiSuQ/BS9F1akNl6xccc1VXUKqvZtnRkOBIxCx7YEpgExWk8CFcVoYjikD0CBX7nfwlOfOp0na/IIxCjPA2+QnrJJ9vNuLX+uTzQGiLZInngmUpf/G8h1tuiyLXoHBU42aJlRXbo8i1E++EhD95NLOCCqxEY7ohjPF2nqajgs/4ZvyVj+6lgV4SUEUHLXxyHfzzzVi/6Br8qvai6QKNwjVKKgU4PlhiWRUdBS/naC+De3940nyscnmsOI5tBNdxHytgOLd78DG+01NaPmyJIaV6iw7MTnW1LsKr1CF2/ykWhWGAE1QpWyHR2Ugjf/IRPBnxLqhaRIFQiUWewjXCWOV/C99Ip/PM0TZB14KpKAJoD+HK0n3dbosjr1NJHiGQHK6kkUpZhlM3FeA2X9Mgl7OoCBiZ7XIIzt60THbD22ZR2CednoMVBHkwp1vAqNU7GUy0qYoJzvJv7YvgquixTwMFOmDsrRLIoFnX0GM4Ebaoq/JSsfQrTv8nhpF+PSFYiVqWVr0XIo/r8C2X0540fSqPNtIs6REzESMKzNw0O+zF/xME9ateNQdPr619UuNZLr10JFoqjcf4BwWY4QSca0uTGvx5vrxkHMMeyb8s7no1tqJaMaF4WFaZ7HEOHmYJ7iHyGOC2AUc5At7r+7UeOKjilyfCOP4DUM5/+RpXhOrm70pAyPdY379iAtML5JRK1N9E2L3lUHkMIhDoBsnRPsAhguYUb68am0I4qhUrM6gwu2wQ5Bdbytf/DUQrnQX4HHifXgJNtE5OzF4Q1/ZDr+RoEaNRbgfWWlTwNI972/6ArAvWOE7+GQgS3A5T
+ C34htrG9
+ V7zYPNujUFCkhUqdiaGKodauxJu1fCGPJNlmIJ8jtlj3oScnbMC0etfrV89ehSFHnHxc0ZhTluu9+UA1EnvtHXPkMmO6G/3ySnaW6CsdKPpQFY+w/YQxfj6CB++GBH2V2CdekrU8Qgek+KCWHtfkOS0i9tcjyuR+VJChfcicFOalSh1s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,204 +118,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 793807ca13bf3072fc6d16ce6d90e9ab9beff2a5  Add linux-next specific files for 20261110
+> On 11/10/26 04:09, Zi Yan wrote:
+> > On Tue Nov 3, 2026 at 11:43 PM EST, Song Hu wrote:
+> >> NR_FILE_PAGES lives on both the node and the memcg plane for page
+> >> cache folios: filemap_add_folio() and filemap_unaccount_folio() charge
+> >> it to the folio's node and memcg, while __swap_cache_add_folio() and
+> >> __swap_cache_del_folio() maintain the node plane of NR_FILE_PAGES and
+> >> the memcg plane of NR_SWAPCACHE.  A folio in the swap cache therefore
+> >> carries no per-memcg NR_FILE_PAGES count: shmem folios drop their
+> >> memcg file accounting when swapped out, and anon folios never had any.
+> >>
+> >> The cross-zone arm of __folio_migrate_mapping() moves NR_FILE_PAGES on
+> >> both planes unconditionally.  For swapcache folios the memcg plane is
+> >> empty, so migrating one misaccounts it: the destination accrues
+> >> nr_pages that were never accounted there while the source counter
+> >> underflows.  The wrong counts persist until the memcg is destroyed,
+> >> but the aggregate in memory.stat stays correct, so the drift is easy
+> >> to miss.  NUMA balancing, migratepages, compaction and memory hotplug
+> >> can all migrate such folios.
+> > 
+> > It would be better to simplify the above like Joshua suggested.
+> > 
+> >>
+> >> Reproducer, on a 2-node QEMU guest with cgroup v2:
+> >>
+> >>   1. create a cgroup with memory.max = 50M and swap enabled;
+> >>   2. memset 128M of anonymous memory in it, so reclaim swaps most of
+> >>      it out;
+> >>   3. fork to raise the swap entry refcount, then fault the memory
+> >>      back in, so the resident folios are swapcache ones;
+> >>   4. migrate_pages(pid, node0 -> node1).
+> >>
+> >> "file" row of memory.numa_stat (bytes) after step 4:
+> >>
+> >>                     without this patch      with this patch
+> >>                       N0          N1          N0          N1
+> >>                      0 (*)  51691520         0           0
+> >>
+> >>   (*) the source counter has gone negative; negative values read as 0.
+> >>
+> >> Keep moving the node plane via mod_node_page_state() and skip only
+> >> the empty memcg plane, mirroring the swapcache exclusion the NR_SHMEM
+> >> handling in the same block already applies.  It accompanies
+> >> commit 4eef27af2932 ("mm/migrate: move NR_FILE_THPS on cross-node migration")
+> >> and commit c5eef2e03618 ("mm/migrate: move NR_KERNEL_FILE_PAGES on cross-node migration").
+> >>
+> >> Fixes: 0d1c20722ab3 ("mm: memcontrol: switch to native NR_FILE_PAGES and NR_SHMEM counters")
+> >> Signed-off-by: Song Hu <husong@kylinos.cn>
+> >> ---
+> >>  mm/migrate.c | 16 ++++++++++++++--
+> >>  1 file changed, 14 insertions(+), 2 deletions(-)
+> >>
+> >> diff --git a/mm/migrate.c b/mm/migrate.c
+> >> index 28a8d7734735..bc60f6587d1b 100644
+> >> --- a/mm/migrate.c
+> >> +++ b/mm/migrate.c
+> >> @@ -690,8 +690,20 @@ static int __folio_migrate_mapping(struct address_space *mapping,
+> >>  		old_lruvec = mem_cgroup_lruvec(memcg, oldzone->zone_pgdat);
+> >>  		new_lruvec = mem_cgroup_lruvec(memcg, newzone->zone_pgdat);
+> >>  
+> >> -		mod_lruvec_state(old_lruvec, NR_FILE_PAGES, -nr);
+> >> -		mod_lruvec_state(new_lruvec, NR_FILE_PAGES, nr);
+> >> +		/*
+> >> +		 * Swapcache folios carry NR_FILE_PAGES on the node plane
+> >> +		 * only (their memcg footprint is NR_SWAPCACHE, see
+> >> +		 * swap_state.c), so move only the node plane for them.
+> >> +		 */
+> >> +		if (folio_test_swapcache(folio)) {
+> >> +			mod_node_page_state(oldzone->zone_pgdat, NR_FILE_PAGES,
+> >> +					    -nr);
+> >> +			mod_node_page_state(newzone->zone_pgdat, NR_FILE_PAGES,
+> >> +					    nr);
+> >> +		} else {
+> >> +			mod_lruvec_state(old_lruvec, NR_FILE_PAGES, -nr);
+> >> +			mod_lruvec_state(new_lruvec, NR_FILE_PAGES, nr);
+> >> +		}
+> > 
+> > Like Joshua said in another email, it will be more readable if
+> > NR_SWAPCACHE updates can be moved into the then branch above.
+>
+> Can one of you write me the updated patch description? Thanks1
 
-Warning (recently discovered and may have been fixed):
+Sure. Here's an updated commit message incorporating Joshua's
+suggestion to describe the accounting model first and then explain why
+migration gets it wrong.
 
-    https://lore.kernel.org/oe-kbuild-all/202611112032.TMyPU6Rm-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild-all/202611120249.0rbvGayD-lkp@intel.com
+mm/migrate: don't move memcg NR_FILE_PAGES for swapcache
 
-    kernel/bpf/scev.c:3391:5: warning: stack frame size (1088) exceeds limit (1024) in 'bpf_compute_loop_iters' [-Wframe-larger-than]
-    mm/shmem.c:1330:13: warning: stack frame size (1056) exceeds limit (1024) in 'shmem_undo_range' [-Wframe-larger-than]
+NR_FILE_PAGES is accounted on both the node and memcg planes for page
+cache folios.  Swapcache folios are the exception: they keep
+NR_FILE_PAGES only on the node plane, while their memcg accounting is
+tracked as NR_SWAPCACHE.
 
-Warning ids grouped by kconfigs:
+The cross-zone path in __folio_migrate_mapping() currently migrates
+NR_FILE_PAGES through mod_lruvec_state(), which updates both planes.
+This is correct for normal page cache, but wrong for swapcache folios
+because there is no memcg NR_FILE_PAGES state to move.  As a result,
+migration incorrectly increments the destination memcg counter and
+decrements the source one, leaving the per-memcg accounting incorrect
+until the memcg is destroyed.
 
-recent_errors
-`-- mips-eyeq6_defconfig
-    |-- kernel-bpf-scev.c:warning:stack-frame-size-()-exceeds-limit-()-in-bpf_compute_loop_iters
-    `-- mm-shmem.c:warning:stack-frame-size-()-exceeds-limit-()-in-shmem_undo_range
+Reproducer, on a 2-node QEMU guest with cgroup v2:
 
-elapsed time: 1471m
+  1. create a cgroup with memory.max = 50M and swap enabled;
+  2. memset 128M of anonymous memory in it, so reclaim swaps most of
+     it out;
+  3. fork to raise the swap entry refcount, then fault the memory
+     back in, so the resident folios are swapcache ones;
+  4. migrate_pages(pid, node0 -> node1).
 
-configs tested: 170
-configs skipped: 4
+"file" row of memory.numa_stat (bytes) after step 4:
 
-tested configs:
-alpha                              allnoconfig    gcc-16.2.0
-alpha                             allyesconfig    gcc-16.2.0
-alpha                                defconfig    gcc-16.2.0
-arc                               allmodconfig    clang-24
-arc                                allnoconfig    gcc-16.2.0
-arc                               allyesconfig    clang-24
-arc                                  defconfig    gcc-16.2.0
-arm                                allnoconfig    gcc-16.2.0
-arm                               allyesconfig    clang-24
-arm                                  defconfig    gcc-16.2.0
-arm64                             allmodconfig    clang-24
-arm64                              allnoconfig    gcc-16.2.0
-arm64                                defconfig    gcc-16.2.0
-arm64                 randconfig-1000-20261111    gcc-13.5.0
-arm64                 randconfig-1001-20261111    gcc-13.5.0
-arm64                 randconfig-1002-20261111    gcc-13.5.0
-arm64                 randconfig-1003-20261111    gcc-13.5.0
-csky                              allmodconfig    gcc-16.2.0
-csky                               allnoconfig    gcc-16.2.0
-csky                                 defconfig    gcc-16.2.0
-csky                  randconfig-1000-20261111    gcc-13.5.0
-csky                  randconfig-1001-20261111    gcc-13.5.0
-hexagon                           allmodconfig    gcc-16.2.0
-hexagon                            allnoconfig    gcc-16.2.0
-hexagon                              defconfig    gcc-16.2.0
-hexagon               randconfig-1000-20261111    clang-17
-hexagon               randconfig-1000-20261112    clang-24
-hexagon               randconfig-1001-20261111    clang-17
-hexagon               randconfig-1001-20261112    clang-24
-i386                              allmodconfig    clang-22
-i386                               allnoconfig    gcc-16.2.0
-i386                              allyesconfig    clang-22
-i386        buildonly-randconfig-1000-20261112    clang-22
-i386        buildonly-randconfig-1001-20261112    clang-22
-i386        buildonly-randconfig-1002-20261112    clang-22
-i386        buildonly-randconfig-1003-20261112    clang-22
-i386        buildonly-randconfig-1004-20261112    clang-22
-i386        buildonly-randconfig-1005-20261112    clang-22
-i386                                 defconfig    gcc-16.2.0
-i386                  randconfig-1000-20261111    gcc-13
-i386                  randconfig-1001-20261111    gcc-13
-i386                  randconfig-1002-20261111    gcc-13
-i386                  randconfig-1003-20261111    gcc-13
-i386                  randconfig-1004-20261111    gcc-13
-i386                  randconfig-1005-20261111    gcc-13
-i386                  randconfig-1006-20261111    gcc-13
-i386                  randconfig-1007-20261111    clang-22
-i386                  randconfig-1008-20261111    clang-22
-i386                  randconfig-1009-20261111    clang-22
-i386                  randconfig-1010-20261111    clang-22
-i386                  randconfig-1011-20261111    clang-22
-i386                  randconfig-1012-20261111    clang-22
-i386                  randconfig-1013-20261111    clang-22
-loongarch                         allmodconfig    clang-24
-loongarch                          allnoconfig    gcc-16.2.0
-loongarch                            defconfig    clang-24
-loongarch             randconfig-1000-20261111    clang-17
-loongarch             randconfig-1000-20261112    clang-24
-loongarch             randconfig-1001-20261111    clang-17
-loongarch             randconfig-1001-20261112    clang-24
-m68k                              allmodconfig    gcc-16.2.0
-m68k                               allnoconfig    gcc-16.2.0
-m68k                              allyesconfig    clang-24
-m68k                                 defconfig    clang-24
-microblaze                         allnoconfig    gcc-16.2.0
-microblaze                        allyesconfig    gcc-16.2.0
-microblaze                           defconfig    clang-24
-mips                              allmodconfig    gcc-16.2.0
-mips                               allnoconfig    gcc-16.2.0
-mips                              allyesconfig    gcc-16.2.0
-nios2                             allmodconfig    clang-20
-nios2                              allnoconfig    clang-24
-nios2                                defconfig    clang-24
-nios2                 randconfig-1000-20261111    clang-17
-nios2                 randconfig-1000-20261112    clang-24
-nios2                 randconfig-1001-20261111    clang-17
-nios2                 randconfig-1001-20261112    clang-24
-openrisc                          allmodconfig    clang-20
-openrisc                           allnoconfig    clang-24
-openrisc                             defconfig    gcc-16.2.0
-parisc                            allmodconfig    gcc-16.2.0
-parisc                             allnoconfig    clang-24
-parisc                            allyesconfig    clang-17
-parisc                               defconfig    gcc-16.2.0
-parisc                randconfig-1000-20261112    gcc-12.5.0
-parisc                randconfig-1001-20261112    gcc-12.5.0
-parisc64                             defconfig    clang-24
-powerpc                           allmodconfig    gcc-16.2.0
-powerpc                            allnoconfig    clang-24
-powerpc               randconfig-1000-20261112    gcc-12.5.0
-powerpc               randconfig-1001-20261112    gcc-12.5.0
-powerpc64             randconfig-1000-20261112    gcc-12.5.0
-powerpc64             randconfig-1001-20261112    gcc-12.5.0
-riscv                             allmodconfig    clang-24
-riscv                              allnoconfig    clang-24
-riscv                             allyesconfig    clang-24
-riscv                                defconfig    gcc-16.2.0
-s390                              allmodconfig    clang-17
-s390                               allnoconfig    clang-24
-s390                              allyesconfig    gcc-16.2.0
-s390                                 defconfig    gcc-16.2.0
-sh                                allmodconfig    gcc-16.2.0
-sh                                 allnoconfig    clang-24
-sh                                allyesconfig    clang-17
-sh                                   defconfig    gcc-14
-sparc                              allnoconfig    clang-24
-sparc                                defconfig    gcc-16.2.0
-sparc                 randconfig-1000-20261111    gcc-16.2.0
-sparc                 randconfig-1000-20261112    gcc-8.5.0
-sparc                 randconfig-1001-20261111    gcc-16.2.0
-sparc                 randconfig-1001-20261112    gcc-8.5.0
-sparc64                           allmodconfig    clang-20
-sparc64                              defconfig    gcc-14
-sparc64               randconfig-1000-20261111    gcc-16.2.0
-sparc64               randconfig-1000-20261112    gcc-8.5.0
-sparc64               randconfig-1001-20261111    gcc-16.2.0
-sparc64               randconfig-1001-20261112    gcc-8.5.0
-um                                allmodconfig    clang-17
-um                                 allnoconfig    clang-24
-um                                allyesconfig    gcc-16.2.0
-um                                   defconfig    gcc-14
-um                              i386_defconfig    gcc-14
-um                    randconfig-1000-20261111    gcc-16.2.0
-um                    randconfig-1000-20261112    gcc-8.5.0
-um                    randconfig-1001-20261111    gcc-16.2.0
-um                    randconfig-1001-20261112    gcc-8.5.0
-um                            x86_64_defconfig    gcc-14
-x86_64                             allnoconfig    clang-24
-x86_64      buildonly-randconfig-1000-20261111    gcc-14
-x86_64      buildonly-randconfig-1000-20261112    gcc-14
-x86_64      buildonly-randconfig-1001-20261111    gcc-14
-x86_64      buildonly-randconfig-1001-20261112    gcc-14
-x86_64      buildonly-randconfig-1002-20261111    gcc-14
-x86_64      buildonly-randconfig-1002-20261112    gcc-14
-x86_64      buildonly-randconfig-1003-20261111    gcc-14
-x86_64      buildonly-randconfig-1003-20261112    gcc-14
-x86_64      buildonly-randconfig-1004-20261111    gcc-14
-x86_64      buildonly-randconfig-1004-20261112    gcc-14
-x86_64      buildonly-randconfig-1005-20261111    gcc-14
-x86_64      buildonly-randconfig-1005-20261112    gcc-14
-x86_64                               defconfig    gcc-14
-x86_64                                   kexec    clang-22
-x86_64                randconfig-1006-20261111    clang-22
-x86_64                randconfig-1007-20261111    clang-22
-x86_64                randconfig-1008-20261111    clang-22
-x86_64                randconfig-1009-20261111    clang-22
-x86_64                randconfig-1010-20261111    clang-22
-x86_64                randconfig-1011-20261111    clang-22
-x86_64                randconfig-1012-20261111    gcc-14
-x86_64                randconfig-1013-20261111    gcc-14
-x86_64                randconfig-1014-20261111    gcc-14
-x86_64                randconfig-1015-20261111    gcc-14
-x86_64                randconfig-1016-20261111    gcc-14
-x86_64                randconfig-1017-20261111    gcc-14
-x86_64                                rhel-9.4    clang-22
-x86_64                                rhel-9.4    gcc-14
-x86_64                            rhel-9.4-bpf    gcc-14
-x86_64                           rhel-9.4-func    clang-22
-x86_64                           rhel-9.4-func    gcc-14
-x86_64                     rhel-9.4-kselftests    clang-22
-x86_64                     rhel-9.4-kselftests    gcc-14
-x86_64                          rhel-9.4-kunit    gcc-14
-x86_64                            rhel-9.4-ltp    gcc-14
-x86_64                           rhel-9.4-rust    clang-22
-xtensa                             allnoconfig    clang-24
-xtensa                            allyesconfig    clang-20
-xtensa                randconfig-1000-20261111    gcc-16.2.0
-xtensa                randconfig-1000-20261112    gcc-8.5.0
-xtensa                randconfig-1001-20261111    gcc-16.2.0
-xtensa                randconfig-1001-20261112    gcc-8.5.0
+                    without this patch      with this patch
+                      N0          N1          N0          N1
+                     0 (*)  51691520         0           0
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+  (*) the source counter has gone negative; negative values read as 0.
+
+Fix it by updating the node accounting directly for swapcache folios
+while leaving the nonexistent memcg NR_FILE_PAGES state untouched.
+Non-swapcache folios continue to use mod_lruvec_state(), preserving
+the existing behaviour.  This mirrors the existing swapcache handling
+for NR_SHMEM in the same block.  It accompanies
+commit 4eef27af2932 ("mm/migrate: move NR_FILE_THPS on cross-node
+migration") and commit c5eef2e03618 ("mm/migrate: move
+NR_KERNEL_FILE_PAGES on cross-node migration").
+
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Song Hu <husong@kylinos.cn>
+
+Thanks to Joshua and Zi for the helpful reviews.
+
+Thanks,
+Song
 
