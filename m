@@ -1,92 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 618B9606A31C
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 19:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C948606A32D
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 19:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=h72fjJkI
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QSd4A21L
 Received: by kanga.kvack.org (Postfix)
-	id 47D496B05D8; Thu, 12 Nov 2026 14:32:37 -0500 (EST)
+	id 2FBEB6B05C8; Thu, 12 Nov 2026 14:34:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42E3F6B05D9; Thu, 12 Nov 2026 14:32:37 -0500 (EST)
+	id 285FC6B05D1; Thu, 12 Nov 2026 14:34:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 344866B05DA; Thu, 12 Nov 2026 14:32:37 -0500 (EST)
+	id 14E566B05D9; Thu, 12 Nov 2026 14:34:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 144756B05D8
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:32:37 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 21E17A8B9A
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 19:32:35 +0000 (UTC)
-X-FDA: 85427463870.28.766492F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 595EAC000E
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 19:32:33 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id D6C5C6B05C8
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 14:34:55 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5555080E56
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 19:34:55 +0000 (UTC)
+X-FDA: 85427469750.04.342FA02
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id AF55CC000A
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 19:34:53 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=h72fjJkI;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794511953;
-	b=Nh9lnuM4sktbkPYDhos1y4LJvE/n2xO5V/MEr7zNJydeTY94rPNcQP2uzIIwmTGPjEhP1S
-	IALTFir76H6owbpHBAsJ5peVgc94htUgNJbrHjaqBvVO0FSce3xy0WkoGpvsfS5/hau/HE
-	Fsfma58LmTRfhzbRax35AIO1BHJ50Js=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=h72fjJkI;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QSd4A21L;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794511953;
+	s=arc-20220608; t=1794512093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PY286/snnbEF5QyixUAEHWZvLTqyb1OkbulZ3V9rDhA=;
-	b=ag5gdnIev/5t0ug8XeFhl7dxhj9Jp/e9QaP6kfpOYxfUSPrvC6g4wvYpv0oBCaUZzn6kFZ
-	2NV5+oZS29P57RO9gb09MOojlfiOUJy0npYSSMuR28kVt9QJNhGyWTGfzH21aFX1AFaNaP
-	6MeCpu91pG7t9IrEX3ygGCgL28g6pWs=
+	bh=Fzt2dBpdapix7RUmqVUPHjVh/havNMakXElf23OCC/4=;
+	b=gKDRDqbd7xOvmPzxYDuYkGbvNIThOXlauDZrIhcv9Ei9DG1md4vet4DFC+HgI1GlWogYVL
+	+Xil05rvdryEsxTORNoMRq+kBC4WmOJbvrGmyTw0tGGXBZ0XLKN6rw+iC9c/TIe73ez177
+	JAwXlcL2Zwmb4evUU5LLmYPL3iU6ZA8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794512093;
+	b=oxSor3sERbKxVQDyItjX3dc2ijvNnE4hS8hbBr4LW2proX2AZDwoTe52dG1u1lggjVEdV6
+	Y8jeVx+fnSGx5xUpD3QILFKjca87VKTU06BLs08xutK1AtHPrqNcTwO+C90r7gFl4JeHLE
+	WbgZ86bsL/u3ZSv4USV9KJB0X67KSxI=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QSd4A21L;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6AD1362433;
-	Thu, 12 Nov 2026 19:32:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4F421F000C4;
-	Thu, 12 Nov 2026 19:32:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1794511952;
-	bh=PY286/snnbEF5QyixUAEHWZvLTqyb1OkbulZ3V9rDhA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=h72fjJkIt+Va71O69daZ2arnUrd8jTdiBVApIAer0TGjgBuC0c3GWO2JIn7yxg1E/
-	 soIzM0uy+i9p10EcjDxQk0LUSWGF+I6AmwdRErIL/d631Pe3mbD39m2difcanToBX3
-	 d7apj2AGagrXKdki612FGoiOc60Vs8V3QXoY9gAM=
-Date: Thu, 12 Nov 2026 11:32:31 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Xionggui Chen <evers_chen@163.com>
-Cc: David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- chenxionggui@lanxincomputing.com
-Subject: Re: [PATCH] selftests/mm: Handle implicit read permissions in
- madv_populate
-Message-Id: <20261112113231.ce39807d300f102e6763a87b@linux-foundation.org>
-In-Reply-To: <20261112031811.56500-1-evers_chen@163.com>
-References: <20261112031811.56500-1-evers_chen@163.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by sea.source.kernel.org (Postfix) with ESMTP id BBC8C44DF6;
+	Thu, 12 Nov 2026 19:34:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 610C81F000C4;
+	Thu, 12 Nov 2026 19:34:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794512092;
+	bh=Fzt2dBpdapix7RUmqVUPHjVh/havNMakXElf23OCC/4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=QSd4A21LzwNBycHbPA4kAqRX5meE3MjPkelVRq7bVzJnzVClKcn5Rpr/Dz7z7OsGO
+	 oZy+xADrRy820imjvS0gZLtsV+heBChFRdXOemxl34mSppcJtkIO4xVrdAmjE3y6bh
+	 X07QO41a3RVk7RmEXR774gpusHa7lhyPnOgyVs3TqlD7vJk0eccf42cmu7SnHo+i2w
+	 IIwLP9dysThVv1/5Cx0YVQPODydwdMZweFry0TINNiHYUSbBisC2LYqL1eVOP59B2p
+	 nYXkYsy7sFwEG04WUPqYH7nHz3Hnmwb3x2pV7QyGbcTSq5PJuZy3TnoHCuWS0TKWHZ
+	 Rvu//kCeePTkA==
+Date: Thu, 12 Nov 2026 19:34:40 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, 
+	James Houghton <jthoughton@google.com>, Andrea Arcangeli <aarcange@redhat.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Balbir Singh <balbirs@nvidia.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	=?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>, Andrei Vagin <avagin@gmail.com>, 
+	Stephen Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>, 
+	Muhammad Usama Anjum <usama.anjum@arm.com>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Chris Down <chris@chrisdown.name>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	=?utf-8?Q?Miko=C5=82aj?= Lenczewski <miko.lenczewski@arm.com>, Michal Hocko <mhocko@suse.com>, 
+	Mike Kravetz <mike.kravetz@oracle.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 05/12] fs/proc/task_mmu: write-protect device-private
+ THPs in PAGEMAP_SCAN
+Message-ID: <avYQteUm963AKJQ7@gremlin>
+References: <20261111-uffd-state-fixes-v1-0-00713d368976@columbia.edu>
+ <20261111-uffd-state-fixes-v1-5-00713d368976@columbia.edu>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 6wup114jn7me7uigtey9ge1ws1brrc7e
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261111-uffd-state-fixes-v1-5-00713d368976@columbia.edu>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 4moczr13zso3e47b8iuwb4i3mem3jiki
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: AF55CC000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 595EAC000E
-X-Spam-Status: No, score=-17.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794511953-715183
-X-HE-Meta: U2FsdGVkX1+QWcfVUhaDXs2GZbJWZA7+W6G/ORWAOTHP6E5tUgnOXZ+eF6V52oD586QmqNjU1t69BP64hueeHNHWlgRmGBe1QCD/Htmp6weeViiL+qZLeCAMw0/UnQekdnQYr1EEqTFeLYzPCP8HkCNfl2VO8EK8pkmjmBBIf9Fi/1ly3VwqSbX+rmxcZWtpqUkaO1+Go5fIYdLXrWRqe7TVb2oG+xOEqStZDymdTws588nWNzh7WZQ2mC3k1apE8JrsAv3CydrCbvsl9q7emKjLXkb5p8c3GPcwzxVKKGMyofp1mE2BONPooiMk6usO97w4gZkNuho/oqKaPQeox2K2hj69HzECRQuNZ0wH6U+wSm0EgLEXqxvkVsXCm9W0XYQM0icQ3r8xJPcVatKzmByK0XwtLd5pA0JdhY5+X+gdIazlEpcat03R6foEwz1B7uroF4bNvp8hp3Zqtm46myu+0aviNZstCqPyUaHhRFth0m8C9HHPiIu3qGsLj8Wsegfb9C24y/82UFXEiV6WiMGUX6NrDuPuw4XojNBhRTa+ClBCY4njkT6XKCL8BQa50lr1b/MaGSF6To0hQkzlqChY2fbQ7NGnBHvVYhx6pIuwk1rGssdbNxkysS/tXsDaYhzi02VsxiyoTiBwbDV3vOI9gec6SSW0tpCx1hO+nAOdWyE/KZPuCH/GJ5xwlRvcKsCGvq6+L7yHv1avtGbtrEE4pOZM/K5N47Z+BaBai/ehpAsSqY/4M7TcC2U399aOlD2ZXIJWYNVq7LLheekBRGjfh/wDkBSFX18yJjUEeLAHOYpKQUzsG+pLGzkHiZpFBlq882IEQ0PKfTrlIp3CVFl4Fzp36zCGo1IZgD03Pm+qVWjcAetlk9G51RL/ogTBFkx3NPt1Ag36yBJqYPtAJruYkZPQzAebhJqwA+HqA6LlI4oezvcySkUNLlNQFsZrUjahkYyVFo6UR5je80L
- XGm1GUNM
- LH2FvvXFk4VdKrFnX0MxDQuRcoZ8VtIJcxDzbbYrfNn74CDW/EhUon2/RRv8eYe6h6mMvOg4wRQsF/+7syQqycBq4iojw62BjvIQ4fAo5DWrPXxPjAYuNFPyntMM1VL9+ZTFg2VVNjscEPn2nlX/fQm2tcHk7WJ4K9V3+P39euhijQoZxCzaRAhi/djSCGgU/nu2eRgBHiG6L0Jo0FriyJGKluxXmDzgNt9iGa7Lkhs1wyQBlNPFF69brsQV87ffkxS9Vyw3SRU8VG9OqEjHRZNFDAqXQTfn2ecXW6MmCpp4lVhuLtwAnC21tkyQ/mel1Z9BHgpLxZR5J3byC4bhVdlhIvSxFGvLIsioiK1YBALD4R5yhKFkeq6E4i0uDRtXY0cdKEPHKWRB9VOU6Yy4GeUuGV0mywL6fCOaO7Tr8tgujUPZbgH7DxFEF4WhF0V1xDQ9mUdVFFP5N5vY=
+X-HE-Tag: 1794512093-221580
+X-HE-Meta: U2FsdGVkX1+/HZg4o0Thh9OieK/kECG2XXre0Sids0W9VAPz+L1QfS6tKGnP4brnXHPAF6HBkO23rEnSu5zt8q2dtX+zZgVYpB5DsfjeLSO8yqqDfyI/PNdJ/aL1D8BXk7HbkXUzDTImkgfS/DSCTozMeWor1mh62xN8c/zGT3qkOYu1RG5sMo7IuexJp5tSUyvfl8vjXwE5OCpwd4jYHBttKZ4EqMrl+wTxWGHeoIJNECoVH02382bB8cwVnBUTPxVilvhW0ifYMXw3Du9HdadsThOfgbCUOT0O52ehOkpV6SIliazTXGohYDuajSlCO6bCm1bKLSEUjCNjM/xy1VaTLiUiDkcVjm+HWln7P5piUD2RnPSSnSleWzzWIRdz2PJofnm1RNOT40C+sqfP0ig7WhOJUdnbmjmKWstat29ZGnK32u2KPhBn0ANyo1X0lFh5spPulA82iNXRfEdBBbaa0Uh78qhlZcE3DJADNTbgpDMEg0o/8W/rEPAMSVONSeuBAYtRB5XBU+euacgMch0uyHXJxt9uQCgKJUtGs6Y1ltbCcN8i3we25h9Kb8qyn7YGWr/KZT++3VC/1QTt3rKf1idQxeV1zob4hRhQ7JY8NO1wECwwu0yR49YkNAz0oc//nhIBPAXLau3PUZ7XHrWLwju3huLA3VaymZOagUMUcHui+51h/pRsOrNf7B6vaNPvT0avcJ//CJVS4HNJY3m3x7t42CZ8s+CT2mT9oEt7BWI0i9ihquyr/8wcOMh7218WHLisJSE48AGw0hWy7P8FUpOlhPinTNRaQbAq5WSyMBESFHzZxpPFmg642uQWH4AEtpp4FhQlvKOmMqEuRHg9hmJWnutySHPNerua/ZWc9QEe5y/bG3T4R6MLBEz4i9VA5gyczNQ0sqsIgzyDJPTze4eyhW9AYW28CVhI4/FpvaxlvLpfl5bIGfWBVPce0iUY20u6Bt6l72/3OGz
+ 9t2LPKdy
+ RPqH5f3Zc56zRoPMIzUrwjrJHKM2XgcdFg1pcUtGmu2f8/e4poh/WyCkyaJBcRn7i9/IrxmtAutYlJ0hsYrOBXqWEmR6VkshcBzPzMWDSE8IAEikPQRj5AGuyLkmG/uiKLHMP1v4ZOdrU1PQ+2ELN9/R+yC/DqSdqvRu96Qy44PDG5Om6X5pZON+04DRv6WjQnCh+G8RiieTz1m8I56eUKsvsOjiEAj8I8n0J52cWUYJmOFMsR66/5TTKkWr8hlVaYS+ATALHlNnZUvkHfpFci8URs/ns9qxA2OyiQAva6fO89x/XRjuZktndYOtjyCRN/NVRYwvwoB7XFYI7ywbVjiGU1LhvUhZqOm8mTsn4Mf+YMyXsocT+VESIZQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,180 +113,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 12 Nov 2026 03:18:11 +0000 Xionggui Chen <evers_chen@163.com> wrote:
+On Wed, Nov 11, 2026 at 12:55:13PM -0500, Tal Zussman wrote:
+> PAGEMAP_SCAN with PM_SCAN_WP_MATCHING write-protects a huge PMD through
+> make_uffd_wp_pmd(), which handles a present THP and a migration entry
 
-> The madv_populate selftest assumes that a mapping created with
-> PROT_WRITE cannot be read, and expects MADV_POPULATE_READ to fail
-> with EINVAL.
-> 
-> However, some architectures, including RISC-V, may implicitly grant
-> read permission to PROT_WRITE mappings. On such architectures,
-> MADV_POPULATE_READ succeeds, causing the test to fail incorrectly.
-> 
-> Check the actual VMA permissions through /proc/self/maps and adjust
-> the expected result accordingly.
-> 
-> Add a PROT_NONE test to verify that MADV_POPULATE_READ still fails
-> with EINVAL for mappings without read permission.
-> 
-> On RISC-V with Linux 7.2.0, the original test fails 1 out of 16
-> tests, while the updated test passes all 17 tests.
+It's crazy to me that we write-protect page tables through a procfs interface
+like this. But I guess we have to live with it now.
 
-Code looks good, thanks.
+I suppose that answers my q about this on a previous commit...
 
-The changelog is a little imprecise.  
+> but does nothing for a device-private THP. The PMD never gets the uffd
+> bit.
 
-"some architectures" is too broad - this is purely riscv.
+Sigh yeah. Device-private feels like another 'just have to happen to know to
+update X million open-coded parts of the code'.
 
-The wording suggests that a readable hardware PTE alone determines the
-result.  riscv can have readable writable PTEs without setting VM_READ,
-and this test still expects EINVAL on those systems.  
+We really need to find a way to abstract this stuff.
 
+>
+> pagemap_thp_category() reports a non-present PMD without the uffd bit as
+> written. A user tracking writes with async uffd-wp therefore sees every
+> page of a device-private THP as written on every scan, whether it was
+> written to or not. This requires a driver that migrates THPs to device
+> memory.
+>
+> A device-private PMD must be write-protected like any other huge PMD. To
+> fix it, pass it to set_uffd_wp_swp_pmd() as well, which downgrades a
+> writable entry and sets the uffd bit. When the THP migrates back,
+> set_pmd_migration_entry() carries the uffd bit over to the migration
+> entry, so the write protection is kept.
+>
+> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+> ---
+>  fs/proc/task_mmu.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index 53780a454432..752f1b13d47a 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -2524,7 +2524,8 @@ static void make_uffd_wp_pmd(struct vm_area_struct *vma,
+>  		old = pmdp_invalidate_ad(vma, addr, pmdp);
+>  		pmd = pmd_mkuffd(old);
+>  		set_pmd_at(vma->vm_mm, addr, pmdp, pmd);
+> -	} else if (pmd_is_migration_entry(pmd)) {
+> +	} else if (pmd_is_migration_entry(pmd) ||
+> +		   pmd_is_device_private_entry(pmd)) {
 
-I altered the second paragraph, please review.
+Could this not just be !pmd_none() + cover all softleaf entries? Or is that not
+valid?
 
+It seems completely insane to have to specifically spell out all the
+possibilities, open-coded, everywhere.
 
-From: Xionggui Chen <chenxionggui@lanxincomputing.com>
-Subject: selftests/mm: handle implicit read permissions in madv_populate
-Date: Thu, 12 Nov 2026 03:18:11 +0000
+>  		pmd = set_uffd_wp_swp_pmd(pmd);
+>  		set_pmd_at(vma->vm_mm, addr, pmdp, pmd);
+>  	}
+>
+> --
+> 2.39.5
+>
 
-The madv_populate selftest assumes that mmap(PROT_WRITE) creates a VMA
-without VM_READ and expects MADV_POPULATE_READ to fail with EINVAL.
-
-On RISC-V, commit 6c7559f22b6f ("riscv/mm: ensure PROT_WRITE leads to
-VM_READ | VM_WRITE") makes the kernel set VM_READ for mappings requested
-with PROT_WRITE.  MADV_POPULATE_READ checks this VMA permission, so it
-succeeds and the test fails incorrectly.  Whether the hardware can read a
-writable PTE does not, by itself, determine the madvise() result.
-
-Check the VMA permissions through /proc/self/maps and adjust the expected
-result accordingly.
-
-Add a PROT_NONE test to verify that MADV_POPULATE_READ still fails with
-EINVAL for mappings without read permission.
-
-On RISC-V with Linux 7.2.0, the original test fails 1 out of 16 tests,
-while the updated test passes all 17 tests.
-
-Link: https://lore.kernel.org/20261112031811.56500-1-evers_chen@163.com
-Signed-off-by: Xionggui Chen <chenxionggui@lanxincomputing.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
----
-
- tools/testing/selftests/mm/madv_populate.c |   67 +++++++++++++++++--
- 1 file changed, 63 insertions(+), 4 deletions(-)
-
---- a/tools/testing/selftests/mm/madv_populate.c~selftests-mm-handle-implicit-read-permissions-in-madv_populate
-+++ a/tools/testing/selftests/mm/madv_populate.c
-@@ -69,10 +69,38 @@ static void test_prot_read(void)
- 	munmap(addr, SIZE);
- }
- 
-+static int mapping_is_readable(void *addr)
-+{
-+	FILE *maps;
-+	char line[256];
-+	unsigned long start, end;
-+	char perms[5];
-+	int readable = -1;
-+
-+	maps = fopen("/proc/self/maps", "r");
-+	if (!maps)
-+		return -1;
-+
-+	while (fgets(line, sizeof(line), maps)) {
-+		if (sscanf(line, "%lx-%lx %4s",
-+			   &start, &end, perms) != 3)
-+			continue;
-+
-+		if (start <= (unsigned long)addr &&
-+		    (unsigned long)addr < end) {
-+			readable = perms[0] == 'r';
-+			break;
-+		}
-+	}
-+
-+	fclose(maps);
-+	return readable;
-+}
-+
- static void test_prot_write(void)
- {
- 	char *addr;
--	int ret;
-+	int ret, readable;
- 
- 	ksft_print_msg("[RUN] %s\n", __func__);
- 
-@@ -80,9 +108,19 @@ static void test_prot_write(void)
- 	if (addr == MAP_FAILED)
- 		ksft_exit_fail_msg("mmap failed\n");
- 
-+	readable = mapping_is_readable(addr);
-+	if (readable < 0)
-+		ksft_exit_fail_msg("Cannot determine VMA permissions\n");
-+
-+	errno = 0;
- 	ret = madvise(addr, SIZE, MADV_POPULATE_READ);
--	ksft_test_result(ret == -1 && errno == EINVAL,
--			 "MADV_POPULATE_READ with PROT_WRITE\n");
-+
-+	if (readable)
-+		ksft_test_result(ret == 0,
-+				 "MADV_POPULATE_READ with readable PROT_WRITE mapping\n");
-+	else
-+		ksft_test_result(ret == -1 && errno == EINVAL,
-+				 "MADV_POPULATE_READ with write-only mapping\n");
- 
- 	ret = madvise(addr, SIZE, MADV_POPULATE_WRITE);
- 	ksft_test_result(!ret, "MADV_POPULATE_WRITE with PROT_WRITE\n");
-@@ -90,6 +128,26 @@ static void test_prot_write(void)
- 	munmap(addr, SIZE);
- }
- 
-+static void test_prot_none(void)
-+{
-+	char *addr;
-+	int ret;
-+
-+	ksft_print_msg("[RUN] %s\n", __func__);
-+
-+	addr = mmap(0, SIZE, PROT_NONE,
-+		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-+	if (addr == MAP_FAILED)
-+		ksft_exit_fail_msg("mmap failed\n");
-+
-+	errno = 0;
-+	ret = madvise(addr, SIZE, MADV_POPULATE_READ);
-+	ksft_test_result(ret == -1 && errno == EINVAL,
-+			 "MADV_POPULATE_READ with PROT_NONE\n");
-+
-+	munmap(addr, SIZE);
-+}
-+
- static void test_holes(void)
- {
- 	char *addr;
-@@ -266,7 +324,7 @@ static void test_softdirty(void)
- 
- int main(int argc, char **argv)
- {
--	int nr_tests = 16;
-+	int nr_tests = 17;
- 	int err;
- 
- 	pagesize = getpagesize();
-@@ -280,6 +338,7 @@ int main(int argc, char **argv)
- 	sense_support();
- 	test_prot_read();
- 	test_prot_write();
-+	test_prot_none();
- 	test_holes();
- 	test_populate_read();
- 	test_populate_write();
-_
-
+--
+Cheers, Lorenzo
 
