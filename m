@@ -1,99 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83FB606A88E
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 01:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02421606A8B5
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Nov 2026 02:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=faUooxKv
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CQPzrCau
 Received: by kanga.kvack.org (Postfix)
-	id CA2566B05B0; Wed, 11 Nov 2026 20:57:51 -0500 (EST)
+	id 888216B05B1; Wed, 11 Nov 2026 21:00:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C79A16B05B1; Wed, 11 Nov 2026 20:57:51 -0500 (EST)
+	id 811BC6B05B2; Wed, 11 Nov 2026 21:00:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB8006B05B2; Wed, 11 Nov 2026 20:57:51 -0500 (EST)
+	id 6D8BB6B05B3; Wed, 11 Nov 2026 21:00:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 902656B05B0
-	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 20:57:51 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 861FAA0239
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:57:49 +0000 (UTC)
-X-FDA: 85424805858.03.7DE2AD0
-Received: from mta1.migadu.com (out-244.mta1.migadu.com [95.215.58.244])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4839420003
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 01:57:47 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=faUooxKv;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.244 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D4D06B05B1
+	for <linux-mm@kvack.org>; Wed, 11 Nov 2026 21:00:11 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8BB4AC03FF
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:00:10 +0000 (UTC)
+X-FDA: 85424811780.14.EA9B777
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C5487A0003
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 02:00:08 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CQPzrCau;
+	spf=pass (imf25.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794448808;
+	b=silKQWcUOUEezkPmdm5bsYCZRCseQM4DkaS9A9GbaoEScKXoO5cRMgMip69DpeAIjNQ0w6
+	f03BoWy0MduUTykBgRgskv0+O+JpkMSODTyyc2qD1YF+kAJO0xekWsLoXweTh+1tXv8OML
+	5aaTmwP/5A+NjZvTPizKvcuHxTW4D04=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CQPzrCau;
+	spf=pass (imf25.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794448667;
+	s=arc-20220608; t=1794448808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gM036Lz3o4zVMa1LHZqyXfXI7ctHVwdatuzaP+xuoQk=;
-	b=7WhZgn8VOzu6xDxXUNTKPa195tZWvhuxGabaTfY7HhQ+VvvFXg/j6WEW69fgT6gvPEerM6
-	AZjz3W+5CLuC/ZQYU8+FRACXI4ue0ukNRrluEgPreGh5IiR+XIs3tF8c8cNVTx0d3hbekS
-	/k9li1oA+7H7gmhJEa3Qqekog5EU4xk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794448667;
-	b=fKtDKO3NeQl96208s32uLQq2zwW3Q4o72pFywA0y6samvLt8jfrv0xjHiZaWKEZ89rqMHA
-	v5XemwAVuIALKqOvT0HuQsPiy224VY7XFoyDBtftWit7EPHjifTl5LcmQL1z4IZLlWmn2N
-	VTmNaf012tc6H0moJuU6IHA3okrKDgk=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=faUooxKv;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.244 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=yKaM/QiUACyjX+qdRyFbfdqOOL/98E7TZUDAFfd2x+A=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794448665; v=1; x=1795053465;
- b=faUooxKv0kNDG903OFqeLVR1EGlcLCvX6gWu51FNniszxFnwsJRj5rGAm7y/bHE8ac1WigCr
- iDvPEllng7LoA7eG/DEUYyRb5kIo+/sIiNMhc3QOjJiyRL6/RdQLVeBFDwTiki0Zty3V4VAEiuZ
- hFjJVN1i5g23LdUhIj29ewqc=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 41d9010a3529e826;
-	Thu, 12 Nov 2026 01:57:45 +0000
-X-Mizu-Trace-ID: 41d9010a3529e826
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <5e2733ee-7a25-430f-bdda-f89fc5856e5d@linux.dev>
-Date: Thu, 12 Nov 2026 09:57:35 +0800
+	bh=TCRfyxHtM7gWIieAFsQRUzzBSJgM17kQTHPB2Hu1iOs=;
+	b=Hn8544cBZ8DAjlBL2aGS9tLXkHwnVwR6O1skUzZj7WsHFFU6VCbg6X2nkicBar2nbSGm9W
+	G2iTbIIDP8Z3dmbcSzhZif3HPWaBEL7UarNU1liiGw0jx+qVuC/it88P7xrL8fcJxcDSK5
+	HigvqJM8shJrcKVnSr3roMKrb5OgkmI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4866963A22;
+	Thu, 12 Nov 2026 02:00:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E67C91F00A05;
+	Thu, 12 Nov 2026 02:00:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794448808;
+	bh=TCRfyxHtM7gWIieAFsQRUzzBSJgM17kQTHPB2Hu1iOs=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=CQPzrCauYk1gS86uv74QwbX+ugone0X6LWe7bEpPNMoRJeKKt3NhJUtZLLwOs+fN3
+	 NdEuynPzBwssC17dv6rQpBaYyvxfL0MknHWoGmsZlbi1GILHtsiK9dsioXxUTzISQi
+	 JQbgSPIK7pftO9sxaakiMITlhaqPpW4rxO/tm5HKgmPRlzW6tGPTHb2ciEURHPPODm
+	 0Fwml7Ek/hCFcEub4NjxF8jea1V+WnEdyNnNPTg9Kd7uo+Ai7wvlzylFfb8JsKAHTA
+	 bHnmjI5NJRvXW3kN902T9w0VMzZRIN6VhrLB5hzI+2SYo/a93UIz/Qfh9oUpSM4Icw
+	 L2YF71zXcoOEw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D81E1391AFD2;
+	Thu, 12 Nov 2026 02:00:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (macOS/Intel)
-Subject: Re: [PATCH v3] mm/mglru: fix a no-op lru_gen_clear_refs() call in
- lru_lazyfree()
-To: "Liam R. Howlett" <liam@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Yu Zhao <yuzhao@google.com>, Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>,
- stable@vger.kernel.org
-References: <20261109021611.22247-1-hui.zhu@linux.dev>
- <4xqyzrl4lbxwbky22lc5k5mcvusudg75z6hspjokfoghp3dny3@rjuukqzxiuyv>
-Content-Language: en-US
-From: Hui Zhu <hui.zhu@linux.dev>
-In-Reply-To: <4xqyzrl4lbxwbky22lc5k5mcvusudg75z6hspjokfoghp3dny3@rjuukqzxiuyv>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 5m716j8dkfqbx5g8hxzggh1rnpdakn61
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] ptp: ocp: replace __get_free_page() with
+ kmalloc()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179444880643.1768068.10714270723125429493.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Nov 2026 02:00:06 +0000
+References: <20261108-b4-ptp-v1-1-71160700886f@kernel.org>
+In-Reply-To: <20261108-b4-ptp-v1-1-71160700886f@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: vadim.fedorenko@linux.dev, richardcochran@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, david@kernel.org, vbabka@kernel.org,
+ linux-mm@kvack.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C5487A0003
+X-Stat-Signature: s4gx1643j4797typxc8hrctmup481k1m
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4839420003
-X-HE-Tag: 1794448667-361707
-X-HE-Meta: U2FsdGVkX1/rBhRt+45mH83Lcuw49fTvyJf2w1MoUocJoONh9C/z2sMOFj4QAAuvBXmKhQihd8hRp7aWWPkZo07enMCpYSQkionP9OXEvIzcwO0cRrI26ZB8AwLwLsVtTR2HicFo+jkPk+Sg4vDnJpX4l1ExpsvQp7ymhp8t4PhkHrNevWzmywPg59ZHZAhgIJeD2ck6VMiF9MY8VqYO4x/U+OiIfmNEQZjhNuqzklWWBzj+PPGbbDZIpqSL0Uo4ug53cyv4z6L0dCmQ5RGSGIwSAY9A40eDqNMyNYQQnndQUKw8VaiAcB+v5JvoIhoQMNdNcQ7jeGiX/lLMHvh67THWMtEvF193/r/PosFAwGMQ6EHrKcAXskBSDLay6JYxPSc9mQgFiTae3Z5qhXvdfWFU3lkq+q5NSIGk8yddsyg1tGPSlKEKWMXG6nIEGgfVzsjAh2hBAGe5FXxEdQ9S6Csj18QjAYRcUtjF0bBdzJxMp5xfp7ovFOf34PE0lAkBEDnZCSBJpAhGHCXqTulesoMxNUzMkjAbdmTMmywuJ6QtXt+nEMuguEysroKcehK2K86aMe7AIljb526Xwgkd2o28Qks1pEY8S8/6+TYPEuGqh7ni/xd2Z5cym5gg+y5MruSXe398k97P/NhTTZzl/XTciQ8SWepkhh/M2cyFA5Tdju4+cTBxVO/ybGmgHLV+eNk1UVEaDrzIzz9nEYznxcNwQiXvCa/1EwN6luG+djW6XuBU8gbz0o4n/GbYADuO6kaBk6jvS/s03NG6ttiK8g1G9kdl9UQqS1LdmTfQ9+9U7+vJnlMoNPvM5DI4F9qC93cNskfNxSPxGBMJUySPNXJoUi/vMz27ayKvnHHZ4Z1P7XcAR3GuRmwbHgIGaqRvS4XAFsRhmr0NI+SyLX3Fzlq9E1njQSw8eEfTv+GOMLqm3m0YfeyoyjlvEeYzJ/wpDSx+6Jo3u8WqnjKuRGY
- DLuWHGNY
- +8c0DPZTPGjJYrYjGNbyEkptYUy2126mTDEaRxMVQXdlsb4e7Vr1JnxoKbQQiB8uaWqj+2/YhHIpGU1iNL58Q8YQQxydjaYN5Hr2YrVmq9XiaxI5zzHYwiv/4l2Cg6MxmY4Wn6RjETiY9ZQJXgJ+wP2J+61/1K7PFIXOBfZG+5dO0a61JVMVWFg5yWl8xJ13rN6tA3YBdQHijQ49MhvI3SB5ul81zFOPYJS5cSgKYEPLBfcyO2oGEWGi4M2r95sdJwbnwdE3+MHO0C0nZjJLDkXpGyKxsxTf5LiwrRzrlJ0GiLn2zyLRD23M4sYS0aGt5va3UdVumyXxZGPTfS+JTflHhK1d+GGDGRV3S+0ieWlwGE9uKbBLfiSGTnkw/Ewp69390zlL6GOtfqR9dtSen9kcBhw==
+X-HE-Tag: 1794448808-489262
+X-HE-Meta: U2FsdGVkX18KgAeBVOSmS2rGzle/i1h38388r04Qsi3fPYS7khrr+ZijiedhBztrQvmqKPSHd3AnbQQ9Fvchx+qmQEqaqxQXy6olvwu1jTrsTxS41jd5zEt4nF+qDDAseJnd8QhPS+jzJ8Kdd1G6y/0L5IH7fj5sRfqstasD5Lq0ZiWgQgAK413XfyH/AhZyDJlME2XbtInADjod3y42vPlAEWdp3H+Hltsq8KWPGmFz+6QlftcVBIw9jTU7OLFGcnRh11IZWcXlLdcAjQqyjQkC6nYaxoYdGLpgOMTCRwrGZqiiflEG2v1GK4kfNbGRGiAevw5pRUEd9q0HkhqYHPczxZN5OZfny4QC+klpQYBTagyw6SvWPFZsBpyyM7yvGCC7TyzkhDSa4HtK/yAOKimOmJ0XGsg4TWAPepLGy3Xks0eu1drediqY8W1frzNmVSRE5uWddrC0sh//hGXCZAlZXtBCiFBirsY742dhjyHISOwbmUGVDnUVIBbGzn5Ay12QJTdzFuq0ZIi9TcSBB0DxrursiWQsZISc2i1yJBaRfo2hxLIHxtf28J2Q5i1Wbv6ta3dtJO+THtJbUqsq5E34erwyoFDAGak0d7xdU9FJhOwiQPASISPYgHXvWSR3+m0S2OkAV/s0vPv6W6iNeHu7XIx4wZDdBUQoMBdhMVeQUQdZsGTTq/VppkphP0VsAHyRBiYLkPs/VlyBIGXOXIdgXI2D8fSpj/5uo3n2p8FWiwWPzLpvlySdwfd2AITv3fhzw3y0P+B8ggL5QxMLCTQR0L1zEAUDvBLHvN2WRkaKR9sQ6QY7lQHGkV3qo9pyY8+L/hL3p21A/PrD6bC/jGMqPxdKckjGLywyi3iRbu9c/CGHnk/NjPW7/rdB01AfyFgL2ZC4BgP0vp48DmN1DnBgFEvIyIvQnDFUfUobTkGciXKjwi1tA2ADflOu5hS6Vryl9hi/6yp74XbRrRe
+ jgaUOS6m
+ e0oSZW4RHdTfgL6nwdnjNAabryKK88eytIw7iMmN90MMM+ZLzk21rExXc6T0vW1fTSBEydWofWUfU0g1QB7RXxVcrFFGNpS4iVMBi6Zi8xkRhPHLseJfIYYQoEH0H4XmVMPf1Mz7tkEs7cys5scy7yOYvjAzMAdcWqUKTvOIVZwVBPAhijbm4DvsFzJCse68bd+9n6Ho0Um6zSkFm0KyItzXzVRHlr6m2qDnFA79t3Ht4xT4UKkZjcaBzQwy+/cfDyN0Yr6IJEhD8caVoDXnEB8Z2U2UxAg4JNRmTJVahD0O3ijWRrUU7aOrWOVVSDbgGJtgrEmdyF2GvneBeJvkL6IgzTSIFlVyrMN67L8IQlR8QF2/8MXI12XdQ34dbhs+Uw0uaHDg3aTRJmVbmt98/KJocHNDl640hELzYuKoQatOzxqmQoqVEC6S9rCcRXDuu3J5AeG7sPO0VNT5hJYCwSjCP+WunfMiaQb6hs0LiK9ZeyeULxGeeXwFBC/x05Mumct/ZdRjLzZaTXJ4fZn7uJ5Ncu4XMMZr9FQmf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,109 +101,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-2026/11/12 01:21, Liam R. Howlett:
+Hello:
 
-> On 26/11/09 10:16AM, Hui Zhu wrote:
->> From: Hui Zhu <zhuhui@kylinos.cn>
->>
->> lru_lazyfree() calls lru_gen_clear_refs() after lruvec_del_folio(), but
->> lru_gen_del_folio() has already cleared LRU_GEN_MASK, so folio_lru_gen()
->> returns -1 and lru_gen_clear_refs() exits at its "gen < 0" check without
->> clearing the refs or PG_workingset.
->>
->> A MADV_FREE folio therefore keeps the state it had before madvise(2),
->> even though madvise_free_pte_range() has already cleared the accessed and
->> dirty bits of its PTEs.  lru_gen_folio_seq() places it one generation
->> younger, and PG_workingset puts it in the last tier, so sort_folio()
->> promotes and protects it instead of evicting it and charges it to
->> lrugen->protected[], which read_ctrl_pos() uses to balance anon against
->> file reclaim.  __folio_inc_gen() clears the refs but not PG_workingset,
->> so this repeats every time the folio reaches the oldest generation.  If
->> the folio is redirtied first, ttu_anon_lazyfree_folio() keeps it and
->> lru_gen_eviction() packs the stale state into the shadow entry, so a
->> later refault is promoted to the youngest generation.
->>
->> Call lru_gen_clear_refs() while the folio is still on the generation
->> list, as deactivate_file_folio() and folio_deactivate() already do.  Its
->> return value only says whether the folio is in the oldest generation,
->> which lru_lazyfree() does not need because it re-adds the folio below.
->> Keep folio_clear_referenced() unconditional: the classic LRU needs it,
->> and it also covers the folios that lru_gen_clear_refs() skips.
->>
->> Fixes: cc8ec7be78ff ("mm/mglru: optimize deactivation")
->> Cc: stable@vger.kernel.org
->> Suggested-by: Barry Song <baohua@kernel.org>
->> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
->> Reviewed-by: Barry Song <baohua@kernel.org>
-> One nit..
->
-> Reviewed-by: Liam R. Howlett (Google) <liam@infradead.org>
->
->> ---
->> Changelog:
->> v3:
->> Add Cc: stable@vger.kernel.org and pick up Barry's Reviewed-by.
->> No code change compared to v2.
->> Per the thread discussion, the __lru_gen_clear_refs() refactor will be
->> sent as a separate cleanup after this fix lands.
->> v2:
->> Call lru_gen_clear_refs() before lruvec_del_folio() instead of
->> open-coding the flag clears; drop the lru_gen_enabled() branch and
->> the comment (Barry Song).
->>
->>   mm/folio.c | 6 ++----
->>   1 file changed, 2 insertions(+), 4 deletions(-)
->>
->> diff --git a/mm/folio.c b/mm/folio.c
->> index 35e242b48870b..ea3adb6a89d75 100644
->> --- a/mm/folio.c
->> +++ b/mm/folio.c
->> @@ -597,12 +597,10 @@ static void lru_lazyfree(struct lruvec *lruvec, struct folio *folio)
->>   	    folio_test_swapcache(folio) || folio_test_unevictable(folio))
->>   		return;
->>   
->> +	lru_gen_clear_refs(folio);
-> Since you're not checking the return here, you could use
-> folio_set_lru_refs(folio, 0);
-> folio_clear_workingset(folio);
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Thanks for the review.
+On Sun, 08 Nov 2026 10:40:36 +0200 you wrote:
+> ptp_ocp_summary_show() allocates a temporary buffer for formatting
+> PTP OCP device summary information.
+> 
+> This buffer can be allocated with kmalloc() as there's nothing special
+> about it to go directly to the page allocator.
+> 
+> kmalloc() provides a better API that does not require ugly casts and
+> kfree() does not need to know the size of the freed object.
+> 
+> [...]
 
-That is exactly the shape we agreed on for the follow-up cleanup in
-this thread, Barry's __lru_gen_clear_refs() draft. I would still keep
-v3 as it is, for two reasons.
+Here is the summary with links:
+  - [net-next] ptp: ocp: replace __get_free_page() with kmalloc()
+    https://git.kernel.org/netdev/net-next/c/c88fd6989aea
 
-folio_set_lru_refs() is only defined under CONFIG_LRU_GEN, so the
-open-coded version needs a new stub in mm_inline.h. That turns this
-one-spot fix into the header change we planned for the cleanup patch.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-The two calls are also unconditional, so on the classic LRU every
-lazyfree folio would lose PG_workingset too, which upstream never did
-before cc8ec7be78ff. Barry and Kairui just agreed to take this patch
-as a clean backport for stable, so that CLRU behaviour change should
-go into the cleanup patch with its own justification.
 
-lru_gen_clear_refs() is self-gated on gen >= 0, so the call is a
-no-op for folios that are not on a generation list, and the return
-value it computes shares the cacheline lruvec_del_folio() touches
-right after. I will send the cleanup, with the open-coded clearing
-and the stub in one place, once this lands.
-
-Best,
-Hui
-
->
->>   	lruvec_del_folio(lruvec, folio);
->>   	folio_clear_active(folio);
->> -	if (lru_gen_enabled())
->> -		lru_gen_clear_refs(folio);
->> -	else
->> -		folio_clear_referenced(folio);
->> +	folio_clear_referenced(folio);
->>   	/*
->>   	 * Lazyfree folios are clean anonymous folios.  They have
->>   	 * the swapbacked flag cleared, to distinguish them from normal
->> -- 
->> 2.43.0
->>
 
