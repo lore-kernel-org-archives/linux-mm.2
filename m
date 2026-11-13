@@ -1,115 +1,119 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B013360A6F66
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 17:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB2A607E059
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 17:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OeYFEpwo
+	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=YXVg4m6Z
 Received: by kanga.kvack.org (Postfix)
-	id 92FCD6B05B7; Fri, 13 Nov 2026 12:15:39 -0500 (EST)
+	id C90FA6B05B9; Fri, 13 Nov 2026 12:18:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DFF56B05B8; Fri, 13 Nov 2026 12:15:39 -0500 (EST)
+	id C40E26B05BA; Fri, 13 Nov 2026 12:18:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F5956B05B9; Fri, 13 Nov 2026 12:15:39 -0500 (EST)
+	id B56986B05BB; Fri, 13 Nov 2026 12:18:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5584F6B05B7
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:15:39 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D6605120238
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 17:15:38 +0000 (UTC)
-X-FDA: 85430747556.26.4475A95
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0E12114000B
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 17:15:36 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OeYFEpwo;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 974896B05B9
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:18:37 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 24DC48023E
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 17:18:37 +0000 (UTC)
+X-FDA: 85430755074.04.3F629BC
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 31340180010
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 17:18:35 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=YXVg4m6Z;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf24.hostedemail.com: domain of chris@chrisdown.name designates 209.85.210.178 as permitted sender) smtp.mailfrom=chris@chrisdown.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794590137;
+	s=arc-20220608; t=1794590315;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=NnqtQ/mxknt+/WoqFvknhFyoHQ25ZnnIoL+B41Z9ONg=;
-	b=H5GcXoC3Fv9VlnZQrr7n6pm74Z2kyigFy9I3SEHtgDbWct9CyP/UuzoTii6YZiSdaNTbvW
-	oWqETsi+tHFetPjSU+0JX4kPGwbL+rxgCYii7I81JzzhiRqYkuxLOXKtOyYLU4gBg/qE72
-	O0PS3k6yQWW7XdviC06MB7A6BSPpoW4=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OeYFEpwo;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hnhSF7Az6Z9lY2PNjeRQ4LQp1XBnKkpuWvbgZfPvipQ=;
+	b=TyxVmvZ/GmIALhCbzcIezJk4DNwHH8Rovtolfpmi1DqmpFgmDypETNmqg1+qFw7fGRUqtF
+	oirJAmoo421dVwS56Z7ShbQC4yXc4vuW5xgS9lXj0JZ7qr7XUZVIqFasJYxTuiWdyluz2q
+	AZmvhBEwEn1/aHRNjwkvl+RrpJgHgnQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794590137;
-	b=fXW5GhXVtPD37586A4q5rx3OnPKlw5F07yltDksdsNTUNrNh5ogoIuvZN3DU0MJkO3lQ19
-	NZG9qQ3O1yUpEVbWGzVtfmfhTae/TWDXuvl+nvh4BflT9YoW0tppxij3hRyMnI8IqiPOrL
-	CaC9lb7mhZHAd1W3JsxfOY71ggtS75U=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2D09946B1F;
-	Fri, 13 Nov 2026 17:15:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C5521F000CA;
-	Fri, 13 Nov 2026 17:15:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794590136;
-	bh=NnqtQ/mxknt+/WoqFvknhFyoHQ25ZnnIoL+B41Z9ONg=;
-	h=From:Date:Subject:To:Cc;
-	b=OeYFEpwo9dvd3uGZpOLMo2Syz6OFEvOSH/L7Y4msQumYLE5kba82C8Xh8S8gTrujC
-	 yTO9frsKjaG5CeMV8NWtnKoxq9g49gZJWmvzBBWXtAYtr3XY6ULahd0EBjS1l/jnK+
-	 OO95xkzWGJNDXDGDOc/MmptFQ+rQzQxYHW4MaKTj9dzOdkWM9Vje1qPJcInWKzRNjB
-	 rJXZrgvWpK+BDEF8kKEF64uC/cmVyTFMtnBHkP0cRVbpqUB1NBP9J2Zm8ezKXZdxX8
-	 CYB1JolFmX2IbVqE2W5uNqs/bUnH8vIjMSLWf0Z7G3ZjlGhNly+xpT9dH9L8dbyNCw
-	 NQVqALn96qVaQ==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Fri, 13 Nov 2026 18:15:26 +0100
-Subject: [PATCH] mm/huge_memory: flush dirty file PMDs before removing rmap
+	t=1794590315;
+	b=tIMWq3RXKBsRtAWcKzZPgm2QiYeebucWmIsIDMF66cR+gIXc2qaLAoYBx2nhe3ELIClTYW
+	rif4XBRpSH9uJUAmrnhGNNR/JBaoAotWytGR1cM/2KJE0E4sZi2MIXx9byUQNSwsqiww3h
+	LQmAJ64taCaNUDQUGwGTHDN3ho5KxYY=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=YXVg4m6Z;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf24.hostedemail.com: domain of chris@chrisdown.name designates 209.85.210.178 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8b904d10882so516401b3a.0
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 09:18:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chrisdown.name; s=google; t=1794590314; x=1795195114; darn=kvack.org;
+        h=user-agent:message-id:content-disposition:content-type:mime-version
+         :references:in-reply-to:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hnhSF7Az6Z9lY2PNjeRQ4LQp1XBnKkpuWvbgZfPvipQ=;
+        b=YXVg4m6ZMpPhED+K3lCB0QMuU2D6puj8fyont/fOrjvmmXCCLhNWB3WDn9nindYNYI
+         g6dPT3eQoI0vQicUEZ0YV94Z4vQnXOEmjyHOHQ8mzroZW9st3pMJ0ZT0USHP752pPy6f
+         tNt59bOeR8tk5wE/rk7WkRz7mR9HZZsBHjPsI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794590314; x=1795195114;
+        h=user-agent:message-id:content-disposition:content-type:mime-version
+         :references:in-reply-to:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hnhSF7Az6Z9lY2PNjeRQ4LQp1XBnKkpuWvbgZfPvipQ=;
+        b=iESfEAJ/Yqnx//sO5Tg1T6FizW1+rEw6PtNx7J/+cpYEVxIm5wlEh0fvQme0ghxcr+
+         BRiapyl1s/10MD6+pTemCCm90dgdI8pXc+bapyep0e8V222LXujn4MvZUjldcb1g5km8
+         Kv9C0991mZsy73uEIV2Zroq4P9fk/C1+J0s+WThMHoaey0go/XhtyElZHs21Q9jhie+o
+         /Dv9rHXcn9cQPAF9IQ3cAMXaVPWSgMJhE38y7E8xhILc+x5ZXPGoYhbhmcX00i8nbcjo
+         18v4QEncptDwgvIcTSZ7x8pvT580yF1FSjIde2Gx4hU95PoX0jZsDq+OhtcY3+H8EiZ2
+         Ierw==
+X-Forwarded-Encrypted: i=1; AL+hErGi1a9OryLWnZd/GB7O6PgxoxLuOL5BDTFfV8YYPwGdeWf2b3MByYDU/2taGKtfdqTATmJn5piMRQ==@kvack.org
+X-Gm-Message-State: APuU4Z/ryWQk+j1ZGxZtoD8kOaTN/gK3N4NH3nqehSUwsQFkG/KgtC0Y
+	sy+cC+WnvUJMUYjUsR6CpJIJPtMUV3kQ0m83PWF3PcnMupE947kRyqWSDMELU4uiEyo=
+X-Gm-Gg: AYBFou0HnLLoHgga0rWxzbtqzLipyeJMfUCrn0QkEeF5lPAj46+hDJ289vE+KOkrqqw
+	wCo3REuqbqEG7F4j3gdGN7fsTkygljgnE5/99rC4blfglQxXGuLYsactpbTtyeQ51PKwUy/I1tM
+	0f+rrblHT6u2w7Pq3FxABDaRptf/whwYvXk+512OyFbTtB/SLEoxgCs+2Jj2tNRRZcS7U2IPKOJ
+	TuzjBpwYveeD3gdtp0Mjvl1g6CIPJEhxmt6GrVfl8Gs0h3xeTX+GDBf739um5kmWxcFO2ejcYW+
+	aZ9Wn2pK8SRL4/+ApiCWYLeWenGtXhyw7o8kJT8+m+rrgkby0BjDzpxwQ2r1OXkYtOJYMO3B+E8
+	az0zXvkA7w0n6aX5dforc5UDFsLUflwVlzRlgBilBaeS4SDD1gLyXY7i1GEKfS0R84UxU71tTbf
+	d1EuIkfPTzaoQEHSrWBRFuBrJmP5O+qfm3EtIUItzQzBsXWlawqf15fz3MwHzNixr1PpJ8PBeSe
+	dU3Hpmdl8L1dxD8DmwtNKIJoWymcXoY1qV5CebPQRZ4BgENWRbK0LNWjvtkI7AnLus/lik0qOtp
+	Tt5dgbtXKvdH/PRfHg+Kdvqm6/UUJvtfKEk3EJDNC/rLMvD//h3n+b6xmdeURuq4bQRTteIZ+CV
+	Lwipv1eQJvXDh8al1StYiLZuwsfaAgFJZXb5p0c2bOhVIZuQaadDY12OvT1a7TIOOk/5TfrxQIh
+	6RU2BMJpExr+yiiqYCRH3Q7WMPN7TRkbq15M09qjzHEe7cXZ04IxG5WVnZvWw=
+X-Received: by 2002:a05:6a00:2c89:b0:893:12e5:c07c with SMTP id d2e1a72fcca58-8beb619a61emr2835248b3a.27.1794590313819;
+        Fri, 13 Nov 2026 09:18:33 -0800 (PST)
+Received: from [172.22.0.2] ([50.175.87.158])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8bed1a6dbbdsm1460009b3a.24.2026.11.13.09.18.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Nov 2026 09:18:33 -0800 (PST)
+Date: Fri, 13 Nov 2026 09:18:30 -0800
+From: Chris Down <chris@chrisdown.name>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net, terrelln@fb.com, dsterba@suse.com, hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com, chengming.zhou@linux.dev, Andrew Morton <akpm@linux-foundation.org>, linux-crypto@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, riel@surriel.com, shakeel.butt@linux.dev, kernel-team@meta.com
+Subject: Re: [PATCH 1/2] crypto: zstd - use vmalloc() for stream workspaces
+In-Reply-To: <20261111153532.1036709-2-usama.arif@linux.dev>
+References: <20261111153532.1036709-1-usama.arif@linux.dev> <20261111153532.1036709-2-usama.arif@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-dirty_file_pmd-v1-1-8c11f2a2e65f@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAK1F92oC/yXMTQ5AMBBA4avIrDVplSZcRaRBByP+0iJE3F2x/
- BbvXeDQEjrIggss7uRonjxEGEDdlVOLjIw3RDxSQgjJDNn11A0NqJfRsJSjkirmZZJK8NFisaH
- jG+bFb7dVPdbre4H7fgA2gFgjcgAAAA==
-X-Change-ID: 20261113-dirty_file_pmd-90e63640a593
-To: Will Deacon <will@kernel.org>, 
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>, 
- Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>, 
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>, 
- Ross Zwisler <zwisler@kernel.org>
-Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Chris Mason <mason@kernel.org>, 
- "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7929; i=david@kernel.org;
- h=from:subject:message-id; bh=HdL68kmUPC38EtwlODjudbsI/ECSjMkD6buFKlpLu3g=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLK+u65//2GJy4Yj5RMvLN+ayBVj2lBz4vm6XzKak/e7a
- x9Yzs21tKOUhUGMg0FWTJElKPi+wcuX62qr3fiYYeawMoEMYeDiFICbfIvhf7iG0dm2uPubWOJ9
- FBsX2X9t/3fuY+X6gr+Wyj/bVTKOuzP8Mze/nnM0Y/OCgIczkquqdLzWztnXmf3edYvD4WvtW/I
- v8gIA
-X-Developer-Key: i=david@kernel.org; a=openpgp;
- fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Stat-Signature: gmgrf7phqqaqocryscofwfaydxpxyuqi
-X-Rspamd-Server: rspam01
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Message-ID: <20261113091830.c58bbfda1f249304@chrisdown.name>
+User-Agent: Mutt/2.4.3 (cc9e3943) (2026-10-09)
+X-Stat-Signature: iko5einn6jrsfdnp1jmrpcrue1b4h3hq
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 0E12114000B
-X-HE-Tag: 1794590136-478154
-X-HE-Meta: U2FsdGVkX1+nooKiJi0ES+5AE77YMzzg+5eCjJuY6l4CGINw+FlT7FXYhJLw2pHlhfPQcaPy0SuYjVvSPrZ00C3stKIM3fkJGSXnRTBx2iCSG7pMBHbAuml37nEgV7LjROFrNlBytS7BEVnmZGSICsH79lgpsaNWdRlwTtRK6+NUgtqsjO7FvPnAYLQThAT7/aDfXlH2LMPw8sGfpPNZnXe03UgWLRHP3XB3ShV/g1sET97RKsUXB5/njFEK3uYsY4JjE35Gl9N+mhc4cwn5bJzfz24IJPxQ8E0i8qbfqXs7jM4cEKNFlKuPU+bphMqWzqH7op05sk/qOS2Eazw4h8rnBrJe9IgPMAEBR+HQGe7tdEaayNXWv4zCiFp4itmCpIjuQBplssWWmRVsASO0dnylIdMOvWOqyyIOZ9dNH5ZLTmghnRcpEhp0hW6/8yJVcv/EQwKUiwu1Fba3PkV0V0ERtRP2SoE7eBV16lS2GpPX15fYlede0WVdZrGhWGwaM60+3smTuDWTsfC1pFq9NlU8yENl1yxXjYHe/sBi2Rks1H7amr4S3X0Yr9MMG0AwLdh1XXHvH5cU7isqTTOfJFxV0A7+oTrWmktSV3qFCTckquaVFNyHPLYTe3P3zH5/qU/K3frySWLBKcLH7LOe6YWBWd6eAbWafgazrK2MnI7u3zrkNYehAxRYexDxOgEgv+Vcx2nRhuUNt4K+KcXnGuEHYceTCljmGzHr99bF1MVHRWdp6+yM4hw/Psv3xkKPJRP/j/w68c6huaUVN86UZDC2SMgSM19HSq0bJeda7O4nnVopAX8xVTf6BU0/k5eK4OWFVPoRfe9fPx1rqQ89y1AGOZjQmxcrDZOUv08xWRMtfz8wnHWQm8igzoOJ0l9ZTqHOqF4dZl8QvPWnKeJOMgvJ7yRTeTqiFEfH4cuFh/UbyQ1NHmE3Pcy/nr7/Wqtxy6od++TPEp1jhvcz23A
- hps2bCMg
- +fx6U+r4dbPqx0ljhPaYXjwSbGINXMFPlihG/6BbtHojdbLTN6G7pNJv6ZVTa+2vf6AgpUt/Yov7KR/EsHfZ3KWUaJkjfM1nngrHH7yMDZT+WnGInGACRYs3HbdP/n3e5a0Yc36rNgvJOyEXXuh/fQmfThtioQmc891VWDE88d9OGP8rKERSgGDru5ZSKw5Z4QHSCQHzlhMAnZxxOvmiAQQtqy3yU0zelM28+bIhlOpuVg3s5NFwiaj1VSE6jm+7xMj8POL4kpuYt53+OGTKa2QQ/NNnhpcbwkB9TX/ZAJCZe+Eo=
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 31340180010
+X-HE-Tag: 1794590315-435979
+X-HE-Meta: U2FsdGVkX18WlF67ycxXQLEois9vRjE/tX1asgss7bUBmlz4s8aFsgrzpCO0Q7YFDLcuyVzJCubpce3funhC0DlSEVLT4TNSenv4/lVzNfRjnHQ5WDxigJnvY0hwMu6WqGUmKoifHeS/Dxw6zHw5VvpWuzCpbzPkj9/dptn/Ss10v890spYw65UTHe0xfTkMa1RW6iMYiqbdQFNHxfnsnRJcuQVsj5Rn3LjnIXd4Ga8bG87RYS4Y4iJ7WvZLcKtS7CPrsYYt69gRb8KXdD63Wn3/m8L2qmeYhoGcx5+mG/keU2ZD2Q08mThr+x1v/Panq2SmdCLfRo0pCKRGmDwpjr1oQAx0ebKZ8w+WXox2cdYn9GqqoqTtPG8woVpuaXX5LWHx0GBte8ydpQ6he6OyPk+Tl8M1yjfq5Q4noX7duuXv1GLbSE2A4u250vcVhee9MMEbjqtBUTdlYvefsm7AXLamDgcaybjQ2WMudg2ZuhJZMnQBWP8qdC0tMtG3DTDUTkAMUUo60NhfEnIIWOvpYGvGHAGtX4OpM9M8I8sqVVFQvbZpMl59F73Ay9f0S3t6ZIMtd9hGYYEk8U2abCNR9/iesWUq68zEU8tSaEfHxKb/YoPAYM1L2pEE6ZPXMcxnTWCf4pK62wnTL2JQn3xu8wS0G7zkGAf3x5ctKUtKkz6+9unTycfm6dJNxF6a3fx4zE9IhikzGu7a75wWqLXEkHNbi/EFU6/rheJc0iiI3ItWk0X2/C+8PCIEuzkuXyy/kOYxmQmL1TVB8DJQenWvjA193yOT08us4D5whO7zDcErZFQXWIU0PKFQC/JG6hCYcPmJ+fmlePYz6AzPi9WspwG5rP+HYzoPAzFe1of5D6U6WorbgKSSnGdnMUc7WBuSK27T3AzbbLTphD2cJ8Mc+T6iK7h5IS7yvz+xitJjvYaYEcM5alkV5jhfAuVBVLa4N5GtwD0FPX7rKqxqZWb
+ C6CpDB2Q
+ HRkNEGBybWsWIjcevprO4EuxWHk0t6c30nCkqNzmG2206FxrqKr41r1CsQ74W5oK61p93PU9lMTyRSdGNfPk5x5x1tay3hVMp8+cOg7vB+Qg5X7eKqBqLRheViiiZFWDzAIDoBAlVfNrX0HoA0nXlSF2Qwd86EebH1PJfU+Acv2Sk09bmgfpq0Rs51kscACvFUKoirceOT7a+6V10rR7zqnpEEi/2ZrDSANgODu3WpH3qQJNNWVhC/x28k+bBkuukEur6E64vvbE4xQEpeC3f3bGZ+UTLDKOFEtX7wFf22MO0Jilupsn8o11Q/CVYTtvt6gnwsCZqK0cHMlMLUPNWqn2evX5mKhBk3HnLi0jTAVpwzw1WXPxT4HThDUUuKNzq5WBjzjxe44ltBTIEsq9X8Ph2KcKrji/6S+WTVxssv5qSBGeZ4p+hOCwj9BgJjnH0hNLi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,213 +122,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Unmapping a file PMD can lose concurrent stores when it races with
-writeback. zap_huge_pmd() removes rmap and drops the PMD lock before the
-gather flushes the TLB. Writeback can then clean the folio while another
-CPU can still write through a stale writable TLB entry. Those stores do
-not fault and dirty the folio again. Filesystem DAX has the same problem
-with its dirty tags.
+Hi Usama,
 
-Commit 5df397dec7c4 ("mm: delay page_remove_rmap() until after the TLB
-has been flushed") fixed the same race for PTEs by adding delayed rmap
-removal to the mmu_gather infrastructure. The PMD path still removes
-rmap before flushing.
+Usama Arif writes:
+>Use vmalloc() and vfree() directly to avoid the high-order allocation.
 
-Flush the TLB under the PMD lock before removing rmap for dirty file
-PMDs. Skip the early flush at address-space teardown, when no users
-remain, and for mappings without writeback, including shmem and device
-DAX.
+vmalloc() doesn't avoid high-order allocations any more. Since
+a06157804399 ("mm/vmalloc: request large order pages from buddy
+allocator"), vm_area_alloc_pages() first tries the largest order that
+fits, and splits the block up afterwards. So for these 383 pages it still
+asks for an order-8 block first, then order 6, 5, 4, 3, 2 and 1.
 
-Use tlb_can_delay_rmap() to share the PTE path's architecture checks.
-On s390, clearing the entry already handles TLB synchronization, and
-__tlb_remove_page_size() immediately drops the mapping reference, so
-rmap must be removed first. UP cannot have concurrent stores from
-another CPU while holding the page table lock. Make the predicate
-side-effect-free and set the gather's delayed_rmap flag when an entry
-is actually queued for delayed rmap removal.
+What the patch does avoid is kmalloc() rounding the 1.5 MiB up to a 2 MiB
+block, which is where the 516 KiB per stream comes from. Maybe say that
+instead?
 
-Queue the folio before the early flush, while the gather still has a
-valid range. Keep batching references and drain a full batch only after
-dropping the PMD lock. The early flush resets the gather's TLB state,
-so draining the batch does not flush that range again.
+Once that's fixed, please feel free to add:
 
-Although writing to files through mmap is generally discouraged,
-unmapping such mappings may become slower: each dirty file PMD now
-requires a TLB flush under the PMD lock. Future work should properly
-extend the delayed-rmap machinery to PMDs and hold the PMD spinlock
-across multiple entries, so their TLB invalidations and rmap removals
-can be batched.
+Reviewed-by: Chris Down <chris@chrisdown.name>
+Tested-by: Chris Down <chris@chrisdown.name>
 
-Fixes: 4b4bb46d00b3 ("dax: clear dirty entry tags on cache flush")
-Cc: stable@vger.kernel.org
-Reported-by: Kiryl Shutsemau <kas@kernel.org>
-Link: https://lore.kernel.org/linux-mm/aoWw_iKEDLjKL2jr@thinkstation/
-Reported-by: Chris Mason <mason@kernel.org>
-Suggested-by: Lance Yang <lance.yang@linux.dev>
-Suggested-by: Usama Arif <usama.arif@linux.dev>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- include/asm-generic/tlb.h | 10 +++-------
- mm/huge_memory.c          | 38 ++++++++++++++++++++++++++++++--------
- mm/memory.c               |  2 +-
- mm/mmu_gather.c           |  2 ++
- 4 files changed, 36 insertions(+), 16 deletions(-)
-
-diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-index 4bba02fd5d543..2dcf4ce0de589 100644
---- a/include/asm-generic/tlb.h
-+++ b/include/asm-generic/tlb.h
-@@ -250,11 +250,7 @@ bool __tlb_remove_folio_pages(struct mmu_gather *tlb, struct page *page,
- 		unsigned int nr_pages, bool delay_rmap);
- 
- #ifdef CONFIG_SMP
--/*
-- * This both sets 'delayed_rmap', and returns true. It would be an inline
-- * function, except we define it before the 'struct mmu_gather'.
-- */
--#define tlb_delay_rmap(tlb) (((tlb)->delayed_rmap = 1), true)
-+#define tlb_can_delay_rmap() (true)
- extern void tlb_flush_rmaps(struct mmu_gather *tlb, struct vm_area_struct *vma);
- #endif
- 
-@@ -267,8 +263,8 @@ extern void tlb_flush_rmaps(struct mmu_gather *tlb, struct vm_area_struct *vma);
-  * remote TLBs to flush and is not preemptible due to this
-  * all happening under the page table lock.
-  */
--#ifndef tlb_delay_rmap
--#define tlb_delay_rmap(tlb) (false)
-+#ifndef tlb_can_delay_rmap
-+#define tlb_can_delay_rmap() (false)
- static inline void tlb_flush_rmaps(struct mmu_gather *tlb, struct vm_area_struct *vma) { }
- #endif
- 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 7791872f14af7..600a68a54ecf8 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2508,10 +2508,12 @@ static inline void zap_deposited_table(struct mm_struct *mm, pmd_t *pmd)
- 	mm_dec_nr_ptes(mm);
- }
- 
--static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
--		pmd_t pmdval, struct folio *folio, bool is_present)
-+static void zap_huge_pmd_folio(struct mmu_gather *tlb, struct vm_area_struct *vma,
-+		pmd_t pmdval, struct folio *folio, bool is_present, bool *force_flush)
- {
- 	const bool is_device_private = pmd_is_device_private_entry(pmdval);
-+	struct mm_struct *mm = tlb->mm;
-+	bool delay_rmap = false;
- 
- 	if (folio_test_anon(folio)) {
- 		add_mm_counter(mm, MM_ANONPAGES, -HPAGE_PMD_NR);
-@@ -2519,23 +2521,41 @@ static void zap_huge_pmd_folio(struct mm_struct *mm, struct vm_area_struct *vma,
- 		add_mm_counter(mm, mm_counter_file(folio),
- 			       -HPAGE_PMD_NR);
- 
--		if (is_present && pmd_dirty(pmdval))
-+		if (is_present && pmd_dirty(pmdval)) {
- 			folio_mark_dirty(folio);
-+			/*
-+			 * Remove rmap after the TLB flush if other CPUs could
-+			 * still write to a mapping that supports writeback.
-+			 */
-+			if (!tlb->fullmm && vma->vm_file &&
-+			    mapping_can_writeback(vma->vm_file->f_mapping))
-+				delay_rmap = tlb_can_delay_rmap();
-+		}
- 		if (is_present && pmd_young(pmdval) &&
- 		    likely(vma_has_recency(vma)))
- 			folio_mark_accessed(folio);
- 	}
- 
-+	if (!is_present && !is_device_private)
-+		return;
-+
- 	/*
- 	 * Present and device private folios are rmappable. Remove the
- 	 * rmap after transferring young+dirty to the folio.
- 	 */
--	if (is_present || is_device_private)
-+	if (!delay_rmap)
- 		folio_remove_rmap_pmd(folio, &folio->page, vma);
- 
--	/* Device private folios are pinned. */
-+	/* Device private folios are pinned and don't need a TLB flush. */
- 	if (is_device_private)
- 		folio_put(folio);
-+	else if (__tlb_remove_page_size(tlb, &folio->page, HPAGE_PMD_SIZE))
-+		*force_flush = true;
-+
-+	if (delay_rmap) {
-+		tlb_flush_mmu_tlbonly(tlb);
-+		folio_remove_rmap_pmd(folio, &folio->page, vma);
-+	}
- }
- 
- static struct folio *normal_or_softleaf_folio_pmd(struct vm_area_struct *vma,
-@@ -2573,6 +2593,7 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	struct mm_struct *mm = tlb->mm;
- 	struct folio *folio = NULL;
- 	bool is_present = false;
-+	bool force_flush = false;
- 	bool has_deposit;
- 	spinlock_t *ptl;
- 	pmd_t orig_pmd;
-@@ -2597,13 +2618,14 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	folio = normal_or_softleaf_folio_pmd(vma, addr, orig_pmd, is_present);
- 	has_deposit = vma_has_deposited_pgtable(vma);
- 	if (folio)
--		zap_huge_pmd_folio(mm, vma, orig_pmd, folio, is_present);
-+		zap_huge_pmd_folio(tlb, vma, orig_pmd, folio, is_present,
-+				   &force_flush);
- 	if (has_deposit)
- 		zap_deposited_table(mm, pmd);
- 
- 	spin_unlock(ptl);
--	if (is_present && folio)
--		tlb_remove_page_size(tlb, &folio->page, HPAGE_PMD_SIZE);
-+	if (force_flush)
-+		tlb_flush_mmu(tlb);
- 	return true;
- }
- 
-diff --git a/mm/memory.c b/mm/memory.c
-index 7f019afc35ca0..cd954afb146f4 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1757,7 +1757,7 @@ static __always_inline void zap_present_folio_ptes(struct mmu_gather *tlb,
- 		ptent = get_and_clear_full_ptes(mm, addr, pte, nr, tlb->fullmm);
- 		if (pte_dirty(ptent)) {
- 			folio_mark_dirty(folio);
--			if (tlb_delay_rmap(tlb)) {
-+			if (tlb_can_delay_rmap()) {
- 				delay_rmap = true;
- 				*force_flush = true;
- 			}
-diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-index e98397ac577c4..6a2d56970a552 100644
---- a/mm/mmu_gather.c
-+++ b/mm/mmu_gather.c
-@@ -171,6 +171,8 @@ static bool __tlb_remove_folio_pages_size(struct mmu_gather *tlb,
- 	struct mmu_gather_batch *batch;
- 
- 	VM_BUG_ON(!tlb->end);
-+	if (delay_rmap)
-+		tlb->delayed_rmap = 1;
- 
- #ifdef CONFIG_MMU_GATHER_PAGE_SIZE
- 	VM_WARN_ON(tlb->page_size != page_size);
-
----
-
-base-commit: 55c8a634fd238bc7e6e2c4010985192ae8163435
-
-change-id: 20261113-dirty_file_pmd-90e63640a593
-
---
-
-Cheers,
-
-David
-
+Chris
 
