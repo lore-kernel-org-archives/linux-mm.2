@@ -1,128 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8F20606A33D
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 15:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627FA606BAA6
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 15:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=K6ah8pAP
+	dkim=pass (2048-bit key) header.d=g-ucla-edu.20260707.gappssmtp.com header.i=@g-ucla-edu.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=ZdndL+Ep
 Received: by kanga.kvack.org (Postfix)
-	id D71F36B00EF; Fri, 13 Nov 2026 10:51:08 -0500 (EST)
+	id 03B246B05B1; Fri, 13 Nov 2026 10:59:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D23BB6B05B0; Fri, 13 Nov 2026 10:51:08 -0500 (EST)
+	id F06FC6B05B2; Fri, 13 Nov 2026 10:59:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C12246B05B1; Fri, 13 Nov 2026 10:51:08 -0500 (EST)
+	id DCE6B6B05B3; Fri, 13 Nov 2026 10:59:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C4F66B00EF
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:51:08 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 38AC41401CB
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 15:51:08 +0000 (UTC)
-X-FDA: 85430534616.28.156DE1F
-Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
-	by imf29.hostedemail.com (Postfix) with ESMTP id F3FAB12000B
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 15:51:05 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=K6ah8pAP;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf29.hostedemail.com: domain of "prvs=770a1a5e7=dipiets@amazon.it" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=770a1a5e7=dipiets@amazon.it"
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794585066;
-	b=XmmhDSBhWLY8GxI2+/guzoRYRljrLavUjGe27eDo1g9Oc1e0cFXNAPLI8Xtv6DbBtXBR3d
-	ixxIn3ff50+oSpQ7iMfB07AcfvKoJRo3uDZMXjtSe4Enr6pJvSShIeixDJ/bdo39ua+GL6
-	QOUV0Yvohm4s1n8bNL0ytAoyKW48CLg=
+	by kanga.kvack.org (Postfix) with ESMTP id A580A6B05B1
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:59:18 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2D2B6A792C
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 15:59:18 +0000 (UTC)
+X-FDA: 85430555196.18.AD57A2D
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 306E01C0004
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 15:59:16 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=g-ucla-edu.20260707.gappssmtp.com header.s=20260707 header.b=ZdndL+Ep;
+	spf=pass (imf20.hostedemail.com: domain of jasonangelov@g.ucla.edu designates 74.125.82.52 as permitted sender) smtp.mailfrom=jasonangelov@g.ucla.edu;
+	dmarc=pass (policy=none) header.from=ucla.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794585066;
+	s=arc-20220608; t=1794585556;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ttqAfDxUfq10cMBrxuj6822Y6w4QHwk60wHnUr65sec=;
-	b=hDnWbYwOTtc4Ev7gzwTvtGGEHm10tLtp3mz9UYwbdng3cnHjeA7HPhtQMPLDkgygQTD33D
-	QKUL1n+iNnecbMHN1ovkFWhomjeOVJ3Iu2gEWsJ+Ffrr8iOj+oVRIeN9wQz2xn5WoSXtdX
-	0m7ONj+gvQs7n/rUjQoJ7uW84lg7KnU=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=aIRQL3xPbHGiEB8Nq3QfhoUZhbnBVyn8ckiUXc1wE3o=;
+	b=lqUh7qr2xqcxjoLCBK6oZDsCgJ0TYkZTsuMVi1cdr5Bing4LHl0G5aAf2zI5Kf2tIXagwl
+	t7HqT/P/Ml8lHPh18pxhaBnLoKUdiYgoHhz957LGz1JF1aYiWid9bNd1FfwQDXCo7pdmyk
+	KHtwxmTXEc1SxXAaHWpMEGa23nW5/IA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794585556;
+	b=VAgOVwdKiLKzwHA42axx6ICeKRsOJOz+YRvSHjwtRdZFQF9611Us3kaat68OFTRJu0jLr+
+	Ui36dgRT/TOpn3s+lYv5vVFHElkgRfDj5kdmCg8NzQFrmewEMWK9fE0sPCnxjegJzA6xzk
+	DdhTod7mB0ef5h8VLJbGnXWsGvIEQSA=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=K6ah8pAP;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf29.hostedemail.com: domain of "prvs=770a1a5e7=dipiets@amazon.it" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=770a1a5e7=dipiets@amazon.it"
+	imf20.hostedemail.com;
+	dkim=pass header.d=g-ucla-edu.20260707.gappssmtp.com header.s=20260707 header.b=ZdndL+Ep;
+	spf=pass (imf20.hostedemail.com: domain of jasonangelov@g.ucla.edu designates 74.125.82.52 as permitted sender) smtp.mailfrom=jasonangelov@g.ucla.edu;
+	dmarc=pass (policy=none) header.from=ucla.edu
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-15ea896ddc8so1470571c88.0
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 07:59:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1794585066; x=1826121066;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ttqAfDxUfq10cMBrxuj6822Y6w4QHwk60wHnUr65sec=;
-  b=K6ah8pAPjUEvreiAYDBqYH+TxJ4vHRlRfIv4HblQYvf40QjU1XF9GIeV
-   ZUkDDopkSbP7peo0dpubEaOWL7PQzzm5G/CkYjH7z/mBIw6RgNiXZwJUF
-   krNhbysPxSxuzG/bbMMoJbaLtBduikwgynxAh91GklyBAjLLzrtjCRUJG
-   DHOXF2vlYBcAcj6StRRhCSF70agY18T0o+KtkANhYFodZ4rsx1hZ05q6F
-   yRvjJdaxHnZntCBbbizp3K3hTbjiG2htgvwI5Sqfp3VYalM6xeOCnae/3
-   c3AsK3tmF5wzzKYeCBefbI1d+sRzl8f/Uny89FCGoWxCGiycwiSrRljXU
-   w==;
-X-CSE-ConnectionGUID: mEzGvvEbQ/eZvW+yJkWFSA==
-X-CSE-MsgGUID: 726PIJdYTv201+SXclxh0w==
-X-IronPort-AV: E=Sophos;i="6.27,211,1787011200"; 
-   d="scan'208";a="33924868"
-Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 15:50:57 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.236:27372]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.10.61:2525] with esmtp (Farcaster)
- id 06ade6d6-3062-4e83-9e5f-28bb5c92f1e7; Fri, 13 Nov 2026 15:50:57 +0000 (UTC)
-X-Farcaster-Flow-ID: 06ade6d6-3062-4e83-9e5f-28bb5c92f1e7
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Fri, 13 Nov 2026 15:50:55 +0000
-Received: from dev-dsk-dipiets-1b-77b833da.eu-west-1.amazon.com
- (10.253.66.177) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56; Fri, 13 Nov 2026
- 15:50:49 +0000
-From: Salvatore Dipietro <dipiets@amazon.com>
-To: <jack@suse.cz>
-CC: <abuehaze@amazon.com>, <agruenba@redhat.com>, <akpm@linux-foundation.org>,
-	<alisaidi@amazon.com>, <almaz.alexandrovich@paragon-software.com>,
-	<apopple@nvidia.com>, <blakgeof@amazon.com>, <brauner@kernel.org>,
-	<byungchul@sk.com>, <cem@kernel.org>, <david@kernel.org>,
-	<dipietro.salvatore@gmail.com>, <dipiets@amazon.it>, <djwong@kernel.org>,
-	<dlemoal@kernel.org>, <exfat@lists.linux.dev>, <fuse-devel@lists.linux.dev>,
-	<gfs2@lists.linux.dev>, <gourry@gourry.net>, <hyc.lee@gmail.com>,
-	<joshua.hahnjy@gmail.com>, <jth@kernel.org>, <liam@infradead.org>,
-	<linkinjeon@kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-xfs@vger.kernel.org>, <ljs@kernel.org>, <matthew.brost@intel.com>,
-	<mhocko@suse.com>, <miklos@szeredi.hu>, <naohiro.aota@wdc.com>,
-	<ntfs3@lists.linux.dev>, <ntfs@lists.linux.dev>, <pfalcato@suse.de>,
-	<rakie.kim@sk.com>, <ritesh.list@gmail.com>, <rppt@kernel.org>,
-	<rvvandan@amazon.com>, <ryan.roberts@arm.com>, <sj1557.seo@samsung.com>,
-	<surenb@google.com>, <vbabka@kernel.org>, <viro@zeniv.linux.org.uk>,
-	<willy@infradead.org>, <ying.huang@linux.alibaba.com>,
-	<yuezhang.mo@sony.com>, <ziy@nvidia.com>, <kirill@shutemov.name>,
-	<dgc@kernel.org>
-Subject: Re: [PATCH 0/2] mm, iomap: account dirty at page granularity for per-block dirty folios
-Date: Fri, 13 Nov 2026 15:50:15 +0000
-Message-ID: <20261113155015.516481-1-dipiets@amazon.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <mcskrz2zbav5r3xtlwqytyotgjcmmi3wapeibkqornuhb3qp5y@qk22j77kvkqx>
-References: <mcskrz2zbav5r3xtlwqytyotgjcmmi3wapeibkqornuhb3qp5y@qk22j77kvkqx>
+        d=g-ucla-edu.20260707.gappssmtp.com; s=20260707; t=1794585555; x=1795190355; darn=kvack.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=aIRQL3xPbHGiEB8Nq3QfhoUZhbnBVyn8ckiUXc1wE3o=;
+        b=ZdndL+EpFpgwNBBhGD2pbcTWhA0J2XqR7BXRPsVTuV1rVw/+xamO1R1Pg7IucsFDIu
+         ma739UuxZQvVk2OEM4gDYyZd1cW1XUNShGijXoOuyQo2UD0tAU88+vOFvPZqvtOGJzKg
+         ufW018HbZk3XQuW/GgnA7q+uEbRwqjAL1EQ3LS/hlPhx/b1KfAsflizVQ5rtIXWkL3dA
+         ntVTdg18PtqzkY1DjuINyLf3Ix9+qEfNbt4YCrNTOS3XD+ZC4qD/hX6gmvbzMNItNt2/
+         Gd8ZS1k6Ya++tcdEcy/08hnLadXMAaNE6ms1059XVDmCPyHIvQ82/rZvRE+RHSF0XLVL
+         /djw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794585555; x=1795190355;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=aIRQL3xPbHGiEB8Nq3QfhoUZhbnBVyn8ckiUXc1wE3o=;
+        b=RMkP5xr/k2+WZKUx8pMD+WFbKjQATfjNFPXzVbX1WnjDwD5ZYMn7ndx+roITtk16DZ
+         oKWNVxNcyfEE2JaT1Oy8NVu4Mik0CmiBsFXLQEIifXr/4p9Ges36Nkx6XByQdDXtPQ6Y
+         z9IkTbpZErqwgPougLU0la5fqcVsI41MkAUpGeVUJVH38/1gbOzD5S+YOtvlxNXGbtIb
+         1Sj94ZTVP9NYDNEynSf8549KmyoxYdyGJk+ijpIlUMyiCPmMOGt+AsFZjedqjC6nrAH/
+         pL7Ye3GcdBN1UTc47F3fnQYcm8+NMYgtaiDzeIA8sUEEIhDwW1J4GWOtUKKb05fAQJ4p
+         Tpkw==
+X-Forwarded-Encrypted: i=1; AL+hErGnGQb6A/6i84QRqCdpEe0vR/Li3at6NFqTgQD8uqtEfw5SNLASEXVhOH3t9vt8i2uji0c/Z6GH+Q==@kvack.org
+X-Gm-Message-State: APuU4Z9dfSTxw8AwHy652WbyCE3G01nsMLqvTp3j3p46H1z0lKysK4MV
+	WeVJQvTjbBK/9amcPYgF/W0nNFXrgP05ngRFcu4awgG/E6ysq0WNFhe89pMLMKJJuS4=
+X-Gm-Gg: AYBFou3MlrgpfOQL/6RwPWo+NWGQqh/G2Yun1IXzM2GRrNoDyUM3/gPMosi8rp2qUTI
+	tM+JyLRCIytsjtYMd2ikZlFR1RllKzy1V29rg0p8KbfZAxFU173AP/RzGNXlK7HhoEw+5jysNVc
+	RhSPgsNrurncML89O1ETTeobtdBv18RB/HmWQKq/qmYUjQxFipNzZDAfmr4o9xeS/y+H8PFYkvn
+	pkM86Ewvn6qDkfp0pQfjgLSq+Z2MubDshcU88Gqa3a1Wm5Sm8dGhGmOv1ToB87fzWnO4qmhPmjD
+	VxA4rWd5hWEIo2bQyBr+hTY+eYdHcerRw/taUPx11qrHSJcGz/tySfmfw4PDr2D/5PWZd/XYmTE
+	UDY7RMSSzOWkLTwXv5HMRJVhPL8UG70umaO6IvcC9GEBlwj42+7wmj32NYQNRq3Qf48gImKHygC
+	Dlv5A5rYipavRoArEFCfpYBDMnhHKfHLgGf/kOtwTl3fyd7GPTO2b6i/57S84V/JbSGk1XcBRmk
+	lv9ZbrBQJv50QOfvdcj4Veuecob2CKxb4HtABW/xq2tUtUjCWRTZNOpVDqQBP3tnpiAUiB8SfTj
+	bXL9D1fmGVfUgA3E6esLYmlaFmDC8w==
+X-Received: by 2002:a05:7022:3c03:b0:1b2:42db:8a1d with SMTP id a92af1059eb24-1b5030cd460mr2271552c88.29.1794585554755;
+        Fri, 13 Nov 2026 07:59:14 -0800 (PST)
+Received: from [127.0.1.1] ([131.179.95.34])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5031bc518sm7868383c88.15.2026.11.13.07.59.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Nov 2026 07:59:14 -0800 (PST)
+From: Jason Angelov <jasonangelov@ucla.edu>
+Subject: [PATCH 0/3] mm/damon/tests: add KUnit coverage for age_ms filters
+Date: Fri, 13 Nov 2026 07:58:54 -0800
+Message-Id: <20261113-test-age-ms-filter-v1-0-b99eab2f71bb@ucla.edu>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: EX19D031UWA001.ant.amazon.com (10.13.139.88) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: F3FAB12000B
-X-Rspamd-Server: rspam12
-X-Stat-Signature: op8b9uoif5gc5njg34rxjbqts4sry3pr
-X-Rspam-User:
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MSQqAMAwAvyI5G2jrWr8iHkSjBrRKU0SQ/t3ic
+ QZmXhDyTAJd9oKnm4VPl0DnGUzb6FZCnhODUabWWhsMJAHH5A/BhfdAHq2tirYsqDGqhBRenhZ
+ +/mk/xPgBjyfsPGQAAAA=
+X-Change-ID: 20261112-test-age-ms-filter-9953843e7204
+To: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Jason Angelov <jasonangelov@ucla.edu>
+X-Mailer: b4 0.14.3
+X-Rspamd-Server: rspam06
+X-Stat-Signature: godat78xwhujoown795ni99mbh3bnh6x
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794585065-777423
-X-HE-Meta: U2FsdGVkX19izMO1ger21VW9HjBEEiwk0lPjve46hp3lgAupNDYYe4XbFHjJvomgeUIrA7H8VwfQPTEUtZxTyI+7DIZSNBUS1ViSypa9oQUWF/0S2whK9uhxCWDjwkiB4PmBErUMTFMeh/GVcgHG7ZlkP3g4Gf9+6pchPRd7RMAw/6IIWAaQEgtAF4IWGiJEaacf8LyVkOO/ujpbo/HMrPNyXPuuz+5IwNSIY/CXNDhbmcuvYL/lEftIXUs4N022UjBmWDSNsts9VkG/dWm7poW5bhUHfIeluEzmr2V1CoVN0qjpxQxgmM7s3uqEaH4l62YP6CcHlCycv+Npw3TUU6Uvj9QrxHsvwCBZ3zTl6f2RqWZIqvC30op7Y6KxZdcj9AokxXc2bciMEo04gfmfjdYWV7n04lpDT6Z2izaXdIglrfcs+WcmprIi6ImN96/v7YGozmruoAX9erdH+UimuwqN/+8vxH4B+WZDeFOI0WW9MDQqQoMQHQyjiGH3I/L7JJtfQfPJzqyZD0bIETpOrpyFI4+E154wHhBRWNG9i/HSTXwUk0RuRFPy7mplKs3g7Oqkm0YvuIRkg0Me5fmQ/F//Xeb2lG+ts3XK+JFPaUOsnsQyH3MI1/vkfX3iC6l1O3NPqQXY5MEoHnMc/CjZ81/YeIdALD0T0xWcUW6G1JhbueTvGwKrGHgFjj8J3+BkLO4W2C3vfwP87PkwOaeBWFtEdUvhRfv/OGGNeHPB2i3V67GFPgui1Rt68Y0sVFYLiEgT/FTT0CSdkv5N+gI5xZtxRO2mnE6E9m3PwESWSg9pLzn+gK33/QFnJpSzpKNjP+Gk1w1UlZwudl2Pyk2bddC6uIE9Sa3UdQEXy/QLBBi3QJmBDnnxhxihR/TaDPOiKAAVlFaAFEuScONrXrpf+Gni6DsSBS9QU+/wJGpDGFcw4HDQOCTiRiGspIIQm0pC0nI8rqlFetIx/0IJCb1
- uBs8V756
- EbOK4+NF7AFwhwHpDhPMrVUytcLmGqhCXfAt3tAa/Qv4fHhil1kPB9qN4ffMoHbTSt97MT4ry+ByMSuITHQ5WbCY5AbkLvcUuFrJXz2C8xtlfMEplccDdHXHBf9jyKh/dfTOCdOZgwh0ZBIliJ3d2cSAXDBBAj0+2kfjjN0T2VKGCbPc7EUJDe3OvbwKBM2mnrVIgCuYJU2b/QMDbGieHIh7jIruBdP3hRElPaJnhCq3s38RY2BWDXiwssZQKbvggiF9sogNtehAKlZlMPz88kWzc3mSOCUgs7GOzvuSQCptAr+mi5bf74c5nBrQgZ73O2gYkeT3yxJOCZAQ9mzELDNlHdoNfZUDKenO5E5E6yLxPMEsgeihYdDqLaCgcH5lilHKW5N5oaFf/Ax94Pk6pekGCBcHbmSPt3Frj9PrZAjv530sOYbnW7YmkIrYII1rEXIBxDa7na1ZSGP47gTv56RxfXp6U/ucDPjkw7BCvyF5xc2v/kYgMU2aFjxRQMLIC433mFZlIzqUFdXem1Q2pt2QnLvATMXqquhU8uLbpWGpLCEA7ZPyYFqJFzyi6spL5L/WFH46AES9v8dVZDqHlijYbXhllTp/QIAUizdqOqPxyQfKBUBMihDZYXztXCcWvD9SkEdQM5mygv4LX2ekOyG4gUla+l3vFsq7Cn1rxIGSrXswsBWflAb1QQwUl1eifoeRScxN69O0FF6N/Yko8OeXfjSK6+fi0jRu6gmOJQBBesvSm+zl2h4suICf1UxhSCI2DxPBc5X5IgiNv1kjAqCPAVqZzzWthLizX8iT/SKMCXToFD4ChDy8UHx+J4URlp+hEasIalc0/+ONZpBA9U1UHdiYs++mnIrpc7J7eT5fR/M6FCzVrMjo6b6ZbGor4Dd4gSbK7w9ZNWMgoooL/Sl8P1g==
+X-Rspamd-Queue-Id: 306E01C0004
+X-Rspam-User: 
+X-HE-Tag: 1794585556-398954
+X-HE-Meta: U2FsdGVkX19nTnltj1U/btr2EsL7h6r2lECLBh/06l5uMz4oILIWJ2SRV9J1/HCF1jZCL1ZGbv/EkEHoGOS36Vx3Mrkk/mCy11PhAlvyFRRbEfXtDgxIdbm0OJt0q36RkAncijR1ZmDDHk6D6tVWymTnYmWmjgvG+zHwqYHyDeAxEoViTA/5F1+JgN+d6hW1GB+IOjBgj33FiKwoesH5nvZy1tdItJ4Jlk+QPstIOBwyUIaYka2bJ6smrTPhUDYCJi/YKJyVrv1Owbh8itM0DeKixoILnTDP4yN5wEXI+6lEr2Ohf5yBwSA3AphQXrXyTS0YTUviHaasUsO/Ca6vKZThMEZkR2Psg+4XVVNK7WuNHhknuugp00VpStH3kzZEMcQncK2U8NHyjaJkGqUtKjgnF37MaswBSr7MnRW1lkofYiJSZn20hhlgvmih8d4SqmBREFmcbT+tQB58+frd0rOnuHj8a8B7XdO39P/5Z6KoMrvir0Lty6qtnIs8UoXZTJLsxrK649wOPzWuXj8aIhrdyPyz/4LzFaw2csAe6TB5mIGGb1BKn3fH7Ugpki/k6Eja1WtmPSKHIMo4tLlIMwtQcRCYzo0txVObwQm2IiIPID9G5qzgBgt0J1nBZXc3gw/qnd1l+lZN1qdkNf6vEVWbxJCroPZ+GwBTMvxxfhP6q8zUzp+dEHYnMCT1pL3nZ8tgm61gDTfry80+SAleKXPrdpu09LZ1I7p+A9y/UPz0AJhIfH5P2f1thTObA4BhB14Zarf1dsOz9WPsiP5W8g0l+F/249vJjBk1VTxLDxzMOhm3gt4EgFTWleC2OQ5NtRQULRQ5o/VP3FdMPRwAwbShleEYG+7jDn+PCrR2r/5IXX24uHAFtnRDWZbr9bzHFQP5eTsUBC1lv2LOVCTg/t7wy6Bx1ZaORMs5EvLWIBC/JTLKGF2kFVtIVMnCvJvCPzVPaGhzxKtj3bShi8L
+ 3tm8cKJM
+ CSzYxmHqiyVKLJq/KEIeVLg8MftqusIZgQc8JuUKwHubiMSouTRMtBQaWBl7nTMIjia4ZqGpmSQjm27+1KMeQ8KTn9ILSJr49tO8VMlRU/lZiUOcprsrrMHepQ0rq6hoB3FjPjGnTX0MQwZPg+llDT5idjVopde9W7VX3URu+1QQVnnFf+VA0l4dxYSZ43XRsUlR6NmZ8I/vyntbaMbOSo5pvwnVEk1Qd9egaVRtfOkdSaMS66+PrnB1V79IZRtHmpfGWcz93iKK4e+6yhV53XlvkiHkxgNkgsUAzKMYboBznhVfzSVNax6ayUJXjWjnnPxDJ3rCrtUyC4fs/YfKfYV6pyKvZsj4RQ6sf9EY5T8TBaN8b2FJmC2SrYqLdbjZEw3KnFJCJGmFDgIfqNyB6QgGfwbed/ZVzZV7fbJUwOe6+YOmV4mAJHyerANQ8APa8K/NGh9BsHJZ2oGx5sR1BUS82nkqJCAVfb+L+X3ICfEvaO3DZGgn99AClWvvVauAt61Tdn78eZnDjifRPybNEcAgmOIcwfmmk+jKCGHYgqfgK8u3qV2HOw1Llcikixb32ufNWT5f5EF/rTkkPegeoRgXrJw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,156 +125,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi all,
+The DAMON core tests do not cover DAMOS_FILTER_TYPE_AGE_MS. Add tests for
+committing valid and invalid age ranges, identifying the filter as
+core-handled, and matching ages at and outside the range boundaries.
 
-Thanks Jan, Pedro, Dave, David and Kiryl for the feedback.
+Region age is counted in aggregation intervals, but age_ms filter bounds
+are in milliseconds. The interval-change test checks age rescaling and
+filter matching after both increasing and decreasing the aggregation
+interval.
 
-Following Dave's question about how PostgreSQL gets large folios on
-files it writes 8 KiB at a time, we looked deeper and found a
-reproducer that needs only fio and a single disk.
+Signed-off-by: Jason Angelov <jasonangelov@ucla.edu>
+---
+Jason Angelov (3):
+      mm/damon/tests/core-kunit: test DAMOS_FILTER_TYPE_AGE_MS in damos_test_commit_filter()
+      mm/damon/tests/core-kunit: test DAMOS_FILTER_TYPE_AGE_MS in damos_filter_for_ops()
+      mm/damon/tests/core-kunit: test DAMOS_FILTER_TYPE_AGE_MS interval changes
 
-What happens:
+ mm/damon/tests/core-kunit.h | 107 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 107 insertions(+)
+---
+base-commit: daed51c9105158768a3949395135aa6e0a04bb7e
+change-id: 20261112-test-age-ms-filter-9953843e7204
 
-  1. A buffered sequential read (VACUUM, a backup, a scan) builds large
-     folios through readahead.  They stay large in the page cache until
-     they are evicted.
-  2. The first small write into one of these clean folios charges the
-     whole folio as dirty: a 4 KiB write into a 256 KiB folio charges
-     256 KiB, while writeback only writes the dirty 4 KiB.
-  3. With random writes, most writes land in a different clean folio,
-     so the dirty count reaches the limits with little real data.
-     balance_dirty_pages() then throttles the writers, and they end up
-     paced by how many folios writeback can clean per second rather
-     than by the bytes to write.
-
-Reproducer: XFS on one EBS gp3 volume (3000 IOPS), m8g.8xlarge
-(32 CPUs, 128 GiB), default read_ahead_kb=128. fio's 1 MiB reads grow
-the readahead window up to the device's max_sectors_kb (256 KiB), so
-the read builds 256 KiB folios.
-
-  ; create.fio: 16 x 3 GiB files, direct I/O so nothing is cached
-  [global]
-  directory=/mnt/xfs/fio
-  filename_format=f.$jobnum
-  size=3072m
-  numjobs=16
-  group_reporting=1
-  [create]
-  rw=write
-  bs=1m
-  direct=1
-  ioengine=libaio
-  iodepth=16
-
-  ; load.fio: buffered sequential read; builds the large folios
-  [global]
-  directory=/mnt/xfs/fio
-  filename_format=f.$jobnum
-  size=3072m
-  numjobs=16
-  group_reporting=1
-  [load]
-  rw=read
-  bs=1m
-  direct=0
-  ioengine=psync
-
-  ; randwrite.fio: random 4 KiB buffered writes, 32 x 312 = ~10k IOPS
-  ; invalidate=0 keeps the cached folios when fio opens the files
-  [randwrite]
-  directory=/mnt/xfs/fio
-  filename=f.0:f.1:f.2:f.3:f.4:f.5:f.6:f.7:f.8:f.9:f.10:f.11:f.12:f.13:f.14:f.15
-  rw=randwrite
-  bs=4k
-  direct=0
-  ioengine=psync
-  invalidate=0
-  numjobs=32
-  rate_iops=312
-  time_based=1
-  runtime=120
-  group_reporting=1
-
-To reproduce it, run (as root):
-
-  fio create.fio
-  sync; echo 3 > /proc/sys/vm/drop_caches
-  fio load.fio          # skip this step for the control run
-  fio randwrite.fio
-
-fio asks for ~10k write IOPS, more than the volume's 3000, so dirty
-data builds up in both runs.  In the control run (no load step) each
-4 KiB write creates a 4 KiB folio: after 120 s only 3.3G is dirty,
-below the 12.2G background threshold, and nothing is throttled.  After
-the load step the same writes land in 256 KiB folios, and each write
-into a clean folio is charged 256 KiB: the dirty count passes the
-background threshold after 6 s and writers are throttled from 13 s.
-
-Results on v7.4-rc2, one run per kernel, each on a fresh instance.
-Writer sleep is the total balance_dirty_pages() pause time over the
-32 writers during the 120 s write phase:
-
-                         write   p99 / max   writer   max    folio
-                          IOPS     lat ms    sleep s  dirty  size
-  baseline, control      9,984  0.01 / 0.30      0    3.3G    -
-  baseline               4,061    60 / 160     179   23.5G   256K
-  v1 (this series)       9,984  0.01 / 0.67      0    3.6G   256K
-  max order cap 64K      7,071    50 / 280      73   22.3G    64K
-  max order cap 16K      9,984  0.02 / 0.05      0   11.9G    16K
-  split on write         9,984  0.02 / 0.17      0    3.6G   256K
-  evict on write         9,984  0.03 / 0.19      0    3.3G   256K
-  POSIX_FADV_RANDOM      9,984  0.02 / 0.05      0    3.3G     4K
-
-The control run gave 9,984 IOPS and max latency up to 0.30 ms on every
-kernel.
-
-  - max order cap: the global cap in mapping_max_folio_order() that Jan
-    suggested trying.  At 64 KiB a 4 KiB write still charges 16x and is
-    throttled.  At 16 KiB this run is not throttled, but dirty reached
-    11.9G, just below the 12.2G background threshold.  The cap that
-    avoids throttling depends on the write size, and it removes large
-    folios for every file, including ones that never see small writes.
-  - split on write: when a buffered write (iomap opts in, not for
-    zeroing or unshare) finds a clean, uptodate, unmapped folio at least
-    4x the write size, folio_split() it down to the write's order before
-    dirtying it.  The rest of the folio stays cached in large folios.
-    On the concerns Jan raised about splitting [1]: split on write only
-    splits clean, uptodate, unmapped folios, so it needs no new
-    filesystem state beyond an opt-in flag in iomap, and if
-    folio_split() fails the write simply proceeds as today; evict on
-    write avoids splitting altogether.
-  - evict on write: same trigger, but mapping_evict_folio() the folio
-    instead of splitting it (~40 lines).  This discards the folio's
-    other cached data; nothing reads it back in this test, so the read
-    cost does not show here.
-  - POSIX_FADV_RANDOM (Dave's question): fio's fadvise_hint=random on
-    the load job.  It avoids the problem without a kernel change, but
-    only where the application opts in: the hint is per open file, so
-    every process that reads a file must issue it, and a reader that
-    doesn't (a backup or copy tool, for example) still builds large
-    folios.  Every application that reads files sequentially and then
-    rewrites them in place would have to adopt it, and keeps the
-    regression until it does.  It also turns readahead off for those
-    files, so their sequential reads lose readahead.
-
-Split and evict on write keep whole-folio accounting and act at write
-time, so they also cover large folios already in the page cache,
-whoever built them, without each application having to opt in.  Both
-only touch clean, uptodate, unmapped folios at least 4x the write
-size, and only on iomap buffered writes.  Split keeps the rest of the
-folio cached at the cost of the split; evict is simpler but drops it.
-I'd appreciate your opinion on these options, or any other direction
-you think is more appropriate.
-
-Thanks,
-Salvatore
-
-[1] https://lore.kernel.org/all/oocwnxqgd4klrem6hkya3sddqoxkosml4ysz23if4j7wj2qdwi@5skgc4ftu7io/
-
-
-
-AMAZON DEVELOPMENT CENTER ITALY SRL, viale Monte Grappa 3/5, 20124 Milano, Italia, Registro delle Imprese di Milano Monza Brianza Lodi REA n. 2504859, Capitale Sociale: 10.000 EUR i.v., Cod. Fisc. e P.IVA 10100050961, Societa con Socio Unico
-
-
+Best regards,
+-- 
+Jason Angelov <jasonangelov@ucla.edu>
 
 
