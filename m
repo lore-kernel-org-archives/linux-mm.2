@@ -1,100 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F6C606A32D
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 03:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73EA2606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 03:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Xgq8tYcW
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VBTNmNHO
 Received: by kanga.kvack.org (Postfix)
-	id 1BF986B062A; Thu, 12 Nov 2026 22:08:33 -0500 (EST)
+	id 6D08B6B0642; Thu, 12 Nov 2026 22:12:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 196FD6B0642; Thu, 12 Nov 2026 22:08:33 -0500 (EST)
+	id 6A8746B0644; Thu, 12 Nov 2026 22:12:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AD8F6B0653; Thu, 12 Nov 2026 22:08:33 -0500 (EST)
+	id 596BB6B064E; Thu, 12 Nov 2026 22:12:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D553D6B062A
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:08:32 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CF93114019A
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:08:30 +0000 (UTC)
-X-FDA: 85428612780.15.1434BF3
-Received: from mta0.migadu.com (out-231.mta0.migadu.com [91.218.175.231])
-	by imf12.hostedemail.com (Postfix) with ESMTP id EA76740004
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:08:27 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Xgq8tYcW;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.231 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 2DDB96B0642
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:12:38 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 24AFCA8CFC
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:12:36 +0000 (UTC)
+X-FDA: 85428623112.14.3E31BB9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 76ED580002
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:12:34 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VBTNmNHO;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794539554;
+	b=NzBaQ6oAbDDyrzkCjNDOgEScuBOEEbFC5UGWcjwR1UHgx52FcuE7vs+icXOTL5R5BMrhDq
+	rEHBEMZTGth3IIa71pJrCm3hURBRQy3HLBg8TPDO/RnKZ8IltqdNKtUsfEBmfo53RzIEep
+	A691EGK6/zhmXNnid8w5moaToYboLsc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794539308;
+	s=arc-20220608; t=1794539554;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xh12Ec73501aJdZldZTaVOfppvQ19TVeVwb3Yqc67Do=;
-	b=lo/JPeGl7wV79O+CUq/IA1pf5N3Cx5/3ri0BOnzNwRcngQTR700s0JEvtqemst1vWqVHgG
-	vn9dLGffkNlEc0wbY08/zCN0BKuCWoI/vwx4qjfYnm2R4pNCZBACIoFftK2/AHDv2Luewp
-	Wd/4g2coGEu27LQMmqhSz8iKdKXuDVo=
+	bh=OsTrCOvBFWxn4axo5RZn2nb5R4o7XckDXTyC7dJ8tr4=;
+	b=40XqFSrYmsJ9mwwIdE8HIqoVTvdeB5PUKyvCB4eHZepj0dMsVnGwS86NbyHqBoQnm2CGbL
+	TBHva22L0hvpr4Kq4jWZ1Msh6nj62tMCMG7y3snE55l3zGugH9KisTqSvP0j8MRBEim1Bg
+	9lnoVms5rHH5n+UhxKOsyH2Rm/XFJBI=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Xgq8tYcW;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.231 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794539308;
-	b=gDBfxMU55/WWXyzjo0imjh6mDGzidnqezGBNAeZdWFObaIhsbgFID4MsGGP98FPTzAQKr6
-	202604zLLcmyXo0NJLFiK3oA0Uh+/4padFZFC56PhjpYUwFfh387DAqe22ipMv7cJVDsCA
-	IslE7AyR9nMm8RScCkkHPy23+FexQCg=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=i7wdYt1YR5CVX/6t3vNtMl/JvBAliVHJFFa19DKBkmU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794539306; v=1; x=1795144106;
- b=Xgq8tYcWRueqF4ojil24saUe27PEkfMEboQlmmXHzBbCEFdoMphPGlA7z+KF5LxNoRJ53C4I
- c7c1wCTWWNlU9bZZ/J1beBn6dPSShj3qKON2n9tIWv/bWD/o7GffX/NGF+peDJeNZruMY0E1yXJ
- UfekAJ1ZoVD0ofGejP4IHN7k=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 0da06881c7ca0ca3;
-	Fri, 13 Nov 2026 03:08:26 +0000
-X-Mizu-Trace-ID: 0da06881c7ca0ca3
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <1c6137c0-297a-4993-b386-6e8a1824d8dc@linux.dev>
-Date: Fri, 13 Nov 2026 11:08:12 +0800
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VBTNmNHO;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8ECA9402DD;
+	Fri, 13 Nov 2026 03:12:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45EA21F000C4;
+	Fri, 13 Nov 2026 03:12:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794539553;
+	bh=OsTrCOvBFWxn4axo5RZn2nb5R4o7XckDXTyC7dJ8tr4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=VBTNmNHOV2NCySGEhL4lt7Zm/2MSpOfxDQE/jEAxoMxO7N6+ovffiyo7YxD3k03W1
+	 /VOXAv8B0lHM/gdfXd5cPnbE5LuHWQbFdU4WzMKVCjThec8hmkOetbyDIpqnB5CEpC
+	 FE7FznFYkMgrXZqiTrod+75QWnHgld0efwHFQnUawpERdtj2MYdzLFzXsW1sDS3QBf
+	 cAvwrKaSDd+MVXcH4YxcT5YLy5Faon8BI1A2BJ8QZU0F3n9NPjQ8kJ+V54TcgFW490
+	 RLFqWodLIe4mEXN61GnNjX8mvC0Lq1d51IpDU+k2S3eJ9kAFDvRpJwUf6ySLDfL28E
+	 hCW+/9Cz85YNA==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Joerg Roedel <joro@8bytes.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Brian Starkey <Brian.Starkey@arm.com>,
+	John Stultz <jstultz@google.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Radu Rendec <radu@rendec.net>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+	kvmarm@lists.linux.dev, Oliver Upton <oupton@kernel.org>,
+	media-ci@linuxtv.org
+Subject: Re: [PATCH v9 06/14] dma-pool: Allocate CoCo atomic pools using
+ CoCo shared memory allocator
+In-Reply-To: <sashiko-outbox-199544@kernel.org>
+References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
+ <20261104164555.3555725-7-aneesh.kumar@kernel.org>
+ <sashiko-outbox-199544@kernel.org>
+Date: Fri, 13 Nov 2026 08:42:10 +0530
+Message-ID: <yq5amrrdmnlh.fsf@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (macOS/Intel)
-Subject: Re: [PATCH v2] mm/mglru: yield the lru_lock earlier in
- fill/drain_evictable()
-To: Baolin Wang <baolin.wang@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
- Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-References: <20261113020132.274013-1-hui.zhu@linux.dev>
- <a72af87a-0f10-4717-9d50-2d3480c32caf@linux.alibaba.com>
-Content-Language: en-US
-From: Hui Zhu <hui.zhu@linux.dev>
-In-Reply-To: <a72af87a-0f10-4717-9d50-2d3480c32caf@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EA76740004
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 3hyntzf7bjwmwda4mztyqthokksz3i9p
-X-HE-Tag: 1794539307-976051
-X-HE-Meta: U2FsdGVkX19UL+vL29KE2gwM2RqYKaiC77q7uoeJzIO+BEepB119q80s80xnC/tXjEVFOBRNaEUblmE4tmpepedXeIr1jFZ+9JDfC1m7E+l6r14tbw9KFBY7oZCEDnx0dq2Z5ee7CP59fRucd0OMYNJ0bSmplE4tLLluHYoYUJMY32JSEnt5tEsKyd7pld12V31sUiOABchYzbtXuWOTc4YS2G1qipJ/BrhSvS/ExJL1E/4cu0qiAuU0o6N1jNcAH8me8bqbw/HWfP5NmH/4xHZJqYxGZBkVdKMDWwuB3wWcV9q2Q40Mm8srg4/KRE9Tpm7Eexb4HTmavM7lpn9UkAqIerMt68IIn3UJJYXM1elLNODo+OoIZtRo3qVUHae68AmnZZeVy9qWtP3irEryW/wxCU1hBayuFqYffHiHpBti8X9dwMjO+hDi+9WNPhG/eyWiznvFzWvEY73S7Ym2pjeVnfvZcdk1dpNodPgus2aKSw9DXOkWCw6HvHC8yVWClO8pYDEClMpfgNi07+wihVIwBVc3K8yxr0/vTLLdusUU9DQkD1+dWcHJAKDpwjr7mCmhtQ7XSfDkfZCCMNduVkTFLeanb5HlC85cTwq9FKwM+RnqOrLZuGZ/Uc5xClhzlbtKedadxapWtACE/8ON50aOvdr9aRHj2aO4tlDeTBlOKlfbNKnKsSK9k560r9y4Pkj5oqVaEPw8FUPSDOedJfw1qOHe6G+oJDYwWmBKyBeeijZ8di8e1A2JupBFezHnQW3BzZbOlk52PD9KYJSKDotjiNocyjplP7NOFKDVN5/9D/dCunEj9vfxI/yCF8r6wq9yGpjcFRQNzxSZz+tNesibxRfGheNN+PNbxvZDvMlXb5Xmd5yCWe1UyjrbpV3WxgdtFts+K/G5bYTH+5ZVMQB5oSBD6vVkkiomkkpZ4g2hWjb1uDVC95zmAzHxqI+QtjrnioV1NBVM0BTjCPn
- 78VaLojt
- dm+WuDS0ptgmZ+l7Yr0zxAfXYjRULtXKfSGTTe77n2ak9GK7vd9CVQPprxQHaYtBlXU2qFgI+cgkc138UXytFxXM33IBYnrHpaZ5Pkg7F4LWVDxuceMuB1zqvouZ/JTj28KOLXI+67tDxBYSLNg3c2qu8TlEvI/k6tOJ9ebn7bRsv/ve3B4MyfnxNw7VaazzMwOUR1NQ3nm/GpxuTlbLMh4KFfbUSK1nOLkN6a9KeSzIxpBzvcIx6tPiy9tNHLM+X1YEkFQKomTwa8n3uEHOsxxQwzxIPzkUJSz3UF0kBeLeMRxMInvXWDr9Rhg+fMFZXt3qbzpG9wfNjwfRbRZZ5vH4rKR2cNFNzUrYMgZ0T0Eh+V9hF27UWD4+CS2bKGpiEUPex9f1FGtC3QZ0=
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 76ED580002
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ig1o6dx7qgd8ujyj4y9qjtxk6w8nnoiz
+X-Rspam-User:
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794539554-18023
+X-HE-Meta: U2FsdGVkX1/5yiM1Qv6xlJw6bdJhkePuNKo5mP55shYISMBxDaO29/V4/ncwzvq+spKpwGBbTKGvQxudx7e9SkhSawcXrvkqGy6B/QqTsmM2FFCo1NsJ4FODljPyU7tSLqzf1s+CwfvvGEkKVdUNYPW1NYTYpDZV+8XjIsfLvEo4Zqv27KQSTCcxXCMjbHD9lF+085qzHeuAB0gzpOfPqCMYMvtpdG0V3+WnBRm9EltDUd7NgsM8QvmUP5HOER64U+D4Kd6NQjgd0AuxNW0zPeP3ocOcgjejGe4rGqFblvyT0wQe8ydGx39QBLmiHZ/ssia6QKE5ilBVyUB9osWua4UJc+U8VTpygnteUKwyHaXyRJXs8Gft/Iaev0/Q4xXNEhgmxP59DKq1FjcgL0h+72Xq92H9I1rrNUzfAZ3QfGSKDmOnV4UNbUTcp5rmsSwVEcEFZplAhEaK2IkKJzngPnYovUfJ6zXo9EhOt74o7S0iNZ9Z7qr0I9WkXNVZUbNgq24ZsSlTgD3+hPjsM2Gq0Ux/F0NOcsDlVK42VV3AU4oSnX56DVWgtwEO+PYzbALNoYDe/V8ulct7UmJQzsPFYAz+7eHpwaSATLNCrVExfJM7D8J7b90HYqqwajBOMlntV1KeCvUVkdcsgfkZ5XvpAFjo0yu583NX2qYYNIH0P4C/rdD8W2kWOMVCaqGN5L6FhangQO3yExzZcL0zHpHaC0t7j8TchkWV6MyGCBGMAP/BFwHLcf55LYSvea/nRXTPHb3Ybcjm5cB47khpLUVi0n+a5lHrU+l/VOnk2XRJuyY/2H0fvU8ejOXr7b0OIRyKrFESDMXaf/RHrRUBoykOgwsqEV9psEu+Ybl87eYx3GtkTdiCfMFvL6CkRrxoFPbtNwzDxkUkEJmlw6dsTxNHopHuG7hBF8ZonkPJZtdbjryPpLFc/lqWvdWmb45BqL0MaFVoKi4jtqN9UH7wJp1
+ 08Oo1iXX
+ 55js2ZSL1IgPHN4SufsqN+uTY2px/jELcPNugJKHhdDCDqmLDsPcj8CI/fTRNNE9Qq3zQE1IiveGIYcxPKAlvsW9F9PppGazKhQ7RKXbyeBe1y+kSIx1Faj+XAXcbR7phwKnSZEkA34xhagI+389IT7+HLnAE9Mn/YcBBBXC7em9bTfuz/2tp/S2ZejdAWe1qfjl2LPVp02ALOjOkkE6+5/ON3wbw38GTvEry7CNYUIj+oa25ZXMIgfs6UFa5SguVoFULOR2oEVfZG90yy0DH5eToSP5d1LqiDegQMktie4V/9ve39Z4+9SXdyPbQOZBTbN2ijoTgDdpOQg5alyF2+pKkXfOG1ZoKS0fGQUBFX6b56JlScpO9oIZ0GnKCZ62pRx5Gn+p07X3wfCKmZb7DQLtsG92JHnQRRp3U6EtprcO3s/4p/r319mCJo0wuR9w9yvEb5JqhSYkfHSJOYg9+WdFrweHU0VmmlWmPLx86r+XuE4Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,85 +148,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+sashiko-bot@kernel.org writes:
 
-2026/11/13 10:50, Baolin Wang :
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] dma-pool: cc_make_shared() runs after arch_dma_prep_coherent()
+> --
 >
+> commit daae4fcc15a00bc83c4081ef4b27786a7f224537
+> Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 >
-> On 11/13/26 10:01 AM, Hui Zhu wrote:
->> From: Hui Zhu <zhuhui@kylinos.cn>
->>
->> lru_gen_change_state() migrates folios in batches of up to
->> MAX_LRU_BATCH (4096) folios under lruvec_lock_irq().  A full batch
->> keeps local interrupts off for up to about a millisecond, and CPUs
->> contending for the same lru_lock spin with interrupts disabled for
->> that long.
->>
->> The caller already reschedules between batches, but a batch itself
->> only ends after 4096 folios.  Stop it early when a resched is
->> pending, or when the lock has waiters and the current hold has moved
->> at least MIN_LRU_BATCH folios; the caller restarts where it left off.
->> TIF_NEED_RESCHED can still be set with interrupts off: a remote
->> resched_curr() sets it directly in the target's thread_info. The
->> minimum batch avoids lock bouncing under sustained contention, while
->> a waiter now waits ~15us instead of ~1ms.
->>
->> This follows lru_gen_look_around() in this file, security/keys/gc.c
->> and jbd2_log_do_checkpoint(), and commit 6e9be217a3ce ("mm/mglru:
->> use a smaller batch for reclaim").
->>
->> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
->> ---
->> Changlog:
->> v2:
->> Also yield on lock contention after a minimum batch (Kairui Song).
->>
->>   mm/vmscan.c | 10 ++++++++--
->>   1 file changed, 8 insertions(+), 2 deletions(-)
->>
->> diff --git a/mm/vmscan.c b/mm/vmscan.c
->> index 6a1af9b92349..c1231925159f 100644
->> --- a/mm/vmscan.c
->> +++ b/mm/vmscan.c
->> @@ -5533,7 +5533,10 @@ static bool fill_evictable(struct lruvec *lruvec)
->>               success = lru_gen_add_folio(lruvec, folio, !active);
->>               VM_WARN_ON_ONCE(!success);
->>   -            if (!--remaining)
->> +            /* stop early to shorten the irq-off section */
->> +            if (!--remaining || need_resched() ||
->> +                (MAX_LRU_BATCH - remaining >= MIN_LRU_BATCH &&
->> +                 spin_is_contended(&lruvec->lru_lock)))
->>                   return false;
+> dma-pool: Allocate CoCo atomic pools using CoCo shared memory allocator
 >
-> IIUC, Kairui's point[1] is to just drop the 'MAX_LRU_BATCH - remaining 
-> >= MIN_LRU_BATCH' condition, no?
+> This commit updates atomic_pool_expand() to allocate confidential computing
+> shared atomic DMA pools using the cc_shared layout and transition helpers
+> (cc_shared_calc_layout(), cc_make_shared(), and cc_make_private()), enforcing
+> shared granule size alignment and minimum allocation order.
 >
-> if (!--remaining || need_resched() || 
-> spin_is_contended(&lruvec->lru_lock))
+>> diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
+>> index 70b7f64b17ab5..da487c3f9dc61 100644
+>> --- a/kernel/dma/pool.c
+>> +++ b/kernel/dma/pool.c
 >
-> [1] 
-> https://lore.kernel.org/all/CAMgjq7CUMuNSdCXZ7_kDdo9+0BFvPNHuO=mq=ct_Q5YUyyckvQ@mail.gmail.com/ 
+> [ ... ]
+>
+>> @@ -126,8 +142,7 @@ static int atomic_pool_expand(struct dma_gen_pool *dma_pool, size_t pool_size,
+>>  	 * shrink so no re-encryption occurs in dma_direct_free().
+>>  	 */
+>>  	if (dma_pool->cc_shared) {
+>> -		ret = set_memory_decrypted((unsigned long)page_to_virt(page),
+>> -					   1 << order);
+>> +		ret = cc_make_shared(page_to_virt(page), pool_size);
+>
+> [Severity: High]
+> Does calling cc_make_shared(page_to_virt(page), pool_size) after
+> arch_dma_prep_coherent() and dma_common_contiguous_remap() leave dirty cache
+> lines on the cacheable linear mapping alias when CONFIG_DMA_DIRECT_REMAP is
+> enabled?
 >
 
-Not quite.  [1] was about the extra `moved` counter in the version
-discussed on the v1 thread; Kairui was fine with the rest.  Since
-`remaining` counts down from MAX_LRU_BATCH and one call is exactly one
-lock hold, `MAX_LRU_BATCH - remaining` is the number of folios moved
-in the current hold, so the condition is just `moved >= MIN_LRU_BATCH`
-without the extra variable.
+This is getting fixed by 
 
-The minimum-batch test itself is a response to Michal's lock bouncing
-concern [2].  Without it, under sustained contention the loop could
-yield after every single folio: each yield costs an unlock, a requeue
-and a restart (microseconds), while one folio move costs a few hundred
-nanoseconds, so the migration could slow down by tens of times, with
-cgroup_lock and cpus_read_lock held throughout.  With it, each hold
-moves at least MIN_LRU_BATCH (64) folios, i.e. does ~15us of work
-before it may hand the lock over, while a waiter still waits only
-~15us instead of the ~1ms of a full MAX_LRU_BATCH batch.
+https://lore.kernel.org/all/20261109230830.1707975-1-m.szyprowski@samsung.com
 
-[2] https://lore.kernel.org/all/avV0IbvSx4iuv0tF@tiehlicka/
-
-Best,
-Hui
-
+-aneesh
 
