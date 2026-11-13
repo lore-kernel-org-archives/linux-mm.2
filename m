@@ -1,94 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925F7606A88F
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 22:06:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9118A606A881
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 22:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=O0iwsBs4
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zpSa1ylf
 Received: by kanga.kvack.org (Postfix)
-	id 6D6266B05B3; Fri, 13 Nov 2026 17:05:51 -0500 (EST)
+	id DB3DA6B05B4; Fri, 13 Nov 2026 17:05:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6ACFA6B05B5; Fri, 13 Nov 2026 17:05:51 -0500 (EST)
+	id D91896B05B6; Fri, 13 Nov 2026 17:05:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 572486B05B3; Fri, 13 Nov 2026 17:05:51 -0500 (EST)
+	id C72466B05B4; Fri, 13 Nov 2026 17:05:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 23DC36B05B3
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 17:05:51 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 881C21401B3
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 91C766B05B4
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 17:05:53 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EA312C014B
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 22:05:52 +0000 (UTC)
+X-FDA: 85431478944.29.6E89665
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 169E01C000E
 	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 22:05:50 +0000 (UTC)
-X-FDA: 85431478860.26.A868B4E
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 86E93100005
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 22:05:48 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=O0iwsBs4;
-	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=zpSa1ylf;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794607551;
+	b=8cElegF6auGzSZhj6imUxVmuFHzBBPaTNkPhmO4b0COpbPxuTNSxjvjMCNdzF0PcWyOnLl
+	QwLYXy3zuRlznb4Behv5wKOHxvHu6YA5Azpq3O8sQNxiOOKQ85aI7YtvTJwqoLx5WBlBPQ
+	8tVNyO12DnCFWWZwO6PsFns5to2UB78=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794607548;
+	s=arc-20220608; t=1794607551;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x3U8jhke3RBD55kF2ywexkvmentOUqyFGvRCrHrWYAo=;
-	b=BN+4K4vkJiRsklCPGQidwF5qXAMdtNYo7hYcP5cepkZkYmRBf3YMjEH/27IfHjc1nIChLt
-	FcGLKXlsnTdZa7S7lgE4FTxw6kfsy+s7gbjCXd9dvTWUKbuQnWNzMwvU+H7l1Kak3+xYQb
-	x/9aEtRgb9Arp0M6dqAFT4OqrAKHvuM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794607548;
-	b=Fn7fypBJxSBsqgTEE37kp3l3O7jTiCiN40FIJGd0Dq7haRekCW3HvPQ+UJMEYYoWz0zgVj
-	YTTL3fhmDPCzV7SoV84w+Oe8Z+JWMah5kVgSUH6FyQw1eIJABr2S1OhRZ9LPtK7kdA9YIm
-	9zmfF5sQjtgcXlLGeRNW0H6uyz3ya+0=
+	bh=RjswVOHO5sVxrAeAWnMLkts0RZq5oWih+6CZ1AINTug=;
+	b=PWi1PsEFmJiDL/BW69ZnFk2zV/ZDZh/6dC9c7SBZoZqWoodH8vELvA8LC0zVTUSbstjEaD
+	T44IuYbGvTxTGClR2Ur4RlF53U6nmzXQ/Ycp70QNtFhnvw8o+IXRSMranfbOgohFbC+0cp
+	roBj4RJCPOrGcQD0qljUJB6vwzemVV0=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=O0iwsBs4;
-	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-8b3653df740so8394617b3.2
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:05:48 -0800 (PST)
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=zpSa1ylf;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-8b331cad3cfso12008347b3.1
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:05:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794607548; x=1795212348; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1794607550; x=1795212350; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=x3U8jhke3RBD55kF2ywexkvmentOUqyFGvRCrHrWYAo=;
-        b=O0iwsBs4L/NDg/td6f2foeH8vQ9EpT+hI8C9nBmmaFsrqA5ACygu3NkeNs3PlyM0fR
-         HxD6+TJmLrA/pwPSNF3a8SlkrIXvWCz6CRinlVEy0NUotlME4gYPACzrpyLpfguQ3lFH
-         stxXaeaeTckkSv/DO68Su55vjnkpySdHf+A/yb5ScnxVVxDW/bPVb9/VXFyWbW3XcHOL
-         yAtUA+v6Q5VoP6AO/4Mfnk52+427sZrytoqrBzutmmpybgEMTnPH2+4q0iN7IGvCRwfZ
-         SspOJwzzUlIUVWQQngxMxBzESGmMNpSNWMw0bZ+TZ3u44EQ+qSZ4+eEVzIqC8gwe6yQr
-         IxiQ==
+        bh=RjswVOHO5sVxrAeAWnMLkts0RZq5oWih+6CZ1AINTug=;
+        b=zpSa1ylfGkgpr3rKUxWbVmzmMrP3uEATDhcfJYEJ6tTht3PRKvugP6fqICI61zvwr8
+         rUlLI5hfrhDPhpbOLO7cEqyKkss37zHG0JKJNMYUvn+uxkJbQ2zPuDLm058KD7fFu02H
+         W91JcNSUZtPJrrn0S+wDP2Pysjx2kHw4Lg69+HDw2cO9ibdwCqVbglPvtCF1fYr/tbU7
+         jiqskEXEEOF7AdtAvtlmo8n7ARlr1vR/k7ICqa8l1p6bm0LdsCTrpr9r2pCp/IJk2D4+
+         5kO98ewUM2D90/i1Ju1y8LLKHpyOGgdB75rUmi1zsNmz6HIWjkIHeTThQps+OQG2E+SE
+         zACA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794607548; x=1795212348;
+        d=1e100.net; s=20260707; t=1794607550; x=1795212350;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=x3U8jhke3RBD55kF2ywexkvmentOUqyFGvRCrHrWYAo=;
-        b=V9lsuLJGeglNRbKO9GMfEQEQrljhPefCBW1yYi4JP4AqZTku1xwKoWeIB8MSn1U79W
-         g2tNj23e1PSDnqPM85ltrOoKg6XIYGACTwgEYpqMc7DmJ1vVEgwRnj+kisVjgDkAvocu
-         UKvQfLfeZKsf3glZa7FO0rIUcpcE+X1BOY8WqJ03cqj3YET9D6SyZwqKGVp40OF5ca3v
-         U1QUQE+uIfpF8F4L2OYSkg3NY7OSMOV19XKkXfPmrP42z0+MHz43EBtxt9n6EIF2XudP
-         pwpejZDtI3Al6JfTm3sCLPzqAY9KiSXQXW3fmiGqMU653iKvxE72xwxST2RA7pMmZbdd
-         IXTw==
-X-Forwarded-Encrypted: i=1; AL+hErG4rPnoUO3i2OPWBti+EDb8WzE+f4c2C+ino2qxJoEuIpc2o+8R0DqWWjyUjR6zpn6LWHAjvtX+bA==@kvack.org
-X-Gm-Message-State: APuU4Z8SaJvGjYQYQgFnu5ikY4toM/hqm4QzZD2KG2Yg0AKENtE0/oTD
-	3rr+kUHwO+m9mwc8DMh4kwfpnKGzk5z2/ctAoH0VHw/hD2GrpgeCUQbj
-X-Gm-Gg: AYBFou2SBwEz7hdoh0yp4eS9AzM6gyKUslt3YLkCqR+DOZ190HQqDFRVne8yvxzESqD
-	eBJ9SiF/B2AQT2iBvN9ROTpSHQYYK4UuvTSkeydXu/C88mzJhKCxlFyRqrSTWoFlpXXO8aiY4vs
-	H2De5+PscHYJM4YCd1geR4CQUmlBuVbUprBgixqfx11rqmZ7FmgAJCSiLE4VVw+TYb++Gre/6Yw
-	xRnp3QpmA4vrZzwyN7SbH3lCCFOIoKBo5Inu1JWNxi5A4lI39qGjFixCp+YRmMB/0nR7s2H0Qhy
-	d8/IsFJsabUxabuLA8lZwFGilK5w6ZPF91PKVOhd8ZVih7kBJfUegXDqWZtCnYQ6sS1YCuAYKQg
-	kM9SMK4ByLYd1dZGDXjO9LH+ET6s2kOpi2aoX7wK7U4/vUtu2ZcLhkWQPTiCuQT1IEBYHtjZ71t
-	1DUPULviTIxZJyLbIsfBXaTUCCI8b4oIiJO2YM2s1wRQ95JVT3rFhgWRK6Tsk4xFxx3UtRKdmOQ
-	DwlWrwyhNV2gKHjmI6qnUTwazfk8ChuEYliu4HwXS9wJeXcWNyVeNffbQfnxoyWyUE1bl9KQw+L
-	0Bcga2K1zImCKrq5Efk1Uf7nTy7aNgnfw/y76nYutt++PPNUUvTE9nU2yerG
-X-Received: by 2002:a05:690c:530a:10b0:8b3:2997:f9d8 with SMTP id 00721157ae682-8b4aa36ecffmr20756877b3.54.1794607547707;
-        Fri, 13 Nov 2026 14:05:47 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:58::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b4aa8f354asm31651117b3.14.2026.11.13.14.05.45
+        bh=RjswVOHO5sVxrAeAWnMLkts0RZq5oWih+6CZ1AINTug=;
+        b=O3MPp0inkfywPYCyu8n4ZbtwxknQ/J8prsbqySuufJJDmOVeXz3WC1+BGZJiBxKRd6
+         aNuRR6a5dKcm9t0yt1Pw0ys119I8aTFgDld9Sl3zB1wI65wc7/CDqEjY04pC8ETGkxKc
+         Htz5UpPD0KieQ4uytgLPNbFQsUbhE0QFE0K9tgRAc0RZRimuYznRxK+gOfUPNg8bHsuF
+         WnQuJ7qHjhm4T1AW9BLZJcyaLER5xu6Ue20QxYEz6ahaHAtaHbXQ5/+LUFTyw/zibWca
+         +1iBS9QN/L4cAu4ZhKBvFZ7x6V0mJqp5kIjxUzFPxdkpZaQlxJ7U2kIsSe6/vGr6DxBn
+         go7g==
+X-Forwarded-Encrypted: i=1; AL+hErEIjTC08RzScCgHpePypQ/wvFP8yBCflW2FX4BrcnJqUCsq2d9oGGjKXtX6TmTMrmycaM8bzu67Cg==@kvack.org
+X-Gm-Message-State: APuU4Z9SDkTEjPkh8pepfJAMeXBSb9WYOjMh53gzraBQTNDoyHfNBGvj
+	QhA9wsBAP9K8XNe0qeJ+nHo7rJozmunF0IrlfSS1FOHbJNkbCPPOe0B9
+X-Gm-Gg: AYBFou0Qm01nd4bHd88FcVGmw67b/5/kEqzxQ9FZTwsMMaognCisjdvKj2KTYxE5d5T
+	q/mRleel2SXjTfDnTblCbaWnWEAVzfnDX4Aap9wk3KIgos/lmHCTMPHqQlSFsPZ2t6ucQo22Qs+
+	DN1Qgzgvy81N6MyBnjeJwsIrs/emFcBbhVrCEoPM2LRjKiSKGrdQqfkUYRRNQ9CnIENiWUmax4q
+	hiY524jkYf43d/FAQ3oMtAzSnbz+SRreYeg0MCGZJAb55YQFMhSwSSLOKaikimjwT/s90r5h1g/
+	Ba4We+Kxx7SzhwiJjbnjvUxMIyVM+pacP3yqtHWFIbBOvUNlVf6DvhTEletlqN2yJdjLNxzoZ/5
+	MnDk41toQJuW8n4JYX4NLE3HFpTyUK36qIPRdZ+KVrp4f+yyNHZN1NV4P9O/RQqHAajelio4qpd
+	arWQhN/ROSQpTGxKym83EFEzh+EZ5DqFmE+GRTaYOpxdyTFYbAbyZafklmqlV7JVC8aHd1Odnx/
+	h25ouIOGIpeX6HMTQNgwEBWIcWXdamcXzkye7+nJuH9JTFGI4x/I3uQnUiFKrX+tJdeD7Q8a/R+
+	vgubxNCzU1TmacKGR9lyDabYolUSvSiN48gCDPl/n9cAfpztGxXVfPSsgbXk/bbqyBiZZPC6SV1
+	rVFpQBqU=
+X-Received: by 2002:a05:690c:c6c2:b0:8b3:2d97:b8d4 with SMTP id 00721157ae682-8b4aa37bf16mr19608777b3.49.1794607549317;
+        Fri, 13 Nov 2026 14:05:49 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:59::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b4aa99f7a1sm30911297b3.29.2026.11.13.14.05.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 14:05:46 -0800 (PST)
+        Fri, 13 Nov 2026 14:05:48 -0800 (PST)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: Johannes Weiner <hannes@cmpxchg.org>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
@@ -115,28 +116,28 @@ Cc: Roman Gushchin <roman.gushchin@linux.dev>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [PATCH v9 3/7] mm/page_counter: make page_counter_try_charge() stock-aware
-Date: Fri, 13 Nov 2026 14:05:30 -0800
-Message-ID: <20261113220539.2275715-4-joshua.hahnjy@gmail.com>
+Subject: [PATCH v9 4/7] mm/memcontrol: check PF_MEMALLOC after trying the limits
+Date: Fri, 13 Nov 2026 14:05:31 -0800
+Message-ID: <20261113220539.2275715-5-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.53.1
 In-Reply-To: <20261113220539.2275715-1-joshua.hahnjy@gmail.com>
 References: <20261113220539.2275715-1-joshua.hahnjy@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 169E01C000E
+X-Rspamd-Server: rspam12
+X-Stat-Signature: r9h8ybxsw1hu69crsk889s9786ts6y5i
+X-Rspam-User:
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 7xfmzjdy9d8menkjjpw8q1z6w8mpo5w5
-X-Rspamd-Queue-Id: 86E93100005
-X-Rspam-User: 
-X-HE-Tag: 1794607548-56223
-X-HE-Meta: U2FsdGVkX1/WH6d0KKz88AyC11rUimUpnOUGtR+f2SccSGRCmevYIUIpiCOvpBRz//tECioYyJFq6d2Hcs2Q4D19GrJjO1GAzEH0oIxOHZ8nU7m0yJCX60MdwePACiQalNdTCel5+bRgukOihqMdjImh3J3/2vabwccTPXZH025Mg3mEdkkHpbI20wZckh1K8D7iysuv6Ao8gOS2cuCC1b+uD5S0Mza28/2LLJ8ybVB4LKQreNudjdHCiAA3jArIhEfuE5/UxFo1ZGpUdoW9gfpBhFgWzCEeW0g8Uq5xXaj8rik0i3FOo9gPxwdvBs3GlVTBSSI1LOtEIR8KT2MclWz/v4XFpUfm5h7D9N42Ta2Uz/EsyzGltl00ZPvXCPC44H1mVixfy5D/TsXOwfwrK7zZtcKgg+S4s3TjcsXPm1hwzL/uXm8G+WpHI9mmDeWjp9kGS3ny8rCRgLNcw5HKJTU8T6aMiFn/k1yaJO7AfIq+WWnKPaYKaC6WlwiwvY5TE9HQ7flOfQJfdtCa1Qiv3F8SKlDVAd9L5fNidE/g37jXU75/K+wveej6R/595z+jTYiTWVE00sbJKZjZOvJnJLgm78U3fGhPfTFTPjuGIDElm+iHorNbt8d+pwmJL9uAZtmWIhiEwYyZ0C0vbT+fftQbCPrW1f8l+B8d4fgbdbfGK+/Zac3z/E6YVr3YLJjoPcJa4oGrCUoN0zos/7CLWEVKzTqsnDAzl6L/0vd0TMymJ1NpxOolPCTe337APQuchU7YuKJ6tadvXRpRGvYERZFNLvDI5Xq+/cIWu/hREx+eRdN+/AhgM82Qy5/m79KL1QChlQDAZOw0+ZFlOcbbPZV3PQ4Oz8TdKDc1SoqW7piOFJt9hyMPgJ7wbTOjR6Y+ZSx0d54gHa9bI6Xuw/e0f+Dj4NsbAEro0LKIhBXF0NAARpml3dq04yhNmWb1nwq00Zyw0LaokhBSPdrcwKI
- xk0htTBz
- 2guHM619ZU8dcaLvc67SKG+mPCgvw6TvGQJoEzhF34wvg1K2D9nCyYIwY+OTyLipnXeHn1m0aX2Ni0hUnxMPSrd86J2hlrON1YnUh2oSwhh5MLyGreXiIDGfzZ8lzBeoHZLPyVTuFCHlqOmf3gmj1KRtGZDToAA442sIP9DmBbu+NCdi8LZNqiXZ8MF057UlFd3lRDItYzle94U13xO6SNmwOcrZ0HjyQB/3omTwVZy2khB2VjMeVDpb1nxoJUUzATr9+jj5BsCfIYkgAg5VjPLRZ9QYPj2dz09ERXy0+YjJ1dAOVqhPm6/++aUSm/ayP3mynMGhNo4R9FQP6Ddum/bHkBtZ2488MF8diUerVWCKT9smCFVrjWlzR92PMiXZ+Gj16k/7QwliuQ77gMvZEDT4Lh0RTDCeOYZHhoYnHFm3lmmv8/qLyeIiM3CnX5Jzuw5VPAvACB/G9VVubiMXXrsRB02aTi3NL7nqct8wvbK7Ya/6mC9QQrESopY65EcM7Oions3KDdnMEyZisgofSvvicvIewyIPvtFYM9N6xJotDYbg=
+X-HE-Tag: 1794607550-558066
+X-HE-Meta: U2FsdGVkX19W2TGr3xWr+oGH4FOIkhgkyqjbzyHmi7Yi3cU9gu0qS40MYen/owhJM2zP6FWL2DrNZPGupNw8bY+MpAgEmgSM2hSBY6PiziwdcrLVDSokn96B5h4i2sEND0392VDTJyU8Z95gicTDZvZAzsqbpk3MgZfrSECa1Tq9wqMThsiozBLPyT2X56hPJ2ZpI52fUlfg9755QGPWUNPT7YXBnpXqUeKeRk5IWu/gF6pnvwmnb9lyUqABNR5a9SxfK99DCDAC42g6zZ3GVdTjWeXxAZSf3ALgaBw5vDTb6U1i/tXGJM9cCxNsG+jVmRAUFUKREW2Lsmb9dEPruJuBQq4PuftJFVIT8GvbRYg0EaVsVtCElcVjjyKWr/3DOOxSq2Uj5AvdMoJ98vbWg7KkYScXKJopB+WY0wyQn3PQTNQ878jw+faGvxSC4QiIu7tazExzgnT+gRvZvfMb/RwknMYhQGpMvV2CQi3uZ8/2TGVTRBbDOlQSkfyV38JwjWSLbW3yvymJCr4x9H8mpP6V31knUf529e5bI+5B/JlYPy2VnACk8rmWzC/0QR422TZVk5C54pElt/P0LG9BBJ+2tunnwStO3QL+9dMNyrSy23Dvy2RBFLmbwS9dP+F8tAqIo+G+KU7vj6dqpCm0tEEFiNcP61qGFvc5p6aIQFRMqK9KccWkKYEdGkMbgMUMIgF6MN4/R57D1E1UZPW1ig7fQzVrA/oMyCNRegZFjGd0vh+jG6MZfQGMaZpQO9sFkJ3TDX5dGgeJYJ4R8eW237v55iO2soh9BYen1kN2Kzqr3BaSUnbFy4eRsK9kWXN6SFUcJPdcYgDWmYsMaE+jfu/Dj+u4Op2uJ45eVGL8U8c3fcO7h+LD5uUzsMCPKR889D9QXkVKh+aJ2tkzhZ7uUwQKdG4mPBKqU8Uam7dTeA3WuBF846Or0PgmFWg3R3qxnQsVezUkSwaPDlbbd8l
+ wGqOTsvo
+ 2hbMe8vZt6PM8ikZJFsK8hRQKVnuPzBUCI2zdodnn4KrDcCP9aztKzBioT6+eZ/yiqA2Fmu02XdjREmyRaCbHa4ZszuEUNPMUxFlzEx9FKP5CJzw7q9bglfJijMabhJkFy5NdYs6+LCmwrwa8/Wb8gYHmCb3lxhcEq2tckyzDGqXjcDezXZXcNHcUlE+OXjdBXbxdggBZT2jkhEOTVEkYqSM89kDUfaruDFzweMVE4mACZxfxpIZNRsUX8vtBFCZTQTbbnzbuSJKXVsH2v40SCpUSDUS+EqPpLD8nG3ImQonI7Tg8ez7oJXZY/BVfp2r0kOpAOQGcVAVGtGhr9go4Gu0wh5GJjPY1OmTmt3t5/bU9IqhYZHmEfTejAJZURxsq3sEvDaBC4kQvg57U484xayRkYSN0J3MDWB4xJF38eysl+TfAY86q8OTdnZr0FYzJ1ZUHExRy5nv4A20Gq5vog7qyFmg3Ptq5DWqmkEm251gZStLUq0Mz2eA2IHjp7wes0gKM6xujPHmcvslczlMzHqvp2OyoEXVzrP4hsSXfm8+1dBxeqlGv44ofTGRh+DIXH4t666EOp/naK4GeNO5T42+PopqNYmTPJEXY/8tH7CC6iXa7oAsQmXZwlQErAjfoJ+gLz1fY/2zEi2IoqUKFMVC21uBL0dZhSlbFr7KCVHN82SaUfOp7ZRaHpXPMtXdeJOetW+sPn9nesPQnG7ihtSSPArOyw0f81h+ddr18tKPr+zE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,252 +146,98 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Make page_counter_try_charge() consume stock transparently to callers
-while preserving the same semantics as try_charge_memcg's greedy
-charge attempt, refill, and !allow_spinning special case.
+PF_MEMALLOC charges are currently forced right after consume_stock(),
+before trying the limits, so that they skip memory.high and the
+high_work worker can't queue itself from its own reclaim.
 
-page_counter_try_charge gets two new parameters, may_batch and
-nr_charged.
+A later patch in this series moves the memory stock into the page
+counter, so that the stock is consumed inside page_counter_try_charge().
+That leaves no place between consuming the stock and trying the limits
+for the PF_MEMALLOC check.
 
-may_batch is intended to preserve the behavior of !allow_spinning
-scenarios in try_charge_memcg, where the goal is to charge as quickly
-as possible, without evicting other stock slots or making a greedy
-charge to refill the stock.
+Prepare for this by checking PF_MEMALLOC on both outcomes of the page
+counter charge instead: skip memory.high on success, and force the
+charge on failure. These charges still do not batch, so the resulting
+usage is the same. The differences are that a PF_MEMALLOC charge that
+hits a limit is counted in the cgroup-v1 failcnt again, and its
+MEMCG_MAX event goes to the cgroup whose counter failed, as for any
+other charge.
 
-nr_charged is used to reflect the size of the successful hierarchy
-charge, preserving the existing batch-based memory.high accounting
-for current->memcg_nr_pages_over_high. As with refill_stock() today,
-the full charge is reported even if the excess is later uncharged
-because the stock could not accept it. This only affects memory.high
-throttling heuristics and never fails a charge.
-
-So this preserves the existing accounting heuristic. Accounting for
-credits returned by refill would be a separate behavioral change which
-may be addressed in a future follow-up.
-
-As of this patch, no page_counter has stock yet, so there are no
-functional changes intended.
-
+Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
 Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 ---
- include/linux/page_counter.h |  4 +-
- kernel/cgroup/dmem.c         |  2 +-
- mm/hugetlb_cgroup.c          |  2 +-
- mm/memcontrol-v1.c           |  3 +-
- mm/memcontrol.c              |  8 ++--
- mm/page_counter.c            | 85 +++++++++++++++++++++++++++++++-----
- 6 files changed, 86 insertions(+), 18 deletions(-)
+ mm/memcontrol.c | 37 ++++++++++++++++++-------------------
+ 1 file changed, 18 insertions(+), 19 deletions(-)
 
-diff --git a/include/linux/page_counter.h b/include/linux/page_counter.h
-index cf627c5090093..58532259e7f59 100644
---- a/include/linux/page_counter.h
-+++ b/include/linux/page_counter.h
-@@ -98,8 +98,8 @@ long page_counter_margin(const struct page_counter *counter);
- void page_counter_cancel(struct page_counter *counter, unsigned long nr_pages);
- void page_counter_charge(struct page_counter *counter, unsigned long nr_pages);
- bool page_counter_try_charge(struct page_counter *counter,
--			     unsigned long nr_pages,
--			     struct page_counter **fail);
-+			     unsigned long nr_pages, struct page_counter **fail,
-+			     bool may_batch, unsigned long *nr_charged);
- void page_counter_refill_stock(struct page_counter *counter,
- 			       unsigned long nr_pages);
- void page_counter_drain_stock_fully(struct page_counter_stock_pcp *stock);
-diff --git a/kernel/cgroup/dmem.c b/kernel/cgroup/dmem.c
-index d49ed5d4a9237..dd325e9413fb5 100644
---- a/kernel/cgroup/dmem.c
-+++ b/kernel/cgroup/dmem.c
-@@ -736,7 +736,7 @@ int dmem_cgroup_try_charge(struct dmem_cgroup_region *region, u64 size,
- 		goto err;
- 	}
- 
--	if (!page_counter_try_charge(&pool->cnt, size, &fail)) {
-+	if (!page_counter_try_charge(&pool->cnt, size, &fail, false, NULL)) {
- 		if (ret_limit_pool) {
- 			*ret_limit_pool = container_of(fail, struct dmem_cgroup_pool_state, cnt);
- 			css_get(&(*ret_limit_pool)->cs->css);
-diff --git a/mm/hugetlb_cgroup.c b/mm/hugetlb_cgroup.c
-index 6921b18572666..c67d961cf8943 100644
---- a/mm/hugetlb_cgroup.c
-+++ b/mm/hugetlb_cgroup.c
-@@ -304,7 +304,7 @@ static int __hugetlb_cgroup_charge_cgroup(int idx, unsigned long nr_pages,
- 
- 	if (!page_counter_try_charge(
- 		    __hugetlb_cgroup_counter_from_cgroup(h_cg, idx, rsvd),
--		    nr_pages, &counter)) {
-+		    nr_pages, &counter, false, NULL)) {
- 		ret = -ENOMEM;
- 		hugetlb_event(h_cg, idx, HUGETLB_MAX);
- 		css_put(&h_cg->css);
-diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-index b7f2868885071..a146e54c6f9f7 100644
---- a/mm/memcontrol-v1.c
-+++ b/mm/memcontrol-v1.c
-@@ -2193,7 +2193,8 @@ bool memcg1_charge_skmem(struct mem_cgroup *memcg, unsigned int nr_pages,
- {
- 	struct page_counter *fail;
- 
--	if (page_counter_try_charge(&memcg->tcpmem, nr_pages, &fail)) {
-+	if (page_counter_try_charge(&memcg->tcpmem, nr_pages, &fail,
-+				    false, NULL)) {
- 		memcg->tcpmem_pressure = 0;
- 		return true;
- 	}
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index aaeef20eec06a..0e7500624b9e3 100644
+index 0e7500624b9e3..fe97b320b2589 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -2816,13 +2816,14 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+@@ -2795,23 +2795,8 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 	if (consume_stock(memcg, nr_pages))
+ 		return ret;
+ 
+-	/*
+-	 * Reclaim may need memory to free memory. Let it go over the
+-	 * limits for a while rather than fail or OOM kill. Doing this
+-	 * before trying the limits also skips memory.high, so the
+-	 * high_work worker can't queue itself from its own reclaim.
+-	 */
+-	if (unlikely(current->flags & PF_MEMALLOC)) {
+-		/* Find the cgroup this charge puts over its limit, if any. */
+-		for (mem_over_limit = memcg; mem_over_limit;
+-		     mem_over_limit = parent_mem_cgroup(mem_over_limit))
+-			if (mem_cgroup_margin(mem_over_limit) < nr_pages)
+-				break;
+-		goto force;
+-	}
+-
+-	if (!allow_spinning)
+-		/* Avoid the refill and flush of the older stock */
++	/* Charges from reclaim or non-spinning contexts don't batch. */
++	if (!allow_spinning || (current->flags & PF_MEMALLOC))
+ 		batch = nr_pages;
  
  	reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
- 	if (do_memsw_account() &&
--	    !page_counter_try_charge(&memcg->memsw, batch, &counter)) {
-+	    !page_counter_try_charge(&memcg->memsw, batch, &counter, false,
-+				     NULL)) {
- 		mem_over_limit = mem_cgroup_from_counter(counter, memsw);
- 		reclaim_options &= ~MEMCG_RECLAIM_MAY_SWAP;
- 		goto reclaim;
+@@ -2836,6 +2821,13 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 		goto retry;
  	}
  
--	if (page_counter_try_charge(&memcg->memory, batch, &counter))
-+	if (page_counter_try_charge(&memcg->memory, batch, &counter, false, NULL))
- 		goto done_restock;
++	/*
++	 * Reclaim may need memory to free memory. Let it go over the
++	 * limits for a while rather than fail or OOM kill.
++	 */
++	if (unlikely(current->flags & PF_MEMALLOC))
++		goto force;
++
+ 	if (unlikely(task_in_memcg_oom(current)))
+ 		goto nomem;
  
- 	if (do_memsw_account())
-@@ -6057,7 +6058,8 @@ int __mem_cgroup_try_charge_swap(struct folio *folio)
- 		private_id = mem_cgroup_private_id_get(memcg, nr_pages);
+@@ -2931,9 +2923,9 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ out:
+ 	/*
+ 	 * Don't forget to raise a MEMCG_MAX event for forced or rejected
+-	 * requests. mem_over_limit is NULL if a PF_MEMALLOC charge fits.
++	 * requests.
+ 	 */
+-	if (!raised_max_event && mem_over_limit)
++	if (!raised_max_event)
+ 		__memcg_memory_event(mem_over_limit, MEMCG_MAX, allow_spinning);
  
- 		if (!mem_cgroup_private_id_is_root(private_id) &&
--		    !page_counter_try_charge(&memcg->swap, nr_pages, &counter)) {
-+		    !page_counter_try_charge(&memcg->swap, nr_pages, &counter,
-+					     false, NULL)) {
- 			memcg_memory_event(memcg, MEMCG_SWAP_MAX);
- 			memcg_memory_event(memcg, MEMCG_SWAP_FAIL);
- 			mem_cgroup_private_id_put(private_id, nr_pages);
-diff --git a/mm/page_counter.c b/mm/page_counter.c
-index 70d76689e3212..e1feb2bd1e225 100644
---- a/mm/page_counter.c
-+++ b/mm/page_counter.c
-@@ -154,23 +154,79 @@ static void page_counter_drain_stock(struct page_counter_stock_pcp *stock,
- 	css_put(counter->stock_css);
- }
+ 	return ret;
+@@ -2942,6 +2934,13 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 	if (batch > nr_pages)
+ 		refill_stock(memcg, batch - nr_pages);
  
-+/*
-+ * Consume the cached charge if enough nr_pages are present, otherwise return
-+ * failure. Also return failure for charge requests larger than
-+ * PAGE_COUNTER_STOCK_BATCH or if the local lock is already taken.
-+ */
-+static bool page_counter_consume_stock(struct page_counter *counter,
-+				       unsigned long nr_pages)
-+{
-+	struct page_counter_stock_pcp __percpu *stock = READ_ONCE(counter->stock);
-+	struct page_counter_stock_pcp *pcp_stock;
-+	u8 stock_pages;
-+	bool ret = false;
-+	int i;
++	/*
++	 * Skip memory.high for charges from reclaim, so the high_work
++	 * worker can't queue itself from its own reclaim.
++	 */
++	if (unlikely(current->flags & PF_MEMALLOC))
++		return ret;
 +
-+	if (!stock || unlikely(nr_pages > PAGE_COUNTER_STOCK_BATCH ||
-+			       !local_trylock(&stock->lock)))
-+		return false;
-+
-+	pcp_stock = this_cpu_ptr(stock);
-+	for (i = 0; i < NR_PAGE_COUNTER_STOCK; i++) {
-+		struct page_counter *cached = pcp_stock->cached[i];
-+
-+		if (counter != cached)
-+			continue;
-+
-+		stock_pages = pcp_stock->nr_pages[i];
-+		if (unlikely(stock_pages < nr_pages))
-+			break;
-+
-+		stock_pages -= nr_pages;
-+		WRITE_ONCE(pcp_stock->nr_pages[i], stock_pages);
-+		if (unlikely(!stock_pages)) {
-+			WRITE_ONCE(pcp_stock->cached[i], NULL);
-+			css_put(counter->stock_css);
-+		}
-+		ret = true;
-+		break;
-+	}
-+	local_unlock(&stock->lock);
-+
-+	return ret;
-+}
-+
- /**
-- * page_counter_try_charge - try to hierarchically charge pages
-+ * page_counter_try_charge - try to hierarchically charge pages using stock
-  * @counter: counter
-- * @nr_pages: number of pages to charge
-- * @fail: points first counter to hit its limit, if any
-+ * @nr_pages: number of pages requested
-+ * @fail: points to the first counter to hit its limit, if any
-+ * @may_batch: whether a stock miss may trigger a batch charge
-+ * @nr_charged: optional; set to the hierarchy charge size on success
-  *
-- * Returns %true on success, or %false and @fail if the counter or one
-- * of its ancestors has hit its configured limit.
-+ * Return: %true if the request was satisfied. A failed batch charge may update
-+ * @fail before an exact retry succeeds.
-  */
- bool page_counter_try_charge(struct page_counter *counter,
--			     unsigned long nr_pages,
--			     struct page_counter **fail)
-+			     unsigned long nr_pages, struct page_counter **fail,
-+			     bool may_batch, unsigned long *nr_charged)
- {
-+	unsigned long charge = nr_pages;
- 	struct page_counter *c;
- 	bool protection = track_protection(counter);
- 	bool track_failcnt = counter->track_failcnt;
- 
-+	if (READ_ONCE(counter->stock) && may_batch)
-+		charge = max(nr_pages, PAGE_COUNTER_STOCK_BATCH);
-+
-+retry:
-+	if (page_counter_consume_stock(counter, nr_pages)) {
-+		if (nr_charged)
-+			*nr_charged = 0;
-+		return true;
-+	}
-+
- 	for (c = counter; c; c = c->parent) {
- 		long new;
- 		/*
-@@ -187,9 +243,9 @@ bool page_counter_try_charge(struct page_counter *counter,
- 		 * we either see the new limit or the setter sees the
- 		 * counter has changed and retries.
- 		 */
--		new = atomic_long_add_return(nr_pages, &c->usage);
-+		new = atomic_long_add_return(charge, &c->usage);
- 		if (new > c->max) {
--			atomic_long_sub(nr_pages, &c->usage);
-+			atomic_long_sub(charge, &c->usage);
- 			/*
- 			 * This is racy, but we can live with some
- 			 * inaccuracy in the failcnt which is only used
-@@ -210,11 +266,20 @@ bool page_counter_try_charge(struct page_counter *counter,
- 				WRITE_ONCE(c->watermark, new);
- 		}
- 	}
-+	if (charge > nr_pages)
-+		page_counter_refill_stock(counter, charge - nr_pages);
-+	if (nr_charged)
-+		*nr_charged = charge;
- 	return true;
- 
- failed:
- 	for (c = counter; c != *fail; c = c->parent)
--		page_counter_cancel(c, nr_pages);
-+		page_counter_cancel(c, charge);
-+
-+	if (charge > nr_pages) {
-+		charge = nr_pages;
-+		goto retry;
-+	}
- 
- 	return false;
+ 	memcg_enforce_high(memcg, batch, gfp_mask);
+ 	return ret;
  }
 -- 
 2.53.1-Meta
