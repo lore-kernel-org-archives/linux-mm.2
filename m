@@ -1,93 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD1B606A33D
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 06:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C64606A321
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 06:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=sCJ9eEuX
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=UNkyA3Jn
 Received: by kanga.kvack.org (Postfix)
-	id B2D956B05CD; Fri, 13 Nov 2026 01:48:02 -0500 (EST)
+	id A7B876B05FC; Fri, 13 Nov 2026 01:56:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B05416B05F7; Fri, 13 Nov 2026 01:48:02 -0500 (EST)
+	id A53B56B05FE; Fri, 13 Nov 2026 01:56:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1B066B05FA; Fri, 13 Nov 2026 01:48:02 -0500 (EST)
+	id 991506B05FF; Fri, 13 Nov 2026 01:56:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 86A896B05CD
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 01:48:02 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0C58D16056D
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 06:48:02 +0000 (UTC)
-X-FDA: 85429166004.20.29C3D64
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E49541A0002
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 06:47:59 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=sCJ9eEuX;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf19.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 73C856B05FC
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 01:56:45 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DB21F140152
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 06:56:44 +0000 (UTC)
+X-FDA: 85429187928.18.43BC4A5
+Received: from mta1.migadu.com (out-156.mta1.migadu.com [95.215.58.156])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A0A9140007
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 06:56:42 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UNkyA3Jn;
+	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.156 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794552480;
+	s=arc-20220608; t=1794553003;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2V+tV4ewaynofE8kPco4QPP/Avu9AgLsEkRfsCohWsI=;
-	b=eMKmN6KGzJtRXSMhsXGhYGCGdWiIobPQ9AI3NXAidyM1/Pf8zjYC/l1IIhy4XLInGrssnl
-	bWlpgEx10Xic3mts7M6cgzKxQPyreR29iUWks8PUGe10E4AZmuVUMZ8MXwrMufZxvf7BV5
-	Ef9EUcd3YQEuPrrzv+z77wRTpLRJZjI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=sCJ9eEuX;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf19.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+	bh=dleCmS+wcIoZt0s8RSq4SghUIJElDi6eszWr991uRyM=;
+	b=bFTo6dW6wskjoID6v4x0NpxDA1Ht1j4Swf6RfDXsyg9Lmsg/tfHsXOeyzMTbHDj2hKU/pX
+	QVm78TAbqbkDxa1p5VvVOWqF/RF1dZVnzKOl1dzmDcJatLW1xLUdAOxyqqJ9W0qHBp/olj
+	DxnIklZso0+mVP1CxHORby9KM+DMEjk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794552480;
-	b=7VKOkTvStR3tCLD+6NkoBfDgbUhj+je87UsNsm42/wWB7uiD1tzrUHKfVntE4eTBO8w3iM
-	tZC0hFUKVObcFjlucxBOLyaMhJJfxT4wGaSAeLkYeKbVQnnSKB3h28d80ecEmLJUmWHF74
-	YdQ6YWrM94VG8VkiAt+nascbHAxnbF0=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C066616F2;
-	Thu, 12 Nov 2026 22:47:55 -0800 (PST)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0EFBB3F85F;
-	Thu, 12 Nov 2026 22:47:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794552478; bh=5i7fDyuQrBPfqbfudFwvrfilL8nz8d+trbu034WceBU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sCJ9eEuXBnkpPB+5xYYSTJZKQIv2FyOza6IduZmLGvxBm/AjRigGwtWQ0bh8UmagQ
-	 TbYwfJoXNo+ZuQpa2iGOFgo5MFSasfVKaJiXzi8QljIpJh8j533RoyPp5LSAlsh8rA
-	 wz0XuEGtjc868dTQbbtg4WNXfApl4kI2T02vXAYo=
-Date: Fri, 13 Nov 2026 12:17:55 +0530
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com, 
-	will@kernel.org
-Cc: Ryan Roberts <ryan.roberts@arm.com>, 
-	Mark Rutland <mark.rutland@arm.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Linu Cherian <linu.cherian@arm.com>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH V4 0/4] arm64/mm: Convert pgtable READ_ONCE() as
- pxdp_get()
-Message-ID: <ikp346hhtfkswk4gabydkaxgtuvoygrj75clezzv25r2j7t6gz@q32fppupesvt>
-References: <20261105043403.3326445-1-anshuman.khandual@arm.com>
- <vtaekdnpxd5avhpv3hlmeswwq5raf57ila2qyilxvddu3w5nnq@lkenzauzv7hy>
+	t=1794553003;
+	b=MkGcOgmSRgKHxPA5Wlf9S97uEqFvCxEO1U8TlJMjhXKuOcH4UJyYC0aKoK5Iylde3wdQuu
+	NEnCTrTc64pyRzLJ4Za+xKTifDXdJJdxQEH6KsCDExjf4HiJiXzZKtpInGUiwc922Dk77U
+	j/Y/7Ugk53JSVZHzB/S9EfYZ+YbK+sk=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UNkyA3Jn;
+	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.156 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=I3d8MPdHTNroLOq0wxxtMmc+Uc1DmX33W42S6M5zY04=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794553000; v=1; x=1795157800;
+ b=UNkyA3JnPdAidvUvOJTuIvQmZpPY8ozTwnkilYyO2Yz0+psZFKteeR6nuYxReRyUReMJdiBE
+ LK7CSRmGggvJbt1kemXL0HN7gbpIFRn15BASDwSvJbIJ5HiIuxAgqWbjQxEINhQQ/iIfCEpWU50
+ ksCYhpiYNihWqFiKDcKbRxY0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 120149e2deeb02e7;
+	Fri, 13 Nov 2026 06:56:40 +0000
+X-Mizu-Trace-ID: 120149e2deeb02e7
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <dbfa9791-5a4e-4837-a2cc-ac506826761c@linux.dev>
+Date: Fri, 13 Nov 2026 14:56:34 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <vtaekdnpxd5avhpv3hlmeswwq5raf57ila2qyilxvddu3w5nnq@lkenzauzv7hy>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/3] mm: hugetlb: fix GFP mask propagation to CMA
+To: Kefeng Wang <wangkefeng.wang@huawei.com>, muchun.song@linux.dev,
+ osalvador@suse.de, david@kernel.org, akpm@linux-foundation.org,
+ azpijr@gmail.com, lance.yang@linux.dev, Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org,
+ "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+References: <cover.1794379433.git.zhengqi.arch@bytedance.com>
+ <1c5e8c4ae230dc238a16f2f42d65bffac6244ad3.1794379434.git.zhengqi.arch@bytedance.com>
+ <7def88b4-cba5-4e8b-9e68-6069c492b582@huawei.com>
+ <1cd3c151-24c2-4fec-8356-99853f8d6971@linux.dev>
+ <9b46d8e0-104e-4659-8dec-67eb6f059dac@huawei.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <9b46d8e0-104e-4659-8dec-67eb6f059dac@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A0A9140007
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: pgwe1pt3kiak3xcc6at9cs5rgi3u6s4s
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E49541A0002
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 1ujwd7rwym6d8xnekyjp1pd7gzkbd3u7
-X-HE-Tag: 1794552479-718864
-X-HE-Meta: U2FsdGVkX1/vDe9vNcIVZAS8RlBLISD2/k4fjX4rq3PfREL387WoUoEpiuEfJCz7gzG99nWQ/a4H0RNt8iJJYYKMWQqMgH/mnQpxm8xtq3B2Z+fkz+5OjomVzn7sDo0Ywgu1L3ndC9Y5+7NoJC9zrIQji4f+r2u3a4KqqJr2stzz46zNqTeOOly7s9NYcBoC3HDb+FbtWkadRSHx1/ZRL9FmhJZ9+UYrydoN2VPTcFmsIa19jseobrrSN2d0TqQTdwcHwP6Xm3oNX3nBzPl7Hx0P2+47qg3C2mReBGvpTomSSYJB+H75fYv/c1eNX+R7E3JddmvBvWNFMMVC3zc7guXw4fTqWZuThPGKgQgHTzMMUxWGUbgZE4xFDo0NEObkYPXAwpfm/nPC9/cbf07qKS1RWXsvzzNdCj5jAtMSON8A8lE+4eWClr9GbaJ3vSSPrNNhCw8bWCiJWwJ9m+9ouGIKHi+jpJ9OaD/vKOZjf/wLoE7ILvTqElzxPB68h/Obfz4IQ0OTdvNRaLscV/8wRstDeSAG27whYlFWCN0WlXF+TrNLSrXsb1L+pSod16x9xxa6EK/AsZo7f03H7dZpKJrla6t61WzBiN7z3UWIKgKpGBsZclHUfk1uTcs+7CarbblLBxtiDShTDXFjLcQZwEsLy2mCgYOEzv+FipgleFUTOXcz8unBXw4GsNjOZG9WmWUe+7xagDw4LF6kNU+h88qcHn+5CMrSMHHXeR8GJBCZjIDyzy/CLZlv0xwYbmm9DJe4ijKja+wffmjBT2sw68shOzMF5kGxM3LFCHM7uFdCQBs1C0nTNLzqLtxOs2DHcNyGkHI94k97rQ2XBa0SHQZfo/qmRt8nVtGlRKEE5Dmm9JNDKSzycbmJ4pNf52C77D78HI3IepHt8diZZQw8mrAr2nbRGieJ/7FRQP0pmfdAezZp0MIN8T19ed4sKx0vT3I9MLBcXIoCTuitupJ
- 4TX+aubB
- ITW9nh14Q+at89O1iyf/tQFXQNYpe9Juse6eFyaxWhsxc/+LQHDRhLAU0hZRdvsDrv2mKEFvzNn5wcVaRJfkTPob3wNsIJLXK4OjLSi2OXxh6zCJ5VEf2yumqnrB0fu+g9hajx3giB9WEkad0AqV5uZKRXtVz0OlLTYWln1lmlrCzemdQMfIpMZq4J/iADDucULogQK9cS6+B+X8Dzj5Gam42pyuO3gCdSDXSOE3pS8IsSjgncnsXrldZYzFc/n+0miCdO1vzov4elAIKieg6cl5c7t+BxWk50hlbcvG7j8I46s8unLhFtc8Lpj62rHuO+gIH2d/GwQ7fdC+zTLJsbAIs/ZtDQzWfOU5zr6bnQc/jQgFLRJKvj31o5e02YScF+WqzMnvLNdrWjqfnWEqnWkXHDttFa9xHxojwBqgnWTXhJvE+AhswRLuQ6uK224EODeDnPjmGwKi0+Th5DGmQjdMB9ZdkhcxvIMAAyxkCBNpLSKsVjllzeE3n3hspRcx8FOgC6LaFlbJejgvoXQxzkS9cJZImekSpI0fV17GPNxUrSnHlDqdE4Y0hAqbxmUMBec53dXI8FQ28gPk=
+X-HE-Tag: 1794553002-206429
+X-HE-Meta: U2FsdGVkX1+3wc4PdkqHj/E6oZzu0zJMKIZbbDIGzOF3N2Q2DN+lP5A+FxREjcQKsr2lHl6xuMRvFD9Tu72pbH+pQLABZcFT9sxE0f3E0LG93mY3WUYsBM58axGjklstMmIuSEw+gDgkbBoJJ2uUjiiK7PP7E7TfTTispRATPhJjD+4ZPo1HN4ltTdicq9VuoFpe4URlqhKN2L1VNiV2YFBBfT4sDIvNw88lC2Po+11/wjp4ZA3ipEN4eYQXh/AcjzyFzllIoC9TSXgsVCCa455EkP7vvTa+gx5wgUXRul2f0wVzaE4VEjYIP2w5OrHgt6n13Vclgj8Qbwxpdd4ux/0GC9qfZ36m4OvUfFQbXBu5DMqjbGGfIQWRm3EwSAKFOgb1r/DJm069kgNgcqAHBv4EzJwKWiI6KJUiGPgOcx2ZGUi5p0gmMuZ9Z9t9++IrAZNR4lZyZdk5OLLToIwB8HBZ2rbMV2m6KAFQGsqeN2Hvn4Bdn80p922n1Xc7G+V5TzpHEuCez9Qi1Vj3dGHOxvr71VnJCE3WSMdNUjNfrybkenYEik7aj00OJb7dnbKKvXM7eKsJiIm5iU7T4TIynS8FOyivKnH9XUpkEXQGA7VZoeoVV4z2WF5fe/SCD29LuYzFzG6efDdrT1lZXNH29+OAxmN/vrztihMuBtrZcG4XtowYrp8/zLhcWbsnTzwIbIXSGNMsamCCTD7U3KY91Wvrzg+8NE58k1b7D7g3fhOTULTC9G+eBaIxTNosvzzG36gl56J2zE0kLO7Ss4+EEY7YiEHuS4HEit/FdItRgEOiZ3dRj2d3n6ML+Lvw7jjPZ6aycVKloudyUsVzlIMBS6AZITV6qaJHCkgfOTydkQ1XK3wBJL4hxMTFXPjxQygwNYLo9bey6dMLgpvA3iDLtfbv4eOtAUrMu/P8/CahI3ELwluN9BRLYyPm/qTOupn3sr+ADMG7lGx4QXU09LK
+ Eqw8GLrr
+ goITrSkJZOhQRGKjrVW6yoAdoRtzk06SHh/ABoFmKysJ4rjBZRLMoFn0JQarLxj7yPzuDYeTb24V+xvcP7x5uT2KZz/Ajhl6B/xBmDQRYBzk7lMGt7aIkEqOtdyUN1ibfNGVasyGneSd02KNECk3UcyTramGR0y+wosMV5kw9Bz718dnsVK/weti8Vt5BXLsSUj5LDYVXEaCI94aw4iuOzi9Vw/zFTHg01IZEic/OKV8MSGfnHpw4AeWMYzl4nCTx6kURIti8uI+PwYYUgggXGr0MBixMgJTmyvobnEO2baNdIhVbRdLuxNsF1nsti6I7ejJRQy6ENLoQMFE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,116 +99,59 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 13, 2026 at 08:58:51AM +0530, Anshuman Khandual wrote:
-> On Thu, Nov 05, 2026 at 10:03:59AM +0530, Anshuman Khandual wrote:
-> > Route READ_ONCE() accesses on pgtable entries via level specific generic MM
-> > pxdp_get() helpers which platforms could then override when required. These
-> > accessors on arm64, will help in ensuring page table accesses are performed
-> > in an atomic manner while reading 128 bit page table entries later. But for
-> > now they just default to READ_ONCE(), thus preserving existing behaviour on
-> > current D64 translation a well.
-> > 
-> > This is similar to generic MM where all atomic accesses have already been
-> > converted from READ_ONCE() into pgtable level specific accessors.
-> > 
-> > These are preparatory patches for D128 enablement, although standing their
-> > own for D64 translation as well. These patches are split from earlier D128
-> > V1 series. There are no functional changes here, and besides mm kselftests
-> > do not show any regression.
-> > 
-> > https://lore.kernel.org/linux-mm/20260729122452.3797443-1-anshuman.khandual@arm.com/
-> > 
-> > This series applies on v7.4-rc1 and have been hosted below for reference.
-> > 
-> > git@git.gitlab.arm.com:linux-arm/linux-anshuman.git (arm64_pxdp_get_v4)
-> > 
-> > Changes in V4:
-> > 
-> > - Dropped all pxdp_get() platform overrides per Catalin
-> > - Moved pmdp_test_and_clear_young() and [pud|p4d]_offset[_phys]()
-> >   helpers inside arch/arm64/mm/mmu.c to avoid build problems
-> > - Updated all commit messages as required
-> 
-> This series has run into some KASAN fault issues during boot with 5 level
-> pgtables but also unlike Sashio suggestions these would require more code
-> churn to fix. Please find the details below.
-> 
-> https://lore.kernel.org/all/ohyhflzuoxdemccemutoosmj5hsfwylrlt6tvnyehulerk7gf3@ada6wu4zrzkp/
-> 
-> NOTE: somehow Sashiko had dropped LAKML from the thread although it shows
-> up in MM list.
-> 
-> Given the above scenario, I would suggest falling back on the V3 series,
-> that defined and override pxdp_get() helpers for arm64 platform. Although
-> similar to generic MM default fallback, they prevented code movement into
-> arch/arm64/mm/mmu.c file causing these KASAN issues in the first place.
-> 
-> https://lore.kernel.org/all/20260924062214.1635078-1-anshuman.khandual@arm.com/
-> 
-> V3 series apples cleanly, builds, boots and also clears MM selftests on
-> v7.4-rc2 as well.
 
-The following upstream commit had changed pxdp_get() arguments as 'const'
-(since V3 was posted) which would now require similar changes to be made
-in all platform overrides for pxdp_get().
 
-48bd5dc504cc ("constify arguments in default pxdp_get()")
-
-Hence will repost V3 series as V5 after changing the arguments as 'const
-pgprot_t *' if there are no other conerns.
-
+On 11/13/26 11:56 AM, Kefeng Wang wrote:
 > 
-> > 
-> > Changes in V3:
-> > 
-> > https://lore.kernel.org/all/20260924062214.1635078-1-anshuman.khandual@arm.com/
-> > 
-> > - Added overrides for pxdp_get() and replaced remaining READ_ONCE()
-> > - Updated all commit messages as required
-> > - Dropped previous tags
-> > 
-> > Changes in V2:
-> > 
-> > https://lore.kernel.org/all/20260922061638.3967467-1-anshuman.khandual@arm.com/
-> > 
-> > - Rebased on v7.3-rc4 along with all latest dependencies
-> > - Updated commit messages per Ryan
-> > - Added tags from Ryan
-> > 
-> > Changes in V1:
-> > 
-> > https://lore.kernel.org/all/20260903060657.2717457-1-anshuman.khandual@arm.com/
-> > 
-> > Cc: Catalin Marinas <catalin.marinas@arm.com>
-> > Cc: Will Deacon <will@kernel.org>
-> > Cc: Ryan Roberts <ryan.roberts@arm.com>
-> > Cc: Mark Rutland <mark.rutland@arm.com>
-> > Cc: Lorenzo Stoakes <ljs@kernel.org>
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: David Hildenbrand <david@kernel.org>
-> > Cc: Mike Rapoport <rppt@kernel.org>
-> > Cc: Linu Cherian <linu.cherian@arm.com>
-> > Cc: linux-arm-kernel@lists.infradead.org
-> > Cc: linux-kernel@vger.kernel.org
-> > Cc: linux-mm@kvack.org
-> > 
-> > Anshuman Khandual (4):
-> >   arm64/mm: Use pmdp_get() for PMD accesses
-> >   arm64/mm: Use pudp_get() for PUD accesses
-> >   arm64/mm: Use p4dp_get() for P4D accesses
-> >   arm64/mm: Use pgdp_get() for PGD accesses
-> > 
-> >  arch/arm64/include/asm/pgtable.h | 38 +++----------
-> >  arch/arm64/mm/fault.c            |  8 +--
-> >  arch/arm64/mm/fixmap.c           |  6 +-
-> >  arch/arm64/mm/hugetlbpage.c      | 10 ++--
-> >  arch/arm64/mm/kasan_init.c       | 18 +++---
-> >  arch/arm64/mm/mmu.c              | 97 ++++++++++++++++++++++----------
-> >  arch/arm64/mm/pageattr.c         |  8 +--
-> >  arch/arm64/mm/trans_pgd.c        | 14 ++---
-> >  8 files changed, 108 insertions(+), 91 deletions(-)
-> > 
-> > -- 
-> > 2.43.0
-> > 
+> 
+> On 11/13/2026 10:30 AM, Qi Zheng wrote:
+>>
+>>
+>> On 11/12/26 7:27 PM, Kefeng Wang wrote:
+>>>
+>>>
+>>> On 11/11/2026 2:46 PM, Qi Zheng wrote:
+>>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>>>
+>>>> cma_alloc_frozen_compound() uses GFP_KERNEL, allowing direct reclaim
+>>>> during the first MPOL_PREFERRED_MANY allocation attempt even though
+>>>> the caller clears __GFP_DIRECT_RECLAIM.
+>>>
+>>> MPOL_PREFERRED_MANY is only used for the partner allocator. Without your
+>>
+>> It's doesn't seem so.
+>>
+>> Gigantic surplus allocations already use MPOL_PREFERRED_MANY, following
+>> eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic hugepages"),
+>> which predates 9bda131c6093.
+>>
+>> alloc_buddy_hugetlb_folio
+>> --> MPOL_PREFERRED_MANY
+>>      --> gfp_t gfp = gfp_mask & ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL);
+>>          folio = alloc_surplus_hugetlb_folio(h, gfp, mpoli->nid, 
+>> nodemask);
+>>          --> alloc_fresh_hugetlb_folio
+>>              --> only_alloc_fresh_hugetlb_folio
+>>                  --> alloc_gigantic_frozen_folio
+>>                      --> hugetlb_cma_alloc_frozen_folio
+>>                          --> cma_alloc_frozen_compound
+>>
+>> Before 9bda131c6093, cma_alloc_folio() forwarded the caller's GFP mask.
+>> The conversion to cma_alloc_frozen_compound() replaced it with
+>> GFP_KERNEL, re-enabling direct reclaim during the preferred-node
+>> attempt.
+> 
+> Oh, I forgot about that commit. The naming and some of the comments are 
+> misleading because alloc_buddy_hugetlb_folio/alloc_surplus_hugetlb_folio
+> can allocate both buddy and gigantic folios (which can be allocated from
+> CMA).
+> 
+> Maybe rename alloc_buddy_hugetlb_folio to hugetlb_alloc_surplus_folio,
+> or other names...
+
+Naming is difficult. ;)
+
+The Hugetlb implementation seems quite messy in many places; let’s focus
+on fixing the issues first.
+
 
