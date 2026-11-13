@@ -1,103 +1,132 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4EB606A321
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 00:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BE6606B7D2
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 00:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=EKlCtyFR
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=p5YftAwJ
 Received: by kanga.kvack.org (Postfix)
-	id 43D6C6B0615; Thu, 12 Nov 2026 19:27:43 -0500 (EST)
+	id B15FB6B062D; Thu, 12 Nov 2026 19:44:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EE396B062B; Thu, 12 Nov 2026 19:27:43 -0500 (EST)
+	id AED9B6B062E; Thu, 12 Nov 2026 19:44:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32B0B6B062D; Thu, 12 Nov 2026 19:27:43 -0500 (EST)
+	id A03926B062F; Thu, 12 Nov 2026 19:44:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E2976B0615
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 19:27:43 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 78749121C27
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:27:42 +0000 (UTC)
-X-FDA: 85428207564.11.5C2BF6C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id AC1A7100006
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:27:40 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EKlCtyFR;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 79B3C6B062D
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 19:44:17 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id ED560421EC
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:44:16 +0000 (UTC)
+X-FDA: 85428249312.08.1AA3029
+Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 092D6180003
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:44:14 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=p5YftAwJ;
+	spf=pass (imf16.hostedemail.com: domain of aleszlucero@gmail.com designates 209.85.221.177 as permitted sender) smtp.mailfrom=aleszlucero@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794529660;
-	b=RjFbwPKro9jN9dGExwC434/mWwf0IXSxSj3YJ5ZVSWmF11ibilS4HW12w92pCTysvp29pS
-	6guB5o06RtPf3OTwuFN17tbtlqT0ijO2uZMzXpn5OgjMhIL+2K/+JSiAerTBpCFibcbroh
-	YQQv4vCI27pTSuS0Qam5a2mGjkZ+Gpo=
+	t=1794530655;
+	b=EPJQfPmfYbR/yH3fZ9Wt+eLg6BPQlPGFaz2Kf/mLwgEIUBB5t0NpXUADEC/qPE9IINU4dU
+	hHqIkURhqPL17sCqSFdaca5I6n3GMRH/CnobgnJsLvEeQ5AQiPvhmYWX1DnpYsJlhoTXWb
+	zFVr5NWCyDrZC/MM24pcr8o+3v/fRZg=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EKlCtyFR;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=p5YftAwJ;
+	spf=pass (imf16.hostedemail.com: domain of aleszlucero@gmail.com designates 209.85.221.177 as permitted sender) smtp.mailfrom=aleszlucero@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794529660;
+	s=arc-20220608; t=1794530655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J4uyCKwoU2ZUCtJEnB2UmwB5w4/Naib62nyhZDy72sc=;
-	b=OeXz+MMKPxy1o3v6LVreBeOEoQQLmWu+r0pJwxVSRAERgyAm/h+FgWL2urI172gamA0w3k
-	SoChSQ2x1XzpaCFdNYrZ+7K+iMHOBKrjRdiuwW46tTm+eLLnU9EU0L6b+rWZ0uqVlOlWeY
-	eZYlMaeE1aGP2b/E4wAjcdrqBatHdgY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 140BD601CB;
-	Fri, 13 Nov 2026 00:27:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3FF91F000C4;
-	Fri, 13 Nov 2026 00:27:38 +0000 (UTC)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=s1YVk99TpLbLdCzUwvUqAo5yK2pRxoOy71wVRzZH/Js=;
+	b=W9EpcHv8dmdlapDXkKFgnTj/Vd9jUtCUa6CUNEYRVRfHQStaLHmzf1u8AzuP1qh693Vwy2
+	+wO6yB+uVKhTsGGmEs0NFmGIL9Qg2R2tOSkVjgH3uZY7oOvCjoihpyM9FpwQK8n0tHoBfr
+	19T1jwwFE3+r4HsAzgMu6yDA3YoMtmc=
+Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-5eaaa9b1591so702387e0c.3
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:44:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1794529659;
-	bh=J4uyCKwoU2ZUCtJEnB2UmwB5w4/Naib62nyhZDy72sc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=EKlCtyFR0G3LjMnWtYrdKkTgBAehi0VR4yOuK+2aRnoodEo+e1zmWIfkZTHLjYB1P
-	 pMSxyfyQ0J0Ri07DLyGs/JZxFILKGtIY+BkEeQRW7wJpPeGqeemXoa8tbeg0Wce32L
-	 dyK4nVN/Bzh+LcPW6JZ9e5fRVWKngprMwyRK+Xp0=
-Date: Thu, 12 Nov 2026 16:27:38 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Mika =?ISO-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, linux-mm@kvack.org,
- dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, David Hildenbrand <david@kernel.org>, Leon
- Romanovsky <leonro@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>, Matthew Brost
- <matthew.brost@intel.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@suse.cz>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Lyude Paul <lyude@redhat.com>, Danilo
- Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH v17 00/12] migrate on fault for device pages
-Message-Id: <20261112162738.d689b46268e077ac06f41d91@linux-foundation.org>
-In-Reply-To: <ec4431f1-e70d-477c-b09a-eedc35d97691@redhat.com>
-References: <20261103061629.972669-1-mpenttil@redhat.com>
-	<avWpWBl1nPcRVmpQ@raptor>
-	<79f33ab0-2e43-4efb-94d0-addaf40745ec@redhat.com>
-	<avXoJSGh5xjGFgod@raptor>
-	<20261112164752.GA3692174@nvidia.com>
-	<ec4431f1-e70d-477c-b09a-eedc35d97691@redhat.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=gmail.com; s=20260707; t=1794530654; x=1795135454; darn=kvack.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=s1YVk99TpLbLdCzUwvUqAo5yK2pRxoOy71wVRzZH/Js=;
+        b=p5YftAwJg/UZJ3cZJsENVO+XTPwBSeurXv6/AFsS7+9nmTNbPaFLVOef8+tRnvowMk
+         DsPC94yvyg4U/RRtY/EEplZ/rT8NdFWsw0I6U3tt4+4gcbXgzk7SWU1lyCHvQpSRms/U
+         Xq3n6fsOiDJECcWaRy+ltFoRF7TQIbAwgEan8vVKrBGblJyCahgyr4O/EN6Ln5e1D9nz
+         jLAlJX5UQYhyGPrDOhfTI6uTtqkmHuw4aVkDTmxyBg+oBXgauv74sJ9pl0ocs6LhDosr
+         zaiwQPlnusn6KJFthR/FsoMuY9OrE7GHM6Q/SdwhFtsm5L1X9APTyS4VoYh/bqxE9bbH
+         Je1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794530654; x=1795135454;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=s1YVk99TpLbLdCzUwvUqAo5yK2pRxoOy71wVRzZH/Js=;
+        b=AeGxOnnhP/6KlZE5b7fbkQYY0JeBsIO/cOtcmW5DT8Vyai4VVmPs0qiO6rJQq3QRLg
+         RWF3FAobfLJguORk3SNrfWeBJe2fIxcOkq14bUuCwd6cIFQQw70aC+RCzntPtJWFocsa
+         0PwwF0125fFcD8OKAStJsY27zCbhQEti15uzwyHwt6oKBJc7rn4gNHP38dRBqqIN8f2/
+         WMfHK3sYxTtE1c2rFEgoPTomvwmdCHekvjP5CLZaxk1UBGlywW4Y+aaNylh3CsbDR9Fk
+         xpnyuIIKfTWnFpOmAJAIxeyggKg9fBaiCCynfu6Sxbj20Eo4uVIaVmIMOmodi5mv80mP
+         RuUw==
+X-Gm-Message-State: APuU4Z8fX0BJWhILrTzWHrJgyfTNxXlYTwUauvg81cKcCU0GU4XWQqrP
+	/9fAv/F9A6fybqp5fVjrDHOYpBt/HAFXmQBHSTiwjw1npoe1492ayZRX
+X-Gm-Gg: AYBFou0hWPPvYu3kSvs2rHQQjNnMXyW50Lvh5ECs9k4T+9YuoQ2dwX3Z3f40RNscA0w
+	7t9j2NuNJpgNYQEdFqvazPFTNAI3lPQxADZ6dSIu/AVt/xO4jWvG0V+umeklzRJ4W/1GgS2rSQC
+	4W8S/oyklfYZ/TyPh645kgMdUFqPEZojARfTeTzrxB7jGWku+kC/SxUYDsyTq3G1jSte+fa9yKv
+	UTPTOdnXvdsgw3213mmvNmU0NmQAMtSEYIQitCztuwSZYQgep4ZRljBiyXj6+bKDZFjnYWPD1Kd
+	epytuT7LQctC+zYCtgzHbp7KaCuF55mtR1lcTPY2108EV0lGpIH7jZOWI38NjOTwlTGK7h6wo+d
+	jwTsaDqj15kAOAP2Cljb6EUvoGGTJFvqKvqdoTsFg3gdK0i3nFHp55KHKEqIPKK7aDcbeVXi85X
+	fr93GNRv29Beku+foDExs1EdODeWMEz+9aJ9HoLDoSUPNTHTFHdKJAj9IvVndSr9a9PEQsxxscF
+	d/2B/0yZhhsA6YWmF6va020wMz6qS6MGnuDZ8l7A4Vg3K9y50H2CoUfhz34TrIsAvabqejoPbwA
+	d0i0iEmlPSPKTEEcjXT6m+FHwVM06yVPnK2BdupETw==
+X-Received: by 2002:a05:6122:311c:b0:5ec:c186:d22b with SMTP id 71dfb90a1353d-5ee34aef024mr356354e0c.22.1794530654065;
+        Thu, 12 Nov 2026 16:44:14 -0800 (PST)
+Received: from [192.168.0.8] ([2a09:bac5:565c:323c::501:50])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ee34eb9a0esm391085e0c.17.2026.11.12.16.44.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 16:44:12 -0800 (PST)
+From: =?utf-8?q?Oscar_Alejandro_S=C3=A1nchez_Lucero?= <aleszlucero@gmail.com>
+Date: Thu, 12 Nov 2026 18:44:07 -0600
+Subject: [PATCH] mm/pagewalk: document missing struct members
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: AC1A7100006
-X-Stat-Signature: cooj56sd8w5e3xw3gesxkztbgt7m7qqq
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20261112-pagewalk-doc-v1-1-6cc5ce7148da@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzNDQ0Mj3YLE9NTyxJxs3ZT8ZN0UkzSDlFTTZAPjZCMloJaCotS0zAqwcdG
+ xtbUAf6DM0V4AAAA=
+X-Change-ID: 20261112-pagewalk-doc-d4f0de5c03c2
+To: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Oscar_Alejandro_S=C3=A1nchez_Lucero?= <aleszlucero@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794530651; l=2229;
+ i=aleszlucero@gmail.com; s=20261104; h=from:subject:message-id;
+ bh=pJ9P7W0I0mabCui6yThr7RtPoOdOOdr/WWw8y3K4weU=;
+ b=hZqPLMCN9HIdyzRPrexPxD5hxkRBBDo8KaVc6u0T36+0rfujFKA0gvnwyuFR3TDzS5/mf4F2Z
+ uyV6aukmUS6CHj6em6Ww+8WbDzVk2GIzU7/nC3HtVodDt7MVDF5sHul
+X-Developer-Key: i=aleszlucero@gmail.com; a=ed25519;
+ pk=zRzEBMID7l1FXqr2CjfnlIn++3m3N05FuNYb5zPA3cw=
+X-Stat-Signature: 5qq16buonxqjsrn8hef9bef7yyo6s71q
 X-Rspam-User: 
-X-HE-Tag: 1794529660-203862
-X-HE-Meta: U2FsdGVkX18Fs5aNvQ0nEfpEKR2CkbkcqsC7ZxjlYmxXpvHkk3DX8X/5UhTg3xBfxGT9PVpBWr+Ty2r5BVsqv/WJt/GliGc3NcRrXM79idXMdFmFgRxNu62X9TMhy9APcCkQ3GkOJtwZLAniZJPnpJXpMR7Vobqdh0cOdiRCfggOQqjTvgAQxqn+HLkUA+jRfCfZJxX6L9/K+GBgTLy6d0YemFQKJKP5+07Q5sp+28qhkONJTnYPlw/IF0ma8S+6X9BBWgB3H6lW9+6CxznS/9pd0+pqtFPkFdxSqLg3i+6fhiNCxArPY8DhMGWDvRccShSRjtNzMwc97t+r6+60ZLA+THUahRRshRS04YJ2E8HPfcnXiUqM/A+KQQqSCKnDiWKQbttEB+CogCwymeAroe5qLOQRvcHRJc08L440OYZgdfNNTz4g6v0lozoAAJmhDzl4Nh4sLIiW0J9YjQ31U1hegIPDeXqQbRpXA+fVvKxzDjStg98pJXSDboqTtbsPnJuHEPFSBcChtG0Rk0EioH/YPf2CUx9qqv4XcW12nnUBfCg6cz/Syj73xTz18coNGbbjWNwzZl9BtP3UIeerDDLNVa4roKBr+HcHnMpkKuC85OasWJwV0UMelkfpwC6gECXVS/DP9w2GvHmGqdF7IRlwdow4pQKoA8i7qukxKlhQg5LCOdGAaSEgELDRXcSLz3XhCZS94beZq69PvkuYU08N6elH3MfeM0ATg0njfPT8Wl/MatN+C4Ur9cvjeuoDw8aCDHDgSdUHgW5V8vNKM6+A9tgNcKjNVwZQalR/gMu9E/L/jj6XVkJzq2CXMPQV99zIGNOnoNPshSSeMJGnlcfGZ+LQLDN9W0RBKwa+5Wqt2q0MvZwnSLd9dXdjUrm/eZbbjW7AUMdLGU1MOhOJST24Fj76mprOF9o9hgrh8WLC7vBcqzlrUP7kpoPc3CrKy5hnLQuRMNdXHBAp+rV
- 6ZASNhtj
- cqFZ02rqEokHxnvCuH/C8E6rhddBR7azWISn7ATO3OJui5fYW2sfenCsiwcJV5aYjRgTHthYZyy6jvW4Pjxkpdmjy5YIjTCYEeEI1pmC5hZLUnb1gW25ozrxBPuT0ZOIDXzieCHOS18rAVEtOFBRjp851VHYGAdk1+oS+h9Md7KuGW55ylvwkqPyFIc/tmFxavPlJsA7zWnEwXnsYRxOsPAs0111N8m/VGCu4G7tyktTL6Pc9orzhyp0xUr0LN8gGXH40z96IapAuJvldmnRICmWkhg==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 092D6180003
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794530654-273611
+X-HE-Meta: U2FsdGVkX1/G5Uc/LH7+N0fzvdX87M3pLg99rbpePoZ/9BMpR+k91SyO3psYVTxC53KFdlxyqg6BYhAzr4176lj5BHUfA/cEfs+kPhxXI+27mUQhqUNBpRzXf2F7uMPRMus4F+MR2hmjnhD6IbQ9JZYMERhKuHqMKWJvsIcvkkYMBhkhACKeeWcvUKuotLQQOn36hIJ2kiIWkZo96dMfqSG8NhNe2zFB7tCwjcmnC8oyc1LTIF5Ulp38KUUObUfqh7muFAnxPOMoGMrPC7U1zJ3E0ZABYZ8I1z95zrO8MhjoZsDPfz3K3R2cFn+0PjOCZmFyBWGhi5XX9hkhOe6SBCxRP8sqnZEUoMJGbud+G44d0PHLSIvgsm0c0Utte7c+qFTkLRg+32x2r/F++QHlUchWiGY131TIHLs/Y1XOgVyG7XRssws2UMT8b1osRpNwWNEeFG8He2YXcQUnV80C6gqatAnFa0Of3bEXuHkvXmHwxU4D8nOyEJfvS1fFpxIaLKjSwHfx8AwsdCKvLAGErendygXW50pIrmtfCdJdYvkMk+QWe+6tq3zoG0GOWmx5cg1nYtPWl5znEKOhJQgouhCnsqAdcsdA48evifXlhi72L8icdecOsqDWCgO1buJECU16uekwdO7WvSurvTuGXbXL3VNhBNOEZD+103fdZ9152oblKHXFPEQTmHSGrEJ8cCibBV1iHg2qAPLeqVuOkbxwQGSyUeQLHy9qNJlnrN+JCSgHdWxRhXZJ0thjX7AbmOjjHtmT2NAGPkS2naMauENsD3kRsOwUN7JGZhktk1ZGK750UHqJamS/KtBIRR6OuKK6buJUY4CNz697Iw1ugiJJNaRERt1I1ya5oiiVCDzPpIS2R1AWXAGs3f+qrbxiD3NioTWT8dlz5s7mKB2fKsYZ6miUNHF+ikHu4htmgEhYRxZzq1wqyPeP0Va/2G/K2XwdrY3QkO9+vMruphH
+ K2xPCzuf
+ cvuBMOdNQHO43KK1HzIqsk91RARBgaXAVk8aLIDv83M3m39PgEnaUI67V0SeKX4oQvRalJujkCh56Hpqi9KSlyskdazMsjW4slDY03sD4MQkGufesDphY/mu3IOJH09QaTGvS18v50RkRO9OXuzrMgRKyibLAetiRQcLs0htAL5XYwkY/+aJhM58xyjuQ9WswLzsnZCYpWLWUsucw/jlouS3pSyTO8y/8GyRs1uj5lNJrQFgJxsDkQY1F+5Zr5VZUQ140X5zDJyblkMMNQD2CkFZ0Dq98WPmXiTx0myagijMR/G+dqsJi1tFEvWPVcGxe1tDnsx644P+Zlx4V7RKIEZ94YU8il0oQ0PB/tqAJx9ciH8pxr7Iv/JT0mnbf3VPOGHuFwU730+seKY+eyxWq1zRmWyZiLp22eNAGXjX22SJ1Ze4lcw0Z3xEcHr1zRmhR52qmUSKEyzi9fayh/0jpYLyftrBXW2PsT3zLEhrVcKiFbE0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,66 +135,54 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 12 Nov 2026 19:01:58 +0200 Mika Penttil=E4 <mpenttil@redhat.com> wr=
-ote:
+Add missing kernel-doc entries for @walk_lock in struct mm_walk_ops, and
+for @ptep, @pudp, @pmdp, and @vma in struct folio_walk. Also fix @pte,
+@pud, and @pmd descriptions to state they hold entry values, not pointers.
 
->=20
-> On 11/12/26 18:47, Jason Gunthorpe wrote:
-> > On Thu, Nov 12, 2026 at 04:24:05PM +0000, Alexandru Elisei wrote:
-> >> Hi Mika,
-> >>
-> >> On Thu, Nov 12, 2026 at 04:00:09PM +0200, Mika Penttil=E4 wrote:
-> >>> Hi Alexandru!
-> >>>
-> >>> On 11/12/26 13:56, Alexandru Elisei wrote:
-> >>>> Hi Mika,
-> >>>>
-> >>>> I want to help getting this series merged, and I've been familiarizi=
-ng myself
-> >>>> with hmm and device migration, please bare with me if the questions =
-I'm asking
-> >>>> are obvious or downright silly.
-> >>> Thanks for the interest and willing to help! I am preparing a v18 of =
-the
-> >>> series and plan to post it early next week.
-> >> The series is big, and as far as I can tell the MM people are hard at =
-work
-> >> reviewing bug fixes. It might be better to wait a while, to give peopl=
-e a
-> >> chance to have a look? I know that if I see a series being reposted of=
-ten,
-> >> I am less inclined to review the patches since probably a new iteration
-> >> will be posted soon. But I can only speak for myself, you know best.
-> > It is at v17 and it is still getting high severity sashiko errors
-> v14 was first that sashiko managed to review. There was a regression in
-> last posting, but also false potsitives, and sashiko reports same issue
-> then 3-4 times, so the reality is not that bad.=A0
+Signed-off-by: Oscar Alejandro Sánchez Lucero <aleszlucero@gmail.com>
+---
+ include/linux/pagewalk.h | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-Pining for the days when all we had to deal with was checkpatch. =20
+diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
+index b41d7265c01b..978714d5e32f 100644
+--- a/include/linux/pagewalk.h
++++ b/include/linux/pagewalk.h
+@@ -63,6 +63,8 @@ enum page_walk_lock {
+  *                      install. If allocations fail, the walk is aborted. This
+  *                      operation is only available for userland memory. Not
+  *                      usable for hugetlb ranges.
++ * @walk_lock:          locking requirement during the page walk (see
++ *                      enum page_walk_lock).
+  *
+  * p?d_entry callbacks are called even if those levels are folded on a
+  * particular architecture/configuration.
+@@ -161,10 +163,14 @@ enum folio_walk_level {
+  * struct folio_walk - folio_walk_start() / folio_walk_end() data
+  * @page:	exact folio page referenced (if applicable)
+  * @level:	page table level identifying the entry type
+- * @pte:	pointer to the page table entry (FW_LEVEL_PTE).
+- * @pmd:	pointer to the page table entry (FW_LEVEL_PMD).
+- * @pud:	pointer to the page table entry (FW_LEVEL_PUD).
+- * @ptl:	pointer to the page table lock.
++ * @ptep:	pointer to the page table entry (FW_LEVEL_PTE).
++ * @pudp:	pointer to the page table entry (FW_LEVEL_PUD).
++ * @pmdp:	pointer to the page table entry (FW_LEVEL_PMD).
++ * @pte:	page table entry value (FW_LEVEL_PTE).
++ * @pud:	page table entry value (FW_LEVEL_PUD).
++ * @pmd:	page table entry value (FW_LEVEL_PMD).
++ * @vma:	pointer to the VMA (for internal use only).
++ * @ptl:	pointer to the page table lock (for internal use only).
+  *
+  * (see folio_walk_start() documentation for more details)
+  */
 
+---
+base-commit: 9d66f26fefacebfeed15de31c1123451a17ff119
+change-id: 20261112-pagewalk-doc-d4f0de5c03c2
 
-Mika, afaict the entire patchset is a performance optimization, yet you
-say "I don't have a benchmark showing a gain".
+Best regards,
+-- 
+Oscar Alejandro Sánchez Lucero <aleszlucero@gmail.com>
 
-Recipients look at patchsets wondering "why should I spend time on
-this", especially in these times.  It's best to answer this question
-right there in the first sentence of the [0/N].  That means numbers,
-and the better they are, the more attention the patchset will get.
-
->  Documentation/mm/hmm.rst               |   45 +
->  drivers/gpu/drm/nouveau/nouveau_dmem.c |  402 ++++++++-
->  drivers/gpu/drm/nouveau/nouveau_dmem.h |   12 +
->  drivers/gpu/drm/nouveau/nouveau_svm.c  |  155 ++--
->  drivers/gpu/drm/nouveau/nouveau_svm.h  |    5 +
->  include/linux/hmm.h                    |   51 +-
->  include/linux/migrate.h                |   59 +-
->  lib/test_hmm.c                         |  174 +++-
->  lib/test_hmm_uapi.h                    |   21 +-
->  mm/Kconfig                             |    1 +
->  mm/hmm.c                               | 1075 ++++++++++++++++++++++--
->  mm/migrate_device.c                    |  618 +++-----------
->  tools/testing/selftests/mm/hmm-tests.c |   56 ++
->  13 files changed, 1984 insertions(+), 690 deletions(-)
-
-also, yikes!
 
