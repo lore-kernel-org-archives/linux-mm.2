@@ -1,92 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A91A3606A89D
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 19:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9F560A261D
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 19:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FEa/188U
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SWTYQg0C
 Received: by kanga.kvack.org (Postfix)
-	id 9B52D6B05B7; Fri, 13 Nov 2026 14:09:34 -0500 (EST)
+	id 9DEAB6B05C4; Fri, 13 Nov 2026 14:10:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93EBE6B05BA; Fri, 13 Nov 2026 14:09:34 -0500 (EST)
+	id 98E2C6B05C5; Fri, 13 Nov 2026 14:10:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 830436B05BD; Fri, 13 Nov 2026 14:09:34 -0500 (EST)
+	id 87E1C6B05C7; Fri, 13 Nov 2026 14:10:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D6126B05B7
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:09:34 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D7719A010F
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:09:33 +0000 (UTC)
-X-FDA: 85431034626.11.07284D1
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F8436B05C4
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:10:16 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EA3AC8014D
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:10:15 +0000 (UTC)
+X-FDA: 85431036390.29.AF03256
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 27A61180007
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:09:32 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="FEa/188U";
-	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 611DFC0006
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:10:14 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SWTYQg0C;
+	spf=pass (imf28.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794596972;
-	b=tdn4yqMjmP4kgkrwbWkJcba/2Hbv/csw7535IWQrJzpoq3TFHug/IaX0jEL4FMgMK4A6yG
-	YoZOUHqhaEK1y4rOSQLBTXDy4N/6FemOPG+tn70WdwEtsoySo1T4VQyYqBVSx4bIChmy4M
-	CLjefg+63JFRH2NrVIaR7gpz+RpmPjQ=
+	t=1794597014;
+	b=d29Kh9WbLCANhVmwkRJa2+awaNBe0FjQwRU0S4ADsfNWPCSaYwxRS4wEI7ISsqGq2IdC97
+	MB7tlK7XHrqn1bN5vPhZsaJX6W4zHqA6NqK5bUKWyInupAkTJO7bRd2D36mB6RqrJK1fAk
+	O9e6hi/0/FJlxBQbwak3JK1exEQuZp0=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="FEa/188U";
-	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SWTYQg0C;
+	spf=pass (imf28.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794596972;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794597014;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4qDyc03bSyRb25YlwotJjboqqvHxvlFSL1lrlrlrLEM=;
-	b=ZMH5WPCfiByF7cfoM7kxsPhngo9KJi/6fSnJwupYovDQscngCR7gItzLVyCMO8r5a3RLLc
-	GxT08SfnHS57oLZ/yzAon5Vd9VMrzGCayc3c7H3fVZGoxp4nDn5Ejzg8wE3Quw7SkFXOf4
-	y9PNZ5i2rDmOIKvtwKaCEMAEEwX96N0=
+	bh=zabQJqh6t7uxEuYlIQWDR7cku3smA7px6dIU8SpBgYA=;
+	b=mSlDpoApxRPyu1uD+DZkUTdtMEAAZUaehhMPNp4Fb5m9XXzZDvbaIfK+KbAKE5WtYf7Ih+
+	ZXS18XlhFdXwZtKvncERpyO1bZLtgc6mSASEPh1UZ3yI4UiPaKb5vkkfbmBWq/Je2eKRW1
+	JIq/lXeRXSuFCmGa89fmiywacP+x/qU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5891942BA2;
-	Fri, 13 Nov 2026 19:09:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9BDA1F000C4;
-	Fri, 13 Nov 2026 19:09:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A31A14646C;
+	Fri, 13 Nov 2026 19:10:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB43B1F000C7;
+	Fri, 13 Nov 2026 19:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794596971;
-	bh=4qDyc03bSyRb25YlwotJjboqqvHxvlFSL1lrlrlrLEM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=FEa/188ULC/fY5oGSX/Zv1LmItEJg5GZeErIic/vuNNfGDlyoBX59mxidLjFEPe3p
-	 vlFtYxmGnFM6SLimMJHuctYAnZkvFAcFxi30cGbQA/LG/HKpfb4ydPBrYISd43x/rw
-	 c/puYQbD9foT/PN4Q5pTx/xN7W/Wlw56tMszcOZ3CMi81y+2zIL6Hz2Vuh7WALIl8D
-	 L2UHdpn3YHyuDiTP0D+ThVSOCfpg716mo9Tvog+hTenHkJk+gfZTDQgLSBVNfBKuSf
-	 dUG65SdRuSdhT4LbojqAWguRgaRQC/l6YMzHl34tG36/ddAj+t5Q3tlZiVstrZAkSQ
-	 O0X34BNMuV8Vg==
-Message-ID: <sashiko-outbox-213508@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v12 2/7] mm: take a folio off WB_DONTCACHE_DIRTY only if
- it was counted there
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Mike Snitzer" <snitzer@kernel.org>, "Matthew Wilcox" <willy@infradead.org>, "Jan
- Kara" <jack@suse.cz>, linux-mm@kvack.org, "Christian Brauner" <brauner@kernel.org>
-Cc: "Chuck Lever" <cel@kernel.org>, "Jeff Layton" <jlayton@kernel.org>, "Anna
- Schumaker" <anna@kernel.org>
-In-Reply-To: <20261112190911.84702-3-snitzer@kernel.org>
-References: <20261112190911.84702-1-snitzer@kernel.org>
- <20261112190911.84702-3-snitzer@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 13 Nov 2026 19:09:30 +0000
-X-Stat-Signature: sa6rq3xbb4dxtdu3xgb3myk73w7xaj3s
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 27A61180007
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	s=k20260515; t=1794597013;
+	bh=zabQJqh6t7uxEuYlIQWDR7cku3smA7px6dIU8SpBgYA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=SWTYQg0CgR/xis3k3QzKwIhMJEwlNq0p3qBtiA8bOEVMxTYMo+tzuklGFY+7drVAi
+	 HfI5oWBuKY1tqR7EPRtqiVf8A+TdLMExZ6rbKIhg4EMBylI0fl0HplfyLPFWS3JRhD
+	 EsgFqbMQioG5krlMtyZjak7X0+SMrM6+tCKGeKhf8U5my6BhLc1LtwtAmyJw4YTpGE
+	 RVK/8K5E8VGr3VkICY8Q6d/sZxdxrTRyWqcdzP0KTW8fB/i/kay4R6KZlOViJj2CmP
+	 9q9nUu+gRpmM7U9RiDj/XDasZXz5/lMi33X4lJRcB0A2xSsdhG25kaCeZKCgAOJsLp
+	 0Imh7sydD26RA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	dipietro.salvatore@gmail.com,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	linux-mm@kvack.org,
+	Salvatore Dipietro <dipiets@amazon.it>
+Subject: Re: [PATCH 6.18.y 0/3] mm/page_alloc: fix iomap buffered write regression from 5d8edfb900d5
+Date: Fri, 13 Nov 2026 14:09:57 -0500
+Message-ID: <draft-0007-redipietropagealloc6@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261113110259.2901456-1-dipiets@amazon.it>
+References: <20261113110259.2901456-1-dipiets@amazon.it>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794596972-536171
-X-HE-Meta: U2FsdGVkX18Ns3O++TTANraSvwSp/5GvX5GqzGxGjXUXKLL4cXqhy7tI7Y9s/Tm3UESdixCJPaoWkR35R7l9cP0rmzgH6NtdrAhPeVocAp8HYoMe2IuHG3elhxOPBfsJfMGzHqB/NXZb4vb/SeDLPdVPpT3MvYe/wJTMlEEBMg/MHiaYqcwPSVM657/55Pfeovi7zyweSdTu62FOwI03RHlRnQsPdPA39mHcjeTBDN9Ux+IPGDE9gZMaPxMiEAukGHWJrKz6xysYKZbK5gNvR3kAOXR3MA9d4YEkXor8AzJB/jz4RpTTiNLp8QtPqsP4xzTpuaN7qUAKmt/ndks8prOy6wuFYwKSgs/QZ/c8pDkmH1ZFpFPHjFYzDybktS/zXm3U4Y9LQK796xd0i0DNygU3k2wZNCFLSNmlmTLzUpQaF0B93AyhCa26lb6KM1o1/p7GT47YydQxL8hRzZAbaQHQls94MNtBP9vA4Gc4YRZewrUpJNjVVFtO0ITAmCjnXfS4BqNu7qaKHZSdxfnCtvlDDFmH/7MVW2mPV1N+R6fdIkDXgPrLanDysvRPj0X+iWDFxw7DepYRmF3kfs/lDJqc9Wsk2dvQbebqdo+s7su1yQ8HpUM/rWni4Yfgcp8CfxH5H5awl5iaPvkbcZpcYb2t/tRqLfnV4fvLO1bBLcHE0v47mZbvdnqxzX0x8T0yya/FHrHyRggS3pe+8IxLdQ+m5h8tCocEtu9KAFSM6C6t8kpZZSItuvwib3S4WdudQRfJKQiq2HkPs/UoGlOMT2SzjnUqzoNkst1Q4NfIuvEIcVVjST2Aads/i66a+NsUgVkxVRXpd43/IATk1LiDpqtcQLtoGWwjD1JPmUJmDweTxqZFNjpUa1a2bcg5AxWg8xSTC/YodZt8tDnPjzYvNhkoR87LZdC9JlM3d0ppqQ2uvHeGp09wHUr42iImT4te5EFYgMPtmiFoYe3EHpp
- hVDqjaRX
- I0Ld7A+PGMV4OgszTs+NsPQQLS5cxOGXP56pDafzzt+eJKoyXKt8+rYMm0ld3wq3fuhE6ceDdWAjeL+PSSk2lrReJzMOg3dLQtsOtEjv1A0hzbnB1Vqv+ZoAINvcRnVTjxwGNegXeexscvgejczuSW6i81Vtw2LUDra7FWEk6TzkDEEBVaJzvq5cl1jVAt8/ZWqnUxR6W+0740JC1vLCQtn/I9bk8v2LmJHx/5mQZLAtV2OZJ+fAww1B2930aiV6H6XA+iRZX9wUiKhSU8pOjPSYcOQl669GOYV+dkddNv4L7BDMyW2dK162Vwfv/P4BT6rMpmMRAbCrENpiGpgWP/mmaWMwGunDi+5ws1m57SmNcdL5dc1t+oaYmvKKeWZ9usEb3h95cnHeGRO4lveKsBIqWJJX4Th3RdbnjcwzYcxcLXrDfwex7YX5moCzz8qB9AwM7z5jsvopA1End1AoQQLNdxouiLJVeWhl9TAfygP/2+2x/vbXDP6GUjH0d7rgnylHK9qy70Mq3doClA8VacmwIgPZFJzYtLgrVXsgXKI0RXpwLtV1yJUjDiYkHv3QP0GgSCR2DlRIAqJ+09WyXnFb6T4NvJeKP6FkxItkZOw40SdBrtRjzm434e6SfSVEFIHgfmlegwXyHygUVdLBfc5b7wP8O6cmKFZzH
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 611DFC0006
+X-Stat-Signature: 7x6qjf7whpqcmh7i756bb4jo8ny6rbfo
+X-Rspam-User: 
+X-HE-Tag: 1794597014-444678
+X-HE-Meta: U2FsdGVkX1+xFIkO1NvqjwrqPv2EIue87e19nT5FUTeQC8wMCB/K23T3IlKfwBaynJXISIEGjntNAEu1JTfk0lNjSD7mbxgVVigRG/Ryx28HAX4PsET1Su0FsXL0F4ncfHVoCroYE7wh14cK7rK1NUUQZtFMCaTu7Q0hS/BjjeAsi06OzxQkkDcjN3ZH2Ltg+iAqUqHiKB2jBvo+Pklr6hvmQqch2rV2zly17vI2nJD9mbZIunZrWvIuYNxaSqOYXUu1Lnc/WxF7KNOloRlFNXlQZvT977V4++NVbblp7f/qVQ+FbZriqYuo4x+sinOsJ8wJtycAenAsQ4cDumWosUVWoFaSINLWOExbfYbtqrjCABLN72NchNZ9SUrsKi+tGEffgoZgi/lXCyEyi+9vZkJEyibIPNJebj5lUQbMWSJIUFMJtjKoMfqk4peaSlHZvq79UnZ47sxSJWOxQ6Did6O0t5dj17QfkRxP9J34IN+RWGLEL61PtxrziuAAv+4yU2f+bbhlyUZrQfTQVmvBCfX7rGpU+k04Ay95f2g52t8TnRIAeIMJQjuS5okTCBHKpghQmi5DhM40sHVMUVgT+vRgIGUEM8ooP4vvYXDh7DN0N/6UMq0iAs6J1UHt2Sye94RABN8jDtJmaT3F47sfLzQtu5rSzs/QoUf4i92RqlRohRIzASsCy6m7ZoqRYQt4LapmnNEbEYEEaMvlyoE5IQNeA6nLwynOKx8oSitHzE3GmULTSvDgXrtY4xcj/5e7Z8Tf5U0UTi5tKks/1mug4xa9BJme0Ca2OIC719py6uzPKhFMLhXNFPX99sDkqjkNv3nbKOTy537KP3aYRNQeV0FIcoFD7ZPEwVVqycj2VWmwJaJbcpbs/0IvSDoE0lgrTeIVPt4kvXVc9/5oLEQ9TvnyNS4H8UkmCyirNOHsxFmwIviEHK6KTVmreWldI1bdfPFF1jXJfLgzA2znDoO
+ q9zxSvtU
+ cupVVJEfObvt//PAyRVLwBBAqgiT6rnTGJIWi1FyFj2OrNavvhnz/cL6wan8d23CVBUxWujij8IW58l/AfJ2c068RyYisJSakPycDuNI0F2rETinc9OY2vbBGY+H4s6+qIftwsIpyFEfrMryUvcebBhKvKbc1Kgn2arXoGe1Iu0fZc2fUoZSFPUT4/OHk+GEwxZt8n8+6FVgU5U+hJi8ptIngmFYnWCJJtWjFfJdrL2cff2N6ghKg5299VSYUAretJjpm9U/bCuKOuSjKyLccBHt4lKjHBvZxVoltA1EAjWEwofVlHhJD0Tu8ZOqpsfvdDedSuahjVfbLEa0fQWDS8uFLNqI9Gqhe4W9/2riaDhtXTgo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,85 +97,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] mm: unsigned negation in filemap_clear_dropbehind() corrupts
-  counter on 32-bit
---
+On Fri, Nov 13, 2026, Salvatore Dipietro wrote:
+> Patches 1-2 are its prerequisites from the same mainline merge (Cc:
+> stable), only moved from mm/page_alloc.h to mm/internal.h. Patch 3 is
+> adjusted for this tree, see its changelog.
 
-commit 08b68ff1ed201d0ae5bce5df36b625f50a1bfa1f
-Author: Mike Snitzer <snitzer@kernel.org>
+Patches 1/3 (6ee3d87b9408 ("mm: page_alloc: do not give all non-blocking
+requests reserve access")) and 2/3 (fe21f930d1e6 ("mm: page_alloc: remove
+ALLOC_NON_BLOCK from ALLOC_RESERVES")) only carry Johannes' and Andrew's
+Signed-off-by. Since you are the one sending them, they need your Signed-off-by
+as well; only 3/3 has it.
 
-mm: take a folio off WB_DONTCACHE_DIRTY only if it was counted there
+Could you resend the series with your Signed-off-by added to patches 1/3 and
+2/3?
 
-This commit updates filemap_clear_dropbehind() to hold the folio lock and
-i_pages lock before clearing the dropbehind flag and decrementing
-WB_DONTCACHE_DIRTY when both PG_dirty and PAGECACHE_TAG_DIRTY are set.
-
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 437113addbddf..98ce955404127 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -1956,22 +1956,36 @@ void *filemap_get_entry(struct address_space *map=
-ping, pgoff_t index)
->  	return folio;
->  }
-> =20
-> -/* Clear the dropbehind flag of a folio that a cached lookup found. */
-> +/*
-> + * Clear the dropbehind flag of a folio that a cached lookup found, and =
-take
-> + * the folio off WB_DONTCACHE_DIRTY if it is counted there.  With the fo=
-lio
-> + * locked and the i_pages lock held, the folio is counted if both PG_dir=
-ty and
-> + * the dirty tag are set.  A folio that another task has locked keeps th=
-e flag.
-> + */
->  static void filemap_clear_dropbehind(struct address_space *mapping,
-> -				     struct folio *folio)
-> +				     struct folio *folio, bool locked)
->  {
-> -	if (!folio_test_clear_dropbehind(folio))
-> -		return;
-> -	if (folio_test_dirty(folio) && mapping_can_writeback(mapping)) {
-> -		struct inode *inode =3D mapping->host;
-> -		struct bdi_writeback *wb;
-> -		struct wb_lock_cookie cookie =3D {};
-> -		long nr =3D folio_nr_pages(folio);
-> +	unsigned long flags;
-> =20
-> -		wb =3D unlocked_inode_to_wb_begin(inode, &cookie);
-> -		wb_stat_mod(wb, WB_DONTCACHE_DIRTY, -nr);
-> -		unlocked_inode_to_wb_end(inode, &cookie);
-> +	if (!locked) {
-> +		if (!folio_trylock(folio))
-> +			return;
-> +		if (unlikely(folio->mapping !=3D mapping))
-> +			goto out;
-> +	}
-> +	if (!mapping_can_writeback(mapping)) {
-> +		folio_clear_dropbehind(folio);
-> +		goto out;
->  	}
-> +	xa_lock_irqsave(&mapping->i_pages, flags);
-> +	if (folio_test_clear_dropbehind(folio) && folio_test_dirty(folio) &&
-> +	    xa_get_mark(&mapping->i_pages, folio->index, PAGECACHE_TAG_DIRTY))
-> +		wb_stat_mod(inode_to_wb(mapping->host), WB_DONTCACHE_DIRTY,
-> +			    -folio_nr_pages(folio));
-
-[Severity: Medium]
-Does passing -folio_nr_pages(folio) to wb_stat_mod() corrupt the
-WB_DONTCACHE_DIRTY counter on 32-bit architectures?
-
-folio_nr_pages() returns unsigned long, whereas wb_stat_mod() takes s64.
-On 32-bit platforms, negating a 32-bit unsigned long produces 2^32 - nr,
-which is then zero-extended to s64, adding a large positive value instead
-of subtracting nr pages.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261112190911.8470=
-2-1-snitzer@kernel.org?part=3D2
+-- 
+Thanks,
+Sasha
 
