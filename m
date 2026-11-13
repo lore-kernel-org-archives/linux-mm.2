@@ -1,92 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E21606B214
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 08:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA245606A323
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 08:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=jJ/iIGz4
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=fFXXsTut
 Received: by kanga.kvack.org (Postfix)
-	id CB0776B063C; Fri, 13 Nov 2026 03:53:44 -0500 (EST)
+	id 031C86B05D9; Fri, 13 Nov 2026 03:55:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C60796B063F; Fri, 13 Nov 2026 03:53:44 -0500 (EST)
+	id F242E6B05EA; Fri, 13 Nov 2026 03:55:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B76E36B0640; Fri, 13 Nov 2026 03:53:44 -0500 (EST)
+	id E13586B05EC; Fri, 13 Nov 2026 03:55:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 95E586B063C
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:53:44 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 19ABFC038F
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:53:44 +0000 (UTC)
-X-FDA: 85429482768.22.B73FD9C
-Received: from mta1.migadu.com (out-184.mta1.migadu.com [95.215.58.184])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 2B8F720002
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:53:41 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="jJ/iIGz4";
-	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.184 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BA2F46B05D9
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:55:50 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 57D441C3C16
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:55:50 +0000 (UTC)
+X-FDA: 85429488060.07.552339C
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2D7B7C0003
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:55:45 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=fFXXsTut;
+	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794560022;
-	b=bG5DEY1/eM/sl7/BcOdxGdrGUqOSRE2CNnZ2PCpnn+ETfIZqV4f86dZY9vadCfHyMgQBKz
-	kUqGhB29GGzt2NUCBQ8zCpIIV2MEFJqtUalARJOVa00aSC14gtmQ19UnIXu+EBc6FWFFqq
-	cgLCbuOEQErXf92dTc1AS2HJ/BZPn30=
+	t=1794560147;
+	b=WhjU8SFpPPqDloGerZsnNxgedjxuh16+v5PJDl0QZCoH62JbSSQ7ah15ijUrzpveuztWe9
+	ShmCTjtaykya3dX8mjRk0RluVhEGalKubKpP5SiqNrK1euMUY/mZbT/DjKgxcT6D3P+Z/J
+	tLZqDIjVu4UkSes2w6qawfrxGkdeYVM=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="jJ/iIGz4";
-	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.184 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=fFXXsTut;
+	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794560022;
+	s=arc-20220608; t=1794560147;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cjQnjpho+fyRhgUTZY5Z+DHRvjFJ19pcEbfZyNg/8uc=;
-	b=Tf0MhOubZe0GA2OGhWaSP4ETdPBmXRaG7fFrD4RS1k9MAxnpdP8bZmU/gnSh6fJuAhYerq
-	EsGHJiSD4Z/2/uo94CJv/RgkzVENd+M9oUGFIW9xmsGd6xm6dvKqFm9y/k5PmaEMQW8vGQ
-	bZtbskHq9r/JGWXF3Hd42D68qzhzUSg=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=CqTuTBJUY5nbUP9k6g85314MB/qlykyFWA7AeA8gtPY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794560021; v=1; x=1795164821;
- b=jJ/iIGz4xJtTBlVk7sS80UqXlRpw54Qna/snuriOIzh3X08wZH/3ipRFnVHogOt5qM8Y3r2C
- mX7M83EwtJBNpBo4XrP2fDZInfOh9Di2RNNxDc1eC4OhoJ7XLKcRo5lY1NIjq1NoBqK+V/fHFEV
- skJjKSPONmuw0YHbw+hwBIlU=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id f62f24c4a9f7b48d;
-	Fri, 13 Nov 2026 08:53:40 +0000
-X-Mizu-Trace-ID: f62f24c4a9f7b48d
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 13 Nov 2026 16:53:32 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com,
-	baohua@kernel.org, baolin.wang@linux.alibaba.com,
-	qi.zheng@linux.dev, shakeel.butt@linux.dev,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	Baoquan He <hebaoquan@kylinos.cn>
-Subject: Re: [PATCH v3 1/4] mm/mglru: add MM_WALK_EMPTY stats and tracepoint
-Message-ID: <avbQDAw6zKe5dRzH@fedora>
-References: <20261113084953.412919-1-baoquan.he@linux.dev>
- <20261113084953.412919-2-baoquan.he@linux.dev>
+	bh=xbWpqpVEiuE3z83GiQA0YLlwDhjEJ8fHQ7f78aTTUNM=;
+	b=Rp5SCpYNut02XleJywgudEG5H9GdPu+Ywn+nn8bQerePV3iD75d6a4x3u835lkUUzCdFTu
+	tlcaHLqlIOUku4JsVufIN0iLRXRG1j+1bdgBvAfGwrsYVDqDoUoMWyUJkg9+ndyR611H5J
+	3fR5a7H946H7V9zz8BUAaM0BS9Z8MR8=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1794560142; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=xbWpqpVEiuE3z83GiQA0YLlwDhjEJ8fHQ7f78aTTUNM=;
+	b=fFXXsTut4QijhUWgRBPgE4k4sELZIkJ+h2qiWztIOms7r5LNojCkCMAwyk/0517mCll1+vPq2NLGGiKWvJD1+06gG7RR434XgNYZKbBruVfGduNZMt2QG9UP1TNKCO2Yi5MhIySuhEcQmQs4A+G+K0dDC7v5pU1CzZNOnQP+NVQ=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R631e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0XEeeDi2_1794560138;
+Received: from 30.74.144.124(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XEeeDi2_1794560138 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 13 Nov 2026 16:55:40 +0800
+Message-ID: <79229fba-8019-46d6-9cd4-a24a463474be@linux.alibaba.com>
+Date: Fri, 13 Nov 2026 16:55:38 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261113084953.412919-2-baoquan.he@linux.dev>
-X-Stat-Signature: hk4oxqcfh9uokb6wtj1bedg1gh4rdsqn
-X-Rspamd-Queue-Id: 2B8F720002
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 01/16] mm/mglru: report evictable sizes per type
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org
+Cc: axelrasmussen@google.com, baoquan.he@linux.dev, hannes@cmpxchg.org,
+ hui.zhu@linux.dev, kasong@tencent.com, kunwu.chan@gmail.com,
+ liam@infradead.org, lianux.mm@gmail.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, liuxiang.277@bytedance.com, lyugaofei@xiaomi.com,
+ mhocko@kernel.org, mhocko@suse.com, qi.zheng@linux.dev,
+ ridong.chen@linux.dev, rppt@kernel.org, ryncsn@gmail.com,
+ shakeel.butt@linux.dev, surenb@google.com, wangzicheng@honor.com,
+ weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com,
+ zhuhui@kylinos.cn, sidchintamaneni@gmail.com
+References: <20261111232603.9934-1-baohua@kernel.org>
+ <20261111232603.9934-2-baohua@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20261111232603.9934-2-baohua@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ya1rhnkojr3fdcjcpmjah7jj8a6k61fe
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2D7B7C0003
+X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794560021-907645
-X-HE-Meta: U2FsdGVkX18zF750U7t9KEhYeUm+ZCMpMCoefUbtfs4CjuDSuhGDO6BGAB703a7K+n9GVeDWpRD1yUqPSTxfAi7+Sx1q9BwI/ANs64C7RUCYMF4SKcEneniWpAaP+8UYZqnGGsi4j/WEVJ4usVJkKsSsjbR+2rWfJfno7DCMO/Fo/sUmjUr9Y0+geI09ghwQG4ZjiyieWuZvKb1DzU6C6D3zmdMTYmxS38+No9QJlBiYOy7RsUMN5DVr/RAsyzTZTkYViPrhibHiUE5fFhz/rp0/cwRIVxr+iPnnAxkPAUOzav7GIF3vUtHVFQL55qHseiTy4iH5Oqt6MTq3dD9ivqfln3v2v9EC49Pfw6zFwuUGlyp0qmmuQcp9ucwFCMfApn909Xd6+Amx8Qw5Z2inhHrfi5B7PNMwAZLbBW822hnRGMSNm8ZmErlk1zq48ktvN0nncJmHTaMuBGfJotN7Bih/zH3XQfeF4+LUCX+yoE8e8tCouK8QIlN/f8oKrNusm71GJixsNE8E/VuTUz2tFXSE4Pjk50PRhMUjjhQdPLaEj37gSUWmupdW4ViiHBbHJv4VGp/yavSc7/EHPcNlgxJxPsDDDqwGeBzf25qyKgJjB8vQy+lWWFrFT2R2Qe5mb5VaXi0NWn+RdZPVRgdJ5Q4cU8BcDe8nNoL15qu3nw4ojoGthLaINuAM8oTzc14OJew+BdW9GRdzb6PYn896BJUXgTEWmF7KI4/DUdmAhf5CcUu2tIcSCua79M5QIBRwaycxQUm5i8pMUUcY3uWPV+JH04Epi1pcE+AupVyGz18fzbXM/e2BEqXci8RJzbqtF7vnGcLSRR+sHWhAuj3Rr19IZ9UZpkSPAsdtZl7FysdLEx9FL+U7rc5Ipac2evkEjoWkak7BW/RRGbvJkN/iMVoL1qshJfeBtgl6xul0LBPfGQrvmuiB8VK5IIRV2GQO3ga93a/XH09IHFueTbo
- JXAnab8k
- shfqKhU7U8fPAP2sDYT7pWM/CECvGq2PUQs2k0pJ4zl49ChXnZdngv+RIbBbUiaavblkVd71JcAykkAPRfcYVCxrZft9UgwjBzvVs3xfyah+BX3J73OpZ1bMhovmFLkpI4erJK52ThLS4BPPANDhpji1uiG4PRnWeyjKoEFbZ+VgEMlnYCa6B3YGVq1rcMTeFGDk0+pxBJXSbb4zsHZQCYdpH0yfpbXfENdUCByw2GyOKtWZQHL90hX6Vv2/dW344cXHwTWCvilfu8+ffx2pbdAWd6LFqTCpW3BHK2bxpxSJskVTNZkqZT8Jt55MCdZD/at8ZCJ8rxU8C3H/ujYsOLNw6Ng==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794560145-131263
+X-HE-Meta: U2FsdGVkX19nKij7sBT35uQxEwQVVSzSN0Q1G0rdG86HnE6Png5qJIRvaM8JHEQB481sSZKnEonMSnzst65oRahoIZdBtmwcuS+Cmo47tXjdIHG35S+khWzCnzoQoZI66x9gDIh4LZ+z6/kLMQboIARBn3GdyMOxefP5oQYoasrDN28jykzlF6GWd38H9hkrN/oTeQnG5nQidnFS0/kQdGahf9H+noySbXyM3/VYFUjUWfsrJ/Adgb+fI8toa8TKH/OeH1m3zExzGJGrrdG4lqU/C2CEAJYXZeXvoUSl16mGYXVsh64OmQdZDN4EPl7JfPNztoedahxZAucySthkqf0SIgCI21ATeVZFU4qseQCp6kD4jG5mgqNdRQ9YX48We/MrZiKlq9l0N8ovIfxsxb2QJ79UyLn3KGdrF1C+CLgtnfc+YF1hbfDQP6mzjOmI0iTB3zqEltFqi98oaIB7UPBq+ODUhrv+BQ9wunJRhSdiNas7r7WQsrVMuMxPwkawC/YDZmHauV9pPZv9zqK+UMHIMCKg5iteoJ3Hq9iQCSAQ+zkAKPU88DHudTAj333eNotAKa6LKnBli9KNy3KcMbmWkKmBz1y5y0US986woduj/21ObufzsINQbTxwzqOjZrQxMVBjxpgcy22Jpl2+P9kwTBFBju8AlSHPKxn96kutW1ou0tgOQtjRAxD1iM5aXXYX0yexq/CWkXd+EPTP5MZLyUozdnSQi5QxgmyA+YeZ1igrhFtt82JLnRH0XlpIgTrl4h68zvezxVXeDwvEjVyQwGnUrBTeBZlV813yFmBRP5QJKa1IZDsUokZr98MmmEkYqSdclTaByZBdfolNq1mLd3ZxcAAXoDNZyn4p3Bs4atRm4HZbi5zCUoyWdDYGY55mv0Lx+WamVN7WF51OuLY/QGqNEo5FbbgSY/Fe9VOxUNiyAGIUypT2oZTE9dR/HQsFayTPgbyshJAGZW2
+ AiMbx6s8
+ hNEd9frbvutXQdR4MMI/R8splEaap3MEyxdY4h3eF5TPR6DzYvp+G+Pt6DmEFlM8wpakVh3AX8Kqa/VyT4P+0Q2YMyj1I54OgL+VFfRR2UDYQ0l+7NSIZJQeqXRIKEk1wytBX7rNszwkechFngtp53pT3KmHAA06UX3xhX+a3CEln/Ei/vm/JR9ozIQbFeEbC8gHV7HUGv/9KTKgcVkIlKEjiOiEg8P1dyTvpg+AAvovzboWn456pG2neffhpF9E+QuIzEmR5xX9gPFclX9cB/ZiorbcUE8bkCEhFV9kK53MRNR7uK3hUz6NJV2a9chiiexufa1pZwgc4Dj3UaskkNapw+gsw7Y+jhEbtIyAhNGbQ4sDFTgxAE4Qt38KkXlK/BZIu5ML2cImcOpV50qxrdY3iRragv2GFMuAy2a9wDMu2QWsf0LBuFUN6Sx41rFmbe3cY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,163 +98,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/13/26 at 04:49pm, Baoquan He wrote:
-> From: Baoquan He <hebaoquan@kylinos.cn>
-> 
-> Add per-walk counters to measure empty aging walks which traverse
-> an mm's page tables but find no folio for the current lruvec (node+memcg).
-> These are common on multi-NUMA node systems because lru_gen_use_mm() marks
-> an mm for all nodes at every context switch.
-> 
-> New counters (accumulated in mm_state->stats[]):
-> 
->   MM_LEAF_ASSOCIATED   - leaf entries whose folio is in this lruvec
->   MM_WALK_TOTAL        - page-table walks completed
->   MM_WALK_EMPTY        - walks that found no folio in this lruvec
->   MM_LEAF_EMPTY_WALKS  - leaf entries scanned during empty walks
-> 
-> A new tracepoint, mm_vmscan_lru_gen_walk(), fires after each walk, and the
-> debugfs lru_gen output ("TYFALWEE") exposes the new counters.
-> 
-> Reviewed-by: Barry Song <baohua@kernel.org>
-> Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
 
-> Signed-off-by: Baoquan He <baoquan.he@linux.dev>
-~~~
-Git format-patch automatically added my linux.dev mail address, I should
-have noticed this and remove it.
 
+On 11/12/26 7:25 AM, Barry Song (Xiaomi) wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> Change lruvec_evictable_size() to return the number of evictable
+> anonymous and file pages separately instead of a single total, so
+> that callers can weigh the two types independently.
+> 
+> Update lruvec_is_sizable() and get_nr_to_scan() accordingly; the
+> summed totals are unchanged, so there is no functional change.
+> 
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
 > ---
->  include/linux/mmzone.h |  4 ++++
->  mm/trace_vmscan.h      | 28 ++++++++++++++++++++++++++++
->  mm/vmscan.c            | 32 ++++++++++++++++++++++++++++----
->  3 files changed, 60 insertions(+), 4 deletions(-)
-> 
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index c161d563ce8f..a49efd9b74ed 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -579,6 +579,10 @@ enum {
->  	MM_LEAF_YOUNG,		/* young leaf entries */
->  	MM_NONLEAF_FOUND,	/* non-leaf entries found in Bloom filters */
->  	MM_NONLEAF_ADDED,	/* non-leaf entries added to Bloom filters */
-> +	MM_LEAF_ASSOCIATED,	/* leaf entries whose folio is in this lruvec (node+memcg) */
-> +	MM_WALK_TOTAL,		/* page-table walks completed */
-> +	MM_WALK_EMPTY,		/* walks that found no folio in this lruvec */
-> +	MM_LEAF_EMPTY_WALKS,	/* leaf entries scanned during empty walks */
->  	NR_MM_STATS
->  };
->  
-> diff --git a/mm/trace_vmscan.h b/mm/trace_vmscan.h
-> index 565c56428364..4884fc7a35b9 100644
-> --- a/mm/trace_vmscan.h
-> +++ b/mm/trace_vmscan.h
-> @@ -763,6 +763,34 @@ TRACE_EVENT(mm_vmscan_kswapd_clear_hopeless,
->  		__entry->nid,
->  		__print_symbolic(__entry->reason, kswapd_clear_hopeless_reason_ops))
->  );
-> +TRACE_EVENT(mm_vmscan_lru_gen_walk,
-> +
-> +	TP_PROTO(int nid, unsigned long seq, int leaf_total,
-> +		 int leaf_associated, bool empty),
-> +
-> +	TP_ARGS(nid, seq, leaf_total, leaf_associated, empty),
-> +
-> +	TP_STRUCT__entry(
-> +		__field(int, nid)
-> +		__field(unsigned long, seq)
-> +		__field(int, leaf_total)
-> +		__field(int, leaf_associated)
-> +		__field(bool, empty)
-> +	),
-> +
-> +	TP_fast_assign(
-> +		__entry->nid = nid;
-> +		__entry->seq = seq;
-> +		__entry->leaf_total = leaf_total;
-> +		__entry->leaf_associated = leaf_associated;
-> +		__entry->empty = empty;
-> +	),
-> +
-> +	TP_printk("nid=%d seq=%lu leaf_total=%d leaf_associated=%d empty=%d",
-> +		__entry->nid, __entry->seq, __entry->leaf_total,
-> +		__entry->leaf_associated, __entry->empty)
-> +);
-> +
->  #endif /* _TRACE_VMSCAN_H */
->  
->  /* This part must be outside protection */
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 96201eae0ceb..98037a562ab6 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -3590,6 +3590,8 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
->  		if (!folio)
->  			continue;
->  
-> +		walk->mm_stats[MM_LEAF_ASSOCIATED]++;
-> +
->  		if (folio_test_large(folio)) {
->  			const unsigned int max_nr = (end - addr) >> PAGE_SHIFT;
->  
-> @@ -3688,6 +3690,8 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
->  		if (!folio)
->  			goto next;
->  
-> +		walk->mm_stats[MM_LEAF_ASSOCIATED]++;
-> +
->  		if (!pmdp_test_and_clear_young_notify(vma, addr, pmd + i))
->  			goto next;
->  
-> @@ -4151,8 +4155,28 @@ static bool try_to_inc_max_seq(struct lruvec *lruvec, unsigned long seq,
->  
->  	do {
->  		success = iterate_mm_list(walk, &mm);
-> -		if (mm)
-> +		if (mm) {
-> +			bool empty = false;
-> +
->  			walk_mm(mm, walk);
-> +			/*
-> +			 * A walk that traversed page tables but found no folio
-> +			 * belonging to this lruvec (node+memcg) is pure waste.
-> +			 */
-> +			if (walk->mm_stats[MM_LEAF_TOTAL]) {
-> +				walk->mm_stats[MM_WALK_TOTAL]++;
-> +				if (walk->mm_stats[MM_LEAF_ASSOCIATED] == 0) {
-> +					walk->mm_stats[MM_WALK_EMPTY]++;
-> +					walk->mm_stats[MM_LEAF_EMPTY_WALKS] +=
-> +						walk->mm_stats[MM_LEAF_TOTAL];
-> +					empty = true;
-> +				}
-> +			}
-> +			trace_mm_vmscan_lru_gen_walk(
-> +					lruvec_pgdat(lruvec)->node_id, walk->seq,
-> +					walk->mm_stats[MM_LEAF_TOTAL],
-> +					walk->mm_stats[MM_LEAF_ASSOCIATED], empty);
-> +		}
->  	} while (mm);
->  done:
->  	if (success) {
-> @@ -5638,14 +5662,14 @@ static void lru_gen_seq_show_full(struct seq_file *m, struct lruvec *lruvec,
->  
->  	seq_puts(m, "                      ");
->  	for (i = 0; i < NR_MM_STATS; i++) {
-> -		const char *s = "xxxx";
-> +		const char *s = "xxxxxxxx";
->  		unsigned long n = 0;
->  
->  		if (seq == max_seq && NR_HIST_GENS == 1) {
-> -			s = "TYFA";
-> +			s = "TYFALWEE";
->  			n = READ_ONCE(mm_state->stats[hist][i]);
->  		} else if (seq != max_seq && NR_HIST_GENS > 1) {
-> -			s = "tyfa";
-> +			s = "tyfalwee";
->  			n = READ_ONCE(mm_state->stats[hist][i]);
->  		}
->  
-> -- 
-> 2.52.0
-> 
+
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
