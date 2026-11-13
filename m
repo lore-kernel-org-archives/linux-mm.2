@@ -1,81 +1,87 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A5B607E828
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 17:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9193606E65E
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 17:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GJPwlCXx
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bLpH8XJy
 Received: by kanga.kvack.org (Postfix)
-	id A942A6B05CB; Fri, 13 Nov 2026 12:39:29 -0500 (EST)
+	id 518916B05CD; Fri, 13 Nov 2026 12:40:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A44F16B05CC; Fri, 13 Nov 2026 12:39:29 -0500 (EST)
+	id 4EFFD6B05CE; Fri, 13 Nov 2026 12:40:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 934726B05CD; Fri, 13 Nov 2026 12:39:29 -0500 (EST)
+	id 3DF5C6B05CF; Fri, 13 Nov 2026 12:40:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A3DA6B05CB
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:39:29 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1015F1601D3
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 17:39:29 +0000 (UTC)
-X-FDA: 85430807658.26.0ADCB8E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3143640003
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 17:39:27 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GJPwlCXx;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 13B536B05CD
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:40:54 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7DCB0120188
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 17:40:53 +0000 (UTC)
+X-FDA: 85430811186.16.DE4B3A1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id BA86D100003
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 17:40:51 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bLpH8XJy;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794591567;
+	s=arc-20220608; t=1794591651;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dm8q8HGPHE9E98Lt4CJ5Z1tUerEAxjiOuXmAiX4bR3k=;
-	b=aAclrwdOswJ44nW+2uGNQETj+FAN5sB89LEQLgBZrvhtdDyPafpCZR4cfjB9+kZim1hQvb
-	lHeaY3DRNkb2xtMXyoARIaGQQB4NhVlBMJw/dQiJFhHQjsz/Qo1xfYwfHFUzUsgjx+GogS
-	+Q31sD/3n3HhGQp+IH8gLvyGboth2sQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794591567;
-	b=N3h/Qhw7kIZr9kFFMFfth5TsXnAM+d0sKDUgbJwP3wwMY9OhUon3prKSsFFCyiDbDgUUDJ
-	MWB3mZzAkGemXuJDvdhAOWaSJmkIZtSt9DKK5CFjYeXzt09Ro9nxmAffIoKlhIRIu5vEy/
-	3zs+lLoS3kdVgSssiDUzV0tyPHM/f7g=
+	bh=U9C2gpc/O9t6+kPqP8v01Nu5WfJZ/IQBQy4m+7/b2yA=;
+	b=U0eAqXlopwUxBq5/o0Z1rP0ExdHrWrO/2B9uM80EU3vK1S5yoDwpPoMlqBkJRkn7nCFRVR
+	3MbvaQoYFeS9GX67e5pcAJTBs99gWLH50lopHuGwLcJfoBTwf2jw/HfPZWkkF7i0lXpB6e
+	vwU56owS47ivpq9dgDe9jPu+RHpRdxs=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GJPwlCXx;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bLpH8XJy;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794591651;
+	b=U3u3cagPxdY6qLxb+fTUA/UTeNjR6BuZzYFnuDd0UbxaZIre+7c1CT61wkdwnJE8s0zcEF
+	PHOBupxP5IQTt8kN6CMF1/Eb3YWtCevWyb8tXF+lEIgfqsh2bdekIFOkdtctSE0vqMCOG3
+	+D/zTL+qBuVxd2HIJ2N78nllVJ8Jk3E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5387B46FBB;
-	Fri, 13 Nov 2026 17:39:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E1BF1F000C6;
-	Fri, 13 Nov 2026 17:39:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 404AE63613;
+	Fri, 13 Nov 2026 17:40:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A9F1F000C5;
+	Fri, 13 Nov 2026 17:40:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794591566;
-	bh=dm8q8HGPHE9E98Lt4CJ5Z1tUerEAxjiOuXmAiX4bR3k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=GJPwlCXxg4dqojQf5ueDh9IrlaSbGZO0JTmYaJQfn9oeW6hwuzQ31647nd+eCdAiM
-	 c3dP0I8334riJdJpI663KprFneiBckFlSv7YhbNtuQF6t2UIGX+lRxL0DEuo7nifWU
-	 vHQ2PPNUguiOeFgNd5Jhe84QJCoy6nHyL3oR6c9vLooCa2mdAkYaH6sSonUszYpdhO
-	 mRkEnd4xpyXmdf8iWU66G1xdatv9n5GVbNGEKIWVoVW+PBR8YB2wjESBvfVHfDIKyA
-	 8394hibUzO+kInePRReL0tZCB04bhVYUX09nnmgo7JiPg9OJAFJfY7zQyh7t/bp1d6
-	 j5dP7ZKfGKvMQ==
-Message-ID: <16bb1a14-04f4-4524-9882-20d452175a3d@kernel.org>
-Date: Fri, 13 Nov 2026 18:39:20 +0100
+	s=k20260515; t=1794591651;
+	bh=U9C2gpc/O9t6+kPqP8v01Nu5WfJZ/IQBQy4m+7/b2yA=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=bLpH8XJyEvvSiuM10JJmp+bDW+f4W9jBhVjQNpC++yUjtyxbYX5RC/uYJo7j/lFxe
+	 J/6lQSQ8ILF7y9OcDp7/sqJXQe5+zn3MwBEzW/cqzi/0LKkljhvr+gN6QskzklMdmV
+	 7e1DuzYOemxwtTxdhkKIep1kTuZA+AWQUBrb8TyHs8ydaX4hqWzDGEEly7Z0G8QYU9
+	 82nFCHJOo+oUXSVdQxIzpi3uShlyeqx3Fi+v5t28hoUub9jUPAOX22VP4TSDtVGeLt
+	 W0O9OTtAve96jjcIGfkk/ay8BHTE57vQdiXin6CooGJgEJYDK2Cb2eCd/YUY3bxu2Y
+	 HEGZeLnbUptFg==
+Message-ID: <140b377d-571f-48b6-bd29-c8c65b78627e@kernel.org>
+Date: Fri, 13 Nov 2026 18:40:44 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: synchronize with PTE table reclaim for all folio
- sizes
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
- ljs@kernel.org
-Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
- qi.zheng@linux.dev, pfalcato@suse.de, ayushr@modal.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <affd6da4e8d0de1424a4e0b3bafcd1324dfb6c97.1793847060.git.baolin.wang@linux.alibaba.com>
+Subject: Re: [PATCH] mm/khugepaged: reject shmem collapse ranges beyond i_size
 From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: Roman Gushchin <roman@kernel.org>
+Cc: sashiko-reviews@lists.linux.dev,
+ =?UTF-8?B?SsOpcsOpbXkgSmVhbg==?= <Jeremy.Jean@oss.cyber.gouv.fr>,
+ Zi Yan <ziy@nvidia.com>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+References: <20261112142335.2749597-2-Jeremy.Jean@oss.cyber.gouv.fr>
+ <sashiko-outbox-212974@kernel.org>
+ <5f3dec4f-0416-4550-a980-b464a90aeb11@kernel.org> <87y0aw8x7y.fsf@kernel.org>
+ <79c3445e-623e-46ac-a09a-0a5d21f117c9@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -121,22 +127,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <affd6da4e8d0de1424a4e0b3bafcd1324dfb6c97.1793847060.git.baolin.wang@linux.alibaba.com>
+In-Reply-To: <79c3445e-623e-46ac-a09a-0a5d21f117c9@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: wamrew7oibi1c56xkzgwkjwj51azipgo
-X-Rspamd-Queue-Id: 3143640003
+X-Stat-Signature: 33rpk8xzthigfhujquyrg41pmjjt5ug6
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1794591567-521085
-X-HE-Meta: U2FsdGVkX1+vwt2DLSPkmAp2Ji7970HNBB/qEY1llJlaqZzZilsaiF+mjvLYh8RMKw38WisYtjuEP+3NtPlp0v9eTUwE97BaWbXvSQFIWGwMNJOr/DB1yPYfPfz4H0YL8UWVOQpym71kBUaG5EcufJXjLU2N0kCvZpUw3R9Lq7Rle0W1Nq+Bev5sL9IQ0sFYFnyvofKZjend3Q93A/f/KD+ZyGK0Wi/31tOs80hO+VG5BML43Hcp1udIq10jaCXyFi0beVHVFo74A8cNHul2IHYDUvSZNuS2sWi8CzqqIgNkSCYzUtOhlESV7mYxHSwjbAaMPJpUxc6ttMg+c09ehRQukBGx7panQtUlxQ9qN0j+S6LqxQufqOpVH6dk7FwJJlZN7LGjesRph3KhEbp/9eXPcfZwH5ruUHyi0CbKRo71xSUe8F/zvjN0XFcgaEMRzig6/AHtrNGXJFbs3Z2Tw+jSqkFCEM9Vzh2xvfAe0LrBYepr9KVJw9ugYedw2Y98hK83g1diNTaY79PjwCszY4YRAXVLnaGfdK5siMKg+AfsBCe4sjHzUjE0VDYsFVWoOwaSkIvcUfUfNmq2+MNU+1mXTyyTYlhly2r+uG/dt8CLkJCzLllixNu0cRxNKq4PPYDn0eSNc9HOhdcEZ2jBCNOabPDh3LMNP4FdUzjphiY/nPvFgIs0y8VbwDSSSvjMUJNQli6WKZptGxwbrodS8EA59Hwfh4tYZMtEINLagQ+hW0wV3TKreScczWBXu4nVwD5l96ke8WzHWrgZ99X/sokwMU0UgpzV2FV2y47+Wij089NaYbseHt78ibZUyoUENzsdHn652AtlaIuo8KgcdG1U+esTuRLnDTqg6OaTDZgf9vcYCZmNNEcM++6erlsgqVzne64SexI2F6IGbU7fG76PzLDYXnYo1GQ68oRu4oVqFf9DhLQKPQ/6qC6WNZUvVE+kqak5vG22/WDqK/5
- IQkOsh7f
- rzNUc+yUg5cyrAFJ0+Wa1DW0XWjXQx5hr1HB+uDaWoa6hCIZfDlDsF/PdSZFTErH6NuLgBHpheBqjaeHdj1Ki6T/uUdJb1wsHhloy7W3nAOdf8NK1SQnzmOBp1zKAdtdRQ1WnTcMdAMTwA7AQML2FRJExGzsauLMfBBoZaCIAsKrs9oKGhiFnIvnQEV69ylD7zoYP2Q7xEXMdwwYAGjBs8XSpBj41HttFZKpBPn7J4UNk8pRkVp2aqrZ23U3dxvMIFOXqryJuZjNDuPZSOLOn6PQlJIVPz+Qh25JvS9MmE8dF/bMFTejyFoV4hw==
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: BA86D100003
+X-HE-Tag: 1794591651-2038
+X-HE-Meta: U2FsdGVkX19wJ8Z1rrOd1VhMJqLgDuj30V07IplZm2PqZWpeHIz0Zhywb0gzUEJFpMWClBWAXnXRlvqau7fu6CPzXw//TQTvTW/MSNky2jWT6Grk/pI4TqgmZ9a2LgrKOpHVy7k1llo3ZTudjAuJM/lgNX3abelXTCaMTSd0W0rJeJjI75cXnaVtAIrofyS0uF+lfh7khssa1lu+hDAyGRf+NPAcyXh086X+PICPxbcYogezcScS09zKtB83hs4aq5qGAoN7foX2gAz0TP6qERXr1VI8F6CEzI7nhCsm+VRI9V305+pHFDzbzm5gwvaiVEP8L07F5gjgx5+nTlbVtZl17bl0IxN8h8bmW8tZvxOkw/FFXPpUFAFOjCVYTxGRDKTrwrV6CewKfQft9L7DioMKX+xJpx1ueWJEetUgIUf/th5nu29uJFPkclgjhgTO3MvZp2K7Ziu/Bj8zFkrp2ExT3hTyZotQ/2J+PRI1Fy5SQ1lAx86Jc79EcVsNvKP3snEQLHmWYknH8ewXu4LlJEiX7uVSb7sKbYt7hNDgFJzewgdirclo7+4tAd2mo+QOUB/N25RPR5nN9kr3osHKi0E8W0vl+tktrslmxO8vzuXsBXW/IXYilpjqEqET7y9SbqaT1ZPuIprqRv5zVfWrYQtYItAKXqoOUgZhVem48saf8XS0igQTL/jhAbaLYV1OspjP87hTo5K78V4kREhk8Zs95qJPC/KuZguS5KXRKZjmBtkFo71wG0bdz9EuwLe3De3K+OLuNl5EjaFIEzEP8Lg4M/d1bECwNiAESK4WwtSIoEIMak5YTvQhDk5Om6zAcyQgAgVOuxvWXbiw82FDOf805aYDqb3EcdI2QWEqzc5Yj/GKAkFKw2mM2E9BgSoeRZy40BOOvDqCTJYa1J8mR8xr36ogItRWDOzneFQ8jb4jqwm2rguQgRhUhpPOj05EuHUdWio/MtgB8jWXsFP
+ 9Oax4RwB
+ JFzQlV7Hn3Cm01aZesEJn9Kh2tMesqlz4cWW2zy5Q352oShLsVKWAuaROdshM6iKWatatnwJ0F1ER0Y2iFssh0MCOGY7VSv9g433ZZ7flsEFuFtAMN5cjlDD5km1mo16Gn5Jsco5C4FFG8ZhPZmVo9gdtaGWrFQWdXr1dCTAKNR7g8K8U0FLi39MCyDHyRg1RpA+CoFwUjaVNmzSfbxvrpmlDrd2oSbbs9BOuwS4+v/YBh+8mn/6TIqCWJRR7tQB/JQXtw3hr7w338/nzmSFD5Y2sA+jhC00ft7f25BgUXNW0WLve9yDDQV++7+WRupnCa10Nqt5UNuG1Vr257OuGPsWRDF/k+6upgxA0FSYiTvwX++pAggfhX/tYEmekuopyArDoPUpJOxgBxgV0GK7Wyh9pBA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,84 +150,58 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/5/26 03:56, Baolin Wang wrote:
-> Similar to commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped
-> folios"), the '!pmd_present()' check in page_vma_mapped_walk() can also race
-> with concurrent page table reclamation via zap_empty_pte_table().
+On 11/13/26 18:30, David Hildenbrand (Arm) wrote:
+> On 11/13/26 18:20, Roman Gushchin wrote:
+>> "David Hildenbrand (Arm)" <david@kernel.org> writes:
+>>
+>>> Ignore this shit from Sashiko.
+>>>
+>>> Roman, make it stop.
+>>
+>> David, will do.
+>>
+>> But also it's not how I want to interact on mailing lists tbh.
 > 
-> page_vma_mapped_walk() is used by many functions including try_to_unmap(),
-> try_to_migrate(), folio_mkclean(), pfn_mkclean_range(), remove_migration_ptes(),
-> page_mapped_in_vma(), and mapping_wrprotect_range(). Except for try_to_unmap()
-> and try_to_migrate(), the other callers do not perform post-walk accounting
-> checks, so the race has no observable impact on them.
+> Roman, just to be clear, I am talking about preexisting issues. We get bombarded
+> with preexisting issue reports. Having more duplicate reports posted to the
+> mailing list does not help anybody.
 > 
-> For migration, the race can cause unnecessary retries. For reclaim via
-> try_to_unmap(), the race can cause failure to reclaim a folio that is in
-> fact already unmapped (as shown below), which may lead to unexpected OOM
-> or increased refaults.
+> It creates more work for everybody. And the least I need right now is more work,
+> believe me.
 > 
-> CPU 0 (reclaim)                      CPU 1 (MADV_DONTNEED)
-> --------------------------------    --------------------------------
-> folio_lock(F)
-> try_to_unmap(F, TTU_SYNC)
->                                     zap_pte_range(full PMD range)
->                                       spin_lock(ptl)
->                                       clear PTEs
->                                       zap_empty_pte_table()
->                                         spin_trylock(pml)
->                                         pmd_clear()
->                                         spin_unlock(pml)
+>> I understand everybody is stressed and overwhelmed by llms etc. Including
+>> myself. If sashiko is not appreciated in mm lands, I can turn it off,
+>> no problems from me.
 > 
->   page_vma_mapped_walk()
->     observe !pmd_present(pmde)
->     nr_pages < HPAGE_PMD_NR
->     skip synchronization
->     return false
+> Sashiko is great. The embargoed sending of mails to the list is great. I
+> appreciate all of that.
 > 
-> try_to_unmap() returns
-> folio_mapped(F) == true
-> nr_unmap_fail += folio_nr_pages(F)
->                                     tlb_flush_mmu_tlbonly()
->                                     tlb_flush_rmaps()
->                                       remove F's rmaps
->                                     spin_unlock(ptl)
+> Posting preexisting stuff to the mailing list is not great, at least not right now.
 > 
-> Commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped folios")
-> has already moved the PMD clear operation (via zap_empty_pte_table()) to
-> after tlb_flush_rmaps(). Similarly, page_vma_mapped_walk() also needs to
-> use sync_with_folio_pmd_zap() to synchronize and avoid memory ordering
-> issues on weakly ordered CPUs.
+> We were very happy that preexisting issues went into the private bugtracker. I
+> want to delegate stuff to people in my team to screen them and see if it needs
+> fixing. Well controlled.
 > 
-> Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
-> Cc: stable@vger.kernel.org
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> ---
->  mm/page_vma_mapped.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
+> Now either:
 > 
-> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-> index e6b6170c2f4f..8797467b6f0c 100644
-> --- a/mm/page_vma_mapped.c
-> +++ b/mm/page_vma_mapped.c
-> @@ -293,10 +293,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->  			spin_unlock(pvmw->ptl);
->  			pvmw->ptl = NULL;
->  		} else if (!pmd_present(pmde)) {
-> -			if ((pvmw->flags & PVMW_SYNC) &&
-> -			    thp_vma_suitable_order(vma, pvmw->address,
-> -						   PMD_ORDER) &&
-> -			    (pvmw->nr_pages >= HPAGE_PMD_NR))
-> +			if (pvmw->flags & PVMW_SYNC)
->  				sync_with_folio_pmd_zap(mm, pvmw->pmd);
->  
->  			goto next_pmd;
+> (a) it was never really gone, and we were in disbelieve that preexisting issues
+>     are no longer posted publicly.
+> 
+> (b) Sashiko maintainer decided to re-enable it without consulting us.
+> 
+> 
+> I'm sorry if I made you angry, but I hope you can see how I suspect (b) and why
+> it would make me angry.
+> 
 
-Baolin, how to proceed with that? Are you intending a resend? Including some of
-the performance impact and ways forward to optimize?
+And for the records, my request earlier that day (when I was less stressed ;) )
+was a bit nicer:
+
+https://lore.kernel.org/r/a78bd75b-dc4c-4007-b855-f1e58d2a435e@kernel.org
 
 -- 
 Cheers,
 
 David
+
 
