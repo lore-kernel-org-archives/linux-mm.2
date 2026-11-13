@@ -1,130 +1,118 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD54606A33F
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 19:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606CF606A323
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 19:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EjnKkOqp
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hlbjPbIQ
 Received: by kanga.kvack.org (Postfix)
-	id 0C2CD6B05BB; Fri, 13 Nov 2026 14:38:23 -0500 (EST)
+	id 5AEC46B05C7; Fri, 13 Nov 2026 14:43:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09ADD6B05BE; Fri, 13 Nov 2026 14:38:23 -0500 (EST)
+	id 58BDA6B05CD; Fri, 13 Nov 2026 14:43:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF4B76B05BF; Fri, 13 Nov 2026 14:38:22 -0500 (EST)
+	id 49C196B05CF; Fri, 13 Nov 2026 14:43:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C6A576B05BB
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:38:22 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5B38D40204
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:38:22 +0000 (UTC)
-X-FDA: 85431107244.05.E5F20E1
-Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 8C2FE20002
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:38:20 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=EjnKkOqp;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of ivanrwcm25@gmail.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=ivanrwcm25@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F41F6B05C7
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:43:36 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 99194C029B
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:43:35 +0000 (UTC)
+X-FDA: 85431120390.14.10151B3
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C8CBB140002
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:43:32 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hlbjPbIQ;
+	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794599013;
+	b=6bAE7lKsh8uGLMuumtAFm5bqcZmRKTDwhxBDq85IhDBMEAbH0Ymx4H/0cUGMeyuDa8h+a9
+	SagAAyGPVJdTuXlPP2BASID6QzbVwvshtT7DIqG42+JRYvuWAbuyM9EWAJMKT3VEiDLM6V
+	CCIADqi6EXUff9dWI3io3RsD+2ZzTfE=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hlbjPbIQ;
+	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794598700;
+	s=arc-20220608; t=1794599013;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=lprKMd/Cznsmc5fuL6v7XxVzYtKcce6V0NZVQATR6sk=;
-	b=UWKWfxt7gQr8/IKj1by4EDnaPVEldttfutttYRpFltcRvFbwsvx5KJ/ft7Qjb0VMIknSya
-	4Oec737y6/jABvVageEFneD20ryGS4qNMl7Cd1Z9nnwNl5neY8IbN16bthhGP5UdeMSOif
-	N9AHKxaOsDbrfi/PcDVCG4q4PHhH0Cc=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=EjnKkOqp;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of ivanrwcm25@gmail.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=ivanrwcm25@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794598700;
-	b=PZyZoXHYOmkuofs5eOx7FOF2mq9kLqfNXr9WPxmC+PsLEhMiTPIauiemxhGwkcl4n47A7l
-	f1rhXV/tV570fAOsUZj2fjIT8LfKWyWbXxFYu/KRrVYU0os1siLSxx+PUrFiLWiYvrZx+I
-	agioGZbtmsG7Omoh6ZyyS62Ig8p40B8=
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-67c6a0abc2eso1592459d50.0
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 11:38:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794598699; x=1795203499; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lprKMd/Cznsmc5fuL6v7XxVzYtKcce6V0NZVQATR6sk=;
-        b=EjnKkOqpRwrArGQjG26NJ9m19L5v6nsbATs1vWANeN7gW9CzgIZTkdyKsNk/viGPuS
-         JRMweY/eeh+ikynDaTgxwm7EQVCFe+MKLASyTAVbZnTZNHra4AahQ118WiAyIQldEvm5
-         fXjTqJLx167rB+L5suo8J6Mg/w5AtHATzd/q4ABWp9g6tO8t/XV/v+EWh4j0tZNOSeef
-         KCIFWvGggeQQliVCgBEthFOr4JPr+06gL3utiBmkRH5OEoYyrB56yl9GyG7Q6NFga5fn
-         YO4PMgHCq1Pz5dUFZ04CAYkiV78L02TDAe6RleMyJRz74qL8qzAn8bYtftSri6fcZf+Z
-         9WmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794598699; x=1795203499;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lprKMd/Cznsmc5fuL6v7XxVzYtKcce6V0NZVQATR6sk=;
-        b=LuwvIwGsKYOqnnM1FSJ2ueN/QismlbmTiSEN4rx725qIeK8yqi31RdBw0/EJM6/RBM
-         0C+eLdQEG5zSjfzMK74HiK3VxmI/7qWKzufKhN+gNDhgsfj3H+FkiSOvuOz616/+MpZR
-         LE1CbGHA5XTk74cwTbsM92RhFahxTciTEF8z72bIFfqebgp0kPZXL363JaTyRyWIBFmm
-         N1aU9UYdJuBDID1zdsm6Lu+MAnooyAaZTcktZyUJImwW6oATJgCl9o/S0La/lllbhP4V
-         tGZma81jk75MgL/iIe9RZ1q5+NxsHiZE/YG5ixAU1U1DAQ0iv0aq3rMgr5pVpyGPkgmJ
-         TLDg==
-X-Forwarded-Encrypted: i=1; AL+hErENgrpDMvM2b0w3dRw3f5PGZ3mUcW8ppct9ZM5sGxwlA2XcIap97Ieh1Ul1Q9O9Un1hacX175F78w==@kvack.org
-X-Gm-Message-State: APuU4Z8KROggn/4LqESN67oZYpkZ8IW9MptAmg16DKBEcOhIJRTDeKVQ
-	y2PXVoBVSC4+BmXvlShRfGZh/rabp/sMJ/S839aPIiR5KPJCE8SkBJWj
-X-Gm-Gg: AYBFou2MrrSYyy6IILVcD0agnn/9I9DfKUWdPrAPnBmGZnacV9y54PHsFfh31H0uRxF
-	1HVp9UpCta2St2yaPx5sh4FVzkWAJE6nELn6LXlLdewu7MncKTqJe209aaLO9NLDvZi4mf0qpzR
-	QGuKAoapLqYOyJLRyAR0SMIqWbBKZmHIX/i1YsmmCZJs0S8x5++DvHcuix3yStCXn6US4nJJ1NS
-	rFRJTtSUzlKSCBl0wY0+Tkh7g92hbhzyL3CVFNxqOL882RsS9pyVtTJX2AxrZVk0uPB9v55Hyl0
-	crZ69xAbfCfEv4N7wcZnsYJ0uMl/2m8BEQpcEgk3Bdo/3Eu2JHYtxIsd2FSX0IovOf2y90PeN5j
-	6TkJnj6tnlkg3PpybIfkZ/2iiFuaMgzmDHVnh+YYcv7J5WyTPoh1E1o2qlaU1y7fHACvtrGhfs8
-	lQuJG8zt8bDqERLt6c7vLzWX7Pn4g75CcipXDoRaB0FHCgfbsds+k20McSf2l7eFqAvHvR99vOa
-	eZwDB71lsaBRo+Ke7IGnLBYnpRGH1n/OjKcZqQSQgafqF0oHkjQwF7pmgnPuJeJ/5JXmhWR1YJ4
-	0WNFeLYWGf8bkzbsZHsm5sXt
-X-Received: by 2002:a05:690e:1501:b0:675:3507:46f5 with SMTP id 956f58d0204a3-67d89758c74mr1463866d50.89.1794598699469;
-        Fri, 13 Nov 2026 11:38:19 -0800 (PST)
-Received: from unix.. ([181.229.23.179])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67d8a4339c3sm2844892d50.3.2026.11.13.11.38.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 11:38:18 -0800 (PST)
-From: Ivan Ezequiel Rodriguez <ivanrwcm25@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Iv=C3=A1n=20Ezequiel=20Rodriguez?= <ivanrwcm25@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm: use PFN_PHYS() in phys_mem_access_prot()
-Date: Fri, 13 Nov 2026 16:38:12 -0300
-Message-ID: <20261113193812.1239880-1-ivanrwcm25@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=N4P8j+QMSewuz+uKE5PNg/893eiJ2vhGXM01N1veea0=;
+	b=RwL8ZzrijEkQOKcWpPo1tcj0cTcKtSTQuwZLoAUGDSUXV2+Vprb/10bYNSPq32RV8wOS17
+	TOT1d57AX1zf2Oxwaz7lJsnti/dq8PB5ZqNjM0IAui4a5YG4g2wpTmTBjV6DbmpQ6XryPN
+	1spoWvBLda0/zklkAt1Ns+5xSZNOE7A=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794599013; x=1826135013;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Cua/uwgNa005FQjs9yZ0Cq6T2u8yr5c8hJMGRbdb5yM=;
+  b=hlbjPbIQNyXeKdBS+pK8V++hvIr+UaXQiQ+3+Bn3vpq2PnNb1a9/ZyTg
+   gqnUEhI2giNKilfo756UA8EuTazdu+WagnJ8WrnqGPfTD9qI+4vKiLLmD
+   NmiH031OkthcmwoOftocMZcB57LEi1+8CZlXcp6W1a1dJEYst4KhOxcMy
+   32vh+vcNxebMjNL2P2yOER2GIdrIsb8GhIAS6v2CMO3bQhnD0T2wphiSy
+   srXGJf5Ih/DgECyJlxOH9aBX7Lve9hskvQe6pQ2wNIoCZnQfjyEl5yt3c
+   cQSoqM38A770mNTwFPwGn571wpEaHMV+bvX1zDJyih+tZ9/uz22JV+Blq
+   w==;
+X-CSE-ConnectionGUID: sIQO8kzKQIibB2nwrUHQHw==
+X-CSE-MsgGUID: 9Ge0fN+uQQmVmbrV2Dz9FQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11965"; a="3405941"
+X-IronPort-AV: E=Sophos;i="6.27,212,1787036400"; 
+   d="scan'208";a="3405941"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 11:43:31 -0800
+X-CSE-ConnectionGUID: pS34q/LXTGORiKyYo7IdWA==
+X-CSE-MsgGUID: RUTstUSRRweYGmOOPK6vdQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,212,1787036400"; 
+   d="scan'208";a="8841713"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 13 Nov 2026 11:43:27 -0800
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xRxBE-000000013pP-0yI7;
+	Fri, 13 Nov 2026 19:43:24 +0000
+Date: Sat, 14 Nov 2026 03:42:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: Chris Down <chris@chrisdown.name>, Vlastimil Babka <vbabka@kernel.org>,
+	Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@linux-foundation.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Kees Cook <kees@kernel.org>, Marco Elver <elver@google.com>,
+	GONG Ruiqi <gongruiqi@huaweicloud.com>,
+	Jonathan Corbet <corbet@lwn.net>, linux-hardening@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v3 5/6] mm/slab: Support disabling
+ KMALLOC_PARTITION_CACHES at boot
+Message-ID: <202611140317.3kXloW0R-lkp@intel.com>
+References: <9a4caff0336c78a7adc746786c81c9c01f89c40b.1794506262.git.chris@chrisdown.name>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9a4caff0336c78a7adc746786c81c9c01f89c40b.1794506262.git.chris@chrisdown.name>
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C8CBB140002
+X-Stat-Signature: 3xjydh7n1tfj5q733k3h7yi49aecqrct
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8C2FE20002
-X-Spam-Status: No, score=-14.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: gbci3yqc83imn8tz9ngien59c3tkxc1r
-X-HE-Tag: 1794598700-736001
-X-HE-Meta: U2FsdGVkX1927BxLlaEAOkqKp7b+ApyFn5KNXwz/gtpGLT4V5DmkmhURxrP0MEevMTQaIN7tyB9+YpWSTvQmdcMExNQh+Bew7NbuHgCXGbMvtgaD7KCnqeWE3C9yUK3Gq1zhqFT9AqyHzmdL/MOffpbICBckdJ/gzEYnIxb6tkFIyL16XT39aY/CmvPcl9bAs8blf3wKoVLNA1SDYzN+fPxd3cGJ5Kin1x057n8Luvy94QqoVCbNWb3Oq45D8cN/7oRP2GWuw9Pw9BCrccTDnPqdbG1GofkGgxR4yl3qDHpzSXmiimU1FRoJoIDa1IeHukYvE4ttPCci8aSkja7XoIwzdwd5MF+CAzn0X2x/hYR4tLiUkX1YKIE3HUcWKG4bJWRyJ3uOlBeVdr2sPXw5NjknX+N4QLqU9bUkeasU9Fh/K8gzoQgHuBirIIhmXXzo4qcr5jT96ZCP/MPKXy1IX+8aoLACIFGhH3HadC6zcVmf3Go3Vz2uFdZcK5HbE+9j5faqcmj3X8wnRJSk3QrPDk3hI6AMqiM5m/ide02dqQIS27chPMegnYCtH+GRkxMBGx9R/p4LJDnbwbhpQt+lg8NPto/FhJXgydTIiXCDv2PXjs3XSX2nc8aRnH8rXgPNF1RJP9zxPF8zNnIeVGy8xlsBF/HCPl9EkMMK5QR9W0VspHnxbHxKnLQ5TVqXZuwFhnyBMRJUJoYTJfYvtWhoFf2lNmJOVCffCgj4JUbOfcCyRRWbASPjt6PNwqPNbDPOdrUyrMelwcmwmONGx2TEG1CnU87CQgsLhYlorqMFEj40V7/QiTjx8hEI+N4mak3BWrNO2wM3NISoHziH2VBesXUJqjZyHnu1Rq0vN1NjLsV+S7WYGbXNyfy5EmTui/VveacYqfLGG/md5/BiDuOD0603Y5HGPB5uYBc4Subdl24Zp5GdCihgkAdwYnD7oYszWmFuCzrfdAWrVhZBTUM
- MzWtgVuh
- efOf1y1Y8wEuDOIRfaMz3bcJd4z7Zl6mJj0wWLl7Sxnsk1ZNDBJ9dO2yQoAj81NR7lm6xhY2gG90IxQ/rsFlGpW0EZ+ijOLmnSv081w8y8rIwpkg9J3LlTAB3qnIOxz8/mX9GuHVLiCHJtUNOgoeeyeKJyp5hrNzcQhzGPYdbrpKjluRVQb10wpS4VshNC648He5436GZYhQJlU1QdbWzrB5q4IvnIxL2fYx8BaNqgeSLHA0lvA63sZIuPFhtN3KUqkL4JNwvJCzWNP+vFqSMW4gdQJ6SSnkgAISv1GqoD2ADJuBnvGVhLNz20qY0BA9V6X3Ykz7Fhh2/yv+ADgmoLJSq9LDxVVpLH99kPaIPjfFveD5sYwFNQoFxqdS/FlNUPQq2qW/FB1yO8BKg0Uk1pHBQ3N6hS0Mzv+kQUsknLeWmhn+HxJNUdEWLbQJtcY6Qhdz3WYEhAxhkO/mkFC+0zE437T3rbNeiEp0MmKUeCaqkHeUWRsu+NA+TZKd/hB8EoUB+yvZTOMFufjeuUMPjh46eh/wKMuyzCu3D
+X-HE-Tag: 1794599012-944650
+X-HE-Meta: U2FsdGVkX1+io3M0mSmf1sPvuNH0pT+u6FICsTC/9sGi6OpluLeY/V8ee4gN5jnrlSHn49QzGltVLaoujsgX+fLImFIo2+erTbhjm7ZDGDCgIh/n19Gq3DkdBkM6o53L+oEYxBh/z2Bb9wHL69TJFTe7UWhIuaSZvofY36EQ4GXNFAcs9LD58gtV4+nrPRhBTKQBYRrY2PPZ/WqqzqLOt7Nwtc4WeFOo/2kndzdC6QkvL3o+A/0KAl8aApnq5YF/phhF9IeU7XMjGu4FUZnVfvBtBq4z2GRtehsBpxGroW5RBOJ9Cb5RmsZ6VUq827+Mb6k5gnE9XLYiabM/tmJNJedVQ7xr2AEeC/076POv8O+mVhBiEy627lme9CL3afGtQ3oY+kj5hS5VfjdfioEteeuw7LEW2H/403uSJ+Z36abzNj53CspLjIJD/5v3D+1bFIfVV0YpY3Gf7LNJyp1vXirh6LaQVAnHQad1c3PC2saqm+KN95BGF4/pMnsT7bUNMlgQuMFIp9KIHVKSWvCJI//70Zl4m3OcXM+KJZifqBIVT1N2XrS5QGJySiU9wC8L/B/lmU+9T42xJZaBMe4E8uWb98Vxx6VkE49OWF+MQWDAaUtUvZrAq0lldgPGdgdl1efws+i4mburYBSureFfb5SgHVB35U2jGkhsZmdxkSlNO34Md6AZ41S9R/io6ytLvTnCBa9UKlgYg+3IsAcfs9d88RKBS0qFyM2qIUM1eX0bCL+h/wE85VUF0s7KBZ7wRHTSfBPnJ/gotoZcT2Euv9PiLcjIpD3e8Hl7rwSpaxPFeLnDeq+tUVxAguZdmIqNWlyP63xIlCJ1qqeH65yzP2dtrw+Ty9TiwfeGAyncc7+7LtwvhfLSyimfFr1GiwmaIwLSDtDcI6zHhk4nzd6bLNPKSvVdg/zSchElAe2BPL+HluQDGiA30qINrpGlFH3nKyXcM+bgsYln7E/GBsP
+ IC9RniGW
+ WOyCRniS0WBThO6LQtnY3P7QYuO3eMSTzpq0whQD30L6TtPsi78A23w8OegH9jXP7ZaEJik4nu9/+exudH40DCXj5654DcOwhdopXgPNVTrgC5XTP3ROoBLrQjd65vAkozutJq5KKUgJzPMFpX10mfk1IHu5XGXo5g6wIoOrC/2nZPLKxR2BNlSv9v//2EVOxbGVGCfMGDSfmKsCsL7TLlBB5+zIUtNC8j2W580gL/0OP+VfMnaHyA22X7Cdgzu6b5OTAAZLrJoue22JFTCjcVmD3+93RYIzeMp9qN5z7amfEbTJk2d72S2DcVFQVsqwVAgaPpFAg/T2/N8L0InPFRmnpJcibac1vF/C9dbmL4/VtczgBNUeGEhNQNU6TT56YVI2T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,41 +121,102 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Iván Ezequiel Rodriguez <ivanrwcm25@gmail.com>
+Hi Chris,
 
-phys_mem_access_prot() stores "pfn << PAGE_SHIFT" in a phys_addr_t.
-The shift is evaluated as unsigned long, so on a 32-bit kernel with
-CONFIG_PHYS_ADDR_T_64BIT an address above 4 GiB is truncated before
-uncached_access() compares it with __pa(high_memory).
+kernel test robot noticed the following build warnings:
 
-mmap_mem_prepare() already shifts in phys_addr_t, so the mapping is
-accepted and then left cacheable. PFN_PHYS() casts before the shift.
+[auto build test WARNING on ce6518e61e3b4bf4f97f7ac6204049b9eba7eb75]
 
-On a MIPS32 XPA Malta guest, mmap of /dev/mem at 0xf00000000 without
-O_DSYNC used the boot CCA. The same mapping with O_DSYNC was uncached.
-With PFN_PHYS() both are uncached.
+url:    https://github.com/intel-lab-lkp/linux/commits/Chris-Down/mm-slab-Enable-SLAB_FREELIST_HARDENED-by-default/20261113-005125
+base:   ce6518e61e3b4bf4f97f7ac6204049b9eba7eb75
+patch link:    https://lore.kernel.org/r/9a4caff0336c78a7adc746786c81c9c01f89c40b.1794506262.git.chris%40chrisdown.name
+patch subject: [PATCH v3 5/6] mm/slab: Support disabling KMALLOC_PARTITION_CACHES at boot
+config: hexagon-allnoconfig (https://download.01.org/0day-ci/archive/20261114/202611140317.3kXloW0R-lkp@intel.com/config)
+compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project 1b1fed44d3dcca649a9877915d57c3357a98124e)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261114/202611140317.3kXloW0R-lkp@intel.com/reproduce)
 
-Fixes: 7e6735c3578e ("/dev/mem: use phys_addr_t for physical addresses")
-Cc: stable@vger.kernel.org
-Signed-off-by: Iván Ezequiel Rodriguez <ivanrwcm25@gmail.com>
----
- mm/char-mem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202611140317.3kXloW0R-lkp@intel.com/
 
-diff --git a/mm/char-mem.c b/mm/char-mem.c
-index c5761ddedbd7..53ce0034a4c1 100644
---- a/mm/char-mem.c
-+++ b/mm/char-mem.c
-@@ -272,7 +272,7 @@ static pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
- 				     unsigned long size, pgprot_t vma_prot)
- {
- #ifdef pgprot_noncached
--	phys_addr_t offset = pfn << PAGE_SHIFT;
-+	phys_addr_t offset = PFN_PHYS(pfn);
- 
- 	if (uncached_access(file, offset))
- 		return pgprot_noncached(vma_prot);
--- 
-2.43.0
+All warnings (new ones prefixed by >>):
 
+>> mm/slab_common.c:1029:44: warning: non-overlapping comparisons always evaluate to false [-Wtautological-overlap-compare]
+    1029 |         } else if (type > KMALLOC_PARTITION_START && type <= KMALLOC_PARTITION_END) {
+         |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   1 warning generated.
+
+
+vim +1029 mm/slab_common.c
+
+   999	
+  1000	static void __init
+  1001	new_kmalloc_cache(int idx, enum kmalloc_cache_type type)
+  1002	{
+  1003		slab_flags_t flags = 0;
+  1004		unsigned int minalign = __kmalloc_minalign();
+  1005		unsigned int aligned_size = kmalloc_info[idx].size;
+  1006		int aligned_idx = idx;
+  1007	
+  1008		if ((KMALLOC_RECLAIM != KMALLOC_NORMAL) && (type == KMALLOC_RECLAIM)) {
+  1009			flags |= SLAB_RECLAIM_ACCOUNT;
+  1010		} else if (IS_ENABLED(CONFIG_MEMCG) && (type == KMALLOC_CGROUP)) {
+  1011			if (mem_cgroup_kmem_disabled()) {
+  1012				kmalloc_caches[type][idx] = kmalloc_caches[KMALLOC_NORMAL][idx];
+  1013				return;
+  1014			}
+  1015			flags |= SLAB_ACCOUNT;
+  1016		} else if (IS_ENABLED(CONFIG_SLAB_OBJ_EXT) && type == KMALLOC_NO_OBJ_EXT) {
+  1017			if (!need_kmalloc_no_objext()) {
+  1018				kmalloc_caches[type][idx] = kmalloc_caches[KMALLOC_NORMAL][idx];
+  1019				return;
+  1020			}
+  1021			flags |= SLAB_NO_OBJ_EXT | SLAB_NO_MERGE;
+  1022		} else if (IS_ENABLED(CONFIG_ZONE_DMA) && (type == KMALLOC_DMA)) {
+  1023			flags |= SLAB_CACHE_DMA;
+  1024		}
+  1025	
+  1026		if (kmalloc_partition_enabled) {
+  1027			if (type >= KMALLOC_PARTITION_START && type <= KMALLOC_PARTITION_END)
+  1028				flags |= SLAB_NO_MERGE;
+> 1029		} else if (type > KMALLOC_PARTITION_START && type <= KMALLOC_PARTITION_END) {
+  1030			/* Use the normal caches, which have already been created. */
+  1031			kmalloc_caches[type][idx] = kmalloc_caches[KMALLOC_NORMAL][idx];
+  1032			return;
+  1033		}
+  1034	
+  1035		/*
+  1036		 * If memcg_kmem is enabled and this is a KMALLOC_NORMAL cache and not
+  1037		 * aliased with any other type, make sure it's never merged with any other
+  1038		 * cache.
+  1039		 *
+  1040		 * In other cases the kmalloc cache may end up being used for a
+  1041		 * __GFP_ACCOUNT allocation so mark it as such. The exception is a
+  1042		 * KMALLOC_NO_OBJ_EXT cache.
+  1043		 */
+  1044		if (!mem_cgroup_kmem_disabled()) {
+  1045			if (type == KMALLOC_NORMAL && KMALLOC_RECLAIM != KMALLOC_NORMAL)
+  1046				flags |= SLAB_NO_MERGE;
+  1047			else if (!(flags & SLAB_NO_OBJ_EXT))
+  1048				flags |= SLAB_MAY_ACCOUNT;
+  1049		}
+  1050	
+  1051		if (minalign > ARCH_KMALLOC_MINALIGN) {
+  1052			aligned_size = ALIGN(aligned_size, minalign);
+  1053			aligned_idx = __kmalloc_index(aligned_size, false);
+  1054		}
+  1055	
+  1056		if (!kmalloc_caches[type][aligned_idx])
+  1057			kmalloc_caches[type][aligned_idx] = create_kmalloc_cache(
+  1058						kmalloc_info[aligned_idx].name[type],
+  1059						aligned_size, flags);
+  1060		if (idx != aligned_idx)
+  1061			kmalloc_caches[type][idx] = kmalloc_caches[type][aligned_idx];
+  1062	}
+  1063	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
