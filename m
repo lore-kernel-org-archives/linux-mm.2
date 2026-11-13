@@ -1,108 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F95606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 05:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630ED606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 05:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vah1V1BJ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JbpxuY6s
 Received: by kanga.kvack.org (Postfix)
-	id CDAE76B05B5; Fri, 13 Nov 2026 00:47:37 -0500 (EST)
+	id 6ADDB6B0630; Fri, 13 Nov 2026 00:58:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C64246B0613; Fri, 13 Nov 2026 00:47:37 -0500 (EST)
+	id 685156B0631; Fri, 13 Nov 2026 00:58:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2B546B0618; Fri, 13 Nov 2026 00:47:37 -0500 (EST)
+	id 5746E6B0633; Fri, 13 Nov 2026 00:58:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 74CFC6B05B5
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:47:37 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EF194140285
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:47:36 +0000 (UTC)
-X-FDA: 85429013712.09.FA6B732
-Received: from mta1.migadu.com (out-106.mta1.migadu.com [95.215.58.106])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9E1DA40004
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:47:34 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vah1V1BJ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.106 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 236A16B0630
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:58:13 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 758C3160329
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:58:12 +0000 (UTC)
+X-FDA: 85429040424.12.53B1429
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 88FDF1C0004
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:58:10 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JbpxuY6s;
+	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794548855;
+	s=arc-20220608; t=1794549490;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tH9MRkHQTZbs1LzKP4zwJuzcXsw9kcfIaj2yccY1Tzc=;
-	b=dFxaGnh35M5j7w23C1wa+gRrnDVmFyefYdyc4iHyNaqBzaSoFz1ulhlvtOAJLJZwxsPmQZ
-	AaCmq2IxnqBi6r1jfRPdTMXZkDZTPkpYLsTiJ+Eu+eXGYF3C0EpNiDF9jqBpN9yFK+u76J
-	0prEHS4lB2Kf1NfNKkj1kPowU5h+Xok=
+	bh=smxez4a4cpwU5haMt1Qy+s3oYad8QJKBdb5k+aJyAn0=;
+	b=gMBlzXu7gjW8Qy8qYsSK73Bmjhw7QCC9naqp6ZtxUx/q9JVfqAseWAhucjBOtVOwriRpCb
+	iEtK19bbH90VKFdz4D5oL4GJ5999YE45rwRY3Ll7SHwi2WA7H7bu1qp+6l4qa0wrcbrWgo
+	1rmKGFOOgRIdZ/QasQQ3Dzw4hqaj34k=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794548855;
-	b=YEymuO7LfTTflbODqLtltRMzshSj3+GEWpJTRW7q3JWGrYJ0K+77naqLlR4vO9uzcL519k
-	HLMqWVoh47bgjz8LfrrKkV/BcYLT0XVuMJ6x4oSMWK6Eqvr7AMEQWg8ekRDkgbsJjS3yk7
-	amfpXjD1DsbX8CJZEFNfOb074aOWgdg=
+	t=1794549490;
+	b=Jsz1+hY7gTcFBEn67adqTISvdun0rY/y3oVPG3GwQdWXaTEuxFv00kCI+wsd+Rv+H5Vv8Y
+	PuT4PiSNmBGj7N6vstB+cv7xtoz8pQanZhVGtAyBpkHIYfT2Gfxk7+/yGXF52pawnWt5Wx
+	vT0sIvfdjqPuRFcPqqX6ROoe6lKlgE8=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vah1V1BJ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.106 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=k23lgE2Jzwowgo6m52d31kwDYMIKzjyRuwBX8TKnliw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794548852; v=1; x=1795153652;
- b=vah1V1BJzyDQPBXiFoiTCNiHazPgAheKdRO33bHipe52/y+yAl43SB0Ku0GgJ1V00l0jR64R
- gNZEwA/rC3wGHfKH5EC1jOD3dd6dcxe+kruvkxcP9wAPduHUaHJzKIMkrOL062xAgoCL2lhYlpj
- r8OK8eWv7WROLSvGnQ/SL8H8=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 6a17f1505f6787fd;
-	Fri, 13 Nov 2026 05:47:32 +0000
-X-Mizu-Trace-ID: 6a17f1505f6787fd
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=utf-8
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JbpxuY6s;
+	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 783F2464E8
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:58:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 600B51F000C4
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:58:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794549489;
+	bh=smxez4a4cpwU5haMt1Qy+s3oYad8QJKBdb5k+aJyAn0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=JbpxuY6s8p/uMo5IM8wIor2lYcD1IhFC8wD2mFAM4Zfsw6h8gRQPA8kPsQCUF3ZTr
+	 1vkENvuP2tMlypzdhzU7G7EXQehtMOktzPLKlgt6yMOq19C0tablpRUCBeBfFtZ3/b
+	 cwzeAYXN7sFS7qayPqOmPo/L8+amxLuwVAhRfsju7JD06uGf0evjFQ+R81UFZEaPkX
+	 4V55+TxlCxRfTh7J7GmQaBxIu7qrvk0JExGmu157n1TaRc7gUbrwzolsklKDTCyJra
+	 F8uuPYrCW5cQp+atzPhogKSmyqyolA9ELw8bdKbb35P5ssEIzHI/vX73O8qSGxGlT1
+	 K16NpBU/kqJTg==
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-93e63ee7b4cso98283985a.2
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:58:09 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErGmkJVQLkCEGzQ8t+hea4LaqCYmtywL1FHQApqYEKxmfsAEjHbJFVaPjhTPOL9h12JIM/UrHvRWsA==@kvack.org
+X-Gm-Message-State: APuU4Z+tXgmQaC3ncBEXn+sIeVdO1NogyHGMps9dA6isIzA4wHV7DqFh
+	LvneCKjRHdntIy5uHrriocSJkfLwg5uwVn4UtJwUZG8HNxYvxZj+h8epe8Wdf1ZGbALtRnktEes
+	mRFanmBqrepnMPUN5ZI99c4/0AeV59B8=
+X-Received: by 2002:a05:620a:6f01:b0:93b:d7a0:d9e6 with SMTP id
+ af79cd13be357-9494bb6f8bfmr264863585a.64.1794549488490; Thu, 12 Nov 2026
+ 21:58:08 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v2 12/14] mm/cma: centralize CMA pageblock initialization
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <sashiko-outbox-212157@kernel.org>
-Date: Fri, 13 Nov 2026 13:47:13 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>,
- Li Zhe <lizhe.67@bytedance.com>,
- Andrew Popple <apopple@nvidia.com>,
- Balbir Singh <balbirs@nvidia.com>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- James Houghton <jthoughton@google.com>,
- Lance Yang <lance.yang@linux.dev>,
- Qi Zheng <qi.zheng@linux.dev>,
- linux-mm@kvack.org
+MIME-Version: 1.0
+References: <20261111232603.9934-1-baohua@kernel.org> <20261111232603.9934-15-baohua@kernel.org>
+ <sashiko-outbox-210422@kernel.org> <CAGsJ_4ykeDu9XyyiNs9HBp2w--Pm7=oqs0=M5cPiypQ1qq9yTg@mail.gmail.com>
+ <CAMgjq7Cx0Z6mxQXKJN5KfRYbMNMD1qOy4Yrt51prbGz+=2F+2w@mail.gmail.com>
+In-Reply-To: <CAMgjq7Cx0Z6mxQXKJN5KfRYbMNMD1qOy4Yrt51prbGz+=2F+2w@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 13 Nov 2026 13:57:57 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4x_F=m2irpO96PrxEkDpe5FLETuHG9rT1-uGy0-QL0W5A@mail.gmail.com>
+X-Gm-Features: AclHuK-BtN6duN0Nw2xNYdnH-GL2E8mcqjETysKEfCxuyiMN4yvJ_ve-YYDyzsU
+Message-ID: <CAGsJ_4x_F=m2irpO96PrxEkDpe5FLETuHG9rT1-uGy0-QL0W5A@mail.gmail.com>
+Subject: Re: [PATCH v7 14/16] mm/mglru: Avoid prolonged anon reclaim with swappiness=200
+To: Kairui Song <ryncsn@gmail.com>
+Cc: sashiko-reviews@lists.linux.dev, akpm@linux-foundation.org, 
+	axelrasmussen@google.com, baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, 
+	hannes@cmpxchg.org, hui.zhu@linux.dev, kunwu.chan@gmail.com, 
+	liam@infradead.org, lianux.mm@gmail.com, linux-mm@kvack.org, 
+	liuxiang.277@bytedance.com, lyugaofei@xiaomi.com, mhocko@kernel.org, 
+	mhocko@suse.com, qi.zheng@linux.dev, ridong.chen@linux.dev, rppt@kernel.org, 
+	shakeel.butt@linux.dev, surenb@google.com, wangzicheng@honor.com, 
+	weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com, 
+	zhuhui@kylinos.cn, sidchintamaneni@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <EDBD7566-17EA-4B8D-8510-E670614DDA01@linux.dev>
-References: <20261113033442.62970-1-songmuchun@bytedance.com>
- <20261113033442.62970-13-songmuchun@bytedance.com>
- <sashiko-outbox-212157@kernel.org>
-To: sashiko-reviews@lists.linux.dev
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Stat-Signature: 7ak734tb7fuyqaw3zoaepcuq1n9g13g3
+X-Stat-Signature: gpm4ykkyxyqo8fbhzxazakqpqa4kapk5
+X-Rspamd-Queue-Id: 88FDF1C0004
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9E1DA40004
-X-HE-Tag: 1794548854-308511
-X-HE-Meta: U2FsdGVkX1+iZI32BJZG03p5nkT3L3ZHKNhtVs71oyH1OMbnaA5uN//ixD8ACeCtZ1Aoi3TK3XN/aTHPnEhe4JPTszXyGQYLSnXLfeot8xB6C+uXa0ZhJA+6skZ+8LGUR3mzSYQyT18tpHrbSKX5G7Huq3p1vRmRNB+HUQINE9UIxiMwFh23YxMojA1047iUNDs8vl7QErodAnuQrfNWqFUH6paCpqOw6vOHqvYEZ7pCDhmgaPFHdvSQPOXJf2A2W4TXYDwF3lWGcETZD4xQka67HUYtLLlZV/0/HTa/vz2uy2WolSUzfX26REdVgC0WVpRl3snyBs6ieBy/B1JG/5MtMJhO5CQzm0fC8gtMiMnblwqOCe9G1xYnsqVUEBT2vNh7bNIsjr/GWggIU6ERkcoli9pisTJBWJ60qStz5dTRyLN/Li3L2qbCsQFC6exTTMYrOmkRRIkLwp3F5QaGeYpgtDjYsxwr9pzUI5DH2uG6FbteTmnGXPnJWHV9nkE4KZU0yc45EvQDUy76fDDCqrhRJp48xWr8DdGKHLwFcy/S7G5cffQPx3eKAjEqwaXwiZm0rhhXR2DPfEH31tOqDZVyRGGBh9KsMopXaFUZ4pEAqweSZzRhlHZT/PP0hlyKSz2Pz6gZq0334+gqVJWwW3NzlZqsnEXvQFuICo58Pjh4VwHBi7P6U7lPX8lAeJyAo0XG7CaOmOxeiUmFZBSMoT0Ym/kD6GzxBOt5WeOLuMetrkdDo9DuBAhLvntwv314y7AwCWsX6A8vyCozcGDKoUCtLthSVK8ouIXRfg7CjjRrmcRprHCS4J6OTXNbC0ZToJV3ZTc0HGTxTA5jo0n7fGofLRlFNSFGYPTWWNFweQ/aLbgJRC83dHT9DkFFRi/Kcasb8iW0drRLyD2NiEr1XFk06+AL1lNLntDsGOo+TlqcRZgAfucPEDEn/Kf1FeigfHzxfK8yt+Dcen1HSWK
- nONrI5Dj
- palwhCWCkDEoH9YF9oWerp4PenRhQ9LtXcfj94EXGSvtbpzxvoNR+OHgGzeDmVxfnc8+P0k4gxMnywZa+igzaDD8fMmHAGGq5kUI0R/sleOBbp9NWX03emVzV7LQg305HlnoAC4Ua5iGQvehbpWUVKofvCoVoJwtf3zjKYZS3Q6UmGlLW6XQFjpCsslqHdE4nxKq0uxUa2cS9WkWGe6EQ7h7FM1Z6Vu+VbBPrskAU4hkvUu9W5dWu9RRzZQO7uhcLhBKcEw9zAbZy57sxaoB8fX7x9QqEPu+sUhKF0UaZa5ZzLw1nGRo7EXlAd32s+/fja4rrz9vYUmoLn3i9QrjtX/vAhIge+ZLhxNAJ+oTMNlpHasMEtLECA55wJw==
+X-HE-Tag: 1794549490-200716
+X-HE-Meta: U2FsdGVkX1+Xz13U5MIKsw0fg+Vec/6c3a3wEdZgXkkK8z7yVgfPVaLRb2YzcA3ab19JRDzRsZmzCGc6Aj62rd+rEOMEwSfOt4DX7QVrTsgaT4C3XfWFHSeYs/x7ZcZ0jwpOvGyaCO1QqbSoMq92ZqVjF/adJgD5CfqEC3+P425ybfGKcCDV30l0RetKj/JG2SIZL8rFEDcWrAUghmcN+EdkkmBmHgU8P+aj2Q/AvITMsFheGpxT0EmzGcWD0KbGEdVMOQMkfB8XB7Ax5six7EQDHepuD7EM6bgkB59n9cVDsVXUkS4xhk19ccGWB9UO8KzsefJc9S6uhAJGoqUS9OrpB7QZb3oydm/nUwUxKtqGmRAHBeLyFtMD/mPcph/sCVdpWoULtkdK7kQZZQkMAMlrcxIfaEy+u+2IiXbnCS+h+OIp+aIHWsOoUdkUe/qMvVNyoBfsNi+Mz9cr2UtnGYHN19ivFgSWIZjpAZfkf70DCwb1tcqb+eyccQ7OR23zglHj0Pi3aIBHMfdHa5znlk049+S7I37CbnZafqfXvHW57SGen4Rt7R2DmsTuhz+izen/muf7d1ehHnE/6qfiPTq1KXdv8q0hMzd5BvEmLsz66z44kIATV2P/0hOtlWNPCILkLEx2YPuWC7r9fjJlBbBuLklrdIFLb8npC68jD2tE3ejK4IlMkhJ+bY+dYrLXLvSFja92+vy3Kq37SacmQ7+EOKgQ1X+a2QHnJCt3NqhQVSc1ABfjwBerNAQFHR6NcTCk1yiNSlcuuJ7YgaMg1lEaLWs+syE4doP9ZsLNy4p7brXjWLUTI3yYRjskJF2ziCZFJdSu3zfxSeUZbA3g0OtvDWTqeIdcr+vVfrUODMPh+9y6Zytd1HuMOH2Jcu3GEyPxLPOV9UwnPD4T6cWNAlDLbAgch/eihX3WP5vTqxXTTAme58epsp4ZW+q9VXV7daipiTufjn4q4seEWUP
+ 7BZSSeQT
+ ccGuB5MUFqrQrga8SWNGk+sO5wjYgx0loh3Lb6fTx/XRmlWb73wokiijPe5q7C7lFaJriyvZE5afvo5GGSTCBoQA2sEVBiXtIZqOxcIOv/kfvL5i8+2t8C3b8HO7bZRuHIGF1abl+4amrzlA3TNIAWE/c/l+gWDnZnHC7yzj3EYlh0wSABDRb76uQ1NvTtgsUUpcsoWD5dq+OUwKmHLLC0I+cxOXiC82DXrMOy+NEJ02WAgJv+9j3EKN74QRsat+DaZBbaGfDnGH5YhDLd+HcD4hO1cHoPePhCZ6OdQDMMHTaSd54zTxKQnvugKdHvgh0mEc8GsPOKvy49N9NLkFdCULw14Oubk+wRjVx+/aCqxvnT/UeaHGQwQVk+FTapBwhNI99
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,145 +114,242 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Thu, Nov 12, 2026 at 6:46=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+[...]
+> > > > @@ -5891,7 +5896,7 @@ static int run_eviction(struct lruvec *lruvec=
+, unsigned long seq, struct scan_co
+> > > >                       return 0;
+> > > >
+> > > >               lruvec_evictable_size(lruvec, sc, swappiness, nr_to_s=
+can);
+> > > > -             lru_gen_balance_scan(lruvec, swappiness,
+> > > > +             lru_gen_balance_scan(lruvec, sc, swappiness,
+> > > >                                    nr_to_reclaim - sc->nr_reclaimed=
+, nr_to_scan);
+> > > >
+> > > >               if (!evict_folio_lists(nr_to_scan, lruvec, sc, swappi=
+ness, MAX_LRU_BATCH))
+> > >
+> > > [Severity: Medium]
+> > > Does passing sc from run_eviction() into lru_gen_balance_scan() cause
+> > > swappiness=3D200 via debugfs proactive reclaim to always calculate a =
+non-zero
+> > > file_factor?
+> > >
+> > > lru_gen_seq_write() initializes sc on the stack without setting .prio=
+rity
+> > > to DEF_PRIORITY, leaving sc.priority zero-initialized when passed to
+> > > run_cmd() -> run_eviction().  In lru_gen_balance_scan(), sc->priority=
+ <
+> > > DEF_PRIORITY / 2 (0 < 6) is then unconditionally true, so proactive
+> > > eviction with swappiness=3D200 always reclaims file pages instead of
+> > > preferring anonymous memory.
+> >
+> > Well, I'm getting tons of complaints about
+> > lru_gen_seq_write(), even though it's just a debug
+> > interface that probably very few people actually use.
+> >
+> > If anyone is actually using it, please let me know.
+> > Otherwise, I think we should consider removing it in the
+> > long term. Both memcg and node already have proactive
+> > reclaim interfaces, so this one seems redundant and
+> > difficult to maintain.
+>
+> For now I think we just be really lenient about that interface, e.g.g
+> keep it at DEF_PRIORITY like in previous version
+>
+> > All Sashiko comments seem to suggest:
+> >
+> > @@ -5955,6 +5956,7 @@ static ssize_t lru_gen_seq_write(struct file
+> > *file, const char __user *src,
+> >         struct blk_plug plug;
+> >         int err =3D -EINVAL;
+> >         struct scan_control sc =3D {
+> > +               .priority =3D DEF_PRIORITY,
+> >                 .may_writepage =3D true,
+> >                 .may_unmap =3D true,
+> >                 .may_swap =3D true,
+> >
+> > But I think this approach could introduce its own problems.
+> > Suppose we have four generations for both file and anon,
+> > and users use the debugfs interface to reclaim the oldest
+> > generation.
+> >
+> > 1. Even at DEF_PRIORITY, we can currently scan up to
+> > lrugen->max_seq - MIN_NR_GENS, which means the
+> > second-oldest generation can also be reclaimed. This
+> > somehow violates the user's request to reclaim only the
+> > oldest generation.
+> >
+> > 2. With swappiness=3D1 or 200, if we run out of the
+> > preferred file or anon type in the oldest generation,
+> > we can fall back to the other type and reclaim all of
+> > its oldest generation, as we did before scan-budget mode
+> > was introduced. With the new approach, however, we stick
+> > to the preferred type at DEF_PRIORITY and don't fall
+> > back to the other type. As a result, evict_folio_lists()
+> > can return 0 earlier than it would with the fallback
+> > approach.
+> >
+> > I guess the only way to address all these issues is to add
+> > a separate reclaim path for requests from
+> > lru_gen_seq_write(), with evict_folio_lists() handling
+> > these requests differently from regular reclaim to preserve
+> > the old behavior before this patchset introduced the
+> > budget-based model.
+> >
+> > Something like the following, though it would be very ugly:
+> >
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 4fe516d33703..24c6abe37189 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -4745,7 +4745,8 @@ static bool isolate_folio(struct lruvec *lruvec,
+> > struct folio *folio, struct sca
+> >  static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec=
+,
+> >                        struct scan_control *sc, int type, int tier,
+> >                        struct list_head *list, int *isolatedp,
+> > -                      unsigned long *scanned_seq)
+> > +                      unsigned long *scanned_seq,
+> > +                      bool cmd_proactive)
+> >  {
+> >         enum node_stat_item item;
+> >         int zone_idx;
+> > @@ -4768,7 +4769,9 @@ static int scan_folios(unsigned long nr_to_scan,
+> > struct lruvec *lruvec,
+> >          * newest generation when under severe pressure, so hot folios =
+are
+> >          * not evicted as soon as priority is raised.
+> >          */
+> > -       if (sc->priority =3D=3D DEF_PRIORITY)
+> > +       if (unlikely(cmd_proactive))
+> > +               seq =3D lrugen->min_seq[type];
+> > +       else if (sc->priority =3D=3D DEF_PRIORITY)
+> >                 seq =3D lrugen->max_seq - MIN_NR_GENS;
+> >         else if (sc->priority > DEF_PRIORITY / 2)
+> >                 seq =3D lrugen->max_seq - 1;
+> > @@ -4966,7 +4969,8 @@ static void lru_gen_balance_scan(struct lruvec
+> > *lruvec, struct scan_control *sc,
+> >  }
+> >
+> >  static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruve=
+c,
+> > -                       struct scan_control *sc, int type, int swappine=
+ss)
+> > +                       struct scan_control *sc, int type, int swappine=
+ss,
+> > +                       bool cmd_proactive)
+> >  {
+> >         LIST_HEAD(list);
+> >         LIST_HEAD(clean);
+> > @@ -4990,7 +4994,7 @@ static int evict_folios(unsigned long
+> > nr_to_scan, struct lruvec *lruvec,
+> >
+> >         tier =3D get_tier_idx(lruvec, type);
+> >         scanned =3D scan_folios(nr_to_scan, lruvec, sc,
+> > -                             type, tier, &list, &isolated, &scanned_se=
+q);
+> > +                             type, tier, &list, &isolated,
+> > &scanned_seq, cmd_proactive);
+> >         nr_isolated =3D isolated;
+> >         if (nr_isolated)
+> >                 __mod_node_page_state(pgdat, NR_ISOLATED_ANON + type,
+> > @@ -5177,11 +5181,13 @@ static bool should_abort_scan(struct lruvec
+> > *lruvec, struct scan_control *sc)
+> >  }
+> >
+> >  static long evict_folio_lists(unsigned long nr_to_scan[], struct
+> > lruvec *lruvec,
+> > -                            struct scan_control *sc, int swappiness,
+> > unsigned long max_batch)
+> > +                            struct scan_control *sc, int swappiness,
+> > unsigned long max_batch,
+> > +                            bool cmd_proactive)
+> >  {
+> >         int type;
+> >         unsigned long batch, scanned, total_scanned =3D 0;
+> >
+> > +retry:
+> >         /*
+> >          * Scan both types with the given budgets; the caller checks if
+> >          * reclaim is satisfied after each pass.
+> > @@ -5191,8 +5197,13 @@ static long evict_folio_lists(unsigned long
+> > nr_to_scan[], struct lruvec *lruvec,
+> >                         continue;
+> >
+> >                 batch =3D min(nr_to_scan[type], max_batch);
+> > -               scanned =3D evict_folios(batch, lruvec, sc, type, swapp=
+iness);
+> > +               scanned =3D evict_folios(batch, lruvec, sc, type,
+> > swappiness, cmd_proactive);
+> >
+> > +               /* if it is a debugfs proactive reclaim, lend budget
+> > to the other type */
+> > +               if (!scanned && cmd_proactive && swappiness &&
+> > swappiness <=3D MAX_SWAPPINESS) {
+> > +               if (!scanned && cmd_proactive && swappiness &&
+> > swappiness <=3D MAX_SWAPPINESS) {
+> > +                       nr_to_scan[!type] +=3D nr_to_scan[type];
+> > +                       goto retry;
+> > +               }
+> >                 nr_to_scan[type] -=3D min(nr_to_scan[type], scanned);
+> >                 total_scanned +=3D scanned;
+> >         }
+> > @@ -5240,7 +5251,7 @@ static bool try_to_shrink_lruvec(struct lruvec
+> > *lruvec, struct scan_control *sc)
+> >
+> >                 orig_anon =3D nr[LRU_GEN_ANON];
+> >                 orig_file =3D nr[LRU_GEN_FILE];
+> > -               scanned =3D evict_folio_lists(nr, lruvec, sc,
+> > swappiness, MIN_LRU_BATCH);
+> > +               scanned =3D evict_folio_lists(nr, lruvec, sc,
+> > swappiness, MIN_LRU_BATCH, false);
+> >
+> >                 if (should_abort_scan(lruvec, sc))
+> >                         break;
+> > @@ -5896,7 +5907,7 @@ static int run_eviction(struct lruvec *lruvec,
+> > unsigned long seq, struct scan_co
+> >                 lru_gen_balance_scan(lruvec, sc, swappiness,
+> >                                      nr_to_reclaim - sc->nr_reclaimed,
+> > nr_to_scan);
+> >
+> > -               if (!evict_folio_lists(nr_to_scan, lruvec, sc,
+> > swappiness, MAX_LRU_BATCH))
+> > +               if (!evict_folio_lists(nr_to_scan, lruvec, sc,
+> > swappiness, MAX_LRU_BATCH, true))
+> >                         return 0;
+> >
+> >                 cond_resched();
+> >
+> > However, this would make the code much more complex and
+> > probably isn't worth the effort for a rarely used debugfs
+> > interface, especially given that we already have proactive
+> > reclaim interfaces for both memcg and nodes.
+> >
+> > So perhaps we should simply set .priority =3D DEF_PRIORITY
+> > and live with the two less significant issues described
+> > above.
+>
+> I agree with this, actually maybe later we can use something in
+> scan_control like an extra field, CLRU has a lot of special tweaks in
+> that, which also needs to be sorted.
 
+Agreed. I'll add a few words to the changelog.
 
-> On Nov 13, 2026, at 12:07, sashiko-bot@kernel.org wrote:
->=20
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [Medium] mm/cma: skipped and per-PFN managed page accounting in
->  cma_activate_area()
-> --
->=20
-> commit cd588f911bb59c4583e63d2e776ba252d0663161
-> Author: Muchun Song <muchun.song@linux.dev>
->=20
-> mm/cma: centralize CMA pageblock initialization
->=20
-> This commit moves the initialization of early-reserved CMA pageblocks =
-from
-> hugetlb into cma_activate_area() and restores managed-page accounting =
-for
-> those pages if CMA activation fails.
->=20
->> diff --git a/mm/cma.c b/mm/cma.c
->> index 9ec1d1fd5dff5..46e72734ba729 100644
->> --- a/mm/cma.c
->> +++ b/mm/cma.c
->=20
-> [ ... ]
->=20
->> @@ -191,12 +195,13 @@ static void __init cma_activate_area(struct cma =
-*cma)
->> 	/* Expose all pages to the buddy, they are useless for CMA. */
->> 	if (!test_bit(CMA_RESERVE_PAGES_ON_ERROR, &cma->flags)) {
->> 		for (r =3D 0; r < cma->nranges; r++) {
->> -			unsigned long start_pfn;
->> -
->> 			cmr =3D &cma->ranges[r];
->> -			start_pfn =3D r <=3D allocrange ? early_pfn[r] : =
-cmr->early_pfn;
->> +			end_pfn =3D r <=3D allocrange ? early_pfn[r] : =
-cmr->early_pfn;
->> +			for (pfn =3D cmr->base_pfn; pfn < end_pfn; =
-pfn++)
->> +				=
-adjust_managed_page_count(pfn_to_page(pfn), 1);
->> +
->> 			end_pfn =3D cmr->base_pfn + cmr->count;
->> -			for (pfn =3D start_pfn; pfn < end_pfn; pfn++)
->> +			for (; pfn < end_pfn; pfn++)
->> 				free_reserved_page(pfn_to_page(pfn));
->> 		}
->> 	}
->=20
-> [Severity: Medium]
-> Does gating the adjust_managed_page_count() loop on
-> !CMA_RESERVE_PAGES_ON_ERROR leave early-reserved gigantic hugetlb =
-pages
-> unaccounted in zone->managed_pages and totalram_pages if CMA =
-activation
-> fails?
+"Note that we are already lenient with the debugfs proactive
+reclaim interface. We may reclaim one generation ahead even
+at DEF_PRIORITY, and with extreme swappiness values such
+as 1 and 200, we may not fall back to the other type.
 
-Right. I think the following diff will fix it.
+To address these cases and preserve the behavior of the
+previous model before scan-budget-based reclaim, we would
+need to add another flag to scan_control. However, this
+may not be worthwhile for a debugfs interface that is likely
+to be rarely used, especially given that we already have
+memory-level and node-level proactive reclaim interfaces."
 
-diff --git a/mm/cma.c b/mm/cma.c
-index 7ca0e100504d..e8845747f7cf 100644
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -200,18 +200,23 @@ static void __init cma_activate_area(struct cma =
-*cma)
-        for (r =3D 0; r < allocrange; r++)
-                bitmap_free(cma->ranges[r].bitmap);
-
--       /* Expose all pages to the buddy, they are useless for CMA. */
--       if (!test_bit(CMA_RESERVE_PAGES_ON_ERROR, &cma->flags)) {
--               for (r =3D 0; r < cma->nranges; r++) {
--                       cmr =3D &cma->ranges[r];
--                       end_pfn =3D r <=3D allocrange ? early_pfn[r] : =
-cmr->early_pfn;
--                       for (pfn =3D cmr->base_pfn; pfn < end_pfn; =
-pfn++)
--                               =
-adjust_managed_page_count(pfn_to_page(pfn), 1);
--
--                       end_pfn =3D cmr->base_pfn + cmr->count;
--                       for (; pfn < end_pfn; pfn++)
--                               free_reserved_page(pfn_to_page(pfn));
--               }
-+       for (r =3D 0; r < cma->nranges; r++) {
-+               cmr =3D &cma->ranges[r];
-+               end_pfn =3D r <=3D allocrange ? early_pfn[r] : =
-cmr->early_pfn;
-+               /* Restore managed page accounting for early-reserved =
-pages. */
-+               for (pfn =3D cmr->base_pfn; pfn < end_pfn; pfn++)
-+                       adjust_managed_page_count(pfn_to_page(pfn), 1);
-+
-+               if (test_bit(CMA_RESERVE_PAGES_ON_ERROR, &cma->flags))
-+                       continue;
-+
-+               /* Expose the remaining pages to the buddy. */
-+               end_pfn =3D cmr->base_pfn + cmr->count;
-+               for (; pfn < end_pfn; pfn++)
-+                       free_reserved_page(pfn_to_page(pfn));
-        }
-        totalcma_pages -=3D cma->count;
-        cma->available_count =3D cma->count =3D 0;
-
->=20
-> When crashkernel=3D...,cma is used alongside hugetlb_cma,
-> hugetlb_cma_add_crashkernel_ranges() sets CMA_RESERVE_PAGES_ON_ERROR =
-on
-> the hugetlb_cma area before hugetlb_bootmem_alloc() reserves gigantic
-> pages from it via cma_reserve_early().  gather_bootmem_prealloc_node()
-> always skips adjust_managed_page_count() for hugetlb_early_cma(h) =
-folios,
-> and those folios remain active in the hugetlb pool even if
-> cma_activate_area() fails, so their managed page count needs to be
-> restored regardless of CMA_RESERVE_PAGES_ON_ERROR.
->=20
-> Also, calling adjust_managed_page_count(pfn_to_page(pfn), 1) once per =
-base
-> PFN invokes setup_per_zone_lowmem_reserve() for every 4 KiB page =
-(262,144
-> times per 1 GiB page) instead of stepping by pageblock_nr_pages or
-> adjusting by end_pfn - cmr->base_pfn.
-
-Batching is not generally safe here. Activation can fail before zone =
-validation,
-or because the CMA range crosses zones, while =
-adjust_managed_page_count(page, count)
-charges the full count to page_zone(page). Since this is an exceptional =
-early-boot
-failure path, I prefer to retain the per-PFN accounting.
-
-Thanks.
-
->=20
-> --=20
-> Sashiko AI review =C2=B7 =
-https://sashiko.dev/#/patchset/20261113033442.62970-1-songmuchun@bytedance=
-.com?part=3D12
-
+Thanks,
+Barry
 
