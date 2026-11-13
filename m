@@ -1,143 +1,109 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E94606A89D
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 10:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5603F606B261
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 11:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=LhM4Fldr
+	dkim=pass (2048-bit key, unprotected) header.d=amazon.it header.i=@amazon.it header.a=rsa-sha256 header.s=amazoncorp2 header.b=qF8Nvtci
 Received: by kanga.kvack.org (Postfix)
-	id AD75D6B06B1; Fri, 13 Nov 2026 05:57:03 -0500 (EST)
+	id 230A66B06B4; Fri, 13 Nov 2026 06:03:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAFF56B06B2; Fri, 13 Nov 2026 05:57:03 -0500 (EST)
+	id 1BA4F6B06B5; Fri, 13 Nov 2026 06:03:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99DC26B06B3; Fri, 13 Nov 2026 05:57:03 -0500 (EST)
+	id 0D0016B06B6; Fri, 13 Nov 2026 06:03:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B5886B06B1
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:57:03 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 02B0D1606D6
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:57:02 +0000 (UTC)
-X-FDA: 85429793526.20.59E7A4A
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 25E0A140005
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:57:00 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=LhM4Fldr;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf09.hostedemail.com: domain of elver@google.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=elver@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794567421;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DD0E26B06B4
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 06:03:21 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 075F1C0791
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 11:03:21 +0000 (UTC)
+X-FDA: 85429809402.09.CF99BD5
+Received: from pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.245.243.92])
+	by imf05.hostedemail.com (Postfix) with ESMTP id DB05D10000C
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 11:03:18 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=qF8Nvtci;
+	spf=pass (imf05.hostedemail.com: domain of "prvs=770a1a5e7=dipiets@amazon.it" designates 44.245.243.92 as permitted sender) smtp.mailfrom="prvs=770a1a5e7=dipiets@amazon.it";
+	dmarc=pass (policy=quarantine) header.from=amazon.it
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794567799;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h148AzK7ulcLWc0NU3jZpboHW5vO/KJ9aeMyUmTns1k=;
-	b=gBSnqVKbcycjc0bp3jsVcE52jkljgc+XasRGlmE4MrnIw7NYKcM9q4bVcZUmGaHjQ0zpuk
-	5gNs9/xrS67QHcqCRq4QlUDn8g9MIBHCvu7RJ6lVX7xXshpCVe8YiR59j2mMCkOiJdGBN2
-	+uEt/JR9rMPmpbREd4q08eisZuhjxJ0=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794567421;
-	b=l4K7mzpoD2Qy1jZblTuNr+DUHz2Iv/h8rs8oZnZZXQIC7LljxYCTTVQJrNTu6rWNy82kr9
-	wd9UHnOV8afer3AUfWO2PPjc4NmfW7Apxz5bpSKVEh1AfeAyTMlpyjQjrwKD5q7zLxD6CS
-	zuRj7qtqGnE4xJADJTOwa3A4Eh8FRZA=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=LhM4Fldr;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf09.hostedemail.com: domain of elver@google.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=elver@google.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cddc597d062so691554a12.3
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:57:00 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794567419; cv=none;
-        d=google.com; s=arc-20260327;
-        b=r6MU0mh66sLMFHEn5iMxVyjdNlavRv9TN8YfDEKrwQnT5uhk2SL6qT7kG9fZQ8n7Nm
-         U5pErsivBc8ZzOZeNLn6gdWK7SSjbMh4pxyDP+dX28cIuQUTMw7JQ8WDFAY3EZSYf2wB
-         TpPFfmGW9fF/BzODjb2ZSiaqm+yYpEbzatvKjU8190eXHulqYQQ1z777xCIaYgqJRi0m
-         EviTGqlaXhYBYoTHU8qbrI0km/Xi9ouPWVbgVf7Epizb6ubhB+x9x1hPp6Ih1Qs+Mh6W
-         I86op7ssVIyEfrN8hA5FxghC9qs/h0uy29N0mjluqDelBN/M0ndK+c7DP9wUyHyx3xgu
-         Ugyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=h148AzK7ulcLWc0NU3jZpboHW5vO/KJ9aeMyUmTns1k=;
-        fh=wz6J5omm4keNJU6wGZqPHwUBPx1c+7RL6YdDHwnTMa8=;
-        b=eZN62ji1jBPB6ZM8nulqauRCS+EUww8PNsQVc9KQPtV04stcLV4AWtU1GYeSt/fOiD
-         cYtolBNs1YK8sLRrVSBpDQzaD4ZzRJcgTH9fWeADmm2PGeiz3/xMMvYINBzLYmMgn2SA
-         MxiQ/9tBawe3sqFZM3O5VxqtWmVA9GF+9cpBfsIQJ4SLOcEbQCPdTQO7rIMxOmYMoa7M
-         vkDfKusjGTmpphSHgTqxHSU/PztPyedqgkzybPFfIdh2bwWZkDmZ9OLNDGqgMhsxPdti
-         cJ9G5KxZUYscX7epMQHWYlGyb1Op9vBj3xqGF+kSwOW7qxfapGaU6bJtAVxniCZldIRq
-         2Syw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=rxpebwgxAi2rpMQVYH2/YieUDfApwWMHIlSz9atE37k=;
+	b=UTy+ZGBw12aC2YszdTUQrgF6/Kr4kUE/fRbRtbpPX1M3/XLP6nXGSKScdMXDr7638ZI5J2
+	wJ+JNWQvkF2752gG9CJ3R4YxS6m0OpG76cJ65aP25gKBVB0yPz9iAwNePFJO7Q2Q795XOx
+	YZPowtslDr/+2fxuNQ5/etxYXQjvXQA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794567799;
+	b=PShm4LQatbBDjdDRP+wliUQUAz6irJphFYNx0CIAV9zDG9HsWtlnfPihPmuwWA15yL/bPn
+	Lats9ncfUBTqqq6XZNSi2V9rvJXI5wVWhL9cia78U8gab7oVr6sKmVU/sbFmmLpk28j0Y2
+	hBOqU1C8MuPcuHzx618XAUXEVUUf4FQ=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=qF8Nvtci;
+	spf=pass (imf05.hostedemail.com: domain of "prvs=770a1a5e7=dipiets@amazon.it" designates 44.245.243.92 as permitted sender) smtp.mailfrom="prvs=770a1a5e7=dipiets@amazon.it";
+	dmarc=pass (policy=quarantine) header.from=amazon.it
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794567419; x=1795172219; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=h148AzK7ulcLWc0NU3jZpboHW5vO/KJ9aeMyUmTns1k=;
-        b=LhM4FldrWf1fkIxvM2cWHaLRRLCOLB4zGCDyzIeYnSygbiJ0cgtN767Yi6K5F7ar3X
-         cKYce7Cii/QIgoleaQvfHx260DUlV/v1Flwn+tA3SxTb6JP7CAi+fUHwAu4fZ7yFyjQi
-         7k+2yxs5gUtyQjmfQAM8Z4C2pEou9kth4Du/4DFfXK66r8RvOzZdw/D5/qx57E3fBIYj
-         F5SAsUvmYF4ZpyDG7QxVn9pJAMNRuSxYq4KGjcv5WGhWI6jds5D1xf3VQaLAl9OJvta7
-         D0DG3zen2mC1stqRCtracPSFbG3sCxIpvyGhss5tSm6v/Cdt996uDZDTxubDCBHrY/ZZ
-         fdXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794567419; x=1795172219;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=h148AzK7ulcLWc0NU3jZpboHW5vO/KJ9aeMyUmTns1k=;
-        b=TenktwbcYYWF5P1MKjJ3/zqI63w1D+z5cIFaZOnaF2fmyT0rKttYK68p35ys/J8Bxg
-         1rKOczJi2sHWdtu1YjTKP4zFNrfhkcF4zqVtnuxAT6w+52u6pbUPdjGADf/jv5q9WqH8
-         upXi2eNTxidy7gtvIw4pwBPsU6TikN1EypD87A2Q9d8Biwi5R69iw6YiIZA/xqJgaovJ
-         Sl1zkDXv2rCYuDp1porYfdWUYSbOZXF7nh8sHD0/AeJqaVap7Nu6zA4dSTYrBiyH0W8M
-         VzVcKrzB1SwjmTu2jG9ysL07tRqqlQomt113OiDohTq9oQ1VG6/KP7M6/QXgVglviead
-         N0dA==
-X-Forwarded-Encrypted: i=1; AL+hErGLSjA7eDku2KlYDsWZchrDxNRsH7xVT7ItS9D7z2U3p9nhVag+MAs0+WhlBX8XXNVcN54LxE6I2Q==@kvack.org
-X-Gm-Message-State: APuU4Z8Gg29tvALQ08wQN4jtnhJmjn0Qq+CKhjHzlGCb+JT/cNwaZhna
-	PrFnHU4nqR3GhK5xFTFLo3S7gOk5+UADTBYiYGduIKI+HKfERNBQDmvBDtlpfOse80yIjAUS8vK
-	IP/RtF55o7eCKrtmO21qkAtz1J+Y+FC0kiKnxSBia
-X-Gm-Gg: AYBFou38AQD8KmR0lMjvsDSmu4uW/Ypeemn/rZJScZOq86wSL1kF9Vy6RwUR29VPV5j
-	f0g6ThdDX9ZoDVpTJUx9S1cdAI/6kj06QT3iI8OUKYYGZsj3By3SbWlwvJbITP24G1Du/sAwbvR
-	k6bEKbxIN3xh3Btgc24ikDkoIp3i6vUCz87a5R5JfimUXP+65ZEwxks/zz0PIplzsjGz8bY3aos
-	8B5DH9lR1XyHg3VXHRkwUVY26zFB4hGvjCm8DlfMiWb4tJJLeF8BBjZ0sLagEEwFFJj7kgzKp82
-	3LC1CdaIOX+DZ+CJqBS1SN/fPEiN3tvNap2ECKmeon1PRof4JWM4v0b8+QnQg6ET53qJZ+6FtqS
-	s6ZNmOjtPz09mHyl9C5gpai3Bmnp0vw5tzXnunBZtUFD0kHCRCyfV/dLc1K1prLFFdz6A
-X-Received: by 2002:a05:701b:2810:b0:1af:2ba7:e44b with SMTP id
- a92af1059eb24-1b503068de7mr2114022c88.3.1794567418689; Fri, 13 Nov 2026
- 02:56:58 -0800 (PST)
+  d=amazon.it; i=@amazon.it; q=dns/txt; s=amazoncorp2;
+  t=1794567798; x=1826103798;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=rxpebwgxAi2rpMQVYH2/YieUDfApwWMHIlSz9atE37k=;
+  b=qF8NvtcixCyRwOn8Tud08wV3zhyzeXWBZa3T3UHsvqYc7fjZwZtHehET
+   Avp9gf5Htdv84ex4BcLIjMlaWBg225WQBBXrScvqYlS2564xA9KoB2Byl
+   OSl8DR4QAKqCttzwKK31IQMT0EuX2PmTWG6ap3AltejtRS8PyLrsxU5yZ
+   FaX+c7n37e9DwFNcTqI/MF0P6OavcryQxvyvH5z6lk1RkNk3kPrkkM2qf
+   +70RgHxbQs6s0S0+DErrTsVjo58kMU+AI2PPwLi1uwfb5yO215PcXeK9H
+   8X9mx+MaWTfUf9FzeZBH1q9X1dvslufOMbgdPQRSaBptMZSL2GxZro4O2
+   Q==;
+X-CSE-ConnectionGUID: iydCxRSzSXewt4ZzwzSvgg==
+X-CSE-MsgGUID: pE9VtNAcSJypVESQgYT0GQ==
+X-IronPort-AV: E=Sophos;i="6.27,211,1787011200"; 
+   d="scan'208";a="33389046"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 11:03:15 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.48:10011]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.31.142:2525] with esmtp (Farcaster)
+ id 961ba48b-c7a4-4592-bbd0-a0083439ac97; Fri, 13 Nov 2026 11:03:15 +0000 (UTC)
+X-Farcaster-Flow-ID: 961ba48b-c7a4-4592-bbd0-a0083439ac97
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Fri, 13 Nov 2026 11:03:14 +0000
+Received: from dev-dsk-dipiets-1b-77b833da.eu-west-1.amazon.com
+ (10.253.66.177) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56; Fri, 13 Nov 2026
+ 11:03:13 +0000
+From: Salvatore Dipietro <dipiets@amazon.it>
+To: <stable@vger.kernel.org>
+CC: <dipietro.salvatore@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+	<linux-mm@kvack.org>
+Subject: [PATCH 6.18.y 0/3] mm/page_alloc: fix iomap buffered write regression from 5d8edfb900d5
+Date: Fri, 13 Nov 2026 11:02:56 +0000
+Message-ID: <20261113110259.2901456-1-dipiets@amazon.it>
+X-Mailer: git-send-email 2.50.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <cover.1794506262.git.chris@chrisdown.name>
-In-Reply-To: <cover.1794506262.git.chris@chrisdown.name>
-From: Marco Elver <elver@google.com>
-Date: Fri, 13 Nov 2026 11:56:20 +0100
-X-Gm-Features: AclHuK8EymS8R4ke35k_Ts4zDwGVpBzqd0W1daXPPjdA8aiWj2M9LBxfbR3z3Fk
-Message-ID: <CANpmjNP0cWB_670hYj7p+Dd=do1qEu4XHeW+c7sTv-MXi0UBTg@mail.gmail.com>
-Subject: Re: [PATCH v3 0/6] mm/slab: Support selecting slab hardening features
- at boot
-To: Chris Down <chris@chrisdown.name>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Kees Cook <kees@kernel.org>, 
-	GONG Ruiqi <gongruiqi@huaweicloud.com>, Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org, 
-	linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: fpap1qa61emjwb6hhfhms5y5ds83x6oj
+X-ClientProxiedBy: EX19D031UWC001.ant.amazon.com (10.13.139.241) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 33t8qjo4moodmtojpapemkw3sauagduh
+X-Rspamd-Queue-Id: DB05D10000C
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 25E0A140005
-X-HE-Tag: 1794567420-666697
-X-HE-Meta: U2FsdGVkX19jQYTkXdg62GSNIGg3LUZRkWvNO8vZCbGqKIIDSp44sKHD2uHQljXIHESqyRD9WhCjq0LyY4WwyIALwSh+mr/5fPy69PlxkTEzLwLwcNzAa12uEBB+dRo1v0jqIPML3XFlI0UomIKJMhXW9AG1fGdvAJiTS1qdPLbqVTgiiOOyroFzBWC6Jra3rWypKzouOqyUOrflzpaoPOlaTdIrNa/5wUrfxgDvJ0K3CMJBbEu2Be/y4Wg890hJFQ2UNobIX+QqlhiQ8cR6Pk5LZuXCb0FV3v0VlZGVgpc7oHc8IhiWevjC4uV+cxNJ/DMlwpASoNnH1iLIj1UN1zkciUtfOwrjG161ufEdy29FEkHP0UGLFlMGhgxXpC7Ntl8T8WoBQ8/f27bLTGOqePD80w+FCQUji3Rl5q7emHEOJ3iTkHjvbAgGbHivZHo/n8BYZcu6/iRhQywH5a9xpSlJH9idJt10f6bwa4qJ4TAe8Qd64zqpoXJoCocWlKK1C/LzrD+MEDgOBrw4PdoMwhPV8vD0kmRtjPpZb8lXqcNuLYOi2L59o1lbFtUy7ra+FZUesy4FjMqK0VQwXtSXXGcJJtS3BMqRimqBSSrdPX++OIOSuXAXk1tKTZCopzd9XTNe/Yus/ZMkk10Mxgw6EqSqU7hvA1WezyTxu5oMImTbzCBGnfLFp3uDN08eCCDHuYh+dtYMO7OOEXPLwrY2vlZcepASopJtKTum9EZFp9XifcE5sL4EYLtaDW5cTROBeFjrvjAxHOScgomWtBSQxpMovs9p9RMEJebjluo9dG9gZMairrOex1j5WswTTn1GN1B4+lHOts8+8dWiq5B76RdBMv7jherCceFntCDs1PWx0ht7dy6057kwel1DRcljQaRIRRQthCcCv9JEdrSk8xItrV0Y/pxOeqXD3Djlp+TSz9lUWYoefcia51vR3UPe4eRfZAu2KGmlFkm+jnL
- jgQXMDcB
- x7bFt0G2BByPJp2ZlBbge3qJwIsBXm7r9/8+aSS5P28gscYSm75lbYOrlPIgx6R8UyCbeR6FcfiMx2QtLFNje14uJ5/Va1xGYIuxFy0VU7Np9vYOU0KcEq5xR9vKNnALoGlbdmoWerGoYvr5FFI6upQ5WUxM/1tKZbcV6dvmdUDvSjTrXahtmOLSoBu0rgdx+BAL0BXDVqIv5okZgx0AqrUCCkmghNNuJ1Pzb7T7CWdAPuuo=
+X-HE-Tag: 1794567798-737018
+X-HE-Meta: U2FsdGVkX19D8zYdluhFzSKld2HiJ/n/83NrWGq2GTnIGgQ/6OqKolYW9m5M7nxZHxqLngpHmL2kZCGSPRLOGcTHZfQ0cfVPpWJfyn6dn0DxMyHnK/AcXudRuLa4SLPJnpoCb2ID1narbWLAEc994THZ07eXXWmmPdPGBEX9EqiWdMpLJztgu66nL8X2XQ7Yju65NlCN1aeiE1cA3u404ns0++kItZ57cXQPgQwe9O6D0A3Z442RoS34WiNrCJ/ZcTi/29ab1C1NrchGmoEFlEn8ctO3PjKfnJYHbAnixlBd+YgfGn0q9pM48ZgoX3YyrzSyFbrIJH2Nb+LZ54H6y0HeDLANbaF9sVhsjIeZhaswhQ2fEWZVrTKtrU+LJH9S1li9/4W6y1DEd+3+bKeKe55grZRfWOn+9MwMhhYsLPsQ1h5lWP7GE+joooX+tNeidDU5fUnXkEu5F5Zxax2qMgYKxPcjPOF1r18ZvqSUP/RFYQdiPbljqbPB2KcHxR00vIyF9U6o0w4VFkcOPjx/91BGjYiFiV+4qmewmWNU6IaKp90U0tJVqzeONe3Ity2zg8GDmUyFaWIFfbT43ntu1ddfQUkVVN6ICBDStZNLbDcJW7gTekJCD/bNvop5nSDFhZVnuPqWiSQFuJCYPsXOWGGf54OXTbV03TDTd9FMSbr/jVTF3SzZdGO4STGou0QgkI70qqVX59b+wH7XQiMfLcS8UWKZu+6+sukxw5ceG2AFpeob5dbGMNGSRaPoj8GkzWf52v2gei/gTmPc0cDUozKbWy7uEpX5IR6wRCetMDqRKft0OekG/v7RNqAJACf8j6+MZErOn6c3XIINPInYfy7q6+mWdejwLUAyT646GWnId2DdIoE5ENYKEDqhX+EDh0q8GNT0uQFsTrgAUs1RJLP8o1Unq0HBQd/wWrJeQfddcnksp/tW8UcsMUaJnBFWRC2C+fj2NtUJtYQPsVQ
+ 5ZTdclXq
+ ZScgyZtYxPzt9JeWaIUsPWE5DgjrHv+Cs5XmGVPnbn33Z2QToMiNBVQxXHqbaPoF8K2StUKA5Mufes6EceOplhR5NYUkY+YTyVwQdgrnKRmwUtiLCHekDH+DTtvcSmIm8yYJwNSXO5v6x7KA+oX1LMLJ2696UuP9aDZC+ObjiRYaGjwmU0ao5wPlj9g6J3MLuV6Rq1mjcC+tAEbAfWCgCo4LCb2ibCZ2bOWcH2ImDTPB+ZYg7ZkBxovAFIVpD1FvKOVuMiDgfgCzMY4EWnyY9ehwCWwkqO3++c+iTURXKMLUlY81+pw19CRBibhFThf8+EKqae3s1+I6fk55uET16eRoFFaa4LhU/X/ZnPOVxU+NhlxDt7bbrn7LDQT7lgXHqzD5QuzSuNtHuPkvxpt7IzP5/60r42gosfU2PXrxvs0Kt1LzaDSjQ3nK9c/p/Uyc1Qy2kh6xzAWL/DAL4cY8Ai0XFuzm6v4J4ZLIBRnX6cAEofTBnOWH1A+7/okeWeaqbWNNQM6gqz0sfckhFx5JMIX1Vodw9irN8hkAhJWZUIQA/x9xXYmapLMBOVDUalCOuUJLDEovCR4+Jw2ak+tdrgMV1UsVYzT6Da7PMjQ7AGPaM5r8T/ZbKM5Eiduxot2Po8oGjsydhU0VHWi41ksEbLBHzhiRUovc4dEtdvdWF3wLmP69wHDPSQwaJkA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,53 +112,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 13 Nov 2026 at 09:51, Chris Down <chris@chrisdown.name> wrote:
->
-> Slab hardening settings are currently all build time choices. This means
-> that, unfortunately, hosts with different requirements end up needing
-> separate kernel images. At Meta, for example, some hosts are built with
-> these options and the rest of the fleet isn't, and that's one of the
-> things that keeps those kernels apart.
->
-> This series does two things:
->
-> - SLAB_FREELIST_HARDENED and SLAB_FREELIST_RANDOM are cheap enough with
->   sheaves that it makes more sense to just enable them by default than
->   to make them switchable. With both on, system level benchmarks didn't
->   change measurably, only slowpath heavy microbenchmarks did [1].
->
-> - SLAB_BUCKETS and KMALLOC_PARTITION_CACHES cost memory (Harry measured
->   about 1 MiB and 18 MiB respectively after boot on a 64 CPU VM [2]), so
->   they get slab_buckets= and kmalloc_partition= boot parameters, which
->   default to on when the option is built in.
->
-> Whether those two should be folded into a single slab_hardening= is
-> still open [3].
+Backport of 0e05a469c294 ("mm/page_alloc: avoid direct reclaim and
+compaction for costly __GFP_NORETRY allocations") to 6.18.y. It fixes a
+regression from 5d8edfb900d5 ("iomap: Copy larger chunks from userspace",
+v6.6), which slows buffered writes under memory fragmentation.
+Andrew and Vlastimil agreed it should go to stable [1].
 
-A coarse slab_hardening= option can easily be replaced by
-documentation. While less knobs is better, an intransparent coarse
-variant of slab_hardening= just makes the admin wonder "what does that
-actually to, and do I want it?". They still have to go and look up
-what it actually does, and at that point it doesn't add much value
-(alternative suggestion below).
+Patches 1-2 are its prerequisites from the same mainline merge (Cc:
+stable), only moved from mm/page_alloc.h to mm/internal.h. Patch 3 is
+adjusted for this tree, see its changelog. Acks from Vlastimil and
+Johannes on these adjustments would be appreciated.
 
-> > > light: "I'm willying to sacrifice _some_ memory and CPU for security"
-> > > full: "I'm willying to sacrifice more overhead for security
+Built, booted and tested with pgbench simple-update (PostgreSQL 18.6,
+1024 clients, 96 threads, 1200s) on m8g.24xlarge (96 vCPU arm64),
+12x io2 RAID0 XFS, mean of 3 runs:
 
-Who will decide what is light and full? I think there just won't be
-any consensus reached.
+  v6.18.63               87,278 TPS
+  v6.18.63 + series     154,670 TPS  (+77.2%)
 
-One thing that users may want is an "all off" option, similar to
-mitigations=off, should they wish to get max performance back with a
-single option. So you could consider slab_hardening=off. But at that
-point it may be more consistent to drop slab_buckets= and
-kmalloc_partition= in favor of arguments to slab_hardening=, such as
-slab_hardening=nobuckets,partition. This would mirror mitigations=,
-and should cater to the usecase of slab_hardening=off to get max
-performance with a single option.
+[1] https://lore.kernel.org/all/1fc0caa5-43b1-487f-94cf-0d1aff4c03fd@kernel.org/
 
-But I would not add options such as 'light', 'full'.
+Johannes Weiner (2):
+  mm: page_alloc: do not give all non-blocking requests reserve access
+  mm: page_alloc: remove ALLOC_NON_BLOCK from ALLOC_RESERVES
 
-Thanks,
--- Marco
+Salvatore Dipietro (1):
+  mm/page_alloc: avoid direct reclaim and compaction for costly
+    __GFP_NORETRY allocations
+
+ mm/internal.h   | 14 ++++++++------
+ mm/page_alloc.c | 16 ++++++++++++++--
+ 2 files changed, 22 insertions(+), 8 deletions(-)
+
+-- 
+2.50.1
+
+
+
+
+AMAZON DEVELOPMENT CENTER ITALY SRL, viale Monte Grappa 3/5, 20124 Milano, Italia, Registro delle Imprese di Milano Monza Brianza Lodi REA n. 2504859, Capitale Sociale: 10.000 EUR i.v., Cod. Fisc. e P.IVA 10100050961, Societa con Socio Unico
+
+
+
 
