@@ -1,144 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11BB606A889
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 09:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09166606A321
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 09:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Bbcq+flr
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lp8IreAf
 Received: by kanga.kvack.org (Postfix)
-	id 9EB3B6B062C; Fri, 13 Nov 2026 04:12:07 -0500 (EST)
+	id DEDEC6B05DB; Fri, 13 Nov 2026 04:18:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99C546B062F; Fri, 13 Nov 2026 04:12:07 -0500 (EST)
+	id D9E066B0644; Fri, 13 Nov 2026 04:18:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87BEA6B0632; Fri, 13 Nov 2026 04:12:07 -0500 (EST)
+	id C65E96B0646; Fri, 13 Nov 2026 04:18:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E8516B062C
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 04:12:07 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C4606A7E6F
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 09:12:06 +0000 (UTC)
-X-FDA: 85429529052.23.1DC8ABD
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 4E6E6100007
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 09:12:04 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Bbcq+flr;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf05.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 91EA96B05DB
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 04:18:02 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 19ED5C029D
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 09:18:02 +0000 (UTC)
+X-FDA: 85429544004.20.9CAC287
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 589A240003
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 09:18:00 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lp8IreAf;
+	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794561124;
-	b=i4b+zu/8IBhgmSBeVMcP3YHt4ptMQ37d3oi0M/gYntP92NQxHHgn5SCyxefofmd66FUoKK
-	Ksb+ytuYKJxTWwRvCQEQ12INEHH0q27f7Rw/Rnug7B4G9889snY1UH8peaQedNsXPkny5e
-	b3/p+TawkecNPVC3Fe9M2kAq4RWe2/8=
+	t=1794561480;
+	b=V1a9CLvj+1BOuDqptxn52ST+Ep+90k+VpsGLLjXTfF5yuj7k16ZRrSpuBY3kvwh7NQenv8
+	lgNdBE0WVN8tqMoPcva8vAzk1y9IGuixCrLJhtJ7QPOugxawS7T+znaADqDNEamElbP0mN
+	PZmihIrao8MmizyxPrRcK+RaGrjPMD4=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lp8IreAf;
+	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794561124;
+	s=arc-20220608; t=1794561480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l9qjP3EolVZNhFJ6yU6oKwddBCb6NF0vJywntTMZ9kE=;
-	b=LNZXFwSYJApJEjyDZyyvxEYy4G+ZFBJkMgTITbtTuLzaceGn4Zfgn4+BXJ31yuwOjqP3gR
-	mWHVpEknomzlEqO+Qz9Pu3x+1wB8WPArSbn7m4HxSOH/9X8BIdFjuXtTwg4NUJIZco0MCH
-	Bm3OBKeupjIPISzF1KEd3CR66bhu6GM=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Bbcq+flr;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf05.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794561123;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l9qjP3EolVZNhFJ6yU6oKwddBCb6NF0vJywntTMZ9kE=;
-	b=Bbcq+flrN8v/wCVVGVAvLeQHYqeHKGAKvnYn2qguXzBp3Y11tHYrehbqA7hrqEWLYmYbrs
-	Apvgyz+aHNgkFzXQSGg1f8nGbrsPSFLeLE/5lUlURaaFZ4825exN9Zg83Fic8FRjtdHuoo
-	0PepzX+FKVqKyn7WLblblOXgl6J96iQ=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-171-7DGfCYW3MzyEBaBT69o43Q-1; Fri, 13 Nov 2026 04:12:01 -0500
-X-MC-Unique: 7DGfCYW3MzyEBaBT69o43Q-1
-X-Mimecast-MFC-AGG-ID: 7DGfCYW3MzyEBaBT69o43Q_1794561120
-Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-3ad36e654f1so7373721fa.3
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 01:12:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794561120; x=1795165920;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=l9qjP3EolVZNhFJ6yU6oKwddBCb6NF0vJywntTMZ9kE=;
-        b=DSGv/4fgoNR61BvY6n90bRR42FORSarmUK+QqAe8VK6BEtpgYFSl129Fog5pvv6WCj
-         OS23+3hAXMIvtyn57pb6v7Cu4giyxdIEYciseV/BwC+VclbnooQ22RLgXtE5yiB8FtWl
-         pHXj9xLwqhrdhG5s4XPK3klPGqRtcEFp7ah2rTBHVrstekZ47XiiVY6WMITQZ7R2WA1G
-         Smk6KrfrSKUwiyW/35RNpuS1jcJ4XQj6VoXELVN2EQ08HGK92J/9aP+A1I/HUSRQx6J+
-         zMbw47Rr0gqzHw/W09v+nF9krNvPo8ty6/Jd8h/mVaHjTx9n7mbb1fxR/PCfGC2PIgEi
-         sBrg==
-X-Forwarded-Encrypted: i=1; AL+hErFGnuQeZfYolcdnoCwrFvst3qx8IbXOfE4eV/J6MoA3HnqY1p87eGMGglt0566iiTl71NVbU+GXxw==@kvack.org
-X-Gm-Message-State: APuU4Z/SjYzxOKdPr51Ph49UoSB8oKJdbv/MGso8KhGLW2qYdFiJu0iF
-	tu8QTNvVjvb8k7n3xKZNVtOWlJPy9MXv0Vz1hs8ERGlJBQ899FFzao5afe/PLlJ0dEYRsvVkXbk
-	qwSk7HzcyTW5pOtYuXeKVtrKHCB/4E1VLKXWTnku+2VHrNtshmkI=
-X-Gm-Gg: AYBFou15DdhhvW4+zokUkL5fN0RGItu8SSTjqXTJB0fN5D5f2mcT5ydA2x6TsLCPvoQ
-	BKqVUg0BzDbCM+xqWyAT4Z843TR1TS2HqXsC6H8RPf3t3g2NwrVb9GlO3uKLpN81/v8qvgLLfas
-	DX8p0mymD1FUx4cau2mhSFvZyNcH0vZBjLmkzmaST6G072Vuil/gv5shnRo6YWXpVD4CJtR0tcK
-	s+CVxknnnS6Vi9gTm1NZ9/yf3JBJMnL+ahTjdsWF7QVsetUqfEifgNwpeo95Gt0C0vtAHka2vK0
-	zvmzpCMlsW/bOL2SA2t5Pf8tM/Xa5eQLtOqAWN+WFyPavXkZ69/xiP/64r03g3RH5og85aiXGml
-	5XkJVpd/TpqMPclo5PS72PslPN+ARmeJ5ht0uZFcvO3psbc5RqT+P6oAwZzQDSRKIZZBfb40G4Z
-	AZjCv3
-X-Received: by 2002:a05:651c:a347:b0:3ad:f8cc:390 with SMTP id 38308e7fff4ca-3ae2b4bc3f1mr7065871fa.11.1794561120254;
-        Fri, 13 Nov 2026 01:12:00 -0800 (PST)
-X-Received: by 2002:a05:651c:a347:b0:3ad:f8cc:390 with SMTP id 38308e7fff4ca-3ae2b4bc3f1mr7065831fa.11.1794561119826;
-        Fri, 13 Nov 2026 01:11:59 -0800 (PST)
-Received: from [192.168.1.86] (89-27-86-246.bb.dnainternet.fi. [89.27.86.246])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3ae2b76a91fsm6490801fa.8.2026.11.13.01.11.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Nov 2026 01:11:58 -0800 (PST)
-Message-ID: <2ad4f730-0656-4b2e-8cbb-4aaae44de1cd@redhat.com>
-Date: Fri, 13 Nov 2026 11:11:57 +0200
+	bh=eStupLSXeWq6p5mACFQucqZl8B+vHFCM7s/qEMYl1DA=;
+	b=pnwSNoqCR5feBTeqkWIpgafltkZV33tFVx6nK3HG0kOQiv2sbK80fnqzI5CXUyPFRq1w3l
+	LXzzsKonfTaVVZ91zc9NPnPVPAHH8JjZNadGIdhGxqTB4+0IdcSIyYshaaxlexIIAMqHgk
+	Tru1ljkGLp7nV6Ufx4aL7QkN7YQ5yA8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id AB78D612F0;
+	Fri, 13 Nov 2026 09:17:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FA51F000C4;
+	Fri, 13 Nov 2026 09:17:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794561479;
+	bh=eStupLSXeWq6p5mACFQucqZl8B+vHFCM7s/qEMYl1DA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=lp8IreAfVoWjkixVIy9DCUXHkhoExRX0F1bbq7RlUuuTLL2eI+T7WMiDI5rw6sIv+
+	 Tm2Suo/+oDXFjmRwIiOnV02E4vaOWMUZ8wTK/EJAeUrdGwkD26bi30Vw8xnP/kIV98
+	 u7ddgT8/w0FqgbOAedwo4GGOSF4BjyPO/jdwIfbdfuaYHbCW2mLAR0Bv8XNN52x2dt
+	 RxgOs0ydh/zyJPL/0Pug88P7wSdbgFS3HkokHC8vobelXDq1P+NMXkg+e3grB/8qcc
+	 jEcjzrWoR30bVGhisVhMc6gHD9Yr99w1Sdg6Ylsj6TL0yP959LlIrHJl2PfcF12YSh
+	 RgyN/1I/zeC4g==
+Message-ID: <ba5dd85a-20a3-4f76-a929-4fc2df8fecf0@kernel.org>
+Date: Fri, 13 Nov 2026 10:17:54 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 00/12] migrate on fault for device pages
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>, linux-mm@kvack.org,
- dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, David Hildenbrand <david@kernel.org>,
- Leon Romanovsky <leonro@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@suse.cz>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>
-References: <20261103061629.972669-1-mpenttil@redhat.com>
- <avWpWBl1nPcRVmpQ@raptor> <79f33ab0-2e43-4efb-94d0-addaf40745ec@redhat.com>
- <avXoJSGh5xjGFgod@raptor> <20261112164752.GA3692174@nvidia.com>
- <ec4431f1-e70d-477c-b09a-eedc35d97691@redhat.com>
- <20261112162738.d689b46268e077ac06f41d91@linux-foundation.org>
-From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
-In-Reply-To: <20261112162738.d689b46268e077ac06f41d91@linux-foundation.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: vHqQz2jmlaDZLLRDFpqnxs3zDXibQVE733w6aU6Y1zw_1794561120
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH v3] mm/page_alloc: only skip kswapd nodes below their
+ kswapd watermark
 Content-Language: en-US
+To: Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Gregory Price <gourry@gourry.net>,
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ "Jose A . Perez de Azpillaga" <azpijr@gmail.com>,
+ Daniel Hodges <hodgesd@meta.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20261112214738.3002458-1-joshua.hahnjy@gmail.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20261112214738.3002458-1-joshua.hahnjy@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4E6E6100007
-X-Rspamd-Server: rspam12
-X-Stat-Signature: wafr7nikdsj46qa3fan3bk7t5dumijn7
-X-Rspam-User:
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794561124-314243
-X-HE-Meta: U2FsdGVkX19RN6Bod1DFHBrD3WsP4tlkhJyxqfq8AvzKE6jBoJmWztVwxvdYwF/qxuWvHPAgR62teZuy8trF7+G92LXh4zlsOh1mrBAdL7hah5jh9RwD73WxXt3of86LQqPl0KIdPrbe0YblzOXW0EF7BA2EU9wL18Zwue2B1RawnR2a9Wem5CdG4eNnz5ormzlqSVFP84IzOxluPutGBwhH5o/bDCDYsbv6uuK4m9NknY7Gt7VutiqT3fjF+PwARfkW1Fwm8OZuSYfd0wKprIr6X9s3yQXNxG5WKPybkA1Fe+8laO2zH1vNyGxwHqdsnaa4PbdozHDTj9UcR/ZV7Jd9645DD1TA9JD6tO8/0DPW5b6yPNV5AQmCUmWfznTlA+2VEvflmwYqJO6y+iV9+sEAW0A3yUT5Boas1BAMh9A4HK33OYyWM3zS799qzwfV3VQ4G1sggs3uJ0PpDsd52UF4H6fEtFIkuCRVbUfCUk384XMZKtRmAY40YyTa/fRHfMGScPK0hd3574GMgTr8PLOwzZ0qMMrsePCFkmzJK4lZ1DTtxUgg+qOnWnIOe4GPzs8VWKZ935nt87EngxN5P59WJEeP6oe0gNRnJ82O+fm/z+hqTxvCQ0ySl7rH7mRRNys29yvrdSTv66VhJWUWg7LJJE2hTMczGneAIIg6D5FDWscjT+SyzojbxcX6EFcD3V/YO76KsvOWDZG0hPEtvlO/PLl0VW8PdRm0JEtN7kqhgnROkyTQabKi7VOi3UvDBroHJ61eTlC8V8iekJ9QxFu80TMP8d3CaLY6Ue/9n2JvJ7fUF0AO6L7tbrMmo7Sj5HwSx3danLeoGoDmf/90m0vV2lkr9f3J6X+wcvLRAHQT0jpeFvTRYsA9z19oOCMmfgNV3yDndPRdEfxvhHgkcDKme0cmR2VCBX8wwu2PGO5xoAIUGAwqlqvBpviptVn89B9kfc4P5BWnYEsjym/
- /S5sKZJk
- zYPwWDpbcGmrsrRGs4gkt9SJsjZD0joZxO7XTmEwTac6SDkOE6Er5+7P7V+A9xGzTBazRQaNx1NcYI+Hc19T66g6UaNfmbBh9Tvw6uFWzosRxA01F2LXEP5Cn6sUyGUkE1OQbJWJoncYXJg8MvuQWTb5Dt7oY3gN78M+Yv9rWWgS3/PiPgmDXkiDyEXTCovlOhU9sLCc/k6zUgw7rLKxo52YKEfhV8hPOCgWB/H4kXLJnmCWOJWYZm1nnBYAzlDJLRn2e52Hn9vZZtE/szlXIO9JtfOJ8zU7R0tHWTqDpK+VNtID7df2O0nC2BinCseiCKjFc+sSSgnvRFFT1OD3ne55V9IGzeqCBSM8iZIMRwCEgwv2wvF5fKnw1kIUP3UmsLquwtREs0UYFrCvi0MbnmJyVzDXEZuQOD/vN4RQHQU3+ayXnsTb2aksNeGjvmB9b1yKC5HcUUnYYDGvY5ECTrb6YTS0N37VAGCwZ9DO8DQR7S0XOtKDRvituDSIYVyhPvdnh1wNq3Mf5P//MY4+fCuoMgTUsOwJAMh3D2JDzLjFlEw36qtttZwPwuog1wUuQ1/7R
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 589A240003
+X-Stat-Signature: c9eyotgjz87qo3fs314qdei8gnsqfnky
+X-Rspam-User: 
+X-HE-Tag: 1794561480-534918
+X-HE-Meta: U2FsdGVkX19FpOFVdxTeVlTIyPuM7vyU+i4kigM/FQWaOx3PXcqhvaI+SUtdvw+ccVyt0UGYzlEq0aFqkuY0s+1wt+eQ6jV+DB+dLLdBMe2QIO8iQp9aAgHgsoVT8geiPmSVNEBx6M0U6ZvbxpwKOL3IoypqJlltZypnmU4QzgAPtvQAyW7tn/XpDL+8nyZKreYN1gMV6iPzAEs9Wu3gBhqaZVV189r+0kT48yKTvcVS+wB+TSdRh4/g5ufuleHRtwWpUvMKZJmutSZIwWDyLkXkrYLUYVapvhpdoorRJX+aUleUpukGblaDee7Wgc689Lqo0x5hOwH08FtemZp8v+LShOCFcC4BZ3yVDH06OxqcVmubdLuMHR2ud5yxPTM1iKI9AwU1vGR3xALzkoNn3B/yj5jeYPddNSPfU2OCDIIoCTxoa4A3uIeBSeWZ7iXqhVROBxMhha8o5mCGCYNX6Ifo/VYg3ubJR3htPF42a7BiaWYJ5hz4vQFa07ZgkoNNeKRAfYu730yNkHPv1fcPONZ+fAaOgpcyY8MFmN8hvAasK+7wzon+KHpJZNz6D7/FppTPTLUWpvKC1X10+AighB95t1o2tlTTdIr18UgIVXTCFKIAnyE8/nN7oT5DZFPXqdOLKVry4mFrOlGrhKJA2BBOOYpphkkr5DDKbxSAfqODJXuiQsrTiZKIUlBdIApgmZ8ns8SQiH30OXpq7DvLmWo4ClqEuEiluZx7yCX83sR4xnDdHsL2qwajKfy89i02rTF+F7FJLQobuWBEgiQRRCwtOnF1TRsXEO0UqLchcttgVIvOLz+2iNpw+Ki0TVNuvsvvmYvku+d8gRxSatDuWhmekrnGDTQDsMRZn3SXnb2LmQz7M+WyRE7baRjkosvSoKbl/lARobyhr5oPJFXk/X0z2g5rLLPx1IOtwQ03KoA8UF5u9VR1t2vvw6n/e4p2ZtUuqoQLF5sAaL6DOps
+ N10sQtDU
+ xdN//TF+51gzh+IXsXFcVENYjW0OxnRdGNyBDuJVHEN0JknV4BQDE6ZVWgXaY5tVlU1S9aKKxRjoD49E0n3fFB+3izactivbDl2ynseNFJji4uj9qXUNMQDOgpRdHbIAwvDzzLhufgmrDzcCIs2PB63+JFwfmIrXxEdAebAUyyH4nS8A6NZmH+Bec+hq0BCqwmQWMW5sbvD+xOTc7Qc8DTWQPESg6iMAmq73LwY4CiEALRVvjRmGS7vs4+P9VNIPnsuz1Z2GTemp2OskEdtuNIWW7CDjWGsNcf9MeC0Ve6P4J+3TJLWCD/LasGkAUmYSYQmzt2l9g/1/ZoLDnp+oH9SV7j7RAVcIEjUXngk/H69hSAaoq7A0QVvkmdkJNe0PXHoI6Q7MYBQ7wEkWRNb9M1Q3sCjroiTExnc4ZylTEHbf5S90ThBLVqF8/K3wQcbUfao7baY22sNzLhE8hJjiWOCMptq1Wh+dMiUnoZp6uL1euRPCaUV4MVuZVwEmkB6qvzwwf0t+SBuXCigUnQKCCsDCPaJZfu1rqUmoXGAMjsfOXCKr9WzBWnNZJMKQUHwU2M0H5H7BJDdxLwUuJS2LI7HAS/twfx1MHgt1wYfWxWIdNMFyLp6yeX3cEMUO7Bpi2QXCS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,92 +142,113 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/13/26 02:27, Andrew Morton wrote:
+On 11/12/26 22:47, Joshua Hahn wrote:
+> Commit 19c5fb83f2a4 ("mm: page_alloc: avoid kswapd thrashing due to
+> NUMA restrictions") makes get_page_from_freelist() skip any node with
+> kswapd running to avoid piling on already-pressured nodes.
+> 
+> This assumes that kswapd was woken to create free space, although kswapd
+> can be woken up for other reasons, like higher order allocation
+> failures. Thus, fragmented nodes with failed high order allocations will
+> always wake up kswapd and direct order-0 allocations to the fallback
+> path, even when there is free space.
+> 
+> This behavior was observed on 2-NUMA Meta production workloads where
+> faults would pile on already pressured remote nodes while stranding
+> memory on the relatively empty local node, causing unnecessary pressure.
+> 
+> Only skip nodes with kswapd running if the node is under the relevant
+> low-memory watermark.
+> 
+> On a 2-NUMA VM with a 60G node0 and a 20G node1, with THP enabled=always
+> and defrag=defer, I ran a process that prefers allocating on node0.
+> With a fragmented node0:
+> - Before the patch, 66% of faults were served from node0
+> - After the patch, 100% of faults were served from node0
+> 
+> Fixes: 19c5fb83f2a4 ("mm: page_alloc: avoid kswapd thrashing due to NUMA restrictions")
+> Suggested-by: Daniel Hodges <hodgesd@meta.com>
+> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+> Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Acked-by: Gregory Price (Meta) <gourry@gourry.net>
+> Acked-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> ---
+> v2 --> v3:
+> - Shortening cover letter, suggested by Gregory and Johannes
+> - Collect signatures
+> 
+> v1 --> v2:
+> - Added a Fixes tag and separated this from the other cleanup patches
+> - Check zone_watermark_fast with no flag to match the call in
+>   pgdat_balanced().
+> - Calculates mark outside the zone_watermark_fast check to match the
+>   style for the other zone checks.
+> - Wordsmithing commit message to explain the unaddressed gap.
+> - Yes, this is ugly. I have another series to clean this code up but
+>   I wanted this to be a feature-minimal patch so that it could be
+>   easily backported. Things will be much prettier once those are landed.
 
-> On Thu, 12 Nov 2026 19:01:58 +0200 Mika Penttilä <mpenttil@redhat.com> wrote:
->
->> On 11/12/26 18:47, Jason Gunthorpe wrote:
->>> On Thu, Nov 12, 2026 at 04:24:05PM +0000, Alexandru Elisei wrote:
->>>> Hi Mika,
->>>>
->>>> On Thu, Nov 12, 2026 at 04:00:09PM +0200, Mika Penttilä wrote:
->>>>> Hi Alexandru!
->>>>>
->>>>> On 11/12/26 13:56, Alexandru Elisei wrote:
->>>>>> Hi Mika,
->>>>>>
->>>>>> I want to help getting this series merged, and I've been familiarizing myself
->>>>>> with hmm and device migration, please bare with me if the questions I'm asking
->>>>>> are obvious or downright silly.
->>>>> Thanks for the interest and willing to help! I am preparing a v18 of the
->>>>> series and plan to post it early next week.
->>>> The series is big, and as far as I can tell the MM people are hard at work
->>>> reviewing bug fixes. It might be better to wait a while, to give people a
->>>> chance to have a look? I know that if I see a series being reposted often,
->>>> I am less inclined to review the patches since probably a new iteration
->>>> will be posted soon. But I can only speak for myself, you know best.
->>> It is at v17 and it is still getting high severity sashiko errors
->> v14 was first that sashiko managed to review. There was a regression in
->> last posting, but also false potsitives, and sashiko reports same issue
->> then 3-4 times, so the reality is not that bad. 
-> Pining for the days when all we had to deal with was checkpatch.  
+Easily backported, but there's no Cc stable. So I'm adding it as it seems
+useful enough for LTS kernels. But at the same time not urgent for rcX hotfix.
 
-Yeah.. running sashiko locally now. Interesting enough, refactoring the
-series (end result being the same) made most of the "high errors" disappear.
+Applied to page_alloc/for-next, thanks.
 
-
-> Mika, afaict the entire patchset is a performance optimization, yet you
-> say "I don't have a benchmark showing a gain".
-
-No not a performance optimization as is, in the latest cover I explain it:
-
-"The main goal of this patchset is to provide a new feature,
-migrate efficiently on fault, and not directly improve performance
-of current migrate_vma_setup() (which is now routed thru
-hmm_range_fault()) callers."
-
-The "efficiently" is wrong word, I should say "in one walk".  In the
-beginning of the cover, I explain the benefits of having one walk. Also,
-I think it is sensible to have one implementation for it in HMM, instead
-of each driver trying to do something similar.
-
-We don't currently have in kernel the capability to do migrate on fault
-in one walk, so I can't show a performance gain with a simple apples to
-apples test.
-
-Also :
-
-"the selftests show that there is at least no regression for
-current migrate_vma_setup() callers."
-
-So the test is to show there is no regression still for current callers
-(X86-64), not to show if there would be gains.
-
->
-> Recipients look at patchsets wondering "why should I spend time on
-> this", especially in these times.  It's best to answer this question
-> right there in the first sentence of the [0/N].  That means numbers,
-> and the better they are, the more attention the patchset will get.
->
->>  Documentation/mm/hmm.rst               |   45 +
->>  drivers/gpu/drm/nouveau/nouveau_dmem.c |  402 ++++++++-
->>  drivers/gpu/drm/nouveau/nouveau_dmem.h |   12 +
->>  drivers/gpu/drm/nouveau/nouveau_svm.c  |  155 ++--
->>  drivers/gpu/drm/nouveau/nouveau_svm.h  |    5 +
->>  include/linux/hmm.h                    |   51 +-
->>  include/linux/migrate.h                |   59 +-
->>  lib/test_hmm.c                         |  174 +++-
->>  lib/test_hmm_uapi.h                    |   21 +-
->>  mm/Kconfig                             |    1 +
->>  mm/hmm.c                               | 1075 ++++++++++++++++++++++--
->>  mm/migrate_device.c                    |  618 +++-----------
->>  tools/testing/selftests/mm/hmm-tests.c |   56 ++
->>  13 files changed, 1984 insertions(+), 690 deletions(-)
-> also, yikes!
-
-Yeah, the nouveau made the numbers bigger - but we have a real user!
-
---Mika
-
+> 
+>  mm/page_alloc.c | 23 ++++++++++++++++-------
+>  1 file changed, 16 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 8532af052d74b..56121c3f9c4a7 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -45,6 +45,7 @@
+>  #include <linux/mmu_notifier.h>
+>  #include <linux/migrate.h>
+>  #include <linux/sched/mm.h>
+> +#include <linux/sched/sysctl.h>
+>  #include <linux/page_owner.h>
+>  #include <linux/page_table_check.h>
+>  #include <linux/memcontrol.h>
+> @@ -3799,6 +3800,9 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+>  	struct zoneref *z;
+>  	struct zone *zone;
+>  	struct pglist_data *last_pgdat = NULL;
+> +	enum zone_watermarks kswapd_watermark =
+> +		sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING ?
+> +		WMARK_PROMO : WMARK_HIGH;
+>  	bool last_pgdat_dirty_ok = false;
+>  	bool no_fallback;
+>  	bool skip_kswapd_nodes = nr_online_nodes > 1;
+> @@ -3866,16 +3870,21 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+>  		}
+>  
+>  		/*
+> -		 * If kswapd is already active on a node, keep looking
+> -		 * for other nodes that might be idle. This can happen
+> -		 * if another process has NUMA bindings and is causing
+> -		 * kswapd wakeups on only some nodes. Avoid accidental
+> -		 * "node_reclaim_mode"-like behavior in this case.
+> +		 * If kswapd is already active on a node and the zone is below
+> +		 * its kswapd watermark for this request, keep looking for
+> +		 * other nodes that might be idle. This can happen if another
+> +		 * process has NUMA bindings and is causing kswapd wakeups on
+> +		 * only some nodes. Avoid accidental "node_reclaim_mode"-like
+> +		 * behavior in this case.
+>  		 */
+>  		if (skip_kswapd_nodes &&
+>  		    !waitqueue_active(&zone->zone_pgdat->kswapd_wait)) {
+> -			skipped_kswapd_nodes = true;
+> -			continue;
+> +			mark = wmark_pages(zone, kswapd_watermark);
+> +			if (!zone_watermark_fast(zone, order, mark,
+> +					ac->highest_zoneidx, 0, gfp_mask)) {
+> +				skipped_kswapd_nodes = true;
+> +				continue;
+> +			}
+>  		}
+>  
+>  		cond_accept_memory(zone, order, alloc_flags);
 
 
