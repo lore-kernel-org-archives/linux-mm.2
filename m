@@ -1,95 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE266606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 02:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70992606A327
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 02:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=gfsdFogV
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R2O5BE9R
 Received: by kanga.kvack.org (Postfix)
-	id AC8FF6B0632; Thu, 12 Nov 2026 21:32:22 -0500 (EST)
+	id 7E6286B0636; Thu, 12 Nov 2026 21:33:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A79DB6B0638; Thu, 12 Nov 2026 21:32:22 -0500 (EST)
+	id 796646B0643; Thu, 12 Nov 2026 21:33:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 990246B0642; Thu, 12 Nov 2026 21:32:22 -0500 (EST)
+	id 6D3B76B0644; Thu, 12 Nov 2026 21:33:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 751706B0632
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:32:22 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1796F401E9
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:32:22 +0000 (UTC)
-X-FDA: 85428521724.21.745D6A7
-Received: from mta1.migadu.com (out-107.mta1.migadu.com [95.215.58.107])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5085520008
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:32:18 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gfsdFogV;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.107 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794537140;
-	b=IaWacY1U5vYH1ErqiN3BfrgtntdLcy2PlYOCMsIHNmKJJCwS9BBuCzABc8ItqIjRG2OSoE
-	2vuiMi7LWvJlpjNTOxpaXnVZX0L3uOiwIzZLlzoMquO0n7KWURLXVg8ZqoIUMQQ6cueGJ8
-	tQ5sk7ckChIC3dUTbmIWjUDM3pn/KNc=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AF3F6B0636
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:33:53 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CF4898010B
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:33:52 +0000 (UTC)
+X-FDA: 85428525504.14.3EAA814
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 39DB740006
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:33:51 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R2O5BE9R;
+	spf=pass (imf04.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794537140;
+	s=arc-20220608; t=1794537231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lbpLTpOGMpA+HgcOkuaLW9mLJLwh3XI+GukCg+jrEFM=;
-	b=miNM6Sv3yadnWSZgYoHl1CZ6cprMMApioqRYRDcZwl/EskmSgw6Vf+0gjEH/m1tYOaFKPL
-	fPtPuo60yIsjRdSdf6Rw3x6sRGiiQoQ1tgdwD6Vj8o30rJ5mnlrneT0fmesHgqxCUs4zK7
-	sPPgQbLVAjWzpPHuCq+bg3yIB+8/rTI=
+	bh=vo3EuFGzZ8sMiniz968ZKrMVFQcbEM5I9uSXgOOhJ8w=;
+	b=1O2fDK2wIgwSpFShPYIClynrzPSObdNCMXPCXRlZcHqxiyZju8la3KTNDu1wXv/hLB6wyE
+	HIZkwkjy0Gx0lQ/KM75B2OAXX2myfQVSMLRNmJ+BqwU621PSsfVboSi+3RVce0LRpMCEO5
+	tRGU/8P1UP2uW1T8Ej7oCqC41wC5wiI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794537231;
+	b=WN8ODFbps+f0Gp+dM7hSmwgyMITLKJaeVOV7DoNijh1eEHKy98NMhFMr7P5V99830m/Tbz
+	6QH0hZ9AhsOauVX+QXr7mTbNoaH+gb1RypNlOy5A5RN2NRD7eJqZOFyhP38rtYdwRNBfkG
+	fJWZZCAPqKYUTWps7/lXLB94jNshXc8=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gfsdFogV;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.107 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=rPYNFO6YVUN4UZ9ePQsjHDKAQ5JmLGEIdbmrTTalDLg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794537133; v=1; x=1795141933;
- b=gfsdFogVEW4Zflj3Q2WrLFOcUfh9cxOqpK21xmbi3TyuovSp4b40nuUQyrxbpUrxs+bhPWMD
- rjQ/y9uM0/wVszDfyL6CFaK7OtbQQS8GEmIwVwFXqEO0N6J65TSU3btXekNOs11CndaTtnZ7Y9W
- oQLdbD0NMIghJrjwYVhjpKOY=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 92e45a4d795c9232;
-	Fri, 13 Nov 2026 02:32:13 +0000
-X-Mizu-Trace-ID: 92e45a4d795c9232
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <1cd3c151-24c2-4fec-8356-99853f8d6971@linux.dev>
-Date: Fri, 13 Nov 2026 10:30:46 +0800
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R2O5BE9R;
+	spf=pass (imf04.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 908D86252E;
+	Fri, 13 Nov 2026 02:33:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68ECF1F000C4;
+	Fri, 13 Nov 2026 02:33:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794537230;
+	bh=vo3EuFGzZ8sMiniz968ZKrMVFQcbEM5I9uSXgOOhJ8w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=R2O5BE9RfQz3R4GwH6pbaOg77FwMYCfskeCy28RtNXXRKID45E5znoskpMUyVkN1r
+	 IOVkVJ2Bw0NqyvNixVYmsqRUNDOZLRjH/7i6c+Oj4JoXO3kFXX2uFeadT3lgojfsBc
+	 0dngUo6lzDCUjknWmHmkeVzAquODA2lz9/z9AhUCwcmAm8J1e7QhR4XEnoVagxxRFD
+	 3sdHOUb3CUiXreG+qY5h0jE5I9WNYCUlfMK3DBDNkvy4wcKXooraF8L5AmEOqvkS1f
+	 3HuYQhJymnw9o9k+1dtZVYfxrxfu7qnhQOlvtOjIdBWgyTttu3SKHBRJlAg/NCQiSQ
+	 8/ZrS6jvxNTtA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	dipietro.salvatore@gmail.com,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	linux-mm@kvack.org,
+	Salvatore Dipietro <dipiets@amazon.it>
+Subject: Re: [STABLE 7.3.y] 0e05a469c294 ("mm/page_alloc: avoid direct reclaim and compaction for costly __GFP_NORETRY allocations")
+Date: Thu, 12 Nov 2026 21:33:29 -0500
+Message-ID: <daily-reply-2026-11-12-1484516151@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261112094205.994560-1-dipiets@amazon.it>
+References: <20261112094205.994560-1-dipiets@amazon.it>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/3] mm: hugetlb: fix GFP mask propagation to CMA
-To: Kefeng Wang <wangkefeng.wang@huawei.com>, muchun.song@linux.dev,
- osalvador@suse.de, david@kernel.org, akpm@linux-foundation.org,
- azpijr@gmail.com, lance.yang@linux.dev, Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org,
- "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-References: <cover.1794379433.git.zhengqi.arch@bytedance.com>
- <1c5e8c4ae230dc238a16f2f42d65bffac6244ad3.1794379434.git.zhengqi.arch@bytedance.com>
- <7def88b4-cba5-4e8b-9e68-6069c492b582@huawei.com>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <7def88b4-cba5-4e8b-9e68-6069c492b582@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5085520008
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 9qj9q7w67zf54gsnd6w1wtqojsnrzt57
-X-Rspam-User:
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794537138-212700
-X-HE-Meta: U2FsdGVkX19C8cGIHnxlpeWOLTa2cEpogKwIj3vEF/m2HrsKgQIvncPP3OEindjspC7mlvBiCXQ/sMGzv9mExFfCQpjBX+sfU5rOY5BLbkDi+vB63xZk2mR5BjPoNadsBxMQlGpH8s3YM8Bp4R0+zIR2znNuQiJxp0ltvTf4JyFBgCcCWZnBgROsnPqQssHHHiLRcf96hRyGvDGOBTysEyBPBo28c6ARdTc3ixkodfIbjWhHy69PNrH5w0xxC5C4rXlAJGFtYMB8MTwAqVSsGgz/KWJ8nk8etE8IgxI/o5zFDCSl0rXd0n+DHpZTUwCTmBvVL087hnmvcfBCWf47BdtkJqfVDDfDQf37Ryl8UsqVVXDWrjbegezAa+jWwpPQR/LWCtaCkV7aKh1Uy1sFn/ahMBACrmsB4sNkR15xBRKtCOct1NcXjKfjNMHl159gLYLdOJRxMkgxnr7ehvr5yL7kjfeZi09wwc92PiiQnC2ka1GEEczPdQRrtxack/51oI7JzKzyoxlv56vIVQJ6OJ6n24zsNGjqknGdUAlu4WhdIdJbmLuelYVhihLLDDkO+IUH1SclLvlgSaYQC0goJ9+1N7WUO3qnTc2FOMLhdQMTWQjTNEnDVrUG7c82tW/7Ir0kp+8MJzMBlZ0llZLcY0Dk015AxOgjzh7Xte5rqB9KjjZKBJm4w8IOAisT00e+/x91I9DhFJim2rnFiXfX6SSBShmk0otfAQ7w3uBK9V3FmNxJ9akTvQXA0YH1Pl3BKM8LkqahvCc4Jckp5u7UFQ//msYnQTSyIW/6POGJJ28ulNRZdR6niexglD+TGhF3TwORlUcQRkv9Wivr7BZwYD9VkFICplRLrzCnvAR/OcgKEtct7/OGyv/NimNkWZup1PEMmRTqpCYQvPp6lNezdosHJ/r0kaZIJj0fsph6/dLgLact5/zCfYkU/2nrWgXsPGDwQRgFszbTwHzLp9a
- 5ghNrWXP
- SkuQr9QZ5+C5gPmeDnwWfZjqeVZkZNiZ3FjW7gzI5vKCvoRyFcN5i8bUdzI/LofLcOMxq/9jmOD2cB5bvbul2k8fjW3xn90hyDMetpBe8QwjFLugdNrM/pdalQcwBALuqOrdlBROk4+NsTZaAVu5O5E51M1FLBiw11ZxhSxzGV76STRMAedrsJQgJMHfHIPxE5NsMlFSBDJ/OB+YTH5M0n2XCDC0GTW6BtKvKvGZvX5PauWzmdohvmD6G6Q1lxMjTlTcfXgymowcFSw2iv0KVXuaRw7rW3/eFIb5DPYhGtskQrPvJ3jx8PZzrGjp3g+P6dFWsuiyoVKXxmDpAbZAoPF4J7JN8W5oe0btfSDulXDCUAAGUWq4XRN14srHndyD+RrK+QpI+kkw1vK21uygaRMneTJ51qO+Lz9KxOkgKheHO+WZCKvYjdBonoyFGkSTuMqrKM4IVHky3n1cnM6ccwiQi488vN/BqwFvtY5/pseT/ITwLRgyPWcHtzdbmB61ooMihM0QtKXiN1W0hmeMTSP7VU6b0GC+Wv2tZRxrRh2yzqgL4HZMSOm42b5mAUisAzi6sJAuW8pNYuJg=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 39DB740006
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: 9or9ndkaggbtu85a9s58ht3eq7r4dcyh
+X-Rspam-User: 
+X-HE-Tag: 1794537231-510257
+X-HE-Meta: U2FsdGVkX1/Hr8aSAo/nXS897eFWzblNr3c5bdd7NLRzoq77nshUeapEePbIaQPPB2bVkTWMHPgpTxZY7HsWu13ayuG7+7vh8k1IlXkk3NNs0ihfnEWyzxJvrseA7wjSklJswXKO/zF9BbyEExXn+JzRs2Z6A7GKLzlXZVnEzleH/3XwknZCcVH/sdsh20kPEiSf8/CmJRlRPVDCRpfDeuMbHK+OTFSNYQPfewPW+i3+LltowLJ7lG6vJy/OZsNPxpkWy/hqWti73IIjE8Pg9ZYf9x3bh3RnzF6fbUIaS9eurfa06iK2AFGmMmDyusckkpGL/aa15V7pjIQp6w8PaPGiuBSyaOZ7PUM3Uubd/SPbfbuSWa581HXL3Cj6YV6K4tP0xeyQW5MFhzchuSP8tFAN+vurDstFeSI279T5YR/hJ4IoefOiNkDyze3FV70DfYRSJsjQhsnYvgTx9dd7BSe9/KqawpUvvxqON+VPz0bla1lmf7Y2qk4zTECjzXtV4szGai6wnzV/O6pRdYTaYgSpoxu5evntGypvdQQ4u5hud31FQP3GyXugiP/U3ntbFDdekB8NkdYRGFW/pL0qz7WRF2Y6KSaGmkDtKsPD03fuUODacqvHb/UJLelQ4NJ13M9aYLNu8SE1XjB8UYhCXsoC0/JtIvplAD61eMCVpVziliKTPoiO0i/a8ktjEv57B55Q3VD23DOeUnjO18Lz7EqXGtBoeJnq71gFeISfA2DCLhkWNHmbSJQignDuUDYGhyDMtMhXpUg8tqFmqb4PJRlQ/wdq8JdYeeuyJ7iEQzInOikx1CwTiEHeqoPQpmYx5LT1VRQS5aYNiHGMpF7ZSTmxvhJ/5+eoxEvDHjb7//sbC9zPaEYB/NNp9LBLFF6Gw34VO/dRWshWn8rrmM4rhEzjQdPvCdBbRJz0w5Xup9XP8IKFI8qkXqL0CVGQBrfx9mzsdU+YBi0g52D1Bp+
+ 98BhBtUs
+ tzOc4efRwPAyDOVyEXgKGnjAKZSiLOvvd1p+nayAKatbkubbAGhqSJ8JmSx+67ByuxpXZgtGeMCP17xuenIjhABx1t8qD6X6TJ7bfrlzTfW6+bq8VCK0zGYAHtZ2DTq8tgYAFeH2E/8Jg63e567C6h6UpCBWFnkGfqrL53DKcLBY0YEHdOibk9itXuiR5qKjp3FHRkIZS+XGTUtqNrn6G2OsneqUNRkDsmQ+Gdyj295pDRyA7aMy0MKrHsNxCSzbLyVB+Pd9O8A/fupn53rxLhfNHLTus6TQgmAIBm21RoK6pih/sjvdIKowCkEEgnhapBuSewlMJWlIhSRg57FoDLpRLLRtgEylRADHeCcFqkK/Hg0M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,128 +98,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On 2026-11-12, Salvatore Dipietro wrote:
+> [STABLE 7.3.y] 0e05a469c294 ("mm/page_alloc: avoid direct reclaim and compaction for costly __GFP_NORETRY allocations")
+> Hi,
+> Please apply to 7.3.y:
+>   0e05a469c294 ("mm/page_alloc: avoid direct reclaim and compaction for costly __GFP_NORETRY allocations")
+
+Queued for 7.3, thanks.
 
 
-On 11/12/26 7:27 PM, Kefeng Wang wrote:
-> 
-> 
-> On 11/11/2026 2:46 PM, Qi Zheng wrote:
->> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>
->> cma_alloc_frozen_compound() uses GFP_KERNEL, allowing direct reclaim
->> during the first MPOL_PREFERRED_MANY allocation attempt even though
->> the caller clears __GFP_DIRECT_RECLAIM.
-> 
-> MPOL_PREFERRED_MANY is only used for the partner allocator. Without your
-
-It's doesn't seem so.
-
-Gigantic surplus allocations already use MPOL_PREFERRED_MANY, following
-eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic hugepages"),
-which predates 9bda131c6093.
-
-alloc_buddy_hugetlb_folio
---> MPOL_PREFERRED_MANY
-     --> gfp_t gfp = gfp_mask & ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL);
-         folio = alloc_surplus_hugetlb_folio(h, gfp, mpoli->nid, nodemask);
-         --> alloc_fresh_hugetlb_folio
-             --> only_alloc_fresh_hugetlb_folio
-                 --> alloc_gigantic_frozen_folio
-                     --> hugetlb_cma_alloc_frozen_folio
-                         --> cma_alloc_frozen_compound
-
-Before 9bda131c6093, cma_alloc_folio() forwarded the caller's GFP mask.
-The conversion to cma_alloc_frozen_compound() replaced it with
-GFP_KERNEL, re-enabling direct reclaim during the preferred-node
-attempt.
-
-Right?
-
+-- 
 Thanks,
-Qi
-
-> patches "mm: hugetlb: add CMA support for PMD-sized pages,"
-> cma_alloc_frozen_compound() is only used for huge page allocations. In
-> this case, I think we don't need the gfp flag, which is why I hardcoded
-> it, so there's no need for the Fixes tag; this patch should be part of
-> your new feature. Maybe I missed something?
-> 
->>
->> Pass the caller's GFP mask through the helper so CMA respects its
->> reclaim constraints when trying the preferred nodes.
->>
->> Fixes: 9bda131c6093 ("mm: cma: add cma_alloc_frozen{_compound}()")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> Acked-by: Muchun Song <muchun.song@linux.dev>
->> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
->> Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
->> ---
->>   include/linux/cma.h |  2 +-
->>   mm/cma.c            | 10 ++++++++--
->>   mm/hugetlb_cma.c    |  4 ++--
->>   3 files changed, 11 insertions(+), 5 deletions(-)
->>
->> diff --git a/include/linux/cma.h b/include/linux/cma.h
->> index 8555d38a97b1a..4539ea5f2c4e8 100644
->> --- a/include/linux/cma.h
->> +++ b/include/linux/cma.h
->> @@ -53,7 +53,7 @@ extern bool cma_release(struct cma *cma, const 
->> struct page *pages, unsigned long
->>   struct page *cma_alloc_frozen(struct cma *cma, unsigned long count,
->>           unsigned int align, bool no_warn);
->> -struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int 
->> order);
->> +struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int 
->> order, gfp_t gfp);
->>   bool cma_release_frozen(struct cma *cma, const struct page *pages,
->>           unsigned long count);
->> diff --git a/mm/cma.c b/mm/cma.c
->> index 9ec1d1fd5dff5..a7c47c0e7d070 100644
->> --- a/mm/cma.c
->> +++ b/mm/cma.c
->> @@ -933,9 +933,15 @@ struct page *cma_alloc_frozen(struct cma *cma, 
->> unsigned long count,
->>       return __cma_alloc_frozen(cma, count, align, gfp);
->>   }
->> -struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int 
->> order)
->> +struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int 
->> order, gfp_t gfp)
->>   {
->> -    gfp_t gfp = GFP_KERNEL | __GFP_COMP | __GFP_NOWARN;
->> +    /*
->> +     * The only caller of cma_alloc_frozen_compound() is hugetlb, and
->> +     * hugetlb constructs its gfp mask via htlb_alloc_mask(), which 
->> already
->> +     * sets __GFP_COMP. Check here for usecases bypassing 
->> htlb_alloc_mask().
->> +     */
->> +    if (WARN_ON_ONCE(!(gfp & __GFP_COMP)))
->> +        return NULL;
->>       return __cma_alloc_frozen(cma, 1 << order, order, gfp);
->>   }
->> diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
->> index cd6a64986278a..3e5a30571524a 100644
->> --- a/mm/hugetlb_cma.c
->> +++ b/mm/hugetlb_cma.c
->> @@ -69,14 +69,14 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int 
->> order, gfp_t gfp_mask,
->>       }
->>       if (hugetlb_cma[nid] && node_isset(nid, *nmask))
->> -        page = cma_alloc_frozen_compound(hugetlb_cma[nid], order);
->> +        page = cma_alloc_frozen_compound(hugetlb_cma[nid], order, 
->> gfp_mask);
->>       if (!page && !(gfp_mask & __GFP_THISNODE)) {
->>           for_each_node_mask(node, *nmask) {
->>               if (node == nid || !hugetlb_cma[node])
->>                   continue;
->> -            page = cma_alloc_frozen_compound(hugetlb_cma[node], order);
->> +            page = cma_alloc_frozen_compound(hugetlb_cma[node], 
->> order, gfp_mask);
->>               if (page)
->>                   break;
->>           }
-> 
-
+Sasha
 
