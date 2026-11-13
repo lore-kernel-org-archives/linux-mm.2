@@ -1,100 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C7D606CB13
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 08:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C53606CB33
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 08:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=TeNSsJ6o
+	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=PZiWq43m
 Received: by kanga.kvack.org (Postfix)
-	id 866806B061F; Fri, 13 Nov 2026 03:51:32 -0500 (EST)
+	id 420866B0623; Fri, 13 Nov 2026 03:51:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 818B76B0622; Fri, 13 Nov 2026 03:51:32 -0500 (EST)
+	id 3F7DA6B0625; Fri, 13 Nov 2026 03:51:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75A5C6B061F; Fri, 13 Nov 2026 03:51:32 -0500 (EST)
+	id 30E6D6B0626; Fri, 13 Nov 2026 03:51:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5655F6B061F
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:51:32 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DB94DA2D9E
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:51:31 +0000 (UTC)
-X-FDA: 85429477182.09.ABD1466
-Received: from mail-pj2-f10.google.com (mail-pj2-f10.google.com [74.125.227.138])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 11E5E1A0002
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:51:29 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=TeNSsJ6o;
-	spf=pass (imf19.hostedemail.com: domain of chris@chrisdown.name designates 74.125.227.138 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794559890;
-	b=6rTX1T9ctkVfVOtRC6xMgM0d9O/NTT4TXaLaSluCx8UPsqq9h1ldETHZ6C1pwWLyQZN1JF
-	tfVCkcyzqbkRQ4XhZ7mcD+3HjbrWeFcQ6hwyvGcv3Ju4JuVmZm58nPzUpR0eR3+BsLJ4TW
-	2L/TYO9p6zMQ26pGT9DDIdLETBkMvIk=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=TeNSsJ6o;
-	spf=pass (imf19.hostedemail.com: domain of chris@chrisdown.name designates 74.125.227.138 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
+	by kanga.kvack.org (Postfix) with ESMTP id 10FB06B0623
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:51:36 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 94A5380293
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:51:35 +0000 (UTC)
+X-FDA: 85429477350.02.AC52C59
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf11.hostedemail.com (Postfix) with ESMTP id BC11A40003
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:51:33 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=PZiWq43m;
+	spf=pass (imf11.hostedemail.com: domain of chris@chrisdown.name designates 209.85.214.174 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
 	dmarc=pass (policy=quarantine) header.from=chrisdown.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794559890;
+	s=arc-20220608; t=1794559893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Md769LsMtNFDtvpBg7Ba+68YL18ytLzyTSc3mrMJ/dI=;
-	b=R0P0f7Z3yGQdf0IRVoXsbC0AnvBgyJ1GRvtzCmFjBqCwHN8HVzeMsT2UhCLwvW+Ty4GMAP
-	RsxST6njZDnfdetr5hMURYQYqG22zSD7cQnCHNZAXNvCfMOAZqZZGW52dVgUDi3i8OSLKN
-	GLesqTW2bTl1KMp8iS93xD1OvIw46Wk=
-Received: by mail-pj2-f10.google.com with SMTP id d9443c01a7336-2e934c6c20aso7478085ad.0
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:51:29 -0800 (PST)
+	bh=CiBcy7QaND7m5s9DJlixmA3xnrmmNcQJ7o62g9gNxcQ=;
+	b=JtPKKxr4QTwNffyLpkvVCQy4+YNmICnrUAGZcinSbGH68eCidtA33Rj22NaMAtStnZgA5R
+	2T0BfZcjCEfEm30wTf3gLaR7X2cGYIftMwlZKqYdriLKAd/wRCGhn2fHO0MQD0FwFJrceE
+	NZ3Y9/53a46pTwJB015N+q9woMWhFIY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794559893;
+	b=TCsHakDhGwz9X4c24hD9eJAjeo+SMS5uri6jMm+qcS5UfpBXdq/3og9Izn3J1FsyvpDzLD
+	XVOuF/VKkPgAysGJhwuHnJvjSm82rNm+Jgv7DMpE+tXJ4P7zdc4nP35g80xjsg/dRMEjse
+	OqkQpEJ81mZD9HKWcrv1o/R2u/280R0=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=PZiWq43m;
+	spf=pass (imf11.hostedemail.com: domain of chris@chrisdown.name designates 209.85.214.174 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2e96502e447so11104615ad.1
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:51:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1794559889; x=1795164689; darn=kvack.org;
+        d=chrisdown.name; s=google; t=1794559892; x=1795164692; darn=kvack.org;
         h=user-agent:content-disposition:content-type:mime-version:cc:to
          :subject:from:references:in-reply-to:message-id:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=Md769LsMtNFDtvpBg7Ba+68YL18ytLzyTSc3mrMJ/dI=;
-        b=TeNSsJ6ozALXHNyxNi1LEuRbeOd+Tqf9PYuRPmFM7hi44/rTiaIPn+8mrePoCy4+5O
-         X5+Uec9A7gWwecVXVq4lmq/tS0mM3vv8pB21K34TxynORn6fFkZERGdctOipVyeLS0QL
-         jKXBWTZBscnFGYeSru6+iUIMhtT/H1fFpimuk=
+        bh=CiBcy7QaND7m5s9DJlixmA3xnrmmNcQJ7o62g9gNxcQ=;
+        b=PZiWq43mWu8wDR5FQCP4C9TJV4mhy7vny5wXdHpesFOB8CnfDMtldth8v5DDv3a+FF
+         +2kKdSDEKxAqHoPx/isGXBdVn5p8DVKA0JBI1bctszAEsvbpWKnDmemoACWe74Nc9+JK
+         0EtRt8sJ9tIHyuK6UdUrAFK70VeDUQaKPn9zQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794559889; x=1795164689;
+        d=1e100.net; s=20260707; t=1794559892; x=1795164692;
         h=user-agent:content-disposition:content-type:mime-version:cc:to
          :subject:from:references:in-reply-to:message-id:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Md769LsMtNFDtvpBg7Ba+68YL18ytLzyTSc3mrMJ/dI=;
-        b=Yw7+O7f93GRUEpLf7pxLZJEc7SFmQRnMxKavhb3s/5ZR4foB57ScrCCf0PNZfL/QM9
-         /yfNVzfNcI1Z54JI4Jlg4rE0lfUoaswMPQinM9UGyMaGQqoD0cUL09dfcETsIrO+1ZTQ
-         XHHajosTbSvdHYZAd0sHYGtbYZfcz1oIYDL12TnT11A9Y40ZZZCbiq3FySzCfxveB2Ft
-         TtPlTRJW1ZrPmdpiG2Db0krCi15Ve94bl8EgQYpBWBDD+xe50fBCgZXj/sFprtGZweIH
-         UYjzg9Zf9pNsrKmFzz5JH42OcabX+9RpEsr9ULfjZ6NlJENs3wDrkbngiawtTrCjVaJl
-         O9BA==
-X-Forwarded-Encrypted: i=1; AL+hErEh5394nWaJr/XPQpVWfMyFArusjU8US7ej0JWENnXMxgDurgcQaZXiFo+YZAFdpXx22hqHHIH8Lw==@kvack.org
-X-Gm-Message-State: APuU4Z8ij0u5V1bl/w9qsFGGxAYyNchy6rpXGKH6lglr+PWrzGXns+bV
-	QeEWeWC5BipcbsLvq/RM/lmKsMwdhQjkHRg5t+4dMi4bN486epG2+UFyYvCiZcHCsQQ=
-X-Gm-Gg: AYBFou3vqrFiyV88WZlhtjRm4p3UDiJM1UWJCPkRRbkNZJwVBqaHNsY3B3E6vqSlmHa
-	UodTiQoZwtWNmbewy7N9ZWBxI6WB0WIxT0lYSmDko/q5Oz4rHaYE4McXQ7KdILVdw6FCHdQ5R6D
-	O+eWTU7VQZfjapCgy+xUSVMQ3cHmHm/1aa3Ur0cktBDlq0bBhcIVgUM+Dpwcm2ZKLluqnsOx+AN
-	sxHcruO2/yoFbAGuEt17U3sKoAdwf85v5COE/MJLMQUM1Tpzre1c/4qQL7/DB7aYZY+7/wpc+LC
-	lTGfdmqxJyi4hw0TGIMwsBPwZQ0h8/YzFIFP6GMUeoYy+og2ZYbFSMD4kwDSq4Ykutzyq9cKNC5
-	e4IoMjVy6hIY7HNvU9744BZCZULx7Suf+9Ozlt+GhdULBtMuYnEhKsM2ncvi1hbfMd/P+T/5jn5
-	qOsCSqFdwzhyK7961weThyTSe9FdLhRpw6HDiYQ1rPYvlNbxunOEbpEYlgDt2DEm536L+b6loP+
-	Oolkbtv/+nUZBGsrVqMINStTYK6kCsqKh2+pREwKIwT3KB3dMr2P8TRFAPojRY1aYIYSjQSYwJI
-	6LFDClVcorPiPXM+FYfzDYExanOqIQPQo/1e6xqNv9l/YXMp7U3t0ESt+5pmCXmWiPTRhm+DpIw
-	buC2N2DzIotABovqI47mBS0XiTmISHG+5pENDjhzxffioGHxjG/qk46PlEcKrfUm2t15ViXeiKi
-	Trf+wCj3HjRIwLWiNYNeEzC0KFd/q4QAP0vd8iHML6v3w7gSRQN5eiI0DdgTM=
-X-Received: by 2002:a17:902:c945:b0:2e8:8637:5e3 with SMTP id d9443c01a7336-2ee0daf1004mr19821485ad.34.1794559888836;
-        Fri, 13 Nov 2026 00:51:28 -0800 (PST)
+        bh=CiBcy7QaND7m5s9DJlixmA3xnrmmNcQJ7o62g9gNxcQ=;
+        b=CY+Ozkwy6v1ObtZidDMI1R97H3Dp1L+nwyuVAmANv/bf/ZBQ4H2/taNfezRKkip1Or
+         yLmCeSZnu3GIZaAttH/cO6xp602UObxq0pRIZiUdX1SMa8NsYPvU4HjmbGoo4R+1Wiid
+         nJnf0ro/IRDcKinW0MUt70cGSOoMrQdFDt+JCo6KWHs4oK0DQWyJbPDL17/GXLdMphMf
+         /8NU5D7EVmcUgkZV0FC7YgELSFnoOuyHehM2HN+m87M/dYcrW8GyH8bS/sbRNLONGlkp
+         h4r5Qs88R8h3mzh9dO4P80YZKKgJwX/CaKEjBq0lwI2QhTa2CHesTgFsTkJUKWgWYK8B
+         ikjg==
+X-Forwarded-Encrypted: i=1; AL+hErFr1zvFa3YNO+ML5Hx9azqr+t8zTMPC06tBYJ7yAOaijKJxd255hDBh9wXK8qlyNuk+mKz5BFWXsw==@kvack.org
+X-Gm-Message-State: APuU4Z+cJ8tF3wbrPLwNC0CM7bqaq1OoY0fluLn+MSFzYMsFwrJVhMLH
+	SVHKbnFD/kOSDLdoFgFkdxS0ME1HR3G3kpdWl/Dsdy1c2cWfmbIguJjQjJ0VWQz2RjE=
+X-Gm-Gg: AYBFou1AjookhdTDSKbmpS1xPCgbcE3tLzLFOHQKScqjzu8ljcb1uILJkhgCEx8qELE
+	V2k6XCxrQPvnKDQeYlupbV1N2HYR5qhqJ8QtRXFD23upCianGuUkISq6lZ5kqCAiKVlXhJbdUsS
+	8TJ5apdTgEh7sWHZZEfNLz0473nP6HZ7QXBf0ZfUFaTq2Hltxv7dhCCHDK3szy4xzige1TXy/gi
+	0hF/NSmCOURW9IkDtpn88efuU1lARzgj91ORmIvzOz+9zopaHi15+njbqxyQbUfjHtL75WLYQyu
+	pqQQ1Hnuj/jJyY0KCbGYCx3MXVJtv6KN4zS2dGigwxapsL1sdiWa8aa9wQubzCUoadzTGrcxQQ0
+	owewxC2rpSFeE9+YLyxfCzMKqTyoig/wTROLtPc9rU/F+X1ig0PZUYgiHCkyv9r5c7CE5f/s2hB
+	hddrfgxcLphAxs0ELlxXykpPQ2VDBnp8UjtHZwbJnYfibAqu9zcfvje1+zHQkGe4DO2a2WoA8TB
+	Dmhnb9JbqDaesAYcd/NSPhg8PLZHxz1wx8aNRv62oWEKE3L2XoP6UBpGctyie7YDnJx9hSUfqyk
+	ceQUU3Q3zpEBNYVAcvSNT+H2KFkdXRkKM9AjjfV4HqQZQf2Uxshy2NISR+n5SmzoC+6ni8wyLeC
+	yDzv2hnaTIDSlaOmYsWOKtzNvtUxncO+qtI0XAzDQDDZ9vRDWAp1VBcKxCrktl0LHZzu7nlJiiX
+	wGJ6C7xPyu978cjoH2zRVo0oLWlpcuyi9WfGDVigfoNAGDUUG3e9KVDwTeixk=
+X-Received: by 2002:a17:902:b414:b0:2ed:e0a:1138 with SMTP id d9443c01a7336-2ee0d66682emr16000605ad.4.1794559892624;
+        Fri, 13 Nov 2026 00:51:32 -0800 (PST)
 Received: from [172.22.0.2] ([50.175.87.158])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ee1c4d802csm2287965ad.37.2026.11.13.00.51.27
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ee0f7e48e2sm6970455ad.36.2026.11.13.00.51.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 00:51:27 -0800 (PST)
-Date: Fri, 13 Nov 2026 00:51:25 -0800
-Message-ID: <25b5bf9a7ef115709f1149044824576e6f71e71c.1794506262.git.chris@chrisdown.name>
+        Fri, 13 Nov 2026 00:51:31 -0800 (PST)
+Date: Fri, 13 Nov 2026 00:51:28 -0800
+Message-ID: <5e66c6e1fb0514242c89504ce624773ad54f50bc.1794506262.git.chris@chrisdown.name>
 In-Reply-To: <cover.1794506262.git.chris@chrisdown.name>
 References: <cover.1794506262.git.chris@chrisdown.name>
 From: Chris Down <chris@chrisdown.name>
-Subject: [PATCH v3 1/6] mm/slab: Enable SLAB_FREELIST_HARDENED by default
+Subject: [PATCH v3 2/6] mm/slab: Enable SLAB_FREELIST_RANDOM by default
 To: Vlastimil Babka <vbabka@kernel.org>,
     Harry Yoo <harry@kernel.org>,
     Andrew Morton <akpm@linux-foundation.org>
@@ -121,14 +121,14 @@ X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 11E5E1A0002
-X-Stat-Signature: e497df9pd695s55znn4z38ghqo5fkcdm
+X-Rspamd-Server: rspam09
+X-Stat-Signature: dm9mq4akzyjus8iuz7pqzp5dstg881ae
+X-Rspamd-Queue-Id: BC11A40003
 X-Rspam-User: 
-X-HE-Tag: 1794559889-663939
-X-HE-Meta: U2FsdGVkX1/QJr5QNUkvGzxcZECLTFlZWUPmFlUPy0uOd6w7OAt+euLqQrZqB2In0Et4hwqQadMZ4xmSyzJA+YCx3EWJrrV0kDg75d9DOz2HSFZEygLuikq7Tj6zGYRWR+qQXH1WJlhQECYykwETGYYoQpb9cyizpmjmVszEsdlG48iJB28ahyxMR5iVTfuJKnaHmcUglUJp3tgYALFPIvYqPfz/WsM07d6mBWQ1k5ou8eUjHiRIu/LEg66mFQQ9XkzQiJuXW2Pe9ews08adDMKpCiRu2dNv1of1R9Nak8X62V8V0D8cMfE4MxFT7SwepIzthGczUDbalcBiO6wW0JtmqqN53vMAJhhleECNruOne9B8oCCZ9O6hjnpKaDr3XMZpdhbi7RlHryK8HZexbSeo9gu05RkvjhSlf3cxyRBH/NNK2nVyZ0OZVD3lfC69+VDAHrGSZ0FzEXSnKOJQMa+zxAtg2JnodAKHbISUDJl8m1zYud7j6922vrPVBfQ0FGN+PVS2YHfxWJ6SooYKmlEC5JIhLVh/8G7jrxoaTWQw3xQ8sP0GXVyk+k8S2itDv7GcE7hQebdrR7Ig7lMXpTUiSqz3vi5M3N4rY9hQm1CdswqRQkai6qrK/SttTWUGU+1PckhwijfDF0Y4eWmMDnc679RZNps7WEyeC0mLy5PCIfHPK5RILhkAfc09F6sWmTi5ymCkg8t9D33nGRxVyPa14032lvIY4YTlMqq4by4TzXNgyV23T1v/ovEA0bjSvAgzfc/LUciRfiV8f+nzjMU6ziKJuE/B1VFY6FWmtjO9S73310krK/5sZ3JkfmISqdo1PSAzuZX6fbK5+D9bHVYoVTdDQjHYEBdUS7xXYFrA2ThGPvSzuZuPWgsyIB1WRh8Mrws6Wa6RvY3aNAaFHFNfPEo16v2DM8UA5i3La8LA0WvVPRO5s8ALtO7idgJtZ8QVqIhooXYPiz/NYVh
- KNrEiYTQ
- s8Dkm4artxwkrrRsQx9cVBHgwiZ9gXhZv3o3xDcf+pIKvNLPgnBPNCm2cPr5Y51j8HnwijWq5sV5vdylI5i4s6LkCYzVv5DFN1hWTtO1QPBLaNgc2grVl1jtSX99HdPs13MYu2FnX+JmEFOJg8zOHWN6tIKMJkW/SlCmXNTT4mBKoS7Pr0TwY7KXy9n5hG5aXTY4VQtiV/OURgJwtCwDuzsrfMuZPobpP3ugxcNWCVi5fJldy75tsfiKQCNCzO+I/BcYhkO0UtSh96BgBb2IpIqgWStmz7kcBlUgXl0mf6d9mDUZ1sKjg4DHH6ZFDLNk+ZoOMPjk84fe9go/xfLh0FyMqO8t88i/Jp8+Rw50ZnihiunTSZ7CGDHY5BbBmcixpPfu9zkXudXhjNCTpyb4mrbl/08dF9Lb/+135xtEn32B2HyKIabATAPpC1ZqWyW/yRSYyjXIhIuy0z1RQlt3sxgObempMyMjczs79eEe4QIkJlmE=
+X-HE-Tag: 1794559893-66306
+X-HE-Meta: U2FsdGVkX190LwmBQRqyf77bxr5k3weWHrJLyrGsgOggI9XPoN56oeX7QHJvdcVffJNFW2qMyHWti5QCiuFl/eDOik5FBY2z9m9COSNDA+nY0HDRvwKvq1bIm0h+KXsrEcbGpxRXj6znt7GKJhTGrCAsuAqmnS8GQ8MldpG4O6cbVpacFuSNRTZf5mNmxRoDPIr35Lh77YNBg4ZNnwlv1Pnh2ohxnxa2X9ZuntgKGgGZGEb2HwQsfvBOBv3mcJc+huaFjy83NdRFECasZ7q7AJapePEXwwXBnkPxnrY+m+2iCQF0JzAhSUaHSBFiPLJx/AVTk++C3kbqkJcJRn5HjoXXA4hyb46V75QB8gy4GP3h1GYuEj/c3pGFFIdzGbSLFgq7eYgnXFQLQbYK5MQCbvVt0o2g6DLcjYny7DuY0pJGyegPqWg+AGPSdv9L5BIWiB3anlXk3TobfVAtLffO8emkfFbaHMpWUIHQNdXZS+RFnQgYZj4NPufgnt/kLTyQ5bSKKBQ8zhaQSQDKvdnnKw9D0GzApvcDBxDkpDm+NC7ihMe4sds9hs/F8HLOKAPuu5bWz3rZFnAEXPgS2LXt/JatkmqS9fxRhbqfxeQVTomcowFJMuqNfu1OEtVFys9rq+PCbUrqMegvAoK1r02G80K46loUxIPv7OZ1JDo3Wc8yfIBPX8CY7fY2SbyGLhC1/U0FowyBXPe1cyrq0hlBnjxIFm9QYKdEA3iWg3yE+ydZwTMKrjGB711ZAR/dvdawWqHNM+rB5Ugis7tI8n3mtwIL1MCvTCEPPDCnX17I1g7Y6KPfADPOkVSn+tc95ydqQ56chOSkFi2R8nb89HF2Z/VlkTv5MKs6i0H4LhDkkjLwQ/EQ8ujmXVV7o496Esr2W6LiVBsv+F6PVD1weeATqFUcbokGyTWAqpXCh1LYNlTpCTLJdy0xKHmMcbFa/iVnEiSd5zK5GrsTYbJ9yUO
+ UMCj8HUu
+ Mx9t3ZzCWz0N3J1WgdQ34eNsAlJloi02KRmdRz1G3VpKs/npS9DCedBVt9qBzKaVqFmk1n87p5FVgIkJV2HzO0+aZ76kMAoV6+PMl5QBi+EN5E/XE9viaROlHeCM4grkt2T31FiZp/AQIn7w3JGTQ9G1KHgf7PA4kwRd2kgGQHWWGiuNxdDFRYfT1l0WZppJc30rhKm5fmRckOKt27Yp6ZFdINQPQQPh9mccOXpDRBFWrKDxEGVxEZ/bEopMfHpIDYjQJmwlCSMuJe1WqWoWiPlwWDnMWkf2U2ZZEE5ogJJCPRX0S8Wmx/ziFYLnhffUjeEGetdy7wtioL7tm/JoP4/5vCgqRj5kCPSWb6rI85MDphggJ+4OWsintjxeZPxR+mwtcAB/ncaOVWSCCbDvQnG0KBc1T9EOXeumc2I7gArXOePAbAT+xMORp8M00Tqz1//XPE5OHcabdBk/SIGsaz8EcdalAcstfFceNazu+Cj0PfBg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,17 +137,19 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-SLAB_FREELIST_HARDENED obfuscates the free pointers stored in free
-objects, and catches naive double frees and frees to the wrong cache.
-Most distros already enable it, and with sheaves its cost is small,
-since the per-cpu fast paths don't touch freelists. Measurements also
-show this quite clearly [1][2].
+SLAB_FREELIST_RANDOM randomises the order in which the objects in a new
+slab are handed out. Like SLAB_FREELIST_HARDENED, most distros already
+enable it, and its cost is only paid when a new slab is set up.
 
-So let's just enable it by default. SLAB_BUCKETS defaults to
-SLAB_FREELIST_HARDENED, so it's now enabled by default too.
+With it on, the same system level benchmarks didn't change measurably.
+Allocating from new slabs does get slower, by up to about 30% per object
+in a microbenchmark which does little else.
 
-Link: https://lore.kernel.org/all/auITixAJMfLtfa7i@chrisdown.name/ [1]
-Link: https://lore.kernel.org/all/179312451613.474906.1475329637924619088@kernel.org/ [2]
+So let's enable it by default too. SHUFFLE_PAGE_ALLOCATOR defaults to
+SLAB_FREELIST_RANDOM && ACPI_NUMA, so it's now built in by default on
+those systems, but page shuffling itself stays off unless it's enabled
+with page_alloc.shuffle.
+
 Suggested-by: Vlastimil Babka <vbabka@kernel.org>
 Reviewed-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Chris Down <chris@chrisdown.name>
@@ -156,17 +158,17 @@ Signed-off-by: Chris Down <chris@chrisdown.name>
  1 file changed, 1 insertion(+)
 
 diff --git a/mm/Kconfig b/mm/Kconfig
-index afff1b25b543..f330c2c29fd2 100644
+index f330c2c29fd2..d174537d941e 100644
 --- a/mm/Kconfig
 +++ b/mm/Kconfig
-@@ -208,6 +208,7 @@ config SLAB_FREELIST_RANDOM
- config SLAB_FREELIST_HARDENED
- 	bool "Harden slab freelist metadata"
+@@ -200,6 +200,7 @@ config SLAB_MERGE_DEFAULT
+ config SLAB_FREELIST_RANDOM
+ 	bool "Randomize slab freelist"
  	depends on !SLUB_TINY
 +	default y
  	help
- 	  Many kernel heap attacks try to target slab cache metadata and
- 	  other infrastructure. This options makes minor performance
+ 	  Randomizes the freelist order used on creating new pages. This
+ 	  security feature reduces the predictability of the kernel slab
 -- 
 2.56.1
 
