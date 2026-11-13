@@ -1,111 +1,150 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630ED606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 05:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6932F606A32D
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 06:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JbpxuY6s
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=XSO8oQUa
 Received: by kanga.kvack.org (Postfix)
-	id 6ADDB6B0630; Fri, 13 Nov 2026 00:58:13 -0500 (EST)
+	id 693AD6B0624; Fri, 13 Nov 2026 01:04:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 685156B0631; Fri, 13 Nov 2026 00:58:13 -0500 (EST)
+	id 66B366B0625; Fri, 13 Nov 2026 01:04:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5746E6B0633; Fri, 13 Nov 2026 00:58:13 -0500 (EST)
+	id 55A2A6B0626; Fri, 13 Nov 2026 01:04:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 236A16B0630
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:58:13 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 758C3160329
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:58:12 +0000 (UTC)
-X-FDA: 85429040424.12.53B1429
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 88FDF1C0004
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:58:10 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JbpxuY6s;
-	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3176A6B0624
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 01:04:52 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5E99FA03FE
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 06:04:50 +0000 (UTC)
+X-FDA: 85429057140.26.04882C6
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7472FA0003
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 06:04:48 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=XSO8oQUa;
+	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.48 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794549888;
+	b=wTKTSL/xfxRyoQWYPf0T0q7SZ74vAIjH7byxtY7tJK61y5lpTcvm0E2Fwjn7fPZz/O5j7M
+	15mUq8p50Jq3G9vDrDc+BtoZxPvq3wjgmlW+2w/TSodqd00L0AqGXxmvf9NuhqYJf/nrtt
+	HZqrIdtqJTZJ/WpC/GIgIqevMJCJqq0=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=XSO8oQUa;
+	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.48 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794549490;
+	s=arc-20220608; t=1794549888;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=smxez4a4cpwU5haMt1Qy+s3oYad8QJKBdb5k+aJyAn0=;
-	b=gMBlzXu7gjW8Qy8qYsSK73Bmjhw7QCC9naqp6ZtxUx/q9JVfqAseWAhucjBOtVOwriRpCb
-	iEtK19bbH90VKFdz4D5oL4GJ5999YE45rwRY3Ll7SHwi2WA7H7bu1qp+6l4qa0wrcbrWgo
-	1rmKGFOOgRIdZ/QasQQ3Dzw4hqaj34k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794549490;
-	b=Jsz1+hY7gTcFBEn67adqTISvdun0rY/y3oVPG3GwQdWXaTEuxFv00kCI+wsd+Rv+H5Vv8Y
-	PuT4PiSNmBGj7N6vstB+cv7xtoz8pQanZhVGtAyBpkHIYfT2Gfxk7+/yGXF52pawnWt5Wx
-	vT0sIvfdjqPuRFcPqqX6ROoe6lKlgE8=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JbpxuY6s;
-	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 783F2464E8
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:58:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 600B51F000C4
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:58:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794549489;
-	bh=smxez4a4cpwU5haMt1Qy+s3oYad8QJKBdb5k+aJyAn0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=JbpxuY6s8p/uMo5IM8wIor2lYcD1IhFC8wD2mFAM4Zfsw6h8gRQPA8kPsQCUF3ZTr
-	 1vkENvuP2tMlypzdhzU7G7EXQehtMOktzPLKlgt6yMOq19C0tablpRUCBeBfFtZ3/b
-	 cwzeAYXN7sFS7qayPqOmPo/L8+amxLuwVAhRfsju7JD06uGf0evjFQ+R81UFZEaPkX
-	 4V55+TxlCxRfTh7J7GmQaBxIu7qrvk0JExGmu157n1TaRc7gUbrwzolsklKDTCyJra
-	 F8uuPYrCW5cQp+atzPhogKSmyqyolA9ELw8bdKbb35P5ssEIzHI/vX73O8qSGxGlT1
-	 K16NpBU/kqJTg==
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-93e63ee7b4cso98283985a.2
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:58:09 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErGmkJVQLkCEGzQ8t+hea4LaqCYmtywL1FHQApqYEKxmfsAEjHbJFVaPjhTPOL9h12JIM/UrHvRWsA==@kvack.org
-X-Gm-Message-State: APuU4Z+tXgmQaC3ncBEXn+sIeVdO1NogyHGMps9dA6isIzA4wHV7DqFh
-	LvneCKjRHdntIy5uHrriocSJkfLwg5uwVn4UtJwUZG8HNxYvxZj+h8epe8Wdf1ZGbALtRnktEes
-	mRFanmBqrepnMPUN5ZI99c4/0AeV59B8=
-X-Received: by 2002:a05:620a:6f01:b0:93b:d7a0:d9e6 with SMTP id
- af79cd13be357-9494bb6f8bfmr264863585a.64.1794549488490; Thu, 12 Nov 2026
- 21:58:08 -0800 (PST)
+	bh=7xFaxwfpj5KbqoBFMnfOTbn14r38Tg3ox9XxMLJZOVU=;
+	b=qUh14/Kcbm3lmIghx98uat6OhXxaWD/+kFkN8zDmipAN2RM7Lz1rZ2RuUuT/2KhtMFbWyC
+	ZDDRxiqAlDEwSLj8zX2n2q2x22vJIF3fAYDb3k+XUdK+7Kmndcqb2gL/kKRuuY1rWmfQdg
+	sEab1PUOJYTnVriRY83UmLv+j69gS3k=
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-91f0274f88cso9511796d6.0
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:04:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1794549887; x=1795154687; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=7xFaxwfpj5KbqoBFMnfOTbn14r38Tg3ox9XxMLJZOVU=;
+        b=XSO8oQUa9aDd8Xoqx/JHB2l4HxnYirZNlODkbPQQzaciEHukIfFs9QuDGrNFu/Pcyv
+         DE5UkAte08Z96u4UWHrDxojSvdqcEMGaylrzSBn7TnBINM/gnKlEgbtk3rAQiRr29fYO
+         V/aftB0IiBSUt50+J0MwDNKQ6XnjOehkwmMJEGIY3CcsDNFNg+RersOey8S6u4Cbtcey
+         iwawhAgS4qtl/TbcPIDxvXXHdSOYvm4bROKNGopzEI7GqPRP38hY021QtRxdjN8byz9p
+         uibIfuGwchwSMaevRYEz7hsDWGOceE9TmAkpfXeB9YbqcEsevmZYFh5QcYjS8rpwNyUU
+         a3VQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794549887; x=1795154687;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7xFaxwfpj5KbqoBFMnfOTbn14r38Tg3ox9XxMLJZOVU=;
+        b=Kl6GKwoQ1nPlhrbSVy1XlRQF6PxDMZo3ypR7B113W6ec3JWfVB0S3nuZVCJ+k/Ik+Q
+         MZN7xJnGbp/NcTW0wEnvo/wJDO7tIad2Ht7wDBqEDdJA7sovCgO7W+Mze3gLE0cfv3Gt
+         TZrLrvtpMDSidnjVJ0u71Av/effWQfe+alW87HJfH2KvkaE6b5x2Efv5yWsFR07eTxjQ
+         vei7rrLajyGzmDBAaeDPlTdSXmSVSHiygtHTn8lbRoOtz6JtKm3KZgIFYOW3s0h8/5Aw
+         9TJO8kqekdJ2VHB2B/hzqW+HF5iW3tStP+uRT+rtGB/fusB/tdeEGlG6c9l8gDvZ55yD
+         77qg==
+X-Forwarded-Encrypted: i=1; AL+hErH7l/EJ7O1n7zN+j4B/HZNHnNTMLuJlSBfILwfQt8afExTyc1Edf0BPmQ7ViJncpksCt50jbpyExw==@kvack.org
+X-Gm-Message-State: APuU4Z8hco9HVuj5RXv9ac/VZW1c8abeX4/6wu3kMW+0JkRSkRCLlLr/
+	tO6eym+JHlds6k70UGmAGEkTumIqcpQOXAuonDKmI8fqan79OKqouJWZo4m+UE46H+w=
+X-Gm-Gg: AYBFou21Mx5GdyAtbYgoJ0i3/JsBF2AXVb63dLfTBNgchlaNCPqVaMtDhJPNnuNO+Dc
+	h7Hw24Ww92lsjRmXGm8gSPaejfqBhGccyr0b13+jBeZPNnrqf/TXMM+d3vsExyvzjGsCXSjvks8
+	/FTti7OxVQYHl1IQ953Fe/EiZVMsuRWgLpK+79YQkrdwDHKuE4+0rVnN5YZiyQlmxG8DuxS837d
+	5MnljG/3PiS7e9BW/vxarSO7zBqDm1ObPgAGVGo+WKWf0Evaev74XmKPIGml2gGMS5V1wZKb7RW
+	oIp4ueLHR4Z3g9cfoOCOKKojsL8p4hyKTysDG9Gr+x8SMelqoXdhriMMmS/yr7XMW+MbVtMFl48
+	MmcEo2ElcrMEjZA86sQiAeUX5vIcfStlu0lxXIVM8oIKf/ggxESrfc+S9z2Hiao3GAFdbpl2Ye1
+	BUgzw2nUnO5MVLA/MhTU27xXfFOPzMsmopVWEgKsbbTwynshF3U6Oay+i3OiwMWAdBg5DJxbOup
+	R0eFNorQr5+mjVXrUIAcVxyTGhuqzUjlMnBoUp/mIwE9BgLhAW6NSyUrjNHyu2Z+celW/mmt0ii
+	g+HHgt0NSk469yoD71Q3JGvqXQ85qqiErpXLgm2OLxKaA4a5ZlqFvm54t3vNvQgYLfyYPqglvrM
+	j/vQqZI0=
+X-Received: by 2002:a05:6214:3f81:b0:91c:6d83:60ed with SMTP id 6a1803df08f44-91f2424ace7mr21809446d6.55.1794549887409;
+        Thu, 12 Nov 2026 22:04:47 -0800 (PST)
+Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23c9ade7sm13257376d6.5.2026.11.12.22.04.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 22:04:47 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261111232603.9934-1-baohua@kernel.org> <20261111232603.9934-15-baohua@kernel.org>
- <sashiko-outbox-210422@kernel.org> <CAGsJ_4ykeDu9XyyiNs9HBp2w--Pm7=oqs0=M5cPiypQ1qq9yTg@mail.gmail.com>
- <CAMgjq7Cx0Z6mxQXKJN5KfRYbMNMD1qOy4Yrt51prbGz+=2F+2w@mail.gmail.com>
-In-Reply-To: <CAMgjq7Cx0Z6mxQXKJN5KfRYbMNMD1qOy4Yrt51prbGz+=2F+2w@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 13 Nov 2026 13:57:57 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4x_F=m2irpO96PrxEkDpe5FLETuHG9rT1-uGy0-QL0W5A@mail.gmail.com>
-X-Gm-Features: AclHuK-BtN6duN0Nw2xNYdnH-GL2E8mcqjETysKEfCxuyiMN4yvJ_ve-YYDyzsU
-Message-ID: <CAGsJ_4x_F=m2irpO96PrxEkDpe5FLETuHG9rT1-uGy0-QL0W5A@mail.gmail.com>
-Subject: Re: [PATCH v7 14/16] mm/mglru: Avoid prolonged anon reclaim with swappiness=200
-To: Kairui Song <ryncsn@gmail.com>
-Cc: sashiko-reviews@lists.linux.dev, akpm@linux-foundation.org, 
-	axelrasmussen@google.com, baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, 
-	hannes@cmpxchg.org, hui.zhu@linux.dev, kunwu.chan@gmail.com, 
-	liam@infradead.org, lianux.mm@gmail.com, linux-mm@kvack.org, 
-	liuxiang.277@bytedance.com, lyugaofei@xiaomi.com, mhocko@kernel.org, 
-	mhocko@suse.com, qi.zheng@linux.dev, ridong.chen@linux.dev, rppt@kernel.org, 
-	shakeel.butt@linux.dev, surenb@google.com, wangzicheng@honor.com, 
-	weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com, 
-	zhuhui@kylinos.cn, sidchintamaneni@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: gpm4ykkyxyqo8fbhzxazakqpqa4kapk5
-X-Rspamd-Queue-Id: 88FDF1C0004
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 08/12] mm/migrate_device: do not migrate a
+ uffd-protected zero page
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, 
+ James Houghton <jthoughton@google.com>, 
+ Andrea Arcangeli <aarcange@redhat.com>, 
+ Suren Baghdasaryan <surenb@google.com>, Balbir Singh <balbirs@nvidia.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
+ Pedro Falcato <pfalcato@suse.de>, 
+ =?utf-8?q?Micha=C5=82_Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>, 
+ Andrei Vagin <avagin@gmail.com>, Stephen Rothwell <sfr@canb.auug.org.au>, 
+ Arnd Bergmann <arnd@arndb.de>, Muhammad Usama Anjum <usama.anjum@arm.com>, 
+ David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+ Matthew Brost <matthew.brost@intel.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+ Gregory Price <gourry@gourry.net>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Alistair Popple <apopple@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+ Kiryl Shutsemau <kas@kernel.org>, Chris Down <chris@chrisdown.name>, 
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+ =?utf-8?q?Miko=C5=82aj_Lenczewski?= <miko.lenczewski@arm.com>, 
+ Michal Hocko <mhocko@suse.com>, Mike Kravetz <mike.kravetz@oracle.com>, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org
+In-Reply-To: <20261111-uffd-state-fixes-v1-8-00713d368976@columbia.edu>
+References: <20261111-uffd-state-fixes-v1-0-00713d368976@columbia.edu>
+ <20261111-uffd-state-fixes-v1-8-00713d368976@columbia.edu>
+Date: Fri, 13 Nov 2026 01:04:45 -0500
+Message-Id: <179454988585.482102.2051616940227067987.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Stat-Signature: e6yc6w4ggpkcjzhgn64rjuf6xynwdsg4
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7472FA0003
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794549490-200716
-X-HE-Meta: U2FsdGVkX1+Xz13U5MIKsw0fg+Vec/6c3a3wEdZgXkkK8z7yVgfPVaLRb2YzcA3ab19JRDzRsZmzCGc6Aj62rd+rEOMEwSfOt4DX7QVrTsgaT4C3XfWFHSeYs/x7ZcZ0jwpOvGyaCO1QqbSoMq92ZqVjF/adJgD5CfqEC3+P425ybfGKcCDV30l0RetKj/JG2SIZL8rFEDcWrAUghmcN+EdkkmBmHgU8P+aj2Q/AvITMsFheGpxT0EmzGcWD0KbGEdVMOQMkfB8XB7Ax5six7EQDHepuD7EM6bgkB59n9cVDsVXUkS4xhk19ccGWB9UO8KzsefJc9S6uhAJGoqUS9OrpB7QZb3oydm/nUwUxKtqGmRAHBeLyFtMD/mPcph/sCVdpWoULtkdK7kQZZQkMAMlrcxIfaEy+u+2IiXbnCS+h+OIp+aIHWsOoUdkUe/qMvVNyoBfsNi+Mz9cr2UtnGYHN19ivFgSWIZjpAZfkf70DCwb1tcqb+eyccQ7OR23zglHj0Pi3aIBHMfdHa5znlk049+S7I37CbnZafqfXvHW57SGen4Rt7R2DmsTuhz+izen/muf7d1ehHnE/6qfiPTq1KXdv8q0hMzd5BvEmLsz66z44kIATV2P/0hOtlWNPCILkLEx2YPuWC7r9fjJlBbBuLklrdIFLb8npC68jD2tE3ejK4IlMkhJ+bY+dYrLXLvSFja92+vy3Kq37SacmQ7+EOKgQ1X+a2QHnJCt3NqhQVSc1ABfjwBerNAQFHR6NcTCk1yiNSlcuuJ7YgaMg1lEaLWs+syE4doP9ZsLNy4p7brXjWLUTI3yYRjskJF2ziCZFJdSu3zfxSeUZbA3g0OtvDWTqeIdcr+vVfrUODMPh+9y6Zytd1HuMOH2Jcu3GEyPxLPOV9UwnPD4T6cWNAlDLbAgch/eihX3WP5vTqxXTTAme58epsp4ZW+q9VXV7daipiTufjn4q4seEWUP
- 7BZSSeQT
- ccGuB5MUFqrQrga8SWNGk+sO5wjYgx0loh3Lb6fTx/XRmlWb73wokiijPe5q7C7lFaJriyvZE5afvo5GGSTCBoQA2sEVBiXtIZqOxcIOv/kfvL5i8+2t8C3b8HO7bZRuHIGF1abl+4amrzlA3TNIAWE/c/l+gWDnZnHC7yzj3EYlh0wSABDRb76uQ1NvTtgsUUpcsoWD5dq+OUwKmHLLC0I+cxOXiC82DXrMOy+NEJ02WAgJv+9j3EKN74QRsat+DaZBbaGfDnGH5YhDLd+HcD4hO1cHoPePhCZ6OdQDMMHTaSd54zTxKQnvugKdHvgh0mEc8GsPOKvy49N9NLkFdCULw14Oubk+wRjVx+/aCqxvnT/UeaHGQwQVk+FTapBwhNI99
+X-HE-Tag: 1794549888-282645
+X-HE-Meta: U2FsdGVkX18Ls59Ag5zHm4npbDBIbw3TLPrwsMsPyePaTV2uqLxYx8dwSW50brhJiUxO6p1GW5bMNJmhW8DPzqiVkzzb1278Et0BchfbkH6f/z5ALSbVIeqppe8PS0gtTRR3mHEhuI1E8ewWNr+SFoY0A2JzOjB1CzWlc5p1Pos4LPTsKXNmjnXwn4xhrdi0yapqOLYy+Vt2gNnTIdWMQT3Uo80AZ5xgtFac/rGSXkAiq/x7bDZd1HR+6/R4SGDOHPxhV69vo2jyAjbQM8aEqrEiXYIiNOa/7MV/BBMG9jS0H8JpJM3Ydy/dELZuF3oZKHkD9TscVHq710pu3oIWMu3E2rVBpCynR9pJ1XpySs6EbvhideZoleKZ90dsVk+2eXsYqy5StAeGsuCbDpItlfUe+VrW3qLjgnuj7PUnosIVpKPuBvjS6tQO1YtCCtfaGQCSG7uIr2jlS3gmKhEIcipkHi4RFLdoxqCCmh2CAvGBIOKejitEPSwAuYMD/X9uHk4YgaMRiZbWY3amBY+cq94YZMjlRoYVyUCP4KMWm7X1FXuTK8yqv+jxMvSG4ue1DBYM+ni71EbD41AFTjJJX12TI7Y+bdySPEsi0QXYa21xdHEARywDJQ7dp97c4zJk44notg/xx0jx74WsKQAbnHmbn/G91jdNAcV0gYLu9loi76f8u4/RtYwINZmufT1VPWffZS1Oe7ZZKxfBe5grfIRhvb6hrhoASnNNY4xK7bBPm6ja7lt+q7n0FhIwBH0PudQo4AoOwEzQ3B82nwmM/pQDJXMdbGi/tiMs7dgVPG2qo+cV6b3uven+vem307nni7ZJhhqob4Fb1wMPGRZZ5tgKN9OIsJNvrj2jjS9DIYnEJAtq2UyR14BEUdFleWmgLbYNGZzXu+5I0xwwn2N+OhlaxNoykCsGCXOyT7xTVaDyXII9tTI4Na6bCDNdaeAJ8JK5s5gjNHAPbHfE8dn
+ ouLDt5Jx
+ iEdrtvT8rkUqr4HroZOd6x3FsLwKuJmCGNr1+1xC2d5x29saUQf8JKepFxpSqE9EnTv94kIg1eU2XUGDQa3F4DbuhQ2bUmX7ggfKci81JkGFb4BJB/5O+EvlekdzKTzfFst+2mhWgR81ZzS0Cm6MjiP4NS25wq4UqEULtRhFJfkvUMYzLLwerqpyl+EvkKhRi7wWwJIYgFBlTqIfG3CgDNU3xmjlknkGvkL9xdu62znVEP8Xzk2hq5krYGSgjtsLKE02sK49wQCW5DAiOUPsMiIWbyCFytKA5lpQdgRoD3/6d4ztxgh7gHKWvrqpAvEYwD/7+mANE3stXcJGaAiNj8/7LVvmQNhvtas9kQkzPr/m3WJRCTxcw/8V5+NWkIjMlQtXH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,242 +153,64 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 6:46=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
-e:
-[...]
-> > > > @@ -5891,7 +5896,7 @@ static int run_eviction(struct lruvec *lruvec=
-, unsigned long seq, struct scan_co
-> > > >                       return 0;
-> > > >
-> > > >               lruvec_evictable_size(lruvec, sc, swappiness, nr_to_s=
-can);
-> > > > -             lru_gen_balance_scan(lruvec, swappiness,
-> > > > +             lru_gen_balance_scan(lruvec, sc, swappiness,
-> > > >                                    nr_to_reclaim - sc->nr_reclaimed=
-, nr_to_scan);
-> > > >
-> > > >               if (!evict_folio_lists(nr_to_scan, lruvec, sc, swappi=
-ness, MAX_LRU_BATCH))
-> > >
-> > > [Severity: Medium]
-> > > Does passing sc from run_eviction() into lru_gen_balance_scan() cause
-> > > swappiness=3D200 via debugfs proactive reclaim to always calculate a =
-non-zero
-> > > file_factor?
-> > >
-> > > lru_gen_seq_write() initializes sc on the stack without setting .prio=
-rity
-> > > to DEF_PRIORITY, leaving sc.priority zero-initialized when passed to
-> > > run_cmd() -> run_eviction().  In lru_gen_balance_scan(), sc->priority=
- <
-> > > DEF_PRIORITY / 2 (0 < 6) is then unconditionally true, so proactive
-> > > eviction with swappiness=3D200 always reclaims file pages instead of
-> > > preferring anonymous memory.
-> >
-> > Well, I'm getting tons of complaints about
-> > lru_gen_seq_write(), even though it's just a debug
-> > interface that probably very few people actually use.
-> >
-> > If anyone is actually using it, please let me know.
-> > Otherwise, I think we should consider removing it in the
-> > long term. Both memcg and node already have proactive
-> > reclaim interfaces, so this one seems redundant and
-> > difficult to maintain.
->
-> For now I think we just be really lenient about that interface, e.g.g
-> keep it at DEF_PRIORITY like in previous version
->
-> > All Sashiko comments seem to suggest:
-> >
-> > @@ -5955,6 +5956,7 @@ static ssize_t lru_gen_seq_write(struct file
-> > *file, const char __user *src,
-> >         struct blk_plug plug;
-> >         int err =3D -EINVAL;
-> >         struct scan_control sc =3D {
-> > +               .priority =3D DEF_PRIORITY,
-> >                 .may_writepage =3D true,
-> >                 .may_unmap =3D true,
-> >                 .may_swap =3D true,
-> >
-> > But I think this approach could introduce its own problems.
-> > Suppose we have four generations for both file and anon,
-> > and users use the debugfs interface to reclaim the oldest
-> > generation.
-> >
-> > 1. Even at DEF_PRIORITY, we can currently scan up to
-> > lrugen->max_seq - MIN_NR_GENS, which means the
-> > second-oldest generation can also be reclaimed. This
-> > somehow violates the user's request to reclaim only the
-> > oldest generation.
-> >
-> > 2. With swappiness=3D1 or 200, if we run out of the
-> > preferred file or anon type in the oldest generation,
-> > we can fall back to the other type and reclaim all of
-> > its oldest generation, as we did before scan-budget mode
-> > was introduced. With the new approach, however, we stick
-> > to the preferred type at DEF_PRIORITY and don't fall
-> > back to the other type. As a result, evict_folio_lists()
-> > can return 0 earlier than it would with the fallback
-> > approach.
-> >
-> > I guess the only way to address all these issues is to add
-> > a separate reclaim path for requests from
-> > lru_gen_seq_write(), with evict_folio_lists() handling
-> > these requests differently from regular reclaim to preserve
-> > the old behavior before this patchset introduced the
-> > budget-based model.
-> >
-> > Something like the following, though it would be very ugly:
-> >
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index 4fe516d33703..24c6abe37189 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -4745,7 +4745,8 @@ static bool isolate_folio(struct lruvec *lruvec,
-> > struct folio *folio, struct sca
-> >  static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec=
-,
-> >                        struct scan_control *sc, int type, int tier,
-> >                        struct list_head *list, int *isolatedp,
-> > -                      unsigned long *scanned_seq)
-> > +                      unsigned long *scanned_seq,
-> > +                      bool cmd_proactive)
-> >  {
-> >         enum node_stat_item item;
-> >         int zone_idx;
-> > @@ -4768,7 +4769,9 @@ static int scan_folios(unsigned long nr_to_scan,
-> > struct lruvec *lruvec,
-> >          * newest generation when under severe pressure, so hot folios =
-are
-> >          * not evicted as soon as priority is raised.
-> >          */
-> > -       if (sc->priority =3D=3D DEF_PRIORITY)
-> > +       if (unlikely(cmd_proactive))
-> > +               seq =3D lrugen->min_seq[type];
-> > +       else if (sc->priority =3D=3D DEF_PRIORITY)
-> >                 seq =3D lrugen->max_seq - MIN_NR_GENS;
-> >         else if (sc->priority > DEF_PRIORITY / 2)
-> >                 seq =3D lrugen->max_seq - 1;
-> > @@ -4966,7 +4969,8 @@ static void lru_gen_balance_scan(struct lruvec
-> > *lruvec, struct scan_control *sc,
-> >  }
-> >
-> >  static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruve=
-c,
-> > -                       struct scan_control *sc, int type, int swappine=
-ss)
-> > +                       struct scan_control *sc, int type, int swappine=
-ss,
-> > +                       bool cmd_proactive)
-> >  {
-> >         LIST_HEAD(list);
-> >         LIST_HEAD(clean);
-> > @@ -4990,7 +4994,7 @@ static int evict_folios(unsigned long
-> > nr_to_scan, struct lruvec *lruvec,
-> >
-> >         tier =3D get_tier_idx(lruvec, type);
-> >         scanned =3D scan_folios(nr_to_scan, lruvec, sc,
-> > -                             type, tier, &list, &isolated, &scanned_se=
-q);
-> > +                             type, tier, &list, &isolated,
-> > &scanned_seq, cmd_proactive);
-> >         nr_isolated =3D isolated;
-> >         if (nr_isolated)
-> >                 __mod_node_page_state(pgdat, NR_ISOLATED_ANON + type,
-> > @@ -5177,11 +5181,13 @@ static bool should_abort_scan(struct lruvec
-> > *lruvec, struct scan_control *sc)
-> >  }
-> >
-> >  static long evict_folio_lists(unsigned long nr_to_scan[], struct
-> > lruvec *lruvec,
-> > -                            struct scan_control *sc, int swappiness,
-> > unsigned long max_batch)
-> > +                            struct scan_control *sc, int swappiness,
-> > unsigned long max_batch,
-> > +                            bool cmd_proactive)
-> >  {
-> >         int type;
-> >         unsigned long batch, scanned, total_scanned =3D 0;
-> >
-> > +retry:
-> >         /*
-> >          * Scan both types with the given budgets; the caller checks if
-> >          * reclaim is satisfied after each pass.
-> > @@ -5191,8 +5197,13 @@ static long evict_folio_lists(unsigned long
-> > nr_to_scan[], struct lruvec *lruvec,
-> >                         continue;
-> >
-> >                 batch =3D min(nr_to_scan[type], max_batch);
-> > -               scanned =3D evict_folios(batch, lruvec, sc, type, swapp=
-iness);
-> > +               scanned =3D evict_folios(batch, lruvec, sc, type,
-> > swappiness, cmd_proactive);
-> >
-> > +               /* if it is a debugfs proactive reclaim, lend budget
-> > to the other type */
-> > +               if (!scanned && cmd_proactive && swappiness &&
-> > swappiness <=3D MAX_SWAPPINESS) {
-> > +               if (!scanned && cmd_proactive && swappiness &&
-> > swappiness <=3D MAX_SWAPPINESS) {
-> > +                       nr_to_scan[!type] +=3D nr_to_scan[type];
-> > +                       goto retry;
-> > +               }
-> >                 nr_to_scan[type] -=3D min(nr_to_scan[type], scanned);
-> >                 total_scanned +=3D scanned;
-> >         }
-> > @@ -5240,7 +5251,7 @@ static bool try_to_shrink_lruvec(struct lruvec
-> > *lruvec, struct scan_control *sc)
-> >
-> >                 orig_anon =3D nr[LRU_GEN_ANON];
-> >                 orig_file =3D nr[LRU_GEN_FILE];
-> > -               scanned =3D evict_folio_lists(nr, lruvec, sc,
-> > swappiness, MIN_LRU_BATCH);
-> > +               scanned =3D evict_folio_lists(nr, lruvec, sc,
-> > swappiness, MIN_LRU_BATCH, false);
-> >
-> >                 if (should_abort_scan(lruvec, sc))
-> >                         break;
-> > @@ -5896,7 +5907,7 @@ static int run_eviction(struct lruvec *lruvec,
-> > unsigned long seq, struct scan_co
-> >                 lru_gen_balance_scan(lruvec, sc, swappiness,
-> >                                      nr_to_reclaim - sc->nr_reclaimed,
-> > nr_to_scan);
-> >
-> > -               if (!evict_folio_lists(nr_to_scan, lruvec, sc,
-> > swappiness, MAX_LRU_BATCH))
-> > +               if (!evict_folio_lists(nr_to_scan, lruvec, sc,
-> > swappiness, MAX_LRU_BATCH, true))
-> >                         return 0;
-> >
-> >                 cond_resched();
-> >
-> > However, this would make the code much more complex and
-> > probably isn't worth the effort for a rarely used debugfs
-> > interface, especially given that we already have proactive
-> > reclaim interfaces for both memcg and nodes.
-> >
-> > So perhaps we should simply set .priority =3D DEF_PRIORITY
-> > and live with the two less significant issues described
-> > above.
->
-> I agree with this, actually maybe later we can use something in
-> scan_control like an extra field, CLRU has a lot of special tweaks in
-> that, which also needs to be sorted.
+On 2026-11-11 12:55 -0500, Tal Zussman wrote:
+> migrate_vma_setup() installs a migration entry for each page it
+> collects, which carries the uffd bit over to the new PTE. However, a PTE
+> that maps the zero page is left in place without a migration entry.
+> migrate_vma_insert_page() later overwrites it with a new PTE that is
+> built only from the VMA flags, so the uffd-wp bit or the RWP PAGE_NONE
+> protection of the old PTE is lost. The same applies to the huge zero
+> PMD.
+> 
+> Once a driver has migrated such a zero page, writes and accesses to it
+> no longer fault into userfaultfd, so the manager misses them. With async
+> tracking, PAGEMAP_SCAN unconditionally reports the page as written or
+> accessed.
+> 
+> This requires a driver that migrates memory to a device.
+> 
+> To fix it, do not mark a zero page for migration if its entry has the
+> uffd bit set in a VMA registered for WP or RWP. The driver sees an
+> address that was not migrated, which drivers already have to deal with.
+> 
+> The uffd bit can also be set after the zero page was collected, as
+> write-protecting only takes the mmap lock for read. So check again under
+> the page table lock in migrate_vma_insert_page() and
+> migrate_vma_insert_huge_pmd_page().
+> 
 
-Agreed. I'll add a few words to the changelog.
+Similar to last patch, this changelog could be improved.  My best
+attempt at summarizing:
 
-"Note that we are already lenient with the debugfs proactive
-reclaim interface. We may reclaim one generation ahead even
-at DEF_PRIORITY, and with extreme swappiness values such
-as 1 and 200, we may not fall back to the other type.
+"""
+Device migration replaces a zero-page mapping with a fresh entry,
+losing its userfaultfd WP or RWP protection.
 
-To address these cases and preserve the behavior of the
-previous model before scan-budget-based reclaim, we would
-need to add another flag to scan_control. However, this
-may not be worthwhile for a debugfs interface that is likely
-to be rarely used, especially given that we already have
-memory-level and node-level proactive reclaim interfaces."
+Don't migrate the uffd-protected zero pages.
 
-Thanks,
-Barry
+Skip protected zero pages during collection. Check again under the
+page-table lock before insertion, because another thread can apply
+protection after collection finishes.
+
+The alternative ...
+"""
+
+I have concerns with this:
+
+> The alternative would be to carry the uffd state over in
+> migrate_vma_insert_page() and migrate_vma_insert_huge_pmd_page(). Not
+> migrating the zero page is simpler, and a zero page that is protected by
+> userfaultfd in a range that a driver migrates should be rare.
+
+This basically force-fails a migration of a uffd protected zero page.
+
+Wouldn't we expect this to cause drivers to fail to make progress if
+they require that page to be resident on the device?  Not sure we want
+to force drivers to try to handle this special case (if they even can).
+
+We'll need some input from the migrate_device/GPU folks.
+
+-- 
+~Gregory
+
 
