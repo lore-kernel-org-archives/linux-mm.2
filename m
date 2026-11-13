@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3324B606A331
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 12:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E830606A333
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 12:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ab83gmrU
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VMX4GK9T
 Received: by kanga.kvack.org (Postfix)
-	id 75C2C6B0701; Fri, 13 Nov 2026 07:02:20 -0500 (EST)
+	id A90266B0703; Fri, 13 Nov 2026 07:02:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 733D46B0703; Fri, 13 Nov 2026 07:02:20 -0500 (EST)
+	id A68FD6B0705; Fri, 13 Nov 2026 07:02:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 670F46B0704; Fri, 13 Nov 2026 07:02:20 -0500 (EST)
+	id 9A4D56B0706; Fri, 13 Nov 2026 07:02:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 339A46B0701
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 07:02:20 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8409F12023A
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:02:19 +0000 (UTC)
-X-FDA: 85429957998.10.3CD5655
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 617AE6B0703
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 07:02:24 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C5804C028A
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:02:23 +0000 (UTC)
+X-FDA: 85429958166.08.889AEF0
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A398712000D
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:02:17 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ab83gmrU;
-	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id D65DE18000E
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:02:21 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VMX4GK9T;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794571337;
+	s=arc-20220608; t=1794571341;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rS1m6Cp+lH+e/iHXkx5HAKDceJmj2j6LhhW3qVbCZW4=;
-	b=IFihFsAoQHfrCAGoFwzaDfTrEDsTSnlEZ9svT/t6PdD5ELHUj0xbnP7h5v24JXXIfBTcZE
-	ky9adc7jSejIl8mhvY/P+LR9u1ngYx2jtZhMydXtZwhqT1Jzv5/KHfojae+1YnOoyR95PP
-	6ipN6lzndV8PtGISTvIyW1GMW4LdpxM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794571337;
-	b=8dkxTV389cFbuCgFgS1Y+SHrdUgpVyijMTkBx09Vr6DYkKkGLMmYTXB4yK38zkhSVFtzAy
-	kKhLqwopuGqhK+IqyDJfCBnl72K5ScGCfeFwHRweglfsV24vtPf44wQWw4m9fvG0FSsJTb
-	Gu8oXpxGWLAJG1CRk3hlR6orMP9qe3o=
+	bh=dE2hTtE0m5h9YxougRZ2lCucnmPTxya6Cnx70Y4r2Gc=;
+	b=SzXTt488zYwDPnvjMWMu9BMmJx2GnlbtLYZchZDA+nzethN1G7HtpllGFO5TEVwAEvwW/g
+	Xz+5Gij1nQfs+JPCDtbhQl+waoN1U482Nu4EfPL+cfCG1ODQfQQ77EkIauVrFdkw25PaDq
+	Qfkm+n3RX/xrNEvCr79NXN0yCZohFSQ=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ab83gmrU;
-	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VMX4GK9T;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794571341;
+	b=VdPNc0L7GIfpl3LrzGQ3A7mqgvblxd8mDjKMOegpQMHdbtXcJzg9Wpik0tAHCs2eEUKdAJ
+	Ld1Opaw3pWgP2vVHMZ5nH3TM3/zsU3sTZtJNUE6V/Yant6lpvjXGEKSg+4OSbyA1WGwToA
+	Nr97psLVEZIqJJJDBmWj0ED0NISBtbQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3DBCA62236;
+	by tor.source.kernel.org (Postfix) with ESMTP id 6408562635;
+	Fri, 13 Nov 2026 12:02:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74DAC1F000C5;
 	Fri, 13 Nov 2026 12:02:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE1E41F000C4;
-	Fri, 13 Nov 2026 12:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794571337;
-	bh=rS1m6Cp+lH+e/iHXkx5HAKDceJmj2j6LhhW3qVbCZW4=;
+	s=k20260515; t=1794571341;
+	bh=dE2hTtE0m5h9YxougRZ2lCucnmPTxya6Cnx70Y4r2Gc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ab83gmrUpzh805E0hYE9wXyEirCMlxpG5/m5wWElyk1lwxlfo4B4O3MxfGYxZt6l8
-	 09dfQssQ+WkFWAIpI11SMv0HX8EzkPZEZrEx9evH9V/FyqX/9Sw0yl7lzD6nnCSFMd
-	 O/OHVg27YfeRoj0w2nMtmyevJPrskpK7G+g2xeGkWS08ADCV3aGN3u0KFYLN6kx4Tz
-	 tzF/S4PfkL2ziROzev1RRF8i71wXgY/MKGxPdW4/3SVE3JjHTB29DJCK9j1hlckSwf
-	 SFxaFn8HiWaq7Fhtd4NZ8Fh+NpyGhq+YxTiOT6Ojsxh+UXG2jc/ZJxduokvOwlNOhE
-	 jT8wxOXakn9cw==
+	b=VMX4GK9T1QqX0jMCjmZTcD9CnhCWfUfcSvJYi2XNjZ57FtxLU6EB/3/4q9r/+5hZu
+	 eKvqp1es2XIFoSf4R3jDhozLWHtNpVwkujE+lD9Z+huJnixonHHqhHVQroZLVtOt5I
+	 3qdcbbWx5fUS2EyzwyC3lkXgefEKshLt4CNmn2g9W2wycnWlHFlRvZYV5yoYN6pU3N
+	 pZ/YMx6O3An++kxwnwYCvm+7XUq964M1mVe57TiN2/+fbKkBPR3W4K2RNpqlxAL6FX
+	 /p59185g5oHecRDJJeSXCIdkab5vwDHfsHN5SbheeGZkKLodG7h1bQi5xc1ysk8PLh
+	 1UYkIvei++mdw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Fri, 13 Nov 2026 12:59:25 +0100
-Subject: [PATCH v3 29/33] efivarfs: stop using SB_RDONLY for read-only
- efivar ops
+Date: Fri, 13 Nov 2026 12:59:26 +0100
+Subject: [PATCH v3 30/33] ubifs: don't set SB_RDONLY after errors
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-work-fs-sb_rdonly-v3-29-0be92bb73709@kernel.org>
+Message-Id: <20261113-work-fs-sb_rdonly-v3-30-0be92bb73709@kernel.org>
 References: <20261113-work-fs-sb_rdonly-v3-0-0be92bb73709@kernel.org>
 In-Reply-To: <20261113-work-fs-sb_rdonly-v3-0-0be92bb73709@kernel.org>
 To: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>
@@ -80,28 +79,28 @@ Cc: Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org,
  linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, 
  linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, 
  linux-xfs@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
+ "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7550; i=brauner@kernel.org;
- h=from:subject:message-id; bh=/72VFxS3I/CxjnoeReimw+DEGd3eAwaOhrR+5ycR15E=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWR9+73nwoslG7XsBMXfysYIvXxhmf35Nss5h7+WN8+kt
- ua9j56a0FHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAnCTDRgZXq7pe6s1a7LQibbO
- KS9YQuPDjp8Qnex1db740bpVxRFXkhh+s6TcX5VQXrR3wYaS0y7RLewCqzj2sPZdWRjy86/za7m
- 33AA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6710; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=R1ABsKCXnKiNmLZdfzr1ssLR6gmZNKgRga/FC/TrEs0=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWR9+7234/uajY4CWefNfoXJHNS2SF/00b6sc3dy07zuz
+ gsK86Y2dZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzE15vhf0r7UfMZH65/27Cp
+ TGiro4OZtUV9uYeQjp4Je7wxxyPNbkaGVcoroh+qlHr+zzjeHG7U0r9v9bkps35IqngE2l3cFh7
+ GDQA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D65DE18000E
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 7krfpjzqmrxhba6uyr1u3xwmxymxujia
-X-Rspamd-Queue-Id: A398712000D
-X-Rspam-User: 
-X-HE-Tag: 1794571337-311709
-X-HE-Meta: U2FsdGVkX1+t7Tg5Lv7r/rjRbqONn44Yq4fKGFVykThRj6lZiNH92wYxE3QZR4CzhGb7qdw1WOBgWchShFM/YXaA3ldUQMSbTo1jAHxF4A7s91TsYQnXPnsEjRlyXFbNzeXF2BWLMQXtvI49ssyCucIQsaGQw/IhgTke8P6zmsdacmzClg6XJxpl1EHmdCLwVQGv3KvvstVRZi2PL0pq/jgcdSb1wSCRtqvUOAmDIrqF3qCHKyBAdBgp0Ek2b3KHIlD7nJKuygMGMnsdQmtpkM8jDaphQp/FFUkIXaFRShPw7wdwDjK6h4V6nZvgJS9+XvlWhi4Ju7H2sz1lmfekHNrAbMXn/wQ7cbskgjxIiYfFi39AT2d8HkiqMdRAZ9rBuTGP+PjiiHM2OUzZMBbCm+l8dwfXQbKqDj03GpndtVOh8YcT0iVAS/6/ut6IvBlHiTqCwOqAFhvQmF8qWPrmCLvxa/6AIgg680HQSA07ai3Tq0+LyrW4b2vdudHUtuiB7oqtvdKvgTlC8fe5/073FASfNYntM3kAx7q71GHV2JQl1DPTd4yn8eI8z/qX2+vZO1143tH9xqXyOsD3KUXCTtMB1WFYA4drusOyH68xG1HmsXe7BZCcKODtXk2bnK/Rmq/QnuIFwUAdjyZ8uKJZearjGQJA4CIQ0mYOzJYocqkc6axtsWECEr9Z1aAdkz7P3JMpKc0YDDSvlfj2u2f+U81RS38ihBgi/mTlcWspPbUTHUEKP1r+dkwSUp6WtNwARPBdREHY+1ZexonqSfOJb9PC/WUkkCK48r6URNFqMBYyKeqJc4ms4DRyp4VsS8UrkyXokLdGsZFQ13C3KEEDGPHND7sLdKk8HKKUv1LLU2/79h5dHsEnQSepSL761l6A8HbgwWRFvZnlWBgWS7+w6RCF9Ll2kao2/EErKaczdBYbMA5Z6fOHECWyoNXSa/Zh2LQHcYPFhYyplARy9q0
- Y9ExXNBJ
- 1Ir7GFji1EInT29bxErrQI7e1bv2BIB6aceoEIydrKjshpheCETLCC7OcVcFiKQZlSyiXXhsGcvHHl7MNwBMfJqj/buonYPltTVk9VfaKWccm6ZZtNcJuIT+GZukG/T+rD44HIwbkfgVUPHZ9GhW0dsntHKohy0DpTBVkGk4purt0m5KS3QIixDrvU39iWBZsm/bPGU7vG9MhUgQNAmVXbgS2GwygwRyR0qXh6dYFg60froo7CmK06RzyWxCFLqo4BLsoqE11BazkSRDZ6y7We7DAIubDJDt21CKOAS2EAoCw+tuGtIoTb1+6Kzdd+jr4zhZ9J0q3fdxr0Ro=
+X-Stat-Signature: b5shuamyyxud5dorudo8hwfxx1ei9za7
+X-HE-Tag: 1794571341-219878
+X-HE-Meta: U2FsdGVkX18qYTxNGM60WWMVenhYyp4/X9IF740mAN5p4NjXLivqSyu3LMUoKSuyU0iEauq7erOz1RnHTHHPTaP2ag/VINlVotRw7yN4RdFYUqaJCEYrj9dNb1SAYtRdr0nvEqJgVIhu5/bmTlQlmDIJcSEz0aHe3zSiIln80FyxqRppHDMMg/3fPK+MQfUUqEvWgKCR5zCGvKwaBjzL1Ms7hzs8nsX9JeoF59q6PNvD8EjeQgyVk4BKC2ewoadtTbNmWXIAZaaI67GA6Ij2l1YXicN+TxOqpgILRZQ9OPatDHZpE+qCF59IiBbPmDPjqeJSIw4DYDigklElmiuQwej0LZFmrYDxGZWEYI8X45EZcTiZ2UFXAzsPfx0rQnGLumBr5ltZQv9C+8Gz6GZjMc+DuozddUw2mFQvOFdr0kRSHMtL6EyxGaUYJMvGez4/kErBd6G1nVL/3YiuOVyv+Nx266MDvUgQfNHjVeAlDKFK13+V042tVIM7JhvdKB4Q3MAOPL+bkVkA89YHMy2V7EMBgtybsYQgEe2Y8UpO+2HnUernpiRVu4WF3Wqu+xgJzuMXXi3ZSdJcMIObeDJYYOC/0Fc3ofvodMARQoulJFy+VwzSqPrq0AKlLZmtT6S4JGpiKTn8r3N7J0GYCkxgprWBxxs8hyorLcxIDvHejV+lgRcKYZNHhkzikkY+YZcPxQUnCw3xD5BaaNMO3CGFhtY8YxfEPi3rfZMAi46q2BfNWckW8KNOLGg0NuCraz3F/yf1WuqER9xNyEfQzWVB8PHJ98eLMsZm9zOxff8fLZGzzO1grktYADSpiBIYNSnjN7BfZY6MbegoeLRqaAhMEBmbTVSjfu5DDjzc0eGGrmpRCsndRDeavvfCWF3KlPMJYypTPMPhn75ZSVATCDt/k8/2EvOsBtzP/NOCOOd3bWvPI5Ehjn79y52MhJCWeOkpFYe/O76BveSUPBxGcym
+ k/QQGaoV
+ wUSjBHHzpEAuYW9Kf5ZSrCvEk1WZtBvcfBEzy2HCQPxBdv4QowPQyTnIN/AypJ9heVdSslJWutg2Ml2a+nW9moZ4m398GMPWO9yD4hJHk5JKdCaj2mQsdh1Aeb3dGNP1sBHWrfI5WiUov/dyMsFCznaAdSQKKaQ+4taDkv1Re0UFPRwI6yTJ/FgzHfgJxVTA+xMpbDGr8qsKRD6rpzoMlI/upG9/yKjx7lt+4zvyuj8jiO15qCGrhEdTeEfB7W8G91+OhR3xrJNpDL3fQZQI2h4p8pzAfHdkKw/mnIhJQfudQSl284USOKycIzqzfD9j6u0drLzJ1IUN5eAQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,222 +109,201 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Since commit 94f7f6182c72 ("efivarfs: automatically update super block
-flag") efivarfs_ops_notifier() sets or clears SB_RDONLY whenever the
-efivar ops switch between ops that can and ops that can't set variables,
-e.g. when tee_stmm_efi is probed or removed. It does that at any time
-without holding s_umount. efivarfs is frozen on every suspend and if the
-ops switch while it's frozen thaw_super() either leaves the s_writers
-rwsems locked or releases rwsems nobody holds.
+ubifs_ro_mode() sets c->ro_error and SB_RDONLY from whatever context hit
+the error, e.g. a failing write, and without holding s_umount. UBIFS
+can't be frozen but that still races with everyone else changing
+sb->s_flags. And c->ro_error alone already makes every write fail with
+EROFS.
 
-So keep the state in efivarfs. The notifier sets and clears a new
-EFIVARFS_OPS_RDONLY flag instead and efivarfs_fill_super() initializes
-it under efivar_lock() so a switch can't slip in. fill_super doesn't set
-SB_RDONLY either. systemd mounts efivarfs before tee_stmm_efi is loaded
-and the mount has to become writable then. create, unlink, setattr,
-fileattr_set, write and opening for write fail with EROFS while the flag
-is set. Like the SB_RDONLY check this runs without efivars_lock so a
-write racing with a switch can still call a NULL ->set_variable. That's
-not new.
+So call sb_set_emergency_ro() instead. The background thread can hit
+the error before SB_BORN but doesn't hold s_umount either. The xattr
+setters check c->ro_error as well because ecryptfs calls them without
+write access on the lower mount and they change the inode in memory
+first.
 
-efivarfs_reconfigure() only refuses a remount from read-only to
-read-write while the flag is set and returns EROFS. It used to refuse
-every remount without "ro" which would break option-only remounts.
+So far a remount to read-only after an error was refused and a remount
+to read-write went through and cleared SB_RDONLY again because
+c->ro_mount was never set. Now going read-only works. Nothing is synced
+for it in that state and ubifs_remount_ro() skips the write-buffer syncs
+and the master node like ubifs_put_super() does and only cancels the
+write-buffer timers. Going read-write after that is refused by the VFS.
 
-With read-only ops efivarfs is mounted "rw" now. statfs() doesn't report
-ST_RDONLY anymore and access(W_OK) succeeds.
+The flusher still gets to the folios and inodes that were dirty before
+the error, also after the remount which sets c->ro_mount and frees the
+write reserve buffer. Every journal write fails with EROFS after an
+error anyway. So do_writepage() and ubifs_write_inode() drop them
+without going near the journal. Otherwise reserve_space() trips its
+!c->ro_mount assert for every folio after the remount.
 
-Fixes: 94f7f6182c72 ("efivarfs: automatically update super block flag")
-Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/efivarfs/file.c     |  6 ++++++
- fs/efivarfs/inode.c    | 15 +++++++++++++++
- fs/efivarfs/internal.h | 14 +++++++++++++-
- fs/efivarfs/super.c    | 26 ++++++++++++++++++--------
- 4 files changed, 52 insertions(+), 9 deletions(-)
+ fs/ubifs/file.c  | 12 ++++++++++++
+ fs/ubifs/io.c    |  6 +++++-
+ fs/ubifs/super.c | 40 ++++++++++++++++++++++++++--------------
+ fs/ubifs/xattr.c |  6 ++++++
+ 4 files changed, 49 insertions(+), 15 deletions(-)
 
-diff --git a/fs/efivarfs/file.c b/fs/efivarfs/file.c
-index cb1b6d0c34545..a074145fa57e1 100644
---- a/fs/efivarfs/file.c
-+++ b/fs/efivarfs/file.c
-@@ -23,6 +23,9 @@ static ssize_t efivarfs_file_write(struct file *file,
- 	ssize_t bytes;
- 	bool set = false;
+diff --git a/fs/ubifs/file.c b/fs/ubifs/file.c
+index 99dd52715eee9..4eae6c2ae2eea 100644
+--- a/fs/ubifs/file.c
++++ b/fs/ubifs/file.c
+@@ -898,6 +898,13 @@ static int do_writepage(struct folio *folio, size_t len)
  
-+	if (efivarfs_ops_rdonly(inode->i_sb))
-+		return -EROFS;
+ 	folio_start_writeback(folio);
+ 
++	/* Nothing gets written after an error, drop the folio. */
++	if (unlikely(c->ro_error)) {
++		err = -EROFS;
++		mapping_set_error(folio->mapping, err);
++		goto out;
++	}
 +
- 	if (count < sizeof(attributes))
- 		return -EINVAL;
- 
-@@ -137,6 +140,9 @@ static int efivarfs_file_open(struct inode *inode, struct file *file)
- {
- 	struct efivar_entry *entry = inode->i_private;
- 
-+	if ((file->f_mode & FMODE_WRITE) && efivarfs_ops_rdonly(inode->i_sb))
-+		return -EROFS;
-+
- 	file->private_data = entry;
- 
- 	inode_lock(inode);
-diff --git a/fs/efivarfs/inode.c b/fs/efivarfs/inode.c
-index 07602cd5d33c3..be183de4b7716 100644
---- a/fs/efivarfs/inode.c
-+++ b/fs/efivarfs/inode.c
-@@ -15,6 +15,8 @@
- #include "internal.h"
- 
- static const struct inode_operations efivarfs_file_inode_operations;
-+static int efivarfs_setattr(const struct mnt_idmap *idmap,
-+			    struct dentry *dentry, struct iattr *iattr);
- 
- struct inode *efivarfs_get_inode(struct super_block *sb,
- 				const struct inode *dir, int mode,
-@@ -83,6 +85,9 @@ static int efivarfs_create(const struct mnt_idmap *idmap, struct inode *dir,
- 	bool is_removable = false;
- 	efi_guid_t vendor;
- 
-+	if (efivarfs_ops_rdonly(dir->i_sb))
-+		return -EROFS;
-+
- 	if (!efivarfs_valid_name(dentry->d_name.name, dentry->d_name.len))
- 		return -EINVAL;
- 
-@@ -122,6 +127,9 @@ static int efivarfs_unlink(struct inode *dir, struct dentry *dentry)
- {
- 	struct efivar_entry *var = d_inode(dentry)->i_private;
- 
-+	if (efivarfs_ops_rdonly(dir->i_sb))
-+		return -EROFS;
-+
- 	if (efivar_entry_delete(var))
- 		return -EINVAL;
- 
-@@ -132,6 +140,7 @@ const struct inode_operations efivarfs_dir_inode_operations = {
- 	.lookup = simple_lookup,
- 	.unlink = efivarfs_unlink,
- 	.create = efivarfs_create,
-+	.setattr = efivarfs_setattr,
- };
- 
- static int
-@@ -155,6 +164,9 @@ efivarfs_fileattr_set(const struct mnt_idmap *idmap,
- {
- 	unsigned int i_flags = 0;
- 
-+	if (efivarfs_ops_rdonly(dentry->d_sb))
-+		return -EROFS;
-+
- 	if (fileattr_has_fsx(fa))
- 		return -EOPNOTSUPP;
- 
-@@ -176,6 +188,9 @@ static int efivarfs_setattr(const struct mnt_idmap *idmap, struct dentry *dentry
- 	struct inode *inode = d_inode(dentry);
- 	int error;
- 
-+	if (efivarfs_ops_rdonly(inode->i_sb))
-+		return -EROFS;
-+
- 	error = setattr_prepare(idmap, dentry, iattr);
- 	if (error)
- 		return error;
-diff --git a/fs/efivarfs/internal.h b/fs/efivarfs/internal.h
-index f5c1a25be9969..34a0c53b5993f 100644
---- a/fs/efivarfs/internal.h
-+++ b/fs/efivarfs/internal.h
-@@ -16,10 +16,22 @@ struct efivarfs_mount_opts {
- 
- struct efivarfs_fs_info {
- 	struct efivarfs_mount_opts mount_opts;
--	struct super_block *sb;
- 	struct notifier_block nb;
-+	unsigned long flags;
- };
- 
-+/* efivarfs_fs_info->flags */
-+enum {
-+	EFIVARFS_OPS_RDONLY,	/* the registered efivar ops can't set variables */
-+};
-+
-+static inline bool efivarfs_ops_rdonly(const struct super_block *sb)
-+{
-+	const struct efivarfs_fs_info *sfi = sb->s_fs_info;
-+
-+	return test_bit(EFIVARFS_OPS_RDONLY, &sfi->flags);
-+}
-+
- struct efi_variable {
- 	efi_char16_t  VariableName[EFI_VAR_NAME_LEN/sizeof(efi_char16_t)];
- 	efi_guid_t    VendorGuid;
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index 12746ced6dc63..437dfea9aa42d 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -28,12 +28,16 @@ static int efivarfs_ops_notifier(struct notifier_block *nb, unsigned long event,
- {
- 	struct efivarfs_fs_info *sfi = container_of(nb, struct efivarfs_fs_info, nb);
- 
-+	/*
-+	 * This runs without s_umount so it can't touch SB_RDONLY. The
-+	 * modifying operations check EFIVARFS_OPS_RDONLY instead.
-+	 */
- 	switch (event) {
- 	case EFIVAR_OPS_RDONLY:
--		sfi->sb->s_flags |= SB_RDONLY;
-+		set_bit(EFIVARFS_OPS_RDONLY, &sfi->flags);
- 		break;
- 	case EFIVAR_OPS_RDWR:
--		sfi->sb->s_flags &= ~SB_RDONLY;
-+		clear_bit(EFIVARFS_OPS_RDONLY, &sfi->flags);
- 		break;
- 	default:
- 		return NOTIFY_DONE;
-@@ -384,9 +388,6 @@ static int efivarfs_fill_super(struct super_block *sb, struct fs_context *fc)
- 	sb->s_d_flags |= DCACHE_DONTCACHE;
- 	sb->s_time_gran         = 1;
- 
--	if (!efivar_supports_writes())
--		sb->s_flags |= SB_RDONLY;
--
- 	inode = efivarfs_get_inode(sb, NULL, S_IFDIR | 0755, 0, true);
- 	if (!inode)
- 		return -ENOMEM;
-@@ -397,9 +398,15 @@ static int efivarfs_fill_super(struct super_block *sb, struct fs_context *fc)
- 	if (!root)
- 		return -ENOMEM;
- 
--	sfi->sb = sb;
-+	/* The ops can't switch between sampling them and registering. */
-+	err = efivar_lock();
-+	if (err)
-+		return err;
-+	if (!efivar_supports_writes())
-+		set_bit(EFIVARFS_OPS_RDONLY, &sfi->flags);
- 	sfi->nb.notifier_call = efivarfs_ops_notifier;
- 	err = blocking_notifier_chain_register(&efivar_ops_nh, &sfi->nb);
-+	efivar_unlock();
- 	if (err)
- 		return err;
- 
-@@ -413,12 +420,15 @@ static int efivarfs_get_tree(struct fs_context *fc)
- 
- static int efivarfs_reconfigure(struct fs_context *fc)
- {
-+	struct super_block *sb = fc->root->d_sb;
- 	struct efivarfs_fs_info *sfi = fc->root->d_sb->s_fs_info;
- 	struct efivarfs_fs_info *new_sfi = fc->s_fs_info;
- 
--	if (!efivar_supports_writes() && !(fc->sb_flags & SB_RDONLY)) {
-+	/* Only refuse remounting a read-only mount read-write. */
-+	if ((fc->sb_flags_mask & SB_RDONLY) && !(fc->sb_flags & SB_RDONLY) &&
-+	    sb_rdonly(sb) && efivarfs_ops_rdonly(sb)) {
- 		pr_err("Firmware does not support SetVariableRT. Can not remount with rw\n");
--		return -EINVAL;
-+		return -EROFS;
+ 	block = folio->index << UBIFS_BLOCKS_PER_PAGE_SHIFT;
+ 	for (;;) {
+ 		blen = min_t(size_t, len, UBIFS_BLOCK_SIZE);
+@@ -918,6 +925,7 @@ static int do_writepage(struct folio *folio, size_t len)
+ 		ubifs_ro_mode(c, err);
  	}
  
- 	/* statfs()/show_options() read nostatfs locklessly; benign race. */
++out:
+ 	ubifs_assert(c, folio->private != NULL);
+ 	if (folio_test_checked(folio))
+ 		release_new_page_budget(c);
+@@ -997,6 +1005,10 @@ static int ubifs_writepage(struct folio *folio, struct writeback_control *wbc)
+ 		goto out_unlock;
+ 	}
+ 
++	/* After an error do_writepage() drops the folio. */
++	if (unlikely(c->ro_error))
++		return do_writepage(folio, len);
++
+ 	spin_lock(&ui->ui_lock);
+ 	synced_i_size = ui->synced_i_size;
+ 	spin_unlock(&ui->ui_lock);
+diff --git a/fs/ubifs/io.c b/fs/ubifs/io.c
+index 6c6d682427793..931a88329b5f5 100644
+--- a/fs/ubifs/io.c
++++ b/fs/ubifs/io.c
+@@ -72,7 +72,11 @@ void ubifs_ro_mode(struct ubifs_info *c, int err)
+ 	if (!c->ro_error) {
+ 		c->ro_error = 1;
+ 		c->no_chk_data_crc = 0;
+-		c->vfs_sb->s_flags |= SB_RDONLY;
++		/*
++		 * SB_RDONLY needs s_umount, see sb_set_emergency_ro(). The
++		 * background thread runs before SB_BORN already.
++		 */
++		sb_set_emergency_ro(c->vfs_sb);
+ 		ubifs_warn(c, "switched to read-only mode, error %d", err);
+ 		dump_stack();
+ 	}
+diff --git a/fs/ubifs/super.c b/fs/ubifs/super.c
+index 38972786817e7..2d71274e89ad0 100644
+--- a/fs/ubifs/super.c
++++ b/fs/ubifs/super.c
+@@ -312,6 +312,12 @@ static int ubifs_write_inode(struct inode *inode, struct writeback_control *wbc)
+ 		return 0;
+ 	}
+ 
++	/* Nothing gets written after an error, drop the change. */
++	if (unlikely(c->ro_error)) {
++		err = -EROFS;
++		goto out;
++	}
++
+ 	/*
+ 	 * As an optimization, do not write orphan inodes to the media just
+ 	 * because this is not needed.
+@@ -327,6 +333,7 @@ static int ubifs_write_inode(struct inode *inode, struct writeback_control *wbc)
+ 			err = dbg_check_inode_size(c, inode, ui->ui_size);
+ 	}
+ 
++out:
+ 	ui->dirty = 0;
+ 	mutex_unlock(&ui->ui_mutex);
+ 	ubifs_release_dirty_inode_budget(c, ui);
+@@ -1839,19 +1846,26 @@ static void ubifs_remount_ro(struct ubifs_info *c)
+ 
+ 	dbg_save_space_info(c);
+ 
+-	for (i = 0; i < c->jhead_cnt; i++) {
+-		err = ubifs_wbuf_sync(&c->jheads[i].wbuf);
++	/* Like ubifs_put_super(), don't write anything after an error. */
++	if (!c->ro_error) {
++		for (i = 0; i < c->jhead_cnt; i++) {
++			err = ubifs_wbuf_sync(&c->jheads[i].wbuf);
++			if (err)
++				ubifs_ro_mode(c, err);
++		}
++
++		c->mst_node->flags &= ~cpu_to_le32(UBIFS_MST_DIRTY);
++		c->mst_node->flags |= cpu_to_le32(UBIFS_MST_NO_ORPHS);
++		c->mst_node->gc_lnum = cpu_to_le32(c->gc_lnum);
++		err = ubifs_write_master(c);
+ 		if (err)
+ 			ubifs_ro_mode(c, err);
++	} else {
++		/* Syncing the write-buffers would have canceled them. */
++		for (i = 0; i < c->jhead_cnt; i++)
++			hrtimer_cancel(&c->jheads[i].wbuf.timer);
+ 	}
+ 
+-	c->mst_node->flags &= ~cpu_to_le32(UBIFS_MST_DIRTY);
+-	c->mst_node->flags |= cpu_to_le32(UBIFS_MST_NO_ORPHS);
+-	c->mst_node->gc_lnum = cpu_to_le32(c->gc_lnum);
+-	err = ubifs_write_master(c);
+-	if (err)
+-		ubifs_ro_mode(c, err);
+-
+ 	vfree(c->orph_buf);
+ 	c->orph_buf = NULL;
+ 	kfree(c->write_reserve_buf);
+@@ -1977,10 +1991,7 @@ static int ubifs_reconfigure(struct fs_context *fc)
+ 		if (err)
+ 			return err;
+ 	} else if (!c->ro_mount && (fc->sb_flags & SB_RDONLY)) {
+-		if (c->ro_error) {
+-			ubifs_msg(c, "cannot re-mount R/O due to prior errors");
+-			return -EROFS;
+-		}
++		/* After an error ubifs_remount_ro() can't write but still works. */
+ 		ubifs_remount_ro(c);
+ 	}
+ 
+@@ -1994,7 +2005,8 @@ static int ubifs_reconfigure(struct fs_context *fc)
+ 		mutex_unlock(&c->bu_mutex);
+ 	}
+ 
+-	if (!c->need_recovery)
++	/* Only valid without a media failure, see ubifs_put_super(). */
++	if (!c->need_recovery && !c->ro_error)
+ 		ubifs_assert(c, c->lst.taken_empty_lebs > 0);
+ 
+ 	return 0;
+diff --git a/fs/ubifs/xattr.c b/fs/ubifs/xattr.c
+index 3b0e8a270f594..572f6f3e52ad3 100644
+--- a/fs/ubifs/xattr.c
++++ b/fs/ubifs/xattr.c
+@@ -260,6 +260,9 @@ int ubifs_xattr_set(struct inode *host, const char *name, const void *value,
+ 	if (check_lock)
+ 		ubifs_assert(c, inode_is_locked(host));
+ 
++	if (c->ro_error)
++		return -EROFS;
++
+ 	if (size > UBIFS_MAX_INO_DATA)
+ 		return -ERANGE;
+ 
+@@ -564,6 +567,9 @@ static int ubifs_xattr_remove(struct inode *host, const char *name)
+ 
+ 	ubifs_assert(c, inode_is_locked(host));
+ 
++	if (c->ro_error)
++		return -EROFS;
++
+ 	if (fname_len(&nm) > UBIFS_MAX_NLEN)
+ 		return -ENAMETOOLONG;
+ 
 
 -- 
 2.53.0
