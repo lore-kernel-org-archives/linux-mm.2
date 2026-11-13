@@ -1,95 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70992606A327
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 02:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC74606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 02:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R2O5BE9R
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Kmi42mXl
 Received: by kanga.kvack.org (Postfix)
-	id 7E6286B0636; Thu, 12 Nov 2026 21:33:53 -0500 (EST)
+	id 21FE66B0646; Thu, 12 Nov 2026 21:37:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 796646B0643; Thu, 12 Nov 2026 21:33:53 -0500 (EST)
+	id 1AABA6B0647; Thu, 12 Nov 2026 21:37:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D3B76B0644; Thu, 12 Nov 2026 21:33:53 -0500 (EST)
+	id 075406B0648; Thu, 12 Nov 2026 21:37:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AF3F6B0636
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:33:53 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CF4898010B
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:33:52 +0000 (UTC)
-X-FDA: 85428525504.14.3EAA814
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 39DB740006
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:33:51 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R2O5BE9R;
-	spf=pass (imf04.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D05086B0646
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:37:16 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 30005120252
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:37:16 +0000 (UTC)
+X-FDA: 85428534072.01.0F2B667
+Received: from mta0.migadu.com (out-131.mta0.migadu.com [91.218.175.131])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 36DC720002
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:37:13 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Kmi42mXl;
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.131 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794537434;
+	b=wXLdZIuevuhfLo0i15YExSiKRl8myY8Xhz4JUDh7Y+akiEa+BLx/I3tDWRtcsyky5gYGBG
+	zG5RdXCUdahKcJpSOhw8JnDq8eCcw0uRU3q1FuUi6C1Zq20fwhvpgoT6wiVn09RU+P59jP
+	nyXeX0pBFvvA5OaGhyyoncTJAWwUP2k=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Kmi42mXl;
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.131 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794537231;
+	s=arc-20220608; t=1794537434;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vo3EuFGzZ8sMiniz968ZKrMVFQcbEM5I9uSXgOOhJ8w=;
-	b=1O2fDK2wIgwSpFShPYIClynrzPSObdNCMXPCXRlZcHqxiyZju8la3KTNDu1wXv/hLB6wyE
-	HIZkwkjy0Gx0lQ/KM75B2OAXX2myfQVSMLRNmJ+BqwU621PSsfVboSi+3RVce0LRpMCEO5
-	tRGU/8P1UP2uW1T8Ej7oCqC41wC5wiI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794537231;
-	b=WN8ODFbps+f0Gp+dM7hSmwgyMITLKJaeVOV7DoNijh1eEHKy98NMhFMr7P5V99830m/Tbz
-	6QH0hZ9AhsOauVX+QXr7mTbNoaH+gb1RypNlOy5A5RN2NRD7eJqZOFyhP38rtYdwRNBfkG
-	fJWZZCAPqKYUTWps7/lXLB94jNshXc8=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R2O5BE9R;
-	spf=pass (imf04.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 908D86252E;
-	Fri, 13 Nov 2026 02:33:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68ECF1F000C4;
-	Fri, 13 Nov 2026 02:33:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794537230;
-	bh=vo3EuFGzZ8sMiniz968ZKrMVFQcbEM5I9uSXgOOhJ8w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=R2O5BE9RfQz3R4GwH6pbaOg77FwMYCfskeCy28RtNXXRKID45E5znoskpMUyVkN1r
-	 IOVkVJ2Bw0NqyvNixVYmsqRUNDOZLRjH/7i6c+Oj4JoXO3kFXX2uFeadT3lgojfsBc
-	 0dngUo6lzDCUjknWmHmkeVzAquODA2lz9/z9AhUCwcmAm8J1e7QhR4XEnoVagxxRFD
-	 3sdHOUb3CUiXreG+qY5h0jE5I9WNYCUlfMK3DBDNkvy4wcKXooraF8L5AmEOqvkS1f
-	 3HuYQhJymnw9o9k+1dtZVYfxrxfu7qnhQOlvtOjIdBWgyTttu3SKHBRJlAg/NCQiSQ
-	 8/ZrS6jvxNTtA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>,
-	dipietro.salvatore@gmail.com,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	linux-mm@kvack.org,
-	Salvatore Dipietro <dipiets@amazon.it>
-Subject: Re: [STABLE 7.3.y] 0e05a469c294 ("mm/page_alloc: avoid direct reclaim and compaction for costly __GFP_NORETRY allocations")
-Date: Thu, 12 Nov 2026 21:33:29 -0500
-Message-ID: <daily-reply-2026-11-12-1484516151@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261112094205.994560-1-dipiets@amazon.it>
-References: <20261112094205.994560-1-dipiets@amazon.it>
+	bh=K1FZSZTtwlQFE90cbI0Nr3F5RUyKerMzzNbSuIEFiEg=;
+	b=VPD1pjVWQwsIcBoJsVTQ+/tVqwx9aLRz6JbSPVr/v0f5XMeYPvVtYWRbinw7zX+8piKgDw
+	E9oDAWrdyFxPPETJOTBBQdG5R0PNeAIY4czMxLEhFf0a1Or0jI2RE7VZysWPC2bCEyavgQ
+	JrHRC2YMzSDcdTjXhR9XJqXxsvFwqyU=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=MFXk5wTZQlNYOhRGLZAR7H0oTSAkWycqp+1VJkXLZqo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794537431; v=1; x=1795142231;
+ b=Kmi42mXlThlbRJtif9w0jI/C3akIzoRzs+jo9m20zM/DvMgcGRPO8XeGs0yhyiOO8CDfTl8W
+ VuZLmw8sC/4EbVCE87fDYr4Wsh8UlxQkxi0KnQ5rw7fx8+cBCCSEET8OfOgenNnX1cREAfhlg6p
+ 2XRWMiXpgmH3dhF+SBEK91SU=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 5429636b6996bd30;
+	Fri, 13 Nov 2026 02:37:11 +0000
+X-Mizu-Trace-ID: 5429636b6996bd30
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 12 Nov 2026 18:37:10 -0800
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: sashiko-reviews@lists.linux.dev
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Dave Chinner <david@fromorbit.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Qi Zheng <qi.zheng@linux.dev>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
+	Chris Mason <mason@kernel.org>
+Subject: Re: [PATCH] mm: list_lru: don't use a new memcg's lists for an
+ offline memcg
+Message-ID: <avZ3rcGiLnWS4qUq@linux.dev>
+References: <20261112221248.3512447-1-shakeel.butt@linux.dev>
+ <sashiko-outbox-211977@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 39DB740006
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 9or9ndkaggbtu85a9s58ht3eq7r4dcyh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <sashiko-outbox-211977@kernel.org>
+X-Stat-Signature: xftezrc397omx7f97s1nidu58khy57cm
 X-Rspam-User: 
-X-HE-Tag: 1794537231-510257
-X-HE-Meta: U2FsdGVkX1/Hr8aSAo/nXS897eFWzblNr3c5bdd7NLRzoq77nshUeapEePbIaQPPB2bVkTWMHPgpTxZY7HsWu13ayuG7+7vh8k1IlXkk3NNs0ihfnEWyzxJvrseA7wjSklJswXKO/zF9BbyEExXn+JzRs2Z6A7GKLzlXZVnEzleH/3XwknZCcVH/sdsh20kPEiSf8/CmJRlRPVDCRpfDeuMbHK+OTFSNYQPfewPW+i3+LltowLJ7lG6vJy/OZsNPxpkWy/hqWti73IIjE8Pg9ZYf9x3bh3RnzF6fbUIaS9eurfa06iK2AFGmMmDyusckkpGL/aa15V7pjIQp6w8PaPGiuBSyaOZ7PUM3Uubd/SPbfbuSWa581HXL3Cj6YV6K4tP0xeyQW5MFhzchuSP8tFAN+vurDstFeSI279T5YR/hJ4IoefOiNkDyze3FV70DfYRSJsjQhsnYvgTx9dd7BSe9/KqawpUvvxqON+VPz0bla1lmf7Y2qk4zTECjzXtV4szGai6wnzV/O6pRdYTaYgSpoxu5evntGypvdQQ4u5hud31FQP3GyXugiP/U3ntbFDdekB8NkdYRGFW/pL0qz7WRF2Y6KSaGmkDtKsPD03fuUODacqvHb/UJLelQ4NJ13M9aYLNu8SE1XjB8UYhCXsoC0/JtIvplAD61eMCVpVziliKTPoiO0i/a8ktjEv57B55Q3VD23DOeUnjO18Lz7EqXGtBoeJnq71gFeISfA2DCLhkWNHmbSJQignDuUDYGhyDMtMhXpUg8tqFmqb4PJRlQ/wdq8JdYeeuyJ7iEQzInOikx1CwTiEHeqoPQpmYx5LT1VRQS5aYNiHGMpF7ZSTmxvhJ/5+eoxEvDHjb7//sbC9zPaEYB/NNp9LBLFF6Gw34VO/dRWshWn8rrmM4rhEzjQdPvCdBbRJz0w5Xup9XP8IKFI8qkXqL0CVGQBrfx9mzsdU+YBi0g52D1Bp+
- 98BhBtUs
- tzOc4efRwPAyDOVyEXgKGnjAKZSiLOvvd1p+nayAKatbkubbAGhqSJ8JmSx+67ByuxpXZgtGeMCP17xuenIjhABx1t8qD6X6TJ7bfrlzTfW6+bq8VCK0zGYAHtZ2DTq8tgYAFeH2E/8Jg63e567C6h6UpCBWFnkGfqrL53DKcLBY0YEHdOibk9itXuiR5qKjp3FHRkIZS+XGTUtqNrn6G2OsneqUNRkDsmQ+Gdyj295pDRyA7aMy0MKrHsNxCSzbLyVB+Pd9O8A/fupn53rxLhfNHLTus6TQgmAIBm21RoK6pih/sjvdIKowCkEEgnhapBuSewlMJWlIhSRg57FoDLpRLLRtgEylRADHeCcFqkK/Hg0M=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 36DC720002
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794537433-709748
+X-HE-Meta: U2FsdGVkX1+ckVO1HdYUhvpjcSOjtR6/0V/N5QZrjx3vFKmHhR8mKfbCtCySFUKZw6XijaTxAKbdQY80NU2as/PtDQeY6lI74T8GBYERkEJ88/Tw4vVTGxnwwpwq/eS/D0XKdV9q+dVVsOiil+1fm0x8Q25FkVZzGV/ej/POL/4vijCDwxLP30IL9xpJWH4Zb/Ln4SsXYfnX7UbA6dlP5azYnVQlekKuCMVgrrsMSyEaTUKrE1jY2Hfh4Gb9AooC57wAar1PSTSJr13oPdW9hQuIvRZzMHhyYjt8BpYhVRWtMMlDnTQV9o5sXUy5Uw/ZnBQy7CGz4b2+paZfcsso5+FhsI65LAoYN5Uf/XBrIDLwet72eEBzN9uZJ7QvR70VwYerJu1Q+jNEY1VvmGx7JiJVBxPAZFSP9cpJN0DRfwXxC6QXO5APMBd1qLAvCvBaAUrnPbj+JJE5CoGWn7NjtQcZQBg6Tz+/8WwTY53uA5hpwHOvuUWHApO9LFKq1hy7ru0h9ZNqMxJMDSBEQKwKQ+wZVzyPSIcFYo+hKRRhIF39G6JsdNDgsTuUnu8Wer1ubNWznT2+ad3By749XWcHbRX0DYIVy/8sv1DS3u3WIko4jTMwm7LQDxnlzBmuE58FWxpxu1R8Mwuw3j5oDhxAlK74N0uuyZXyawib8LJrO18iQGwfz7S6Hs6SZ0o5XVmFHV+HJ8Dbh2w4nOnVYRWmaaNQDgwjVRyidtSV2BxM+Ub+siQfkldY8GAUm1yBKqYfbF8/0DXwT7kWbDnuyrucNcOJmYpgHH1rLHZ7uf6Rhii+kRRmaDeDjqjruFT1oUukKOrq5V67zia4TPX9a/s6EP/UzFvHY1zFJXaVEevnxdw7aYVinHpr5VKQd53Rl4LJiL/lQqhSyCJvflnX/GtplNsHi2cvKWd/FPNSgdN2PdGWNAWXF4QzRcnhZzS4KUIbHmF+yIAVg8ON8Gr++xM
+ JgwxDOH+
+ +FoIN1M2IZk5/ecWOQUlxeNGT434ut1lGnGEdP3iRhhR2Q6Am8On86IMj48N5RE87bysUfZbwdDt/ZMFbULvCC6gLHUlgCsx7b0GqhvKN81qPgipCQJIlYN3W7R8aFe5DtLfuZ70SKaqAyoMmn4IpVP9gRqzwYGgYcexkdklq0pnEJ+YsDY8S75aHhO49EIP4ESXQUOGfkIMaAHZz7OA2FZgnTcTCn89K0HDRU2RENzfvm6psVb1ntp5Cde3yTfhfp00thcr1AeYJfJe9h8h/L1MQ7j6jce7DnKFc1WmgOzguGDhzLvIpiCv9eKN8WMu9J6jxT6JP8kgG506fINHl4BE1bNVKW+CvVLctJzH0wiUQV76XsshvESB9ig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,16 +97,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-12, Salvatore Dipietro wrote:
-> [STABLE 7.3.y] 0e05a469c294 ("mm/page_alloc: avoid direct reclaim and compaction for costly __GFP_NORETRY allocations")
-> Hi,
-> Please apply to 7.3.y:
->   0e05a469c294 ("mm/page_alloc: avoid direct reclaim and compaction for costly __GFP_NORETRY allocations")
+On Fri, Nov 13, 2026 at 12:15:11AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [High] mm: list_lru: missing mlru->memcg check in
+>   memcg_list_lru_allocated()
+> --
+> 
+> commit d213b82b7b4ca4978c858df10a2a8cdea14626e4
+> Author: Shakeel Butt <shakeel.butt@linux.dev>
+> 
+> mm: list_lru: don't use a new memcg's lists for an offline memcg
+> 
+> This commit records the owning memcg in struct list_lru_memcg and checks it
+> in list_lru_from_memcg() so that an offline memcg whose kmemcg_id was reused
+> does not use the new memcg's lists.
+> 
+> > diff --git a/mm/list_lru.c b/mm/list_lru.c
+> > index d1d256822ccc7..937dbf239c9d4 100644
+> > --- a/mm/list_lru.c
+> > +++ b/mm/list_lru.c
+> > @@ -72,12 +72,15 @@ static int lru_shrinker_id(struct list_lru *lru)
+> >  }
+> >  
+> >  static inline struct list_lru_one *
+> > -list_lru_from_memcg_idx(struct list_lru *lru, int nid, int idx)
+> > +list_lru_from_memcg(struct list_lru *lru, int nid, struct mem_cgroup *memcg)
+> >  {
+> > +	int idx = memcg_kmem_id(memcg);
+> > +
+> >  	if (list_lru_memcg_aware(lru) && idx >= 0) {
+> >  		struct list_lru_memcg *mlru = xa_load(&lru->xa, idx);
+> >  
+> > -		return mlru ? &mlru->node[nid] : NULL;
+> > +		/* Lists at a reused index belong to another memcg. */
+> > +		return mlru && mlru->memcg == memcg ? &mlru->node[nid] : NULL;
+> >  	}
+> >  	return &lru->node[nid].lru;
+> >  }
+> 
+> [ ... ]
+> 
+> > @@ -602,6 +604,8 @@ static int __memcg_list_lru_alloc(struct mem_cgroup *memcg,
+> >  			if (!mlru)
+> >  				return -ENOMEM;
+> >  		}
+> > +		/* Set before the lists are published, and never changed after. */
+> > +		mlru->memcg = pos;
+> >  		xas_set(&xas, pos->kmemcg_id);
+> >  		do {
+> >  			xas_lock_irqsave(&xas, flags);
+> 
+> [Severity: High]
+> Does memcg_list_lru_allocated() also need to check mlru->memcg == memcg?
 
-Queued for 7.3, thanks.
+Yes this is correct and Andrew already have a fix for this.
 
-
--- 
-Thanks,
-Sasha
 
