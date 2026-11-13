@@ -1,82 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB5F606A339
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 21:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C14606A89D
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 21:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cbvfpgu8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AX7USU0W
 Received: by kanga.kvack.org (Postfix)
-	id D666B6B05B5; Fri, 13 Nov 2026 16:39:40 -0500 (EST)
+	id 9425B6B05BE; Fri, 13 Nov 2026 16:40:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEA2D6B05BC; Fri, 13 Nov 2026 16:39:40 -0500 (EST)
+	id 9197E6B05C3; Fri, 13 Nov 2026 16:40:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDA056B05E6; Fri, 13 Nov 2026 16:39:40 -0500 (EST)
+	id 7BE386B05C7; Fri, 13 Nov 2026 16:40:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DE506B05B5
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 16:39:40 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 17B38400B8
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:39:40 +0000 (UTC)
-X-FDA: 85431412920.26.9BB5E79
+	by kanga.kvack.org (Postfix) with ESMTP id 532CC6B05BE
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 16:40:45 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CD827401B0
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:40:44 +0000 (UTC)
+X-FDA: 85431415608.17.99602B8
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 51449C0003
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:39:38 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cbvfpgu8;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 0C5A51C000F
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:40:42 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AX7USU0W;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794605978;
+	s=arc-20220608; t=1794606043;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HQYsjuLSgqmkYc+gxSurb8uN4B+g/9xyTOSp3ZLANuo=;
-	b=QrpXd32AXEFfqy1z5C0M89O+Xlt/68RtMZb18IkTyw8yYGzZCFU/mo5/ILLyzOdSTFdjUa
-	ulA9l8Pw0QKpxKYq2lFaLg71YYY1hWN/1Da9vVIwAEfLtp1htJrJvboyUT/UeEhthVDACu
-	NhByah0sZMTRy6McIYZi6+GI3BfRiPE=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cbvfpgu8;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=P1llZ08OdgTejftE/Zr62LvYnJQ1b5X/QxBDEpfHpvw=;
+	b=NfghBkHEjb7ZdblzVI7EwwWY6mqyBFPwMMZ4GL/jkr4vukf8gSJV48j8m68JXv72VpIs7S
+	4MBfemyBaIyd7+5mlSAwJib/6+e+5NMsoFyIlEwmEZVsHpO+cbqFMRh7lsNSCiUlWiEUzg
+	/f7pf01llQRkgIEXSVdMC5qlnNFzDuQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794605978;
-	b=EAMyVxZ2N59ZmCCuQyYaunUzLHlBqH9IPkwwhYHrRvtGsU/jNp/3BAPjwoGiEUDZkadCcd
-	w6PtkbJQKZqVcbT+cNRsDKaxXCngnZ4SR4vyI5knR0rxmWk5xqkS+KIAbCFPWJ9b0zUvLC
-	IlwpCjBLQSdLjJ07xup5BcbxfmFb3A4=
+	t=1794606043;
+	b=e3rf5GXjwpRoLYAahOhokNDiuFe2z2OHFT8gW0MwC4K3V7r/zntiaSrkuOiLEyurUZhv2y
+	V+6AoK2DiYPjv60HM3SsXVJw1GmUImA5o+BbULlGoci+g9Nb819uK3r56JUUVD1Njc+2JS
+	IYN53POwGpYptp+smK3TIr+KkwFlVjI=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AX7USU0W;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 884E6623B6;
-	Fri, 13 Nov 2026 21:39:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B0C1F000C6;
-	Fri, 13 Nov 2026 21:39:32 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 904E361D0E;
+	Fri, 13 Nov 2026 21:40:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9E3E1F000C4;
+	Fri, 13 Nov 2026 21:40:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794605977;
-	bh=HQYsjuLSgqmkYc+gxSurb8uN4B+g/9xyTOSp3ZLANuo=;
+	s=k20260515; t=1794606042;
+	bh=P1llZ08OdgTejftE/Zr62LvYnJQ1b5X/QxBDEpfHpvw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=cbvfpgu8tOow6Wv2h/7RSGys/vhrTWGQUnh4KqZ/MxLpfcdUf3D5uLQJDematIwO6
-	 pF8ZFDoI5V9m6v0E2uv31piPTWg5RXcGhHOMnGB+I01f81xmVBupgzZAhOd1wnhrNW
-	 S9hFDCZ8T/veXtk3HWrex1bO4RiSQWcnyZWnwvE2hEuQIiziMaZL8uAjJVaIED0+dX
-	 8meuP51dZrUS3Vzh9kCgbv2SscDfUdKlnVIslfTnnyoRorO6NK6HfpIJ7CuQZO8P84
-	 WPetnx9aM+9b3QGtptr+vAsx7A4FMTZfolDdiM/+o0o+7Pgeat5j7DADWq6BOdsgh0
-	 uZwK1kSfZhR9w==
-Message-ID: <a502f84a-b349-487d-94d9-aff7d9b95102@kernel.org>
-Date: Fri, 13 Nov 2026 22:39:30 +0100
+	b=AX7USU0W6anKzcrRLBQdaC+yiY9KxCD7w7bGRNj34mps7b9sCJ+2njdozvZ13Sv1A
+	 5DEDBAZhp3CXzv5xyTDwgeoZEdbYxI0DEqB8UPwXkShseY9DviUFLkgLvhKa5dzRNk
+	 FBMClX5B3CafyBUJxjxN9G59blWZ65JOyNeG7C/FsdXwgJhvHHZoAyeubc9amyjPSa
+	 vHyRl/Atlq99zIEelKyRYEZkEq5cvRQWjoQE04E0afBOxxVvDbjB/cAtwu2wojFuP+
+	 dAaV8d04vYXJHYY+LGgbGGPOCbZs0Ig8eawUOGcsrznVXljCcs5/u+Tq5wbQMDikUO
+	 IHoYdJ337SSWQ==
+Message-ID: <0cff8050-24ef-47ff-b107-70a5acdea631@kernel.org>
+Date: Fri, 13 Nov 2026 22:40:31 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/madvise: zap markers from guard regions
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>, Mike Rapoport <rppt@kernel.org>,
+Subject: Re: [PATCH RFC 0/8] mm/huge_memory: clean up and speed up large folio
+ splitting
+To: kasong@tencent.com, linux-mm@kvack.org
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Tal Zussman <tz2294@columbia.edu>, stable@vger.kernel.org
-References: <20261113-disallow-uffd-guard-install-v2-1-9d0063c70542@kernel.org>
- <f8b0f20d-90dd-496d-97e9-9a232124e3e0@kernel.org> <avd8-uVPf6BSqwEQ@gremlin>
+ Matthew Wilcox <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+References: <20261114-swap-thp-split-v1-0-dfa8d4fa448d@tencent.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,22 +131,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <avd8-uVPf6BSqwEQ@gremlin>
+In-Reply-To: <20261114-swap-thp-split-v1-0-dfa8d4fa448d@tencent.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: rq8esf3591b77aikmz53y13crezzth4b
-X-Rspamd-Server: rspam01
+X-Stat-Signature: 5jiaij3jtgogbb9cjfj1c8ussp4wx86j
+X-Rspamd-Queue-Id: 0C5A51C000F
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Queue-Id: 51449C0003
-X-HE-Tag: 1794605978-165777
-X-HE-Meta: U2FsdGVkX1+vIzQRWYuQ2FAa8QG9gNKcutSYvrgdIE6r2WRq3nsfrElXMnKEuxAt+rnzzU4UCHJhW1CaNeYa40dxXEL4KFEkZL+qvv9OxtD7KY4MMqj7m1sSB8g6yGuVYftwwPASqjwpI1wVYp32/xn9dHyC4wmEE5NdNeeDudxtZjCBjMZVeQBc2gyANRzu3jYdqTPjbYv4eDVXtnf+eAVgfyZSSBTQBAAlympCuIEGocHc7kKB+0JMhonH5Ue5RW2I00ZUpthB43ostVJoZhbGzRYHnCXxB0BCZ9wv+LjsY5UhiQ9dBSRR9Es0qBYKCOq8UlyOfY7Jwecb8AJVI631uUqCClIwb2F853KLKpB096nqxxgdNevSgpMamKoOq3ydyKznavtkeHx80JYx2fqAmmK8n+p5ap6Qon4NZGy4B38i4nTmQm8oAY63T4541IQgi/IEmVyDFpb7GcU7VDyLMmkdcy2V3JywDGHqbZe2RqlmLLgaE6vFUnwi6wYH078hQP/FLZef0xNnQuxpBifffEXmiWzicLDDBqSsx5T4afey1OD2KYIuProAdnF9qTBNCCtBtqYTcpU+Pze/DESSBUqdcPV0MG1EH5+TNDYFKRSfOdqhAlMKU30u/g7afCHaAbcEgxysStfFZnXOzxyzRjKug0H53KOWZdNAmu52P53uuPsv5VhAf6bU8+Spa4Lr8v62NcXWkDGnPhJa1KTOXIv40fmCjN7G8GK+jWNWmk/kDHcvxLn4z1EtDV1xnp3PeSutNjmBY/GD8n8duUtsu/p++K4fWaj89PAFSh5viGjDuYclzCogjCjjAhJLW/vNj7FrEb4muHPPwh7rbEKo8+tCy1AamojFSvD5XHBH+E8a42EuC0koSeSrhRVyckHIJsLxMYi4Vaoc04q98rfYuwqIaPSWANtUqFF04VHdM/uUSuFXz31PawjNbbPJdBsjN1CxiG4OK5Kg5km
- j+gN+nLw
- mBOIEgd//ni+FmpKq8cSHpjVUJkfK2p7zdAiRWc5v3LRdzo6rbHkW1+cqNghZ1UG+XMBsZ+q8/7fNAdBuAZ7I4HJIY/9CVZ01U4DamPWDE6eMP8dQFWR8fwaZryEC2DOsY2ln2k7g1nLAyWhfbAyUsKRQ9p/tf35qLwn77fcuYR2Iv3VnRQUvULqt0SQkDxYYjmFz9zeitT0PJ/vGz4+9Ts3bfKrIpbjzNTJLX+4kIScTJVowDVYYmCL8HOsXtTF9kcpKg2/7rwQadfnpCNST3PAPFQ==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794606042-61231
+X-HE-Meta: U2FsdGVkX19dVl2lY5uoGle2uIzmGBmwmWyfchia8EHaVJeXZ0Xc3jAs5XIKvxpXj4Zag+xuLmnb9UTQTOSqIzhFWOXakJCAktDuQEWsPdk/6rFeHcagMRavgbBO0Q8UsFgVOxMQPoySukZcce8GCEvREuKHv2c8rNz+Adr5R3nYB5O14I/6GRYrEhkd/eu0itJ9/z9MOTAMKRJkP+zNE0VpY3enrbmEUL95isgtRBGXPYkUx7PJ771YSdWGDFKiikUfveC/uuQx+o1P3G2GulNUUUkSejvIL+QtBA9j8C40D033bjxx4JLaKA0PUUgdvjcAu2wJ4LP5BNxNfBW5RNh7CZDbbMz/ov6/VzbluWDK48fuRpsLO+V5HW8d9sOE+6Tn4HxjpkJ94uXMWfVrHQgsvwsKumbvdKi0n4gzzZPEbUnNMctFA6vIxe38Mtt3UZ+Z4JY/urho80iiRaWZdRhnh4J7DTEXJ7qU3kT80o39Mf1Ynb1zWu7rthsf1mF9iZ9OYLh4jvH/CKljIamtPehKG4gCl1YrEnSXcTRKjZ+TSI4sTzN+zQu4Q8pJGFnqEBnaiu1IgXtWs82RBBy7pg393KdTa/vIF4ayDR/E6fgSr2JqFcYoobR8MfRlAJXwT9fj695NvnpeA4GZBRvpKi/CNdVLytVY9LOeW6xCgcKt2C3aOt4NfsJ5IRMnZHZtbN9YHWNs0N1iGPSdwm+5heUeYrwPMfdXKqeZ8Tsab3Y93RhunI1MJZrzJFi8o0iv8fuS2hQ5sCBBVwLzwv7Xl5OxAPgBr+cGgr11xljUfuNldv3ohwh/eEo02cDsU5/TVKT21QId3ysz8vhHmlwkII2lSpYNKxX/hSZt4A0jLXlcaDBxl/dbRYcpMpXK7VVHTU6NQ48Q5MBByKTaVCoNF429Q2VbNqTStOSfPyKw9M3SfKC8qPjbecOsBcKpeG2Daqs2yUiHj0chVnmUOnh
+ DtSe6+B2
+ YQt8Mqu5q31agdgz1GWdz9VfvyTJ60rvMGOLSW6y3WjD8+oV+PiPn0bjqrfKcAqmdVqGaRylbGpRD76v2JERtvph2ZriETdNm2P4vzftEhDJ/2f/FDW969gSY1mSwRmLrG1dYfKoUPDGbwkL9DmE7PnmCQo98MiMqsj1fSnFkBM9dguGTMJLcTVQgdS3jmp/c4HcnTypwTfMqePB082xk+3Iy/oh6dtr7yTJLqmzyivPNOrC+Qfp9LntNrVCLeQWlSj8HbSD1WLw/fgamjn34aUlrNrQ/Rn0OdaUetSiSgHXENurFrkK1e0BBMDyJcHyTrOBOHXPKUh7VpWs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,90 +154,15 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
->>>  mm/madvise.c | 28 +++++++++++++++++++---------
->>>  1 file changed, 19 insertions(+), 9 deletions(-)
->>>
->>> diff --git a/mm/madvise.c b/mm/madvise.c
->>> index 0214efd2a014..4f7728583207 100644
->>> --- a/mm/madvise.c
->>> +++ b/mm/madvise.c
->>> @@ -850,6 +850,19 @@ static int madvise_free_single_vma(struct madvise_behavior *madv_behavior)
->>>  	return 0;
->>>  }
->>>
->>> +static void zap_range(struct madvise_behavior *madv_behavior,
->>> +		      zap_flags_t flags)
->>
->> Two ... ;) But maybe it's consistent like that in the file, didn't check.
+On 11/13/26 22:26, Kairui Song via B4 Relay wrote:
+> Hi all,
 > 
-> I'm a bit exhausted, can you or Andrew just fix up whitespace like this on
-> application?
-> 
-> It'll be easier when I have the VMA tree.
+> This series slghtly cleans up the large folio split path and reduces
+> its overhead: uniformly splitting PMD sized file folios to order 0
+> is over 20% faster.
 
-Yeah, absolutely. I'll let Andrew pick this one.
-
-> 
->>
->>> +{
->>> +	const struct madvise_behavior_range *range = &madv_behavior->range;
->>> +	struct zap_details details = {
->>> +		.reclaim_pt = true,
->>> +		.zap_flags = flags,
->>> +	};
->>> +
->>> +	zap_vma_range_batched(madv_behavior->tlb, madv_behavior->vma,
->>> +			      range->start, range->end - range->start, &details);
->>> +}
->>> +
->>>  /*
->>>   * Application no longer needs these pages.  If the pages are dirty,
->>>   * it's OK to just throw them away.  The app will be more careful about
->>> @@ -872,13 +885,7 @@ static int madvise_free_single_vma(struct madvise_behavior *madv_behavior)
->>>  static long madvise_dontneed_single_vma(struct madvise_behavior *madv_behavior)
->>>
->>>  {
->>> -	struct madvise_behavior_range *range = &madv_behavior->range;
->>> -	struct zap_details details = {
->>> -		.reclaim_pt = true,
->>> -	};
->>> -
->>> -	zap_vma_range_batched(madv_behavior->tlb, madv_behavior->vma,
->>> -			      range->start, range->end - range->start, &details);
->>> +	zap_range(madv_behavior, 0);
->>>  	return 0;
->>>  }
->>>
->>> @@ -1217,9 +1224,11 @@ static long madvise_guard_install(struct madvise_behavior *madv_behavior)
->>>
->>>  		/*
->>>  		 * OK some of the range have non-guard pages mapped, zap
->>> -		 * them. This leaves existing guard pages in place.
->>> +		 * them. This also drops any PTE markers in the range,
->>> +		 * including existing guard markers, which we reinstall on
->>> +		 * the next attempt.
->>>  		 */
->>> -		zap_vma_range(vma, range->start, range->end - range->start);
->>> +		zap_range(madv_behavior, ZAP_FLAG_DROP_MARKER);
->>>  	}
->>>
->>>  	/*
->>> @@ -1845,6 +1854,7 @@ static bool madvise_batch_tlb_flush(int behavior)
->>>  	case MADV_DONTNEED:
->>>  	case MADV_DONTNEED_LOCKED:
->>>  	case MADV_FREE:
->>> +	case MADV_GUARD_INSTALL:
->>
->> Huh why that change? Not spelled out above.
-> 
-> It's just the established way madvise interacts with TLB maintenance.
-> 
-> Anything that uses madv_behaviour->tlb has to return true here so
-> madvise_init_tlb() and madvise_finish_tlb() do the right thing.
-
-Ohhh, I see now.
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+I expect (well, and I have) some fixes in that area, so we better hold this off
+for the next week.
 
 -- 
 Cheers,
