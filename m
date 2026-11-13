@@ -1,101 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7347606B220
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09504606A327
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XIZrg6Vi
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cV0oIxbY
 Received: by kanga.kvack.org (Postfix)
-	id F2AED6B05B4; Fri, 13 Nov 2026 13:01:46 -0500 (EST)
+	id 2E27F6B05B0; Fri, 13 Nov 2026 13:09:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F02196B05B8; Fri, 13 Nov 2026 13:01:46 -0500 (EST)
+	id 2B3576B05B2; Fri, 13 Nov 2026 13:09:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E181D6B05B9; Fri, 13 Nov 2026 13:01:46 -0500 (EST)
+	id 1A2A06B05B3; Fri, 13 Nov 2026 13:09:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C90026B05B4
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:01:46 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5DE7740207
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:01:46 +0000 (UTC)
-X-FDA: 85430863812.20.109B752
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E7FA46B05B0
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:08:59 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E4B32A0136
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:08:58 +0000 (UTC)
+X-FDA: 85430881956.16.E766A5D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A2771C0011
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:01:44 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XIZrg6Vi;
-	spf=pass (imf10.hostedemail.com: domain of roman@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=roman@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id 31BDE180006
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:08:57 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cV0oIxbY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794593337;
+	b=y2ZJu6Kayefqpc1EQCfSYoLoonp9WUsu4YQMrIGnln7d/gKt8G6BSckzbKPvMTzwQhOSSw
+	MEv2DSh/W5ANV79afa+OAT3w9451vitk9hA3BkJ1aAN+qP2t5HA79VxRWsmE+vbBlJJ7Rq
+	RiZeSL4V/JTZXrlbF+DtmEPUzvFbU5s=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794592904;
+	s=arc-20220608; t=1794593337;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qx5F2tDerzQZ0lB87zR6bUAyzgyChxqTyHYx/YjImmk=;
-	b=BUwjlpO867LxJsdmDzHw8B/IPzyYF9pgEOB4CshdRw4USr0fZMi9CTr3aM8bi5CWrNKrd0
-	vWJKCHRLaEnmQdl2PtRB4fA5fWu37Oi58Cotn9vwpDz4CcbNnNE6Vc0swoJcGuRCByECXm
-	bxT20N1jwzQz3RI1qAo0Qru4f9sHmEw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794592904;
-	b=jtxTQ63fOYzKHpJ1LZEHLcjUr0v8Ccysq3B6vHiJ87QO47/EkyRxSvwYQIcajL8swv2wuo
-	vWk528izBPdQRZhfPJXDjkPPB9i2dMrk9XNXWnANCSGcKxlP5BDjpXGNfrXacVR4O/AjO0
-	Kk8vyPQH69SI8HLGNf140yvxfRLD1Q4=
+	bh=FhKJJ+G598x7k4YdedDcO2AKZY/WuEiagj+EDD3aHQg=;
+	b=dsf54QDTUWt3RQOnm+LZQ5W5M5vdboRMUeQVaWmi119cEoIFfGhkR4mebpIyEq44fbejiP
+	s3bJjZZIjkJYOc2CaTFM9GtCSXK3x1ZKGVWyj/UqQscXxBGnQ1XRMUzugHJKG+iOjB4Qy0
+	EoJ4hWQqwJJpCPnB/JzRBILMnZSzW1g=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XIZrg6Vi;
-	spf=pass (imf10.hostedemail.com: domain of roman@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=roman@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cV0oIxbY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1B7CF61203;
-	Fri, 13 Nov 2026 18:01:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A1691F000C4;
-	Fri, 13 Nov 2026 18:01:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3DC7E61203;
+	Fri, 13 Nov 2026 18:08:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92BB11F000C4;
+	Fri, 13 Nov 2026 18:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794592903;
-	bh=Qx5F2tDerzQZ0lB87zR6bUAyzgyChxqTyHYx/YjImmk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=XIZrg6Vit3aXlTCbNDJ6Bkleo1yuoSB7+fWp3kHJTa53ecRgCLhMt3g9g+U92W4iM
-	 jA18lJH8ZnoAFzaOWGRf9BHF8SeE5YP1pIbpQH3S9mZj59QNmlkgN1seK9w1bJou90
-	 JfZCcD6MxBKHIdSgp0LHUN/Grw2sSDR1ydbtHV6aQ/8lmWCRthsjT+0moV2KSflruv
-	 hjPYcTz3LXXYFyX1NZenudmNpDbnXblvmqclpT/pMtreQaY4ucr2WX9dzzpCG2Iv2n
-	 /0yVGd/yc1U+2oZEN9VprWzywovAfhvE1UQ4VrBhs2d6VoVJgxb4iUC/zAvApDZ1iz
-	 3j2fcfgb07B/A==
-From: Roman Gushchin <roman@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: sashiko-reviews@lists.linux.dev,  =?utf-8?B?SsOpcsOpbXk=?= Jean
- <Jeremy.Jean@oss.cyber.gouv.fr>,  Zi Yan <ziy@nvidia.com>,  Roman Gushchin
- <roman.gushchin@linux.dev>,  Baolin Wang <baolin.wang@linux.alibaba.com>,
-  "Liam R. Howlett" <liam@infradead.org>,  Nico Pache
- <nico.pache@linux.dev>,  Ryan Roberts <ryan.roberts@arm.com>,  Dev Jain
- <dev.jain@arm.com>,  Barry Song <baohua@kernel.org>,  Lance Yang
- <lance.yang@linux.dev>,  Usama Arif <usama.arif@linux.dev>,  Kiryl
- Shutsemau <kas@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>,
-  linux-mm@kvack.org
-Subject: Re: [PATCH] mm/khugepaged: reject shmem collapse ranges beyond i_size
-In-Reply-To: <79c3445e-623e-46ac-a09a-0a5d21f117c9@kernel.org>
-References: <20261112142335.2749597-2-Jeremy.Jean@oss.cyber.gouv.fr>
-	<sashiko-outbox-212974@kernel.org>
-	<5f3dec4f-0416-4550-a980-b464a90aeb11@kernel.org>
-	<87y0aw8x7y.fsf@kernel.org>
-	<79c3445e-623e-46ac-a09a-0a5d21f117c9@kernel.org>
-User-Agent: mu4e 1.12.12; emacs 31.1
-Date: Fri, 13 Nov 2026 10:01:42 -0800
-Message-ID: <87a4nc7gqh.fsf@kernel.org>
+	s=k20260515; t=1794593336;
+	bh=FhKJJ+G598x7k4YdedDcO2AKZY/WuEiagj+EDD3aHQg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=cV0oIxbYqP9gvsvME0oMOtemuKmLAysenN/kgBSdnF+B18EtGcfZSxLyyhCiFn9lX
+	 U/oem6jMeFeOnlZ+nSRyXcGJtfgyNZIP8uEPZwOJ+AHMtb6VpKSv3BfPqFa8I4k16T
+	 cBtgVfULAsZNMYuN4x6RbEbHFL16p2S5UqvgQJlrXM0FyZy8tLmao149HtIQ+K8u9i
+	 ffe8VbuJ7lwDFflvwa+1ux0bW4dNqukDUVCEOOI0wFTM6SW98Eg31DKW8KyEfRPd0g
+	 Zt4hLUWDX/3aZA8oCkHF2urDLGkH7IMVbx587YBvnK8lBUaWviCBgawcqGUB6t0BHj
+	 DaZg5qjoToidA==
+Message-ID: <4d3c45ad-bdd5-46c0-bcf7-26b8575fa884@kernel.org>
+Date: Fri, 13 Nov 2026 19:00:57 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 4rt8xfrydiext487pt9cm487i94qbaye
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/khugepaged: reject shmem collapse ranges beyond i_size
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: sashiko-reviews@lists.linux.dev,
+ =?UTF-8?B?SsOpcsOpbXkgSmVhbg==?= <Jeremy.Jean@oss.cyber.gouv.fr>,
+ Zi Yan <ziy@nvidia.com>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-mm@kvack.org
+References: <20261112142335.2749597-2-Jeremy.Jean@oss.cyber.gouv.fr>
+ <sashiko-outbox-212974@kernel.org>
+ <5f3dec4f-0416-4550-a980-b464a90aeb11@kernel.org>
+ <20261113094954.942014a255165efc812fb2a5@linux-foundation.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261113094954.942014a255165efc812fb2a5@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 31BDE180006
+X-Rspamd-Server: rspam12
+X-Stat-Signature: jaeo517f34481ffu5z998nkuai6cmryc
+X-Rspam-User:
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: A2771C0011
-X-Rspam-User: 
-X-HE-Tag: 1794592904-577372
-X-HE-Meta: U2FsdGVkX18DCTClti064Ij9E3gzpt68lu9wd81TkW0OhkZNax3j6EqLgI64Ow/ODrI3rxo4CFk1YkiU6oVxJ7ZuVBb6eV0as2XJbIKwGGH6LUALtEwda+gV8FmSz43/+Ly+7969L8NCW3MSuGknSjBusp7a3dHrPD0sZ6U0y/xy5CHwDxQIyJPel8MrAMXpx9mxYP2GsX3VngCn9zQqmXqMeUGXxhnk5v5+X1BqEWbtcyQMCq5Fb3PyjXt1eevzNvbtygZ1c1jzp1ix9CIZntlDyscW4NQ+6fi0zVitbpR7+BQmJgRWz8l1jfP8C5/1s4JgbBGr57uqYYagDVT8IE2Ck7hq8xTArOO3mMqszLVi4xim8h3wtWB0QC/OpuTGnKUPAFBKEBV4xOGyoepgVeXPpQkCpQG+/N9KdkLka7JiMDgI5p43a4SeouxKDWyAMCIyvGZ9YqGJ9Q8LCv+tvtrHxjKPnxXgPVRVkBcUZ/rf7ur3czBvjqOCvpRRBOcioUc0mvnI6y004/RbFVKsdRIay7BhYFah0MCTrxRIB5KyuCEMth2m673DtIVMSPFs8ru6W7A4FMM56ECvsoOjTPZKZtx0JeormKa0c8H5c/QKktiw007zS1ZZ3jBWPG1eWlgiYIu53fFnD1nQ5xZgr5Y7jIQcIOwtnObRvrbDayytCI/wFMnUSIMwaXRX4lPzligEOGUY+MlpxqClSpduHDRRDDCW06CBLb2B2HFrojtZSGD2LOo8p/7XO4pJh+SCjghvue0I/9I5bR/CqarT0pdBCw88aH1CX/u+/ukNqyVICxENyr8BdCpFdv/v0Rc+oXehWAqQ59ovihbOBlewODEQQEA8IlZlZPONEBvrXQRkE5w6N3wnQ4QntMmF4os7BrNeUjrrmOiL/JQDiLxv/JD/vLF1RijJhPcTRc8UeSf2Y+ABcNoJvv2XqEEW75FS+l3ZuS2YJDSip5xgLdY
- 6ycC543k
- G4KJOBiH1lmMM0uxopOFbM9kJlwjARrr1ea1CyHkcXqyvHJvqm7FAnveOj798AeDiDqPs8FsAzEmoE4A63O2mlY3yf0bSvzYuBK1+q1oB8VEyvpuc7rgassAajzlfW7FMBCAmO1kKPH5AZ3vzaqqLLbzWuxsi8bVDKoArqCL9aiLHAvu6YxwwGOCsrHgP/Zbrfz2UrAcmQih9P69dCS/hTqAtk1K0chrpObbMT3WKhOqsImieKsCkcz1SkR/+ABW3QUa7oHzzS5vuRY5M5/W5GOPSnuqW6/6R74Wc0BIfp7rDOH4ofQj5R/MhTeBT3zbDA/VybhVEzptrZ8xUHRoi042T2PQ9Jyo2ryso8XnashDBn/Y=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794593337-556934
+X-HE-Meta: U2FsdGVkX1/D2L++9k5D4lXov9XnsE/SjdJx7CeEKPe0xUYZmYvbqPAWhKAtftLlGO4vuSMfqjraMPeTRvIk0YL5QXWSQcFe5cni0tHOKjSh4LJigwxClVvEyxmhvzOdehApqMsq/zJJJ8H0wKzfuyuLpirmAv3cKu+Ab9WTr+09VMZEhBFb435drILHLa8QQIYk2cn1Kx5P3rK4+m9es7wdv8mW7bXiN2aUFin9JSW8pbQMtdAbDsNhHujTJIZKAPLXjm+/VCo5wkTVo/BarQO7birTonWFqlwUEJB6NtQilicepXRJ7SySnBZn9VdcPN0szQkxQepOD83NDcd/K3Zduzow7S+PIm+O9odSZb2RXpNnHvgRd4vP8BxM4qfsls3mgfbham4+5owyAXpA4AnQxrsgGEH/6+7FQOP7aKkGGJ5L11OEAdP3thwalvJMS/YU69hMuxInTH6rX3SXcpySYJa49VksmL0siFtGK+J3XPU+s771t4YbkrZkH2IQOkfq1mfjXfHiB33fhwFlYn1XRc8F5IPpmVGUgUMEYJ+X0CyCQd+4K4+3+Dqd0J1oIJfgepMpd/eDG96rfsdKRuiHvyxqrID15YRbpa9m+gXAUA3hUAIPlyJ/ILhKSGrYyoG6qMecxpcSKsF1s5PgfiW8PckKzcl8dIxeSBeOJt+X/Oalb2crg1B5IDq2LXfs04MleFMheMh8zkKebml+gpmJfWBWda9UQnas/oiZ19+BgyPwWezFqA3Gp/m8M921Hop+OzvDVJEGJKNfORd/gOJ7n2gMsPghpRHge8bWE7KuWddmf8RLTqX6cFUAFDQFh6NAAq8weIgpYO+kSrqyvFIVSWMWI2QwS/q6UZspSryTmg+DEp6WXFKQCBjqRbj+lPxLRYxIma2poNR0U1wf/l8GchJDZaSLFqJy8VolRjl1rllL4MjUQRLYtLukNQyh2E4s+STHXqfSZZLQD5j
+ AG0EbjbE
+ 8xJnD8I8BSqZrBDeat3FN+ecj1q5NYPNWsGEnWeruEjHYg5r5oDyZfhxURlO5WPs6wUTlcONoCjUC5A4bpxWGgGhIf8xvJ3sKVuBnjPAQDi3X5uHMTMHWk+9Rcbo299qPvo1dcuWGxnUVsPPle/A82ZTTSn6SS/S9b+JexQtELFJ13cUMhsC+6nhygDVTNEUs1czknzFZVWNHX6sg6v1Tbh8WttYNqsObjbO7QJVPMPUF2q6jpt81RjKUUm9UC1MrOcdN6d4Zz8d56PMk0ejJdBQvoKdkz/JUqRBYLG64EMUhIaWUAYHVl8NLNRGjwFSClwKg/0Uj2KCWzLNAsbnRz9PJMUUhqnLeRcFEtttx7i9OofY7vGKQMwgMuO+ZBuGyYcKVR/yarvmDpFmTPzpLRJNKyZmqc/he+fFgExVNXi6cydOLHtGx9SQWimBr+l2YSdPwgqQkc0IcKXCjQfc5F/YKP0bAbVJegIN4ien02P3f/Hg9J1xdmUqmmbHF0XDi8EIJDXvmhGLl92NQ9Qc/vOiIZubcrH+k1Bkh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,77 +150,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-"David Hildenbrand (Arm)" <david@kernel.org> writes:
+On 11/13/26 18:49, Andrew Morton wrote:
+> On Fri, 13 Nov 2026 15:56:50 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+> 
+>> On 11/13/26 15:25, sashiko-bot@kernel.org wrote:
+>>> Thank you for your contribution! Sashiko AI review found no new issues
+>>> in this patch, but noticed 1 related pre-existing issue it does not
+>>> introduce:
+>>> - [Medium] mm: xarray node memory leak in collapse_file() [1]
+>> Ignore this shit from Sashiko.
+> 
+> There was some ball-dropping with this bug.  Shardul posted a fix last
+> year:
+> 
+> https://lore.kernel.org/20251204142625.1763372-1-shardul.b@mpiricsoftware.com
+> 
+> various ackings happened, suggestions made, other fixes developed, etc.
+> I guess Shardul gave up and went away, who could blame.
+> 
+> I'll add all this to my backlog pile and shall figure something out.
 
-> On 11/13/26 18:20, Roman Gushchin wrote:
->> "David Hildenbrand (Arm)" <david@kernel.org> writes:
->> 
->>> On 11/13/26 15:25, sashiko-bot@kernel.org wrote:
->>>> Thank you for your contribution! Sashiko AI review found no new issues
->>>> in this patch, but noticed 1 related pre-existing issue it does not
->>>> introduce:
->>>> - [Medium] mm: xarray node memory leak in collapse_file() [1]
->>> Ignore this shit from Sashiko.
->>>
->>> Roman, make it stop.
->> 
->> David, will do.
->> 
->> But also it's not how I want to interact on mailing lists tbh.
->
-> Roman, just to be clear, I am talking about preexisting issues. We get bombarded
-> with preexisting issue reports. Having more duplicate reports posted to the
-> mailing list does not help anybody.
->
-> It creates more work for everybody. And the least I need right now is more work,
-> believe me.
+I have another reminder on my todo list from a certain company here. These
+public reports do not help anybody.
 
-Totally understand.
+The only cause chaos to the people that read them and think they have to act on
+them.
 
->> I understand everybody is stressed and overwhelmed by llms etc. Including
->> myself. If sashiko is not appreciated in mm lands, I can turn it off,
->> no problems from me.
->
-> Sashiko is great. The embargoed sending of mails to the list is great. I
-> appreciate all of that.
->
-> Posting preexisting stuff to the mailing list is not great, at least
-> not right now.
+-- 
+Cheers,
 
-Yet I've been explicitly asked about it by others. So at least there are
-various opinions here.
-
-> We were very happy that preexisting issues went into the private bugtracker. I
-> want to delegate stuff to people in my team to screen them and see if it needs
-> fixing. Well controlled.
->
-> Now either:
->
-> (a) it was never really gone, and we were in disbelieve that preexisting issues
->     are no longer posted publicly.
->
-> (b) Sashiko maintainer decided to re-enable it without consulting us.
-
-The correct version is b*, it's indeed back, but in a completely
-reworked way, as I wrote to Lorenzo yesterday.
-
-Pre-existing reports are now limited to the first non-rfc version of the
-patchset, they are limited in numbers per patch (1-2), they are
-_deduplicated and posted strictly once per issue_.
-
-Re consulting the problem is that there are several hundreds maintainers
-with drastically different views. If we'll wait for everybody's agreement
-each time, nothing will ever move. So I have to make some decisions like
-this on my own. And, yes, some of them will be wrong or not perfect.
-I do fix/adjust things constantly. But some patience would be nice.
-
-Btw now you can delegate access to bugs to people outside of MAINTAINERS.
-
-> I'm sorry if I made you angry, but I hope you can see how I suspect (b) and why
-> it would make me angry.
-
-No problems. I understand the problem with the maintainers load right
-now.
-
-Thanks
+David
 
