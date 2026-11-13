@@ -1,107 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7E6606A32D
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 12:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 823C8606A327
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 12:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cf+yeFhO
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=G3ZE0lBf
 Received: by kanga.kvack.org (Postfix)
-	id 3B3226B0708; Fri, 13 Nov 2026 07:02:38 -0500 (EST)
+	id 5675C6B070C; Fri, 13 Nov 2026 07:27:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 363CA6B070B; Fri, 13 Nov 2026 07:02:38 -0500 (EST)
+	id 518A16B070D; Fri, 13 Nov 2026 07:27:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 252A46B070C; Fri, 13 Nov 2026 07:02:38 -0500 (EST)
+	id 407CE6B070E; Fri, 13 Nov 2026 07:27:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E2C3D6B0708
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 07:02:37 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5599AA7C6E
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:02:37 +0000 (UTC)
-X-FDA: 85429958754.21.0251162
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 73FC7140009
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:02:35 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cf+yeFhO;
-	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 19C666B070C
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 07:27:13 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A92161C3AE3
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:27:12 +0000 (UTC)
+X-FDA: 85430020704.07.6F0241A
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf06.hostedemail.com (Postfix) with ESMTP id AEDB8180003
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:27:10 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=G3ZE0lBf;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf06.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794571355;
+	s=arc-20220608; t=1794572831;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nqpl7OV39r2iQfy91FqwaHd5ZOtj6zGRSvahZGEYD+E=;
-	b=6idXWzaIpNUWFSC7jCyposx0ghGA17aBip50w3q1p3tMKrVJIF/vKEKfOBo/b6OVXUyDvT
-	LxhN6yn4ZgdGWcjxPQ78fOaFotW4E7EdZt4JYE87KBT3NhDNbsiZx2lIMiJ0j2zP7yQ8f6
-	ZsyChGSDTDRZOUsU0/guRwQIK2taxN4=
+	bh=wQS8+G8zUE7eRedh/eNlx+5Ei152G7Qf9Mz0SPz+noE=;
+	b=n+GfHtn28pfXfjoQKD3X/arSX71FC7812HAL6M3RlMxFpvStgjjORbSZ7+P7M68xPFe9Og
+	U/CL26P1C6GKbHayEpRvvac65148ApsFyXIbbHf+v0oSU6ctJrTDA4qV5CZvDeo/HAEadO
+	Lw1M+ha3ZP/dv6NErRU0U5Dxe7mNYI4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794571355;
-	b=5IyxlDfXNk+KmlXSMU16vxLR4fD78T7HRIw9LeqvV0spMx+XnYDgxAtJv07J4GxsPUggzt
-	j5eKqHOCyuYfOEkMpywEitvIo382QjdKiiW5fsmeJ+l786vJzFVTCwy2sWfEsQlV7Nspnt
-	4bZm4Jrh9fDg1Dtx209MAzPU8J3M1Ng=
+	t=1794572831;
+	b=3zTAy1wAxxy5Mp/jPj6b93x0pX1StlARIFnZaAQywHMis6Z+4ELgxHi1ivfVdXf7+aLk5e
+	fttCenokiFHimclbS2Zqx/b4PvOOgvDtW1QLWV8MtGNkuuLlquqgdPXt41JLt1C0GpxkSH
+	LzDQBNnE0+IYcl0ua/13kYazPyAlLSE=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cf+yeFhO;
-	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 13E0562236;
-	Fri, 13 Nov 2026 12:02:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF12E1F000C4;
-	Fri, 13 Nov 2026 12:02:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794571354;
-	bh=nqpl7OV39r2iQfy91FqwaHd5ZOtj6zGRSvahZGEYD+E=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=cf+yeFhOxffbF4Gcf34O35WTxadG12WvPaCmfzpM4r32A0Zx6mgMDJc1sLO/YM6kO
-	 AttOejPt8vjAVMDguouOKgG4chNWLadxzD+/+x0udw00EWdrBxZXjjyUGxXiNfr0KL
-	 2Cy4hMfY6XBfQRpX+3tRTOLMyM9ycZzFnmbhGe4vQX/XMXAN8zxW+nTIQRZUDSPFN+
-	 UA0HoX/cY+5dUrCcKOGhiq27KEj1oYfFrxgN2XYCRdQGCGFk9rXYAWmgfrTpRTXfVE
-	 pkxsl//WEYBESVhL4XDuY4okx74G61h8X8gdb9K34VBxKOCwUYhd2LlsYSC6gjpuqG
-	 xJXrsVuVLfs5g==
-From: Christian Brauner <brauner@kernel.org>
-Date: Fri, 13 Nov 2026 12:59:29 +0100
-Subject: [PATCH v3 33/33] xfs: allow remounting read-only after a shutdown
+	imf06.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=G3ZE0lBf;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf06.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7357B1476;
+	Fri, 13 Nov 2026 04:27:06 -0800 (PST)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F1F693F673;
+	Fri, 13 Nov 2026 04:27:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794572829; bh=TjVoosr6HqMq8nW/HCbzKJB4G46aGduUougz+nELtKA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=G3ZE0lBf0yvMtKjxWs2lS+kwNScICzsuSt3PN/vaXgGRiWOYWIb6EyG35gA5p99XI
+	 lmoFC4/gSOeIy5HY8ViwUoBBUzPDEoS4MnqpoeBv1rskyqgs7Scl+nXtorBAOHztk1
+	 blRI1d2Xf1UCXz55EOxU/1juRk2+HZiqQMu38DKA=
+Date: Fri, 13 Nov 2026 12:27:04 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Breno Leitao <leitao@debian.org>, Vlastimil Babka <vbabka@kernel.org>,
+	Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH] slab: allow sheaves for SLAB_NOLEAKTRACE caches
+Message-ID: <avcCGNUqCrcwbFG6@arm.com>
+References: <20261112-kmemleak_sheaves-v1-1-e40e3d73b253@debian.org>
+ <sashiko-outbox-212599@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-work-fs-sb_rdonly-v3-33-0be92bb73709@kernel.org>
-References: <20261113-work-fs-sb_rdonly-v3-0-0be92bb73709@kernel.org>
-In-Reply-To: <20261113-work-fs-sb_rdonly-v3-0-0be92bb73709@kernel.org>
-To: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org, 
- linux-ext4@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
- linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, linux-mm@kvack.org, 
- ntfs@lists.linux.dev, ocfs2-devel@lists.linux.dev, 
- linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, 
- linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, 
- linux-xfs@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org, 
- Christoph Hellwig <hch@lst.de>
-X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2142; i=brauner@kernel.org;
- h=from:subject:message-id; bh=Wv1rk/34mZRddPCwhZsrnHdy4Y6/8eX5Up6b2ymQePk=;
- b=kA0DAAoWkcYbwGV43KIByyZiAGr2+8Ci+Z4+6tOwi97X6NaG06NaC9t14B0Ks88kXi6ffXLsd
- Yh1BAAWCgAdFiEEQIc0Vx6nDHizMmkokcYbwGV43KIFAmr2+8AACgkQkcYbwGV43KJHWwD/VEUp
- qHV8TWkuKU4bX3KINk6z04cdivoCpFl2Vn3AuVEBANhCoTbo2sLJQwZevodePoMGYTNnOhgh2Gr
- V9nOa3SIE
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 73FC7140009
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: pm81gf3pqdnpnk6rr83q1keb7y8p7f51
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <sashiko-outbox-212599@kernel.org>
+X-Stat-Signature: iwkcr1mri5e9ie6t1pbf1tjthc5smf9q
 X-Rspam-User: 
-X-HE-Tag: 1794571355-733848
-X-HE-Meta: U2FsdGVkX19CujyRGdJDkvNnaZrmHX3QgKdt/mnOoDkqP2BTFPVWdI43vke59gDIpUyaqoF+wPjZdBi3XZ9RmC00Sv6R/c2oJsClvs+YPmVcOK00uMXRwrDRyaY/xIsoX6jImdwKJLXC+mM94r5xjv+mrv0UeTGH1JbRQFGXMYwSPPAiiuEwj7UzMnxdl8jON9gv90BQo6oBA+5akqqtMbXUxBGRVNjtaR9KzvaWxHRNHymAP3XjoCX2GyLOU/dtnS3F0YKfAAxQD/B00wDMyb1Oy672RNWLCeYmdD+rjL/yXXffGW5w2u+DQR0k938+b72CFglBC5nmudJnt351OEeDQnZsPgxnws7K/GLYAZx5wkeQk9bkqyLme5UevWICyxvY9fo77KmzUFtBiX0vB9qB495lJ0aUhdGTDb1Xw38MFwzJAhAFVo8UQGOYzgN2Lj/VcWMeN+YetORVz5N9CcuBEJbfJLFkFn3nksFe0jXcY7X69dE/0xE/JEUE8HoGJ9yyLvd2kKJdCSFp6AGaTGN6EfJ33+2BlxiW74OmZQnhuarP4DiMqY6M3hBcLUG6D6wiKn54krUM8ubVkLSzhjb4yoVZuONdZzsq+OA2lfHd+W6IFkgQc+gfkp2RcSthDmVwDxN3txemPbgVx1gWquiHskiifn0uKzj18V7ic4SsBQMMiFpAwF1Cfg4IMzS9s3vEGwbCeXKxy80K3VYzhzj6khm4DETOMOToVpc0tEWXHXfxa86O/nesbuCs0WGzTYs6/xAHYKnZKb1wffxD4EKkL/B3Td+3tafkTl7fgtAC9ZQ0Y6FmnMpYa28G9sJGJ1HLzRzNWV1UG/DoyXX58tbnIyEcq3HJblWfZisncEHFeZqUT6i72On8F7qunRfim6AoDO99V150xKMgjq3qE4tZuV+iBWk1OZM8W3vCucK9/vBW3z+PjLQTljrEWslSzjtHwjFSPQBdyotITIK
- ENDg0C0g
- jWoZsAssvsNqzVD1zXOXreqAc0d3gwV/kZ9nK4HTwEq+IXwn0PFcxdIgo0zkcfElDJFA5hYiq8hHxNAl5Q3evptiuh9lVgMx/0PFmZpxL2SKQf2r2fzyzwqLgt9ifnu/xBBLAl6ChaFAH7u6L8SVWmkCh1HA1MR8SR4xuQiewH7WEBUgv6VZZ+VNftMM31Honm1rHZXJXQfik9Gn9A48wNbU0DnW2sUkyQBwVKMCJTxDsW7bpgQmHiqKmpaXFxrULKE82TjbUtL6X9+S0Oh7YoTLC8HaMxUADm5e/
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AEDB8180003
+X-HE-Tag: 1794572830-870666
+X-HE-Meta: U2FsdGVkX1+rcui29YK2ytEVaTBDHGmRri0vEfM4f0lGBxNKG4aOypC3dDXn8RlvSUj9p7IHjNUNwButJOfk9W94Azbt8Z/wMYtT42BgGZDxeuMUPUmtKD0pVwHBEDzpNFqTD7pBro2Tzq9ObGjw/d1Oeuc/g2Z78Pua39FJRjgZZuCP5ImgPDdt76gucqego/YMrP2FhVTa3PlfTF6gLvkM9RgGvevNqwieM+uoUtVvU/IlAkQsQoDYt92jxQpVQtQIBbEtSp73x6QgEdgsDOZGpjs6wen5T9BGe9TYUv2jj1Z8oTMl+kJbRTntC4yqlGWU01HuYiKuBzHhO86wD0B2Usu14YHXNNw6Fj/KGiDXu+Cl6B8YugIaEGRFluqVssR3vubjmFIWVPeUpzWnzR8RgTpZuw5Bay72ds4c5kJ8QbCOc6M+lRuTjc0naC1BDT0amDflR2cjmv9X66HxZ1g0PBZmVL4sueQ29OGs4/LmBcnwGIA0grIPqxWUlck6J+WBRLb/v5Y68g+CIaXqRxe5pi8Rsu+jMGWr/Owc3KtDVntRbOmYLcABnLmQAcfgfoGviNf6LWXWdUyd4XUsIs4PSsJPV9ttpyXWqssiEALSCoKSjhe3Tv2iwVDJ3qlL0keOto9eRn8p3YWP72Lg74ARwk7SK50uz5pmFq7KL1k006A73J40xTJeTw3QhIvpKpIFmzmuyQnhm0Dw8L+NfvlKxCvYWcKTkiFcqNdEPaPTxxJKwMWpG/1olHkWiRbzxrPGYO6WzTmjeuUkCNVmUL53EcF8dDii5IG5qao1hqUSBaUvVAcp+qkh+9UlsWG8S8ZWEHD+gIKIhMfKlHPyUNm08wGnqRBErqYIAd/QQ/cnAzT7fJAtZv+FytUvD9tMcOCRg3mbUAGyYCz9dH0u5tpJuUQymcdulMZy2SFyQe9BddGP5Hmy2gIDBVwaYRib+11Soe/B3qUz+6aDT1O
+ EruJyfPi
+ Hy1n30WV4WDgE0QUYKNFRdvQRDfYkUFK7E0u3gVvCkLZ8oCh6SesPwKyI26s98RAx4fezjBsCqLspWtBBHyEeS4oQarLNZw2YYMqDlVSFnhyHouwa6fJJAky7aoRaPoIanoTjqIRTmAsT7s94BhsYvVNqXbmg+U3QZv1Z33X/w6TqinlmE+5pQCYbW3FVzE1kZ9V0THKCEPmtKBkqvOzz8DX8HVZ0nTJQFIGsyZ2NbtuIfNeq+3HRK4FEU6HTBbkYHDQrvlhMJerpJnlB1/Qz31ALyQmKLfBl8umIuiIKnRHK02I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,69 +96,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-xfs_remount_ro() starts with sync_filesystem() which fails with EIO
-after a shutdown. So a shut down xfs can't be remounted read-only and
-emergency remount (sysrq u) WARNs in reconfigure_super(), a panic with
-panic_on_warn:
+On Fri, Nov 13, 2026 at 10:05:08AM +0000, sashiko-bot@kernel.org wrote:
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index 8369853ddca72..f19e20b6f9a4f 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -2850,6 +2850,13 @@ static struct slab_sheaf *__alloc_empty_sheaf(struct kmem_cache *s, gfp_t gfp,
+> >  	if (s->flags & SLAB_KMALLOC)
+> >  		alloc_flags |= SLAB_ALLOC_NO_RECURSE;
+> >  
+> > +	/*
+> > +	 * kmemleak allocates its metadata from SLAB_NOLEAKTRACE caches, so
+> > +	 * tracking their sheaves would recurse into kmemleak.
+> > +	 */
+> > +	if (s->flags & SLAB_NOLEAKTRACE)
+> > +		alloc_flags |= SLAB_ALLOC_NO_LEAKTRACE;
+> > +
+> >  	sheaf_size = struct_size(sheaf, objects, capacity);
+> >  	sheaf = kmalloc_flags(sheaf_size, gfp | __GFP_ZERO, alloc_flags, NUMA_NO_NODE);
+> 
+> [Severity: Medium]
+> Does SLAB_ALLOC_NO_LEAKTRACE leak into nested sheaf and slabobj_ext
+> allocations for the backing normal kmalloc cache?
+> 
+> When s is a SLAB_NOLEAKTRACE cache (such as kmemleak's object_cache),
+> s->flags & SLAB_KMALLOC is false, so __alloc_empty_sheaf() passes
+> SLAB_ALLOC_NO_LEAKTRACE to kmalloc_flags() without SLAB_ALLOC_NO_RECURSE.
+> If the backing normal kmalloc bucket needs a new empty sheaf in
+> alloc_from_pcs() -> __pcs_replace_empty_main() -> alloc_empty_sheaf(),
+> that nested sheaf allocation inherits SLAB_ALLOC_NO_LEAKTRACE and is not
+> registered with kmemleak.
+> 
+> Because kmemleak never scans that untracked normal kmalloc sheaf:
+> - If the sheaf is later used as pcs->rcu_free in __kfree_rcu_sheaf(),
+>   kvfree_call_rcu() returns before kmemleak_ignore(ptr) while freeing is
+>   deferred, so kmemleak_scan() misses pcs->rcu_free->objects[] and reports
+>   queued objects as false-positive leaks.
+> - Any tracked kmalloc sheaf linked between two untracked sheaves on
+>   barn->sheaves_full or barn->sheaves_empty is unreachable during
+>   kmemleak_scan() and is also reported as a false-positive leak.
+> - In slab_post_alloc_hook() -> alloc_tagging_slab_alloc_hook() ->
+>   prepare_slab_obj_exts_hook() -> alloc_slab_obj_exts(), the slabobj_ext
+>   vector is likewise allocated with SLAB_ALLOC_NO_LEAKTRACE still set,
+>   skipping kmemleak registration before calling kmemleak_not_leak(vec).
+> 
+> Setting SLAB_ALLOC_NO_RECURSE along with SLAB_ALLOC_NO_LEAKTRACE (or
+> clearing SLAB_ALLOC_NO_LEAKTRACE before nested allocations) would prevent
+> the flag from propagating into the normal kmalloc cache's own metadata.
 
-  forced remount of a xfs fs returned -5
+Sashiko is right here, this could lead to false positives. I don't think
+clearing SLAB_ALLOC_NO_LEAKTRACE before nested allocations is correct
+since that could reintroduce the original recursion. Adding
+SLAB_ALLOC_NO_RECURSE alongside it should fix this.
 
-Going read-only doesn't need to write anything. So ignore the errors
-from flushing and from freeing the COW and post-EOF blocks once xfs is
-shut down, also if the flush shut it down itself. The rest of
-xfs_remount_ro() copes with a shutdown like unmount does. And refuse
-going back to read-write with EIO, xfs_remount_rw() didn't check for a
-shutdown at all.
-
-Fixes: b97cca3ba909 ("xfs: only bother with sync_filesystem during readonly remount")
-Cc: stable@vger.kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- fs/xfs/xfs_super.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
-index 5a06132aa3846..59c83438d402b 100644
---- a/fs/xfs/xfs_super.c
-+++ b/fs/xfs/xfs_super.c
-@@ -2041,6 +2041,10 @@ xfs_remount_rw(
- 	struct xfs_sb		*sbp = &mp->m_sb;
- 	int error;
- 
-+	/* Nothing can be written anymore after a shutdown. */
-+	if (xfs_is_shutdown(mp))
-+		return -EIO;
-+
- 	if (mp->m_logdev_targp && mp->m_logdev_targp != mp->m_ddev_targp &&
- 	    xfs_readonly_buftarg(mp->m_logdev_targp)) {
- 		xfs_warn(mp,
-@@ -2115,9 +2119,12 @@ xfs_remount_ro(
- 	};
- 	int			error;
- 
--	/* Flush all the dirty data to disk. */
-+	/*
-+	 * Flush all the dirty data to disk. That fails after a shutdown, also
-+	 * one the flush itself caused, but going read-only still has to work.
-+	 */
- 	error = sync_filesystem(mp->m_super);
--	if (error)
-+	if (error && !xfs_is_shutdown(mp))
- 		return error;
- 
- 	/*
-@@ -2133,7 +2140,7 @@ xfs_remount_ro(
- 	 * cached inode, so this requires a synchronous cache scan.
- 	 */
- 	error = xfs_blockgc_free_space(mp, &icw);
--	if (error) {
-+	if (error && !xfs_is_shutdown(mp)) {
- 		xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_INCORE);
- 		return error;
- 	}
+IIUC, I think we need to include SLAB_NOLEAKTRACE in the
+mark_obj_codetag_empty() condition in __free_empty_sheaf(), alongside
+SLAB_KMALLOC, if we go with the NO_RECURSE option.
 
 -- 
-2.53.0
-
+Catalin
 
