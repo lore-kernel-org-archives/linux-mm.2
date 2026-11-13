@@ -1,119 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA136606B20A
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 08:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E21606B214
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 08:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=fPD7ErIw
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=jJ/iIGz4
 Received: by kanga.kvack.org (Postfix)
-	id 9A0ED6B063A; Fri, 13 Nov 2026 03:52:28 -0500 (EST)
+	id CB0776B063C; Fri, 13 Nov 2026 03:53:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9781D6B063C; Fri, 13 Nov 2026 03:52:28 -0500 (EST)
+	id C60796B063F; Fri, 13 Nov 2026 03:53:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B56A6B063D; Fri, 13 Nov 2026 03:52:28 -0500 (EST)
+	id B76E36B0640; Fri, 13 Nov 2026 03:53:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 63D186B063A
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:52:28 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DF2ECA8055
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:52:27 +0000 (UTC)
-X-FDA: 85429479534.09.2859DFE
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 04B1D14000B
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:52:25 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=fPD7ErIw;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf09.hostedemail.com: domain of chris@chrisdown.name designates 209.85.214.177 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 95E586B063C
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:53:44 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 19ABFC038F
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:53:44 +0000 (UTC)
+X-FDA: 85429482768.22.B73FD9C
+Received: from mta1.migadu.com (out-184.mta1.migadu.com [95.215.58.184])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 2B8F720002
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:53:41 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="jJ/iIGz4";
+	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.184 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794560022;
+	b=bG5DEY1/eM/sl7/BcOdxGdrGUqOSRE2CNnZ2PCpnn+ETfIZqV4f86dZY9vadCfHyMgQBKz
+	kUqGhB29GGzt2NUCBQ8zCpIIV2MEFJqtUalARJOVa00aSC14gtmQ19UnIXu+EBc6FWFFqq
+	cgLCbuOEQErXf92dTc1AS2HJ/BZPn30=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="jJ/iIGz4";
+	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.184 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794559946;
+	s=arc-20220608; t=1794560022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sQBXOWZ0Jeg9Kyjo2fd5tVPCdhkMAv0V+YCAjxLdw8k=;
-	b=xQb5Sl8ZJZmNh7u4n43HSbHsmabhhoVAE40CuoOqN0y2w3Ug02c0Aic7kqL31AgrRZZS7t
-	TSNYl22ul4OraMMnnG+pYIklql03s//rYn6QE/MuLIDDkhumzJEgmCoX8+XW3gzVZWm0KH
-	F5A9gVMqqtnYr/Ef9ucKX4InC0mxb7k=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=fPD7ErIw;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf09.hostedemail.com: domain of chris@chrisdown.name designates 209.85.214.177 as permitted sender) smtp.mailfrom=chris@chrisdown.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794559946;
-	b=O0V9K1vG1jVCV+calZBhsaQufpvEZrHDaNMa4pZNHkZtg7NpPRLdi+cfirZhZdv/mTZirx
-	w4RPjqyVEhdWSr0axZTgMDBJSJ+p8nkkOUrYK5mtG7kT2VR/kxi1soe28VotmXVXYOgzJD
-	ML5FCVKEipA+AuKyCYLcacyPX5d2hZc=
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2e98798cbddso5729475ad.0
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:52:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1794559945; x=1795164745; darn=kvack.org;
-        h=user-agent:message-id:content-disposition:content-type:mime-version
-         :references:in-reply-to:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=sQBXOWZ0Jeg9Kyjo2fd5tVPCdhkMAv0V+YCAjxLdw8k=;
-        b=fPD7ErIwIOIEwLS8GvhSTBksdx+vgcgLTgj7EKFYDKfaE0WGozH1kPsFd9vwUm9ACI
-         AteR86kiIjoyBnlXJ72hAy/22B7n50SaXI4shJ5Q7gjbYOaGzwwBxXD+br9mbO9hv1+V
-         u8/RZBiCRMY8EYSFz78w70trqV91O8q1Z0810=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794559945; x=1795164745;
-        h=user-agent:message-id:content-disposition:content-type:mime-version
-         :references:in-reply-to:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sQBXOWZ0Jeg9Kyjo2fd5tVPCdhkMAv0V+YCAjxLdw8k=;
-        b=tSfFUHj0TEriYPiNF0IYjE6W+RzkwbVGJxFU+BpHvxm4TCkeldm54HxQ9zblWSi5iJ
-         v8IcyJEk+n9Fc4Zufp4iPmJ0OKb0u2NxYFtQk4Qz/IDUgi7glODwJVUruJMqsliO6EmI
-         5S1b+CkYWAwoLbtnDJqeGayfM439ijhjiEjNILFaWn6CgClZwk84kXDrtc6r+stzH5to
-         cg1ZKl7Lx4G+WsCmilSnBNrijVAW1dEAGdLDV2meGt3gjVVvkOFACk/SfnDpUqw2iN4l
-         NwtE6dQyc4WrHaB0ji0Pl37jmztHKx7OToD1KLvI57QK4Gg8RJ4c1H7Am3+AGN8DDqJq
-         VMhg==
-X-Forwarded-Encrypted: i=1; AL+hErHgqB9v3lzuYhlDvqidyu5pbTIom9Yl4NBwU844J3+aDxLSGucSVxPeu1o0mt/e45h6+LQxT9bRBQ==@kvack.org
-X-Gm-Message-State: APuU4Z+wzQknR6ekAJN+omJnehAJ3IYPRzq4rkSWahYfOAMgieRBCyLU
-	/qYjNbbsB4LP0vnt2qc3DEAhWWS5Ne6q2v+fJM3tAXYqVtE3KQTK3ZR8Fl7++ML3iaM=
-X-Gm-Gg: AYBFou0Uq+FJ+3PHm/giT9PXG/33TIvmlar004KG5OJF/HvN392b8In8EYL8zgzeJhg
-	0hNXzrFHgyo+WIW5gVdov5/GIXYt21L6B+DVPASMUL3XmZxFbYoi/Lp0/XvfCHOy+cBpQrocor9
-	sjtONbNXkbSRD7WLuoifnBe13A51kqEmS8ekhSz+uEIVpJnhQU9ekzaXp/UC+hMcDdnpHQSmE71
-	+h6fFxEbMq3eqKZ4+P6Y0BoA3KEjcY/80g3q2l3hfCfpHV8kvZLF8EFzcltApvPXvqMpKCtYMpP
-	1TIfxWjD8mOE8Fb9Rq8VJLy3k8JBGQhFl5d4Rr3YLiwpMnKaoFNKtF7d9wSaLm2Hjb4m3t9WP6n
-	FmZVhjwb2PLjFe1NAggizAOtKT0n4yRUYTaXIHJHV29Aw765n31Hg5Fg07j9/mr2SHej26CNATp
-	ktaBNbPTj+x34hLlpWWIYmg69dQj0p30HwH8NS0TRa6l4/BdZDtdzTS7f2bK7zSHz60V6fog2j/
-	Cxr0WeikFCtMCDkjb9FNYRaqYWyl7IZbHb3An6L5tpKg0PSKXjBpwpwe7Z8uu61pZmcY/PIP9gx
-	IxQvd+54e+zJFGDHHD/g0GagU7RoCPEyhB48TD17RPnbvXjFMhAc5B0NcTNynQkc7Pj0Q3KOGoR
-	rXm64nir7Rvqs8tdOK1uHy7W8PF4Fz7x1jrUTVAaKwOV9hwb0O77vt/I6cIsuMoQNgHpz6Jg3IL
-	g6CtIVBwtqxB9E5II9fQWeO92r+ivENXVqdBH8ngjfQ7J7pcVuWJjjBkvGZUM=
-X-Received: by 2002:a17:903:8cd:b0:2e9:5714:608b with SMTP id d9443c01a7336-2ee0df40edemr17713825ad.34.1794559944843;
-        Fri, 13 Nov 2026 00:52:24 -0800 (PST)
-Received: from [172.22.0.2] ([50.175.87.158])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ee0f75b472sm6940845ad.19.2026.11.13.00.52.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 00:52:24 -0800 (PST)
-Date: Fri, 13 Nov 2026 00:52:19 -0800
-From: Chris Down <chris@chrisdown.name>
-To: Harry Yoo <harry@kernel.org>
-Cc: Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, Marco Elver <elver@google.com>, GONG Ruiqi <gongruiqi@huaweicloud.com>, Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org, linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v2 3/6] mm/slab: Support disabling SLAB_BUCKETS at boot
-In-Reply-To: <aud4gPOUzvHtLYnJ@thinkstation>
-References: <cover.1793253633.git.chris@chrisdown.name> <9a68a4d95830352ad3821437c2e22c30a673055b.1793253633.git.chris@chrisdown.name> <202610302115.8C7AD110@keescook> <aud4gPOUzvHtLYnJ@thinkstation>
+	bh=cjQnjpho+fyRhgUTZY5Z+DHRvjFJ19pcEbfZyNg/8uc=;
+	b=Tf0MhOubZe0GA2OGhWaSP4ETdPBmXRaG7fFrD4RS1k9MAxnpdP8bZmU/gnSh6fJuAhYerq
+	EsGHJiSD4Z/2/uo94CJv/RgkzVENd+M9oUGFIW9xmsGd6xm6dvKqFm9y/k5PmaEMQW8vGQ
+	bZtbskHq9r/JGWXF3Hd42D68qzhzUSg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=CqTuTBJUY5nbUP9k6g85314MB/qlykyFWA7AeA8gtPY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794560021; v=1; x=1795164821;
+ b=jJ/iIGz4xJtTBlVk7sS80UqXlRpw54Qna/snuriOIzh3X08wZH/3ipRFnVHogOt5qM8Y3r2C
+ mX7M83EwtJBNpBo4XrP2fDZInfOh9Di2RNNxDc1eC4OhoJ7XLKcRo5lY1NIjq1NoBqK+V/fHFEV
+ skJjKSPONmuw0YHbw+hwBIlU=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id f62f24c4a9f7b48d;
+	Fri, 13 Nov 2026 08:53:40 +0000
+X-Mizu-Trace-ID: f62f24c4a9f7b48d
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 13 Nov 2026 16:53:32 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com,
+	baohua@kernel.org, baolin.wang@linux.alibaba.com,
+	qi.zheng@linux.dev, shakeel.butt@linux.dev,
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+	Baoquan He <hebaoquan@kylinos.cn>
+Subject: Re: [PATCH v3 1/4] mm/mglru: add MM_WALK_EMPTY stats and tracepoint
+Message-ID: <avbQDAw6zKe5dRzH@fedora>
+References: <20261113084953.412919-1-baoquan.he@linux.dev>
+ <20261113084953.412919-2-baoquan.he@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-ID: <20261113005219.f954ab03e886b1c3@chrisdown.name>
-User-Agent: Mutt/2.4.3 (cc9e3943) (2026-10-09)
+In-Reply-To: <20261113084953.412919-2-baoquan.he@linux.dev>
+X-Stat-Signature: hk4oxqcfh9uokb6wtj1bedg1gh4rdsqn
+X-Rspamd-Queue-Id: 2B8F720002
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 04B1D14000B
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: 1szces97gqydttyddh47y3hwok1n44be
-X-HE-Tag: 1794559945-29119
-X-HE-Meta: U2FsdGVkX18DB1viLj9lRj8SLvxqhdKIsgqqETyJgTw96GSErPMv74VTNHfCmxinUYXdVoCjWvyGeEiT6GK7tgLmxy/jWpCu0rQJGdCW/Sn307Wvt28UhzFJPyYtfhvcKJokQFngMHHCLjDJueqkPrG0oAew3Fkd1L6gJSJ/im7odCQu/pwTL7yl+xwYuXk0nFZfDA8oW03RNzNadP99612o+70rd0d7keQoNGmR64NzeUtxnsvzHxPAhSZl2eix4xlJKyixAnmsn9rotwGjCA2c3wv20j0ke65V2SRWxLFfHfHq8l0mnAyOrUZ3im9lZDa9k9CvoticzqS3TITzkBgzpX4OeVYidMv3ovfkxqqbquenp2AKp77/zvnPp63kAfnUMRBQN8jPdyKG6+cqH08GIM56trJXT1CGJ4HXE/gSQmtxfU0QEsPqw4SOS/yrGciTSplbqApEc7IGOLHKAGk9i+zUaLmopR2Fau5gkvFuGP5uZXypkdjX9pJgdk37zPObSr//CSqCGFnrsk2kT/q08gGwyqcAw8x2eQy3O+uItpEWiWIVGdVxlY7wk24HhPeivdXJ3HJWR5y3DGt+4RQ5aCssg1+RVXjct1XKc2J5sd/jGGD5GYo1fPwX4BHzd2JwQY8e7izM2vXzR1OCcfgYDCYxAH/17xbVFrss/wdadDMq+8n1Y1zSdiyezZw6Rr+0OI5vDSql/v8Em3kBFKQjnyixqX2E5oPp6Qemk62o9KZNiOcc1DCN+hW7/wQhUwMyVx2+Dghwg4d0YARaxgSmPLnpQL+sA3JjJ8vonV+4rznN+zw4LQbAEUjxiZjrtBLkMTjENi+sKdIAAk4QFYQOV+3RgJS60ua46dKuxSGbGq0L0Edy6WB0+0ib5rjteQKPmUO5ZBrcUmm4YgNHrl5yZ/Nu1XPvSLdEy/r57lHlZiXU6ZPtOBoYB8uZfDSQTN7DLGl0SeSDxfO1jOU
- VXbgXuVr
- lTpwyNUSW/bkjtIB3HYotV1nr7AMFLC6YUiM//ep3DUNSNKoW35fsHfzsfeIBp2zVsZcffG2qLxbnszH8LndXepfF2g5yJ72/JJka6dP4TtTpr8TcrZSnwWwKqJRjwHujEar9DuEpgtSQfvzgVRnw4OpC1YTIGD/iPyPEE5ZTE+m5WY5Sb/yCKhavPvdPRigpgMQ0OXu9SvXKpNe+rojFlOUxtvW0xSAxx0fY2EBI9iwLzs76gkPAIsiVaI+G4SrdKWQrE8mrlOWi3Y8OKqm49Ffz1dxW4ILN2Te9SbAXNr0NkeNYWHpqE5LrCu3npi0u9Ek/ZQAWRPov/Z1QHleLH5Aj1kg6z+M2jZQMiFiC3iMyTbiKDygE8a/9CNwf/JdiJln3N5tgmEeuhywQSLyQND7x/ekevHZtWMx0Q9t/GccCbt0M8ahyiTNWXQwCeV81IKv04YSEnEG8OwW3bEZonaN2SYcYBy9a8fHqCMCvHRbvCt42L4QWMjC35A==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794560021-907645
+X-HE-Meta: U2FsdGVkX18zF750U7t9KEhYeUm+ZCMpMCoefUbtfs4CjuDSuhGDO6BGAB703a7K+n9GVeDWpRD1yUqPSTxfAi7+Sx1q9BwI/ANs64C7RUCYMF4SKcEneniWpAaP+8UYZqnGGsi4j/WEVJ4usVJkKsSsjbR+2rWfJfno7DCMO/Fo/sUmjUr9Y0+geI09ghwQG4ZjiyieWuZvKb1DzU6C6D3zmdMTYmxS38+No9QJlBiYOy7RsUMN5DVr/RAsyzTZTkYViPrhibHiUE5fFhz/rp0/cwRIVxr+iPnnAxkPAUOzav7GIF3vUtHVFQL55qHseiTy4iH5Oqt6MTq3dD9ivqfln3v2v9EC49Pfw6zFwuUGlyp0qmmuQcp9ucwFCMfApn909Xd6+Amx8Qw5Z2inhHrfi5B7PNMwAZLbBW822hnRGMSNm8ZmErlk1zq48ktvN0nncJmHTaMuBGfJotN7Bih/zH3XQfeF4+LUCX+yoE8e8tCouK8QIlN/f8oKrNusm71GJixsNE8E/VuTUz2tFXSE4Pjk50PRhMUjjhQdPLaEj37gSUWmupdW4ViiHBbHJv4VGp/yavSc7/EHPcNlgxJxPsDDDqwGeBzf25qyKgJjB8vQy+lWWFrFT2R2Qe5mb5VaXi0NWn+RdZPVRgdJ5Q4cU8BcDe8nNoL15qu3nw4ojoGthLaINuAM8oTzc14OJew+BdW9GRdzb6PYn896BJUXgTEWmF7KI4/DUdmAhf5CcUu2tIcSCua79M5QIBRwaycxQUm5i8pMUUcY3uWPV+JH04Epi1pcE+AupVyGz18fzbXM/e2BEqXci8RJzbqtF7vnGcLSRR+sHWhAuj3Rr19IZ9UZpkSPAsdtZl7FysdLEx9FL+U7rc5Ipac2evkEjoWkak7BW/RRGbvJkN/iMVoL1qshJfeBtgl6xul0LBPfGQrvmuiB8VK5IIRV2GQO3ga93a/XH09IHFueTbo
+ JXAnab8k
+ shfqKhU7U8fPAP2sDYT7pWM/CECvGq2PUQs2k0pJ4zl49ChXnZdngv+RIbBbUiaavblkVd71JcAykkAPRfcYVCxrZft9UgwjBzvVs3xfyah+BX3J73OpZ1bMhovmFLkpI4erJK52ThLS4BPPANDhpji1uiG4PRnWeyjKoEFbZ+VgEMlnYCa6B3YGVq1rcMTeFGDk0+pxBJXSbb4zsHZQCYdpH0yfpbXfENdUCByw2GyOKtWZQHL90hX6Vv2/dW344cXHwTWCvilfu8+ffx2pbdAWd6LFqTCpW3BHK2bxpxSJskVTNZkqZT8Jt55MCdZD/at8ZCJ8rxU8C3H/ujYsOLNw6Ng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,23 +95,163 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Harry,
+On 11/13/26 at 04:49pm, Baoquan He wrote:
+> From: Baoquan He <hebaoquan@kylinos.cn>
+> 
+> Add per-walk counters to measure empty aging walks which traverse
+> an mm's page tables but find no folio for the current lruvec (node+memcg).
+> These are common on multi-NUMA node systems because lru_gen_use_mm() marks
+> an mm for all nodes at every context switch.
+> 
+> New counters (accumulated in mm_state->stats[]):
+> 
+>   MM_LEAF_ASSOCIATED   - leaf entries whose folio is in this lruvec
+>   MM_WALK_TOTAL        - page-table walks completed
+>   MM_WALK_EMPTY        - walks that found no folio in this lruvec
+>   MM_LEAF_EMPTY_WALKS  - leaf entries scanned during empty walks
+> 
+> A new tracepoint, mm_vmscan_lru_gen_walk(), fires after each walk, and the
+> debugfs lru_gen output ("TYFALWEE") exposes the new counters.
+> 
+> Reviewed-by: Barry Song <baohua@kernel.org>
+> Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
 
-Harry Yoo writes:
->A gentle ping to Kees to hear his thoughts on having a bit more
->coarse grained boot parameter e.g.) `slab_hardening=` to specify
->how much performance/memory is worth sacrificing for enhanced security.
+> Signed-off-by: Baoquan He <baoquan.he@linux.dev>
+~~~
+Git format-patch automatically added my linux.dev mail address, I should
+have noticed this and remove it.
 
-For what it's worth, I'd still prefer to keep slab_buckets= and
-kmalloc_partition= as they are. Each one maps onto one config option and
-one cost that you can reason about on its own (about 1 MiB vs 18 MiB in
-your numbers). If we want slab_hardening= as well, it seems easy enough
-to add later on top, as a way to set the defaults for the individual
-parameters. So I don't think it needs to block this.
-
-I'd like to hear what Kees and Marco think too, though.
-
-Thanks!
-
-Chris
+> ---
+>  include/linux/mmzone.h |  4 ++++
+>  mm/trace_vmscan.h      | 28 ++++++++++++++++++++++++++++
+>  mm/vmscan.c            | 32 ++++++++++++++++++++++++++++----
+>  3 files changed, 60 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index c161d563ce8f..a49efd9b74ed 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -579,6 +579,10 @@ enum {
+>  	MM_LEAF_YOUNG,		/* young leaf entries */
+>  	MM_NONLEAF_FOUND,	/* non-leaf entries found in Bloom filters */
+>  	MM_NONLEAF_ADDED,	/* non-leaf entries added to Bloom filters */
+> +	MM_LEAF_ASSOCIATED,	/* leaf entries whose folio is in this lruvec (node+memcg) */
+> +	MM_WALK_TOTAL,		/* page-table walks completed */
+> +	MM_WALK_EMPTY,		/* walks that found no folio in this lruvec */
+> +	MM_LEAF_EMPTY_WALKS,	/* leaf entries scanned during empty walks */
+>  	NR_MM_STATS
+>  };
+>  
+> diff --git a/mm/trace_vmscan.h b/mm/trace_vmscan.h
+> index 565c56428364..4884fc7a35b9 100644
+> --- a/mm/trace_vmscan.h
+> +++ b/mm/trace_vmscan.h
+> @@ -763,6 +763,34 @@ TRACE_EVENT(mm_vmscan_kswapd_clear_hopeless,
+>  		__entry->nid,
+>  		__print_symbolic(__entry->reason, kswapd_clear_hopeless_reason_ops))
+>  );
+> +TRACE_EVENT(mm_vmscan_lru_gen_walk,
+> +
+> +	TP_PROTO(int nid, unsigned long seq, int leaf_total,
+> +		 int leaf_associated, bool empty),
+> +
+> +	TP_ARGS(nid, seq, leaf_total, leaf_associated, empty),
+> +
+> +	TP_STRUCT__entry(
+> +		__field(int, nid)
+> +		__field(unsigned long, seq)
+> +		__field(int, leaf_total)
+> +		__field(int, leaf_associated)
+> +		__field(bool, empty)
+> +	),
+> +
+> +	TP_fast_assign(
+> +		__entry->nid = nid;
+> +		__entry->seq = seq;
+> +		__entry->leaf_total = leaf_total;
+> +		__entry->leaf_associated = leaf_associated;
+> +		__entry->empty = empty;
+> +	),
+> +
+> +	TP_printk("nid=%d seq=%lu leaf_total=%d leaf_associated=%d empty=%d",
+> +		__entry->nid, __entry->seq, __entry->leaf_total,
+> +		__entry->leaf_associated, __entry->empty)
+> +);
+> +
+>  #endif /* _TRACE_VMSCAN_H */
+>  
+>  /* This part must be outside protection */
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 96201eae0ceb..98037a562ab6 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -3590,6 +3590,8 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
+>  		if (!folio)
+>  			continue;
+>  
+> +		walk->mm_stats[MM_LEAF_ASSOCIATED]++;
+> +
+>  		if (folio_test_large(folio)) {
+>  			const unsigned int max_nr = (end - addr) >> PAGE_SHIFT;
+>  
+> @@ -3688,6 +3690,8 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
+>  		if (!folio)
+>  			goto next;
+>  
+> +		walk->mm_stats[MM_LEAF_ASSOCIATED]++;
+> +
+>  		if (!pmdp_test_and_clear_young_notify(vma, addr, pmd + i))
+>  			goto next;
+>  
+> @@ -4151,8 +4155,28 @@ static bool try_to_inc_max_seq(struct lruvec *lruvec, unsigned long seq,
+>  
+>  	do {
+>  		success = iterate_mm_list(walk, &mm);
+> -		if (mm)
+> +		if (mm) {
+> +			bool empty = false;
+> +
+>  			walk_mm(mm, walk);
+> +			/*
+> +			 * A walk that traversed page tables but found no folio
+> +			 * belonging to this lruvec (node+memcg) is pure waste.
+> +			 */
+> +			if (walk->mm_stats[MM_LEAF_TOTAL]) {
+> +				walk->mm_stats[MM_WALK_TOTAL]++;
+> +				if (walk->mm_stats[MM_LEAF_ASSOCIATED] == 0) {
+> +					walk->mm_stats[MM_WALK_EMPTY]++;
+> +					walk->mm_stats[MM_LEAF_EMPTY_WALKS] +=
+> +						walk->mm_stats[MM_LEAF_TOTAL];
+> +					empty = true;
+> +				}
+> +			}
+> +			trace_mm_vmscan_lru_gen_walk(
+> +					lruvec_pgdat(lruvec)->node_id, walk->seq,
+> +					walk->mm_stats[MM_LEAF_TOTAL],
+> +					walk->mm_stats[MM_LEAF_ASSOCIATED], empty);
+> +		}
+>  	} while (mm);
+>  done:
+>  	if (success) {
+> @@ -5638,14 +5662,14 @@ static void lru_gen_seq_show_full(struct seq_file *m, struct lruvec *lruvec,
+>  
+>  	seq_puts(m, "                      ");
+>  	for (i = 0; i < NR_MM_STATS; i++) {
+> -		const char *s = "xxxx";
+> +		const char *s = "xxxxxxxx";
+>  		unsigned long n = 0;
+>  
+>  		if (seq == max_seq && NR_HIST_GENS == 1) {
+> -			s = "TYFA";
+> +			s = "TYFALWEE";
+>  			n = READ_ONCE(mm_state->stats[hist][i]);
+>  		} else if (seq != max_seq && NR_HIST_GENS > 1) {
+> -			s = "tyfa";
+> +			s = "tyfalwee";
+>  			n = READ_ONCE(mm_state->stats[hist][i]);
+>  		}
+>  
+> -- 
+> 2.52.0
+> 
 
