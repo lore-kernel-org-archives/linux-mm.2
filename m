@@ -1,97 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3A6606A338
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 19:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9FC606BCF6
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 19:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=pqHs8TES
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=DxslJsEK
 Received: by kanga.kvack.org (Postfix)
-	id AC3836B05E3; Fri, 13 Nov 2026 14:50:16 -0500 (EST)
+	id 4B2576B00EF; Fri, 13 Nov 2026 14:55:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A748A6B05E4; Fri, 13 Nov 2026 14:50:16 -0500 (EST)
+	id 445356B05B0; Fri, 13 Nov 2026 14:55:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93EC46B05E5; Fri, 13 Nov 2026 14:50:16 -0500 (EST)
+	id 32ACC6B05B1; Fri, 13 Nov 2026 14:55:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 69C946B05E3
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:50:16 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 60162A791B
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:50:15 +0000 (UTC)
-X-FDA: 85431137190.24.0D595B4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8451140006
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:50:13 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=pqHs8TES;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id AD2A36B00EF
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:55:46 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2968A801F1
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:55:46 +0000 (UTC)
+X-FDA: 85431151092.29.2261EFC
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 588AFC0006
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:55:44 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=DxslJsEK;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.169 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794599744;
+	b=38vb2HqczotYIEFqxzmR5bVHhE6Q4SDg8sA8GtzfK91l3uxKyQPk96hoAAwJ43eMmocR8b
+	R2cYB1O8f+j0J+bFOaSmVzVf+7EnsXdniiINlVA33T3cVI0AYZQVUSLamQgxgZ/K1TQHoR
+	zcUJrX76bqkeDpVsnzO/lQLpWFGos/0=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=DxslJsEK;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.169 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794599413;
+	s=arc-20220608; t=1794599744;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=icSSFy6GjaSbuEQ4ljb9qXuvnPWw3H9lXh4lbn2mdRs=;
-	b=pkYO+Yy6x0lc5QKWirV21VFY4S8Ghivzazy4N0wTXs5NvnV++bJvxsJj4xC6XBzosD6VDn
-	GooBms8j0GEgz2thu/ncunhzMMiOghZnnE2zOoTMRaW6Z7LI1atW4x0zDZhhqnl1dtWpBb
-	13K4CkelsrWQ0C1olnEE4IIwsNuUQ9M=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794599413;
-	b=qgcNm4qX/B9GR41sa1PL1D4kO1wWoeVjoKYlqCD3cRwJA0uHqeVK3zDP6EPGWtoqfm97UU
-	4hX5noUu0dEDrfKee6zirmDKyG7SUSZlQaWdGX/2Qm3mNz8Kz85vUAwfDmorTOU0BX75sR
-	tGM5XI30VtoVwfklzE/tYMCQb2RgMP0=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=pqHs8TES;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 68B91422B7;
-	Fri, 13 Nov 2026 19:50:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 820301F000C4;
-	Fri, 13 Nov 2026 19:50:11 +0000 (UTC)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=UeGRg/WkJsGVpuyAFSuDrs2zUW/JrhTUImqKDlhPu/Q=;
+	b=y+/x4FpJILQD1AEJzdBM4fgaoaibcokkiO99uf74YCYxULMSj4UAklp5qJg/weBBij2ldp
+	ibUNjsF68v7ox2lg+B3yyMexH7ySmr3gEF9Y0tgpyX9cI9ad2Ri4xljEm5yTAF+elo3NzP
+	oODgaP/TJlJCbK7yzFpTjraqzhUDVVE=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-5365f9a04c5so37027091cf.1
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 11:55:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1794599412;
-	bh=icSSFy6GjaSbuEQ4ljb9qXuvnPWw3H9lXh4lbn2mdRs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=pqHs8TESSdCkgZCf632amqMara786CCSSZNFMUL2TR9gYOwnTgEW0tzMZpiQvlpEq
-	 W4VZT81obVTgxzwhf+4pFBJKGq355mRZ7i41mDGv3pFjJBAX7kAb+g1W9wdSeT0HIm
-	 tdJz1J7236QoUVbKn0ehPDa5mltdmB8w//C/4g/w=
-Date: Fri, 13 Nov 2026 11:50:11 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Cc: linux-mm@kvack.org, axelrasmussen@google.com,
- baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, hannes@cmpxchg.org,
- hui.zhu@linux.dev, kasong@tencent.com, kunwu.chan@gmail.com,
- liam@infradead.org, lianux.mm@gmail.com, linux-kernel@vger.kernel.org,
- liuxiang.277@bytedance.com, lyugaofei@xiaomi.com, mhocko@kernel.org,
- mhocko@suse.com, qi.zheng@linux.dev, ridong.chen@linux.dev,
- rppt@kernel.org, ryncsn@gmail.com, shakeel.butt@linux.dev,
- surenb@google.com, wangzicheng@honor.com, weixugc@google.com,
- yuanchu@google.com, zhangbo56@xiaomi.com, zhuhui@kylinos.cn,
- sidchintamaneni@gmail.com
-Subject: Re: [PATCH v8 00/16] mm: mglru: fix swappiness behavior
-Message-Id: <20261113115011.f90e267d58a9a88c513ae325@linux-foundation.org>
-In-Reply-To: <20261113185541.70203-1-baohua@kernel.org>
-References: <20261113185541.70203-1-baohua@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=gourry.net; s=google; t=1794599743; x=1795204543; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=UeGRg/WkJsGVpuyAFSuDrs2zUW/JrhTUImqKDlhPu/Q=;
+        b=DxslJsEKRnGEhos/GNfdH12Y26naBjGnlx9q4uTjpH909BrSC7HGo9Iz7oMBz9hpMD
+         qEGEu0U+qvuJJ/j1lTT6/Z376CYKwDrde8qkkbxteiRAiNnT8Txf1T0XNGfGPOFVg3U1
+         I1/0RHNNVHbLr+xnkxJ3D88tC922hVpVNW9wry+lOL2bB7WHkQx25gIt/0U2bz/du0Lv
+         4RQVyPmaEETioUUJm8kfZvICZAqbV42jfs9WT9NZIjsxTx2wypzGU7mobHJnnEtiBI6h
+         63NJn46oDPa2QifOQC7sjgJ2NK0QugDqOJ5wKlUbfkDxK2cNG7BFN9ej/jBG03CS55y6
+         D80Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794599743; x=1795204543;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=UeGRg/WkJsGVpuyAFSuDrs2zUW/JrhTUImqKDlhPu/Q=;
+        b=xqb2YBer63VljK2b5zC25IgYaaycAdFDGpghRnPIooUhEaEoczFX9A9XROLl/tNf6D
+         d1z3ie9F5raVpPk/0KRDc+Csj20eTUKrh61X5fgPZBAxhbxHXeqQMOGE9ANI/OlTh0PP
+         Xs6kCVd2Y0aE8LdPzUdByGOvuRKMUOjDhnG1ISwSBtkaVU/CanGDefShYjTwBIpSr7sM
+         4exERGMt2Jf48GIhI70FE46uuAjAoRTAUcnvKRPYon2kIP1P6/uENKhmgATkHXcZDppa
+         nvrpit9JV5UhE/4D2k/Rjy9zbCrS953yUirZC5VvEP15hR2eW46dcKZhddUhrFxJ+TDM
+         iaFQ==
+X-Gm-Message-State: APuU4Z+fpC4hib2yOJpE2gihPfw4lUR4B/En3R4+4j99USoZhNe5gSG5
+	TzjV+4DYD5sIhxOgA460VDxqyRP0EWH3Mnj2/KgzRdlGBwRDtvz2XWwREu1LL+C2wGNaapvyy1R
+	uZiIZ
+X-Gm-Gg: AYBFou0d39gFalk6L4tfz62rduTvZBWFXZ8t4HfqfwttIckejitvSykIc106hEQn2nY
+	QFuU3eeBkghk7J6GvBbFTL3cMQGoleFeEDO/b5cRdSjf+/CkqqaPcsTcVOTPnYfMB2sx7rp0EgG
+	sI8GtzDedONwbYo6oTbfrcOenswu3iCtjQIMf++ftV0rwARYkmppxV3vfvoU6Y1Eq12yLplnbFl
+	hvglEx6TyOu0pf7GNskCy+KDZc63yMCbr4Q+LoiqZdU0zyX+cOaQ/Iblr+WgCvMkA/sWZwq8cil
+	Gw9jzQlmjc+kWPhUu45fnd12GFHJ0HVRFSR9NhgSkEG0zlP82TpGVtDIwGLGZfQH8YqA6Q2bR5u
+	0TLIM+kqyiaViysWk07F2yhs2m3X2PQQvzmeDx0mkcpr9CXgToHSsJuCFWzAFnGGarCXlS00Kr8
+	C5yXHnufgNxd7L5d0WuBB5eGDrqH2HAA4vfYcP9uTybJJqHMEoyXmr3c7e+hMFPcE8x7GQB+m2Y
+	ehmtctGADh0y3AoatW5yYe9N/r6INHvA1PFvWWQWZEFXMjQoaomQRbWSmmPNGbQzLZlvgGMS3rq
+	QDBo8XWeLZcfmbbHrV2rrxXdQwZOWakg9kLwLOg8YkrvhYPlch+hoa6dCPZXY4i/Re3TotbpgRL
+	Rwupdfo3dmn/Ypl8=
+X-Received: by 2002:a05:622a:258e:b0:533:2c5b:d668 with SMTP id d75a77b69052e-55ac8894504mr59124981cf.30.1794599743447;
+        Fri, 13 Nov 2026 11:55:43 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55ad0a231dcsm25486351cf.13.2026.11.13.11.55.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Nov 2026 11:55:42 -0800 (PST)
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	jgg@ziepe.ca,
+	leon@kernel.org,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	kas@kernel.org,
+	dave.hansen@linux.intel.com,
+	bp@alien8.de,
+	rppt@kernel.org,
+	stable@vger.kernel.org,
+	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Subject: [PATCH] mm/hmm: reject shadow-stack mappings
+Date: Fri, 13 Nov 2026 14:55:36 -0500
+Message-ID: <20261113195536.2660763-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: c3oj6np4toeopho593q46c9tph7ne7ni
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: p7hjt3acay3ysrhict8prjakwxguq9ho
+X-Rspamd-Queue-Id: 588AFC0006
 X-Rspam-User: 
-X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8451140006
-X-HE-Tag: 1794599413-417912
-X-HE-Meta: U2FsdGVkX19bDo1WipHoB88iTpnE7kzmmAv12ih3yK1zZSqNH2ynJ1v/EDndbT5Smsx1qK5ayjcI/LR+ucOen/+FWbY81jpE3iesTq9binY+Zl++UCSVPY1c2hMK97gp5YR9PG8zjD+Tf7gMj6AFOF0M0PfFr9AGY1RykT/drL7PQs00+EYe/4DbWnyhMZ7fVY21+52KZzUic0GwMsYZyZcZHwoV9D1O0eWs6YWkJH12WLYYqkgbF1WzyKee1+wfdzmvgpR31n1NFjogc/oja3US2YoaeBO7PvWx4ofcI6WZu1MxdW2RxgFxRT8PctUovoNheQgT4hrfArMNBJif+PcAKz0obH0Kch5/i9R7w3Inl+gr/36qhh47L0F7igMxOSDxQ7Uhr6O5SbHmJE/0zsIPc4gZ+MPTHGNJn1INJom5yq3Vyv4MISTk2jIyjOdBPpR4ek2aRp0P0icp4H8WBL+78LhfwbJkLxRV4uxboZScTS04klr2e2jnCe2ke31LRq/FGRv8WSyLvxhebiHjPxREkz0PtX7NrSV6Bm2IYXm0A7S/gJg2WhMos1iBXRi/oAiRZW09Wst7TjDFFxJWU1DjP9T7tCvI5MoSJuX6j/qkdfbothhcU3LPb9c4BO37+rnH611MTBqwR45ZMjd7NCiPhaV8yuyo3DVmx25yUZc1LHrf5sDPygTYf1EvqG3hntfTWsoXErowgMbBCDdvn8BGCE4HjT6gtXxzuLgkRWdjPwObZxOjBB551UkqCx4jVUB/IG4WHSJyGFmW8LZ+Ijouj+8Y942GtVza9uzF4GeechqmPuJ51qPJfKsJZDXXYVoON/ZmGoSMx5UWX2EMvivK8fDWu6KEaWUXjNSO0CaMCOdz1Olp5D08zwwL/e+JooAxXndZiFyeo6fqkFrEcM4WTLeJzy81SwQurjapbunuKMUEi3xyHoXKRlYB5AEaxifDY7VtPY6SEzIuKzM
- nbC+sB6I
- i3XVC3Mtrc4j7Ih6KD7Sfk0UuqE4dNHF+6vSZiz7+KxoKFOucRyDAFcEcfcpIhVtO04I8YTGf3orccYqvTxUvOsiq+/hxv/xwRRltx1Hpt8MN0qn6bSwfqHQn+hNuVbZ2yy5wI9dpJgk5Bcgu6Jy9MufwO/cCxmlRcjvcNLPk4D3Xn6rNKyDxpcjGtzg7R7zJfKn3DrHc7HN82yQ6P2BXPNRBH+Dwbjf7PPqswzuMlcjoRUWCz8Ctlw4SGXNgo0b3kbp9PO3AyhtlvZDPfvvuRKDrIlL2I4IOPdmvoZvVOOmy/8wturXD7iDfFIdqonUtQaim9DnGAhsuR262OK9MoGeBVe/mk7ehMAdn
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794599744-639209
+X-HE-Meta: U2FsdGVkX19O4z8LtAaN0o5uD9cYBeQMvxSJqac+Q4PZi9UZ66wgyO4NRCxiSlRExQbQYvyyyctBsJcvWwxQdz1D/tfgK1/Uk+dos5t9VD0zMpuskcJQ5ol7IaNpHOFlsBFcPUrdvN1hD5PQYtZrdmQkEHszZoTu4XfpbA4cJlLUSwVvJ2k4lRVbGmdPlsBBjEhy+6dCSjvuezOeNDRjDpyzWlq/wqJ5uuFEKsGxzDvcCHomuGAN+G7VV992f5mnTramXywhtxnf6bWiuZbKxgbEsQ1isQo7ueiy7xsb1pH9M0KwEwuh54IQ3eTts2tcmcqBA7IFh9rJKJgbLtSgRDQMwrx/vQ2m65C36W3Q0LopBQ2G3awavSYd/D87kJy3YvONezHQ5OEJPPJZHRE5DsgvGMvMBMBQ0thF/VcYU/E6BvKGWB7fjFEppERBdSRPWXi+ZKuitsIwvij4T8j2vaoXBratPKrRu5BLvKNJx6+TVwgbwNkuyr1jPuZcGkFkV0YHbFp/6c3riffJ6VNNw4lOfg4eIm16WMh3kSsKgeDQc9w85y/WihM345BE5A906ALCMZJVrG+LBOpJpJLt3r3ZqbvKMZ94PKY4fuJFKu4ifhRYRCCnSGuXUQdCeyAvDamA4vxwKuBbRqOeaDYcS3XxGxG2pLgz5t+OpVEVJCXUKp9ZLQusflg9mpcAnyN/KjnyoLCS/eU/bBDmrEru0InnKbP5z6s2KBo+/AyqzLKQwjWYkrKluaYbTGZ22subMvFF2D6UjGkZqsEudqJGyR/GMIeOF4Uh68r+OnlhyZ+PhgmjJXStEOZXtWby5davsy+YTlD+s1pxjv1GuuSox49k6LMt9Rwz15AT9UxM4LTelS0DCybCMQPJaZv6wgTQ0X4tENL8Kea61KS2gd0oAs9bUvc7beyU3DOC9/tZjOmhaV8uCFep1IHDoB6mezFXapFqW7gXeO9BCjDrhoX
+ RhWWGSaE
+ EJsBQ0TaWj4gV2yMB0Te0bN3a03rzE0rjkkIr48E3f0AwfS5Fd1kJ1oJ7FZdAlnMEaYEZl1PPWweB4hPfSLrVPVpaOY+n+92LXvbG9HluETktMcyXoE3q8Rds0yVWRkyOqSzZjlyYaB0zVh2rVG0L0UQYNk+agMl1IPFwhz6XgzLEXJbFIXUEZYhz3fyG80oce1sCATtlnG+5Qc4mvqTft74mbAar18xYgCSFz78gGjaT4DZV/1XdD8jlz1PfcFODbNqA6ucp6Kn1NDmsC7B5OV0HNIGdKm+t5Uf/OJlO71+NjTT3Fhfmb4JmINd4SdZVeFgG6mNukE/WMuY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,139 +130,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, 14 Nov 2026 02:55:25 +0800 "Barry Song (Xiaomi)" <baohua@kernel.org> wrote:
+HMM can grant ordinary device write access to a userspace shadow stack.
+On x86, pte_write() is true for a shadow-stack PTE, so a populated page
+can be returned with HMM_PFN_WRITE without taking a CPU write fault.
 
-> Classic LRU respects swappiness, while MGLRU only weakly
-> honors it when selecting the scan type. The fallback logic
-> can easily override the bias established by
-> get_type_to_scan(). As a result, swappiness has a much
-> smaller overall impact when changing from 1 to 200, as
-> shown by the data presented later in this cover letter.
-> 
-> In this patchset, patches 1-8 from Kairui introduce a model that uses
-> refaults to determine nr_to_scan[] for both file and anon in MGLRU.
-> For each reclaim operation, we calculate how many file and anon
-> folios to scan, similar to CLRU, rather than relying on
-> get_type_to_scan() and fallback mechanisms to decide what to
-> reclaim, which have proven rather unreliable in honoring swappiness.
-> This model also allows scanning and reclaiming from the two youngest
-> generations, including the youngest generation itself. This can help
-> resolve OOM situations[1] and reduce the need for aging.
-> 
-> ...
->
+Nouveau translates that flag into a writable GPU mapping.
 
-Thanks, I've updated mm.git's mm-new branch to this version.  I expect
-I'll advance the series into mm-unstable (hence linux-next) over the
-weekend.
+Reject shadow-stack VMAs in hmm_vma_walk_test(). Use the existing
+unsupported-range handling: a requested fault returns -EFAULT, while a
+snapshot records HMM_PFN_ERROR.
 
-> v8:
-> * Fixed Gaofei Lyu's name;
-> * for debugfs proactive reclaim, use DEF_PRIORITY;
-> * refine no-populatable aging (limit frequency, allow an aging
->   after eviction returns 0 scanned)
-> * refine "restrict eviction accounting to eligible zones" for
->   potential premature OOM;
-> * Collect Baolin's reviewed-by tag, thanks!
+Link: https://lore.kernel.org/linux-mm/20261111-mason-migrate-et-al-fixes-v1-10-3d2454362e8d@kernel.org/
+Fixes: 54007f818206 ("mm: Introduce VM_SHADOW_STACK for shadow stack memory")
+Cc: stable@vger.kernel.org
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+---
+ mm/hmm.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Here's how v8 altered mm.git:
-
-
- mm/vmscan.c |   34 ++++++++++++++++++++++++++--------
- 1 file changed, 26 insertions(+), 8 deletions(-)
-
---- a/mm/vmscan.c~b
-+++ a/mm/vmscan.c
-@@ -4034,8 +4034,6 @@ static void try_to_inc_min_seq(struct lr
+diff --git a/mm/hmm.c b/mm/hmm.c
+index 2f1e98c6b644..fa61ca59d927 100644
+--- a/mm/hmm.c
++++ b/mm/hmm.c
+@@ -596,6 +596,7 @@ static int hmm_vma_walk_test(unsigned long start, unsigned long end,
+ 	struct vm_area_struct *vma = walk->vma;
  
- 	/* see the comment on lru_gen_folio */
- 	if (swappiness && swappiness <= MAX_SWAPPINESS) {
--		unsigned long seq = lrugen->max_seq - MIN_NR_GENS;
--
- 		if (min_seq[LRU_GEN_ANON] > seq && min_seq[LRU_GEN_FILE] < seq)
- 			min_seq[LRU_GEN_ANON] = seq;
- 		else if (min_seq[LRU_GEN_FILE] > seq && min_seq[LRU_GEN_ANON] < seq)
-@@ -4246,7 +4244,13 @@ static bool lruvec_is_reclaimable(struct
- 	if (mem_cgroup_below_min(NULL, memcg))
- 		return false;
+ 	if (!(vma->vm_flags & (VM_IO | VM_PFNMAP)) &&
++	    !vma_test_single_mask(vma, VMA_SHADOW_STACK) &&
+ 	    vma->vm_flags & VM_READ)
+ 		return 0;
  
--	if (!lruvec_is_sizable(lruvec, sc))
-+	/*
-+	 * As in __alloc_pages_may_oom(), avoid triggering OOM for low-zone
-+	 * allocations. Also, defer the LRU size check until reclaim reaches
-+	 * a very low priority to avoid premature OOM.
-+	 */
-+	if (sc->priority <= 1 && sc->reclaim_idx >= ZONE_NORMAL &&
-+	    !lruvec_is_sizable(lruvec, sc))
- 		return false;
- 
- 	gen = lru_gen_from_seq(evictable_min_seq(min_seq, swappiness));
-@@ -5220,6 +5224,13 @@ static bool try_to_shrink_lruvec(struct
- 	bool need_rotate = false, should_age = false;
- 	int swappiness = get_swappiness(lruvec, sc);
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
-+	/*
-+	 * Avoid aging the lagging type under extreme swappiness,
-+	 * as reclaim of the unpreferred type is disabled until
-+	 * DEF_PRIORITY / 2.
-+	 */
-+	bool allow_no_populatable_age = (sc->priority <= DEF_PRIORITY / 2) ||
-+		(swappiness > MIN_SWAPPINESS + 1 && swappiness < MAX_SWAPPINESS);
- 
- 	/*
- 	 * Proactive reclaim initiated by userspace for anonymous memory only.
-@@ -5238,8 +5249,9 @@ static bool try_to_shrink_lruvec(struct
- 
- 	while (nr[LRU_GEN_ANON] > 0 || nr[LRU_GEN_FILE] > 0) {
- 		unsigned long orig_file, orig_anon;
--		DEFINE_MAX_SEQ(lruvec);
-+		unsigned long max_seq;
- 		bool no_populatable;
-+		long scanned;
- 
- 		if (mem_cgroup_below_min(sc->target_mem_cgroup, memcg)) {
- 			need_rotate = true;
-@@ -5248,8 +5260,7 @@ static bool try_to_shrink_lruvec(struct
- 
- 		orig_anon = nr[LRU_GEN_ANON];
- 		orig_file = nr[LRU_GEN_FILE];
--		if (!evict_folio_lists(nr, lruvec, sc, swappiness, MIN_LRU_BATCH))
--			break;
-+		scanned = evict_folio_lists(nr, lruvec, sc, swappiness, MIN_LRU_BATCH);
- 
- 		if (should_abort_scan(lruvec, sc))
- 			break;
-@@ -5261,14 +5272,20 @@ static bool try_to_shrink_lruvec(struct
- 		if (root_reclaim(sc) && should_age)
- 			break;
- 
--		no_populatable = (nr[LRU_GEN_ANON] && nr[LRU_GEN_ANON] == orig_anon) ||
--				 (nr[LRU_GEN_FILE] && nr[LRU_GEN_FILE] == orig_file);
-+		/* Limit no_populatable aging to once per try_to_shrink_lruvec() */
-+		no_populatable = allow_no_populatable_age &&
-+			((nr[LRU_GEN_ANON] && nr[LRU_GEN_ANON] == orig_anon) ||
-+			(nr[LRU_GEN_FILE] && nr[LRU_GEN_FILE] == orig_file));
-+		allow_no_populatable_age &= !no_populatable;
-+		max_seq = READ_ONCE((lruvec)->lrugen.max_seq);
- 		if (should_run_aging(lruvec, max_seq, sc, swappiness, no_populatable)) {
- 			trace_mm_mglru_aging(lruvec, sc, swappiness);
- 			if (try_to_inc_max_seq(lruvec, max_seq, swappiness, false))
- 				need_rotate = true;
- 			should_age = true;
- 		}
-+		if (!scanned)
-+			break;
- 
- 		cond_resched();
- 	}
-@@ -5965,6 +5982,7 @@ static ssize_t lru_gen_seq_write(struct
- 		.may_writepage = true,
- 		.may_unmap = true,
- 		.may_swap = true,
-+		.priority = DEF_PRIORITY,
- 		.reclaim_idx = MAX_NR_ZONES - 1,
- 		.gfp_mask = GFP_KERNEL,
- 		.proactive = true,
-_
+@@ -607,6 +608,8 @@ static int hmm_vma_walk_test(unsigned long start, unsigned long end,
+ 	 * allow write access either. HMM does not support architectures that
+ 	 * allow write without read.
+ 	 *
++	 * Devices must not gain ordinary write access to shadow stacks.
++	 *
+ 	 * If a fault is requested for an unsupported range then it is a hard
+ 	 * failure.
+ 	 */
+-- 
+2.56.0
 
 
