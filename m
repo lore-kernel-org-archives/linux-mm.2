@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF0560A6F45
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 12:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4736070C51
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 12:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ug6W5wvR
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jTTdJq3Z
 Received: by kanga.kvack.org (Postfix)
-	id BEE9F6B06F9; Fri, 13 Nov 2026 07:02:02 -0500 (EST)
+	id 81F516B0622; Fri, 13 Nov 2026 07:02:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC6C76B06FB; Fri, 13 Nov 2026 07:02:02 -0500 (EST)
+	id 4C1646B06FD; Fri, 13 Nov 2026 07:02:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8F2D6B06FC; Fri, 13 Nov 2026 07:02:02 -0500 (EST)
+	id F22C66B06FE; Fri, 13 Nov 2026 07:02:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6EBC56B06F9
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 07:02:02 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D93BE160310
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:02:01 +0000 (UTC)
-X-FDA: 85429957242.08.8F1F7B8
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 92C996B06FB
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 07:02:06 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1AEEFA0283
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:02:06 +0000 (UTC)
+X-FDA: 85429957452.18.E040759
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 14DE980004
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:01:59 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ug6W5wvR;
-	spf=pass (imf30.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 36E4920006
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:02:04 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jTTdJq3Z;
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794571320;
+	s=arc-20220608; t=1794571324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9m7rGhniXkCVOpjWxIRaB48HqI4fh7CALv+MiR87LK4=;
-	b=44KeC8jD9K9EEBfwdwcgbpvjjy8zPERsgibn9L831n0S8WTEX48cSulUliXzGoomtOIPUs
-	36osF3w7sr6OpSCXQ1ajrDkSvSLgP4aoWx+thFEZoMykqTe/2fRCvErUjnQ0kL0PjtgAK4
-	/zoY3byD4HQn3mazO6DZkzOi+VBLBwU=
+	bh=+Ow1hJfO48deuGkhrYlAsCvQdwxNlOUTrn1uGHKQmZQ=;
+	b=BAnmxvZdoIPmbYgdxmvJYxubDfyzQeVap/Bz97p4TNKPn+1H7tUY6uyoTjThPmgv3q1DAe
+	qKzZNyQ46vrEQtYG6PMxpOjjN6PsuTGCqi7tMmvQgKlXCA+BjWXIPH3YCcmLcY0SYALNWk
+	XvnwfZmQKeBhT1rieG+qv2Qa9KoEPac=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794571320;
-	b=aXo8XK7pK+HbJRYIC8cR7pyVrKM6YwNZpC/+mwSKLAsj4wy7W4pctWCFRmF5y+gpvZ9EXp
-	aD+1IbfgZwJH6E2+Kj9JXGNxR7/P1EazkRS0AQStmBCBUTz2r+hz9s5XhEAaSEFxsyiD+Q
-	0kHWXl0X9vAaDB/mLz+QJkU1shnC00c=
+	t=1794571324;
+	b=Y5Lg6/EXlrcpCQkqltnCNvlW3EW2FBFNzcv9oYngJ3cCuHdIHokw7tmr/p7McdrexG+3iD
+	IZdAOtNViisd7ETskmNAqQ27Ruuxn9zNkQpyQes6kCfaM9PSlexDQn2AaPz0bBZh5txQUa
+	U5vMOIewWweW1cEWLVfR5HYIbWjpVoU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ug6W5wvR;
-	spf=pass (imf30.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jTTdJq3Z;
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3F2CE41E56;
+	by sea.source.kernel.org (Postfix) with ESMTP id 8D08845733;
+	Fri, 13 Nov 2026 12:02:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B921F000C4;
 	Fri, 13 Nov 2026 12:01:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D3391F000C6;
-	Fri, 13 Nov 2026 12:01:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794571319;
-	bh=9m7rGhniXkCVOpjWxIRaB48HqI4fh7CALv+MiR87LK4=;
+	s=k20260515; t=1794571323;
+	bh=+Ow1hJfO48deuGkhrYlAsCvQdwxNlOUTrn1uGHKQmZQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Ug6W5wvRvHb+tMs8apk9dsP12PBW6wealEd4cLaVlE1fx5qaxqtwRWv5cqHHWuhDr
-	 YVnjvHdTrptkecCq3R2oMJGTGmOxrWz0qZVCTiaiKN9DE6t5gewtPzzQDis7LktDry
-	 duUPpwOfDeDuTQAZjHOZqqPb9oRFf2t/ve6OvwN72J5QKsuISTXm+hYy0QJnLfv9hz
-	 JW/bfx/JL2fdDy2aLhuKpSKmB3fOaWJc5+SPTFntR7HN/9z1Ya12r9bvJl3y9R8Iue
-	 n0kqSrkyoT1yn6fqhBQ6xKvPhajY2OIuJ7Kyw95+zVc2BNwJtFDivWhPfIIj6DPK8z
-	 40BhzVceFBNcQ==
+	b=jTTdJq3ZHQO17xb1iVOpqx2VTyAHhHtIJVfqcsF5CgXMewwsOUDO0PGAsvU6p+LpF
+	 TV3JzlautUj4L70UOUEDWlY3bZSV1dPbUEsN/m0YfrITpmQP/KGytfNTOcJ0W7x19D
+	 DzQ8NvQQLP8CLRtZb9XUNruqdy7nHLpZC8fV1S5w5MpXFNHWC7YQCnw0k1qtN9ShWb
+	 ReInI2kgJadpToBmQGYul0Y7E0e7OnBYAAdW0Z/rTwv5T2xYp5tAJvPpMUxrxKckqV
+	 Zt6tG2Qg3OiYXPBetd6NbpVajzfYTqXiNREfZPOS/6Ga6R4dRpmzpZ58YMWSjwasFU
+	 kb++q785qgsFQ==
 From: Christian Brauner <brauner@kernel.org>
-Date: Fri, 13 Nov 2026 12:59:21 +0100
-Subject: [PATCH v3 25/33] btrfs: check BTRFS_FS_STATE_RO instead of
- SB_RDONLY at runtime
+Date: Fri, 13 Nov 2026 12:59:22 +0100
+Subject: [PATCH v3 26/33] btrfs: don't set SB_RDONLY after filesystem
+ errors
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-work-fs-sb_rdonly-v3-25-0be92bb73709@kernel.org>
+Message-Id: <20261113-work-fs-sb_rdonly-v3-26-0be92bb73709@kernel.org>
 References: <20261113-work-fs-sb_rdonly-v3-0-0be92bb73709@kernel.org>
 In-Reply-To: <20261113-work-fs-sb_rdonly-v3-0-0be92bb73709@kernel.org>
 To: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>
@@ -82,26 +82,26 @@ Cc: Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org,
  linux-xfs@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=14087; i=brauner@kernel.org;
- h=from:subject:message-id; bh=N9txMHHpqH0c/abOscx2MPg9hwaXL1389imewXw8xz4=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWR9+71dY/PcFR/n+Jr/5noSq9qt0zsxl8s2YY35pWM6P
- SxWKikNHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABP5rM7wTz/IP7h+sWdTcIRk
- yGcTRk3GGC/GRb/mrTNe1SgxKWuNCyPD89N8yYem+L5b6ZHpd2m519f4KXVeM1e9bz9dt7GWd5c
- qAwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8494; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=qEpzIjmevC5rqt8moTob6So4JiC8WNq/cSBOGdRGEnE=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWR9+71jTyXTxEnTJTw5T1bwJM7ZOevytnVXb85fZKKeq
+ GvuY7DVv6OUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAiRt8ZGaYy9WnGRbe0X/Xm
+ 2rVCWIqpcfvTrtcb6nbvqNVcyPHNwY6R4cj3j63L2l2Z5Th0yhfO+hpVwdUd4/Fi3dqpUi96JSY
+ m8AAA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 14DE980004
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: owugpri55679mg54dq9hf8po35o6e6k7
+X-Rspamd-Server: rspam09
+X-Stat-Signature: s1csz4oyknamubp75h6ut67hd71su6nf
+X-Rspamd-Queue-Id: 36E4920006
 X-Rspam-User: 
-X-HE-Tag: 1794571319-999735
-X-HE-Meta: U2FsdGVkX18hUgrjC99lXLI8mniMXwhYos08OPa3EExD9FPepK6AH7Bh5KNXra0Ny7mzPIbG9LfVUsVb2NrTcp4H/sdq5E1tWkQFopwosNtacCmQWVbe/tjOIPh0oBhWth0mYo+FZ2AeVo7vfX9LR3J9mWjdg3NQ83QSb9BEPkG+nuCisdXgMeva9YTPioOlxMUOgD9wt++ZY/7mHGZ5n4DltCPu5M/6eq0K7ie1M+aDPRQNVu8M+7VnLR/9yxNiuCOXVSBXxmtNBELj0LrqMW4OZmw4AtukZ+n2LyHeDDdDu80Fom1FAdDTX9CoK5hNKNi3ilVLJ4gtRaKgtJWkDFaIZKoDOaQ2ZOH+Y3qtHhpVJuO41rTpY2avQLyBpIlnUOrwbkalhIUoW7M+bJDWKyebD9WGBmB44RMnCstqCHOirc+Bl7soLopktj32dF3UZPzArVXKH0x0qfanHVtX80vn7UjfamgB8expkqi1dlxmF/rbRx7fEYhkbMgdDq4WCkQUsIG56KvWXaM1A22Y5JcHu09/fmyVRRu3A8JMlf5F8llYEKQHSYqXivjvzLoA3VKNp8cuTdSrr4aGkGN8XoGing0wpaGXaECj/IR6kbkxKV8m3Ustd6uJHyNZJCn5zpkoFOhIEqhU7D70ViJSe3Zfu6gO6pANIBCzdV6k+ccByznmSLwz6IaDIHvNLoToQG+r2wGw9b6gciYSBJNMG/s6lsRAC2274iS+QdVT5hWOiBkWz48WB3yjlhR+ynlDngtELhigv6R/GgwlWZGMihw4QXHkpDL5XU8GXYmpZhgSJXXa1/47zQP+4sPsuTNdftbB6K84BqTXh+e27+fBcTGWf7zbmwBqL+7eMChm4p8xuUcQEY8PjTzEqw3FMLwq6UJAUrGfdSG3BrKLXeZXF22Cmntv/3mfZTbo8RAz75vOOeSiANV2o4+gcBAquQVm+rIDqLcDfYXSy5aEvjp
- scXlHzRZ
- D2+Q2+Ar0K/NiAq21CU7e9j9K9hBzUanIULrYftw8JNGRh8uyYA6Hz/XvvNoPIM6LZSoWH+xJ6DSfQCcCD7YjnalXp+5AUFtXaSZ2XfWa+WM9VAIpWz6Xn0aSrwGgjD0iynoI/4xvSrwO6Sq33cC5wLffpMt0934R3HX560w0bI+SOEWGx/sLbtzub05CEMboAg0rbizemjxvemcFpYpAlLmSe4dHt+ZMABRzOyKsnHb/bp9gTW297Eca1Vbl934z8Fvi1m+qIyXaI5VyP69B7vuWmTG+sE7ygfuERmCwnqc12dJsgd5bIufyFAc33HBV5NF/j7bQ61EsQb8=
+X-HE-Tag: 1794571324-872468
+X-HE-Meta: U2FsdGVkX191zcL+GhqXG5JanZ08MdxekRKcnRnfMTTIBuO83lh+AQ/vRkK1OJq8kYvEI8AiNCgKnkzMaJbbydFZbVI8QiEDRZBGkvziZXHqf2/5twrGxY0UzRx5L3bEp97QAYiGCmLyZas3TyHh5PxtMKpWdqfdBaWXJGxIjWK+HZSFG/7E2XwOnIGAH7TZbZdt64bL3WvoymeZR2ab0gEiqiRcr1/W7NfVJn6Kz9TpLpAAU4SWE/DzSc35b2vTDYeWn7UfkHJOcLSdVsAOvL5WyYFtkjwKMkHJMEzHHl0cW51YXpgqpkI8Ems/yuzD0J99II9SYPFgbF2gG7FHYmN3M5ZH4rlRtqH/IZxFhXPDj7S5JWkoijuHk6jOlX1Zw3a8MjiVAg+DJN4zpu9dSf7YaIdwoKGgrip/dnP72G10LCUOEAytlaS1faD1jirTxC+jUbWu4bcZjNfXmJKiYTaOpiL7WMRpJg0msNgVnx9uPdTso8/hE6K607yeeLwlVCj8tnk3B5BBvzT8IWYl6QFA8uemF9N7NM08De5AiPRHDtil7p1AaVjyJkUj3G6HrwVGOWNuL9g5zxOB4g0JoPLM31NX626QQSisP8+jJVaGArswYROdN0Ui+zn2kaktPyMYOsaL3TzcwQyEmvlvjwLhKsG8S83FoDtbRD1iYZ8rE5EDLRGpzvFgl//U4sW/nLsqZ7bb205wENVcwFb2LQBA9AhEskd4xAppFBv8MVr9Hsw1yS+hOqAsQWiKsEJj46OawVw6fR73lJJYKeKTqAxMPbeA9UTJF+PDekCfvsOb3vlyd/xTxXyjvHjMdlqebBc0mkfl6nh6ibspKOppURbaqhbTNUAa1fe8JEcepOC8DsMVIQ2mcJyzCeGM3dPH+fadd8nFHEJBsF4CISUuclSOgTGY3O94IkUXljvlaqxJd+il7B8IMtNOJq10P0Aa+HmIxvqIBq9Ne4CwMzr
+ WlQEOitT
+ 6/Isb9OmMenf9Nhsffasi4GE+4KxjpQa+wvksGr7nJyR1/8aD+hGTKLJe41Rht1JMbj+JE5voRtL2LLGG/2Dtt2fqrKzI73H0oa6pn+M1zQILzM7QFPk1HIL4qRH0B9GSpfy5Bh3thUcmVQliKUrtQc0IC9V/2hoQsJV/WOqgTSVY9zO+K22KGrkumDzS7E+ZhbKYB/OG0Pym9N8vGK/I9xLouvmnRccOyQyBiCY5S+k3Y4i56xaJJ3oeBJ5MyFxPBJe6jc3naewLBWPIs/oOIbG2vj9BQ3wbFhwLOZaueyNPl54nHML8RE+iCOZ7dxP49GpruMgbP3ZPq1o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,382 +110,213 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add btrfs_fs_rdonly() which tests BTRFS_FS_STATE_RO and use it instead
-of sb_rdonly() wherever btrfs checks for a read-only filesystem at
-runtime: the error handler, read repair, async discard, close_ctree(),
-btrfs_inc_block_group_ro(), check_inode_item(), device replace and add,
-cancelling a balance, the sysfs label and force_chunk_alloc stores, the
-qgroup PERTRANS conversions and the subvolume orphan cleanup. And check
-it next to every btrfs_root_readonly() check that guards a modification,
-e.g. in btrfs_permission(), btrfs_setattr(), btrfs_update_time(), the
-xattr and ACL handlers, btrfs_fileattr_set() and
-btrfs_remap_file_range_prep().
+__btrfs_handle_fs_error() sets SB_RDONLY through btrfs_set_sb_rdonly()
+without holding s_umount. It runs from any context and every transaction
+abort ends up there. That races with everyone else changing sb->s_flags.
+And if it happens while the filesystem is frozen thaw_super() sees a
+read-only superblock and leaves the s_writers rwsems locked. Today only
+btrfs_zone_finish_endio_workfn() can get there after ->freeze_fs() but
+that's luck.
 
-BTRFS_FS_STATE_RO has always been set and cleared together with
-SB_RDONLY. The remaining sb_rdonly() users are mount and remount paths
-plus btrfs_is_full_ro() which only matters for rescue mounts.
+btrfs doesn't need SB_RDONLY for any of this. fs_error already stops new
+transactions and BTRFS_FS_STATE_RO is what btrfs checks since the
+previous patch. So only set that like ext4 and f2fs do and call
+sb_set_emergency_ro() so the VFS refuses modifications and reports the
+superblock as read-only. That's not done for rescue mounts or a
+superblock that already carries the error flag. btrfs_force_shutdown()
+sets BTRFS_FS_STATE_RO too but not the VFS state, so opening a file for
+writing fails with EROFS instead of EIO after a shutdown.
 
-This prepares for not setting SB_RDONLY from the error handler. Until
-then the only difference is that ftruncate() and FICLONE through files
-that were opened for writing before a forced remount to read-only, e.g.
-by sysrq u, fail with EROFS now instead of modifying the filesystem.
+A remount to read-only now actually happens after an error, so
+btrfs_remount_ro() skips the commit and the unused block group pass that
+can't succeed anymore. Going read-write fails with EROFS instead of
+EINVAL. The VFS doesn't call ->sync_fs in that state and refuses a new
+freeze with EROFS, so BTRFS_IOC_SHUTDOWN shuts down without the freeze
+after an error. btrfs_freeze() still skips its commit after a shutdown
+or when the error races the freeze, and the thaw skips
+check_dev_super() because the superblocks on disk may not match after
+an error.
+
+A second read-write mount of the filesystem succeeds now. A non-forced
+remount to read-only fails with EBUSY while files that were opened for
+writing before the error are still open.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/btrfs/acl.c          |  3 ++-
- fs/btrfs/bio.c          |  2 +-
- fs/btrfs/block-group.c  |  2 +-
- fs/btrfs/dev-replace.c  |  2 +-
- fs/btrfs/discard.c      |  2 +-
- fs/btrfs/disk-io.c      |  4 ++--
- fs/btrfs/fs.h           | 10 ++++++++++
- fs/btrfs/inode.c        |  8 ++++----
- fs/btrfs/ioctl.c        |  8 ++++----
- fs/btrfs/messages.c     |  8 ++++----
- fs/btrfs/qgroup.c       |  4 ++--
- fs/btrfs/reflink.c      |  3 ++-
- fs/btrfs/sysfs.c        |  4 ++--
- fs/btrfs/tree-checker.c |  2 +-
- fs/btrfs/volumes.c      |  4 ++--
- fs/btrfs/xattr.c        |  8 ++++++--
- 16 files changed, 45 insertions(+), 29 deletions(-)
+ fs/btrfs/fs.h       | 16 ++++++----------
+ fs/btrfs/ioctl.c    |  5 +++++
+ fs/btrfs/messages.c |  8 ++++++--
+ fs/btrfs/super.c    | 35 +++++++++++++++++++++++++++++++----
+ 4 files changed, 48 insertions(+), 16 deletions(-)
 
-diff --git a/fs/btrfs/acl.c b/fs/btrfs/acl.c
-index 10a0d733bfd17..8bf11da118f7c 100644
---- a/fs/btrfs/acl.c
-+++ b/fs/btrfs/acl.c
-@@ -107,8 +107,9 @@ int btrfs_set_acl(const struct mnt_idmap *idmap, struct dentry *dentry,
- 	int ret;
- 	struct inode *inode = d_inode(dentry);
- 	umode_t old_mode = inode->i_mode;
-+	struct btrfs_root *root = BTRFS_I(inode)->root;
- 
--	if (btrfs_root_readonly(BTRFS_I(inode)->root))
-+	if (btrfs_root_readonly(root) || btrfs_fs_rdonly(root->fs_info))
- 		return -EROFS;
- 
- 	if (type == ACL_TYPE_ACCESS && acl) {
-diff --git a/fs/btrfs/bio.c b/fs/btrfs/bio.c
-index 2c6234f6182f8..987f29b1ac462 100644
---- a/fs/btrfs/bio.c
-+++ b/fs/btrfs/bio.c
-@@ -924,7 +924,7 @@ int btrfs_repair_bbio_failure(struct btrfs_bio *bbio, const struct bvec_iter *or
- 	 * The fs either mounted RO or hit critical errors, no need
- 	 * to continue repairing.
- 	 */
--	if (unlikely(sb_rdonly(fs_info->sb)))
-+	if (unlikely(btrfs_fs_rdonly(fs_info)))
- 		return 0;
- 
- 	if (btrfs_repair_one_zone(fs_info, logical))
-diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
-index 9a98e291769ca..04c0c0b0c489f 100644
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -3138,7 +3138,7 @@ int btrfs_inc_block_group_ro(struct btrfs_block_group *cache,
- 	 * In that case we should not start a new transaction on read-only fs.
- 	 * Thus here we skip all chunk allocations.
- 	 */
--	if (sb_rdonly(fs_info->sb)) {
-+	if (btrfs_fs_rdonly(fs_info)) {
- 		mutex_lock(&fs_info->ro_block_group_mutex);
- 		ret = inc_block_group_ro(cache, false);
- 		mutex_unlock(&fs_info->ro_block_group_mutex);
-diff --git a/fs/btrfs/dev-replace.c b/fs/btrfs/dev-replace.c
-index cdfe093e5c5c4..943ce620a046c 100644
---- a/fs/btrfs/dev-replace.c
-+++ b/fs/btrfs/dev-replace.c
-@@ -1115,7 +1115,7 @@ int btrfs_dev_replace_cancel(struct btrfs_fs_info *fs_info)
- 	int result;
- 	int ret;
- 
--	if (sb_rdonly(fs_info->sb))
-+	if (btrfs_fs_rdonly(fs_info))
- 		return -EROFS;
- 
- 	mutex_lock(&dev_replace->lock_finishing_cancel_unmount);
-diff --git a/fs/btrfs/discard.c b/fs/btrfs/discard.c
-index 1c304bf473e55..e5c029813228c 100644
---- a/fs/btrfs/discard.c
-+++ b/fs/btrfs/discard.c
-@@ -86,7 +86,7 @@ static bool btrfs_run_discard_work(const struct btrfs_discard_ctl *discard_ctl)
- 						     struct btrfs_fs_info,
- 						     discard_ctl);
- 
--	return (!(fs_info->sb->s_flags & SB_RDONLY) &&
-+	return (!btrfs_fs_rdonly(fs_info) &&
- 		test_bit(BTRFS_FS_DISCARD_RUNNING, &fs_info->flags));
- }
- 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index c45cda4290d5a..3dcacf7e4d1d4 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -177,7 +177,7 @@ static int btrfs_repair_eb_io_failure(const struct extent_buffer *eb,
- 	struct btrfs_bio *bbio;
- 	int ret;
- 
--	if (sb_rdonly(fs_info->sb))
-+	if (btrfs_fs_rdonly(fs_info))
- 		return -EROFS;
- 
- 	/*
-@@ -4483,7 +4483,7 @@ void __cold close_ctree(struct btrfs_fs_info *fs_info)
- 	/* Cancel or finish ongoing discard work */
- 	btrfs_discard_cleanup(fs_info);
- 
--	if (!sb_rdonly(fs_info->sb)) {
-+	if (!btrfs_fs_rdonly(fs_info)) {
- 		/*
- 		 * The cleaner kthread is stopped, so do one final pass over
- 		 * unused block groups.
 diff --git a/fs/btrfs/fs.h b/fs/btrfs/fs.h
-index 2dd167c32d612..024c3ec7d0583 100644
+index 024c3ec7d0583..39fd1a04d25ba 100644
 --- a/fs/btrfs/fs.h
 +++ b/fs/btrfs/fs.h
-@@ -1194,6 +1194,16 @@ static inline int btrfs_need_cleaner_sleep(const struct btrfs_fs_info *fs_info)
- 		btrfs_fs_closing(fs_info);
+@@ -1195,9 +1195,8 @@ static inline int btrfs_need_cleaner_sleep(const struct btrfs_fs_info *fs_info)
+ }
+ 
+ /*
+- * Check whether the filesystem is read-only. BTRFS_FS_STATE_RO is set and
+- * cleared together with SB_RDONLY on mount, on remount and when an error forces
+- * the filesystem read-only. Use this instead of sb_rdonly() at runtime.
++ * Set and cleared with SB_RDONLY on mount and remount but set alone after an
++ * error. Use this instead of sb_rdonly() at runtime.
+  */
+ static inline bool btrfs_fs_rdonly(const struct btrfs_fs_info *fs_info)
+ {
+@@ -1233,15 +1232,12 @@ static inline bool btrfs_is_shutdown(const struct btrfs_fs_info *fs_info)
+ static inline void btrfs_force_shutdown(struct btrfs_fs_info *fs_info)
+ {
+ 	/*
+-	 * Here we do not want to use handle_fs_error(), which will mark the fs
+-	 * read-only.
+-	 * Some call sites like shutdown ioctl will mark the fs shutdown when
+-	 * the fs is frozen. But thaw path will handle RO and RW fs
+-	 * differently.
+-	 *
+-	 * So here we only mark the fs error without flipping it RO.
++	 * A shutdown isn't an error, so don't use btrfs_handle_fs_error().
++	 * BTRFS_FS_STATE_RO doesn't touch SB_RDONLY, so it's fine while the
++	 * filesystem is frozen, e.g. for the shutdown ioctl.
+ 	 */
+ 	WRITE_ONCE(fs_info->fs_error, -EIO);
++	set_bit(BTRFS_FS_STATE_RO, &fs_info->fs_state);
+ 	if (!test_and_set_bit(BTRFS_FS_STATE_EMERGENCY_SHUTDOWN, &fs_info->fs_state)) {
+ 		btrfs_crit(fs_info, "emergency shutdown");
+ 		fserror_report_shutdown(fs_info->sb, GFP_KERNEL);
+diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+index 2063075906c8f..7f88eeb8afc57 100644
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -5165,6 +5165,11 @@ static int btrfs_ioctl_shutdown(struct btrfs_fs_info *fs_info, unsigned long arg
+ 	if (btrfs_is_shutdown(fs_info))
+ 		return 0;
+ 
++	/* After an error there is nothing to flush and freezing fails. */
++	if (flags != BTRFS_SHUTDOWN_FLAGS_NOLOGFLUSH &&
++	    sb_emergency_ro(fs_info->sb))
++		flags = BTRFS_SHUTDOWN_FLAGS_NOLOGFLUSH;
++
+ 	switch (flags) {
+ 	case BTRFS_SHUTDOWN_FLAGS_LOGFLUSH:
+ 	case BTRFS_SHUTDOWN_FLAGS_DEFAULT:
+diff --git a/fs/btrfs/messages.c b/fs/btrfs/messages.c
+index cedca40508315..3a768e2ac1ccf 100644
+--- a/fs/btrfs/messages.c
++++ b/fs/btrfs/messages.c
+@@ -173,8 +173,12 @@ void __btrfs_handle_fs_error(struct btrfs_fs_info *fs_info, const char *function
+ 
+ 	btrfs_discard_stop(fs_info);
+ 
+-	/* Handle error by forcing the filesystem readonly. */
+-	btrfs_set_sb_rdonly(sb);
++	/*
++	 * Handle error by forcing the filesystem readonly. SB_RDONLY needs
++	 * s_umount, see sb_set_emergency_ro().
++	 */
++	set_bit(BTRFS_FS_STATE_RO, &fs_info->fs_state);
++	sb_set_emergency_ro(sb);
+ 	btrfs_info(fs_info, "forced readonly");
+ 	/*
+ 	 * Note that a running device replace operation is not canceled here
+diff --git a/fs/btrfs/super.c b/fs/btrfs/super.c
+index b424cc836bd4a..ff61ec9ebfa79 100644
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -1041,6 +1041,18 @@ int btrfs_sync_fs(struct super_block *sb, int wait)
+ 	return btrfs_commit_transaction(trans);
  }
  
 +/*
-+ * Check whether the filesystem is read-only. BTRFS_FS_STATE_RO is set and
-+ * cleared together with SB_RDONLY on mount, on remount and when an error forces
-+ * the filesystem read-only. Use this instead of sb_rdonly() at runtime.
++ * Nothing can be committed after an error, don't fail syncfs(2) and freezing.
++ * BTRFS_IOC_SYNC calls btrfs_sync_fs() directly and still gets the error.
 + */
-+static inline bool btrfs_fs_rdonly(const struct btrfs_fs_info *fs_info)
++static int btrfs_super_sync_fs(struct super_block *sb, int wait)
 +{
-+	return test_bit(BTRFS_FS_STATE_RO, &fs_info->fs_state);
++	if (btrfs_fs_rdonly(btrfs_sb(sb)))
++		return 0;
++
++	return btrfs_sync_fs(sb, wait);
 +}
 +
- static inline void btrfs_wake_unfinished_drop(struct btrfs_fs_info *fs_info)
+ static void print_rescue_option(struct seq_file *seq, const char *s, bool *printed)
  {
- 	clear_and_wake_up_bit(BTRFS_FS_UNFINISHED_DROPS, &fs_info->flags);
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index abaa334714566..415c5145fcbe3 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -5433,7 +5433,7 @@ static int btrfs_setattr(const struct mnt_idmap *idmap, struct dentry *dentry,
- 	struct btrfs_root *root = BTRFS_I(inode)->root;
- 	int ret;
- 
--	if (btrfs_root_readonly(root))
-+	if (btrfs_root_readonly(root) || btrfs_fs_rdonly(root->fs_info))
- 		return -EROFS;
- 
- 	ret = setattr_prepare(idmap, dentry, attr);
-@@ -6058,7 +6058,7 @@ struct inode *btrfs_lookup_dentry(struct inode *dir, struct dentry *dentry)
- 			return ERR_CAST(inode);
- 
- 		down_read(&fs_info->cleanup_work_sem);
--		if (!sb_rdonly(inode->vfs_inode.i_sb))
-+		if (!btrfs_fs_rdonly(fs_info))
- 			ret = btrfs_orphan_cleanup(sub_root);
- 		up_read(&fs_info->cleanup_work_sem);
- 		if (ret) {
-@@ -6421,7 +6421,7 @@ static int btrfs_update_time(struct inode *inode, enum fs_update_time type,
- 	struct btrfs_root *root = BTRFS_I(inode)->root;
- 	int dirty;
- 
--	if (btrfs_root_readonly(root))
-+	if (btrfs_root_readonly(root) || btrfs_fs_rdonly(root->fs_info))
- 		return -EROFS;
- 	if (flags & IOCB_NOWAIT)
- 		return -EAGAIN;
-@@ -9316,7 +9316,7 @@ static int btrfs_permission(const struct mnt_idmap *idmap,
- 
- 	if (mask & MAY_WRITE &&
- 	    (S_ISREG(mode) || S_ISDIR(mode) || S_ISLNK(mode))) {
--		if (btrfs_root_readonly(root))
-+		if (btrfs_root_readonly(root) || btrfs_fs_rdonly(root->fs_info))
- 			return -EROFS;
- 		if (BTRFS_I(inode)->flags & BTRFS_INODE_READONLY)
- 			return -EACCES;
-diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-index f3e2afe221be3..2063075906c8f 100644
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -291,7 +291,7 @@ int btrfs_fileattr_set(const struct mnt_idmap *idmap,
- 	u32 inode_flags;
- 	bool prop_set = false;
- 
--	if (btrfs_root_readonly(root))
-+	if (btrfs_root_readonly(root) || btrfs_fs_rdonly(fs_info))
- 		return -EROFS;
- 
- 	if (fileattr_has_fsx(fa))
-@@ -2453,7 +2453,7 @@ static int btrfs_ioctl_defrag(struct file *file, void __user *argp)
- 	if (ret)
- 		return ret;
- 
--	if (btrfs_root_readonly(root)) {
-+	if (btrfs_root_readonly(root) || btrfs_fs_rdonly(root->fs_info)) {
- 		ret = -EROFS;
- 		goto out;
- 	}
-@@ -3191,7 +3191,7 @@ static long btrfs_ioctl_dev_replace(struct btrfs_fs_info *fs_info,
- 
- 	switch (p->cmd) {
- 	case BTRFS_IOCTL_DEV_REPLACE_CMD_START:
--		if (sb_rdonly(fs_info->sb))
-+		if (btrfs_fs_rdonly(fs_info))
- 			return -EROFS;
- 		if (!btrfs_exclop_start(fs_info, BTRFS_EXCLOP_DEV_REPLACE)) {
- 			ret = BTRFS_ERROR_DEV_EXCL_RUN_IN_PROGRESS;
-@@ -3927,7 +3927,7 @@ static long _btrfs_ioctl_set_received_subvol(struct file *file,
- 		goto out;
+ 	seq_printf(seq, "%s%s", (*printed) ? ":" : ",rescue=", s);
+@@ -1286,7 +1298,7 @@ static int btrfs_remount_rw(struct btrfs_fs_info *fs_info)
+ 	if (unlikely(BTRFS_FS_ERROR(fs_info))) {
+ 		btrfs_err(fs_info,
+ 			  "remounting read-write after error is not allowed");
+-		return -EINVAL;
++		return -EROFS;
  	}
  
--	if (btrfs_root_readonly(root)) {
-+	if (btrfs_root_readonly(root) || btrfs_fs_rdonly(fs_info)) {
- 		ret = -EROFS;
- 		goto out;
- 	}
-diff --git a/fs/btrfs/messages.c b/fs/btrfs/messages.c
-index 0704be7be8719..cedca40508315 100644
---- a/fs/btrfs/messages.c
-+++ b/fs/btrfs/messages.c
-@@ -132,10 +132,10 @@ void __btrfs_handle_fs_error(struct btrfs_fs_info *fs_info, const char *function
- #endif
+ 	if (fs_info->fs_devices->rw_devices == 0)
+@@ -1348,9 +1360,11 @@ static int btrfs_remount_ro(struct btrfs_fs_info *fs_info)
+ 	 * Setting SB_RDONLY will put the cleaner thread to sleep at the next
+ 	 * loop if it's already active.  If it's already asleep, we'll leave
+ 	 * unused block groups on disk until we're mounted read-write again
+-	 * unless we clean them up here.
++	 * unless we clean them up here. Not after an error though, that can't be
++	 * committed anymore and may still finish zones.
+ 	 */
+-	btrfs_delete_unused_bgs(fs_info);
++	if (!BTRFS_FS_ERROR(fs_info))
++		btrfs_delete_unused_bgs(fs_info);
  
  	/*
--	 * Special case: if the error is EROFS, and we're already under
--	 * SB_RDONLY, then it is safe here.
-+	 * Special case: if the error is EROFS, and we're already read-only,
-+	 * then it is safe here.
+ 	 * The cleaner task could be already running before we set the flag
+@@ -1385,6 +1399,10 @@ static int btrfs_remount_ro(struct btrfs_fs_info *fs_info)
  	 */
--	if (error == -EROFS && sb_rdonly(sb))
-+	if (error == -EROFS && btrfs_fs_rdonly(fs_info))
- 		return;
+ 	btrfs_qgroup_wait_for_completion(fs_info, false);
  
- #ifdef CONFIG_PRINTK
-@@ -168,7 +168,7 @@ void __btrfs_handle_fs_error(struct btrfs_fs_info *fs_info, const char *function
- 	if (!(sb->s_flags & SB_BORN))
- 		return;
- 
--	if (sb_rdonly(sb))
-+	if (btrfs_fs_rdonly(fs_info))
- 		return;
- 
- 	btrfs_discard_stop(fs_info);
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index a0651fbfe7782..dc96c6aca1a94 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -4658,7 +4658,7 @@ static void qgroup_convert_meta(struct btrfs_fs_info *fs_info, u64 ref_root,
- 
- 		qgroup_rsv_release(fs_info, qgroup, num_bytes,
- 				BTRFS_QGROUP_RSV_META_PREALLOC);
--		if (!sb_rdonly(fs_info->sb))
-+		if (!btrfs_fs_rdonly(fs_info))
- 			qgroup_rsv_add(fs_info, qgroup, num_bytes,
- 				       BTRFS_QGROUP_RSV_META_PERTRANS);
- 
-@@ -4688,7 +4688,7 @@ void btrfs_qgroup_convert_reserved_meta(struct btrfs_root *root, int num_bytes)
- 				      BTRFS_QGROUP_RSV_META_PREALLOC);
- 	trace_btrfs_qgroup_meta_convert(root, num_bytes);
- 	qgroup_convert_meta(fs_info, btrfs_root_id(root), num_bytes);
--	if (!sb_rdonly(fs_info->sb))
-+	if (!btrfs_fs_rdonly(fs_info))
- 		add_root_meta_rsv(root, num_bytes, BTRFS_QGROUP_RSV_META_PERTRANS);
++	/* Nothing can be committed after an error, don't fail the remount. */
++	if (unlikely(BTRFS_FS_ERROR(fs_info)))
++		return 0;
++
+ 	return btrfs_commit_super(fs_info);
  }
  
-diff --git a/fs/btrfs/reflink.c b/fs/btrfs/reflink.c
-index b5d2c094941df..de9bc8ba50287 100644
---- a/fs/btrfs/reflink.c
-+++ b/fs/btrfs/reflink.c
-@@ -857,7 +857,8 @@ static int btrfs_remap_file_range_prep(struct file *file_in, loff_t pos_in,
- 	if (!(remap_flags & REMAP_FILE_DEDUP)) {
- 		struct btrfs_root *root_out = inode_out->root;
+@@ -2308,6 +2326,9 @@ static int btrfs_freeze(struct super_block *sb)
+ 	struct btrfs_fs_info *fs_info = btrfs_sb(sb);
  
--		if (btrfs_root_readonly(root_out))
-+		if (btrfs_root_readonly(root_out) ||
-+		    btrfs_fs_rdonly(root_out->fs_info))
- 			return -EROFS;
- 
- 		ASSERT(inode_in->vfs_inode.i_sb == inode_out->vfs_inode.i_sb);
-diff --git a/fs/btrfs/sysfs.c b/fs/btrfs/sysfs.c
-index 3ac1fa608d3b5..c7522aafde1b0 100644
---- a/fs/btrfs/sysfs.c
-+++ b/fs/btrfs/sysfs.c
-@@ -751,7 +751,7 @@ static ssize_t btrfs_force_chunk_alloc_store(struct kobject *kobj,
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EPERM;
- 
--	if (sb_rdonly(fs_info->sb))
+ 	set_bit(BTRFS_FS_FROZEN, &fs_info->flags);
++	/* Nothing can be committed after an error. */
 +	if (btrfs_fs_rdonly(fs_info))
- 		return -EROFS;
- 
- 	ret = kstrtobool(buf, &val);
-@@ -980,7 +980,7 @@ static ssize_t btrfs_label_store(struct kobject *kobj,
- 	if (!fs_info)
- 		return -EPERM;
- 
--	if (sb_rdonly(fs_info->sb))
++		return 0;
+ 	/*
+ 	 * We don't need a barrier here, we'll wait for any transaction that
+ 	 * could be in progress on other threads (and do delayed iputs that
+@@ -2382,7 +2403,12 @@ static int btrfs_unfreeze(struct super_block *sb)
+ 	 *
+ 	 * And since the fs is frozen, no one can modify the fs yet, thus
+ 	 * we don't need to hold device_list_mutex.
++	 *
++	 * After an error the super blocks on disk may lag behind, skip it.
+ 	 */
 +	if (btrfs_fs_rdonly(fs_info))
- 		return -EROFS;
++		goto out;
++
+ 	list_for_each_entry(device, &fs_info->fs_devices->devices, dev_list) {
+ 		ret = check_dev_super(device);
+ 		if (ret < 0) {
+@@ -2392,6 +2418,7 @@ static int btrfs_unfreeze(struct super_block *sb)
+ 			break;
+ 		}
+ 	}
++out:
+ 	clear_bit(BTRFS_FS_FROZEN, &fs_info->flags);
  
  	/*
-diff --git a/fs/btrfs/tree-checker.c b/fs/btrfs/tree-checker.c
-index 9cd79d97b9b5e..6cce0e6c759e5 100644
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -1325,7 +1325,7 @@ static int check_inode_item(struct extent_buffer *leaf,
- 			       "unknown incompat flags detected: 0x%x", flags);
- 		return -EUCLEAN;
- 	}
--	if (unlikely(!sb_rdonly(fs_info->sb) &&
-+	if (unlikely(!btrfs_fs_rdonly(fs_info) &&
- 		     (ro_flags & ~BTRFS_INODE_RO_FLAG_MASK))) {
- 		inode_item_err(leaf, slot,
- 			"unknown ro-compat flags detected on writeable mount: 0x%x",
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index d3e6a9b429dd9..47879cc2160df 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -2964,7 +2964,7 @@ int btrfs_init_new_device(struct btrfs_fs_info *fs_info, const char *device_path
- 	bool seeding_dev = false;
- 	bool locked = false;
- 
--	if (sb_rdonly(sb) && !fs_devices->seeding)
-+	if (btrfs_fs_rdonly(fs_info) && !fs_devices->seeding)
- 		return -EROFS;
- 
- 	/* Forbid freezing until the device is a committed member (or unwound). */
-@@ -5297,7 +5297,7 @@ int btrfs_cancel_balance(struct btrfs_fs_info *fs_info)
- 	 * mount time if the mount is read-write. Otherwise it's still paused
- 	 * and we must not allow cancelling as it deletes the item.
- 	 */
--	if (sb_rdonly(fs_info->sb)) {
-+	if (btrfs_fs_rdonly(fs_info)) {
- 		mutex_unlock(&fs_info->balance_mutex);
- 		return -EROFS;
- 	}
-diff --git a/fs/btrfs/xattr.c b/fs/btrfs/xattr.c
-index cbee10b6b49aa..c38ddee786362 100644
---- a/fs/btrfs/xattr.c
-+++ b/fs/btrfs/xattr.c
-@@ -365,7 +365,9 @@ static int btrfs_xattr_handler_set(const struct xattr_handler *handler,
- 				   const char *name, const void *buffer,
- 				   size_t size, int flags)
- {
--	if (btrfs_root_readonly(BTRFS_I(inode)->root))
-+	struct btrfs_root *root = BTRFS_I(inode)->root;
-+
-+	if (btrfs_root_readonly(root) || btrfs_fs_rdonly(root->fs_info))
- 		return -EROFS;
- 
- 	name = xattr_full_name(handler, name);
-@@ -409,7 +411,9 @@ static int btrfs_xattr_handler_set_security(const struct xattr_handler *handler,
- 					    const void *buffer,
- 					    size_t size, int flags)
- {
--	if (btrfs_root_readonly(BTRFS_I(inode)->root))
-+	struct btrfs_root *root = BTRFS_I(inode)->root;
-+
-+	if (btrfs_root_readonly(root) || btrfs_fs_rdonly(root->fs_info))
- 		return -EROFS;
- 
- 	name = xattr_full_name(handler, name);
+@@ -2522,7 +2549,7 @@ static const struct super_operations btrfs_super_ops = {
+ 	.drop_inode	= btrfs_drop_inode,
+ 	.evict_inode	= btrfs_evict_inode,
+ 	.put_super	= btrfs_put_super,
+-	.sync_fs	= btrfs_sync_fs,
++	.sync_fs	= btrfs_super_sync_fs,
+ 	.show_options	= btrfs_show_options,
+ 	.show_devname	= btrfs_show_devname,
+ 	.alloc_inode	= btrfs_alloc_inode,
 
 -- 
 2.53.0
