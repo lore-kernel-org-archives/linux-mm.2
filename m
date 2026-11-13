@@ -1,92 +1,132 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F323B606A88C
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 03:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59777606A333
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 03:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=cQzJAi9q
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=aAzolQjT
 Received: by kanga.kvack.org (Postfix)
-	id 9D3166B05F8; Thu, 12 Nov 2026 22:28:58 -0500 (EST)
+	id 60EC06B05B0; Thu, 12 Nov 2026 22:35:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AAF96B0661; Thu, 12 Nov 2026 22:28:58 -0500 (EST)
+	id 5BEE06B05ED; Thu, 12 Nov 2026 22:35:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C28B6B0664; Thu, 12 Nov 2026 22:28:58 -0500 (EST)
+	id 4AEDA6B05F1; Thu, 12 Nov 2026 22:35:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D4956B05F8
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:28:58 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DDA8DA8CD4
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:28:57 +0000 (UTC)
-X-FDA: 85428664314.29.23B7411
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf03.hostedemail.com (Postfix) with ESMTP id DBC7420006
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:28:55 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cQzJAi9q;
-	spf=pass (imf03.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E5DF6B05B0
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:35:22 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 06D6A12059C
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:35:21 +0000 (UTC)
+X-FDA: 85428680442.22.8D842BC
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E9A1FA0003
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:35:17 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=aAzolQjT;
+	spf=pass (imf15.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794540536;
+	s=arc-20220608; t=1794540919;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bOwK+5oLftQk320DH0GEbzZnadmplgpiQL2jCJ+yV24=;
-	b=XHq0EDC0Swkr9lHWZMQqjtCOZcSHBL9HPiNX0HI/QaoVjNAkU0p6ERxl3axhtCt1ZFzutM
-	HIafCDNKpy5obgZ+/MclqTCgYdyJWpaywucKnIq2iXQ/YCwGrdMRMkRdzzVThrDd/qM5Vx
-	Q9BSVeN1Lk051z46HNvSvI+7U/xE+SI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=mrv4Fj3Nih9i0dF+SR2v9n/Jjgg1ueiHuwDw4uU10mY=;
+	b=kN+IjELW+fduYyOudiGOlABCFmbnQ7et6ggv7ppoMx9bgFbopRw9sPDYLiqRVNGeaJjKv9
+	YmKTib1LWRR8frWgWgOz6blKZe6uODA7ri/RylH49q77xir54hW9GSeYw4JHw5SGvVvz5F
+	ORBCD2sCaG02wxS3zqR+FFfv6GVhPBE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794540536;
-	b=Y3B334NLM7MNOrP9sZQCdPGzZDKPHvZfNXeZyPSbDRq7KqX5QStEM6kPylXIl2XgHWXK2T
-	tlA6lF8E4tBm50hZ3sN9423UnWnWx3maHyhaXXyxBQP3dOvK2u0ZG77oMdWoJjqWH931PJ
-	OgVG2YONQNxACYvDE73pXqDoSapnec0=
+	t=1794540919;
+	b=fNdort28mPH1cq2rAy41EG77PP16hzberiY/1T2uu50Iucj3JjkaLrp1chDzPCmzkTkIuF
+	xH7Lx8hg2q2FoECqk9rWLfBaH/UQ5/UIAugTzRe9ieUgNoVxdEytd26CVe05/TUbB+NazJ
+	GfGaUDg+9f22VurJMVjIrPzNZJE4EEM=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cQzJAi9q;
-	spf=pass (imf03.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C6D24175A;
-	Thu, 12 Nov 2026 19:28:51 -0800 (PST)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 106C63F632;
-	Thu, 12 Nov 2026 19:28:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794540534; bh=kLEU3+bkOweqD+kWRCMnCgNUSxxZISweiL/OZrrvsQg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cQzJAi9qDEf+g9Wu+39XmiWj8YhBA0INOILUGffcjMUE8/Tf9z7R4Xduj/J3XnJva
-	 NIkTXHmTBtDOBXymBVjpVAXOyuDh6Q8LHelosDBddoa2rtGosn/7Xf/ohNpiQnHq7C
-	 yISkFw1TmXdLfYUuB5eNB4w4khmLNN95v7wKKgUE=
-Date: Fri, 13 Nov 2026 08:58:51 +0530
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com, 
-	will@kernel.org
-Cc: Ryan Roberts <ryan.roberts@arm.com>, 
-	Mark Rutland <mark.rutland@arm.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Linu Cherian <linu.cherian@arm.com>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH V4 0/4] arm64/mm: Convert pgtable READ_ONCE() as
- pxdp_get()
-Message-ID: <vtaekdnpxd5avhpv3hlmeswwq5raf57ila2qyilxvddu3w5nnq@lkenzauzv7hy>
-References: <20261105043403.3326445-1-anshuman.khandual@arm.com>
+	imf15.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=aAzolQjT;
+	spf=pass (imf15.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso1346690eec.0
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 19:35:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1794540916; x=1795145716; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=mrv4Fj3Nih9i0dF+SR2v9n/Jjgg1ueiHuwDw4uU10mY=;
+        b=aAzolQjToROyIWLDAbXcYbS/1AYHDPQg73c9aw38IwniOciIIM8iX7xvOvdkXuqgqa
+         7LLg4JMhOV/Sd32kMamDk+yHBH+DOP4nBfCh6J8rjayc/Tu9SnRUip9Iz2PuAH9AjHBq
+         cd7CowZNlrsL/oEBAP+yuUm2M5pz26Pqv5aKKz+sKUUPmJT3Bq0YUeUZ8KQkPO+h/9YT
+         VFcNzd6s8kfCXPhgMa/eabxAxC/T7vP9CFXWAosI3COOOPPbANxpZTsWwzHi0b+FjwkX
+         j623CqXDyIFhlAsQi2fza2qmR3xqochEsqkep3zTgZYfQtdh4vSsm/jxvHxWmcDE/++l
+         2jcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794540916; x=1795145716;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mrv4Fj3Nih9i0dF+SR2v9n/Jjgg1ueiHuwDw4uU10mY=;
+        b=ALUNwAnQihqeIEUiriCm1X8hAsYjB7JdLkkQqnqcpS4NQiZcPl/Ks5X4by7l8632J7
+         PDfGbVDeNif9+tDTH00EUJuc42uJ+d1m+YhNJlFntxnIJ05AJogBmRCi3bLkSlJQLeYC
+         ymj7cS/Vo8PPYxPgZa5Wcl0sVpN2gYqUyghMS6jQJuQ3VE36UxGqoQzArlkb1rGAj7eZ
+         Km7bkS3K1cgEDAZh2Fnoht98pumtPaReYG49wbopP0kAlHCkv2j55/5BpAwfnbC4Ylr2
+         JZhFv+7Z3SveIzClRZnRt0E6XKmBorMTTVUiZSMz5Q0y732wR0kZUvQqbV+wkH7nDsTU
+         9o3w==
+X-Forwarded-Encrypted: i=1; AL+hErFEqJ4NHj806fn4axuZhg2NU/J3WeQmIYOD6VZs0LPbbWgXpn/nPID2KczIGyzA/Fnh5+a9yvWujQ==@kvack.org
+X-Gm-Message-State: APuU4Z+888QI918+ZcAPrgIMehNQigWccczGHxxMKfzug8MPgI/Z7FB2
+	Xqwt1g3TpLokt9vgC7sbjU/n/v+lRcsGR048BFNr2bJ71tRQWVeRScqZzUa/DU0cgdQ=
+X-Gm-Gg: AYBFou3G0F5E+Sa1n3lXfnwc8h7d2lU6XpBIsOAa3kPBF5hEOd5zGB/rQIngc8WXO4e
+	PRCZ6bXGJOJSiBZa55IoB+P/h+hsZg+ZM0KVMrV3l3kgsI9xpDzIhP6iYWjaPKheH+IbjbeR/+9
+	BlYY8XaA5d1A/vI24OFklevSxxMo8qOZNGtYSZEMxU6B5igXKLix6m7dz9POHxGdi2kw5MTGUQD
+	7PFD80gusoPlAoP7QncPLiiZBLXXbBTvxabmb2QgJ4B6rivSv4mfJrHCSi2Mf0/p1fz8+Yinhps
+	wIp7IgteU6XDPeK4vu5AR05y5nrbQMTXMUojCRAbNN6oIHohAhdjEnlUGiHxHyCjA28woywU8EB
+	baIs/rTlHp9hVjdoetp4aDXQHavTQXdRYUPiqAt0skZ8z9oG1jEbRseFTNUF19wrE2iN+UM69y9
+	Xs6CHMZMf6E4qBaTS/s8H04+Qw7ajsJjp7tPImGTwCTBAG/rBvvd6clwYYcGCytZG9Elcbin86Y
+	KQGj+GkCxfee5t/A+wuLFKnOyhJGLe6ODXNVKS4qVM6qIMFmJ8ZpOFHWYh6aUKTyBlAwbgTegnT
+	JOJKVt5oY3L1ZanT3c8URQrn4boljBuVtsUOE48MdV/VulN+iDWStoc8DR+KCg==
+X-Received: by 2002:a05:7301:db11:b0:369:fe4c:b48f with SMTP id 5a478bee46e88-3796047be6bmr1056859eec.0.1794540916137;
+        Thu, 12 Nov 2026 19:35:16 -0800 (PST)
+Received: from G6L4RL2QG9.bytedance.net ([61.213.176.12])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37955e0d966sm2959426eec.15.2026.11.12.19.35.11
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 12 Nov 2026 19:35:15 -0800 (PST)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Mike Rapoport <rppt@kernel.org>
+Cc: Li Zhe <lizhe.67@bytedance.com>,
+	Andrew Popple <apopple@nvidia.com>,
+	Balbir Singh <balbirs@nvidia.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	James Houghton <jthoughton@google.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>
+Subject: [PATCH v2 00/14] mm: Unify memmap initialization for compound pages
+Date: Fri, 13 Nov 2026 11:34:28 +0800
+Message-ID: <20261113033442.62970-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.54.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105043403.3326445-1-anshuman.khandual@arm.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DBC7420006
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: tokn6aju3ahpmrdfx67ketrsdf48rc4x
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: qz93et1o7b1qirqmrq44mgc4fc9hb1cy
+X-Rspamd-Queue-Id: E9A1FA0003
 X-Rspam-User: 
-X-HE-Tag: 1794540535-437342
-X-HE-Meta: U2FsdGVkX18p9peBqJFHQuubYrPX8iD9RYVruUb0/0+Q3kSmjI5JP++K7V1DwufGPjqIInokgDlwbK/ayxn8bz/p4YBLGp9QhMl04Z9AnKcrx21VDAgQ9sHFmp2QwwRNsqWYaC0eBSzklMzPWUZkUqsQH37SBrqs8F88DNmX1oOtGWOt3Mkc1hR0/l3vHBoytQkrR7F56FlSVhLMVuqrMfPnzhNHk+1+mZLxQyKPhyI18RUncKA3hlM7V4cDYKokkA0jIbgwrQ5Kpa0aIiLFSWou5jOABBx3YAvjvWTfbJ3NiraXEDCtF6atYRNWmiEZcla5A/sj9+9jivkrYhEPPgMP61PZs+cUg95iHq6umFTuwmx2ty+AeQaRIhvloEP1fq5d8tR8WgP+NqFh3+O5MAvGMMeFFjWTXeNu1OO71mAW4pRWgSzSAGAr5VcBzfGam9EoqOGLSuKfv+uwzhXGMEWbeObaptHwhunuheoZTmTUkhQgZYTkpSObLmr4q4h22m06QEH5Wd2X2tt6kR8kTBPg3TY3nZ6y1PBl17cn5kq4R239eR1Hkz3XyYgfoWCeg76A2hQomeK0+MylCSPxhUoJ7qSQlFIeQSI8xTUXFVUmsx4Lp13EczsT0b2zfVb465zAZ4ZaAxhXvk0iS0GhI6G53ZkFgyfLylITtigu1NOPiBi/rfhPaYVSqmrfPggu0Qn1VTFLD617N2nTxfBwdi3T849gH0f+QBfSO7z38J3K25oVQbSKW/qBm2X2LGpVuDcx2hPYyTMHxQ+311DvE5CPKXauP2T2FkM+CeZRQ+mJBGEJIhKGlnWZh/tuKm3w2pO1JCI4P45ixuUtjv0/qR/Q2t693HfAm8FqfNu5Btqur30WgSrSIp1CuwQ+1VeMOviJCkNVqwgzVamjz+qNLoFULuq2xkL/wq+xrQ6sw3Dr4RDcCvrC/Agh6a1ssj34YZBCopunCPqZ01E/5K3
- vUw2x9+u
- 5TC66x3fQg0Z4aOYvUOuaZweXVUdQkvVw50r/dPrqec4/Yy1NOOdmPJI2kBb3it5BAGKFhnxoejiZolFXY6BjChG/m1mZrZ10aTCCFt8qf471bPYRhb7SkqSJx4vkORaJ5El8UF7VZxoqQ6zpKqtS7QSX3RTRYjg7MwgKW0b9KQcTY3PSYHy+UemFAx6iSDZOEQhSXNt9jttVAj09s5/tz7HYzV+nO2T9CBXQ8sm27LCSIKc6vik/oKRp6wsPWXJBbRFMmGwhTaabMo+GANhB0P7pukoeN/qpc+Lvzv9xHIBNOb5ZzkJ/OqHogUPkAJoiF1NYiimaT2CTXYnBO3tUN7vuyNDHg3Sq+KysE6bmX9LtMNc4xBe1HfXEqrEjg2TOpYsBPtl9IjpzjadW5NoNumzmpXStdsRTXrHFNSVtEm/b9OrdCH+0jZDIa2I7VB2DQthaWk3mvz5Mfa2KD5hHIvcQMhzwOdMAmy/WapBHANT1GGJpwim6oKawWiPcI4yc/uMiBHQLozykYcHCi9pvYdcKhP09nbrISrpkwPFRCrYqNPp0uhGuVghP+KQ1EMAb+OOuycGkGLX2ne8=
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794540917-903357
+X-HE-Meta: U2FsdGVkX1+rym3lH7PUyj7FrNP2UWrrtcDb27QtBYj+TzxDFNqOFA+KwyQxKtAmnuJ7jTgBdJcuHvH+UaJo7Is/foENg/3TbpFtyl+f+aDkXY0zmCYRkysVoXB6RrGEpO6QNDXum2lvsGuhJZM7dGbIkGlup/gsHzOO08bHEd882QkH4eEV9UC6j37UCLmdhp6ZAJiCat8lUNxGJKw02UD/X8cnhxvejG/KTvEKckefhi9NjAeNBhgI0RSlcutwq1Z+4eFwI5tXXGX51SN1ur1Cqq++gtnPmXLd0uArYfkqOJksUodiIZQHXHVG0PLTJb9Lp+XHsSDS9xEdOVm+98mWT0j9YFKHUWkC8Urq/ScEi4Ybifzde7NEz0i1waGrt3mErmnLYnR3iFG3zUgrC31PXnGAzujrFXew4SfnA1/13xLv+IpIJIUwpjZVem8Ke817vKTC30sGNxC4OlfAj6fB83dTkGfVDM7cDC72weMusXEbe2n8qqdfjlN1k92X2mbGkfA6vE2fcV+HSTiin3fOQx10XfrShY5EmXfF0dMIz0G32K1ifEQqhWRkWzzAyH9/qMB8MHx+XNK/6Ksgn7riByAFmvGq3PCZwTHAGY7xeXqJTDlP43y19ZwJ1chYhaJXdzQ1oc/H7Dou1kTOGFDHBjZX6u1ZW3BVCSadblzweZ4fWESJZWeQ9S0hWxU/H6BGGVwXWbsfEXLrTNj/YDxIe/g4yEVuKBZ8CCGOqha9OHgpQIF88e0n9v2HBYRAbBfRSJm7OL8zehkVg8MH1B1zCEW5TqKfEh4DVEPO+39bBx1cLryd02FkkLMiLhSGZqG5QeUMDO5r+RyVZQ3YXxJi4C24thmtZkpiYVWCUnNiDHfkL14aZZ//1gkJBci2zxKgvZ9JRrbzt4mlSR5ENq0GgfNQqiAVHW4P2g4LMuy05ZjG2JLid2UJnkEkBrzZCFadeyT7q3F4ZWzPGcV
+ kefIo6ii
+ azq4iy/Zfj6iwes76kjvRkoc0uDttWcq231BpjmzrqQAXn3rYZMhBVQbdT33JqRgy7TNUcZs4nGTfkfNoRb9065Eo9rP978grMhtpd2vaOf/DUltg1U27PD8LYWmSKCeeuDmmWq1S6ktz3uQXnCwo5WBCfoDNSuuQJV74A9hk/uCUFJBqVZx8PPa0nBdIP4npx+jN6jWTigvpFCMWi1wNleq2MwiomlxeQ7CglQAup5wv4TVTmYrtg9di/kA6moArFSI/NfxYjhGeOJBS6GJhfjAahu9NdiBoZew1WwXTZVhmYOiBT1ERDFz3/7dfamKV9V2FxL9D0LCC0Qw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,105 +135,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 05, 2026 at 10:03:59AM +0530, Anshuman Khandual wrote:
-> Route READ_ONCE() accesses on pgtable entries via level specific generic MM
-> pxdp_get() helpers which platforms could then override when required. These
-> accessors on arm64, will help in ensuring page table accesses are performed
-> in an atomic manner while reading 128 bit page table entries later. But for
-> now they just default to READ_ONCE(), thus preserving existing behaviour on
-> current D64 translation a well.
-> 
-> This is similar to generic MM where all atomic accesses have already been
-> converted from READ_ONCE() into pgtable level specific accessors.
-> 
-> These are preparatory patches for D128 enablement, although standing their
-> own for D64 translation as well. These patches are split from earlier D128
-> V1 series. There are no functional changes here, and besides mm kselftests
-> do not show any regression.
-> 
-> https://lore.kernel.org/linux-mm/20260729122452.3797443-1-anshuman.khandual@arm.com/
-> 
-> This series applies on v7.4-rc1 and have been hosted below for reference.
-> 
-> git@git.gitlab.arm.com:linux-arm/linux-anshuman.git (arm64_pxdp_get_v4)
-> 
-> Changes in V4:
-> 
-> - Dropped all pxdp_get() platform overrides per Catalin
-> - Moved pmdp_test_and_clear_young() and [pud|p4d]_offset[_phys]()
->   helpers inside arch/arm64/mm/mmu.c to avoid build problems
-> - Updated all commit messages as required
+Hi,
 
-This series has run into some KASAN fault issues during boot with 5 level
-pgtables but also unlike Sashio suggestions these would require more code
-churn to fix. Please find the details below.
+This v2 is based on the mm-new branch at commit daed51c91051.
 
-https://lore.kernel.org/all/ohyhflzuoxdemccemutoosmj5hsfwylrlt6tvnyehulerk7gf3@ada6wu4zrzkp/
+This series is split out from the earlier, larger series
+"mm: Generalize HVO for HugeTLB and device DAX" [1]. That series
+generalized vmemmap optimization across HugeTLB and device DAX. One
+remaining piece is the separate compound struct page initialization used
+by boot-time gigantic HugeTLB pages and compound ZONE_DEVICE ranges.
 
-NOTE: somehow Sashiko had dropped LAKML from the thread although it shows
-up in MM list.
+This v2 also folds in Li Zhe's two-patch series, using that series' v2
+as the integration point [2]. Those patches add
+memmap_init_page_from_template() and use it to reduce bootmem HugeTLB
+tail struct page initialization overhead. The surrounding patches in
+this queue are adjusted to build on that helper directly, so the merged
+series keeps one template-copy helper and then shares frozen compound
+page initialization between ZONE_DEVICE and HugeTLB.
 
-Given the above scenario, I would suggest falling back on the V3 series,
-that defined and override pxdp_get() helpers for arm64 platform. Although
-similar to generic MM default fallback, they prevented code movement into
-arch/arm64/mm/mmu.c file causing these KASAN issues in the first place.
+The first two patches are the merged prerequisite series. The next four
+patches make the generic memmap initialization code suitable for
+sharing. They add zone-consistency verification to template copies,
+factor the PFN-independent page state, simplify the ZONE_DEVICE template
+setup, and introduce a helper for initializing frozen compound pages.
 
-https://lore.kernel.org/all/20260924062214.1635078-1-anshuman.khandual@arm.com/
+The HugeTLB patches then make boot-time gigantic HugeTLB initialization
+rely on the common frozen compound-page helper. The following small
+cleanups make now-local helpers static. The final three patches move
+early-reserved CMA pageblock setup into cma_activate_area() and then move
+MIGRATE_MOVABLE pageblock initialization into the shared memmap helpers.
 
-V3 series apples cleanly, builds, boots and also clears MM selftests on
-v7.4-rc2 as well.
+After this series, boot-time HugeTLB and compound ZONE_DEVICE ranges,
+including device DAX, use the same helpers for frozen compound-page and
+pageblock initialization.
 
-> 
-> Changes in V3:
-> 
-> https://lore.kernel.org/all/20260924062214.1635078-1-anshuman.khandual@arm.com/
-> 
-> - Added overrides for pxdp_get() and replaced remaining READ_ONCE()
-> - Updated all commit messages as required
-> - Dropped previous tags
-> 
-> Changes in V2:
-> 
-> https://lore.kernel.org/all/20260922061638.3967467-1-anshuman.khandual@arm.com/
-> 
-> - Rebased on v7.3-rc4 along with all latest dependencies
-> - Updated commit messages per Ryan
-> - Added tags from Ryan
-> 
-> Changes in V1:
-> 
-> https://lore.kernel.org/all/20260903060657.2717457-1-anshuman.khandual@arm.com/
-> 
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Linu Cherian <linu.cherian@arm.com>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> 
-> Anshuman Khandual (4):
->   arm64/mm: Use pmdp_get() for PMD accesses
->   arm64/mm: Use pudp_get() for PUD accesses
->   arm64/mm: Use p4dp_get() for P4D accesses
->   arm64/mm: Use pgdp_get() for PGD accesses
-> 
->  arch/arm64/include/asm/pgtable.h | 38 +++----------
->  arch/arm64/mm/fault.c            |  8 +--
->  arch/arm64/mm/fixmap.c           |  6 +-
->  arch/arm64/mm/hugetlbpage.c      | 10 ++--
->  arch/arm64/mm/kasan_init.c       | 18 +++---
->  arch/arm64/mm/mmu.c              | 97 ++++++++++++++++++++++----------
->  arch/arm64/mm/pageattr.c         |  8 +--
->  arch/arm64/mm/trans_pgd.c        | 14 ++---
->  8 files changed, 108 insertions(+), 91 deletions(-)
-> 
-> -- 
-> 2.43.0
-> 
+[1] https://lore.kernel.org/20260513130542.35604-1-songmuchun@bytedance.com/
+[2] https://lore.kernel.org/20261112112816.55095-1-lizhe.67@bytedance.com/
+
+v2:
+- Fold in Li Zhe's memmap template helper series, based on its v2 [2].
+- Remove __meminit from memmap_init_page_common().
+- Add a cleanup to make memmap_init_page_from_template() static.
+- Collect Reviewed-by from Mike Rapoport.
+- Fix the helper name in the final commit message.
+
+v1: https://lore.kernel.org/20261109095807.41547-1-songmuchun@bytedance.com/
+
+Li Zhe (2):
+  mm/mm_init: factor out memmap_init_page_from_template()
+  mm/hugetlb: optimize bootmem hugepage tail vmemmap init
+
+Muchun Song (12):
+  mm/mm_init: verify zones for template-initialized pages
+  mm/mm_init: factor out common struct page initialization
+  mm/mm_init: simplify zone device page initialization
+  mm/mm_init: factor out frozen compound page initialization
+  mm/hugetlb: drop boot-time HVO handling for gigantic folios
+  mm/hugetlb: initialize all struct pages for bootmem hugepages
+  mm/hugetlb: use common compound page initialization helper
+  mm/mm_init: make __init_single_page() static
+  mm/mm_init: make memmap_init_page_from_template() static
+  mm/cma: centralize CMA pageblock initialization
+  mm/cma: localize init_cma_pageblock() to cma.c
+  mm/mm_init: move pageblock migratetype init to memmap helpers
+
+ include/linux/mm.h   |   8 --
+ mm/cma.c             |  24 +++--
+ mm/hugetlb.c         | 111 ++-----------------
+ mm/hugetlb_vmemmap.c |  17 +--
+ mm/mm_init.c         | 247 +++++++++++++++++--------------------------
+ mm/mm_init.h         |  13 +--
+ mm/sparse-vmemmap.c  |   7 +-
+ 7 files changed, 129 insertions(+), 298 deletions(-)
+
+
+base-commit: daed51c9105158768a3949395135aa6e0a04bb7e
+-- 
+2.54.0
+
 
