@@ -1,94 +1,115 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03BDD606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 02:12:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=GCE9cin7
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CAA9606A33D
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 02:13:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEE2D6B0635; Thu, 12 Nov 2026 21:12:43 -0500 (EST)
+	id 01CDA6B063D; Thu, 12 Nov 2026 21:13:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCA946B0636; Thu, 12 Nov 2026 21:12:43 -0500 (EST)
+	id F36BF6B063F; Thu, 12 Nov 2026 21:13:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDAAA6B063B; Thu, 12 Nov 2026 21:12:43 -0500 (EST)
+	id E764A6B0640; Thu, 12 Nov 2026 21:13:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 871EB6B0635
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:12:43 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7A1B41C3BF3
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:12:41 +0000 (UTC)
-X-FDA: 85428472122.21.5F3B27F
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9A08240006
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:12:37 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b="G CE9cin";
-	spf=pass (imf11.hostedemail.com: domain of evers_chen@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=evers_chen@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B04DB6B063D
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:13:10 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2E443A79B7
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:13:10 +0000 (UTC)
+X-FDA: 85428473340.29.466C528
+Received: from zg8tmtyylji0my4xnjeumjiw.icoremail.net (zg8tmtyylji0my4xnjeumjiw.icoremail.net [162.243.161.220])
+	by imf19.hostedemail.com (Postfix) with ESMTP id EDD451A0002
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:13:05 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	spf=pass (imf19.hostedemail.com: domain of dzm91@hust.edu.cn designates 162.243.161.220 as permitted sender) smtp.mailfrom=dzm91@hust.edu.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794535959;
+	s=arc-20220608; t=1794535988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yBSCO2ZTyBMUw4lEtbXQeC5hax7xeAegX11PJK1BWPU=;
-	b=aeWqln6evZ6XftmvNg4jg5qbqHgk+rfRQRL0TQ/WKJron+02S0kVA3HAm0D5iPa00EYC7H
-	PLjrAVSkMP+CNE14cPPhXRbiPey8PTPO/i5ZV6Zl4l0qUPoRySMre+yXPSLyNSUhj0Yy6U
-	+00bytElaCr+nFwr9A4fGIVe2uhCXt0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2Y84LlsZe6rgvKsWJlLFsVqJRljJBA8w4SWbN4DVpek=;
+	b=ivJOWxL8ewO5XIoRoYYPiq38CzW7E+893oIpWbrknDdR1hSOfSMlhdTRxkZC7oQhnAEJ3i
+	+goFHgvwQYS6s+tDsmUbUZv7QhikieSXtolLSvEqX2+b/MmspGsrFWm2XYYE17ZyzVXKOV
+	Jtrf/OoUwUH3yIgCqmY6T9zr6L3JPDM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794535959;
-	b=1+vtnzs140+Ac2wo8YiCzDLj+cM0l0Tnz8a7Yot/8C/fL3ZiCPDd/yVHYNao77OFV4x9bj
-	mKA8Q2cy/h/EUSuiaaw3BOVxaD51YQRH7bmRigTId93VPMFebHdE+ihmPjinvfnZNpwieG
-	bHro16NWDRfwSXbKgNj0cYo3Uzxy/I4=
+	t=1794535988;
+	b=tO4hVqHmfG//lieFdavb5TVG+Hh1qzzrZLF4LlcLXNbBpLjjT8IsUuUb/SiB1kfkrSRZTt
+	5lqYFfijZy8Mu6PY3jIKyjDjAg2OA4hRjwjuT35B131N4vdkWPy1j6gCbJHEfQoehUgbNx
+	QHdhdQ2N3ff3atdIWe7GXgSRG7Rd2u4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b="G CE9cin";
-	spf=pass (imf11.hostedemail.com: domain of evers_chen@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=evers_chen@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=yBSCO2ZTyBMUw4lEtbXQeC5hax7xeAegX11PJK1BWPU=; b=G
-	CE9cin7HxmhtM4QVDMpujCG9RcnZMrNsaGA5fuo29FES5HY1RgmdfzcSMBsUaSno
-	KGpCdRE0ssAnA6eKbswHQiLAaTKej7/ZhLn32iYC5OTebvxt8P3vHCccoNZa/VYr
-	2V6kHDS/vff1awh4FCtQz9jKdnuPKaOTT1nYFsDjA8=
-Date: Fri, 13 Nov 2026 10:12:21 +0800 (CST)
-From: =?GBK?B?s8LQ3LnzIA==?= <evers_chen@163.com>
-To: "Andrew Morton" <akpm@linux-foundation.org>
-Cc: "David Hildenbrand" <david@kernel.org>, "Shuah Khan" <shuah@kernel.org>,
-	"Lorenzo Stoakes" <ljs@kernel.org>, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	chenxionggui@lanxincomputing.com
-Subject: Re:Re: [PATCH] selftests/mm: Handle implicit read permissions in
- madv_populate
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
-In-Reply-To: <20261112113231.ce39807d300f102e6763a87b@linux-foundation.org>
-References: <20261112031811.56500-1-evers_chen@163.com>
- <20261112113231.ce39807d300f102e6763a87b@linux-foundation.org>
-X-NTES-SC: AL_Qu2SBvmYukEv5yiabOkdkkwWh+Y2W8q2vvog1YVfc/AEnCf94AIGenN6DVjo/+WmFBGzkwC6eSVh1/t6TbJbAY/9K7RCV4PQwL/21KBweA==
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_27127_1236226711.1794535941838"
+	imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of dzm91@hust.edu.cn designates 162.243.161.220 as permitted sender) smtp.mailfrom=dzm91@hust.edu.cn;
+	dmarc=none
+Received: from hust.edu.cn (unknown [172.16.0.50])
+	by app1 (Coremail) with UTF8SMTP id IAEQrMBWHWkqcvZqh8ZEAA--.1437S2;
+	Fri, 13 Nov 2026 10:12:58 +0800 (CST)
+Received: from [100.81.40.43] (unknown [10.12.191.55])
+	by gateway (Coremail) with SMTP id _____wC3sN8gcvZqqfo_AA--.64337S2;
+	Fri, 13 Nov 2026 10:12:53 +0800 (CST)
+Message-ID: <f9ee662a-4da0-4204-89ce-33704044c88c@hust.edu.cn>
+Date: Fri, 13 Nov 2026 10:12:47 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Message-ID: <409e264d.1c46.1a1d2ad66ce.Coremail.evers_chen@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:eigvCgDXvywGcvZqqydtAA--.933W
-X-CM-SenderInfo: xhyh22pbfkv0i6rwjhhfrp/xtbC6wb1AGr2cgZf5AAA3L
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
-X-Rspamd-Server: rspam06
-X-Stat-Signature: xqpxxggtx3phzigjb7ce9o3c75wwmfqh
-X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,HTML_MESSAGE,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 9A08240006
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/zsmalloc: remove CONFIG_ZSMALLOC_STAT
+To: Xueyuan Chen <xueyuan.chen21@gmail.com>, Minchan Kim
+ <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Alex Shi <alexs@kernel.org>,
+ Yanteng Si <si.yanteng@linux.dev>, Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Helen Koike
+ <helen.fornazier@gmail.com>, Vignesh Raman <vignesh.raman@collabora.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, Nhat Pham <nphamcs@gmail.com>
+References: <20261111-zsmalloc_stat-v3-1-2d85ed51570e@gmail.com>
+From: Dongliang Mu <dzm91@hust.edu.cn>
+In-Reply-To: <20261111-zsmalloc_stat-v3-1-2d85ed51570e@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:IAEQrMBWHWkqcvZqh8ZEAA--.1437S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3AF17KrWUuF48AF4DZw1DJrb_yoWfGFy3pa
+	18Jr4xCryxtF15J3yUArykur9xt3ZrWFW8Gw1DW34rZFn2yw4FyFyDKryYv3yDXrWkAa1x
+	GF9agFna93Wjy3JanT9S1TB71UUUUjDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUQKb7Iv0xC_KF4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
+	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
+	v20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK
+	6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1ln4kS14v26r
+	126r1DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI
+	12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj64x0Y40En7xvr7AKxV
+	W8Jr0_Cr1UMcIj6x8ErcxFaVAv8VW8uFyUJr1UMcIj6xkF7I0En7xvr7AKxVW8Jr0_Cr1U
+	McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCY1x0262kKe7AKxVWUAVWUtwCY02
+	Avz4vE-syl42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8VW8uFyUJr1UMxC20s02
+	6xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr
+	4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWrXVW8Jr1lIxkGc2Ij64vI
+	r41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr
+	1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvE
+	x4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU0MxRDUUUUU==
+X-CM-SenderInfo: asqsiiirqrkko6kx23oohg3hdfq/
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: EDD451A0002
+X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: tmixztw5anip7wpcznixinzcbkpyez5u
 X-Rspam-User: 
-X-HE-Tag: 1794535957-135928
-X-HE-Meta: U2FsdGVkX18+lXbEuhJr1cIQkjv7XNCfEa0FPk7iao142JAwN8SXgGDYGB2UcCHlgCpWf+VpK9Q4I9cujnnLFWn+e7FM0507HyjLki3L0ZvUueGIuNfsqSSJWHmfAXmYqrcfyVJcqGYofQiYV3YIINup74SkFlRKP+msj3ApzrV1hQpfo63wiExrqRwf4B6/e43kZMkVQtw6JRlUtLsDED4/PXPCBBPKMLVH0XLgyOHeTW7TQSZvHkMq39VzMBMH3yrzyhGoCAWSWcmEq+6+lWp5WTgHOp+ptNVj7csJ8xbFeicima+HvA2T4aRT+d+RDHyw/YH0dRJgx1kkhiXDgD70xoezNYpGv68x4SZmdEG+d1QTh16Rb2DAmQhmf+0lttpzhx4tXLkNNMNQud4MYFMgcUYja8Vmmio+i62YfAS7QifiZDHbg1HlgYPLHAjMA+wzxaa0R8nR67IUrRBVYQOJpYwzA2HwBCc5HOL5rTfQNpVzmU8W8G/29HNk+Vp4blu3ZxfEe0R6tsvoZQYcxzIhtzWT3wwsoyalpuE8KOWkUthsZCAgtKsCjZ1MTS0wy0ELBFl/kQBB12gXjJJlP8R3xmrnFLYWgAE7kGU5CgxS/7G7PahDpHN5rWPIfCkTssYej36XzILPjwm9jA3WJdI82UZYduXChuWhuuEFl2CtpnA9xizbLKhuIZHcEaGi/7SE8WUXOQgsqzPCQRPaxKz3Q7E5e3pqcrAhAs976WaymLhIMyfEkyx3HRYPemoAtZgiy+Vzaj+cdiSVYQXe1ra3pRAPYS8MG0rf+MWtP7bukMSjlbcf+yal525IBDU9IoD7Zdt3AX4SDBy9sZXSw6cy2xSk8rDfuPlbrvd3zbzS2mRtV/G0jnKjBSGjqHdPx3w3qr5bY6jhO51ZvuwLLf2H1JnNe3bLvGY6SEJkCFfN4ZLB2VtXa8N2WfNckZhOxEbsy+2ac8LYaE3U04i
- ygaKFZ6G
- k6fN/vematiMMJuLMYxnRcXv8VtVlxkXTDrvjRUlpHJZD/zwAHKwqeURqkoG58Bhx9rksdviR6PSnhm8ZidcIOT+O5rZ8LYU2YZgpYNv4IfnYJ6YUdJ/GcM2qCZicfnzmvg7TbV75mVNzffCmfdlbOWzd3CfYkEzEkvCOzkXtWqaNZH1k6ZYamde9mc9uOPs1sAg84WC4wOdqoexeu21BnLjuQwLWYOGTRl8onPYEl5Q5358XJlKtOHcdiBEHJwjNHVE713MCuXdSPUUjn59qJzv+SmHITqAB8/ZBa7rAZ9uIS463vQriV59N+W9Qzcth9QvtcuzozY5JXm2S4Z4woKwwBc6PCsrHOiSk76+lta3rafpD+FZDoWk5QSwqO6v+npt7EmTwzTZaao3jooYu8+0QtevgfZ3HdGKYhkUZGntvOlwxKFDWeOrpeFzL+P7AOQ0NywIRJdBT8y4OoBygW0as/0a9PlWGb2Nc8rnq698par5217Wra7QxtHK3C3JE/1vdIjxx47X8EXUkkya9dIsEcgkdY4qhKV9Y7nzN/01Y+2n4tjJ185gtHNltozUtYLWcLh/WSrgZja9hq+ke3O55sQ==
+X-HE-Tag: 1794535985-184244
+X-HE-Meta: U2FsdGVkX19xyBm8AmEsV+gDioUCOh5VvSmyRc3RXPPLKfPwr9g/wgQtTLlK7YgFisw5dBGs5JwvWnIUjMtlMfWjnP55W4gYHjy2kzvSHg+QkmHFOivq08oIcr2au09I5rer5HGzWU+SeWmw9WwAkLOSdSnkyZ6eotZAr29yWU6oVWE3YKkaxkALTyOc16lpP4Uw+qbffOQufh5y2+eFE92TXV+EjAmlQE6KggA08TmJaR+9imJTuRSMkcf3BpS7/ra4JpbL5rrT3mxURcFwQCo1P1eN1dak+XzmN9h78fb/uPqyHYE9zqC1X6QGqXLhkUXy/zDRSeNpqSobhP3wXNQKJ8YynL5CbGH53b23Z8zozVm/pts2YFopV9jxne8ITpRCFQOgQ8VkSs51p07NlTdYY3XaFzYbdoGnSg3A6q93FZ53m7dGlLwNqG3Tnrw/Wh1z8uEp61Aviur+iSYY/bHnW+fhQPg8pmdkM6iYk3BIbnPNz3N2x9XS4nNy1Im3l1qxvxwUUIhmrzWhsRQ68iXVt2XgUKcjL90lWV5DWv7RuylD1EvRqqIaIy3E2gFMknCnoYu3yNsnIPNiXODzYvePVJ2osGWebkQU5bP7LZ45w5fcOYYkOM+a4/ilgW0CBNgCXPqrstsmTCMoxU+qrMVmkss5HuBSIbUqjjk9wnrXwObrPVwStCeG9uvmVhWjMDVpTChftTj1FAwxXa5LE/hyrDZAZQ8s4zm5yUps35HiNP11IVRHkBlWk1u42p+iF5zLqgtvp/0Y1IZKiqeYNJC/2YYD1+d/J/cQkQtQAiapbFu0BkNaIbSZBabVobkPh+wJpTyUnMt7ArZGpADrgEspiktKB2Mtq/PJhhmOWwq9WWK+eR7u97+Cish5X29f2L2PqypJU9/th/w7p4P9VIKFxj7BMgAjxnBMIjd8ei1IQHM3PVdG/0RuJzNZGPR83kEK43YmvVQ2Ra2BqSb
+ jFmPksSQ
+ TBRdzRh3SfZ4kcAxsVdTXZDDVYpaxDFyoA4j1YIzZcWbfSp4PuhTqFw2QMHB/Cy5hTkZlHnwMZOlA/JbVUNsxIrWFgomUtmgMydTlm76c4hgUZXNmn50Nex+3SI3y98ZqAiI4b89Y+BjWSeecpXFRrPBq7/LpO8vi9c5/ryh4Fr+8kwfnwc7mGyFD/3fn+o/lkHcNYklHp1rgTcVRjZ9NdBqieU6DbBzS4kRtJPhlcKGXmOz2LAgqaLSWpiXLh/wkDXgbCUfaAGBBZOoZuHdplwZcMe4z456r2VoUP6NQEpRjYDaLJdTIQb1+Tw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,237 +118,253 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-------=_Part_27127_1236226711.1794535941838
-Content-Type: text/plain; charset=GBK
-Content-Transfer-Encoding: base64
 
-VGhhbmtzIGZvciB0aGUgcmV2aWV3IQoKWW91J3JlIHJpZ2h0LiBUaGUgY2hhbmdlbG9nIGlzIHRv
-byBicm9hZCwgYW5kIHRoZSBkaXN0aW5jdGlvbiBiZXR3ZWVuIFJJU0MtViBQVEUgcGVybWlzc2lv
-bnMgYW5kIFZNQSBwZXJtaXNzaW9ucyBuZWVkcyB0byBiZSBtYWRlIGNsZWFyZXIuCgpJJ2xsIHJl
-dmlzaXQgdGhlIHdvcmRpbmcgdG8gZGVzY3JpYmUgdGhlIFJJU0MtVi1zcGVjaWZpYyBiZWhhdmlv
-ciBtb3JlIHByZWNpc2VseSwgd2l0aG91dCBpbXBseWluZyB0aGF0IHJlYWRhYmxlIFBURSBwZXJt
-aXNzaW9ucyBuZWNlc3NhcmlseSBtZWFuIFZNX1JFQUQgaXMgc2V0LgoKVGhhbmtzLApYaW9uZ2d1
-aQoKCgoKCgoKCgoKCgpBdCAyMDI2LTExLTEzIDAzOjMyOjMxLCAiQW5kcmV3IE1vcnRvbiIgPGFr
-cG1AbGludXgtZm91bmRhdGlvbi5vcmc+IHdyb3RlOgo+T24gVGh1LCAxMiBOb3YgMjAyNiAwMzox
-ODoxMSArMDAwMCBYaW9uZ2d1aSBDaGVuIDxldmVyc19jaGVuQDE2My5jb20+IHdyb3RlOgo+Cj4+
-IFRoZSBtYWR2X3BvcHVsYXRlIHNlbGZ0ZXN0IGFzc3VtZXMgdGhhdCBhIG1hcHBpbmcgY3JlYXRl
-ZCB3aXRoCj4+IFBST1RfV1JJVEUgY2Fubm90IGJlIHJlYWQsIGFuZCBleHBlY3RzIE1BRFZfUE9Q
-VUxBVEVfUkVBRCB0byBmYWlsCj4+IHdpdGggRUlOVkFMLgo+PiAKPj4gSG93ZXZlciwgc29tZSBh
-cmNoaXRlY3R1cmVzLCBpbmNsdWRpbmcgUklTQy1WLCBtYXkgaW1wbGljaXRseSBncmFudAo+PiBy
-ZWFkIHBlcm1pc3Npb24gdG8gUFJPVF9XUklURSBtYXBwaW5ncy4gT24gc3VjaCBhcmNoaXRlY3R1
-cmVzLAo+PiBNQURWX1BPUFVMQVRFX1JFQUQgc3VjY2VlZHMsIGNhdXNpbmcgdGhlIHRlc3QgdG8g
-ZmFpbCBpbmNvcnJlY3RseS4KPj4gCj4+IENoZWNrIHRoZSBhY3R1YWwgVk1BIHBlcm1pc3Npb25z
-IHRocm91Z2ggL3Byb2Mvc2VsZi9tYXBzIGFuZCBhZGp1c3QKPj4gdGhlIGV4cGVjdGVkIHJlc3Vs
-dCBhY2NvcmRpbmdseS4KPj4gCj4+IEFkZCBhIFBST1RfTk9ORSB0ZXN0IHRvIHZlcmlmeSB0aGF0
-IE1BRFZfUE9QVUxBVEVfUkVBRCBzdGlsbCBmYWlscwo+PiB3aXRoIEVJTlZBTCBmb3IgbWFwcGlu
-Z3Mgd2l0aG91dCByZWFkIHBlcm1pc3Npb24uCj4+IAo+PiBPbiBSSVNDLVYgd2l0aCBMaW51eCA3
-LjIuMCwgdGhlIG9yaWdpbmFsIHRlc3QgZmFpbHMgMSBvdXQgb2YgMTYKPj4gdGVzdHMsIHdoaWxl
-IHRoZSB1cGRhdGVkIHRlc3QgcGFzc2VzIGFsbCAxNyB0ZXN0cy4KPgo+Q29kZSBsb29rcyBnb29k
-LCB0aGFua3MuCj4KPlRoZSBjaGFuZ2Vsb2cgaXMgYSBsaXR0bGUgaW1wcmVjaXNlLiAgCj4KPiJz
-b21lIGFyY2hpdGVjdHVyZXMiIGlzIHRvbyBicm9hZCAtIHRoaXMgaXMgcHVyZWx5IHJpc2N2Lgo+
-Cj5UaGUgd29yZGluZyBzdWdnZXN0cyB0aGF0IGEgcmVhZGFibGUgaGFyZHdhcmUgUFRFIGFsb25l
-IGRldGVybWluZXMgdGhlCj5yZXN1bHQuICByaXNjdiBjYW4gaGF2ZSByZWFkYWJsZSB3cml0YWJs
-ZSBQVEVzIHdpdGhvdXQgc2V0dGluZyBWTV9SRUFELAo+YW5kIHRoaXMgdGVzdCBzdGlsbCBleHBl
-Y3RzIEVJTlZBTCBvbiB0aG9zZSBzeXN0ZW1zLiAgCj4KPgo+SSBhbHRlcmVkIHRoZSBzZWNvbmQg
-cGFyYWdyYXBoLCBwbGVhc2UgcmV2aWV3Lgo+Cj4KPkZyb206IFhpb25nZ3VpIENoZW4gPGNoZW54
-aW9uZ2d1aUBsYW54aW5jb21wdXRpbmcuY29tPgo+U3ViamVjdDogc2VsZnRlc3RzL21tOiBoYW5k
-bGUgaW1wbGljaXQgcmVhZCBwZXJtaXNzaW9ucyBpbiBtYWR2X3BvcHVsYXRlCj5EYXRlOiBUaHUs
-IDEyIE5vdiAyMDI2IDAzOjE4OjExICswMDAwCj4KPlRoZSBtYWR2X3BvcHVsYXRlIHNlbGZ0ZXN0
-IGFzc3VtZXMgdGhhdCBtbWFwKFBST1RfV1JJVEUpIGNyZWF0ZXMgYSBWTUEKPndpdGhvdXQgVk1f
-UkVBRCBhbmQgZXhwZWN0cyBNQURWX1BPUFVMQVRFX1JFQUQgdG8gZmFpbCB3aXRoIEVJTlZBTC4K
-Pgo+T24gUklTQy1WLCBjb21taXQgNmM3NTU5ZjIyYjZmICgicmlzY3YvbW06IGVuc3VyZSBQUk9U
-X1dSSVRFIGxlYWRzIHRvCj5WTV9SRUFEIHwgVk1fV1JJVEUiKSBtYWtlcyB0aGUga2VybmVsIHNl
-dCBWTV9SRUFEIGZvciBtYXBwaW5ncyByZXF1ZXN0ZWQKPndpdGggUFJPVF9XUklURS4gIE1BRFZf
-UE9QVUxBVEVfUkVBRCBjaGVja3MgdGhpcyBWTUEgcGVybWlzc2lvbiwgc28gaXQKPnN1Y2NlZWRz
-IGFuZCB0aGUgdGVzdCBmYWlscyBpbmNvcnJlY3RseS4gIFdoZXRoZXIgdGhlIGhhcmR3YXJlIGNh
-biByZWFkIGEKPndyaXRhYmxlIFBURSBkb2VzIG5vdCwgYnkgaXRzZWxmLCBkZXRlcm1pbmUgdGhl
-IG1hZHZpc2UoKSByZXN1bHQuCj4KPkNoZWNrIHRoZSBWTUEgcGVybWlzc2lvbnMgdGhyb3VnaCAv
-cHJvYy9zZWxmL21hcHMgYW5kIGFkanVzdCB0aGUgZXhwZWN0ZWQKPnJlc3VsdCBhY2NvcmRpbmds
-eS4KPgo+QWRkIGEgUFJPVF9OT05FIHRlc3QgdG8gdmVyaWZ5IHRoYXQgTUFEVl9QT1BVTEFURV9S
-RUFEIHN0aWxsIGZhaWxzIHdpdGgKPkVJTlZBTCBmb3IgbWFwcGluZ3Mgd2l0aG91dCByZWFkIHBl
-cm1pc3Npb24uCj4KPk9uIFJJU0MtViB3aXRoIExpbnV4IDcuMi4wLCB0aGUgb3JpZ2luYWwgdGVz
-dCBmYWlscyAxIG91dCBvZiAxNiB0ZXN0cywKPndoaWxlIHRoZSB1cGRhdGVkIHRlc3QgcGFzc2Vz
-IGFsbCAxNyB0ZXN0cy4KPgo+TGluazogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvMjAyNjExMTIw
-MzE4MTEuNTY1MDAtMS1ldmVyc19jaGVuQDE2My5jb20KPlNpZ25lZC1vZmYtYnk6IFhpb25nZ3Vp
-IENoZW4gPGNoZW54aW9uZ2d1aUBsYW54aW5jb21wdXRpbmcuY29tPgo+U2lnbmVkLW9mZi1ieTog
-QW5kcmV3IE1vcnRvbiA8YWtwbUBsaW51eC1mb3VuZGF0aW9uLm9yZz4KPkNjOiBEYXZpZCBIaWxk
-ZW5icmFuZCA8ZGF2aWRAa2VybmVsLm9yZz4KPkNjOiBTaHVhaCBLaGFuIDxzaHVhaEBrZXJuZWwu
-b3JnPgo+Q2M6IExvcmVuem8gU3RvYWtlcyA8bGpzQGtlcm5lbC5vcmc+Cj4tLS0KPgo+IHRvb2xz
-L3Rlc3Rpbmcvc2VsZnRlc3RzL21tL21hZHZfcG9wdWxhdGUuYyB8ICAgNjcgKysrKysrKysrKysr
-KysrKystLQo+IDEgZmlsZSBjaGFuZ2VkLCA2MyBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygt
-KQo+Cj4tLS0gYS90b29scy90ZXN0aW5nL3NlbGZ0ZXN0cy9tbS9tYWR2X3BvcHVsYXRlLmN+c2Vs
-ZnRlc3RzLW1tLWhhbmRsZS1pbXBsaWNpdC1yZWFkLXBlcm1pc3Npb25zLWluLW1hZHZfcG9wdWxh
-dGUKPisrKyBhL3Rvb2xzL3Rlc3Rpbmcvc2VsZnRlc3RzL21tL21hZHZfcG9wdWxhdGUuYwo+QEAg
-LTY5LDEwICs2OSwzOCBAQCBzdGF0aWMgdm9pZCB0ZXN0X3Byb3RfcmVhZCh2b2lkKQo+IAltdW5t
-YXAoYWRkciwgU0laRSk7Cj4gfQo+IAo+K3N0YXRpYyBpbnQgbWFwcGluZ19pc19yZWFkYWJsZSh2
-b2lkICphZGRyKQo+K3sKPisJRklMRSAqbWFwczsKPisJY2hhciBsaW5lWzI1Nl07Cj4rCXVuc2ln
-bmVkIGxvbmcgc3RhcnQsIGVuZDsKPisJY2hhciBwZXJtc1s1XTsKPisJaW50IHJlYWRhYmxlID0g
-LTE7Cj4rCj4rCW1hcHMgPSBmb3BlbigiL3Byb2Mvc2VsZi9tYXBzIiwgInIiKTsKPisJaWYgKCFt
-YXBzKQo+KwkJcmV0dXJuIC0xOwo+Kwo+Kwl3aGlsZSAoZmdldHMobGluZSwgc2l6ZW9mKGxpbmUp
-LCBtYXBzKSkgewo+KwkJaWYgKHNzY2FuZihsaW5lLCAiJWx4LSVseCAlNHMiLAo+KwkJCSAgICZz
-dGFydCwgJmVuZCwgcGVybXMpICE9IDMpCj4rCQkJY29udGludWU7Cj4rCj4rCQlpZiAoc3RhcnQg
-PD0gKHVuc2lnbmVkIGxvbmcpYWRkciAmJgo+KwkJICAgICh1bnNpZ25lZCBsb25nKWFkZHIgPCBl
-bmQpIHsKPisJCQlyZWFkYWJsZSA9IHBlcm1zWzBdID09ICdyJzsKPisJCQlicmVhazsKPisJCX0K
-PisJfQo+Kwo+KwlmY2xvc2UobWFwcyk7Cj4rCXJldHVybiByZWFkYWJsZTsKPit9Cj4rCj4gc3Rh
-dGljIHZvaWQgdGVzdF9wcm90X3dyaXRlKHZvaWQpCj4gewo+IAljaGFyICphZGRyOwo+LQlpbnQg
-cmV0Owo+KwlpbnQgcmV0LCByZWFkYWJsZTsKPiAKPiAJa3NmdF9wcmludF9tc2coIltSVU5dICVz
-XG4iLCBfX2Z1bmNfXyk7Cj4gCj5AQCAtODAsOSArMTA4LDE5IEBAIHN0YXRpYyB2b2lkIHRlc3Rf
-cHJvdF93cml0ZSh2b2lkKQo+IAlpZiAoYWRkciA9PSBNQVBfRkFJTEVEKQo+IAkJa3NmdF9leGl0
-X2ZhaWxfbXNnKCJtbWFwIGZhaWxlZFxuIik7Cj4gCj4rCXJlYWRhYmxlID0gbWFwcGluZ19pc19y
-ZWFkYWJsZShhZGRyKTsKPisJaWYgKHJlYWRhYmxlIDwgMCkKPisJCWtzZnRfZXhpdF9mYWlsX21z
-ZygiQ2Fubm90IGRldGVybWluZSBWTUEgcGVybWlzc2lvbnNcbiIpOwo+Kwo+KwllcnJubyA9IDA7
-Cj4gCXJldCA9IG1hZHZpc2UoYWRkciwgU0laRSwgTUFEVl9QT1BVTEFURV9SRUFEKTsKPi0Ja3Nm
-dF90ZXN0X3Jlc3VsdChyZXQgPT0gLTEgJiYgZXJybm8gPT0gRUlOVkFMLAo+LQkJCSAiTUFEVl9Q
-T1BVTEFURV9SRUFEIHdpdGggUFJPVF9XUklURVxuIik7Cj4rCj4rCWlmIChyZWFkYWJsZSkKPisJ
-CWtzZnRfdGVzdF9yZXN1bHQocmV0ID09IDAsCj4rCQkJCSAiTUFEVl9QT1BVTEFURV9SRUFEIHdp
-dGggcmVhZGFibGUgUFJPVF9XUklURSBtYXBwaW5nXG4iKTsKPisJZWxzZQo+KwkJa3NmdF90ZXN0
-X3Jlc3VsdChyZXQgPT0gLTEgJiYgZXJybm8gPT0gRUlOVkFMLAo+KwkJCQkgIk1BRFZfUE9QVUxB
-VEVfUkVBRCB3aXRoIHdyaXRlLW9ubHkgbWFwcGluZ1xuIik7Cj4gCj4gCXJldCA9IG1hZHZpc2Uo
-YWRkciwgU0laRSwgTUFEVl9QT1BVTEFURV9XUklURSk7Cj4gCWtzZnRfdGVzdF9yZXN1bHQoIXJl
-dCwgIk1BRFZfUE9QVUxBVEVfV1JJVEUgd2l0aCBQUk9UX1dSSVRFXG4iKTsKPkBAIC05MCw2ICsx
-MjgsMjYgQEAgc3RhdGljIHZvaWQgdGVzdF9wcm90X3dyaXRlKHZvaWQpCj4gCW11bm1hcChhZGRy
-LCBTSVpFKTsKPiB9Cj4gCj4rc3RhdGljIHZvaWQgdGVzdF9wcm90X25vbmUodm9pZCkKPit7Cj4r
-CWNoYXIgKmFkZHI7Cj4rCWludCByZXQ7Cj4rCj4rCWtzZnRfcHJpbnRfbXNnKCJbUlVOXSAlc1xu
-IiwgX19mdW5jX18pOwo+Kwo+KwlhZGRyID0gbW1hcCgwLCBTSVpFLCBQUk9UX05PTkUsCj4rCQkg
-ICAgTUFQX0FOT05ZTU9VUyB8IE1BUF9QUklWQVRFLCAwLCAwKTsKPisJaWYgKGFkZHIgPT0gTUFQ
-X0ZBSUxFRCkKPisJCWtzZnRfZXhpdF9mYWlsX21zZygibW1hcCBmYWlsZWRcbiIpOwo+Kwo+Kwll
-cnJubyA9IDA7Cj4rCXJldCA9IG1hZHZpc2UoYWRkciwgU0laRSwgTUFEVl9QT1BVTEFURV9SRUFE
-KTsKPisJa3NmdF90ZXN0X3Jlc3VsdChyZXQgPT0gLTEgJiYgZXJybm8gPT0gRUlOVkFMLAo+KwkJ
-CSAiTUFEVl9QT1BVTEFURV9SRUFEIHdpdGggUFJPVF9OT05FXG4iKTsKPisKPisJbXVubWFwKGFk
-ZHIsIFNJWkUpOwo+K30KPisKPiBzdGF0aWMgdm9pZCB0ZXN0X2hvbGVzKHZvaWQpCj4gewo+IAlj
-aGFyICphZGRyOwo+QEAgLTI2Niw3ICszMjQsNyBAQCBzdGF0aWMgdm9pZCB0ZXN0X3NvZnRkaXJ0
-eSh2b2lkKQo+IAo+IGludCBtYWluKGludCBhcmdjLCBjaGFyICoqYXJndikKPiB7Cj4tCWludCBu
-cl90ZXN0cyA9IDE2Owo+KwlpbnQgbnJfdGVzdHMgPSAxNzsKPiAJaW50IGVycjsKPiAKPiAJcGFn
-ZXNpemUgPSBnZXRwYWdlc2l6ZSgpOwo+QEAgLTI4MCw2ICszMzgsNyBAQCBpbnQgbWFpbihpbnQg
-YXJnYywgY2hhciAqKmFyZ3YpCj4gCXNlbnNlX3N1cHBvcnQoKTsKPiAJdGVzdF9wcm90X3JlYWQo
-KTsKPiAJdGVzdF9wcm90X3dyaXRlKCk7Cj4rCXRlc3RfcHJvdF9ub25lKCk7Cj4gCXRlc3RfaG9s
-ZXMoKTsKPiAJdGVzdF9wb3B1bGF0ZV9yZWFkKCk7Cj4gCXRlc3RfcG9wdWxhdGVfd3JpdGUoKTsK
-Pl8K
-------=_Part_27127_1236226711.1794535941838
-Content-Type: text/html; charset=GBK
-Content-Transfer-Encoding: base64
+On 11/11/26 8:41 PM, Xueyuan Chen wrote:
+> CONFIG_ZSMALLOC_STAT only controls the debugfs interface. The class
+> counters are updated regardless of this option.
+>
+> Remove the CONFIG_ZSMALLOC_STAT guards and rely on the debugfs API
+> stubs when CONFIG_DEBUG_FS=n. Skip statistics setup silently when
+> debugfs is unavailable.
+>
+> Remove the Kconfig entry and replace the existing CONFIG_ZSMALLOC_STAT
+> settings with CONFIG_DEBUG_FS=y. Update the English and Chinese
+> documentation to match, and clarify the pool name in the debugfs path.
+>
+> Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+> Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
 
-PGRpdiBkYXRhLW50ZXM9Im50ZXNfbWFpbF9ib2R5X3Jvb3QiIHN0eWxlPSJsaW5lLWhlaWdodDox
-Ljc7Y29sb3I6IzAwMDAwMDtmb250LXNpemU6MTRweDtmb250LWZhbWlseTpBcmlhbCI+PGRpdiBp
-ZD0ic3BuRWRpdG9yQ29udGVudCI+PGRpdiBzdHlsZT0ibWFyZ2luOiAwOyI+PHA+VGhhbmtzIGZv
-ciB0aGUgcmV2aWV3ITwvcD48cD5Zb3UncmUgcmlnaHQuIFRoZSBjaGFuZ2Vsb2cgaXMgdG9vIGJy
-b2FkLCBhbmQgdGhlIGRpc3RpbmN0aW9uIGJldHdlZW4gUklTQy1WIFBURSBwZXJtaXNzaW9ucyBh
-bmQgVk1BIHBlcm1pc3Npb25zIG5lZWRzIHRvIGJlIG1hZGUgY2xlYXJlci48L3A+PHA+SSdsbCBy
-ZXZpc2l0IHRoZSB3b3JkaW5nIHRvIGRlc2NyaWJlIHRoZSBSSVNDLVYtc3BlY2lmaWMgYmVoYXZp
-b3IgbW9yZSBwcmVjaXNlbHksIHdpdGhvdXQgaW1wbHlpbmcgdGhhdCByZWFkYWJsZSBQVEUgcGVy
-bWlzc2lvbnMgbmVjZXNzYXJpbHkgbWVhbiBWTV9SRUFEIGlzIHNldC48L3A+PHA+VGhhbmtzLDxi
-cj5YaW9uZ2d1aTwvcD48L2Rpdj48ZGl2IHN0eWxlPSJtYXJnaW46IDA7Ij48YnI+PC9kaXY+PGRp
-diBzdHlsZT0ibWFyZ2luOiAwOyI+PGJyPjwvZGl2PjxkaXYgc3R5bGU9Im1hcmdpbjogMDsiPjxi
-cj48L2Rpdj48ZGl2IHN0eWxlPSJtYXJnaW46IDA7Ij48YnI+PC9kaXY+PC9kaXY+PGRpdiBzdHls
-ZT0icG9zaXRpb246cmVsYXRpdmU7em9vbToxIj48L2Rpdj48ZGl2IGlkPSJkaXZOZXRlYXNlTWFp
-bENhcmQiPjwvZGl2PjxkaXYgc3R5bGU9Im1hcmdpbjogMDsiPjxicj48L2Rpdj48cHJlPjxicj5B
-dCAyMDI2LTExLTEzIDAzOjMyOjMxLCAiQW5kcmV3IE1vcnRvbiIgJmx0O2FrcG1AbGludXgtZm91
-bmRhdGlvbi5vcmcmZ3Q7IHdyb3RlOgomZ3Q7T24gVGh1LCAxMiBOb3YgMjAyNiAwMzoxODoxMSAr
-MDAwMCBYaW9uZ2d1aSBDaGVuICZsdDtldmVyc19jaGVuQDE2My5jb20mZ3Q7IHdyb3RlOgomZ3Q7
-CiZndDsmZ3Q7IFRoZSBtYWR2X3BvcHVsYXRlIHNlbGZ0ZXN0IGFzc3VtZXMgdGhhdCBhIG1hcHBp
-bmcgY3JlYXRlZCB3aXRoCiZndDsmZ3Q7IFBST1RfV1JJVEUgY2Fubm90IGJlIHJlYWQsIGFuZCBl
-eHBlY3RzIE1BRFZfUE9QVUxBVEVfUkVBRCB0byBmYWlsCiZndDsmZ3Q7IHdpdGggRUlOVkFMLgom
-Z3Q7Jmd0OyAKJmd0OyZndDsgSG93ZXZlciwgc29tZSBhcmNoaXRlY3R1cmVzLCBpbmNsdWRpbmcg
-UklTQy1WLCBtYXkgaW1wbGljaXRseSBncmFudAomZ3Q7Jmd0OyByZWFkIHBlcm1pc3Npb24gdG8g
-UFJPVF9XUklURSBtYXBwaW5ncy4gT24gc3VjaCBhcmNoaXRlY3R1cmVzLAomZ3Q7Jmd0OyBNQURW
-X1BPUFVMQVRFX1JFQUQgc3VjY2VlZHMsIGNhdXNpbmcgdGhlIHRlc3QgdG8gZmFpbCBpbmNvcnJl
-Y3RseS4KJmd0OyZndDsgCiZndDsmZ3Q7IENoZWNrIHRoZSBhY3R1YWwgVk1BIHBlcm1pc3Npb25z
-IHRocm91Z2ggL3Byb2Mvc2VsZi9tYXBzIGFuZCBhZGp1c3QKJmd0OyZndDsgdGhlIGV4cGVjdGVk
-IHJlc3VsdCBhY2NvcmRpbmdseS4KJmd0OyZndDsgCiZndDsmZ3Q7IEFkZCBhIFBST1RfTk9ORSB0
-ZXN0IHRvIHZlcmlmeSB0aGF0IE1BRFZfUE9QVUxBVEVfUkVBRCBzdGlsbCBmYWlscwomZ3Q7Jmd0
-OyB3aXRoIEVJTlZBTCBmb3IgbWFwcGluZ3Mgd2l0aG91dCByZWFkIHBlcm1pc3Npb24uCiZndDsm
-Z3Q7IAomZ3Q7Jmd0OyBPbiBSSVNDLVYgd2l0aCBMaW51eCA3LjIuMCwgdGhlIG9yaWdpbmFsIHRl
-c3QgZmFpbHMgMSBvdXQgb2YgMTYKJmd0OyZndDsgdGVzdHMsIHdoaWxlIHRoZSB1cGRhdGVkIHRl
-c3QgcGFzc2VzIGFsbCAxNyB0ZXN0cy4KJmd0OwomZ3Q7Q29kZSBsb29rcyBnb29kLCB0aGFua3Mu
-CiZndDsKJmd0O1RoZSBjaGFuZ2Vsb2cgaXMgYSBsaXR0bGUgaW1wcmVjaXNlLiAgCiZndDsKJmd0
-OyJzb21lIGFyY2hpdGVjdHVyZXMiIGlzIHRvbyBicm9hZCAtIHRoaXMgaXMgcHVyZWx5IHJpc2N2
-LgomZ3Q7CiZndDtUaGUgd29yZGluZyBzdWdnZXN0cyB0aGF0IGEgcmVhZGFibGUgaGFyZHdhcmUg
-UFRFIGFsb25lIGRldGVybWluZXMgdGhlCiZndDtyZXN1bHQuICByaXNjdiBjYW4gaGF2ZSByZWFk
-YWJsZSB3cml0YWJsZSBQVEVzIHdpdGhvdXQgc2V0dGluZyBWTV9SRUFELAomZ3Q7YW5kIHRoaXMg
-dGVzdCBzdGlsbCBleHBlY3RzIEVJTlZBTCBvbiB0aG9zZSBzeXN0ZW1zLiAgCiZndDsKJmd0Owom
-Z3Q7SSBhbHRlcmVkIHRoZSBzZWNvbmQgcGFyYWdyYXBoLCBwbGVhc2UgcmV2aWV3LgomZ3Q7CiZn
-dDsKJmd0O0Zyb206IFhpb25nZ3VpIENoZW4gJmx0O2NoZW54aW9uZ2d1aUBsYW54aW5jb21wdXRp
-bmcuY29tJmd0OwomZ3Q7U3ViamVjdDogc2VsZnRlc3RzL21tOiBoYW5kbGUgaW1wbGljaXQgcmVh
-ZCBwZXJtaXNzaW9ucyBpbiBtYWR2X3BvcHVsYXRlCiZndDtEYXRlOiBUaHUsIDEyIE5vdiAyMDI2
-IDAzOjE4OjExICswMDAwCiZndDsKJmd0O1RoZSBtYWR2X3BvcHVsYXRlIHNlbGZ0ZXN0IGFzc3Vt
-ZXMgdGhhdCBtbWFwKFBST1RfV1JJVEUpIGNyZWF0ZXMgYSBWTUEKJmd0O3dpdGhvdXQgVk1fUkVB
-RCBhbmQgZXhwZWN0cyBNQURWX1BPUFVMQVRFX1JFQUQgdG8gZmFpbCB3aXRoIEVJTlZBTC4KJmd0
-OwomZ3Q7T24gUklTQy1WLCBjb21taXQgNmM3NTU5ZjIyYjZmICgicmlzY3YvbW06IGVuc3VyZSBQ
-Uk9UX1dSSVRFIGxlYWRzIHRvCiZndDtWTV9SRUFEIHwgVk1fV1JJVEUiKSBtYWtlcyB0aGUga2Vy
-bmVsIHNldCBWTV9SRUFEIGZvciBtYXBwaW5ncyByZXF1ZXN0ZWQKJmd0O3dpdGggUFJPVF9XUklU
-RS4gIE1BRFZfUE9QVUxBVEVfUkVBRCBjaGVja3MgdGhpcyBWTUEgcGVybWlzc2lvbiwgc28gaXQK
-Jmd0O3N1Y2NlZWRzIGFuZCB0aGUgdGVzdCBmYWlscyBpbmNvcnJlY3RseS4gIFdoZXRoZXIgdGhl
-IGhhcmR3YXJlIGNhbiByZWFkIGEKJmd0O3dyaXRhYmxlIFBURSBkb2VzIG5vdCwgYnkgaXRzZWxm
-LCBkZXRlcm1pbmUgdGhlIG1hZHZpc2UoKSByZXN1bHQuCiZndDsKJmd0O0NoZWNrIHRoZSBWTUEg
-cGVybWlzc2lvbnMgdGhyb3VnaCAvcHJvYy9zZWxmL21hcHMgYW5kIGFkanVzdCB0aGUgZXhwZWN0
-ZWQKJmd0O3Jlc3VsdCBhY2NvcmRpbmdseS4KJmd0OwomZ3Q7QWRkIGEgUFJPVF9OT05FIHRlc3Qg
-dG8gdmVyaWZ5IHRoYXQgTUFEVl9QT1BVTEFURV9SRUFEIHN0aWxsIGZhaWxzIHdpdGgKJmd0O0VJ
-TlZBTCBmb3IgbWFwcGluZ3Mgd2l0aG91dCByZWFkIHBlcm1pc3Npb24uCiZndDsKJmd0O09uIFJJ
-U0MtViB3aXRoIExpbnV4IDcuMi4wLCB0aGUgb3JpZ2luYWwgdGVzdCBmYWlscyAxIG91dCBvZiAx
-NiB0ZXN0cywKJmd0O3doaWxlIHRoZSB1cGRhdGVkIHRlc3QgcGFzc2VzIGFsbCAxNyB0ZXN0cy4K
-Jmd0OwomZ3Q7TGluazogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvMjAyNjExMTIwMzE4MTEuNTY1
-MDAtMS1ldmVyc19jaGVuQDE2My5jb20KJmd0O1NpZ25lZC1vZmYtYnk6IFhpb25nZ3VpIENoZW4g
-Jmx0O2NoZW54aW9uZ2d1aUBsYW54aW5jb21wdXRpbmcuY29tJmd0OwomZ3Q7U2lnbmVkLW9mZi1i
-eTogQW5kcmV3IE1vcnRvbiAmbHQ7YWtwbUBsaW51eC1mb3VuZGF0aW9uLm9yZyZndDsKJmd0O0Nj
-OiBEYXZpZCBIaWxkZW5icmFuZCAmbHQ7ZGF2aWRAa2VybmVsLm9yZyZndDsKJmd0O0NjOiBTaHVh
-aCBLaGFuICZsdDtzaHVhaEBrZXJuZWwub3JnJmd0OwomZ3Q7Q2M6IExvcmVuem8gU3RvYWtlcyAm
-bHQ7bGpzQGtlcm5lbC5vcmcmZ3Q7CiZndDstLS0KJmd0OwomZ3Q7IHRvb2xzL3Rlc3Rpbmcvc2Vs
-ZnRlc3RzL21tL21hZHZfcG9wdWxhdGUuYyB8ICAgNjcgKysrKysrKysrKysrKysrKystLQomZ3Q7
-IDEgZmlsZSBjaGFuZ2VkLCA2MyBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQomZ3Q7CiZn
-dDstLS0gYS90b29scy90ZXN0aW5nL3NlbGZ0ZXN0cy9tbS9tYWR2X3BvcHVsYXRlLmN+c2VsZnRl
-c3RzLW1tLWhhbmRsZS1pbXBsaWNpdC1yZWFkLXBlcm1pc3Npb25zLWluLW1hZHZfcG9wdWxhdGUK
-Jmd0OysrKyBhL3Rvb2xzL3Rlc3Rpbmcvc2VsZnRlc3RzL21tL21hZHZfcG9wdWxhdGUuYwomZ3Q7
-QEAgLTY5LDEwICs2OSwzOCBAQCBzdGF0aWMgdm9pZCB0ZXN0X3Byb3RfcmVhZCh2b2lkKQomZ3Q7
-IAltdW5tYXAoYWRkciwgU0laRSk7CiZndDsgfQomZ3Q7IAomZ3Q7K3N0YXRpYyBpbnQgbWFwcGlu
-Z19pc19yZWFkYWJsZSh2b2lkICphZGRyKQomZ3Q7K3sKJmd0OysJRklMRSAqbWFwczsKJmd0OysJ
-Y2hhciBsaW5lWzI1Nl07CiZndDsrCXVuc2lnbmVkIGxvbmcgc3RhcnQsIGVuZDsKJmd0OysJY2hh
-ciBwZXJtc1s1XTsKJmd0OysJaW50IHJlYWRhYmxlID0gLTE7CiZndDsrCiZndDsrCW1hcHMgPSBm
-b3BlbigiL3Byb2Mvc2VsZi9tYXBzIiwgInIiKTsKJmd0OysJaWYgKCFtYXBzKQomZ3Q7KwkJcmV0
-dXJuIC0xOwomZ3Q7KwomZ3Q7Kwl3aGlsZSAoZmdldHMobGluZSwgc2l6ZW9mKGxpbmUpLCBtYXBz
-KSkgewomZ3Q7KwkJaWYgKHNzY2FuZihsaW5lLCAiJWx4LSVseCAlNHMiLAomZ3Q7KwkJCSAgICZh
-bXA7c3RhcnQsICZhbXA7ZW5kLCBwZXJtcykgIT0gMykKJmd0OysJCQljb250aW51ZTsKJmd0OysK
-Jmd0OysJCWlmIChzdGFydCAmbHQ7PSAodW5zaWduZWQgbG9uZylhZGRyICZhbXA7JmFtcDsKJmd0
-OysJCSAgICAodW5zaWduZWQgbG9uZylhZGRyICZsdDsgZW5kKSB7CiZndDsrCQkJcmVhZGFibGUg
-PSBwZXJtc1swXSA9PSAncic7CiZndDsrCQkJYnJlYWs7CiZndDsrCQl9CiZndDsrCX0KJmd0OysK
-Jmd0OysJZmNsb3NlKG1hcHMpOwomZ3Q7KwlyZXR1cm4gcmVhZGFibGU7CiZndDsrfQomZ3Q7Kwom
-Z3Q7IHN0YXRpYyB2b2lkIHRlc3RfcHJvdF93cml0ZSh2b2lkKQomZ3Q7IHsKJmd0OyAJY2hhciAq
-YWRkcjsKJmd0Oy0JaW50IHJldDsKJmd0OysJaW50IHJldCwgcmVhZGFibGU7CiZndDsgCiZndDsg
-CWtzZnRfcHJpbnRfbXNnKCJbUlVOXSAlc1xuIiwgX19mdW5jX18pOwomZ3Q7IAomZ3Q7QEAgLTgw
-LDkgKzEwOCwxOSBAQCBzdGF0aWMgdm9pZCB0ZXN0X3Byb3Rfd3JpdGUodm9pZCkKJmd0OyAJaWYg
-KGFkZHIgPT0gTUFQX0ZBSUxFRCkKJmd0OyAJCWtzZnRfZXhpdF9mYWlsX21zZygibW1hcCBmYWls
-ZWRcbiIpOwomZ3Q7IAomZ3Q7KwlyZWFkYWJsZSA9IG1hcHBpbmdfaXNfcmVhZGFibGUoYWRkcik7
-CiZndDsrCWlmIChyZWFkYWJsZSAmbHQ7IDApCiZndDsrCQlrc2Z0X2V4aXRfZmFpbF9tc2coIkNh
-bm5vdCBkZXRlcm1pbmUgVk1BIHBlcm1pc3Npb25zXG4iKTsKJmd0OysKJmd0OysJZXJybm8gPSAw
-OwomZ3Q7IAlyZXQgPSBtYWR2aXNlKGFkZHIsIFNJWkUsIE1BRFZfUE9QVUxBVEVfUkVBRCk7CiZn
-dDstCWtzZnRfdGVzdF9yZXN1bHQocmV0ID09IC0xICZhbXA7JmFtcDsgZXJybm8gPT0gRUlOVkFM
-LAomZ3Q7LQkJCSAiTUFEVl9QT1BVTEFURV9SRUFEIHdpdGggUFJPVF9XUklURVxuIik7CiZndDsr
-CiZndDsrCWlmIChyZWFkYWJsZSkKJmd0OysJCWtzZnRfdGVzdF9yZXN1bHQocmV0ID09IDAsCiZn
-dDsrCQkJCSAiTUFEVl9QT1BVTEFURV9SRUFEIHdpdGggcmVhZGFibGUgUFJPVF9XUklURSBtYXBw
-aW5nXG4iKTsKJmd0OysJZWxzZQomZ3Q7KwkJa3NmdF90ZXN0X3Jlc3VsdChyZXQgPT0gLTEgJmFt
-cDsmYW1wOyBlcnJubyA9PSBFSU5WQUwsCiZndDsrCQkJCSAiTUFEVl9QT1BVTEFURV9SRUFEIHdp
-dGggd3JpdGUtb25seSBtYXBwaW5nXG4iKTsKJmd0OyAKJmd0OyAJcmV0ID0gbWFkdmlzZShhZGRy
-LCBTSVpFLCBNQURWX1BPUFVMQVRFX1dSSVRFKTsKJmd0OyAJa3NmdF90ZXN0X3Jlc3VsdCghcmV0
-LCAiTUFEVl9QT1BVTEFURV9XUklURSB3aXRoIFBST1RfV1JJVEVcbiIpOwomZ3Q7QEAgLTkwLDYg
-KzEyOCwyNiBAQCBzdGF0aWMgdm9pZCB0ZXN0X3Byb3Rfd3JpdGUodm9pZCkKJmd0OyAJbXVubWFw
-KGFkZHIsIFNJWkUpOwomZ3Q7IH0KJmd0OyAKJmd0OytzdGF0aWMgdm9pZCB0ZXN0X3Byb3Rfbm9u
-ZSh2b2lkKQomZ3Q7K3sKJmd0OysJY2hhciAqYWRkcjsKJmd0OysJaW50IHJldDsKJmd0OysKJmd0
-OysJa3NmdF9wcmludF9tc2coIltSVU5dICVzXG4iLCBfX2Z1bmNfXyk7CiZndDsrCiZndDsrCWFk
-ZHIgPSBtbWFwKDAsIFNJWkUsIFBST1RfTk9ORSwKJmd0OysJCSAgICBNQVBfQU5PTllNT1VTIHwg
-TUFQX1BSSVZBVEUsIDAsIDApOwomZ3Q7KwlpZiAoYWRkciA9PSBNQVBfRkFJTEVEKQomZ3Q7KwkJ
-a3NmdF9leGl0X2ZhaWxfbXNnKCJtbWFwIGZhaWxlZFxuIik7CiZndDsrCiZndDsrCWVycm5vID0g
-MDsKJmd0OysJcmV0ID0gbWFkdmlzZShhZGRyLCBTSVpFLCBNQURWX1BPUFVMQVRFX1JFQUQpOwom
-Z3Q7Kwlrc2Z0X3Rlc3RfcmVzdWx0KHJldCA9PSAtMSAmYW1wOyZhbXA7IGVycm5vID09IEVJTlZB
-TCwKJmd0OysJCQkgIk1BRFZfUE9QVUxBVEVfUkVBRCB3aXRoIFBST1RfTk9ORVxuIik7CiZndDsr
-CiZndDsrCW11bm1hcChhZGRyLCBTSVpFKTsKJmd0Oyt9CiZndDsrCiZndDsgc3RhdGljIHZvaWQg
-dGVzdF9ob2xlcyh2b2lkKQomZ3Q7IHsKJmd0OyAJY2hhciAqYWRkcjsKJmd0O0BAIC0yNjYsNyAr
-MzI0LDcgQEAgc3RhdGljIHZvaWQgdGVzdF9zb2Z0ZGlydHkodm9pZCkKJmd0OyAKJmd0OyBpbnQg
-bWFpbihpbnQgYXJnYywgY2hhciAqKmFyZ3YpCiZndDsgewomZ3Q7LQlpbnQgbnJfdGVzdHMgPSAx
-NjsKJmd0OysJaW50IG5yX3Rlc3RzID0gMTc7CiZndDsgCWludCBlcnI7CiZndDsgCiZndDsgCXBh
-Z2VzaXplID0gZ2V0cGFnZXNpemUoKTsKJmd0O0BAIC0yODAsNiArMzM4LDcgQEAgaW50IG1haW4o
-aW50IGFyZ2MsIGNoYXIgKiphcmd2KQomZ3Q7IAlzZW5zZV9zdXBwb3J0KCk7CiZndDsgCXRlc3Rf
-cHJvdF9yZWFkKCk7CiZndDsgCXRlc3RfcHJvdF93cml0ZSgpOwomZ3Q7Kwl0ZXN0X3Byb3Rfbm9u
-ZSgpOwomZ3Q7IAl0ZXN0X2hvbGVzKCk7CiZndDsgCXRlc3RfcG9wdWxhdGVfcmVhZCgpOwomZ3Q7
-IAl0ZXN0X3BvcHVsYXRlX3dyaXRlKCk7CiZndDtfCjwvcHJlPjwvZGl2Pg==
-------=_Part_27127_1236226711.1794535941838--
+|The documentation changes look good to me. Acked-by: Dongliang Mu 
+<dzm91@hust.edu.cn> # Documentation|
+
+> ---
+> Drop CONFIG_ZSMALLOC_STAT instead of making the counters conditional. The
+> option only controls the debugfs interface, while the class counters are
+> updated unconditionally. Removing it simplifies the code.
+>
+> Following Nhat's suggestion, remove CONFIG_ZSMALLOC_STAT and rely on
+> the existing debugfs API stubs when CONFIG_DEBUG_FS=n.
+> ---
+> Changes in v3:
+> - Squash the three patches into one (Nhat, Sergey).
+> - Add Nhat's Reviewed-by.
+> - Update the documentation wording.
+> - Link to v2: https://patch.msgid.link/20261109-zsmalloc_stat-v2-0-caee41684aba@gmail.com
+>
+> Changes in v2:
+> - Drop CONFIG_ZSMALLOC_STAT instead of making the counters conditional.
+> - Update configuration files and documentation.
+> - Link to v1: https://patch.msgid.link/20261106-zsmalloc_stat-v1-1-b574f4714adf@gmail.com
+> ---
+>   Documentation/mm/zsmalloc.rst                    |  4 +--
+>   Documentation/translations/zh_CN/mm/zsmalloc.rst |  2 +-
+>   arch/s390/configs/debug_defconfig                |  2 +-
+>   arch/s390/configs/defconfig                      |  2 +-
+>   drivers/gpu/drm/ci/arm.config                    |  2 +-
+>   drivers/gpu/drm/ci/arm64.config                  |  2 +-
+>   drivers/gpu/drm/ci/x86_64.config                 |  2 +-
+>   mm/Kconfig                                       |  9 -------
+>   mm/zsmalloc.c                                    | 33 ++----------------------
+>   9 files changed, 10 insertions(+), 48 deletions(-)
+>
+> diff --git a/Documentation/mm/zsmalloc.rst b/Documentation/mm/zsmalloc.rst
+> index d2bbecd78e14..4c0786378dc3 100644
+> --- a/Documentation/mm/zsmalloc.rst
+> +++ b/Documentation/mm/zsmalloc.rst
+> @@ -33,8 +33,8 @@ proper handle-based APIs.
+>   stat
+>   ====
+>   
+> -With CONFIG_ZSMALLOC_STAT, we could see zsmalloc internal information via
+> -``/sys/kernel/debug/zsmalloc/<user name>``. Here is a sample of stat output::
+> +With CONFIG_DEBUG_FS, we could see zsmalloc internal information via
+> +``/sys/kernel/debug/zsmalloc/<pool-name>``. Here is a sample of stat output::
+>   
+>    # cat /sys/kernel/debug/zsmalloc/zram0/classes
+>   
+> diff --git a/Documentation/translations/zh_CN/mm/zsmalloc.rst b/Documentation/translations/zh_CN/mm/zsmalloc.rst
+> index 4c8c9b1006a9..b555a07ac871 100644
+> --- a/Documentation/translations/zh_CN/mm/zsmalloc.rst
+> +++ b/Documentation/translations/zh_CN/mm/zsmalloc.rst
+> @@ -32,7 +32,7 @@ zs_unmap_object()解除映射。
+>   stat
+>   ====
+>   
+> -通过CONFIG_ZSMALLOC_STAT，我们可以通过 ``/sys/kernel/debug/zsmalloc/<user name>``
+> +启用CONFIG_DEBUG_FS，我们可以通过 ``/sys/kernel/debug/zsmalloc/<pool-name>``
+>   看到zsmalloc内部信息。下面是一个统计输出的例子。::
+>   
+>    # cat /sys/kernel/debug/zsmalloc/zram0/classes
+> diff --git a/arch/s390/configs/debug_defconfig b/arch/s390/configs/debug_defconfig
+> index d44674b63715..83193ef8efb9 100644
+> --- a/arch/s390/configs/debug_defconfig
+> +++ b/arch/s390/configs/debug_defconfig
+> @@ -100,7 +100,7 @@ CONFIG_UNIXWARE_DISKLABEL=y
+>   CONFIG_IOSCHED_BFQ=y
+>   CONFIG_BINFMT_MISC=m
+>   CONFIG_ZSWAP=y
+> -CONFIG_ZSMALLOC_STAT=y
+> +CONFIG_DEBUG_FS=y
+>   CONFIG_SLAB_BUCKETS=y
+>   CONFIG_SLUB_STATS=y
+>   # CONFIG_COMPAT_BRK is not set
+> diff --git a/arch/s390/configs/defconfig b/arch/s390/configs/defconfig
+> index e00e252d4694..694a309377d5 100644
+> --- a/arch/s390/configs/defconfig
+> +++ b/arch/s390/configs/defconfig
+> @@ -94,7 +94,7 @@ CONFIG_UNIXWARE_DISKLABEL=y
+>   CONFIG_IOSCHED_BFQ=y
+>   CONFIG_BINFMT_MISC=m
+>   CONFIG_ZSWAP=y
+> -CONFIG_ZSMALLOC_STAT=y
+> +CONFIG_DEBUG_FS=y
+>   CONFIG_SLAB_BUCKETS=y
+>   # CONFIG_COMPAT_BRK is not set
+>   CONFIG_MEMORY_HOTPLUG=y
+> diff --git a/drivers/gpu/drm/ci/arm.config b/drivers/gpu/drm/ci/arm.config
+> index d7c51670da2f..fc0a8a4bfb18 100644
+> --- a/drivers/gpu/drm/ci/arm.config
+> +++ b/drivers/gpu/drm/ci/arm.config
+> @@ -5,7 +5,7 @@ CONFIG_CRYPTO_ZSTD=y
+>   CONFIG_ZRAM_MEMORY_TRACKING=y
+>   CONFIG_ZRAM_WRITEBACK=y
+>   CONFIG_ZRAM=y
+> -CONFIG_ZSMALLOC_STAT=y
+> +CONFIG_DEBUG_FS=y
+>   
+>   # abootimg with a 'dummy' rootfs fails with root=/dev/nfs
+>   CONFIG_BLK_DEV_INITRD=n
+> diff --git a/drivers/gpu/drm/ci/arm64.config b/drivers/gpu/drm/ci/arm64.config
+> index c46125c1f80f..10b01b55a66d 100644
+> --- a/drivers/gpu/drm/ci/arm64.config
+> +++ b/drivers/gpu/drm/ci/arm64.config
+> @@ -5,7 +5,7 @@ CONFIG_CRYPTO_ZSTD=y
+>   CONFIG_ZRAM_MEMORY_TRACKING=y
+>   CONFIG_ZRAM_WRITEBACK=y
+>   CONFIG_ZRAM=y
+> -CONFIG_ZSMALLOC_STAT=y
+> +CONFIG_DEBUG_FS=y
+>   
+>   # abootimg with a 'dummy' rootfs fails with root=/dev/nfs
+>   CONFIG_BLK_DEV_INITRD=n
+> diff --git a/drivers/gpu/drm/ci/x86_64.config b/drivers/gpu/drm/ci/x86_64.config
+> index 7ac98a78691e..8225b806dad8 100644
+> --- a/drivers/gpu/drm/ci/x86_64.config
+> +++ b/drivers/gpu/drm/ci/x86_64.config
+> @@ -5,7 +5,7 @@ CONFIG_CRYPTO_ZSTD=y
+>   CONFIG_ZRAM_MEMORY_TRACKING=y
+>   CONFIG_ZRAM_WRITEBACK=y
+>   CONFIG_ZRAM=y
+> -CONFIG_ZSMALLOC_STAT=y
+> +CONFIG_DEBUG_FS=y
+>   
+>   CONFIG_PWM=y
+>   CONFIG_PM_DEVFREQ=y
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index afff1b25b543..4a77cda7f1d7 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -130,15 +130,6 @@ menu "Zsmalloc allocator options"
+>   
+>   comment "Zsmalloc is a common backend allocator for zswap & zram"
+>   
+> -config ZSMALLOC_STAT
+> -	bool "Export zsmalloc statistics"
+> -	select DEBUG_FS
+> -	help
+> -	  This option enables code in the zsmalloc to collect various
+> -	  statistics about what's happening in zsmalloc and exports that
+> -	  information to userspace via debugfs.
+> -	  If unsure, say N.
+> -
+>   config ZSMALLOC_CHAIN_SIZE
+>   	int "Maximum number of physical pages per-zspage"
+>   	default 8
+> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+> index 7ef80e0da626..104ccf3aa170 100644
+> --- a/mm/zsmalloc.c
+> +++ b/mm/zsmalloc.c
+> @@ -222,9 +222,7 @@ struct zs_size_stat {
+>   	unsigned long objs[NR_CLASS_STAT_TYPES];
+>   };
+>   
+> -#ifdef CONFIG_ZSMALLOC_STAT
+>   static struct dentry *zs_stat_root;
+> -#endif
+>   
+>   static size_t huge_class_size;
+>   
+> @@ -279,9 +277,7 @@ struct zs_pool {
+>   	/* Compact classes */
+>   	struct shrinker *shrinker;
+>   
+> -#ifdef CONFIG_ZSMALLOC_STAT
+>   	struct dentry *stat_dentry;
+> -#endif
+>   #ifdef CONFIG_COMPACTION
+>   	struct work_struct free_work;
+>   #endif
+> @@ -565,14 +561,10 @@ static inline unsigned long class_stat_read(struct size_class *class, int type)
+>   	return class->stats.objs[type];
+>   }
+>   
+> -#ifdef CONFIG_ZSMALLOC_STAT
+> -
+>   static void __init zs_stat_init(void)
+>   {
+> -	if (!debugfs_initialized()) {
+> -		pr_warn("debugfs not available, stat dir not created\n");
+> +	if (!debugfs_initialized())
+>   		return;
+> -	}
+>   
+>   	zs_stat_root = debugfs_create_dir("zsmalloc", NULL);
+>   }
+> @@ -650,10 +642,8 @@ DEFINE_SHOW_ATTRIBUTE(zs_stats_size);
+>   
+>   static void zs_pool_stat_create(struct zs_pool *pool, const char *name)
+>   {
+> -	if (!zs_stat_root) {
+> -		pr_warn("no root stat dir, not creating <%s> stat dir\n", name);
+> +	if (IS_ERR_OR_NULL(zs_stat_root))
+>   		return;
+> -	}
+>   
+>   	pool->stat_dentry = debugfs_create_dir(name, zs_stat_root);
+>   
+> @@ -666,25 +656,6 @@ static void zs_pool_stat_destroy(struct zs_pool *pool)
+>   	debugfs_remove_recursive(pool->stat_dentry);
+>   }
+>   
+> -#else /* CONFIG_ZSMALLOC_STAT */
+> -static void __init zs_stat_init(void)
+> -{
+> -}
+> -
+> -static void __exit zs_stat_exit(void)
+> -{
+> -}
+> -
+> -static inline void zs_pool_stat_create(struct zs_pool *pool, const char *name)
+> -{
+> -}
+> -
+> -static inline void zs_pool_stat_destroy(struct zs_pool *pool)
+> -{
+> -}
+> -#endif
+> -
+> -
+>   /*
+>    * For each size class, zspages are divided into different groups
+>    * depending on their usage ratio. This function returns fullness
+>
+> ---
+> base-commit: fa4ad798f6f681031775266044ba1b0cf3c670bd
+>
+> --
+> Best regards,
+> Xueyuan
 
 
