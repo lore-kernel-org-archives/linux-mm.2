@@ -1,129 +1,116 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42254606A338
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 23:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5174D606A338
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 23:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YcWOQZ2m
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jwwZoRZh
 Received: by kanga.kvack.org (Postfix)
-	id 5C3DF6B05B0; Fri, 13 Nov 2026 18:02:47 -0500 (EST)
+	id 37EE46B00EF; Fri, 13 Nov 2026 18:08:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 545C16B05B1; Fri, 13 Nov 2026 18:02:47 -0500 (EST)
+	id 32D816B05B2; Fri, 13 Nov 2026 18:08:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40D5B6B05B2; Fri, 13 Nov 2026 18:02:47 -0500 (EST)
+	id 220EF6B05B3; Fri, 13 Nov 2026 18:08:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D0DF6B05B0
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:02:47 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6056AC02F9
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 23:02:45 +0000 (UTC)
-X-FDA: 85431622290.25.6919B78
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 91D6A14000C
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 23:02:43 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YcWOQZ2m;
-	spf=pass (imf09.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EAB6F6B00EF
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:08:10 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6E3CB1602FA
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 23:08:10 +0000 (UTC)
+X-FDA: 85431635940.03.9B0F3EA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B620D100002
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 23:08:08 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jwwZoRZh;
+	spf=pass (imf14.hostedemail.com: domain of roman@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=roman@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794611288;
+	b=Oy5gStJxz/k5hEQBfa6ed9vuzXjxq4hOHCWVbHVgBAbODC2qgbNvUrmepvUJDctZa1kkAh
+	DVza4VfSF3tVJyiW4VTYMUfBh/4NiocN7kZbdgnSsCCKljBWD7FHwQzlx0nSXxvHssA8so
+	jMPDuAx+mWo38JrkaHGUfOpDU5mbr70=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jwwZoRZh;
+	spf=pass (imf14.hostedemail.com: domain of roman@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=roman@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794610963;
+	s=arc-20220608; t=1794611288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ll4G4Q/q4XxD/HDGmclEgc4oOKKpDop1k/0Nt4LDa/I=;
-	b=yo66Gq1pXxZh/pQsOM2JEW70jxx/91jV/JIP50rkuz0kp5iLk0N0J6bKHx1I7gfYKehUnT
-	GSmUZOutxpppLPXXt4e4Eo8+F8iGWQKJl30WtL/yatBAZK+4ww7LcJUz6PIycC2CfXWW93
-	9sLeahBz6k2/Pc1ppZ2Lu0FvQylbZKI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794610963;
-	b=SCz3NoK3TEL5z8uI7xzbjPSX8g/g18w2YciCkTQjvc1uH8s+Qi2st+bV6qVyYUbP5jTt7x
-	IYMu+Omg0aiiG4QNbEsVNQzWeDvIoxXY+jjpiH0NGHs6wODpf9zIY5jL1ZYwFt7LuUHklv
-	ef4M+MeTPbHDvjJK4q0azqDHeYMiBEI=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YcWOQZ2m;
-	spf=pass (imf09.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=06kAyjF7TnFu0sIXC7RFGZg/0iQXbcsoCMf4v8Qle6Y=;
+	b=rP861KQXb15LDy0L0US+VETDnFu/rBllizjFfpGsjcwDuoPqRUzVwWgIZIX3GZp0v4/Dmh
+	O61AWhsfMTMznNI7MP67XcEceCwdg5BmUoqdLJ/Ltkk1LJGgND1nrdFJWStuRTSiPeLO2X
+	7IrJ4jrkyFTnbT3VR59Hc/QvORZbOKA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4BD4342463;
-	Fri, 13 Nov 2026 23:02:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C431F000C4;
-	Fri, 13 Nov 2026 23:02:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CDB3A601E2;
+	Fri, 13 Nov 2026 23:08:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E7A31F000C4;
+	Fri, 13 Nov 2026 23:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794610962;
-	bh=Ll4G4Q/q4XxD/HDGmclEgc4oOKKpDop1k/0Nt4LDa/I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YcWOQZ2mnmKIwfWqO86r36Y2thtdPt7NDxIJB1lck9jkiPFShHR8nf2BIT0tT2NP/
-	 JopWy5LGV/I2uPyIA9lN4OxYRrf6K9K9CkF3nsRXOqUvUzFbLh2C98FR/8GCNMwm/Z
-	 0tx2fmGRcFyrFI2fEge6AGnEVDVPxd9G0hj2dPVjejCU/RGcqxZr45+HSiSdZdR7/f
-	 rEiVVLlYql5q3JybO7rdInm9Ap8JxBPlCdvGSY8fSVvGsaqbj3X9I5cUybgbhNRVv2
-	 u8Y5s/KI6ck9NhvAIFsnBadsPV80J19oKVlPlhmPKcc8wWWuj1sjCmE3H4SGUQgQ3C
-	 62V0u9JD1cyWg==
-Received: by traversing.sirena.org.uk (Postfix, from userid 1000)
-	id 8BD9A3287899; Fri, 13 Nov 2026 23:02:37 +0000 (GMT)
-Date: Fri, 13 Nov 2026 23:02:37 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Zi Yan <ziy@nvidia.com>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	sashiko-reviews@lists.linux.dev,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	David Rientjes <rientjes@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
-	Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Usama Arif <usama.arif@linux.dev>, Kairui Song <kasong@tencent.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Yu-cheng Yu <yu-cheng.yu@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>, Peng Fan <peng.fan@nxp.com>,
-	Josef Bacik <jbacik@fb.com>, Chris Mason <mason@kernel.org>,
-	linux-mm@kvack.org, Borislav Petkov <bp@alien8.de>,
-	Dennis Zhou <dennisszhou@gmail.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+	s=k20260515; t=1794611287;
+	bh=06kAyjF7TnFu0sIXC7RFGZg/0iQXbcsoCMf4v8Qle6Y=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=jwwZoRZhF5nsQFRrPE0EJgk/oVPJnNV37PiBSxtlxmq1EraKTGVX8YQFPbPx32BEj
+	 qRjZDNql0Gyx6L5oSfZ2t/y/npMKeK7EOPQrZXqXPFmFL9J9kfL+Nc6xRihmxm/Inp
+	 GFAGaNWwtXejLmIbTNPUcmKVR/IvmgfSB810L4xixkTaPn8Wdljnrk9x23adoKTZAi
+	 bJ0BUFmhW9NRKyIn1n/r7lpGnSfgHh+0I4xZa4/nmjXWIBe6FWeCo2IaYs4jd272ex
+	 LOvYp4f0obUUhpXCOT7rCG34YbJsPuZ0pyQIG+NATAiQJLzZj/wCyqzY+5ArVyjmek
+	 fF8q9SkPBJ5dQ==
+From: Roman Gushchin <roman@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,  Roman Gushchin
+ <roman.gushchin@linux.dev>,  sashiko-reviews@lists.linux.dev,  David
+ Hildenbrand <david@kernel.org>,  "Liam R. Howlett" <liam@infradead.org>,
+  Vlastimil Babka <vbabka@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
+  Suren Baghdasaryan <surenb@google.com>,  Michal Hocko <mhocko@suse.com>,
+  David Rientjes <rientjes@google.com>,  Shakeel Butt
+ <shakeel.butt@linux.dev>,  Andrew Morton <akpm@linux-foundation.org>,
+  Jann Horn <jannh@google.com>,  Pedro Falcato <pfalcato@suse.de>,  Matthew
+ Wilcox <willy@infradead.org>,  Jan Kara <jack@suse.cz>,  Nhat Pham
+ <nphamcs@gmail.com>,  Johannes Weiner <hannes@cmpxchg.org>,  Matthew Brost
+ <matthew.brost@intel.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>,
+  Byungchul Park <byungchul@sk.com>,  Gregory Price <gourry@gourry.net>,
+  Ying Huang <ying.huang@linux.alibaba.com>,  Alistair Popple
+ <apopple@nvidia.com>,  Usama Arif <usama.arif@linux.dev>,  Kairui Song
+ <kasong@tencent.com>,  Balbir Singh <balbirs@nvidia.com>,  =?utf-8?B?SsOp?=
+ =?utf-8?B?csO0bWU=?= Glisse
+ <jglisse@redhat.com>,  Kiryl Shutsemau <kas@kernel.org>,  Yu-cheng Yu
+ <yu-cheng.yu@intel.com>,  Dave Hansen <dave.hansen@linux.intel.com>,
+  Dennis Zhou <dennis@kernel.org>,  Tejun Heo <tj@kernel.org>,  Christoph
+ Lameter <cl@gentwo.org>,  Peng Fan <peng.fan@nxp.com>,  Josef Bacik
+ <jbacik@fb.com>,  Chris Mason <mason@kernel.org>,  linux-mm@kvack.org,
+  Borislav Petkov <bp@alien8.de>,  Mark Brown <broonie@kernel.org>,  Dennis
+ Zhou <dennisszhou@gmail.com>,  Rick Edgecombe <rick.p.edgecombe@intel.com>
 Subject: Re: [PATCH 10/13] mm/migrate_device: refuse to migrate shadow stacks
-Message-ID: <8b5c7020-76a9-404c-bb2d-dba434c8705f@sirena.org.uk>
+In-Reply-To: <F185BA4F-F26B-48EF-AB3C-848D72FA630D@nvidia.com>
 References: <avYJ-CxBEpdO1Wmu@gremlin>
- <816E22E2-C7DD-4DD1-AAC9-F51F4D1ED71C@linux.dev>
- <avdveCV9uW1zwXXd@gremlin>
- <F185BA4F-F26B-48EF-AB3C-848D72FA630D@nvidia.com>
- <20261113144316.57192d4ab088e7fc64eee47a@linux-foundation.org>
+	<816E22E2-C7DD-4DD1-AAC9-F51F4D1ED71C@linux.dev>
+	<avdveCV9uW1zwXXd@gremlin>
+	<F185BA4F-F26B-48EF-AB3C-848D72FA630D@nvidia.com>
+User-Agent: mu4e 1.12.12; emacs 31.1
+Date: Fri, 13 Nov 2026 15:08:05 -0800
+Message-ID: <87y0aw5nze.fsf@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Nv7RrJjmbTmkdLju"
-Content-Disposition: inline
-In-Reply-To: <20261113144316.57192d4ab088e7fc64eee47a@linux-foundation.org>
-X-Cookie: Earth is a beta site.
-X-Stat-Signature: cb6sypt7yinmmte48sorpajaqcsuh5xe
-X-Rspamd-Queue-Id: 91D6A14000C
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: fxe7f3gscgbxuret1koo383xwrmt9z18
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B620D100002
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794610963-200760
-X-HE-Meta: U2FsdGVkX1/RpIc/VQLq4k71J0IlTTC86CmZtmvTdfWBRsefkxa2C2zP59gGYiwQ0wzeH6phlF+ErbO+awpI+053cckJ33ETJdMuTH0x+NxxJAyhEBQXQ8TReq03LDQu6ODFaX8re3vXQUVXDqqjRC9FdZkShW8iBZoVXyFq9gNRLLCTE2lii/dGFOX3VI4kDanKS9ZVUeVeE1/Iq3Jh7UzmH/Je6UPnt4Ng1VlPVMXIptTpEucnWzuKhJCidWCz6yYR8khOHMR20btI2XcBjVjMGkqRjpFVjxYS/1SVPU5afDQ5rz16yaO8w0dCaiixdRpb7eUwj57iXVU4WP/LysvLfWTWV5O8kofXngWBPxFQ6UiIxGePvig3/LYnLtSATP6uurRCijyNunmm8gXkT5lNXdVWbbt7xx7MDXWAJsfQDPU8WRcQn9x5So8wsfOP8eQasJJZRY+z3ca9tHcxDPzhgwU84ECsVAY365ZwunTZEV2ok4BUpJsGQ3wd6LZcuemM2oZCw6CiDecyahK6ojKqOSkulGa+bv4+8KFMwMN5FjZEuWy4dBW/NXEhCxzINUlx19i/9zDWUuD701H6AUekH1rmhxHml/7X+sdMTKNYB2RVTQXOU2MAERoC0nJgJYAyQdB7RvvA4cKqzjktjH/e24H6TgaPzZY+0Ol2iNJRlk5EF70HOQHipMcbRt6UO8Hwj/xVscyFdT0BeB+7xnqkajLMMieEocrysqYA1Y6+IfO4z+OGszJTX9+og2K8PNHiGeie2yDrYupeBgaGON6lS+2GuTBmioewlEeBYsHUwSx2QqRB/DirUXbI2UIaTG9FvDOR4ObAF+CBaksftVYiitCXCPISvY1eus9sXTCOmA1pgehflkoiodCFF1SLdWKmvOWc++tZctpiMG5ErGGJCIkwZYqfrw21weHq3Us2RXfu5UY9yJyhs7QEd+KSkkmVCNFzBIG9C1YilXx
- jmnT4pdw
- SbPd0jHhKKlpm/IO7J79OKFEDcKvAFqV2luCaE/V3YloWX3kYFL8wwvj0CGwwLXA6hObW8rqvS2cHjY8frgmtwxIpV+RG8fbM3Q409wVJDVT7CnAxblymMNmx/MOHcgiUMp8x6VZMSWXmwHtes/CnmB7fOo0D6nazIApiFKkL6J2/qCGHzXK4Sl2GofPRGNVJMz7to6a07hKOkNlHlNMHQ9o6R9onRg2UEzHMtSj49FZkRR7TFqlMpi0R4vhu+4LMFMMKkLYyBA+WPLPRa5bfKIJikcJtBZcgwvYwsKtrnxxL7eQ69C7If4HN9VpTonX2LztMChWQlYLkcLBtMTQPE8KIKUTt+Q+W7f4x/CbqAERctpAXfDVpsGh2X4kvOb+IEL21hmdov/f84DeRqOzsxJ2v3qQvIXEK1c0w2PTjlMsgk/ZAk00xc+RZ0f5qO8iFz0kcoeRhxXChVCNNNrv+KcRxpDKCAzb8oPUp6brvDVZdchUcGQTOx87qvMaVUFQodMDQ
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794611288-294059
+X-HE-Meta: U2FsdGVkX18cUNlHYY2Hinaj2zLdWF9z4YdS/nkjETbToy77aZb3yGLHonMUN2B/cz3ZWVuINGGoymIr+vY9wojCimEf2c4+BWwDQBO296I8NJ9f2WJLRSvdCJXjYV9zJTHlc+yEIB3Fe31D2LMEE2RcfKBCREZ26GwjDqgeDRU4V6t4fHwynm5jzwDf6BFKTfRDXxrTQZA9Iud+Ci7tSlVfpRPibwDestP9rmJM4HJ+VnJ0+Es2cqTa4+N2a3iVObGSh2yPUSsY0btey5hFfaUl2kIALyJYXO6ajcWiNlQAbziBLkc2477RZGp/+VXeqThKWpiopod/jDVz678vTPEHJ/MUwJo4/hByTD4MkKa6R+nE2ZKLZU+hdPG1/txndO4r6V4jik221E8Sqk6kc/++zI+oybtIMC6u6MiScKtdiKuQg9jThyjru6VHAgzvv1yJu+GN9zq+kGCv++SOFR7MSeETYS78iUjoCONZt6rXdGDMcxirnTcAc+dFqa07LbhIZ2BOmYMGcCorzHPYqD4I+JBp4nD8KPKNBIpM8Jqw3OTE9IjZ463NsK0ZFZDxNPuHGy8uLtxnMhYvO9dXMy1FthEo7OxyW9EozsnIikCxHs/brG/AeYp74ZOV3rUxgKYh3cVe3TK2fg+u2iKgUdMg41unKRSwQ7Pu08+nWVNPT3cbPVzITsQYD+NjjihWQX6wlNfcjUHCug7rbvaygpsdeGr2LFmwMOLd6rz0kE/J9uxvgtTsguPmWxnnYFBljlm8lQT6QmP83ux9Ynx/UgmuBwAMUcM0iDed/iO8gnInxD4Ijj6g0qPXVxWMUJqWN/saTW+mPLlUa9tIZkr1iT09O3Mv2R7T2UHpI8Yhn8OJpGtWSGZ1af1S8lgh9kWhZ80SO645ZL/gtgZS4JzWKzFpIZ3QQONnAOXQMt7DxlISg2LRgwXa5h0xg5omndt8dt//cjPEtTgL6NshNZM
+ TcSaIsVB
+ 0cm9olfYppxVv4i3CQ3Vx+wMKwU+cE8gd8EFeT11eXGw8QyEYpPvxvjhqkgN/CO93KhrriKp2sz+yIGMS6WrHICKDFxWUf90T4+3cCXfBb2PU+Qa06wuk4p7NVxt42r+EbGUKREMwAWZJkBjbG72uXiMWPda51bN+zUOKDBTF4Qx0xSnYQN4Z2beKLV6kUZG8a+GFX9WQNLNbYu2aiOGFMqwuYO5PMDrwqJN87DdYnj75jGYAK7wZgPy7SuUhPgVgLBQbDvvrQjdyExVw94rRNDmzrsuFjm43YQBG5n0AdeEMnB4/hyT2midwnA+WAvgzelDYpi1wXDPoeqNg3wOoZwbcFQOuwyX8ObpNbYAcRMECNNDQi0TAyYZJ9KDbJqpji9Pu1pTGV6VUt6A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,37 +119,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Zi Yan <ziy@nvidia.com> writes:
 
---Nv7RrJjmbTmkdLju
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> On 13 Nov 2026, at 15:17, Lorenzo Stoakes (ARM) wrote:
+>
+>> On Thu, Nov 12, 2026 at 02:53:44PM -0800, Roman Gushchin wrote:
+>>>> On Nov 12, 2026, at 11:03=E2=80=AFAM, Lorenzo Stoakes (ARM) <ljs@kerne=
+l.org> wrote:
+>>>>
+>>>> =EF=BB=BF+cc Roman
+>>>>
+>>>> Roman - see below - I was under the impression mm was not supposed to =
+receive
+>>>> 'unrelated to this patch but' reports? Did something change?
+>>>
+>>> Yes, sashiko started reporting pre-existing bugs again, but in a better=
+ way:
+>>> strictly once (per bug)
+>>> only for the first non-rfc version
+>>> somewhat related to the proposed patch
+>>> not more than 1-2 per patch
+>>> not exposing security-sensitive stuff this way
+>>>
+>>> Obviously the goal here it to increase the chances for the problem to b=
+e fixed.
+>>> It=E2=80=99s global, not mm-specific.
+>>
+>> (Sorry only just saw this!)
+>>
+>> Ah, I thought it was an mm opt-out.
+>>
+>> In general they're spawning a lot of AI sloppers to go off and send ever
+>> more fixes and causing ever longer days for us, it's quite a noticeable
+>> impact unfortunately.
+>>
+>> And often they're duplicative of already-sent fixes so you can see the
+>> conundrum with this :)
+>
+> I wonder if there is a plan to make Sashiko identify duplicated fixes
+> and send an email to point out the existing patches. So maintainers do
+> not need to do that manually.
 
-On Fri, Nov 13, 2026 at 02:43:16PM -0800, Andrew Morton wrote:
+There is no plan, but I like this idea. Let me think how to implement it
+better.
 
-> The main issue is teaching it how to get reliable, high-bandwidth
-> access to git and to mailing list archives - LLMs are often blocked for
-> <reasons>.  For the mailing-list problem I gave it last-resort access
-> to my local 100GB of email archives.  Gulp.  Dovecot's indexing helps a
-> lot!
-
-Konstantin has maintainer-containter which does a local lore and git
-mirror in a container:
-
-  https://git.kernel.org/pub/scm/utils/maintainer-container/maintainer-container.git
-
-It's early days yet but of particular note here is that it has a MCP
-interface.
-
---Nv7RrJjmbTmkdLju
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQReagvpf3TrrA7BoYYv73Ows9A4iQUCaveXDQAKCRAv73Ows9A4
-iXnLAP9Y6nNY+wLgV+TwNUVGYCPbqtqb8GP+nUAiWl6CW6eEzgEAx/RWJknZapZy
-kzNGR0pB0nFGmHqW3Kqp1r4hvliX4AM=
-=clnb
------END PGP SIGNATURE-----
-
---Nv7RrJjmbTmkdLju--
+Thanks!
 
