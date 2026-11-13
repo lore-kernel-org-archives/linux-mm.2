@@ -1,128 +1,150 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4AF8606A32E
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B79607105D
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=readmodwrite-com.20260707.gappssmtp.com header.i=@readmodwrite-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=bFuykAQq
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cFHMfohK
 Received: by kanga.kvack.org (Postfix)
-	id 1619E6B05E0; Fri, 13 Nov 2026 13:57:27 -0500 (EST)
+	id 1B8756B05EC; Fri, 13 Nov 2026 13:58:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 118AC6B05E1; Fri, 13 Nov 2026 13:57:27 -0500 (EST)
+	id 189786B05ED; Fri, 13 Nov 2026 13:58:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF53C6B05E2; Fri, 13 Nov 2026 13:57:26 -0500 (EST)
+	id 078DD6B05EE; Fri, 13 Nov 2026 13:58:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CA0816B05E0
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:57:26 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 62A21A7559
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:57:26 +0000 (UTC)
-X-FDA: 85431004092.18.27FEEA1
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 8ED9B1A000B
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:57:24 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=readmodwrite-com.20260707.gappssmtp.com header.s=20260707 header.b=bFuykAQq
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DF58C6B05EC
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:58:22 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 130ABC0178
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:58:22 +0000 (UTC)
+X-FDA: 85431006444.19.AC0DFBD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4CB9140004
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:58:20 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cFHMfohK;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794596244;
+	s=arc-20220608; t=1794596300;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6z2IIANAK/q43/60wCSqFTZejveLr8Zsp4m5wY/kCvw=;
-	b=50c5BdFCzNvf9CX+bzpgldRT0C2aZtbwsbuePnWXIfdOUDIrqYps6e7ZfWxHY9ljwCaBde
-	sllbIArGoDNERB1yOdCNzVCNb4cdxuFke5oUIurDs3sW+mksWazYPwCAUh8C3MbyEyQROD
-	w7BmJ7Koslml2y0/UcTC8F3t6cphLgs=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=readmodwrite-com.20260707.gappssmtp.com header.s=20260707 header.b=bFuykAQq;
-	dmarc=none;
-	spf=none (imf19.hostedemail.com: domain of matt@readmodwrite.com has no SPF policy when checking 209.85.128.52) smtp.mailfrom=matt@readmodwrite.com
+	bh=plduXl+R6cqY32R5PgJwlwqrejdYEcZNDX1tD+foFH4=;
+	b=1JjdFAmIQRUt/i3trLXEXrt4cS5JNCRQkYENOOSGjTukP7tx+7P3rmQcmWI+1APjRWOKrL
+	5rC+RyLdo657ftIWlBrBKaadkr71IBu/NVs6Uprx3Xmij7J7pknLJJdhm+3gTaxftUKtVM
+	1OJJYaz6jXMFIoh/UGSxf2WArEb+Fwc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794596244;
-	b=FRndWJHV3MZsiCTdAglU1+xExPIcln9k353n1xklWbZEdYbQvkFHWXOddxUqqjJGbKmX6g
-	KXRy38LajM28+J3+/aexAH6gpOeeaWp5gKDUoR5Mbyca5VKJ3oHmgQpO8hmXGQpasimRt3
-	f3nCRzIoF2uqTuDwJYLGSkZxRyrIs6E=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4bb5f49a61bso1795075e9.0
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:57:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=readmodwrite-com.20260707.gappssmtp.com; s=20260707; t=1794596243; x=1795201043; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6z2IIANAK/q43/60wCSqFTZejveLr8Zsp4m5wY/kCvw=;
-        b=bFuykAQqI/MaxuNSiYs2HUCGbDnnG4IaemcFQHNL/TRSh7daUgV229Q8b1sEyxlGwk
-         Wr/FKeOrKh+pzkRPGbBfMzTGN+DlkGtxNcLSoJcx3Ewu7s97m5hxMNKKVRAlL0fQut+k
-         Desi4mgWQx8bxTUAQef6Krya13zJlT4g+HHSEi4Qt1xoKwQATOUtTjTxoOfG3RMCRnIb
-         0cKm0W+aKU5VBt8kpvkIiAF7ZAilCx1tAEkBge57jhtq/dTUIQf0KBr8259UbSOJHE2p
-         YnGyViOBKmbMevI3g/nQtIenm4oGBNLSv3vc9k7oKaS35joZ5+aTUX1oXeCBdKk+Los+
-         UFgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794596243; x=1795201043;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6z2IIANAK/q43/60wCSqFTZejveLr8Zsp4m5wY/kCvw=;
-        b=kfRjA4Up+7q6wxAGtdMUCougFRXO6pqasSQamsWo6pc33EkqvDAtJ944vhih9uTUh3
-         2ATu6LRBbV8LMzjQ+YrVKUyIfBrmUJPw0Vqb/yidI4GPtmxepltpKYj0pXPqnb84sYle
-         YMNIAECwkp6CatZTWyMGZMgbToIw1evv9BeiNlqk1DSEg7buD2rMIUU4xe94O3SeN2aZ
-         alWTx0MCxnJ9jp57lVjKbYdzbGb3rhBeaXxx2Z34B6EIZXK0yZhYPYLwMlHiKYnAbhZv
-         GY+jJnJ/MLY+7S0BY2utjnhGJVokry5vGo5cWR7aGyd3MILFJuD4ChmXQ92t1rpupivz
-         D+/g==
-X-Forwarded-Encrypted: i=1; AL+hErHRzhZhrpQF3nzguWa9OFmzcxrcsqxC5B1hNXVzZRMDs4/snZfd6Pa5pil6Xq/VCwAycJ3ypOnekQ==@kvack.org
-X-Gm-Message-State: APuU4Z+dIM9tB+Bq3UEpq/BYZlRM6qwUq1ll6W41zDVcPXgrE4MBsZbc
-	12pA6FqNlwed1IWaNyC2g4/ruZzMa4iT+w/daoywgNCbkq+0PMym2l9uvXbdQiu+TfE=
-X-Gm-Gg: AYBFou11D8t94We373UrhirDS71hOzmisuQsmyNtNlV9aNKwv/bryMfIj+DpMD9N+A2
-	58S7Nkjl8q13i0TAOnyrmlnOSVJOquWYuZhgwFGfIATO48R1ZKjjuDljOIyq/KpDOrnNSCx6bBd
-	rzye/MGTxcH0IU2WmoH3nP+2DDtb61dO4SHnC/dzo5t1Eb0vxBFdo09MgHIXZWcWCK27Q4Kxc4k
-	7U/IkOl7Oe0+T9MgSLzWZRUvd79PDRGFs147IM3RWDqkJ2gmKEJYx+zgOJN16EMgvIF5298jA/4
-	ApDKnqu09W2B1Vh70gnO2quR8CxJvZaDYxNHTCydHZLcO7ILAk0cpDORSOrmIGSaJOtrBG89JmX
-	4qn024DKFKsFlmUqJ4dqzNVHtM+Vc4VmeaBZnPMlh4FSGV/FnqGHXXZ7jtHtCjKgH8WiY0nAaeA
-	sE4MVTRT2ZWuE66+/OohsNVVsJmHSDZwwLCTH4coa36+F7jxeufgtuIcxJMQx4PDuttZxpomlQF
-	vJed17lRW4hx8cHfJ0at3eHdai1f35O4wkH+oq6aRThP6gbig0vVY4Ia/SxnqM2MeXO9Sp4XnVl
-	bbyW6JpMMouuOiDdEt/R7+xWAsPXhBaPukR8OJaxyfohLK/Z47M=
-X-Received: by 2002:a05:600c:628c:b0:4ba:6d8:dfad with SMTP id 5b1f17b1804b1-4bb55a6b67fmr78323595e9.14.1794596243301;
-        Fri, 13 Nov 2026 10:57:23 -0800 (PST)
-Received: from matt-Precision-5490.. ([2a09:bac6:37a8:ec8::179:1b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c5f5972a7sm6417589f8f.21.2026.11.13.10.57.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 10:57:21 -0800 (PST)
-From: Matt Fleming <matt@readmodwrite.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Marco Elver <elver@google.com>
-Cc: Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Caleb Kan <ckan@cloudflare.com>,
-	Caleb Kan <calebkan1106@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	kernel-team@cloudflare.com,
-	Matt Fleming <mfleming@cloudflare.com>
-Subject: [PATCH v3 10/10] scripts/gdb: Decode compressed stack depot frames
-Date: Fri, 13 Nov 2026 18:57:02 +0000
-Message-ID: <20261113185702.1332171-11-matt@readmodwrite.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261113185702.1332171-1-matt@readmodwrite.com>
-References: <20261113185702.1332171-1-matt@readmodwrite.com>
+	t=1794596300;
+	b=g290rCf1s/wvO86s7A9cdiezuY7bCHcSraDoLyhQ8Sxh5E7lliquHpJNThkVxMSIN3rrrN
+	2l3RifOTbGm+HqQUWdfLMF6pQbFWCzf1+lc2xu/KdGJhK/eQYO1gbVrqUTpZeDbzXmGSP4
+	McJp97wNddg3wuEYIynpTdeV+xjHPak=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cFHMfohK;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C6A8C623FB;
+	Fri, 13 Nov 2026 18:58:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A6C1F000C4;
+	Fri, 13 Nov 2026 18:58:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794596299;
+	bh=plduXl+R6cqY32R5PgJwlwqrejdYEcZNDX1tD+foFH4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=cFHMfohKIP9bZkMX3RyFr/Ll4R+czW78WJbfwmAUJfkYxKrc3F5eycBDUkXneLE5J
+	 zLmy7f4T3SKuWAbJfOjW4wASWun1i2hpcPsSRgg6sNBUSxm7CxmKMEGeUPM1hXAMIH
+	 3GKF4t/5yePvyYKMcZlLAbEjrBlxqOByEOlVcR5r7Uvpv4RTQO4oZnVFlQUkxtsBTt
+	 Qanw4sSGu2xtFHluqWwh/ghF1SF7encSXNNqYrl7JksRhjnMYE4wNSfAafURUA57/X
+	 GrydL0T9XVbUhYn6/7nrHwJRG8DZESnJdoN6m6Bg1l6eWdIuolgbk3ZPEpxgXtYvEL
+	 husZdF7uzgD7Q==
+Message-ID: <136002e1-646d-4607-be3f-b6a6a869bbec@kernel.org>
+Date: Fri, 13 Nov 2026 19:58:08 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/9] mm/huge_memory: honor MM_CP_TRY_CHANGE_WRITABLE in
+ change_huge_pud()
+To: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>, kvm@vger.kernel.org,
+ linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-riscv@lists.infradead.org, seanjc@google.com, pbonzini@redhat.com,
+ akpm@linux-foundation.org, peterx@redhat.com, ljs@kernel.org,
+ imbrenda@linux.ibm.com, borntraeger@linux.ibm.com, frankja@linux.ibm.com,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>
+References: <20261112142039.907090-2-clopez@suse.de>
+ <20261112142039.907090-5-clopez@suse.de>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261112142039.907090-5-clopez@suse.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4CB9140004
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: p95sy5y8d94smn953kchc8ahmu9f9s1m
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8ED9B1A000B
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: artie3si831mri6rpbn65z83ww5uupej
-X-HE-Tag: 1794596244-871141
-X-HE-Meta: U2FsdGVkX18ekRSKL22K8fChTXo+dKVXZxfOAemWpu0lc21F5Pt0VIsHVapEJ2rzKzwjgq8e64JM9bhOzPyI3DbsQCnoc7ZAp8EnM4mUnoTUvmrA+pVwQutqm1rkPwvx8nVTPNi0Qer358x5UK//Zcv1VUPMBJKFx7IhrrtgknyAfgcFTA6Hw3ypb1Fnw5CMy1LEmPMgNxe+meif9w3U5c1TDhe3F2ehk8aypr5yNQlz0fCK+jUfhQt7oRXaTk5/VXEEyNl0iWDcQcQR3Q6gU30ZQt/FAhjFA1v7clIHa/Uam5ml13IOqdNTiYOXqk7YT2m/CrnfI+5x0HVUevsxrm2A0jDR3fTCFldk2DVm0BuDsC+zxkmW0dlAUI5g9bv2VCC9Kb2Zg9FxReBKTJ2QjKa6bPZdVxcW/44p0mTgJLx6H2Nk31+RI3W03RyQcPvJAns7zAVOfMAJrcVKa5qPc8VqjPf0ltcOPv/+BsiELy+VuvKgW7BZJnyob4x65j+csoMbeseYXHj+mkNzuUNEYVkGHnHg7XjEACmev877YoXu1V/GKuDnMJUKwsvZnmb/lcwlI8RmCtR1ipw5NRTPozaTFI2MNUpE/CDFSdYSi7a88aMWhp5syvvKoTcALGigRyVJLDEHPlZ2z3Q6LeDhgKo2MXWbVEmJVYhHXaK1JmEaHOiQuEsQMFkeTGyYSEI8TcEskJ+0iEgdc/pu1yWy84xbETZXAUGUN0Y8NxRtcLnjShp3Ot0FU1NL9trarsXvH5GTYCb5L2qZhvNxNP+Tf1uI0uKalKxPmgbVzhKzfvfODThTF6LYrn992/cuLU9vholwJEyAufn9u7gvZfvsM4uGy4Ff9kkPhXh3d/3f2dvUGDOSgEqUTFWKPw/T/eo+c5/iwys+Xnb+A2Bv89IBvxEl2Yh9wYqRltDeNAWOyj97h2/wdCXt35jt0U94IhTHRhXUEscwmZF1XP8qOcf
- gb3JHPEz
- 4PSLMOIoEu/qm+q2OgAhYG1sVPh20VqT4J/bI3nUfu6xqE7errCyoSUUhd1YUweYEkc5OyLp+GkdKCaYZlpxiQj0YHak/4xBNCYMqbQNycnBBlTHCE53VUzZl3j05NsDAegOI8ZkvA37BGhWJv3UHyaY45fgpQPxZaLwmqRLcyB53BvEqXkwiVRK7MQ9DPAyuEnGAY2b1ulXvPahsdFk96pMZs7LyP2acQAEsgfM/sB6syf0FxzAb4uQefftzKatdBjy2WkVUamoc1I5TKrR/Mbtgzc80BhJcsCbkj+ctNVS7BlwIrFTcmV9ICNMMjK8G+dRBVyzjtdLniLImmGgok+BDUuzACHxIjSDM+uq2OjtA3jqrSQbTSPAGTmtEZJy+PCJAKt9ceI4UKpa8yGBcaaw/hXivyEqxjTgNjg2wPx3/4yk=
+X-HE-Tag: 1794596300-177628
+X-HE-Meta: U2FsdGVkX1+Wb2OPd7r2aZe8fHA1XjPsbKkxYXAX6BUMIseCeuzys+XBZPJ8T4xzmJ/y9cVZPoLItwf1GLVDDNG9KvZ8miMc9VVYU1xjy6Fae3E2/8KYxN0hDwpvyBdkLVhYD941F7e37gduyornDZtNyfjHTrOhuMhlIJcP0J6VbA/plhFrxDLhT5tMi4UfiaYSFdvS5QPA+QJeFPz+CK6nQUsmj854URUu2ByZOaMf5NvenjC77ZV/KoA1jfzRYYUq+X8V2PKvgatUuTpFHsP30M/j9/U4QQa2Ds9kKfnsLE60PI9FL1mhz7vddwCTVPU6T/+oKAlODwaENF0KdhL0n45uGr2uSAxZuletz9IipAJwdEDuQWkmzPewURvWg6y00XQ3LF83LMYuHHMBBkTaLoe3t+YQnwIXjUDtLjHl3VvoXBZOKlEh6St23OqRzksQJv5kBraNu4bP32+rzTvwVw1XG8EWUVMm3lIi8r0Hm4UCkQDqioKeAwJFzgdFzh05fDE9kvGXSfSdabA3iA5SGAPtla6d6uMU/i/xB27+K75za9d3ihfCaARyY1ivm54r9wySVXqXXdsI5JyBYJmoZVi8V65P83ieF3A6jz+YQrIMBzRbkoopo4mrV0m047pakC2rE9T0avFqzd/QhbUxDVzNahyVg8+jfuozFJ0/4U/bUd73oehF9zOr6su8OlXMmufWbS0MQ7Orc4ZfTyyhIv0Icb8szIZruA+GB4ifvWkHfmu8KFOUfl+jXFWMWX+rF/XGtgtmlEgAU2m4xP1AczvBplIVIR46CRYFJRzLzzwmrMc6ftKUR0ZLaTm2s8D+ZE5X+JtAr9qZqAWsyZSBSA9YC/mXO8fFGBvhzJg0grLgA3bQlGAnnT7IrK4uizDUBX4PSHgbiBQ29EytEt9eJtRao2yru++SZulHXUNvM1mCLGRrLL0mOyAsmxUZJf90wP/SUmHRWotgxd2
+ Q/aVt0sB
+ 7MCmLI9XnyfKdN2hKLI9qbWgtGZROhuRhZu5BswbS4xd1Ilxm+ueW1BjgvRphxj6a47XuYHfPvJlg2O7WxMCbOfTNKPtTDJdBzGa4bu5X5aFlLWq7476eAXW3YvXXHTZ7jXwAZx5vKbDjxLiA125D+c7Zv+997M3BaBJBYc5JNzffQ8IJ1At4Lz6WldkahgWnlw9zHmqXqKLP+RyFfN0hc3qRrGuCdyy1yQ6Re9IjeU2g6mjpjeFxAM0L8pCGVnDHkkWZ9y2meCtINjgtUlExcX44YqyzyOIc4FO8Urj6obEmqjO+8TzFAdVTHYkS6DY2R//aSNo/Qijn/mQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,105 +153,26 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Matt Fleming <mfleming@cloudflare.com>
+On 11/12/26 15:20, Carlos López wrote:
+> change_protection() applies vma->vm_page_prot, which lacks the write bit
+> for CoW and write-notified mappings. MM_CP_TRY_CHANGE_WRITABLE makes
+> entries writable again if a write fault would only set the write bit.
+> 
+> However, change_huge_pud() ignores the flag. For example, device DAX
+> mappings are write-notified once soft-dirty tracking is armed through
+> /proc/pid/clear_refs, and a protection change then leaves dirty PUDs
+> read-only, so the next write to each of them faults.
+> 
+> Fix this by adding can_change_pud_writable(), based on
+> can_change_pmd_writable(). It omits the NUMA and uffd-wp checks, as
+> change_huge_pud() bails out on those changes.
 
-lx-stack_depot_lookup reads stack_record->entries directly and would
-misread compressed frames as full-width addresses. Export
-STACK_RECORD_COMPRESSED through constants.py.in and decompress frames
-the same way as arch_stack_depot_frame_decompress() on x86-64 and
-arm64.
+Again, please keep MM changes to a bare minimum for your work.
 
-Other architectures never compress frames (the generic hook rejects
-compression), but the helper raises an error if it meets compressed
-frames there.
+If this is not required for your work, please drop it.
 
-Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
----
- scripts/gdb/linux/constants.py.in |  5 +++++
- scripts/gdb/linux/stackdepot.py   | 23 +++++++++++++++++++----
- 2 files changed, 24 insertions(+), 4 deletions(-)
-
-diff --git a/scripts/gdb/linux/constants.py.in b/scripts/gdb/linux/constants.py.in
-index dab8b80bed69..da6b39c3dc13 100644
---- a/scripts/gdb/linux/constants.py.in
-+++ b/scripts/gdb/linux/constants.py.in
-@@ -22,6 +22,7 @@
- #include <linux/radix-tree.h>
- #include <linux/maple_tree.h>
- #include <linux/slab.h>
-+#include <linux/stackdepot.h>
- #include <linux/threads.h>
- #include <linux/vmalloc.h>
- 
-@@ -112,6 +113,10 @@ if IS_BUILTIN(CONFIG_PAGE_OWNER):
-     LX_GDBPARSED(PAGE_EXT_OWNER)
-     LX_GDBPARSED(PAGE_EXT_OWNER_ALLOCATED)
- 
-+/* linux/stackdepot.h */
-+if IS_BUILTIN(CONFIG_STACKDEPOT):
-+    LX_GDBPARSED(STACK_RECORD_COMPRESSED)
-+
- /* linux/slab.h */
- LX_GDBPARSED(SLAB_RED_ZONE)
- LX_GDBPARSED(SLAB_POISON)
-diff --git a/scripts/gdb/linux/stackdepot.py b/scripts/gdb/linux/stackdepot.py
-index aaa18af25cd1..f689cacb3cb7 100644
---- a/scripts/gdb/linux/stackdepot.py
-+++ b/scripts/gdb/linux/stackdepot.py
-@@ -20,6 +20,21 @@ def help():
-     gdb.write("Unrecognized command\n")
-     raise gdb.GdbError(t)
- 
-+def stack_record_entry(stack, i):
-+    if not int(stack['flags']) & constants.LX_STACK_RECORD_COMPRESSED:
-+        return int(stack['entries'][i])
-+
-+    # Mirror arch_stack_depot_frame_decompress().
-+    payload = int(stack['compressed_entries'][i])
-+    if utils.is_target_arch("x86-64"):
-+        return 0xffffffff00000000 | payload
-+    if utils.is_target_arch("aarch64"):
-+        text = int(gdb.parse_and_eval("(unsigned long)_text"))
-+        if payload & 0x80000000:
-+            payload -= 1 << 32
-+        return (text + payload) & 0xffffffffffffffff
-+    raise gdb.GdbError("compressed stack depot frames are not supported on this architecture\n")
-+
- def stack_depot_fetch(handle):
-     global DEPOT_STACK_ALIGN
-     global stack_record_type
-@@ -40,7 +55,7 @@ def stack_depot_fetch(handle):
-     pool_index = parts['pool_index_plus_1'] - 1
-     if pool_index >= pools_num:
-         gdb.write("pool index %d out of bounds (%d) for stack id 0x%08x\n" % (pool_index, pools_num, handle))
--        return gdb.Value(0), 0
-+        return [], 0
- 
-     stack_pools = gdb.parse_and_eval('stack_pools')
- 
-@@ -48,10 +63,10 @@ def stack_depot_fetch(handle):
-         pool = stack_pools[pool_index]
-         stack = (pool + gdb.Value(offset).cast(utils.get_size_t_type())).cast(stack_record_type.get_type().pointer())
-         size = int(stack['size'].cast(utils.get_ulong_type()))
--        return stack['entries'], size
-+        return [stack_record_entry(stack, i) for i in range(size)], size
-     except Exception as e:
-         gdb.write("%s\n" % e)
--        return gdb.Value(0), 0
-+        return [], 0
- 
- def stack_depot_print(handle):
-     if not constants.LX_CONFIG_STACKDEPOT:
-@@ -61,7 +76,7 @@ def stack_depot_print(handle):
-     if nr_entries > 0:
-         for i in range(0, nr_entries):
-             try:
--                gdb.execute("x /i 0x%x" % (int(entries[i])))
-+                gdb.execute("x /i 0x%x" % entries[i])
-             except Exception as e:
-                 gdb.write("%s\n" % e)
- 
 -- 
-2.43.0
+Cheers,
 
+David
 
