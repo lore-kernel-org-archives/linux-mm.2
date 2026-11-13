@@ -1,78 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5174D606A338
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 23:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B9A9606A332
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 23:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jwwZoRZh
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=korg header.b=dL1pZOXq
 Received: by kanga.kvack.org (Postfix)
-	id 37EE46B00EF; Fri, 13 Nov 2026 18:08:11 -0500 (EST)
+	id 5D0FB6B05B2; Fri, 13 Nov 2026 18:10:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32D816B05B2; Fri, 13 Nov 2026 18:08:11 -0500 (EST)
+	id 57AB56B05B3; Fri, 13 Nov 2026 18:10:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 220EF6B05B3; Fri, 13 Nov 2026 18:08:11 -0500 (EST)
+	id 4910C6B05B4; Fri, 13 Nov 2026 18:10:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EAB6F6B00EF
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:08:10 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6E3CB1602FA
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 23:08:10 +0000 (UTC)
-X-FDA: 85431635940.03.9B0F3EA
+	by kanga.kvack.org (Postfix) with ESMTP id 25B606B05B2
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:10:08 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A7E251C35A4
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 23:10:07 +0000 (UTC)
+X-FDA: 85431640854.27.41AE47F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B620D100002
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 23:08:08 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jwwZoRZh;
-	spf=pass (imf14.hostedemail.com: domain of roman@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=roman@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id D8919C0003
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 23:10:05 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=korg header.b=dL1pZOXq;
+	spf=pass (imf28.hostedemail.com: domain of roman.gushchin@linux.dev designates 172.105.4.254 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794611288;
-	b=Oy5gStJxz/k5hEQBfa6ed9vuzXjxq4hOHCWVbHVgBAbODC2qgbNvUrmepvUJDctZa1kkAh
-	DVza4VfSF3tVJyiW4VTYMUfBh/4NiocN7kZbdgnSsCCKljBWD7FHwQzlx0nSXxvHssA8so
-	jMPDuAx+mWo38JrkaHGUfOpDU5mbr70=
+	t=1794611406;
+	b=MM3SRPXaqT9Ill0EMYdXSLu5XtbQyJUUEMnAwQmT2/Ep2FEy1fljf8zKtPmJ/D9jp6zVQo
+	eLW6k0GfEEggpre5c57uzg+jw4C6XzRtrUg054RZIGECuQveSMkDCiHQZSi0QFVnYuNjAn
+	OSLwqDHxP/UYByRPv9P7bq2xyJ12ibg=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jwwZoRZh;
-	spf=pass (imf14.hostedemail.com: domain of roman@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=roman@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=korg header.b=dL1pZOXq;
+	spf=pass (imf28.hostedemail.com: domain of roman.gushchin@linux.dev designates 172.105.4.254 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794611288;
+	s=arc-20220608; t=1794611406;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=06kAyjF7TnFu0sIXC7RFGZg/0iQXbcsoCMf4v8Qle6Y=;
-	b=rP861KQXb15LDy0L0US+VETDnFu/rBllizjFfpGsjcwDuoPqRUzVwWgIZIX3GZp0v4/Dmh
-	O61AWhsfMTMznNI7MP67XcEceCwdg5BmUoqdLJ/Ltkk1LJGgND1nrdFJWStuRTSiPeLO2X
-	7IrJ4jrkyFTnbT3VR59Hc/QvORZbOKA=
+	bh=yXeMiIlzLQ0R7siTBRkfiZ7NvU2B6iTFcdfu0ymlIxA=;
+	b=xich32reHxVzUVwnrTakX2Hv+NKH+JZrlH4lEouAqbUFo/ILFjSq20A86hSu/EmYm/qbk6
+	ajg4v2c3Egl9+d+5EOS79j5Mn4dbQ8fUBUmuKQ9yQmTsYqsW9zZlb9fijwkNc14fHQJ/td
+	4eHZJ8fp7d48nvQ4txuFeUAKzTGX0ug=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CDB3A601E2;
-	Fri, 13 Nov 2026 23:08:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E7A31F000C4;
-	Fri, 13 Nov 2026 23:08:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794611287;
-	bh=06kAyjF7TnFu0sIXC7RFGZg/0iQXbcsoCMf4v8Qle6Y=;
+	by tor.source.kernel.org (Postfix) with ESMTP id 5B42C6181D;
+	Fri, 13 Nov 2026 23:10:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 909961F000C4;
+	Fri, 13 Nov 2026 23:10:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=korg;
+	t=1794611405; bh=yXeMiIlzLQ0R7siTBRkfiZ7NvU2B6iTFcdfu0ymlIxA=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=jwwZoRZhF5nsQFRrPE0EJgk/oVPJnNV37PiBSxtlxmq1EraKTGVX8YQFPbPx32BEj
-	 qRjZDNql0Gyx6L5oSfZ2t/y/npMKeK7EOPQrZXqXPFmFL9J9kfL+Nc6xRihmxm/Inp
-	 GFAGaNWwtXejLmIbTNPUcmKVR/IvmgfSB810L4xixkTaPn8Wdljnrk9x23adoKTZAi
-	 bJ0BUFmhW9NRKyIn1n/r7lpGnSfgHh+0I4xZa4/nmjXWIBe6FWeCo2IaYs4jd272ex
-	 LOvYp4f0obUUhpXCOT7rCG34YbJsPuZ0pyQIG+NATAiQJLzZj/wCyqzY+5ArVyjmek
-	 fF8q9SkPBJ5dQ==
-From: Roman Gushchin <roman@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,  Roman Gushchin
- <roman.gushchin@linux.dev>,  sashiko-reviews@lists.linux.dev,  David
- Hildenbrand <david@kernel.org>,  "Liam R. Howlett" <liam@infradead.org>,
-  Vlastimil Babka <vbabka@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
-  Suren Baghdasaryan <surenb@google.com>,  Michal Hocko <mhocko@suse.com>,
-  David Rientjes <rientjes@google.com>,  Shakeel Butt
- <shakeel.butt@linux.dev>,  Andrew Morton <akpm@linux-foundation.org>,
-  Jann Horn <jannh@google.com>,  Pedro Falcato <pfalcato@suse.de>,  Matthew
- Wilcox <willy@infradead.org>,  Jan Kara <jack@suse.cz>,  Nhat Pham
- <nphamcs@gmail.com>,  Johannes Weiner <hannes@cmpxchg.org>,  Matthew Brost
+	b=dL1pZOXqRkUI/AQR14f8O1vveyz1yyus6WljBOIDKiTMaE0pDdB4sJEle17ZXshJY
+	 uK20eK/lv7QdNDBWVgn/t22tu2dzGFW6aPCMQN5F9c8iZKeVkU9sXmtnZ48VQYjViY
+	 JCWKfbso5n3lcZdES6ZPHZQ8+92phKQ5CIPKL2zA=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>,
+  sashiko-reviews@lists.linux.dev,  David Hildenbrand <david@kernel.org>,
+  "Liam R. Howlett" <liam@infradead.org>,  Vlastimil Babka
+ <vbabka@kernel.org>,  Mike Rapoport <rppt@kernel.org>,  Suren Baghdasaryan
+ <surenb@google.com>,  Michal Hocko <mhocko@suse.com>,  David Rientjes
+ <rientjes@google.com>,  Shakeel Butt <shakeel.butt@linux.dev>,  Andrew
+ Morton <akpm@linux-foundation.org>,  Jann Horn <jannh@google.com>,  Pedro
+ Falcato <pfalcato@suse.de>,  Matthew Wilcox <willy@infradead.org>,  Jan
+ Kara <jack@suse.cz>,  Nhat Pham <nphamcs@gmail.com>,  Johannes Weiner
+ <hannes@cmpxchg.org>,  Zi Yan <ziy@nvidia.com>,  Matthew Brost
  <matthew.brost@intel.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>,
   Byungchul Park <byungchul@sk.com>,  Gregory Price <gourry@gourry.net>,
   Ying Huang <ying.huang@linux.alibaba.com>,  Alistair Popple
@@ -87,30 +83,29 @@ Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,  Roman Gushchin
   Borislav Petkov <bp@alien8.de>,  Mark Brown <broonie@kernel.org>,  Dennis
  Zhou <dennisszhou@gmail.com>,  Rick Edgecombe <rick.p.edgecombe@intel.com>
 Subject: Re: [PATCH 10/13] mm/migrate_device: refuse to migrate shadow stacks
-In-Reply-To: <F185BA4F-F26B-48EF-AB3C-848D72FA630D@nvidia.com>
+In-Reply-To: <avdveCV9uW1zwXXd@gremlin>
 References: <avYJ-CxBEpdO1Wmu@gremlin>
 	<816E22E2-C7DD-4DD1-AAC9-F51F4D1ED71C@linux.dev>
 	<avdveCV9uW1zwXXd@gremlin>
-	<F185BA4F-F26B-48EF-AB3C-848D72FA630D@nvidia.com>
 User-Agent: mu4e 1.12.12; emacs 31.1
-Date: Fri, 13 Nov 2026 15:08:05 -0800
-Message-ID: <87y0aw5nze.fsf@kernel.org>
+Date: Fri, 13 Nov 2026 15:10:03 -0800
+Message-ID: <87jymg5nw4.fsf@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: fxe7f3gscgbxuret1koo383xwrmt9z18
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B620D100002
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794611288-294059
-X-HE-Meta: U2FsdGVkX18cUNlHYY2Hinaj2zLdWF9z4YdS/nkjETbToy77aZb3yGLHonMUN2B/cz3ZWVuINGGoymIr+vY9wojCimEf2c4+BWwDQBO296I8NJ9f2WJLRSvdCJXjYV9zJTHlc+yEIB3Fe31D2LMEE2RcfKBCREZ26GwjDqgeDRU4V6t4fHwynm5jzwDf6BFKTfRDXxrTQZA9Iud+Ci7tSlVfpRPibwDestP9rmJM4HJ+VnJ0+Es2cqTa4+N2a3iVObGSh2yPUSsY0btey5hFfaUl2kIALyJYXO6ajcWiNlQAbziBLkc2477RZGp/+VXeqThKWpiopod/jDVz678vTPEHJ/MUwJo4/hByTD4MkKa6R+nE2ZKLZU+hdPG1/txndO4r6V4jik221E8Sqk6kc/++zI+oybtIMC6u6MiScKtdiKuQg9jThyjru6VHAgzvv1yJu+GN9zq+kGCv++SOFR7MSeETYS78iUjoCONZt6rXdGDMcxirnTcAc+dFqa07LbhIZ2BOmYMGcCorzHPYqD4I+JBp4nD8KPKNBIpM8Jqw3OTE9IjZ463NsK0ZFZDxNPuHGy8uLtxnMhYvO9dXMy1FthEo7OxyW9EozsnIikCxHs/brG/AeYp74ZOV3rUxgKYh3cVe3TK2fg+u2iKgUdMg41unKRSwQ7Pu08+nWVNPT3cbPVzITsQYD+NjjihWQX6wlNfcjUHCug7rbvaygpsdeGr2LFmwMOLd6rz0kE/J9uxvgtTsguPmWxnnYFBljlm8lQT6QmP83ux9Ynx/UgmuBwAMUcM0iDed/iO8gnInxD4Ijj6g0qPXVxWMUJqWN/saTW+mPLlUa9tIZkr1iT09O3Mv2R7T2UHpI8Yhn8OJpGtWSGZ1af1S8lgh9kWhZ80SO645ZL/gtgZS4JzWKzFpIZ3QQONnAOXQMt7DxlISg2LRgwXa5h0xg5omndt8dt//cjPEtTgL6NshNZM
- TcSaIsVB
- 0cm9olfYppxVv4i3CQ3Vx+wMKwU+cE8gd8EFeT11eXGw8QyEYpPvxvjhqkgN/CO93KhrriKp2sz+yIGMS6WrHICKDFxWUf90T4+3cCXfBb2PU+Qa06wuk4p7NVxt42r+EbGUKREMwAWZJkBjbG72uXiMWPda51bN+zUOKDBTF4Qx0xSnYQN4Z2beKLV6kUZG8a+GFX9WQNLNbYu2aiOGFMqwuYO5PMDrwqJN87DdYnj75jGYAK7wZgPy7SuUhPgVgLBQbDvvrQjdyExVw94rRNDmzrsuFjm43YQBG5n0AdeEMnB4/hyT2midwnA+WAvgzelDYpi1wXDPoeqNg3wOoZwbcFQOuwyX8ObpNbYAcRMECNNDQi0TAyYZJ9KDbJqpji9Pu1pTGV6VUt6A=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D8919C0003
+X-Stat-Signature: xzmsopuftu4xh7ywqub6e6j575z1y5c8
+X-Rspam-User: 
+X-HE-Tag: 1794611405-590769
+X-HE-Meta: U2FsdGVkX18gGW1j7r2H9qDPRxyqAapmh1KEgU+T0nGUx9GlMSLF2VvpxUPslcyA7LvJ+4G3HqSpW8v1vvEqocBRMCzTrYiym1EIZYsOujkVr5k+xf9Ar9CnGRUMUvoUuw0MICMvFWoOsu8T97+RQ4yoU4GA87L10OCJn0sX1Of3sotWJK7XSPeL2GzZYpgqIvbFBurzQ7qFloV6uq+xgnqqg9xtPO4RRmvMaIIn7zwsW+Z48tfZKB5jOx656nTG7S65Os/qeUicAFWPIOQVr9woW4B3zfvQPiUy+47xRzlOzsOavlD9JmJYweT6Voj/gpEAfvqBQj92ccUxoTVA99unuaG+4AgSIFuaG2guW0iKCUGDtBzLVudxL0AB0wgCWPkWga1pXiTQD9AAThuMjn0++eoISsyrEjQ601J5HkbIC3YWfqjoCVjwH91SgSj/F71PVcdF3IPTmrjrN0nXHAj2nnXjxYxCC1Nbrsisc0Na3ggMMAJwunVN6gk0Y4vMawLUSvmjVeKEOSRcnelUBnQ2x5Vse8hIvcIBRJfy5rdF5d1gangAruapdWczI6Eut0499UNytkXeLCHL4AFjREjoFYi49XaRY2UslKr+kM7fOzj2mmOivR81baAxJ887XnnpNoFXvithaXvIPrUqwbs8D+BgHaA1TvqLfADhvoiOUAHQiBGN9676VTG/GuViSEq+rCk18B0EhfWbjh+Ws/xdO0VoIysotcNDsg5oUYfYczP9hJ0LLQ0XhLg8dbtKWQ+PIar7xseDykFIvAn6dwoUeZt+c4tpIRStvQENxvn4jrXNh4sKV7JHzDWThDI7oT9Pf3x6iovmDCM/7+7QC1LEpDnjP+um0OwqJy3O4Fguy9fFNT2xOFIvJTGfxaWjy57e5Hlok6kA6C6SGqabUuBHnlvuKxeqS9iqXwZWphb9UIRSMPgMjY0C1qWE8tsVLvxKC1xEzFeo7pULfa5
+ hFlP5BbR
+ +62k3MA7k0RBqkI5bNVpVXT9Za9AeYfMXPyx/tbgidQIOpdYoLv/1zTcmWK13Z5X3stWBulbX9/qLsVxLmc7ELD1VXFt5GjBhgG69l1JvMoMsX1xALK1iiZsKhmnAEWoFFSR22ih/J7Y4oS6nHkwH/MVqYySFdXS6ONZiUZhkjjXKqRbtkFI/cL7sqPCmWUkH0Is1Q8zZFZISPqKwV2VrV8hmbgbH8Vm1WepplURdgjkCnZ9ZeG5h8GzpfN3UxpbAKDiq5OwOXtjKOgZkk0eF6T0nQ+l1HlsssGpOF4IOeXutTCFQJXndnx+ZLFi/zeYMdYFdlZbuBhFZ6UpZxwByrnVNgg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,49 +114,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Zi Yan <ziy@nvidia.com> writes:
+"Lorenzo Stoakes (ARM)" <ljs@kernel.org> writes:
 
-> On 13 Nov 2026, at 15:17, Lorenzo Stoakes (ARM) wrote:
->
->> On Thu, Nov 12, 2026 at 02:53:44PM -0800, Roman Gushchin wrote:
->>>> On Nov 12, 2026, at 11:03=E2=80=AFAM, Lorenzo Stoakes (ARM) <ljs@kerne=
+> On Thu, Nov 12, 2026 at 02:53:44PM -0800, Roman Gushchin wrote:
+>> > On Nov 12, 2026, at 11:03=E2=80=AFAM, Lorenzo Stoakes (ARM) <ljs@kerne=
 l.org> wrote:
->>>>
->>>> =EF=BB=BF+cc Roman
->>>>
->>>> Roman - see below - I was under the impression mm was not supposed to =
+>> >
+>> > =EF=BB=BF+cc Roman
+>> >
+>> > Roman - see below - I was under the impression mm was not supposed to =
 receive
->>>> 'unrelated to this patch but' reports? Did something change?
->>>
->>> Yes, sashiko started reporting pre-existing bugs again, but in a better=
- way:
->>> strictly once (per bug)
->>> only for the first non-rfc version
->>> somewhat related to the proposed patch
->>> not more than 1-2 per patch
->>> not exposing security-sensitive stuff this way
->>>
->>> Obviously the goal here it to increase the chances for the problem to b=
-e fixed.
->>> It=E2=80=99s global, not mm-specific.
+>> > 'unrelated to this patch but' reports? Did something change?
 >>
->> (Sorry only just saw this!)
+>> Yes, sashiko started reporting pre-existing bugs again, but in a better =
+way:
+>> strictly once (per bug)
+>> only for the first non-rfc version
+>> somewhat related to the proposed patch
+>> not more than 1-2 per patch
+>> not exposing security-sensitive stuff this way
 >>
->> Ah, I thought it was an mm opt-out.
->>
->> In general they're spawning a lot of AI sloppers to go off and send ever
->> more fixes and causing ever longer days for us, it's quite a noticeable
->> impact unfortunately.
->>
->> And often they're duplicative of already-sent fixes so you can see the
->> conundrum with this :)
+>> Obviously the goal here it to increase the chances for the problem to be=
+ fixed.
+>> It=E2=80=99s global, not mm-specific.
 >
-> I wonder if there is a plan to make Sashiko identify duplicated fixes
-> and send an email to point out the existing patches. So maintainers do
-> not need to do that manually.
+> (Sorry only just saw this!)
+>
+> Ah, I thought it was an mm opt-out.
+>
+> In general they're spawning a lot of AI sloppers to go off and send ever
+> more fixes and causing ever longer days for us, it's quite a noticeable
+> impact unfortunately.
+>
+> And often they're duplicative of already-sent fixes so you can see the
+> conundrum with this :)
+>
+> So ideally we'd like a way to embargo these or have a maintainers-only vi=
+ew
+> of them etc. so we can figure out a way of reasonably getting to valid
+> cases.
 
-There is no plan, but I like this idea. Let me think how to implement it
-better.
+Disabled for mm. Maintainers-only view is available in the database.
 
-Thanks!
+Thanks
 
