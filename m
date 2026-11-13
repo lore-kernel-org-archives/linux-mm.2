@@ -1,90 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7230606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 03:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0FE606A32E
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 03:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M9I9jjzt
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=V7EuX4Ny
 Received: by kanga.kvack.org (Postfix)
-	id DBA4F6B0643; Thu, 12 Nov 2026 22:19:27 -0500 (EST)
+	id D23E66B0663; Thu, 12 Nov 2026 22:22:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6B746B0647; Thu, 12 Nov 2026 22:19:27 -0500 (EST)
+	id CAE056B0664; Thu, 12 Nov 2026 22:22:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C59196B064B; Thu, 12 Nov 2026 22:19:27 -0500 (EST)
+	id B9F6B6B0665; Thu, 12 Nov 2026 22:22:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EB266B0643
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:19:27 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 97F5C6B0663
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:22:36 -0500 (EST)
 Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 36059A71A4
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:19:27 +0000 (UTC)
-X-FDA: 85428640374.18.C052D74
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 8921AA0002
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:19:25 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M9I9jjzt;
-	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9659BA014A
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:22:35 +0000 (UTC)
+X-FDA: 85428648270.18.522DB41
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 82EEB40006
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:22:32 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=V7EuX4Ny;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794540153;
+	b=i0k/sxpKCmi4I+jQVTpkK+WMqEW92SFJf+8IpH6tF/uZbzw8fS2RLWvNFmzxdNRGY2DNWM
+	3fz41cAhmbid3eExh2I9B096dLqrl2MqvHJG380sHokLoQx30lMOKXXV9ENvmSeFsE/XMZ
+	2bvzQQ26CnMhYdVUeRDZI9ixrgD2c/s=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794539965;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1794540153;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=72v4ImOjPkw3MFtGjNB0Wa1avDJa1IMYb60hbfYFdbo=;
-	b=JMH6DkCPtPRB+VdX3WdX8YfZUUS/suqHQ4h/W9IrSg7/UN1LFIy330dXpmbR/BvERUeWaD
-	kflz5H9i9+Mv+T9pOwDaUKfRiqY0KNIMV6hQgdXXZ/bAfEy2V85cKWSFa64RZ0M8nJ+28f
-	yMGxiRTMTTAzjTsncRNCTQmJCNKngPA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794539965;
-	b=Mkq2J1eCwOSx7gM8od7B+c9x410EvKFy+IK1/gUmYIOIYslkanjCJayT0+kBcuaPnsNzJ5
-	KK0Dm3inLqspO1TujCatmuuRQET9LFWCEw/Kz83SW9ApkgGLSDHINCyfxLpqXt+dH/LBqg
-	ssKxdbKGxfPd8e315VIhNrFZUcS3g/o=
+	bh=aKPg/C+iEjXAyA26yNMVbAy4RFLh/YULbk2Iqfm+Dhw=;
+	b=hfMf5xXalitKdAaxezYXdgYg19BrEFMoDUgu4ZQ09/oVLnRbgIe9VMsN/lEGwHRCO1howi
+	dCb1jelpAJucDqALRwsej7OJz201jRhRFX73X5THEOX+GtrNQUpyivYHp+iA+ghRcc7iTv
+	Nah7pNB1XR3Ip+Y31P6U/nPuahgv2Rk=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M9I9jjzt;
-	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BFEEA458B2;
-	Fri, 13 Nov 2026 03:19:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44FD41F000C4;
-	Fri, 13 Nov 2026 03:19:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794539964;
-	bh=72v4ImOjPkw3MFtGjNB0Wa1avDJa1IMYb60hbfYFdbo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=M9I9jjzts8ylOOFpF0LgUW9bXVhdHz75JKV1pZqOPQBhhDXVCWl+nFewEmtCZL3CP
-	 kZT0QVdxJG5VDW8k98bZ9ozAMUo0OhuiqkFyalTG91mIaDUekzN7v6kFzJJ2vOA99j
-	 ZJre4tTxg0whQx6P+dXtHSHBsY4zXus5Lf4r+RcFBMP9YNzYYrFlI/uzrROuOTI+0s
-	 5gRu+0Kha9BvYRuMW8ss15lCfGI4HgDe56ARt75Z/OQtBMB7pvoIUSbZwPaRHBEsNC
-	 Q3YIFDYhCEgFv6M79tvkX/Un4qriAd/B7jbH0m4zrVfXkgka/dUioLcYrVvqqpfmvL
-	 4s0R0I/sn9xzA==
-Message-ID: <sashiko-outbox-212131@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] selftests/mm: Handle implicit read permissions in
- madv_populate
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Xionggui Chen" <evers_chen@163.com>, "David Hildenbrand" <david@kernel.org>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Shuah Khan" <shuah@kernel.org>
-Cc: "Lorenzo Stoakes" <ljs@kernel.org>, linux-mm@kvack.org, chenxionggui@lanxincomputing.com
-In-Reply-To: <20261112031811.56500-1-evers_chen@163.com>
-References: <20261112031811.56500-1-evers_chen@163.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 13 Nov 2026 03:19:23 +0000
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=V7EuX4Ny;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1794540149; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=aKPg/C+iEjXAyA26yNMVbAy4RFLh/YULbk2Iqfm+Dhw=;
+	b=V7EuX4NyVki8rWtz3DZkz0FnltMeff9N87p2nCNi2n0kcfPtOM8HvQo2i3JB7KiETZsE/GwdEAIUZlvR4G58uhXsDN0HkOZYd1ySftL6CWTIE5bnRFJjPSmIzNmqxNgkgWMTRtJJjdGdo3LC7oFnoUvuV29qR5OtJ2a9FvT5uT8=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0XEdjdNz_1794540146;
+Received: from 30.74.144.124(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XEdjdNz_1794540146 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 13 Nov 2026 11:22:27 +0800
+Message-ID: <920ed3c0-42ee-4268-b8ac-45981645ae4b@linux.alibaba.com>
+Date: Fri, 13 Nov 2026 11:22:25 +0800
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/mglru: yield the lru_lock earlier in
+ fill/drain_evictable()
+To: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
+ Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+References: <20261113020132.274013-1-hui.zhu@linux.dev>
+ <a72af87a-0f10-4717-9d50-2d3480c32caf@linux.alibaba.com>
+ <1c6137c0-297a-4993-b386-6e8a1824d8dc@linux.dev>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <1c6137c0-297a-4993-b386-6e8a1824d8dc@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 82EEB40006
+X-Rspamd-Server: rspam12
+X-Stat-Signature: auz6jpzangmngtudit8569hskmewg4cz
+X-Rspam-User:
+X-Spam-Status: No, score=-24.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: s5utzi4oj4mwtrb4xw5sffph97uw7mhy
-X-Rspamd-Queue-Id: 8921AA0002
-X-Rspam-User: 
-X-HE-Tag: 1794539965-591984
-X-HE-Meta: U2FsdGVkX18L715ySnm5pXktkzHhSvfd7S/Wk/qwLL/TtgZyxLj6BtUCnvpTt72rhm2q5gSSsPWj0NpH2XRqtoW20fDSR6VWpcOKY3kYhzUlGbCrYnWhIwceO49ksTsIF1UoKIOgIWAg11ZEYVzjOstj/MKTBXXbf/NCH7/0gtYheDin82uRSHj4qJ/94eVOBtSQ+DDowjoDC9tSAdv3E88Y53w/Eiw7sC9QDC0ftssEEyWxbw09QZsLCemnm+g0fpM6rwSWUrbpcICYs+GLMNuefqT5Agx6338X51wa1OGu8Ee0IvOBp2mKGXcbH+1DK4CeuHtd4i3I0l6CpOWvPJEYB0iN+AHNF7DsMMwLjt+J9rvgp3N+8mfQ+vUUgcbLqak62RirJRzL/Y7dDLkXufNLYqAUqa9Lrdnn14ITe8M4NJPg08uQFBtCtaWfcL5InKhlJHwTAEa0/VfDnbosool5uhGXemKCtdj8Ghv0AqHjKy/sczVi+BtrpXJpCP2ez4oaZqhI4E9TCWD4WceBW295PgHN/uXlAINZMbX/dP03OkfR8XmPzNkzqPjE+suODzjNZfWhbSrTJgYOwz3fkzs2Sl6RCLDSKHFGCdDThn2I5PRRsgwB+uGdNLwPI28bU+AHhBSaGHg0riitYe7L9FDvFqf1bHBEMwK2zJRQ329IZYNehP/hczPYjaszyWDgGUmPuYLTwrbUmJ31B0AmuEelcg70MaS5nBj89rVKdEWj7YLS0WyWuBu2W50CWbs8wNcCGGVk0E1Uk42Fat/NXyLbkm4XNvZh9qd6cUmc4oONFoYfffyYIomz5L72/lf/CyBc3V56Tuhn3nXsUBHqR6i/xlbuniixjYQDeomcFxhdS3ijCMsrtKDavrR60IuaN1tyImA3WZkr49eLtvIzuag314TpSP/1Pdfyf8e30/dVId++aS3yLhflN68AfuQD0ZYaD/EbZ+zmftuxwqE
- P6s1fl6H
- ur1ExgDvvhCK1MW7+cfZ52eudyKU+yAoS6ATH0XC5It5Y0H6AfwMV+22zONuiBjUfbRNan0vMTBiQgs/8ko5w5RPmirkwgTClVZIYnNEbht2t1obxP1EhO/IVibFVVeTQlJ3Ao5Xu+PIMeIbPVl58QGwBG/N/XYemElbJS4m3H0KNMRt5RM7LU6P35SflJmiwF/aMLsfSTp73KutkBXVt59i20y6cKj/yuSxcOMi67GWQAWjrGY0pmT7TK22GPSNl1qknqOMDOAd0VikzCgjyv32oyhAwJNAFItoVvnyb3DqlWvDmHLT9AH1w8eouCnvVOOq7A2zrDBjjbANH6lUE2ZwdJ0pDwmwKbqSShCpmkE/w7lVzE6qXcegsCXOQTU0B/LyH7nTftVPeHeV4ZV+FPN6hXPj1iD0DHCTWLIjxJozM+AlGwrd/Qg7n+Bi2NnUDbiR0SJcjHEB0u82bhzOS3lmMxvPD3WtoGKpFQebl4qX3oDvpd0ufl2t/E0gGrboERS5waknfBlZFBFM85iB9tfMB/zYMzY15ZSCzu9tuJAIfPi2CTg8owwfGwwKw2ZFPgZAtcG8kpSM6qGBhkQRQ6GaZxXNXF1bzdE2/gHBjvifUDWzy6FCQqeq5Wg9OCwsjumntjtmi4TmpaWACibDPXlxflB8e7d5FJXXzbq32iYPjkyRlZef0pQDGp6yAI8KSzD68
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794540152-564876
+X-HE-Meta: U2FsdGVkX1/Z99/fh/HS+suJmnBSgs1iSrxpmUSPlGGkf5lKl9kk5AuvRrOs598MLIyjRVUymGgwEJUd66gBcu3EIawksgLHvwUKW4Wbd3hJwqWt+g7AGdqs5cHeHp1ZNqju6vJTPMMzzsetiWQZoU439GmsOBV+70c2i34iT2Wfwm4/lI+IPlr5MC/I5RDBp3KfnWrwPjGsP3FzMIyDNoW+eqJwJGcQ6ZkSsqCbH6DoRbvmG/NlWkr24uiYMzR+wCx6nDSX8gj/4qt2EysSUs07E+V39Xmg17DG5y5QeJya2OrNOtADFxLjWZ3oVglC1o8Uk5J14yFMyBYeq8U5SlShbSUnNzZ4z0bhIeDHQeX6U26UgsvF65sWdKzrm5wJhI+1LcBvEsKLAxvnzkqiLLspevcjarb6MPRSVvjKenZChEPGwaQF5a1Zn1NYsOJBHqfD0fmqTRxwfhZQSYgqiE4189Xz1voW+oYo5bF1/VL/MUeuqjDykXskmhUAj5N3hESV+rG5fbDWdBDNyXNu7s4xMK41wn6fxZuWMzfe88RQuMPFCtMfp5DT2J3dQ6j9XI8Xk15/5ngFH0uqOKHre3EzkaiJtgNhoB72qXcvodmzZ3AXcrLsfO1SdQ5ve4NnWerWx7tldQVIb4WHO8vGQZ3jo+f8xlE8LDJym4EH3KHw59LZbplUsT6x3uC/ZbL3kes96VxO9eNKja5vah/OnM99sv9N+5/TJBzZiNb2wBllWo4ONMb2M4uE9/BThXTqKpZ4eJzMOSsqAiOwEnCiw7hknyFwX+aGRUaohiywpfkrJltwXN7ZkXXx7V2/n+A3goELvi3YEqQeA3BSwS13Le0KAmSDTBJSvpMFuFQUfdD7mSsgGOy4okHi6AmpyKW3GwN3CdNy0DHZZXS64VINNbPg4uWSRKHEt1SxSFtkLt3unPOCF0ZgWqWgzNG0t6nGtlKlNX28hamIRUUhRPa
+ RzinlAAh
+ OnDxI9zaJaR0M44H9wwKyCldMQI5AH3B0S3IC2Knt6Seg71ZCsOdggjNwx4UkrIUTuptl8m6IStVY2Oekted3wp8J9r5PTWW+paMkuYXaudIIIAnfU0FFKkU4bv7navCe9ZiHvnAac+uW9YqwWoUnEGyyc4qUSOdWM/epNW2W4KUKDTnyezZRt7isgDReusWxeF4qbye3gw3xiI9Upf8F8dZOSd3wXw8fU00JLByIXDUoMzzRs3cjIskSJxP/Hk75Iq4Mh54HoRLMqb7xLcIMmjy0tjTHd8REtLUCvDB0WYulHWeiqdTEo11p2iDI5pfLQPLl0FfR9ZY3GZU75+KYOQ/Qd+7dCeVm3BdWNvAyO/9UBSSNoIc52LPIIrkjE0Ok4sG+ZYGXW3YgIZqqpC3rgUDE8/awLEJ2znWq5Q2pR5piNFRDuNIaYaQIwklrURZ2kSbKl9uMjnvJKJpGCx7nrUWlbV6K2v3wq36L9ZbCSo9ZxFRbFF82CGPiseiemmDGVwy/YWNZaQfv9ej0WuRFbOsWBjFY+N3dOzPVBkxFupyWVNB4TLV+kA1YFrDbajLcy09C8BKltZglMUA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,94 +98,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Low] selftests/mm: custom /proc/self/maps parser in
-  mapping_is_readable()
-- [Low] selftests/mm: missing Fixes trailer for test_prot_write()
-  failure
---
 
-commit 3592bfa7e9663819c643afaf7d6c337f6b102d15
-Author: Xionggui Chen <chenxionggui@lanxincomputing.com>
 
-> selftests/mm: Handle implicit read permissions in madv_populate
->
-> The madv_populate selftest assumes that a mapping created with
-> PROT_WRITE cannot be read, and expects MADV_POPULATE_READ to fail
-> with EINVAL.
->
-> However, some architectures, including RISC-V, may implicitly grant
-> read permission to PROT_WRITE mappings. On such architectures,
-> MADV_POPULATE_READ succeeds, causing the test to fail incorrectly.
->
-> Check the actual VMA permissions through /proc/self/maps and adjust
-> the expected result accordingly.
->
-> Add a PROT_NONE test to verify that MADV_POPULATE_READ still fails
-> with EINVAL for mappings without read permission.
->
-> On RISC-V with Linux 7.2.0, the original test fails 1 out of 16
-> tests, while the updated test passes all 17 tests.
->
-> Signed-off-by: Xionggui Chen <chenxionggui@lanxincomputing.com>
+On 11/13/26 11:08 AM, Hui Zhu wrote:
+> 
+> 2026/11/13 10:50, Baolin Wang :
+>>
+>>
+>> On 11/13/26 10:01 AM, Hui Zhu wrote:
+>>> From: Hui Zhu <zhuhui@kylinos.cn>
+>>>
+>>> lru_gen_change_state() migrates folios in batches of up to
+>>> MAX_LRU_BATCH (4096) folios under lruvec_lock_irq().  A full batch
+>>> keeps local interrupts off for up to about a millisecond, and CPUs
+>>> contending for the same lru_lock spin with interrupts disabled for
+>>> that long.
+>>>
+>>> The caller already reschedules between batches, but a batch itself
+>>> only ends after 4096 folios.  Stop it early when a resched is
+>>> pending, or when the lock has waiters and the current hold has moved
+>>> at least MIN_LRU_BATCH folios; the caller restarts where it left off.
+>>> TIF_NEED_RESCHED can still be set with interrupts off: a remote
+>>> resched_curr() sets it directly in the target's thread_info. The
+>>> minimum batch avoids lock bouncing under sustained contention, while
+>>> a waiter now waits ~15us instead of ~1ms.
+>>>
+>>> This follows lru_gen_look_around() in this file, security/keys/gc.c
+>>> and jbd2_log_do_checkpoint(), and commit 6e9be217a3ce ("mm/mglru:
+>>> use a smaller batch for reclaim").
+>>>
+>>> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+>>> ---
+>>> Changlog:
+>>> v2:
+>>> Also yield on lock contention after a minimum batch (Kairui Song).
+>>>
+>>>   mm/vmscan.c | 10 ++++++++--
+>>>   1 file changed, 8 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>>> index 6a1af9b92349..c1231925159f 100644
+>>> --- a/mm/vmscan.c
+>>> +++ b/mm/vmscan.c
+>>> @@ -5533,7 +5533,10 @@ static bool fill_evictable(struct lruvec *lruvec)
+>>>               success = lru_gen_add_folio(lruvec, folio, !active);
+>>>               VM_WARN_ON_ONCE(!success);
+>>>   -            if (!--remaining)
+>>> +            /* stop early to shorten the irq-off section */
+>>> +            if (!--remaining || need_resched() ||
+>>> +                (MAX_LRU_BATCH - remaining >= MIN_LRU_BATCH &&
+>>> +                 spin_is_contended(&lruvec->lru_lock)))
+>>>                   return false;
+>>
+>> IIUC, Kairui's point[1] is to just drop the 'MAX_LRU_BATCH - remaining 
+>> >= MIN_LRU_BATCH' condition, no?
+>>
+>> if (!--remaining || need_resched() || spin_is_contended(&lruvec- 
+>> >lru_lock))
+>>
+>> [1] https://lore.kernel.org/all/ 
+>> CAMgjq7CUMuNSdCXZ7_kDdo9+0BFvPNHuO=mq=ct_Q5YUyyckvQ@mail.gmail.com/
+> 
+> Not quite.  [1] was about the extra `moved` counter in the version
+> discussed on the v1 thread; Kairui was fine with the rest.  Since
+> `remaining` counts down from MAX_LRU_BATCH and one call is exactly one
+> lock hold, `MAX_LRU_BATCH - remaining` is the number of folios moved
+> in the current hold, so the condition is just `moved >= MIN_LRU_BATCH`
+> without the extra variable.
 
-[Severity: Low]
-Should this commit include a Fixes: tag for the test it fixes?
+If so, why not just set:
 
-  Fixes: e5bfac53e310 ("selftests/vm: add test for MADV_POPULATE_(READ|WRIT=
-E)")
+int remaining = MIN_LRU_BATCH;
+?
 
-> diff --git a/tools/testing/selftests/mm/madv_populate.c b/tools/testing/s=
-elftests/mm/madv_populate.c
-> index 7fce5d0b622be..818f99ee20041 100644
-> --- a/tools/testing/selftests/mm/madv_populate.c
-> +++ b/tools/testing/selftests/mm/madv_populate.c
-> @@ -69,10 +69,38 @@ static void test_prot_read(void)
->  	munmap(addr, SIZE);
->  }
-> =20
-> +static int mapping_is_readable(void *addr)
-> +{
-> +	FILE *maps;
-> +	char line[256];
-> +	unsigned long start, end;
-> +	char perms[5];
-> +	int readable =3D -1;
-> +
-> +	maps =3D fopen("/proc/self/maps", "r");
-> +	if (!maps)
-> +		return -1;
-> +
-> +	while (fgets(line, sizeof(line), maps)) {
-> +		if (sscanf(line, "%lx-%lx %4s",
-> +			   &start, &end, perms) !=3D 3)
-> +			continue;
-> +
-> +		if (start <=3D (unsigned long)addr &&
-> +		    (unsigned long)addr < end) {
-> +			readable =3D perms[0] =3D=3D 'r';
-> +			break;
-> +		}
-> +	}
-> +
-> +	fclose(maps);
-> +	return readable;
-> +}
+> The minimum-batch test itself is a response to Michal's lock bouncing
+> concern [2].  Without it, under sustained contention the loop could
+> yield after every single folio: each yield costs an unlock, a requeue
+> and a restart (microseconds), while one folio move costs a few hundred
+> nanoseconds, so the migration could slow down by tens of times, with
+> cgroup_lock and cpus_read_lock held throughout.  With it, each hold
+> moves at least MIN_LRU_BATCH (64) folios, i.e. does ~15us of work
+> before it may hand the lock over, while a waiter still waits only
+> ~15us instead of the ~1ms of a full MAX_LRU_BATCH batch.
 
-[Severity: Low]
-Could mapping_is_readable() reuse the shared VMA helpers in vm_util.h
-instead of open-coding a /proc/self/maps parser?
-
-madv_populate.c already includes vm_util.h and links against vm_util.c,
-which provide open_self_procmap(), find_vma_procmap(), and close_procmap()
-(exposing PROCMAP_QUERY_VMA_READABLE in procmap.query.vma_flags) as well as
-check_vmflag(addr, "rd").  Reusing those avoids duplicating VMA lookup logic
-and avoids line truncation on mappings with paths longer than 256 bytes.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261112031811.5650=
-0-1-evers_chen@163.com?part=3D1
+fill_evictable()/drain_evictable() are really cold paths, I really don't 
+see any practical impact from this. At least we (Alibaba) won't be 
+dynamically switching MGLRU state in practice.
 
