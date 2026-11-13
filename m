@@ -1,97 +1,133 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1AB9606A331
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 04:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6C4606A33A
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 04:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jSTGdRM8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IwjNfTHF
 Received: by kanga.kvack.org (Postfix)
-	id AB8F76B0677; Thu, 12 Nov 2026 23:07:37 -0500 (EST)
+	id 36A636B05DE; Thu, 12 Nov 2026 23:10:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97EC66B0679; Thu, 12 Nov 2026 23:07:37 -0500 (EST)
+	id 3425E6B0603; Thu, 12 Nov 2026 23:10:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8BBB26B067D; Thu, 12 Nov 2026 23:07:37 -0500 (EST)
+	id 2587A6B0622; Thu, 12 Nov 2026 23:10:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D3DD6B0677
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 23:07:37 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BD9A016011F
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 04:07:36 +0000 (UTC)
-X-FDA: 85428761712.02.DB83911
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1C90220007
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 04:07:34 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jSTGdRM8;
-	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794542855;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9aldM43iDnBgK669O7/TyzrI++PflsmX7+Dloxg69GQ=;
-	b=igeRIvf1jQ5fgG0cA2wHRzPmE3L/dD12OGQCvGK5ebcApC+X7H8uQIO6xqXq8yNwCZu8RL
-	NrvnIDUjh2RvGjw0pg2szzoAK958QlshmHh9ldF1PRS1Vl+xU8JwwxEiBQ2qwka+H1mn/d
-	HJ9kUGc2ntDfDeF2N6RjCSa+jP6xx+0=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EBAC76B05DE
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 23:10:19 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7A0C61A0170
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 04:10:19 +0000 (UTC)
+X-FDA: 85428768558.22.5A4AD41
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 9CE7240006
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 04:10:17 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=IwjNfTHF;
+	spf=pass (imf27.hostedemail.com: domain of aleszlucero@gmail.com designates 209.85.221.173 as permitted sender) smtp.mailfrom=aleszlucero@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794542855;
-	b=rxtktue5oSsKioWgtiv+xvz2ZE07LaO/89JPBkKvN3U/3H135RFFgjobnTvJClCPMZmwQU
-	Ji7Evx3Qx4Fmf04Rh+vmomxS0Y1/YvFv2uzkAcR+qdnDoadjQkKcdKVSbC/jD0481jxVoW
-	JIjUQIbqqXVuhmffVTvk3ikZuodYLUg=
+	t=1794543017;
+	b=7QlPiLC+Gduau1k2Ec+4CaO8n6bbhDE7TBviYflvrxDq9+DB2sAH2bGBbpMUJQNNpuhNf0
+	+IXgtsSczd5OIWdvXyct/pToRqMfsLcRsKOwTOQH8z+O4ro/SR49NaEdnVg8YqpIUyUg8t
+	A4uGEqxIwIJXm5f9GBGqydVAUyBnbdE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jSTGdRM8;
-	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 563FD447C7;
-	Fri, 13 Nov 2026 04:07:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B691F000C4;
-	Fri, 13 Nov 2026 04:07:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794542854;
-	bh=9aldM43iDnBgK669O7/TyzrI++PflsmX7+Dloxg69GQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jSTGdRM8IgWThxf0PcqRJfP2Un8sdy7nckG8gyJRk1L66huSt+isTWrpEhvcvMpPE
-	 6CmCAhtON7D5l8NEZk/TQdafHISB93QU/8VNUoVSuJBGgSIFJmFTg74VobDu4z4rxb
-	 LsW6i5e2YfQtb+moSG9sxyGGO/xsv+sjCfOWx1Expv9Hv2fqPC59y9/vXjCD1LiqkA
-	 LBjGV1hvWzygJ7ra0ogQ6dWRzuMs6nDDzb5QDlUvASRR71504cxoY/DnW9n3gBmehH
-	 99wM79hMqryR3CjmCXeibBiYVQPiPtM9ViRLyLNMgnLNv4yw/DQR2ht4Oh814JtLi2
-	 /qvRe+8XJbVqA==
-Message-ID: <sashiko-outbox-212157@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 12/14] mm/cma: centralize CMA pageblock
- initialization
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Muchun Song" <songmuchun@bytedance.com>, "Andrew Morton" <akpm@linux-foundation.org>, "David
- Hildenbrand" <david@kernel.org>, "Oscar Salvador" <osalvador@suse.de>, "Mike
- Rapoport" <rppt@kernel.org>
-Cc: "Li Zhe" <lizhe.67@bytedance.com>, "Andrew Popple" <apopple@nvidia.com>, "Balbir
- Singh" <balbirs@nvidia.com>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R .
- Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Muchun
- Song" <muchun.song@linux.dev>, "James Houghton" <jthoughton@google.com>, "Lance
- Yang" <lance.yang@linux.dev>, "Qi Zheng" <qi.zheng@linux.dev>, linux-mm@kvack.org
-In-Reply-To: <20261113033442.62970-13-songmuchun@bytedance.com>
-References: <20261113033442.62970-1-songmuchun@bytedance.com>
- <20261113033442.62970-13-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 13 Nov 2026 04:07:33 +0000
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: mfitftbyw9jsi9seoby4badn8dthj5ck
-X-Rspamd-Queue-Id: 1C90220007
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=IwjNfTHF;
+	spf=pass (imf27.hostedemail.com: domain of aleszlucero@gmail.com designates 209.85.221.173 as permitted sender) smtp.mailfrom=aleszlucero@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794543017;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=0dyLUPgXHh//k1rqYdikzfnU/k9m9fgYRI9bsvixd+8=;
+	b=RGQ+guupA2hn2fwcUlQl10WeKhNjOONaZmNrOsn4XdYwEN3sWA2d1A3mKs93CRTzY+VGyi
+	wY/Y455L4Z/NHAD+dlI4sXl28bQ6fp/CR1xT6NgpaFGHVR00KyXhPecSsU65hiyIh/QSV+
+	jwn2k2j+BsShX52daEL4qXqrA+u9wbE=
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-5eac01ff101so214238e0c.2
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 20:10:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794543017; x=1795147817; darn=kvack.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=0dyLUPgXHh//k1rqYdikzfnU/k9m9fgYRI9bsvixd+8=;
+        b=IwjNfTHFBn9KXnSb4lg31vQNG87/kgsrVqJV9T4gPO+OhAFk34b3SgrcKoFCJyuuWk
+         qIGGCpvNPNySOgQ68Wxc54xJQTB+uveQ54cXEwXvQAhNeHstVyE6Ujv8f2QlJB1227BT
+         KglH0itxVY6qLNXVAEOLp65Dm43O4/tRf5n18KUmFRxZ5pRCbXUPbEGORfqX5XC2uFXi
+         SqrBkh7vxuT8+N5Z/k/acnf/sSg2Kz15Xu2vEHTyXj09P4ykmUba7k2BkkSjH7W+7tCu
+         14X7ItWQrSyihS3CBV1+SJtSWlf30rhZq8t9WuZx7NcWPx8vVo6JhM0kNR6qsWbbL3u7
+         ExAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794543017; x=1795147817;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=0dyLUPgXHh//k1rqYdikzfnU/k9m9fgYRI9bsvixd+8=;
+        b=lZoendCmNWsym5KUhk6V54mpqib9o7wW0ioHkteXjk353/9u4AppFfmsIEblUrq0y8
+         z5T6I3VldhJ4jmltUMXOYQFAfcRi7oA161zbIkkt2XG3NDZYJ9xfyd/3gpodBxivu1PR
+         q/ZDaYl3Kr6u3iZqRh6rWwYqQPXlzUaoojISabn+6thZNtQi7Sh/RCq8e0Bww4C55bbD
+         UV3/6e4oMbCRSpyEkOUdkMPuj6moeTpgSvYXc+P3d0+UAGkAfwzjX5rrKircqlRV5vMu
+         ADiGxaHOM6lje+QoAgM6Fe1fQ/GiGpg0UB4jOgN88JBGXP86n6NfZpRDZlknO7ZHZJGY
+         qXqg==
+X-Gm-Message-State: APuU4Z8WScZARQ7egyAARXfbpKoIxtkMBENlM4AnoJf7X2Wnvdyz9sDo
+	BOaIhj6CabKl7dCMSKa9+2psLHrDd5NbIJ6nYIQhd8DoHyekNVMGdi23
+X-Gm-Gg: AYBFou1SMkNt3rNZxK9SmnGHqgd5RWud297LNOCWYHrLXwEeuNzsKWXjMul0cZnqI2F
+	Zn/1Jq970tbTClxdq7wkQzksYlgUWPWiKMn9RUcxLrapKUEPYwfjrHYsOZndTFO8DwX+i6Y4IJA
+	3T4Ae106Fi3Y6vJ7JWgAxcX67uXVRgpI+v18yC4CRkdQQa2rlL9ZgsbvPPtYt1ag6ArwZGsnlZS
+	/smmtgPorxrjIh4cvjnSyAL0psC1DwrNZUmbA15rU4VZyV0APoN8Doi4lOtGQL6yLStM43TwuE7
+	zyUkWMiK5EJAJZKd+7ILZv3bDIMoIBAMiqODc0DeFAstpHnPj1/Igo3h+audHkk+3+KuWb8qdKL
+	iPTdGQhg3mqqHIpWwN7TPGX/K7kpGx4i6CSkc8T2plNyKg010rNr+0PN9T/TpMmUaHNNCXSufVw
+	9+dLTEuQkv6NPtWzf+V8RXSv02braUxhN+TK+qsBkFznhenwPVjGL5Q3eN+yWBtpYVLz1x7DSo9
+	u8TgSrvclbb0uRyLcIes6+TgDEnBgEs1qQruVfgdCryZ7+RqN5WDqR/RN15sge9CeCycBHlnUGL
+	5loE3hK+mLif85hvPg==
+X-Received: by 2002:a05:6102:604b:b0:7d2:840b:b064 with SMTP id ada2fe7eead31-7d64d47e1a7mr270019137.3.1794543016557;
+        Thu, 12 Nov 2026 20:10:16 -0800 (PST)
+Received: from [192.168.0.8] ([2a09:bac5:565c:aa::11:1e5])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d64c47fb86sm792188137.6.2026.11.12.20.10.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 20:10:15 -0800 (PST)
+From: =?utf-8?q?Oscar_Alejandro_S=C3=A1nchez_Lucero?= <aleszlucero@gmail.com>
+Date: Thu, 12 Nov 2026 22:10:11 -0600
+Subject: [PATCH] mm/folio_batch: document missing struct members
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20261112-folio-batch-doc-v1-1-e5a1c013e4d6@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MTQqAIBBA4avErBtopB/pKtHCdKyByNCIQLp70
+ vJbvJchcRROMFYZIt+SJBwFVFdgN3OsjOKKQTWqJyKFPuwScDGX3dAFi960fmDSbHUHpToje3n
+ +4zS/7wfLKgF3YQAAAA==
+X-Change-ID: 20261112-folio-batch-doc-fa4f7e18ec85
+To: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>, 
+ Matthew Wilcox <willy@infradead.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Oscar_Alejandro_S=C3=A1nchez_Lucero?= <aleszlucero@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794543013; l=1225;
+ i=aleszlucero@gmail.com; s=20261104; h=from:subject:message-id;
+ bh=OMAbBXvcemwxXwqU4ezuLdvFSjrFqp0C4mq99sFmFE4=;
+ b=yDZIedPEmQr67Ky69DJnIrFX8e3/p9mJnummgDENZMYpyxQ8XE27tvk6nU/6EHyLj9FghMcf6
+ blVDfBk9GPOCNDs30cjFrRULD1ACSu2V2en8//kQ1xdW07VpgniI14c
+X-Developer-Key: i=aleszlucero@gmail.com; a=ed25519;
+ pk=zRzEBMID7l1FXqr2CjfnlIn++3m3N05FuNYb5zPA3cw=
+X-Stat-Signature: yq83548oo4rg6cbhwbapf9tk3rr4nwmm
 X-Rspam-User: 
-X-HE-Tag: 1794542854-725578
-X-HE-Meta: U2FsdGVkX1+YJs8g8tr+MrDnDNKzBp/wDFILlZRCaH6knYja7Qpz9amAMNpeHKX/glGfwqc7pCY0h5itvyBFVlcx4VlkZkd9/ba6B3D2kvjpv9TtTrX4Zj298RlucutJNcegWHGKtmqzqtFTYuFYbTjwkul4Xpea2kZrBtQ1C4UQKD6Hl9DABBG3gqLaDDpxeprkY2z9/P5fuMEEbdkfA/0SapXK9wbTbCNFk1Jl3voV0Ct4YxR/v5VUyU8ss2eue/divh78+Lvw30+K8eH3tZJtOhkAnF2FL9ZZbOsBMR0P3tHTn0hU/zjRYN9dzk+V0dpCkAv+vWJPjpmmKtyclveJlE1/hdsfaFtbu4M/ktlu47SWnpyf0rrBdeCAHHvHgp49vRkMPK7mnM/mZGhnoE/alDX5VAWF1ql/fxRSJoTLYSRaQOqpmbkOlsmUpSG7Uh8a8OXUKqbe76mLJy3Xxm89Ci2GiPLw6+Sp1r/eGFjjMgsyTI1ahs254nkpsR8LYgXdEIzOePIicpsjh+TzPEytDok4f6fg9kOBPIRuSQAmlKnvkU4P8isxeGKUFTTNsd2GP019IVHyHlKFQosRClQqS7EQgZ2VtCpdONlbb7a4VAnnfi8xK5rxnzaQe3fgUB2qhXW3gFryrEL9RZXujB8QV6PtAqbXpqqLntfJjSM2FQKFbDpCHVZi5vUYF0HFfPc0d0hhRLhXy6KBgTaVHK98y1QpOcBLPg1lgrYTwf+WRR1gXpg6g92NNDED5ljaUZdDZow5aYqe0COlZqRimYiD3okQsFNpWViC2PTamiwKbnUHbT7oUE1eyjpmmFgZ/X+jX3b9EQyuo+yU/qUCSBq7h94SUgqqbqL28i0LABkk7K1L2Yk6SK+PWCXZahU758PpbsH7atQoDV36uir3nCL3TxG332AFPA2bW/r/MlbATVzwQevNTBxR9iVkWCC/xQnX+pndJ+XoI+073If
- uHS6eTsy
- EEsCtM3hFY9KhI8djYrDEly7KHhJCICPvmfQfz0AZYHYb5QESWZ7cZai3tShvwb5VdUjhyHhs6OMH6OlN0cAAPMDPYfBSJi0C+YhA/77OnRrD4y8/nC1TP17xTZznTcI1t6kqPQznZNo13OVt7rKOxKBierl99f7OX1yvVGRLN8kzGoXsFpyQJ3jSlhXIDeDSOG7kgUS2GiWfqJWgVS/f6GKyAXDnaATrGqm+EhkIve4N8eiD9ReiE9YghU7aHQR266zBYfYQRmVGV7pJ6gep57txZDRikUxHYH1V8rDVrzN0176UR1Vb3aAHixZpDWaLoFgrXlOife/AcbblOZNMGdCSUpg2dSt/Y3S73MGH8s3fcvJxWxxFPDGXdDA19V2/gUVgx5pRhVVv5Zc3luNCqjd4ksUP8YwjrAkjR/IuyKbAKqYG7r3/NvonbXPkoQmyJwTe6RoUGiR+Stmp3sJV58ztD06IJNxW8+vsvK13e8IsVkrM8+AqcHACeHEUJuyb2UOzqG75mY4rfX4zWIdUyTowaWZPghHd3RxU1sQoJkiQUBXRNCaw3UeV7aEQwe6PUZz2wVOES+R/KeVxDUSsZ1+R5Q==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9CE7240006
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794543017-537725
+X-HE-Meta: U2FsdGVkX1+j8h+oIw9Bvl+6L3An77EH2BjIeoFSL0Uqr8ZdMqD3wZ3g5t/H1oY5bjD8qrw6JkcdPQbTagITjDLH9c2BUEOSddpxi4ZWgOlmRTwy53i/zNQyFwy9sXwBSR9X/cIrucO5nuueAT5lr9Xrgp+B/pnlZJ3X0AL8A+LLhTysGMwic4Tdx3BVIuE934bzzYkP2W9CodvThsfAes/l3P6SK2H6W8S5S3CXU/R3OlWz8MfKefHiHQ0ome2UNbeHvkPD/A+Ohu9jvdZ5G2Ob4b8Ud1JyqltMDvz86NIDJJcJZa8GfwYuDbK3BI05cAPipzW70++DqpGrek/vnDozspFnKF3MkBftTRc8GSadGGPRiGbZWWyegvK5e3J7/X4zxdHrYPLwc4ab9hgldoVplRri9MATVI60pa4tmT4gjNxdA30EvZyYO3CDetgvqR23ynK6qbteW5K2KgtP90R+Q3XblG+tLWFn6xXkfCySJq1te6O+5tBjxPBJdqKEq88YdtH+kuvbe+/n9wrrDJM+Zufsz2lafTTeIQcni950yUe97n1ZT/qAkcjt3GnC9NdnEInpA7DCs1MN+7l3Pe/cOM2dRCEoZDASOmbc2ItsuVHTDAGdaQ1+hbKz1dXwfjM8G3tcKTaZ2VL5jdj7fFAIjIYc9/RSKvdJAeHf5FgX5lycRwnnOdrUV/N0eHsWPIRhvx8YYOCJ2vbf5S4wsZGBUh3KWm7Db6zvMtjiPMY4rzv94uQJYygrTi1nLNlY6h62Pi/dnXPKCFF6Lkc+bH41wG+25geXi6ZkvWRX8UfssXuGqhKSfwRve3T0cV+y8aqpXSovO9KA9X1zXOFvPKhYS3rRlQdf1lSZX+iXo2vihUg52kqgLh4mJbNER++8Ps+BLLjqNg8YNLNopTeuoFPdjWw8QbYhBJgqCDH4FpQNSXUjfYPsplschmlhL63HSnyMxmEmtCOwpVZPH3V
+ QN3DQMeP
+ yqHzw0qYGeCg1pdBLxohSHEDWZQTE8cP4NLVd3qWl0V50VbdHr4HjnKZRCxXRNK6DwmuHUFgC8uydEWBQiOnZzAu8ndHXnj6UNOjQ0ziUW7rffu8kyyFNIusMsu0e/5DkaYfTzhfLddeOOtLJ6f3PArT+MC5mYsmMi+3IlbJFI/p+3i1jaSWIJX4Bsny+juBqSIAc3mbd1au8eCu+kyefp7GUWabTRFw8BwPAptqhYFjNQBQex9/GClaSdySk6AJ2lpzoWqYRfByuSAoAUMX4LG+kN17jREmIz+B4DAW9/Ev499D3r1z+JdwrUgkOQLYDB1yNBWCVb0bfH72bij53JXaRsQk/okcAgUHtR5GwUtbJkX+2e6YOWjInDcuDAdfDTzwXo87sNbfNNbcX0CMWU9LQfeB4Ag5Mt+y65s5pkCk5J/+eyhHVF4irXdzFPhCuNVbuxjY0Gn9OcS+ZnzTqk5hifJ/f2k6cDvvKPIVZ8Klrm35jG+uJ+B9C2ugYQc0xDfojEJAGzDba5aNnq1xR2r1nmQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,71 +135,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] mm/cma: skipped and per-PFN managed page accounting in
-  cma_activate_area()
---
+Add missing kernel-doc descriptions for @nr, @i, @percpu_pvec_drained,
+and @folios in struct folio_batch to fix warnings.
 
-commit cd588f911bb59c4583e63d2e776ba252d0663161
-Author: Muchun Song <muchun.song@linux.dev>
+Signed-off-by: Oscar Alejandro Sánchez Lucero <aleszlucero@gmail.com>
+---
+ include/linux/folio_batch.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-mm/cma: centralize CMA pageblock initialization
+diff --git a/include/linux/folio_batch.h b/include/linux/folio_batch.h
+index b45946adc50b..7731dcd249a8 100644
+--- a/include/linux/folio_batch.h
++++ b/include/linux/folio_batch.h
+@@ -18,6 +18,11 @@ struct folio;
+ 
+ /**
+  * struct folio_batch - A collection of folios.
++ * @nr: Number of folios currently in the batch.
++ * @i: Index of the next folio to process in folio_batch_next().
++ * @percpu_pvec_drained: Whether the per-CPU deferred LRU queues have already
++ *                       been drained during __folio_batch_release().
++ * @folios: Array of pointers to the folios in the batch.
+  *
+  * The folio_batch is used to amortise the cost of retrieving and
+  * operating on a set of folios.  The order of folios in the batch may be
 
-This commit moves the initialization of early-reserved CMA pageblocks from
-hugetlb into cma_activate_area() and restores managed-page accounting for
-those pages if CMA activation fails.
+---
+base-commit: 9d66f26fefacebfeed15de31c1123451a17ff119
+change-id: 20261112-folio-batch-doc-fa4f7e18ec85
 
-> diff --git a/mm/cma.c b/mm/cma.c
-> index 9ec1d1fd5dff5..46e72734ba729 100644
-> --- a/mm/cma.c
-> +++ b/mm/cma.c
+Best regards,
+-- 
+Oscar Alejandro Sánchez Lucero <aleszlucero@gmail.com>
 
-[ ... ]
-
-> @@ -191,12 +195,13 @@ static void __init cma_activate_area(struct cma *cm=
-a)
->  	/* Expose all pages to the buddy, they are useless for CMA. */
->  	if (!test_bit(CMA_RESERVE_PAGES_ON_ERROR, &cma->flags)) {
->  		for (r =3D 0; r < cma->nranges; r++) {
-> -			unsigned long start_pfn;
-> -
->  			cmr =3D &cma->ranges[r];
-> -			start_pfn =3D r <=3D allocrange ? early_pfn[r] : cmr->early_pfn;
-> +			end_pfn =3D r <=3D allocrange ? early_pfn[r] : cmr->early_pfn;
-> +			for (pfn =3D cmr->base_pfn; pfn < end_pfn; pfn++)
-> +				adjust_managed_page_count(pfn_to_page(pfn), 1);
-> +
->  			end_pfn =3D cmr->base_pfn + cmr->count;
-> -			for (pfn =3D start_pfn; pfn < end_pfn; pfn++)
-> +			for (; pfn < end_pfn; pfn++)
->  				free_reserved_page(pfn_to_page(pfn));
->  		}
->  	}
-
-[Severity: Medium]
-Does gating the adjust_managed_page_count() loop on
-!CMA_RESERVE_PAGES_ON_ERROR leave early-reserved gigantic hugetlb pages
-unaccounted in zone->managed_pages and totalram_pages if CMA activation
-fails?
-
-When crashkernel=3D...,cma is used alongside hugetlb_cma,
-hugetlb_cma_add_crashkernel_ranges() sets CMA_RESERVE_PAGES_ON_ERROR on
-the hugetlb_cma area before hugetlb_bootmem_alloc() reserves gigantic
-pages from it via cma_reserve_early().  gather_bootmem_prealloc_node()
-always skips adjust_managed_page_count() for hugetlb_early_cma(h) folios,
-and those folios remain active in the hugetlb pool even if
-cma_activate_area() fails, so their managed page count needs to be
-restored regardless of CMA_RESERVE_PAGES_ON_ERROR.
-
-Also, calling adjust_managed_page_count(pfn_to_page(pfn), 1) once per base
-PFN invokes setup_per_zone_lowmem_reserve() for every 4 KiB page (262,144
-times per 1 GiB page) instead of stepping by pageblock_nr_pages or
-adjusting by end_pfn - cmr->base_pfn.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113033442.6297=
-0-1-songmuchun@bytedance.com?part=3D12
 
