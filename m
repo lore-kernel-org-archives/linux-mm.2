@@ -1,136 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91DCB60A3825
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 10:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 267C0606A8A4
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 10:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amutable-com.20260707.gappssmtp.com header.i=@amutable-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=tGk+OIUq
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mugwqvhM
 Received: by kanga.kvack.org (Postfix)
-	id 869836B0694; Fri, 13 Nov 2026 05:14:02 -0500 (EST)
+	id 15DA16B067E; Fri, 13 Nov 2026 05:15:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 811B96B0695; Fri, 13 Nov 2026 05:14:02 -0500 (EST)
+	id 10F726B0695; Fri, 13 Nov 2026 05:15:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 726A76B0696; Fri, 13 Nov 2026 05:14:02 -0500 (EST)
+	id 025306B0697; Fri, 13 Nov 2026 05:15:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 522696B0694
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:14:02 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D4A3B120656
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:14:01 +0000 (UTC)
-X-FDA: 85429685082.06.5DCA727
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 01FB9140004
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:13:59 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.s=20260707 header.b=tGk+OIUq;
-	spf=pass (imf26.hostedemail.com: domain of alex@amutable.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=alex@amutable.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D4CC06B067E
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:15:15 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6BC40A833D
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:15:15 +0000 (UTC)
+X-FDA: 85429688190.03.F7BFD3B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id BD4B11C0008
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:15:13 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mugwqvhM;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794564840;
-	b=aJ5r2lVDSUSabcQ4OlyO4KVLvUHJ3csU4BsK2XC3fUSq9bpEBx0EXnKiSqLyycCQYUzHZm
-	DGPeFXIZHatG8sjL+uXWPvQDwkO3R5BI29FwT+flcIh1ZmPPSdXKAq+azTvVQwy6aryyYX
-	/MNePnUYWzyziwoHsAGQ/n+11yHUos4=
+	t=1794564913;
+	b=KkBa6iDmKYVNcmZdVQzPVdQ7gopMVbvEriIduQLS3dRKsUxk6UUTpsZUmcpW3AgVrRbzWG
+	ToOnqeiunbvfqqp62X73M9IvhOYhG0eDr/lwwMYa3gEDo5Km+3voeabu1mLGITlHhPwthH
+	7TLu53f8Z8Q+y6pkPaZhB7zO2bjGVVE=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.s=20260707 header.b=tGk+OIUq;
-	spf=pass (imf26.hostedemail.com: domain of alex@amutable.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=alex@amutable.com;
-	dmarc=none
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mugwqvhM;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794564840;
+	s=arc-20220608; t=1794564913;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LWRhkHq/o14g3eGvU8PB/2eVsiZ8AcgjQiitoPu4Uko=;
-	b=diVOBxtEz5+qo5rZc6tbOBhGxXB46oe2ck4dwflYMtgIb+eB4B04AcAeJjB7g1ZyNrQ72Q
-	XIJRHltXXe+qrZREAQdTwdxNZpsi4tRkmK3YRpodkgaFIFvqwOGTFApZ7vAJceXhs/P+ra
-	8djAdbUIqyEh/Ms00bpGEC2lzkbynAc=
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-491d1f66968so207276f8f.0
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:13:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amutable-com.20260707.gappssmtp.com; s=20260707; t=1794564839; x=1795169639; darn=kvack.org;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=LWRhkHq/o14g3eGvU8PB/2eVsiZ8AcgjQiitoPu4Uko=;
-        b=tGk+OIUq2fG+tjPn7gwx+sYttnO2vIgRlVgRnQmjmmIKLCSQwyZW8EkzbHETn7RbzS
-         7RZM0Zo9jn+MaIflhjci1/pP7rrqLiv2Tfp0YUJXY7OVoqTGTHsIy7hWXtMUw+9m0bcm
-         cqvuPQp4HbxucMiktMbKHBCBiTH/EhjWBnrvC2LFZbR6RUNSbN3tXHSJxr26RETYfbLr
-         rXuKk5HvNDSe680qWcqoCggp1xwth2i1QpHBZglT2GVba7kAGo1q+biWgRMxWudfm4r8
-         ezXNkI8tVNpa4c5mdp4aZRzshuUk8pD2MU7nEMSCieIOyqB7HoROMYPJTtDMyOSkWEhA
-         wBBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794564839; x=1795169639;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LWRhkHq/o14g3eGvU8PB/2eVsiZ8AcgjQiitoPu4Uko=;
-        b=VZSgAgIbRn4MhE7zUgD9mAK9epaH0L35t9xBNOROaHVJ4MYqH1qUBG+b85OYd3XOqI
-         UCIQotUZ7e+UEkX5udDZB/O5trb5+eKuUdkffR1KWcfakLx01STSXx+vRZiSqBwr6UdE
-         1OiWKMniWAFCSa4LmdySEUDgWwjNuHcBl7V/MbooVOPcmCBnYjZG2hGVYIluJlXUVIzd
-         STasJyap+m6puEhCnoxW4yekNrxEAYSu7bYnD9GaNqjI1ThanvaA/6Mz8z4stEpSOZjp
-         s36PKCwujsYR7Akd7BXrU4G5HmfgBR/VrHdnNAHvsGpTQSE1+Hjko3daMghUI3+u8mJp
-         +TaQ==
-X-Forwarded-Encrypted: i=1; AL+hErEZ0Xe70pKKOvVFhcK4lY97OkSiYXbgslUHiIR6eOM01/mrNcTUzRwl86rFDUgtcTe2UNWD8rmQrg==@kvack.org
-X-Gm-Message-State: APuU4Z+5UDTQLlA8zSzVjqAj1vRKbCZBZrIDy2ZA4glAtDUXFxBRCpP7
-	5PktbsUujdZNoVUuHfA9GrqYG/k2Ztb1UTKwbkQu8j38MtCwWMp5IkSx2L0Xg5eZM/rR
-X-Gm-Gg: AYBFou1kDsxLoj2y6AhInhXZdqyYZeKcq6h2c5ro58sAjds6lc3XST90F12UbdFgJ0a
-	GemiztsdCgOzaKhHpEoCKAkHSC0OSfo7mHwQDBay//v97LO6Be0lKuME0krtwBKmS5z26OVDYUX
-	Y8LFbO1IMomBlaKtPSvZU+cNgsISOBEO4/LD0aFNkbyfD0Dn9SN2LeRHHQpWsg/HgJHmtvO622Y
-	0Zpcsf4a1rL2rfBpyA898UfhQJTm+slJ+PmXq8TJ7up4TJA4a+EXrJMPKedVsfEEzXSwF2UcUFX
-	JajQCPj53DyBwsrt4iOImNItal6JfSfSN2kFcdmbneNayLjLMa0cr83jhowIXYjhrrNG1UakSxT
-	3TUYQns8dV9fJKO+1ff7y7waXKz/VrigRzx31a3iyNPP4zsPzXlFaohup8MUtubNdS8FLEfFePd
-	cXtu4EoN9CkF1guc6KhQtrUwtbxiksM770pdUOx1aa98Ig39Yc7MgyeC069gMOm/WlAnt4eY4zo
-	agslEQ1l1bBQYYfDvEKgIXnpRxJusqf3sqUdWD0dm0lbkgCVfs2r273r1RISJFablE/pCeTI4a1
-	S7D8S668sritD1sfksqQhmWEK32p9fDVOp0zZO+Wk0sPl9LCd3UbXi78SZvmKy8=
-X-Received: by 2002:a05:6000:993:b0:48f:bc59:ab9c with SMTP id ffacd0b85a97d-49c6fd932f0mr4358101f8f.12.1794564838578;
-        Fri, 13 Nov 2026 02:13:58 -0800 (PST)
-Received: from [10.0.0.233] (tmo-086-54.customers.d1-online.com. [80.187.86.54])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49d673ce75fsm190118f8f.55.2026.11.13.02.13.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 02:13:58 -0800 (PST)
-Message-ID: <77855be3fb9f0e1888c6dddc56d73a1683c820f0.camel@amutable.com>
-Subject: Re: [PATCH RFC 25/41] pstore: use fc_init_pseudo()
-From: Alexander Mikhalitsyn <alex@amutable.com>
-To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
-Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>, Josef
- Bacik	 <josef@toxicpanda.com>, Christoph Hellwig <hch@lst.de>, 
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>,
- Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org,
- target-devel@vger.kernel.org, 	driver-core@lists.linux.dev,
- linux-mm@kvack.org, bpf@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
-	apparmor@lists.ubuntu.com, linux-nfs@vger.kernel.org,
- netdev@vger.kernel.org, 	fuse-devel@lists.linux.dev,
- linux-efi@vger.kernel.org, 	xen-devel@lists.xenproject.org,
- ocfs2-devel@lists.linux.dev, 	linux-s390@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, 	linux-usb@vger.kernel.org, Amir Goldstein
- <amir73il@gmail.com>, 	linux-erofs@lists.ozlabs.org,
- linux-kselftest@vger.kernel.org
-Date: Fri, 13 Nov 2026 11:13:56 +0100
-In-Reply-To: <20261110-work-loop-pseudo-v1-25-4c998976c6c7@kernel.org>
-References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
-	 <20261110-work-loop-pseudo-v1-25-4c998976c6c7@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	bh=rMuyr457fqCWZXx15HHMmpYyTiHvK3jp03BAUYi6K/g=;
+	b=LwifpKpSB9dR25SDLqephxK7j3/Q7FMCmiqk03acdjrX3+6RAnGJiHDJLHv3H6+Gtz9Mcy
+	DmzD4g29HQ1g8ulHTtqx5XEKNbcDoyyr/8bQyQaRxHx30wqHfSeJJDx7lwsXnKPEnnf2x6
+	CNd6nIV3X6ohmQI+LRAJhBogDi7zDPE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 36DDB62325;
+	Fri, 13 Nov 2026 10:15:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A811F000C4;
+	Fri, 13 Nov 2026 10:15:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794564912;
+	bh=rMuyr457fqCWZXx15HHMmpYyTiHvK3jp03BAUYi6K/g=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=mugwqvhM1NYSHmQVe1isbb+Lt7fz8+iLoYW5R22sMCGb3YuPbqdLN+KDfQCT8NvxU
+	 ms7URPHAVatE2sRnmNhqBJ8cJgyO3ACmQrMGrk5JAEDYq6p+Ep18MvT9fHEuMGZ/p0
+	 DTSm/kK1aZMBl0Bp2I2ZOLM7kRDi+pl2SyW7u4p6dG0ASRhvGyngVmkAwzdjR6dEtP
+	 Dclc8J2YE4U60LiGVPkGX6UKSyY2EcSphkWyfETBtsYYOeDp/X4SPrFn4VyR0E/oRn
+	 JFHNvcqIK3jLyDTAYxEEMAAZcwM62FV36r1CsTIlXyLB2bvy+QPTS6tjfjnrmoAsH9
+	 dCNgaq9OvQBiQ==
+From: David Hildenbrand <david@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+ Kiryl Shutsemau <kas@kernel.org>, 
+ Brendan Jackman <brendan.jackman@linux.dev>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Ye Liu <ye.liu@linux.dev>, 
+ Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+In-Reply-To: <20261110-fix-split_folio_to_order-race-v4-1-cc5042f33408@nvidia.com>
+References: <20261110-fix-split_folio_to_order-race-v4-1-cc5042f33408@nvidia.com>
+Subject: Re: [PATCH v4] mm/huge_memory: prevent losing PG_waiters in
+ __split_folio_to_order()
+Message-Id: <179456490744.5856.15187695775214289167.b4-ty@b4>
+Date: Fri, 13 Nov 2026 11:15:07 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Stat-Signature: thuixmrsk7otjbjb9ts9ys553tcq7xjd
-X-Rspamd-Queue-Id: 01FB9140004
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16.0
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: BD4B11C0008
+X-Stat-Signature: eon8en9h7wmy3iqh75ddpa6h9aiyc4mm
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794564839-186893
-X-HE-Meta: U2FsdGVkX1/RsmarBIgeAi2xarU+etONTe7++zqW7uoH/uyjoRlhhsWGLSvQfHZVawuoIF0cR9AJdJcOBfiI8aPSKxoUklMjAovUYptJTdSRnRUXmD0Vkf6GPFsmmx633jg75KM8NrSteYOw04Dl5bwp+PjRK7GwIGGN+WCdYdFXY5V8P0SrtVj0IGoh4mKlocZj0ceypJbygvYzuD7FaOs+WD9oLF53F9C6YZ5XOP7q5md/oQGnHA+C1VkS8k9r8i8hmNw+fv3bRyyaKOxOCZgyDOJztMOWtDi7I8NYh0c36ngL11oVyY7kZYQhWyBtIxPREwe37PSDIxnvufMT4pp6ZJWHSB4yZgtCnioYqcEAKeyNkgz1iZE2yy33b8UxrwJkCO3uwp8vYZWIGWIz5VG729Fx7CD7HaqrtA9tf1aqL2CRdkvFE/HFZrsvh6sm7rQ7TPMbfaR8uF7YE33DNAhcFHLEoIWhYguzVZHXX7dnERq2sDQLWuP52VKbiKr3HEXCD9/2TQGvJonWJNvvx1B+UUTeIY3fEHzK3itUit4cTeDCCG4kpXpRYpn9FYcZhySHEjZLtcVDFvFsiY9TgX+L2BCX82EXMk1s/k6gM59V+vapOh0odVShfCjqmVQeZKNHFxBzKEZSRHrMtr2fDa+vl2fAT4/FQ6IMHBKZjK5jZPinbW4N9m0fvjj8oRRqtnNLdqqHRoZtnJQrwrSqIGqW61h6EX5OGjHsv5GZZwPgE+YB+Vef7ytWRINKxCgrmeSONblGLBbHR56CgqHOt3Hb3JC+b7qX6y5ubIdZTJyOJsNrjd9CD59kaW1459LmPnvWXH1CRMh3iOq6OpwRPPFhnMCnl9yxMrarW9oGmH1+A1krX04juS81cg0si+kupVBly5FSqOTgpKZWyw73kHTNibA9halCuCtqPvipjNuLGrePknnX+ZGShQUaW6X9xV32dTysoU0Xbx0ACc8
- 2zfEDHBm
- /AGHGqPUIZs8kuws+M1vt49kB3h6/b2evqmaxpaN+S2+TRu2wb3a48rGMobc+VWkzWMG9zkFZ+DLStuqbuuiL8pUKT5m6dLZea4/Igc5LHZy+k4bf/a7tJ2rJxvWsWPhmzBdU3oSN09MJE6PjK3kIEkFlvtDY8msJ7T+csIe5u+PA4tpXfKSkC45Bf8M7frP8hy0EmNGMafX9i4tO0Xirb3ruFa8eCh9z6HPlJykqcmYZcVyLZTCIj5Fdvde5lkt+3P7jqFZXUdDHn5NtKukGm2plg7IGE5Wx2mYwn1drmaqwbh1eJ0Ps8Sj8Ui0TxU1sDlH1PH7pLPsY1sfAo+uVdgsVKs9UIMlLz4VpewjrHdr21pjIG9krTvfqmcetSPoiUaMYlWOtc7TZs1sjmWq64zJ9iQOa1iYw5WOKT7zKnJ9j/cgOsXiez6c6EfZD3+FJJYuBOoGQEm7LHlxbtVK9zsMmg3UUdGDWJ2lhJOkZpF8epa0=
+X-HE-Tag: 1794564913-819834
+X-HE-Meta: U2FsdGVkX1/33OpAbOqO3Oq9mnr863F0OMC95KufE7P1EDe45lorJ/6NEhHYDGg/5RkJAsRO9NVJFVBlGF66VhSAZpyRL4xYr0/R0iCaH2lYZ4g3ckeRPSahC4hsd6t45niIg2Byu1UtENnQy2ktxzS3c2VbpoTeWz95nadihZPFMXgL6ukUTSZxdhfz8Jpd72SmIoIU6w6G2LsWh8j0v8476SQF/VBeKp9TPpHTEpVu6HOc2kRx7qjpUNMPEm0B9uSBz8sxn2eZxcDiW48ajzjjmEUbg5ldgGzmX83yi/KrFThqlJvoI8vPbyDuwmBmyttmLEGGnYtVRLBvZdTBaEU0/6tQSwCQWXRDwBueNaDLtAP6oU6n2Hz8bpppvsp7ApcU92XrSdSE7Dn0f4EwHzZDTM28iVg461NIq/CypXKSJA8Pb/4zNr7urFp0lHuhWw6u4Mt2TlLoXhX1AkhwDUjgmi2DbY6VihRMUhzaPdtUmLgAby2D8VXSR7E7ZkpV7BpF9n4jHANJe9Xcv6XX2mT5SleVwRYD+8RDr3c3FLccYm/lrG7O5hsElYoVqzX5SnVSWce6pizn0ituqiJc4tbtJZ5J04GkfRzpuy5uBCBMnTvFUQVVX2/IiH1c+bBaOCNzLFhNGCIo+FyTaWt5Y3HWts9Yp3V+hYYogBDBcO/zMO3A9zoi9S1e2izlSTBkVzprvqiGQn+GdbBaiQ1pF4uvtzMFLTio0QCs8Vz/gkAUSMWxjfBL5Hcj0BjzhVseidBlXYVPN/CQ/nogu/paewzAoKABVKtutaphdYj9SWtdK/HOcHqb7TnRAZ7lKJC1+IQ0ZmoEsCH0lQDvrwFV9RBWgY0xQGvjc6pHDXKIcNP3L3rx6WVt9FWj3C7cFDmtw+8+HXrD6v2zjek0LBie5wIkm7VZop4x/URhrxOsY4mwd6O2tmgPUo1Ep+7vnCOHYvNoayiNErDMgtGKxmV
+ omqaHZw/
+ hAwgN2HTuc87soWSc+pyCPeJ08ieSmGA4Ku2Y1eV57rZl/rpUv1UhlEMRH/LjrR5XC0oIMUBJgxZSe2TwRywWEoV/AU0/N4Okpxk8uLrpk6XLoy7eZ9fTcUVIXo2HuMVj/HyJgiDi01MUY06gtnpQDfktjFPpc3doOvpEkKgEvXDK4M/mxjp1zC3IfRrGNC+YTEFq0E0VeNBn7l0xRo5Gz2w/N/b+q8NkX9whDEQRQN3BEbY9OgBDQJke3ofoIijNHXYp18eXLtYe5tyaKqMclvBpcw91LGmoQM1W
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,38 +107,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 2026-11-10 at 10:14 +0100, Christian Brauner wrote:
-> Initialize pstore as a pseudo filesystem. This raises SB_I_PSEUDO and
-> also SB_I_NOEXEC and SB_I_NODEV. pstore never holds executables or
-> device nodes.
->=20
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+On Tue, 10 Nov 2026 22:19:25 -0500, Zi Yan wrote:
+> __split_folio_to_order() calls prep_compound_page() on each new head page
+> to create a compound page after clear_compound_head(). prep_compound_page()
+> uses non atomic __SetPageHead(). It is mostly OK, since the folio is locked
+> and frozen and no one else is supposed to modify the folio's flags.
+> 
+> However, code calling migration_entry_wait() can reach the folio by PFN,
+> then access its flags. It is because softleaf_entry_wait_on_locked() used
+> by migration_entry_wait() sets PG_waiters concurrently without taking a
+> reference and the frozen refcount during split cannot block it. Meanwhile,
+> __SetPageHead() does a plain read and write, so PG_waiters atomically set
+> by softleaf_entry_wait_on_locked() will be lost if the set happens after
+> __SetPageHead()'s read and before its write.
+> 
+> [...]
 
-Reviewed-by: Alexander Mikhalitsyn <alex@amutable.com>
+Applied, thanks!
 
-> ---
-> =C2=A0fs/pstore/inode.c | 2 ++
-> =C2=A01 file changed, 2 insertions(+)
->=20
-> diff --git a/fs/pstore/inode.c b/fs/pstore/inode.c
-> index cf499ba72702..4658561cf90b 100644
-> --- a/fs/pstore/inode.c
-> +++ b/fs/pstore/inode.c
-> @@ -18,6 +18,7 @@
-> =C2=A0#include <linux/ramfs.h>
-> =C2=A0#include <linux/fs_parser.h>
-> =C2=A0#include <linux/fs_context.h>
-> +#include <linux/pseudo_fs.h>
-> =C2=A0#include <linux/sched.h>
-> =C2=A0#include <linux/magic.h>
-> =C2=A0#include <linux/pstore.h>
-> @@ -491,6 +492,7 @@ static int pstore_init_fs_context(struct
-> fs_context *fc)
-> =C2=A0	ctx->kmsg_bytes =3D kmsg_bytes;
-> =C2=A0
-> =C2=A0	fc->fs_private =3D ctx;
-> +	fc_init_pseudo(fc);
-> =C2=A0	fc->ops =3D &pstore_context_ops;
-> =C2=A0
-> =C2=A0	return 0;
+tree: mm/core.git
+branch: for-next-fixes
+
+Applied patches will appear soon in mm-next, followed by linux-next.
+
+Please report any outstanding bugs that were missed during review, so we
+can either drop the patch series or decide how to fix it up.
+
+It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
+though the patches have already been applied. If possible, patch trailers
+will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. Further, this is not a guarantee that the
+patches will go upstream. If in doubt, please check the listed branch.
+
+[1/1] mm/huge_memory: prevent losing PG_waiters in __split_folio_to_order()
+      https://git.kernel.org/mm/core/c/7183af7f
+
+-- 
+Cheers,
+
+David
+
 
