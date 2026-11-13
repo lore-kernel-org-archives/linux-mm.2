@@ -1,78 +1,76 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F8F606A33A
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 21:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53322606A337
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 21:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lEbwHmkR
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g+AsvhoT
 Received: by kanga.kvack.org (Postfix)
-	id 25C116B05C2; Fri, 13 Nov 2026 16:36:26 -0500 (EST)
+	id 654706B05DA; Fri, 13 Nov 2026 16:36:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E64B6B05D8; Fri, 13 Nov 2026 16:36:26 -0500 (EST)
+	id 5DE156B05DB; Fri, 13 Nov 2026 16:36:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AE236B05D9; Fri, 13 Nov 2026 16:36:26 -0500 (EST)
+	id 4A5446B05DC; Fri, 13 Nov 2026 16:36:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D7F226B05C2
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 16:36:25 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5E4C0160246
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:36:25 +0000 (UTC)
-X-FDA: 85431404730.27.B327738
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 8A78E1C0008
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:36:23 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lEbwHmkR;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794605783;
-	b=GbVTyp2GHFn/VlFvsFKlfUsLiSb082RGQu5MpN4kDFr9Pa2BbC92dSmkrqWy6+ga+FVgIB
-	uuZtY5cBBvegsLjymOtD0yWZ09QJVYn05CZVRK8PE6t5rPRmzeKeMVmyiC+a/AGtHk8ppm
-	n84EB5oSA2zeDcza224g9l5lOd6VnTw=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lEbwHmkR;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 243016B05DA
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 16:36:32 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BBFA5A7559
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:36:31 +0000 (UTC)
+X-FDA: 85431404982.21.9C7F899
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 109DD120004
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:36:29 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g+AsvhoT;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794605783;
+	s=arc-20220608; t=1794605790;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=qoTt+MDRkeoVNwu26WSyXJZ+2Whw1KHsinqhf7xKN0w=;
-	b=hhxSVp0B0Vl+OGGghcMWyMYxeYNX/2jAwONBDcRKHYwjRFxoU42OwVW1HolL56ImnLN3Dm
-	1WDDzOd6b9Bhz8EaVr/FFg/aztELkVvgFaR7srX6V9wmD+7Zu2zfLr4nNllPJf/fwHzZOd
-	oM/757h8tBZ2n/eU97ltVLSgubTtAM4=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=WN+yjAtvVrc0ctpoDlmv+PaGA9TaExp57jSuyDwcPHI=;
+	b=TmgvwE36yAHbNi5099ijU9RUQSWoa8bxZSkTOGWsjymnrH0u3UwuxUR7MBlRUBUURioI19
+	BzEtSQQhK/FKEPL4UEikdEK1Am5RfIUNtOBGzsw8EapNVm9ljyKxBu/9ENtTbN2aPr7IwL
+	Zuer3MxK+8lxsMXEmq3L0gXlkb1oEfk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794605790;
+	b=PIyPZDgVRuUlcOKoAga9t+OB6jTilVd45I2kmHQC9fR3w/JuBdjT0aqwmRVqGYuAipgFzC
+	K3Tvg2bIQXUX6++mphKu5WXh3vzrDYWfSOMRy4J2Q6Nd8OuJVtHBxR4hHC7AHrOYsyF/n6
+	Z5VthF0BB/4ec5VdEiX6FqvoSjwNvyA=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g+AsvhoT;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C93E145619;
+	by tor.source.kernel.org (Postfix) with ESMTP id 88636633BB;
+	Fri, 13 Nov 2026 21:36:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FC921F000C4;
 	Fri, 13 Nov 2026 21:36:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF551F000CB;
-	Fri, 13 Nov 2026 21:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794605782;
-	bh=qoTt+MDRkeoVNwu26WSyXJZ+2Whw1KHsinqhf7xKN0w=;
-	h=From:Subject:Date:To:Cc;
-	b=lEbwHmkR7JeWSvaOgQa55K2iwpCMKNMvqhMle+H/PulltxLT70zxLeQJl7VoTOnaU
-	 Zk2ydRTQh9FE6Bwev5F08wAb1FjrbryE3cnR4qIqzOMxgDULOgqLCI2R1lwibdgs9a
-	 Wxpge7J77BbReVu4Mj8rixE2121QLGWe5iRD4NWVTeDow/YV0H2xKCnvQvV//6xj5Z
-	 8eb07+dpLj1trGumYqUmMnJidRa/okjm/55n0WVz+/9iV0o+SrllijWL1ZwchgJCl7
-	 u3R84o2Eu7TeOfi6t8jF78BRFe4hG6RzbujpsBifWVx8u5v9aNo+KF7pZFwzUiypv1
-	 5kwH0u/SRWzJA==
+	s=k20260515; t=1794605789;
+	bh=WN+yjAtvVrc0ctpoDlmv+PaGA9TaExp57jSuyDwcPHI=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=g+AsvhoT+tYFQT4Lxddn/4RA9GH8lcuOlnZs3RnuvsOKi9maLL2SF+vqlXTfWAlAF
+	 UVQiRLRLxm0R7x+2g36yOfjDmlBfGIkcYDkB2wjXVLkqvY20tcsKzrXlmAsUgbSkAE
+	 xywdKaGnCcvlkSGKkdHxgvsvHkZewsTrAs981tYACeW11Z1OTTyqnDjpBczb4KcWnt
+	 nagwzqgg1A9fxRtIm7WHnalVtvFkijfMuFMU/BkVzJZ87AjbwIQAh4zHqvhiqm2m6f
+	 zbe2SCeG32LPzPc9+zpzJ/dgFehpQsj7BgTt2U+rD/yLKNyKIM4KXf3xRS5ZgMpBr8
+	 s8FoRl33Hh2bg==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Subject: [PATCH 0/2] mm/mempolicy: shared policy limits for
- tmpfs/shmem/guest_memfd
-Date: Fri, 13 Nov 2026 22:36:11 +0100
-Message-Id: <20261113-mempolicy_limit-v1-0-16688b2644dc@kernel.org>
+Date: Fri, 13 Nov 2026 22:36:12 +0100
+Subject: [PATCH 1/2] mm/mempolicy: merge adjacent shared policy ranges
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMuC92oC/yXM0QpAMBSA4VfRubbaEPIqktgOjgxtiJZ3N1x+F
- //vwKIhtFAEDgweZGmZPUQYgByauUdGyhsiHqVCiJhp1OsykbzqiTRtLO14EucZVzxpwVerwY7
- O71hWv+3ejii3dwP3/QAK0AcEcwAAAA==
-X-Change-ID: 20261113-mempolicy_limit-6f043870d04b
+Message-Id: <20261113-mempolicy_limit-v1-1-16688b2644dc@kernel.org>
+References: <20261113-mempolicy_limit-v1-0-16688b2644dc@kernel.org>
+In-Reply-To: <20261113-mempolicy_limit-v1-0-16688b2644dc@kernel.org>
 To: Hugh Dickins <hughd@google.com>, 
  Baolin Wang <baolin.wang@linux.alibaba.com>, 
  Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, 
@@ -87,26 +85,26 @@ To: Hugh Dickins <hughd@google.com>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  linux-doc@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2020; i=david@kernel.org;
- h=from:subject:message-id; bh=swg4p31TendTFxqtz+LrPRXfqomDbwEqx/NII4CvOWU=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLK+N53bqxhq8HeBCSfrhp89N01PaXx71f038bNWQ9Ecd
- svXq5xiOkpZGMQ4GGTFFFmCgu8bvHy5rrbajY8ZZg4rE8gQBi5OAZjIqgBGhqsiTx95aLYfy83/
- GvtYJ2iOzZSi/FM8V5Wf1Ka38Ce6PmX4K/Y38sa3108OF/w6ILcuKHn1zclTu556bv8pulA75Mi
- F4wwA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1770; i=david@kernel.org;
+ h=from:subject:message-id; bh=Sd3VuioKyfuNxkrcYED0n1NfIILXQri+cCwle5kG/5k=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLK+N50XFGKt+Xjjo+E188Uz9/zie3Cd6/Avc70m7pyFW
+ 2bmFSRkdpSyMIhxMMiKKbIEBd83ePlyXW21Gx8zzBxWJpAhDFycAjARLj2G/yGSTy5M+55a6RVU
+ 58dX3phh9bBLIvOkko99hZ3BVMUZrxkZXuyqyhXOYuCt9FAXlyrQa3Hj95tpE3zW6A1r5ZRS7T9
+ 8AA==
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 109DD120004
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8A78E1C0008
-X-Stat-Signature: xhy3g97ez4kfab77or9ucmpi85g73s4n
+X-Stat-Signature: infzyrzm8a357d5rjdrqzcft1k1y33p4
 X-Rspam-User: 
-X-HE-Tag: 1794605783-435677
-X-HE-Meta: U2FsdGVkX1/cyPxau+hAtU8cv+LUnENotz5dx5kA1mVdmY6ekaY4bvNhOnDWhFBXk7N7vlx3OSYKrCyO6Ft1+BnRBgvoo207U9LD5SRib1PPvZXAMrjViH6WfMUzBa6r2g4OvRb+w8xE/yZlYaOaQ6oOFM/eySaILUDZKKARujt8EAaeYFFazxHjMTxpdxXGFRq7BFNg2n5IXfoOK0apAoP48xoCNoEjhd4JAr4Hvsuq4QljPSvq4r47FdpH0HIglUK2O/pzQk4KsppR4ZKVRluxCeysiE5psAoWp4V0Cj8njNL9Q1FBL1lk5j8fIQhIbDQ3ZB/JmAZ77sw6l62fL741QibAODfnPNOkSFin2tUX2k7Sn7TIEn/aXPWcrMiUuzykUcAnf5NPMkj929bnQvhHEURAKNDP3KNmo+5ZzK/EPXgvAagelKeKeuuRaFVe7tgADl1yUPQDyE4QR/BcOHQQgGLC22YVa12WsbFfYa7BLbZ2YWmHmmLXcNq1/yO/oesC2MqfCjFvGPFKuBYtGF2ltwbb4sqsXbUL6WPQV8+jSiZqAX5hz19s7QUQ2n2doz9xNxL3geyGKY9sOoFD+Umx5aDRwHgX/7kzx1MZPkXcZW4e4Q1u1E/GsokcPbanHkulYtsKYEAv97uRRIAUne+wKoz2AhhBtbVP+k3aTWSpPdeJWNl1NfzHqBJ/Nst1pPtBnUBBe1P4UmC9rPtbDqSQ6g6IVuhnmkBZfymQtsqaN9ycXg1Zhir0x9E12iT2WhNskaGl0fuCB2Xz7bDbvuXWJ7S43QVEzqP7Xg3amBvDRBHvouCfUCBwHhBVOWtC7bQ6Ns8ovoLigv8Hox/dVd59YJ4ywwfecLsiSs4ReOixx5AxYZlOtRYSHO3ab9lJ3QXTWOEKWdo1bslP0H2VOqIvTNy2RhRf0LUU0m3ZvHRFPMfQlzb3q89/kOg6HgM+9BvnjrBJYb0SXrFpakS
- Oewnt7EB
- 6pdYtRbuVHqr21ulZW4gAqhwnuMSYcfQPgvbu/jBgpTVrx4L2uRzv83d41rRdmjZzEIw3gAELC/PQG6SAN24XQjD4yLY+2p/ObaopYnLa2KPwdZorN4xuGim4j1LVzhN2UDvHpLi1Lb13Tkw4ZG5m4VqyP0C8a01eJnhsorFP/kIHRJ/lzCX+sLMpXY8EzpkYUygDl7xtSBoqWJM4zzGQY25mHkYvrotqXrv1FRUYUQdQQRFvfXHn3bNEYhqcuZGiJy/q8gdCXd7dlLmF0EW64jwIxsfQEsUr5F2f2yd52vK/CRf6ShHFYKVDQEBsA7iq7s1HWZzF1yc7e5z9wTr3buqXF5vtJJ8pr/nlXMswWOf948vs1R6cCwIkKw==
+X-HE-Tag: 1794605789-409916
+X-HE-Meta: U2FsdGVkX19Z2V91ckYWZIm/2IvCGGSWKY7sgXUUtUk/P48GU0f1vi9l5TrYvtM514kpi19cMgbPgFQdanh1zpNpQ1J8zjyXAkUiAgWzO//NVqZ0Jg3tZ8kioCVJPqQoUFutr6ToSs6IQmbX8ri01we7gZJaBiZ+dvy/HLi++PKtIgSs5qX43HheCZ2Pvic+PXR3OJxioNnDVby+kCkMKW/CnMzFiw+bfQhii+EDXZio/DwdsTsYGpIXJlcodqHouRj8C1BdKa4zsVMLk3+cCm2DmYSHpO+2ckIwnxbB+4T2KH1yQ7vTsPwQZRbqqoa0UicRQ6EX9HdMhBK56O3ggqQNxV9QVdLfrjPDIr+MG6Lr9ciTyGJpNxePMkRf2bX7cgo3hgqRqiYVfBEZChXBKjMTHAQPTjueCg2hN9LeL/zZH1EDecKkDYCbfkgu02jxC4OB7EW397qWNwoPXu9PlPgSd6EWSf7REaLzfok7LbVV5gI8Vh5/L0aV4Zeona5j0z/U+o3fh2dZLz+GldsDIh4ZVRnwlz2t/+d89tKAn6V9o5SIcwHujM50Y9yvbMnOQ8ZVLGVo1YSN9gI4jYoGc8IhfD/f0u9i7VD2NJnGYXx25/xKNSc9w+meBwGNG8Ee3PNynjgFR/4WgKZdVt10MBAXDp8T0RRz8YFKUijrnIEqpAtNE3WOV8WYZ6fndw7tos7hXfsqyWSTLYDY2diWw2l64vVZ7FUJb9sghePE6NPYmQFKEKKCh1HGIO1tIDWIg2OppdFnkw1CQB//ufB7rrii3UX4h6tX7KCCpU3fKK/vI41j5PKX9NKN72dp/JoVCKIp6wr3Wle3/em752aBSmQ1jY6UF0DYYKOOZugSRUEuA/2/TCI8SFTQodnoLxYq7mQFIAPQpKAKgybEbNc4lPzMKr8a6WKFC3RnmAYTexgJshTCaonHWEjLOmEZQQ6POvT5NSNe2OtXYoKkUNe
+ Mrg35LZ+
+ sEn3FO785mG6Qvld+x6IjMSshVSV4R+36Dy25JpVjVTsD7w7a0ztGd06GlssNB8c7A1DhfabmjsuEkb05I0gdpGB2tGzV+37d8zuLeu3CRCu14dhVAh6f+7QTy9gC/AEO7+bkwpIpXHFLHHNEV2wpzVGS7kARVx1xrswuY3q+QBOfQXNob+IeYuxpMV9QkVi+0guw45a3qRvghl0ViImUyAKpdnN04fQ2a+cTEWi4aZ8xGvkZ/HXTmEX5IKaUR8EC+3aZIpAs+l6TVhuTNI/NZw7xEUk6sBbL3KE1CKqIqN5Ye72CWwmkjHEC0MjGPxCPFJuB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,60 +113,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-For some reason we thought it would be a good idea to let users create
-as many shared policy ranges for shmem/tmpfs as they want. And
-guest_memfd inherited that handling.
+Shared policies can retain separate tree nodes for adjacent ranges with
+identical policies. This can create unnecessary policy ranges especially
+when individual VMAs cover individual file ranges, and user space sets
+the policy on these VMAs independently.
 
-Fortunately, at least for guest_memfd we know that we shouldn't really
-have more than one shared policy right now in practice.
+Extend the existing replacement handling to merge ranges with equal policy
+at either boundary. The existing replacement loop will then remove the old
+nodes and installs a single node for the combined range. This also avoids
+splitting an existing node when setting the same policy on a subrange.
 
-While we now at least charge these allocations to the memcg, users can
-still allocate possibly many, and cause trouble, for example, by having
-long list walks under spinlocks.
+Extending either boundary rules out splitting an existing node, so the
+allocation retry can only occur with the originally requested range.
 
-Instead of trying to improve things, let's just stop the user from doing
-stupid things.
-
-Essentially: limit the number of shared policy ranges per inode to 1024
-as default. Let the admin increase that limit. 1024 is likely still
-plenty: who maps a shmem/tmpfs/guest_memfd file and configures that many
-mempolicies on it through separate VMAs?
-
-Maybe we should set the limit even lower ... but 1024 feels at least like a
-start where no user case should be impacted.
-
-Patch #2 can be considered a fix, but I am not tagging it like that.
-It's been that way forever ... should we? The impact is primarily just
-wasting kernel memory and doing a lot of expensive operation under
-locks.
-
-Patch #1 prepares for that by merging adjacent policies if they are equal,
-to reduce the number of policies further if some user space actually does
-something questionable on sub-ranges.
-
-This is not super urgent but something that should be addressed.
+This change will make it easier to cap the number of shared policy
+ranges per inode.
 
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
-David Hildenbrand (Arm) (2):
-      mm/mempolicy: merge adjacent shared policy ranges
-      mm/mempolicy: limit shared policy ranges per inode
+ mm/mempolicy.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
- Documentation/admin-guide/sysctl/vm.rst | 18 ++++++++
- include/linux/mempolicy.h               |  1 +
- mm/mempolicy.c                          | 74 +++++++++++++++++++++++++++++++++
- 3 files changed, 93 insertions(+)
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 06b90903e8794..183bc3bd077cd 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -3208,6 +3208,23 @@ static int shared_policy_replace(struct shared_policy *sp, pgoff_t start,
+ 
+ restart:
+ 	write_lock(&sp->lock);
++	if (new) {
++		/* Try to merge ranges with same policies. */
++		if (start) {
++			n = sp_lookup(sp, start - 1, start);
++			if (n && mpol_equal(n->policy, new->policy)) {
++				new->start = n->start;
++				start = new->start;
++			}
++		}
++		if (end != ULONG_MAX) {
++			n = sp_lookup(sp, end, end + 1);
++			if (n && mpol_equal(n->policy, new->policy)) {
++				new->end = n->end;
++				end = new->end;
++			}
++		}
++	}
+ 	n = sp_lookup(sp, start, end);
+ 	/* Take care of old policies in the same range. */
+ 	while (n && n->start < end) {
 
----
-
-base-commit: c6e0cad6c9b4180bb229db06e5b062c5ce0723bd
-
-change-id: 20261113-mempolicy_limit-6f043870d04b
-
---
-
-Cheers,
-
-David
+-- 
+2.43.0
 
 
