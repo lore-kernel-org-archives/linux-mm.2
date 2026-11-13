@@ -1,121 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D4A606A323
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 07:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B3AC606A321
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 08:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WNZ+fL7a
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=M3I78Ut2
 Received: by kanga.kvack.org (Postfix)
-	id A687E6B05C1; Fri, 13 Nov 2026 02:27:32 -0500 (EST)
+	id 596426B0604; Fri, 13 Nov 2026 03:20:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A19C76B05FA; Fri, 13 Nov 2026 02:27:32 -0500 (EST)
+	id 56DF86B0605; Fri, 13 Nov 2026 03:20:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 955CA6B0604; Fri, 13 Nov 2026 02:27:32 -0500 (EST)
+	id 4AB216B0606; Fri, 13 Nov 2026 03:20:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 736066B05C1
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:27:32 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D4C36801D5
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 07:27:30 +0000 (UTC)
-X-FDA: 85429265460.20.74D38F3
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 25423A0005
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 07:27:28 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=WNZ+fL7a;
-	spf=pass (imf25.hostedemail.com: domain of gopalmalaviya53@gmail.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=gopalmalaviya53@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794554849;
-	b=he8zKMmxZVIlYinqXVO0Rb65nCvvUGXbXI3J1RSzoQzC+n22/JqU1QQIJ0ALG5H3v91Fld
-	ifrAfbwdx66lFOW4bzpABFE16flS/PmQAemyl3iYm11xPYaiKgF8QOi/RhmgZGbcKFbv0F
-	NJgsc2dM0zqZE0frhdUV30aFo/PiH6w=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=WNZ+fL7a;
-	spf=pass (imf25.hostedemail.com: domain of gopalmalaviya53@gmail.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=gopalmalaviya53@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1799C6B0604
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:20:00 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 80CC7A013E
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:19:59 +0000 (UTC)
+X-FDA: 85429397718.13.6370ABA
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+	by imf19.hostedemail.com (Postfix) with ESMTP id CC28A1A0007
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:19:54 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=M3I78Ut2;
+	spf=pass (imf19.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794554849;
+	s=arc-20220608; t=1794557997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=hbenJVq9I5uwkDNPOZUGRpBZdFROzQQvvi7cvGqBcJI=;
-	b=0YrmPPKHqSPGE7k1bvPia39Pg0JNqh7Vh9M5gsOi2Ahalo3C1+pxRsdJtf03+fO5B9nTYv
-	5aVmYMMbsT7tncjQ/neN8Ku0jLfyY7sNEabMJGHOdvxc99NaVtaXWw221D7bir0GjFRDOf
-	We04bg9Jb0x9n84+LFIp6AnW5bTMeLs=
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso650243eec.0
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 23:27:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794554848; x=1795159648; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hbenJVq9I5uwkDNPOZUGRpBZdFROzQQvvi7cvGqBcJI=;
-        b=WNZ+fL7aoBsa4E9/xf4H8TRO/aKPULYpNC1dICqCTEqim0grnCxfACoKH2cP28PJ6/
-         9ruhJaUwVMcI/hrWZEYJeQBe8s1UL67vPPrwZsnr5/y3/T0kVsUrJTYHnphC69yEVmol
-         3+0XWqoacxtcOzKoRG2VVQ2GrfpNYC7Fyz16oQmwW7ogwGeLOhRcilXAY6NW+2NevakV
-         MJ9qhpgyyONJNpuq9blVjMWIRqAjz1IJraLnLgxx1qpQXKcY30Gm8MNBaa9c77r2DxYl
-         T9aEmxmn18dTX0yOV+spnoEVnJ3MMLKORzSMIZereo96F9AOYqWyfhjPJ4xFaDLZWMZ9
-         6wLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794554848; x=1795159648;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hbenJVq9I5uwkDNPOZUGRpBZdFROzQQvvi7cvGqBcJI=;
-        b=iaLMDKbOfhtd9fwiNO0YUbXA7bL+3gbKa6+vp21LGzhGIY6TrN4mYbYdGx7dLA/yCt
-         JgzObHa734NYu6KHDMXANeIvRx2quABpQA3/Nn59sBsWRJOV++LL87Vx7zqj1GaXTtrE
-         AQ85WTAKlzmUJlOQ4bq7nRgVr6VoF3hykah0CtDcGzo5X1idHTv+mNMrXchzjtq311hc
-         IiBtMY8wHnBZQxmEc186MMgJzy3U2qEr1gb/ltQAwHyqJ1E4UrwWk1nHdGN0QU0DLxCz
-         uJE4xpKFbjPG/gRmbdoBA1By3YPRX4UQoU85qrUoMNsw2A+52169a6DL2paJ1RnSSiUu
-         4e1Q==
-X-Gm-Message-State: APuU4Z9GVELCszqFwFfeOIrhNQEYQJGZ485UYVAIR3AAsRjd+cXHxqKq
-	TZ7Ro11XV+j8bPedcAsn3DZh7cs1uBLUKEZ8Y5fY1XdhcrkKHW5wnoJR
-X-Gm-Gg: AYBFou3wYgeGNO59OK4je3nEj7h8z1updjyuMhxbp4ex5ZzIdiFDVsgklk+glfrwspH
-	FP2e5G7orRmaGYhX3ZeLqjl3myK1f1qMEyW/YX5ZaaNXYWEd1mV3Q+K/b8QJB6f7u6FJHRz3rd5
-	nv+7jCCCasNLWGKzorjVEyWeinltp5hCp9XUAxSMgkAlG4WnzuRIpfShCXSztYamJAQrvkzAp6w
-	PsTw3patYUEobmeroGI7HDus02QqQOwq41LMjVqMap65DK9K1VK/KKs6+5rKk4Yj+fWte4bMhkN
-	bVWxScYDijpwFPUnkZYNUkKrGMQOLi6Nk/CUbfVRMk8SVSzjx5+aMGf87aOC54yd4s4Uztootjq
-	t7Qsvh7sakQMab2QC+pj47VRwyZeT+jan6nmXqILsi84JB+EX2gj2UhueRZuZol/mdSmnGHHDZL
-	0mYY5HRYW3zajRGDRYh8MKGOV5tG9EdQzo5l/itcFuzYXCRrzbM07g2k5rci3ySFz/H3rnototn
-	voV3VIce4SQ00x5Bb+FFfDLL+H4i798CO9kz8ZR3Sm8Vwd4uwxGuzp2hsX172pz+XqX6KbFghvA
-	IXrb/bGrnTtji3l7+b9w3G+778s/Wv7HWZYtvOEApSoBtDXb4ZNYkNts5pyz8sXe5mQH3DaFT1k
-	7vRM/2jM9PpQI
-X-Received: by 2002:a05:7300:828e:b0:375:dbeb:b363 with SMTP id 5a478bee46e88-37966a575camr1303312eec.28.1794554847648;
-        Thu, 12 Nov 2026 23:27:27 -0800 (PST)
-Received: from LAPTOP-KD1TH5BD.tail375eb4.ts.net ([47.11.114.36])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3795378c2fesm4906698eec.1.2026.11.12.23.27.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 23:27:27 -0800 (PST)
-From: Gopal Malaviya <gopalmalaviya53@gmail.com>
-To: akpm@linux-foundation.org,
-	willy@infradead.org,
-	jack@suse.cz
-Cc: linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	p.raghav@samsung.com
-Subject: [PATCH] mm/readahead: don't skip the fallback after aligning index down
-Date: Fri, 13 Nov 2026 07:27:11 +0000
-Message-ID: <20261113072711.235264-1-gopalmalaviya53@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ylL32ZA+eS78yzSptteM2YgqxrCDp8OR2zVucYyFWyA=;
+	b=XmFyNClVHjTisPjT9NWeoKHg7PsQdbHVlRilsmYEW70JGW27MyS2k0WHcMAaq1hCRWe1oO
+	TdZPgwr5M0QSsqCRDF7RLubIQlSej2EEdkm5skcuw26tV2e4YGrqX93C90FxMoFnZ1vXqA
+	bjv4ZcOsuEAlYMxLFxnWD56LyUS6fIY=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=M3I78Ut2;
+	spf=pass (imf19.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794557997;
+	b=UmdzLditPo4LCDgpPHoy+BNRAWLAS5q96cOaCss4R3lHs896W7yPzCHw1OoOztyVK1oM+R
+	c1+pxYUfrOZEirhvCR03g83LUCBtaa1LkjA+Aew3CuHc7Y5umNevtfaGtwPMjFez/0tVwb
+	UQc68zRvM828WxCQDZdeimrU1ij79tM=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=ylL32ZA+eS78yzSptteM2YgqxrCDp8OR2zVucYyFWyA=;
+	b=M3I78Ut2h1XzAqRsE6LbAjmsrN6fR2fuGwcNvCl6wBD+WoVt+ymegCUNqBcsK57fm9atPMBpB
+	J+I8PGKpQY35yJYinAI/nmqnhffoMHFKpwrAm7oxY6xidGyrC8s9TC6Z/Ft4u0UoCh6sFLOltCY
+	HIPmxuJM0PIsqR/ryTQlu08=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4jQqtf5FCJz12LJQ;
+	Fri, 13 Nov 2026 16:19:54 +0800 (CST)
+Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id B120140579;
+	Fri, 13 Nov 2026 16:19:48 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ kwepemk300003.china.huawei.com (7.202.195.93) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Fri, 13 Nov 2026 16:19:42 +0800
+Message-ID: <c900aca6-e1a1-4155-a900-ff4abc270427@huawei.com>
+Date: Fri, 13 Nov 2026 16:19:41 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/3] mm: hugetlb: fix GFP mask propagation to CMA
+To: Qi Zheng <qi.zheng@linux.dev>, <muchun.song@linux.dev>,
+	<osalvador@suse.de>, <david@kernel.org>, <akpm@linux-foundation.org>,
+	<azpijr@gmail.com>, <lance.yang@linux.dev>, Qi Zheng
+	<zhengqi.arch@bytedance.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<stable@vger.kernel.org>, "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+References: <cover.1794379433.git.zhengqi.arch@bytedance.com>
+ <1c5e8c4ae230dc238a16f2f42d65bffac6244ad3.1794379434.git.zhengqi.arch@bytedance.com>
+ <7def88b4-cba5-4e8b-9e68-6069c492b582@huawei.com>
+ <1cd3c151-24c2-4fec-8356-99853f8d6971@linux.dev>
+ <9b46d8e0-104e-4659-8dec-67eb6f059dac@huawei.com>
+ <dbfa9791-5a4e-4837-a2cc-ac506826761c@linux.dev>
+Content-Language: en-US
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <dbfa9791-5a4e-4837-a2cc-ac506826761c@linux.dev>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 59i7pg8pg8c79ki8g69p6a5h4f3rfqat
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemk300003.china.huawei.com (7.202.195.93)
+X-Stat-Signature: g44w6dqk4moe6sucra1cjr8wfp7cdse3
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 25423A0005
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794554848-250309
-X-HE-Meta: U2FsdGVkX19GKvs8rNj+ICy873+Hwl0exhbg5VaatUIL3JaG2IFa+dvdypzWqXqMl8r9AMSJstx6GzNTrW9MjnHNcvuThQ+JcV96QN3WZu+Z8MJw+tzx2iOEdtH/stsGHEJKBgoDYPLZQpiXFrzAcGChP6RMwMOjPgfcRJ5jTS4r1vLZXCtALISXuYPB2Mx7771+nG5auhyWZv/o8sTrJDDHMFo5E1GUM41VriTBA2HTnSz6BrB/49BGaH2+CFc/BKPE5EtD+clADcXoI1XsIAlTNScKyiv7siu8i5ijv54fJixPpZAGrocm414syWfAzJis6S+C0WDjuZRsQjPiBNTurhKwrXa46ha5BvtnKkZVl/ulXFvvPNEoD7qAqjhAAFOAPGb/O4u9IpjRGphrZ7a39eC/xC6OKdQ6AOhKal5703WZQzz22ehkp08j/LDjLD+foG+jw0s9q2htq5B+mNreXZPAc5ZlN4nWvsp5z2jmvFiBIdaw56WPwfZfOZDWjGdAERtKR15ILFAWgvpI42idb2ARFeUKK+pEZDpDqm61/PhXhKRGnYSvFJ6Jb4GSOys9Ee7Ekdxfj1Qfce5p78Pj4VHZH3vcaCilWjNUJW1+bWiB3AF7BbdgBuGbeHBZ/g27qaJdryhFPj00raKY96CLAVFwEN2z+tJnrgqYYxZCFhPSoDYgOZKvRi8I/LtdI3rh+A3vrxizZlnDGRAnOytaWQmDjSVQWIFR3b7hNwDbbfaeN7H5nN5Y1kNo6yfofeoFagicF2Jd+vBO+AC7uXXXBZwGUst4rQ3jH1RLMRfN9RCQdy8m0vvx1ikTGjH6PWHs2pptm0W16aO0zVu4eStYnb6d4o5+dSvk6TGgIkBXAowOlpWF6igJFmc1nffnfTrAovptIKT8kB+CnUKQLP+5i+KdPOC7Ctm57M8hmbMKKonZJYFAOoYqTGFbGI/ab4VQxV/J9VMYbs8bltv
- QCauex1J
- 79jL2JquEvaJT4l76cjG37/6EY/S5Hue+w0/tGWxWbjhMW+3A7Qh6ujeLlLyGKoJs2wNQw46v1o7Utq+PvvIhluQv3bEFWrV7LnNz7AAYCjw8ifZ3X4ECB4u8rDWomMZbpoV2OQfkqV8hv4JKd0h7bNNAtrXY5FyNeUm9De5D/HOz9uEyZpwl1AzcIYDJ5P8KjB0g+l5O8RxXhlFPa86jcCuPZecw6Vv6tqHKt7rSi3Uygw2iOWWPHPDNDQQr8EsXk1Y2GzkE45CkCnFiHATmQ1QqZkeSTU39oZl+9jjj7bMbp810vmw1AtKMqXiKSYwXuIMZkUrmPDOxdRzpNrG8rhPwrh3JlFjx8cUxRTQVOjxh289vW1GC2lr3ReU6U5UZqPPccNLqMrY9RRPiLXaOoUwV3CctvjHQ16HD7bJMGajbdjpiH7Neiusn88o6FVvz21l2Uxf7KUl9stLnlN4qAQp0ejkcwF35CmxprhMMlQ4m1WA=
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: CC28A1A0007
+X-HE-Tag: 1794557994-985158
+X-HE-Meta: U2FsdGVkX1+xu8rARwAroVx5Js/Wy4Zq4R4lg85SoetrdKTmXDij107kTo/crbuAecEHLLdVDuVHvXWhREfjJbQAbojSbcDwgCPPxK5nh/we+GgQVczMzZd9VVqJjYoWIrlI6Vj91RbjnCsOmOChM+inENCaVMhE/PguKU2uVEDXqDHm/9RCtY2k1UlaQbsyRXFSgPRwEpXnCIHlC0HRHKGXlKH/jgii5uV0qQy9FTs+aWXSnXSsUG+W+v7ZCM559A3Mn82OZu9vG2gg+vrXKq9n/r6PGpgNzXtU9oCxZekUKCPPfzzCw/PDRkSf9Wzc7+Y5uAYzrRNZ8AAE7yCLpVBhVZrOVmeO1/v2k8ZbvuFHcqbTJuWP9HkZ26q3A9XM/83vFhbpGXVEtP5TTzLMPasMEPvUqc2VmsQ1gOuU5EDvnUvpyOg92sjlJyZqP8YarpKe8AKprz8lqGKehbnOdCPxnd96A58SaB/G6jByDWuur3VreZh+Ce/Es2qGRC+k37OiLW+aTyxZeIL218o0eLD1aYNpUmlCTLcOzJZw9RFilQ2zU3l6iyLoT1GT0bEiyZKCJrXyxNHuudxZaChqoOPmDaSB3H80Yi0ZY1LGnhtj7rxaAThfdEmO8kcWoGlU2/NanM19Mh0WftCDwfNdCPvpVErNVSBZ2jyXoOD/gbDBsKx3Gg5+eEv7y6fi9O6jxKvqUM6c0WRX8oVScyWAcQgJfyW4YkW8Y41oRSoeZcwg0INRgAs9ZLk0GjIHvZPXF+9XIUB+lTgatgFwM5QToBJtbYr/aB5TTslQlnzFBcxrEU+9ep4Zycd9HLhFINEniwd7bwzPDPM15RLo6V/QLMVIka2BPxe4PCSwQBIG9JKhY96ioyFTZbLSiSBmhRf/1Z9YFjiqbzVRaqzQmzrseGVFad91AEnrYXxrE80p7qOlLxmkul3Yqy4R7biknX1Xg4lZJBvPkTrpMtfQQ3Q
+ RLzOEQkC
+ 4NViKiQwhDwCMOocZeLbrZw5jRm24pcmc1Z5xX+iAUp/ewH0Sy+BBJ6z0QYYV2Bhc80Lfc/51pPy2d99StYVyxmSAy3SMq5+KsvhjLsDpU88yXkA//nYtfXB0M7hPYkd74Ft6fC2Df7fWInZcIK+Y6uTGBX1kZsBw+lyfMQqHS5YWM6u92iYYw1TMqtQjAEjLDdruRTmRqXHLNEZO50FNbujPpeWXU4fsVvACLHkqaMrCIYDGPk46PlZZw9sW3Stsn6sGC11qh9EIqljKagzFt7byrsBU1bMuviv2ceVMQPbXm/5UcaqOrq/nRe+wZSd0kzVHu8b7o5NF0lSrSyEgvuExvy6F4ZNiBqsdtvC+1eCTYvWPrSNdUXDkYw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,84 +108,66 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-page_cache_ra_order() rounds the start of the readahead window down to
-the minimum folio size of the mapping, so on a file system with blocks
-larger than the page size, index can end up below start. If adding the
-first folio then fails, for example with -EEXIST because that folio is
-already cached, the loop stops with index still below start, and the
-check before the fallback
 
-	if (ra->size > index - start)
 
-wraps around, so do_page_cache_ra() is not called and nothing of the
-window is read.
+On 11/13/2026 2:56 PM, Qi Zheng wrote:
+> 
+> 
+> On 11/13/26 11:56 AM, Kefeng Wang wrote:
+>>
+>>
+>> On 11/13/2026 10:30 AM, Qi Zheng wrote:
+>>>
+>>>
+>>> On 11/12/26 7:27 PM, Kefeng Wang wrote:
+>>>>
+>>>>
+>>>> On 11/11/2026 2:46 PM, Qi Zheng wrote:
+>>>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>>>>
+>>>>> cma_alloc_frozen_compound() uses GFP_KERNEL, allowing direct reclaim
+>>>>> during the first MPOL_PREFERRED_MANY allocation attempt even though
+>>>>> the caller clears __GFP_DIRECT_RECLAIM.
+>>>>
+>>>> MPOL_PREFERRED_MANY is only used for the partner allocator. Without 
+>>>> your
+>>>
+>>> It's doesn't seem so.
+>>>
+>>> Gigantic surplus allocations already use MPOL_PREFERRED_MANY, following
+>>> eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic hugepages"),
+>>> which predates 9bda131c6093.
+>>>
+>>> alloc_buddy_hugetlb_folio
+>>> --> MPOL_PREFERRED_MANY
+>>>      --> gfp_t gfp = gfp_mask & ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL);
+>>>          folio = alloc_surplus_hugetlb_folio(h, gfp, mpoli->nid, 
+>>> nodemask);
+>>>          --> alloc_fresh_hugetlb_folio
+>>>              --> only_alloc_fresh_hugetlb_folio
+>>>                  --> alloc_gigantic_frozen_folio
+>>>                      --> hugetlb_cma_alloc_frozen_folio
+>>>                          --> cma_alloc_frozen_compound
+>>>
+>>> Before 9bda131c6093, cma_alloc_folio() forwarded the caller's GFP mask.
+>>> The conversion to cma_alloc_frozen_compound() replaced it with
+>>> GFP_KERNEL, re-enabling direct reclaim during the preferred-node
+>>> attempt.
+>>
+>> Oh, I forgot about that commit. The naming and some of the comments 
+>> are misleading because alloc_buddy_hugetlb_folio/ 
+>> alloc_surplus_hugetlb_folio
+>> can allocate both buddy and gigantic folios (which can be allocated from
+>> CMA).
+>>
+>> Maybe rename alloc_buddy_hugetlb_folio to hugetlb_alloc_surplus_folio,
+>> or other names...
+> 
+> Naming is difficult. ;)
+> 
+> The Hugetlb implementation seems quite messy in many places; let’s focus
+> on fixing the issues first.
+> 
 
-For example, with read_ahead_kb 128 and 16 KiB blocks, the mmap
-read-around window for a fault on page 1042 starts at page 1026, index
-becomes 1024, and if pages 1024-1027 are cached, pages 1028-1057 are
-not read ahead.
-
-Compare with the end of the window instead. Where index is not below
-start, this is the same check and the same number of pages as before.
-
-Tested in a KVM guest (x86_64, 2 vCPUs, 3 GiB) on mm-hotfixes-unstable,
-with XFS with 16 KiB blocks and with ext4 on virtio-blk, read_ahead_kb
-128. A test caches page 1026 of a file with pread() on a
-POSIX_FADV_RANDOM descriptor, then faults page 1042 through a mapping,
-and counts the cached pages of the window [1026, 1058) with mincore():
-
-                                       before   after
-  XFS, 16 KiB blocks                      6       32
-  XFS, 16 KiB blocks, nothing cached     32       32
-  ext4                                   32       32
-
-Tracing shows the fallback now running after the -EEXIST, as
-page_cache_ra_unbounded with index=1024 and nr_to_read=34.
-
-Touching 1% of the pages of a cold 20 GiB file on XFS with 16 KiB
-blocks, at random, at a stride of 2053 pages, or as random runs of 2
-or 4 adjacent pages, reads the same amount before and after, within
-5% over two runs each, at read_ahead_kb 128 and 8192.
-
-Not tested: other block sizes, other file systems with large blocks,
-and other architectures (built for i386 only).
-
-The problem was pointed out by the Sashiko AI review of an unrelated
-patch [1]. An AI assistant (Claude) helped with the analysis and the
-test, and drafted this changelog. I reviewed, implemented, built and
-tested the change.
-
-[1] https://sashiko.dev/#/bug/linux-da6e8836-f808-4b39-9f04-de52995a0162
-
-Fixes: d5ea5e5e50df ("readahead: properly shorten readahead when falling back to do_page_cache_ra()")
-Signed-off-by: Gopal Malaviya <gopalmalaviya53@gmail.com>
----
- mm/readahead.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/mm/readahead.c b/mm/readahead.c
-index 6e55632902..afcde18316 100644
---- a/mm/readahead.c
-+++ b/mm/readahead.c
-@@ -552,10 +552,12 @@ void page_cache_ra_order(struct readahead_control *ractl,
- fallback:
- 	/*
- 	 * ->readahead() may have updated readahead window size so we have to
--	 * check there's still something to read.
-+	 * check there's still something to read. Compare with the end of the
-+	 * window, as index may have been rounded down below start to the
-+	 * minimum folio size.
- 	 */
--	if (ra->size > index - start)
--		do_page_cache_ra(ractl, ra->size - (index - start),
-+	if (index < start + ra->size)
-+		do_page_cache_ra(ractl, start + ra->size - index,
- 				 ra->async_size);
- }
- 
-
-base-commit: 76f5384740b2fd9ee5d71da9d49b271d37c5a51b
--- 
-2.43.0
-
+Indeed. thanks for you confirm.
 
