@@ -1,102 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296B6606A889
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 05:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A965606A332
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 05:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nado3prZ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DY52BRJq
 Received: by kanga.kvack.org (Postfix)
-	id 3C3AE6B05EB; Fri, 13 Nov 2026 00:15:33 -0500 (EST)
+	id 5C2816B0669; Fri, 13 Nov 2026 00:17:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 379126B0654; Fri, 13 Nov 2026 00:15:33 -0500 (EST)
+	id 5730D6B0665; Fri, 13 Nov 2026 00:17:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28A236B0655; Fri, 13 Nov 2026 00:15:33 -0500 (EST)
+	id 43B6A6B066D; Fri, 13 Nov 2026 00:17:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 05C316B05EB
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:15:32 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 84804140622
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:15:32 +0000 (UTC)
-X-FDA: 85428932904.29.130BD45
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id E1B7AC0005
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:15:30 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nado3prZ;
-	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 167956B0665
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:17:23 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9AED51A01AF
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:17:22 +0000 (UTC)
+X-FDA: 85428937524.23.51C6DF0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 046DE140007
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:17:20 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DY52BRJq;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794546931;
-	b=2OEDssn4On7sYIOkpQyGkYozutfwDupq5uoALudbfnWwcejFtjNrsV65sj1n9nobnbdBjA
-	5g5DHRjAZUxfbsFeOBI/yKpJi3yFHWk8E93fFJLGYnTP2CBHzPFkd4MJcg1yzi284toVPA
-	jVP4y63VHHLP03dkmBY4Rg2trSqll+g=
+	t=1794547041;
+	b=B9NaHok/TKUUVrs5UmOdjQmfQpM08FPAVRpFKp8EG728uL1ctO4XvuCLStDBtO/F9m8Z6T
+	y++6ARw8lSihdcbRcdqBTWYzeKOmRpv6p5pdGWWFccXFep6PUSn24ijV1805kHgb6frvwU
+	WmNbct3PwQ4BFNF4DCilZNFRLFEuiSw=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nado3prZ;
-	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DY52BRJq;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794546931;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aZa3tZ4YYrvdqsY2fuTuPviPfCZk/F7TkrMXqn8SDvU=;
-	b=yrKEIg4VEri8r99vrYN5wIskQ7BdnlNMP+WrJauFWUxXxXiTCccfgGXYxgeEiTl1rZi5Yk
-	DO8vLy5uBfo+rgFX7a5uVQR5K0alBbfDOrbXrxjiMXzyCK3noQmPZiL14anUAz6lQbl+Zb
-	Zcidw0mnt5X9rU3qzhLQ80qXm15nZMo=
+	s=arc-20220608; t=1794547041;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=O0KFYW6GQeuL89YBqW1qiLu+Kr/wUVvd+oaMVAmTWFA=;
+	b=4kOw0u6g6y+6hYgGZ6mvr8qDBhVmG7619+f6ZOMd44ZzN2oldd6GiDdiI8K8aSwQVJyAmK
+	d+Ck2CUwOZ2Kt5NVM1mJWbnqv2rIrH4GC+h4uvCgFb7n9BSmOpiQLeNpLdoSsrwLxxYcJb
+	Yj9Pp6mJolxvMSEAjKVx+SyHFd/bbRs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1B84E601CB;
-	Fri, 13 Nov 2026 05:15:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 550071F000C4;
-	Fri, 13 Nov 2026 05:15:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C818541691;
+	Fri, 13 Nov 2026 05:17:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 603121F000C4;
+	Fri, 13 Nov 2026 05:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794546929;
-	bh=aZa3tZ4YYrvdqsY2fuTuPviPfCZk/F7TkrMXqn8SDvU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=nado3prZO5HA5qtHqKc9NMPK5g8S/GDTf1PFS19BN0eD1f0itXc9SoD5GOIXYgdnz
-	 k+9GHrawO9moE+d6NVvMHufK51BfNwvgh/5xN32f97sWZ8KbDaPLalNBrRzx2uJn6L
-	 8cNxBwJ5L2JKqNqmVX36T/Z23IM27R080wHq+2Wuq6L1tza4A6D++gileL7+3uXla+
-	 nPbrtD8dx4GpRO2IJpFDAoI7OhlReECMgFfjOK2rctbJyJwO7kol9YSVM2UhLo1IwS
-	 khWbswPGnC3YZbtTKs0lPHxt8pEUz29SczQJq380SHCeHDqC1AvPR0yymQX9sNUuVf
-	 FnpfB2rF7C1Xg==
-Message-ID: <sashiko-outbox-212213@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 3/4] mm/huge_memory: don't warn when a page table
- blocks a huge pfn insert
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Eliav Farber" <farbere@amazon.com>, "Andrew Morton" <akpm@linux-foundation.org>, "David
- Hildenbrand" <david@kernel.org>, "Zi Yan" <ziy@nvidia.com>
-Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Baolin
- Wang" <baolin.wang@linux.alibaba.com>, "Nico Pache" <nico.pache@linux.dev>, "Ryan
- Roberts" <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance
- Yang" <lance.yang@linux.dev>, "Usama Arif" <usama.arif@linux.dev>, "Kiryl
- Shutsemau" <kas@kernel.org>, "Thomas Gleixner" <tglx@kernel.org>, "Ingo
- Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>, "H.
- Peter Anvin" <hpa@zytor.com>, x86@kernel.org, "William Kucharski" <william.kucharski@linux.dev>, "Vishal
- Moola" <vishal.moola@gmail.com>, "Alex Williamson" <alex@shazbot.org>, "Matthew
- Wilcox" <willy@infradead.org>, "Peter Xu" <peterx@redhat.com>, "Jose A.
- Perez de Azpillaga" <azpijr@gmail.com>, linux-mm@kvack.org
-In-Reply-To: <20261112051440.16140-4-farbere@amazon.com>
-References: <20261112051440.16140-1-farbere@amazon.com>
- <20261112051440.16140-4-farbere@amazon.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 13 Nov 2026 05:15:27 +0000
-X-Stat-Signature: ma1mtuwh37jbwzfc4n4ynj8m6h6kwo83
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E1B7AC0005
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	s=k20260515; t=1794547039;
+	bh=O0KFYW6GQeuL89YBqW1qiLu+Kr/wUVvd+oaMVAmTWFA=;
+	h=From:To:Cc:Subject:Date;
+	b=DY52BRJqtabD4Q+zldmRe3wCwGrf8R6w8sFAQKSmpKROsaMSzyoGsVSUAHcAJWXM8
+	 bmsqZgCqc0rnuMdF+sr8bPknfcoMOqd4upTCiSZEjG7lYB5dc+YvBLnin78hTXsS4Y
+	 2b0d41jVaGi05Qo65rhPyHd3VdzOcMgf/fMDcCjOg8x2iruEXncA0sAz1U7x+XS8sn
+	 pUrDZFx+NdXueHdq+hFgkNVB1/QwqD1KIQWeaijAmGVA98TI/LX4Kxtph2JG/a8+SD
+	 KcLQDBIAbhnj36SiS0n01TKZG+3qC+tngakpUaHcQJURT5AtP8PBapfA4tvvtMRM/B
+	 zDttYkoi8uYhg==
+From: SJ Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SJ Park <sj@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 0/4] mm/damon: add lru-active probe filter type
+Date: Thu, 12 Nov 2026 21:17:06 -0800
+Message-ID: <20261113051711.89274-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794546930-417924
-X-HE-Meta: U2FsdGVkX18MQvdfweZAkKnMRK7EKvksZozFFFbXKdtCWN9B9+flbT+HJjQw/8i9DJObqH4ty5vbj7Ph3mXOyUhTyecQ9n5b5FS7nLm9u+XVEG93RwdWTgggReF1PoidvN3yBZpGd3bhQy+1RVNE46GUmxrMF/iPB6rQi76NZplfW+wHv88PrZnRlz1Q5kCsUgxfnIw/ILudE5CyniVEECwfVZxpSg5htvR1FbIBr4r5KxaN1igtfHMGGEyk5OeYZvCLXi9FDr76IDHZ2LcvMfTMYsZrxOCMTgKJdm6c+z2XxNRLHxWm4BNfj3saPncfa4dD/7SG6XXndX3zgtUM0LbADkATJvFShJK7CgONr0ZrPFLV4GB6dfsA5ncp/LI6bEYZlJzvgtrd4mwm+YNkwclQXJo1RWhQxdo3xoq1JLdK3C9XWeB7SHw3bpl6g8izGXTllxScLUxWcL4hi23kEQNJuz16Mm7+bw3fxH3q6AQd2fF/+Vl9OvnYQWJfovh6bnK2M2RaPey71Htk8BKwCrtGVxiSX4A9KfDTeMKQQFRMC9LUKaK154WiIDT3x5rr3jCwvTrAxvK0NZ1GT+2kbo+QoebpZV75TYmRc+ZnY7iR4/hKUCvoRZ3efmMPbDPLiLP4SGWSftgbtgJblGIMsheHTM8JSlSXplWopxquuQUBkzKtdnSxP09wVzrOal77OQ0hsWdXRlyIpS6cwykqmZ5Giefnc2KzkX7JGk+3sXqKRsDW9J7pes+j+YLgpn3UvwWp/fvSDvhUbRs1eKgtB11gUnzs6ukMHF6RlX4rMQuIySrAAHd8P9158Ge9DT3Wf8QTZ+jhWX0SNqz81UAX9PI/fWQ1Sn3GCSkhXckjqBIWFOhruyZ8yv+oQFT6WvupqWTFde3vqHTTCh+/Tf70zGj0qv9dN5gBybNbqVx+xCGgS9nbdwl7bbVjBmS7eV57ySQOfsW5+Q3AiDowTqN
- uqtP+Z3C
- XZ01FOUOhSzyljr4ITQMgST2YtniO/7Ri6iGcKyPYtHcIDNH48jw2oHbSSzXXMYTVK01uz0btJ1EQL9DoRorSX55cskGowfE844vIu3s00zK3zr6Ce1tsNOLdVVgjpk1oRY8Eilv+ZcfyNYcwyTkKb3g6OmmgfRqvZ3OaRVpKu05q4i5xYvD0wcr8OZupmNhFOgUlKyCSsbbcihIj7NIWKPjQAS2kZfgLjGF76flFF3WsT1IkFvfchOxuETGf0bxnDsmnnqXD6+uu485+j+HGb3Y7Pmt5FQIYazZj9Wyv3yh0MZcBKoH9hQBCBmXwoR22voi3o6SQ2iKy/9s7Krk9k8Grnd06Jk5HUiQ1C+azV+ZtFWqtL1uBUgiJHcFeJ13hBHcthISpZIMUjBOgr4ShKVm3n2IoCMKhdXB+6fiQZd1nRRjEC5CMxqFU0b5LAJyPqw4P++7tpOz0nUe1WOLHGjScOONiOS0dEHKU7XA2kE1Vb5vI00Hu60uYUvXlqTkhPsbIVGsltsrSxng1mHEgSIMJaaJw01t6b0UrgscgNC386H+Hf/cZJ0ql/0iiUy2xZFzjLB9ovReAZLgR67VHaVn+PiC8pYaEygWwF9VItpOHiYPZz7hRzsqAcKaK8L9Ncob18+D9BiHnRr6q14fM6scL42vf17J8asXcfxTXd9nFLBj93XcKKRgbDuELNVWMoWMKoj02Uz1tGogB1Xyo3Wclk94kl+vrawOC20N0LBDLDoc=
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 046DE140007
+X-Stat-Signature: cp9ea1cmbnazo4wk43mqrhsyc4hreoxa
+X-Rspam-User: 
+X-HE-Tag: 1794547040-733860
+X-HE-Meta: U2FsdGVkX19eupgAqcsOqnUOtiLUoXs/B3FGRsDKkTpnMseFN7iakUyKAlMwYKlXHUUxe6DKbIRep1I4pLc5WBh/+GpVZfC6e4GP/xwiAOaMkIi5tM4ZH2JPdlKfu6sWl4NZlKNoeNEjNgOFqFgie1SoLx2BN4G+fG5yNC0T6F0+dkMShTpVGhi5vyV4ERIT67xXcjPxUaUiugqsXELX4j8hxt+rOCAOx4InyYwL8r/HQnhW285P3+o0O6OgEy+ZBSSM6tsUPE62KUWQUhM2R9SyX7NUj8PG/Dfdy4BbiwAJrRn09nLonrt+/Mf3fPbX0H/ucSosg77OkUYL0OSXoEFVN4gCRoSQ/iLfoS6vuR/JMh9UmvMQ5LJv7GZEZlTmpk0fow/NfUWVvvrhd4seTiFVSSGYQDgzIXU3AQquu+Mfvzm5q3gLRt1PfF1yccytLjUKw1YDKl9qwW3Be5J2Uf62geieLGF6g4xrMquVDQU6s65BNRcgSAo2kUui+jsDTaeriK9usRdetBdfeu7ncTiNXRNukJoFkqBnsXEw4TyiPsOPIL4DjFs7pUCcPAKFw1t5mDrmDW0m6+ESx4IJBAvfTs5djuXoHuUlBbOFxQ/hmfceKZwwSb5iI8HREKc3euyE3sxJ6FE92fmoGl+hSh/RitFZNqVJl4EEzhKFudT8yFFCKEZ+vfAMAVQ33583+YoHmjRjPY8JCIeLLs9wn4d/bFVwstmX0cN6RzycsZ23axEs+4iPUj8AzPM9vJBw8RLa8NdVmRtJUJzLOU4exMyG2X1bOmCml/z/JU16VOQ2MMrRfkBg+1Tn/FThsMtJ7xGcvY7UVqyECrKGv+0ltdfwo9Lpl5PvyCXyuR1jZLN0Tyf9F2y2Yi6xlC9WFheAD0N7jVXO60uf41rqJQ6OyW8K9Wh6ErCA+ei2Aqf+gDtTNvEXhHMYTKwS9qlPCPaFJWnYQBHwihtJvdBQVi8
+ QYqu9Kll
+ tEFf/OxESxtAjYhfGVImJwLwq8jlpUPYD1Te1zLfp5Z1PgJzwjy2RczKPtgHumjxalo4cc63/A/XDOi/D+EuMv2AaPUIdLTjKw9FvQqE2CKhZYXbPmo0AqojvRCWvyxIrtKjNU9ggg7ufeq3HU/jopr5C5pR/6vcTIFwIBjorGlp9R2nxLuN9qgbWTztV4Le6NN1IL6Renyt4498Bqj3G/8aYxyIQ4Pnra5wF8e8DakYDFCe8CNm2avt1yG9m1mmjavh2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,52 +96,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] mm/huge_memory: inaccurate Fixes trailer for insert_pmd() and
-  insert_pud()
---
+The LRU-activeness of folios is useful information for understanding and
+optimizing the system.  DAMOS ops filter therefore supports filtering
+memory based on the information.  Using it, the information can be
+extracted in the folio granularity.  It is precise but expensive.  DAMON
+probe filter is the complementary way for getting the information in
+region granularity with much cheaper cost.  DAMON filter does not
+support LRU-activeness based filtering, though.  Add the support.
 
-commit b401d2d30ea8d00390aed1659aa84d49600aa4d3
-Author: Eliav Farber <farbere@amazon.com>
+Define new DAMON filter type, DAMON_FILTER_TYPE_ACTIVE, on core API
+(patch 1).  Add support for it on both vaddr and paddr operation set
+(patch 2).  Extend DAMON filter sysfs ABI to let users configure DAMON
+filters of the type using a new keyword, "active" (patch 3).  Finally,
+update the DAMON design document to explain the new type (patch 4).
 
-> mm/huge_memory: don't warn when a page table blocks a huge pfn insert
->
-> insert_pmd() and insert_pud() treat a non-empty entry at their own level
-> as a leaf and compare its PFN against the one being inserted. A page
-> table installed by a concurrent order-0 fault also makes the entry
-> non-empty, and pmd_pfn()/pud_pfn() then report the PFN of that table,
-> which never matches. insert_pmd() warns unless the entry is the huge
-> zero PMD, and insert_pud() warns on any mismatch.
->
-> A VM_PFNMAP mapping with both ->fault and ->huge_fault can produce the
-> mixed orders: an order-0 fault installs a page table over an address
-> while a concurrent huge fault on the same address reaches insert_pmd().
-> Changing an mm's THP policy while another thread faults the same PMD,
-> for example with prctl(PR_SET_THP_DISABLE), is enough to do it.
->
-> Compare the PFN only for a leaf entry. A page table is not an error, so
-> take the existing out_unlock path, which returns VM_FAULT_NOPAGE and
-> lets the access refault onto the smaller entry.
->
-> Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
-> Signed-off-by: Eliav Farber <farbere@amazon.com>
-> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+Test
+====
 
-[Severity: Low]
-In insert_pmd() and insert_pud(), the pmd_pfn() and pud_pfn() comparisons
-and their WARN_ON_ONCE() calls only run when write is true.  Commit
-f9e54c3a2f5b ("vfio/pci: implement huge_fault support") always passes
-write =3D false to vmf_insert_pfn_pmd() and vmf_insert_pfn_pud(), so it
-cannot reach this warning.
+Confirmed the functionality like below.
 
-Should the Fixes: tag reference c6f3c5ee40c1 ("mm/huge_memory.c: fix
-modifying of page protection by insert_pfn_pmd()"), which added these
-checks to mm/huge_memory.c?
+First, start masim [1] to generate a ~476 MiB hot memory region.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261112051440.1614=
-0-1-farbere@amazon.com?part=3D3
+    $ ./masim.py run --config_file ./configs/stairs-500mb.cfg --repeat 10
+
+Second, start DAMON to monitor data access and active memory ratio of
+each region using DAMON user-space tool (damo) [2].
+
+    $ sudo ./damo start --target_pid $(pidof masim) \
+            --probe --probe_prep set_pgidle \
+                --probe_filter allow pgidle_unset \
+            --probe --probe_filter allow active \
+            --probe_weight 1 0
+
+Show the monitoring results.
+
+    $ sudo ./damo report attrs
+    heatmap: 00008[...]82222222222222222222222222222222222222222222222257777789999998888888874444445[...]8
+    # min/max temperatures: -1,580,000,000, 100,002,000, column size: 62.841 MiB
+    probes
+    - prep: set_pgidle, filter: allow pgidle_unset (weight: 1)
+    - allow active (weight: 0)
+    intervals: sample 5 ms aggr 100 ms (max probe hits 20)
+    #   size         address       age           probe_hits
+    0   253.047 MiB  85.984 TiB    15.800 s      0 0
+    1   4.000 KiB    127.984 TiB   15.400 s      0 20
+    2   120.000 KiB  127.984 TiB   15.300 s      0 0
+    3   1.450 GiB    127.407 TiB   11.300 s      0 0
+    4   498.738 MiB  127.409 TiB   11.200 s      0 0
+    5   500.273 MiB  127.409 TiB   11.100 s      0 0
+    6   502.055 MiB  127.409 TiB   10.900 s      0 0
+    7   461.926 MiB  127.411 TiB   6.500 s       0 0
+    8   351.754 MiB  127.410 TiB   1.600 s       0 0
+    9   497.930 MiB  127.411 TiB   0 ns          1 0
+    10  8.000 KiB    127.984 TiB   0 ns          6 0
+    11  476.340 MiB  127.410 TiB   1 s           20 0
+    memory bw estimate: 0 B per second
+    total size: 4.909 GiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+The second (idx 1) 4 KiB memory region is not accessed for 15 seconds
+and the page for the region is on an active LRU list.  The last 476.340
+MiB memory region is accessed for each sample for the last one second as
+expected.  And nearly all pages of the region are not on an active LRU
+list.
+
+[1] https://github.com/sjp38/masim
+[2] https://github.com/damonitor/damo
+
+Changes from RFC
+- RFC: https://lore.kernel.org/20261108191615.113362-1-sj@kernel.org
+- Add test results on the cover letter.
+- Rebase to the latest mm-new.
+- Drop RFC tag.
+
+The test section and the changelog can be removed from the final commit
+message.
+
+SJ Park (4):
+  mm/damon/api: define DAMON_FILTER_TYPE_ACTIVE
+  mm/damon/ops-common: implement DAMON_FILTER_TYPE_ACTIVE operation
+  mm/damon/sysfs: support LRU-activeness based DAMON filter setup
+  Docs/mm/damon/design: update for DAMON_FILTER_TYPE_ACTIVE
+
+ Documentation/mm/damon/design.rst | 1 +
+ include/linux/damon.h             | 2 ++
+ mm/damon/ops-common.c             | 7 +++++++
+ mm/damon/sysfs.c                  | 4 ++++
+ 4 files changed, 14 insertions(+)
+
+
+base-commit: e055da336413b651d1e23d438bb5430f9350d3f8
+-- 
+2.47.3
 
