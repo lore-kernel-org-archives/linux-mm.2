@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4736070C51
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 12:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A595F606B58E
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 12:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jTTdJq3Z
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JRpZnT4t
 Received: by kanga.kvack.org (Postfix)
-	id 81F516B0622; Fri, 13 Nov 2026 07:02:07 -0500 (EST)
+	id 1DD386B06FE; Fri, 13 Nov 2026 07:02:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C1646B06FD; Fri, 13 Nov 2026 07:02:07 -0500 (EST)
+	id 1B52D6B06FF; Fri, 13 Nov 2026 07:02:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F22C66B06FE; Fri, 13 Nov 2026 07:02:06 -0500 (EST)
+	id 0A3506B0700; Fri, 13 Nov 2026 07:02:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 92C996B06FB
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 07:02:06 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1AEEFA0283
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:02:06 +0000 (UTC)
-X-FDA: 85429957452.18.E040759
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 36E4920006
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:02:04 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jTTdJq3Z;
-	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D57EA6B06FE
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 07:02:10 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5F7981C3B0E
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:02:10 +0000 (UTC)
+X-FDA: 85429957620.09.085A40D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 91A9440014
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:02:08 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JRpZnT4t;
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794571324;
+	s=arc-20220608; t=1794571328;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+Ow1hJfO48deuGkhrYlAsCvQdwxNlOUTrn1uGHKQmZQ=;
-	b=BAnmxvZdoIPmbYgdxmvJYxubDfyzQeVap/Bz97p4TNKPn+1H7tUY6uyoTjThPmgv3q1DAe
-	qKzZNyQ46vrEQtYG6PMxpOjjN6PsuTGCqi7tMmvQgKlXCA+BjWXIPH3YCcmLcY0SYALNWk
-	XvnwfZmQKeBhT1rieG+qv2Qa9KoEPac=
+	bh=YUJ/RH16CUAQaM0PxhxLjbl6pOsDoCFNUfhjJDzXYAI=;
+	b=W5ij1VTMsWFulJIPU88Vl0QJVYn8S05s8fEvoMBwcHd+NKCsOysQ+EM7r/84nzcV6xJvT8
+	KQ9gCJAcvcU0pVHH4nmGPm8ph4xrrJTb4xefmif3FpgtEKkyFENKfJQX06syQ7Rl4sQUxY
+	bVVXWbA25pDeNmMUnsx7ak0CMEewqQ4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794571324;
-	b=Y5Lg6/EXlrcpCQkqltnCNvlW3EW2FBFNzcv9oYngJ3cCuHdIHokw7tmr/p7McdrexG+3iD
-	IZdAOtNViisd7ETskmNAqQ27Ruuxn9zNkQpyQes6kCfaM9PSlexDQn2AaPz0bBZh5txQUa
-	U5vMOIewWweW1cEWLVfR5HYIbWjpVoU=
+	t=1794571328;
+	b=U0HbxqcGz6MrplPnbF2AHI2/3VZNx7P4R8cuaxVXc8nRzfzR6gqrI8q99Nl8qd9K5ztRv+
+	xpMy25nLguoUe+tKdp7FSPlxjmLgyiyrVA1gXNNV6eGeu/8fg7k90MczRLxU1yyaip34yb
+	tDP32QyiZeEY0bZohX6E/Z220cfcCzU=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jTTdJq3Z;
-	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JRpZnT4t;
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8D08845733;
+	by tor.source.kernel.org (Postfix) with ESMTP id 2ECE362236;
+	Fri, 13 Nov 2026 12:02:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EECC31F000C8;
 	Fri, 13 Nov 2026 12:02:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B921F000C4;
-	Fri, 13 Nov 2026 12:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794571323;
-	bh=+Ow1hJfO48deuGkhrYlAsCvQdwxNlOUTrn1uGHKQmZQ=;
+	s=k20260515; t=1794571327;
+	bh=YUJ/RH16CUAQaM0PxhxLjbl6pOsDoCFNUfhjJDzXYAI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=jTTdJq3ZHQO17xb1iVOpqx2VTyAHhHtIJVfqcsF5CgXMewwsOUDO0PGAsvU6p+LpF
-	 TV3JzlautUj4L70UOUEDWlY3bZSV1dPbUEsN/m0YfrITpmQP/KGytfNTOcJ0W7x19D
-	 DzQ8NvQQLP8CLRtZb9XUNruqdy7nHLpZC8fV1S5w5MpXFNHWC7YQCnw0k1qtN9ShWb
-	 ReInI2kgJadpToBmQGYul0Y7E0e7OnBYAAdW0Z/rTwv5T2xYp5tAJvPpMUxrxKckqV
-	 Zt6tG2Qg3OiYXPBetd6NbpVajzfYTqXiNREfZPOS/6Ga6R4dRpmzpZ58YMWSjwasFU
-	 kb++q785qgsFQ==
+	b=JRpZnT4t/jYbHpTQBZoAPxuC43KKqhQeXRStGzW9hFFjLHr69igGE2UBo+5YKnWrI
+	 6yXrPHlE7MVQKWFxBfBxlYZFy9S/vpLmUeGY3XqZjw//xJk7S0I5D1emk0NJFzB0U2
+	 I3er5eljWMspmrvP0zgjWx8CbO5RuNDw/Wmn821zjZ+wkK2GUGAVl+HvAPjaVuAlIc
+	 V/u3bYzEQCIURcDJ0eTE7xnepibFXGJ7BpvW3cQ2TTowUrEKBRovXGNL5psqJ/gAnu
+	 vt0GVMPoozgBRhxRRGXMpZFjJYlQ2RL1gwHgAFYHmYciD5STu+MbLlHB3XtPlMAbPq
+	 rHJ0XuzI4u4jQ==
 From: Christian Brauner <brauner@kernel.org>
-Date: Fri, 13 Nov 2026 12:59:22 +0100
-Subject: [PATCH v3 26/33] btrfs: don't set SB_RDONLY after filesystem
- errors
+Date: Fri, 13 Nov 2026 12:59:23 +0100
+Subject: [PATCH v3 27/33] gfs2: wait for a pending withdraw before
+ remounting read-only
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-work-fs-sb_rdonly-v3-26-0be92bb73709@kernel.org>
+Message-Id: <20261113-work-fs-sb_rdonly-v3-27-0be92bb73709@kernel.org>
 References: <20261113-work-fs-sb_rdonly-v3-0-0be92bb73709@kernel.org>
 In-Reply-To: <20261113-work-fs-sb_rdonly-v3-0-0be92bb73709@kernel.org>
 To: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>
@@ -80,28 +80,28 @@ Cc: Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org,
  linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, 
  linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, 
  linux-xfs@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8494; i=brauner@kernel.org;
- h=from:subject:message-id; bh=qEpzIjmevC5rqt8moTob6So4JiC8WNq/cSBOGdRGEnE=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWR9+71jTyXTxEnTJTw5T1bwJM7ZOevytnVXb85fZKKeq
- GvuY7DVv6OUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAiRt8ZGaYy9WnGRbe0X/Xm
- 2rVCWIqpcfvTrtcb6nbvqNVcyPHNwY6R4cj3j63L2l2Z5Th0yhfO+hpVwdUd4/Fi3dqpUi96JSY
- m8AAA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2800; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=c4mPQccEi9gz8unBosiI8qBxJmixdc+IlKuwVCk3jlI=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWR9+73LfPfKBzIWqW9OvkvPjHxZM8nQtbrctT3gRuaXb
+ rV/CWcnd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzk6W+Gf5olC2Qc59ZVZAX3
+ b9B4uFE95lx3xlX1KVFTD/fuKuKQTmBkuK4jWLf9WX8Nd90m/zPsRT+evmA7t3Hd0qArEs5hkU4
+ GzAA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 9x6zgggguhec11osuckafd3abmmh5tf8
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: s1csz4oyknamubp75h6ut67hd71su6nf
-X-Rspamd-Queue-Id: 36E4920006
+X-Rspamd-Queue-Id: 91A9440014
 X-Rspam-User: 
-X-HE-Tag: 1794571324-872468
-X-HE-Meta: U2FsdGVkX191zcL+GhqXG5JanZ08MdxekRKcnRnfMTTIBuO83lh+AQ/vRkK1OJq8kYvEI8AiNCgKnkzMaJbbydFZbVI8QiEDRZBGkvziZXHqf2/5twrGxY0UzRx5L3bEp97QAYiGCmLyZas3TyHh5PxtMKpWdqfdBaWXJGxIjWK+HZSFG/7E2XwOnIGAH7TZbZdt64bL3WvoymeZR2ab0gEiqiRcr1/W7NfVJn6Kz9TpLpAAU4SWE/DzSc35b2vTDYeWn7UfkHJOcLSdVsAOvL5WyYFtkjwKMkHJMEzHHl0cW51YXpgqpkI8Ems/yuzD0J99II9SYPFgbF2gG7FHYmN3M5ZH4rlRtqH/IZxFhXPDj7S5JWkoijuHk6jOlX1Zw3a8MjiVAg+DJN4zpu9dSf7YaIdwoKGgrip/dnP72G10LCUOEAytlaS1faD1jirTxC+jUbWu4bcZjNfXmJKiYTaOpiL7WMRpJg0msNgVnx9uPdTso8/hE6K607yeeLwlVCj8tnk3B5BBvzT8IWYl6QFA8uemF9N7NM08De5AiPRHDtil7p1AaVjyJkUj3G6HrwVGOWNuL9g5zxOB4g0JoPLM31NX626QQSisP8+jJVaGArswYROdN0Ui+zn2kaktPyMYOsaL3TzcwQyEmvlvjwLhKsG8S83FoDtbRD1iYZ8rE5EDLRGpzvFgl//U4sW/nLsqZ7bb205wENVcwFb2LQBA9AhEskd4xAppFBv8MVr9Hsw1yS+hOqAsQWiKsEJj46OawVw6fR73lJJYKeKTqAxMPbeA9UTJF+PDekCfvsOb3vlyd/xTxXyjvHjMdlqebBc0mkfl6nh6ibspKOppURbaqhbTNUAa1fe8JEcepOC8DsMVIQ2mcJyzCeGM3dPH+fadd8nFHEJBsF4CISUuclSOgTGY3O94IkUXljvlaqxJd+il7B8IMtNOJq10P0Aa+HmIxvqIBq9Ne4CwMzr
- WlQEOitT
- 6/Isb9OmMenf9Nhsffasi4GE+4KxjpQa+wvksGr7nJyR1/8aD+hGTKLJe41Rht1JMbj+JE5voRtL2LLGG/2Dtt2fqrKzI73H0oa6pn+M1zQILzM7QFPk1HIL4qRH0B9GSpfy5Bh3thUcmVQliKUrtQc0IC9V/2hoQsJV/WOqgTSVY9zO+K22KGrkumDzS7E+ZhbKYB/OG0Pym9N8vGK/I9xLouvmnRccOyQyBiCY5S+k3Y4i56xaJJ3oeBJ5MyFxPBJe6jc3naewLBWPIs/oOIbG2vj9BQ3wbFhwLOZaueyNPl54nHML8RE+iCOZ7dxP49GpruMgbP3ZPq1o=
+X-HE-Tag: 1794571328-102900
+X-HE-Meta: U2FsdGVkX1/mI57LKYdlCfYIpaMfMzQeCO5d/PGKiuNhTDiV/KZ66zzNN9pz/phRRokLckmFkCFxSQzTAPrJs05BeI7mLoqj9HqJKTRCoy0UxooNVK1z4v4xguBa1dmmL+9fCMb7KRdTMTG9msN6yWzmemEVwkwRSTP1xdEZ6ckXVMWHiaTqEQBZCe0NpgquVIOupHf9wsdmvGi4jjCV1gSp0PzNR57Uyj1tIBqZ+aKRy43OlCcLTjAEx0t7x2vsFwIpcipCN09uHbmhGMb+4Z6NOgPQ54658JTdKKvK9SYdSyLX1lStDpSFiD0l120Tqef52w38QVnO1IyQ6zpiKDqcOCvsYfuBV24aowHTvnjvkO6tPyYbIyLnc639TG02lITbfRDxGvh/d31LB/jcr20aTmyeS/c6Sed3AqWhcAkaRYZf4u3P68+0kRSVVA3JGRhCpGB7+YKGnQF0VDnS/spOs42724d4L6ODCV2dM4NzsXxCR8F2JwwpieRbzp+M3sXteCXxGu4PA2Dv8o1uSJQ2Axa+ZFFuFxChRkDn6JC8QsuR3sWuWdZj9gTPV1e7OZSQjTI7TjKw4/Me1/x3Me3xAdJiiymGPqKcZugmd0WzEdBTB6X9SnnAuYS5v2pUnBMScjET847fXMW7GkuTWr1F0oMVtMroCElTaThMwxbFspjPwYit/m8K93PaFVK/nYK2E3cDmUKbFnmsl2joAcKilyGVHqiBuBhz5O07/zTt4zw2JsL33+/6VGESbgIWneTyZFfNnide6RX7jCfZ2wBsWxEzUOAGC9b6NqmSxidNkyuHzhzOXuOhfLkEbmZdeA/nYnnNXFLEkMHgr78hIfEABr3V17uCC2JZqsJIGl/PSGloWGYyUTlTqT7DsLvxVvrdbfnLTa2FtfrYNkja8+ehfH/2aok3VKwj1s/ygA+hKE6vC8h3gGYrcIUOOX6CM2MmwIH+Vg2npIMkPLy
+ Hu8l+5ua
+ c30C/MN+1Jo2d296Hifl6afgbVJ1jfQrOCEBEMNBlDq9QiJGPOrAZOfpstelZH63sI/N/zTo6P05VYNIsVZRlrDs/xPqyO7YDdB93u9YJgEXGnXjFfdGt5kwVDwUFxbXrT5mEWxdzr6fHou6NIR6NzkxL7sDmuYaNaJ/WDEmEghcmfTCvkC7Wr5QHywuaEFK+Tzn+lXwX3Ci87uJybFt4FEtWjFE0b2jSAvurVy6pH2fiwpXmKVOXvHAFJfROGLf8SPvJK96s7l853BD7T0VF1XQaq+CgkoL669t6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,213 +110,84 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-__btrfs_handle_fs_error() sets SB_RDONLY through btrfs_set_sb_rdonly()
-without holding s_umount. It runs from any context and every transaction
-abort ends up there. That races with everyone else changing sb->s_flags.
-And if it happens while the filesystem is frozen thaw_super() sees a
-read-only superblock and leaves the s_writers rwsems locked. Today only
-btrfs_zone_finish_endio_workfn() can get there after ->freeze_fs() but
-that's luck.
+Since commit 9c4a3de6cd5b ("gfs2: Asynchronous withdraw") most of a
+withdraw happens in do_withdraw() from a work item and SDF_JOURNAL_LIVE
+stays set until then. A remount to read-only in that window bails out of
+its log flushes on the withdrawn filesystem and gfs2_quota_cleanup()
+hits its BUG_ON(). Flushing the work isn't enough because
+gfs2_withdraw() only queues it after setting SDF_WITHDRAWN and a
+withdraw can also start in the middle of gfs2_make_fs_ro().
 
-btrfs doesn't need SB_RDONLY for any of this. fs_error already stops new
-transactions and BTRFS_FS_STATE_RO is what btrfs checks since the
-previous patch. So only set that like ext4 and f2fs do and call
-sb_set_emergency_ro() so the VFS refuses modifications and reports the
-superblock as read-only. That's not done for rescue mounts or a
-superblock that already carries the error flag. btrfs_force_shutdown()
-sets BTRFS_FS_STATE_RO too but not the VFS state, so opening a file for
-writing fails with EROFS instead of EIO after a shutdown.
+So let do_withdraw() wake up waiters when it clears SDF_JOURNAL_LIVE and
+let gfs2_make_fs_ro() wait for that right before gfs2_quota_cleanup().
+umount doesn't need to wait because it sets SDF_NORECOVERY first.
 
-A remount to read-only now actually happens after an error, so
-btrfs_remount_ro() skips the commit and the unused block group pass that
-can't succeed anymore. Going read-write fails with EROFS instead of
-EINVAL. The VFS doesn't call ->sync_fs in that state and refuses a new
-freeze with EROFS, so BTRFS_IOC_SHUTDOWN shuts down without the freeze
-after an error. btrfs_freeze() still skips its commit after a shutdown
-or when the error races the freeze, and the thaw skips
-check_dev_super() because the superblocks on disk may not match after
-an error.
+gfs2_make_fs_rw() could leave the bit set on a withdrawn filesystem too
+if do_withdraw() ran between its withdraw check and setting the bit. So
+do both under sd_log_flush_lock which do_withdraw() holds while it tests
+the bit.
 
-A second read-write mount of the filesystem succeeds now. A non-forced
-remount to read-only fails with EBUSY while files that were opened for
-writing before the error are still open.
-
+Fixes: 9c4a3de6cd5b ("gfs2: Asynchronous withdraw")
+Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/btrfs/fs.h       | 16 ++++++----------
- fs/btrfs/ioctl.c    |  5 +++++
- fs/btrfs/messages.c |  8 ++++++--
- fs/btrfs/super.c    | 35 +++++++++++++++++++++++++++++++----
- 4 files changed, 48 insertions(+), 16 deletions(-)
+ fs/gfs2/super.c | 20 ++++++++++++++++----
+ fs/gfs2/util.c  |  2 +-
+ 2 files changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/fs/btrfs/fs.h b/fs/btrfs/fs.h
-index 024c3ec7d0583..39fd1a04d25ba 100644
---- a/fs/btrfs/fs.h
-+++ b/fs/btrfs/fs.h
-@@ -1195,9 +1195,8 @@ static inline int btrfs_need_cleaner_sleep(const struct btrfs_fs_info *fs_info)
- }
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 04bb4cf787d4d..f61c309368ef1 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -146,12 +146,21 @@ int gfs2_make_fs_rw(struct gfs2_sbd *sdp)
+ 	}
  
- /*
-- * Check whether the filesystem is read-only. BTRFS_FS_STATE_RO is set and
-- * cleared together with SB_RDONLY on mount, on remount and when an error forces
-- * the filesystem read-only. Use this instead of sb_rdonly() at runtime.
-+ * Set and cleared with SB_RDONLY on mount and remount but set alone after an
-+ * error. Use this instead of sb_rdonly() at runtime.
-  */
- static inline bool btrfs_fs_rdonly(const struct btrfs_fs_info *fs_info)
- {
-@@ -1233,15 +1232,12 @@ static inline bool btrfs_is_shutdown(const struct btrfs_fs_info *fs_info)
- static inline void btrfs_force_shutdown(struct btrfs_fs_info *fs_info)
- {
- 	/*
--	 * Here we do not want to use handle_fs_error(), which will mark the fs
--	 * read-only.
--	 * Some call sites like shutdown ioctl will mark the fs shutdown when
--	 * the fs is frozen. But thaw path will handle RO and RW fs
--	 * differently.
--	 *
--	 * So here we only mark the fs error without flipping it RO.
-+	 * A shutdown isn't an error, so don't use btrfs_handle_fs_error().
-+	 * BTRFS_FS_STATE_RO doesn't touch SB_RDONLY, so it's fine while the
-+	 * filesystem is frozen, e.g. for the shutdown ioctl.
- 	 */
- 	WRITE_ONCE(fs_info->fs_error, -EIO);
-+	set_bit(BTRFS_FS_STATE_RO, &fs_info->fs_state);
- 	if (!test_and_set_bit(BTRFS_FS_STATE_EMERGENCY_SHUTDOWN, &fs_info->fs_state)) {
- 		btrfs_crit(fs_info, "emergency shutdown");
- 		fserror_report_shutdown(fs_info->sb, GFP_KERNEL);
-diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-index 2063075906c8f..7f88eeb8afc57 100644
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -5165,6 +5165,11 @@ static int btrfs_ioctl_shutdown(struct btrfs_fs_info *fs_info, unsigned long arg
- 	if (btrfs_is_shutdown(fs_info))
- 		return 0;
- 
-+	/* After an error there is nothing to flush and freezing fails. */
-+	if (flags != BTRFS_SHUTDOWN_FLAGS_NOLOGFLUSH &&
-+	    sb_emergency_ro(fs_info->sb))
-+		flags = BTRFS_SHUTDOWN_FLAGS_NOLOGFLUSH;
+ 	error = gfs2_quota_init(sdp);
+-	if (!error && gfs2_withdrawn(sdp)) {
+-		gfs2_quota_cleanup(sdp);
++	if (error)
++		return error;
 +
- 	switch (flags) {
- 	case BTRFS_SHUTDOWN_FLAGS_LOGFLUSH:
- 	case BTRFS_SHUTDOWN_FLAGS_DEFAULT:
-diff --git a/fs/btrfs/messages.c b/fs/btrfs/messages.c
-index cedca40508315..3a768e2ac1ccf 100644
---- a/fs/btrfs/messages.c
-+++ b/fs/btrfs/messages.c
-@@ -173,8 +173,12 @@ void __btrfs_handle_fs_error(struct btrfs_fs_info *fs_info, const char *function
- 
- 	btrfs_discard_stop(fs_info);
- 
--	/* Handle error by forcing the filesystem readonly. */
--	btrfs_set_sb_rdonly(sb);
 +	/*
-+	 * Handle error by forcing the filesystem readonly. SB_RDONLY needs
-+	 * s_umount, see sb_set_emergency_ro().
++	 * Check for a withdraw under the lock do_withdraw() holds while it
++	 * takes a live journal down, so one of them sees the other.
 +	 */
-+	set_bit(BTRFS_FS_STATE_RO, &fs_info->fs_state);
-+	sb_set_emergency_ro(sb);
- 	btrfs_info(fs_info, "forced readonly");
- 	/*
- 	 * Note that a running device replace operation is not canceled here
-diff --git a/fs/btrfs/super.c b/fs/btrfs/super.c
-index b424cc836bd4a..ff61ec9ebfa79 100644
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -1041,6 +1041,18 @@ int btrfs_sync_fs(struct super_block *sb, int wait)
- 	return btrfs_commit_transaction(trans);
++	down_write(&sdp->sd_log_flush_lock);
++	if (gfs2_withdrawn(sdp))
+ 		error = -EIO;
+-	}
+-	if (!error)
++	else
+ 		set_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags);
++	up_write(&sdp->sd_log_flush_lock);
++	if (error)
++		gfs2_quota_cleanup(sdp);
+ 	return error;
  }
  
-+/*
-+ * Nothing can be committed after an error, don't fail syncfs(2) and freezing.
-+ * BTRFS_IOC_SYNC calls btrfs_sync_fs() directly and still gets the error.
-+ */
-+static int btrfs_super_sync_fs(struct super_block *sb, int wait)
-+{
-+	if (btrfs_fs_rdonly(btrfs_sb(sb)))
-+		return 0;
-+
-+	return btrfs_sync_fs(sb, wait);
-+}
-+
- static void print_rescue_option(struct seq_file *seq, const char *s, bool *printed)
- {
- 	seq_printf(seq, "%s%s", (*printed) ? ":" : ",rescue=", s);
-@@ -1286,7 +1298,7 @@ static int btrfs_remount_rw(struct btrfs_fs_info *fs_info)
- 	if (unlikely(BTRFS_FS_ERROR(fs_info))) {
- 		btrfs_err(fs_info,
- 			  "remounting read-write after error is not allowed");
--		return -EINVAL;
-+		return -EROFS;
+@@ -567,6 +576,9 @@ void gfs2_make_fs_ro(struct gfs2_sbd *sdp)
+ 				   HZ * 5);
+ 		gfs2_assert_warn(sdp, gfs2_log_is_empty(sdp));
  	}
- 
- 	if (fs_info->fs_devices->rw_devices == 0)
-@@ -1348,9 +1360,11 @@ static int btrfs_remount_ro(struct btrfs_fs_info *fs_info)
- 	 * Setting SB_RDONLY will put the cleaner thread to sleep at the next
- 	 * loop if it's already active.  If it's already asleep, we'll leave
- 	 * unused block groups on disk until we're mounted read-write again
--	 * unless we clean them up here.
-+	 * unless we clean them up here. Not after an error though, that can't be
-+	 * committed anymore and may still finish zones.
- 	 */
--	btrfs_delete_unused_bgs(fs_info);
-+	if (!BTRFS_FS_ERROR(fs_info))
-+		btrfs_delete_unused_bgs(fs_info);
- 
- 	/*
- 	 * The cleaner task could be already running before we set the flag
-@@ -1385,6 +1399,10 @@ static int btrfs_remount_ro(struct btrfs_fs_info *fs_info)
- 	 */
- 	btrfs_qgroup_wait_for_completion(fs_info, false);
- 
-+	/* Nothing can be committed after an error, don't fail the remount. */
-+	if (unlikely(BTRFS_FS_ERROR(fs_info)))
-+		return 0;
-+
- 	return btrfs_commit_super(fs_info);
++	/* A withdraw that do_withdraw() didn't finish yet leaves it live. */
++	if (!test_bit(SDF_NORECOVERY, &sdp->sd_flags))
++		wait_on_bit(&sdp->sd_flags, SDF_JOURNAL_LIVE, TASK_UNINTERRUPTIBLE);
+ 	gfs2_quota_cleanup(sdp);
  }
  
-@@ -2308,6 +2326,9 @@ static int btrfs_freeze(struct super_block *sb)
- 	struct btrfs_fs_info *fs_info = btrfs_sb(sb);
- 
- 	set_bit(BTRFS_FS_FROZEN, &fs_info->flags);
-+	/* Nothing can be committed after an error. */
-+	if (btrfs_fs_rdonly(fs_info))
-+		return 0;
- 	/*
- 	 * We don't need a barrier here, we'll wait for any transaction that
- 	 * could be in progress on other threads (and do delayed iputs that
-@@ -2382,7 +2403,12 @@ static int btrfs_unfreeze(struct super_block *sb)
- 	 *
- 	 * And since the fs is frozen, no one can modify the fs yet, thus
- 	 * we don't need to hold device_list_mutex.
-+	 *
-+	 * After an error the super blocks on disk may lag behind, skip it.
- 	 */
-+	if (btrfs_fs_rdonly(fs_info))
-+		goto out;
-+
- 	list_for_each_entry(device, &fs_info->fs_devices->devices, dev_list) {
- 		ret = check_dev_super(device);
- 		if (ret < 0) {
-@@ -2392,6 +2418,7 @@ static int btrfs_unfreeze(struct super_block *sb)
- 			break;
- 		}
+diff --git a/fs/gfs2/util.c b/fs/gfs2/util.c
+index 529c3ec37a18a..888e0d6bf5122 100644
+--- a/fs/gfs2/util.c
++++ b/fs/gfs2/util.c
+@@ -121,7 +121,7 @@ static void do_withdraw(struct gfs2_sbd *sdp)
+ 		up_write(&sdp->sd_log_flush_lock);
+ 		return;
  	}
-+out:
- 	clear_bit(BTRFS_FS_FROZEN, &fs_info->flags);
+-	clear_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags);
++	clear_and_wake_up_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags);
+ 	gfs2_ail_drain(sdp); /* frees all transactions */
+ 	up_write(&sdp->sd_log_flush_lock);
  
- 	/*
-@@ -2522,7 +2549,7 @@ static const struct super_operations btrfs_super_ops = {
- 	.drop_inode	= btrfs_drop_inode,
- 	.evict_inode	= btrfs_evict_inode,
- 	.put_super	= btrfs_put_super,
--	.sync_fs	= btrfs_sync_fs,
-+	.sync_fs	= btrfs_super_sync_fs,
- 	.show_options	= btrfs_show_options,
- 	.show_devname	= btrfs_show_devname,
- 	.alloc_inode	= btrfs_alloc_inode,
 
 -- 
 2.53.0
