@@ -1,110 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78D6606A323
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 14:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49E5606A332
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 14:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=ioMmpLVr;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=9ZDId9b8;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=ioMmpLVr;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=9ZDId9b8
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=HbiPobah;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QBNwugyQ;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=HbiPobah;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QBNwugyQ
 Received: by kanga.kvack.org (Postfix)
-	id D34F26B05B3; Fri, 13 Nov 2026 09:53:54 -0500 (EST)
+	id 0B20F6B05B5; Fri, 13 Nov 2026 09:54:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D04786B05B4; Fri, 13 Nov 2026 09:53:54 -0500 (EST)
+	id 05C886B05B6; Fri, 13 Nov 2026 09:54:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C41A56B05B5; Fri, 13 Nov 2026 09:53:54 -0500 (EST)
+	id E66D56B05B7; Fri, 13 Nov 2026 09:54:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9ADFB6B05B3
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 09:53:54 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 390FC1602CE
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:53:54 +0000 (UTC)
-X-FDA: 85430390388.08.EB35341
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf15.hostedemail.com (Postfix) with ESMTP id DDFACA000B
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:53:51 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ioMmpLVr;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9ZDId9b8;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ioMmpLVr;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9ZDId9b8;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794581632;
-	b=ihFFOvKzvwFOW0THl7yl/W7eh7RVKUgtpYRj7Wp1SdaIJd1i23wuF/2NRDwQLvQt7xEnmP
-	5bJ0JiuJhMN+Wl4Sn+xQ11nhNUmKFUQYgh+bCkZiEqGKal7Xa8lrF87JNzU+AKiOH6ukyH
-	aX6Hk+7kLdUuXp34z9hVRXbXhbntTIw=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BCAF96B05B5
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 09:54:53 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 58859A01A6
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:54:53 +0000 (UTC)
+X-FDA: 85430392866.01.104B93F
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 289DB80009
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:54:51 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HbiPobah;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=QBNwugyQ;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HbiPobah;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=QBNwugyQ;
+	spf=pass (imf30.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794581632;
+	s=arc-20220608; t=1794581691;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=395YDkxERGkERftBnzeIEZcPQVVqMstX985T2iiyf8A=;
-	b=lTB8q0VBaJaNacP/Us4FMn+qTYJeT7zpwtsCjTjh3kGf3hEQLDHPG22TtO+W0rwlWU+s2d
-	HwR1q9uLiIJDDxxwJ9c55Cbboj+6xZqe9cUE1N2ck4hRjz7PYihuIv+KY+H/7nySIVVh8u
-	L+KASKRkEemedlNTGB8KDBl6Mb7W2RY=
+	bh=kLg1wy+Nl3hNJVUViyQU914DrXr8uKXxDSBe+HH3+OI=;
+	b=DXFTfo9ZdCx4J5rEhDEmZjsSPqo+gnYItu3whT17ML3DuFF3llrMskI5Xh/h6fq5jMm78Y
+	YXJfqtLwOJH9XzqnB7O1Qv7LHtOklKKIeuWUA8LQ99TMXLJ2rWY2g8vpAcKQ+KA4jEdgzb
+	Jy2u4QVrmOJPIJRDTu5PTB8o6TkdWJk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794581691;
+	b=GtYjBY4IWmO8rmZfVYSO63wZOwGKIw9lgNJ31q/b2ZRMtnyoFHE8eO3i0Y6AIBCSBsMKFi
+	JBE10MN/D/eoix7GQFB27CjWVAvmYp2CHtibU2e0QaAgXQEBpyFsHw6veJcxCzi3O6PeD8
+	rDeXPdP3RFM41iAIHoRWtf7ntcj9d10=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ioMmpLVr;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9ZDId9b8;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ioMmpLVr;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9ZDId9b8;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HbiPobah;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=QBNwugyQ;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HbiPobah;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=QBNwugyQ;
+	spf=pass (imf30.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 5FB0421FAC;
-	Fri, 13 Nov 2026 14:53:50 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 0100E1F76B;
+	Fri, 13 Nov 2026 14:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794581630; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1794581690; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=395YDkxERGkERftBnzeIEZcPQVVqMstX985T2iiyf8A=;
-	b=ioMmpLVrVycBwQTgA9eNAfyAsyyURDxmI0Fpb2RpBJ61iKIAJ/x5mT8/Jnn0mFbn1SRP4q
-	anRnd1zCml/8FXpIsmG31jBvjpFU+3Belrk3hBl0C8Vs7RQ5C3Jb4qyE1TOJACDnbLkyOR
-	ZHp4pK+r/vBBUm5kRz6IJSUnHsKLA5s=
+	bh=kLg1wy+Nl3hNJVUViyQU914DrXr8uKXxDSBe+HH3+OI=;
+	b=HbiPobahhoFdy1JualtlCQSG5WiHGbYkeN97T1slq4syz8ydxAAmyFBMnw9wIWMymvWQBA
+	OibY1yJc8woYnm917MtaAgfxA3/FGLQWnqOg9S4/Gje0GR/2m8TO3d0XcGyF5ZnSISlDva
+	Pm+cC9vb75/3LpW2TrEGkQOayOm27Hw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794581630;
+	s=susede2_ed25519; t=1794581690;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=395YDkxERGkERftBnzeIEZcPQVVqMstX985T2iiyf8A=;
-	b=9ZDId9b8i3xRqf/vzV+Qe7ixhSr62gcfP9QE5YMJXMpSIhCGDx5uqBSpMJWsnQhjaZ2AmU
-	qi7hnDqlbKzvp6BQ==
+	bh=kLg1wy+Nl3hNJVUViyQU914DrXr8uKXxDSBe+HH3+OI=;
+	b=QBNwugyQn7fvnUpfJc61DDJ3B5ezL3Vu/dwAt7y/gE33yL9lBDupL5AB9JAf8phimNZdBs
+	djr90So7chpqQRAg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794581630; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1794581690; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=395YDkxERGkERftBnzeIEZcPQVVqMstX985T2iiyf8A=;
-	b=ioMmpLVrVycBwQTgA9eNAfyAsyyURDxmI0Fpb2RpBJ61iKIAJ/x5mT8/Jnn0mFbn1SRP4q
-	anRnd1zCml/8FXpIsmG31jBvjpFU+3Belrk3hBl0C8Vs7RQ5C3Jb4qyE1TOJACDnbLkyOR
-	ZHp4pK+r/vBBUm5kRz6IJSUnHsKLA5s=
+	bh=kLg1wy+Nl3hNJVUViyQU914DrXr8uKXxDSBe+HH3+OI=;
+	b=HbiPobahhoFdy1JualtlCQSG5WiHGbYkeN97T1slq4syz8ydxAAmyFBMnw9wIWMymvWQBA
+	OibY1yJc8woYnm917MtaAgfxA3/FGLQWnqOg9S4/Gje0GR/2m8TO3d0XcGyF5ZnSISlDva
+	Pm+cC9vb75/3LpW2TrEGkQOayOm27Hw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794581630;
+	s=susede2_ed25519; t=1794581690;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=395YDkxERGkERftBnzeIEZcPQVVqMstX985T2iiyf8A=;
-	b=9ZDId9b8i3xRqf/vzV+Qe7ixhSr62gcfP9QE5YMJXMpSIhCGDx5uqBSpMJWsnQhjaZ2AmU
-	qi7hnDqlbKzvp6BQ==
+	bh=kLg1wy+Nl3hNJVUViyQU914DrXr8uKXxDSBe+HH3+OI=;
+	b=QBNwugyQn7fvnUpfJc61DDJ3B5ezL3Vu/dwAt7y/gE33yL9lBDupL5AB9JAf8phimNZdBs
+	djr90So7chpqQRAg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 38DC6134C3;
-	Fri, 13 Nov 2026 14:53:50 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BBF48134C3;
+	Fri, 13 Nov 2026 14:54:49 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id gu/ZB34k92oEFQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 13 Nov 2026 14:53:50 +0000
+	id hybEI7kk92pSFgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 13 Nov 2026 14:54:49 +0000
 Received: by quack.suse.cz (Postfix, from userid 1000)
-	id B81542396C; Fri, 13 Nov 2026 15:53:49 +0100 (CET)
-Date: Fri, 13 Nov 2026 15:53:49 +0100
+	id 50A352396E; Fri, 13 Nov 2026 15:54:49 +0100 (CET)
+Date: Fri, 13 Nov 2026 15:54:49 +0100
 From: Jan Kara <jack@suse.cz>
 To: Christian Brauner <brauner@kernel.org>
 Cc: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>, 
@@ -112,31 +112,32 @@ Cc: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>,
 	jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, 
 	linux-mm@kvack.org, ntfs@lists.linux.dev, ocfs2-devel@lists.linux.dev, 
 	linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, linux-efi@vger.kernel.org, 
-	linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org, Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH v3 05/33] fs: add a generic emergency read-only state
-Message-ID: <wpmkheecl35h56u4zadxrg67ysjowyahmcgjgftch3l2yxwkso@4vq74eptdmmd>
+	linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org, 
+	Karl Mehltretter <kmehltretter@gmail.com>
+Subject: Re: [PATCH v3 06/33] ext2: don't set SB_RDONLY after filesystem
+ errors
+Message-ID: <wsdk673ps54ncvmj7xvgzghgcf7y27uw4w7ahrgbytdy6tdxg3@ldvmi2yk3lm7>
 References: <20261113-work-fs-sb_rdonly-v3-0-0be92bb73709@kernel.org>
- <20261113-work-fs-sb_rdonly-v3-5-0be92bb73709@kernel.org>
+ <20261113-work-fs-sb_rdonly-v3-6-0be92bb73709@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261113-work-fs-sb_rdonly-v3-5-0be92bb73709@kernel.org>
+In-Reply-To: <20261113-work-fs-sb_rdonly-v3-6-0be92bb73709@kernel.org>
+X-Spam-Score: -11.30
 X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spam-Score: -11.51
-X-Rspamd-Queue-Id: DDFACA000B
-X-Rspamd-Server: rspam12
-X-Stat-Signature: e8hszbyfa631sqqdcksc5ykmn6scapxt
-X-Rspam-User:
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 289DB80009
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794581631-361029
-X-HE-Meta: U2FsdGVkX18v5T7nTOTXbxahpn8WSkr27y+mJTZoCWwpR2GZ2FZzrJpqw1ArR9OBDAuL5gWKbSmFsTCqkxXre36O0KBCIFuvXLy2R8K28S9Lmvs2ChmwP7scPWpN4fUIeUyAI1mkyKTmJQcC15w71HXW2V+tEyHY+bvAuG+XE+1RpkL51Z/EuJhaHgairkC+lzypH3WGp1zOYxfQRFbZbSVYFpRwvXqKfohm7gSP3vrWCdSmnUSIJ0Lif8I5xeke+uxGs94MjRRE5aZitlT576/OhbmN0+7lHMX4eVDd578tbOY/LpNknh+UUxU9rRzFaW5mFI3AJC15KHAd/cIUl2z94ZomuXo0m1J9QlRqjABJJ5bErmyH6CmYwo3HPd0FZAbMGTcMFgkgur4G2yfD53q+ZuAbUVQcZTe2I2ILO1ERCVxd5riqVY6dAAwWhWVCng6rMekHW7qyO+ybDHMknrkNmMG5ioTXy9pY7V+JPNVxxiDVt6nKHBLloSK+z3ptR9jhOIEoO8wI+ArLWntTCjJKmly6ilSAW97QLlfN+wtqTCzmotpMsNU2aFJQE5tW9ZcIK3+5YeB1qJAQ32IDs/Q9FdRbxOlzttjGD+dOCUwq7gsyHxUksVhdBIKS8s8FF/Mk1PGbGnN8QV5F/GZGZnG52L8rowHrSB8DzyA/CkFbNsG1GNF5sohEwt5yI0MkRbiFsQcmhEZWqcaB9Wnv5xPiNAyN1QPBJe+ZQ26wd8Z4Qfj8yraF8sekXjjzQLcdIOUEQmrVNQLWUJyALNQHUiAl/xGxywBaQsk/V/dyF9kdguE4amXrOm7C+WHPtsdRzMO1y3r7LozYu4aHpE/hufJGadRa3EPs1CyOldqqW5zMKE7EEHv48yL8Mf+0nSh7Kq/8iYehLQzZ6+/WPYLAP2t+dLwOe0UkIi83CWtiXU8rD3EvcVLJwbPL4cD5/PWCP2krErOGMowm4e/gCmY
- jKwgy+Iz
- 0glYZBeocCCO72oRD36RsCC1OeKyB/b/Ty0zzVtp91TKysTdjzcdw5o2phKGYt/7raYFnLmwDX2lqvmjMP1uoesD7y7WAjUfTWVDTzJKqqmBE0Sh45/rSopI3sNac+F7fnxt+Q1L/XP+WtLTtg0yHEyr0jSd4zWNBL7zqdAjGZoEcDPzzrOnDbGrXjbvDpUO6WdEyHyUOecVKV7KCFNXSDFW89k590RFYXCemmKZCWNJs+43Cu21JAZMYEkatLfoOzi0+kikAMyQRu/A8zK7IDxxtfmkYMOEcpSoSX3yawtGgAH45iGvZCvxwas1vYinMbvOlw07f79IYo4Qr1aHgiSh0Sxqbck3NY3K+toA7i+COTNYR2wFBxAcNcAmpa607N1IpJgAPlLw1McU12YD56JvfIE4ppEAyAnZTk49ZJ+gurYJLBFu8VwI09/lfMo16dOQl5dG3bHVNhBgGxs+kd1pazVaGF8v1rwliWNVVt3WHgfJKJqTt1KoYulccCF23i0xMOqe7xq6HWjA=
+X-Stat-Signature: zixmztoi4t11uj6hdzcb1mmtybrfwd8j
+X-Rspam-User: 
+X-HE-Tag: 1794581691-644240
+X-HE-Meta: U2FsdGVkX19EmaBCvyp2Kb9ntX8eRcI8yQKUvT1+z9oHzL2mn3ERTBsg3TPRTrMbXl9JhQY0gPgD4EHE/uS8iwSK0o2yRySUgm2SuiJnYQaA1vZYh6svKsx4ryJnCI+Al13xMGsK/QkWZODp5ES+reAjMxt10lfFin4cFfCfBExu3VxLT8DTbWDwlFE7oOKhLFGgEC2RRaDCIvuONn1cnwT8eTSKKcnnGm9uTmE2r9h0VQrIXa8Oa2BKKRBSOk7b2HqPT7F+kamauQThbr7bN4VNTB51sdzNvL2NuVan8tB/JgGWH7SFm6kE2dR2RW4jBYJzguQvNhrkcr9NtY84Udw04al1pAdg4gUr00zd513184ftOq0IimXSEnkY1xFXFmxLVAleFKlgUzJ2PL4aVjqo8eZ+6P1qp/xicYqTrmxW9xAbpFflx3maq5FiDoRHVNHkvcJRMvrf3ic+QUxmkFoRoeelT2v+Kilkg27fVOqo+wN/4ffHjmOJQb5KM4Qt+V1fnL+H1Ap78pWDpFGl/6AlXQb9vM7jAbAL2/j8Ap2XndmpS5R5yZIUWH6hVes+QAM8E9jFAmvsT/c42m5fUkZYZRwdto6WtZcSed19otUq+Bi1tfP8IYkAeF1wLPv+a0XsYMFoibwvdBvMCHTvF84gNf/4zHlZ3gsyYHdOWpWRMulVHkpIXxSRbIB4+fPd9Jx53tcQW1cw9FxBZ+HFhjJN2t8DJn1QPH7MGu95RSO4F9XUatbvqH3uHnW2w3DaJC06sMBtIUff8dpOHk5juGtL5P2ynrxBVjN9Hx6yMYU8D4Mpe3Tsh3BWHEYQ55024cB8rMtocVtG+vjSO1QOb9aIRo2HFuyg0coLT92QA1oaLMMm/gJ5zgk0ahGglYMLWP07AQzLdBpenQ9eXaUQ4VvH8N9BWo3MYjAuNAuvbWp3uJb1SGbNoJ70KRUYuBvuo44YNFf8AMRuP9IWdQl
+ zYZCENu9
+ Xkfo6PwZfgk4aNJd2v0UftF3n604RtJvjkzinUy4GH40GKv3SBfo6ZPwSCaGTDxd14/hRFRiamcjOgKc6nyVnheXIBt8MfS+fMlDfUH/ZutTYg2c6ypjYcxEQgXWiUVLhbgZHNShsqImksmtkSKK7qC7hgYdJfwb349+rEPUzwVW52rWfbIFxHWN0dmXf8Elq5S1w8+nD2+W4C/1xWqD5cQIHH4G+PU0qHC/8RuLTFwTrOCJ+3VllZbf+grqYI/4QdrBYGRckx+R+EokpfV7GaEmhTibFSI0iJGbiJQN8dZt9TaRaHnj8hgXovurY4qih5M8DliV0BKKj35VRkowVKp+3NP2P3wMenpDGaINktG+K3pVvAY/D3S+7Oo4VMD/mV8YGZO+6LeOD2pVXvsXPpumJXWqLKp6kNd05L+4P404EHXFsq+x40brqVzQ4G3a3P+vlblqEi/HcHP4U48NbKqrQUyYuvqcFE37P
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,89 +146,158 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri 13-11-26 12:59:01, Christian Brauner wrote:
-> ext4 and f2fs don't set SB_RDONLY after errors anymore and refuse
-> modifications themselves. Doing that in all the other filesystems means
-> the same checks in ->open, ->setattr, ->fsync, the directory and quota
-> operations and ->reconfigure everywhere. Jan suggested a flag in the
-> superblock instead so the VFS can do it once (cf. [1]).
+On Fri 13-11-26 12:59:02, Christian Brauner wrote:
+> With errors=remount-ro ext2_error() sets SB_RDONLY from whatever context
+> hit the error and without holding s_umount. That races with everyone
+> else changing sb->s_flags and it breaks freezing. If it happens while
+> the filesystem is frozen thaw_super() sees a read-only superblock and
+> leaves the s_writers rwsems locked so every writer hangs. A lookup in a
+> corrupted directory is enough. Karl proposed teaching thaw_super() about
+> it but Jan preferred fixing the filesystems (cf. [1]) like ext4 and f2fs
+> already did.
 > 
-> So add sb->s_state with SB_STATE_EMERGENCY_RO. It's only ever set and
-> never cleared and SB_RDONLY stays untouched. A filesystem calls
-> sb_set_emergency_ro() where it used to set SB_RDONLY and the VFS refuses
-> modifications wherever sb_rdonly() would:
+> So call sb_set_emergency_ro() instead and let the VFS refuse
+> modifications. ext2 still refuses allocations and ext2_xattr_set()
+> itself, ecryptfs calls the latter without write access on the lower
+> mount. Unlinked inodes are left to e2fsck. ext2_write_inode() keeps
+> working because writeback still writes data, bitmaps, indirect and
+> directory blocks after the error and they'd be lost without the inode.
+> A thaw after an error while frozen still writes the superblock but
+> EXT2_ERROR_FS stays set in it.
 > 
-> - __mnt_is_readonly() and sb_permission(), so everything that takes
->   write access through mnt_want_write(), mnt_want_write_file() or
->   mnt_get_write_access()
-> - notify_change(), rw_verify_area(), remap_verify_area(),
->   vfs_fallocate(), vfs_fsync_range() and do_page_mkwrite() for files
->   opened before the error
-> - reconfigure_super() going read-write
-> - the dquot code and quotactl(2)
-> - sync_filesystem() and the per-superblock passes of sync(2)
+> After a remount to read-only a remount to read-write fails until umount.
+> A plain remount to read-write right after the error succeeds but the
+> filesystem stays read-only. Writes through file descriptors opened
+> before the error fail with EROFS.
 > 
-> sb_rdonly_any() is true for a read-only mount and for the emergency
-> state so nobody has to open-code the pair.
+> [1]: https://lore.kernel.org/r/hyhuckyohsabx2suvq3z7uy3pbgmihva6wgzxr3op7pzcrlu33@p7zzlgp2ehjf
 > 
-> So umount and the ->reconfigure() implementations that sync first don't
-> write such a superblock anymore either. syncfs(2) and Q_SYNC fail with
-> EROFS so userspace learns that nothing was written. Jan suggested that
-> (cf. [2]).
-> 
-> freeze_super() refuses a new freeze with EROFS. Nothing is synced
-> anymore so the flusher would keep writing to the frozen filesystem.
-> Joining a freeze that's already in effect still works and thaw_super()
-> is unchanged so an error while frozen is undone cleanly. FIFREEZE and dm
-> suspend with lockfs fail on an errored filesystem now, like they already
-> did for ext4.
-> 
-> /proc/mounts, statmount() and statfs() report the superblock as
-> read-only. "emergency_ro" isn't shown as a mount option because remount
-> helpers pass the shown options back.
-> 
-> The filesystem still has to refuse what doesn't go through the VFS: its
-> allocators, its journal and deleting unlinked inodes. Writeback isn't
-> stopped. The flusher, sync_bdevs() in sync(2) and sync_blockdev() in
-> kill_block_super() keep writing, so the filesystem decides what its
-> writeback still writes. Without a journal refusing only part of it
-> leaves the disk inconsistent. ext4 refuses data writeback in that state,
-> jfs commits the allocations writeback hasn't committed yet. The VFS
-> can't decide that.
-> 
-> [1]: https://lore.kernel.org/r/my2k7257m265fp5ad77n5hfndl23i56gsog3jwnsyocp3yxbnj@aphfqdiej2hs
-> [2]: https://lore.kernel.org/r/5qefa4mracb3x2z4vsdejmkyyfrhdcrixmmnooz4rzwcdfoejm@mqkvixj6afwp
-> 
-> Suggested-by: Jan Kara <jack@suse.cz>
+> Reported-by: Karl Mehltretter <kmehltretter@gmail.com>
+> Link: https://lore.kernel.org/r/20260903060855.4610-1-kmehltretter@gmail.com
 > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-Just one nit below. Otherwise feel free to add:
+Looks good. Feel free to add:
 
 Reviewed-by: Jan Kara <jack@suse.cz>
 
-> diff --git a/fs/quota/quota.c b/fs/quota/quota.c
-> index 33bacd7075800..b488fb1f9cc44 100644
-> --- a/fs/quota/quota.c
-> +++ b/fs/quota/quota.c
-> @@ -783,6 +783,19 @@ static int do_quotactl(struct super_block *sb, int type, int cmd, qid_t id,
->  	if (ret < 0)
->  		return ret;
->  
-> +	/* An error made the filesystem read-only. */
-> +	if (sb_emergency_ro(sb)) {
-> +		switch (cmd) {
-> +		case Q_QUOTAON:
-> +		case Q_SETINFO:
-> +		case Q_SETQUOTA:
-> +		case Q_XQUOTAON:
-> +		case Q_XQUOTARM:
-> +		case Q_XSETQLIM:
-> +			return -EROFS;
-> +		}
-
-I'd use existing quotactl_cmd_write() helper for this.
-
 								Honza
+
+> ---
+>  fs/ext2/balloc.c |  5 +++++
+>  fs/ext2/ialloc.c |  2 ++
+>  fs/ext2/inode.c  |  4 +++-
+>  fs/ext2/super.c  | 13 ++++++++-----
+>  fs/ext2/xattr.c  |  2 ++
+>  5 files changed, 20 insertions(+), 6 deletions(-)
+> 
+> diff --git a/fs/ext2/balloc.c b/fs/ext2/balloc.c
+> index 80acc1e193871..77f2ed5a76a28 100644
+> --- a/fs/ext2/balloc.c
+> +++ b/fs/ext2/balloc.c
+> @@ -1236,6 +1236,11 @@ ext2_fsblk_t ext2_new_blocks(struct inode *inode, ext2_fsblk_t goal,
+>  	*errp = -ENOSPC;
+>  	sb = inode->i_sb;
+>  
+> +	if (sb_emergency_ro(sb)) {
+> +		*errp = -EROFS;
+> +		return 0;
+> +	}
+> +
+>  	/*
+>  	 * Check quota for allocation of this block.
+>  	 */
+> diff --git a/fs/ext2/ialloc.c b/fs/ext2/ialloc.c
+> index bf21b57cf98cd..2741ecd2b94fc 100644
+> --- a/fs/ext2/ialloc.c
+> +++ b/fs/ext2/ialloc.c
+> @@ -433,6 +433,8 @@ struct inode *ext2_new_inode(struct inode *dir, umode_t mode,
+>  	int err;
+>  
+>  	sb = dir->i_sb;
+> +	if (sb_emergency_ro(sb))
+> +		return ERR_PTR(-EROFS);
+>  	inode = new_inode(sb);
+>  	if (!inode)
+>  		return ERR_PTR(-ENOMEM);
+> diff --git a/fs/ext2/inode.c b/fs/ext2/inode.c
+> index 12ac4cfe15003..dd28637c60737 100644
+> --- a/fs/ext2/inode.c
+> +++ b/fs/ext2/inode.c
+> @@ -71,7 +71,9 @@ void ext2_evict_inode(struct inode * inode)
+>  	struct ext2_block_alloc_info *rsv;
+>  	int want_delete = 0;
+>  
+> -	if (!inode->i_nlink && !is_bad_inode(inode)) {
+> +	/* After an error made us read-only the inode is left to e2fsck. */
+> +	if (!inode->i_nlink && !is_bad_inode(inode) &&
+> +	    !sb_emergency_ro(inode->i_sb)) {
+>  		want_delete = 1;
+>  		dquot_initialize(inode);
+>  	} else {
+> diff --git a/fs/ext2/super.c b/fs/ext2/super.c
+> index fb217ef2d69f0..10d5165459749 100644
+> --- a/fs/ext2/super.c
+> +++ b/fs/ext2/super.c
+> @@ -53,7 +53,7 @@ void ext2_error(struct super_block *sb, const char *function,
+>  	struct ext2_sb_info *sbi = EXT2_SB(sb);
+>  	struct ext2_super_block *es = sbi->s_es;
+>  
+> -	if (!sb_rdonly(sb)) {
+> +	if (!sb_rdonly_any(sb)) {
+>  		spin_lock(&sbi->s_lock);
+>  		sbi->s_mount_state |= EXT2_ERROR_FS;
+>  		es->s_state |= cpu_to_le16(EXT2_ERROR_FS);
+> @@ -73,11 +73,11 @@ void ext2_error(struct super_block *sb, const char *function,
+>  
+>  	if (test_opt(sb, ERRORS_PANIC))
+>  		panic("EXT2-fs: panic from previous error\n");
+> -	if (!sb_rdonly(sb) && test_opt(sb, ERRORS_RO)) {
+> +	/* SB_RDONLY needs s_umount, see sb_set_emergency_ro(). */
+> +	if (!sb_rdonly(sb) && test_opt(sb, ERRORS_RO) &&
+> +	    sb_set_emergency_ro(sb))
+>  		ext2_msg(sb, KERN_CRIT,
+>  			     "error: remounting filesystem read-only");
+> -		sb->s_flags |= SB_RDONLY;
+> -	}
+>  }
+>  
+>  static void ext2_msg_fc(struct fs_context *fc, const char *prefix,
+> @@ -179,7 +179,7 @@ static void ext2_put_super (struct super_block * sb)
+>  	ext2_xattr_destroy_cache(sbi->s_ea_block_cache);
+>  	sbi->s_ea_block_cache = NULL;
+>  
+> -	if (!sb_rdonly(sb)) {
+> +	if (!sb_rdonly_any(sb)) {
+>  		struct ext2_super_block *es = sbi->s_es;
+>  
+>  		spin_lock(&sbi->s_lock);
+> @@ -1360,6 +1360,9 @@ static int ext2_reconfigure(struct fs_context *fc)
+>  	if ((bool)(flags & SB_RDONLY) == sb_rdonly(sb))
+>  		goto out_set;
+>  	if (flags & SB_RDONLY) {
+> +		/* After an error nothing may be written, just go read-only. */
+> +		if (sb_emergency_ro(sb))
+> +			goto out_set;
+>  		if (le16_to_cpu(es->s_state) & EXT2_VALID_FS ||
+>  		    !(sbi->s_mount_state & EXT2_VALID_FS))
+>  			goto out_set;
+> diff --git a/fs/ext2/xattr.c b/fs/ext2/xattr.c
+> index 8f608930a48c6..12dfffff189cb 100644
+> --- a/fs/ext2/xattr.c
+> +++ b/fs/ext2/xattr.c
+> @@ -429,6 +429,8 @@ ext2_xattr_set(struct inode *inode, int name_index, const char *name,
+>  	ea_idebug(inode, "name=%d.%s, value=%p, value_len=%ld",
+>  		  name_index, name, value, (long)value_len);
+>  
+> +	if (sb_emergency_ro(sb))
+> +		return -EROFS;
+>  	if (value == NULL)
+>  		value_len = 0;
+>  	if (name == NULL)
+> 
+> -- 
+> 2.53.0
+> 
 -- 
 Jan Kara <jack@suse.com>
 SUSE Labs, CR
