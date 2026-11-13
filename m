@@ -1,120 +1,171 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F26E1606A8BD
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 19:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F51606A323
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 20:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=EXQ5r4iB
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OyUCD7Uy
 Received: by kanga.kvack.org (Postfix)
-	id 2459E6B05B3; Fri, 13 Nov 2026 14:58:18 -0500 (EST)
+	id 29B946B05B6; Fri, 13 Nov 2026 15:02:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21C816B05B4; Fri, 13 Nov 2026 14:58:18 -0500 (EST)
+	id 24C576B05B7; Fri, 13 Nov 2026 15:02:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10CD06B05B5; Fri, 13 Nov 2026 14:58:18 -0500 (EST)
+	id 1135F6B05B8; Fri, 13 Nov 2026 15:02:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DB6796B05B3
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:58:17 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3255F1401D4
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:58:17 +0000 (UTC)
-X-FDA: 85431157434.07.191D391
-Received: from mail-pj2-f3.google.com (mail-pj2-f3.google.com [74.125.227.131])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 541CE180002
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:58:15 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=EXQ5r4iB;
-	spf=pass (imf16.hostedemail.com: domain of chris@chrisdown.name designates 74.125.227.131 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CE8A06B05B6
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 15:02:50 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 662461C30C8
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 20:02:50 +0000 (UTC)
+X-FDA: 85431168900.08.D1F4118
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2A33420009
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 20:01:00 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OyUCD7Uy;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794599895;
+	s=arc-20220608; t=1794600060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SA/I1XcNdOqWCHpHPoabvJbPaHjQpV93aW+4lUY75XM=;
-	b=c+FteXd88e47oiZoQKmS8uCObdMJUv7V1thP4s1HMWZCavEoi2jLo7gsMEAzuhV3xAQOFn
-	2c3STGpNOa3+2UKHi/vqMfdvahrRul6EXukwVWOq7+dOwsoGd9eQjx6iWPzRbIegAaqi+x
-	AXNfhHuENi6vKxmPOlUd0w16mbJc04Q=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=EXQ5r4iB;
-	spf=pass (imf16.hostedemail.com: domain of chris@chrisdown.name designates 74.125.227.131 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
+	bh=cVUaiMaz3XMN9uwKkKZrpHW2DyS8HoLv5GhhqXeNd3c=;
+	b=5rOp3iOUwuroYNZhrae+XyKUntTRFAHRgibYWDYDM6zgF2tSOIUJjIB5eLgl9DCbFFCYlC
+	K2rUMtcycME7RYqkPK/LNku2KRpBaSHP4jiCSLYdb49MK/9Tpy1wj7hm83nLAQiH8vYeCr
+	U5MufL06sNddHOM7GJQLHSMNh1O/x+4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794599895;
-	b=QXwtVMV5KAtRj0MNf4EoI6PAvijAAZFWhpiD7+5Z3BDmom05OO7Gsii6VW0Fp202328y7I
-	VMNzP7YiXwQWpDhKykIx2mJQcco/xn91hDa6MB84ECJrniG636T+Zk57UKwx+gLN+KBCtw
-	jVM4Dz5jpMzHNoAC09wCTTam7QctuGM=
-Received: by mail-pj2-f3.google.com with SMTP id 98e67ed59e1d1-3adc0ac3564so321582a91.1
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 11:58:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1794599894; x=1795204694; darn=kvack.org;
-        h=user-agent:message-id:content-disposition:content-type:mime-version
-         :references:in-reply-to:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=SA/I1XcNdOqWCHpHPoabvJbPaHjQpV93aW+4lUY75XM=;
-        b=EXQ5r4iBBFCJ10ofqrtyJ7tsDDRHmMy/CkwzpzqG9ymmM16hROzX7lz7ydXee3Ner9
-         LFRXj76pbhDEQ8gmIY2mZPEZSO8WfevF8WOZAJoSXvYk5ALr+6AEF6Qc1iKMqDSBhzbB
-         gHZONl3f8lR8DHUKq/v7k/pPVRkdGn0ajDBYo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794599894; x=1795204694;
-        h=user-agent:message-id:content-disposition:content-type:mime-version
-         :references:in-reply-to:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SA/I1XcNdOqWCHpHPoabvJbPaHjQpV93aW+4lUY75XM=;
-        b=ocMcktTmUfFVQ1LqM+AYyOXbatQsAAZ1pVCECEDgtflbw/+hFQ8XGD6Yy+XFJlGWrQ
-         Kql3krTVmdoMbZI2/v/6dslJLaVaa+Ow87LqJPbA/37iQ78v0n6M1tzsa8eItk92wOJc
-         ohAJwo6Gi73dMhzTLyK/33cGCDn0SZ7o9mmakacPxahdoC3mSZgoE6DPBo444jeWHOay
-         0pLLWEjnuL6/LMHJwhEj777/HPeUw5CY2605kshu8UFMzJ20R8bqXDsmrR9bTTvugA48
-         qDV8tfZkN8ah2ln8gd0KtE1PkuqVmohqFD1/V3L7Kw+u1XtcJ9/jStFDMuaL9cnZlVYv
-         uwdw==
-X-Forwarded-Encrypted: i=1; AL+hErGVMoyo6uyucHaWMvl25qCHLYdvvysY4fOKbyi44fTzDkmgpFAYwlgf6Hm3wUFMWdah/YTnT86mtA==@kvack.org
-X-Gm-Message-State: APuU4Z/m9X3KGw4k4XK8xDUxdWW/3Aoeqd/QYwjUhUG1CmM7fIDPWmOo
-	8DHTDMrcVFN2zmysqFPux0hmNaAVWAjdmgg52rGppAPPsjCJ+GQ/hZkVLe5zLtmntZQ=
-X-Gm-Gg: AYBFou0vC/BzPJSfdSz+Is0tKG3JKdDGVbkXnF+tLt4wA9bHYeKgIIHHB/S+0SjKr42
-	SqVpPwUVecCudL3DqD4bCKPAyXK6RVfRogpnLGkoyMiMDF58EuQjMjCyrN+BWIzPIFynZst2OWe
-	O0+JDiohP0dJ1um5liz5Lf4aqLWIpcW11wu3md4b+mPG+QyEBMYh7VGfG3YPmYl6eShsE6EPITM
-	51GYGRaz5tpxWu8Y5AbH0S4/B/T/G2DsPoon8gAnnSs4eF+FkJujEz8VhdViN6YvudVBvN9PcGb
-	JB8O+Yq7hhHWYsKzqCIj6c4yLY0zBINZd3pfsc8OnLUPGysmvUbsR0kQoqAId4DIiE4uspdkB2T
-	ML3tOiOj4S8TSqAjCKpi2xg8ARs3Js+/bfKEi3r3mRc7THCpT8IN9k+uOH67drnlj3UEldqqU8i
-	dM7B6KQ6KqcqROjxLHUkhupx79lzIVN7IcAJsr2GlJxkU4biE9sJsaYhuRjV8r4R/tkgmHJhPxl
-	XWdrSfqCV3oFYlzKq8agg935RBgLWxy0QkJAGRPlqpYrQGWOJ+zgyJ7xfgWlNlZwxwhwsVn8y4G
-	m5q2JfWJWcnxgqA6TTkGKf5E9kLgQpkXzB1n5RJmDrUWFwZCJSV7QtAjaGWySKPUNImIca0Gvne
-	3/UrVblkxD4eHRrqZBk0lSssgzJHiTkgGbclgW8JLrYF3t76x1f+RYIVt2Bp+MdjU/wYBr0UAKp
-	Zv+CUkxd92VgF5l4oZ8uuCI+r34cFs2+SCfRVwv4YR+ua9cCZl4NQ5XVLNHIEvNhY2kjs1cSsRV
-	qFja7Gr
-X-Received: by 2002:a17:90b:394e:b0:3ab:be66:ddbf with SMTP id 98e67ed59e1d1-3b1b0b60493mr3259630a91.54.1794599894079;
-        Fri, 13 Nov 2026 11:58:14 -0800 (PST)
-Received: from [172.22.0.2] ([50.175.87.158])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1aec66f4csm5853480a91.14.2026.11.13.11.58.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 11:58:13 -0800 (PST)
-Date: Fri, 13 Nov 2026 11:58:10 -0800
-From: Chris Down <chris@chrisdown.name>
-To: Vineet Gupta <vineet.gupta@linux.dev>
-Cc: dennis@kernel.org, tj@kernel.org, cl@gentwo.org, peterz@infradead.org, mingo@redhat.com, will@kernel.org, boqun@kernel.org, longman@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, ast@kernel.org, andrii@kernel.org, daniel@iogearbox.net, acme@kernel.org, yonghong.song@linux.dev, eddyz87@gmail.com, martin.lau@linux.dev, nathan@kernel.org, ndesaulniers@google.com, morbo@google.com, justinstitt@google.com, llvm@lists.linux.dev
-Subject: Re: [RFC PATCH 2/2] local_lock: do not put btf_type_tag on the lock guard type
-In-Reply-To: <20261110012235.1024461-3-vineet.gupta@linux.dev>
-References: <20261110012235.1024461-1-vineet.gupta@linux.dev> <20261110012235.1024461-3-vineet.gupta@linux.dev>
+	t=1794600060;
+	b=F2teHwA4FdrzWtyiH8JO6oWPKJonr+hsJ5sQTjvANSS87wrKolgWZk81ee0caDvvl6Mohg
+	ZAYQ55vysKA7f0NtUcFO+LIFavaVLOSpQFyhFfTZKXqh1suHA8nM8utMrdMfqb9w5Y7k4O
+	lxNbRjRks9sRqx4xWmxWxegPLG7MVdo=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OyUCD7Uy;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5A82A40190;
+	Fri, 13 Nov 2026 20:00:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E49AC1F000C4;
+	Fri, 13 Nov 2026 20:00:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794600059;
+	bh=cVUaiMaz3XMN9uwKkKZrpHW2DyS8HoLv5GhhqXeNd3c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=OyUCD7UyGbgQkY37EnEigD1L/mrS7PBtAgr+4NmGTZUelqoLujjnkQSl5X8ARX9MI
+	 +N/R6NXrTN7PcrCbmG/pn27YFyv29KKY0XQoMMAUfuHO8AlBL7bBkgke2RbJvLRPau
+	 gqlZKfWqdyCRLwVmQBvbVLOkIeDne2b24kKHimyfVWs7mXPP0YasHlDFJjkbRUClJ0
+	 B/2YPA2lbPXMYhcPkl6S0YHYVWhH4pYxJz/ZIFporIOHnC79l8MpxhfGy+VNxSydkm
+	 o5/gV4LFTaPbY5q4iab0I9lC5gCZrC/A7fMlWILAEbgb7ZUXgDiS+PGC1UtJqmTk9S
+	 k8m6JJ8gBDoYA==
+Message-ID: <6630ec25-3648-4d60-beb7-61572053318b@kernel.org>
+Date: Fri, 13 Nov 2026 21:00:42 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Message-ID: <20261113115810.cd33f9ed58c02dd9@chrisdown.name>
-User-Agent: Mutt/2.4.3 (cc9e3943) (2026-10-09)
-X-Stat-Signature: fpmqb47rwe8yp5uf3ncqitwf6r7aiuwj
-X-Rspamd-Server: rspam01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/9] mm: limit pagecache folio refcount when mapping
+ pages
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
+ Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+ Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Steve Sistare <steven.sistare@oracle.com>, John Hubbard
+ <jhubbard@nvidia.com>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
+ Josef Bacik <josef@toxicpanda.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
+ linux-arch@vger.kernel.org, iommu@lists.linux.dev, netdev@vger.kernel.org,
+ Chris Mason <mason@kernel.org>, stable@vger.kernel.org,
+ Pedro Falcato <pfalcato@suse.de>
+References: <20261112-refcount_overflow_stable-v4-0-ad3deef0bd23@kernel.org>
+ <20261112-refcount_overflow_stable-v4-1-ad3deef0bd23@kernel.org>
+ <avdovRTVITLwuit_@casper.infradead.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <avdovRTVITLwuit_@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2A33420009
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: fyicyo9jgjurbc7gpmb557d5farnkyft
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 541CE180002
-X-HE-Tag: 1794599895-158573
-X-HE-Meta: U2FsdGVkX18bp9iLu//CQXzQwF3i7rRsbscZBxW0MEwntx4ly8KVro/RZwQLvfNveN/S8p5W4JWZ0+LDofmB8aybt7qECXrmCzdN4sB+e19eHJIwFIleO8RQ7GNj+Mm3peWhjzvNqoBexYrwkHiVGR/8B10JrRYt9itnsM0aietmZzswDTuDGLzkqDu9Xorj8iSS7iCL316oNZYn4l2WcU6AMje03E2si6BdLhaSp9KlWdWYVDTexXkQgyXLzNCewAdg/E6Yq4P8XV36DJOe6Vspe9GOaCGim8Hyna/DOk+SizkfSgD0piy/ftSwni+RObgWePPuPMh4hi9WerTIfDQtgjfagaZx9g05HgSZWRmB7G7vSyo2jh5pvByUPO/lpWs5L91pMDfs49G0hp5xdom15NXe6ezzjt7HwSTPClBSRChWpuUoBC13BCQ3QRKyXUqPeeR08tcM0Bg8fUsmETsft+UNQiKfECqJBd9DHOhm2KuWnFLVMQsVIUT3+IB+a6gbch+dGm19rID/+o3aZimxWSr123SgwCeqazG1iT2JSz3TjHBpAN/FPlvIK1TkYSWSmXxXD6hoAwzewbFuGsydQkAWWPLSmivQaKqeMIaU7aExBsLUD7cbl9ZwT1SNMhqpShe3ltRgUTMuIJXicKOsR7Fu7PvLElP1L6WYXQXPohvsj9EmKIIYrvSg6bTMAokRqNAlqJ4mdHcwrWzO6LjWA8kOELIBNtysOmw6B6lq1HRMLtyDhoYT1CRvFBTMmxz4EcZqp8LG5aREqAz6Jl577437+wu7pkr1D//z2kuwKvbIQZqdfRAZpFdh2iJntdMSrb0iG8sNY0vCXPXmulJRRyVmvASo6IzWpAGHNJmGWhVlrVjlbPEafZaS/wTWYsgtMZJgmq/UoGwwlRfwIDGt2Crc/u9gExXTbos73ysvau+bw/I4XX7RZYnSOWVUts1IYGSYn7qlb7pCIk4
- P6l1ffE/
- PUF6/PuqKIf4sNdisbkIAsknJxKZtljQwVbEP/K9ouqN5DH0Xr4LEx1lpB8Qfuk4UgM8np4GYvPYMZh/1Z+jRffXA+lIgLuPAw5rMA1zfqxVd/Ryex4PI3r+rgBS6vdMVgPodDy822dadbgy4pS1Jeyo8ExpFlXSpcARLMzhA8aEBqkI9o8qkSAM2S4AWDjDKy3UFKfa+G70Cmlh4WCvpsIZDP400iSaUEBrt5SWQn2mXOkXcfokM99TRwYP8CTMuP/f9sRrha4hryG6UO3Z75ac56tMDAJKSIQT4uPMpkQm+0HXS+oIxfYCTWW0kyHnlLeaeBv+0B/7euLqqGDmU/QAXu6s+EdYOwBmwSWj5kkCtdkS0B6TBOAux1R1Kn0uqeVnCkDY4nxN/l9am+l/HQ6Pw7RIAqOBk/Wu1HRW6ngvRGhVup7J7HU7xEgYexdGng1Tl6HwS1Sv6L4+9EN6VwbtQpq2Q7n0142Ct3zzvFuCXx64=
+X-HE-Tag: 1794600060-651872
+X-HE-Meta: U2FsdGVkX19uFFlxLbb7bwPqpMsgIKfvrEjkYuK8NcChh1kVrzYY33h6GyzxDI1Vi+L8FUJZ+pxlyfYmpRzPE6F2jVtOih3xtOZwN5NciTsc9JQTumWebpmsyAWP32o80B+gcF7KhH8skCTveRYeB01Cfbku6ca5C4NRIygYjie+2zZqjs/KXXDaU39AHihx/UrJKCOCuytvmQ+vBqNkAFoll+1HNMJrWezfTjpMdyHOpXYFpt2NNzpGZZ0oeRsJzLM7YJRGYVAa/g7tuXQ3XShyadCIzqB0/erAV0koKuQO3/r8uBYiAVA9V2cKxV6G0VbCzRSmR7U4KO2qS+Nks6sZmuV/r7zwXEjjuSUbLbzngnkbeoQi8FFYWVr6KHLOCRwwpWkNrUty3c8r1WkuiGW5cXk9ckZdYmq3efEvyUp87EVY2bQj4wc9aeETYczKRTRLpNFV0df168n1XJf4TUbV1vJAKqJWeIJJQaU7j6gQrZfDfHAqUs1tdH5rAM5WPxmSF+zcRiy6uKixOzcMSIk7VjsHb2TX/+jq2Y4h9JA7IKkhjIPKZOhAAhrIFlLb+737E6oo5WwirD8zqhFZfT4p7WySaeDgYBWfeOjbcLzymh1iKyECI84BlJm/rTRESAivzGi2nRHOvbYx9WZ3n9+HEYR35HRydtuekwG6epJSur6lCQ54pzayz2o0urKOKbrphONSqIWoAb15wbU93Ik0fgMfiejTcirKX2DF4COHnpoQ6KiJT5F3IRWL5tigv/0dQU6PvU2hNW2qPz45JpO3+awmSW3jNiEcvyc33yeCdS94GwK4K4Cc5EZ9TfDf0yUN7UI39WJ/+jCJ2OCN7kbs15v46GPlsFAbvhTiJIsqohOGmC/65ZIH6Zh+dLeFBTBiWwyA7UBV9YPCCccQ27gfya0UxXQGpfGN6aRQVltMPUS2bafFgjc/AGpusrQd7Cgzoj6Rq71G5g4vg7o
+ AOR/hlee
+ +QpONSQxmgyX5zDVLf0fpjenPM4cN51m3Y/9yyOmjQ+4OqcI7M4GaB+2dw5BdeEqqNSxOFr2/FjanNcgimDFHuK7KOqnAYKWGTBXPKbBG88QZT7aP1I6sDtcp1TLVTCPOiny1wsXC3dEkKzq1SSugro5uEcNc6TBBr+UsNYImxCBqRezo/GGCJAiefU0eqhx3tseNwVf97x/bU16n+s6CFTydX0UrWugrR+5V/6c+2xBjfCyGIgRYyLKmSNwXQid7UxRVdXlGs2e08CgO5Yn/WujgnazZcCNPa2LAEPxAQl6PIzGqZJPWirHixQZ/VkOxoe/UT9h0+nqv7fu56pYTKalOPg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,68 +174,139 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Vineet,
+On 11/13/26 20:45, Matthew Wilcox wrote:
+> On Thu, Nov 12, 2026 at 11:53:20PM +0100, David Hildenbrand (Arm) wrote:
+>> Being able to overflow the refcount is not really big news, but it's about
+>> time that we do something about it because some modern technology might
+>> find ways to abuse it :)
 
-Vineet Gupta <vineet.gupta@linux.dev> writes:
->	typedef local_lock_t __seg_gs
->	__attribute__((btf_type_tag("percpu"))) lock_local_lock_t;
->
->	typedef struct { local_lock_t __seg_gs
->	__attribute__((btf_type_tag("percpu"))) *lock; } class_local_lock_t;
->
->Both put the tag on local_lock_t, an aggregate: the first on a typedef of
->it, the second on the pointee of the guard's member.
+Hi Willy,
 
-The typedef is the aggregate case, and it's the only one of the two that
-GCC warns about. But the second one is just the "T __percpu *p" spelling
-that 1/2 keeps the tag for. _T->lock really is a pointer to per-cpu memory,
-since local_lock() passes it to this_cpu_ptr(). So the tag is correct
-there. This patch drops it from the guard's lock member and the
-constructor's argument as well, not only from the typedef. I think it
-should keep the tag on those two and only drop it from the typedef.
+thanks for the review!
 
->Every variant of an
->aggregate shares one DIE, so there is nowhere to record it, exactly as for
->DECLARE_PER_CPU() of a struct. clang writes the annotation into DWARF
->without complaint, but pahole does not translate it from that position,
->so with today's toolchains it reaches BTF from neither compiler.
+Be aware that I want to get this fixed now asap. So I will push back against any
+bigger changes on this for now unless there are real issues to fix.
 
-That's true of the typedef, but not of the member. With clang 23 and
-pahole 1.32 the lock member comes out as PTR -> TYPE_TAG 'percpu' ->
-local_lock_t, the same as any other per-cpu pointer.
+I want to get this sent early next week to Linus.
 
-For the typedef, clang 23 puts the annotation on the typedef's own DIE, as
-you say, so there is somewhere to record it. It's only pahole that doesn't
-pick it up yet. You also mentioned GCC patches for type tags on typedefs
-in the pahole thread [0]. Once those land, does this warning go away?
+With future changes I am planning, mappings will no longer be an issue. I will
+then drop admin reserves (as the chance for DOS will go down drastically) and we
+can use the negative refcount as our limit.
 
->Unlike the per-cpu declarations this changes no BTF at all. A tag in that
->position was never recorded, so there is nothing to remove, and the one
->percpu TYPE_TAG that does reach a local_lock type comes from those casts,
->which keep it. An x86 defconfig built with clang is identical with and
->without this patch: 152551 BTF types and a 6828300 byte .BTF either way,
->and .text is unchanged. The patch removes a GCC diagnostic and no more.
+> 
+> Yes.  My primary worry is actually it finding a path where we forget to
+> put the refcount on a folio and that gets exploited into a UAF.  I'm not
+> sure the "reserve for root" aspect really helps recover from that, but
+> I'm not too opposed to it.
+> 
+>> As a short-term solution, let's introduce two folio refcount limits:
+>> one for ordinary consumers and one for admins. Leave some headroom
+>> before the refcount goes negative, which we really don't want (having
+>> the mapcount go negative is also not expected).
+> 
+> I don't think a negative refcount or mapcount is really a problem.  What
+> matters is that we don't get to zero from below (for the refcount)
+> or that we don't get to 0xf000'0000 (for mapcount).
 
-The defconfig BTF only stays the same because nothing in a defconfig uses
-these guards. lib/test_context-analysis.c is the only user in the tree.
-With CONFIG_CONTEXT_ANALYSIS_TEST=y, class_local_lock_t,
-class_local_lock_irq_t, class_local_lock_irqsave_t and
-class_local_lock_nested_bh_t all lose the percpu tag on lock with this
-patch applied.
+They are a problems in current code with both negative refcount and negative
+mapcounts.
 
-Nothing in BPF looks at those types today, so this doesn't break anything.
-But it does remove correct annotations to get rid of a warning that is
-only ever caused by the typedef itself. When the guards were added, the
-type was only ever used as _type *. The typedef came later with
-3931d4b98039 ("cleanup: Basic compatibility with context analysis"). If
-GCC isn't going to accept the tag on a typedef, could this be limited to
-that typedef in cleanup.h instead, so the guard's pointer keeps its tag?
-As far as I can see, lock_##_name##_t is only ever used through a
-pointer, in DECLARE_LOCK_GUARD_1_ATTRS().
+Nothing I want to sort out in this patch set.
 
-[0] https://lore.kernel.org/r/252c53f3-3f06-40f4-9cd3-795eb298687c@linux.dev
+So if we reach a negative mapcount of refcount today, we messed up.
 
-Thanks!
+> 
+>> +/* Leave separate reserves for administrators and concurrent reference gains. */
+>> +#define FOLIO_REF_COUNT_LIMIT		(INT_MAX - (1U << 26))
+>> +#define FOLIO_REF_COUNT_ADMIN_LIMIT	(INT_MAX - (1U << 25))
+> 
+> I think these specific values will generate bad code.
 
-Chris
+Again, we can worry about fine tuning once we have a proper fix in place.
+
+> 
+>> +static inline bool folio_ref_count_over_limit(const struct folio *folio)
+>> +{
+>> +	const unsigned int ref_count = folio_ref_count(folio);
+>> +
+>> +	if (likely(ref_count < FOLIO_REF_COUNT_LIMIT))
+>> +		return false;
+> 
+> I would replace this with a simple signed comparison against 0.
+
+As per above, this is something for the future.
+
+> 
+>>  static inline void folio_get(struct folio *folio)
+>>  {
+>> -	VM_BUG_ON_FOLIO(folio_ref_zero_or_close_to_overflow(folio), folio);
+>> +	VM_WARN_ON_FOLIO(folio_ref_count(folio) <= 0, folio);
+>>  	folio_ref_inc(folio);
+>>  }
+> 
+> And I would drop this hunk.
+
+Similarly, for the futue.
+
+> 
+>> diff --git a/mm/util.c b/mm/util.c
+>> index 80f6c714844f2..c9c3dc4b490fa 100644
+>> --- a/mm/util.c
+>> +++ b/mm/util.c
+> 
+> Now we have mm/folio.c, I think it should live in there.
+
+I can move it.
+
+> 
+>> @@ -791,6 +791,32 @@ int folio_mc_copy(struct folio *dst, struct folio *src)
+>>  }
+>>  EXPORT_SYMBOL(folio_mc_copy);
+>>  
+>> +bool folio_ref_count_over_limit_slowpath(const struct folio *folio,
+>> +		unsigned int ref_count)
+>> +{
+>> +	if (ref_count >= FOLIO_REF_COUNT_ADMIN_LIMIT)
+>> +		goto over_limit;
+> 
+> Maybe let this go up to 0x8100'0000?
+> 
+>> +	/* Background threads must not consume admin reserves. */
+>> +	if (current->flags & PF_KTHREAD)
+>> +		goto over_limit;
+>> +	/* Neither must interrupt contexts on behalf of the interrupted task. */
+>> +	if (!in_task())
+>> +		goto over_limit;
+>> +	/* Capability checks are not safe with IRQs disabled. */
+>> +	if (irqs_disabled())
+>> +		goto over_limit;
+>> +	/* Use the task's credentials, which filesystem overrides cannot change. */
+>> +	if (has_capability_noaudit(current, CAP_SYS_RESOURCE))
+>> +		return false;
+>> +
+>> +over_limit:
+>> +	pr_warn_ratelimited("folio:%p refcount:%d mapcount:%d mapping:%p reached refcount limit\n",
+>> +			    folio, (int)ref_count, folio_mapcount(folio),
+>> +			    folio_mapping(folio));
+> 
+> If it's worth doing folio->mapping, maybe also print folio->index?
+> In fact,
+
+I can do.
+
+> 
+>         pr_warn("page: refcount:%d mapcount:%d mapping:%p index:%#lx pfn:%#lx\n",
+>                         folio_ref_count(folio), mapcount, mapping,
+>                         folio->index + idx, pfn);
+> 
+> might be worth pulling out into a mini helper from __dump_folio()?
+
+I want a pr_warn_ratelimited though.
+
+Again, thanks for the review, I want to get this fixed asap now.
+
+-- 
+Cheers,
+
+David
 
