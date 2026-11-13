@@ -1,94 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1697606A321
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 03:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07B6606A327
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 03:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=iyoMEpXz
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=gf1QoPRj
 Received: by kanga.kvack.org (Postfix)
-	id D3AB66B064A; Thu, 12 Nov 2026 22:35:30 -0500 (EST)
+	id CEC3C6B065D; Thu, 12 Nov 2026 22:35:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEBAD6B065D; Thu, 12 Nov 2026 22:35:30 -0500 (EST)
+	id C9E216B0666; Thu, 12 Nov 2026 22:35:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB3616B0661; Thu, 12 Nov 2026 22:35:30 -0500 (EST)
+	id BB3816B0667; Thu, 12 Nov 2026 22:35:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B2D66B064A
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:35:30 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EA69A160439
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:35:29 +0000 (UTC)
-X-FDA: 85428680778.24.DE917F8
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 274D280002
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:35:28 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=iyoMEpXz;
-	spf=pass (imf02.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.82.171 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794540928;
-	b=8mD9TuivFp1LMF2ZrUmQSXNoLETdc281YcNlABMh/suZz9/W7kjUpW3BdUvnTNrWMtPeWX
-	v67pNwM4XPkvv/T/mPh5FU5JxoUQIr70NEOFjBFDp/PHA04R3ZaEKXii5i3k2WIs7+HjTP
-	TAvHkB10q3JYQ5GYiu8pTGLbOFdWAtg=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=iyoMEpXz;
-	spf=pass (imf02.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.82.171 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 913066B065D
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:35:35 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 11DF2A80C5
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:35:35 +0000 (UTC)
+X-FDA: 85428681030.12.8451437
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8BB3FA0002
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:35:32 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=gf1QoPRj;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf15.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.82.178 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794540928;
+	s=arc-20220608; t=1794540933;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fx9BDQQeKoTDNDbEhBwBM0FWpMS6IvOY7MZ4EVdx3a0=;
-	b=ZK9qACA4BOcx2pQxhVISDwLTxRoTjrutkayxLWqJEtm+L3HXIHyToayPoYIAemIMPcZUvV
-	DRYoSv2dtPjo9M2+lOSf+YxPKaf6z09+tz6qMyI6rjhbfIHOjF9KYCI4PDXth1RmbEwseN
-	xihp8+TaindxnT4jIh2pQV5RxoV6ZTk=
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-36dbde64409so854812eec.0
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 19:35:27 -0800 (PST)
+	bh=rjuLQ3sQch1AgnD9MXsNCce3VktIWaK+QChBd/wj6dI=;
+	b=LE2iQ8XnOJLw9vxJroR5PohKKH+XZ/lUNfvBYRLeQMqNE4Dtf/LMT0lw1uweaBCR41aaSM
+	0x28XfB0GjbHUL7wcgcdV1p2Lx7jIBzu8aTx3cV6Oc599HuTQPNprnbp8mqoHI6XruwvkS
+	B4T11we2hqwkB5Io2qD1MBndEmNW0Ko=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794540933;
+	b=CrHHV84/NHpTQKvvNPLbWSoEGAkRddntgxLPjDQyRHMmCcPSo/VrCOKufVKb68BLq40Khm
+	+vmbYGYnniFxSEfP6cMy4GzvxqvE39l15jpw4iE4uk4N+cL3ilI5eZ9SPBiBfjb0BNhKd6
+	jw5uLE1cPIagFPVQE8q0NYvuPrcIhyQ=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=gf1QoPRj;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf15.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.82.178 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-33fb4680717so1152040eec.1
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 19:35:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1794540927; x=1795145727; darn=kvack.org;
+        d=bytedance.com; s=google; t=1794540931; x=1795145731; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=fx9BDQQeKoTDNDbEhBwBM0FWpMS6IvOY7MZ4EVdx3a0=;
-        b=iyoMEpXz+NwfbvLSvowRTD4IqvsaJ1nxFqklFRb/wEXMLGt3jX8LPVfoMjXjpaoGkD
-         UhQ8/1/y5MAEw1RL+Z49JU+a+prYkea1St/yRC+rFbVzZDP2kikc2xdJN5zwM8yndHmx
-         Bxh5mdxZnnAcNUsT8OB8EccFr2J2pfuaoQIy0pdmdt6NHFXBdhxcf8hdXBUs8CEUWgVj
-         W6MlCWHpNwF/yVBCvtjBDaLDlexhqcth2mz8i+8Qlj743G1DhqT5ix8Rsuza30lKKatF
-         H5uts28whzwkGL2FFx9MHhjcCsxRNlyvIDkpp++UtJ62ukmV7r81snnCmlDXgjRk2+BW
-         zKyA==
+        bh=rjuLQ3sQch1AgnD9MXsNCce3VktIWaK+QChBd/wj6dI=;
+        b=gf1QoPRjS1k/9hA5c81grDDK/v0+jf3Nvq3UdeZ9u+KYDJ9Ea10TWWCaG5ZBWQ3ao+
+         qamZlZAcG2xeeg4WRmpeJcGji2BHDGKFeQwYHhXQcYQ/V7HGHAWN+EF5DHDAxJDgp8VX
+         osQ7FEPt4y9JSaeJOGNhkPxpoEcUvBU19D7dJahg8iMADdcRwqUh7moB4dmdf21Ij9Yd
+         yZrOo5H9GOIv/HnHRWEb7ywgn03oyhl0BHNdngU7eNbXEZcm3R5Dlt4gLWdSlgqnsNSv
+         Fem4cIMJuyVwfALlJ16yxN6+ulDZVoz9RgUeRtYY/4CDGYjeHUpToyl3QxJhJ50yNVCV
+         DRrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794540927; x=1795145727;
+        d=1e100.net; s=20260707; t=1794540931; x=1795145731;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fx9BDQQeKoTDNDbEhBwBM0FWpMS6IvOY7MZ4EVdx3a0=;
-        b=RsrE0zpkrq9Q/Hlhi9Ppaq9VdwEl9Lumlqu8x1GWwtHe5tpEbHwEF/rEvcO/oIXYQq
-         ycxYghsggstao2ASOTYHm474xyGqaoRTvaMns9rbEqD2Y0uWcoYau9DgRh1xuJBINgNO
-         AKDyb1rEkrm0fNpd71T/yVLkyXhm1ACzDM1lhFxAFW4K1432DET2svgikrGFyFg78XHu
-         2NGZkK4Gxgf4cN6/pm8gCSTjRZ12g/FKVNoGEpaX5CSes3CBYin52wc2lzrZwnFIJWuy
-         3xtF4vp/6iQ8bIF9OXC1Mkp5kvlmz7PAsg+N4uRWHez4mne7nvFPBQ+XR0uS/w6rcTgv
-         eDcg==
-X-Forwarded-Encrypted: i=1; AL+hErFD8qp8CyP1bObo+glHTRw/nLRrj+CpBfM9NIJgPRfrDMSWQuiCiMhpbk0uclZRoXTf4HgN4Dkc2w==@kvack.org
-X-Gm-Message-State: APuU4Z8H4GvLe/C+w/itRJNkLMCip61PeQ15/7ElvgSIqBXn+cTBBP6Y
-	9yw/0Boj/4+aGGpE/gcml8lceH/7tc3AEeJ2carpCIs6qYYeZi+J/Dc9LpxWo1SA0KM=
-X-Gm-Gg: AYBFou0lJzwIc2ASS5hCBrWANCLFsXGfLsz4ncLOc6xSq8Oe7WISNzCxmJuargHEhsC
-	b2+yYKccdlmXR0Z1cFbZveGaWVkSUxOoGY0uSN/ErGhyrQafFyE/B/YGLG4+ZRUTmPlO8EIZxLh
-	UsyPu9y9Kl2O9BiFaGsL216a1XzWVLdX5VFqf4NzoHGkFVuJlsjoxbKf5S100i8VUSHB/FVXGH6
-	62FTbev4CRJBj0ecmt03ZYg+75g80/LmsvRV9pcUxnUVQxcrwjhyv/LknNZC6CR4UMixpCy65ey
-	eJLNlethzajlVStB0GOeZcI7sCxtQwcXRQgeIdkf4VEyAtD+W0npLy3oQzhXi1eN5SnEHObFhE0
-	xrgIkN2aoWyCuDiztuLKIkhneOsclCLZrZAv4iq/Zgt5BxQZt6EyUOIfyZ+D9nDag1xmLsxeqDj
-	Mq8dezPW3jbr8Jid9Z8ZEONnputPEqxLIhGJId2RP4YnFi7yqOooRVRq39mVPN+zfgrsFW84YjY
-	TeAWPCIAvoqqXwbtD99TO/YKNhO2HI3gk+lKPIGGT0VLSUI1f53ygPkSOZLGmJDHuadwYslSLUf
-	jzJhx+tdAzyAiEKk81J299NcgvEgL+AWncFnT0tuYaa52m4wNRijYh3FqeYkNw==
-X-Received: by 2002:a05:7300:d58d:b0:36f:9d8:4a33 with SMTP id 5a478bee46e88-379675071a1mr1169403eec.31.1794540926434;
-        Thu, 12 Nov 2026 19:35:26 -0800 (PST)
+        bh=rjuLQ3sQch1AgnD9MXsNCce3VktIWaK+QChBd/wj6dI=;
+        b=YZoUqlI4n5V1uU71P0d5L6sUSEFHrvkgvsnROUPctMyf7VFyvQfp6ZRD3pwMeQ6BOb
+         p+MgJwfCwC6bBOm4VBmjx8b8piGsFmvUJUHAvKNP14CCN8lwFlfKjaXZcKCXaqh1V0Wq
+         CWmV8iesalxK4R9/vP5uh3lSFTRQiJhLHuP1rHjSeKnTXHyEB7L/UAKjaYFSWEZqxXAI
+         /wJB8Wpa2KuZaYg0QmbQ2U9ocH+ve6vph3qmcPf0bKEHi1Zu4ptOASctzhXfg2d/ueHr
+         EQMoYUgNF9m2k78TV7Af+ab0CrjkcZg5wmHfGDeSPwT5THktzUFZ/73yM0TWt1i8D8LS
+         wAqw==
+X-Forwarded-Encrypted: i=1; AL+hErHznPha/b/ss42C34PVAcmDvGkwOdqZbuo8/tp7fbITmwqbeSplLX4DvhluntOt45qGKSIchMq5RQ==@kvack.org
+X-Gm-Message-State: APuU4Z+7XKWl+vM3mvRGx/J/zvt779qMiqa4NLeRO2enD7EGitQEFJAm
+	4H3ecLuTwbojJwybaHYotndinLN4UeiG9cf6Nc7BUTtzdvVTswxt6FJRCHTW76SoU10=
+X-Gm-Gg: AYBFou13bRMIT3iTc8gZN89zsAlPdXvSqbVzctH6pJwpHYOrS/eL5EEE/CNWC810MSL
+	ivR4RicF0vLzq/t5EAoaZs2EiUdfjICKt9a1Pk/XTBbKh8mxR0UiPWsNM6n5XiDLIXXhKrmcaRz
+	v8VCZRsUuS+LcjDGqznC/U+qF5YLqnB1lx5J7nSL+HWlKpc7YoGtgHIvKn+n9vBVpFhNh9A+OJE
+	fVLG9p/hM1K+u7LLYVduGI0SJzQN+N94KyFTSJ+eyGmSJtbwiwd0lMSBqVNsSGkoFchrv8R+8sV
+	m0X8GZT4R57t6jKPOQ3e4fLZmIMqBP+7krCKAYF+5d4rm/jvpVHsxsVRj9SJ3IlOHSmEZ2rrxMk
+	a5J6th+WQGpL7W1WyuujNabEWOSqGQBi45yMDoQPDcDfNU7+qkL9/ez4JjCWLtUiqEhykoG3pmQ
+	xeMNRrtjQfxUkQh1y23qXlFr4+5a67KpRH4lVRKwEj2FdfXRpJk+V1W9PjF/xezyZw3fTjWYk23
+	GIdtzOVd9kWuCWZ6lSJS4UzKGDXWK5yZkm0tHwl//OoFR0k9cib1wchezii7O1zpkqWxaGUeVqN
+	Y7Im4QR0LCJTtQgxcLcoKlrgxkTzn1z1Q8IKWTJYPzv0EHFWjEd7qnGEo3Dcrw==
+X-Received: by 2002:a05:693c:80cf:b0:36e:9773:84b9 with SMTP id 5a478bee46e88-379673132d2mr1035256eec.23.1794540931106;
+        Thu, 12 Nov 2026 19:35:31 -0800 (PST)
 Received: from G6L4RL2QG9.bytedance.net ([61.213.176.12])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37955e0d966sm2959426eec.15.2026.11.12.19.35.21
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37955e0d966sm2959426eec.15.2026.11.12.19.35.26
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 12 Nov 2026 19:35:25 -0800 (PST)
+        Thu, 12 Nov 2026 19:35:30 -0800 (PST)
 From: Muchun Song <songmuchun@bytedance.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -109,27 +109,27 @@ Cc: Li Zhe <lizhe.67@bytedance.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH v2 02/14] mm/hugetlb: optimize bootmem hugepage tail vmemmap init
-Date: Fri, 13 Nov 2026 11:34:30 +0800
-Message-ID: <20261113033442.62970-3-songmuchun@bytedance.com>
+Subject: [PATCH v2 03/14] mm/mm_init: verify zones for template-initialized pages
+Date: Fri, 13 Nov 2026 11:34:31 +0800
+Message-ID: <20261113033442.62970-4-songmuchun@bytedance.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261113033442.62970-1-songmuchun@bytedance.com>
 References: <20261113033442.62970-1-songmuchun@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: modk1t94q3fiaqt8expuubh96oeeoxp7
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 274D280002
-X-Stat-Signature: 6pd5ii96jq7k7tss8hkm3mdbdtf463gx
-X-Rspam-User: 
-X-HE-Tag: 1794540928-657765
-X-HE-Meta: U2FsdGVkX196DxgHbqPWNM04Ygxo6s3ii0x1KMGUjYJ85VY/vr4vlpTnEXvIqa2RX6AbINfWRoxuBzegScZu2IiQ4Q7zZ/RPPECGibT5a0zYW52sLDMcXvClS+NO9hoN0ob5j1UrVluYu1vQhXaGiButOoWoW0TvDbnvijWWWA0LgWnw/Z7feGU1/6cBd8nlpwGfWaQCzsmveJBNoQYyKr7CTcNMaFq9xte/euIINZjSwheuYpoIdcQPQMVfrYBCNKCPZ1W1/8rcxUrlBMp3/MoS/BfQ8xxfHBLDcIX82Pa++bCTWHspvjhDwIg8SDpcQbkzQEi9n0h532LvLH/3edjMNaGLxOrPtm26kI+V3/Mtt0xNTowQtjzSFEQrG4Ka0g8WnepbViTozJIs56/6QvAXgNOkuw4p1jHdYJje6XYMUdfMEfjzjJIRGOvRkeqb+FOm90ZhhOUx+6AiTx6JpGSSEtUBqEBYi+esEq61bok/0CFojDn+6dku0LV1zFr3FIM5tk8BmVpBU3THOKJPpBC0xwRdDhsQg8PrQBRC4cbAhq7uGgQlbngpvvfFxB67P7qUbgi6EsW8CeUyn+i7W1aYbeXab1+9f2efjkew31l0LsODYS5Jq2BAS1a+TOekH3dapOFTaGKiL59qW7SGGvgLbBQ8gI46JPJh6qfchk37fA+WD5ny6esAqJTe5lVACSrPN+hAVN9gZNENvr1MBToF8bBoGHfhLKvAbcfyFcC+/cqGPVnxCzA0jV10XkIX4H80qQP1XonVWCrRAMMyHhQfFc1R1y0eIbR1idIRd22Q48hn8EVBqZdaf2grfkz6wA5sK/BbbNQ1LZ6TDJa5a/aG/oJgwM7ZiZUlF0Ee6YoOhWQdfkF11RyBeHXEw6GBJ5eqvZOd+GPFaeOM+UCim0l52nNw5aZrcmL0exIfFq8dqGdUJOHXYtmLlE8rFlccvJfFgbHGOfq8rv3ivU1
- Wb6P2z5t
- cBtwFzV1p0a29shQWWY1nHzKB4f0VpIhWljIg09C11ICF3Kih4o6TCsfhqZdq30f3AnCNwaLPb5FA3mZRe8SQFRS+4o7ns4equeNzCiaW+OR8xyATagZsJBXJo+tO5lrJ5JWKhXP7G4AsOewxKSlmkrFG5YhO41GCJo1RnBa25CsqnwHA7r4VMeQFcTDSJBQuYkuQrrraEA+YmbVE64mVWnc2bgGcy3r3vba7EU7Mx6VBKgujACcaPj93z7HMGO/aRucSqCIwa2WM2HKKuYmuSHVhIsM2pzsVVxXKj4AbH+BI5nruXAsMSLxHGg==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8BB3FA0002
+X-HE-Tag: 1794540932-905282
+X-HE-Meta: U2FsdGVkX1+AfmwiEdKGoueE3cuQmq8Ho5BfxxcWPkGzc+gr2aTHW2llirI/dQ29dsrohmeS166RGI7W6hwAkndGVqeNcvslsbZcp5nvAYYRk6XXNdJcyB6ekE5+BE1Q7SJz8TCrg06+cGf/YvHeuees0InRYTeNSKD/Wbd7KpUbj3Zm3mihngsujf5Nzm/uk6n1o9qTPiN1Mcd28Q2OlZ1YOQHXbX/kJWK2k/wiGUObbly7AVaMHA01LOEd/F+dx+GZMVZ+yIbo9iAvrBiqTHuy2mpi/2niDr6/2YotQo5UNVQPC/gWWrs2sie9BbPVk9bpBXq6S8Ik9ejM0D2i2nZZ+G8c5Dwt2RMjnHZ3ITspg33oqYQj981DgaLaAqACam6HgS6t169J+USVQ+VH8C5ZIg6bSfDGKF8pXtlrsTuMt9bjYceV5JGbyjHQfluzyj61f/V99XL4Q8dFJoKqG8IVPLrTiw2SNuO5JE1INNluloy9en3n7vj6PGHr4MnNWl68KjkYzUkJCG7T5z+U7zlkpbj+mLspZzb38YsDRDR+bdWLQag0NsgSNoiRciqdMMKeRJTIZGdKaZ8Vd3Uwlbn2bCL7ndj/T3ao5kvvnP1qALau5wY5vvxb4hfi0pbLoGL85tL9wfTKYXrl7OCS+T+bXUuZ3Z703HiK09jQkHWmPB1NklM2tydrLmk1aPiMKavSAD1F+CBVoQjhuWYBn88AxcMtp1MNWnRJMHML/lw/1USQ+foHXclKaUNEnAs1EK5Pnq24FO8rLu5ijmNiU8/Sd0gJO3QHY13znjpeBzNFD3hK7WSghenlfxxmvLunl/Z7ambdQy+8e/DFgSUUy8nh8cLRAGQJ0plddCdXxo/jOxf3blbx6u5NMKDodJPrHvIH4YnDMl0mktz+dtMnl9kFcZu2RtuhuJSkl2C7E5kVXWp1UVJs+KzjemXTskx2918CPR7hES7ZRVCWkfz
+ s5FIiywR
+ rZHofbJbSg9XVTbwWEeMVNKdJoZsUk844Cammb7yRw0ouxkHdLJDjJ5gFCuVvLtHd5ngSHWIwh3O+AeCgQLMrzM/5KRDkY6FnaL3EfzsoArLXXqTud6qiRqWRnX6kAaT/0MkGRTBlYSLDmhxsxRIHW/cxI13yVWBASW8siLh3gCJz/e8AgqN6C5FGu4CAiYSS+/dL+8GICfKMsgQZ31lbByoLT+QT18wabbLvy1cr5sh/EDVoWFJvLItS4yvfkUJOIDZGvJk1kCbWlcLymDHtXYi72e9WwKL7zk1CWI5RhoQrRIKRVDOko6hLNIlmcvoeGEf/zAgYO2tyaZgdGz5cDGjVloTzwomxptTDrrHPcp/yoK6Qwb49Gh5i1IGBu6gy7Q9E92K44Gu88Hmo2bWuDQyUcw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,93 +138,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Li Zhe <lizhe.67@bytedance.com>
+Template-based ZONE_DEVICE initialization bypasses
+__init_single_page(), which means copied struct pages do not run the
+vmemmap zone consistency check.
 
-Boot-time HugeTLB allocation has to initialize tail struct pages itself
-when HugeTLB vmemmap optimization (HVO) is unavailable or fails.  For
-gigantic pages, this can cover a large number of tail pages.  Most state
-installed by __init_single_page() and prep_compound_tail() is identical
-for every tail page in the same huge page; only PFN-dependent fields need
-refreshing.
+Verify each destination after copying the template so the fast path gets
+the same validation as regular page initialization.
 
-Initialize the first tail page normally, then initialize the remaining
-tails with hugetlb_init_tail_page().  This copies the already
-initialized first tail page with memcpy() and refreshes only the
-PFN-dependent fields in the destination page, while avoiding the full
-__init_single_page() and prep_compound_tail() sequence for state that is
-identical across tail pages in the same huge page.
-
-The fallback path was measured on a v7.4-rc2 base with a temporary
-jiffies-based printk modeled after the existing timing in
-memmap_init_zone_device(), using 4K base pages and 64 boot-time 1G
-hugepages.  HVO is unavailable on arm64; on x86-64,
-hugetlb_free_vmemmap=off was used to exercise the fallback path.
-
-  arch    base      with this patch  reduction
-  arm64   360.8 ms  256.0 ms         29.05%
-  x86-64  171.0 ms  165.0 ms          3.51%
-
-Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- mm/hugetlb.c | 23 ++++++++++++++++++-----
- mm/mm_init.c |  5 ++++-
- 2 files changed, 22 insertions(+), 6 deletions(-)
+v2:
+- Apply the zone verification in memmap_init_page_from_template().
+- Collect Reviewed-by from Mike Rapoport.
+---
+ mm/mm_init.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 88c9aa700533..ed3af959f615 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3266,6 +3266,7 @@ static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
- 	enum zone_type zone = folio_zonenum(folio);
- 	int nid = folio_nid(folio);
- 	struct page *page = folio_page(folio, start_page_number);
-+	struct page template;
- 	unsigned long head_pfn = folio_pfn(folio);
- 	unsigned long pfn, end_pfn = head_pfn + end_page_number;
- 	unsigned int order = huge_page_order(h);
-@@ -3274,11 +3275,23 @@ static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
- 	 * As we marked all tail pages with memblock_reserved_mark_noinit(),
- 	 * we must initialize them ourselves here.
- 	 */
--	for (pfn = head_pfn + start_page_number; pfn < end_pfn; page++, pfn++) {
--		__init_single_page(page, pfn, zone, nid);
--		prep_compound_tail(page, &folio->page, order);
--		set_page_count(page, 0);
--	}
-+	if (start_page_number >= end_page_number)
-+		return;
-+
-+	pfn = head_pfn + start_page_number;
-+
-+	/*
-+	 * Seed a template from the first real tail page and refresh only
-+	 * PFN-dependent fields before copying it.
-+	 */
-+	__init_single_page(page, pfn, zone, nid);
-+	prep_compound_tail(page, &folio->page, order);
-+	set_page_count(page, 0);
-+	memcpy(&template, page, sizeof(template));
-+
-+	for (pfn++; pfn < end_pfn; pfn++)
-+		memmap_init_page_from_template(pfn_to_page(pfn), pfn,
-+					       folio_zone(folio), &template);
- }
- 
- static void __init hugetlb_folio_init_vmemmap(struct folio *folio,
 diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 3988c19699bc..639880afe0ee 100644
+index 639880afe0ee..5ce5a325021c 100644
 --- a/mm/mm_init.c
 +++ b/mm/mm_init.c
-@@ -720,7 +720,10 @@ void __meminit memmap_init_page_from_template(struct page *page,
- 	if (!is_highmem_idx(zone_idx(zone)))
- 		set_page_address(template, __va(pfn << PAGE_SHIFT));
- #endif
--	memcpy_nontemporal(page, template, sizeof(*page));
-+	if(zone_is_zone_device(zone))
-+		memcpy_nontemporal(page, template, sizeof(*page));
-+	else
-+		memcpy(page, template, sizeof(*page));
+@@ -724,6 +724,7 @@ void __meminit memmap_init_page_from_template(struct page *page,
+ 		memcpy_nontemporal(page, template, sizeof(*page));
+ 	else
+ 		memcpy(page, template, sizeof(*page));
++	vmemmap_optimization_verify_zone(page);
  }
  
  struct zone __meminit *pfn_to_zone(unsigned long pfn, int nid)
