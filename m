@@ -1,89 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E48606A323
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 11:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446CA606A334
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 11:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QEbn3Ucu
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=p8FVxTEx
 Received: by kanga.kvack.org (Postfix)
-	id E77EE6B05EA; Fri, 13 Nov 2026 06:13:19 -0500 (EST)
+	id 11C976B0683; Fri, 13 Nov 2026 06:22:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDF516B06CB; Fri, 13 Nov 2026 06:13:19 -0500 (EST)
+	id 0CD996B068B; Fri, 13 Nov 2026 06:22:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FA7F6B06CD; Fri, 13 Nov 2026 06:13:19 -0500 (EST)
+	id EFE776B06BB; Fri, 13 Nov 2026 06:22:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 52A216B06B2
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 06:13:19 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BBB318060E
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 11:13:18 +0000 (UTC)
-X-FDA: 85429834476.20.48F5CA7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2EAFF40006
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 11:13:17 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QEbn3Ucu;
-	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BDD8A6B0683
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 06:22:29 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3F91FA0885
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 11:22:29 +0000 (UTC)
+X-FDA: 85429857618.09.514CAE6
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 62392140005
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 11:22:27 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=p8FVxTEx;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794568397;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1794568947;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zYPIChJtLZR0TjyFHbX9L6fpST0b1RMxFFvviYHMHxQ=;
-	b=QARztXBbCSONWu/7nWzeBhsIK/F3/NhG6XSHrtRZeD0+R28bpBZjqSK8jeNIKkNwuuho4Y
-	Wk4J8pYw0oHfB17pc3rECcuK48L5SCTP5OGaeiXIoWVHknoadZFWFfJvv7SgIyTAOQXzxs
-	Fr72czJwLnDOCk+bG/rOZuFPqUiL6aY=
+	bh=jhZJPwyqkT2jXkPI1fAXCUzZovCR8gpp0OeWDLPOIpE=;
+	b=Z3rRDP3X/sdUMd44rvXM4sNI2SLBX0HgL6b6LEdK1sEyu22Y699Du3jqppaXlnvUmE7ymI
+	plyPK3+RrdSuMwrERbsf2Pwra/DRMmUllDWp7bjg9X22N9sTdb6gQMXXBzkTqT+2eTlVSD
+	SrcUPB9sCY71RZjj0Wrf8tRu3PdnS+o=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QEbn3Ucu;
-	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=p8FVxTEx;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794568397;
-	b=0wbpRqnNuCwdaKUDMKCLQe9dRs0D0/c+/sW0Jp5CTxIX58qw+kzKew5LL9ysqwsrwsIWAm
-	ta1MLNroiX7OEMXNEKrjR9HyoD9Ix6DJvEX17mDaXoLLM4Ti6VOaTI726DM/XFiheeLwvv
-	L2C20VhDiB+5QuaR9vu+H5JMGlDIiZQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 96EAF60D54;
-	Fri, 13 Nov 2026 11:13:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F6311F000C4;
-	Fri, 13 Nov 2026 11:13:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794568396;
-	bh=zYPIChJtLZR0TjyFHbX9L6fpST0b1RMxFFvviYHMHxQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=QEbn3Ucu17qc2JuZvB7FvTBnG8/LnVWeXYxTLhwBTJT+wG+kLETIfzjHdlM5HNDiy
-	 fHS0C2sXn7gXo7GY1uf5ANChWu/o+vQYiZYEget/wwE3ub931VushGc6jDjeOnl9Pu
-	 PmOqWGnx2thMOsghwSXZ7GEPTL/NtACgqWH81waDb06WdmQXTk+7wxP4vbDaYAiDQ6
-	 ElDEIsiTnQBz5ea+jA9g3yOnGsPF5qHwugFWI4sbO0yMG6cWVKTTDVCC1lkX8rn9KR
-	 uMFqKzcgW/m23M9SsTn4nn0+KqAAh9O8ERA0f9f5TJ8mMGXMHBmZYgcUGAcS8hE/9G
-	 BcoVUBRnaXasg==
-Message-ID: <sashiko-outbox-212685@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] mm: mglru: use pte_table_clamped_end() helper to
- calculate the end
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Baolin Wang" <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org, david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com
-Cc: baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev, qi.zheng@linux.dev, shakeel.butt@linux.dev, mhocko@kernel.org, linux-mm@kvack.org
-In-Reply-To: <b2386c5da61f9a15e60daa421b033bc1e0bcdd41.1794481498.git.baolin.wang@linux.alibaba.com>
-References: <b2386c5da61f9a15e60daa421b033bc1e0bcdd41.1794481498.git.baolin.wang@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 13 Nov 2026 11:13:15 +0000
-X-Stat-Signature: gkcww3fzqt9houf3td33jauw7x9w8jwq
-X-Rspamd-Server: rspam01
+	t=1794568947;
+	b=CiCFOAbtjce0nr1zt9zHN3XC/yo/Yq+60wX4zLlbIJSfQe8jj8fPMXLcX3H/8P60INeAHt
+	SnG/7aLV2R2wWNqU1idPwgqDb+cxE9/3WDJ1NRepg5XcNYEr7a/fRU7UJ9JB+twNS9KMmg
+	sRwyvzZFu3VHmacsNdiyJeMuB6+Xifg=
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-35159e0092aso94791eec.2
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:22:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794568946; x=1795173746; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=jhZJPwyqkT2jXkPI1fAXCUzZovCR8gpp0OeWDLPOIpE=;
+        b=p8FVxTExB890LKJaDAqZRkEWS59QaFnvkjGp/6G+0XiS38ZJ3i4eN/w9Zz2UlzsmkX
+         3zKtb/2LldL7IB/HknSwOLsGgsKZ+n4T3N8Sf7ASicPEjDb3Fv+ZqhKU24rLszZLaJBh
+         Z/y1jXIIzeq0ndB8ZTqM4RNOGq9oZvKHjxJzRzRAPQHLqp+jIDJXxZSAEvyL01SiTH3N
+         wlhWbFgvZ+4n40alWDNXgEuZGOU56YyuVasqxYJRDsGkcWrJQ2N4bsUnwNwDjMMWn93o
+         TAHiLlA3neBeLEU3U+hnn+urT0kXNoE2oOdnDNkDSPc6JDngFz9SquUIiVqsvr5T01TZ
+         jtBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794568946; x=1795173746;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jhZJPwyqkT2jXkPI1fAXCUzZovCR8gpp0OeWDLPOIpE=;
+        b=tG52iS4QeVJFx491M0nLWpJ2QJYLb0JjV/NqxG0th/0GGSmoM6vAq0rAyPQcvz+6Ed
+         rSV/QClctemyJrv9w3O+vV2WbrN1MWL5+MHW4NA3wGsTgf2Upbp0s855Lf6Oepdtd0uk
+         IItZqPWmX+asdjKCyiAOZmCmyQ8/e+KfNCXHYV1Tvhy6o4unSJnNeSi0C7QY4mc3MYRt
+         +HkSR+glwY1IPbz5tR8aCTfiNihliHrerBS50exoCo7IFm/Tv6e05piOA6+f0f/N8L+w
+         Cn1QnIefd3J+WoJWmV9QwjyQNbWALIq1+GuQrQ808HDPClo7HVmSCMfjWExqNBG1+Rsx
+         3tsg==
+X-Forwarded-Encrypted: i=1; AL+hErG0JHUkbl0Ti8DZmaz1Ljfa5PeUJwbf6Xk0dc1gG6/MwxrIOI0Dm13gF5I0kJyR0JPCvVvIUu3zlA==@kvack.org
+X-Gm-Message-State: APuU4Z+G73wOdFNiagEfS3vaJccA35FOfSh/N1E/axwFCYZDf9NB3l3a
+	atj2ZjzxBEBlrovPpMNUkX4FUqxS94ISd8uIUKCm1M7H1n9sDiGqMO4X
+X-Gm-Gg: AYBFou0siwA4nzUUoe++erUDvVKRCWYmSpeG5RVlsnn5Mcvd6T8RRfn4pYuZjPPxLsg
+	+7BYz6VlkDbEgni5gR2X0IZ8PKwio9FtZ2gSGFBqySfhn2fosJr9071A7m8gPRVvsw1dsYpmjM7
+	Iluz3E8N5bJiPUxDqFD+yVWCZhjT5GzChXjf+aX5RobJaVDt8fWDJEFN2buWSpMrwvbvFldsYwI
+	lH9N+RFxB3dN0AwI9Ui4J5PQAKRV0k9RoyKBY+HNxUy8SZpayK5FcUcyPGD4pMxGdsxmv15Dt3D
+	so9fFHZxTzfo6Oa6xEEIdFQucS+Qin/2RT4TJftMmdVCEy9gSAyohfjqgDEj+W9MBmbFFI/Z0rv
+	txN6Rnjmb6udFgkBp5IUAXBWK6+8ZaCxXO9SixW9XmTtEx82goYsobO8bWcgGbx3Z1j9hhNZAst
+	s+U08RbK3UaVKAbXNEatSKU1z+6/7WhvZDilMzCBDeBGPE3lsFOgMzcMa1hLWSX2gEQxsCjVWdD
+	1h5tSsuv7SdgTTywgbnmb+pxVBWjwEPZ+JYeMomXEhD7LLimAZ85PtSFlCDr5uZw1FxDO9zT0Ys
+	R4ZW/ErXcKSzGsySIXn7Oi3ux+4Ct4r2JOzbfg1MYCCXdvAp3/r2U6dhM6J2MbmKSvI=
+X-Received: by 2002:a05:7301:a0a:b0:36c:a1bc:6114 with SMTP id 5a478bee46e88-3796038259fmr2893772eec.0.1794568945402;
+        Fri, 13 Nov 2026 03:22:25 -0800 (PST)
+Received: from o6.lan ([2602:fce1:44f:115e::])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3795378c2fesm7133252eec.1.2026.11.13.03.22.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Nov 2026 03:22:24 -0800 (PST)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3] mm/zsmalloc: remove CONFIG_ZSMALLOC_STAT
+From: Xueyuan Chen <xueyuan.chen21@gmail.com>
+To: Dongliang Mu <dzm91@hust.edu.cn>
+Cc: Xueyuan Chen <xueyuan.chen21@gmail.com>, 
+ Minchan Kim <minchan@kernel.org>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, Alex Shi <alexs@kernel.org>, 
+ Yanteng Si <si.yanteng@linux.dev>, Heiko Carstens <hca@linux.ibm.com>, 
+ Vasily Gorbik <gor@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>, 
+ Helen Koike <helen.fornazier@gmail.com>, 
+ Vignesh Raman <vignesh.raman@collabora.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-s390@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ Nhat Pham <nphamcs@gmail.com>
+In-Reply-To: <f9ee662a-4da0-4204-89ce-33704044c88c@hust.edu.cn>
+References: <20261111-zsmalloc_stat-v3-1-2d85ed51570e@gmail.com>
+ <f9ee662a-4da0-4204-89ce-33704044c88c@hust.edu.cn>
+Date: Fri, 13 Nov 2026 19:22:13 +0800
+Message-Id: <179456893350.2142163.5558519210108805249.b4-reply@b4>
+X-Mailer: b4 0.16.0
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 62392140005
+X-Stat-Signature: s7g5hwwget6szqsdbmxk3i94fok981aw
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 2EAFF40006
-X-HE-Tag: 1794568397-678460
-X-HE-Meta: U2FsdGVkX18fLhJIqwrSgJ8yoiSX9O2UDuO3k8dcbJawAoWGYu3rBtIcXC6FyO5f3bWSN0WvELMyXerktTSrpGMRpg7eEEeNJvcuNw2mBB0+uX2iKudsRI+IAYUBixyO3haIa/kn7JlFQdOM4r3ehNLbQwQB+pi7qWWJngHIKt/QOBTW4o/2ALblLQPy8SjsHApWSs96VpClhS4mG7XHlqp8BnvlfB2bKfySvX/qbKet/XqVKw52ZIDK2FYKxsq6/WnjgCdIuMP3OXw5lbgyVM8ngcJG2EK0H+Ez8M4v6MX+Irk4SuXuAO9aRpalOHOmebWReQ9IE16OGoPlU5lulIsK70571GArgI2l2RR5e93Ypb6AJbfi4mm9EJ7Gz14h3do9X4eVkjm6nNnbsT2n9WmxWKAty1YU2/sUXE93Socj9iukvrEVtmOyFkmI/HAPaTUZm1e1L8jOTCcY2ukqeo6Qi8gFHWYQTjBKytT5CIBb/T7CK5nM3hnyz1rMHU1ByGB5nyyeN6+DDKPHVKP9kx9dhZDxBxbclAqwB0hZjQCCNLmASXGILQq6h9RrN05MOibevJJhWpW7GL3cUtUJwJdLMnSjFylVIRWGIiR+M8YqSom3+awaDw8ef1CZl1OF73nP7+rfJagdKp1DJUHLQY4rfL23FmBe4uY0DHJ+2dVVVtz1PM1NE29IY2edloWPgLgLGj1aiUTH2klPrzuO0FVOSvH+2XtvwAKj3poESFiLhfk/OVwE3DiIINcdXtMdlXXYTxcvlGFktXSJ3t4qfFt8m1oWZMmjeSYnh/e9MPyUjyAon1nN3f65aP/YNw/ujPQmXTh2ZjdZ1zw6gn9n+tYeqt0QxAegMpR7O2sg3DHUZlDD34F1eFN+WWatTOKK1CikSbNoyQaKQlMh8UzdJyIM7RE0TIIQikbzqYTdGpoawkZkPahLADgPTyZPbhDPHAz+c77yRBkLDabBb78
- 8KQX3Wpi
- U06mJiAVr5d9sPsuC+ALU9L1W04dOBS7MiJjp6ow5/zjaPCZewcduFIq511iqQOKCdyzqhLdckC873FOdX6ZAre8rF79J/rFqH3jskHLy5mQAm074sOwckZYZPf3lL10D+ilArpKVL7HwG9EfvLMnaDEm8ed4+alGBeNzMJ8KH+7E/pB5Ddg0yEkm9ojyeWq9dtnzI7QzDWZLW0gwj8rq5IdiHzm8gWUWALRE9AxIUnxHnPBsqaLqVOqX194z/i9ksmvqbU/yemXAv3sBntqAnpXySOeOG2l7bpgaX3Fxr894KrT7ZTSEnGdn4r39Zk5LqrMJrxMcU2bunuZwrw4Lb7bMfn2DrfawLMjDu5aEfj1j9IoVE29lOhdAupduwM3w1x5sP3IqORMfJyMzdj5PdHjwbQvTMHfFz+x7bwKPqi9N8e9HOi6Mv10wM4i7JPtLP5tyzlPAslFshp7yV620edVAG9SWQWwakAfhDHlQSzSw6uSPWxyz2tDv6cglDXiRMqU5239BSoHM+2wvB4Qa9MpwFMrqzuNsfNoE867XdmPouT4cjUk/NvSNZZ6VzTPW0KhveuFF3pEgZa/HUHG1U+HropXaXNs7zZ1cc/G6I74HBZMZzpRTT9LDypPfsbOzGvUE
+X-Spam-Status: No, score=-14.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794568947-707835
+X-HE-Meta: U2FsdGVkX19ndroE/z2iX57VVecA5kBtY+aqlZE38YQU+ye7y2fZw+D6YG4OM4o4CGNKeIJo0DY+5LtCzDeyHqgIfDQhCFafTtGxJvyeW23Lve/FztDHD0lbgC5hZlxCFxd9KUIUevL7/l2Q1gZ+UXeq1PR94X4c4OYq9pqYbWcLlk1PZjJW+/Dvqlr2qu79RaOrBbL9Sg8CmPt28TvCQAMCtDijI59KOo//sNxFNdi860HIDjDz9ffd2dHis1Zq7VIvhOG//O74pHQgXIcwIkKD7LABy4iE32sbtKGOAScBhoAc9Ey2C6/Fz9SaYkMmoNwiRjZwk5Osy0UH4lr3MuV7+6QYpgOwSX6PCbXgZfcT5GdtkF7MwOZ9H4Oc8V++gOugUSpX0S4cAC4QHQcS3JMGqo3A0JTfvWZCH71E/MusdJx9MGAiCGThC1166E0HnDLS8no3V9/fixbHJvD9mp5f/Iu5r0YFFufvFEF2hI+k6w6c/W+G53wIEehbd7IgEoenNIRrS9NaxB8uK2FcpYNEhLzuVj3yTH8qJpNeSiq7nO+NSdtqWYg17Fvc+c4Y1TOGFJ7Ahw4c5X8Xc66Q1XH0JIwkfcy5KEQUhNbXx6JOK0EZYKIsNzSu7eoIVmhYw/8bh5+PP/JCEmkIwEKNTnAl7A/D1qb0ONYNeXun/qURWfRaXiy1HnLje96dbDomv0SD1yCC+jLDp0l/6rxzcbBb0isTzw2nZx1I2CwVqFuaIgwdL8ZslecjwilP6pAsHW87TUfZL78vyQ2/Q9uOi/z93lYc9M1D24jF19dalGrmcGDiXmJqrZG5HCxgrYSh5vlpk1oMpWl6lp7m7FV2Jy/bn4dTLNXqfaC/401roNyrdVfqxFE7FpucvOOWt337WfIP9V+xLChZiL6pjFAVomFRamd8ge+7JSk62OoauSM7ZlPqtCGB+xu/VZGz5ypb9p0l7ZTzs1c074lTv1P
+ ej36aPlD
+ xKuHSPkDPmTnEyIwLndAx9AExoszFcKGsRbYVC5TudilMM8GUmBT6Kkui33eoX071PSa985iIhUVc3TiHcCAvVEV8G0DLOzRfhM3Pq3MBesAxW1pEIdP5yqACvvLn3Qd919nriTvjBQZDhLhPFeZDU4yFF+EMCGyEO7G7Ouah3quTpXSgiHLy1UDaYf8sSd5YWKuhtjwut+nUB6Go6gWUk/pjzal6vPnHo13pyp9Qa3KZFR1Tq6xaq5MawfI47OJjfOg/BY/GVZs/n2EZXMXEa1Tj3eYMZUMYCEQelvD5UMbJVD0ECJPfgnBNeoPpQyrG30adI8pa2TgaDCfcCrfpo082UO3XX5Ktzjcdi0BHaZWMPIucd6WfWWJXCrbBik1Jcn0sbDbZWso1FfglLx2y0vbpCEys/+fvW0RK/2XvEPBBtT2daizb6VXAbqRf/syxo2fPfwI0+Z1CQq0S/g7ki6mNwxrtJMYEGDKCUhBbSpYfuziLv1nmFCw8E+3XNyn/921dM/8k6W7ecMl9yFlzH4me1oLybiDA5c70wqq4jBFcdZ/0jhrJ2l+fR6yjydV5+5aFdWsV3qOifmgmJdXVxVIU4Btc2xmv7v5vrMc44MaKyyrRwaxhFo60YQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,42 +147,259 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [High] mm: mglru: call to undeclared pte_table_clamped_end() in
-  lru_gen_look_around()
---
+On 2026-11-13 10:12 +0800, Dongliang Mu wrote:
+> 
+> On 11/11/26 8:41 PM, Xueyuan Chen wrote:
+> > CONFIG_ZSMALLOC_STAT only controls the debugfs interface. The class
+> > counters are updated regardless of this option.
+> >
+> > Remove the CONFIG_ZSMALLOC_STAT guards and rely on the debugfs API
+> > stubs when CONFIG_DEBUG_FS=n. Skip statistics setup silently when
+> > debugfs is unavailable.
+> >
+> > Remove the Kconfig entry and replace the existing CONFIG_ZSMALLOC_STAT
+> > settings with CONFIG_DEBUG_FS=y. Update the English and Chinese
+> > documentation to match, and clarify the pool name in the debugfs path.
+> >
+> > Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> > Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+> > Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> 
+> |The documentation changes look good to me. Acked-by: Dongliang Mu 
+> <dzm91@hust.edu.cn> # Documentation|
+thanks!
+> 
+> > ---
+> > Drop CONFIG_ZSMALLOC_STAT instead of making the counters conditional. The
+> > option only controls the debugfs interface, while the class counters are
+> > updated unconditionally. Removing it simplifies the code.
+> >
+> > Following Nhat's suggestion, remove CONFIG_ZSMALLOC_STAT and rely on
+> > the existing debugfs API stubs when CONFIG_DEBUG_FS=n.
+> > ---
+> > Changes in v3:
+> > - Squash the three patches into one (Nhat, Sergey).
+> > - Add Nhat's Reviewed-by.
+> > - Update the documentation wording.
+> > - Link to v2: https://patch.msgid.link/20261109-zsmalloc_stat-v2-0-caee41684aba@gmail.com
+> >
+> > Changes in v2:
+> > - Drop CONFIG_ZSMALLOC_STAT instead of making the counters conditional.
+> > - Update configuration files and documentation.
+> > - Link to v1: https://patch.msgid.link/20261106-zsmalloc_stat-v1-1-b574f4714adf@gmail.com
+> > ---
+> >   Documentation/mm/zsmalloc.rst                    |  4 +--
+> >   Documentation/translations/zh_CN/mm/zsmalloc.rst |  2 +-
+> >   arch/s390/configs/debug_defconfig                |  2 +-
+> >   arch/s390/configs/defconfig                      |  2 +-
+> >   drivers/gpu/drm/ci/arm.config                    |  2 +-
+> >   drivers/gpu/drm/ci/arm64.config                  |  2 +-
+> >   drivers/gpu/drm/ci/x86_64.config                 |  2 +-
+> >   mm/Kconfig                                       |  9 -------
+> >   mm/zsmalloc.c                                    | 33 ++----------------------
+> >   9 files changed, 10 insertions(+), 48 deletions(-)
+> >
+> > diff --git a/Documentation/mm/zsmalloc.rst b/Documentation/mm/zsmalloc.rst
+> > index d2bbecd78e14..4c0786378dc3 100644
+> > --- a/Documentation/mm/zsmalloc.rst
+> > +++ b/Documentation/mm/zsmalloc.rst
+> > @@ -33,8 +33,8 @@ proper handle-based APIs.
+> >   stat
+> >   ====
+> >   
+> > -With CONFIG_ZSMALLOC_STAT, we could see zsmalloc internal information via
+> > -``/sys/kernel/debug/zsmalloc/<user name>``. Here is a sample of stat output::
+> > +With CONFIG_DEBUG_FS, we could see zsmalloc internal information via
+> > +``/sys/kernel/debug/zsmalloc/<pool-name>``. Here is a sample of stat output::
+> >   
+> >    # cat /sys/kernel/debug/zsmalloc/zram0/classes
+> >   
+> > diff --git a/Documentation/translations/zh_CN/mm/zsmalloc.rst b/Documentation/translations/zh_CN/mm/zsmalloc.rst
+> > index 4c8c9b1006a9..b555a07ac871 100644
+> > --- a/Documentation/translations/zh_CN/mm/zsmalloc.rst
+> > +++ b/Documentation/translations/zh_CN/mm/zsmalloc.rst
+> > @@ -32,7 +32,7 @@ zs_unmap_object()解除映射。
+> >   stat
+> >   ====
+> >   
+> > -通过CONFIG_ZSMALLOC_STAT，我们可以通过 ``/sys/kernel/debug/zsmalloc/<user name>``
+> > +启用CONFIG_DEBUG_FS，我们可以通过 ``/sys/kernel/debug/zsmalloc/<pool-name>``
+> >   看到zsmalloc内部信息。下面是一个统计输出的例子。::
+> >   
+> >    # cat /sys/kernel/debug/zsmalloc/zram0/classes
+> > diff --git a/arch/s390/configs/debug_defconfig b/arch/s390/configs/debug_defconfig
+> > index d44674b63715..83193ef8efb9 100644
+> > --- a/arch/s390/configs/debug_defconfig
+> > +++ b/arch/s390/configs/debug_defconfig
+> > @@ -100,7 +100,7 @@ CONFIG_UNIXWARE_DISKLABEL=y
+> >   CONFIG_IOSCHED_BFQ=y
+> >   CONFIG_BINFMT_MISC=m
+> >   CONFIG_ZSWAP=y
+> > -CONFIG_ZSMALLOC_STAT=y
+> > +CONFIG_DEBUG_FS=y
+> >   CONFIG_SLAB_BUCKETS=y
+> >   CONFIG_SLUB_STATS=y
+> >   # CONFIG_COMPAT_BRK is not set
+> > diff --git a/arch/s390/configs/defconfig b/arch/s390/configs/defconfig
+> > index e00e252d4694..694a309377d5 100644
+> > --- a/arch/s390/configs/defconfig
+> > +++ b/arch/s390/configs/defconfig
+> > @@ -94,7 +94,7 @@ CONFIG_UNIXWARE_DISKLABEL=y
+> >   CONFIG_IOSCHED_BFQ=y
+> >   CONFIG_BINFMT_MISC=m
+> >   CONFIG_ZSWAP=y
+> > -CONFIG_ZSMALLOC_STAT=y
+> > +CONFIG_DEBUG_FS=y
+> >   CONFIG_SLAB_BUCKETS=y
+> >   # CONFIG_COMPAT_BRK is not set
+> >   CONFIG_MEMORY_HOTPLUG=y
+> > diff --git a/drivers/gpu/drm/ci/arm.config b/drivers/gpu/drm/ci/arm.config
+> > index d7c51670da2f..fc0a8a4bfb18 100644
+> > --- a/drivers/gpu/drm/ci/arm.config
+> > +++ b/drivers/gpu/drm/ci/arm.config
+> > @@ -5,7 +5,7 @@ CONFIG_CRYPTO_ZSTD=y
+> >   CONFIG_ZRAM_MEMORY_TRACKING=y
+> >   CONFIG_ZRAM_WRITEBACK=y
+> >   CONFIG_ZRAM=y
+> > -CONFIG_ZSMALLOC_STAT=y
+> > +CONFIG_DEBUG_FS=y
+> >   
+> >   # abootimg with a 'dummy' rootfs fails with root=/dev/nfs
+> >   CONFIG_BLK_DEV_INITRD=n
+> > diff --git a/drivers/gpu/drm/ci/arm64.config b/drivers/gpu/drm/ci/arm64.config
+> > index c46125c1f80f..10b01b55a66d 100644
+> > --- a/drivers/gpu/drm/ci/arm64.config
+> > +++ b/drivers/gpu/drm/ci/arm64.config
+> > @@ -5,7 +5,7 @@ CONFIG_CRYPTO_ZSTD=y
+> >   CONFIG_ZRAM_MEMORY_TRACKING=y
+> >   CONFIG_ZRAM_WRITEBACK=y
+> >   CONFIG_ZRAM=y
+> > -CONFIG_ZSMALLOC_STAT=y
+> > +CONFIG_DEBUG_FS=y
+> >   
+> >   # abootimg with a 'dummy' rootfs fails with root=/dev/nfs
+> >   CONFIG_BLK_DEV_INITRD=n
+> > diff --git a/drivers/gpu/drm/ci/x86_64.config b/drivers/gpu/drm/ci/x86_64.config
+> > index 7ac98a78691e..8225b806dad8 100644
+> > --- a/drivers/gpu/drm/ci/x86_64.config
+> > +++ b/drivers/gpu/drm/ci/x86_64.config
+> > @@ -5,7 +5,7 @@ CONFIG_CRYPTO_ZSTD=y
+> >   CONFIG_ZRAM_MEMORY_TRACKING=y
+> >   CONFIG_ZRAM_WRITEBACK=y
+> >   CONFIG_ZRAM=y
+> > -CONFIG_ZSMALLOC_STAT=y
+> > +CONFIG_DEBUG_FS=y
+> >   
+> >   CONFIG_PWM=y
+> >   CONFIG_PM_DEVFREQ=y
+> > diff --git a/mm/Kconfig b/mm/Kconfig
+> > index afff1b25b543..4a77cda7f1d7 100644
+> > --- a/mm/Kconfig
+> > +++ b/mm/Kconfig
+> > @@ -130,15 +130,6 @@ menu "Zsmalloc allocator options"
+> >   
+> >   comment "Zsmalloc is a common backend allocator for zswap & zram"
+> >   
+> > -config ZSMALLOC_STAT
+> > -	bool "Export zsmalloc statistics"
+> > -	select DEBUG_FS
+> > -	help
+> > -	  This option enables code in the zsmalloc to collect various
+> > -	  statistics about what's happening in zsmalloc and exports that
+> > -	  information to userspace via debugfs.
+> > -	  If unsure, say N.
+> > -
+> >   config ZSMALLOC_CHAIN_SIZE
+> >   	int "Maximum number of physical pages per-zspage"
+> >   	default 8
+> > diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+> > index 7ef80e0da626..104ccf3aa170 100644
+> > --- a/mm/zsmalloc.c
+> > +++ b/mm/zsmalloc.c
+> > @@ -222,9 +222,7 @@ struct zs_size_stat {
+> >   	unsigned long objs[NR_CLASS_STAT_TYPES];
+> >   };
+> >   
+> > -#ifdef CONFIG_ZSMALLOC_STAT
+> >   static struct dentry *zs_stat_root;
+> > -#endif
+> >   
+> >   static size_t huge_class_size;
+> >   
+> > @@ -279,9 +277,7 @@ struct zs_pool {
+> >   	/* Compact classes */
+> >   	struct shrinker *shrinker;
+> >   
+> > -#ifdef CONFIG_ZSMALLOC_STAT
+> >   	struct dentry *stat_dentry;
+> > -#endif
+> >   #ifdef CONFIG_COMPACTION
+> >   	struct work_struct free_work;
+> >   #endif
+> > @@ -565,14 +561,10 @@ static inline unsigned long class_stat_read(struct size_class *class, int type)
+> >   	return class->stats.objs[type];
+> >   }
+> >   
+> > -#ifdef CONFIG_ZSMALLOC_STAT
+> > -
+> >   static void __init zs_stat_init(void)
+> >   {
+> > -	if (!debugfs_initialized()) {
+> > -		pr_warn("debugfs not available, stat dir not created\n");
+> > +	if (!debugfs_initialized())
+> >   		return;
+> > -	}
+> >   
+> >   	zs_stat_root = debugfs_create_dir("zsmalloc", NULL);
+> >   }
+> > @@ -650,10 +642,8 @@ DEFINE_SHOW_ATTRIBUTE(zs_stats_size);
+> >   
+> >   static void zs_pool_stat_create(struct zs_pool *pool, const char *name)
+> >   {
+> > -	if (!zs_stat_root) {
+> > -		pr_warn("no root stat dir, not creating <%s> stat dir\n", name);
+> > +	if (IS_ERR_OR_NULL(zs_stat_root))
+> >   		return;
+> > -	}
+> >   
+> >   	pool->stat_dentry = debugfs_create_dir(name, zs_stat_root);
+> >   
+> > @@ -666,25 +656,6 @@ static void zs_pool_stat_destroy(struct zs_pool *pool)
+> >   	debugfs_remove_recursive(pool->stat_dentry);
+> >   }
+> >   
+> > -#else /* CONFIG_ZSMALLOC_STAT */
+> > -static void __init zs_stat_init(void)
+> > -{
+> > -}
+> > -
+> > -static void __exit zs_stat_exit(void)
+> > -{
+> > -}
+> > -
+> > -static inline void zs_pool_stat_create(struct zs_pool *pool, const char *name)
+> > -{
+> > -}
+> > -
+> > -static inline void zs_pool_stat_destroy(struct zs_pool *pool)
+> > -{
+> > -}
+> > -#endif
+> > -
+> > -
+> >   /*
+> >    * For each size class, zspages are divided into different groups
+> >    * depending on their usage ratio. This function returns fullness
+> >
+> > ---
+> > base-commit: fa4ad798f6f681031775266044ba1b0cf3c670bd
+> >
+> > --
+> > Best regards,
+> > Xueyuan
+> 
+> 
 
-commit 921adf1dcfd3cc8b15e0745e6085a76a09ac3fb5
-Author: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-mm: mglru: use pte_table_clamped_end() helper to calculate the end
-
-This commit replaces the open-coded PTE table and VMA end address
-calculation in lru_gen_look_around() with pte_table_clamped_end().
-
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 25a224746c36d..cb8635e41a38a 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4340,7 +4340,7 @@ bool lru_gen_look_around(struct page_vma_mapped_wal=
-k *pvmw, unsigned int nr)
->  	walk =3D current->reclaim_state ? current->reclaim_state->mm_walk : NUL=
-L;
-> =20
->  	start =3D max(addr & PMD_MASK, vma->vm_start);
-> -	end =3D min(addr | ~PMD_MASK, vma->vm_end - 1) + 1;
-> +	end =3D pte_table_clamped_end(addr, vma->vm_end);
-
-[Severity: High]
-Does this break the build when CONFIG_LRU_GEN is enabled?
-pte_table_clamped_end() is not declared or defined anywhere in the tree,
-so compiling mm/vmscan.c fails with an implicit function declaration
-error.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/b2386c5da61f9a15e60=
-daa421b033bc1e0bcdd41.1794481498.git.baolin.wang@linux.alibaba.com?part=3D1
 
