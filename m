@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8AA606A889
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C333B606A89B
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yfw0uYdH
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hSsQEHar
 Received: by kanga.kvack.org (Postfix)
-	id 076766B05CC; Fri, 13 Nov 2026 13:56:58 -0500 (EST)
+	id 705B26B05CE; Fri, 13 Nov 2026 13:57:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04F526B05CD; Fri, 13 Nov 2026 13:56:57 -0500 (EST)
+	id 6E4BB6B05CF; Fri, 13 Nov 2026 13:57:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7FD76B05CE; Fri, 13 Nov 2026 13:56:57 -0500 (EST)
+	id 5A61E6B05D1; Fri, 13 Nov 2026 13:57:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C0C446B05CC
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:56:57 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4FC4716020D
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:56:57 +0000 (UTC)
-X-FDA: 85431002874.08.27F8BF2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B71D0180006
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:56:55 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yfw0uYdH;
-	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3500D6B05CE
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:57:03 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B8D77A0257
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:57:02 +0000 (UTC)
+X-FDA: 85431003084.25.25626EA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 07C6E180009
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:57:00 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hSsQEHar;
+	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794596215;
+	s=arc-20220608; t=1794596221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mosG6dXpKs4MiSvsDopZl5qPTYSrZ6sq9UtFKALWaM8=;
-	b=iRm9y3FFhP7oH172eFqfDxgHHiCM1d/o4pmFd8bi8l5AjHDKn6iDPbsxLuQCp0jk7I5QTf
-	Y3s5zjrBAc4PcrbejgCCb5cHAm0zRKct0WI5yh7j4DpFmbGKa3ZXfBjpBpUpHLEqzZ87mp
-	b/H7MlDhziGAe76ebQP35vBmoSas8Qo=
+	bh=S5jCGWK0mMVJUZnlxb/Lm2+++2Og+50SQZcmUWnLKIY=;
+	b=r4AKiI6mcGzHWs13f2I5bY64DN6Q3cDWFozfmRmmlY3y8W/p9ItHu9nX1jm0PFEjgmn0Fm
+	hymMknFDD+ayipDxxJInrPWgkpymqn8JkGARr+39mPrLUkA7KyCvt1doninc9MG06KH08z
+	yddl9DjMRUo48vjf0K3HtVPmglFdZ8M=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794596215;
-	b=NUNQj1GHlSBEqtZShfw4K05lqdeAodQUEX8sQHvi2apqndO4EPL82vnqrjErCpROcnOGBX
-	XpCQlhXbFjV9CZTGUajsgOqPtxof0p/edbeBpbODROtRu8rKWQEniCSPNeQySVUt7dnFer
-	5KGpPa2erm9vXKCkvCSicteXvyR6Aec=
+	t=1794596221;
+	b=dMttkla3axpgbQKWe1oCmzHwuO+E3dlnWcVaY/lPsAKHYAxN0AxU3DWSCn9SdEX4dVoCZW
+	Ki70Spy8JvypZfhKUqgD08aC+hXaXmdmH54US6jqCg84gYMTZdAIsVODfzPW3ABUF+nHGU
+	Fc0+4MEbjGFI5CJVKLBtb/m4rIvbI+I=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yfw0uYdH;
-	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hSsQEHar;
+	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 521BC63295;
+	by sea.source.kernel.org (Postfix) with ESMTP id 1A6E54631C;
+	Fri, 13 Nov 2026 18:57:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E2A91F000C4;
 	Fri, 13 Nov 2026 18:56:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57AC61F000C8;
-	Fri, 13 Nov 2026 18:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794596215;
-	bh=mosG6dXpKs4MiSvsDopZl5qPTYSrZ6sq9UtFKALWaM8=;
+	s=k20260515; t=1794596220;
+	bh=S5jCGWK0mMVJUZnlxb/Lm2+++2Og+50SQZcmUWnLKIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Yfw0uYdHB28H6CZ6a1Qjriabq78wA7ne5Juecy/t5L8jf1M8DmFkK0I0tzYrCgl0r
-	 FZ8/NU2UKcvC8wRvEH4Tt4Bna6yVLzBwnM6cK+Rk0twV6YRyYhBBeJmoZUQ2yeHSWQ
-	 1wKiw5xDYvscmMfC7RKfzl6IT3v/mLX1a+WUN8B/AZ/F75khkZJYZvmkYw40Qu+3wX
-	 MiOzmjsfCP9FSw9lDY5ftO3FJ3MgOyCKXqGu2vqaVjmuUnb5WYOoBqVngODp48k4mD
-	 vBuUWOTiep+CuYSPoqwOaiCZLgOpcA4Mv1bybyKLABcVWGagJ7VHe7WZTdcmfUOHNu
-	 aXqqj2OEyockw==
+	b=hSsQEHarvAkvCU45KeaGeDjcWDMOqt3OZAJvXxoHb+LNXMMCikLCUgF7KeB4Hmmu/
+	 fINAm+gwafUcWqYxD60C6gieAY5asMO/WHIqwagOJDD0sYpoDNnob1E9WnJ9d9eAwK
+	 opug0lrdGWffL8JQoJSwWKWmCG9kCZx4u0FJ++6jLCQijP/Ry09OAkC1dwK01sArTW
+	 JSVXVtA8Hu2P5U+MShtJFIU/zi4NJXZR/JYEJqN+PcNgTV7YzWVOq3w0A0TGMzT+D0
+	 Q3GIub7JiUzQo7LBQhjZU9Y4PobLZ/6uKAHSPgHV32FgbCursDerf93GyW1zFOJKgM
+	 t3HUS1ujSx6KQ==
 From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 To: akpm@linux-foundation.org,
 	linux-mm@kvack.org
@@ -89,28 +89,28 @@ Cc: axelrasmussen@google.com,
 	zhangbo56@xiaomi.com,
 	zhuhui@kylinos.cn,
 	sidchintamaneni@gmail.com,
-	"Barry Song (Xiaomi)" <baohua@kernel.org>
-Subject: [PATCH v8 13/16] mm/mglru: Reduce LRU lock contention by shrinking folio batches in inc_min_seq
-Date: Sat, 14 Nov 2026 02:55:38 +0800
-Message-Id: <20261113185541.70203-14-baohua@kernel.org>
+	Barry Song <baohua@kernel.org>
+Subject: [PATCH v8 14/16] mm/mglru: Avoid prolonged anon reclaim with swappiness=200
+Date: Sat, 14 Nov 2026 02:55:39 +0800
+Message-Id: <20261113185541.70203-15-baohua@kernel.org>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20261113185541.70203-1-baohua@kernel.org>
 References: <20261113185541.70203-1-baohua@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B71D0180006
+X-Stat-Signature: i3to1koyc8fko81jjkd6rxhujc5ayqpg
+X-Rspamd-Queue-Id: 07C6E180009
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: bcq4stournfkayhcqerhx9heewf8audh
-X-Rspam-User: 
-X-HE-Tag: 1794596215-566122
-X-HE-Meta: U2FsdGVkX19zU8kQCHk8gcpKujJ83LdtaH9LKbbDhxj2gDfd4qiGAMXlYxB7NKp0/mJ0x6tf7+tI3D4bW+0LNEFNmpo9wGSwVOr9iAjcH2MEylIog0WtzWbbe7a19Lj2SAnhE/rbZHPurDh1iF6twEdrEhyMDIblu1TCIQsa307V0cHmL57HrwfHKzAQdk0rXeckeKKMDv5336qJrSLjv/1Uy88MBcoqx1iWgaboCLNp0EJRClpR01dWFg/L/DC9/RzeS05ozxj+pOOB3kf+jd+eRjomew4OkHNorgDeokSCFE5HRL8WtWBz4+gQ3Yr1X4Tcj17lb4X4zrDpKWSGvrIvOs52uAPDM62yLCQ90aFHd/GtrgzChIe18tLnGkPvH0z6/gSdO5KiDwcizfSy32GXv1OnFzfh+76SmOTDgvcjwfYt2aLmF8XwH9XW/Hghy6Y3kODvVs5ejgYU03BMc94MEq+NZ39FnC1nNavIgMyW+ShjyAck5+mY1Re0uBEGw2zrjasXC8Fryi46sPMF185I2xLN903/f2CmuhljGFuP1NMDXSRDHVFQyDfp43a8DKgo60Q0jSEiCBlOG04Etup2y2BGWG4rudWmi36ouhUi/NQxj18mWIjgmeQSFD6n399wbdiG851gLWxt0CDlf9GeBLVKAxUEH3nhcuq62tfWB3TCFCeKVe3lQXi8yaUeypsammO70uZCA8u7njmYC0PnVb2+Ckmgdf4UuMqtF45En4kn8Ur2ZjMPQXV3WbcI16nkFCsCV8xUVN3k5Qz7iK/dti5Sf2d5bRrbIGn+BO8fzY3cw9yIFAzVfaQROKvBiAVwnEUwUS2hgFyOo/7NZLEPYai/cxPGXrZ56RJZrTbRKhSWq6UfueYDBPFE0fLe4VBf/GPz4bwgfWyMNUcgbko1VrAW7JoVFo6Yl79E8fFAfV0T9bSHnQ3wvlrmAE6bCKjKv9axjOlrhO8KxQ4
- DevjkHsM
- 2EHlGS+4avt9p6VamzoSLtyjTPtaGy4U6UHFDQ0cptn4ppEwYj5+f4GNnDqBNfehkJOp857fvKb367ItRAkGBLr/xe+8Y0bO3dn5XQZczEgytyzQw5RrYzCaUTviXgE9NTbzqElj3HUorJH9ULLXPRrRx+7nZeBK70o/ywF0wR+DsL0423MCg5ckhLuRwwQ3dvYCZAZJPHCTMQkMGAmdmrWUsC6NJfMPn3BEOhTIaxfG8Jv7lqBKT81EKVYxj0WbD0xr+uj1A8439/tgGYTWFXldmqH0iNJRRy56SUqtjX0P9dyy48EBPZKPzhK3sTPZXam6CRgi9MD3jscRaFrBNnZX3ynyGjiEwDioa
+X-HE-Tag: 1794596220-362513
+X-HE-Meta: U2FsdGVkX1+xE9df0ipQMnvqFF3FxHaXYHAKDdOO2fDs9Ufg3lYeERF2S2Pgsp8v9t8kqvckjaHWoIJPkNQuupTShdd51L1T4/kAESXZ/7xvzGODVDQJf+z/8T+HxL2RXLtSY7mR4LGQSgzwz1/SM1YGvhnX9XCxL1Vo2OfZBmG5mObHtn+LQjf4eLf1Ck/XV2PkuogqAiYgraLAETwKC1wtbn+1Tp06dbiZcwtBHE0AFfbCLZwQn5SkSv725t8DfUu01ztKF2XFtUbq9m9uW4dXMYzYepv7LYRZBruRjgzp/jA9grN8zP6jxCJdpPXMh7pJjiQZXL47AZfgLVikoJ7gycWw0Q1MALy1GTP+vp6kMML6zG+CtPHQVWQZqIJYSmMrLPBc9/moYj4p3sx9gCiB10/SgN0fYjC2bVnK0ZbK65TFHJZtizZuvxE7pUPhaz8L6KfhzorjZzQQjZ/w4G/r4hgBs+cvDBLWKt3WM3NXqdK1VNEav21/+mdcgDuxuN0mYkoOXK3G0BVvqewYmODbhNh0rQJx8UpCREn19qxgvdmxDKe+RzyyUDyn4BpvM0wBJ2XDVdH99NEERlRVjyLE9AZ0hcGn96uVXMzVoEi+aQrlHTLINyLEn5OxfZCTfdmWxXYG01UPQJTseTfhKAzX7krvkq43P5EhDQFNN6BKOegiSxgzxaGdq05aV3FGQO6lEtr8PEeYUtjW0zBlwae6JDK17Yq52+B/Een+9CS3RFvpRtpIlne2/x4ZF1rhpPpFsclTZsrTA+pJJGBJYf7YkOrjZqlMIC597U5cfd6hg5VLxC8mXEEMwmBWH8NJb5PoUflPxacOYbW6SQAauDmOUDUmD2n3laSRHvLr6UrBuGRZM09g1MBYqkNemtfokCBWIJ2FzjSXRQIp4OjqMFlrWwuHI45N66vA6aWmd0mr7pgYJryOiyBSzA3UAyp2z5gCg38bLGDS28ZgKs+
+ rqYmi10s
+ YvwfrlhdR2ol0cPpBnDsW7wNMVuTX9zOrdOplbieE5cWF+4tRaSgMu2tHNOWtOD3Y8EtTU75pGNXTo4WlTTFk3sfKwSw1dlaxtGohpq53let12SttjdVRmcI0igsKf6vM1BbfpRzh7hYD8I2pjzt8sn7ce8GWaHR+xJLMqyVi6qwZJ6VZ41mqCgDMNJhsGQbzWUXdc3DinE8be2AssW4HcP/1mEalWpJgk1FsANNr85oTRcIZY+ApHcWIbQ6NzMTU2tsPKADpcLpzMfIkH4hiqGGGAuTJmxWwNekZ6upgyf5w2cG+87Dhi9+ACEdKgGRrt/fbIk1uO19ZIn4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,29 +119,70 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Reduce the number of folios moved from the oldest generation to the
-second-oldest generation in each batch. This shortens the time the
-lruvec lock is held, allowing concurrent LRU operations to make
-progress and significantly reducing LRU lock contention.
+From: Gaofei Lyu <lyugaofei@xiaomi.com>
 
+It has been observed that swappiness=200 can significantly slow down
+reclaim on some machines, with some workloads running 3x slower
+under MGLRU than under CLRU.
+
+This is because swappiness=200 currently results in file_factor=0.
+Give file reclaim a small factor at lower priorities, for example,
+when sc->priority < DEF_PRIORITY / 2.
+
+Signed-off-by: Gaofei Lyu <lyugaofei@xiaomi.com>
+Co-developed-by: Barry Song (Xiaomi) <baohua@kernel.org>
 Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 ---
- mm/vmscan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/vmscan.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 6ed47089a330..2595f3fbe1b6 100644
+index 2595f3fbe1b6..b1a36dae6da6 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -3912,7 +3912,7 @@ static inline void flush_lru_batch(struct list_head *head, struct list_head **ba
- static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
+@@ -4899,8 +4899,8 @@ static int get_tier_idx(struct lruvec *lruvec, int type)
+  * We don't calculate the scan cost, MGLRU uses lazy promotion, which will
+  * cancel the scan budget natually.
+  */
+-static void lru_gen_balance_scan(struct lruvec *lruvec, int swappiness,
+-		unsigned long total_scan, unsigned long nr[])
++static void lru_gen_balance_scan(struct lruvec *lruvec, struct scan_control *sc,
++		int swappiness, unsigned long total_scan, unsigned long nr[])
  {
- 	int zone;
--	int remaining = MAX_LRU_BATCH;
-+	int remaining = MIN_LRU_BATCH;
  	struct lru_gen_folio *lrugen = &lruvec->lrugen;
- 	int hist = lru_hist_from_seq(lrugen->min_seq[type]);
- 	int new_gen, old_gen = lru_gen_from_seq(lrugen->min_seq[type]);
+ 	u64 refault_rate[ANON_AND_FILE], anon_factor, file_factor;
+@@ -4957,7 +4957,12 @@ static void lru_gen_balance_scan(struct lruvec *lruvec, int swappiness,
+ 	file_weight = nr[LRU_GEN_FILE] + nr[LRU_GEN_ANON] / size_bias;
+ 
+ 	anon_factor = (u64)swappiness * refault_rate[LRU_GEN_FILE] * anon_weight;
+-	file_factor = (u64)(MAX_SWAPPINESS - swappiness) * refault_rate[LRU_GEN_ANON] * file_weight;
++	if (swappiness == MAX_SWAPPINESS)
++		file_factor = sc->priority < DEF_PRIORITY / 2 ?
++			      refault_rate[LRU_GEN_ANON] * file_weight : 0;
++	else
++		file_factor = (u64)(MAX_SWAPPINESS - swappiness) *
++			      refault_rate[LRU_GEN_ANON] * file_weight;
+ 
+ 	/* Cross-multiply the ratio above. */
+ 	anon_scan = mul_u64_u64_div_u64(total_scan, anon_factor, anon_factor + file_factor);
+@@ -5154,7 +5159,7 @@ static void lru_gen_prepare_scan(struct lruvec *lruvec, struct scan_control *sc,
+ 
+ 	total = apply_proportional_protection(memcg, sc, total);
+ 	total >>= sc->priority;
+-	lru_gen_balance_scan(lruvec, swappiness, total, nr_to_scan);
++	lru_gen_balance_scan(lruvec, sc, swappiness, total, nr_to_scan);
+ }
+ 
+ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
+@@ -5914,7 +5919,7 @@ static int run_eviction(struct lruvec *lruvec, unsigned long seq, struct scan_co
+ 			return 0;
+ 
+ 		lruvec_evictable_size(lruvec, sc, swappiness, nr_to_scan);
+-		lru_gen_balance_scan(lruvec, swappiness,
++		lru_gen_balance_scan(lruvec, sc, swappiness,
+ 				     nr_to_reclaim - sc->nr_reclaimed, nr_to_scan);
+ 
+ 		if (!evict_folio_lists(nr_to_scan, lruvec, sc, swappiness, MAX_LRU_BATCH))
 -- 
 2.39.3 (Apple Git-146)
 
