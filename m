@@ -1,120 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C916606A337
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 02:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F6C606A32D
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 03:08:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Xgq8tYcW
 Received: by kanga.kvack.org (Postfix)
-	id 832BD6B0657; Thu, 12 Nov 2026 21:53:19 -0500 (EST)
+	id 1BF986B062A; Thu, 12 Nov 2026 22:08:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 809ED6B0659; Thu, 12 Nov 2026 21:53:19 -0500 (EST)
+	id 196FD6B0642; Thu, 12 Nov 2026 22:08:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 721016B065A; Thu, 12 Nov 2026 21:53:19 -0500 (EST)
+	id 0AD8F6B0653; Thu, 12 Nov 2026 22:08:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 37C426B0657
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:53:19 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9AF541601E1
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:53:18 +0000 (UTC)
-X-FDA: 85428574476.06.342C512
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf10.hostedemail.com (Postfix) with ESMTP id BCE18C0004
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:53:13 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	spf=pass (imf10.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794538396;
-	b=emuVjP+BwMANKCI31fNl8VQTsTqZNVO91WgzVC0CwcJAk7ayMYiLlPuicyDsoVT+ZVVzcG
-	4nTvPjKQIrju59JqS7qY3GYP8rOk7O6XhO6yoSK3ZvFpqQT7kV4qBj22WW9NCPQrtucqDq
-	ZDWByVqGhqGWCr8ZywYntT5ltF8x/iE=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D553D6B062A
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:08:32 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CF93114019A
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:08:30 +0000 (UTC)
+X-FDA: 85428612780.15.1434BF3
+Received: from mta0.migadu.com (out-231.mta0.migadu.com [91.218.175.231])
+	by imf12.hostedemail.com (Postfix) with ESMTP id EA76740004
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:08:27 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Xgq8tYcW;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.231 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794538396;
+	s=arc-20220608; t=1794539308;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=qKeJBKYSKrXzA2DdXk+Uv7PAsSWBeJIQUutMePGjhzg=;
-	b=CDtJGt6zTYbKaoh5RSHpCqo0Eg2QcB5/tOL6ShYAJACfdkCWLuaJwXpTuoSHT9okE/n1b+
-	+WOeRSo/Oix9iydxBcUxL3N6P43WTJA+C/PR78aa3zULrJe0BBWUOgIOvm88Ntsd57JXMu
-	I2Es8zlGBQ1y09R9rlhebqysTwxqgu0=
-X-UUID: 56b8724edf0d11f19a56ed5b684f684d-20261113
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_7B
-	HR_CTT_TXT, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NAME, IP_TRUSTED, SRC_TRUSTED, SA_TRUSTED, SA_EXISTED
-	SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
-	CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO
-	GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:4f9bbadd-e78c-4769-a1dd-5c2cd0e23a33,IP:10,
-	URL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:-15
-X-CID-INFO: VERSION:1.3.19,REQID:4f9bbadd-e78c-4769-a1dd-5c2cd0e23a33,IP:10,UR
-	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-15
-X-CID-META: VersionHash:7db8b62,CLOUDID:4af21d31961f732c8794b7d6542fc9f3,BulkI
-	D:261113104019IM9075YM,BulkQuantity:2,SF:10|38|66|78|102|127|153|841|865|8
-	98,TC:nil,Content:0|15|50|99,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:41,QS
-	:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,A
-	RC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 56b8724edf0d11f19a56ed5b684f684d-20261113
-X-User: lihongfu@kylinos.cn
-Received: from macbook.local [(114.244.3.119)] by mailgw.kylinos.cn
-	(envelope-from <lihongfu@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1341907876; Fri, 13 Nov 2026 10:53:00 +0800
-From: Hongfu Li <lihongfu@kylinos.cn>
-Date: Fri, 13 Nov 2026 10:52:37 +0800
-Subject: [PATCH v2] selftests/mm: mlock2-tests: fix fclose(NULL) in
- is_vmflag_set()
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xh12Ec73501aJdZldZTaVOfppvQ19TVeVwb3Yqc67Do=;
+	b=lo/JPeGl7wV79O+CUq/IA1pf5N3Cx5/3ri0BOnzNwRcngQTR700s0JEvtqemst1vWqVHgG
+	vn9dLGffkNlEc0wbY08/zCN0BKuCWoI/vwx4qjfYnm2R4pNCZBACIoFftK2/AHDv2Luewp
+	Wd/4g2coGEu27LQMmqhSz8iKdKXuDVo=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Xgq8tYcW;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.231 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794539308;
+	b=gDBfxMU55/WWXyzjo0imjh6mDGzidnqezGBNAeZdWFObaIhsbgFID4MsGGP98FPTzAQKr6
+	202604zLLcmyXo0NJLFiK3oA0Uh+/4padFZFC56PhjpYUwFfh387DAqe22ipMv7cJVDsCA
+	IslE7AyR9nMm8RScCkkHPy23+FexQCg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=i7wdYt1YR5CVX/6t3vNtMl/JvBAliVHJFFa19DKBkmU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794539306; v=1; x=1795144106;
+ b=Xgq8tYcWRueqF4ojil24saUe27PEkfMEboQlmmXHzBbCEFdoMphPGlA7z+KF5LxNoRJ53C4I
+ c7c1wCTWWNlU9bZZ/J1beBn6dPSShj3qKON2n9tIWv/bWD/o7GffX/NGF+peDJeNZruMY0E1yXJ
+ UfekAJ1ZoVD0ofGejP4IHN7k=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 0da06881c7ca0ca3;
+	Fri, 13 Nov 2026 03:08:26 +0000
+X-Mizu-Trace-ID: 0da06881c7ca0ca3
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <1c6137c0-297a-4993-b386-6e8a1824d8dc@linux.dev>
+Date: Fri, 13 Nov 2026 11:08:12 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-for-mlock2-v2-1-f62195fc8394@kylinos.cn>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NwQ6CMBAFf4Xs2RraYIue/A/DAdqtrGBrWmwkh
- H+X4tXjJPPmLRAxEEa4FAsETBTJuw3EoQDdt+6OjMzGIEohOS8rZn1gz9HrQbBWKltL05rqXMM
- 2eAW09Nljt+bH8d09UE+5kI2e4uTDvL8lnr2/4cQZZyeF0hhVadGZ6zCP5Hw8agfNuq5f/hNIs
- 7cAAAA=
-X-Change-ID: 20261104-for-mlock2-a67f86dad498
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>
-Cc: hongfu.li@linux.dev, linux-mm@kvack.org, 
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
- "Liam R.Howlett" <liam@infradead.org>, Hongfu Li <lihongfu@kylinos.cn>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794538380; l=2033;
- i=lihongfu@kylinos.cn; s=20260915; h=from:subject:message-id;
- bh=c5NvTkyLv8vVmdu1qrQ3QDkHHLM9VqONXM8ZX64SW3A=;
- b=8msNcvfbPWNkjRBc55Y3yhcUCTKNn80xye5iwBTmLuI+t+agi89Y5Yqv/WWCI0aHBzW2dabOv
- aQpO35FY8oZDjv7tZmhqPAfT/w7reiAigPaMTzGYMqj0xR9lgJG1tGC
-X-Developer-Key: i=lihongfu@kylinos.cn; a=ed25519;
- pk=rUpDSpB3neoNZRlGG6dHlFb3RepiJakcev+ucyqaZzw=
-X-Stat-Signature: x6nei5mnj8g858azcbeg4sm88mdnqdm7
-X-Rspamd-Queue-Id: BCE18C0004
+User-Agent: Betterbird (macOS/Intel)
+Subject: Re: [PATCH v2] mm/mglru: yield the lru_lock earlier in
+ fill/drain_evictable()
+To: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
+ Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+References: <20261113020132.274013-1-hui.zhu@linux.dev>
+ <a72af87a-0f10-4717-9d50-2d3480c32caf@linux.alibaba.com>
+Content-Language: en-US
+From: Hui Zhu <hui.zhu@linux.dev>
+In-Reply-To: <a72af87a-0f10-4717-9d50-2d3480c32caf@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794538393-344042
-X-HE-Meta: U2FsdGVkX1+LcKe6a0IzGtX/Ly45A9Jrd9kRivyx0/skJPDMupT3DSLkK8yO4idyUPv+/1R5W5GwC8o9e+LxkxoUgaK6PkQhQP9EG9aGWiILJQO14zHFDz+V1FnfgvG8ji0GpGPFNHLAijsSZA1nlGYbMC/uj0P0INuzMnvvb1huziuxYBYl669eOTSMlCbJJRYhLzZUDKCiqP5hetWaKhyJGY5uY20J5lgLh7FU2VfkbbvoWFDW8HqaqfJ9pC9Xj39qoKv1DqUdtsTNkzs0Qr9rGfkw8QCsisdGMK8KsDwE2Qj3VwzxrRlU1CrnO5F5a/Lo9vcn+/YoT2O8D+VnJZtJag9YzQyj4C/D0NlcKsZwfs89+pJBciPkxtpEXXg/F3x7M3fTvU6M8Lj5/V+BaqA85vkEWPNhAMVDkpzqAYBDUvOx4yza7kxHiPUScEPWjm3j89D5X8UayIiR8o2vIGVH+mHomM8mQ24Zn90ENUxzVljLtyIeJIVuINKFWdmyaRC8Ly/yQ/F4VvR8ATFpsRpt+012jzafchwbcxtgJ0tbhvdo4We0nStSu4GQIz4vpy7JIZQXDzPfoQGs/Pk+15wbEZZm9jwqw3R7hfwabkDaZ/Chsh6dygs82+FpO1vp70p7L47wOvSV65N8pdBtJsO/lIGfYUf1toL61h1gbV0UABRy+tDE+lqwqIMnlge8gJoCHbDrZpaWe12V2aiMTdUFyyiTxxpc/Q63QPtz+qEiojy6WJJlRjenRaV6CU/s+gWSMrUyGfT2I5NQeG9orlsfIKVAYLP5WKClSCchvLOEOq9jaT/+qAw13s/NOxTMqBTHFa+1VZR1r/rH8rbNqPEghx0Ls6Ne8AL3LMVgqni3uy762b5aGZkkve1FLJ7j8LgZpqRwpWHEz/jlmf7LYsfWyiNxGF6Zkwt7Gx7kodCjsohhgw9VNTQFVmwJooPgHG/9a9zc+ev+dQSIlho
- jHbCQFSR
- n8K8ricVsO8ndp7NRDcKBc9gXk/Cuhkt0fM2m8NRBO+FiqgGYQ/XlRqZypmha7amZ5xH0
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: EA76740004
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 3hyntzf7bjwmwda4mztyqthokksz3i9p
+X-HE-Tag: 1794539307-976051
+X-HE-Meta: U2FsdGVkX19UL+vL29KE2gwM2RqYKaiC77q7uoeJzIO+BEepB119q80s80xnC/tXjEVFOBRNaEUblmE4tmpepedXeIr1jFZ+9JDfC1m7E+l6r14tbw9KFBY7oZCEDnx0dq2Z5ee7CP59fRucd0OMYNJ0bSmplE4tLLluHYoYUJMY32JSEnt5tEsKyd7pld12V31sUiOABchYzbtXuWOTc4YS2G1qipJ/BrhSvS/ExJL1E/4cu0qiAuU0o6N1jNcAH8me8bqbw/HWfP5NmH/4xHZJqYxGZBkVdKMDWwuB3wWcV9q2Q40Mm8srg4/KRE9Tpm7Eexb4HTmavM7lpn9UkAqIerMt68IIn3UJJYXM1elLNODo+OoIZtRo3qVUHae68AmnZZeVy9qWtP3irEryW/wxCU1hBayuFqYffHiHpBti8X9dwMjO+hDi+9WNPhG/eyWiznvFzWvEY73S7Ym2pjeVnfvZcdk1dpNodPgus2aKSw9DXOkWCw6HvHC8yVWClO8pYDEClMpfgNi07+wihVIwBVc3K8yxr0/vTLLdusUU9DQkD1+dWcHJAKDpwjr7mCmhtQ7XSfDkfZCCMNduVkTFLeanb5HlC85cTwq9FKwM+RnqOrLZuGZ/Uc5xClhzlbtKedadxapWtACE/8ON50aOvdr9aRHj2aO4tlDeTBlOKlfbNKnKsSK9k560r9y4Pkj5oqVaEPw8FUPSDOedJfw1qOHe6G+oJDYwWmBKyBeeijZ8di8e1A2JupBFezHnQW3BzZbOlk52PD9KYJSKDotjiNocyjplP7NOFKDVN5/9D/dCunEj9vfxI/yCF8r6wq9yGpjcFRQNzxSZz+tNesibxRfGheNN+PNbxvZDvMlXb5Xmd5yCWe1UyjrbpV3WxgdtFts+K/G5bYTH+5ZVMQB5oSBD6vVkkiomkkpZ4g2hWjb1uDVC95zmAzHxqI+QtjrnioV1NBVM0BTjCPn
+ 78VaLojt
+ dm+WuDS0ptgmZ+l7Yr0zxAfXYjRULtXKfSGTTe77n2ak9GK7vd9CVQPprxQHaYtBlXU2qFgI+cgkc138UXytFxXM33IBYnrHpaZ5Pkg7F4LWVDxuceMuB1zqvouZ/JTj28KOLXI+67tDxBYSLNg3c2qu8TlEvI/k6tOJ9ebn7bRsv/ve3B4MyfnxNw7VaazzMwOUR1NQ3nm/GpxuTlbLMh4KFfbUSK1nOLkN6a9KeSzIxpBzvcIx6tPiy9tNHLM+X1YEkFQKomTwa8n3uEHOsxxQwzxIPzkUJSz3UF0kBeLeMRxMInvXWDr9Rhg+fMFZXt3qbzpG9wfNjwfRbRZZ5vH4rKR2cNFNzUrYMgZ0T0Eh+V9hF27UWD4+CS2bKGpiEUPex9f1FGtC3QZ0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,68 +103,85 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-is_vmflag_set() jumps to the shared 'out' label when
-seek_to_smaps_entry() fails. smaps is NULL on that path, and the
-code at the 'out' label calls fclose(smaps) unconditionally.
-fclose(NULL) is undefined behaviour, so the test crashes before
-it can report a test result.
 
-Return early on that error path instead, so smaps is always valid
-at the 'out' label.
+2026/11/13 10:50, Baolin Wang :
+>
+>
+> On 11/13/26 10:01 AM, Hui Zhu wrote:
+>> From: Hui Zhu <zhuhui@kylinos.cn>
+>>
+>> lru_gen_change_state() migrates folios in batches of up to
+>> MAX_LRU_BATCH (4096) folios under lruvec_lock_irq().  A full batch
+>> keeps local interrupts off for up to about a millisecond, and CPUs
+>> contending for the same lru_lock spin with interrupts disabled for
+>> that long.
+>>
+>> The caller already reschedules between batches, but a batch itself
+>> only ends after 4096 folios.  Stop it early when a resched is
+>> pending, or when the lock has waiters and the current hold has moved
+>> at least MIN_LRU_BATCH folios; the caller restarts where it left off.
+>> TIF_NEED_RESCHED can still be set with interrupts off: a remote
+>> resched_curr() sets it directly in the target's thread_info. The
+>> minimum batch avoids lock bouncing under sustained contention, while
+>> a waiter now waits ~15us instead of ~1ms.
+>>
+>> This follows lru_gen_look_around() in this file, security/keys/gc.c
+>> and jbd2_log_do_checkpoint(), and commit 6e9be217a3ce ("mm/mglru:
+>> use a smaller batch for reclaim").
+>>
+>> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+>> ---
+>> Changlog:
+>> v2:
+>> Also yield on lock contention after a minimum batch (Kairui Song).
+>>
+>>   mm/vmscan.c | 10 ++++++++--
+>>   1 file changed, 8 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index 6a1af9b92349..c1231925159f 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+>> @@ -5533,7 +5533,10 @@ static bool fill_evictable(struct lruvec *lruvec)
+>>               success = lru_gen_add_folio(lruvec, folio, !active);
+>>               VM_WARN_ON_ONCE(!success);
+>>   -            if (!--remaining)
+>> +            /* stop early to shorten the irq-off section */
+>> +            if (!--remaining || need_resched() ||
+>> +                (MAX_LRU_BATCH - remaining >= MIN_LRU_BATCH &&
+>> +                 spin_is_contended(&lruvec->lru_lock)))
+>>                   return false;
+>
+> IIUC, Kairui's point[1] is to just drop the 'MAX_LRU_BATCH - remaining 
+> >= MIN_LRU_BATCH' condition, no?
+>
+> if (!--remaining || need_resched() || 
+> spin_is_contended(&lruvec->lru_lock))
+>
+> [1] 
+> https://lore.kernel.org/all/CAMgjq7CUMuNSdCXZ7_kDdo9+0BFvPNHuO=mq=ct_Q5YUyyckvQ@mail.gmail.com/ 
+>
 
-get_value_for_name() follows the same pattern. Return early on the
-seek_to_smaps_entry() error path there as well, and drop the now
-redundant 'if (smaps)' guard on the fclose().
+Not quite.  [1] was about the extra `moved` counter in the version
+discussed on the v1 thread; Kairui was fine with the rest.  Since
+`remaining` counts down from MAX_LRU_BATCH and one call is exactly one
+lock hold, `MAX_LRU_BATCH - remaining` is the number of folios moved
+in the current hold, so the condition is just `moved >= MIN_LRU_BATCH`
+without the extra variable.
 
-Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
----
-Changes in v2:
-- Convert get_value_for_name() in the same way, as suggested by Liam R.Howlett.
-- Update the commit message.
----
- tools/testing/selftests/mm/mlock2-tests.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+The minimum-batch test itself is a response to Michal's lock bouncing
+concern [2].  Without it, under sustained contention the loop could
+yield after every single folio: each yield costs an unlock, a requeue
+and a restart (microseconds), while one folio move costs a few hundred
+nanoseconds, so the migration could slow down by tens of times, with
+cgroup_lock and cpus_read_lock held throughout.  With it, each hold
+moves at least MIN_LRU_BATCH (64) folios, i.e. does ~15us of work
+before it may hand the lock over, while a waiter still waits only
+~15us instead of the ~1ms of a full MAX_LRU_BATCH batch.
 
-diff --git a/tools/testing/selftests/mm/mlock2-tests.c b/tools/testing/selftests/mm/mlock2-tests.c
-index 144b550813a6..455f1c841dec 100644
---- a/tools/testing/selftests/mm/mlock2-tests.c
-+++ b/tools/testing/selftests/mm/mlock2-tests.c
-@@ -66,7 +66,7 @@ static bool is_vmflag_set(unsigned long addr, const char *vmflag)
- 	smaps = seek_to_smaps_entry(addr);
- 	if (!smaps) {
- 		ksft_print_msg("Unable to parse /proc/self/smaps\n");
--		goto out;
-+		return false;
- 	}
- 
- 	while (getline(&line, &size, smaps) > 0) {
-@@ -103,7 +103,7 @@ static unsigned long get_value_for_name(unsigned long addr, const char *name)
- 	smaps = seek_to_smaps_entry(addr);
- 	if (!smaps) {
- 		ksft_print_msg("Unable to parse /proc/self/smaps\n");
--		goto out;
-+		return value;
- 	}
- 
- 	while (getline(&line, &size, smaps) > 0) {
-@@ -123,9 +123,8 @@ static unsigned long get_value_for_name(unsigned long addr, const char *name)
- 	}
- 
- out:
--	if (smaps)
--		fclose(smaps);
- 	free(line);
-+	fclose(smaps);
- 	return value;
- }
- 
+[2] https://lore.kernel.org/all/avV0IbvSx4iuv0tF@tiehlicka/
 
----
-base-commit: 74d73ffcffe03804f97e9fb82301dadf75671282
-change-id: 20261104-for-mlock2-a67f86dad498
-
-Best regards,
---  
-Hongfu Li <lihongfu@kylinos.cn>
+Best,
+Hui
 
 
