@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D932606F2CC
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE6EE606F2CC
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=readmodwrite-com.20260707.gappssmtp.com header.i=@readmodwrite-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=iY7TEU92
+	dkim=pass (2048-bit key) header.d=readmodwrite-com.20260707.gappssmtp.com header.i=@readmodwrite-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=es6pIa0a
 Received: by kanga.kvack.org (Postfix)
-	id 4969B6B05DC; Fri, 13 Nov 2026 13:57:22 -0500 (EST)
+	id DE4256B05DD; Fri, 13 Nov 2026 13:57:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 447EC6B05DD; Fri, 13 Nov 2026 13:57:22 -0500 (EST)
+	id D6DDF6B05DF; Fri, 13 Nov 2026 13:57:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30F046B05DF; Fri, 13 Nov 2026 13:57:22 -0500 (EST)
+	id BBF966B05E0; Fri, 13 Nov 2026 13:57:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F06446B05DC
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:57:21 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D80DA1A0249
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 916516B05DD
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:57:22 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 31CC61402E2
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:57:22 +0000 (UTC)
+X-FDA: 85431003924.16.0B511AF
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 5B47F140007
 	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:57:20 +0000 (UTC)
-X-FDA: 85431003840.13.6DB6E0C
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf07.hostedemail.com (Postfix) with ESMTP id F02FB40008
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:57:18 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=readmodwrite-com.20260707.gappssmtp.com header.s=20260707 header.b=iY7TEU92
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=readmodwrite-com.20260707.gappssmtp.com header.s=20260707 header.b=es6pIa0a
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794596239;
-	b=ksBxEhtXELYrNp8P7VInHwdIq+BAFQAxmvMy7+CXmGXNo9V2m5cDmhovhvOIp1GaYlcHwA
-	5eitmEWfKd1eQVSovHQtSWXInGKw6d5rxcCiRiO8dOrCZvIiJ3Y5XRmWdDxW4lZMtS7qZL
-	c5uMMAzB9oKsgxcySHH17ei8dvk8jr4=
+	t=1794596240;
+	b=EuwBukwKJak5evuiqH5qjCM0+tG5u1DqiaF34AyNp9ykpjl0fCzvqNSE9voj+bSqPVmGPh
+	DKpKZkBEaFko1u+36AtEYm2iWv0t6i8BCbUtXYXeIbRkMDFtSvcpftAaUhkuVU9eH22QxS
+	fl7u91FMgF/QYCt9oJl59AYn2AUfveY=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=readmodwrite-com.20260707.gappssmtp.com header.s=20260707 header.b=iY7TEU92;
-	spf=none (imf07.hostedemail.com: domain of matt@readmodwrite.com has no SPF policy when checking 209.85.221.41) smtp.mailfrom=matt@readmodwrite.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=readmodwrite-com.20260707.gappssmtp.com header.s=20260707 header.b=es6pIa0a;
+	spf=none (imf26.hostedemail.com: domain of matt@readmodwrite.com has no SPF policy when checking 209.85.221.44) smtp.mailfrom=matt@readmodwrite.com;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794596239;
+	s=arc-20220608; t=1794596240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OKLsDxKgeNyTR2N6X6bMkhCfSN7v5jMUZuKftv1qAXY=;
-	b=XiFgdMrjG0n3TFbgv5Z5k1sUFKsKsip9Bc6DTVU19/m4iqjxmcuyP3RlOYFi0jii/0If6O
-	tiGBbVJNrHLXYreWrXbZEsAB4dw03I4meE+RLGQaktm8zt4OnCDPaW5rgm9PuZgeXTEJLe
-	7jA/6n5iSsInwHvYT2opZPLj5daufl4=
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-49a92144733so530440f8f.0
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:57:18 -0800 (PST)
+	bh=gMf8yUDJzGPEGi0squc2iKfzOrQ0w86CHit/17hkkFQ=;
+	b=CLgPoPwcDKaVn7uYSQcN0OM+5uu0fJ/DL81YD7bo5RYcEwoiIUi5l6WNvO8l6aAC/W/UkQ
+	Tj7j7LM9OEyuEi0AEryW8IUjw/pIxK7/l8vCUStOeYCPszYpxPy7KvZ6+u8CIJVHRzkZkq
+	I4bOw+59wTBtqk6wyKXIqQQvomE15xs=
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-490a0e72588so580502f8f.3
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:57:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=readmodwrite-com.20260707.gappssmtp.com; s=20260707; t=1794596238; x=1795201038; darn=kvack.org;
+        d=readmodwrite-com.20260707.gappssmtp.com; s=20260707; t=1794596239; x=1795201039; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=OKLsDxKgeNyTR2N6X6bMkhCfSN7v5jMUZuKftv1qAXY=;
-        b=iY7TEU923zwZSr7/lMTFSJCybbns/pwMHp1pZV+2hnEiE6zArktv0gpYLNSPu54E9E
-         YqR8M2q471ZW9NxJWI++SnUP5jaY5/XnKG3NN8TaCFoo0ZXNqTGtm4Ze8iOIefXgDMyS
-         xdeUrbkGA1HhIhwEjIOTvZFLue75gbHOb/6TxHl1J+khf1OgVDWegt47FfTVQad/hJks
-         DR2XYAMw6Isdd7eu5eLrTzY2CgYvGZtzxLlfQPZOZPWsySdctN8yiKxBvS/gFRkP72Jv
-         Z8noxKmoTjisZFkVdYrI0PUnviRuVUMV3B4M3Re2JTsq69E5+/GcnXdGu1VgLf2LuAGl
-         k6+w==
+        bh=gMf8yUDJzGPEGi0squc2iKfzOrQ0w86CHit/17hkkFQ=;
+        b=es6pIa0aOXhkykrY4MFGkbh7z4ZrZIuLSI5k/AD2TtCjqkf0iOh7Atew3rm9e9XI4i
+         igOd4QNAPJRO1SopC9OOoa8DxwDbTZHhCXDGKh7NFylAVU1bpGwT4JDP3Lc0jtwP3b2V
+         /4IuPWqqiJrF8PrbLruIn5l18nO0Z7fUpBwlfNadDj6Zr0wUUEuxe9lTTjAxbZ93nKNZ
+         9iy6yTVw5beiiEvzYZ005YI9/AMOSON1JiLNCPACjmYuHlV5CEJlNjg7TdGht81BCgp9
+         z+4DN3UxtscdIoJgpb65BUSPV7endYrF5D+yywTSTBu0I68JSz81lsiUkI8TroxfdU6I
+         RyAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794596238; x=1795201038;
+        d=1e100.net; s=20260707; t=1794596239; x=1795201039;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=OKLsDxKgeNyTR2N6X6bMkhCfSN7v5jMUZuKftv1qAXY=;
-        b=r2nQcwvTwyhP+YT5YrQ5sK+VP8u8WKWF3l+Hq0z6LM/kbeVsX81YAPA+gaywdI2n8W
-         wvSuQG2OqoAdZX+fb1SmpUj8UjqEHta8V2ROQQmW1MZ9lwe0HVDBh6BrtS3SBkzzFYUd
-         kyrVsKbCPRjitkWETpWh4qKANfolFoyCRjvnG5dQOZimYwIfqc32NNiDJS4Pxq8PC2CK
-         kZky2I3/vskuBkBqzBXVixUh7S6Xzv5o5ABBDQXLvNeARsq29g3n7Cg82Yy8qgeYWV17
-         I7sALPVBZltzNBSe5Mq/CZ1He07S+nIezYIDjsxFlhIQDBRGWMYrIW/fJzy/mj7Fhtxi
-         lYqA==
-X-Forwarded-Encrypted: i=1; AL+hErFfqdVaqAsqitxdZTJ+OR2D0MwsbeHRfmGIUklj5n3CqduxC96xPeXxWykv/FDAYNvPPDOtPxzX5w==@kvack.org
-X-Gm-Message-State: APuU4Z/6Ushl4HYVXqNbccHwnssPlmy7fuDlAEl98Wp4lU2mgOwAByjy
-	NrimThJI+zf7nhTtiw+XLa7fmCcKGWLb5T80muukaA5/wNq9oguBcK07iAbUZiUxrVk=
-X-Gm-Gg: AYBFou15gaArpk5lfq7iXHZd36lrZd612/ISfR6uPIzNycyXl0DPG9sBP5NRRmUF/Bo
-	mIsqZMsuTvjhyh/GEx4b2NE9jLGFhs2UwSUVQKadyveALmfTonsbF2X7XBEuf5fmAeHmgMhas2l
-	oOWVP/F0D8jBfkyY1XAsegvlezGIqhgTN986f+g1MGbDm7QKa5NH1tqEJd3Ro4Dw/CjgiG7B4CR
-	TGzj+TfjohmNGU5SZsgv1p5+Ud6QOTxHWNFqXol00Z3w3mg57IGVO7jlgWD2UnJ861m9RktE8Zy
-	IOF0HuM2yRzeeqUU7pjCKCHl+mmLO2YJ1SnPpM15+mVTSS+XUTnvl++KFCUZP9mRzKUHER2ReIA
-	qGcxDRLR7ObPI7Nmtp/RZVi2aiFJPFpIR6PfnoxoQExvKnbmSaecmZT55yx0EPvMhyl8vG0+uYK
-	+QLQIo9N7XTlQhlomsnJPrW4yhdUClSB9bMe7gBxbhEXfQbv362rrKx5Blq7M/GNMZr3ZZZL3+k
-	NLkHkp+X/guTejRBirUZDIv3atgAqV/bDGpR0GdvGTGqWuutibUctAxVqrvoVZZS0z8wp25/Fgq
-	42kXJweZSyAKuVU9a0sFssLy3XUjpg==
-X-Received: by 2002:a05:6000:430d:b0:48f:bbf3:cf52 with SMTP id ffacd0b85a97d-49c73350e7bmr8591785f8f.52.1794596237596;
-        Fri, 13 Nov 2026 10:57:17 -0800 (PST)
+        bh=gMf8yUDJzGPEGi0squc2iKfzOrQ0w86CHit/17hkkFQ=;
+        b=WQOyOLSP7EcqkAenIek6DX6bRGSyQ+8xE5ii2Ua7zHq0Kxo1ppXYdYC+Z5IVHXI7UN
+         lhJrPKl2HHdD1cJHa1nCstpume5Cvw0Pgw72zQ6J+wG5VxVG3xeI/R7AK+gHM37gK2su
+         i4fG7g/iX8nKasXMzpBTr6a8ZSoDlPNFdSnECuXN6/bfaY92qUNW8IZmuAB4Isqqt2px
+         1BB68FDNsxJr+g31ku1W1V9VGrj/9lZGe+3GVStvL5qYl5wDr7fd6yWVV94tWDPktkz+
+         KQWCvY/GDLgN0ZJ4fyeqNwubbKPneLSJNhlN2gSVwo03rb5Q/U3gNdsZJh2cNR05Mvow
+         k2cg==
+X-Forwarded-Encrypted: i=1; AL+hErH4n3PAD+1VANNH4mpw6V+SV/qV+e+E/UpL3Onue7LemRSQDO6VTaN1ul9f8nKJNGI0SEh9S+4k0g==@kvack.org
+X-Gm-Message-State: APuU4Z+5BsWlZl26LMJycKnu9nk0GjgHkY+TXNsEjftby+dgDDvOvcaI
+	RvXyEOgoSFX2xRJUSHnP2f8oCZ1BptEuTG2rbYszL1xXkJf1FJSmttnAK9GHM1yfp0c=
+X-Gm-Gg: AYBFou2kcHjSW+e8ATzDXZUDdrWWQ3t1bp7iGTa1OtcvGObgh3EcyKVnrZsWiBKdWpd
+	L41C3uzR0T/nMiqKFEwGbedI1+FEauznbbjANDB173sMTSq3uhg0T0ytl1lipD5DJkzNHVgpzcK
+	WEEsDbyG2yW4OC9fU5Oy1CKMPxY24HnaeLB4KJc10R9P7QdqOQXR0W50QLmU9NHpeCbPzbTiuK8
+	IDiqy4unfh2nsw5AsJEm9/r1K/rKwJuvNgymwmpLbFFM/LU5JXbzzCcJe+ZLyRVgLTyjI9wFY5O
+	ILQdMSKeSj57T3dPkdwLMJngKuR0XsKx12HYS+tdN7KNdAJl+KRvgeNocci0bwuvhOL20YdpXjl
+	fTmcx9jf9u/Xr9cx+L2Yoxsu6CFsMwCGbiDWyBTb0jmdH2FE66c70FA8xO/DwDDfRsQ1XITK4AF
+	06QfQmX0iOGDnJdEPMYCaOlkiHZdj05Oo45iSOLjiEoOjQ6EOaBZ4jm8Sm7A+slE0hP1vr4sBCw
+	4kWw4HzH7U8Ijg7jWAZIXO0QPqLZc2qQdbtjTMw6VspxWA8FTlV2Dm/zIVERbwdeQdi7Q5d/b+P
+	s3xByN5xGG+b3wdzmyWjREAA1Y3VoQ==
+X-Received: by 2002:a5d:59ca:0:b0:487:13f:f612 with SMTP id ffacd0b85a97d-49c723fb77dmr7422413f8f.37.1794596239000;
+        Fri, 13 Nov 2026 10:57:19 -0800 (PST)
 Received: from matt-Precision-5490.. ([2a09:bac6:37a8:ec8::179:1b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c5f5972a7sm6417589f8f.21.2026.11.13.10.57.15
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c5f5972a7sm6417589f8f.21.2026.11.13.10.57.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 10:57:16 -0800 (PST)
+        Fri, 13 Nov 2026 10:57:18 -0800 (PST)
 From: Matt Fleming <matt@readmodwrite.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Marco Elver <elver@google.com>
@@ -102,27 +102,27 @@ Cc: Alexander Potapenko <glider@google.com>,
 	kasan-dev@googlegroups.com,
 	kernel-team@cloudflare.com,
 	Matt Fleming <mfleming@cloudflare.com>
-Subject: [PATCH v3 07/10] stackdepot: Remove stack_depot_fetch()
-Date: Fri, 13 Nov 2026 18:56:59 +0000
-Message-ID: <20261113185702.1332171-8-matt@readmodwrite.com>
+Subject: [PATCH v3 08/10] stackdepot: add architecture hooks for compact frame storage
+Date: Fri, 13 Nov 2026 18:57:00 +0000
+Message-ID: <20261113185702.1332171-9-matt@readmodwrite.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261113185702.1332171-1-matt@readmodwrite.com>
 References: <20261113185702.1332171-1-matt@readmodwrite.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: u46re7xqg7xtry7zmt64z5fpms9xirmp
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: F02FB40008
 X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794596238-646870
-X-HE-Meta: U2FsdGVkX18O5JvoE4dSO0CccUxZ8xwOcrZhJvOKwhkKwQ3jCM24xPkkICmaZr6KL4MDfcLA9dmh4/y3p+zFiBjA9ZHZm9UpyLBf3AoOb5yxu7QLUXkg6BnXgqg2ztYShWBpazF4uc0wH1DpGVn354O2jpO7R2FsHK7S6tuSW8R4GDh2C4Lq12GnMYK19zygLOH2QAh2YySf9PfvDqNeYzUzWixQkVleMLLKO0gGf7PPF+W3i5TjiBJ5pGnLg/62zOOl7LZcMjLq6bFzN1G7qeBFnKyiSuUTb1KvfEHfCV9ZnTtivOj+v8duf2wpSMgsaSCl7MKjhN6dBlvgvW7E0/+tt6ZzXcUgnMaC6SKmbSDW/OU74Nis1qMGEboR2kmSbIEFXp2F8vN/wVDAUqUZuXP25bbh7WmwJO8DvzbEqxevjDgUaJ6Bp1+l+oTrH/HVAiIrRjf5CD29fVKeUX7PWQ1FH0O++VYSbQ2reLvtTNet2kr8SdCk4W6h3ubprmj/jC6Qhex/e2dopELxPJUjSd6gI98y3fbRe1cuLOmK/WL025RPN5PVxx1jGmCoG42YHhWcPmyUl9/cR7bGVkU6xYhcAtuCq3g2U0PWRsW+XHX5dMYHF2sqFcKefih1i+sjJU7jP6bvwseimWQO87e1ih5ydQQgJpjt2B/kUeWn+cnDj6r3DRdDSnyxYyGN1yr/OjJcdl3PfMsgbhvWXZdeBUSvlQQafLVUjYqwKVe4eMq5jrfmdEl+J/XP0DhV8xXqHIrhw/BUf1XBV6Gd1ov8kUlTOIBxNu0cu7ek/N5INmJ9zsFSDSAXyjuAfKkiQYOljGz4jQ0HncXhpGAnKIgdWUBXQDlG3umaveWBsPt7fRUALyXgF1UMqW7TYXxcNJKdDUqn2ItChxdR63M4dW52pH2mMLOb1P4iNZHnMw3kcvz7U40GP6wHQNHEVMV0WcucNcXl8TTMRg7IadXO3qX
- /zslZu2l
- qSIKNzFZeQj3KcCk4ZWZjBJdDCnSIyeJd2pUHOiorMAZeKjxe/vOrEvclla0py/ALcgTyhIClFIGsBLmO/jrSJzi6DRhrBgdQR0jAHu/vjaj9XlVkZIJ6nLTLNiCvZOnnCuuiJB8DAilFyI0XoMW6p3LN7PmD1wHadFXFm/YaxN7BsZYdvShs92ewlzZCK7gq8xIPx45h+K+lBpCHgUMD0cEm47e0MA39riG93LmrntKe6Abuu8ByRxjlaF5pjq7Tm8ifGSbTLsXm3Nx6FZBChZ/vERnU5i3y/2Noyv66wZyQ3DFEiIsEIeXwR1Z5fr94950SQjYQjK7aHiV1UN7HBmjIMx2axcA6u/NxjqIcAFQ9gcIZEXUp7ZP3Uncpa1pzOSkK2TOPCSwn7TsxMbDCZIyvWhAnsbBaWx3YVJPL1xmmtQDsIb0K4fi8V4x1WmvbcyvG
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5B47F140007
+X-Stat-Signature: sz75jdws7r7ec49fmpty3ydyo8ych7wj
+X-Rspam-User: 
+X-HE-Tag: 1794596240-323923
+X-HE-Meta: U2FsdGVkX19BtyNToWE7R1VaOlFl+hAMla7CFDw8ZmtFqlEKliCfVEmcKN6+6BpeYoRt/IChw0CixgvC/b9aeZRRts6paw8l+Cd8LXIPwgcD2yHcymU4pfpyZydBzGfhGkn2gL0d/mSQw+eTwsJUjEh+7rePBniDaVuPNqOEaqWOa3LszwXPp9aOHhYVGYnjBwv/P84pFVP0scheL+v5Kzf7RIrDYxNIapA+3ALnIMaAbY4IfcqlbjcozCDjhUB+9tX3A3/FN0yJYowvDfUwK8P6CYjsZxUvygjpZ9EKZMsBqkjBvVxfXn2/YMMn7gJmD2DTgKoM7tX1vVWf5ogJXfO/QqgrfZg0uQZ5b3wrDNKtcpRQ7ehfMnIvij5U/MQPn4qPiZjZ7ihXu2TCRklye8PluRg0zq7haKDlb0xcinb+t5vm1UklkV4grNFQGEnsDMp7ZsikaNvGHeMZjYmCURnngOuF81UXaSmmLPUVZAQdNvmtj+0+xiZmoFmkpstxSxp9xY6iN/9vpU61IRzHZH1IKmVlDP0aRYkohBmCBURxft2lbJjWcEXMyU3Ehjyldn8dq71iwVIvoOfGzZ3NBxun5IV9NdTLMXSxRuCALBLQydL1sDkbx+hEkV3EU80iyrdinT+yMqmF85foBDkF7aorLK+VNMaSyqFoGobrSn81PEV2KQvu118asOFjOPnBxD4ormpGk7rIS/5CwzB3H+8j/9BgPTI/ebcVCpVPJ+Lwz3gGECD2VPRiQYWKjCRzbxtyltF+b/dWDEby1Bd2kvSC1UTzXYlTfbdUnePri7xGNlNILltEOI1LCF9HjNnsXflA/Uys+c/Z+szc04jx5NiGQThLt+wD3vfyG0liQOnrFh/YrXE8Sblt35VlMFDLx2h4O5UZ0fFXETpURqmi2Xy23wNgGz2BM35K1Lts/0i6cOfDHGo+ttMCVMYjMCMTh4EjmpQJRf/f7/ugLxC
+ d2CkGLUx
+ ckhSTCS5JuKY3zraoplCba8nuVgfGFqYFW9fdKuxYYmEp1EMxFFjDiAloj4eatrWAXpAAl++z03PIv2dnr42ahEFE52D8bnGRZrgdDY0d0WFIkflP2A88SRbEZsnZ7OUW+NQ+/Lv2GNBr3daDuz1SGkgdYjjezCx+dMKl9QK5FgFnGvjMri4c9sf25K6aRFxJNN0u8c7/LBxmglXMPv89iKE72bwiwzRoN6cNuM6JXWj6SZ/C5rAZ8ch0siOmFLbfXLYEdmPVYJf3Z9WmArT2NaJLpIcMXZU6BZzmY+v5qwgaYmEbO3qKybCcwcJMowMJADH33hGpzSMUtv52pvqRJoihks4TO4WH1NYhL7ZtX+BIzOsrqZOH4QIIzM/H8NM6GGc+hwF1h1dlrTwunVA2qF5Xbw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,208 +131,289 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Matt Fleming <mfleming@cloudflare.com>
+From: Caleb Kan <ckan@cloudflare.com>
 
-All callers now use stack_depot_fetch_into(), stack_depot_print() or
-stack_depot_snprint(). stack_depot_fetch() hands out a pointer into
-depot storage, which leaks how frames are stored internally by
-stackdepot. This will be undesirable when compressed frame support
-lands in a later patch.
+Stack depot records can reduce their frame storage when an
+architecture can represent kernel text and module addresses in 32 bits.
+Add architecture hooks that compress a frame only when decompression
+reproduces the original address exactly.
 
-Add a KUnit test that stack_depot_snprint() output and return value
-match stack_trace_snprint(), including truncation.
+Store arm64 frames as signed 32-bit offsets from _text. This covers the
+2 GB module relocation window without depending on a 4 GB high-bit
+boundary. On x86-64, store the low 32 bits when the upper 32 bits are all
+set. Keep other frames full-width, and provide a generic implementation
+that always rejects compression.
 
+Make the generic header available to architectures without a specialized
+implementation and wire it explicitly for UML. Add KUnit coverage for raw
+fallback, arm64 boundary round trips, and native x86-64 prefix compression.
+
+These hooks do not change stack depot behavior until a later patch uses
+them to store compressed frames.
+
+Signed-off-by: Caleb Kan <ckan@cloudflare.com>
+[mfleming: simplify arm64 decode, reworded]
 Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
 ---
- include/linux/stackdepot.h   | 11 ------
- lib/stackdepot.c             | 68 ++++++++++++++++--------------------
- lib/tests/stackdepot_kunit.c | 36 +++++++++++++++++++
- 3 files changed, 66 insertions(+), 49 deletions(-)
+ arch/arm64/include/asm/stackdepot.h | 37 +++++++++++++
+ arch/um/include/asm/Kbuild          |  1 +
+ arch/x86/include/asm/stackdepot.h   | 37 +++++++++++++
+ include/asm-generic/Kbuild          |  1 +
+ include/asm-generic/stackdepot.h    | 19 +++++++
+ lib/tests/stackdepot_kunit.c        | 86 +++++++++++++++++++++++++++++
+ 6 files changed, 181 insertions(+)
+ create mode 100644 arch/arm64/include/asm/stackdepot.h
+ create mode 100644 arch/x86/include/asm/stackdepot.h
+ create mode 100644 include/asm-generic/stackdepot.h
 
-diff --git a/include/linux/stackdepot.h b/include/linux/stackdepot.h
-index 734529767c8a..dcc2e1d21f92 100644
---- a/include/linux/stackdepot.h
-+++ b/include/linux/stackdepot.h
-@@ -188,17 +188,6 @@ depot_stack_handle_t stack_depot_save(unsigned long *entries,
-  */
- struct stack_record *__stack_depot_get_stack_record(depot_stack_handle_t handle);
- 
--/**
-- * stack_depot_fetch - Fetch a stack trace from stack depot
-- *
-- * @handle:	Stack depot handle returned from stack_depot_save()
-- * @entries:	Pointer to store the address of the stack trace
-- *
-- * Return: Number of frames for the fetched stack
-- */
--unsigned int stack_depot_fetch(depot_stack_handle_t handle,
--			       unsigned long **entries);
--
- /**
-  * stack_depot_fetch_into - Fetch a stack trace into caller-owned storage
-  *
-diff --git a/lib/stackdepot.c b/lib/stackdepot.c
-index 556f3ecdcc8f..8f1aaa0c6d88 100644
---- a/lib/stackdepot.c
-+++ b/lib/stackdepot.c
-@@ -757,33 +757,14 @@ struct stack_record *__stack_depot_get_stack_record(depot_stack_handle_t handle)
- 	return depot_fetch_stack(handle);
- }
- 
--unsigned int stack_depot_fetch(depot_stack_handle_t handle,
--			       unsigned long **entries)
-+/* Copy the first @nr_entries frames of @stack into @entries. */
-+static void depot_copy_entries(const struct stack_record *stack,
-+			       unsigned long *entries, unsigned int nr_entries)
- {
--	struct stack_record *stack;
--
--	*entries = NULL;
--	/*
--	 * Let KMSAN know *entries is initialized. This shall prevent false
--	 * positive reports if instrumented code accesses it.
--	 */
--	kmsan_unpoison_memory(entries, sizeof(*entries));
--
--	if (!handle || stack_depot_disabled)
--		return 0;
--
--	stack = depot_fetch_stack(handle);
--	/*
--	 * Should never be NULL, otherwise this is a use-after-put (or just a
--	 * corrupt handle).
--	 */
--	if (WARN(!stack, "corrupt handle or use after stack_depot_put()"))
--		return 0;
--
--	*entries = stack->entries;
--	return stack->size;
-+	memcpy(entries, stack->entries, nr_entries * sizeof(*entries));
-+	/* stackdepot.c is not instrumented; tell KMSAN the copy is initialized. */
-+	kmsan_unpoison_memory(entries, nr_entries * sizeof(*entries));
- }
--EXPORT_SYMBOL_GPL(stack_depot_fetch);
- 
- unsigned int stack_depot_fetch_into(depot_stack_handle_t handle,
- 				    unsigned long *entries,
-@@ -808,12 +789,27 @@ unsigned int stack_depot_fetch_into(depot_stack_handle_t handle,
- 	if (nr_entries > max_entries)
- 		return 0;
- 
--	memcpy(entries, stack->entries, nr_entries * sizeof(*entries));
--	kmsan_unpoison_memory(entries, nr_entries * sizeof(*entries));
-+	depot_copy_entries(stack, entries, nr_entries);
- 	return nr_entries;
- }
- EXPORT_SYMBOL_GPL(stack_depot_fetch_into);
- 
-+static struct stack_record *depot_print_fetch(depot_stack_handle_t handle)
+diff --git a/arch/arm64/include/asm/stackdepot.h b/arch/arm64/include/asm/stackdepot.h
+new file mode 100644
+index 000000000000..72053527ab21
+--- /dev/null
++++ b/arch/arm64/include/asm/stackdepot.h
+@@ -0,0 +1,37 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __ASM_STACKDEPOT_H
++#define __ASM_STACKDEPOT_H
++
++#include <linux/types.h>
++#include <asm/sections.h>
++
++/*
++ * Modules are allocated inside a 2 GB relocation window containing the
++ * kernel image. Store a signed 32-bit offset from _text so compression is
++ * independent of 4 GB high-bit boundaries crossed by that window.
++ */
++static inline unsigned long arch_stack_depot_frame_from_payload(u32 payload)
 +{
-+	struct stack_record *stack;
-+
-+	if (!handle || stack_depot_disabled)
-+		return NULL;
-+
-+	stack = depot_fetch_stack(handle);
-+	/*
-+	 * Should never be NULL, otherwise this is a use-after-put (or just a
-+	 * corrupt handle).
-+	 */
-+	WARN(!stack, "corrupt handle or use after stack_depot_put()");
-+	return stack;
++	return (unsigned long)_text + (s64)(s32)payload;
 +}
 +
- void stack_depot_put(depot_stack_handle_t handle)
- {
- 	struct stack_record *stack;
-@@ -834,26 +830,22 @@ void stack_depot_put(depot_stack_handle_t handle)
- }
- EXPORT_SYMBOL_GPL(stack_depot_put);
- 
--void stack_depot_print(depot_stack_handle_t stack)
-+void stack_depot_print(depot_stack_handle_t handle)
- {
--	unsigned long *entries;
--	unsigned int nr_entries;
-+	struct stack_record *stack = depot_print_fetch(handle);
- 
--	nr_entries = stack_depot_fetch(stack, &entries);
--	if (nr_entries > 0)
--		stack_trace_print(entries, nr_entries, 0);
-+	if (stack)
-+		stack_trace_print(stack->entries, stack->size, 0);
- }
- EXPORT_SYMBOL_GPL(stack_depot_print);
- 
- int stack_depot_snprint(depot_stack_handle_t handle, char *buf, size_t size,
- 		       int spaces)
- {
--	unsigned long *entries;
--	unsigned int nr_entries;
-+	struct stack_record *stack = depot_print_fetch(handle);
- 
--	nr_entries = stack_depot_fetch(handle, &entries);
--	return nr_entries ? stack_trace_snprint(buf, size, entries, nr_entries,
--						spaces) : 0;
-+	return stack ? stack_trace_snprint(buf, size, stack->entries,
-+					   stack->size, spaces) : 0;
- }
- EXPORT_SYMBOL_GPL(stack_depot_snprint);
- 
++static inline bool
++arch_stack_depot_frame_try_compress(unsigned long frame, u32 *payload)
++{
++	u32 candidate;
++
++	candidate = (u32)(frame - (unsigned long)_text);
++	if (arch_stack_depot_frame_from_payload(candidate) != frame)
++		return false;
++
++	*payload = candidate;
++	return true;
++}
++
++static inline void
++arch_stack_depot_frame_decompress(u32 payload, unsigned long *frame)
++{
++	*frame = arch_stack_depot_frame_from_payload(payload);
++}
++
++#endif /* __ASM_STACKDEPOT_H */
+diff --git a/arch/um/include/asm/Kbuild b/arch/um/include/asm/Kbuild
+index 8fdc0bd9ab6f..14778d2457d7 100644
+--- a/arch/um/include/asm/Kbuild
++++ b/arch/um/include/asm/Kbuild
+@@ -21,6 +21,7 @@ generic-y += preempt.h
+ generic-y += ring_buffer.h
+ generic-y += runtime-const.h
+ generic-y += softirq_stack.h
++generic-y += stackdepot.h
+ generic-y += switch_to.h
+ generic-y += topology.h
+ generic-y += trace_clock.h
+diff --git a/arch/x86/include/asm/stackdepot.h b/arch/x86/include/asm/stackdepot.h
+new file mode 100644
+index 000000000000..9a8d04fa8c1c
+--- /dev/null
++++ b/arch/x86/include/asm/stackdepot.h
+@@ -0,0 +1,37 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_X86_STACKDEPOT_H
++#define _ASM_X86_STACKDEPOT_H
++
++#include <linux/types.h>
++
++#ifdef CONFIG_X86_64
++/*
++ * Compress canonical kernel text/module addresses whose upper 32 bits are all
++ * ones. Other kernel virtual addresses stay raw, so decompression reconstructs
++ * the original frame by restoring this prefix.
++ */
++#define STACK_DEPOT_X86_64_FRAME_PREFIX	0xffffffff00000000UL
++#define STACK_DEPOT_X86_64_FRAME_LOW_MASK	0x00000000ffffffffUL
++
++static inline bool
++arch_stack_depot_frame_try_compress(unsigned long frame, u32 *low)
++{
++	if ((frame & ~STACK_DEPOT_X86_64_FRAME_LOW_MASK) !=
++	    STACK_DEPOT_X86_64_FRAME_PREFIX)
++		return false;
++
++	*low = (u32)frame;
++	return true;
++}
++
++static inline void
++arch_stack_depot_frame_decompress(u32 low, unsigned long *frame)
++{
++	*frame = STACK_DEPOT_X86_64_FRAME_PREFIX | low;
++}
++
++#else
++#include <asm-generic/stackdepot.h>
++#endif /* CONFIG_X86_64 */
++
++#endif /* _ASM_X86_STACKDEPOT_H */
+diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
+index b7a388bef6ea..76d4792a325a 100644
+--- a/include/asm-generic/Kbuild
++++ b/include/asm-generic/Kbuild
+@@ -55,6 +55,7 @@ mandatory-y += serial.h
+ mandatory-y += shmparam.h
+ mandatory-y += simd.h
+ mandatory-y += softirq_stack.h
++mandatory-y += stackdepot.h
+ mandatory-y += switch_to.h
+ mandatory-y += timex.h
+ mandatory-y += tlbflush.h
+diff --git a/include/asm-generic/stackdepot.h b/include/asm-generic/stackdepot.h
+new file mode 100644
+index 000000000000..846975767bdd
+--- /dev/null
++++ b/include/asm-generic/stackdepot.h
+@@ -0,0 +1,19 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __ASM_GENERIC_STACKDEPOT_H
++#define __ASM_GENERIC_STACKDEPOT_H
++
++#include <linux/types.h>
++
++static inline bool
++arch_stack_depot_frame_try_compress(unsigned long frame, u32 *low)
++{
++	return false;
++}
++
++static inline void
++arch_stack_depot_frame_decompress(u32 low, unsigned long *frame)
++{
++	/* Generic code never compresses frames, so this hook is unreachable. */
++}
++
++#endif /* __ASM_GENERIC_STACKDEPOT_H */
 diff --git a/lib/tests/stackdepot_kunit.c b/lib/tests/stackdepot_kunit.c
-index b0c44c096976..ae4f7661a48f 100644
+index ae4f7661a48f..dc3f8e207bdd 100644
 --- a/lib/tests/stackdepot_kunit.c
 +++ b/lib/tests/stackdepot_kunit.c
-@@ -3,6 +3,8 @@
+@@ -3,11 +3,23 @@
  #include <kunit/test.h>
  #include <linux/array_size.h>
  #include <linux/gfp.h>
-+#include <linux/minmax.h>
-+#include <linux/stacktrace.h>
++#include <linux/limits.h>
+ #include <linux/minmax.h>
+ #include <linux/stacktrace.h>
  #include <linux/stackdepot.h>
  #include <linux/string.h>
  
-@@ -71,9 +73,43 @@ static void stackdepot_fetch_into_rejects_missing_or_short_stack(struct kunit *t
++#include <asm/stackdepot.h>
++
++#ifdef CONFIG_ARM64
++#include <asm/sections.h>
++
++static inline unsigned long stackdepot_arm64_frame(long offset)
++{
++	return (unsigned long)((long)_text + offset);
++}
++#endif
++
+ static void stackdepot_fetch_into_roundtrip(struct kunit *test)
+ {
+ 	unsigned long entries[] = {
+@@ -73,6 +85,73 @@ static void stackdepot_fetch_into_rejects_missing_or_short_stack(struct kunit *t
  	KUNIT_EXPECT_MEMEQ(test, fetched, expected, sizeof(expected));
  }
  
-+/* stack_depot_snprint() must match stack_trace_snprint(), with truncation. */
-+static void stackdepot_snprint_matches_stack_trace(struct kunit *test)
++static void stackdepot_frame_raw_fallback(struct kunit *test)
 +{
-+	const unsigned int nr = min(40, CONFIG_STACKDEPOT_MAX_FRAMES);
-+	const size_t size = 4096;
-+	unsigned long entries[40];
-+	depot_stack_handle_t handle;
-+	char *got, *want;
-+	unsigned int i;
++	unsigned long frame = 0x1000UL;
++	bool compressed;
++	u32 payload;
 +
-+	for (i = 0; i < nr; i++)
-+		entries[i] = 0x301000UL + 0x1000UL * i;
-+	got = kunit_kzalloc(test, size, GFP_KERNEL);
-+	want = kunit_kzalloc(test, size, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, got);
-+	KUNIT_ASSERT_NOT_NULL(test, want);
++#ifdef CONFIG_ARM64
++	frame = (unsigned long)_text + (unsigned long)S32_MAX + 1UL;
++#endif
 +
-+	KUNIT_ASSERT_EQ(test, stack_depot_init(), 0);
-+	handle = stack_depot_save(entries, nr, GFP_KERNEL);
-+	KUNIT_ASSERT_NE(test, handle, (depot_stack_handle_t)0);
-+
-+	KUNIT_EXPECT_EQ(test, stack_depot_snprint(handle, got, size, 2),
-+			stack_trace_snprint(want, size, entries, nr, 2));
-+	KUNIT_EXPECT_STREQ(test, got, want);
-+
-+	/* Truncate part-way through the trace. */
-+	memset(got, 0, size);
-+	memset(want, 0, size);
-+	KUNIT_EXPECT_EQ(test, stack_depot_snprint(handle, got, 700, 0),
-+			stack_trace_snprint(want, 700, entries, nr, 0));
-+	KUNIT_EXPECT_STREQ(test, got, want);
++	compressed = arch_stack_depot_frame_try_compress(frame, &payload);
++	KUNIT_EXPECT_FALSE(test, compressed);
 +}
 +
- static struct kunit_case stackdepot_test_cases[] = {
++#if defined(CONFIG_X86_64) && !defined(CONFIG_UML)
++static void stackdepot_frame_x86_64(struct kunit *test)
++{
++	unsigned long direct_map = 0xffff888000001000UL;
++	unsigned long frame = 0xffffffff81234567UL;
++	unsigned long out;
++	bool compressed;
++	u32 low;
++
++	compressed = arch_stack_depot_frame_try_compress(frame, &low);
++	KUNIT_EXPECT_TRUE(test, compressed);
++	KUNIT_EXPECT_EQ(test, low, (u32)0x81234567);
++	arch_stack_depot_frame_decompress(low, &out);
++	KUNIT_EXPECT_EQ(test, out, frame);
++
++	compressed = arch_stack_depot_frame_try_compress(direct_map, &low);
++	KUNIT_EXPECT_FALSE(test, compressed);
++}
++#endif /* CONFIG_X86_64 && !CONFIG_UML */
++
++#ifdef CONFIG_ARM64
++static void stackdepot_frame_arm64(struct kunit *test)
++{
++	long negative_offset = S32_MIN;
++	long positive_offset = S32_MAX;
++	long offset = 0x123456;
++	unsigned long frame = stackdepot_arm64_frame(offset);
++	unsigned long out;
++	bool compressed;
++	u32 payload;
++
++	compressed = arch_stack_depot_frame_try_compress(frame, &payload);
++	KUNIT_EXPECT_TRUE(test, compressed);
++	KUNIT_EXPECT_EQ(test, payload, (u32)(s32)offset);
++	arch_stack_depot_frame_decompress(payload, &out);
++	KUNIT_EXPECT_EQ(test, out, frame);
++
++	frame = stackdepot_arm64_frame(negative_offset);
++	compressed = arch_stack_depot_frame_try_compress(frame, &payload);
++	KUNIT_EXPECT_TRUE(test, compressed);
++	KUNIT_EXPECT_EQ(test, payload, (u32)(s32)negative_offset);
++	arch_stack_depot_frame_decompress(payload, &out);
++	KUNIT_EXPECT_EQ(test, out, frame);
++
++	frame = stackdepot_arm64_frame(positive_offset);
++	compressed = arch_stack_depot_frame_try_compress(frame, &payload);
++	KUNIT_EXPECT_TRUE(test, compressed);
++	KUNIT_EXPECT_EQ(test, payload, (u32)(s32)positive_offset);
++	arch_stack_depot_frame_decompress(payload, &out);
++	KUNIT_EXPECT_EQ(test, out, frame);
++}
++#endif /* CONFIG_ARM64 */
++
+ /* stack_depot_snprint() must match stack_trace_snprint(), with truncation. */
+ static void stackdepot_snprint_matches_stack_trace(struct kunit *test)
+ {
+@@ -110,6 +189,13 @@ static struct kunit_case stackdepot_test_cases[] = {
  	KUNIT_CASE(stackdepot_fetch_into_roundtrip),
  	KUNIT_CASE(stackdepot_fetch_into_rejects_missing_or_short_stack),
-+	KUNIT_CASE(stackdepot_snprint_matches_stack_trace),
+ 	KUNIT_CASE(stackdepot_snprint_matches_stack_trace),
++	KUNIT_CASE(stackdepot_frame_raw_fallback),
++#if defined(CONFIG_X86_64) && !defined(CONFIG_UML)
++	KUNIT_CASE(stackdepot_frame_x86_64),
++#endif
++#ifdef CONFIG_ARM64
++	KUNIT_CASE(stackdepot_frame_arm64),
++#endif
  	{}
  };
  
