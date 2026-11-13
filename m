@@ -1,99 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22333606A881
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 12:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4276F606A334
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 13:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=TuxtysPG
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BF6KxyJo
 Received: by kanga.kvack.org (Postfix)
-	id 3AD666B06B3; Fri, 13 Nov 2026 07:59:25 -0500 (EST)
+	id 68F106B06AC; Fri, 13 Nov 2026 08:00:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37EFD6B06B6; Fri, 13 Nov 2026 07:59:25 -0500 (EST)
+	id 63FA56B071A; Fri, 13 Nov 2026 08:00:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BC0A6B06B8; Fri, 13 Nov 2026 07:59:25 -0500 (EST)
+	id 57D956B071B; Fri, 13 Nov 2026 08:00:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C7E56B06B3
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 07:59:25 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 39A8A6B06AC
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:00:35 -0500 (EST)
 Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A0516160394
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:59:24 +0000 (UTC)
-X-FDA: 85430101848.27.EC42F2D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9E455A0005
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:59:22 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=TuxtysPG;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf15.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B0485140169
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:00:34 +0000 (UTC)
+X-FDA: 85430104788.27.52DE7C3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id F1E4DC0011
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:00:32 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BF6KxyJo;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794574763;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1794574833;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L9o0QAn31EhODg5Xk6yf6VXd8Cb1/NtuAjQyDpQKKWc=;
-	b=ILiHm4J61ZU2KhA5r3v1cQ16BKmk6OccYy8+X7WSXs/sqeqoKRB5oZwYmTkn5ufMigcjIx
-	5ng56/lxzTFEFn9/X+P24d/1bQ5ruk0EegjE+LU9fACOXUphlQYBrKBdbqflpPntXqyFh5
-	d8KXHQ7iGTHM69ZrJV7hdAEx+kEZvwU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=TuxtysPG;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf15.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	bh=iXpdjrmHik8VxmCAaCIUmmAMDQ+4+ZSb3XBzqpT6F+w=;
+	b=ezTkpuUdUpB8YhLgnOq8huFxNn4MtI9SuM7hjKppCn51hOW/mFOKxMx51sM78iUMW0DWzC
+	S5+Zt2eqZ5blDwbHLAOzXktUYo1nbKjGizfmKzECYXfT+MiIpmw6aaby47DTBJ+c9SydlX
+	KnbzOH/EpeK0MzJMyjR5hLAbKoCaU/w=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794574763;
-	b=ytFKcDpQUImDzFGvX6+hp8nHxcQRjxqhzl65JvKzg/kB8B0RMEapUczaP2Li0CdvODC2hB
-	Tv3cGmGHweqTQlutYEbciiOjWDZI5F9f2MDlawoFbzQxluDtJugCgOXAR0g2qIgYqAC4cu
-	wVU/Sas3rPU2xJq+e0x5r3BFo5wPBzg=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AA0A81476;
-	Fri, 13 Nov 2026 04:59:18 -0800 (PST)
-Received: from [10.43.20.13] (unknown [10.43.20.13])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D3EAC3F673;
-	Fri, 13 Nov 2026 04:59:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794574761; bh=IA8HbrwIcSv7yszpiNKddpXBErCGjQg6blFLc6aN5Qs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TuxtysPGkHekTOZWakO1gsh0ZU6UXYkeHjTVMySBTC5bRkJpe89iJYfrTPPZBsPsP
-	 RNfp6yInd9YavKXA4MaZUVcMvkkZZJkxd1I85hSj+EcPLh+OwTih1jHciCoqfVxaxp
-	 PEP99UB64GxvcCTp4Xozo9TLGLjSplxdXdRAwpgg=
-Message-ID: <827c5b0b-ec80-43bd-abdb-8fce4a8b1df9@arm.com>
-Date: Fri, 13 Nov 2026 11:51:14 +0100
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: pkeys: wait for the child in become_child()
-To: Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?Q?Carlos_L=C3=B3pez?=
- <clopez@suse.de>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- dave.hansen@linux.intel.com, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- linux-kselftest@vger.kernel.org, Muhammad Usama Anjum <usama.anjum@arm.com>,
- Joey Gouly <joey.gouly@arm.com>, Hongfu Li <lihongfu@kylinos.cn>
-References: <20261106164639.2959195-1-clopez@suse.de>
- <20261106135739.113e4b432ecb6e92f62e37d4@linux-foundation.org>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20261106135739.113e4b432ecb6e92f62e37d4@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 9E455A0005
-X-Stat-Signature: k6unj9qbbookbonur7kwbqic3cm3f6pd
+	t=1794574833;
+	b=ZDvJRQ8PwT+xg8c7h6fCeV6+I0n0wJdVEWHZ2pr85zFJlJzCsrsY0VB1SbNgnOuh68yQeM
+	YzxSHIL2Irt/CgCiMIUn+Eei74YWEPkQH/3onkXQc1xDCs6nqtBQQG2/Og/ZwtmzJC3TUt
+	KjbUyS65LUqh/hIJupPPLhNUN8zpG6c=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BF6KxyJo;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 29C2A4621E;
+	Fri, 13 Nov 2026 13:00:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C23F41F000C4;
+	Fri, 13 Nov 2026 13:00:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794574832;
+	bh=iXpdjrmHik8VxmCAaCIUmmAMDQ+4+ZSb3XBzqpT6F+w=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=BF6KxyJoaqun7yvquPMrlDlaVyVUnjVtisOJkuDveMfAONqiyhXMnYZ+jba6we/Nh
+	 0nXWG6EArsSCEIpSuCwD6qKrrGUyQEl/o0gJU0Ha5fLfVPy/5hh2gVNH9X1bwG7fiq
+	 a/QW5IuS5pJMMpocWkEZ/oKcE25pze/t0kYcdGAWRkSGUaRVvXiZIP12u3wDwT2uaq
+	 05vHL2oOpjxzh4z+sqXlzm0fawvNr2usV25AZ5/V7eVOJxvo+ueIzja7J3jK2uRlbz
+	 E4q+9YDHcztpQYqNN4E3LowAXWY8kMvJheY+DBIwnc8JQE1d912n3J4VCNSf+Y1q/g
+	 jUuefX2matdoQ==
+Message-ID: <sashiko-outbox-212803@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 2/2] mm/ksm: add initialization helpers for
+ scan_get_next_rmap_item()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?WHUgWGluICh2aXZvKQ==?= <xu.xin@linux.dev>
+Cc: chengming.zhou@linux.dev, david@kernel.org, linux-mm@kvack.org, ljs@kernel.org
+In-Reply-To: <20261112125959.177881-1-xu.xin@linux.dev>
+References: <20261112125754.176930-1-xu.xin@linux.dev>
+ <20261112125959.177881-1-xu.xin@linux.dev>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 13 Nov 2026 13:00:31 +0000
+X-Stat-Signature: rjd14onfk7xrzeuhhbjimy9bhqikp67r
+X-Rspamd-Queue-Id: F1E4DC0011
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794574762-570255
-X-HE-Meta: U2FsdGVkX19oS4VQtO9s2gzKMCCxPYRfjWOMasgSli3rgUG9pGFPCjzYoBltmbN69zFvPoWu24Mw/xILZYqbZdYvaVMlYITlhZAMs2FFrAUXngVmo7DbVfffOw8BUGgBdLP3lak6NRA4VHZz1OcZiu6+2pfOY70OvyzSlFpsTb4I1Fs7sqs7qxLfO6+Bgkk9tHAuE3IauuxpHrC0vGRok4xDOEF+x96xErfINrxZpNDalSNde+w6gzaXfV2KHgXIEO6AZwnZP8IGD4O5uyJGIdQIMKP2e8vukCSldpTt7T0QPhNXphpvSNv5fuLyrJXaewbuNeBJrFVCKQWYV7x3t2SC3b1Cs7J16sAfoGqI4dsJIDYx7Z6q7tkhOLYkhz5Byo523JDbSHE3YRhGkFu5ZyZknybcuLwFvu8z6P8EQc5j4ikczyUmSGnHJRtrB/DxTkEkAjVuJ75edfzrEO8Mbp/ymIhqryXyCeF1bpshaAIq4+y1UI35KlESfZX1RKvF15s9NZ4DL7URUM6jqN8tpL9IzuVkcj07wdj3aNoQ5BEwbc0NQBsqVQ49TTTmnr7P4jCri8HuiPA8G976bhPNnwx02FZ4Wzz09qEux/t101BSGrs52npXHUP8mIEwd7xldNgMpnyKfedKn/NXq87V6QVAG8KNhSxflRqMmoMeHETf69LzQncDBE1wU42phpAPX65qsVKgXPV/Fi1yk8mWHsZB64Yo8dLMhGDyLWhUfTVryDN402CBNF+7RNFpeUFiMthNPrO39EH0t/Q5uBjUVX6p/9chDX94S9wem9W4XwbmvfQm/hog2P7ROjHVnCqfVC0UZOOEd8+jKZ7Dqpt+1GZRbYycGO+2lLAOrt6w1MsGaG97qfCW3/QYOSOMBjkGzWM3Dr/v5TFEJtu7PDPj1aRyTGhXnn1xPPSH6c9WTuBCiF6JzF6Xp4z9H41xivVqZPXO1x3UAZHtjh9IAO4
- CBmWXmk0
- L+1oSzHdbf/JnvdHTp15StgFYsUSA+uHpkFkC+GPGlbPUB5120hNtSEmCQCcZfsJwMgg26Os2MEXBYBrvVLdGMIS4kxU4wYsOXll8cx3jCi3YzWHZWgnOWKK18Ge3MejtmerW8kLjbs3hJlrFBiw4M6PkIXEyGbWqt1Jv3+YpUl41uzdn9FYmPVV16c1xCQReWAi0zFtcvn9PLQiT1UEjC7VnToA2x5lx0RkmQxOwmZ+Vt4yLP3GEaCbcVEn4k1HTVa0x4CTTpn3wROzoXasvs6KKJqT/svxaSEVEPEonKz4mgoUBZBD6xPdFQCay2a8I7ofQhYuopCYxyoAwZDeCLgzCp7xMtM7ugYe7kpjf9yLPMRlS6Lu2j/2YxQ==
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794574832-210110
+X-HE-Meta: U2FsdGVkX1+4429JMJT1jQMFOm4fvjPf64QFWPWUoNx11dPQHgsAoXsVKI10+Eln28ucwp5zSkYARfLapkzI7o5Cx1xLJ/OUALeem+xdjX2Lr8dDXmJj2ZP8bV66xE41c8wnmuiTlv138f8um5fDDgIAhLG6/NhFyB6Ypj1anh1xmofCc8rJtDsPnAn+GUij2kJVXxBlTRyjEhjgcF97WgN04zc8CnCet3Tnamm3zxAhYUDuFPBgh+GHL0HVJkkmzPO2fKONCpzPcTyapppVFxjy4Sg+9LUR6p5VP1nKH6iv3CpRCNsIdPhD1o6Ar+B4afboVbRtj66mAtpVCKYSGM0CxuALmatMojgp4jW3z2iSgNO8k02ZRryV0LccJlegpcCeaIzU820kMeBxqgEc5jhohoyY6f2/GA748RJasowqgHJo58Dwv1ZTmiIBqbzsFO8+anVOV5DQeX8ZJMd3oty9oIGO2LajTSNr61hJcQbrahEGMWzZLGIyxKEZ0ZRzYUUuhHf5KmgIjlpejq70AeSF9KBWqdjMkbBgG7V+n7knbPx0q/1ix790TheLLu6YA1jvFgJf/uTjqhKSyoLzS+qWJqUSffDmUB/xHMHMBQc82XmHEW0a32BOYVulPAVW9gP+iyxsGKkoKBvSEPpkp+ti5KF7PxFZGtVs7SMVt3YfAjgTVPNS6F7Mt8x+BPleJ2Fj9UG38hFw8ZWMjRn2gYCyHxcqg8oYQsi7mkCDZOyiDZIAp8QqZsLLw7vawxEo3QVVTgkR+d6Une4c8CtHvZ7aTxPo4l4b0RuynbUdyT0CNHKgzr5HACbK5ohLMEUyu2bjTkHrRDBoJRG/JuZhEyEbadV9ZQ8V1QBEShp7Gzl/rZWrtoEWlss54HQYvoH5sonAJKMHtyhlaWaAoMPbSduOvcEbMAvWSkYHlLZ/e8JhfMVmmR+RUzgHcw8P/aHX658nZntJVn35L/QPFwP
+ Eu8KS/Ek
+ l9ap3UTOtwFdMrvRgvzPbEDTBfvfEgDUpKo9AGb0ykgdfa7eRpn49waM5hhPuXaCGwgQdKjmqbMnjrzqbFUhDrBp+M/0R4FJblHwwxa5GVvLuCeYrGFHSMXsO7itEUYb77AwAUZ5P8C0oBGVKVCNEgk0FQRolsAVKWRsk/knYx+fhIIs54XXR4Q3qClKcrejFT5Be1fP4LryoT6PEUrLNcXeVLdmqc5OK9vAd2RQ6T2ADOblcR9xsUPYJRkg75osonogKcJZeR3FUaHshqx+nAfW35FZ6BXMuFKO08W15soBGSaVz50CI+73Xiv1rMa7lm+znH+i7nmoJL/jAXUHtnSZNnnsz675DApjjkxtVmKjmNrp9627O0PnkTiXySz4RGIjmWmbnJOwk1/ln+z19S5xHp7oi8Vpfkg4DFiubO1JCOaQE4l1J0fkh/RjOk7PzzWJhuNIScB8NL90priBu6WQaVaw8YjalX15/AhnqBLFVp1hRrp1JnZ4srj3oKPstYOzCm1XD2qws3nNI16g/4X5kHw4AhFo9NEMfz0PwU6ARdSsuZ2RBdkvSwoTC3ke8nq4RhZK8bdVIiw9LWxAE+22DIWgGgvgEZKsimVni4foFGrE505vMS9+tp6lwOtNL4+RPOvVlVUY3gcU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,32 +92,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 06/11/2026 22:57, Andrew Morton wrote:
-> On Fri,  6 Nov 2026 17:46:39 +0100 Carlos López <clopez@suse.de> wrote:
->
->> become_child() forks during test_pkey_alloc_exhaust() and has the parent
->> exit, so that the remaining tests run in the child. However, the test
->> runner only waits for the original process, so it sees the test finish
->> early with a success status while the remaining tests keep running in
->> the background. Failures after the first fork are thus not reported in
->> the exit status, and the remaining tests overlap with the next selftest.
->>
->> Fix this by waiting for the child in the parent and exiting with its
->> status. A previous fix avoided waiting, arguing that the parents would
->> keep holding their resources [1]. Particularly, the parent keeps the
->> hugetlb reservation of its test memory, so the child runs out of hugetlb
->> pages after a few iterations. Avoid this by freeing the test memory
->> before waiting.
-> Thanks.
->
->>  tools/testing/selftests/mm/protection_keys.c | 16 +++++++++++++---
-> get_maintainer coverage of selftests is poor, alas.  So it's a good
-> idea to poke around in the git-blame output to figure out who best to
-> cc.  I added four new lucky duckies to this thread.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] mm/ksm: scan_begin_new_cycle() reorders lru_add_drain_all() at
+  scan start
+--
 
-Thanks, looks sensible to me. These pkeys kselftests really rely on a
-lot of (black) magic...
+commit 82208b052cdf6d037a169e81cb68de5a2ad7f1fc
+Author: Xu Xin (vivo) <xu.xin@linux.dev>
 
-Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
+mm/ksm: add initialization helpers for scan_get_next_rmap_item()
+
+This commit extracts the new scan cycle check and the first mm_slot lookup
+from scan_get_next_rmap_item() into scan_begin_new_cycle() and
+scan_get_first_mm().
+
+[Severity: Low]
+In mm/ksm.c, does moving lru_add_drain_all() into scan_begin_new_cycle()
+change the execution order at the start of a scan cycle in
+scan_get_next_rmap_item()?
+
+Previously, when ksm_scan.mm_slot equaled &ksm_mm_head, advisor_start_scan()
+and trace_ksm_start_scan() ran before lru_add_drain_all(). Calling
+lru_add_drain_all() inside scan_begin_new_cycle() in the if condition runs
+it before both calls, contrary to the commit message's statement that the
+exact execution order is kept intact.
+
+This reverses the relative order of the mm_lru_add_drain_all and
+ksm_start_scan tracepoints. It also records advisor_ctx.start_scan via
+ktime_get() in advisor_start_scan() only after lru_add_drain_all() finishes
+draining per-CPU LRU caches, whereas scan_time_advisor() still includes the
+ksmd CPU runtime spent inside lru_add_drain_all() via
+task_sched_runtime(current).
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261112125754.1769=
+30-1-xu.xin@linux.dev?part=3D2
 
