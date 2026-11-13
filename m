@@ -1,98 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081D260A3833
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 10:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E86A9606A337
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 10:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amutable-com.20260707.gappssmtp.com header.i=@amutable-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=To6Sp7pJ
+	dkim=pass (2048-bit key) header.d=amutable-com.20260707.gappssmtp.com header.i=@amutable-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=qYuRZtUg
 Received: by kanga.kvack.org (Postfix)
-	id 15E456B0695; Fri, 13 Nov 2026 05:15:21 -0500 (EST)
+	id 1AD7C6B0689; Fri, 13 Nov 2026 05:16:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 136786B0698; Fri, 13 Nov 2026 05:15:21 -0500 (EST)
+	id 15EA46B068B; Fri, 13 Nov 2026 05:16:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF2696B0699; Fri, 13 Nov 2026 05:15:20 -0500 (EST)
+	id 075DF6B0698; Fri, 13 Nov 2026 05:16:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C45296B0695
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:15:20 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4BBFE1404E5
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:15:20 +0000 (UTC)
-X-FDA: 85429688400.14.4BF14D6
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 557FF1A0002
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:15:18 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.s=20260707 header.b=To6Sp7pJ;
-	spf=pass (imf19.hostedemail.com: domain of alex@amutable.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=alex@amutable.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D25DB6B0689
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:16:01 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 66F1FC0489
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:16:01 +0000 (UTC)
+X-FDA: 85429690122.19.70C9F95
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 95E9280004
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:15:59 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.s=20260707 header.b=qYuRZtUg;
+	spf=pass (imf30.hostedemail.com: domain of alex@amutable.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=alex@amutable.com;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794564959;
+	b=G0qobjEcF1Rnz8H1mmzfVIsKEKidTDN2F+eKg2pV83kEoww07B9gBB5NebHXx3ia0FBbGT
+	gf8U0Cxrt0b156j2EvmO/NEXjqyLsqLGic+Fhj+unFA968042eeUjj19LK0t+VeuU+sn1o
+	jwCRBupbUADaV9KMNqdyGPPXK+5pLEI=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.s=20260707 header.b=qYuRZtUg;
+	spf=pass (imf30.hostedemail.com: domain of alex@amutable.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=alex@amutable.com;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794564918;
+	s=arc-20220608; t=1794564959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QtOsdPCKGJ1fBhMqXd/zLQfd50NEx4L7veNiE/G2OUE=;
-	b=OSvJcNq0k4mfuA+F6fo4Al/QUENYQDxOaDf81HbAydtjfVnVWoksqoGO2kPeqCryTFPcnr
-	a3o6iKBeEM1vvAEsw+FzTrLwtyxllTUrdaNaaeAtJtroNG3JIuGQTkOytKeH+HMS+MR9oj
-	rPjyYhYS8Q6zU34fruP3u3IZ/0oQgFo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794564918;
-	b=tCl5l+skLNNRvALxepQhT3ox2d723hHZWiQP2XuFZc4jo5YMyWFf8UZfP1bs1KreIjdsO6
-	XimNYzWfalf4AuCrP7NSrl18s0bk73Pn3DY1D0ZnlmvoBXx6O6kh0ADeLVGA13tiMtWZVh
-	8uL6HPLnjw0g20HasTQtzlMPmw3DBZ0=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.s=20260707 header.b=To6Sp7pJ;
-	spf=pass (imf19.hostedemail.com: domain of alex@amutable.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=alex@amutable.com;
-	dmarc=none
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4a5b2be99a8so4413375e9.2
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:15:18 -0800 (PST)
+	bh=PfCz/38ILdxPmJBY1NDzDaIsiECcLTMyKpoKPJStEV0=;
+	b=YsCh+ZiHq+x1bY9gmKzGGP/OBU/9C9nmMSMYaervseLa7Ty/BURs178ZAuXS78PdNo1Tst
+	3c9O5OgsoNYdW6ezetBSXl8k8vpQZf62XMJUnJDsv7LQFDmkiwdYykY6wkaYY6y/B9zH1m
+	9S4hqdmNs4Fc1KD4dmR9K6weMO5+0Ps=
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c506094fd93so151136166b.1
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:15:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amutable-com.20260707.gappssmtp.com; s=20260707; t=1794564917; x=1795169717; darn=kvack.org;
+        d=amutable-com.20260707.gappssmtp.com; s=20260707; t=1794564958; x=1795169758; darn=kvack.org;
         h=mime-version:user-agent:content-transfer-encoding:content-type
          :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=QtOsdPCKGJ1fBhMqXd/zLQfd50NEx4L7veNiE/G2OUE=;
-        b=To6Sp7pJWfu5EjSP/ZMidDvHgKYAJDKHa8YTI1wvCrMX79PVcowsVGMqnuSEgdWpN5
-         eSEM7N8BP7QlKiIlerct97YZ5YF8CBeOtXaJRPUkvzQXuLPv9HOUAyObnYvVc7zLxTJP
-         Bl2/F40LpzkDMPXuKboLPlDhtXvh5cSjnllTQF+zEdwDdszXOqy68EiLlWCwQ05desAb
-         kDxkHwyADsNY3glN+g+NJHeSUMlABLUxfg7IGp1jJsbsT58dcDQVPG0hj95bgAIl/qAB
-         0IHnpUQ3p+nvA6t3TPizSsQFc48VE8Z6PzmFF8XOb3eLg6FZGuE7w7FWGxZS42inDl6c
-         KKlw==
+        bh=PfCz/38ILdxPmJBY1NDzDaIsiECcLTMyKpoKPJStEV0=;
+        b=qYuRZtUgk6O+Pk96l9gVJKYQrxgVpirff8by/oxuAV5kMjmAlVpLCtbYd5HLRXr4xo
+         2jYH1n+FHulRv0bDRSLkRBcqSw9NtvXw6OSFXwy9QAmjuVaU9siREG0o31ZCrOgj/APm
+         tmtPelr91i8rj2vz1f/DuAxY5sZYkRCWkjw8oxBro/8i35icmTt3L8FMUcwtUG+6LChW
+         PXWPTZ/e+UvG0Sp79RYXvqy61rrV5lI/2sqjP0eNXCnD7tp6FwA9juGOGbkoD3XFdFbk
+         Ws4zjPw/1SA5kHN/22EI0vwJwyHnU7dI5MbrGr4YXHb5V0jRwGPoSBdGJlc7gHkrF47s
+         peaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794564917; x=1795169717;
+        d=1e100.net; s=20260707; t=1794564958; x=1795169758;
         h=mime-version:user-agent:content-transfer-encoding:content-type
          :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=QtOsdPCKGJ1fBhMqXd/zLQfd50NEx4L7veNiE/G2OUE=;
-        b=ON8JNF8FGjsDQX0yf3FqRsX4DeTNuT3xLEOp5chb7LbFFtkCO+ZsGLY6hak1/HyuA1
-         8yXz35r/5yw8oxvwjIEGeMuRHA/wX+FzfaBHC1GFUaia6lqZ+N753nvTdPu1M80Hopwk
-         kw94ZhR83DsFYOxTuDW8dPEeGrZIT9N+7RyUQIqUuArwl7i2BJobJoJgDJnWXXhyJmos
-         eXvwn69bE2x7E4eby5DwFnEtRF5brIwMWIcNbk8KoHzGtQq7r+AyzbKSYe/4jPxa0JTF
-         iDvyAh1iNRvCNuc1NJVgVQ/JpI8YCJSvrg7lFP2VtMTzN8MjH1MEo+vMJmkQ6g2Lo5J3
-         7Yig==
-X-Forwarded-Encrypted: i=1; AL+hErF0q1WMdOs40mK9MTIZS4uhpTSOCE9IBfqusn94IeqPrV1DD6LUyntnFzLccP2pNa4SZUj4ReLnkA==@kvack.org
-X-Gm-Message-State: APuU4Z/DtRxARRTVe3xywSmeCjvfUxOALufdEj+0nYLI8xnQpKmh+3W3
-	pUciBIk+IZPpR784LHMd6q1oC9suXnMnfdV895wdWkDO6DDal37USBxz4EjMypyqbcJF
-X-Gm-Gg: AYBFou0tArjlr9Nxit8qN5cIBk1Kay2CqpuGftgGgryBenao95S6jl8Mk9dHumPhgRm
-	viG5chM8cVINqdUOQCEEXS3DDGa0EcLpucC9e7Yon/Xk9Y6fYIatzTfWpbpShyF7fE3Qtbt5M0h
-	RfGLHan79A/g0hAP+7MWVh9f1JL0imp7Jv2826YGbC+S0lyOs+oKTP6AY+IOL+QezAXnnzWrMQT
-	6AqDVs0rXK19fX1IoYyJiR8Oa7tRtuR/waw5p2fWqOO5M8tIA571p1QV3H3bgjj3mpkmaFUzHLO
-	xdcOUkJK7fUWlE2Iy4lKn46KzJWzknNmcXLzGwZeTxJdVjShLbK2dsErPaGeEXYRVw1sFkjcSKz
-	RzgjGuzZLLbgVweN/EBK/AOe5rjIWKWgYpi/c8N9Dkfy6bLmCJXUDQvJZRA8KcSjIU3cf7/sd/9
-	sbgpWBp3a0RmRK5c6muXSKPnORmEeAan8oeYpdlBFfax1TuKSGyls/NsvriphdovhkYz3CXeMTB
-	qoJDUvNBGptbpNzlNxcAKS/g+oAH9APEd01rsxIKz3XxvL4LVdV+Mh3wjuJ/HlZa/zDampdftfr
-	46K4CPGGOeWw5wFoimbpFKyWe7QGbn6fFVy869NUSmKRKwQH7Hjnq+geZDKyUO8=
-X-Received: by 2002:a05:600c:4f84:b0:4a7:7f3f:6f8e with SMTP id 5b1f17b1804b1-4bb5599ade1mr43492835e9.0.1794564916955;
-        Fri, 13 Nov 2026 02:15:16 -0800 (PST)
+        bh=PfCz/38ILdxPmJBY1NDzDaIsiECcLTMyKpoKPJStEV0=;
+        b=IdPbhq33QZohkQUJ2xv3knP0J2XYbPALkh7PEFIyHSYobVdIF361+MPjqpRg6WUkdt
+         vnYPfhDGeQukE2Tqb4ke3IF93NvloNfUIksWSDEtHIHj6lWnccmhREFgnftNIc/jbvuY
+         NwwJ+0lSZ+lbhDj1PQey+OVWMTSAMeXccdnnftzU1jRnUtm6cqLSVn6ww4gzy8VuPoy9
+         KfS48JFd4kjUPAOxODY68QqM765ykMkCSy0vjz38wUebGYVvSNT4ldIH6nD/CupXcZNJ
+         K4v2P7XeLFm61UEsClsexCLUWoWX+eeturo15MhVBEBIFW3v2K4y1gAqc37YqrAheTbq
+         q2hg==
+X-Forwarded-Encrypted: i=1; AL+hErGoAz/msW2CSclDkMyQYc087ER97LNmh6yyFTWdrvb0URD0leMG/jM2oyOC1LoPzHbjPh+sHonJ2w==@kvack.org
+X-Gm-Message-State: APuU4Z+BTFJkgEqHVtviozTIaG2vCs1amFPMQWNot07pCiOJ+z2lDTTM
+	H9GhrDbvSKZYglizAndrq/LSdWzuehcIQpvt3Hcm5gENXAiBB9T8Zh0Av7W2BlgM0P6EJ6GVQe9
+	mFBeaoPDsFTk=
+X-Gm-Gg: AYBFou3dco4IGgPAt5UN7f2CmPABpelNEi+8MIj9++XEGQpK4KkCpcuHMVeygMuOR15
+	zdINvVSKTgUDSMuAr7+T3vYr/M7Go3DbisyMhzQDyGiDYNF/I/hsc8v0s9uBM3ZytYd+0DMIa/E
+	f290hoN65JX+b8gCq7dZ5Ony7DBRYsAI24iYADLNncw9rwNHG3xlSXTxWn4u2S+YBlfmE0BFn3W
+	dhxyTsl5zhBztGEq6oQTgPP54hS0my3p393ptg0hb8Yg1Ri1RhPDt0RSQR1TUmPyc1dtc6lPF3x
+	4Mt6YkH2oxMzNsZFTDpoN2C3IPoKhIWtwXelLmEOgCwenX5SxjOzLBVdU3lg/yDs9BwnWI7oLfA
+	MmmuF4TUiLKmDI61EkAk3WZT6DDrBQ7gIvamT1KnIyp3nEA+bbOodFRJoofiP9zl7iva9RvFbLN
+	awByjgDjkFnUBnB0tchI/NInRCsgWjt8Zf5DTXK6EV+LNdBhXdtskSrD4awmUOlR6hF90YTyOub
+	VNmrrJMFBk2HW2y47qg2FCPpJXklzYibJd6zUWO1LI5Ir+/l/akIMRMvXhdqM9FysLmK/LREtzi
+	pE2VldbJihccOBZrhw4wW+kToGWmf43PHHv/0SsjC4/DuRHZYg2d4tRmoi3g38M=
+X-Received: by 2002:a17:906:f59c:b0:c42:102f:15f0 with SMTP id a640c23a62f3a-c509614d4c1mr171873666b.3.1794564958075;
+        Fri, 13 Nov 2026 02:15:58 -0800 (PST)
 Received: from [10.0.0.233] (tmo-086-54.customers.d1-online.com. [80.187.86.54])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb56680ea9sm31982365e9.0.2026.11.13.02.15.14
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c5095b7d1b7sm75606066b.74.2026.11.13.02.15.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 02:15:16 -0800 (PST)
-Message-ID: <e2edfa06d185acd86b46945622b6eb6dff97b307.camel@amutable.com>
-Subject: Re: [PATCH RFC 33/41] fs: add file_is_pseudo()
+        Fri, 13 Nov 2026 02:15:57 -0800 (PST)
+Message-ID: <c5a694991af7e9182fd475a20bf4cfd73a13e395.camel@amutable.com>
+Subject: Re: [PATCH RFC 34/41] loop: refuse files on pseudo filesystems as
+ backing files
 From: Alexander Mikhalitsyn <alex@amutable.com>
 To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
 Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>, Josef
@@ -110,10 +112,10 @@ Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>, Josef
  linuxppc-dev@lists.ozlabs.org, 	linux-usb@vger.kernel.org, Amir Goldstein
  <amir73il@gmail.com>, 	linux-erofs@lists.ozlabs.org,
  linux-kselftest@vger.kernel.org
-Date: Fri, 13 Nov 2026 11:15:14 +0100
-In-Reply-To: <20261110-work-loop-pseudo-v1-33-4c998976c6c7@kernel.org>
+Date: Fri, 13 Nov 2026 11:15:56 +0100
+In-Reply-To: <20261110-work-loop-pseudo-v1-34-4c998976c6c7@kernel.org>
 References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
-	 <20261110-work-loop-pseudo-v1-33-4c998976c6c7@kernel.org>
+	 <20261110-work-loop-pseudo-v1-34-4c998976c6c7@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2-0+deb13u1 
@@ -123,14 +125,14 @@ X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: j4qbm1x594ajhzeam9fnfzygworjamtf
-X-Rspamd-Queue-Id: 557FF1A0002
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 95E9280004
+X-Stat-Signature: dwgxkiojqjeop931sabiww5xwjamo13p
 X-Rspam-User: 
-X-HE-Tag: 1794564918-853087
-X-HE-Meta: U2FsdGVkX19riVhj3QCjUU6Mx8B86GENkDHhOB0yezlcKSV1VRcX8YyiB5pKscTtQrHRkvPMT36LT3RHUOumO1ABUUv8Rlm10Gm/tT9WN46pY6SFcD19fCnu6wGQhMeZKEUTcHyzKvD7Vcf4PO6B7hzWKsAn6+F1VQQvhdMpCumWq8YDwu4wtJyuYJwxaJUTNqUJ1IKl76hQmoYTJLzK3lAu1/P4jPkIWsiwP38HhXV5SBob91DW+kOORTfur5TBOkQEPxBtV8/lXVx82pDITR7k4QSOm1BKVLB3d4qeEH6FF/bxghKYDC6BpZ3oiy77hHzm/Q9+F2a1nrsLXZa8IqN6HpFP9fh23sbVeBMgmKcwuyh7ypo6TLOWIICKRw8PxL6K+uIYe27o+iB2ik1ItrsYZCPWEf3Iob4MIWbVmIgFIdl+63jzCJRPURZyKFBT7S7SdUkY+Q90gtwuFfQRNge5gY+jPtG1EQJHf/K5kfj8gyZ/UpAMbTscO4TYgdgdyjtTjxn1NkqdurH0N5IJ4NBmmrtWKVqnaxKtFFeTy/3m1410jv1QblftQbp8rxa/S6XEArIbZskYscKTI7LQPKUqon5MMh4CW5N9Y1kbgFm1y7r9QOi3Kn0rSqvEBm8JAI4wTpHZYQn2bdO9Oav55aiqYZUqrmp/sFhexm2RUuAnbJexQ8AoxQr/YZCkkw3qo8Av4kivgWIMhg9EAWtZEA5w5lUzJQc6r6LJpWKaa6WVewVDUpFH+bM+HjzqrDu8B5fA6ntYJC1yBO6Hwx6bjFClUFTHluv1we7wFf8EuyDJrJec7cAlplmXSsIh4lTt+JQnJSYGxYMlVvu7UelI2in8q98KhM8Gaq4VbPIAAr/pAS0Mo1K1fYyV6QVXtZUfpiaoyIMuDaNoNOB85s2UD00hZ36fTE3k1lReLZOgxl2FkTG9Iuu3q09IDP5SBFdC4P6OvlbXiphAoYSAINL
- wBrziaMc
- 4l3hwxsiOM5mpYbp14dEimdLla00z8u0Ce+hCcPbmXiAgxDHMjS0fPJD1CvDgojsp7stkmF5JS+Ovon94uC+3EU0bDoF2YbIFbLuV4FPB1YuPUUaXWfpsUgsUGdOGd5sot2555rIpbGeABns71B+AgfUkPUISPNsx30TaZ/BfB2Vg9mG+RsMpP82NGfOqE/FJHuF7NFwC2NeY4Ln0iCq14u69ow4hnC0kIbBUEexoe2eIuHHxG53h91/jdVnm5TxvL7G6E8d+597sWgFqos+xMLSzqZXnIbb+A1AtxLkwIwUfTXnRtSigqCEo4MEY9GSOl8yoCz/hGqOQ4lVQ2Gp2ILx8Y6dybwcW7LpHmd/op3wIQcDUvkBN6hf2/+dE5tqBhOpDJyzd5wo2900EGBUa6l7C5b/bimYPjaRpOrMbC7VtM8IS4dwikhFXANgnscHjYZ27qizjJjPza1cIAyKDAF4yT7C7reulEgq0e4i4sueFWfK6pdZxiWwH7w==
+X-HE-Tag: 1794564959-239898
+X-HE-Meta: U2FsdGVkX18s1Hqy7sVar6y3PfKIOHm8E8sqYvo7xtMREmY3ccY75WlpDdgQ3wGk67hprnukTfAlHyqDydPEZNsafPGwUvWJWWQQ/gELjZg0dzwiDsdgwaOApwskXrJkYFJsRBO7bEqmpehVs1xIt18piOKF/xDwWnt1yQ0lrLHpW2PGpnsvH93fhjgwqwa9svBaPca/P+gq5K8tZZEdlVoOoCeLrnUpMuiGIKbWhVQ/kpdL820nq5qxEE0i7WcWjgMbZfXPZFUbA5fWEQuCW6ai00UsfIkbjHK6t8U0w5HaTIlh5HJh9Duy0PtzyV4FkgfjDO6JIZU+oqYA2juI22dF8GlFAa91Ach2MGhcux7lDryMAfFQ1uRzfo+2O4ivKZbp3FPgXVxTf1mnpntFZ9NeRExTItqV7wxead52q4oPr/tq84fEgEJLFKteqK+/hcvxNnzeumA9/+6x941agat3OQGb9EOyjBcApIx/Sr/8x6Xrzl7IXKewM6rZsjeXOFPGj7n/WSGDbQlsOzLqGxj1gEDTCFsU/eDgWY07Zm4WloE0+CF9gOudlYxntm5ntgLfDruHOqQFFqRvg89xMyqoQf53cuB7mkZtvKezNc2uc6iOChcf+c0RuC0/BkvxrACeGX3l5gkfLA/ieRE09kSQm6/DSECBC/x+TTuIjiAUqJ/1UwxVUDJCpiOABiZfi5jfISSv7p80wurA56nw/M07rvCQcHFyxtFycPKBmNhKscif4gWX6NTVn4SrjVIq2enpxYVgfjOiHzqSi/czMMt44IhWQhI0xmnOXrV+iPnGu/Eo3SzhaMcBsoSjadGlzND8TTLuZT8+AilH2/N7oPKW8LkaYvhncW3+mrjBSQGLhM5XUSx+fy8nd28x5JyFTLYuz+y1MS9fdnXtt6ilYAiqj3Pc7vCvwcMXOiRJrGXH2XRQ3repNCIOjv5B0UWYsIEQzLpNlULwVMKbu8q
+ rvQoJ7W7
+ JEQMVzqgwpQfHeFrH0nrdDH63mJtM3GAVeD+UE0QzxZ4rWQsbJAnf9jMYF5R6iHLq9/UFYSrAMDz/eJ/C3RF8TNkLEiEAHyoB+rJLsD+wu+LIstvlo0yhU2o/htTrNBlSclxP2LoKFjIQYQfbKdmMYr9h6zzvEm25d9JpzRFD8QY7WjuKTED3NTDQ5Y78NL2JAt5OVadKhSaQv/IWs5AlfoCDG5PM8VN3flp9m84Ly5VpH3w06asR53qIGYF+z6hXbZFRvWI8MYW8/KH5D9gOxKV2hRRNcSp4eXCQo1KhQJtRTBA8YuC6G2C5B+meZj36m2DG+Z9G5FPRaATxNW4H876ck9+ewGidvZiFsC5NfUiKS9Ge0+fmbw3rqpzUyuPj+0FQlUaggVoWysNqWd7vKrKociUJlNFNqPBknoOp0fxikEoH3ud5KXA6QoWyIaoHuEPs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,55 +142,77 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On Tue, 2026-11-10 at 10:14 +0100, Christian Brauner wrote:
-> Add a helper to check whether a file is a regular file on a pseudo
-> filesystem. Only regular files count. Device nodes on pseudo
-> filesystems
-> such as devpts, binderfs or the block devices on bdevfs are what they
-> are.
+> Currently loop accepts any regular file that implements ->read_iter()
+> as
+> a backing file and any that also implements ->write_iter() as a
+> writable
+> one. That includes files on procfs, sysfs and other pseudo
+> filesystems.
+> For example, /proc/kcore attaches read-only as a loop device the size
+> of
+> the kernel's virtual address space, 64 PiB with 5-level paging. sysfs
+> attributes attach read-write as 4096 byte loop devices. Writing a
+> block
+> to the loop device of /sys/kernel/mm/transparent_hugepage/enabled
+> changes the THP setting.
 >=20
-> Look at the inode that actually provides the data via d_real_inode().
-> overlayfs accepts sysfs, cgroup2, debugfs, tracefs, configfs and
-> securityfs as lower layers and reads of such an overlayfs file are
-> served by the file on the pseudo filesystem. Checking the overlayfs
-> inode would miss that.
+> That's not just nonsensical, it can be abused. Loop calls -
+> >read_iter()
+> and ->write_iter() of the backing file directly from its worker which
+> runs with kernel credentials. But pseudo files enforce part of their
+> access rules at read and write time against current. Dozens of sysfs
+> ->show() and ->store() methods call capable(). Behind a loop device
+> all
+> of these checks are done against the loop worker instead of the task
+> that opened the file. And setting up a loop device requires no
+> capabilities, only access to the device nodes. So on v7.4-rc1:
 >=20
-> No functional changes.
+> - uid 0 without any capabilities can't write to
+> /sys/kernel/reboot/mode
+> =C2=A0 as mode_store() requires CAP_SYS_BOOT. Writing "warm" through a
+> loop
+> =C2=A0 device works.
+>=20
+> - uid 0 without any capabilities can't read the files in
+> =C2=A0 /sys/firmware/dmi/entries/*/ as dmi_sysfs_attr_show() requires
+> =C2=A0 CAP_SYS_ADMIN. Reading them through a loop device works.
+>=20
+> - An unprivileged container that was handed a loop device can't
+> change
+> =C2=A0 gro_flush_timeout of its own network devices as
+> =C2=A0 gro_flush_timeout_store() requires CAP_NET_ADMIN in the initial
+> user
+> =C2=A0 namespace. Writing it through a loop device works.
+>=20
+> The same goes for hard_offline_page, the md and sd attributes, rfkill
+> and others.
+>=20
+> Refuse files on pseudo filesystems as loop backing files. Note that
+> file_is_pseudo() looks through overlayfs so stacking overlayfs on top
+> of
+> sysfs doesn't get around this.
 >=20
 > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
 Reviewed-by: Alexander Mikhalitsyn <alex@amutable.com>
 
 > ---
-> =C2=A0include/linux/fs.h | 12 ++++++++++++
-> =C2=A01 file changed, 12 insertions(+)
+> =C2=A0drivers/block/loop.c | 3 +++
+> =C2=A01 file changed, 3 insertions(+)
 >=20
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index 99caef43ff3c..407ffb6342ec 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -2553,6 +2553,18 @@ static inline const struct inode
-> *file_user_inode(const struct file *f)
-> =C2=A0	return file_inode(f);
+> diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+> index c96e35c3ef42..1482580a1979 100644
+> --- a/drivers/block/loop.c
+> +++ b/drivers/block/loop.c
+> @@ -537,6 +537,9 @@ static int loop_check_backing_file(struct file
+> *file)
+> =C2=A0	if ((file->f_mode & FMODE_WRITE) && !file->f_op->write_iter)
+> =C2=A0		return -EINVAL;
+> =C2=A0
+> +	if (file_is_pseudo(file))
+> +		return -EINVAL;
+> +
+> =C2=A0	return 0;
 > =C2=A0}
 > =C2=A0
-> +/*
-> + * Regular files on pseudo filesystems are kernel interfaces and
-> must not be
-> + * used as storage. Look through stacking filesystems at the inode
-> that
-> + * provides the data.
-> + */
-> +static inline bool file_is_pseudo(const struct file *file)
-> +{
-> +	const struct inode *inode =3D d_real_inode(file-
-> >f_path.dentry);
-> +
-> +	return S_ISREG(inode->i_mode) && (inode->i_sb->s_iflags &
-> SB_I_PSEUDO);
-> +}
-> +
-> =C2=A0static inline struct file *file_clone_open(struct file *file)
-> =C2=A0{
-> =C2=A0	return dentry_open(&file->f_path, file->f_flags, file-
-> >f_cred);
 
