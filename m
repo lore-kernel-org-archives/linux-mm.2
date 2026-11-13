@@ -1,92 +1,119 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2B94606A88C
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 19:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83409606C94C
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 19:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BBOhDTuU
+	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=uiFgOFMw
 Received: by kanga.kvack.org (Postfix)
-	id 10C9D6B05B1; Fri, 13 Nov 2026 14:58:07 -0500 (EST)
+	id A5C2F6B05B2; Fri, 13 Nov 2026 14:58:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E42D6B05B2; Fri, 13 Nov 2026 14:58:07 -0500 (EST)
+	id A33E16B05B3; Fri, 13 Nov 2026 14:58:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3C396B05B3; Fri, 13 Nov 2026 14:58:06 -0500 (EST)
+	id 949E76B05B4; Fri, 13 Nov 2026 14:58:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D1A546B05B1
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:58:06 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5E00B1A019D
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:58:06 +0000 (UTC)
-X-FDA: 85431156972.11.9A0C9D3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C67D9C000A
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:58:04 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BBOhDTuU;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794599884;
-	b=PX+RVgdpAALyP3xrunX7L1Sz4PsiuIFF18AxToDdr8wDTmjk5B3Z6y91ADQjOXjWyt/GxZ
-	T4cXYlQ5VqrI/IM6KdoMzEbGp1rXLMdIZ5qIcGxN2V9Xt4OpD7nHY4OPbUzduOEMb/ugZT
-	ca5Apv9Dj4V93K+XY4EIGKEoBovYQlY=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BBOhDTuU;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6909B6B05B2
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:58:15 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0B124140291
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:58:15 +0000 (UTC)
+X-FDA: 85431157350.02.626C153
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 03C261A000A
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:58:12 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=uiFgOFMw;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf19.hostedemail.com: domain of chris@chrisdown.name designates 209.85.216.43 as permitted sender) smtp.mailfrom=chris@chrisdown.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794599884;
+	s=arc-20220608; t=1794599893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IbLqO6g0MnnThcPzBQZqW0ZRgI8AVvZaYZ5qNuebmZw=;
-	b=nqMi1UgPVe4/ChpC1S0nis0hOrFafq/RMaR3gf8mo85RYFEJDhZs4o+pA9bfM2/0ZyW4oN
-	YC+dPX0LpqnFceZLBBcCNI1rr3iC+P0znMIbV1xVkRsADe8u+4y0gBT6PB0TfuFpJec5sa
-	J0DPdWccQdMb8MwhkGtrbqw5GzqF3/A=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EAC33456CE;
-	Fri, 13 Nov 2026 19:58:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E851F000C4;
-	Fri, 13 Nov 2026 19:58:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794599883;
-	bh=IbLqO6g0MnnThcPzBQZqW0ZRgI8AVvZaYZ5qNuebmZw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BBOhDTuU2n/nCaaU+nqxXKoavYB8xw1K8tCCIvrNVcpBL7ENgr/B27IziPRbNzyyd
-	 aNdSayCifYvib6Z5Hr78yad6NBJdmHl7/NVANgM+kdWkUS9lftyZXD4oOZNTHVxeQ4
-	 scOicWe7x9RgVoIyjgvWnA0EPnIcqMTYROuTCaycprVbErerCeXdIVR6dapBwhgyuv
-	 VZ0rSyXzCEwgrTd020Wqxi+kq8OjsXpiRsuRMUoXY2V9CvT8Bnrsh9Utu5a+PxeubS
-	 pUL0Vs1d92xFpQsUqKb2EI4XwMwYAauS1y6+EFU4F7VQgewrgrYfex/qI63EC89uR6
-	 R2XsRsE+bGaCg==
-Date: Fri, 13 Nov 2026 19:57:57 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Gregory Price (Meta)" <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	jgg@ziepe.ca, leon@kernel.org, akpm@linux-foundation.org, david@kernel.org, 
-	kas@kernel.org, dave.hansen@linux.intel.com, bp@alien8.de, rppt@kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/hmm: reject shadow-stack mappings
-Message-ID: <avdrZ716BHN-JLc6@gremlin>
-References: <20261113195536.2660763-1-gourry@gourry.net>
+	bh=mK+snQ9Frl5VxzHZ6tx3RVh1smAcvo0rFgfFkfaD5gg=;
+	b=M1OlCJrnLfcyRZqGh1+8f+da6haZyv+Stk0gseRJ0kITvrFSSoEDXe9ce6YRmK2wecAD7Y
+	N6XunVy0Bi/jLRQXZBw4i10WkOsnRK8y4xTf8ULRCZxRx/+QQ2mxo6vmrM/BezLKP8950q
+	7fbk32moXgyNGrBWzK+YbHPjZq8nu/s=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=uiFgOFMw;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf19.hostedemail.com: domain of chris@chrisdown.name designates 209.85.216.43 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794599893;
+	b=AVWOMHtZT0bzvywvJ8t7XBj8agoq9+GaTiv8lDbTc8F0hHk22GySZ/jm7Fag5vS4HOaMux
+	qywkNX8VUYahBNYGrYZJ+OWIFfewBQBtE00oGOzO+ZTvIeF70nZj16GlqZG0/FbCRuxFdq
+	dhgVWqJqEHgE66ZhztIOVBAbOVXIzoQ=
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3ac91ac8924so742592a91.1
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 11:58:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chrisdown.name; s=google; t=1794599892; x=1795204692; darn=kvack.org;
+        h=user-agent:message-id:content-disposition:content-type:mime-version
+         :references:in-reply-to:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mK+snQ9Frl5VxzHZ6tx3RVh1smAcvo0rFgfFkfaD5gg=;
+        b=uiFgOFMw4bt0WYBMiiwlcjrp6YRLr2plPpdkBNrwD9hB/rIY8XEBD6yIHm1N+0pKdw
+         EW3XfHO/lon0GaCqtjk+gYf/ggxMKumD6PSgIWVWPYOjO15ON0Og0PeTV1DFNOzh32+O
+         jc/5Vzdoa3AhCulrvloDur7aRsJtIuKgojdUg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794599892; x=1795204692;
+        h=user-agent:message-id:content-disposition:content-type:mime-version
+         :references:in-reply-to:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mK+snQ9Frl5VxzHZ6tx3RVh1smAcvo0rFgfFkfaD5gg=;
+        b=GrHIIl1Clxw5pHDXYavieMInALF8Nt+iUNOm1sQyvv4qnXJO3JdUbeBo1bJpHx741K
+         91wdkiVCDYbkUniWnxUPRNwh1o+jnAn0K3IN60vQBzF6h9otDYXhUv8khZdzGHch9BHH
+         1U44cWpCj8fCW2h77DrM9xlAfJDkLCeCMeCkjUh9Opxm4KqSea9zLyTnyEBKlOnu5u2q
+         JSkSTmAHVATLkdEceYi680IqZ4ic4MKnBiT1DyNakotwcrB46jiU2tGUggTQ3lSONCjx
+         PRuKT3t8ONXOYnMqP98AjlUT5eoNjmqFNvLQuMVpYojwfPr53isjR8aaTbExtyzStRGe
+         BCdA==
+X-Forwarded-Encrypted: i=1; AL+hErGTRc6nCJsikn6SV2Xeridh2aoF5NO68Raq7VnEbpn7vNE6Loy9glEe4eKuIwJ1+nxX7LjQN9HXJQ==@kvack.org
+X-Gm-Message-State: APuU4Z8qMIX/p3LLaguur7/xsbk2v0fSi8YawBKAQazT+gliH9/AgSMI
+	8wmfegq2/3Tn9ZcywbTvfvONcFG5xEnqMXk4/IQ0Y5/CQotHNM/5dqi2L6nX6m1KVd0=
+X-Gm-Gg: AYBFou0taNlc4IbQlJ9fTrRpKxnXY8SOtGX6vBBkHzVL7M384m5uEQBqZVteEy4Ls8a
+	DC2LwwkaX7C0u2wf1CGcMYIPaS62FbTcsQrrBQ9Hijzt2N8Y1WJkBYgROjhLY1CTSF81Bo6J0FM
+	Mk2iT+DwYpAsBAuRhjZe4oz2f9zyS4x8nU1TAwzxy45/ZAZvtsahyJRvNfvTqmg1U3Ocq+7bQ9E
+	0wdtQx+tQ8dTKTDJLWQHPPQJ/TZwaQJykpyHaX1i/kK1+5OIBiSFXV2fWAz5zr/IYG+zMQ9PmrY
+	ST11AKCm/BtrFzIFjzris0g9fVCkMDupd3KzSz1bnTcsVquiUZN36B8K47HxzEJzIuWwGCS2yjo
+	qQBAypUEVGSWfLIJ881e+CMxB2kNSkCqjYg56StvgVNwSCCGMKVnh6gpdRAthJ38ctGFgtavZnI
+	cA5Ka15bj4+aPKmnVAjx/anL4m0W5KJJZxYFIwngn0ENGdb3qdR0S63vEbf6IQrPVnZVBscpMDL
+	ynlAAP3ssh8ybPpUz/CxXISJaCxaLY6lFnfN9NLOUdJDZyXkxxocGcYdgwnEKjPCU9HrxL2goGa
+	xp+fE2PEM/5k2Ffj0WF4MGye4PA6pUsIjrtOi/QWpXlyAoLQ/3ZTuhxoyKtly5C274C1pCHf0HA
+	x6Y/zDw8eXNYKBBpAztlE+iRhNKp6lbQD2oyCzgdVvvOE5Co3xZe9Ck7urbQIdrVZz6FVE8Cz1f
+	tqbgPZ/NNjutWNJN9U7bUQ0U74Vm0qNXIYQNFn6zLJ50bp9/hzfjmPqr3VPYI=
+X-Received: by 2002:a17:90b:17c7:b0:3ab:884b:65ab with SMTP id 98e67ed59e1d1-3b1b0ba4fd8mr3495026a91.55.1794599891728;
+        Fri, 13 Nov 2026 11:58:11 -0800 (PST)
+Received: from [172.22.0.2] ([50.175.87.158])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ee0f7e5055sm14868305ad.39.2026.11.13.11.58.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Nov 2026 11:58:11 -0800 (PST)
+Date: Fri, 13 Nov 2026 11:58:08 -0800
+From: Chris Down <chris@chrisdown.name>
+To: Vineet Gupta <vineet.gupta@linux.dev>
+Cc: dennis@kernel.org, tj@kernel.org, cl@gentwo.org, peterz@infradead.org, mingo@redhat.com, will@kernel.org, boqun@kernel.org, longman@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, ast@kernel.org, andrii@kernel.org, daniel@iogearbox.net, acme@kernel.org, yonghong.song@linux.dev, eddyz87@gmail.com, martin.lau@linux.dev, nathan@kernel.org, ndesaulniers@google.com, morbo@google.com, justinstitt@google.com, llvm@lists.linux.dev
+Subject: Re: [RFC PATCH 1/2] percpu: do not put btf_type_tag on per-cpu variable declarations
+In-Reply-To: <20261110012235.1024461-2-vineet.gupta@linux.dev>
+References: <20261110012235.1024461-1-vineet.gupta@linux.dev> <20261110012235.1024461-2-vineet.gupta@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20261113195536.2660763-1-gourry@gourry.net>
-X-Stat-Signature: iq7eci9q3dnphf8yz8pyqkwc8xj5twfw
-X-Rspamd-Queue-Id: C67D9C000A
+Message-ID: <20261113115808.87a52a7c74e293ce@chrisdown.name>
+User-Agent: Mutt/2.4.3 (cc9e3943) (2026-10-09)
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 03C261A000A
+X-Stat-Signature: bbhfocq71j6k3g1ms1puf8cibc55gbim
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794599884-806563
-X-HE-Meta: U2FsdGVkX18eL0DKBd6uMJVbkMSB1MwgR0O/9uI0xQ4+/QXbOO9XMQTxooymIUEtFBA4ydU/5o2ELzvC8xz2MFGB2dPULNX2whOXjZR3cxbYNspjNJSrMjBlXvpB3+gY1D1nlmvA2Fq2xG8VXxNGS67tp7IQhCfyhTPWAum7ou8VKBu5ZrQ6Mbb7DxWo+ibx5mfLoN1jMEMpFD9WM0m/ditunWRllkTyTPez0E69vBVUeDsZA7zyENp6k4q2s0i9ueuAi6jKhF9CqGnbM7BlgNxZLCwi1DyKbEWCSyir2axvX9vEILM6amus7VI0cdmyiMp0z2bE0tQ4p9Cp5td8gwKeq53p0wkcOLb2m6bFs8Ve+14oOnJZN0AMMsVjgQNYUN0OudoZRpsL7Dn/wapVrjyLutteutZ/x8FBMipTLq35k+h7B6jGXZWSjxFqSiWlGAzNghhVY+fHU8RMfjKIWfYiF5BB0pQA7Hm9mmUTRj+rIAuEvaiyHhZUihCIqFEHqM31YuJVsXitaV3zT9i783UsAcOXol3XvsZC8/LrMnTTmpnm873PuuC5G2E2NbHKc7CyliITxfMWCGQeUKjrqpS07zbe3Z4dzBGHwLAjqYH1SwHjln2i5ZPiX6OcyJU1EfAx3k8EzlDKlqDbcggXbRFioS3FIIUodQ/kFjBdKSMB24mSqAzTY+17+1DrUFFlkep1j3YiyI45ooe0VfBiKjnnt24+4zqR+osh/kHE7m0Yqx+TsqmW2L3fKQ3YvrtDC26xsjxKJN5iwLCOYU9YLcjEu+2kE3bJPwE/2Sh+CRbjcstL/W/9YyOiYWoJLw5ZK1Y6gScbamOaEk5XdZhzYlKvL6NWf+TQLuNN/PpzPWFU8uJQ6n6t5o1zLIPw+mLK8oBuJhfyipteABE7hq4/5t3tMYbSkt+u7zwZI1KFEEaESmv7Qr6/kpJEYKJbrxPz4FBkWDC84lDYSEBio+6
- FWa6jC/N
- n2LS4+64qyOc6KorYHzDNoPI2KwV+4Rr8b7n0DDqEv37vyylQ7kvT9ZeX371J6KAN2zQJRoBa8JMGMAPwJ0uUYRXER0jzbOLlFX6RrsPW1VDFeRmbC164Cu2KsTDg6bAvMB6T/M2iQ+h4ytMmbwr3/utqn4Rqj4iPAxQ1ElUXQ3o0J+b/AMzinKGFARZH88y2QZ/v0WxUcmIaZn5z2x1DIXEWVxC/idsskgV8RFhGQfl/7WFPBx4esoiOP1DvWMjex3qRTTt+xkghvy+vfp+L8YVqTUZDNgG/HUY9K1QV5+ev1Y+kt9715yf+zlO2AXSeEOewugyuxpgTmb8s7IUixDc7yw==
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794599892-680824
+X-HE-Meta: U2FsdGVkX183S2khfsoa0kbvQ6OZQxq1lUFIWCcf9g3MLO9o5kJmtgFaoylmI+23zZGmKJ59MBAgY5F0x7QKuhsX78BoB46z8YrZVaBifQmwVbLqINFC1cDONo9AI5oWxgZ5e4OTZ7FM74uF/GiTIqg1xxGAfnplWwYqKRXEvjjqiLNE5gqkiwVL1/Pa0Z3YLK8obRuOHKH6VnFaQnj0t97bz+PgHyhoGVgY5u04CPj4QbJilRFWLI9UJRDsGAzQbYDhcZYdhqaawYmDl0AUevluwwSp41gHM2X5DDbTRklyuArXSFjDDzdn4HyCzEIzK0oII7+CdQoYTy8ZotBakFNOwZjyQh1J2mgXJAovFHQfTWjdWEGgZFmmbcO6Epv7ghPfWMwlmMsli2Ra4MojaDZS5LQOZhIEI5odK+Jadn4RY5mxc9nfoPWJkiftAYG9gqLX99svRoWIRMQXsQi7+rMxusc3G1ff8dBY4OIjDD8+wLd4u1TanklYzwmrF+uPa29dhunS75OD36v/VSo+sePn4QC97hRvutMu3B37uipgvUOkR91jbs7G5IU4XBTX4OWZ7fEy6bfBFFfhfvJfSsCZHyBArJZt8RaXBCI8PdwqvuxzwZeV7VTjeK2SeDWDxxplU9/OdzvJ9xufEzvBT+QkEAzIy0g7+YxrqcuWxGrZE7aA7eaz4G1bp47/FCthq7yxTr76y/XplQQsEhE8DK0PBDuazAnTIlvc3hsyJBNeUJqbE/XoNmu4+BQB+U6GB5ky1bdqNVkL6KbpsDJif+PVFnkgZDh3PtgYVToDFKcCAfAmlcQlBfkYmMZghns7x5n1ZgrkJ6e7CoBx9XPC08kmMCYLwHC+3VOUgs0nkJZgJxGX7tjhX+KhBIT/jybULAVj8RYKHv6aT2QZkZQ0ZGmn4I85N488KflPhHxGeaG8aY+VIC/iH/1A+APoG5tJpq37M7X27hnH9JuQXjv
+ a1crPdUS
+ MW6FhptcI633h5S0Bae42zfKKE3KmEflvAWkx3QV957O5aNxSjAO6PN2eG1F7KDA7s9pIrvKogM+4y/eqy1xOH+jNjEU+f7c/a0SdW0RC726+Ud9qcqFFcuhrVDwlaaMPF0y7h/JnGPgkqmRz8EsfolVwE9FED20oT7qRTmU9TsyCXgn2bx2Q7U5fb8OGd1ueH8VC9b5c02el+X98iV8V9jEP0ZeMVsh/HGfbtomxVjngeG8MA1Ypp78fO+kZAywT03MwnW2u2V4OLcpD5etfZ3fsFcz2Aft7W4PVDVKunUEm4oxxMKp3PMExPSSubT9AFB3YBmkWEq0U5laPGTzYooJjca6PtZZnkc8+TIZKhFZfLRGDf29Qa4Tn9dfKu47RAhDuGd6Zp++72d1VD1lrJxWdpcUQwJZ4oP+p/GVrB3xxUqNQjvShOvfAT6SIhgkmWVGcuGwfRRmokqfC+MWQcIl6AQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,56 +122,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 13, 2026 at 02:55:36PM -0500, Gregory Price (Meta) wrote:
-> HMM can grant ordinary device write access to a userspace shadow stack.
-> On x86, pte_write() is true for a shadow-stack PTE, so a populated page
-> can be returned with HMM_PFN_WRITE without taking a CPU write fault.
->
-> Nouveau translates that flag into a writable GPU mapping.
->
-> Reject shadow-stack VMAs in hmm_vma_walk_test(). Use the existing
-> unsupported-range handling: a requested fault returns -EFAULT, while a
-> snapshot records HMM_PFN_ERROR.
->
-> Link: https://lore.kernel.org/linux-mm/20261111-mason-migrate-et-al-fixes-v1-10-3d2454362e8d@kernel.org/
-> Fixes: 54007f818206 ("mm: Introduce VM_SHADOW_STACK for shadow stack memory")
-> Cc: stable@vger.kernel.org
-> Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+Hi Vineet,
 
-Thanks for doing the HMM side of this, LGTM and:
+Vineet Gupta <vineet.gupta@linux.dev> writes:
+>The message is confusing: this is a declaration, not a definition. But
+>the compiler is right to object to a type tag on the aggregate, and the
+>issue is fundamental: every variant of an aggregate shares one DIE, so
+>there is nowhere to put it. clang drops it silently and GCC warns.
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Not a big deal, but the definition in GCC's message is the definition of
+struct cpuinfo_x86, not of cpu_info. It's saying the attribute is being
+applied to the struct type after the struct was already defined, which is
+accurate. So maybe just drop that first sentence?
 
-> ---
->  mm/hmm.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/mm/hmm.c b/mm/hmm.c
-> index 2f1e98c6b644..fa61ca59d927 100644
-> --- a/mm/hmm.c
-> +++ b/mm/hmm.c
-> @@ -596,6 +596,7 @@ static int hmm_vma_walk_test(unsigned long start, unsigned long end,
->  	struct vm_area_struct *vma = walk->vma;
->
->  	if (!(vma->vm_flags & (VM_IO | VM_PFNMAP)) &&
-> +	    !vma_test_single_mask(vma, VMA_SHADOW_STACK) &&
->  	    vma->vm_flags & VM_READ)
->  		return 0;
->
-> @@ -607,6 +608,8 @@ static int hmm_vma_walk_test(unsigned long start, unsigned long end,
->  	 * allow write access either. HMM does not support architectures that
->  	 * allow write without read.
->  	 *
-> +	 * Devices must not gain ordinary write access to shadow stacks.
-> +	 *
->  	 * If a fault is requested for an unsupported range then it is a hard
->  	 * failure.
->  	 */
-> --
-> 2.56.0
->
+I've tested this with clang 23 and GCC 16. With clang, the same 280 types
+and 3360 bytes of BTF go away. Likewise, with GCC, the per-cpu
+declarations no longer warn, and the non-enclosed address space errors
+are gone.
 
---
-Cheers, Lorenzo
+Once the commit message nits are fixed, please feel free to add:
+
+Reviewed-by: Chris Down <chris@chrisdown.name>
+Tested-by: Chris Down <chris@chrisdown.name>
+
+Thanks!
+
+Chris
 
