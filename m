@@ -1,140 +1,149 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAEF0606A896
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 19:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C56606A336
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 19:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CwOdmvHG
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=gobMN0Go;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=k3yJ2X1I;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=T/wFHoCc;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=XwA+jkCg
 Received: by kanga.kvack.org (Postfix)
-	id 1A0AC6B05C8; Fri, 13 Nov 2026 14:10:36 -0500 (EST)
+	id 6D6C86B05B9; Fri, 13 Nov 2026 14:13:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12A566B05C9; Fri, 13 Nov 2026 14:10:36 -0500 (EST)
+	id 687A76B05BA; Fri, 13 Nov 2026 14:13:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F33EE6B05CA; Fri, 13 Nov 2026 14:10:35 -0500 (EST)
+	id 575FB6B05BB; Fri, 13 Nov 2026 14:13:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C1A906B05C8
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:10:35 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 80DC11A01F0
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:10:34 +0000 (UTC)
-X-FDA: 85431037188.12.62C03A7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A6E5D140012
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:10:32 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CwOdmvHG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B6406B05B9
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:13:18 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B0BD21201D0
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:13:17 +0000 (UTC)
+X-FDA: 85431044034.24.DC314E4
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 83F5640003
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:13:15 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gobMN0Go;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=k3yJ2X1I;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="T/wFHoCc";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XwA+jkCg;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794597032;
+	s=arc-20220608; t=1794597195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TmQhBXxYv2wy3oWjyq1yC5XpUFA1i4l5VWHKkx2FbwI=;
-	b=Pz6rIbuR3iRPs20H0QonQ8UuuqfdiPKeTLOYmNotzHVuotfb3Gyn84zx8j193nA0OfLaFG
-	ro/ML4A9z70H05MvcEAqk/22ffnAGyl52Nk/uH6WT1LvYJkHMl5kLNG8lbBT6mFcYkk+Yg
-	6w84mv8nHe/m2FgmHNFTa4BAB6n+cjc=
+	bh=19uX3cVjKh3oQCJxRBIfRcpKq58CZsyDKOYCWbtw5ps=;
+	b=CP+nFKswD1rsq9n63ssOrBLJYt7HY7Rti+VDkHJ0KVP8zbFdKCVn0YeLVLOEAeisZGo9iW
+	WYET4yl6FINA4mcnFnBwoMNuxORTbl6/wgwAVoiy0T/heYVr1cHoGspkBneNhRLXRRCznc
+	bzUa5CCLJCccq+sWrBbAkEBtzQ/bAn4=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CwOdmvHG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gobMN0Go;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=k3yJ2X1I;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="T/wFHoCc";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XwA+jkCg;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794597032;
-	b=P6Rx+wXr/7ckh7UuxjPGU/QtFInR+YWnUhvyB0J+9x4i8TBJrwTJmwPo0dNKp5oZbKvP2+
-	5X2l+6O4gpofIwVIpnDGk+ZYoxszqg/XBiTrF5yH4DXhpNemdg90oUJBZMfOdaBmp4vMUQ
-	lw2/1uA1cppuFqdTdthRm2t0noZZajs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0428046C9C;
-	Fri, 13 Nov 2026 19:10:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EBA31F000C5;
-	Fri, 13 Nov 2026 19:10:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794597031;
-	bh=TmQhBXxYv2wy3oWjyq1yC5XpUFA1i4l5VWHKkx2FbwI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CwOdmvHGwN0V7RevMwq+XSLErkMTQPIU0g9XgUG7+UhuxToue+GpBWcI88Yd+ek0L
-	 w7iawLFldGwkYJndnP76FS/Dpty3LMdeL+NqvKkBN4RJ3QdLt3LDhd+pfcXD3SEbC4
-	 qzGGGJhD8QKlDJ/x4yGRZ1GHuKwM6S0LB0xIp8x7nSluJ/VguXuf//n36LJTKG6qZl
-	 Ur/t7Q0zo3zpYz2D3anxD6WcKlohv9Jc5bjpFVy6l8RSrTItGwxoH1u3D1onKQOkl0
-	 LWfBKjrXFb8ce3frkZWzEgPc59boiD0dqbeT9b5HqX1EerJKxSsaCePcdKo+ZpFW+u
-	 OrxvUyUv6Csbg==
-Message-ID: <00521fb1-121d-4aef-9278-fb6b36755291@kernel.org>
-Date: Fri, 13 Nov 2026 20:10:26 +0100
+	t=1794597195;
+	b=znn7zCksrsDbgQgPBgPHzOxYpAPGLTs1P6sqphbd5DK95D2ENbbIsC8NdB/EKRV203KIdU
+	xEZe3JBzPYvSzX4bZDQCnkEEgRgZAHF/DhMhJHO34MvPS4Wcvl8irqYWn8hTMjSCoicI7r
+	JsOCkMjds1h6tu+SM8w1IIRpQUgBbbU=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id F01941F7D5;
+	Fri, 13 Nov 2026 19:13:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1794597194; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=19uX3cVjKh3oQCJxRBIfRcpKq58CZsyDKOYCWbtw5ps=;
+	b=gobMN0Go7dtgesD60abepmHGjJqiT7XR8JBrmRTZeIjGmsD9WF5vhroV2KpmFqnqFiRhz0
+	4Xxmax1aPsE4onLeo85S5qJmTnlpp2wcPx627Fn7LL9utblNw73BIqyR9fHZuz1inuaUOW
+	qqAQbUChbIer5y0r7/jwg23IKvJY6g4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1794597194;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=19uX3cVjKh3oQCJxRBIfRcpKq58CZsyDKOYCWbtw5ps=;
+	b=k3yJ2X1I5Au6tqt4bU0rNcvnsJDJ2hvTev+loJ0jYdWf+66F8YQ2E4qnBrPL5E8OoHzWdM
+	VVUDEYPg0aud3DDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1794597193; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=19uX3cVjKh3oQCJxRBIfRcpKq58CZsyDKOYCWbtw5ps=;
+	b=T/wFHoCcYRQLNMnwBHW35jb6KJ0V7qyiWglsW7xN6wn8BWhHCdN46eovtrskuM0kGfoNw8
+	kl/ooMcM9AgFS1XJgIG04qGwVMFYL+5eyOVT1rYw0J6CvZP72XHwFcVD49n4suJb6UEU8I
+	d3CddHx6e1pA2jAAXzYfA6ANet9Xn2I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1794597193;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=19uX3cVjKh3oQCJxRBIfRcpKq58CZsyDKOYCWbtw5ps=;
+	b=XwA+jkCgr723dqgXsfRZbBHmScQ9TpV/WWV7Ql2L5ASjlOMMdc33+YzLt2gYs4LHcNme44
+	+FobGJlXO23Lb3BQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9E30913485;
+	Fri, 13 Nov 2026 19:13:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id TaZ4GkVh92poGgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 13 Nov 2026 19:13:09 +0000
+Date: Fri, 13 Nov 2026 19:13:07 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Salvatore Dipietro <dipiets@amazon.com>
+Cc: jack@suse.cz, abuehaze@amazon.com, agruenba@redhat.com, 
+	akpm@linux-foundation.org, alisaidi@amazon.com, almaz.alexandrovich@paragon-software.com, 
+	apopple@nvidia.com, blakgeof@amazon.com, brauner@kernel.org, byungchul@sk.com, 
+	cem@kernel.org, david@kernel.org, dipietro.salvatore@gmail.com, 
+	dipiets@amazon.it, djwong@kernel.org, dlemoal@kernel.org, exfat@lists.linux.dev, 
+	fuse-devel@lists.linux.dev, gfs2@lists.linux.dev, gourry@gourry.net, hyc.lee@gmail.com, 
+	joshua.hahnjy@gmail.com, jth@kernel.org, liam@infradead.org, linkinjeon@kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-xfs@vger.kernel.org, ljs@kernel.org, matthew.brost@intel.com, mhocko@suse.com, 
+	miklos@szeredi.hu, naohiro.aota@wdc.com, ntfs3@lists.linux.dev, 
+	ntfs@lists.linux.dev, rakie.kim@sk.com, ritesh.list@gmail.com, rppt@kernel.org, 
+	rvvandan@amazon.com, ryan.roberts@arm.com, sj1557.seo@samsung.com, surenb@google.com, 
+	vbabka@kernel.org, viro@zeniv.linux.org.uk, willy@infradead.org, 
+	ying.huang@linux.alibaba.com, yuezhang.mo@sony.com, ziy@nvidia.com, kirill@shutemov.name, 
+	dgc@kernel.org
+Subject: Re: [PATCH 0/2] mm, iomap: account dirty at page granularity for
+ per-block dirty folios
+Message-ID: <avdg_Q08T-ilyNmK@pedro-suse.tail5790ac.ts.net>
+References: <mcskrz2zbav5r3xtlwqytyotgjcmmi3wapeibkqornuhb3qp5y@qk22j77kvkqx>
+ <20261113155015.516481-1-dipiets@amazon.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mm/ksm: add initialization helpers for
- scan_get_next_rmap_item()
-To: "Xu Xin (vivo)" <xu.xin@linux.dev>
-Cc: chengming.zhou@linux.dev, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, ljs@kernel.org
-References: <20261112125754.176930-1-xu.xin@linux.dev>
- <20261112125959.177881-1-xu.xin@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261112125959.177881-1-xu.xin@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261113155015.516481-1-dipiets@amazon.com>
+X-Spam-Level: 
+X-Spam-Score: -11.80
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 83F5640003
+X-Stat-Signature: x388wb94x5z9w6tb5e3jsh4k4wchwybf
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A6E5D140012
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: msf1s1intrwhhnkwqsbpuq8wpmpw9uaz
-X-HE-Tag: 1794597032-839013
-X-HE-Meta: U2FsdGVkX1/VN/uzcI9qGEPetgQ5QicgwHh6G1wxP7zAVkzDtjbmw/Qo23C4/Mq3lrLv5YNRJY1A8TrRwAMFBtU2elSfn1HQM6dZaO62LQJRk9Y2AMFhYjMIbyxkOx2X1be69GQNX+a3Hc7GiroizdYzHcVDdc4j9YxZL1RFA4CkEvcTYppX6HgsqJzXS7yZh2dIx1BVBABMHEITKRkXBoaUWrKIpewMuHMxXrWsHAJhfzkmuLY0bU2Gilmmzxa3+WNJg/wrEYngZqAEDL7e1/euuWBWILexiaH++mUkeZZHrethbyaFjyGm6VYcjH79SwIuQjF1aEUUL6v629u+Ezvj851B4QKYU1FpcM9H9fe2VRAeHujJIhoanCD9zSFJsG5Jt7waN62C8AooUq5GuAQi/zkO029YWvBn2OchWR9fAWfZXYXgZEOGXdilcwaiz5L1KXwtunfPcsKM5Twl3vFyT1PgNValwJEgAFMlYlbfdvVvQ6AyZRUT/XCaivnEjCGHNOa5kYE3LF8hLhexlWHxiE3idXQPKNzQ5jVL1laDgcP7RVW/0lwzr1xv40NSopOaNJLVXm8Ixj2aXec3zbIBdmBuMeHWe3SWg6+bjZn1Qqiolj8pH/GwiuiTr3m0xKmMoGzP90OW31+9nqFddBS2zq4zwAdBTBVT91LMnpc8LIkP3jX1DpQ9FEC2mhBTrmyJUXMJg9cTHeRGMt7k3v9eEtVoTzRP5A9al1YFfP+rGny5tr7x8JRkHaLk0WeU450xwfnWZivYuiOwlxEljkOIpBqADZUeX64Lk4R9vhq3AVSbSuYlk4G38ShDtD5/Iw651Ve8nEB3lXNwv7aAOIMwpNTZVf7O/tm4FRaX9c4w6Dwe3RkVUlIekZx7MMDtuawmHRXaUh5O1jwPJhOqjNreEIq49zEUB+YUFrbZGvPx2qKFotxljKyU0gVq3DOQwzDlgYfKzWVyqhdudXM
- jbcN6QFN
- sgBRL7VqpLslsrsqQYbmkf36gJqOd6yUIObgsCAwXHpLyokoNSipvAp/McO4dj3vQm0g6zbFDXJ/C3tgeLelWgJNsMEeBm9qf6PK+2gHV0+C7+Yd+nU7KXEl2zFGp1VfaaKog+tcusP/OUIBVbrOdT5cAnRWRnkQthM+bls5JsWRPzFd+Q9OungGNSY9y+kKDoU9BgcnNdAMk8Py5KngaXD6SnGlipoSaCz7E0LTr5P7/flWWYiJ5OT1sgyLB8rjXvQyxqCBJBKY6WYaCf4jYoFVZhfAOswoylTnAGX0i7Cqu6rh1BlyklaXOMg==
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794597195-304772
+X-HE-Meta: U2FsdGVkX1+jnao//bxwpXPRtJzrFBVyzrvpX/6HV1jlTsR0fMREYLP3+CAeAqIOGd4pV0StNoGTwYV2Elswuk6cMFI3y0pBnUYfaZenqpcH4qFHHjMfLIki/rUk3k8Afoqdwd/w+jg36Fvr7EF6JhIftRNovhL6Spgb/YpppBINaUJbhmx88T+P19pEyendf1G9kYF/SBQZhTZhb2u1sPhzgsg1u5UrkY1lTcg/qhv//ib0K33JPuQMHh5BL9eXghatGcWr+wzHHSYg5Lzdy0sXEiEK2+Vlq4ylD55LZcJdvoQntLARY5BtEYiuKcPRWHDu+OtR9jv9umeAik6FehGJwArrysgl88iOrbdoB1ttPw8hHaoYKIcth52dvxSgqj3G+MBjmSO3FPyDI1gNcGJwgygdM+QsjSxLOv8y5bA24N4EEafeSlvPicABSA4WobDvS4xOA2AnOP6IrykNal9Cb8CX0dvD9KcVKOAkMz23szeXro2LGkBD0dBUQrLVP6uUZXaZO49elFCAxjNKuhDiqSVFCBBH4JtibjpVmoUIvr9WltT425xgGF0YQti13cq+EjR3QrvuXURrfbHyIcUYI5/NdzBM11DeXLyXFm91iquI2bo8H780Xx9R2/WCwX97vVsKIpOEjfzssshOkv0BIRQ3m8M9GudJxPl5V8d5f2X7obng/pS/5QxL2eLICN5clW4jr6DVj394+2K1aU6tGLDa+0l0TwOrFHhGpaafDoUdGJO0JbyQxDuszU1FNahagXmEgvRB2/pEQFe5OEbJqaooGo6+sjrhylRHfTzxd481CXTWS/YZ26ZevgOSnJcA0DiJkc518XSHYRrXjf/UfFAUmRz0EFrehnKvSB3z8O8XPauAOkUT9HhND+S3NoEMBfCpHtfyVU6nmsnTQQzbcDul5PxT5O84oxoLH6YjnW1vVqKFI898bTho/NnRQd6akqfDBK8f05d3urT
+ fCaAL6xc
+ HuzBr2+nWgNu/WXr7r2pgdFKNHiG6lhCvqr86QH9cBsm7Sr8HM+zbnjndWq+PKeTXUBQ++Tk/bAqFUYiAQ0jYw5Y2vAsbK3jyLD04m75OXJflXbGfcCQz3nka/NOUrrvOS8Z7pJWPt8FeOZ+3CRRGNDVZzGcn8Mnm8fjbH3G9yfmwPp9JsFsuCdV2j/t1XnU4eAL9QeoVIwfokf7QsbeWVwM5sBGSUmNpJrInBG/p4LIadwUwGsaYHBkZNx8tYIOV9KnMxKDhC4k4Nqezdob97O3pU/KxUSOHmEeqIimGjt/cgErw6N4igY+ReUlANxmmSwKL+cozl8Czc1Gi98/wYDQxtw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,87 +152,153 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/12/26 13:59, Xu Xin (vivo) wrote:
-> Extract the new scan cycle detection (including draining per-CPU LRU
-> caches) and advancing the scan cursor to the first mm_slot into
-> scan_begin_new_cycle() and scan_get_first_mm().
+On Fri, Nov 13, 2026 at 03:50:15PM +0000, Salvatore Dipietro wrote:
+> Hi all,
 > 
-> This keeps the exact execution order intact while making
-> scan_get_next_rmap_item() cleaner and easier to follow.
+> Thanks Jan, Pedro, Dave, David and Kiryl for the feedback.
 > 
-> No functional change intended.
+> Following Dave's question about how PostgreSQL gets large folios on
+> files it writes 8 KiB at a time, we looked deeper and found a
+> reproducer that needs only fio and a single disk.
 > 
-> Signed-off-by: Xu Xin (vivo) <xu.xin@linux.dev>
-> ---
->  mm/ksm.c | 70 +++++++++++++++++++++++++++++++++++++-------------------
->  1 file changed, 46 insertions(+), 24 deletions(-)
+> What happens:
 > 
-> diff --git a/mm/ksm.c b/mm/ksm.c
-> index 49977bcf04f7..e79e64372e49 100644
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -2640,6 +2640,49 @@ static void ksm_reset_unstable_trees(void)
->  		root_unstable_tree[nid] = RB_ROOT;
->  }
->  
-> +static bool scan_begin_new_cycle(void)
-> +{
-> +	/* Check if the cursor points to the head. */
-> +	if (ksm_scan.mm_slot != &ksm_mm_head)
-> +		return false;
-> +
-> +	/*
-> +	 * A number of pages can hang around indefinitely in per-cpu
-> +	 * LRU cache, raised page count preventing write_protect_page
-> +	 * from merging them.  Though it doesn't really matter much,
-> +	 * it is puzzling to see some stuck in pages_volatile until
-> +	 * other activity jostles them out, and they also prevented
-> +	 * LTP's KSM test from succeeding deterministically; so drain
-> +	 * them here (here rather than on entry to ksm_do_scan(),
-> +	 * so we don't IPI too often when pages_to_scan is set low).
-> +	 */
-> +	lru_add_drain_all();
-> +	return true;
-> +}
-> +
-> +static struct ksm_mm_slot *scan_get_first_mm(void)
-> +{
-> +	struct ksm_mm_slot *mm_slot = ksm_scan.mm_slot;
-> +	struct mm_slot *slot;
-> +
-> +	spin_lock(&ksm_mmlist_lock);
-> +
-> +	slot = list_entry(mm_slot->slot.mm_node.next, struct mm_slot, mm_node);
-> +	mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
-> +	ksm_scan.mm_slot = mm_slot;
-> +
-> +	spin_unlock(&ksm_mmlist_lock);
-> +
-> +	/*
-> +	 * Although we tested list_empty() above, a racing __ksm_exit
-> +	 * of the last mm on the list may have removed it since then.
-> +	 */
-> +	if (mm_slot == &ksm_mm_head)
-> +		return NULL;
-> +
-> +	return mm_slot;
-> +}
+>   1. A buffered sequential read (VACUUM, a backup, a scan) builds large
+>      folios through readahead.  They stay large in the page cache until
+>      they are evicted.
+>   2. The first small write into one of these clean folios charges the
+>      whole folio as dirty: a 4 KiB write into a 256 KiB folio charges
+>      256 KiB, while writeback only writes the dirty 4 KiB.
+>   3. With random writes, most writes land in a different clean folio,
+>      so the dirty count reaches the limits with little real data.
+>      balance_dirty_pages() then throttles the writers, and they end up
+>      paced by how many folios writeback can clean per second rather
+>      than by the bytes to write.
+> 
+> Reproducer: XFS on one EBS gp3 volume (3000 IOPS), m8g.8xlarge
+> (32 CPUs, 128 GiB), default read_ahead_kb=128. fio's 1 MiB reads grow
+> the readahead window up to the device's max_sectors_kb (256 KiB), so
+> the read builds 256 KiB folios.
+> 
+>   ; create.fio: 16 x 3 GiB files, direct I/O so nothing is cached
+>   [global]
+>   directory=/mnt/xfs/fio
+>   filename_format=f.$jobnum
+>   size=3072m
+>   numjobs=16
+>   group_reporting=1
+>   [create]
+>   rw=write
+>   bs=1m
+>   direct=1
+>   ioengine=libaio
+>   iodepth=16
+> 
+>   ; load.fio: buffered sequential read; builds the large folios
+>   [global]
+>   directory=/mnt/xfs/fio
+>   filename_format=f.$jobnum
+>   size=3072m
+>   numjobs=16
+>   group_reporting=1
+>   [load]
+>   rw=read
+>   bs=1m
+>   direct=0
+>   ioengine=psync
+> 
+>   ; randwrite.fio: random 4 KiB buffered writes, 32 x 312 = ~10k IOPS
+>   ; invalidate=0 keeps the cached folios when fio opens the files
+>   [randwrite]
+>   directory=/mnt/xfs/fio
+>   filename=f.0:f.1:f.2:f.3:f.4:f.5:f.6:f.7:f.8:f.9:f.10:f.11:f.12:f.13:f.14:f.15
+>   rw=randwrite
+>   bs=4k
+>   direct=0
+>   ioengine=psync
+>   invalidate=0
+>   numjobs=32
+>   rate_iops=312
+>   time_based=1
+>   runtime=120
+>   group_reporting=1
+> 
+> To reproduce it, run (as root):
+> 
+>   fio create.fio
+>   sync; echo 3 > /proc/sys/vm/drop_caches
+>   fio load.fio          # skip this step for the control run
+>   fio randwrite.fio
+> 
+> fio asks for ~10k write IOPS, more than the volume's 3000, so dirty
+> data builds up in both runs.  In the control run (no load step) each
+> 4 KiB write creates a 4 KiB folio: after 120 s only 3.3G is dirty,
+> below the 12.2G background threshold, and nothing is throttled.  After
+> the load step the same writes land in 256 KiB folios, and each write
+> into a clean folio is charged 256 KiB: the dirty count passes the
+> background threshold after 6 s and writers are throttled from 13 s.
+> 
+> Results on v7.4-rc2, one run per kernel, each on a fresh instance.
+> Writer sleep is the total balance_dirty_pages() pause time over the
+> 32 writers during the 120 s write phase:
+> 
+>                          write   p99 / max   writer   max    folio
+>                           IOPS     lat ms    sleep s  dirty  size
+>   baseline, control      9,984  0.01 / 0.30      0    3.3G    -
+>   baseline               4,061    60 / 160     179   23.5G   256K
+>   v1 (this series)       9,984  0.01 / 0.67      0    3.6G   256K
+>   max order cap 64K      7,071    50 / 280      73   22.3G    64K
+>   max order cap 16K      9,984  0.02 / 0.05      0   11.9G    16K
+>   split on write         9,984  0.02 / 0.17      0    3.6G   256K
+>   evict on write         9,984  0.03 / 0.19      0    3.3G   256K
+>   POSIX_FADV_RANDOM      9,984  0.02 / 0.05      0    3.3G     4K
+> 
+> The control run gave 9,984 IOPS and max latency up to 0.30 ms on every
+> kernel.
+> 
+>   - max order cap: the global cap in mapping_max_folio_order() that Jan
+>     suggested trying.  At 64 KiB a 4 KiB write still charges 16x and is
+>     throttled.  At 16 KiB this run is not throttled, but dirty reached
+>     11.9G, just below the 12.2G background threshold.  The cap that
+>     avoids throttling depends on the write size, and it removes large
+>     folios for every file, including ones that never see small writes.
+>   - split on write: when a buffered write (iomap opts in, not for
+>     zeroing or unshare) finds a clean, uptodate, unmapped folio at least
+>     4x the write size, folio_split() it down to the write's order before
+>     dirtying it.  The rest of the folio stays cached in large folios.
+>     On the concerns Jan raised about splitting [1]: split on write only
+>     splits clean, uptodate, unmapped folios, so it needs no new
+>     filesystem state beyond an opt-in flag in iomap, and if
+>     folio_split() fails the write simply proceeds as today; evict on
+>     write avoids splitting altogether.
+>   - evict on write: same trigger, but mapping_evict_folio() the folio
+>     instead of splitting it (~40 lines).  This discards the folio's
+>     other cached data; nothing reads it back in this test, so the read
+>     cost does not show here.
+>   - POSIX_FADV_RANDOM (Dave's question): fio's fadvise_hint=random on
+>     the load job.  It avoids the problem without a kernel change, but
+>     only where the application opts in: the hint is per open file, so
+>     every process that reads a file must issue it, and a reader that
+>     doesn't (a backup or copy tool, for example) still builds large
+>     folios.  Every application that reads files sequentially and then
+>     rewrites them in place would have to adopt it, and keeps the
+>     regression until it does.  It also turns readahead off for those
+>     files, so their sequential reads lose readahead.
 
-I like this function cleanup here, but not sure about the other one.
+Holy heck, did an LLM write this?
 
-Can we just leave the lru_add_drain_all() where it is, or what's the reason for
-that change?
+> 
+> Split and evict on write keep whole-folio accounting and act at write
+> time, so they also cover large folios already in the page cache,
+> whoever built them, without each application having to opt in.  Both
+> only touch clean, uptodate, unmapped folios at least 4x the write
+> size, and only on iomap buffered writes.  Split keeps the rest of the
+> folio cached at the cost of the split; evict is simpler but drops it.
+> I'd appreciate your opinion on these options, or any other direction
+> you think is more appropriate.
 
-Note that that might soon get removed either way, so I wouldn't worry about it.
-
-Then, I would rename the function into something like
-
-"scan_should_start_new_cycle"
-
-And keep it simple.
+I think you'll face strong resistance to any of these options.
 
 -- 
-Cheers,
-
-David
+Pedro
 
