@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1586071040
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C596071056
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=are3EysM
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cEAr2HQs
 Received: by kanga.kvack.org (Postfix)
-	id 7EF656B05BE; Fri, 13 Nov 2026 13:56:12 -0500 (EST)
+	id 72C426B05C3; Fri, 13 Nov 2026 13:56:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C6576B05BF; Fri, 13 Nov 2026 13:56:12 -0500 (EST)
+	id 703896B05C4; Fri, 13 Nov 2026 13:56:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DC856B05C3; Fri, 13 Nov 2026 13:56:12 -0500 (EST)
+	id 5CB4D6B05C5; Fri, 13 Nov 2026 13:56:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3ECDA6B05BE
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:56:11 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8011D1601C5
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:56:11 +0000 (UTC)
-X-FDA: 85431000942.15.97B0EA4
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 35F816B05C3
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:56:17 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B00D7C016F
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:56:16 +0000 (UTC)
+X-FDA: 85431001152.11.AED0F6D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id DD5A040008
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:56:09 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=are3EysM;
-	spf=pass (imf27.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 0927418000E
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:56:14 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cEAr2HQs;
+	spf=pass (imf24.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794596175;
+	b=hMyVxH+kOjc+0FXz9XQltvEOYNYcAN06601mBQuLbPHsuczQiU4op2KNLv8f6pFYwoBqIV
+	JG2s920XptCvMAtXPSdDR5YR+MlBOc+sxShECeHZD4DM6ocUnXB909K9ozFsPsDgF6wWw9
+	ECV61fx/1ZeIGo2Gjytmvync+FJOmk0=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cEAr2HQs;
+	spf=pass (imf24.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794596170;
+	s=arc-20220608; t=1794596175;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ab6jQE+uJD46Ll5FCTsmdW/Hp44XQBfAYxsnpCJz+D4=;
-	b=AV5mX7ieeuB5I9XOtCrCEbXD1yUJxn6yMC43Opz7FqOXL6aiTiczPU9JhJYGbwwxQ6fQ0C
-	9aL8OIaBO9F9ER+nim7zHFlFnil4sS05nCZUf257k0sAXTokBTRJiilFtUlI1Rv28INFMu
-	nksyj+OPlqEhga0zF0sjMOoywVEM8lQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794596170;
-	b=RkEq6z7socYQw9F0DvKH0RUUEicqoF+HddPtk3272ygfLG21rZtHrQ0IR+OQM4FpAipBJb
-	kL5zmqyWQH0/LWXlCV6FDUfzBLfwh4FG7IGBBsa7U/7R802tL9BDlplv8wqRgvbUXIoD7g
-	TldIxUmRAXtZ70ffgMygJaysEO46y0E=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=are3EysM;
-	spf=pass (imf27.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=CFBgz9a6PFaeiektq38l4AMQg2WGrNsoRVRJuqkI91Y=;
+	b=aOhF5oEgJvm9HCQOI4ySGfSojR4m0hO6Oa1fxLK+WYYi/UeS/ktBCHyvEyUPbUXB0Kp/R+
+	9WWV+tQ1h9J7zLNiJTTJT1K6nAfO2VsoKAxQQJumvGswhlPiqjRnkle9hjw3iE5kI+lQB3
+	99HNXvHqkqyj9DfdtoA+9AwoWqS8GPk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3EAAD41B61;
+	by sea.source.kernel.org (Postfix) with ESMTP id 59E564008C;
+	Fri, 13 Nov 2026 18:56:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B1A1F000C5;
 	Fri, 13 Nov 2026 18:56:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C47F1F000C6;
-	Fri, 13 Nov 2026 18:56:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794596169;
-	bh=ab6jQE+uJD46Ll5FCTsmdW/Hp44XQBfAYxsnpCJz+D4=;
+	s=k20260515; t=1794596174;
+	bh=CFBgz9a6PFaeiektq38l4AMQg2WGrNsoRVRJuqkI91Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=are3EysM1jA1csE0F2A4zqg4HWywNrj29LCGP/RVLXJtm8cr4O2xBP6WHjffQBzrT
-	 LPZFO9rKE7/kJTAHQtCfvPSxT+ioFVXdt8U5SaBx1Jp76hZWHSZlka5llH7LcFpnSS
-	 QIEeyqItCGRqteyEPa5MWsSakzBvkXTATk+yU9c7j75xwkZjNgQ+MSIOOPGNYNqgNl
-	 sdHW+anINi+EiqoIzTKJnRuIBQbKZbS1xhF6KGS35IpTiv9K9L6NVGwbpfMXi4sH6r
-	 3qATtXCewl3sNMf2ZI6ra+O3JlPziRH8Tbk/TI7Fe+7a+LHertNw7jEV0YLNv+ohQQ
-	 qrh/MrXqdZubw==
+	b=cEAr2HQsZ1HHjKxIxtST4/NiLm1Wyc+KIlItjQzOcfqY4hu5Up643evmj4GyrtiMS
+	 Vmget5swEPwDuETHXtENzVK7cop367Y+vCrQRjVKr9/r6w5IPPj6Nu0t7iks9jB9xB
+	 54lFYd8qrBvUvp/cFDJxeQYA8xMsQSm9QHU8+cM1JovcYqJBFxfd1aMDzzK57Q5xlK
+	 +/mPscj9NRkLLkP+/OUqeAhkXINVdceKIv7zjqKTaSCLVtt3m0QQEoMswGKd++D3sl
+	 XK2MDBNAb9E1FcpXxWMVQCsbkK56bTAu85pFBjaV0u2VjicjXs4eyiyObhBIL6tgUt
+	 Vum8wnlpS71lg==
 From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 To: akpm@linux-foundation.org,
 	linux-mm@kvack.org
@@ -90,28 +90,27 @@ Cc: axelrasmussen@google.com,
 	zhuhui@kylinos.cn,
 	sidchintamaneni@gmail.com,
 	Barry Song <baohua@kernel.org>
-Subject: [PATCH v8 04/16] mm/mglru: lift the forced protection of reclaimer
-Date: Sat, 14 Nov 2026 02:55:29 +0800
-Message-Id: <20261113185541.70203-5-baohua@kernel.org>
+Subject: [PATCH v8 05/16] mm/mglru: skip zones above reclaim_idx instead of rotating them
+Date: Sat, 14 Nov 2026 02:55:30 +0800
+Message-Id: <20261113185541.70203-6-baohua@kernel.org>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20261113185541.70203-1-baohua@kernel.org>
 References: <20261113185541.70203-1-baohua@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 3jyfti8n37ybjpewh51dxttco73m6a7h
-X-Rspamd-Queue-Id: DD5A040008
+X-Stat-Signature: a58aebpcksqshfn6ei6ekx6kyynz6b3t
 X-Rspam-User: 
-X-HE-Tag: 1794596169-344185
-X-HE-Meta: U2FsdGVkX190qAjPjILpWb6CzNe26XS/QOqHFIFDPZyTefv5FYnnQeL5M5a23j2DYQbWn8R7BrTVOBKyUkVI5zXH5VsyJYFX9HNfPYzlrb5qs3DllcDU1MUIfNIjSNFQLNQVKdLN1np/s24as571BXJVw7W2A7laA3KOIR+oB+acyM468qM3YUVWMYMHaV2mC7zMeAZfOBJDzMbKrTo4Ezdt82jMeuABV6hXaU+Rhk7dySrVBxNuxYnNlxjeDjv8em1WYDhIdMBBIgI26nSLaYXBaVFwj6ienjyJ1+98hrmeRnQKMnS/iI0OJJtGh7Rw8X0WsfMjmixHAb6sNe43B8cW6sycky2dEdGjcduzwpiVXPAKsa6mK5D3i12DrYAQX2rAeY1l2/sH1z3Np0P+2Wsamjt92B5zqa+yjUXcorQpPG1DH9FMefvLHwat7tehWm4I/zrtGC2x/PLKdFuFB+XyWZl9Xqex4NM/41dN/LKX8B2opcw7lh1vQCsc28cmVJWxLKMu2KIQ/J3Mbz/XnvSwahTAZzL5n9yysVjnosPAHj2C6n1qFoJ9qDBQPOluCt30cmzJBvAUIAXVS9+Q5BdR37KzNZKgEOyA+QpX0ihJSYr7ZAzKq9W+hhnFvgLCp0f+Ozg0rAyvSVQsf23d2PNoj4vPU8nEXsv4Vi0t8vrRL4ASM51OjVcN5R6Zh+p8TRPqMvynicbyyNDn6tKhGA+uiOYT4uOLQ1MauKqyKO+vne84UNuUw1vcFCOP5fNBKu+oOZDFrOdhrWJFCetumeNaLVc2T+ixSQzcQ62BxqZrO2JYrWqcnEHEOjDaimKCD0k1Hu2iVnNf+XUl+m4Khw6jR2vzMIGjJB9kTd1U8clC0lhMoeETljHAtI2SA+1zw78l/S/iBcKihBWclOktE92wAOsa6hn1rGUA8IQMBKJ/pgi2oMCMz+J76NMmJVv/oDbtErJJUeCkQ/QURmk
- oO7+GLsI
- e5Cby6CWID4IBVI57qGDhfEehKQxxtFNGTzlDxabxgS1wf/HF9HQ+3SOXQlGDBGJXkcEb7ysE7GES4su+v13jPAZ2VyDfZZEXG1230zFFqHyZw536F7+RPFiGNYtPAQk0UO28AlLqO2n00IQG/aIBHYSixaJ39exm+YzO2PwnOnmfeVN0cGdUgmH28XcqH3anrd1xNzE9nY6pPRzzubGPUoNPH7B73abJ94yESh9cumjCHWEpktPuQfMUK+boWxow0IEoKTgx9qgbTzZZzq7LpoYW4P2SNO3M3sZGFt0sGnbFtg4U9wtAYIvo8KpnQYddGIwkB+J7jmuNwS2kW+WVKgGcS0KEZWGLUwRwB9eelqn9lmfIAW0jOAu93QaQur4quSLt
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0927418000E
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794596174-437897
+X-HE-Meta: U2FsdGVkX1/A4RpnSHhfSqCY4+DHQC/IppFAdo24UsdsZMdC8q60H0MvwCD0y7ELTU1C/43yiIQ8hh+wYTGpi35V7m9yMZPnVrGUm+QwHDD5Zmy4sr4ZiN1YOh3mR1TevZrO4BvTfZSZ7V741j+mHq1zuwYnwu6oYZMps2rkpOYpS3j8oTXWuLCWdDyRfWMek52VNN1KXNrUHcfXPxnvKJtOojMYTKx7IE/P4JPItdemgAHqj6uQYw/5j0mZk1YoOzvskUM8EHeegUSDT22vTICm+b+5kDdLDdjFxAiHjvbJC8tbuR4pXmVLCwZNLM3hL5Nk/jd+Zw9PDf8OqbJvjq2p/Udgjubv45rg2zH8svWes34I03nuqEW46mFf+0EmE8sr2SilyMnR3Wl6/niSGRfIBue8rYytIsAGkThZBNyR96nu5OIYN/b35RexZE7PLZFxviTnyqxf1cl78SAW3sySGXgmMYjlRFMZDtitk2sYo/Uy4lqPkNi2hh73n4zh9QCIScQUoWN1gbLaH9J1tiysF66ix8/mkVMuReYHnb1wGKh3La2nRFHyDac6oK+pEKuqTyWiDyqFCXTsbLl9KUEGonpzU6d/1+0xmKtHsMFCAegigjve2N1CY7CNPuV4/bhcM/whU3BN2J6tTARQmH0ng4DFj2snCMiG2TW4GiCFjUZ5gDoaak/rXXi8sNCcquzmuaR47h0NKyY2G7JUtmKnWRXYsX8eN55q9j+gpZrXZYvQe/T7VFnrdIEakmqCmUlR+f0JVXwouWzXpxAKGm+jt97H2y+Tst/nf41LKYccly/sdC1TtNGw7gNc+yKKsdZPk54+3r91jjkqllpbPIQyqCLa6mpCy7QeDJXbP/aU9/0YoKMDjDywTxV79sFDSTn1ip9O8GEHE2+ZifJu53YZ8Ky1AkJqdWNe5+EluzhR+03S7Xk3MuUqvUt0mvOdvpkspZu74e8kh+y8RAO
+ FtzR4lic
+ H+p3XWHur1CBADQU4Q6Evx1PolIFR1/qpq3w1hQ1NMQ6vA7aDThLi1572IuC9SpJOhD3WCGhTnGPHCPAs7GKU4H2GTLgO5PZcv7JGjdJaWkBtxOYXgznuTvQhT5OOOkkdCPGj65UPy9wyYA+LZtqsmXzm6lWkq+5yZ7VjMb4C1rhMLtTNP5w7prrtWEep2F16Pw6EvyV/ml3JWCbaHDZcX7uy02mPU/W7wsCtUNR/GC+eMkgnl8yzEeGlE0b8F4N4fmRaOkd2QwLz8FPGAph2ks1gYbx4rDoASzf+r5klJLqUNfu1kROreWxDYShPGRZ4HSMgKVj5OzcpF7N9B97qDvbDh7LmY9CkQ5NetZpk8DU3gFSjDRs1vXKha44Spe7sGWYc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,133 +121,174 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Kairui Song <kasong@tencent.com>
 
-When a type is drained down to MIN_NR_GENS gens, the reclaimer will
-fail to make any progress on that type without aging.
+scan_folios() used to visit every zone. Folios in zones above
+sc->reclaim_idx can never be isolated, so sort_folio() rotated them to
+a younger generation, the "ineligible" branch, or, when only one gen
+was left, skipped them. This wasted scan work on every pass, and the
+rotation kept the protected folios from aging.
 
-However aging comes with a cost, and it will take time to finish. Even
-if we do aging more proactively, when under great pressure, gens will
-still be drained very fast so the new gens produced by aging can't catch
-up with the consumption. With MIN_NR_GENS setting blocking the reclaim,
-we will run into OOM. This OOM can be reproduced by the previous test
-program [1] used for fixing another aging problem [2]. When running in
-great pressure, certain workloads will keep seeing premature OOM with
-MGLRU, and never see any OOM with classical LRU.
+Restrict both the scan and the gen selection to the eligible zones,
+like the legacy LRU, which only isolates folios in zones up to
+reclaim_idx:
 
-This might get worse if we implement async aging, or avoid hotness
-inversion in aging, as they will slow down the aging process even more.
+- lruvec_populated_min_seq() takes a zone_limit, so the oldest
+  populated gen is searched only among the zones the scan can
+  reclaim from. A gen populated only in protected zones no longer
+  stalls the scan.
+- scan_folios() iterates the eligible zones in the descending order
+  of the legacy zonelist walk, draining the zone at reclaim_idx
+  first.
+- The ineligible branch of sort_folio() is now dead and removed,
+  with a VM_WARN_ON_ONCE_FOLIO() guarding the new invariant.
 
-To fix this, let's first drop the get_nr_gens() == MIN_NR_GENS early
-return and let the raised-priority scan bound cover max_seq itself.
+try_to_inc_min_seq() still considers all zones, so min_seq[type] is
+only bumped once the oldest gen is empty everywhere. At DEF_PRIORITY
+the search bound stays min_seq[type], so the scan still starts from
+the oldest gen regardless of whether it is populated.
 
-Mapped folios will still survive as the rmap PTE check will keep them.
-Unmapped cache folios may thrashing more when under great pressure,
-which is really a problem that should be fixed with refault distance
-and frequecy aware promotoin instead [3].
-
-Link: https://github.com/ryncsn/emm-test-project/tree/master/file-anon-mix-pressure [1]
-Link: https://lore.kernel.org/linux-mm/20260428-mglru-reclaim-v7-0-02fabb92dc43@tencent.com/ [2]
-Link: https://lore.kernel.org/linux-mm/20260502-mglru-fg-v1-0-913619b014d9@tencent.com/ [3]
 Signed-off-by: Kairui Song <kasong@tencent.com>
 Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
 ---
- mm/vmscan.c | 34 +++++++++++++++++++++++++---------
- 1 file changed, 25 insertions(+), 9 deletions(-)
+ mm/vmscan.c | 47 +++++++++++++++++++----------------------------
+ 1 file changed, 19 insertions(+), 28 deletions(-)
 
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 6006508250c5..0e8b3161f8f5 100644
+index 0e8b3161f8f5..a6e9e755e4b2 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -4677,7 +4677,7 @@ void lru_gen_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent,
-  ******************************************************************************/
+@@ -3992,7 +3992,7 @@ static bool inc_min_seq(struct lruvec *lruvec, int type, int swappiness)
  
- static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_control *sc,
--		       int min_gen, int tier_idx)
-+		       int min_gen, int max_gen, int tier_idx)
+ /* Similar to lruvec_evictable_size, return the oldest populated seq of the type */
+ static unsigned long lruvec_populated_min_seq(struct lruvec *lruvec, int type,
+-					      unsigned long max_seq)
++					      int zone_limit, unsigned long max_seq)
  {
- 	int gen = folio_lru_gen(folio);
- 	int type = folio_is_file_lru(folio);
-@@ -4694,12 +4694,22 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
- 	if (!folio_evictable(folio))
- 		return false;
+ 	int gen, zone;
+ 	unsigned long min_seq;
+@@ -4003,7 +4003,7 @@ static unsigned long lruvec_populated_min_seq(struct lruvec *lruvec, int type,
+ 	min_seq = READ_ONCE(lrugen->min_seq[type]);
+ 	while (min_seq <= max_seq) {
+ 		gen = lru_gen_from_seq(min_seq);
+-		for (zone = 0; zone < MAX_NR_ZONES; zone++) {
++		for (zone = 0; zone < zone_limit; zone++) {
+ 			if (!list_empty(&lrugen->folios[gen][type][zone]))
+ 				return min_seq;
+ 		}
+@@ -4026,7 +4026,7 @@ static void try_to_inc_min_seq(struct lruvec *lruvec, int swappiness)
+ 	/* Requires at least MIN_NR_GENS gens for basic functionality */
+ 	seq = lrugen->max_seq - MIN_NR_GENS;
+ 	for_each_evictable_type(type, swappiness) {
+-		min_seq[type] = lruvec_populated_min_seq(lruvec, type, seq + 1);
++		min_seq[type] = lruvec_populated_min_seq(lruvec, type, MAX_NR_ZONES, seq + 1);
+ 		if (min_seq[type] > lrugen->min_seq[type])
+ 			seq_inc_flag = true;
+ 	}
+@@ -4689,6 +4689,7 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
+ 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
  
--	/* promoted */
-+	/* promoted, or moved due to reparenting. */
- 	if (gen != min_gen) {
- 		list_move(&folio->lru, &lrugen->folios[gen][type][zone]);
+ 	VM_WARN_ON_ONCE_FOLIO(gen >= MAX_NR_GENS, folio);
++	VM_WARN_ON_ONCE_FOLIO(zone > sc->reclaim_idx, folio);
+ 
+ 	/* unevictable: let it through and the generic path will cull it */
+ 	if (!folio_evictable(folio))
+@@ -4705,10 +4706,8 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
+ 	 * longer be promoted or protected, so just isolate them. The one
+ 	 * exception is lru_gen_reparent_memcg(), which is handled above.
+ 	 */
+-	if (min_gen == max_gen) {
+-		VM_WARN_ON_ONCE(zone > sc->reclaim_idx);
++	if (min_gen == max_gen)
+ 		return false;
+-	}
+ 
+ 	/* protected */
+ 	if (tier > tier_idx || refs + workingset == BIT(LRU_REFS_WIDTH) + 1) {
+@@ -4725,13 +4724,6 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
  		return true;
  	}
  
-+	/*
-+	 * We are reclaiming the last gen left. Folios in this gen can no
-+	 * longer be promoted or protected, so just isolate them. The one
-+	 * exception is lru_gen_reparent_memcg(), which is handled above.
-+	 */
-+	if (min_gen == max_gen) {
-+		VM_WARN_ON_ONCE(zone > sc->reclaim_idx);
-+		return false;
-+	}
-+
- 	/* protected */
- 	if (tier > tier_idx || refs + workingset == BIT(LRU_REFS_WIDTH) + 1) {
- 		gen = folio_inc_gen(lruvec, folio, min_gen);
-@@ -4754,15 +4764,16 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+-	/* ineligible */
+-	if (zone > sc->reclaim_idx) {
+-		gen = folio_inc_gen(lruvec, folio, min_gen);
+-		list_move_tail(&folio->lru, &lrugen->folios[gen][type][zone]);
+-		return true;
+-	}
+-
+ 	return false;
+ }
+ 
+@@ -4763,16 +4755,17 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 		       struct scan_control *sc, int type, int tier,
  		       struct list_head *list, int *isolatedp)
  {
- 	int i;
--	int gen;
+-	int i;
  	enum node_stat_item item;
++	int zone_idx;
  	int sorted = 0;
  	int scanned = 0;
  	int isolated = 0;
  	int skipped = 0;
-+	int gen, max_gen;
- 	unsigned long min_seq;
+ 	int gen, max_gen;
+-	unsigned long min_seq;
++	unsigned long seq;
  	unsigned long remaining = nr_to_scan;
  	struct lru_gen_folio *lrugen = &lruvec->lrugen;
-+	DEFINE_MAX_SEQ(lruvec);
++	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+ 	DEFINE_MAX_SEQ(lruvec);
  
  	VM_WARN_ON_ONCE(nr_to_scan > MAX_LRU_BATCH);
- 	VM_WARN_ON_ONCE(!list_empty(list));
-@@ -4775,18 +4786,24 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+@@ -4784,24 +4777,22 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	 * when under pressure to respect swappiness more and reduce IO cost.
+ 	 */
  	if (sc->priority == DEF_PRIORITY)
- 		min_seq = lrugen->min_seq[type];
+-		min_seq = lrugen->min_seq[type];
++		seq = lrugen->min_seq[type];
  	else
--		min_seq = lruvec_populated_min_seq(lruvec, type, lrugen->max_seq - MIN_NR_GENS + 1);
--
--	if (get_nr_gens(lruvec, type) == MIN_NR_GENS)
--		return 0;
-+		min_seq = lruvec_populated_min_seq(lruvec, type, lrugen->max_seq);
+-		min_seq = lruvec_populated_min_seq(lruvec, type, lrugen->max_seq);
++		seq = lrugen->max_seq;
  
- 	gen = lru_gen_from_seq(min_seq);
-+	max_gen = lru_gen_from_seq(max_seq);
-+
- 	for (i = MAX_NR_ZONES; i > 0; i--) {
+-	gen = lru_gen_from_seq(min_seq);
++	seq = lruvec_populated_min_seq(lruvec, type, sc->reclaim_idx + 1, seq);
++	gen = lru_gen_from_seq(seq);
+ 	max_gen = lru_gen_from_seq(max_seq);
+ 
+-	for (i = MAX_NR_ZONES; i > 0; i--) {
++	/* Scan eligible zones in descending order. */
++	for (zone_idx = sc->reclaim_idx; zone_idx >= 0; zone_idx--) {
  		LIST_HEAD(moved);
  		int skipped_zone = 0;
- 		int zone = (sc->reclaim_idx + i) % MAX_NR_ZONES;
- 		struct list_head *head = &lrugen->folios[gen][type][zone];
+-		int zone = (sc->reclaim_idx + i) % MAX_NR_ZONES;
+-		struct list_head *head = &lrugen->folios[gen][type][zone];
++		struct zone *zone = &pgdat->node_zones[zone_idx];
++		struct list_head *head = &lrugen->folios[gen][type][zone_idx];
  
-+		/*
-+		 * If there is only one gen left, rotating the unreclaimable
-+		 * zone become meaningless, just skip them.
-+		 */
-+		if (gen == max_gen && zone > sc->reclaim_idx)
-+			continue;
-+
+-		/*
+-		 * If there is only one gen left, rotating the unreclaimable
+-		 * zone become meaningless, just skip them.
+-		 */
+-		if (gen == max_gen && zone > sc->reclaim_idx)
++		if (!managed_zone(zone))
+ 			continue;
+ 
  		while (!list_empty(head)) {
- 			struct folio *folio = lru_to_folio(head);
- 			int delta = folio_nr_pages(folio);
-@@ -4797,8 +4814,7 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 			VM_WARN_ON_ONCE_FOLIO(folio_zonenum(folio) != zone, folio);
+@@ -4811,7 +4802,7 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 			VM_WARN_ON_ONCE_FOLIO(folio_test_unevictable(folio), folio);
+ 			VM_WARN_ON_ONCE_FOLIO(folio_test_active(folio), folio);
+ 			VM_WARN_ON_ONCE_FOLIO(folio_is_file_lru(folio) != type, folio);
+-			VM_WARN_ON_ONCE_FOLIO(folio_zonenum(folio) != zone, folio);
++			VM_WARN_ON_ONCE_FOLIO(folio_zonenum(folio) != zone_idx, folio);
  
  			scanned += delta;
--
--			if (sort_folio(lruvec, folio, sc, gen, tier))
-+			if (sort_folio(lruvec, folio, sc, gen, max_gen, tier))
- 				sorted += delta;
- 			else if (isolate_folio(lruvec, folio, sc)) {
- 				list_add(&folio->lru, list);
+ 			if (sort_folio(lruvec, folio, sc, gen, max_gen, tier))
+@@ -4830,7 +4821,7 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 
+ 		if (skipped_zone) {
+ 			list_splice(&moved, head);
+-			__count_zid_vm_events(PGSCAN_SKIP, zone, skipped_zone);
++			__count_zid_vm_events(PGSCAN_SKIP, zone_idx, skipped_zone);
+ 			skipped += skipped_zone;
+ 		}
+ 
 -- 
 2.39.3 (Apple Git-146)
 
