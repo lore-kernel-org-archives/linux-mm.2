@@ -1,98 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0BA606A891
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 19:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B43D606A333
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 19:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NX6l4vlx
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bgfZAIyb
 Received: by kanga.kvack.org (Postfix)
-	id CF24E6B05C1; Fri, 13 Nov 2026 14:22:15 -0500 (EST)
+	id 38E086B05B6; Fri, 13 Nov 2026 14:23:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB2996B05C5; Fri, 13 Nov 2026 14:22:15 -0500 (EST)
+	id 365A26B05B7; Fri, 13 Nov 2026 14:23:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCAC06B05C7; Fri, 13 Nov 2026 14:22:15 -0500 (EST)
+	id 27C3E6B05C9; Fri, 13 Nov 2026 14:23:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DC226B05C1
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:22:15 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E39D8C011F
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:22:14 +0000 (UTC)
-X-FDA: 85431066588.06.171F93C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 380961C0009
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:22:13 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NX6l4vlx;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 007426B05B6
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:23:46 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8C5A414024E
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:23:46 +0000 (UTC)
+X-FDA: 85431070452.05.2613984
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id C9D4B140011
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:23:44 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bgfZAIyb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794597733;
+	s=arc-20220608; t=1794597824;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fdl4VOJT6zViP7jtfnU1Xg3aoOGQL41O0hxbPwDlR+A=;
-	b=YSiaRcZ8djct/llyoQQH53FU5kOT5L5L+1XH/vlQFHBrDCxpQ91epulXVnMk8/TaUuDxAK
-	6cE9pXiYcNlai7IFRa9HFETwa2+KW8LNSCT8/Y+04wd5NJrC85Y7IFBgtqu9RaYbwoXBFU
-	+o6U9p7gBd8JvUwVwNNewqQySOXFF1c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794597733;
-	b=wOvQRXVjnYvRqfSNbjgcTHvcy5WbYYotWmqjpaVnibxtuHl4fiNBIGO6m82hZipJNzQRFu
-	3DeJs6AfFd1HDgOHWL3yTvdTSUPob+7An8xSia1bO5iTupIRE086Yf+MVNRBuS8gwSR34q
-	meZ5pxNTfrK3yRXtQcgwDswZpBdBoU8=
+	bh=UZxr9Ep6aHh8ddParUSsye3s6V8xF5fudX0wgl2EMag=;
+	b=gz7gIoHxhCfKSYaHB3fpGqzSVeB2SLuXzJrWYRPjflYNEfe2pG04q1XsscOb/EmLqDdv9H
+	tbUJb6hFu+n9aLZAxjan0z3N2z1tJlQgDrXuGGR4A0QUVSMXuTC28pMM7inrbiJwu+9yVM
+	ohpl490CeRDyKugO9v+HytFA1YvHrgU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NX6l4vlx;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bgfZAIyb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794597824;
+	b=hXlhtC/L1co1dC+4zkJ1uufAG34dHdCayXAwyivZIj2qLuNdy22lqQfOOcl4MsrpPWJ7w4
+	xzLXYqcq9j4EnXdzths+1FjJiNX2N+bmqH1t4Cd/fk3OVkm1DmwyY7eDTvpuPFIHAR/OgR
+	4qgOyObT/8yfzjqhdbTscDvtmtubGkk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6EDE846062;
-	Fri, 13 Nov 2026 19:22:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F10861F000C8;
-	Fri, 13 Nov 2026 19:22:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4A1BB60D60;
+	Fri, 13 Nov 2026 19:23:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FE9B1F000C4;
+	Fri, 13 Nov 2026 19:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794597732;
-	bh=Fdl4VOJT6zViP7jtfnU1Xg3aoOGQL41O0hxbPwDlR+A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NX6l4vlxAsFOjaj+ZundCIjebkwjdIPIUBB6r6xto4qN1LhAmxdOJZlzrDEKEFlHX
-	 HE+RzVuSSPFuI5p/wzPEd1EWoL48luhiQrH5Fuylbug07Ef3zaiXlkH2raN+byKwcx
-	 ETtjAefB4pa1W94nXtaIlrAAzMDf7b2jtwqGkoqUv3j2kS3nzrIYUPM0FCJ6ZQ/TUH
-	 Pg9l/Ahp2pnUhstVIekqNTSYv5F0iZAVv+3d7lVWPZopB2q+jIlDKPVOg625y+x55w
-	 2HbExloMEtf2bl5fPgILQoRc23yrhUKrH3yaVEEApNzX0fSs170YpwQdkw5kr35VOZ
-	 TavaBPQLZKR1g==
-Date: Fri, 13 Nov 2026 19:22:06 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Tal Zussman <tz2294@columbia.edu>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/madvise: disallow guard region installation in
- uffd-armed VMAs
-Message-ID: <avdjMNNkOXm2khTW@gremlin>
-References: <20261112-disallow-uffd-guard-install-v1-1-bcf8b1aaa72e@kernel.org>
- <0e3e876e-c3df-4660-ad89-a5f0fd7dedc8@kernel.org>
- <avcNcL6svEOTg_3r@gremlin>
- <0d6e29f8-54fc-427a-a979-1a8c6f4e3f06@kernel.org>
+	s=k20260515; t=1794597824;
+	bh=UZxr9Ep6aHh8ddParUSsye3s6V8xF5fudX0wgl2EMag=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=bgfZAIybHQ4boLlLTaD68XYZ3p8BUC77geB9/nH0ZR9wJQCpbR6xYtXxh2G7XQD46
+	 XwW/5bf9LWGbh9Z35wDLUSHAv//hWBV+AarzJqrBaib6+C0xd3qQ3Nw9Lz6ksYrgFQ
+	 VWw7A4VAUJI7WirFfBUH9vzcsFrfMLDw9a5WzisPKmo/oOgFaSBupXTfV1Bo/4wrBM
+	 8g3WtvN62Buws/bDP1BrYw/F4+XM0cI9opHhrDc82j9ovdMJpLztQxurqynEkzFNiv
+	 grK6KhMoX3XuT73AjkWbW0I7GVyY4dheodjwNHB7XDR9weZWVDxukTz0HcBShxk1aF
+	 2rNydqh0lkZQA==
+Message-ID: <a127857b-d1f6-409d-8c14-3622ea553ae7@kernel.org>
+Date: Fri, 13 Nov 2026 20:23:36 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0d6e29f8-54fc-427a-a979-1a8c6f4e3f06@kernel.org>
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: qzmjxd9pc9xn1e9ps61b8shafepho7dx
-X-Rspamd-Queue-Id: 380961C0009
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] mm/rmap: fix migration entries being treated as
+ partial unmaps
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Kiryl Shutsemau <kas@kernel.org>, Usama Arif <usama.arif@linux.dev>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Rik van Riel <riel@surriel.com>,
+ "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
+ Jann Horn <jannh@google.com>, Zi Yan <ziy@nvidia.com>,
+ SJ Park <sj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ linux-mm@kvack.org, Sashiko <sashiko-bot@kernel.org>, azpijr@gmail.com
+References: <20261109220958.2071687-1-joannelkoong@gmail.com>
+ <07a8ffc3-1f71-4e41-aa83-424e267ee48f@kernel.org>
+ <CAJnrk1aMwrEHdv9v=1cC54QpxzRGpRMbiu07KGfyEhzQNP4XFg@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAJnrk1aMwrEHdv9v=1cC54QpxzRGpRMbiu07KGfyEhzQNP4XFg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1794597733-686174
-X-HE-Meta: U2FsdGVkX18MWDmmr137jp8JqGWi/hflf9uh7InBa4E7qPI0RB3VGIjrZdqacM4eUeis6YXKjMpsvNwNJHmAhdFFvwWykMVaswgLznlAZdTDXH+XsdU4vteaoddNadlUGBwcitDiDnR/IzqHmYRp+FqEK1dek7ahI6nAa5NMjhEPw1Gww8cDtikG6dHx8uOhPoZD4PD3uYEAztVQiQfEfqiVuu7jRoKNWJhOWQzRCGtGyWWkT8M7+fRRtg9X8l+MeL0NnQbH5rrcYkbleHMSgBsuoV2eZKg0hI7sh+4NObKZOd5gJZXMM4eZRopgbF1wqj67f8JbGzS8pgPVtJyx5cFYsomIjYNLBRB8+F2HnZzSCX94Cy66NckKS1lzHlAB4WCyZ2sSYi+YlgGtvjuqk6BZtDzkG+UfMuTnclk+mwwAmphim/iy4JKI/xp2XqdsDA5nsQdoz3ajJ0SrBNx4lxSD15sd7ZR0QG8sno9L/G/tS3Q+QAmU9m8vowbaEzXhnyyzyMDzNgScmaCCxb0Slcw6i9Bm4nfjJfLfBZgzECXs1vVILjw3lFLh7I+13GVSG0cLN7Vb39LCaOKtPWIM4YOVTzRZAbTmAnmzBCQMvuC/ulV2tclD+dpnjapcTu9pfTFdoFN3nZ+i6Th+XoooKhv/cQr4wz1O9mUZr4wAbPFo14AdgR7doKXUpd46yyaMBekWiwag5BZR0STpjzx+zqqIDAH2qpoRiZ3nRDLa4SS7HQnV1z+tBIZH8A7QuIIm2IDQE/oTc8ogKSVFR4CR6gCW3nHm3mZ69kY8qrsvVxodOBOdPaMNBBz3vTRz6eyS1ZWLYCSoVBZUUyRTrinmYEZWx1gt/0xNib5vw2ynghSyr187hDATL9M27irqgM6q5uozJHpmitZYrzFJAIA5kWIs5BjRM6Lm92GWqTKyDlc9G2zJpMsLdy07TOTwZS3acU71UwHrTHgNep3gZ4G
- 5HBJnAPr
- YFawk0GeVQvezBUIeUpqh45iHW/Yl9yJ0A1DiS6QE3eY39AnFwzvAafObncKm+S1DYUGlDDmKBWk+EfZGjSOB/8WqNg7YPV8uDQF0mYM0Mv9jcH9TOsg/rmli01Qg3wCrxJB+V4gDUvVB9CIu/13ojwcznQdRErcb7iRPmatLGt5iTKl3/GWK4LIH5tZt23Oh/bL/YnhhbiG+8iYrNVqaGEgaNrMO0H620IH/Xgoy8MrX7t1ocgeXteRK/c/HIUK0PlKy
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C9D4B140011
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: ks7ghbpcqwe46fxmg8bsmbjr1y3ke6ty
+X-HE-Tag: 1794597824-542342
+X-HE-Meta: U2FsdGVkX19Co5QZWLFaSciGBNN9QFc2IkfwHUZhMy46I/I2Jl3zFtunvQI8l4Zdy9m2dR+FOFJeyefgN7TP3F9U24R97vB04ST1Cx/40PLHASBM4Xu7QuGdVFVAhC+kaetQ+a/fudGszIgWEtGxhb41PhfJmtA4kDwtfQWGrYuElydvkhvGjmWH+/UtMVXNpAzs6xBeU3+RdfhA/MOw/Y8U401WwbelN/X2jlAm1fQut50xWRlli+9vbxG2arE3rUPqycAiyjNwXQBeMxP709SBxlwXR0lmwCM/W86LP6MMsiZkCVqQ0Gr1iXc0WhyQig5OMDiM+B6hq+TgEbSWACXwy4UDlnLu0AvKeIrlcPVDTykyLMPK7+jc6PluQ/zpuEOOSr8ms4D1nQ9MzLm5WYSSiTWBmOIAJJfs2rN88fGOGw2mkvCEKp+ZWUIUt1HGtIbqQTztZmOioOjEJewh6aaBY8LhQhcSt4O+6ckRg1NGCRas2343W1rrfRTEwq8XgYY0tY7iVePayDD3IWJcSouZXJ8gd6doWCF/L5hX4Cgqw+buWNy9mC7ueW3geZ+AXgQI2xRmO4DltdiHH3ldgTuhvNjhK716d5sHnVUXF7q1wataFp6ySvMBqmBt6fgCxZ7yTQK+ALd3IrbY/cpzy6MP5ShjHiUQEn4xZWc4IIURNFoQgI1BdgbQc2FSa4Sm+Az+PDDzx+Isu0ILqkl4LeGG5ieGShs+rYMoJekFoB4qbv5fOHjJTrMLoml1RL7VwGG3X3ym8/jTBhQKQWbFouoMEnmlrwqsfaXMNACy6j6YUurxOG9SmjvKDV9aaGWGfKWkOFNSn+ATXp4bESLIqGsRkOyWa4/KgJyeKDgvscQPh5jptwDk4w6wt8af8Wstu9ZFRFNzBAjx0yO9QqsMotd2Aw9qeihBgpmwwk4I+t7hbQOIvouPH1hdpVvBidxLYJNU4uh9SdBElugNaXE
+ 6zhoYICt
+ luRXpCrBMzW6AwMbMA63EyRibFD+/rnqATARCSCYoPmd801BsfA10dnsFN4osaQtdJolqG3lGnG5Z5EAFc8vsnC1TN8uCAFo3BiBzjC37IyWNadOEWsTWg5wSUXMba9k9SMmA30X97Q9njCn2i0oRyFZQWv6D559CSqacIM5Zkwl+LuoyS4bcc+ZV9W9SCunRM4U6Oqczs4OrgIDZMkkYxd73LjhEW6wezyzb+23cM943V+GAc07wLMkvK4Jl2aVseDhylpOKh6r3RG22q/cjjm5+hDy7lS2eAt1o0WG3OZWOFtaPzFfGfdVYyg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,134 +150,55 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 13, 2026 at 08:15:34PM +0100, David Hildenbrand (Arm) wrote:
-> On 11/13/26 14:59, Lorenzo Stoakes (ARM) wrote:
-> > On Fri, Nov 13, 2026 at 12:59:00AM +0100, David Hildenbrand (Arm) wrote:
-> >> On 11/12/26 18:38, Lorenzo Stoakes (ARM) wrote:
-> >>> In order to establish guard regions, guard markers are installed in the
-> >>> page tables of a mapped VMA.
-> >>>
-> >>> However, problems arise when one tries to combine this with registering a
-> >>> VMA for userfaultfd, as such operations may themselves need to install page
-> >>> table markers such as uffd-wp.
-> >>
-> >> How does this interact with UFFDIO_POISON markers that can outlive even
-> >> userfaultfd registration?
-> >
-> > The zap clears poison markers, as is standard. It's really horrible this logic.
-> >
-> > So the code path for zap used by the guard install (via zap_vma_range()) is:
-> >
-> > zap_vma_range()
-> >   -> zap_vma_range_batched() with NULL zap_details
-> >     -> __zap_vma_range()
-> >       -> zap_p4d_range()
-> >         ...
-> >         -> zap_pte_range()
-> >           -> do_zap_pte_range()
-> >             -> zap_nonpresent_ptes()
-> >
-> > And zap_details is NULL.
-> > > In zap_non_present_ptes():
-> >
-> > 	...
-> > 	} else if (softleaf_is_uffd_wp_marker(entry)) {
-> > 		if (... !zap_drop_markers(details))
-> > 			return 1;
-> > 	} else if (softleaf_is_guard_marker(entry)) {
-> > 		...
-> > 		if (!zap_drop_markers(details))
-> > 			return 1;
-> > 	} else if (softleaf_is_hwpoison(entry) ||
-> > 		   softleaf_is_poison_marker(entry)) {
-> > 		if (!should_zap_cows(details))
-> > 			return 1;
-> > 	} ...
-> >
-> > And zap_drop_markers() checks zap_details && zap_details->flags &
-> > ZAP_FLAG_DROP_MARKER.
->
-> Right, my intuition tells me to just nuke that thing by setting
-> ZAP_FLAG_DROP_MARKER.
->
-> MADV_GUARD, is just like munmap() another form of "zap it all and protect it".
-> >>> This is especially problematic because guard region installation causes the
-> >>> regions to be zapped first, meaning that the removal of userfaultfd-tracked
-> >>> ranges will not be logged in this case.
-> >>
-> >> Again, similar to trying to uffd-wp-protect'ing a hwpoison marker (which will be
-> >> ignored), and then zapping that.
-> >>
-> >> Isn't guard marker installation/removal just another form of zapping?
-> >
-> > I mean users being weird could decide to use it for that rather than
-> > MADV_DONTNEED, but zapping is a side effect really.
-> >
-> > Really the idea is that you might have users who, for whatever reason,
-> > faulted in some range, and now want to make that a guard range, so for
-> > convenience we zap it for them :)
->
-> I think not just convenience. There was this problem with faultaround / THP
-> placement IIRC ...
->
-> I'd just zap everything that's there. That's literally what the user asked for.
->
-> >
-> >>
-> >> So to me this all sounds like "if user space does something stupid, it's user
-> >> space's fault".
-> >
-> > Unfortunately, as per Tal's series, there's more to it than that (linked in
-> > Closes: tags).
-> >
-> > You can get an infinite syscall restart (ugh) if you do this on a shmem
-> > range (Tal's 9/12) so it's a kernel bug that _has_ to be fixed.
-> >
-> > The other bits are just about a user losing track of uffd stuff if they
-> > guard/unguard, as you say.
-> >
-> > But every other zap code path does the uffd remove event stuff, so this is
-> > still an exception.
-> >
-> > If you support uffd, you have to add a whole bunch of horrifying, awful,
-> > terrible open-coded uffd crap, e.g. the userfaultfd_remove() etc. And you
-> > have to drop the bloody lock and reacquire it too and make sure all that
-> > works correctly (...!)
-> >
-> > Anyway there's basically 3 options here:
-> >
-> > 1. do something like what Tal's series does - add a TON of complexity for a
-> >    use case that nobody uses to get behaviour on something nobody sane
-> >    should care about (i.e. uffd/guard/unguard/expect uffd correctness).
-> >
-> > 2. Zap with ZAP_FLAG_DROP_MARKER, and silently lose uffd-wp state but
-> >   'support' uffd. It does fix the 9/12 bug but then subtly breaks uffd.
->
-> Right, that's what I would do.
->
-> MADV_GUARD_INSTALL zaps everything.
->
-> It already zaps swap entries, migration entries, hwpoison entries ... so just
-> zap everything.
->
-> [...]
->
-> >
-> > If you're really concerned though, we could go with option 2, which will
-> > just make UFFD behave differently for guard regions.
-> >
->
-> Not really concerned, it's just the most consistent one for me. Zap everything.
-> The user asks for it, like he would ask with munmap().
->
-> > (I regret, obviously, ever allowing this for uffd ranges. And we _all_
-> >  regret that uffd was _ever_ allowed to be merged in this state...)
-> Yeah ...
+On 11/13/26 00:28, Joanne Koong wrote:
+> On Tue, Nov 10, 2026 at 3:49 AM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+>>
+>> Batching resolves the problem in the common case. For the remaining parts, we
+>> should likely just check in the deferred split handler whether actually
+>> partially mapped to then clear the flag if not.
+> 
+> As I understand it, there's no simple way to check if a folio is
+> partially mapped or not under CONFIG_NO_PAGE_MAPCOUNT without doing a
+> rmap walk. 
 
-Ack will send a v2 doing that then :)
+Yes. With CONFIG_PAGE_MAPCOUNT you can (still) read the information from the
+folio, but the grand plan is to phase that out and remove it.
 
-Heads up that (naturally) the subject line will differ!
+I just keep getting distracted :)
 
---
-Cheers, Lorenzo
+> Would it make sense to do something simpler here instead
+> where we just check the folio's partially mapped flag and cache that
+> before we replace the PTEs with migration entries, and then for those
+> edge cases that the batching solution doesn't cover, just restore that
+> flag back to its original state?
+
+As a last resort if we cannot get something else working (and we really care).
+It is rather hacky.
+
+> 
+> I think this would add coverage for the migration and reclaim paths,
+> instead of just the deferred split shrinker, but would miss the race
+> where someone tries to do a partial unmap while the folio has the
+> migration PTEs, but I think this is already a race that exists in the
+> batching case. imo it seems acceptable though given that the race is
+> pretty rare and doesn't have any adverse effects except delaying
+> freeing the unmapped pages until the whole folio gets unmapped.
+> 
+> Do you think something like this makes sense, or would you prefer
+> having the check in the deferred split handler?
+
+The question is, do we really care once we have the PTE batching in place?
+
+We would still split for if we cannot batch (multiple VMAs, PTE differences that
+we have to respect). Do we have any idea how much that matters in practice?
+
+(I raised once that, just because a folio is fully mapped doesn't really telly
+you anything. It could be mapped into various processes partially, or scattered
+in a single process.)
+
+-- 
+Cheers,
+
+David
 
