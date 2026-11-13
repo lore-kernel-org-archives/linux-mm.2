@@ -1,98 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75148606A89F
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 20:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D832606A327
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 20:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fSMFgLfD
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=X9UIULDA
 Received: by kanga.kvack.org (Postfix)
-	id 0DD376B05B3; Fri, 13 Nov 2026 15:38:02 -0500 (EST)
+	id 8EE8F6B05B4; Fri, 13 Nov 2026 15:41:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08F7F6B05B4; Fri, 13 Nov 2026 15:38:02 -0500 (EST)
+	id 885086B05B5; Fri, 13 Nov 2026 15:41:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE6F36B05B5; Fri, 13 Nov 2026 15:38:01 -0500 (EST)
+	id 7743A6B05B6; Fri, 13 Nov 2026 15:41:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B3AAD6B05B3
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 15:38:01 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6E3FD120298
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 20:37:59 +0000 (UTC)
-X-FDA: 85431257478.02.4372197
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9E274180003
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 20:37:57 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fSMFgLfD;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C3F56B05B4
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 15:41:43 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C5CA31C3216
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 20:41:37 +0000 (UTC)
+X-FDA: 85431266634.14.FD22445
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	by imf11.hostedemail.com (Postfix) with ESMTP id BC20B40008
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 20:41:35 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=X9UIULDA;
+	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.50 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794602496;
+	b=P1KohWnm6xXjpxzgjBckVy5aP1KDA8qfZROlNT0vF+p477hzXfYsObFcfY/kCaNvUmRB9b
+	02JflQb0flU+1EpFYlaP4Viceb5nNgbT3sRn6RK9rbXef8YQAMQwTvLTAMEO8NRVH3T4KQ
+	StHSsxyJ3cLwCazBvBB5ZxJOHQUSSNM=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=X9UIULDA;
+	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.50 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794602277;
+	s=arc-20220608; t=1794602496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AvlalDGclbf9jbvk6fxMo0zLcUfRP1nU9XgrjQZVQsU=;
-	b=aTRfcr6v339bWfYfSOT8A1CeRKG+wFLLg5H/lWPET2WyRZ5VpkDDknLNDx6vzTrzxQLOQG
-	AXSWjyvtWfoZLM/1AjH3W3y1jXAvX9xqC0O5JSU6MVoB1EV1kL2sIA5pIAu1OLO7mmKEgs
-	fefFU210uRGw/430Lp+vkjwHnJQH6Aw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794602277;
-	b=7hksdkAI720MqM6XIgPaKLk/xKgy2NV+924dYANOFnvG4ZB+G1W+GJfU5EJfsKfRfnHb4F
-	2oD8WyeLewAwAAqLK/gx2b8opQ5iOXZCaDE8FyyjIPSJeKIDbAASBPG1AXrWqRCC5A37D+
-	O6uiIag88GxmLuOxvhdR4d42gDbc7Qo=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fSMFgLfD;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CBE9B42B1A;
-	Fri, 13 Nov 2026 20:37:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E49121F000C4;
-	Fri, 13 Nov 2026 20:37:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794602276;
-	bh=AvlalDGclbf9jbvk6fxMo0zLcUfRP1nU9XgrjQZVQsU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fSMFgLfDA/Ou58ytoSDg+1mflt1C7sWfR/W+ACkbe1dn9am4k5kJZgDhqDYpp0Nt0
-	 EaI5rLObsWfuzFn5sTkAdXrZTPZEOpgzZMmRyDRvvWgX5LUQ7U5rqM0s/9Lhy2n2iO
-	 YWKyKRkJOYrhOtqCRb2/2i02fzf4vW8jb0PlxlNLpBkgx09vD8+B+Wt97/Ys9H+6+l
-	 fX145SXiGWNPCodaqf//AhojDtXtDD6IR3aLabRjw+Ztxi0EdDViMwKG/qjkIKS5XJ
-	 PU9Sx0DZki7JpzFZRqIWWzYvt8C9VphFjKVogQHq88kV0ThjxG70bvz0ukpSgbufbj
-	 ChhdqKcPkXVrQ==
-Date: Fri, 13 Nov 2026 20:37:49 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Carlos =?utf-8?B?TMOzcGV6?= <clopez@suse.de>
-Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-s390@vger.kernel.org, linux-riscv@lists.infradead.org, seanjc@google.com, 
-	pbonzini@redhat.com, akpm@linux-foundation.org, david@kernel.org, peterx@redhat.com, 
-	imbrenda@linux.ibm.com, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
-Subject: Re: [PATCH v3 5/9] mm/mprotect: add MM_CP_PERM_UPGRADE
-Message-ID: <avdw0O4rWi4WrTvy@gremlin>
-References: <20261112142039.907090-2-clopez@suse.de>
- <20261112142039.907090-7-clopez@suse.de>
+	bh=Go1UlgX1P4vYTlu1myflgbT685YTRFHTo3Fw25oz0DU=;
+	b=QubGa6XgyQd89pMdX7e7MDgJGMEW+cRrA9N368VeqW1WIu5e+jG0b9DQq+SzpAjm7Zh8dy
+	kqJB7lpGV9ZSYOYhu5iw1QNtWl6D7EHowQLbnRvasord5hU2cZ5hgMX8W13dzzyiiuB5z5
+	K9sHh9TKRWtJkzF+foeMLelx1izHPZ8=
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-91f23ddf32fso10009206d6.0
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:41:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1794602495; x=1795207295; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Go1UlgX1P4vYTlu1myflgbT685YTRFHTo3Fw25oz0DU=;
+        b=X9UIULDAVleUz/ncbne+o5FarLK2TTn3AETdSTnBG5pBWlvuwbVoR2Rd0qggw02WTE
+         PorFEyKlbouIYEvZxrevcDCNtW95JvEIwf8YcC1iNaqcSUGDCcuvwb184IDt/3wUo7je
+         U0GJLNGBt2OTXD/xAK8j2H62FGLXKJLeMYBUE9fv9u2+vH/H931KkZX2b7mBlWa0eDiW
+         6YTD9Kr/uwpG6Ft3cGZVAVDBltP/9Rr4dldgqDJqzv9CTcm3KrAnqObNWfFC+2E6Qy7z
+         bTS1M1u2hR17oxnTrt649B3/NCWh9oXm30vkQZwPMz9Jw2mrEXUO4h9N1K/6oiyudObL
+         VNxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794602495; x=1795207295;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Go1UlgX1P4vYTlu1myflgbT685YTRFHTo3Fw25oz0DU=;
+        b=jDYon00sRRN7I7bqxFFuE16wXPcgnTZLdffV7aLohA/QDJmDqOZOz54+NPXSoVq/Pw
+         FhTKWVfXa7dwRd+7YHKhpyD7wSYkqpzwYazpXqm/IlprQAeI9IdMk1t+NN6XbsAY+EKs
+         iepABRG7k19jJqtgz2r61Loo76TocdKAEzcpWBY/BflmPaqTeO0bIWWPDOr+r38Pfezg
+         bG0tJ0cQTnrL9eVpAB5tzDbxZjVsszrEWqhNhWrhJaq4txFLewfGLvFysibPd3a3eDYz
+         yNv+21oUVz89JUQCfWv3rcGpv6uXM7ci3AIFPhjYV5kg2Sz77FCZLxZCwEAoKhY6CuuC
+         HuYg==
+X-Forwarded-Encrypted: i=1; AL+hErG5EKeYKv7LoHm+yHUO+YAuV4MY0LqvBnk8d3MgZKi/qsSaCrMgsOAJQKlAjp4WyIe4tBNXylcNVA==@kvack.org
+X-Gm-Message-State: APuU4Z9a8bzGvDFzHAW/IuRK9BPK/vBAbF5Aij0iCoR21QWNpcmxiUtb
+	CQge6kq7wKt4T3fwE5Fd0aXpskTqELJwthd6tVKFNHBOlg0VNdL+yRNduZXgWXwCQUc=
+X-Gm-Gg: AYBFou3L6zgmWlNo14TPmBwKYLskATHoJ1IF8beSK11EJ+omTSM7BCLQrqXbCEnSbe8
+	Rcg6B6+55L04115h1SSEQkiewSlUxnhL0Ks4nMTKpj9a8G944piQksD9coLxc6ZvwiTGK4nQRRV
+	2kj8yxz44lZK5S4kS7hCkbgx3bez8vcJICB75uNPZ7qSX5vOHnyUfiYPH2YduBPzyS98dDoBbkb
+	1IEV79bBu0/0RDTvyFF/pmx61TG5s1mFlPFkAWYkM5WVEz8lehF6hbzkFqAyLBPRc28uzzMFxRP
+	CcAbOzNCbBquPzmwTIrHcwHoamw2/VslsWXGr7mBcg9FvZn7RUZ2A9bKDPGsE2On6EvnB1eRE33
+	rJGPZWes0hlPT1C9jOknee1qjiWAwYWaJ5GrEPZki8JYoqbtH14E3bGtrULKfvxCwZVis5lbOz7
+	rV+7pRoo8Xko9a0Ya7E8TXtrRtDISB3khUZZAdtG1EOfQldioZxz5SlDDB+jq/d+RpAsCZIVku+
+	iiYfmbnrJki0Qop0FmDoeN9wfXXzoc8xgrCX+pLkMH47PTqwxQIqPDor/fmNqHoy9lHuYxFrJSX
+	/u+lBuoxH/ztL5NI9C//ndp1T+aLYa+ViHQRR86f1kAWL5eIazsizgmg1ZxFQK5P/Xyxj/Xgmmc
+	q4fCE284=
+X-Received: by 2002:a05:620a:2792:b0:93e:a71a:5de0 with SMTP id af79cd13be357-9494bb894c4mr610417685a.26.1794602494861;
+        Fri, 13 Nov 2026 12:41:34 -0800 (PST)
+Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9494c5fd154sm262112585a.2.2026.11.13.12.41.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Nov 2026 12:41:34 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261112142039.907090-7-clopez@suse.de>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9E274180003
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: sajr6kq3r1hphc6akoih8ohaxipkbdbk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] mm/hmm: reject shadow-stack mappings
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, kernel-team@meta.com, leon@kernel.org, 
+ akpm@linux-foundation.org, david@kernel.org, kas@kernel.org, 
+ dave.hansen@linux.intel.com, bp@alien8.de, rppt@kernel.org, 
+ stable@vger.kernel.org, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+In-Reply-To: <20261113200303.GA395967@nvidia.com>
+References: <20261113195536.2660763-1-gourry@gourry.net>
+ <20261113200303.GA395967@nvidia.com>
+Date: Fri, 13 Nov 2026 15:41:33 -0500
+Message-Id: <179460249376.482102.14669935557901467762.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Stat-Signature: ush1mdn5zs6czfsq38yfpwkwyum1nqiw
 X-Rspam-User: 
-X-HE-Tag: 1794602277-830142
-X-HE-Meta: U2FsdGVkX1/EXU+1C66ezMwV9ijhNYTzu3eGWJCHC6dkK9bLwws0iSy8rK0i/JUL3LA1f5BGHzNzoyHmfwmf0SunwzLKl99YLXYVkbrUjpG2EnFPAErg+kBihVq2S2FoRqkrSfT7kGcXr2plbiG+c114GxuX9+LHJXAuTISPpiUMUy9ZTruQOsslrV/cjjqEPCsbRgLGZ5L5bF97OrzStNogfKQgBe6TDnx/AFSdWZ/MIRxODUxYhxJXYoO4qf+/rLjUkPtGUpB5fHp0732T1L+iTuAdJtgzbgx55rwg6eAp5n87DfXYs0wlc1Qf2jBRhtPMnxXRA0Iz4bK9fmhoaLvyg7rmXxK/G0IGlbpUzCmWAfI0/MUCJ+V5myOoYgZyVVMXNr+4EQS2BTn7yl1QSjKkT05gSLjs4mFq2KkLrp5GNOIVuEKyjoJnE0jwFDDQc0NgJ2SYMBOyLvzUhN0mVOvjUzKV60SbIrznCHEc1AJYJixfBa4I0i2xcYnKU3GlOcb+6vsFgS2fSe/cdpUAZs8pchNrx4pXZ7cDF0LXGG2RiE6QcOW5Uqy4eR/2r8CdT+vpAIGUjCmyBxkSy2Dyd2KLjfrK/o602ndDokU6fYhwqEbWmNTC1yWYGwn0FI1WE6xlnMbfu3hcGgap8Cr7lepDu0VhA+EbNtL+yPvjUNVabVggnIzkxZqwRUDff49fN4U4XdVvzmmqdd6Tr5ALkCEpMAsweeNJs7NCA98MxsERqpptuLp0Op6istyT7i9SngRw1HWfKpWKxDgm2jCTNJ+1mHP8PlUp3Tjb2h/0s/aLOIKKzBqWsmDzjXNgH0Mr8ma2es+d0x7/HjBwIchMxYuUo6E7ExiezYPTX3024YPM65jPTrdF4SlUXdLTjO4+dKaK8YRvxiK0+MOmLMTEeQl3a7FGv/t4K5WhYdw1kpKjW0OOZJUMna8c1UlgIJIlZ9AO1tWWrdxzuSDS8BC
- jhdu2YcL
- ZJ6iwIcZVZjbpnhByEo5QIttjjYzTW8NDEGqnKBAVgyaTxMvghLaqIVHEr7wJVRmsJ316/vK8DxSRPDAoklRZkiM3T7JcPYKIk/YV0gXXt/Nsz8jHxIAVe+AKbED/OyETPJ2cxp/V5zX+sF3wW97ZX0kqOkbwXXJqBOCdl5vg5bJvYC61FxerNKQjx6EYxWXtBOl222eXPVHfKsqGS7iiEbp7BDNrV5Oiw0vv+sO+icifb1/AnnG6AIsopzpwREKEADZb9c01mjGheLeSPHJVXDuPHwBqzbVyHnuYgUPMhvT3PjNK9XkiLQfgcnOEmJBQ9dkwooMPEZLtEi4=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BC20B40008
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794602495-334670
+X-HE-Meta: U2FsdGVkX18iOI57XQlrKgcZUcq9otBtjEBuo6osorDuQpRs10Od6LjzL1WbAf5EiXT5baCCKoL888PWrSXEpltR9rvhSPhElifYrrBPyNezWq0SF1WHLvh8mRCeGJimzfa/5a9H6tMHTOfBE1oAD3MqBNCpbdszjF84gndg2KUydZ6XjbTeQcV3s3pczbx/l8hTwPDPZacM5mYgll/I+vTqUjMm1O/auP4Ly8wIPw2ieqhrktbDq285qIbHVHW8AkQ2n7VkO+5u146Gaijttt6PXOzvNzzvdmzDqNqpuYqIHiltSVmKeeHXJPdh4E1pjrTgdO7+C6r1AqZz55N2U6jp7ByMPK/MtcIhDhqxvWD125Y5FWTP9J44rWOj4GdorT3TvNKDRpFBCXJFuSK2+Ohp/QwdoptRWsHs2o5pA5bwrDOg6B1fc3JZPu8DESnc60gHh5PcbXpFFIwtxa3b/GtugpSJOQL1x9c4WqWT9weCm9arsS9cZ+RnPRN0Ko7YUrh5rGeWOeLKUC8gQx1mmF49ftV6cCkoJv9Xbv4XBv6x0tNJk1YdJL16OlfRCZXX4MxoAIpvxhVzEqbS86obTVO3STgDaFVULJqPeTDPj+DZi70osYxQESRtSaQvMSzne6mygIm7LiSCYA+TIjWxU7WTeWgZ0Xb5DvIuzg2Tt57o6iPrsYkM/mhNRjcNZyt92aUpv9tHLbxve6q3huNaS4LhrIyKn1Uobxo1bg2kueTPCAafv6S6WIRPLlimhkOIXgz6hjHDXJrKZVlC80xTUTXjcIHGD/df3wC3Co3IFkJmm4XMTDP5tyE5rZKK8sVisNLtb0Qf3ljXxYJit4H8dZ5Z/JQMjDcPDijA2aP/cae5IE97rGE2yIEC0OW4eev86aLs7dtZ7Mp+QRlwahvYgdX7VHnyXGt1njbNLoR9jwYcHwK2g9xeg45/RMRB6xTFaLnR+XPLsbp6BqYCSI3
+ qCvuzXKe
+ MmASQksJ7PlshS40TB1e5QeZRWvYkdDFBbal88rMXhZTG7326BCjBxn7VWVONtrm3zGDOlkbgerYFL34+os+VjdJ+W3hh7uzXn8L+hlp6zmUzqGdoE6FkthIcmHDyAbq7V05Ja8LxoUGW9WggH+5w6ovgAFs/OubkmGQ0PgE1ibIQyc+wV1zqa3cMyup2hfeMDV2xNrUUMFwEs9DFBWx1WEWSIbb4k6GIppIufFeIESHqWuuCfJW1XI21tjjtHXmCib5emRMKUhagfZbN6kQ+Kzc0uVVArHGhj85SQeTbhqrqhyo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,101 +130,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 03:20:34PM +0100, Carlos López wrote:
-> Add a change_protection() flag for changes that only add permissions,
-> so that MMU notifier users can keep their mappings and fault in the new
-> permissions later. mprotect() sets it when the new VMA flags only add
-> read, write or execute permissions, or VM_ACCOUNT, which does not affect
-> the page tables. Any other change, such as a different protection key,
-> is not an upgrade.
-
-I'm struggling to comprehend what this means.
-
-'Add a flag for changes that only add 'permissions' (not defined) so that 'MMU
-notifier users' can keep mappings and 'fault' in 'the new permissions' later.
-
-The rest of the message just states what the code does but speaks about it as if
-it was already what happened.
-
-This needs to be completely rewritten...!
-
+On 2026-11-13 16:03 -0400, Jason Gunthorpe wrote:
+> On Fri, Nov 13, 2026 at 02:55:36PM -0500, Gregory Price (Meta) wrote:
+> > HMM can grant ordinary device write access to a userspace shadow stack.
+> > On x86, pte_write() is true for a shadow-stack PTE, so a populated page
+> > can be returned with HMM_PFN_WRITE without taking a CPU write fault.
+> 
+> I'm not sure I understand this? The pte is writable but you don't want
+> only DMA to write to it?
 >
-> Signed-off-by: Carlos López <clopez@suse.de>
-> ---
->  include/linux/mm.h |  2 ++
->  mm/mprotect.c      | 13 +++++++++++++
->  2 files changed, 15 insertions(+)
->
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 6af3b7008f1a..001829a61405 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -3585,6 +3585,8 @@ int get_cmdline(struct task_struct *task, char *buffer, int buflen);
->  #define  MM_CP_UFFD_RWP_RESOLVE            (1UL << 5) /* resolve rwp */
->  #define  MM_CP_UFFD_RWP_ALL                (MM_CP_UFFD_RWP | \
->  					    MM_CP_UFFD_RWP_RESOLVE)
-> +/* Whether this change only upgrades/adds permissions */
-> +#define  MM_CP_PERM_UPGRADE                (1UL << 6)
-
-What are 'permissions' exactly?
-
->
->  bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
->  			     pte_t pte);
-> diff --git a/mm/mprotect.c b/mm/mprotect.c
-> index 84bcfe0281d3..8c0fcd10f5a3 100644
-> --- a/mm/mprotect.c
-> +++ b/mm/mprotect.c
-> @@ -767,6 +767,17 @@ static const struct mm_walk_ops prot_none_walk_ops = {
->  	.walk_lock		= PGWALK_WRLOCK,
->  };
->
-> +static bool vma_flags_is_perm_upgrade(vma_flags_t old_vma_flags,
-> +				      vma_flags_t new_vma_flags)
-
-No comment, random abbreviation (but just one word). Not ideal.
-
-> +{
-> +	vm_flags_t old = vma_flags_to_legacy(old_vma_flags);
-> +	vm_flags_t new = vma_flags_to_legacy(new_vma_flags);
-
-This is beyond appalling and a complete abuse of the VMA flags API.
-
-You seem to have decided that you won't try to learn how the API works, so
-instead you'll just write deprecated code that I have to find time to come and
-fix up later I guess?
-
-And we're at v3...!
-
-> +	/* VM_ACCOUNT does not affect page tables */
-
-What does this mean? And why are you referring to a deprecated constant?
-
-> +	vm_flags_t mask = VM_READ | VM_WRITE | VM_EXEC | VM_ACCOUNT;
-> +
-> +	return new == (old | (new & mask));
-
-Ordinarily I'd try to help you use the new API, but the very fact you'd send
-it like this dissuades me :/
-
-> +}
-> +
->  int
->  mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
->  	       struct vm_area_struct *vma, struct vm_area_struct **pprev,
-> @@ -847,6 +858,8 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
->  	vma_overwrite_flags(vma, new_vma_flags);
->  	if (vma_wants_manual_pte_write_upgrade(vma))
->  		mm_cp_flags |= MM_CP_TRY_CHANGE_WRITABLE;
-> +	if (vma_flags_is_perm_upgrade(old_vma_flags, new_vma_flags))
-> +		mm_cp_flags |= MM_CP_PERM_UPGRADE;
->  	vma_set_page_prot(vma);
->
->  	change_protection(tlb, vma, start, end, mm_cp_flags);
-> --
-> 2.51.0
+> Is there something special on x86 that makes the shadow stack pte
+> non-writable by the CPU?
 >
 
---
-Cheers, Lorenzo
+Some of the context is here:
+https://lore.kernel.org/all/20261111-mason-migrate-et-al-fixes-v1-10-3d2454362e8d@kernel.org/
+
+We had a similar issue with migration, but this should handle the DMA
+case as well.
+
+It's "technically writable" but the kernel is supposed to prevent that.
+
+I will say my understanding of the larger HMM picture is limited, so
+there might be a better way than special-casing it like this.
+
+-- 
+~Gregory
+
 
