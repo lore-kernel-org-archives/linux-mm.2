@@ -1,110 +1,78 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F51606A323
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 20:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 813F6606A330
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 20:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OyUCD7Uy
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TlrFg8X0
 Received: by kanga.kvack.org (Postfix)
-	id 29B946B05B6; Fri, 13 Nov 2026 15:02:51 -0500 (EST)
+	id 5F6CA6B05B8; Fri, 13 Nov 2026 15:03:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24C576B05B7; Fri, 13 Nov 2026 15:02:51 -0500 (EST)
+	id 5A84A6B05B9; Fri, 13 Nov 2026 15:03:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1135F6B05B8; Fri, 13 Nov 2026 15:02:51 -0500 (EST)
+	id 4976F6B05BA; Fri, 13 Nov 2026 15:03:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CE8A06B05B6
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 15:02:50 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 662461C30C8
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 20:02:50 +0000 (UTC)
-X-FDA: 85431168900.08.D1F4118
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 23F5A6B05B8
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 15:03:13 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 87261A71FA
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 20:03:12 +0000 (UTC)
+X-FDA: 85431169824.17.57568BC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2A33420009
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 20:01:00 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OyUCD7Uy;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id A39B32000E
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 20:03:10 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TlrFg8X0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794600060;
+	s=arc-20220608; t=1794600190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cVUaiMaz3XMN9uwKkKZrpHW2DyS8HoLv5GhhqXeNd3c=;
-	b=5rOp3iOUwuroYNZhrae+XyKUntTRFAHRgibYWDYDM6zgF2tSOIUJjIB5eLgl9DCbFFCYlC
-	K2rUMtcycME7RYqkPK/LNku2KRpBaSHP4jiCSLYdb49MK/9Tpy1wj7hm83nLAQiH8vYeCr
-	U5MufL06sNddHOM7GJQLHSMNh1O/x+4=
+	bh=HdQQRt/CgHJflkJafdeqoWxFHY5SFOsLjrXPZfDp7E8=;
+	b=YsYyUMbRCZ01MfoEeosowtrkF0fccdR7BZOhX58pshctq2eWswv6f5J1L4p4lh4htrR90e
+	E2jNaJ7HoAlrpC1pCBNOpwSI1B6K5d6GuuI+aK/YUaSyOamFRWMHRzKULKI40aXsAwAPvu
+	hHR0IHisF+N2mvS5faWmrwUzGM3DQSE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794600060;
-	b=F2teHwA4FdrzWtyiH8JO6oWPKJonr+hsJ5sQTjvANSS87wrKolgWZk81ee0caDvvl6Mohg
-	ZAYQ55vysKA7f0NtUcFO+LIFavaVLOSpQFyhFfTZKXqh1suHA8nM8utMrdMfqb9w5Y7k4O
-	lxNbRjRks9sRqx4xWmxWxegPLG7MVdo=
+	t=1794600190;
+	b=OfaxbWK2gG6Qk4BPsCuu7JOALMgYXyLQfJ9aWSX9LhfvUQZtUCRiDuMlRWY1fIX5CqhkjP
+	fSVLJFF+jm02bmkCgO3c4DKfjTBOwWZA7BZX469/o3bwzRyBC+bqW/nRcHpYdoSB2VcS7g
+	8gkA7pI5JT2uM3i+OMYKFf74pzzsr8A=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OyUCD7Uy;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TlrFg8X0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5A82A40190;
-	Fri, 13 Nov 2026 20:00:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E49AC1F000C4;
-	Fri, 13 Nov 2026 20:00:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CAB0944777;
+	Fri, 13 Nov 2026 20:03:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901F61F000C6;
+	Fri, 13 Nov 2026 20:03:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794600059;
-	bh=cVUaiMaz3XMN9uwKkKZrpHW2DyS8HoLv5GhhqXeNd3c=;
+	s=k20260515; t=1794600189;
+	bh=HdQQRt/CgHJflkJafdeqoWxFHY5SFOsLjrXPZfDp7E8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OyUCD7UyGbgQkY37EnEigD1L/mrS7PBtAgr+4NmGTZUelqoLujjnkQSl5X8ARX9MI
-	 +N/R6NXrTN7PcrCbmG/pn27YFyv29KKY0XQoMMAUfuHO8AlBL7bBkgke2RbJvLRPau
-	 gqlZKfWqdyCRLwVmQBvbVLOkIeDne2b24kKHimyfVWs7mXPP0YasHlDFJjkbRUClJ0
-	 B/2YPA2lbPXMYhcPkl6S0YHYVWhH4pYxJz/ZIFporIOHnC79l8MpxhfGy+VNxSydkm
-	 o5/gV4LFTaPbY5q4iab0I9lC5gCZrC/A7fMlWILAEbgb7ZUXgDiS+PGC1UtJqmTk9S
-	 k8m6JJ8gBDoYA==
-Message-ID: <6630ec25-3648-4d60-beb7-61572053318b@kernel.org>
-Date: Fri, 13 Nov 2026 21:00:42 +0100
+	b=TlrFg8X0AUB4Vm67OzMwLnuL9ahl3Pw5r3X9tm+PjK/f3ZGnXwMx56AU0yk2zAn57
+	 GDIOEAe/hcJOW795WrjVEMPe9PSEKQ/w4IyIpnKgcypvlNIddvLpmUQ7xuwaFwejzZ
+	 dSr3MD6IQGYdygBLKFvjyNJ0rzzWChkutY4pTXadyw1/FyGvEWWELV5QFeV7U4rMOE
+	 DkiZdGgY2cPRtxHO5905s6aMxNcChen4/Au3qZ70bQKYLRRj1nccZLkHpxMdxhuwRL
+	 QkDE/YTxe29nxalHy0hwbrV2IiyzuaaVWUjPz085uA7WpZVxCcrxUOvmG66jXzGfM9
+	 hFxKTW4IUPjyg==
+Message-ID: <69e27ce5-8378-489a-ad8e-37c364cf63c5@kernel.org>
+Date: Fri, 13 Nov 2026 21:03:03 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/9] mm: limit pagecache folio refcount when mapping
- pages
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
- Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
- Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>,
- Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
- Robin Murphy <robin.murphy@arm.com>,
- Steve Sistare <steven.sistare@oracle.com>, John Hubbard
- <jhubbard@nvidia.com>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
- Josef Bacik <josef@toxicpanda.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
- linux-arch@vger.kernel.org, iommu@lists.linux.dev, netdev@vger.kernel.org,
- Chris Mason <mason@kernel.org>, stable@vger.kernel.org,
- Pedro Falcato <pfalcato@suse.de>
-References: <20261112-refcount_overflow_stable-v4-0-ad3deef0bd23@kernel.org>
- <20261112-refcount_overflow_stable-v4-1-ad3deef0bd23@kernel.org>
- <avdovRTVITLwuit_@casper.infradead.org>
+Subject: Re: [PATCH] mm/hmm: reject shadow-stack mappings
+To: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com, jgg@ziepe.ca,
+ leon@kernel.org, akpm@linux-foundation.org, kas@kernel.org,
+ dave.hansen@linux.intel.com, bp@alien8.de, rppt@kernel.org,
+ stable@vger.kernel.org, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+References: <20261113195536.2660763-1-gourry@gourry.net>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -151,21 +119,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <avdovRTVITLwuit_@casper.infradead.org>
+In-Reply-To: <20261113195536.2660763-1-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2A33420009
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: fyicyo9jgjurbc7gpmb557d5farnkyft
+X-Stat-Signature: uucesqneomnit7nrezja873aac1hjsg8
 X-Rspam-User: 
-X-HE-Tag: 1794600060-651872
-X-HE-Meta: U2FsdGVkX19uFFlxLbb7bwPqpMsgIKfvrEjkYuK8NcChh1kVrzYY33h6GyzxDI1Vi+L8FUJZ+pxlyfYmpRzPE6F2jVtOih3xtOZwN5NciTsc9JQTumWebpmsyAWP32o80B+gcF7KhH8skCTveRYeB01Cfbku6ca5C4NRIygYjie+2zZqjs/KXXDaU39AHihx/UrJKCOCuytvmQ+vBqNkAFoll+1HNMJrWezfTjpMdyHOpXYFpt2NNzpGZZ0oeRsJzLM7YJRGYVAa/g7tuXQ3XShyadCIzqB0/erAV0koKuQO3/r8uBYiAVA9V2cKxV6G0VbCzRSmR7U4KO2qS+Nks6sZmuV/r7zwXEjjuSUbLbzngnkbeoQi8FFYWVr6KHLOCRwwpWkNrUty3c8r1WkuiGW5cXk9ckZdYmq3efEvyUp87EVY2bQj4wc9aeETYczKRTRLpNFV0df168n1XJf4TUbV1vJAKqJWeIJJQaU7j6gQrZfDfHAqUs1tdH5rAM5WPxmSF+zcRiy6uKixOzcMSIk7VjsHb2TX/+jq2Y4h9JA7IKkhjIPKZOhAAhrIFlLb+737E6oo5WwirD8zqhFZfT4p7WySaeDgYBWfeOjbcLzymh1iKyECI84BlJm/rTRESAivzGi2nRHOvbYx9WZ3n9+HEYR35HRydtuekwG6epJSur6lCQ54pzayz2o0urKOKbrphONSqIWoAb15wbU93Ik0fgMfiejTcirKX2DF4COHnpoQ6KiJT5F3IRWL5tigv/0dQU6PvU2hNW2qPz45JpO3+awmSW3jNiEcvyc33yeCdS94GwK4K4Cc5EZ9TfDf0yUN7UI39WJ/+jCJ2OCN7kbs15v46GPlsFAbvhTiJIsqohOGmC/65ZIH6Zh+dLeFBTBiWwyA7UBV9YPCCccQ27gfya0UxXQGpfGN6aRQVltMPUS2bafFgjc/AGpusrQd7Cgzoj6Rq71G5g4vg7o
- AOR/hlee
- +QpONSQxmgyX5zDVLf0fpjenPM4cN51m3Y/9yyOmjQ+4OqcI7M4GaB+2dw5BdeEqqNSxOFr2/FjanNcgimDFHuK7KOqnAYKWGTBXPKbBG88QZT7aP1I6sDtcp1TLVTCPOiny1wsXC3dEkKzq1SSugro5uEcNc6TBBr+UsNYImxCBqRezo/GGCJAiefU0eqhx3tseNwVf97x/bU16n+s6CFTydX0UrWugrR+5V/6c+2xBjfCyGIgRYyLKmSNwXQid7UxRVdXlGs2e08CgO5Yn/WujgnazZcCNPa2LAEPxAQl6PIzGqZJPWirHixQZ/VkOxoe/UT9h0+nqv7fu56pYTKalOPg==
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A39B32000E
+X-HE-Tag: 1794600190-255810
+X-HE-Meta: U2FsdGVkX1/my1fJkp2SlBwr272SV4/XHX+9sy1e6sYLsdXRNs/hs6GBzlZ2JpJmd4Ggdr0LL0PHXu6KKwKXkVPdhRnZnfrmoe25t0LLZaF9uTf1OGD8d0y7etbDMtcbz1fnRjsx9+HE2BJW6KvX5B/+8iSyJKr1wzibo64wYx1DUb4CFY/RRZ9FFiNNP9CFbCmePLpCAeSlBIHaz5xsXYVAlxqrjFYyTkU2os3xoUqW/PxWgy54Hwh9apXWtQ1gp9rySanfrN2FuWvmwObsVbhyFLxtZduiS7M4b73rqgBogwQ/yUBdAy2cbFkALfJRJcJuIf2aDuslC/5dhSEoYnt3uLHrLMGXps19qqUBcmrTlLGDOSR1mRcwG9qzyfMLWdcebXintLHQ1h9CTiHf7VF4nB6YnVueVpFUeM5FMISrortmzb6juiOc8+SgFppKsZFn2fBEdLFlL0I9LQRqSg+JOphwuktGSGUqjE55TwPkGa+q4o3ZRYUSSvcviAqIu/nsrfuVYhFYSiCE2JRicLesDyvEYMW4cAGyk4VRJecptWc+92ST3eHRGMpUGnTiEl2S2LSEJL+pgoLeLyf07NQtL/UcXm/Tc+i/WPnXVIhvRnojup90CkHJv7TmD6o4tZE4V9UjdCOiKTyH8KexsZ1EiYpaVJkgd0LAuOLyTNyv4F8WZpsBTNBND9AoZwhBaNy098vzViBidJYt/du2TJx9oEKlISjsVfLp97q4DVh3mHxSr7JFUWobd+H6uGeuTUW2V3lxlfhL+ni5ki5Tm2V/thJgK65cJ/qC3NbUgQYmGl4xR/oIYDm8TbQ4XiQZCw3os3wIX2I68Tyh+byOqbESVof5QzmSagIddemUj7lS0Q0bgSzrJGs6PJDvsLvNsR8j1/GQJHuEDHMbgqOGXagmvlPd3ACj2an2N7bxagbkfbDCkxhYlph26pwntOlhCIVr0iiFX7qotsK21rm
+ H6t/yBSZ
+ 7Ai2TOvzYVJGdWfvTttc9pSUvlI57W58e2u4i7eCM5XwwnUhnb3pLxqJHn9yXwzbo14G97Q0an8J3plDybaKRHe9TFCcVqs74pi2l436HjsJ+cZtZh9KeBC5IK+2a3w0FmKoj4Kc3v3Kp0n4tN8YS5KOWc5DADSdRGfMmHO11AaHovxcSIWnjaVkyrjRsp51hT9WGaA0U2RN0AZ2Ec9u1a/bHCjkEKRdQJI2AMc9fqI/IBKP89GXVi/a97wXhUkgnEIX1ynabjHCLRs8+sVOs/Gf7ccMQEcIwCM6GqvWvCY1lKvdJ1R9LT8eg8dzIg89nuI5E7z1VLA1JfKIA/3muBAvv0g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,136 +143,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/13/26 20:45, Matthew Wilcox wrote:
-> On Thu, Nov 12, 2026 at 11:53:20PM +0100, David Hildenbrand (Arm) wrote:
->> Being able to overflow the refcount is not really big news, but it's about
->> time that we do something about it because some modern technology might
->> find ways to abuse it :)
-
-Hi Willy,
-
-thanks for the review!
-
-Be aware that I want to get this fixed now asap. So I will push back against any
-bigger changes on this for now unless there are real issues to fix.
-
-I want to get this sent early next week to Linus.
-
-With future changes I am planning, mappings will no longer be an issue. I will
-then drop admin reserves (as the chance for DOS will go down drastically) and we
-can use the negative refcount as our limit.
-
+On 11/13/26 20:55, Gregory Price (Meta) wrote:
+> HMM can grant ordinary device write access to a userspace shadow stack.
+> On x86, pte_write() is true for a shadow-stack PTE, so a populated page
+> can be returned with HMM_PFN_WRITE without taking a CPU write fault.
 > 
-> Yes.  My primary worry is actually it finding a path where we forget to
-> put the refcount on a folio and that gets exploited into a UAF.  I'm not
-> sure the "reserve for root" aspect really helps recover from that, but
-> I'm not too opposed to it.
+> Nouveau translates that flag into a writable GPU mapping.
 > 
->> As a short-term solution, let's introduce two folio refcount limits:
->> one for ordinary consumers and one for admins. Leave some headroom
->> before the refcount goes negative, which we really don't want (having
->> the mapcount go negative is also not expected).
+> Reject shadow-stack VMAs in hmm_vma_walk_test(). Use the existing
+> unsupported-range handling: a requested fault returns -EFAULT, while a
+> snapshot records HMM_PFN_ERROR.
 > 
-> I don't think a negative refcount or mapcount is really a problem.  What
-> matters is that we don't get to zero from below (for the refcount)
-> or that we don't get to 0xf000'0000 (for mapcount).
-
-They are a problems in current code with both negative refcount and negative
-mapcounts.
-
-Nothing I want to sort out in this patch set.
-
-So if we reach a negative mapcount of refcount today, we messed up.
-
+> Link: https://lore.kernel.org/linux-mm/20261111-mason-migrate-et-al-fixes-v1-10-3d2454362e8d@kernel.org/
+> Fixes: 54007f818206 ("mm: Introduce VM_SHADOW_STACK for shadow stack memory")
+> Cc: stable@vger.kernel.org
+> Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+> ---
+>  mm/hmm.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
->> +/* Leave separate reserves for administrators and concurrent reference gains. */
->> +#define FOLIO_REF_COUNT_LIMIT		(INT_MAX - (1U << 26))
->> +#define FOLIO_REF_COUNT_ADMIN_LIMIT	(INT_MAX - (1U << 25))
-> 
-> I think these specific values will generate bad code.
+> diff --git a/mm/hmm.c b/mm/hmm.c
+> index 2f1e98c6b644..fa61ca59d927 100644
+> --- a/mm/hmm.c
+> +++ b/mm/hmm.c
+> @@ -596,6 +596,7 @@ static int hmm_vma_walk_test(unsigned long start, unsigned long end,
+>  	struct vm_area_struct *vma = walk->vma;
+>  
+>  	if (!(vma->vm_flags & (VM_IO | VM_PFNMAP)) &&
+> +	    !vma_test_single_mask(vma, VMA_SHADOW_STACK) &&
+>  	    vma->vm_flags & VM_READ)
+>  		return 0;
+>  
+> @@ -607,6 +608,8 @@ static int hmm_vma_walk_test(unsigned long start, unsigned long end,
+>  	 * allow write access either. HMM does not support architectures that
+>  	 * allow write without read.
+>  	 *
+> +	 * Devices must not gain ordinary write access to shadow stacks.
+> +	 *
+>  	 * If a fault is requested for an unsupported range then it is a hard
+>  	 * failure.
+>  	 */
 
-Again, we can worry about fine tuning once we have a proper fix in place.
+Cool, so I can drop
 
-> 
->> +static inline bool folio_ref_count_over_limit(const struct folio *folio)
->> +{
->> +	const unsigned int ref_count = folio_ref_count(folio);
->> +
->> +	if (likely(ref_count < FOLIO_REF_COUNT_LIMIT))
->> +		return false;
-> 
-> I would replace this with a simple signed comparison against 0.
+	e27dc0754e3f4 mm/hmm: refuse shadow stack vmas in hmm_range_fault()
 
-As per above, this is something for the future.
+:)
 
-> 
->>  static inline void folio_get(struct folio *folio)
->>  {
->> -	VM_BUG_ON_FOLIO(folio_ref_zero_or_close_to_overflow(folio), folio);
->> +	VM_WARN_ON_FOLIO(folio_ref_count(folio) <= 0, folio);
->>  	folio_ref_inc(folio);
->>  }
-> 
-> And I would drop this hunk.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Similarly, for the futue.
 
-> 
->> diff --git a/mm/util.c b/mm/util.c
->> index 80f6c714844f2..c9c3dc4b490fa 100644
->> --- a/mm/util.c
->> +++ b/mm/util.c
-> 
-> Now we have mm/folio.c, I think it should live in there.
+I used the comment:
 
-I can move it.
-
-> 
->> @@ -791,6 +791,32 @@ int folio_mc_copy(struct folio *dst, struct folio *src)
->>  }
->>  EXPORT_SYMBOL(folio_mc_copy);
->>  
->> +bool folio_ref_count_over_limit_slowpath(const struct folio *folio,
->> +		unsigned int ref_count)
->> +{
->> +	if (ref_count >= FOLIO_REF_COUNT_ADMIN_LIMIT)
->> +		goto over_limit;
-> 
-> Maybe let this go up to 0x8100'0000?
-> 
->> +	/* Background threads must not consume admin reserves. */
->> +	if (current->flags & PF_KTHREAD)
->> +		goto over_limit;
->> +	/* Neither must interrupt contexts on behalf of the interrupted task. */
->> +	if (!in_task())
->> +		goto over_limit;
->> +	/* Capability checks are not safe with IRQs disabled. */
->> +	if (irqs_disabled())
->> +		goto over_limit;
->> +	/* Use the task's credentials, which filesystem overrides cannot change. */
->> +	if (has_capability_noaudit(current, CAP_SYS_RESOURCE))
->> +		return false;
->> +
->> +over_limit:
->> +	pr_warn_ratelimited("folio:%p refcount:%d mapcount:%d mapping:%p reached refcount limit\n",
->> +			    folio, (int)ref_count, folio_mapcount(folio),
->> +			    folio_mapping(folio));
-> 
-> If it's worth doing folio->mapping, maybe also print folio->index?
-> In fact,
-
-I can do.
-
-> 
->         pr_warn("page: refcount:%d mapcount:%d mapping:%p index:%#lx pfn:%#lx\n",
->                         folio_ref_count(folio), mapcount, mapping,
->                         folio->index + idx, pfn);
-> 
-> might be worth pulling out into a mini helper from __dump_folio()?
-
-I want a pr_warn_ratelimited though.
-
-Again, thanks for the review, I want to get this fixed asap now.
++        * Shadow stack VMAs must not be written, and there is no particular
++        * reason to allow read access to shadow stacks from devices, so just
++        * disallow it entirely.
++        *
 
 -- 
 Cheers,
