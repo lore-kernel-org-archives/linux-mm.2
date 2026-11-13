@@ -1,206 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C7F606A323
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 14:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15239606A33E
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 14:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=selector1 header.b=H8EYQ6Xx
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=no2XTcBk
 Received: by kanga.kvack.org (Postfix)
-	id 727796B05B3; Fri, 13 Nov 2026 09:23:12 -0500 (EST)
+	id 1D4996B05B6; Fri, 13 Nov 2026 09:25:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FE906B05B5; Fri, 13 Nov 2026 09:23:12 -0500 (EST)
+	id 1AC586B05B7; Fri, 13 Nov 2026 09:25:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F0D86B05B8; Fri, 13 Nov 2026 09:23:12 -0500 (EST)
+	id 0EA616B05B8; Fri, 13 Nov 2026 09:25:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 360116B05B3
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 09:23:12 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BDC6E1C2DE0
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:23:11 +0000 (UTC)
-X-FDA: 85430312982.28.A390E2D
-Received: from YT5PR01CU002.outbound.protection.outlook.com (mail-canadacentralazon11021108.outbound.protection.outlook.com [40.107.192.108])
-	by imf14.hostedemail.com (Postfix) with ESMTP id BB72610000B
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:23:08 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=selector1 header.b=H8EYQ6Xx;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf14.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 40.107.192.108 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794579788;
-	b=YOo3O90iiAkZ5U+4CDT2nFnErr4qtnEOb5lIiURBpkA1qNveIbzzfKwZpSBsrJic90yNwV
-	v13jn1b/jWfhWksUric6J8U/IaFT/vpw9DP2ch1zx6BGo2ZK9r3Zqrkvq0AaT4USzXv/8y
-	mxsDT+0O7KNYK/tlv57c1Ep3EBxnj1k=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=selector1 header.b=H8EYQ6Xx;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf14.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 40.107.192.108 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794579788;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E13C86B05B6
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 09:25:36 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7019B402B1
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:25:36 +0000 (UTC)
+X-FDA: 85430319072.17.653804C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id D877C40004
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:25:34 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=no2XTcBk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794579935;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XeLDOcLmqwn4Mgr0bkG+XwfS6qej2SH5JaqSEo1Vq1I=;
-	b=niq0ce00+qc81GJIi6i2jrPoRwQpejsCu5/udChjxzF8JbU2MjhsyFDTz9pqVuUz7+QMcf
-	EhIWCfiookxw0APxVec6GSqSxZAOx97c0FmbT6q4fRTj8UCVPcbqVqa2zKBn61TxRrZhVz
-	7IdILgM/anYwxPLtpWkNl1s+nUH2TJo=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KzPW+KqP+157Eh8fL6YRU0shtP+eESFY+WWcF47Yiy1m4O2+D8M6KORF7dW+pziVdYvzci+zzvGnq2dfODbToPdY/V0KqA7lSTJUl+KFsucs2MwEVXlL/KSZsqJQOhSghpVqQ+8etbt8JS895gcm2jhJyLEfVJvVYRFqPRFy8N8AIlAgtmiMQtqvEzkfZaf060JC3Gc2WBO3mar9tUblrNvRCMyGg8Yv5trNuQ94wDdalDDnenc+ktO2BUAU4nsgA4b2eSTESorbrsN80NTiVzZUlZhBwGuUxwftwRLoQOHnr7Ekdm5xXCMTr2SxNm5fePb/K2/MoeQl70AIaCJpFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XeLDOcLmqwn4Mgr0bkG+XwfS6qej2SH5JaqSEo1Vq1I=;
- b=T5HlRHyF7PgywQLLQ0d27cdvMmuDJr3j5VWscJ6RHqfBnlePJNLclhnaVW+OP12nuk9y9nP7LpJuf2w2t7160kN3UsbHoR4v/9sBuAWTU4c7Fk5KVrEKf4mdxeLCOqqlMAbCYzBc4gE6LfgwkaUQNkG5RpZOSlqB+cHd0arhisbApSVf05yvrnoMRcjd+mqwm2jA38QG2AHpZFpwEJMbnTg4uSmoRp+eNOi8IOV2hXQ/1GH+IqYj3t1kdzbUD+JX5khuvdjMmWc7gQw+MQUFG1qIyxyZt1C8sxm5vSkxi5ihDn99FoqNdXYKPipo/2f7TBqsFRVskoih+g7flGwWTQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
- dkim=pass header.d=efficios.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XeLDOcLmqwn4Mgr0bkG+XwfS6qej2SH5JaqSEo1Vq1I=;
- b=H8EYQ6Xx0AJbIEqTH856+lJ659x7P6ZAhGij4yiQYrdOXGJTt6HfEIRtt6JNR7MboA8u5YpY1x+fX2T7inum3DShkFsfY9+t3ChLpIXxDLwKyEDn7Sqm5pw6V2tr4JSrLxZ3K0+IsH8Xn13freLbXbWX5wwZUgwFC3Z4CQS1HPNPHqzyCqP8U38Y+EfQdZQypWw4QLg29YxbO2tzeJM7vz+K3efW7Z+giaEGSrubrT/IsbY18RLBVaTgx5zyTJT6OhuMsVNJRsJb4PnqJK2NPLNnzbeS6bzUbic/IJ/MHgGs14JBZtNTbi+2lhEs/eu3k1fY4z6wxUFQJVpfosjq8Q==
-Received: from YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:1d0::10) by TO1PPF61C4FF72B.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b08::64e) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.10; Fri, 13 Nov
- 2026 14:23:03 +0000
-Received: from YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::6b9e:a901:67c5:7ddc]) by YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::6b9e:a901:67c5:7ddc%6]) with mapi id 15.21.0615.008; Fri, 13 Nov 2026
- 14:23:03 +0000
-Message-ID: <b33a9a59-f0e4-45a7-a112-3f80cdd0380f@efficios.com>
-Date: Fri, 13 Nov 2026 09:23:00 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v25 09/14] lib: percpu_counter_tree: test the limit
- counters
-To: sashiko-reviews@lists.linux.dev, David Hildenbrand <david@kernel.org>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Martin Liu <liumartin@google.com>, David Rientjes <rientjes@google.com>,
- christian.koenig@amd.com, Shakeel Butt <shakeel.butt@linux.dev>,
- SeongJae Park <sj@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, Christian Brauner <brauner@kernel.org>,
- Wei Yang <richard.weiyang@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Yu Zhao <yuzhao@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Mateusz Guzik
- <mjguzik@gmail.com>, Matthew Wilcox <willy@infradead.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Aboorva Devarajan <aboorvad@linux.ibm.com>,
- David Carlier <devnexen@gmail.com>, Andrew Morton
- <akpm@linux-foundation.org>, linux-mm@kvack.org,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, Harry Yoo <harry@kernel.org>,
- Hao Li <hao.li@linux.dev>, Kees Cook <kees@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
- <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
- Valentin Schneider <vschneid@redhat.com>,
- K Prateek Nayak <kprateek.nayak@amd.com>,
- linux-trace-kernel@vger.kernel.org, Jan Kara <jack@suse.cz>,
- Oleg Nesterov <oleg@redhat.com>, Alan Stern <stern@rowland.harvard.edu>,
- Andrea Parri <parri.andrea@gmail.com>, Will Deacon <will@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Hugh Dickins <hughd@google.com>
-References: <20261111203626.95838-1-mathieu.desnoyers@efficios.com>
- <20261111203626.95838-10-mathieu.desnoyers@efficios.com>
- <sashiko-outbox-211804@kernel.org>
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Content-Language: en-US
-In-Reply-To: <sashiko-outbox-211804@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YT1PR01CA0090.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:2d::29) To YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:1d0::10)
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: YT6PR01MB491026:EE_|TO1PPF61C4FF72B:EE_
-X-MS-Office365-Filtering-Correlation-Id: 11f00af0-5d11-415e-87a2-08df4191a0ec
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|23010399003|366016|22082099003|18002099003|261009223027099003|56012099006|4143699003|261102123227099003|261026140227099003|261026121527099003|261022105027099003|261028144727099003|261021121427099003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	p/hiD+m7d7zUgA6GQXrY8ynQPcmPhl3wDtIpqi2AYteFCq9zi3yIUHqrkszSS4/thkicVUq9vqUt5UR5gbl376JrQlskg9k6klKyYZ663DC3Vfv5/KMtBDqth49PBVb91aNqAMIXOolPIhFRwKvrY4oKMo/XUc/m4CZndOePIT5fMWrp5K+pKA0Io+UTFMOOACNmukSoAcIMpMnZctci12l3USW0rLsSi9ZQzp4SrQIX4qQCPbNN/arP9I2GmwKe8Gcv+wFfOnaO8urQy3n3QeTWjAlOVbbdwVXG5x5o8rajZ1VhpOtYp7Hp4PGCeJb0sbzKKKvquoCILvGtK2rw4dAe56KMZxPoSq9Vm1p4BsSebhDWc46uDA6Cg0oCS5BE+CdO6tgd9Ps8SWpyMapMphsAJBfwm+jjD0VPmtzQSvsaJKxv+EOPEkPD3YnLKGhqGJjfMbj4lXWBd2Y9S28KaAg3rCwm1yWRqFoVNjqOUkZIVjGwS5WSmSl+lLePBK+GJe73EUxNW9rGzMyDBFJuBT6MMls7KWFWjA9kdvQlvEIOvNIpM4X2WaiCoaljkDvGO4WtJIF1zr4hZl03hPMPUmPIvakg5zAhyIIdty6Vl4E=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(23010399003)(366016)(22082099003)(18002099003)(261009223027099003)(56012099006)(4143699003)(261102123227099003)(261026140227099003)(261026121527099003)(261022105027099003)(261028144727099003)(261021121427099003)(10067099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bUx3TXBTZk10dG9sZjA1SGFVeDFPWW9WbVdmUTJlOEdkMmIxWG1TSll6VUU5?=
- =?utf-8?B?ZFVoQWw1QllqY3hOaFZCWEp0UjQ2Q21reFlzT0p1ME1YMUdpcGZtYzZ2R3lO?=
- =?utf-8?B?NXJrUWl2Z0dUdkpWWFRvT2h4MGM2VktNZXd4bjdIL0dYNGVFcnFhcFlQRkJv?=
- =?utf-8?B?YjRSVFcxSDMyd093NytZb3dkVTZGYmpCY215VExCd0xydithUCtqNHNBajRn?=
- =?utf-8?B?YlhCUlNnWFJxVkMyZmxnTjA2bkpjUUR5bktrMlR4UUhlSGFxQThLbGY2dEZo?=
- =?utf-8?B?YjRBT20zaWt5c1RoUXhBQ01nTlNkS1NoRTh0b01sbnhtMkpldWt5VVcyNFdX?=
- =?utf-8?B?TWh6ZUhOd3VtS0RYbE5uaTBnWGtsR1A3V0hmM0dKT1JxZ2VZZ0tobDJkM2xj?=
- =?utf-8?B?U3V1UExobTVobFRLN1kxamg4SW5oZ1VIeG9aK2ZCb1FIditvZzVGdm0rT3lD?=
- =?utf-8?B?Vlc4dnkvRzZRRUR5S3ROcnorbktxZHFRbFJiL3pBc1QvQmlrUEU4YVFZTjZI?=
- =?utf-8?B?b05wb3VVdGw0U1MzMVFZZU9Ud2JJRGZsTm0zWjRLSkpjU0pXOStCbm1TUXpY?=
- =?utf-8?B?OFEyclhzREIyYU9iY0krSHZ1a2dmMmJEOGZTeDVpRm9JeFZkdExxNGgwRGNO?=
- =?utf-8?B?OWlhTFQzZGJQc3Q3b00zdXViL2lIV0pXdjlsVW13OWlRSE1jOGVHR0VYQmRz?=
- =?utf-8?B?TWp5SzBnNGwvMVU5QVhmYjQ0T0gxY1ZxWFFvaElEN3p4WTVKME5hdzZZaFNj?=
- =?utf-8?B?N2hDRzZmcmlSc3VlK0w4VzZ6SGJCdEp4QjFZcHJMRndGN0c0T0RqeTNDc2xL?=
- =?utf-8?B?SStPRU9CWHdCZXRsRHJGdTFEenFESkVpRk9DVUNSYnFvU0VEQmxJT2tZTEtR?=
- =?utf-8?B?ZCtwU3RhQVFZdlhBcFo1OEVpdlBKaXZzRW5DeVUrZ2R3YW9vRUhoczJsUXVw?=
- =?utf-8?B?VldWcTd4c3lQSjJ3QjV1RXNMTk50eEZjZVp6aTVqdDB0Y0pJMW9icXQvRzBP?=
- =?utf-8?B?c21FdEJsYmlUVklxMkhKRjRYTTBSYWlyZ01BaEdSdTY4Uk01RWg2OTFjcWpp?=
- =?utf-8?B?T1ViNHJHazZWaFNJZ3FoamJkVkhtSzlFV1BlM1lwUVVnNlZuV1VndU5IREFI?=
- =?utf-8?B?SDJ4OXJKcjh2TnZOMEdCWmwwYXRvVk5uRytFSmRmdEVCQ2lNbHFLMHVzU0N6?=
- =?utf-8?B?NTQxTnozWVQrUXEyM3VaeWtrcjAxb1lRdUNGZkx3WnZaS0ZTa09qNE84MSt2?=
- =?utf-8?B?eEx3MnNyRXZ5WnhUeTlFaDkya0J6aURXRHlRcDFlQjFlUmZ1QitQOGZlWnlz?=
- =?utf-8?B?VUlVODB6RnVHRUhPNmNDMWllclFrNnUvUFByQ0cyWjJqY2p5QmpYeGRkSTVa?=
- =?utf-8?B?R2tXeGMyRW0zSVBEU3JYSE1HOGsxdlJuMmJVUkdsZGZ2bHRTLzdZUUkrL1VT?=
- =?utf-8?B?Zll6ZStTUHZQWVc5bGl5STlBc3p4dkVINkl6S0x4SlJCK1A2elFVZnUrWmNV?=
- =?utf-8?B?MEZsQStWcG02b20vd3NLTXhwbXRNdG04VXJNSGFFVzdScCtVM3pLdUJncjBI?=
- =?utf-8?B?R1UvZjJOSEdKTVZhN3J1WWxkWEEyU0lGUVhNL3dEL3EwYXdLOWRsVkNZYUEx?=
- =?utf-8?B?NlJLZEoyeWs1cldVdFNlU0xPNzErNER2U0NjUi94c0xiVnVISko2VTJpSlF4?=
- =?utf-8?B?TmtvaHFDSW1BKzhQejZtTXZSN2xMczRuYnFGTWtYT3VZMmZBcXIvM0U1N1Bh?=
- =?utf-8?B?L0lRT3dPRE1VamFsY3J4eGRwREtpK3g3UmJXTnVWL2RITEJhMllITldTK1B2?=
- =?utf-8?B?OUF5bnFKZDJhRjJEc1F5cEFmcitUR0pTb2E5cEJLM1pTVjYzcjVqY1I2azFh?=
- =?utf-8?B?WWs5ZldsQTBUaTh1aTl4bzNraVJBVFptTW9PZ0c1M2xOOUc0YTcwS1BtcjdM?=
- =?utf-8?B?czAyNlVFaVk2MjJsS05YN2tFYXR3dzk3ckx0RVhWWlEyNkRYNWpudldzdkJo?=
- =?utf-8?B?RUVMbG52N2tTaE85cHFKc1NKNUdScmF0eFNZR3ZsdTZLelNOaTA5UGUvRkYy?=
- =?utf-8?B?c1NObVZaT3phT1FrZlVLUzVSMGNWbjRhM2ZMWGhEODQzakpUOXUyWHd1VXVH?=
- =?utf-8?B?M0pnRXZYSnA5ZmEyc1hOYXNCYnpHaUM2eER4M2ozclc3MWZsNmtVbmx3UkxC?=
- =?utf-8?B?Q3FMVnVuOFFKWVNOSlNPWDY2Y1Nsc2g5aTgyME1qakRHVEp0MWMvWFpXMUJp?=
- =?utf-8?B?NTlZUUI4VjlHSlI4UlErcG1aL3dvbGF3b3djRDE3NTVsS2JNc2VKa1RwVFRs?=
- =?utf-8?B?TENxalJXT2IvTnpWVlh1b2srbFFVeUkvREswOEtCaE1OWE9lcHRjb1ozM0hl?=
- =?utf-8?Q?KmIUHLRkR/V199Ms=3D?=
-X-OriginatorOrg: efficios.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 11f00af0-5d11-415e-87a2-08df4191a0ec
-X-MS-Exchange-CrossTenant-AuthSource: YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2026 14:23:03.6790
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: S5L8PpMRjr4HJwhV32jh6gdCAUdDnrmp3Mvks8SX5ESG9ygjh7s/u5IWwcgMuqJPwtQo+jyy+s8Xh5B5oXvxnBNYBuDo9X0Ksietrs3QQv4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TO1PPF61C4FF72B
-X-Stat-Signature: hn9wxd5qt38ydftxbez3zytnqizkebqj
+	bh=SLDUcu13ptYDqhss1p7Qyq/IvX8mix873ioFC6PBrB4=;
+	b=zmHIAqCCBu9fAokxymUpWVb+gKZtplG1Dzp6Yj6i1WfosAGwXMejrjkMQ9TwWt24MpMqK9
+	ADFyOls1nAnZnyFwtuFLyEGzrtxcxYvszkVYOoSXOPqLT1MShgMCXmCS4rq5xgPwRLCp4J
+	SRWG/r0/4DEw4dvj+y3F6AH9fXtuLTs=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=no2XTcBk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794579935;
+	b=4TDjPFqbD06sTL+WeTUpkkN6H64E69Ek6PW+STtipLX4QR4Sv1QHRLx1Z3gHwHoYj7NK6s
+	FM83wNhcDzlfqytm8Ukke0WDnpNI+8L8jszUh74yu6vZOhZyBZSplYQWUdmHiy7cxxRtaH
+	IsOQveT8SUCsH5Lu8dYtkAc3jp401e0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 659E36021D;
+	Fri, 13 Nov 2026 14:25:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 660F81F000C5;
+	Fri, 13 Nov 2026 14:25:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794579934;
+	bh=SLDUcu13ptYDqhss1p7Qyq/IvX8mix873ioFC6PBrB4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=no2XTcBkgCbWLnUTzdiJz0lXQPokK8OcsVMSOwtmcX19znogGkjQb0zm+pzjfmyCZ
+	 pADvMu9IftHt5W+CPWGgnq3fcUtEK8pMW2xsNaFCZPA/1+WbT44T8HsibiMP0X2Tfk
+	 Psa2bh9QYTHtbduN9aV5UYXWuxX0RhplV0brFOqeHJ8rQEEGrRS51trIKC33r3xq9G
+	 BvqrSJrSETRmMhnIiEDqHhhV2GgZPzJo+HKEGl42SrQ2HpebHAQS8jGdTqlGG+VLiL
+	 HdlCW3mBdlUUVfKayxseUMv26i0DPYRB5EQdndRR7RXIRhpUjRzYDpROKH4HobiFCc
+	 WmU7DvU4ckd+g==
+Message-ID: <sashiko-outbox-212974@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] mm/khugepaged: reject shmem collapse ranges beyond
+ i_size
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?SsOpcsOpbXkgSmVhbg==?= <Jeremy.Jean@oss.cyber.gouv.fr>, "David
+ Hildenbrand" <david@kernel.org>, "Zi Yan" <ziy@nvidia.com>
+Cc: "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, "Nico
+ Pache" <nico.pache@linux.dev>, "Ryan Roberts" <ryan.roberts@arm.com>, "Dev
+ Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama
+ Arif" <usama.arif@linux.dev>, "Kiryl Shutsemau" <kas@kernel.org>, "Andrew
+ Morton" <akpm@linux-foundation.org>, linux-mm@kvack.org
+In-Reply-To: <20261112142335.2749597-2-Jeremy.Jean@oss.cyber.gouv.fr>
+References: <20261112142335.2749597-2-Jeremy.Jean@oss.cyber.gouv.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 13 Nov 2026 14:25:32 +0000
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D877C40004
+X-Stat-Signature: p7uisexa6stuki5phfk699bs8qp8dxd9
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BB72610000B
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794579788-500338
-X-HE-Meta: U2FsdGVkX19BF5AhiIx90nwy2Camc0E+bHBDlbArTTTPVBOVAvVagGMAZCYJ+2JSJ9pIMQoUFIeSFRfp/21/TN53L/oI9ACtOsqqAFRMXduODs4WVtmk23jEOn+WAQKYQebmT81pHSU2K1gdw/Dq5mPLkJMasMe7A5ccDrg3LnDdghwuImo5fjO7MKjiXHvNKcRCB5RB8eqgB+GC3tKFxXF+SK6PNP2aWj3FYnpCI8BZDpUnuozIkMM8iOjLwxoGfPVgeyz9XZ8S5vo+1A4BhvqM0h+5ksbB2wY68iUli3qDPpkuePaF5JBA/h3ptO4jzSfUYWSyAKGkao3arpYSujDJrw1AhkTjC2NH/xnlUp3BYiQFHxBwWPX2x5UolZuQdEBWf8Bk9rJBrdcw17hHCnNGghqH1+88G1BOrPJRmqOwgLE/XHY0FPseAM0O7ouCVQ4BzZQyje+sgbTX5TiELj/1aBuXD1ZyzGqwSsTDTw2bIDBirlkLoAzsZec4lxZud0/uGb4kScB1Kl7hSoQbhLjc4I+ZreoPDsLkTdt7vzrFus8qlg5xTy5t67cGNCJM+P3a7YlTRkJEl0tUqCCzpyd73lyTQjAxM0wM4d88CBM6oMGsSk5JEwvLk3w8sig57U5t777ygThJdycu1PokogIyGephEcUYBD4oAEH0N0dSBk5+758rtEy0uPKZqtgxgqGedK183JJxvXOdpXvGDZtPcc5c7JWl2LlcG+kOcp0tliNl9+LaRueGrggWxtp3jS9Wpn8nNOeEhq/fRGy+EBHW2JDjN8YFftlnETLwVNo7p3XqD8avxVWEuXQ0JWMd1BOVTqpRIW9KLNd+vlJOhOxihI+lEr2QTu78+P0Ch8kUhvuIVuAyLN8kFYhYmt3W4sCBXFjgn1lEd3ITuD0MmBiqnzqsDQXXEfm/h1TKrA5YtAT3xDt5ksKUhmx/KDoC4esxAcbcZKd2p8d32nP
- SoRxT+x1
- R0BoO1RiDR8S1e78TRs4Z/OwfjtYXDd56ebiAfmnGlmQoCs2/Si/HRSBnAJIU6no6xKWuxDnZWRQFlbrWEXPguZdOMTO8NxCnwCHObpzwZ86y8LmN1LlFFTz9WhSAmXZk8yHqpqy8oX5jHrMfncpUuTWpIYCZg3YjjSqHGhWwsgdAO/SnitqBaA70RJV8+cFF1QJcrxpAO2Wb+NBoXniykMq6HmFzDQqxcThr/IfmlDgOoZPNKuIC+zDhP5N1kgUCZZsbWYzGl+Hd/l2puPMeTrCfCQuMoifFcQR73ilsFzGzxhR2RjXU075m8DPRYZ85pBDis7CTA6c5Rs//22RbfVvLoVPjk27p/NfUdoqhnD/CgBTo8frpVxBzQKmX89bD3rLj+6VkL/WYpVANFxKZ84o5Pd2EYK573iFtsNOQFyyrPZ2UyZWYCARLmF+xBJzWxc0TiI4bdrBhC0RzV0+1CmVWThwcmtuMCEc705mPsRhb6/Z+GxdGrXiCa2a7QN+fSqcCqXpxOAF31obti6m5mt0rkhjSFtMv8/WJLIETiPWqA72uVBE0czi/XE8JjSipBlh/e04p819MmZj1ZEDyAxJ1ULiOazj7r8VK
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794579934-738402
+X-HE-Meta: U2FsdGVkX18Yic/u/F+CuWhVLlRvmm0DOZGfINGSXc3O90Gto7UoAsqSU35BlLGhaEtIfygFsNBKCaeFCO3tf5+8/mTp6msCaEZH4l3ETVoqe1eR9MsfEQhRv7pjKoJt/zLdR4t7di63RN7IsqFx9b55x1X8CnPk1jpXUciPNokJ/u9Z/u+4LTPLdCorXIZuMVbgvBcHtk1lI1NM83bGZRlmKoeWOIqiR6USxKrji8JNPhZXjIgzpHeNAxDJGRiHXTHz+JNOu3ctO9iIIQaxmfuM6hKylXXt6k3cv47PQ8/9F9QMv9AVt2vnO9SgcxN0OhcttFQeHBUTRFWwhLWTi9MvDKsdZWY476n9sTYP4XOgm9ung4K9siqigpoTJ8LSSz2kyfHRyGjrgDp16v28za/kzSSgKlJgltnXgpBw2VPw/Tevc0MCV9RgtUEqnyx8OKGKDRak/0SiRdx7G+STuN0vrRdJl8+967M4qbFdpTdBQpC0vzd/T4UeSuJABtXlbc+isIjP6YYb6Mv1rQlPV8JOb/Ua+bc0WVpSj6vvVD2WzTrFHBbUpYBh1lpDUq0WXUm/0GCRh8R2dCqXLdveeknVJopkIa30R/J7CLOhRQe+pgKb5o/l8MT9dtWlYZVpfTYlvEekDHqHJCGhomSOZ6eQ8e+5xjzNg0j+GcnPxnaTuW5deSv54oE4qD024IRlPkWNGvpkGyLWz5ESCpgQwduWz93SUSq5Gdj2okgcXruEj7tAA5aLDwqVcOHVsNPc+pDjjFNVj9SkOF9H9ajau7LlqcnXrz2MoLyy2RbqwF1rFASjDaYYLTJJtz6u3k+RMZJiPo46z5UiJLbvshXXSOBiIhWrIY6EQxpkhFLdjhCAWk0iKorbVnStNsplXrMtL1PDeNqsXGfOmi9iZJ0zw1cmsbLEx6sJcZXguOw9O00f7GTIjfw/LpjPJAoXAncLwLT0qp9Zly0X3Ih1tGZ
+ K95mkh8M
+ g/1ohEwb8nfDnuMm215ztD3WTqY648Thm/90OY98dBgmyG12dQRYdAbhJtNZdWKZvy3Oz8cn6AzsKn0anf4elMow278ZbZf1jr8MDNrwU8o3bhd5Ydj9dacKpYUvFBqfRaVDKR6JWKENv/T6CyLitXeYeEWjuYs/fAnsDP2gxbeeiewrhkwgVMBxd04A8MVmvuFMI1V85nmGmQveZqq+Fq9l6OCYwR8q+wYrmDi5waLU0dOCX/cs4uwEsI4V+1aEb2ZhHGkcr3v6sI1bcwm7hdcqXAwLM+s6Od8WB6rRXjK9v/1qgeYvTiite0fjhPqLQy4+oaOfafTfAn0kau71rmI5GpPP/UgD8NExdt3xE2po1LYXlESsWpj6o3rjGbdiQnFkrI6bTHA8r5GuuGU489UiqoFaaEWfdak8vh5ykRv4brbGBEgtj/rKlgKMKY3ASg2VX31zOJnsFwiaasSs/ange/9rVbjlFTodFz6l4zAXi7K6sEYpddqyzZaXC1dX2qxtYzQBtGMCV6Od6tdHy1A3y3mjJq93ottVaC6+I+pMLhBWZCkf1q1EFuRtbt1aBOvWU8Sa50py4emjr6IGOgQHkrY5v/z1rGWAJSClxlJ34pmYtQ69pILZRwFqCOTWscibt7JxfuSzdjoZXbi2oRE8ogyhMb2itR143r0i7E9vVhwJjEskYbqacKA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -208,50 +96,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-> [Severity: Low]
-> Can the relaxed atomic_long_sub() on sh->charged be reordered after
-> percpu_counter_tree_limit_sub() on weakly ordered architectures?
+Thank you for your contribution! Sashiko AI review found no new issues
+in this patch, but noticed 1 related pre-existing issue it does not
+introduce:
+- [Medium] mm: xarray node memory leak in collapse_file() [1]
+--
 
-[...]
+commit 8b05158695205f614e5dcb777a5926b63afd5388
+Author: J=C3=A9r=C3=A9my Jean <Jeremy.Jean@oss.cyber.gouv.fr>
 
-> This can cause a false-positive KUnit failure on sh->nr_over.  Using
-> atomic_long_sub_return() or smp_mb__after_atomic() before
-> percpu_counter_tree_limit_sub() in both the loop and the final cleanup
-> would enforce the intended ordering.
+mm/khugepaged: reject shmem collapse ranges beyond i_size
 
-Yes, this is a bug in the test. atomic_long_sub() gives no ordering, and
-the subtraction from the limit counter is a per-CPU update without a
-barrier when it does not carry. Another worker can then add into the
-freed room before it sees charged decrease, and count a false overrun.
-x86 does not reorder these stores, so our test runs could not hit it.
+This commit holds the inode i_rwsem in shared mode during shmem collapse in
+collapse_file() and rejects ranges extending beyond i_size rounded up to
+PAGE_SIZE.
 
-Planned fix for the next round: the free uses atomic_long_sub_return()
-at both sites.
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index c6d5ba6c88a6d..e0e602e8f87f1 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2272,6 +2272,13 @@ static enum scan_result collapse_file(struct mm_st=
+ruct *mm, unsigned long addr,
+>  	 */
+>  	VM_WARN_ON_ONCE(!is_shmem && !mapping_pmd_folio_support(mapping));
+>  	VM_WARN_ON_ONCE(start & (HPAGE_PMD_NR - 1));
+> +	if (is_shmem)
+> +		inode_lock_shared(mapping->host);
+> +	if (is_shmem &&
+> +	    end > DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE)) {
+> +		result =3D SCAN_TRUNCATED;
+> +		goto out;
+> +	}
+> =20
+>  	result =3D alloc_charge_folio(&new_folio, mm, cc, HPAGE_PMD_ORDER);
+>  	if (result !=3D SCAN_SUCCEED)
+> @@ -2703,6 +2710,8 @@ static enum scan_result collapse_file(struct mm_str=
+uct *mm, unsigned long addr,
+>  out_put:
+>  	folio_put(new_folio);
+>  out:
+> +	if (is_shmem)
+> +		inode_unlock_shared(mapping->host);
+>  	VM_BUG_ON(!list_empty(&pagelist));
+>  	trace_mm_khugepaged_collapse_file(mm, new_pfn, index, addr, is_shmem, f=
+ile, HPAGE_PMD_NR, result);
+>  	return result;
 
-> [Severity: Medium]
-> Does setting sh->target to 2 * sh->max / cpumask_weight(cpus) + 512 prevent
-> limit_worker_fn() from reaching its in-loop subtraction branch?
+[Severity: Medium]
+This problem wasn't introduced by this patch, but can collapse_file() leak
+a preallocated xa_node in xas.xa_alloc [1]?
 
-[...]
+mm/khugepaged.c:collapse_file() {
+	...
+	do {
+		xas_lock_irq(&xas);
+		xas_create_range(&xas);
+		if (!xas_error(&xas))
+			break;
+		xas_unlock_irq(&xas);
+		if (!xas_nomem(&xas, GFP_KERNEL)) {
+			result =3D SCAN_FAIL;
+			goto rollback;
+		}
+	} while (1);
+	...
+}
 
-Yes. The workers together never hold more than max, and a worker only
-frees once it holds its target. The targets add up to more than twice
-max. So the branch is dead whenever the target is above max. Elsewhere
-the limit fills up while most workers are below their target. On 384
-vCPUs, more than 97% of the operations were failed additions.
+If xas_create_range() fails with -ENOMEM, xas_nomem() drops the lock and
+caches a newly allocated xa_node in xas.xa_alloc.  If another thread
+populates the XArray range before the lock is retaken, the next
+xas_create_range() call succeeds without consuming xas.xa_alloc and breaks
+out of the loop.  Because collapse_file() never calls xas_destroy(&xas)
+before returning, that xa_node is leaked.
 
-Planned fix for the next round: the target goes away. A worker frees
-part of what it holds when its addition fails, so the value keeps moving
-near the limit. The test also checks that such frees happened.
+[1] https://sashiko.dev/#/bug/linux-2a262b48-1e7f-4d11-8b87-d5e410ce41f7
 
-Thanks,
-
-Mathieu
-
-
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-https://www.efficios.com
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261112142335.2749=
+597-2-Jeremy.Jean@oss.cyber.gouv.fr?part=3D1
 
