@@ -1,94 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3097606A897
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 02:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B007D606A8A6
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 02:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=Xs+ZTY1a
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=eQbhO6D7
 Received: by kanga.kvack.org (Postfix)
-	id CE95A6B0649; Thu, 12 Nov 2026 21:51:01 -0500 (EST)
+	id B63B56B0650; Thu, 12 Nov 2026 21:51:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC0C66B064B; Thu, 12 Nov 2026 21:51:01 -0500 (EST)
+	id B140C6B0651; Thu, 12 Nov 2026 21:51:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD6406B064D; Thu, 12 Nov 2026 21:51:01 -0500 (EST)
+	id A30876B0652; Thu, 12 Nov 2026 21:51:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 983866B0649
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:51:01 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0CFD41401AD
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:51:01 +0000 (UTC)
-X-FDA: 85428568722.10.D55CC81
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D559B40002
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:50:57 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Xs+ZTY1a;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 6F5F26B0650
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:51:30 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D1306A76B7
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:51:29 +0000 (UTC)
+X-FDA: 85428569898.12.40C881B
+Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 1FE51C0003
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:51:27 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=eQbhO6D7;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of ritesh.list@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794538288;
+	b=1pxVlS7gKwkjMAbr+O7qZ4MAgIDAUJrkv/a9jawcmwFkZvQPlKz6kSwvfTdN4OT2+lNl6D
+	RR0snIwGaR1wIwD7m4mIN5KxC9FQb39pQkTYkjUwVLVVFCI0B0lyjR27FtpMCRRQ8va93Y
+	SOaoxvJHZOhXBoSwEPoNI5z1OjTFAdc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794538259;
+	s=arc-20220608; t=1794538288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mVe5HwVBkXjfHvoljda/mJvecIfGagV1bTDZ+w25zss=;
-	b=MP7eT7InaeReZhse3LJPMNKIRs8oH/UhSoEpFwbPQxhj6cIc76T25A8pKvIuiC6047EIL6
-	TGgjKWugSyqXRMeUJ1dnXiEwwjAyH3yW+CquPJVbVpm+FDuWS/LicvJowX/eZMw0A7AwXt
-	UJnLCVZ1Rk9Z1ObYtnRQu1WglhphZhw=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=BEjGpvcrNvlHhAnch5bFQ1ZwAUgnUCLZ3mkaXsk+SiU=;
+	b=K5pAXWr5y7FB4hhGN7/FS5ydEQaRY0/U1w/aRyQ4S4r6yR4vJI4FzN73JtqiRNQVuV6zlr
+	70FzrU7r4yNernr5f/xizXkBN9ibrxnwouaSKKR+OTUYUHttlXeb0z7CTnER/Qq2AMC3uE
+	iXSBEDleXMe2DsMSddXjfDAOo71uERA=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Xs+ZTY1a;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794538259;
-	b=QV0ePXTHsWGP0ZHA9kfwPvk0LVLHrlGZhBtNwel+JvDD/mHpQ6ygsAJ3q5/SEkJodohIL4
-	kSEAlORKXn1TB+HjkiVAIGFQ7Ci/zYT+TSTG42xOwt6Y2DUjgkbeF3kWMMN6HKzv5ZGvSh
-	ah/n6uUXhWSOSyW28/6RlayBkSQ1Vs4=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1794538254; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=mVe5HwVBkXjfHvoljda/mJvecIfGagV1bTDZ+w25zss=;
-	b=Xs+ZTY1ahj0evqtHOE96xHkAO6aKM/5WA+sUTn7c/vRE4Y3Kp9PKA+u90Gzf94kRueeP0W5Tp+YkFkaar7I4GDazTz8yrZI4ckOQaBMnTF6ggXPOcj7ez20m1lAP0LHAdzHR9SvxOl+PX7D0RbqwXwHQLEFAqu36vHG5sJSIBDg=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0XEdfmiI_1794538251;
-Received: from 30.74.144.124(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XEdfmiI_1794538251 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 13 Nov 2026 10:50:52 +0800
-Message-ID: <a72af87a-0f10-4717-9d50-2d3480c32caf@linux.alibaba.com>
-Date: Fri, 13 Nov 2026 10:50:51 +0800
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=eQbhO6D7;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of ritesh.list@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-15dd124bbe7so324230c88.1
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:51:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794538287; x=1795143087; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=BEjGpvcrNvlHhAnch5bFQ1ZwAUgnUCLZ3mkaXsk+SiU=;
+        b=eQbhO6D7YQEBfryAZpIv3dJ9p7x55aHSGQruubzZXxGcujcv9DxEw7j86FwFXTh40w
+         cLm7i1AFINBtTx/UbxR/3PK2ueW+twuMbAGPxAU7nVrXXQUveG+K7NUJa2J01/ixqwLi
+         nT/dfEGebG3iEsU1blJF4CoTLOKXPu0XhxgGl4F65eJI3hYU3xfdmWQN9t6LEO0EuQbE
+         vHzcGLIAZuLOdRHEoE2eYsUKbyJZ77kJjXvgBk2kWzm3qn5Rj/Dg062XczdPLm1TXvIp
+         ld2c4VghZ9e/FNUGnlgkwspcwDgfisoFwAfAH4ucFaKCnKVN1NIUJ9DxOtkOxKCvOT3u
+         XP8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794538287; x=1795143087;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=BEjGpvcrNvlHhAnch5bFQ1ZwAUgnUCLZ3mkaXsk+SiU=;
+        b=HnzeAFKh3eFNC2+S3HHStugF7KGTOD0dkYNuN7SC+zyraOIgZvjKOuL8Q44zFr7Lqj
+         KdlqqC1v7puc79XjZiXx0PMGp7aB22FY2oO8BeUj+fY00GcNgNt91Rp9JutkXPA4NSAl
+         vCVGikysC5qKsX6wV4/InSOBPkiq4vEcA7p0kviBZo254rlTAC5G3GpJ6FYCEbEn1hWx
+         nMK8uyIFCyarTJPtWHtK0g7HJee/ZGbis+6ccxACcjXyR02PARdUvveXiq2Gubawu4OQ
+         utrxReZlzVNY3I83tLNMeNsHSNrcCp3Mlx+3e4XAm8jucd99OgolyuaoDH2DtXG5+Dxz
+         lDGA==
+X-Forwarded-Encrypted: i=1; AL+hErEqacoVhxFMkb8sSc71eBLKcbOJX2OxSQ7NRENd7gyFGiFT5Gv2SdA8bvUS3illbyH3OJ1i2qYAhw==@kvack.org
+X-Gm-Message-State: APuU4Z/xHIjLt06vnwhu0Dh4tGkxHGPNykvsDC0AR2j4K4ZXFGYBd4Rr
+	g1oB+u88HgMMEvuyp0xfLixsEOgLXnZuReHKLzkEANtkdqAYfkdVokfm
+X-Gm-Gg: AYBFou1QwjlCw/9+yqvMmf1HUacoUMDjpqaTIyZ3wCtdiIMzB418FuWJEL1a6zVhmcV
+	Rae30AUxKWvz8anxpJBEnf8HkaQ/IH+vYUQBQNKbRHYbK0bISiOUqRgE1Y1yQEm40XGWTuJwatL
+	O45bbyhUmVlkUhQeDRtWR0ili+EcEam4dprKLqLZcasiv7UxE3/wybuTZ+0YNkJU7YaedFMtGq2
+	aPTyX4YWnODlfRedNIJ2V4YaslaA3b4CCpzqKNMK5wkVO0ShvGiN7PqGX+rOjpT7o3VbI/qnFT1
+	CHgcVYFhghl9m00v1bATmSHmRiN2si6WjORZXSloQbdNQNBtiHyk7PSWTuSA08n1/v821Tf8CZD
+	eI6xdfqbpJxHLrp2Qp6uNMmjyukLKjrYycUALy9ZYIpGTbvTPyPXR73Jb56skDDQld312fGf5Fn
+	gw657IKR5e3XWJJOJuy61qmvPT12eTSu8SNJ/X8QlJCxrOE/ASxlMqnuxvAraj2IawqoN5fjrjq
+	rzP93aWCUCoOrh67CVPmm3c8dYtTfGwpaE6e+PIe+U2gDgvwEaITTMRRgSd9bTKGPwH5QH4LK8P
+	qrcE/Gj2AF2jGV2iO3tc+C9NzWAgUgOMqw==
+X-Received: by 2002:a05:7023:a4b:20b0:1b2:4e2c:6838 with SMTP id a92af1059eb24-1b50314bed1mr1240666c88.15.1794538286798;
+        Thu, 12 Nov 2026 18:51:26 -0800 (PST)
+Received: from pve-server.rlab ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b50319d40asm2853771c88.11.2026.11.12.18.51.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 18:51:25 -0800 (PST)
+From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	linux-kernel@vger.kernel.org,
+	chleroy@kernel.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	linux-mm@kvack.org,
+	kvm@vger.kernel.org,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Subject: [PATCH 1/2] KVM: PPC: BOOK4S HV: Fix memslot rollback in H_SVM_INIT_START
+Date: Fri, 13 Nov 2026 08:21:13 +0530
+Message-Id: <7510ddb55a34e8a669eb7c2624d652264701bfba.1794537345.git.ritesh.list@gmail.com>
+X-Mailer: git-send-email 2.39.5
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/mglru: yield the lru_lock earlier in
- fill/drain_evictable()
-To: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
- Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-References: <20261113020132.274013-1-hui.zhu@linux.dev>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20261113020132.274013-1-hui.zhu@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: shbudxh54495pxbnxjeb8hpmm5samqm8
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
-X-Spam-Status: No, score=-24.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: D559B40002
-X-HE-Tag: 1794538257-891824
-X-HE-Meta: U2FsdGVkX187GLdkf+Bw/mHfZUNf87OzhweOpEiZwU+1DNwyzO4RILZ56tVC+DYFqOoRxr4F7OiSePrjxAG7+jfgQop5GRRVIq+6B+zRHaIdIU6EijEDsrEwqeTgBXrXsoplcCd26jCoRwyuFdMA8+OnuwVrekWZL9Tun62JVm56tcyPHfDU/GRJt87qkxqohWW1H4yTqRgoqjclLHuK654+EqDVvkcSSxKvncDAlpb2ktLLbT5mH1yL5DSnQVQAxEzK0qp/x4chNH9mQSvwmEvaJLxPczoWKOVygVssN94bwAYQvHE0M3vAJ2D6YyDv/tWFsg7aBeMc3UpSVTL+lfMg+lXIOVCq0YjSa7dIbU8yoPJpb8FBLxUsfp/XRVzCxaXfE/DWFl62sj81plySPEiDnss0lZH8g+SHsW+c7KvUY7/7Y8UI/AhVoet6aLhHjImX9wHR9sK6QPCRHSx6q2pUT/zrqsFrX27Jh+3u5EJfWfMI57glgmqH0hyQ8fy8r9BJ2BIkYlRFJDHxwrTqLs1R5NEYUR2CzUnkOum3VCiwjtm24ikUszkoPwZZV+KgGSIq1PHiadN1Z5QCQQABC5I8cLpuy4Muy+/mXxNaN51SyQUIudNi6DI8+nNW5eSrX77pJurz4CjlexRvvelN9SBoS1kCsB3DresqvGjZ66Ngz3JAJQhs3rLNMVSecsazZ19O35rkM1TnQMFu91XH8UlP/hsmgPhYa4jgdEfnjgGuCV9W49gReGTKWtP6cfZYoBlU0IjtiR16v9F9+R8omrhP3T1z5vEdm35rc+1LlXzboSgMkxVxMfVzn19wiA7SDrbVM0Sag2Yoo5KE7L94ad1rURLvO/RlF5KK9z6cfMOhb/UruhV3S/1z0hxn8Lmy8LA571QRC8aMCxaaKoIskPRAQND6Agr/PvOczrd0ZP3r/X8DtERU4WgbuIMX2igsBimlKFWSUMnm2semfpi
- I/kHxLyR
- BJ+jn01BnV23tZhxd15nfLLSWBsjMJNHgXwC8tGLHO3lE1Ye4xFRAra+DPZywqQKty1xFotvAIxAkZylgEfp9wxQJbIDs7qBgOSU1ieTibs4SlI8w9tVXgq+kfKcOpHU65UroGidJV8ByOkq8e7k/1p0C5L3leQC6K3DXexB20imaiUtVNHUCxQmp/wpvCa4eVSf8ZnNb5eKlbJB2g1uCdTFaoW13KVSzPmXfpXbXKvSqJHfgl7fEfe2gbxmbBDb7p6JpwPJuo/Fh0/Z/HYfO4eovUoNldTowpqkCs+FU0BK0aDfNfQJ2FEcx7p5NUB4Usl3N0xUAnBYpOwDe7TQt9zOc9PG0Q5FgYvtSeaVaJpQL/JRcyEhuckOw8RooVoFtEkNgn+f9+K5VxP/MRizKNj94fQ==
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1FE51C0003
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 9srkj1z461rmijuwjqppsaxx5f3pt4bt
+X-Rspam-User:
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794538287-588478
+X-HE-Meta: U2FsdGVkX181acWPXGfRkIFGW7SwzBeggDw/2EP4+639evN6fcQXqNp0nQgvtePPYr2+kt7F1W5HrzusTW3uJa3Bsnr6zOx+R0KT7uD1vznw+fvw2Q6yj5x1uaq7VDz8E6eBLfOKoqijGcDuCGBPrApljcinRCV8C1YDJwAyq06Wyckpxp455YujhP7t6vJCVZlJKykMf9GFnudBlG5eqcYqwDXCJFOMPAxAKfkt9ZJSuVJXEpYlaZajiEumhUdPiRrEDq0cDjkVhgXU/KSBkPe5GOLj211DRZ4xeo5H1IGt1zayRmDWCZ5Ab7NoluJvA/BGMDc6kyNH5BlON8Ru/Epqo/pqqteSAJnw9MyOKkLsQ2kz1Sx3e2vBQFgVnD9MXa3hKuPcKw0gZlUU66bMa2QlC2Yn0EyzP2z2f7xa9RLTQ4TRFTHOobzrL0DngJmGZLeYeQ+RFMRyqOwP6n2LHveaEL+RnHrDnZ6Bw4lwpCiYeUi8o0A2b2PUxJg7MF8mN8VyUZT0jWumR17iUow+AVK1CUtPbW3+v4h8uQq3HlfuAax6xcpaPSvruhGff11nAiXi8JxyJqCPOF/9iX889CoBR8KxG7y0JVFhn2mLTyC0rGmySH2QK9y1xAWIQn9n2UZx/LX6BBVsp7xpBr/572Zw9fhXvg2qH7cq/5Css3iJlb49ujFeOT3i+fJsES7B4zKZLF8ThRLBCMgDjF/fnp68kNA51zc2P28v3i0kp0NE75F7nlhH68Jvxs6c6n9QuSb5f9CZxf0revUkmK21g2Kxzv5VP8YSPXQMpBpL8SMLdFHQ1+RHyIlqpv+4JCKKdseCyQqEDV4ZsPxm4nBsjSbIGaJfr9ANg7j5OCXP9N7NL/aZV+JG/SidgPa4A2RoMgwEdYe1g1YMqb2egVMqlRNX4t8I4aAbf1dh0l2tiK2OA7iYT7m1PrARQPMZJK23uHVshH7TbyG7w51TeeV
+ MOCkthO7
+ KdFN3Yh0Jw9Y7hcBUPXA0nTVHr11kNw6YERTB6LEoeZWujNDtMyMsqJRAckV0ywWuwsgz6eu+Hs3mbRakhI1QypcFEGdZl0HgGoKiv9a9Pxh8s/Q+8DQtCl+11OEUlIaSe9UNzevXPPvWy63mtdZDNwgClwwJVkJ/2jslUgQC98VxTCCSqCSfnXcRcSK4j/b9fYuY4/XKdU5c0zqe2g0cMEVQRatjtr2ahdRf2BskgFaGYOl7St0JjyaC5dfKW9ywcfK17Bf1/Zb2nVI6xif7R5qBCpJShky8Uk7t6HnwA5jvrPWzsV0b10S1rMbiKaepDmNM42ZSuTrdk5mR9VX2YkloeArp0EN8rYNXXJNOaESGTQv6SyeYWRSk6jK6lKucU1AwDb9OGgpdQS8n999/SrvMd7f735xNvSbd+1k3tKhL1TtKezAf0/GhqqPzgDwXVDblRQczGjlPjJpNET3Er1aHhWa0aDFrhzPM3UTM/PoTKvNq8CyXh9vNKgMWxVA/hMTbVHJUwrTNDCDH/C8zeAfHMGN3UheAMDUtgBnvf703m01LfRInk9xMIChxFoulObkKGI4Bx2KQd1o2tMLf5Eh56oi/VGHl2U28BYKQU+t8G+CfiqQdu7aaeuRXzI91HoUg3t/VgdjGtedy76Q6wGFCYNflgpiDhAGJMgvN8Ap05F8/FAP2coKqKA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,59 +130,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+If registering a memslot with the ultravisor fails,
+kvmppc_h_svm_init_start() is supposed to undo the memslots it has
+already registered. The loop walks them with "m", however it wrongly
+passes "memslot" instead (which failed to get registered).
 
+Fix the loop by passing "m" instead, the memslot which was registered
+successfully, for rollback from the beginning.
 
-On 11/13/26 10:01 AM, Hui Zhu wrote:
-> From: Hui Zhu <zhuhui@kylinos.cn>
-> 
-> lru_gen_change_state() migrates folios in batches of up to
-> MAX_LRU_BATCH (4096) folios under lruvec_lock_irq().  A full batch
-> keeps local interrupts off for up to about a millisecond, and CPUs
-> contending for the same lru_lock spin with interrupts disabled for
-> that long.
-> 
-> The caller already reschedules between batches, but a batch itself
-> only ends after 4096 folios.  Stop it early when a resched is
-> pending, or when the lock has waiters and the current hold has moved
-> at least MIN_LRU_BATCH folios; the caller restarts where it left off.
-> TIF_NEED_RESCHED can still be set with interrupts off: a remote
-> resched_curr() sets it directly in the target's thread_info.  The
-> minimum batch avoids lock bouncing under sustained contention, while
-> a waiter now waits ~15us instead of ~1ms.
-> 
-> This follows lru_gen_look_around() in this file, security/keys/gc.c
-> and jbd2_log_do_checkpoint(), and commit 6e9be217a3ce ("mm/mglru:
-> use a smaller batch for reclaim").
-> 
-> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> ---
-> Changlog:
-> v2:
-> Also yield on lock contention after a minimum batch (Kairui Song).
-> 
->   mm/vmscan.c | 10 ++++++++--
->   1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 6a1af9b92349..c1231925159f 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -5533,7 +5533,10 @@ static bool fill_evictable(struct lruvec *lruvec)
->   			success = lru_gen_add_folio(lruvec, folio, !active);
->   			VM_WARN_ON_ONCE(!success);
->   
-> -			if (!--remaining)
-> +			/* stop early to shorten the irq-off section */
-> +			if (!--remaining || need_resched() ||
-> +			    (MAX_LRU_BATCH - remaining >= MIN_LRU_BATCH &&
-> +			     spin_is_contended(&lruvec->lru_lock)))
->   				return false;
+Fixes: 2027a24a75ce ("KVM: PPC: Book3S HV: Disable page merging in H_SVM_INIT_START")
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+---
+ arch/powerpc/kvm/book3s_hv_uvmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-IIUC, Kairui's point[1] is to just drop the 'MAX_LRU_BATCH - remaining 
- >= MIN_LRU_BATCH' condition, no?
+diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+index 463aef870c4e..190f64d992d8 100644
+--- a/arch/powerpc/kvm/book3s_hv_uvmem.c
++++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+@@ -497,7 +497,7 @@ unsigned long kvmppc_h_svm_init_start(struct kvm *kvm)
+ 		kvm_for_each_memslot(m, bkt, slots) {
+ 			if (m == memslot)
+ 				break;
+-			__kvmppc_uvmem_memslot_delete(kvm, memslot);
++			__kvmppc_uvmem_memslot_delete(kvm, m);
+ 		}
+ 	}
 
-if (!--remaining || need_resched() || spin_is_contended(&lruvec->lru_lock))
+--
+2.39.5
 
-[1] 
-https://lore.kernel.org/all/CAMgjq7CUMuNSdCXZ7_kDdo9+0BFvPNHuO=mq=ct_Q5YUyyckvQ@mail.gmail.com/
 
