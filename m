@@ -1,96 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25588606A331
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B6206071039
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y5V33Lza
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XlQHgXxB
 Received: by kanga.kvack.org (Postfix)
-	id 3ABF16B05B5; Fri, 13 Nov 2026 13:36:52 -0500 (EST)
+	id B44676B05B7; Fri, 13 Nov 2026 13:39:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35D236B05B6; Fri, 13 Nov 2026 13:36:52 -0500 (EST)
+	id ADD4D6B05B8; Fri, 13 Nov 2026 13:39:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29CFD6B05B7; Fri, 13 Nov 2026 13:36:52 -0500 (EST)
+	id 9F26E6B05B9; Fri, 13 Nov 2026 13:39:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0916A6B05B5
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:36:52 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 791881202A7
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:36:51 +0000 (UTC)
-X-FDA: 85430952222.25.B18B1BF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id CFA80A000B
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:36:49 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y5V33Lza;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794595010;
-	b=FIgmRLu9pOvQwcGIJXVYbJeIht/uqxMVIFGGlFvzC9o124hhZ+inTEj4zqvhJS4tzbQaTC
-	Zy0AWuLpZc4uGSzVf8Wf/rMdbCWBRVp7kcxfmvkjlciwBcN1qxwkEW1/nS41bg07svl3ee
-	sPsTPigkeSBDpLFLcSOspwzJ/+DUtp0=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 75C766B05B7
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:39:44 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 073BF4025D
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:39:44 +0000 (UTC)
+X-FDA: 85430959488.20.421381D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 5111C160013
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:39:42 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XlQHgXxB;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794595010;
+	s=arc-20220608; t=1794595182;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jmkU0n0KGNaX67NEI1E6pDmmFAUmU35EaMfakgIfL60=;
-	b=mcJNjFnTP5LQBduJvSiolyPMhJlZbu0qODlhhu7jyC9Q0mRdLoHVozTY1P/YRTf5Kz63Mj
-	nvVNLbpXCYH2H8w1Oly5MTemfCsayWAppzQrsHfHnA/Mjn6gUFz/1Yc/lDudXY4jgI/izD
-	ULel+FDrxx2Ihs3/3oepgk4OeVtm24c=
+	bh=vnUq4ElnHsxRnOIjFta6Y04mbJFNlBGZVOzsVi3X2B0=;
+	b=H2L4BgZXaHxUZD3HsFBgew7PhcseouT+/RUBYhXknvSJ/Ztz7qjcqgydEGNfcJOfirvqjW
+	LRWtB6yOQzYO5Ypws1X/JxfzDeR1Kl1whAV0k4OtVBL4UkZF4hEJ8rTufu0coSXJrkJjPH
+	e+cqWckus8jAXd35hP9HB30wad8562I=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794595182;
+	b=bKboYW0o5ARbogI+HHKFN4BuSoMr3uisQ2JPoHG/j/oNGGAgRe5toSU8fVQYsTDlriLhp9
+	dhI8TYlgq4Z8965MFYtanGCW/gYLcqbq5pu5BYYmIKtR2LjPbeoOv9VTFnmfLtvDSD+l69
+	T99vYKPu0V4hcvQ826a3OQxkQLczca8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y5V33Lza;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XlQHgXxB;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3073D45541;
-	Fri, 13 Nov 2026 18:36:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 979881F000C4;
-	Fri, 13 Nov 2026 18:36:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7144E60D9B;
+	Fri, 13 Nov 2026 18:39:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 120801F000C5;
+	Fri, 13 Nov 2026 18:39:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794595009;
-	bh=jmkU0n0KGNaX67NEI1E6pDmmFAUmU35EaMfakgIfL60=;
+	s=k20260515; t=1794595181;
+	bh=vnUq4ElnHsxRnOIjFta6Y04mbJFNlBGZVOzsVi3X2B0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Y5V33LzaOo0yZjlfI+RpIMkePLOEWMJvSVIc99TZ6biEuCehXTyteLbCL3MBrabuT
-	 IAfVZ38dyLQVENsHoBvTVdiCg0Kw+bSk9dumAnxJmtztoz1gmHhS5SsVaNtivmacY6
-	 ePunxP7ukPZJyth6eg3N9Bz6oPo3Du08RFixIMxlq7Vq5wo5yyvt5/2XxvBkKnwF0+
-	 vSCWEjjaVzM4ckNauVm1aOgkRuY2Xm0QVYakOTPpr1unqQeca2N2komHaNZj0pp8XF
-	 68FZkDxAHnjo19HPw9KFfkz0BXfG0NOLwyez2FiCZrGUDGB05d2eyhJWEDP4cqNifz
-	 waRawah3Vo0Lg==
-Date: Fri, 13 Nov 2026 18:36:47 +0000
-From: Harry Yoo <harry@kernel.org>
-To: Marco Elver <elver@google.com>
-Cc: Chris Down <chris@chrisdown.name>, Vlastimil Babka <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Kees Cook <kees@kernel.org>, GONG Ruiqi <gongruiqi@huaweicloud.com>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org, linux-hardening@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v3 0/6] mm/slab: Support selecting slab hardening
- features at boot
-Message-ID: <avdQEBP70kK8W7d0@thinkstation>
-References: <cover.1794506262.git.chris@chrisdown.name>
- <CANpmjNP0cWB_670hYj7p+Dd=do1qEu4XHeW+c7sTv-MXi0UBTg@mail.gmail.com>
+	b=XlQHgXxByB6xl8SZ2zgJrv2a4VJwpuAx3QYWCYpSU55j5VJ3BMLi/P5uiYZSahMS/
+	 /vM7T9DYqwzbDLY+z/BTxiyepi4vgfEs7J/lKzU2fxQKfPZf0TZQUw0j3Tmtnd18dS
+	 7FdNz5zU4duliWfFLor6rTP3n4vGKpCn27hoEpHVMTq++WbChyE5JwdctSUeZ3LSXt
+	 yNUdmwAvENyLuWY5f6EyxFaSLqVqFFUihIBEHGENBSokpPyNj2ZQqXbuQT7u+nBoN5
+	 wvXRWmE5JX94kSJClQjbLR4SWgfOnefI26H7hjvQbs0R9aBh61i6k8SsFtOayKT3ed
+	 4M/AFVStJB+IA==
+Date: Fri, 13 Nov 2026 18:39:34 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, Andreas Larsson <andreas@gaisler.com>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Matthew Wilcox <willy@infradead.org>, 
+	Malin Jonsson <malin.jonsson@est.tech>, Richard Weinberger <richard@nod.at>, 
+	Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org, 
+	linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org
+Subject: Re: [PATCH v2 2/6] mm: remove ARCH_NEEDS_KMAP_HIGH_GET
+Message-ID: <avdXERQgqgJ3P_Sd@gremlin>
+References: <20261112112528.1116405-1-arnd@kernel.org>
+ <20261112112528.1116405-3-arnd@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CANpmjNP0cWB_670hYj7p+Dd=do1qEu4XHeW+c7sTv-MXi0UBTg@mail.gmail.com>
-X-Rspamd-Queue-Id: CFA80A000B
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 9k6yrbo7gmp5ssatu5zsckrrojmjie6e
-X-Rspam-User:
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+In-Reply-To: <20261112112528.1116405-3-arnd@kernel.org>
+X-Stat-Signature: gn3xfa7cbufzw7ic6pyjzkqrh9o6ipc9
+X-Rspamd-Queue-Id: 5111C160013
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794595009-905454
-X-HE-Meta: U2FsdGVkX1+A0d3ZdZAfOVOKqwnWUe7Yg1vQzYKf7M21eqDcC7Jj15sAdSYAe2f97+C1I1df0k1XYDAsF1+fRcmKIPnlok7lTW3a8FYa1NXie14YGgiVm5AJ7HV1waGOWOm4S9ZhEBKL6PfoBZxomoVV0L8ls/mAJ0lbqW38nyRlJY5KBUbCqOZuFq9VIGnxJZKQW3X5ExPqWiVoUiuYthLlBHIn5q89Xe8Soa4h/Hn5XxLRuG8f8nAwvzwqLYa1jMWZ6mZ6vFfBpfejMS5Hi3CX3wXAl9SOpqNoDZBbldrEQ+c1trA7T9ly904sXIUEslfjH43RXSrhYAvu6UJLoh6X+CVq4i3JM1/sQSLq0E4w/z/MBQ7RjulCnk2bZV7gtobuynRTXDFfOHKd6yYa6qYoGTrXPICsROLYADgKZjoqgMiYpDePQDcZoVh66G+36F4DUr5kWgffM/WfZiY70PDvOYWPa+HhaTpPoDFa6eyFRW1lpODsLqw8YHhjoDnrzsZIswZcfFoLOpgqKIeiBDXmKS5fRWpG2+pAj5K23mJt8AFABZBlv/2DF+dLB8rrL79fwyXJ0fcn1doceclyK5xskZKKwNR0VPOffpLGM9BBsfx0lTQp5yn85Nlgz8l9VNZ6UypLcmu0sUZzUVNWFGyJQf14+bmEuPkTLPdeNIWdLZuviRhXwdnlpk/y9zjUKJWVfnZtxXBU6ZQOSRJG7ATGoDU89R3Ab+aeqA5Zk66d7gaTRq2IZXVdpo7yZ3zPW3Nzdls1prbRb/8E7hRu7YwfV3oXgGHSFg+urLLR1mppOjTr1KEIB042yCPw8/+YCZQT+bTS2V11/1TXOhXRaCtOjhbcB2jrdtf6HdHtDlCJV6Wl0PUKe6I5M4rEyFVWZn/ETo407LYzEoGIrET0BnolBGNR2RiMwGU7Zhi2Zr8yi02LvC9zetoceYzMXyboIboHplAsPcbgJz4LsEN
- JwgtmS4D
- S8gnnuWYUst65rOMqGFe3+LKGmZHSFMQ94OCb3phKGIbkTwkC6Tt0U1m8iabI+bTsubDrp033YOZvD1OVjkU74TNVPt08J0E/9KJkTkSnkqrdQTCr/tcuLYslrmad9FOu+W/7nRmwOvTAU+PPLLrqQFJCyTtBN2zfbYoUi630J0TQre3WXSfVc1UG16KUyoVCRvtUaiSWsyf1+t7Clg4XMqHbnzXPX1xDh0hBwFYVFVhhXRkhbdlnHuVnPSUTLHpr8ZB3QJ9I9m+pm8YG5y0yY+rhdH7QylHgEL8s44pjkQS1/dHjOgq1Zy2Y7EMVihW2WlR/xUF56g9vTpwdgRbVLcUwI7TInziDJFNMhpuYAXnaWINOq8cM6Ps5gfukf8QI6jj/TjZ76egdUFf6lCf1y544eQ==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
+X-HE-Tag: 1794595182-486403
+X-HE-Meta: U2FsdGVkX18LxGF8guCJA5gOFoGvdChqXeL6ICwSmsj3jZs6EJ9+Hs6X4i+FcSunwjDzWyS/GoITQhIDhRPW1y/9DZ10q9pg5976A+wxwcFbE/szm1KeZLCQqKKHjFNTLkLXKqrZDCpI6QTsuorU8WlMt+UMjV0tSzXaPoZasmjBn5w8SoXKEAc7KNjfNo0dyhDsgk6R5weg70kN69yzffi+uLPg4QI13EGfYys4NNmfRa49Y7+meb9ozOULTVfiLYAve3iwcsoB/Rwz6EX7dTZlFJ2mstrlaHYgNBwG81csvtH7JdC0as6wZkvy91KQP47nLbzGv60Zo3AOkIIsjreJlujE3KjzR8IU7pXSoVMVIrZTiw4bTLhFvDffTdIgoiVHPqnmt0PmvCqg4nP7udEujVAih7Mk8hmx2UNlebCXONNEnPyaUqFSo1281oaiM+TE3ui/Y/7VjzFl5yAR6THhZoM/oEtrpSZoYirlUR75l7oak2qeQQVPDgD4s2wv9TQQ0Kol0UxPtXMoRLxk/Nk9DxWb+6uFkUlG8oQG8XmrRTgD6Caf68abzhqorROla2V40e0airDDQgKWLJ4XxSxkIf164S8B92btidZtqoC1kg+a2z0Kymgx4Yt0T+OnRPqAbq999LqsxaIu0mD53RNf00hd+Zao9WP89aDibwpz2mqtuAAdGpZcf81So362wphwNi130qK38SpejEUGhCVRAVZQ5DzMApDswXKa2tT0xlMMq7linhpgWx6gkMiH44yVyy4zGBFTDq+SE0x5Rw5tzPAVMiJzMjMFbR/D/l5W3IupCXNlExMCr20cVJG7bUzrMK6ZRs0CG0I/S1N1oCuBDEyLb8C/OE+11bXPK0ycjoXobcXHg+a69peURSjGG+614guBexlQzqh4twty/Tz5yEsbWWN7U9HLcEXaCw6ue9QSu1jD03I/XhRpmT9dpwm5EVVYmLABAyWUhmi
+ uOfhODpA
+ ZYcAXYdhv7dtKXYykzZK94tHXebDGZ841ShjYHQle67MWVm3T+XaSxDEQ+PYHGNNtxBC18LPh5ONTiDguD2P2eTa+LkhHLnnyWG0dhDHXb9dvSBYzPg5pIF1VT1dPstRyPqQ4+06IuwCQsjXnqXE2xCEYzUQptNcf97BrWrqA19Cawre/3oZSToPr484lw26hr3mBH2YdBZ0nIP3CNzO0ryf2LPtIcZXifHj6ypS1gYgz+o26DiEyw4xTG1XR2h7Uvkl42AR6diBXJXd4zPVPYeBPuIMJ08fA/osCnOsGinigbXaeCdFQF8BallRDm+pmdSmEGJR23cf8Q9/eqDUZ2HVSiVCfXOGd09M9eejgJPAZtEg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,78 +100,228 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 13, 2026 at 11:56:20AM +0100, Marco Elver wrote:
-> On Fri, 13 Nov 2026 at 09:51, Chris Down <chris@chrisdown.name> wrote:
-> >
-> > Slab hardening settings are currently all build time choices. This means
-> > that, unfortunately, hosts with different requirements end up needing
-> > separate kernel images. At Meta, for example, some hosts are built with
-> > these options and the rest of the fleet isn't, and that's one of the
-> > things that keeps those kernels apart.
-> >
-> > This series does two things:
-> >
-> > - SLAB_FREELIST_HARDENED and SLAB_FREELIST_RANDOM are cheap enough with
-> >   sheaves that it makes more sense to just enable them by default than
-> >   to make them switchable. With both on, system level benchmarks didn't
-> >   change measurably, only slowpath heavy microbenchmarks did [1].
-> >
-> > - SLAB_BUCKETS and KMALLOC_PARTITION_CACHES cost memory (Harry measured
-> >   about 1 MiB and 18 MiB respectively after boot on a 64 CPU VM [2]), so
-> >   they get slab_buckets= and kmalloc_partition= boot parameters, which
-> >   default to on when the option is built in.
-> >
-> > Whether those two should be folded into a single slab_hardening= is
-> > still open [3].
-> 
-> A coarse slab_hardening= option can easily be replaced by
-> documentation. While less knobs is better, an intransparent coarse
-> variant of slab_hardening= just makes the admin wonder "what does that
-> actually to, and do I want it?". They still have to go and look up
-> what it actually does, and at that point it doesn't add much value
-> (alternative suggestion below).
-> 
-> > > > light: "I'm willying to sacrifice _some_ memory and CPU for security"
-> > > > full: "I'm willying to sacrifice more overhead for security
-> 
-> Who will decide what is light and full? I think there just won't be
-> any consensus reached.
+On Thu, Nov 12, 2026 at 12:25:24PM +0100, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> Arm has stopped setting ARCH_NEEDS_KMAP_HIGH_GET, so this
+> is handled using the same wrappers across all architectures
+> now, which leaves room for simplification.
+>
+> Replace lock_kmap()/unlock_kmap() with open-coded spinlocks
+> and drop the now empty arch_kmap_local_high_get() and
+> kmap_high_unmap_local() helpers.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-You're probably right.
+Lovely :)
 
-> One thing that users may want is an "all off" option, similar to
-> mitigations=off, should they wish to get max performance back with a
-> single option. So you could consider slab_hardening=off.
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-slab_hardening=off sounds good to me.
+> ---
+>  mm/highmem.c | 100 ++++++---------------------------------------------
+>  1 file changed, 10 insertions(+), 90 deletions(-)
+>
+> diff --git a/mm/highmem.c b/mm/highmem.c
+> index a33e41183951..214164f9172b 100644
+> --- a/mm/highmem.c
+> +++ b/mm/highmem.c
+> @@ -143,25 +143,6 @@ static  __cacheline_aligned_in_smp DEFINE_SPINLOCK(kmap_lock);
+>
+>  pte_t *pkmap_page_table;
+>
+> -/*
+> - * Most architectures have no use for kmap_high_get(), so let's abstract
+> - * the disabling of IRQ out of the locking in that case to save on a
+> - * potential useless overhead.
+> - */
+> -#ifdef ARCH_NEEDS_KMAP_HIGH_GET
+> -#define lock_kmap()             spin_lock_irq(&kmap_lock)
+> -#define unlock_kmap()           spin_unlock_irq(&kmap_lock)
+> -#define lock_kmap_any(flags)    spin_lock_irqsave(&kmap_lock, flags)
+> -#define unlock_kmap_any(flags)  spin_unlock_irqrestore(&kmap_lock, flags)
+> -#else
+> -#define lock_kmap()             spin_lock(&kmap_lock)
+> -#define unlock_kmap()           spin_unlock(&kmap_lock)
+> -#define lock_kmap_any(flags)    \
+> -		do { spin_lock(&kmap_lock); (void)(flags); } while (0)
+> -#define unlock_kmap_any(flags)  \
+> -		do { spin_unlock(&kmap_lock); (void)(flags); } while (0)
+> -#endif
+> -
+>  struct page *__kmap_to_page(void *vaddr)
+>  {
+>  	unsigned long base = (unsigned long) vaddr & PAGE_MASK;
+> @@ -238,9 +219,9 @@ static void flush_all_zero_pkmaps(void)
+>
+>  void __kmap_flush_unused(void)
+>  {
+> -	lock_kmap();
+> +	spin_lock(&kmap_lock);
+>  	flush_all_zero_pkmaps();
+> -	unlock_kmap();
+> +	spin_unlock(&kmap_lock);
+>  }
+>
+>  static inline unsigned long map_new_virtual(struct page *page)
+> @@ -274,10 +255,10 @@ static inline unsigned long map_new_virtual(struct page *page)
+>
+>  			__set_current_state(TASK_UNINTERRUPTIBLE);
+>  			add_wait_queue(pkmap_map_wait, &wait);
+> -			unlock_kmap();
+> +			spin_unlock(&kmap_lock);
+>  			schedule();
+>  			remove_wait_queue(pkmap_map_wait, &wait);
+> -			lock_kmap();
+> +			spin_lock(&kmap_lock);
+>
+>  			/* Somebody else might have mapped it while we slept */
+>  			if (page_address(page))
+> @@ -313,60 +294,32 @@ void *kmap_high(struct page *page)
+>  	 * For highmem pages, we can't trust "virtual" until
+>  	 * after we have the lock.
+>  	 */
+> -	lock_kmap();
+> +	spin_lock(&kmap_lock);
+>  	vaddr = (unsigned long)page_address(page);
+>  	if (!vaddr)
+>  		vaddr = map_new_virtual(page);
+>  	pkmap_count[PKMAP_NR(vaddr)]++;
+>  	BUG_ON(pkmap_count[PKMAP_NR(vaddr)] < 2);
+> -	unlock_kmap();
+> +	spin_unlock(&kmap_lock);
+>  	return (void *) vaddr;
+>  }
+>  EXPORT_SYMBOL(kmap_high);
+>
+> -#ifdef ARCH_NEEDS_KMAP_HIGH_GET
+> -/**
+> - * kmap_high_get - pin a highmem page into memory
+> - * @page: &struct page to pin
+> - *
+> - * Returns the page's current virtual memory address, or NULL if no mapping
+> - * exists.  If and only if a non null address is returned then a
+> - * matching call to kunmap_high() is necessary.
+> - *
+> - * This can be called from any context.
+> - */
+> -void *kmap_high_get(const struct page *page)
+> -{
+> -	unsigned long vaddr, flags;
+> -
+> -	lock_kmap_any(flags);
+> -	vaddr = (unsigned long)page_address(page);
+> -	if (vaddr) {
+> -		BUG_ON(pkmap_count[PKMAP_NR(vaddr)] < 1);
+> -		pkmap_count[PKMAP_NR(vaddr)]++;
+> -	}
+> -	unlock_kmap_any(flags);
+> -	return (void *) vaddr;
+> -}
+> -#endif
+> -
+>  /**
+>   * kunmap_high - unmap a highmem page into memory
+>   * @page: &struct page to unmap
+>   *
+> - * If ARCH_NEEDS_KMAP_HIGH_GET is not defined then this may be called
+> - * only from user context.
+> + * This may be called only from user context.
+>   */
+>  void kunmap_high(const struct page *page)
+>  {
+>  	unsigned long vaddr;
+>  	unsigned long nr;
+> -	unsigned long flags;
+>  	int need_wakeup;
+>  	unsigned int color = get_pkmap_color(page);
+>  	wait_queue_head_t *pkmap_map_wait;
+>
+> -	lock_kmap_any(flags);
+> +	spin_lock(&kmap_lock);
+>  	vaddr = (unsigned long)page_address(page);
+>  	BUG_ON(!vaddr);
+>  	nr = PKMAP_NR(vaddr);
+> @@ -393,7 +346,7 @@ void kunmap_high(const struct page *page)
+>  		pkmap_map_wait = get_pkmap_wait_queue_head(color);
+>  		need_wakeup = waitqueue_active(pkmap_map_wait);
+>  	}
+> -	unlock_kmap_any(flags);
+> +	spin_unlock(&kmap_lock);
+>
+>  	/* do wake-up, if needed, race-free outside of the spin lock */
+>  	if (need_wakeup)
+> @@ -508,30 +461,11 @@ static inline void kmap_local_idx_pop(void)
+>  #define arch_kmap_local_unmap_idx(idx, vaddr)	kmap_local_calc_idx(idx)
+>  #endif
+>
+> -#ifndef arch_kmap_local_high_get
+> -static inline void *arch_kmap_local_high_get(const struct page *page)
+> -{
+> -	return NULL;
+> -}
+> -#endif
+> -
+>  #ifndef arch_kmap_local_set_pte
+>  #define arch_kmap_local_set_pte(mm, vaddr, ptep, ptev)	\
+>  	set_pte_at(mm, vaddr, ptep, ptev)
+>  #endif
+>
+> -/* Unmap a local mapping which was obtained by kmap_high_get() */
+> -static inline bool kmap_high_unmap_local(unsigned long vaddr)
+> -{
+> -#ifdef ARCH_NEEDS_KMAP_HIGH_GET
+> -	if (vaddr >= PKMAP_ADDR(0) && vaddr < PKMAP_ADDR(LAST_PKMAP)) {
+> -		kunmap_high(pte_page(ptep_get(&pkmap_page_table[PKMAP_NR(vaddr)])));
+> -		return true;
+> -	}
+> -#endif
+> -	return false;
+> -}
+> -
+>  static pte_t *__kmap_pte;
+>
+>  static pte_t *kmap_get_pte(unsigned long vaddr, int idx)
+> @@ -575,8 +509,6 @@ EXPORT_SYMBOL_GPL(__kmap_local_pfn_prot);
+>
+>  void *__kmap_local_page_prot(const struct page *page, pgprot_t prot)
+>  {
+> -	void *kmap;
+> -
+>  	/*
+>  	 * To broaden the usage of the actual kmap_local() machinery always map
+>  	 * pages when debugging is enabled and the architecture has no problems
+> @@ -585,11 +517,6 @@ void *__kmap_local_page_prot(const struct page *page, pgprot_t prot)
+>  	if (!IS_ENABLED(CONFIG_DEBUG_KMAP_LOCAL_FORCE_MAP) && !PageHighMem(page))
+>  		return page_address(page);
+>
+> -	/* Try kmap_high_get() if architecture has it enabled */
+> -	kmap = arch_kmap_local_high_get(page);
+> -	if (kmap)
+> -		return kmap;
+> -
+>  	return __kmap_local_pfn_prot(page_to_pfn(page), prot);
+>  }
+>  EXPORT_SYMBOL(__kmap_local_page_prot);
+> @@ -607,14 +534,7 @@ void kunmap_local_indexed(const void *vaddr)
+>  			WARN_ON_ONCE(1);
+>  			return;
+>  		}
+> -		/*
+> -		 * Handle mappings which were obtained by kmap_high_get()
+> -		 * first as the virtual address of such mappings is below
+> -		 * PAGE_OFFSET. Warn for all other addresses which are in
+> -		 * the user space part of the virtual address space.
+> -		 */
+> -		if (!kmap_high_unmap_local(addr))
+> -			WARN_ON_ONCE(addr < PAGE_OFFSET);
+> +		WARN_ON_ONCE(addr < PAGE_OFFSET);
+>  		return;
+>  	}
+>
+> --
+> 2.53.0
+>
 
-However this assumes "all on" is the right thing to do by default,
-but not enabling slab hardening is not as nearly critical as not
-enabling mitigations to CPU vulnerabilities, no?
-
-I'd rather mirror hardened_usercopy= instead of mitigations=off.
-
-slab_hardening=on (turn on all slab hardening features)
-slab_hardening=off (turn off all slab hardening features)
-(Otherwise it is determined by CONFIG_*.)
-
-> But at that point it may be more consistent to drop slab_buckets= and
-> kmalloc_partition= in favor of arguments to slab_hardening=, such as
-> slab_hardening=nobuckets,partition. This would mirror mitigations=,
-> and should cater to the usecase of slab_hardening=off to get max
-> performance with a single option.
-
-I hope we don't reach this point, but more fine-grained control should
-be achivable if it is indeed required.
-
-> But I would not add options such as 'light', 'full'.
-
-Fair enough.
-
-> Thanks,
-> -- Marco
-
--- 
-Cheers,
-Harry / Hyeonggon
+--
+Cheers, Lorenzo
 
