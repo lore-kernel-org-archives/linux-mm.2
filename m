@@ -1,94 +1,142 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6590E6075E22
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 17:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A5B607E828
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 17:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=nj+gYvOx
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GJPwlCXx
 Received: by kanga.kvack.org (Postfix)
-	id 1889E6B05C9; Fri, 13 Nov 2026 12:33:43 -0500 (EST)
+	id A942A6B05CB; Fri, 13 Nov 2026 12:39:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1392E6B05CA; Fri, 13 Nov 2026 12:33:43 -0500 (EST)
+	id A44F16B05CC; Fri, 13 Nov 2026 12:39:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04FB06B05CB; Fri, 13 Nov 2026 12:33:43 -0500 (EST)
+	id 934726B05CD; Fri, 13 Nov 2026 12:39:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D13CD6B05C9
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:33:42 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4311D120180
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 17:33:42 +0000 (UTC)
-X-FDA: 85430793084.09.05B5E8B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7577616000E
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 17:33:40 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nj+gYvOx;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794591220;
-	b=aKEqEBX31Cvh3arATp3qAk6a+mq62E4tUQXWRWz2RkFo2tTRzBSqvUctmTeRATds74G7+8
-	yfjWJdKfFPJk3zLATWSVKlfel7twoZo1cB0//2u+W7gBdP9y06m4vhR/Kz5dj4qAXf572Q
-	g/m3bJfAZHvn0BkBgLhQNt57xIkmLMU=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nj+gYvOx;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A3DA6B05CB
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:39:29 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1015F1601D3
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 17:39:29 +0000 (UTC)
+X-FDA: 85430807658.26.0ADCB8E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3143640003
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 17:39:27 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GJPwlCXx;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794591220;
+	s=arc-20220608; t=1794591567;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kv7BDGPBwuPWEZQhR2InhXR34RPBwAkzXgdKO+ZahP0=;
-	b=CycJTQDaTLCFLmR9+naN9jBI65ouY9nAXgtdXRyzZtef6sIFtLv3nwdS/AjwDPcC1ZeIaP
-	Z+Kkjd1oxQWEKbn3ZfgCTQfHLFgyCUmeoTGHnQaXotWWzGgWuPUjOs0kP3sESa40UEAH4O
-	ZNi0gimyaHBeezHBqMIwEBEVk+OkVlA=
+	bh=dm8q8HGPHE9E98Lt4CJ5Z1tUerEAxjiOuXmAiX4bR3k=;
+	b=aAclrwdOswJ44nW+2uGNQETj+FAN5sB89LEQLgBZrvhtdDyPafpCZR4cfjB9+kZim1hQvb
+	lHeaY3DRNkb2xtMXyoARIaGQQB4NhVlBMJw/dQiJFhHQjsz/Qo1xfYwfHFUzUsgjx+GogS
+	+Q31sD/3n3HhGQp+IH8gLvyGboth2sQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794591567;
+	b=N3h/Qhw7kIZr9kFFMFfth5TsXnAM+d0sKDUgbJwP3wwMY9OhUon3prKSsFFCyiDbDgUUDJ
+	MWB3mZzAkGemXuJDvdhAOWaSJmkIZtSt9DKK5CFjYeXzt09Ro9nxmAffIoKlhIRIu5vEy/
+	3zs+lLoS3kdVgSssiDUzV0tyPHM/f7g=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GJPwlCXx;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AE35C63276;
-	Fri, 13 Nov 2026 17:33:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEB71F000CC;
-	Fri, 13 Nov 2026 17:33:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1794591219;
-	bh=Kv7BDGPBwuPWEZQhR2InhXR34RPBwAkzXgdKO+ZahP0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=nj+gYvOxuaFa8U1PjQSbesNMnJI3ApEvBsFxziUXX9m3XAIWX/O/zj/09CAgFUjDi
-	 7J7qLXRvj/JULay/QFLajS4qrGhpc7sB0xJSMHNMj3FZmdk7mmRsP1VLuF7h8C0I1p
-	 BnQHlmoGn4aZPQk98/laiaoOkBUu5s2YqcuXYP34=
-Date: Fri, 13 Nov 2026 09:33:38 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: kernel test robot <lkp@intel.com>
-Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>, Linux
- Memory Management List <linux-mm@kvack.org>, mm-commits@vger.kernel.org,
- "Liam R. Howlett (Google)" <liam@infradead.org>, "Oscar Salvador (SUSE)"
- <osalvador@kernel.org>
-Subject: Re: [akpm-mm:mm-new 307/308] mm/cma.c:493 cma_find_free_range()
- warn: always true condition '(start < (4294967296)) => (0-u32max <
- 4294967296)'
-Message-Id: <20261113093338.c9ac760d6f6010f8108d4cba@linux-foundation.org>
-In-Reply-To: <202611131415.4Nn1yaIf-lkp@intel.com>
-References: <202611131415.4Nn1yaIf-lkp@intel.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5387B46FBB;
+	Fri, 13 Nov 2026 17:39:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E1BF1F000C6;
+	Fri, 13 Nov 2026 17:39:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794591566;
+	bh=dm8q8HGPHE9E98Lt4CJ5Z1tUerEAxjiOuXmAiX4bR3k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=GJPwlCXxg4dqojQf5ueDh9IrlaSbGZO0JTmYaJQfn9oeW6hwuzQ31647nd+eCdAiM
+	 c3dP0I8334riJdJpI663KprFneiBckFlSv7YhbNtuQF6t2UIGX+lRxL0DEuo7nifWU
+	 vHQ2PPNUguiOeFgNd5Jhe84QJCoy6nHyL3oR6c9vLooCa2mdAkYaH6sSonUszYpdhO
+	 mRkEnd4xpyXmdf8iWU66G1xdatv9n5GVbNGEKIWVoVW+PBR8YB2wjESBvfVHfDIKyA
+	 8394hibUzO+kInePRReL0tZCB04bhVYUX09nnmgo7JiPg9OJAFJfY7zQyh7t/bp1d6
+	 j5dP7ZKfGKvMQ==
+Message-ID: <16bb1a14-04f4-4524-9882-20d452175a3d@kernel.org>
+Date: Fri, 13 Nov 2026 18:39:20 +0100
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: synchronize with PTE table reclaim for all folio
+ sizes
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
+ ljs@kernel.org
+Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
+ qi.zheng@linux.dev, pfalcato@suse.de, ayushr@modal.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <affd6da4e8d0de1424a4e0b3bafcd1324dfb6c97.1793847060.git.baolin.wang@linux.alibaba.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <affd6da4e8d0de1424a4e0b3bafcd1324dfb6c97.1793847060.git.baolin.wang@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: bwbsprjzxwe9zsi7h6so5ks58jxnuwjn
-X-Rspamd-Queue-Id: 7577616000E
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: wamrew7oibi1c56xkzgwkjwj51azipgo
+X-Rspamd-Queue-Id: 3143640003
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,NICE_REPLY_A,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794591220-237669
-X-HE-Meta: U2FsdGVkX18bQereP5icjB3HGGAwKONICZpIJCopUJ/vLhNvrfWCqVWHM0RyWHwgHEpt+gUJtrogILsBXIttS7hg5quxHhzsrorXtZ833ObvLwc9BJfkCgi+6AUXvd6otaMPsYuM0E9e1iPbmwV6VKjHo5ZwT86IcxZGTyScYZskWJkOyvr8Oa94TNf2DuSf8gDOZquSTob/8p7k/TtCV8uqAJatjLhn5uUNyk/rW1uHEr0e7/MJul5qKhEXhLFCSHa/00O3LKmN1g3SbpTiYp8xFeahpfOZLeVSEKFLwmT6ITyCOS2q+0PUuGG/XivW2WhMDv0b6nr3jK5jSN97L0QBI2LlaeGmpISDLwHwbDGWWFgzi5PbBh8pEQDcjF9ScxbE30v7CI//i8bAYOX1yd8sR3U9Xz5yl7qDVged8jc7GE5vdPeA8NlVVh/+xsDabqLrGA9AOvqjbC88Euzx2S/8q1XmdGRFNOcSJuCaXmbehkEFxTeUIBUTJGRQbBF0AcTGn0hy/5voikcptw9h9FQJfpIwzp7uir3huUGRiRQr4MZfozeYYWW8nZTPn1t1eavFOhXP4CmFMo79h28/FnK+L73x5UtDCKSefsheiw/lD28xNRDTcZI1l3ZmsuHUSKTMrHWs4kbPevDxnPh4ssci3QwpcjL7rcEnd9Ec1/XofIfmJYKSNSdfqKB1KyvNSYap4cUTmzZaPYLvAzqUMXR38H1Xbe2+d8EyiZRBhbQjrFdAkBodCpVjuiHen38QMQnGncNda86Shk2tlPQ73LLGN8CIV3pJrspjjeO4586wGGmC52LLgOIaNQWbdpaT2rCotGZ4hnthV6OpbH2U8LRCThJsQrOLjRmWGmqcLcORfaE92Q+aaNwuO8rSAbT4q09Xqr1CKsV8vQ7hjrs+wbdt6jSEGhCOrFAV4ZbD71/xMES3nRJlS0EnIuFWOhlybbFawj16dO2lAAa521S
- 0japShzm
- e/I1aZ3AdbsbKIcukRx3cQTMfab8dGeLEzH5Gd5571DYOR9bxUdptV3qUW2m0ly4VRhWYnb5649Bs71irTP2cKqmoyaLDSloLlDBGPQBcpQulw8LqfH4FvMK4cYHKNs/Dht2ijUCuhVLL11xre9Y9mwoPPqLHfap9RLurAdwILfry60/WUajxSOonur4lWZ1618pHPbdzwtdHQvSXb+39hYYLqmL6/XSyC+IsQ8p6MsSe2fRnd0jF19VixYoCXn1ikhU539bbDWt6sUnRfJpy9oXeGTtXgu3yQR061Zmpx8Yj+ZTraonw8WmW2RIiufhNbVvBMVpLrfPQp8AEjhv+DCfzkCYRSncVJplDOuXEWhnDstXOf+S0TlU+2wgPGf7iyaQ1Zb2NsOa//IDQPx1bRnNihDfOEKp0d0gc1VhAxiA0zs8=
+X-HE-Tag: 1794591567-521085
+X-HE-Meta: U2FsdGVkX1+vwt2DLSPkmAp2Ji7970HNBB/qEY1llJlaqZzZilsaiF+mjvLYh8RMKw38WisYtjuEP+3NtPlp0v9eTUwE97BaWbXvSQFIWGwMNJOr/DB1yPYfPfz4H0YL8UWVOQpym71kBUaG5EcufJXjLU2N0kCvZpUw3R9Lq7Rle0W1Nq+Bev5sL9IQ0sFYFnyvofKZjend3Q93A/f/KD+ZyGK0Wi/31tOs80hO+VG5BML43Hcp1udIq10jaCXyFi0beVHVFo74A8cNHul2IHYDUvSZNuS2sWi8CzqqIgNkSCYzUtOhlESV7mYxHSwjbAaMPJpUxc6ttMg+c09ehRQukBGx7panQtUlxQ9qN0j+S6LqxQufqOpVH6dk7FwJJlZN7LGjesRph3KhEbp/9eXPcfZwH5ruUHyi0CbKRo71xSUe8F/zvjN0XFcgaEMRzig6/AHtrNGXJFbs3Z2Tw+jSqkFCEM9Vzh2xvfAe0LrBYepr9KVJw9ugYedw2Y98hK83g1diNTaY79PjwCszY4YRAXVLnaGfdK5siMKg+AfsBCe4sjHzUjE0VDYsFVWoOwaSkIvcUfUfNmq2+MNU+1mXTyyTYlhly2r+uG/dt8CLkJCzLllixNu0cRxNKq4PPYDn0eSNc9HOhdcEZ2jBCNOabPDh3LMNP4FdUzjphiY/nPvFgIs0y8VbwDSSSvjMUJNQli6WKZptGxwbrodS8EA59Hwfh4tYZMtEINLagQ+hW0wV3TKreScczWBXu4nVwD5l96ke8WzHWrgZ99X/sokwMU0UgpzV2FV2y47+Wij089NaYbseHt78ibZUyoUENzsdHn652AtlaIuo8KgcdG1U+esTuRLnDTqg6OaTDZgf9vcYCZmNNEcM++6erlsgqVzne64SexI2F6IGbU7fG76PzLDYXnYo1GQ68oRu4oVqFf9DhLQKPQ/6qC6WNZUvVE+kqak5vG22/WDqK/5
+ IQkOsh7f
+ rzNUc+yUg5cyrAFJ0+Wa1DW0XWjXQx5hr1HB+uDaWoa6hCIZfDlDsF/PdSZFTErH6NuLgBHpheBqjaeHdj1Ki6T/uUdJb1wsHhloy7W3nAOdf8NK1SQnzmOBp1zKAdtdRQ1WnTcMdAMTwA7AQML2FRJExGzsauLMfBBoZaCIAsKrs9oKGhiFnIvnQEV69ylD7zoYP2Q7xEXMdwwYAGjBs8XSpBj41HttFZKpBPn7J4UNk8pRkVp2aqrZ23U3dxvMIFOXqryJuZjNDuPZSOLOn6PQlJIVPz+Qh25JvS9MmE8dF/bMFTejyFoV4hw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,45 +145,84 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 13 Nov 2026 14:29:18 +0100 kernel test robot <lkp@intel.com> wrote:
-
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-> head:   31a696f9c37defab0f28f774e00ac7f135889ec3
-> commit: 4cbc68cde0e185ae7cefed74c1b56e61cfe13277 [307/308] mm/cma: simplify cma_declare_contiguous_multi()
-> config: um-randconfig-2200-20261113 (https://download.01.org/0day-ci/archive/20261113/202611131415.4Nn1yaIf-lkp@intel.com/config)
-> compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project 8621950157210c1fa68f20f0614cb51310ec9dff)
-> smatch: v0.5.0-9187-g5189e3fb
+On 11/5/26 03:56, Baolin Wang wrote:
+> Similar to commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped
+> folios"), the '!pmd_present()' check in page_vma_mapped_walk() can also race
+> with concurrent page table reclamation via zap_empty_pte_table().
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202611131415.4Nn1yaIf-lkp@intel.com/
+> page_vma_mapped_walk() is used by many functions including try_to_unmap(),
+> try_to_migrate(), folio_mkclean(), pfn_mkclean_range(), remove_migration_ptes(),
+> page_mapped_in_vma(), and mapping_wrprotect_range(). Except for try_to_unmap()
+> and try_to_migrate(), the other callers do not perform post-walk accounting
+> checks, so the race has no observable impact on them.
 > 
-> smatch warnings:
-> mm/cma.c:493 cma_find_free_range() warn: always true condition '(start < (4294967296)) => (0-u32max < 4294967296)'
+> For migration, the race can cause unnecessary retries. For reclaim via
+> try_to_unmap(), the race can cause failure to reclaim a folio that is in
+> fact already unmapped (as shown below), which may lead to unexpected OOM
+> or increased refaults.
 > 
-> vim +493 mm/cma.c
+> CPU 0 (reclaim)                      CPU 1 (MADV_DONTNEED)
+> --------------------------------    --------------------------------
+> folio_lock(F)
+> try_to_unmap(F, TTU_SYNC)
+>                                     zap_pte_range(full PMD range)
+>                                       spin_lock(ptl)
+>                                       clear PTEs
+>                                       zap_empty_pte_table()
+>                                         spin_trylock(pml)
+>                                         pmd_clear()
+>                                         spin_unlock(pml)
 > 
->    476	
->    477	/*
->    478	 * Find the largest free range above 4G that can hold a part of a multi-range
->    479	 * CMA area.
->    480	 */
->    481	static phys_addr_t __init cma_find_free_range(phys_addr_t align,
->    482			phys_addr_t size_align, int nid, phys_addr_t *basep)
->    483	{
->    484		phys_addr_t start, end, size;
->    485		phys_addr_t max = 0;
->    486		u64 i;
->    487	
->    488		/* no point searching if the system can't addres above 4G */
->    489		if (!IS_ENABLED(CONFIG_PHYS_ADDR_T_64BIT))
->    490			return 0;
+>   page_vma_mapped_walk()
+>     observe !pmd_present(pmde)
+>     nr_pages < HPAGE_PMD_NR
+>     skip synchronization
+>     return false
+> 
+> try_to_unmap() returns
+> folio_mapped(F) == true
+> nr_unmap_fail += folio_nr_pages(F)
+>                                     tlb_flush_mmu_tlbonly()
+>                                     tlb_flush_rmaps()
+>                                       remove F's rmaps
+>                                     spin_unlock(ptl)
+> 
+> Commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped folios")
+> has already moved the PMD clear operation (via zap_empty_pte_table()) to
+> after tlb_flush_rmaps(). Similarly, page_vma_mapped_walk() also needs to
+> use sync_with_folio_pmd_zap() to synchronize and avoid memory ordering
+> issues on weakly ordered CPUs.
+> 
+> Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
+> Cc: stable@vger.kernel.org
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
+>  mm/page_vma_mapped.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+> 
+> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+> index e6b6170c2f4f..8797467b6f0c 100644
+> --- a/mm/page_vma_mapped.c
+> +++ b/mm/page_vma_mapped.c
+> @@ -293,10 +293,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>  			spin_unlock(pvmw->ptl);
+>  			pvmw->ptl = NULL;
+>  		} else if (!pmd_present(pmde)) {
+> -			if ((pvmw->flags & PVMW_SYNC) &&
+> -			    thp_vma_suitable_order(vma, pvmw->address,
+> -						   PMD_ORDER) &&
+> -			    (pvmw->nr_pages >= HPAGE_PMD_NR))
+> +			if (pvmw->flags & PVMW_SYNC)
+>  				sync_with_folio_pmd_zap(mm, pvmw->pmd);
+>  
+>  			goto next_pmd;
 
-silly smatch.  But I'll fix that typo!
+Baolin, how to proceed with that? Are you intending a resend? Including some of
+the performance impact and ways forward to optimize?
 
->    492		for_each_free_mem_range(i, nid, MEMBLOCK_NONE, &start, &end, NULL) {
->  > 493			if (start < SZ_4G)
->    494				continue;
+-- 
+Cheers,
 
+David
 
