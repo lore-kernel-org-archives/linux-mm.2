@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E7C60A261D
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 12:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9165860A3804
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 12:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JRILRqwd
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IQlbwT0U
 Received: by kanga.kvack.org (Postfix)
-	id 842B26B06C2; Fri, 13 Nov 2026 07:00:27 -0500 (EST)
+	id 55BBA6B06C8; Fri, 13 Nov 2026 07:00:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F36C6B06C8; Fri, 13 Nov 2026 07:00:27 -0500 (EST)
+	id 50CE46B06CA; Fri, 13 Nov 2026 07:00:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72D8B6B06C2; Fri, 13 Nov 2026 07:00:27 -0500 (EST)
+	id 422F56B06CB; Fri, 13 Nov 2026 07:00:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DABEF6B06C2
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 07:00:26 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 655321A02C0
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:00:26 +0000 (UTC)
-X-FDA: 85429953252.27.826A53E
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2429C6B06C8
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 07:00:31 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AF325801A6
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:00:30 +0000 (UTC)
+X-FDA: 85429953420.22.126F953
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id A37E020009
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:00:24 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JRILRqwd;
-	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id C2E41160010
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:00:28 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IQlbwT0U;
+	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794571224;
+	s=arc-20220608; t=1794571228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fcUPAY7Omn+SLVKKp6rIXL2FdbTX+CoaPRplNDl/Les=;
-	b=OR3kBS/lYBCeLZZbwuL88yhk1vfV1eT8vZDy9QEPffk5QDgbhnx7w+GSdwJ1eLq0eFALgY
-	6xhmLAsVwqdfjCOTRINw4NiKCUYSLvBoxmMgqNjlE8py84UE+MWtoODreRUUYfm3kAr5SW
-	CxW5kDgf+PBg4XZ+gH99WBhfeGndsJg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794571224;
-	b=ZfFniwd11fhrmM4LffePFeQeIp0okBxFP2/2eHyoLe30ZDM0y1/1if2NA6R7vQdLls/R/A
-	gKiEfq4jhCnMLVODWGwx5JwXlkTP/f10FJqQSEdHfzk6Hb46W0Xfn/xmG4UnLRx/kFMGiD
-	3Jz2MLIZxbAwk8K7vH4PtJjPLJ5Fg7o=
+	bh=kWzXWzq1v3XoYX3vwCfbSUj0i+mCKEVSA6Mgkp1L8Uc=;
+	b=eDMT5TajwiS7LLKmzU7ccOjd6dvcXmOWNK/3xGQBNoJkJKdscojPMFVMEMELc1X/oYzR1e
+	xFiI1imCx+ENZ5HuB9NiU/E78US4BSBD3smZG5RK7Xbfx82WO7t6Yi4qe0PvD4JkM3LXvk
+	WwWrQ6KL8BpNtE3Y+q+0/xShGvdwsgg=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JRILRqwd;
-	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IQlbwT0U;
+	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794571228;
+	b=c4vlBG02HUcAooKXsjnignLl/Et7Pec7SGNxrU5rALiZ8RhbzfS748h+jOYhICwOjLbKWj
+	q2+XaEk+nl/CkoLw7EdbxVCZtkKzhmfyMIkqLCVd/jrQdrm17E2hv9HfNA6kuRu9TjBvtQ
+	Q8MFq5c3hFQEwIltAa5nM2frEUW5GlU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DEDD1421F3;
-	Fri, 13 Nov 2026 12:00:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85E811F000C5;
-	Fri, 13 Nov 2026 12:00:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1BB1143098;
+	Fri, 13 Nov 2026 12:00:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 475E51F000C6;
+	Fri, 13 Nov 2026 12:00:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794571223;
-	bh=fcUPAY7Omn+SLVKKp6rIXL2FdbTX+CoaPRplNDl/Les=;
+	s=k20260515; t=1794571228;
+	bh=kWzXWzq1v3XoYX3vwCfbSUj0i+mCKEVSA6Mgkp1L8Uc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=JRILRqwd4JRgYzxUqWzJjNJlZe50YGlY+OaXv6HHQUZ/YRL+egTShAGjpX/70665+
-	 Nd9K1WH0rqdzRgv8HsOuog0O0NolbJ+thxfmrdZowu+oxZTtS5QzEQcOIUdVNmx8f0
-	 UJQ4eQhxK+Fnl9k+68gHrlzlyKY1NN8Vyj/sEz9ODGaM5Rdxwnurz9lGIsrgOf3Lcj
-	 SmgyiukO64uSDlM/RD3oySDk+ptebhvq18FN4TuIt6DchF+K+FbLsqScLqwKzVdZ8s
-	 LrgCTVlLMbHT9Vv3dBRYuIx42nvdS3v4ICzRtq/RueTY/XtvzirWDph/Fv2B53Vl4Y
-	 Cbno+lrB2kv9g==
+	b=IQlbwT0U22yZRhpbmLVl+YLgOuwLPGZNu8Jjr5LWoleO6zccNYti5Oe0o1F24oMRH
+	 nc2LWwniww4QkKJ3d052ea5oSbqw2zpR4Zs2HsjQGBWfGPcg1hq3Cm3Nk6dNoiAb2w
+	 tDsUh29BL4Q3Q3NdzxBFF7dVcY1x/t7DpJQBdnSxUxz5mMBbVLM7hGleT7083sY7OP
+	 amZrUNXUtFcI6GxvtNJsjC7QQJPlruHnr96mhlpOZ7i4fBJHOJfQwSJIjgaqb/SJ7B
+	 IycFfQGEpHbkoBSsenJp5oAVw9oT7Nra81YI83OQgZJtnh5XK1VF4A5719NEG6Z2f/
+	 M8/IpuFceU24g==
 From: Christian Brauner <brauner@kernel.org>
-Date: Fri, 13 Nov 2026 12:58:59 +0100
-Subject: [PATCH v3 03/33] ecryptfs: don't leak the inode when a lookup
- can't open the lower file
+Date: Fri, 13 Nov 2026 12:59:00 +0100
+Subject: [PATCH v3 04/33] ecryptfs: fall back to a read-only lower file
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-work-fs-sb_rdonly-v3-3-0be92bb73709@kernel.org>
+Message-Id: <20261113-work-fs-sb_rdonly-v3-4-0be92bb73709@kernel.org>
 References: <20261113-work-fs-sb_rdonly-v3-0-0be92bb73709@kernel.org>
 In-Reply-To: <20261113-work-fs-sb_rdonly-v3-0-0be92bb73709@kernel.org>
 To: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>
@@ -80,29 +79,28 @@ Cc: Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org,
  linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, 
  linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, 
  linux-xfs@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org, 
- Farhad Alemi <farhad.alemi@berkeley.edu>, Tyler Hicks <code@tyhicks.com>
+ "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1544; i=brauner@kernel.org;
- h=from:subject:message-id; bh=YAwCWT/i/fjx/KfCi+3/MK6nbc2fiyWIJhkFODNNUZ8=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWR9+z1HsaTv488H3xpWX/srV7CPeeZrxWrdNBszu55di
- c3reiZN6ihlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZhIrjQjwySrtUH91ksq2b6F
- f2RuXzKXt/pX8WYeq3KBE7xBVrNFCxkZLgr684g+2JrpYdtgKnfy3fWJk3dof9NZl8QWURbxans
- 0OwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5054; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=6aWyDCVSWKskTQggaDwc4XmhKC4rMH1xBzHPr2v1ST0=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWR9+z1P4eXbLA8XNWndlvsJFkUvfm9iihR6dv0vT7CZ4
+ MUDPueud5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExEIo7hf943jfsXNOLyl37m
+ Ewq5q7kk/IEVb5GC+dk85kZBBQXjGYwMH/7t3rpDMXBV2pkLd8ydjt+v/TVpVctH1UdCsob6pfy
+ neQE=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A37E020009
+X-Stat-Signature: 137cjehixd9yukerrroeyhynewj946d6
+X-Rspamd-Server: rspam01
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 4sfojg5zhf741ybsr94jk6dzq4mmcos4
-X-Rspam-User: 
-X-HE-Tag: 1794571224-444028
-X-HE-Meta: U2FsdGVkX182GFktAxQmNqyOXFaN40vjG/7L3fqigrqxKhgR8KzjwyqW6IEYf2f0z0SiLYCdCJS8HSeM2UIfeyc1hmjG7FeMfW9tygrcDfpPIxZ1ZMEmfghTehk++H9l7g7hYXdS7uMRPhXUk6fLGtkx0f4IEZN9uPyG6SiAyPGwj8GfU96U0zIwzaz39B57jFdAvs+dZ+6/aFZl30nrcK+Uguo6wdyb2r9zeK5YAlDqp58li2zEVnwv+mRq4a9t8oQNc1IVoaC9GETASdHkOA1rxfm99Vrwf5NpJSp33h/C8gHUUqylYeWCFPY7pA8fhNHWN8LY1++kaWKUZcWsgMdzPC3sFeWIKirqP7wdOjhQad6GRJILQEEFpGW4+Yg169jxZq+JoL/AhfeZno6pW9d+DVoM5qjk8uCJYI84G8wytjLr3PZXBt6wAtcn5H4Jv8KalrSKxSo8aCvHmO/uE/aWte+ZGejolcqHOASanFzNE4jaZjsLROOVKpO1mde3NScHUIds/d0k7Jkd/Hf/Mn8iUDHJAS8WN8ex255fiWPTJU7Tr/LkKKD3B7YPoCX3aSv4J3NC9e0gYY3ZYh53Y+0Ql+GAeP5xHrDW80ArmHo6oEEzxKDm3PlD1xSvTSwlub7JadYZfr7LUuc2r55tL8i5qTabte+qk43nazEFRpK1TwvcP8YalXbNPaSMMF8N4wxZT/cKVmJbqBMOoeUJIPmmAzWOvx8NluCfYhvmCP94reJn/5ACrGSYq2cMZrnt6/9DaCqyEMlOnaUB5DEyo+qVCyz+5aHkpEkY8cg9S4oTVSV6NhE5S3bMvHdeU0ZSLdH6ncKF7q9TYWX6frxp4AnRzQn2K6gGBCmojZXk5FJmoIPZqFVizRhoSJP+sr8GTicVoRzoztMCts51+EYrKOBqsvSbKb3E7OJiqJRgvDHRa++lDpTHdarTA5z5QEDdoVsdUtJPP4KmImVIgAJ
- OZQiGco/
- C61xq5etYiokPRYd7MXAdeEzRNz2CrV2Q9mTjOurpkRzEdYe0m7/4JjM1v+fO7yPvoLvMJHSkB6uR+iZfp4Xzjn3jZP6HBoH9IF9qCa9C7crwhc7KnLbFJV7uHheEvKqU/jIL15I5jRS4QtRcm+MrKkoa4o4WbER2VIasFb3TcJ8rJHf1tydoa+NlUzX+lv37strx7APs3bJaTcko5TEctduknOR2Xc1A4VCidf3eUPPO3oElieHBqauJYRUK/06jII1TSNbnwMnGWoJ4aCDVoU+AR53ECN2ueNZU2ML8U2ex1Uvs1gDtwVWCv7o7kH18m2j3NFDAANH9E5RO8zqKiM9rdG2tmkgUBOvtgEdLr0H352JjCaDIc0/qYw==
+X-Rspamd-Queue-Id: C2E41160010
+X-HE-Tag: 1794571228-722679
+X-HE-Meta: U2FsdGVkX19OmjLKSwa8fpHyt/Wi21c1R07XV5FpTvchTZXeg09LTafa5IcueYEZddT8WLf0RjtwwEzCYUiRdtJdo/DcvxAWsblOeguBAj28WXL/bPs3sj9roQrd9Fi0wsaoaWGT2SLQtXDoSUQpXZsAv2ObdAcGRdM7CfeGPIPY4e3fucw6gmnD3KAfJsgedVeAExywqtlAcOWQlAkZ76wDlD/fo8Vs5N5+PWTcPvQqTv/Fe6MH6fdXmTpA9nnWD//UXNB3tss77PcYP4Bu13vkYdhO0Odw/wdNkNlB7gYKd7PpWVLyJ2Bp6SJCFvYL0GwBijwIfZ/x4qHhUrGbzMqEwdRuNe/dJCHgdO1DIHse5FuJBPI1/BhtlAhkycLzK1gT+j1+yGt+osJG7fHLgKdBSlDbYv815P6VINAempA3ca5TvfyxgCiblhhrLVI/Lm3nzlDtzai9sIvFNQApUTn6YDf9vV2UVIJSUT1YMyEDvfeBWm7HCLWGasmT0Oy4MoK9WtDYIn+g3+cJvO7u1lzCqpAYsUv82HgjVC4fvBeWHspEnw+xLiXknb9eg0Bil+IAkvLsN37XINfDALjT+9vBn8n30QgKiQyKxYdva8W51WJkwQzNhJqB9wJ6wjAdrqDRc/PzriM/4nO8ll06vVBDAp0gZ2agiFNyLdUWcxRGb/m8Q1sdVjYwERjofr1RsattolemkwVTgQIWrB9lWgQha8qfjNZhKKeVrNGXqbgO17UfE5aQQFy95A578F4dJIA1xQ8RVIXu7HcXiTqN72XESCmZHpGGidLkJ+5iuQPWw2omi01gQDFtdndqflOxmRhec7Z0texWVq8BGwQnVoiLkqvVZ6IS8Cuv/irKs28DYOjWIMvwjYtoNhauWmqj7CpPme8DOFOsbrQOwdTje61GsqIIK2OwM1egwRs4+R/SWwAErlN/FLSKcTCIHIcbfIa+2nQXG0EUrjG/UHP
+ VXyghk5p
+ G1qCDrNrF6ap0RAxrYXYaf+CWiihy5FDe1o7r4Jqz0rpicTbG4Yue/9pldBi3spoVhRa78UGGDFvKfKorKKCfgUUGEJWWpgmcytcajI4k1KKhldkrQXCviH0kx4Rdkf6u0TnxLuFKxYi+UfQFUQBVUTgRxBi9ovChGBEk6alHssCbu+8kA83/olQP/zEwo291VI3Y0wmenrn9o7yT3OBTfU31k0M9RqRURjqv0Rl9KGkw6SQXvT9HXfNzu/O5bfNrmdSZTV3nXpRJ1j7o7LXpFopRNIsuBM5oSvHC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,43 +109,129 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-ecryptfs_lookup_interpose() opens the lower file of a regular file to
-read the size from the header. If that fails it marks the inode bad and
-returns, but a new inode is still I_NEW and nobody ever unlocks or puts
-it. So it leaks together with its lower inode, a concurrent lookup
-through another hard link waits for it forever and umount complains
-about busy inodes. The lower open fails e.g. with ETXTBSY while the
-lower file is executed. A cached inode is marked bad for all its other
-users instead.
+ecryptfs opens the lower file read-write unless the lower inode is
+IS_RDONLY(). A read-only mount underneath refuses that and so does ext4
+after an error since commit d3476f3dad4a ("ext4: don't set SB_RDONLY
+after filesystem errors"). Then every lookup of a regular file fails
+with EROFS. The other filesystems are about to behave like ext4, so fall
+back to opening the lower file read-only. Opening an ecryptfs file for
+writing then fails with EPERM like on top of a read-only superblock.
 
-Use iget_failed() for a new inode and iput() for a cached one.
+truncate(2) and creating a file still write to the lower file and
+would trip the WARN_ON_ONCE() in __kernel_write_iter(). So let
+ecryptfs_write_lower() and __ecryptfs_truncate() refuse that with EROFS.
+Opening an empty file doesn't try to write the header through a
+read-only lower file at all, read_or_initialize_metadata() skips it and
+the open fails with EIO.
 
-Fixes: 3b06b3ebf441 ("eCryptfs: Fix new inode race condition")
-Cc: stable@vger.kernel.org
-Reported-by: Farhad Alemi <farhad.alemi@berkeley.edu>
-Closes: https://lore.kernel.org/r/CA+0ovCgYP920GT68hAJK6Trjyv1kGv2dZAuem4LEunycQ=POww@mail.gmail.com
-Acked-by: Tyler Hicks <code@tyhicks.com>
+Note that ecryptfs never takes write access on the lower mount. On a
+read-only bind mount that was only a problem for directories so far.
+With this regular files can be unlinked and changed through it too.
+
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/ecryptfs/inode.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/ecryptfs/file.c       |  4 +++-
+ fs/ecryptfs/inode.c      |  8 ++++++++
+ fs/ecryptfs/kthread.c    | 15 +++++++++++++--
+ fs/ecryptfs/read_write.c |  3 +++
+ 4 files changed, 27 insertions(+), 3 deletions(-)
 
+diff --git a/fs/ecryptfs/file.c b/fs/ecryptfs/file.c
+index 49b0fbe0428a2..626de51e7dba5 100644
+--- a/fs/ecryptfs/file.c
++++ b/fs/ecryptfs/file.c
+@@ -170,8 +170,10 @@ static int read_or_initialize_metadata(struct dentry *dentry)
+ 		goto out;
+ 	}
+ 
++	/* The header can only be written through a writable lower file. */
+ 	if (!(mount_crypt_stat->flags & ECRYPTFS_XATTR_METADATA_ENABLED) &&
+-	    !i_size_read(ecryptfs_inode_to_lower(inode))) {
++	    !i_size_read(ecryptfs_inode_to_lower(inode)) &&
++	    (ecryptfs_inode_to_private(inode)->lower_file->f_mode & FMODE_WRITE)) {
+ 		rc = ecryptfs_initialize_file(dentry, inode);
+ 		if (!rc)
+ 			goto out;
 diff --git a/fs/ecryptfs/inode.c b/fs/ecryptfs/inode.c
-index 48e520960d665..3a966348a578a 100644
+index 3a966348a578a..35afb94143b8a 100644
 --- a/fs/ecryptfs/inode.c
 +++ b/fs/ecryptfs/inode.c
-@@ -362,7 +362,10 @@ static struct dentry *ecryptfs_lookup_interpose(struct dentry *dentry,
- 	if (S_ISREG(inode->i_mode)) {
- 		rc = ecryptfs_i_size_read(dentry, inode);
- 		if (rc) {
--			make_bad_inode(inode);
-+			if (inode_state_read_once(inode) & I_NEW)
-+				iget_failed(inode);
-+			else
-+				iput(inode);
- 			return ERR_PTR(rc);
+@@ -741,6 +741,7 @@ static int __ecryptfs_truncate(struct dentry *dentry, const struct iattr *ia)
+ 	loff_t i_size = i_size_read(inode);
+ 	loff_t lower_size_before_truncate;
+ 	loff_t lower_size_after_truncate;
++	struct file *lower_file;
+ 	struct iattr lower_ia;
+ 	size_t num_zeros;
+ 	int rc;
+@@ -771,6 +772,13 @@ static int __ecryptfs_truncate(struct dentry *dentry, const struct iattr *ia)
+ 	if (rc)
+ 		return rc;
+ 
++	/* Fail before zeroing the page cache, see ecryptfs_write_lower(). */
++	lower_file = ecryptfs_inode_to_private(inode)->lower_file;
++	if (!(lower_file->f_mode & FMODE_WRITE)) {
++		rc = -EROFS;
++		goto out;
++	}
++
+ 	if (ia->ia_size > i_size) {
+ 		char zero[] = { 0x00 };
+ 
+diff --git a/fs/ecryptfs/kthread.c b/fs/ecryptfs/kthread.c
+index ae4cb4e2e1348..d381d56baa90b 100644
+--- a/fs/ecryptfs/kthread.c
++++ b/fs/ecryptfs/kthread.c
+@@ -30,6 +30,17 @@ static struct ecryptfs_kthread_ctl {
+ 
+ static struct task_struct *ecryptfs_kthread;
+ 
++/* A read-only mount or a filesystem that hit an error refuses O_RDWR. */
++static struct file *ecryptfs_open_lower(const struct path *path, int flags,
++					const struct cred *cred)
++{
++	struct file *file = dentry_open(path, flags, cred);
++
++	if (PTR_ERR_OR_ZERO(file) == -EROFS && (flags & O_ACCMODE) == O_RDWR)
++		file = dentry_open(path, (flags & ~O_ACCMODE) | O_RDONLY, cred);
++	return file;
++}
++
+ /**
+  * ecryptfs_threadfn
+  * @ignored: ignored
+@@ -59,7 +70,7 @@ static int ecryptfs_threadfn(void *ignored)
+ 					       struct ecryptfs_open_req,
+ 					       kthread_ctl_list);
+ 			list_del(&req->kthread_ctl_list);
+-			*req->lower_file = dentry_open(&req->path,
++			*req->lower_file = ecryptfs_open_lower(&req->path,
+ 				(O_RDWR | O_LARGEFILE), current_cred());
+ 			complete(&req->done);
  		}
- 	}
+@@ -132,7 +143,7 @@ int ecryptfs_privileged_open(struct file **lower_file,
+ 	 * lower file is fput() when all eCryptfs files for the inode are
+ 	 * released. */
+ 	flags |= IS_RDONLY(d_inode(lower_dentry)) ? O_RDONLY : O_RDWR;
+-	(*lower_file) = dentry_open(&req.path, flags, cred);
++	(*lower_file) = ecryptfs_open_lower(&req.path, flags, cred);
+ 	if (!IS_ERR(*lower_file))
+ 		goto out;
+ 	if ((flags & O_ACCMODE) == O_RDONLY) {
+diff --git a/fs/ecryptfs/read_write.c b/fs/ecryptfs/read_write.c
+index b3b451c2b9410..b3956ae50ff66 100644
+--- a/fs/ecryptfs/read_write.c
++++ b/fs/ecryptfs/read_write.c
+@@ -33,6 +33,9 @@ int ecryptfs_write_lower(struct inode *ecryptfs_inode, char *data,
+ 	lower_file = ecryptfs_inode_to_private(ecryptfs_inode)->lower_file;
+ 	if (!lower_file)
+ 		return -EIO;
++	/* ecryptfs_open_lower() may have fallen back to a read-only file. */
++	if (!(lower_file->f_mode & FMODE_WRITE))
++		return -EROFS;
+ 	rc = kernel_write(lower_file, data, size, &offset);
+ 	mark_inode_dirty_sync(ecryptfs_inode);
+ 	return rc;
 
 -- 
 2.53.0
