@@ -1,119 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8DE607E06E
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 17:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 769CD606A884
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 17:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=IJlmK2Jz
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B1b3Gxm7
 Received: by kanga.kvack.org (Postfix)
-	id 872926B05BA; Fri, 13 Nov 2026 12:18:39 -0500 (EST)
+	id 7638C6B05B2; Fri, 13 Nov 2026 12:20:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84A626B05BB; Fri, 13 Nov 2026 12:18:39 -0500 (EST)
+	id 714616B05B4; Fri, 13 Nov 2026 12:20:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75F7A6B05BC; Fri, 13 Nov 2026 12:18:39 -0500 (EST)
+	id 651516B05BD; Fri, 13 Nov 2026 12:20:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 51BA36B05BA
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:18:39 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D59381A0200
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 17:18:38 +0000 (UTC)
-X-FDA: 85430755116.17.3251395
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 0270540003
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 17:18:36 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=IJlmK2Jz;
-	spf=pass (imf04.hostedemail.com: domain of chris@chrisdown.name designates 209.85.214.181 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 47F0E6B05B2
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 12:20:22 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D27D18022F
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 17:20:21 +0000 (UTC)
+X-FDA: 85430759442.13.67AD637
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 2ED87140009
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 17:20:20 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B1b3Gxm7;
+	spf=pass (imf23.hostedemail.com: domain of roman@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=roman@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794590317;
+	s=arc-20220608; t=1794590420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3C8tSwHqjzI+bnh3DElyKp/N4OUqkqrYjzdrA+UxunU=;
-	b=JtPVEIVxrz4Ma0Hlx8OaK76mOZYS11u4MnEufDfDanquPIqnpu175qB0IKg2HyzUMm+Dd8
-	gy5clGSFOnSv5CPNhkWr6gYoMRGd14JaBRPcyhiVOBGhzmq0vsWGReUNXVoyVDZFIVBAna
-	CIFroxnjdN4z07H+TjE1XRnHZ5zZTL8=
+	bh=Z4SrH4RVDNtmZG2ZRDPtfT86JlaE5VwGit9tIKv3JJQ=;
+	b=IEfcE6ypUkWVL2ghP/5KqS0w9dAmiFy6zvThMSfUfgbC8wOW0ebRxOiYcojaV1bbcj8dxv
+	WSJoi/xGshJxYpVPN62cq5rNMyAoPLm6Zec/2bN7b5QTMbY0RcUWrlVQwi97qu4b/mCwlo
+	kM2Nu55quCfkuXyHjuVq3UA3y5sWN3c=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794590317;
-	b=V1D0/sO2vMNJZ+Il/ZQZt9iQUeq4JA+BMs02h1x0ZXxuyywvnkxcPAv22ngVJNM1YjUDqW
-	VXtaWFUoXEpDBK8uU/GVh3bGa8sNWHCyDg3umwwpFXLNL+edZ8hlaJHQ/dpEaRaQ9KJXea
-	ZOYcvYyMVEWw7laic2BYdU9LnidaM7U=
+	t=1794590420;
+	b=NvygiwScLPH9I1TED4CcSI1m7uSEIkzk0E6wSBl1TobJTtI3QUStRtn70gFP9QHJCi7DsJ
+	eQkP/UhNJgWru8/kXzdLbOlEmu84FQwwl87LgUx7vnjErsj3RgmuWlTD0l4cEToUtqJfXT
+	/eJF6wMB5P/gsZdUYjw8FuKd+JEXAEs=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=IJlmK2Jz;
-	spf=pass (imf04.hostedemail.com: domain of chris@chrisdown.name designates 209.85.214.181 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2e95bd1c14cso23733235ad.2
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 09:18:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1794590316; x=1795195116; darn=kvack.org;
-        h=user-agent:message-id:content-disposition:content-type:mime-version
-         :references:in-reply-to:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3C8tSwHqjzI+bnh3DElyKp/N4OUqkqrYjzdrA+UxunU=;
-        b=IJlmK2JzBNBdfl22GQAikPAM0S/YE9w1ABO84D10HiuoyepeK0/9ut56CinecWFgFz
-         PKyuZRXSC88gUqGFfpOpmdxgUjwjGbP15DsIATMH1Yo3MflYDmpFdZxIZOqCr0pjuxTN
-         2lqrHwQ9VTJnPXhdD2RlTLavMqf6jfeKAnQLY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794590316; x=1795195116;
-        h=user-agent:message-id:content-disposition:content-type:mime-version
-         :references:in-reply-to:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3C8tSwHqjzI+bnh3DElyKp/N4OUqkqrYjzdrA+UxunU=;
-        b=SQ1Kxhvf5/tV7RcXVDpB570YzHnUUhoQo9G79GmI7hu3o7ePr8Xcc6ClYqglV3hXqB
-         VPkUJJed/+LPrVb7/VU/vqMOqbZ2CgNv2CATkXXMRRDM6coJ9o0dcRuy6cBHnRmQob+q
-         tD5PSuHZO6TF4oQ7korSEdEppyVt8AmqTRbapffOYNkJt/KLvYMbHPIUf0a+7w5Ij7UC
-         4bLJcTu0q/sHi7pnaw+9nunZcMGEYzXDiynC6uCwlkofq5nrpmzf/CzOXrOs75spgxLA
-         qEJlqJK71XQWLxRceu3fz7z7djFOdnf1AcI/HIgOg4thsRy1EGJTw4Fwtcl1QSsXYkdk
-         6ZkA==
-X-Forwarded-Encrypted: i=1; AL+hErHbO5a6lwcpy1HIunLsD/09AHfBMX0ma+rJDF4uyJINAXa0sNkjIpaYsjBkfusDW7K6vgIO2mThVg==@kvack.org
-X-Gm-Message-State: APuU4Z/6fV/rcFRsAwq6pVaBMf9yeJTiMO7vXwzRhpNCJBa+wvT3rI+N
-	qi+RWkKHUK+9YwltLs21eStXJTm+rg/gn7JQvZziBMAq5pnQ4trVupQX0OQHlJdDP4g=
-X-Gm-Gg: AYBFou0KXuYHPq79VOdL/lNfZp592QhbX9kGavoH9RvqBjcAd/IAHXVAkcDOLZqjCv4
-	3aCCwv35QbgdMNfnlbiqcnCLFUUP4hfzLNdxHqsXMU0/Oe9kEG0oXlVllRwMVxwCa0ki0D+/DSI
-	cFY8+Z3aT6wFhJrtl3urbBK7J+L36H/TtFvUT1P40deTfBsFju/zxyAQDJZy3Nv4U3DqSLtfaIU
-	LxTOegEjHzJ9EwCdDzyzFxW9lIpp63EUG1v/5YnVIrY5bcfU+DHEOXduIGzVQxpBn/5G3lv2mFZ
-	haskTHg5AfyBQ85c5RPmNo9jem8LIMP6AwKnD3HkYpnqrx6oCWPAxyAgUvG+CrONy08vWbeH3gj
-	ZqSWnJu10uLHnNzkF6rqPfyYA/6kHaO2EnfXf00CcH78OH9iLOF8mDbmqhjdC7h4EXz5QeiJb4p
-	eguANBpSlT5xjMiElG6xfCnNDLG/FQHV+CZ+ndAnSsL0+rGYg32ZAZjUGX6k+M2GHZrqb6ZVE8J
-	KTq8+FhaYZVNsGOyKPtU7Ols3oSFtyZzgArLGmXCvJ5Swcr+dGPsPFLN52KfJx+bfufFXA1giWQ
-	jCEhjTnw5wXZKddhqtO4G+9AxZMpZT6BEkKmE6Wdkm+O99jF544GfW4U4GMfpWgwtzuzkpBs+GY
-	b+vB/8LYxYc7gtt/BSHIVb5u2KOtrswt8IadvVM9xoPbqhUqqVXkvDvGFulCnHBfGj7mSt+MKYh
-	cGmh6zSIVZWAbYFHS3S1gbqHvPxisEUObh10yI7/Dg2tNmG1QawDu/Gl7f08Q=
-X-Received: by 2002:a17:902:e74c:b0:2e2:d77b:e586 with SMTP id d9443c01a7336-2ee0df12481mr33259215ad.60.1794590315817;
-        Fri, 13 Nov 2026 09:18:35 -0800 (PST)
-Received: from [172.22.0.2] ([50.175.87.158])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ee10bdd1a4sm12923515ad.11.2026.11.13.09.18.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 09:18:35 -0800 (PST)
-Date: Fri, 13 Nov 2026 09:18:33 -0800
-From: Chris Down <chris@chrisdown.name>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net, terrelln@fb.com, dsterba@suse.com, hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com, chengming.zhou@linux.dev, Andrew Morton <akpm@linux-foundation.org>, linux-crypto@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, riel@surriel.com, shakeel.butt@linux.dev, kernel-team@meta.com
-Subject: Re: [PATCH 2/2] crypto: deflate - use vmalloc() for stream workspaces
-In-Reply-To: <20261111153532.1036709-3-usama.arif@linux.dev>
-References: <20261111153532.1036709-1-usama.arif@linux.dev> <20261111153532.1036709-3-usama.arif@linux.dev>
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B1b3Gxm7;
+	spf=pass (imf23.hostedemail.com: domain of roman@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=roman@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5AAA946BBA;
+	Fri, 13 Nov 2026 17:20:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA9C41F000C9;
+	Fri, 13 Nov 2026 17:20:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794590419;
+	bh=Z4SrH4RVDNtmZG2ZRDPtfT86JlaE5VwGit9tIKv3JJQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=B1b3Gxm77W9VqDxwBwV3lHzY0TWR1gYFbDnKPMD8LxLeaZpBZ2ZYzt14vw0cqRmTp
+	 wj3Ybj26v7A1nHm76aBOFUQD1vOYEzyefBXlhx5+9dfYCSD5zqhrgTWS6UBkId/j43
+	 sV05M9HMz+gwNk2rKShUN4yQFxptFZRq79/1QN/UNi4rQd0ODaGZ2P+U+j/6UbUg81
+	 yqNWsrh898VwZm5ofdrjnV1aBm39i5pgKhoC5ps/3YqdCQK6FFL6N5jQ+eqSwArwmV
+	 TubhdfmaS5Lc00xq/VVt14jB2QN/5SsWoIuhfZCrazb9AX4VRSSTMFf+bYBdPrzn3F
+	 tWy0h3fOXQ5fQ==
+From: Roman Gushchin <roman@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: sashiko-reviews@lists.linux.dev,  =?utf-8?B?SsOpcsOpbXk=?= Jean
+ <Jeremy.Jean@oss.cyber.gouv.fr>,  Zi Yan <ziy@nvidia.com>,  Roman Gushchin
+ <roman.gushchin@linux.dev>,  Baolin Wang <baolin.wang@linux.alibaba.com>,
+  "Liam R. Howlett" <liam@infradead.org>,  Nico Pache
+ <nico.pache@linux.dev>,  Ryan Roberts <ryan.roberts@arm.com>,  Dev Jain
+ <dev.jain@arm.com>,  Barry Song <baohua@kernel.org>,  Lance Yang
+ <lance.yang@linux.dev>,  Usama Arif <usama.arif@linux.dev>,  Kiryl
+ Shutsemau <kas@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>,
+  linux-mm@kvack.org
+Subject: Re: [PATCH] mm/khugepaged: reject shmem collapse ranges beyond i_size
+In-Reply-To: <5f3dec4f-0416-4550-a980-b464a90aeb11@kernel.org>
+References: <20261112142335.2749597-2-Jeremy.Jean@oss.cyber.gouv.fr>
+	<sashiko-outbox-212974@kernel.org>
+	<5f3dec4f-0416-4550-a980-b464a90aeb11@kernel.org>
+User-Agent: mu4e 1.12.12; emacs 31.1
+Date: Fri, 13 Nov 2026 09:20:17 -0800
+Message-ID: <87y0aw8x7y.fsf@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Message-ID: <20261113091833.6dccf0e5ea9aef18@chrisdown.name>
-User-Agent: Mutt/2.4.3 (cc9e3943) (2026-10-09)
+Content-Type: text/plain
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0270540003
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 67rkei4eridphuxi6395em488cxb4syr
+X-Rspamd-Queue-Id: 2ED87140009
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: f5w4gfrqur9kthzam6mn9o1y6xm5op1y
 X-Rspam-User: 
-X-HE-Tag: 1794590316-609302
-X-HE-Meta: U2FsdGVkX18jm8qeDMr7wJ3R096AzdBPAKocuBP4DWLDjFgn93yqK4CvKBNVQ13s8aS+3tnUG3hm8P4Xyzvb5seBKPVDMhZV1VKEdRYw4x1Xm1gAlmPvlwEZjOfR8tMK+Om1pbyTSy3/bKfvRdglcrmrPGGhbtEG864EEGeXvL63qKYuiXSTyvtmXdTzWewyCPWnmLyvKEZ+La8ksyyFYCEOtADLhLof79VUvRdzzJ4RIQN+iZsYXDf66kjQY3F5K24VF7LlWVlsKY8iI2Ytt3nIxHPwsZPQvsXVBLdiJRhO1DBGl7xDLj8tjBPMOHktsAWqtui+rBy9PScEcqRXDbGaXDw79Yc+90MYH9YmUnssqv7SPhH5qVsEpUgR1iETScWdNAiNKVsAGTs1lIgw/jVRVugEBzqpE7kdzje5dQss024mLXxjEyKpMW1DzVpPDjE2BuB3eswTr/gAqhqC3lEfeT8bbJ0Y5us8befk2aqAz5Y7twN7dVjwq1DfmL8RQJXc0Jbt6fjwbTP6aE1Al47rIuV8CQ62tiEIi8J7aUptd16tg+ZzHqaOUZ7kWk94ab91yjlpKGh/iarmG7EnpEoXPvLoYQcahtNxYtr9Zy7WwmWIFMb6AxeY4Yn0EhlLDaxvZPo+p9hgGAhpO39D9Dlv5MAqIa8Zy/5Flh4heX5Hyj8CpNJ1h3ffc9oIy6CoCXp+AWFGxH4pWQErW5hzv31MioeJa3Z9T4ifcH0gsf+IeT6WYm24O5Z2aCtm405Iok7PeWqzYEzpqlHjN2ZSKJRqPzqmNE76CgNwAPRe7jkmZUJPWu7J6617nRUNBmGR1rbNA+Bsqxyvzcv8kgTBjE70qD4zvismZN+JaMI1sgQFqnEIoBMGzf+ayHA32BrTg/R6Mdbix7PFfx/VPKvL3rQ+cxOwpbT9dDJu3NCS5Yv2KK6gKWjFczFWoOoEsrHBE2i1EB0ZIhgvo8natgK
- 1n+93G4/
- Tx37Qz87A9AYfIoBZPW0xDaKeaa4FK0aNKVDsY+Bi4hvHIWdOc8w/l34QNjZcuMsziDuIEmaetSJCZ7nU9f9v1xVuLvl+hORGRSBjuZ6VycxVIrRgnTVxxKFC9gJF2pb9I3v5Xx2oS/azKST9ytZmB7+r/i/EA8ZvuO1HosoQYdvv1E+L5NXfB8GiY5oAnnwld0KWv4TqOLCMC0ZtDNZpSkRRKBUu8ibdVJtI9KPNDOJjdcQq61Jt9VDSU4zbrO8hkFiWJx4qndJRotduiuDaf8ErhCZOFv4mPO4mKfeZXmbX3UFxjyeJJEp6DHRiDlLqRABKT51NYQXtjrQM+6CfJILggEeBogu9dSKXOKgmqlDIzDnml20TOtuMlFAeDWwJDVDsjtn8h+ffY3tytGmDeVk+6fAXRHovmCyFeGJgMAALIelx+nN3dBJecyeV+2N9RRju/6Ls2ple9vM=
+X-HE-Tag: 1794590420-809797
+X-HE-Meta: U2FsdGVkX1++Z50nsQqezY4gUx5NrTt7wJ9EaX4K+TU3TAPuKZuz7YLsldXwn6tIkyLYUNpG0qXMhffzqP2FM2ar0wW2h1LJ3a1Vt/Fke0qKjOKHTKrhxHLDVKSFFcrKv++VUGop4YaOEwQDkpZIQ8H7R5fnpttUb2xugdMXAv0T56uuMZzoMk/NHtBognnzfvcD97lSbpUKBIF5DXn3BHUA9wFS/aMlXRJL5tSYJVHoY/X4M7HkGym+Lbu/0BvxfzxBnWfnwc6NFWe07htMyvEWeWAFlwc7l/VOhwu9kJuphNX+f4j8kB8hYmu2uDRF4+o8HOnXiswzs0FJEM0uJIQaK9zSALXScvvC/fLN0aZx67/RIQJHCYCas0oUK9IBhw3YEe9ZHVRrhL004gj8oeiGd2f97ARy9NFDZP/R20dNdGmPrggu+cEa9ytBdoJ8rtexMA0iWFKlYCWFJ+jqPbMCgo7whWFnZKORgu81/XmiNPpJ0gXkQZYVyf0zdAvks2VDAMJZ9+duF2W8lA2aN0DGsMWPP7p5sNUjmFeCEsGjJ5oikFQo7raIm8yZon2XPqU61mdbs0MIJaCuNnn2nk87ZFb41auKg+GAT68BhF/ZSHdqgJZX/iP0IRv300q2s8yfCQTgDJfNqAAJve/z5wud+h4nmJyjtibxQXbFWGyjQRqTbbp6KwfzfpGzpTCcF2JFfBhwS9u8Jk22mh9oMb67TsoMDRU57gl1ybiABYuNuFkVjC7nUw0f3quAEqVpdyzVyl3oZJ952knOAThH9njnvvTjvcNpMCutBGZ0dEKyFf5PCxrrnYmPaikUqoBubXEjWYlOdYaVFbo95BQdwd3ZSQ22FeaxXmDbmm9mZ5imNM3gX+fzMbgQR/hIjGWmpDFi+qI3A55XfKS+fBVBQEsDcVXu5NtaCY38ulB+WCH16oadV+9qjiY8s0xvqYZ2035w2PXswezCcfNHvmp
+ 43zaijCA
+ tbER2e6qnMKCkcDzvBfYQWmGB37VP+EUj02s1/jExDE//0x1Dk0aNaiRdLzeYf1CCCPG6NQCNIgQyyqI0d4QH3GBg78VMVNlFMPUt4W7ebQyJmdMOJwH33pJbWPE1TuoelMds854cBXivSsRpzD+aoq6H7xYnbCCxKBUNw8SFVY49UGsdRUvEMvwypau0mQGOoaPqyYeT190K1YI7sxVFmsjCTME20xUNX5LobczzHWgRKXVxdSVdwKjCpvXqTe9I1sJruxyOB9Rq4KJGEzva9Z9BE8ja9g3VTeDnUhPdEIELEYLhhpVJIa6SFJ5V+txSctkPcOuCyHwRR3n1fSGq14ceIgRSqHwG2nOpjTqVLntBSJ4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,12 +102,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Usama,
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
 
-Thanks! I've tested this with zswap using deflate, and it works well.
+> On 11/13/26 15:25, sashiko-bot@kernel.org wrote:
+>> Thank you for your contribution! Sashiko AI review found no new issues
+>> in this patch, but noticed 1 related pre-existing issue it does not
+>> introduce:
+>> - [Medium] mm: xarray node memory leak in collapse_file() [1]
+> Ignore this shit from Sashiko.
+>
+> Roman, make it stop.
 
-Reviewed-by: Chris Down <chris@chrisdown.name>
-Tested-by: Chris Down <chris@chrisdown.name>
+David, will do.
 
-Chris
+But also it's not how I want to interact on mailing lists tbh. I
+understand everybody is stressed and overwhelmed by llms etc. Including
+myself. If sashiko is not appreciated in mm lands, I can turn it off,
+no problems from me.
+
+Thanks
 
