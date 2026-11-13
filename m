@@ -1,98 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE80C606A323
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 07:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 084A3606A880
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 07:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=CjeDckG5
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=m+raJt39
 Received: by kanga.kvack.org (Postfix)
-	id BAE0D6B05D3; Fri, 13 Nov 2026 02:13:22 -0500 (EST)
+	id 0E4F66B05FE; Fri, 13 Nov 2026 02:20:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5EFA6B05D5; Fri, 13 Nov 2026 02:13:22 -0500 (EST)
+	id 0BD386B05FF; Fri, 13 Nov 2026 02:20:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A50DE6B05D7; Fri, 13 Nov 2026 02:13:22 -0500 (EST)
+	id F151C6B0600; Fri, 13 Nov 2026 02:20:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 80B976B05D3
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:13:22 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 09CE41606A3
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 07:13:22 +0000 (UTC)
-X-FDA: 85429229844.27.B21B461
-Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
-	by imf05.hostedemail.com (Postfix) with ESMTP id C72A3100005
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 07:13:16 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=cmss.chinamobile.com header.s=default header.b=CjeDckG5;
-	dmarc=pass (policy=none) header.from=cmss.chinamobile.com;
-	spf=pass (imf05.hostedemail.com: domain of zhangchujun@cmss.chinamobile.com designates 111.22.67.151 as permitted sender) smtp.mailfrom=zhangchujun@cmss.chinamobile.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794554000;
-	b=3ZXQXppVSH6XoOMlDY6+ZDqP6C2DaV1Qop+f68KgUDC21Rm7nIESjZZyte/4BWUmz+wOyB
-	oeH2GKgoq0jyKuAjRSmqRExTiQYbcOpFJmVUO07LMIc3JgSP+FvqUVV48qzUoMwxlrJKyb
-	DqZ3vS80VhD+++m1ZzFYaVi/6+KjUCI=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BFF026B05FE
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:20:24 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4E28A806D9
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 07:20:24 +0000 (UTC)
+X-FDA: 85429247568.16.66DE08B
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6ADAF40006
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 07:20:22 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=m+raJt39;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794554000;
+	s=arc-20220608; t=1794554422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=jwJEcLepynHbIn+FVTxG6lhSdNiQ07QILHBvbeYHS+M=;
-	b=U3VMpdm9Ub9LDRbo0ZhgX09DiZosPKQYr32sfvMtThox1wbIonb3S9UoGi4HX8ebs77sD+
-	C7Fnm10+ytwtqEdTyFh4A1lwOv6gl6mg4wpRMxt3dpAbGE7X0kDPny2Z6MxQN/8f67ZYQi
-	8NwcuwYPshK9+M59fstLux8xvyIP1oU=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4ukC9+RmyKpMCoo2Ej2X50ZCe3RffRo8JS7sjMrz5b4=;
+	b=uR7YmdjKlf4SVC7Nks0a35Y2O54mFvO3e1mHzENcBDj2KwIKDbpg8/2VkHkf+ORdZweZrz
+	W0zuoX9/KkHLZn7R0osW8OoYMmV46+m3ckGl9YRTO6ceJQmdfDHDub50xaidtgQUC7rpC1
+	ycQKS9L7WaR5V7/cXP6dlzhWS3iYfpc=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=cmss.chinamobile.com header.s=default header.b=CjeDckG5;
-	dmarc=pass (policy=none) header.from=cmss.chinamobile.com;
-	spf=pass (imf05.hostedemail.com: domain of zhangchujun@cmss.chinamobile.com designates 111.22.67.151 as permitted sender) smtp.mailfrom=zhangchujun@cmss.chinamobile.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=m+raJt39;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794554422;
+	b=kiafokbYGLIG+Sh8W+N5/bRiKISGVyvDTarY04u5J9fi6xf+QuwqhhIJ3Lf9ErWqvKhJTW
+	xdYiPfoFQmBrN5Qtq4n2HYp1o9zMPEjWtHSgq4HH+qGIe8dnDn6mfMtk4xaKHtFpWR+LNx
+	/E2O2FUUvsdE4gK0tWfl9QhFqIyUoeU=
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-91c6ce60697so13335376d6.3
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 23:20:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=CjeDckG5BJvVoZ+/d3qltobSl8QLrmOl9wvuXOj8dcFS6OjanaLVI5FxRAmioaXnIvQZMgOa+Jwo+
-	 ILVhlL4FjNplNBMz9rgAxjV7vmjkkdN8XvRym4rsFF364bTdRmclhMj1gpoTAOSB8OLr4ZGfFmrAR+
-	 swCzb+7S68Gtk9to=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app02-12002 (RichMail) with SMTP id 2ee26af6b8852d9-252a6;
-	Fri, 13 Nov 2026 15:13:11 +0800 (CST)
-X-RM-TRANSID:2ee26af6b8852d9-252a6
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from desktop-eb75daa8a6be458c-20260816004526035 (unknown[10.55.1.72])
-	by rmsmtp-syy-appsvr07-12007 (RichMail) with SMTP id 2ee76af6b883592-1bdcd;
-	Fri, 13 Nov 2026 15:13:11 +0800 (CST)
-X-RM-TRANSID:2ee76af6b883592-1bdcd
-From: zhangchujun <zhangchujun@cmss.chinamobile.com>
-To: hughd@google.com,
-	david@kernel.org
-Cc: akpm@linux-foundation.org,
-	baolin.wang@linux.alibaba.com,
-	shuah@kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	zhangchujun <zhangchujun@cmss.chinamobile.com>
-Subject: [PATCH] selftests/memfd: close fd in sysctl helpers
-Date: Fri, 13 Nov 2026 15:13:06 +0800
-Message-ID: <20261113071306.1673-1-zhangchujun@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.50.1.windows.1
+        d=gourry.net; s=google; t=1794554421; x=1795159221; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=4ukC9+RmyKpMCoo2Ej2X50ZCe3RffRo8JS7sjMrz5b4=;
+        b=m+raJt39SHV5hlAMvZCfnOSTVkuHF9IkHpZ3ppIVdjA8vXsj+uhxym7NdgstMhqQpv
+         8TB5wWEmtDZnj8TDea/ZxAAF1QoPqUk54Rq8ulJyF9+PvXV8A0pNTwCXAekIDnC/Jlvw
+         QFkgwGiqwvGQc/bvoV44p9PIBJozKWwiJD6pGHjdFpPSk/uzjtpWnoJVqHSOtpRx89T3
+         dCVKOmNJC5udlXMcee7dE/AVE4MXhmrGzZJM3Bkzi3LIhrabur5/XEBwkaCYDQWxJSns
+         WvEGo3TGnu89zBby47jevrcwStw1c0Mdqr2mXsghYpeDVItjFnuoRWVYQmQrT/RQKeZP
+         s18Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794554421; x=1795159221;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4ukC9+RmyKpMCoo2Ej2X50ZCe3RffRo8JS7sjMrz5b4=;
+        b=HEeQxMcx9tqJYn9BQjx2s70/ymisK+/BfX3c9PihZwfRCbUTnuJdu/Q7OczmAqJKLb
+         lDDvCqsXg6EB2OkDPeY2SzqWftD236FByKpi8RcOAZo7Xtxmo5ySnxQTg5nCtTiM7Br4
+         LXfDyKtyKo8uxPwpwFSP7HG17yLcxgp427xMWAcoFl5Jb0mRhG0oHTSZdBNOjBq0bWjI
+         ctml906Yk7V9wRVkom72Jrg6KwM/3jhH2o2T7mDQ/sHjV1vp5IXlCSuP/Xhp5MfxCJiH
+         2xK3OAh6CliEXRwOy7VFskruWdDOUkEgLtQylKMk2V23jy9mBRx6ykm1tlhP7qfuiYiL
+         EXsw==
+X-Forwarded-Encrypted: i=1; AL+hErFfBK+FmQU7Eq4mWXmFsDQTArhADSrgOloPjSE6iMhVY7ptpswkoyxK1lqLW7IEXCgQoONFy3DNyw==@kvack.org
+X-Gm-Message-State: APuU4Z88uOs/0b/VQblVpdeYTa06yg1ZYE4W2XyU6wKx8yghyyiE3AOV
+	wyu6iX0i+rDF8h02bGNF36UNnHEr0XdnB1jF7/Yn6ySIIehStgHVXAw7itzREHVMND8=
+X-Gm-Gg: AYBFou26eQ8/cK5Lq0rgXhf9uVmggzlQ1iYj8FsDyXR78bqFb99cJrlfI9gHfIV4kOo
+	lHtPmk9G3VqkFM/ouF9xkqOGjyRK8Oq/b1yWpUU9F9id7V7iCdG7dhqeTQGFHa2SKuhaiCbzqDp
+	78DRvuCBLBGWcZ88XnPsgauuJrjZceN6+ilvXvXHrrKWaKv8hfTgnUVVMUPRP/E4YnClXyfOH94
+	6/hfPCDLe8klTBHV6TAMSsbbjTAaglrqnF/X5g/iYjXs5v5Sutp6m6vkuqQc5AD4R08v6i+Mvma
+	lf6T4kue7BFPQx3nPmg7aNoeZPSN42cvkRFgEtnjG473zL8PhzcKXxWwSW+gIkckjw512mdpRvu
+	zUORwsHlLuAve8gkrzsa/pCwruz9WXvMATUL88hGe+nG1e8R97Z6A1hlY66Azign1lzzpcChOvd
+	ym23fziGDRl8zXGn8XB9YwM1dWib1hj6JQK5MlJ7YPqCQdlJYTdYKQTJ+js+zoYqXiiFMcJ5sp7
+	6J83LoDDDkX4w+dncMaDaWJR32EboCaY7orF8PN2/ce4zZg+Ihn8Bwv4XuOyq6JUqxeUcUetr3/
+	TiI97TDddo77cRL8DBTAdKCnVFpbNDrCrQHn26Z5RuCilNvYpbx0xzUwQN+pUqT6jOpthILtDKz
+	wJnG+bMlqELnnywfNXs4s/61kNohSLA==
+X-Received: by 2002:a05:6214:c46:b0:917:a1a7:6369 with SMTP id 6a1803df08f44-91f24198eaemr24969396d6.22.1794554421464;
+        Thu, 12 Nov 2026 23:20:21 -0800 (PST)
+Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23d614b4sm14297636d6.18.2026.11.12.23.20.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 23:20:20 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C72A3100005
-X-Rspamd-Server: rspam12
-X-Stat-Signature: dqr8ikd7heqhspigjty36bycc7m4rqhe
-X-Rspam-User:
-X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794553996-843996
-X-HE-Meta: U2FsdGVkX1+MwpxY4JKr55c77A1cqAZM8QiiLh0BkGeFIi7jCECsk3oV0v7ywno5zcea8NnnzD2sr5zrFyaJwUIyAkk7aBudslEzA1Z6gHrOFRjlMSi6JeXDnQw/LXowKQE33QKrRpoNPSLsuvxMx8/zjoRgX+hgAmoCbjC91n3x+7jEJyIC5pER5/jPkj5i9+Y5rKAmMGMRPsilczaNYKZIJUkbjpprH5gDKP46iMxCD+TIg0/ysFY20EC57PFVEErYIkiVDPGunK/rIUL2Xz8QiExA3Iirmyda8kIIwlLq9cIthhg+WeT5DkctvxTK9HzMYL6m10A4wBRXrXQgLNwWeG7BleWmII2/vdpB59omhg6nfskXwx4ycOeUXlYAhwaLS4g37wNIEG6DL1iR3R78qJuClWzIi0lS+/TVIQ5tS9BhLFdp/NIJprReD1lAxAIROC9Me/ekQB0rdsm7gCEfE/23b0K4rK4h8Af6mPa72udhCklQFqQMdaxovJSo5noz4UL23PbNyJM/lupSjdH6BgkrpYSkm3VVLRE6S9E2kd6YnjaV+D+SwQN+eAbTO9NcdQQZIyT0wwfaf5YnOr6JS+MeDYEyTmEaNcV9hZTQNCYvuVACt7zotT9dvtlrMXvnntRh3ZuGFrvYWp0Q1mhBNp+1eokFqbHFGe2GONKrnzMwT80qGfJLTemiHrCDTt2sSHcpMcYaTehF/NT6guiUMHNARZ7BApPeyd/K8+Szb1zthUx6QxrxMldTBrc4l/jt5UcRnFpJz4ILmBJqxI0HZjTROmEl4aYPQBpr4B/73EEOdvGmlyfMSHK3gYAuJr01C6AcK4cZLoShBandU5ygG7OBZ/efSpDaGL/KxoZjCf8lwsqSEB31hxJEey6J21jpPK8f6HBq/n51hFnDanfx2oHPBrNiWNwUYrT0/QXxj8gbc3qSxOUpPz5rz3ygEyuygAGfK9ZvT2gp4Wt
- 1It7szLo
- 0ugrOh8aLuWObOpvaqycCkNM4EZLo3QPqd6CxpCfgp1Fl76V0WtNQhNcCoaGoeJzBPF8HLfb3AaWPM3is3lTLYiXtKmwQR6IvG1XzfGOHpbox3UNFPcNSTTmEWTorvAasjypW4IdKHAa7vTHM56Ozf6KresHI5+2i0Yuy5SqsOe9RkupOvhMhFWpKCWP3p61iHYg8ioMr7cPmw8Mgt87fOyxcsYFZAH/RVc0x5Uzt+mGDOuNnaUHrivOybQ8ODFFB0wafyQPYyFCDYHSsm5BPBsVkEOGhOQXWyA9rREUUYTepKtVDZZbLLHd5uB70+12Jf43cZRQcinPKr3g/0RWoysEHig==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [RFC v2 1/1] mm: add source selector to memory.reclaim
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: Li Zhe <lizhe.67@bytedance.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, gourry@gourry.net, 
+ joshua.hahnjy@gmail.com, ljs@kernel.org, mhocko@suse.com, 
+ muchun.song@linux.dev, rakie.kim@sk.com, roman.gushchin@linux.dev, 
+ shakeel.butt@linux.dev, weixugc@google.com, ying.huang@linux.alibaba.com, 
+ ziy@nvidia.com, cgroups@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+In-Reply-To: <20261102070440.16262-2-lizhe.67@bytedance.com>
+References: <20261102070440.16262-1-lizhe.67@bytedance.com>
+ <20261102070440.16262-2-lizhe.67@bytedance.com>
+Date: Fri, 13 Nov 2026 02:20:20 -0500
+Message-Id: <179455442014.482102.4069329165987986914.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6ADAF40006
+X-Stat-Signature: pz3uhjinf6y83z189tkh6kwkob7cgmmg
+X-Rspam-User: 
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794554422-980503
+X-HE-Meta: U2FsdGVkX1+LeOzXx11o6oWu8yCtQO7jeUDcpk61miVTc3yR6ERlku+msCeFbJmC+nrDZDXtKSIFvbY/M5Y5R0B+eo6vIVWuY2igS55SVjBAIBy2KwsZxWruV+IficBOHfkditcVN7XI5r45AfOv7VbBKAcqi7i/jmnSfwFqdXYuvebGvTjfuxgtEv8bLcSnHwONh758hWRz/52OKNaqurDQS0rmkntTuy4lm4X1exdM/Nu4FuWIyAnnHEonQvX9+qwC2CCxEcSbpmY1Frm1wN2IaXpgIUCfJlHyWRFsTkf2j6VIlViEsNVgTYp0zqtfSjYAaLsZuQXNPmNjoI04aeAnqDNZu9DYOo5iSFR6xo7U0ITnTIydwUHPicUUoBl6e084kuh/mPg3zG0mCMBPj38c0epmuyGNnSTbcL5tUZGsqJ/KFQeVn1p/biFHUJ2bj7eg/WyTdDxtiM1Zv7P0udnfNDWv3PJ09tTO+CzWZTANByG4ReV6lZg8RT4ncMJQZw4Uy4TyAnOpqZzOzuM11JgFog5YBrGpPFXCxgiJEuxdE+PL7HN69XjarMgqaAJKCi4sL44u1IWoeX6bYK4RPrEJw9kxX8jDJbplr9vEShXIzSE8tx6Vz0NNJVIQwhek3dXTczYvv0i3LTTxZd1WGBFhndbPTIRcwSx9uqRuEcnFtkfdJIciaqLVLfrTNsl8JVlT1iKsUAu4UpgKHpZtIErPkSPfFs+uCzXtHs9y7GM/Od+M9cbYclRTJU1g1n567NOStJhdtIISmsQFimgG5B6ULY5lnqkFnFDhgPhKtnM3mI5z00ZWj1a8PRkCMkZuJ5ZrmnwabS9OFR45W8akvA3A+VHzPMKvGy77s1pg4sy271jmHRIsgFXYpIW6G+SBKQHV1C5hXBUzHoH5GXe9SunKgV6IL8TsXnivf5WfTLjVJ5njrSEh8YDll3ycDf4JthHXFsdxcsWY/K7ky90
+ tykmUeGb
+ MEoHWdRDZq7Rtw/C1tZ/0W9wlM4kMeeG5aFZxV36md/gHA6G4uD6nPUes18Fjmt047gJazo1pCVa3Xp+WrcHvWqIAoPeTq6FXd798TH0fj3+sadtSfSgpsxOr08kmdLSaqqApDkYhjLbX354cPRj1ysOAJWE19GAdqWhVe/b7WGhk1qwwQHq6A2XENT1vIDKgndoNljvBB8SvAOWAlaQWC7S8pxOBMAus892xNtIVlkfO44gjnaxBaZ+1M4MSPLP35t7una0F9+L22wdSbil1qnOtZLQjY+RoAaO047VVF9XG/YyIcSsvo80lpqsBNgbtutQVDs1xrBmoG/0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,50 +131,80 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The three sysctl helpers sysctl_assert_write(), sysctl_fail_write()
-and sysctl_assert_equal() open /proc/sys/vm/memfd_noexec but never
-close the descriptor, leaking one fd on every call.  The noexec tests
-call these helpers in a loop, so the test can run out of file
-descriptors on a system with a low limit.
+On 2026-11-02 15:04 +0800, Li Zhe wrote:
+> +	Specifying a source value constrains where proactive reclaim applies
+> +	pressure. Currently only source=nodes:<nodelist> is supported. For
+> +	example::
+> +
+> +	  echo "1G source=nodes:0-1" > memory.reclaim
+> +
+> +	This reclaims memory of the target cgroup resident on nodes 0-1.
 
-Close the fd before returning from each helper.
+you buried the fact that you want to allow source=zswap in your cover
+letter. I was confused by nodes: was needed here until i re-read.
 
-Signed-off-by: zhangchujun <zhangchujun@cmss.chinamobile.com>
+As Joshua mentioned, i don't think you need the separate cover letter,
+and I agree this is far too long for the proposed change.
 
-diff --git a/tools/testing/selftests/memfd/memfd_test.c b/tools/testing/selftests/memfd/memfd_test.c
-index cdab3a837624..8bdfa91d3b76 100644
---- a/tools/testing/selftests/memfd/memfd_test.c
-+++ b/tools/testing/selftests/memfd/memfd_test.c
-@@ -120,6 +120,8 @@ static void sysctl_assert_write(const char *val)
- 		printf("write sysctl %s failed: %m\n", val);
- 		abort();
- 	}
-+
-+	close(fd);
- }
- 
- static void sysctl_fail_write(const char *val)
-@@ -136,6 +138,8 @@ static void sysctl_fail_write(const char *val)
- 				val);
- 		abort();
- 	}
-+
-+	close(fd);
- }
- 
- static void sysctl_assert_equal(const char *val)
-@@ -153,6 +157,8 @@ static void sysctl_assert_equal(const char *val)
- 		abort();
- 	}
- 
-+	close(fd);
-+
- 	/* Strip trailing whitespace. */
- 	p = buf;
- 	while (!isspace(*p))
+---
+
+When I asked for testing, I wasn't concerned with the functionality,
+I was asking what problem this actually solves. performance? fairness?
+
+Shaping the distribution of memory is neat and clearly works, but why
+does userspace want this?
+
+The interface "lacking flexibility" is not a problem in and of itself.
+
+I CAN see why you might want to proactively shape what data is swapped.
+Let me give you an example:
+
+---
+The global node reclaim interfaces allow us to put pressure on distinct
+nodes - which lets us shape which node is swapped from first.
+
+Example: node0-1=DRAM, node2-3:CXL
+
+  echo 1G > node2/reclaim   # swap from CXL
+  echo 1G > node3/reclaim   # swap from CXL
+  echo 1G > node0/reclaim   # demote to CXL
+  echo 1G > node1/reclaim   # demote to CXL
+
+But the memcg.reclaim interface only allows us to pressure the complete
+set of cpuset.mems nodes for that memcg
+
+  cat cpuset.mems           # 0-3
+  echo 1G > memory.reclaim  # makes progress from any of 0-3
+
+Presently, proactive reclaim iterates nodes in node or fallback order,
+meaning it attempts to make progress from the fastest node possible
+first - which attempts to demote by default.  If the lower nodes are
+full, this demotion will fail and we'll swap directly from the top tier,
+which is (presumably) warmer than the bottom tiers.
+
+Enable source-bound reclaim in the memory.reclaim interface so that user
+space can have the same control over memcg memory tiers that global
+proactive reclaim has.
+
+  echo 2G source=nodes:2-3 > memory.reclaim  # [z]swap from CXL
+  echo 2G source=nodes:0-1 > memory.reclaim  # demote to CXL
+
+This lets user proactive reclaim to target the coldest memory first
+rather than preferring to reclaim from node0 first and potentially
+swap out memory warmer than what is present on a CXL tier.
+---
+
+With this, you might be able to demonstrate fewer refaults and less
+DRAM (node0) memory consumed by zswap. These are clear benefits.
+
+I would argue that memory.reclaim should operate this way anyway,
+and that would could make proactive reclaim do this by default, but
+I could see the policy bits in userland being useful as well
+
+Performance may not be the only reason you want this, but you need to
+help me understand what you're trying to accomplish.
+
 -- 
-2.50.1.windows.1
-
-
+~Gregory
 
 
