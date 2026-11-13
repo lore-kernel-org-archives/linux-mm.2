@@ -1,102 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD32606EBB6
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 16:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C2B60A6F50
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 16:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MijHPcsQ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vibe2WIA
 Received: by kanga.kvack.org (Postfix)
-	id 2B35A6B00EF; Fri, 13 Nov 2026 11:03:11 -0500 (EST)
+	id 47F656B05B9; Fri, 13 Nov 2026 11:19:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 264286B05B0; Fri, 13 Nov 2026 11:03:11 -0500 (EST)
+	id 4083A6B05BA; Fri, 13 Nov 2026 11:19:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17ACC6B05B9; Fri, 13 Nov 2026 11:03:11 -0500 (EST)
+	id 2B0406B05BB; Fri, 13 Nov 2026 11:19:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D79506B00EF
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 11:03:10 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EBBE81A01C4
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 16:03:09 +0000 (UTC)
-X-FDA: 85430564898.27.F9BA637
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C35F2100017
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 16:03:06 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=MijHPcsQ;
-	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id F3A1D6B05B9
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 11:18:59 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 84EF74025A
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 16:18:59 +0000 (UTC)
+X-FDA: 85430604798.15.6729F29
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D0E271C000E
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 16:18:57 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vibe2WIA;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794585787;
+	s=arc-20220608; t=1794586737;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=lv8NvC7HZDwkKZVoXw+7O2h5gIlJbnwmSDVX+2upUUs=;
-	b=uQvRjbbFrU3d8ZmiszOQCjDzy/lsIdaIZIsEbXV+H5vk2mRFBLmKKqhH4vfQLjZ4ADaLBl
-	ffeDxn3POeLQ6S1sykTDPLt/dH0H4gt4wFAo1lAdj8NgL5Ee9ZArlG1zGQEybgedxk0RMz
-	xpW3cYYU0Xw1vMGN0PKtvPKD/QSq5Ok=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gfKCKZttULbLUSYKjLw2rQpWRQy7369BlI6NWLima74=;
+	b=PqBgU8r5yivATE4P/MRCLeyQAcc//OSu5KF0bbUtpm1DrtH4W5khIake1U1esG0kskX9Kr
+	kPda2yCGTqKEs2zhTOPI/Q03+hKqoQg8Z8HQeOP2J6Wp2lJrv7NnZ0gUHHf9NcEjG/WVOH
+	RDj33lznVDgV8IjRBvHOO9abR9GbtTQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794585787;
-	b=jXmzq06PuOZ8niCaAzWf3bA9RS0mFqccTjUpWpV73yjEQBSZnHZaN729giar4CbvkJeBgW
-	4+4xpl/pFZUzPKpOB+PabrhFXybiGwl2A8AxZJw+6RRzWMPsRdf4aI7Ju1LqnoNm1WyqCB
-	3z7D0t3PuS83S4ZSyordEz9dORM1a5Q=
+	t=1794586738;
+	b=mbIxHAseM5sVWgOiR41SatC8BPKrak3rH/kAQDMncYjKZocPS5wT7uFZUxDw8HTChtwbo4
+	KSGx8pnU/pNMfADOiqV274ZWeswTbEErrApDgijjp+i717KRSkK4d/09tvUZH9n6e+N3iV
+	3eIMpctLyasw+DYE4LTx5jljAQT/ukg=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=MijHPcsQ;
-	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794585787; x=1826121787;
-  h=date:from:to:cc:subject:message-id;
-  bh=iTh6WixWUDEbiKZbg0v39EPO5GHw8FrjoVYrf52zqFs=;
-  b=MijHPcsQt5Yszq90yQvE70aeu7HVcRtAD5KCu9Gk24MUYScUxmMExqXC
-   oOZ4x6T9iEumQ1RWpOguwiplRnzzWYi4kuhocXykXNUCCMa7OURZGEWAL
-   5dt4WTmSUHJhirA4FwDrd7AP4hqzb7OCYgjDk1WDco1fNpQbzfTAcfOlX
-   VB965lL09GTi7TUlFrlFYL7wGmYJuM8IA54DU0Tel8hvMtIkP5XxRXcLK
-   UMlsWFZHnWtFXwPXlzWwSYM53GYtKNzc7V/QxU8z9nW87bX0VCQI0MmsG
-   aibjoJbKc4TuohOiw/1ni5JoYYlJyq64P39K1+YX0vlZg+Ztnlg8JIyCp
-   w==;
-X-CSE-ConnectionGUID: LwdRGEdMTvS6rXTkppwnhQ==
-X-CSE-MsgGUID: nEbFhwbhQeOlI46qUptFxg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11965"; a="3387172"
-X-IronPort-AV: E=Sophos;i="6.27,211,1787036400"; 
-   d="scan'208";a="3387172"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 08:03:06 -0800
-X-CSE-ConnectionGUID: Jn5E5HN0Q2SBwu/Ed/juJg==
-X-CSE-MsgGUID: rMENWAhJSS+2U0SLEh4nqA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,211,1787036400"; 
-   d="scan'208";a="9118710"
-Received: from igk-lkp-server01.igk.intel.com (HELO 1073a420ae3a) ([10.211.93.152])
-  by fmviesa002.fm.intel.com with ESMTP; 13 Nov 2026 08:03:03 -0800
-Received: from kbuild by 1073a420ae3a with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xRtjx-000000001Id-0UlJ;
-	Fri, 13 Nov 2026 16:03:01 +0000
-Date: Fri, 13 Nov 2026 17:02:14 +0100
-From: kernel test robot <lkp@intel.com>
-To: Phillip Lougher <phillip@squashfs.org.uk>
-Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org
-Subject: [akpm-mm:mm-nonmm-unstable 130/151] fs/squashfs/namei.c:141
- squashfs_lookup() warn: unsigned 'block' is never less than zero.
-Message-ID: <202611131701.jmNjTw9l-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vibe2WIA;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4972B628B8;
+	Fri, 13 Nov 2026 16:18:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF1591F000C7;
+	Fri, 13 Nov 2026 16:18:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794586737;
+	bh=gfKCKZttULbLUSYKjLw2rQpWRQy7369BlI6NWLima74=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Vibe2WIAY0fix0GPxjAhXr5IAODiFtxZhTL6hkbMoPswB8Z/QjgQa5K6AQAOsa4f1
+	 e+uAs5WkrJgP7rMWQHuPujIsc8ylsI4yJQOIXwOCjzn1A75l7fNQkw310CvkvijR36
+	 lLtjvMZ7B3j36t2y2nTxZ0stUyuupSMR4h+eazWcTCeIke1ypglK7wlYA+z6MPeLxq
+	 jHt0ChQ1YqiOkr/PGa9uZ7DIVGvktcDmQXALJWrzvhBOcCr+yhRFiAjzPLO0kMrnmt
+	 VJ3C0n4Mh7ykyJb2v9jT9EWTN8wgzzQsjDVToJVInkJ8qbWNeX0JyBA+ptZw78dAkV
+	 9x9Cfbut/O4Gw==
+Date: Fri, 13 Nov 2026 16:18:47 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Eliav Farber <farbere@amazon.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, 
+	William Kucharski <william.kucharski@linux.dev>, Vishal Moola <vishal.moola@gmail.com>, 
+	Alex Williamson <alex@shazbot.org>, Matthew Wilcox <willy@infradead.org>, 
+	Peter Xu <peterx@redhat.com>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/4] mm/huge_memory: don't warn when a page table
+ blocks a huge pfn insert
+Message-ID: <avcsfhWktvKxQlkW@gremlin>
+References: <20261112051440.16140-1-farbere@amazon.com>
+ <20261112051440.16140-4-farbere@amazon.com>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261112051440.16140-4-farbere@amazon.com>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: xda7zf55ady7wh1nuk4mh3pqxmqrdjnm
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: agjeun6x5kd6tbg3y65j3n6ag818i4pe
-X-Rspamd-Queue-Id: C35F2100017
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: D0E271C000E
 X-Rspam-User: 
-X-HE-Tag: 1794585786-830451
-X-HE-Meta: U2FsdGVkX1/HNUcWjtT1LopwKWNsNRDfHqBo69tgys5DUXQnDGghQ6RxkQv73GIp6cvpf1gebJtse6t9StGPTslaIV3qKLdCbTxKlHK/WJ6B6bHMu0jHtJ68/CGJYvnNNjxKab4tnEaYhGf7mCnizSHMT1cURVQwXK02+D8kcD0HybIMeMlkxKveJw2sBnuDhBlzZkqdWN8zy22ZAN0ulYZHNIdPMAwuYHQG5y8AfAru95H48MYZGGdLjNQF+wSxe3Gfv+tbqFR29DS8SwQU8GnnbcJZP0mc5xOJPRtuZtflrWxtuctDpAf3lHCxvvx9BCJDNYnOyugQXP0Ja/rJGxVRs7S4puPJ6KxL+c1WTl5TRd6Y/8zy+7JjVVKI/bT9E9wFSJ6GRQBOypN7nTM7KbLvXJktImru1eLvN/lRW+mFAVJms/9n4n/vr11SmnF1Kb+Vui5CPEie1G1JN4DHprl++3BPzaI99W/D3FASBp7gdVU8oH0dmOBo6tZjFCXFvJRW9MmqAJ94XA2aNO714mUB0CEo9WafKMzIa/q1+KzZqJYGVmQ4H3Imn5S0TQ8sk1rTSVzrVOKpjEzml/vEHR3/D//7MFMBEJL0Aea+QeLzBfGanyI05I6nmnZbez4liWY9kQRq8psPHvRXzQqo+kIWsfKbRUxWWaaFvbTCaOpIlwDrK/c/T6gJMsvzUR1C2Q82Hn80vUaDyWUZwwD2P/IPTaf3CTd2Y3GUg5Bcqiqh6lQ4qL0lUG+Vc/lUpkgcyjjEjyZsoc6l/Bc462mgphTZHlz/0mTbZkz/tYbbi/PNYPr7YrOHODrzyizaygwLzH4l5izmOCjymRc/eE3jxaG5zxubuP/OjItfsJg0mEu2MislY53n7TpYdVzO/MZg7u3sZl6dcjnxpNnCeifPDecQTi9bgoDseMlTQXKAYot18uABCGJFWOO0MBkVGuHyV+54Df/RlxJ1Mjh2XSq
- wSmLHKln
- YzCrh1fG7ojCbShYO6Q22VmA6AiNZoRu5mwp05kuUNmHv5cOdDerNVTkLT2znQo6QBG5Z587cQWGbrMj39YyxqHdUSsBtG81PhSR7gzTSVOQtYBVN8Z+N3bzNWoxZv2z+ok59Qr6vAXlh+RwAj1TN5aUYkdf8vS5KFZm95+Pymt+AEb48hXH7XrKbn4wBG7Ea3mTD9mS04yzVjNyE/axegPM9vWXxhrVTPIXPP4IidkpNyXPQ9s4OWHAnHHzCMQzQXbqczPpqiaXS1Ovt0mxZ6MnzUs0yEHoUUrOb7XN2gJouHwv6mQRPtvpqKgLvkJapkk+YBtwipEwXbLc=
+X-HE-Tag: 1794586737-798578
+X-HE-Meta: U2FsdGVkX1/yKlrBpA6sz+o0596IA2YNP3SNNe/LFZ78IqA0hiIdZUcdiHNcGh8H/XfCdt6GPj+nnnADZEZ5gMMQpwfJwpog9e1A/MBjCBFkNbeEPSyOVmbKcTLKW8mpNt9JW4esbJzoYZgRw7A2WujNKaDqD4G4x0sxC/om3WTYbHQTteV3q/15e4tt/XvuvlGaW9JwDw5jYbyyIzAYQ0MxNVtywEvQwB4Lc0rZwDaHnFqTLm7cW5GaIggN8KG6pMGfaT2d9dTnKfo2Th0kkPtxWXVqqHkxoTnglyOnXe1UayWTXoVv+iLp39MpA61ZXUC7CaA9sJwTKRvf/cxz9tmxU7vKxJZL0eGolifbZLmGmhzvCiFC6F0P3QMUTYQIhn8TEjUZr3CdsJmPVNXSjCwVmfGJStkfqy7V0YqIygV4zG8pR8ykiEmZST7lQYRqRC+LxZnxNEjVIJCm/LhNSnCvXXZks2up5R4g06Q5EX13HNCZAAE8knjd7MUhENSBsmiWXdXP3Tb8wsM+lY39ICi5KVgWL74YtCecQACR+RRiAIH9m/m6xh4ELe3Ba2566NrDyIoV9teg+5xqTS1bUo1jBSMaRBRSkuZuR79y4/Jw7FHej0uZRHniMygLRPyxdcXPXeqau7xP+Yd7W+tclweNd3WEBLqsZl1p568pNvBuz2b0p7kEV74pYzIHFeuzzHISbGjhWr5aUmJVw0+zIWYrmmehYfNSokrFb/PapSFci/0vAx0Hg6nWrnmb0DQQaK3aRdQeNOGROBXeBsoWZJBAvuF3/X9J4s7PC0IX1OIW1c3d4bGvDsOsQzCWtP/3Z9WAADIFQrR4JgLbDw1pmU6cnstpxX2nNOkcxEyYl0Ox3oRBWTfelX52xoGx8JiVNzkxpvZZ8qEVevtjB16K/irtnG9Mg40ZT/XWJ/z6K8+K+iPCGswD2IgV8MRY10grHe2AjuwLRNbtsu+E0Lt
+ MVk4NaES
+ QsdK8HkiOjbhEeHA57xDFt/xbK8Z4pTeo9e351G6nhfH0YeakfytfbiMzlA5GUvL2SS/OBEgj6OEzZ1Tj3HRgzwL/3nYCmFliNZCyR0mseQXj80HYmelbp4oUOzbyxZ7/7kCR4uNVZLDvNbQcb6dg2ZfntmjdEBPMMJhASJD2xpL8suzQWYcmO+PXmMmEn1k5t/yJaEnxJz/FWIlD3Jn9hmtTMSXF9yjLCzj4w98O2ZWMqlPhI10/QkkRv1PqevaIPyqDW1xGTCvQDInrAh432TM89uiHoNS8zdcH80Wqq2AjSbvyitj8RawQjtEi2cQ7UfoUvMRxxj++pv5zl253EuNBAc8dvGFian95bMptjj7x16I93t7s+RVBdGH2kSatF/EbJM4WfLdtXP0Gma+foPMSOpdLKZdC9zyUCA4Ez0wDD+icINTZiSxmJsI4FbG4sxZUWL38NH2G6xw9qT68FCc/CqvKzGcfU9+B
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,140 +106,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
-head:   152f0559e66c079f717de375f133ff127afb1f58
-commit: 4dddf794b08bef04e5634dd4b52775a160d2cb6c [130/151] Squashfs: sanity check directory metadata block location
-config: um-randconfig-2200-20261113 (https://download.01.org/0day-ci/archive/20261113/202611131701.jmNjTw9l-lkp@intel.com/config)
-compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project 8621950157210c1fa68f20f0614cb51310ec9dff)
-smatch: v0.5.0-9187-g5189e3fb
+TL;DR is I feel like maybe I need to take this over as I'm not confident
+you understand this...
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202611131701.jmNjTw9l-lkp@intel.com/
+On Thu, Nov 12, 2026 at 05:14:39AM +0000, Eliav Farber wrote:
+> insert_pmd() and insert_pud() treat a non-empty entry at their own level
 
-smatch warnings:
-fs/squashfs/namei.c:141 squashfs_lookup() warn: unsigned 'block' is never less than zero.
-fs/squashfs/namei.c:141 squashfs_lookup() warn: error code type promoted to positive: 'block'
+Non-empty reads quite strangely. I'd say present but non-present !=
+!pmd_none().
 
-vim +/block +141 fs/squashfs/namei.c
+And the code is just... so terrible.
 
-   123	
-   124	
-   125	static struct dentry *squashfs_lookup(struct inode *dir, struct dentry *dentry,
-   126					 unsigned int flags)
-   127	{
-   128		const unsigned char *name = dentry->d_name.name;
-   129		int len = dentry->d_name.len;
-   130		struct inode *inode = NULL;
-   131		struct squashfs_sb_info *msblk = dir->i_sb->s_fs_info;
-   132		struct squashfs_dir_header dirh;
-   133		struct squashfs_dir_entry *dire = NULL;
-   134		u64 block = squashfs_dir_start(squashfs_i(dir)->start, msblk);
-   135		int offset = squashfs_i(dir)->offset;
-   136		int err, length;
-   137		unsigned int dir_count, size;
-   138	
-   139		TRACE("Entered squashfs_lookup [%llx:%x]\n", squashfs_i(dir)->start, offset);
-   140	
- > 141		if (block < 0)
-   142			goto data_error;
-   143	
-   144		dire = kmalloc(sizeof(*dire) + SQUASHFS_NAME_LEN + 1, GFP_KERNEL);
-   145		if (dire == NULL) {
-   146			ERROR("Failed to allocate squashfs_dir_entry\n");
-   147			return ERR_PTR(-ENOMEM);
-   148		}
-   149	
-   150		if (len > SQUASHFS_NAME_LEN) {
-   151			err = -ENAMETOOLONG;
-   152			goto failed;
-   153		}
-   154	
-   155		length = get_dir_index_using_name(dir->i_sb, &block, &offset,
-   156					squashfs_i(dir)->dir_idx_start,
-   157					squashfs_i(dir)->dir_idx_offset,
-   158					squashfs_i(dir)->dir_idx_cnt, name);
-   159	
-   160		while (length < i_size_read(dir)) {
-   161			/*
-   162			 * Read directory header.
-   163			 */
-   164			err = squashfs_read_metadata(dir->i_sb, &dirh, &block,
-   165					&offset, sizeof(dirh));
-   166			if (err < 0)
-   167				goto read_failure;
-   168	
-   169			length += sizeof(dirh);
-   170	
-   171			dir_count = le32_to_cpu(dirh.count) + 1;
-   172	
-   173			if (dir_count > SQUASHFS_DIR_COUNT)
-   174				goto data_error;
-   175	
-   176			while (dir_count--) {
-   177				/*
-   178				 * Read directory entry.
-   179				 */
-   180				err = squashfs_read_metadata(dir->i_sb, dire, &block,
-   181						&offset, sizeof(*dire));
-   182				if (err < 0)
-   183					goto read_failure;
-   184	
-   185				size = le16_to_cpu(dire->size) + 1;
-   186	
-   187				/* size should never be larger than SQUASHFS_NAME_LEN */
-   188				if (size > SQUASHFS_NAME_LEN)
-   189					goto data_error;
-   190	
-   191				err = squashfs_read_metadata(dir->i_sb, dire->name,
-   192						&block, &offset, size);
-   193				if (err < 0)
-   194					goto read_failure;
-   195	
-   196				length += sizeof(*dire) + size;
-   197	
-   198				if (name[0] < dire->name[0])
-   199					goto exit_lookup;
-   200	
-   201				if (len == size && !strncmp(name, dire->name, len)) {
-   202					unsigned int blk, off, ino_num;
-   203					long long ino;
-   204					blk = le32_to_cpu(dirh.start_block);
-   205					off = le16_to_cpu(dire->offset);
-   206					ino_num = le32_to_cpu(dirh.inode_number) +
-   207						(short) le16_to_cpu(dire->inode_number);
-   208					ino = squashfs_mkinode(blk, off);
-   209	
-   210					TRACE("calling squashfs_iget for directory "
-   211						"entry %s, inode  %x:%x, %d\n", name,
-   212						blk, off, ino_num);
-   213	
-   214					inode = squashfs_iget(dir->i_sb, ino, ino_num);
-   215					goto exit_lookup;
-   216				}
-   217			}
-   218		}
-   219	
-   220	exit_lookup:
-   221		kfree(dire);
-   222		return d_splice_alias(inode, dentry);
-   223	
-   224	data_error:
-   225		err = -EIO;
-   226	
-   227	read_failure:
-   228		ERROR("Unable to read directory block [%llx:%x]\n",
-   229			squashfs_i(dir)->start, squashfs_i(dir)->offset);
-   230	failed:
-   231		kfree(dire);
-   232		return ERR_PTR(err);
-   233	}
-   234	
+It seems to assume that softleaves don't exist so don't bother to care
+about that, for one.
+
+I'm not sure if this fix is sufficient, actually.
+
+> as a leaf and compare its PFN against the one being inserted. A page
+> table installed by a concurrent order-0 fault also makes the entry
+> non-empty, and pmd_pfn()/pud_pfn() then report the PFN of that table,
+> which never matches. insert_pmd() warns unless the entry is the huge
+> zero PMD, and insert_pud() warns on any mismatch.
+>
+> A VM_PFNMAP mapping with both ->fault and ->huge_fault can produce the
+
+Please refer to non-deprecated VMA flags in new code.
+
+> mixed orders: an order-0 fault installs a page table over an address
+
+'the mixed orders'? What does that mean?
+
+> while a concurrent huge fault on the same address reaches insert_pmd().
+> Changing an mm's THP policy while another thread faults the same PMD,
+> for example with prctl(PR_SET_THP_DISABLE), is enough to do it.
+
+OK that's useful information. Terrible.
+
+I wonder if actually there are other bugs that will surface because this
+takes the mmap write lock but concurrent faults are permitted.
+
+Maybe we need to make PR_SET_THP_DISABLE take every single VMA's write lock
+in the mm first...
+
+Even that is dubious as new VMAs can come into existence while you do that
+:))
+
+Ah well. I guess correct thing is to handle races like this as best we can.
+
+>
+> Compare the PFN only for a leaf entry. A page table is not an error, so
+> take the existing out_unlock path, which returns VM_FAULT_NOPAGE and
+> lets the access refault onto the smaller entry.
+
+Sorry this paragraph is just word salad LLM-ish code-as-prose, delete it.
+
+This commit message is really poor - it's too long, and what it goes into
+detail about is mostly useless.
+
+Pare it down into a form that demonstrates understanding of the page fault
+code. Make the actual explainy bit as small as possible.
+
+And you haven't answered key questions:
+
+- What real-world workload were you doing when you encountered this?
+
+- Or was it code inspection? Or was it an LLM? Assisted-by might be gone
+  but you are strongly encouraged to explain this even if below the --- in
+  the patch...
+
+- What are the actual runtime implications for users?
+
+- Why did you decide to not do anything about the other flaws here?
+
+- What parts of the kernel are actually vulnerable to this? E.g.
+  https://elixir.bootlin.com/linux/v7.3.1/A/ident/vmf_insert_pfn_pmd
+
+Anyway, there's lots of broken stuff here though.
+
+insert_pmd() seems to ignore the fact that PMD softleaves exist. Maybe
+that's not possible in this code path... but... I don't see how it's not?
+
+So this just seems terribly broken overall.
+
+>
+> Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
+
+A commit message that goes into excruciating detail describing the code I
+can literally scroll down and look at, but zero comment on why this fixes
+target was chosen.
+
+Presumably the first user that made this possible? I guess? Or no?
+
+Do I as a reviewer have to go figure it out?
+
+Please try to make our lives easier :)
+
+> Signed-off-by: Eliav Farber <farbere@amazon.com>
+> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+> ---
+>  mm/huge_memory.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+>
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index eb913acb03b7..052c50dadc48 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -1643,6 +1643,14 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
+>  		const unsigned long pfn = fop.is_folio ? folio_pfn(fop.folio) :
+>  					  fop.pfn;
+>
+> +		/*
+> +		 * A concurrent order-0 fault may have installed a PTE table
+> +		 * here, which pmd_pfn() would report as the PFN of the table
+> +		 * itself. Only a leaf entry can be compared.
+> +		 */
+
+I hate this comment so much.
+
+It's what I see so often from LLM output too... you're going on to say what
+_would_ have happened if you _didn't_ do what you just did on the
+_assumption_ that reader has zero understanding of page tables and fault
+handling, and that the code (of course) will _never_ change.
+
+It's adding nothing.
+
+'Only a leaf entry can be compared' especially... it just reads like an
+annotation from somebody/something that doesn't understand page table/fault
+handling code.
+
+Anyway delete both please.
+
+> +		if (!pmd_leaf(*pmd))
+> +			goto out_unlock;
+
+ * @VM_FAULT_NOPAGE:		->fault installed the pte, not return page
+
+Is this still the correct return value?
+
+I imagine it's effectively saying 'this is not what we expected ah well
+carry on'.
+
+But what if it's a softleaf... Presumably it's somehow not possible for it
+to be a PMD softleaf entry... but ugh.
+
+The assumption here in the code is so bogus though. One can experience a
+concurrent huge fault no?
+
+So:
+
+			if (pmd_pfn(*pmd) != pfn) {
+				WARN_ON_ONCE(!is_huge_zero_pmd(*pmd));
+				goto out_unlock;
+			}
+
+Is still completely broken isn't it? You could well find a leaf, installed
+by a concurrent huge fault handler, and trigger a warning couldn't you?
+
+Or is that somehow prevented?
+
+I also don't get why an existing unexpected entry is totally fine if !write
+let's not check anything...
+
+It feels like the real fix is something more substantial.
+
+Maybe better for me to take this over...
+
+> +
+>  		if (write) {
+>  			if (pmd_pfn(*pmd) != pfn) {
+>  				WARN_ON_ONCE(!is_huge_zero_pmd(*pmd));
+> @@ -1770,6 +1778,14 @@ static vm_fault_t insert_pud(struct vm_area_struct *vma, unsigned long addr,
+>  		const unsigned long pfn = fop.is_folio ? folio_pfn(fop.folio) :
+>  					  fop.pfn;
+>
+> +		/*
+> +		 * A concurrent order-0 fault may have installed a PMD table
+> +		 * here, which pud_pfn() would report as the PFN of the table
+> +		 * itself. Only a leaf entry can be compared.
+> +		 */
+> +		if (!pud_leaf(*pud))
+> +			goto out_unlock;
+> +
+>  		if (write) {
+>  			if (WARN_ON_ONCE(pud_pfn(*pud) != pfn))
+>  				goto out_unlock;
+> --
+> 2.47.3
+>
 
 --
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers, Lorenzo
 
