@@ -1,91 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400CA606B635
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27AF1606E345
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=readmodwrite-com.20260707.gappssmtp.com header.i=@readmodwrite-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=onJLlDP8
+	dkim=pass (2048-bit key) header.d=readmodwrite-com.20260707.gappssmtp.com header.i=@readmodwrite-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=MnKcIp1Z
 Received: by kanga.kvack.org (Postfix)
-	id 494E46B05D1; Fri, 13 Nov 2026 13:57:10 -0500 (EST)
+	id 642DC6B05D2; Fri, 13 Nov 2026 13:57:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46D676B05D2; Fri, 13 Nov 2026 13:57:10 -0500 (EST)
+	id 61BFB6B05D3; Fri, 13 Nov 2026 13:57:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 334B76B05D3; Fri, 13 Nov 2026 13:57:10 -0500 (EST)
+	id 50A966B05D4; Fri, 13 Nov 2026 13:57:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 042626B05D1
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:57:09 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8AD6C1A0124
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:57:09 +0000 (UTC)
-X-FDA: 85431003378.21.DDE7F58
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C4ED614000A
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:57:07 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=readmodwrite-com.20260707.gappssmtp.com header.s=20260707 header.b=onJLlDP8
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D4F16B05D2
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:57:11 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A5C7D1201BB
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:57:10 +0000 (UTC)
+X-FDA: 85431003420.03.179AFF1
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf12.hostedemail.com (Postfix) with ESMTP id B83FE40003
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:57:08 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=readmodwrite-com.20260707.gappssmtp.com header.s=20260707 header.b=MnKcIp1Z;
+	dmarc=none;
+	spf=none (imf12.hostedemail.com: domain of matt@readmodwrite.com has no SPF policy when checking 209.85.128.45) smtp.mailfrom=matt@readmodwrite.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794596228;
+	b=w0Cm7I3dlgKzsXIHt7t3DS1lhs/KUQlsLY2zBQDs+kvhPfNx45AbEswWIR8pUdAYXOKyvS
+	jQplbJJWoJBo4vQTACSausmRi3zR4i81No7QGc3rJtF/QfaVeyBbXmu3CIPJZRAAtLcu6q
+	LECxdNxU5r2ZlP7r11WSfaYaUUd0hvw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794596227;
+	s=arc-20220608; t=1794596228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=e1AVEuQ7/0Q/MGJ9DZTfOv+grpHr5U/1zcdAaccW6t4=;
-	b=iMLuakfccJH/xKIJ/DBI97aoAioaQBZlx0As2i9aaIqXHMtthBQZIq0gCWkC9TEy6RvXp4
-	hxExMXYDoeU4WtkfIcHGhNt9Q/ct1H/rqm6uWtrmhJqpeNaqP1beZQ8na2+cpNJJaDaimo
-	8DDARSDjpS5oYych9SvukRlDqBrn+wA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794596227;
-	b=N7dy0ygSugEkkB6At1v+R9x1UDnHFnuvdlCwMW98VDW9tHHCaSkC8Me8dcXnF/vjotINnP
-	IAWHWaAbNqQWukNNxf/0JtjsFL2qhRA4gxZlh9af82xW7FZNaJ9M/PErdUFb3+g0JYWLiy
-	kDq17ILOSUwM5m3JYtInUXQTubQNKt8=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qsLrdL7sT/af1ui02yqpWUBVQva/Rfa3My1unqAhcwE=;
+	b=Tru7Cl3s8JDQ0LylZLnPkGBMvYor+iaGZfpBMVnFYdoSOrTP1IbxTgkKjtAIWgwmKZng5e
+	8m9p9Q6tKk2h4+psHfSi7uwMUoln6ycdz6ehppdnF4TsE15fbKx42UHQrkhp6viMNZONTR
+	dx3qtH3Bbq8YIHKLI4uCFrid8lCIhkA=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=readmodwrite-com.20260707.gappssmtp.com header.s=20260707 header.b=onJLlDP8;
-	spf=none (imf23.hostedemail.com: domain of matt@readmodwrite.com has no SPF policy when checking 209.85.221.42) smtp.mailfrom=matt@readmodwrite.com;
-	dmarc=none
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-49465892f7bso1306280f8f.1
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:57:07 -0800 (PST)
+	imf12.hostedemail.com;
+	dkim=pass header.d=readmodwrite-com.20260707.gappssmtp.com header.s=20260707 header.b=MnKcIp1Z;
+	dmarc=none;
+	spf=none (imf12.hostedemail.com: domain of matt@readmodwrite.com has no SPF policy when checking 209.85.128.45) smtp.mailfrom=matt@readmodwrite.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4b467581b98so10757805e9.0
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:57:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=readmodwrite-com.20260707.gappssmtp.com; s=20260707; t=1794596226; x=1795201026; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=e1AVEuQ7/0Q/MGJ9DZTfOv+grpHr5U/1zcdAaccW6t4=;
-        b=onJLlDP8sYwiNv4wiX8/SQ+djKAvxkUThPP71KCiWIVKUcrTHKQBgQDiLhuynmYQt2
-         W8OzgtoOohYQloikyjciYjvZFVW+6+QauqeoXOZyJFZLnoTvDkdATVf7JwhZvAKEndAU
-         F9MMhs9vec5eK/xEwRorI7f7DmXn5+cA6XEHmryn3Pn1Z00NEvMgYxBeSGM8Z0L7yiAZ
-         EhZKIyljZ/EMNxIaB6D+8vUvBloEl+ZvQkbkhD0m1LFDI0hTH2EcHXIFW30VuoIp4CIG
-         CGm3dZyro2EcL8XTrNGbTlJzj5NxS4LTkhb6A7I9/YsXhAWWckmmmHb8W8e4f+H6zGxG
-         4Snw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794596226; x=1795201026;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=readmodwrite-com.20260707.gappssmtp.com; s=20260707; t=1794596227; x=1795201027; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=e1AVEuQ7/0Q/MGJ9DZTfOv+grpHr5U/1zcdAaccW6t4=;
-        b=u+61KurdQ+F3eTiAn6LHG4CXrFbSZCdyubZ1L5xUuDqNRQgY/ihdpraznNLmncG38F
-         V7I4FdT9l6j8mHLBqRULBJtiqSYmyR5R/8VMwOruIBOcmXR7HT3L0/DAcYoDw6fh+HNK
-         bO+oNveZL8C5/gF/i1IJrKclHdlzFpw6O6T3bcQqqSYrc6KSq/iU2Osnczaw75bM8jHJ
-         /o1CZrqVTcCbjpm3fGJ3ojhcKudTQZiUplfossREeGO+9UF+K7udEOytBnA4jmVPP/00
-         ojUwS3cv0xpbW1FJnSeWEqs5OH3yUNLF3w/2VkNTUFkLCe6wyt5l/xisVL0c34ygcLmv
-         x1DQ==
-X-Forwarded-Encrypted: i=1; AL+hErES7jWZHRQfjKuf7GVG/LeRzIhOBF/Xwd5gx9xwuFI/xCPpsi3xWzsPO851tiNSvfzGIBuENZlW6Q==@kvack.org
-X-Gm-Message-State: APuU4Z+lx/lU9QlJL+hqcFj8tc1dWN9EEGvgEA8apcfglEKb0yPCD34K
-	c/IphNOaWOhnCBWSHRWb62/UDThkfl96BFXxzNQr5bnGi8kz8jjlqyV9PEDHsFAvQr8=
-X-Gm-Gg: AYBFou2Nvn3WDytj1gNzpFxhv9X5K9NSm+5iPyGVlMj1OAi0vB0NM9J4y7YAoMPqaUI
-	sUfMqYyKq4zREWIz7+YbH6V7gwTDPxNKEWJ9xo9JIUtDsP12uWX7/63jMzuwsDri6ulgPCq7cSo
-	jk9nbOTVlLIsA9NDKcpzAIUPOVe/WLyqOMOxYmngiyOTVnp/c8ZPlmbfxFup9kVp7QkmrzvC6ho
-	CsTApWup5hBWNzOun7/LkZOU+Xr4Dtn07qOyvp7uPxbw9xXQHMcHmQ0nfrOpXnn+AjsWSOjj7rm
-	ryckYd6WltIrVyDHPRxTJ6yUScWfCAZNCuZD+chNn92B/lDNCfWCQtnuoZvjKzzgS8mSbOkXOIU
-	a7zqxZXe4Nmh5qdS6cvlo47gY79w0XXNYl8/Wwr9nG27fj8OUqa0gOlQ4npnGSn1JoDuUZg4bMr
-	7T92wMz14eUfTNGIL3ugmnA32Ffd2A1frARCBuUhArPM6RkVH+tt1q8luTRhosQGqBCciZ6J1ZO
-	MMHQZSzrMfSaRdz0215MASzkD3ypUvI3RiftBaSYJud9hhm4Jze0MtSUg74k18e5a121h6HQStH
-	Cy18y8nbnoe9h8T+xq99DlII7ggAtg==
-X-Received: by 2002:a05:6000:4559:b0:487:27f9:834 with SMTP id ffacd0b85a97d-49c725e5a73mr4785615f8f.41.1794596225990;
-        Fri, 13 Nov 2026 10:57:05 -0800 (PST)
+        bh=qsLrdL7sT/af1ui02yqpWUBVQva/Rfa3My1unqAhcwE=;
+        b=MnKcIp1ZLiT5mwPj2KxwDNGk8364WOjtNk+i/GMoKxdlWAQ8Vtb0eTpL8wsBl0GOpc
+         vK8NlZtph4rO4M7w3yMz/lx+9G3q/F7M980rSg+6zVXdtChurF3WZCU/rmoPfgt4oe6v
+         0GgGxhP44YnlcN0PdwtsJ+Tla7k4T4+dupofOQ7bpARZPxWhLZzN6CUAoP3PArCP3QV9
+         AJeXj4AQ7piHIPHjA8m+Znh3DxyCHq5VvOxLSPh2X4n7W5EpoGI73JERRDBtxZOzLmlR
+         uHneDIZbhExsu5ClS+Mr7sdS9YQHUbEiWIAQXK79abBUbM8ZOyTIRWjUfSbP+pd7+3N3
+         q6iQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794596227; x=1795201027;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qsLrdL7sT/af1ui02yqpWUBVQva/Rfa3My1unqAhcwE=;
+        b=lzGxyy5WnUQYw2z1paZa5jupNZl8wylBI+N7A77bhWjN1KDVOqHMZywfc8xxKiDQH8
+         pYpIB2y7S0ES7ZS1t6kCAvzAOpd5ncBxZW8YwqYqQbf41atltAg0gXVafU3WONokGRWm
+         v6oJxq+l/bIkNuRpXzU72Jnm4/10quGVSAItBY2O2O5p9Stcw/te1E9CNEUnFmERB+hM
+         OePvk9gnmwSffHwQjwllNgNSRBe64DjQle3ixYx1QnjUIcMSrvYEzb4rbYO2bkIZHTeB
+         8Wss2hkwMNofIbtV8K5jy9VcFZtTGbe9Lnk0R+CMM+vuAUgdhiFaAzilnf6nn037fUfV
+         pD+g==
+X-Forwarded-Encrypted: i=1; AL+hErHKm9op22thcY8SIQhM8FXWh+P0Y+py3zQHVds89Ze/Iqp0PKPIZReo+PVAoTzazMppBNnGXjCVPg==@kvack.org
+X-Gm-Message-State: APuU4Z+gXaLswet+QFsgutjLZOQt+3MdlSiO+puOOORY48WUX+fBEXm0
+	tRNfKgg/bxTHVs5nbwMarwl7Yg9ohA32q+brlJQps05OEcHcSTS7c6YwYUQlGlddsvQ=
+X-Gm-Gg: AYBFou1j7kex4uhskeln6JFe74UEjTiseLkH6Sqco5U6AAwpFNaafXUBXTP+llIQ7UW
+	wCrqOQUp53HIPeeikn2KUzvr3K7ydepm0jctKUN8w4xhRt6HWqVFoqUv4x9vXX+xWKyoYOFICau
+	y+H6h8F53Qt1yTwq7C/aZlIh84mrb7n5jf8HIuirtzISWQPmtp0Eg+5hZsu29ilQzkFkufUqoh0
+	mkiVlUT3ChBBeTuiXPNqTX3AF8seoGI6EFMba+vcKv1P8Zb0nfkJCDBtylopnmA4NRmkCiz1cTX
+	NPjmEJzBl9Q7PtQ/v33R1lBXRWF4e63ISTE/HfSRoG0ZmRL8T9ohij53AEs3iETWo0PvDzDjlwd
+	gp9fS3aoiZv8uYUWtyRhhnDHb+zZgnIMXqzITTnAZFAN/te5Vh9LY1BuRWWR1OMpSMo8WLofAY5
+	FsfMdSF9lkbSFPM4/O2t28asMccl2eVSiEr5l19yNK68B9pNA1/j4+0kMdW/qmPAfTx6azvBlaY
+	mkv1saiq4Hl4IaLE0U++w9Aee0mnFRIr0JQ76A5hvxiKFXWhYHQpN9fQXovv+2cnE8jppZFOhX/
+	TNjNEXBjn7OMNFXf+K306V7Q4TZ/dA==
+X-Received: by 2002:a05:600c:8708:b0:4a6:30c3:1114 with SMTP id 5b1f17b1804b1-4bb55a7ece6mr79207495e9.12.1794596227289;
+        Fri, 13 Nov 2026 10:57:07 -0800 (PST)
 Received: from matt-Precision-5490.. ([2a09:bac6:37a8:ec8::179:1b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c5f5972a7sm6417589f8f.21.2026.11.13.10.57.04
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c5f5972a7sm6417589f8f.21.2026.11.13.10.57.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 10:57:05 -0800 (PST)
+        Fri, 13 Nov 2026 10:57:06 -0800 (PST)
 From: Matt Fleming <matt@readmodwrite.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Marco Elver <elver@google.com>
@@ -101,25 +104,27 @@ Cc: Alexander Potapenko <glider@google.com>,
 	kasan-dev@googlegroups.com,
 	kernel-team@cloudflare.com,
 	Matt Fleming <mfleming@cloudflare.com>
-Subject: [PATCH v3 00/10] stackdepot: store compressed frames in stack records
-Date: Fri, 13 Nov 2026 18:56:52 +0000
-Message-ID: <20261113185702.1332171-1-matt@readmodwrite.com>
+Subject: [PATCH v3 01/10] stackdepot: add caller-owned stack trace fetching
+Date: Fri, 13 Nov 2026 18:56:53 +0000
+Message-ID: <20261113185702.1332171-2-matt@readmodwrite.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261113185702.1332171-1-matt@readmodwrite.com>
+References: <20261113185702.1332171-1-matt@readmodwrite.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: n3zspfa9wkqt85os69oaspfcyiozpi5w
-X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: C4ED614000A
-X-Rspam-User: 
-X-HE-Tag: 1794596227-263098
-X-HE-Meta: U2FsdGVkX1/dAeDqPkdt2up4B7AjSSoBBhr+R1Orallm0IVBkvif4fia9XsRiq2qeGhO3VCZu+lNkKl8qbyye90NQbV/FDNbGdswAHDtX6bjUB3OMSQwhUxJeR/AQxy0IBSENC7qy5YnO/V5uYc50gEdALOuyTHTHjXC1rrIZxOCEwTF3oBFWidkjHWK2h0eEc0HTEc+y3ngLOXpFIQ0mn3j9chfjf8+wr/vkPyeWa3Fd+IyKnyy1Nc8ST6wOZUBqtj8VNQm/G9QyUxzbuTBQSQ57dI9x6EJKcnO+V1/387C5++JiOVh01UxPqiX1QpPI/U7E0WdadzA/nx4CxyDYdu0XFOEjGSHjeujNpUvRPKudh3FlhYe0ZIUI74FrBtGJu4Djb/VsVJlD0xJEaKGfqbIJcIJ8ldNW2UdOCT5taUgh3gHSSR5WvpTzm36DiYBfEx1+uSHY2QJxqL4gS9XHD7J49VCNEdB6cAbTkSAWNMYAtQCNGqKJDB+vGdJWBzA3d9IXnZoabxkXJZ5UrUjlBiC8P1gExKOui0XLFDU/kkaPCkdliWCHynPo1U2y/pPoYHcyTpKMDUpfCqTz+RES9FqZr2FJtQtLDGZgAZnV3pLfDGktFWcqgKbwiT3aa3/kz8YPlal8DCaNtpTi6/1/0GZ2Ug7ZrAXcwIpiarfuRdYweuxqI7h6rFIYNNhnmhO5VyrdYyv6V1osog5dcHEhXAK3f0j+459Rsb+oWNStm5RqlJHYc+X31937lWAwHDvU/efuD4NqW/t++2jSEGjiqDciF8teS/pejTJJGfm4c8gAzlGjp5QzjwoIAG04EdHs8AXDsgDSlvIkxkswy6+Kfz2wqAwdhny8hb2CqrsHsvq4tyN5dZcKBX86OBOXOOSf5tGutzi9fV4prp7qyzmFAjxml2WZDXa0+q55JgYjTTUVwCsNz1j/2xk1tmGwFV71UcTbLGQNf8hn06vzR2
- 7Zjqmvo6
- gPlSd/bZcekvKkzGyizyo2ptskLsfIdgczB1W1GaF6gREte365yTHmEJI2AefPFFc6wA1sOThiFn/i9p3sa9kWYEE/ESWHHNpSXa54YuMSBUbeVrxDtglKcD5RZVFhBR0TWekWSRhN2nsg2S4Hspto3MEPDtZF+fqgmvOFsD0oaG1Lngo+Axhbl93fp5ci6vuVkgMOgJTXHmwBCFluZRbZ6Od1tEopvcOqOX3WNuAQYijO5aseQ0XbuhfA42seJ1IQe0Eu8QGZs7wAEeWfz7bmI31EYwx2YwQgWXtDpkL9OMNHkkbKpAs0berbl5LFfWGMWnuefp088vCoOl1GXvYdeuab7wrdQ3spotyFjB+Fvw/iRnnDgXD9nm482Yn6IGDxz37LipymxfQ/RUrVlwidZ78iHpcSYDrkK9IAnwfEgkyJLrxv+RKi34mPpfBnumsw8cw
+X-Rspamd-Queue-Id: B83FE40003
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 56jmdixgwtjr64yy9spiy6bzj5gph4of
+X-Rspam-User:
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794596228-102455
+X-HE-Meta: U2FsdGVkX18T3LchvJChXJYZp9Ix6OFkVrIyeQLJ6GK9bJ5H9KZDjos81A6gLedQL8Hq1KtzSFxKkBXJ0Edn0eM/YzNQu5T5tiPLtv+9F+OdailxEdS7rBc2wh8kPs4f9poHJT1P0gZ+CkVMQhgRXsqvLjSnVTJ6wE7+2BlhuQQLIvr6ybTSXFowIfkTl1sXhfjlyo9rd27oJs3T1w26FS/Z8zLyCLiusAOvqP8qCgY6vPkiWR2aP55/qd7DvoG2GqDF7eT6l+VDUHWLNuDKU0VzcMY3nZqGXLVIkh39gQHLfFST0ilQB8E7T8cKqp0xB1veH1DJc3dmtbDKDziPRn7ROyjBgZueI3e3V4JUSmB5sY6jbs8bk8JKI57CRw+Qaaavxf6e6Xl489ZwSZsBKqkuXQOshM/2Ct/NFjS1qHe32uO6kCzTWYIxQxcUrk+BynkjWV/n02Ie+gaPAFryh8NfKB4wsRFRhzuZ5ncd8fkix7tkNZy0OCBalXe0khfkTDo3v2y8A5nsuf1NWEuzZ1fmFp4xhSSHKh6BWtAio99ZDIDOYr6xk6n82OTLPd3HSfgmeXH4hSQxh3zT3TQYhdWPu6cgZpiqAkYYY90xbMB8bW8e+kYB7vu8YtWZ9Sp1r8x/DNWxhvbIkDvYDXMoP2O2Nrau0VI6jar20A6Vsy5omNqZD9uf0AwTJkIoLucUzsmh40NoBwOfxapc6VCMZUej4xg6vMUJixTIN7Wv3iYIf8uWLwa75ul2BbSxVtGdQzNjaAcJf3AzxCJCWNCtwKMxCwedBiarMbHt/H3rjZxkZqqk0gH3Pb27NVwxAi1JT8w+BKl/ThtrYn746m8oh9tqk/EJ+MHnonKpw8uxpbzBr/kXCMBtuf0LgYAlF1C6d5hJXxhSjgQBh2d0+tRZeNYrUVtl2YJAM08ZEY8ScAb32xEK8aBN+OmyXOYD3k2h0pOLZdfwi5AWMoWFeMT
+ MA0GeKkS
+ yYUS6hbvjSRFC/qhgoVeTv7qWGgcLw/+vDb33l+rdcsPgGr3ZBXxTZrFOMHd3pgxyPiRspnHOyFfQP7SZjXkunZijOI3AV4a2O+1V5H1RXETxEWWaEW2mryY2hK6hX6cPcRvGSj6z9d6pCBslkNs2YsLk+M+WyWUH/p2gq5Wuf7gkr8E42ngLGIz0jOana59a4EyHk5QCvtFn9xFmJ4G1BEWCOjn1d54bNfExx5HKR+66jZx+mhpNaYCB/+Mv3tNlH2Lx7AtYMkWpt5f9gZ43iUC/n/CNVyPS0TGm1lZUws6xe9egkJq38wf3OZsX2fnsleYn1LkrteSJHZqwm4J5u+R3vXkstx/J8Dfry678uVkpuRfAezLONoxo5ePEGROTMZq968WUd6wiUKTskK137r/Ug+2HSwPa2Ph45IrpggFck9ujFT+ddmDu7mSMKnsoshjv5htJd7NmIx4AdhYn8w003Qw31FzaIZ7bTMJIofOqRA+kOapbj1Vldkxpq7DXZDZ16XuRhFOTi/G16gaE9eKZnZMsbL3JavmBsrwflxaY3dYDuh3pgjckdzmqcrZdzWu3hFCKZDdAyeU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,95 +133,256 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Matt Fleming <mfleming@cloudflare.com>
+From: Caleb Kan <ckan@cloudflare.com>
 
-Hi,
+stack_depot_fetch() returns a pointer to contiguous storage owned by stack
+depot. That cannot work once a later patch stores compressed frames, so
+callers need an interface that copies the trace.
 
-Cloudflare runs KASAN on pre-production servers, and on some of them
-stack depot keeps running out of pools even with stack_depot_max_pools
-raised to 65,536. Once the depot is full, new persistent traces get no
-handle and later KASAN reports lose the allocation and free history.
+Add stack_depot_fetch_into() to copy a complete trace into caller-owned
+storage. Leave the destination unchanged when it is too small, keep a zero
+handle as a no-op, and document that callers must keep the handle valid
+while copying it. Warn and return 0 if a caller passes a NULL buffer or
+zero capacity for a valid handle.
 
-v2 of this series [1] tackled that with a trie that shares common frame
-prefixes. Marco asked how much of the saving came from compressed frames
-alone [2]. It turns out we can get a decent saving with just frame
-compression and none of the trie complexity.
+Unpoison the copied entries before returning them because
+lib/stackdepot.c is not instrumented by KMSAN. Add built-in KUnit tests for
+exact and oversized destinations, zero handles, and undersized buffers.
+Later patches add tests for stack depot internals.
 
-When every frame of a persistent record can be compressed with the arch
-hooks, the record stores 32-bit frames instead of unsigned longs.
-Evictable records are always allocated at maximum size, so they stay
-uncompressed.
-
-On our production KASAN hosts this reduced stack depot pools per 1000
-stacks by 41.5% on x86-64 and 27.1% on arm64. arm64 saves less because
-we run a lot of BPF programs, and their code lives outside the +/-2 GiB
-range around _text that can be compressed.
-
-Compressed records aren't contiguous unsigned long arrays, so callers
-can no longer borrow stack depot's storage. Patches 1-7 move every
-stack_depot_fetch() user to stack_depot_fetch_into() or the print
-helpers and then remove stack_depot_fetch(). Patch 8 adds the arch
-hooks, patch 9 stores compressed frames, and patch 10 teaches the GDB
-helper to decode them.
-
-Changes in v3:
-- Drop the trie backend, the stackdepot.trie_enabled boot parameter and
-  the trie KUnit tests.
-- Drop STACK_DEPOT_FLAG_COUNTABLE. page_owner reads traces with
-  stack_depot_fetch_into() instead.
-- Remove stack_depot_fetch() now that it has no users.
-- stack_depot_print() and stack_depot_snprint() decompress one frame at
-  a time instead of copying 16-frame chunks.
-- Store compressed frames directly in hash records, using the u16 size
-  and u16 flags header layout from v2's COUNTABLE patch.
-- The GDB helper decodes compressed frames instead of rejecting trie
-  handles.
-- v2's patch 1 landed as 8f56ea8e0706 ("stackdepot: stop preallocating
-  after the final pool").
-
-Thanks to Caleb, who wrote v1 and v2.
-
-[1] https://lore.kernel.org/all/20260908-stackdepot-trie-v2-0-1996d5cef732@cloudflare.com/
-[2] https://lore.kernel.org/r/CANpmjNMP=NdD8ZE9rPwikUBcLwc8V=J648X05YGPn41yAZ5hmw@mail.gmail.com/
-
-Caleb Kan (6):
-  stackdepot: add caller-owned stack trace fetching
-  mm/kmemleak: use stack_depot_fetch_into() for leak reports
-  kmsan: use stack_depot_fetch_into() for origin reports
-  mm/slub: use stack_depot_fetch_into() for owner tracking
-  drm/locking: print deadlock backtraces with stack_depot_snprint()
-  stackdepot: add architecture hooks for compact frame storage
-
-Matt Fleming (4):
-  mm/page_owner: Read stack traces with stack_depot_fetch_into()
-  stackdepot: Remove stack_depot_fetch()
-  stackdepot: Store compressed frames in stack records
-  scripts/gdb: Decode compressed stack depot frames
-
- arch/arm64/include/asm/stackdepot.h |  37 ++++
- arch/um/include/asm/Kbuild          |   1 +
- arch/x86/include/asm/stackdepot.h   |  37 ++++
- drivers/gpu/drm/drm_modeset_lock.c  |   5 +-
- include/asm-generic/Kbuild          |   1 +
- include/asm-generic/stackdepot.h    |  19 ++
- include/linux/stackdepot.h          |  45 +++-
- lib/Kconfig.debug                   |  16 ++
- lib/stackdepot.c                    | 164 ++++++++++++---
- lib/tests/Makefile                  |   1 +
- lib/tests/stackdepot_kunit.c        | 312 ++++++++++++++++++++++++++++
- mm/kmemleak.c                       |   4 +-
- mm/kmsan/kmsan_test.c               |   4 +-
- mm/kmsan/report.c                   |  28 +--
- mm/page_owner.c                     |   8 +-
- mm/slub.c                           |  12 +-
- scripts/gdb/linux/constants.py.in   |   5 +
- scripts/gdb/linux/stackdepot.py     |  23 +-
- 18 files changed, 650 insertions(+), 72 deletions(-)
- create mode 100644 arch/arm64/include/asm/stackdepot.h
- create mode 100644 arch/x86/include/asm/stackdepot.h
- create mode 100644 include/asm-generic/stackdepot.h
+Signed-off-by: Caleb Kan <ckan@cloudflare.com>
+[mfleming: reworded for compressed frames]
+Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
+---
+ include/linux/stackdepot.h   | 36 +++++++++++++++
+ lib/Kconfig.debug            | 16 +++++++
+ lib/stackdepot.c             | 29 ++++++++++++
+ lib/tests/Makefile           |  1 +
+ lib/tests/stackdepot_kunit.c | 89 ++++++++++++++++++++++++++++++++++++
+ 5 files changed, 171 insertions(+)
  create mode 100644 lib/tests/stackdepot_kunit.c
 
+diff --git a/include/linux/stackdepot.h b/include/linux/stackdepot.h
+index 2cc21ffcdaf9..734529767c8a 100644
+--- a/include/linux/stackdepot.h
++++ b/include/linux/stackdepot.h
+@@ -199,6 +199,42 @@ struct stack_record *__stack_depot_get_stack_record(depot_stack_handle_t handle)
+ unsigned int stack_depot_fetch(depot_stack_handle_t handle,
+ 			       unsigned long **entries);
+ 
++/**
++ * stack_depot_fetch_into - Fetch a stack trace into caller-owned storage
++ *
++ * @handle:	Stack depot handle
++ * @entries:	Caller-owned buffer to copy the stack trace into
++ * @max_entries:	Number of frames that fit in @entries
++ *
++ * Copies the stored frames into caller-owned @entries. If fewer frames are
++ * stored than @max_entries, only the stored frames are written and their count
++ * is returned. If more frames are stored than @max_entries, the copy is skipped
++ * entirely and 0 is returned.
++ *
++ * Passing a NULL @entries buffer or zero @max_entries for a valid @handle is
++ * invalid. Callers must provide storage for @max_entries frames.
++ *
++ * Callers should size @entries to match the save-side stack depth cap (for
++ * example, %CONFIG_STACKDEPOT_MAX_FRAMES or the local stack_trace_save() limit)
++ * when losing diagnostics on an undersized buffer would be surprising.
++ *
++ * A non-zero invalid @handle, including a post-put handle, may WARN. Its return
++ * value and copied contents are undefined because the record may have been
++ * reused for another stack.
++ *
++ * Callers must ensure @handle remains valid for the duration of this call.
++ * Persistent handles saved without %STACK_DEPOT_FLAG_GET require no extra
++ * reference; handles saved with %STACK_DEPOT_FLAG_GET require a held reference.
++ * Callers must not call stack_depot_put() on persistent handles.
++ * Racing this helper with stack_depot_put() on the same handle is invalid.
++ *
++ * Return: Number of frames copied, 0 if @handle is 0, stack depot is disabled,
++ * or @max_entries is less than the number of stored frames.
++ */
++unsigned int stack_depot_fetch_into(depot_stack_handle_t handle,
++				    unsigned long *entries,
++				    unsigned int max_entries);
++
+ /**
+  * stack_depot_print - Print a stack trace from stack depot
+  *
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 2d22638ec13a..861d0caf9391 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -2818,6 +2818,22 @@ config RESOURCE_KUNIT_TEST
+ 
+ 	  If unsure, say N.
+ 
++config STACKDEPOT_KUNIT_TEST
++	bool "KUnit test for stack depot" if !KUNIT_ALL_TESTS
++	depends on KUNIT=y && STACKDEPOT
++	depends on STACKDEPOT_MAX_FRAMES >= 3
++	default KUNIT_ALL_TESTS
++	help
++	  Enable this option to test stack depot API behavior at boot.
++	  This test is built in, so KUNIT must also be built in.
++
++	  KUnit tests run during boot and output the results to the debug log
++	  in TAP format (https://testanything.org/). Only useful for kernel
++	  developers running the KUnit test harness, and not intended for
++	  inclusion into a production build.
++
++	  If unsure, say N.
++
+ config SYSCTL_KUNIT_TEST
+ 	tristate "KUnit test for sysctl" if !KUNIT_ALL_TESTS
+ 	depends on KUNIT
+diff --git a/lib/stackdepot.c b/lib/stackdepot.c
+index 90c52f2e0d3f..556f3ecdcc8f 100644
+--- a/lib/stackdepot.c
++++ b/lib/stackdepot.c
+@@ -785,6 +785,35 @@ unsigned int stack_depot_fetch(depot_stack_handle_t handle,
+ }
+ EXPORT_SYMBOL_GPL(stack_depot_fetch);
+ 
++unsigned int stack_depot_fetch_into(depot_stack_handle_t handle,
++				    unsigned long *entries,
++				    unsigned int max_entries)
++{
++	struct stack_record *stack;
++	unsigned int nr_entries;
++
++	if (!handle)
++		return 0;
++	if (stack_depot_disabled)
++		return 0;
++	if (WARN_ON_ONCE(!entries || !max_entries))
++		return 0;
++
++	stack = depot_fetch_stack(handle);
++	if (!stack)
++		return 0;
++	nr_entries = stack->size;
++	if (WARN_ON_ONCE(!nr_entries))
++		return 0;
++	if (nr_entries > max_entries)
++		return 0;
++
++	memcpy(entries, stack->entries, nr_entries * sizeof(*entries));
++	kmsan_unpoison_memory(entries, nr_entries * sizeof(*entries));
++	return nr_entries;
++}
++EXPORT_SYMBOL_GPL(stack_depot_fetch_into);
++
+ void stack_depot_put(depot_stack_handle_t handle)
+ {
+ 	struct stack_record *stack;
+diff --git a/lib/tests/Makefile b/lib/tests/Makefile
+index df0537e1b91f..bc6532d88150 100644
+--- a/lib/tests/Makefile
++++ b/lib/tests/Makefile
+@@ -49,6 +49,7 @@ obj-$(CONFIG_RANDSTRUCT_KUNIT_TEST) += randstruct_kunit.o
+ obj-$(CONFIG_SCANF_KUNIT_TEST) += scanf_kunit.o
+ obj-$(CONFIG_SEQ_BUF_KUNIT_TEST) += seq_buf_kunit.o
+ obj-$(CONFIG_SLUB_KUNIT_TEST) += slub_kunit.o
++obj-$(CONFIG_STACKDEPOT_KUNIT_TEST) += stackdepot_kunit.o
+ obj-$(CONFIG_TEST_SORT) += test_sort.o
+ CFLAGS_stackinit_kunit.o += $(call cc-disable-warning, switch-unreachable)
+ obj-$(CONFIG_STACKINIT_KUNIT_TEST) += stackinit_kunit.o
+diff --git a/lib/tests/stackdepot_kunit.c b/lib/tests/stackdepot_kunit.c
+new file mode 100644
+index 000000000000..b0c44c096976
+--- /dev/null
++++ b/lib/tests/stackdepot_kunit.c
+@@ -0,0 +1,89 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include <kunit/test.h>
++#include <linux/array_size.h>
++#include <linux/gfp.h>
++#include <linux/stackdepot.h>
++#include <linux/string.h>
++
++static void stackdepot_fetch_into_roundtrip(struct kunit *test)
++{
++	unsigned long entries[] = {
++		0x101000UL,
++		0x102000UL,
++		0x103000UL,
++	};
++	unsigned long exact[ARRAY_SIZE(entries)] = {};
++	unsigned long fetched[ARRAY_SIZE(entries) + 1] = {
++		[ARRAY_SIZE(entries)] = 0xa5a5a5a5UL,
++	};
++	unsigned long expected_tail = fetched[ARRAY_SIZE(entries)];
++	depot_stack_handle_t handle;
++	unsigned int nr_entries;
++
++	KUNIT_ASSERT_EQ(test, stack_depot_init(), 0);
++
++	handle = stack_depot_save(entries, ARRAY_SIZE(entries), GFP_KERNEL);
++	KUNIT_ASSERT_NE(test, handle, (depot_stack_handle_t)0);
++
++	nr_entries = stack_depot_fetch_into(handle, exact, ARRAY_SIZE(exact));
++	KUNIT_EXPECT_EQ(test, nr_entries, (unsigned int)ARRAY_SIZE(entries));
++	KUNIT_EXPECT_MEMEQ(test, exact, entries, sizeof(entries));
++
++	nr_entries = stack_depot_fetch_into(handle, fetched, ARRAY_SIZE(fetched));
++	KUNIT_EXPECT_EQ(test, nr_entries, (unsigned int)ARRAY_SIZE(entries));
++	KUNIT_EXPECT_MEMEQ(test, fetched, entries, sizeof(entries));
++	KUNIT_EXPECT_EQ(test, fetched[ARRAY_SIZE(entries)], expected_tail);
++}
++
++static void stackdepot_fetch_into_rejects_missing_or_short_stack(struct kunit *test)
++{
++	unsigned long entries[] = {
++		0x111000UL,
++		0x112000UL,
++		0x113000UL,
++	};
++	unsigned long fetched[ARRAY_SIZE(entries)] = {
++		0xa1a1a1a1UL,
++		0xb2b2b2b2UL,
++		0xc3c3c3c3UL,
++	};
++	unsigned long expected[ARRAY_SIZE(fetched)];
++	depot_stack_handle_t handle;
++	unsigned int nr_entries;
++
++	KUNIT_ASSERT_EQ(test, stack_depot_init(), 0);
++
++	handle = stack_depot_save(entries, ARRAY_SIZE(entries), GFP_KERNEL);
++	KUNIT_ASSERT_NE(test, handle, (depot_stack_handle_t)0);
++	memcpy(expected, fetched, sizeof(expected));
++
++	nr_entries = stack_depot_fetch_into(0, fetched, ARRAY_SIZE(fetched));
++	KUNIT_EXPECT_EQ(test, nr_entries, 0U);
++	KUNIT_EXPECT_MEMEQ(test, fetched, expected, sizeof(expected));
++
++	nr_entries = stack_depot_fetch_into(0, NULL, 0);
++	KUNIT_EXPECT_EQ(test, nr_entries, 0U);
++
++	nr_entries = stack_depot_fetch_into(handle, fetched,
++					    ARRAY_SIZE(fetched) - 1);
++	KUNIT_EXPECT_EQ(test, nr_entries, 0U);
++	KUNIT_EXPECT_MEMEQ(test, fetched, expected, sizeof(expected));
++}
++
++static struct kunit_case stackdepot_test_cases[] = {
++	KUNIT_CASE(stackdepot_fetch_into_roundtrip),
++	KUNIT_CASE(stackdepot_fetch_into_rejects_missing_or_short_stack),
++	{}
++};
++
++static struct kunit_suite stackdepot_test_suite = {
++	.name = "stackdepot",
++	.test_cases = stackdepot_test_cases,
++};
++
++kunit_test_suite(stackdepot_test_suite);
++
++MODULE_DESCRIPTION("KUnit tests for stack depot");
++MODULE_AUTHOR("Caleb Kan <ckan@cloudflare.com>");
++MODULE_LICENSE("GPL");
 -- 
 2.43.0
 
