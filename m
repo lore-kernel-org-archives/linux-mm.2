@@ -1,100 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE03260A263D
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 08:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6EAA606A33A
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 08:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Spus7ydt
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=WS8WcZnC
 Received: by kanga.kvack.org (Postfix)
-	id D1FB66B05BA; Fri, 13 Nov 2026 03:50:30 -0500 (EST)
+	id 901196B0612; Fri, 13 Nov 2026 03:50:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF71C6B0612; Fri, 13 Nov 2026 03:50:30 -0500 (EST)
+	id 887DD6B0615; Fri, 13 Nov 2026 03:50:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0D1D6B0614; Fri, 13 Nov 2026 03:50:30 -0500 (EST)
+	id 779B86B0616; Fri, 13 Nov 2026 03:50:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 961286B05BA
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:50:30 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 12FBD120240
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:50:30 +0000 (UTC)
-X-FDA: 85429474620.03.330FD9D
-Received: from mta0.migadu.com (out-37.mta0.migadu.com [91.218.175.37])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 02377A0006
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:50:27 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Spus7ydt;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.37 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4307C6B0612
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:50:32 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AB8ED140108
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:50:31 +0000 (UTC)
+X-FDA: 85429474662.09.65AAE1D
+Received: from va-2-114.ptr.blmpb.com (va-2-114.ptr.blmpb.com [209.127.231.114])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 135F480004
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:50:28 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=WS8WcZnC;
+	spf=pass (imf30.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794559828;
+	s=arc-20220608; t=1794559830;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E4seY1bfdJRdNuGWbVqJrL/nhHuxt0I+JvshzPPsBIU=;
-	b=sZ7MYIxZzE3+9cNSI0c9Mujeqna0bEaz1O7QbmxPXhm5vseFzZImIHxFGKLX8Av1neV4Q3
-	60RQGFnUFxdILNsHhw/uZpmmQGwKpq9jfYZhylIJfjbW7Waf/3GmW3Oez6PehwsScVanwq
-	jiRXH5JHNnjLmmMaUuO7GIEVVart69g=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794559828;
-	b=Fxoq2wSYAIBW4p4BopuTEUmJg3giFPOh5HBNh3y1KMSi7JOiQVzUgB4tRdbEbsmY8uiMj6
-	Ufu3eDvfTYZkMZgoODFR/+EaewbO41n4G09EvYXr/sXMtNbIcSwPKPPnVEQ3J0UoiRE0A4
-	fDq/7jOcs64RqcHaH/2PeATGkUNyyGY=
+	bh=BRtBrIkCJ4EaL32K9DlOPnqwkNfnHFCSjQCoKgoeAeI=;
+	b=TChyWwc1dj4ZUhNEmE3mae+GC4PPO3rZxmlT/yqlet/hw4BOK0EG/xNLmBqs1PIKvMLCP9
+	sdBuJu425HS7PeQ1iJf/PiDG7hxpgRaqO4QBblNZ7OXr8BveSfJuWMTNMLbAefYCcqcNmk
+	4AFUS9NI2uwxqd8EH5FdP0E1IYzUAJ8=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Spus7ydt;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.37 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=OpOlJjKeN76PPhsp2vVKYcBlOdY7KZSKZkyAfppf/OY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794559826; v=1; x=1795164626;
- b=Spus7ydt/4EbUAIV8MFR4ENy3YZmG7/vZ1EsI+ycg9YlO8BY/bfzOidm8b8VPmKSo+ycQ6ae
- 13o2K2vPaua5mQ1IsZnGWJ9MGxgzgoMl5N1IbiO6mc07E2vl5BcxdV+/4vvc8rSteIuZfI1ny/r
- mBlFYYgOw9iyeWWrdQKzn9aQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id cd6d10ca7f07a972;
-	Fri, 13 Nov 2026 08:50:19 +0000
-X-Mizu-Trace-ID: cd6d10ca7f07a972
-X-Migadu-Flow: FLOW_OUT
-From: Baoquan He <baoquan.he@linux.dev>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	Baoquan He <hebaoquan@kylinos.cn>,
-	Baoquan He <baoquan.he@linux.dev>
-Subject: [PATCH v3 2/4] mm/mglru: add PUD-level Bloom filter state and generic helpers
-Date: Fri, 13 Nov 2026 16:49:51 +0800
-Message-ID: <20261113084953.412919-3-baoquan.he@linux.dev>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20261113084953.412919-1-baoquan.he@linux.dev>
-References: <20261113084953.412919-1-baoquan.he@linux.dev>
+	imf30.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=WS8WcZnC;
+	spf=pass (imf30.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794559830;
+	b=mEYYmzLwK4R3JS7zNgNw6HL2MMIHMN5771aTYmFhhgh/mhX6uXmZtPR8QSpFGoWD8NMZRb
+	OgaGQalKGKCk1Kghm9A4f/4SV5OpKbwBkjg2aG9ciKsvL0D/tLim54SUK8sdRb9fqbFbn2
+	k9dGzEoaQWdu8W090uSMoKgFrWB2fzI=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1794559826; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=BRtBrIkCJ4EaL32K9DlOPnqwkNfnHFCSjQCoKgoeAeI=;
+ b=WS8WcZnCPd1sylOkrsayKrwQwJmRZxPsTbwuOPsjuRzPlFzJOVVOUDtxz6fBff4j7AGe19
+ W884ecRxKw5wEGYZPI2bFIexpnRXKovEkJLUcoJ5dH5vGKjTCpbteJF2mUHNjBN4WCQFAF
+ 2f8Fb8X65F8F+whKN9DQj1EMvMkHE6ZE89Rxx+3z7Zo+kr7mAK9TYi3T3JxBXmxTAIc+nU
+ aC+WxDimYFyav2wlhObzWhkIaRT8wdv1K843OT7OJrZC/gl8lqJ1iq/Cmw86GyyNMgLyZ8
+ USSbK5wT3bk1KFDk2ACA/3rlsaPY2+UwXLohW4NSbcmWmin3FVFwRPiZGaxHdA==
+To: <gourry@gourry.net>
+Cc: <akpm@linux-foundation.org>, <cgroups@vger.kernel.org>, 
+	<david@kernel.org>, <joshua.hahnjy@gmail.com>, 
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-mm@kvack.org>, <lizhe.67@bytedance.com>, <ljs@kernel.org>, 
+	<mhocko@suse.com>, <muchun.song@linux.dev>, <rakie.kim@sk.com>, 
+	<roman.gushchin@linux.dev>, <shakeel.butt@linux.dev>, 
+	<weixugc@google.com>, <ying.huang@linux.alibaba.com>, <ziy@nvidia.com>
+Subject: Re: [RFC v2 1/1] mm: add source selector to memory.reclaim
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: zb8xjqkhdathmtf8wtdigpmpcj6uic9u
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.45.2
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Date: Fri, 13 Nov 2026 16:49:48 +0800
+Content-Transfer-Encoding: 7bit
+In-Reply-To: <179455442014.482102.4069329165987986914.b4-reply@b4>
+Message-Id: <20261113084948.78661-1-lizhe.67@bytedance.com>
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+X-Lms-Return-Path: <lba+26af6cf45+ab9184+kvack.org+lizhe.67@bytedance.com>
+References: <179455442014.482102.4069329165987986914.b4-reply@b4>
+Content-Type: text/plain; charset=UTF-8
+X-Stat-Signature: m1grhofpxp97e6dfn15erk9cgq9mxz6k
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 02377A0006
-X-HE-Tag: 1794559827-982897
-X-HE-Meta: U2FsdGVkX1/1zqN2W6U0G74eAU8cmq9EbOfsv39dInzzgMqV7Pde6+8SuTNsfO8bq5kDxmYCGXoMpPPJ8Nt/B1e8sI7WOeSYtKP+q0NkbR0mypWCsChBxkHq2QdeVh7EnWfPiEULPlN0TasTTYtmfUabzHvn+HS6R1DHkjHXjiOCRLj8AE5k9EmQBO7J3XsXCHFLmyQw6YLn48wgJP+ERT+ZOaNKyFYJ0Aw7bvObgPBcU6I7PWrZ2AUhaNKk3jR4bQha5acI+znXxJh/yFbigG9lg8i9Mdu46HdxGik6ISAYs5X/nUJg2ZtiWu0YJsbtWfjjS0u6MGblBFplkIfJ5HWlfThk4INiw/SnuJqGVxqKRPZaHexbr5L4fGnrDvM6MPX4OyoB7a/3mGadcw3iDDxAYkrFTSZoJrt6UJU4uY5VRSp7dMh1PMF75FhAAgrx/T6tjD0C66sA9ujVVhCKPXATzP+IlU34PiJ0sdGCCVhMlUPfjxfvfNJVhk7qdMMSDsqFk9IA7cP+NDA5ehY84bkKby8l1wGeif/Xr+sWlVN8rh73cym6HT/LeukEO5htoj3T/kEkBXoulaCihAFaGjh8BKn1wl1wWfmN5VZ/dn6vgMrjnYWgej5ASU7SuSDvx6kVBRbNVtVgx+zASlJ0YVzO1xTbG68imDpgbyJQnO2qm2r3ULf2w/FQ5Bn2EEXlFSlVIvFywAvf9UGYslO1Jd1kdZTwhzpbLxoMKfWEitoyd+IpoKWE74loO0latsZNBjfwBblNX7GGuWA1gBfAKvOtLpUj4a7T5ZOSK0+1gixsuVJuS00YIBUq59vn1N3dH5S0IvlYAzmOzPyIfCz8IYdNPDR346r+Cr2ZGqtTI/V5eGCh39uCqjBe7SusrcF6LSvFPqilE50rkkDQgGHrcv29i3aB8PXaMUQM+3MnFGLROAI9XobAwdZsZS/oZD0KVhZtLofQap8cLJKjd5R
- UY02NC49
- q8p8zpBNvTXOCToo9/PnyKR1x7yXTmNJhumgwAjSdSjRCuBDhe2FTAA7gmpuGHf5PMYFBBrlhLS4E48Nwe/BL96xdal9QLT5Kxh9wrT0Dy9aarKU7H7qNrvXicPWfjyxW5p2LV34PHldGvuti37zyg/ZPwL16We/vDT13Ss8oVol5WQfXt1axDQqiOnyPxcRwVrotsSrP7e9+My+dt/C+8zccpKhxIcNM2IHrUQhBrszcJq4=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 135F480004
+X-HE-Tag: 1794559828-351311
+X-HE-Meta: U2FsdGVkX18BaB6XnXMpTvul0Ebgvzww5Igp37lqVTf68XBxE7EgjM2Lf6N7ZypmBJ0TbuQqNSJUzC4b3HX8ysPJEP6H/+2VeYTw26J9TisJnd090Kw3EvJTTtT0x+L3vKiBkHA466Afv6i12XzyjlwEljh+KrqAOMWDPFlPF2eh0CQ0CgyZuUpgPazL5yTF51e6wV1a1WKdb2wYKFV3cVuaRuUR5TNVj9/FiiZ8obnWgMGjZSXvSuPltFzTxcmRjfZ/WbBR3qoPwGicS7gksyirEyHlZcSTwdARp3gLVV4UYtoT3gDBjKWwXbx8UoSHiC/RKudZRmHA/rWAwM4/Blkk+01Soluwbek8qwXt0uLXXL9v3GJGRL+/JR0uyhnMk21VYqDlBOr0YBP8JsLi1dI77YM5WlluBViwr4Sa1fdJrTsrIwU2cY5QEy0d87Na6eTRy/U1dBkJJn4K9g8QzYq2kH1Njq0E+P4ofi5q6EmrkbA200zcxxpkzB+y2zQ/SoihOM00h7xW0xZgyMwpr2MDpFneFQ+OHYvKTCw4ArnEFZd7SxwuFUfxlr105flspOgvwbcRhsKQ9P+2Iocy7s+5fdwsDLvPAms64g3LhSu5sH90haLwQx2lRzQNgq5zc0zZQBHOpR3OnrPBejtEwpIKi4AMzfIGbsc6/a0v9KIGojvCsD+vYjQJFlHHw6Sb3VHs4M8VAOTGM/wtK8PCcvImAPEg4chmjASK/9g/+hw81lsQyz1z2a9N2g5pIByaRDH9D5ShOovRrQ4UTG/EPNo8yWcXt9qOquROLul7JLY8cYSey+Rco443fex1h2wC797YmNFUUo/R30fO1ATlMevcLJo0hsRC1dj+TUJTxfJBU5FI4CMnLJjV1kskik7cTxjSZwjUNhGUu0DRit0Xv+m6kL/bAXmUagc/U5mdOEoneY+pdMVMKru2rGWdwdt6a/btYwnhDyNMiO5HKwA
+ /XQFiO2q
+ BJOA/XERmdpKQ18oOwjRd47E9z32g1xSQ0OwZ+naLXvwvawWxDv3DpscXoWbkzEJzQWuogouYPr2Y5GedmgSwbmDLx6jeNm20Btp9THIefXkiOVzYGEoBEkVeg5BkRQyPnfTjCA92jB0XWSvcQYm2U3e09VaQ5ObgyeNHnqXfv1V1oHmVB9b9gMERd7MahC7BhEbDKTQPyVc56lXVe8oYCzrKtN32e65Ced+ubfUie8k4E2SjDREYY4V8PLOQPr2prWpHL4FqnCP/CZ0CPmU5u33LmfvGWJroNnVcq+Es8+fnbLF8oRMhOMHmy6ktw//YCa+JUupeiuRlcgJmYLyZADb5a2thhWGW/ftFLLF/dWtWw7+FIV9S7DkMVdSJOjabHsmlX2vUtKZyCVGEABP6MufGaA4wPUkOPVER
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,214 +97,107 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Baoquan He <hebaoquan@kylinos.cn>
+On Fri, 13 Nov 2026 02:20:20 -0500, gourry@gourry.net wrote:
 
-Generalize the Bloom filter state and helpers so that another filter
-level can reuse the same hash, double-buffering and reset logic.
+> > On 2026-11-02 15:04 +0800, Li Zhe wrote:
+> > +	Specifying a source value constrains where proactive reclaim applies
+> > +	pressure. Currently only source=nodes:<nodelist> is supported. For
+> > +	example::
+> > +
+> > +	  echo "1G source=nodes:0-1" > memory.reclaim
+> > +
+> > +	This reclaims memory of the target cgroup resident on nodes 0-1.
+> 
+> you buried the fact that you want to allow source=zswap in your cover
+> letter. I was confused by nodes: was needed here until i re-read.
+> 
+> As Joshua mentioned, i don't think you need the separate cover letter,
+> and I agree this is far too long for the proposed change.
 
-Replace the PMD-level filter array with a two-dimensional filters array
-indexed by level, and add BLOOM_FILTER_PUD and BLOOM_FILTER_PMD. The
-PUD-level filters operate at PUD granularity and generalize the
-suppression one level up: when all PMDs under a PUD fail the PMD-level
-filter, the whole PMD iteration can be skipped. Cross-node empty walks
-are the most visible case: a foreign mm's PUDs have no young entries for
-this lruvec, so the entire PMD iteration is pure waste.
+Agreed. The nodes: prefix was meant to keep source= a typed selector,
+but I made the motivation and possible future extensions too long and
+distracting. I will make v3 much clearer and shorter, and keep the focus
+on source=nodes.
 
-The existing PMD-level code now goes through the generic
-test/update/reset_bloom_filter() helpers.
+> ---
+> 
+> When I asked for testing, I wasn't concerned with the functionality,
+> I was asking what problem this actually solves. performance? fairness?
+> 
+> Shaping the distribution of memory is neat and clearly works, but why
+> does userspace want this?
+> 
+> The interface "lacking flexibility" is not a problem in and of itself.
 
-No behavior change yet; the PUD-level filters are populated and used by
-the next patch.
+Thanks, this is a fair point. Sorry, I also made that earlier
+explanation too long, so let me summarize the intended use cases here:
 
-Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
-Signed-off-by: Baoquan He <baoquan.he@linux.dev>
----
- include/linux/mmzone.h | 10 ++++++--
- mm/vmscan.c            | 58 +++++++++++++++++++++++++++++-------------
- 2 files changed, 49 insertions(+), 19 deletions(-)
+https://lore.kernel.org/all/67fcd8db-269d-43f1-aea2-8c41165747d0@bytedance.com/
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index a49efd9b74ed..1f086ef3a00e 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -589,6 +589,12 @@ enum {
- /* double-buffering Bloom filters */
- #define NR_BLOOM_FILTERS	2
- 
-+enum bloom_filter_level {
-+	BLOOM_FILTER_PUD,
-+	BLOOM_FILTER_PMD,
-+	BLOOM_FILTER_LEVELS,
-+};
-+
- struct lru_gen_mm_state {
- 	/* synced with max_seq after each iteration */
- 	unsigned long seq;
-@@ -596,8 +602,8 @@ struct lru_gen_mm_state {
- 	struct list_head *head;
- 	/* where the last iteration ended before */
- 	struct list_head *tail;
--	/* Bloom filters flip after each iteration */
--	unsigned long *filters[NR_BLOOM_FILTERS];
-+	/* Bloom filters flip after each iteration, indexed by level */
-+	unsigned long *filters[BLOOM_FILTER_LEVELS][NR_BLOOM_FILTERS];
- 	/* the mm stats for debugging */
- 	unsigned long stats[NR_HIST_GENS][NR_MM_STATS];
- };
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 98037a562ab6..9dbb3f477d7d 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -2798,6 +2798,10 @@ static bool __maybe_unused seq_is_valid(struct lruvec *lruvec)
-  * walk_pmd_range(); the eviction also report them when walking the rmap
-  * in lru_gen_look_around().
-  *
-+ * A second, coarser pair of filters sits one level up. The filters are
-+ * indexed by level: BLOOM_FILTER_PMD for the PMD-level filters above, and
-+ * BLOOM_FILTER_PUD for the PUD-level pair.
-+ *
-  * For future optimizations:
-  * 1. It's not necessary to keep both filters all the time. The spare one can be
-  *    freed after the RCU grace period and reallocated if needed again.
-@@ -2823,14 +2827,13 @@ static void get_item_key(void *item, int *key)
- 	key[1] = hash >> BLOOM_FILTER_SHIFT;
- }
- 
--static bool test_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq,
--			      void *item)
-+static bool __test_bloom_filter(unsigned long **filters, unsigned long seq, void *item)
- {
- 	int key[2];
- 	unsigned long *filter;
- 	int gen = filter_gen_from_seq(seq);
- 
--	filter = READ_ONCE(mm_state->filters[gen]);
-+	filter = READ_ONCE(filters[gen]);
- 	if (!filter)
- 		return true;
- 
-@@ -2839,14 +2842,13 @@ static bool test_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long s
- 	return test_bit(key[0], filter) && test_bit(key[1], filter);
- }
- 
--static void update_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq,
--				void *item)
-+static void __update_bloom_filter(unsigned long **filters, unsigned long seq, void *item)
- {
- 	int key[2];
- 	unsigned long *filter;
- 	int gen = filter_gen_from_seq(seq);
- 
--	filter = READ_ONCE(mm_state->filters[gen]);
-+	filter = READ_ONCE(filters[gen]);
- 	if (!filter)
- 		return;
- 
-@@ -2858,12 +2860,12 @@ static void update_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long
- 		set_bit(key[1], filter);
- }
- 
--static void reset_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long seq)
-+static void __reset_bloom_filter(unsigned long **filters, unsigned long seq)
- {
- 	unsigned long *filter;
- 	int gen = filter_gen_from_seq(seq);
- 
--	filter = mm_state->filters[gen];
-+	filter = filters[gen];
- 	if (filter) {
- 		bitmap_clear(filter, 0, BIT(BLOOM_FILTER_SHIFT));
- 		return;
-@@ -2871,7 +2873,25 @@ static void reset_bloom_filter(struct lru_gen_mm_state *mm_state, unsigned long
- 
- 	filter = bitmap_zalloc(BIT(BLOOM_FILTER_SHIFT),
- 			       __GFP_HIGH | __GFP_NOMEMALLOC | __GFP_NOWARN);
--	WRITE_ONCE(mm_state->filters[gen], filter);
-+	WRITE_ONCE(filters[gen], filter);
-+}
-+
-+static bool test_bloom_filter(struct lru_gen_mm_state *mm_state, int level,
-+			      unsigned long seq, void *item)
-+{
-+	return __test_bloom_filter(mm_state->filters[level], seq, item);
-+}
-+
-+static void update_bloom_filter(struct lru_gen_mm_state *mm_state, int level,
-+				unsigned long seq, void *item)
-+{
-+	__update_bloom_filter(mm_state->filters[level], seq, item);
-+}
-+
-+static void reset_bloom_filter(struct lru_gen_mm_state *mm_state, int level,
-+			       unsigned long seq)
-+{
-+	__reset_bloom_filter(mm_state->filters[level], seq);
- }
- 
- /******************************************************************************
-@@ -3114,7 +3134,7 @@ static bool iterate_mm_list(struct lru_gen_mm_walk *walk, struct mm_struct **ite
- 	spin_unlock(&mm_list->lock);
- 
- 	if (mm && first)
--		reset_bloom_filter(mm_state, walk->seq + 1);
-+		reset_bloom_filter(mm_state, BLOOM_FILTER_PMD, walk->seq + 1);
- 
- 	if (*iter)
- 		mmdrop(*iter);
-@@ -3771,7 +3791,8 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
- 			walk_pmd_range_locked(pud, addr, vma, args, bitmap, &first);
- 		}
- 
--		if (!walk->force_scan && !test_bloom_filter(mm_state, walk->seq, pmd + i))
-+		if (!walk->force_scan &&
-+		    !test_bloom_filter(mm_state, BLOOM_FILTER_PMD, walk->seq, pmd + i))
- 			continue;
- 
- 		walk->mm_stats[MM_NONLEAF_FOUND]++;
-@@ -3782,7 +3803,7 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
- 		walk->mm_stats[MM_NONLEAF_ADDED]++;
- 
- 		/* carry over to the next generation */
--		update_bloom_filter(mm_state, walk->seq + 1, pmd + i);
-+		update_bloom_filter(mm_state, BLOOM_FILTER_PMD, walk->seq + 1, pmd + i);
- 	}
- 
- 	walk_pmd_range_locked(pud, -1, vma, args, bitmap, &first);
-@@ -4417,8 +4438,8 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
- 
- 	/* feedback from rmap walkers to page table walkers */
- 	if (mm_state && suitable_to_scan(i, young))
--		update_bloom_filter(mm_state, READ_ONCE(lruvec->lrugen.max_seq),
--				    pvmw->pmd);
-+		update_bloom_filter(mm_state, BLOOM_FILTER_PMD,
-+				    READ_ONCE(lruvec->lrugen.max_seq), pvmw->pmd);
- 
- 	mem_cgroup_put(memcg);
- 
-@@ -5981,6 +6002,7 @@ void lru_gen_init_memcg(struct mem_cgroup *memcg)
- void lru_gen_exit_memcg(struct mem_cgroup *memcg)
- {
- 	int i;
-+	int level;
- 	int nid;
- 	struct lru_gen_mm_list *mm_list = get_mm_list(memcg);
- 
-@@ -5998,9 +6020,11 @@ void lru_gen_exit_memcg(struct mem_cgroup *memcg)
- 		if (!mm_state)
- 			continue;
- 
--		for (i = 0; i < NR_BLOOM_FILTERS; i++) {
--			bitmap_free(mm_state->filters[i]);
--			mm_state->filters[i] = NULL;
-+		for (level = 0; level < BLOOM_FILTER_LEVELS; level++) {
-+			for (i = 0; i < NR_BLOOM_FILTERS; i++) {
-+				bitmap_free(mm_state->filters[level][i]);
-+				mm_state->filters[level][i] = NULL;
-+			}
- 		}
- 	}
- }
--- 
-2.52.0
+In short, performance, fairness and cost are all part of the goal. One
+target is mixed DRAM/CXL systems where user space keeps each memcg near
+its own DRAM/CXL resident ratio target, based on the workload's
+latency/throughput and cost requirements. Another target is the case you
+described below, where user space wants memcg-scoped reclaim to apply
+pressure to the desired tier first, rather than reclaiming from warmer
+memory on the top tier. This is especially useful when a memcg is close
+to its memory limit and user space wants charge-reducing reclaim to
+start from colder/lower-tier memory first.
 
+> I CAN see why you might want to proactively shape what data is swapped.
+> Let me give you an example:
+> 
+> ---
+> The global node reclaim interfaces allow us to put pressure on distinct
+> nodes - which lets us shape which node is swapped from first.
+> 
+> Example: node0-1=DRAM, node2-3:CXL
+> 
+>   echo 1G > node2/reclaim   # swap from CXL
+>   echo 1G > node3/reclaim   # swap from CXL
+>   echo 1G > node0/reclaim   # demote to CXL
+>   echo 1G > node1/reclaim   # demote to CXL
+> 
+> But the memcg.reclaim interface only allows us to pressure the complete
+> set of cpuset.mems nodes for that memcg
+> 
+>   cat cpuset.mems           # 0-3
+>   echo 1G > memory.reclaim  # makes progress from any of 0-3
+> 
+> Presently, proactive reclaim iterates nodes in node or fallback order,
+> meaning it attempts to make progress from the fastest node possible
+> first - which attempts to demote by default.  If the lower nodes are
+> full, this demotion will fail and we'll swap directly from the top tier,
+> which is (presumably) warmer than the bottom tiers.
+> 
+> Enable source-bound reclaim in the memory.reclaim interface so that user
+> space can have the same control over memcg memory tiers that global
+> proactive reclaim has.
+> 
+>   echo 2G source=nodes:2-3 > memory.reclaim  # [z]swap from CXL
+>   echo 2G source=nodes:0-1 > memory.reclaim  # demote to CXL
+> 
+> This lets user proactive reclaim to target the coldest memory first
+> rather than preferring to reclaim from node0 first and potentially
+> swap out memory warmer than what is present on a CXL tier.
+> ---
+> 
+> With this, you might be able to demonstrate fewer refaults and less
+> DRAM (node0) memory consumed by zswap. These are clear benefits.
+
+Thanks for the example. It makes the problem much easier to discuss. I
+will refer to it when reworking the v3 motivation, and will avoid
+framing the issue as a generic flexibility problem.
+
+> I would argue that memory.reclaim should operate this way anyway,
+> and that would could make proactive reclaim do this by default, but
+> I could see the policy bits in userland being useful as well
+> 
+> Performance may not be the only reason you want this, but you need to
+> help me understand what you're trying to accomplish.
+
+Thanks again for the review and suggestions.
+
+Thanks,
+Zhe
 
