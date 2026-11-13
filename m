@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 928C3606F2CC
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B65606A883
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=readmodwrite-com.20260707.gappssmtp.com header.i=@readmodwrite-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=d6A95ldW
+	dkim=pass (2048-bit key) header.d=readmodwrite-com.20260707.gappssmtp.com header.i=@readmodwrite-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=WQyNdvng
 Received: by kanga.kvack.org (Postfix)
-	id 7A2ED6B05D7; Fri, 13 Nov 2026 13:57:15 -0500 (EST)
+	id 580766B05D8; Fri, 13 Nov 2026 13:57:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 759AD6B05D8; Fri, 13 Nov 2026 13:57:15 -0500 (EST)
+	id 4E9576B05D9; Fri, 13 Nov 2026 13:57:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F4D06B05D9; Fri, 13 Nov 2026 13:57:15 -0500 (EST)
+	id 382B76B05DA; Fri, 13 Nov 2026 13:57:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 388E06B05D7
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 03D906B05D8
 	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:57:15 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 603EF160186
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:57:14 +0000 (UTC)
-X-FDA: 85431003588.09.1DC6239
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6DB8F40006
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:57:12 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=readmodwrite-com.20260707.gappssmtp.com header.s=20260707 header.b=d6A95ldW
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7BF261201D0
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:57:15 +0000 (UTC)
+X-FDA: 85431003630.17.15DCE26
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B3AE5A0005
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:57:13 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=readmodwrite-com.20260707.gappssmtp.com header.s=20260707 header.b=WQyNdvng
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794596233;
+	b=Y4gmU1DR7RWZq/wE8xSAQKXhfFEMmaqvfxRHXghL94MYFenwFqbnOTZON1OKfRAmhq+CvL
+	D8MLjh3nFZYnlkJyxpeiKOsI2zzRlkGAYErSsCkjw5VKZkOSQ7mEWV9c07teco1i1BELyp
+	wx3h7570YEfZjEEAw78V42nyA3EuTyI=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=readmodwrite-com.20260707.gappssmtp.com header.s=20260707 header.b=WQyNdvng;
+	spf=none (imf15.hostedemail.com: domain of matt@readmodwrite.com has no SPF policy when checking 209.85.221.49) smtp.mailfrom=matt@readmodwrite.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794596232;
+	s=arc-20220608; t=1794596233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eMKilXOc8iF9aDdrmQW0L2QZLW9z0erSCAgXdVbBET0=;
-	b=svsZHDGmc7GH2bW0kkQoZZiJVy8/w9+Pbf1DY4csyHrbGe5qz+u31JtqpoT+0F3hMOTtWO
-	K/8rDB7ihu1BZvjucNcRtT/yuiuhoj2j/ZPqG4vCQqUb+XWFUMtP6lYh/9Cmybopy4fZiN
-	PKRpWWG/hRRTeZX+YslaLsvcx+Gnjzo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794596232;
-	b=UwJC0NhOjJDDuN/nViW6rtIPVToVqN2VF07adfCqNaU+1fbnZYZLtc72qsLxofb9lreO3l
-	Jc/FvzH760qcBp/taB3RTqpW8x9bScR70aByr4XNbgJ87zeUBpFmxPIcLSBCC6ei5HfKSN
-	5RqwfF7Db4T41NobioEeNx9iI/+Z+X0=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=readmodwrite-com.20260707.gappssmtp.com header.s=20260707 header.b=d6A95ldW;
-	spf=none (imf01.hostedemail.com: domain of matt@readmodwrite.com has no SPF policy when checking 209.85.221.45) smtp.mailfrom=matt@readmodwrite.com;
-	dmarc=none
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-492fcbfaa88so672278f8f.3
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:57:12 -0800 (PST)
+	bh=TvCJCDZ1w+NnQ3WWtAE5fKPBEjh4gdc9x1Sa5mH/xTw=;
+	b=WPTgxxMqFLTxOnYLwwp0yfPZ6lg4NhSTaqsUnc2OuYOeDTB42AIto2Jrzsr4YUjrf7NVDZ
+	n/uVsScD1i1VSKq41P/HlM2JRwtZUuab2pVfUsQAPAngZXPWFkN2gGaCp11euzx83y4teF
+	gXHfp/FXy6z+3gDhUWlyoojNLahCKG8=
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-492fcbfaa88so672287f8f.3
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:57:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=readmodwrite-com.20260707.gappssmtp.com; s=20260707; t=1794596231; x=1795201031; darn=kvack.org;
+        d=readmodwrite-com.20260707.gappssmtp.com; s=20260707; t=1794596232; x=1795201032; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=eMKilXOc8iF9aDdrmQW0L2QZLW9z0erSCAgXdVbBET0=;
-        b=d6A95ldWRZL5nnVWjsR1TKIBcSQtTUa0pJkyDoW9yCoxpbkBr4InqpmL8RnjfWiCEe
-         b1Qdd3LgQDTAZV9ygLpAMNdu+rljaHjvAGfzE+TcJXlfqKxEgRDhrHysVgxEovc/EXSP
-         yVcXCJJtvxXTJYhw8Amk1hPivse9V6nv5zxErfBetlXUqT3q9urP5FEPolEHI/AuDg8W
-         Ys1biLiOCi6I7PE83eiGLCMhTztwi0l2+0Ziww00YIY0m2pVHvfxNO6NKEqovn2NdatD
-         nwRhC3uyN9l3gp3Xxlfdqi3Y2ITzY1XMfsZ79JWYgwlhaFd9ubQW2cArlt4dALzRCTjw
-         SfRQ==
+        bh=TvCJCDZ1w+NnQ3WWtAE5fKPBEjh4gdc9x1Sa5mH/xTw=;
+        b=WQyNdvngky4tdSvoqSQrCrRZhm1L3iS8yWTtCdOA528DSCEJiwO9N3wRCmH+E82SCJ
+         DIDqKGcYAhRiT9K78XRBygO7KBMCFgHA0pWcr4ZKK3ACdub5pCLBzU2BRPWso2vH1ZNu
+         CzIZ+SjpzRij15bb5uAsTuUhREsij+OK018wr7Fyf8c65GcMIMRVdBth7BUFzE6RFCwu
+         VjFJGYhu+hNb6U3jqEsGrjE+yYMIL6GFuVN1ZzHBZ3xWySpvOjwTcWXqAzBHcDdjOEKQ
+         W95ZwS2v5IGbjR48qWNCukB3oghGlnkkAXkRCdPmxyDaRwaotym35RrccBYKAIJVLfEz
+         nZlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794596231; x=1795201031;
+        d=1e100.net; s=20260707; t=1794596232; x=1795201032;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eMKilXOc8iF9aDdrmQW0L2QZLW9z0erSCAgXdVbBET0=;
-        b=OYU+8nX0uKu35vaDqWWEqywTYKm+mSf0NIWXbNQ0EwLnsMXianPxXwZLsWdfWgJV7g
-         c35GmZrsJksR7R0hCiZDCn8c1/5jxC785uHuDQ2tJUZKXcdjwF6DAwLyKqUjEANkw2jH
-         yZZSJIYrP5Jzc9xII6ZAUKOWhS3BDhKfKeOyGyN1uNdXodm/RNdhSUbPRRa/+GtJeT8o
-         lJsk5NUe/yLM9WXNazOzUvZNPAZJBWYvQlsiKKtw9APjqAVIwjphjlMWhIdsRo9jZMC7
-         +ihdGSrozOJF+pG2LhO8ZMHmrLeOO3exj6Zyq6+3pK4/9SBHXvT5aMBGj+pe11aD3ON/
-         POCA==
-X-Forwarded-Encrypted: i=1; AL+hErHbWosoP+i2jqPd0LGQdTiP5jWvPoyC/EQ9aumP+/aLv0qaDJ8ord7QQJqTkjwU4M0+yNNGBxGsXw==@kvack.org
-X-Gm-Message-State: APuU4Z8mmZ55HBlR2nruM1Je5hm9FECx95j2/BqT+Zzk0R1ML6Zk73aD
-	St2+2AXKdjvbWWzWyEg/7vgVoMcIemxF8TqDIWhTbwfrWno7A6ny0ILR3LuteLveS0Q=
-X-Gm-Gg: AYBFou3vr1H2GqNXGTEZm5zHjal6A4wsUshm9e6UPl1HfzhqCjbGD6zVhhLzPA54/vA
-	Njp5cxnnkpFGs1IGINoZTh0OLH1R8yh6k0jyfFug5klArs9/hem2brprF8Ohfd5lytDtVs2rR8E
-	NzA43GIJxW61Kj7ZUdP9t3jvGJv4fB2YM20R+AgVuTvagUyqRbvL+PoYJ1cotLtcQd9GfuzZROo
-	0bph17sAR0Yr0w4yANNyWeU5bm0zb0lv/I6pkJQxdDT0GtYDjek1x65V8U1zXLojVA8zx/PrBTq
-	JEgwX4iiji62qJA5bj/IjJq32iwjU7IWwOjQzg998Vi79NE1Vex31HMYJ/Sksx5Ma7l4Y+864Jf
-	7YgVkZfCnVK0PpBZrMP0g2zcDL9xh+ZOcqCQi838aBx2E0NJik3CGSczRGadCpvLJINVO0pYn9y
-	bzv32/Kt8iPp2HbcpkWAfbeHzGarLAAfpyncOjSvrejOE+6goIAvp9bQ00r1phq/ZI1anu/Z4Vn
-	80And3Z3tjAuCeijauJJOiNQDhst219JFyJvVCsMvwEYqnbJJU2INbT/voxmGlnlpkZ8sJH0zho
-	mvNz+VSp0V9IxBVhXCEjXnhyjeAdsA==
-X-Received: by 2002:a05:6000:2204:b0:48a:f59f:8b70 with SMTP id ffacd0b85a97d-49c7467aa37mr8267530f8f.46.1794596231138;
-        Fri, 13 Nov 2026 10:57:11 -0800 (PST)
+        bh=TvCJCDZ1w+NnQ3WWtAE5fKPBEjh4gdc9x1Sa5mH/xTw=;
+        b=ovgpqZeLhJ8/Vn8wrXlCdznbdoYJWm4DzeypGsxK258fjN7D2v0dRdjZWPzmkotZVg
+         H5DaV6CJpKbehu0zzJaqKweC6bbF5v3nPZkgKd8mqIBbiESwtrQ7t1jcF3Lhw1wi3IS8
+         zVtgo2d5WRnizSeWQloE42ir/oaC1EYoJfeZYmMp6w3mgeJMZcqi8cKt9eah2hPgKyXg
+         WV0aZZGToChIiE5BSpuPleerHi8RBJ1E1hb37cre4vkK6B45d+jG0SZoD0TA5eXUhRoz
+         mH1pl/UAAPOjdHMo3qz5kMqoL/CJj1RNfUL3+RM3/Dix1CZbS1wtzxdQglrjIGQSOMJl
+         U4xg==
+X-Forwarded-Encrypted: i=1; AL+hErHZdshQTA/Yy1IUKExTe51HGBaJ98uAT22um4DDjgN8NECSxk96QZe6BvxOicdtU2Uo81WZOgUnjQ==@kvack.org
+X-Gm-Message-State: APuU4Z9kum8jD9gSJmT9jZx9oqwv0iSGBRrF97Inc7XTK6ywVWvO2Wt9
+	FPolxRH5XZRXHWDkzwj/6fOJp+3MZMhTCw2nDstDCLP+YFtGan6CTyeMYn7vVAGKAH4=
+X-Gm-Gg: AYBFou22S/Mzs4JHDyVR+RU4Teu90/TkF7WtVPQh5RIXsVhbltDp5wlonsJh3YGwSRD
+	jS1iCrUq+zEB5bwgGRJkEGuu/YKUgVko5XSmVpKn72aLelxZTm3sYk7EPurORHthJTPeNsqYFN3
+	drqrkKQXfCXmVnR8YmUuGyzTouYRqq5txs8NecvUqSVqFs8e69i1iZuemeNqHbwqTwnwSKUA5DQ
+	BSFS22zMvzDI2McnZkO4HoJRSdHciZ4Tss9iqlFGsomSw15D6YMaW3JhLHp8BgxfG7t9rcGVirc
+	wn3xlYz6/G8OAbk+neBjU/MXhoA7RHNmTY3Nq/XAxdCOJRnVz4H4WisOYL2v4dRoV9xLWByFTzn
+	xiTl4lmN/RlLExHgZl7icc6DQL/CqvJLq4RV7nBDamnZeWxdGFQ4ngA+iPtdpRDtwTTvghBOIzu
+	4KXZx4pcS7kGx81AGzoA7lolOaLDfbdZqhp0uDMP1TB8F9jP7/LH1UCNg2dBMUgQmfnnEH1Hicw
+	lBdvbNrHoFd+VIulX3knGunRRDJwJna3DCFNWu9KGJr2FNTf92zu0UcMb2ea/gH1sZ9wJps5QGn
+	XQcuAbzLehQeolf3peTmFtzvMB1MMg==
+X-Received: by 2002:a05:6000:228a:b0:48e:3647:c35d with SMTP id ffacd0b85a97d-49c7381ade0mr8401708f8f.21.1794596232455;
+        Fri, 13 Nov 2026 10:57:12 -0800 (PST)
 Received: from matt-Precision-5490.. ([2a09:bac6:37a8:ec8::179:1b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c5f5972a7sm6417589f8f.21.2026.11.13.10.57.08
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c5f5972a7sm6417589f8f.21.2026.11.13.10.57.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 10:57:10 -0800 (PST)
+        Fri, 13 Nov 2026 10:57:11 -0800 (PST)
 From: Matt Fleming <matt@readmodwrite.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Marco Elver <elver@google.com>
@@ -102,27 +102,27 @@ Cc: Alexander Potapenko <glider@google.com>,
 	kasan-dev@googlegroups.com,
 	kernel-team@cloudflare.com,
 	Matt Fleming <mfleming@cloudflare.com>
-Subject: [PATCH v3 03/10] kmsan: use stack_depot_fetch_into() for origin reports
-Date: Fri, 13 Nov 2026 18:56:55 +0000
-Message-ID: <20261113185702.1332171-4-matt@readmodwrite.com>
+Subject: [PATCH v3 04/10] mm/slub: use stack_depot_fetch_into() for owner tracking
+Date: Fri, 13 Nov 2026 18:56:56 +0000
+Message-ID: <20261113185702.1332171-5-matt@readmodwrite.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261113185702.1332171-1-matt@readmodwrite.com>
 References: <20261113185702.1332171-1-matt@readmodwrite.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ynzyubp73dhgytfyn3xf9iq9pdu545fr
+X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B3AE5A0005
 X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: m3daifnzxkeekdek5hhayyk9gmwskk6o
-X-Rspamd-Queue-Id: 6DB8F40006
-X-Rspam-User: 
-X-HE-Tag: 1794596232-637205
-X-HE-Meta: U2FsdGVkX18nQHdr346W6YI+lBK4LLtKVQb7ZsUahSJXmvIyh2zAzRhEuCp3cI9YSYHzFJlVM8X0EsAQwdyhvYBD4neOj2euEChZLA5+AoSq0kgeOnmRMMO3a+KtSGycTqIdxy9y4xLubEOELa7nAwS65XhbbtXxBGxrfAyIuFHTX68NI43xq3voQNFbfagOl/X06vkQphNvLOnwnbc5W9I/v1qg50dQjlkoSeCBA28McWacrVL6sVVQ991/SBbQLXIIjQ9hM39M3H/lZsyOZy4pewiwNJdIW2nhS5Ttvu260nTkdi5ZMsWy2ujMKDGQ1x7JtxkDpZg7HALaO2bGxv48xz8UpClU5zDG4vhGqwHbEK1iQWXqdlY2M2Ai5HnsUSdDOy9yuaVJCUEtDTex8YYvRi9MsKszwy+1aED95QdudiVhcxeiZePvJnWMZ7TIwsIfEbKFblIBuBImiBayALYn8XqluLVEQy1Z+iYn+XQ+zR+mFKcER+zZurJVgyX7TI63l+LivPpokP3a6oJnGf4zhlz2vKbJO68dZZ9qMacIMwtygNZtYUhTOJTNOEWt4m/o84HRqfMNu7Iz6npjkr/1W2buFp8W4atD1Z4Ej35cnN6nJmSUpkycuo70TlfTCMwd3CEynnmz3QpvPqsJL8Fncmd3G4ig4eR3VLnM8zMn8olBEhmkOsYDSn1F4kmPKz+2g2pLqTVYw/sBJq7cDN47Jh/xts7yXG+zqUcsiB6t03g385DJLb8xkuRxwsxNKWY6Z0mmstMrckfgHMV6D93etnHYGYxd0D5UJVwPvRscnGan8Khsrqs7wjRrblRNMEVbN4YKVizhWclx/8W+GlGA67GOzFtjWufedBi8OjnOsGI64fN/uNCSICx9BjbeBKa/A6Qc+TaYQ5uu+36eQMHqc1Zac3z4i7OzkEJCIj28QbcqEA7BPcarIR6taPkTh31lNGPip+FbyurWukW
- PRlGt9gc
- p4Qd1SiH+zdTMHog0aRdEze5lmoRl3Brr2ozPFt42MJSrz/RDnZdKE2eoUQUBAZqD1oMDM8thgtwn23bhvsxoqHInjD4CXJtdBz5cws+Bs3ZEExCQOKkMsIf8z2DoxxcTV5hOSJXWjZE0QeEVJ3QJlHWip3447vPNWWh+LLhuKbLbvlH6ZVN4ESPmD23E+u8cR1RqQGdM/q17wkB91mUpX+3F4L7NbuS0DP4nwLhxqwMarNwUlHHUTIZFmoBdWIhRZ0MVDms6/zDPUaFmnn9xKVJRXRuie+6C4N/Vo6PmjWxHHGmQs5Cx99PdwWLbtU4OqjN/ipuPJOJWtzahL+Z/86NpVv02Aal1lqg4eD9gP8teiOkSE/e55Vav/rHpYozZ7RlkyEiVnfWQstm6F4WQBcSpCAON0u1FVXN1JfpujlvZMdn+hbKQRgponnq7S9lsMw+J
+X-HE-Tag: 1794596233-426960
+X-HE-Meta: U2FsdGVkX19NKsims80lwfXdaMMpZrRuzz+JebWaYFSx1DFga88nXmDtkLdEhPzJjvqy+/xIP9uvwKnQ9Wh5ebXBSw5UqCRFL6UtVfEy7Yi7tjjJGXD+3tsQYK212jahA/Ngu3aJo6whi7DXUBhIul6ntEW+QtscBun4Ty536cDv2Sf/qQ5Um7TGXSHKhs+G9A9dSeplApsOT2YOhG+74ok4i2IXccKvX+rhqy394Fw3I/Hjn4lQjtpZdqqPlTuZ6PRrFt2XHsakrcHn5FF0ZLMnYm9C6gXPiiL480XCnRLxO2z+OmMqJtTJUmuRmgZOL09VJgdfeOqrxntAoZGfjpo962eXRbzYZMtq9C9vtQwf5gyW2rxVZFdVcjjVDlDwuhNX6biy1cMMystU2eq3hj809b+sf8m84MXwXr0Li9LRD4GR6yEqfsenpQRB7iAe07+oHcZR+6GbzGvXaHCoNL7cNBZilEZCDhzWv7Vpm1nYagwh/4n0YaGm28NCjF6e+axJoOo95PUreavn1PfpXatYzYc59S/DsPtp/oLO3sgJiu+vQpbjD2V2PP/auqHD5DIqoiv2VygN9qBvmFLF1/FT8O8eztEZrckp5HLHZNkz8eSy85wa+yyHtOZgx1WI9Kiio/sUjMUBhvCc0q3mK+6UtjLKbjaI9SYvqnM0npAdRiRc32lg7ppNqfgnkc/JHlx7tGSG1SzJJWHs1Sni/Ze+1aBoeGY+SFcmsxNAAXsplmKtClLzD/RUEAwUDluzfEKbXIaDxlqL98UBNFt4hiQydR2ln8I6DXcGVSLu/LvFqahYYH61WIxLBqcp60aFuZHVU1E/cisplhbWftY/wlvGh2DTEg+uG/h66KWr2WfgjghuKngtFG4UM33N7MypxDTiEbqwcxf8T28kKo4RqAkMYzkEuCt0+AHUAqMdPD4YsUfmXBrwiFQbh1/fqaV/K9fnRXv11rvojm7yIsP
+ yC3eOro+
+ clsB5/PPVKpLeLkcEh4QcJctKQUCJWwyWUp1+g26dj6lZgDBACu9FPO/0yr5QL22vIkqAGoGfWMYxBdqBDjCl89qcvQT7Ez9UoBIr8GrRm0pzeaTuKivBtCx7w5nqbn3hMDPQrAZAqVWGdI3tz98zSkFqjHdfBJDefFqoywOoB8hV9NbO8ONOO6eUu9Q6eUlOZjwVUoZEc+qSX4qtGgPue+fRYDMguW/zWPHP/uldcvZIF2j+RwWrIlACji7WktIp49AJAjbHIiPQZGAaqnp5wJ0yJ7k+s4uPpfsxEGx3Hw8iFKPDG2HVXpJ8VgU59Cuu5GRa3PUEU6/QCdIPRbpwB+EVyHgzJz+4tqzAt27EaPsWHBitfc+S2sfn3/ZwVCIuRJ2zT9Ci47gb+ns0aOd621fOz2cXp+hLzHk7fDBwvQOnk6ytMS9u1BUohM4jCZMn1pZP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,131 +133,68 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Caleb Kan <ckan@cloudflare.com>
 
-KMSAN stores ordinary origin stacks and synthetic alloca and chain origins
-in stack depot and retains the resulting persistent handles. Once a later
-patch stores compressed frames, these handles can refer to records whose
-frames must be decompressed before use, while kmsan_print_origin() still
-relies on the pointer-returning stack_depot_fetch() API.
+SLUB owner tracking stores allocation and free stacks as persistent stack
+depot handles. Compressed frames must be decompressed before use, so
+__kmem_obj_info() and the alloc_traces and free_traces debugfs files
+cannot use stack_depot_fetch().
 
-Use one KMSAN_STACK_DEPTH array to materialize each origin and chained
-stack in turn. Preserve the chain's head and next-origin handles before
-reusing the array for the chained stack. The array covers both the regular
-save limit and the smaller synthetic records.
-
-Pass the scratch array into a common origin-printing helper. Keep local
-storage for standalone kmsan_print_origin() calls, but let kmsan_report()
-reuse its existing stack_entries array after printing the report stack.
-With x86-64 Clang 19, the regular nested report path uses 752 bytes, below
-its 768-byte size before this conversion.
-
-lib/stackdepot.c is uninstrumented, so stack_depot_fetch_into() unpoisons
-the successfully copied range before returning it to KMSAN. Remove the
-now-redundant explicit unpoisoning of chained entries. Origin depth and
-use-after-free metadata remain in the handle's extra bits and are
-unchanged.
-
-Update test_stackdepot_roundtrip() to use caller-owned storage while
-retaining its frame-count and kmsan_check_memory() checks. This verifies
-that the copy-out API returns initialized entries to instrumented callers.
+Use stack_depot_fetch_into() with TRACK_ADDRS_COUNT-sized local arrays.
+This matches the save-side limit. Keep the existing KS_ADDRS_COUNT copy
+limit and debugfs formatting unchanged. Continue
+to copy or print no frames when the fetch returns zero.
 
 Signed-off-by: Caleb Kan <ckan@cloudflare.com>
 [mfleming: reworded for compressed frames]
 Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
 ---
- mm/kmsan/kmsan_test.c |  4 ++--
- mm/kmsan/report.c     | 28 ++++++++++++++++------------
- 2 files changed, 18 insertions(+), 14 deletions(-)
+ mm/slub.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/mm/kmsan/kmsan_test.c b/mm/kmsan/kmsan_test.c
-index 31f47cc4dab4..7c04e4b21873 100644
---- a/mm/kmsan/kmsan_test.c
-+++ b/mm/kmsan/kmsan_test.c
-@@ -669,7 +669,7 @@ static void test_long_origin_chain(struct kunit *test)
-  */
- static void test_stackdepot_roundtrip(struct kunit *test)
- {
--	unsigned long src_entries[16], *dst_entries;
-+	unsigned long src_entries[16], dst_entries[16];
- 	unsigned int src_nentries, dst_nentries;
- 	EXPECTATION_NO_REPORT(expect);
- 	depot_stack_handle_t handle;
-@@ -680,7 +680,7 @@ static void test_stackdepot_roundtrip(struct kunit *test)
- 		stack_trace_save(src_entries, ARRAY_SIZE(src_entries), 1);
- 	handle = stack_depot_save(src_entries, src_nentries, GFP_KERNEL);
- 	stack_depot_print(handle);
--	dst_nentries = stack_depot_fetch(handle, &dst_entries);
-+	dst_nentries = stack_depot_fetch_into(handle, dst_entries, ARRAY_SIZE(dst_entries));
- 	KUNIT_EXPECT_TRUE(test, src_nentries == dst_nentries);
+diff --git a/mm/slub.c b/mm/slub.c
+index cd671b934719..32e6597a5c03 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -8328,12 +8328,12 @@ void __kmem_obj_info(struct kmem_obj_info *kpp, void *object, struct slab *slab)
+ #ifdef CONFIG_STACKDEPOT
+ 	{
+ 		depot_stack_handle_t handle;
+-		unsigned long *entries;
++		unsigned long entries[TRACK_ADDRS_COUNT];
+ 		unsigned int nr_entries;
  
- 	kmsan_check_memory((void *)dst_entries,
-diff --git a/mm/kmsan/report.c b/mm/kmsan/report.c
-index d6853ce08954..0770658ba932 100644
---- a/mm/kmsan/report.c
-+++ b/mm/kmsan/report.c
-@@ -83,9 +83,9 @@ static char *pretty_descr(char *descr)
- 	return report_local_descr;
- }
+ 		handle = READ_ONCE(trackp->handle);
+ 		if (handle) {
+-			nr_entries = stack_depot_fetch(handle, &entries);
++			nr_entries = stack_depot_fetch_into(handle, entries, ARRAY_SIZE(entries));
+ 			for (i = 0; i < KS_ADDRS_COUNT && i < nr_entries; i++)
+ 				kpp->kp_stack[i] = (void *)entries[i];
+ 		}
+@@ -8341,7 +8341,7 @@ void __kmem_obj_info(struct kmem_obj_info *kpp, void *object, struct slab *slab)
+ 		trackp = get_track(s, objp, TRACK_FREE);
+ 		handle = READ_ONCE(trackp->handle);
+ 		if (handle) {
+-			nr_entries = stack_depot_fetch(handle, &entries);
++			nr_entries = stack_depot_fetch_into(handle, entries, ARRAY_SIZE(entries));
+ 			for (i = 0; i < KS_ADDRS_COUNT && i < nr_entries; i++)
+ 				kpp->kp_free_stack[i] = (void *)entries[i];
+ 		}
+@@ -10031,12 +10031,14 @@ static int slab_debugfs_show(struct seq_file *seq, void *v)
+ #ifdef CONFIG_STACKDEPOT
+ 		{
+ 			depot_stack_handle_t handle;
+-			unsigned long *entries;
++			unsigned long entries[TRACK_ADDRS_COUNT];
+ 			unsigned int nr_entries, j;
  
--void kmsan_print_origin(depot_stack_handle_t origin)
-+static void kmsan_print_origin_with_buf(depot_stack_handle_t origin,
-+					unsigned long *entries)
- {
--	unsigned long *entries = NULL, *chained_entries = NULL;
- 	unsigned int nr_entries, chained_nr_entries, skipnr;
- 	void *pc1 = NULL, *pc2 = NULL;
- 	depot_stack_handle_t head;
-@@ -97,7 +97,8 @@ void kmsan_print_origin(depot_stack_handle_t origin)
- 		return;
- 
- 	while (true) {
--		nr_entries = stack_depot_fetch(origin, &entries);
-+		nr_entries =
-+			stack_depot_fetch_into(origin, entries, KMSAN_STACK_DEPTH);
- 		depth = kmsan_depth_from_eb(stack_depot_get_extra_bits(origin));
- 		magic = nr_entries ? entries[0] : 0;
- 		if ((nr_entries == 4) && (magic == KMSAN_ALLOCA_MAGIC_ORIGIN)) {
-@@ -123,14 +124,10 @@ void kmsan_print_origin(depot_stack_handle_t origin)
- 			origin = entries[2];
- 			pr_err("Uninit was stored to memory at:\n");
- 			chained_nr_entries =
--				stack_depot_fetch(head, &chained_entries);
--			kmsan_internal_unpoison_memory(
--				chained_entries,
--				chained_nr_entries * sizeof(*chained_entries),
--				/*checked*/ false);
--			skipnr = get_stack_skipnr(chained_entries,
--						  chained_nr_entries);
--			stack_trace_print(chained_entries + skipnr,
-+				stack_depot_fetch_into(head, entries,
-+						       KMSAN_STACK_DEPTH);
-+			skipnr = get_stack_skipnr(entries, chained_nr_entries);
-+			stack_trace_print(entries + skipnr,
- 					  chained_nr_entries - skipnr, 0);
- 			pr_err("\n");
- 			continue;
-@@ -147,6 +144,13 @@ void kmsan_print_origin(depot_stack_handle_t origin)
- 	}
- }
- 
-+void kmsan_print_origin(depot_stack_handle_t origin)
-+{
-+	unsigned long entries[KMSAN_STACK_DEPTH];
-+
-+	kmsan_print_origin_with_buf(origin, entries);
-+}
-+
- void kmsan_report(depot_stack_handle_t origin, void *address, int size,
- 		  int off_first, int off_last, const void __user *user_addr,
- 		  enum kmsan_bug_reason reason)
-@@ -193,7 +197,7 @@ void kmsan_report(depot_stack_handle_t origin, void *address, int size,
- 			  0);
- 	pr_err("\n");
- 
--	kmsan_print_origin(origin);
-+	kmsan_print_origin_with_buf(origin, stack_entries);
- 
- 	if (size) {
- 		pr_err("\n");
+ 			handle = READ_ONCE(l->handle);
+ 			if (handle) {
+-				nr_entries = stack_depot_fetch(handle, &entries);
++				nr_entries =
++					stack_depot_fetch_into(handle, entries,
++							       ARRAY_SIZE(entries));
+ 				seq_puts(seq, "\n");
+ 				for (j = 0; j < nr_entries; j++)
+ 					seq_printf(seq, "        %pS\n", (void *)entries[j]);
 -- 
 2.43.0
 
