@@ -1,94 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6EAA606A33A
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 08:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24AA9606A33A
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 08:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=WS8WcZnC
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vHzNBiDo
 Received: by kanga.kvack.org (Postfix)
-	id 901196B0612; Fri, 13 Nov 2026 03:50:32 -0500 (EST)
+	id C5CE36B0617; Fri, 13 Nov 2026 03:50:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 887DD6B0615; Fri, 13 Nov 2026 03:50:32 -0500 (EST)
+	id C349D6B0618; Fri, 13 Nov 2026 03:50:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 779B86B0616; Fri, 13 Nov 2026 03:50:32 -0500 (EST)
+	id B719B6B061A; Fri, 13 Nov 2026 03:50:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4307C6B0612
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:50:32 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AB8ED140108
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:50:31 +0000 (UTC)
-X-FDA: 85429474662.09.65AAE1D
-Received: from va-2-114.ptr.blmpb.com (va-2-114.ptr.blmpb.com [209.127.231.114])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 135F480004
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:50:28 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=WS8WcZnC;
-	spf=pass (imf30.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7F9BF6B0617
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:50:38 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 07B1EA7FE2
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:50:38 +0000 (UTC)
+X-FDA: 85429474956.17.5279AE5
+Received: from mta1.migadu.com (out-83.mta1.migadu.com [95.215.58.83])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E262520003
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:50:35 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vHzNBiDo;
+	spf=pass (imf13.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.83 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794559830;
+	s=arc-20220608; t=1794559836;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BRtBrIkCJ4EaL32K9DlOPnqwkNfnHFCSjQCoKgoeAeI=;
-	b=TChyWwc1dj4ZUhNEmE3mae+GC4PPO3rZxmlT/yqlet/hw4BOK0EG/xNLmBqs1PIKvMLCP9
-	sdBuJu425HS7PeQ1iJf/PiDG7hxpgRaqO4QBblNZ7OXr8BveSfJuWMTNMLbAefYCcqcNmk
-	4AFUS9NI2uwxqd8EH5FdP0E1IYzUAJ8=
+	bh=Eav5kyje92g21GwxFUl8GjTnmUnP4vZtJeShxpAtoVs=;
+	b=biDHM2o1bK0FUeIGldy/XpR+ng2ugvq0rimYN6W8RCHpcyZAXh8A2MOKfSSjqJB6+mhowF
+	G6pL0TSwsnWEKuo9DHJv5rAYrJ+9MoXjYENs2kGpPYlKiOuMV0UbANF8uvMJBl7L28kYH1
+	EaW/E5qIbyYh7uW3AFAMFiwZjP7v51c=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=WS8WcZnC;
-	spf=pass (imf30.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vHzNBiDo;
+	spf=pass (imf13.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.83 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794559830;
-	b=mEYYmzLwK4R3JS7zNgNw6HL2MMIHMN5771aTYmFhhgh/mhX6uXmZtPR8QSpFGoWD8NMZRb
-	OgaGQalKGKCk1Kghm9A4f/4SV5OpKbwBkjg2aG9ciKsvL0D/tLim54SUK8sdRb9fqbFbn2
-	k9dGzEoaQWdu8W090uSMoKgFrWB2fzI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1794559826; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=BRtBrIkCJ4EaL32K9DlOPnqwkNfnHFCSjQCoKgoeAeI=;
- b=WS8WcZnCPd1sylOkrsayKrwQwJmRZxPsTbwuOPsjuRzPlFzJOVVOUDtxz6fBff4j7AGe19
- W884ecRxKw5wEGYZPI2bFIexpnRXKovEkJLUcoJ5dH5vGKjTCpbteJF2mUHNjBN4WCQFAF
- 2f8Fb8X65F8F+whKN9DQj1EMvMkHE6ZE89Rxx+3z7Zo+kr7mAK9TYi3T3JxBXmxTAIc+nU
- aC+WxDimYFyav2wlhObzWhkIaRT8wdv1K843OT7OJrZC/gl8lqJ1iq/Cmw86GyyNMgLyZ8
- USSbK5wT3bk1KFDk2ACA/3rlsaPY2+UwXLohW4NSbcmWmin3FVFwRPiZGaxHdA==
-To: <gourry@gourry.net>
-Cc: <akpm@linux-foundation.org>, <cgroups@vger.kernel.org>, 
-	<david@kernel.org>, <joshua.hahnjy@gmail.com>, 
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-mm@kvack.org>, <lizhe.67@bytedance.com>, <ljs@kernel.org>, 
-	<mhocko@suse.com>, <muchun.song@linux.dev>, <rakie.kim@sk.com>, 
-	<roman.gushchin@linux.dev>, <shakeel.butt@linux.dev>, 
-	<weixugc@google.com>, <ying.huang@linux.alibaba.com>, <ziy@nvidia.com>
-Subject: Re: [RFC v2 1/1] mm: add source selector to memory.reclaim
+	t=1794559836;
+	b=HkWWmJoLWLa6VhP1BLLs1OpU82+/Vvv1PDw+Shy5u8/JLUFjTe83UI1vvEB3hkRfGu8gje
+	QFvtuTADOdwuEnXZ0BHsrRfLHPNY7/+2RADHPVztXM7UsNN+xxEG1zZgi+yM7uM74I85zr
+	fxzXykOH9dYyMaGfmZK0GI6yQISrCKQ=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=1JILv/z6o3UPLx3z9/o5/EHXKasu4GhmRsDkH9/WOUY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794559833; v=1; x=1795164633;
+ b=vHzNBiDoO5ykIr5uGoyaYRw1Op5S+6EgROpNzJ5d5T4c4b6B629EKSWIv6w3lvW2TE9StH7s
+ U9BHJ3FD/wPP1r6osrFB5WzKKOMdLlknq1Cm8oVighhjv71pLdBRc5M0zsJas1mrZ/a9aLPlLQF
+ 2AjL3fTT4uik/WM/cyDnWTLc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 435f3ebaac992ddd;
+	Fri, 13 Nov 2026 08:50:33 +0000
+X-Mizu-Trace-ID: 435f3ebaac992ddd
+X-Migadu-Flow: FLOW_OUT
+From: Baoquan He <baoquan.he@linux.dev>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	Baoquan He <hebaoquan@kylinos.cn>,
+	Kairui Song <ryncsn@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>
+Subject: [PATCH v3 3/4] mm/mglru: skip cold PUD subtrees during aging
+Date: Fri, 13 Nov 2026 16:49:52 +0800
+Message-ID: <20261113084953.412919-4-baoquan.he@linux.dev>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20261113084953.412919-1-baoquan.he@linux.dev>
+References: <20261113084953.412919-1-baoquan.he@linux.dev>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.45.2
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Date: Fri, 13 Nov 2026 16:49:48 +0800
-Content-Transfer-Encoding: 7bit
-In-Reply-To: <179455442014.482102.4069329165987986914.b4-reply@b4>
-Message-Id: <20261113084948.78661-1-lizhe.67@bytedance.com>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-X-Lms-Return-Path: <lba+26af6cf45+ab9184+kvack.org+lizhe.67@bytedance.com>
-References: <179455442014.482102.4069329165987986914.b4-reply@b4>
-Content-Type: text/plain; charset=UTF-8
-X-Stat-Signature: m1grhofpxp97e6dfn15erk9cgq9mxz6k
+MIME-Version: 1.0
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: bjagm7xojo5qtcqqimn5386h3oyyokxm
 X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 135F480004
-X-HE-Tag: 1794559828-351311
-X-HE-Meta: U2FsdGVkX18BaB6XnXMpTvul0Ebgvzww5Igp37lqVTf68XBxE7EgjM2Lf6N7ZypmBJ0TbuQqNSJUzC4b3HX8ysPJEP6H/+2VeYTw26J9TisJnd090Kw3EvJTTtT0x+L3vKiBkHA466Afv6i12XzyjlwEljh+KrqAOMWDPFlPF2eh0CQ0CgyZuUpgPazL5yTF51e6wV1a1WKdb2wYKFV3cVuaRuUR5TNVj9/FiiZ8obnWgMGjZSXvSuPltFzTxcmRjfZ/WbBR3qoPwGicS7gksyirEyHlZcSTwdARp3gLVV4UYtoT3gDBjKWwXbx8UoSHiC/RKudZRmHA/rWAwM4/Blkk+01Soluwbek8qwXt0uLXXL9v3GJGRL+/JR0uyhnMk21VYqDlBOr0YBP8JsLi1dI77YM5WlluBViwr4Sa1fdJrTsrIwU2cY5QEy0d87Na6eTRy/U1dBkJJn4K9g8QzYq2kH1Njq0E+P4ofi5q6EmrkbA200zcxxpkzB+y2zQ/SoihOM00h7xW0xZgyMwpr2MDpFneFQ+OHYvKTCw4ArnEFZd7SxwuFUfxlr105flspOgvwbcRhsKQ9P+2Iocy7s+5fdwsDLvPAms64g3LhSu5sH90haLwQx2lRzQNgq5zc0zZQBHOpR3OnrPBejtEwpIKi4AMzfIGbsc6/a0v9KIGojvCsD+vYjQJFlHHw6Sb3VHs4M8VAOTGM/wtK8PCcvImAPEg4chmjASK/9g/+hw81lsQyz1z2a9N2g5pIByaRDH9D5ShOovRrQ4UTG/EPNo8yWcXt9qOquROLul7JLY8cYSey+Rco443fex1h2wC797YmNFUUo/R30fO1ATlMevcLJo0hsRC1dj+TUJTxfJBU5FI4CMnLJjV1kskik7cTxjSZwjUNhGUu0DRit0Xv+m6kL/bAXmUagc/U5mdOEoneY+pdMVMKru2rGWdwdt6a/btYwnhDyNMiO5HKwA
- /XQFiO2q
- BJOA/XERmdpKQ18oOwjRd47E9z32g1xSQ0OwZ+naLXvwvawWxDv3DpscXoWbkzEJzQWuogouYPr2Y5GedmgSwbmDLx6jeNm20Btp9THIefXkiOVzYGEoBEkVeg5BkRQyPnfTjCA92jB0XWSvcQYm2U3e09VaQ5ObgyeNHnqXfv1V1oHmVB9b9gMERd7MahC7BhEbDKTQPyVc56lXVe8oYCzrKtN32e65Ced+ubfUie8k4E2SjDREYY4V8PLOQPr2prWpHL4FqnCP/CZ0CPmU5u33LmfvGWJroNnVcq+Es8+fnbLF8oRMhOMHmy6ktw//YCa+JUupeiuRlcgJmYLyZADb5a2thhWGW/ftFLLF/dWtWw7+FIV9S7DkMVdSJOjabHsmlX2vUtKZyCVGEABP6MufGaA4wPUkOPVER
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: E262520003
+X-HE-Tag: 1794559835-332129
+X-HE-Meta: U2FsdGVkX19Xc9tE6JGX/DnaGYa2pJgAhjuyq34GyB7bwoWwrlg7G3vPnc/Q/5vKAgsP+67FCSMF1MB4YxtEBWzrfL9/VJX6ZW8XmrWJh94ERuSIrw4S/N8/2j3BAsWxrp8WtJ9nwBDapJ/hALdjFOCU9pP2M1HWyfR/SyTpVLYNwWaOFXH2yi80pBZ/Pa0oV+n8BsbYwAolGr4pIz3B95lPnqHDCpDqhRu/sExE40Y6V30t/xZy5meeJM88179Mn/L0Gfa1p+McLhPWnwDDzx2E5lm4sdi+x+vFKCDGXUcr/yyYrFQxdIahV2n6Vs1N6gpCaDUzd29eOa/WyCSmHWmppaEra/Y5K40PgkNjPuB1krcltdhiuksqzgoSoAXsdFH+YOdx1HI59ZCwxNltlXHJ1gYTiRYE1OnQFFvjnOqkRM+qoLOl6TLj6wtrz0N7xAXILy1UHP7P2TlXkRTgULZdQxcVNA3dDdeDU48cQzG4VGMtAKdLJx9ANBlWNKzsstf0AW7qUjywXE1afifi+XdaShsPQLhKs7w5UHHMRbbrGJPy3ZAfQxce2yQO0Y4MjFvQP7xQ1Ar0Hdks73YbWAzJu2Ie4hHRoTNhW0Iw7RiOYKynX7fPf67d1rnwD/FJenJ56hWTj4Qk607K2XfnFgZdEXsc4SWnV7WZGhw3jbEBs/nKME/sx6YPm1M4ya6kSVCOPuEL8rvCS0HIGZa3YokTuHP89EWVr5LCbC4zViGvEZ1rwHwddNonqXki5DAGtOPdiWZfzFJGsTnv42vBQEDL8i83MKN7kKoGVrKFZCUiFx5+n3cykti8UwjklFAOOrj79dVNBsyqAKI3lS2q8ZprKQ3l/WEFtRbcl/X5HDnsdKrVzR4mm/q0Ddwoi/BvUXmxfIpl7raAkzkPKnNMCVjBAbyRH6SyNThANPxyuwkA9bhcr9PLsZCgQxws5v/QGWBWJLrkYdiw2m9nn6F
+ QUpO8Guv
+ APf/6x+z8tQuT7aOLW18w+GtmLfbwQdXYuGr/c23AtVyKPFZJFJQkq5XdGDWXYnl0Oj3PSsvjJTaywMJ59oNRWT9JzREAcA+Gt8Y/Wjx70OxzMf2y0vuMhpEX2rhXjokD5tsnJwLm6KvbEVB4/KIg10L14ePjPT9dgcxTnP+3q3uBUVhc4kLkpHsJ96pwR58wLc61Y8nA5R9sbdxCcM4H92VwFKPH9X+SjTH4RW/JQCntu0+s2koPYMZnhrYaWSKztfcC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,107 +104,164 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 13 Nov 2026 02:20:20 -0500, gourry@gourry.net wrote:
+From: Baoquan He <hebaoquan@kylinos.cn>
 
-> > On 2026-11-02 15:04 +0800, Li Zhe wrote:
-> > +	Specifying a source value constrains where proactive reclaim applies
-> > +	pressure. Currently only source=nodes:<nodelist> is supported. For
-> > +	example::
-> > +
-> > +	  echo "1G source=nodes:0-1" > memory.reclaim
-> > +
-> > +	This reclaims memory of the target cgroup resident on nodes 0-1.
-> 
-> you buried the fact that you want to allow source=zswap in your cover
-> letter. I was confused by nodes: was needed here until i re-read.
-> 
-> As Joshua mentioned, i don't think you need the separate cover letter,
-> and I agree this is far too long for the proposed change.
+The aging walks into every PUD and runs the PMD-level Bloom filter on
+each PMD. Add a coarser PUD-level filter one level up:
 
-Agreed. The nodes: prefix was meant to keep source= a typed selector,
-but I made the motivation and possible future extensions too long and
-distracting. I will make v3 much clearer and shorter, and keep the focus
-on source=nodes.
+ - walk_pmd_range() reports whether the subtree held anything young for
+   this lruvec. That is the same condition which already carries a PMD
+   over into the next generation: a young PMD entry, a huge page owned by
+   this lruvec, or PTEs with enough young ones to pass suitable_to_scan().
+ - walk_pud_range() records that in the PUD filter, and
+ - on subsequent generations, skips the whole PUD subtree when the filter
+   says it had nothing young last generation.
 
-> ---
-> 
-> When I asked for testing, I wasn't concerned with the functionality,
-> I was asking what problem this actually solves. performance? fairness?
-> 
-> Shaping the distribution of memory is neat and clearly works, but why
-> does userspace want this?
-> 
-> The interface "lacking flexibility" is not a problem in and of itself.
+Use (mm, PUD-aligned address) as the filter key rather than the PUD page
+table pointer. It is a stable identity for the range being walked, is
+available without walking the page tables in lru_gen_look_around(), and
+does not depend on the lifetime of a page table page.
 
-Thanks, this is a fair point. Sorry, I also made that earlier
-explanation too long, so let me summarize the intended use cases here:
+The double-buffered filter flips with each new iteration, so newly hot or
+migrated-in pages are re-checked promptly rather than suppressed
+indefinitely. force_scan walks bypass the PUD test, so manual aging and
+newly added mms always rescan and re-populate the filter.
 
-https://lore.kernel.org/all/67fcd8db-269d-43f1-aea2-8c41165747d0@bytedance.com/
+To keep hot regions marked, also report the covering PUD from the rmap
+feedback path (lru_gen_look_around()), so regions whose hotness is only
+observed by eviction will be re-scanned.
 
-In short, performance, fairness and cost are all part of the goal. One
-target is mixed DRAM/CXL systems where user space keeps each memcg near
-its own DRAM/CXL resident ratio target, based on the workload's
-latency/throughput and cost requirements. Another target is the case you
-described below, where user space wants memcg-scoped reclaim to apply
-pressure to the desired tier first, rather than reclaiming from warmer
-memory on the top tier. This is especially useful when a memcg is close
-to its memory limit and user space wants charge-reducing reclaim to
-start from colder/lower-tier memory first.
+Suggested-by: Kairui Song <ryncsn@gmail.com>
+Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
+Signed-off-by: Baoquan He <baoquan.he@linux.dev>
+---
+ mm/vmscan.c | 45 ++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 38 insertions(+), 7 deletions(-)
 
-> I CAN see why you might want to proactively shape what data is swapped.
-> Let me give you an example:
-> 
-> ---
-> The global node reclaim interfaces allow us to put pressure on distinct
-> nodes - which lets us shape which node is swapped from first.
-> 
-> Example: node0-1=DRAM, node2-3:CXL
-> 
->   echo 1G > node2/reclaim   # swap from CXL
->   echo 1G > node3/reclaim   # swap from CXL
->   echo 1G > node0/reclaim   # demote to CXL
->   echo 1G > node1/reclaim   # demote to CXL
-> 
-> But the memcg.reclaim interface only allows us to pressure the complete
-> set of cpuset.mems nodes for that memcg
-> 
->   cat cpuset.mems           # 0-3
->   echo 1G > memory.reclaim  # makes progress from any of 0-3
-> 
-> Presently, proactive reclaim iterates nodes in node or fallback order,
-> meaning it attempts to make progress from the fastest node possible
-> first - which attempts to demote by default.  If the lower nodes are
-> full, this demotion will fail and we'll swap directly from the top tier,
-> which is (presumably) warmer than the bottom tiers.
-> 
-> Enable source-bound reclaim in the memory.reclaim interface so that user
-> space can have the same control over memcg memory tiers that global
-> proactive reclaim has.
-> 
->   echo 2G source=nodes:2-3 > memory.reclaim  # [z]swap from CXL
->   echo 2G source=nodes:0-1 > memory.reclaim  # demote to CXL
-> 
-> This lets user proactive reclaim to target the coldest memory first
-> rather than preferring to reclaim from node0 first and potentially
-> swap out memory warmer than what is present on a CXL tier.
-> ---
-> 
-> With this, you might be able to demonstrate fewer refaults and less
-> DRAM (node0) memory consumed by zswap. These are clear benefits.
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 9dbb3f477d7d..d12934f2fbb3 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -3133,8 +3133,10 @@ static bool iterate_mm_list(struct lru_gen_mm_walk *walk, struct mm_struct **ite
+ 
+ 	spin_unlock(&mm_list->lock);
+ 
+-	if (mm && first)
++	if (mm && first) {
+ 		reset_bloom_filter(mm_state, BLOOM_FILTER_PMD, walk->seq + 1);
++		reset_bloom_filter(mm_state, BLOOM_FILTER_PUD, walk->seq + 1);
++	}
+ 
+ 	if (*iter)
+ 		mmdrop(*iter);
+@@ -3738,10 +3740,11 @@ static void walk_pmd_range_locked(pud_t *pud, unsigned long addr, struct vm_area
+ 	*first = -1;
+ }
+ 
+-static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
++static bool walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
+ 			   struct mm_walk *args)
+ {
+ 	int i;
++	bool young = false;
+ 	pmd_t *pmd;
+ 	unsigned long next;
+ 	unsigned long addr;
+@@ -3778,8 +3781,10 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
+ 
+ 			walk->mm_stats[MM_LEAF_TOTAL]++;
+ 
+-			if (pfn != -1)
++			if (pfn != -1) {
+ 				walk_pmd_range_locked(pud, addr, vma, args, bitmap, &first);
++				young = true;
++			}
+ 			continue;
+ 		}
+ 
+@@ -3789,6 +3794,7 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
+ 				continue;
+ 
+ 			walk_pmd_range_locked(pud, addr, vma, args, bitmap, &first);
++			young = true;
+ 		}
+ 
+ 		if (!walk->force_scan &&
+@@ -3801,6 +3807,7 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
+ 			continue;
+ 
+ 		walk->mm_stats[MM_NONLEAF_ADDED]++;
++		young = true;
+ 
+ 		/* carry over to the next generation */
+ 		update_bloom_filter(mm_state, BLOOM_FILTER_PMD, walk->seq + 1, pmd + i);
+@@ -3810,6 +3817,8 @@ static void walk_pmd_range(pud_t *pud, unsigned long start, unsigned long end,
+ 
+ 	if (i < PTRS_PER_PMD && get_next_vma(PUD_MASK, PMD_SIZE, args, &start, &end))
+ 		goto restart;
++
++	return young;
+ }
+ 
+ static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
+@@ -3820,6 +3829,7 @@ static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
+ 	unsigned long addr;
+ 	unsigned long next;
+ 	struct lru_gen_mm_walk *walk = args->private;
++	struct lru_gen_mm_state *mm_state = get_mm_state(walk->lruvec);
+ 
+ 	VM_WARN_ON_ONCE(p4d_leaf(*p4d));
+ 
+@@ -3827,13 +3837,29 @@ static int walk_pud_range(p4d_t *p4d, unsigned long start, unsigned long end,
+ restart:
+ 	for (i = pud_index(start), addr = start; addr != end; i++, addr = next) {
+ 		pud_t val = pudp_get(pud + i);
++		void *pud_key;
+ 
+ 		next = pud_addr_end(addr, end);
+ 
+ 		if (!pud_present(val) || WARN_ON_ONCE(pud_leaf(val)))
+ 			continue;
+ 
+-		walk_pmd_range(pud + i, addr, next, args);
++		/*
++		 * Use (mm, PUD-aligned address) as the filter key instead of
++		 * the page table pointer. It is stable across the aging walk
++		 * and the rmap feedback path, and avoids walking the page
++		 * tables in lru_gen_look_around().
++		 */
++		pud_key = (void *)((unsigned long)args->mm ^ (addr & PUD_MASK));
++
++		/* Skip a subtree that had nothing young for this lruvec last gen */
++		if (!walk->force_scan &&
++		    !test_bloom_filter(mm_state, BLOOM_FILTER_PUD, walk->seq, pud_key))
++			continue;
++
++		if (walk_pmd_range(pud + i, addr, next, args))
++			update_bloom_filter(mm_state, BLOOM_FILTER_PUD, walk->seq + 1,
++					    pud_key);
+ 
+ 		if (need_resched() || walk->batched >= MAX_LRU_BATCH) {
+ 			end = (addr | ~PUD_MASK) + 1;
+@@ -4437,9 +4463,14 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+ 	lazy_mmu_mode_disable();
+ 
+ 	/* feedback from rmap walkers to page table walkers */
+-	if (mm_state && suitable_to_scan(i, young))
+-		update_bloom_filter(mm_state, BLOOM_FILTER_PMD,
+-				    READ_ONCE(lruvec->lrugen.max_seq), pvmw->pmd);
++	if (mm_state && suitable_to_scan(i, young)) {
++		unsigned long max_seq = READ_ONCE(lruvec->lrugen.max_seq);
++		void *pud_key = (void *)((unsigned long)vma->vm_mm ^
++					 (pvmw->address & PUD_MASK));
++
++		update_bloom_filter(mm_state, BLOOM_FILTER_PMD, max_seq, pvmw->pmd);
++		update_bloom_filter(mm_state, BLOOM_FILTER_PUD, max_seq, pud_key);
++	}
+ 
+ 	mem_cgroup_put(memcg);
+ 
+-- 
+2.52.0
 
-Thanks for the example. It makes the problem much easier to discuss. I
-will refer to it when reworking the v3 motivation, and will avoid
-framing the issue as a generic flexibility problem.
-
-> I would argue that memory.reclaim should operate this way anyway,
-> and that would could make proactive reclaim do this by default, but
-> I could see the policy bits in userland being useful as well
-> 
-> Performance may not be the only reason you want this, but you need to
-> help me understand what you're trying to accomplish.
-
-Thanks again for the review and suggestions.
-
-Thanks,
-Zhe
 
