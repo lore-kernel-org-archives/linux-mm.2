@@ -1,103 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87092606A89C
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 04:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2B5606A88E
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 04:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=av3kerPu
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=LomucHzO
 Received: by kanga.kvack.org (Postfix)
-	id 8A5106B064D; Thu, 12 Nov 2026 23:55:14 -0500 (EST)
+	id 134066B0622; Thu, 12 Nov 2026 23:59:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8565D6B0662; Thu, 12 Nov 2026 23:55:14 -0500 (EST)
+	id 10B9D6B0623; Thu, 12 Nov 2026 23:59:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 745A36B0664; Thu, 12 Nov 2026 23:55:14 -0500 (EST)
+	id F3C666B0629; Thu, 12 Nov 2026 23:59:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CDE56B064D
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 23:55:14 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B9FCEC0527
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 04:55:13 +0000 (UTC)
-X-FDA: 85428881706.25.4D6BCE1
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	by imf04.hostedemail.com (Postfix) with ESMTP id BFBDF40003
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 04:55:11 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=av3kerPu;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.42 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CE14E6B0622
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 23:59:16 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5825B803BA
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 04:59:16 +0000 (UTC)
+X-FDA: 85428891912.15.F440ED9
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 70ABB40004
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 04:59:14 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=LomucHzO;
+	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794545712;
-	b=Q4PScQSvfxJZEBFl0H9VatMWrSoed1Uj3XrmljeV/89x2OEbu5Wturgm1pkHO+DhDm1Ntz
-	y+jFhzpKcxKVhU0h+ABmUNspGliSot7NCaOwQUgT35+ABKYBaDTgFgJw3p6Or/xD+CY0uQ
-	e59pSDY7WAONCVOuMzRCWhJBzeL6cAI=
+	t=1794545954;
+	b=LlElxgwsQmdoXXv453aW8uq/IOHVMplioQr26YDJ5YW2r6qFuM7HVEHBMY14YR+wYA4tjj
+	NyOTwv8cnI6ojlEXGsd9l99vr7tl/wMiwFOVUClg7/96Bq9abbcGvjxoPryHUNKUY7eKxM
+	BSz0p5HxXtTXICaCfLiUveRbSZns164=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=LomucHzO;
+	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794545712;
+	s=arc-20220608; t=1794545954;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ksSqi9LFAnauiWq3VTcsn2XVnb33hHx7fgUlFBfWLfI=;
-	b=2pI6mD44zpAL7O0iNbblxa0K4fq5HZ32aY19LPijrSfqNSY4o32YGLTSZTJDgjNqgTcuCQ
-	1NxdAPgblXdO7Qr+KNAtNBCcQ6yqjilkx8RmP3bkMMXr+UImv8AKTaz/5mUuiP83cPcTjU
-	/BaSBL9w8jwDgehgLWahpE6a+Sm5sVs=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=av3kerPu;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.42 as permitted sender) smtp.mailfrom=gourry@gourry.net
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-91c847584b8so11357476d6.0
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 20:55:11 -0800 (PST)
+	bh=GLmBItbP4RM0lDvur+G85T4jZR5s6nwsiM+d+TbTnSA=;
+	b=uahc3tt7PE7+VukKfoFThGj9hZDET/dTPngyOs9zR1y9MdF4PES1yFjP13E15vo3Mnqphn
+	BoYq+lMU667tj3kPvLc2iUSaD24RzDYkSFx1veuPPjA73neCIuwve4MFn9dhBAs4qZZ6b9
+	EANxkrmChV5BJiM6kOXRDCDao1OEFg0=
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-94937a33cfbso86191785a.0
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 20:59:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1794545711; x=1795150511; darn=kvack.org;
+        d=gourry.net; s=google; t=1794545953; x=1795150753; darn=kvack.org;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=ksSqi9LFAnauiWq3VTcsn2XVnb33hHx7fgUlFBfWLfI=;
-        b=av3kerPu5l3RmMzgu0d6mDCl2vu86S6cJbIDleg9RmpSLFIHG9H1TGwxzeVCFt2WJ0
-         S2nDhg9yuRxymd/C10QBs7qcTdOttBd+BcS4UGP367NUPxvFEL4q++TltyFcVuOBk2xn
-         jwjZgI2nP8+VDUxKcTHmyPTcLeA+jBqUC4bFcuOZ98fjRBp4moyLyK5w4w4YZYeGBSMF
-         NiK1Kme8FsmDwtGnfXH62IXbqNZETeQdWPQ9/RGqtEBX+ZKRgAM1zzIqk3pv9tGHKZsv
-         Gt926Ysy9w3yNwx3lNgmVwK4B9XD0nPPjYEkE5F+xxiOgSN31MK7b4GwehpzaczTq9W1
-         7YJg==
+        bh=GLmBItbP4RM0lDvur+G85T4jZR5s6nwsiM+d+TbTnSA=;
+        b=LomucHzOSv8bVJY4eYPel/8ofToSCuMB40IoXogg788DAvBfef4xGXL+BJ9g7V/5ll
+         GfkNv2+PEaeh1oGq71FIvuwg7iauE4Hg3mKFV4ug3ogHZvINZXvVgl1b2bL4J3Akqo4g
+         68p/LYfrnttzw/9XbQVrmfrk9T1krZVHfbQxACEmsJVNacz2JVA0+fXN8Cro00/FeVCJ
+         V8uRAzkxRhJQsmPhNcdoZE40wbb9rlghlKKRjRUmjDdL4emEGgUpJFn+WsyfBAgxecBC
+         RCGZzZrXGMEqhJbQud4vm91BzMNywADePNP1avwrfqibKmzYQZ9K4PGIo4NKI34ewdjC
+         VnYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794545711; x=1795150511;
+        d=1e100.net; s=20260707; t=1794545953; x=1795150753;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ksSqi9LFAnauiWq3VTcsn2XVnb33hHx7fgUlFBfWLfI=;
-        b=I1lkSnIEvrK+ymfXRotJifKVCyw7Ok1pbwoV/6NgLEVFHUKuAvvyujd2qDV5949uVf
-         B7IgIgtyHmpefI0OthvJu4Qh7CSDCS9UH9xEiTklS+qpYRxRVX/lvNb2mEjOR6qgQuap
-         89dJcmddV/MCm6/kYjGJDCX32Ny1k5ATVng7miNSPZ6D7NUCaw2uKPTN+NGRfv3/MbLy
-         nxfZgHGTtjSs2VWvayIBn1584t5pM5RGNSGeBBR7ebmG9qroDeZEtrDFg231cDWnWTrk
-         7V3zHEPRXOASM4z1LG2yx04TV7QG30Uc8ylEF2TXqmTuSZ07+QYlx3BtjT1PUM85S8uV
-         WoFQ==
-X-Forwarded-Encrypted: i=1; AL+hErF8m66ScD7sv/+QoEotZVFtCzqDlgxaW/sviPqcmCnESLSyjI9rMG8gTpkFxcFmi1xhf62DIiflGw==@kvack.org
-X-Gm-Message-State: APuU4Z/jPc6WPs8W2uVnbJQCKIuWRCHwI9lX5YGZeAkzJmw+uZZeRQ+M
-	z4hFcleG/Dt0AXwQ8X8fy2D7kQxN4SOOoy6nleHmLpCIwrtTYhYdD/ZW5nNg+yQ8GRE=
-X-Gm-Gg: AYBFou1mPE07qIFgWKlO110UuElztnUHUrctFBarpR8ZRUAEtai+cAjaZwHQ99kf1oi
-	zfFnSibVp/TyWgz/+J5lHTVOxuLhNXaAxvFoKpWGkxf0Tr2WSBwhkQGit910yRAt3wDN5L4/2rK
-	pvSREq/6ZhKKfgNp2LuNjFp8fNw93JdMCJrIo3cdzxI7Py+AYDAXxBAQ4biD9VeXjJn40WsQcc2
-	L+DYY2oxZ5QISRcvp0/9Yq1pLD9YXZiI40LWaiIaW1DUYBv4m0kDTbBv8PVLLbym0Q+zEmHw3xq
-	m0A8NTtsAIgRpktrYGuoy/EoP6L4+MVx2u5TPe+N76biJXaGz6lupczRnYZN+osQ9b2ddSkzWGp
-	xPlxCWYUEErZ63ue5wD4Tpa3YFAf6cJiviSpAp6LpNxdjP4iRCUL5TSTiI+tu+F2djaf6SDaVt0
-	xJj5nbPDepJw47pI73q+Z+1+UFpRyYz3PFP59rAfG6WV2C5ltv7a77D+OJTiUXGMTS5MLfSbA6Q
-	PkSFAFSK7AeqOhISOZzCPe2cjpAv3/XCjXnypEONXtrueqGq5f5+GySld2addAkSqi9J4LheN93
-	Zu6jedDaootXD6C8KwXaH7AFW7a6DsgqPZP+sRuTpks1h1tdPA5J58l3JSyBtF0bm3pSioWn/Jy
-	ryK+xW25zeYjDf6p+vtccOUfc7Y+E
-X-Received: by 2002:a05:6214:5e05:b0:91f:2abb:a7ad with SMTP id 6a1803df08f44-91f2abbad77mr1153566d6.16.1794545710518;
-        Thu, 12 Nov 2026 20:55:10 -0800 (PST)
+        bh=GLmBItbP4RM0lDvur+G85T4jZR5s6nwsiM+d+TbTnSA=;
+        b=Q3TKOi5lPL95w41tf+qD0udrLHp8M4+sWcPyg8bS4fb37L0joX9NJg88j+6kRjTR5h
+         VmBPWuEU4AkCrNfZVSG4MI37LEjAPx5zu3+TZSHl+dflroIpuZcx2POS/9qhJX9s1EhQ
+         GZrzX2kLu4tdaqSJr6AFSEVThiojwYb0Z3riG4OHD+6FT1Vw9ZUpY2oJaZNmQPdCN6l8
+         r0uKh9NZSkgMEa0gBaEaTe2yOCpRT3ckHQHzI0iqOKs93+lkAOjfRMM/3mRQ9Q0EFBcx
+         zgRZIB3jvCUtcjVUZyzsoz0OGgEurSq6Qk1nk3yJOGap/54VJWzm3olGniqnSHAu3DO2
+         4WfA==
+X-Forwarded-Encrypted: i=1; AL+hErEwjY5OaBHwelNPkvcdqOeo7Cz9LMJ9gtihLuKbtDiNcDTmqsQo/FihiAmZayq04GUWL/rQAzK6dw==@kvack.org
+X-Gm-Message-State: APuU4Z+pAlAD0sFdp+LLEPJK6qf0uqwr6V9T2eJwPZzpdH18Uk8aLe5h
+	Am2yO7XTVKNldoR4pL39mJ2c74nisqE0sOGQnRPBzmAKwMw2eszGkFruetYq1lkUtK8=
+X-Gm-Gg: AYBFou2SyRWhcdD2YVGmwnEshvUYKIpHtHGMBRglmrfnbQhmR8+EUCHSyLzCiGAPETt
+	vKSZTjiza2neCybxunbYLtx5k8feZjQMW4MdGg10nXVbMafMICmgFO6IWNvuno30479+d1E3p+B
+	dsMWiMAuMFt9oNmemAaLgkhZNb9VKRW1v+I5wF/EGzQhseG1tfcJht6u+o9ajYXfc3A6tzOI6cQ
+	q6pEVjH0wCCv1Ds9gYsFhb82mcKc4KA3ETQMfsU3BUPoC9f/QA/BHyZvNHZ2BSWTSJsnFcYZo1o
+	lA64NnYSBYeFbuImUSfcP9wIJEY/SC4CxwgMmQlY4LvVrI29ACdv3mBrD+/1KoWFMR2dQ/rFtz0
+	A4u8RcQHzGJCXJbygSjSVJ0OuvQMV3QpL31Dvg9CDRtROYzKiGdHx/Ndav9GGVMFD7lyDEK3YZi
+	Ny4DNqCPi6ChNNb8RLOCr8nIsVyiTWGx66iqsNUg2gX3q+TrXsk3rZRfYhZO6aFGrxc3b+A1qJJ
+	wXdTgPqk9iEn6/3GGa2K3+Q1xra04p1nW3wANuJEsuJcgKo7OUzdM7ki3DY8dEW3rzYl4iB0uui
+	S+rhkQXeq44kayXRoEOIccdj/RE5WAHnrgs+zippfO8oHcqqE1Nns2du+ku5IyLhzsAU0y3PrKW
+	JHW7Lqdg=
+X-Received: by 2002:a05:620a:1729:b0:93f:33a8:8e84 with SMTP id af79cd13be357-9494bca3482mr231345485a.56.1794545953581;
+        Thu, 12 Nov 2026 20:59:13 -0800 (PST)
 Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23d73206sm12150726d6.25.2026.11.12.20.55.09
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9494c8399f7sm102246085a.24.2026.11.12.20.59.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 20:55:10 -0800 (PST)
+        Thu, 12 Nov 2026 20:59:13 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 03/12] fs/proc/task_mmu: downgrade writable migration
- entries in PAGEMAP_SCAN write-protect
+Subject: Re: [PATCH 04/12] mm/migrate: keep the uffd bit when restoring a
+ writable migration entry
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 To: Tal Zussman <tz2294@columbia.edu>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -127,24 +127,24 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Michal Hocko <mhocko@suse.com>, Mike Kravetz <mike.kravetz@oracle.com>, 
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  linux-fsdevel@vger.kernel.org
-In-Reply-To: <20261111-uffd-state-fixes-v1-3-00713d368976@columbia.edu>
+In-Reply-To: <20261111-uffd-state-fixes-v1-4-00713d368976@columbia.edu>
 References: <20261111-uffd-state-fixes-v1-0-00713d368976@columbia.edu>
- <20261111-uffd-state-fixes-v1-3-00713d368976@columbia.edu>
-Date: Thu, 12 Nov 2026 23:55:08 -0500
-Message-Id: <179454570885.482102.16669231045892763097.b4-reply@b4>
+ <20261111-uffd-state-fixes-v1-4-00713d368976@columbia.edu>
+Date: Thu, 12 Nov 2026 23:59:12 -0500
+Message-Id: <179454595216.482102.14752706183169554544.b4-reply@b4>
 X-Mailer: b4 0.17-dev
-X-Rspamd-Queue-Id: BFBDF40003
-X-Rspamd-Server: rspam12
-X-Stat-Signature: jw8nwqfnunb9ooijwp73eamjfoxnfcht
-X-Rspam-User:
+X-Stat-Signature: 3qxjhne9hghefw58hf57ujt8gc4qdoh8
+X-Rspamd-Queue-Id: 70ABB40004
+X-Rspam-User: 
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794545711-697044
-X-HE-Meta: U2FsdGVkX1/1TMLWeKi6Agk3GcufpRA3hEpkqSxPhDDP8u0s52xRIB4aDnGwut7uFcQY1MrG5HIRrZjCjAqwOi9rP3I/sng3D0JND+OZ012pnQCoo30pt+bf2Xyx06MPAx8sIKxv+KHSTx2hoyX2JVmSFG0Z4BZD4tKxPT/qhtwlMyQJI5qhwrSvNX6vIhDzLPS1u6/RN/Ja/06p7h7PZ36wuS2r99Jf9Xac7u0GQ9F97Pa0qwYSf2rSkWiVWn6HUkIH7G+skOc/s9lvR4H2g/YQ52s3ej8voRdcybe9E3pHM96MyfLz2G57EY+O68l+rWgHrGiMi5v6N2HKx/9gg5S3Hu/5TjgJHwAOTlvt6biwX41CPFUjmWqJIT29jM+5euo+4PVeooFLR3/bOPDtvm2+qPcNUNkQCO4IWUJJNdgk0RDKo2QCHAwMRTvruUpsJtZzwOrTf/HFn1x5N2TK9ZXawjFPk0+RcE8VLAJZ7IhFsnyg/D+QZY+iLfILvW1Y/3ePJZtXBHwuT2NZOQofl0S8bL5JFa9py0iKTyqEOThAsKWGCISlxRx7ep0esUK9Rd/7gdcv2sbwcM/Pz7/Ru1UKee5fvwCoKOPw59oww9NCUfDyx78ECRwfiGvkD1pMhWdBvmjQI/oYOkbfgQCiBBTs+L8eyNYhPeJievYoIC5u4TbGmYpBJPghLNOrejUCvRVefO8iUteJdcHzb+122AsyoSEGimPqFdTIhZ5Pd8Dz6qjyXY4jtpjkhYOuBNZzGrv53DlB4DQ60wCR2U+4rp++XrLm7cIF8DKO9Qkfo+/WDyqQmRMFDQ5OY13PF8v1UurFY1O+Wb/WIIWo6tBAFL6fFRQZw9exINbMpKqTHgDhjFSXa9uIs14+j5xbEbaeLKde6faRmcGBQSXIUs6LwanK6HBIdQ4yNMxzCCbCOaPxxtYGv3Zf4arwk3H8KHIu2hE6PpEOyS2VbUIBsiz
- LghgBoWw
- 0MyvU39T7WtTDJd1etOLjhBQhlgIyDfJ1U3mreCFMb3z94NPLwfEGgD8ttQBCqMm2q+Hhkyy6+ga2Q/QjDpzPF8L2+ykCJBEWr9659h/Pqapo9aefLSIO1KRHP8vnNxUgYedBfXNKPhsZchB4CdZVTg4wOjYqAzvkueecF4P3klldLNu5HDFbLjxtJGQxR3Dz7YG7WlJ2zGUSts38DsKGEuG6bK4a0t/Zb/noVqI8JQNcMOka9Llo000zo1KhPsc2+oId2pCZriutu/Wx6wQT2HKomc1OIzk6cGqZgxVU2MZQPtdKoJPY8bn+4wSWE2WrfGlDWVCwof6AQyfoupL+pv6p09337QccmLAwikwYll8rfdQcHtIQ0PBXyICaaDqzN4xu63u5SN0pDJugEHZGDQZY1pKaM3Hdq6kpfx47a++9xGDPikvRWN8BpxYa5p94jG9ZLb0ky3L1F02KFYUVyeWJP2Z/fiPJG+FtjFOvF0nc+PJrBFpHirUxcU+2jiAcI34cZ/2KX95yF5BcrJgs3fFzumk1proMk73Y
+X-HE-Tag: 1794545954-568041
+X-HE-Meta: U2FsdGVkX1/UbOo+8o3G080bSaHHgxaTEa5C+h2KQN3NOkJ8+Ewlx3KfGzwNGRgwSMDP+9889FdVLgi1FH7EE3qKx+c/o3NTKTcKNzx2cTMUdtUSslwwTiH87MPPIDezKiBKdmX/7UFelqJr9OkOPAe077Ifor/+KPBFyg8EzyhxZstrdVGr63zgm/iVpKDRxTShCE564x7eOQHKZhfXOxPQsmcqHjMlldGCtFOgGzBAC1bCJh67/JPYFYmiXxXRibITdREPslszdJdGhc0VxYUBvC5tGKMAKEHohSRuEmO3rHfQ/zOwSDaRJ21yEmKlCNZJQWibQ4PLRgT8UmZy5Yva1VodzUUSLfTqlw85gXz5dUpWTiIdP2ER/oXPNopmbuOxF5/zVtSzKblHLaLIcXA54pxp7DAj3xrLboJnwTVLMzS87B6xDbt2UZm7eELZysmw4qDK7ou82ifYhtj4K2kwOnDNEx1+t01a1sFpJ13jox2T4RUN/PPSWGha9VkrG9MSpuyXL1XSCFyjT0TTqswXYoGhTs6C2+lDWBz9vHXRLUAeFIqYdyv958jLLZZgrgwl/k++muOQ+xFeaLvpsEboK23PpXGq7fYoNzLpAqR7qhWGQCmg7KBwloZUWFCWqPKj9/mAX47FGmuvb+ZIWYO6iiMB8eVz79o/Rt3OPr56GVp+yi3Fmzt4TQqeXJz1DvFnj2JJevbnxjJqMf8KI22v1r57XwBEOaL9Lq9J0mmAZvGROLxbLLqgtO3jvGddrYxcBzxP1JZaIlRQA/LHMabBzVTyrcUQ+8XL2Jh5Bhf3IeOFuMU3Y55LbD9VAH6QyqPmlsiwjmAL+9wwTiBChEg2OZsCtYT8sHonChBNQPKqkwZF2qpA+O223HvEbe3rCnb+cr+mTZ927czyCkG+s8T4AZN1gsgoOHMSnQEAoTEp77wMBgJAdkcAPD198+pvwwBj/PpGwy32MkedF5f
+ 0AGeneWZ
+ /I+C65+5PlYU07Tji4TAxXot0O71UbZ4+8oLQVF0s4snyhObmBewtLtHA3qJyfuVY7Aa7xj9kccX+QwajELwOpf8MIf9wHJx+X6X21jcHf0940sY84xxwiF0AcGcUg/2LtnfG1TzYsUKogjAWwuJ1hqjo2chGxG14RBQLuRom/MiQwg/42WF76QvjlwNxGR33yvqHJTFHQavSRkqSTcQ0rtHQrkyrZxubSbNhmqJFBx49sTXoCdVrjL+lc6ETebZdpsdAy20Mi0gm55PbECon9Q9P84lq19XL/6LrDXukQmBDo9py6z7tqAy+I9NL2kClEl2fMhovqQr/L7FcQR5X+ruaFWyfRpL6elh/AwtSDFrBPhaDR1zp3q5aJqEeq4PHanwg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,39 +154,39 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 2026-11-11 12:55 -0500, Tal Zussman wrote:
-> PAGEMAP_SCAN with PM_SCAN_WP_MATCHING write-protects pages in a VMA
-> registered for async uffd-wp, and sets the uffd bit on non-present
-> entries as they are. An entry with the uffd bit set must not be
-> writable, so that the page is write-protected once it is mapped again.
-> change_protection() therefore downgrades writable migration and
-> device-private entries to readable ones first, but PAGEMAP_SCAN does
-> not.
+> remove_migration_pte() makes the restored PTE writable for a writable
+> migration entry, and only looks at the uffd bit of the entry otherwise.
+> A writable migration entry that has the uffd bit set is therefore
+> restored as a writable PTE without the uffd bit, and the page is no
+> longer write-protected.
 > 
-> For a writable migration entry at the PTE level,
-> remove_migration_pte() restores a writable PTE without the uffd bit. So
-> if a page is under migration while PAGEMAP_SCAN write-protects it, the
-> write protection is lost. A user tracking writes with async uffd-wp
-> sees the page reported as written on the next scan although nothing
-> wrote to it.
+> An entry with the uffd bit set must be restored write-protected, whether
+> the entry is writable or not. remove_migration_pmd() gets this right: it
+> makes the PMD writable and sets the uffd bit as two independent steps,
+> and pmd_mkuffd() write-protects the result. To fix it, do the same at
+> the PTE level, where pte_mkuffd() write-protects the PTE as well.
 > 
-> With CONFIG_PAGE_TABLE_CHECK, setting the uffd bit on a writable
-> non-present PTE or PMD also triggers a warning.
-> 
-> To fix it, downgrade writable migration and device-private entries
-> before setting the uffd bit, as change_protection() does, at the PTE,
-> PMD, and hugetlb levels.
+> The only known path that created such entries is PAGEMAP_SCAN. Now that
+> PAGEMAP_SCAN downgrades them like change_protection() does, we should no
+> longer see them, so this change alone should not be visible to
+> userspace. If another path ever creates a writable migration entry with
+> the uffd bit set, the page now stays write-protected instead of losing
+> the uffd bit.
 > 
 > Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
 > Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
-Reproduced and managed to emit a page-table-check warning and
-demonstrate the lost WP during migration.
+yeesh, agreed with Lorenzo, this is painful.
 
-Will leave the review notes to Lorenzo, the overall idea looks sound,
-if painfully verbose / special.  But then uffd appears to create
-this pattern everywhere it touches something :\
+I wonder if we can fix this abstraction somehow or if we're stuck with
+it forever.  The nuance here suggests we're going to find more of these
+corner conditions over time.
+
+I reproduced the issue and showed this patch also closed the problem by
+itself (without the prior patch).
 
 Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
 
 -- 
 ~Gregory
