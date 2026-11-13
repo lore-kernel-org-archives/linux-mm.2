@@ -1,90 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4276F606A334
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 13:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908A9606A327
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 13:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BF6KxyJo
+	dkim=pass (2048-bit key, unprotected) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.a=rsa-sha256 header.s=h01 header.b=LTM9AkCn
 Received: by kanga.kvack.org (Postfix)
-	id 68F106B06AC; Fri, 13 Nov 2026 08:00:35 -0500 (EST)
+	id 8B6E46B06BB; Fri, 13 Nov 2026 08:03:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63FA56B071A; Fri, 13 Nov 2026 08:00:35 -0500 (EST)
+	id 88E916B06BC; Fri, 13 Nov 2026 08:03:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57D956B071B; Fri, 13 Nov 2026 08:00:35 -0500 (EST)
+	id 7A46C6B06BE; Fri, 13 Nov 2026 08:03:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 39A8A6B06AC
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:00:35 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B0485140169
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:00:34 +0000 (UTC)
-X-FDA: 85430104788.27.52DE7C3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id F1E4DC0011
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:00:32 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BF6KxyJo;
-	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 531576B06BB
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:03:18 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 202E040336
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:03:16 +0000 (UTC)
+X-FDA: 85430111592.05.301C80F
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 68C512000C
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:03:13 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=LTM9AkCn;
+	spf=pass (imf31.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794574833;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794574994;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iXpdjrmHik8VxmCAaCIUmmAMDQ+4+ZSb3XBzqpT6F+w=;
-	b=ezTkpuUdUpB8YhLgnOq8huFxNn4MtI9SuM7hjKppCn51hOW/mFOKxMx51sM78iUMW0DWzC
-	S5+Zt2eqZ5blDwbHLAOzXktUYo1nbKjGizfmKzECYXfT+MiIpmw6aaby47DTBJ+c9SydlX
-	KnbzOH/EpeK0MzJMyjR5hLAbKoCaU/w=
+	bh=atdp2aydRKXMXDIBngPs3VoW6SW6B3JnVooZbiegGyo=;
+	b=Aqy6uyHjkXTuC9Syy/R04bPXjcVZOokXzdVldCMbuOczx7mcDx6ur1fUoWW+FOsis96+c+
+	1ynXSt7YClhumSNHbjP+abSTM/KDOqbW2bCaB56Ec8MYeqcHOwJD3R1KO7Cm14E/6S9W/S
+	ZJWAX3QrIpqEOeXJe/XrcQZ0zywD2PI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794574833;
-	b=ZDvJRQ8PwT+xg8c7h6fCeV6+I0n0wJdVEWHZ2pr85zFJlJzCsrsY0VB1SbNgnOuh68yQeM
-	YzxSHIL2Irt/CgCiMIUn+Eei74YWEPkQH/3onkXQc1xDCs6nqtBQQG2/Og/ZwtmzJC3TUt
-	KjbUyS65LUqh/hIJupPPLhNUN8zpG6c=
+	t=1794574994;
+	b=eQ9RZDvuY5GPgYD2jqpPAkLj4MoUE1WGunf9YYeQpUUd8SKRvwfQsI4IdArslsgeD8yyD8
+	3HireI0KpVzuUA7g71tRaHj9DvWcxtb4kQeZVy0wpsQACqf8kS3nqAU3QE0pn0uX6RhCIn
+	0qmLtzj8xwUrhUy+SS2uFABMIylecjE=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BF6KxyJo;
-	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 29C2A4621E;
-	Fri, 13 Nov 2026 13:00:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C23F41F000C4;
-	Fri, 13 Nov 2026 13:00:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794574832;
-	bh=iXpdjrmHik8VxmCAaCIUmmAMDQ+4+ZSb3XBzqpT6F+w=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BF6KxyJoaqun7yvquPMrlDlaVyVUnjVtisOJkuDveMfAONqiyhXMnYZ+jba6we/Nh
-	 0nXWG6EArsSCEIpSuCwD6qKrrGUyQEl/o0gJU0Ha5fLfVPy/5hh2gVNH9X1bwG7fiq
-	 a/QW5IuS5pJMMpocWkEZ/oKcE25pze/t0kYcdGAWRkSGUaRVvXiZIP12u3wDwT2uaq
-	 05vHL2oOpjxzh4z+sqXlzm0fawvNr2usV25AZ5/V7eVOJxvo+ueIzja7J3jK2uRlbz
-	 E4q+9YDHcztpQYqNN4E3LowAXWY8kMvJheY+DBIwnc8JQE1d912n3J4VCNSf+Y1q/g
-	 jUuefX2matdoQ==
-Message-ID: <sashiko-outbox-212803@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] mm/ksm: add initialization helpers for
- scan_get_next_rmap_item()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?WHUgWGluICh2aXZvKQ==?= <xu.xin@linux.dev>
-Cc: chengming.zhou@linux.dev, david@kernel.org, linux-mm@kvack.org, ljs@kernel.org
-In-Reply-To: <20261112125959.177881-1-xu.xin@linux.dev>
-References: <20261112125754.176930-1-xu.xin@linux.dev>
- <20261112125959.177881-1-xu.xin@linux.dev>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 13 Nov 2026 13:00:31 +0000
-X-Stat-Signature: rjd14onfk7xrzeuhhbjimy9bhqikp67r
-X-Rspamd-Queue-Id: F1E4DC0011
+	imf31.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=LTM9AkCn;
+	spf=pass (imf31.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=atdp2aydRKXMXDIBngPs3VoW6SW6B3JnVooZbiegGyo=; 
+	b=LTM9AkCnC6t33+hNMotrxV1KakbzcP9xVuiib1rfU38aLSyOpkPkovxRZnCfqm0C9y8wd++cDSA
+	r8x+EnfFoHib35KD7OiQp1BrxbkivMQ2nlJwwL1n/LdWXNr+S2dAh89CYxJ8HJx8UH2b8GFkwvUqg
+	NeYZI2agHB926oPEhvyV2GvCAeP5Bzp4Ujfa8WvuSAuOszTI0LdHGf2OlFBlf+Y2l92wK5wV+qfpW
+	OSwjjtJ/QpRqmXkob/PvIDtaoT8YqZsqurk5O1O0Gy1AvhxF6kxNs8KxHoyfCcv3zuMc80wpO+3DC
+	RBufQeGqrwkPvaWEY4SVtpHLT699JvIPIhyA==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
+	id 1xRqvc-0000000EfC0-3U4A;
+	Fri, 13 Nov 2026 21:02:53 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 13 Nov 2026 21:02:52 +0800
+Date: Fri, 13 Nov 2026 21:02:52 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	"Liam R. Howlett (Google)" <liam@infradead.org>,
+	Davidlohr Bueso <dave@stgolabs.net>, Michal Hocko <mhocko@suse.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Marco Elver <elver@google.com>, Michal Hocko <mhocko@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Thomas Graf <tgraf@suug.ch>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org,
+	Lorenzo Stoakes <ljs@kernel.org>, Chris Mason <mason@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andrew Ballance <andrewjballance@gmail.com>, stable@vger.kernel.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>
+Subject: [PATCH] mm: kvmalloc: Bail if called with soft or hard IRQs disabled
+Message-ID: <avcKfEvln8_2a7fJ@gondor.apana.org.au>
+References: <xdzcyoou73blpfdlgy47i2ktrcsffnclerzojpgrxphid54gjc@nicdcvzqx447>
+ <auqtTjXhD8is-y9f@gondor.apana.org.au>
+ <CAHk-=wiE0KG+jkhmJWifXuAVivtB63WCWtdEpGAex7-T0SHd2g@mail.gmail.com>
+ <aurAxRpCwzeyXeVj@gondor.apana.org.au>
+ <CAHk-=wgPvbYRcKpQ8WTH-EYZRgMG0KSH+cZxY5-Hyf+X7JjWsw@mail.gmail.com>
+ <aurJZ81qnbiHH_P1@gondor.apana.org.au>
+ <ausS3LQNkdc6lBy3@milan>
+ <auxDm_YO4oACA_d2@gondor.apana.org.au>
+ <CAHk-=whXvVO6a5AreZu3LPBj_wjpzUanwhvu8WqWP2q7g5S7Vw@mail.gmail.com>
+ <auy-7TvVzJ-VCrG4@milan>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auy-7TvVzJ-VCrG4@milan>
+X-Stat-Signature: gpdsz8df1bho5icr7eg8mxbj6mjiozzp
+X-Rspamd-Queue-Id: 68C512000C
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794574832-210110
-X-HE-Meta: U2FsdGVkX1+4429JMJT1jQMFOm4fvjPf64QFWPWUoNx11dPQHgsAoXsVKI10+Eln28ucwp5zSkYARfLapkzI7o5Cx1xLJ/OUALeem+xdjX2Lr8dDXmJj2ZP8bV66xE41c8wnmuiTlv138f8um5fDDgIAhLG6/NhFyB6Ypj1anh1xmofCc8rJtDsPnAn+GUij2kJVXxBlTRyjEhjgcF97WgN04zc8CnCet3Tnamm3zxAhYUDuFPBgh+GHL0HVJkkmzPO2fKONCpzPcTyapppVFxjy4Sg+9LUR6p5VP1nKH6iv3CpRCNsIdPhD1o6Ar+B4afboVbRtj66mAtpVCKYSGM0CxuALmatMojgp4jW3z2iSgNO8k02ZRryV0LccJlegpcCeaIzU820kMeBxqgEc5jhohoyY6f2/GA748RJasowqgHJo58Dwv1ZTmiIBqbzsFO8+anVOV5DQeX8ZJMd3oty9oIGO2LajTSNr61hJcQbrahEGMWzZLGIyxKEZ0ZRzYUUuhHf5KmgIjlpejq70AeSF9KBWqdjMkbBgG7V+n7knbPx0q/1ix790TheLLu6YA1jvFgJf/uTjqhKSyoLzS+qWJqUSffDmUB/xHMHMBQc82XmHEW0a32BOYVulPAVW9gP+iyxsGKkoKBvSEPpkp+ti5KF7PxFZGtVs7SMVt3YfAjgTVPNS6F7Mt8x+BPleJ2Fj9UG38hFw8ZWMjRn2gYCyHxcqg8oYQsi7mkCDZOyiDZIAp8QqZsLLw7vawxEo3QVVTgkR+d6Une4c8CtHvZ7aTxPo4l4b0RuynbUdyT0CNHKgzr5HACbK5ohLMEUyu2bjTkHrRDBoJRG/JuZhEyEbadV9ZQ8V1QBEShp7Gzl/rZWrtoEWlss54HQYvoH5sonAJKMHtyhlaWaAoMPbSduOvcEbMAvWSkYHlLZ/e8JhfMVmmR+RUzgHcw8P/aHX658nZntJVn35L/QPFwP
- Eu8KS/Ek
- l9ap3UTOtwFdMrvRgvzPbEDTBfvfEgDUpKo9AGb0ykgdfa7eRpn49waM5hhPuXaCGwgQdKjmqbMnjrzqbFUhDrBp+M/0R4FJblHwwxa5GVvLuCeYrGFHSMXsO7itEUYb77AwAUZ5P8C0oBGVKVCNEgk0FQRolsAVKWRsk/knYx+fhIIs54XXR4Q3qClKcrejFT5Be1fP4LryoT6PEUrLNcXeVLdmqc5OK9vAd2RQ6T2ADOblcR9xsUPYJRkg75osonogKcJZeR3FUaHshqx+nAfW35FZ6BXMuFKO08W15soBGSaVz50CI+73Xiv1rMa7lm+znH+i7nmoJL/jAXUHtnSZNnnsz675DApjjkxtVmKjmNrp9627O0PnkTiXySz4RGIjmWmbnJOwk1/ln+z19S5xHp7oi8Vpfkg4DFiubO1JCOaQE4l1J0fkh/RjOk7PzzWJhuNIScB8NL90priBu6WQaVaw8YjalX15/AhnqBLFVp1hRrp1JnZ4srj3oKPstYOzCm1XD2qws3nNI16g/4X5kHw4AhFo9NEMfz0PwU6ARdSsuZ2RBdkvSwoTC3ke8nq4RhZK8bdVIiw9LWxAE+22DIWgGgvgEZKsimVni4foFGrE505vMS9+tp6lwOtNL4+RPOvVlVUY3gcU=
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794574993-166325
+X-HE-Meta: U2FsdGVkX1/ye2djLKT7EH+N7rfivwHqu7I7sbP9Gkv7IrAq5mfWvuPeAJBTMuCjpLbRmi98tbR8pwCZFW9942Z+IdtPdEKHAM1oMTtkztn9gwHYYNixW3IcP+3TvoREwt8piwRl/5Pu2URvEqONCGOk/Jlz5AxYM2Aik8IeeM8Dlk/Dzb+kVKHLjzrEkKjCbS0ghsk3yhYujziAGx/uJkTjped1O1VcJDoKRlhzGijkx1WeRFiTouKDe0sYiGamokbOb7qO6Nr3eoxSDyQMf00ErjPeTt4tixSdCoHb9Wl00hAS4ZjDJEfsIfiEO31wWasnKxZ1E+a4zLEERnmuljzMSwxsfksUxmxbEvd/5K+jA4YHvYiOTpZtLFMs1/SxioFPExzRsa02R3LzJAZvshhIzfb+BKvH3EgZ0cndE6MKyDRKl+7aAr8FcShZ7viruLkQkjVsabciHuQRgifdgHgBdppS4g7hlnj6I8RiCiiVYXyD/qohl1CEqJ/3SZsGWiQUPPW+hUboRB/lKUVE7MPmvKD3wpi1JgeX+to/j2ttCr/zGfdTOdSe3ufvXxxF9tTP42gBYA+2BZ28nQHWv80h9xWTvyUsXGuqnHCqBIekYSmlualq5Iu3tHCrCZ9/fFUj4n0Lg2bDeOaNtfah/p3gKtoCGdvCLKBRJ0fNqmnWxPhNGph8rRRZzggFJWCgGKQqEqZs8BHiWYaEjiRoMybb3XSG35livGE5PGm4HcfUmVBd6ATRKWO5NJ/OXlkGiGnQoHXI8SAZxzMfJ+nk6zZf59qd4m/t51555kU9kmUgxXD7/Et/pD58DpCLMkPfFYWJKt/bkIp8ADlppaPeiFZWm8n2i2k5D6tj4gnvubDEhGrodwQPFJ475XbfqwKZgdb30Ve13PcviDv0ItW6jVICh99YYvFVZPKTN4r8o3jnIoTyPiM5/YvSTNMeYTaWBS5y7JBsoH+0/42GfYk
+ 6yknj9M9
+ Y1yTMRK2aYvtM2JVe1eOrNaJ7s6qMmzPkatBu+qIuYDcqALkAIJOgH80qJmDwaiQWAMXKoz/zWkk5p7so574BwnLvsEOCz8H6IjYeCH97fvTBYjHkRJzNmJyugYCec8B6ow0wvmYhWNtbt2ULY5qCqjFHVEeoyXuMmAqzm1OdHDvTaaJgMVf2YKUe/MWHNv+qUfC5iexUCYrRWHFU2FngcT6Ye0vE3xLBPNsmDG1v48ZD6XxmX0KgPp0hgR8lUHgE5nCF5LpnBBwbOninGd6EIOozizgdbDNFlq/lv+eeZi9B2W3/DOTXuA4As+2iXYFfLO01B7nbUhzOXuAFyh6tMWuugYkeiaaxRyw95pfTaE0B2X0wbwZ/9+bYrvOWI5s4EibPym18Wb2PGXlAkxQxeV06njhV0TnxtdPYvMq3gwFIRPA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,42 +112,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] mm/ksm: scan_begin_new_cycle() reorders lru_add_drain_all() at
-  scan start
---
+On Thu, Nov 05, 2026 at 06:37:49PM +0100, Uladzislau Rezki wrote:
+>
+> Probably the simplest option is to return NULL for non-blocking vmalloc()
+> allocations when BH are disabled. That would address the reported
+> rhashtable deadlock.
 
-commit 82208b052cdf6d037a169e81cb68de5a2ad7f1fc
-Author: Xu Xin (vivo) <xu.xin@linux.dev>
+OK let's try this patch:
 
-mm/ksm: add initialization helpers for scan_get_next_rmap_item()
+---8<---
+The function kvmalloc may call vmalloc under the hood even when
+used with GFP_ATOMIC.  However, vmalloc uses naked spin locks so
+it must not be called if the caller already holds spin locks that
+can be used in hard or soft IRQ context.
 
-This commit extracts the new scan cycle check and the first mm_slot lookup
-from scan_get_next_rmap_item() into scan_begin_new_cycle() and
-scan_get_first_mm().
+Use the heuristic irqs_disabled() || in_softirq() to detect such
+callers and prevent them from using vmalloc.
 
-[Severity: Low]
-In mm/ksm.c, does moving lru_add_drain_all() into scan_begin_new_cycle()
-change the execution order at the start of a scan cycle in
-scan_get_next_rmap_item()?
+Reported-by: Liam R. Howlett (Google) <liam@infradead.org>
+Fixes: c6307674ed82 ("mm: kvmalloc: add non-blocking support for vmalloc")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 
-Previously, when ksm_scan.mm_slot equaled &ksm_mm_head, advisor_start_scan()
-and trace_ksm_start_scan() ran before lru_add_drain_all(). Calling
-lru_add_drain_all() inside scan_begin_new_cycle() in the if condition runs
-it before both calls, contrary to the commit message's statement that the
-exact execution order is kept intact.
-
-This reverses the relative order of the mm_lru_add_drain_all and
-ksm_start_scan tracepoints. It also records advisor_ctx.start_scan via
-ktime_get() in advisor_start_scan() only after lru_add_drain_all() finishes
-draining per-CPU LRU caches, whereas scan_time_advisor() still includes the
-ksmd CPU runtime spent inside lru_add_drain_all() via
-task_sched_runtime(current).
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261112125754.1769=
-30-1-xu.xin@linux.dev?part=3D2
+diff --git a/mm/slub.c b/mm/slub.c
+index 45e077c7526c..18bc70f44e22 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -7139,6 +7139,14 @@ void *__kvmalloc_node_noprof(DECL_KMALLOC_PARAMS(size, b, token), unsigned long
+ 	if (ret || size <= PAGE_SIZE)
+ 		return ret;
+ 
++	/*
++	 * vmalloc uses naked spin locks, so it must not be used if
++	 * the caller already holds a spin lock that can be used in
++	 * a soft or hard IRQ.  Use heuristics to detect this.
++	 */
++	if (irqs_disabled() || in_interrupt())
++		return NULL;
++
+ 	/* Don't even allow crazy sizes */
+ 	if (unlikely(size > INT_MAX)) {
+ 		WARN_ON_ONCE(!(flags & __GFP_NOWARN));
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
