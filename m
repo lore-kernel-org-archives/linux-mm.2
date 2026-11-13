@@ -1,115 +1,132 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CAA9606A33D
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 02:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A646F606A32D
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 02:19:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=OTPEMuve
 Received: by kanga.kvack.org (Postfix)
-	id 01CDA6B063D; Thu, 12 Nov 2026 21:13:11 -0500 (EST)
+	id 7A3086B063F; Thu, 12 Nov 2026 21:19:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F36BF6B063F; Thu, 12 Nov 2026 21:13:10 -0500 (EST)
+	id 753E56B0641; Thu, 12 Nov 2026 21:19:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E764A6B0640; Thu, 12 Nov 2026 21:13:10 -0500 (EST)
+	id 643B26B0642; Thu, 12 Nov 2026 21:19:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B04DB6B063D
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:13:10 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2E443A79B7
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:13:10 +0000 (UTC)
-X-FDA: 85428473340.29.466C528
-Received: from zg8tmtyylji0my4xnjeumjiw.icoremail.net (zg8tmtyylji0my4xnjeumjiw.icoremail.net [162.243.161.220])
-	by imf19.hostedemail.com (Postfix) with ESMTP id EDD451A0002
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:13:05 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	spf=pass (imf19.hostedemail.com: domain of dzm91@hust.edu.cn designates 162.243.161.220 as permitted sender) smtp.mailfrom=dzm91@hust.edu.cn
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 035F86B063F
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:19:38 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 92504A01F7
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:19:38 +0000 (UTC)
+X-FDA: 85428489636.10.A51917E
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+	by imf29.hostedemail.com (Postfix) with ESMTP id BEC44120005
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:19:36 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=OTPEMuve;
+	spf=pass (imf29.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794536376;
+	b=0t4Gk9OOxKPP8MxDPlJqZS0/80IzFzR4mxXkvVvSaAeDlLvm8szNW8y6P/wHIy6dx4Lv8O
+	36ORwsfscXR3Vz5O+jO3d5D11/eSrHv9ISASlMTp1mBDLRgrUKZPqhzXi+b51RVk3APc1+
+	vQbjrbi2+4EO+wmtgz1bcJDMEDvKhnM=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=OTPEMuve;
+	spf=pass (imf29.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794535988;
+	s=arc-20220608; t=1794536376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2Y84LlsZe6rgvKsWJlLFsVqJRljJBA8w4SWbN4DVpek=;
-	b=ivJOWxL8ewO5XIoRoYYPiq38CzW7E+893oIpWbrknDdR1hSOfSMlhdTRxkZC7oQhnAEJ3i
-	+goFHgvwQYS6s+tDsmUbUZv7QhikieSXtolLSvEqX2+b/MmspGsrFWm2XYYE17ZyzVXKOV
-	Jtrf/OoUwUH3yIgCqmY6T9zr6L3JPDM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794535988;
-	b=tO4hVqHmfG//lieFdavb5TVG+Hh1qzzrZLF4LlcLXNbBpLjjT8IsUuUb/SiB1kfkrSRZTt
-	5lqYFfijZy8Mu6PY3jIKyjDjAg2OA4hRjwjuT35B131N4vdkWPy1j6gCbJHEfQoehUgbNx
-	QHdhdQ2N3ff3atdIWe7GXgSRG7Rd2u4=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of dzm91@hust.edu.cn designates 162.243.161.220 as permitted sender) smtp.mailfrom=dzm91@hust.edu.cn;
-	dmarc=none
-Received: from hust.edu.cn (unknown [172.16.0.50])
-	by app1 (Coremail) with UTF8SMTP id IAEQrMBWHWkqcvZqh8ZEAA--.1437S2;
-	Fri, 13 Nov 2026 10:12:58 +0800 (CST)
-Received: from [100.81.40.43] (unknown [10.12.191.55])
-	by gateway (Coremail) with SMTP id _____wC3sN8gcvZqqfo_AA--.64337S2;
-	Fri, 13 Nov 2026 10:12:53 +0800 (CST)
-Message-ID: <f9ee662a-4da0-4204-89ce-33704044c88c@hust.edu.cn>
-Date: Fri, 13 Nov 2026 10:12:47 +0800
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ebdv6ZUT/HH0C8QcvPGAmiBNBGZr0ii2abVsK2I4hFY=;
+	b=ZKznCcY4WXtu0Q1JzhDV/y+J5qvYNdJ7JRham5cABVEneCyFGnSWDwKAVXkof+Y0Awi0+c
+	IFN4XQICblyaDYLljAlrEN3guPLPVpIK9J8SK0r5RrWVfET1tiXmUahUsKk0yeu8A4qQIh
+	dK90iPa441IXgEZF36U97iSHJFbMIvM=
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-36dbde64409so773056eec.0
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 18:19:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1794536375; x=1795141175; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ebdv6ZUT/HH0C8QcvPGAmiBNBGZr0ii2abVsK2I4hFY=;
+        b=OTPEMuvep2beaEZP63Y9AhRhEwbi7SV7KimUl1CoKl/enG4FiE5XvZaMcgz90gp6XH
+         WwmQylaWkEw6pmkLg6TjOIowDBNvjZcdEPTys2D7kikrToeutlGQFZXqoeHA/5j/bLxJ
+         IMqSXrUhvm1tyqYglaLcHaJZPYus5O1SD8lIw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794536375; x=1795141175;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ebdv6ZUT/HH0C8QcvPGAmiBNBGZr0ii2abVsK2I4hFY=;
+        b=HGf1ntWBJslZGSMn+Tivb0/KjxteGzXC3HbWjqMTzrrRl1P/d4aGvUPmvAQS/BF3uy
+         VTH60wT5Loy9xkrRAwyl3NaNFOZlY1VQ/43Dmk683T6+ZSxfOiCgUe8rJkfhTMDnoF6K
+         VYYdpLv1IOAdXYAtNtJWC7VFmGYPr91Scdi6ZX/JJ4/2y/EdAXjmoKeaRWFR2PpI3Tpu
+         kNYqnmHcRFvZaHsnUexQWw+qStpF3+PQXV9xpewmGMuCS7K07Jb3kjLWP0Thn2Ouhkky
+         BGwY9PzS4P+ZT//x9mQqzj+0WPGOJ9+8ijdU05R8MX7zs0Bno11flBujmH4g8upmddE2
+         HaUQ==
+X-Forwarded-Encrypted: i=1; AL+hErGtyIuArJxGZiL/OnXRKM8z7U+gtH/N2PqdcGC4tlQ6ZtYDWeMsyXIOFKnbfZVlyLzvBQF3IcMdkw==@kvack.org
+X-Gm-Message-State: APuU4Z8PLlVZGHrelNheyTP//RUTtiY+S8+uChOBx8VJEYv6WVrhsj0V
+	mjJEArx3NBt51h1jMHd0AIIv0FKZpgle6CGTcxT2UaVBZe13I9SUnviS9d2Yp6tQtQ==
+X-Gm-Gg: AYBFou2yl1mh5chXH3kqVqcML8m8wHQnQmD8DWJuQkpZSBncjai+j6838LNCg4c6exN
+	PkMbekftMATeM1Rcj5Inax8qVbi2UvDBP9AX6KhIC3EhVWJ6NX5QJwc7LbhYe/63wjwZ9V3fpHz
+	1NPu8eqPdf4xK0Npm9zaNuCBWLFkRcBa9ONOv3My03g2gpm8pp2j+vl6nfhugHNff2/h6aJEWC9
+	0hxZDuxSG92WJ7LhrLWvTzyY5qEY9R8BBbR7vMul2VMSs3dLOPIoTAWGYakVQf9/8DrHCdXIHZS
+	SmHDlDjT2MM9JjH978eKsQbChJ6nYStYtLGs1ddoZWh5mlpOLh73ovxMsU6UEyjFhEEFLD7AEab
+	089bbFF/rLF0PPCbyEJIbcaOKKzJgSAogpxEVLKLPlYEW4h3e3U097v9moo+L03NkmhJOEHUlR+
+	0DcNxlWO2VcNEivoLpRIg9q8pDvW1GQxukAWZiWyA3NVvIwlcNjVoztyuYU5Bi12rE9gElZVccw
+	WulouJHHRfLoUXLHMaynzzCU9ffRjDVOPEQTtU7LxKX/a0L6vcIX1dAS4ZP9D8x/7zTvJ3qD5Lm
+	OmGmd8dwCr8X3/eAfBP39qE+8wsK4vjGo6Msp+V1mWow4687FIeQZzQOP+f09HUMVtTF0w==
+X-Received: by 2002:a05:7022:3a03:b0:1a4:9eaa:d01d with SMTP id a92af1059eb24-1b50315d8e2mr1234175c88.45.1794536375046;
+        Thu, 12 Nov 2026 18:19:35 -0800 (PST)
+Received: from google.com ([2a00:79e0:2031:6:3f2c:d0f6:e2f1:e609])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-379565d269asm2477887eec.23.2026.11.12.18.19.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 18:19:31 -0800 (PST)
+Date: Fri, 13 Nov 2026 11:19:23 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Cc: Minchan Kim <minchan@kernel.org>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	Alex Shi <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>, 
+	Dongliang Mu <dzm91@hust.edu.cn>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Helen Koike <helen.fornazier@gmail.com>, Vignesh Raman <vignesh.raman@collabora.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	Nhat Pham <nphamcs@gmail.com>
+Subject: Re: [PATCH v3] mm/zsmalloc: remove CONFIG_ZSMALLOC_STAT
+Message-ID: <avZyo_hCRonuhXW6@google.com>
+References: <20261111-zsmalloc_stat-v3-1-2d85ed51570e@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/zsmalloc: remove CONFIG_ZSMALLOC_STAT
-To: Xueyuan Chen <xueyuan.chen21@gmail.com>, Minchan Kim
- <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, Alex Shi <alexs@kernel.org>,
- Yanteng Si <si.yanteng@linux.dev>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Helen Koike
- <helen.fornazier@gmail.com>, Vignesh Raman <vignesh.raman@collabora.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
- dri-devel@lists.freedesktop.org, Nhat Pham <nphamcs@gmail.com>
-References: <20261111-zsmalloc_stat-v3-1-2d85ed51570e@gmail.com>
-From: Dongliang Mu <dzm91@hust.edu.cn>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20261111-zsmalloc_stat-v3-1-2d85ed51570e@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:IAEQrMBWHWkqcvZqh8ZEAA--.1437S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3AF17KrWUuF48AF4DZw1DJrb_yoWfGFy3pa
-	18Jr4xCryxtF15J3yUArykur9xt3ZrWFW8Gw1DW34rZFn2yw4FyFyDKryYv3yDXrWkAa1x
-	GF9agFna93Wjy3JanT9S1TB71UUUUjDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUQKb7Iv0xC_KF4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
-	v20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK
-	6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1ln4kS14v26r
-	126r1DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI
-	12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj64x0Y40En7xvr7AKxV
-	W8Jr0_Cr1UMcIj6x8ErcxFaVAv8VW8uFyUJr1UMcIj6xkF7I0En7xvr7AKxVW8Jr0_Cr1U
-	McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCY1x0262kKe7AKxVWUAVWUtwCY02
-	Avz4vE-syl42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8VW8uFyUJr1UMxC20s02
-	6xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr
-	4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWrXVW8Jr1lIxkGc2Ij64vI
-	r41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr
-	1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvE
-	x4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU0MxRDUUUUU==
-X-CM-SenderInfo: asqsiiirqrkko6kx23oohg3hdfq/
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: EDD451A0002
-X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: tmixztw5anip7wpcznixinzcbkpyez5u
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: BEC44120005
+X-Stat-Signature: zjhx7thah6ci1ufbxhbyrnhr55so8bhy
 X-Rspam-User: 
-X-HE-Tag: 1794535985-184244
-X-HE-Meta: U2FsdGVkX19xyBm8AmEsV+gDioUCOh5VvSmyRc3RXPPLKfPwr9g/wgQtTLlK7YgFisw5dBGs5JwvWnIUjMtlMfWjnP55W4gYHjy2kzvSHg+QkmHFOivq08oIcr2au09I5rer5HGzWU+SeWmw9WwAkLOSdSnkyZ6eotZAr29yWU6oVWE3YKkaxkALTyOc16lpP4Uw+qbffOQufh5y2+eFE92TXV+EjAmlQE6KggA08TmJaR+9imJTuRSMkcf3BpS7/ra4JpbL5rrT3mxURcFwQCo1P1eN1dak+XzmN9h78fb/uPqyHYE9zqC1X6QGqXLhkUXy/zDRSeNpqSobhP3wXNQKJ8YynL5CbGH53b23Z8zozVm/pts2YFopV9jxne8ITpRCFQOgQ8VkSs51p07NlTdYY3XaFzYbdoGnSg3A6q93FZ53m7dGlLwNqG3Tnrw/Wh1z8uEp61Aviur+iSYY/bHnW+fhQPg8pmdkM6iYk3BIbnPNz3N2x9XS4nNy1Im3l1qxvxwUUIhmrzWhsRQ68iXVt2XgUKcjL90lWV5DWv7RuylD1EvRqqIaIy3E2gFMknCnoYu3yNsnIPNiXODzYvePVJ2osGWebkQU5bP7LZ45w5fcOYYkOM+a4/ilgW0CBNgCXPqrstsmTCMoxU+qrMVmkss5HuBSIbUqjjk9wnrXwObrPVwStCeG9uvmVhWjMDVpTChftTj1FAwxXa5LE/hyrDZAZQ8s4zm5yUps35HiNP11IVRHkBlWk1u42p+iF5zLqgtvp/0Y1IZKiqeYNJC/2YYD1+d/J/cQkQtQAiapbFu0BkNaIbSZBabVobkPh+wJpTyUnMt7ArZGpADrgEspiktKB2Mtq/PJhhmOWwq9WWK+eR7u97+Cish5X29f2L2PqypJU9/th/w7p4P9VIKFxj7BMgAjxnBMIjd8ei1IQHM3PVdG/0RuJzNZGPR83kEK43YmvVQ2Ra2BqSb
- jFmPksSQ
- TBRdzRh3SfZ4kcAxsVdTXZDDVYpaxDFyoA4j1YIzZcWbfSp4PuhTqFw2QMHB/Cy5hTkZlHnwMZOlA/JbVUNsxIrWFgomUtmgMydTlm76c4hgUZXNmn50Nex+3SI3y98ZqAiI4b89Y+BjWSeecpXFRrPBq7/LpO8vi9c5/ryh4Fr+8kwfnwc7mGyFD/3fn+o/lkHcNYklHp1rgTcVRjZ9NdBqieU6DbBzS4kRtJPhlcKGXmOz2LAgqaLSWpiXLh/wkDXgbCUfaAGBBZOoZuHdplwZcMe4z456r2VoUP6NQEpRjYDaLJdTIQb1+Tw==
+X-HE-Tag: 1794536376-319254
+X-HE-Meta: U2FsdGVkX19hB0lCFeDvJB0rRWQn2e471OKEBqOYkMc4m4qZBXPbOOii6Nbd2h8g1MWpqfgIUpjGy6KbLFDLOLpNquwzdDX0fp4U/eRAznavfYRY7Iuw37chlZNokGdgbgKW5xQeagJxAT4uv9TPbaD859/w2dD8np3nRs8cHdF0oC+3+/kbTbJU9ynXZU6gqhbCRqiZOZKvrX65fYbeAVQSNJJ6bx6jSpN0PH3GvN3fMx3gDLWLQEpf7w9pgleZLtpDSbm+kzd0svV1rTbpz3Ft2cj+G9FL+Oc+oFCL7iK0SunxnrJQKUBp4n9RgrefSFwwmgw/UDsxW7ur7sPfWMbgej67D0f1lsGp+FAjEUsi3e+Jiw6VgJQ2ssLSYLG2B7a9K46WzIiNnZU7B5IdmuHwyPL+pTEHUujiunwPyFPVNxRAinA9jiiv3CELVl/6UQRn5kMnJ8c9ANtVGk+gcH/PQEEu6TxCuNrhYoCvWiozrb7OfOH3jTIirjyPExUL2xOqSv9Xkh+fHZ9fLszcEzIa1VnSDm6+UlyCUgdRHw/mSVeyLxNgd9rReUxp/5+nNg1j3UvftnruIdRd+xfV+cVh4djMdEnUhNekaDrJ3XRdQydwAvg63sO1mBuJ7eXL3hGBRZH3hgFKAd1yVuyWFrkDlHymJfmomR2iYDnu+stgvUc9zzsK6AD6umftJrdhXWOl+7P/JnBB7wcmrTdnA3A6XFkPV3jbjvOzAN2E77gimncQpNxLGpd7CzkVuKnVAaCrz5HrEuvibDtD7qP8dmYTA/+r1JKgZQ58mqNe5hq+BKe0lFlJCBt2KNr2shylyvdWTJ5J/vBHIyPnNeR2GIoIV05zPqHosGePbbM0PKXWmAC8E5wncwDtddV57mBv6B76qtvDc376lYaX4JjmbbrT9w1oCc8k3q1bZtP2b5TGyVnlb44OMWhbu+nmqSWHQSCXhn5X4vtYwsnBSfP
+ grGDsguF
+ /Wi2QvDEbiXj0bfDVsRfizix02tCtbYKDNnRUUpJl03Malx4M7fMtBm5LGoNkrvlgPbVTzJUSJnqLSCaP0mtoMr9y8Qo9SeXrLd66b5c6mZZkHpmlZHp7yL92iXw73Dd05J9RCi5RwuafGydmPKcmXWVF01U5zg8OSsYWzOPEUfhUawir+ozA6djYSKteeOT0tys1ICSidHcwZcS8ZsxlVZQ4hrlWp33aH/huPglXRkkkP26a/D5NdsULaWu6US1ZQj8KnvYzv5U0QYf87xPI0HYxjR3BZSUVq4Agv7XlDinZoCLmXKANn9OlLkV7Ndf/olo2b7Ilg6cD/RrSa0Zf+6QQ6Ntqy2VxOZ7fmf3U+HceaN64UQrr+Dz1luzOO/ezMN7WO6hDJCveyOurvotZYGwezOM251L00ijcCPZS8n+leMKz0mx9FZlXhc7uhrd3L0Un1MghJQUA/ZOrNOjRHgOJS1WabHkvxYe8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,253 +135,27 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-On 11/11/26 8:41 PM, Xueyuan Chen wrote:
-> CONFIG_ZSMALLOC_STAT only controls the debugfs interface. The class
-> counters are updated regardless of this option.
->
-> Remove the CONFIG_ZSMALLOC_STAT guards and rely on the debugfs API
-> stubs when CONFIG_DEBUG_FS=n. Skip statistics setup silently when
-> debugfs is unavailable.
->
-> Remove the Kconfig entry and replace the existing CONFIG_ZSMALLOC_STAT
-> settings with CONFIG_DEBUG_FS=y. Update the English and Chinese
-> documentation to match, and clarify the pool name in the debugfs path.
->
-> Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-> Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-
-|The documentation changes look good to me. Acked-by: Dongliang Mu 
-<dzm91@hust.edu.cn> # Documentation|
-
-> ---
-> Drop CONFIG_ZSMALLOC_STAT instead of making the counters conditional. The
-> option only controls the debugfs interface, while the class counters are
-> updated unconditionally. Removing it simplifies the code.
->
-> Following Nhat's suggestion, remove CONFIG_ZSMALLOC_STAT and rely on
-> the existing debugfs API stubs when CONFIG_DEBUG_FS=n.
-> ---
-> Changes in v3:
-> - Squash the three patches into one (Nhat, Sergey).
-> - Add Nhat's Reviewed-by.
-> - Update the documentation wording.
-> - Link to v2: https://patch.msgid.link/20261109-zsmalloc_stat-v2-0-caee41684aba@gmail.com
->
-> Changes in v2:
-> - Drop CONFIG_ZSMALLOC_STAT instead of making the counters conditional.
-> - Update configuration files and documentation.
-> - Link to v1: https://patch.msgid.link/20261106-zsmalloc_stat-v1-1-b574f4714adf@gmail.com
-> ---
->   Documentation/mm/zsmalloc.rst                    |  4 +--
->   Documentation/translations/zh_CN/mm/zsmalloc.rst |  2 +-
->   arch/s390/configs/debug_defconfig                |  2 +-
->   arch/s390/configs/defconfig                      |  2 +-
->   drivers/gpu/drm/ci/arm.config                    |  2 +-
->   drivers/gpu/drm/ci/arm64.config                  |  2 +-
->   drivers/gpu/drm/ci/x86_64.config                 |  2 +-
->   mm/Kconfig                                       |  9 -------
->   mm/zsmalloc.c                                    | 33 ++----------------------
->   9 files changed, 10 insertions(+), 48 deletions(-)
->
+On (26/11/11 20:41), Xueyuan Chen wrote:
+[..]
 > diff --git a/Documentation/mm/zsmalloc.rst b/Documentation/mm/zsmalloc.rst
 > index d2bbecd78e14..4c0786378dc3 100644
 > --- a/Documentation/mm/zsmalloc.rst
 > +++ b/Documentation/mm/zsmalloc.rst
 > @@ -33,8 +33,8 @@ proper handle-based APIs.
->   stat
->   ====
->   
+>  stat
+>  ====
+>  
 > -With CONFIG_ZSMALLOC_STAT, we could see zsmalloc internal information via
 > -``/sys/kernel/debug/zsmalloc/<user name>``. Here is a sample of stat output::
 > +With CONFIG_DEBUG_FS, we could see zsmalloc internal information via
 > +``/sys/kernel/debug/zsmalloc/<pool-name>``. Here is a sample of stat output::
->   
->    # cat /sys/kernel/debug/zsmalloc/zram0/classes
->   
-> diff --git a/Documentation/translations/zh_CN/mm/zsmalloc.rst b/Documentation/translations/zh_CN/mm/zsmalloc.rst
-> index 4c8c9b1006a9..b555a07ac871 100644
-> --- a/Documentation/translations/zh_CN/mm/zsmalloc.rst
-> +++ b/Documentation/translations/zh_CN/mm/zsmalloc.rst
-> @@ -32,7 +32,7 @@ zs_unmap_object()解除映射。
->   stat
->   ====
->   
-> -通过CONFIG_ZSMALLOC_STAT，我们可以通过 ``/sys/kernel/debug/zsmalloc/<user name>``
-> +启用CONFIG_DEBUG_FS，我们可以通过 ``/sys/kernel/debug/zsmalloc/<pool-name>``
->   看到zsmalloc内部信息。下面是一个统计输出的例子。::
->   
->    # cat /sys/kernel/debug/zsmalloc/zram0/classes
-> diff --git a/arch/s390/configs/debug_defconfig b/arch/s390/configs/debug_defconfig
-> index d44674b63715..83193ef8efb9 100644
-> --- a/arch/s390/configs/debug_defconfig
-> +++ b/arch/s390/configs/debug_defconfig
-> @@ -100,7 +100,7 @@ CONFIG_UNIXWARE_DISKLABEL=y
->   CONFIG_IOSCHED_BFQ=y
->   CONFIG_BINFMT_MISC=m
->   CONFIG_ZSWAP=y
-> -CONFIG_ZSMALLOC_STAT=y
-> +CONFIG_DEBUG_FS=y
->   CONFIG_SLAB_BUCKETS=y
->   CONFIG_SLUB_STATS=y
->   # CONFIG_COMPAT_BRK is not set
-> diff --git a/arch/s390/configs/defconfig b/arch/s390/configs/defconfig
-> index e00e252d4694..694a309377d5 100644
-> --- a/arch/s390/configs/defconfig
-> +++ b/arch/s390/configs/defconfig
-> @@ -94,7 +94,7 @@ CONFIG_UNIXWARE_DISKLABEL=y
->   CONFIG_IOSCHED_BFQ=y
->   CONFIG_BINFMT_MISC=m
->   CONFIG_ZSWAP=y
-> -CONFIG_ZSMALLOC_STAT=y
-> +CONFIG_DEBUG_FS=y
->   CONFIG_SLAB_BUCKETS=y
->   # CONFIG_COMPAT_BRK is not set
->   CONFIG_MEMORY_HOTPLUG=y
-> diff --git a/drivers/gpu/drm/ci/arm.config b/drivers/gpu/drm/ci/arm.config
-> index d7c51670da2f..fc0a8a4bfb18 100644
-> --- a/drivers/gpu/drm/ci/arm.config
-> +++ b/drivers/gpu/drm/ci/arm.config
-> @@ -5,7 +5,7 @@ CONFIG_CRYPTO_ZSTD=y
->   CONFIG_ZRAM_MEMORY_TRACKING=y
->   CONFIG_ZRAM_WRITEBACK=y
->   CONFIG_ZRAM=y
-> -CONFIG_ZSMALLOC_STAT=y
-> +CONFIG_DEBUG_FS=y
->   
->   # abootimg with a 'dummy' rootfs fails with root=/dev/nfs
->   CONFIG_BLK_DEV_INITRD=n
-> diff --git a/drivers/gpu/drm/ci/arm64.config b/drivers/gpu/drm/ci/arm64.config
-> index c46125c1f80f..10b01b55a66d 100644
-> --- a/drivers/gpu/drm/ci/arm64.config
-> +++ b/drivers/gpu/drm/ci/arm64.config
-> @@ -5,7 +5,7 @@ CONFIG_CRYPTO_ZSTD=y
->   CONFIG_ZRAM_MEMORY_TRACKING=y
->   CONFIG_ZRAM_WRITEBACK=y
->   CONFIG_ZRAM=y
-> -CONFIG_ZSMALLOC_STAT=y
-> +CONFIG_DEBUG_FS=y
->   
->   # abootimg with a 'dummy' rootfs fails with root=/dev/nfs
->   CONFIG_BLK_DEV_INITRD=n
-> diff --git a/drivers/gpu/drm/ci/x86_64.config b/drivers/gpu/drm/ci/x86_64.config
-> index 7ac98a78691e..8225b806dad8 100644
-> --- a/drivers/gpu/drm/ci/x86_64.config
-> +++ b/drivers/gpu/drm/ci/x86_64.config
-> @@ -5,7 +5,7 @@ CONFIG_CRYPTO_ZSTD=y
->   CONFIG_ZRAM_MEMORY_TRACKING=y
->   CONFIG_ZRAM_WRITEBACK=y
->   CONFIG_ZRAM=y
-> -CONFIG_ZSMALLOC_STAT=y
-> +CONFIG_DEBUG_FS=y
->   
->   CONFIG_PWM=y
->   CONFIG_PM_DEVFREQ=y
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index afff1b25b543..4a77cda7f1d7 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -130,15 +130,6 @@ menu "Zsmalloc allocator options"
->   
->   comment "Zsmalloc is a common backend allocator for zswap & zram"
->   
-> -config ZSMALLOC_STAT
-> -	bool "Export zsmalloc statistics"
-> -	select DEBUG_FS
-> -	help
-> -	  This option enables code in the zsmalloc to collect various
-> -	  statistics about what's happening in zsmalloc and exports that
-> -	  information to userspace via debugfs.
-> -	  If unsure, say N.
-> -
->   config ZSMALLOC_CHAIN_SIZE
->   	int "Maximum number of physical pages per-zspage"
->   	default 8
-> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-> index 7ef80e0da626..104ccf3aa170 100644
-> --- a/mm/zsmalloc.c
-> +++ b/mm/zsmalloc.c
-> @@ -222,9 +222,7 @@ struct zs_size_stat {
->   	unsigned long objs[NR_CLASS_STAT_TYPES];
->   };
->   
-> -#ifdef CONFIG_ZSMALLOC_STAT
->   static struct dentry *zs_stat_root;
-> -#endif
->   
->   static size_t huge_class_size;
->   
-> @@ -279,9 +277,7 @@ struct zs_pool {
->   	/* Compact classes */
->   	struct shrinker *shrinker;
->   
-> -#ifdef CONFIG_ZSMALLOC_STAT
->   	struct dentry *stat_dentry;
-> -#endif
->   #ifdef CONFIG_COMPACTION
->   	struct work_struct free_work;
->   #endif
-> @@ -565,14 +561,10 @@ static inline unsigned long class_stat_read(struct size_class *class, int type)
->   	return class->stats.objs[type];
->   }
->   
-> -#ifdef CONFIG_ZSMALLOC_STAT
-> -
->   static void __init zs_stat_init(void)
->   {
-> -	if (!debugfs_initialized()) {
-> -		pr_warn("debugfs not available, stat dir not created\n");
-> +	if (!debugfs_initialized())
->   		return;
-> -	}
->   
->   	zs_stat_root = debugfs_create_dir("zsmalloc", NULL);
->   }
-> @@ -650,10 +642,8 @@ DEFINE_SHOW_ATTRIBUTE(zs_stats_size);
->   
->   static void zs_pool_stat_create(struct zs_pool *pool, const char *name)
->   {
-> -	if (!zs_stat_root) {
-> -		pr_warn("no root stat dir, not creating <%s> stat dir\n", name);
-> +	if (IS_ERR_OR_NULL(zs_stat_root))
->   		return;
-> -	}
->   
->   	pool->stat_dentry = debugfs_create_dir(name, zs_stat_root);
->   
-> @@ -666,25 +656,6 @@ static void zs_pool_stat_destroy(struct zs_pool *pool)
->   	debugfs_remove_recursive(pool->stat_dentry);
->   }
->   
-> -#else /* CONFIG_ZSMALLOC_STAT */
-> -static void __init zs_stat_init(void)
-> -{
-> -}
-> -
-> -static void __exit zs_stat_exit(void)
-> -{
-> -}
-> -
-> -static inline void zs_pool_stat_create(struct zs_pool *pool, const char *name)
-> -{
-> -}
-> -
-> -static inline void zs_pool_stat_destroy(struct zs_pool *pool)
-> -{
-> -}
-> -#endif
-> -
-> -
->   /*
->    * For each size class, zspages are divided into different groups
->    * depending on their usage ratio. This function returns fullness
->
-> ---
-> base-commit: fa4ad798f6f681031775266044ba1b0cf3c670bd
->
-> --
-> Best regards,
-> Xueyuan
 
+While we are at it,
+We use zramX throughout Documentation/admin-guide/blockdev/zram.rst
+and in some other files as well.  So let's just replace user/pool name
+with
+
+	/sys/kernel/debug/zsmalloc/zramX/classes
+
+Here and in the Chinese translation.
 
