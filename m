@@ -1,143 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED918606A897
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 03:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3ADE606A321
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 03:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=d5ak/0K/
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=FABUw9KL
 Received: by kanga.kvack.org (Postfix)
-	id 045076B065C; Thu, 12 Nov 2026 22:13:57 -0500 (EST)
+	id 0BB636B065F; Thu, 12 Nov 2026 22:16:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01C266B065D; Thu, 12 Nov 2026 22:13:56 -0500 (EST)
+	id 06C616B0660; Thu, 12 Nov 2026 22:16:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E76056B065E; Thu, 12 Nov 2026 22:13:56 -0500 (EST)
+	id EC4126B0661; Thu, 12 Nov 2026 22:16:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C27BC6B065C
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:13:56 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 438F7A03A1
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:13:56 +0000 (UTC)
-X-FDA: 85428626472.25.20FE71E
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 4CD1C20003
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:13:54 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b="d5ak/0K/";
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf31.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794539634;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BE1C66B065F
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:16:01 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4A6601A03AE
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:16:01 +0000 (UTC)
+X-FDA: 85428631722.28.2A3E48C
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3A64B140003
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:15:57 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=FABUw9KL;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf23.hostedemail.com: domain of evers_chen@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=evers_chen@163.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794539759;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g7cNQ/YZaMN6lII1BbBbVlNBX/05rEUMzyowuYGYqyg=;
-	b=W3L6OtCDIcir3Jb6CLQnIy8avuAEzfUhGLc9dV0scKqe35qsAZFiH7BtGEDv0PPe7K0g9w
-	OJGGUdInLqz5+/+ru7zCfDdzmqGmewRPnZdzTNG8a3ew21BqlnPg6n4SW3mkPfeYR/78+R
-	A99VTDkrvYB4qfiBD32yBFANdsErTxo=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b="d5ak/0K/";
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf31.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794539634;
-	b=XPDyNSN8LP3iJ4BovVfc+RT+MCLpjIGAKZ1zjuqjxPii7FGyj/gu3T4uKvv8yYmuc/V4CJ
-	PCHamP3lPH8QSO2xOtT6KZVYpty4Osc/eSFBzwpjWuHArPMXrWzgT6FZDPkqAZl2SJrHaw
-	4MIEnYIygEirE0EE+NfXC9frDFpELLY=
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-5383c97c8cfso104651cf.1
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 19:13:54 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794539633; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nqIOb3gFIhPJCU3QTnVsaD0ctYr7LPmUcOqfjyN80a4aCdgFeiC43v/uH/U3h7fbZ5
-         +Rig3Yx+NIR0PtKGAAs1URaPe02kfKkYMt935IWF3K8+FzfqNs4xkjEMz4e9AzZg5027
-         yZV1sP40JXf7Dpvuj98XZbyfkulJO4OYccwK2S50zc3wQYPAep5qIjbLkGU8FSC4pLtD
-         vcaL+7shCk/VxG/2UPVSHEZ/Ljxt2yQTVgl0JJdP28+AmylRiCS8f1JmcviAkFKsYhc6
-         dkwpH18wNP37B16Jr6qjMyzCvx1+appAgA2navZ/Rp4/yyYfP0NuMg3Cf+nruJCmo1pV
-         qmMg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=g7cNQ/YZaMN6lII1BbBbVlNBX/05rEUMzyowuYGYqyg=;
-        fh=GvO039+ghDvc58662F8Fa1buj8swNc8fRHGO6ECAvqI=;
-        b=mq+9xFqY48uq+nkh2aYiF/4Uvql0HUDMIfWsgGNYcq0P0bNhS99PLn/JxZgdGMrehv
-         tcnCajWkWVsdUbHQpe6IBR6i1paU8WL6ZjAt1Mln3/29fu+c5aK+YLGOaohAjditHHHy
-         MVpkIvt5CXgcwMXiDpEhvnAAY/o9+eX4GN7/ybcKhAzzvlRFuBkZQKbRRXf2F/FWan0/
-         DtUiYJZIGSyTzmwy89p8PrBDVRqoWPwuijfhcsi00Fx7/uaIvoFMspdH1QO6esfo/lst
-         5aZ8jHrlhaOv0tm0PyX7fQySrk/1nnYuZn0wL9r7MIOnB0D6iNgI8+2RYWLUr/IxeYEC
-         TJnw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794539633; x=1795144433; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=g7cNQ/YZaMN6lII1BbBbVlNBX/05rEUMzyowuYGYqyg=;
-        b=d5ak/0K/fP8PByzbAFs/eroKUW1GZCAIsncSgF1+krPqhlxdF0XmlfB56cHGu8pw/6
-         Yr0l6cYARNBrmyPGX11URA7U80hfKuXfmUFJm5576m01k6PfVj3kUKSse7CikwG1ZwUE
-         kkmmem8SzPjLvKKtgYtm65FXniv/CipRwggoCmSlf4eBsU39VyvpiG4Iox0OjlJXYcNB
-         szCtYG21hAj1WJQC4hVXt5edPRm+t9wnHjGje6vFoDXYfTUUfUvZ8e2/tIe8Qn920Dui
-         0C0mC+lB0Iw9JfatVtMXAyejttnfwBCIB91YkSafKFlQ+AynBgy+MsjSU5w243Qgi+vo
-         XwUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794539633; x=1795144433;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=g7cNQ/YZaMN6lII1BbBbVlNBX/05rEUMzyowuYGYqyg=;
-        b=cPm3s2AQgQqhkf0qCNpr2IU+LkgECvVviZNRY3EqR694J61khj9tWkDZzanKPWmy5d
-         lY9vIkCaDASzBJUwZvWIyxS8yKmhM5grfQgb0cmYWTyEjhADFru3nfd0eENofzoPaB9P
-         NcPf0EFcLKAAsoSwV0gimTpp0s1hYOH4qzG4Ed7O6iS6iZf6NCLkkbG/UzInfg2jdTzm
-         dV0ju1Dm5/WVxHAeTtLgQP7P3UR4/JbN4iz2zF9UKTXp6WrupA+iVD1CJBUYPhpA9HjI
-         +7HvOno/G/6wEm6/HvYQBUFCxyNZprlhr7lnN8qsauzOjme8yp/WXmIoUPmZEExnrRAI
-         t2Hg==
-X-Forwarded-Encrypted: i=1; AL+hErGqdP9PkHVACnKzmvpdpLYFcWpHfhS+Mzw2AALGVRYM7QASpjINEA7sVT409L8lz5SgyRqd/1zYew==@kvack.org
-X-Gm-Message-State: APuU4Z+EOy+yO0L2GmYaKbld/sbvdlmeQvVbeQTGWMmemA3W+OdULlWf
-	9BewfIT7u5FVriXmntI0TxlJCld+8FaQOUBOhB7adLCZr9LO5JPz4V/lWG19YonLjAM7zDVLsLh
-	aQG1zXnmj1jLcegvbs/mhndUjtfvvLteSTqUWt9jt
-X-Gm-Gg: AYBFou3MzIsk4D6x33nKpsFDjVW9n4lbj/vI0B0+WqKqx3+Y4b8DJPdVFY7zKVHuvpW
-	BEUd2Rcfz008DbE7HAcn9ySKDh+SN517SC775/888nhPC1LKmzTrOmGP2ex1ipsfMeph78zURir
-	1PqzEeZoFKZjBsXKwEF1mDWIIqXlNk+l2qEIO5HRRpDjojYZiAJn9IhmgFNu3XsXxIVKy8EJPBz
-	uNoIpFMtjtm5dSMjBMDz3EhQUCie9MqX21JTVdl2NkPNyvdNNvX2NS8KnW7jXhubzmJK/J3/vSQ
-	OL2xtD4fqomY6qXIHzjwLsCy9pEX74z4t3R2JQlYkSSVZjbIGAWLJ2EJZKxrGrOwU1uxOdjYAP8
-	KvMNKP0PFcSPCXguuqtPDB14jnCDtk0Qwir0HbxH/G5asgQv2a0w2dE5hp/6ZP2qrMYYgTp0=
-X-Received: by 2002:a05:622a:4c06:b0:52f:9ed4:8d76 with SMTP id
- d75a77b69052e-55b32ae7d17mr2934621cf.14.1794539632682; Thu, 12 Nov 2026
- 19:13:52 -0800 (PST)
+	bh=5UWPlGM+o3dWohOnvym8E+O+RQOw/78ZpY1zfq1s7e8=;
+	b=7h8nB4KdpL3aahB4tcohURcd2wllS9EktM1JCnktefYkThxwjaf8L0o6eliAJu5EmS2hb3
+	E8YkLrGyFExdGh8CTxOEOkzOmA+4Ks86s8usP2MWx6+tshEQ3XzX98Rc1ldm6nt2Hd1HhC
+	gwzNXMaIWDk+UjlQkGW94S3LiUVYeUE=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=FABUw9KL;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf23.hostedemail.com: domain of evers_chen@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=evers_chen@163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794539759;
+	b=5zFp0ZtJNN9UV2tOjp3w+IvpcWZk9kYdsqBxWa9zKdE8+DPN/tQXI7ouaoTyNBZH2jvVZU
+	T/YONMU1OYG9T4TNCPXfM6Pl6OR69zTZg43I7kgRn/TU83d7+4mWflPJqe37HqF5mbW8yq
+	UsYJOvFmO5HfjirtMneW5S0BZ9HoDTc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=5UWPlGM+o3dWohOnvym8E+O+RQOw/78ZpY1zfq1s7e8=;
+	b=FABUw9KLHI8dQ+h33m7un8kvF8PX/fOjoTrVjKb3/d9iuT6VHxkMp1c0catLy5
+	0qvI6EQ3lho7V8B3Eo/h4ftoEA7mNtzaTpbJcJlkiR+xUkPZj2vxGep38myDo6HT
+	c5lnquD+/hyLK0lVpVXUqjitx0w5ccliFSHGkWJsd5euI=
+Message-ID: <94f0b18e-6bee-4aac-a396-fa5a5eea15fa@163.com>
+Date: Fri, 13 Nov 2026 11:15:37 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261112140101.647-1-adrianhuang0701@gmail.com> <20261112183727.68afda9533aff699eea12cdd@linux-foundation.org>
-In-Reply-To: <20261112183727.68afda9533aff699eea12cdd@linux-foundation.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 12 Nov 2026 19:13:40 -0800
-X-Gm-Features: AclHuK-5_bVJBffNEkLm33nopZ4Y4fegU-viRnI-qvcSPbYgKaZRfYUy-9POop4
-Message-ID: <CAJuCfpEqQQb1_UkWH50tgbdVz9KZ2anfCGWsvvoYFsnC_KHcjg@mail.gmail.com>
-Subject: Re: [PATCH mm-unstable 1/1] fs/proc/task_mmu: advance seq_file
- position on interrupted VMA lookup
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] selftests/mm: Handle implicit read permissions in
+ madv_populate
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, ahuang12@lenovo.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Cc: David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ chenxionggui@lanxincomputing.com
+References: <20261112031811.56500-1-evers_chen@163.com>
+ <20261112113231.ce39807d300f102e6763a87b@linux-foundation.org>
+Content-Language: en-US
+From: cxg <evers_chen@163.com>
+In-Reply-To: <20261112113231.ce39807d300f102e6763a87b@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_____wD31_XZgPZqXZLhHA--.33600S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxtr1kJFy5ZFy5KrWDCFy5CFg_yoW7tr1kpF
+	WUWF1YvFsYqa47A397uF17tryqyr4fCayIqw18Xr90ywn8Jry3Kr47Ga4F9a48AFWkXw15
+	Ca98u3srKr4DtFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Ukb1nUUUUU=
+X-CM-SenderInfo: xhyh22pbfkv0i6rwjhhfrp/xtbC7ByvuWr2gNxqnwAA3T
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 3A64B140003
+X-Stat-Signature: oxkfkddk6t7484zs8wyi4s8ckqaziiy1
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4CD1C20003
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: xwtfzd5h5e5d7xmsk7ahqcfdx4zue3rr
-X-HE-Tag: 1794539634-987894
-X-HE-Meta: U2FsdGVkX1+GQFvExxK0kw9jIQACwIWuevEqJ9tkPCm/qKqX1D4MwDWCj+uhWqdQh3O5gUen1vDH9L5EHmDjqTa8PtW90S2zcO7UVKrwWR1y5Z7lVWIvU0A+cg/kMGFJRxwCIXztloVycMTpEE+4B/qzkVpw8IH+yU8bErEZiuuQM5uSJeNJdT9rfMZ+BsNiEREsUbrYNPBiPol4433igN/jMHx9dqhUU1Foyx8bWInULjef+qVVDQ+241k8Odf3hTa+/gJ7OkUFNuKyPPrtlUiqO8Tdgv6KffkbbprMR1sRFb0b7SjdcPF2CD1vAL3bzSjI5GDiu6O3P6zBpHHJklZsuqnD/xmVwDrISlwtYg8IpkNL7NMGzu8flPdgw2wYw5BF8x1dMCE64l3mrAIcVOwjQrnfYV90nCyPAe/8bYZ1m4mYDIJ9Kjve3t33IjvVC5i/ujg2DjnmU78w0uxnR0pTFpeYawB2Tznk9XzHnJf7LTAodz8d0P+gW3iuEuxGrhX6DsiOeTNPlnFDxfwJ9bCvbB6p2X0ne7EkYfmzfSvUiSk7VG8lWPgTmE06GlaefMdmbOks2wg4F1m7uc4zY/Ij4JF/LdpYu6fIXDNSsSj0yz2G1w0CeURJyl95PEhPGsXq86kjULRgA3vkgPFg+N+f7zxSVTrIVHjO0kjabB6Jqh3ak7DlalVC441QPC+0OPySr/Rku6GtyOkUPnZ85ZhnfIynjSGP2bkHrmqMo/9qRTqPyGWmseHWiMo9K9V8+glRSKK6U9sQcPW1/k1Zfc1Jn3DrCN/OLonpgq1bZKsY0MpMqI9MeeI9sOzGeYCnOEf7X4Sw5ZQYl6SF5akmIeQwLwLkFKbOj0TuD2d87VKJOnXhr2X+lpnrT8MMJ0kj/FtQN3qNUm492j5dRIEtceIdXNrxaRbC/azuFCtIkvOCWOZR74SrhayTYlfL3AtIQc9DAJ6mVX8CR94yQ/9
- pe+THmHx
- KSMDOKD3Sv/dyf28+chlawr+NCLBNBqXvWW0E4QuXxWduhvrCP5/CBvV22OwGX9bNMIYEX4jPA2+il4qTYVfYZ9zj7J4OYKz9hhHfvNN7/HSxs2EbUY2i2hYtzSdChzngcg0pSp9W5R3sBEs7Xot3dIkUBBdJ6HFjBXKOLcnUL2q1rR66Gg71HcVZzkeT1jo0rtMpWsN7ipnBAWfTIegCIoSdm4UhmHxJwaxLtJID9t74lzpMUIUv3xbPo/4sb5j8ciDMkzm2tpShM6moZl7bDDW9b7RqDMBj3kkTaVEL5uKX2r5exR6mAio8H8ujcqjHH13eM0Xfu0C2AkTN6veB3Dow490vLnyAg9+rSDNpcwLVHYA=
+X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794539757-560151
+X-HE-Meta: U2FsdGVkX1/Ndli+F/0nd0whAEkUB3vxZwTeTQ2It4WUlSxRFr6FQ8ZlarW7b9lqNXPJDEKWBA3OPUtdCIvwTjx4lPMTokfVyCCQSu+fgkrz2zF8+I/a0PCRZUYCHC3U5jlPKmc/88G5h0fkI7rIaZXX8X2ZLr6hpfRvJRGHNKrv6zy5Flv7ezTS5NZ4WJC0BXi+Yu6vCezHqp5+l57yGDQOZSfWtLT3KPqNg81BCs0rJ8dMBBynoY3Mq0+gpAvTH87kE73wmEfKXNph2D1FFV3FuC4T8Th8sCuPG5EJYwIt4NKz76N5+iGvCSmwzzbzU41f7hTsTPGhjPlJLN1QZmoy3zFKCopT4zICC0wUOlmaJ3tYx/4ByOMmrYIND7l3s+EqQR3Eg+EJ1Fo4yZYn/yKJlHInX2LhfR87tbH7b+ElaCv1FOFSJw22uf7h6VhabEBm271UaD3Ttkz9uLk0g81KBxeelOiHj9lgPLYdh9erp6KAlxwAKvaLw2D4oDa1HwYf7AtW+HSKsJoIvQo7RE5De9kxJBzVmRJzxszwfQ+jx37oSqt8CX+txNyCH8yB8xEhksY9V+txRqRE0E0+Eq0OO8Rb2MSIsi9JW49oYgLstG+sUInLS3chC4b6GYx3zc91lXFl1WKsZzKCHeVvFhUXsDXmqMHJw6z9jcnpU7EvkTVCDIlYP4Dc0UkR7Wym9oo/OYazJQu+0+O1VIZJF8s009IyeRzylgLy5mSsUAwJDnZsdh3yyj/0/kNqtm8kGMnAARiGedJKwnD9BomwHBBZE+FlijKeY6fjWn/SfIaNF0H4cie689Fqkca5M4HzoB4xjcVYZso3TsxHOqiwCT6QE4M3qQEYSfsZPauFnIkZkSPd3pH1yBjLmOjiJlpaJ5INyedOCi3opLknsuIXyTUS3JpOj96uvzN3OIcRdgeTi9HCAfgf9dbTWyNjGHbht4LVcQlASh2p5s2ggdB
+ UwHTiDCd
+ B1n//ov/0p1CYY/MnD6PwG2mG3vat00y+S0XnvPCZ0+e5ZcpFi20TjSkpQq1WiTG/QfzOH5iHGFHSvON4/NZiGAK0/Dny5FC7WfGeWp/wsx7LAb2h5AARpNetT6em5MxjwGiBDPeWZoKrnzZRmmyT7CL9a2NzM/9ZYaDeUazXsxBiaNs3axK2X9Tn5L2AenhlCOSScr6VgpIakxMInju7mt65JCfkEDzzshweX6LOoo5O5cvGL0W91EIb3NuwtkpQVQvSTP2mkEXa+PKIA3djjg05+rgk/LvINbKhaH4qpwxoGm+Ndx49RJ+XmDoJ/n8enCrH2NqRsXxeGuX1Gx+U1E/4qSwLxnslIWBrXiVZ+x8ygxyOEPJ9lLjDzCpJ7BcPkaj9W3WT8flrhYcZN4J4LdRkfYslDOKtjtqbykR0tK1Ea5jl4P/ZrufUOLigCQXbEK8T5zDRizEbkkU5Xpfffu7qmgPmGzyWgvP++t1+98PDYmP5ZA6JIf2djgoOJmu6KQD/+E7YlGtwmbNGikpaW5pcBQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,37 +98,192 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 6:37=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
-> On Thu, 12 Nov 2026 22:01:01 +0800 "Adrian Huang (Lenovo)" <adrianhuang07=
-01@gmail.com> wrote:
->
-> > Commit 5631da56c9a8 ("fs/proc/task_mmu: read proc/pid/maps under
-> > per-vma lock") introduced the possibility of returning -EINTR
-> > from proc_get_vma() when the VMA lookup is interrupted.
->
-> OK, but what's causing the interruption?
->
-> > When this happens in m_next(), proc_get_vma() returns an error
-> > pointer without updating the position index. Consequently,
-> > seq_read_iter() reports:
-> >
-> >   seq_file: buggy .next function m_next did not update position index
-> >
-> > The above buggy message is reproduced by the following command:
-> >
-> >   # stress-ng --vma 0 -t 60
->
-> afaict "stress-ng -t" can send SIGALRM, but mmap_read_lock_killable()
-> only responds to fatal signals.
->
-> So please clarify: exactly what is causing this to happen?
+Thanks for the review and for improving the changelog.
 
-Also I don't think stress-ng --vma 0 -t 60 command reads maps, smaps
-or smaps_rollup files by itself but I might be mistaken. It would be
-nice to get more details on how this gets reproduced.
+The revised description is accurate. It correctly explains that the 
+behavior is specific to RISC-V and that MADV_POPULATE_READ depends on 
+the VMA permissions rather than the hardware PTE permissions alone.
 
+The updated changelog looks good to me.
+
+Thanks,
+Xionggui
+
+
+On 11/13/26 03:32, Andrew Morton wrote:
+> On Thu, 12 Nov 2026 03:18:11 +0000 Xionggui Chen <evers_chen@163.com> wrote:
+>
+>> The madv_populate selftest assumes that a mapping created with
+>> PROT_WRITE cannot be read, and expects MADV_POPULATE_READ to fail
+>> with EINVAL.
+>>
+>> However, some architectures, including RISC-V, may implicitly grant
+>> read permission to PROT_WRITE mappings. On such architectures,
+>> MADV_POPULATE_READ succeeds, causing the test to fail incorrectly.
+>>
+>> Check the actual VMA permissions through /proc/self/maps and adjust
+>> the expected result accordingly.
+>>
+>> Add a PROT_NONE test to verify that MADV_POPULATE_READ still fails
+>> with EINVAL for mappings without read permission.
+>>
+>> On RISC-V with Linux 7.2.0, the original test fails 1 out of 16
+>> tests, while the updated test passes all 17 tests.
+> Code looks good, thanks.
+>
+> The changelog is a little imprecise.
+>
+> "some architectures" is too broad - this is purely riscv.
+>
+> The wording suggests that a readable hardware PTE alone determines the
+> result.  riscv can have readable writable PTEs without setting VM_READ,
+> and this test still expects EINVAL on those systems.
 >
 >
+> I altered the second paragraph, please review.
+>
+>
+> From: Xionggui Chen <chenxionggui@lanxincomputing.com>
+> Subject: selftests/mm: handle implicit read permissions in madv_populate
+> Date: Thu, 12 Nov 2026 03:18:11 +0000
+>
+> The madv_populate selftest assumes that mmap(PROT_WRITE) creates a VMA
+> without VM_READ and expects MADV_POPULATE_READ to fail with EINVAL.
+>
+> On RISC-V, commit 6c7559f22b6f ("riscv/mm: ensure PROT_WRITE leads to
+> VM_READ | VM_WRITE") makes the kernel set VM_READ for mappings requested
+> with PROT_WRITE.  MADV_POPULATE_READ checks this VMA permission, so it
+> succeeds and the test fails incorrectly.  Whether the hardware can read a
+> writable PTE does not, by itself, determine the madvise() result.
+>
+> Check the VMA permissions through /proc/self/maps and adjust the expected
+> result accordingly.
+>
+> Add a PROT_NONE test to verify that MADV_POPULATE_READ still fails with
+> EINVAL for mappings without read permission.
+>
+> On RISC-V with Linux 7.2.0, the original test fails 1 out of 16 tests,
+> while the updated test passes all 17 tests.
+>
+> Link: https://lore.kernel.org/20261112031811.56500-1-evers_chen@163.com
+> Signed-off-by: Xionggui Chen <chenxionggui@lanxincomputing.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Shuah Khan <shuah@kernel.org>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> ---
+>
+>   tools/testing/selftests/mm/madv_populate.c |   67 +++++++++++++++++--
+>   1 file changed, 63 insertions(+), 4 deletions(-)
+>
+> --- a/tools/testing/selftests/mm/madv_populate.c~selftests-mm-handle-implicit-read-permissions-in-madv_populate
+> +++ a/tools/testing/selftests/mm/madv_populate.c
+> @@ -69,10 +69,38 @@ static void test_prot_read(void)
+>   	munmap(addr, SIZE);
+>   }
+>   
+> +static int mapping_is_readable(void *addr)
+> +{
+> +	FILE *maps;
+> +	char line[256];
+> +	unsigned long start, end;
+> +	char perms[5];
+> +	int readable = -1;
+> +
+> +	maps = fopen("/proc/self/maps", "r");
+> +	if (!maps)
+> +		return -1;
+> +
+> +	while (fgets(line, sizeof(line), maps)) {
+> +		if (sscanf(line, "%lx-%lx %4s",
+> +			   &start, &end, perms) != 3)
+> +			continue;
+> +
+> +		if (start <= (unsigned long)addr &&
+> +		    (unsigned long)addr < end) {
+> +			readable = perms[0] == 'r';
+> +			break;
+> +		}
+> +	}
+> +
+> +	fclose(maps);
+> +	return readable;
+> +}
+> +
+>   static void test_prot_write(void)
+>   {
+>   	char *addr;
+> -	int ret;
+> +	int ret, readable;
+>   
+>   	ksft_print_msg("[RUN] %s\n", __func__);
+>   
+> @@ -80,9 +108,19 @@ static void test_prot_write(void)
+>   	if (addr == MAP_FAILED)
+>   		ksft_exit_fail_msg("mmap failed\n");
+>   
+> +	readable = mapping_is_readable(addr);
+> +	if (readable < 0)
+> +		ksft_exit_fail_msg("Cannot determine VMA permissions\n");
+> +
+> +	errno = 0;
+>   	ret = madvise(addr, SIZE, MADV_POPULATE_READ);
+> -	ksft_test_result(ret == -1 && errno == EINVAL,
+> -			 "MADV_POPULATE_READ with PROT_WRITE\n");
+> +
+> +	if (readable)
+> +		ksft_test_result(ret == 0,
+> +				 "MADV_POPULATE_READ with readable PROT_WRITE mapping\n");
+> +	else
+> +		ksft_test_result(ret == -1 && errno == EINVAL,
+> +				 "MADV_POPULATE_READ with write-only mapping\n");
+>   
+>   	ret = madvise(addr, SIZE, MADV_POPULATE_WRITE);
+>   	ksft_test_result(!ret, "MADV_POPULATE_WRITE with PROT_WRITE\n");
+> @@ -90,6 +128,26 @@ static void test_prot_write(void)
+>   	munmap(addr, SIZE);
+>   }
+>   
+> +static void test_prot_none(void)
+> +{
+> +	char *addr;
+> +	int ret;
+> +
+> +	ksft_print_msg("[RUN] %s\n", __func__);
+> +
+> +	addr = mmap(0, SIZE, PROT_NONE,
+> +		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
+> +	if (addr == MAP_FAILED)
+> +		ksft_exit_fail_msg("mmap failed\n");
+> +
+> +	errno = 0;
+> +	ret = madvise(addr, SIZE, MADV_POPULATE_READ);
+> +	ksft_test_result(ret == -1 && errno == EINVAL,
+> +			 "MADV_POPULATE_READ with PROT_NONE\n");
+> +
+> +	munmap(addr, SIZE);
+> +}
+> +
+>   static void test_holes(void)
+>   {
+>   	char *addr;
+> @@ -266,7 +324,7 @@ static void test_softdirty(void)
+>   
+>   int main(int argc, char **argv)
+>   {
+> -	int nr_tests = 16;
+> +	int nr_tests = 17;
+>   	int err;
+>   
+>   	pagesize = getpagesize();
+> @@ -280,6 +338,7 @@ int main(int argc, char **argv)
+>   	sense_support();
+>   	test_prot_read();
+>   	test_prot_write();
+> +	test_prot_none();
+>   	test_holes();
+>   	test_populate_read();
+>   	test_populate_write();
+> _
+
 
