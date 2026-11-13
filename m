@@ -1,124 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6381606BAB5
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 15:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD32606EBB6
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 16:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=g-ucla-edu.20260707.gappssmtp.com header.i=@g-ucla-edu.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=jkBb59ec
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MijHPcsQ
 Received: by kanga.kvack.org (Postfix)
-	id 089F46B05B5; Fri, 13 Nov 2026 10:59:24 -0500 (EST)
+	id 2B35A6B00EF; Fri, 13 Nov 2026 11:03:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F07C16B05B6; Fri, 13 Nov 2026 10:59:23 -0500 (EST)
+	id 264286B05B0; Fri, 13 Nov 2026 11:03:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA7726B05B7; Fri, 13 Nov 2026 10:59:23 -0500 (EST)
+	id 17ACC6B05B9; Fri, 13 Nov 2026 11:03:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A0AFB6B05B5
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:59:23 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 15AC71C26E2
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 15:59:23 +0000 (UTC)
-X-FDA: 85430555406.06.07C19B9
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 2E11718000B
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 15:59:21 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=g-ucla-edu.20260707.gappssmtp.com header.s=20260707 header.b=jkBb59ec;
-	spf=pass (imf16.hostedemail.com: domain of jasonangelov@g.ucla.edu designates 74.125.82.53 as permitted sender) smtp.mailfrom=jasonangelov@g.ucla.edu;
-	dmarc=pass (policy=none) header.from=ucla.edu
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D79506B00EF
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 11:03:10 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EBBE81A01C4
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 16:03:09 +0000 (UTC)
+X-FDA: 85430564898.27.F9BA637
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C35F2100017
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 16:03:06 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=MijHPcsQ;
+	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794585561;
+	s=arc-20220608; t=1794585787;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BUQE0kUGDk8M7CIw9MtJvjFLkWAN6uJ898YNqYUmUwc=;
-	b=boBmT3hU8sfKiEMM7++bvScXBjUynbyTfiwbWip6j8Uqf7wgGdfcJp9em4DXZQzj3VMiHB
-	2S86qRGGclTkmkOBh3pqbaLcG4nLFNbpkTRFbLy1vJe/Ld7MQzBZ5rqMeuMQCnyab2LmCR
-	OA5aixvc6l+fnPIQFLa9byzT/O3AhtQ=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=lv8NvC7HZDwkKZVoXw+7O2h5gIlJbnwmSDVX+2upUUs=;
+	b=uQvRjbbFrU3d8ZmiszOQCjDzy/lsIdaIZIsEbXV+H5vk2mRFBLmKKqhH4vfQLjZ4ADaLBl
+	ffeDxn3POeLQ6S1sykTDPLt/dH0H4gt4wFAo1lAdj8NgL5Ee9ZArlG1zGQEybgedxk0RMz
+	xpW3cYYU0Xw1vMGN0PKtvPKD/QSq5Ok=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794585561;
-	b=EY00AwSgEdbhzBnNoh0dXWOuPAT9akQRzCZJ/+CReMT3jUhY32TMG2wdP/OOIIQEjM1Xj0
-	rluJcIwWBsAn8H+MeNkoXqNT3xMJYByEm78Aegu6Rm5Qzf/08H36mquKqqZhZkYSAAaB3y
-	H+6jTjvBq1CQZvlAwwgGraknWquio7k=
+	t=1794585787;
+	b=jXmzq06PuOZ8niCaAzWf3bA9RS0mFqccTjUpWpV73yjEQBSZnHZaN729giar4CbvkJeBgW
+	4+4xpl/pFZUzPKpOB+PabrhFXybiGwl2A8AxZJw+6RRzWMPsRdf4aI7Ju1LqnoNm1WyqCB
+	3z7D0t3PuS83S4ZSyordEz9dORM1a5Q=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=g-ucla-edu.20260707.gappssmtp.com header.s=20260707 header.b=jkBb59ec;
-	spf=pass (imf16.hostedemail.com: domain of jasonangelov@g.ucla.edu designates 74.125.82.53 as permitted sender) smtp.mailfrom=jasonangelov@g.ucla.edu;
-	dmarc=pass (policy=none) header.from=ucla.edu
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1a2af4c8d00so2114944c88.0
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 07:59:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=g-ucla-edu.20260707.gappssmtp.com; s=20260707; t=1794585560; x=1795190360; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=BUQE0kUGDk8M7CIw9MtJvjFLkWAN6uJ898YNqYUmUwc=;
-        b=jkBb59ecdmkrdrI0zjNAbRscOIQcUBmZn20SjsfKBcxbo4aEe0OemzJzBStBItHq49
-         oYoTnTjjs1FW9BeUy5lJHVKspr9bRT672A4kIjUnSjlvE7njbIB431shTPxCNFELrKb+
-         ydEPv4TVbv56z4xRqmftN0miN+r0HXHCPeWTX5t8G4zzqRz66ImF92Kn2Ev8FXLviXyx
-         7IAs/bUeePsGnlkpLaBSbIMCwjHL/zw5ai+xkPL2vuyyxMbbZ7gU9tdGkGgrzR+Lyfi6
-         rx2fuKGFjwL/aGkF7hVP9DL7OTxunkfvgfr4PgYInmp2e0FdeGwFgYcy3Ul/qAoSGM4H
-         +IAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794585560; x=1795190360;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BUQE0kUGDk8M7CIw9MtJvjFLkWAN6uJ898YNqYUmUwc=;
-        b=pXzFLqriZ0OLbx4ZsWLPqnDC+sFPmkvaxhgkgX4k3lmqsXBdrhbRz9l8r8hW2FhGub
-         mpbaluPGf44T751qAiIKHU1vaRqcSEDDZniKwBCLnzxwOqLAs6Jgd2fSn+1o8GEYJ3lx
-         HhCuOMFqvV+BNQ3949bGjNm1NunS+xuxSl2YfwiztlJbVu0o2mU66m3kuSKIq/uCPOMM
-         n6cGmMVbVQUZaWL/S2v4DNTc+sOEaOKcLLMP404njrM/agdApK9wfdmEhUhdHcryQTin
-         J/UshoJTwxoFscBhTX5EHFtlTZluJhL6BrXMoloc1DHSwL+6y9hQcGRwoZj8ECvyPeM9
-         HH6A==
-X-Forwarded-Encrypted: i=1; AL+hErG97dhZ4+Kud88PPbk2nAbI4ZBfOlK+0sG3Ozvp40Jnmwhm2ME9GuOj2zfrC1nKmTYnPYkajQKqkA==@kvack.org
-X-Gm-Message-State: APuU4Z/iOrwJddzn3eELZsx5LlNqlbMdfAAow0S9iXcRhatGJVPn02KK
-	mZKyPbHxvBNMJDwwRL6gHV+osZrygUolzicN7yy36yK/nIME0a2Cchn0KYpa4FtKw+v80kzuOvB
-	OyLEmeOeH5g==
-X-Gm-Gg: AYBFou3g3Eu+xKgeS0+eYUA/SYglH+RfkoiRrL+vw2NL8xQW0EZnCUznyYe+RIdyTF2
-	j6byrttol92pdKQNDQb1NjmMFXJkQLJYaezxgOqqtyGpgUkuRLq//Txd5O1gJ+ct2CrTst15FLs
-	KjaBj01vmtDPvEqoLnNYvqFtFrtEM5btvhxdRs8Edqxcx8CnJpT6nefbuoPakbRHZWllQRMBYva
-	T08mS2lPlbaL5XZEQAu23ztV55JTJp59fOefzLArirHGInMrIOXbOPVItF20yzPhYMR7GpvYAY4
-	TAXWec0dDOCfY26NYCD7u8RBeX9emLtV/jhsDSMCCxjuaNKMDyIkL+bdQ6usmwwIyO5Y1A/jQ6P
-	j5gzngljNNYZ+IeTBCXK3+ZGHKurZeI2E5JLUaD4QLv8Xy6Qt3AqaCYKcWhySNtzlmaz4tnS6fA
-	y9VbVbYYoZo5pTKeNCoXjMgilZaiJmaOtyHMiPFiCtkaVkJb9tUYNI9BybanwPL4wV4rRLiJT0s
-	8Jmqj4quef9+ZIwjQ6OByhIEPJN9v2LgpfFkV+BGCmu2oKGH0k+9oNfOy0AOa+7UEneYcJYY5tE
-	UtN1TN+BKDNCD2ffGgb15c2NLn+W2Q==
-X-Received: by 2002:a05:701b:4590:20b0:1b3:b53e:b4c5 with SMTP id a92af1059eb24-1b503137aafmr2631085c88.38.1794585559658;
-        Fri, 13 Nov 2026 07:59:19 -0800 (PST)
-Received: from [127.0.1.1] ([131.179.95.34])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5031bc518sm7868383c88.15.2026.11.13.07.59.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 07:59:18 -0800 (PST)
-From: Jason Angelov <jasonangelov@ucla.edu>
-Date: Fri, 13 Nov 2026 07:58:57 -0800
-Subject: [PATCH 3/3] mm/damon/tests/core-kunit: test
- DAMOS_FILTER_TYPE_AGE_MS interval changes
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-test-age-ms-filter-v1-3-b99eab2f71bb@ucla.edu>
-References: <20261113-test-age-ms-filter-v1-0-b99eab2f71bb@ucla.edu>
-In-Reply-To: <20261113-test-age-ms-filter-v1-0-b99eab2f71bb@ucla.edu>
-To: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Jason Angelov <jasonangelov@ucla.edu>
-X-Mailer: b4 0.14.3
-X-Rspamd-Server: rspam06
-X-Stat-Signature: qh6uj1nkf1phqgrrf99i69tb438be8dh
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 2E11718000B
+	imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=MijHPcsQ;
+	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794585787; x=1826121787;
+  h=date:from:to:cc:subject:message-id;
+  bh=iTh6WixWUDEbiKZbg0v39EPO5GHw8FrjoVYrf52zqFs=;
+  b=MijHPcsQt5Yszq90yQvE70aeu7HVcRtAD5KCu9Gk24MUYScUxmMExqXC
+   oOZ4x6T9iEumQ1RWpOguwiplRnzzWYi4kuhocXykXNUCCMa7OURZGEWAL
+   5dt4WTmSUHJhirA4FwDrd7AP4hqzb7OCYgjDk1WDco1fNpQbzfTAcfOlX
+   VB965lL09GTi7TUlFrlFYL7wGmYJuM8IA54DU0Tel8hvMtIkP5XxRXcLK
+   UMlsWFZHnWtFXwPXlzWwSYM53GYtKNzc7V/QxU8z9nW87bX0VCQI0MmsG
+   aibjoJbKc4TuohOiw/1ni5JoYYlJyq64P39K1+YX0vlZg+Ztnlg8JIyCp
+   w==;
+X-CSE-ConnectionGUID: LwdRGEdMTvS6rXTkppwnhQ==
+X-CSE-MsgGUID: nEbFhwbhQeOlI46qUptFxg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11965"; a="3387172"
+X-IronPort-AV: E=Sophos;i="6.27,211,1787036400"; 
+   d="scan'208";a="3387172"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 08:03:06 -0800
+X-CSE-ConnectionGUID: Jn5E5HN0Q2SBwu/Ed/juJg==
+X-CSE-MsgGUID: rMENWAhJSS+2U0SLEh4nqA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,211,1787036400"; 
+   d="scan'208";a="9118710"
+Received: from igk-lkp-server01.igk.intel.com (HELO 1073a420ae3a) ([10.211.93.152])
+  by fmviesa002.fm.intel.com with ESMTP; 13 Nov 2026 08:03:03 -0800
+Received: from kbuild by 1073a420ae3a with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xRtjx-000000001Id-0UlJ;
+	Fri, 13 Nov 2026 16:03:01 +0000
+Date: Fri, 13 Nov 2026 17:02:14 +0100
+From: kernel test robot <lkp@intel.com>
+To: Phillip Lougher <phillip@squashfs.org.uk>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org
+Subject: [akpm-mm:mm-nonmm-unstable 130/151] fs/squashfs/namei.c:141
+ squashfs_lookup() warn: unsigned 'block' is never less than zero.
+Message-ID: <202611131701.jmNjTw9l-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: agjeun6x5kd6tbg3y65j3n6ag818i4pe
+X-Rspamd-Queue-Id: C35F2100017
 X-Rspam-User: 
-X-HE-Tag: 1794585561-881395
-X-HE-Meta: U2FsdGVkX1985EF3hnEMcOhW5g7Xl80B9ZhHdMNE7EuYRp063AWrNkx1iNZohpMRx9eJRqq/72HNdyz4RwQaKeFfcnfsCxorR9astjvEPc6VkEhXqZD2r9TJaPjZv6fjjHUekAEJ90WuQ1fkjluu5I7yNcdfiaRreDDa+enBvBkfR3+wVDyDIi5Z4ve/g85nCK+sHuwlljCRAj1w2OZ5FwNHXRod8M6CDlg43sfk0Vx47aXmCLMREJWlFlXBmoNcRCVnkcQ8JFoRRT2bdXL3ZhdvDpyPc9+7NwoDMV0AjZHUi9FptoNxElhyqy2fX2XQbRNoQCGrnOfTw+ZwBwr74ORjE2aYwUebsqL5VwnHhkUnmsvkr44j4diNyz4BVEpdQ1Q23nwCAiV0NF27WU9dFjHJ2GQSP2H9IhBTwRa0sJmBZkrRsYn+BT3LcF/GPi/QALq6GGjnwW9gUYc8gpHWRdvA+Cje4kS3qjAvMbaWpUsKU1R1UWmR0hw6EjFRIVI2hfE7EDNFbWSQb9VB+MCkcRPhbwCDGSBunIpXLcKrFF/dXWuEpV+WDvVmGHfS4osV1/h3Yb+NyXybNb9zDtVoZ82Xthpfdg456xsBmN3PTLdNUZ5hOW8M7/LH6h6A6WEMqoF6mBtkVCNwbbWnLWvV804/8wmGgHrYHwJ8EA9FUXaslr6BGMedplWm+jajOaQEX/coGq50/DylkWJ7sETAv5PPw1ruepbvTQx8R/4dUtkRtS8LvG0aXvmxwR6FLdAsJQdh86q4SGto4B4Ymf91VuTabgYqWf/EKgICWos7CjUrE/Br2PEYSjnNRdil7uaUebrZTq+7BIh3NtksqtJrao/xqoTuVezi+9sTPyQ+YNDog96oO0oXlWgzTuZ8NNiiIu5ColRO/2P1PTHZ635R+CrzIsDvaIBg2ksvixnBnwHLZz75NTBn2dzjUwYL+v1GWJTHzaIRC34o5yP7xwS
- 7L+PxgAS
- EkGpX6bDOsJERsNdEKz35GAR6odlOeGJadIiibhjrtltSRk5v2g4r6pawfghTzjtU2OvZljcXuNcuPArez56fXxScK90Ejy3l7ovNCS8tvMW+jYVv7ujB9h79KSfk7bqD5qpnKy5cK1406ikIRn31CFamRounERU1e0ItIPvTJFqea9cGWgQM+O7sZX+wJL2AIoG3RCU5ba0A3IiEI+tVpOaLmLI2ecYxKLOxp4us1fhXve8Jjqfo08pqoXzossbzcL8v8hYIR41cGbhlZJ5ioBuw16rQcqMkSxv//1+huqeHYmYWQwvuVXrfRkcpE52TamV0EwPbveTxNsdrb203wlgLUE7ISK5DuC6bDOqNpAdw589KM/UkuBDUUp0jQVj0qwDP//du26J0X9SCwm09FJORszctWVVYX1J8Bid85Fd5W+FNymloCjDTFOJLLOQM8wcXoilg7JZYCOx8u12pPFZb9J/tSlP8ve9RsBym0CwFjN//mhTzVijToaKLquODx5x7gO2ffCtoH3ewHkKpmR+fbrlwbY7kAZe/DpNBGUbBwHEClwkprESXDDvneJRKUMCa2BrknPoQq/JOwah7PGiwAA==
+X-HE-Tag: 1794585786-830451
+X-HE-Meta: U2FsdGVkX1/HNUcWjtT1LopwKWNsNRDfHqBo69tgys5DUXQnDGghQ6RxkQv73GIp6cvpf1gebJtse6t9StGPTslaIV3qKLdCbTxKlHK/WJ6B6bHMu0jHtJ68/CGJYvnNNjxKab4tnEaYhGf7mCnizSHMT1cURVQwXK02+D8kcD0HybIMeMlkxKveJw2sBnuDhBlzZkqdWN8zy22ZAN0ulYZHNIdPMAwuYHQG5y8AfAru95H48MYZGGdLjNQF+wSxe3Gfv+tbqFR29DS8SwQU8GnnbcJZP0mc5xOJPRtuZtflrWxtuctDpAf3lHCxvvx9BCJDNYnOyugQXP0Ja/rJGxVRs7S4puPJ6KxL+c1WTl5TRd6Y/8zy+7JjVVKI/bT9E9wFSJ6GRQBOypN7nTM7KbLvXJktImru1eLvN/lRW+mFAVJms/9n4n/vr11SmnF1Kb+Vui5CPEie1G1JN4DHprl++3BPzaI99W/D3FASBp7gdVU8oH0dmOBo6tZjFCXFvJRW9MmqAJ94XA2aNO714mUB0CEo9WafKMzIa/q1+KzZqJYGVmQ4H3Imn5S0TQ8sk1rTSVzrVOKpjEzml/vEHR3/D//7MFMBEJL0Aea+QeLzBfGanyI05I6nmnZbez4liWY9kQRq8psPHvRXzQqo+kIWsfKbRUxWWaaFvbTCaOpIlwDrK/c/T6gJMsvzUR1C2Q82Hn80vUaDyWUZwwD2P/IPTaf3CTd2Y3GUg5Bcqiqh6lQ4qL0lUG+Vc/lUpkgcyjjEjyZsoc6l/Bc462mgphTZHlz/0mTbZkz/tYbbi/PNYPr7YrOHODrzyizaygwLzH4l5izmOCjymRc/eE3jxaG5zxubuP/OjItfsJg0mEu2MislY53n7TpYdVzO/MZg7u3sZl6dcjnxpNnCeifPDecQTi9bgoDseMlTQXKAYot18uABCGJFWOO0MBkVGuHyV+54Df/RlxJ1Mjh2XSq
+ wSmLHKln
+ YzCrh1fG7ojCbShYO6Q22VmA6AiNZoRu5mwp05kuUNmHv5cOdDerNVTkLT2znQo6QBG5Z587cQWGbrMj39YyxqHdUSsBtG81PhSR7gzTSVOQtYBVN8Z+N3bzNWoxZv2z+ok59Qr6vAXlh+RwAj1TN5aUYkdf8vS5KFZm95+Pymt+AEb48hXH7XrKbn4wBG7Ea3mTD9mS04yzVjNyE/axegPM9vWXxhrVTPIXPP4IidkpNyXPQ9s4OWHAnHHzCMQzQXbqczPpqiaXS1Ovt0mxZ6MnzUs0yEHoUUrOb7XN2gJouHwv6mQRPtvpqKgLvkJapkk+YBtwipEwXbLc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,125 +104,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-DAMOS_FILTER_TYPE_AGE_MS defines an inclusive range for age in
-milliseconds to filter for target regions.
-Aggregation interval can be changed by users or intervals
-auto-tuning features.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
+head:   152f0559e66c079f717de375f133ff127afb1f58
+commit: 4dddf794b08bef04e5634dd4b52775a160d2cb6c [130/151] Squashfs: sanity check directory metadata block location
+config: um-randconfig-2200-20261113 (https://download.01.org/0day-ci/archive/20261113/202611131701.jmNjTw9l-lkp@intel.com/config)
+compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project 8621950157210c1fa68f20f0614cb51310ec9dff)
+smatch: v0.5.0-9187-g5189e3fb
 
-Add a kunit test for each:
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202611131701.jmNjTw9l-lkp@intel.com/
 
-- convert region age to milliseconds, correct behavior at boundaries
-for defined filter range
-- DAMOS_FILTER_TYPE_AGE_MS filter keeps correct behavior even when
-aggregation interval changes
+smatch warnings:
+fs/squashfs/namei.c:141 squashfs_lookup() warn: unsigned 'block' is never less than zero.
+fs/squashfs/namei.c:141 squashfs_lookup() warn: error code type promoted to positive: 'block'
 
-Signed-off-by: Jason Angelov <jasonangelov@ucla.edu>
----
- mm/damon/tests/core-kunit.h | 81 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 81 insertions(+)
+vim +/block +141 fs/squashfs/namei.c
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index fb84d30a712d..6de7c2531702 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -1837,6 +1837,86 @@ static void damos_test_age_ms_filter_is_core(struct kunit *test)
- 	KUNIT_EXPECT_FALSE(test, damos_filter_for_ops(DAMOS_FILTER_TYPE_AGE_MS));
- }
- 
-+static void damos_test_age_ms_filter_interval_changes(struct kunit *test)
-+{
-+	/* Filter window: 200-400 ms.  Start: 100 ms interval, age 0. */
-+	struct damos_filter filter = {
-+		.type = DAMOS_FILTER_TYPE_AGE_MS,
-+		.matching = true,
-+		.range_min = 200,
-+		.range_max = 400,
-+	};
-+	struct damon_attrs attrs = {
-+		.sample_interval = 5000,
-+		.aggr_interval = 100000,
-+		.min_nr_regions = 3,
-+		.max_nr_regions = 3,
-+	};
-+	struct damon_ctx *ctx;
-+	struct damon_target *t;
-+	struct damon_region *r;
-+	int err;
-+
-+	ctx = damon_new_ctx();
-+	if (!ctx)
-+		kunit_skip(test, "ctx alloc fail");
-+	t = damon_new_target();
-+	if (!t) {
-+		damon_destroy_ctx(ctx);
-+		kunit_skip(test, "target alloc fail");
-+	}
-+	damon_add_target(ctx, t);
-+	r = damon_new_region(0, DAMON_MIN_REGION_SZ);
-+	if (!r) {
-+		damon_destroy_ctx(ctx);
-+		kunit_skip(test, "region alloc fail");
-+	}
-+	damon_add_region(r, t);
-+	KUNIT_EXPECT_EQ(test, damon_set_attrs(ctx, &attrs), 0);
-+
-+	/* below window: age 1 = 100 ms */
-+	r->age = 1;
-+	KUNIT_EXPECT_FALSE(test, damos_filter_match(ctx, t, r, &filter,
-+			ctx->min_region_sz, &err));
-+
-+	/* inside window: age 2 = 200 ms */
-+	r->age = 2;
-+	KUNIT_EXPECT_TRUE(test, damos_filter_match(ctx, t, r, &filter,
-+			ctx->min_region_sz, &err));
-+
-+	/*
-+	 * change aggregation interval 100 -> 200 ms:
-+	 * inside window: age rescaled 2 -> 1, still 200 ms
-+	 */
-+	attrs.aggr_interval = 200000;
-+	KUNIT_EXPECT_EQ(test, damon_set_attrs(ctx, &attrs), 0);
-+	KUNIT_EXPECT_EQ(test, r->age, 1u);
-+	KUNIT_EXPECT_TRUE(test, damos_filter_match(ctx, t, r, &filter,
-+			ctx->min_region_sz, &err));
-+
-+	/* inside window: age 2 = 400 ms. */
-+	r->age = 2;
-+	KUNIT_EXPECT_TRUE(test, damos_filter_match(ctx, t, r, &filter,
-+			ctx->min_region_sz, &err));
-+
-+	/*
-+	 * change aggregation interval 200 -> 50 ms:
-+	 * inside window: age rescaled 2 -> 8, still 400 ms.
-+	 */
-+	attrs.aggr_interval = 50000;
-+	KUNIT_EXPECT_EQ(test, damon_set_attrs(ctx, &attrs), 0);
-+	KUNIT_EXPECT_EQ(test, r->age, 8u);
-+	KUNIT_EXPECT_TRUE(test, damos_filter_match(ctx, t, r, &filter,
-+			ctx->min_region_sz, &err));
-+
-+	/* above window: age 9 = 450 ms. */
-+	r->age = 9;
-+	KUNIT_EXPECT_FALSE(test, damos_filter_match(ctx, t, r, &filter,
-+			ctx->min_region_sz, &err));
-+
-+	damon_destroy_ctx(ctx);
-+}
-+
- static void damos_test_filter_out(struct kunit *test)
- {
- 	struct damon_target *t;
-@@ -2599,6 +2679,7 @@ static struct kunit_case damon_test_cases[] = {
- 	KUNIT_CASE(damon_test_commit_ctx_keeps_quota),
- 	KUNIT_CASE(damon_test_valid_probe_params),
- 	KUNIT_CASE(damos_test_age_ms_filter_is_core),
-+	KUNIT_CASE(damos_test_age_ms_filter_interval_changes),
- 	KUNIT_CASE(damos_test_filter_out),
- 	KUNIT_CASE(damos_test_apply_scheme_filtered_sz),
- 	KUNIT_CASE(damos_test_apply_scheme_filter_sz_unchanged),
+   123	
+   124	
+   125	static struct dentry *squashfs_lookup(struct inode *dir, struct dentry *dentry,
+   126					 unsigned int flags)
+   127	{
+   128		const unsigned char *name = dentry->d_name.name;
+   129		int len = dentry->d_name.len;
+   130		struct inode *inode = NULL;
+   131		struct squashfs_sb_info *msblk = dir->i_sb->s_fs_info;
+   132		struct squashfs_dir_header dirh;
+   133		struct squashfs_dir_entry *dire = NULL;
+   134		u64 block = squashfs_dir_start(squashfs_i(dir)->start, msblk);
+   135		int offset = squashfs_i(dir)->offset;
+   136		int err, length;
+   137		unsigned int dir_count, size;
+   138	
+   139		TRACE("Entered squashfs_lookup [%llx:%x]\n", squashfs_i(dir)->start, offset);
+   140	
+ > 141		if (block < 0)
+   142			goto data_error;
+   143	
+   144		dire = kmalloc(sizeof(*dire) + SQUASHFS_NAME_LEN + 1, GFP_KERNEL);
+   145		if (dire == NULL) {
+   146			ERROR("Failed to allocate squashfs_dir_entry\n");
+   147			return ERR_PTR(-ENOMEM);
+   148		}
+   149	
+   150		if (len > SQUASHFS_NAME_LEN) {
+   151			err = -ENAMETOOLONG;
+   152			goto failed;
+   153		}
+   154	
+   155		length = get_dir_index_using_name(dir->i_sb, &block, &offset,
+   156					squashfs_i(dir)->dir_idx_start,
+   157					squashfs_i(dir)->dir_idx_offset,
+   158					squashfs_i(dir)->dir_idx_cnt, name);
+   159	
+   160		while (length < i_size_read(dir)) {
+   161			/*
+   162			 * Read directory header.
+   163			 */
+   164			err = squashfs_read_metadata(dir->i_sb, &dirh, &block,
+   165					&offset, sizeof(dirh));
+   166			if (err < 0)
+   167				goto read_failure;
+   168	
+   169			length += sizeof(dirh);
+   170	
+   171			dir_count = le32_to_cpu(dirh.count) + 1;
+   172	
+   173			if (dir_count > SQUASHFS_DIR_COUNT)
+   174				goto data_error;
+   175	
+   176			while (dir_count--) {
+   177				/*
+   178				 * Read directory entry.
+   179				 */
+   180				err = squashfs_read_metadata(dir->i_sb, dire, &block,
+   181						&offset, sizeof(*dire));
+   182				if (err < 0)
+   183					goto read_failure;
+   184	
+   185				size = le16_to_cpu(dire->size) + 1;
+   186	
+   187				/* size should never be larger than SQUASHFS_NAME_LEN */
+   188				if (size > SQUASHFS_NAME_LEN)
+   189					goto data_error;
+   190	
+   191				err = squashfs_read_metadata(dir->i_sb, dire->name,
+   192						&block, &offset, size);
+   193				if (err < 0)
+   194					goto read_failure;
+   195	
+   196				length += sizeof(*dire) + size;
+   197	
+   198				if (name[0] < dire->name[0])
+   199					goto exit_lookup;
+   200	
+   201				if (len == size && !strncmp(name, dire->name, len)) {
+   202					unsigned int blk, off, ino_num;
+   203					long long ino;
+   204					blk = le32_to_cpu(dirh.start_block);
+   205					off = le16_to_cpu(dire->offset);
+   206					ino_num = le32_to_cpu(dirh.inode_number) +
+   207						(short) le16_to_cpu(dire->inode_number);
+   208					ino = squashfs_mkinode(blk, off);
+   209	
+   210					TRACE("calling squashfs_iget for directory "
+   211						"entry %s, inode  %x:%x, %d\n", name,
+   212						blk, off, ino_num);
+   213	
+   214					inode = squashfs_iget(dir->i_sb, ino, ino_num);
+   215					goto exit_lookup;
+   216				}
+   217			}
+   218		}
+   219	
+   220	exit_lookup:
+   221		kfree(dire);
+   222		return d_splice_alias(inode, dentry);
+   223	
+   224	data_error:
+   225		err = -EIO;
+   226	
+   227	read_failure:
+   228		ERROR("Unable to read directory block [%llx:%x]\n",
+   229			squashfs_i(dir)->start, squashfs_i(dir)->offset);
+   230	failed:
+   231		kfree(dire);
+   232		return ERR_PTR(err);
+   233	}
+   234	
 
--- 
-2.53.0
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
