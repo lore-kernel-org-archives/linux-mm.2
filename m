@@ -1,86 +1,85 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12B2606A31C
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 10:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05D260A5BD2
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 10:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oikIjxjS
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NneODPg5
 Received: by kanga.kvack.org (Postfix)
-	id BEDB56B069A; Fri, 13 Nov 2026 05:39:44 -0500 (EST)
+	id 7E5696B0693; Fri, 13 Nov 2026 05:50:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B76D16B069F; Fri, 13 Nov 2026 05:39:44 -0500 (EST)
+	id 7BBEC6B069B; Fri, 13 Nov 2026 05:50:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A69D86B06A3; Fri, 13 Nov 2026 05:39:44 -0500 (EST)
+	id 6ABFD6B06A7; Fri, 13 Nov 2026 05:50:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A5516B069A
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:39:44 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C1A6CA0184
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:39:42 +0000 (UTC)
-X-FDA: 85429749804.29.5A075E5
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 350516B0693
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:50:51 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8FBB7160203
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:50:48 +0000 (UTC)
+X-FDA: 85429777776.11.B0385D0
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 1073320002
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:39:40 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oikIjxjS;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794566381;
-	b=hiRIPzaF9KiXWbNNYzXJmXfF5i6mXEQ/dBrmDDutBshsxwXGq6wgsBT/IzfdoGnz/+eRwE
-	jsf2oEH4p0OtnVAwA0P9a3JuJI9/bnPA4uKHdplg73ztvhGIFdyMrC0XcPm4aTd/4mJqYu
-	xJrEhHwZs6vNcIz6/zoPXimjNGMuuy0=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oikIjxjS;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id CA44F80005
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:50:46 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NneODPg5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794566381;
+	s=arc-20220608; t=1794567046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4Nwzk4hxferb9G9G6d7KRjbkhkRCdOn7hm3bsXHy8vw=;
-	b=xWV+9j6VuQABkamawtMMc7Nylra6SE2lMDIkY0afivkpuR5r3jyY2zCE7v3yAZqM5XtDES
-	G/q6GL8DJSNXm4C63bklMMOtlcQmizYrTmiHA+z2Mnz040OCp6RN+NkhAwZVgb2mR/v7Jc
-	fPQq91YE/nUfVWMycP6zIG/OBb9sngo=
+	bh=0JXP8ijEUph+DH7eK7vAJyLP+Bw6tzlYEIbg+5Jovus=;
+	b=bGd8rsn2bD+mu9FhDdOccXvx8s0KZtvr0yS7ECLghuzXrZFAROA6mDj65na4p7iUMrnYLq
+	KzH6ET5lUPgNGN0H3USaT7LjQ3sen2uyaELWd/WHMu8OQ+wCljDIAd5+CC3Ssecdm9mhia
+	kjYruAzrDWf5lwoAIPRu5KWXsWiyQ44=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NneODPg5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794567046;
+	b=rWmJlh87ADNM+dM6ysz08yGXM772nW6xQCVaeuxqKjDt2lEII1xw+KfWd421x7Aj6o6u3p
+	vSsQ/r2WmerVfzchbrnpi1S8IbRkgrUGA4G3pMNBZpX53mKsyccAUR2mt/dUb9xGb/Es/O
+	dwOHUkaLbj4/wl/CoK1ZgpauF+nDNwo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8111E6122D;
-	Fri, 13 Nov 2026 10:39:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E3131F000CC;
-	Fri, 13 Nov 2026 10:39:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 34AF3626B1;
+	Fri, 13 Nov 2026 10:50:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B4D81F000D2;
+	Fri, 13 Nov 2026 10:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794566380;
-	bh=4Nwzk4hxferb9G9G6d7KRjbkhkRCdOn7hm3bsXHy8vw=;
+	s=k20260515; t=1794567045;
+	bh=0JXP8ijEUph+DH7eK7vAJyLP+Bw6tzlYEIbg+5Jovus=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=oikIjxjSW/M3ldlbTICtnub5xkYFg1ViNQG9Nw0xmdg4Z8H6Oow3vzougdHwkiiqr
-	 iDlXhmbsdFDMNTEMRspgNB8hc7M7RUv9+eeKZz45hk/j/7SYqqrzUNRKBbeIjpf1U5
-	 Y5zPfblV2wKwr4t6/MAY9nF2P+u3QfIW2adYe1H20ozRsZlu88NJSEuyZSv3/LjC6B
-	 RcoHav9UN2OzsVWsG7vR5B6yzFFHACZJg94CyfpGzymJyOSOFFGJ9ZsFNn6EcB5SrO
-	 clQai4laO0w8SaQ6Z5mnAJt5vqU2zXV567BlDyycdQ7OEYyiDcrPzmVJGcLoPRkdOQ
-	 aEaCDQbty4x5Q==
-Message-ID: <29bf5516-36bf-490e-ac35-d89893fa61b3@kernel.org>
-Date: Fri, 13 Nov 2026 11:39:34 +0100
+	b=NneODPg5Lm7PgKusVQTTjim0GwSW5e0lbqq+NWR9bvLd97yPbNhZe9Y0LmWebgvgL
+	 CAOw1Ac+t8trQnJncFKKYqIgJl0yTBlsebndJYxBEBtu5oO/s6z+Azwf8gH7aeUgLH
+	 OikDWGvl1iYsa12pbPkUNFWo/BVTZKVL6VA0YhDbEp5pWjYPb6lKn/2+/qR+fOcvdW
+	 vYMHEdFGcGtOrsxK/QjxDvOhs8YYEUrxU4gtiJ+DfTGvlbyKCAjYd6k9gyMHsEBf1P
+	 XCHGwM3DJvppC4w3ICUq1nllm6XFK6Qbjj8dzvOi4r5KSgPFnetZ8KTT9img7cvlZM
+	 MLwoFy43sV16g==
+Message-ID: <abbeb2f5-0ce7-4fc4-b16d-6e9226989acd@kernel.org>
+Date: Fri, 13 Nov 2026 11:50:39 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] mm: add vmf_insert_pfn_order() and vmf_pfn_order_ok()
- helpers
-To: "Farber, Eliav" <farbere@amazon.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20261111113045.35368-1-farbere@amazon.com>
- <20261111113045.35368-3-farbere@amazon.com>
- <a242ede8-71c2-4f75-b5e5-dcfa98ab25d3@kernel.org>
- <BY3PR18MB47227EB15146F8F16E1C005BC6702@BY3PR18MB4722.namprd18.prod.outlook.com>
+Subject: Re: [PATCH v2 4/6] mm: drop HIGHPTE support altogether
+To: Arnd Bergmann <arnd@arndb.de>, Mike Rapoport <rppt@kernel.org>,
+ Arnd Bergmann <arnd@kernel.org>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ Andreas Larsson <andreas@gaisler.com>, Christophe Leroy
+ <chleroy@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Linus Walleij <linus.walleij@linaro.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Malin Jonsson <malin.jonsson@est.tech>, Richard Weinberger <richard@nod.at>,
+ Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org
+References: <20261112112528.1116405-1-arnd@kernel.org>
+ <20261112112528.1116405-5-arnd@kernel.org> <avWo4NrAPX8BisCY@kernel.org>
+ <ba23a789-9820-4223-a6db-d9e99ebcf356@app.fastmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,21 +126,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <BY3PR18MB47227EB15146F8F16E1C005BC6702@BY3PR18MB4722.namprd18.prod.outlook.com>
+In-Reply-To: <ba23a789-9820-4223-a6db-d9e99ebcf356@app.fastmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1073320002
-X-Stat-Signature: 6ya1de14firzrwrhqec4uam8aw69w6fu
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: CA44F80005
+X-Stat-Signature: bwrhbgxrioftgi4349njda5n58x5iikp
 X-Rspam-User: 
-X-HE-Tag: 1794566380-903646
-X-HE-Meta: U2FsdGVkX1833Q9kLG086s/fFNPyeh80q+j6B22rI+3ClQYjRp/PEwM4j3G3DsWZcjRr4tDV4zy3BvNKFREWO7egZvQ2pn2eNBMP4qHfj7QALlpoQwfoCg6RuS1WaYMdqtXPH1Jt4+6ZMwlMJxF5egjZnrPYAOrYKwS1C9wYR9cys97YblZXmHjhlGEyu4tnswIPsHJtkTo46Z5TipM9jj+BTqgbSh2t0b1/ZyYFWTGC28FVcaJW13CejEQLfrv+4lLbn2zpGkbM/6tVf40dGnnHm/viyCKzcLpB42LuhYi+B5NqP6TsRHn9KsnnTLdv2kyaG4wO+ED69TGHwh/anjpfJntfarMUpRqyAAvTiZzqzS76hMeCUmwt2lauYlcyfb19+b4gpO0QMSwkXr6qhvA1lPASYYL/IEL7z39W3x0+n6GFSwSkP+6lAQOnC6CqIEYThxgTy+Q3njIt6G52eXCCiQQ6+zdaY1WUBJ96/Cl21CyiWLYZR+nQ2E9uJDQbXF056VfNnLASjGtMHh67aWMjPUDAE7VRSCpa6MZOaAUSwBq5BmXNA2+s/zx0t8lAtVs0WsKM0KaqllO2BXq3T3Hvr5eD88IGCeJ8KpM1qNmyO8ertmNiJTc0eL+dg97+skrGmaoGu733G1JIsT+toqUWwmpSyTnLNpWe2IDcSzKWs+FlotiU/9oHoeRH00ng9lzsLN7M/ZmJJsBdRMfhBLkFiW6LXKDZaUDv5iRyBSawVM/AwGhhWH43Z7ihR9Mn7HElgrv+m0INcjyp3WlzV8v5NEPUrwq/Uz3IVMRObMAdTjx1uCaiM/DNhbYF7E2A3NNUcNR6UsXaOc9qQPC4S4ppItL7Du++qviMuD8uAllUTK2/gDBQVgDsvLhF7Gjvw1F6yLYJXOzT4BAce3IMgcYX7r88QPmVX8Ev7Jds2aU2UejUxJsAVBWJp3EgKBP2ruF8y7IfF9z5/VdAP0T
- 4ykCLfww
- 24CPnyf0iJyNmNlC0tY1cRHWYUyfm1p9I2ZVcVyJJU0QRP9dRaFERUg9aNtZYp5HVhKuNNY1023CJgF5iA2PSEnrLkBlDUUUFoqNPDVuNSLZbCUmHkj93mMU2uDNK7gMfcAyv+hWlxu4/ADKbZlO3bXfXr1TgwY+bATXcxNZ8/b0Ojz4izOU7Wy5tl4DD4Q1+s9r8qyikOvuGLbvwxPi5MZcNjmEoDngaG/NCWS+ADV8QCtlGRuozCPilPLE10uRgyBZw4kazW0fZhx1Gdy9qxGfrUB24qOYKp/OKL35IR2+yX0uEBpWTuT9YD2BsJ6DTgvGViwlxO6hxo04r2XFhJjr26hViYwSeoOHossQDiEkxwIjGvTTIj0G5z9oI9KLTl7ggAjIHqFczBE0=
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794567046-571642
+X-HE-Meta: U2FsdGVkX18hdYQLWBJBWNuc8NfIbDpFRzgU7KoZFEsb3j4Br8D8bEXPmhjitescvzl0mBo0e0h7Oc8SymZeACcBBdh5RzkTyxY/YGZ0ZVw5c3yi7JVBL5lKGn+s2zN3w9cLgMPnbr+0RHRFAsr2pswb5Lvw2mUnEr8f6ebEXVruYXNBuUXM8Q4Je7eQBok1bcfyTFNssM21cNHU9VrgS7MvM9O9uc5UPHna3vMoxwGYSdI5apGGAaKblq1HAMdfPe2Lcc0/HnhbPqKRhsFF2iojwMoXPX27rB90crgSBn38rg5NuQouEXJCMcItbY38nL0I0V7OGRV7vZyqkzRJciiX5EEB4fZivYi9BQSbLTrvxRs+g90qEmKRuviFt1STcNFw8jIjcSPwxbJOWdSsCD48aFE7cG23v7nDPcJUVShURIFGNRFjme0Vg+6ItP9S1TUjmmSE/X9Gw17f55ru86n1jsWsbZ9ZpMb8VpKXmrJBWJqxZRDylyK83SeTA5/WcedqQvif2TE+lHBjrRnFaRb5SqlE9Xj+hSYp/k7d9CwXrcW9KY/XbF+sdDxwaMdapPOICJOiW6/WzqZt8yuxY/aWzBXQV2ewxM0W0hJHbk9aFfepqYH5UFKF1UZoVsE4W2nQcVzICVGD2qGtGx14RNaeT0bw6vTMkbMgywtDkIHw/8Gp5o8SMmzy/au316fVLHtZpdZoMFt5zdqPGR98XSLgbXiu6lb8LQjJCxb532w9EpGF+F3gok0mx5DkLg9HOlayqw2/vIf/7btYOZ5wwOEL8/kQ+sMhqaSxIUNwyLVtsWvTLwLkZeTwlMPe+n6zP02dbDtgGFlAmQv9eiNXehyBpxcquvSDXZzmB68JsG2vxJBzO/73cs2yubjR1HXzroS5wSqjqF37I2VH4xnkCTU9x+9D1OXGlfgq8nqDbAK5S/SQ3JFHC/xOwyXZ7Gn0jfWiMOF/bhxB5D/IX+4
+ Mig/T8YB
+ v0Qkk7qyTirEWPzCSwYtkO8UEwb3w+krqSIh1IdKLJ7UVZy30UnQ/YdGkzyEQDR6orq0ARrK7/CpPQeca0qBP1ju/P9bl5YzqM0wHPhx/Zy37wvSpo3Na+AE2bxPlMShd1c2/FJJoZLHW1GtUD72ZvU33CeQM/K4Mdr58QoBxcEyA/b4zdxF0Z79ijo4q+ivOMKp1uhhGMfxy4DOz7o5t0oupn10M5OXyyE9r6Uq1lhDPmx5flXQgDeUHCZaBGMr7rRxKGwCvCzgBSPHCN9bw1aFk4dWSBI34oaja
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,167 +150,118 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/12/26 16:55, Farber, Eliav wrote:
-> On 11/12/26 14:02, David Hildenbrand (Arm) wrote:
->>> +    return !order || (addr >= vma->vm_start &&
->>> +                      addr + (PAGE_SIZE << order) <= vma->vm_end &&
->>> +                      IS_ALIGNED(pfn, 1UL << order));
+On 11/12/26 14:26, Arnd Bergmann wrote:
+> On Thu, Nov 12, 2026, at 12:54, Mike Rapoport wrote:
+>> On Thu, Nov 12, 2026 at 12:25:26PM +0100, Arnd Bergmann wrote:
+>>> From: Arnd Bergmann <arnd@arndb.de>
+>>>
+>>> With both x86 and arm having dropped CONFIG_HIGHPTE support, no
+>>> architecture is left using it, so remove the remnants in common code.
+>>>
+>>> It is likely that further cleanups are possible in the page table
+>>> code but those are not obvious from the config options.
+>>>
+>>> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>>> ---
+>>>  include/linux/hugetlb.h | 5 +----
+>>>  include/linux/mm.h      | 1 -
+>>>  include/linux/pgtable.h | 9 ---------
+>>>  3 files changed, 1 insertion(+), 14 deletions(-)
 >>
->> To make this somewhat consumable for a human,
+>> With this and arm HIGHPTE patches applied there are still a few leftovers:
 >>
->> if (!order)
->>       return true;
->> return start >= vma->vm_start && end <= vma->vm_end;
+>> $ git grep  HIGHPTE
+>> arch/arm/configs/vt8500_v6_v7_defconfig:CONFIG_HIGHPTE=y
 > 
-> We crossed in flight: v2 went out about six minutes before your mail, so
-> you were reading v1. I posted it to address sashiko-bot's review of v1,
+> This got dropped in patch 5/6 in v2, but I've moved that here now.
+> 
+>> mm/memory.c:     * Dumping the PTE would be nice, but it's tricky with 
+>> CONFIG_HIGHPTE,
+> 
+> Added the patch below for this. Untested so far.
+> 
+>> mm/pgtable-generic.c: * kmapped if necessary (when CONFIG_HIGHPTE), and 
+>> locked against concurrent
+> 
+> Updated the comment and also dropped __pte_map() after I noticed that
+> open-coding the only caller in pte_offset_map_rw_nolock() is consistent
+> with that comment change:
+> 
+> --- a/mm/pgtable-generic.c
+> +++ b/mm/pgtable-generic.c
+> @@ -314,7 +314,7 @@ pte_t *__pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp)
+>                 pmd_clear_bad(pmd);
+>                 goto nomap;
+>         }
+> -       return __pte_map(&pmdval, addr);
+> +       return pte_offset_kernel(&pmdval, addr);
+>  nomap:
+>         rcu_read_unlock();
+>         return NULL;
+> 
+> 
+>> mm/userfaultfd.c:        * index ordering when CONFIG_HIGHPTE is 
+>> enabled. We mapped dst_pte
+> 
+> Dropped that comment block as it no longer applies.
+> 
+>> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> 
+> Thanks,
+> 
+>       Arnd
+> ---
+> Subject: [PATCH] mm: print pte in __print_bad_page_map_pgtable()
+> 
+> HIGHPTE support is gone now, so it's easy enough to print the
+> PTE here along with the upper level entries.
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index ec3d9d99ccee..dabeb5568c94 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -528,9 +528,11 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+>  	char p4d_str[PTVAL_STR_MAX];
+>  	char pud_str[PTVAL_STR_MAX];
+>  	char pmd_str[PTVAL_STR_MAX];
+> +	char pte_str[PTVAL_STR_MAX];
+>  	p4d_t p4d, *p4dp;
+>  	pud_t pud, *pudp;
+>  	pmd_t pmd, *pmdp;
+> +	pte_t pte, *ptep;
+>  	pgd_t *pgdp;
+>  
+>  	/*
+> @@ -567,13 +569,18 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+>  	pmd = pmdp_get(pmdp);
+>  	ptval_to_str(pmd_str, pmd_val(pmd));
+>  
+> -	/*
+> -	 * Dumping the PTE would be nice, but it's tricky with CONFIG_HIGHPTE,
+> -	 * because the table should already be mapped by the caller and
+> -	 * doing another map would be bad. print_bad_page_map() should
+> -	 * already take care of printing the PTE.
+> -	 */
+> -	pr_alert("pgd:%s p4d:%s pud:%s pmd:%s\n", pgd_str, p4d_str, pud_str, pmd_str);
+> +	if (!pmd_present(pmd) || pmd_leaf(pmd)) {
+> +		pr_alert("pgd:%s p4d:%s pud:%s pmd: %s\n",
+> +			 pgd_str, p4d_str, pud_str, pmd_str);
+> +		return;
+> +	}
+> +
+> +	ptep = pte_offset_kernel(pmdp, addr);
+> +	pte = ptep_get(ptep);
+> +	ptval_to_str(pte_str, pte_val(pte));
+> +
+> +	pr_alert("pgd:%s p4d:%s pud:%s pmd:%s pte:%s\n",
+> +		 pgd_str, p4d_str, pud_str, pmd_str, pte_str);
+>  }
+>  
+>  /*
 
-First, wait for human review. Always.
-
-Second, read Documentation/process/submitting-patches.rst
-
-"Wait for a minimum of one week before resubmitting or pinging reviewers
-- possibly longer during busy times like merge windows."
-
-Because we have much other priorities right now :)
-
-> which found a write-flag asymmetry in this patch and a COW problem in
-> patches 3 and 4. vmf_pfn_order_ok() is unchanged there, so all three of
-> your comments apply to v2 as posted.
-> 
-> Agreed on the shape. Your version drops the pfn term, which is your next
-> question, so let me answer that and then propose deleting the helper.
-> 
->> And maybe rejecting IS_ALIGNED(pfn, 1UL << order) with WARN_ONCE() as this
->> sounds like the user is doing something stupid?
-> 
-> A misaligned pfn is not a caller bug, it is what userspace asked for. For
-> /dev/mem, vm_pgoff is the base pfn, so an mmap() at a page-aligned but not
-> PMD-aligned physical offset gives a pfn that cannot be mapped at PMD order.
-> Falling back to PTE order is the correct answer. The selftest covers this
-> directly: it maps /dev/mem at offset +4K onto a PMD-aligned VA, so the
-> window term passes and only the pfn term fails, and it asserts both the 4K
-> fallback and that the data read back is the data at that physical address.
-> A WARN there would fire on an ordinary mmap().
-> 
-> Dropping the term is worse than a WARN, because nothing below catches it.
-> x86 pfn_pmd() masks the pfn:
-> 
->         static inline pmd_t pfn_pmd(unsigned long page_nr, pgprot_t pgprot)
->         {
->                 phys_addr_t pfn = (phys_addr_t)page_nr << PAGE_SHIFT;
->                 pfn ^= protnone_mask(pgprot_val(pgprot));
->                 pfn &= PHYSICAL_PMD_PAGE_MASK;
-> 
-> so a misaligned pfn is silently rounded down and the mapping points at the
-> wrong physical memory. pfn_pud() does the same with PHYSICAL_PUD_PAGE_MASK.
-> 
->> But looking again, this all looks like sanity checks where the user is just
->> doing something stupid?
->>
->> Why is that required at all? I'd get rid of this entirely.
-> 
-> The check is required on the fault path because mm asks the handler to do
-> it. From __thp_vma_allowable_orders():
-> 
->         /*
->          * Check alignment for file vma and size for both file and anon vma by
->          * filtering out the unsuitable orders.
->          *
->          * Skip the check for page fault. Huge fault does the check in fault
->          * handlers.
->          */
->         if (!in_pf) {
-> 
-> thp_vma_suitable_order() is the same check: the order window within the
-> VMA, plus, for a non-anonymous VMA, IS_ALIGNED(vm_start >> PAGE_SHIFT -
-> vm_pgoff, ...), which for a PFNMAP whose vm_pgoff is the base pfn is the
-> pfn alignment. mm's own huge handler honours that contract:
-> do_huge_pmd_anonymous_page() opens with
-> 
->         if (!thp_vma_suitable_order(vma, haddr, PMD_ORDER))
->                 return VM_FAULT_FALLBACK;
-> 
-> and the pfn-mapping handlers each carry a private copy:
-> is_aligned_for_order() in include/linux/vfio_pci_core.h for vfio-pci and
-> nvgrace-gpu, device-dax re-derives it from dev_dax->align, and fs/dax.c has
-> dax_fault_check_fallback(), which tests the PMD colour and both ends of the
-> window.
-> 
-> So I agree with where you are going, just not that it can be deleted. I
-> would rather move both terms into mm than add a seventh copy. insert_pmd()
-> and insert_pud() are the right place: they already reject
-> addr < vm_start || addr >= vm_end, and they already hold the pfn in
-> fop.pfn. What is missing there is the end of the window and, in the
-> non-folio branch, the alignment. Concretely:
-> 
->   - Add to insert_pmd(), beside the start test:
->     addr + HPAGE_PMD_SIZE > vma->vm_end, and, in the !fop.is_folio case,
->     !IS_ALIGNED(fop.pfn, HPAGE_PMD_NR), both returning VM_FAULT_FALLBACK.
->     insert_pud() the same with HPAGE_PUD_SIZE and HPAGE_PUD_NR. The
->     alignment test is gated on !fop.is_folio, and the window test is a
->     no-op for the folio callers, since dax_fault_check_fallback() already
->     rejects (pmd_addr + PMD_SIZE) > vm_end before calling.
->   - Drop vmf_pfn_order_ok() entirely. No caller needs it and no new driver
->     does geometry.
-> 
-> That removes the helper you object to, fixes an unchecked window end that
-> exists today for every implementor, and leaves vmf_insert_pfn_order() as
-> the order dispatch plus the huge-zero and pfn_modify_allowed() cases.
-> 
->> Why do we even care about the order? Why isn't it sufficient that we get called
->> with "insert this pfn range" and we see how to best map it (pfn/pmd/pud)?
->>
->> Why does the caller even have to care about *how* something is mapped?
-> 
-> It does not, and it does not choose. mm picks the order and tells the
-> handler which one: __handle_mm_fault() tries create_huge_pud() ->
-> ->huge_fault(vmf, PUD_ORDER), descends to create_huge_pmd() ->
-> ->huge_fault(vmf, PMD_ORDER) on VM_FAULT_FALLBACK, then to
-> handle_pte_fault(). vmf_insert_pfn_order() only dispatches on the level mm
-> reached, which is what vfio_pci_vmf_insert_pfn() already open-codes with
-> the same !order / PMD_ORDER / PUD_ORDER ladder. The patch de-duplicates
-> that; it does not introduce the order-based shape.
-> 
-> Changing the interface to "here is a pfn range, you pick" means changing
-> ->huge_fault itself, for all of its implementors. The folio-backed ones
-> need the order, because they look up a folio of that size. That seems like
-> a bigger discussion than this series, but I am happy to have it.
-> 
-> For VM_PFNMAP specifically there is a narrower version of your idea that
-> does work, and patch 1 is most of it: pfn_range_track() already gives mm
-> the pfn range at mmap() time, so the fault path could insert without
-> calling the driver at all. What stops it is per-fault policy, not page
-> table walking: /dev/mem must re-check range_is_allowed() because
-> revoke_iomem() can zap the mapping after mmap(), UIO must test idev->info
-> under info_lock so a fault racing unbind gets SIGBUS, and vfio-pci holds
-> memory_lock and checks __vfio_pci_memory_enabled(). That is why
-> ->huge_fault exists for these mappings.
-> 
-> Does the insert_pmd()/insert_pud() move look right to you? The missing
-> window-end test is pre-existing, so it could equally go on the
-> huge-pfnmap mm fixes series rather than inside v3. Say which you prefer
-> and I will send it that way.
-> 
-> What changed in this patch between v1 and v2:
-> 
->   https://lore.kernel.org/all/20261112125638.12209-3-farbere@amazon.com/
-> 
-> Only the order-0 path. The sashiko-bot review on this thread observed that
-> vmf_insert_pfn_order() honoured the fault's write flag for PMD and PUD but
-> not for order 0, where the pte comes from vma->vm_page_prot. v2 passes it
-> at order 0 too, through an extracted __vmf_insert_pfn_prot(..., mkwrite),
-> so the v1 sentence you quoted above the hunk, "The order-0 path needs
-> nothing: wp_pfn_shared() resolves that fault", is gone. I could not
-> reproduce a user-visible failure on either new target: /dev/mem and UIO
-> both modify vm_page_prot, so vma_wants_writenotify() takes its escape. That
-> change therefore rests on consistency with the huge paths, not on a
-> demonstrated bug. It does mean a first write at order 0 no longer calls
-> ->pfn_mkwrite, which the kernel-doc now states. v2's cover letter has the
-> rest of the changelog.
-
-Before I reply to anything in here: did an LLM compose most of these walls of
-text? :)
+Yeah, that LGTM. I assume you'll send out a v3.
 
 -- 
 Cheers,
