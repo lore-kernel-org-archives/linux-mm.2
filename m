@@ -1,111 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E43606A330
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 20:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12325606A33D
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 20:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V46RjedJ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EfCt/jkE
 Received: by kanga.kvack.org (Postfix)
-	id 8A3926B05B6; Fri, 13 Nov 2026 15:56:27 -0500 (EST)
+	id 01C8C6B05B2; Fri, 13 Nov 2026 15:59:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 853326B05B7; Fri, 13 Nov 2026 15:56:27 -0500 (EST)
+	id F10916B05B3; Fri, 13 Nov 2026 15:59:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 741F56B05BA; Fri, 13 Nov 2026 15:56:27 -0500 (EST)
+	id E4CE46B05B8; Fri, 13 Nov 2026 15:59:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D7EC26B05B6
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 15:56:26 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 46A6C120182
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 20:56:25 +0000 (UTC)
-X-FDA: 85431303930.29.2CC9A3E
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8E71B140002
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 20:56:22 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BD9146B05B2
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 15:59:51 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4E781801F1
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 20:59:51 +0000 (UTC)
+X-FDA: 85431312582.18.2F38C12
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id AABAB140005
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 20:59:49 +0000 (UTC)
 Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=V46RjedJ;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf26.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="EfCt/jkE";
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794603383;
+	s=arc-20220608; t=1794603589;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AXSAbZ4zAFhDA0DT3gf9mQz9cKPQmAWHCdFOgQ2qISo=;
-	b=u45dL9Uy/llrUDGzh5iGzXcc0GxrBHgARSg05ZkTMHoRvpMiAo6k7IPWYrin2JyPPK6LOR
-	ovndpNDwTVBDKWwHJ0QfHhKxaUHpHyvPCRDuVyydbhYOq2gEeaQx7hSobYr6P6q05+q0II
-	vSg1GV355McgziXN1eeKCEMLhXVjBFs=
+	bh=gVxBLZX6lQzckB6AIbX2pQJru5dIfjw9YVDcZIdu890=;
+	b=uRb7w/HAly8sFNN0ppMDkwT4YyTCw/hZm/P7o6FEXj2HHOOM++jb/VWNy+9r+SL/7JUUiJ
+	D7Ntetj+/srrDS60XmaT9MaIyXK50CW/y8f+flamNTL5Lg8pNiQ1Fopqbqp7qPVj5Keema
+	0ZeQAzmUl86uTdgMSxOughFPRn55eKU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794603589;
+	b=XZbKgQG7Mf3sL/AJKVN+uIIrjtZsjBHNIVQ6yhW2kz4GH1YvyhRvHe2w1ahf7DagrMxX9J
+	MF7OQoN0KdyscQoSkudNz4Y4fKA8MAKka/QTkq8wC8VDJUEnauq2TV4JeGpKCQ7Z41P7+t
+	XyDCgsAZwdVjDomx+h6qHyDHfl72ebc=
 ARC-Authentication-Results: i=1;
 	imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=V46RjedJ;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf26.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794603383;
-	b=KLDcKx8HSthWXQrO4oG2Iko3pAFK68nxCY67uPaP0Dt/GEv6gs27qptcKrdL6Qp3IvRQkQ
-	x0Q5nX0qwfi/z1Fn2mqd0tssJnJGMkdiqbDCBNBBw/aiRlsmjcCtfb/rC5yapsBcF+YbYS
-	N07AYPGI7mXm8Ko23y8WWTWboAsGfrk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794603383; x=1826139383;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=AXSAbZ4zAFhDA0DT3gf9mQz9cKPQmAWHCdFOgQ2qISo=;
-  b=V46RjedJ5aU9xXdMeZu8LqzFBOyNXAzRn3yYg3J+PMqg+AHXRfgQG8ye
-   wfXWwT92gPbqSzUPI25G1ICbCFSfBnwDjIj9O8DreaX5cq+RG6WiCbjNn
-   lAXv1zGrFLvZx07JhM8DOVcLQqXJ1h2UwD0kKmUT5FnF7tX2Iyvay8Qzd
-   8hgMMG2GIqHVdk8BDawe2j/wQevr1gHFBfM/Q3K33OeR/u5VR7IDTdCWk
-   5gbpBwaSIjc48Lo3gtZFpkLxHACYwevhAkoYMMcuQUyWJU/JT2A/tvVzh
-   YmSi00N7+bWOzjwzKOtcxBb4vDaO7xa/UEj8MaG4OCzetAxXFg1JXhGC8
-   g==;
-X-CSE-ConnectionGUID: n97PIFaPTA+TVvHgGuSZjw==
-X-CSE-MsgGUID: LAybBJ6FTB+AKxkP1tSnrQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11965"; a="3312230"
-X-IronPort-AV: E=Sophos;i="6.27,212,1787036400"; 
-   d="scan'208";a="3312230"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 12:56:22 -0800
-X-CSE-ConnectionGUID: MxmC/jBhRhOduSE8W+FTjQ==
-X-CSE-MsgGUID: CSNAP3JdQu+WpkyRp59/Bg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,212,1787036400"; 
-   d="scan'208";a="9029453"
-Received: from ettammin-mobl2.ger.corp.intel.com (HELO [10.245.244.252]) ([10.245.244.252])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 12:56:18 -0800
-Message-ID: <0b794f803517c27ea818a2e894761095300b4da4.camel@linux.intel.com>
-Subject: Re: [PATCH] mm/hmm: skip NUMA balancing on protnone faults
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Matthew Auld
-	 <matthew.auld@intel.com>, linux-mm@kvack.org
-Cc: dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, Matthew
- Brost <matthew.brost@intel.com>, Mika =?ISO-8859-1?Q?Penttil=E4?=
- <mpenttil@redhat.com>,  Leon Romanovsky	 <leon@kernel.org>, Jason Gunthorpe
- <jgg@ziepe.ca>, John Hubbard	 <jhubbard@nvidia.com>
-Date: Fri, 13 Nov 2026 21:56:15 +0100
-In-Reply-To: <9ec3e8b9-064a-47a7-8d00-566ff371b846@kernel.org>
-References: <20261112-numa-v1-1-ad9cbca8f49a@intel.com>
-	 <b32fb02a-68b4-4db9-83dd-254147dbf215@kernel.org>
-	 <1993e931e6a4b0cda5c04e72b1a8d5fb924f950a.camel@linux.intel.com>
-	 <9ec3e8b9-064a-47a7-8d00-566ff371b846@kernel.org>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-2.fc43) 
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="EfCt/jkE";
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9465A448B2;
+	Fri, 13 Nov 2026 20:59:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F951F000C5;
+	Fri, 13 Nov 2026 20:59:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794603588;
+	bh=gVxBLZX6lQzckB6AIbX2pQJru5dIfjw9YVDcZIdu890=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EfCt/jkEInFzOANdOTJJt6IXsNytJX76wHVHRjNrF88Xjw3qp6MqJvxVq0PDoGQid
+	 HqvdYMbEdN2obhqGDYDFJojlub4fnNPZJ9U6j8sGvuMtgJAcJYJFKs2Qz44cw4RLcI
+	 o3RbslRdMuWZOtId3qgp6zZyQESV4Se91+5ZGEBshlKorXhB8sG6T+/l44w7rZME58
+	 0e/97s29kipqBUVU+icJTEC19aN6eGp44UBq0S/kxYuXWjwxzXQZldSIhlPYj5G+y0
+	 oV0hi0WdohvhJftm39HJNM/uH2AUVFNv4JQ/P5qHhRkj/03UVRKTtC7bn/zMsPkp2q
+	 MRBAcCm7m0NGg==
+Date: Fri, 13 Nov 2026 20:59:41 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Carlos =?utf-8?B?TMOzcGV6?= <clopez@suse.de>
+Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-s390@vger.kernel.org, linux-riscv@lists.infradead.org, seanjc@google.com, 
+	pbonzini@redhat.com, akpm@linux-foundation.org, david@kernel.org, peterx@redhat.com, 
+	imbrenda@linux.ibm.com, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>
+Subject: Re: [PATCH v3 0/9] KVM: don't zap secondary MMU on permission upgrade
+Message-ID: <avd4MOhiTCw0I_e1@gremlin>
+References: <20261112142039.907090-2-clopez@suse.de>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8E71B140002
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261112142039.907090-2-clopez@suse.de>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 1qtsg4rgn54s3tbx9rdfdr5pzcd3negh
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: gmg8mwoqq9z55bprmrfppmmyzasqx1or
-X-HE-Tag: 1794603382-880974
-X-HE-Meta: U2FsdGVkX199cWiGlzC/vQAoj3agLaYIl5tjisG0lmZmQHjTusJf3kRPZqaN3eW71n1EWBHlHVJf74YsWauPrGtkrV7Gb+fz5wVdlHy2N7GW8McQSUVgRlxs4o2Nrn0p9hpLgRyKpdXLrhA3FnOUYDaAwzoYE52qx4Ymg7wiqlUPsKRwErm1ykyFkNvYMnRyBGl5k8XhQbePcjJbld2enIa8ewjEcKCsvjWt0tk7dfN7SOw6NZ2Jfe0gvdQxJHMmj7x0oTzw/JEk1qgWv+heoChjEO3W0Jm4tSLAxE9puJCSDA/stPK6pyo6Ol9yzczZV+XHv3OkqWsIFMyj8q8nZZU9nuFAMnXAj5Smeh4jmg/ITb2YA60yllv2tBxZXndAfq+bLzBm1YRQOMnuk+wzxOU7kaRd4xdhT+gFHYJf1yERqQaBbUTAhxQnkxNDygm/tEZhwM3jgUBI7ZY5xJlBsPL9S9Q7uMO39fVQDp+TLOuLQIWl2zhBHyZr6CtfhrjHxjxh8d8Y9aZfgFWKW+MK2P5ul7rz5Uli8DaAPObpuF+Dww93ElZjHsHwuxTeH1PebR0/5N4E6aPe/B4dBoTQJpsddOU+fPeHo6Jwa/jmk+0xIJz/97Bbu8PoEmWnxsmkPvIYCodynRY4J9UG4ZiTFtJC5O36FKb+WmHWutyNPl6gdtlS5iyQgNZGSi/FuojFGm9KN3x3Q7q2r/oz//zi+dd9ZbLO0CcXP6C5hyl5osqXUPGd3kWI12cuajF5xp5GWd1QKS9j3QYQop3XJrIgPeThGWwAN/+VmI3Ue/CqYCmorXHwluHL85dyIGtnwd6C/oFepnBy+l7ps8km4u5zCH1a5ZYCqoWDYYl5WFfiUz2LGskIDT+tVwhrAzyymQ8mzFdcfehO4asrqNlXpAaFfqNEOPNoDH/SnUoNDTQC6w/wLC5/YSVZRbkm9Skv+Lnsxm0RLJ+bhykt72eGTkT
- 6nYqd4v4
- Zz0NrUpycC6d2j0/zBWbc2UBMh0QwABHvknQThm37v/53ed1/iYfqYu9iJ0IqQRcLRVPiguL9mVfYsGNyDtTq8Dlk1Wc+9rN0tgsI1VTEAU/zG7pey3HyiCObZj2cX9eU3KsE9uAuG3vlcId6/nwckymHOtGF79zSAMb7zdMBFdYTwMl8UqyujwTLpNLWl9+bB4cegIDx1wJ9dDs6vez4/kwFshP+Y+N+1yugUnasUc6qFZmRJ6wIVt+aGQ==
+X-Rspamd-Queue-Id: AABAB140005
+X-Rspam-User: 
+X-HE-Tag: 1794603589-494952
+X-HE-Meta: U2FsdGVkX19oIRxgajfJZqxrd4/CjkdGFmmVrEqA/XqAeKKAeqAOrvw0/hfkFHyc7wqVslXYV0wGgSRiYZvsS1raEWoMWfkzOwCeFA65XKWZCB8hDUC5rQaxB8Rj1l8LLTY65AgJeo0xJX++hPyuMNCQuUibeLnXNvcYt6dr4PU3jIsJ8FexQYXANFuYye+Y974/f0zr6sD42MXg+QjufODwNHAeIdtju6d4oMBEaRd+NDxfqJXYMFBrQsjEigqlLs1z/WSV+yNFtYYOweUERSBv/zQGoHmjzoh9UIsD6h30IsKr9vcB0MyILAmM3fI4GT4YsL3+F0IHBxPe5hAOa6I9PGgJ1XEQqOXUabW5Mqn0ENCiTAV74/PlfjxFJ7xfNm684zrErxeR4yBF4b/Iii7jtB7mKPSZXLjQphst9JGR9O5rXeigH+oVgs+x8uDvZLA+OHnz6Bu7QXjantPcs4wOvys8s9SKgc4rVzzE2Is9Cr9tx0Oe7AhkEjet8cHaaHku20vuU70PyrErI92jwi0M5UbVJ2Gg4D3ssQcOvyXt5YkmBhOcfX01UeVpf8cRaipAJIaXyitRS34DeWLfJ0cW0rAFSBlpq01w8UNpK50Keti4l/yVvh1Ba9sF5geKqh92XMaoAKN7br9yBkrhX4WuVWvGpATboTauD5QpQpPR0crus3Faj8ur3/ROhrzo34lJYbPHADB2YSpzxb2YQ+sqr3w/S5xQfLF3KGAYHhoChHl/G+y+cBaRF5vOTZLzwHAvSJEF+1WJGzj3cR8EC7jaCyi2VvRKOrAWxYr50n9gsKJ46a3IHca2zs4Hol1TuIgCdsd782QBgakTPvepoE1/7kmDGxPLpoDmmv1ieHi3Lc7YSbDR+qHwEjum7jObzTLUVr9eHDMroyMD3K26Ao3PKNcRTT2kjzQqw4Ld63E49GTJZBTRQPb0ni7od+Xzsats3nKiCtSJYUSk0cG
+ r5XQ5XCe
+ +XiQnXf6RxvOl3tzmvLojfsUSGu4HoZ8mx9LtaCu8HpY7r71pczrI+RnnzPUfD2AFYcVbv0/3BrnM6jLi0JYOHW5Bv2YJ9VHZjtprwUQK4XPCID+vv9WeWplU0VE5PVfYkLE3AQzN/46ku/wrd/z+9rhEWe3X/65BE2uKGjs87OKPZtHqbyT6dfsDR5Sd+j6VVUHGnCn+3NKUzbBbatBwOZGFt5R9/xUwLov54tdUyVvS5Zs/9anvKXK3g6YzuVxQCNFhOKB6pMR3tZqUhmDJCWnFfRWBbBJrF9XPz2GzCrQetOc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,118 +97,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 2026-11-13 at 21:43 +0100, David Hildenbrand (Arm) wrote:
-> On 11/13/26 21:34, Thomas Hellstr=C3=B6m wrote:
-> > Hi, David
-> >=20
-> > On Fri, 2026-11-13 at 19:27 +0100, David Hildenbrand (Arm) wrote:
-> > > On 11/13/26 17:25, Matthew Auld wrote:
-> > > > When automatic NUMA balancing marks a PTE or PMD as protnone
-> > > > (PAGE_NONE), hmm_pte_need_fault() requests a fault to restore
-> > > > access
-> > > > permissions, including _PAGE_RW when write access is needed.
-> > > >=20
-> > > > Calling handle_mm_fault() from hmm_do_fault() currently
-> > > > triggers
-> > > > NUMA
-> > > > balancing in do_numa_page() and do_huge_pmd_numa_page(). When
-> > > > hmm_range_fault() runs from a device driver or kworker context
-> > > > (such as
-> > > > a GPU SVM or userptr rebind worker), folios get migrated toward
-> > > > the
-> > > > CPU
-> > > > node executing the remote fault.
-> > > >=20
-> > > > Also, each folio migration invokes try_to_migrate_one() ->
-> > > > mmu_notifier_invalidate_range_start(), which invalidates the
-> > > > caller's mmu_interval_notifier while holding mmap_lock. That
-> > > > causes
-> > > > hmm_range_fault() to abort with -EBUSY after every 2 MiB PMD
-> > > > and
-> > > > exhaust
-> > > > its retry timeout on large buffers, which has been observed
-> > > > with
-> > > > large
-> > > > imported Xe userptr buffers.
-> > > >=20
-> > > > Add FAULT_FLAG_NO_NUMA and set it in hmm_do_fault() so protnone
-> > > > entries
-> > > > restore PTE/PMD permissions in-place without performing NUMA
-> > > > balancing,
-> > > > matching GUP's default !FOLL_HONOR_NUMA_FAULT behaviour.
-> > >=20
-> > > Ehm, that's not how it works.
-> > >=20
-> > > GUP will not trigger a "special" fault and will try not
-> > > triggering a
-> > > fault and
-> > > not restore permissions.
-> > >=20
-> > > It will try continuing, leaving the protnone pte as it is.
-> > >=20
-> > > See gup_can_follow_protnone().
-> > >=20
-> > > For read-only access that should always work.
-> > >=20
-> > > For write-access we always trigger an ordinary fault and do NUMA
-> > > migration etc.
-> > >=20
-> > >=20
-> > > So FAULT_FLAG_NO_NUMA is doing something completely different and
-> > > I
-> > > don't agree
-> > > with it.
-> > >=20
-> >=20
-> > There are two major problems with the current behaviour.
-> >=20
-> > 1) The work item executing hmm_range_fault() might have no affinity
-> > at
-> > all to the GPU about to access the memory.
-> >=20
-> > 2) If migration happens, then hmm_range_fault() will stop and retry
-> > leading to excessive execution time.
-> >=20
-> > While perhaps Matt's commit message doesn't correctly describe the
-> > GUP
-> > behaviour, do you have any alternative suggestion than to avoid
-> > migration in this case? I think it's a reasonable idea given the
-> > problems with the current code?
->=20
-> Adding fault reasons that hack around NUMA hinting such that a actual
-> CPU
-> accessing it later will not trigger ... NUMA hinting?
->=20
-> I might be missing the "reasonable" in here :P
+Sorry but as I said to David I really question what you're doing with this
+series on the mm side, and I wonder whether we should even consider it for
+this cycle, frankly, given [0].
 
-Wouldn't the net effect be that content stays put instead of being
-migrated? In both cases a later CPU access will not trigger NUMA
-hinting except that the proposed change doesn't send content to an
-irrelevant node?
+And, myself being the fool who is engaged in the Sisyphean task of
+converting VMA flags everywhere, you can imagine my delight when I saw that
+you (seemingly quite knowingly!) chose to abuse that API, writing code that
+I'll personally have to rewrite later.
 
->=20
-> I recall that John (cc) kept saying "GPUs and NUMA balancing is
-> inherently
-> incompatible, you have to disable NUMA balancing".
+Don't do that please :)
 
-Perhaps we could force hmm_range_fault() to run on the node closest to
-the GPU. Then at least the migration might be beneficial.
+Please also do not keep respinning based on sashiko feedback. FIRST get a
+clear understanding of what maintainers want.
 
->=20
-> You could likely implement something similar to GUP, where you would
-> allow for
-> bypassing protnone for reading.
+Sashiko is a bug finder, not a reviewer.
 
-We could ofc look at that. Might help in some cases.
+And see [1]:
 
-Thanks,
-Thomas
+"Wait for a minimum of one week before resubmitting or pinging reviewers -
+possibly longer during busy times like merge windows."
 
+Please only respin once a week at the minimum.
 
->=20
-> That wouldn't give you access to the writing side. There might be
-> ways to sort
-> out some of the writing (similar to FOLL_FORCE handling in GUP), but
-> I'd rather
-> not go down that path. KVM also doesn't seem to need that.
+--
+Cheers, Lorenzo
+
+[0]: https://lore.kernel.org/linux-mm/a2f584f6-e382-4876-aa6d-d5a34de6ee59@kernel.org/
+[1]:https://docs.kernel.org/process/submitting-patches.html#don-t-get-discouraged-or-impatient
 
