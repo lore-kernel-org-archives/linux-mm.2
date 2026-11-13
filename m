@@ -1,81 +1,79 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32BE6606A8BB
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 19:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94FF3606A8A7
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 19:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gcZYmCrb
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X78cUYoU
 Received: by kanga.kvack.org (Postfix)
-	id 44D226B05B2; Fri, 13 Nov 2026 14:00:13 -0500 (EST)
+	id A1E816B00EF; Fri, 13 Nov 2026 14:02:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 424356B05F1; Fri, 13 Nov 2026 14:00:13 -0500 (EST)
+	id 9F5EC6B05B1; Fri, 13 Nov 2026 14:02:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33A996B05F2; Fri, 13 Nov 2026 14:00:13 -0500 (EST)
+	id 90B1C6B05B9; Fri, 13 Nov 2026 14:02:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F06986B05B2
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:00:12 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8883C1201E9
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:00:12 +0000 (UTC)
-X-FDA: 85431011064.21.DF06167
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FA456B00EF
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:02:49 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E4F72A79BC
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:02:48 +0000 (UTC)
+X-FDA: 85431017616.08.A834A46
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id BA50580007
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:00:10 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gcZYmCrb;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2C6D2100007
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:02:47 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X78cUYoU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794596567;
+	b=tQWVJTEeE/DanPRsYCxOb8qXXBdYE7AaemfAXaeAj/uqOeK8Qj2zJiyDMPD5hahdxEv5/B
+	IJL3hRD4ZZscfg7e4vJ29FW4HViDax/aX0qBtoJHJQoRkInjgeeO+5co9CprLRQvAE58je
+	2gf9FTM6l76T5fP1MmbJz5RxgD5Yvuw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794596410;
+	s=arc-20220608; t=1794596567;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+2lqXoxbcTGbpqi5YkiRhwq1uO/E+YCynWayZ3OE3fk=;
-	b=M5c33wCZM17G3DTWNV/aGyfF6Lo4YeQOSZ7yyKQqQBjsJVifO6OhPbSi0i0IehzJMd6vok
-	4QKgvgj0H0dmutMpNHeNPoigGtv4rMabi2RmxhByo8rX4amHmncaNk0WaA/YmeAGtoo437
-	P5GhNgb4RXf1aCD61NIjKS03cdMWF3s=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794596410;
-	b=SLLq5HIluustYSVEQM7ys58914cFkTtOLcK17sq8Km+Ev5pYoJQCceZU6l/Qm7vlIoUwuG
-	B4q7kMMxuo6aRTWVMRLdhrK7B7C4jiVlFKYOfMlzjHSy8/KXU+X5xwQc3/nwyzUtK73iLC
-	BxBG9b38u2Hi+hmLk+FzKxEShRJmgFU=
+	bh=KwTOBx+Jltn2XW+4Mg0maGISpF6Y7cfL2ZL24ASbOeA=;
+	b=vwfycPrlIUnOju+L+qVR7r/rcBarxt39vs0AG5USB/Scs2HQ1V2H4uYgwAkSOxwnkQJbnE
+	3SXVbozQe3iaX+Ky6iUvp4aQYgGooRqkrJS2fVoUwZESc+iVC2d7SNHpR/xkPc+y5pGyLQ
+	pnjURrXIJOSTYc7O1DSyRUimP1SxmFc=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gcZYmCrb;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X78cUYoU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4DEBC6242C;
-	Fri, 13 Nov 2026 19:00:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB51F1F000C4;
-	Fri, 13 Nov 2026 19:00:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A40AC6242C;
+	Fri, 13 Nov 2026 19:02:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A18431F000C4;
+	Fri, 13 Nov 2026 19:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794596410;
-	bh=+2lqXoxbcTGbpqi5YkiRhwq1uO/E+YCynWayZ3OE3fk=;
+	s=k20260515; t=1794596566;
+	bh=KwTOBx+Jltn2XW+4Mg0maGISpF6Y7cfL2ZL24ASbOeA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gcZYmCrb/XakcrNd58e3ddXkD36SjuOB0rbEEBXmvH785qkb9J2/KK9BHMjqhPOdD
-	 7sQkDObyATbGUuhcqKqGrEXCUiXVpdyfzVyO9YQLKKG/6aTVob2pgTNO1IuNaj6/dG
-	 APTwnMbRMSLtHHT7Y4dXM8O0DsNemxBY2KlH3MRjlmE8oQzAEkzRLGJMWHIIkVtuWZ
-	 uYUZPIsbhVuPx6iD5A4ScPvtRe3uQlffpuhazLJ3BF7hTUDanfv7K1hsChy+q6Vdo7
-	 dSv4aGisHzzgaPOOwGrgGIt7wf0it+6ZKnZlcXBv5vbzxzUPz4LxcfeF9nN+6E4uS/
-	 6x5mu1VMCiK/Q==
-Message-ID: <2ff19317-8da9-4014-be04-27fc218b8eea@kernel.org>
-Date: Fri, 13 Nov 2026 20:00:02 +0100
+	b=X78cUYoUjXHiG1qzWewIHCXS6qqkU3WoRc6BWbaI0b6GthrnVwI4mhpWL2GGvBZWT
+	 r9GgfeBG8++oZO+Bw6dr+LZtOv/NMjN4Ntb9BpTSTN0ofH13FFgd+uCkE3iArb/zXe
+	 89P9/ZVy/euGWgXCEWX9Jc4Wm0VLMjbBOv1Q7eI+SSO3fDwUW+HDvAxDZVlG/dwgXS
+	 x7agLj5mWRKyknKwmcYIXT4fLNklS5d/bg7ydZB/TGeXgPqnaMHVRuNB7YijhLgxVT
+	 EalRbF7PWqw6h+r5GnZsXMGFpYWbnBb4qzqyOi7hZk6yZ0/p64jepacEhvldSBqOdY
+	 fWZfF67xhBkIg==
+Message-ID: <64e1c24f-08fb-437e-80c1-e5b486d15200@kernel.org>
+Date: Fri, 13 Nov 2026 20:02:40 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/9] KVM: don't zap secondary MMU on permission upgrade
-To: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>, kvm@vger.kernel.org,
- linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-riscv@lists.infradead.org, seanjc@google.com, pbonzini@redhat.com,
- akpm@linux-foundation.org, peterx@redhat.com, ljs@kernel.org,
- imbrenda@linux.ibm.com, borntraeger@linux.ibm.com, frankja@linux.ibm.com,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>
-References: <20261112142039.907090-2-clopez@suse.de>
+Subject: Re: [PATCH] selftests/mm: Handle implicit read permissions in
+ madv_populate
+To: Xionggui Chen <evers_chen@163.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ chenxionggui@lanxincomputing.com
+References: <20261112031811.56500-1-evers_chen@163.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,21 +120,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261112142039.907090-2-clopez@suse.de>
+In-Reply-To: <20261112031811.56500-1-evers_chen@163.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 2C6D2100007
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ic9w9yieya6oiuzs7haq9qx3kuks7rpx
+X-Rspam-User:
 X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: uff3iew8gmfa48qb469yir7tk35g8yk7
-X-Rspamd-Queue-Id: BA50580007
-X-Rspam-User: 
-X-HE-Tag: 1794596410-98862
-X-HE-Meta: U2FsdGVkX1+sC5xZPbclmiH6S5mHOijro3k7MZGqa63KKJTLUa+QBf8Nt0sZDrTeQbeWmW4C6fFs4SNbxCfBJUYXd5d9lyRC/0P6gUPS6yQ3hBsjaTIvUZqMTxXTccKYNe4n9VSzD9Ylq8By2R0jssioMFA8ePKk/+Qym7N5A7gvEESy0nappJSXf17uqtEYh0pcpyvHvEKTp1JiOJdb32Dr4Gk5L0DW2I7nQeHIIom6ZPmUHwNQ2SbazJI+J4tcxeJgxcO1wIkhkOTG4cuCDg2GZaokMLhqg65jT/6LhXlmk843a1qn3GkcnYd+Ocgi/Gu15Is8yKqlIoaqkOtUfkmiW9441QtBWdXQc8TQ7+JnlPEDm5HUerKu6uoFlT2YzQSUd7/NO96bEf01JQPkOknNqHmYRPUoSo6w4sgYBiWl779+Sl4zOz8NXfr3LjzI5DoZhVHOzn5PgL4hty72iMvTx/ovuOTN10IBFTLeBIpKwust7/1wsiB02vgQGxggpDwscXot84J7YLc6Y4AiNUD7K1jEX2ynt1wZ0i0sGRhY6AlKPbhliGESqS5YWjJz6/n2s/MvqIl9n9ESLEYrcd3BieiSrXsdJuNiVJWh9qgxt2DQgHClMaqf/j7wNKWD2XCqDTj0wp6GzMay2Hp3CbCBOoDviLCCXudaKoI8/XPoezBA/mr2T3uzuvrhgMpb0ouAcYRJJBw2kJuLv3FkaybTXF8bp+AgcWa+gpDHzvPpKWCj3rcL9P/zAU/37YYt9ueFnDAf2msPJT5ogX87fq2XC0qM0JTcsuk2x4ISbR9DLfuU0R+h0F45c0ZOSNBu1m1fqi+jEbbG38Jqc0LDRK8WX+nx+SeP1kWSxYXCTW/WicVswDyxCae7uWfm7MT5JIwAYDonq0abII0EmHnQZdR5LjW2m0eAS4TP0wL8IkZNi5zYx38ERX8a3Arwcgs1hA5C2jePjUnS0f+3LPf
- JE0W+Hbz
- 06uUYCid46kPbWVmwMn3hkdgJLIFokKVuvpuHRC5S/YNEZ31GETaEX8/p4cw25mqC+1CbxPD9Om1BD7E0Stg/GurkT9GyLPY6IRnLwH9INz2uwpCqwP3Yy9A06JTJm6eu/IUL5t41DwOmxfA2Nz3MwrMacyqPeH0lTwtOxI6ZFVQaVpymGDQGBo6feC6jzrE1p5LqGYpfn1jEGajYrVcc+ecJX6n/xH5PdPbt0OpsGgw7YUa3SLHPo5HwKhoslOS9i8ybAxOgUzZN9LiYTJKEl9d+CHPVVu92RGjv
+X-HE-Tag: 1794596567-262916
+X-HE-Meta: U2FsdGVkX19hpT9hVdY+j8Q++4oQNL7FfytNGtgg8xtxVg2CQLxorqPOhgj6qQVky9xe7U9m2IPcDQ5xz+3q7keqCNTu6aGs5CBLkz0llcWPjBMtAjkrfcTwwi6pGgT2/umAhPN+By/S9UlhZ5dXreLuJHbpbYhyBivPoZY6VVj0p/eiiy3LwWh7V5YO1oJWZEXbvEfJgP91E1Y376ZiqZOp0KeEoKjdsRit94YA+00mvRhX0VtPnV3feMeSAGFE8uPvVOJWCXCUHJVbtu0EMdRlDU0vByldpNjedirhWhjx3W6+b43iTkXcn7UVb8woCbB5pNq9FsMxfqlrz20mApCQlXSAV++qC7HIRRi/iqtso/gIKC3fRfc0YcbC5dAArEV+vvT5EEi91QDNSOG31tS870tL3z7QtiOKCMMYDi7q9K/Ujto4WnY88C/f8pfFd3HG44uFGnLsQlDy2xcmTH0I/gMcVM2stotzxs2cezsbXO9JhNjjYxcRzN8YMgUYj9l1JwOm9mZckqG0y5FIeb+2FYLYuH1osqOYuSvEMpNExjP8R3qRm2Zkos1h8YxEBBv8EinNfwFD+ckJ4XmhV60UYfTjc2bYGshwpxf80G2t+ckIVejhT4gvGrQtiT60JE8Hoi+13DYUXD7w3+U3sqAeS/WeN7a2qKAIi/D/1MDuNKfLnDkxdBeZU6sBEt4swY8aHChkGriVOkzGiLwr5mewvWzY/eJLrrFECLjiwQgrE30eGPJtk6MlBqPe/VIVQLbSbJWVX54QB3tsNbGKtK7NRpksa0pflty2TN2oRooy2NFQ18gWhBEZitNTW3Cp/keWnxpikBHHmJ6Ad7l4ho2deqTD5i7q4kFaSWLCq3VFvbzkkvY9pPnw9gJO1ubZFxX4h9odTyaw6vdsaVklPrfKpddRTEXCQEyqa2MqYUedzx0i3r96gBDCXQu90GnRPPm4Dqx7eTbkIrLQarD
+ tDXCkz/O
+ PnbzecWPLgrN3ZWJ8/UKxgsZxNY0Aq7FmAn3TxowsNgOwNSL2x3KiwMqz0lPciM+efaFM+HKi6uNv5hvKVPAhZ3qEw5wdja0ZwdqFtifUMf+pXDYpFxl+shIeDTbOb1YfeK2064udkTfO4wjp9cHPqcYOU62DXyfeHYVmp5qvl7XkfHlLq3yIr8nvQ3Wouh4xlwAXd9kfb2w2UVcOmeM91A7DeEKGB17Obg3URIBc0DYePeSbTRRu4UENxzxPpLU6gCVWMFFKt/9GsaA3PrvhCRhzV3B+XGmN29A7s5k2gwhJzSAoyNhDDRvE3ntZiUA7R3Hgfq4kVtUdZ6cXMiTWo36DkIU7KizdQiBcuSzQhpkB1xjfnp9BmR5Utg5VoJvDg98mYlE99wBMsJospmyRl4gFpE7AUI70dqjvuO5ZaaY44r3iqjDSCG0VdCjbdh2PG4wgch59nOX9cRyYla0f+ETSQJG1xj2ib9mASDq/kQCgOvylS39J8DiUdFGmX/TACNAxgU6g74b8Qa6tAomYgO2c+eBrQ46VIVFv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,48 +143,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/12/26 15:20, Carlos López wrote:
-> Stop KVM from zapping its mappings on permission upgrades on x86 and
-> s390, as these keep the PFNs unchanged and revoke no access. KVM faults
-> in the new permissions on demand, so dropping mappings early gains
-> nothing.
+On 11/12/26 04:18, Xionggui Chen wrote:
+> From: Xionggui Chen <chenxionggui@lanxincomputing.com>
 > 
-> To do so, add an MMU notifier flag that marks an
-> MMU_NOTIFY_PROTECTION_VMA invalidation as a strict permission upgrade.
-> For the flag to be accurate, change_protection() keeps writable entries
-> writable on such changes. A few cases where it needlessly makes or
-> leaves entries read-only are fixed along the way.
+> The madv_populate selftest assumes that a mapping created with
+> PROT_WRITE cannot be read, and expects MADV_POPULATE_READ to fail
+> with EINVAL.
 > 
-> Background
-> ==========
+> However, some architectures, including RISC-V, may implicitly grant
+> read permission to PROT_WRITE mappings. On such architectures,
+> MADV_POPULATE_READ succeeds, causing the test to fail incorrectly.
 > 
-> change_protection() pairs every protection change with an
-> MMU_NOTIFY_PROTECTION_VMA invalidation, and KVM zaps its SPTEs in
-> response, as it cannot tell whether permissions widened or narrowed.
-> This is costly, e.g. during a QEMU background snapshot, which uses
-> uffd-wp to write-protect guest RAM and unprotects each page once it is
-> saved. Every unprotect then makes the guest refault memory it could
-> already access.
+> Check the actual VMA permissions through /proc/self/maps and adjust
+> the expected result accordingly.
 > 
-> Secondary MMUs that share the CPU page tables (e.g. ARM SMMU,
-> IOMMU/ATS) can keep read-only entries in their TLBs that a fault does
-> not flush, so they are already notified of permission upgrades on the
-> CPU TLB flush path [1]. KVM keeps its own page tables and faults in
-> permissions on demand, so it needs no notification, as Sean noted when
-> that signalling was first proposed [2].
+> Add a PROT_NONE test to verify that MADV_POPULATE_READ still fails
+> with EINVAL for mappings without read permission.
 > 
-> Series overview
-> ===============
-> 
-> Patches 1-4 fix cases where change_protection() needlessly makes or
-> leaves entries read-only, so that the next write to them faults. They
-> only affect performance and can be picked up independently.
+> On RISC-V with Linux 7.2.0, the original test fails 1 out of 16
+> tests, while the updated test passes all 17 tests.
 
-We generally don't add performance improvements without clear motivation and
-data to back it up.
+I would have said, if RISCV is the odd one, special case it and call it a day?
 
-MM is currently busy with more important stuff, so best to keep your changes to
-a bare minimum.
+That would keep the changes to test_prot_write() to a minimum.
+
 
 -- 
 Cheers,
