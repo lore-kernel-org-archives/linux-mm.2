@@ -1,132 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BE6606B7D2
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 00:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D01606A883
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 00:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=p5YftAwJ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hp45uWNU
 Received: by kanga.kvack.org (Postfix)
-	id B15FB6B062D; Thu, 12 Nov 2026 19:44:17 -0500 (EST)
+	id 33D426B0630; Thu, 12 Nov 2026 19:58:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AED9B6B062E; Thu, 12 Nov 2026 19:44:17 -0500 (EST)
+	id 2EE346B0631; Thu, 12 Nov 2026 19:58:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A03926B062F; Thu, 12 Nov 2026 19:44:17 -0500 (EST)
+	id 204926B0632; Thu, 12 Nov 2026 19:58:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 79B3C6B062D
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 19:44:17 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id ED560421EC
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:44:16 +0000 (UTC)
-X-FDA: 85428249312.08.1AA3029
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 092D6180003
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:44:14 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=p5YftAwJ;
-	spf=pass (imf16.hostedemail.com: domain of aleszlucero@gmail.com designates 209.85.221.177 as permitted sender) smtp.mailfrom=aleszlucero@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794530655;
-	b=EPJQfPmfYbR/yH3fZ9Wt+eLg6BPQlPGFaz2Kf/mLwgEIUBB5t0NpXUADEC/qPE9IINU4dU
-	hHqIkURhqPL17sCqSFdaca5I6n3GMRH/CnobgnJsLvEeQ5AQiPvhmYWX1DnpYsJlhoTXWb
-	zFVr5NWCyDrZC/MM24pcr8o+3v/fRZg=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=p5YftAwJ;
-	spf=pass (imf16.hostedemail.com: domain of aleszlucero@gmail.com designates 209.85.221.177 as permitted sender) smtp.mailfrom=aleszlucero@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id EB5D46B0630
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 19:57:59 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5E76142237
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:57:59 +0000 (UTC)
+X-FDA: 85428283878.06.10F53A9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id C542AC0006
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:57:57 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hp45uWNU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of jfern@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jfern@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794530655;
+	s=arc-20220608; t=1794531477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=s1YVk99TpLbLdCzUwvUqAo5yK2pRxoOy71wVRzZH/Js=;
-	b=W9EpcHv8dmdlapDXkKFgnTj/Vd9jUtCUa6CUNEYRVRfHQStaLHmzf1u8AzuP1qh693Vwy2
-	+wO6yB+uVKhTsGGmEs0NFmGIL9Qg2R2tOSkVjgH3uZY7oOvCjoihpyM9FpwQK8n0tHoBfr
-	19T1jwwFE3+r4HsAzgMu6yDA3YoMtmc=
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-5eaaa9b1591so702387e0c.3
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 16:44:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794530654; x=1795135454; darn=kvack.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=s1YVk99TpLbLdCzUwvUqAo5yK2pRxoOy71wVRzZH/Js=;
-        b=p5YftAwJg/UZJ3cZJsENVO+XTPwBSeurXv6/AFsS7+9nmTNbPaFLVOef8+tRnvowMk
-         DsPC94yvyg4U/RRtY/EEplZ/rT8NdFWsw0I6U3tt4+4gcbXgzk7SWU1lyCHvQpSRms/U
-         Xq3n6fsOiDJECcWaRy+ltFoRF7TQIbAwgEan8vVKrBGblJyCahgyr4O/EN6Ln5e1D9nz
-         jLAlJX5UQYhyGPrDOhfTI6uTtqkmHuw4aVkDTmxyBg+oBXgauv74sJ9pl0ocs6LhDosr
-         zaiwQPlnusn6KJFthR/FsoMuY9OrE7GHM6Q/SdwhFtsm5L1X9APTyS4VoYh/bqxE9bbH
-         Je1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794530654; x=1795135454;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=s1YVk99TpLbLdCzUwvUqAo5yK2pRxoOy71wVRzZH/Js=;
-        b=AeGxOnnhP/6KlZE5b7fbkQYY0JeBsIO/cOtcmW5DT8Vyai4VVmPs0qiO6rJQq3QRLg
-         RWF3FAobfLJguORk3SNrfWeBJe2fIxcOkq14bUuCwd6cIFQQw70aC+RCzntPtJWFocsa
-         0PwwF0125fFcD8OKAStJsY27zCbhQEti15uzwyHwt6oKBJc7rn4gNHP38dRBqqIN8f2/
-         WMfHK3sYxTtE1c2rFEgoPTomvwmdCHekvjP5CLZaxk1UBGlywW4Y+aaNylh3CsbDR9Fk
-         xpnyuIIKfTWnFpOmAJAIxeyggKg9fBaiCCynfu6Sxbj20Eo4uVIaVmIMOmodi5mv80mP
-         RuUw==
-X-Gm-Message-State: APuU4Z8fX0BJWhILrTzWHrJgyfTNxXlYTwUauvg81cKcCU0GU4XWQqrP
-	/9fAv/F9A6fybqp5fVjrDHOYpBt/HAFXmQBHSTiwjw1npoe1492ayZRX
-X-Gm-Gg: AYBFou0hWPPvYu3kSvs2rHQQjNnMXyW50Lvh5ECs9k4T+9YuoQ2dwX3Z3f40RNscA0w
-	7t9j2NuNJpgNYQEdFqvazPFTNAI3lPQxADZ6dSIu/AVt/xO4jWvG0V+umeklzRJ4W/1GgS2rSQC
-	4W8S/oyklfYZ/TyPh645kgMdUFqPEZojARfTeTzrxB7jGWku+kC/SxUYDsyTq3G1jSte+fa9yKv
-	UTPTOdnXvdsgw3213mmvNmU0NmQAMtSEYIQitCztuwSZYQgep4ZRljBiyXj6+bKDZFjnYWPD1Kd
-	epytuT7LQctC+zYCtgzHbp7KaCuF55mtR1lcTPY2108EV0lGpIH7jZOWI38NjOTwlTGK7h6wo+d
-	jwTsaDqj15kAOAP2Cljb6EUvoGGTJFvqKvqdoTsFg3gdK0i3nFHp55KHKEqIPKK7aDcbeVXi85X
-	fr93GNRv29Beku+foDExs1EdODeWMEz+9aJ9HoLDoSUPNTHTFHdKJAj9IvVndSr9a9PEQsxxscF
-	d/2B/0yZhhsA6YWmF6va020wMz6qS6MGnuDZ8l7A4Vg3K9y50H2CoUfhz34TrIsAvabqejoPbwA
-	d0i0iEmlPSPKTEEcjXT6m+FHwVM06yVPnK2BdupETw==
-X-Received: by 2002:a05:6122:311c:b0:5ec:c186:d22b with SMTP id 71dfb90a1353d-5ee34aef024mr356354e0c.22.1794530654065;
-        Thu, 12 Nov 2026 16:44:14 -0800 (PST)
-Received: from [192.168.0.8] ([2a09:bac5:565c:323c::501:50])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ee34eb9a0esm391085e0c.17.2026.11.12.16.44.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 16:44:12 -0800 (PST)
-From: =?utf-8?q?Oscar_Alejandro_S=C3=A1nchez_Lucero?= <aleszlucero@gmail.com>
-Date: Thu, 12 Nov 2026 18:44:07 -0600
-Subject: [PATCH] mm/pagewalk: document missing struct members
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mp8Nm+ZgjUiagLtuzyFv0b5XLhVofSDigIQqeI46CSQ=;
+	b=OfycR+XuKhOUsipQeu76eoXqackqaHWYleKpwqS6hyv1sQMFG9mD2HjjPWNWCVA7CCG0Aw
+	CZQ3+xQc9C7ejiLDXtUggpzWaEPJltdIfJPThei1tO2OQk0zUvb03xE8wYfaoKVa1sE1+l
+	4ObUicCj7TqvDIMKgMLMSXpaOPbBx/M=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794531477;
+	b=RHu04dpa4/zDjv4/5bIzjzo4DwLzsMLVj58ispbxuV/8nbeyBZB++/+l/J5qyaztjkuFKp
+	10OqzDLwgO/2PJIo0Cshdk63OiXCtjmv3j1Y4Dqh7d68yHpOMGFKFoNzPXZcUV6OQIApwC
+	FbN+S6V7i+zXk9Chlk6nmdQoRvwtn14=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hp45uWNU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of jfern@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jfern@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with UTF8SMTP id 3E5A74655B;
+	Fri, 13 Nov 2026 00:57:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id D04721F000C8;
+	Fri, 13 Nov 2026 00:57:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794531476;
+	bh=mp8Nm+ZgjUiagLtuzyFv0b5XLhVofSDigIQqeI46CSQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Hp45uWNUlx5lB0g1PVku3oGagTt0MsHS6lj3WhUUxTU/sh90uSTmwJej9SWhs9KJC
+	 Hm+EDQxGKsuT/SpE90FL0nUljOt4SQ50f3DQTpORlTjcMn1eGds/369qset1q1ilhg
+	 YTnqJOmqo2upEg86MuCUcfvXyaRiaMhTduOXq2l06pteuFqveBX9RusOBL35DLuc4D
+	 fbVJnHQ/myzneuQZRQhWLO24RwluZ22WkRwqWBcPwrWO/4HJyBU00Hxz2PsHVVxVxT
+	 xeHJ3xk93ZyhE/reS5nRWxxiGYLEPh7FilrYOp3TLIqz9kZwOlzPvA3OjYi9oQ0sDp
+	 Fb3qFXSyVB0UQ==
+From: Joel Fernandes <jfern@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <jfern@kernel.org>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang@linux.dev>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: rcu@vger.kernel.org,
+	kasan-dev@googlegroups.com,
+	linux-mm@kvack.org
+Subject: [PATCH for-v7.5 03/14] kasan: Avoid an unrelated RCU warning in the callback test
+Date: Thu, 12 Nov 2026 19:57:30 -0500
+Message-ID: <20261113005747.2977123-4-jfern@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20261113005747.2977123-1-jfern@kernel.org>
+References: <20261113005747.2977123-1-jfern@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20261112-pagewalk-doc-v1-1-6cc5ce7148da@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzNDQ0Mj3YLE9NTyxJxs3ZT8ZN0UkzSDlFTTZAPjZCMloJaCotS0zAqwcdG
- xtbUAf6DM0V4AAAA=
-X-Change-ID: 20261112-pagewalk-doc-d4f0de5c03c2
-To: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Oscar_Alejandro_S=C3=A1nchez_Lucero?= <aleszlucero@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794530651; l=2229;
- i=aleszlucero@gmail.com; s=20261104; h=from:subject:message-id;
- bh=pJ9P7W0I0mabCui6yThr7RtPoOdOOdr/WWw8y3K4weU=;
- b=hZqPLMCN9HIdyzRPrexPxD5hxkRBBDo8KaVc6u0T36+0rfujFKA0gvnwyuFR3TDzS5/mf4F2Z
- uyV6aukmUS6CHj6em6Ww+8WbDzVk2GIzU7/nC3HtVodDt7MVDF5sHul
-X-Developer-Key: i=aleszlucero@gmail.com; a=ed25519;
- pk=zRzEBMID7l1FXqr2CjfnlIn++3m3N05FuNYb5zPA3cw=
-X-Stat-Signature: 5qq16buonxqjsrn8hef9bef7yyo6s71q
+X-Stat-Signature: q8gw74b8cn88neuqfbqjrzpguba16hkh
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 092D6180003
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794530654-273611
-X-HE-Meta: U2FsdGVkX1/G5Uc/LH7+N0fzvdX87M3pLg99rbpePoZ/9BMpR+k91SyO3psYVTxC53KFdlxyqg6BYhAzr4176lj5BHUfA/cEfs+kPhxXI+27mUQhqUNBpRzXf2F7uMPRMus4F+MR2hmjnhD6IbQ9JZYMERhKuHqMKWJvsIcvkkYMBhkhACKeeWcvUKuotLQQOn36hIJ2kiIWkZo96dMfqSG8NhNe2zFB7tCwjcmnC8oyc1LTIF5Ulp38KUUObUfqh7muFAnxPOMoGMrPC7U1zJ3E0ZABYZ8I1z95zrO8MhjoZsDPfz3K3R2cFn+0PjOCZmFyBWGhi5XX9hkhOe6SBCxRP8sqnZEUoMJGbud+G44d0PHLSIvgsm0c0Utte7c+qFTkLRg+32x2r/F++QHlUchWiGY131TIHLs/Y1XOgVyG7XRssws2UMT8b1osRpNwWNEeFG8He2YXcQUnV80C6gqatAnFa0Of3bEXuHkvXmHwxU4D8nOyEJfvS1fFpxIaLKjSwHfx8AwsdCKvLAGErendygXW50pIrmtfCdJdYvkMk+QWe+6tq3zoG0GOWmx5cg1nYtPWl5znEKOhJQgouhCnsqAdcsdA48evifXlhi72L8icdecOsqDWCgO1buJECU16uekwdO7WvSurvTuGXbXL3VNhBNOEZD+103fdZ9152oblKHXFPEQTmHSGrEJ8cCibBV1iHg2qAPLeqVuOkbxwQGSyUeQLHy9qNJlnrN+JCSgHdWxRhXZJ0thjX7AbmOjjHtmT2NAGPkS2naMauENsD3kRsOwUN7JGZhktk1ZGK750UHqJamS/KtBIRR6OuKK6buJUY4CNz697Iw1ugiJJNaRERt1I1ya5oiiVCDzPpIS2R1AWXAGs3f+qrbxiD3NioTWT8dlz5s7mKB2fKsYZ6miUNHF+ikHu4htmgEhYRxZzq1wqyPeP0Va/2G/K2XwdrY3QkO9+vMruphH
- K2xPCzuf
- cvuBMOdNQHO43KK1HzIqsk91RARBgaXAVk8aLIDv83M3m39PgEnaUI67V0SeKX4oQvRalJujkCh56Hpqi9KSlyskdazMsjW4slDY03sD4MQkGufesDphY/mu3IOJH09QaTGvS18v50RkRO9OXuzrMgRKyibLAetiRQcLs0htAL5XYwkY/+aJhM58xyjuQ9WswLzsnZCYpWLWUsucw/jlouS3pSyTO8y/8GyRs1uj5lNJrQFgJxsDkQY1F+5Zr5VZUQ140X5zDJyblkMMNQD2CkFZ0Dq98WPmXiTx0myagijMR/G+dqsJi1tFEvWPVcGxe1tDnsx644P+Zlx4V7RKIEZ94YU8il0oQ0PB/tqAJx9ciH8pxr7Iv/JT0mnbf3VPOGHuFwU730+seKY+eyxWq1zRmWyZiLp22eNAGXjX22SJ1Ze4lcw0Z3xEcHr1zRmhR52qmUSKEyzi9fayh/0jpYLyftrBXW2PsT3zLEhrVcKiFbE0=
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C542AC0006
+X-HE-Tag: 1794531477-489692
+X-HE-Meta: U2FsdGVkX1/3OBSfOlzsnzBS8AxdMlDNmbqRjXQZ87H2PWo5l3BbBr09fajQ0wcQsLwsrMQ7YDN9LfrouDN4c3y6vUpcQpZj8N+9l2Cuaxq/DIcJBlJa05qLJBkB4tkuR8X9E8AF+6c+ltfrAkvwggnX1Qy5/O4kqFm+wWfZ5deyUTUuLvsfL0bvHOttl4S+i+J0MLJDcIpAMy5lP+ifykWNVYBdIoDh3uBwEERoje9ADnfEgdoEkPsBZtML760vgkApZ0uJPCRurBRyT/wM+eg1uIGzff4KnQSq1IyTkwtsT9ozpazGVjzelpDSdfSD5fMKGFoF5uOzdDEfosRJKLNgsEzxxamX3Dw6/RAH2EJxBfCqgySH7hPhB/WF0wGRXQTyYPVoPNgQjdXO4iNmZccNk56BORy1l/lw4rDEMFhk0lCoKowpM8+THpCB9XUUXa64ZxhojtPCLK9GfY/MaDaRNCzfybrSiRr3W8l9uP9HlQtradeKuNuaN9Wdxmnd1uV15S6xjQktLYmZHaBhs/s7xGJo1C9YGC0RSfBqZgGESPEgdN1/7MARbAHWEFNOYGTaqaGL8fpxRNsXU6e72MVM1JluZ8sv2eOZG14AtuXVhdWhZTH1S4a/SnZEsdQeJVh7mLBIbA9Q3J068hCLNleTFiyZ6jIEQa1byFZzqik0miBSmQjtJK2694sdHig70GcBDBKts5ALYbxvg9/Z2QsMhRLLIa7kvr9P8x3zTQ37iJxSsOYCJEwi4O4bt8gNtMrODmULWPvdXysEC9Q0nwEJcxuZ1Ev5P7IbZ/9p2yqxdfSib7vgFNQkgUlvCv98XpEfDJV7xNBJg2wY6iSCulyrW2yLQiktA4gDDE75LkA9Ye2tCgd0o4xZ6WIqLN4NLVkMv++n5nR3yyK882kjx3Jn3eP5pKAX3cZpTozbwbr3iyZV9715tFpSiYIx+Wj1PO1XCHba32piSgvcr/m
+ 1NHZQIri
+ xgaWjMpfF/9GvIrvC8pIhhnxW779ym0z8idBSeDX+bn5fkWub4O5Oxz7v+r1z/l6bFfGx1nuHNcDB56gmFyFPHttGOd07MuB5i5zFSNu887ibcgaagDOQbUwTsQ27/Cnwyu83W2bd+oYzt4QO6DAKISwngpTDNVBNXKXiBKHOTgs6tvUYmxqMWhfnpOe2w5IRQEExWr1WB7iSiv3/7hv3mYWce9cFKrKdkB1lYyFisW3lhWHAz/16ztJ6JcjsnzFjC5AD+r1gyIrx1yY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,54 +111,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add missing kernel-doc entries for @walk_lock in struct mm_walk_ops, and
-for @ptep, @pudp, @pmdp, and @vma in struct folio_walk. Also fix @pte,
-@pud, and @pmd descriptions to state they hold entry values, not pointers.
+rcu_uaf() passes a false protection condition to
+rcu_dereference_protected(), which produces a suspicious-RCU-usage
+warning before the intended KASAN failure occurs.
 
-Signed-off-by: Oscar Alejandro Sánchez Lucero <aleszlucero@gmail.com>
+The pointer refers to a fresh allocation that has not been published to
+readers. State that protection condition explicitly, leaving the intended
+tests intact.
+
+Test:
+Built with CONFIG_KASAN_KUNIT_TEST=m
+Booted Qemu guest (8 CPUs), ran modprobe kasan_test filtered to kasan.*rcu_uaf*
+
+Signed-off-by: Joel Fernandes <jfern@kernel.org>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- include/linux/pagewalk.h | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ mm/kasan/kasan_test_c.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
-index b41d7265c01b..978714d5e32f 100644
---- a/include/linux/pagewalk.h
-+++ b/include/linux/pagewalk.h
-@@ -63,6 +63,8 @@ enum page_walk_lock {
-  *                      install. If allocations fail, the walk is aborted. This
-  *                      operation is only available for userland memory. Not
-  *                      usable for hugetlb ranges.
-+ * @walk_lock:          locking requirement during the page walk (see
-+ *                      enum page_walk_lock).
-  *
-  * p?d_entry callbacks are called even if those levels are folded on a
-  * particular architecture/configuration.
-@@ -161,10 +163,14 @@ enum folio_walk_level {
-  * struct folio_walk - folio_walk_start() / folio_walk_end() data
-  * @page:	exact folio page referenced (if applicable)
-  * @level:	page table level identifying the entry type
-- * @pte:	pointer to the page table entry (FW_LEVEL_PTE).
-- * @pmd:	pointer to the page table entry (FW_LEVEL_PMD).
-- * @pud:	pointer to the page table entry (FW_LEVEL_PUD).
-- * @ptl:	pointer to the page table lock.
-+ * @ptep:	pointer to the page table entry (FW_LEVEL_PTE).
-+ * @pudp:	pointer to the page table entry (FW_LEVEL_PUD).
-+ * @pmdp:	pointer to the page table entry (FW_LEVEL_PMD).
-+ * @pte:	page table entry value (FW_LEVEL_PTE).
-+ * @pud:	page table entry value (FW_LEVEL_PUD).
-+ * @pmd:	page table entry value (FW_LEVEL_PMD).
-+ * @vma:	pointer to the VMA (for internal use only).
-+ * @ptl:	pointer to the page table lock (for internal use only).
-  *
-  * (see folio_walk_start() documentation for more details)
-  */
-
----
-base-commit: 9d66f26fefacebfeed15de31c1123451a17ff119
-change-id: 20261112-pagewalk-doc-d4f0de5c03c2
-
-Best regards,
+diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
+index b9e167ed5be3..4e23765d722c 100644
+--- a/mm/kasan/kasan_test_c.c
++++ b/mm/kasan/kasan_test_c.c
+@@ -967,8 +967,9 @@ static void rcu_uaf(struct kunit *test)
+ 	ptr = kmalloc_obj(struct kasan_rcu_info);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr);
+ 
++	/* The freshly allocated object has not been published to readers. */
+ 	global_rcu_ptr = rcu_dereference_protected(
+-				(struct kasan_rcu_info __rcu *)ptr, NULL);
++				(struct kasan_rcu_info __rcu *)ptr, true);
+ 
+ 	KUNIT_EXPECT_KASAN_FAIL_READ(test,
+ 			call_rcu(&global_rcu_ptr->rcu, rcu_uaf_reclaim);
 -- 
-Oscar Alejandro Sánchez Lucero <aleszlucero@gmail.com>
+2.54.0
 
 
