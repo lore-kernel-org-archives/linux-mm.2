@@ -1,95 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B03606A8A8
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 02:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3097606A897
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 02:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=v2J4x8w4
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=Xs+ZTY1a
 Received: by kanga.kvack.org (Postfix)
-	id 33D336B064C; Thu, 12 Nov 2026 21:42:54 -0500 (EST)
+	id CE95A6B0649; Thu, 12 Nov 2026 21:51:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 314736B064D; Thu, 12 Nov 2026 21:42:54 -0500 (EST)
+	id CC0C66B064B; Thu, 12 Nov 2026 21:51:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 229C56B064E; Thu, 12 Nov 2026 21:42:54 -0500 (EST)
+	id BD6406B064D; Thu, 12 Nov 2026 21:51:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 023806B064C
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:42:53 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7C3D11C3BCE
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:42:51 +0000 (UTC)
-X-FDA: 85428548142.15.BDF0C84
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf19.hostedemail.com (Postfix) with ESMTP id CADC71A0002
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:42:47 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=v2J4x8w4;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 983866B0649
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:51:01 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0CFD41401AD
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:51:01 +0000 (UTC)
+X-FDA: 85428568722.10.D55CC81
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D559B40002
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:50:57 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Xs+ZTY1a;
+	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794537769;
+	s=arc-20220608; t=1794538259;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rpfqaLD/s0aZ2I2qPUV8mwprDsWG5GFsyO34/kwcrmE=;
-	b=Pr4J6jkqZce7FzloQ1B5U3UVFEcs7WCC+WP1GSlH8Hu+b1tZHbOYIA8zsxCAfzNfMCMzKT
-	fUcy0YVxR2EYaD+nyXWd5owX+hMUMYEM0frad6bLZ5o+8v/0dSlis4dPQZYFdzJ5/J5NnI
-	Q5QMMpHNKOvk8SG2c/ZPOLZJU+YegwQ=
+	bh=mVe5HwVBkXjfHvoljda/mJvecIfGagV1bTDZ+w25zss=;
+	b=MP7eT7InaeReZhse3LJPMNKIRs8oH/UhSoEpFwbPQxhj6cIc76T25A8pKvIuiC6047EIL6
+	TGgjKWugSyqXRMeUJ1dnXiEwwjAyH3yW+CquPJVbVpm+FDuWS/LicvJowX/eZMw0A7AwXt
+	UJnLCVZ1Rk9Z1ObYtnRQu1WglhphZhw=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=v2J4x8w4;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Xs+ZTY1a;
+	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794537769;
-	b=Ow9kX1S+4buoe3lZPGt8lOYWcT5sl7x6zqf6bDyyVTz2eiervSDgMGeR+RaBLBWC3zln3K
-	LUZTwwaOobhxHkSl7qbZuVb/FX7cp45JPff2X3laJudcnCD96tU8zLiw0PO6cnCDLTyLZh
-	cW8Sj8zNzETt2kdiEaGWOa6yAZLTQY8=
+	t=1794538259;
+	b=QV0ePXTHsWGP0ZHA9kfwPvk0LVLHrlGZhBtNwel+JvDD/mHpQ6ygsAJ3q5/SEkJodohIL4
+	kSEAlORKXn1TB+HjkiVAIGFQ7Ci/zYT+TSTG42xOwt6Y2DUjgkbeF3kWMMN6HKzv5ZGvSh
+	ah/n6uUXhWSOSyW28/6RlayBkSQ1Vs4=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1794537765; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=rpfqaLD/s0aZ2I2qPUV8mwprDsWG5GFsyO34/kwcrmE=;
-	b=v2J4x8w4xEhBnkI2KXUn9Obj2RPAX7Pm0AMMy1kLpWiU10VOmZmULFBcgr9nLPL6XyBojG03lx+TyWpUnuo9dhfVQxUM/fWx+m4kDo+3HAo1cXY16nG3LvB5VEvEG88b9fl0VUKNPUm8gcrhVwtvUSppvcUk8rAw5vErkQDIHgM=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0XEdeb.M_1794537762;
-Received: from 30.74.144.124(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XEdeb.M_1794537762 cluster:ay36)
+	t=1794538254; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=mVe5HwVBkXjfHvoljda/mJvecIfGagV1bTDZ+w25zss=;
+	b=Xs+ZTY1ahj0evqtHOE96xHkAO6aKM/5WA+sUTn7c/vRE4Y3Kp9PKA+u90Gzf94kRueeP0W5Tp+YkFkaar7I4GDazTz8yrZI4ckOQaBMnTF6ggXPOcj7ez20m1lAP0LHAdzHR9SvxOl+PX7D0RbqwXwHQLEFAqu36vHG5sJSIBDg=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0XEdfmiI_1794538251;
+Received: from 30.74.144.124(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XEdfmiI_1794538251 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Fri, 13 Nov 2026 10:42:43 +0800
-Message-ID: <795b8d8a-4f6f-451f-9274-ccb8380e03dd@linux.alibaba.com>
-Date: Fri, 13 Nov 2026 10:42:42 +0800
+          Fri, 13 Nov 2026 10:50:52 +0800
+Message-ID: <a72af87a-0f10-4717-9d50-2d3480c32caf@linux.alibaba.com>
+Date: Fri, 13 Nov 2026 10:50:51 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/khugepaged: reject shmem collapse ranges beyond i_size
-To: Andrew Morton <akpm@linux-foundation.org>,
- Pedro Falcato <pfalcato@suse.de>
-Cc: =?UTF-8?B?SsOpcsOpbXkgSmVhbg==?= <Jeremy.Jean@oss.cyber.gouv.fr>,
- David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261112142335.2749597-2-Jeremy.Jean@oss.cyber.gouv.fr>
- <avYBFPhB46XWAG4A@pedro-suse.tail5790ac.ts.net>
- <20261112145036.97f74a828755d5b9178a3e3a@linux-foundation.org>
+Subject: Re: [PATCH v2] mm/mglru: yield the lru_lock earlier in
+ fill/drain_evictable()
+To: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
+ Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+References: <20261113020132.274013-1-hui.zhu@linux.dev>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20261112145036.97f74a828755d5b9178a3e3a@linux-foundation.org>
+In-Reply-To: <20261113020132.274013-1-hui.zhu@linux.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: CADC71A0002
-X-Stat-Signature: ttico3rxrerib3qdw1uzfxwi87ok1aze
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: shbudxh54495pxbnxjeb8hpmm5samqm8
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-14.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-24.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=no autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794537767-672210
-X-HE-Meta: U2FsdGVkX19gEbCO7+JniIkuyScAnFjLSH66yA8tZ2CiZAFaOWXyQIBF/fLIGqUGeOx1nmo6CTQx3UcCsdgt3GgubAQHY7RYNPY/3uRFdRtKUAcEloK9w1NbgZpoMUvFsDAVuN+yEUPVQK6LnPUGMiNORv8fSCcRWCcIEvV7Zqz+PF5nIby0cHMKy3IBorzilPhgwAuUpcOYgzYu/fWh/zkOXDZwthkM56jxh9cKDtPwrDC5fDwiC81oYDxm0+btzei6V5d0LExdcZfl62v0W0IhzOf4gexhOvJ7MocxVcQVMJ/nrBX7hwuKiSiVUeGXbONPLqd45jELW4DHY7lvav7eYAXLZsNXB5tXxdDUkmiXpYCQKTaa/qth6bgyCzQgRVog0Ybzrmxaftvn8elIfH5Ozl+HQlp2nXm8l964i1Y13NX5uSP8IRB6HTNUnaxhVM8NoOjhT/4AauSGdtOW6SSlEjbr3wjn9gOQtnLddaMLzMEczYNbomfv3+Y1hn7ObJl9w0KYZdn5cKddECFEsuDeL9TzamJB7sS3Jhjeqs2fjO2u8vM7pCsu8np+bL6JlHvnTW9vqPC5y9v4PhCvC3/hhkRFT+Q3EA0MOtP0ZdIfrobelZ4ATOy/+YLaOSHuOCLVx4i4ikeGXoK2sKPWnGwFB7pKOlYSPnRB6AUYR/ju5eoA2uHLny+ot8K5ir6FpEywpqJquJPKZToK/DZNAFVWg6zUREfjOKwhoEbnRz6zoAASSWuJq1VBXRiVLFdD3DcYGUpMVgCcdzSrcS0Mx1o5vll0puYIQK0AfMwzpu++ELbTaP6qbqgfgMW3vAFMBrXCfr9m47SAYBOyAZouV0uIceicQx6J2+XIa5enFWG/4xdSRcVulOYQkMROvie4zEnhcD6egN57m+C4SshXBtjL87LH9U4GTAyOlqiqrWLtQtB6F38Cs4+A1DHMvSTKvRUmhabHunvKmqhqCQi
- WQf8QqRI
- WSaVyn2kGYyW01mhtZALPY54/WlpXllKN9WVnPAANI9kKAWaPhFqDX8S8InGOc1M0DDt2jTbEOHafnWdv39H13+C/Yw/qc+D1nTi7grf0MmkZUDWDmUWCYwsaTI6S+axtJrzf1uR9a1YtwpXrrmVnLkjqro8t0RvRnUDr8VoAXpCqVixzxotkfzYxkIH9f8NGQ63EmSFWdqurTnpQxAb5Ic8GduLBcLAWiH04QXW9hVbScpBOJiCjAwmNXoOi4ipYnRuJMmMJ48P1JWXaWLnI4rVHTj/PqRqDTVly1MB6lmNze5YAyjVEUvXVfK7L2b1WHCMZs9Sy+KeKT9ByhRYxcYg+PV1rvfOFPJL7/DAPQIqY0H/NzgZLvjYX2lgWNrtm6TymTXYw5qesxDIFK+fjWJbIdrPlYtmylY3pwwchA2bp1mfbjRCJ3I3hAMqLvhaJeFuq0U+rXUEnGhK3geoA8c5UB/D6VeXktWmMYXSD9vykrmS1/e+Ia7Q+yd1bXKAUhp7T3IlD1aMaVqEnEn4/F0gTW4URxgMr4bcKT1svRxxbVloAId0AJMs0sNHEsdXYQ9Kg
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: D559B40002
+X-HE-Tag: 1794538257-891824
+X-HE-Meta: U2FsdGVkX187GLdkf+Bw/mHfZUNf87OzhweOpEiZwU+1DNwyzO4RILZ56tVC+DYFqOoRxr4F7OiSePrjxAG7+jfgQop5GRRVIq+6B+zRHaIdIU6EijEDsrEwqeTgBXrXsoplcCd26jCoRwyuFdMA8+OnuwVrekWZL9Tun62JVm56tcyPHfDU/GRJt87qkxqohWW1H4yTqRgoqjclLHuK654+EqDVvkcSSxKvncDAlpb2ktLLbT5mH1yL5DSnQVQAxEzK0qp/x4chNH9mQSvwmEvaJLxPczoWKOVygVssN94bwAYQvHE0M3vAJ2D6YyDv/tWFsg7aBeMc3UpSVTL+lfMg+lXIOVCq0YjSa7dIbU8yoPJpb8FBLxUsfp/XRVzCxaXfE/DWFl62sj81plySPEiDnss0lZH8g+SHsW+c7KvUY7/7Y8UI/AhVoet6aLhHjImX9wHR9sK6QPCRHSx6q2pUT/zrqsFrX27Jh+3u5EJfWfMI57glgmqH0hyQ8fy8r9BJ2BIkYlRFJDHxwrTqLs1R5NEYUR2CzUnkOum3VCiwjtm24ikUszkoPwZZV+KgGSIq1PHiadN1Z5QCQQABC5I8cLpuy4Muy+/mXxNaN51SyQUIudNi6DI8+nNW5eSrX77pJurz4CjlexRvvelN9SBoS1kCsB3DresqvGjZ66Ngz3JAJQhs3rLNMVSecsazZ19O35rkM1TnQMFu91XH8UlP/hsmgPhYa4jgdEfnjgGuCV9W49gReGTKWtP6cfZYoBlU0IjtiR16v9F9+R8omrhP3T1z5vEdm35rc+1LlXzboSgMkxVxMfVzn19wiA7SDrbVM0Sag2Yoo5KE7L94ad1rURLvO/RlF5KK9z6cfMOhb/UruhV3S/1z0hxn8Lmy8LA571QRC8aMCxaaKoIskPRAQND6Agr/PvOczrd0ZP3r/X8DtERU4WgbuIMX2igsBimlKFWSUMnm2semfpi
+ I/kHxLyR
+ BJ+jn01BnV23tZhxd15nfLLSWBsjMJNHgXwC8tGLHO3lE1Ye4xFRAra+DPZywqQKty1xFotvAIxAkZylgEfp9wxQJbIDs7qBgOSU1ieTibs4SlI8w9tVXgq+kfKcOpHU65UroGidJV8ByOkq8e7k/1p0C5L3leQC6K3DXexB20imaiUtVNHUCxQmp/wpvCa4eVSf8ZnNb5eKlbJB2g1uCdTFaoW13KVSzPmXfpXbXKvSqJHfgl7fEfe2gbxmbBDb7p6JpwPJuo/Fh0/Z/HYfO4eovUoNldTowpqkCs+FU0BK0aDfNfQJ2FEcx7p5NUB4Usl3N0xUAnBYpOwDe7TQt9zOc9PG0Q5FgYvtSeaVaJpQL/JRcyEhuckOw8RooVoFtEkNgn+f9+K5VxP/MRizKNj94fQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,47 +99,57 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 11/13/26 6:50 AM, Andrew Morton wrote:
-> On Thu, 12 Nov 2026 18:11:35 +0000 Pedro Falcato <pfalcato@suse.de> wrote:
+On 11/13/26 10:01 AM, Hui Zhu wrote:
+> From: Hui Zhu <zhuhui@kylinos.cn>
 > 
->> On Thu, Nov 12, 2026 at 02:23:35PM +0000, Jérémy Jean wrote:
->>> MADV_COLLAPSE lets collapse_file() treat absent shmem pages as holes
->>> filled with zeros. It does not check i_size, which allows one present
->>> page to become a huge mapping that covers the whole collapse range,
->>> including pages beyond EOF. This makes those pages writable. A later
->>> file extension can expose their contents after F_SEAL_WRITE.
->>>
->>> Hold inode i_rwsem in read mode while collapsing shmem so i_size
->>> cannot change. Reject a collapse if its page range extends past
->>> i_size rounded up to PAGE_SIZE. Keep i_size_read() outside the
->>> page-cache XArray lock because its 32-bit SMP reader is not IRQ
->>> safe.
->>
->> I don't think this is an issue. shmem/tmpfs purposefully maps with large pages
->> across i_size, and collapsing across i_size is a feature, not a bug.
-
-Yes. finish_fault() even has comments explaining the special case for 
-shmem/tmpfs.
-
-	/*
-	 * Do not allow to map with PTEs beyond i_size and with PMD
-	 * across i_size to preserve SIGBUS semantics.
-	 *
-	 * Make an exception for shmem/tmpfs that for long time
-	 * intentionally mapped with PMDs across i_size.
-	 */
-	needs_fallback = !shmem_mapping(mapping) &&
-		file_end < folio_next_index(folio);
-
-> hoo boy, this again, See
-> https://lore-kernel.gnuweeb.org/linux-mm/nwkpojnictbg6jicccpxyfi63ol4tmfajrlx24u5xxoxx7lv5f@jkw3o7j6tlfs/T/
-> and enjoy.
+> lru_gen_change_state() migrates folios in batches of up to
+> MAX_LRU_BATCH (4096) folios under lruvec_lock_irq().  A full batch
+> keeps local interrupts off for up to about a millisecond, and CPUs
+> contending for the same lru_lock spin with interrupts disabled for
+> that long.
 > 
-> It's not good that this sequence permits non-zero data to be exposed in
-> areas which ftruncate() created - the ftruncate() contract says it
-> doesn't do that.
+> The caller already reschedules between batches, but a batch itself
+> only ends after 4096 folios.  Stop it early when a resched is
+> pending, or when the lock has waiters and the current hold has moved
+> at least MIN_LRU_BATCH folios; the caller restarts where it left off.
+> TIF_NEED_RESCHED can still be set with interrupts off: a remote
+> resched_curr() sets it directly in the target's thread_info.  The
+> minimum batch avoids lock bouncing under sustained contention, while
+> a waiter now waits ~15us instead of ~1ms.
+> 
+> This follows lru_gen_look_around() in this file, security/keys/gc.c
+> and jbd2_log_do_checkpoint(), and commit 6e9be217a3ce ("mm/mglru:
+> use a smaller batch for reclaim").
+> 
+> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> ---
+> Changlog:
+> v2:
+> Also yield on lock contention after a minimum batch (Kairui Song).
+> 
+>   mm/vmscan.c | 10 ++++++++--
+>   1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 6a1af9b92349..c1231925159f 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -5533,7 +5533,10 @@ static bool fill_evictable(struct lruvec *lruvec)
+>   			success = lru_gen_add_folio(lruvec, folio, !active);
+>   			VM_WARN_ON_ONCE(!success);
+>   
+> -			if (!--remaining)
+> +			/* stop early to shorten the irq-off section */
+> +			if (!--remaining || need_resched() ||
+> +			    (MAX_LRU_BATCH - remaining >= MIN_LRU_BATCH &&
+> +			     spin_is_contended(&lruvec->lru_lock)))
+>   				return false;
 
-That's a valid concern and this is a known issue for shmem/tmpfs. Brian 
-previously posted a patchset to fix it:
-https://lore.kernel.org/all/20251112162522.412295-1-bfoster@redhat.com/
+IIUC, Kairui's point[1] is to just drop the 'MAX_LRU_BATCH - remaining 
+ >= MIN_LRU_BATCH' condition, no?
+
+if (!--remaining || need_resched() || spin_is_contended(&lruvec->lru_lock))
+
+[1] 
+https://lore.kernel.org/all/CAMgjq7CUMuNSdCXZ7_kDdo9+0BFvPNHuO=mq=ct_Q5YUyyckvQ@mail.gmail.com/
 
