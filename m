@@ -1,111 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D6A606A883
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9445606A665
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=b3Q3ouUO
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KM9Zundo
 Received: by kanga.kvack.org (Postfix)
-	id 464E76B05B4; Fri, 13 Nov 2026 13:48:13 -0500 (EST)
+	id DD5966B05C1; Fri, 13 Nov 2026 13:49:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40E106B05BA; Fri, 13 Nov 2026 13:48:13 -0500 (EST)
+	id D5EAD6B05C2; Fri, 13 Nov 2026 13:49:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FE436B05BF; Fri, 13 Nov 2026 13:48:13 -0500 (EST)
+	id C4DA66B05C3; Fri, 13 Nov 2026 13:49:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ED3426B05B4
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:48:12 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 38426A7843
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:48:12 +0000 (UTC)
-X-FDA: 85430980824.08.5C82B7C
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 8D78540007
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:48:09 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=b3Q3ouUO;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A34A66B05C1
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:49:01 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 34B081A023C
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:49:01 +0000 (UTC)
+X-FDA: 85430982882.23.1248459
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7BC7F140006
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:48:59 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KM9Zundo;
+	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794595739;
+	b=5/lCtwS/BX1QqBBbdv34vuLcyI5YbU2YEmFnrSotMo5tDwenQoHwSSEtSdSaSf8eT60xbt
+	VAtK0fm+S2uCnEY1xk6X/hYtG1N5ukG+QVWGnxAk02sgkLt+DQ3RU+F56QjXgKpTILnq+Z
+	Ve3b4T2XZoRSCJK8mNKSeskZnHv+OEM=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KM9Zundo;
+	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794595690;
+	s=arc-20220608; t=1794595739;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dTTXoLzmI08d/jkNxxwJkcGQTYkKfMEm/po0ghn6PCY=;
-	b=GiN0LIMpA0HBJniQfJebZuP7SYcZ9PT8PEF7B9rKcL0jyM7EX225v9p7UHxJ792UH7D4zf
-	IDH1wLGB5/O+g25dFruugH+2JmJk8ZphMnZBpN++6yLoxcHrMpILTJq/3OpbaTy374ch0X
-	LglFlvHXayJ8CJAUoUi+aQqqm3Mwj7Q=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=b3Q3ouUO;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794595690;
-	b=TgVRWr8Nev6+dfmwcwl3yhfZVvvMdj9qFOxtyVTB6HVUic4SoBp+YgI9i/QSc+JrkX89wa
-	kZpl34MaHZuFPYkSWkcd/KT654ITDCs6277zIUPlCrCttfKTU5zPJYnCRgZtDgcZ7V6KgX
-	U+hEnSbxm1eLy4iEHQJmwCr54AHBmyc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794595690; x=1826131690;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0jeRtz+9v5QZzJ0um3TzrYm5IN5Zt91xgFDxIX0GY3g=;
-  b=b3Q3ouUOk/43aFPnd8o121ldPmp2/0/RJXMCovrBBVHF7W2VEBNQ8V5h
-   d4g6X+WAcoCVyzpP+zaCAvBty0taVhe096n25MuTo2oG9Bt6WqS8BG2Ly
-   OMKUz52XXML2NvmFMwsGk6EGfJnfeGbBLyG/xJ51SvxE3Jd7wr+p1Jg/N
-   jR21CA1P8vFJpPY51Oc8obaydx9OKrtOyBcUQJGKYGrSgG2vGXFE8GFqJ
-   JjeUauZH9H/b6ybhBC7P4L6SNuHzAaIi3cNrdlQJ+UhnJLdp0Z2OUpeip
-   6YOoI+qPSGASWXBdeyq307ht8Zj8f9iNCLPEiDe6tXA78jGQWDE3TNTO3
-   Q==;
-X-CSE-ConnectionGUID: IZBgmbY9QSGaNc9tf8Cv4w==
-X-CSE-MsgGUID: iKsXSUWSRqelVjlIGtXEyw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11965"; a="3268944"
-X-IronPort-AV: E=Sophos;i="6.27,212,1787036400"; 
-   d="scan'208";a="3268944"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 10:48:08 -0800
-X-CSE-ConnectionGUID: Rh20D4FlSN+XtD+EJsNIVQ==
-X-CSE-MsgGUID: VsDH7IbkSdi8NAaR+ArEEQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,212,1787036400"; 
-   d="scan'208";a="9523504"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 13 Nov 2026 10:48:04 -0800
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xRwJd-000000013hD-0x1c;
-	Fri, 13 Nov 2026 18:48:01 +0000
-Date: Sat, 14 Nov 2026 02:47:17 +0800
-From: kernel test robot <lkp@intel.com>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
-	david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, baohua@kernel.org,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	baoquan.he@linux.dev, qi.zheng@linux.dev, shakeel.butt@linux.dev,
-	mhocko@kernel.org, baolin.wang@linux.alibaba.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: mglru: use pte_table_clamped_end() helper to
- calculate the end
-Message-ID: <202611140210.uZmu9pV3-lkp@intel.com>
-References: <b2386c5da61f9a15e60daa421b033bc1e0bcdd41.1794481498.git.baolin.wang@linux.alibaba.com>
+	bh=4QthcyiX160Q2O1QLVhpEtRESs44jcv/A+FxN1Locc4=;
+	b=5Uk3KQs3lMK7fabdhLfnWlIJHI6Cf1zK13wfmAOn+ZOTAlLpZwShLv501WfzGHUEXhsuID
+	EDAJenvJO/Dnt+sHvEvYJtrIVvhyXx+AS+WWTVyP7+1NRbTqRXzTRkKHAhSKu+2FpvrMwd
+	N6zqSR/SfZ52xnwwND0oa8rCtxM+4+8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AC11041486;
+	Fri, 13 Nov 2026 18:48:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3141F000C5;
+	Fri, 13 Nov 2026 18:48:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794595738;
+	bh=4QthcyiX160Q2O1QLVhpEtRESs44jcv/A+FxN1Locc4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KM9ZundoTl/C+YRnnU78L9MVp1BzRd8EE2j13ChbAlxTVzDcNGS4mO3I5tLHPBi2u
+	 BYEGgyNd8OumZ4JIQj27B01nx05UhAX7LynlAFmE2SKHQL/ggv/SodmJ6ne+VMwZPy
+	 wPorpOp5FN0796vB5MiXuYp/z26K3ioFHVvuaaM89V8tl+xC9m8RxH9ARgR7AYnCiK
+	 yYr4cY5ALq5WS4jStkYUz3ibMHWClD2mK1+TVzMD8WX73BIIIkzOMbzhmrBPlgTgKz
+	 9RFVK+2fNI+3NMD0KQEbXC4lnIyDhdmggZD4Xnk0Cii4vm/uPUCsEr5yGeOYIyqnZF
+	 +7+OMMzS3HLJQ==
+Date: Fri, 13 Nov 2026 18:48:56 +0000
+From: Harry Yoo <harry@kernel.org>
+To: Marco Elver <elver@google.com>
+Cc: Chris Down <chris@chrisdown.name>, Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Kees Cook <kees@kernel.org>, GONG Ruiqi <gongruiqi@huaweicloud.com>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org, linux-hardening@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v3 0/6] mm/slab: Support selecting slab hardening
+ features at boot
+Message-ID: <avdbfEfQHpF9Ez-e@thinkstation>
+References: <cover.1794506262.git.chris@chrisdown.name>
+ <CANpmjNP0cWB_670hYj7p+Dd=do1qEu4XHeW+c7sTv-MXi0UBTg@mail.gmail.com>
+ <avdQEBP70kK8W7d0@thinkstation>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b2386c5da61f9a15e60daa421b033bc1e0bcdd41.1794481498.git.baolin.wang@linux.alibaba.com>
-X-Stat-Signature: w1ac1exfcajbai75j5wus7q8b699wnqj
-X-Rspamd-Server: rspam01
+In-Reply-To: <avdQEBP70kK8W7d0@thinkstation>
+X-Stat-Signature: rzeeiont74mqthehpmn7qkgck5p7hkoj
+X-Rspamd-Queue-Id: 7BC7F140006
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 8D78540007
-X-HE-Tag: 1794595689-372729
-X-HE-Meta: U2FsdGVkX1/NRPbOY22BTdbQHRV7Z/RljOnGV9bbqSsgcHJ/wZ5Fqa+uuI2c4kUZ52QyW8qYzEc8v+Mstwd0lKZSZFcKZCMjGLmbPtEGQroSZFz7ztMAKsvkuquCK0oCabP1HMzNUGC4s4jZBJ/TDlGOXLJBUcswcABK/2uJsEhHAXnJQazuOQWBOaiye8JQ9hJPtYGQwL+DhTr3sH/FalN2Wb4nOA5XuGPWjlSfMnZxzzQb3Ekq9muR9soiavl/V2rTSOY141Gg/5EE0pxsQzBedAXqSbGd0YCU/JzlSiwMPIG4nQmrElIt9PzmnZ53rS1mw1JFbLtFX1U/tVaXR6OmFphpTYzbRdyIG4qKZERISlinoz2ygnkGjw+oGJCBgSFhgB0uS12jB9zbKJn8y44P6ZyX/Oju7jSYhDKJswG8VO5jjGY5dUEBa+kkDIQwLW5WMaK0zeVC1ie+r6tqj8qNmPEjmLdsTCwmTdktioJ7Sqkh4F1RDiWBMoqvCtf3SHPEu+qgv524o7vBWrcjtsncIhWuM/VfVmhEk0zGY+bW4oqNkeO2DEaN6/N8V6TKAiqieDJZlDXIjW5FUsFTjQTQ5hZLWolTvZQaXWij/gHTrKgxTzxsVpbJ6GS+OhfkSvtNP5dwLKO9PieJjl6h8s8w+11lDsTIeq1vZOp+Le9lty/WLsmoLkfBwKbuNARO+8lBgJXI5MkNrR+5csIjOvswNqrg/FKqx34HUXTlxqXI670FXt6C0RvUvaF5K2UF2SO1JmOl0heB4ZPKKkjinDkzIEZZZrMz5rQwRCib6mijPF+gvzn5oVMgyHApL4uhG0COvO2bk1H4NeNOAYKLmBVRZxASvVxWYyEAh82V2t7zLFXNMCu9T55q+o09IRY2MSesYFEEzXNmeRZQQM4k+EDhJIWSsRBWhWuyikNlUl5TavV1FvHypB/Z4fpV5f4auv7hDVri6s839jUCRaq
- r2tHKQAf
- +39/6lX10YKx1gY0+ot2XNyhVOcf4rX51gK5/OoDBJo8wQEyQ1izmNEfIys68Wxqu5Rqg9aYThbp+q97kC1nY2aDeZv+RoXjw5ddJfCK5AHOsgK+m0cbpRMr1zoc9j+V6Rfwxai7XM1qW8WFkartaxzyWFTiM7c2L+n5JcKy5/O/AjqB/WCV9xmJcpX11vjrEifP1rXcFYrF3Zc7MOgZj5vyI/LLb021R0hs2i1rGTSET4BID7xaaJTJAuVUKOM+i0zvCKupbqM1fGc5xBgvFq0Y/jgFLdv040pWHWeauLV2x20p+V5apOF407zoRNguxQY/XZ0x2AVi2b4kypAIs4AjhZ9Pvy5CmOoKzlJV7jXs5QzfMOzKAXNPIWQwp/CxvKW8LbdZI11hquwc/OOaLxWu2xA==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794595739-36534
+X-HE-Meta: U2FsdGVkX1/37noWTJfbAS0pcONZxWlO2ZCgWiUcmkg8dLc8pX5ihU5zpMzg/MjrZvlv9FKHMxOmh/VzzidFiHhxb3A8vZgNeSUFoamfoE0M0s0nnwJzuSOdVDSjJpDd/R7K7gq4MiJpjyTHO2wb11LA5VP+5fTCKJzkT5nNeirg9bKvKIAkgg/ND2d9kHoUGBM9Gqyv06Od6sBwtmp0ZnGR/aS7xMUw+ZgojgyztE0HCCIBGDdznQkxkKxL3nc2cJHgP+jUZF8fP3yIWcPHqEEKU9kt8lczZyfK0Ku437jRF5VsBYlejUHlYbnxO6ppVW8uu/uOHLvk3rYabQ0gM20Tv3edqFaWTHJVrJ8LxfO18WVeGuT2XGgrY/jy8hjZdbj+NuWya1oVRuvp3apmNTJkxnhox/K07iSfQ8BYhcMJbZnYcNn9oJ1H/afxLj6Xhm9HTTH5CfgGFmNOx4/de+usNuBk73ltIvjX2ty7CBvy2QrKf628JfBzeYlXx/qqM8Gh3oF1dNFBGWGGMwY7tXjBt5tZG4M3EV+RYMuZ/ATHZ528iFND4i2fbp0Te04blV/ata1DCyPWIizp06TbYdrATwAZ/iPP5mU8Y0zhCNtDexf5Y3iwWK+9Wkaz0ZvTMU33162WlWUXoOBkZZj3bMX98Kt/11AnUdOYRO7us8BcdK/WyIOpsLbLT25t9/ZNvHxiY5zyBuCX6A0Y8N72n7x0L9++GAWbHL6NzUkmI+5DN9BSE333lEyhPU9287BmjZeyiBTtcIJwfqN45qJ9dBpo9gdABRa5qw7Hn59rN53HMGkUBTHCEqbQOHp5iys0fqXNHrZ8GprxitxzwsIZKKI1+J0rNU41akGOeYnRBdxc7GQuUaT6oVzzfoD7qsBWKHD2ReCSqwvlADfPhHDMAlXJAsmgD+zznz2wMIh+Uym4fADsevKb+HPtSbve2daFBPh5x30JKeTdHk/I+2e
+ pZlagSSo
+ p32sLqgL/ZiODByVJSocmKPSfd60yujKt5+12PVNPZJmkvgN3wLnR5n9R6k/ko4GNXnnkt9MZHJe0P7SWePH9UVSaqcZtRgtnYkdp4dyN4osEjBknzYxvpRnDLASPRejqJ4ZaR2EdjD8snnxBKWf/RB0YGb65nRoR24v10nWTA6UCIIMKHDnYZUZGfdOrzE4Sv4ckM8R8nsg9C0EwJ8vmgU0wRl5rLHmDhCd7nlrzfl2mzY5tDNhIe3nm77oudSGMyirv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,159 +100,85 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Baolin,
+On Fri, Nov 13, 2026 at 06:36:49PM +0000, Harry Yoo wrote:
+> On Fri, Nov 13, 2026 at 11:56:20AM +0100, Marco Elver wrote:
+> > On Fri, 13 Nov 2026 at 09:51, Chris Down <chris@chrisdown.name> wrote:
+> > >
+> > > Slab hardening settings are currently all build time choices. This means
+> > > that, unfortunately, hosts with different requirements end up needing
+> > > separate kernel images. At Meta, for example, some hosts are built with
+> > > these options and the rest of the fleet isn't, and that's one of the
+> > > things that keeps those kernels apart.
+> > >
+> > > This series does two things:
+> > >
+> > > - SLAB_FREELIST_HARDENED and SLAB_FREELIST_RANDOM are cheap enough with
+> > >   sheaves that it makes more sense to just enable them by default than
+> > >   to make them switchable. With both on, system level benchmarks didn't
+> > >   change measurably, only slowpath heavy microbenchmarks did [1].
+> > >
+> > > - SLAB_BUCKETS and KMALLOC_PARTITION_CACHES cost memory (Harry measured
+> > >   about 1 MiB and 18 MiB respectively after boot on a 64 CPU VM [2]), so
+> > >   they get slab_buckets= and kmalloc_partition= boot parameters, which
+> > >   default to on when the option is built in.
+> > >
+> > > Whether those two should be folded into a single slab_hardening= is
+> > > still open [3].
+> > 
+> > A coarse slab_hardening= option can easily be replaced by
+> > documentation. While less knobs is better, an intransparent coarse
+> > variant of slab_hardening= just makes the admin wonder "what does that
+> > actually to, and do I want it?". They still have to go and look up
+> > what it actually does, and at that point it doesn't add much value
+> > (alternative suggestion below).
+> > 
+> > > > > light: "I'm willying to sacrifice _some_ memory and CPU for security"
+> > > > > full: "I'm willying to sacrifice more overhead for security
+> > 
+> > Who will decide what is light and full? I think there just won't be
+> > any consensus reached.
+> 
+> You're probably right.
+> 
+> > One thing that users may want is an "all off" option, similar to
+> > mitigations=off, should they wish to get max performance back with a
+> > single option. So you could consider slab_hardening=off.
+> 
+> slab_hardening=off sounds good to me.
+> 
+> However this assumes "all on" is the right thing to do by default,
+> but not enabling slab hardening is not as nearly critical as not
+> enabling mitigations to CPU vulnerabilities, no?
+> 
+> I'd rather mirror hardened_usercopy= instead of mitigations=off.
+> 
+> slab_hardening=on (turn on all slab hardening features)
+> slab_hardening=off (turn off all slab hardening features)
+> (Otherwise it is determined by CONFIG_*.)
 
-kernel test robot noticed the following build errors:
+Should have been CONFIG_*_DEFAULT_ON.
 
-[auto build test ERROR on akpm-mm/mm-everything]
+> > But at that point it may be more consistent to drop slab_buckets= and
+> > kmalloc_partition= in favor of arguments to slab_hardening=, such as
+> > slab_hardening=nobuckets,partition. This would mirror mitigations=,
+> > and should cater to the usecase of slab_hardening=off to get max
+> > performance with a single option.
+> 
+> I hope we don't reach this point, but more fine-grained control should
+> be achivable if it is indeed required.
+> 
+> > But I would not add options such as 'light', 'full'.
+> 
+> Fair enough.
+> 
+> > Thanks,
+> > -- Marco
+> 
+> -- 
+> Cheers,
+> Harry / Hyeonggon
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Baolin-Wang/mm-mglru-use-pte_table_clamped_end-helper-to-calculate-the-end/20261112-191239
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/b2386c5da61f9a15e60daa421b033bc1e0bcdd41.1794481498.git.baolin.wang%40linux.alibaba.com
-patch subject: [PATCH] mm: mglru: use pte_table_clamped_end() helper to calculate the end
-config: x86_64-randconfig-1008-20261113 (https://download.01.org/0day-ci/archive/20261114/202611140210.uZmu9pV3-lkp@intel.com/config)
-compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261114/202611140210.uZmu9pV3-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202611140210.uZmu9pV3-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> mm/vmscan.c:4343:8: error: call to undeclared function 'pte_table_clamped_end'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    4343 |         end = pte_table_clamped_end(addr, vma->vm_end);
-         |               ^
-   1 error generated.
-
-
-vim +/pte_table_clamped_end +4343 mm/vmscan.c
-
-  4296	
-  4297	/******************************************************************************
-  4298	 *                          rmap/PT walk feedback
-  4299	 ******************************************************************************/
-  4300	
-  4301	/*
-  4302	 * This function exploits spatial locality when shrink_folio_list() walks the
-  4303	 * rmap. It scans the adjacent PTEs of a young PTE and promotes hot pages. If
-  4304	 * the scan was done cacheline efficiently, it adds the PMD entry pointing to
-  4305	 * the PTE table to the Bloom filter. This forms a feedback loop between the
-  4306	 * eviction and the aging.
-  4307	 */
-  4308	bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
-  4309	{
-  4310		int i;
-  4311		bool dirty;
-  4312		unsigned long start;
-  4313		unsigned long end;
-  4314		struct lru_gen_mm_walk *walk;
-  4315		struct folio *last = NULL;
-  4316		int young = nr;
-  4317		pte_t *pte = pvmw->pte;
-  4318		unsigned long addr = pvmw->address;
-  4319		struct vm_area_struct *vma = pvmw->vma;
-  4320		struct folio *folio = pfn_folio(pvmw->pfn);
-  4321		struct mem_cgroup *memcg;
-  4322		struct pglist_data *pgdat = folio_pgdat(folio);
-  4323		struct lruvec *lruvec;
-  4324		struct lru_gen_mm_state *mm_state;
-  4325	
-  4326		lockdep_assert_held(pvmw->ptl);
-  4327		VM_WARN_ON_ONCE_FOLIO(folio_test_lru(folio), folio);
-  4328	
-  4329		if (!test_and_clear_young_ptes_notify(vma, addr, pte, nr))
-  4330			return false;
-  4331	
-  4332		if (spin_is_contended(pvmw->ptl))
-  4333			return true;
-  4334	
-  4335		/* exclude non-mm-backed VMAs containing anon pages from COW */
-  4336		if (!vma_is_mm_backed(vma))
-  4337			return true;
-  4338	
-  4339		/* avoid taking the LRU lock under the PTL when possible */
-  4340		walk = current->reclaim_state ? current->reclaim_state->mm_walk : NULL;
-  4341	
-  4342		start = max(addr & PMD_MASK, vma->vm_start);
-> 4343		end = pte_table_clamped_end(addr, vma->vm_end);
-  4344	
-  4345		if (end - start == PAGE_SIZE)
-  4346			return true;
-  4347	
-  4348		if (end - start > MIN_LRU_BATCH * PAGE_SIZE) {
-  4349			if (addr - start < MIN_LRU_BATCH * PAGE_SIZE / 2)
-  4350				end = start + MIN_LRU_BATCH * PAGE_SIZE;
-  4351			else if (end - addr < MIN_LRU_BATCH * PAGE_SIZE / 2)
-  4352				start = end - MIN_LRU_BATCH * PAGE_SIZE;
-  4353			else {
-  4354				start = addr - MIN_LRU_BATCH * PAGE_SIZE / 2;
-  4355				end = addr + MIN_LRU_BATCH * PAGE_SIZE / 2;
-  4356			}
-  4357		}
-  4358	
-  4359		memcg = get_mem_cgroup_from_folio(folio);
-  4360		lruvec = mem_cgroup_lruvec(memcg, pgdat);
-  4361		mm_state = get_mm_state(lruvec);
-  4362	
-  4363		lazy_mmu_mode_enable();
-  4364	
-  4365		pte -= (addr - start) / PAGE_SIZE;
-  4366	
-  4367		for (i = 0, addr = start; addr != end;
-  4368		     i += nr, pte += nr, addr += nr * PAGE_SIZE) {
-  4369			unsigned long pfn;
-  4370			pte_t ptent = ptep_get(pte);
-  4371	
-  4372			nr = 1;
-  4373			pfn = get_pte_pfn(ptent, vma, addr, pgdat);
-  4374			if (pfn == -1)
-  4375				continue;
-  4376	
-  4377			folio = get_pfn_folio(pfn, memcg, pgdat);
-  4378			if (!folio)
-  4379				continue;
-  4380	
-  4381			if (folio_test_large(folio)) {
-  4382				const unsigned int max_nr = (end - addr) >> PAGE_SHIFT;
-  4383	
-  4384				nr = folio_pte_batch_flags(folio, NULL, pte, &ptent,
-  4385							   max_nr, FPB_MERGE_YOUNG_DIRTY);
-  4386			}
-  4387	
-  4388			if (!test_and_clear_young_ptes_notify(vma, addr, pte, nr))
-  4389				continue;
-  4390	
-  4391			if (last != folio) {
-  4392				walk_update_folio(walk, vma, lruvec, last, dirty);
-  4393	
-  4394				last = folio;
-  4395				dirty = false;
-  4396			}
-  4397	
-  4398			if (pte_dirty(ptent))
-  4399				dirty = true;
-  4400	
-  4401			young += nr;
-  4402		}
-  4403	
-  4404		walk_update_folio(walk, vma, lruvec, last, dirty);
-  4405	
-  4406		lazy_mmu_mode_disable();
-  4407	
-  4408		/* feedback from rmap walkers to page table walkers */
-  4409		if (mm_state && suitable_to_scan(i, young))
-  4410			update_bloom_filter(mm_state, READ_ONCE(lruvec->lrugen.max_seq),
-  4411					    pvmw->pmd);
-  4412	
-  4413		mem_cgroup_put(memcg);
-  4414	
-  4415		return true;
-  4416	}
-  4417	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+-- 
+Cheers,
+Harry / Hyeonggon
 
