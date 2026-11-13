@@ -1,145 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A93606A321
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 01:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB34606A337
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 01:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ah5pKHle
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=R9brNIwr
 Received: by kanga.kvack.org (Postfix)
-	id 652926B05E5; Thu, 12 Nov 2026 20:02:07 -0500 (EST)
+	id 9B06B6B062F; Thu, 12 Nov 2026 20:03:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 603BC6B0631; Thu, 12 Nov 2026 20:02:07 -0500 (EST)
+	id 987DB6B0634; Thu, 12 Nov 2026 20:03:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F1B26B0633; Thu, 12 Nov 2026 20:02:07 -0500 (EST)
+	id 89D586B0635; Thu, 12 Nov 2026 20:03:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 22AEF6B05E5
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 20:02:07 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 77CA64097E
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 01:02:06 +0000 (UTC)
-X-FDA: 85428294252.14.291D51A
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 93C8EA0003
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 01:02:04 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=ah5pKHle;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.82.175 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 568896B062F
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 20:03:02 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0CC641A2461
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 01:02:59 +0000 (UTC)
+X-FDA: 85428296478.28.AA2FD74
+Received: from mta1.migadu.com (out-99.mta1.migadu.com [95.215.58.99])
+	by imf18.hostedemail.com (Postfix) with ESMTP id A66A01C000F
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 01:02:56 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=R9brNIwr;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.99 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794531777;
+	b=kVa9DTdld0dhC0r7BA4FKrRTDVyQHrrQn/SlKFEIYDMQHqkSQwM5+dlUhY2PaCXQHQfVwA
+	4vdn6hAFm1xrCLvNFA8T2zUn8oTfVcaxgCW5M69bItMJd6bEGCp1rZZlYl/z4P/IRzVCYJ
+	hCL8gFMc7iRBybgfsm9Nmiu4Dz8L7YQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794531724;
+	s=arc-20220608; t=1794531777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QuB4gRralS9yFslodv3QC7A77JieK5X8DdVq10Sbwss=;
-	b=GDdfjkEVbmp6cZCTh/LSh5rdpFrsVb6DErFPaE89TYOSC2bztNOka7H12OQA57oUCO2J4v
-	QsXx/7Vqp6pNKrhBMM59dqQOy+v1c2kfw4vN6CvjN8xvEtcRUrD1Aj+oMuyI4tTCMahBRV
-	E74LlqJbXZneY5JuAwamC2Yx3glsUmU=
+	bh=FykfmgAPqHTxTSp27gbwTeMio+wbYbSRIFzyKLbkdRY=;
+	b=4+cX16sa6QzF+HtxZ38Hd168vJQY50y4fK4offjA3r7N2PDwcZUkJlasHorLtN9NuHVOid
+	f8gPhjJBI4VP/kskGeleMapYWZtkzy2MEx53uUxuP/ippWkA63uHBpXLrVWv6uNx+UViIQ
+	Nvc7tDEqEIoJc3DxDw+xK1yEMKwT3xc=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=ah5pKHle;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 74.125.82.175 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794531724;
-	b=cajksNRQKetILCPoA6anF6GA9393gWe2dW9xtLR5bwOwCEanBDj83Vh+cLYE+CypigzMkd
-	xEIBKbtWdCzsiAA/uc54jN92TbE6Qvl4MM9B+aii4GNB6qG8VYvvvMkwoUdOlL6WBceoO2
-	3Cfmuej+lEcsYktYVowaSTjkdo3o7XY=
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-36d1b3b9974so37552eec.2
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 17:02:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794531723; x=1795136523; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=QuB4gRralS9yFslodv3QC7A77JieK5X8DdVq10Sbwss=;
-        b=ah5pKHlefUxShXsGRxLKQMCG/focVLT/Y7Oxf5mseif2xLrtO/gnM7vyRwENqXutd2
-         G9ZETfOVpbGaPevcuYAQaX5enE6jeAJPTfrUg/y9dv2PoUFunxIHtfAeDpB4iQRSYkca
-         g6qIIpgg6i2Bn6b+RmGUsmiHX+jjXAh0l+H4F7iyo+ccauoQqPGrbyELVk5zMxILar7M
-         /gQbdCCrNoN+LHQhQPdPqr849whNlX6Stex+Qw9vosaQZxdsioRbr3EvTDap0P96yy+A
-         ucQp6K+0MyEpwSHJg66o7m9piTLkD/hBAHG4ivjil0zIj0yjf2Dy2yc79SclnLcm7e32
-         yZEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794531723; x=1795136523;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QuB4gRralS9yFslodv3QC7A77JieK5X8DdVq10Sbwss=;
-        b=kux+5catxl+1tTOeqnnKme1mMg9bzHegl6N2hhspm8VfFsBcD3y2CC8cWuxfuzWt8D
-         Iezq5ro8ZrBgYhvPjNwSy3XjRBMFXjR1KZR827S1gVx9qafmbVqDnJDvIF8d8fDXhHRm
-         3B9VGqUScYpbfJmYs2Ba4V5x/gEi9cBp297dAZbCUBdeO9/HyVyfVvn+sDlMTOvlPrVB
-         XCo2FU6o2w9JXxJ8LWBl7vuu4QIO13NM+TNzPHfzec30WhlmILwd+hEKLURiLxiubfdT
-         Rfr9wu0FXQiFbWEnh7RHME3oy+YlJPxvkBzhgG4mJttR8gnWv2Hz8cxcpM2pUqvZx2LI
-         Y9MA==
-X-Forwarded-Encrypted: i=1; AL+hErHpp1u4RTrnQVMSkj0R7lrDAmtcNPIKM1ZHj/ukNeKdSP28locex8XBJX2XLZjCwCp+qbnegWEW+w==@kvack.org
-X-Gm-Message-State: APuU4Z8fkH7vVcsOF/dXclc1A7J5+i+YtY4oR+OEznhLsyq0ua3wy7pO
-	Y4n84f/0fQW+6chXYfv2QvkOL3Y6d0fbb9TBP9N1+KXsyYeZIfn6I+00
-X-Gm-Gg: AYBFou04QK0dR7QXH9GxoW9X3E25ydD0qzt7vT761lbUtXGszhzMBneh1Cdn/o/9+e1
-	uBYLHBuzlMI272owitH1dwbCF8NT83/r/Ls1kJQ3r2FSCXnlan8B8ssW9njzk64s2dfx1Hzbnd3
-	j6fh4oBSH6dh0tZ4l0rJf6x72St6Upz7wrofivJiEt+gXjfLsKUP18ysugMATJP0F90SStNn5aJ
-	aB72+hXXU8C53IQTuakxYU0/AkD+q6ZjU5NmVQpC4IYT21064XusQPxcCxNceYkpqgCLheduBpk
-	eiJB2NWXmh1dXummTdhDKojuBWbnjZCjisAIur734IcsA7qXPqZh+m62b2GvJrLeVBEQJG3bi5w
-	FHdNNs5lV81QPp+ADYEMYMFPbEwuNTRGOKbxl0PZ11dyZdP29AE5ShtHR8MXoXQ7/EAUjG9ZbnR
-	8ejNwKdEXToPB6dgRxCNXsLp1GM+kcpdbxQ4zAHRiKxQzkhIOJ0ZNX1BYrTZIPsRyGohVWg1Ozl
-	DBphVfUAYvgper9Xb8oEZDDWeUmXUmmzdi17wyck+RNiS3x19fEvU2CzMmBz9rxCyr1ua3Nx+bo
-	IEQKBQZYxlfD6VvWK+t3PrQWtwYr4sO4fzrfVlpl6+3Lg8ytQcfYxyW0DHOCclSGZOxix7IdX47
-	OA8J5NAVdJ/RI
-X-Received: by 2002:a05:7300:c00e:20b0:35e:d21c:f33e with SMTP id 5a478bee46e88-379651ecb3emr1356356eec.1.1794531722833;
-        Thu, 12 Nov 2026 17:02:02 -0800 (PST)
-Received: from o6.lan ([2602:fce1:44f:115e::])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37955332ae7sm4453590eec.8.2026.11.12.17.01.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 17:02:02 -0800 (PST)
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=R9brNIwr;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.99 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=BF3X4sfAAGZDFbKdkmTbmSYx6CaOf04nwmeq6oXxtzI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794531773; v=1; x=1795136573;
+ b=R9brNIwrYnS6aG9f3LJaa+HLum7i05blqjI/ZRe0bh0OswKZUgZLyxsD+gVOnBBHFsdWfpg5
+ fP9Pe8hG0gzPsSJou6vbhTJOllsnD/9qpcl1FZP+WJRefQC556kg0xFai9CHhIH6IqKe+DNDuIz
+ 7BKUYMcGbpTLuypaw+1fex64=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 4fa07f28e6c8e2e0;
+	Fri, 13 Nov 2026 01:02:53 +0000
+X-Mizu-Trace-ID: 4fa07f28e6c8e2e0
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <096620df-7200-48a5-8ba7-0ad69d008869@linux.dev>
+Date: Fri, 13 Nov 2026 09:02:43 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3] mm/zsmalloc: remove CONFIG_ZSMALLOC_STAT
-From: Xueyuan Chen <xueyuan.chen21@gmail.com>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Xueyuan Chen <xueyuan.chen21@gmail.com>, 
- Minchan Kim <minchan@kernel.org>, 
- Sergey Senozhatsky <senozhatsky@chromium.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, 
- Randy Dunlap <rdunlap@infradead.org>, Alex Shi <alexs@kernel.org>, 
- Yanteng Si <si.yanteng@linux.dev>, Dongliang Mu <dzm91@hust.edu.cn>, 
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Sven Schnelle <svens@linux.ibm.com>, 
- Helen Koike <helen.fornazier@gmail.com>, 
- Vignesh Raman <vignesh.raman@collabora.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-s390@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- Nhat Pham <nphamcs@gmail.com>
-In-Reply-To: <d812b71d-b7ec-496f-9404-add2282105a6-agordeev@linux.ibm.com>
-References: <20261111-zsmalloc_stat-v3-1-2d85ed51570e@gmail.com>
- <d812b71d-b7ec-496f-9404-add2282105a6-agordeev@linux.ibm.com>
-Date: Fri, 13 Nov 2026 09:01:51 +0800
-Message-Id: <179453171134.2553194.3867422839676762696.b4-reply@b4>
-X-Mailer: b4 0.16.0
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 93C8EA0003
-X-Stat-Signature: 33gctmp8g5su6aqhyopsc4kg5nmdmj6g
-X-Rspam-User: 
-X-Spam-Status: No, score=-14.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794531724-53981
-X-HE-Meta: U2FsdGVkX1/qTaRzGnBJTSfei8upagvUgv1U8HTD7B+pmO8UjNWkp7kh1fR7CekMu1UwGXJvzPax+2LGY8YjbksFWV57P8QW7gqKNlHV/gri8FnlWrZZh/8IEh7KI9dlzIWm+uOQR+yfpZkwU6lThHeeHe7nEYvKaWfUacTW8RkwbbFvHLIqbi1CBouoLkhJSy3TMiq4/QRaWzkhkvL55WxBx7MUKrTNaUdgN+IkMQ0E0DxjwhMLGQhP4FjHs3l0MJ192ZR/6zTBapdw3Qwtq+2dT/ZYGGvEoUZpBlKgX24wIPdA0JQ1wohsV1Xa/BkJkSgzEqZzl3G8v7zHQbG1iM7TeivV2LAKy0d9XeZGMvVmdyQXPnnx/ZjfoBHMkFkOYXbw4U/x/NPtFbsw0hm3VITpvSLQHHyzu6CYrUWyWeNLyav4KRpE1DFeLbws4YTT9nkCBwkVlRVIBHL36Nxzp6ylYz9DViuA4FRmJF94HTUuXayPRYetEdzMnsrTRxgDOdoeWzoUZyIgK4Jix4F+TlmhTYd+9ha6o/zoU70RCra0Nk+tMb9MwgJCnZwrLTMLyS/BSRk0oNkLqddM+lTLQoS63M9XJRF8m7OcjIWlQNUUCYQrqGKNk4X6imetJGZXZBZYDNJyMW2mlowIYXXsaadC3tNl94Tpbnji7RLTVK9eeA/UuVyZQLuvy/fLLK2qLh4Xic0X3NQHkPZlYbC45NYhw72jLEmJwvYCo0rXmDQ2WETpk7ia8jLvTwICyrAE+i8+Z4Y/sYq+RhoPLQo/SdE6J2DJ8Ymqjv42o5gsujGWS4eY2Q6QYTKUg2E9bJO7riBbXUz9GWIvPc/ByWdtXPsB7C0+CmW6S+xh3FJfUdR+2XUV79WZMBWSaLqacNBj4kiLwVu5qaDJeDd1LqdQftoMRxiwc2WR68tzfHDBWmnGNpbpEhj/yUwAMOR94JYJyn0EwVKNY7XnpzBBEJq
- +JS2cJ1R
- qydfT/DXVt8wwKUKMZM0qD8g15/IpJJ6ijAX9a/yDz/iwGQjuSbFoSlj3rf2cQN0rjfTXh4eK/z4ZUMsQ/ZWaVpEn4NYPVEn4wqbwqqCQspadLMBNss58WeSkalWdk4HN4uez1OCP8CCBxeggwL7EHlGaEFZpfdSaLtvb9Q4Qul5J3c1sMMqDhwp4JDRWIAgKNWn1HQmv9HBopLExe5dKbl8mg+8GtJ6hMs5pczOFuE/eouBg37D+d+KRhY60kiFepAtZHUEpaVHgdVXqyVbyCa3JYO+yniuLMxHUZN/2H1rWBCOO2hKDa81Zd9Eq6pCsGe0g+6p8ThscDcBJSP6xbdZejOSVbAFeDOXIaoiZS/Gqm9qk26FPi0A4EATznO20O4t8O21JA5Jy9qYnGZlUoOTmn0bgNbhHZcwHXrHIBNi2+VSG4cq71JS7r3He93RjfTFRnvgFUAQut4iJLEeYhmpwWeI2xeIMWzqj+GxPsew5r1MJp/nmLp5nRBrpeEh8aoucA3G0CWQt9RkV64zdyOjEDKqrOEmSaY3iXlKZ7KJ1MYY=
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] mm/huge_memory: prevent losing PG_waiters in
+ __split_folio_to_order()
+To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Brendan Jackman
+ <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261110-fix-split_folio_to_order-race-v4-1-cc5042f33408@nvidia.com>
+Content-Language: en-US
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <20261110-fix-split_folio_to_order-race-v4-1-cc5042f33408@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A66A01C000F
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ui4pmcwuonmky9f38hsmnf6pypyg3cof
+X-Rspam-User:
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794531776-755783
+X-HE-Meta: U2FsdGVkX18qiMCbtkFVx3ODP5Hk2NB5Po1Cn9XmF+uE9NV+xmKsHMgSj9LbrJWiDSPGZTMkZn6egwz4BxrexbiZi1A03f2eLRipz8TeAZZPV9UQFn8i+675iBqwzIx/N75ae5j+5HsBh5oAEu/bUDLb9KB+KKbG20jSrWVwOpQxgTP8W7zdeLKyxboaxu0THFeUkYaW0os4QYEfL1Z824qRU1W6kyBT3M6Av5eEvzRVtrb3NMm67zFcJBX2zMhP5PZYL/EjgK5wS2WjF2rzsayE8PooYP0s9UFmLrWPvGuhjlu2KKYfGCE3t6xhDOiENn8h81EPC+kqh0NCeEAeYkiBcfxS6I4m5i1ctHshJ3WQSgs9AVpbuZiXKPl1Xn8oWejXV2EECJbDrLuHr3WKNJtStG52PEcGDCKkfWJ1Esi15GSAlXliFQmE3UKZ0GXy+O4xcXA6TLin+S5j99ULy4K+oTLtVYN3LY9kZI2JTpq9fCMfbiq85IIaKAcdeTjzXB/3MPL5/NPBR21qKchJsK0UGsgxx8VaBTaX1Uxa9V53RbKFgvwvKEUb0C0VWCD3HesiIQbG94gdnh6xm+EKX2ODVSwwCId00wiYrveg7f9axs+QtBA6TDFxxINsBRqogZaaOPmIZcCn2+MmKpPj83Zl2UpkzF4TujIrXuiXoDpGx0IorJEwKJT5zTey6Xb+HAnVqVQyC6MXP8vDRIazoZSzNCWivBmBYJy+fTDT0B2ukIEFpMNOImg2rUD924e3tACQdUTb4YPTTnSl91Zh6ea4PD/WrLPyWWjBbp7mT6whSamX4wqH9Capyr2tFHY+JRlnYJIgP8fC5/rvjBm5UpbiLUGUJJit2GyS7Fz7bVGD+up57M3gtU8X0tehKkvucI9vT6NEGT4lbOm6KXzLBOv+AW79CWQVpVVwsnoKtJReN7zmBho4PES1dq0V6cUd/b25SeGZjldhSnkvbtP
+ WVXnpI/D
+ M4wS/gKnDy7VHfAdaA7CviwbBIdCLJ9eAlgnIAK+rMz8OMF9+cYxZLLn47bm0HpRwhsJpwMg6mztiJ7sZGLuo3fjHu9ws9KqoZ3QWXSZJR64o6urEISmEqvmPGSNWq/r8zfCnxqVUoYNeydzKQhxdNQWBkhrZQyV05/IEP7ONMYOtWhWUBt5zNETvUh/OzjwEFmmLdQBA8RrOCaLKPR/gytYGH9upGINgJ8XBzvFukAyDTvH0ENOIf7+RkeSvcyIA5pwrCFL9uRlnBeU4Egd7/T2j7cnl4rgFpiDK/3ws55bKHi+wpYGISyfwXymRQt3gvFFTVAFhwWeKnHkZpd2IDF754YXQE9A/2S/SgiTiDswzHynZo6hXpP/mTZms5CP7HlSuRGtpyUfJNg/IHnOxXgwVp/n+jYOyd2s4B1/QS0ln2SAC5e6zCT96CTbbavJU+7G5yF4Jt+eUCPV/tsbNrqe4vux8/5NLiLzgUULA14fkkAga7ZnT7u1XS63FRVsuMZNlo40Aosnh8FohUW+4hLkAKj64n5lAfHrtl2GNcfh9sTvFqjGxpgWIKYGk8I5vVHp+GF6LbsboIf/2jLV4X9kjOIyw3p3butNCJS5APvUyEEy5BfP9Nsci5VXrx/jRxhncfHU1280UsY4olZEJCIbQMfeheFtNW15k4RmCEHusstR/T4/Xndfo6A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,66 +104,233 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-12 13:29 +0100, Alexander Gordeev wrote:
-> On Wed, Nov 11, 2026 at 08:41:26PM +0800, Xueyuan Chen wrote:
-> > CONFIG_ZSMALLOC_STAT only controls the debugfs interface. The class
-> > counters are updated regardless of this option.
-> > 
-> > Remove the CONFIG_ZSMALLOC_STAT guards and rely on the debugfs API
-> > stubs when CONFIG_DEBUG_FS=n. Skip statistics setup silently when
-> > debugfs is unavailable.
-> > 
-> > Remove the Kconfig entry and replace the existing CONFIG_ZSMALLOC_STAT
-> > settings with CONFIG_DEBUG_FS=y. Update the English and Chinese
-> > documentation to match, and clarify the pool name in the debugfs path.
-> > 
-> > Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> > Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-> > Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> ...
-> >  arch/s390/configs/debug_defconfig                |  2 +-
-> >  arch/s390/configs/defconfig                      |  2 +-
-> ...
-> > diff --git a/arch/s390/configs/debug_defconfig b/arch/s390/configs/debug_defconfig
-> > index d44674b63715..83193ef8efb9 100644
-> > --- a/arch/s390/configs/debug_defconfig
-> > +++ b/arch/s390/configs/debug_defconfig
-> > @@ -100,7 +100,7 @@ CONFIG_UNIXWARE_DISKLABEL=y
-> >  CONFIG_IOSCHED_BFQ=y
-> >  CONFIG_BINFMT_MISC=m
-> >  CONFIG_ZSWAP=y
-> > -CONFIG_ZSMALLOC_STAT=y
-> > +CONFIG_DEBUG_FS=y
-> >  CONFIG_SLAB_BUCKETS=y
-> >  CONFIG_SLUB_STATS=y
-> >  # CONFIG_COMPAT_BRK is not set
-> > diff --git a/arch/s390/configs/defconfig b/arch/s390/configs/defconfig
-> > index e00e252d4694..694a309377d5 100644
-> > --- a/arch/s390/configs/defconfig
-> > +++ b/arch/s390/configs/defconfig
-> > @@ -94,7 +94,7 @@ CONFIG_UNIXWARE_DISKLABEL=y
-> >  CONFIG_IOSCHED_BFQ=y
-> >  CONFIG_BINFMT_MISC=m
-> >  CONFIG_ZSWAP=y
-> > -CONFIG_ZSMALLOC_STAT=y
-> > +CONFIG_DEBUG_FS=y
-> >  CONFIG_SLAB_BUCKETS=y
-> >  # CONFIG_COMPAT_BRK is not set
-> >  CONFIG_MEMORY_HOTPLUG=y
-> 
-> So DEBUG_FS is selected unconditionally? Please, drop this for s390.
-CONFIG_ZSMALLOC_STAT used to select DEBUG_FS, so I added
-CONFIG_DEBUG_FS=y to keep the stats available.
 
-OK, I'll drop those lines from the s390 defconfigs in v4.
-> 
-> > --  
-> > Best regards,
-> > Xueyuan
-> 
-> Thanks!
-> 
-> 
 
+在 2026/11/11 11:19, Zi Yan 写道:
+> __split_folio_to_order() calls prep_compound_page() on each new head page
+> to create a compound page after clear_compound_head(). prep_compound_page()
+> uses non atomic __SetPageHead(). It is mostly OK, since the folio is locked
+> and frozen and no one else is supposed to modify the folio's flags.
+> 
+> However, code calling migration_entry_wait() can reach the folio by PFN,
+> then access its flags. It is because softleaf_entry_wait_on_locked() used
+> by migration_entry_wait() sets PG_waiters concurrently without taking a
+> reference and the frozen refcount during split cannot block it. Meanwhile,
+> __SetPageHead() does a plain read and write, so PG_waiters atomically set
+> by softleaf_entry_wait_on_locked() will be lost if the set happens after
+> __SetPageHead()'s read and before its write.
+> 
+> One example code interleaving:
+> 
+> CPU0: __split_folio_to_order(new_order>0)  CPU1: do_swap_page()
+> 
+> 1. clear_compound_head(new_head)
+>    new_head->compound_info = 0
+>    (page_folio(new_head) == new_head now)
+> 
+>                                            2. migration_entry_wait()
+>                                              softleaf_to_folio(entry)
+>                                              page_folio() -> new_head
+>                                              (not the old head any more)
+> 
+> 3. prep_compound_page(new_head, new_order)
+>      __SetPageHead(new_head)
+>        tmp = new_head->flags.f  <-- load; PG_waiters == 0 in tmp
+> 
+>                                            4. folio_set_waiters(new_head)
+>                                              set_bit(PG_waiters, &flags.f)
+>                                              enqueue on waitqueue, sleep
+> 
+> 5.     new_head->flags.f = tmp | (1UL << PG_head)
+>        <-- store; overwrites step 4, PG_waiters == 0 again
+> 
+> Later, folio_unlock(new_folio) sees no PG_waiters, skips folio_wake_bit(),
+> and CPU1 can remain blocked indefinitely.
+> 
+> Fix it by setting PG_head along with other flags in new_folio->flags before
+> smp_wmb() and clear_compound_head(). The remaining compound page metadata
+> is set after clear_compound_head(). In that way, after
+> clear_compound_head() makes new_folio visible, nothing overwrites the
+> PG_waiters from softleaf_entry_wait_on_locked() by modifying
+> new_folio->flags non-atomically.
+> 
+> While at it, use data_race() to suppress the KCSAN issue reported by Ye
+> Liu's patch (the second Closes) on reading folio->flags in
+> __split_folio_to_order().
+> 
+> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
+> Reported-by: David Hildenbrand <david@kernel.org>
+> Closes: https://lore.kernel.org/all/DMHE8BEEER1H.2BIY52NXATPIA@nvidia.com/
+> Reported-by: Ye Liu <ye.liu@linux.dev>
+> Closes: https://lore.kernel.org/all/20261029-data_race_huge_mem-v1-1-112e331291c1@linux.dev/
+> Fixes: c010d47f107f6 ("mm: thp: split huge page to any lower order pages")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> ---
+> The issue was raised by David when reviewing Ye Liu's "mm/huge_memory: use
+> READ_ONCE() when cloning folio flags during split" [1]. This patch also
+> supersedes Ye Liu's patch.
+> 
+> [1] https://lore.kernel.org/all/20261029-data_race_huge_mem-v1-1-112e331291c1@linux.dev/
+
+Fine with this superseding my READ_ONCE() patch.
+
+Reviewed-by: Ye Liu <liuye@kylinos.cn>
+
+> ---
+> Changes in v4:
+> - removed the data_race() on new_folio->flags read, since there is no data
+>   race on it.
+> - rephrased the comment above data_race() to avoid confusion.
+> - rephrased the comment on setting PG_head to clarify why it needs to be
+>   set before smp_wmb() and why no plain RMW is allowed after
+>   clear_compound_head().
+> - adjusted the comment on __prep_compound_page() about PG_head.
+> - Link to v3: https://patch.msgid.link/20261109-fix-split_folio_to_order-race-v3-1-1cdc509e34be@nvidia.com
+> 
+> Changes in v3:
+> - set PG_head before smp_wmb() like Kiryl suggested instead of
+>   prep_compound_page_atomic().
+> - used data_race() to suppress KCSAN reports while at it.
+> - dropped Lorenzo's ack, since the patch is changed.
+> - Link to v2: https://patch.msgid.link/20261106-fix-split_folio_to_order-race-v2-1-1b59c67b8af3@nvidia.com
+> 
+> Changes in v2:
+> - renamed __prep_compound_head_and_tail() to __prep_compound_page().
+> - added comments to prep_compound_page() and __prep_compound_page().
+> - Link to v1: https://patch.msgid.link/20261029-fix-split_folio_to_order-race-v1-1-a483c7451b0d@nvidia.com
+> ---
+>  mm/huge_memory.c | 32 ++++++++++++++++++++++++++++----
+>  mm/internal.h    |  2 ++
+>  mm/page_alloc.c  | 17 +++++++++++++++--
+>  3 files changed, 45 insertions(+), 6 deletions(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index bd44d58e86845..76c57d845269e 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3714,6 +3714,7 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+>  		 * Don't pass it around before clear_compound_head().
+>  		 */
+>  		struct folio *new_folio = (struct folio *)new_head;
+> +		memdesc_flags_t new_flags;
+>  
+>  		VM_BUG_ON_PAGE(atomic_read(&new_folio->_mapcount) != -1, new_head);
+>  
+> @@ -3730,8 +3731,15 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+>  		 * unreferenced sub-pages of an anonymous THP: we can simply drop
+>  		 * PG_anon_exclusive (-> PG_mappedtodisk) for these here.
+>  		 */
+> -		new_folio->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
+> -		new_folio->flags.f |= (folio->flags.f &
+> +		new_flags.f = new_folio->flags.f & ~PAGE_FLAGS_CHECK_AT_PREP;
+> +		/*
+> +		 * data_race() is used because folio->flags is only read here,
+> +		 * but a reference-less writer can still write to it, e.g.,
+> +		 * PG_waiters update from softleaf_entry_wait_on_locked().
+> +		 * The flag is not transferred to new_flags as it is
+> +		 * folio specific, so it is not lost.
+> +		 */
+> +		new_flags.f |= data_race(folio->flags.f) &
+>  				((1L << PG_referenced) |
+>  				 (1L << PG_swapbacked) |
+>  				 (1L << PG_swapcache) |
+> @@ -3749,7 +3757,19 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+>  #endif
+>  				 (1L << PG_dirty) |
+>  				 (1L << PG_dropbehind) |
+> -				 LRU_GEN_MASK | LRU_REFS_MASK));
+> +				 LRU_GEN_MASK | LRU_REFS_MASK);
+> +
+> +		/*
+> +		 * Set PG_head before smp_wmb() and clear_compound_head().
+> +		 * After clear_compound_head() marks new_head as a folio of its
+> +		 * own, new_head->flags must not be modified by plain RMWs.
+> +		 * A plain RMW can cause a loss of atomic PG_* updates from
+> +		 * a reference-less writer, e.g., setting PG_waiters via
+> +		 * softleaf_entry_wait_on_locked().
+> +		 */
+> +		if (new_order)
+> +			new_flags.f |= 1L << PG_head;
+> +		WRITE_ONCE(new_folio->flags.f, new_flags.f);
+>  
+>  		new_folio->mapping = folio->mapping;
+>  		new_folio->index = folio->index + i;
+> @@ -3779,7 +3799,11 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+>  		 */
+>  		clear_compound_head(new_head);
+>  		if (new_order) {
+> -			prep_compound_page(new_head, new_order);
+> +			/*
+> +			 * PG_head is set above, so only set up the remaining
+> +			 * metadata on head page and tail pages.
+> +			 */
+> +			__prep_compound_page(new_head, new_order);
+>  			folio_set_large_rmappable(new_folio);
+>  		}
+>  
+> diff --git a/mm/internal.h b/mm/internal.h
+> index aeebb3e49ed11..4ce67ce2f3fba 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -807,6 +807,8 @@ static inline void prep_compound_tail(struct page *tail,
+>  	VM_WARN_ON_ONCE(tail->private);
+>  }
+>  
+> +void __prep_compound_page(struct page *page, unsigned int order);
+> +
+>  #if defined CONFIG_COMPACTION || defined CONFIG_CMA
+>  
+>  /*
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 143776e671abb..5f03f3725dd2e 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -682,18 +682,31 @@ static inline bool pcp_allowed_order(unsigned int order)
+>   * This usage means that zero-order pages may not be compound.
+>   */
+>  
+> -void prep_compound_page(struct page *page, unsigned int order)
+> +/*
+> + * Set up the metadata on head page and tail pages.
+> + * Caller must set PG_head before this.
+> + */
+> +void __prep_compound_page(struct page *page, unsigned int order)
+>  {
+>  	int i;
+>  	int nr_pages = 1 << order;
+>  
+> -	__SetPageHead(page);
+>  	for (i = 1; i < nr_pages; i++)
+>  		prep_compound_tail(page + i, page, order);
+>  
+>  	prep_compound_head(page, order);
+>  }
+>  
+> +/*
+> + * PG_head is set non-atomically. It should be used when no one else can modify
+> + * @page's flags.
+> + */
+> +void prep_compound_page(struct page *page, unsigned int order)
+> +{
+> +	__SetPageHead(page);
+> +	__prep_compound_page(page, order);
+> +}
+> +
+>  static inline void set_buddy_order(struct page *page, unsigned int order)
+>  {
+>  	set_page_private(page, order);
+> 
+> ---
+> base-commit: d865f2677c44cb2171b833d6775cf692756fa8be
+> change-id: 20261029-fix-split_folio_to_order-race-087a2a9fbf7c
+> 
+> Best regards,
+> --  
+> Yan, Zi
+
+-- 
+Thanks,
+Ye Liu
 
 
