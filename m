@@ -1,146 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5E1606A338
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607E5606A338
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XzAFPkN7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VZKwDank
 Received: by kanga.kvack.org (Postfix)
-	id 96EAB6B00EF; Fri, 13 Nov 2026 13:52:02 -0500 (EST)
+	id 79BED6B05B2; Fri, 13 Nov 2026 13:53:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 945766B05B1; Fri, 13 Nov 2026 13:52:02 -0500 (EST)
+	id 7729B6B05B3; Fri, 13 Nov 2026 13:53:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 836D26B05B2; Fri, 13 Nov 2026 13:52:02 -0500 (EST)
+	id 6B1DD6B05B6; Fri, 13 Nov 2026 13:53:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E1966B00EF
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:52:02 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7EC771601D7
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:52:01 +0000 (UTC)
-X-FDA: 85430990442.29.DB81165
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 444F66B05B2
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:53:19 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CE495402B0
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:53:18 +0000 (UTC)
+X-FDA: 85430993676.21.D153E98
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A9E504000A
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:51:59 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XzAFPkN7;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794595919;
-	b=5QEwV2iFBnw+hZkDkqeF2YsXVUSgNIgBSNZrD/WNr1MgDOtOG3vt3xgT53Z4rp1scysz3U
-	lJtYeOBITwBp0nWkPvlIUSYW87dikYP4T5NWZj9IyKPBud3fMQU+w/luz/UonU5qucER26
-	cVTInkM5j09oi+GZTG6LOS/k59SQ6mY=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XzAFPkN7;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 220801C000A
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:53:17 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VZKwDank;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794595919;
+	s=arc-20220608; t=1794595997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5muRXWS1rFjtRwmxUHcdPdK+9QBRwjjtk/I3ke8eqss=;
-	b=uEcJCp0+xfWOQhXTW/yhWW4LEQWRD5pXsMP5sFEplLgesMFeeSbUHC5mkgEdtfVoLjhExY
-	RF/1NGAFZoWec7ryLgSRGpx82gRaQ/EGRx/uIES376uKT6ThRMUR39IMoW21rklpdE0JLD
-	87u4NbhykjWEw8YIoWeOXQ41vJl5SbU=
+	bh=6DABqvPmRZQ9oUhOgSWnNOl71UnHng1Nk40a2Wv2ZOk=;
+	b=p+AE1E1QtlBiA42R/utx9IgTB4KXinhCytivf9Kvap9AWpIapeNOsPHiLSNRfvJaAuoc5P
+	vnuLCNO68MTneaQDfJSYXSl0d6HSViDozQjWmXR9p+2LT5cglcJ5GuUjegyZ4oEz+E5ZAs
+	zpIVZcofBQZnTZZSVQzbzNsbmkIxqa8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794595997;
+	b=ucos9v2dhWNjhWqPrkIiWrVp0m2jxL4h++WlbikK1omqJ+8kgJbILd+vi4flLd8/q+JDcx
+	ylCv+RGer9xSVFcEdtIebvJhW0zSawNgIBo7uZS/aLOxrfiuz6Txh2PmDdnI3LpMNJffMl
+	iIvoe5BZJ0C+frODn7LWHaT2QjsS2po=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VZKwDank;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D443941B11;
-	Fri, 13 Nov 2026 18:51:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B0F1F000C4;
-	Fri, 13 Nov 2026 18:51:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4674140822;
+	Fri, 13 Nov 2026 18:53:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62B11F000C4;
+	Fri, 13 Nov 2026 18:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794595918;
-	bh=5muRXWS1rFjtRwmxUHcdPdK+9QBRwjjtk/I3ke8eqss=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XzAFPkN7MUXlKgAkmPOQRLSCSAt2PwqC0Kcv+HnyUqadeayf26mt5dOB87zAhmnsL
-	 rCM/LOn1v4X8mo04YABi6kewxSg+rOZSdDxrb5UOebeOVDzcvlJzot+uNTf8h7Ixtr
-	 dhn82CAc62qemGvmxq0ChSKEdR1156L63Gfde8CamKm69f2i7gWALhNCtLos241caU
-	 SMUSWuXj2DhPLnm+iDL0xVjmBG9PQVccC5ep41dBb7XuYBjXOcqMPAR+VbhxURTeMW
-	 Ivqjv+vG9iPHvq9/l7fzKDH3I7PS44kkVRvz88GIIpeGHqch7+hqspqTFss6NGgs+4
-	 90lFUZKzvLglA==
-Message-ID: <3314e44d-dbfe-45da-a1b0-8337784a5e86@kernel.org>
-Date: Fri, 13 Nov 2026 19:51:49 +0100
+	s=k20260515; t=1794595996;
+	bh=6DABqvPmRZQ9oUhOgSWnNOl71UnHng1Nk40a2Wv2ZOk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VZKwDankvfuzex2kRsuuyuqHtFOBDmCaX+0WDxsKL/ouO87kgLIB3xb7y6yOm/l4j
+	 S2Hzsy3SFJbSAfPNpN5/WCPjXE7lb2e5myi9k1xiqxrHzc763+i64zEJqAuEDsEm7w
+	 uMkCEgAbD+8ekgjG4FklqyNU/1b5rvooVJAA1POv4y6HUtbiYHEgQgYDgPoAc+m9Hh
+	 ToYoOlC742wO+lulBmOy7vDZnkmacJKxLOREhis/Tt2axILXyzJPa3zG9ixS/CXFAV
+	 XBAzB3tDKbseqSfaR/otntCp+rYZDrvbMx/fIiAxtDqSI8W93FtHmyJCo6VYd9sBQy
+	 zC+gw78C8+jvw==
+Date: Fri, 13 Nov 2026 18:53:09 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, Andreas Larsson <andreas@gaisler.com>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Matthew Wilcox <willy@infradead.org>, 
+	Malin Jonsson <malin.jonsson@est.tech>, Richard Weinberger <richard@nod.at>, 
+	Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org, 
+	linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org
+Subject: Re: [PATCH v2 4/6] mm: drop HIGHPTE support altogether
+Message-ID: <avdciuic3FAy6evm@gremlin>
+References: <20261112112528.1116405-1-arnd@kernel.org>
+ <20261112112528.1116405-5-arnd@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/9] mm/mprotect: add MM_CP_PERM_UPGRADE
-To: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>, kvm@vger.kernel.org,
- linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-riscv@lists.infradead.org, seanjc@google.com, pbonzini@redhat.com,
- akpm@linux-foundation.org, peterx@redhat.com, ljs@kernel.org,
- imbrenda@linux.ibm.com, borntraeger@linux.ibm.com, frankja@linux.ibm.com,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>
-References: <20261112142039.907090-2-clopez@suse.de>
- <20261112142039.907090-7-clopez@suse.de>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261112142039.907090-7-clopez@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261112112528.1116405-5-arnd@kernel.org>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: qire7hxj9rbe9axmysxzau1wwmcjircg
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A9E504000A
-X-Stat-Signature: yb4ijj7iew4nqjanq856e44ao1pcecfa
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 220801C000A
 X-Rspam-User: 
-X-HE-Tag: 1794595919-598983
-X-HE-Meta: U2FsdGVkX18GLULmz/bpG/cXyg4bFCSVhY3fqGyggWW0c06skOg/hiZdTuLWj+oKc2hViGT+M3N0s4+sAA0cJWNX2uwqoAeLo/YnjrA5VU0ShGCoH88IDz1v89I2H9VNTaoyKUM7CwR61xJl3zePhHsG3Q1sL8cVWG184o5t729Gij1mIPd12ZRY3/rXftL3WUXKswHd1u5eUA0GCKSpHVrEowSIKy5NfuWWmzSQOU2lGh3FtReLQm4uR8hpXxXE9WGuPQR0ckQPJM8E+ChqouiMgW1VnJiJi9FH18hFMO2fGkSitVd7qSKkDEdlG/kMRHy4rCzxt0RyXXmVr3Xfsx9F/sCqhNDNmMvjys7N0EzcEppLMpCoDA6tTN59MY8HIdsTX4ZXP/ZKZVzCAaAaViTVsgWadEZgtbAHPibJklx5tvumwQPUBoWEb5WOV/mDoLpaY0lolmRAcdKInrIFi3HsdDavaeKyJCl5GFnl3LPBS0w9rZ+BnetQjfD+9uZdcSzrlGaG7VJ1iYVJC1o2HBZyTIG227kxkgyzAz5O++kRBu+JccoLleh4tw/S1D4tvQ2xxPzRp/jEgNmckndlKeDh64ShCUC9OKPywHAmbrVoN4ZGKl7eNtjI8SKu0eco96VL2CQXNZ45TkrKzKTp0PeJ7eWzYreU9fKNbXphB42VXrZMrawie1xPJprRLHmX3hy09hvRIIZvv4zoJoXvg1ZwngIY5G622MrKFPgkcHPQauB7wGmhKNqrzD8lhdPmes08fYP6XIiMEU1vU62LU3VF4QintQyYK3J2dndPsqEa4rZcPWYoCQ999BitQeEUqwAbLZs0hf+qwSRHMoNXk5bietxiubh/gpADWCeVmCdW/247PbqLVisHrleKcN4LAK4ZEHQ0gEbTHpOI0Zk1O2EOY9joO1xGf9Zm+iQmeqGTV/ApjsR9tPE1spLiRHcI5PKtV6ONBmAwhy62X6E
- aFii5Grh
- C6bsEj0/op9p+/RACt5Z65esNXO7J2zacJ2bQaMVLYzZC9qbM1Ak6A7Uz2O3/773cy5rjjE5L/X0XSu1mRTo33ukdISxASQDwRxphpKwJrBo9s0h6RykwBzAMdqBhHSLxOjXJoZcRnVghZ8Ymlo4Wb2KpXTh3RE6oXKZGxtAsYX0eeMwh4tnWbS+l47xxy4QN8CwBCYuYCatJZfQyeWvZ4p+xI9xVhu8Hdmf75D+MPNKUSJVX5EQ+fXOgYQnk+LY8B0ZJIQLjm7jYtcM0TqV7TzqW2wn8yWXXul+PmQAnCAqWRj5rsHFmY+B3Lh6UjyyaYBkQLjJdRvnnMKw=
+X-HE-Tag: 1794595997-179341
+X-HE-Meta: U2FsdGVkX1/PU/HLKJlm9AHx8lF00BXyfSdTGSncLDezepnj/Fh9A5yQy+XSDFcqf7ktFteyLMUQn+ot+sWRFdC/VyQH46RYzswv5po92a4wTmNhc+zo8ujNPJI9sBZ03gf4QsD2rKj8EGeWC8gvvTuzdggIrDVvTOxJP57VYB4JmJhGZbqkbOavimGuRHKXOsP5LFiBGgfsN0HJGbhTBQzAJujaqsD7VjNjG1KODv4L6D+nZIBk4y7D8iGmdnj4p28w3X2+yDXKVw9LtZT7ew9tfIjMT51xp1pU0oKcIP0VpVMT7AiyGJ11y4HstKfl67eqLPBGkCL9uYKxyXAuD/F378R4DOrKkzhe4pyFrom2yW9skIJdCp6283Dg9rF8NagpjvW3VzXxSnpAKTRwqNhB9wgm1nT8+LDnJDsiAozoa89svjHZn4VhyomhEDJQx83Y6a1RMomCM8OnqAKZF0EOSLqFj1k7oxQ/Iq5U+hje/y522rMndkHJErhZeGCFmmYov7YKlqwRt3TLynSbZIlNo6GB62OO9Amc88C8XjyfD22e0tvla5J+B5KdW2tCciMuInDrPZOLkQwUpaZSig/eJLjb8HS881RcgJXjAW4Pk+uboH14OlFYtuLKv6phmjINzGjrhp9fO3gCueQLIE6ulr/WNaKrzrAg/L+EE2llkSJthkVGTc7qhsuVpZXbevCgxAjN2BvOYqBQ96mt+JPEW9oNk1BOt4HLeI3/x3huyatdvOEUOabybSBEPCKd1ry7/Un63+N0BZuwQUud+9Egff6diEzix+InuovP092O35FBI8KhcZ7o3LL/mm1blmGh1aBFExNWfzNR9Qhp1D0qMUf7F+UW2zq7fNJ6hsPRjzth95Jo1OfmjSYmLyn1xOy0DR7P/0BLtVW8ZZqG43Js4Vju2YseTGYK7qO7TrlOnepY66yyinrUS0SRig6fnJcilszxWQcFYE2ecP8
+ qGEuOfA6
+ m/I9Vxf42FJQPx0mU5sSIxsC6O1NuDTDBT821whRXFdpGbtIvNi/YyKChzPK/oMlksam+QHVzpfO7RZRZuCYb9hxn0GmtfqddYG2nTY6LNfuiR8Lagipv+FV1/VrHlIQIXiOS8cYdrQs/CBvayD6AD+sGsdN1vUB6gRkHMuLzPf/IHX+i7c4NeZxw7EriidYUnNtVYIslPyOsqrgTbEhaSVLDn45f9+tA2rgH1DO6vEJz0dm3fMIG1f5TpTLvIsU6fOQREKaT9HDWkRzYMsPY6HwR4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,62 +100,101 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/12/26 15:20, Carlos López wrote:
-> Add a change_protection() flag for changes that only add permissions,
-> so that MMU notifier users can keep their mappings and fault in the new
-> permissions later. mprotect() sets it when the new VMA flags only add
-> read, write or execute permissions, or VM_ACCOUNT, which does not affect
-> the page tables. Any other change, such as a different protection key,
-> is not an upgrade.
-> 
-> Signed-off-by: Carlos López <clopez@suse.de>
+On Thu, Nov 12, 2026 at 12:25:26PM +0100, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> With both x86 and arm having dropped CONFIG_HIGHPTE support, no
+> architecture is left using it, so remove the remnants in common code.
+>
+> It is likely that further cleanups are possible in the page table
+> code but those are not obvious from the config options.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+
+LGTM assuming Mike's changes :)
+
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 > ---
->  include/linux/mm.h |  2 ++
->  mm/mprotect.c      | 13 +++++++++++++
->  2 files changed, 15 insertions(+)
-> 
+>  include/linux/hugetlb.h | 5 +----
+>  include/linux/mm.h      | 1 -
+>  include/linux/pgtable.h | 9 ---------
+>  3 files changed, 1 insertion(+), 14 deletions(-)
+>
+> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> index 58f755e70e96..7c6d191fdf50 100644
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
+> @@ -178,7 +178,6 @@ void hugetlb_bootmem_set_nodes(void);
+>
+>  /* arch callbacks */
+>
+> -#ifndef CONFIG_HIGHPTE
+>  /*
+>   * pte_offset_huge() and pte_alloc_huge() are helpers for those architectures
+>   * which may go down to the lowest PTE level in their huge_pte_offset() and
+> @@ -193,7 +192,6 @@ static inline pte_t *pte_alloc_huge(struct mm_struct *mm, pmd_t *pmd,
+>  {
+>  	return pte_alloc(mm, pmd) ? NULL : pte_offset_huge(pmd, address);
+>  }
+> -#endif
+>
+>  pte_t *huge_pte_alloc(struct mm_struct *mm, struct vm_area_struct *vma,
+>  			unsigned long addr, unsigned long sz);
+> @@ -1047,9 +1045,8 @@ static inline spinlock_t *huge_pte_lockptr(struct hstate *h,
+>  	 */
+>  	if (size >= PUD_SIZE)
+>  		return pud_lockptr(mm, (pud_t *) pte);
+> -	else if (size >= PMD_SIZE || IS_ENABLED(CONFIG_HIGHPTE))
+> +	else if (size >= PMD_SIZE)
+>  		return pmd_lockptr(mm, (pmd_t *) pte);
+> -	/* pte_alloc_huge() only applies with !CONFIG_HIGHPTE */
+>  	return ptep_lockptr(mm, pte);
+>  }
+>
 > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 6af3b7008f1a..001829a61405 100644
+> index 6af3b7008f1a..019de55bd796 100644
 > --- a/include/linux/mm.h
 > +++ b/include/linux/mm.h
-> @@ -3585,6 +3585,8 @@ int get_cmdline(struct task_struct *task, char *buffer, int buflen);
->  #define  MM_CP_UFFD_RWP_RESOLVE            (1UL << 5) /* resolve rwp */
->  #define  MM_CP_UFFD_RWP_ALL                (MM_CP_UFFD_RWP | \
->  					    MM_CP_UFFD_RWP_RESOLVE)
-> +/* Whether this change only upgrades/adds permissions */
-> +#define  MM_CP_PERM_UPGRADE                (1UL << 6)
->  
->  bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
->  			     pte_t pte);
-> diff --git a/mm/mprotect.c b/mm/mprotect.c
-> index 84bcfe0281d3..8c0fcd10f5a3 100644
-> --- a/mm/mprotect.c
-> +++ b/mm/mprotect.c
-> @@ -767,6 +767,17 @@ static const struct mm_walk_ops prot_none_walk_ops = {
->  	.walk_lock		= PGWALK_WRLOCK,
->  };
->  
-> +static bool vma_flags_is_perm_upgrade(vma_flags_t old_vma_flags,
-> +				      vma_flags_t new_vma_flags)
+> @@ -4025,7 +4025,6 @@ static inline spinlock_t *pte_lockptr(struct mm_struct *mm, pmd_t *pmd)
+>
+>  static inline spinlock_t *ptep_lockptr(struct mm_struct *mm, pte_t *pte)
+>  {
+> -	BUILD_BUG_ON(IS_ENABLED(CONFIG_HIGHPTE));
+>  	BUILD_BUG_ON(MAX_PTRS_PER_PTE * sizeof(pte_t) > PAGE_SIZE);
+>  	return ptlock_ptr(virt_to_ptdesc(pte));
+>  }
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index 780fe849ff8b..1352b4cee7ae 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -100,14 +100,6 @@ static inline pte_t *pte_offset_kernel(pmd_t *pmd, unsigned long address)
+>  #define pte_offset_kernel pte_offset_kernel
+>  #endif
+>
+> -#ifdef CONFIG_HIGHPTE
+> -#define __pte_map(pmd, address) \
+> -	((pte_t *)kmap_local_page(pmd_page(*(pmd))) + pte_index((address)))
+> -#define pte_unmap(pte)	do {	\
+> -	kunmap_local((pte));	\
+> -	rcu_read_unlock();	\
+> -} while (0)
+> -#else
+>  static inline pte_t *__pte_map(pmd_t *pmd, unsigned long address)
+>  {
+>  	return pte_offset_kernel(pmd, address);
+> @@ -116,7 +108,6 @@ static inline void pte_unmap(pte_t *pte)
+>  {
+>  	rcu_read_unlock();
+>  }
+> -#endif
+>
+>  void pte_free_defer(struct mm_struct *mm, pgtable_t pgtable);
+>
+> --
+> 2.53.0
+>
 
-Two tab indent.
-
-> +{
-> +	vm_flags_t old = vma_flags_to_legacy(old_vma_flags);
-> +	vm_flags_t new = vma_flags_to_legacy(new_vma_flags);
-> +	/* VM_ACCOUNT does not affect page tables */
-> +	vm_flags_t mask = VM_READ | VM_WRITE | VM_EXEC | VM_ACCOUNT;
-
-Why is VM_ACCOUNT a permission upgrade? At best it's "no change".
-
-What am I missing?
-
-Also, what you really care about is "no permission downgrade", and "no
-permission upgrade" is not the inverse of that ;)
-
-
--- 
-Cheers,
-
-David
+--
+Cheers, Lorenzo
 
