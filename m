@@ -1,91 +1,150 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0112606A323
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 05:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2604606A32D
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 05:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=XiEM1jkt
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=isCaEMYN
 Received: by kanga.kvack.org (Postfix)
-	id 06EDE6B05D4; Fri, 13 Nov 2026 00:39:28 -0500 (EST)
+	id B9FCC6B05B7; Fri, 13 Nov 2026 00:46:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01FEE6B05E1; Fri, 13 Nov 2026 00:39:27 -0500 (EST)
+	id B4FE36B05D3; Fri, 13 Nov 2026 00:46:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9EC66B05E7; Fri, 13 Nov 2026 00:39:27 -0500 (EST)
+	id A17186B0628; Fri, 13 Nov 2026 00:46:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C82E46B05D4
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:39:27 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6042D1401F8
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:39:27 +0000 (UTC)
-X-FDA: 85428993174.17.CF4C6FC
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 802CC140006
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:39:23 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=XiEM1jkt;
-	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794548364;
-	b=2nNzAfIfPReuyYmp82UUS70P+2InpoeR72LsV48OImGXuSa1Nnj5Vygq2XTNUxv/kN6lYy
-	hwD0s9VHZ/epAcPGJNo6sStHsCJz8NjdzBdkcY0g7Ld5y7vR9/U9C0Ii+F2Vse89XPm7qh
-	dO40cOUXlrMphpVdm6N++bNy3DREeVI=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=XiEM1jkt;
-	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 66EAB6B05B7
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:46:06 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 621F41A028B
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:46:05 +0000 (UTC)
+X-FDA: 85429009890.30.F09A00C
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 31C33140002
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:46:03 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=isCaEMYN;
+	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794548364;
+	s=arc-20220608; t=1794548763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0rfDGBAcafKezqinDyA203mmJPgTuUKXlIMMfgq4UE8=;
-	b=mWPkGEyPeV5QgMhjraGCo8QIXIvV+qL22w1OrF9rnbduWjvBp0sIIjU6cylK8FOEtDDtNk
-	RxfVS/fQB68ei55EB9vUiZzQKFRsFB4eBL5EQC7OjcUW1rPW2qCdbB/Du091AhmOaA9l85
-	lb7EbngOc6FfRA3aK4ih+1rh2cr4ffg=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1794548360; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=0rfDGBAcafKezqinDyA203mmJPgTuUKXlIMMfgq4UE8=;
-	b=XiEM1jkt2POCsHYNa9XX7GAdBifIErUVppJAKeCOVkhM46pZbPgDUuRX39b82RMnoNt2VIQ0RBxEG2Vj5LHqH1sGuSANs10ZP1yTTBIeUCvrzNL2+eE7Ggm6uE2l9a03hqNIo+qNicFjSnOr8DcSISnU2BEd/DOCx1yTT3cm1+U=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0XEe.jFP_1794548359;
-Received: from 30.74.144.124(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XEe.jFP_1794548359 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 13 Nov 2026 13:39:20 +0800
-Message-ID: <8e342039-2e73-4657-9ff6-55a71b5cb678@linux.alibaba.com>
-Date: Fri, 13 Nov 2026 13:39:18 +0800
+	bh=v4rRGE+RVmHQmdWS08eNxSiiu1iRCMHoWjayyFspKz0=;
+	b=CLloA/Ko1rUYgINu4LVnpqZM5oMhyOrOygdi0cw8y6+1EplIBr6VOengQpTpiNx9BY5b+T
+	NoMHok9KHS+k12xv5UGKZPJNSdyEsGJSImTwwpB9RfMwHMTM5FU1o6b7iMDWIyuqCuyhy9
+	jA6YcdOZy7oNeg3DqJLXNvr9zcSEzWw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794548763;
+	b=woexHnUmd99DIQAUfqIGBIkx0rE8mjs1mUFeCVaG/l+6w91Ej8z2+ZlxpzwJ2iK4OETQ0q
+	m4W5gqtvR52Avwc41n7VPVWES5Pv/ZfStXtlgJucslziC805pEnZyt2W+mrliv8MARKXJr
+	JIbDphpANv6o8/agTH6yqyb9rlkPypk=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=isCaEMYN;
+	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-91c1f548f87so11888916d6.2
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:46:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1794548762; x=1795153562; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=v4rRGE+RVmHQmdWS08eNxSiiu1iRCMHoWjayyFspKz0=;
+        b=isCaEMYNA/nCsCK3MFeYeVzRii/z/VES8vy43Eacsk2AAeiYvQ52w8pEmfzPTONDND
+         qv7ZgJ7UkLdKxjJG9q/dVq25OJnuWcx16xgneD2ug3WK7gCXM5FzD2wLzmPKNvt9TXBO
+         E/U69rQPN0xgdlXRh/bR1LFUXhQUheiPVrd9TIlaPxtlawb9b34uJ+cupYVnuXmM7ZPU
+         28PCLKC5ir8hdXKHim0frT8Hl3lvHP+7rO31mirUSxN2Ca0d9D3yY9IB5dllo0zkgjrP
+         todN8J8UV1jIbWxaep1AuwOZb3cU97s0DEJOV8ro/cuIAkOikh072D44eUBf9FE+mxJn
+         pgPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794548762; x=1795153562;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=v4rRGE+RVmHQmdWS08eNxSiiu1iRCMHoWjayyFspKz0=;
+        b=WmyPvCXOE7Yc189OtYtkx/UqFbx43+I3epU6/7bqgnEfYCBRHyjKS7gjrk4WmPbdgU
+         oE9Co2SnmviWfwHWCBqpsRV7xl5z3w2UlA6lB9NICT8KXaKs1Wum8olTbRKKLKM1swgl
+         yWxUhJr9W2aIX8OGcHnQJ04QpfwBsI5jmojgm3oSNyTRl9Dl6jdrsNcY3S9NM67Q87QO
+         7h7xRjq9cOQTKU9iNA2HD5+7TbcZrEf08BOhwBItRSdmt/SuoRj7im+Ov+Li6j0er1uA
+         J6HIkbvfyhlU2JDmlTvSOAJrIkGo31ZGBsDafk5Ga6CVs/fO+nwLQBngUPCRWEgLfh03
+         Ep0A==
+X-Forwarded-Encrypted: i=1; AL+hErHYoMfluyZZJDgNK3n7Exw1DiOHcy4sKcfyI/RTHq/QYcb9r+L9yesyniwQnI3VrP+MUj3pa+ldfQ==@kvack.org
+X-Gm-Message-State: APuU4Z//UJdyjZmwRcvGcMfeWhc1aip5dEwtMiNq1zllan+EXef/qMd8
+	9uCYjqwKhysxM6F9wB3sAs32jBbTXhPOtutkKQtwtoPSfGpz4/VWmzECQ3Jkc7M1xqg=
+X-Gm-Gg: AYBFou3qnh7VYkKR07tdAvCMWe60ZB+UkRyjHFj6qtMU6pWy2Fs62HkCur/FYbJ36Mk
+	DTGD1XwYZn3DuFJYjWSsqSKVs5BQaEERIkgSlbPq24s/zG7fkZWB2UxTr8o5fuUrnYXdHghi7AW
+	UhIu9bnyNr6/33AYNg39x9i/KWOEVqyjM2cLXC7QhV8rm4PQQS0aixHSq9WPHaOLBAyXlYFYjG1
+	J2LMGVMxNeyArySxYaRVj0SUXmlsG8FXfnX5Xn/2PGDoaNIZwYA3TX6YwIL4udPHwCoKYL/ViBY
+	9dFukuH6aXyY3WsEPmllXttVtrje3cRSF+vK5Z5e7HCv933PV07ye/iwVmXKAkJyDQCoc9jlHFv
+	RaRvRHELUWHlqTqsstfAjaUxXCY6O9XjNjPCWjDVK2dZ1mMopVsJ2ABpcK4VNT6ITI26D4ZPNuP
+	4aPy3TrvyLuW5FM0aOGxIM7ekr+mxIEjuk8iQmLJ/VIY1x3BucRADZIKTf0x/OEYc0zLNHA8AdF
+	PgZ+zM6HLQBMVg91ykqugup0e0SFhFNzYxVARMEcRHtIq4EIkV3p78FgwOgIjyCe0fjSWuz2XMY
+	Ay0E+Yt4n2V2d7YxyX07UuBTO7EMJgO04O92S/RDKoDOJG+lA8OsyHrjo7mhZh+IrftbgRUtESk
+	xIUWFIhM=
+X-Received: by 2002:a05:620a:801c:b0:93e:c12c:fbb7 with SMTP id af79cd13be357-9494bc76c5amr274209085a.68.1794548762215;
+        Thu, 12 Nov 2026 21:46:02 -0800 (PST)
+Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9494c836f6dsm108597885a.22.2026.11.12.21.46.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 21:46:01 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/shmem: drop the second folio batch from
- shmem_undo_range()
-To: sashiko-reviews@lists.linux.dev, Qiliang Yuan <qiliang.yuan@linux.dev>,
- Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>,
- Jan Kara <jack@suse.cz>, Qiliang Yuan <odys.yuan@gmail.com>,
- "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, kernel test robot <lkp@intel.com>
-References: <20261111-bug-mm-shmem-undo-frame-v1-1-e50a95b8f9b2@linux.dev>
- <sashiko-outbox-212134@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <sashiko-outbox-212134@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 802CC140006
-X-Stat-Signature: bq47okhu74a3gmt1ty5efz3jnfhutgb7
+Subject: Re: [PATCH 07/12] mm/mremap: resolve uffd state when the context
+ is dropped, not during the move
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, 
+ James Houghton <jthoughton@google.com>, 
+ Andrea Arcangeli <aarcange@redhat.com>, 
+ Suren Baghdasaryan <surenb@google.com>, Balbir Singh <balbirs@nvidia.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
+ Pedro Falcato <pfalcato@suse.de>, 
+ =?utf-8?q?Micha=C5=82_Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>, 
+ Andrei Vagin <avagin@gmail.com>, Stephen Rothwell <sfr@canb.auug.org.au>, 
+ Arnd Bergmann <arnd@arndb.de>, Muhammad Usama Anjum <usama.anjum@arm.com>, 
+ David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+ Matthew Brost <matthew.brost@intel.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+ Gregory Price <gourry@gourry.net>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Alistair Popple <apopple@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+ Kiryl Shutsemau <kas@kernel.org>, Chris Down <chris@chrisdown.name>, 
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+ =?utf-8?q?Miko=C5=82aj_Lenczewski?= <miko.lenczewski@arm.com>, 
+ Michal Hocko <mhocko@suse.com>, Mike Kravetz <mike.kravetz@oracle.com>, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org
+In-Reply-To: <20261111-uffd-state-fixes-v1-7-00713d368976@columbia.edu>
+References: <20261111-uffd-state-fixes-v1-0-00713d368976@columbia.edu>
+ <20261111-uffd-state-fixes-v1-7-00713d368976@columbia.edu>
+Date: Fri, 13 Nov 2026 00:46:00 -0500
+Message-Id: <179454876058.482102.4630783467113971871.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Stat-Signature: yx4h9z4pb1ge667aqqu1wr6bibw6nzak
+X-Rspamd-Queue-Id: 31C33140002
 X-Rspam-User: 
-X-HE-Tag: 1794548363-551057
-X-HE-Meta: U2FsdGVkX1+EGEFcDQhMtaQqgL64IjWIS4aG47I9uwprD/KnHtLixAWJEjqCxSJ8uHreVmHxgMd6Qk2P/5MLliofsF/yRyHpoUzGpDf0jw3iP6CsbYal9T7+4k8usGs3ZmwWCLIMZ8VE89xvMcHNgKCuZPbHIkGZjhiSZjruGTgdFDXFazW/iuwQnLlelJLL5BUkcODTpdzXzaoR2BgOyAnSyVZ1HN7EwAbggNCD72IJUrVwGhCuzQPARNO++w5NxagCacA/jNmI3rOGLAiu6GjWrn+Or7JTnHSnHbfD829hgB68mOetXQQ8rH27TBkHl8LeySxBofN4XlXSf3SzUSKVRmpTcm0AK5tJBZIYtzIHJmvDZjYNCPNhvhC0MPgVrrjJIvHhKvjXHBRbhdfztdcmEQPmfKJUv1BbT4XOqSEi28daom4mmezNi+AvfVzJ0cD6Vrtd7GmgUGzf5OBj3WHS7r36Cv5wViSlJE1Jd6L35IvLPSS1CrnF/5JFzn9QGlVPZYTe9JuReCGTVfpIk3e7AMPNzE+tkExbrM7Ov4c+BCxGes+opCkC+g3LerxtgeCUZwjZsy4PjbFeI2H2ybwMhkQ4iXmMSwoxCm5Q7NFHdsZE0Ww3BfvmPGWMeksSjXcqB7L+vTmbJzbjUC+tA/MHD3a1TAEQhcuPtm18o/CivmAZNv8b3HJ62xN2N3Rcg2KtYOPVVSRHQ0CHlq/4VMnVyCOQ/WW2uvPjE+g0dY8Zeh0QEZEOXFy9ESMmXMkPLRd5kENWmJBd6RNnKMGhE5MnVjvezsB9aiL6RI7HTljUfKuTNGkIhph6TPxO4xFf4qJxcAqlJc694qZeIx+S3A5RZ9L8zsG1h1NDvbBXUJAnAodo7gDr8Vua+XHZFnRLtrA8JuZJbpHhMLpWy0mF2iiuMn0evrnpCw9PB7et9uaIf46qguK3KSkCg8IPBO5jV64HhoCtxpK/NMjq03T
- bNZa9xYn
- KwfMhM5XvYow0snf50OWmAwIIa0xTauV9UVkq/+Tcbrtyf98MxZca10HUExYnl9hJgAZ5yy+CkEVBsz+ib7t4klXOHXUWgAkX/HAZyDVR/Ud80H3PwhlYASf46U6LsrgHWjheonsbYKSVogIrNfNfy0kCPvBMEvW6e4ANkbSRkTSbug3IPTmLlnVPeysOVxFBKsRm847/DJXQC7k89CwkFSgioKnbdBZeQ6QnnmIozKAwzkElp1EmY1YC8E3dGxI5s2YylTnw6P0NkOYUARd87F3+3ndrcKq1iHO1dkl33//vaKhdzfTNsyLMmB0XyOi5JYo0IudwOdm44Tv8UcDqDAxWaEOfQSGcxvZ7/6HMj3x8fnor50sLABu0nW9kazxq2qSfBN2xiSj8y+HIPS1jCd23vc0s38no4NHqWrT+oNZboAzeCkrm9BxtuGqrxumWkbCxF/oJ2/lcFMvaA14wm+/4i/eVntGRNO9EQVUn4vNxq7I=
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794548763-690132
+X-HE-Meta: U2FsdGVkX1/9AHyfNvXqPRFCJDSipoMyEPb960OLLD8RJqfjeDaHNzvJXHuLbYBqA31PQYZff8dTXZBUBfN7+mIaMWGfAG/8ql7C4wfcpBl1GRX7YESDQ2BVK36RwQA5VbvSwE3gGZL1CGLNTqphfQURqIKa1dujdNJnvDHC/w/IQvMtzHHEE/KZs9Q4FkZqNOmrja8KWkqz4AajZHvNJJiNzhMjtVnh5rzRtCx4bC2u/mRI30LtDy3dm0AyvkV6QP65V6aVVtHp8we8e7eiWaOUiaYisZ4AY9s6mvUElkl+MnPERsSLp8N6/7kAX5930OLFEzewTsgh7PgOcdUBMWBx+bvjZK3+g+iuHidcBtNP9ZE6cdwllxo89o1HhDbE3kbKM0o9qguSEH0qsfI+Kxg7wDQS4ff4PyVLMNlkMomTUGKUnGUCZ5ByPIO4OJI+Ya+d1A3JcOd58ZZ1IDRpHDp/EiG+tEHc3LM1kUjMW8Iac9YXiaPg2ykwUUy9Qrwoh6ToXgOq/lZrK7B08IxAJQ6JgofwULS81ImtDDMbsyo22a9dUJDV5nRrIEMh57DsFkRzJYkkY1IrFHF23vGceQZSdnSGmqNv2KRbnswstblYIUn1bp3bVDRZx7yu5nunMORCsNBMFyXs8jBKajA1Wv2xfmMAOW/ukodAHnirsUvttSJCsX+t6Hsr5BTOj+KOXIAwQyjYxiUa5F1jDC7Zbjt6mQKUmLG/EJOkpbyoOXiyX/qg8OwtnrgsOZlSNscCFhXwVeCKV+3nYWFoohC8436BbaJzArLeAQ3cdH0L5Ptpd5rCp4B0cqPpZUnvdgm/5/lBq51dMRV13mtfRN0sVUDaedXrEyi1LIVO6JefbT8E0CcII57Z2dkhB5Me+nDmWLJSJmyZ+Drl3fyyz1w9gGWpea9jHzL2cByNrBBidn6/EqLIsffVdN3wynAmbItNxPpR03g7fk4o16l663o
+ c6pF0xvk
+ BiwPwAarmyGAddkDD8K8MBc0YM5fh285DK9LELE5Ryqs8iyJcf0gSwv9XcL24757td7g+31lNNy5wkKsdvp+D7NyLYXtE5C0uzguEvrwvYuOLmfKIvC5whBri2E+8XfmQxlbEF8OSs+f1xJFnJ9/Mn2jX1EgLDKLYgBxEbBHYigQW8+B40EBGue3re4/XgQ6l9aniabREnIp7k5rwYT1bOhLoGA6o69z41Q3kApGMItgaofX+cOak64vatUHkXYflkTfPvAiMu7cB6GqkGJWv8Xsua8lvA+dQ7n6ug455o42ClJ6jOakLPleTWqPunWhQQr/yqO+wBmAH+TbRp6LN6gSSrlBYsPx45GODLuhaHf5UMFCazawF/wcWi3ezy5sCJYxp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,99 +153,78 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On 2026-11-11 12:55 -0500, Tal Zussman wrote:
+> Without UFFD_FEATURE_EVENT_REMAP, the new VMA of an mremap() is not
+> registered with userfaultfd: mremap_userfaultfd_prep() drops the context
+> from it once the move succeeded. The uffd-wp bits, uffd-wp markers, and
+> RWP PAGE_NONE entries in the new VMA must be cleared as well.
+> 
+> However, move_ptes(), move_huge_pmd(), and move_huge_pte() clear them
+> from each entry while moving it, before we know whether the move will
+> succeed. If a page table allocation fails halfway through, mremap()
+> moves the entries back into the old VMA, which is still registered,
+> without their uffd state.
+> 
+> Writes to a WP range are then no longer reported, and an RWP range
+> becomes accessible without a fault. Nothing restores the protection
+> afterwards. This requires a page table allocation to fail in the middle
+> of mremap(), so it is rare.
+> 
+> The uffd state must only be cleared once the move can no longer fail. To
+> fix it, leave the entries alone during the move and clear the uffd state
+> of the new VMA in mremap_userfaultfd_prep(), right before dropping the
+> context, using userfaultfd_clear_ptes() like unregistering does. A
+> failed move then puts the entries back as they were.
+> 
+> This adds a second walk over the page tables of the new VMA, for VMAs
+> registered for WP or RWP without UFFD_FEATURE_EVENT_REMAP.
+> 
+> Like unregistering, userfaultfd_clear_ptes() also asks for the PTEs to
+> be made writable again where that is safe (MM_CP_TRY_CHANGE_WRITABLE).
+> The old code only cleared the uffd bit and left the PTE read-only. For
+> private anonymous memory this saves the minor fault on the first write
+> to each page that was protected.
+> 
+> However, this adds spurious minor faults on shmem and hugetlb. When
+> resolving, change_protection() rewrites every present entry in the range
+> with vma->vm_page_prot, so a page that was writable and not protected is
+> made read-only, and its first write after mremap() faults.
+> UFFDIO_UNREGISTER and UFFDIO_WRITEPROTECT already behave this way and
+> lead to the same spurious faults. This needs to be fixed in
+> change_protection() and will be done in a separate change.
+> 
+> The entries no longer need per-entry handling during the move, so drop
+> uffd_supports_page_table_move(). Where the old and new addresses are
+> suitably aligned, move_normal_pmd() and move_normal_pud() can move whole
+> page tables of these VMAs again.
+> 
+> clear_uffd_wp_pmd() has no users left, so remove it.
+> 
+> Fixes: 0cef0bb836e3 ("mm: clear uffd-wp PTE/PMD state on mremap()")
+> Fixes: 763f43865fc4 ("mm: preserve RWP marker across PTE rewrites")
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
+Is this a fair summary:
 
-On 11/13/26 11:39 AM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found no new issues
-> in this patch, but noticed 1 related pre-existing issue it does not
-> introduce:
-> - [Critical] mm/shmem: skipped boundary zeroing on swapin failure in
->    shmem_undo_range() [1]
-> --
-> 
-> commit 785bd3384006f8bb06c3c8f9b1b5d455eba3d449
-> Author: Qiliang Yuan <qiliang.yuan@linux.dev>
-> 
-> mm/shmem: drop the second folio batch from shmem_undo_range()
-> 
-> This commit removes the second folio_batch from shmem_undo_range() by
-> passing fbatch directly to delete_from_page_cache_batch() after removing
-> swap entries, and using truncate_inode_folio() when undoing a failed
-> fallocate().
-> 
->> diff --git a/mm/shmem.c b/mm/shmem.c
->> index 156469423a866..5bcbdd6078a73 100644
->> --- a/mm/shmem.c
->> +++ b/mm/shmem.c
->> @@ -1352,9 +1352,6 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
->>   	index = start;
->>   	while (index < end && find_lock_entries(mapping, &index, end - 1,
->>   			&fbatch, indices)) {
->> -		struct folio_batch remove;
->> -
->> -		folio_batch_init(&remove);
->>   		for (i = 0; i < folio_batch_count(&fbatch); i++) {
->>   			folio = fbatch.folios[i];
->>   
->> @@ -1366,13 +1363,14 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
->>   				continue;
->>   			}
->>   
->> -			if (!unfalloc || !folio_test_uptodate(folio)) {
->> +			if (!unfalloc)
->>   				truncate_cleanup_folio(folio);
->> -				folio_batch_add(&remove, folio);
->> -			}
->> +			else if (!folio_test_uptodate(folio))
->> +				truncate_inode_folio(mapping, folio);
->>   		}
->> -		delete_from_page_cache_batch(mapping, &remove);
->>   		folio_batch_remove_exceptionals(&fbatch);
->> +		if (!unfalloc)
->> +			delete_from_page_cache_batch(mapping, &fbatch);
->>   		for (i = 0; i < folio_batch_count(&fbatch); i++)
->>   			folio_unlock(fbatch.folios[i]);
->>   		folio_batch_release(&fbatch);
-> 
-> [Severity: Critical]
-> This problem wasn't introduced by this patch, but can shmem_undo_range()
-> leave partial boundary ranges unzeroed when swapping in a boundary folio
-> fails [1]?
-> 
-> Later in shmem_undo_range(), shmem_get_partial_folio() is called to fault
-> in boundary folios at lstart >> PAGE_SHIFT and lend >> PAGE_SHIFT before
-> passing them to truncate_inode_partial_folio():
-> 
-> mm/shmem.c:shmem_get_partial_folio() {
-> 	...
-> 	folio = NULL;
-> 	shmem_get_folio(inode, index, 0, &folio, SGP_READ);
-> 	return folio;
-> }
-> 
-> mm/shmem.c:shmem_undo_range() {
-> 	...
-> 	folio = shmem_get_partial_folio(inode, lstart >> PAGE_SHIFT);
-> 	if (folio) {
-> 		same_folio = lend < folio_next_pos(folio);
-> 		folio_mark_dirty(folio);
-> 		truncate_inode_partial_folio(folio, lstart, lend, &start,
-> 					     same_folio ? &end : NULL);
-> 	...
-> }
-> 
-> If the boundary falls inside a swapped-out entry and shmem_swapin_folio()
-> fails with -ENOMEM under memory pressure, shmem_get_partial_folio() ignores
-> the error from shmem_get_folio() and returns NULL.  shmem_undo_range() then
-> skips truncate_inode_partial_folio() for that boundary while the subsequent
-> whole_folios loop skips any swap entry crossing start or end, leaving stale
-> non-zero data in the swap entry that becomes visible on later reads or file
-> extensions.
+"""
+A page-table move clears uffd state before the entire operation succeeds.
+If an allocation or later operation fails, the protection bits cannot be
+recovered.
 
-This is unrelated to the current patch. David already raised this 
-concern before [1], and I'll think about whether there's a reliable fix 
-for such edge cases.
+Transport the page table state unchanged in both directions. Resolve the
+protection bits only after the move and VMA callback succeed.
 
-[1] 
-https://lore.kernel.org/all/20261026-fixes_shmem-v1-0-703206d5fa0c@kernel.org/
+  ... details about spurious faults ...
+  ... remove clear_uffd_wp_pmd ...
+"""
+
+Anyway, I was able to reproduce this reliably by injecting some
+ENOMEM failures, and the change looks reasonable.
+
+Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+
+-- 
+~Gregory
+
 
