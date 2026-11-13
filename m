@@ -1,119 +1,119 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF90606B342
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 08:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA136606B20A
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 08:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=Ngf8iaA4
+	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=fPD7ErIw
 Received: by kanga.kvack.org (Postfix)
-	id 2EA176B0638; Fri, 13 Nov 2026 03:52:23 -0500 (EST)
+	id 9A0ED6B063A; Fri, 13 Nov 2026 03:52:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C1796B063A; Fri, 13 Nov 2026 03:52:23 -0500 (EST)
+	id 9781D6B063C; Fri, 13 Nov 2026 03:52:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D87B6B063B; Fri, 13 Nov 2026 03:52:23 -0500 (EST)
+	id 8B56A6B063D; Fri, 13 Nov 2026 03:52:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 021516B0638
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:52:22 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8B84AC0315
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:52:22 +0000 (UTC)
-X-FDA: 85429479324.11.32D2CD5
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C2D2D40009
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:52:20 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=Ngf8iaA4;
-	spf=pass (imf04.hostedemail.com: domain of chris@chrisdown.name designates 209.85.216.44 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794559940;
-	b=FpkrdhF0qCdpE0b7Zoho+dWLVSTbXBvTgxy8hsAr0y6IUmWDpmW/1Rp75b+93d8sazhBnG
-	7VzDv9VyAXQ28bpSwlP6cZUmbxyfPWWQBl1W6Uq0a728o4vBglxyqAcYGn9QtcjYeNJCwc
-	EjYPXUN3CLCqRFFDOAjJ46T/TJFlSN0=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=Ngf8iaA4;
-	spf=pass (imf04.hostedemail.com: domain of chris@chrisdown.name designates 209.85.216.44 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 63D186B063A
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:52:28 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DF2ECA8055
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:52:27 +0000 (UTC)
+X-FDA: 85429479534.09.2859DFE
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 04B1D14000B
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:52:25 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=fPD7ErIw;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf09.hostedemail.com: domain of chris@chrisdown.name designates 209.85.214.177 as permitted sender) smtp.mailfrom=chris@chrisdown.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794559940;
+	s=arc-20220608; t=1794559946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e4bPcAILoFa159OMZMpYEpI9iPNGmEeupM4uWcOHC14=;
-	b=yIIih2H/+8TwlvYL3RABo5qTZWYHHCmgJflzupt2OPnw+bp77yQnz6b3OnJ+cheo+ospyO
-	ePjZwSmkvF6tmo7u1J/aoQGOdBfCqPybASNar7LxM73qYcm4eOtJxARfQlPcnAfxmUiEcJ
-	fPYZJsb4vm6qQrCh7Aagws/MmOOEJ7Q=
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3ad41b47541so1005348a91.1
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:52:20 -0800 (PST)
+	bh=sQBXOWZ0Jeg9Kyjo2fd5tVPCdhkMAv0V+YCAjxLdw8k=;
+	b=xQb5Sl8ZJZmNh7u4n43HSbHsmabhhoVAE40CuoOqN0y2w3Ug02c0Aic7kqL31AgrRZZS7t
+	TSNYl22ul4OraMMnnG+pYIklql03s//rYn6QE/MuLIDDkhumzJEgmCoX8+XW3gzVZWm0KH
+	F5A9gVMqqtnYr/Ef9ucKX4InC0mxb7k=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=fPD7ErIw;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf09.hostedemail.com: domain of chris@chrisdown.name designates 209.85.214.177 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794559946;
+	b=O0V9K1vG1jVCV+calZBhsaQufpvEZrHDaNMa4pZNHkZtg7NpPRLdi+cfirZhZdv/mTZirx
+	w4RPjqyVEhdWSr0axZTgMDBJSJ+p8nkkOUrYK5mtG7kT2VR/kxi1soe28VotmXVXYOgzJD
+	ML5FCVKEipA+AuKyCYLcacyPX5d2hZc=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2e98798cbddso5729475ad.0
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:52:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1794559939; x=1795164739; darn=kvack.org;
+        d=chrisdown.name; s=google; t=1794559945; x=1795164745; darn=kvack.org;
         h=user-agent:message-id:content-disposition:content-type:mime-version
          :references:in-reply-to:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=e4bPcAILoFa159OMZMpYEpI9iPNGmEeupM4uWcOHC14=;
-        b=Ngf8iaA4qXMMX9NqJAZep5+qYLKc/0/Bzvw+BdjB/YFkBoyqkzvJd/1hm0+FIAXU6w
-         io8T98gYPM0ojVgpw0i7O/y9hktEHpDrYKhU3buuLv+VSZAaW/3QOxl2YsEuBOLrywoh
-         r65ZkrWXFghgb+Ycbe3CgTqxLEH8WwROzcADk=
+        bh=sQBXOWZ0Jeg9Kyjo2fd5tVPCdhkMAv0V+YCAjxLdw8k=;
+        b=fPD7ErIwIOIEwLS8GvhSTBksdx+vgcgLTgj7EKFYDKfaE0WGozH1kPsFd9vwUm9ACI
+         AteR86kiIjoyBnlXJ72hAy/22B7n50SaXI4shJ5Q7gjbYOaGzwwBxXD+br9mbO9hv1+V
+         u8/RZBiCRMY8EYSFz78w70trqV91O8q1Z0810=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794559939; x=1795164739;
+        d=1e100.net; s=20260707; t=1794559945; x=1795164745;
         h=user-agent:message-id:content-disposition:content-type:mime-version
          :references:in-reply-to:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=e4bPcAILoFa159OMZMpYEpI9iPNGmEeupM4uWcOHC14=;
-        b=bIl611aZnpgwoGV7rTgMTXlEKeUm+axU4eguI9/7og7jHcoj2ouMgPuPCiVMeJc7OF
-         Pc7K1ZHwCKPGotTcS+fwdocS8XuFt5Kan2rfaxVrEplrySBZr4JGihU43qrYnmHK90CC
-         fVpK8F04G+xuoNv9RphG4/qktgdjQ0EM3MrWy7eOhmDB8PDphu14crQ5vfm9DlnF3yIH
-         aw/pW/rQlFlYuHtV6owGpGs9LFKLRDaB+gAk6tzD82UePCbWhhX7hroAkK+RDIXwV9cd
-         So7CVVNC3iAXq5oCHCADtWg9uCzsjBIbu/t4Wt0+Up9DZ5ksmJLDQXUJ/FKwYRWH0UoH
-         m1fw==
-X-Forwarded-Encrypted: i=1; AL+hErExZwRzjyPg6Mqpu+eyWXgEIP6ZzBwFXz5wGT724ndHE2YAZyo7iToLOmvjjEnuvYVT9SFuZET1SA==@kvack.org
-X-Gm-Message-State: APuU4Z9sOJhm1xT+QobluEDDcP9CHoIxRcJYBv9XIZcdhVr/EgkWv1+e
-	ElijvZl4rJKoXE6USp0LUWPa2ysVwBHPK7muDfNqDp8+5Lk4aG1icr9YRtRvl44Lyeo=
-X-Gm-Gg: AYBFou0cca/tZbx0+uj3ThBsvEv56ZPCFQoZELkNRe5lAvJn3s19gB5+acCT0KaxZ/S
-	AY1sPd2hAQ4WcwdxjB/MX2k4MaA1RWOxBDDwZ+3shCOmPIt6wllAtQ3Lltxvr2aHwuFefEK/mhj
-	39l1KkvwuQdfDTmnD4eY+Db4/gwVq8+k85IocwTAnaQURyqDpMuQqPTqS8PwIeDvHOqnTRomDB0
-	MtzWk1GItCYl+nnC89ZhUfl4Trawl4LHsfnKw7rB14if9HsufFoDf5UJyG6R8A/yvSwRiCYp4Xc
-	eDFGWz8kEdoNaxvzxlspjxidlSNywE0zmuw+O6NPCkZesr819XNU0zlK3UcVYV9/iNShKmXREvJ
-	HGLcd/jQFIadDfAKNJZ9/00OGHlUula4iO6jA2u7B0qhDYRdkkpTsVoaAF337M1TPZavkbU1ZgW
-	4lqTKL6bF+391p52pXTAESXm7B3vDsrH7EdVMVljbGI8aDdozQv5bTAUQLOBKBdDLg3w6fqrdRF
-	m+jumQ3Ik+98FfqjgA9B5PFmKnH8jIA5ntRYyJMko7uMuei7ERK8QT/fOAzhZP+xLRNo8/61yRW
-	rZmetPXmeN6ir4w7CSHlotgihT4Ustho1WQhnrJbo+ft95RruB6Zkb3bs/DA9taDh5ZIG3z6pjt
-	SvfoGeSG8I7+jc7vO1ubxzcb5FGJXuYzTzqf2gD3tyHzcw5GbD9lGNOLoHsPDuwUNwAWryL9MSs
-	Kd/2gXlJo0AdboP6xhBLL1+chmshTW/6MPwp8Cq6unCqt0UVgFUhAttzttiXw=
-X-Received: by 2002:a17:90b:58f0:b0:3b1:4eb6:b3a with SMTP id 98e67ed59e1d1-3b1b081887amr1718429a91.8.1794559939633;
-        Fri, 13 Nov 2026 00:52:19 -0800 (PST)
+        bh=sQBXOWZ0Jeg9Kyjo2fd5tVPCdhkMAv0V+YCAjxLdw8k=;
+        b=tSfFUHj0TEriYPiNF0IYjE6W+RzkwbVGJxFU+BpHvxm4TCkeldm54HxQ9zblWSi5iJ
+         v8IcyJEk+n9Fc4Zufp4iPmJ0OKb0u2NxYFtQk4Qz/IDUgi7glODwJVUruJMqsliO6EmI
+         5S1b+CkYWAwoLbtnDJqeGayfM439ijhjiEjNILFaWn6CgClZwk84kXDrtc6r+stzH5to
+         cg1ZKl7Lx4G+WsCmilSnBNrijVAW1dEAGdLDV2meGt3gjVVvkOFACk/SfnDpUqw2iN4l
+         NwtE6dQyc4WrHaB0ji0Pl37jmztHKx7OToD1KLvI57QK4Gg8RJ4c1H7Am3+AGN8DDqJq
+         VMhg==
+X-Forwarded-Encrypted: i=1; AL+hErHgqB9v3lzuYhlDvqidyu5pbTIom9Yl4NBwU844J3+aDxLSGucSVxPeu1o0mt/e45h6+LQxT9bRBQ==@kvack.org
+X-Gm-Message-State: APuU4Z+wzQknR6ekAJN+omJnehAJ3IYPRzq4rkSWahYfOAMgieRBCyLU
+	/qYjNbbsB4LP0vnt2qc3DEAhWWS5Ne6q2v+fJM3tAXYqVtE3KQTK3ZR8Fl7++ML3iaM=
+X-Gm-Gg: AYBFou0Uq+FJ+3PHm/giT9PXG/33TIvmlar004KG5OJF/HvN392b8In8EYL8zgzeJhg
+	0hNXzrFHgyo+WIW5gVdov5/GIXYt21L6B+DVPASMUL3XmZxFbYoi/Lp0/XvfCHOy+cBpQrocor9
+	sjtONbNXkbSRD7WLuoifnBe13A51kqEmS8ekhSz+uEIVpJnhQU9ekzaXp/UC+hMcDdnpHQSmE71
+	+h6fFxEbMq3eqKZ4+P6Y0BoA3KEjcY/80g3q2l3hfCfpHV8kvZLF8EFzcltApvPXvqMpKCtYMpP
+	1TIfxWjD8mOE8Fb9Rq8VJLy3k8JBGQhFl5d4Rr3YLiwpMnKaoFNKtF7d9wSaLm2Hjb4m3t9WP6n
+	FmZVhjwb2PLjFe1NAggizAOtKT0n4yRUYTaXIHJHV29Aw765n31Hg5Fg07j9/mr2SHej26CNATp
+	ktaBNbPTj+x34hLlpWWIYmg69dQj0p30HwH8NS0TRa6l4/BdZDtdzTS7f2bK7zSHz60V6fog2j/
+	Cxr0WeikFCtMCDkjb9FNYRaqYWyl7IZbHb3An6L5tpKg0PSKXjBpwpwe7Z8uu61pZmcY/PIP9gx
+	IxQvd+54e+zJFGDHHD/g0GagU7RoCPEyhB48TD17RPnbvXjFMhAc5B0NcTNynQkc7Pj0Q3KOGoR
+	rXm64nir7Rvqs8tdOK1uHy7W8PF4Fz7x1jrUTVAaKwOV9hwb0O77vt/I6cIsuMoQNgHpz6Jg3IL
+	g6CtIVBwtqxB9E5II9fQWeO92r+ivENXVqdBH8ngjfQ7J7pcVuWJjjBkvGZUM=
+X-Received: by 2002:a17:903:8cd:b0:2e9:5714:608b with SMTP id d9443c01a7336-2ee0df40edemr17713825ad.34.1794559944843;
+        Fri, 13 Nov 2026 00:52:24 -0800 (PST)
 Received: from [172.22.0.2] ([50.175.87.158])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ee0f4ad534sm7140735ad.9.2026.11.13.00.52.18
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ee0f75b472sm6940845ad.19.2026.11.13.00.52.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 00:52:18 -0800 (PST)
-Date: Fri, 13 Nov 2026 00:52:12 -0800
+        Fri, 13 Nov 2026 00:52:24 -0800 (PST)
+Date: Fri, 13 Nov 2026 00:52:19 -0800
 From: Chris Down <chris@chrisdown.name>
-To: Kees Cook <kees@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, Marco Elver <elver@google.com>, GONG Ruiqi <gongruiqi@huaweicloud.com>, Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org, linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v2 5/6] mm/slab: Support disabling KMALLOC_PARTITION_CACHES at boot
-In-Reply-To: <202610302123.687A961@keescook>
-References: <cover.1793253633.git.chris@chrisdown.name> <617bbfdce4fb2689c2510f0cd7f9adbb3ab8edfa.1793253633.git.chris@chrisdown.name> <202610302123.687A961@keescook>
+To: Harry Yoo <harry@kernel.org>
+Cc: Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, Marco Elver <elver@google.com>, GONG Ruiqi <gongruiqi@huaweicloud.com>, Jonathan Corbet <corbet@lwn.net>, linux-mm@kvack.org, linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2 3/6] mm/slab: Support disabling SLAB_BUCKETS at boot
+In-Reply-To: <aud4gPOUzvHtLYnJ@thinkstation>
+References: <cover.1793253633.git.chris@chrisdown.name> <9a68a4d95830352ad3821437c2e22c30a673055b.1793253633.git.chris@chrisdown.name> <202610302115.8C7AD110@keescook> <aud4gPOUzvHtLYnJ@thinkstation>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-Message-ID: <20261113005212.556c6f234712bdfe@chrisdown.name>
+Message-ID: <20261113005219.f954ab03e886b1c3@chrisdown.name>
 User-Agent: Mutt/2.4.3 (cc9e3943) (2026-10-09)
-X-Stat-Signature: ban6e1ezirnyb65aagf8prot4zk71aw5
-X-Rspamd-Queue-Id: C2D2D40009
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 04B1D14000B
 X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794559940-790068
-X-HE-Meta: U2FsdGVkX1/kV0jRtCF2hFOFTtRRv6D6zEHvZcDLHWxU3SBD5iigrCYyWREPxDltoJgHNYee19vCnoCZVvC35hICmHyCr9C1Tm2TqrnFp32pyLXw0AR5JnzHgJp05eoM8hb41/aBqndAVBKlsdd7GeHen251MTXU6HC+heAbPFIuYByIh+Y9CCXsbTdbQjl5XgJUAtnXAUE80r7RFLuyg3j8yG1mG52Iz8G+cAgZxK6xP49s/O1gSbiNUF6+o3apzCyvQ7k7Lzqpyksk26HbpcOpvLrKYl4lWzqRFcDLLB+A0o3G0LYYXg65i4Yr/J1heFFD/BZdcXzUrcoyAYKAIHlBZe2pzh5Dj99CmR0XjEq2nxJQmxJ49z+SgcU0nPUL+x9DN36WN519prZ45Ikppu2HXKP0qp4QCt1wjQQIbWQzeViyz8rbV+gX9AFbdnR6l4AgB1W5qtpU+vh+t6vlACB7wMFW6LvG6Q9P/pqQyakme0eTtkv4zp83iMDXDZuY7N5+tUciKmRrNgnuHDQvhlB6XQOhfIFT9GkEq6916lIfrdNYF7MPJH5LTnFbhu0vZBfPPa3CUjH9XmrzPl6g142K3rSST6BzocUmeDIzCVHMsh0kK83RaljUlxC4EiMzBV33u1MAvGXMXX4+6NLyX7N+OQRVMDtGVH6hmcKv0KKW0vxiWG9+cyu0q/qhbKYGI72W6lyOY0SU+2og0tk/UpAUWxxV35QeF+is2V2aGLKKA7qkz07Yf7WeIht9oRpjBAB3R7iuZUAoqI6C90ZUEaAA9Ezkyx1cIdIyLMnZXBGF70hobY3WYYV4xg+Z3HAd0YaKe6IB/5YAeJVXu7q82smIjaOx0630AxUJvhOwvyyUfeGiAm4aLP8RLhojNl5FcIW9GJ2Y58Us9D3ohe0BdV9goHoJc2w4CyLJNUqj+L7mxtmxghAwuxRmN3sDk2cfuWfyRTvyNH/ETVWtEdg
- LhdjNsWG
- PaE1Zp+kwU6RF+9Fv5lY7Fk1xxpzwXgrvFafBBtFDTHgR7PYEtphIr2GUxw8+2/sBBMm2H9yo/1smPQ91pc+LMmB6pFiX2GlQc7zARvtfNQuDVTzFGeXxbSf+r98WqeROi7dRaRMEHMDbA0MsV9qEEfHO/iaIwBF6zkDhpKyAjPWGSjOnDdjXmtL2J2fkL3+/BZYeb3aXVLQ2cJRnYyn03ofN1+JxtaY4OByQFZprJDqvK9W5Gj8ksmQMB7V/eTKhgVdQ20sDSq3/30ytMgBef67ovgj/5KMEYp/7ONqNN3wsBvYkMLEUseraZaqjnh70dIzxoKcxNxrcOzePdS75PewDTkcwu75woNh0DkaRbkkJLAHvyXfQPBAnKctT4/Ds1nprgkPt1OEdyqr8nNe9vYOvmF6lunGs7HN5SIzUsrlfD2kP2a1nZwLAkGX41h+Du0itJOCYZR96b37mCh9hEbljDA==
+X-Stat-Signature: 1szces97gqydttyddh47y3hwok1n44be
+X-HE-Tag: 1794559945-29119
+X-HE-Meta: U2FsdGVkX18DB1viLj9lRj8SLvxqhdKIsgqqETyJgTw96GSErPMv74VTNHfCmxinUYXdVoCjWvyGeEiT6GK7tgLmxy/jWpCu0rQJGdCW/Sn307Wvt28UhzFJPyYtfhvcKJokQFngMHHCLjDJueqkPrG0oAew3Fkd1L6gJSJ/im7odCQu/pwTL7yl+xwYuXk0nFZfDA8oW03RNzNadP99612o+70rd0d7keQoNGmR64NzeUtxnsvzHxPAhSZl2eix4xlJKyixAnmsn9rotwGjCA2c3wv20j0ke65V2SRWxLFfHfHq8l0mnAyOrUZ3im9lZDa9k9CvoticzqS3TITzkBgzpX4OeVYidMv3ovfkxqqbquenp2AKp77/zvnPp63kAfnUMRBQN8jPdyKG6+cqH08GIM56trJXT1CGJ4HXE/gSQmtxfU0QEsPqw4SOS/yrGciTSplbqApEc7IGOLHKAGk9i+zUaLmopR2Fau5gkvFuGP5uZXypkdjX9pJgdk37zPObSr//CSqCGFnrsk2kT/q08gGwyqcAw8x2eQy3O+uItpEWiWIVGdVxlY7wk24HhPeivdXJ3HJWR5y3DGt+4RQ5aCssg1+RVXjct1XKc2J5sd/jGGD5GYo1fPwX4BHzd2JwQY8e7izM2vXzR1OCcfgYDCYxAH/17xbVFrss/wdadDMq+8n1Y1zSdiyezZw6Rr+0OI5vDSql/v8Em3kBFKQjnyixqX2E5oPp6Qemk62o9KZNiOcc1DCN+hW7/wQhUwMyVx2+Dghwg4d0YARaxgSmPLnpQL+sA3JjJ8vonV+4rznN+zw4LQbAEUjxiZjrtBLkMTjENi+sKdIAAk4QFYQOV+3RgJS60ua46dKuxSGbGq0L0Edy6WB0+0ib5rjteQKPmUO5ZBrcUmm4YgNHrl5yZ/Nu1XPvSLdEy/r57lHlZiXU6ZPtOBoYB8uZfDSQTN7DLGl0SeSDxfO1jOU
+ VXbgXuVr
+ lTpwyNUSW/bkjtIB3HYotV1nr7AMFLC6YUiM//ep3DUNSNKoW35fsHfzsfeIBp2zVsZcffG2qLxbnszH8LndXepfF2g5yJ72/JJka6dP4TtTpr8TcrZSnwWwKqJRjwHujEar9DuEpgtSQfvzgVRnw4OpC1YTIGD/iPyPEE5ZTE+m5WY5Sb/yCKhavPvdPRigpgMQ0OXu9SvXKpNe+rojFlOUxtvW0xSAxx0fY2EBI9iwLzs76gkPAIsiVaI+G4SrdKWQrE8mrlOWi3Y8OKqm49Ffz1dxW4ILN2Te9SbAXNr0NkeNYWHpqE5LrCu3npi0u9Ek/ZQAWRPov/Z1QHleLH5Aj1kg6z+M2jZQMiFiC3iMyTbiKDygE8a/9CNwf/JdiJln3N5tgmEeuhywQSLyQND7x/ekevHZtWMx0Q9t/GccCbt0M8ahyiTNWXQwCeV81IKv04YSEnEG8OwW3bEZonaN2SYcYBy9a8fHqCMCvHRbvCt42L4QWMjC35A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,28 +122,21 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Kees,
+Hi Harry,
 
-Kees Cook writes:
->Swap the ifdef for a CONFIG-controlled static branch that defaults off
->without CONFIG_KMALLOC_PARTITION_CACHES.
+Harry Yoo writes:
+>A gentle ping to Kees to hear his thoughts on having a bit more
+>coarse grained boot parameter e.g.) `slab_hardening=` to specify
+>how much performance/memory is worth sacrificing for enhanced security.
 
-I've dropped the #ifdef in v3. kmalloc_partition_enabled now defaults to
-IS_ENABLED(CONFIG_KMALLOC_PARTITION_CACHES), and kmalloc_partition= is
-ignored without that option, so new_kmalloc_cache() doesn't need any
-#ifdef.
+For what it's worth, I'd still prefer to keep slab_buckets= and
+kmalloc_partition= as they are. Each one maps onto one config option and
+one cost that you can reason about on its own (about 1 MiB vs 18 MiB in
+your numbers). If we want slab_hardening= as well, it seems easy enough
+to add later on top, as a way to set the defaults for the individual
+parameters. So I don't think it needs to block this.
 
-I've kept it as a bool rather than a static key, for the same reason as
-on 3/6: the only reader is new_kmalloc_cache(), at boot. When
-partitioning is off, kmalloc_type() still picks a partition index, but
-every one of them resolves to the normal cache. So the flag is never
-read on the allocation path.
-
-The one place a static key would actually help is kmalloc_type(), where
-it could skip picking a partition and go straight to KMALLOC_NORMAL.
-Since kmalloc_type() is inline, that means exporting the key to modules.
-That seemed like more than this series needs, but if you think it's
-worth it I'm happy to add it.
+I'd like to hear what Kees and Marco think too, though.
 
 Thanks!
 
