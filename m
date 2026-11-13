@@ -1,105 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F7760740C0
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 13:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1387360A2621
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 13:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=b8qN5aZ/
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=z8JlYKSU
 Received: by kanga.kvack.org (Postfix)
-	id 09EC96B05F0; Fri, 13 Nov 2026 08:30:06 -0500 (EST)
+	id 380046B00EF; Fri, 13 Nov 2026 08:42:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F28D46B05FB; Fri, 13 Nov 2026 08:30:05 -0500 (EST)
+	id 331326B05B1; Fri, 13 Nov 2026 08:42:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E16976B05FC; Fri, 13 Nov 2026 08:30:05 -0500 (EST)
+	id 21FDB6B05B2; Fri, 13 Nov 2026 08:42:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B5ACA6B05F0
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:30:05 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BA626A01BA
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:30:04 +0000 (UTC)
-X-FDA: 85430179128.19.33B0F66
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 2022E140009
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:30:01 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="b8qN5aZ/";
-	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EF1386B00EF
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 08:42:07 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7D1FEC02A7
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:42:07 +0000 (UTC)
+X-FDA: 85430209494.07.B33BB8D
+Received: from mail-wm2-f10.google.com (mail-wm2-f10.google.com [74.125.225.138])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8BB60A0002
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:42:05 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=z8JlYKSU;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of alitariq45892@gmail.com designates 74.125.225.138 as permitted sender) smtp.mailfrom=alitariq45892@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794576603;
+	s=arc-20220608; t=1794577325;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=rG04TwV+aXkJ3tlNjFerWDM4B3GSxAC0ACNVgfYbO7k=;
-	b=7pgTDKbQhJentiB+xb13MpDb+9ZKtxpQdSGAAd1mNfCK+Z9lN2B0CjgBYMlzIp7b106syE
-	XLZxRpsdIweqVvPA7Ku7y1FOM3stC1NEyrrd1xKZ5nD7G5XgdzJz+sxy5bF5u+yeXzepy2
-	kKPX172TvG7dgp51t7bogpcUxqPRCfc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794576603;
-	b=BHY99qioP/0PYYWNpi5UJ4J6to6cgVyVoej0kC/2J67tR+4LOOjwdJQDlVKd4sTUezFIgR
-	BZEYfTu4PulX0+q4rWB5HQ34ua0R4S9Ai7cl/ZSaIA7siizYl9ZD6dZdQsRSnfrCJqLlGe
-	B+UJ024CaIk+HxNKx4lSbV121gejNck=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Oyo60OYFmXZXL90Hj9PED7vL+lEsAHp4eJo0r71AKr0=;
+	b=a87XG+XgOO/c8vMWuOtVtTqAm3FvTobmnEf/+KCKj9JeFb+xmX67lms+BLom3l6K+tPP/e
+	ajk8f/W6wvlwYmNUEPnqC55cKdkS8zGHU0nG/ghliPSANe/FKgQDEBp2k16QnCfUSnYK1a
+	uhWfU3xtvjDgt0tdYSOVOngr//w7wtE=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="b8qN5aZ/";
-	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794576602; x=1826112602;
-  h=date:from:to:cc:subject:message-id;
-  bh=l/tnBcaBNGJcgq4kYFCcHdlZTAOqbmLwHFmG/eNT78A=;
-  b=b8qN5aZ/J6Ljxu9S0Yjc4uo1pgrnWxbdwnTy1rIqhsqHxSWrM9ypswuG
-   iBGgepUyiKdUDsP2ekRH6NHvsQUg0psAq1EBDa6k0RjoDgCyatUXDF970
-   q+a4lvSBXIQYV2SiGFDjK/Ah9VFOcKB49gC+R47Nb1ihWxWpoi8ePPQTD
-   i2q045naIQkwTUNKnA038vyJaFw6+zr+IjQ39F73k0PzCA1fqgoHyi8dK
-   Q83Zq8+Jy+b4BrZ+ePg7l5IRWuYpuobPgA7vygbPjGT9vm7XgL1nXnD91
-   37nRoBGFyEFMQDhQnOQCMJ7/BiFzQjYhOsSlFd5CZEt1HG4Vo0d7XPYso
-   A==;
-X-CSE-ConnectionGUID: BkFRf0DXQXmpe55JHyK0ew==
-X-CSE-MsgGUID: 9NlTLT2JS+ai/oKadgdYdA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11965"; a="3285193"
-X-IronPort-AV: E=Sophos;i="6.27,211,1787036400"; 
-   d="scan'208";a="3285193"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 05:30:00 -0800
-X-CSE-ConnectionGUID: dl4b/IjPSqyTM3G8ujv+Nw==
-X-CSE-MsgGUID: gEAAOc6NRYqsnqHSswrDbQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,211,1787036400"; 
-   d="scan'208";a="9103122"
-Received: from igk-lkp-server01.igk.intel.com (HELO 1073a420ae3a) ([10.211.93.152])
-  by orviesa009.jf.intel.com with ESMTP; 13 Nov 2026 05:29:58 -0800
-Received: from kbuild by 1073a420ae3a with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xRrLn-000000001HH-3HhY;
-	Fri, 13 Nov 2026 13:29:55 +0000
-Date: Fri, 13 Nov 2026 14:29:18 +0100
-From: kernel test robot <lkp@intel.com>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org,
- "Liam R. Howlett (Google)" <liam@infradead.org>,
- "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-Subject: [akpm-mm:mm-new 307/308] mm/cma.c:493 cma_find_free_range()
- warn: always true condition '(start < (4294967296)) => (0-u32max <
- 4294967296)'
-Message-ID: <202611131415.4Nn1yaIf-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2022E140009
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 55w8p543xwxap56f9fmohjgto11dpk4t
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=z8JlYKSU;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of alitariq45892@gmail.com designates 74.125.225.138 as permitted sender) smtp.mailfrom=alitariq45892@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794577325;
+	b=4MLZWLYMqPZg/q88UpjY8L8tPCadN0FIGfVDIX3li3+kOFIYPVvHgYkGTOZ0sUIUKYwPB/
+	vBVDvd76NOzusjnUFbYVK2fxT9dtP8Iv8kxt7g7Yx58F5tKHfgjwufMuMryhDA6cUEbBKV
+	m6sBra0bZBMlsTKB/+bUoQKB5V4rg2c=
+Received: by mail-wm2-f10.google.com with SMTP id 5b1f17b1804b1-4b76ade741cso3203675e9.0
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:42:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794577324; x=1795182124; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Oyo60OYFmXZXL90Hj9PED7vL+lEsAHp4eJo0r71AKr0=;
+        b=z8JlYKSU+mXPd9FpLoRWTNsrmt1OkeaBayUZGJWbxUk96eQ0H/oyYWOYDa8qy4a8bd
+         DAxtUFo7PNtgsjyMKJY9mXrIVKDfHmouFDI/otqgN9l/ea/XV3Mdryz5JZOzZSQLdAA8
+         suYNd7JGSe7Vh74bRfDjYdCw6Xe6cL1yeOYwIaKjVO0rQv6tbt5Nxp/pPtXi64Z/h8k6
+         Ht9k31tUc8T6WaNMSUj6jEIbTcVBj59fl56PPf4DFn9S5Wkm/xEwLfnyPxS40aoA+Wa7
+         xB+7T9tYtvqAttWJDX1bFAjH8L6QQXOz0ebMe9dgQ5GPR+1sYnvRe+/RtwxxMlqDsCFA
+         Wu8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794577324; x=1795182124;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Oyo60OYFmXZXL90Hj9PED7vL+lEsAHp4eJo0r71AKr0=;
+        b=DnaE2lZpkYMMjg06CPe4LFGVFYuqJBCBKgiXbkdBRSufS0ZRg9k5WvoQmXsYCinjlE
+         FZQs+OsYZTy9pn5eQoxaeYKhP7neexSxMAfqFTlyMdYQ3WQZnCiRanw6uEVI1Ds9Iuw0
+         LSmZQe6InNpPGRA/tXrK2fWNLws6T3Kmn1dON2o1P/15wTfHjaA8DNqhAHBjWZiGrVzj
+         Q6Y12ojm8TwtYkycRbOGI/AKggu00I0/flBJDOLDw2+LtAitAYfBdIxadLipE8xiGFXT
+         4Ke9O7hVd90IBk13sA4HpA7MhCW/8xMW+E9kSiFTSprQSu/6J4E4Dsvq0vfZhJzj7wza
+         E7Zg==
+X-Forwarded-Encrypted: i=1; AL+hErEULl56spSGLqOUt4jE41ycUHairxtqPHs7vDkf3B4CrzuVUtAmDgjPbmf/K2AnM7aekOUX9FKK6A==@kvack.org
+X-Gm-Message-State: APuU4Z/+xKMUc4Ju3YkOz1f/cWW8BB5YVHyI36T4BAD4NtOSv1RypChv
+	V07wEZTQMDD06RCaWpvezIrC9VMQEfjWPTzSvgQr0jIa9Pv20MoxDHiV
+X-Gm-Gg: AYBFou1fhJV4sKcVQsrhQhFnDt920kYvGISNlmvG6PuppoM8ac5051uoTi1OWDEPWMx
+	6E0/UEucKsNouzdzoXPM36Ig7096gsr+ZwfVK4utPFgcO1rGuwSeLPBAvGfnFBIrPd02cBpR9L4
+	e9oc5wmYuxl/BpbOGWh7dqVjegEq/vpkiU9jj0ZEKpYF0ecQMClEqRPJVr1zoGb+wQCNHuL6pmT
+	VhAk5AXWfHiM4bkG9uKAgrLu4ZpDCfuv0GPe8BAajvW2rfaqoGOc0aho0fgEskhwA9oJ2kk/IkR
+	A2zKDzxFFNCBsPGE0xaPif6MD+UD5uccwioDGwivhad/1kIldR4jieL2IK8oZoHZdOugfy+O+MA
+	COuE+S6W77UACCh84qaMaU5nNHVvr6MCcvazMwrvGmVkM5qGV2sKbuVXlShDlljP14RhoQrK9oN
+	utD+nzOgsebIwQbo0siOQ5wbgYF4edQ1K7sF9ad3DzoAHZ1qxfwUne/N6OtVrMGybwWiuefOLOi
+	USRSOjeMEqDu2SPkg7eYEnPzZSQIdfgB2vHoJaLTrG/N2U8XAUZVoIByz8dMlelF4t5jiZMWIuE
+	oecpmGeCz47+ODNdhr7m2FzjxRjcEJuQTOwCp85vZkb5BebBlGa3Qm7Z3so=
+X-Received: by 2002:a05:600c:4e56:b0:4ac:aae6:6400 with SMTP id 5b1f17b1804b1-4bb55a48042mr52996795e9.13.1794577323783;
+        Fri, 13 Nov 2026 05:42:03 -0800 (PST)
+Received: from [192.168.100.182] ([45.249.9.114])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c5f5972a7sm5085715f8f.21.2026.11.13.05.41.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Nov 2026 05:42:02 -0800 (PST)
+Message-ID: <5ccd1e39-94f0-4e02-87d2-aae8985d1b12@gmail.com>
+Date: Fri, 13 Nov 2026 18:41:58 +0500
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] riscv: mm: Add KASAN shadow mapping to flush_cache_vmap()
+To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, linux-riscv@lists.infradead.org
+Cc: Alexandre Ghiti <alex@ghiti.fr>, Vivian Wang <wangruikang@iscas.ac.cn>,
+ Yunhui Cui <cuiyunhui@bytedance.com>, Muchun Song <muchun.song@linux.dev>,
+ Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@kernel.org>,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261102134422.610837-1-alitariq45892@gmail.com>
+Content-Language: en-US
+From: Ali Tariq <alitariq45892@gmail.com>
+In-Reply-To: <20261102134422.610837-1-alitariq45892@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1794576601-907581
-X-HE-Meta: U2FsdGVkX1/wF/HW6UWID+hk9j4Wq364UziWLZnm6X5NnNjo6em9NE8kYfwORthfjThipyh2Qgs0qdxlXI2eCO572xZ9ZOFMjYwPgeR4sLN5F787dQhnbELXVO0d2xAN5Ufkupxx+1+DsheJo/tcNkvOOKvCGGJYxH2Dj7F3esNsKbzJ9/QK05IlnuTGK83I/JPeD52RAJCV6UeN4KDmJ+mBZMQQmVeHcrTRFVNDLSvzw3K2rxIDN/dfDkwkBWMDJtMwoziru8tOdd0iCoHS5FZGh2g5u77BUPIiNMM+9yOsVqD1ZS0BSYqYpho7/QAph18TFcl1ne51zNLDdg7/Kt1ZqFtYLqrBfauoDu8CGEJ+raQVu4V0LeAduZM6ou2MCe4eMz8W+stn8qRvyDpUS0mtQAGYjfTqKYul6zbYmBaKK5b/GWzWSbi07nROuC76OAqwwuz/CZ5Fz5wP5uwmNzPfv9GBJGm+7gNq07NhkS1dtdxCCYBQJuNEH3HAAIS6QarB58M/iTJeQRjuOj2pnq1YgLu3V6CKDo6Ya7qovp1FBBoc7upwWvBRaer1NvRoxbnQ+39V/D2k5nCCU7PMs8T6WDahQPQQVz+QmHqzjeDdKx3n83C80nvHXABB8i3gTTYy0RCwyM2aJY3uq4DxPnYcrAlLjGO1GXeluL7X8TMKsrk44dLz/ZE8awBNCUnHi2/hMPIPjZB4qauxkNjKqmWjd4UUa+MXOEgH6x6t8wS80lRqHnkSPluKkWKUN/1HWVDh0ZsPCbGulLGHoD5vri/dJ+7Hsw2YtVcliiGZ1t4fm/DzSbnhw7CWFOQvQMUUxVQPsyL2d2I5FHNL+M7UOIsWSSuKKqUiXM/EoMFlElQi9FZnioBevxOTZb3+2yZR3037oML+NjflNV7Lpc72Ut7jdnHgSCbSaJXrPzosaiddNsWaBQP6QMD5wcAetkMBHuME+pC89rcb1Z8Z3IL
- ROlI4t5J
- uqnlvTumH2OA7r+64rdH8wKzrrLdDg6DjSjOsJj6itIE4PZvD11V656HpD4PEtO5REGMUGZ7db+BIfAbacHyyCrhc2m1RjHmz4EpYTqQUpjp1NeRRoqyXOFCAnz2+pC2328UhNElLP7qCl1GPy7FkFItk6BdQiYxlW29Nx30nx0qR4vMmuYMRlBGd2+RSnbtGXOQBbIdjoGaGHOzQkGQK9ctcy+V13Dcy8LQlv3Cmu+/6msbB8RbVv/uPVHLRXv9ML/oJ1axiqvV4XmBTTnGLIxanzab/7PnyxUYEddfkMrxsjPtZf8QzwYEP0rd5vSh2x4YeSnD4q+lIDhc=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 8BB60A0002
+X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 63ifmhimgb6ap995behz4st9xdkfpkqp
+X-HE-Tag: 1794577325-463933
+X-HE-Meta: U2FsdGVkX19zCbzSEZ7tbA61a+eA7KwEHDZsRFOnx58/UEnYiJMa/6T1cLr3lraOlHN8GfsUCVwpDKmWH+//o7ytnOuPDaA/GCIjBwpn4ATXxG6mDEjgFcGS4Boj4z698ZU0sTLUnyCZBVjuC0+R9KW8AmSfHHTjRtIrTPkkIdEVwWk2hX4+PbY2+JxUjs2CeFpEqqI3e593ACJJanyu0GoqF/q3b7eb49dmS89PIJC8cfLBRy4oARPcgoqAfzRuACpSX0RavnMZ6Pq+RY+qsbGzcHE0qsLLgByjRONO+cXZ8Ikfa1ZdfqdFkHDi7U1Rm13uKp0cMYdaANeycIxyXJckrmMwA8JC4R9T3h8oSCr/XDiF9a3HahX65lU/fPQm/roIR55JzC3F/m4uva5Hfw1kD8NH92UdmT564zH71RcX8PSaixXBliyMUWqlQa+kI2isf+o38AgtvzN+pKKvt7eJgZz7lMeDl4qaqFwBq2AYFC7LiH1CAkSMcQGcRKD4dQdTg/+Gpi2aucB1JquZRFRaUq72u8vwuQYDjdTkOw3ppOR0iKJdKrX+okrS7C5Q1zduXJiAEMcSKGYKr/SSXuUrnAeW+zM7C1fkACaC1I4AaoUNgrhzu3RPTbqk2zKwCL86cK+qAzhslk2SUr10dCDZ+O3B92GHvRPt7U40zRqJ2B3tdXgn6xpY0SpqNIufmrHlczJLqIqCoyQHZIvFs5CX6FfGw7gYhs7lfnmvwR95KKRKQx0DfrkNEv6nMsYQcSji6OYRQ7LFh2ooxAIjxxMqlCIMp70S4Hx/t2T06Q7BzDGtp9rXG9aBgeeWPh/rc0hs8Qo7kQ3NeS7FwIa3f7p7zTKKcn5vSUD7hwsGxVtucM2WQm3Cw2ifW6/lGd9M7ATGU0FJ7mvOmt9qWokUsY+lW2RaJvUrdzgxg+HNAGjG5Mgb+kcXjIcFTCA+UOvhJNUpVB00hT7InjaD7di
+ 8QkUSw9y
+ 7WKS84wJ+Rgw/qktNHN1uwYB1aV5whGOhWBtfSsqvNI55Y8fsz3zoCSeRu6OPfg+NIVbIeHH6JjT4bSL+KcxorF+vOsnfw9fDiBvxXLFPau1F46AC3ymHE1BCTi8r8vE+pMFi6bDsne+XWySWjyiQtp2cavKw3V1yv5RXF/N48gkzj65AmXBwjl7LlZ0bW/FcEUw/Pdf8DBUJwnuuwNsTI4Q5I9Hm4klUOuGnmhDiFKso8yPVMnR/YEl2sH6AVnhQG1Hh15IigKq51DEJEdvKfzMBq4ny4IMB62Vg0y9Ap717fSjX+DUVtlhHrsebb+zb94ZykqNjKSjS11O2+VxkbFgMooMWW33/Fpg98fy6SKNKN6/d7DInMNfyg9iR28GZXqa7luASfiqUDLQ4RVklcM55f/ZvFrSQteCQx8fWrfdzPaL7NyrYS+j5A0Eu2c05Zl/LBzNadFK7QlfZshyoStYtZ4gqYwsWQO7HXOE5giC/DwpgaPa9YeEM2tZVFzrF++uorZuQo1LTTX3DHl9/oaQaGEw6RJ9upGXvMu9UqjuMf7Eavj99kWUBWMKupqZmz0fVPwN2uhf03FFxG0OONRavELmP/phVThm30z9Oy4YJTlA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,61 +130,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-head:   31a696f9c37defab0f28f774e00ac7f135889ec3
-commit: 4cbc68cde0e185ae7cefed74c1b56e61cfe13277 [307/308] mm/cma: simplify cma_declare_contiguous_multi()
-config: um-randconfig-2200-20261113 (https://download.01.org/0day-ci/archive/20261113/202611131415.4Nn1yaIf-lkp@intel.com/config)
-compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project 8621950157210c1fa68f20f0614cb51310ec9dff)
-smatch: v0.5.0-9187-g5189e3fb
+Gentle ping on this fix. Muchun has acked it. It fixes a boot crash on
+riscv KASAN kernels (2 of 30 boots on Orange Pi RV2). Could it go in 
+through the riscv fixes branch?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202611131415.4Nn1yaIf-lkp@intel.com/
+Thanks,
+Ali Tariq
 
-smatch warnings:
-mm/cma.c:493 cma_find_free_range() warn: always true condition '(start < (4294967296)) => (0-u32max < 4294967296)'
+On 11/2/26 6:44 PM, Ali Tariq wrote:
+> flush_cache_vmap() sets a per-CPU flag, and a kernel page fault
+> that finds the flag set gets an sfence.vma and a retry.
+> flush_cache_vmap() only sets the flag for vmalloc, module and vmemmap
+> ranges. kasan_populate_vmalloc() maps new shadow pages and calls
+> flush_cache_vmap() on the shadow range, so no flag gets set.
+> For vmap()-style areas, kasan_unpoison_vmalloc() writes
+> the new shadow right away. If the CPU hasn’t seen the new entry yet,
+> the store faults, and since there is no flag set, the kernel crashes.
+> 
+> [    0.675216] Unable to handle kernel paging request at virtual address fffffff7c009a000
+> Current swapper/0 pgtable: 4K pagesize, 39-bit VAs, pgdp=0x0000000004504000
+> [fffffff7c009a000] pgd=000000009ff6e001, p4d=000000009ff6e001, pud=000000009ff6e001, pmd=00000000400e7401, pte=00000000403cb0e7
+> status: 0000000200000120 badaddr: fffffff7c009a000 cause: 000000000000000f
+> __memset+0x60/0xfe
+> kasan_unpoison+0x26/0x4e
+> __kasan_unpoison_vmalloc+0x20/0x2e
+> __get_vm_area_node+0x1c6/0x276
+> get_vm_area_caller+0x52/0x84
+> vmap+0xf0/0x264
+> dma_common_contiguous_remap+0xa0/0xd0
+> atomic_pool_expand+0xb6/0x310
+> __dma_atomic_pool_init.isra.0+0xf6/0x1c0
+> dma_atomic_pool_init+0xf6/0x1aa
+> do_one_initcall+0x134/0x928
+> kernel_init_freeable+0x532/0x60a
+> kernel_init+0x28/0x162
+> ret_from_fork_kernel+0x82/0x94c
+> ret_from_fork_kernel_asm+0x16/0x18
+> 
+> The PTE is valid, so the mapping was in place when the CPU faulted.
+> 
+> Tested on Orange Pi RV2: without this patch 2 of 30 boots crashed,
+> with it 50 of 50 booted.
+> 
+> Add the KASAN shadow region to the ranges for which flush_cache_vmap()
+> calls mark_new_valid_map(), as commit 4edd70ee6a7d ("mm/sparse-vmemmap:
+> flush_cache_vmap() after hotplugging vmemmap") did for vmemmap.
+> 
+> Fixes: 503638e0babf ("riscv: Stop emitting preventive sfence.vma for new vmalloc mappings")
+> Signed-off-by: Ali Tariq <alitariq45892@gmail.com>
+> ---
+> Crash Log: https://kernelci.cloud-v.co/scheduler/job/541
+> ---
+>   arch/riscv/include/asm/cacheflush.h | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/riscv/include/asm/cacheflush.h b/arch/riscv/include/asm/cacheflush.h
+> index c2b0a2928f06..c95b2f6007fd 100644
+> --- a/arch/riscv/include/asm/cacheflush.h
+> +++ b/arch/riscv/include/asm/cacheflush.h
+> @@ -8,6 +8,8 @@
+>   
+>   #include <linux/mm.h>
+>   
+> +#include <asm/kasan.h>
+> +
+>   static inline void local_flush_icache_all(void)
+>   {
+>   	asm volatile ("fence.i" ::: "memory");
+> @@ -57,7 +59,9 @@ static inline void mark_new_valid_map(void)
+>   static inline void flush_cache_vmap(unsigned long start, unsigned long end)
+>   {
+>   	if (is_vmalloc_or_module_addr((void *)start) ||
+> -	    (start >= VMEMMAP_START && end <= VMEMMAP_END))
+> +	    (start >= VMEMMAP_START && end <= VMEMMAP_END) ||
+> +	    (IS_ENABLED(CONFIG_KASAN) &&
+> +	     start >= KASAN_SHADOW_START && end <= KASAN_SHADOW_END))
+>   		mark_new_valid_map();
+>   }
+>   #define flush_cache_vmap_early(start, end)	local_flush_tlb_kernel_range(start, end)
 
-vim +493 mm/cma.c
-
-   476	
-   477	/*
-   478	 * Find the largest free range above 4G that can hold a part of a multi-range
-   479	 * CMA area.
-   480	 */
-   481	static phys_addr_t __init cma_find_free_range(phys_addr_t align,
-   482			phys_addr_t size_align, int nid, phys_addr_t *basep)
-   483	{
-   484		phys_addr_t start, end, size;
-   485		phys_addr_t max = 0;
-   486		u64 i;
-   487	
-   488		/* no point searching if the system can't addres above 4G */
-   489		if (!IS_ENABLED(CONFIG_PHYS_ADDR_T_64BIT))
-   490			return 0;
-   491	
-   492		for_each_free_mem_range(i, nid, MEMBLOCK_NONE, &start, &end, NULL) {
- > 493			if (start < SZ_4G)
-   494				continue;
-   495	
-   496			start = ALIGN(start, align);
-   497			if (start >= end)
-   498				continue;
-   499	
-   500			size = ALIGN_DOWN(end - start, size_align);
-   501			if (size > max) {
-   502				max = size;
-   503				*basep = start;
-   504			}
-   505		}
-   506	
-   507		return max;
-   508	}
-   509	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
