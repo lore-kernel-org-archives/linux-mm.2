@@ -1,97 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 134F6606A880
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 05:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5445D606A31C
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 05:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=JNT8zodY
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=a+cjQRoe
 Received: by kanga.kvack.org (Postfix)
-	id 144D76B05FD; Fri, 13 Nov 2026 00:08:32 -0500 (EST)
+	id 6A1066B0619; Fri, 13 Nov 2026 00:10:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F6696B0613; Fri, 13 Nov 2026 00:08:32 -0500 (EST)
+	id 651716B0624; Fri, 13 Nov 2026 00:10:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFFD66B062E; Fri, 13 Nov 2026 00:08:31 -0500 (EST)
+	id 518CF6B0627; Fri, 13 Nov 2026 00:10:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BF79A6B05FD
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:08:31 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 42F921C3F53
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:08:31 +0000 (UTC)
-X-FDA: 85428915222.21.256A8DF
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5A73640002
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:08:29 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=JNT8zodY;
-	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2758D6B0619
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:10:34 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 145F7120A0F
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:10:33 +0000 (UTC)
+X-FDA: 85428920346.16.DA4BE5E
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 28F7420004
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:10:31 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=a+cjQRoe;
+	spf=pass (imf31.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.172 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794546631;
+	b=W8TIenhyiqwE6HHVfvOghCVvFd3bmOywAJRT1eH6faIpO69lBMBWH+8KThOCo3Vzpc1Ufh
+	9hvD6XHxC9/ab2vM4F/LYdhnO87X19LLZ9QI9kFV8ur3uMRH8SopQ7LLqJkEN38XnbWvsW
+	NnHM7+3pJR59qMpnXBtUsCVbIswV3GY=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=a+cjQRoe;
+	spf=pass (imf31.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.172 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794546509;
+	s=arc-20220608; t=1794546631;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LmFjzwEPLh1WnvAWN35VH6q9XGy6Q88rO7whGWc3zyY=;
-	b=BX6MloixSywBv+Am/A1ihfbgLetIWigX05E2ybeA0Wahoi6Z9cKbJHOl+e/WbE7QfnARKY
-	/bGHdpISAVDUg3xRdrFzgvvrDMWXBaAoqdKExmr0NJpysd9w2XjcmL5XmHeD4o3tiQdcPO
-	Hp/rvRZtPrKcY+dIRZbjO5mr9317x1w=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794546509;
-	b=vRWBDHrWLlz74dRIci2UaWaBwjzs74Gk9Nl96RTN8whUCVI09lqvFoBLUBtEq1DrKVkdcr
-	evgri22e19NvpsYjV8+fDe8Cxh+lKHeprsrbgyXACsrAU6whvASsPx0tG8D5S6OCip5I8k
-	a5QoeWgxF3gVnlrnpx3dAf8YMNmRuR0=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=JNT8zodY;
-	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-93f3c616c84so79298885a.1
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:08:29 -0800 (PST)
+	bh=mgkN7zfne8CxcStcMwaH53uuXOvKnVLzfMEVlic0so8=;
+	b=O+lz80vuFZEjTvH2PcE30grBZeyxH5kA3UyqdJwA4AvgHoJv+9bFNEMJm/YwWZ6HcM8w8b
+	r09nl07QJednqnZ9CUs0p7AKvO5zKWBt6C3TTwpAOf90jFLg8WWbm8uWhlHC7D5qVt5mji
+	bHv+kpYfRkK83idVxFsKPN1pRX7B0To=
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-93f2b8cf037so85316085a.1
+        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:10:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1794546508; x=1795151308; darn=kvack.org;
+        d=gourry.net; s=google; t=1794546630; x=1795151430; darn=kvack.org;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=LmFjzwEPLh1WnvAWN35VH6q9XGy6Q88rO7whGWc3zyY=;
-        b=JNT8zodYKpGUKTtx2fvoKVloi5BS1ZcTcMbKAEREGsx4wUrSagwrfGblrmb3KyvWN6
-         EnGQnQRrVU+S8GyQ/Zf9SmnJnwxf7gYWLJ5DHLTlyATRoJjIiMQI03yEZoWqCaL+q2bv
-         Xsa8dk/v02i3nCesl/I3HAkc8oo8zEqbcHU62sWvut8lKAgkCfp4uFoEd+EcUqupBNkP
-         scAJGstCMWL9G8RHP7FU9j8SUP+6CT+I1w+81wVRH586hNgaW/kl/1kBxMvWvRp9Z7dW
-         mbS6sPUG6eSWW/P9Ee/b9exGTicu2ds8sPD4rtTs/3tJr+9XS9xqDFkJTo6iPe4T6ot5
-         gM4g==
+        bh=mgkN7zfne8CxcStcMwaH53uuXOvKnVLzfMEVlic0so8=;
+        b=a+cjQRoewwIwH91dNR/ctq9YiVou5//K8jp7IL+C1hS+E/5SIsnC9UQgOFpIM0AVTq
+         HgZiLPcoMZhrI1hH6Eb0uAZsxDqJTfioHscRYF8iJOQ5g5aMorWCJLi8oGYme8eHgio3
+         TPDJiNt6WHJL3kK6bOm2jw3XoEiNCIyaT8i0T2nuljfic+MlBaVX4HMiFNhPEXnmUSao
+         LDJ2bGauvvpnI3sPO9paYxsSoToc51K+hhTxQH/McMYjJr3o+cRWxvvLyhgs33fGOBxr
+         NZwbQ9ffwyjICCU9z/iRKmk5XHvvX2+Khe3peN/kID0h91Ebl2zYKIT2WVOQTs+g+PBr
+         XxTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794546508; x=1795151308;
+        d=1e100.net; s=20260707; t=1794546630; x=1795151430;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LmFjzwEPLh1WnvAWN35VH6q9XGy6Q88rO7whGWc3zyY=;
-        b=03moAN/Y/Rmn5ZhnGoOnLPsGx3OdCaPne+ruYyERbyxyDELDLrNRuNA8/uoWPKegTO
-         1sdD5+0kDguX5zBoYa8uk1UKgSqiORk1EeAi4QiIjz5WSX5/ADa1Nbs7D/YuIaQ/Z6YA
-         2KZFPQm2ZWhdEaG7RDv4IEvoP2chQha8z6mpDlZPg0d50fyfhYe3UMazgtRBTBnmcFLl
-         nTvEiTPF8YfUZ8MATwuCjTKUtzeBX9pel+gM4848GYf6sNYmfEnwmgg6a4th6nzHAxL5
-         WKkNxCoqYnOaKE+qeI7BZKY/oz+BEUlQhMCErBxlS+5i1NQ4/txQBBdkU6jdYz9/jIHq
-         0uWA==
-X-Forwarded-Encrypted: i=1; AL+hErGSnSMoM4xLMwPNR2cZ6XdkT7b3NO3iT9cqeJMxDMQqw67ZTN1IvFzKMhPLvY2rnygn7moPJvFscg==@kvack.org
-X-Gm-Message-State: APuU4Z/23+mi0OemmbVyq3S/q5JAxxPppfJJxJjnN7agiTLtt7Snc1qz
-	YB8/Y2fdNB+sTmjR+U4yl93941AXUv3y3kynEcVZE3pmAh4vfqJ8ZYJTx0a76lxT4m0=
-X-Gm-Gg: AYBFou2IVWVy843AoNozpO7ZCkplktamK5nlHCyzbP0zxoixWJaXCJTRUymj4e+zqRb
-	ujb5XhXXG3HBVMKds0JYZdZRrrf9jUZ2SSx+9eTT6Yntq7C0Wjo9P53obRQ7Uogy1uMX2GWw9m4
-	GPdN1zpZD0khjxHMORO1jAQlA8O4xIsSU5PQOhyJsitPN2e2Zo1GQZBk77FvenrB2UwdEs0hGtY
-	J7Pro6dUGnVqvorGFbtqH83QkjMC22lbHnFOufzrWnlchxEqJ/OTSwYj6S/0LJVkd/cWjMo4MyL
-	7kirKPGgMpN7NMIys0wfh4G5uxQdYgyX2WoKwyxeoaOy76UmeqCuEf/P/6YTPSJAMzgn+LS2vdL
-	ZZVQ4H2yOq+fWq6fKOWe8y9xem7s6M3uHn6VTCOQPMhCsqEFk6FU20EFEe6+HKjHW0kFD7L6Ln2
-	8v+REtMaiGhhwkR28uTSDvEgkFGHWdxs7ayEfDlSVL9d2KmQywuuaoQQyDaBF8WYjdJVx1M6xl9
-	d8oIQXZTTTH/ahfpBIwgrXSvuxHoFs4Vrgoxi+A77KhM4wegFzqnK5atU/ZqFwZHxo0D/1HXl4z
-	tfM3qosiXvbFd4jGI+7FWW0nuYAYSIYCjit/hoMQwaz5ihmWxjApf4sHvk0X7ezOzG4Yoxte5ZC
-	1jtUDIt4eodgWBFEGDVRmQF3WZiZ87Q==
-X-Received: by 2002:a05:620a:2987:b0:93f:2a56:2772 with SMTP id af79cd13be357-9494bcbc465mr254819685a.78.1794546508039;
-        Thu, 12 Nov 2026 21:08:28 -0800 (PST)
+        bh=mgkN7zfne8CxcStcMwaH53uuXOvKnVLzfMEVlic0so8=;
+        b=iqRnPD3awrBF4H7m9sKyCxs8l6pUVbUs32aRO71Nr7MC/PEnJ6JOpDq9WIx5A2bJdY
+         a05FSGBiYZ38FfpY45jw9DG0bir831iJ/i4iCbsDhgSab0XbxPfuFEdFjMCwhnbgFVHP
+         bId6VtZGF2Y4UVQmuNhpYAb+HzOgIMdu9aGagu5aPQ2R20q8CeoM1/Zd2EAPcznxpgLI
+         KGBcWczsUNjA34wO6a0SxduBodYHgSW1+VHWfWp4FvAhZxXsQi0EfHEtH8gaHK3MGzpm
+         +q3WWzu/2jHKtwFOvkOD6IY5DGz0J/6T8I+9HoPHU+MHkJJXVdxSjcLeeZll/znAgfMR
+         GD3Q==
+X-Forwarded-Encrypted: i=1; AL+hErEkQw8ZWVVQa+KNs+hB7BsMaJ2mNRVJPUJE9/eoZ2VjKN/L+Uku96kwUjdPXQQTXKc5U3MdOaBnWg==@kvack.org
+X-Gm-Message-State: APuU4Z+7X0TAP6kNt/ts3Q1EF4K/SBeo5dIEjm7W6Nyd/YujeZrfcIqt
+	Q/Cy9j48LLmwEKarYUgVVuskaGKgLy6W7WmqR4YNSdt6x6KzPEQWPaz8vuoBF5OniOQ=
+X-Gm-Gg: AYBFou1TH8FOWJ9QYXYNO3L4X1Kxp3gkmV82tb4OwIxKrDNiUq73S/a0G/JbV1ghhZF
+	MU/WiDlySc0Wf6BT6RmJoFG/GHAFwAQL+0b8HJTnjFh6u7DGfbtaSOfV6okwzpB3mPtpMwh1RF8
+	KbNf1Ip2zoWJOiFCAn58iLgNvwqUp9zJ8XtXo38r9AWppxFUBMKlnOvYL+QTLWU2Jq2YA3R/05K
+	ndYU9nGeq6ljjNQy/YBFSppF9RWtAQya+63GV5RfXkCC77QPEb+T6AAf0yPe1NOQiexJFGLZYE3
+	8vho/0fSuNpHjznxZxXBoxB4B5MzD86O8mGkJ5awScHQLWh/d+iTV0y8qx+OuuKHUShlFcMjcNG
+	B9L8MUX6fOjMjvyaLqKdyOD77W46rSJeYyB00w/TRt2y9Egjr7b9ZS3nyrUI0qLtHTmiv/7zV5V
+	2lLOJ4bwj9xbbU1LJlCDD1yQgPCS9UOEkf9vnUdqkYsudXk/OrZ6EoE5fOMgFz27MdUJ0ijTDHu
+	uHIqNoPoeR6WkDeHvZOJvt2IVdKVGvs+OMPhBQrGOaocYCYHChsuakqFnudUD5Et5HAx3yGpOX2
+	p4wwSWMNf4VaQ+680vWY4V9hjqDTzbldeG00M+k3/LgjgHvwagpMkA7xcT613NvIygX5zvEsQGr
+	WTSisj6Q=
+X-Received: by 2002:a05:620a:684a:b0:945:f6b0:db0 with SMTP id af79cd13be357-9494bb3103bmr245366785a.30.1794546630191;
+        Thu, 12 Nov 2026 21:10:30 -0800 (PST)
 Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23d452b0sm12300596d6.11.2026.11.12.21.08.26
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9494c836079sm103580385a.18.2026.11.12.21.10.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 21:08:27 -0800 (PST)
+        Thu, 12 Nov 2026 21:10:29 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -99,14 +99,15 @@ Content-Transfer-Encoding: 7bit
 Subject: Re: [PATCH 05/12] fs/proc/task_mmu: write-protect device-private
  THPs in PAGEMAP_SCAN
 From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Tal Zussman <tz2294@columbia.edu>, 
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
- Peter Xu <peterx@redhat.com>, James Houghton <jthoughton@google.com>, 
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Mike Rapoport <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, 
+ James Houghton <jthoughton@google.com>, 
  Andrea Arcangeli <aarcange@redhat.com>, 
  Suren Baghdasaryan <surenb@google.com>, Balbir Singh <balbirs@nvidia.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
+ Pedro Falcato <pfalcato@suse.de>, 
  =?utf-8?q?Micha=C5=82_Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>, 
  Andrei Vagin <avagin@gmail.com>, Stephen Rothwell <sfr@canb.auug.org.au>, 
  Arnd Bergmann <arnd@arndb.de>, Muhammad Usama Anjum <usama.anjum@arm.com>, 
@@ -126,25 +127,24 @@ Cc: Tal Zussman <tz2294@columbia.edu>,
  Michal Hocko <mhocko@suse.com>, Mike Kravetz <mike.kravetz@oracle.com>, 
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  linux-fsdevel@vger.kernel.org
-In-Reply-To: <avYQteUm963AKJQ7@gremlin>
+In-Reply-To: <20261111-uffd-state-fixes-v1-5-00713d368976@columbia.edu>
 References: <20261111-uffd-state-fixes-v1-0-00713d368976@columbia.edu>
  <20261111-uffd-state-fixes-v1-5-00713d368976@columbia.edu>
- <avYQteUm963AKJQ7@gremlin>
-Date: Fri, 13 Nov 2026 00:08:26 -0500
-Message-Id: <179454650651.482102.17667443707760097412.b4-reply@b4>
+Date: Fri, 13 Nov 2026 00:10:28 -0500
+Message-Id: <179454662851.482102.356362894816988437.b4-reply@b4>
 X-Mailer: b4 0.17-dev
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: ee5twnqmzftd96dfabpttc3h9mt8mum9
-X-Rspamd-Queue-Id: 5A73640002
+X-Stat-Signature: sfr67f5fodf3x98zsw43kn6dgy4g6w6x
 X-Rspam-User: 
-X-HE-Tag: 1794546509-604374
-X-HE-Meta: U2FsdGVkX1+WPFy3WO9JdYEGl4AzuGpV15h24suH42KoFj3yjd+gN+Fi1PwaZTtoqH2ciAvHmoADUd9SZXElp3klnl8u5lp2jIp9CJs5IMWlZt4RoOIvbqhCAcQy2UDyeI9dfQDlVt96knCxCvPitI3tohIdv6lKQJIiBdbqwbx5jfFLT4kNNk6obAssJZ7WEVSSV5HjYrNSFEUscTGU+4TvT/ESjPM3QEAop3ZBMEUSFzl+ploryUfTyxe8QbxflLhEZAbz3G6DuipoQKr4urGh6vFsA/rhQC3kX5RmkgWoSUkfk7jw9VNp7QGY1QEmOHPwkRnadQZQ/loodGKydMd3Wn603NpTMuUfbCHK+ed+GJa4woCub1gb9u381xvHLxBADJG8IdU4Fhx+nAclQi/DsGQMXnRaG1/10pMhiJNexsR+O4ui4o/pdOSOUgSnKpbb7Ybm9dxyB2m089AjlZNPnDUv4Mv8yIjBB3OEeoVwQszANBEVH75Z0sDKEwB4nvk6NK1i4m3y+JeNY0hfbX/Iet0ERDy/4eK/yRY7ehJSYqzjnleQqT8TjMPMUjf/jmFTedgCs9lEfBrAibDqfmH2Ylf1jwbX7vlh2uk3NJ/hTnVt+4CWakltxLqa1ZOWwlK7Fet/QYIYDTk4Yy+zjD2/YJC2ToN0Uexb/CCjjYD3znWrskIy34OF8u/je2Hi+7l8lc3nID3DLe666bsV8nCUFrAXGJVcCX68h23fD37cuBs2uPr/IP4/bj6ZYaWVFy979gC3iND4O0M5KHROG4ZTuVj43abDEwktAX+z2IFRYa42st/QXb/4OyxatjWkFMu384vR/Ak5g51kVvqWFPNXrKXLJpE5JJp4z2Z9UC6fXfdah45N+RMGJfLG7KG7YBIvdbIOc2OlBcnxA4rQ9Op6OW6ex7t9KFyxrc/Z10TMl3v8uTtDsKy0Sj7t1NfkWANEYP0sXynsMcNMbIN
- L4j/xkPy
- I/kx1JUQqwjxYSgDdOpQ9q58l0TF/wMhvk8KcbILQACv2r09LPx9UhlRE/e6XPtyoDB4E0L3AETF+rIg9gW9pu4u+j9S7W77h+ER4ywwKg5byFv9ojmYvg1vUbwwkMarzmiAAMA6RmLHMf5r/O8wrCqOGULk1R8pVG5KyNhp03NAquRTPQ0Y9k2fJblCq0ye4/W8jpAXk3JgAzMNdczxCCtGkK4XzziPjZek6eXoShyqT6s9rDw0XIcqGx5fJn9bLSX8VbLmIz+RHlCW6ID4iHl4lsjJ8AodeeFgkoePmLr5yb1FCCMfVRDIRkSs3FyCxpzwqikVxrLCuN9oGtq37mClEbT2oKI+CWQqpGlCjcREqxrMTtbzGcPgIeenGmpFP+Hwy
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 28F7420004
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794546631-939992
+X-HE-Meta: U2FsdGVkX18ScE6I35d2B8IHirCWkTR10CrRYmcjVIdi7iSyBW6j8/QXQ6NtMgPsWZiH59CKwUF2Dd4aJyifMtOf26ZmbS6apJJ8ItqR6ACuHNNjNPLir5ZBCay19ZpyCtQRe+YjBYK45fB7V5pssurSE5yIF7mSZReB9dnFHAAnxwAddR8kn71pcXVCHORTFqrhkDDfE1olJ0ADqhb+2APBTjF1MN7ZUWAWntnZ2EBWVobcH0InXUuh3tMdzleaJ/4UqJOxNysSE6NLkMoP80f3xWx3+Z15aGC8lk8k8nWr+P+QqgaeBpkoTqqxz23XZ/XhtE7Y0jPcsUsObK4wHZNZ0rcGiCnLGHqq7BmCfg/VbetWFll3bzITm4dnJmrUF7OtcdD/SsntwECamTeszWd4IHf3hOrbpjYVJZfENkVqgzXpGSs2Z34ARSmYCkTV817022hTjQ7I0mdPdhFMTf483nOTavt+LkbYNhkfNuJ8SCUCpvx7OIOcE6Mgvx5etpv7mldDsvcqfZ27uWPGFKgTpA5Cq2h/crxuqkoYil5oegJbPoP1fLIXwl5Qp+FvsmaIrNGPM3LlVV4M0xO9jJ/kq3UbmAz1XyTq2kYquBVE3zldgQeV6Ax15T2n3oXbC1d/gyyN4JGCU0/HW6npI96alWoYHSSjpHQiVnpesDrom/y0cOzFAcu0L4X2NvgVzLCSzuWjsX4ol57LITDkloYC+5x0e0NrikSHC6muOt9Kazb1fqLrgKw78Hv4O2TiRvdf4csmoitTtg0M2TXIRPBgsIqxOBAP+Fu2Ok4AQ6I8E7SMYz/HNZp6toxv6sUDYkSNt9MjJp7+ZeX18NnUx0vmFhv50wghnCIHaT0DqlrM4XvZ+jTdD9J28KtELH3HYNILm7+9xZam/zbfrQMhb9d4gigIayzEbbnLx5MICjDgoHOjQcckI7J4v7uGZxGb+4tnLrJZqIxr9kw9cJo
+ 28tvja9C
+ 7q7IzxuOPwAF0cdZlPRjL1buUXxpT7/fS7I6/JmLvEkZAjOm2xvwPkQESuVx9U0JjrYkvc6FDo7WgE9CVGDi1vigsOQ2GI3K7F6kfM5U3L85CSmfo/rgVyEAiFpd4IskraUK3NWJvdv96754csXCssv77wxOjviLGWUDKJrnvF7lt4wLqly1Nj3ceoHN95R5zdqBjBuXk3aopUidpqZUu/RfVR2mhsiQ1IQ+7EejHKpkQfgg0fsVcrwfbx6J4obd6NcforQIsEKmDnj3gTJnrWaKr7cxm2rJbPQCveuvpqwiSZjTlgWVFBgavdSISFZwqGeB3wgPCBFRKWLtBiV0PNX8CSGoZYT+Lo5WerHPZtSdkFTskfPjuQ46Y2A7G82UrR+vAYmhIoqAbXOcAjOKAc3qnenBvkLYKh+Bc4q+8DPiIZfe+Kq+TRNMZhA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,23 +153,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-12 19:34 +0000, Lorenzo Stoakes (ARM) wrote:
-> On Wed, Nov 11, 2026 at 12:55:13PM -0500, Tal Zussman wrote:
-> > but does nothing for a device-private THP. The PMD never gets the uffd
-> > bit.
+On 2026-11-11 12:55 -0500, Tal Zussman wrote:
+> PAGEMAP_SCAN with PM_SCAN_WP_MATCHING write-protects a huge PMD through
+> make_uffd_wp_pmd(), which handles a present THP and a migration entry
+> but does nothing for a device-private THP. The PMD never gets the uffd
+> bit.
 > 
-> Sigh yeah. Device-private feels like another 'just have to happen to know to
-> update X million open-coded parts of the code'.
+> pagemap_thp_category() reports a non-present PMD without the uffd bit as
+> written. A user tracking writes with async uffd-wp therefore sees every
+> page of a device-private THP as written on every scan, whether it was
+> written to or not. This requires a driver that migrates THPs to device
+> memory.
 > 
-> We really need to find a way to abstract this stuff.
->
+> A device-private PMD must be write-protected like any other huge PMD. To
+> fix it, pass it to set_uffd_wp_swp_pmd() as well, which downgrades a
+> writable entry and sets the uffd bit. When the THP migrates back,
+> set_pmd_migration_entry() carries the uffd bit over to the migration
+> entry, so the write protection is kept.
+> 
+> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
-I've poked at it a bit, but zone device creates this issue in many
-places. The core issue is really that softleaf can mean 20 things,
-and the number of things has been piled on heavily.
+reproduced the issue by observing we fail to carry back the write
+protect bit after migration.
 
-I don't know how we solve this, it's just a rats nest of complexity
-at this point.
+Implementation details i'll leave to Lorenzo's feedback, i don't feel
+strongly about it, it's gonna look bad either way i think :\
+
+Tested-by: Gregory Price (Meta) <gourry@gourry.net>
 
 -- 
 ~Gregory
