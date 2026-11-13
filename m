@@ -1,149 +1,116 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD12606D056
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E67606D061
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AaE1y4q+
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bXI2J06z
 Received: by kanga.kvack.org (Postfix)
-	id 223696B05C9; Fri, 13 Nov 2026 13:56:51 -0500 (EST)
+	id C0EEF6B05CB; Fri, 13 Nov 2026 13:56:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FAF46B05CA; Fri, 13 Nov 2026 13:56:51 -0500 (EST)
+	id BE6A76B05CD; Fri, 13 Nov 2026 13:56:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C3856B05CB; Fri, 13 Nov 2026 13:56:51 -0500 (EST)
+	id AAB2D6B05CB; Fri, 13 Nov 2026 13:56:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D919F6B05C9
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:56:50 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 696C3140204
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C0436B05CB
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:56:53 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 42FBE1201F4
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:56:52 +0000 (UTC)
+X-FDA: 85431002664.27.D68B462
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9F420180003
 	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:56:50 +0000 (UTC)
-X-FDA: 85431002580.22.CBB7248
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9F8AC40003
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:56:48 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AaE1y4q+;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794596208;
-	b=MkVrBsK8pJhcF39lfxtNuvKLcSds0zFk3l9dTLI6SfK3tuNd8Orttx6l0X0FIAye3u4kFU
-	IYhKcQlAKfIHoCG0HHzNZVEKoeCgRWl54HXcz/Mdv09U/zaJisp7CGuUu4yz77MY4a0PRv
-	p2nLx6dKg9hJt8USFOO/dkXkXnUky8M=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AaE1y4q+;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bXI2J06z;
+	spf=pass (imf24.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794596208;
+	s=arc-20220608; t=1794596210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EaBAv/H8BT4vm7qZdZm8f+J1eyq2A3r6KggVt6sufuE=;
-	b=0QvagZOe539bVzpFJ+oIBLFRvlHK6zBZj24JB7kkb4ZRGz62OKsCSY3/GpNVx1qibhUBUV
-	bS8VWwZIFPUeVRlcj2c5rzPyLChVgBRcIfha579fLWhG+PTSfV44otksU95d9XzXm8r5z6
-	tO3wO8n65n4nKvsgvKKLhYZ0kHI2ELM=
+	bh=8b2BNlI9D/dTvm+pNy8yi6bMbbcURwn+cQ+yjC30tMI=;
+	b=L2e4X5VRW9FKIJVfTbjbYQ6JWHreD04amQY9E/jnWMqzM6mIF8w5MSN6SAUNIUXayRawJk
+	nhZdwpLipIUMCmv5tW5sUNVMOEgk3YxlPIwrJTheW2M7d9F536x22EnoUDZ0A9EtVJQnkn
+	pzw2TVLFLIkigeSm5Mo6F4Iul4bSaeU=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bXI2J06z;
+	spf=pass (imf24.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794596210;
+	b=pkZpJgUWt5vsAxI9Td6zGmvj8VjQnqguseTad85JV6+hRcYhaSGWhs8QYrxK+exYjCvtkK
+	ieLz+aF93+R9Mj2+p0eYwwfU2ld33tq55J9qQUmMN5qcieILaxssmOWX1idplItHq+AxNc
+	meaK4JYFQJsymCiN4+b1v7LcRD7o5h4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0307F46637;
-	Fri, 13 Nov 2026 18:56:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 240ED1F000C6;
-	Fri, 13 Nov 2026 18:56:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3C52763319;
+	Fri, 13 Nov 2026 18:56:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C55B1F000C4;
+	Fri, 13 Nov 2026 18:56:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794596207;
-	bh=EaBAv/H8BT4vm7qZdZm8f+J1eyq2A3r6KggVt6sufuE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=AaE1y4q++14YE+IhwkDHq526uKCelbaOwgasfvvC4nM/4hAhiYAO7UK+ijyX/ar2K
-	 RcF9z3EyMuug76TE2MqnPN2zWnCcm8jTzvzD51ZgEqYsfg4/t8IDDX/GqFCDl1vhrC
-	 lS03Ce5DsUfiByziqXEoTJGp4FyelH9mFjJ21U3K8rzL71dB1L5jvKvnw29yWtG/k5
-	 oYaPu+ChzIYEEiYVssqHg9c1J3lM2qqyA0QQlJtW1QlWTTSRsyYTAN3TebDz5DbyaE
-	 mgC+QvXuFWfDMfwcVSWr1BdmY9ZPFHBKLQBXw41STjLTQz9S41ytt6jjSxenfIWl17
-	 oTSsNoPlU4QMQ==
-Message-ID: <603cd8e0-c2c5-4c1e-85c4-d0a5ceda8d4c@kernel.org>
-Date: Fri, 13 Nov 2026 19:56:37 +0100
+	s=k20260515; t=1794596209;
+	bh=8b2BNlI9D/dTvm+pNy8yi6bMbbcURwn+cQ+yjC30tMI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=bXI2J06zqS4ZMTGM2ywcmXZMT6M5NchVfkrpb3+jmFMX0GouWWfQtvL19PqvwjRbG
+	 uXyoa+cGma3kCNC6ndYJrY0oeLu9Ensr4Ya6TdLkoVSKIoAg8Uzuo2l5h7p3eO3fXp
+	 O0tUN/ofRqvlsoMR3ByVCopBGWCCl8MoU/OxIAhtAuPe9ph5A5vPhbEDhuqhzebBKP
+	 sLhtxxhU22vHjynQLcTIt0S/UgbOpgNIAuIC/q/JJe0rbe2SMV8TYQRSJh4sWcUNbp
+	 +jtNJCGMK4Y5TLQlTTlzMNVHmq81BpoSASl9pq7xE7J+ggD4khO99VH1MB+QpgMrWO
+	 e9M1HLuIaAPCg==
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+To: akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Cc: axelrasmussen@google.com,
+	baolin.wang@linux.alibaba.com,
+	baoquan.he@linux.dev,
+	hannes@cmpxchg.org,
+	hui.zhu@linux.dev,
+	kasong@tencent.com,
+	kunwu.chan@gmail.com,
+	liam@infradead.org,
+	lianux.mm@gmail.com,
+	linux-kernel@vger.kernel.org,
+	liuxiang.277@bytedance.com,
+	lyugaofei@xiaomi.com,
+	mhocko@kernel.org,
+	mhocko@suse.com,
+	qi.zheng@linux.dev,
+	ridong.chen@linux.dev,
+	rppt@kernel.org,
+	ryncsn@gmail.com,
+	shakeel.butt@linux.dev,
+	surenb@google.com,
+	wangzicheng@honor.com,
+	weixugc@google.com,
+	yuanchu@google.com,
+	zhangbo56@xiaomi.com,
+	zhuhui@kylinos.cn,
+	sidchintamaneni@gmail.com,
+	"Barry Song (Xiaomi)" <baohua@kernel.org>
+Subject: [PATCH v8 12/16] mm/mglru: Restrict eviction accounting to eligible zones
+Date: Sat, 14 Nov 2026 02:55:37 +0800
+Message-Id: <20261113185541.70203-13-baohua@kernel.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20261113185541.70203-1-baohua@kernel.org>
+References: <20261113185541.70203-1-baohua@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/9] mm: keep writable entries writable on protection
- changes
-To: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>, kvm@vger.kernel.org,
- linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-riscv@lists.infradead.org, seanjc@google.com, pbonzini@redhat.com,
- akpm@linux-foundation.org, peterx@redhat.com, ljs@kernel.org,
- imbrenda@linux.ibm.com, borntraeger@linux.ibm.com, frankja@linux.ibm.com,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>
-References: <20261112142039.907090-2-clopez@suse.de>
- <20261112142039.907090-6-clopez@suse.de>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261112142039.907090-6-clopez@suse.de>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ea4nhfacikuqmq7qbnt5je3h8no9a9x4
+X-Stat-Signature: 8kdrtao7gen4oa8c5nep1w99czkjgwfe
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9F8AC40003
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794596208-521755
-X-HE-Meta: U2FsdGVkX18DLduqqmvxRUxJqMibRnZreWPyDxnYGfYSW/TYe0NHOV1/pa2emE1M22SRFGfYx6i4NE41YY0xMOhKajN9l/W90QKva0fYoJUjnpO9PEBUIWEnOjeAMT8bu2o3ggv4NjwnO3yqcGp3TtG6iD8JIbDP+RgUkQhwR/G/IQk69gXYzl2SyPygrjOoCUhMAUKY+3aBIYFdUt0ZaHsamG6FVsS8qnOEzh9oPBcVUNpP52oArO9Q7g1EltIFNAU/E643xSCYv1L2IfQiL43IYpStvVt0pOKcefqdP0SZTWTkja1GK74ZHt+TBlWo/Lk2nIjnsqnrq3JrKW2TJuYg2mPjBmcBz2Stx31uJcng7cB8L/taJnAvcnR9pXZF2hQIA6HCcfKaopgvAfpIkDLeH0qyj5TKXyz3cDntG1eEa0fxA1VFXj8Q3spPbrimdfwrFlpXA85sF8xDiwCM0mYF3bVU2Q3SFvFXPGnXmk6YLrR3n1umbFY7kU6IXUY5Or9Qr5lYQX7ULrWaPeism+u4WSD9JzhjtZoue1MtLDuGtLI8Uw6Ixyo/gfqOevkPIP/5MU9vy/Skd9osqayx8Ne//xBL8k8iANbGgcC/KvMMc94hQKo4YCXGrFoc9mc8YVmFNZW5eHFTZDuc5voEkGhoOT+DY6zejHkXukYq7wincO2HGMxlXZBkUrV8kyyy+tRbcf6r2mj5a0dTa1YOGjJBxpzp0KArF/ts9eo67IpywQjneSpsmrajh1H/RmPUFjypzMuzFS3NLcCoUDP0Xz761fecCwUeuIc0aYjt7WvofnX0iNnZ7S1MjAMVLPUOz0j6iCcg2gbFlT5bdmJ/NIWWHLnc8IemHFl1nnmCeIC/Qzyz/uT8mZhfA0z6dSRFenkUin+TVi9pF0lZtXcia5fo9o2cu93W1F5hJ6/66rsRxOZl4InJmO85KWlfgiZh/Ql+JZMUQKSRS0pihUF
- B1g6vs9+
- BQOgk0okUireoQwXMAmGqBxw7aZkivVO3kGGCSo5je8RuJO9/7WonD6RLvcgbdDpYtzJbhmB2yzla+myw7pUcZ8uYWUcVpEZvJ7Zt2Q1MvTGtSLBKjIYvGX/xlseZeVOZcZWprmIM87buvpKInZhbrIS9sEHEm5oMx+trkIK9pVrNkGH7zCujfMJv7ai3uBVjCxxJaqiExmqdJ35vfLIsmqw4jGoedI3gI3acsc1PHZPSwVVVLVwoX2C+BX56wM7BVK675Xq+JvuMAsGi7MgUpWFvgM0sRJVnlGug
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 9F420180003
+X-HE-Tag: 1794596210-945258
+X-HE-Meta: U2FsdGVkX19yQjafPRtDlxjS79/NpeLTEUaAtrXaCHmY1/xic8yZchX/3wZ4eEVYHgDt+AHdBDbIcv5jrBkYowEUEmexNfXLVO5Ynicev57udkcizG87lbYHD+DGN44r8X2ArmxwtmgIg8HYzZN2BvUVLgZVqhyChrTAXa2nOH3VgbdPTNQc1n/HceKtiB40RkJYeNMzBceTdBHpfa317yLpx/YVLP5s8XvT5n/zv4LZ3olwBk5w6SeGFcFQ5h17iSbNA/0co1diSUqP6MHDDC94cmL8O98+ZXzQay6ev27yLsCXhmFDN3lmuXb73OZ53kWb+70N1aSye4Gnrig5u0XJ4co9y7A0G07B5B0Uwbz7I2cAIxqWItmBD4jK6IViN8MSNUJvFIb8kzX3h1xc75w6EwyRGk4UbqWCpu7RPwGaXXSlh9EpIE5Yz3PtwlL+F2a2XGuZ0axngo/iMFm8lDivzBZx1+APGsX0JYhlLmJp9Spyba/wFa0PMBBKcIMZsHuMGP7LgT67Tjj4uHkvaCUuuDmnO0grT3EpZMpYQYBJpzushGb5MYjy2nFR3yYp4rvMYu/sOrz2ceBksiqZZh9uM+rkP9DF0R3MHkMU1mDsAcOc7092rNCIJHASVoZF8Te7PPWtB/Ke9MjNSbTrcEnCZf/e42BU/vPaf16BMsuWQtL+EW2IP8qx6iP6HJ1kJhXb1P7DzB5njYqp1nLbnB+g3XGl039IH4gsRIMIfw3lwOj5vIXQcSh292Hbg2biLEb/J2umQYqUD4l24Uh1LJvSpNV2pwURHR7LkTJegupjwNplUDG8RoCdrlJ759dPvb3q5Qeu9ja/A1QEZyHroFCMaKxRSmsWZRK5cWBRNYxH6DPRRb5P1QdUClXN+iUturbmBGEwkj5gFylJDUnC/AQT0WesHAzBtMYdUXE02/gOigpj3dy4ljYM8HqvGnm3Rs5ofkRJbyg/l3LlVSE
+ QtkgShw4
+ HmgcHnUGrGYYYsT3+abMHEG11DAxAjHx1Ie/gEj7O+n04jopk0NirwfW8mt0zTrIXABJfbrZVOezkezsf6J9rAuFrq9hGcsVzEOQellH5w6wcV+UsKB6PasfGtCb62aNWAIVDxq4BANZCJ6QVbCNcz9duEfskDBa3uYdibGl5MNHo+GNZx47c+SDgd1Yc5eQ8IQou7BdCucA8XPlmDLRSQJ5hzLZPh68rtJFcNg5wmJFiRt9JJSyWTVK2t+RbeZvhvqUZVCAWDi2FK6sKgnLOE22ZdwTUtkckxNZItAnF8ijRtCnEH0K9H84fEg+XDwCRy2hbJOjQDLZWCbQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,27 +119,163 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/12/26 15:20, Carlos López wrote:
-> change_protection() applies vma->vm_page_prot, which lacks the write bit
-> for CoW and write-notified mappings. MM_CP_TRY_CHANGE_WRITABLE makes
-> entries writable again if a write fault would only set the write bit.
-> In shared mappings, it relies on the dirty bit for this, as a clean
-> entry might still need a write fault to notify the FS.
-> 
-> However, this misses clean entries that were already writable. For
-> example, a uffd-wp unprotect makes shmem PTEs read-only if they were
-> mapped by a read fault before uffd-wp was registered, so the next write
-> to each of them faults.
+For both lruvec_evictable_size() and lru_gen_imbalanced(),
+only count eligible zones up to sc->reclaim_idx. This avoids
+overestimating the number of pages available for scanning and
+allows aging to proceed more promptly when eligible zones
+contain few folios.
 
-See my other reply, adding such optimizations without any motivation why we
-should even care is not really what we want.
+lru_gen_age_node() uses lruvec_is_reclaimable() to determine
+whether any memcg has generations old enough to reclaim under
+min_ttl. If none are reclaimable, it may trigger OOM. However,
+lruvec_is_reclaimable() also uses lruvec_is_sizable() to
+estimate the LRU size.
 
-Drop it from your series and keep the MM changes to a bare minimum please.
+Previously, lruvec_is_sizable() counted folios across all zones.
+With accounting now restricted to zones up to sc->reclaim_idx,
+the estimated size may be significantly smaller, potentially
+leading to premature OOM.
 
-Or is there a real dependency for your work?
+To avoid this, skip the sizing check when reclaim is restricted
+to zones below ZONE_NORMAL. As in __alloc_pages_may_oom(),
+triggering OOM for low-zone allocations is generally pointless.
 
+Furthermore, defer the sizing check until reclaim reaches a
+very low sc->priority to reduce the risk of premature OOM.
+
+Co-developed-by: Bo Zhang <zhangbo56@xiaomi.com>
+Signed-off-by: Bo Zhang <zhangbo56@xiaomi.com>
+Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+---
+ mm/trace_vmscan.h |  4 ++--
+ mm/vmscan.c       | 26 ++++++++++++++++----------
+ mm/vmscan.h       |  5 +++--
+ 3 files changed, 21 insertions(+), 14 deletions(-)
+
+diff --git a/mm/trace_vmscan.h b/mm/trace_vmscan.h
+index 565c56428364..9dafdb5bd3ce 100644
+--- a/mm/trace_vmscan.h
++++ b/mm/trace_vmscan.h
+@@ -488,9 +488,9 @@ TRACE_EVENT(mm_mglru_aging,
+ 			unsigned long seq = max_seq - MAX_NR_GENS + 1 + i;
+ 
+ 			__entry->nr_anon[i] =
+-				lruvec_gen_size(lrugen, LRU_GEN_ANON, seq);
++				lruvec_gen_size(lrugen, LRU_GEN_ANON, seq, MAX_NR_ZONES);
+ 			__entry->nr_file[i] =
+-				lruvec_gen_size(lrugen, LRU_GEN_FILE, seq);
++				lruvec_gen_size(lrugen, LRU_GEN_FILE, seq, MAX_NR_ZONES);
+ 		}
+ 		__entry->nid = lruvec_pgdat(lruvec)->node_id;
+ 		__entry->priority = sc->priority;
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 9071f8889b5c..6ed47089a330 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4205,8 +4205,8 @@ static void set_initial_priority(struct pglist_data *pgdat, struct scan_control
+ 	sc->priority = clamp(priority, DEF_PRIORITY / 2, DEF_PRIORITY);
+ }
+ 
+-static void lruvec_evictable_size(struct lruvec *lruvec, int swappiness,
+-				  unsigned long nr[])
++static void lruvec_evictable_size(struct lruvec *lruvec, struct scan_control *sc,
++				  int swappiness, unsigned long nr[])
+ {
+ 	int type;
+ 	unsigned long seq;
+@@ -4219,7 +4219,7 @@ static void lruvec_evictable_size(struct lruvec *lruvec, int swappiness,
+ 
+ 	for_each_evictable_type(type, swappiness) {
+ 		for (seq = min_seq[type]; seq <= max_seq; seq++)
+-			nr[type] += lruvec_gen_size(lrugen, type, seq);
++			nr[type] += lruvec_gen_size(lrugen, type, seq, sc->reclaim_idx + 1);
+ 	}
+ }
+ 
+@@ -4228,7 +4228,7 @@ static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_control *sc)
+ 	unsigned long total, sizes[ANON_AND_FILE];
+ 	int swappiness = get_swappiness(lruvec, sc);
+ 
+-	lruvec_evictable_size(lruvec, swappiness, sizes);
++	lruvec_evictable_size(lruvec, sc, swappiness, sizes);
+ 	total = sizes[LRU_GEN_ANON] + sizes[LRU_GEN_FILE];
+ 
+ 	/* whether the size is big enough to be helpful */
+@@ -4247,7 +4247,13 @@ static bool lruvec_is_reclaimable(struct lruvec *lruvec, struct scan_control *sc
+ 	if (mem_cgroup_below_min(NULL, memcg))
+ 		return false;
+ 
+-	if (!lruvec_is_sizable(lruvec, sc))
++	/*
++	 * As in __alloc_pages_may_oom(), avoid triggering OOM for low-zone
++	 * allocations. Also, defer the LRU size check until reclaim reaches
++	 * a very low priority to avoid premature OOM.
++	 */
++	if (sc->priority <= 1 && sc->reclaim_idx >= ZONE_NORMAL &&
++	    !lruvec_is_sizable(lruvec, sc))
+ 		return false;
+ 
+ 	gen = lru_gen_from_seq(evictable_min_seq(min_seq, swappiness));
+@@ -5088,9 +5094,9 @@ static bool lru_gen_imbalanced(struct lruvec *lruvec, struct scan_control *sc,
+ 	for_each_evictable_type(type, swappiness) {
+ 		unsigned long seq;
+ 
+-		youngest[type] = lruvec_gen_size(lrugen, type, max_seq);
++		youngest[type] = lruvec_gen_size(lrugen, type, max_seq, sc->reclaim_idx + 1);
+ 		for (seq = min_seq[type]; seq < max_seq; seq++)
+-			old[type] += lruvec_gen_size(lrugen, type, seq);
++			old[type] += lruvec_gen_size(lrugen, type, seq, sc->reclaim_idx + 1);
+ 	}
+ 
+ 	/* the vast majority of pages sit in the youngest gen */
+@@ -5143,7 +5149,7 @@ static void lru_gen_prepare_scan(struct lruvec *lruvec, struct scan_control *sc,
+ {
+ 	unsigned long total;
+ 
+-	lruvec_evictable_size(lruvec, swappiness, nr_to_scan);
++	lruvec_evictable_size(lruvec, sc, swappiness, nr_to_scan);
+ 	total = nr_to_scan[LRU_GEN_ANON] + nr_to_scan[LRU_GEN_FILE];
+ 
+ 	total = apply_proportional_protection(memcg, sc, total);
+@@ -5854,7 +5860,7 @@ static int lru_gen_seq_show(struct seq_file *m, void *v)
+ 			char mark = full && seq < min_seq[type] ? 'x' : ' ';
+ 
+ 			seq_printf(m, " %10lu%c",
+-				   lruvec_gen_size(lrugen, type, seq), mark);
++				   lruvec_gen_size(lrugen, type, seq, MAX_NR_ZONES), mark);
+ 		}
+ 
+ 		seq_putc(m, '\n');
+@@ -5907,7 +5913,7 @@ static int run_eviction(struct lruvec *lruvec, unsigned long seq, struct scan_co
+ 		if (sc->nr_reclaimed >= nr_to_reclaim)
+ 			return 0;
+ 
+-		lruvec_evictable_size(lruvec, swappiness, nr_to_scan);
++		lruvec_evictable_size(lruvec, sc, swappiness, nr_to_scan);
+ 		lru_gen_balance_scan(lruvec, swappiness,
+ 				     nr_to_reclaim - sc->nr_reclaimed, nr_to_scan);
+ 
+diff --git a/mm/vmscan.h b/mm/vmscan.h
+index c6b583fc7493..2599d7c614ac 100644
+--- a/mm/vmscan.h
++++ b/mm/vmscan.h
+@@ -119,12 +119,13 @@ struct scan_control {
+ #ifdef CONFIG_LRU_GEN
+ /* The number of pages of @type in the generation @seq, summed over all zones */
+ static inline unsigned long lruvec_gen_size(struct lru_gen_folio *lrugen,
+-					    int type, unsigned long seq)
++					    int type, unsigned long seq,
++					    int max_zone)
+ {
+ 	int gen = lru_gen_from_seq(seq);
+ 	unsigned long size = 0;
+ 
+-	for (int zone = 0; zone < MAX_NR_ZONES; zone++)
++	for (int zone = 0; zone < max_zone; zone++)
+ 		size += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
+ 
+ 	return size;
 -- 
-Cheers,
+2.39.3 (Apple Git-146)
 
-David
 
