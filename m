@@ -1,149 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C56606A336
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 19:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B9C606A332
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 19:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=gobMN0Go;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=k3yJ2X1I;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=T/wFHoCc;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=XwA+jkCg
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LjmXZN4T
 Received: by kanga.kvack.org (Postfix)
-	id 6D6C86B05B9; Fri, 13 Nov 2026 14:13:18 -0500 (EST)
+	id CFC756B05C3; Fri, 13 Nov 2026 14:15:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 687A76B05BA; Fri, 13 Nov 2026 14:13:18 -0500 (EST)
+	id CCCFE6B05C6; Fri, 13 Nov 2026 14:15:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 575FB6B05BB; Fri, 13 Nov 2026 14:13:18 -0500 (EST)
+	id BE2F56B05CA; Fri, 13 Nov 2026 14:15:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B6406B05B9
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:13:18 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B0BD21201D0
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:13:17 +0000 (UTC)
-X-FDA: 85431044034.24.DC314E4
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 83F5640003
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:13:15 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gobMN0Go;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=k3yJ2X1I;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="T/wFHoCc";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XwA+jkCg;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 958AB6B05C3
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:15:43 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2E7BB1A01A6
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:15:43 +0000 (UTC)
+X-FDA: 85431050166.21.4F66727
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 682E7A0011
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:15:41 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LjmXZN4T;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794597195;
+	s=arc-20220608; t=1794597341;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=19uX3cVjKh3oQCJxRBIfRcpKq58CZsyDKOYCWbtw5ps=;
-	b=CP+nFKswD1rsq9n63ssOrBLJYt7HY7Rti+VDkHJ0KVP8zbFdKCVn0YeLVLOEAeisZGo9iW
-	WYET4yl6FINA4mcnFnBwoMNuxORTbl6/wgwAVoiy0T/heYVr1cHoGspkBneNhRLXRRCznc
-	bzUa5CCLJCccq+sWrBbAkEBtzQ/bAn4=
+	bh=hwPuVq7T8FdelkrZoqjLG70zrzZ/KbjEwFQO6WatOkU=;
+	b=xyBhux29+Pp/wjG4Zx6Pc5fRLb0E18B7S6AovxuZ+y1Xf+d60Wt+aZhd+3YJuSI0ze8zVK
+	GlSk3I7QLRmD9X72d/JZ85Sdzpvq+SyvHZVrx2w6sXVpJSo59Z8MxbFXvoYWpDXS+A5rRu
+	6w+MWk+OqPzCcn04bWl2O7vPNUcKtWw=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gobMN0Go;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=k3yJ2X1I;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="T/wFHoCc";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XwA+jkCg;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LjmXZN4T;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794597195;
-	b=znn7zCksrsDbgQgPBgPHzOxYpAPGLTs1P6sqphbd5DK95D2ENbbIsC8NdB/EKRV203KIdU
-	xEZe3JBzPYvSzX4bZDQCnkEEgRgZAHF/DhMhJHO34MvPS4Wcvl8irqYWn8hTMjSCoicI7r
-	JsOCkMjds1h6tu+SM8w1IIRpQUgBbbU=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id F01941F7D5;
-	Fri, 13 Nov 2026 19:13:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794597194; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=19uX3cVjKh3oQCJxRBIfRcpKq58CZsyDKOYCWbtw5ps=;
-	b=gobMN0Go7dtgesD60abepmHGjJqiT7XR8JBrmRTZeIjGmsD9WF5vhroV2KpmFqnqFiRhz0
-	4Xxmax1aPsE4onLeo85S5qJmTnlpp2wcPx627Fn7LL9utblNw73BIqyR9fHZuz1inuaUOW
-	qqAQbUChbIer5y0r7/jwg23IKvJY6g4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794597194;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=19uX3cVjKh3oQCJxRBIfRcpKq58CZsyDKOYCWbtw5ps=;
-	b=k3yJ2X1I5Au6tqt4bU0rNcvnsJDJ2hvTev+loJ0jYdWf+66F8YQ2E4qnBrPL5E8OoHzWdM
-	VVUDEYPg0aud3DDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794597193; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=19uX3cVjKh3oQCJxRBIfRcpKq58CZsyDKOYCWbtw5ps=;
-	b=T/wFHoCcYRQLNMnwBHW35jb6KJ0V7qyiWglsW7xN6wn8BWhHCdN46eovtrskuM0kGfoNw8
-	kl/ooMcM9AgFS1XJgIG04qGwVMFYL+5eyOVT1rYw0J6CvZP72XHwFcVD49n4suJb6UEU8I
-	d3CddHx6e1pA2jAAXzYfA6ANet9Xn2I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794597193;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=19uX3cVjKh3oQCJxRBIfRcpKq58CZsyDKOYCWbtw5ps=;
-	b=XwA+jkCgr723dqgXsfRZbBHmScQ9TpV/WWV7Ql2L5ASjlOMMdc33+YzLt2gYs4LHcNme44
-	+FobGJlXO23Lb3BQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9E30913485;
-	Fri, 13 Nov 2026 19:13:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id TaZ4GkVh92poGgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 13 Nov 2026 19:13:09 +0000
-Date: Fri, 13 Nov 2026 19:13:07 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Salvatore Dipietro <dipiets@amazon.com>
-Cc: jack@suse.cz, abuehaze@amazon.com, agruenba@redhat.com, 
-	akpm@linux-foundation.org, alisaidi@amazon.com, almaz.alexandrovich@paragon-software.com, 
-	apopple@nvidia.com, blakgeof@amazon.com, brauner@kernel.org, byungchul@sk.com, 
-	cem@kernel.org, david@kernel.org, dipietro.salvatore@gmail.com, 
-	dipiets@amazon.it, djwong@kernel.org, dlemoal@kernel.org, exfat@lists.linux.dev, 
-	fuse-devel@lists.linux.dev, gfs2@lists.linux.dev, gourry@gourry.net, hyc.lee@gmail.com, 
-	joshua.hahnjy@gmail.com, jth@kernel.org, liam@infradead.org, linkinjeon@kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-xfs@vger.kernel.org, ljs@kernel.org, matthew.brost@intel.com, mhocko@suse.com, 
-	miklos@szeredi.hu, naohiro.aota@wdc.com, ntfs3@lists.linux.dev, 
-	ntfs@lists.linux.dev, rakie.kim@sk.com, ritesh.list@gmail.com, rppt@kernel.org, 
-	rvvandan@amazon.com, ryan.roberts@arm.com, sj1557.seo@samsung.com, surenb@google.com, 
-	vbabka@kernel.org, viro@zeniv.linux.org.uk, willy@infradead.org, 
-	ying.huang@linux.alibaba.com, yuezhang.mo@sony.com, ziy@nvidia.com, kirill@shutemov.name, 
-	dgc@kernel.org
-Subject: Re: [PATCH 0/2] mm, iomap: account dirty at page granularity for
- per-block dirty folios
-Message-ID: <avdg_Q08T-ilyNmK@pedro-suse.tail5790ac.ts.net>
-References: <mcskrz2zbav5r3xtlwqytyotgjcmmi3wapeibkqornuhb3qp5y@qk22j77kvkqx>
- <20261113155015.516481-1-dipiets@amazon.com>
+	t=1794597341;
+	b=hrrgAGI1GOJC84ZIgVyXZOHHX+l+IsYorGpQeGdevzgzWkeDGYu2RFTA5qfsY9DoeVuTXj
+	bVK1pD/JQ3WJFZanci1HyOBFUjz00oaa0n9PmAagvJtwWLSyfhCAxgb8jejfY+igEmhz/W
+	UUp+lPLOsSBJHivIP/FwSXeT0ubP90U=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E21D6633BF;
+	Fri, 13 Nov 2026 19:15:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F34681F000C4;
+	Fri, 13 Nov 2026 19:15:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794597340;
+	bh=hwPuVq7T8FdelkrZoqjLG70zrzZ/KbjEwFQO6WatOkU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LjmXZN4TxOHWUMeds0ZDPxwPCBanIIeDnosnRa9n71ZxOThzbLrZgo8dJNYMXfqwj
+	 mW/DpaVwx5UkWp/+j4UaZ3V6+W7fDsNZb3CDJbdrpQeHrBwsnOB4an6C2KWXWHxcdN
+	 A0LR0HWkvBY/UKYBWCJ6b8qEzT4YCefgJxwv1S4ewW1U0mhkaFtqSVfjrtdEWnHKmO
+	 OgVRoeK4MHUrpXzMBIJ+45gKib4aXMDx4tCerHrLm51CAvJAbb8qI246UZLsLACGPH
+	 9lB2uXB3KBe87fpe69pC69v1a+e3nhCYIAd3V7GUSRQFSnNQ/R5WoGEFdjNXxQKUB4
+	 vQ7k5qcNPlGcA==
+Message-ID: <0d6e29f8-54fc-427a-a979-1a8c6f4e3f06@kernel.org>
+Date: Fri, 13 Nov 2026 20:15:34 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261113155015.516481-1-dipiets@amazon.com>
-X-Spam-Level: 
-X-Spam-Score: -11.80
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 83F5640003
-X-Stat-Signature: x388wb94x5z9w6tb5e3jsh4k4wchwybf
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/madvise: disallow guard region installation in
+ uffd-armed VMAs
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ Tal Zussman <tz2294@columbia.edu>, stable@vger.kernel.org
+References: <20261112-disallow-uffd-guard-install-v1-1-bcf8b1aaa72e@kernel.org>
+ <0e3e876e-c3df-4660-ad89-a5f0fd7dedc8@kernel.org> <avcNcL6svEOTg_3r@gremlin>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <avcNcL6svEOTg_3r@gremlin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794597195-304772
-X-HE-Meta: U2FsdGVkX1+jnao//bxwpXPRtJzrFBVyzrvpX/6HV1jlTsR0fMREYLP3+CAeAqIOGd4pV0StNoGTwYV2Elswuk6cMFI3y0pBnUYfaZenqpcH4qFHHjMfLIki/rUk3k8Afoqdwd/w+jg36Fvr7EF6JhIftRNovhL6Spgb/YpppBINaUJbhmx88T+P19pEyendf1G9kYF/SBQZhTZhb2u1sPhzgsg1u5UrkY1lTcg/qhv//ib0K33JPuQMHh5BL9eXghatGcWr+wzHHSYg5Lzdy0sXEiEK2+Vlq4ylD55LZcJdvoQntLARY5BtEYiuKcPRWHDu+OtR9jv9umeAik6FehGJwArrysgl88iOrbdoB1ttPw8hHaoYKIcth52dvxSgqj3G+MBjmSO3FPyDI1gNcGJwgygdM+QsjSxLOv8y5bA24N4EEafeSlvPicABSA4WobDvS4xOA2AnOP6IrykNal9Cb8CX0dvD9KcVKOAkMz23szeXro2LGkBD0dBUQrLVP6uUZXaZO49elFCAxjNKuhDiqSVFCBBH4JtibjpVmoUIvr9WltT425xgGF0YQti13cq+EjR3QrvuXURrfbHyIcUYI5/NdzBM11DeXLyXFm91iquI2bo8H780Xx9R2/WCwX97vVsKIpOEjfzssshOkv0BIRQ3m8M9GudJxPl5V8d5f2X7obng/pS/5QxL2eLICN5clW4jr6DVj394+2K1aU6tGLDa+0l0TwOrFHhGpaafDoUdGJO0JbyQxDuszU1FNahagXmEgvRB2/pEQFe5OEbJqaooGo6+sjrhylRHfTzxd481CXTWS/YZ26ZevgOSnJcA0DiJkc518XSHYRrXjf/UfFAUmRz0EFrehnKvSB3z8O8XPauAOkUT9HhND+S3NoEMBfCpHtfyVU6nmsnTQQzbcDul5PxT5O84oxoLH6YjnW1vVqKFI898bTho/NnRQd6akqfDBK8f05d3urT
- fCaAL6xc
- HuzBr2+nWgNu/WXr7r2pgdFKNHiG6lhCvqr86QH9cBsm7Sr8HM+zbnjndWq+PKeTXUBQ++Tk/bAqFUYiAQ0jYw5Y2vAsbK3jyLD04m75OXJflXbGfcCQz3nka/NOUrrvOS8Z7pJWPt8FeOZ+3CRRGNDVZzGcn8Mnm8fjbH3G9yfmwPp9JsFsuCdV2j/t1XnU4eAL9QeoVIwfokf7QsbeWVwM5sBGSUmNpJrInBG/p4LIadwUwGsaYHBkZNx8tYIOV9KnMxKDhC4k4Nqezdob97O3pU/KxUSOHmEeqIimGjt/cgErw6N4igY+ReUlANxmmSwKL+cozl8Czc1Gi98/wYDQxtw==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 682E7A0011
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: j1keqstd5s31agmhbfwhdneb1kok4qww
+X-HE-Tag: 1794597341-745446
+X-HE-Meta: U2FsdGVkX190wn+1PTRHj7Pb9/fR3wWikkXXOIwWkAkY+MMxCuwKSljhCWY/RajLSCZadEqj8sdgPvZy1v6AqFAQHal9OsVN6sSEqdQlzyZ5TutM4yf5/1A7ptgcTo1BOFyz01j+EJv9CngjMw+30DMgslCTLQ1I9jwW9v4THGQQzdSHaT+OtjRavaS5fV/8sZzlc/pm7rX0wjODZbOd43Fbkq4N4zEe7J+NBTAfmEWndC8PAFhPNraSKnJHOlMXtBy1VuY7sJUErdQS+BXJG9hc1umgqLmfZO3vBAH3hrA0WLktitO/chUA0vsWN8X1TcPDOmCiiiUNt6XGeFgmDga5NPTJoJpaY9csQy7xp2vdzJ6MG6zJyGU4dcuqSV/wbf28hs3q4C8shoDZBF5XV0RVodt3U/4dti5RcaUmx3qYr3z+2MSJGJ+kG3VMyonCEi5S8JnOZ6f9m1UhU+JYOfrZ2pRPMF21U0iNaJHdS9pYAIdgobzipWf/e5ULovgNFWimeCY2OJ8k+D3BFFgIKmKNXBoRKLc+UlzqJ5/zp3sOU8Qf+koHTDEi16RBBhNeoPl5Iz1Q5sLlZ2v92j41VYkuhdRlIee9t1TFtGv5SadHcXpLhw0NZhgQ38MF+gouT5DwRIo3FbgWuw5zhNBFPHROAdHB/Pi5wGFsZ3axFnESVF65I/PCrxDuQmm+r1KBZffIpvyQPM46j69RfCMHGtlgejl4k9Wy73Fb6lLhcPArkHKhXabhUouCUxt78Go9dw1z8f+WxyjlAN1n5qzIjYzXjjjAVm8y7BNfQO2G2XVtMRI6Wi/TTv0y0cdQ54+Lh3BCJNb1DTbnlrTs2hvJFbeO1ezLO5RL51uQjHyRM2RvF9umlZ0vvcJ4y73KkHcm0VkS9ApVd8is5LVTTiVAAq818+DKRwGSHsQLE1DhmlroL5Nnqczdc2pS3LzWdkC8oQLkOal/AkDO3EyMIsH
+ 488YQhXN
+ qgzOZ6PloovcwXUH9Y6h6WniogoZayv0FsQ1HQBq5it4G8Ldz1VwBCrrHUoJYSIaSSgcsfUclIna+Hxdw5SUB3QWjXhESy3nwu8sk6ciTbKO9yqIJXHmfYaQKaaAhiwAZPI+K34TO0uOicP1ynvTRXAQmdY/dAAs8T70MP6qocg2MLqwQEpteoJb4JPb0UiAZMwEx9sfD9pW6lVSXoBKtXCmRtq8dUFIdnTIFBQaa1yeBY0+daN9fCyjqodjgFjQ4fYMJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,153 +147,131 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 13, 2026 at 03:50:15PM +0000, Salvatore Dipietro wrote:
-> Hi all,
+On 11/13/26 14:59, Lorenzo Stoakes (ARM) wrote:
+> On Fri, Nov 13, 2026 at 12:59:00AM +0100, David Hildenbrand (Arm) wrote:
+>> On 11/12/26 18:38, Lorenzo Stoakes (ARM) wrote:
+>>> In order to establish guard regions, guard markers are installed in the
+>>> page tables of a mapped VMA.
+>>>
+>>> However, problems arise when one tries to combine this with registering a
+>>> VMA for userfaultfd, as such operations may themselves need to install page
+>>> table markers such as uffd-wp.
+>>
+>> How does this interact with UFFDIO_POISON markers that can outlive even
+>> userfaultfd registration?
 > 
-> Thanks Jan, Pedro, Dave, David and Kiryl for the feedback.
+> The zap clears poison markers, as is standard. It's really horrible this logic.
 > 
-> Following Dave's question about how PostgreSQL gets large folios on
-> files it writes 8 KiB at a time, we looked deeper and found a
-> reproducer that needs only fio and a single disk.
+> So the code path for zap used by the guard install (via zap_vma_range()) is:
 > 
-> What happens:
+> zap_vma_range()
+>   -> zap_vma_range_batched() with NULL zap_details
+>     -> __zap_vma_range()
+>       -> zap_p4d_range()
+>         ...
+>         -> zap_pte_range()
+>           -> do_zap_pte_range()
+>             -> zap_nonpresent_ptes()
 > 
->   1. A buffered sequential read (VACUUM, a backup, a scan) builds large
->      folios through readahead.  They stay large in the page cache until
->      they are evicted.
->   2. The first small write into one of these clean folios charges the
->      whole folio as dirty: a 4 KiB write into a 256 KiB folio charges
->      256 KiB, while writeback only writes the dirty 4 KiB.
->   3. With random writes, most writes land in a different clean folio,
->      so the dirty count reaches the limits with little real data.
->      balance_dirty_pages() then throttles the writers, and they end up
->      paced by how many folios writeback can clean per second rather
->      than by the bytes to write.
+> And zap_details is NULL.
+> > In zap_non_present_ptes():
 > 
-> Reproducer: XFS on one EBS gp3 volume (3000 IOPS), m8g.8xlarge
-> (32 CPUs, 128 GiB), default read_ahead_kb=128. fio's 1 MiB reads grow
-> the readahead window up to the device's max_sectors_kb (256 KiB), so
-> the read builds 256 KiB folios.
+> 	...
+> 	} else if (softleaf_is_uffd_wp_marker(entry)) {
+> 		if (... !zap_drop_markers(details))
+> 			return 1;
+> 	} else if (softleaf_is_guard_marker(entry)) {
+> 		...
+> 		if (!zap_drop_markers(details))
+> 			return 1;
+> 	} else if (softleaf_is_hwpoison(entry) ||
+> 		   softleaf_is_poison_marker(entry)) {
+> 		if (!should_zap_cows(details))
+> 			return 1;
+> 	} ...
 > 
->   ; create.fio: 16 x 3 GiB files, direct I/O so nothing is cached
->   [global]
->   directory=/mnt/xfs/fio
->   filename_format=f.$jobnum
->   size=3072m
->   numjobs=16
->   group_reporting=1
->   [create]
->   rw=write
->   bs=1m
->   direct=1
->   ioengine=libaio
->   iodepth=16
-> 
->   ; load.fio: buffered sequential read; builds the large folios
->   [global]
->   directory=/mnt/xfs/fio
->   filename_format=f.$jobnum
->   size=3072m
->   numjobs=16
->   group_reporting=1
->   [load]
->   rw=read
->   bs=1m
->   direct=0
->   ioengine=psync
-> 
->   ; randwrite.fio: random 4 KiB buffered writes, 32 x 312 = ~10k IOPS
->   ; invalidate=0 keeps the cached folios when fio opens the files
->   [randwrite]
->   directory=/mnt/xfs/fio
->   filename=f.0:f.1:f.2:f.3:f.4:f.5:f.6:f.7:f.8:f.9:f.10:f.11:f.12:f.13:f.14:f.15
->   rw=randwrite
->   bs=4k
->   direct=0
->   ioengine=psync
->   invalidate=0
->   numjobs=32
->   rate_iops=312
->   time_based=1
->   runtime=120
->   group_reporting=1
-> 
-> To reproduce it, run (as root):
-> 
->   fio create.fio
->   sync; echo 3 > /proc/sys/vm/drop_caches
->   fio load.fio          # skip this step for the control run
->   fio randwrite.fio
-> 
-> fio asks for ~10k write IOPS, more than the volume's 3000, so dirty
-> data builds up in both runs.  In the control run (no load step) each
-> 4 KiB write creates a 4 KiB folio: after 120 s only 3.3G is dirty,
-> below the 12.2G background threshold, and nothing is throttled.  After
-> the load step the same writes land in 256 KiB folios, and each write
-> into a clean folio is charged 256 KiB: the dirty count passes the
-> background threshold after 6 s and writers are throttled from 13 s.
-> 
-> Results on v7.4-rc2, one run per kernel, each on a fresh instance.
-> Writer sleep is the total balance_dirty_pages() pause time over the
-> 32 writers during the 120 s write phase:
-> 
->                          write   p99 / max   writer   max    folio
->                           IOPS     lat ms    sleep s  dirty  size
->   baseline, control      9,984  0.01 / 0.30      0    3.3G    -
->   baseline               4,061    60 / 160     179   23.5G   256K
->   v1 (this series)       9,984  0.01 / 0.67      0    3.6G   256K
->   max order cap 64K      7,071    50 / 280      73   22.3G    64K
->   max order cap 16K      9,984  0.02 / 0.05      0   11.9G    16K
->   split on write         9,984  0.02 / 0.17      0    3.6G   256K
->   evict on write         9,984  0.03 / 0.19      0    3.3G   256K
->   POSIX_FADV_RANDOM      9,984  0.02 / 0.05      0    3.3G     4K
-> 
-> The control run gave 9,984 IOPS and max latency up to 0.30 ms on every
-> kernel.
-> 
->   - max order cap: the global cap in mapping_max_folio_order() that Jan
->     suggested trying.  At 64 KiB a 4 KiB write still charges 16x and is
->     throttled.  At 16 KiB this run is not throttled, but dirty reached
->     11.9G, just below the 12.2G background threshold.  The cap that
->     avoids throttling depends on the write size, and it removes large
->     folios for every file, including ones that never see small writes.
->   - split on write: when a buffered write (iomap opts in, not for
->     zeroing or unshare) finds a clean, uptodate, unmapped folio at least
->     4x the write size, folio_split() it down to the write's order before
->     dirtying it.  The rest of the folio stays cached in large folios.
->     On the concerns Jan raised about splitting [1]: split on write only
->     splits clean, uptodate, unmapped folios, so it needs no new
->     filesystem state beyond an opt-in flag in iomap, and if
->     folio_split() fails the write simply proceeds as today; evict on
->     write avoids splitting altogether.
->   - evict on write: same trigger, but mapping_evict_folio() the folio
->     instead of splitting it (~40 lines).  This discards the folio's
->     other cached data; nothing reads it back in this test, so the read
->     cost does not show here.
->   - POSIX_FADV_RANDOM (Dave's question): fio's fadvise_hint=random on
->     the load job.  It avoids the problem without a kernel change, but
->     only where the application opts in: the hint is per open file, so
->     every process that reads a file must issue it, and a reader that
->     doesn't (a backup or copy tool, for example) still builds large
->     folios.  Every application that reads files sequentially and then
->     rewrites them in place would have to adopt it, and keeps the
->     regression until it does.  It also turns readahead off for those
->     files, so their sequential reads lose readahead.
+> And zap_drop_markers() checks zap_details && zap_details->flags &
+> ZAP_FLAG_DROP_MARKER.
 
-Holy heck, did an LLM write this?
+Right, my intuition tells me to just nuke that thing by setting
+ZAP_FLAG_DROP_MARKER.
+
+MADV_GUARD, is just like munmap() another form of "zap it all and protect it".
+>>> This is especially problematic because guard region installation causes the
+>>> regions to be zapped first, meaning that the removal of userfaultfd-tracked
+>>> ranges will not be logged in this case.
+>>
+>> Again, similar to trying to uffd-wp-protect'ing a hwpoison marker (which will be
+>> ignored), and then zapping that.
+>>
+>> Isn't guard marker installation/removal just another form of zapping?
+> 
+> I mean users being weird could decide to use it for that rather than
+> MADV_DONTNEED, but zapping is a side effect really.
+> 
+> Really the idea is that you might have users who, for whatever reason,
+> faulted in some range, and now want to make that a guard range, so for
+> convenience we zap it for them :)
+
+I think not just convenience. There was this problem with faultaround / THP
+placement IIRC ...
+
+I'd just zap everything that's there. That's literally what the user asked for.
 
 > 
-> Split and evict on write keep whole-folio accounting and act at write
-> time, so they also cover large folios already in the page cache,
-> whoever built them, without each application having to opt in.  Both
-> only touch clean, uptodate, unmapped folios at least 4x the write
-> size, and only on iomap buffered writes.  Split keeps the rest of the
-> folio cached at the cost of the split; evict is simpler but drops it.
-> I'd appreciate your opinion on these options, or any other direction
-> you think is more appropriate.
+>>
+>> So to me this all sounds like "if user space does something stupid, it's user
+>> space's fault".
+> 
+> Unfortunately, as per Tal's series, there's more to it than that (linked in
+> Closes: tags).
+> 
+> You can get an infinite syscall restart (ugh) if you do this on a shmem
+> range (Tal's 9/12) so it's a kernel bug that _has_ to be fixed.
+> 
+> The other bits are just about a user losing track of uffd stuff if they
+> guard/unguard, as you say.
+> 
+> But every other zap code path does the uffd remove event stuff, so this is
+> still an exception.
+> 
+> If you support uffd, you have to add a whole bunch of horrifying, awful,
+> terrible open-coded uffd crap, e.g. the userfaultfd_remove() etc. And you
+> have to drop the bloody lock and reacquire it too and make sure all that
+> works correctly (...!)
+> 
+> Anyway there's basically 3 options here:
+> 
+> 1. do something like what Tal's series does - add a TON of complexity for a
+>    use case that nobody uses to get behaviour on something nobody sane
+>    should care about (i.e. uffd/guard/unguard/expect uffd correctness).
+> 
+> 2. Zap with ZAP_FLAG_DROP_MARKER, and silently lose uffd-wp state but
+>   'support' uffd. It does fix the 9/12 bug but then subtly breaks uffd.
 
-I think you'll face strong resistance to any of these options.
+Right, that's what I would do.
+
+MADV_GUARD_INSTALL zaps everything.
+
+It already zaps swap entries, migration entries, hwpoison entries ... so just
+zap everything.
+
+[...]
+
+> 
+> If you're really concerned though, we could go with option 2, which will
+> just make UFFD behave differently for guard regions.
+> 
+
+Not really concerned, it's just the most consistent one for me. Zap everything.
+The user asks for it, like he would ask with munmap().
+
+> (I regret, obviously, ever allowing this for uffd ranges. And we _all_
+>  regret that uffd was _ever_ allowed to be merged in this state...)
+Yeah ...
 
 -- 
-Pedro
+Cheers,
+
+David
 
