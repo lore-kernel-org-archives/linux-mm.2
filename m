@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92074606A88E
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 21:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D76F606A336
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 21:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h+diSbf1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WMqPKEaj
 Received: by kanga.kvack.org (Postfix)
-	id B95D66B05BB; Fri, 13 Nov 2026 16:46:12 -0500 (EST)
+	id 813996B05BF; Fri, 13 Nov 2026 16:46:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6EEA6B05BD; Fri, 13 Nov 2026 16:46:12 -0500 (EST)
+	id 7EB876B05C1; Fri, 13 Nov 2026 16:46:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A847F6B05BF; Fri, 13 Nov 2026 16:46:12 -0500 (EST)
+	id 6E1F46B05C4; Fri, 13 Nov 2026 16:46:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 885866B05BB
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 16:46:12 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 27BB780156
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:46:12 +0000 (UTC)
-X-FDA: 85431429384.22.D847D57
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 57F214000E
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:46:10 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h+diSbf1;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 4DCE76B05BF
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 16:46:22 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D86248015B
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:46:21 +0000 (UTC)
+X-FDA: 85431429762.20.A6AD6EE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 20AA3100002
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:46:19 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WMqPKEaj;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794606370;
+	s=arc-20220608; t=1794606380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kSGDbQCcTAUSRH7G/fxYE5gB5OxnE3KFAroSX9Yeoig=;
-	b=DjzIEwLJBWF18C34cOa+4CKHE3/8o8ZO0COMMv02BfTiYiLvqCiA1hSRTS0GftJOwkTqip
-	r5llPXl0wtL+HOwhjx65WtIKWkSorLGz9pviYIoSL9XYffHihl23TwszGXbXHumFT6k4Gg
-	Xc9t2U1RTzOwClovkW+2D3AX4I4jyIw=
+	bh=8rpd6WLSmRU3qOkeaVFoKOfZ/LYCxe6ke3Meyy3vZKg=;
+	b=oM6wnsTF+PRIviO7y9WRHIvyAUJ0k3O6rZ8PaJX9vioQOzf3aqLwd0fAjw7s4U6Nw6kcmm
+	3XGE9fDCSQBjU9vZK5n3Iw57sokC5NEeY67mWwPhR3lQEYxfNil6Ig9Uv6SvKad91MhRtE
+	19AiiMz2InmLbQg8PN18k5XS6Cj76g4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794606370;
-	b=p5HBeYWg3/Y+YbbEC/n3mP/mK6gnKm6rW3uMHyNnRyPEdM3IrfFWgKee+SOOoUtFnUOoYS
-	p6sObDkXkeMUCRyYX6DMl05czvwsLlJ0yYAViMBVtcIip5LpysWwjGz6UljxZQW08qdUzL
-	XY/ZZRCS2CHyyszxmJb7p4xGHqASzSI=
+	t=1794606380;
+	b=FHtp4Ahy1n6Xqd4gzyV6VIGaAZxLZFmErdOgo2n59W5OLuOiqshppgcEB9Gegq9PHNV7wq
+	LJvXk6Y0Qifu2jO8GnVnjqIPABafulKKdaeTk0KB/HULk/IdWq1w13GMBNUu9YhRJNqVqh
+	PZXCVArTCP3mzjXzbDmgGn9XE1BeoW0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h+diSbf1;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WMqPKEaj;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9C33C434E7;
+	by tor.source.kernel.org (Postfix) with ESMTP id B538462434;
+	Fri, 13 Nov 2026 21:46:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04FD51F000C5;
 	Fri, 13 Nov 2026 21:46:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783581F000C9;
-	Fri, 13 Nov 2026 21:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794606369;
-	bh=kSGDbQCcTAUSRH7G/fxYE5gB5OxnE3KFAroSX9Yeoig=;
+	s=k20260515; t=1794606379;
+	bh=8rpd6WLSmRU3qOkeaVFoKOfZ/LYCxe6ke3Meyy3vZKg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=h+diSbf1SuhC6aFNsHOme977E1ZvwU97QzoXopEuhlIB8TKotYFMevmSp6UYzTjjn
-	 FZeBCqM15Mnt2X2QQ2AB3koBYK+6mDB43xHWQszL+inYtuGHaR83oC9sbpFLS+f0C6
-	 xkz3NWMU9n1zMVtX+l60Y74eUjxb0O0csn+shbuBTEqWXGhJYBK51xoqFzkuawsOMV
-	 Q8zEswz9yY4YJBacnDHaha//uClVvE6rjjq9K940lycXG2YGhlU71NttRaWeUyYI7P
-	 PADgp+xzd+leSC8aoGyMzk5lcig2i+1MEFKCo4ieNxRDJ7tUTtIjpSrNrbD0OnM24Z
-	 ofN2wsrpH4Smw==
+	b=WMqPKEajsCLhGzUkvEZaGbSQ54SbihrSASdI/IghM9JQNHOHo3SgRPvLWU3fE6OYt
+	 zKPrH4MjS6QSlFrH7DEK3hVvWDQgpS7FUSUlvjzmGaIfGT9bQq3wFfXNwspyDCJMIb
+	 BYbdz36X4tIC6kUgLslyXhnWQzU1QJQzg81t2YlF5ZDx/akEUFTez5KFc7LOYblgG3
+	 ZoMtLAYLzwBipJe1aqFSXoFYe71qroTQZpJif6I2UPdSd2bz+W8KCvXB8KDdBdR+ly
+	 MB69v33NXvRXb0PA04gQF5hZ+xlel8KrdpgtKS+NSVoyvvnqr4lKUIdPNXOmb/Ryxd
+	 HLmFei1P+LnVg==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Fri, 13 Nov 2026 21:45:21 +0000
-Subject: [PATCH v2 03/13] mm: cachestat: restart the walk after each entry
+Date: Fri, 13 Nov 2026 21:45:22 +0000
+Subject: [PATCH v2 04/13] mm/migrate_device: allocate THP deferred split
+ heads
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-mason-migrate-et-al-fixes-v2-3-50a2ed382b61@kernel.org>
+Message-Id: <20261113-mason-migrate-et-al-fixes-v2-4-50a2ed382b61@kernel.org>
 References: <20261113-mason-migrate-et-al-fixes-v2-0-50a2ed382b61@kernel.org>
 In-Reply-To: <20261113-mason-migrate-et-al-fixes-v2-0-50a2ed382b61@kernel.org>
 To: David Hildenbrand <david@kernel.org>, 
@@ -97,28 +98,29 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Mark Brown <broonie@kernel.org>, 
  "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, 
  Rick Edgecombe <rick.p.edgecombe@intel.com>, 
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
+ Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2976; i=ljs@kernel.org;
- h=from:subject:message-id; bh=lUSIkZIR6P4SuNmqWQyzCX54g+mtKdeum9Py8TZcLQQ=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLK+t/zguiHA9DlRiPeX+wLWT9Yyk4tcdNnWH917zS3wp
- dwetthHHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZjIPwVGhl+hxfcuPbsXZ6HV
- 5B++6g3X3W0Wr3cdmDv3x8wyxqLNIvMZ/ikxn1r4KWXT6Qzru093Tf6oxM6YmXCuqu7/F8dlilX
- 1HMwA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1999; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=sueKEVWnjnuf/6gb3KihY296WkpSAIKgZmGa4KnlpQ8=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLK+t/yoSE/Udbn7csn+WJ7VBzJNikVlk3h/7s1tv5Va8
+ W6hXsrXjlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAExkijAjwyx/t7W1s5IkpaZf
+ P1a31/eWh7vL5lgdU8nJ3F0l9SfP32NkWHX98ee0Vac8cw7dKN/pKv7BNG89g4Lnd48dfbcsra1
+ CWQE=
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Stat-Signature: gpashm3der185eso9h5o3n9qroy47eyb
-X-Rspamd-Queue-Id: 57F214000E
+X-Stat-Signature: 646h3krfjcgafa87ughocmtych1b3wf6
+X-Rspamd-Queue-Id: 20AA3100002
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794606370-123806
-X-HE-Meta: U2FsdGVkX1/8/wujBlftBQDRLZ95VwXBqzckeIxksqunfmGflq28fLSzz2H0B+OheadIV1I9DzxFhomxi4jS6aeglMNH0hl7KBDBiflqz37x3Vr26xMtAicdopZl9DZdRGrL4wAVcQ+sx2SMeY6UxHAZ4vB5zuFC4ZKhpuzYkKC0YybEWO2GY7j/3pIiIav3hwNnqeMImHuHrABSaC8HonAHztTwoEl/1gja5y7YvUWHUKlFsH75KO+kIGjbPE0kl2LEpsJmI/t/FHarPpbYPMnG0wM+3k/ohgy/bV/aNgVUl9NlUeLL154eP7LzC8v2ZIpmboJLxiMVNnNLOY0ozqZB7m02WauO5exMJ3IFiA8AGb2/qV4V22UiGrBXExCDjG2fV2J3nxnlJrivnZ7oN7PKacns6YxLRE7hbX871j7pOj/Y9jkFHqUfqIvR/FDHcmGJYAUsaiumGZjxfTjtxsCQ0JfjcDQssgkw4m7ywKHlrZ84bOltWesiUlFul7Y/Y1XJ/yGKwcqMqrARsOzpHRbweEdD4SfpSr2KvCDsOH0LMbPMXDwhhIENc5WLNPxSSSditv5D8watUyMi6ThBrzmzbi+IK9PXpO89CDNnHOxk9kEaStNaXKYyqcfEvKI7uYzA4USFYzWde4xcNcwrpaUPXIHtWdOicMsh5UZlOMc4DQ4fSTBp1F2ihCEODEuJKyWiNAI78Bh8RFsKkzSGv6N7HzLjHSwcvzzpUn0etsCyTQDIlw4AI8eqO9BnEsZ+Va1S5tXZ02+cCNIr3KwXAORIPoP5jBZRUXfP6alnS8XdJOU6Mg53XUsyn4WFcQlymFpH8ATXzYDBFe4U5IJxe76/DmGribG8zjDjHF+IHxpLKpM90ZFCL7dYSWqfiQQqtgnIDcSjCfVxIBtERXa42EAnNZieaiRtpYpAYghiRHc9kIWUffFcm55jQlxGWPEwa4vG0hTppEZXAMuIJ5c
- EQlQzovM
- 9vAkiMUiZAg3232Q215T/BvtDwDqs0YfFAdLhKvPM7gO7HAbe42eUsUfV/2JJDQm2HNj9ZA6D89YYBNqJnQzTlwfEik4vK/73NXSJhF3W5pB2m/7ucUuKILRW9aOMpGHk0XB5NugE7Gk0cUv41xdYtveJ5PJGzXVXb2DXemEPUBve4wtN3JhuY8pxcVPPtjKa+V64ke9Ru0JKm+nKcYaz6vDmoUeKjWBs5HiTLXenqBXzO5GYm6z309q3/Qz2f2Bg+tkYauGRHpU+LAZzEbMGscmABOcQxU4Ry+NfmhyF1Dj46hlxqt6mtkqfV4UQyRvr0YZauLQC1awE2FgTYJA6h8qT10vMqg2P86A7mNAlDIZQJR856RHldcmWAmrzjreHr7VGW6Ip2kSPKaqJcgCXpJq9u8Xh9FTmJYMUM3wruSzPRUVLks3Ff3m7QQ==
+X-HE-Tag: 1794606379-751287
+X-HE-Meta: U2FsdGVkX1+qdZcawQZ/TarFpGc6LsV2bCh1xCk+/aiPBh0CiNmYpckbw65B2mJ1cuPL4ZNxdjfjDmMyNT8i1G2ol8Ftr//dYaQVKXJwxXzt5V2jL9cpGk6xj8DtrsJskka1ClgDQtZ4fO5LwHH0Ty7OmB0o3zY/aKwvVpRftcBcnhp5URE8ivTqxSzveeK9A57uuKR4dSQvCN+4LCJOEBfaG14FOw64jQhU66DnEaME8r45A3rDj1uuQIGouwZz9HWCJJ5MHSClfq6aLR090Q2SrnbeDuXaKPXOAiZY19MWKnqCd94sIMvL61GufGBQrJPZLikb6oLbdwE5n9SIVLh4Af6CkUP+xULKsxNSGpuvYrAC/0tTqL9yiKT5rcmnVQDVQGPlbmptN4gO8Cz9WGWT7a5eyGREyRRh3wm7P0qSvyB00Z2THQ3MGXJhdfqk0IURKqPsxj+OQXyWDOAPMp0eN+bPGjEGnJHj+72SqweV81dNB6DPKqkKVgvLVAZ2YP8IV9p1GH6dCglqaa6Apz2q5nHQMOiSyKyjAnYz3v7OkODbu+PquFdzYn2YSq+1qyqO4kbulitvQnIjblDyOXKiM79AI6fnec8VAjvKtpQYmnqyfXC97+c+Bi+YBxcqUsw+jyRms0rEyGoGnBxTY/XsT1pCai24VaB8eaji5D8fqjNkZa3cUYT/pzaWR92zl2IcBzQH4ZuDcwKt1hr/9Vj4dtV9FiKDPSk/0kVWJ+D4VsOkIkbH32ND5oZCQZQd67tbihBbL1Ao2/r3CH4tUIlIiSsOvumz9yZWEZav1bDVgf4UMXkg2wWCualowiPVDjLpId+fZfR+lNb6QW87RRNASPrLzDohmrYuGdf0ncdNQZ01VcntExGxYQXgrF53nTSJ6tb3Yhvn9GSHjz8XO0uJ1tDdhBdjERuvV9C9IDtCD3Z+jDOfBYe6LRs8DsoYJpavMYRPSQMvgM6NlLl
+ +8Vm/7Gh
+ JUErmUhacvtsNafojQHE4lPTomyqmj98kUclpMVlM5zfNlQwmAw0QQIn/kTagzQ4zicHQMUcybBvL6GnWMTV5F30V6rAoF9kW8d9aw9L15RYfeUKT6IC/k7wCgRZhXAe+gITvUBpNVLFv0FeDfVsnRVunGiyqRJQVsKibHDvNUcjtERepzXBdbumFBrKoelf+oZnyjuDGik/Ergjpbhc0geCagUk736JIB1r88/+e6DfUFg7w3R4K7jkhcU93XH25b7d5Zc42Py3PHDCvhp+oyIX91zoLZZhkeeczALxgWWkZbVCToQYlTEN3BONYu8r7dYmMzCeuwNQVbWbYNWUy8PMb8ocp15AkQvtAoZpfdoWmIj8Aiua+xQ/4z6MtMzFjFNKsGDpFNvG3j0x3U8tpHY0gVh4BRnJdiWKRjqaK7C5CZTBtDMIABON3pPTjb0kToywgTC+T9qOtcm2m3ym9hGavQrsiNiMP55fDhGQaEKwD6kgcjJq68cS2Qsma9y4Yd41xu5RMpY3GSxAJHFOCKhKGYvWmLleCXRQAj1NsfCuC+GbI6u/3liBSZg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,85 +129,58 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Chris Mason <mason@kernel.org>
+From: Josef Bacik <josef@toxicpanda.com>
 
-cachestat() can leave cached pages out of its counts. This happens if
-the entry that the call has just counted is replaced by a larger folio
-that starts in the same XArray slot.
+A THP that device migration maps into an empty PMD can end up on the wrong
+deferred split list when it is later queued for a deferred split.
 
-The issue is that filemap_cachestat() walks the page cache under the RCU
-read lock, so racing concurrent collapse/split is possible.
+This occurs if the memcg has no heads yet (resulting in a warning if
+CONFIG_DEBUG_VM is set), where deferred_split_folio() will then queue the
+folio on the parent's list.
 
-Thus, an entry can be replaced immediately after the walk has returned
-it. When that happens, the next xas_find() skips the sibling entries that
-point to the slot of that entry, since ordinarily they belong to that
-entry.
+Once a later THP fault in the same memcg allocates the heads,
+__folio_unqueue_deferred_split() and the split path resolve folio_memcg()
+to the memcg's own, now existing, list and take its lock.  They then
+list_del_init() a folio that is linked on the parent's list, racing with
+anything holding the parent's lock, and both lists' nr_items counts go
+wrong.
 
-However a concurrent collapse_file() or __filemap_add_folio() (when
-replacing a shadow entry) can store a larger folio in the slot, in which
-case the sibling entries belong to the new folio and the walk still skips
-them.
+Resolve the issue by calling folio_memcg_alloc_deferred() after the charge
+in migrate_vma_insert_huge_pmd_page() and falling back like a failed charge
+if that fails, as __do_huge_pmd_anonymous_page() does.
 
-Consider:
+This was originally discovered by code inspection.
 
-    cachestat                         collapse
-    =========                         ========
-    count a 64-page folio in slot 8
-                                      store a 512-page folio in slot 8,
-                                      with sibling entries in slots 9-15
-    xas_find() starts at slot 8
-    and skips slots 9-15
-      /* 448 pages are never counted */
-
-Also consider:
-
-    filemap_cachestat()                  __filemap_add_folio()
-    ===================                  =====================
-    counts the shadow entry in slot 0
-                                         slot 0: a folio of 32 pages
-                                         slots 1-31: siblings of slot 0
-    xas_find() skips slots 1-31
-      /* 31 pages are never counted */
-
-Essentially the fact that large folios might be present means we cannot
-safely continue the XArray walk, and must reset the iterator each time.
-
-Fix this by resetting the walk in each loop. This incurs a performance
-penalty, but given that only the RCU lock is held here, it can't be
-avoided.
-
-Fixes: cf264e1329fb ("cachestat: implement cachestat syscall")
-Signed-off-by: Chris Mason <mason@kernel.org>
-[ ljs: squashed 2 commits, fixed up comment in code, and commit message ]
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+Fixes: fafaeceb89a5 ("mm: switch deferred split shrinker to list_lru")
+Cc: stable@vger.kernel.org
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+[ ljs: tweak commit message, remove unnecessary comment ]
 Tested-by: Gregory Price (Meta) <gourry@gourry.net>
-Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Acked-by: Usama Arif <usama.arif@linux.dev>
+Acked-by: Balbir Singh <balbirs@nvidia.com>
+Tested-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- mm/filemap.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ mm/migrate_device.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 7c05e4fad081..c4e82891767b 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -4731,10 +4731,11 @@ static void filemap_cachestat(struct address_space *mapping,
- 		if (folio_last_index >= last_index)
- 			break;
- 
--		if (need_resched()) {
--			xas_set(&xas, curr_index);
-+		/* Collapse or new folio spanning shadow entries needs reset. */
-+		xas_set(&xas, curr_index);
-+
-+		if (need_resched())
- 			cond_resched_rcu();
--		}
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 9e19fadfa65c..9e5dab8e1b77 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -833,6 +833,13 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+ 		goto abort;
  	}
- 	rcu_read_unlock();
- }
+ 
++	if (folio_memcg_alloc_deferred(folio)) {
++		count_vm_event(THP_FAULT_FALLBACK);
++		count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_FALLBACK);
++		ret = -ENOMEM;
++		goto abort;
++	}
++
+ 	__folio_mark_uptodate(folio);
+ 
+ 	pgtable = pte_alloc_one(vma->vm_mm);
 
 -- 
 2.56.0
