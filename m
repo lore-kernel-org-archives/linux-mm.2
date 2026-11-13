@@ -1,152 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0234F606A321
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 10:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57FCE606BDA8
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 10:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IPtuJoKO
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=umgMFbRV;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=TlBq/+CO;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=umgMFbRV;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=TlBq/+CO
 Received: by kanga.kvack.org (Postfix)
-	id CF6706B06A8; Fri, 13 Nov 2026 05:53:21 -0500 (EST)
+	id 66E7C6B06AE; Fri, 13 Nov 2026 05:55:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCA256B06AA; Fri, 13 Nov 2026 05:53:21 -0500 (EST)
+	id 63E596B06AF; Fri, 13 Nov 2026 05:55:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDFDE6B06AC; Fri, 13 Nov 2026 05:53:21 -0500 (EST)
+	id 554DE6B06B0; Fri, 13 Nov 2026 05:55:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 93F3B6B06A8
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:53:21 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 22E681C4155
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:53:21 +0000 (UTC)
-X-FDA: 85429784202.22.47EA53A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6DC1640007
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:53:19 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IPtuJoKO;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C1FE6B06AE
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:55:21 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BB2D0A8425
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:55:20 +0000 (UTC)
+X-FDA: 85429789200.04.DAEFE39
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 880391C000A
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:55:18 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=umgMFbRV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="TlBq/+CO";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=umgMFbRV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="TlBq/+CO";
+	spf=pass (imf20.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794567199;
-	b=cg4nZOMnNW2phcNEt6t63nuUXL0gvQb8AvIX9JrX9ZnqRAnXUAGBqcdEy0XRceEOwTUFTq
-	Pr3Oo0lyXf6uRDJTXxp72RGFhiiZXbDi5q6zlrUWdW72uIDVjJ8Ik9TP+5zJGxeIQsBQgH
-	LzRNERR25zbKR0XjNuYgSndN8VnX9po=
+	t=1794567318;
+	b=KpMzz5Mom4A0DLSOvGR2qhHXw+rf/LAR6J1qC8ou+IYD3WIPREzqslWffl0/6G7lsDvfLw
+	lVEtChvnSKAr3CVeUXJj9+L5O43M7+Oegh0gyrflVwrNpFPSYiE3hAD4QNxWhI3APgft00
+	1wEwGP7pM42I9/ABjovBLtZGFUcthzU=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IPtuJoKO;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=umgMFbRV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="TlBq/+CO";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=umgMFbRV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="TlBq/+CO";
+	spf=pass (imf20.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794567199;
+	s=arc-20220608; t=1794567318;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FXAR3k2XOmADxmocsX6uctWFtqeJu78i+LhIjLZQduk=;
-	b=Fcy3rW+oyuHYEp6vPGjm3MXJhOu4hEDwASac9L1XBrB4XrCoAzvb+zhRtmYRUZqmpNVxUg
-	tuBGjqDVEi7YQQGDl3wIEjvmNZqMCdspyC3IvYtAaVvuD6OJhcL/WyKA1xD5NSKd8IrPY+
-	JHRSHWJ6MWigbYoRVljurCCRGYHLrlQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 049C661813;
-	Fri, 13 Nov 2026 10:53:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B244E1F000C7;
-	Fri, 13 Nov 2026 10:53:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794567198;
-	bh=FXAR3k2XOmADxmocsX6uctWFtqeJu78i+LhIjLZQduk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IPtuJoKOgWndeSoW+Ft3DNggXS8gWEaDgnYeDpRAG/BlU2uN9HvsIaEXvK1oh4mgm
-	 39cal93B7HS5m+6upMeYECPQ1Zyxj4IccScKEvkyMn/ULHL58tQ62QNgWDydbwEPyu
-	 +nqDDxVxRKKW680xeSqy0Z02nhINaogVyU61pDYjSDRpfZgAA6tmITzkeVoOKUtKMh
-	 DjWM8Na3+aAeVtBCznGkh8sY+5EA8owX5Qs/0RpY/uxHYPIrwY04cScd11itwqTscW
-	 oXjeS2Gpc/3uepUzBJOBCspIJv1bF5djY+zFcYKECFQH8KUxdf6U7RK8YGjJCOlaV6
-	 V5Di54SflxNNQ==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Peter Xu <peterx@redhat.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Song Liu <songliubraving@fb.com>,
-	Rik van Riel <riel@surriel.com>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	Will Deacon <will@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Nick Piggin <npiggin@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Kevin Tian <kevin.tian@intel.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steve Sistare <steven.sistare@oracle.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	fuse-devel@lists.linux.dev,
-	linux-arch@vger.kernel.org,
-	iommu@lists.linux.dev,
-	netdev@vger.kernel.org,
-	Chris Mason <mason@kernel.org>,
-	stable@vger.kernel.org,
-	Pedro Falcato <pfalcato@suse.de>
-Subject: Re: (subset) [PATCH v4 0/9] mm: limit pagecache folio refcount
-Date: Fri, 13 Nov 2026 11:52:56 +0100
-Message-ID: <179456713145.6906.7073956264359546741.b4-ty@b4>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261112-refcount_overflow_stable-v4-0-ad3deef0bd23@kernel.org>
-References: <20261112-refcount_overflow_stable-v4-0-ad3deef0bd23@kernel.org>
+	bh=oBrh96JneCB85QRwSH0ue44D5aaTmYW0dbY0hlT+9E0=;
+	b=lfoSgWM7IyH7P0Ja3Rs++ofJA+UXL3qHpFVGDQ2BHO9WUcpQzwrlqNfA1v5PiFeQy2EWx0
+	YnHr1TdjLT2RD3OxoRthy0qU8jqiffHasaSaivlEIxG8blEwEdhrC14QR2HQjOxfF8uSfB
+	+DLkfduZb1qW3ryFCTwHkiAXbVodNQc=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 0F3351F88E;
+	Fri, 13 Nov 2026 10:55:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794567317; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oBrh96JneCB85QRwSH0ue44D5aaTmYW0dbY0hlT+9E0=;
+	b=umgMFbRVOQPm7ehXwpvWXZpEFAs863cWC/2ZQwGrgu0F7Vcaar4nmsQ5kvPZk7l7K5rw/A
+	yRxIm/BZccK4dRlCtO565LhfAab2lGF0Y4kvjIQ66bDesY1sioh5A3u0Bd9Z5X5mUzTXMu
+	fDm/Ha4bbSr8PEme402AnjzFpzuBHB0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794567317;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oBrh96JneCB85QRwSH0ue44D5aaTmYW0dbY0hlT+9E0=;
+	b=TlBq/+COzaMY0uiXRfDSQGdNPyu/YjLzQKM37Jd2LmZKy0L85wS+kQxNPWDodjKFJhXiOE
+	+XLddAk3tkl9C0Cw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794567317; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oBrh96JneCB85QRwSH0ue44D5aaTmYW0dbY0hlT+9E0=;
+	b=umgMFbRVOQPm7ehXwpvWXZpEFAs863cWC/2ZQwGrgu0F7Vcaar4nmsQ5kvPZk7l7K5rw/A
+	yRxIm/BZccK4dRlCtO565LhfAab2lGF0Y4kvjIQ66bDesY1sioh5A3u0Bd9Z5X5mUzTXMu
+	fDm/Ha4bbSr8PEme402AnjzFpzuBHB0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794567317;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oBrh96JneCB85QRwSH0ue44D5aaTmYW0dbY0hlT+9E0=;
+	b=TlBq/+COzaMY0uiXRfDSQGdNPyu/YjLzQKM37Jd2LmZKy0L85wS+kQxNPWDodjKFJhXiOE
+	+XLddAk3tkl9C0Cw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DA095134C3;
+	Fri, 13 Nov 2026 10:55:16 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id SbO5K5Ts9mpIHQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 13 Nov 2026 10:55:16 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id 67FD522C8E; Fri, 13 Nov 2026 11:55:08 +0100 (CET)
+Date: Fri, 13 Nov 2026 11:55:08 +0100
+From: Jan Kara <jack@suse.cz>
+To: Gopal Malaviya <gopalmalaviya53@gmail.com>
+Cc: akpm@linux-foundation.org, willy@infradead.org, jack@suse.cz, 
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	p.raghav@samsung.com
+Subject: Re: [PATCH] mm/readahead: don't skip the fallback after aligning
+ index down
+Message-ID: <ks3uy5pvacectdtlbqnz2bmchocfw2atkx6cvvfrjxsx47i4qe@rhnp4qu3ayhs>
+References: <20261113072711.235264-1-gopalmalaviya53@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6DC1640007
-X-Stat-Signature: wm4aj9xqnswnsib9q7y9bbtgtfxhhzrr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261113072711.235264-1-gopalmalaviya53@gmail.com>
+X-Spam-Level: 
+X-Spam-Score: -12.80
+X-Stat-Signature: xesaz1wfi1h8ikabuqomyms9muoygs4r
+X-Rspamd-Queue-Id: 880391C000A
 X-Rspam-User: 
-X-HE-Tag: 1794567199-669500
-X-HE-Meta: U2FsdGVkX18OkHrikTCZKxbZofGhjcncIrz0pGuC5PXHIr01ByIFqooWYC+fHSJIvOiaWz0KnGKA2TFA6xRTummog/p/Y5e+7q0z/oOG6PZjIPeCn25uFpHWQbu9qcQKMkMNLGIgrOzv0GawpMPusScIWthKvZvAyuO8VNiGuC6M3cx2DUZYWwAdKTc0px0qt6kBRyeDbCDREytxeGCY4zyr0pNKDe6XsYQxZRB2BUBm2w6DqP0U1QJb/5iirzSL4JaDHPezmZQQ0mgQ/DN4bZbgFojKkX+x/2Pga7zCpmqsnsam+EqbdDu6+QESqSjbvuWHcRd6A+d+cYPfh2FqrfyHlaWGNFzxGBInNjoJ1UGXP4ZlTPD6ee/b/I8Patybf2Epxk2gTl6EHeN0qiKgOGW2JSU5E+JIoHl4z3r16sJxXmIH78rr1K/hreVp+GOGpzXNIrxgCjm5WR/Tgdr3dQqArsLGUmetYvEm9WlJxpr5FNxVggINZlYnU/uNmCdC0ran6OHUVrpXVDTqkyt1L+q3ij6TQyqIVccnDwFQMvK1+MdU5sJnSKJvnZ9FSsIYfSja9kHd1wxX/b49yRIBuCWiXfYhZtLXZrEaywaLYHr0yT1vy9GPkUfA6HP8vvoQ8m3/PhSqCTsXtZfYWP4kIbZgYDmnlZJ3fhPbKOvJQJvzxqBeglFsLWWDQuPiUnjEexDVbWjJ/oBx4Kk6IqwQsEcr9g7bSj4soEC0+IURpEPItLsI9IqdkR8oVE9wKJ0Mo6YcntzO5sRhqnwyoSZ+ay/4GjlVukWRpt7SkP+vRz/fqa5EPFwHIqopVbFhufe/OKkMDdD5X9sS5wWyF/T7vFxYAZv6V7p3nMiUAv4MiF047FfDEP/kKfd4qqIoht+kDOXVQaYK/ROJHA7Eo8PSfokG758adXKMBMyqm++r1rABXONnd+GSVPnmLDiLY7aRzVpUnvMMyxEq9o7HhYg
- AJAe0EOq
- w57vCX9S/eoR39hTzZRXnq2qag5wJj6ai1Kc/JV5/6Iyz/wWd0kxa0zc+U5oz9LlrB0lZ0SRjonkB6o1/q8OpxOe1X5V96OqBWUzAxmfoQkNO18hAPReBXJIpKiO2CY6KClP2NWiUx5fFIGA/q2XmVhmJXlh+4XJJZsf4Q/KRxk2AfcU3A9a/hJyWKQEzHmmq7fQD9Fdvo6S3kvN8pVQFbYsSC6ZJ7dXVbxswrJBtxLS/rIZLJWQ6W7vx2Ev0S9o7+iXNwK0Qb0cLEnkXYB1BNmxutRfP1TjV5YGkXIpmmy2wnfZhibKZOWRkf9ZVqg9KRcFq
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794567318-59604
+X-HE-Meta: U2FsdGVkX1+skgDU27RCXHe87hiBciLfCFZHOtQXIIwmtlVNYYua2zhNBxL48hAgDZPXaoBF5qyW3ScV5sL75AfZKwLKibDe/VSTMaDjBghLIN8rFxTBuTdlp1mhNErDYtLTH5z4G3Jfn2wDpBxYG7LoC6cDn3uQp8cMZVWBW1soxQ/mgW2UnaHU7Cxp+DzxZTR5Y2SvdKS3DrlLSqZ4iGIsxjNmP3tHNH7fvHQ2sH5Pss7iZ5AXYJfDBBlSFBifG/+rhutLTXfdf2E0m7MWr1sHPA0/5DZn4QdkGWMZ9MEav39wLk/0m4DkgQsFzhcTywVToLSjC4udoHFAoaIWihZVSKVVTfolTjzKYo8fnDiOOMOs4K9fegJKtlze73LSMvfNgO8/ZK9u3IeAioFqe9+wKKkvhm7QmJQYhlttNwD1K6AM7WNhpe2zaBYjmzhmwC1jTUUAOI2qM7p3eWd5y0Qw/u3Gglnnmjp4aVvV7pFoxGVwaHwkWiargxpIYvK88V4wBj0gdo2b+/fgO8aoK3UfFUDulHQxswRKH+71husylQMAHqKLs9rTgCXhgVVn3aj53dmy2GoEq6afL2rXg5xNG3tR8rbwdiQow/3dNjq3M7w83dqwLmpRYjW7axj8/yWyk6Gqk1giNFqJLQSRg7KH3x21YEFExuxSfXDQqQV/7XaRtgdjVU1dDx4KSf6un/DcByEc6QN7CZMnalwDa/e55gGJHYsLlfmgTuKYui4Z5rBR34krP184fqbRW4vSo3kW/xlVDqVVGR/KBVL8zaPW3Z1PJvZ/vW/Ssl28GCcNsjcP4/eKhjxtNCSsWQ5LHULH7LrIJw8gOguJ7oiyeGP0hM3yjqtv+iubrPLPc3LdNCb9vhAAM353CcBw8fml9uq5GJDlq0AQkB3kklJP1aji0lL1jVy8Fl4XVGDYg0BG9UvV5tPFhR4XwqhnhB8zRzNFWaw3hWfZout/lUs
+ 7spoIMpi
+ 9JainVObRaomw6oHn9Nnyp6UldzU/pMl/b5h9r5serby+XXKChTjzVbdDyHlyXY6dLudRq0YMl5+hvLK9a0ni2uY4fcwiif/EL3PITchsCQFBa5NuAjynmQ0kFqiKdqYRy/G5nY9JgUZXZHA16HPZgPjqXWF+UW7FkpcIz+m4ymA3Ui/T4KSGffgUTVOCXx4rdmQNN5z7e6Xz1eBTQQvfjoF+aLQfugABskch6Qg8H1wSD6jvlMvyaEYQXge5SYEh51Kzq+tyQLA4FGui9SpQiGfDYWDRbLbQDqHEw0buLHOCSmiwsVgsA7dzkhJX9hSIcjqRoVup4v2r/rWilQzIuS0wEWAd1tBgWlYPyREEy5i2YHK6/70rhAQWHruA2I5ScSrXcNquTuT5GxRIwr1541BIOAxX1F/yp2EDBkczDN7AfLvIe+oj0mEWqosqPxLXUCek
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,51 +141,95 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 12 Nov 2026 23:53:19 +0100, David Hildenbrand (Arm) wrote:
-> I'm resending this quite quickly, addressing Pedro's review (thanks!!!),
-> so I can replace the version in -next tomorrow and move forward with
-> this to get it fixed.
+On Fri 13-11-26 07:27:11, Gopal Malaviya wrote:
+> page_cache_ra_order() rounds the start of the readahead window down to
+> the minimum folio size of the mapping, so on a file system with blocks
+> larger than the page size, index can end up below start. If adding the
+> first folio then fails, for example with -EEXIST because that folio is
+> already cached, the loop stops with index still below start, and the
+> check before the fallback
 > 
-> I un-RFC'ed the -net patches, but I will not pick them up. As mentioned
-> below, they can go in independently.
+> 	if (ra->size > index - start)
 > 
-> [...]
+> wraps around, so do_page_cache_ra() is not called and nothing of the
+> window is read.
+> 
+> For example, with read_ahead_kb 128 and 16 KiB blocks, the mmap
+> read-around window for a fault on page 1042 starts at page 1026, index
+> becomes 1024, and if pages 1024-1027 are cached, pages 1028-1057 are
+> not read ahead.
+> 
+> Compare with the end of the window instead. Where index is not below
+> start, this is the same check and the same number of pages as before.
+> 
+> Tested in a KVM guest (x86_64, 2 vCPUs, 3 GiB) on mm-hotfixes-unstable,
+> with XFS with 16 KiB blocks and with ext4 on virtio-blk, read_ahead_kb
+> 128. A test caches page 1026 of a file with pread() on a
+> POSIX_FADV_RANDOM descriptor, then faults page 1042 through a mapping,
+> and counts the cached pages of the window [1026, 1058) with mincore():
+> 
+>                                        before   after
+>   XFS, 16 KiB blocks                      6       32
+>   XFS, 16 KiB blocks, nothing cached     32       32
+>   ext4                                   32       32
+> 
+> Tracing shows the fallback now running after the -EEXIST, as
+> page_cache_ra_unbounded with index=1024 and nr_to_read=34.
+> 
+> Touching 1% of the pages of a cold 20 GiB file on XFS with 16 KiB
+> blocks, at random, at a stride of 2053 pages, or as random runs of 2
+> or 4 adjacent pages, reads the same amount before and after, within
+> 5% over two runs each, at read_ahead_kb 128 and 8192.
+> 
+> Not tested: other block sizes, other file systems with large blocks,
+> and other architectures (built for i386 only).
+> 
+> The problem was pointed out by the Sashiko AI review of an unrelated
+> patch [1]. An AI assistant (Claude) helped with the analysis and the
+> test, and drafted this changelog. I reviewed, implemented, built and
+> tested the change.
+> 
+> [1] https://sashiko.dev/#/bug/linux-da6e8836-f808-4b39-9f04-de52995a0162
+> 
+> Fixes: d5ea5e5e50df ("readahead: properly shorten readahead when falling back to do_page_cache_ra()")
+> Signed-off-by: Gopal Malaviya <gopalmalaviya53@gmail.com>
 
-Okay, updating the first 5 patches in -next.
+Looks good. Feel free to add:
 
---
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-Applied, thanks!
+								Honza
 
-tree: mm/core.git
-branch: for-next-fixes
-
-Applied patches will appear soon in mm-next, followed by linux-next.
-
-Please report any outstanding bugs that were missed during review, so we
-can either drop the patch series or decide how to fix it up.
-
-It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
-though the patches have already been applied. If possible, patch trailers
-will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. Further, this is not a guarantee that the
-patches will go upstream. If in doubt, please check the listed branch.
-
-[1/9] mm: limit pagecache folio refcount when mapping pages
-      https://git.kernel.org/mm/core/c/86c0d919
-[2/9] mm: limit pagecache folio refcount when splicing into pipes
-      https://git.kernel.org/mm/core/c/6ab934de
-[3/9] mm/mmu_gather: flush pending references early before the folio limit
-      https://git.kernel.org/mm/core/c/89b412c7
-[4/9] iommufd: fix cleanup when adding memfd folio pins fails
-      https://git.kernel.org/mm/core/c/35e8fbf9
-[5/9] mm/gup: limit pagecache folio refcount when grabbing references
-      https://git.kernel.org/mm/core/c/a6f95654
-
+> ---
+>  mm/readahead.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/readahead.c b/mm/readahead.c
+> index 6e55632902..afcde18316 100644
+> --- a/mm/readahead.c
+> +++ b/mm/readahead.c
+> @@ -552,10 +552,12 @@ void page_cache_ra_order(struct readahead_control *ractl,
+>  fallback:
+>  	/*
+>  	 * ->readahead() may have updated readahead window size so we have to
+> -	 * check there's still something to read.
+> +	 * check there's still something to read. Compare with the end of the
+> +	 * window, as index may have been rounded down below start to the
+> +	 * minimum folio size.
+>  	 */
+> -	if (ra->size > index - start)
+> -		do_page_cache_ra(ractl, ra->size - (index - start),
+> +	if (index < start + ra->size)
+> +		do_page_cache_ra(ractl, start + ra->size - index,
+>  				 ra->async_size);
+>  }
+>  
+> 
+> base-commit: 76f5384740b2fd9ee5d71da9d49b271d37c5a51b
+> -- 
+> 2.43.0
+> 
 -- 
-Cheers,
-
-David
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
