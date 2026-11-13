@@ -1,97 +1,148 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 356B7606A897
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 21:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC632606A88F
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 21:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JUJiUfci
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=XDkJKINo
 Received: by kanga.kvack.org (Postfix)
-	id 39DC96B05B0; Fri, 13 Nov 2026 16:41:07 -0500 (EST)
+	id CC7CA6B00EF; Fri, 13 Nov 2026 16:42:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3768A6B05C7; Fri, 13 Nov 2026 16:41:07 -0500 (EST)
+	id CA1836B05B2; Fri, 13 Nov 2026 16:42:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23FDC6B05C9; Fri, 13 Nov 2026 16:41:07 -0500 (EST)
+	id BB5866B05B8; Fri, 13 Nov 2026 16:42:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EDC716B05B0
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 16:41:06 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 726B98018D
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:41:06 +0000 (UTC)
-X-FDA: 85431416532.05.5AAF384
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id DE2FEC0003
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:41:04 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JUJiUfci;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794606065;
-	b=y/GXEpPu6e6DW+22/3kjl6IlkkZH8Gbzy1jdGb9BmDSv5z46YKz/GtKzueTezMft7PKhRL
-	XtOdY70JTcoRuFmt448SHYoCGrxTc8itWQU34AdcJ62VT9mWUQzp4MNBsXygY0Q1Md7aoE
-	UMMwYgdBTdgVK26S+Qw1WRIhQtE2U78=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 86A666B00EF
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 16:42:35 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0BFA140157
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:42:35 +0000 (UTC)
+X-FDA: 85431420270.17.C110D24
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 14DAD40007
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:42:32 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=XDkJKINo;
+	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794606065;
+	s=arc-20220608; t=1794606153;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Azpyo6qZejVSjZbhSbkw8eKwL/GvzZIoGcaHlgWwzCw=;
-	b=MCQNNEeDEYtqbwinMcdjHSghnkeUm1pqIa1kSRIqUi0CEx8ylLzENQkdYRKw3FoZOKA5Ym
-	Z0rigC/zpl9EYuSIUJw5SA9tgaYiPB3fKWBRQlz3Ec1ED49W7KXGTocbRIbTRgKa1F0F8z
-	+mQKewZ+MnkU5NDy4DdvKgobMUGaxqw=
+	bh=RwPRyHP2zyVmejGR1uh4JtlvqhjIfEODs3w+QBRfcJQ=;
+	b=VXihHaK+V+N0Ce3siQffHl0Uz2rZX/oMa9m4Ff60MdA8AyLiV4xBmwRpfyCD2ymQE2UvlR
+	xVpnoqMIQJij93n0FD8grqclr1a7NaBaFugxC+4vhLtyvef6DWp1EmgVKp9cuyJ8JYzNZt
+	vBV+TqMmNmRSMyOufEf3pwj9XNwb/oI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794606153;
+	b=0vkqytS+4xA8aTmpdCXSa6TGM4Y9SlPbzvUi+4UNIkjS3myo8gPyp56HNTdwlAvOtl1CQI
+	Ke5+baBlcbl1HxtYWqE1o3TqD+3MeBkpFr6zkQEqRHqtfJR4AXzWt+YsVRLGNLd7H7yQIN
+	5zEKyDS64CyCFRSgZZWbtEkJ6Im6heY=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JUJiUfci;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 72C5D61D0E;
-	Fri, 13 Nov 2026 21:41:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD8331F000C4;
-	Fri, 13 Nov 2026 21:41:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794606064;
-	bh=Azpyo6qZejVSjZbhSbkw8eKwL/GvzZIoGcaHlgWwzCw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JUJiUfciR+27rcMr+AH9/thxOkwvAeqQfsQoj+e42JxNdgaK7n9gYhC9QMpqCjV7p
-	 c/YVvkJdWHU9uAjGEAmKi/kWG67S/0uHIhKFMXtzw1hFYInLwf55qdedjEqz2tsX99
-	 +Mf8XvRfkiT+Z8BLMegvwmHrXcCLCdXsknS4olBohbvk4hcpS/Z1C5ybpiX5ySgqdr
-	 byQEA/rBEDCSoeOyZqK0wUu2LuYm/TDUHyCZ0gzidNIjUf9YoFmd4ITHcmI7B8WZSr
-	 Gol5aSvcXkd4LzUrJSC+9pOWter0IrQj/gA0Exfg3+rc3GUFO6Qn6yoK+6+R5FJR5z
-	 pohy6BedXa/MA==
-Date: Fri, 13 Nov 2026 21:40:57 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Tal Zussman <tz2294@columbia.edu>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/madvise: zap markers from guard regions
-Message-ID: <aveD0GCxbs0Zuq_0@gremlin>
-References: <20261113-disallow-uffd-guard-install-v2-1-9d0063c70542@kernel.org>
- <f8b0f20d-90dd-496d-97e9-9a232124e3e0@kernel.org>
- <avd8-uVPf6BSqwEQ@gremlin>
- <a502f84a-b349-487d-94d9-aff7d9b95102@kernel.org>
+	imf27.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=XDkJKINo;
+	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-91f2b826fe9so16612946d6.1
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:42:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1794606152; x=1795210952; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=RwPRyHP2zyVmejGR1uh4JtlvqhjIfEODs3w+QBRfcJQ=;
+        b=XDkJKINoPcrGFL/qBCC2kJc3oYq06CGeXGLjsG4Zjm1YfaejXneA6DccrLxdeJ8ELf
+         ov1g7ksRDZ9kikvnZuzVlPqvpzrkPriA91HHqGvpuzhmL5yHd7QECYGT7VzvpTr3xibo
+         oE95Keb8zDBYo+UACHPPB0juuuzIQHzQdMQdZiAO+mzax7TxpxV9D+65ayMLQ7INmMIG
+         IdnfQAI8BNHF6NRG9RjEhfXpPcT2SkYN4dHWBQch1NH1T9/3RE/5OCwknagjP3a1zLhV
+         C5ry+KkbLocdm22pmuULiIeNuTX/wsy8CbbpGRUKiGdvf1NK4fgaUqMwqYc3PNGDN1Yw
+         SkaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794606152; x=1795210952;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RwPRyHP2zyVmejGR1uh4JtlvqhjIfEODs3w+QBRfcJQ=;
+        b=M/vGxi/IwleHzvJbQcpKiSOGSkkyyTh17Dm5SyYRsWUHebPgRCBCZAHOA6t1IkyMA1
+         gSjWD1Cc7fVM9uM/lYABnGxIAJiEK2TP8qnalzD5d/BtjWymJxjk+9rvjlAOUNqMiv6K
+         Y3JpWPO34V2v0HcjvOue1cxBFbdLqr1C9oO0rMdGiKYjeMRNtXVBazxP9rklBJ1lAtIx
+         Wlz5mfOHxv0FWUNhoM/9wmdYB3d4FMRTEpGDGZis7Z8HV5CFj7w0KuuLMsWF2NxEbiBM
+         j0MXdhRvjp3eayp3uZZWcc14s6Xu4CJVYW+hQazjPI4oWpkWjEXhWkt5H65udVJ5209b
+         M1/w==
+X-Forwarded-Encrypted: i=1; AL+hErGk20fCPUpuXdJRtMMIoFFWaDKoNeX2LCUAyB3NRufo+QBMh83RojP9wbjeoKtLi5s4b7IPLDT0XQ==@kvack.org
+X-Gm-Message-State: APuU4Z9W5uSv04pVEmz5MJ1aAaUmKXqUTigQlnBXtSj20i3Jlzg8hydr
+	IugikabNUInRCOpfDR1Epdfx6FYhTXbYE1cFFFpiciTVWSXpMQnLSkBiyytiswcb2XM=
+X-Gm-Gg: AYBFou3GCwE3r4V5r5bKaBn+g5zxBZqhWloxQfygAs89E6ZZ7S4rvY8P0sNIgeY+i/z
+	vFofpUieD6mkpgSCy1qh7Wkw5pxuo/JhCtuya6YkYm8Nki3tNr58VrHUM7NoU2X1znva5N34L0R
+	agbVNNGyZBleTM+YTjePXsxk1x+GN04J0tPAv4p5p9z7C07HQ3ZqOhNoctwf2dfwcezfpidATL8
+	0TLoWb7MhyZly2yt9OdzokWF0num30vKkiW6Lr1vBomJrDd9biLJ8C36PxpgzQtOBjac6t9rO57
+	ibXtGCSpOyGPhiRdPTz7wwbv1NPaLQVXLULL1N+qeYI5NV38c89QbI5TkwBataSBKd1IhWi9rwR
+	SKi1e8k5dALibOAwZUbxL70Z6IZVPmcx5FaM11bP4a+V3GACr+xU5099zI6HJPaavb4r53Fny1U
+	ldAIUOmyLwyzg487CgI6XNLN6rNi6hGnTvpj7siqtLInhg1i5Riws0I/joOrlmQF2N5rW8ofVaX
+	3whKCwAbqZ/fl7eRwrOoOTwKPf4u5Ddicj+WNcqTaA8aGEmbfK0atARDFU3o+28z0Sj0J3GbmSP
+	pK8vjvhuptmyrbHCuU5CgbYJfTEOZI+WhgmCBQ/IUxNn/fnRL+oBt6vUY9bCLSN1DZHbxfV3TyS
+	aqXHr9ak=
+X-Received: by 2002:a05:622a:598e:b0:536:566e:6b52 with SMTP id d75a77b69052e-55ac7564a85mr62222541cf.27.1794606152109;
+        Fri, 13 Nov 2026 13:42:32 -0800 (PST)
+Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55ad0349423sm27363181cf.7.2026.11.13.13.42.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Nov 2026 13:42:31 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a502f84a-b349-487d-94d9-aff7d9b95102@kernel.org>
-X-Rspamd-Queue-Id: DE2FEC0003
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ytt4i7piaqwcxxdgi5rx41ebgppgpdhg
-X-Rspam-User:
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794606064-865862
-X-HE-Meta: U2FsdGVkX18TwF1y/oMeFJ5acRZN0aBq/OFH5KFLS7cFNBPnpWMgNpspKGpExwxyrW1ax5s+edpMK9j2pZhBmoE7Wo64MLSubXfoX94ZAq5bUmxze0Zz1s7rRx9Up35/YPb3l+YBXB3j+GKjNUCP5H5nG/lxThROojXhPxz2p1l7dhtgPd7ojVziOMcJg3BNew5Tf0x2urNFWDsYvltaijjWpkDN5Zc9Lzvsv1pNJekcWBvncn+G8MQdPfmkTwQHOFBH766k2Ur0aie2lzOSL53vqmqbeCd3Bt9qU4ggXpVKeRNnEMnUdV9KUoxyNQI4fzk+TEf+ZiZKSFsVNXbret4vmZigj53Mxqken8evbplb5jCuJjad7ZgxLGLfmR8Zw4brN3BN4V8BFTyxjeb68B9A8FnSZ3ommn3DbeCHND+davTegf0tf2OcK2OSgi1VWr+s4eSrJ9zuAHEQicxS5sZpRvEOP+JShKm60hXI+VAK9EmQj7DR9VmcFHqHCwlJJG27sGAbeGRDOmmFmJYo3uWfo6bWMIOYMJiKzz1fZKlu+SFaA8lJmkX5VaXp8ATUjsHT+isEJ6lctxnrG23Zvo7FFKOUUS3AOESPJGCSXuzcfMEhL0Qsc7Z6lhK+nFZxKmuAxvLXauOOGjEWvR4p5Aj4jDryI4NufARKRSLCijxp9qYAiEEgmS/7KzbvKyAfEyUxIOOEQrAfE/MYqibPfLJ/2H77PFV3EDnAYgFu2fUbaQlDbIAhjBtqNiF3jzpVvnie5zi4m9CAVdXeODyZjOVgv2pU8QDL4Nizg7LCt9QcNnXbNQizlGNE1Nk0viSD/Fq88guoVZSfBiiu6MZrXmVuKt4JvCMjrELZyALVZIgOUkWNTUVAdLNzXUYzm0fth/gic/8A6oL+cVXEsL/Cz/VHWCxqEvfCAgnxi5GGjCecVFKKnN9SO4TYB7yu4XMEwhkV+TMek3LIsw8/tFd
- /vnNRJBp
- 6+iHeL/ihI2AJ7riv9/rpQaQNBrPr0k3RL+BL8+7jtm8tz86/9y3Gy4LDlWNxMl2sLPXUYHZg016FXnwla5SoWuvjn7U3sg68P7xGZUvBWlXuPGqG9Op3ni5yvcga99C6IBw/0I3HNFgXTBrvkv2uuJVoblKWUyEuk04mKUllw2CwkvzQhmH9ZZy/qyF3hMneuZoTFlblgMUXFm8I7UcY8LQdALmF1E2q+ZzwKBXn9Lr8X88RkAOLBEjOYFWPQ2FQy1C+YBlZ4KReqmUdTE2Zjt9AWEblEmGl0hedZMcAQ6KAOebsAjOyBcmxxAQVLLMw6iPHJTnpUGNdDcHlZ0yDC4zEMLDM7B94WYnFrNlKpgShviX4X7NtJZzauEBTcc0BsF6EWw6gNPGJnxoi/dPopjOE13XAHz7Zh8a/jlbHtPM0jqc=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 01/15] hugetlbfs: fix integer overflow in fallocate()
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@suse.de>, 
+ Andy Whitcroft <apw@canonical.com>, Miaohe Lin <linmiaohe@huawei.com>, 
+ Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
+ Hugh Dickins <hughd@google.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, 
+ Dave Airlie <airlied@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, Peter Xu <peterx@redhat.com>, 
+ Breno Leitao <leitao@debian.org>, Will Deacon <will@kernel.org>, 
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+ Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>, 
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Gerd Hoffmann <kraxel@redhat.com>, linux-doc@vger.kernel.org, 
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, 
+ luojiajun <luojiajun3@huawei.com>, Josef Bacik <josef@toxicpanda.com>, 
+ stable@kernel.org
+In-Reply-To: <20261028-fixes_hugetlb-v1-1-a0a033db180f@kernel.org>
+References: <20261028-fixes_hugetlb-v1-0-a0a033db180f@kernel.org>
+ <20261028-fixes_hugetlb-v1-1-a0a033db180f@kernel.org>
+Date: Fri, 13 Nov 2026 16:42:30 -0500
+Message-Id: <179460615000.482102.14809359037930927808.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 14DAD40007
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: x4g49hmtizh9rh8ihbzss6h5yytsmexm
+X-Rspam-User: 
+X-HE-Tag: 1794606152-766193
+X-HE-Meta: U2FsdGVkX18sozImsOBhXguVfvmnyHylHKAFKvPRH+M/cgQmmQ3rbDs95rRok58DVT1QSUO7qCGpvElmhm/yK0/4cqPU3HxsROLNSc0wvnNkiL458yCBxaJ77am/ir+7tJY1dY+Z6VgRvZO1JfgTE8jYQuZimVvVkCaxn5ZdJCrziFigqVt7WN1uxAjamfOcRpk239xzR9Q8XC1zMbrvaYQfAKr2wjI/B9BzJ12K4rVoYtGzuxW4XyEhldFiKUxaLiwlgtvNtyuZ6IHfwaEsNgntJeIgCWpb7AxVe+YeFod82txW+7u+7VaONZgdjvFN/3M+UlqBGgL+xI+VXDSdBiFlyJDcWCahWm0xp4wk5CR7tW32cJWrs8GPJSHKfDEFYRTFtap9iN7lhidO8d08gro10NNkKY4c6XwFmSsKXGhIsQYns6Ms97TtF6Yntkekf2VqsG/51SZfOW5IAbgtxoj6HeJy3heKNC9DSifPaw5UjbKotjU1v7Yog/40tu/O2L2ua0jxOzaHzoqOBIUEE4YrDqhsrTLWTg+c9WZO51KyHuEcauVQ8C0xR4izURtD8uUlgfaCa0BIf+sLlaL4yavZbokcFFXosVQaHD6RZMs9g+65zvaIEWHoDF/nzJSrvkF0zlIABSV8BpW0fhgjHeGHHn1hxIB+CInA65AjVV5+nlSxEtE7kqMDIDSteynHn/JLUPF7eUQhj9d3x/denOY45zGwgjmrjG9U96eAhqcGxWy88KdBEOoCqG0Bt80ts+yZv2699F8EEndqtoeqcxZq+8m9jgca9jCyQklPFbv/BIxrfGMMi0nmcu/nz3IDaocoNytB+//p4cx8T2l2qgYT2P1Z05G54qNtOLKS1Zxn5IaQbuYijD4Kp2HDsm4wzm9EeTWlFBKchEhzVsnyggb4crUcU9LXyItSFRwrv2md5tlWMuYSxpTiT6qvFardaCUuqizxjFX4h1ORcrB
+ sTRaylHf
+ syp3PbrJUTcwpS7dWLIV+GHoLTk+IdCkq4Q+nJ6HQse5AzhEkfOniPfj3oyvlW9gCxZSd9r9vaVajHMS89KUR7UfrhFpfVhvKGIqGDVl4ZmMNJis0zgHN06Dl0ghhM3YKrU4uW+40Jfaf6UNFD8vwZSbIYP4AUmfDAMsTipUf2MFIELx0uJEr63hotl01vBmQNa5Lel7eQkrNjnh0GyTtMnen/LWX+mFmQCCo3Eae7Utn2o8+G0+6R/e7ZRsyfSYv18zueop8dduCG1uIWhTV3/N/ko3cwhigh/PTG5SazIolmW97dYcNLShO4uwTBlUx3rG8geZUPcGbr+ZR6M4lMFfYNTV/1zqpOgypg/KNbyziXULsFvOoTcrA9hpJWyyx+MCSKOB9s+UGPDlew4IFpbkXR2spnN6Ks9wY8UU4NymCWhmBLeYCM8TlSKUB/1/Fxs7zqJ5onRb/LAr3274oFy/7DdP70etXgQne4IUsWq+yE38=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,58 +151,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 13, 2026 at 10:39:30PM +0100, David Hildenbrand (Arm) wrote:
-> >>>  mm/madvise.c | 28 +++++++++++++++++++---------
-> >>>  1 file changed, 19 insertions(+), 9 deletions(-)
-> >>>
-> >>> diff --git a/mm/madvise.c b/mm/madvise.c
-> >>> index 0214efd2a014..4f7728583207 100644
-> >>> --- a/mm/madvise.c
-> >>> +++ b/mm/madvise.c
-> >>> @@ -850,6 +850,19 @@ static int madvise_free_single_vma(struct madvise_behavior *madv_behavior)
-> >>>  	return 0;
-> >>>  }
-> >>>
-> >>> +static void zap_range(struct madvise_behavior *madv_behavior,
-> >>> +		      zap_flags_t flags)
-> >>
-> >> Two ... ;) But maybe it's consistent like that in the file, didn't check.
-> >
-> > I'm a bit exhausted, can you or Andrew just fix up whitespace like this on
-> > application?
-> >
-> > It'll be easier when I have the VMA tree.
->
-> Yeah, absolutely. I'll let Andrew pick this one.
+On 2026-10-28 21:13 +0100, David Hildenbrand (Arm) wrote:
+> hugetlbfs_fallocate() rounds the range end up by adding hpage_size - 1
+> to offset + len. vfs_fallocate()'s existing overflow check only makes
+> sure that offset + len does not overflow.
+> 
+> Once we overflow for valid endpoints near LLONG_MAX, we can get a
+> negative temporary result that is then converted to a very large
+> huge page index.
+> 
+> A one-byte allocation ending at LLONG_MAX can therefore consume all
+> available huge pages. Pages added beyond LLONG_MAX are skipped during
+> inode eviction, leaking them and triggering the BUG_ON() in clear_inode().
+> 
+> To fix it, calculate the end index in a simpler way that cannot
+> overflow. This also fixes the signed overflow reported by luojiajun in
+> 2019.
+> 
+> Backporting notes: without commit a08c7193e4f18 ("mm/filemap: remove
+> hugetlb special casing in filemap.c"), remove_inode_hugepages() must
+> include the final huge page during truncate and eviction.
+> 
+> Reported-by: luojiajun <luojiajun3@huawei.com>
+> Closes: https://lore.kernel.org/all/1554775226-67213-1-git-send-email-luojiajun3@huawei.com/
+> Reported-by: Josef Bacik <josef@toxicpanda.com>
+> Fixes: 70c3547e36f5 ("hugetlbfs: add hugetlbfs_fallocate()")
+> Cc: stable@kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Thanks! :)
+Reproduced the BUG_ON() and validated the fix.  LGTM
 
-> >>>  	/*
-> >>> @@ -1845,6 +1854,7 @@ static bool madvise_batch_tlb_flush(int behavior)
-> >>>  	case MADV_DONTNEED:
-> >>>  	case MADV_DONTNEED_LOCKED:
-> >>>  	case MADV_FREE:
-> >>> +	case MADV_GUARD_INSTALL:
-> >>
-> >> Huh why that change? Not spelled out above.
-> >
-> > It's just the established way madvise interacts with TLB maintenance.
-> >
-> > Anything that uses madv_behaviour->tlb has to return true here so
-> > madvise_init_tlb() and madvise_finish_tlb() do the right thing.
->
-> Ohhh, I see now.
->
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
 
-Thanks :)
+-- 
+~Gregory
 
->
-> --
-> Cheers,
->
-> David
-
---
-Cheers, Lorenzo
 
