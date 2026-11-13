@@ -1,118 +1,134 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606CF606A323
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 19:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC76606A885
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 19:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hlbjPbIQ
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=YzISiqkl
 Received: by kanga.kvack.org (Postfix)
-	id 5AEC46B05C7; Fri, 13 Nov 2026 14:43:36 -0500 (EST)
+	id F00916B05B8; Fri, 13 Nov 2026 14:45:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58BDA6B05CD; Fri, 13 Nov 2026 14:43:36 -0500 (EST)
+	id ED71C6B05D1; Fri, 13 Nov 2026 14:45:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49C196B05CF; Fri, 13 Nov 2026 14:43:36 -0500 (EST)
+	id DC60A6B05D5; Fri, 13 Nov 2026 14:45:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F41F6B05C7
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:43:36 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 99194C029B
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:43:35 +0000 (UTC)
-X-FDA: 85431120390.14.10151B3
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C8CBB140002
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:43:32 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B4B746B05B8
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 14:45:24 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4ECFDA01CF
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:45:24 +0000 (UTC)
+X-FDA: 85431124968.20.0B7878B
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 273E1140009
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:45:22 +0000 (UTC)
 Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hlbjPbIQ;
-	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794599013;
-	b=6bAE7lKsh8uGLMuumtAFm5bqcZmRKTDwhxBDq85IhDBMEAbH0Ymx4H/0cUGMeyuDa8h+a9
-	SagAAyGPVJdTuXlPP2BASID6QzbVwvshtT7DIqG42+JRYvuWAbuyM9EWAJMKT3VEiDLM6V
-	CCIADqi6EXUff9dWI3io3RsD+2ZzTfE=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hlbjPbIQ;
-	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YzISiqkl;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf26.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794599013;
+	s=arc-20220608; t=1794599122;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N4P8j+QMSewuz+uKE5PNg/893eiJ2vhGXM01N1veea0=;
-	b=RwL8ZzrijEkQOKcWpPo1tcj0cTcKtSTQuwZLoAUGDSUXV2+Vprb/10bYNSPq32RV8wOS17
-	TOT1d57AX1zf2Oxwaz7lJsnti/dq8PB5ZqNjM0IAui4a5YG4g2wpTmTBjV6DbmpQ6XryPN
-	1spoWvBLda0/zklkAt1Ns+5xSZNOE7A=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794599013; x=1826135013;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Cua/uwgNa005FQjs9yZ0Cq6T2u8yr5c8hJMGRbdb5yM=;
-  b=hlbjPbIQNyXeKdBS+pK8V++hvIr+UaXQiQ+3+Bn3vpq2PnNb1a9/ZyTg
-   gqnUEhI2giNKilfo756UA8EuTazdu+WagnJ8WrnqGPfTD9qI+4vKiLLmD
-   NmiH031OkthcmwoOftocMZcB57LEi1+8CZlXcp6W1a1dJEYst4KhOxcMy
-   32vh+vcNxebMjNL2P2yOER2GIdrIsb8GhIAS6v2CMO3bQhnD0T2wphiSy
-   srXGJf5Ih/DgECyJlxOH9aBX7Lve9hskvQe6pQ2wNIoCZnQfjyEl5yt3c
-   cQSoqM38A770mNTwFPwGn571wpEaHMV+bvX1zDJyih+tZ9/uz22JV+Blq
-   w==;
-X-CSE-ConnectionGUID: sIQO8kzKQIibB2nwrUHQHw==
-X-CSE-MsgGUID: 9Ge0fN+uQQmVmbrV2Dz9FQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11965"; a="3405941"
-X-IronPort-AV: E=Sophos;i="6.27,212,1787036400"; 
-   d="scan'208";a="3405941"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 11:43:31 -0800
-X-CSE-ConnectionGUID: pS34q/LXTGORiKyYo7IdWA==
-X-CSE-MsgGUID: RUTstUSRRweYGmOOPK6vdQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,212,1787036400"; 
-   d="scan'208";a="8841713"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 13 Nov 2026 11:43:27 -0800
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xRxBE-000000013pP-0yI7;
-	Fri, 13 Nov 2026 19:43:24 +0000
-Date: Sat, 14 Nov 2026 03:42:53 +0800
-From: kernel test robot <lkp@intel.com>
-To: Chris Down <chris@chrisdown.name>, Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@linux-foundation.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Kees Cook <kees@kernel.org>, Marco Elver <elver@google.com>,
-	GONG Ruiqi <gongruiqi@huaweicloud.com>,
-	Jonathan Corbet <corbet@lwn.net>, linux-hardening@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v3 5/6] mm/slab: Support disabling
- KMALLOC_PARTITION_CACHES at boot
-Message-ID: <202611140317.3kXloW0R-lkp@intel.com>
-References: <9a4caff0336c78a7adc746786c81c9c01f89c40b.1794506262.git.chris@chrisdown.name>
+	bh=gjLy+MNfOWSbu5NtI+C6mzKEH0S8YN5kvQWQs6kfrkc=;
+	b=ezm9lr/jZdWoeWEiqryJea81knSlvJOFIi6IhKDdMEfcPkDZS9RV3Mb1H5+SEAqldVDGFr
+	dcZwxPSC+nYkm1I+eO9hi981dmvWskH9c2CkhgjKTzxeO/J4YPapObeIU2kK/RdHUxyuWr
+	VjWNUZtifrsKR+hYIrl3EFltwKjUa8Y=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YzISiqkl;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf26.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794599122;
+	b=TGhFL9IacS7qKuWUzMUOP1BWvUS+RolR6O1lOt19V8QZ7wEqhE0XH0iQWYlKb2uhJd6YWj
+	pRdeWHl1VSvAkHn6YU/YgoNLfluYDsZykESDEkww0m42lGkcocsMYnb2cl3XJAyvBlmTxF
+	WcHpNoNewno84RxL6BLLw0Aa17Lbxfs=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=gjLy+MNfOWSbu5NtI+C6mzKEH0S8YN5kvQWQs6kfrkc=; b=YzISiqklc3XmZrEQ4ktPVVJEkp
+	Cs6TrBIfJSI5GVzQaJ/BxOH7V9mOe6ECuhT9tR991M71QRZmMQbRkr3h5jYRETRQ1/NqAtljElDZy
+	ZK3Yn97v5vfAfW8turrQxs3YL0t2dKfAcAxEDEFgaQqKOpnyfIK+wlJltQMRvfKjQct8kqa5cBPSu
+	3/qdKKUa6v4PQrDIpsV+MzoTrOqFsqMwJwWHol9uio29w4LKmd2+5PbypGIl0kWmmAJ8SlOjzRxrL
+	nO+exbnLtFOurhTYJxZVDL2lXdeoETe9g1o7Kvf6PjbPLnlZ8Mhcx7fBSgFEk5Yi5tP+rgZ+DQEj2
+	Z9VNHkUw==;
+Received: from willy by casper.infradead.org with local (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xRxCo-000000052Uc-0jPI;
+	Fri, 13 Nov 2026 19:45:02 +0000
+Date: Fri, 13 Nov 2026 19:45:01 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Nick Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Steve Sistare <steven.sistare@oracle.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org,
+	iommu@lists.linux.dev, netdev@vger.kernel.org,
+	Chris Mason <mason@kernel.org>, stable@vger.kernel.org,
+	Pedro Falcato <pfalcato@suse.de>
+Subject: Re: [PATCH v4 1/9] mm: limit pagecache folio refcount when mapping
+ pages
+Message-ID: <avdovRTVITLwuit_@casper.infradead.org>
+References: <20261112-refcount_overflow_stable-v4-0-ad3deef0bd23@kernel.org>
+ <20261112-refcount_overflow_stable-v4-1-ad3deef0bd23@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9a4caff0336c78a7adc746786c81c9c01f89c40b.1794506262.git.chris@chrisdown.name>
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C8CBB140002
-X-Stat-Signature: 3xjydh7n1tfj5q733k3h7yi49aecqrct
+In-Reply-To: <20261112-refcount_overflow_stable-v4-1-ad3deef0bd23@kernel.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 273E1140009
+X-Stat-Signature: ehgyyuzkqs3ysqj817gwf8mhoeqko1m7
 X-Rspam-User: 
-X-HE-Tag: 1794599012-944650
-X-HE-Meta: U2FsdGVkX1+io3M0mSmf1sPvuNH0pT+u6FICsTC/9sGi6OpluLeY/V8ee4gN5jnrlSHn49QzGltVLaoujsgX+fLImFIo2+erTbhjm7ZDGDCgIh/n19Gq3DkdBkM6o53L+oEYxBh/z2Bb9wHL69TJFTe7UWhIuaSZvofY36EQ4GXNFAcs9LD58gtV4+nrPRhBTKQBYRrY2PPZ/WqqzqLOt7Nwtc4WeFOo/2kndzdC6QkvL3o+A/0KAl8aApnq5YF/phhF9IeU7XMjGu4FUZnVfvBtBq4z2GRtehsBpxGroW5RBOJ9Cb5RmsZ6VUq827+Mb6k5gnE9XLYiabM/tmJNJedVQ7xr2AEeC/076POv8O+mVhBiEy627lme9CL3afGtQ3oY+kj5hS5VfjdfioEteeuw7LEW2H/403uSJ+Z36abzNj53CspLjIJD/5v3D+1bFIfVV0YpY3Gf7LNJyp1vXirh6LaQVAnHQad1c3PC2saqm+KN95BGF4/pMnsT7bUNMlgQuMFIp9KIHVKSWvCJI//70Zl4m3OcXM+KJZifqBIVT1N2XrS5QGJySiU9wC8L/B/lmU+9T42xJZaBMe4E8uWb98Vxx6VkE49OWF+MQWDAaUtUvZrAq0lldgPGdgdl1efws+i4mburYBSureFfb5SgHVB35U2jGkhsZmdxkSlNO34Md6AZ41S9R/io6ytLvTnCBa9UKlgYg+3IsAcfs9d88RKBS0qFyM2qIUM1eX0bCL+h/wE85VUF0s7KBZ7wRHTSfBPnJ/gotoZcT2Euv9PiLcjIpD3e8Hl7rwSpaxPFeLnDeq+tUVxAguZdmIqNWlyP63xIlCJ1qqeH65yzP2dtrw+Ty9TiwfeGAyncc7+7LtwvhfLSyimfFr1GiwmaIwLSDtDcI6zHhk4nzd6bLNPKSvVdg/zSchElAe2BPL+HluQDGiA30qINrpGlFH3nKyXcM+bgsYln7E/GBsP
- IC9RniGW
- WOyCRniS0WBThO6LQtnY3P7QYuO3eMSTzpq0whQD30L6TtPsi78A23w8OegH9jXP7ZaEJik4nu9/+exudH40DCXj5654DcOwhdopXgPNVTrgC5XTP3ROoBLrQjd65vAkozutJq5KKUgJzPMFpX10mfk1IHu5XGXo5g6wIoOrC/2nZPLKxR2BNlSv9v//2EVOxbGVGCfMGDSfmKsCsL7TLlBB5+zIUtNC8j2W580gL/0OP+VfMnaHyA22X7Cdgzu6b5OTAAZLrJoue22JFTCjcVmD3+93RYIzeMp9qN5z7amfEbTJk2d72S2DcVFQVsqwVAgaPpFAg/T2/N8L0InPFRmnpJcibac1vF/C9dbmL4/VtczgBNUeGEhNQNU6TT56YVI2T
+X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794599122-1473
+X-HE-Meta: U2FsdGVkX1+UgXFPRk8+hT2pBbI4uEaGIXXBqygDHqzXMoSYca8xn0vsYsWCYkNHD83rAyPD/iQalg+iVAXOjsUOWGa8QQssLpSqe7MvKYT0vxCpPQx9uMw2zm4ydHIcPYhpFveTPFkOwldwDxEhrPf34wswGnwiyFAJqKsG6VLZYgl8GVgkS/hrhrBd+8iB/zoKkHT7WQso3t4pleXoVHnQvtOFwhDs2em9BnOtVevfaTUPp5GLWQSAIM2TwOo0sEkmHD/suxo/gKK5kpWyYEvEKzkgA4y3D9yMKS15XAjFa+5t68dUByBDN0jtfBELR4OQb4ZerbQzi5sw5+gmqj2xNaciQl2BIT/sUUjMPdtCPORytn0MztI/HuKtm+XHK9OZ19EaY+7AMSL+ed0u/jbsOtRzMA0Pb3vERdNJGKZq6fF+0D9X9mFLJi5sXFAxVIHaXxznn+xys+DistFLSDk2YyGn5d1Zma3yurge+7rPfJUW+m/83OcG2aZomTgK7csRbQsPZkYQRBiWfcgWGFJwjP3EmalVExj8dlkg+mAWXx5FaDPex6CiHH6x/5+XpWwt5maSNnHumYivAXOGm7w2zPxmkAZa/GngHNQjPcKwjh6QqM0jGVaGy2klkOekEVyzPOGIEkDXqaYCaTgT1abxlLg9pVwsb+5HZSf7TL28EMX6k21DsNQTNxJVIz9hiFiqWQxrcvpkgyhJxck53m+9IPiLAGqF/sPVrK/XW76JvK3MjtuA0Q2LZ1MHXy1ngwV0zOWuITgRPLR7U1AzhH0M8fmm/Df0KCSbLmAa042WonCJNzVWnHefVxlWgyhwDYfTS9jjDikF+cpfwwe6+bpNHfTtv8H11wnm/1l/LUaIZRmp+UMmD67O29Q8p826ADSjg+aHz6fR/oJaAiqKbs3qG0CjDpv5T6hRsOWkkk95B8mV4IV4R+eGs1Ng0IvLEqCNfwXfQcS22x8mp0H
+ KmrVJxL/
+ ft6U0agG7juBcCYfEpEWowzQOkeChPeE+cqtdHgXwCWPbDZFrIKRCYIevaD9UKQmiTT0ZffyyklSqHgJXGFx3ZXbLwE+uBk3ex98BM2jIAdYk/51emZ+34jqpzeEFJlzQ0C8HZw2tBiSKHcag9hfA1t+W8Iy1hfO6rvVoKcogtdWWzyo95DUApfI+R0pBwjK91hTFXEL6Z0uUjtve2u1DOvPHgxU2NqumOhxztYgBSIS7zUvcZ+LG110t3Dt2z+kfIwukkbaE1HO0XjUw45tscbhs3FVdmZiB2pcxddi6XNnN3ec/f90DOjbHt1CFjtmmKGhRnzO2VdJwfPuOxIiz0tFH+i9hIo6hbRgq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,102 +137,93 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Chris,
+On Thu, Nov 12, 2026 at 11:53:20PM +0100, David Hildenbrand (Arm) wrote:
+> Being able to overflow the refcount is not really big news, but it's about
+> time that we do something about it because some modern technology might
+> find ways to abuse it :)
 
-kernel test robot noticed the following build warnings:
+Yes.  My primary worry is actually it finding a path where we forget to
+put the refcount on a folio and that gets exploited into a UAF.  I'm not
+sure the "reserve for root" aspect really helps recover from that, but
+I'm not too opposed to it.
 
-[auto build test WARNING on ce6518e61e3b4bf4f97f7ac6204049b9eba7eb75]
+> As a short-term solution, let's introduce two folio refcount limits:
+> one for ordinary consumers and one for admins. Leave some headroom
+> before the refcount goes negative, which we really don't want (having
+> the mapcount go negative is also not expected).
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Chris-Down/mm-slab-Enable-SLAB_FREELIST_HARDENED-by-default/20261113-005125
-base:   ce6518e61e3b4bf4f97f7ac6204049b9eba7eb75
-patch link:    https://lore.kernel.org/r/9a4caff0336c78a7adc746786c81c9c01f89c40b.1794506262.git.chris%40chrisdown.name
-patch subject: [PATCH v3 5/6] mm/slab: Support disabling KMALLOC_PARTITION_CACHES at boot
-config: hexagon-allnoconfig (https://download.01.org/0day-ci/archive/20261114/202611140317.3kXloW0R-lkp@intel.com/config)
-compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project 1b1fed44d3dcca649a9877915d57c3357a98124e)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261114/202611140317.3kXloW0R-lkp@intel.com/reproduce)
+I don't think a negative refcount or mapcount is really a problem.  What
+matters is that we don't get to zero from below (for the refcount)
+or that we don't get to 0xf000'0000 (for mapcount).
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202611140317.3kXloW0R-lkp@intel.com/
+> +/* Leave separate reserves for administrators and concurrent reference gains. */
+> +#define FOLIO_REF_COUNT_LIMIT		(INT_MAX - (1U << 26))
+> +#define FOLIO_REF_COUNT_ADMIN_LIMIT	(INT_MAX - (1U << 25))
 
-All warnings (new ones prefixed by >>):
+I think these specific values will generate bad code.
 
->> mm/slab_common.c:1029:44: warning: non-overlapping comparisons always evaluate to false [-Wtautological-overlap-compare]
-    1029 |         } else if (type > KMALLOC_PARTITION_START && type <= KMALLOC_PARTITION_END) {
-         |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   1 warning generated.
+> +static inline bool folio_ref_count_over_limit(const struct folio *folio)
+> +{
+> +	const unsigned int ref_count = folio_ref_count(folio);
+> +
+> +	if (likely(ref_count < FOLIO_REF_COUNT_LIMIT))
+> +		return false;
 
+I would replace this with a simple signed comparison against 0.
 
-vim +1029 mm/slab_common.c
+>  static inline void folio_get(struct folio *folio)
+>  {
+> -	VM_BUG_ON_FOLIO(folio_ref_zero_or_close_to_overflow(folio), folio);
+> +	VM_WARN_ON_FOLIO(folio_ref_count(folio) <= 0, folio);
+>  	folio_ref_inc(folio);
+>  }
 
-   999	
-  1000	static void __init
-  1001	new_kmalloc_cache(int idx, enum kmalloc_cache_type type)
-  1002	{
-  1003		slab_flags_t flags = 0;
-  1004		unsigned int minalign = __kmalloc_minalign();
-  1005		unsigned int aligned_size = kmalloc_info[idx].size;
-  1006		int aligned_idx = idx;
-  1007	
-  1008		if ((KMALLOC_RECLAIM != KMALLOC_NORMAL) && (type == KMALLOC_RECLAIM)) {
-  1009			flags |= SLAB_RECLAIM_ACCOUNT;
-  1010		} else if (IS_ENABLED(CONFIG_MEMCG) && (type == KMALLOC_CGROUP)) {
-  1011			if (mem_cgroup_kmem_disabled()) {
-  1012				kmalloc_caches[type][idx] = kmalloc_caches[KMALLOC_NORMAL][idx];
-  1013				return;
-  1014			}
-  1015			flags |= SLAB_ACCOUNT;
-  1016		} else if (IS_ENABLED(CONFIG_SLAB_OBJ_EXT) && type == KMALLOC_NO_OBJ_EXT) {
-  1017			if (!need_kmalloc_no_objext()) {
-  1018				kmalloc_caches[type][idx] = kmalloc_caches[KMALLOC_NORMAL][idx];
-  1019				return;
-  1020			}
-  1021			flags |= SLAB_NO_OBJ_EXT | SLAB_NO_MERGE;
-  1022		} else if (IS_ENABLED(CONFIG_ZONE_DMA) && (type == KMALLOC_DMA)) {
-  1023			flags |= SLAB_CACHE_DMA;
-  1024		}
-  1025	
-  1026		if (kmalloc_partition_enabled) {
-  1027			if (type >= KMALLOC_PARTITION_START && type <= KMALLOC_PARTITION_END)
-  1028				flags |= SLAB_NO_MERGE;
-> 1029		} else if (type > KMALLOC_PARTITION_START && type <= KMALLOC_PARTITION_END) {
-  1030			/* Use the normal caches, which have already been created. */
-  1031			kmalloc_caches[type][idx] = kmalloc_caches[KMALLOC_NORMAL][idx];
-  1032			return;
-  1033		}
-  1034	
-  1035		/*
-  1036		 * If memcg_kmem is enabled and this is a KMALLOC_NORMAL cache and not
-  1037		 * aliased with any other type, make sure it's never merged with any other
-  1038		 * cache.
-  1039		 *
-  1040		 * In other cases the kmalloc cache may end up being used for a
-  1041		 * __GFP_ACCOUNT allocation so mark it as such. The exception is a
-  1042		 * KMALLOC_NO_OBJ_EXT cache.
-  1043		 */
-  1044		if (!mem_cgroup_kmem_disabled()) {
-  1045			if (type == KMALLOC_NORMAL && KMALLOC_RECLAIM != KMALLOC_NORMAL)
-  1046				flags |= SLAB_NO_MERGE;
-  1047			else if (!(flags & SLAB_NO_OBJ_EXT))
-  1048				flags |= SLAB_MAY_ACCOUNT;
-  1049		}
-  1050	
-  1051		if (minalign > ARCH_KMALLOC_MINALIGN) {
-  1052			aligned_size = ALIGN(aligned_size, minalign);
-  1053			aligned_idx = __kmalloc_index(aligned_size, false);
-  1054		}
-  1055	
-  1056		if (!kmalloc_caches[type][aligned_idx])
-  1057			kmalloc_caches[type][aligned_idx] = create_kmalloc_cache(
-  1058						kmalloc_info[aligned_idx].name[type],
-  1059						aligned_size, flags);
-  1060		if (idx != aligned_idx)
-  1061			kmalloc_caches[type][idx] = kmalloc_caches[type][aligned_idx];
-  1062	}
-  1063	
+And I would drop this hunk.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> diff --git a/mm/util.c b/mm/util.c
+> index 80f6c714844f2..c9c3dc4b490fa 100644
+> --- a/mm/util.c
+> +++ b/mm/util.c
+
+Now we have mm/folio.c, I think it should live in there.
+
+> @@ -791,6 +791,32 @@ int folio_mc_copy(struct folio *dst, struct folio *src)
+>  }
+>  EXPORT_SYMBOL(folio_mc_copy);
+>  
+> +bool folio_ref_count_over_limit_slowpath(const struct folio *folio,
+> +		unsigned int ref_count)
+> +{
+> +	if (ref_count >= FOLIO_REF_COUNT_ADMIN_LIMIT)
+> +		goto over_limit;
+
+Maybe let this go up to 0x8100'0000?
+
+> +	/* Background threads must not consume admin reserves. */
+> +	if (current->flags & PF_KTHREAD)
+> +		goto over_limit;
+> +	/* Neither must interrupt contexts on behalf of the interrupted task. */
+> +	if (!in_task())
+> +		goto over_limit;
+> +	/* Capability checks are not safe with IRQs disabled. */
+> +	if (irqs_disabled())
+> +		goto over_limit;
+> +	/* Use the task's credentials, which filesystem overrides cannot change. */
+> +	if (has_capability_noaudit(current, CAP_SYS_RESOURCE))
+> +		return false;
+> +
+> +over_limit:
+> +	pr_warn_ratelimited("folio:%p refcount:%d mapcount:%d mapping:%p reached refcount limit\n",
+> +			    folio, (int)ref_count, folio_mapcount(folio),
+> +			    folio_mapping(folio));
+
+If it's worth doing folio->mapping, maybe also print folio->index?
+In fact,
+
+        pr_warn("page: refcount:%d mapcount:%d mapping:%p index:%#lx pfn:%#lx\n",
+                        folio_ref_count(folio), mapcount, mapping,
+                        folio->index + idx, pfn);
+
+might be worth pulling out into a mini helper from __dump_folio()?
+
 
