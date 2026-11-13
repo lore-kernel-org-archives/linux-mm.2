@@ -1,147 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDFAC606A323
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 553FB606A896
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i76A644j
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IVa1pdaT
 Received: by kanga.kvack.org (Postfix)
-	id DFFDD6B05B3; Fri, 13 Nov 2026 13:09:04 -0500 (EST)
+	id 4AF2F6B00EF; Fri, 13 Nov 2026 13:29:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAFE96B05B4; Fri, 13 Nov 2026 13:09:04 -0500 (EST)
+	id 45FBD6B05B0; Fri, 13 Nov 2026 13:29:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC6BE6B05B5; Fri, 13 Nov 2026 13:09:04 -0500 (EST)
+	id 3286B6B05B1; Fri, 13 Nov 2026 13:29:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A08F56B05B3
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:09:04 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2D79BC01D6
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:09:04 +0000 (UTC)
-X-FDA: 85430882208.18.BDA3E1A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5E5A31C0004
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:09:02 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i76A644j;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 085AD6B00EF
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:29:10 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EE57FA77D6
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:29:07 +0000 (UTC)
+X-FDA: 85430932734.14.93AD02A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 4798A10000A
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:29:06 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IVa1pdaT;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794593342;
-	b=XWrIKuLYfn/dpo1BW2yfNJGt89V/feWjWQDAFtBLmUuvmkqz5Mxffj9du0SFwmbYKd7cRf
-	QsLY91SILTJthCCNYfLXhzGv3WGcHFTzBrqFCYjukpmjDwNeTvcC68gZHAIWR38iMjjoAz
-	mlKm0kF2ahtZr1I2XbJeMtZzipIlEZw=
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794593342;
+	s=arc-20220608; t=1794594546;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gYve4B7tfcs+4qrP0IXYiOdAh1t+su0pgfjEgvnY4jk=;
-	b=gBKUmHsmyP3MIxk4WjJ62VW71AyBL9fKJJ477Y6fmIt15otVWCvQ3EQOv03IyL3JhWIIXC
-	XweNZVmkPUov1rf0plbbHciYwxFG5klz1e8OMfIeb6hnxeAU7+bl5fV9jMm1MxdFbeVRh0
-	ItbHCPXe6mvJO0k5E7XyHu1h2KCfhbQ=
+	bh=VA8bk9ERwXuNEDBoJnHNSRw6hKUgevqXTx1c8nNVso8=;
+	b=TmaYu5mbjkSx0PmboDXYdEYpr6tif+/dGvjmEwSBuz7gc5fZVugn83fbjGt1RRSror3sHR
+	YZkGIv3SNkTN1IC6IR6mC+zESuro7KLKqz0obp2W3CnIiQ8FSQR0De1VdsCR3bFvoH9gb5
+	4eZacrxPaWVdYeQHR5/ntvMSuUxjcVw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i76A644j;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IVa1pdaT;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794594546;
+	b=JNf2jYFzlcNUGGv3TXR42K8oOgF/WzljiY7OxEwNNXkoHLemtfr1iHQca+dMWHiuCLhGce
+	HArP4DO7W1HfpnaS9paFzrQfhFUvFkeoEMw5gCKC3Z+2jPjp1c4IiiQxoY5GNOp161Z4p1
+	V++Cyk0H7D3glg/ki5n+d2rEf2wl3Jw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 91698409BF;
-	Fri, 13 Nov 2026 18:09:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ADFB1F000C4;
-	Fri, 13 Nov 2026 18:08:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A73C7609ED;
+	Fri, 13 Nov 2026 18:29:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B26B1F000C5;
+	Fri, 13 Nov 2026 18:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794593341;
-	bh=gYve4B7tfcs+4qrP0IXYiOdAh1t+su0pgfjEgvnY4jk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=i76A644jOZvI9RY4CcNq0C7o8DUzWe+9qC3ysMy/JwSXMB9tRGZmNJWZrbOfqhSUv
-	 aUDdLVOLg+krPme2jYFfg4MXLazXlAFJsy/pjn326/EG+kuBJWWo2s1h8uR7sDZS6C
-	 LjmmT1rOSREiHaLYXXPrbmH0j2lefokWVGooRPdOPF47iMVL+i2rqm7v/zqraCSSgL
-	 cQnRCdLO+45B0SWnvjk7u0Nsz5CSeYT9LeG+Dm5nVPOVnsjvX91UvhYcVNo+h0d0gn
-	 02TKOiusgWqvrdP0a0nIp2r5W1hh43Y4lOx06tV+uVw+oA2+07JRrI7EVuS9Mxia7x
-	 GbRUtNjh7VemA==
-Message-ID: <27ee1e9a-be41-498c-b64f-df161dfa4b98@kernel.org>
-Date: Fri, 13 Nov 2026 19:08:48 +0100
+	s=k20260515; t=1794594545;
+	bh=VA8bk9ERwXuNEDBoJnHNSRw6hKUgevqXTx1c8nNVso8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=IVa1pdaTdvJPJW//quHT797JAknHetwTWP7XqIoxrHXy3p4kDfkDlbx/DJJxbKsog
+	 rVFaQbg1Xck2HGSyWeu56XkGjrKwJPV0lS+xf5BDNqkkNmvShfyS2sbc1jFKZIOewA
+	 dJiBcGQ9c5b79av0BG88cuTvdQG51W4RdcMPeVA/yOq6gfQ9JazFJwgKGV1TsFFpez
+	 G3/qzHYX9Fsiu09GVI+/44p89d/EhN8NqzC+7WCjmY2yfIdF6US3wYkdAj9qcHtMmW
+	 ulHbdzl8VNIr0omw2Ava7FxqFWAvagnGxDQdCSQB/MMZ6HIsYv3Bza2BR2Dz0h2hSV
+	 Lt4YVL9fVueKA==
+Date: Fri, 13 Nov 2026 18:28:58 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, Andreas Larsson <andreas@gaisler.com>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Matthew Wilcox <willy@infradead.org>, 
+	Malin Jonsson <malin.jonsson@est.tech>, Richard Weinberger <richard@nod.at>, 
+	Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org, 
+	linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org
+Subject: Re: [PATCH v2 1/6] ARM: remove support for highmem on VIVT
+Message-ID: <avdWJOWX3X2KlZfr@gremlin>
+References: <20261112112528.1116405-1-arnd@kernel.org>
+ <20261112112528.1116405-2-arnd@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/khugepaged: reject shmem collapse ranges beyond i_size
-To: Roman Gushchin <roman@kernel.org>
-Cc: sashiko-reviews@lists.linux.dev,
- =?UTF-8?B?SsOpcsOpbXkgSmVhbg==?= <Jeremy.Jean@oss.cyber.gouv.fr>,
- Zi Yan <ziy@nvidia.com>, Roman Gushchin <roman.gushchin@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-References: <20261112142335.2749597-2-Jeremy.Jean@oss.cyber.gouv.fr>
- <sashiko-outbox-212974@kernel.org>
- <5f3dec4f-0416-4550-a980-b464a90aeb11@kernel.org> <87y0aw8x7y.fsf@kernel.org>
- <79c3445e-623e-46ac-a09a-0a5d21f117c9@kernel.org> <87a4nc7gqh.fsf@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <87a4nc7gqh.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5E5A31C0004
-X-Rspamd-Server: rspam12
-X-Stat-Signature: yp3u3uy16zetfa1ns83n5pcz116bphw6
-X-Rspam-User:
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261112112528.1116405-2-arnd@kernel.org>
+X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 4798A10000A
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794593342-474683
-X-HE-Meta: U2FsdGVkX1+10junZSTDEQ08WSdb3xC7dYqma4Mvd02qSH3UvMoNL84rFd31axNZmU76u/I2LSFuoY7wPBu4C4qURn8whzsscyEIvRMU5t7jbkEMlsGXA7WRB2e3VUdBwY54Oj2Euubl2uxnvI/aIvpJuoas64D6YycWc5ktOILqzPRyGe73J5ddcy+ICl1f0l+unBBJZSkwxYTXRpa7MHDT3dCg8fyJbdtxPt/mAUyYOJ1SCsvzhiauemBv+zo4SK6S4y9tBbzNwyJmhZl4AnMWWpIKtEODbTr4dVOWI38Ye2mpVh4cL8YQhhOnsH90LcDt4h1FbYx81jfOsYLF6zw2OKP9bNIoKujwqVQKizJaxjYlJhOUIrQlojisWcI8F2pzW9F3LaOkipk2CO11vGpVUBmYpg27qdizib/XfRO7IrDarM548ZlCq8xux/3CDg5cjL5Nfy25OgXdBg44qDVcQrrSJBsqB2dZmu9Ha6sPe4QGgV7Hd4bO3yqCWmzdCEaBg/V1J8VlZuFdrNGMyMKB1ZW9Jz/6rwCyLP68PwRDDAs21tlKa0Y5hBfCmYNTlTCHRU/ldHqF57Nv/WgG8c+46p22YIKQcTkVJRwzcteH2F03uBjFmylaWYMkeVGuPs2VVFFH9Q6xzfFNpgU0MVuZ6+hkuR71OawMxbglu2vJnIB8YNzPtu4SwsqUgCpTJW0jGuTe4itR0RZZn+JxdkmD9Kc7AIbGb7dCk1uL4pJjhS3eairZmyAr4rGrS8D6I21M46a20t3KGKBpHCbMFUFo8Tz09K/YQcnHKquZh38VywS91kO9Xufx7kjZR0JD+Vxy7TvyxH49gq9oApjW/FI2QzWYpKVC4uaGSyoICBK514xRUyJTxMxI8cV+ulhm5LSrvYK2Ks9P54QlwlkXeSIkidAy98iIb6lluYBlLvgF8clsrBfhGmFFRsUpDIGD7k+v5qzOM2Zz8KRA+XO
- ky5qhntO
- ryPYyPkghUcSkBATYxSYAbhOcWy+yKMo+p6nWyLoqGL7PdStxZ9A5uuBIGukDI67is2Yq/FOmK27sv+OpYmKecwmwcdsyK1rCHSDpsl319/XVh5xQ5Wxh/iRNIu/LZGNXO72QJPX1OCFEcGRhrCXng3TRCaxQ/amwH13KM4Pus86cZdgp0lJW9Qduz+oZ4sMbf3j9J9sOmt3kAvpPjCHzapf807ieKhKKEHByRyFhmixE4UVPp/5RV7lPf1goKc+J92g7vkwHHCZwBX3n4wAko7eeIAb6bnA/baw2Mr8rUISVHSFUEQyYhKEmG1QQ9jG16zbU69mOBrtfQdM9psVLyvguZrp3PshPdthEoqwN/Hg6lP+LdDhqSVFW4RKzV74meaeNRLV+wmcdj61t4vhPuie5++oN8fH8MgKDBIlUyaaYyJp200lTGOuCOzJtln5jzKQEb260qVyE3E9sDcr61qMTpQ==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
+X-Stat-Signature: riigyor43rwu5s9o763wr7aeiwcexta8
+X-HE-Tag: 1794594546-48499
+X-HE-Meta: U2FsdGVkX19IfMi7q5/XgokpK0I0oxWh2JOB0UMMGkpo6v+2VTdQ8iMgMx2DUnZ2pDJqvIt0YF1QuZc0zKkBPl4lIUeUzuB/9yhgG5VGHDf0kzRgYkwy1prQ7YiRLZSGg+12sHmMXzL7lQ777qCqGAyi/9FFE5JmxZ6H5B0oWB8a2DLhUGyyTgvMTx+c7VjdgjS5Up3ZhjW1KxcIfJPZqQsG0Wy9gL3n46xXRgkWXDBOpbEvlsLOATvgIystz1gSo6usTkpm1eI5B2Nw6OogrrCfIkKtIUT1NJO3BGMPCF3/u4pspAeOKZiNSnJEtYYQueULcQPlA8AfcXCff7d99HrzOtlhxTAo0kZ+Mq9qK8j9l/5FltDUs9xIlLyWOJP0nIzPtoItZamJi9J5V50DXt+XEKJpgkVNpeVwaHd4xVb+9ZENpYcVSi2+sL8G3Wk6WStb4LeowvOHhcZHdID3xPEWLKXXyRi1w6ss+z/gAQ8JHvsYO1ngV4ZGvGVTv92ZMj7B6Pwhp4qY9i381GLm+qnJBBImhqkqnZRMlbFrnrF7mqm0rc9ES4xrUipgUaNxGDBhPn23DbLMBwpbcoWuowWW7+V72tlYO6xhEu5JVClNNzSRhqjnZye9SDVWR+OEMp0bm85docXViVFTkXpb3edPMpvt8nqA20nNsARXANLSv62r0CSp1yzqbGthdKRTmnjbSSXMOhYykgB6DI7f9Eg8uZAXGeQ5YEzwtiExgRrGbkLmcIZ1kXxOlW0lEMlu+gomw2sjIXZtM+c3p8H9eWqOgB4VB8qIpgdNseonQN2SpPQ4Z9VVb3qFXk88qWNrSV8UDyhqIKnGA2pWCRHv/ykge7BtdavsQIghUbDGpDGYvKOHI38z4ab9ZeQ1XCS5ho91Zl+RMNbicveOaPL/vzO0EoLm9sAe4Te46cNw189FV8NRFcl2dihtmeu5OQw+KIxDEh4zzsCYVGmXglk
+ fACUZqsi
+ aYlyuCtDWAPTlp7UJBLvUC9hU9Wqk9CWB38mzsrEY4E/ohxg2JyLJczzfcqTsX5q9jgO91ZXJw9/oToYoxOEBFOC8BvremBF5NXzGoOACpEIK/YC5mFmJvV7Ig2RYaGn1CNUsbxzMUkWk84L/uQwecfyXk7gEFipmCP4/K6lTcNAfOWCBECfhz2yskBcfcuSK6LDVeG2d94dBl/wGGLlbM+pV4k7xRCAbD6hO1tU4C+WI8FjF//Vb7f4IXk6Di4obanwuKqj3tNf9z7Ynh8ZLFdd445kYbSZRHIGGSDKDceRC3+0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,68 +100,441 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Thu, Nov 12, 2026 at 12:25:23PM +0100, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> As Jason Gunthorpe noticed, supporting VIVT caches adds some complications
+> to highmem that can be avoided these days:
+>
+> While all ARMv4 and ARMv5 CPUs use virtually indexed caches, they no
+> longer really need highmem because we have practically discontinued
+> support for large-memory configurations already.  The only machines I
+> could find anywhere for memory on ARMv5 are:
+>
+>  - The Intel IOP platform was used on relatively large memory
+>    configurations but we dropped kernel support in 2019 and 2022,
+>    respectively.
+>
+>  - The Marvell mv78xx0 platform was the initial user of Arm highmem,
+>    with the DB-78x00-BP supporting 2GB of memory. The only remaining
+>    board file is for Buffalo WLX (Terastation Duo), which has only
+>    512MB and is going to be removed soon.
+>
+>  - The Kirkwood platform supports 2GB, and there are actually boards
+>    with that configuration that can still work. However, there are
+>    no known users of the OpenBlocks A7, and the Freebox V6 is already
+>    using CONFIG_VMSPLIT_2G to avoid enabling highmem.
+>
+> Remove the Arm specific portions here, making CONFIG_HIGHMEM conditional
+> on modern caches. Since the cache type is enforced by Kconfig, no
+> boot time check is needed here.
+>
+> Link: https://lore.kernel.org/all/20251219171412.GG254720@nvidia.com/
+> Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
->> Posting preexisting stuff to the mailing list is not great, at least
->> not right now.
-> 
-> Yet I've been explicitly asked about it by others. So at least there are
-> various opinions here.
+Really lovely! All looks reasonable AFAICT so:
 
-I suspect these other subsystems are not as exposed to Anthropic's long list of
-fixes :)
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-> 
->> We were very happy that preexisting issues went into the private bugtracker. I
->> want to delegate stuff to people in my team to screen them and see if it needs
->> fixing. Well controlled.
->>
->> Now either:
->>
->> (a) it was never really gone, and we were in disbelieve that preexisting issues
->>     are no longer posted publicly.
->>
->> (b) Sashiko maintainer decided to re-enable it without consulting us.
-> 
-> The correct version is b*, it's indeed back, but in a completely
-> reworked way, as I wrote to Lorenzo yesterday.
-> 
-> Pre-existing reports are now limited to the first non-rfc version of the
-> patchset, they are limited in numbers per patch (1-2), they are
-> _deduplicated and posted strictly once per issue_.
-> 
-> Re consulting the problem is that there are several hundreds maintainers
-> with drastically different views. If we'll wait for everybody's agreement
-> each time, nothing will ever move. So I have to make some decisions like
-> this on my own. And, yes, some of them will be wrong or not perfect.
-> I do fix/adjust things constantly. But some patience would be nice.
+> ---
+>  arch/arm/Kconfig                    |  1 +
+>  arch/arm/configs/gemini_defconfig   |  1 -
+>  arch/arm/configs/multi_v5_defconfig |  1 -
+>  arch/arm/configs/mvebu_v5_defconfig |  1 -
+>  arch/arm/include/asm/highmem.h      | 56 ++---------------------------
+>  arch/arm/mach-omap2/Kconfig         |  2 +-
+>  arch/arm/mm/cache-feroceon-l2.c     | 31 ++--------------
+>  arch/arm/mm/cache-xsc3l2.c          | 47 +++---------------------
+>  arch/arm/mm/dma-mapping.c           | 12 ++-----
+>  arch/arm/mm/flush.c                 | 19 +++-------
+>  10 files changed, 17 insertions(+), 154 deletions(-)
+>
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index 0cc289a7184a..fd01ccab9c12 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -1208,6 +1208,7 @@ config ARCH_SPARSEMEM_ENABLE
+>  config HIGHMEM
+>  	bool "High Memory Support"
+>  	depends on MMU
+> +	depends on !CPU_CACHE_VIVT
+>  	select KMAP_LOCAL
+>  	select KMAP_LOCAL_NON_LINEAR_PTE_ARRAY
+>  	help
+> diff --git a/arch/arm/configs/gemini_defconfig b/arch/arm/configs/gemini_defconfig
+> index 5860b2fe7d1f..95debf46581b 100644
+> --- a/arch/arm/configs/gemini_defconfig
+> +++ b/arch/arm/configs/gemini_defconfig
+> @@ -11,7 +11,6 @@ CONFIG_KEXEC=y
+>  CONFIG_ARCH_MULTI_V4=y
+>  # CONFIG_ARCH_MULTI_V7 is not set
+>  CONFIG_ARCH_GEMINI=y
+> -CONFIG_HIGHMEM=y
+>  CONFIG_CMDLINE="console=ttyS0,115200n8"
+>  CONFIG_PM=y
+>  CONFIG_PARTITION_ADVANCED=y
+> diff --git a/arch/arm/configs/multi_v5_defconfig b/arch/arm/configs/multi_v5_defconfig
+> index a0d2fb2fcf9a..bc34b6026e37 100644
+> --- a/arch/arm/configs/multi_v5_defconfig
+> +++ b/arch/arm/configs/multi_v5_defconfig
+> @@ -27,7 +27,6 @@ CONFIG_MACH_D2NET_DT=y
+>  CONFIG_MACH_MSS2_DT=y
+>  CONFIG_ARCH_SUNXI=y
+>  CONFIG_ARCH_VERSATILE=y
+> -CONFIG_HIGHMEM=y
+>  CONFIG_ARM_APPENDED_DTB=y
+>  CONFIG_ARM_ATAG_DTB_COMPAT=y
+>  CONFIG_CPU_FREQ=y
+> diff --git a/arch/arm/configs/mvebu_v5_defconfig b/arch/arm/configs/mvebu_v5_defconfig
+> index dbc6c511e70b..5adf6c75304e 100644
+> --- a/arch/arm/configs/mvebu_v5_defconfig
+> +++ b/arch/arm/configs/mvebu_v5_defconfig
+> @@ -13,7 +13,6 @@ CONFIG_MACH_RD88F5182_DT=y
+>  CONFIG_MACH_LINKSTATION_MINI=y
+>  CONFIG_MACH_D2NET_DT=y
+>  CONFIG_MACH_MSS2_DT=y
+> -CONFIG_HIGHMEM=y
+>  CONFIG_ARM_APPENDED_DTB=y
+>  CONFIG_ARM_ATAG_DTB_COMPAT=y
+>  CONFIG_CPU_FREQ=y
+> diff --git a/arch/arm/include/asm/highmem.h b/arch/arm/include/asm/highmem.h
+> index bdb209e002a4..67ed46d1922b 100644
+> --- a/arch/arm/include/asm/highmem.h
+> +++ b/arch/arm/include/asm/highmem.h
+> @@ -11,66 +11,14 @@
+>  #define PKMAP_NR(virt)		(((virt) - PKMAP_BASE) >> PAGE_SHIFT)
+>  #define PKMAP_ADDR(nr)		(PKMAP_BASE + ((nr) << PAGE_SHIFT))
+>
+> -#define flush_cache_kmaps() \
+> -	do { \
+> -		if (cache_is_vivt()) \
+> -			flush_cache_all(); \
+> -	} while (0)
+> +#define flush_cache_kmaps() do { } while (0)
+>
+>  extern pte_t *pkmap_page_table;
+>
+> -/*
+> - * The reason for kmap_high_get() is to ensure that the currently kmap'd
+> - * page usage count does not decrease to zero while we're using its
+> - * existing virtual mapping in an atomic context.  With a VIVT cache this
+> - * is essential to do, but with a VIPT cache this is only an optimization
+> - * so not to pay the price of establishing a second mapping if an existing
+> - * one can be used.  However, on platforms without hardware TLB maintenance
+> - * broadcast, we simply cannot use ARCH_NEEDS_KMAP_HIGH_GET at all since
+> - * the locking involved must also disable IRQs which is incompatible with
+> - * the IPI mechanism used by global TLB operations.
+> - */
+> -#define ARCH_NEEDS_KMAP_HIGH_GET
+> -#if defined(CONFIG_SMP) && defined(CONFIG_CPU_TLB_V6)
+> -#undef ARCH_NEEDS_KMAP_HIGH_GET
+> -#if defined(CONFIG_HIGHMEM) && defined(CONFIG_CPU_CACHE_VIVT)
+> -#error "The sum of features in your kernel config cannot be supported together"
+> -#endif
+> -#endif
+> -
+> -/*
+> - * Needed to be able to broadcast the TLB invalidation for kmap.
+> - */
+> -#ifdef CONFIG_ARM_ERRATA_798181
+> -#undef ARCH_NEEDS_KMAP_HIGH_GET
+> -#endif
+> -
+> -#ifdef ARCH_NEEDS_KMAP_HIGH_GET
+> -extern void *kmap_high_get(const struct page *page);
+> -
+> -static inline void *arch_kmap_local_high_get(const struct page *page)
+> -{
+> -	if (IS_ENABLED(CONFIG_DEBUG_HIGHMEM) && !cache_is_vivt())
+> -		return NULL;
+> -	return kmap_high_get(page);
+> -}
+> -#define arch_kmap_local_high_get arch_kmap_local_high_get
+> -
+> -#else /* ARCH_NEEDS_KMAP_HIGH_GET */
+> -static inline void *kmap_high_get(const struct page *page)
+> -{
+> -	return NULL;
+> -}
+> -#endif /* !ARCH_NEEDS_KMAP_HIGH_GET */
+> -
+>  #define arch_kmap_local_post_map(vaddr, pteval)				\
+>  	local_flush_tlb_kernel_page(vaddr)
+>
+> -#define arch_kmap_local_pre_unmap(vaddr)				\
+> -do {									\
+> -	if (cache_is_vivt())						\
+> -		__cpuc_flush_dcache_area((void *)vaddr, PAGE_SIZE);	\
+> -} while (0)
+> +#define arch_kmap_local_pre_unmap(vaddr) do { } while (0)
+>
+>  #define arch_kmap_local_post_unmap(vaddr)				\
+>  	local_flush_tlb_kernel_page(vaddr)
+> diff --git a/arch/arm/mach-omap2/Kconfig b/arch/arm/mach-omap2/Kconfig
+> index 79f8afe3a6bf..f0f1d7a8640c 100644
+> --- a/arch/arm/mach-omap2/Kconfig
+> +++ b/arch/arm/mach-omap2/Kconfig
+> @@ -135,7 +135,7 @@ config ARCH_OMAP2PLUS_TYPICAL
+>  	bool "Typical OMAP configuration"
+>  	default y
+>  	select AEABI
+> -	select HIGHMEM
+> +	select HIGHMEM if !CPU_CACHE_VIVT
+>  	select I2C
+>  	select I2C_OMAP
+>  	select MENELAUS if ARCH_OMAP2
+> diff --git a/arch/arm/mm/cache-feroceon-l2.c b/arch/arm/mm/cache-feroceon-l2.c
+> index 2bfefb252ffd..1316b6ab295a 100644
+> --- a/arch/arm/mm/cache-feroceon-l2.c
+> +++ b/arch/arm/mm/cache-feroceon-l2.c
+> @@ -12,7 +12,6 @@
+>  #include <linux/init.h>
+>  #include <linux/of.h>
+>  #include <linux/of_address.h>
+> -#include <linux/highmem.h>
+>  #include <linux/io.h>
+>  #include <asm/cacheflush.h>
+>  #include <asm/cp15.h>
+> @@ -38,30 +37,6 @@
+>   * between which we don't want to be preempted.
+>   */
+>
+> -static inline unsigned long l2_get_va(unsigned long paddr)
+> -{
+> -#ifdef CONFIG_HIGHMEM
+> -	/*
+> -	 * Because range ops can't be done on physical addresses,
+> -	 * we simply install a virtual mapping for it only for the
+> -	 * TLB lookup to occur, hence no need to flush the untouched
+> -	 * memory mapping afterwards (note: a cache flush may happen
+> -	 * in some circumstances depending on the path taken in kunmap_atomic).
+> -	 */
+> -	void *vaddr = kmap_atomic_pfn(paddr >> PAGE_SHIFT);
+> -	return (unsigned long)vaddr + (paddr & ~PAGE_MASK);
+> -#else
+> -	return __phys_to_virt(paddr);
+> -#endif
+> -}
+> -
+> -static inline void l2_put_va(unsigned long vaddr)
+> -{
+> -#ifdef CONFIG_HIGHMEM
+> -	kunmap_atomic((void *)vaddr);
+> -#endif
+> -}
+> -
+>  static inline void l2_clean_pa(unsigned long addr)
+>  {
+>  	__asm__("mcr p15, 1, %0, c15, c9, 3" : : "r" (addr));
+> @@ -78,14 +53,13 @@ static inline void l2_clean_pa_range(unsigned long start, unsigned long end)
+>  	 */
+>  	BUG_ON((start ^ end) >> PAGE_SHIFT);
+>
+> -	va_start = l2_get_va(start);
+> +	va_start = __phys_to_virt(start);
+>  	va_end = va_start + (end - start);
+>  	raw_local_irq_save(flags);
+>  	__asm__("mcr p15, 1, %0, c15, c9, 4\n\t"
+>  		"mcr p15, 1, %1, c15, c9, 5"
+>  		: : "r" (va_start), "r" (va_end));
+>  	raw_local_irq_restore(flags);
+> -	l2_put_va(va_start);
+>  }
+>
+>  static inline void l2_clean_inv_pa(unsigned long addr)
+> @@ -109,14 +83,13 @@ static inline void l2_inv_pa_range(unsigned long start, unsigned long end)
+>  	 */
+>  	BUG_ON((start ^ end) >> PAGE_SHIFT);
+>
+> -	va_start = l2_get_va(start);
+> +	va_start = __phys_to_virt(start);
+>  	va_end = va_start + (end - start);
+>  	raw_local_irq_save(flags);
+>  	__asm__("mcr p15, 1, %0, c15, c11, 4\n\t"
+>  		"mcr p15, 1, %1, c15, c11, 5"
+>  		: : "r" (va_start), "r" (va_end));
+>  	raw_local_irq_restore(flags);
+> -	l2_put_va(va_start);
+>  }
+>
+>  static inline void l2_inv_all(void)
+> diff --git a/arch/arm/mm/cache-xsc3l2.c b/arch/arm/mm/cache-xsc3l2.c
+> index d20d7af02d10..477077387039 100644
+> --- a/arch/arm/mm/cache-xsc3l2.c
+> +++ b/arch/arm/mm/cache-xsc3l2.c
+> @@ -5,7 +5,6 @@
+>   * Copyright (C) 2007 ARM Limited
+>   */
+>  #include <linux/init.h>
+> -#include <linux/highmem.h>
+>  #include <asm/cp15.h>
+>  #include <asm/cputype.h>
+>  #include <asm/cacheflush.h>
+> @@ -55,34 +54,6 @@ static inline void xsc3_l2_inv_all(void)
+>  	dsb();
+>  }
+>
+> -static inline void l2_unmap_va(unsigned long va)
+> -{
+> -#ifdef CONFIG_HIGHMEM
+> -	if (va != -1)
+> -		kunmap_atomic((void *)va);
+> -#endif
+> -}
+> -
+> -static inline unsigned long l2_map_va(unsigned long pa, unsigned long prev_va)
+> -{
+> -#ifdef CONFIG_HIGHMEM
+> -	unsigned long va = prev_va & PAGE_MASK;
+> -	unsigned long pa_offset = pa << (32 - PAGE_SHIFT);
+> -	if (unlikely(pa_offset < (prev_va << (32 - PAGE_SHIFT)))) {
+> -		/*
+> -		 * Switching to a new page.  Because cache ops are
+> -		 * using virtual addresses only, we must put a mapping
+> -		 * in place for it.
+> -		 */
+> -		l2_unmap_va(prev_va);
+> -		va = (unsigned long)kmap_atomic_pfn(pa >> PAGE_SHIFT);
+> -	}
+> -	return va + (pa_offset >> (32 - PAGE_SHIFT));
+> -#else
+> -	return __phys_to_virt(pa);
+> -#endif
+> -}
+> -
+>  static void xsc3_l2_inv_range(unsigned long start, unsigned long end)
+>  {
+>  	unsigned long vaddr;
+> @@ -92,13 +63,11 @@ static void xsc3_l2_inv_range(unsigned long start, unsigned long end)
+>  		return;
+>  	}
+>
+> -	vaddr = -1;  /* to force the first mapping */
+> -
+>  	/*
+>  	 * Clean and invalidate partial first cache line.
+>  	 */
+>  	if (start & (CACHE_LINE_SIZE - 1)) {
+> -		vaddr = l2_map_va(start & ~(CACHE_LINE_SIZE - 1), vaddr);
+> +		vaddr = __phys_to_virt(start & ~(CACHE_LINE_SIZE - 1));
+>  		xsc3_l2_clean_mva(vaddr);
+>  		xsc3_l2_inv_mva(vaddr);
+>  		start = (start | (CACHE_LINE_SIZE - 1)) + 1;
+> @@ -108,7 +77,7 @@ static void xsc3_l2_inv_range(unsigned long start, unsigned long end)
+>  	 * Invalidate all full cache lines between 'start' and 'end'.
+>  	 */
+>  	while (start < (end & ~(CACHE_LINE_SIZE - 1))) {
+> -		vaddr = l2_map_va(start, vaddr);
+> +		vaddr = __phys_to_virt(start);
+>  		xsc3_l2_inv_mva(vaddr);
+>  		start += CACHE_LINE_SIZE;
+>  	}
+> @@ -117,13 +86,11 @@ static void xsc3_l2_inv_range(unsigned long start, unsigned long end)
+>  	 * Clean and invalidate partial last cache line.
+>  	 */
+>  	if (start < end) {
+> -		vaddr = l2_map_va(start, vaddr);
+> +		vaddr = __phys_to_virt(start);
+>  		xsc3_l2_clean_mva(vaddr);
+>  		xsc3_l2_inv_mva(vaddr);
+>  	}
+>
+> -	l2_unmap_va(vaddr);
+> -
+>  	dsb();
+>  }
+>
+> @@ -135,13 +102,11 @@ static void xsc3_l2_clean_range(unsigned long start, unsigned long end)
+>
+>  	start &= ~(CACHE_LINE_SIZE - 1);
+>  	while (start < end) {
+> -		vaddr = l2_map_va(start, vaddr);
+> +		vaddr = __phys_to_virt(start);
+>  		xsc3_l2_clean_mva(vaddr);
+>  		start += CACHE_LINE_SIZE;
+>  	}
+>
+> -	l2_unmap_va(vaddr);
+> -
+>  	dsb();
+>  }
+>
+> @@ -178,14 +143,12 @@ static void xsc3_l2_flush_range(unsigned long start, unsigned long end)
+>
+>  	start &= ~(CACHE_LINE_SIZE - 1);
+>  	while (start < end) {
+> -		vaddr = l2_map_va(start, vaddr);
+> +		vaddr = __phys_to_virt(start);
+>  		xsc3_l2_clean_mva(vaddr);
+>  		xsc3_l2_inv_mva(vaddr);
+>  		start += CACHE_LINE_SIZE;
+>  	}
+>
+> -	l2_unmap_va(vaddr);
+> -
+>  	dsb();
+>  }
+>
+> diff --git a/arch/arm/mm/dma-mapping.c b/arch/arm/mm/dma-mapping.c
+> index fb2eb0ed7bb8..917a546af0b9 100644
+> --- a/arch/arm/mm/dma-mapping.c
+> +++ b/arch/arm/mm/dma-mapping.c
+> @@ -647,18 +647,10 @@ static void dma_cache_maint_page(phys_addr_t phys, size_t size,
+>  			if (len + offset > PAGE_SIZE)
+>  				len = PAGE_SIZE - offset;
+>
+> -			if (cache_is_vipt_nonaliasing()) {
+> -				vaddr = kmap_atomic_pfn(pfn);
+> +			vaddr = kmap_atomic(phys_to_page(phys));
+> +			if (vaddr) {
+>  				op(vaddr + offset, len, dir);
+>  				kunmap_atomic(vaddr);
+> -			} else {
+> -				struct page *page = phys_to_page(phys);
+> -
+> -				vaddr = kmap_high_get(page);
+> -				if (vaddr) {
+> -					op(vaddr + offset, len, dir);
+> -					kunmap_high(page);
+> -				}
+>  			}
+>  		} else {
+>  			phys += offset;
+> diff --git a/arch/arm/mm/flush.c b/arch/arm/mm/flush.c
+> index 66270904f874..e21c5af6f34c 100644
+> --- a/arch/arm/mm/flush.c
+> +++ b/arch/arm/mm/flush.c
+> @@ -208,21 +208,10 @@ void __flush_dcache_folio(struct address_space *mapping, struct folio *folio)
+>  					folio_size(folio));
+>  	} else {
+>  		unsigned long i;
+> -		if (cache_is_vipt_nonaliasing()) {
+> -			for (i = 0; i < folio_nr_pages(folio); i++) {
+> -				void *addr = kmap_local_folio(folio,
+> -								i * PAGE_SIZE);
+> -				__cpuc_flush_dcache_area(addr, PAGE_SIZE);
+> -				kunmap_local(addr);
+> -			}
+> -		} else {
+> -			for (i = 0; i < folio_nr_pages(folio); i++) {
+> -				void *addr = kmap_high_get(folio_page(folio, i));
+> -				if (addr) {
+> -					__cpuc_flush_dcache_area(addr, PAGE_SIZE);
+> -					kunmap_high(folio_page(folio, i));
+> -				}
+> -			}
+> +		for (i = 0; i < folio_nr_pages(folio); i++) {
+> +			void *addr = kmap_local_folio(folio, i * PAGE_SIZE);
+> +			__cpuc_flush_dcache_area(addr, PAGE_SIZE);
+> +			kunmap_local(addr);
+>  		}
+>  	}
+>
+> --
+> 2.53.0
+>
 
-Right. My ask would be to move them all into the bug tracker instead of posting
-them publicly. There I can filter for stuff that I know is already either being
-discussed, already fixed in a tree, already delegated differently, or already
-sitting in my backlog.
-
-I would really appreciate if that would be possible.
-
-> 
-> Btw now you can delegate access to bugs to people outside of MAINTAINERS.
-
-Oh, that's awesome! I was trying to delegate the last 2 weeks but was always
-busy with other things (guess what :) ) ... and wondered how to send people
-these reports.
-
-
-I'll try playing with that next week.
-
-> 
->> I'm sorry if I made you angry, but I hope you can see how I suspect (b) and why
->> it would make me angry.
-> 
-> No problems. I understand the problem with the maintainers load right
-> now.
-Thanks!
-
--- 
-Cheers,
-
-David
+--
+Cheers, Lorenzo
 
