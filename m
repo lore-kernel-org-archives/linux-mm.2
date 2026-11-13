@@ -1,106 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E1D606A321
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 05:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C6F606A321
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 05:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jPl6cncC
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=e2k6z9Lg
 Received: by kanga.kvack.org (Postfix)
-	id 492FA6B065E; Fri, 13 Nov 2026 00:01:50 -0500 (EST)
+	id 49ECC6B05BF; Fri, 13 Nov 2026 00:07:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46B8C6B0662; Fri, 13 Nov 2026 00:01:50 -0500 (EST)
+	id 44FB36B05EB; Fri, 13 Nov 2026 00:07:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 332B96B0665; Fri, 13 Nov 2026 00:01:50 -0500 (EST)
+	id 33D1F6B061E; Fri, 13 Nov 2026 00:07:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C9856B065E
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:01:50 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8E1F140829
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:01:49 +0000 (UTC)
-X-FDA: 85428898338.11.6DD1809
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 12B336B05BF
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 00:07:24 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9275F8052F
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:07:23 +0000 (UTC)
+X-FDA: 85428912366.07.249D880
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9C7BFC0008
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:01:47 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jPl6cncC;
-	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id BA7C820005
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:07:21 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=e2k6z9Lg;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794546107;
+	s=arc-20220608; t=1794546442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9AW9CjsrWOUjN/UAvPMW3aqbxmgaglM7A1wQ9TO+c4w=;
-	b=l97Kuy5FH+HZNfgBtKpuXlvHuKpXSY0EAUtmiFkE6w+NOu+miu70CENMpbRBQDHc1GdOiA
-	SYk6MGcMXJmkVYmy5HZpHXzq+C/WHkqlG1AHQ5tIR23JmVdyw7yYdonWlmHsFS7NQ3y/Y2
-	DgLu6/GasO67rH6YvdHJdtMmHzO9ZTo=
+	bh=pUQ12nlyx4HX6d0KqIKX5qaNGaPIm7bVzP7lJ+Kotz8=;
+	b=NUfFYD2aFohg3dVZh1bJ3cqEDVlbdTE1yf6WMyHfRM6Unc5m4dRll2gGUSaZ/muxiTRaAB
+	a3RaYEL85YO4J7spDjpqZX2ZPJhreMbK9PLxpSEA2WgJbi2YAAxKRXd0LTmqwR12hlrTbF
+	TEeNoqXuWBo7pPIOHb6tpoo0gGjor9g=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jPl6cncC;
-	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=e2k6z9Lg;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794546107;
-	b=dhRU8KHBDBIUUzcQgTQ61tzIrCOLVWGsNz4VLhGXoJvr3WSF8zvcWJ3fPnvr2CYlu5vU2S
-	t54GQ01OSXLfVay7gpbnbjDf4Gw1UvSGMjeqMvOrAOT0hYqemJFHSSFwk/vu9I3gd5GIvw
-	sKbvFLJdcfnUu8JatswlYhb09i9h6VI=
+	t=1794546442;
+	b=4JG9EfEqykKm3D+hyxJq5gjt1qOMbzpRc+uwxnnGW4mebVh53spK5FHbSMS/79IyeHIqMq
+	6yW4/7PmF0xpf9AnBduwuYXe3N6lrMDxa10RExTJi2p8sPw/y2PlOReege3l8CcAInxqQi
+	u1BlwHW9pGLz+mPY2LCRENj+cZrcpCQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C255A45A40
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:01:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831301F000CC
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:01:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794546106;
-	bh=9AW9CjsrWOUjN/UAvPMW3aqbxmgaglM7A1wQ9TO+c4w=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=jPl6cncCx4PXs8iU+t7ZVtchhZkYOtmMuTjAD+cAubn9jIf2CF3giYVgp8+H2N3z1
-	 Fli14Cp4kTr5cA2XRNs25VeNNisaEsbSBjiDY9EgA0BAIQ+20AksXrQT0qhTiS3LK6
-	 moG8hP5OCl32TUDVHp4P0N6SAIhb1zJXq8HyM3mINwukfQzuQJQPATqeBsZUAkPRv8
-	 ZUSjKMgrg27trBFQ8/sKK1kDbTOATfT/+7tLzNbP3mK1G2EEg6+acJqB832r0L3Eoo
-	 YticRoSc5dgIYp1Pff3CD+Qom5ik5mQ1APsCCm2vt2Gl9q4ltUWNgkTS04w/TAAx9L
-	 tvewe9MBFaLpA==
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-91f1324a134so8785266d6.0
-        for <linux-mm@kvack.org>; Thu, 12 Nov 2026 21:01:46 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErEnIPLdPpUys/8Yw11NrCCxf6E7ctmOKV3AxrbqCNDcHK7+b22Q5qYwfWi0iwMbyl4GrxVhqdE9Ow==@kvack.org
-X-Gm-Message-State: APuU4Z/Nh/Jfgp+IBy9K0jJ2gUuZzJMr0w4vhRQT1C0WsHeloaU5tFTk
-	cLwXoivE0Hk4xHduST5RkIiYPjn3CfQrwdBW+WJpT/Z5wmD2XfgDvQvvU2z/AvwJfWxwvrhK5UD
-	lD2kxFwcuCkcKnjRZss8CHFck+fZ0L+M=
-X-Received: by 2002:a05:620a:2903:b0:944:1f6b:37e1 with SMTP id
- af79cd13be357-9494bad0b65mr255979885a.33.1794546105743; Thu, 12 Nov 2026
- 21:01:45 -0800 (PST)
+	by sea.source.kernel.org (Postfix) with ESMTP id E27EC463C7;
+	Fri, 13 Nov 2026 05:07:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 433531F000C4;
+	Fri, 13 Nov 2026 05:07:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1794546440;
+	bh=pUQ12nlyx4HX6d0KqIKX5qaNGaPIm7bVzP7lJ+Kotz8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=e2k6z9LgR9oEPd4b4CAv1/nPxjCbaaPq6uHd+OHl+JDwjVJ6KMeCVAgM2iMKW8Gf0
+	 diIEpMxXxG5yBsJKLLQGiCf43wbn6qtsjyaeoUV1SshKo0jw0k5+2nx3LBBYxehU7z
+	 +GBsnFx9muK6B7dQq8TSCnN3GYZaxEftInJ4vjQQ=
+Date: Thu, 12 Nov 2026 21:07:19 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: sashiko-reviews@lists.linux.dev, Dave Chinner <david@fromorbit.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin
+ <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, Qi Zheng
+ <qi.zheng@linux.dev>, Meta kernel team <kernel-team@meta.com>,
+ linux-mm@kvack.org, Chris Mason <mason@kernel.org>
+Subject: Re: [PATCH] mm: list_lru: don't use a new memcg's lists for an
+ offline memcg
+Message-Id: <20261112210719.e843ee35b7fa69cf7710cfdf@linux-foundation.org>
+In-Reply-To: <avZ3rcGiLnWS4qUq@linux.dev>
+References: <20261112221248.3512447-1-shakeel.butt@linux.dev>
+	<sashiko-outbox-211977@kernel.org>
+	<avZ3rcGiLnWS4qUq@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <b2386c5da61f9a15e60daa421b033bc1e0bcdd41.1794481498.git.baolin.wang@linux.alibaba.com>
-In-Reply-To: <b2386c5da61f9a15e60daa421b033bc1e0bcdd41.1794481498.git.baolin.wang@linux.alibaba.com>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 13 Nov 2026 13:01:34 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4y82CKoLx=HC8zUpHz+qwT8sNHjqT0bbrfLuCRYrWR1iQ@mail.gmail.com>
-X-Gm-Features: AclHuK8HdvCcqCC5av5V-jbmYvBsxzAXNNzsR_76rBkzpQcdIzOCeoFv-Xbo6SY
-Message-ID: <CAGsJ_4y82CKoLx=HC8zUpHz+qwT8sNHjqT0bbrfLuCRYrWR1iQ@mail.gmail.com>
-Subject: Re: [PATCH] mm: mglru: use pte_table_clamped_end() helper to
- calculate the end
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, hannes@cmpxchg.org, 
-	kasong@tencent.com, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, baoquan.he@linux.dev, qi.zheng@linux.dev, 
-	shakeel.butt@linux.dev, mhocko@kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: hnn1zhbymp9pfj9xu3eqqi1ep4p7hr9b
-X-Rspamd-Server: rspam01
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 9C7BFC0008
-X-HE-Tag: 1794546107-489274
-X-HE-Meta: U2FsdGVkX1+agYYjsOvNepIl8+udyC5zk9awxsJJR0nhZ4SsystlxZ9rWy/jWBQmBrQwq0lyIea5oHK6Z/L1y6rhQBfxLi8f4dRX/pSiRLEDnUy60Vk+o9GYV2BrvXUrpqbNAhDLAdpogB2m/RwaeOEgFpkURa/Q+LDk4IftJwej5T1BBH5lSRlEfbul6/f75GhYI93QZtQYvamtK2jfDPOgOd0AfMHdwlx3gOrAAZFk3FlTAdm2ZQylNvHt9GlWPM4EclRBARov7mesPszXtnSwXexP8rd7rbEKwdXpavHsLI54Qs3K3vwADhfAB2zfG0LqPVZ3tFdxoSaG/4OIfi3PhiVpIJApMbJQT1e63axtXKERVO9kpysO6cuQsZHOve7FAVGjzy19RrTz+AD0M7lCx4/AifOPxc2e1WqwXdZYc+1Z2pnZYNrJJqihoMTGPpiAiZ3PulVUqFdxeV1Ywxb8qIJxzInaozlWoiLXuKYNkXJFPT+HIA75zt+vXBVzuR3A500KtBSE4cflP/lZ2AQ5NJVTiXQ0eftFsiqvD5KJVIkIkaaRTeAxYngURmtYhKLQAahqEqm2GS8Ne85LgE3l36ygJBOe6fFPEBSUIrpXW2nMCU5yctmAsjD+B7wAOs/uhvopLyb3q90MaZC+7JJZEtwYxzKnuwEprsc0zIZTlSq+966uwjC/s5VIloLNsoT+46350nSkAvHkW2+eHE8qmIBVUNWGoKBvs5bQFsUeNF9m/NsufWB+LCctUhGMj+Tl6BhpZTGMoKbdHdawwcWVUHZYnvJCeOSFNu+rsNAh3HqYPcHi6n5KRsIuI+l4ryNks/qPIO56zLzAb45jk1bcjNliCLOLnNgomZV1UJWHjM6+TY0pl2SkrvYAPFFPWEEyoEzIFFnj0e9oTjm+I7ZhgKJrf/fYcWcKLLgVFNSfxAq+WdBJ2eao/BPGm2hR4JQOVP+2Dkb8MyXM6i+
- CyQ9Soj8
- jef6HUKnTNQHhyTvNZ+CQK42jry3FaHLBc7EeT2bvZCWIBSrNzKZujOpSO5AJee/9WRmfohZfaWyeqOER5Qlp2eiJDdLGMFnE6JryjchETRRpDzH7iirgoAYi/F8WpS9zQJcxgHzz7sBwgE2iVbNQ4HsCVQuIEZk1joY7HsYQTd8Ko+opnsGFxrVXCWmrA5OcdfNag3t3/uDR50i3MrIEqqwMCdm51JyPun1s9I8NQgE+oJfydngYUKhOFAVWF0WNrNN323iPm3g+dXHsqj4mZvIQqjX5NIfj1Mh4jqh+ypCwMV2bdQWT5pom3r52jYnqUREq8ffD7r5xxv79UyO1oGU0g/jVpnjI7KsLx0T+rk6BOD8HpuSUjF8MpaY4voI57whu
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BA7C820005
+X-Spam-Status: No, score=-17.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: y61k87ymeseeac4eigbkr3shq5g69tmh
+X-HE-Tag: 1794546441-842051
+X-HE-Meta: U2FsdGVkX18lh4ablgThxGD383TqC5PANqS667VSBv1FKJW+CZS1zBOFUtIwEynR6kWTXYMHCcPP3STNF4NK+2rNfQbPE37TZ8V6XIjFuunfNmXcZ3IITvkvHOs/OKpXc0mVBOx6sKy1mdK7EdmhZOtu2SykSDDU+wAfmAPIjZu6QYJAyK+YPrP7xDKVTcCx9aqzwOmAVWlGL+Wlf4tTzopvS8h7EkZG+Dh7TYU4iCkeBvlOcqiK/eww25Twukps+ZM+/5nxJmiHFgruC9Go88hGkDzInh2luFRHPiVLOEp1EJzOlo2OPiMcyNQnpGDc+lKVoj8YQ7XOTfAywnu+b6U2YAjWy0i96irm/hEaUJQWzUadCW/iiSGGIt438y9ZXYQalUafqudhiYI2O72g31I1IErWZgiruQVqTaTSxn/wPlM0PcmPU58u6cpdTtlglES8DKy5NoIbkFgryp7NsRzyQHpjqIyY/qCqP3S+VM78wJV7/KeVcYQNnGFdPgmYZ8vdg17ZsZxnRZJR3KF0tQmidan6mNCmSSa/ZrHlMNZOEt2RuwhOLEJVBNfQUD5Xnibuww7UPF7M+BXOsk082PCUE25bGVclciEJEtYyZBeojSQ00rkHfwD1p1WShYWbm47pF5eCyFoKWbdo0lN8mM/koqn5ulHUap+q5zUdzAATWiBks49GY8e6h8IiTyzW0J3Q+4YjWUfFhYX/f44blIinypv01OldYWSUgCRRyJLkBbpbtNuguU4ZD/qWq7388TDwtVtgxfOVHqh9/JKwEtsI6EfNh34eRqNxTFL+Ilp6OcO9TQdSTwnI1tljYXf6ui2H34J1UMWQJJZVPi26gJIWhWkdT4cEOZIaRFsvTmSMdsWPTaII3F5D+0Y8QLLN2YvwozMYkZR59ERPTUxKG+WNrJNBfkZoNgF7tkXEZvefJM02+8WRzrXe+R9pj9kGWKwiwSF23YEazTbK6CU
+ 5Y5NUIbc
+ wUWoYHDNH6RBQ/79zGUevBV6NX+VMXa5thZznIzzLZj1Ajyiel5GUqk4Bppd6Z6bsgpEB9V7naQ7dAPuoYGNa2YhnBJ5BLtff2DqgMZOYqT/o/XQlWTuzH8vYjP+b08v4JHhHUB1+iu7vEoM40vCpIj7XPQsw+0FC0UrGy1lpMxT8T9pmhxb7i1Cns4QHPPgeNXo4b8MWWmaRadt8oqZYQya3tTJ26E7DLyNpiuNuwAT3XUcAugB+k2tIG3N5roleFdD1fIzIzMS1vMDhBZGzq0mLTEbw3pekQQyoHVXhnID4PFNrPcRRgi/uAkMNeoIHiHE0vtoCDifEdOk1jFMGQ3/6bzrKoBSWkdXmb1wkeYeA2mDIRXzg3CAN4jRL5vxDiWhGyAV5DgU7s3pOmAL0nKiHcWCECTPoJEoQPLeF1OnZbTekO3k5U8xpfw27QUDrwRLwatEFjlloueMZeGtiM1X4dWyxJuJw9NXSzmXo6Rx2qB1xWyiLOOv98xYpe3X4ozPidMwaOJtRUaCHzeXGZEOGIQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,55 +99,76 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 7:13=E2=80=AFPM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
->
-> Use pte_table_clamped_end() to clamp the range to the PTE table and VMA
-> boundaries when batch-checking young flags, making the code more readable=
-.
->
-> No functional changes intended.
->
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> ---
-> Based on mm/core.git for-next branch.
->
-> Note that this was found while reviewing David's series:
-> https://lore.kernel.org/all/c31cc8a0-c098-4784-a843-f13f51914094@linux.al=
-ibaba.com/
-> ---
->  mm/vmscan.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 5495d9be90e8..804d4188e7b4 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4470,7 +4470,7 @@ bool lru_gen_look_around(struct page_vma_mapped_wal=
-k *pvmw, unsigned int nr)
->         walk =3D current->reclaim_state ? current->reclaim_state->mm_walk=
- : NULL;
->
->         start =3D max(addr & PMD_MASK, vma->vm_start);
-> -       end =3D min(addr | ~PMD_MASK, vma->vm_end - 1) + 1;
-> +       end =3D pte_table_clamped_end(addr, vma->vm_end);
+On Thu, 12 Nov 2026 18:37:10 -0800 Shakeel Butt <shakeel.butt@linux.dev> wrote:
 
+> > [Severity: High]
+> > Does memcg_list_lru_allocated() also need to check mlru->memcg == memcg?
+> 
+> Yes this is correct and Andrew already have a fix for this.
+> 
 
-We don't have pte_table_clamped_end() in Andrew's tree yet;
-it's part of David's patch:
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: mm/list_lru: verify memcg owner before skipping allocation
+Date: Thu, 12 Nov 2026 16:08:59 -0800
 
-https://lore.kernel.org/all/20261111-pte_table_clamped_end-v1-1-2dbe339c487=
-a@kernel.org/
+list_lru_from_memcg() rejects an entry at a reused kmemcg_id when it
+belongs to another memcg.  memcg_list_lru_allocated() still treats any
+entry at that index as a list for the requested memcg.  Its callers can
+therefore skip the allocation of that memcg's ancestor lists.
 
-So we're not going through Andrew's tree for this patch, right?
+With child C and parent P's lists both unallocated, a reader can retain C
+while it is offlined.  If an unrelated new memcg reuses C's ID and
+allocates its own list, the reader mistakes that entry for C's and skips
+allocation of P's list.  Once the folio's objcg points to P,
+deferred_split_folio() can add it to the root list.  If P later gets a
+list, unqueue locks P's list while unlinking the folio from root's list,
+which can corrupt that list under concurrent operations.
 
->
->         if (end - start =3D=3D PAGE_SIZE)
->                 return true;
-> --
-> 2.47.3
->
+Require the entry to belong to the requested memcg before returning true. 
+Hold RCU over the XArray load and owner comparison because this helper is
+also called outside the folio fast path's RCU section.
 
-Thanks,
-Barry
+Link: https://lore.kernel.org/20261112161502.18d9d72c0139b8f69bb88ff4@linux-foundation.org
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reported-by: <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/sashiko-outbox-211977@kernel.org
+Cc: Chris Mason <mason@kernel.org>
+Cc: Dave Chinner <david@fromorbit.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Qi Zheng <qi.zheng@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+---
+
+ mm/list_lru.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+--- a/mm/list_lru.c~mm-list_lru-dont-use-a-new-memcgs-lists-for-an-offline-memcg-fix
++++ a/mm/list_lru.c
+@@ -568,9 +568,19 @@ void memcg_reparent_list_lrus(struct mem
+ static inline bool memcg_list_lru_allocated(struct mem_cgroup *memcg,
+ 					    struct list_lru *lru)
+ {
++	struct list_lru_memcg *mlru;
++	bool allocated;
+ 	int idx = memcg->kmemcg_id;
+ 
+-	return idx < 0 || xa_load(&lru->xa, idx);
++	if (idx < 0)
++		return true;
++
++	rcu_read_lock();
++	mlru = xa_load(&lru->xa, idx);
++	allocated = mlru && mlru->memcg == memcg;
++	rcu_read_unlock();
++
++	return allocated;
+ }
+ 
+ static int __memcg_list_lru_alloc(struct mem_cgroup *memcg,
+_
+
 
