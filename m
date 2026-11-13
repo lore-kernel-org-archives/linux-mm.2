@@ -1,136 +1,142 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82A260A2600
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 10:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3D6606A881
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 10:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amutable-com.20260707.gappssmtp.com header.i=@amutable-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=fjs2nbqX
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Mlh/iknC
 Received: by kanga.kvack.org (Postfix)
-	id BC2D16B069C; Fri, 13 Nov 2026 05:17:55 -0500 (EST)
+	id F1E8F6B069D; Fri, 13 Nov 2026 05:17:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B73DB6B069D; Fri, 13 Nov 2026 05:17:55 -0500 (EST)
+	id EF66E6B069F; Fri, 13 Nov 2026 05:17:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A89E76B069E; Fri, 13 Nov 2026 05:17:55 -0500 (EST)
+	id DE4F36B06A0; Fri, 13 Nov 2026 05:17:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 862F76B069C
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:17:55 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 19C6240282
+	by kanga.kvack.org (Postfix) with ESMTP id C24FC6B069D
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 05:17:57 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4F494402E8
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:17:57 +0000 (UTC)
+X-FDA: 85429694994.15.0F87B4E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9912D40005
 	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:17:55 +0000 (UTC)
-X-FDA: 85429694910.24.C762003
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 2F125C0003
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:17:53 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.s=20260707 header.b=fjs2nbqX;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of alex@amutable.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=alex@amutable.com
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Mlh/iknC";
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794565073;
+	s=arc-20220608; t=1794565075;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zqPqkCGOaO5RL/5NE1UeXRxAO7AqEHmUDDsiHSGxDsA=;
-	b=J6yxNmUPRx/vyDBCXy3vFDy6KeUFGbAh/fSRdnBZaoDrCUBJXBkDuYMu9DQGp9EMa29xB6
-	LTBlVUU+sEX8glYgwqxJs+WT73+I0Rfu3/Dp9QG33Kgcqagd4FoZImoBJxYJ3WGDvSwlyr
-	I5E8FJPwgh58g/d3Y9wGgKaIV3vjBQM=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.s=20260707 header.b=fjs2nbqX;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of alex@amutable.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=alex@amutable.com
+	bh=sZLmD7hsU/6QEyVPCXGzkI+ZZAvpViPfzCZeFeE5hYc=;
+	b=i5QttLxYC+jB2HsYGhhoQeqlDok5so9GS/UnCunGHyZT4lUUFI85fXL94J7pBiiCZ8DiRr
+	41jy7ZuwZkQhCz7eNHG7d7/PXgRto/iY8jOvek1FTaDjjpdj5mJfXD+JCcEyrN+fCz5T8v
+	AGdivCrKdonBzfzDehuRKUZG09B/oFU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794565073;
-	b=25KpIAUX4k3ulPt1kdkqww8S7HQF9GrOCW3Tqj7+hZPBVYukPQNun3yb6zb3VpLSlYNb5W
-	1JNTeWLTKtXOyq4mvnJS3PRW2iEr3BACQKOlhDkwQDkHBe6FxMXPpJO7eqqqKJBU1fZZrZ
-	GJZFny/PhzF5/vKtYuxzkcOI9iVyBKQ=
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a1b07c3c5fso10701195e9.1
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 02:17:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amutable-com.20260707.gappssmtp.com; s=20260707; t=1794565072; x=1795169872; darn=kvack.org;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=zqPqkCGOaO5RL/5NE1UeXRxAO7AqEHmUDDsiHSGxDsA=;
-        b=fjs2nbqXJbWwsSBLdj6G7rOOPz90yEuerAXEDjFpeubcy9BZF8Q0WlTLWRvBz1WLvi
-         L/PH8zugbeeuyLcVdMmQh5HPccIf5JpnYKYkpJdFB8u5np58b0MY7b0851blQR/OVpzM
-         u0MdoubEIAHEk8GpN95tWLvl4QksrgMdrPL3WlVU3mPHXaU1SmKmQ0An6DXHBz15KH4i
-         Lo7dmfZ2jpzaSniS33itrNDjJ7T08TbHRhobPLaPnkbdEQuwn9wwXy9ePKhwSIg29sbH
-         tQT0o1mgtYHlSb3/tIBhvMV309ePKnVauxrmkhh58P6gqu6zOclHGYJcFB7KjW3dtoZQ
-         qy4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794565072; x=1795169872;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zqPqkCGOaO5RL/5NE1UeXRxAO7AqEHmUDDsiHSGxDsA=;
-        b=RRRjqjPpn5uffPakeAEP2uBBUQoGA6Q4/wSMb6iCZIs3MCzCI6MTQqV3X0J8sdto4o
-         lvZ9RXmh7okhdwNinGggLhot51LbsVgbLbFb5QcKLPGM4X5WZiAYxml7p4VaamK5ZZ8I
-         0tw4S2prCVIbo2CrXV7IA7FxDCZLsFdYsaKBfXc4cX8wrDlPDrnMzD+8ovyzV8v0HyCj
-         27N7w43SctN7ZS7nywQGloI0xSwpWB1x4iszX6iiSnZwq7KgB3XPIlDj2o3BEXoN08nY
-         wW4wO2MeLHPEu7uGH13C/EwUszj93JrDNDkF1/fhiAAD+zQJOhldhL7Ztsd5PVqmSP+J
-         GaDg==
-X-Forwarded-Encrypted: i=1; AL+hErGwRWSmAv5/fzfmWDvrhJPngD32ym6GHB3W8JZc2dwrz9OOf8cEzOHrlkuRa8m+nxpqMkjkhvQDYA==@kvack.org
-X-Gm-Message-State: APuU4Z9NsDtpFu7pbp+lA1Q3f0Bdp6N7EW7EGRGQQFqjPX0euPntRF1m
-	eWHSC6/06GoUQ85Jov6r4VjYcBmm4t0VMsDZSI7mFoQIn8VPlWunjNE/J8XFl4EElH1l
-X-Gm-Gg: AYBFou1arbpQ6ll+dujHO4+i7Y2+oNei4pPmrXBq+1jm3J/AtcgPi45tznnbOYisfaw
-	2JnUJKqM0ZKn+0lw+vSBNNHjU7cakM6bsX/lYQ8ZqEU8ZEtrK2t2nR4oZ3msMEZoleSEG4uxomF
-	PUn6AIc223SwzCIu4lRPQI9MdnZIAAh0/ySVFromCExfTekiNHUEK2swx/MTMhO+cNfUe0VXwAd
-	V1OJVXjSamBUeAWT3K0iZwa5IqYxWACY1MWPrtiVsRDzVqL40/IQR2XDAkLAXbO3Vx8DHP94Knj
-	QafF/zw7Zq7N5fXcbdaZIYEYqstUiPhNP4sGTsuacHtG1ezdwKLrLW5j/otOt5GfvaM3Df4TNfm
-	cbzFZmhj5ph/UTWz0HM6CuSZ+hJjgBbt+CI9jTY4UvNEMEu0zFrKDViIGwqwnMkfd8RsELVE9lO
-	N05d+pkZVAlpOICDHWaGSucjYuEHOCcdaDz+xegNiAeZ5GunaMid14myFryIxhwj4gRZIKHyEK+
-	RrmPRJAOIzENQyyx4rLAWQcJmVmgNOdTUHtgQjKTs24ihvhI6ueBABXGY9gkARNGMa3bw6nWniT
-	RWW++JYtQ8HVeP2c6ms0SZTrQobtU2MMA0Gw4GK6WbZ6AgTsGaTudxA0E14Tj9w=
-X-Received: by 2002:a05:600c:45d4:b0:4a0:23f:8b0d with SMTP id 5b1f17b1804b1-4bb559f6f31mr43851425e9.2.1794565071804;
-        Fri, 13 Nov 2026 02:17:51 -0800 (PST)
-Received: from [10.0.0.233] (tmo-086-54.customers.d1-online.com. [80.187.86.54])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c7da37b19sm3937770f8f.5.2026.11.13.02.17.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 02:17:51 -0800 (PST)
-Message-ID: <7cde6f3091f9d90593e4a6441723b6b889cc4024.camel@amutable.com>
-Subject: Re: [PATCH RFC 35/41] zloop: refuse zone files on pseudo filesystems
-From: Alexander Mikhalitsyn <alex@amutable.com>
-To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
-Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>, Josef
- Bacik	 <josef@toxicpanda.com>, Christoph Hellwig <hch@lst.de>, 
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>,
- Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org,
- target-devel@vger.kernel.org, 	driver-core@lists.linux.dev,
- linux-mm@kvack.org, bpf@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
-	apparmor@lists.ubuntu.com, linux-nfs@vger.kernel.org,
- netdev@vger.kernel.org, 	fuse-devel@lists.linux.dev,
- linux-efi@vger.kernel.org, 	xen-devel@lists.xenproject.org,
- ocfs2-devel@lists.linux.dev, 	linux-s390@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, 	linux-usb@vger.kernel.org, Amir Goldstein
- <amir73il@gmail.com>, 	linux-erofs@lists.ozlabs.org,
- linux-kselftest@vger.kernel.org
-Date: Fri, 13 Nov 2026 11:17:48 +0100
-In-Reply-To: <20261110-work-loop-pseudo-v1-35-4c998976c6c7@kernel.org>
-References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
-	 <20261110-work-loop-pseudo-v1-35-4c998976c6c7@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	t=1794565075;
+	b=5wrWi0XA7Lyeg6hYTpMVlO5esXWV2PluY5/LnZQm09Z0ixT0XtptsEeoInwkeOX2OTJMBl
+	XUGZA66mzfXFOeNN4lpQ5cpzevC+TUgYQKObSEEKz513f0XGXMzGvO/SoPNgMRBkXj1lyw
+	+xPLq1lFR14ifRGMjSiAr3CtMlV10Wo=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Mlh/iknC";
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1E0BD62681;
+	Fri, 13 Nov 2026 10:17:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19BBC1F000C4;
+	Fri, 13 Nov 2026 10:17:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794565074;
+	bh=sZLmD7hsU/6QEyVPCXGzkI+ZZAvpViPfzCZeFeE5hYc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Mlh/iknC2FK9BSatYYtrb6t4ST8Cm5jjehZaswXTPr5pAlNcGKwzX2FZoGuo1ouZN
+	 m95lpM3urmBlqh9o9LHelgPLM31Iv3JsQSI2DiQ7MeguGWmhN+eU1CVvWjvr8biRWx
+	 8V5d4/DbXA4p0h8v1Ne3tgOTBuiUlX9hndMwxyZ6gbKxxY/tkRS6SAumtWNjX+Q5qt
+	 iQHaJl583sJf3P+TNZ3M4VNlv9l7crdo9scokax2cT+Xl5azcdoZrTW4mXISMNKPdH
+	 tRhEI7NG4e+FxFS9U+05A3MtKdr1BwNB081ybDO92bYdamQToNYRwQ7WBF+NDgbEGi
+	 BUtgQwy3lFtCQ==
+Message-ID: <5ca50c99-8dfb-42b1-b593-16bf264581e8@kernel.org>
+Date: Fri, 13 Nov 2026 11:17:49 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2F125C0003
-X-Stat-Signature: ooseymehy1ia14o7x1r6a3cue1ncsqs9
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/folio_batch: document missing struct members
+To: =?UTF-8?Q?Oscar_Alejandro_S=C3=A1nchez_Lucero?= <aleszlucero@gmail.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261112-folio-batch-doc-v1-1-e5a1c013e4d6@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261112-folio-batch-doc-v1-1-e5a1c013e4d6@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: stuqenxesakrp7iamc46izq5oe9f6f6n
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: 9912D40005
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794565073-756913
-X-HE-Meta: U2FsdGVkX18soh+O0Ly+SOEFEvJ8w0G9/TVcABBNjdMDk7m5kv9V/s4CENjW1wsaonfslLVFm8TMw1lxfXj3z+ZaoUEgM7+UFw+m/R8zFabesjdTbXHK/+rUQC9IfsaJlr7LwV+JDVHQdegrzOU1IzcBLfAYzB9UbFp73Q9v/JCdSUTk6LshyUwx2hCaJnx7p6HMMFbu9Y7P0cv8+lI8s5c7WUCmhR3RFivYZkk3e6iHH++9c/auOcx/Fszr8oLeaCQkzzx+3JHZ7Hb6Tb9vC0+yAC/NzzUWycBnkM748Iq+W/elk3bep/aPaaOUETBt8mzgVLkJO3uHIcK3MeRKfaY3kWeJAT/8gTHwWqu65VWHymYrhuWqVr7y9TNC+nb9py+3Hd6RImp4K+6WHZOWnTWKxIW7BsgYFu28NTw4Xb3OU3xs3zmeDRlLFEfvUstFHix6AaDXFh2TzKw24qUl/DV25n5oPhFkgMOeVApNapA7Jyl8uvbNkntX/DzS976yrwgO5nSPEg/1+Hn4X9RUTcRvTf2fSBDd1LEsNQ2BOInnz72FJYaaDkZBVSaKY8QLJnu0wOo6KPPswuaysStDW+m9Tn2brS+nU6du1pJTpX99kZTDeMYsvELHQM/IvDar32YHR5Sskbe8W1t0TJaOwFp7hE2jZLhtwhAnCOJc9QgPglpsjG/L8cd1wZNRVu9Xb2JwUWa9GM5n69GoRo/UHvhE5IR9U163A+gTSRbAyKw2Sf76kUKr1dSOdsUWQlbQ87umujSE4p8Ow2JjDlZxU9RcojGXtfbBesx9uVlU6cP2g2hZ9MbaytePVsAw3IuCkeh+e7uETaIoBZpwptnJr9FFcmx0agCjx+QRxMuBPFlptSJfRcdzZUF3vAqkQA32OmExFTvpvLoJjJeOEBslwvIYqj6olbwKJBfpGi/CvoMp/mlOVjqDkaaZpMwhew6TKsiYAfK03uFCO0iqgM9
- BtTJqQ3z
- fzJEo2Btb5sfL+YClDFRKN2ooVy/XROCsfyMdQqW1gzpwjZwwicvAlaL0EyZbov/0aBViUkKHzpCdefpy+zJdPCpuEuRS/edBQYnfoegafxM0l9g2HUuGRsVCERCpPkDU1KOyJzP9pO2+V2EVFfxT6mUxdVi6MrEG6J2GlgW3xWTw1+2vXKhKLtp4WgSo3nN8S216QEW7rvUE1uc41oZ+Rm9aC21Ewqrg/2Q3iu8swxBf0ZDn2UdpcM0QTJMgMVYuOFZvzKAlyWgTMVzzjxcIy8h08wp5fZ2lXT25JXJDadecj5+STkZlFjAJAyk8P13U6AGvz393XNLXyIAUw/IvgXtGww5XDpLUHDro1yBl1W3S+d6FrGSssP5pndDU6F1uabrSMytzwClk1c9QZF8xryiUKGbRAmyDUauDXJTIECNgLieFZNrXxX62znL5qN6TeMqz
+X-HE-Tag: 1794565075-477646
+X-HE-Meta: U2FsdGVkX18CczRpMb1gAXmic7xs5pZu9PJlsfZsjbkWgeTK/LGO/vLYyAiW0QgFL9y3QvYmqC+KSfyJzVmfJIwgySgiCq0L91xW5BtJ/7NlixJOLFFtH/M8EgDb8lk/9C3icg8CCeqYYaFqNEMRoVEbz4J1BsXEY28iyhs3QsLHfi9RgCOrtL5i6pFmjIDYD69rVIleKWBCsF8W12udnAejx9noClx0M6iCgV9VeQUPgLMKhU7L+3l8m74KSey4fJm2WvQ8CBnHCBzkk+/SB9gFwA2nGbjYoVVq8vhdZHmxSrEHooy5CRM+3i4qIFiaHGuSXVstTsHMwuj3Hcc2ITEAvuLmi7aESm/4lthz0mVsSxuHEBqpg0yrpQfAPJZhP1hBgg1xLxxKRarVc2IQfKZ9P15TQwze38rz7NtUTEUywTVqTUMzzP6QHBOzI2avzGYhy4kWDNOUz0XrShfw+3OMCHjByku0GEOVIVTT9irswNxxJJw37tSKMuvA8hkW3HqQWfW6oGed/XoltX3z+/6eEBSJQjjqtZP2ZZqC8VnvGolIL5mZTHErGxE3joRRN3u+VtsGn3PGO/541LC2fWunvNdGRMhtS5BXgp6J88bM5A4i/maiIin19TIYT8XcHqxwI2ag5WGtnF+NiGuyAtq/fRfupyb1339BtEw665OhJHD836loQWLJx9a1D5qjw2e0lQYTHIiqDS20PL6ZB+u1uOJ8+7YWnlPOanUNUCK6ZnSv2YwqAbk2E8mSDGm6cpBqrD+OBjfu8zH1T16bTJ7mv+MhbCs4QieHoNOKGJTcufMW7lz+gTKbCu3E8lGMrpH0Z9eHMAikDO1cDCXGqac9JtADEpwzMwB3NpO3o3QH3MiKNaEfpSUMBEVoKrKsQzSv/sQ462QT93eObvCUG9IJqJoduCz0eLv0llvHhwGadnX+kZs189GEoOHOOwbGTnGjpEXwoY8xvmg/qqu
+ 2ttgX2HD
+ 7+hUF5TwcbOmsINQdgfeyD3G7ocPYIpweGvwuAf3rSsjxWAdPoFtL6x9tb+gGv3ADMSCJgOxdLd85jpC2XWNDxSABtg2CRSXfZoBWw111gMbMylDDYDhBkntklH7bVlq7Zfb4IMDQTdujrLMPZOZe7dDa9Z3PjSXkjoRrDOgeQG8Orgjm3q04J7mtTRVFs/ml9YAZHHqAjeCzMMJBJtBLp63fYl+78cP1fkFLfHpECJQgcvYCfv+tjHLSftgTAaCh/L+NQSVB5+WR6qNL9MMKLS0MvechjhoTpMU0LKQjph8rJa81PIebBiwFP9ko/yitDrTdMylqL+lUZ0qdgQjrxKKTLFvVufGAER7p3MYJMUYoSjpfucVadCiMRQ9zGaaXAP9C
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,36 +145,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 2026-11-10 at 10:14 +0100, Christian Brauner wrote:
-> zloop opens its zone files by name below the base directory but a
-> bind
-> mount can put any file there, including a procfs or sysfs file.
-> Refuse
-> files on pseudo filesystems as zone files just like loop does.
->=20
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-
-Reviewed-by: Alexander Mikhalitsyn <alex@amutable.com>
-
+On 11/13/26 05:10, Oscar Alejandro Sánchez Lucero wrote:
+> Add missing kernel-doc descriptions for @nr, @i, @percpu_pvec_drained,
+> and @folios in struct folio_batch to fix warnings.
+> 
+> Signed-off-by: Oscar Alejandro Sánchez Lucero <aleszlucero@gmail.com>
 > ---
-> =C2=A0drivers/block/zloop.c | 5 +++++
-> =C2=A01 file changed, 5 insertions(+)
->=20
-> diff --git a/drivers/block/zloop.c b/drivers/block/zloop.c
-> index 65634a39b0bf..dcc06dd47b04 100644
-> --- a/drivers/block/zloop.c
-> +++ b/drivers/block/zloop.c
-> @@ -1137,6 +1137,11 @@ static int zloop_init_zone(struct zloop_device
-> *zlo, struct zloop_options *opts,
-> =C2=A0		goto out_fput;
-> =C2=A0	}
-> =C2=A0
-> +	if (file_is_pseudo(zone->file)) {
-> +		ret =3D -EINVAL;
-> +		goto out_fput;
-> +	}
-> +
-> =C2=A0	if (zlo->block_size) {
-> =C2=A0		ret =3D zloop_get_block_size(zlo, zone);
-> =C2=A0		if (ret)
+>  include/linux/folio_batch.h | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/include/linux/folio_batch.h b/include/linux/folio_batch.h
+> index b45946adc50b..7731dcd249a8 100644
+> --- a/include/linux/folio_batch.h
+> +++ b/include/linux/folio_batch.h
+> @@ -18,6 +18,11 @@ struct folio;
+>  
+>  /**
+>   * struct folio_batch - A collection of folios.
+> + * @nr: Number of folios currently in the batch.
+> + * @i: Index of the next folio to process in folio_batch_next().
+> + * @percpu_pvec_drained: Whether the per-CPU deferred LRU queues have already
+> + *                       been drained during __folio_batch_release().
+> + * @folios: Array of pointers to the folios in the batch.
+>   *
+>   * The folio_batch is used to amortise the cost of retrieving and
+>   * operating on a set of folios.  The order of folios in the batch may be
+> 
+> ---
+> base-commit: 9d66f26fefacebfeed15de31c1123451a17ff119
+> change-id: 20261112-folio-batch-doc-fa4f7e18ec85
+> 
+> Best regards,
+
+Waiting for more review before queuing this.
+
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+
+-- 
+Cheers,
+
+David
 
