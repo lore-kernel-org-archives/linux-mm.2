@@ -1,116 +1,125 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E3F606D07B
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400CA606B635
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 18:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mlaIq1/E
+	dkim=pass (2048-bit key) header.d=readmodwrite-com.20260707.gappssmtp.com header.i=@readmodwrite-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=onJLlDP8
 Received: by kanga.kvack.org (Postfix)
-	id D215F6B05CF; Fri, 13 Nov 2026 13:57:08 -0500 (EST)
+	id 494E46B05D1; Fri, 13 Nov 2026 13:57:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD7986B05D1; Fri, 13 Nov 2026 13:57:08 -0500 (EST)
+	id 46D676B05D2; Fri, 13 Nov 2026 13:57:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B98C06B05D2; Fri, 13 Nov 2026 13:57:08 -0500 (EST)
+	id 334B76B05D3; Fri, 13 Nov 2026 13:57:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 93E696B05CF
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:57:08 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4ED3EA7578
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 042626B05D1
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 13:57:09 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8AD6C1A0124
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:57:09 +0000 (UTC)
+X-FDA: 85431003378.21.DDE7F58
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C4ED614000A
 	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:57:07 +0000 (UTC)
-X-FDA: 85431003294.03.EFEAADE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B9A92A000C
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:57:05 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mlaIq1/E";
-	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=readmodwrite-com.20260707.gappssmtp.com header.s=20260707 header.b=onJLlDP8
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794596225;
+	s=arc-20220608; t=1794596227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O5wdJ/qn6omLpc5B3id98U2KGeiHvUPuFJZq033njYo=;
-	b=nZIRO/KiEFQtyHUcATtVqG6gvYWNZDNwg/QvcQ3KZhcxdflHhmwJvr97S9eeIGrkqK3OgL
-	sBI0lBI2K2xg6+4uDlSRdCtvUjpfUs7anrtwADXnNn30qLHDwBCxBdQewxCm0HDmnubq1W
-	p+6ZbQ4InSf5u/+K0ipPCMc5NxqLomg=
+	 in-reply-to:references:dkim-signature;
+	bh=e1AVEuQ7/0Q/MGJ9DZTfOv+grpHr5U/1zcdAaccW6t4=;
+	b=iMLuakfccJH/xKIJ/DBI97aoAioaQBZlx0As2i9aaIqXHMtthBQZIq0gCWkC9TEy6RvXp4
+	hxExMXYDoeU4WtkfIcHGhNt9Q/ct1H/rqm6uWtrmhJqpeNaqP1beZQ8na2+cpNJJaDaimo
+	8DDARSDjpS5oYych9SvukRlDqBrn+wA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794596225;
-	b=hk9Nu1L7M4KO/2VFr1yHx1XZdeZ/EID94uNK9wNrx9icwJOJAMbboYqqhL+/rzRELtbjUY
-	UHkUgaLMMbbuH7UVos/MQSzMg670I2ByfoBrENZSj3QZ5A5dshjiG9bQXy6NB2gYupxVkh
-	JEuZZbc+B8F6i9bRgvm9GlRe+4qBlzc=
+	t=1794596227;
+	b=N7dy0ygSugEkkB6At1v+R9x1UDnHFnuvdlCwMW98VDW9tHHCaSkC8Me8dcXnF/vjotINnP
+	IAWHWaAbNqQWukNNxf/0JtjsFL2qhRA4gxZlh9af82xW7FZNaJ9M/PErdUFb3+g0JYWLiy
+	kDq17ILOSUwM5m3JYtInUXQTubQNKt8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mlaIq1/E";
-	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6019763295;
-	Fri, 13 Nov 2026 18:57:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607D81F000C4;
-	Fri, 13 Nov 2026 18:57:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794596225;
-	bh=O5wdJ/qn6omLpc5B3id98U2KGeiHvUPuFJZq033njYo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mlaIq1/ECiKhX1sgaJ79ZxG5rLmhWuUpdWnsIxSEPVAHzgIu4nlqCQt0YesH9VzSZ
-	 T+XTRqak96Tb0ScKXzxRBJ6/ZXH6a1/OpQjyoHi1Cmpm77zKkAH5z0Rb0FNGIrABtz
-	 f+5Gcaxd1Pl+QrdKE0MpaWZVUlpQQjB0+7ZlhfMhq5smacySYZfwt+FcpeV47GTFPt
-	 oeZYePf1DDgU1v+4/ZfMpzAYnHCPveh7lSpNEb/Y+sf/aXfSmhGsrMFaWIO2PG7bFj
-	 gm2Lo/jAf+txBPK0vXDqKCxSKNbr3HTK3kl9kIY3PxdDypWRRwOHiNaYVGjDg3iSTi
-	 bhIWXzS3GkTLQ==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: axelrasmussen@google.com,
-	baolin.wang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	hannes@cmpxchg.org,
-	hui.zhu@linux.dev,
-	kasong@tencent.com,
-	kunwu.chan@gmail.com,
-	liam@infradead.org,
-	lianux.mm@gmail.com,
+	imf23.hostedemail.com;
+	dkim=pass header.d=readmodwrite-com.20260707.gappssmtp.com header.s=20260707 header.b=onJLlDP8;
+	spf=none (imf23.hostedemail.com: domain of matt@readmodwrite.com has no SPF policy when checking 209.85.221.42) smtp.mailfrom=matt@readmodwrite.com;
+	dmarc=none
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-49465892f7bso1306280f8f.1
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 10:57:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=readmodwrite-com.20260707.gappssmtp.com; s=20260707; t=1794596226; x=1795201026; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=e1AVEuQ7/0Q/MGJ9DZTfOv+grpHr5U/1zcdAaccW6t4=;
+        b=onJLlDP8sYwiNv4wiX8/SQ+djKAvxkUThPP71KCiWIVKUcrTHKQBgQDiLhuynmYQt2
+         W8OzgtoOohYQloikyjciYjvZFVW+6+QauqeoXOZyJFZLnoTvDkdATVf7JwhZvAKEndAU
+         F9MMhs9vec5eK/xEwRorI7f7DmXn5+cA6XEHmryn3Pn1Z00NEvMgYxBeSGM8Z0L7yiAZ
+         EhZKIyljZ/EMNxIaB6D+8vUvBloEl+ZvQkbkhD0m1LFDI0hTH2EcHXIFW30VuoIp4CIG
+         CGm3dZyro2EcL8XTrNGbTlJzj5NxS4LTkhb6A7I9/YsXhAWWckmmmHb8W8e4f+H6zGxG
+         4Snw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794596226; x=1795201026;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=e1AVEuQ7/0Q/MGJ9DZTfOv+grpHr5U/1zcdAaccW6t4=;
+        b=u+61KurdQ+F3eTiAn6LHG4CXrFbSZCdyubZ1L5xUuDqNRQgY/ihdpraznNLmncG38F
+         V7I4FdT9l6j8mHLBqRULBJtiqSYmyR5R/8VMwOruIBOcmXR7HT3L0/DAcYoDw6fh+HNK
+         bO+oNveZL8C5/gF/i1IJrKclHdlzFpw6O6T3bcQqqSYrc6KSq/iU2Osnczaw75bM8jHJ
+         /o1CZrqVTcCbjpm3fGJ3ojhcKudTQZiUplfossREeGO+9UF+K7udEOytBnA4jmVPP/00
+         ojUwS3cv0xpbW1FJnSeWEqs5OH3yUNLF3w/2VkNTUFkLCe6wyt5l/xisVL0c34ygcLmv
+         x1DQ==
+X-Forwarded-Encrypted: i=1; AL+hErES7jWZHRQfjKuf7GVG/LeRzIhOBF/Xwd5gx9xwuFI/xCPpsi3xWzsPO851tiNSvfzGIBuENZlW6Q==@kvack.org
+X-Gm-Message-State: APuU4Z+lx/lU9QlJL+hqcFj8tc1dWN9EEGvgEA8apcfglEKb0yPCD34K
+	c/IphNOaWOhnCBWSHRWb62/UDThkfl96BFXxzNQr5bnGi8kz8jjlqyV9PEDHsFAvQr8=
+X-Gm-Gg: AYBFou2Nvn3WDytj1gNzpFxhv9X5K9NSm+5iPyGVlMj1OAi0vB0NM9J4y7YAoMPqaUI
+	sUfMqYyKq4zREWIz7+YbH6V7gwTDPxNKEWJ9xo9JIUtDsP12uWX7/63jMzuwsDri6ulgPCq7cSo
+	jk9nbOTVlLIsA9NDKcpzAIUPOVe/WLyqOMOxYmngiyOTVnp/c8ZPlmbfxFup9kVp7QkmrzvC6ho
+	CsTApWup5hBWNzOun7/LkZOU+Xr4Dtn07qOyvp7uPxbw9xXQHMcHmQ0nfrOpXnn+AjsWSOjj7rm
+	ryckYd6WltIrVyDHPRxTJ6yUScWfCAZNCuZD+chNn92B/lDNCfWCQtnuoZvjKzzgS8mSbOkXOIU
+	a7zqxZXe4Nmh5qdS6cvlo47gY79w0XXNYl8/Wwr9nG27fj8OUqa0gOlQ4npnGSn1JoDuUZg4bMr
+	7T92wMz14eUfTNGIL3ugmnA32Ffd2A1frARCBuUhArPM6RkVH+tt1q8luTRhosQGqBCciZ6J1ZO
+	MMHQZSzrMfSaRdz0215MASzkD3ypUvI3RiftBaSYJud9hhm4Jze0MtSUg74k18e5a121h6HQStH
+	Cy18y8nbnoe9h8T+xq99DlII7ggAtg==
+X-Received: by 2002:a05:6000:4559:b0:487:27f9:834 with SMTP id ffacd0b85a97d-49c725e5a73mr4785615f8f.41.1794596225990;
+        Fri, 13 Nov 2026 10:57:05 -0800 (PST)
+Received: from matt-Precision-5490.. ([2a09:bac6:37a8:ec8::179:1b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c5f5972a7sm6417589f8f.21.2026.11.13.10.57.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Nov 2026 10:57:05 -0800 (PST)
+From: Matt Fleming <matt@readmodwrite.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Marco Elver <elver@google.com>
+Cc: Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Caleb Kan <ckan@cloudflare.com>,
+	Caleb Kan <calebkan1106@gmail.com>,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	liuxiang.277@bytedance.com,
-	lyugaofei@xiaomi.com,
-	mhocko@kernel.org,
-	mhocko@suse.com,
-	qi.zheng@linux.dev,
-	ridong.chen@linux.dev,
-	rppt@kernel.org,
-	ryncsn@gmail.com,
-	shakeel.butt@linux.dev,
-	surenb@google.com,
-	wangzicheng@honor.com,
-	weixugc@google.com,
-	yuanchu@google.com,
-	zhangbo56@xiaomi.com,
-	zhuhui@kylinos.cn,
-	sidchintamaneni@gmail.com,
-	"Barry Song (Xiaomi)" <baohua@kernel.org>
-Subject: [PATCH v8 15/16] mm/mglru: Make swappiness=1 file reclaim more aggressive
-Date: Sat, 14 Nov 2026 02:55:40 +0800
-Message-Id: <20261113185541.70203-16-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20261113185541.70203-1-baohua@kernel.org>
-References: <20261113185541.70203-1-baohua@kernel.org>
+	kasan-dev@googlegroups.com,
+	kernel-team@cloudflare.com,
+	Matt Fleming <mfleming@cloudflare.com>
+Subject: [PATCH v3 00/10] stackdepot: store compressed frames in stack records
+Date: Fri, 13 Nov 2026 18:56:52 +0000
+Message-ID: <20261113185702.1332171-1-matt@readmodwrite.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: ss95oo9u8umyrqdis81yk6ddiewjfm6z
-X-Rspamd-Queue-Id: B9A92A000C
+X-Rspamd-Server: rspam06
+X-Stat-Signature: n3zspfa9wkqt85os69oaspfcyiozpi5w
+X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: C4ED614000A
 X-Rspam-User: 
-X-HE-Tag: 1794596225-886714
-X-HE-Meta: U2FsdGVkX18S70gMXB+B7DkN6Xzxy3JYS5h6N9uW027pzVvnDzKck94TVm2HAjm8uSft6TDVcw50pr5cyALyPeqjV0xXqz0H1929fT1vsFYjP17lhbs+H6gJVlLXRTBTzLl3k1dostGU2hYyeV5qQKvgquvxEAguOB0gzeb0jEeRhmXJNfvLFAg6REDt+RAwxEjmBBVJHQmsdp/SLATm+gGavBLacp9hMYrG2o8O1AcSiFPJ9FPNcDsGfLn2ltD+v7bpU5NLmrI3kyr/caCX/e44X+dlCtVFXVgUUR8hsKok+T1Dku3qEN46MEeu1zkuPJPBSkZ7M6h64SXiBHPG9BU+FmQVrhgFwKvps5VBkxwXpYsYuHqZMSeFcXFbPSQPocZPuaqnLMrHndilWcBXesmsZ0rd6qBvtixR1KYe4eF+4KbYttZR8GwRSf6xdj52CoUwzZYc3kqbvBk2Dh6XruGZiyJBJF/o+L2NotyFqsL4gKm75HbAoKbqL1w/vZeqvthR0zc1lNPbwVGQltbgDL0LPoT8zPpbUfhZAcInzGvLd8UAHIwUmim1UV595gMXzUrUGRaBL22Ce1PC4uOz36TnlyntCWA+/cC90n5bQnJx1M0EY6z9yX2uSHjqhC6QzUZkfHp9f60WVpiEokaRmBBS3rnuP1G3g8ttEScIYDblf2+6C3kH3eabHRr1deHqwwVojkNEyFmVZXrDer0eDbrjKHtqu9ndIUXq3KHpO08ODsr3J2a1s/u1bBPRNYnhWDExliQ6lFyO6x6FSvbWdj8Q2goP7dKlCJDsuvLYYSqhzAJD3aLl687zgoVYl70E23U5zCJ4WhPzGLYoCe1EQEJrQXbtnR7aTHTIWPu8BdSL7QX3P5JNz1MHP0boaHmUySXfx7ZJdsyoCPp+kgyPB0vm0WJfbfADwEMJptrj0BD3uHOVVjAlNyzYS5yCZdTaiRtPA3Eys8DwaLkHPGw
- +fEtXG4k
- enEIEjhTdGTaBd2s6nPbX767tEmkWrGde9dWcdhLQ4HoxPXFhh6/9lIaC6x6aMxzjuGc17G/LYWfFO9G0ktX75BOaYOv1pQ7iPob87rk1hFUh8hBJel2iFSV2gnYBtSTj3lrniS7q4srwzk89ic8A9Vb7M2tfNiCpgNJCBPE/fBPOZCxWVujoaHp43JpKrhpGtQFjIHq53CyER+nHmu08oqhZJ9iQp36XT77zV/TG0PTv/z9+dCjLeXoHy1JvnUPjcOQLlapv+hgqlVi8ROXUSJpxEhQHtot5V6ilHoUMrW/uwnbQGPtrAAK3yA==
+X-HE-Tag: 1794596227-263098
+X-HE-Meta: U2FsdGVkX1/dAeDqPkdt2up4B7AjSSoBBhr+R1Orallm0IVBkvif4fia9XsRiq2qeGhO3VCZu+lNkKl8qbyye90NQbV/FDNbGdswAHDtX6bjUB3OMSQwhUxJeR/AQxy0IBSENC7qy5YnO/V5uYc50gEdALOuyTHTHjXC1rrIZxOCEwTF3oBFWidkjHWK2h0eEc0HTEc+y3ngLOXpFIQ0mn3j9chfjf8+wr/vkPyeWa3Fd+IyKnyy1Nc8ST6wOZUBqtj8VNQm/G9QyUxzbuTBQSQ57dI9x6EJKcnO+V1/387C5++JiOVh01UxPqiX1QpPI/U7E0WdadzA/nx4CxyDYdu0XFOEjGSHjeujNpUvRPKudh3FlhYe0ZIUI74FrBtGJu4Djb/VsVJlD0xJEaKGfqbIJcIJ8ldNW2UdOCT5taUgh3gHSSR5WvpTzm36DiYBfEx1+uSHY2QJxqL4gS9XHD7J49VCNEdB6cAbTkSAWNMYAtQCNGqKJDB+vGdJWBzA3d9IXnZoabxkXJZ5UrUjlBiC8P1gExKOui0XLFDU/kkaPCkdliWCHynPo1U2y/pPoYHcyTpKMDUpfCqTz+RES9FqZr2FJtQtLDGZgAZnV3pLfDGktFWcqgKbwiT3aa3/kz8YPlal8DCaNtpTi6/1/0GZ2Ug7ZrAXcwIpiarfuRdYweuxqI7h6rFIYNNhnmhO5VyrdYyv6V1osog5dcHEhXAK3f0j+459Rsb+oWNStm5RqlJHYc+X31937lWAwHDvU/efuD4NqW/t++2jSEGjiqDciF8teS/pejTJJGfm4c8gAzlGjp5QzjwoIAG04EdHs8AXDsgDSlvIkxkswy6+Kfz2wqAwdhny8hb2CqrsHsvq4tyN5dZcKBX86OBOXOOSf5tGutzi9fV4prp7qyzmFAjxml2WZDXa0+q55JgYjTTUVwCsNz1j/2xk1tmGwFV71UcTbLGQNf8hn06vzR2
+ 7Zjqmvo6
+ gPlSd/bZcekvKkzGyizyo2ptskLsfIdgczB1W1GaF6gREte365yTHmEJI2AefPFFc6wA1sOThiFn/i9p3sa9kWYEE/ESWHHNpSXa54YuMSBUbeVrxDtglKcD5RZVFhBR0TWekWSRhN2nsg2S4Hspto3MEPDtZF+fqgmvOFsD0oaG1Lngo+Axhbl93fp5ci6vuVkgMOgJTXHmwBCFluZRbZ6Od1tEopvcOqOX3WNuAQYijO5aseQ0XbuhfA42seJ1IQe0Eu8QGZs7wAEeWfz7bmI31EYwx2YwQgWXtDpkL9OMNHkkbKpAs0berbl5LFfWGMWnuefp088vCoOl1GXvYdeuab7wrdQ3spotyFjB+Fvw/iRnnDgXD9nm482Yn6IGDxz37LipymxfQ/RUrVlwidZ78iHpcSYDrkK9IAnwfEgkyJLrxv+RKi34mPpfBnumsw8cw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,48 +128,96 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-In MGLRU, swappiness=200 favors anon reclaim, while swappiness=1
-favors file reclaim. Swappiness=0 allows only file reclaim, while
-swappiness=201 allows only anon reclaim. Thus, swappiness=1 and
-swappiness=200 are counterparts for file and anon reclaim,
-respectively.
+From: Matt Fleming <mfleming@cloudflare.com>
 
-Before this patchset, get_type_to_scan() always returned
-LRU_GEN_ANON for swappiness=200 and LRU_GEN_FILE for swappiness=1.
+Hi,
 
-For swappiness=200, file_factor is set to 0 at higher reclaim
-priorities. Similarly, for swappiness=1, anon_factor is set to 0
-at higher reclaim priorities. This makes the two settings behave
-similarly, although the thresholds differ slightly based on
-testing.
+Cloudflare runs KASAN on pre-production servers, and on some of them
+stack depot keeps running out of pools even with stack_depot_max_pools
+raised to 65,536. Once the depot is full, new persistent traces get no
+handle and later KASAN reports lose the allocation and free history.
 
-This allows file pages to be reclaimed more aggressively and
-benefits workloads that prioritize file reclaim by using
-swappiness=1.
+v2 of this series [1] tackled that with a trie that shares common frame
+prefixes. Marco asked how much of the saving came from compressed frames
+alone [2]. It turns out we can get a decent saving with just frame
+compression and none of the trie complexity.
 
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
----
- mm/vmscan.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+When every frame of a persistent record can be compressed with the arch
+hooks, the record stores 32-bit frames instead of unsigned longs.
+Evictable records are always allocated at maximum size, so they stay
+uncompressed.
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index b1a36dae6da6..9ebfa3e4eeb0 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4956,7 +4956,11 @@ static void lru_gen_balance_scan(struct lruvec *lruvec, struct scan_control *sc,
- 	anon_weight = nr[LRU_GEN_ANON] + nr[LRU_GEN_FILE] / size_bias;
- 	file_weight = nr[LRU_GEN_FILE] + nr[LRU_GEN_ANON] / size_bias;
- 
--	anon_factor = (u64)swappiness * refault_rate[LRU_GEN_FILE] * anon_weight;
-+	if (swappiness == MIN_SWAPPINESS + 1)
-+		anon_factor = sc->priority <= DEF_PRIORITY / 2 ?
-+			      refault_rate[LRU_GEN_FILE] * anon_weight : 0;
-+	else
-+		anon_factor = (u64)swappiness * refault_rate[LRU_GEN_FILE] * anon_weight;
- 	if (swappiness == MAX_SWAPPINESS)
- 		file_factor = sc->priority < DEF_PRIORITY / 2 ?
- 			      refault_rate[LRU_GEN_ANON] * file_weight : 0;
+On our production KASAN hosts this reduced stack depot pools per 1000
+stacks by 41.5% on x86-64 and 27.1% on arm64. arm64 saves less because
+we run a lot of BPF programs, and their code lives outside the +/-2 GiB
+range around _text that can be compressed.
+
+Compressed records aren't contiguous unsigned long arrays, so callers
+can no longer borrow stack depot's storage. Patches 1-7 move every
+stack_depot_fetch() user to stack_depot_fetch_into() or the print
+helpers and then remove stack_depot_fetch(). Patch 8 adds the arch
+hooks, patch 9 stores compressed frames, and patch 10 teaches the GDB
+helper to decode them.
+
+Changes in v3:
+- Drop the trie backend, the stackdepot.trie_enabled boot parameter and
+  the trie KUnit tests.
+- Drop STACK_DEPOT_FLAG_COUNTABLE. page_owner reads traces with
+  stack_depot_fetch_into() instead.
+- Remove stack_depot_fetch() now that it has no users.
+- stack_depot_print() and stack_depot_snprint() decompress one frame at
+  a time instead of copying 16-frame chunks.
+- Store compressed frames directly in hash records, using the u16 size
+  and u16 flags header layout from v2's COUNTABLE patch.
+- The GDB helper decodes compressed frames instead of rejecting trie
+  handles.
+- v2's patch 1 landed as 8f56ea8e0706 ("stackdepot: stop preallocating
+  after the final pool").
+
+Thanks to Caleb, who wrote v1 and v2.
+
+[1] https://lore.kernel.org/all/20260908-stackdepot-trie-v2-0-1996d5cef732@cloudflare.com/
+[2] https://lore.kernel.org/r/CANpmjNMP=NdD8ZE9rPwikUBcLwc8V=J648X05YGPn41yAZ5hmw@mail.gmail.com/
+
+Caleb Kan (6):
+  stackdepot: add caller-owned stack trace fetching
+  mm/kmemleak: use stack_depot_fetch_into() for leak reports
+  kmsan: use stack_depot_fetch_into() for origin reports
+  mm/slub: use stack_depot_fetch_into() for owner tracking
+  drm/locking: print deadlock backtraces with stack_depot_snprint()
+  stackdepot: add architecture hooks for compact frame storage
+
+Matt Fleming (4):
+  mm/page_owner: Read stack traces with stack_depot_fetch_into()
+  stackdepot: Remove stack_depot_fetch()
+  stackdepot: Store compressed frames in stack records
+  scripts/gdb: Decode compressed stack depot frames
+
+ arch/arm64/include/asm/stackdepot.h |  37 ++++
+ arch/um/include/asm/Kbuild          |   1 +
+ arch/x86/include/asm/stackdepot.h   |  37 ++++
+ drivers/gpu/drm/drm_modeset_lock.c  |   5 +-
+ include/asm-generic/Kbuild          |   1 +
+ include/asm-generic/stackdepot.h    |  19 ++
+ include/linux/stackdepot.h          |  45 +++-
+ lib/Kconfig.debug                   |  16 ++
+ lib/stackdepot.c                    | 164 ++++++++++++---
+ lib/tests/Makefile                  |   1 +
+ lib/tests/stackdepot_kunit.c        | 312 ++++++++++++++++++++++++++++
+ mm/kmemleak.c                       |   4 +-
+ mm/kmsan/kmsan_test.c               |   4 +-
+ mm/kmsan/report.c                   |  28 +--
+ mm/page_owner.c                     |   8 +-
+ mm/slub.c                           |  12 +-
+ scripts/gdb/linux/constants.py.in   |   5 +
+ scripts/gdb/linux/stackdepot.py     |  23 +-
+ 18 files changed, 650 insertions(+), 72 deletions(-)
+ create mode 100644 arch/arm64/include/asm/stackdepot.h
+ create mode 100644 arch/x86/include/asm/stackdepot.h
+ create mode 100644 include/asm-generic/stackdepot.h
+ create mode 100644 lib/tests/stackdepot_kunit.c
+
 -- 
-2.39.3 (Apple Git-146)
+2.43.0
 
 
