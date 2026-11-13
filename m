@@ -1,94 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D08E606A33B
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 03:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2611C606A32D
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 04:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Lyxm9tmi
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JF5hF5v7
 Received: by kanga.kvack.org (Postfix)
-	id AF6966B0617; Thu, 12 Nov 2026 22:58:45 -0500 (EST)
+	id AD4616B0671; Thu, 12 Nov 2026 23:01:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACD586B0628; Thu, 12 Nov 2026 22:58:45 -0500 (EST)
+	id A849C6B0675; Thu, 12 Nov 2026 23:01:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0BE86B0682; Thu, 12 Nov 2026 22:58:45 -0500 (EST)
+	id 9287B6B0680; Thu, 12 Nov 2026 23:01:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A9936B0617
-	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 22:58:45 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D48194016C
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:58:44 +0000 (UTC)
-X-FDA: 85428739368.07.A63D0EE
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 51DC920002
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 03:58:40 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=Lyxm9tmi;
-	spf=pass (imf03.hostedemail.com: domain of evers_chen@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=evers_chen@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	by kanga.kvack.org (Postfix) with ESMTP id 586046B0671
+	for <linux-mm@kvack.org>; Thu, 12 Nov 2026 23:01:30 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 42D4C405FC
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 04:01:27 +0000 (UTC)
+X-FDA: 85428746214.08.7C3B317
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 639F0120006
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 04:01:25 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JF5hF5v7;
+	spf=pass (imf29.hostedemail.com: domain of jocolema@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=jocolema@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794542323;
+	s=arc-20220608; t=1794542485;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2JUOfsFOfJEmlaAFTpTaKsBmsfTT4SLC4fGYq4jy5VE=;
-	b=yXJF2el7oMcwyGY058jYkpZ0m0n00GtgR4r4MexgnrNG/jwYhY62zuE7qeL5dNuQxL5xbV
-	c9cSM19RsE/c6KnUnt4qg308bFREnfDblHuqJcj95o2WZ+e52+YHFN22mimul2AFB4zvPP
-	KIsP+Wi3KSdokgBKw5VkOytjCd+nOww=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=c7E91ugUUXL2RSD7YVbBkOLNFCGTuw0TRMQRMDFJplQ=;
+	b=STkm2FjUJKHk4UJb3NMgfqp3mmsRtrVnLJBEPuZoH7RJw8PXlPHtkqTblC9fqZsiG6qUDF
+	jMmNdjDMnD0PhV/RNwIgAdgtIQy1Mvz3ndnrNHDK5woZzB3fmXJPuUIGjpe/8VxF4fHzdl
+	iF1zHQrvhDzPA04hoYURN+NJ5VxtmKU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794542323;
-	b=GDCvy89dNXG2CxJpw8xaKrNuiN9SrXYP0ZHgdR5GrCRuJ6zX6YUaKyQ/4ruVOlEnb8KKo9
-	lXnafs5UlWK4PJ1B5R8ikywS6wiulUVfAcsSNWNPwWGz+YW5KCZZL/riEtVtpTSyy+s+HA
-	wjejHfWDOKV97tmpuFD/6jhtUhWJv9s=
+	t=1794542485;
+	b=bO+c1XD7EAmcJRx880wF9M+iIZCJOaXC0TYLKLLem+FjYn12cGMWn75np44YMpwajVGpEz
+	CcbvwiHC4M0MU1XEzUGuyPQDCji1bGx9lKcv3Rqf4RLDFMHZxvAT9F4yAyN4NDi5LTwJTb
+	LWdqyAPGJBVxru/7xjtYrknZxw/oGO0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=Lyxm9tmi;
-	spf=pass (imf03.hostedemail.com: domain of evers_chen@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=evers_chen@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=2JUOfsFOfJEmlaAFTpTaKsBmsfTT4SLC4fGYq4jy5VE=;
-	b=Lyxm9tmihZjGz8crX5pRuB65/Xtrx2bBsgaelAvvffoJzTvD7w8G18j7HLR94S
-	bSAwEt6dzdt8Nf/YUB0U2imtO+rft0IVW8zhSCtLvI/Mfq5D/bQpesoMHU7JSnuQ
-	DSRrIYM6ib3ovh2hArvCiOOAK8XUCT2AxdxcXvGyAYrnM=
-Message-ID: <b2ddd82c-7f07-4845-be0d-dce2c4ffb679@163.com>
-Date: Fri, 13 Nov 2026 11:58:20 +0800
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JF5hF5v7;
+	spf=pass (imf29.hostedemail.com: domain of jocolema@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=jocolema@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794542484;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=c7E91ugUUXL2RSD7YVbBkOLNFCGTuw0TRMQRMDFJplQ=;
+	b=JF5hF5v7uYYnHB8xqar9UO2H9WJVGitsLSjziX0aofXOvVurb77pLhkVPq56nlWq+ZxKXW
+	0ZXJeno1ryz8ZRRJFZxnaExAuK5tw4b1vBTtVzC7DYI0PvVTDR8wGpcmxl5XVfETMVvD8S
+	Xh4OOsvf92WNvjIOO84J1hUwCFliTBw=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-102-6EZoidn1OrOslF0C3bpmWw-1; Thu,
+ 12 Nov 2026 23:01:19 -0500
+X-MC-Unique: 6EZoidn1OrOslF0C3bpmWw-1
+X-Mimecast-MFC-AGG-ID: 6EZoidn1OrOslF0C3bpmWw_1794542477
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CA9A818005BF;
+	Fri, 13 Nov 2026 04:01:16 +0000 (UTC)
+Received: from jocolema-thinkpadp1gen4i.rmtusco.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DF46430000E8;
+	Fri, 13 Nov 2026 04:01:13 +0000 (UTC)
+From: "John J. Coleman" <jocolema@redhat.com>
+To: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: zenghui.yu@linux.dev,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	liam@infradead.org,
+	ljs@kernel.org,
+	mhocko@suse.com,
+	peterx@redhat.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org,
+	audra@redhat.com
+Subject: [PATCH] selftests/mm: allocate nr_pages based on pmd size for uffd pmd_move tests
+Date: Thu, 12 Nov 2026 21:00:45 -0700
+Message-ID: <20261113040045.1439391-1-jocolema@redhat.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: Handle implicit read permissions in
- madv_populate
-To: sashiko-reviews@lists.linux.dev, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
- chenxionggui@lanxincomputing.com
-References: <20261112031811.56500-1-evers_chen@163.com>
- <sashiko-outbox-212131@kernel.org>
-Content-Language: en-US
-From: cxg <evers_chen@163.com>
-In-Reply-To: <sashiko-outbox-212131@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:_____wD3_0XcivZqFta+Hg--.3699S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGF18XF1DZF43KFWUWr1kGrg_yoWrJr48pa
-	yxJ3WYyr47Gw12yw4vyw4xXr1xKFs3GFW8X348tryFv3sIkFn7WrW8Ka45Kas5AFZYqw1Y
-	vas8Casxuw1qyFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Um9aPUUUUU=
-X-CM-SenderInfo: xhyh22pbfkv0i6rwjhhfrp/xtbC7B0yPGr2it3HVQAA3m
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 51DC920002
-X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: wwgksj1rb6o8ws9opp9xg7c9985bbmxt
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: y_V_B-dDL5cMESMBY0opIpGiKuxZliCwD00e94QgPnk_1794542477
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Stat-Signature: o9wzk83n5xihxkq6h1renxebeaxgxwbt
+X-Rspamd-Queue-Id: 639F0120006
 X-Rspam-User: 
-X-HE-Tag: 1794542320-992517
-X-HE-Meta: U2FsdGVkX1+S6OHrapyMGoqHaij7mARrYEnxci14RDkGl+Es/zfOwvySL2DLcl4H2d6N8O07c411H7MkLkqlh61PIKnWU6qLnr2gQS4fGMlB3VbTj/dSc4eSs1uOi7dlhjFZ+vVpovNOkBqzRPYrVAXwB5+JEy+r929t7C+q05OKc7F2vO3HSmG9gLav8634bjfglJwtHz4W6xP2N76H1eafempGOT9yZeUkyIEL1qrvqC2XTbLAT8KwRUZtjDex3VgREabN4tgTA6J6a7jfBt4rWT7kbWS+qv0SE35kNCj4dtykuP1C5NNH8mRGjHyMAMCXHAm9AjU3TdHWB3pqcgGjQkkBL7z6c+ycFmnd8hThBXGJjzDOuDpR6Y9X9BtQbcq3eYQzWDaTTWtgHRWoaX3Ctk7fkyhmUob1D+TS9pZUc64CO5m3U8HJA7O+9Reo0L42HbXfdbyYrsi0lYtrthDaFxqK+AeUbbxJ9FRvBhcfWf/iwFLfRKAxTHKBwJz1Fy/y5zut2aMk0+QnrXQdiXT9OWuK4GOAJEEjKYTwC0qlsiPbrgwvKVedO7yxDkulZ/5PLVYAe0jgu1F8OcPc4saxNrFDfvzCcijI9CXIWH9p7IO6poLOefiILQyWTpL5ywAZv2dzdexenFwF+iXj1VxYvuusoOOd2Wl4gjNervYgJMqhTO3qQgKc/i8Us/3SXYaXWRajXWtmT6YlsbNzBuD0/LbljdVu47F4KiEeDrhdmdXM5zZOrqc6fpmgB469njFKajS/spwSnlyEd+PfyRr+XWSaEwd2oZcYxzcw5jbi/H9e93fU//k5hg3FAiFId23aWAf7oYTxwO/qMIueRr/boKa65a8RszWnL0HMgtoNqhLzpnt/6sSeMFjL4p1k5FA7BhOAriVZ6TeWXziQedJf2H5Z88uqs4bAgivb0CgDaZUGKsfko7P47GhCXtGKghLCTv6Qo1JilgeOwWO
- ehYOUaZF
- tJBMzZ7xV/jfuMcDgRBj4GjZNLUhM5h84w488Xd+LjQVUA+nMw/Yng6r0dd8qO1Rms7FAH9f7ZV1YV2tXuE6rQth7L371+4Leo9jz3Ai9kjuQVE7jQdLshSuyG1nRhr+54Dqz9MHDOHw/jctB9sbOM3DUVSd47CbA6MDyg5ByOkA7S/42IkMm0kaQjAaOgE99otABm1bC38jJyIQWqP2xMA1Bzaom1UV1YcozBjYfd0bIU05ubvukKiWLSfEmPGteXIllMbjzAk++ms7JYeGlYxGeLdf67BTeC9nCfYxFiRmSPyi2QYtuk3+rlk9hWAIEAdD/KrRAxyoTZ0uol+6Ysq0jjkxay4HKowu4Jz/86jx59m51ycWnVQLFMpqxKZ7GoVZrww/V2kqO0syvF0oco52rq8kB2qtwcY4wlFPEe6ixCrnnC9vr33sqiSkiqsrU5Tdu
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794542485-85499
+X-HE-Meta: U2FsdGVkX18yIfpdR6XSALuk1hgFq/GMKFo/c7ro2Mlwk3tSerIlgbojEIoyyXWXy6qc5H+VPCMPDKo89rScxk/UmBgBk+tHnvSulZGpJhM2ahrlTumtqq9ewnu/FFn/7gY3hUM0LFkRwky7oTtqdePiY1dvPcrEFa4PnjQCCIpY1jRv0gAkgWhYerWu28pdJzRf+GfIKxHEz02lM1PYIhTOZM1pSl61NH9Qu+gLixLFqtcSrJY7AAPdpQM0Z6IRAcpq9DlAIIa09KvoVdG+LcPr6QKEoogK4qLzOapeA9cM6wJcdhqojmIfDhbwKTDNeOMFdENo0Joi/Lxsy9S3JhBcKxJAAgd2MSMis9ZPI/rGZRQdTZG6poR+HQaACmMFd+gG7qgZXpcgMSjqqoM5gg/+/qtZqNr2NvwcAcCQbpZzvaIM1kiyr25LaS+IVxsQbJ72EtZKH8CisRFM96tNzVRto87lny6OORfSp1f1SL+0cynkroK+wWTUAkd/se+lG8XycMWCI8vsFgKIaVp/q3e0iRNv/xd8yBOLnu9f4i4v43OrCH+8IfXf7AvmO/Upm9hzUGnBmrZt+dPu4cp/H0ay4DDsA//+Cz+ukKyNSltwo7GXiwgxOfUWK+R4Ay4R4uW2Ft3NARAna4qyGH/v0P3ihCk0hRZ8nooCf4SnfdiblIRNvhBq7qrDjHwa/3wOMOhrpPLw+9cGZwJTOUQXzhq/9Oq1E51Qw9dkGS0BaAIKFC27QLhJB3iPNnBXeHQuWPkfKEULfhNBqVBVMSUDbQ0WFm7G4yLK51DYc5HSlrzHZ024kzy2kIo+plcq27WUNOrGihaHdfiLcYgJTks5sMgR8FqG55F7JQgK0hoGuz6f90N1wNjkscoHfaYETd7p9FWb3DxQeaEDtKkRbmqAp0XbCUt5RM85TG06VJZq07VD4Q/fBoYB8+qgVUynH+fyEsxpehajWamZtk/ze6A
+ Y0BEoKD1
+ /EXL5G3IViSrsCmURJW9KRdPlvqGgcg62Ek7ndFirbvBXOhRxUWSlYEehxxI1Yi0D26J0ByZQEzGT5osbdILGe395Cjmomv9PdhPaB3u+Ou0IVojU7JDlHRWHzT3nvVhsMjnk+PdkXlbXbfBRAnaTtfvOBueBcBCH/ybZU7TcZir+UEGFcZh8zR/BUnHTf9IuZhlR0GOao/AgVaDPpODmAk7yGZVHTvDcuMZpHn5uSVAlYuJ/suulN1emGiG81LNE+TOIzp1Rth9eZ3q+oDJVeBzS5w0oxHBKJRAoKQ/zl1UWCHE4U/lHsK8CQmXvCrhwXKfD8pCpK90G5irCTg6XZsr9M021sZc2Jt3eIuWC3/KycOgdp0O3lRFsNGQbOufM556VnOi4bSp1rScrcIZrLe5QqdDzXy+S30h/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,109 +114,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Andrew,
+When executing the uffd-unit-test, the "move-pmd on anon" test will fail
+on aarch64+64k with a segmentation fault because the initial allocated
+memory region is too small.  This only happens with the move-pmd* tests
+because the architecture base page size is still utilized even though the
+memory region is specific to the size indicated by the pmd.
 
-Thanks for improving the changelog and picking up the patch.
+Patch 9f5c2aec3388 ("selftests/mm: fix uffd move-pmd test crash on 64K
+base page systems") implements an initial fix to the segmentation fault
+by skipping the test if the allocated memory region is not large enough
+for the number of pages x page size requested.  Since this will skip over
+the aarch64+64k pmd tests, this patch is intended to resolve the problem
+with 64k pages by pre-allocating the memory region with 2x the pmd page
+size (for area_src and area_dst) for only the move_pmd tests by using the
+uffd_test_case_ops pre_alloc hook.
 
-I noticed that the original madv_populate test was introduced by commit 
-e5bfac53e310. Would it make sense to add the following Fixes tag?
+Link: https://lore.kernel.org/all/20261103202049.499206-1-jocolema@redhat.com
 
-Fixes: e5bfac53e310 ("selftests/vm: add test for 
-MADV_POPULATE_(READ|WRITE)")
+Fixes: a2bf6a9ca805 ("selftests/mm: add UFFDIO_MOVE ioctl test")
 
-I also tested an alternative implementation using the existing procmap 
-helpers, as suggested by Sashiko. It passes all 17 tests on RISC-V with 
-Linux 7.2.0.
+Signed-off-by: John J. Coleman <jocolema@redhat.com>
+---
 
-However, since PROCMAP_QUERY requires a relatively recent kernel, 
-keeping the current /proc/self/maps implementation may be preferable for 
-compatibility with older kernels.
+I initially included patches V1 and V2 through the linked email thread.
+V1 and V2 modified UFFD_TEST_MEM_SIZE contingent upon base page size and
+a multiplier.  However, sashiko review observed alignment issues with
+powerpc64 with 2MiB and 16MiB pmd sizes as well as 32bit type overflows.
 
-Thanks,
-Xionggui
+Subseqent to sashiko review I decided to make a significant change hence
+why I created a new patch rather than continuing with V3.  This patch
+leaves UFFD_TEST_MEM_SIZE at the 32MiB arbitrary value and utilizes the
+pre_alloc callback within the uffd_test_case_ops object to set nr_pages
+based on 2x retrieved PMD size divided by the base page size for both
+source and destination test allocated memory regions.
 
+ tools/testing/selftests/mm/uffd-unit-tests.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-On 11/13/26 11:19, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issues to consider:
-> - [Low] selftests/mm: custom /proc/self/maps parser in
->    mapping_is_readable()
-> - [Low] selftests/mm: missing Fixes trailer for test_prot_write()
->    failure
-> --
->
-> commit 3592bfa7e9663819c643afaf7d6c337f6b102d15
-> Author: Xionggui Chen <chenxionggui@lanxincomputing.com>
->
->> selftests/mm: Handle implicit read permissions in madv_populate
->>
->> The madv_populate selftest assumes that a mapping created with
->> PROT_WRITE cannot be read, and expects MADV_POPULATE_READ to fail
->> with EINVAL.
->>
->> However, some architectures, including RISC-V, may implicitly grant
->> read permission to PROT_WRITE mappings. On such architectures,
->> MADV_POPULATE_READ succeeds, causing the test to fail incorrectly.
->>
->> Check the actual VMA permissions through /proc/self/maps and adjust
->> the expected result accordingly.
->>
->> Add a PROT_NONE test to verify that MADV_POPULATE_READ still fails
->> with EINVAL for mappings without read permission.
->>
->> On RISC-V with Linux 7.2.0, the original test fails 1 out of 16
->> tests, while the updated test passes all 17 tests.
->>
->> Signed-off-by: Xionggui Chen <chenxionggui@lanxincomputing.com>
-> [Severity: Low]
-> Should this commit include a Fixes: tag for the test it fixes?
->
->    Fixes: e5bfac53e310 ("selftests/vm: add test for MADV_POPULATE_(READ|WRITE)")
->
->> diff --git a/tools/testing/selftests/mm/madv_populate.c b/tools/testing/selftests/mm/madv_populate.c
->> index 7fce5d0b622be..818f99ee20041 100644
->> --- a/tools/testing/selftests/mm/madv_populate.c
->> +++ b/tools/testing/selftests/mm/madv_populate.c
->> @@ -69,10 +69,38 @@ static void test_prot_read(void)
->>   	munmap(addr, SIZE);
->>   }
->>   
->> +static int mapping_is_readable(void *addr)
->> +{
->> +	FILE *maps;
->> +	char line[256];
->> +	unsigned long start, end;
->> +	char perms[5];
->> +	int readable = -1;
->> +
->> +	maps = fopen("/proc/self/maps", "r");
->> +	if (!maps)
->> +		return -1;
->> +
->> +	while (fgets(line, sizeof(line), maps)) {
->> +		if (sscanf(line, "%lx-%lx %4s",
->> +			   &start, &end, perms) != 3)
->> +			continue;
->> +
->> +		if (start <= (unsigned long)addr &&
->> +		    (unsigned long)addr < end) {
->> +			readable = perms[0] == 'r';
->> +			break;
->> +		}
->> +	}
->> +
->> +	fclose(maps);
->> +	return readable;
->> +}
-> [Severity: Low]
-> Could mapping_is_readable() reuse the shared VMA helpers in vm_util.h
-> instead of open-coding a /proc/self/maps parser?
->
-> madv_populate.c already includes vm_util.h and links against vm_util.c,
-> which provide open_self_procmap(), find_vma_procmap(), and close_procmap()
-> (exposing PROCMAP_QUERY_VMA_READABLE in procmap.query.vma_flags) as well as
-> check_vmflag(addr, "rd").  Reusing those avoids duplicating VMA lookup logic
-> and avoids line truncation on mappings with paths longer than 256 bytes.
->
+diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
+index 2a97ba1d6feb1b35d6281449fd1917793a64fab1..0846de62689f710bab320e399d0bb5849b9408ff 100644
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c
++++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -2226,6 +2226,20 @@ static void uffd_mmap_changing_test(uffd_global_test_opts_t *gopts, uffd_test_ar
+ 	uffd_test_pass();
+ }
+ 
++static int set_pmd_pagesize_nr_pages(uffd_global_test_opts_t *gopts, const char **errmsg)
++{
++	uint64_t pmd_pagesize = read_pmd_pagesize();
++	if (!pmd_pagesize) {
++		if(errmsg)
++			*errmsg = "failed to retrieve pmd page size";
++		return -1;
++	}
++
++	gopts->nr_pages = (2 * pmd_pagesize) / gopts->page_size;
++
++	return 0;
++}
++
+ static int prevent_hugepages(uffd_global_test_opts_t *gopts, const char **errmsg)
+ {
+ 	/* This should be done before source area is populated */
+@@ -2259,6 +2273,7 @@ struct uffd_test_case_ops uffd_move_test_case_ops = {
+ };
+ 
+ struct uffd_test_case_ops uffd_move_test_pmd_case_ops = {
++	.pre_alloc = set_pmd_pagesize_nr_pages,
+ 	.post_alloc = request_hugepages,
+ };
+ 
+-- 
+2.56.0
 
 
