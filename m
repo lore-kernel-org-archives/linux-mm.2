@@ -1,100 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2998F606A32D
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 09:54:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f0wHaTbe
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11728606A889
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Nov 2026 09:55:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3812C6B0628; Fri, 13 Nov 2026 04:54:08 -0500 (EST)
+	id 186816B0653; Fri, 13 Nov 2026 04:54:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 358836B062B; Fri, 13 Nov 2026 04:54:08 -0500 (EST)
+	id 15E176B0655; Fri, 13 Nov 2026 04:54:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26F6A6B062F; Fri, 13 Nov 2026 04:54:08 -0500 (EST)
+	id 09B9C6B0656; Fri, 13 Nov 2026 04:54:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 026C36B0628
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 04:54:07 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8115C160500
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 09:54:07 +0000 (UTC)
-X-FDA: 85429634934.21.008636C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C948040004
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 09:54:05 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f0wHaTbe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794563645;
-	b=BFnKqQrmLAPJDWevuRZtj5LPsDMsWzcWFJWeHyvhu/ZdtFqABB7so1yjM744jaIgmm4u5x
-	6iWrBHbd3dlkrqJcfA/7oyl8PAt29R0vl5L7SzmbnF6lnR3CKEq9gNSAjwzDKc0O0QLiwM
-	5w6WWrZtviMXbwZSAAzxE98e1f/Y+zE=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DD2646B0653
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 04:54:58 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 76E00801F6
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 09:54:58 +0000 (UTC)
+X-FDA: 85429637076.28.F382BC8
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 812B9100009
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 09:54:54 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	spf=pass (imf05.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794563645;
+	s=arc-20220608; t=1794563696;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P8EQ9FC4cZYCHq8yHZtNznd9EQgrZ12HAlgtAWeleac=;
-	b=prvZfb5XSIMRx9CG/Rucc7hoXE8ReHluPMveJaTysquePI96DozutyXm3RnqvmC4DHEo50
-	Ocjn24XBAukn8DWVHMu6fUH2R9+M7aunxNvoOmX5bPP51dV82SW/PGcSgB/cSfU8ZA7p1v
-	z/3r5xiSMXK9XBdbBEeTwYc/CZ2tsww=
+	 in-reply-to:in-reply-to:references:references;
+	bh=XflFerSSX8/DRZ0nDIfVWn5DuNcdHJxrlRvSa/LouyE=;
+	b=vWXnx34pzg+p5suss3QQfduyQU/ka5t48Q60p7+eHtsqfSjr+9es85QNe+7tgEfPFZDl39
+	DOKSD+h7czcvIZAuGxhQZ+dqIuATQjlTLyjyoydUqXiitauciPuaOSvyrXKlQasmAiljHP
+	WUZ3dwZJ+ZrGTY2EGlcwzS4M/7Vapas=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794563696;
+	b=XBmHyrec/29xinuxpt+HU/bp5Wi1ovnpIJi06EaMyV5eeqM6H/PmCud4CABHvkfv8jeLQt
+	C2X367JK5tW7XpIUQ5koa8tvOEl0+S9YOChsFhbl6ccp/nH/5dBg0hagEanyF6roopB8NX
+	ylf8RsfXHODxWyMRMReS866TsnbHMrs=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f0wHaTbe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4BABE4056A;
-	Fri, 13 Nov 2026 09:54:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E7341F000C5;
-	Fri, 13 Nov 2026 09:53:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794563644;
-	bh=P8EQ9FC4cZYCHq8yHZtNznd9EQgrZ12HAlgtAWeleac=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=f0wHaTbedH8MKd3xbBvnJTz6C3TbsBFAY862o2AQcfBrjdYCZA3KKd4lOYhc4HnOS
-	 izioEzZzwmUKgaqN+BTovULVcLTwuMKzmhsM3ubNMZE53yu9d5l1ZvOzQAg97twAMR
-	 M1C+9ppPdDuBhepWvTHZ2XnpoSlD6S+Ou1ltqktZfoiXbzqIpWy846z0TXOfHwz2Kh
-	 rH0ywqW5+yfwOMr3/lL6BhxTLLZ081RzXBPdRO5jt2OwfRB8CaXvj4nv7up1OW30Ly
-	 awPHrEqKhyxkGZvqah8xlnrPQemguFQVjnqn6N5tpOi0JMBf352YsDajD5YdT1recb
-	 bBr9/SbnYAwkw==
-From: David Hildenbrand <david@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Qiliang Yuan <qiliang.yuan@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org
-In-Reply-To: <20261112-bug-mm-shmem-undo-batch-v3-1-212db8c24058@linux.dev>
-References: <20261112-bug-mm-shmem-undo-batch-v3-1-212db8c24058@linux.dev>
-Subject: Re: [PATCH v3] mm/shmem: remove truncated folios from the page
- cache in batches
-Message-Id: <179456363894.3289.16333011678633371676.b4-ty@b4>
-Date: Fri, 13 Nov 2026 10:53:58 +0100
+	imf05.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+X-UUID: 3fbb9ca2df4811f19a56ed5b684f684d-20261113
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:9c27602e-87ec-4c9c-98ce-81fa5be77e03,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:10
+X-CID-INFO: VERSION:1.3.19,REQID:9c27602e-87ec-4c9c-98ce-81fa5be77e03,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:10
+X-CID-META: VersionHash:7db8b62,CLOUDID:438bb5e73a121e35e5892c22171444ca,BulkI
+	D:261113175444ZD0JE9K2,BulkQuantity:0,SF:17|19|38|64|66|78|80|81|82|83|102
+	|127|136|153|841|865|898,TC:nil,Content:0|15|50|99|100|101|118,EDM:-3|-100
+	,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:
+	0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 3fbb9ca2df4811f19a56ed5b684f684d-20261113
+X-User: lienze@kylinos.cn
+Received: from [192.168.111.179] [(114.244.3.119)] by mailgw.kylinos.cn
+	(envelope-from <lienze@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
+	with ESMTP id 480940769; Fri, 13 Nov 2026 17:54:42 +0800
+Message-ID: <db00f01d-c9c1-4207-ae7d-9dd77cf5afa7@kylinos.cn>
+Date: Fri, 13 Nov 2026 17:54:37 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] Docs/mm/damon/design: update for
+ DAMON_FILTER_TYPE_ACTIVE
+To: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, damon@lists.linux.dev,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20261113051711.89274-1-sj@kernel.org>
+ <20261113051711.89274-5-sj@kernel.org>
+Content-Language: en-US
+From: Enze Li <lienze@kylinos.cn>
+In-Reply-To: <20261113051711.89274-5-sj@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16.0
-X-Rspamd-Queue-Id: C948040004
-X-Rspamd-Server: rspam12
-X-Stat-Signature: h9oineeu4ayop4aagqt8omnqqw87tow6
-X-Rspam-User:
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794563645-317560
-X-HE-Meta: U2FsdGVkX184QMl2wwPxxkDIxVRH7AeATF+yfqYJDqXJ8vuND7ZCI0s9yusLqlTpsACiIFFp3UHACRldmriHsISNFDUjOYMsV8CoyzjP0ObL7ehumjCjALQsokkANL7BkxwTpIKj40V7ZrZ5tV8kau0zUSK0IgWf0Rq7R8V1ifvUC29UQJ6Kq6LCZrJBl3bbCl+mSiFWqArZAjlYeRyw6e5aMpoDphn3WnTcgWLnYI6OnSzD6wh2K6mQy3TQxHkyMH+ch9RjtqUu0jrZJNJz1hnJobjfNF3WrADNAn/1cvq50PeRuehnkzx3eXF1pZQwbWYDikM+Tqt2zGSeHhS+vVPN8//Bt/9DNPAbKOZWv8MdBb/nj/48enYqeW74gPZXBhNpGGFCP5is5CT9h3OfzfEnMTxHq3T+/wdZLEcnYfmstXkjkpzV4BxWPXWrVBQ8T58+G7H0oNhmxP5OxOTiT2y1TIj73mAgDDaV7+vnhzCfgPwKq2++myYLhDN8Xxt3gWjDQ7gT98QK6OMLpc3VunDaStPe/btJommiZs8t4iN6X/GMR7693e797Ii2JVBkbhIXjQaSDp1JR5C4kqBNX88nOcdZxyaDg3mbPdqOKyYGxoLM14AHN8ez4RcFDAEuIo/nVRyuQa4S5scB7e/BntUBJeC9OpDw39J42DLVCaNfg0Yap0nXvHzxNvUuz0p+Azai8/ZOb79XwwQTSdWHI6aWn/Wy4XIiutuvv5zIwzkMnNqRDeY3xHg7spDkF1XlSadUWPUd/CGJh1tvRTPX3kcHB8oP7BDIZBfQvhhJueLGp1tqzyTZqLeO6aOT6iB2wucbjTs7PUScM4VkC6EOEtQis4AuL6C0tACPkaFEZCqGIV+Mrb+QRRbzniUp77/UKvxj7fZ0kDBQ+n+CVhhjKORY7wptYya9OP+2BJqphOgjYUojuAgxEnD7HftQIUrqIpNq42MqL4dC3x2mrW0
- kVQzx3UM
- Mnud6YpZLk3MQL3El2VfuHcBYGGV/hNNn3wup1c2xCRopRlhyAIhouuGPCOEM2XSnejJKeBkuRER+IMt27kfStxSHm4THFTMBFTxFCpjwSQeEP5aNKPAusNnVC/3r7qRvXzPI6emCgQted87Vxlr9vC95hWPiQilFIRb+ohtg/7lt1WGvTjasVPw96lulL70qEPECW2qeUZpXMsxskNAA8n6TRuuyAaG7WyQMltzCASFUAbTIg6Sb7jZnsUqFpJrIZHt0QT2PwwJnfY4JO54FqGxDs5b5lM2+NeiUkhjVXxOLvurgRXQium3IWBqxAa+6PM+MIzB+1W25XiaC/TQmJ8hGVLG9SnXt/7dOSWhkiby3kXay0ttuzjmsKIUdLrU/Uaf8Xj+T5p6WOOk=
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 8nek7o49d9xyjzb9dp6wa8k365shu5r9
+X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 812B9100009
+X-Rspam-User: 
+X-HE-Tag: 1794563694-930665
+X-HE-Meta: U2FsdGVkX190lIvE2bUP5Ag0AZpZYooiT4NsggP/fnJl9AuTHNG6TgCcHh/ogz54VtLFlxwdPTP1M3l7yuOh81mMLPIRcbr4KVvPv6PE9L7rmKiBvkcPO5HxvPXITZ95z/cSewBOs+4//001iJKY8mTt4LMXxIxFoExYVj1SAXXy1NXfhNWu7dmekP737G0oBpDuiC5h6IdAXwIvH75z7W1mdI/6Fw/YAsSxsiNQe9o8ThC2c8YNBm0FnXE4TggmS1g8pH7nkjAmk4CuqCwN7wkBA7ITM6g0aR3R7yZZXRTDHHUCZm/gQjDNS8vRC7x40Xj4T7DPw+G0eDcqGn9xpukmBHocgPy0a8KHOmfGp6X9gZzPwInGU6i4W9dip/YGTlXeY3qo6JOCesRdEycn7TreP3vsjsn5/dDwLG7LKtQFO5UJxVkjPsknb4MzR562FWApLZQ4BD4bme5+GadYfuBnP2Kj1j2+09FuHJAvVCaa3GmIyzCVPunscoXi2Ck8VmmfcxJpq/yAW3mfwkguTjtXWWascAkcwEJmUXCuJHuZtRedVEQ6pzjK4msPlxJUW8rvcsWOk17KbBdGNZ/+6Qz38DU+oGvustmrHx875pWI9kux3QocbzJN13EBtTY5xjh7TScUpqxLWbvcfTVQn/P5Rl1uPIx9S7nJCc56Q+/AULkNxWOwlGeymZ3Hf/tZMdtYwf4+qAiTOWn5oSSxcHscoFMF8DAymhk/cR20VCs0BCk6NOjnx6FX5j0oH633bsEWh/y0N3/PiYG1/pnkm9mH/L/HeIxjELNvaab1MzbcK4O7DmjQ93eKNfjhGgoIOLtHlSQA+WQfjhrcfAB/SXdGWHaqbV7+oVF5G5Upi84w1dowwR0bC1rqnXQ2ME4+h2SYChZSk5CYK8tER3kO6Bb2zd8FNkF84YWlaDv9uy7lkknWGF7l1jb3fQVNojTJVZM5JbOiIioruvOG6cK
+ ykxtlNs1
+ UkHvEKDsgZcxw5o84IKFGVS1UtxRczrPcaNNrCq6G+vkC9u5v5ktG4Zz1B1VrPzT+IAXUQz94JizJBgeLvksAOU6JbZqTEOU+yDiXyv8UZ7NQDXRav7w/dwM1Ag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,43 +103,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 12 Nov 2026 04:05:12 -0500, Qiliang Yuan wrote:
-> truncate_inode_pages_range() takes the folios it finds out of the page
-> cache with delete_from_page_cache_batch(), which takes the inode's
-> i_lock and the i_pages lock once for each batch of up to
-> FOLIO_BATCH_SIZE folios.
+Hi SJ,
+
+On 11/13/26 1:17 PM, SJ Park wrote:
+> Update DAMON design document for the newly added LRU-activeness DAMON
+> filter type.
 > 
-> shmem_undo_range() calls truncate_inode_folio() on each folio instead,
-> so filemap_remove_folio() takes and drops both locks once per folio.
-> Truncating, punching or freeing a tmpfs file or memfd made of small
-> folios, such as a large /dev/shm segment, pays for that on every page.
+> Signed-off-by: SJ Park <sj@kernel.org>
+> ---
+>  Documentation/mm/damon/design.rst | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> [...]
+> diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+> index 8440c4954090e..b676be6971589 100644
+> --- a/Documentation/mm/damon/design.rst
+> +++ b/Documentation/mm/damon/design.rst
+> @@ -302,6 +302,7 @@ filter types.  Currently below filter types are supported.
+>  - ``pgidle_set``: Matches if the page for the memory is marked as access-idle.
+>  - ``hugepage_size``: Matches if the page for the memory is a part of a hugepage
+>    of a given size range.
+> +- ``active``: Same to that for DAMOS filters.
 
-Applied, thanks!
+This reads a bit awkward to me.  How about:
 
-tree: mm/core.git
-branch: shmem-7.5.misc
+  "Same as that for DAMOS filters."
 
-Applied patches will appear soon in mm-next, followed by linux-next.
+The ``anon`` and ``memcg`` entries above use the same wording, so
+it would be nice to fix those at the same time.
 
-Please report any outstanding bugs that were missed during review, so we
-can either drop the patch series or decide how to fix it up.
+WDYT?
 
-It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
-though the patches have already been applied. If possible, patch trailers
-will be updated.
+Thanks,
+Enze
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. Further, this is not a guarantee that the
-patches will go upstream. If in doubt, please check the listed branch.
-
-[1/1] mm/shmem: remove truncated folios from the page cache in batches
-      https://git.kernel.org/mm/core/c/2e0dafbf
-
--- 
-Cheers,
-
-David
+>  
+>  If such probes are registered, DAMON executes the probes for each region's
+>  sampling memory when it does the access :ref:`sampling
 
 
