@@ -1,176 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 612D8606A329
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 07:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C471606A327
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 07:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=CDsB0zl+
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ukw/YXat
 Received: by kanga.kvack.org (Postfix)
-	id C69E16B05D3; Sat, 14 Nov 2026 02:10:54 -0500 (EST)
+	id B11176B05E0; Sat, 14 Nov 2026 02:13:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5A096B05D4; Sat, 14 Nov 2026 02:10:54 -0500 (EST)
+	id AC24A6B05E1; Sat, 14 Nov 2026 02:13:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D3396B05D5; Sat, 14 Nov 2026 02:10:54 -0500 (EST)
+	id 9D87D6B05E2; Sat, 14 Nov 2026 02:13:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 685B06B05D3
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:10:54 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4C6D5C0373
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:10:53 +0000 (UTC)
-X-FDA: 85432852386.11.9320194
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 8F0CE1C0005
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:10:51 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=CDsB0zl+;
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794640251;
-	b=OJxRWNaL0q+mkPhVl2kpKfvEgIz4VUHfPUTH264iJiVIokco+Z8Uqaos8EfVcfpATd7Wrz
-	TwCQ7AQJ6GvkiLSlZCRp5HF1u3/Lm+7IEEJ7RkJ8gjMnP4hwxFB/5S+23C1cqI6aPsRxNm
-	mwt/mLMczzMFFLPKDlANqeo/twqDd3s=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=CDsB0zl+;
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7ADE46B05E0
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:13:36 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 13873A7D73
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:13:36 +0000 (UTC)
+X-FDA: 85432859232.28.803A920
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4512580003
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:13:34 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ukw/YXat";
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794640251;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794640414;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+HAKXNFyWuVVus4jyGRYSZgEnC6sp/o+JpWnVYJ3k8U=;
-	b=4xbMcwExTz6wB+mPrNveDthxumAFNHJ3Tiy2ldM0bYK1Pu5If5lFgXC09V6HapKbO3qbb9
-	UaJGMn7euNjS/8WKbQN9kSTya4AnO+rHAgB+fNGsWSVfdoPnFdira8fKw4PIERX7EgfAnG
-	CyWgtcfXqFEShvPVS+Q+B9hkJLL7Kd8=
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-55ade1de0b4so27475861cf.3
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 23:10:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1794640251; x=1795245051; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+HAKXNFyWuVVus4jyGRYSZgEnC6sp/o+JpWnVYJ3k8U=;
-        b=CDsB0zl+CgeJ2JmgJZ62oVSmiCgsB3QulYFvYcahHvkvkP5aXX1i+Nf/QXLSEzHw4F
-         Y4bomdBbQxvDJFpgOvrgokE9QVqcVx+i3Z5xeqL2VrWUbmAQxuwX8DmVhhhkFDodLgmb
-         6zm0w8HqOafitgjn9xWKGJ0Vi+cD7WpUDRGuP5xR7CKnUvI2ogK1l2f4O6stfLE+w7PE
-         lP1FKaV2OPwfZxK5k+ZDuUJyQgqQ9w2by82K1vdVYjymlp0n/f9UxY8H86H6mnWYPRrP
-         CmeWWfgVJ9MkCqOurNwyn0uwjI2Rw4eR1Wg2tG5gESl+XtSNgfLVfi9CSYJ55qS3UFz1
-         zqWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794640251; x=1795245051;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+HAKXNFyWuVVus4jyGRYSZgEnC6sp/o+JpWnVYJ3k8U=;
-        b=XGmKx04OIAViW3S8/lbcOQogPgLnxEaG+pjfr31HG1wtZNvvMk+2HrTjoqrDbLIdO9
-         6E6n9pbqn9eDQmB90yOnumgXFnSaVSN7/e174C7Q550HZQT6FAiOuYGfZYQgDs1FpfcE
-         Pdqed4YzUxCTSIoNALX7WS4Ueo0NvvWQXbUBdw8//1p3reS+NybS9uzGzPcZzok0anEK
-         NPOZItZdlccuxAoBb+TSbuDspHC/99ioUh27fh1uvl33RSdpOxZAb600eaJVLBCKZKL4
-         yd5Yr50cokKAMV1b9bzo/SzA5E6/3oTeiJb0cc2WHaR4f7G7ss7XJnluTvi5Tw1zNvTE
-         cs5w==
-X-Gm-Message-State: APuU4Z91+y4DQ/EXnd+M3Qg3UuGkP09IFqP1oXlhKIT1LCKuAbZUQkai
-	sjMa/vIMYtbgbWKUHHGgGXx7qGJYSdsdQwl9nOqaGcqwFzKBkYs1HWP6FkRu9EeW95BMbpcidLM
-	Wg/d0
-X-Gm-Gg: AYBFou3exrA0B8h+VShM4gTHMekw7AX2TJcxMiNA4nnPR1Uk135mQ1e/nZxWNF26I7y
-	0xRnAFZqDS9+JU109YBLJxhZNHFz0WnEZ07Dt5fi77F/yaEXW1aMN9hS2jEfKtusCVbzAeH0/BH
-	bdqTaqEi581UnmsLc6NnBQSIbeo95c6IdzGnxTz1HZmhYT42MOxwoF4Oy8zTlwo3cZKJYTY8Nsn
-	s/jAmjOKtFuqWKVF+v3tT4fpb+JRYeZ31bjer1LFbaYIjyde5j6dyrbnQCfHv9YxVugD0NYLSuy
-	G+fa+6yfLpAC56hpbvJMDvasElrJiDSAa508tdv+ZbxCEQXR7Th7N3oPSRMXFFwi7hYekxJCdtV
-	JI88MXjr7wl9iEoNcedbarL2MqqWYSwjv74yUnnTMdlGA+cNlUFEK3XbZa+XVikOnYWajkRCpML
-	w4umOg6C2ccDFzV3Lgu6fWBJygdhRuaK/sMY+qbW+56CvhUB0FQ3GoJj8GrlLb+ZQDQb/XLY0NS
-	GdEQeWckcMKq3qlI6AjI/yuP85jIMIYO64D9EMDHWc6XQppahzMRzgPQyihFCBhZ+cznMLGevkE
-	l5lzVM8KoiX+kAgEe7cGrDp9jFMRvKZlmAyR4VwM9xxBVKuUpTQqb/Y8IUK9q6LcwhEKPzxH4PE
-	4OgEYjad0Gwygz+U=
-X-Received: by 2002:a05:622a:191b:b0:535:a5fc:3b58 with SMTP id d75a77b69052e-55ac8b9ba4dmr73074831cf.68.1794640250752;
-        Fri, 13 Nov 2026 23:10:50 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23db3a99sm37730986d6.40.2026.11.13.23.10.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 23:10:50 -0800 (PST)
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	linux-doc@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	linux-serial@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	damon@lists.linux.dev,
-	linux-cxl@vger.kernel.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	rdunlap@infradead.org,
-	gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	dakr@kernel.org,
-	johan@kernel.org,
-	jirislaby@kernel.org,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	baoquan.he@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	yury.norov@gmail.com,
-	linux@rasmusvillemoes.dk,
-	pavel@kernel.org,
-	lenb@kernel.org,
-	hannes@cmpxchg.org,
-	brendan.jackman@linux.dev,
-	ziy@nvidia.com,
-	sj@kernel.org,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	lance.yang@linux.dev,
-	usama.arif@linux.dev,
-	kas@kernel.org,
-	xu.xin@linux.dev,
-	chengming.zhou@linux.dev,
-	gourry@gourry.net,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	ying.huang@linux.alibaba.com,
-	matthew.brost@intel.com,
-	byungchul@sk.com,
-	apopple@nvidia.com,
-	rientjes@google.com
-Subject: [PATCH 22/22] nodemask: remove the now-unused first_memory_node/next_memory_node
-Date: Sat, 14 Nov 2026 02:09:59 -0500
-Message-ID: <20261114070959.3490008-23-gourry@gourry.net>
-X-Mailer: git-send-email 2.56.1
-In-Reply-To: <20261114070959.3490008-1-gourry@gourry.net>
-References: <20261114070959.3490008-1-gourry@gourry.net>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8F0CE1C0005
-X-Stat-Signature: g8d6urc948cszfaqz69551otzrazan6m
+	bh=E2yOuaC5vZY/Cg0ZYrSDveIBucrJOwFIorRf7ht0Ka0=;
+	b=s92p/+YGCBIdYTXBJE2NycqYM0KGVEIU3y3FJLokUAZy9DlUPZCJIWUovQhGu9ge/UCqIa
+	UYnxeHIZQ65+RjzChJQ5VyQty0YED8OHlRxRJUBL4QZSB6YAi+rQHVGBmEYN+3pZ+mil0I
+	nQELlbS4H07ZlYQ812Y/4+jHJvSsadU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794640414;
+	b=A4O4DRChJ1+BinWoiu61AZaMsRG2K/ghd8LZbDrCHEJ20Fq09DyImV0uAxgHFDKXMwtp+B
+	gI88UlTIXM/8C/YhZpcEbGXrOllp4CcnedhFxKYkfuE9Sdv51RnKZxk4+xz5zA+Dd1h0CC
+	oAD/bRZrYd6qzJAXlNPic06uCvsVFGY=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ukw/YXat";
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 50A0B60C02;
+	Sat, 14 Nov 2026 07:13:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C681F000C4;
+	Sat, 14 Nov 2026 07:13:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794640413;
+	bh=E2yOuaC5vZY/Cg0ZYrSDveIBucrJOwFIorRf7ht0Ka0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Ukw/YXat0UTtusqWWSmOJe7aAFFb4Q241JhlbsrUixkUfFMCOc5/9wWLkjzsTyTFZ
+	 QWLj6VOACLYgz+3EVfYXNpaKib7wDKvTgy7taKFZvi2jdjPtcWXwlrAtcugSq4cwzH
+	 ZSo2Cgah4+DdwzAAh/IVze5wK7G89LrWny00vZMPtz78tXxH/Sd8DyhmCkB2n/Mpt/
+	 osYJeWcxXVfoajmcYssLTsUTOB2jh0zkQCwUe8HlDQNsyG2rwqoPQDkvhCWYYbBxRP
+	 u1xX2zJLjVFAQcg52uAKCku4Z7IDUF9w8DSB4/0glpmtn6Gf7QdniCB/EgKXO570up
+	 79sN+Lq8GqfwA==
+Message-ID: <sashiko-outbox-214241@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] selftests/memfd: close fd in sysctl helpers
+Reply-To: sashiko-reviews@lists.linux.dev
+To: zhangchujun <zhangchujun@cmss.chinamobile.com>, hughd@google.com, david@kernel.org
+Cc: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com, shuah@kernel.org, linux-mm@kvack.org
+In-Reply-To: <20261113071306.1673-1-zhangchujun@cmss.chinamobile.com>
+References: <20261113071306.1673-1-zhangchujun@cmss.chinamobile.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 14 Nov 2026 07:13:32 +0000
+X-Rspamd-Server: rspam06
+X-Stat-Signature: tnmp7fi8ywyba1r38utt8jua6wh16wix
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 4512580003
 X-Rspam-User: 
-X-HE-Tag: 1794640251-568419
-X-HE-Meta: U2FsdGVkX1+AiXX2KRk2NJl2+ZbH8SMslvbbq3pxtbgOQ0oYPY6eT6pG0kgQG94J4F3MtuChruFk72Rs+HRJE/u9800822TUd5hq8uyHGUxA5oO9OMVQrcFOS8zCNA4gqwAZgIu9bripO3svZKOQg9hNNBfgLw85nSX+bk4lvCHtA1J7bAwPvkHxu9L5kfqg42zh41Dycta19njKCKVmJv1HF0iKewfEoPX1N1MqArbNpA4xSYi29gllHcEwXYAByBnQI4F0zFLUK3ldIP11RiovwE96dJKb3mAbxgqgVxYTRWK8imDwbX+ONbObW+Ze/x9u7m9iyntAkGH7fry83pj7egF4O+eHOT2cDW/sTv9Jf7vPzdtj4sOUqXnUSe/EWAMF9SI8plxnw7V9C1ufkcy+Kdl1jZNg1Zjdb83fHcrVLIzUPRW/qYhrU3zP98q/wsGEsb4n1EVdMAAR+RIJ7L7n1yeb08Z8UfGYG7lDIexMDrk9Ogadhsi/KOF/cxzzCtCzdimrUAp8Rjj8zxHbeaLS7LheqknjBiBqX6LquGsWzvSVENrnyUCmTPoFCKlUMXNGkNo1AdB8JKQVwi7wmteutyXD4Z7ti9PAE8S2LsbGg/miwoaXUsMLjNarwphjfig/Y2UOpY76NYDRKyD6//2F6gTjcfTLkzHF9DSFBusov+BDoPub7Meb3fVPu643FrNQLFnFucU/iBC4hRmJ5qFrz6ttTQ9YOf8ikUXbBbIa5w9berHTJRa3z5uZgf7QcVIvdOeYYX4voMNn9BiOkU5i3RCACdqxhn8icVTLDbvfxC00kq7j2mVf9K4+s6yyfzxOAQoCqelKysgVy9/CqyIZiqOa01yZXuhv+0vzyOhmWyNbRVRh+haCSEo8TSU/8thMBeSZ0z9aiH7cAJeOTGSi3KQFU8MW86TfeMXw1qb3MbQrOdvDP3bcWRMKlWu5e5/6aVqiorBSsHB+2vZ
- 7waXF3KQ
- 5QO2w7R0EE1KSB4aIAMzKV7ikB+gDBxOb40HDyrJvkQxFarohArALquomA+0JG0siCTJK32vQHxv9oYCMZ1RCaaz2HxoDxsFZHA9DXpsh0S2MFD+bLX5CjIXPKfJT+AF9K7FAzKhJIFI4lfRYY2fikU4KvthHLxjWu08cEsxw75A/k/Mbi/itRmdzfkQ0QhteZnDLKcKyB0cP0IWjBpNCGYaE0E09FZ9zHTITWDnd7rS1NEiuilLqcgMD61yAF6VPEU1ZMGwQ1SyoBMDFtwZJNPCrtp/iUti8ZCb13umjeSL3QibLsiqPHezYr0tzkbfrQTHJNTRFGGM2ICoBcIYFwrU1gxSwp1fpAxHCiPpeNHFf1/bA9rxQX0EJ/OkVfYhhAEeVjzTQUY9gxJ9P+5f7pY0x/DHxDu/QYE6FMOqu0Hy+SVo=
+X-HE-Tag: 1794640414-611465
+X-HE-Meta: U2FsdGVkX192MFzoSvSwQqdUyxQEJDrtnB+bNfZdZ3B6PlMuBc+KJBSANHnBJQGdB4JjnS3kCcpnmhfezVufVPjLdlFe1lLRDnFWeaj28xrCFvw1uT8OVMrBkNZqQfEFOMVA9hOjTv4s5O0H+oNCq6J9yidsDTIi7em8OycZuGFW5GoOy8ANj60/Rh54Q/GWqW0SlD/Dobcc/85gCobtb7RCLEBI02SKvGGaKPDGNl1nCxwGRjpXNeT1W5HM95sxVhUuUMLQAKskMOh8hTgHmJf8YmfDxVrwi6sA038uB4mY+fy86StoGJqstbfQ1Bre3r/Q2fs99cS55o+OSkHKStl1WB5iytrmRZnt6kBAumSu9EkhF2IRsfZQj4mNPOUqpdCSJ/MWiyDgHTFrLDUJYERBB0EJF0m16JWcz2csh9ECM4jXtlj4cUFiT1dZhfB9KJxsPl7DAoVyetnnWVlGWI7bVsB6IufFS/Gx2FSD7Bg8OjViYlaEyl/1Q2hAwcmon2ZA4FKaUhVL+S1uSQ6gqGfQIDuuXpE2RPgElXCyBVjMSuNzXEyyITKUn5kdaa/bT/WmIjYMzOKhAHo7xfX0MSupFhd1xNmjB9Op9p3dWeRgN/oT3ikLaT2/OdRwbEqbyYwsEpurC0gi6l6NMvpntlRNLzydzgaUrUtuLJcTVTLbuNrgm8TbXo4V1sHscL1d0fIiiHpM/xzs2VrlIclqjq8FvxpgLF69VtJsOqQI52kZ+XLPpqvMysZsj/FNJq6/rRePbVujciW5wFZ1uSqt3tBZMqEBLtZsxRjfrLrel7WysFejoWNFq4CGkM1nei2gzynEyquZw81WjVc6TUOpDMcUQRjjUWsRYL0N1TQrqf71UUQUKdtDVi2P67CpIxaGhssaq7vPz+3JhtnW7gXsmnr8WhcDkhhwAf41/1JwHUYTA/yMrsE6JugcbnJ2j8ivc5gGwaVufiBfLHalJgj
+ 4oHYCGj8
+ t4MxL4elo9rrnHtHaUcv7IDENgIIdGRSPKhF+CUwOjiz6CHOGPJbNBTFoZQCdZBq63oygygrLrtXI+nNIWWAASgkODsED60UIFHvBANrEx+iQcMKHHgbpvF1omdng3VAqrGbMNolN7u/T79jizist6/5sn2RiJRtEK3iYlfA1VhwwEDvUcGtmziA9HZbzU9rLtBKGGvC9Kw7nE3n2UPj9BEs0tACXywWhcqSaaZQb6VbQENdrl29yC4KVXh2FLWE5jW16W8gg7etT3Hw95y9riOZC+GPaMpeaAhdQsZ/47++Q8wGSm+LG/3Uwu5X0K23ouFwV0eN4sOimqE5x/yMLlnseFiWRXWHesmAeOJX7YHtDaew1A1LXGJPI9bvF0vp5YSgRInL850kPdteJBvRPnmAjtpGJfzN8OV+Kbms5NQrJXrTa748rrIzOzroSANNwmseFHhFZ8BJRdl+NkNYzeYvQzv+O9pD1LaPAEMTH7T/zhxR8fXIHzO9e0GL0XY48okyMTp5c3bvR01SB/ygD8ov6n0cOSoBmQvVaxqJEXAU2YJ9IlU+VJzjZirDQIhXFLbMEXqPPwJfn1ulct4OM5vNEmQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,49 +90,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-Both helpers hard-code N_MEMORY, which says only that memory exists.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [High] selftests/memfd: Signed-off-by trailer uses handle instead of
+  real name
+- [Low] selftests/memfd: missing Fixes trailers for sysctl helper fd
+  leaks
+--
 
-Every caller now names the state it means, leaving no users of either
-helper. Remove them so new code has to pick a node state explicitly
-rather than silently getting N_MEMORY.
+commit f7c1cc7489dcee54b6a1302dc52c7e84f82859e6
+Author: zhangchujun <zhangchujun@cmss.chinamobile.com>
 
-Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
----
- include/linux/nodemask.h | 7 -------
- 1 file changed, 7 deletions(-)
+> selftests/memfd: close fd in sysctl helpers
+>
+> The three sysctl helpers sysctl_assert_write(), sysctl_fail_write()
+> and sysctl_assert_equal() open /proc/sys/vm/memfd_noexec but never
+> close the descriptor, leaking one fd on every call.  The noexec tests
+> call these helpers in a loop, so the test can run out of file
+> descriptors on a system with a low limit.
+>
+> Close the fd before returning from each helper.
+>
+> Signed-off-by: zhangchujun <zhangchujun@cmss.chinamobile.com>
 
-diff --git a/include/linux/nodemask.h b/include/linux/nodemask.h
-index 7ace610bdd654..eea0ff7601303 100644
---- a/include/linux/nodemask.h
-+++ b/include/linux/nodemask.h
-@@ -457,15 +457,10 @@ static __always_inline unsigned int next_node_state(int nid, enum node_states st
- }
- 
- #define first_online_node	first_node_state(N_ONLINE)
--#define first_memory_node	first_node_state(N_MEMORY)
- static __always_inline unsigned int next_online_node(int nid)
- {
- 	return next_node_state(nid, N_ONLINE);
- }
--static __always_inline unsigned int next_memory_node(int nid)
--{
--	return next_node_state(nid, N_MEMORY);
--}
- 
- static __always_inline void node_set_online(int nid)
- {
-@@ -509,9 +504,7 @@ static __always_inline unsigned int next_node_state(int nid, enum node_states st
- }
- 
- #define first_online_node	0
--#define first_memory_node	0
- #define next_online_node(nid)	(MAX_NUMNODES)
--#define next_memory_node(nid)	(MAX_NUMNODES)
- 
- #define node_set_online(node)	   node_set_state((node), N_ONLINE)
- #define node_set_offline(node)	   node_clear_state((node), N_ONLINE)
--- 
-2.53.1-Meta
+[Severity: High]
+Per Documentation/process/submitting-patches.rst, the Signed-off-by trailer
+and commit Author field must use a real human name rather than a single-word
+account handle or username ("zhangchujun").
 
+[Severity: Low]
+Since this fixes file descriptor leaks introduced in sysctl_assert_write(),
+sysctl_fail_write(), and sysctl_assert_equal(), should the commit message
+include Fixes tags for the commits that added those helpers?
+
+  Fixes: 11f75a01448f ("selftests/memfd: add tests for MFD_NOEXEC_SEAL MFD_=
+EXEC")
+  Fixes: 6469b66e3f5a ("selftests: improve vm.memfd_noexec sysctl tests")
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113071306.1673=
+-1-zhangchujun@cmss.chinamobile.com?part=3D1
 
