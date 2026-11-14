@@ -1,106 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655DD606A33B
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 16:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1A18606A89B
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 16:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zte.com.cn header.i=@zte.com.cn header.a=rsa-sha256 header.s=z202610 header.b=vhq7gym0
+	dkim=pass (2048-bit key) header.d=zte.com.cn header.i=@zte.com.cn header.a=rsa-sha256 header.s=z202610 header.b=Ib3WR+2g
 Received: by kanga.kvack.org (Postfix)
-	id CAD696B05B0; Sat, 14 Nov 2026 11:47:11 -0500 (EST)
+	id 421996B05B1; Sat, 14 Nov 2026 11:47:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C37336B05B1; Sat, 14 Nov 2026 11:47:11 -0500 (EST)
+	id 3D2596B05B2; Sat, 14 Nov 2026 11:47:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B74586B05B2; Sat, 14 Nov 2026 11:47:11 -0500 (EST)
+	id 310066B05B3; Sat, 14 Nov 2026 11:47:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 85F116B05B1
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EAAAF6B05B1
 	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 11:47:11 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0C177A03F7
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7BC38140413
 	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 16:47:11 +0000 (UTC)
-X-FDA: 85434304662.27.E3854C9
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 71A6820004
+X-FDA: 85434304662.22.1587995
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7B7461C0007
 	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 16:47:08 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=zte.com.cn header.s=z202610 header.b=vhq7gym0;
-	spf=pass (imf31.hostedemail.com: domain of shao.mingyin@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=shao.mingyin@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794674829;
-	b=1jf5MIxb4BgN6CI5Yg2jCsDbMdfi95Q/kbkj1OgEbhc5Z12EFJj6MbcasaaJ4B4uDDEgvf
-	Z3/qVbnR5TRo9FA6zdKH8bqM6RYf8/K4TQoUQg2p99rvNbEZ8vI5mZo4GW8J2l0+Meb+sk
-	P8DS51YSSVqGZMlZF9pVIaWLvwBBbsU=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=zte.com.cn header.s=z202610 header.b=vhq7gym0;
-	spf=pass (imf31.hostedemail.com: domain of shao.mingyin@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=shao.mingyin@zte.com.cn;
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=zte.com.cn header.s=z202610 header.b=Ib3WR+2g;
+	spf=pass (imf20.hostedemail.com: domain of shao.mingyin@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=shao.mingyin@zte.com.cn;
 	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1794674829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=f9lkg5AV718yKRuUDbng7AhiBPUBTF5d9AC5RxltnpU=;
-	b=op8eFHWnrV0kxdU98oCt2I1T31KmxJP61EpBaoDLhXHy1sZ13eNJHJfOug8MyKbjCaFCym
-	yWcp2TQ8BpTqhbU40/vDKYiTxYjw9L2QbBt9FevrTLbmcooFo918V3JQZlnwhN808zPnrF
-	JIK/djbACHEm7bMz36uhtTUh/1mRij8=
+	 references:dkim-signature; bh=3LuBfwrsNMEmaxatdcww0jyj29nzn1W/PMAS+hcYzQQ=;
+	b=Ti4mu3Wx/8FUkhib0K9p0yixroGiOd2sRXRNTH6QO9xYaZT8SJRUjRz1kh3tv7OQAwsZQw
+	as7xh72vfivMiWXG4oAiPgsfLV4YNjOMi98J5T9bNyJ1h/84VWqvFfdm6lxIo8Y5wpEzAV
+	aq+1oY3ksXMqlHCkstjqitvB0tfche4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794674829;
+	b=YmwLLzx0xx6grEOmhs4wK2yMQnf08cmtrZ0JWKEav+qpP3OPEOONlz+ELnRYC36klgTwiT
+	vXm0pRMwXNvnZXMwbg5c3JX+7pz6yn+lnk0exJtPgiGpA6ak5/bClSIJfFwwbj7ypry2hy
+	HDu9Ot0qVT1Xix0+US1nV75rj0wOgHE=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=zte.com.cn header.s=z202610 header.b=Ib3WR+2g;
+	spf=pass (imf20.hostedemail.com: domain of shao.mingyin@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=shao.mingyin@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jRg5P6lqJz5BNRx;
-	Sun, 15 Nov 2026 00:47:05 +0800 (CST)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jRg5M70DSz8XrrJ;
+	Sun, 15 Nov 2026 00:47:03 +0800 (CST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=zte.com.cn;
-	s=z202610; t=1794674825;
-	bh=LS3poxthHIQDOPkfmHKkqMcC+PRkH+aQtxDBHIIAQ6s=;
+	s=z202610; t=1794674824;
+	bh=V7A2yyFE7wnSjeZEJxHslp4jPPbaHPv0vPxXAMZMgLs=;
 	h=Date:From:To:Cc:Subject;
-	b=vhq7gym0cPm10dacpHkPYLUq47YPLV6jbU27ba1Tv9OpdJBWu/NKpHQWenqVfjzci
-	 46lrYsFX9cQXrd1vEp2Whb4JGHW6uBbaR1VEdgAARVmsXIST/nYIQ+besmq5hUlIl0
-	 RrI48zBQLHVGgYluriY2SVd1aPjTMetgeeK6s7QsDPw5AmE7nttyHh05ddoT/h8+Ml
-	 3RWZL+WarbkOKURce0IAuBlMnv74Jgs3em+IUSyLWROFD0CY/KsQYOmVgapRpV+7cf
-	 79Rs4IbDYEGJ2poK2o+LZfvMll++1YE1bxS/JPgB7mcke0hbPncTTRGK1aaSSzzbZE
-	 mMYmf0w4i6iaw==
-Received: from xaxapp01.zte.com.cn ([10.88.99.176])
-	by mse-fl1.zte.com.cn with SMTP id 6AEGktnb089520;
-	Sun, 15 Nov 2026 00:46:55 +0800 (+08)
+	b=Ib3WR+2gr/7rSbP9L7eduEl1nvz2FLrNgu5CqNXBEQRords0YIIRQAZAd8t1c6pgl
+	 L14voEHkFAvIkctcG+5Ai/+txc8ZyxViXYFuZaJUa5OgXT8yK0mfKLGMkcZoRD3fe7
+	 ui/ftW7BJDvvksVW+8LUJkm1qqVu1M6D1Rz22siVQNvYFZZWN11oPe3p7kluBFxOrh
+	 /bJBnqjO6PYgj8L5QBs2sVH5Mp3OXeaXN7Kffq61nr9FUxyP1Z8vsYE41IVVyBni2l
+	 OWHwwf7r4AjzyqqG8yq4hkPa2L4WDBH2uw8Vmp/vnzbRb9Q5lTiK6A5ZF7kyfaUJIQ
+	 NMXPDpzccWfNw==
+Received: from xaxapp04.zte.com.cn ([10.99.98.157])
+	by mse-fl1.zte.com.cn with SMTP id 6AEGkr7a089513;
+	Sun, 15 Nov 2026 00:46:53 +0800 (+08)
 	(envelope-from shao.mingyin@zte.com.cn)
-Received: from mapi (xaxapp02[null])
+Received: from mapi (xaxapp05[null])
 	by mapi (Zmail) with MAPI id mid32;
-	Sun, 15 Nov 2026 00:46:57 +0800 (CST)
-X-Zmail-TransId: 2afa6af89081cd3-30ca3
+	Sun, 15 Nov 2026 00:46:55 +0800 (CST)
+X-Zmail-TransId: 2afc6af8907f77b-3074b
 X-Mailer: Zmail v1.0
-Message-ID: <20261115004657890Pz8ERDf5nCtE-B6M7KFzu@zte.com.cn>
-Date: Sun, 15 Nov 2026 00:46:57 +0800 (CST)
+Message-ID: <20261115004655564ix3vefI54RZ3HhYOmxuKX@zte.com.cn>
+Date: Sun, 15 Nov 2026 00:46:55 +0800 (CST)
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 From: <shao.mingyin@zte.com.cn>
-To: <akpm@linux-foundation.org>, <david@kernel.org>
-Cc: <linux-mm@kvack.org>, <liam@infradead.org>, <vbabka@kernel.org>,
-        <rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-        <linux-kernel@vger.kernel.org>
-Subject: =?UTF-8?B?W1BBVENIXSBtbS91dGlsOiBmaXggb2ZmLWJ5LW9uZSB3aGVuIGNoZWNraW5nIGZvbGlvIGluZGV4IGluIHNuYXBzaG90X3BhZ2UoKQ==?=
+To: <akpm@linux-foundation.org>, <liam@infradead.org>, <ljs@kernel.org>
+Cc: <linux-mm@kvack.org>, <vbabka@kernel.org>, <jannh@google.com>,
+        <pfalcato@suse.de>, <linux-kernel@vger.kernel.org>
+Subject: =?UTF-8?B?W1BBVENIXSBtbS92bWE6IHJlc3RvcmUgVk1BIGl0ZXJhdG9yIG9uIGZ1bGwtcmFuZ2UgbWVyZ2UgZmFpbHVyZQ==?=
 Content-Type: text/plain;
 	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 6AEGktnb089520
+X-MAIL:mse-fl1.zte.com.cn 6AEGkr7a089513
 X-TLS: YES
 X-ENVELOPE-SENDER: shao.mingyin@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Sun, 15 Nov 2026 00:47:06 +0800
+X-SOURCE-IP: 10.5.228.132 unknown Sun, 15 Nov 2026 00:47:04 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6AF89089.002/4jRg5P6lqJz5BNRx
+X-Fangmail-MID-QID: 6AF89087.000/4jRg5M70DSz8XrrJ
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7B7461C0007
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 71A6820004
-X-Stat-Signature: 3hfzbt9gu5zbrewyfe96o4ksksgk5zxi
+X-Stat-Signature: ajak37hweb5k6u6rou9ty7oi8ssmi1s5
 X-Rspam-User: 
-X-HE-Tag: 1794674828-31475
-X-HE-Meta: U2FsdGVkX1+cAgThfnwwCkcb59SZYCIqbCgzyQwHLnDEb2lvQ54x17D6quAC6DJY0TP9rsmxrRhhyo18vT9Xz18MoA+GBlzmWfBFA1ZK52m4lshGSt70gA33cdt4ixkdM7mWbECUCQca5rL+xpLN/zy+NF8M6fcbn4wuYBYY9p107HOqDjJRnpix/pC9ELLlaFBu/5SyR7FeXBRjIlIPuzoJ4ESZxKLeqv1jgFIzsrVhCWrZZ70qPJmAWHpGZlKa/VOdMOBnbJhazbK0smiJSI4CHYjCWqImwL/PVnmsrqotzh3V09PcpRfxMMiJ9oXO1fxk/wy3uT64rvdtyggOQrAl+KL1Aiw711/60+6f7YFSPkJVcZ6NGzKfmRaZ6B97ElpIcye2CYx0mS3LYzrBijBxEFh6Oy4qPX6TfT0Bk4Oct+egn+kGlbKvYGjgjzb8fRqEVJ7XrMCVrVzkwkuvd6g4QHgoG/70WpCsqJMOKEjk5J1wrg+1Ez+KrC9eh0fXPPkY4i5dAuMxJBhTs2aWqRSqgXb+2WjG1Kf4dLSnPApCatIKrof5ET6mSPyVrEpeIjKlPEymvgY8oPTpzwklgtOQTPxPUjBp3XgypVBt/Th/kJ1tGLLzpLmc9QgUpEqRUOQlaKJm3zhyhC+zBEqWN9Qez1xhrpfLbWrC6id8o90UBSmGQDXBUBU8PqJU/dTbFQCnVcUiY4mDTqOdWEB3JoezOqthK9/AwgC2kfRKqey303C/B2DSpp1S+pn7Yylm8aa+EQnU0l9Q7IfiFayI3Ok5fZ4yh4eb/CQYTvDXC3FSnlQ41VCWsUnhweYiXiSDICZIxOQtLirX/QPaDW2AcJg6S6Alpr6hgHHDMSL+wjDc8dr97Yd32ws3vDDflHTB99dqFMoiuMsSo8eVenaks5OiQQSXKeZbmDRf4E029NhqO8zwzyViX3HpWgwBy1kL5LudGqtTkFi3XvE318f
- mfzuhqVd
- NWjidWLichhv5aX+9xbCmOn+WUK7NkMD9uxWUap9qvS+Bkf81mFCFmH7ehIsNSAHOdEBR5YgwiWr8hfQVvrNWTk1A+x7cJ97MuoGNL3LuuGvndaYCPOdekEZzhGZ1LvHIy+B0ss2vvwF09GLgydMEvWYxXAPMnAUbdW/A0kfJYYBjKqCDZWC7dHqP5dRqoKSA18Co/nctPNHc5cl6IZFojDkD56UVAXa1hnPtOHtOVXIdQPCgzYm8QWupLa8/z/bkGAttCRsCmpie/RcfYGfkC+NK15wOxKy1A/5B8RD8heNkiX+/+qfoJk2SpQOCZoKD9JgSemncqTcU9YWoqb4r+6p+fCvZSzVeq4oMgCl3ZxG5X6GP3KbMe6A4ig==
+X-HE-Tag: 1794674828-615107
+X-HE-Meta: U2FsdGVkX1/r2dDezrCtjrgn+7kUhl84k8x+nenchN03+5e0XeWO9X/pSPJySEcRBBVfDYWL9BH7vzQSpgnw0TwRyEXFAZ5bThlIulB/MMrEKkwrgr6o34Y0WJG9Uy02Q8Ya9hlK+alSHmDKHYOC/TLI0xo1PtPGdd1kwNt6SQnM2kmmKEkFYdlrLocfWajW62HiIZaDE75xrFDTGZ4dhaaEaD9MvfFmiB1ViqDM5ZJpNnTpp2Py41X+YjUN+Q367nEiZ9kUaNiuXs/rjfSdEkCkkIUo4U0sU3GbFO7R/nbsvZk3P65zHtypMc/ohoX3hwjr3CWmRpDF4xsOi/gk5giWxz2Qfx84WnaCvFVGRqNgSfRR7wrr7W14LGt+8Aooo5k0szH7JRlgGgssLDRQ6G/0snj1ojCIxsvwcUVy9rQwhyj9xhhSRctQn8XwqTeW1KzYNiUrQo+AwNPxEKj5PhieGOcwFVH5ZJIlKcLI+g/0SCIBLcg1P4ZNAY5MpVdYFp/YkfnJYSsLP8U6dtDToj0shBh/2k/8pIspGLVmopHs0K2P1plOmA9d0KWAaDHO42h4yN4V2V7hQPchqzH67tVg5cC0+lbJwJcVUXS+Re06hlMNdLkUOmeEqFclgamCZfvz4ZuKOc+Yq+NB89MCdo6DB8O4aN4FYA2ZLbt+f4KIG+yH7zi3xmpDMRoUxRFaU1Q4rQf+6Ua33oyrVkX24W/hSxvyRllsPBIqzMhnEmC5M9IZ4hSePs/0nHwQJ1IkBz8lykwpWozHq9Cn8NTveHUtAQBrJuAySiJaZLWDidhFDxcOqr+qA00R1zSZ0B3QB9JQAKzB/Cieus28AqgnxlPEZKA9lCDofZK2UUuujmnk7kNvOITgRa4jVZ5sszGwTIM2/+JpM1WXNk8Rg0kxWvcogfSo59y/hImFbF8KR2OpOGWPd9AxSHfdbgLv3wQB7XstXys3Osr7oS9oPqm
+ VhpdVDRl
+ vFz9RZhbcURq8dfKdpDiJ4767x0uLjgQu/nWsBHZUmpjOu+eatSRD683a7PoVCoE0paEoaj37Ubs3qJzzmY1HJ/JGslMJK/jtuaCzqgKVeLwXTlFS/L9s7es4yVMl7yRH5ITOVFiDkVasnKu9s9nSTdZ5j23eHM5Ax9NLf3MHHymRxF0qfaBaNkfekXSuBjMZfgABVlA1/T6ITDnx2hSGm4lohe1DPVBvyxKj9jG15f6gNdcUW9Crg/aW36tt1IJjzTIit8RUsitvZBT5U9giZHu8kYeDE2vngUEKevVI9Y06ygXyU4MauZEZUui6wD2xfeQr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,40 +110,60 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Shao Mingyin <shao.mingyin@zte.com.cn>
 
-mm/util: fix off-by-one when checking folio index in snapshot_page()
+mm/vma: restore VMA iterator on full-range merge failure
 
-snapshot_page() computes the page index before copying the folio state.
-If the folio changes between those reads, the index can equal the copied
-folio's page count. Valid indices are strictly less than that count,
-but the current check accepts equality and marks the snapshot faithful.
+vma_merge_existing_range() moves the iterator to the previous VMA when
+merging to the left. If the range spans the whole middle VMA and a
+vm_ops->close() hook prevents removing it, the function returns without
+restoring the iterator.
 
-Use >= so that this inconsistent snapshot is retried, or falls back to
-the unfaithful single-page representation. This also avoids reporting an
-out-of-range folio index without the corresponding dump_page() warning.
+An mprotect() walk can then visit the middle VMA again. Restore the
+iterator to the range start, as the abort path already does. Extend the
+existing close-hook merge test to check the iterator after this failure.
+No crash or data corruption has been observed in this case.
 
-Fixes: d863a12108f2 ("mm/util: introduce snapshot_page()")
+Fixes: 01c373e9a5ce2 ("mm: rework vm_ops->close() handling on VMA merge")
 Signed-off-by: Shao Mingyin <shao.mingyin@zte.com.cn>
 ---
-Build-tested mm/util.o with W=1 on x86_64. The boundary check was
-reviewed statically; the folio-split race has not been reproduced.
+Tested with tools/testing/vma using its default ASan/UBSan options.
+The added iterator assertion fails before the fix; all 29 tests pass
+with the fix. Also build-tested mm/vma.o with W=1 on x86_64.
+This verifies iterator position, not a crash or a production workload.
 
 
- mm/util.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/vma.c                        | 5 ++++-
+ tools/testing/vma/tests/merge.c | 1 +
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/mm/util.c b/mm/util.c
-index a5140b3b70f3305cd78144a54d3b15a794da9609..6e6a8f8640a75ebb0f81f54c9a5085f698320714 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -1462,7 +1462,7 @@ void snapshot_page(struct page_snapshot *ps, const struct page *page)
- 		set_ps_flags(ps, foliop, page);
- 	}
+diff --git a/mm/vma.c b/mm/vma.c
+index c82e9306b11ac14f684f44b8d71a0026b7fc145c..c87b29f1beec4ceb02c23f6b37af0e5dff272436 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -983,8 +983,11 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
+ 	 * If we need to remove middle in its entirety but are unable to do so,
+ 	 * we have no sensible recourse but to abort the merge.
+ 	 */
+-	if (vmg->__remove_middle && !can_merge_remove_vma(middle))
++	if (vmg->__remove_middle && !can_merge_remove_vma(middle)) {
++		vma_iter_set(vmg->vmi, start);
++		vma_iter_load(vmg->vmi);
+ 		return NULL;
++	}
  
--	if (ps->idx > nr_pages) {
-+	if (ps->idx >= nr_pages) {
- 		if (loops-- > 0)
- 			goto again;
- 		clear_compound_head(&ps->page_snapshot);
+ 	/* If middle isn't removed then it's resized, i.e. splits. */
+ 	if (!vmg->__remove_middle && check_split(middle, left_side ? end : start))
+diff --git a/tools/testing/vma/tests/merge.c b/tools/testing/vma/tests/merge.c
+index b26f1a66a17074775d751a907eb627445cc1dda3..91accb5dc9944724cd11d1bfa47484a3cf9df54c 100644
+--- a/tools/testing/vma/tests/merge.c
++++ b/tools/testing/vma/tests/merge.c
+@@ -680,6 +680,7 @@ static bool test_vma_merge_with_close(void)
+ 	 */
+ 	ASSERT_EQ(merge_existing(&vmg), NULL);
+ 	ASSERT_EQ(vmg.state, VMA_MERGE_NOMERGE);
++	ASSERT_EQ(vma_iter_addr(&vmi), 0x3000);
+ 
+ 	ASSERT_EQ(cleanup_mm(&mm, &vmi), 2);
+ 
 
 base-commit: 84abb955b1015477aa11a96e2f3ac1b938b77f48
 -- 
