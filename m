@@ -1,88 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C471606A327
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 07:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0243606A329
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 07:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ukw/YXat
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QS0kLU7m
 Received: by kanga.kvack.org (Postfix)
-	id B11176B05E0; Sat, 14 Nov 2026 02:13:36 -0500 (EST)
+	id DB8B76B05E2; Sat, 14 Nov 2026 02:21:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC24A6B05E1; Sat, 14 Nov 2026 02:13:36 -0500 (EST)
+	id D69B56B05E3; Sat, 14 Nov 2026 02:21:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D87D6B05E2; Sat, 14 Nov 2026 02:13:36 -0500 (EST)
+	id C58DA6B05E4; Sat, 14 Nov 2026 02:21:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7ADE46B05E0
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:13:36 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 13873A7D73
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:13:36 +0000 (UTC)
-X-FDA: 85432859232.28.803A920
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A91946B05E2
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:21:46 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 36382160375
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:21:46 +0000 (UTC)
+X-FDA: 85432879812.13.C0AAA40
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4512580003
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:13:34 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ukw/YXat";
-	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 98897140005
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:21:44 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=QS0kLU7m;
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794640414;
+	s=arc-20220608; t=1794640904;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E2yOuaC5vZY/Cg0ZYrSDveIBucrJOwFIorRf7ht0Ka0=;
-	b=s92p/+YGCBIdYTXBJE2NycqYM0KGVEIU3y3FJLokUAZy9DlUPZCJIWUovQhGu9ge/UCqIa
-	UYnxeHIZQ65+RjzChJQ5VyQty0YED8OHlRxRJUBL4QZSB6YAi+rQHVGBmEYN+3pZ+mil0I
-	nQELlbS4H07ZlYQ812Y/4+jHJvSsadU=
+	bh=SySnQWEZZt0ZJcY0gD5OVrDsND9/1T98niGZwR/wiT4=;
+	b=OlXo6raGZr1JiBuCf0Ji6l8FKhTIzWO+N0zex++lfME40Yrp4CLAkrrdRGJ+HK5sEH3bUy
+	Vtt4sgRgKBK20LfXiE21vc8MwdlK/IRgYEomzNRdDtiy9vBSTjjBaJEuQO2hU4wyzNVnXa
+	KQDjB3ELtoXvpLZ7aAwQ6KOUc0Vizwg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794640414;
-	b=A4O4DRChJ1+BinWoiu61AZaMsRG2K/ghd8LZbDrCHEJ20Fq09DyImV0uAxgHFDKXMwtp+B
-	gI88UlTIXM/8C/YhZpcEbGXrOllp4CcnedhFxKYkfuE9Sdv51RnKZxk4+xz5zA+Dd1h0CC
-	oAD/bRZrYd6qzJAXlNPic06uCvsVFGY=
+	t=1794640904;
+	b=XDLmiA8Swq25RIPjx952Bm7/wfm3v4QG3E8S3hpHnQRU3irm76o8fn20ib0xPeEsbZjEcJ
+	bHGLt9+M+o4fYwxji3onhaAEgA9dEt1YKLpKH9bhFDrd+wGEb9zCqkz7XdSgUTTfvluulp
+	NZrdRoSuScfywQDjZ02FpCwKthkDpLQ=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ukw/YXat";
-	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf09.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=QS0kLU7m;
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 50A0B60C02;
-	Sat, 14 Nov 2026 07:13:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C681F000C4;
-	Sat, 14 Nov 2026 07:13:32 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 11C6F60E01;
+	Sat, 14 Nov 2026 07:21:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3015F1F000C4;
+	Sat, 14 Nov 2026 07:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794640413;
-	bh=E2yOuaC5vZY/Cg0ZYrSDveIBucrJOwFIorRf7ht0Ka0=;
+	s=k20260515; t=1794640903;
+	bh=SySnQWEZZt0ZJcY0gD5OVrDsND9/1T98niGZwR/wiT4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Ukw/YXat0UTtusqWWSmOJe7aAFFb4Q241JhlbsrUixkUfFMCOc5/9wWLkjzsTyTFZ
-	 QWLj6VOACLYgz+3EVfYXNpaKib7wDKvTgy7taKFZvi2jdjPtcWXwlrAtcugSq4cwzH
-	 ZSo2Cgah4+DdwzAAh/IVze5wK7G89LrWny00vZMPtz78tXxH/Sd8DyhmCkB2n/Mpt/
-	 osYJeWcxXVfoajmcYssLTsUTOB2jh0zkQCwUe8HlDQNsyG2rwqoPQDkvhCWYYbBxRP
-	 u1xX2zJLjVFAQcg52uAKCku4Z7IDUF9w8DSB4/0glpmtn6Gf7QdniCB/EgKXO570up
-	 79sN+Lq8GqfwA==
-Message-ID: <sashiko-outbox-214241@kernel.org>
+	b=QS0kLU7mA8nNQkh1mioJKyLHUOPwA4e3Jbn/FDXu8YM/vbOIvnClPO/kYBq3DaEPU
+	 To6lyW4Bodv/ef+5WC8o/CDKIJ3pHAvzh2zEBZlJZbChJGwAG/LgfxTjc8o935qFb2
+	 skhSmpPaYX1NTyHPmPhSEKm9WdyII5LpDWl7BbEcefknr+mzW3BkXbx4qdkmIitUMh
+	 +0U0WctafQuOZlgsj5kFtrcQCCNChTjBAC/V0Y/paSOCGm93hiUKwfj17txlZCiPS6
+	 cQyFBcxkfxHv5wEIYjr9wEGF/rxi/8LisMNs71oq6Wx2dGyriH/Tn0hEFRzJfxsgiw
+	 RgiKmZAVtUk6w==
+Message-ID: <sashiko-outbox-214261@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] selftests/memfd: close fd in sysctl helpers
+Subject: Re: [PATCH 10/22] mm/khugepaged: restrict collapse to common memory
 Reply-To: sashiko-reviews@lists.linux.dev
-To: zhangchujun <zhangchujun@cmss.chinamobile.com>, hughd@google.com, david@kernel.org
-Cc: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com, shuah@kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261113071306.1673-1-zhangchujun@cmss.chinamobile.com>
-References: <20261113071306.1673-1-zhangchujun@cmss.chinamobile.com>
+To: =?utf-8?b?R3JlZ29yeSBQcmljZSAoTWV0YSk=?= <gourry@gourry.net>, linux-mm@kvack.org
+Cc: kernel-team@meta.com, linux-serial@vger.kernel.org, damon@lists.linux.dev, linux-cxl@vger.kernel.org, akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org, gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, johan@kernel.org, jirislaby@kernel.org, kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, yury.norov@gmail.com, linux@rasmusvillemoes.dk, pavel@kernel.org, lenb@kernel.org, hannes@cmpxchg.org, brendan.jackman@linux.dev, ziy@nvidia.com, sj@kernel.org, muchun.song@linux.dev, osalvador@suse.de, nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, usama.arif@linux.dev, kas@kernel.org, xu.xin@linux.dev, chengming.zhou@linux.dev, joshua
+ .hahnjy@
+ gmail.com, rakie.kim@sk.com, ying.huang@linux.alibaba.com, matthew.brost@intel.com, byungchul@sk.com, apopple@nvidia.com, rientjes@google.com
+In-Reply-To: <20261114070959.3490008-11-gourry@gourry.net>
+References: <20261114070959.3490008-1-gourry@gourry.net>
+ <20261114070959.3490008-11-gourry@gourry.net>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 14 Nov 2026 07:13:32 +0000
-X-Rspamd-Server: rspam06
-X-Stat-Signature: tnmp7fi8ywyba1r38utt8jua6wh16wix
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 4512580003
+Date: Sat, 14 Nov 2026 07:21:40 +0000
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 98897140005
+X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: 7bc3u7ei4afqt1ngk1y675upftyo7bfy
 X-Rspam-User: 
-X-HE-Tag: 1794640414-611465
-X-HE-Meta: U2FsdGVkX192MFzoSvSwQqdUyxQEJDrtnB+bNfZdZ3B6PlMuBc+KJBSANHnBJQGdB4JjnS3kCcpnmhfezVufVPjLdlFe1lLRDnFWeaj28xrCFvw1uT8OVMrBkNZqQfEFOMVA9hOjTv4s5O0H+oNCq6J9yidsDTIi7em8OycZuGFW5GoOy8ANj60/Rh54Q/GWqW0SlD/Dobcc/85gCobtb7RCLEBI02SKvGGaKPDGNl1nCxwGRjpXNeT1W5HM95sxVhUuUMLQAKskMOh8hTgHmJf8YmfDxVrwi6sA038uB4mY+fy86StoGJqstbfQ1Bre3r/Q2fs99cS55o+OSkHKStl1WB5iytrmRZnt6kBAumSu9EkhF2IRsfZQj4mNPOUqpdCSJ/MWiyDgHTFrLDUJYERBB0EJF0m16JWcz2csh9ECM4jXtlj4cUFiT1dZhfB9KJxsPl7DAoVyetnnWVlGWI7bVsB6IufFS/Gx2FSD7Bg8OjViYlaEyl/1Q2hAwcmon2ZA4FKaUhVL+S1uSQ6gqGfQIDuuXpE2RPgElXCyBVjMSuNzXEyyITKUn5kdaa/bT/WmIjYMzOKhAHo7xfX0MSupFhd1xNmjB9Op9p3dWeRgN/oT3ikLaT2/OdRwbEqbyYwsEpurC0gi6l6NMvpntlRNLzydzgaUrUtuLJcTVTLbuNrgm8TbXo4V1sHscL1d0fIiiHpM/xzs2VrlIclqjq8FvxpgLF69VtJsOqQI52kZ+XLPpqvMysZsj/FNJq6/rRePbVujciW5wFZ1uSqt3tBZMqEBLtZsxRjfrLrel7WysFejoWNFq4CGkM1nei2gzynEyquZw81WjVc6TUOpDMcUQRjjUWsRYL0N1TQrqf71UUQUKdtDVi2P67CpIxaGhssaq7vPz+3JhtnW7gXsmnr8WhcDkhhwAf41/1JwHUYTA/yMrsE6JugcbnJ2j8ivc5gGwaVufiBfLHalJgj
- 4oHYCGj8
- t4MxL4elo9rrnHtHaUcv7IDENgIIdGRSPKhF+CUwOjiz6CHOGPJbNBTFoZQCdZBq63oygygrLrtXI+nNIWWAASgkODsED60UIFHvBANrEx+iQcMKHHgbpvF1omdng3VAqrGbMNolN7u/T79jizist6/5sn2RiJRtEK3iYlfA1VhwwEDvUcGtmziA9HZbzU9rLtBKGGvC9Kw7nE3n2UPj9BEs0tACXywWhcqSaaZQb6VbQENdrl29yC4KVXh2FLWE5jW16W8gg7etT3Hw95y9riOZC+GPaMpeaAhdQsZ/47++Q8wGSm+LG/3Uwu5X0K23ouFwV0eN4sOimqE5x/yMLlnseFiWRXWHesmAeOJX7YHtDaew1A1LXGJPI9bvF0vp5YSgRInL850kPdteJBvRPnmAjtpGJfzN8OV+Kbms5NQrJXrTa748rrIzOzroSANNwmseFHhFZ8BJRdl+NkNYzeYvQzv+O9pD1LaPAEMTH7T/zhxR8fXIHzO9e0GL0XY48okyMTp5c3bvR01SB/ygD8ov6n0cOSoBmQvVaxqJEXAU2YJ9IlU+VJzjZirDQIhXFLbMEXqPPwJfn1ulct4OM5vNEmQ==
+X-HE-Tag: 1794640904-295364
+X-HE-Meta: U2FsdGVkX1+CgIItX4lMM/I7/x+fejlnVBPsANoKz6KX8Rlx2thNND1bbJnmiLSpOQ/npVBSgYqOyt1YURCOUyMxXsBh1p3ct9O2fPxIlYE7umlbqAnB7tWBcXKFv3NGUbu3CoZ6XoIKAMlJ57Mp7kICAqhDg9d7j2Q9LVAgVRifqjri0ksLzzytZ7xx0jiN/PZ8fpWgINybyaAZh+EezJSA/zG5luqmQ/18q3tglkbu1QqG/KDqyLEx7BXmMP2LIIFO6KNVQSN/4dl1P2nNLuItVsZQ/eW/Qtv+eJzXQ9VErZmtUC25CTHf4HtFjh5MudYQiMDYasDS9bAlldobxojKdOy4WHJ9zvItbKgD5YJxUWzkojaOemhesZdcaHEeZwv3Zb4955nKIYKaoqy/j24ZU7KMXpoHm3y4Rv1g734KmaLQligsIicIhUrPkzS2bVaVSJA4DWTB9jX6ORSAKkGv7GYTSZcxZruDUTocz5QKvEQr4vXQEDj9XcByOyiQlSQ2CZvUthfPkRDm5Locj78Td7MxTxPPlD7OOAxeV3jX3WLN8vc9f2yrdmGJ4w8/o+54j5c+R2VgPtH2/l1s2KxgxB85EtF/cBVX7i2Tev+kbijJ7+GwQUtFkW3S1scyRHE2LNi5HmgL35sFOxjJnWOKUpzLumeswCUc8ReSp4CIbrD29ygc3ViwzZlf/yW7lnavgxYrxQ8J7JoS/unctYuqQfISVOSCtCsqmcWx2czUd/080DOGskhwrRqTrC+7nzWGCGOBR8QvUXE348HoLsNdpXr6rewpuI62r3tNridSj8sa2JXmwq1USZvgPp4bpry7OVd76SMWz8b3VWdNBUWQqi5k7l5wsN51il0/xiWSIGa9pwpAguDG4980e7hUemQYrHQZ6c/Hz+qYYsq/P5A//9rRJU68ieNtb5lGY77+MiU3f47gM5anYMgnisQUmc+pUnFyqnPOapUjMuQ
+ zsuDpEbR
+ 7woEqi5CR0I9DPMhhJp0IlCLCfsjPjGlcVBl9C5CnbSM+OIM41bNKEjD+0qJUjJImzraCjZaHcDjN/gnUDYTepcQXgbacbh921+PPv35vh2bP1cWpKZqCSi8LF976Uvz8JIu90EM7F1m+nc4i/Rm5QBzJAWVx5fRUkNakjabFrs6wCvIQ5smpcsX8m/QLtdaXS0AfSSUbFVhXfqpj4vkySHWIPgT/knL8Vha6NZjxoMmLPcqv98oV/EpVPua6KHmgc1ujjALc79r7U32PF8oFMRr0WrKIqmgatKY0V/7m7b09rKcTWQbMlUAFJqPGf281vu1VpOqBI6r0CmDHSoimXC1umt+9Nsa0jW9kWNwD8cZmrD7Gf96pGfFsaJnX1qN0A2RO5OQX0jlh53kJiVvwR2qmtJ/2wS1RO6DS+yIcIAqbdkTQ3PPAH10vkYBHO7q3taxI8cwWrhRX2MuC1r9GPxmytn+oPcs5vFRe//AdLfbuB0IOej6ZjSKQf6rb5Y7TLs3OTw+eqf/Q+/MZ2sYSKG/oW3uSmFGOY7gzoh046FWA36fYIry6Ky7y2fI2lcqs5qrBBKw/og20AnsR5/tCEZzh+dJiLhwueJrUaD1Z8sHhLvz3NVtX2V1iRbBAbIKZ2GD4chrm3nMw+U6j4zsjUc8P5MUNH7yX2s3mSvM/jeXX54ZSrD9/ukz2Lm4PSg6I4hkd0gfab+kU6v7i6LDrIQryjfk5umFQP53WBLCipwvDJ/5zGhVo9ZIb8UAGZ+LRLZgavOjsbLbFJvMlUkkxlkRFw/ezwQmQU2KT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,44 +95,56 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [High] selftests/memfd: Signed-off-by trailer uses handle instead of
-  real name
-- [Low] selftests/memfd: missing Fixes trailers for sysctl helper fd
-  leaks
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] mm/khugepaged: missing folio_is_common_memory() check in
+  collapse_file()
 --
 
-commit f7c1cc7489dcee54b6a1302dc52c7e84f82859e6
-Author: zhangchujun <zhangchujun@cmss.chinamobile.com>
+commit 5cdd71b37e4c9e4d2c7bf61d7c51d7ba89a07fb5
+Author: Gregory Price (Meta) <gourry@gourry.net>
 
-> selftests/memfd: close fd in sysctl helpers
->
-> The three sysctl helpers sysctl_assert_write(), sysctl_fail_write()
-> and sysctl_assert_equal() open /proc/sys/vm/memfd_noexec but never
-> close the descriptor, leaking one fd on every call.  The noexec tests
-> call these helpers in a loop, so the test can run out of file
-> descriptors on a system with a low limit.
->
-> Close the fd before returning from each helper.
->
-> Signed-off-by: zhangchujun <zhangchujun@cmss.chinamobile.com>
+mm/khugepaged: restrict collapse to common memory
 
-[Severity: High]
-Per Documentation/process/submitting-patches.rst, the Signed-off-by trailer
-and commit Author field must use a real human name rather than a single-word
-account handle or username ("zhangchujun").
+This commit replaces the zone_device checks in anonymous THP scan and
+isolation paths with page_is_common_memory() and adds a
+folio_is_common_memory() check to collapse_scan_file().
 
-[Severity: Low]
-Since this fixes file descriptor leaks introduced in sysctl_assert_write(),
-sysctl_fail_write(), and sysctl_assert_equal(), should the commit message
-include Fixes tags for the commits that added those helpers?
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 4bbe319ef86fa..b4bd29f25c145 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
 
-  Fixes: 11f75a01448f ("selftests/memfd: add tests for MFD_NOEXEC_SEAL MFD_=
-EXEC")
-  Fixes: 6469b66e3f5a ("selftests: improve vm.memfd_noexec sysctl tests")
+[ ... ]
+
+> @@ -2741,6 +2741,12 @@ static enum scan_result collapse_scan_file(struct =
+mm_struct *mm,
+>  			break;
+>  		}
+> =20
+> +		if (unlikely(!folio_is_common_memory(folio))) {
+> +			result =3D SCAN_PAGE_NULL;
+> +			failed_pfn =3D folio_pfn(folio);
+> +			folio_put(folio);
+> +			break;
+> +		}
+>  		node =3D folio_nid(folio);
+>  		if (collapse_scan_abort(node, cc)) {
+>  			result =3D SCAN_SCAN_ABORT;
+
+[Severity: Medium]
+Should collapse_file() also check folio_is_common_memory(folio) after
+locking each folio, matching __collapse_huge_page_isolate()?
+
+collapse_scan_file() drops its folio reference on each iteration and
+skips missing page-cache indices and swapped-out shmem entries, and
+collapse_single_pmd() drops mmap_read_lock() before calling
+collapse_pmd() -> collapse_file().  Folios that are faulted into holes,
+migrated, or instantiated by shmem_get_folio() or
+page_cache_sync_readahead() on a node outside N_MEMORY_COMMON after the
+pre-scan will still be isolated and collapsed by collapse_file().
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113071306.1673=
--1-zhangchujun@cmss.chinamobile.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261114070959.3490=
+008-1-gourry@gourry.net?part=3D10
 
