@@ -1,149 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D474606A323
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 15:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3B23606A898
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 15:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fd5+MW50
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P0Is9jPV
 Received: by kanga.kvack.org (Postfix)
-	id 99FF76B05B1; Sat, 14 Nov 2026 10:03:05 -0500 (EST)
+	id B52A76B05B5; Sat, 14 Nov 2026 10:06:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 976176B05C8; Sat, 14 Nov 2026 10:03:05 -0500 (EST)
+	id B03D06B05B6; Sat, 14 Nov 2026 10:06:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 865606B05CD; Sat, 14 Nov 2026 10:03:05 -0500 (EST)
+	id 9F2526B05B7; Sat, 14 Nov 2026 10:06:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5974A6B05B1
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 10:03:05 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DD41E140427
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 15:03:04 +0000 (UTC)
-X-FDA: 85434042288.25.7C60511
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf22.hostedemail.com (Postfix) with ESMTP id CF417C0005
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 15:03:02 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=fd5+MW50;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794668582;
-	b=e6/m9M5fLTKf9jkn9FYH4gn0anJXhkKPGt1DwJiFfmzNZOYt1wgfjVXFGAlI6ogx4geaN1
-	VAIC2QThhRMEhMS37vEsjonmgS1DYbyODC2is8UEP29wBWc0DdnkD1BMQwrKAdfzLJuFaq
-	mvnKITdJT14WReZY0csSQ1GZOJrI768=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794668582;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C1CA6B05B5
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 10:06:28 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0082A0422
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 15:06:27 +0000 (UTC)
+X-FDA: 85434050814.26.5B19860
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0EC9C20005
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 15:06:25 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P0Is9jPV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794668786;
+	b=J7HXZUFSdx1XXV7iDngQyWkDIq7rWNB7HXGJFyO/89LYxtc16NCpxjub59Kvz8J2e0ngpW
+	eawZg1uWxP8NjS+XHHpYOkOTs2Z5XI2YtDPde9/gvvAgNITZ9N46ylBAe0tb02Aoh+FS6W
+	UQi/0UV1b7afFaQawHWNbX5/3ILxT4U=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794668786;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C1lCCVtf/MPYj7pNIU76GaLtqiwfvOf2pe2XTu7js8E=;
-	b=RrBNSw8mqy+aiV+nYKPhK+0LWDjdX6ZfkjnnIBycj2DkAGuZxuadZy3Kn3LX3jCXECMcSi
-	AVQbE1Pxf5ry35ztt8yr5HvHGeQ3pRZ0QYwykwyZ1lkU8Jrb2hvGBh9tZpg7FUfFAvDcoQ
-	OeuKPWwT+izfCAjo5JTzAkJinS0hxSw=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=fd5+MW50;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8a058315c79so1351409b3a.3
-        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:03:02 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794668581; cv=none;
-        d=google.com; s=arc-20260327;
-        b=T6Wec24uY5ED3y3FTvyKEmnFKleYJaSJ2GVYd5ezz48YOVnzOaX2rTj2kk93yZhoaJ
-         Zt6ch/rjckN4ZEa7/hXlM8B83LO7nXfdPC1PmwUb4ZZKGDKxCnIobXKzSvGkgzooT1oj
-         5vKeC8TOnaJkVQkZvosM8RC6dRYB7Frvsw56Ck6zATnqkrJqoSbjH4IGY/AwPG+vSZzz
-         sr9K4DZGQzl1dUBStRj90iqzcf1uwck35GDJ4rYOz+9NUQ02E9Js2muzhy6DCtxc/4zo
-         +m4mAW15RwBZRKivCqe+T+gShowpMt7bnGPmZ76sKxsJm96wNR5EiHeEcMpABebby3qH
-         /zPQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=C1lCCVtf/MPYj7pNIU76GaLtqiwfvOf2pe2XTu7js8E=;
-        fh=d1h+RwwFII3S19JooQ+Ubjb3+XaBlb+97REaXpjCq4Q=;
-        b=nxZEwHPB5mETos/u+Y+KQQoMVYRpYR162X929rgRDGAVOHSegOpfmRSSwJUiD7IZEm
-         sUY9f1hS9Im58VNb6wjAAP5oEBx4qGueF+mHwLmLUPUHBemAU7LVW4mkuC0Z803S1d2B
-         OjTKiOHwo/gA3eLPJ0N/1dkwEunYXjhcWWxKpNkfcK0Twn7S8ZG2FcMk3ojj379W9C61
-         +BLuiNGuG/bTUjtU/rOjjZJZnjQlWtdqikR7G97KeBobpN0+DabHtUusG5xSByazg4Pc
-         pvhRd81LVACiz3Myqcd3oWMI9oX+iTjXm5GtuRI07d/I7ZLm6E2k28Insk8bYmE5Ixce
-         aHcg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794668581; x=1795273381; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=C1lCCVtf/MPYj7pNIU76GaLtqiwfvOf2pe2XTu7js8E=;
-        b=fd5+MW50LoU6sLvlAqdsFsOeR/IYBymSe6TURxc1DRmKVFpgJ/deVc/UvLpdVEnFoe
-         M8d9QvrKnrl8gGDdiLUdgdJ1oiByzltvKd+m4ZW9s1rS00HJme9PYzhqj/sQwIfQ9YG2
-         MPqvhftkszrNeU1FX2clyNa1kh/7qfnHVH9WZXSBzw4qrb3TYhn7pGfYZ0FH/Q0eZ05p
-         GQnWS0iLvCjoEhhbHIKnAbMcrYnSXMhOntROzz3SKFK4X0oifixZX51WF+E291tZHhiY
-         d+ZM9qsE2RfPDsnnRt7K5OA8ZyBn1b8yGar3xz/XJmaqS6CRvqfLrjY59dw0UeK5cBBf
-         39Mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794668581; x=1795273381;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=C1lCCVtf/MPYj7pNIU76GaLtqiwfvOf2pe2XTu7js8E=;
-        b=a2p6ExFZ+46ibxAPHn6OpB6c4ra6/yvP1UgKSGyuEcjPR1/o3Tz4dweSbTwuMmCHXA
-         CRhBwveoxi80CqwV6T+DlvUkYMtc5wSgv6o2wOabv3UVD4Ccup8aPhPC7Ade7sDV3/Uk
-         Vc6M3uHbGeP7GXOfcFAbyIiqjQ0ZNHkM1oyQQZlwVzFAAMwrWY4YSFb4wzQB3GjZSCgV
-         Eb5nrtBcS9L3aixNDSWFMnYERivMzPz24LnrXvWWLZhFyqhopBX7hFGuSPLmSWPpHwla
-         bX35RyWpHUz/pex9ap9Y3lBAprHTNgB1ide+2UGtReXqX4KzQTHiOoI8xECGlWE5ymsB
-         8x2A==
-X-Forwarded-Encrypted: i=1; AL+hErEr7RnycLbm6cddMeZ81Lo2pbM5qGnSXEn/dDGFYR8H8UP0rJisxRAHrbB+F5eH68KkQge7FwS5QQ==@kvack.org
-X-Gm-Message-State: APuU4Z8fefNKnSB5xW3RsO7Cni9dKVNNULzIgr6DfWrw3L6HF+bV74hn
-	+Ac6Z88JxhjAJExzp9RGEsUiq3Z+EvEIaFzIPV0gL3tedgG+3rqp5CkEDATH9lU1WfichTUf+YD
-	FhJkIBDY5tQnxNMgMnMnoBNCIlptNONY=
-X-Gm-Gg: AYBFou0LJH6FNVwVpJ7sKqz2B05EygbdSifbFgbuTGDPOF7ymAX15w++mVg5UjNQoil
-	f+qsbo8mHt+GKUOxbHzKXFdyTVoJme5k0LXeTdNmTBV4VQf+kRZXerSCgExQiWBmkXi7OMXWwI7
-	FxQjpJikRBkZkuP4GJMGGtIhtSZNPIhh3q/MRdv663PGY2OvlMhgSt6pOu5/u3pBf9GYDNIdyPQ
-	NkzqBjEC4hVgT/VRjNJfwOwKkkbrMv1Ssq4dRQGx7EhdYk9j6mu9Ce3JnUUKVJQD+ZQxHLabYRG
-	HL6yQozuIGXv7vE59+ulMEK9JovkAdK9/V9K6oxlvvl1jLKI5+YThUaR3QrnPPOf5pJ/1gYQy17
-	a/0ZITnXJlOx2zWtulsim4y9MqTsLT5tTLcL95wEvqKjGd9AIaaIRRqcKtX52R2gddF6A2w==
-X-Received: by 2002:a05:6a00:1acf:b0:880:f278:6b0b with SMTP id
- d2e1a72fcca58-8beb1fd2ff7mr4883548b3a.4.1794668581197; Sat, 14 Nov 2026
- 07:03:01 -0800 (PST)
+	bh=gPlumqmMy/TS1Z79coN07+eLGMuUh+Q2c2xpM92oPK0=;
+	b=dxhoY10Oa80gBMz3kql+Qc74zDdzN12YbabIg2ANnb8XcSoOmPmanHLdcOjcXSlVD6mTNx
+	y7KkhGTSU0bjUqya14AVIbYjRKs+daER4G4mg5rkFG0eFo6p9tGIkPQ6Ea7aVWnwX/EaST
+	mAhEa2PvsVnZ0oymWtQanQlYT6/0tc8=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P0Is9jPV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8700C623AF;
+	Sat, 14 Nov 2026 15:06:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A6AD1F000C4;
+	Sat, 14 Nov 2026 15:06:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794668785;
+	bh=gPlumqmMy/TS1Z79coN07+eLGMuUh+Q2c2xpM92oPK0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=P0Is9jPV8V7EDDghiT7VHrcFj3kSnB2meK+9wfamwMFQSt9LC1mUTxr5pIy4aCWjl
+	 pUfToTL5MPmVsnD3O+F7PPlzn8jMCoGMZJIumApN1DSrXX/QfvlXXAcKCOTGhphiCJ
+	 gz7m5t5dJPvSdi0pAeGOuCZ+CEr6MssBiKI7mJZtn6ke7VIQFVo1496Mzl80WprPrx
+	 up4FYVNdJpTDA7k9o96nSoiAwrF4+sI2jAC5aUq4n4s8NjKJXcQhbitYc3umOlG/9Q
+	 Gp/DgP2lI2Q5BuTlnfBssN8YNcekQlJ3iZ++tGmeU5bUmVUmGC4FzSv06zKhN24mUc
+	 lBOGKo6oysySA==
+Message-ID: <7c6e733e-a464-404d-8b69-607eaede0c5c@kernel.org>
+Date: Sat, 14 Nov 2026 16:06:16 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261113185541.70203-1-baohua@kernel.org> <20261113185541.70203-12-baohua@kernel.org>
-In-Reply-To: <20261113185541.70203-12-baohua@kernel.org>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Sat, 14 Nov 2026 23:02:19 +0800
-X-Gm-Features: AclHuK9gCJV8MFA9iUFu3CwHsXGh1an-enxfVWTT7zznIrP-Np1lV34GtN_mM4U
-Message-ID: <CAMgjq7AXT7u3jMaJ5gU3p+Wnwt5maVAUygMXgv=wLDS6BSyR-Q@mail.gmail.com>
-Subject: Re: [PATCH v8 11/16] mm/mglru: Run aging when one type has no
- populatable folios
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, axelrasmussen@google.com, 
-	baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, hannes@cmpxchg.org, 
-	hui.zhu@linux.dev, kunwu.chan@gmail.com, liam@infradead.org, 
-	lianux.mm@gmail.com, linux-kernel@vger.kernel.org, liuxiang.277@bytedance.com, 
-	lyugaofei@xiaomi.com, mhocko@kernel.org, mhocko@suse.com, qi.zheng@linux.dev, 
-	ridong.chen@linux.dev, rppt@kernel.org, shakeel.butt@linux.dev, 
-	surenb@google.com, wangzicheng@honor.com, weixugc@google.com, 
-	yuanchu@google.com, zhangbo56@xiaomi.com, zhuhui@kylinos.cn, 
-	sidchintamaneni@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: CF417C0005
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/pagewalk: document missing struct members
+To: =?UTF-8?Q?Oscar_Alejandro_S=C3=A1nchez_Lucero?= <aleszlucero@gmail.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261112-pagewalk-doc-v1-1-6cc5ce7148da@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20261112-pagewalk-doc-v1-1-6cc5ce7148da@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 0EC9C20005
 X-Rspamd-Server: rspam12
-X-Stat-Signature: xzag3ft5t6edzze8n61s1ru3y8qd4jps
+X-Stat-Signature: f761qzyn9axjgoazfkn46iry3fhxkdxb
 X-Rspam-User:
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794668582-74876
-X-HE-Meta: U2FsdGVkX19z02AEBFoblECLIJbw97abQFFSJnmjlVeBfmCCKsBUdwX/5laPfDRiRKBKpjbfdiuxLKzm8UfAJEBkEDSfxLH1Mw7+dA8QgqyMaZ/BJa23c7/TanzR7m0fuuSKELtzmLmhiijoc2AmnxX7kKs6mwt0HUTDJKsD9E1JybOMfN1voveNfhS3HxCgKHoNhmp7JK3d7F+9Mj+xL4DBpHTfodRzZGLnlujokxgKDRqN5N5KB9E6c4JmmWfw85KJSCu8U/JCO7rhYwI1ZlWZhicAAqBfWjdRvn7b5azuKtiJMMYKPUOCJF9/k5vv2Qo9QeUZ1rLK49KQaT85TLtybi+AtRKzWb5JTtkqx14FmYUySf6v0D7u3fg4rIfBzVNl7z5uOZLAmf4xM9mMcn53ebUO7TtrSbyjzCHyhw5lk1fRVe0E482NOTbOa6JiCsyLXE9Vuyd2kXlX9uTNXlkEr2CZ02I4EGwNQd8GiVI0OC2ifmhWa+Fq24bj1dUs6sGz3V1KLgdJE3ShSBU/pNDqE49f8h/C+yJQz+h8DqqqxOEr2KTd70bgjnuf8pck0gtrTTTb54D5ZnonnWVXXQMbxfOSwFv4L6EYsi8lk4JWBiM00QPQmUZJ6C18lTfUvCr4MVy3xDq6Q0wTTcXfUubdoyLOVx7MpAxTsqihUSGIx5fau0NjfTnqMQNYf9FQDk6pmqEaEtRC/L0d0AMu9qKmCxKU63vmIxk4LCIWtWpsKOhw0zsD0lE0tbvDA+Aun5x6un8+h8FGxX5xw1fVD0wH7hpF6+fXwrUkwJt8r4B+6vaGvYF8/hpCdzVLuWf73p2Yjhgu/1nXU4vhibw9vAUJBWJdTfC9svXymKGldYhs370xR9gtxE9ws2fEI8FyfiXwYVgUHSQEz69rm+9VH0dSvEZNPEP+ar1V8mwSWqGVgbnA6V4ltCVmtuFKFN1tIDkey2IoxAfRKXr0YKu
- URUhhvyv
- 27NGJ5+CZOc4TZA8I5HwMap2jvcDJzIeep2XUceAWMGwirZpQh3GE9n+LXm5pYs7lEaOcJyr2I03vDDw5vPehVcbF7c4a3ww12P2kCLI1F7f/zkZ+FnLcUVHgayT/6zp+/aoGQOazw1QXnJabHWMPPlPOj/5jB6NElVFYw0wuqtAfCU6xZfnJoMKA01mFhtrvKo7xw5RPrpSLRWn+Q3aZ6hdNnaDH4aFWXotcmWszUNIUPhOBpmOx96g18Auwn1PdsnQSxMshF8lj8Legb3GzodNAlUD0tNM7QQU+ggucCb6fXL00uLyX2/xG0KS1CV2kc6pRrfWQmz9+Qx9DUV0Bn6UTi7rr4muTNoe154A2exCQgaat1Oz1pFhBmZ4lj6HogHbVt/2GRgKF45nbCTCEi5MoQf6lMt7ZLq0Oj9UoypEgdUp/ZfOvBHpiCrGO3qWEK2jfEtLZYCzwItypJR2fmpgLoaDrQ2C1OzT+2BQJgT1HRM07T/z1J3lIPHLikw0OamF8GV7q16T5OQdTLMl036wRBnUtHOBV6o4InXUrhyILwbueRQF826gOYRJnP3li12P9WjMHDtuqopSpQLL7tg8BwLUMf8NlwA59rwyVao5XuhjX1rDhLCsrUFsm2BLRzDZ2+zK1CdRMEtoKuUCvozRQUw==
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794668785-98561
+X-HE-Meta: U2FsdGVkX18hMsAKwZZpBJk1w8AfAsNHzEGdJhJca/o/GDLyfvKZHEkdB6ZyjqyaGUiH0ZDJYgO8qGip067DOKBq3YN+PpD+9Ptk9cPY/fu9DxwUYR28vIKbL6RP7l12HquZ2jknF9O+7/lCntEIINwYQGXrc4SiYzqRfYoR8YdsvidkrOLEBf/kuNcMO1P9HJIer1p5vTtqVFj8tpLg+aqgGsSHtXuglGP2ncugCDwvBpyi+YP9l8/q54HD37bNf+wZ5eUm0pRQ020yfVvECzLmAZbonxDYm75WLGUWFxizA1pMHrfHyiE61x3rgEOX3Z9NaI0w7BLObbv/MbcvzFDB+FykFHqf8WWE1zgc7jAi9W0JabbOXqJOmF9XxWwNq3aUtGoiTw4G9uacvcnor05vuYGl+8JxM6L6fJpj96sdiXeQXNWdbdsXE3e6+sk07K/rXU/Lcw1a0An/R6d1gvVLv29NsjFcKrl1VpEDfkJPWeCAph9V7fMrKhTO4O6erglAu0VcLQocYcgQC6oB4bOzgPNjrAwbtPLel0htp33AsJ5wSVDNDI3LNe8GYohvH75UszS/UwMlbGHBg4DmBRfTMPXeourR3E5ue1JXylZpGDWuvkw6922DoB7QaikK525BWGWeqBaM1/B8w2/ZfsYw//xhJwZsGaFCi4SpZ5YUcjtJFgQvJPhIA5cAEDa4aZJumgqpVKdCqjfx5UEqr99Ze+zojwh9tjlXzacC/UKIO4Cai4RWlprTR/kupvBvi3G2ANUiH8VnEMAecq27HoJN3CQ5n5uQRH5QaqeiQrPEw8jQ0ZzkBPQpiEaAHE/Jr9vn4mVIQcTCfFozaqHqWcKdi3jRLBb2d2oe4WiRza3z6jzw5ygnDRr0DYV2HtoHNG7A8FRFtlgZArdHu9ww1yqgIQrupS22xKwdpQ/8VV2s6W6rrtvrjyzME4CsL0nPGGfizWFhTeeOPWl9sbL
+ 9Tf4tblY
+ cu2Wics4lxWLkB2ekg/BLTAdBOCTyGHugDhO+/OuyXUvVocluQMjJ841xMsstAJfw61Up1Ug0RtGkVO9XTH8pqKsldPk9qmaYdzL/uckoDNIov37d3LjX1L7oSCXvS1tSu6rjPTp8owg+9lBg4jirYQaIkXq8OLnCFGHR38eX66v7lOurDOWQC3eBuOQYGEhn29RxMFzc9nKwIFTiHYXv9MK7ARyMtD64DS8jlLyJARr/yYSCYiQc4AWCJnvjFIOprRNi1ePp+8r8mI39diH70Hw4Zp+GbQcfk1OqMelwPVLopGwvIItCzoCQhdp+Xnhw+fa3tCgfVMMhCOjeaCwoRf/jAouoZUzU/fA8x7AHvYk6dmA8pWu+ZkFQCVje77+1mhDbwcmPnL66/xKsU+DefUainzqP/vVwv3uVLccb+vc8B/pw83tsUKfyoaCV1mSxCssqJYBO+61W0mEICP+Lw78j2JwaIPUapgP1NhOkBsIoDn4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,174 +144,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Nov 14, 2026 at 2:56=E2=80=AFAM Barry Song (Xiaomi) <baohua@kernel.=
-org> wrote:
->
-> We may have scan budget remaining for anon or file but no
-> folios in populatable generations to scan. In this case,
-> `scan_folios()` may waste time scanning that type while
-> the other type still has populatable folios.
->
-> Run aging in this case to make more folios populatable.
-> This also helps respect the scan budget distribution
-> determined by swappiness.
->
-> To avoid excessive aging, allow no-populatable aging only once per
-> `try_to_shrink_lruvec()` invocation.
->
-> With extreme swappiness values such as 1 and 200, reclaim initially
-> focuses exclusively on the preferred type. In this case, defer aging
-> the lagging type until `sc->priority` reaches `DEF_PRIORITY / 2`.
-> This avoids unnecessary aging and has shown better performance in
-> testing.
->
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+On 11/13/26 01:44, Oscar Alejandro Sánchez Lucero wrote:
+> Add missing kernel-doc entries for @walk_lock in struct mm_walk_ops, and
+> for @ptep, @pudp, @pmdp, and @vma in struct folio_walk. Also fix @pte,
+> @pud, and @pmd descriptions to state they hold entry values, not pointers.
+> 
+> Signed-off-by: Oscar Alejandro Sánchez Lucero <aleszlucero@gmail.com>
 > ---
->  mm/vmscan.c | 49 ++++++++++++++++++++++++++++++++++++++-----------
->  1 file changed, 38 insertions(+), 11 deletions(-)
+>  include/linux/pagewalk.h | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
+> index b41d7265c01b..978714d5e32f 100644
+> --- a/include/linux/pagewalk.h
+> +++ b/include/linux/pagewalk.h
+> @@ -63,6 +63,8 @@ enum page_walk_lock {
+>   *                      install. If allocations fail, the walk is aborted. This
+>   *                      operation is only available for userland memory. Not
+>   *                      usable for hugetlb ranges.
+> + * @walk_lock:          locking requirement during the page walk (see
+> + *                      enum page_walk_lock).
+>   *
+>   * p?d_entry callbacks are called even if those levels are folded on a
+>   * particular architecture/configuration.
+> @@ -161,10 +163,14 @@ enum folio_walk_level {
+>   * struct folio_walk - folio_walk_start() / folio_walk_end() data
+>   * @page:	exact folio page referenced (if applicable)
+>   * @level:	page table level identifying the entry type
+> - * @pte:	pointer to the page table entry (FW_LEVEL_PTE).
+> - * @pmd:	pointer to the page table entry (FW_LEVEL_PMD).
+> - * @pud:	pointer to the page table entry (FW_LEVEL_PUD).
+> - * @ptl:	pointer to the page table lock.
+> + * @ptep:	pointer to the page table entry (FW_LEVEL_PTE).
+> + * @pudp:	pointer to the page table entry (FW_LEVEL_PUD).
+> + * @pmdp:	pointer to the page table entry (FW_LEVEL_PMD).
+> + * @pte:	page table entry value (FW_LEVEL_PTE).
+> + * @pud:	page table entry value (FW_LEVEL_PUD).
+> + * @pmd:	page table entry value (FW_LEVEL_PMD).
+> + * @vma:	pointer to the VMA (for internal use only).
+> + * @ptl:	pointer to the page table lock (for internal use only).
 
-Hi Barry
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Thanks for the idea on solving the aging problem.
+-- 
+Cheers,
 
->
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 59957fab915b..9071f8889b5c 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -5109,7 +5109,8 @@ static bool lru_gen_imbalanced(struct lruvec *lruve=
-c, struct scan_control *sc,
->  }
->
->  static bool should_run_aging(struct lruvec *lruvec, unsigned long max_se=
-q,
-> -                            struct scan_control *sc, int swappiness)
-> +                            struct scan_control *sc, int swappiness,
-> +                            bool no_populatable)
->  {
->         DEFINE_MIN_SEQ(lruvec);
->
-> @@ -5121,6 +5122,13 @@ static bool should_run_aging(struct lruvec *lruvec=
-, unsigned long max_seq,
->         if (sc->priority =3D=3D DEF_PRIORITY)
->                 return false;
->
-> +       /*
-> +        * Run aging if scan budget remains but no folios
-> +        * in populatable generations are available to scan.
-> +        */
-> +       if (no_populatable)
-> +               return true;
-
-Usually we don't prefer negative naming, maybe something like
-`drained` is better? Also can makes the comment easier.
-
-> +
->         /* better to run aging even though eviction is still possible */
->         if (evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS =3D=3D m=
-ax_seq)
->                 return true;
-> @@ -5208,6 +5216,13 @@ static bool try_to_shrink_lruvec(struct lruvec *lr=
-uvec, struct scan_control *sc)
->         bool need_rotate =3D false, should_age =3D false;
->         int swappiness =3D get_swappiness(lruvec, sc);
->         struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
-> +       /*
-> +        * Avoid aging the lagging type under extreme swappiness,
-> +        * as reclaim of the unpreferred type is disabled until
-> +        * DEF_PRIORITY / 2.
-> +        */
-> +       bool allow_no_populatable_age =3D (sc->priority <=3D DEF_PRIORITY=
- / 2) ||
-> +               (swappiness > MIN_SWAPPINESS + 1 && swappiness < MAX_SWAP=
-PINESS);
-
-This part is a bit counterintuitive, as we usually prefer to age when
-priority is high, not the opposite. I think what it is really trying
-to catch is then the eviction reclaim loop can't reach a higher gen
-for eviction, and when priority is high, that limitation is lifted so
-it can always reach the right gen for eviction, right? See below....
-
->
->         /*
->          * Proactive reclaim initiated by userspace for anonymous memory =
-only.
-> @@ -5225,22 +5240,19 @@ static bool try_to_shrink_lruvec(struct lruvec *l=
-ruvec, struct scan_control *sc)
->         lru_gen_prepare_scan(lruvec, sc, memcg, swappiness, nr);
->
->         while (nr[LRU_GEN_ANON] > 0 || nr[LRU_GEN_FILE] > 0) {
-> -               DEFINE_MAX_SEQ(lruvec);
-> +               unsigned long orig_file, orig_anon;
-> +               unsigned long max_seq;
-> +               bool no_populatable;
-> +               long scanned;
->
->                 if (mem_cgroup_below_min(sc->target_mem_cgroup, memcg)) {
->                         need_rotate =3D true;
->                         break;
->                 }
->
-> -               if (should_run_aging(lruvec, max_seq, sc, swappiness)) {
-> -                       trace_mm_mglru_aging(lruvec, sc, swappiness);
-> -                       if (try_to_inc_max_seq(lruvec, max_seq, swappines=
-s, false))
-> -                               need_rotate =3D true;
-> -                       should_age =3D true;
-> -               }
-> -
-> -               if (!evict_folio_lists(nr, lruvec, sc, swappiness, MIN_LR=
-U_BATCH))
-> -                       break;
-> +               orig_anon =3D nr[LRU_GEN_ANON];
-> +               orig_file =3D nr[LRU_GEN_FILE];
-
-So maybe what we need here is evict_folio_lists return something like
-`drained`, meaning it still have budget, but can't reach the protected
-gens.
-
-> +               scanned =3D evict_folio_lists(nr, lruvec, sc, swappiness,=
- MIN_LRU_BATCH);
->
->                 if (should_abort_scan(lruvec, sc))
->                         break;
-> @@ -5252,6 +5264,21 @@ static bool try_to_shrink_lruvec(struct lruvec *lr=
-uvec, struct scan_control *sc)
->                 if (root_reclaim(sc) && should_age)
->                         break;
->
-> +               /* Limit no_populatable aging to once per try_to_shrink_l=
-ruvec() */
-> +               no_populatable =3D allow_no_populatable_age &&
-> +                       ((nr[LRU_GEN_ANON] && nr[LRU_GEN_ANON] =3D=3D ori=
-g_anon) ||
-> +                       (nr[LRU_GEN_FILE] && nr[LRU_GEN_FILE] =3D=3D orig=
-_file));
-> +               allow_no_populatable_age &=3D !no_populatable;
-> +               max_seq =3D READ_ONCE((lruvec)->lrugen.max_seq);
-
-Maybe we can drop this READ_ONCE here and just let should_run_aging
-read it from lruvec?
-
-> +               if (should_run_aging(lruvec, max_seq, sc, swappiness, no_=
-populatable)) {
-
-And the `drained` signal, aging policy (allow_no_populatable_age) both
-goes into should_run_aging for a cleaner logical divide?
-
-> +                       trace_mm_mglru_aging(lruvec, sc, swappiness);
-> +                       if (try_to_inc_max_seq(lruvec, max_seq, swappines=
-s, false))
-> +                               need_rotate =3D true;
-> +                       should_age =3D true;
-> +               }
-> +               if (!scanned)
-> +                       break;
-> +
->                 cond_resched();
->         }
->
-> --
-> 2.39.3 (Apple Git-146)
->
+David
 
