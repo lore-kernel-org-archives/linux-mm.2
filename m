@@ -1,95 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73772606A327
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 07:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25306606A330
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 07:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=lEAW2Cgq
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=EH0ZHWjM
 Received: by kanga.kvack.org (Postfix)
-	id 6F4806B05C9; Sat, 14 Nov 2026 02:10:42 -0500 (EST)
+	id 6585C6B05CA; Sat, 14 Nov 2026 02:10:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69EEC6B05CA; Sat, 14 Nov 2026 02:10:42 -0500 (EST)
+	id 629BE6B05CB; Sat, 14 Nov 2026 02:10:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 567626B05CB; Sat, 14 Nov 2026 02:10:42 -0500 (EST)
+	id 4CA076B05CC; Sat, 14 Nov 2026 02:10:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D6856B05C9
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:10:42 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 27A716B05CA
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:10:45 -0500 (EST)
 Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7F5D380130
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 817D51A01FF
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:10:43 +0000 (UTC)
+X-FDA: 85432851966.26.D7B8713
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	by imf10.hostedemail.com (Postfix) with ESMTP id AD6DBC0004
 	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:10:41 +0000 (UTC)
-X-FDA: 85432851882.26.153C1D0
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	by imf04.hostedemail.com (Postfix) with ESMTP id BF2A540006
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:10:39 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=lEAW2Cgq;
-	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.46 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=EH0ZHWjM;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.50 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794640241;
+	b=Uh3G34r/ztNQVnnHRWmRmwHicW382jb4m58kA68eXYD1u9x2PLg39B0Zcre/cbxyOdme1t
+	oI8yzPOltWZIxXSYT/tuN+8Q1/ML7hAlhC4jLTrj1POhA1gc0KAj1RytEE4R6V4xdC484r
+	NLySgZElHpmCS8cfis6cu23fWs9CL1s=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=EH0ZHWjM;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.50 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794640239;
+	s=arc-20220608; t=1794640241;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TW0pg36vCDijleVRTyqZR6UjU0iehYYk3FdVNC+q6Cw=;
-	b=5wT91Cf698Dnbr+YeEUraeLcpZaMVpZdaMGWkFX9Kqy5dIlJqy6sGjK5jZ4pjLnaObQxnk
-	tkK6ajYFUzU0Rynq8yUihDW8hMmKi6cKznXxgzP4atuA+GJbEwYE3lc9G/G2ApHzsiS1pk
-	e+2JyRdX252Uj7VTxtqkZIaE6LxzBbU=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=lEAW2Cgq;
-	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.46 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794640239;
-	b=vcx/1SKhCWwYKrbpigSu0ZwXII6FQZwVpf2rJE/kF9XeCp2F/UUnYid6By6kesQSV+cUxe
-	nmc1tmf7k8CqjJdmDuh2UqSo1hHIpcQISg9trMjYWwHwqXQsJUgxBgoYz0FmefmtTXpyc9
-	0mORQ0F8t0tEpaiRAoJLh23MWk7Is8Q=
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-91ef011e338so29793596d6.1
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 23:10:39 -0800 (PST)
+	bh=Fkzw1dSkiJcsilY2Mokhk9gjBcrzBYNOsKL3JfHFbP4=;
+	b=y6ij1AQprUgjN3uIh773wDvPE4gg+ZyEVGh4eK4rfEroM1Cvh/KcYnKI451hk+8s59qEP+
+	ucxw7G4SxYImDPkN5Kmy2xE5T9Eqw/HIOyGeYrOA3ToCykJFyOylxfSLoev374MpkjgzHL
+	DV16l46fS6rrY+PpjaPSugKlGCjtFAY=
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-91f2b826fe9so19624106d6.1
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 23:10:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1794640239; x=1795245039; darn=kvack.org;
+        d=gourry.net; s=google; t=1794640241; x=1795245041; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=TW0pg36vCDijleVRTyqZR6UjU0iehYYk3FdVNC+q6Cw=;
-        b=lEAW2CgqNLmeMD6Jr2mVGjargYAEpReTOjDmOEEdoTj775tbOdqbxZVQtoaAQplu6P
-         smhZXPDg5FF2msfz9sSwv3GaJDPAuNfqkRxfWOTzW5+FuCtOWAHr1XEeFxVSQ191ULKK
-         Cj1HhIySPPn1gzStHQisbVBCXBT4pzTPrgQ9cd6lMiJ8HxIHCPNbzUnJtJzAlcYT4REe
-         S+xWdNzYKIOdphGKZddXQNg3c7B/tQfmX/IM7pusE73OregCde04CcgAkDWkb+PK029T
-         OuWRLX2keyga6xpgJDahMlaRbxF6pk9wLg3FHdE3h9rui8m27GDRTP/ksz4xontvbMF8
-         YAEQ==
+        bh=Fkzw1dSkiJcsilY2Mokhk9gjBcrzBYNOsKL3JfHFbP4=;
+        b=EH0ZHWjMpf6Fl6O04cJ+upKRtzeM7hmfrsuYiTxPEcviCUBQ/629DDQbKB2wXYw2Es
+         Zf90x8lALBIofG7J5dW/ZqiRl8TEAJpSDD/R0LXrPZi5ddLgL0DW1myN9aGtYo73Jqeg
+         gMIe1aDpLhh+g3eqUVJADrMgyfFwT2PohybF1N0cAioEnTuCPUsLvYFPb+JOtDwPC3dq
+         vGPY8IxJHIO7kD2kGReF3GsI7B0nNdK0Poq8F3Rqim6VtEv5pa4Gugp4vIYdhSjWApyK
+         sF9bYa/5rEC7Kp4erW+0znulfXjf3WYc5WSWGrX3nSBJj07HUZQZXO5X5TbwZnNoCEcJ
+         XhiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794640239; x=1795245039;
+        d=1e100.net; s=20260707; t=1794640241; x=1795245041;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=TW0pg36vCDijleVRTyqZR6UjU0iehYYk3FdVNC+q6Cw=;
-        b=BbRi+kLK2QSKtzXjt8UouDwhnf8cBl1CwG6su7zCGBUUZY05CBd3Dj1cVVqOCeY1pL
-         8YFfwIaw+m5RlcLomyzFz5BzS52TmWqLdxs1d/MPYwxUe4FsUWs3ocduq7lf5RAk6zNu
-         tPRrm8+l1yIFY4Vk/0F0D5wuEMD7yWGTxsMgmlEQJDlGgC2lPo4xABewrz+DEy15wYcI
-         UaQCtSkH9XSducTzMXbkkNHE9RBPIocmQOzX7JlKtlU2WCc90cHhMlkLtxTarKqZO+2U
-         66qWatccnUjvFXYiWaFnlSmeIN6+3nh6rQu5MDQaXumA5UdVoDGyotAtsQw7coJ9zRoN
-         1T5Q==
-X-Gm-Message-State: APuU4Z/P3DnWu3Ut6/XEMUZ1h/SQ6Zx8kTHgwcj46bJd4neIATGhVuzs
-	0gsaaoxFbCSnm6CYBPlcxF9VbuT3U44Ic/iTrQle3RvFgUYqw04Qlpz/A2jYaF3BCx2qrfx2iPW
-	pgCZs
-X-Gm-Gg: AYBFou1Dx5ghaktfD4meA+9RVxDUI/qSy2Z104Lwkjs/VFRp6EPJsxTbxv1PfrcCfaM
-	gFkIEhZOJgggdZUb7Hf9/aV2jvHgc7eeY6kCvLI+9S8IsylwwuO1y/zlC1UNgcfHhFfZCAAg/im
-	wy5lfXjnf2nx/cgltmu4+4tolR/B25r6xBemKYhHwC9RZPLNy/Y38C4w09HfDxseWGvrmqNDPH5
-	7LC5lJz4GgxxUgv2Pj16qUh2sOZ8Cxx3aHuMApNsMBkNgnMEe+jDvoO+dG63ANO3VNeltGCop2C
-	aduOIH6174YDhz2T1LXQevOQ54uvxeVAj4LGLbm+VMXahuGiImFWugZKMNu8VTAWeGts5K11C+S
-	m6EDMFZRQFfCNpEdIHZmTv7Ek2cjEeNCfCdbw8Htq4fLm2ksawAZyC8sq0eHKcUg0bJ6/1JJ6b8
-	NxjuHZTH53RqqmdnuBhR+muB220964+NcY4JcBi+y8/wNvTWH3hSFmoJiIqALuvxmxQFhScmcuL
-	aL78G4DX+yxXWhsGYatmSPYKHbO7Mgv9dTpEke2mMS0vYZzcsX7/E0sjwzWKsjfcLuFGJz6C3ok
-	WGVCpeFqYbVY6mTbggIApdFNRE0XZ6aBIbk7CALK6VQeJLzULFfihMXQHPgbm41pzOACqzx4cet
-	GqCpzF/OnqbL0v1WFIkh8dZyt3WBLeKcjIm0c
-X-Received: by 2002:a05:6214:1311:b0:91f:2208:b683 with SMTP id 6a1803df08f44-91f2428c6aemr76715686d6.55.1794640238785;
-        Fri, 13 Nov 2026 23:10:38 -0800 (PST)
+        bh=Fkzw1dSkiJcsilY2Mokhk9gjBcrzBYNOsKL3JfHFbP4=;
+        b=Sxy4F39moIIMI+wtgn2DAMVJBPjK2rczwGBxzEKkP6K7Rbei66Bx3PBv986M2xoYHz
+         DduK69BggirU4Zs2BnNcDap7QagS6njTJzPGt8Cah+PAmeVrdo95OqV8yz2xgPt4J5YH
+         CBF7vEvJnZ1DWPe6A4LXz0nSd1r1k7SS3uQk+Ajc5PUQTmzdlbf1l2rhglc5PSF2QmKP
+         JWVb2ucabKqWjWo0VhZ8PQOznaU6ushie5faPo0FQr0PyV9kzxhUXsPGdnyEww3l+vtU
+         nKHSQ1LDfjqaSNO8k2dqbawcSAfHKmc3qITYEqm87YHR9jbLZ3/uJz/lARbsSqNpoLjb
+         tPGw==
+X-Gm-Message-State: APuU4Z+X5xwFhbWm194A4Qr3R2t805SbMzHC7qckIzUpBY0Ct1CZ+mHe
+	ojcyvjjjOtSt5Ic8+7rUfLQwGukzSGzSt5w6yKUVE6ey+GKzUlxyoFmvgKTJad/tH5Laruk2CE2
+	avxDs
+X-Gm-Gg: AYBFou2bPvNO41KPFLW7BuURL/PPn0LZdDKcxf2j7REstvURc6b0DnDy5jdTQRX8q/w
+	luaG1lNJNujCKADXYGzixOcuNcbENpEP5Y3iW5fg8wqrWXMtT5EsVzw9C760e8rI4Z0Vxw5+JJf
+	E3ZPIlGwC9yIWNM8RJXlMKuGw6kbYcSPOt3o6HdKHJiKJ+Ccy3e/zc36jVIcAtUBehu8tW2nqc3
+	EZJjEd4/0K81zQ9xA3IxP2fr2+DmoMHsMEhBXiiaW9NbFuqR6BwFGGWcbM/p87PU0bNubxmEMBG
+	gA9cKc7ru8sG1ocDiiW+sIlRtsJgjQcqCdOduD1sjWG2jr1OO7KiDUXm9Z7WFZwjDI5m6QEOJJ0
+	13lF4XteDiVWAB3Y/RMqkpQAmbqUW6PKJdy1meWui8BpedaIIz0wJjnAt03wT6cIA8b+YO0KBpj
+	OFg/coBUwpVAlVMsCh0lOapUIy4CHEL82YsSvF0pEsak0RqZ585ig3RDK4SzdabviJa7f/PAgCM
+	Uk0H+2uZQhqDTlBUmdWcvMwDf/c8NRhPBvxtUz0h9Vc+TEF6cjUoEIR9XYEtiG2MVu6cXKLF2uE
+	nYsaGwM3SZjxuSoc8/1vcqTD5Uo7OnhvWHxA8pHxmbjJPo5xTACCssdRJOaxNCSWLUaEaFkUmla
+	BhfeYnDdB012mo0M=
+X-Received: by 2002:a05:6214:c2b:b0:91c:9086:ee07 with SMTP id 6a1803df08f44-91f2420df31mr81654406d6.38.1794640240818;
+        Fri, 13 Nov 2026 23:10:40 -0800 (PST)
 Received: from gourry-fedora-PF4VCD3F (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23db3a99sm37730986d6.40.2026.11.13.23.10.37
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23db3a99sm37730986d6.40.2026.11.13.23.10.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 23:10:38 -0800 (PST)
+        Fri, 13 Nov 2026 23:10:40 -0800 (PST)
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -150,27 +150,27 @@ Cc: linux-kernel@vger.kernel.org,
 	byungchul@sk.com,
 	apopple@nvidia.com,
 	rientjes@google.com
-Subject: [PATCH 16/22] tty/sysrq: use common memory for the manual OOM zonelist
-Date: Sat, 14 Nov 2026 02:09:53 -0500
-Message-ID: <20261114070959.3490008-17-gourry@gourry.net>
+Subject: [PATCH 17/22] mm/vmscan: restrict reclaim to common memory
+Date: Sat, 14 Nov 2026 02:09:54 -0500
+Message-ID: <20261114070959.3490008-18-gourry@gourry.net>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261114070959.3490008-1-gourry@gourry.net>
 References: <20261114070959.3490008-1-gourry@gourry.net>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: zimufi3n6p63nd6gy53t9oen3f5c1ryt
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: BF2A540006
-X-HE-Tag: 1794640239-693703
-X-HE-Meta: U2FsdGVkX19fiMx+W4TBjnDFOBzJdhCArUvaouihUMm9jTfIoH0qxPM3VTEQ9v+dAD65LMrjIpqtQvOH1fpV5KBBcG2Ez82+7dNmzimKFHrTzo4kh4AEa+l+fIxkXDqGu1VJc29KutRARXWollmz5EOeADKzfp54psoJlZ+fRpIB4AILKUgQlVK12Q0LUMUPxS4KWt4pKr8SyDVOa8PjWMxc/zeSw7C318CfHdoDWiL4qt8Kkq95fpmjyixV0VR+7at7+njCaCClEGpt05MIJ3GphMrf88jVm62+yud1qugu35r2W+Ito3qZYQ7ni4jVNHbXv/InThACdFfwqGefDXxOOJNsKXzKpuGzpoG5JQaXSL+uZx5Vp9P7caFewaE7wCgCJHgY7zPrdMfolELTLW3t3e4yfw4JKksMYf+ZbhCuNEoB8jHiijYi19iikVIg24aVn3d3MP6UfE8pIYQht6WVGTUyeWbYd9Xo1Efstps9fzZyhq92+9EQabpFJG+tls4dNITIiV7eMPP6+6X7o6T7oHzq9ai8DJXfyu3tbBs7HI+1lESofY6Iib4tNWJmkMbF696hw/3w8CkgGP7xKJ+y+jM6l79FHPEqrNGe+0fJxfRPljO+4mWwqg7Sk5hfYk6+3N39EuGyvViXZAoxsiLdzLp1EviqGbNNlccYnuF4lRFIPYhl9D48qIyGtx0evzbwPOW6j83n9RgMCM8fmvK5m88/gujqwv/kU7mjTPNzaR4qe+rVT2+RAQgqdIy/YGmi7gOcIHTeClm4fCHBDV1Fz5R1UIuq/IEUMBkGrUDRFtE57Qn8SX48sZ9nSEWRoSgBjSZJmGwOTEGwsKHmFmjKOkuqo4o24eKCMX0tOXB8AGP3oFgxcOTfg2C/s9Ch4D4vPnSarhdmeIeV2TI047IQwQuiKL1BBgVjtF1xwNKppJGEY+MmsJn9dTvGI1H1OpSbjoev7Vq+1l+2YrG
- l/pNjzjl
- 6K61AFd0skrfiy0ljeT5NlLxNHP98m00+VK+CgIvNxbZKgMex7Ip3zwxllN0VDxncVmvq7gliyCXvwiADO34inqhvs4aaSnI6KOb+S29DXKQyd9xJDvzKC/7dqQ1zS7OJyP6Iez/BCVsO6E+iMtjBjTVLyG9EWKlGixALXLZXQC69gqIwP4CeUIBEAXaU3BiIraESOYKRJOLqpJMhiwnvQtWSvR3k5ycNMnWffYHJDfQidcXcccYPvySm5tlerLSZNf4IkHEF5sSzC2GiUpJN2tetgHaDPgMCkwGPgYhhqfsdDNqdVQmpFrSygJL4RIH4hbr6RWq5kRb5HcZfFTS1oZgQweFxcOsNJFuzRnRKuTw77NX2K+kKXBZ8ebz54iP81Gjc
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: AD6DBC0004
+X-Stat-Signature: ndntgqg31rqh41fat5yxie1zsqefcpjg
+X-Rspam-User: 
+X-HE-Tag: 1794640241-643986
+X-HE-Meta: U2FsdGVkX1/7IjqN/gd0hoTLP2+XoSyxgMPbO1YRBmc96KtWzMekIo/TpSC1rDE/4FL8K/vQBXktqZDTKnnJ7RLmLY8kw+EzDkjKpn7iex3VnF/Q9+9lIbAC9uASgkZEUg56eKGLEzoS6XqkalpplpbABX8KNabBXi+Ph1SF4fjtvPw3GbJ8hvn3G9xOP7YYGYGyXgMxhqstsqF+j6S8iAQy3G55FO5g0cig4MWGZ50JkahRppLAu8JhmJoi6JvtblzaVbjAEZs4jVIq2XgFnkNOYW9irWQYy/h8x+fy+HxP4SPexFz12DnC4lOVeOzFgd93xHf5WsUuQoCLHrRQT/BCxuNiX+76GcbzaphYwPru6RPlxNmV/+/hTGqBbhWm3kbOoBT1VdTc6VTjyjQWtFMEr+pwIwPP06krTwUQtRKmOV0I+iQcS33kDsPk4xshpPuU7BZhCVgHx6u4Xlz/WuyhKgsO4+Dd4Gv/bTsEEryJmxFi+0CVZfZzlvN6Mhy/sM/A/LWQe5k4cm6y+ck3VRs5stEfM1A0lY73soXekBhOIC7xdkhwwAHcf6e1lpAs8KN40Tlso2TFhnt43evUGi+yKOCMeuZ/URaHJycYi0A24l3uEQFqY5QIlifAfxbBEVi2Ts2RSOcorL+qgVdXX+TYqxvWoLfF5ZgLtQsZQKP5klp7kw/DYi7go64KwPI8AE36cIUDOJ9GTF9hIPYFYWKH+BZxmCj0E8kPhylt8uNIil09hKT8wf2+RO96OCLIaf94v2mnblKCRWoWg2jAtNeeXa7yqyg/cV9oM62eaE9xQB/TqKrPOuA39+zG/TRINgd6ZPCx2tZzqdHjK/59PE/QIoyakqe8y1R5bN4Bd8sj3i3lQQFHuxpL4mreYnw9OZDWKd41pmmhht1I1uUUyIZw9aoVSbXCf/YneirGl66+kya/mYl1x6YO8kqY4lv+LMs5m1TrGyjRturFipz
+ 34OYsjL8
+ ZGku1o9vD/17WhhxawyJerIFXIB+/GCvRHXUZzpSyxNn2TTn4lqlUDLu71Nu8p9LXr1uyQrmjGzYlB4xsytQGBnLaqhAfNqqN07w6PwJKRMALAA7v3xlnu8zSq+XIrBkZhi+TiqR/R5FBbuU6ZTYv6aGpoDBoLiNeGqaTjGTtt2FuKJ0pcWuB+Jt5WTx1N+nvGp30yQFLEr6CDkjHAcVVR+4nqumvB0mKPPD8wwRMy1q8CChL3fyfxxu0ATfztTlVn8/8XKEw9i7QIzxe4+Yz17f5B23+20lQs36aVDYUBPBQSmMWde2G3G4aMwHLXjPwXc04k0wN1E64oY+QiOOA1N+gLg7chE9hvnUDTtLHa9g4Yg87p1KQIpaoxJI4OacQUxDG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,34 +179,138 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-SysRq-f constructs an OOM request with GFP_KERNEL and supplies a
-zonelist for allocation-constraint checks. The request represents an
-ordinary allocation, whose fallback domain contains common memory rather
-than every node that happens to have memory.
+Reclaim serves the ordinary allocation domain.
 
-Select the zonelist from the first common-memory node instead of the
-first memory node. All memory nodes are common at this point, so
-behavior is unchanged.
+Restrict it to N_MEMORY_COMMON:
+  - start kswapd only on common nodes, at boot or hotplug.
+  - walk only common zones in direct reclaim and when throttling it,
+    so no reclaimer waits on a node that has no kswapd.
+  - walk common nodes when MGLRU registers an mm and when its debugfs
+    interface iterates or validates nodes, using first_node_state()
+    and next_node_state() in place of first_memory_node and
+    next_memory_node.
+
+The fallback zonelists hold only common memory, and all memory is common
+at this point, so behavior is unchanged.
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- drivers/tty/sysrq.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/memory_hotplug.c |  3 ++-
+ mm/vmscan.c         | 26 +++++++++++++-------------
+ 2 files changed, 15 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/tty/sysrq.c b/drivers/tty/sysrq.c
-index f4571d05b4962..824f5836b47d7 100644
---- a/drivers/tty/sysrq.c
-+++ b/drivers/tty/sysrq.c
-@@ -386,7 +386,8 @@ static void moom_callback(struct work_struct *ignored)
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index 29ff2c46499b3..410a29732bae7 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1207,7 +1207,8 @@ int online_pages(unsigned long pfn, unsigned long nr_pages,
+ 	/* reinitialise watermarks and update pcp limits */
+ 	init_per_zone_wmark_min();
+ 
+-	kswapd_run(nid);
++	if (node_state(nid, N_MEMORY_COMMON))
++		kswapd_run(nid);
+ 	kcompactd_run(nid);
+ 
+ 	if (node_arg.nid >= 0)
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 061fbd168d982..bb7b1c50bfb78 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -2932,7 +2932,7 @@ void lru_gen_add_mm(struct mm_struct *mm)
+ #endif
+ 	spin_lock(&mm_list->lock);
+ 
+-	for_each_node_state(nid, N_MEMORY) {
++	for_each_node_state(nid, N_MEMORY_COMMON) {
+ 		struct lruvec *lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
+ 		struct lru_gen_mm_state *mm_state = get_mm_state(lruvec);
+ 
+@@ -5562,7 +5562,7 @@ static void *lru_gen_seq_start(struct seq_file *m, loff_t *pos)
+ 	do {
+ 		int nid;
+ 
+-		for_each_node_state(nid, N_MEMORY) {
++		for_each_node_state(nid, N_MEMORY_COMMON) {
+ 			if (!nr_to_skip--)
+ 				return mem_cgroup_lruvec(memcg, NODE_DATA(nid));
+ 		}
+@@ -5587,13 +5587,13 @@ static void *lru_gen_seq_next(struct seq_file *m, void *v, loff_t *pos)
+ 
+ 	++*pos;
+ 
+-	nid = next_memory_node(nid);
++	nid = next_node_state(nid, N_MEMORY_COMMON);
+ 	if (nid == MAX_NUMNODES) {
+ 		memcg = mem_cgroup_iter(NULL, memcg, NULL);
+ 		if (!memcg)
+ 			return NULL;
+ 
+-		nid = first_memory_node;
++		nid = first_node_state(N_MEMORY_COMMON);
+ 	}
+ 
+ 	return mem_cgroup_lruvec(memcg, NODE_DATA(nid));
+@@ -5665,7 +5665,7 @@ static int lru_gen_seq_show(struct seq_file *m, void *v)
+ 	DEFINE_MAX_SEQ(lruvec);
+ 	DEFINE_MIN_SEQ(lruvec);
+ 
+-	if (nid == first_memory_node) {
++	if (nid == first_node_state(N_MEMORY_COMMON)) {
+ 		const char *path = memcg ? m->private : "";
+ 
+ #ifdef CONFIG_MEMCG
+@@ -5765,7 +5765,7 @@ static int run_cmd(char cmd, u64 memcg_id, int nid, unsigned long seq,
+ 	int err = -EINVAL;
+ 	struct mem_cgroup *memcg = NULL;
+ 
+-	if (nid < 0 || nid >= MAX_NUMNODES || !node_state(nid, N_MEMORY))
++	if (nid < 0 || nid >= MAX_NUMNODES || !node_state(nid, N_MEMORY_COMMON))
+ 		return -EINVAL;
+ 
+ 	if (!mem_cgroup_disabled()) {
+@@ -6492,8 +6492,8 @@ static void shrink_zones(struct zonelist *zonelist, struct scan_control *sc)
+ 		sc->reclaim_idx = gfp_zone(sc->gfp_mask);
+ 	}
+ 
+-	for_each_zone_zonelist_nodemask(zone, z, zonelist,
+-					sc->reclaim_idx, sc->nodemask) {
++	for_each_zone_node_state(zone, z, zonelist, sc->reclaim_idx,
++				 sc->nodemask, N_MEMORY_COMMON) {
+ 		/*
+ 		 * Take care memory controller reclaiming has small influence
+ 		 * to global LRU.
+@@ -6604,8 +6604,8 @@ static unsigned long do_try_to_free_pages(struct zonelist *zonelist,
+ 	} while (--sc->priority >= 0);
+ 
+ 	last_pgdat = NULL;
+-	for_each_zone_zonelist_nodemask(zone, z, zonelist, sc->reclaim_idx,
+-					sc->nodemask) {
++	for_each_zone_node_state(zone, z, zonelist, sc->reclaim_idx,
++				 sc->nodemask, N_MEMORY_COMMON) {
+ 		if (zone->zone_pgdat == last_pgdat)
+ 			continue;
+ 		last_pgdat = zone->zone_pgdat;
+@@ -6756,8 +6756,8 @@ static bool throttle_direct_reclaim(gfp_t gfp_mask, struct zonelist *zonelist,
+ 	 * for remote pfmemalloc reserves and processes on different nodes
+ 	 * should make reasonable progress.
+ 	 */
+-	for_each_zone_zonelist_nodemask(zone, z, zonelist,
+-					gfp_zone(gfp_mask), nodemask) {
++	for_each_zone_node_state(zone, z, zonelist, gfp_zone(gfp_mask),
++				 nodemask, N_MEMORY_COMMON) {
+ 		if (zone_idx(zone) > ZONE_NORMAL)
+ 			continue;
+ 
+@@ -7736,7 +7736,7 @@ static int __init kswapd_init(void)
  {
- 	const gfp_t gfp_mask = GFP_KERNEL;
- 	struct oom_control oc = {
--		.zonelist = node_zonelist(first_memory_node, gfp_mask),
-+		.zonelist = node_zonelist(first_node_state(N_MEMORY_COMMON),
-+					  gfp_mask),
- 		.nodemask = NULL,
- 		.memcg = NULL,
- 		.gfp_mask = gfp_mask,
+ 	int nid;
+ 
+-	for_each_node_state(nid, N_MEMORY)
++	for_each_node_state(nid, N_MEMORY_COMMON)
+  		kswapd_run(nid);
+ 	register_sysctl_init("vm", vmscan_sysctl_table);
+ 	return 0;
 -- 
 2.53.1-Meta
 
