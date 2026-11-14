@@ -1,95 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5773E606A32D
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 17:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E571606A327
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 17:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KYbsTPPs
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KctJr5aH
 Received: by kanga.kvack.org (Postfix)
-	id ECEDD6B05BF; Sat, 14 Nov 2026 12:07:51 -0500 (EST)
+	id 5889F6B05C1; Sat, 14 Nov 2026 12:12:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7FD96B05C0; Sat, 14 Nov 2026 12:07:51 -0500 (EST)
+	id 539B56B05C2; Sat, 14 Nov 2026 12:12:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D97B16B05C1; Sat, 14 Nov 2026 12:07:51 -0500 (EST)
+	id 4507B6B05C3; Sat, 14 Nov 2026 12:12:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AD2226B05BF
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:07:51 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 13B0580470
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:07:51 +0000 (UTC)
-X-FDA: 85434356742.06.508AF40
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7778A100006
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:07:49 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KYbsTPPs;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794676069;
-	b=NTqk5lcTksyPV+46Lt1hPIChSgOn8q3EOoNUrPhP2A9z9kGNqnf3EtRtSF3JQekZs47/0V
-	b5RFAY+rD86bkfhKKYPlv8Gc9lnsS87mg8MYE46TQLrq8jWV8PQuO/MJ5MpCHb6PZhufIK
-	I0PVdjXj9/WzgnqpJ5p0HDwB9NtJSKg=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KYbsTPPs;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 15AA06B05C1
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:12:26 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 822EE160459
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:12:26 +0000 (UTC)
+X-FDA: 85434368292.19.7DB2400
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id CE19320005
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:12:24 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KctJr5aH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794676069;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794676345;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZBoCEw6CiwtCNOzOZnUMWIHoxrO2jUoBXpCdLr1vMBc=;
-	b=mbIBg16FSUo4J/mvx5WXBjbIeR4K3ILKRNeLgHUTmQnR8qQ8vtjMhZOCLWXcLdbhxH85Uu
-	h3iiSd6R/qr6WNNGVZQPG2pIuXThJUYQkB2Ldy9vckaBSiUkxNwW0lU1/kuRo41q1EHIbr
-	TdNy8fleR9OJhj0zKq4XumynMVyQFhc=
+	bh=GuUas9394tXVS2rINaWyftKxBgw1MZ4KrFxs7EBX5no=;
+	b=iumLCRcgJ2Hj/dnhcPg4qMvfSupCRBXYhxB8WXFErijPRyIkFRAmt0Pw8LKq7O8dBWWxWr
+	FpuuFgGVz2JQU9GGRPiOnhlLdyPkLXKW+WOTABIEA4Go4aeXgEJjmhwjuvX2mbsvA+7rX/
+	YHfrQRV5Q8tGrBzEmllCCZeBSDxnEAc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794676345;
+	b=enxWpQMW6zAO6GVUXsGKNNC9S554ij48e8Ntx2bgrmxqE4QleIBwWaP0kXcagutzSrsPLT
+	n29Q3wKCeg/T6/2inZGRiFR/vd8mPuJtzRHJYZKbixZybl+QyNqEpPchEKvpOf9ElnxK4m
+	Ri0mrEmCRRXh7SCQx098o6NcUVzJhok=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KctJr5aH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C904A60AA6;
-	Sat, 14 Nov 2026 17:07:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384DA1F000C4;
-	Sat, 14 Nov 2026 17:07:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1628141739;
+	Sat, 14 Nov 2026 17:12:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5DBC1F000C4;
+	Sat, 14 Nov 2026 17:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794676068;
-	bh=ZBoCEw6CiwtCNOzOZnUMWIHoxrO2jUoBXpCdLr1vMBc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KYbsTPPstTzbf6iO6y6MCxooU8WHmL4Yjsw6ZTBGAfMwoi9j1DUhateIRsD8zH23f
-	 evujeQKdYvb1uxQOfiQHWSunIvh7O8LgPNjNWIDEPq4laSLVH/xkQgvHK92wnG/QzS
-	 DYL14EekyTcLyfED8kq7nR0/4Q6Z8lrOViAh0gIu7Fkv4rzgm3l7sMY0mbZlF5Eq9/
-	 zt6siETwaDkonabMQTLnzG69YAIXZUp5VUvmBw/0mylDPBml+2nOrBkAL4RBUpwFb1
-	 sx55syQnxXmh9zFD7r9w4/Ds7SmOo6wgy2dGrhmXFcnbpg/ZFNDBYHRiR5WgRiFBYR
-	 kvHSNMNoccokg==
-From: SJ Park <sj@kernel.org>
-To: Enze Li <lienze@kylinos.cn>
-Cc: SJ Park <sj@kernel.org>,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	rdunlap@infradead.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH] Docs/mm/damon/design: replace "same to" with "same as"
-Date: Sat, 14 Nov 2026 09:07:40 -0800
-Message-ID: <20261114170741.197407-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261114055436.5546-1-lienze@kylinos.cn>
-References: 
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7778A100006
-X-Stat-Signature: qsza4khq8pj4ux7abyhefkbiwb5fje1z
+	s=k20260515; t=1794676344;
+	bh=GuUas9394tXVS2rINaWyftKxBgw1MZ4KrFxs7EBX5no=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=KctJr5aHRt1tIu6GHbg3QvOztA2LzkQ2ka5nqUPyAA4IhSDLaxswiaEW9S6eO2rZ1
+	 UVjd9uEqfr5ePG591F0gsVAAqbo3oh2uk+eoyhuM4sqEqajYUbUZzbM5unAwlrOogo
+	 kWPE0RiA27wIXiPqei47M5ZlXJeUQNbEDodp5bl9wkBIixqi/wZzsyQC9aaCAYKD1P
+	 i1HJ4yyiT8CGhGu2Ff90mOw1ZZ4DSqRaikY2XT2H1SHGOsQ9dDMIiYeqLqVLe1d1+Q
+	 HY30pcjL5wIBtza2NKwL5g96u5gA2OlnlGZbxV6h1dH8Fd+5NZSapDr5dTnJ/xE+No
+	 Jd0kVs5YVvyng==
+Message-ID: <sashiko-outbox-214828@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3] mm: introduce copy_mc_highpages() and batch copy in
+ folio_mc_copy()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Shivank Garg" <shivankg@amd.com>, "Andrew Morton" <akpm@linux-foundation.org>, "David
+ Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam
+ R. Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
+ Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
+ Hocko" <mhocko@suse.com>, "Borislav Petkov" <bp@alien8.de>, "Ankur Arora" <ankur.a.arora@oracle.com>, "Dave
+ Hansen" <dave.hansen@linux.intel.com>, "Thomas Gleixner" <tglx@kernel.org>, "Bharata
+ B Rao" <bharata@amd.com>, "Hrushikesh Salunke" <hsalunke@amd.com>, "Ingo
+ Molnar" <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>, "David
+ Laight" <david.laight.linux@gmail.com>, "David Rientjes" <rientjes@google.com>, "Linus
+ Torvalds" <torvalds@linuxfoundation.org>, "Teja Vojjala" <tejavojjala@google.com>, "Huan
+ Nguyen" <nhuhuan@google.com>, "Pedro Falcato" <pfalcato@suse.de>, "Peter
+ Zijlstra" <peterz@infradead.org>
+Cc: linux-mm@kvack.org, x86@kernel.org
+In-Reply-To: <20261113-batpagecopy-v3-1-297f5b2fd28e@amd.com>
+References: <20261113-batpagecopy-v3-1-297f5b2fd28e@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 14 Nov 2026 17:12:22 +0000
+X-Stat-Signature: yeakqnxqd37bt7cgwgrkkuczy3ofg6so
 X-Rspam-User: 
-X-HE-Tag: 1794676069-998501
-X-HE-Meta: U2FsdGVkX1/P0oulVX2oQ20m7JxqJriGhWinXG7c3zOKQ2RQvVpaGbvimo7qwXwvrw2m1LbWH33VyPN9s4fkRZKm40mOw6f4zRBSAjIe3gNqb8tbNIljIMmS4biFKGzdiCH73bn+p50M2Q+1XFhwxqeN+Z1RPAyNamonbtezC2By4GpKynFeM3kOMi208MlSH6C6YLhEGlp7fpTxmY85Lr01AbpeuxCQD1dXAYhaYOP+k30g61ac14/iVi0VL5C6/FbpgbPb/9zVdj2sJuOlqoEi5l4J0xSZJdXpyZbsMc+TOKc/63PVPVRKoG9OWO35G1JDiOzcX/UXixlRep13NTn/qeJ/kxkDiR1fziNX6g2ADGQV5oS+hA3XcCxj1DNQ6SSfdk3IsVf1Fj39bT/HhIKP3kNaVKLFm40cNzZqp78yiFPvVlOphm3hi4CRAjWBWj1F6DXG4SbO/GiI4tG6zIhz65Oo1RwOMeI6U/hsYhXlKfYGmaOk6yEFbn2wqYYduNi11XmLLEwt8ZI9/lWX3JiY2d45srfC1ajxuiQYHhXC59AeUPSPqKfBmQN05OkGXD0JGanQjKMxfbtNrxFLH7kipyhwRNUOrMloNYzhC0/GkHPomDr6s0Z46Zhu1ta3MIh2KxQlyc6oljq4K7y6uywb8EHUek7luEjuRkNzXt7JRhELPWEXNZsC5+nLEGMKSPaE+T7e58JFB1ZuEtU8mLos5Y1WGTJIcXYas85SEJrJAFga8pCc1Fe4Necvyjt/YdI0f0TUJ3dz6x5n0PrD64v/czhaqLtYlTVM0+1JoG/+gpdfLdol8k1q+Tt8H8ryqawYbygL8ZmmWagLSGRdtT7vWjcLer+/ZqNuPiMhpSPBfXIhWVm1v52qK7DxI1RHEqv7ejyDfbbVgGXdnddB0yi/5E34S24OqSF7a6mv8RR1fp7xFDOJ0CbpZKMKyHPlzcnrGhuvvUHlRxhxzID
- FrTXBfCm
- Y/6WRJq+NLeUiXDQdTajziZNS1UwpR5n6+BvZD8saoyi/ByvakikSZrLITYG6+wqWYbzwS+vG+Hap1+szYYclX4htH5lBSO2bBpTcgloED7czX01q98+GX8UVx5RuajK53Hw3XXHVgiMmZZKa84MrOgbAgt7dzE2xy0MXz9br2vq/6zZVcFaNde9q1yIcaUwhtXGzm5iOmzlTy7gMBS5dfMyxuizGp6k5tHQZup6wrgJtRsopVpQ/1t188cDUlcxv16jS
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CE19320005
+X-HE-Tag: 1794676344-362557
+X-HE-Meta: U2FsdGVkX1/xdkv5aQeahWlxJZ1+wrG5LrsIqCwwaJLOpq6fIzl7vPrpDjDlkJ9N4un9UctDODSKul05njpuQTqQGlQMcnxFVEHAYbSofddRftOvPPnC5a7UhubwvHnYlBMTjnAJmvtMWXH4RF0SSLHJpq0W1cda9aN14HRsuswv6LXltBK7nuLNsSl9fzNOViAwxeI74duQOMrPYFQUxtYh7z/U/+2wkqDd24YrzBFHLMQMDdNtG9+ZNTMYtUIk9fUZWzz8vadzOhkb57xQfpLwDsO92veB/PJisqNoMNsqS0F+wp917snT5dSF7FNXVi2j76wNdK1TzXABZa5dbZCpqbTYP2MrlCgHhTahOdxgbzJT5+LqcsYbRLfaUPGEnAijcDjgF0Hc83dnLywFcWZkaJyGwCkiKtC8iV56kT3x45YzY1U2ApTJ3ZZCzJbwLUJyYdqdQIAZELugBZrv0w+5P7TIrPYmtC48SHk3nZAZ53OkjwnJFYDt82w0B1YWfV1nXXchVdNReFgan8WzAxmlmDQo879s7CtJfTPdSTxVw/HdydETPLiqxADOjDN5bV100xCRhrThm8Irckzdfz+3DX/Q5CTs7jNtFbfkHHYJPaDGpLNSdQqiNHNn+oFHTt9ZOjDaqutYREyyr31ex1fzBSyVyUaHyUOVzJatZC1IjDRxjuAedtzSTF0ePWMO1xWey4ZJuqK5EQMTSkP3IHBb3sePCf505nGBTxVlbK0XMylVV17wy+SyQG6BacYunIRwTu1HSG4BIHPDQS7O9GgO77WhMnwgqOYFXZoOA0M+cG4eAEEyNgw9pe3lEeehBzSgKse6Vd7ed5Em+CxlJoiOM/vz+XPrIFS4BeEGcZDH2u0J5dq2/QpK7B7xj4uz+htxFk0iBpE17c8yGYCKjWHnucwe0GUFKnWi9cP2d5+UNzrXMCKsB54uEsptjsatY4YP1Iy/ZL7d6c/9Mjy
+ Ezf20DK4
+ ATnCBxtKBa+5XaP2Mz6JinMtVcOLDDZMwx2zSpaNS98BdZjCTmxfuOlhM5SPAcSHzuRNjdSFINOdTikoSz1Dvux8CBil9ZBSoXt0v+zU2zWOSAq4X8I6RFIa0FqqnIVUI8U+5tmOkIYRy+/4EIq/qJqWFXxhKEhEp80gkskdoY2mNMfHlY4JkB9YPSytE+vs7Vfe86SKJWKrLtiJdzUDcuZ2EKzvg50TU9jiHChU1Inympdy7khmj3fAFnP6YlRp7aKzOwU7pzc4IYN9D7PzME71dTj98hIizG+I0lmjLY0/4M6qz45Q7Zgn3IPX25PVTWKcc870JG0FgC032KhvtbQ+88wsmwJCBMDURe6OFllcO0IuaijOUDOpaaL7G1mJHRBN/QJmkgGHw9wUKRaIhpBjTnTBi/7qoGXwdyRpGHrXq6VdpJyui4jbgOTNhjAO9M1OS8ptBQdwTLk0p4jeA1op10qONZp4NHkJusXXoLIzEqXyvybAjsh1R69ckr6Z3D4dCrKqrhj4bGaS3eimd0oEkyBqJfpH1ruXNLMhC/oFyzihyf4jvnxmDfzi/Rlqb1O4cXZwndgVpaDz0VKffpSWQZ5G+xUoWuLKUDs+V4FnTaO8j13mruCIh73Z50wmFNRqs5ZnH8JAAycX6PA3Qd/DZb7WZSxuSyUfFE6B7IOPIKFyvz6E0nh0Yyb7biCiYsI36sFZdmJbJeiCZR/GFOskyVQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,29 +102,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-Hello Enze,
+Thank you for your contribution! Sashiko AI review found no new issues
+in this patch, but noticed 1 related pre-existing issue it does not
+introduce:
+- [Critical] mm: missing hwpoison check in copy_mc_user_highpage() and
+  copy_mc_highpage() [1]
+--
 
-On Sat, 14 Nov 2026 13:54:36 +0800 Enze Li <lienze@kylinos.cn> wrote:
+commit fae95970ccf2607d670f06862e40d3ba9313200a
+Author: Shivank Garg <shivankg@amd.com>
 
-> "same to" is not idiomatic; it should be "the same as" or "same as".
-> This doc has six such usages.  Fix all of them at once for consistency.
+mm: introduce copy_mc_highpages() and batch copy in folio_mc_copy()
 
-Thank you for fixing those!
+This commit introduces copy_mc_highpages() to copy page ranges with a
+single copy_mc_to_kernel() call when possible and updates folio_mc_copy()
+to use it.
 
-> 
-> Signed-off-by: Enze Li <lienze@kylinos.cn>
+> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
+> index d7aac9de1c8a4..a79e9d68359c8 100644
+> --- a/include/linux/highmem.h
+> +++ b/include/linux/highmem.h
+> @@ -484,6 +484,57 @@ static inline int copy_mc_highpage(struct page *to, =
+struct page *from)
+>  }
+>  #endif
+> =20
+> +/**
+> + * copy_mc_highpages() - copy a page range with machine check handling
+> + * @to: first destination page
+> + * @from: first source page
+> + * @nr_pages: number of pages
+> + *
+> + * Range variant of copy_mc_highpage(). On a machine check, the poisoned
+> + * source page is queued for memory_failure().
+> + *
+> + * Context: Process context. May sleep.
+> + * Return: 0 on success, -EHWPOISON if a machine check was handled.
+> + */
+> +static inline int copy_mc_highpages(struct page *to, struct page *from,
+> +		unsigned long nr_pages)
+> +{
+> +	unsigned long len =3D nr_pages << PAGE_SHIFT;
+> +	unsigned long i, ret;
+> +
+> +	might_sleep();
+> +
+> +	/*
+> +	 * When copying we want to operate on the largest extent possible to
+> +	 * allow for architecture specific extent based optimizations.
+> +	 *
+> +	 * copy_mc_to_kernel() does not call cond_resched(). That is fine on
+> +	 * preemptible kernels, where the scheduler can preempt the copy at
+> +	 * any point, so copy the whole range at once if copy_mc_to_kernel() is
+> +	 * available and the pages are in the linear map. Otherwise, copy one
+> +	 * page at a time and reschedule in between.
+> +	 */
+> +	if (IS_ENABLED(CONFIG_ARCH_HAS_COPY_MC) && IS_ENABLED(CONFIG_PREEMPTION=
+) &&
+> +	    !IS_ENABLED(CONFIG_HIGHMEM)) {
+> +		ret =3D copy_mc_to_kernel(page_address(to), page_address(from), len);
+> +		if (ret) {
+> +			memory_failure_queue(page_to_pfn(from) +
+> +					     ((len - ret) >> PAGE_SHIFT), 0);
+> +			return -EHWPOISON;
+> +		}
+> +		for (i =3D 0; i < nr_pages; i++)
+> +			kmsan_copy_page_meta(to + i, from + i);
+> +		return 0;
+> +	}
+> +
+> +	for (i =3D 0; i < nr_pages; i++) {
+> +		cond_resched();
+> +		if (copy_mc_highpage(to + i, from + i))
+> +			return -EHWPOISON;
+> +	}
 
-Reviewed-by: SJ Park <sj@kernel.org>
+[Severity: Critical]
+This problem wasn't introduced by this patch, but can copy_mc_highpage()
+and copy_mc_user_highpage() (as well as the new copy_mc_highpages() fast
+path) return 0 when the source page or its containing folio is already
+marked PG_hwpoison [1]?
 
-This patch is applied to damon/next [1] tree.  I will repost it soon (~1 week)
-as an mm.git merge request.  So, no action from your side is needed for now.
+Neither helper checks PageHWPoison() or folio_contain_hwpoisoned_page()
+before copying.  copy_mc_to_kernel() only catches synchronous #MC
+exceptions raised during the copy itself (and falls back to plain memcpy()
+when unavailable or on x86 without X86_FEATURE_ERMS or
+copy_mc_fragile_enabled).
 
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+If a source folio was poisoned via software injection (such as
+MADV_HWPOISON) or a prior memory_failure() where reading does not trigger
+a synchronous #MC, callers such as folio_mc_copy() or wp_page_copy() treat
+the copy as successful and copy corrupted data into a fresh destination
+folio without PG_hwpoison set, or trigger an unrecoverable kernel #MC when
+copy_mc_to_kernel() is not active.
 
+[1] https://sashiko.dev/#/bug/linux-3af4aa7d-d182-430b-b982-583f6aea4594
 
-Thanks,
-SJ
-
-[...]
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113-batpagecop=
+y-v3-1-297f5b2fd28e@amd.com?part=3D1
 
