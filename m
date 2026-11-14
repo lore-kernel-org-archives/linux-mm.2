@@ -1,91 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B452A606A327
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 17:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8BAB606A331
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 17:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CC4g0DhR
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O19UBMrA
 Received: by kanga.kvack.org (Postfix)
-	id CB4046B05B9; Sat, 14 Nov 2026 12:33:11 -0500 (EST)
+	id 0F56C6B05BA; Sat, 14 Nov 2026 12:33:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8BD26B05BA; Sat, 14 Nov 2026 12:33:11 -0500 (EST)
+	id 0CD556B05BB; Sat, 14 Nov 2026 12:33:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC9146B05BB; Sat, 14 Nov 2026 12:33:11 -0500 (EST)
+	id 00A3C6B05BC; Sat, 14 Nov 2026 12:33:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A10996B05B9
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:33:11 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3A627A7032
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:33:11 +0000 (UTC)
-X-FDA: 85434420582.02.64F382C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9CE3D180003
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:33:09 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CC4g0DhR;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794677589;
-	b=Duzgom80YgOEBxiUHvJNB297lYKQwxUOwcbA+sdSHOVWHzbnGnM2SBM/r5Ro42dqf6Aeof
-	A62pCiKKFqKt2d7bqzUsEmiEnwsr4iPAtTElPVcsd7jOj1Tp6I+Qrc7UyfzSR7HEab7Ajz
-	vfSIcBg0LwfHx2P3QJ+vEBeoisz+rdA=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CC4g0DhR;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id DAA4D6B05BA
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:33:39 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7EC7FA7BD4
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:33:39 +0000 (UTC)
+X-FDA: 85434421758.22.DBA623F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D8E7580006
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:33:37 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O19UBMrA;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794677589;
+	s=arc-20220608; t=1794677618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1aF6FG/8A8GNSEhifnB76peEauYvwhc3Lhh2bB6umMo=;
-	b=cLIw0xkZcb7LRZiHfDilcC5qD8mF2cwgYMqk10vnYsMNl/4UQOfSR6C1FZDddC2pQC2TYO
-	tAbJ8kN+UnMl+g6FI3Ofg1pi/Z1nnll9WsbVX32X0pcPl5j5NgQZVsqoSQEGE10q1paFmb
-	0DiDiHY3nIBhJXBNi//QVJ6gB98dbts=
+	bh=VMjHeqkDRZE8dhy1hqRxTcDbSg1/bFbdQHaCHWsCozw=;
+	b=5fQSZltUFwe5aEX91jBPJiNcsqOPuFPw0dUJllku0iipMCC0ZsfsWe5V6Cv/Ga32GBALii
+	DvqZmBWB7HQZDUm+faDZeCz7YvFyQbhvS65D1sg7ugRDGYs5nuw4daW7thOo3hFS1LH3bQ
+	rxDPIvkhfXUqfMPcIafiStczjRExzfE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794677618;
+	b=uyjU6ww5uhQfigTDdTxpdOPdo4s9evUNAUnwc4XJn4VdFS9QTa+Hfn6OeGgnYY8G5bgHWc
+	qSzygV8EXx4AC/6y2516/ch4yXzRuoGcdoU6zib3dH5n5WYSPwtCRKEA8LLVoLRz+8Wjef
+	Ci8zsqulC0AmGmb9W8MmMenelWFEknc=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O19UBMrA;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 309C460A86;
-	Sat, 14 Nov 2026 17:33:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 541151F000C4;
-	Sat, 14 Nov 2026 17:33:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1908E406E8;
+	Sat, 14 Nov 2026 17:33:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3003A1F000C4;
+	Sat, 14 Nov 2026 17:33:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794677588;
-	bh=1aF6FG/8A8GNSEhifnB76peEauYvwhc3Lhh2bB6umMo=;
+	s=k20260515; t=1794677617;
+	bh=VMjHeqkDRZE8dhy1hqRxTcDbSg1/bFbdQHaCHWsCozw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CC4g0DhRkW0DeJDtpn706QZWi/HUMQpuW3IfDjK3Nioulri574vN0BEOuOCzLEX0I
-	 hG8CHO8NhSwRLAftY6Yi/ENg6d/hbIwvjnnpPpwvOFX2J4oLQulgyLk2bHXV1QgWwc
-	 3cvYrwB/d4QSZWWOP/nC57raDQvh0wenbsXW2k0Ro9PY1Ww7kQDolFpvmgCVCok4rS
-	 3KyjVPCClhNm5+sFeKfLnxm5MhuiCX+MaRb6p3dZr9Pe8gHaisIFUgCTglyaY/jGqj
-	 04Lz4mnvNMNToXXnifofD5WoXXNk3tC7au3I7cIlVqlA0L0QSWFZHAf5GDvqtKNiVD
-	 3CRYU+nZajhhg==
-Date: Sat, 14 Nov 2026 17:33:04 +0000
+	b=O19UBMrAXkSoqPs2prqibtCjHeT2ADtnsEqYx5CwN2Oz2VgZ9KcZRHMdcNCOcdfgl
+	 ORgZffaPijVySmPmQ6Je7Leyt7vh8GDA4rqz4FakWw97AhfpzssLYjZupsgOQAZAAw
+	 rrsUb2D6bnRPbSgcp7Mrwd6/5MT3vLYsIs/m6OqPkVV7klRQMXXJtEbufp2JLV7xVv
+	 TH2lNKIi9KMJpq7YRLpHUuP6l7p+aka9NtHOoaViwLbdxP37X/QZV3kntbmTcqYy8e
+	 13Nj1AwEP17GmyWaTaNOEZA9ckwfLaHcaYngHulFXkulfjPwlvUstfQTsIBdPOscFI
+	 Lz6Ogx5In6jug==
+Date: Sat, 14 Nov 2026 17:33:32 +0000
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: shao.mingyin@zte.com.cn
-Cc: catalin.marinas@arm.com, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/kmemleak: fix scan period truncation on 32-bit
- platforms
-Message-ID: <avibPHxuBtW-x-gG@gremlin>
-References: <20261115004702358r2RJLihSrqbK4dr026bcI@zte.com.cn>
+Cc: akpm@linux-foundation.org, rppt@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/execmem: check execmem_restore_rox() failure in
+ execmem_cache_free()
+Message-ID: <avibYdE9NJKchXM-@gremlin>
+References: <20261115004704544fuMEkcx0F4A1sNBAzz46-@zte.com.cn>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261115004702358r2RJLihSrqbK4dr026bcI@zte.com.cn>
-X-Stat-Signature: wahu591wtrudy9sm9b1aim8z4ue4k49m
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9CE3D180003
+In-Reply-To: <20261115004704544fuMEkcx0F4A1sNBAzz46-@zte.com.cn>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: tfzi3qfi4omkt4wgmizsuqtmx9wuc951
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794677589-126591
-X-HE-Meta: U2FsdGVkX19bRF7Kho2ga1PGauxL0sJVQELt7X6s0VKd6pPa1CJVlPUg8TtgkLUs2rc6NlOJpRKeSR0Ifer0yWymibRncjO41J6+1juE+YoUYzlA35i6NJllTsycixsU3611qzT0BPuGc1vveqi2nRlatHDM5gSLBjgLMp2vsI7ZEXDBpY32f1Kd4nLQFMoAJu4DRY8caIMC3OfmvRpbLWAv5kBPawpbMeNPQCGURr5n8HR+oMcn6EPaS+q92UA6VX3fQguegU8MEUIzaBKZ1nGgJIkMtlgiAH18BiYtrIDczBySFJxQl6Ac/8IIyxbe7+AADtaC5nqFpYlpFASx2GtQTI1YC51L29/Sm4FhP6pTyJjNBuvvy6stD0RX6Vxgf3emh+mZrYwGeSCuukgLb0+Q+CEtgniO1T5aHOCZSusaQaA7YitJPeSWyAUhBhW/iBX61wNaRJ3Lcy1SNffy/RiZKjTCvKQUY/iOQ04d0lxmqvfirr1DnY2S3C5unRt2VF9C+illSfFLkWoXY/QLY+4UhnfSpyxQXuRmQV6Rj3Co5yCasC1mBDObPPpBJGGcafosrx37p7p2xROSjr94+TSuuWCNPB/L6a6F/50POTHf0mtzZ7drjIDdrfzgd+K19NOHGq/v+TWy/yxvDPerGPmQXswp0tQavEJvivueNwveL/VitJVexdjEcEzUfphZfKPnWEg/abSCTL4fnND7RcE55uYUzEcYaHJWmx94F58q4oEA3v4OmjktJvbXPt0ZHOahfrncbgjTLXGs46wIZMi69szjXSBjOQT5LDi9vyQShaR44pR1YGaqfohjY3s4OifZinZSO7i+2YJgJgdeB7uqnuZbc3m3Nij3CGETyhd6XQ+000s8mnWeCk7uprWtIvo4+IJ3ayULmzN8MhLlLn7mF1JzzvPuFbuX3fGRY0PbSJ+LY5FoDpJJDTt5ErvSmgilgwkxtbDxf0WMcSq
- +rYjWhYp
- qyHrbToI9EyaIb4y6iiG+gu3+sawdSg/LCXZw32fIMN15gmKCPZvvtR2z4u4PrOl3MhGberw6Le3rD1EBjHvyJP9MVHlbFo9CwwapebOe9GN1BYpmuD34Zsf4Ef9HtNNvzLatqf0ANoiPsOjJ37NaVTUDPF7Rm8bTn8793nXt2XNeZh3aYfXLJN9aC1koAV8eJOIFzGHokEzxKG+LQ3btkkh9u15gTflbROgfT5UTZ6DyNh5PG8bHjgTbKyXeupxTZ9PNUZszh947uzeOG4ecsGuWs5z52PenL/WJ4UOfV09i0EIt41sThLHA2A==
+X-Rspamd-Queue-Id: D8E7580006
+X-Rspam-User: 
+X-HE-Tag: 1794677617-667643
+X-HE-Meta: U2FsdGVkX18aBIkrxpzpIrEElAY9T6ggjIqQ9xTwLnUxIIYX4p15/LY95DtEwLma39ZtHuer5nWQh9hlWJm5rAkKYqlP/Xwq6U2qpA5GX/VtaETaxF1W9DeafjGgBbEVf8W9f/3gyuTHxiJWIWIju7WFTmwVXEL5N8F0Mme7vntONtBfdvFry90CDlmFGTP9zczTcWxI/1szQnr0bMCRJFBRkWSrIhabirX8BmNrJsc49AIZSht4EpECQuS13TwLeldvwXot0E+sJeFkyZoSKvVGDeLzcmm3A6MSiNr9mNCllxT4GIXs4041kyyYxpRuAbd8uUa+xeYXHJhjugL+HSVK+ye1ejd9RTQSgRSURjR0wnedHcsLTN+dIgJCcMv9wxtwA08clxM0c/EDddidgStB1aelydFqIAPLdWG3nZQaZCJ1T1wCZD2IS5P2nf3FD9G00cEG6P5ou1onvc8vlfUZtQ9LBNP8Ykof1MsoArWuhfc6r64dEQlqVJ3MLSLOp/pu6QO2HvPR7M97a/Y9u2R2NmGoZkgMfqoZTOh9Z2ZgQa7gIjil/5947qoUMu9xZVd/2ccRNt27sOYgwMHZ6ZxtHwiC4HndoTy0PsoZNiMncnmkMOPbDDZZNvqO9CvGDPNEvyH6exiDKhGT5Dxf8Ogu8X/JfDS28e8IcBWMNTHeahNFXGgJwKAFimWlLqToVMRQNATa5ILABlGF5aXybiVnr3vmqrpEn1yp1VdCN3GJaCCWxaHg5waQgNoWXJD2O4Un9iGxWmVLseUGJGXDZQMT3SMlSfOG9BZRgQ73MokXYtJR9LAKrFt7PkJ4lLTu/p/kBn7S2dX6wyMS5U89Xj8uwgpYNcNfRVeqpxDUxkM+ikZs25b26G2ULYj/YlPTk1c8f8KxQIontjzXUdI7LQUTzbq5ffAu4wrtpnuO4+uVOjihlJqiPjw1zqiBJOZn8UMiY5JSus+kdwKd76E
+ eT2XBF0O
+ MNLtreqVVKKr1qZt9/NvucHHbcujUGb2NgFbM9orRMvZ1MpttusGABRuuTfPGE8xBKpyZUei0NNBBSPBmsekRqk0GV8KpslDLZglEvFuD8x4iVJk1dTk24QBwwWufIHp46XXyccpWrvIsVyt6Hl7kA5gR6MUPGFP22ymxLAEv8Y7ky78PDE8+551QsgyeNG72dtfaAdcIzFFguE45D+ekazU955Iq05kttN4I5a0XQcDjsxTBB+dLVkcoz0AtS+eDqLDcjVASjQnndrCe80uk/BeNsOhxW6uM14k6IaEnzRWyuNFpMJl0aHYRhaRYkG+aTVBwsL2o+nlLIwMVLQaczB3uyxO9sLm6eUF/M0YgwFcUIW6kXRTQBZV8F2nkHK9qZ7FF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,25 +94,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 15, 2026 at 12:47:02AM +0800, shao.mingyin@zte.com.cn wrote:
+On Sun, Nov 15, 2026 at 12:47:04AM +0800, shao.mingyin@zte.com.cn wrote:
 > From: Shao Mingyin <shao.mingyin@zte.com.cn>
 >
-> mm/kmemleak: fix scan period truncation on 32-bit platforms
+> mm/execmem: check execmem_restore_rox() failure in execmem_cache_free()
 >
-> kmemleak_write() converts the scan period from seconds to milliseconds
-> before clamping it to UINT_MAX. On 32-bit kernels, unsigned secs and
-> MSEC_PER_SEC (1000L) are multiplied in a 32-bit unsigned type. The result
-> wraps before the clamp can detect overflow.
+> __execmem_cache_free() checks execmem_force_rw(), but ignores the
+> matching execmem_restore_rox() result before adding the block to the
+> free ROX cache. A failed restore can leave permissions only partially
+> updated, so a later cache allocation can return memory that is not ROX.
+> The cache allocation path does not reapply permissions.
 >
-> For example, scan=4294968 produces 704 milliseconds instead of the
-> UINT_MAX millisecond limit. Perform the multiplication and keep the
-> intermediate result in unsigned long long, preserving the existing
-> 64-bit behavior and the later msecs_to_jiffies() clamping.
+> Check the restore result and return the error. The existing callers keep
+> failed frees pending and retry them through delayed work. This prevents
+> a block whose ROX restoration failed from entering the free cache, and
+> matches the error handling in execmem_vmalloc_rox().
 >
-> Commit 54dd200c5a25 ("mm/kmemleak: fix possible wrong memory scanning
-> period") added this clamp, but it cannot work after a 32-bit multiply
-> has already overflowed.
->
+> Fixes: 187fd8521dd8 ("execmem: rework execmem_cache_free()")
+> Cc: stable@vger.kernel.org # 6.17
 > Signed-off-by: Shao Mingyin <shao.mingyin@zte.com.cn>
 
 NAK.
