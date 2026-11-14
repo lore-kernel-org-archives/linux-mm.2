@@ -1,175 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1086606A331
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 20:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B54606A329
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 20:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=XDIhocjh
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=d3BcPLP5
 Received: by kanga.kvack.org (Postfix)
-	id 267336B05CC; Sat, 14 Nov 2026 15:27:31 -0500 (EST)
+	id C11176B00EF; Sat, 14 Nov 2026 15:33:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F2CE6B05D1; Sat, 14 Nov 2026 15:27:31 -0500 (EST)
+	id BC1A86B05B0; Sat, 14 Nov 2026 15:33:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03ED76B05D4; Sat, 14 Nov 2026 15:27:30 -0500 (EST)
+	id AB1666B05B1; Sat, 14 Nov 2026 15:33:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BF05B6B05CC
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 15:27:30 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 452C1A7FB9
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 20:27:30 +0000 (UTC)
-X-FDA: 85434859860.24.E579D28
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf29.hostedemail.com (Postfix) with ESMTP id AE677120009
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 20:27:28 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=XDIhocjh;
-	spf=pass (imf29.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 84F0D6B00EF
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 15:33:49 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F37E3C047C
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 20:33:48 +0000 (UTC)
+X-FDA: 85434875736.28.86E1C56
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 198A0C0007
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 20:33:46 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=d3BcPLP5;
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.51 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794688048;
+	s=arc-20220608; t=1794688427;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/GQ2kS4zUGO1VrRdCGc0i8jbBEMqqC1y2L0YsldwfFs=;
-	b=2vJyWKIkMO/6z+HeHC9EmuUEMJhwy8Ddhb1Ve55NyfXHhv55RMjBcF94t6sW9z+LwmkhHq
-	MyPc0NkjDn3ZXvXICFmjjXWJFPEvtKIqvmb9q5K0Yc4LFQ/ZJYQa+Ir1K2g/RXA0G07feP
-	TOyKzN8rHTo1Tum7jpfgsPtaRvY800o=
+	bh=mUNTxU6y4TEUEh2QskFJN7r1v0olPGCGxnMzFiH63eA=;
+	b=6MYO17MVyCyjkypqFQb9LHlic7pYPKEJsE2UyNKEADO8R8tmJ2zl6W7Gwa2siSkB9FgRm7
+	OrukMciEB6LtyT74PNPwfYfjuQVBxBUMAnscheVK0cbp4MGtQH5TlK/d3W7hjDf9V/oL1m
+	Bp4FZ3+KCEF0QxauPxTn0vENdeA+emI=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=XDIhocjh;
-	spf=pass (imf29.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=d3BcPLP5;
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.51 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794688048;
-	b=A06fW4+tU+5Ls5Ls1EVlBjCs8OwLCttjDHPKi61n80l5py+7T0wevP58k/DkOrRzF+QlZ4
-	w71WQgTDKHQpJMBX1p87ijC4xmprz0Zu26hjyLfdCRuDsbJq4zmhGbH6YXyUNtaJBH56JG
-	13rn19ajSB6iuQVYfTXyaUsGfP6nqiI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
-	To:From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=/GQ2kS4zUGO1VrRdCGc0i8jbBEMqqC1y2L0YsldwfFs=; b=XDIhocjhPJkOxDtRKRtKBhtH4K
-	d5+pqDbw+uhdymgukoin8yZ+SIycM+3Zy0tlygo/Ahh9V2dUz8am7v5F+s+OiHgrg8Z6MoFGWEnEj
-	F4En8Ab/mKUEIWPb+cNtmXyElhpAnx+TnO9Im2Eow2i+nqiNosKxRAi1SQbReU5LZrPynT4dcY8Lk
-	Thib/6BgIqJzI+6K/y8KD4ybDW6vSBxsArbMvKkNi/HLSIt3390x02r1bfV35x51xAJlxCNHKoU7C
-	Jcj7OJXmK4/hTJJRDAEHa7wka2ef1B/GfVa9DURHrADxvENRQDnmIT2OgPVAh7qGGcJ3nZksJ2bDP
-	bS0oBuOg==;
-Received: from [50.53.43.113] (helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xSKLM-0000000Giga-33TB;
-	Sat, 14 Nov 2026 20:27:26 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-kernel@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-doc@vger.kernel.org,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	linux-mm@kvack.org,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org,
-	Jens Axboe <axboe@kernel.dk>,
-	linux-block@vger.kernel.org,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	linux-bluetooth@vger.kernel.org,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	David Heidelberg <david@ixit.cz>,
-	oe-linux-nfc@lists.linux.dev,
-	Chas Williams <3chas3@gmail.com>,
-	linux-atm-general@lists.sourceforge.net,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	Helge Deller <deller@gmx.de>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	MPT-FusionLinux.pdl@broadcom.com,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	"Martin K. Petersen" <mkp@kernel.org>,
-	linux-scsi@vger.kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	linux-mtd@lists.infradead.org,
-	Neill Kapron <nkapron@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	xen-devel@lists.xenproject.org,
-	Hans de Goede <hansg@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	"Theodore Ts'o" <tytso@mit.edu>,
-	linux-ext4@vger.kernel.org,
-	Mike Marshall <hubcap@omnibond.com>,
-	devel@lists.orangefs.org,
-	Paulo Alcantara <pc@manguebit.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	linux-cifs@vger.kernel.org,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Chao Yu <chao@kernel.org>,
-	linux-f2fs-devel@lists.sourceforge.net,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Benson Leung <bleung@chromium.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	intel-gfx@lists.freedesktop.org,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	intel-xe@lists.freedesktop.org
-Subject: [PATCH 12/12] docs: ioctl-number: update DRM entries
-Date: Sat, 14 Nov 2026 12:26:50 -0800
-Message-ID: <20261114202653.3113381-13-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261114202653.3113381-1-rdunlap@infradead.org>
-References: <20261114202653.3113381-1-rdunlap@infradead.org>
+	t=1794688427;
+	b=K9zQT3k3NPTpS65uhvEw4DSk8YllUTj6Gk5i+8BP7F2V6X3fESon3D8+3bcH4+kSsTDTCt
+	UGArw5beg/rgKiP03gRf1ya6rY27GYIw0ctvODcf/MJVmsk9bA2OE/l3xxZbvJAm/0kFQD
+	XwIcmvf7CmKrR/l3xp8AKTPk8cC217o=
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-91ef011e338so33329066d6.1
+        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:33:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1794688426; x=1795293226; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=mUNTxU6y4TEUEh2QskFJN7r1v0olPGCGxnMzFiH63eA=;
+        b=d3BcPLP5p3ZN+32sAr1Y16K124d9odqm9O0fZj7ZoAB8VoBoMy9qQ0BC42YFqnUP+Z
+         hh8I2ZYQJmwcZncFjTXmZ6YxFn/ViQjDvJTRWhD1zbyOwZvYlPdhKBgbZ9hneE6sUCfZ
+         Sho62UKSM8wst2DuArj+F9YkiQZ7Jy9Z3yyKQ3D+AvrYOjF+G/XkZ/itzzU9O5pOGMdD
+         lczCzAGbdQz+L/8Rsq9DIf1FUpjQeNE2LDUfGsFSePuZk1Jz1abMUSHODi4lYS9n6Icr
+         SDoRnMFeTz6ljQLbB0q3R36oT4rOyhrA5YOTwZzXkOoFHOpj96iBDpWUPXozopW85R+6
+         Ta2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794688426; x=1795293226;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mUNTxU6y4TEUEh2QskFJN7r1v0olPGCGxnMzFiH63eA=;
+        b=aQhf2fed79+jJ5PRmWxiVaB0XWDW7CueVA9REiNBU61yUOxJaWSRmOw77s05udAbyd
+         /O05N8Bawo+pbF2rYuGGjywxDB9FpOjyBcP+500uQDwFOnab3WbFrhs/GLxoPwiKsENL
+         /oj7Kkbn0CDRLQh8iebNyPTbERVzYPVpBqXVWr0gRSlB+1CuxMnnM9uLfDMVTnfwiLAQ
+         IgUBgO10NNJ1TI20Tar1GrEQm7qDgAi/oVv35Z/JPgkYKpoJGJknNmbZpyUsNYLXpfgd
+         9YF7gIDNXCEjAX7dHgitlSRpAioFfVaJtu3nWWKhDsHPkUkdhoEeXK9D96aVeJ+6w2Ci
+         JWyA==
+X-Forwarded-Encrypted: i=1; AL+hErEsx2QyKsxmr+fRr+Foj6qcW8Gt2TTgkqvXUTK7TBsoMPyYgWPxLy+KpLtZuOXBytAvSbCAtFA6fQ==@kvack.org
+X-Gm-Message-State: APuU4Z82c2tNZp6leM3LLwVK57vehQub+VGsu4jELTn9/LVeJjWHoYkT
+	GHXWPIDEPeJOBQjjdZUso2aaRVbmgWqbMOgVqXpYcakqPy6CcsewgAzrVyxF7wTW+Gk=
+X-Gm-Gg: AYBFou34XCmOOf8ce+P+m5yWbWImlGkS1C9Hixm9mh/7LgVE7+AVe44cWvF+omihSSs
+	Z27xDQcSTIhRfoYExe8McegR/mApQ2KimWqO0IfWstQT5wSGuX7kZ66/Jis0kmuHyCV7P7gbumQ
+	+AYKVEjF/JhNf1gch94nT43UMm39sbb60uUPGDit0bXnsekZCWstevCrcPV5cp6a0iMdxpAJx1E
+	s7m3dU9ZbZN27eF/fz9388kcZp+r3pHCaZa6jTL7fJSLlb+OfGyz69eMGRPea/e6Wq3kETs5w7z
+	XmZTpnnG0Vkilwmm8biupIt+CEWm5LG1rA3oaE0gvS20O6/+G1mpLUas8G8mYrUfo4ymM1HxtaX
+	o+ZwrzJF5sUTUarW57iSdM+e0IixG7raL3LD/nhkAYpCGUQ9ZYOtCDMbi0+gWxNlNTc4QAIXbUP
+	vFBv7d4wxOSOAHl+wIE9+DlbaRrn9iuAfLsKzpKrGhiM5jUqoYUFCgAuhIHT/ADQ66/yVUfR9ht
+	jNxLYdhDlYu9+N+EEjVcB5RZ0Iwp9QXkeMMaqC4EVUx+R0ANds1n2+BtOQ14Fpf0zj9O4rOYksq
+	yPyLGYSDnB5ZPVyQgruUv4f0egergAJnARn6WH/d/9jKd0qffc87QBzo14GkWyh0jOjje+BeKD5
+	YPU/5iRw=
+X-Received: by 2002:a05:6214:5291:b0:919:7384:99a6 with SMTP id 6a1803df08f44-91f24246723mr103621956d6.41.1794688426276;
+        Sat, 14 Nov 2026 12:33:46 -0800 (PST)
+Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23d954e1sm49818366d6.33.2026.11.14.12.33.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Nov 2026 12:33:45 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: snunwba8eemqcr9g1e4nhfcthuknkq84
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] mm/migrate: fix softlockup in do_pages_move() with
+ huge page arrays
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: shao.mingyin@zte.com.cn, akpm@linux-foundation.org, david@kernel.org, 
+ linux-mm@kvack.org, ziy@nvidia.com, matthew.brost@intel.com, 
+ joshua.hahnjy@gmail.com, byungchul@sk.com, gourry@gourry.net, 
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <avifKRgR0Q4WPUNR@gremlin>
+References: <20261108142831046W_fbNCAFfuY0BjHPCCHgi@zte.com.cn>
+ <avifKRgR0Q4WPUNR@gremlin>
+Date: Sat, 14 Nov 2026 15:33:45 -0500
+Message-Id: <179468842502.482102.17860580592179578567.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Stat-Signature: 7mahsoqn3st4m4mbpraza8zjkxidmnmn
 X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: AE677120009
-X-HE-Tag: 1794688048-889371
-X-HE-Meta: U2FsdGVkX1/6z/OjLQXeBBzvn1lVBjzBmPnqo9ZPtnVu4ttjJD8/DgKpq+k1+Uv2b2Mj0A+IIVtX7TiLF+fcGX/jRSJX60qPiuV9SF69lG5+A3CjWFgrRUbkJSj8i6U8m6x/akrdloP0PDCADRZmRZLddohPieCTV5HOvfcIsXXNE8apoU1vx5aBwYAw/AJkXp7xf3zeHnGikItlGmmDOvissor0aaO4u0wCZxLa4PNPra+685atk7qNplQ3A4CNERC4bh/Ypnu8YYVA7lKM4kfoOLXBw413BP14JE8LO3SpQVXK1pcpQrs43sTOdq4DGIxYKNAtGjJ/bV4XOJTQaXRpKcsng05Xu2nwW1aXKQSHnqraIWXnaV4tjfVZ9lx2Xwvnt/nwk+41IDUi2HXE1429LGVzxsZbShHypyhU4uBk3XGRQhUCThM0Libuw/+1jcIDFcgw/IEKbyXoWKiOQBha51JaMEFD7If+d8P64htqWSh6AfmnWCkuF+3otYIyrN2w7KiHb0/qjA/o4xDWW+JhCMME+484VU1E48+nhl/1i19rCNLklWeeT9q4woutgY9nAIsMX4DSZpfjVi4QiDQ737/uLfm4hsDJvHIWpmYDsImEASRlBrtwBj429dhnu4ElNuzhjMOlSs+/rKQwwWyiaMkYfFZ4CmauhJC499lC5RQuFjpfhrZKbC3W6v/rWD/0NJTg3YQrI0RkNVbxu3jlNBIm/yXMKQKFY2HRUDpvYyv7jqaZ5ypH5ukd2aAl7DkgJktq6PFPKFDjjlsMfLt5fsHNto8ESK0u1kj9MT3AFEoNR1eG0m4rLMFL4+nooqbhnMQKfXrwuJfcH6FSECPjFLzoozgBIujt5uF/UT9r9NYANC8njRdKgnK+7ecxK9rAL/t6NfQJajmgvEcVyAJtnu2UPgcJ55vfEtQa2+W9F5SAxDZInYqaI5BBy5HkFU4GSewCv8e0dRbuBiB
- S5ns9/jH
- 2H2ZKO7SjDLZmwLuA9qbRGy0mqph6qD084EVZ4WLDzkXAk3tiMGPk0m9A8NT3kBKbryuiEAVF242JmNKYwIvSSaCLq1Pv0JM0N9UhwQtn+9AWzbnbsMd3mKLkpGGSSwnvEiQ0iMgy7mwOUzW92jr6mC/2GHf7xnsVh0pVmEzuIw+nJOkZ2nv2qfYnSrM8Bd/uVvDK+YDXltzkby6FkqwNbVc/k8ZZnIoqs46NOIzzH40937iE7bT5VbZ2tdV58pyHJa8yIhd/mNS+oCXlscl/WYeLvajzlPR6gCB+qnoKykJ7qrt/ipjCBiy/qSk4/fO/KG2OR/If6AfIdONoAK/vBtiP/lVn6E+bO4jL8Px9TgXLeKf/3LXaAwIar9Z7Q8W4koQDC0vJiUNfn5Rq9GCAnHNcoGoTscUPCDAfdixgYEZqPQo3FWlw7+kIBP0WcKexm2ARw8kwkDyPHg3I0DUTS/GkoPRxfjHAheD2RiuG3ezUJOIfFeIvigDEA6XlTnz7rlYpd3BoJkdqA+dAH/erxwNguiIS7S5ElWwHmye+mUgFzyebMkG9Lg3ri6Xu9+JWbcSduZ+IjWp/jDVmdu4Ierv2D6RSSDaabSiI7P/2E+t8RMjl7p6VpT6jkWd2UpqwqTblc+RYsEWstezRw3R29uTa10I3eV9eERtRYZBhNgTBQrYVEJD7b73LsQZX6/ig0tW5Tf62pVMVw4hir5FqZ+DDR0hfM4b5zy9AUxpcdXySZFiAdWoQefMAHAGVxHWuuDPop4eEhfJPU5vZzbTnhHBz46eW/CrCYsAOL1O2p/Sm3NmYfS9cjSAyBgQ4dx9QDVrp
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 198A0C0007
+X-HE-Tag: 1794688426-662017
+X-HE-Meta: U2FsdGVkX1/P0q7VZemftULZinkAF62ot1n+gXEOSJ130hw65EivSOZmljVsUsEbIuYnKHl6ET8xDGwqWuV66p829KE7rHLnz8J3SK04xheFtJcLHkYFKJ7qWMwXHAkCx0u03mImtRiaeKg5R1ng1HIsmPLLvEPIzCfgrrAdgfIUADpF+VckCOghdF+v6HxLCghede2chtH8Rp2J/CY4u8Qf55GQGddtt2pQ50VMwGu+UU5+AvoWrEgn26oMqptYZJlRB2ihtjqvLGmgzMdMuVvd4ZQxd8XwkjIhR4AGtMS+5sdIXUpG9a8skmxvc9oxC0dJX93+OjatA8R5Xc5fFOiwpAXVBh9oYxs3uyu+CbF21tBYfGnZNY3sWiezxNGhf3OwKfd89THMP/+18A+g6VOLPifmUIgt6sKtIauY2JjeI2w9jzk80wyr9eI47UeJur+ci48EigyRAfHb3SE4+2qgU+5h8Nemk/+Rh1cktrdIBaalqWPbQm6xXnQ0PAfDBmUvcr8xnkexsQ727JUYy/cKrtit9u2yffcPWf5Ti9fv7MR1hoZHLcOw+oX6Xma7zY6gcKebrejMXGNLS4P/H8fUg44TLsSO8gaLrQPq0tjWGTZxrOcN8sNZulLPEIDa7fPGzjd4aPSa8VkvvZRV4RMnopHkT8O+YeqsbK0I/2zgmDhGU8luJrxv0jzpowHO6H7peGXwPxqxJYfyWryHZzeR1kagQr2gM6cQFQd9OVZFOlytvgHgrqoAsyKAK38EvzxXYVBrdH81mjTof3HiyKkSHL4SYFflfbuJsfhZYjqiKDAJKhHC6Yl2BMB6AX7YUAUOeU8WqZU5hBHfYStIkAtebfCay0c8284q8Lp6M/DJgWxO+w/0Njh2QttSACmsjg5labkoA/OUnwmhk8NBwLY9RV1KaJjr81QT3ea183PN1cHXQr//PB9fji3T0xgEafRnLAB8H7PTYMQ6aKr
+ 0+cpZtZ5
+ M0gSyXFZ29k6upxZPkRkZuT6c+1/ADeMrN6864cnhmZCmGPJH0WF5OS2V2QojR+6f+umkCuU0MY6zANMuHswoHFvFk6XxD3X2NrDbtUEI/2oUmLR0l3xF1a1af68k3ddGNvnr8QdnTHHpZALbrwtaSDza2feoNEFl0Cfx/YV3/DnxIzgA/oEG2VYAYlnuCHiy8V+gcUJANpIfauQ28CLtPv+PDGIxfeDL1ahJWS2SivfHny/XNwjZn0uUzPZV/8A39oyeuCeRutAkFBMOOKSkbeG0+N0PiqfIvICJYRrxbW763dq7UDNatkpnLuIoH1R1WbbmSXaYUVj3PQISI+qcLrxW6NMFiBL/rcoRgyj1C640qy7a0MZATMB/5faXN3AxG4+n/feTf801e4ViKBKurRJ25qYQIfR/vtdEGYffi5SuiZPkmesBA0645L8t3B3yG7G8HNLZJgfOGZ4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,61 +131,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Update the list of files where DRM ioctls are defined.
+On 2026-11-14 17:51 +0000, Lorenzo Stoakes (ARM) wrote:
+> On Sun, Nov 08, 2026 at 02:28:31PM +0800, shao.mingyin@zte.com.cn wrote:
+> > From: Shao Mingyin <shao.mingyin@zte.com.cn>
+> >
+> > do_pages_stat() had the same problem; it was fixed by 8e934ab44389.  In
+> > current mainline only alpha, hexagon and classic m68k can select
+> > PREEMPT_NONE and they cannot enable CONFIG_NUMA, so this mainly targets
+> > pre-v7.0 stable kernels.
+> >
+> > Fixes: a49bd4d71637 ("mm, numa: rework do_pages_move")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Shao Mingyin <shao.mingyin@zte.com.cn>
+> 
+> NAK.
+...
+> And absolutely not to this person/script doing backports, thanks.
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
----
-[Since having multiple maintainers trying to merge these would
-cause some conflicts, it would be more manageable for Jon to
-take all of these through the docs-next tree.]
+Have to agree here.  This is just creating backport busywork.
 
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Shuah Khan <skhan@linuxfoundation.org>
-Cc: linux-doc@vger.kernel.org
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: amd-gfx@lists.freedesktop.org
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Tvrtko Ursulin <tursulin@ursulin.net>
-Cc: intel-gfx@lists.freedesktop.org
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: intel-xe@lists.freedesktop.org
+This might matter if we intended to do automated cross-arch testing
+on QEMU TCG on these platforms... on those LTS kernels... but also
+mehhhhhh
 
- Documentation/userspace-api/ioctl/ioctl-number.rst |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Yeah we shouldn't encourage this kind of patch spew.
 
---- linux-next-20261113.orig/Documentation/userspace-api/ioctl/ioctl-number.rst
-+++ linux-next-20261113/Documentation/userspace-api/ioctl/ioctl-number.rst
-@@ -98,6 +98,7 @@ Code  Seq#    Include File
- 0x1b  all                                                              InfiniBand Subsystem
-                                                                        <http://infiniband.sourceforge.net/>
- 0x20  all    drivers/cdrom/cm206.h
-+0x20  00-01  drivers/gpu/drm/amd/amdgpu/amdgpu_umr.h
- 0x22  all    scsi/sg.h
- 0x3E  00-0F  linux/counter.h                                           <mailto:linux-iio@vger.kernel.org>
- '!'   00-1F  uapi/linux/seccomp.h
-@@ -269,7 +270,7 @@ Code  Seq#    Include File
- 'c'   08     drivers/scsi/ch.c                                         conflict!
- 'c'   80-9F  arch/s390/include/asm/chsc.h                              conflict!
- 'c'   A0-AF  arch/x86/include/asm/msr.h conflict!
--'d'   00-FF  linux/char/drm/drm.h                                      conflict!
-+'d'   00-FF  drm/drm.h                                                 conflict!
- 'd'   02-40  pcmcia/ds.h                                               conflict!
- 'd'   F0-FF  linux/digi1.h
- 'e'   all    linux/digi1.h                                             conflict!
-@@ -293,6 +294,8 @@ Code  Seq#    Include File
-                                                                        <mailto:zapman@interlan.net>
- 'h'   00-1F  linux/hpet.h                                              conflict!
- 'h'   80-8F  fs/hfsplus/ioctl.c
-+'i'   00-02  drm/i915_drm.h
-+'i'   00-04  drm/xe_drm.h
- 'i'   00-3F  linux/i2o-dev.h                                           conflict!
- 'i'   0B-1F  linux/ipmi.h                                              conflict!
- 'i'   80-8F  linux/i8k.h
+-- 
+~Gregory
+
 
