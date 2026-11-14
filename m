@@ -1,91 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CDD8606A33D
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 12:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D993606A335
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 12:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SJXRZ7UC
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f69SiW3T
 Received: by kanga.kvack.org (Postfix)
-	id AEB4D6B05B9; Sat, 14 Nov 2026 07:03:41 -0500 (EST)
+	id B607D6B05BB; Sat, 14 Nov 2026 07:03:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4DA36B05BA; Sat, 14 Nov 2026 07:03:41 -0500 (EST)
+	id AEAC36B05BC; Sat, 14 Nov 2026 07:03:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 964966B05BB; Sat, 14 Nov 2026 07:03:41 -0500 (EST)
+	id 93D0A6B05BD; Sat, 14 Nov 2026 07:03:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F7BC6B05B9
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:03:41 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 00D29A03BC
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6060E6B05BB
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:03:43 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CA3A71403D8
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:03:42 +0000 (UTC)
+X-FDA: 85433590284.23.5E76D61
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1941E40008
 	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:03:40 +0000 (UTC)
-X-FDA: 85433590242.26.CB72013
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5D11C140011
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:03:39 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SJXRZ7UC;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f69SiW3T;
+	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794657819;
+	s=arc-20220608; t=1794657821;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VJvTxxxVKFSKaVy4VwipIwjtqqi4NX20dtdLW1nv+Hc=;
-	b=fRDmYZFpdedDP8YQWVg0OnX44FknjgRdqadcKAucj7MsRReUba4Rnz28UsEVRf64TQ4EqR
-	A6VZPromYDQcNS+HaRxE6NYUw3qUf+Ld2YXux3i811gemG1GGYlT1ROFZUfNlK0pCqxZ/c
-	Ui+IwsLhy5VRlX9bjye9vphksf2KTYg=
+	bh=i/KYa3UJ+vAFbs7NcbhfOHJmaPLTvaBxJddS/GfOWco=;
+	b=CBeBY0XstBOCPl0aw14y3yhP6gmSVxXGGzWzIXeLV8WMv1VTbrYsJhZAwBN1qE95LRZtbi
+	Ot21qVkFOqrO4RhYQqlwnFjIv/DL7xHtbNDRiDvkGuiVcn06iJ1WGkfglY+/if0fQjUoUA
+	T6WdBMGMl1Lovu1ivfF6MNpQmIQv9fE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794657819;
-	b=dpVnESzF3ujHc6BDoe2qTrcTY3tP/wof0tzRfJzBe7JgJhhAJXKQVtkcTK9u2l73JHD3NE
-	128q1AwBiWtfNo9gQb8lmovJL9xfjVcxBCNaQtEnq8Q0UqmIx5MBGJLYXxDvP+3i3f7iCP
-	S2TA/mdpSkHCtYPRO7R1lTacmH58SJY=
+	t=1794657821;
+	b=HocKft/8q/Vxibf8ETkdX7ThObcKhECsX/9+wZDNrcNMlZfWieneom55E788MUaAmjTx9v
+	JndaCcCh80zARjVAttP2bmnuwlICkallNnm6M1dboNkalB4qRsNyKjVyEqfnDvHOnY3Olg
+	5wpcQ4bi614G9LHRm4K3JPfVRGBlorA=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SJXRZ7UC;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f69SiW3T;
+	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A5EDE435E4;
-	Sat, 14 Nov 2026 12:03:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDA6C1F000C4;
-	Sat, 14 Nov 2026 12:03:37 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B9FA761E34;
+	Sat, 14 Nov 2026 12:03:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEAFA1F000C5;
+	Sat, 14 Nov 2026 12:03:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794657818;
-	bh=VJvTxxxVKFSKaVy4VwipIwjtqqi4NX20dtdLW1nv+Hc=;
+	s=k20260515; t=1794657820;
+	bh=i/KYa3UJ+vAFbs7NcbhfOHJmaPLTvaBxJddS/GfOWco=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=SJXRZ7UCCdy3QZyo+FxMDY7k8UIUGk6IYo89lBu3JfDwkdzTs3BZnWyGaCc/ULTNn
-	 hTClA74WxBneCreuWBl8YFI8tBn7zxnnD9TXVlOMqnV+xQ6uV8PhP1S9SPwJ6ZTpSO
-	 5zAHKao9moTQQgbLDO8sbnPffmS1wkAjk8AyR8QA7xbPlYrXri8uKa7QkpNcwLQwID
-	 Wxo2z8l+5N6HHOqpdrXitXhs30JB45pi0jnIIoiIE1pk9b1JjFa/5wKPTdMicUZTzV
-	 9CQoNePsc39FBbjGyiptDy9bf0aHlUaDlJQsHsyhfRni7RfJyClfhj54WdR0L/qJMM
-	 FNvbQxj3FfiCg==
-Message-ID: <sashiko-outbox-214468@kernel.org>
+	b=f69SiW3T4Q7A6/VsOz19IJcDTbc2284jaDxgfyilDNG1Mci6VQQ0XsUIBzmCI2qyW
+	 jBaCIXM0+pGMbZU6+HsTbwcuLPsb2hzKKEbMRuKK4DOQw/dU5Ns9uMCz52Jnzj9tF5
+	 AXH/9yDypM1F5LtJdPmEAkLH4UA7aJwzK9MLeRyuesvkSJjk6XuJlznUHMW2Vc4Awm
+	 BtcYalXD+cdcCtN0E28SgqskmS21t/xSbEIhlpoLv2451rm/ZPCa/BhesuHFKDJLNb
+	 sT27WrI12rYRWzsaabg7n85XlDTqlHu6y6vW8o/+iQEOAYtkvM/L4JnWcrRwRiTkYU
+	 9J1nIjwgbU3lA==
+Message-ID: <sashiko-outbox-214470@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 17/33] ufs: don't set SB_RDONLY after filesystem
+Subject: Re: [PATCH v3 19/33] ntfs: don't set SB_RDONLY after filesystem
  errors
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.com>
-Cc: "Al Viro" <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, dsterba@suse.cz, tytso@mit.edu, "Mark
- Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>, "Joseph Qi" <joseph.qi@linux.alibaba.com>
-In-Reply-To: <20261113-work-fs-sb_rdonly-v3-17-0be92bb73709@kernel.org>
+Cc: "Al Viro" <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, "Hyunchul
+ Lee" <hyc.lee@gmail.com>, dsterba@suse.cz, tytso@mit.edu, "Mark Fasheh" <mark@fasheh.com>, "Joel
+ Becker" <jlbec@evilplan.org>, "Joseph Qi" <joseph.qi@linux.alibaba.com>
+In-Reply-To: <20261113-work-fs-sb_rdonly-v3-19-0be92bb73709@kernel.org>
 References: <20261113-work-fs-sb_rdonly-v3-0-0be92bb73709@kernel.org>
- <20261113-work-fs-sb_rdonly-v3-17-0be92bb73709@kernel.org>
+ <20261113-work-fs-sb_rdonly-v3-19-0be92bb73709@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 14 Nov 2026 12:03:35 +0000
-X-Stat-Signature: pfpy3it1r8xaxc9o7br9ezm8n19oif7j
-X-Rspamd-Queue-Id: 5D11C140011
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
+Date: Sat, 14 Nov 2026 12:03:39 +0000
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794657819-801904
-X-HE-Meta: U2FsdGVkX1+PkiXPLK8CFqQbyYyze7vA5qDPyz8OuSExKbt1/7TbRMbIZkr6OojLUw4OZqhOnHaRgXe+HycvZ7BHqvscOE4oEOZyZX9HVQmyXdksHUnAkbRiS7cTdJ72ak+ckkblub0ETDzZlWFWB9fRb9Ld62649E+v3XNhnr6CAhkOBDfhQohBsP9tWgoBQ+3R1WIfv55GXuyFb/OIwm/Fc2TDnISqhEdlRAU6EJoXvc76ssNjq14cR8aIpQVwT7kwfN1a8bYFbV+lwdapYeWYuWqq2upqc5qAqbNEuABJgt76yGOGIgH3aty6pYjiOo06GiLJQBM3Eh17X+o07nEl9gyIT9i+8AZWKAot5//BEILkAYQ4j9RNHIT5kr++icRxQAVF8V7cx6azVs0Y2D/2gc46II5159yINE4EVTbCqigj2USR4j6rCnjP5n/c8MWHpLsvOBuHjBwVXveFNccCF8c+sJ2BThRvLBZbzLtXlhrCuxoUXreT9Cz9GClIsCJDEWbtQlTYcbOElUS4a0QQz3RMoJI1cYlFeJEuE97fK0I4+sBuDCqkeQNd3ZQnLVxLwmQbH5axzlNHjJg/Ngn2aUka9K/yxSaXO1KexhZ2YGsqJV3MAbtGL6oF8+EnKz1wSwndR5D9kOe4tom1HzG+wPwyQy8uune0UhabH1wClbY8GQhz5B4Jpf5DQjEyL1UsMIwXydTOUFOIa+9Eba8iY+kayAimoIo6lTeER5S8l8Sh4eq9/Z0yoo3nCJ8RM/OaOqn29i296HlFyeSZsDA2HZUmAXhC5fZOrTJkq2nUB0fMdyuxasKQldAXKxN8nnSGJyn0okG8OXqnV9ZfZuYyLLThQWsp3cw2XhCcoWPUGCmK0FrTsgdhAa6+f8PuE/dGHBraa4FD8CvwqZWYqX9WFyB22inJe9Eq3k2e69CcD36n0StP3qMAwEXvM0ULrfhp4v+buarXabWpNme
- 1fr1Qka/
- qVst9Rnopu+0o3gifIgJYITygR89lztGRJHKHuevqyVEu9l5yDL/QhiluLKQLphsol3v1TWgiC8CQN2Lv0UI1BKavgIUciNm8/jMRuZIPI+OXTbQk2pKtyljeldB9/xDuM8ltxteUgGoV9gbezct79aMjMuo+03L8wDUxLwzHhT4eTlGMDc7br45PfcyttJ38TLscBMXQLHZ9dyTfVYUKW+DrIeKgfc8YRsDWdtwW964MjwvBWUQDs0UcxwH8P21t4nj0R8v+CrwC4mtbTOv8RJSDDePCxeVg6maruuxmCol1HAqI0CZO5yaOxBGhIaJ4WBILho6IodWl5hnmwT2o6cTPYyd+8EVLlyQv6HMyj9vbSUwJIaINA9mtn5jvizUxVermaS16ThOzmTIbptqHtqz3OsullJoxnvbId9RqDIlePF+ldHq9ICe0CjzHmh/wF8JwIXWSosnejdec06urNF4uh3eZ5nzeWJhmmDZ/Vs/WL8i4UQIpNd9SMsVb0e6nXtg38SOI2tgVuGF7XL7UT1GgaTMYg316Q+Ed4amoEs6iqMf2ch3VrQyia08gmvddjgTp4zUTyxNfdRwzaca/ySmGvXJb4FAEJTAr02bc+GuoEMFM+ueEI+1qUDbv0zJ+JOBpc8dm5Vj6HHA=
+X-Rspamd-Server: rspam09
+X-Stat-Signature: d39yots3acuzesz4h3bsam1q6mmawnw1
+X-Rspamd-Queue-Id: 1941E40008
+X-Rspam-User: 
+X-HE-Tag: 1794657820-443761
+X-HE-Meta: U2FsdGVkX18K3udy0dQSBHCWx1TfykbK6euNqBMJcDiWTlFBiqXv66y1+oNmGjw8PT5ANRlpeWQVWlp7KcpCNaOO+3QefGS2i6corN8DVnCup86o69T9/LrsDb9cbGWxhgTU6O7jfi10TeV+Z+16tGZeVz/7/z27NT59mkLnK3hhkD/BNGh39HKoGUd0cIqcHh/aHaoKAhTVLwepFBI2rxbhcSyRf/xLs9Xxw+zjFyUiSvNz9gFOWN0nJUweUV6y2LaM3UTpzWf3ymp7pqVH73ZxnAO8qJr39Z71YLNVC2IDM9QbP680wvi1co5sYaSG/81zGNLT1Vhu1ohlEiVyeyCHTCEQhv7kkYXPv4V2w39QbgUaLMYmAOzuwmpRFjFACZoGdxHR5p/043N/hAnUHJdrz23x3C9MFvDJpjcHSp8W9+0ERsCbkb6VqxAI/VncbGi5Vlv2p48+Qe40bCK6qAE1AK3JE0UyTGo3mrEfpYP8CIQJaonVEFHj3hxOizO/dgARuZdIuUoIDWp/BdsNQQbEZOGstEdRa0K2aOO5uJU/va+PXX5rXgCT+ySlLRLhklGWSiW4BpD8d4iEU5T2CfDPOeIHxWwxW9RMOM5Q/dDc4y8E+qjdzYiuK6FSLIoNzKCbgZT0JyelWMqqShgeWiGpxAc/GLhSW+aIwm2bEnKUiuQQhffq7ZEDck43B9cDPoh9CUzJq8cPe1qNjvd6NaYPTNAO7ri2ArJdqLTBhTTtMeU/wXbCYnMJ7F3ZeE0uwmjp+ge2QYCEX0uBrZN4U91Od7WE4mjzBL71+8qWg/s4O9w8b3zZPiJsuswuNNGyy6otEtVhdyHNcWOv8kdKLfIVviRspXXFdGSXsmcmmqP6F2WzgkPVHwBuqlqQ0cYDL90LMjHot6tNBI+3y8wcIt7G5YTPAZSRtAk4zXC87faL+FNU1YtA0YXhO8MURcseYOeqeNn8BAPQMJnLJDK
+ 9y0AZIrP
+ 1h+ilAdt76LlvMerxerAFdakHvPJYq64Tnbel0SG6ERbBHxcjxxHwVRjV4cQpl7n4XPxzMi7Wi+LqrHN5hIJRnL8Fx5aEO27tgSUtxUg2j9zr3ZjXO5rlXz/NvpCJ1vJfI2n/6I45YzE1bCZiPbTLacs36B1JUu3lQg3ylsb+jhzgy9Shz9AVFkW0gS9m/zPxr59D2UbCV9ZE2pj48jk0n9KCRkebz5jWiykOEOmk+d2f1MZiacMhHjIgskyx1I4iK9u1Q2GCjZkeESldvMNOG6xXjF/HLiXpTFTsNLD2F3rtnEi3T6OB/UU/TqQa/IJ0/SpahEp2wXd/xq7Bg20RmRflEn64uboPpQFykitVrKUlHGte0VYEpPcdHalWmQGBnY2AqpYQcVCWnoFUoczWJon8bA5wwf/kmIajU93C7b8RkU8fk6Z5yMtb4p1O3qd+jmjwigA7U+JiIOmTJWIxQ31PvEWWMb4sQbC9il+BCvCmVnxKofro7h7vQog3gUJw5Jzby2//Xv77W5oY+DrBP+mYfPsRYBkc8WzX6duRMxyYr4XLbx3KIYIrtU95hcMlWYAVvrSUvX5xT93BbcA+SDynI+sqLtQcW7cSzbnxLVzl+qUZPIlQUlcJm2Abb/1ieJeC3foXhWlFQ/6DLrmIg+4/lSpwL11+mdcOtPCShRaqTCyyt26E49FGnL8r1JH+usOjSea7GT4utkU4rwpffAYy+w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,77 +98,68 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] ufs: cylinder group leak and SB_RDONLY clear in
-  ufs_reconfigure()
+- [Medium] ntfs: unlocked sb->s_flags RMW in ntfs_handle_error() via
+  precalc_work
 --
 
-commit eaf412f5390fa6f1c30001040b118660141a9bd6
+commit 41f5366b5799dc9babb537d585f77ff9063831e1
 Author: Christian Brauner <brauner@kernel.org>
 
-ufs: don't set SB_RDONLY after filesystem errors
+ntfs: don't set SB_RDONLY after filesystem errors
 
-This commit switches ufs_error() and ufs_panic() from setting SB_RDONLY to
-calling sb_set_emergency_ro(), and keeps cylinder group structures allocated
-across read-only remounts after an error so inode eviction can still use
-them.
+This commit replaces setting SB_RDONLY on runtime filesystem errors under
+errors=3Dremount-ro with an NV_EmergencyRO volume flag and an asynchronous
+work item to persist the volume dirty bit.
 
-> diff --git a/fs/ufs/super.c b/fs/ufs/super.c
-> index 3569ac92b065b..d82cf73360a79 100644
-> --- a/fs/ufs/super.c
-> +++ b/fs/ufs/super.c
-
+> diff --git a/fs/ntfs/super.c b/fs/ntfs/super.c
+> index 71f0aea46bf8f..91290688d2898 100644
+> --- a/fs/ntfs/super.c
+> +++ b/fs/ntfs/super.c
 [ ... ]
-
-> @@ -1265,14 +1281,20 @@ static int ufs_reconfigure(struct fs_context *fc)
->  	 * fs was mouted as rw, remounting ro
->  	 */
->  	if (fc->sb_flags & SB_RDONLY) {
-> -		ufs_put_super_internal(sb);
-> -		usb1->fs_time =3D ufs_get_seconds(sb);
-> -		if ((flags & UFS_ST_MASK) =3D=3D UFS_ST_SUN
-> -		  || (flags & UFS_ST_MASK) =3D=3D UFS_ST_SUNOS
-> -		  || (flags & UFS_ST_MASK) =3D=3D UFS_ST_SUNx86)=20
-> -			ufs_set_fs_state(sb, usb1, usb3,
-> -				UFS_FSOK - fs32_to_cpu(sb, usb1->fs_time));
-> -		ubh_mark_buffer_dirty (USPI_UBH(uspi));
-> +		/*
-> +		 * After an error leave the superblock alone and keep the
-> +		 * cylinder groups, evict still needs them.
-> +		 */
-> +		if (!sb_emergency_ro(sb)) {
-> +			ufs_put_super_internal(sb);
-> +			usb1->fs_time =3D ufs_get_seconds(sb);
-> +			if ((flags & UFS_ST_MASK) =3D=3D UFS_ST_SUN
-> +			  || (flags & UFS_ST_MASK) =3D=3D UFS_ST_SUNOS
-> +			  || (flags & UFS_ST_MASK) =3D=3D UFS_ST_SUNx86)
-> +				ufs_set_fs_state(sb, usb1, usb3,
-> +					UFS_FSOK - fs32_to_cpu(sb, usb1->fs_time));
-> +			ubh_mark_buffer_dirty (USPI_UBH(uspi));
-> +		}
->  		sb->s_flags |=3D SB_RDONLY;
->  	} else {
->  	/*
+> @@ -434,7 +436,21 @@ void ntfs_handle_error(struct super_block *sb)
+>  		return;
+> =20
+>  	if (vol->on_errors =3D=3D ON_ERRORS_REMOUNT_RO) {
+> -		sb->s_flags |=3D SB_RDONLY;
+> +		if (!(sb->s_flags & SB_BORN)) {
+> +			/* Before SB_BORN the mounter holds s_umount. */
+> +			sb->s_flags |=3D SB_RDONLY;
+> +		} else {
 
 [Severity: Medium]
-Can reconfiguring via fspick() after an error and a read-only remount
-leak the retained cylinder group structures and clear SB_RDONLY?
+Can precalc_free_clusters() reach this branch on a kworker thread before
+SB_BORN is set, racing on sb->s_flags without holding s_umount?
 
-When a read-write mount hits an error and is then remounted read-only,
-this branch skips ufs_put_super_internal() so sbi->s_csp, sbi->s_ucg, and
-sbi->s_ucpi stay allocated while SB_RDONLY is set on sb->s_flags.
+ntfs_fill_super() queues vol->precalc_work before returning to
+get_tree_bdev_flags() and vfs_get_tree():
 
-If userspace then reconfigures the mount via fspick() and fsconfig()
-without specifying ro or rw (for example, changing onerror=3D), fc->sb_flags
-and fc->sb_flags_mask are both 0.  reconfigure_super() only rejects
-sb_emergency_ro(sb) when SB_RDONLY is in fc->sb_flags_mask, and
-ufs_reconfigure() checks (bool)(fc->sb_flags & SB_RDONLY) =3D=3D sb_rdonly(=
-sb)
-without consulting fc->sb_flags_mask.  Execution then falls into the else
-branch, where ufs_read_cylinder_structures() overwrites the existing
-sbi->s_csp, sbi->s_ucg, and sbi->s_ucpi pointers (leaking memory and
-buffer_heads) and clears SB_RDONLY from sb->s_flags.
+CPU0 (mounter)                    CPU1 (kworker)
+vfs_get_tree()
+  get_tree_bdev_flags()
+    ntfs_fill_super()
+      queue_work(..., &vol->precalc_work)
+                                  precalc_free_clusters()
+                                    get_nr_free_clusters()
+                                      ...
+                                        ntfs_error()
+                                          ntfs_handle_error()
+                                            /* !(sb->s_flags & SB_BORN) */
+  super_wake(sb, SB_BORN)                   sb->s_flags |=3D SB_RDONLY;
+    smp_store_release(&sb->s_flags,           <-- unlocked RMW race
+                      sb->s_flags | SB_BORN);
+
+During mount, load_system_files() does not populate the runlist for
+$Bitmap, so get_nr_free_clusters() decompresses $Bitmap's mapping pairs on
+the workqueue and calls ntfs_error() if reading or decompressing fails.
+
+Because neither side updates sb->s_flags atomically and the kworker does
+not hold s_umount, the RMW in ntfs_handle_error() can overwrite SB_BORN
+(leaving later super_lock() callers hung waiting for SB_BORN) or lose
+SB_RDONLY.  Taking the !SB_BORN branch from the workqueue also skips
+NVolSetErrors(vol) and NV_EmergencyRO, allowing a subsequent remount,rw in
+ntfs_reconfigure() to succeed despite the error.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113-work-fs-sb=
-_rdonly-v3-0-0be92bb73709@kernel.org?part=3D17
+_rdonly-v3-0-0be92bb73709@kernel.org?part=3D19
 
