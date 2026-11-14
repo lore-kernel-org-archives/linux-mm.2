@@ -1,91 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3561606A32D
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 17:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A611B606A329
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 17:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ObqNUb3r
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VI99JbvX
 Received: by kanga.kvack.org (Postfix)
-	id BEF3B6B05B5; Sat, 14 Nov 2026 12:32:05 -0500 (EST)
+	id C654D6B05B7; Sat, 14 Nov 2026 12:32:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC6366B05B6; Sat, 14 Nov 2026 12:32:05 -0500 (EST)
+	id C3C5D6B05B8; Sat, 14 Nov 2026 12:32:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B034A6B05B7; Sat, 14 Nov 2026 12:32:05 -0500 (EST)
+	id B7B146B05B9; Sat, 14 Nov 2026 12:32:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B9C36B05B5
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:32:05 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0D130C0441
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:32:05 +0000 (UTC)
-X-FDA: 85434417810.23.A09D0CD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 747E640006
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:32:03 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ObqNUb3r;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 975276B05B7
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:32:39 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1CDFF1A0472
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:32:39 +0000 (UTC)
+X-FDA: 85434419238.09.296BB0D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 78F09C000E
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:32:37 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VI99JbvX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794677557;
+	b=s5f4XNEt4M2Xu1C4ffL7TZf7x6YMmncdQUABwPOR/EZIh37dBvCUdQiqPr4XaAB/0Oyub4
+	drQOUqpQsz8Dc8o5s27HjNWXETck6u9KG7NhKC8U0ahEOgEMoEkqmouDocbVppdMhihnGR
+	FITiHooO86kZeTR4bcjN9FkbRn8s5UM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794677523;
+	s=arc-20220608; t=1794677557;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AljFBfIqcD1ZWecoMIIEjM2yrPFU4geEAa8J3J+RzSI=;
-	b=OleRuj0+4wIUJHVipGsRg2uz71URPZXLF0f2q81+9zCO/NB8jqTrBUuAUaODqq8rOijSLK
-	rGFJ1KvpeYSmjCdNsx9Q3Z85gDmYMj6obsjN2BDGBSmBcZifhZqcHl9e/mfuGkK436VBrh
-	tNNTbF8fCFpk94NN9cNaguXAl5bB/U4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794677523;
-	b=GPvYsgb8xgigLaA6O118Ir9Lx+nRZROQA24fM7vwRtuhJX00ag/ZlZ7qX6A3Q8qxfhGUUM
-	KdY3musLqwU7AHuGFgDk3o7a+ACikigTF0Jhty6lH9WmNNl+PH2eB9WBjVirsziW6Qeq11
-	R964+Rx1/D/hGIoW6cCYKRm+8XnU6us=
+	bh=jd8/NeUBcvGVBl3/IVvk/GOuA5V+/Z06IONroCz7q6I=;
+	b=j8PDzv+3LFaogvCD3rrhMHCASNYftp82qT34uB5uUrtLXLttYKaEeskj5XWnuX388FsULT
+	kM3IyM2VK9ozv+3wU6R7xmZ/wsiI9vcThwKdaGgeZBYQDxe4M20gqDxoY4a/KcVpwgYANE
+	rw9kPS8xiIwybRZW9Ggeoo0ZUOZjo08=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ObqNUb3r;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VI99JbvX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2199D625D4;
-	Sat, 14 Nov 2026 17:32:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9E01F000C4;
-	Sat, 14 Nov 2026 17:31:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AD39640A5E;
+	Sat, 14 Nov 2026 17:32:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD491F000C4;
+	Sat, 14 Nov 2026 17:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794677521;
-	bh=AljFBfIqcD1ZWecoMIIEjM2yrPFU4geEAa8J3J+RzSI=;
+	s=k20260515; t=1794677556;
+	bh=jd8/NeUBcvGVBl3/IVvk/GOuA5V+/Z06IONroCz7q6I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ObqNUb3rKiS4yM6Gx8oWG4UUqxI61uIvOXGmQ5kWt6uCoyS6klGsYFAfIFeZjQK7Z
-	 WmodSxBw2K8Gc7zgtTpEDad5gKA+SXjpbSL8F36t3CGb2c9u4LYPinBOj4tluVSh8g
-	 cZNAV50PT6+QvQFvppbopy9lIinxs1Sq3vyZ2U62s7bmDVYWa6bHKnsrOO/pBVabK/
-	 myCdflNoBM5deUNg0EcV2g+NndbsfDXCR/xJalleom0x3NppP8fBJXFETJ/msTOljp
-	 jV9gpvzRpQTmen093PZThK7Lmzd9W7rA1CFZAobft/EkWhvP1vxu2BOxJUvMb523HW
-	 3bH9Z8rz1R7PQ==
-Date: Sat, 14 Nov 2026 17:31:57 +0000
+	b=VI99JbvX5Z2NlNPLoYgkjL81q/Cig9LlU2aO3HtvyXsC7gP6GqLlha6fJSTcZdZSa
+	 H7BYkxGbDyxHvTyCVvOJ3dcNsV4DDUjCPyrDMDScdjdY8lS4U0xVeqcKTnr7Jv4HgL
+	 e7DzH++DgDtR7AVeINQoCXKgDM7pqg3CseeXbeV9OxIPM6AXWSjPVn734vZ4euskPp
+	 z77bcLD4xUjnfzzt72HaubOIgazybGQygT11OIuMCOFVFkz/jR9JYxq34Bp3+9y3lu
+	 5IAJcuMsXl+m0wiKjBlsZSig2aC6Oty8WGxu3TCdQNmHYNVrZ1nWpc5RD2zZlaD2+y
+	 krFlVWDaaUBdQ==
+Date: Sat, 14 Nov 2026 17:32:32 +0000
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: shao.mingyin@zte.com.cn
-Cc: akpm@linux-foundation.org, david@kernel.org, linux-mm@kvack.org, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/balloon: fix NR_BALLOON_PAGES accounting on migration
- failure
-Message-ID: <avia_XgVOuN_pZ72@gremlin>
-References: <20261115004708909xx05JgB9nXnOCG0zL7h_K@zte.com.cn>
+Cc: akpm@linux-foundation.org, rppt@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/numa_emulation: use the real node id for leftover
+ nodes
+Message-ID: <avibII-ONCFXboWZ@gremlin>
+References: <20261115004706741mYrBkIRqmj_IWsv3oh1uZ@zte.com.cn>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261115004708909xx05JgB9nXnOCG0zL7h_K@zte.com.cn>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 747E640006
+In-Reply-To: <20261115004706741mYrBkIRqmj_IWsv3oh1uZ@zte.com.cn>
+X-Rspamd-Queue-Id: 78F09C000E
+X-Rspamd-Server: rspam12
+X-Stat-Signature: senfs77uj3b7jkpn3m66bunhrnsb5tb4
+X-Rspam-User:
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: eody1qch1kepstjwchfm35crbatqcqma
-X-Rspam-User: 
-X-HE-Tag: 1794677523-289776
-X-HE-Meta: U2FsdGVkX1+yV9RG45TnM0XuRsviMIix7I6mLwDLhWmkuzrcWj0d05cB3b3LIMXiDKQdc/xyfU2iGDw6PpCEVe8PJ0wFY1T9o+VPiVYAJkQOVYpOIiNkHOUjTH9ZVKuFHK2DOUwwJoVHi3Y5haZems/REBfil0+49hO6Pc3zig/tpGR4adB+UWwhkrT9T2oxH29Y0yipsBYoK9OBy2NhswDQmO4ASkoHhtNBBVyRtpUk4WYDE/zDqyYG5FwgmvTIbrtqUfpo1XTOHHA2Eu9ZqdEekmSNMYwN3x2dMphvQZ+fOeAJXBpIz5XZiBr4hxJMW5WrCnr/4b2ssPY1SRBshIrUs7mPnh708fjrqyeSK5dRS2C+TBJfw07PfSMezfQ3PljmikYLbxapUd6UB7FKd3i4uzWQVsNSYX9z/8Ei0/ANMFsDbRleQQ/CurLrSswUN4uenFxpzj6+8q5WjvOGxqgCpLTUO9QjQalrNsWVvEB8XO6oSUg+YZUHdmdbWJlnQtnCiyWrQTuwMavUGrOzOL+Ss0a6u3k8WOypppPXoU64bZ6V6shGvoLH/bU5aYRv8C613++D4KntkVAroK4b6s4zVRKoDU9WECxJkmuHKUM3RBrmBByZ/vd4sMNOLz2wXXKmdGSqPqiXTtIQXFK6AbZc6Yx0fjQ4u2MmZN1UOdkgDDEZRFseD9a0j0s4i0QTmP+LAIBz8MQ0tTEfDZq+r7tgvhkrHuvFSTS1zroR/VHVyzJdlxYnP+Va0fdV+iIwu3/WeeaJrirrL985A7OGTNbGGx1fFCf36RN7TApvbY+lxiG1t1/ih3pyb8E/Y58+e5Z9yaFTYTPMz6YxJrXmwOBMsaDUSVQGZoHjSCXAnVHGi2z49zh0WQE5U7NqKHWxqxvBiOCHxxTuL5R4B56gagI1egjAln2mMb8AgwHPhYZ3Slyy5LYyVy1eGSQPpR2pYXTPENftbTe3VjMYHa1
- uusSg65V
- bWX02B57fscOwKtIyn8UBQeGR5HkjaznMHuoyAr9dr2zVuu5I8/hc/Mo9ndqAZHb7lLzh36krUBNb54GAsRhRRFPFQq9ApTDPI/TIKFkiQvplRMNMt9Pbv2mPBnvxGYqiBKSSQ3W1xLCeftbbvOwVqwPKq9BulK/pskhakoQCpNBrkP64Vs+07Pd5W4iflyKeQL+B6H+lxQuW9m9qQT+dIXT0TjxE65YosheeX5NVObKCvFKm/3pxm8YsI7gaPaH28sZyCH6Ll7hrzQL8pCbQB8Gswtn1ZxOQKwEaJ1P+76zEWcKAYki2LyUrfliDFEEAb2Ms1dxMZNOp1MnVYm6iiDY2G+8TFqMD3g1J
+X-HE-Tag: 1794677557-596954
+X-HE-Meta: U2FsdGVkX1+pNHm/wL4R0zPNwyPVZh2Wt6tN0ixrI+bwqBsDkkGFknRxTj18MskWUTkouVbzgCB14xq8Y7TUwqNRGhHjMqfor8mO6owMdy9W6Yyd/oyWE9jVkIaYWum4YwrVnc6rycA+aZW4t1hfT1twKg8RysTEkx/AnVcCDsJViZiSkhkbF67Z5Gh7imsBKT6oM83KgpHUCT3prMzJnamOs0gQfepGP9VUf0e0WP68GuAqHFcdvf8g+YA7X27IC9xfR8T1cON0mfS3UEKvlGj2gMuTTXIIrqBwTVF2gkVnnio4+uGWvzU5j/mN6XTwg9MBukSYBVTNfT5nrNOVl6XSs1gG5/DrKHun3WlZqyWPYBcb1KyjK99SEVfAywzxC+6hBIxhQj2yzzzWwjRlbr9eFarcAfGU+UQDLURvAw9CN8gNR5V6uFcQz5pSMZdS6HTa5v54wtEq3Tx55naS+vq+ovZB4PMTRnWIKJHiQjIphiR6ozqQ9CG0LRQ1OvYWnYqfKenhi0OPrYkMyB4x8mSkTApF3VAUkBmCTWlBuLpAJf54GbKDf+kR5CnMnO2MPILKMMqANxbyHuiosxwDDuopd4HVYRnOh+wWNuB307yihBNDEraDoIg9nDiHGtqw0DslhbsejpN0kkZYiGEBDOoDXG4rRW/cLmK+l8B4AI+Bv/5XBeGF8R2OxwoPzcc71R45JeBu9A3kQ4iT2zfnxmFqdhl8XlD0rzfhdY2Ci8q3iEU6vE0bWLxbAF6gZx9m67zqd1hq3/I6Pljj4LD9gWjoBa9UkVS9v55zdZA4SuKg0bVKkKnq30b9B6Gt/ladx8Y2zK6LiqGJbV417tJo/lpGXBiPyebS0UdJolGW60EUcNj/VTmvt5tMxgXRmgviiRSGkR0qreMjxEsnpv9KpYe+AGUS2U5aLvfOsUCZp3elfTI+UqpcdWCN9nreH5E+5kexBG2//1ly6MfNam0
+ VCDjV6DD
+ q6xQZfX7A5Qd6YwV1vzgKX6LI9Yd08uiEBeOcLu7Zr9dnHDihyhPr9wFqc+VD0tE+gvRlQx4yQOFcZFvW2UzBD5+ILNRFPuskmaZIJA1JMD12Om7KDC++0pMZsTSilx7uj2Du5bjDvJhcc3ZZUGEgfrDMIs6F0E8NBAqVgQc3IQf+Khc5obB1hbqd1uLVtG9jsRK2Rt4b1Rmm9uEstsxD0h8ejKdDfkXYhnqmKzfFIBUl0ZKuuHAm98fs9Wsgp83/nn5Hepr3kYbw6FtFpgodiqg9AJbbrj/M6uvcLB5zILNdCaHiQ5SRr9Nc998C5wKjt3fkNxtX6ERkXaU3qkzeyWFkO0+jMO/oX6LUae5TUatJztrHE/lDdG0UUH28Tfhdb7pUPkWhSJaxxFDQjJtmMACvZXRZJVFIW62bYW8cYqHHOmjn6hxl8CDL/JhcOlD7Hxj6p/nKuJAhd3BkOL9mlFXOE8tbc2ojkagXt6BvARnkDKw7+fXxNp1enZAiXCURff/2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,24 +94,26 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 15, 2026 at 12:47:08AM +0800, shao.mingyin@zte.com.cn wrote:
+On Sun, Nov 15, 2026 at 12:47:06AM +0800, shao.mingyin@zte.com.cn wrote:
 > From: Shao Mingyin <shao.mingyin@zte.com.cn>
 >
-> mm/balloon: fix NR_BALLOON_PAGES accounting on migration failure
+> mm/numa_emulation: use the real node id for leftover nodes
 >
-> A balloon driver's -ENOENT migration result means that the old page was
-> deflated but the replacement was not inflated. vmw_balloon returns this
-> when its deflate operation succeeds and the subsequent inflate fails.
+> After assigning fake nodes, fix_pxm_node_maps() gives the remaining
+> physical nodes free slots in the emulated node space. The second
+> distance loop in numa_emulation() derives their physical node IDs by
+> subtracting max_emu_nid from those slots. The slot assignment does not
+> guarantee that this yields the original physical IDs.
 >
-> balloon_page_migrate() accounts the deflation and frees the old page,
-> but does not decrement NR_BALLOON_PAGES. Each such failure therefore
-> leaves one extra page in the per-node count, which also contributes to
-> the Balloon value in /proc/meminfo.
+> For example, with fake nodes 0 and 1 mapped to physical nodes 0 and 1,
+> a remaining physical node 2 assigned slot 2 is read as physical node 1.
+> The wrong row of the physical distance table is then installed.
 >
-> Decrement the counter on the old page's node, matching normal dequeue
-> accounting.
+> Record the physical ID when assigning each remaining node's slot and
+> use that mapping in the distance loop. Keep the first loop's fake-node
+> distances, and check the physical IDs before indexing the copied table.
 >
-> Fixes: 4d689474e1b2 ("balloon_compaction: update the NR_BALLOON_PAGES state")
+> Fixes: 63db8170bf34 ("mm/fake-numa: allow later numa node hotplug")
 > Signed-off-by: Shao Mingyin <shao.mingyin@zte.com.cn>
 
 NAK.
