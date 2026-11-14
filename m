@@ -1,134 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88518606A329
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 00:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C1D606A329
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 00:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=emiKzp/Q
+	dkim=pass (2048-bit key, unprotected) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.a=rsa-sha256 header.s=h01 header.b=kMqTfZNM
 Received: by kanga.kvack.org (Postfix)
-	id 14C8B6B05B7; Fri, 13 Nov 2026 19:30:07 -0500 (EST)
+	id 8A3776B00EF; Fri, 13 Nov 2026 19:36:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F6FF6B05B8; Fri, 13 Nov 2026 19:30:07 -0500 (EST)
+	id 853E66B05B0; Fri, 13 Nov 2026 19:36:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F00F46B05B9; Fri, 13 Nov 2026 19:30:06 -0500 (EST)
+	id 76A0E6B05BB; Fri, 13 Nov 2026 19:36:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B5F266B05B7
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:30:06 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0A5808033C
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 00:30:06 +0000 (UTC)
-X-FDA: 85431842412.14.691B7B6
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 38421A0005
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 00:30:04 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="emiKzp/Q";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of joannelkoong@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 564FB6B00EF
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:36:03 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D735216030E
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 00:36:02 +0000 (UTC)
+X-FDA: 85431857364.18.B6BA8D4
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 2A46D180005
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 00:35:59 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=kMqTfZNM;
+	spf=pass (imf06.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794616561;
+	b=wUD8utCdiCsDJr3b48HqFIGaxdCp3tTdfV1KoyI1K6+ruq1WpwpBKWQyOCzu1O2CiyALJm
+	azpV7eOXx13G1MVy6vPNJ6RktI9gFrU9qjGyg6XmIFWiZ1MvllBNRDRJKsdMMqBRnKeYQT
+	JQwZE7p6jY4N/QvGkPpgPoFVmXzzEZk=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=kMqTfZNM;
+	spf=pass (imf06.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794616204;
+	s=arc-20220608; t=1794616561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AolziNO7wrlcNMetD7JvJr3jJHx3WRU9EZSr3HZdTJ8=;
-	b=v0p0DejRtrrN3GtyefTMCBZY2tQk3pZQS9DLeB9xkq21Akz8JgUw4PI6fIOJKf1fHuXPMS
-	olhWfhXdKQrnxPFuAqNSibITDI1QOzgARmm4lOprEk7gcZk/R5CXTYidrrFQJMnmszsM2v
-	gnLwFHSiwJpEpBX8NPz7tLK354OS2DM=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="emiKzp/Q";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of joannelkoong@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794616204;
-	b=4t4quJVFEMytkfYmh9zHVDsUeCiUQA47cXv1SeEHY4xSROhBblh11b4eJ55jRdfvhmUqI+
-	8xvz/O+OH3UOipOm1lmjqMGi8ju+KJFncZfzNf/3kaUkQFgNgkYGt1Cyb3GOjrvlpStQga
-	B3bzZDyuctmLrV97OBvRff15ZFGBA08=
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-67c2c2ac1c3so1661331d50.1
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 16:30:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794616203; x=1795221003; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=AolziNO7wrlcNMetD7JvJr3jJHx3WRU9EZSr3HZdTJ8=;
-        b=emiKzp/Qrz2VU25V17X7xFwCTdOWZd1OCv/hr3BgS8Qzc0CRetAjcFRsBChD0+JqH5
-         5KFNY7EaLv4v20ypvgcucslEGmCrH1HZJBK0vXZhV2KtDT4uD3Abf4dH5poy5XXd5ESR
-         ID24f/wvsavJcR0xNnZhcOxbt/80T59UdKejfvhEnPHcFZ6tM4iQ2RP6ChIdEqQTNzSx
-         EYa3bMyrD/BtwCUNqyG9hCkiWXMiR4wv4r3RSbTl3D7F6V6JZ+bF//Q+CiybWDiGNAgy
-         bXdpk99J+2oOgvJdM/ZiMtGg+5tRDaWhnkilx3JrSlI0daeksq95b+Br3Fl0uZGOjjMM
-         bMow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794616203; x=1795221003;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=AolziNO7wrlcNMetD7JvJr3jJHx3WRU9EZSr3HZdTJ8=;
-        b=mMoAebsRQeX41BD9Dy25LQtl6mQGZdIVpQKNZtrF+yAfc16H4pNyHiH8igFRlk0O7B
-         KqsA9jVskQgyDxjON0tgA8sfyC3aVo9BFkJel6y8Y0J4lu1QP1qq9ZwFlj/PekAZt2UN
-         EaIEPNq9rXo87cDvsjIWBbvsLMAZQaRuncBjklAgdxnI21UY4dWUCb4qaWB3YA6a56ZD
-         1VDTLqsUfnAejs4j+Lkr54uzNQ1vFElEf+XWJ8K7ZrLFRdPuabgCE5FoyVyvFkvmG5vA
-         mSWYKzfHZnpoZE07JdqblvjSUBD9mMWzehtbpBvBxjZrotnSn9n/Bpz14o/MnriJrsru
-         FFgw==
-X-Forwarded-Encrypted: i=1; AL+hErHm/Meex2lN9FUrkPfrf7ZgAndK6d1nFmlpDeayvIIapnkX7wZJ9FcOPBstAWyVpfiHPliYTHPIbQ==@kvack.org
-X-Gm-Message-State: APuU4Z+0UFxH/DPaQeZnxWiG74zP+o1IbLbiy083zjF1C0Ngs1oR1IJU
-	pwZrn8EZgpnqpT8jwDk19lNwPezwdyW6PcAf2GwtzoQHtsWMNf08wUcY
-X-Gm-Gg: AYBFou0aV/pwyke9A+aqOIsR0CaPBLXETvTT/YPTOiEK2tybLaISGDGYQTEdVCyrINz
-	dfOR/0gZdFNxVyuFUm7+VM8Rf69fmzQHSuinUtw/WViT0kXtxNgOaP9OKn6z5qnVx8bz2rAqbgg
-	VuvkViIiIZNCSZgG2W8XvEJ8GEzuigYjKYTx6ZAyVMShbmbdGP4QlM/n28V+JtjwdRaV7Eiv2y7
-	jqXZaupVlmwR/wWUzTsL1CtnnQrpkUEZsSQsVLq9SVXR74aEuxpNjOK7CNLQ96Crf7pkbMt9T2d
-	0MTD6WBsO/KHxOMSJpncuuk7M+SSV9dUDXwlRnlho7LBReUd/cNuep6pe0UWuNBCY6nbAs2DPfr
-	3qQU03jSrvSWfU3kle/9sw0O44ODCOpAlIZS9vTRkADERj83gmgtS6Agcjx0LeLybevJOdliaAu
-	gbW63mfZXzAkMmbTwmFZ01yAmXfDNuFbP5fyJlhwRuJ0LHA+Hdq8hUJVlpjpuQ0/xV8p42E/3Tg
-	SGp7sxl9U9bpdoMUhbavtujnldv+Rgdb6RL1u00GFS/1otAL8T8VpJtQLMRHpVz6hLXVJwyRPYL
-	xN4NDkmXrRUsujIlyLsBDh3VYz62+wJ5seSsVsmxoDRFyLTSSm63bMqzHW/MBaYcD8uWRzIaR3N
-	AHFLEYw==
-X-Received: by 2002:a05:690e:130e:b0:675:1102:ffa5 with SMTP id 956f58d0204a3-67d8933e768mr2424694d50.3.1794616203430;
-        Fri, 13 Nov 2026 16:30:03 -0800 (PST)
-Received: from localhost ([2a03:2880:ff:50::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67d8a55b09esm3473161d50.6.2026.11.13.16.30.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 16:30:02 -0800 (PST)
-From: Joanne Koong <joannelkoong@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org
-Cc: yosry@kernel.org,
-	mkoutny@suse.com,
-	shakeel.butt@linux.dev,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	muchun.song@linux.dev,
-	nphamcs@gmail.com,
-	chengming.zhou@linux.dev,
-	sj@kernel.org,
-	ljs@kernel.org,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	damon@lists.linux.dev
-Subject: [PATCH v3 4/4] mm/damon/core: use node counters instead of flushing the root memcg
-Date: Fri, 13 Nov 2026 16:28:22 -0800
-Message-ID: <20261114002822.1043378-5-joannelkoong@gmail.com>
-X-Mailer: git-send-email 2.52.1
-In-Reply-To: <20261114002822.1043378-1-joannelkoong@gmail.com>
-References: <20261114002822.1043378-1-joannelkoong@gmail.com>
+	bh=KOIAIMFn214socxnffYVdJ7zS1ew3mG2V4IXKS4HuBA=;
+	b=FD7jNTfP3cW4xjUnYf/bTfLBaD6S3I9aBvV13FRt7aWcHjjZKDq1rLLUCQlLT9tAcIcYku
+	Zw1MenJnNBBJtOYZMjosWzJJIX3xNtWkobyBKkxh8Qn4wrQ4SS3PHQt0dxrx/SRPDXRazG
+	lESzOXrwzAVNfQIpw4aQq7aQIezfiUk=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=KOIAIMFn214socxnffYVdJ7zS1ew3mG2V4IXKS4HuBA=; 
+	b=kMqTfZNMYkY5uQSGht0xtivQyXS4QQYoNSceVBFK1CvvkabGipzhTwJsc6Rk6KweVag5r30lQLX
+	f5FqHMgKzTUXSXgu/URhmW4370HBoDNxwLyou0DSaM4yOBm6gmep8MsiiaQBJUJudY5zi4+0HBXDk
+	1Kx+5/4xRPi/PL6I2kp4CqizB86M1pDdYdSdaJU6vpQoMQGvlq+zebkCTsONBLZ5eGYN00EiH6m8j
+	Tj9CWZtvMpu8Dhb+FDbFaD3JkiV0SJFfIXB5dfbfDmVDpLE3l37MqwJ4dx7DwU9t1iUO7/rnB3uaA
+	wbe3ZMbrVghNJa+HHSiTV9WVD/pzWQk36a/Q==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
+	id 1xS1k6-0000000ExD5-0nuj;
+	Sat, 14 Nov 2026 08:35:43 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 14 Nov 2026 08:35:42 +0800
+Date: Sat, 14 Nov 2026 08:35:42 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Uladzislau Rezki <urezki@gmail.com>,
+	"Liam R. Howlett (Google)" <liam@infradead.org>,
+	Davidlohr Bueso <dave@stgolabs.net>, Michal Hocko <mhocko@suse.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Marco Elver <elver@google.com>, Michal Hocko <mhocko@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Thomas Graf <tgraf@suug.ch>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org,
+	Lorenzo Stoakes <ljs@kernel.org>, Chris Mason <mason@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andrew Ballance <andrewjballance@gmail.com>, stable@vger.kernel.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH] mm: kvmalloc: Bail if called with soft or hard IRQs
+ disabled
+Message-ID: <aves3p5vrqqAuHma@gondor.apana.org.au>
+References: <CAHk-=wiE0KG+jkhmJWifXuAVivtB63WCWtdEpGAex7-T0SHd2g@mail.gmail.com>
+ <aurAxRpCwzeyXeVj@gondor.apana.org.au>
+ <CAHk-=wgPvbYRcKpQ8WTH-EYZRgMG0KSH+cZxY5-Hyf+X7JjWsw@mail.gmail.com>
+ <aurJZ81qnbiHH_P1@gondor.apana.org.au>
+ <ausS3LQNkdc6lBy3@milan>
+ <auxDm_YO4oACA_d2@gondor.apana.org.au>
+ <CAHk-=whXvVO6a5AreZu3LPBj_wjpzUanwhvu8WqWP2q7g5S7Vw@mail.gmail.com>
+ <auy-7TvVzJ-VCrG4@milan>
+ <avcKfEvln8_2a7fJ@gondor.apana.org.au>
+ <CAHk-=wg9baZ9EDhZr7ONxjuO65+vvWFo5E2hgxt+3rYo1vnhyA@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wg9baZ9EDhZr7ONxjuO65+vvWFo5E2hgxt+3rYo1vnhyA@mail.gmail.com>
+X-Stat-Signature: j8jtkn5q81pmx11ewsfziu415ctua6j9
+X-Rspamd-Queue-Id: 2A46D180005
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 38421A0005
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: p79fxzsrnwmhdzd4ugk5u661ozzmf9d1
-X-HE-Tag: 1794616204-794564
-X-HE-Meta: U2FsdGVkX18QTCgZ7Hi+kf0SGwqakumQVs0iRdKbqb9HGGaYWlvln6z6W+Do8IhBcIy4kVbKyFeTRFxWK8QQP6gqjf0zvL5S90zB8pwnKk81bypSE1IaTj+Tc2B+hiTglHaqtkpNSEa2Ta6QwstX65S8PuMzWNaWNTRiWq0F65vUyz6GBQxAj2NWaW2oywY5hVBu/WUaRzg7NER+O2NpGBA/2hOGjDCE3JFCvQDcq9AuBNBeVBZR2YswaXHatgx8FZrUYZTxZDlaFENxLc0ORFl0/XHEhbOr45KxKkkR/lGpOKnoChCNqHz9maGCI8sEDjBxVUluqscA100sYEkRXw+xEydVlR6sh/k7b+Gp158Se+GOHhMx/3/+Y2SgHE9R1bgZkuNwryW8pmzXro+QZR1jyhUUGsi7dSpmwLHvamSM5P3+xCcI13+LZysy35g7090bHJwGcNDQVDF7WKD8tFtOmXdQt8pSCOk+RO3K+2Q1oPQJ5PCEA5FSzGdIiiSVLoVuHcjslFIGOLgx18Vjrsr3tG8Ws01jX1OorCTzrSaHpsRGPcb2t47ooj23F2sxkTGQINlT0tCzXupcQlqSF9Oa4ewD2syklkSvm7I40BHQ28vX8tvekHWMId5PXgvWbXRI1z+Inm/fKkydXQS8KfGWR+HLXoYS2tpAkiTtW0ysrC9xXT2bdXiO68zHcWDPb9YWadinI7048Zmfjd2CaZ55AI8MFiOT7NjU5FJFBWN1f8/L+us2FShSh9Vjbr+6rgsBxh1jPgZmAUAL0kqnGCGyRK4Sll29w/5kdqcWRFDsTgyQnH2/Q4dKKBcagCWhO3Ovmyp8Zk5FYsiHTU2D1dI+1oQGorYqNcbR44qyK3uGBVmuehF1qzKSKgQFhXZkoqUWqyNj0d92Vjwe+QiwTPYkJgV0fOpAQQqQmoT08+N9+Hox1bv/8H2ClY2ycsKcK+G8s+hgFdnKmQx56Hi
- MrZ/7gD3
- KrZo8iOoHpsdp5FSNd0WEB54shcLLDpjks+MsbB1oAbwQChao30/tl3+rgm7JxOMrZiPRd3zmNX2Gr7alom6GK0NBQmW7stxhph2m/vdJYGDJmvCR90VD55lb3Ezp9LO9PIoB/eSANNJsJV2APU3MRR1ZjVJHOEQ+c/4LTAFj5U5+CK+ekOeOY57BIDAEntujGdoaq8vt8Rf27K9IOi2BSWa9G6zBH51S/NE/bVDCUHS6jwj8Y/3QZIb/FyKFI0J/shMBRm4+ND1bbzyLL9mZfQhWB5GMR9L06pTYDrFtyxu//R9oz2Q9TMVlWPtIsUY9ZTLAI6bhnTY3hnRk81JXEaV16p4f3ymoMJce5wKyOjVlHcp+xpRFVasvoWlRyh+92ctBQA9/id3z5zNnZaFyQJ6l4WEIy+AFZu5WErSGIt5BKksDZtMtABXJoyNSNMQZDzMHVb1jHOctzc5Ud5fESFFtDH1KRe5uG2AFdc7QSplkUoI=
+X-HE-Tag: 1794616559-259297
+X-HE-Meta: U2FsdGVkX1+S1gn846LQn1FG4K2e++BzeXsPsgRKE8wROHqO3LlSdMJXyFztkwjfZTeFALUeVwbtiejFG2JoYNypd9jJwyD2KH4TrGUyc1N9aJH0ueep9LS/ircFKHcWJH+9iKh9CVRwM2TodIU9sPywCDzWgHSrJTynJcGFHv/ktvwcI9NFeEdRlnZ9NPNJlXY10VT9gz/gmBVEvXAdFvzAkTOq+SS/M+TTTM0i7h/VEY5Dywxz+VbcNLsyz2aJGsdnxPtv09xqgVxG61k/E4mvhaKnuqKWBYJh95Z0W7KSeg0X234liOKQ4TZqbUXZ10fg9dO01AskuhbR5ngcgwKD7BEjriimLHSjxM7UV51TA99z3Wwj88X677PML+avdzSq1o6q61eBxVrp+1fp4goxdDDay+MNCd+UODFTnEfcE9ITz0S9ZEiFZujzcbpiqdxeGtpd+iCDf/0o+Zr8LZUg78RzmYANketIeBeHVwufuuoZdmDMc0Fi37mmDCc1Xl+CihyhYlXG6obDqHUqeJDU/6fXNj5vALXJPEug3gjVBwsn6wtPmDe5yqKZYHWwIdGEUqyGkjDa64ekH5vyJdi3kHqH+brX9ax/l/soBUYUpYfv5FAVO+o7H/yAi90Ae90t7l5Od0+SDQ9pL9pT/vj2aLwMvgs9yF+dypwISRIwzoSRhaeFbqDARezaqmSm5lgVxV+0huu4cw9TEhplIGUL4F1Xge1cMscyEL5wnlsZslTYoQKCLlPmXn27EmMDXLiVkkZJkelb8KXjvhDg+woEm5JNN2Y0p8jmHqG2qCKg67rKL4ulakl99VGOtOLIwj3FmHzqsB+zDcpbrhW41FkJ/kc2pQlyEdtMSRBUFzSXRBhPNaELPzR3D4pMvr8mw1jeaKi3oukTQoc9PgcYi6MA+DGhH+2YVC4kjHK9d/yuYoyBInMean2Mqyub1IvPRTQouWPJwXZAgrf25au
+ e9S6H6Ut
+ e71u8qiZE9iYE340dCi12lk2XdfBdoRKF/qH+faAxSTWwuH0f62GyWvuKj6M8pjt7LJkO7EllkseqnxzGa+v1P4A0WI2QiOnXu973zjwGKxLKmrRVcip5GuufwMF8ntNhK/vSu24xvK/M1yO9C2ZKQTXvgf4G6qfreR1X3kOgK8FhImS/++umfRfHjR82kx2wtBerpmRX4BATXFoGWwRhoDlcKwSEKoKXvy2pI0qUo8LDhIxWGashgohz2VNoNpcqW5eVKeejgjxwQa9+7a3BJVXPOpF92w+cALNVofa1KBUMVYCHNFhzihtOOMGcjEBS8wSikBhY4xHtim7kZTpbISC74Qod5DpQviKy/DnZ+O52w85t56iVrkH315wSZwN/YquMMG0//jbjjJ0TocWOzD+0gEQf6xXlGHmx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,40 +114,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-damos_get_node_memcg_used_bp() flushes the memcg stats before reading
-the LRU sizes of the goal's memcg on the goal's node. For the root
-memcg, that flushes every cgroup in the system. The flush is not
-ratelimited, which means it happens every time the goal is evaluated.
+On Fri, Nov 13, 2026 at 09:47:13AM -0800, Linus Torvalds wrote:
+> 
+> I don't think this is wrong, but I do wonder if we should at least
+> have *some* way to detect these cases and report them.
 
-lruvec_page_state() now reads the LRU sizes of the root memcg from the
-node counters, which are always up to date, so skip the flush for the
-root memcg.
+That would make sense for direct vmalloc calls.  But this is
+kvmalloc, which is supposed to choose automatically between
+kmalloc and vmalloc.
 
-Reviewed-by: SJ Park <sj@kernel.org>
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
----
- mm/damon/core.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+It was you who suggested moving this check from the caller into
+kvmalloc (2018):
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 0a056949604f..14f2a36c1025 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3057,7 +3057,12 @@ static unsigned long damos_get_node_memcg_used_bp(
- 			return 10000;
- 	}
- 
--	mem_cgroup_flush_stats(memcg);
-+	/*
-+	 * The root memcg's LRU sizes are read directly from the node counters
-+	 * (see lruvec_page_state()).
-+	 */
-+	if (!mem_cgroup_is_root(memcg))
-+		mem_cgroup_flush_stats(memcg);
- 	lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(goal->nid));
- 	used_pages = lruvec_page_state(lruvec, NR_ACTIVE_ANON);
- 	used_pages += lruvec_page_state(lruvec, NR_INACTIVE_ANON);
+https://lore.kernel.org/all/CA+55aFxvNCEBQsxfr=yL3jgxiC8M8wY2MHwVBH+T8qSWyP-WPg@mail.gmail.com/
+
+That worked perfectly until kvmalloc started allowing vmalloc for
+non-blocking callers (2025):
+
+https://lore.kernel.org/all/20251007122035.56347-1-urezki@gmail.com/
+
+Thanks,
 -- 
-2.52.1
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
