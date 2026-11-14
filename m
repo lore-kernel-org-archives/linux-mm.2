@@ -1,126 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE57606A33D
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 19:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9A7606A331
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 19:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=p6W00gD/
+	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=jbvHKTMb
 Received: by kanga.kvack.org (Postfix)
-	id 1A77F6B00EF; Sat, 14 Nov 2026 14:47:22 -0500 (EST)
+	id 64D846B05B1; Sat, 14 Nov 2026 14:56:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1595D6B05B0; Sat, 14 Nov 2026 14:47:22 -0500 (EST)
+	id 624CB6B05B2; Sat, 14 Nov 2026 14:56:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 049CB6B05B1; Sat, 14 Nov 2026 14:47:21 -0500 (EST)
+	id 53E406B05B3; Sat, 14 Nov 2026 14:56:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D46476B00EF
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 14:47:21 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5AED1A015A
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 19:47:21 +0000 (UTC)
-X-FDA: 85434758682.08.9BE1F58
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6B6FF40002
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 19:47:19 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="p6W00gD/";
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.169 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 21C206B05B1
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 14:56:40 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8F6651601EC
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 19:56:39 +0000 (UTC)
+X-FDA: 85434782118.22.CB3BE71
+Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 71D3240005
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 19:56:37 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=jbvHKTMb;
+	spf=pass (imf17.hostedemail.com: domain of chris@chrisdown.name designates 74.125.227.129 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794686197;
+	b=o88K7SycHJb7YHFF/lWexp7WairFJUZEaaXtnzg3XJ8Lx3iawlUr1rdBV6W3Obb0+w911C
+	a6b52C7HHLj9Pbmem0Af5yhSMLihcvHA2RnyfzmkH62fdEpTpq/JKml0quxbGmufPaHFLp
+	Y4fjmmgBsYtXCZY3xf34mJRoekUvoh0=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=jbvHKTMb;
+	spf=pass (imf17.hostedemail.com: domain of chris@chrisdown.name designates 74.125.227.129 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794685639;
+	s=arc-20220608; t=1794686197;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=98emB7w1WvhIxOBHV30lEu1AvQx3qKoZ54Faa6ikAUU=;
-	b=RbV5W5LnSiSLt2JsABIubGMhOUoFb94HZ7FhZ/n42fEGnEw3biTm7JYFtmoCb45WMvb+3D
-	MnQcODTOHuhjVL4y3LdSrpy63AP+8yS014aIPJinTmkDlclciB/pygRI+cdA07fkuYlHym
-	gZ8zu7x5VW2i/yYBEceob7PIhJE6XkU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="p6W00gD/";
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.169 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794685639;
-	b=NZMoqcSJf3ayyEDEDHwpUonYaae0GQytOOd1ZR0LPJ/Xin0gv3Mx6PhNYcKp9V3Py2eqhY
-	b7nYEUSFuse3mpQGnv99qqPhfIqpja5e6K4mEO5p7ZwfuqzlvLyKiJ974q6Wcqlh4Su4LU
-	Cw1P9TsMaoFNApw7Th0RmzqRMruhqQs=
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-55b8cd4e2abso21761521cf.1
-        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 11:47:19 -0800 (PST)
+	bh=M5xf74SF1IJB+GwjvbT5WVTIN9Qc9W/2f2algOzAsJI=;
+	b=Kzald/6Ex5bn+wL5JOAJuKy3hpFpk1C5uT3afc/0lkbMEBMLfhiH86ze86Y/+jyVY2qP3K
+	oX4/sq0HlBXnAL6Gk/QwGW1R7BnkK8UFsyIG9KyBqMC7PTdH9qpptyO1WVzrs8wzSAbYpu
+	lNkfgvAZwTKsn2kVRz1942MqHKx9CeY=
+Received: by mail-pj2-f1.google.com with SMTP id 98e67ed59e1d1-3b0d11b85f0so1386115a91.0
+        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 11:56:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1794685638; x=1795290438; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=98emB7w1WvhIxOBHV30lEu1AvQx3qKoZ54Faa6ikAUU=;
-        b=p6W00gD/oQZbBhqrrQCk2Rh5eW4NLlj0l0rkQG0aOaJH4YuwbuqOK0ODjaIGPm+V7z
-         Ci7GUof/kKa2lodrFOJO7m+WxbTmVtL1pbNKOCklaZcAb3KMtogXgNb86Z3rAgjYD9mx
-         ACakchMM1RKzXRp/XZGiGr4wOwbpFWWmvn5gqYNpbns6Z+ttEd4vOH39q9mQ8EOI19Z8
-         XYnAlHvmOw/eRRJDnmaD/4BnGJnCPxc2RoJiTVPXfi4kyogqCm5cc5SAL4GtFcmBQh7K
-         LYlyIJIIeVnnRlgheDfDgElxOLrDUKXAdQjlMhBphc3vWb6tBgfzWobUQQFBKmTkJKwN
-         M29A==
+        d=chrisdown.name; s=google; t=1794686196; x=1795290996; darn=kvack.org;
+        h=user-agent:message-id:content-disposition:content-type:mime-version
+         :references:in-reply-to:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=M5xf74SF1IJB+GwjvbT5WVTIN9Qc9W/2f2algOzAsJI=;
+        b=jbvHKTMbF4Cn2C0fvvSDqDv8ZfJFNt2vVkDxiy2yK/TmG7RmYohzP/5M48yjBlJTyB
+         lQ+sBWn3HMfGA8cSCRAL2704ICu6pdfnczF5I3X1LmL4McVZLzFZ8sVnYabCO6cL6dDU
+         qXCZ2kAQo1CFBkdhy2L2hW9oZ2s8AwUtUKeM0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794685638; x=1795290438;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1794686196; x=1795290996;
+        h=user-agent:message-id:content-disposition:content-type:mime-version
+         :references:in-reply-to:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=98emB7w1WvhIxOBHV30lEu1AvQx3qKoZ54Faa6ikAUU=;
-        b=CVt7YfKI70yh/ZjOnYnMcH1q3xoSbVwc7bBbCjj8wqKgZTSkpdkzMUyfPYG260IO+2
-         MEJbimXh0TaYnfcZ1e7xIi33ow+D+0Akstd1rXCEa+PfTfwG3f2GmOGo6GDfzbKCrDbQ
-         3B4e0DtqifZlf9NohH73Nok3sXCtQE2OlYdqKGFXkfrb8V5IlowhudwXbVvvIl1/WSvZ
-         AX1fK/BU3aKx4/7l3YnqmIQejsnOMOhtlW6bioS259OfRBJm9I4APowf1CnGRNuOWZR9
-         6FrHpbb3FIAZCirc9pdKD6ZKU2CW8EBRrLpMyKBsqrxd0SL+rbDCHJLBX/P+4Rj7wEm3
-         v/YA==
-X-Forwarded-Encrypted: i=1; AL+hErEJfgZEcUbUbhGNvzDG9Skr6Ynyk/sRZ4c+U5xQbxDQmIg6Wq+zQB91tkxKJeQQDXbFFAq1HBoTgQ==@kvack.org
-X-Gm-Message-State: APuU4Z/UJt6aXm5AjaR60D2DEo7dgXA/AXWeNMCEERAamg/e97rABnsF
-	WV20XI2xMiuqw8S0ZwE/mRJgPBTNC5/2s9GKBqoVN1bmQ2LZMCdrI8JXv2hl2N75UZQ=
-X-Gm-Gg: AYBFou1SVOD8J9uD5TJE3oABSaQ7u4r4l3PuO56WQfu3mNLSPLVJUHMxZNpsDyBTdyA
-	0AFYGv36aj7ULp8KsLV7XAsI0v/TPcqOwJeAdqWOJrdKEhm6NyyjvCzp0Xuq3McUvpl2EgZBkGr
-	MGR0K8DuP4uBGvOjnGURXMh1MNrWYptHbDRZOVjInN0Cs37e6ZBm+xUEV2wfddFp0XLZG8UlCbH
-	B5WNZoExNkk5gxa+447gZFNdq+Q8item1VYiPfzmKfbsAns6D7OGRfh9/wos4Cr2G2z0DZERVeR
-	Ngsnx60zHYzHxBFg/yYfkYdXxNY1tiu3fwW6DvSM/0oo4x5XCsZIXAdvppklQHSsXfihmXpXO6O
-	2PnxxfD5DDDDkp4/XfzQwaL20pzKkSLVEVyPXCxfEJCoPgHShtJyJi0yihXglTmAT9CYGhr+xIm
-	m584lSHB6dcj4sBDZ+NfDKW7MSlo5ZsXYEijMOqn1LwX9Tjp/kKfjTUOsap+MJVM6NsffI0E5pn
-	E4PcK6dcY2GpCPtc5uKdvfu6RJ3tVPOhIVUUFiM86JZunGuKPZr6Ggi8ITduQZj2Vh9LbKr7nZq
-	9F9vN20tOgdiER4nTPFPf/p/RsBuFRfgmSFay+Wlqqpsl5nuAgrZrnX9MPOPttOvAxytAGKM9ns
-	WiWzPNGk=
-X-Received: by 2002:a05:622a:191f:b0:536:780e:8f42 with SMTP id d75a77b69052e-55ac7466d2fmr101182171cf.33.1794685638449;
-        Sat, 14 Nov 2026 11:47:18 -0800 (PST)
-Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23d7ba48sm49222936d6.28.2026.11.14.11.47.17
+        bh=M5xf74SF1IJB+GwjvbT5WVTIN9Qc9W/2f2algOzAsJI=;
+        b=kKKGtGXcQC13GMZ5DPUfv34U1BWbVwlfVDA/SJdxJ8rwoeovFsYJOcTmjttKVd42gw
+         6/lL2x2Vwy7Z+88SMvz+VmIs6QUNz6lxjqZsQc1sP4P4BTEF5RIrO4mzfOR2LuCSChsS
+         EPb6Y69WvXBG9+MB/reGXXoD8voY7Xo6v0THxh1TvgJBqgs6Q6FYPA5/wDXI1Qdwpp49
+         6XiCLjt7WwSQURq4JYEFOaUmfiVuKbCkzEpeTjR0opmSX7gkDDAu25G3FAqeV2ZSeJsW
+         nqXRxdsKcKL2dvZJzv9MtEDCGOKSRM1rWYkibpZ2N27Wnb9tE2D+cbwIFiTT87g0wBmx
+         w/eQ==
+X-Forwarded-Encrypted: i=1; AL+hErGuQqx85oVyrZguZnF/mMeNW4cwbYZZ2J8jyhAECE9dqsALh9lsxDAj8TBMfud2fbXROGd4oRNDow==@kvack.org
+X-Gm-Message-State: APuU4Z8nxBfYigjJ8Ub+9M3oSwSmoAPRLOdlzC0c/UVY1DdWu0zDi1JF
+	hVk2VZTR2AK5pn7434KX/4mSe6mzIF6JDeYU8Kj1kpoVPW9sATjYD7pyaDUo3ooPsYw=
+X-Gm-Gg: AYBFou1qntrTUKwqbL8Q+eS9+NfN8NRh94trbKkTrAIoitUNwv5mqg6QosXUPtNSyIS
+	Gz4oP6HS+jFw7mTZmHQ/4Ct6ekRr+4Rbw9gEEBSsChsVVdTswpQ5r6JZpfaDryuSfhaEFB3zto+
+	clU3CORtmtNIaDH+R9CobYci+2+88UGa4jS+6VOSosq4fbBIcHe5ALi3S9o8YwLu2ZqM7acol7y
+	05+RUBWD7OK8D29xZHciR0rikuuehUR/wbtP12VCVz6ND0zPMAyLpkpV9BiRj3UGg7K/0H6nSge
+	VCv8jTVUwoSBiCjNLD72JKP3fa27eYFvdokCHsrrlRh7zdJy820U5QIamAtyLHC1MV0sDkrn63l
+	vqKNmOadMY+AZALtCfI2v5r9pqQghG3lkRKBY2w2gAXyKhgiRNCgqd+GsY2UqzEI3Ge9KlQgyKs
+	iKS66Z6jE/C203zAwp1ZCh0WJJE5llR2OLm1WAOa/4VOHHn4WOpMMbKcNxWdYqSIAqusRgvHBi2
+	6EXBSeklT19rLimOxKnPniZ1lo15mrJk5KaCe0Hza0eps4QTHzKKsodhVL93tUj1gFXufe47JX4
+	buQedntFbhdVrFLDnWDM6hD05/W4Re9c3jbghkFPlIcK4HvVs/y/1aLFwtFEeR5ok6m4xsUtkdJ
+	8zPZLMliwJ6i3GOIc5x+6PJUQKLleL+SyQDRxR9bn5Zizkfh3IdRdXZOrFFfiV8GuJi2t3OQFKt
+	RHD0wQ0on3qpU7vD4GjkdFulMURPS40XmgQVXQiISwneVCjFQHy+4MHxn4p68sdiWP2NccBWVye
+	CwhQQ==
+X-Received: by 2002:a17:90a:b494:b0:3b1:bdc8:c32b with SMTP id 98e67ed59e1d1-3b1bdc8c4bemr3620403a91.53.1794686195875;
+        Sat, 14 Nov 2026 11:56:35 -0800 (PST)
+Received: from [172.22.0.2] ([64.16.22.130])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197d35525sm14940403a91.16.2026.11.14.11.56.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Nov 2026 11:47:18 -0800 (PST)
+        Sat, 14 Nov 2026 11:56:35 -0800 (PST)
+Date: Sat, 14 Nov 2026 11:56:30 -0800
+From: Chris Down <chris@chrisdown.name>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+	Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>, Usama Arif <usama.arif@linux.dev>,
+	Kairui Song <kasong@tencent.com>, Balbir Singh <balbirs@nvidia.com>,
+	=?utf-8?b?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+	Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+	Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>,
+	Chris Mason <mason@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	"Borislav Petkov (AMD)" <bp@alien8.de>, Mark Brown <broonie@kernel.org>,
+	"Dennis Zhou (Facebook)" <dennisszhou@gmail.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 01/13] mm/mmap: free gathered pages before MMF_OOM_SKIP
+In-Reply-To: <20261113-mason-migrate-et-al-fixes-v2-1-50a2ed382b61@kernel.org>
+References: <20261113-mason-migrate-et-al-fixes-v2-0-50a2ed382b61@kernel.org>
+	<20261113-mason-migrate-et-al-fixes-v2-1-50a2ed382b61@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] mm/vma: restore VMA iterator on full-range merge
- failure
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: shao.mingyin@zte.com.cn
-Cc: ljs@kernel.org, akpm@linux-foundation.org, liam@infradead.org, 
- linux-mm@kvack.org, vbabka@kernel.org, jannh@google.com, pfalcato@suse.de, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20261115025832904-wsPy8LPoyIcDJ6FMU1_H@zte.com.cn>
-References: 20261115004655564ix3vefI54RZ3HhYOmxuKX@zte.com.cn,aviVQ40at8rZEyjW@gremlin
- <20261115025832904-wsPy8LPoyIcDJ6FMU1_H@zte.com.cn>
-Date: Sat, 14 Nov 2026 14:47:17 -0500
-Message-Id: <179468563735.482102.182237761852902643.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6B6FF40002
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Message-ID: <20261114115630.0b75d0b49869d4fa@chrisdown.name>
+User-Agent: Mutt/2.4.3 (cc9e3943) (2026-10-09)
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: t5yg7q5coatj5aw7g8gynbty9w4y4q91
-X-HE-Tag: 1794685639-688577
-X-HE-Meta: U2FsdGVkX19KFEisjE6Zrb4scEYtl/kvUuy9zE4kMPDxnXHMJ3XxSiZOrSiYVNJ0Qwb6+0eRjUKtsRmbRPO+PRCEQPkLloDvwycTjcVlXfghnF9XRtpeGsBQ7DRG+Ew0xZpvrfNhWuc/dy49GRHdTI5PzV/yNmUncdovaXNMXkhdxjWSNpZozac/B5BbpJV+E80wD2kRCmc8aTSnNlYHxfRhP7LXchNI+c/aF3JKOC7dYhfWWrCCix0Myiobo7FTphtc/xqcja/03kBxJuwtKbY5VW7aSube3WEWjeSkPR11IBPaAV4RsViSxB7Oz2X0/HookMUdzoKkOkYi/5zcxHyx6yy4HB7jeibs/iTv8rYmYQw/1Y5K7EZfKT3y+DVRzOpJliIwBXPqR/S+Wdu8k9kpGRcMgjlYqv9gIymbtHADciTF5RNF+2UgqFLp0lv2UkD4+qIzU/THbde/Ok8cB+QTtAKMZAT5CiTfgc4svbNjPJL3Mb2bxUfOEomZ2cpzAKnRmavp+5G+uLttPal8beQLrxSJi8y6FUJ5F02NS2Po7ElWkS3n2ACbT7UEGFvWIIvb0EPzx3eGquHXkCUctqsUUuAKDOL1tbETTJ1mM5Uv/+tVeWAdrzY6fhUVp592PkS5ovixogYmH7wYY6krPnlsJmpFiE1OCj0wVslylkN3sqPDY9cbPOGVL3XgM9Sn3iIegfnH7K8Xk9ob2zMvzEtmtAoO9aGmwF3SzvFoQpZ3N16pmxm4mi/VUsGW2C/qWZu0qvHAEliLri98OAYYulQoZozYf0ogcD9pdM270SHlFzJcREkWyNxHiOd8wohSz3Kqtlqd/2BcBWRIxNtBhLm9ztZeDGFBM8Lm+6C4eMiKx6FSyBm0vHNxzyUWmJOibszDbhNUW6zCvZj8EUPt3ZSl+bKP7RMIQQKG34/4vEUL164YHJO8aqVZtCpHVzWZbtvVmEgTDz498rrW+61
- RKdy6kIB
- zFx1PIH2naTJvzxqr0tbPIRJFyuPf4HzAFv8Hwust2C0H3A5UwnTk9iwHCQbZt+ruOoojnaxO3BN5vxtidttAXygD9fkNnX3omBZLszNFxXy3trXHm54emhFx6Q+M+XvKDUVtCP5BvRvk1e3FpUxo6sfvYqR2xkwM+wc9mhk54EXhqNWVyJH9E9abOOG5CLPZm56ptExsUu3ibhA+XspSUUEJ3lFejEuBWAz64hqVjUME1VqX80WIqHFhJ68wNkjx5QZNaNd44F5beU6rZc1e5QtGPqBF4Tsg6sj2USIpOitAKHLIExz/sxTSxQ==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 71D3240005
+X-Stat-Signature: itzuwas1qqfbh661m73ppcx9euqy1di8
+X-Rspam-User: 
+X-HE-Tag: 1794686197-361708
+X-HE-Meta: U2FsdGVkX1+Ubd+NbsfbhMNXnxAV+HeW9KyyKjmTidTgvDcBaReDlrPeh3cu3Q3eQo4PC1/inIS/1D7bKAQHw3OwH1CnqW4G85PMBjopgqjJ6anqgqS46neNJlByVYkoNrww/gTfN3FjCwhYy6+QJdfyfaJv7/oMVF0XvSqVq8UTP+mndDID+S60EgjjLnWdzY/rhGb6h8W9bE/ffb0yxOyHT8FaET/sAbvSq6GFkz97zR7PrrZCaIRdwNbU3/2BLBIQu4AyjVcQcmCgstxiH3DizMJHjdlaOjslrcyVkyBkTT+nKIPU/wG2/i//mUh81/2gEgELlLu4XGFRaojThn8brMobO1mAZ2xgovBdcfkgXbUuVyTREvgv8Rhi0VuFNQfy22Tc/TLXMqGMMN3a/YnUHaifpSvl35WTxec6KUJfkaiO5HfAVb+gMPPHbI4z0vYwfkD8kTS+syMxaLoaGHwjBYi+0hrO9chJ5h4cVkmgyVwRvT/G82vjXOFeU8xSueGJhyvhNgGnbqrwBQRSQUqPCtsA0Ogi9Jbcucav421iKl+/rBpK1fUF/X0DmdKZh5Ot9EJGcUQGwn+PNblMLM/i00v2c692FSk3rI3+PWlZBUquL4Z/QMRJV/5eh7ms0XBg7DLRvi43fvF1bLxJM4CQ96h0cjk6XQWWpGtUhy5h6KYNNShSLFlYQufENgGr3CFUtgXGki2EHS6yO/t0SWlUh8kpexEgPg26blAt/KAlT0m2PVmNGGHoZTa4lRe1qfWLOqsC7se9lCbRJ9gfZR+RaO3AumwiA/Yals72yXuVrWc1aAYFEt/+pVe78os9uNwfU39XjIorBRItp5g17/9TVMHBYGELThODb7Y11tmg9d/OfG8M1LBrMArQqVFbXyulx5ZNS+42jyS89JDicVKO/Xf/1VItdmeRW6TI2Bx9UBwW5lia2iXJmWcUGZUw2esbhAbLefO6VGAJvAt
+ TR1hAjam
+ 7Xo78WrG+iuLjwI/Kahr5/1U1UFjsrb6s4GEaom+azFfPZSfIGTvLQkdKg5bVAU4EzhBw6HvTKcjl7FPm8kjgJIr87Ug+wXFE03uXAdjZQcg3EBNHS6zvgt3U7e4mIorQP2f56RBW+aH3V8AatYpNL3x6BSLJcfoRAFtoADDB67jaK4KewrAi4GiwoJ32+yJRR/jWUQ6kcWjcqpU2lekOA6Gp/wl3u2CvS+Tb8TmyxU63v/KsEeiNsGQ2MAaM/JN2OfbTxPrTQNmu/0gbLS4NPoMum9jDiDSITMdQQVbgONJ7+j3FwtiUTu7zfbLwakj4kz3amWv5tpytixPPakTmO9s74e5uo2CRvshQCi/aLnYgnmOyKg6CNoNz4ZXF+zP045fp37Deq3+TPP2+lpTt+Ew2Xm/zflgNBsOJtL0u9E8cKucCW/+GTfNHvKU1QOA4MdB+rSKcxKGMTvPYovy5khAxkljQmK8nw3bGoFqY+QtpP7GVuOqqEoKaqnVk7t5G/S/x/Qj+s4AbquD6HVOvUvoYjy6pQqXi7gIlJ79MwDLgz4ppMjqrMjVrjk7b6y/oyHjeABl0ZDvhFFgny9z+FeN6IQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,36 +147,27 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-15 02:58 +0800, shao.mingyin@zte.com.cn wrote:
-> 
-> I would like to learn from the technical feedback and improve the
-> quality of my contributions. Thank you for any further guidance you
-> are willing to offer, and again, sorry for the interruption.
-> 
+Hi Lorenzo,
 
-It's a matter of triage, attention, and respect for people's time.
+Thanks! I've tested this with memcg OOMs where one kill is enough to get
+back under the limit, and with it the second kill is gone.
 
-If a bug is unreachable or so low impact that it has no appreciable
-effect on in-tree code, mass-driveby submissions take maintainer
-attention away from critical issues. That is a net-negative.
+It's probably worth knowing that for a memcg OOM this also needs my
+css_task_iter fix [1], which is in mm-hotfixes-unstable. Without it the
+memcg task scan stops seeing the victim once its last thread starts to
+exit, so oom_evaluate_task() never gets as far as checking MMF_OOM_SKIP
+for it.
 
-Exporting this triage (mental load) to maintainers creates a strain
-on the humans in the loop.
+The test I used for this has a 48M memcg with a 30M task and a 1M task
+in it, and then a third task in there faults in 26M, so one kill should
+be enough. Out of 300 rounds of that, I got a second kill in 299 with
+neither patch, 277 with only this one, 147 with only that one, and none
+with both.
 
-By the time the patch / report is read, the damage is done.
+[1] https://lore.kernel.org/r/avA1wXhTMs9eY2NF@chrisdown.name
 
-Even reading your patch message, it's unclear to me what the iterator
-position being off even means.  What visible effect does this have?
-(None, it's not even obviously a bug).
+Reviewed-by: Chris Down <chris@chrisdown.name>
+Tested-by: Chris Down <chris@chrisdown.name>
 
-You may ask why not pass the patch to an LLM to help automate that,
-but then you are externalizing the token cost (and someone still has
-to read the output).
-
-This is not intended to put you down, just to illustrate the frustration
-that these kinds of submissions is causing.
-
--- 
-~Gregory
-
+Chris
 
