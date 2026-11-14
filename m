@@ -1,64 +1,64 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC397606BB25
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 20:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB013606D1E1
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 20:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=Lll2v1Vg
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=iXx/38zX
 Received: by kanga.kvack.org (Postfix)
-	id C2C736B05C0; Sat, 14 Nov 2026 15:27:18 -0500 (EST)
+	id D6BA66B05BD; Sat, 14 Nov 2026 15:27:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B66D26B05BF; Sat, 14 Nov 2026 15:27:18 -0500 (EST)
+	id CECA86B05C2; Sat, 14 Nov 2026 15:27:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 943C56B05C3; Sat, 14 Nov 2026 15:27:18 -0500 (EST)
+	id A073C6B05C2; Sat, 14 Nov 2026 15:27:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 689226B05BD
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 69FD56B05BF
 	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 15:27:18 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F33351C3C24
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E9AAD80266
 	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 20:27:17 +0000 (UTC)
-X-FDA: 85434859314.02.3A24C3F
+X-FDA: 85434859314.30.5A869B2
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 3DA39100003
+	by imf15.hostedemail.com (Postfix) with ESMTP id 27192A0005
 	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 20:27:16 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Lll2v1Vg;
-	spf=pass (imf14.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="iXx/38zX";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf15.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1794688036;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UbmwYeTyCihJtSZLk63m5z0KzwYndJc2EHWvOsqTpUQ=;
-	b=p/7h/SChgU4sLHtSgnI0QV3NHJaGlpswOQH4lxB/el7k12eii+PvJZ71+al1nILlt282I1
-	fhBOticyavWjnfcb4DkSJMdeMmfdU4LLSD1g+xAY0AeKVnOq3t5dC+Jyg9MUKjkdp7IptH
-	9np/ng4Q8CYGwIbJf0ognYpMdpmip0U=
+	bh=o+U3kWErBkCSTRLgMgKm+90EEeoH5yL29FO/FtSBNs0=;
+	b=jvBqpcL52TcHcRf2Sia+lCQrmPslugYZIa82tPabS0de0OctwqIKFjCS90k71y0roxnNpR
+	m+VQBVAWW31kouwokFQQITwuiqYQseWKopNE5RAsYidKafgR7bfkE2ocpQWFA1/RcuHtuW
+	kYv/46sZyLE+6xazRmNkIOmbzY2kjNo=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Lll2v1Vg;
-	spf=pass (imf14.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="iXx/38zX";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf15.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1794688036;
-	b=vj9u5VP0dMw/E/GzNfIHDNVKOsaYBRET+NyNATA/0h6dHNDM5L3JhW3704HqWob4tcvVfb
-	JnlFYCZmZGEb7Qz3dSqSzjGC95fjjtGXg4Q2stvY6v4n1G3+/tSNrYYnELet/5lfseBzek
-	JJV/QTU52Z3PbvdIVyFz7BTPevPOQnw=
+	b=gwKyLAlg6E2n1iqz4drEqmJMoMYBCp4TmvK2389UzTV1QcWbX59WUnQUVYOC9X+juX19du
+	8sFQqyjRA/XG9aTnceHd7WQAmgyYG1D+LcWdh1lcPI8Br4qx0ltA2C0bk7zc9lbvVoyHYr
+	XpaLZikfx1hHiDbJh9nUSLVJKf3nbNg=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=UbmwYeTyCihJtSZLk63m5z0KzwYndJc2EHWvOsqTpUQ=; b=Lll2v1VgC79o9Fes4dZZhe3ORz
-	eQHFmQRElgxX7Tu5xzcxGP7/vNljf6PLPh1EGxc/AD1I1X8ZJkppNH+AEHU4jWnwMHvl76MKTqxAe
-	4Qx4bH6DOxyuGnY5YdMV60Zlx/2jxO0zYkhVepX+QjJlFsdoJAUJ+O95ooMLpf2v/rafUyQ4xvkw0
-	2m2y1pzWNSqMy3qbRMh+piW4ibEYb+oOZ8v8I89rbtlIu0m0BzjRqOwZgtrgVOL1xgijv3cXZBC7n
-	ulw+z870ZwWh2TdeqbPrdaU+Awa1q6BXk1KMWx05apBlmz3vQxFE88Tm+lbWarCp06UGnphrts7qk
-	IMgkh3xA==;
+	bh=o+U3kWErBkCSTRLgMgKm+90EEeoH5yL29FO/FtSBNs0=; b=iXx/38zXd8cg1pen5CP5P6uZUo
+	wY26xN4eIACNe3VSjGGRZ+5kts2ntm/nb4UP/LSf+Y+DnX+LuBTdlRpxCeVwrl2VVi1HrxvDrCWM2
+	AxlgJdBTIDiZ830SBUHp1O2RAJSNmYjoQa6PQt66wkDey10XUjavpo7CUYZ3CuDaDW4iXSmo1XJT5
+	ktxRSDP9vCpP5Vz0x62H+k+pK1iRdjzL2FT7MhYxFn89V3CGB421/gqcC3IOaTl72MN6bGj+kNUjO
+	E9vIoLZ6IwogEn/RA6NORrw8/7nwMUVsKblIPVDlPZ5IT0JGdDJsYOR915lSbgW00LYnSC6kfRliS
+	GYoMJ4Rw==;
 Received: from [50.53.43.113] (helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xSKKx-0000000Giga-2h5V;
-	Sat, 14 Nov 2026 20:26:59 +0000
+	id 1xSKL1-0000000Giga-2f90;
+	Sat, 14 Nov 2026 20:27:03 +0000
 From: Randy Dunlap <rdunlap@infradead.org>
 To: linux-kernel@vger.kernel.org
 Cc: Randy Dunlap <rdunlap@infradead.org>,
@@ -147,27 +147,27 @@ Cc: Randy Dunlap <rdunlap@infradead.org>,
 	Matthew Brost <matthew.brost@intel.com>,
 	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	intel-xe@lists.freedesktop.org
-Subject: [PATCH 02/12] docs: ioctl-number: update sound entries
-Date: Sat, 14 Nov 2026 12:26:40 -0800
-Message-ID: <20261114202653.3113381-3-rdunlap@infradead.org>
+Subject: [PATCH 04/12] docs: ioctl-number: update networking entries
+Date: Sat, 14 Nov 2026 12:26:42 -0800
+Message-ID: <20261114202653.3113381-5-rdunlap@infradead.org>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261114202653.3113381-1-rdunlap@infradead.org>
 References: <20261114202653.3113381-1-rdunlap@infradead.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: byc51myhyjqq49jgo9kozhznrkfma3at
-X-Rspamd-Server: rspam01
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 27192A0005
+X-Stat-Signature: sjmk17nx8wjkhm5nt9c7f5bqts54zbw9
 X-Rspam-User: 
 X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
 	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 3DA39100003
-X-HE-Tag: 1794688036-123726
-X-HE-Meta: U2FsdGVkX19xvdKzQpEwcRtOeGkmPFzTewiUSC3aeQBVd9NhMcKvWfNrdCgZwShItA1fNwXu1HWr//Zl54SwS7PqQzPR3Hs8OQNJtXyNKlMVSqqbJk4+RLxZmqLVFCX6/7fVAuVb+smN8Lz8qz5KMuQTnIb4NX+V/qeADCHg7DafgMNODkD2Z8aBRpUrMSLjTpTipILkWEFIda/PG6YSETuK80lg9T6JYs0LZXqSGNGLw9A7K+UdLpsjQqy88p8A7I8AF8p4nbryvkjEWRCt4d6QLbRHTupQdZOrHztNFvN9yAXQIYWNw8k9jYN54kmrpcJOG4BrN5ua1htQSQfGKXfB2zR+DAJvjN1Snbdx2bUw6zFTTUkjDD9+ILUTRwMbvuvEFYPBjIkxfwHE16jB83RqO/0MdPN9LH2Nem5+/0i09806jpOTzlvJZdlJ00LieO6KITKLoCcn2mK5zjXc8s6mKa638G8MkSuJy8hQArWO/L+JaiFxaj/YRHFqOC1vYFkm1NQ/asmWjgUN7p6+c8bW0pHWruQuB/HQRMDC8eqrSqTFmm5bF8jVBKPRrxRg5YU96FvmwpQwsfJUu/DiyxL/pXepfgi1JLDQAinRr1q2xuSsDJgpkOrqwY/73tzbPrDsJ3X4NeH6wDBmF4BKMnKf0+8/7+xWXzPCIEYXVbTW1SBBJb17Qcwg0kKRnqguV5YWDw9IWcCZwA201VUGh0OrX8MEEUnV6g35KGV0lFrHySWYVkqhpOya9sftzRjpbMnc53g+id+I5Hb+D8hwmw+czyEhCpZXGQLxQXT0wNCtlyUxv+6Lok/OvZLvy6XSQl89Vr7aPfRuyO+R0HupdbooQhllh3EKMFZr4Ol7p9h2y2aV74CJhGRonaMvs2kasNUaeEVM8Vk8rl+yCYtAdJlFIcEGEiEJugd54ZW+xAJ3SirVusD71/96vX9khSILVJt6Iby7WkiHBTdgL4S
- nkuiN9wk
- qnm9fv7ez0BZrZYfREZuP3xFV4z43c6bchKwCON6yqP9IPE85e+BYLZBOq9v94gWtFdc/DmwVT6ahI902FM0ByB20Qkwivxr3d/lDcImTJE5M+dBSHZwFVW42SIY6cLrQDbL/HiuvEZWMog066OteHx3yqF6dRm/aYqktB4LQvh+5MRqHInbb7hs8mSRBBXjmkP9KH6933zKNfcqWvcGswWIh04sshtdm8Eka0BI3att1dzArsJjbEE3XU2N/7FmgR1K24PyZ1HRdKAZwBK19ej+F1mmTlgQhp0e9JgNUxWD5NLa/Q73nl6SGYK9nIFhTgRObZG71delIQ6UouI/eP9MMxH6bASJ1LcbUA8NNExpGUctfU7XORpy1Y5ey8SjGmogjkOk9tXzdc7UEig0ZY6mSrmoPbICp5pIKaELpHH1tv4aMik0OKbLwkIweWRSWDXXXfLOCdDcM2il6rrGSR1Ece0DyIcqQzxiABFdQM9fLQ+5guOaIc8LfvRxaJLhXsX7S+b+GITrXOQWi2ihja/70AHy7nhjXhK3tDnPdjjc/kQtRX1C3L57vz+eZwdTMCsnxJQ2EnyxncW7Mf1B9wi1J7l0F7210IsaO
+X-HE-Tag: 1794688036-429725
+X-HE-Meta: U2FsdGVkX18E4IrMn4NBpczCiFH2YrAK6S7/gITInCLurIqNSPPYf3uH6Y05NeWMVgkva283maf9ET15HLfPTdmDul8t7pzYsIWjTMdKqyKamCfHMaFOngaYalUl/6ZhqYgIP+pMeGvcu9USP2JKMyGtVXExdSkthXOjI3+affPaPoxLQmeA3rZGb0E6L4VYxkJo2gbGK5kR0nZtIjjnqwctrtxqJm+lDm+ldaslegrnN2TrzMsmsIpSFr+Ty/URyXB0WTyGEFxJAeaUciyjAL0EQu0ShI9U+onwiyTudSKmOVNb7SYT2X6dGvo3DCbcZcWM0vlE2Gxtbt4Jjs7smmvucV+tnrdGHdvWLXRdvlPA3iswhrr71O9aUMj9+cUgt/8Gk6w+BQiNEMcuVIkfPfvpz/VgK+HiYIgDaVdCd3k7H9oz9k7gkykxdyl5NkzniZXHaMtKSZ/CYSgYGQjDYDiq3AbNgmQd/yeYuAGxV2lTdaw080SWJkvZ2JQyCpZrAE8oIeOt5PV/xj6HFO70Y8TKXcUbhJaKEo4Y+xbsH2E3Ix01Elp46vglqCLREiUbFT/B7MfU5hKGd+1VLkKc/R6O5v8llfzsRbMFZu+qiyGioBy73+rabW1/OKTHxNr46qC+SJkyymNBoJh4eVVnsBaQaYaUt7UIKsbrGKCqioMY3NOjpOd4X/rUv0SgRMcjRiQ+ryd1nsbeskG7AUjrQ18P2VvRegiH8cwZ+Doof+sAEV8qXlUCRQ16NCD2SvUKPbKd18ElBQC0w9Zjn+M9inHwqJgB8fWmNB47DUO7K35QTosFk8+EXZwWglbEcVlXYANVu63/WhKNGK6+0Leh20kNI0z+DFT5xvrET0JRGy9astbpj3neQYffg+3bPSKI36NMZCbmbblSMUnMcXqPWc5gH8Y5lfQq+Mk6xOr8arhCqtEyxFQkTUZ1PtHHBh4AKqyfYtRw19Gr4w07r5Z
+ /4uXwQfa
+ xeHF9DhRFNuEudh8rEoMltwOHkIMpyi4xyqsTZfdI3CP6hpAZ9NICT9kDo0TOF+wxOrYwe9zaPqTbtnZ8tJwiKIda1k286ldtRgY8KDlKwUsg0oSYL2chec4b4t05cDa/zAwyTZFxbGNld1U0xQtKcRHzPHqiU8ITJZyvSdGUG8RlNRxj46p0Uim6TBsva8/bF+zob8LU5gxygkiw6r0Pd4eOZWEJBTjoTMk4l0ftrCpTbDjfx8a0QtC06XoGu8W2EBz7qamNSqeSjtauqirfAY5t98lqYSeAdwO8+6Sc0vTsVCbMgB8i0/d8ylC2rsymy1yz3v44KH97x5UcM7K1SNjykTB1LLzLHY1X5qtPDNOpWPjYtcbpmsIQAi9K//U4kXxjg3oxKCEVppTDFXvCZef7MiLiH8qIELFlax6PQCCVXz2Dw5mq/8R6km663P93D+5pWbDqEwyn7K7TefVlRi2wuHU0tRvJKp1sAE13Rg54dhhmDYtsi/qaOEmmAf2dE0DFKJccCGrT7jr+3p4tjXEE5zNx73hrucgzS1CTNMRMd/uqhuPuzNiUtvK++GtgQwrw5Zd5G9xqcHIeXvHzsr9RnfmFZyD8gUiUQjXC2mLIjJpsoD5bZ86huaQbAlmJBsHPXsjoqQl4kToZwxoFwzbY7RyHnlIQJCSKOFGaeeYFX2sdH8oWQW41zHA4yYczh0iHAkiPPye2I6N5TezrTTc4DzLrivJlmxvrTu0V2IT0jrRtY3WD1md/kOEx3jn+Xt3fgEYVquJeILOj6EIMdj003ECll6Oz9HySdXb3v6O3W/Q3A4iKvgVQIoDAyVNUL5XZp0WgjeDA3vXKKJPB+ZCGUHeH5wsh44GlNc/Wdkod7ErP7m+3r3uCOCA96mW66Tx19HRUL9zJVylH/tsIQbFtXg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -176,7 +176,7 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Update the list of files where sound ioctls are defined and update
+Update the list of files where networking ioctls are defined and update
 the ranges of function numbers that are used.
 
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
@@ -188,73 +188,97 @@ take all of these through the docs-next tree.]
 Cc: Jonathan Corbet <corbet@lwn.net>
 Cc: Shuah Khan <skhan@linuxfoundation.org>
 Cc: linux-doc@vger.kernel.org
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: linux-sound@vger.kernel.org
+Cc: Marcel Holtmann <marcel@holtmann.org>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: linux-bluetooth@vger.kernel.org
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: Jason Wang <jasowangio@gmail.com>
+Cc: David Heidelberg <david@ixit.cz>
+Cc: oe-linux-nfc@lists.linux.dev
+Cc: Chas Williams <3chas3@gmail.com>
+Cc: linux-atm-general@lists.sourceforge.net
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@kernel.org>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org
 
- Documentation/userspace-api/ioctl/ioctl-number.rst |   12 +++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ Documentation/userspace-api/ioctl/ioctl-number.rst |   19 +++++++----
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
 --- linux-next-20261111.orig/Documentation/userspace-api/ioctl/ioctl-number.rst
 +++ linux-next-20261111/Documentation/userspace-api/ioctl/ioctl-number.rst
-@@ -122,11 +122,14 @@ Code  Seq#    Include File
- 'A'   00-0F  linux/agpgart.h,                                          conflict!
-              drivers/char/agp/compat_ioctl.h
- 'A'   00-7F  sound/asound.h                                            conflict!
-+'A'   20     sound/pcm.h                                               conflict!
-+'A'   20-53  sound/core/pcm_compat.c	                               conflict!
- 'B'   00-1F  linux/cciss_ioctl.h                                       conflict!
+@@ -132,6 +132,7 @@ Code  Seq#    Include File
  'B'   00-0F  include/linux/pmu.h                                       conflict!
  'B'   C0-FF  advanced bbus                                             <mailto:maassen@uni-freiburg.de>
  'B'   00-0F  xen/xenbus_dev.h                                          conflict!
++'B'   C8-D4  net/bluetooth/bnep/bnep.h                                 <mailto:linux-bluetooth@vger.kernel.org>
  'C'   all    linux/soundcard.h                                         conflict!
-+'C'   00-68  sound/compress_offload.h                                  conflict!
+ 'C'   00-68  sound/compress_offload.h                                  conflict!
  'C'   01-2F  linux/capi.h                                              conflict!
- 'C'   F0-FF  drivers/net/wan/cosa.h                                    conflict!
- 'D'   all    arch/s390/include/asm/dasd.h
-@@ -152,6 +155,7 @@ Code  Seq#    Include File
- 'H'   01     linux/mei.h                                               conflict!
- 'H'   02     linux/mei.h                                               conflict!
- 'H'   03     linux/mei.h                                               conflict!
-+'H'   03     sound/core/hwdep_compat.c                                 conflict!
- 'H'   00-0F  sound/asound.h                                            conflict!
- 'H'   20-40  sound/asound_fm.h                                         conflict!
- 'H'   80-8F  sound/sfnt_info.h                                         conflict!
-@@ -160,7 +164,9 @@ Code  Seq#    Include File
- 'H'   10-1F  sound/hda_hwdep.h                                         conflict!
- 'H'   40-4F  sound/hdspm.h                                             conflict!
- 'H'   40-4F  sound/hdsp.h                                              conflict!
-+'H'   60-63  sound/scarlett2.h
- 'H'   90     sound/usb/usx2y/usb_stream.h
-+'H'   FC     sound/pci/asihpi/hpios.h                                  conflict!
+@@ -173,7 +174,7 @@ Code  Seq#    Include File
+ 'H'   FC     sound/pci/asihpi/hpios.h                                  conflict!
  'H'   00-0F  uapi/misc/habanalabs.h                                    conflict!
  'H'   A0     uapi/linux/usb/cdc-wdm.h
- 'H'   C0-F0  net/bluetooth/hci.h                                       conflict!
-@@ -168,7 +174,7 @@ Code  Seq#    Include File
+-'H'   C0-F0  net/bluetooth/hci.h                                       conflict!
++'H'   C0-F0  net/bluetooth/hci_sock.h                                  conflict!
+ 'H'   C0-DF  net/bluetooth/hidp/hidp.h                                 conflict!
  'H'   C0-DF  net/bluetooth/cmtp/cmtp.h                                 conflict!
  'H'   C0-DF  net/bluetooth/bnep/bnep.h                                 conflict!
- 'H'   F1     linux/hid-roccat.h                                        <mailto:erazor_de@users.sourceforge.net>
--'H'   F8-FA  sound/firewire.h
-+'H'   F8-FE  sound/firewire.h                                          conflict!
- 'I'   all    linux/isdn.h                                              conflict!
- 'I'   00-0F  drivers/isdn/divert/isdn_divert.h                         conflict!
- 'I'   40-4F  linux/mISDNif.h                                           conflict!
-@@ -204,6 +210,8 @@ Code  Seq#    Include File
- 'S'   80-81  scsi/scsi_ioctl.h                                         conflict!
- 'S'   82-FF  scsi/scsi.h                                               conflict!
- 'S'   00-7F  sound/asequencer.h                                        conflict!
-+'S'   21-23  sound/core/seq/seq_compat.c                               conflict!
-+'S'   60-67  sound/fcp.h                                               conflict!
+@@ -219,11 +220,12 @@ Code  Seq#    Include File
  'T'   all    linux/soundcard.h                                         conflict!
  'T'   00-AF  sound/asound.h                                            conflict!
  'T'   all    arch/x86/include/asm/ioctls.h                             conflict!
-@@ -219,7 +227,7 @@ Code  Seq#    Include File
- 'V'   C0     media/si4713.h                                            conflict!
- 'W'   00-1F  linux/watchdog.h                                          conflict!
- 'W'   00-1F  linux/wanrouter.h                                         conflict! (pre 3.9)
--'W'   00-3F  sound/asound.h                                            conflict!
-+'W'   00-41  sound/asound.h                                            conflict!
- 'W'   40-5F  drivers/pci/switch/switchtec.c
- 'W'   60-61  linux/watch_queue.h
- 'X'   all    fs/xfs/xfs_fs.h,                                          conflict!
+-'T'   C0-DF  linux/if_tun.h                                            conflict!
++'T'   C0-E3  linux/if_tun.h                                            conflict!
+ 'U'   all    sound/asound.h                                            conflict!
+ 'U'   00-CF  linux/uinput.h                                            conflict!
+ 'U'   00-EF  linux/usbdevice_fs.h
+ 'U'   C0-CF  drivers/bluetooth/hci_uart.h
++'U'   00     net/nfc/nci_core.h                                        conflict!
+ 'V'   all    linux/vt.h                                                conflict!
+ 'V'   all    linux/videodev2.h                                         conflict!
+ 'V'   C0     linux/ivtvfb.h                                            conflict!
+@@ -242,8 +244,8 @@ Code  Seq#    Include File
+ 'Z'   14-15  drivers/message/fusion/mptctl.h
+ '['   00-3F  linux/usb/tmc.h                                           USB Test and Measurement Devices
+                                                                        <mailto:gregkh@linuxfoundation.org>
+-'a'   all    linux/atm*.h, linux/sonet.h                               ATM on linux
+-                                                                       <http://lrcwww.epfl.ch/>
++'a'   all    linux/atm*.h, linux/sonet.h, linux/atmbr2684.h            ATM on linux
++             linux/atmdev.h, net/atm/ioctl.c                           <http://lrcwww.epfl.ch/>
+ 'b'   00-FF                                                            conflict! bit3 vme host bridge
+                                                                        <mailto:natalia@nikhefk.nikhef.nl>
+ 'b'   00-0F  linux/dma-buf.h                                           conflict!
+@@ -264,6 +266,7 @@ Code  Seq#    Include File
+ 'f'   00-0F  fs/ocfs2/ocfs2_fs.h                                       conflict!
+ 'f'   13-27  linux/fscrypt.h
+ 'f'   81-8F  linux/fsverity.h
++'f'   7b-7c  arch/{alpha,mips,sh,xtensa}/include/uapi/asm/sockios.h
+ 'g'   00-0F  linux/usb/gadgetfs.h
+ 'g'   20-2F  linux/usb/g_printer.h
+ 'g'   01-0F  mm/gup_test.h                                             conflict!
+@@ -308,8 +311,11 @@ Code  Seq#    Include File
+ 'q'   80-FF  linux/telephony.h                                         Internet PhoneJACK, Internet LineJACK
+              linux/ixjuser.h                                           <http://web.archive.org/web/%2A/http://www.quicknet.net>
+ 'r'   00-1F  linux/msdos_fs.h and fs/fat/dir.c
+-'s'   all    linux/cdk.h
++'s'   all    linux/cdk.h                                               conflict!
++'s'   07-09  arch/{alpha,mips,sh,xtensa}/include/uapi/asm/sockios.h    conflict!
++'s'   64-65  arch/sh/include/uapi/asm/sockios.h                        conflict!
+ 't'   00-7F  linux/ppp-ioctl.h
++'t'   46-4D  drivers/net/ppp/ppp_generic.c
+ 't'   80-8F  linux/isdn_ppp.h
+ 't'   90-91  linux/toshiba.h                                           toshiba and toshiba_acpi SMM
+ 'u'   00-1F  linux/smb_fs.h                                            gone
+@@ -334,7 +340,8 @@ Code  Seq#    Include File
+ '|'   80-9F  samples/                                                  Any sample and example drivers
+ 0x80  00-1F  linux/fb.h
+ 0x81  00-1F  linux/vduse.h
+-0x89  00-06  arch/x86/include/asm/sockios.h
++0x89  00-07  asm-generic/sockios.h
++0x89  06-07  linux/sockios.h
+ 0x89  0B-DF  linux/sockios.h
+ 0x89  E0-EF  linux/sockios.h                                           SIOCPROTOPRIVATE range
+ 0x89  F0-FF  linux/sockios.h                                           SIOCDEVPRIVATE range
 
