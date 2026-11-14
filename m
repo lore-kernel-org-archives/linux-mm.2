@@ -1,91 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733AA606A329
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 12:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD19B606A884
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 12:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VTkZ9H3k
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LNbrcs4Y
 Received: by kanga.kvack.org (Postfix)
-	id 239AA6B05B4; Sat, 14 Nov 2026 07:03:34 -0500 (EST)
+	id 286FF6B05B6; Sat, 14 Nov 2026 07:03:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 126C76B05B5; Sat, 14 Nov 2026 07:03:34 -0500 (EST)
+	id 23D846B05B7; Sat, 14 Nov 2026 07:03:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F30086B05B6; Sat, 14 Nov 2026 07:03:33 -0500 (EST)
+	id 14D776B05B8; Sat, 14 Nov 2026 07:03:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D37AD6B05B4
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:03:33 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 592EF803C5
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:03:33 +0000 (UTC)
-X-FDA: 85433589906.06.6794D01
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D83AE6B05B6
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:03:34 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 63FF2A03B6
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:03:34 +0000 (UTC)
+X-FDA: 85433589948.15.47CB07F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id B02D52000B
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:03:31 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VTkZ9H3k;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by imf09.hostedemail.com (Postfix) with ESMTP id C5355140005
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:03:32 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LNbrcs4Y;
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794657811;
-	b=R8e5xwSzF+rdD+T7gZusmwY8CFHZOh0i6ic7/dc4vvd+YnNmzahMzB59w79/vUMaNlnneT
-	oz3Zz6rA+dMdKpfdoVxoL+tQoSOaon2KFbAoUtzNot8VYnosn45nDdcV/QDuAr1XaOhQOX
-	5WcmuUGHIwssY6zMPY+DCwyjx8sUSsM=
+	t=1794657812;
+	b=SNmqLsxh038V/f0w13HMTQ281/Ma+PcZNsKy4jFEV2cq/m+cU62k77YSm6IYi+OqT16lxN
+	J8lQEmv5wcx9FgC42ZR/YlCwCM5DjQVPxuJka8T0DvS0EVDgEMOKmZb5XYq202FX7kkmIb
+	qkedsJ3DhWqreKJCrQnhvETQ3hvaz+4=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LNbrcs4Y;
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794657811;
+	s=arc-20220608; t=1794657812;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m8bjqjOZXXJPj1tfqG9iwnas9qJ8BH37nqepWAHXyz4=;
-	b=JhRBXER4BxdQl5AHrKKD49t1Gwg0u0su33BE9GSQz8fGi5fuE96AU7r55QLrg28MG9QQ3a
-	RJxvP41xPO9Oi74SztdrLNoT1auJHBhPQrHMvkANyXkcbeUw/XfWVhkHCUj7nRgXW01VQr
-	5Tim3Q2Z6fj2n3pNTyw6MaC7m1g4mlc=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VTkZ9H3k;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	bh=qsiCTf5/ZDJAgI16zRoAOBgO8sIWPIPaiYYrEaqBQl0=;
+	b=7cyBz0ZDcreyXagkJ9JpE+gU+OZFB+Toctp8Ns4QHJddla6HetWZhff888KBPRlIZLdRUF
+	Ak/4NgJHRXt3rv4yturHfWCzmv6/JsSAXILRl0ZxwdIwc6QAfmGiDxjlb9k3jGgB3S7jKX
+	ZOqSW18Wo7BFORN8+f2R5EeNTQzPTBs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4CCF4602D3;
+	by tor.source.kernel.org (Postfix) with ESMTP id 61ABA61E39;
+	Sat, 14 Nov 2026 12:03:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA991F000C5;
 	Sat, 14 Nov 2026 12:03:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D2641F000C4;
-	Sat, 14 Nov 2026 12:03:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794657811;
-	bh=m8bjqjOZXXJPj1tfqG9iwnas9qJ8BH37nqepWAHXyz4=;
+	s=k20260515; t=1794657812;
+	bh=qsiCTf5/ZDJAgI16zRoAOBgO8sIWPIPaiYYrEaqBQl0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=VTkZ9H3kLYaSH+ftQJare6BeAJ35leW2srLLeVqVNkIYufakLwc9qsPh7q6PyK+GQ
-	 2ESGn5N0LRUxkvTDHqu/Iodt7hjLHU2IBpfcd6KHkZ4X5RchqdoqPfjR2gvnP7Jzzi
-	 v3r7/NXEE33bdYANLq7Kc1uharlCSFFOH1YrAdyf8EjtHgqtSd5DAIGxLsopxrYOA7
-	 c5UFB4cjnyUOFj3v6kLAgLIBJGi137K/4UixHmfbUnRHqyoCrZVv17A0U1XRCHd3IW
-	 xnyP/lx78ekHV4o2o9rHn12pw/WS+rCrGk1Nvtjm8XCbZZO/7VDsyEf+np+R0r3kEP
-	 shGz027E42Ciw==
-Message-ID: <sashiko-outbox-214462@kernel.org>
+	b=LNbrcs4YE9ttSburmbb6iJ9AMZSDEZsciXFVPdhD9V9DlJQLfjlM7FPiVXi7l9Gwe
+	 nYeFvAv5JAjF9k8eBJ27Z/pvT/pGhWSE0qlDGGLMnYhWbsNJByvQdKxRGdUgOnOd3T
+	 FrNF2fag/r/bvDutXeoOnOVYgZEH/qpnkaplk+hKj0lyEdJyDPzRy+DTwDrHTwcBWd
+	 O3oFIPg2Xhd2sNcsEFmNdC8+wgVXv0X58KKsMxRHlQ1NE8HXpLiqzHwqYlwUONMoEJ
+	 Eh58T9nMmlbVadQRoGpQvkVYHUInJjGW235heNs7vHgQ3+zEg+xtEqQsCbamIG7jEW
+	 4919mVQ2HqZ1Q==
+Message-ID: <sashiko-outbox-214463@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 11/33] exfat: don't set SB_RDONLY after filesystem
- errors
+Subject: Re: [PATCH v3 12/33] exfat: use the generic emergency read-only
+ state
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.com>
 Cc: "Al Viro" <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, dsterba@suse.cz, tytso@mit.edu, "Mark
  Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>, "Joseph Qi" <joseph.qi@linux.alibaba.com>
-In-Reply-To: <20261113-work-fs-sb_rdonly-v3-11-0be92bb73709@kernel.org>
+In-Reply-To: <20261113-work-fs-sb_rdonly-v3-12-0be92bb73709@kernel.org>
 References: <20261113-work-fs-sb_rdonly-v3-0-0be92bb73709@kernel.org>
- <20261113-work-fs-sb_rdonly-v3-11-0be92bb73709@kernel.org>
+ <20261113-work-fs-sb_rdonly-v3-12-0be92bb73709@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 14 Nov 2026 12:03:30 +0000
-X-Rspamd-Queue-Id: B02D52000B
-X-Rspamd-Server: rspam12
-X-Stat-Signature: rnujkuubm8wx14xnmkdxwxjudbnc1aou
-X-Rspam-User:
+Date: Sat, 14 Nov 2026 12:03:31 +0000
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794657811-83737
-X-HE-Meta: U2FsdGVkX18oFxEg+Nzr+6zLlvXAzlDHdsD7OZMPJT/jj4G0yMtjMpiEBARrS1108v5mC1VeF4F0gTKB7DSMshVgy5H97pLDzbL25r8HQZN01RMBSCBLjEnc0uQA9EPNicXJm4nc23cRkxYsEaRyOLdBvAa75AxUrILibEQ+NVCssgkg4l5aSnkdvbFuDzZ5rq+51QFEN7AtR/hd2jhC+JAXxiXxIH6suhx57HOEiR7T709sy5I9qAFXmwKeRX66JMBIxS89KcqOCOZZDILxR0+AQFyOPE+9nFmxPMZzMFaCZquJYKVsc06+0CALHv9ie+RJewsr8SdpdkH0yQwmSXMjIvaz6+hC1o3DhMzlFuDDADggBDbAr6aQllFHT8BHbUvBKD7L4Bvjy7G9pyF+Flmf5FvabOigycuo7emtM2KQIBDeRONw9QuVnEu0obT+KOYO4jA+ZxeNO1BU9KLnw8kDvo7duIql1Vey07MDpUXjM3mtIiHEOdtmECu+oiSvhlFb7QlroQh940ZFQNmUT7OOotvfjOr8CtD2S8Bpu3mVfn8mgamzIF8w+Oo8n+VonoKQZA4uoYiiyiv6BB5kZ+7vIlo34MOf6bKkxjmkK6UCZ0RCzaHaH3i0jkyj4dDb1UcQm20LWC/hDoqjBn7sqNRy4aegi1Cfi7dBX7Qa/TcF8i4+FRMbti/XrZb/lOHiY/tS+HTN+uXlojjP7YgqFF1S5jG4B2vKASm7fEN9oqQwmjFz6QnxClhIWIMItjQ6L2fxh4KzKI66daYjLInI4czJ4iaeq+BJRXZSwcrQFZ/S3zRDyWBOppagJO653gZi2yp+umAX3V5TXz9MYum9jqQkOD3YiV7luAk7okEn2hnKnpjETYnAJ0zQjB+KhdlnNIVzQtfyU/Z95Cz4+4uH3jQ1iOm79v+UUEv18nLj4jFg2e0ETW4j9agHGb/xNDFemtI+ces5ZqMlX9lIWc5
- P/RWg3Sg
- hO6l85QoXL+MXDSbYNWPiklvGtJD0QGEIOMT8UaGbnk1LesCFqP9dkf1BZXhfbQdKoXWIyQeP8erUE83+ab00V7tc3ZnDWnbbPPgCX/ObCSlV4Bs8iB4GQhTvYOMG3KyiMqw4mUZzjO6v9JR8i795CVGMCcMGIHnBlprCsskLNLeEJGw218LRCpu04649cmBL0sO18ESW7VBEMqBaRIvqynjRD8cYmxjWqccPVua0R7d3lhsIyefkDj67RsB5VJgDkcNxNnhcI4JP6O0n89TNoa2W5uKUKEKSj4x/iJN2b1pcIf5h8iUpMeOkU4+amqooGWR3aw5pDrvMybLyTf8Fz8Zbme06b7HzVsfjH5V1wHCH87j/3MSlQyksPqIyJHMbrlucfWrkXLt+Z2y01/K2+82p3vM4oQKngmrujalMcA0ePsSfh0LJeV6Dj+0yr77w8p+2PgIY0SX8Ii5AmYT0A4/E2I6FkS1flsadgBjO5GsIc68xA9/K8yNjhfdAk+HIeSWs53csKPUl70/GAlRfcIekpvpi5sb34/404OVpkzDFc3kLpgAh5pfdJUob3TZ3ZhAf/YtXyRFzwO+YlW3tvlJlUxkD9aTeofgYjsWuN+n7448qIKIrc0tBtFWVpQCYb772DbTzt4gVzmc4d91bK5H1fFSjORU+oS/Rd60E0S4WwPgSDdPIWth1VdHJmwpeOPGyxoAwOWsgRENKijsfjFz7SlQuS3I7T5TXizBj2LVAnzvGWlvjRRHaRWzNbhf99kiYcYR7xS8vT3tp0bE1IxfLDoo5I2vZM0Vu
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C5355140005
+X-Stat-Signature: s184b9makhmb3odkexkyq6nphzs8py8i
+X-Rspam-User: 
+X-HE-Tag: 1794657812-189030
+X-HE-Meta: U2FsdGVkX19KP1Srij+oXXcX7e8fPR4eGvbNtZwmQ+XB/5v/ZzP1eOXUAuwkYl2KPunyzOaCna4i9e3JCnKTQUs1vSB9RIbY0x0IZxSySt5YESpk8V4V/FtZrMKE9jd8dqKoFkCr+qOb+D2Zwmrzz6wI52dbJqdPGhh+Fq3+BEfEng2jVs0PA7EPcMQsovK3AddUEz2tx/cJncgxJjNJcNggtX0ANlL86/oTdt8QKDf+PC4X4oqsosllAE7qV28/8AjyxdfzGnGzww/rin6U9PWySoieZUeBF+TlKfMKIFcF3780v36D0dQEgiveHWA4E3rr5/gQtvCadEykRd2W1hDToMS1GUx/IYt1nouUBNHpqo0aZrys5TMCzT/rLaFs3DggsrdypXpP1PvbcFUCqn8ScIqCApVtgIoW6n8m4gGevflmO/w3lx3COXAb1D3wxLjyLYKPjYBuDctmsL10TH4FKdcaWjZarHnhTuw0YTlmYNXQAyvN7yRe/2XZBKuTgB6CacIuMq7U3g0Zvl3aOsHwU3kjQO+vUaz5uVT8yVJEJwzAzBl3c8MqYotT6MdWS625TXSmfKOqdVFJ6xg+NT5lEzXz9DFZwxEmNgyU4Pg58lxffv5fEEsbOKIgSgvbBbTsv5RjusEEB1/f2uenIDzJNRTlMGQL/Z5BC5K/qsY5CfD+5cjlYeTUC/r3RP5Ep3hwk/OA10ubth0pw4wsnFPXUg6cRz0ssowzHKUNaj1W7e7sK0q5NOnVNZTgbqG6AQmiVxlEF5ncS76zz1doMPKKe3poQt6/VY8iSJiX9/tsX+0Id9xJLMAQ3rKhY7OadAqy4L3jmJNw2WgCStieJTGc4ag0fFjNxOsBKMm6Bbk4yvZvtSUT5BTNSMCvllq442nT17114IlozwfiDaPuj3qjYvNiNpA/UyxyFQq9P3CxJ1wFyAlMQ4yUFBh3sqz6qoCwsWt3bhZtTd/Oyv6
+ BNXpTHei
+ m+s/GfzxpZ7q8cwylTbD0TDyuk2i2F++7DVyagH9YneadDcUdwN2KwIOY7ptm7Z+SDYMtqvdNpae88wrozQmjCns494vUqufxHIomHzXcQ1PvkoeJsySqTixNbNRXd+UgioFbtGTA7A7yiHpfFMVeANqrXU9n6c1X++BMs1FScCkMUeqZq35KuFLOuVb1yGAFaTTPT1ePqs6uX1sWiuiRKadVSc0qS69p7UggIZffFkL3ewDGM1pWot7oy2wGCgUy4pn/DrZ4r4VRhwkY79vJf7gcUsEzZR+v+1yUjZWgafCk7F8I+8Ja7MACRYA8WwdhtFWLMgjTRvxXLi30TC40Ad9G+2//l8YTtBNjtEHd9hAIjslMVACDPdex/KsfH74Lg8Q8aQ7boRxB79tFkh4F3t8KxiHPTnMAfDqSgaO9lGy/5nIm4vccDdTFtEUUyy2BG9H/2hUQXRT8Sqc2IpFudVUNXigsYvA45e6QvIqVBbbEglwkREvE+W8X9f0tIt7Vv88rXkrSlqQIGkd87CpdqqagdehHFXtXYmIW16Vw7LeYi6ZUsF+vP8E4orewYYnzwrQPm4o+1i/IYFKLnc4QQsKZEg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,88 +97,67 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] exfat: exfat_page_mkwrite() checks emergency state and
-  dirties before sb_start_pagefault()
+- [Medium] exfat: race with emergency read-only transition in
+  exfat_force_shutdown()
 --
 
-commit e1275d4c04928c834a6a34f6b3133c89c272c085
+commit 55555fc2a6a36c47e1e61fcbe8c22b69f7d5a5f8
 Author: Christian Brauner <brauner@kernel.org>
 
-exfat: don't set SB_RDONLY after filesystem errors
+exfat: use the generic emergency read-only state
 
-This commit replaces setting SB_RDONLY on runtime filesystem errors with an
-EXFAT_FLAGS_EMERGENCY_RO flag and checks exfat_emergency_state() across wri=
-te
-and modification paths so frozen filesystems can thaw cleanly.
+This commit replaces EXFAT_FLAGS_EMERGENCY_RO with the VFS generic
+SB_STATE_EMERGENCY_RO state and skips freezing in exfat_force_shutdown()
+when the superblock is already in the emergency read-only state.
 
-> diff --git a/fs/exfat/file.c b/fs/exfat/file.c
-> index 1386149916bbe..dddedf6e75da6 100644
-> --- a/fs/exfat/file.c
-> +++ b/fs/exfat/file.c
+> diff --git a/fs/exfat/super.c b/fs/exfat/super.c
+> index feeda41a80741..e3587ed270245 100644
+> --- a/fs/exfat/super.c
+> +++ b/fs/exfat/super.c
+
 [ ... ]
-> @@ -974,6 +987,11 @@ static vm_fault_t exfat_page_mkwrite(struct vm_fault=
- *vmf)
->  	struct exfat_inode_info *ei =3D EXFAT_I(inode);
->  	vm_fault_t ret;
->  	loff_t new_valid_size, mmap_valid_size, fault_page_start;
-> +	int err;
-> +
-> +	err =3D exfat_emergency_state(inode->i_sb);
-> +	if (unlikely(err))
-> +		return vmf_fs_error(err);
+
+> @@ -176,6 +176,11 @@ int exfat_force_shutdown(struct super_block *sb, u32=
+ flags)
+>  	if (exfat_forced_shutdown(sb))
+>  		return 0;
 > =20
->  	if (!inode_trylock(inode))
->  		return VM_FAULT_RETRY;
+> +	/* After an error there is nothing to sync and freezing fails. */
+> +	if ((flags =3D=3D EXFAT_GOING_DOWN_DEFAULT ||
+> +	     flags =3D=3D EXFAT_GOING_DOWN_FULLSYNC) && sb_emergency_ro(sb))
+> +		flags =3D EXFAT_GOING_DOWN_NOSYNC;
+> +
+>  	switch (flags) {
+>  	case EXFAT_GOING_DOWN_DEFAULT:
+>  	case EXFAT_GOING_DOWN_FULLSYNC:
 
 [Severity: Medium]
-Can a write fault that blocks in sb_start_pagefault() bypass
-exfat_emergency_state() if a filesystem error or shutdown happens while the
-filesystem is frozen?
+Can exfat_force_shutdown() abort without setting EXFAT_FLAGS_SHUTDOWN if a
+filesystem error sets SB_STATE_EMERGENCY_RO while bdev_freeze() is running?
 
 CPU0                                    CPU1
-exfat_page_mkwrite()
-  exfat_emergency_state(sb) -> 0
-  inode_trylock(inode)
-                                        bdev_freeze()
-                                        ...
-                                        __exfat_fs_error()
-                                          set_bit(EXFAT_FLAGS_EMERGENCY_RO,=
- ...)
-  sb_start_pagefault(sb)
-    /* waits for thaw */
-                                        bdev_thaw()
-  file_update_time(...)
-  iomap_page_mkwrite(...)               <-- installs writable PTE after err=
-or
-
-Because sb_start_pagefault() is called near the bottom of
-exfat_page_mkwrite(), after exfat_prepare_valid_range() and
-mark_inode_dirty(), a fault arriving on an already-frozen filesystem can
-also dirty gap folios and the inode while frozen and then sleep in
-sb_start_pagefault() while holding inode->i_rwsem:
-
-fs/exfat/file.c:exfat_page_mkwrite() {
+exfat_force_shutdown()
+  sb_emergency_ro(sb) -> false
+  bdev_freeze(sb->s_bdev)
     ...
-		exfat_advance_zeroed_size(ei,
-				round_up(new_valid_size, i_blocksize(inode)));
-		exfat_set_valid_size(ei, new_valid_size);
-		mark_inode_dirty(inode);
-	}
+    freeze_super(sb, ...)
+      sb_wait_write(sb, ...) /
+      sync_filesystem(sb)
+                                        __exfat_fs_error(sb, ...)
+                                          sb_set_emergency_ro(sb)
+      if (!ret && sb_emergency_ro(sb))
+        ret =3D -EROFS;
+  if (ret)
+    return ret;  <-- aborts without shutting down
 
-	sb_start_pagefault(inode->i_sb);
-	file_update_time(vmf->vma->vm_file);
-
-	filemap_invalidate_lock_shared(inode->i_mapping);
-	ret =3D iomap_page_mkwrite(vmf, &exfat_iomap_ops, NULL);
-    ...
-}
-
-Calling sb_start_pagefault() before inode_trylock() and checking
-exfat_emergency_state() after acquiring freeze protection would avoid both
-dirtying state while frozen and missing an error that occurred during the
-freeze.
+Because freeze_super() checks sb_emergency_ro(sb) both on entry and after
+sync_filesystem(sb), an in-flight writer or writeback error during the
+freeze makes bdev_freeze() return -EROFS.  exfat_force_shutdown() then
+returns -EROFS without setting EXFAT_FLAGS_SHUTDOWN or clearing
+opts->discard.  Ignoring -EROFS from bdev_freeze() when sb_emergency_ro(sb)
+is set would still complete the shutdown.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113-work-fs-sb=
-_rdonly-v3-0-0be92bb73709@kernel.org?part=3D11
+_rdonly-v3-0-0be92bb73709@kernel.org?part=3D12
 
