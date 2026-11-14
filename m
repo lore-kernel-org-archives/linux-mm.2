@@ -1,98 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCFD5606A327
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 01:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29CB9606A336
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 01:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RlH6/ki1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IvXqZNSe
 Received: by kanga.kvack.org (Postfix)
-	id 89D116B00EF; Fri, 13 Nov 2026 20:14:27 -0500 (EST)
+	id 325586B05B1; Fri, 13 Nov 2026 20:18:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84E306B05B0; Fri, 13 Nov 2026 20:14:27 -0500 (EST)
+	id 2D6EE6B05B2; Fri, 13 Nov 2026 20:18:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78B896B05B1; Fri, 13 Nov 2026 20:14:27 -0500 (EST)
+	id 1ED236B05B3; Fri, 13 Nov 2026 20:18:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5439D6B00EF
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 20:14:27 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D142F1C3769
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 01:14:26 +0000 (UTC)
-X-FDA: 85431954132.16.0481EAC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 42FDA100004
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 01:14:25 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RlH6/ki1";
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ED8F66B05B1
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 20:18:08 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4894EA7BB0
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 01:18:08 +0000 (UTC)
+X-FDA: 85431963456.15.C85F490
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id A4A141C0004
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 01:18:06 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IvXqZNSe;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794618865;
-	b=2TN3+b/H50qiShOEuAoSvnI4MXQ5a7ZNs30f7cboT5jTfdbYzP/hSj9easZtE+sZpvgIoX
-	6oMhN1dpusY9xHRzIzY5kY6TdiFLsBVoxNXKeQI/NyejhP3wdrjMoeJTmzmbLepUC/tabb
-	VbPKp/lDXyHKtdumMWicE27vgCDAFds=
+	t=1794619086;
+	b=LY3Sa12PWkL4XLtdacGmH/QDmJRuSpnOYu9Xpl6n1yoQwVV6+xiu9LyfddRx/nDav5PSQ1
+	NK44/kPaWH1Bp7dhEG9HGSX38g8H+cMyDiIk7pdZm5+TwE7ZzkU/9wbz/gjgW8GkozemfM
+	/YYSE/bbFtE+85wVnYZlcqv+FyyIJjU=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RlH6/ki1";
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IvXqZNSe;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794618865;
+	s=arc-20220608; t=1794619086;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UyYy92siVxlbkOAXrPBxCpNpLxro7gVqdyR2tGshRfw=;
-	b=Y+bH2t18+nLAg0dNMqgBx385W+Tlq8DCWhyvqf2cOojZTccW6H5uDakArJU2MtXHn2ykzl
-	SLFazdyz1g7nhSZHvaX1UjpOmw6GbYVZXMu+0x66WOMyJe3RVMHv636IIGOuX5ZdhLMZlh
-	OG4mlVtiOveO7OaHB7IBsA7LkvgVjHo=
+	bh=KJQaaiL9a5cez/GFapJEhmZC9doVvzp8eiHm2EiP6qo=;
+	b=8lMIDNdCLaD/xR72hTkb8g2uIWf+C26foBhqzexwTiOFOYeM2GIiOIW0CMgxnBtLYMqtla
+	+7avcBx0uo1biqvFtvi79nPyw/8T/JYoP0VM0M+zIkwpGeVgmFMr4mc7GxiaPNGJcFjvWk
+	WPiw4ue9ZZTSyzOhG1SeVk/yLPzCjcs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CF23261908;
-	Sat, 14 Nov 2026 01:14:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3620B1F000C4;
-	Sat, 14 Nov 2026 01:14:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 36779404E4;
+	Sat, 14 Nov 2026 01:18:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3D01F000C5;
+	Sat, 14 Nov 2026 01:18:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794618864;
-	bh=UyYy92siVxlbkOAXrPBxCpNpLxro7gVqdyR2tGshRfw=;
+	s=k20260515; t=1794619085;
+	bh=KJQaaiL9a5cez/GFapJEhmZC9doVvzp8eiHm2EiP6qo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RlH6/ki13MdccZ31W7ZNOHZHNU4dwl06XOwI2e3Zs1ynQ6VT8B2LvBFPuM4eKNb+q
-	 XtG2X2mKPQQflf5m/g4gwv8A6jrvYRbRz9V+3mWLpAYW8kWBw1GHcFpBBaHG+xcqDD
-	 tpbANPB6ufF7J7sNbeg8ps2RMyNK08Zx9kBKfZg/sAdyq/hFCi4PjFOWU6PmUmcvWQ
-	 cqSXj0BEyNspI5CBipxiw3UneGVz4VuhEIRCSxWsD03V+Is5hxLKAO1k+HE2Wo8/Ch
-	 p+HI5RtpQHx9q2+sTQVOxUB1GgprMBo6jc1y1Jem/KJdrPuoVxIGpM+nlgPdq4DKUa
-	 KUUfaDwuw3bBw==
+	b=IvXqZNSeX8nxjzrACfxp+FnrpSBEvh5OU7CzrSeI+urhNrhd5pX7qzHR6PoJa9I81
+	 Mczal/8JRwufxM7lB4260f3N3xGee3FROSb8oNZbYbLWRVlCrz/IpgU0aC0mdUe6/8
+	 E49REOp1Gl2JUlH1Hd8mD6K88E3hOZlTwtXbRR4MPoAKNi0S6YVg+96OggAWn6D3TL
+	 5lS1zkDf/CeavRnDUSQ+ay9ShCVTA1GDXKyCbg5Th0PtMUWwfZ4D1j/LQuU7BhiT/t
+	 Al6uo+V2K2hwO/bGKdv5wRmGYoUaZzMW4GfMWgIn7r9HHShQPhJXNnSY3AIPv7JwhZ
+	 LUCzNs4LM0mGg==
 From: SJ Park <sj@kernel.org>
-To: "Gregory Price (Meta)" <gourry@gourry.net>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
 Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ziy@nvidia.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	ying.huang@linux.alibaba.com
-Subject: Re: [PATCH] mm/mempolicy: ignore a bind policy whose nodes have no memory
-Date: Fri, 13 Nov 2026 17:14:16 -0800
-Message-ID: <20261114011417.85494-1-sj@kernel.org>
+	kernel-team@meta.com
+Subject: Re: [PATCH 1/3] mm/page_alloc: drop unused gfp_mask from zone_watermark_fast()
+Date: Fri, 13 Nov 2026 17:17:56 -0800
+Message-ID: <20261114011757.85670-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261113192642.2618878-1-gourry@gourry.net>
+In-Reply-To: <20261113235238.3595412-2-joshua.hahnjy@gmail.com>
 References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 6gui67bpcuzsk8uaz8fxgb7scjiury7t
+X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A4A141C0004
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 42FDA100004
-X-Stat-Signature: 45rad7q4ipqsekhomhtt8eb97ik9jhup
-X-Rspam-User: 
-X-HE-Tag: 1794618865-534866
-X-HE-Meta: U2FsdGVkX18jSref1wSFcguMbzJ/oZMrqUo5fdxPVfxysp/oMv3wPQpKZZl1GhVgtTKJsuPc99fp8fEV59VYCKXGYAAwpsQKvamIoedsDNVupQwcXKgATQ9Mj+/Bv8rVHpNF2owh3cF7b10CRunDpdUjRFO7/8x+L7zojYSJOlnoK1oJXNz+6QoGcS0YMH3941pH4BD9Ttm7tKppQpJenGL/IdJwj47r9BdqFQLHQqI7LpuJqGKoffIspmH92MYx0Jre1FMcEDa0pIzwp1Mzi2w1anaSPTlPJsKmwbk0bVdZFLY8nvrarM15CPpNfJaIqxi37RSUJg1w3kr86wPXIbNaiGVXIDfHkEpiBAd714hScm3GE3NkoPtk1pkrAAXu5Bd0Tp4/rkWAXzgOfm3KRXUiHjcbnxAvcn7Lzxv+AwrJ9trm6a7VaL4GbRnoUyQ//IAySJ7EFh6XdDfImvy2IJjZJq0T+UTmczCUw3wF9hpi/trNZz2CSAvuHLc0hdrgCD9x+uSzAoHDgNsmr22noLf3wzD4wVuLVLfMwEcDpO8TfbelFhkXLRSKpX+nY7ymnhEees4475LO61thj5l4m4FkyRz1ar4s5copOvNyYyFZaYwaxQuGjVAiDm+oHWLya+7ncBs8WQvjoPLY5VCsjwhDzN3bGjo9opFlXfNDfMdKO781tGUhgoXpL6+4qoqFbFfXeXz5GCxbgJq/a5peLqtAf/YN1bnkodQO2lPC4BFiQq6rIosj8gj4AIiVir2vdHEjaa5uVD/+AvC/uQ8s62HW1VswlR7h75TzdeZtEFs8/GqNLwagIakyuWAkCPkNIiepZRor78bDxttcNvEdmXscXv0heWQ+F2NEwOX3IRrmeV7nGoS84E4Si1CEGcHxxojxPdfjuXHmsjYOg2z9VDQYzCdoj+2HfNcdtSIIyYGedndmJrNeNJ3AhIlTVwArJ5nQZp1MmKdAL5aN/Kb
- h/XwWdSE
- y3w7DD2GA2Op9tZikbzCoUKvmJCMFaWi2K4llmLoHj0GMu/ixSb895WPWZFv/BBb6nLIp0enSjoV1VUUSFclRUEjJVEinuVwGGuQJDTfs1EOTa+g8IfsFzIWo1Xf+Wn4fuCZb5W8Bb+syA8j4dMJzfJ+67nDj238PFW96FnPExpK0DWyXjMghT/57AicLckchHxjjgyTv8WyFKcerh3XVK8d9y3qDD4YoHb/r/AS2/fRGfHKBSctdVCqu9y41RG7exiICEz7Bzz9Lup6hXX8PBy0G/6Oo56FVWZVOSenS5xW3rtpV3GdQ3mvE+QYQS40LH2t875DxTRdRrwKJnG0qQcpYdSk3OaUVIZpVdKmms4EPYF4=
+X-HE-Tag: 1794619086-731883
+X-HE-Meta: U2FsdGVkX18IYOYu5TlCJBUFO1J+hH614+VTrWpNkascj6T1Cob/9XZu2I6GdmYBXE5BHujGHDkFH//eZLXrknx5nLbc1gxLQGphRNcuYsttjC1r70SkVwHs7TdOluFTJK5dJghMCezGI03G2ZQbS11RgxZdF+lc5hhXrucG6w9+x9FeLpLiysadXj5aJQ+CmEDDzK1hJib/+B1po3vFKblmXutSSJwanEJ06OfRxYOcMORqHF7t39LaeRenFwAvJMfS07/mzTBhYGJ1dEPD0GeT6lTrmkxgBKuJ73I7OsMvv1E4mExJgaAvIVKJacFbDXfkNhNdt/+aWz/FVhOGWYZReqc3UHhmGVYr5PmzZdeyT1DAHohWcixGZ6wdw4TIulIFZcqNJEvGwQ53P/M5kUGYr0a7mQImny4Yh2S4bqfmLuv8S0L3tWnQHTdB50DOjpTBPqMxqRPFmv0kb8Fu4awYSBqQSQCMMwzcQ0pkigfsrcG+Gy+QRtC9Suk2L/mvFFOaeQl7hpwxEvQQ693SZ0r5w8AN/1xoClKWjFp6+8bVWfktY22O10W5CnX7n12o5kWPCIeA65GVs4sDlf5JGdLMVLb/QhHhtTMfBAN9rq5TFeJ9R34+DMMgafLuw5yBHxdzZgSu2V/Y+5Duy7EY8z7Qx3q5tZvjQJXfgWMtz3BT/aUq5yk4VLgvdnOePjggpnS+AGui4zZ4hB9kTjbyx6ePmPXtU0KUoxmpdhep57/hg8q8YE2h+fnAX/0Q7mDrlhaXyNRCg5Y2ko3ugIzmy/8/GQAQJfNrTtgiOa60vwY7wFWvTr4AXIVYn81kaq4zonQXmIvAQQ+Db88pQxdhXT6zW/jSA9lGzi356RxOk7EcU5jTU27ukSlPueIetTvrEZS+BfChl5AHn1/hSl4FB/N/Y15o4HKlJ7kVobnuSzm9Fn8DJE209qEgZtPUyN8qQAV+S2Jbhe0tNxlNKoc
+ SD3BPnDe
+ 0vQW6efcj1ZgXNpBnDhx45MoyoImn2ToJUS4rouesXy4+X1Ek+cmxVqtxHiPxo8ylHlDUGy8mFfqZ1stun4Udo0B6lvcev09hgCnXf+v/PffvRa1WA4dIJBwP2OJDtozzvjguWdTdvkOaY48ddLtGojEKhd2KoEH+TkOqw3WiBCGPYPAfosKK4aQ0lI6nD5kp2ynRFF4PPTlDciR/tlwSmFIK4wxlVQWr5vSlJp2vGp5mmrkKl0UxFFWW7zt19ID+PDIgCAcvMOwPfqx3eV69rzSpW7AaoD/zTlfJAmy84ZRg9apOUvoB/ME8AT8K3Rso9TvYoXmYtlVxtkhHQJCIV3YoJAfQntBortVQsL4BI/sxNYNXWspsNvb58ohGDmGqygcX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,35 +108,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 13 Nov 2026 14:26:42 -0500 "Gregory Price (Meta)" <gourry@gourry.net> wrote:
+On Fri, 13 Nov 2026 15:52:34 -0800 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
 
-> apply_policy_zone() assumes that policy->nodes intersects N_MEMORY, so
-> it reads a bind policy with no N_HIGH_MEMORY node as movable-only.
+> zone_watermark_fast() has not used its gfp_mask argument since commit
+> 2973d8229b78 ("mm: discard __GFP_ATOMIC") switched the watermark boost
+> check from __GFP_ATOMIC to ALLOC_MIN_RESERVE.
 > 
-> On systems with CONFIG_CPUSETS=n, nothing rebinds policies when memory
-> is removed, so offlining all memory on the nodes a bind policy names
-> leaves it with none. The policy is then treated as movable-only, and
-> movable allocations are restricted to nodes without memory.
-> 
-> This results in allocations failures, a VM_FAULT_OOM leak, and then
-> an infinitely retrying fault that hangs the process.
-> 
->   page allocation failure: order:0, mode:0x140dca ... nodemask=2
->   Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
-> 
-> Ignore a bind policy whose nodes have no memory. policy_nodemask()
-> already ignores a bind policy that does not intersect the cpuset.
-> This covers hugetlb's policy_mbind_nodemask() as well.
-> 
-> If the nodes regain memory, the policy applies again.
-> 
-> CPUSETS=n with HOTREMOVE=y is unlikely a common configuration, so this
-> isn't marked for stable.
+> Remove the argument, no functional changes intended.
 
-Makes sense and looks good to me.
+Looks clean to me.
 
 > 
-> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 
 Reviewed-by: SJ Park <sj@kernel.org>
 
