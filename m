@@ -1,88 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA2F606A330
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 13:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C6B606A332
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 14:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lC1rRmz7
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=gh7SvrVi
 Received: by kanga.kvack.org (Postfix)
-	id 303966B05BB; Sat, 14 Nov 2026 08:55:09 -0500 (EST)
+	id 5AB8F6B00EF; Sat, 14 Nov 2026 09:43:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DAAB6B05BC; Sat, 14 Nov 2026 08:55:09 -0500 (EST)
+	id 55B1C6B05B0; Sat, 14 Nov 2026 09:43:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C9C66B05BD; Sat, 14 Nov 2026 08:55:09 -0500 (EST)
+	id 471446B05B1; Sat, 14 Nov 2026 09:43:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EBFEE6B05BB
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 08:55:08 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 78B111403DE
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:55:08 +0000 (UTC)
-X-FDA: 85433871096.02.829F687
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E3CFB1A0002
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:55:06 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lC1rRmz7;
-	spf=pass (imf19.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 2D2F86B00EF
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 09:43:50 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A79FF80420
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 14:43:49 +0000 (UTC)
+X-FDA: 85433993778.07.2ADC097
+Received: from mta0.migadu.com (out-82.mta0.migadu.com [91.218.175.82])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 97D3BA000C
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 14:43:47 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gh7SvrVi;
+	spf=pass (imf15.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.82 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794667428;
+	b=Krj/iOqdis43KlK2ravK/K/ZCtPJnjs5q02UuvohU1d39eLvuPb+caA6gdUND6yeLg/igR
+	Q7YAW4tJQduK93LYvxLtZszEEDOhdQwijYfspyEoypbCGJo+QhX8jV0+G9ImI2lBYZWSOd
+	iyE/VB8db/fpENTCt3llSYQPxcSs+EA=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gh7SvrVi;
+	spf=pass (imf15.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.82 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794664507;
+	s=arc-20220608; t=1794667428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gZCOg3PYW5/XzYktPPO7fZbRJ9jC/nh9/3WC5LHdP9k=;
-	b=de6hMLrx2Z9gDJKrla6n5mT6Zs6YnrpZKoGL7yqfd1SNBH6httLFo4/Xtea9MTHVBI24lr
-	98v6HWgFVHBq5e7qkCGmlE4Nj887f4P5RBzRxlPxd4HTh9wXFQSLP0TfVTzrmofRh2TDTm
-	2L1B4RXm6pz/i55/B0MIe77Qr7d0uZM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794664507;
-	b=kAwLp9ylVmvPp08B+DnyotOuWONNzyg9F5d9P9ZHRBgB5gaqupi2u/wZUux6RaD/0BifEY
-	6DD0OXTqva37nXGSmMno0i052KMH6/SIXrzIKY85ADk7oW4IAqtTBNmgElyct8rD3n2oPd
-	MGRLC3Z0ChOg8gU5p64VgcTBx5vBUP0=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lC1rRmz7;
-	spf=pass (imf19.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3B2EF45800;
-	Sat, 14 Nov 2026 13:55:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E73891F000C5;
-	Sat, 14 Nov 2026 13:55:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794664506;
-	bh=gZCOg3PYW5/XzYktPPO7fZbRJ9jC/nh9/3WC5LHdP9k=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=lC1rRmz7ahj/srEYA2ijCYwgAqxvBpBEiZzJTz1BT/wrTEWhRCAJRjIQUg90ualPp
-	 8fNiGIog6yGBq7jcPWwPg3KTZ4hhP7wzOgQinag8fVT+8JrN/YD10tUBIHBk4t50YO
-	 lVbRqj+kObH/VFAULApyIEa7KJo13ikHhn4sjSYyAVLzN15VB21GTINJSJZ5zSjoJ2
-	 SqbEpuE67Y8c73FjyTC9QAtGI69lnMt18W/xx4/7c8YFqB+lo9IQTij1vjYC2G1yJC
-	 gbXcz8wGq7FFvOpMP/hQpyy359bbb1860T3yz8/mr3WEBUyRt+SVvwAJEu6hB8hDoE
-	 Jru9mkTF+Jtaw==
-Content-Type: multipart/mixed; boundary="===============0802335019258284520=="
+	bh=cQfy721NNRPf+g5PYMlJDCkNFHuywBK8RJ9ovzc/M4g=;
+	b=kB5J1y1hTPVb0odBgLFR2OCP/yaMxmgycQOP8NHoaSgZawIAv/YO9NyBO4rCw8qep8i+gL
+	vgYKgqIFpYi097HfFmENBx4y6AxjC/Lo2w7PWBCIJ0qSoCkOz8YNZ5E3HJ/1cZiMezyQ7h
+	t2+0fhI5iC+LNuBpnAxlCo+EKYOyFrw=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=nVJDnAuiRTm3tfpghP9IJ2QoHn4bNdNRote40uYVmok=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794667425; v=1; x=1795272225;
+ b=gh7SvrViVdvLo74BP+WLY44sj9oq8ojTkBek32BlanZAyuqbnr8Zro64mEKQTMyA3o2qcPkG
+ 4NXHVu7hOnWH86hwLcrl9uK5IFGBPLpkSKDp1jHy3mLaqB3aQy8H08qme4eV7zdplwyWGvSkWke
+ q+JSSzMe3SUkZX3pr4nOYNmQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id d35b197d40729a00;
+	Sat, 14 Nov 2026 14:43:45 +0000
+X-Mizu-Trace-ID: d35b197d40729a00
+X-Migadu-Flow: FLOW_OUT
+From: "Xu Xin (vivo)" <xu.xin@linux.dev>
+To: david@kernel.org
+Cc: chengming.zhou@linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	xu.xin@linux.dev
+Subject: Re: [PATCH 2/2] mm/ksm: add initialization helpers for scan_get_next_rmap_item()
+Date: Sat, 14 Nov 2026 22:43:38 +0800
+Message-Id: <20261114144338.644122-1-xu.xin@linux.dev>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <00521fb1-121d-4aef-9278-fb6b36755291@kernel.org>
+References: <00521fb1-121d-4aef-9278-fb6b36755291@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Message-Id: <91e245da9f3df6d6e61808e72a4ad0213a9a6b838f594d0be74dd70ab228422f@mail.kernel.org>
-In-Reply-To: <20261114-work-loop-pseudo-v2-33-98639a2286fb@kernel.org>
-References: <20261114-work-loop-pseudo-v2-33-98639a2286fb@kernel.org>
-Subject: Re: [PATCH RFC v2 33/42] fs: add file_check_backing()
-From: bot+bpf-ci@kernel.org
-To: brauner@kernel.org,linux-fsdevel@vger.kernel.org
-Cc: jannh@google.com,mason@kernel.org,josef@toxicpanda.com,hch@lst.de,linux-block@vger.kernel.org,linux-kernel@vger.kernel.org,linux-nvme@lists.infradead.org,viro@zeniv.linux.org.uk,jack@suse.cz,linux-scsi@vger.kernel.org,target-devel@vger.kernel.org,driver-core@lists.linux.dev,linux-mm@kvack.org,bpf@vger.kernel.org,linux-security-module@vger.kernel.org,selinux@vger.kernel.org,apparmor@lists.ubuntu.com,linux-nfs@vger.kernel.org,netdev@vger.kernel.org,fuse-devel@lists.linux.dev,linux-efi@vger.kernel.org,xen-devel@lists.xenproject.org,ocfs2-devel@lists.linux.dev,linux-s390@vger.kernel.org,linuxppc-dev@lists.ozlabs.org,linux-usb@vger.kernel.org,amir73il@gmail.com,linux-erofs@lists.ozlabs.org,linux-kselftest@vger.kernel.org,brauner@kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Sat, 14 Nov 2026 13:55:02 +0000 (UTC)
-X-Rspamd-Server: rspam06
-X-Stat-Signature: xtzp6k6irjxyxmqw3c4hryzn1ckt4aa9
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: E3CFB1A0002
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: u6spj1d4dy436oh8ah7c8aydu4g9zfsm
+X-Rspamd-Queue-Id: 97D3BA000C
 X-Rspam-User: 
-X-HE-Tag: 1794664506-347011
-X-HE-Meta: U2FsdGVkX1+VOFZfamPKvoDYrCCkSINp1tXY9RYq75IU5PpzgIz1n6jLRyr6Azw5J0obvy6dkolo9TUqIk+YgPzXEhKAEwPsG5vy++AZ0yXFMEJi69x6mg64LbZwQe9EGHhiYnc5bwb145mELbjT7XVHXUjuW0nqzCF8dG+xwy8aZ75i+mFsSHSKugHVZ3kGfRdbGUGd7e/M3DYmpS1HPJ8TX9KwIqJXNlpfZoHzFB80iK0sZsyTFT+gOHsVQ8vUNUU8PF4ZSouRLVQ+xqmJYulYGMuhMG3y4xwxyDOyFHso5SfUauVr13sxrpwzpeTFzudZk726Ic7O+vMFgU7cyOM+BkRsRmg/ubF7G/PuyGujiJm2JxTLLZYu7xkX/kgdKJU8yVjyfUfkpBIdrd+2tMZ0yoyi62iPlofl3w/ZYb/PxG23vhUhJs/QteUW8hSNpvfyPvMNUIU80oeJxllLxN2fGWeT8TGZskpS806q4nHlX7rTC1/VsyF3H/qNAlRa4cAi7lDOWWKk5yG8vHtWIgQkmueQkpqDEA3+YJXHv2aQXuIh4RykJAkCb28g9AdniBKuSfYVtfAl7cs5jauinaQl74uldPqycVukhqYprVt8/e06jjYN8LVSnrsqv6fs3QX/mne1SVkNLWj73DW/QTuoMMQHRVTi90cRa1+VePuwlFRQ9+kd+O8wsnu4BUhxYUB+SkvYWdBi5pkzQYMYYcdpasrbtw/uOy6rABo0UV9sQD+1+NpgGCQjFwz8ZbnU5fzdC1iCvxo/dgEWBZt7fNMPGtieS8DYQ8NdGBHwI2rX0s0/lxiwfZBVsXcZ1XJAc+fK2cCJJCEEzUf9L7v/6T0qS98A+2YN94lmsU2HzCrFF7i/XxIpHpEl5o0QcfJuIzpEE+TTurYRHtStf210CbfFGjQR5LwFCeSeMwDGbpHZM/biyBC6N2u3OFutB+rdj4UcA32MzUgKmpRjsfq
- HHHtgTfY
- X5CLwTQtbi+XgkT7e938FiPe03povjpMQZbNJxPOfLOuk18VIQXeSS5YOXNYroTOYFT0n55P3hFpuzusuy7BDX3SVIBm0rLFdFWuJpvsQ8Zz5TJf91WeIT/9ScuJ9pm+B8M/7GRZ3z34terHWoij0TV6qloj216CRDchBUhSIMX2srLEM/bGkz5dpyKlMXCojibM4f5fggdQzx+Riix1iuKV2ghUGqZbXqt5Svt/UklT7F/HPjzGWwx1OWU8+GPclxkxZEA19bjEG9BfwcGOh2QFBZ7go29qpVFB5YLJYjnChXmAWGqTRcdsE78nlk+UxDefYWg+rozvYRwveF0T6XNDcdb8+oXZfm1pRjh0KiZt025uIFxrtrDNwWoVjDrYMXGlsHQIq1h+cCjTUPT94LminrGgVPom7fvDM8q1E4BGPJkOr3GZMygOWeCrxSA1TeLFnioYaum5gakFMadBRgNvf0urvqh4hj6kqjdzP7xoG9IO+nk5eAaLFNxFjdmyuiKZK
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794667427-732006
+X-HE-Meta: U2FsdGVkX18lf4OivOd3kKbGb9N4m5Qot0R6yOC1dLbwlEqG9cCSb4sP3lRn7ujoNTDfJHTgXQ1gpjDMQpmDv8KyMz/x3AIGx41jmWntMAS0zLLFF9YAc7IWAb010hJT+GO86a65geKbetFPFcNFE795ISTM6LuYyF8qdXyLZliawtn4gqWYfYm7HNrPYyMp3tuaalNDD9mlC/g7ZJcYds7SfuNyNDYiyZQDj9f61QQWMW4M3Xq8BMN08Na6/whSpOvFDqq9O+UFm0KpjvoROVVzw3OjuGUvt5Wjfdpu8dEnTMhICs67mPVXbpokWYMKJhxqV13Zku+nSSoeUcrMa1d4m+hrZjFxevE9V4CZGs3ZpxY4f9ssdYpMAuPrJBUlH9Cue4OXryot243zEvBrQcnvH0RY7hyXjU8GbyeSS950746p4B7MIYrZJrhxXK2DyH0p0QmJ9b/277mAABCwxDq4wu58watEHeLSdYU29hMAFMOTP5wW49BDU1ZNtDQGRe7L0hZtRU5ZhsTy2HwYKwAzJk8ec1J9DxJmWmeJwmW3v8cfLZdB9Kzny8GXl7mNiUY7Tw87ssLqY/ibCHYG3sOU3r5Fh3eZ6D+IykM6XfHKsltN9XECAVwIEH/c++v4ST0X4FOFoh2xjQXoSdr/cKKv+Cyvpa03T0MANZs7UOcDecZMl9Boeqxs3icSHyGWIvr/AA3LRTMh1AJeDrHDNIejGD/kuLoOnDLPAXMWbXecxi1Og+4/zE7GZ3PztdQgTlfw1KLtLqzVXqT5PZLIZZg27udDOfHG2xZlZNtQaNjHX1swMCSjIfplBcRF9Jj9SfIMzIZg6s/VFCNvrL9YLsW22KXiZeq7tf+4i/0/52ZuZoGW5jLq2oeTgWeP0lU+LfV3UM7Keu9BjD2p0z+Oll4qX5upzU9JdN0S6OB1Cdr0IyjWr/Po5Q3IXL2auyHUP13OSGloqMLEzVkL33C
+ 8Ujwepev
+ fHYpuY5FQWw80tDSXQ4s+V4JZUNJr1El7XK4Ag0thAJ0WrpKloE6TzNhbZfCDQSX54htttUbX/09ndmktIqFoKYcGZkgqYQ85TZHWHOHI6CAOJkhWGQhemr6OuA4kPy55bDvhSRDVzUUpjhX1lbC5cIr7vDDRdy6cFYIMwzEZ/dB259SNNE7YNM+rTo2S2E4UJeMHY47DS1Hcyc2V3lRs3LJxNHBRe9HmM1hXQPA+nnc9xWIQ9fDD3J8RG7PTZOVpHA2AMae2caEg75sXHWJ7VqL2THZwxO3Yuqbnc6k2KjRzw2+1jtsAb994IQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,89 +96,52 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============0802335019258284520==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+> > diff --git a/mm/ksm.c b/mm/ksm.c
+> > index 49977bcf04f7..e79e64372e49 100644
+> > --- a/mm/ksm.c
+> > +++ b/mm/ksm.c
+> > @@ -2640,6 +2640,49 @@ static void ksm_reset_unstable_trees(void)
+> >  		root_unstable_tree[nid] = RB_ROOT;
+> >  }
+> >  
+> > +static bool scan_begin_new_cycle(void)
+> > +{
+> > +	/* Check if the cursor points to the head. */
+> > +	if (ksm_scan.mm_slot != &ksm_mm_head)
+> > +		return false;
+> > +
+> > +	/*
+> > +	 * A number of pages can hang around indefinitely in per-cpu
+> > +	 * LRU cache, raised page count preventing write_protect_page
+> > +	 * from merging them.  Though it doesn't really matter much,
+> > +	 * it is puzzling to see some stuck in pages_volatile until
+> > +	 * other activity jostles them out, and they also prevented
+> > +	 * LTP's KSM test from succeeding deterministically; so drain
+> > +	 * them here (here rather than on entry to ksm_do_scan(),
+> > +	 * so we don't IPI too often when pages_to_scan is set low).
+> > +	 */
+> > +	lru_add_drain_all();
+> > +	return true;
+> > +}
+> > +
+> 
+> Can we just leave the lru_add_drain_all() where it is, or what's the reason for
+> that change?
 
-> fs: add file_check_backing()
+Sure, There was no special reason for moving lru_add_drain_all()—I just wanted to
+keep low-level details out of the main scan function to make it look cleaner.
+Since it is going to be removed soon anyway, leaving it in place makes total
+sense.
 
-TL;DR: file_check_backing() may call d_real_inode() on O_PATH overlayfs files,
-which could hit WARN in ovl_d_real() (panic with panic_on_warn) and let the
-pseudo-fs check pass wrongly; reachable via fuse backing open, needs
-CAP_SYS_ADMIN.
+> 
+> Note that that might soon get removed either way, so I wouldn't worry about it.
+> 
+> Then, I would rename the function into something like
+> 
+> "scan_should_start_new_cycle"
+> 
+> And keep it simple.
 
-> diff --git a/fs/read_write.c b/fs/read_write.c
-> --- a/fs/read_write.c
-> +++ b/fs/read_write.c
-
-[ ... ]
-
-> +int file_check_backing(const struct file *file, fmode_t mode, umode_t type)
-> +{
-
-[ ... ]
-
-> +	/* Look through stacking filesystems at the inode with the data. */
-> +	if (d_real_inode(file->f_path.dentry)->i_sb->s_iflags & SB_I_PSEUDO)
-> +		return -EINVAL;
-
-With FMODE_PATH accepted, can d_real_inode() be reached for an O_PATH file
-here?  No ->open() has run on such a file.
-
-For an overlayfs metacopy file whose data is in a data-only lower layer,
-the lowerdata redirect is only resolved lazily, by ovl_open() via
-ovl_verify_lowerdata() or by ovl_d_real().  For an O_PATH file this means
-d_real_inode() goes into ovl_d_real(), which does the lookup and verity
-check itself:
-
-    err = ovl_verify_lowerdata(dentry);
-    if (err)
-        goto bug;
-    ...
-bug:
-    WARN(1, "%s(%pd4, %d): real dentry not found\n", __func__, dentry, type);
-    return dentry;
-
-ovl_maybe_lookup_lowerdata() treats a failed lookup as a normal runtime
-event (pr_warn_ratelimited("lazy lowerdata lookup failed ...")).  It can
-also return -EINTR from ovl_inode_lock_interruptible(), and
-ovl_maybe_validate_verity() returns -EIO for a missing or wrong digest with
-verity=require.  Each of these would hit WARN(1) when reached through this
-helper, which panics with panic_on_warn.
-
-In that case ovl_d_real() returns the overlayfs dentry, so the SB_I_PSEUDO
-test looks at the overlayfs superblock and passes.  Does the check fail
-open there?
-
-Nothing calls the helper in this commit, but later in the series
-f79b9e79484f ("fuse: refuse files on pseudo filesystems as passthrough
-backing files") adds file_check_backing(file, FMODE_PATH, 0) to
-fuse_backing_open_file().  That gets its fd via CLASS(fd_raw), which
-accepts O_PATH:
-
-FUSE_DEV_IOC_BACKING_OPEN
-  fuse_backing_new()
-    fuse_backing_open_file()
-      file_check_backing()
-        d_real_inode()
-          ovl_d_real()
-            ovl_verify_lowerdata() fails -> WARN
-
-This needs CAP_SYS_ADMIN and an overlayfs with data-only layers where the
-data file is missing, the digest check fails, or the inode lock is
-contended while a signal is pending.  No fix for this was found later in
-the series.
-
-Could the pseudo filesystem check avoid forcing the lazy lowerdata lookup
-on O_PATH files, or should ovl_d_real() stop warning on lookup failures now
-that it has callers besides trace_uprobe?
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/43599461726
---===============0802335019258284520==--
+I will rename the helper to scan_should_start_new_cycle(), keep it simple,
+and send out v2 shortly.
 
