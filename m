@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA75606A327
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 18:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EDCE606A323
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 18:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PuBG7HdK
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lURSPx/K
 Received: by kanga.kvack.org (Postfix)
-	id D591C6B05B0; Sat, 14 Nov 2026 13:58:11 -0500 (EST)
+	id 0FD4C6B05B1; Sat, 14 Nov 2026 13:58:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D09C26B05B1; Sat, 14 Nov 2026 13:58:11 -0500 (EST)
+	id 0D5216B05B2; Sat, 14 Nov 2026 13:58:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF8E06B05B2; Sat, 14 Nov 2026 13:58:11 -0500 (EST)
+	id EB7D16B05B3; Sat, 14 Nov 2026 13:58:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F2F86B05B0
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:58:11 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8D0C9A7FB5
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 18:58:09 +0000 (UTC)
-X-FDA: 85434634698.12.75AF5B1
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CA25C6B05B1
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:58:12 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A83B6A0439
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 18:58:11 +0000 (UTC)
+X-FDA: 85434634782.19.67E4864
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E47781C0006
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 18:58:07 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PuBG7HdK;
-	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id 17A42140002
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 18:58:09 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lURSPx/K";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794682688;
-	b=fdtOLMWIzaX0HbzbwWO8s2N0IO8vkDFApsZHhGa1iWQM4PnmK78eJAr4LlDeV4mhGk6fj8
-	JgU/ZGl8dzx5gza+gEkYhOofHEEEWG51BIzEXvwoJFagZEErMTgGvZeW9L6ZQOTkSpVGnI
-	AFDxACorF50tfjQg1DvqvGrA6UlXSkE=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PuBG7HdK;
-	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	t=1794682690;
+	b=NhPg9d2SAFPR5ndrNptVunN0zqILWcq7ioFKkbZboB6OlfaX9oL2X81KQJ6gSW4CZ8eOsK
+	75uqM45vdgzltSUljuTKYiW9riQ7RHbJfLEncBcXnvZgmRA9b/kltTnYeH8zsAjc6SHXPj
+	5F6mNLUOsY0dWOiR1JmA/IWhJaMPIF8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794682688;
+	s=arc-20220608; t=1794682690;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TCMrrOGAhmQQGZtD+G6uTS3x2wdtgxcClnp2b9KxvJ8=;
-	b=DOewfqp0Ftzmfddi+J37MgwEgCBh1spjCbErlTfE/Qr/hlO4ZBhPccvmUlRZZ+DCYoKz+d
-	7HIv4zcJIdUEmfZwikeU4L6VGjAwVh9VpsQoBBNgI5Cba9mjXrN9kMkrPyMe0lBbB6+b+Z
-	+S9OcTXrF0iJOsTGNfBJYDBT1tUKR58=
+	bh=sxb5A3fDezD9XWyVdU0Pm1m1e1Q9nb/c23yvsaH1TGs=;
+	b=3EF0t12NE4g63c/oFYfKbpESjF8DHsZ9u1INZRJc8IpsY4+p2Pn0HN9rMsVsulPLHCvTPI
+	tc1To7O7KF92e7Ojo6oek/EMo5DjZKgZMve8Svyz2CorLcDXfm9AUWytDobKL6mVJyTiuk
+	MAFexYwKs//4EDfCAubfProda5IhetY=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lURSPx/K";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 630C260E15;
+	by tor.source.kernel.org (Postfix) with ESMTP id A225460F40;
+	Sat, 14 Nov 2026 18:58:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A218F1F000C4;
 	Sat, 14 Nov 2026 18:58:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F80D1F000C4;
-	Sat, 14 Nov 2026 18:58:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794682687;
-	bh=TCMrrOGAhmQQGZtD+G6uTS3x2wdtgxcClnp2b9KxvJ8=;
+	s=k20260515; t=1794682689;
+	bh=sxb5A3fDezD9XWyVdU0Pm1m1e1Q9nb/c23yvsaH1TGs=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PuBG7HdKinIjZRpi1N/v0OEkeMKy+DK9ABxTnStO/11VBC14LI3GcEwLDn50ERad4
-	 bu4a+sQujB/FY6xzYimHIVqRU5g4U22f90BBM+3ydoN3ohCbZ+CYyh+Ct7ANXEV5JY
-	 3Z80IbjzKFbEkifiDMwLjzoFJcvqJUB78IoQrSzxf4KaafwIgifS5ZXB2fJybN2oyD
-	 x5M9zn2qFf1/k1vM8YtEljkO7tpOmN2GitcWEt3vrsZ9vv/7ADmMtyglTQZVa4DZSL
-	 yaYHmc4xWHXptue9+LZBj1em3jcMqhyG/DxaIXSZ1PXONUZCSC0bUGW8rKOP43/AqB
-	 EQHgvqmWHliZw==
-Message-ID: <sashiko-outbox-214929@kernel.org>
+	b=lURSPx/Kru0c7vLoWR3Kzj61JujCHkscmvvS8lo8D3qckJbFCHCsuwy2J5VXIb204
+	 7Xea03siSIbW3VpXItIFMLe7+16Fg77Px00eUfc2u6iMC3zBZkeukLjMh/u+VyowpC
+	 ahQ+2U6iyd02SiN9ULBON4FVRj1QqoeknkEJKyQc6aIj78UMY/8DqZHw3ja1Pvkxfs
+	 TJEjsUJNil3Ag75JMPuNetiwm6lEZPO2dCd0iV28mMxXo6lLVCggsef+Xzig3pu0q2
+	 28ixQZIHdQUWR5Ig2F8YCVlqjUNIxI4PiXzI4+ievr9xM+wFpvH4Vg3s3NAzkgg2g8
+	 kITZ5aiZsglEg==
+Message-ID: <sashiko-outbox-214930@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 08/10] stackdepot: add architecture hooks for compact
- frame storage
+Subject: Re: [PATCH v3 09/10] stackdepot: Store compressed frames in stack
+ records
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Matt Fleming" <matt@readmodwrite.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Marco
  Elver" <elver@google.com>
@@ -71,24 +71,24 @@ Cc: "Alexander Potapenko" <glider@google.com>, "Andrey Konovalov" <andreyknvl@gm
  Vyukov" <dvyukov@google.com>, "Oscar Salvador" <osalvador@suse.de>, "Vlastimil
  Babka" <vbabka@kernel.org>, "Caleb Kan" <ckan@cloudflare.com>, "Caleb Kan" <calebkan1106@gmail.com>, linux-mm@kvack.org, kasan-dev@googlegroups.com, kernel-team@cloudflare.com, "Matt
  Fleming" <mfleming@cloudflare.com>
-In-Reply-To: <20261113185702.1332171-9-matt@readmodwrite.com>
+In-Reply-To: <20261113185702.1332171-10-matt@readmodwrite.com>
 References: <20261113185702.1332171-1-matt@readmodwrite.com>
- <20261113185702.1332171-9-matt@readmodwrite.com>
+ <20261113185702.1332171-10-matt@readmodwrite.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 14 Nov 2026 18:58:05 +0000
-X-Stat-Signature: 65bwpb8jwmz13qzypw7fqfzowcgcqwko
-X-Rspamd-Queue-Id: E47781C0006
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
+Date: Sat, 14 Nov 2026 18:58:07 +0000
+X-Rspamd-Queue-Id: 17A42140002
+X-Rspamd-Server: rspam12
+X-Stat-Signature: a5343tpu551muwtnkzsg53mknbh5x34p
+X-Rspam-User:
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794682687-872806
-X-HE-Meta: U2FsdGVkX19AzyYaW+ZUJjUulOpTTC0sFs7Cxo+kRUWo623uMrSgD+4+1QW0s6KqBUupvH8/a2QTgkkUhiXgzgRW7tkH3u487fa2F3tFzA12cjmTMRDZKGEGDaQ3/Rvh/bN7CwyXItHIMI94M0Tf7IdjApTRgJIOmMEkaUuNemOO1nvRpAvPZLLgK+KQqlP619GU3ppai/6/2ToWs2E1aX7uCNMQIFaUawWssSCEBrX76uIMEakjB27YcEigNf3NwOYgGbD4XylQxXxl92TbbXmLCzx2d/NmrqnZJPFKqpIc/ReMaQs1GO4ZScrsip0+gIjE+ek6TLJGraqUId6A+5ezp6ryEhARnf27j9kf2UElTCLrfAtqZOUpjBqdqNuuix+I1K+NQrEYzUnL5hfJgrBlXkHzdzs80ZuaxSE/gjaT5I3s2vRKiaf5uIpOPQ+hpG20piaVrCOtUX38OFV9quswCifdGxsuo9pAE++UeLOpPjwlKHNncZjm5vBjlZKikUfi6TZarDSh4Ti/W6YtkTK2tYmzBDAgQz5YZaXOhKs5T34VDJ7zH/MfDB/fcIQH5EDdWellUQVtQHAjIygjeWRmMUabAvapyi1z9rrbBEpzak80PoH5du+XRnLy80UMPg/TSQgdnsF7xYfaFRyD6eoKmDQX5vYhAAfFmV7ZiSxFt/oOvIkRuHdC8CmdCjvJSnD/UrB9co+L2WAciAD0lnoRH8Qn7ZyFJfiG6oCw+ckn8ESXuDSgBibT/VRDakNzOBNp0aHD7B0d0VKbXbc4ZNzLumMv9E+AsXglpkQA3GsvmQLkObgwk0/jd9Cg/PqC7jc0uRwJ+yISAdB1tmV53XpPMDuZgmL31xttmZj1uDG1AgVjnaja3Bbtctepb6+l+puwltB6RnrCPo+r+HzcGRLnrUwYj7TM0JXCrRuMAM7gLVWa/DidETG6E3HOWQP2x5w6N9G07EEuJxZQzbU
- +LlUBokc
- 8gP/tgc6Rp3Fyr3pJYabNHo9EvrZaYjpgDpAXTjV0hFPCKMbi+6fuSMFL13dc2M/CD2f1bgRJ4T6ahqkUJj6ZecS2tZEI/V/9Hcnq2Jfj1hFFULPNndcX4gGxVHONzxFQHU8vtzYPowOffeZV4rrRq5GixiVLOTs1hV14TnEsZT5pXFRU2dlYmAjf/e1wfS5fPfo/eUd5jDklRSwmntFX+JMh+w84h290IiLXm1Rt0rnEMc3Y5EynkZhZ7kZDzf0xQHgZ7IThk+wH61LRCafRpBLf1RgIybDKSgA7MK5Wk4EVSO8x3DMT9HVdt0mAJXT3u0NEH3C+qFjWwv9iGbJ+QIfw1VEUmld4m/b6Jrcs9DMJwH/SNCG78E1Bq09HkNNM1dIIDJNYaGXw6dmm/YtKBKE8BKZ6v11fDFQwN4qJEr2kL+g4qMGvNWl5nOxU6ahbYqlOjS4Ini4WwpgyecJcptZ338wLbA+wUglKniR1kakKgaYlnF22MvBbz+VLhJoL+tF8l0nwxGV4t+NyYsxVlAf8X8JxWbuPKFc0MWVReuQz/GTgQQlQft986T4KmbeWWQJ7pxcYDG95QoiwyEafru5nghFKIiso8mK8U6F5HoDJ5SNFS/SNqyCXIa3czLf1ZYJaK9Q5KheqtlY=
+X-HE-Tag: 1794682689-755031
+X-HE-Meta: U2FsdGVkX1/kZIOLV5Wq8dY73oqjqtqNukLkdHbBQ/ZvUbuYibD0LWwpcIEI1FCfKmAU1rCQsv+MNOJNMe2PfRfLeqpipyglCTeo+hVJ8oQfjMdWYdiTnaluuPwmFxk1mCNaLfgdiYUdmQ7Y4Ewa1xUliOyvODopDwPlCjxSN2mJjecdd99GiaQ/7tgD2FC90rV766dfbjvfF0MivPsbF1wZ/Fbsz0pyi6oBkl2nI7lUjkx0zXfiJTyZGPIEQBCN3z/niE5sx0hghO/8bE/utS7Ie5ZQKzQRpuh3aHWZHwUfVh2yTEm6MGwnVzMRsQH2eT3Pm4pnzm2FLTYBpZQ1AIYbhu6+CPmktyunVvGg+tVXX8g2TM4bkKUmF5QgQoOyN3oozyI24czSAcLbnF72POk7sDLE3wLfyPj3tBD41BwSlBQ5/cH5Q9xLpy3ZUgIgEefwzdObsotctvlAAAJOoccLrHlduziXvHwpdsjz5w1etFIhTCXrryzoJx9VxfFjjnLp8BBZwgpzl5IbeVzl4zGU0S+0S4Bfub2CF1pzLKKQCty7wq2z7gKfDTvaJHLizi0cJtwz3jTAgGpQA4UbPkPGA0L8BWLsjxlRHnOEipG38fnZ6nrzgYp3S3GWUk//AN4XXB4Q464A4sG/NiuO6p8gcCXwA75r2WGIcHqTRHlE1MGkXFZ8StEN2fiQ6BuazRo/bf+jsmBm1r6JgROH/2ksr1uVtxM1dcYin46KDKn8K8IjnWBMkzeza2iMNKys/AVwI8+W+yHpQZjpZUOAnUf0Gw8/JdiOsI1DMNCQWykVtNhPLFcHb2wXEFiwbvaWOc1/V2Mxu8VjGSNdiZagcOv9t7tfFKetonvuDQLABuoBnAOZ58h9rVCqpeqZgTiPUenyiiLVcX9leISwgpDQ/c7LDu0yo6fweIrJohCQNEP32/0QMWWkvDvvmt6CIN3qJqiEHzZ92YdTXUNLbPh
+ 2qrEzCas
+ D4BfDqnGynzlBUgRYJbTcSu13kZrOeThFBu4QBInpL6hqQB4ueqextWIz7mKpc6TpUmEWekMVhyMZvG8oazQuAIM5H0y5hVt90tOg+sIkQv3UEZxewaMT7ReOfbn2UmrBeUZTVNzsvzpYBvtmmdPiP9P6Rw2Y+WdZ1jbHev1V2my8DAqIriUX0wLxlNPFGBjS/va2PhL/nH3ncBoT26EJJeHEi9OocPz1ZL3bzJ1mSsoVGjRwWctaOh0Qozew6u1yO2PFcOv5c9pAWO0ZZZkq4KgaOpP3HMj7n77RFtRAAJJzXYLo8moQrVO+itayUwWxi/PefYvvnlBq9vbDmkM/L0HW1CdBzDpQESNKwcaUp0/cH3F69/GWg4zP/sGWJJkznCkaRvhYjsWiuZUI6W6x0gIlHJlpbnx1tC45ZDifp6/fBxgh6lGmOYgxT2PYsapQJ49oWalvqp6EZ832dBrPDUdmDY++8t9U0bcaJPND51RzgUaRlb9ssID77QKEozRD5n2E5sjVDbIsyAd6Xyq5/XAXt1VmSr9Q9KPQWWI4v3M6Wlf8MjdlfAJiNFLNNyGLOpWveOBwiKBBRNtXbt1zgescahtt0zzsXkpedQfYhKldUtSdoXJVDoH8ZkUMa0wOaLkgRaWPOCCp+0rlyO9MovUQzhHVF1mZ0FP671wMSpJt55FsZ0lM7bha89mUa8M016YZKw6003eZPdcVwHD5TvKSMhRALEAlpFfHy8PfTHA2K/Tk6RjddIW4ZpvBgprS7zGvWIVkfGgI/RM3r13U3J63YgWdUjn089HXD+3tVjjBxw8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,61 +100,74 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [High] stackdepot: uninitialized frame in
-  arch_stack_depot_frame_decompress()
+- [High] stackdepot: uninitialized frame in depot_stack_entry() on
+  generic arches
 --
 
-commit 29af5949877efb1954b766cd936a7c6ac5d5fb21
-Author: Caleb Kan <ckan@cloudflare.com>
+commit 8ef363f0fde887ad99497bbd2e7b00c5bd8bac35
+Author: Matt Fleming <mfleming@cloudflare.com>
 
-stackdepot: add architecture hooks for compact frame storage
+stackdepot: Store compressed frames in stack records
 
-This commit introduces architecture hooks for compressing and decompressing
-stack depot frames into 32-bit payloads on arm64 and x86-64, with a generic
-no-op fallback for other architectures.
+This commit stores stack frames in a 32-bit compressed array inside
+struct stack_record when all frames of a persistent stack trace can be
+compressed by architecture hooks.
 
-> diff --git a/include/asm-generic/stackdepot.h b/include/asm-generic/stack=
-depot.h
-> new file mode 100644
-> index 0000000000000..846975767bdd4
-> --- /dev/null
-> +++ b/include/asm-generic/stackdepot.h
-> @@ -0,0 +1,19 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef __ASM_GENERIC_STACKDEPOT_H
-> +#define __ASM_GENERIC_STACKDEPOT_H
-> +
-> +#include <linux/types.h>
-> +
-> +static inline bool
-> +arch_stack_depot_frame_try_compress(unsigned long frame, u32 *low)
+> diff --git a/lib/stackdepot.c b/lib/stackdepot.c
+> index 8f1aaa0c6d889..f323f1e97e129 100644
+> --- a/lib/stackdepot.c
+> +++ b/lib/stackdepot.c
+[ ... ]
+> @@ -419,9 +422,37 @@ static struct stack_record *depot_pop_free(void)
+>  	return stack;
+>  }
+> =20
+> -static inline size_t depot_stack_record_size(struct stack_record *s, uns=
+igned int nr_entries)
+> +/* Check whether every frame of a stack can be stored in 32 bits. */
+> +static bool depot_entries_compressible(const unsigned long *entries,
+> +				       unsigned int nr_entries)
 > +{
-> +	return false;
+> +	u32 payload;
+> +
+> +	for (unsigned int i =3D 0; i < nr_entries; i++) {
+> +		if (!arch_stack_depot_frame_try_compress(entries[i], &payload))
+> +			return false;
+> +	}
+> +	return true;
 > +}
 > +
-> +static inline void
-> +arch_stack_depot_frame_decompress(u32 low, unsigned long *frame)
-> +{
-> +	/* Generic code never compresses frames, so this hook is unreachable. */
+> +static inline unsigned long depot_stack_entry(const struct stack_record =
+*stack,
+> +					      unsigned int i)
+>  {
+> -	const size_t used =3D flex_array_size(s, entries, nr_entries);
+> +	unsigned long frame;
+> +
+> +	if (!(stack->flags & STACK_RECORD_COMPRESSED))
+> +		return stack->entries[i];
+> +	arch_stack_depot_frame_decompress(stack->compressed_entries[i], &frame);
+> +	return frame;
 > +}
 
 [Severity: High]
-Does leaving *frame untouched here cause uninitialized-variable warnings
-when callers pass an uninitialized local to
-arch_stack_depot_frame_decompress()?
+Does depot_stack_entry() return an uninitialized frame on architectures
+using the generic header?
 
-When commit "stackdepot: Store compressed frames in stack records" wires
-this into depot_stack_entry(), it declares an uninitialized local frame,
-calls arch_stack_depot_frame_decompress(..., &frame) when
-stack->flags & STACK_RECORD_COMPRESSED is set, and returns frame.  On
-architectures using this generic header, the compiler cannot tell that
-STACK_RECORD_COMPRESSED is never set at runtime, so inlining the empty body
-leaves frame uninitialized and breaks the build under -Wuninitialized /
--Wmaybe-uninitialized.  Setting *frame =3D 0 (or calling unreachable()) wou=
-ld
-avoid this.
+include/asm-generic/stackdepot.h:arch_stack_depot_frame_decompress() {
+	/* Generic code never compresses frames, so this hook is unreachable. */
+}
+
+Because stack->flags is read at runtime and the generic
+arch_stack_depot_frame_decompress() neither writes to *frame nor calls
+unreachable(), the compiler cannot tell that the compressed branch is dead.
+In depot_stack_equal(), the early return when
+!(stack->flags & STACK_RECORD_COMPRESSED) folds the same check inside the
+inlined depot_stack_entry() call, leaving frame unconditionally
+uninitialized in the loop and triggering -Wuninitialized build failures
+under CONFIG_WERROR=3Dy.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113185702.1332=
-171-1-matt@readmodwrite.com?part=3D8
+171-1-matt@readmodwrite.com?part=3D9
 
