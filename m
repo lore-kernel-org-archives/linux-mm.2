@@ -1,91 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FCD3606A889
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 12:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E37606A880
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 12:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZBqU4DgI
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d8ZTGEn0
 Received: by kanga.kvack.org (Postfix)
-	id 8C8966B05B1; Sat, 14 Nov 2026 07:03:26 -0500 (EST)
+	id CE7B36B05B2; Sat, 14 Nov 2026 07:03:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 852916B05B2; Sat, 14 Nov 2026 07:03:26 -0500 (EST)
+	id C98DB6B05B3; Sat, 14 Nov 2026 07:03:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71B1C6B05B3; Sat, 14 Nov 2026 07:03:26 -0500 (EST)
+	id AC3606B05B4; Sat, 14 Nov 2026 07:03:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 446306B05B1
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:03:26 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 59801A7EFD
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:03:24 +0000 (UTC)
-X-FDA: 85433589528.01.E544079
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 845FD6B05B2
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:03:28 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E0E621203A6
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:03:27 +0000 (UTC)
+X-FDA: 85433589654.22.1C68FAD
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B3B798000A
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:03:22 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZBqU4DgI;
-	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id 541F0140002
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:03:26 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d8ZTGEn0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794657802;
-	b=xHsGZbNiOU/dfdoj+Ec9wcPfWKk+N+K6LI67dj87wXs4n7m4lhb+FyWiuxb108mXE1ns0d
-	8kuCPv9EYk2F36Z3wG4NSm6BRZWh9YDN3Au2/saH3+NV2oHOuFbgd0e0MVhIr2MW1yR8yy
-	vYwjL56NiZAEsp8lPCanNDpFYqd0y94=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZBqU4DgI;
-	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	t=1794657806;
+	b=lBDQ1a7bM7lq50UClhok4wHEXkQp55YyVE5FUrhIeD40tItR2Mq03JNX5C0U+N2/f6bq0l
+	xkJ4HPcSQDRcI/ylXi3x940C5A8SWBmQB5MuzWKHZuA9kT2Cjw29HEfdi9O4imCebqni0k
+	cBWL3RaG7c8njifvfZ6vYWbQZytZ3JA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794657802;
+	s=arc-20220608; t=1794657806;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZtvIFXoOKLAsH+V2h5HHt5wrTO8bTwuJgaiMNtvW4Sw=;
-	b=vXpKWCEfn9tl9ARurOPaADFgm6X1veIPEbABMDtU4tXSGln7/rKPIpP/niqHHZhbzT34Gx
-	Gf2cWnpkCWB2J2kE0FgKOtjbSpv1o1QLYs2YQ8ReoHESZPGjn7jxNJhS24tKfqlAm22tTS
-	du28IG90jGJv6idri3L+CR/LILcsv3I=
+	bh=ALzGtljZmngZ99TYML6vyT57I3K5d0MlyVrwhGLF07s=;
+	b=193YNrF2Svo/8Kd7Bp6WwIjM0DbPSibAqBtOWKLMh+A79jzXxCZvesoGWOv+zVNYNEFOpl
+	Nkm3fSjZ/UCKjsWHsu7aQtUm/xJ4OEuCZbnIXgMRXJYKcQuKNSv943Sa8ctfmegLzNyoX3
+	sK7z1Ia4QFOye4j4vpC9HZn6NY5fuvc=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d8ZTGEn0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2ACB9602D3;
-	Sat, 14 Nov 2026 12:03:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FBAB1F000C4;
-	Sat, 14 Nov 2026 12:03:21 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D7CEB6232A;
+	Sat, 14 Nov 2026 12:03:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89B21F000C4;
+	Sat, 14 Nov 2026 12:03:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794657801;
-	bh=ZtvIFXoOKLAsH+V2h5HHt5wrTO8bTwuJgaiMNtvW4Sw=;
+	s=k20260515; t=1794657805;
+	bh=ALzGtljZmngZ99TYML6vyT57I3K5d0MlyVrwhGLF07s=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZBqU4DgIsVF4fBQNr4bYIKhPWkjeKQvvtPUUd9Cz31YPzLVJOtMSWjDuH7EGA/h7n
-	 P2EPM9PNC3jDOgl7kqQR3OcR5SuiZnwdbTz/URj/thGHq6pavdyM9GR1V7q5+9Nr9L
-	 ogQpeDGM/vpkwHN2a+d6KH5p1Dq1y5+epVPBRSkaCZhhXeQqYtWZ7nOpi4phoiJOFa
-	 QW2WytooNIT+NaZ1bOtDLE6flFWVJJCUO+3bxaKOxlU9uNVzGHsSLlk/mD2Ae18ZH1
-	 y1aN0XFGCVxI9RZanX5gvGBBfw/tKxhyoRW6iX00wFbvNon9+aBAYwguwpQmTyJmz/
-	 sjdBN32e0lXhA==
-Message-ID: <sashiko-outbox-214452@kernel.org>
+	b=d8ZTGEn0qxni0o2KqxTpTR9WvaZxwMw6wYgcu+OafMRCtiRzDVAXMU7/wZ74rgbDB
+	 1LocND40CPQPdchDfZSgOlZusuV2b2Jm6PmSzxbXe+UtcgCZxhq7Cayx0Jg+WQs+5S
+	 Fgn0yDEfY6VuTU6Kbg6xIhCMSNZtGpQHRSHQT7Ov+hnlN+QHxRE11/pIkaAJwpMSC3
+	 85ZDbU7OiQ6CVDl/omSbOx09QyAE6AQk8ZxkNWDw19sm6FcfmyGeBCn4P7CMz0EUvA
+	 NEqvQjJ0iP60FlMW/wnjotiw8rWjZFrDQALOU/tpxLhx8piKaT0N8cCt57zYhs9fOY
+	 bSV/RrIKt+71g==
+Message-ID: <sashiko-outbox-214456@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 01/33] jfs: free uncommitted anonymous tlocks when
- evicting an inode
+Subject: Re: [PATCH v3 05/33] fs: add a generic emergency read-only state
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.com>
-Cc: "Al Viro" <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, dsterba@suse.cz, tytso@mit.edu, "Mark
- Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>, "Joseph Qi" <joseph.qi@linux.alibaba.com>
-In-Reply-To: <20261113-work-fs-sb_rdonly-v3-1-0be92bb73709@kernel.org>
+Cc: "Al Viro" <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, "Jan
+ Kara" <jack@suse.cz>, dsterba@suse.cz, tytso@mit.edu, "Mark Fasheh" <mark@fasheh.com>, "Joel
+ Becker" <jlbec@evilplan.org>, "Joseph Qi" <joseph.qi@linux.alibaba.com>
+In-Reply-To: <20261113-work-fs-sb_rdonly-v3-5-0be92bb73709@kernel.org>
 References: <20261113-work-fs-sb_rdonly-v3-0-0be92bb73709@kernel.org>
- <20261113-work-fs-sb_rdonly-v3-1-0be92bb73709@kernel.org>
+ <20261113-work-fs-sb_rdonly-v3-5-0be92bb73709@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 14 Nov 2026 12:03:20 +0000
-X-Stat-Signature: 5ri7d8z1eyizdbiexyi8ohs1x56zx7wx
-X-Rspamd-Queue-Id: B3B798000A
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
+Date: Sat, 14 Nov 2026 12:03:24 +0000
+X-Rspamd-Queue-Id: 541F0140002
+X-Rspamd-Server: rspam12
+X-Stat-Signature: fin5yokpapcik14tfsq5mdtda9fg84y8
+X-Rspam-User:
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794657802-603435
-X-HE-Meta: U2FsdGVkX1/ZasGIJVZyxZ9dJsx5w2zv52NSZA9ZzxbMkemq5k934B5vl4XQ4PvAA/kchujy+Rx07R3nN95hne6yiktLt43fKlvALbG7BBVPNqMeXW/Cw0IrnPPMRZ55Finuw/0MPf6vKUg9cZm6YrEjdrpLrClNv2kDuHAgxaqwOGBm21Goaz8NVTM665YPc/ajtbsKixgstBrTfOfH6cuaYIOFrafdjCKP9X4j38RKAs1Vmplm+xfkXTj35QRkgU3S+iG42dx8mqINmTlfoRpBslM55DYCzmvKjgr5tbYSAUTOYFk/8ZD2zQrKI7iAEFSBhltxS+yOefTEEel4W3eYNTqJJHfdYWNbRTKO8BoMJ1+QctVjn0r7HwA5KQh8JM1PPZXNrgaZNnr6nQa/eIdYTpSASKRg5stARTSDU/903eWuvHtPE0c4nnZ8K2qkicY0WYS3daWwR2rbwf/g63Msx3BfHAeALdvEAAPQR+b+SHdigCnCEnW8bDcmHec85+7gZ5kuCvl3qA2Tm/4fzqsgh5NuNQtgW/kkKLFx4B1vfOBwAFlxsTuT2qqoudSzQH8xWdZy5lx+s3E0v544DOnFmE3W0ea62RmyV07KveWrKrxTVPi7PKpkIv1bev6dMhj9prUnWN4yOGolZ7cDyDx1SoV5cY3AUUVe0Y1ukTuMwsxW6Wlvm8LODrUwGnSIWtmlmMgy3rt934CQRIhgzPR6YcAH5E2wHnvFSc0Bun7NClAiJlye6YRCQSs4jf73VdEacgHWk8zinY2hkTccuUypvm2pZLi2unjnYiCmbKnz341PjcN2jj8MBm/VF3DHNfI3QKcG11UB/hUHE1L1w/nmZnyXxrNkuVppw2l4UUNrpdA7oax2pQqsh5BV9ItNXZdkiPLtsLKxvoFZZk/f/4upOFFkkVbplyxJf//dF+/Z7d7r9x1/uyOU9K+hksfhZUbJziJ7c5SVL6yI2xP
- sekslBUM
- mlrT2sOu2n6Og0/KbxnynLmnMecx5da6usdGpQcryVyNeKkRUudPILQeqPU5gz6Crdth4smSTifIRmBrvhGTm/NU3JFX1rpVudxP0qWCjgdtNevU9hEvF9HJih5aPoojL78IOM5E6ATaFX0t/bmaAbKVkyZFByFCqt9i7tgSSrpAIc9ngNKreSIhJ9wRDJHQ+qsk6d1nbCAxKiPQ0Xdk3UU0qgXi6hJ/o7w8ecJjCr2JlB9teofyRe74Sqhl5NyvSDnsVEYAoojw/e2ix8Upnw1uqA9vegqrO3ju+04o4UOtfD9EviISqAsDqAdvPf++6V4IElJM0QdWay3ucPIvjE91ZD98IcHnnzjmFPuee+2emeMgqZjWE8RmZ1I+hgnRZqrEaTonNzRqTQsQtWAM+hEEPk8L0fpWcdrgCV6vKSr2+3kIIGXSCuMqXPGueXawHosNHjOpUT9QjYgoKeREqmmlDS6yEBzXye2DmYTTB9BMZbIi1TqvaEG30T8cxNJyj3ACy9VKleFFAJURJfo3kMq2AykkI/hwmaajXul/N8Xq+fBLD89mT4S+gsv1EoBvfC5cXfJEAOH52aLCB6WQ4OwwD8w==
+X-HE-Tag: 1794657806-257111
+X-HE-Meta: U2FsdGVkX1+wVdkjzxghKNSkjYGYdNC1WoiSc9H3pnnVrFJ6TG9C5wvSclUhTzL+ZUO949oGqfHXKV/RcgfOVpCcvix1jxXBsW0+gmfCAMSX2MrUoemD2QUDzJ9tVBRv610e++1qNUuoWSj1vbDBAzsOzFfOvQlusUd0YK8zRwtCeMfxVK6rTTYR2U0dQe5ywWpb5NpPgdiB9uDznaS7Ce/T/eLWTnpULTHNDhTzUUf+N63+KQRzHsWhzYlBOPcWa6OD6i5TzyLqFGMX3Jj9dKeemW0Zcu+orfITKyHGqSPz7BLN7JrIBuTtACGsKRjyBp9BY07DHiiYfBiaW4Id2LRwSPLfLB1CUFM2pkh0SlqW8zT3ZVTlwK1sgr6Re+M1VESk65KpPPgrmGspP/R0C9Niv5sAymx67PYn9yBAxhuvtQ4SdpE+9OiTBJcorblU+19E/djgXaAjLw1b9EE70remnbQl4jrMkccg1lSzpPFqq5lhQs0v/4SyIYcqVweMzaaBIIk6qRDZf0NKATsGAYPa8UTyPeFxePjPTOGqscY1gyt20Q00IP90enOkVl5hozFr1+FV02YrGT1bggyz8rumJabxF/IiGwtMlQxZt7E1qSp/MTqTo9Lm8Ol9GaeZpThLnG/DbgCLvUqN+tJzZHYLp8d6vcxIDHIWpT0VG2xXxEyx18uLe7t27q3mce5GmRy/N+EjuHqiK55bsS3v0DojQS16pal7U60swhaCJFm92B/Ezl1yK4uaS/0FzI4WXFbdfDmWZYoraASYmp2UABiR2qnOBn2On+2Bg0zPQDGXBF/PyC7yHvHOasXf+ra8MEqrUpQxBJ1JcEsYXnqZwKAV2JQDlWMR3tM+FZzzNzIHHKmLi8dz0Yr1nAONGVoYkZjtZGRGXrYxshbjaXZASr7rHgqda3/s6hANNtr4oG8+1dtjDoaYlclayYHlqjdpMMCK2Xy69pTj7lcld/W
+ XZUaYsUC
+ 3/yXGoePzHe/juxXTXWjwHajFt+8YXR5cSTWOTjp4BlBMr+4goOodOrTQ4A3hU35v/H6ahCMlUDxwi6G7AYUibzadLeaIJ5j9hfjjv+XRBg/APNgjzs2P0gtGgDD2dLQrpVSTJR0mdoG/E7E4tGEEYXCCMIej6E/+w0h+uKJ/HfMzcqy1CsQw19J+krja2rO/JT9k0Tb2mXtNw4NNhL5PImZ9twPNuOFxT5920S+WxxNg/6UmVFyX5/Gn4QLBMl3txdyjlwzbMB60cEiAJ9rudHlNKtHav5eueDW7UAtrly3kaWIqfgpI633pchXITYrVz5pH3z8VJUOOMkumenISm/4k1JzedI/R14gyX4BL5/+M5GNBmF8oGq2GFrp7xIY6VTHy5Op3SMeWSowcYoQ0bV7GpWwank5xpX4F8GRFf3D7VKiRF2vtCIvvsMw7opapyoTUxSjZgMdcQDJO/tJxpQYLjpv6VC8Z18ZoKRKUnahdjQWJOpr/TVdX5zJ0hPI7oRiBv8NFV6It3Awjj9Qibak9EzR3dI+ifXAk4C1SCMa0H0SDrRiAvmmAw5oUwRHJ2qslfYrJc+ovZ0vmyVVpEWxAf4aX7lE4ITkn0gGDslkjOXq5LFMzvmzU1P9U26pWdyg0h1+BK0bMuqHkd4CVAoIxBYGV+herdY1fkx+d7AIiggFk5YznlPIhh8FYhO15LhU2C9gJcgtO9b3MIU73pe2pjHDIXkNunC7SDgIBT7AOOJM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,180 +95,114 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issues to consider:
-- [Medium] jfs: false WARN_ON_ONCE() in jfs_evict_inode() on read-write
-  mounts
-- [Medium] jfs: txAbortAnon() after jfs_free_zero_link() leaks metapages
-  and tlocks
-- [Medium] jfs: race between jfs_evict_inode(), txAbortAnon(), and
-  txQuiesce()
+- [Medium] vfs: change_mount_ro_state() skips mnt_make_readonly() on
+  sb_emergency_ro()
+- [Low] quota: do_quotactl() misses sb_emergency_ro() in Q_XQUOTASYNC
+  and Q_SYNC
 --
 
-commit a15655dff32c48b09c331d3e03e198e2173008c1
+commit aa167d356b416c1c40da72fb215b9d988cb411bc
 Author: Christian Brauner <brauner@kernel.org>
 
-jfs: free uncommitted anonymous tlocks when evicting an inode
+fs: add a generic emergency read-only state
 
-This commit adds txAbortAnon() and calls it from jfs_evict_inode() to
-release uncommitted anonymous transaction locks and metapage pins when an
-inode is evicted before writeback commits them.
+This commit adds an SB_STATE_EMERGENCY_RO superblock state flag and
+updates VFS paths to reject modifications with -EROFS when a filesystem
+switches to emergency read-only mode without setting SB_RDONLY.
 
-> diff --git a/fs/jfs/inode.c b/fs/jfs/inode.c
-> index c7914dbc91ed9..6390d915c7f11 100644
-> --- a/fs/jfs/inode.c
-> +++ b/fs/jfs/inode.c
-> @@ -172,6 +172,15 @@ void jfs_evict_inode(struct inode *inode)
->  	clear_inode(inode);
->  	dquot_drop(inode);
-> =20
-> +	/*
-> +	 * Writeback commits the anonymous transactions of allocations. If the
-> +	 * filesystem went read-only without a sync, e.g. after an error,
-> +	 * nothing did.
-> +	 */
-> +	if (ji->atlhead) {
-> +		WARN_ON_ONCE(!sb_rdonly(inode->i_sb));
-
-[Severity: Medium]
-Can WARN_ON_ONCE(!sb_rdonly(inode->i_sb)) fire on a read-write mount when
-ji->atlhead is left populated without setting COMMIT_Dirty?
-
-In extAlloc(), xtExtend() and xtInsert() acquire anonymous tlocks on
-non-root xtree metapages via txLock() before splitting pages in
-xtSplitUp().  When xtSplitUp() fails with -ENOSPC or -EDQUOT, extAlloc()
-frees the data blocks and returns before calling mark_inode_dirty(ip):
-
-fs/jfs/jfs_extent.c:extAlloc() {
-	...
-	if (xaddr && xaddr =3D=3D nxaddr)
-		rc =3D xtExtend(0, ip, xoff, (int) nxlen, 0);
-	else
-		rc =3D xtInsert(0, ip, xflag, xoff, (int) nxlen, &nxaddr, 0);
-
-	/* if the extend or insert failed,
-	 * free the newly allocated blocks and return the error.
-	 */
-	if (rc) {
-		dbFree(ip, nxaddr, nxlen);
-		dquot_free_block(ip, nxlen);
-		mutex_unlock(&JFS_IP(ip)->commit_mutex);
-		return (rc);
-	}
-	...
-	mark_inode_dirty(ip);
-}
-
-Because COMMIT_Dirty is never set on the inode, jfs_write_inode() does not
-commit the anonymous tlocks, and evicting the inode triggers the warning on
-a read-write filesystem.  The warning also triggers after a filesystem
-error when mounted with errors=3Dcontinue, where jfs_handle_error() marks t=
-he
-superblock dirty without setting SB_RDONLY, or via extRecord() ->
-xtUpdate(), which is fixed in a later patch in this series (commit "jfs:
-don't set SB_RDONLY after filesystem errors").
-
-> +		txAbortAnon(inode);
-> +	}
-
-[Severity: Medium]
-Does calling txAbortAnon() after jfs_free_zero_link() leak metapages and
-linelocks when an unlinked inode with COMMIT_Freewmap is evicted after an
-error?
-
-Earlier in jfs_evict_inode(), an unlinked inode with COMMIT_Freewmap calls
-jfs_free_zero_link() -> xtTruncate(..., COMMIT_WMAP).  For each non-root
-xtree metapage, xtTruncate() marks mp->lid with tlckFREELOCK, calls
-discard_metapage(mp), and finishes with txFreelock(ip):
-
-fs/jfs/jfs_txnmgr.c:txFreelock() {
-	...
-	while ((lid =3D xtlck->next) !=3D 0) {
-		tlck =3D lid_to_tlock(lid);
-		if (tlck->flag & tlckFREELOCK) {
-			xtlck->next =3D tlck->next;
-			txLockFree(lid);
-		} else {
-	...
-}
-
-If the transaction in jfs_unlink() or jfs_rename() aborted after
-commitZeroLink() set COMMIT_Freewmap, ji->atlhead still holds anonymous
-tlckPAGELOCK tlocks when jfs_evict_inode() runs.  txFreelock() unlinks
-those tlocks from ji->atlhead and frees lid before txAbortAnon() runs,
-without dropping mp->nohomeok, clearing mp->lid, or freeing chained
-linelocks.  Calling txAbortAnon() before jfs_free_zero_link() would release
-the metapage pins and linelocks before xtTruncate() discards the pages.
-
-> diff --git a/fs/jfs/jfs_txnmgr.c b/fs/jfs/jfs_txnmgr.c
-> index 083dbbb0c3268..85192dd4461a4 100644
-> --- a/fs/jfs/jfs_txnmgr.c
-> +++ b/fs/jfs/jfs_txnmgr.c
-> @@ -2581,6 +2581,74 @@ void txFreelock(struct inode *ip)
->  	TXN_UNLOCK();
+> diff --git a/fs/namespace.c b/fs/namespace.c
+> index 9f6ec35c7b9cd..55fa09818ef90 100644
+> --- a/fs/namespace.c
+> +++ b/fs/namespace.c
+> @@ -396,7 +396,7 @@ static struct mount *alloc_vfsmnt(const char *name)
+>   */
+>  bool __mnt_is_readonly(const struct vfsmount *mnt)
+>  {
+> -	return (mnt->mnt_flags & MNT_READONLY) || sb_rdonly(mnt->mnt_sb);
+> +	return (mnt->mnt_flags & MNT_READONLY) || sb_rdonly_any(mnt->mnt_sb);
 >  }
-> =20
-> +/*
-> + *	txAbortAnon()
-> + *
-> + * function:	free the anonymous tlocks of an inode that is evicted
-> + *		before writeback committed them, e.g. because an error made
-> + *		the filesystem read-only.
-> + *
-> + * A page that carries nothing but uncommitted changes isn't written hom=
-e.
-> + * A page that is also waiting to go home with committed changes (mp->ls=
-n)
-> + * goes home with both, after an error the superblock is marked dirty.
-> + */
-> +void txAbortAnon(struct inode *ip)
-> +{
-> +	struct jfs_inode_info *jfs_ip =3D JFS_IP(ip);
-> +	struct linelock *linelock;
-> +	struct metapage *mp;
-> +	struct tlock *tlck;
-> +	lid_t lid, next, llid, k;
-> +
-> +	/* txQuiesce() and jfs_sync() commit under the commit_mutex */
-> +	mutex_lock(&jfs_ip->commit_mutex);
-> +
-> +	TXN_LOCK();
-> +	lid =3D jfs_ip->atlhead;
-> +	jfs_ip->atlhead =3D jfs_ip->atltail =3D 0;
-> +	list_del_init(&jfs_ip->anon_inode_list);
-> +	TXN_UNLOCK();
+>  EXPORT_SYMBOL_GPL(__mnt_is_readonly);
 
 [Severity: Medium]
-Can jfs_evict_inode() and txAbortAnon() race with txQuiesce() walking the
-global TxAnchor.anon_list?
+Does changing __mnt_is_readonly() to check sb_rdonly_any() cause
+change_mount_ro_state() to skip mnt_make_readonly() when sb_emergency_ro()
+is set?
 
-txQuiesce() walks TxAnchor.anon_list (shared across all JFS mounts) under
-TXN_LOCK() and drops TXN_LOCK() without pinning the inode before taking
-commit_mutex:
+fs/namespace.c:change_mount_ro_state() {
+	bool readonly_request =3D (mnt_flags & MNT_READONLY);
 
-CPU0                              CPU1
-txQuiesce()                       jfs_evict_inode()
-  TXN_LOCK()                        txAbortAnon()
-  jfs_ip =3D list_entry(...)            mutex_lock(&jfs_ip->commit_mutex)
-  TXN_UNLOCK()                        TXN_LOCK()
-                                      list_del_init(&jfs_ip->anon_inode_lis=
-t)
-                                      TXN_UNLOCK()
-                                      ...
-                                      mutex_unlock(&jfs_ip->commit_mutex)
-                                    ...
-                                  destroy_inode(ip)
-  txBegin(ip->i_sb, ...)
-  mutex_lock(&jfs_ip->commit_mutex)  <-- use-after-free
+	if (readonly_request =3D=3D __mnt_is_readonly(&mnt->mnt))
+		return 0;
 
-In the opposite interleaving, txCommit() called from txQuiesce() clears
-jfs_ip->atlhead =3D 0 before taking TXN_LOCK() to remove
-jfs_ip->anon_inode_list.  Because jfs_evict_inode() checks if (ji->atlhead)
-without commit_mutex or TXN_LOCK(), it can see ji->atlhead =3D=3D 0, skip
-txAbortAnon(), and hit BUG_ON(!list_empty(&ji->anon_inode_list)) or free
-the inode while txCommit() is still running.
+	if (readonly_request)
+		return mnt_make_readonly(mnt);
+    ...
+}
+
+When a read-write mount has open writable files or active writers and the
+filesystem enters SB_STATE_EMERGENCY_RO, a mount(2) call with
+MS_REMOUNT | MS_BIND | MS_RDONLY (do_reconfigure_mnt()) sees
+__mnt_is_readonly() =3D=3D true, skips mnt_make_readonly(), and sets
+MNT_READONLY via set_mount_attributes() without calling
+mnt_hold_writers().  If reconfigure_super() is later called to remount the
+superblock read-only, sb_prepare_remount_readonly() skips mounts that
+already have MNT_READONLY set and transitions the superblock to SB_RDONLY
+while active writers remain on that mount.
+
+[ ... ]
+
+> diff --git a/fs/quota/quota.c b/fs/quota/quota.c
+> index 33bacd7075800..b488fb1f9cc44 100644
+> --- a/fs/quota/quota.c
+> +++ b/fs/quota/quota.c
+> @@ -783,6 +783,19 @@ static int do_quotactl(struct super_block *sb, int t=
+ype, int cmd, qid_t id,
+>  	if (ret < 0)
+>  		return ret;
+> =20
+> +	/* An error made the filesystem read-only. */
+> +	if (sb_emergency_ro(sb)) {
+> +		switch (cmd) {
+> +		case Q_QUOTAON:
+> +		case Q_SETINFO:
+> +		case Q_SETQUOTA:
+> +		case Q_XQUOTAON:
+> +		case Q_XQUOTARM:
+> +		case Q_XSETQLIM:
+> +			return -EROFS;
+> +		}
+> +	}
+> +
+>  	switch (cmd) {
+>  	case Q_QUOTAON:
+>  		return quota_quotaon(sb, type, id, path);
+
+[Severity: Low]
+Should Q_XQUOTASYNC and Q_SYNC also be rejected here when
+sb_emergency_ro(sb) is set (and quota_sync_one() guarded by
+!sb_rdonly_any(sb))?
+
+In do_quotactl(), Q_XQUOTASYNC still checks sb_rdonly(sb) instead of
+sb_rdonly_any(sb), returning 0 rather than -EROFS in emergency read-only
+mode:
+
+fs/quota/quota.c:do_quotactl() {
+    ...
+	case Q_XQUOTASYNC:
+		if (sb_rdonly(sb))
+			return -EROFS;
+		/* XFS quotas are fully coherent now, making this call a noop */
+		return 0;
+    ...
+}
+
+Q_SYNC and quota_sync_one() also call ->quota_sync() directly, relying on
+dquot_quota_sync() rather than do_quotactl() to reject emergency read-only
+superblocks.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113-work-fs-sb=
-_rdonly-v3-0-0be92bb73709@kernel.org?part=3D1
+_rdonly-v3-0-0be92bb73709@kernel.org?part=3D5
 
