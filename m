@@ -1,93 +1,149 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E95606A327
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 17:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6366C606A331
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 17:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i2PmmhXt
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hdcH+wdd
 Received: by kanga.kvack.org (Postfix)
-	id CD6956B05B0; Sat, 14 Nov 2026 12:51:11 -0500 (EST)
+	id 5420A6B05B0; Sat, 14 Nov 2026 12:57:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAE7D6B05B3; Sat, 14 Nov 2026 12:51:11 -0500 (EST)
+	id 519DE6B05B1; Sat, 14 Nov 2026 12:57:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEBA46B05B4; Sat, 14 Nov 2026 12:51:11 -0500 (EST)
+	id 4308C6B05B2; Sat, 14 Nov 2026 12:57:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F4566B05B0
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:51:11 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 362E4A7F82
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:51:11 +0000 (UTC)
-X-FDA: 85434465942.18.ADEA370
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 91155120004
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:51:09 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i2PmmhXt;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794678669;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 162CF6B05B0
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:57:55 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6AF34C0447
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:57:54 +0000 (UTC)
+X-FDA: 85434482868.05.D8AAF77
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 7E91040003
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:57:52 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=hdcH+wdd;
+	spf=pass (imf27.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794679072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=31CSDRSd9baKd2bGsu5D8xrY334D4K/9sxfZ6xr0ASE=;
-	b=0rYere7gvTa9EQyhY39NM2nGJhVXEVgeNypHBNUZC+VOjsHZI5BbgTunS/NsPME8LW6RTG
-	lMfU9jvw9k3ObecOl+UgFoZSYlq2srphJhv8FBAm/EX1ZUrzEJD1d0IfS+OCeLsgcwLDPc
-	7TqJYdbwmwYhXNTPaUEtjsl36mSA56g=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794678669;
-	b=8dQURp2Vi+cqeJq02efxC+cPfAXgvvhWgj1yggYP1g6n3DoTu7pLAk+d09LN5PES6NsRJH
-	Wl33DqDKkWh7JgSYta0ymYLcwTs6imVMKkcl42ot1vkrIwYJ9UEd4O0XACFY1f5seuIYmZ
-	twAq9FxwhtZyTrXqCdrOsqBVQbQLijA=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i2PmmhXt;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B42E34347F;
-	Sat, 14 Nov 2026 17:51:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 679C41F000C4;
-	Sat, 14 Nov 2026 17:51:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794678668;
-	bh=31CSDRSd9baKd2bGsu5D8xrY334D4K/9sxfZ6xr0ASE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=i2PmmhXtLZqgFobKfTDiwgEfdPGeKoNV3+kRwSM+k0mMbWoeKq+G3ubuPoOjWR8Jo
-	 IHC+qZpEUbJrqpZroF9IfOY1kPquXjJ6GTLoDB3uTz3jWA6/dV5DuPMAJ13f+QdFhz
-	 MnFPPbXZNTj1ZN6C6bnEU9A8hMyHrfSKGP0oEyX/rSkTqjIw0srx9mrLhvDeaJBmjc
-	 gbDCGxJmVqee/dgUJg7jz1rSFNarqyLL4U/WOlAzUJVpdor3XqSjshZs/5H3SDkIsT
-	 wvQotMzDJxv6piPJjdT8fGu0WQ3a3qz4xplA/QaNB6Nk22d+q0/8RjxCZIKzJyh7bT
-	 NBnsWycSJ5dsw==
-Date: Sat, 14 Nov 2026 17:51:02 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: shao.mingyin@zte.com.cn
-Cc: akpm@linux-foundation.org, david@kernel.org, linux-mm@kvack.org, 
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
-	apopple@nvidia.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/migrate: fix softlockup in do_pages_move() with
- huge page arrays
-Message-ID: <avifKRgR0Q4WPUNR@gremlin>
-References: <20261108142831046W_fbNCAFfuY0BjHPCCHgi@zte.com.cn>
+	bh=bylSQ/tfgEhydnCX+X6ude5kn1WgMfGriStlC3xv4iw=;
+	b=nnavMpydV5v4cg3OQkanL6KXuvrYvCirHQL9l1vW+izxAd8UzEZiBwKwreETONJH0XuCvb
+	0I6VQgDQ40kwsKRGm6TR66l+BRLGujRETGYJG2O4BnIozmZ37u3qHwRfYnQ5sI1Yi9Ah1z
+	TvbeAWtC8GK+TQ0Xmr8XF0kQx74iMH4=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794679072;
+	b=2Lj1zNKv7ohpKuIG92CIhqzllsVhdGrQ2l7a0LlgVHy2ENhyF56HC3my5BjbPTeCat2UsS
+	TSxxmm/RodRuL99EAYIQfFT5kzd+g0++qMELiMvnfRWf2dGOdRmSpDbokfO4neOOxtJZwT
+	CxA/Sj/j5HDv6TektWDq/dXp102Lt0Q=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=hdcH+wdd;
+	spf=pass (imf27.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c4d30639709so334484266b.0
+        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 09:57:52 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794679071; cv=none;
+        d=google.com; s=arc-20260327;
+        b=OGxvzVDSH4WkhLp1QNew1kGXgRHwLqlqLLj3IQ3xRHEzhklcEC9VXStH7CC9pFk0Ic
+         Yr8vYI3m3LlwB0ONdhC78vp9VLXK0n1BvbMSYJ6aP8Rtz38OaXqKYMsVO/HF2SIRhSuj
+         Q02FypNX3AWNxA46WNk7ArvAFvateGLOgOatbHUqhVB9jNjEsTCyKiLOAl0ZjArH5ePv
+         1TOIUUd+ENrailopcY+kTMRgtNy+ZupquGRWnPK6RWVUo8PTvVXXor2iT+bNoV8Ks9Pf
+         m9cIToXN3PvtxU1UbQOlQH0+doA5L7gz18Vu6+Bd256PlNt8GQGEdS5afcMvubGFgcE5
+         6FEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bylSQ/tfgEhydnCX+X6ude5kn1WgMfGriStlC3xv4iw=;
+        fh=onU6mbAyhhmKVzikP0m8uGrMzYLBG16JCOZsNmTopmo=;
+        b=ItqXcKaB23MZcUFmXIODoQv636XX34rjppTkbk3C8wp7mhq0pwZ8iIjYTz6xM2nfkd
+         5Z3gSFNIq9cMSLNA9CpiryiFIdAaUQRGlMJGyg7ggWQ7QBXxtd4mO5612/yBHBjrchWu
+         c+gg9lyA/DoSZ5q+Cv1GBg0jyDRmMoeriniplRaO7GF1uomFGVLluKTZFNkf7U5IQieD
+         IgXBmx22Bzx5jRpgUyVb/uSG9fvyfsroG15FMtGqUQ3nwbFR0eibOBQ59aI8vSmjhEjt
+         AVkfdUM9xDzTKGuqHimmZyfRQ52ifXJz76e5bZGXivux2M187ZJwHgBJBe5OOqsycMmr
+         Ualg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794679071; x=1795283871; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=bylSQ/tfgEhydnCX+X6ude5kn1WgMfGriStlC3xv4iw=;
+        b=hdcH+wddnew8sAeFvhqzWD+dtCHAF1ZofBvj8B72T3IE7yzMFCTnNYzXEwLof7ORv6
+         QZwixmDgqEq22KH+tiTv3f11TqV4i0iUbB3IzHNRNqkJ9wnNvwZ1MVQmlxvhP5mGjA2t
+         tJQ9gDjTvJxCRB9qtL5itvHwgKsVF8Wj6sajouxrVORgerKjRIx/jJrzuHGDNs+ImSFG
+         y6eOFsABgl/yWEfGQuaTWfrRrzoTCq7shuFSyNPHqwU96EidMBlU+auvexFxLZJGDp87
+         mAhykohtWyksrALP1yxN5ch8s5vP08AGRjohgfM1HRGNigjfLy3IJI8Gz8v+UhGHZnGY
+         c7xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794679071; x=1795283871;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bylSQ/tfgEhydnCX+X6ude5kn1WgMfGriStlC3xv4iw=;
+        b=ZYjWkoB7U7OjHxToypaJI76yxg4j1zP3oElhTB44kwBOXkEDBE44jt8MkmY3u8bJEi
+         pgujFPz9iCoouNAPac1N6sxqMyBaKjaXd6Tpwen0xApyvAAPGMaZx2fmeXKKOE14XGQX
+         kdCMSrV8/SdzGHkJwq3+sxIfzTriaBjk57g5Tx5W+DI6fcmoiv9lBqBjzrxyc6UPwQdm
+         T7BCNvGYUnlc18QrgV0L7oxh+WlN59P13+DDW6/QgUpDXhKtFkpXG/Lm8lWI9C9E/eRz
+         jwkD+M4s351xMtujgBZDluS+QD2uYvBzG5f1KXCzUvYC5KQ5h1X9uA9yb5wfs/Uh9bb4
+         M7pA==
+X-Forwarded-Encrypted: i=1; AL+hErG4r1nowtvfJW+9Gme1RbAePwZO3mTs9BV56Cw/1e7XUTFZM3nn7OkW8HyJKyzyFCGLk8Y7LA95Aw==@kvack.org
+X-Gm-Message-State: APuU4Z8j4N7WzkPFksRANGtxrmxMrcTKjyl518t5vQOp95AFH6xScCpU
+	VY8s1XBBjC5yAk92V+grIkRk0xf6r4zCnYcwawyoQ5OG1ysURm+TcOQrue/WZhmVSUq/HOtNORJ
+	/0MG5dW+Gr2bnBIsp145qu77Chk9dGS0=
+X-Gm-Gg: AYBFou2CWpPZ1oqdpPAsZfq2SpruEnLaD5i4tuYu+euee65Zvzu43tMjuPsxtkFOLvb
+	19tCjx9D55XHAoT9qc/MqTiAKOeGUgLxpp84YdJlgVlN32OcmQik/zli0dhxqQMxW1S8wt2dxTI
+	oWoRStE8wlmQS2yxRUV0lLqcPVkAiVvPdEaiGzso5YUqMzA3rIg6AAkhI3bF0G3XcPSdCX15B97
+	JTKvMu+cERTYGb4D8SmLvxspruEHnQkdlG7DA6gJUBGgIaBMkeokoXgl6MYZInAWRRgdiAd1V3G
+	JeMIfPnPcnxec+PtoD8Ltv/3fm+Zuy5O4x7izs1vNshx2gXlXo5J6GuToree23oLznQCW6k7cOX
+	pu4hqv9Gq4Hdpqai9FFX4B/9e1v1cxwYAYZFg4++14fdBz1cGRf0zA5tefFcunwEy6QojxnQgTP
+	VG5j+/DqvUGoBkcdxd
+X-Received: by 2002:a17:907:d0a:b0:c2d:d408:5d9c with SMTP id
+ a640c23a62f3a-c509684ba8emr445498366b.48.1794679070813; Sat, 14 Nov 2026
+ 09:57:50 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261108142831046W_fbNCAFfuY0BjHPCCHgi@zte.com.cn>
-X-Stat-Signature: nn8jbjyu3feqokc4dg1kqgcj565rrjjd
-X-Rspamd-Queue-Id: 91155120004
+References: <20261113185541.70203-1-baohua@kernel.org> <20261113185541.70203-11-baohua@kernel.org>
+In-Reply-To: <20261113185541.70203-11-baohua@kernel.org>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Sun, 15 Nov 2026 01:57:12 +0800
+X-Gm-Features: AclHuK9E1krSsTGkkXWgcbJbCojCN75Kmg6w82e28JfpuFnCTTb1-n0fzU9ZEEM
+Message-ID: <CAMgjq7C1A2axrGiQzo2_9d6N9MQNP6Lg+ZqcHsac+qGvt8OL4A@mail.gmail.com>
+Subject: Re: [PATCH v8 10/16] mm/mglru: Run aging when pages are rare outside
+ the youngest gen
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, axelrasmussen@google.com, 
+	baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, hannes@cmpxchg.org, 
+	hui.zhu@linux.dev, kunwu.chan@gmail.com, liam@infradead.org, 
+	lianux.mm@gmail.com, linux-kernel@vger.kernel.org, liuxiang.277@bytedance.com, 
+	lyugaofei@xiaomi.com, mhocko@kernel.org, mhocko@suse.com, qi.zheng@linux.dev, 
+	ridong.chen@linux.dev, rppt@kernel.org, shakeel.butt@linux.dev, 
+	surenb@google.com, wangzicheng@honor.com, weixugc@google.com, 
+	yuanchu@google.com, zhangbo56@xiaomi.com, zhuhui@kylinos.cn, 
+	sidchintamaneni@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 5iamfpr8c9t3zdhd9x1jxo8z6i59xx4j
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 7E91040003
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794678669-819961
-X-HE-Meta: U2FsdGVkX1/wTHYH8AH5Gu1nddgws2tAZyKgImpCNOo3jZgKuEV2uTJwS7EtEEmWUSL1mgxa6S6fjswU9UnwHw++bzz+EnZEhf6Qq30LJPQ06bYZAXi215Z7aKSz75LGR9MEWlHdGkJfgjQljcJit42S7poGHe+hzJycXW/e7cT1Ox1fOWiXNQSPRjhG0YcTw1rRZcLJM0CR4Mwt6BhbCUkqePDVXLta/f3+Te3UbUICzLoTBJoICTHbl1CcE1i+1K2fkozTv1QWeunhgwBc8857mRr20AtinyZKjWb8sBEt0Et6G8nHrzKjimewZSmhIGXQKmLFQEaJaqcFBRYA83gs74OOqL2zIHh/pguk05m1ZGnoSnhLQHPqz07pV+dkUYIdjMrfef2fwk4Ds3JrqVYtQBjVRFQOvCR44+rsHts/Z4QR6Kmt6TRiBVxI3z7OmdFYH22wnIRf+bjJYDcJQoShnXlkt+cuEYEVXbvbCInlh/3jp+mEuI8pmyZ+7OqhOwVJ2n1NNdwP+PIeXYgiFiSZTq4ZzxvpyvrqdXcGjeet+zDg12jICVNs2jaXX34Npcdx6oHCiogbsXrCL4hBpOI5s0MLBe/H4IobuOx7V1Z/9g77n8gWzsE3y1eDLgPdhvw5ZfF5dgGAOL9cGbH9PN5VHo4fwwBGN534fOKU0YVJS9Y8OnacWP+xXwlqEjHs0ngb1O4/E4mma2dwtCBMakik8YH+9m9ANgmvkxTv4g/w6dG9hdeyH3V9k7O/O0fQIQb7zTWxjRdnCraunFzxF//AWWdXJB3SFFlO3VAsKxiTENnKxSj/gcAVY12l1ju1NdcA0vgNuL0wR52A3gVoILtG8cpbltUUGGVnoNcSdO95IsA+1sfsfTnxGnl9XAA5huoovuBkHEw3idauWrjeKVJy/uXpqe6tBElqFBpmoDlnHWdswuhjpp/qayV7mC7adREVdflqwWSjr0CG4qq
- LGunXv1d
- bCBQHqBJhm6jp+AV/tqY6hVsbwa5hPaZ3iJ2LpX4wVgPJLhkBE4zio2qoDSBYx1TMqn0JSSce2doV2ZHfRiy0H72H9Kan/KXiaiHe0d4VfWVbScNtuUqkADg5PkWI7nSLI83XUu/MnSiy2ZjQV5IWF3rZawbm8+5BTzZELwa94Srshe3dejcix5PHXTS86eJQaPrOFm2w8plwTmh6rQNzd3PldlIG5OmrP1w9d5qPvrZnQ1T1z8L2KuFBCwC3gUt3HPFjbWF1RYZU/oju2NYMtUw45vXhWXcW0Uwrd02wGPG4o1pWE/DoJlGFq95dbnFO4I2c1satI/EBKIMknnYC1/gb4n9An+Kj/v9Ah3HhDb8jqf2p9alhsx3cLZTCxrWtYm7TuT3ZxLMEgyYXClkbRhIue2k9ZHxiHerXNiXWATnHZX82d/DSvLOyMuUvJFqO0j/xo18v4y4V8lU=
+X-HE-Tag: 1794679072-246603
+X-HE-Meta: U2FsdGVkX1/fVP2AkXgqA+osEnsDlJZb6WHz8VUg/kNz/V/tgiHpJcso7pomRl63XJasqDRxGkec1n8bJBDR6ZDgeR2W5P1H/WyU87rwdumsia2gRgjd8DHJfUS6QF9izBi9hFmtY9uJEqTXEt/a9JuMoYZo5WvnQjHHljZcyzph+eP2fIU0t0zwr8Sb/Ez8dGzPe0i6/Xi86DHvvMyCgjesSjLN8rlf6b/DwhNdITFwuVGIx43fW4qd6q/ywRAua//tljeJYBXdoEkH/pzS2YM37CVofnu1SrNQz4y8EtGmneff6NutDxAqP3RPNVLHJce0JvsrSydguQptvTDehNXN8M2hyuEs19Xst6xgFAHfbJWZCaCLBcR6NOXuEgsc54j/J0fYiS+Ip5+mzHB2D8slVTex0vQgCq4mF87Fyf+1L/9TSY0IaImdnELdwaiv1SNBGsqTGZuP+fmIL5TnNsvaflA6YF2bd8XA3Fqte1MR1almHVqG6ODQG6C+hQKV3B89I3IY8VRrFPpXSGwdoVctpK5VUbFRIE3MVLg5DmTmhRSvNI/oMNT3DaefiMlBsqSXBC6K5UNMWo/cdoxOzg8UnyoOaXPKZnEexy+jpFwEca20Qpsa1fqvKBB8ot1bfmq03EnIcJp2ImE6UMZ81eOSQlnAgT/uv9tYgHo476M0PXcWeNVgaPnDKYf3Lt0Eee7NvJwcKpI/PpiGudnd7L8yWKeyGe6TCNpQp5WxZORuckKbeZZr4SSwTi+9M6he+Z3lKNhSs5okZwJSffav7yWhuONDvXbNKZY9JBva3fkLDvbZkak4+1qSONPjZ8pM3jcxuwz0xDDAUGE2nT3ZOVDdj7eean/Y+/0hGycjFyIkTzbDFgqIshLTjP/oOBQBuJ6xa08AP16WrXn1AiAKOEpS9VF+lEt1pkLiHUvI2Pu7+aS2xHfodfOhPNC632kNEGpqCFqYV54gn9W5eRa
+ wJNSdk5j
+ inD3mzbin4685EnDub4MIGTiZIDcsjrWV9b/yhfZAmXI3VPNOq1l5TQmrEpn9pnV/75woUE2yokl9yhpfoFVLMjBoddDk5YtcCQCbvkr/gVgsoGyp9m2duG3+zc+3x37yIsSHF+v0hFDzDu3fDNzqFX8DuT0zwjwVIO6q69rHeeSEXPOLy+GLf471l4nXx/ptCVVxKvgA5uH6mw7PGnOq1xj9ULpS1PgShTcNP9CDDTZG67Mg4tBr71Ho14fL/zY4Cgtu7QXdRJpk1eJFir51we/dEiFsx61y6kjRuwtdWN+FrdXYnqnrM/MUH44qjaOhKx//plA2wyjhIU2KxJY3+rgR+GZCEOkTm6ew7Bbq+bEfL7nAfI3VmbmEeD1mL1AiTSNUrYKzVBpycTT2g3ZTYl1+U/iqS1K+aKNJf8tbmEkYKLpEci5GMeW1armdiVpmZxekGOhhWp9WOiuTpfS2Y8UdVd06d51iSufKWouv4yfMAw90bX67wsboUEQNw4/xgrNucZTV1TbMEGPLY1th+lbwLQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,70 +152,105 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 08, 2026 at 02:28:31PM +0800, shao.mingyin@zte.com.cn wrote:
-> From: Shao Mingyin <shao.mingyin@zte.com.cn>
+On Sat, Nov 14, 2026 at 2:56=E2=80=AFAM Barry Song (Xiaomi) <baohua@kernel.=
+org> wrote:
 >
-> mm/migrate: fix softlockup in do_pages_move() with huge page arrays
+> From: Gaofei Lyu <lyugaofei@xiaomi.com>
 >
-> do_pages_move() walks the array one page at a time.  An entry naming the
-> node its page is already on is never queued, so the loop runs without a
-> voluntary preemption point on a non-preemptible kernel; the existing
-> cond_resched() calls in the migration code are only reached after a
-> folio has been queued.  nr_pages comes straight from the syscall.
->
-> A 6.6.60 x86_64 kernel with CONFIG_PREEMPT_NONE=y and CONFIG_NUMA=y
-> reproduces this under QEMU TCG: 50 million entries pointing at a page
-> already on the target node keep the CPU in do_pages_move() for 42.9 s and
-> trip the softlockup watchdog; with this patch the same call completes in
-> 44.3 s without a softlockup.
->
-> Add cond_resched() so that long calls yield periodically.
-> do_pages_stat() had the same problem; it was fixed by 8e934ab44389.  In
-> current mainline only alpha, hexagon and classic m68k can select
-> PREEMPT_NONE and they cannot enable CONFIG_NUMA, so this mainly targets
-> pre-v7.0 stable kernels.
->
-> Fixes: a49bd4d71637 ("mm, numa: rework do_pages_move")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Shao Mingyin <shao.mingyin@zte.com.cn>
+> Run aging when the total number of pages outside the youngest
 
-NAK.
+Huge thanks for this!
 
-This person('s script) sent 300 mails in under four weeks spanning: ata,
-scsi, target, ufs, nvme/nvmet, ubifs, ublk, zloop, dm, md, mmc, virtio-blk,
-mfd, gpio, pwm, spi, PCI, ASoC, ACPI, net, vfs mount, block partitions, and
-now mm.
+I really like the imbalance detection idea, as skewed distributions
+are very common in real workloads, and this significantly improves
+accuracy.
 
-Those patches that I've looked at have actually both been wrong and both
-useless.
+A few trivial nits though:
 
-And absolutely not to this person/script doing backports, thanks.
-
-> ---
-> Changes in v2:
->   - describe the reproduction and the code path, as requested by David
->     Hildenbrand; no code change
->   - correct the do_pages_stat() reference (fixed by 8e934ab44389)
-> Link: https://lore.kernel.org/all/20261107213856462Jx8pIdgdtLvPLfOFTwV4X@zte.com.cn/
 >
->  mm/migrate.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 875079464930..3122ecb85270 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -2372,6 +2372,8 @@ static int do_pages_move(struct mm_struct *mm, nodemask_t task_nodes,
->  		const void __user *p;
->  		int node;
->
-> +		cond_resched();
+> +static bool lru_gen_imbalanced(struct lruvec *lruvec, struct scan_contro=
+l *sc,
+> +               int swappiness)
+> +{
+> +       unsigned long youngest[ANON_AND_FILE] =3D {0}, old[ANON_AND_FILE]=
+ =3D {0};
+> +       struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
+> +       DEFINE_MAX_SEQ(lruvec);
+> +       DEFINE_MIN_SEQ(lruvec);
+> +       int type;
 > +
->  		err = -EFAULT;
->  		if (in_compat_syscall()) {
->  			compat_uptr_t cp;
->
+> +       if (sc->priority > DEF_PRIORITY / 2)
+> +               return false;
 
---
-Cheers, Lorenzo
+We have been using "DEF_PRIORITY / 2" so many times in this series
+maybe we can introduce a macro like "AGING_PRIORITY" for this later?
+And is this condition too hard to trigger?
+
+> +
+> +       for_each_evictable_type(type, swappiness) {
+> +               unsigned long seq;
+> +
+> +               youngest[type] =3D lruvec_gen_size(lrugen, type, max_seq)=
+;
+> +               for (seq =3D min_seq[type]; seq < max_seq; seq++)
+> +                       old[type] +=3D lruvec_gen_size(lrugen, type, seq)=
+;
+> +       }
+> +
+> +       /* the vast majority of pages sit in the youngest gen */
+> +       if (youngest[LRU_GEN_ANON] + youngest[LRU_GEN_FILE] >
+> +           (old[LRU_GEN_ANON] + old[LRU_GEN_FILE]) * MAX_NR_GENS)
+> +               return true;
+
+We may increase MAX_NR_GENS aggressively in the future (e.g. 64 is
+what I have in mind), will MIN_NR_GENS work here? Like what we had
+before 798c0330c2ca.
+
+Also counting only the youngest will cause it to drop to 0 very
+frequently, as each aging starts with an empty youngest generation.
+Perhaps we should look at the yougest MIN_NR_GENS gens (still just
+like what we had in 798c0330c2ca).
+
+> +
+> +       /* Swappiness extremes: the corresponding type matters */
+> +       if (swappiness =3D=3D MIN_SWAPPINESS + 1)
+> +               return youngest[LRU_GEN_FILE] > old[LRU_GEN_FILE] * MAX_N=
+R_GENS;
+> +
+> +       if (swappiness =3D=3D MAX_SWAPPINESS)
+> +               return youngest[LRU_GEN_ANON] > old[LRU_GEN_ANON] * MAX_N=
+R_GENS;
+
+Maybe we can do a "round up / down" for swappiness so the two explicit
+check can be unified, by reading the right type in the for loop above
+directly?
+
+Like doing this before the for_each_evictable_type:
+
+    /* Round up or down corner swappiness, to balance the heavy biased
+type better */
+    if (swappiness =3D=3D MIN_SWAPPINESS + 1)
+        swappiness =3D MIN_SWAPPINESS;
+    else if (swappiness =3D=3D MAX_SWAPPINESS)
+        swappiness =3D MAX_SWAPPINESS + 1;
+
+> +
+> +       return false;
+> +}
+
+And BTW I tested this with FG on top of this using zipf and the result
+is even better than before:
+
+IOPS (zipf 1.1, 40G workingset, 16G memcg, mmap access, 3 test runs
+for each setup):
+mainline: 2,215,641 IOPS
+mainline with FG: 2,705,460 IOPS
+after this series: 2,182,625 IOPS
+after this series with FG: 2,772,968 IOPS
+
+One thing I observed before is that when testing FG, if the generation
+number is low, the accuracy drops by a lot since we are trying to
+distribute the folios among gens by the frequenecy, so we have a
+compressed frequency space. This patch addresses that well so the
+performance gain should be larger now.
 
