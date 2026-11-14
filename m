@@ -1,133 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4B0606A323
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 11:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B542606A327
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 11:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=XOrUqiZ4
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SqVkgSqH
 Received: by kanga.kvack.org (Postfix)
-	id B91BF6B05B3; Sat, 14 Nov 2026 06:26:24 -0500 (EST)
+	id 6BD126B05B6; Sat, 14 Nov 2026 06:33:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B69876B05B4; Sat, 14 Nov 2026 06:26:24 -0500 (EST)
+	id 66E636B05B7; Sat, 14 Nov 2026 06:33:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A58B26B05B5; Sat, 14 Nov 2026 06:26:24 -0500 (EST)
+	id 584506B05B8; Sat, 14 Nov 2026 06:33:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8243E6B05B3
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 06:26:24 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 18F70140393
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 11:26:24 +0000 (UTC)
-X-FDA: 85433496288.08.0785E7E
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D0CD780007
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 11:26:21 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=XOrUqiZ4;
-	spf=pass (imf30.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 393816B05B6
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 06:33:55 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BC89340392
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 11:33:54 +0000 (UTC)
+X-FDA: 85433515188.23.F83CECE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 25F44180002
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 11:33:53 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SqVkgSqH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794655582;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794656033;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tmdYvPt7kTC8oms8BNF2txsi8vvN5s8/xh5Ms39wPok=;
-	b=Pdn7WYMNb19BItk6v5qgJprDkshd1V2rw/nLbuNQTVP6kGpVGxJva7fI9ieU0fN9mhOZMk
-	vpoQRgkiVj8I0T7MftMeV/JmC+aumkyPrq10idSdb7urFaQ/Ejs3CV9ORcyjB+YsV87XPJ
-	X2l7J40VfhPswPIcwqbw1LaWFmXeauY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794655582;
-	b=RkEj1OHiKKH9tmrvxc8ufgUOnzUJnGbYzFwWWYVuv87SbgcscLPQ6f+njjcu5CLYsTFX+A
-	/KHGejGs1zdsm+p4sfpwSPl07fX3/IuTaxusBA7NkY3pgYIpLtDiDftC0VA2PodRtJf9vJ
-	TeeiS0LEADwqYKvWIZDky3KYs6onH9U=
+	bh=JOohzSTuBgrSfk0jf37SnktRbQ4WRgnCUv6nrKxrSi4=;
+	b=iVuR8PvmoiGdzMWBScCLRHzErC8RUQELPCHytnlglbOgvqdBki0FqbQjlOUKsx83vlL7Yc
+	0wkEvB1dvdBy6F1izjDCwPjlgP2IgW79p8y3alHlwoSZRorKPUEDH9f19zKFx4rfbWnRDl
+	8Rx5wYMw7ufGEn7jeZ8q1ofEoNfDZKI=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=XOrUqiZ4;
-	spf=pass (imf30.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-3720addb068so2985095eec.1
-        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 03:26:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1794655581; x=1795260381; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tmdYvPt7kTC8oms8BNF2txsi8vvN5s8/xh5Ms39wPok=;
-        b=XOrUqiZ4JoeTbdpx1TVEvQK2ZHpYkni6fkXNlQFEJwWyVdnGSr8xb9bHBuj/cDiZk+
-         oj5hxQuuaADzR0jbDUIR/AVrz562AFmc5rYawLDotQxzZNrhOthYTUyrec7kDXZGUA3N
-         FLyb/nK75mNmwCY5i2aw7BABs2wbL8gO7fvWZ+MDgnGQ7SicQlCN0XHAWKGdwle016O/
-         GoQB9ZCT5KvmyIfT5Oxkje+rX2GOtl+rkDuWBLQBi923b2hwAA/K7vLRWVAPZ2zPUD4O
-         OzEhOcWFWZk3L21odBs8gK/rIzd2u1yaPV7t51xwjMo90wN3ChI0cbIYY+xRjcu09wwv
-         uXFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794655581; x=1795260381;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tmdYvPt7kTC8oms8BNF2txsi8vvN5s8/xh5Ms39wPok=;
-        b=Toc0/kjocFmdl3tg2SRsqWIxE1dHN4uSOCOkFylKkKHPA1gmVTiL/BSnHVbMWOnpH9
-         IWryzhMVXf9PsKLijNMhbD81CV9hSqRn3TkV699cpJqVjgMStVynyf7NL+DiuT30HZTU
-         lr3b+CIOYrchgzHgs1EqoDr1exhoKb+hrnrB83hd4HhuvA9O6ZY29pSYWr93RFGgqlXW
-         IH+KBs9ayV/bwHqaIFgYZ12alX1SIMd2E0PG72oC4+2BPdvJ81Gwn8cnlEVwdTaWMfGY
-         LKYCC7SgcRefXgLpwu6pIc3kmvZgNWvdAkHHuWrhB0Bx/JtdeYtJsRfshY8WwjJOXrto
-         EeSw==
-X-Forwarded-Encrypted: i=1; AL+hErGMd/HvrG9X9osldOMadg7MQ77CGrNvZRdy2zwr1lTxXFgdcKc/d4SjJCz+Ic9HHSIG2aQX8CJDQg==@kvack.org
-X-Gm-Message-State: APuU4Z8CBxmSuP96U3snNVbbJjJRuRan6mW7U5gusmjUFNFF+pntpAp6
-	DMfxcd4qi+fqP37jPPeMMp9JnNtw9/lCNx7XPM8Ys+fGuh+1VFQUBv8reEOGPtSYNS8=
-X-Gm-Gg: AYBFou2mXO9jNhZN3+BhIPl3HtVw7bMyjoELezAb4dsJafke2Z9AioM8JF/Lx9lxiYB
-	0VNBgZIBm2jXz8Sopf5a6OsBa+o8RH6bnRCBtjVT1pCGywYKzg8kQisGCfQQS0lBqUBFWA5bbV+
-	3UuFQhCGCujlXAsm0uX/wmTgNkOZifrJWrql1CQsGtQG7XgTPTBM6l2iEQGf0wbgCWGMw5Hx8mm
-	cRyGHpjOsz2Gt0aVUOG+S3E5GXZX7y/yhg7k7Rs1bekii0QGUwilTnm2HoIatAObn1MlHJMgS0u
-	d5IpG7eqJhqeI4YVm1U/xnzoAOC26aW7Be/zd6li11kMpv/XnmZtLdJOQleJikbUyzu61NCqDU/
-	YYgDu+3UpnXgqMEllRhoYCkqLm/hMToObrJZlQJ1ydT6UfxJ3ig7aRN+x5v4GO3E4ecpbdvJNrw
-	qLGcoTv18Ik7k3aIhVeKEpfLx+JLdFCy6U/vyOOYh+00q31kw2XpYzd3hlqH/YA27AruI0fJMy0
-	yGytwXll8MGqLeP3YSIwH+Q2OSccSJ68W61sf8IRX5UTuZKG84p165UnnSChuL+C20819wmsubk
-	25f09G9197fYjaZ5ksyzprg/pFWj4HdFOwlQwpWt9j9O1qd1BqkTUhUfFaw4hkplv67WEwaxZEe
-	0pwzNrQ==
-X-Received: by 2002:a05:693c:881a:10b0:35c:ba31:6fef with SMTP id 5a478bee46e88-37967cdd3c2mr4870211eec.36.1794655580476;
-        Sat, 14 Nov 2026 03:26:20 -0800 (PST)
-Received: from G6L4RL2QG9 ([2409:8a00:1832:6900:9d36:3b30:f4a3:7b5f])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-379553316fdsm16190627eec.5.2026.11.14.03.26.10
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 14 Nov 2026 03:26:19 -0800 (PST)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Miaohe Lin <linmiaohe@huawei.com>
-Cc: Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Sashiko <sashiko-bot@kernel.org>,
-	Jiaqi Yan <jiaqiyan@google.com>,
-	"Jose A . Perez de Azpillaga" <azpijr@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH v3 3/3] mm/hugetlb_vmemmap: fix deadlock during PMD split
-Date: Sat, 14 Nov 2026 19:25:23 +0800
-Message-ID: <20261114112523.75208-4-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261114112523.75208-1-songmuchun@bytedance.com>
-References: <20261114112523.75208-1-songmuchun@bytedance.com>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6ukjecp83739z79nxqrqibobkg3foxp4
-X-Rspamd-Queue-Id: D0CD780007
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SqVkgSqH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794656033;
+	b=7S/oqFm3xPWgIktKBXJsrnWvMoC8ihP5IslXpbvkaeOzl0j1+cCQADxcg1AE95D58Iw1Cm
+	bYnDvIfrQqZ3+OjaZciGrpJ+hY8xa9oqmIKKjSiKyQWY87Ls1/MvoXk2oKgtOfiFZ7h2Kn
+	xQSdlXaN1wofDYil98RTd+KMAXDheKs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id AB03260E22;
+	Sat, 14 Nov 2026 11:33:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51111F000CF;
+	Sat, 14 Nov 2026 11:33:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794656032;
+	bh=JOohzSTuBgrSfk0jf37SnktRbQ4WRgnCUv6nrKxrSi4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=SqVkgSqHCr+86lKgqZHxDXqljji8NEnM9TBsv95upQudlE4cf/gCMtfwBdiQSe9lG
+	 GAaQgDdsrQjHcVQjQk57Z7CrTKCTI0m9y92zJMhiRkkpzKj8jzFIBdyYPbIIfQh06/
+	 Z4k7rpfD/0joKsbQgWG+88j+ydNSyEcu1NbGGg8mBdzYS5WJhu5e0KYkvjXhfqSoDS
+	 Z+cYoLk8jMH8nbD5QYmyo6d6i7WwGiZaEWuhtBc6k53EGcEn3it3yyHxPzu8i7dqBc
+	 oD0krgmQBSRNmM72Tne0gRBNi2K/gxAPlHQMPgB/NwmaTi6dw4BU30WIGVOreYxlAO
+	 z9cu0itUO3O9A==
+Message-ID: <sashiko-outbox-214406@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] x86/unaccepted_memory: Do not accept ranges that are
+ no longer E820 RAM
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Pankaj Gupta" <pankaj.gupta@amd.com>, "Thomas Gleixner" <tglx@kernel.org>, "Ingo
+ Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org
+Cc: "H . Peter Anvin" <hpa@zytor.com>, "Tom Lendacky" <thomas.lendacky@amd.com>, "Ard
+ Biesheuvel" <ardb@kernel.org>, "Kiryl Shutsemau" <kas@kernel.org>, "Ilias
+ Apalodimas" <ilias.apalodimas@linaro.org>, "Mike Rapoport" <rppt@kernel.org>, linux-mm@kvack.org, linux-efi@vger.kernel.org, Pankaj.gupta.linux@gmail.com
+In-Reply-To: <20261113105554.199912-1-pankaj.gupta@amd.com>
+References: <20261113105554.199912-1-pankaj.gupta@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 14 Nov 2026 11:33:51 +0000
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 25F44180002
+X-Stat-Signature: 9drm5w63mandhgx4w7yoaem1yssm49jt
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794655581-414028
-X-HE-Meta: U2FsdGVkX180q3gE03R4qZeXymzktUzrpDtWf3Ss8bVyOnxEH24I/pNusJ8VJbtOGezbEjYkCWglmHwFEFgunDwHlN4RH9O73sqqn3jsUENI8+qsCbhm9JBVubywqlmCounOeualCIPAInJkg46gvEX/E+4yyFrYyuiOEf9HLVurYNM5CsdcYPeqktqfid5d4Sc2gEnyC0mfCzQdKwj8rVKzB1fuJyw4CZ42prDGeH+bzV6BlUCGpqKRio0fT6B1fN/UoAxWAYcyFY+zyjipuXV8jzIp8XIqFDet6XFLkFEoSStTg1lrGTlwIikOl9pb1uKkt4dbY40i4k6SBWIuRuSLzsYvgikfyno1/oiBzX2lzG56eC9MUjXKlYE1ruEwZxr2LYxA3Y/onKfJAg1xOIHCFTIYc3DypSkJfpPfOWNsNuqi4XB8TZN4bIILJ39G/Wi2HhYtCTA3yl51ieRe1cssIbjqh5zBY2SLN9XOd3m/NIOGGIFtc9RbpZRy7mZcNoaqwXXPh5lmCKca2CuKR98u7SRxOUvFgOOpSY/G7I4ZnYC+cBH2n0Hyy7LKmJW6GPDxIu9lYRBFlBl8VNx4/srE9nFlqOmRti9oEANrhVOGgYq2FlaJGdYVck95QtGQrHsFGMv2XFpRLfvzaXTwJ+YSbj1TWjRgGRdWnFWS3QhQbqPJwodBtNPpSX/yXebmP0FY6DSxmc20/NEcmPzL/OubFQsC2lHxUMS61us+ogD77iaisKryv60eQjWvZPlYTBHyk30Zj8582AT9kIZh2lZmhV2tURf7Tem+A/XbivqFOIEp/myskDAw4VZ2mGiEZSTjteeA2k3Lb8y4AhaHBj/fr2+ergOrq//hipTUPRvfGX1skM5Q6/i6ey4qQqjvfBB5L7OoOZ8pWgb9nq6n3SqzwYqZaWyo2J0cMxvBzSM1e9GSisMak3n3amlsES8+OqyHDCLdgIz1F01wHMV
- BvJ9SMlI
- U0t3bEmngX0OETUwnJRO9yCZmeJTxFb3EDpwmz1FuAIcS0sM6IXVWazwzvFKR7i1YiU8tiyBNGknBiRrM1fYWbC+zsr9WjzFIBKPe8eDg1cDue+IfKfuHCr98/53MTOiUkYHkftvU7YxU+h1FfVmhiJFa9uS0faBaNqOnPq2CgCKpwpLjtBLISRruLhbVcI9TSfb66qMpMfTbJ+VVKkWwENsdRiEvAzMDPb9aW4PmMyKFA4AQyxUaMWzITc30vvoifuditrXt3lHypgiHQpYjoYrJzjOMVGJtcCfB/BdLTt9vYN0G4fV8NFYBig7VAixJWGsD81k/kNT1kx3FVvDxHTxEJ6klIi5zQuz/HG/CsTzJlQEPkxjfBhTimGOu3D/87zoZ5zHTGvXCokIhVssJeIc6+262vBAqanSohfEOAumfkfbbDzwc0L0aAKvppiIJURvKyF2edzaDM1+KfRmohIf5Q16umu3rGs9XaM+7dOuqr9s=
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794656033-548593
+X-HE-Meta: U2FsdGVkX19TQBbihzQ8ON263N+dmg4F5tpvBuWNiMPG8DJWC0gZPHduB5tQu68YjazWfdhzezLa9Z2/pRFz9t+j6WKE4O4i9krMDqDi6z3NmAXLtPDNepJVq+phy4n9yIXPSbc0ZIYwY4tpSAR97qi+vcNOa48VogmKf7OGZS+gLFG5qkopVKWMmoxb8jgsaMKXWExz+eYMcbZDp2SBHxK2rEpXbBKidataIGXgLHQtxGaCUH/TvS7pDf3xlXSa05nNLfW1UeI5W8pdbQM6hY+X+1KWabqhsQStuiCoL2aPKObua/u9cMxWCQSOYCQhHaLvKdvcxiXOVZac0V4XP+DCMmPGjduZqlYEsR0obz2Wmia72mJUPSbPXJ+iIYP4Vt3uEvXCMMW3PAUubgazp9rKwa9jM014kKAtGHP5lG2nmth/BP6LnA82CqLCmbQf13CQXtUJF4BOmLvZrwqkAwfnBMvGX5wbTLq1f39RHy8rntFIKDzm4/imFhp7/DWfyhxSuAyl4WXu7S3nK5/QNLxG55TTAidr1R7SZuxX639qK9diWJut8MHECm8zqbdnud9z+FqlSASeeeYDaq/NB7p1kdXA2/F68sO0adfhoR7F/B9mtixu06hMp97Zc92c+iKNIHfRJtcxioyKMzp8FjCQLASa883MpTwMa9KuQiT7hCIyoi17vK3qQ0Xao7MFMdYU9CQ4V/fv8zidCAwqNolq6DBCtLBOQFUf+1SjOYcF2F8u97gKFKnz/7N7lvOAo3BS3OJKSAC7mQwy2HvO+rtV3s7qXY3fmmou2Kg72LRC/MNSVUhjQwriZ846yJ5o6M5E8Cpsy0G9ZaEcaNcYmmAJB/Trn/uIi8mwTf9d0iZty976V0ZmMQkYWXlvoBHawJCkHN7juKDfKh4mz/bPx9LGKWWQ2082N5XXUWmr3gzfNlA6pYTNMqT0FQzbbUV+kQICjfmz+/bfhCjjZpQ
+ 6GgMi8u3
+ E+eAHvoxrN7sMi/uUCrBlYwxJUiui+Oqpv5wMO+3crYZBjxnDubvj4S/v3E8mHgr02YmTR7B3QaiJsr7ZPcL1FoFHxNktEmAP5SNAjhQruOil6Bcd4obUKhN3N4oBRhW9pXvvXWlX9A3mO8Py4YCxkCsp+EG0GJv3qeJd8H7uiezxGFwPfW0lHbKHIh+DXb7iJnHYrD2gq07NmjR9QZiahJg7ZzfjeQLiCC2FA+Ou0dVu4NxIhp0kJCuYxFYkhRvACpB+9ehCFMpVjEM1kOCNgKz+qJglx11+GrTc7JvnMlTOykM5JDTBacqQNlbzmNrShpoiceta61TTkFgAGuFc21yw735XIqil1LCEHIS5diLDPEIHSKtXKLeSAbF/pDo+DMAdEVz/m2Y9nmbTfSrYVPOLI8lelVWAhTCG+2Bk/88hTV1bMEz9FqzSkiLZMI/ZAnnMLQCJo1XjGDvvXFPX1uZ8Mwg7powelA4QXR872aIU3DRO6bXJ+6qQQglOx3X1d+EI19XZqIESsJe667Uv0WOoBACi7NiUES0cn5e4M9rXvGQ4A2F8uNh9vgooWNTt67HVF3tjc1lTTkD+NSLiIx6Ne0nLvuTdukDtPhjU1bYWKttl5dWB5FiH7J1/y6yg7WprE9OzvVdVfrpP/K/JVZHUzSIaVhyD1bP/qjMABDd7safmKxnF5Lh598Q2H0dIZ11+Tk+cpx/tDYfvkhLwvjlB0U895vSxbc+/GxS28SGXCDihgVaHGPxliOyH6IA0lVKouebx3DK9ar0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,65 +94,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-vmemmap_remap_range() currently walks vmemmap page tables under
-init_mm.mmap_lock. If the walk reaches a leaf PMD, vmemmap_split_pmd()
-allocates a PTE table with GFP_KERNEL and can enter direct reclaim:
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [Medium] x86/unaccepted_memory: uncleared hole bits in
+  arch_clear_accepted()
+- [Medium] x86/unaccepted_memory: outward unit rounding in
+  arch_clear_accepted()
+--
 
-hugetlb_vmemmap_optimize_folio()
-  vmemmap_remap_range()
-    mmap_read_lock(&init_mm)  <-- outer read lock
-    ...
-      vmemmap_split_pmd()
-        pte_alloc_one_kernel(&init_mm)  /* GFP_KERNEL */
-          <direct reclaim>
-            ttm_pool_shrinker_scan()
-              ...
-                change_page_attr_set_clr()
-                  mmap_read_lock(&init_mm)  <-- self-deadlock
+commit ddcd20a91b6aa10c63b863069cf031e61f95c5fc
+Author: Pankaj Gupta <pankaj.gupta@amd.com>
 
-Since commit d5d8b8662e6e ("x86/mm/pat: Acquire init_mm read lock on
-attribute changes to avoid UAF"), reclaim through TTM can enter CPA,
-which also takes init_mm.mmap_lock. If a writer is pending, the nested
-read blocks behind it while the outer read cannot be released, causing a
-self-deadlock.
+x86/unaccepted_memory: Do not accept ranges that are no longer E820 RAM
 
-HVO walks vmemmap ranges whose intermediate page tables remain present.
-vmemmap_split_pmd() revalidates the PMD under init_mm.page_table_lock
-before installing the PTE table. Use the lockless page-table walker so the
-allocation no longer runs under init_mm.mmap_lock.
+This commit restricts x86 memory acceptance to page-aligned E820_TYPE_RAM
+ranges and updates accept_memory() to clear bitmap bits via
+arch_clear_accepted() only for ranges that were accepted.
 
-Fixes: d5d8b8662e6e ("x86/mm/pat: Acquire init_mm read lock on attribute changes to avoid UAF")
-Cc: stable@vger.kernel.org
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/sashiko-outbox-206969@kernel.org/
-Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
----
-v3:
-- Collect Reviewed-by from Jose A. Perez de Azpillaga
----
- mm/hugetlb_vmemmap.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+> diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/=
+asm/unaccepted_memory.h
+> index f5937e9866ac1..9e27a9953dd83 100644
+> --- a/arch/x86/include/asm/unaccepted_memory.h
+> +++ b/arch/x86/include/asm/unaccepted_memory.h
+> @@ -2,10 +2,11 @@
+>  #define _ASM_X86_UNACCEPTED_MEMORY_H
+> =20
+>  #include <linux/efi.h>
+> +#include <asm/e820/api.h>
+>  #include <asm/tdx.h>
+>  #include <asm/sev.h>
+> =20
+> -static inline void arch_accept_memory(phys_addr_t start, phys_addr_t end)
+> +static inline void __arch_accept_memory(phys_addr_t start, phys_addr_t e=
+nd)
+>  {
+>  	/* Platform-specific memory-acceptance call goes here */
+>  	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
+> @@ -18,6 +19,47 @@ static inline void arch_accept_memory(phys_addr_t star=
+t, phys_addr_t end)
+>  	}
+>  }
+> =20
+> +static inline bool e820_ram_pages(struct e820_entry *entry, phys_addr_t =
+start,
+> +				  phys_addr_t end, phys_addr_t *s, phys_addr_t *e)
+> +{
+> +	if (entry->type !=3D E820_TYPE_RAM)
+> +		return false;
+> +
+> +	*s =3D PAGE_ALIGN(max_t(phys_addr_t, start, entry->addr));
+> +	*e =3D PAGE_ALIGN_DOWN(min_t(phys_addr_t, end, entry->addr + entry->siz=
+e));
+> +	return *s < *e;
+> +}
+> +
+> +static inline void arch_accept_memory(phys_addr_t start, phys_addr_t end)
+> +{
+> +	phys_addr_t s, e;
+> +	u32 i;
+> +
+> +	for (i =3D 0; i < e820_table->nr_entries; i++) {
+> +		if (e820_ram_pages(&e820_table->entries[i], start, end, &s, &e))
+> +			__arch_accept_memory(s, e);
+> +	}
+> +}
+> +
+> +static inline void arch_clear_accepted(unsigned long *bitmap, phys_addr_=
+t base,
+> +				       unsigned long unit_size,
+> +				       phys_addr_t start, phys_addr_t end)
+> +{
+> +	phys_addr_t s, e;
+> +	u32 i;
+> +
+> +	for (i =3D 0; i < e820_table->nr_entries; i++) {
+> +		unsigned long first, last;
+> +
+> +		if (!e820_ram_pages(&e820_table->entries[i], start, end, &s, &e))
+> +			continue;
+> +
+> +		first =3D (s - base) / unit_size;
+> +		last =3D DIV_ROUND_UP(e - base, unit_size);
+> +		bitmap_clear(bitmap, first, last - first);
+> +	}
+> +}
 
-diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-index 6fba3184356c..5852b0a1c479 100644
---- a/mm/hugetlb_vmemmap.c
-+++ b/mm/hugetlb_vmemmap.c
-@@ -161,10 +161,8 @@ static int vmemmap_remap_range(unsigned long start, unsigned long end,
- 
- 	VM_BUG_ON(!PAGE_ALIGNED(start | end));
- 
--	mmap_read_lock(&init_mm);
--	ret = walk_kernel_page_table_range(start, end, &vmemmap_remap_ops,
--				    NULL, walk);
--	mmap_read_unlock(&init_mm);
-+	ret = walk_kernel_page_table_range_lockless(start, end, &vmemmap_remap_ops,
-+						    NULL, walk);
- 	if (ret)
- 		return ret;
- 
--- 
-2.54.0
+[Severity: Medium]
+Does rounding first down and last up to unit_size boundaries clear the
+bitmap bit for an entire 2 MiB unit even when only part of that unit was
+accepted?
 
+When a memmap=3D reservation or mem=3D limit is smaller than unit_size (2 M=
+iB)
+or not aligned to it, arch_accept_memory() only accepts the [s, e)
+E820_TYPE_RAM sub-range within that unit and leaves the remaining pages of
+the unit unaccepted in hardware.  Because first is rounded down via
+(s - base) / unit_size and last is rounded up via
+DIV_ROUND_UP(e - base, unit_size), arch_clear_accepted() clears the unit's
+bit in unaccepted->bitmap anyway.  If a new kernel is later booted via
+kexec (which reuses the EFI unaccepted memory table alongside the
+pre-cmdline e820_table_kexec map), it sees the whole 2 MiB unit as
+E820_TYPE_RAM with its unaccepted bit already cleared and faults when
+accessing the unaccepted pages.
+
+[ ... ]
+
+> diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/=
+efi/unaccepted_memory.c
+> index 4a8ec8d6a571e..b8a0c0d1d2891 100644
+> --- a/drivers/firmware/efi/unaccepted_memory.c
+> +++ b/drivers/firmware/efi/unaccepted_memory.c
+> @@ -130,7 +130,6 @@ void accept_memory(phys_addr_t start, unsigned long s=
+ize)
+>  	for_each_set_bitrange_from(range_start, range_end, unaccepted->bitmap,
+>  				   range.end) {
+>  		unsigned long phys_start, phys_end;
+> -		unsigned long len =3D range_end - range_start;
+> =20
+>  		phys_start =3D range_start * unit_size + unaccepted->phys_base;
+>  		phys_end =3D range_end * unit_size + unaccepted->phys_base;
+> @@ -150,7 +149,8 @@ void accept_memory(phys_addr_t start, unsigned long s=
+ize)
+>  		arch_accept_memory(phys_start, phys_end);
+> =20
+>  		spin_lock(&unaccepted_memory_lock);
+> -		bitmap_clear(unaccepted->bitmap, range_start, len);
+> +		arch_clear_accepted(unaccepted->bitmap, unaccepted->phys_base,
+> +				    unit_size, phys_start, phys_end);
+>  	}
+
+[Severity: Medium]
+If a unit_size-aligned hole such as memmap=3D2M$0x1ffe00000 leaves its bit =
+set
+in unaccepted->bitmap, doesn't range_contains_unaccepted_memory() permanent=
+ly
+report the accepted RAM range immediately preceding the hole as unaccepted?
+
+Both accept_memory() and range_contains_unaccepted_memory() extend any
+unit_size-aligned end address by one extra unit_size to cover
+load_unaligned_zeropad() across the boundary:
+
+drivers/firmware/efi/unaccepted_memory.c:range_contains_unaccepted_memory()=
+ {
+	...
+	if (!(end % unit_size))
+		end +=3D unit_size;
+	...
+	while (start < end) {
+		if (test_bit(start / unit_size, unaccepted->bitmap)) {
+			ret =3D true;
+			break;
+		}
+
+		start +=3D unit_size;
+	}
+}
+
+When the valid RAM before the hole is accepted, accept_memory() extends
+phys_end into the hole, but arch_clear_accepted() leaves the hole's bitmap
+bit set to 1 because it contains no E820_TYPE_RAM.  After that, calling
+pfn_is_unaccepted_memory() on the valid, already-accepted 4 KiB RAM page
+immediately below the hole (for example PFN 0x1ffdff before 0x1ffe00000)
+has end aligned to unit_size, so range_contains_unaccepted_memory() steps
+into the hole's unit, sees the set bit, and always returns true.  As a
+result, read_kcore_iter() zero-fills that valid RAM page in /proc/kcore,
+unaccepted_memory_vmcore_pfn_is_ram() omits it from /proc/vmcore, and page
+freeing paths repeatedly call accept_memory() on ranges ending at the hole
+boundary.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113105554.1999=
+12-1-pankaj.gupta@amd.com?part=3D1
 
