@@ -1,100 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E571606A327
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 17:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B637C606A32E
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 17:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KctJr5aH
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i8Ms1s7x
 Received: by kanga.kvack.org (Postfix)
-	id 5889F6B05C1; Sat, 14 Nov 2026 12:12:27 -0500 (EST)
+	id C927A6B05C3; Sat, 14 Nov 2026 12:14:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 539B56B05C2; Sat, 14 Nov 2026 12:12:27 -0500 (EST)
+	id C43FC6B05C4; Sat, 14 Nov 2026 12:14:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4507B6B05C3; Sat, 14 Nov 2026 12:12:27 -0500 (EST)
+	id B32646B05C5; Sat, 14 Nov 2026 12:14:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 15AA06B05C1
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:12:26 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 92A946B05C3
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:14:54 -0500 (EST)
 Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 822EE160459
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:12:26 +0000 (UTC)
-X-FDA: 85434368292.19.7DB2400
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 22A171A0478
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:14:54 +0000 (UTC)
+X-FDA: 85434374508.19.566B847
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id CE19320005
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:12:24 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KctJr5aH;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 612C8100005
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:14:52 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i8Ms1s7x;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794676345;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794676492;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GuUas9394tXVS2rINaWyftKxBgw1MZ4KrFxs7EBX5no=;
-	b=iumLCRcgJ2Hj/dnhcPg4qMvfSupCRBXYhxB8WXFErijPRyIkFRAmt0Pw8LKq7O8dBWWxWr
-	FpuuFgGVz2JQU9GGRPiOnhlLdyPkLXKW+WOTABIEA4Go4aeXgEJjmhwjuvX2mbsvA+7rX/
-	YHfrQRV5Q8tGrBzEmllCCZeBSDxnEAc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794676345;
-	b=enxWpQMW6zAO6GVUXsGKNNC9S554ij48e8Ntx2bgrmxqE4QleIBwWaP0kXcagutzSrsPLT
-	n29Q3wKCeg/T6/2inZGRiFR/vd8mPuJtzRHJYZKbixZybl+QyNqEpPchEKvpOf9ElnxK4m
-	Ri0mrEmCRRXh7SCQx098o6NcUVzJhok=
+	bh=amAldK0/T73Ry1qXMWa943LC72gx3MygeFvu1xpe5Ok=;
+	b=HZSoRR46+LU6Peg1MsPZExWiKRwtWt2VjFGtzIhxyld3ZhXhAe0MajFfiAKd8niwFX0N9C
+	mXs/WtbFsC+DoW7IkrCOAuO0lQ6Ilp/pbGIIJpTqNWW6zBZryTMTHczBv1Vf1kCtgGZh3J
+	EbjFV68qEtDunaskcJ2RE2wRuBqa12w=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KctJr5aH;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i8Ms1s7x;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794676492;
+	b=X/jowMbJYxZU+rHtI/s9CrBvoTV3Qt7fmXYXOPMKkrGgWEAZq6Kqw5Ul1X2/WjLDZ/RLPZ
+	08zMpjpWEwR4FbIOqeXrd0fzyWGedY/AHMLB10vDCcDwvuEiSp+U7sSlkztk25KlrbGAuu
+	hFNLEI2QfNTQmbTUDjRtEO+cD6BIf9g=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1628141739;
-	Sat, 14 Nov 2026 17:12:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5DBC1F000C4;
-	Sat, 14 Nov 2026 17:12:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 939C1458A2;
+	Sat, 14 Nov 2026 17:14:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6091F000C6;
+	Sat, 14 Nov 2026 17:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794676344;
-	bh=GuUas9394tXVS2rINaWyftKxBgw1MZ4KrFxs7EBX5no=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KctJr5aHRt1tIu6GHbg3QvOztA2LzkQ2ka5nqUPyAA4IhSDLaxswiaEW9S6eO2rZ1
-	 UVjd9uEqfr5ePG591F0gsVAAqbo3oh2uk+eoyhuM4sqEqajYUbUZzbM5unAwlrOogo
-	 kWPE0RiA27wIXiPqei47M5ZlXJeUQNbEDodp5bl9wkBIixqi/wZzsyQC9aaCAYKD1P
-	 i1HJ4yyiT8CGhGu2Ff90mOw1ZZ4DSqRaikY2XT2H1SHGOsQ9dDMIiYeqLqVLe1d1+Q
-	 HY30pcjL5wIBtza2NKwL5g96u5gA2OlnlGZbxV6h1dH8Fd+5NZSapDr5dTnJ/xE+No
-	 Jd0kVs5YVvyng==
-Message-ID: <sashiko-outbox-214828@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3] mm: introduce copy_mc_highpages() and batch copy in
- folio_mc_copy()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Shivank Garg" <shivankg@amd.com>, "Andrew Morton" <akpm@linux-foundation.org>, "David
- Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam
- R. Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
- Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
- Hocko" <mhocko@suse.com>, "Borislav Petkov" <bp@alien8.de>, "Ankur Arora" <ankur.a.arora@oracle.com>, "Dave
- Hansen" <dave.hansen@linux.intel.com>, "Thomas Gleixner" <tglx@kernel.org>, "Bharata
- B Rao" <bharata@amd.com>, "Hrushikesh Salunke" <hsalunke@amd.com>, "Ingo
- Molnar" <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>, "David
- Laight" <david.laight.linux@gmail.com>, "David Rientjes" <rientjes@google.com>, "Linus
- Torvalds" <torvalds@linuxfoundation.org>, "Teja Vojjala" <tejavojjala@google.com>, "Huan
- Nguyen" <nhuhuan@google.com>, "Pedro Falcato" <pfalcato@suse.de>, "Peter
- Zijlstra" <peterz@infradead.org>
-Cc: linux-mm@kvack.org, x86@kernel.org
-In-Reply-To: <20261113-batpagecopy-v3-1-297f5b2fd28e@amd.com>
-References: <20261113-batpagecopy-v3-1-297f5b2fd28e@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 14 Nov 2026 17:12:22 +0000
-X-Stat-Signature: yeakqnxqd37bt7cgwgrkkuczy3ofg6so
+	s=k20260515; t=1794676491;
+	bh=amAldK0/T73Ry1qXMWa943LC72gx3MygeFvu1xpe5Ok=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=i8Ms1s7x3h9Tky0npGs3DcTcpD9x9ZNBOGIqUGiKFm5Kie6dXrVDT+00aDA6F5AEn
+	 vz7YwCk5G2fn+PMuyvUVI7tlnFg6UkkPJa7t2ZWpGFrAqE6ib6pzwIR2H6dHWp+w0r
+	 wnFO0yatYgaLzdKqVERxXCAse+ubatVks74swC1VOJq7WYOMPcepDTdxYbxcbkyedo
+	 Oy9gbE5/EeOfRWTBaouQW8+sMf0CoqryfbpJv/u0WND5MRCDMHv8bPkyEq0tT6Xzco
+	 LfNS3wg7kZq4r2bfLtR3V1V/bZwotoan9lJsRR5hsTUOu7zflwZAOlb3LVIrr2iQ8z
+	 vjdt2l0CTsepg==
+Date: Sat, 14 Nov 2026 17:14:46 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: shao.mingyin@zte.com.cn
+Cc: akpm@linux-foundation.org, liam@infradead.org, linux-mm@kvack.org, 
+	vbabka@kernel.org, jannh@google.com, pfalcato@suse.de, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/vma: restore VMA iterator on full-range merge failure
+Message-ID: <aviVQ40at8rZEyjW@gremlin>
+References: <20261115004655564ix3vefI54RZ3HhYOmxuKX@zte.com.cn>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261115004655564ix3vefI54RZ3HhYOmxuKX@zte.com.cn>
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 612C8100005
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CE19320005
-X-HE-Tag: 1794676344-362557
-X-HE-Meta: U2FsdGVkX1/xdkv5aQeahWlxJZ1+wrG5LrsIqCwwaJLOpq6fIzl7vPrpDjDlkJ9N4un9UctDODSKul05njpuQTqQGlQMcnxFVEHAYbSofddRftOvPPnC5a7UhubwvHnYlBMTjnAJmvtMWXH4RF0SSLHJpq0W1cda9aN14HRsuswv6LXltBK7nuLNsSl9fzNOViAwxeI74duQOMrPYFQUxtYh7z/U/+2wkqDd24YrzBFHLMQMDdNtG9+ZNTMYtUIk9fUZWzz8vadzOhkb57xQfpLwDsO92veB/PJisqNoMNsqS0F+wp917snT5dSF7FNXVi2j76wNdK1TzXABZa5dbZCpqbTYP2MrlCgHhTahOdxgbzJT5+LqcsYbRLfaUPGEnAijcDjgF0Hc83dnLywFcWZkaJyGwCkiKtC8iV56kT3x45YzY1U2ApTJ3ZZCzJbwLUJyYdqdQIAZELugBZrv0w+5P7TIrPYmtC48SHk3nZAZ53OkjwnJFYDt82w0B1YWfV1nXXchVdNReFgan8WzAxmlmDQo879s7CtJfTPdSTxVw/HdydETPLiqxADOjDN5bV100xCRhrThm8Irckzdfz+3DX/Q5CTs7jNtFbfkHHYJPaDGpLNSdQqiNHNn+oFHTt9ZOjDaqutYREyyr31ex1fzBSyVyUaHyUOVzJatZC1IjDRxjuAedtzSTF0ePWMO1xWey4ZJuqK5EQMTSkP3IHBb3sePCf505nGBTxVlbK0XMylVV17wy+SyQG6BacYunIRwTu1HSG4BIHPDQS7O9GgO77WhMnwgqOYFXZoOA0M+cG4eAEEyNgw9pe3lEeehBzSgKse6Vd7ed5Em+CxlJoiOM/vz+XPrIFS4BeEGcZDH2u0J5dq2/QpK7B7xj4uz+htxFk0iBpE17c8yGYCKjWHnucwe0GUFKnWi9cP2d5+UNzrXMCKsB54uEsptjsatY4YP1Iy/ZL7d6c/9Mjy
- Ezf20DK4
- ATnCBxtKBa+5XaP2Mz6JinMtVcOLDDZMwx2zSpaNS98BdZjCTmxfuOlhM5SPAcSHzuRNjdSFINOdTikoSz1Dvux8CBil9ZBSoXt0v+zU2zWOSAq4X8I6RFIa0FqqnIVUI8U+5tmOkIYRy+/4EIq/qJqWFXxhKEhEp80gkskdoY2mNMfHlY4JkB9YPSytE+vs7Vfe86SKJWKrLtiJdzUDcuZ2EKzvg50TU9jiHChU1Inympdy7khmj3fAFnP6YlRp7aKzOwU7pzc4IYN9D7PzME71dTj98hIizG+I0lmjLY0/4M6qz45Q7Zgn3IPX25PVTWKcc870JG0FgC032KhvtbQ+88wsmwJCBMDURe6OFllcO0IuaijOUDOpaaL7G1mJHRBN/QJmkgGHw9wUKRaIhpBjTnTBi/7qoGXwdyRpGHrXq6VdpJyui4jbgOTNhjAO9M1OS8ptBQdwTLk0p4jeA1op10qONZp4NHkJusXXoLIzEqXyvybAjsh1R69ckr6Z3D4dCrKqrhj4bGaS3eimd0oEkyBqJfpH1ruXNLMhC/oFyzihyf4jvnxmDfzi/Rlqb1O4cXZwndgVpaDz0VKffpSWQZ5G+xUoWuLKUDs+V4FnTaO8j13mruCIh73Z50wmFNRqs5ZnH8JAAycX6PA3Qd/DZb7WZSxuSyUfFE6B7IOPIKFyvz6E0nh0Yyb7biCiYsI36sFZdmJbJeiCZR/GFOskyVQ==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: owjfykdz3mgmcoex7n8yrgkkajc9rnyu
+X-HE-Tag: 1794676492-731029
+X-HE-Meta: U2FsdGVkX19C2TJsiio6ZGEk2VrJUKcd1GdSgNy5aUm2zuXXci3DymlBwomV2vfd+U6lHdVgRIKaUaa3n6i57MNSAP+SrKAoj3OFDNt/P/IWuHZJXhQkuSusbdeaXlDsVepMMdl2qH3g20lMKt+OMKPKeDaJYtobunO97D0gfjPNSQAnI9/NgNtyntW8ixDO0Ia8DD34xxN/rpG7rcJv0EEkcMkOc3HTTdWK4PTBQFeBu4PW0uO/dOlIn7nTSinm3wGSgu386N9Yv3SFROA8NCc2kz6KKhACKQSU/uqFcavnZfAQZAumF44Al9QVA4oTjZAPCjhx4sr2KvhVIdP4RZE1zmYTq3DIJD/g0oqFNHnv8G8k2AMB2yayk1LfpCzD+A1DsU/Jm38zE1p1LwcmfQ2Lh2KBf93dmB3mqau1eKzl+tIyOtUEPT2zg2fsbJAkQInhtaMOjdOFHckai3YtYgfiRoFfFXmX/c2soCySt0hl51353/0hRYhyM60HbtPIz04c0det566iGNigfSkB668yhwxTVnrSu9mWoAs093J46Mt3YKKTdqIVSTrAnelMex3vGMw0H+iwDrYkRh2+484qjqCT9c+3bc5C7uOX2wj7k9Jx37BHloRLHSXKInqKE40f9aspReuZ9MK8ShbJ+3/ojXxkwjdkMuVJWetaRl1QHCPCj0uksrWLq+yht5m1ihOFYXCtGFF0CG7Rb9is/hp0pZFULuza+HZHbBVyQZfD/6V5r9faezc+eLrM6C43/ciA3Mw4N32q5mRFcK1BVTC8z3vHKspM6L5R5bnJXVwbkBeAIw4BV/0sDUnnafsZpwbme/fs4s6cPlodHxKKY2d0AV2btVDXsEornXZMvUp7oWD5olUz+eltxLMDE2IJbjiCl40mLBe/Sts3woTjhAL9W8m8I6TtMKDPdA3u/R3dB4nCIgcfBtu2PJuag2FgsltU9+YB1nBSeHLExK2
+ 9ne+FNqF
+ 5iqpqAYHO0PMRNzKFoIEJG1rH/gsFZdC8j2eqCicDsf3z7acUJWa/lkUqPtOyJ+f6F1927vV9zQ0LlWGuCXKcDrRdvek2CFSodaiNTv/p/lcDMKu54VHiDtdlgikl3efWWkxZgQmWKU7M1ikOeWXK3L7rxo7oT/Bxgwf3HD2oTO0dtvitUr+E8K4vpzHtAPwkm8nXvigQT4REN0Vnmub5byUCJhegvNLW9rdWC9poe5/6WI69OFAIZ9W7PzSoC87tJPn/1PnnzmkrxSC395z3LPTN2OY3rmawk9tUN+iuL4C1yuCV7J7DhY+yRg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,105 +92,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found no new issues
-in this patch, but noticed 1 related pre-existing issue it does not
-introduce:
-- [Critical] mm: missing hwpoison check in copy_mc_user_highpage() and
-  copy_mc_highpage() [1]
+On Sun, Nov 15, 2026 at 12:46:55AM +0800, shao.mingyin@zte.com.cn wrote:
+> From: Shao Mingyin <shao.mingyin@zte.com.cn>
+>
+> mm/vma: restore VMA iterator on full-range merge failure
+>
+> vma_merge_existing_range() moves the iterator to the previous VMA when
+> merging to the left. If the range spans the whole middle VMA and a
+> vm_ops->close() hook prevents removing it, the function returns without
+> restoring the iterator.
+>
+> An mprotect() walk can then visit the middle VMA again. Restore the
+> iterator to the range start, as the abort path already does. Extend the
+> existing close-hook merge test to check the iterator after this failure.
+> No crash or data corruption has been observed in this case.
+>
+> Fixes: 01c373e9a5ce2 ("mm: rework vm_ops->close() handling on VMA merge")
+> Signed-off-by: Shao Mingyin <shao.mingyin@zte.com.cn>
+
+(Not the first time I've seen this 'issue' reported).
+
+This is pointless. No caller cares that the merge doesn't
+proceed. Revisting it is a noop.
+
+So this isn't a bug and the 'fix' achieves nothing except unnecessary
+additional work.
+
+I might go change how this behaves just to stop AI-generated reports... :)
+
+> ---
+> Tested with tools/testing/vma using its default ASan/UBSan options.
+> The added iterator assertion fails before the fix; all 29 tests pass
+> with the fix. Also build-tested mm/vma.o with W=1 on x86_64.
+> This verifies iterator position, not a crash or a production workload.
+
+Generally we expect people to mention their LLM usage here.
+
+>
+>
+>  mm/vma.c                        | 5 ++++-
+>  tools/testing/vma/tests/merge.c | 1 +
+>  2 files changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/vma.c b/mm/vma.c
+> index c82e9306b11ac14f684f44b8d71a0026b7fc145c..c87b29f1beec4ceb02c23f6b37af0e5dff272436 100644
+> --- a/mm/vma.c
+> +++ b/mm/vma.c
+> @@ -983,8 +983,11 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
+>  	 * If we need to remove middle in its entirety but are unable to do so,
+>  	 * we have no sensible recourse but to abort the merge.
+>  	 */
+> -	if (vmg->__remove_middle && !can_merge_remove_vma(middle))
+> +	if (vmg->__remove_middle && !can_merge_remove_vma(middle)) {
+> +		vma_iter_set(vmg->vmi, start);
+> +		vma_iter_load(vmg->vmi);
+>  		return NULL;
+> +	}
+>
+>  	/* If middle isn't removed then it's resized, i.e. splits. */
+>  	if (!vmg->__remove_middle && check_split(middle, left_side ? end : start))
+> diff --git a/tools/testing/vma/tests/merge.c b/tools/testing/vma/tests/merge.c
+> index b26f1a66a17074775d751a907eb627445cc1dda3..91accb5dc9944724cd11d1bfa47484a3cf9df54c 100644
+> --- a/tools/testing/vma/tests/merge.c
+> +++ b/tools/testing/vma/tests/merge.c
+> @@ -680,6 +680,7 @@ static bool test_vma_merge_with_close(void)
+>  	 */
+>  	ASSERT_EQ(merge_existing(&vmg), NULL);
+>  	ASSERT_EQ(vmg.state, VMA_MERGE_NOMERGE);
+> +	ASSERT_EQ(vma_iter_addr(&vmi), 0x3000);
+>
+>  	ASSERT_EQ(cleanup_mm(&mm, &vmi), 2);
+>
+>
+> base-commit: 84abb955b1015477aa11a96e2f3ac1b938b77f48
+> --
+> 2.43.0
+
 --
-
-commit fae95970ccf2607d670f06862e40d3ba9313200a
-Author: Shivank Garg <shivankg@amd.com>
-
-mm: introduce copy_mc_highpages() and batch copy in folio_mc_copy()
-
-This commit introduces copy_mc_highpages() to copy page ranges with a
-single copy_mc_to_kernel() call when possible and updates folio_mc_copy()
-to use it.
-
-> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-> index d7aac9de1c8a4..a79e9d68359c8 100644
-> --- a/include/linux/highmem.h
-> +++ b/include/linux/highmem.h
-> @@ -484,6 +484,57 @@ static inline int copy_mc_highpage(struct page *to, =
-struct page *from)
->  }
->  #endif
-> =20
-> +/**
-> + * copy_mc_highpages() - copy a page range with machine check handling
-> + * @to: first destination page
-> + * @from: first source page
-> + * @nr_pages: number of pages
-> + *
-> + * Range variant of copy_mc_highpage(). On a machine check, the poisoned
-> + * source page is queued for memory_failure().
-> + *
-> + * Context: Process context. May sleep.
-> + * Return: 0 on success, -EHWPOISON if a machine check was handled.
-> + */
-> +static inline int copy_mc_highpages(struct page *to, struct page *from,
-> +		unsigned long nr_pages)
-> +{
-> +	unsigned long len =3D nr_pages << PAGE_SHIFT;
-> +	unsigned long i, ret;
-> +
-> +	might_sleep();
-> +
-> +	/*
-> +	 * When copying we want to operate on the largest extent possible to
-> +	 * allow for architecture specific extent based optimizations.
-> +	 *
-> +	 * copy_mc_to_kernel() does not call cond_resched(). That is fine on
-> +	 * preemptible kernels, where the scheduler can preempt the copy at
-> +	 * any point, so copy the whole range at once if copy_mc_to_kernel() is
-> +	 * available and the pages are in the linear map. Otherwise, copy one
-> +	 * page at a time and reschedule in between.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_ARCH_HAS_COPY_MC) && IS_ENABLED(CONFIG_PREEMPTION=
-) &&
-> +	    !IS_ENABLED(CONFIG_HIGHMEM)) {
-> +		ret =3D copy_mc_to_kernel(page_address(to), page_address(from), len);
-> +		if (ret) {
-> +			memory_failure_queue(page_to_pfn(from) +
-> +					     ((len - ret) >> PAGE_SHIFT), 0);
-> +			return -EHWPOISON;
-> +		}
-> +		for (i =3D 0; i < nr_pages; i++)
-> +			kmsan_copy_page_meta(to + i, from + i);
-> +		return 0;
-> +	}
-> +
-> +	for (i =3D 0; i < nr_pages; i++) {
-> +		cond_resched();
-> +		if (copy_mc_highpage(to + i, from + i))
-> +			return -EHWPOISON;
-> +	}
-
-[Severity: Critical]
-This problem wasn't introduced by this patch, but can copy_mc_highpage()
-and copy_mc_user_highpage() (as well as the new copy_mc_highpages() fast
-path) return 0 when the source page or its containing folio is already
-marked PG_hwpoison [1]?
-
-Neither helper checks PageHWPoison() or folio_contain_hwpoisoned_page()
-before copying.  copy_mc_to_kernel() only catches synchronous #MC
-exceptions raised during the copy itself (and falls back to plain memcpy()
-when unavailable or on x86 without X86_FEATURE_ERMS or
-copy_mc_fragile_enabled).
-
-If a source folio was poisoned via software injection (such as
-MADV_HWPOISON) or a prior memory_failure() where reading does not trigger
-a synchronous #MC, callers such as folio_mc_copy() or wp_page_copy() treat
-the copy as successful and copy corrupted data into a fresh destination
-folio without PG_hwpoison set, or trigger an unrecoverable kernel #MC when
-copy_mc_to_kernel() is not active.
-
-[1] https://sashiko.dev/#/bug/linux-3af4aa7d-d182-430b-b982-583f6aea4594
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113-batpagecop=
-y-v3-1-297f5b2fd28e@amd.com?part=3D1
+Cheers, Lorenzo
 
