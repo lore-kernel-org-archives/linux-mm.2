@@ -1,123 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE5B606A33A
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 18:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4CB6606A337
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 18:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HrKfzIzO
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=HqpIC1mz
 Received: by kanga.kvack.org (Postfix)
-	id 7586B6B05B3; Sat, 14 Nov 2026 13:10:40 -0500 (EST)
+	id D00036B05B1; Sat, 14 Nov 2026 13:11:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 709216B05B4; Sat, 14 Nov 2026 13:10:40 -0500 (EST)
+	id CD7756B05B2; Sat, 14 Nov 2026 13:11:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D0646B05B5; Sat, 14 Nov 2026 13:10:40 -0500 (EST)
+	id C15036B05B5; Sat, 14 Nov 2026 13:11:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A8BC6B05B3
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:10:40 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 89F2D80127
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 18:10:39 +0000 (UTC)
-X-FDA: 85434514998.22.B120F44
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B18F0140006
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 18:10:37 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=HrKfzIzO;
-	spf=pass (imf09.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A8266B05B1
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:11:55 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3FBEF40446
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 18:11:55 +0000 (UTC)
+X-FDA: 85434518190.07.B431531
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 127B34000D
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 18:11:52 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=HqpIC1mz;
+	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794679837;
+	s=arc-20220608; t=1794679913;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2tV4PJFJAVwFY0+x5FVmRJ66Mz8ksU1cklE+L0oAwR0=;
-	b=ka/N5N0WgQ7oZRBTFeAa1On1rG+DhqSNM1SlpN2TcDEzhjfK1AO/L/EQgE+yYMEfL9HIwh
-	/sCYYq2nnXcIGGNfkokObGvxcm7ruog7n/VSLYRcthf/jOzVRbxnx2ujXhGol2ZxVW1vS0
-	899Ntd5QhXww9dxwj32oP7WfPlbx7Q4=
+	bh=7Z6kVyng+edrJn16r9HBEkiQxk4z+4fLliDv7QvLeZ4=;
+	b=bibiHwCBJJaSt2i+tmgLxh2p2Y91OFLOex77QgWyBoVSuWd88ReaB6RsGdoI/mO+O6T20u
+	mFDQehRT3tTNBzr+QP+0t/TyAjAgTV5oHER3g4xarknXN8nO1o7u8Dj+0+tUm8GCIVCeEm
+	qS5me2iNshgiPwxWsQLjcQYGNEEV3Lk=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=HrKfzIzO;
-	spf=pass (imf09.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=HqpIC1mz;
+	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794679837;
-	b=Us2doGCfo8jAxdpqSsLeinmw3qQJWaN+o6ZEKLm2pXTL/qoHGtHHsHrjBS1GHfcjgT/A7W
-	zn63PH9yDDZZirRWuSn8izuiOSvQ6K7X6WsyekuV+Y9VVATbP2l2n3MEOob2kAp9EmOYG9
-	4mij4aig0TStr1sfcrHiCAloGh1OtuY=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4b79502c27aso15433795e9.1
-        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 10:10:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794679836; x=1795284636; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2tV4PJFJAVwFY0+x5FVmRJ66Mz8ksU1cklE+L0oAwR0=;
-        b=HrKfzIzOI8+DaO9CkC4RPGqBqHc8vX0CxMgMzxEk7h5Zw49nBG6LQ08hLSUSLbCAS3
-         rUNEkRAkIg77CcUOUWfzip55wBsETX+/ACEOYK9VhoCADvj0XxVe31+BkUGLeG0SC0ak
-         iAq8fWsF75HNQI61ltHHU3in0I5tFLtJ1Lm0EVU+X8HVQ0S2ufC0Mvi24cIqFcvbycqb
-         f/DmVdCvUhLj93wc6WAkko440YpxIGp74dFrr2VNRE7TUA3ySRRzzWSd0OzyELjmA9G6
-         Mwg7O8HcMeXjPe7JBaoak3NzG6tFfL7BmO+ga/hz4Vy01gCfSBmCiAxm0GH4SG3i7OpV
-         c/Eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794679836; x=1795284636;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2tV4PJFJAVwFY0+x5FVmRJ66Mz8ksU1cklE+L0oAwR0=;
-        b=IP4ixM+gW1f3ubBqtnr7x+EIcIJUkc5CyoKGvNt/hVZAFnGUJBAJ+uwRyRNGa2N52Z
-         aOURXueqQHpzhvSmKmPoVoF5LzMA1K0W7nDh86nd6nbcp5Ss2OJRhj60LemTTdxrK2oo
-         /1zk6Cbj9sajYfExd3GCgkxckCWjtOI7NcwL2SMtpolZyimepiyehb2eEicbgG3HJQkv
-         OM/ioVo43vOangDxCrMa3sZyVIaxJTC8Hk2cTL4HJedUT2ip+mTgat+0NJD3rc21rjp9
-         y4zN6Mft7vaBVqzBE56aG26g7QecSeG1kJCvqCDT2hmfDkSn62QMLlqUBJF+TG5jD2j9
-         fg2w==
-X-Forwarded-Encrypted: i=1; AL+hErF0LlPSXiYvEsQbE+ge3mVGL+MRR58a3oYZ8nraVnEa73MztxF6GY6zN84u0yy1QUa6BnA2gntUMw==@kvack.org
-X-Gm-Message-State: APuU4Z/Yttq0fgGrU/GIhOa5mBysvOYOHKYWO1M9pAkLNS12gHikNs8n
-	k46dNUDggo+gHMQ5s4ILqh3mXzE9HwibtxLlGhniyQI25kMDox2jd+lQ
-X-Gm-Gg: AYBFou1LjR/yAc2d7pRQPO5XSYL4ALG2UtgHjH6C8sE/cmDhWx9837xqjLpnLTxruDL
-	cFbHJdR2lYaqywVjaoYni1whDofrdMcFkvJdt1SYRPerMyvRfGsHWs6+h0/ni87ePO+3TXeSOb5
-	Ak50HzH2QMn+CSVuItzJwNJkYsEQtJQx0pIBqYKzIZu5PZXrpKdhTYDQEIEUbpIBulRFO54dd8H
-	DeE///9W0Hf3voUUY6cz53u4olnymCpZ3sPxEfKSIylL48kHxOFhIjg0E/qVXNJAZGOCUJ/OFUq
-	xqtqI+LQbajyz1HdcKUcIu55PU9k8Syg9ERRzZe2oMNay8GylM4kiVP5EsIYoC4uTD40v1WLdUz
-	HypVzjL8nWU9VbGJPOvALTueMgGXiH9XmbvNsWgqOfmr03fi1OXbtOHF/L6Zp/SVdn4bI/noz/+
-	kTBborJ00vdg4cFTjHFVWmdMSy+udHH3ZjPEEqWJ0KJ/G/K8WwyzRjttYP36XReR/oXXAHUExn4
-	sKB6k2gDY3wljy7Nt60NXTIgJnXtjgVp+9cXufQ8ZP6bO0NStG+fgDr2r2Wfz3uT24KneTqWNF2
-	AdA7tMlVDyQtx574rSGEnc/+5V0WKM3wJZvv+fxQk6ximMZNl54QE5y8TnMMUjVXrJMJ8jas32v
-	qfDvS/v3L5Diwz7jOLz7URt3VovylydG6r4U=
-X-Received: by 2002:a05:600c:4715:b0:4b7:6b0a:a2f6 with SMTP id 5b1f17b1804b1-4bb55a963ecmr125366935e9.21.1794679836134;
-        Sat, 14 Nov 2026 10:10:36 -0800 (PST)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c605e5b2fsm12637227f8f.40.2026.11.14.10.10.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Nov 2026 10:10:35 -0800 (PST)
-From: David Carlier <devnexen@gmail.com>
-To: SJ Park <sj@kernel.org>
-Cc: Aveline Noir <jm5905938@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/9] mm/damon/stat: avoid 32-bit overflow in idle percentiles
-Date: Sat, 14 Nov 2026 18:10:34 +0000
-Message-ID: <20261114181034.2665113-1-devnexen@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261102150757.93058-5-sj@kernel.org>
-References: <20261102150757.93058-5-sj@kernel.org>
+	t=1794679913;
+	b=2xsnsuWRwpZDbvQT62Aqs9UNJKusOhQvF2f7bpiq4EY7RJquvSkY6AUEQNmEWQ1PD+fs5r
+	UFCB3hCyT3rldT2XYPogxDB586kuD3XMb9WMy9o845LBvt3xkiYMkioSQc6Qx5oct61lqW
+	7GHRKqBqBw/ijoBOwkensXQp9SsqYe4=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 07C74143D;
+	Sat, 14 Nov 2026 10:11:49 -0800 (PST)
+Received: from [10.163.159.227] (unknown [10.163.159.227])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E9B623F632;
+	Sat, 14 Nov 2026 10:11:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794679912; bh=xDsiiU8GWWJ/pQq9t2dTAxHzPfy05fd8pgLnjvQ2Ib0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HqpIC1mzY1Ev+xlyk5jniXI7ipxiEJBO4kOkrFV+Zq4gzs3MU4V/PxGnAfB/i4Uxa
+	 zWpy/kvkAV3JOoGbIDprum2RzcPRavJKyTCU9yjQfKymhqpb+E2PfOiQ3iCNP5/g+1
+	 XHWlussL2t485cJJ1CNvYzY3uR8fYEnx8a2Mmk9U=
+Message-ID: <28a340e0-76f5-416f-a74e-f74f4a2c2d36@arm.com>
+Date: Sat, 14 Nov 2026 23:41:44 +0530
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/compaction: sample empty pageblocks again from a
+ random offset
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Hildenbrand <david@kernel.org>
+Cc: Mel Gorman <mgorman@techsingularity.net>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20261104101747.2485913-1-kas@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20261104101747.2485913-1-kas@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: jbq8g6okp13qqth448qa4rxxiso6fe4c
+X-Stat-Signature: g45tcdj7r8a4oa8w71f194oox38bn3k4
 X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: B18F0140006
-X-HE-Tag: 1794679837-492339
-X-HE-Meta: U2FsdGVkX1/niv4zLf4ykkcSRIL5Kqz62FBufB03mLn67tprvUDjZMJ4A9tI6+7o/Slm+7Ms39ssI+huJ8+7/1u675r4VSJQilKH5hd8cQFNsa0zEv9C+MQSSBmm9KBOrMZI0cPe4wbKTOpRnFMEGuoFhUDf3UDwNFnqI3F4sQkefWehMjOn8gh4Vbg6AU9pzxJ739bGzbEMxY/rFw2sAAObqtinKmrQVJui4mZrO33CtyAIcDS13l6ZPXaZE7yd8HqYb0WvEqTeEtefe562ECgp11pFbNadFPfwX0PvMNzubcp04JgTMdhSTJ6YamAJQy2Zfih7u+kO2htXKIYCgkX+p9C1pzdOCYnckGwE50JPBnlwPdxGaBB9ACx0F2+pKXScvFfEw5+LW/Vz9KxqsaeeiEZCW3eQPIzPGr9FH9NdVufkj/BmzKol1SoseeByvrlNsRaT+r0xRSkxnhdMjuOLEqdk5x3NwsM9vV2I7Oh+yvTROGROQSdPJDausFLqFXJFNTb2xb+bWWaedi/n2ByT5WnH6Z4/Ws6sKFPMsilv5e5PxY96KBfdGB/WrF/DJv6yFDUkWNfcy8815WPRgIzKW0qrehFJW5somL0p//GgXBOfx/SOrjh6eO8+NBY+PQfak5QgdaAuNm/qDeGVu46VYjn3jxXgqEAksL1/m0to9/u0ifRGlmhLfg7FvrODUjBSHURSwQGpKtInfIbpEA0LjbfufbZihgIC405C5P/R6/imSNpo+3xjJ99K/78vrSkI/y1dJRqZllcFFELmzklnqEnqr41onDHe9pWKBkoadvXoLw8FzkeczgCm5LRBynYfd1y78mKzlUBnq8KUz6RniRWbfmUsCwwpv6A1eAuRAvD2pK3quup6caKdei7yPJITHysyduxdFFEvFdlLnP/BN80Q7eF+/ivsvTIVbfHq+DJeqhFvJaWzVG6CtKLtY7eNyG0jD7rOqqHm36Y
- qHBnaOhC
- sLfGPMaWWslcDgr+xhARtC4dYnZOy2Lp6jHYVwbapqK40D1wQyw8LSvygy/N9sLmoMw2oo/lA6Ws7/jrczzFwEPZVhTK2jNyzL+CqF7MKQFOHwVmHBBMDCpeFWgOTOBiBjlDfdeYW6TeQcAQVFCNg4+9D3sI7ZNRbwioMm1srpgQn/Pl9vg1VW6aP8pNaKLQquvOTbVj+OvtIghBSBuHCkJfuI7n3E5D8Mj80Cyux5EStD2X4kQfaFH2W29gQvqseK3HEFPTPqMlINqyBYTQMBLGqrY3sj78YyYcMroBDQOsliGPt+KcVT+6wwJKvlfDHKaIwHt7sO2tD9OamYK0nOFWVamiXHV4RipQpoom4Kib6nj7OddtFqNm+QlIzIK/U3qYirJNv+FGI5KCaYNXvUjUBjSpOwlavuc80
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: 127B34000D
+X-HE-Tag: 1794679912-7556
+X-HE-Meta: U2FsdGVkX19fXx9xeIsoDssVHVcDK5dhNytLQTl6oT44n+/wijndX5jxG9M9AiS3MaHTDmM+nNQtqZyMydSeOm7iob7544sJ1q6sq4ziyhIcykFxLmJfae1jhIoGnMVmZ/JKBCzbBjUCl9A63t6wYxgndrPsCdlj6w+9Y2kWfxfFxfZVZlehneJMdFMeDJOt3t8D21dOiJ051rsrEkM4n++JT9bEBNPIDuylltUehC5Sfu3BspoTx0RTwZFkXH6lEc/DlSXeqOnjTPH0vhTe1xQb70w7s2vF6WNEr09GtE3L5FFResFdY7sc/Q9NQ1WuGWNoUXt8ntCw/j8cwMYc/N/pdeijkKNuw5TYxgxwbm3TQ27RFXn/K/MFt2HE2InK4KfnS4ifP8V9vrb3OPL/3szBjKzENXw1lCaxyNsM/rE17pLgarPvJ7YatSsWrQGY9Vka/VvtV2QMbuPranMCs/d2H0S5A33j2bhl1kGS+O1j7DxaalVEUjtkqAB2E05Wd2H3RkAxnM/rZbV2xW0uMbZdXoRK3LvzzRBbto230/2h8e8cAJddUsqIPvCmweei/fsDt5Q8jjajRzI0VzPEwdboR66eYCkzB4f+gol6sdE7Xfcy8LzbjAep9h+a0+QxXW58pdfuBM8fYoahTjQY/QPlYISDhfhlgERPV4ooFM6K3r4PamcwRy/ueQx9/+uJIJrY+u353E3Q3NIEXPDBMsxtmOCHpzUFG0s8uj0Ah8T8uACnocFdc3Y9nhwN+I6r/vdOfWdcKR46E7AtVcTxGv6LyplC+fNZnT6MfsjeUoPsFb/Rpweuw/5xDQgg7KdNBD3CnG+E8cSUfqFuCCxD8T2FcI1IMwXrgXh0Aur5i6odaSyI7JvUIizu9ccJ3Wwely7hPd8/T7G2BEcZ588J1xA2Sjnwz5MBnofk/6xWShxpLuGhpy5A686IzqfyhYq39tsk/9bym/WvhyaA44s
+ 6zHeUfl6
+ PvHyrv0dIWco7QlIgFLpOrDbbg2UbKTm12arrtI7ev9kziOko5KBILJMQYH+eMIhZ3JJNw+tWKqY9XIsEK3nDrjSDLKE3foDaU2uZNAS0K42xq+aOyx94BF/CzHWKY8pEHYNjfQRFiVDGvMMHhM+k04PPf90n0WvtT8JIONqQrIBbdrT6vwHrT9MCH+E/t60bLaxqevCvPzR63rb0AprD9OgH6z/9n4PcGHERJ77UxrksaPvbWNmQgyPMobpx8rZKqg4I7csC0JrYROllY1rUcaMxw8247Lk3kaSB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,18 +100,128 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi SJ, Aveline,
 
-The value stored a few lines below has the same problem on 32-bit:
 
-	damon_stat_idletime(region) *
-	(long)c->attrs.aggr_interval / USEC_PER_MSEC;
+On 04/11/26 3:47 pm, Kiryl Shutsemau (Meta) wrote:
+> Once the free scanner finds pageblocks with nothing to isolate, it checks
+> only every stride-th pfn of the next block.  The stride doubles with each
+> empty block, up to COMPACT_CLUSTER_MAX, and async compaction starts at
+> the maximum.  A block that gives nothing is marked skip, and the cached
+> free pfn moves below it.
+> 
+> The samples sit on a fixed power-of-two grid and alias with any layout
+> that repeats at a power of two: when the free pages sit off the grid,
+> every sample misses them.  With one free page in eight, all at
+> pfn % 8 == 4, a stride of eight or more sees no free page at all.  The
+> free scanner runs into the migrate scanner, and compaction fails with
+> most of the free memory in the zone untouched.
+> 
+> Tasks then stall in direct reclaim, and huge page faults fall back to
+> small pages, while gigabytes of memory are free.
+> 
+> Real memory is rarely this regular; the test below builds such a layout
 
-The product is the region's idle time in microseconds, held in a 32-bit
-long, so it wraps once a region has been idle for more than about 36
-minutes, whatever the intervals are. The cold-end percentiles then come
-out negative or wrong. Doing the multiply in s64 with div_s64() would
-keep the sign and avoid it.
+That is where it gets hairy: will this be observable in real workloads?
 
-Hope it helps !
+Suppose stride is 32 and the pageblock has 100 non-free pages. What is
+the probability that 512 slots are filled with 100 objects such that
+x = 0 (mod 32) is filled? It is
+
+C(496, 84) / C(512, 100) = 1.6 * 10^(-12), very improbable.
+
+So the chance you have a sparse block and you are missing out by not
+looking at other offsets is very low.
+
+If stride = 32 and #objects = 400, the probability comes out to be
+1.8%.
+
+Keeping #objects fixed, lowering the stride lowers the probability
+exponentially. (This is relevant since we start with lower strides)
+
+On the other hand, what happens if you are scanning over fully filled
+memory? (there is no way to tell whether a pageblock is sparse)
+You are going to repeat the scans unnecessarily.
+
+IOW I think the probability this patch is going to have a downside is
+more than that of upside.
+
+
+> on purpose.  On a 32G VM it:
+> 
+>   1. fills memory with anonymous pages and pins one of them in every
+>      pageblock;
+>   2. frees one page in eight, 3.6G in total;
+>   3. creates a million files on tmpfs with defrag_mode=1.
+> 
+> Direct reclaim entries (allocstall) and the time to create the files,
+> 10 runs each:
+> 
+>                            allocstall
+>     free pages at          median    max      time, s
+>     pfn % 8 == 0                0      0      4.6-4.8
+>     pfn % 8 == 4               86   1544      4.8-5.6
+>     pfn % 8 == 4, patched       0      1      4.6-4.8
+> 
+> Sparse layouts hit a milder form of the same miss: at async compaction's
+> stride, a block with only a few scattered free pages usually yields
+> nothing.
+> 
+> Keep the aligned samples: the head of a free page of the stride's size or
+> larger is visible only there.  When they find nothing, sample the block
+> once more from a random offset.  A random offset is the usual cure for
+> aliasing: no fixed layout lines up with it, and one free page in eight is
+> found again within about eight blocks on average.
+> 
+> The second pass at most doubles the samples taken from an empty block.
+> Pages scanned by the free scanner stay within run-to-run noise, both in
+> the test above and in an mTHP fault benchmark.
+> 
+> Fixes: 4fca9730c51d ("mm, compaction: sample pageblocks for free pages")
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> ---
+>  mm/compaction.c | 21 +++++++++++++++++++++
+>  1 file changed, 21 insertions(+)
+> 
+> diff --git a/mm/compaction.c b/mm/compaction.c
+> index f1b2060eb201..475b3a645122 100644
+> --- a/mm/compaction.c
+> +++ b/mm/compaction.c
+> @@ -23,6 +23,7 @@
+>  #include <linux/freezer.h>
+>  #include <linux/page_owner.h>
+>  #include <linux/psi.h>
+> +#include <linux/random.h>
+>  #include <linux/cpuset.h>
+>  #include "page_alloc.h"
+>  #include "internal.h"
+> @@ -1797,6 +1798,26 @@ static void isolate_freepages(struct compact_control *cc)
+>  		nr_isolated = isolate_freepages_block(cc, &isolate_start_pfn,
+>  					block_end_pfn, cc->freepages, stride, false);
+>  
+> +		/*
+> +		 * Free pages of the stride's size or larger start on a sample,
+> +		 * but order-0 free pages spaced at a power of two can all fall
+> +		 * between the samples. Sample a block that gave nothing again
+> +		 * from a random offset.
+> +		 */
+> +		if (!nr_isolated && stride > 1 &&
+> +		    isolate_start_pfn == block_end_pfn) {
+> +			unsigned long pfn = block_start_pfn + 1 +
+> +					    get_random_u32_below(stride - 1);
+> +
+> +			/* The block can be shorter than the stride */
+> +			if (pfn < block_end_pfn) {
+> +				nr_isolated = isolate_freepages_block(cc, &pfn,
+> +						block_end_pfn, cc->freepages,
+> +						stride, false);
+> +				isolate_start_pfn = pfn;
+> +			}
+> +		}
+> +
+>  		/* Update the skip hint if the full pageblock was scanned */
+>  		if (isolate_start_pfn == block_end_pfn)
+>  			update_pageblock_skip(cc, page, block_start_pfn -
+> 
+> base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+
 
