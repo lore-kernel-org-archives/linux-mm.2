@@ -1,144 +1,146 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01086606A327
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 19:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CAD0606A330
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 20:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=rjay+nzw
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gmCmslt4
 Received: by kanga.kvack.org (Postfix)
-	id 8997C6B05C6; Sat, 14 Nov 2026 14:57:22 -0500 (EST)
+	id 2D2226B05CB; Sat, 14 Nov 2026 15:00:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86D806B05C7; Sat, 14 Nov 2026 14:57:22 -0500 (EST)
+	id 2AA116B05CC; Sat, 14 Nov 2026 15:00:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 739206B05C8; Sat, 14 Nov 2026 14:57:22 -0500 (EST)
+	id 198AB6B05CD; Sat, 14 Nov 2026 15:00:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 44FEE6B05C6
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 14:57:22 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CE074A7FC9
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 19:57:21 +0000 (UTC)
-X-FDA: 85434783882.12.3C7B295
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E61C140006
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 19:57:19 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=rjay+nzw;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf07.hostedemail.com: domain of chris@chrisdown.name designates 209.85.216.53 as permitted sender) smtp.mailfrom=chris@chrisdown.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794686240;
-	b=h5g7Rt+nynb5Um2k+TzjYKRedzJAsAt4rFw8AeOcMugW0PlCrGJZJyu/d+3DA4c7WVLkTI
-	WJLdU/u/sRm28MGrBW+yV6ubjOrzcUmRLibnen3vekGmIfXwxvT5IOWK9pwq/cTeHnyi4v
-	RKtdfAUP/MeApbJnf2TXIM3WZpMZJZ0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794686240;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EDAFD6B05CB
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 15:00:15 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 08AAE1C3C5B
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 20:00:15 +0000 (UTC)
+X-FDA: 85434791190.14.00FC039
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0212C180002
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 20:00:12 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=gmCmslt4;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf16.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794686413;
+	b=EGCSNyNMF/xVS32tvJOUsTR/aPtyiXkEhjxMayBWmYwOYBYU0WqXUoqvJlmohCggRZdiyI
+	SnOhSMbqRSRNG75jpoePZvikmafXEUADy9Ssxy2j97FXzl04DFTbbpdv8N9ZJ+diwEZGWX
+	6excw8N0rZGQz04Zv8l7Y5vr1YMy+aI=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=gmCmslt4;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf16.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794686413;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f+UcsNuMg4Yueaqy8xslzDAXYJR5HIy/+gngqmLcoZw=;
-	b=aXnBnkDDywEu1BT8qOB02Vf7yeLNlG/gquw8H94p2t/y7tQLqjrlf65nZuPsbJ2XeGThKr
-	XpSboE1LUvPO0dE+717gzuJmh0vbIsh+9TNyCqyHt3jHmPgp80SWrvFfdrDem1ap3ZBe/F
-	O/AL2UPl4D7rgFvULjFiwgZWDhoyiWY=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=rjay+nzw;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf07.hostedemail.com: domain of chris@chrisdown.name designates 209.85.216.53 as permitted sender) smtp.mailfrom=chris@chrisdown.name
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3b179528d56so999896a91.3
-        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 11:57:19 -0800 (PST)
+	bh=sOR+YhJV4utRWR4d1PAjqxQcUdv0HHDpc8pa5uwTO94=;
+	b=EgP8BCFeWhMAmghBV1hD+CtYmsgv0prBdnsLR5BlVeiZgwmpISZx3vuGNxrJI/mR/3OXtn
+	x+9TXUafdJvcSLAKHPyoha4zPphDJHTuoT0oMpWxiG/af7vyf87xNqJqf1vSDnvKv9iyIT
+	Vgz63oLfqFyaReI9b+r04OpyR0gR9UM=
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c4395d31228so387644366b.1
+        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:00:12 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794686411; cv=none;
+        d=google.com; s=arc-20260327;
+        b=L8KPrBoCIYmzqWuL4mPfPShvtPB9ZBIVQ6B2H3CrH9oZIQSQSlWgGE0wDL6MC5a+Js
+         JrodzYezyvjZ64CLv55dXlgMPxeZfG/b9fZVHfLaqasFSbKQlPVodmucN4Nm0Szboaba
+         X9loPLeqvP5LUQdJgA6N/rfoL56yt6tbT8Y/R6Qx2gz32RJ6a0q88S+xGiS89Y9flE98
+         XfE2DGHEMmp8YL4GclJLZm4eT4NOsK520koM7Vrt14vb7VrwPjD+DqqMpSz4aiZTWJ2j
+         o7svjrAcbnzXkfXLGbB+S489y9EtOpfr/YHs6f0uD2e75dPBYWdsyMuEg2DniqQ8S7Oi
+         mmwg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=sOR+YhJV4utRWR4d1PAjqxQcUdv0HHDpc8pa5uwTO94=;
+        fh=THs5RMYEBlRkLa4IPsoXWzXTRTDM3Mmatw8w7VmLCXA=;
+        b=JBCQ3J57pFU9d5hpQYh4Fs50HHyHT2Wp3+IUngH/ouxx4x7aZfwpoKafbQoAqCfm1w
+         lA/bpxZwS81Ke17nk2v7iiZ3r25zT9YTAtLD5FGfzg/+ilS/nr9zXl0hVXPnPtuPhxEn
+         auykxVu45JNKjHuEqzb3qnd3RnOGUQkVBRgKLku8x/ubL68IUNDieamwp1mGCQxHR4Pi
+         6JjJ84pmPws8wB7pM4SjNyQJdfsgIEBy2RZOvdP4vz/RxO7Zr4WhMc3Nn9fiJXgf1dWI
+         42f6PleKSrE7Or9NPfwIauIHmArp56VpuwVY+X92hpLOJcZBXPpIBP9zBqQV6QNBu+cP
+         225A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1794686239; x=1795291039; darn=kvack.org;
-        h=user-agent:message-id:content-disposition:content-type:mime-version
-         :references:in-reply-to:subject:cc:to:from:date:from:to:cc:subject
+        d=gmail.com; s=20260707; t=1794686411; x=1795291211; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=f+UcsNuMg4Yueaqy8xslzDAXYJR5HIy/+gngqmLcoZw=;
-        b=rjay+nzwnxV6wkmOIR8Pojf6sv3FSVmUUsUAyiGhWWB5tm9cEAztZUSyTFNlcOYZG4
-         xJacO8LojP5sF2uNgPvbWgO8DGCGRyeITmUzTky0McQlzeXFAiyBJZDL+Y/Sm9SGaULs
-         69s38M5yEpH19dYjKF1HG/QqVboczVtxZhCLg=
+        bh=sOR+YhJV4utRWR4d1PAjqxQcUdv0HHDpc8pa5uwTO94=;
+        b=gmCmslt4QM9ewriL2sVJ/LTcAtLp4FA96pm2pxj+lJJPB45EFe2jh1QzmDVQ8/mHst
+         eSxTkqz2A6xYmTrcCBK7BmPQL+lMQIj6brexoKTlnliI8tG/Is19w0UBaZwZL2fA36zZ
+         19+EoLXXCntNC5ShVYuBGbcZUo85gU5dMvDQ4CWjztHoy88ER/ZtG6xuVaKGnvmBNYDR
+         Xw+7wt6g6aKYdBHbGjp/WBVVdqjoV77Auw2oUw347C3kwZAWs7AHu+FNYOFsQNNdp5Mz
+         e1r5neTTbW5GUq3AQRHeSGQ4VFbeVXuHWW6XFLtjJs3+RnzpbaVcLX8OyBgrM1jIElNr
+         TjDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794686239; x=1795291039;
-        h=user-agent:message-id:content-disposition:content-type:mime-version
-         :references:in-reply-to:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1794686411; x=1795291211;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=f+UcsNuMg4Yueaqy8xslzDAXYJR5HIy/+gngqmLcoZw=;
-        b=Y66x3zLcTcIa6VSzEd3i8s+McyiLlz3SH+FqeyDU32VN0UIma5/1OX3sIcvejmNSvH
-         fl9rtmLwyN26yfv4Rvm+KiTHy0Jb4XUG949AXFjnyAMbXhIHNaDj+nJryWFVoZ4IbZC2
-         g6KLDT129RZj22pnxp3bd/vtV3R1Zt7Fa9N071WY0yDKN9jIw0RGhv3xyqfBysx7/Wr7
-         boJ8IGSNCzIdl9CGJtajIP/oUUqwikC5XjOPdZNBTWQgLFueSlnl6wceGw/CUnpjOsfV
-         MgOqjJq+IhIv5JmsG1FyBcNZsxq+krPPSZ+yfHGDjdqLsi0z1mQF6fi7UKB9usEEZyKy
-         06Zg==
-X-Forwarded-Encrypted: i=1; AL+hErE2MB3rpL3XCFAMB3ae1x3dv3b0z/kzq0PIzQxjlJdA55JaXkAASMh0cYVuS3JLJTmoKFm5TISMaw==@kvack.org
-X-Gm-Message-State: APuU4Z/bNcnwDq5BvghalXbBgPKd8FLkLOC8BYzFZByvTKXi2TycmOr2
-	MGtwII64oQli1bTF7UXf3rpsJiSbtCLFCe0SfFg0Yb51aTR9Xc4akAOCYBki4dvFOt8=
-X-Gm-Gg: AYBFou0UrqMGPc1RxQOVjtGFk79V1C3dljbDC2+1xpFbYA8vzH6wryk7naitfyCiKfH
-	6tDQuv7H4C+iZ78xQe/CHOfwkqQjZ70Nb+MfgXX5iO1YjgZgAJcFxKmNmF647piw0Yo3AQ6TPlA
-	7+iVwPmqPjRBCsLpW/ldCTK7wXBqzsP+6Ne/GVPjpmiDFgM0yvvM09RYwgaeOwgLM9Wso193GST
-	14v8B5MsM6CJOH5Gi37097L5Q2QpAPCMavacv7vGVx/PqP/RQBVekAjFsV26iMTmBaHr+P4SVtM
-	bH2jGYx/hbBqtwTFoTWn1kBLMNS/IGV1DzK6GwU6EmVO+W0pXx86sWKRXGQ+LPsZ4QxMZQOxDx5
-	tiS1x40WKSw1qxFxWdNym2ZVsHvA7vkjq2+Q3UPOVFbqykV7aCUWIv3UROUl/6NGnhGMDY9gj6H
-	VojIFqxe8pxOoAlCqPyriVQmy5rV98ezpmXwVSjRzDXZrkQZ72mJ1RnuPA3KUYzJbmZBpE33cze
-	QqDY2wNLjolPSQ3OwlqFQZ2MBwlVHuIDEbkwabQd/uAjV4BUIKYs4Bacbg1yao9PfhvuqWdpthr
-	ztAI/6kPOQ9ulDbY7m0JDt/xSc4lgR5fTWGnq8B+2eh+/5L0v97HntBo1uOhwySGW86p8fIQreQ
-	7UzRgEjuKYz9tHt9zJ/QQl2/RFYMUxwhayJe/Cj+lVUs33yqJsDkZQIPpWY2WwlOnAQXdeqFqAO
-	RaHbUcXcu6RYTy07YNLqTl/w7+tQJ/Eb5kxrI5olCmrnFXStJt2RHI+A==
-X-Received: by 2002:a17:90b:2e47:b0:3b0:9317:5849 with SMTP id 98e67ed59e1d1-3b1b07e9b25mr4925477a91.1.1794686238731;
-        Sat, 14 Nov 2026 11:57:18 -0800 (PST)
-Received: from [172.22.0.2] ([4.16.0.251])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1aec3a903sm10737441a91.8.2026.11.14.11.57.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Nov 2026 11:57:17 -0800 (PST)
-Date: Sat, 14 Nov 2026 11:57:14 -0800
-From: Chris Down <chris@chrisdown.name>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
-	Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>, Usama Arif <usama.arif@linux.dev>,
-	Kairui Song <kasong@tencent.com>, Balbir Singh <balbirs@nvidia.com>,
-	=?utf-8?b?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
-	Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
-	Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>,
-	Chris Mason <mason@kernel.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	"Borislav Petkov (AMD)" <bp@alien8.de>, Mark Brown <broonie@kernel.org>,
-	"Dennis Zhou (Facebook)" <dennisszhou@gmail.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH v2 13/13] percpu: queue the balance work on an unbound
-	workqueue
-In-Reply-To: <20261113-mason-migrate-et-al-fixes-v2-13-50a2ed382b61@kernel.org>
-References: <20261113-mason-migrate-et-al-fixes-v2-0-50a2ed382b61@kernel.org>
-	<20261113-mason-migrate-et-al-fixes-v2-13-50a2ed382b61@kernel.org>
+        bh=sOR+YhJV4utRWR4d1PAjqxQcUdv0HHDpc8pa5uwTO94=;
+        b=F3Gcc8G8TOUeZ0NOJBVTLE3sdiselFElk6XqZgDigSZashH+uOCPVTzzoIdBijMbqy
+         XFAvAhDmMPphpXldr3ASYxJqzqQn/MUfD0fAfPYUJxm4HH1auEyprAZZGH/KkwLK5hUZ
+         nBpsJETuuwz7dg6Gv9n6DjVBncTyWjMAwhy1t/A5mb5h2D7idieGqaVKv0sVmKzDGqGQ
+         zdxkZcxfLemTeR3Y9BsZWDSI5a9Az4/9XrYW0li+LeMCd26EmUACI674UxDfhoc6UnE/
+         sYOsCWB6alds2MmJZR6B7GFKQsiccPVfmeb11HXJh+OyvToehBnRxsFbNzIdPviYuwNS
+         iSVA==
+X-Gm-Message-State: APuU4Z/vMIEBdyBfcMGHPUSdSmh+ksyJfyqQYoVf2qFOKqAp/jL4Vftf
+	wNqv5t1/yUDzfRoE4TIZhWyxABcIaoFMhy28ZUChomg/Xsq/pVtv0iSYpB+r9pZnWfzxkQfZrVV
+	QRiudyYXpO4D/+ToYmz5FtUIQq2Qhca8=
+X-Gm-Gg: AYBFou0YnlPlQBx2CGb80zArH+qBngWQ0JmCGLbQv2G08mrvkt8k64OPcFw39JMX8OX
+	8weSvB+F0qyfH9U1uiAgtOyFvLMw2diCeDu0XiAdGnogFQS2c78/ccQEbQ1P7S2RcOUXBH8I/rd
+	72bbHDgcVzbck9MUSObPw63IK4u3FHO9Ni6J0eU79PbTMlP1zKA6nQzAxlIAaQnLjtnkVkz6wei
+	ojXUlMY1K4NI5a2u2QPsldbwOrWdfJMao0d+2QNVndT6pc6C3XjQjRlU7qKcaTgsc8LFUPynqaD
+	4vWl98Q6YmUvCBm2J3ZuuYqGYoyFELsk5POeo+46/mu31VqgROVYrgONDaIbfMAPAX74Yt/GIr7
+	1qHReZbF1KXfABPWLg0DVvccH+oEhURPyW4iWIC/s7T42REZ0d9Ispu/0t4U/L/AJDnH0+A==
+X-Received: by 2002:a17:907:3e13:b0:c2e:3ed7:7db4 with SMTP id
+ a640c23a62f3a-c5096340feamr485567566b.23.1794686411138; Sat, 14 Nov 2026
+ 12:00:11 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Message-ID: <20261114115714.04d384f992f7a635@chrisdown.name>
-User-Agent: Mutt/2.4.3 (cc9e3943) (2026-10-09)
-X-Rspamd-Queue-Id: E61C140006
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 6arxn5s36n36ut1tagpjs88mcru1mj7p
-X-Rspam-User:
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794686239-569851
-X-HE-Meta: U2FsdGVkX18qFjTzHQWw/8v+wt6T6ZiaLj342RsTvS4BOM7XmCBwmX2eoEN+foyBvtTnRarkup4Wk3M6p/P1/dyX0BJM9OuOGMde14DMquFdmLlalRBURUofj7kPYC/S0g55e3W13jgGSIo4sKb3KLORUAHWpR6uoSp2pmBrjCjWgGqqlh0fkbqvuzNQkVFNtzrunY6vg+oE1y9V9shDEkXAuuxo3lBzIKhTvsyU5PeHFPoSQedBKsPEIJKxIy1NkeTjSBbPPT9kJSoF7ZqMrPGcT871x7a7scVr+HgXiX67vzfzVZ5ag5HGI6+9e/w8NdfiqNC9VZHIigDkaJLP6EZ9mfmOFWbR0I9V+8yZ1hP5LHXlJO8F990xi+xKkg4MOJ9SgOlP0A5Bdd8YDnvScHJqGiJlSX43DKVF7qDHlv1RXZANJl+8oPFtxxgkOup0KB/D8rsj4hMNkLg65OlTu55bHclc1y6ngmtbPd4TGfhglTX5Y25/gDR4siAItIQO6/zv+zNOqvuPoGa8cysMWsi5YUWg19I+UQCT10tdLJAobpqJIkYOhk2IVoILXlWdigUevpX/65wiqbcEO/0IVyKd5phYH7I9LDXN0XM6oZ+68lwpjzddho+wZRrAOSoFfG1sEtzO8rxZfiydoNgvsppUKUBgZ6w0TsYVn+X6OaghMMA03EKNttW47ZnLggDsk1HN0RxJUWJiKQ5vPdXRDbQWIS6fiZFap5WaIN2E19LFfOoUI7HJ/5ccUD3M4f9G9+ru0eRlhQVFJStWecfzAJXjzOpgbcIX7UQwXMps11EM6CYZUdl+VPeEx2T868d6MSpr2lnf/JkzbFkZYgwzyKgqtgejfn09QThOx4XZa3fxF9WQT/yOzaUxCzB2YRdNxqNaWre2myrhjFb6pGRrt7k7psSGqG5kt0K6NSM6+UhPY0oHZkn1XV5vtaDFq+XpLt7983FK0zYff9/LgpU
- HIMyn2rd
- adu8SIO7M4G1ykL3x8Dc9NUMEow1ocGMD/1Kvjn0ZtOUuQP1Ey8od3FEh65pfap7CtFA7mLqKTP7ie3K36QC3fkHu43XuCZijKUhSBKXeI50Q/Co6+Fum4begq89jnqoBPBTykihLmIRmBUbzC7V6pdjyrUANSA6Q98OqE9UGX8Mrvbn8W5Qgrh7WawVLeA1lCBgAw5pSzUML5GYxuvHeqBrxTt+1fmgi59jcSqan2okmybwKTOv1h8oAoEqK/rQ+SsOnMtFImE4GqnF4Dh+JThc7R1xvhlKju21m9+Qqf7QQ1moPM0HSp2W5Fa31jzlqMsu7cIxtTIyJVU30yaISOq1iNI9WT0gSV4tA2KBc7MPFT/tWBSynrsc7j9sY5DjzxF/qrhL29+CVPH5cspNASWprIA0Q4pkoMxKXhIlZg2suJrKwlhJtxtbCmQoUthvoQqeOr6lnautIUMedek/SCkLlPriEi+dfPpJIc1Kk9wEk9yBFAO7FBfDsNmKgcUjsrCl3ofap3ytDiW8rvA/ny6yhqFuFJKdANcTj52KxbULd1p2sqR2iEZcaXVaK5o3BM3f6y7D4N60lVMTNmwP6P4q4mqsy/1SxekoPp3oohSdZ52Qzd1nHQcKuxJpvMg6CRnq3iGBmu30aGhUbuN51l1GaTuAenbwjk5iMzUUX/MXZFBzfNMxdSo9I3FHTicGm3P7PXr+cM4IXkv0510w8p5c/hw0VgoXUrqkV
+References: <20261110151407.789960-1-nphamcs@gmail.com> <20261110151407.789960-4-nphamcs@gmail.com>
+In-Reply-To: <20261110151407.789960-4-nphamcs@gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Sun, 15 Nov 2026 03:59:34 +0800
+X-Gm-Features: AclHuK9LiJKo4q2X-ldOljDTJeh41yrOvsNPTDo5hFk09bG_rGCM5-ExnL2Puq8
+Message-ID: <CAMgjq7Cwb-hTx=36CB_gYObgN+Jm4VihKrxzjxQ-YujvJEhKqA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] mm/swap: skip relocation of tableless clusters
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, hannes@cmpxchg.org, 
+	david@kernel.org, mhocko@kernel.org, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, ljs@kernel.org, baohua@kernel.org, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, willy@infradead.org, 
+	brauner@kernel.org, linux-kernel@vger.kernel.org, chrisl@kernel.org, 
+	shikemeng@huaweicloud.com, youngjun.park@lge.com, sashiko-bot@kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: z4qzz7n33m3fjajputoq4ukunfmstxf3
+X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0212C180002
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794686412-692499
+X-HE-Meta: U2FsdGVkX18VSenBr7hThV0O6/p63ZzU91hKubFMGitgmxXzzlFnNlQf1HDOgBYppe+OLEBoobk5mRNpKfemVAdXzF7Svoz5zjXHP9oNBnowiOQ4guCOK9su5OCUDaw0NSruKfjDdhR7cDFF9K3EERQN4cLmPXWuUnzNrsjAjCL6LxNpaUJkRHAkdk9oEhhF2QUIgP3Zg7X6wjQ+0euIopyuh+q5/1UQHjSnfdMQrpf47tmkKREMcjjX9yNpl4iogtguBp3y7WMcxfT9DeUL1p0hF3mFZTnRe7S/3WbtQVM8Jf6xPA6R5Z5OwkuL7QleQwPRVvunXSOqlf1mImec8urOS8RoRDOaHGNM7s4pp/Km7UmEq/sZ7A8vFqXuYk3CfY2HZZ+WXGVeRXK3MJTEAN9MrBQI4G4S+8A5ldNjhk3jk58rLIPfTHab/RLbNu7kUDhDpZ7EdsgrIYIUK0+KUb1mAPA55w6riC53EJYKTuPBsLJZ1Lo3xtZohbVtKotukPtnPGDt5+yKjNBPgZQSVZZJjeDeRIRudeCu4jZzL0JUuJsuEg3xqGV/ejjuPwWnFgxP2DktQroezVLmHy6fU7/snuYP5bEpArlN+8yEggnntxe9QXFpgzz6jJ03U/VR/61B9M1QeeI2xwv2yvgmyfgm8t3alvnWIliBTfay4gHgHZUy+ci/EuF+T32TfD95eSOT04+dQDAD2iOgHmijJjEMafigHbsFKGxmu2UXC3j0X7Mci1HYpIg66k/QQymlyuWKELA/e6yXOo/l4yQbqULrhvug0T+6H4hPtbyzJDHBoVXlTDo5Jsqkvjhv+9u7+dTKWhMDS5MmA6oLAf8vJcjn4WpncZ0w3pVMYdUlNu3N7lIIxcREJWZ1ObTVmDfqKl5k+9Pfq8nRlvHnjhMUbJtwSJ+XpLoPt1en7W9MS9ow/TnuyblzMHQtP5fh2kHtaQOYL9dPnPJ66zqIgia
+ +h+pyeWz
+ CDsthgSWHGZZkWNvcV9LUEzdX4udatHn3v4DYOiwJ35fHUoIEhinCZvh0tttPyNaOGp5rZIocNbD0rij+W2KxsRjQ/qPdgd/38sKPHa9XB4WJJhgb6gxLJG6vvhCS2EJljMQ8mqEi6vWrB0vIzsUDusgXhxQfGHwld6R5TVo0fuqdmBbO69dG2gHzcIax7mvET/QU9I7+LSK2t3wyfw/5/xfpWwXgKHCliq2//sLDn6SNotNIZluQboEnIT3V9PG6vx6DLhr2sElNEfffuMqM7jS52QCtyP9PjKtEvWFG77gdtDT7KroG2ijQzFm9s8q3gvBO/dJayRUxBlDn9jWuYcO85n9Mx7jKH/D1313liTWGyy/M8xqqhk0PJi6RbXHTYqhOowVR/504LWCDi1LsXUg5MKsxwZBEvAAc/7EAprjXgghbCJxt37NQ8pe/Ry29nyo4ClBT+DbKadgs72A5WdJ8oGWvhxRqj9yN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,5 +149,83 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Reviewed-by: Chris Down <chris@chrisdown.name>
+On Tue, Nov 10, 2026 at 11:14=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrot=
+e:
+>
+> A stale reclaimer can reach relocate_cluster() after another allocator
+> re-isolates an emptied cluster and drops its locks to populate the table.
+> The cluster has zero count, CLUSTER_FLAG_NONE and no table, so relocation
+> can free it again and dereference NULL in the DEBUG_VM empty check.
+>
+>     CPU0                                    CPU1
+>     Reclaimer                               Allocator
+>     alloc_swap_scan_cluster()
+>       cluster_reclaim_range()
+>         spin_unlock(&ci->lock)
+>         __try_to_reclaim_swap()
+>           swap_cache_del_folio()
+>             __swap_cache_del_folio()
+>               __swap_cache_do_del_folio()
+>                 __swap_cluster_free_entries()
+>                   free_cluster()
+>                     __free_cluster()
+>                       swap_cluster_free_table()
+>             swap_cluster_unlock(ci)
+>                                             isolate_lock_cluster()
+>                                               swap_cluster_populate()
+>                                                 drop ci and outer locks
+>                                                 swap_cluster_alloc_table(=
+)
+>         spin_lock(&ci->lock)
+>       relocate_cluster()
+>         free_cluster()
+>           __free_cluster()
+>             swap_cluster_assert_empty()
+>               __swap_table_get()  /* NULL table */
+>
+> Leave tableless clusters to the allocator under ci->lock. This also stops
+> a stale reclaimer from returning a cluster to the free list while table
+> population is pending, avoiding the resulting FREE-to-NONE state cycle.
+> The existing cluster lock serializes the table check and relocation with
+> population.
+>
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Link: https://lore.kernel.org/all/sashiko-outbox-203018@kernel.org/
+> Fixes: 07adc4cf1ecd ("mm, swap: implement dynamic allocation of swap tabl=
+e")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+> ---
+>  mm/swapfile.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 32639f65f13c..9fd62e4ca7a0 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -815,6 +815,13 @@ static void relocate_cluster(struct swap_info_struct=
+ *si,
+>         if (cluster_is_discard(ci))
+>                 return;
+>
+> +       /*
+> +        * An allocator may still be preparing the table.
+> +        * Leave the cluster to it.
+
+It's more like the cluster is in an "isolated" state so we shouldn't
+touch it, similar to the "discarding" status above, this comment also
+looks to me. Huge thanks for fixing this!
+
+> +        */
+> +       if (!cluster_table_is_alloced(ci))
+> +               return;
+> +
+>         if (!ci->count) {
+>                 if (ci->flags !=3D CLUSTER_FLAG_FREE)
+>                         free_cluster(si, ci);
+> --
+> 2.53.0-Meta
+>
+
+Acked-by: Kairui Song <kasong@tencent.com>
 
