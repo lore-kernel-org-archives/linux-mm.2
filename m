@@ -1,88 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405D2606A323
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 13:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA2F606A330
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 13:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bfkXAKnv
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lC1rRmz7
 Received: by kanga.kvack.org (Postfix)
-	id 6ACCE6B05B8; Sat, 14 Nov 2026 08:55:04 -0500 (EST)
+	id 303966B05BB; Sat, 14 Nov 2026 08:55:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65E436B05B9; Sat, 14 Nov 2026 08:55:04 -0500 (EST)
+	id 2DAAB6B05BC; Sat, 14 Nov 2026 08:55:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59B526B05BA; Sat, 14 Nov 2026 08:55:04 -0500 (EST)
+	id 1C9C66B05BD; Sat, 14 Nov 2026 08:55:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3653B6B05B8
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 08:55:04 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AD8341C3AD6
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:55:03 +0000 (UTC)
-X-FDA: 85433870886.10.46C849C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EBFEE6B05BB
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 08:55:08 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 78B111403DE
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:55:08 +0000 (UTC)
+X-FDA: 85433871096.02.829F687
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 1A1E220006
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:55:01 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bfkXAKnv;
-	spf=pass (imf13.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id E3CFB1A0002
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:55:06 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lC1rRmz7;
+	spf=pass (imf19.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794664502;
+	s=arc-20220608; t=1794664507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xi+Jp34UVw8n6rWUcn3QcZPlSKYiPMqX7yCNJrzL8oU=;
-	b=KXCZ4iHgVQaUoKfS5yCRBDWy9NDV8g7gsofhlmgqRBlLkXHCJLHVCBevlVkV/q/u9Hcr8J
-	pKWqnyHd8D6dNOBXFBYdTzYw1t0KgHOJQWpYPTZN36BWtdQPkBSO/qaE8TgydwmxKFG9o7
-	MLlm1Pd7bN85JjY668Q4Q/kNLWG7+Pc=
+	bh=gZCOg3PYW5/XzYktPPO7fZbRJ9jC/nh9/3WC5LHdP9k=;
+	b=de6hMLrx2Z9gDJKrla6n5mT6Zs6YnrpZKoGL7yqfd1SNBH6httLFo4/Xtea9MTHVBI24lr
+	98v6HWgFVHBq5e7qkCGmlE4Nj887f4P5RBzRxlPxd4HTh9wXFQSLP0TfVTzrmofRh2TDTm
+	2L1B4RXm6pz/i55/B0MIe77Qr7d0uZM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794664502;
-	b=gnD5RfYJyFzcmtxU5w1CvTNtPtMGtnEvwWMkQFDePrPI+Q1TZ3VrLxOk6hP+TMfNOOsg0F
-	bQ2PHMTC+M6EwwQcLInpbiPuiMuCce8K2NUqxc8mmOjwB3rPCdegmm6c037x48UGSOWsp+
-	NVkhErP1h5xAihc5Y6oTTdf2tRNZk84=
+	t=1794664507;
+	b=kAwLp9ylVmvPp08B+DnyotOuWONNzyg9F5d9P9ZHRBgB5gaqupi2u/wZUux6RaD/0BifEY
+	6DD0OXTqva37nXGSmMno0i052KMH6/SIXrzIKY85ADk7oW4IAqtTBNmgElyct8rD3n2oPd
+	MGRLC3Z0ChOg8gU5p64VgcTBx5vBUP0=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bfkXAKnv;
-	spf=pass (imf13.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lC1rRmz7;
+	spf=pass (imf19.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4EE0E448C9;
-	Sat, 14 Nov 2026 13:55:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36F01F000C6;
-	Sat, 14 Nov 2026 13:54:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3B2EF45800;
+	Sat, 14 Nov 2026 13:55:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E73891F000C5;
+	Sat, 14 Nov 2026 13:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794664501;
-	bh=Xi+Jp34UVw8n6rWUcn3QcZPlSKYiPMqX7yCNJrzL8oU=;
+	s=k20260515; t=1794664506;
+	bh=gZCOg3PYW5/XzYktPPO7fZbRJ9jC/nh9/3WC5LHdP9k=;
 	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=bfkXAKnvyN3NrzfYhrVigeGIKvr/8evEe0tQ8KwSyEafhDf3+AXVoqojleCZ7/Qdh
-	 2b013ZilynaxVntPTxgtS9Fyq3b+7yXhPeXkFfQ9ONM2J9MEOM/JQ3B/znTjkCUpqc
-	 r0tlhXctgE98kfAt1ITbmi9H0tApXPCL2XTcrVOM5qnz/NrX0rxwji+SmXMUOe8YHy
-	 kRbhgqC/kLnhpgS61Qu7Lfu7BuXDWJsHjF+zOY5u5KKN5rR5uvcX/zOV7QTiz8dq9Z
-	 GTd5PKapaf6tpFoOvo6qdgngRWS5W1FIZVvnJWAJ8F5DAYQTkJUN/Wbu5kFv6IHajV
-	 XPu1vrQEYpCgg==
-Content-Type: multipart/mixed; boundary="===============1687560790659556623=="
+	b=lC1rRmz7ahj/srEYA2ijCYwgAqxvBpBEiZzJTz1BT/wrTEWhRCAJRjIQUg90ualPp
+	 8fNiGIog6yGBq7jcPWwPg3KTZ4hhP7wzOgQinag8fVT+8JrN/YD10tUBIHBk4t50YO
+	 lVbRqj+kObH/VFAULApyIEa7KJo13ikHhn4sjSYyAVLzN15VB21GTINJSJZ5zSjoJ2
+	 SqbEpuE67Y8c73FjyTC9QAtGI69lnMt18W/xx4/7c8YFqB+lo9IQTij1vjYC2G1yJC
+	 gbXcz8wGq7FFvOpMP/hQpyy359bbb1860T3yz8/mr3WEBUyRt+SVvwAJEu6hB8hDoE
+	 Jru9mkTF+Jtaw==
+Content-Type: multipart/mixed; boundary="===============0802335019258284520=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Message-Id: <df03e637354be695652a787563af21ac77b4c61f813ae4491a3397a91df7688e@mail.kernel.org>
-In-Reply-To: <20261114-work-loop-pseudo-v2-17-98639a2286fb@kernel.org>
-References: <20261114-work-loop-pseudo-v2-17-98639a2286fb@kernel.org>
-Subject: Re: [PATCH RFC v2 17/42] securityfs: use fc_init_pseudo()
+Message-Id: <91e245da9f3df6d6e61808e72a4ad0213a9a6b838f594d0be74dd70ab228422f@mail.kernel.org>
+In-Reply-To: <20261114-work-loop-pseudo-v2-33-98639a2286fb@kernel.org>
+References: <20261114-work-loop-pseudo-v2-33-98639a2286fb@kernel.org>
+Subject: Re: [PATCH RFC v2 33/42] fs: add file_check_backing()
 From: bot+bpf-ci@kernel.org
 To: brauner@kernel.org,linux-fsdevel@vger.kernel.org
-Cc: jannh@google.com,mason@kernel.org,josef@toxicpanda.com,hch@lst.de,linux-block@vger.kernel.org,linux-kernel@vger.kernel.org,linux-nvme@lists.infradead.org,viro@zeniv.linux.org.uk,jack@suse.cz,linux-scsi@vger.kernel.org,target-devel@vger.kernel.org,driver-core@lists.linux.dev,linux-mm@kvack.org,bpf@vger.kernel.org,linux-security-module@vger.kernel.org,selinux@vger.kernel.org,apparmor@lists.ubuntu.com,linux-nfs@vger.kernel.org,netdev@vger.kernel.org,fuse-devel@lists.linux.dev,linux-efi@vger.kernel.org,xen-devel@lists.xenproject.org,ocfs2-devel@lists.linux.dev,linux-s390@vger.kernel.org,linuxppc-dev@lists.ozlabs.org,linux-usb@vger.kernel.org,amir73il@gmail.com,linux-erofs@lists.ozlabs.org,linux-kselftest@vger.kernel.org,brauner@kernel.org,alex@amutable.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Sat, 14 Nov 2026 13:54:57 +0000 (UTC)
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1A1E220006
+Cc: jannh@google.com,mason@kernel.org,josef@toxicpanda.com,hch@lst.de,linux-block@vger.kernel.org,linux-kernel@vger.kernel.org,linux-nvme@lists.infradead.org,viro@zeniv.linux.org.uk,jack@suse.cz,linux-scsi@vger.kernel.org,target-devel@vger.kernel.org,driver-core@lists.linux.dev,linux-mm@kvack.org,bpf@vger.kernel.org,linux-security-module@vger.kernel.org,selinux@vger.kernel.org,apparmor@lists.ubuntu.com,linux-nfs@vger.kernel.org,netdev@vger.kernel.org,fuse-devel@lists.linux.dev,linux-efi@vger.kernel.org,xen-devel@lists.xenproject.org,ocfs2-devel@lists.linux.dev,linux-s390@vger.kernel.org,linuxppc-dev@lists.ozlabs.org,linux-usb@vger.kernel.org,amir73il@gmail.com,linux-erofs@lists.ozlabs.org,linux-kselftest@vger.kernel.org,brauner@kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Sat, 14 Nov 2026 13:55:02 +0000 (UTC)
+X-Rspamd-Server: rspam06
+X-Stat-Signature: xtzp6k6irjxyxmqw3c4hryzn1ckt4aa9
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: ugra7o5hi5jwsgsxgmgajbjeo57xwqmo
+X-Rspamd-Queue-Id: E3CFB1A0002
 X-Rspam-User: 
-X-HE-Tag: 1794664501-562192
-X-HE-Meta: U2FsdGVkX18tsfd0VRMYQjKXVBLFYJmwjsvnppl8nvYt1uexTbfWPpoDRsGqdx5iZFWzkbagqqp8WK/KPiwEAAOeH/qWVXIkjmrR4qYBWMI4i1fxLlFoNAISfmOMFZCUpsmVm7DqWthgd5xGm/qMVTS16rENEREgMBRKxK8CWkmcwhqMNZZ+29l951r/vtteZimtR93xP6T27fYM2QbLuX+RYmBhQ2k43FmMKxJYxqOzmww9RL2nvbTP6GVUJkNGA8VjfjFSH5s9Bo8dJXhzLDS6Uy2sxHoFKbMKJN7O+WVhd7afdGq0ROWnkVzgOyI4mbjOO0ed8+xn8jrXzdcoKfVXs0m7PEegnlYqzEMOwr0r5MuYgpgCqT51rZNt/tq6pjk26Cp1i2C4Gym3spmmrM+6Rlk1n/Oy5J0a8cSvIEwGRBiX8Tsec4jzv7OZncXtmBsn3x70rLgBeU2ULkAwE72Vu9vQ2E2FUFtGR4YZs2S7uqOKdn7O3DGrWpXlb8HC5TVPWrV0gjZGxpFyFsJ3stKDR1IWhA0nK/Ui/LolWVVeDRYRE2mec1JGG70kYFX+T+GEwlgsA/CD5gJM7O3gaKyucE/fh73W3C1YGzKtRiIsp5O7TMWFquK+aeSJXbAAAUj1iTXdYRcCjN6x50BF6GQEpiTbm0A4rwv/O3rWkt64BJfHNUyyB4AR5nIjwhfHW8k4P8zr6+rjzGTXWex8q22ty9jX7Dkrw/UaUZmoHeQJB26IOSd39mdI3MH7H0TVISrBNI5OC7zmjN2pQT0K9DPu/oQCvSC7F4t6g1BZGSc0hpDRftd6EiunPMc3EH3RHCW2EKJBsZXx15WJ2uBB4rw/lP+h7qVhqJqoZuvgo58wEzEHJCRMGHhSifnBkvl35pSJUFa+ROh9BE9Sb+wW1tZ+yXq/TJJ+nyOoVGSKHpyBh4W9xMJt7vQ3BBY+I/jDCCWlUJAQQ/T+60TppGC
- PfOpknF6
- P+aJmcrBeu73cc8+3bKTjb9e22r/C8BGrU+CfGwfXrFv3/XZWDQhuSfZBhJrPRrFkQ96k+GTS4fL3o309TJ7OcKeIIZwqTMXPF/A+/HCnkQuUj/Eld/1qx+WJXaGi5643TS/vKh4gknds0QmycLnJ/NeAM0pJwEfMRYa9EX9jg8X3i+N/ztAw9hn7vepVOZKA9raAyIpHSWbUMSeSLHOaHGaBdMqkqyvKRehMswNeLdEcWS0wsK5fQA7uqYXkeQ8cRuhLnUG5Z0m/dYQWgA1j4MwWypDHwZvLUedPeEWUHBL+2Fhp/24cYfrFFSFi9Oep9GCUmJAaxokbcbbPgBx2f3puiduuCkF3KG04ROexA0SpmJrQzz5o2AWA0uyAfvr0SOIn17MJO1kcas8vYC7nrYNk1PUD77ljnypj1ihb2mwXil72Cr4PImDODzC7UHoYRsbevnSZQnr/HUW/3WPrXly8wKSG9RokcRDbWlmxUu17fucW72MsVRQ/hQZh0uWwJcJA
+X-HE-Tag: 1794664506-347011
+X-HE-Meta: U2FsdGVkX1+VOFZfamPKvoDYrCCkSINp1tXY9RYq75IU5PpzgIz1n6jLRyr6Azw5J0obvy6dkolo9TUqIk+YgPzXEhKAEwPsG5vy++AZ0yXFMEJi69x6mg64LbZwQe9EGHhiYnc5bwb145mELbjT7XVHXUjuW0nqzCF8dG+xwy8aZ75i+mFsSHSKugHVZ3kGfRdbGUGd7e/M3DYmpS1HPJ8TX9KwIqJXNlpfZoHzFB80iK0sZsyTFT+gOHsVQ8vUNUU8PF4ZSouRLVQ+xqmJYulYGMuhMG3y4xwxyDOyFHso5SfUauVr13sxrpwzpeTFzudZk726Ic7O+vMFgU7cyOM+BkRsRmg/ubF7G/PuyGujiJm2JxTLLZYu7xkX/kgdKJU8yVjyfUfkpBIdrd+2tMZ0yoyi62iPlofl3w/ZYb/PxG23vhUhJs/QteUW8hSNpvfyPvMNUIU80oeJxllLxN2fGWeT8TGZskpS806q4nHlX7rTC1/VsyF3H/qNAlRa4cAi7lDOWWKk5yG8vHtWIgQkmueQkpqDEA3+YJXHv2aQXuIh4RykJAkCb28g9AdniBKuSfYVtfAl7cs5jauinaQl74uldPqycVukhqYprVt8/e06jjYN8LVSnrsqv6fs3QX/mne1SVkNLWj73DW/QTuoMMQHRVTi90cRa1+VePuwlFRQ9+kd+O8wsnu4BUhxYUB+SkvYWdBi5pkzQYMYYcdpasrbtw/uOy6rABo0UV9sQD+1+NpgGCQjFwz8ZbnU5fzdC1iCvxo/dgEWBZt7fNMPGtieS8DYQ8NdGBHwI2rX0s0/lxiwfZBVsXcZ1XJAc+fK2cCJJCEEzUf9L7v/6T0qS98A+2YN94lmsU2HzCrFF7i/XxIpHpEl5o0QcfJuIzpEE+TTurYRHtStf210CbfFGjQR5LwFCeSeMwDGbpHZM/biyBC6N2u3OFutB+rdj4UcA32MzUgKmpRjsfq
+ HHHtgTfY
+ X5CLwTQtbi+XgkT7e938FiPe03povjpMQZbNJxPOfLOuk18VIQXeSS5YOXNYroTOYFT0n55P3hFpuzusuy7BDX3SVIBm0rLFdFWuJpvsQ8Zz5TJf91WeIT/9ScuJ9pm+B8M/7GRZ3z34terHWoij0TV6qloj216CRDchBUhSIMX2srLEM/bGkz5dpyKlMXCojibM4f5fggdQzx+Riix1iuKV2ghUGqZbXqt5Svt/UklT7F/HPjzGWwx1OWU8+GPclxkxZEA19bjEG9BfwcGOh2QFBZ7go29qpVFB5YLJYjnChXmAWGqTRcdsE78nlk+UxDefYWg+rozvYRwveF0T6XNDcdb8+oXZfm1pRjh0KiZt025uIFxrtrDNwWoVjDrYMXGlsHQIq1h+cCjTUPT94LminrGgVPom7fvDM8q1E4BGPJkOr3GZMygOWeCrxSA1TeLFnioYaum5gakFMadBRgNvf0urvqh4hj6kqjdzP7xoG9IO+nk5eAaLFNxFjdmyuiKZK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,65 +91,83 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============1687560790659556623==
+--===============0802335019258284520==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-> securityfs: use fc_init_pseudo()
+> fs: add file_check_backing()
 
-TL;DR: Setting SB_I_NODEV on securityfs may make reopening AppArmor's
-inherited .null fd (e.g. open("/dev/stderr")) fail with -EACCES, which used to
-work; the commit message may also be inaccurate about device nodes.
+TL;DR: file_check_backing() may call d_real_inode() on O_PATH overlayfs files,
+which could hit WARN in ovl_d_real() (panic with panic_on_warn) and let the
+pseudo-fs check pass wrongly; reachable via fuse backing open, needs
+CAP_SYS_ADMIN.
 
-> diff --git a/security/inode.c b/security/inode.c
-> --- a/security/inode.c
-> +++ b/security/inode.c
+> diff --git a/fs/read_write.c b/fs/read_write.c
+> --- a/fs/read_write.c
+> +++ b/fs/read_write.c
 
 [ ... ]
 
-> @@ -64,6 +65,7 @@ static const struct fs_context_operations securityfs_context_ops = {
->
->  static int securityfs_init_fs_context(struct fs_context *fc)
->  {
-> +	fc_init_pseudo(fc);
->  	fc->ops = &securityfs_context_ops;
->  	return 0;
->  }
+> +int file_check_backing(const struct file *file, fmode_t mode, umode_t type)
+> +{
 
-The commit message says "AppArmor puts a .null device node into securityfs
-but only ever opens it via dentry_open() which doesn't care about
-SB_I_NODEV."  Is that the whole picture?
+[ ... ]
 
-aa_inherit_files() installs that dentry_open()ed file into the task's fd
-table:
+> +	/* Look through stacking filesystems at the inode with the data. */
+> +	if (d_real_inode(file->f_path.dentry)->i_sb->s_iflags & SB_I_PSEUDO)
+> +		return -EINVAL;
 
-    devnull = dentry_open(&aa_null, O_RDWR, cred);
+With FMODE_PATH accepted, can d_real_inode() be reached for an O_PATH file
+here?  No ->open() has run on such a file.
+
+For an overlayfs metacopy file whose data is in a data-only lower layer,
+the lowerdata redirect is only resolved lazily, by ovl_open() via
+ovl_verify_lowerdata() or by ovl_d_real().  For an O_PATH file this means
+d_real_inode() goes into ovl_d_real(), which does the lookup and verity
+check itself:
+
+    err = ovl_verify_lowerdata(dentry);
+    if (err)
+        goto bug;
     ...
-    replace_fd(n - 1, devnull, 0);
+bug:
+    WARN(1, "%s(%pd4, %d): real dentry not found\n", __func__, dentry, type);
+    return dentry;
 
-The fd is not O_CLOEXEC, and its f_path.mnt is the internal mount from
-simple_pin_fs() in aa_mk_null_file(), which never has MNT_NODEV.
+ovl_maybe_lookup_lowerdata() treats a failed lookup as a normal runtime
+event (pr_warn_ratelimited("lazy lowerdata lookup failed ...")).  It can
+also return -EINTR from ovl_inode_lock_interruptible(), and
+ovl_maybe_validate_verity() returns -EIO for a missing or wrong digest with
+verity=require.  Each of these would hit WARN(1) when reached through this
+helper, which panics with panic_on_warn.
 
-Opening /proc/<pid>/fd/N, or /dev/stdout or /dev/stderr, resolves to that
-same path and goes through the normal open path:
+In that case ovl_d_real() returns the overlayfs dentry, so the SB_I_PSEUDO
+test looks at the overlayfs superblock and passes.  Does the check fail
+open there?
 
-    do_open() -> may_open()
-        case S_IFCHR:
-            if (!may_open_dev(path))
-                return -EACCES;
+Nothing calls the helper in this commit, but later in the series
+f79b9e79484f ("fuse: refuse files on pseudo filesystems as passthrough
+backing files") adds file_check_backing(file, FMODE_PATH, 0) to
+fuse_backing_open_file().  That gets its fd via CLASS(fd_raw), which
+accepts O_PATH:
 
-may_open_dev() checks path->mnt->mnt_sb->s_iflags & SB_I_NODEV.  That bit
-was clear on the securityfs superblock before this patch and is set now.
+FUSE_DEV_IOC_BACKING_OPEN
+  fuse_backing_new()
+    fuse_backing_open_file()
+      file_check_backing()
+        d_real_inode()
+          ovl_d_real()
+            ovl_verify_lowerdata() fails -> WARN
 
-Can this make open("/dev/stderr") fail with -EACCES for an unconfined task
-that inherited the .null fd, for example a helper exec'd through a ux/Ux
-transition from a confined task?  That open used to succeed.
+This needs CAP_SYS_ADMIN and an overlayfs with data-only layers where the
+data file is missing, the digest check fails, or the inode lock is
+contended while a signal is pending.  No fix for this was found later in
+the series.
 
-Should the commit message say that this reopen path is intended to fail, or
-does .null need separate handling?  The statement that "securityfs never
-holds ... device nodes" also seems to conflict with the .null node described
-in the next paragraph.
+Could the pseudo filesystem check avoid forcing the lazy lowerdata lookup
+on O_PATH files, or should ovl_d_real() stop warning on lookup failures now
+that it has callers besides trace_uprobe?
 
 
 ---
@@ -157,5 +175,5 @@ AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
 See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
 CI run summary: https://github.com/kernel-patches/bpf/actions/runs/43599461726
---===============1687560790659556623==--
+--===============0802335019258284520==--
 
