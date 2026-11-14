@@ -1,95 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02DF760A381F
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 19:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A966606A8B6
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 19:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=k6IAAoqX
+	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=YkY5Y/iV
 Received: by kanga.kvack.org (Postfix)
-	id 16BAF6B05B8; Sat, 14 Nov 2026 14:56:56 -0500 (EST)
+	id 27CBE6B05BC; Sat, 14 Nov 2026 14:57:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F5F06B05BA; Sat, 14 Nov 2026 14:56:56 -0500 (EST)
+	id 234A46B05BD; Sat, 14 Nov 2026 14:57:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00D616B05BB; Sat, 14 Nov 2026 14:56:55 -0500 (EST)
+	id 143846B05BE; Sat, 14 Nov 2026 14:57:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BAB6B6B05B8
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 14:56:55 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3913D140441
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 19:56:55 +0000 (UTC)
-X-FDA: 85434782790.02.0C875FD
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 661EE80002
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 19:56:53 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=k6IAAoqX;
-	spf=pass (imf30.hostedemail.com: domain of chris@chrisdown.name designates 209.85.215.173 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
+	by kanga.kvack.org (Postfix) with ESMTP id B7AC36B05BC
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 14:57:01 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 27D33A7FC9
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 19:57:01 +0000 (UTC)
+X-FDA: 85434783042.05.499EFF5
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 49C55180002
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 19:56:59 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b="YkY5Y/iV";
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf16.hostedemail.com: domain of chris@chrisdown.name designates 209.85.214.179 as permitted sender) smtp.mailfrom=chris@chrisdown.name
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794686213;
-	b=kNsw75baE5nFINqbppDSACg5HWJa+KYZbXA6IYlOL+cUPO5HLevE8RpBLVkrQCdACxcM/C
-	3NCBSGJ+qxCz60qwJckT7y++3TeCz7fRKpMjdpTltDRX9d5ZLLD2HEpk7yU5HryXzhxcak
-	nbUFYDGu9+8MUTn/kIbEnN6wqM2gKDo=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=k6IAAoqX;
-	spf=pass (imf30.hostedemail.com: domain of chris@chrisdown.name designates 209.85.215.173 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name
+	t=1794686219;
+	b=5wGYeifGB5nzYJlZLdb8kq+Q6mWkRdVk2LMG1bXX9GBsq3rLD0MYYTdEnznRfgJCIlGUSg
+	+vGd8Yt9r+BRAnlK71u578gAZLRIKrEOx2XOAsMUJ5V3P3Fx/uENd7sZpBF+Gd/Ge+2KqR
+	mfJgHMnURcZLOZqIEmT03CVneXjssHg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794686213;
+	s=arc-20220608; t=1794686219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jUPvgjj1PBRfdwLGObCdW0ZVMBq40+Tj39RcKsF/1KM=;
-	b=C95fv5FD2B/SgMBiqBXyV/xxJV0Lu0h3Saz5ukZYQgcyL/yfR/BzzA9P/pddxQnyDIVXWM
-	lpY/qas24Ro2ntpHihOWc6SCfFfZBOySQQdrCO1U6JVhIA0Hqan3DKi2xap0KmklFvYFte
-	OkmxMoFsIFHkUD0mMiOj/69y5KDcEwk=
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-cd60c5da24cso2009815a12.0
-        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 11:56:53 -0800 (PST)
+	bh=YJV/kOno9dtsXAkcAOQfE/oQzfJxocwLJi3WPYE6qNI=;
+	b=ollN0CFT1MW/G3gczOjb+g22MxeATf82OSi+3LQ744ahc1AO6M1jpjNymoyBl8k4QJGD55
+	e3thxO7h2hoTxe1SJowsaRqY/DFQ0t3XVNpsztNcp7lsvdEE6E8i6x6x383XlxjEAuFS1F
+	Uwi+QjykAmJ/A3OfOxnFYlXsiiomCmU=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b="YkY5Y/iV";
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf16.hostedemail.com: domain of chris@chrisdown.name designates 209.85.214.179 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2e99b1e5b4cso12577885ad.0
+        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 11:56:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1794686212; x=1795291012; darn=kvack.org;
+        d=chrisdown.name; s=google; t=1794686218; x=1795291018; darn=kvack.org;
         h=user-agent:message-id:content-disposition:content-type:mime-version
          :references:in-reply-to:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=jUPvgjj1PBRfdwLGObCdW0ZVMBq40+Tj39RcKsF/1KM=;
-        b=k6IAAoqXulUcHsvd1s/lud855i8TEPaWT7cOOGeMdHDy+ME1RcLPF2pIbV2QFtuiTM
-         ZChn7PpmZeCFyzb1sN8a14TcX4AvqOcuw3Frhl0zvRgzLvC9PdcfUsPOo6MF+89QJ2Le
-         /Z5+pPWkG2Py7BgESr9VQvOA2hYbPBsJShyfo=
+        bh=YJV/kOno9dtsXAkcAOQfE/oQzfJxocwLJi3WPYE6qNI=;
+        b=YkY5Y/iVF0ZANMN7VICauDT7W5ZgvRIR/mxcelQE0pAlTJTpaPw2XoTXN29/tQY1sf
+         ppqs0q+M6h9ZnpWSGLhjHJEY6ge3pvMjr3nBf0WrUWxotS6yGX8oySLfKQuQn4ToJ/9a
+         FFlVA6fh+0IBwADaZh7e/8AO2xdBsnuhRszbQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794686212; x=1795291012;
+        d=1e100.net; s=20260707; t=1794686218; x=1795291018;
         h=user-agent:message-id:content-disposition:content-type:mime-version
          :references:in-reply-to:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=jUPvgjj1PBRfdwLGObCdW0ZVMBq40+Tj39RcKsF/1KM=;
-        b=G1Nq4vQm4a0waklyLZNvROfFetNzqUMamT4oDlCiY7nS05ZRKDRlQgF2iqZxpqR99n
-         KirfqAy/jEX26J/xgnc4SxhmjjRF653zrLnQTbyZODtaRGq9dKzlzJ5zrUtbXiFAJtAu
-         WlVd5LAtDYvkDYFZdAz9j5JXorZGVOC6O7HCZ58PrBOItvdz12WgQsQeWALktYjC0Zbi
-         hTolZSlr6qSSNpbsSs1SFAQ4GJtmE+zkc/2BAg300FjvFcwwi0y2Fg+JpMRwXZtHN/ix
-         Bhg79TZQ6pqY6lIve4WM81eoHxBzsAj8v/mU6WhX0MZ5sl/Q/UENshzywtvt4uW57ACR
-         9hXw==
-X-Forwarded-Encrypted: i=1; AL+hErEnzoH11GaQb9nukrNMHT8S2oCHZBElwyoL+eujiQmhX2gRlti3GFUKU9BVwyqspNUyOPL9O3jSDg==@kvack.org
-X-Gm-Message-State: APuU4Z/oW0ojnpbzq2IGoH0nfwKHq3S/p/wAMEF6icl9Cwgw9i+4wzm3
-	4PYV6YF1yN58TJT1ulxmkapkXXu6qZ45LgNVEt2P4Fn2nAi8rAx+ycjuiLzxo68XloQ=
-X-Gm-Gg: AYBFou0qgsPQcmjf15/LYrwoik+shIP9H432Ek8EZnJCX1odHxsDLx2k6pz13SVkd4U
-	Agit7wkXFbPfhoNCTpYTjNFHCX2GAD5K+0GR2JUiqjSgVpimLm0brisGy84sgtngM9Zb3t8YkCo
-	fNMv124fbY0pQVs7aeOiZF5JDlkdQ+NBy8+vlAFLG8jNUKBcN3xxHJaXB2vpRHeuhkfAEL1Ur7q
-	9dCQW9OQQTn/bP0kfVlzAoRoOLXK9K3TRbEAmhhLdArUq3OK/HBHQ5eBASCNXLjARDMD/XYFkcv
-	Cr5i5Mu9R8czrcwDy8gxVn+tFa+mjwCXLmjA+vTPpe4roJdafPQ8t3lHy12Swlz6v2fAxPHMstk
-	LxKAGgzfqzsvNhl0WkOTqhGCLgejhgW95aF2CAbS7jdek8u3oj2ZTExgOzkhJOmI9Ra6I/Ar/zC
-	F62AIkparVo1FohnSau9Z18ydCji/K76aCCaNqgV+a5cGh3mgJtglAB2lCc10tFrWrltasxiA1V
-	oHXEh0S6cjt9oi/yUfbdubmtKzwSO46ZujudV9YWTDPw8NtV20rWyT+mIMZ3vd7QVF8IqLinmC3
-	vjd2knl3fa7B+DlNelHikTcLWoqwdU4okznXO7vK7radiFzEweyqo+yaqvuvnQIDEeKYq6uRVjI
-	gMyKFmH7DW2EDwCJRYQu4/bKwOBiaGbayf61ZzLBXISt0gLgiiggvhlo8U7suErnlBb4DX/1P7h
-	tDbpMAcroBqzkuZReR4whdxESEyMQnw4ot4InM2/OceDN6HFMqxbFcR7+4
-X-Received: by 2002:a17:90b:3551:b0:3b3:8194:9e4c with SMTP id 98e67ed59e1d1-3b381949f14mr141149a91.34.1794686212209;
-        Sat, 14 Nov 2026 11:56:52 -0800 (PST)
-Received: from [172.22.0.2] ([64.16.22.130])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1aec63b9bsm10009272a91.12.2026.11.14.11.56.50
+        bh=YJV/kOno9dtsXAkcAOQfE/oQzfJxocwLJi3WPYE6qNI=;
+        b=xwxZAR089thIl3MqDTB2ZEULn9sLdeu2VCR6kfRX2HYRLym/xsKHQfOiwik6Zz/We+
+         DDWl8Q6QFGmE4iRgdN7bXsm1tq5/1t0vBRNfBuJ00MN2ktqPCuLlVZk6MjyiXSiYx72k
+         tiLRU5GyX/qojP0lJJlNl2ekKWu+02MfHTFbcoQVTi4TV/j/baGDr2/gQSWtUf4t3ey1
+         oID08TwKLO2ejxu4AMUufJ+8X+FDANL80j5wpMU8J4dKQ0lpZtBFUxgFK/bp/LM4Gsfa
+         81wZU+tKyXnpcNcigniXBl56namPvcjT4yCGIzLfTbb3Ev0hWSdbkV2XlnjExj1Su9/T
+         F3OQ==
+X-Forwarded-Encrypted: i=1; AL+hErE7/0JrPjnL1LzxjLaMni3dTt7myCmBqhOUvPA4OZfp1nTxstJVwsLj8SEOlw+/Od5rc6lyJ9Y72g==@kvack.org
+X-Gm-Message-State: APuU4Z+eW/MACqv4t9R656SdHJ8v+29H4uohH60RgIV3Hn8+e9SISks5
+	nVdxCUAmyglXrLLshx5GN9vUQ9LE2qspXK7kw6ZFOm8n+m/VqWPrrSB0YArscamb1ms=
+X-Gm-Gg: AYBFou2szYggVM4UBoEDgOEF6n+29+h7rO7HSVi3/RysoZdzcvYFEWhCgwp34JaUy44
+	85AXdhWTQ+PfOTVvGg1Wk9X/qngQGqgeZdIqHJfMB2Fn0UerK63y748iiVxxA4ZQtsbKOTXE09y
+	bErvvOwb9EozYzv1mMI7wALWOX/1eB0QAo1BkT4V4/d5Wl2xTimBURHYHokY6moB5o0TL9gEay1
+	eqEJ97+NV+UEIUz5t6vAgTlLrEdSw7VpWDJCIw3DbMaqWZil0BuVYtJe781yh+/GegjFLnzwbL2
+	uKMMsSSsxZZKM35yt5Yo2U6w5HF/sUF3DVKCVArRhOSIZlIiSw0i3BzBZp1WypKcwZ2p9BFWn2O
+	5H2LngIwDwlTzITxxpt2O/gcE0sUCoKdGjtADeUWb1kgwdYdK2VudvYUPRYNTc5OHCHhCWGUELZ
+	6WerX2Jr9zCHhgRxBo1PalwQrKT7bw1k4ct2FH0KY+WXEzC2FpL54ltmk6QMuOtZstc1IRHsqQY
+	6MoIDhTwCrP8F/BZpPmVDKVqNmGkaBqDt5qIxcvQtwslUmvR4vwfE7j6Q97IViaeaSUJJ4eUPIH
+	EsjQgFLSOboj+frGIQI8GGmYBiBqIAXInEa736J1PvYJAD8lyrZ7ckGcThVY3WVSmofeRdBSBsS
+	EXv0lS8PhUDJe9rXmbTh3MWnaOlztRwQ1BMX2tZOUswtwSPQFf1Q0gycCXUELnzgzgJlT0GnzaJ
+	N79676IwDhbTqDFNsy+nnYYmav0pr+hPl1bRSAYFtXn7QrkLGmEDHaQg==
+X-Received: by 2002:a17:903:2b04:b0:2e9:4d43:d58a with SMTP id d9443c01a7336-2ee0d65fb59mr62764435ad.1.1794686218088;
+        Sat, 14 Nov 2026 11:56:58 -0800 (PST)
+Received: from [172.22.0.2] ([4.16.0.251])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ee0f8dc955sm22202275ad.62.2026.11.14.11.56.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Nov 2026 11:56:51 -0800 (PST)
-Date: Sat, 14 Nov 2026 11:56:49 -0800
+        Sat, 14 Nov 2026 11:56:57 -0800 (PST)
+Date: Sat, 14 Nov 2026 11:56:51 -0800
 From: Chris Down <chris@chrisdown.name>
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -117,29 +117,29 @@ Cc: David Hildenbrand <david@kernel.org>,
 	"Dennis Zhou (Facebook)" <dennisszhou@gmail.com>,
 	Rick Edgecombe <rick.p.edgecombe@intel.com>,
 	Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 06/13] mm/migrate_device: don't let go of the fault
-	page
-In-Reply-To: <20261113-mason-migrate-et-al-fixes-v2-6-50a2ed382b61@kernel.org>
+Subject: Re: [PATCH v2 07/13] mm/migrate_device: look up fault folio after a
+	split
+In-Reply-To: <20261113-mason-migrate-et-al-fixes-v2-7-50a2ed382b61@kernel.org>
 References: <20261113-mason-migrate-et-al-fixes-v2-0-50a2ed382b61@kernel.org>
-	<20261113-mason-migrate-et-al-fixes-v2-6-50a2ed382b61@kernel.org>
+	<20261113-mason-migrate-et-al-fixes-v2-7-50a2ed382b61@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-Message-ID: <20261114115649.cafa06b8b8401e8a@chrisdown.name>
+Message-ID: <20261114115651.2b3100f5d9444151@chrisdown.name>
 User-Agent: Mutt/2.4.3 (cc9e3943) (2026-10-09)
-X-Stat-Signature: 8f3qnbsoczytdhth7nquka55ekbsd4ei
-X-Rspamd-Queue-Id: 661EE80002
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 49C55180002
+X-Rspamd-Server: rspam12
+X-Stat-Signature: qagejrhscd9csu3ssajfn6euuxr6oy4y
+X-Rspam-User:
 X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794686213-281871
-X-HE-Meta: U2FsdGVkX19zeGPf5nztJQoYYB63l4MaVySoMYwafLoI8bN3kST/OrZYj0WqzhPWGLKYFuUJ+gKls4un7MO3LV/juLByi9u7ZnuQirwrN1VjR/Ge5+fCDTHDDuXTiYPxIoBSwWcxRU54/ZEimQWIZcyjO4RtmfLHIhaBxvz6Sta3j8UdU14Ys0LYacVNs3S/40xqaDkrUXfMD+wnHkx5FbzL0HoMNg2w1BCrGzFA6Hf5fODYVjEYYZUAqS1W4zWDTazdtqdNmigiW+ALOVCpe3C/bGCnc+R6vOYM/OWcXuYku6MtQkeoGECUukET2EGJOZ770W7E2ZACwGCgWZzU0HYTfBR/jBxvdkT4qr6O9myqhN1RiQMJTcwvnM6Njl3ei0+87zFVnqZGI5f8P9eL6E0k0X1WyXdQuxH1kmho76uRFntLzY2YLLavY+V+rOeEI2CMBVK7x4h9f9DAKakDNVueJQaCTnU+a2KtThRI6bJz9msCEWGb3hMAU489ReHVHBwkpp7rce1sJSs7UIvw/zyarmnHEPA+FzAf8Xsbh0gTHR1YZcyVZ6Ahm1fRjePKLWZKUYsWkNQ6ATLTeDKgWkG53U/PfMeReSNXZqNuPYd1dcjdJqT4sEbWYDWAJZC5VbIfRO0SAZ3EsNMXTT6dX9v7774ZyrGwAeFQcIp5vMRyDzdk+NnuYXYv9EAvSnitvascA9truBiBzIeqA0s0ldEyjtgiqvuUyvNak87v9g3JASmhMkm+ptMx+aReWr9fOPcAEtdnvNQp7eYt5Bzzzz9R/3cVjhTm3Tv86dck0LjbL9hqUd6Fl8m99/jwy3w0kDVcHrDw5D0e8Fu9xeGCahFrtE9djTz3QMHjbXB8jw/Uwf9x5Ihbn2mrElCW4iQc7wSh8AdPBNe40h6peacLZsEPOeN1EkHzCTjmnO6BeOqEUv9bW5oxjrlpdKdswbXXSIQLLCjcjwbkdYnyn4A
- Dg/6BqGk
- L/rurySeAEL2LVqM0/HJAR+4nMiTdbvZ8wmYwn5uO9WW56Lsi/uwFGEMTYDLPi4+dTWZbgKUexJeYY/cDp+em0qw1QIaCVmI7DaCE9DbgowOBcYRmTvgtlcfUta0NKqnyDZR7bHMhPjAXFJyKxF7fzgCJ23qRATo9dwirIQ6H1ci/1fDcYRREWSYfDWWGgpSAbHidC0+8hvXpCGmqLDs8hTez+1aYsJkJBsAjLBOtCwdaPhO19ZI5oHGhZq5nHJmxfEIq3AqUca+o/S1tp4lK1HQqLFZchLoKPGFMzF1/ejfFDdi2U73qIVrZD4xYiKt1w8KhUCviBfpoilVPQryV0wKeVzTwLBWnOt9qwrOSsfqX0XPfBROJCnaAeD3S+buI+ReWKzLk9FCaEc12gIX5XAx5D7akvqsXMsZklkBvDJudhVn3e6PJYCbW7cmv0ae8H6DW7A4ktfuMhTHiGwxQ4xwlouCI79jokjqrmhUK/OcGT+uCelZRTUA84xiHi99tj/V/A5+LRtQGwnP2N8n6haA6mLI3fVpRXDzJ35xulZU6fJFFQkOrH5zsYjr87RaKaqtu/E4htDWREBw=
+X-HE-Tag: 1794686219-606496
+X-HE-Meta: U2FsdGVkX1/RW7vEAphYGDfZBtafd05SKV0zVsHR77h7ADzjTUfbHXynJc060bbepmQ21Zxy7IkZV7xWrC+WcB/fyRC+ac805eZ8werwtbF8mPfiR77ASIMU4d0gmhMFAMlgdqbG2OUDRGSrPYltfykQ1R9kwZXNQf8FUEdBrOZQgOoHbQ5roIsJT2KyuZNluDA5WKV/eYGZCGGhRHVrbzkNzx62fNZJft9Asx2eoK1dFzj/vSgOXbxtgOsnfutihcizSfhnykzpXAnZ0CbV+d6iO6Pt4Sbke+dAlmycLQ29W/AP8Gu6He1Xk82Lfs0gDJH5cJa3h57YRxAozZsyxAK/Y2g8qtFp7K6OF0S2ObsETbw4NbRrSVINUTAirDSxCuo2lAZiWqGt/yycHaAupo4j8PNEWI8hVH/33XMIZa06o6UmyBOMOv/VMa8c8pLuYgIjLYWCcEYPTawaHB5wEaq+RCxii6Z0c/8gCbOkJ4G5cV2U4HpL0Aw9I83Pd1c0Ho4WP0RvRBGUyR1Gw0xgQUCoQFApH5mN6g+CqmgY2Eb75dwcpOd6JMTYu40DlU3gnw8J9kmQDHjkxBNz+Qxfw/4Z60BJQUR5E0tsmLs4Y7KXQeHGXxBfewksp6hpafnwBxaeGLiML02wgmQS1+0JUUNHwSV+Bj7a4ismRXIUWgo8rslY2E9VKwzD/3HoQeCJcaL4ACazRhihiI4YogF+FmuiK7slqRQl0LZU9FUlcd6U7VAtvF0KZ/gyFifl7fjFIEHfgbjXQ7rSX08JNax1T4Z18HJReP12k4g23KU2oYJABT9IzXp+eCIriW0wgOY4k9PgkzjELTgb5D0CiTw2ObKNFgKc3xO2RpJEpzQuIKgzfPxwh5pybnmYOo/7IKb5M3fF5paJNCyULhaE1RWpjyv6P003y0+QuzLOBNP1FhRvV35zipHlMEyVUJ1VPbF+tEpmN2lz1BWpK52/W+S
+ MqCYVOHS
+ OS1jgMVOgSSPOV7ALuN96UYVS/a3BxWy46pp0pv/Lsr2DgZvUk5BzmUmlITjiUPNPWBSaK43cgjpti9omAk+7F97y4E4JSnulPRm4ZgeXPhA3exwK4fkndjT3EfxJOKjno6USrZztTuIKc5b5GOifdIFL2qkagpDxWENEF6lbQQHV5TNVaLwxlo8XQXomK1dREvN/hMJ6XM4rino5dlUkiz1v0vLz0MSRxuQMskuX29vRD9wfu1tNtlv6vjx1oSaMl88IQJ8bwvc2t8k7K/uM4UVsMCFw4TJ7Sc0LQti7r8df5sYn01JWbrL/h9qfW60lBrw8+Ujh9R+yZo/9qk5YKOZRlLQvtUKvXmWwz9hJrqqDXpPur4/V+rlVisfseYdWPNQengmZSpELNDwLttaDUT3zEkKdaAxbUZM8OqZ/rLYlFKMPIJAU/C7KyJrzoEtYBEinBb5r0VHCtnnZGgTa+qI8pSGxEbWQtM9ky5lqdAoDqLrtI52XIyWQvyLyIIFzlXwICGm021xzlFfRm5BpqHJi8EzNc7fZQhZ5ruwokr8Yl9N5RQf7OZGfPxu8DaHQTE1A8kUg7BZl668fYQX9ae3s8eph0dPELqZYjfkSs6vpWVGKSBvLhes/F/7RBqNedJ6lj0ESLFcbyQWT5DQ7phoYFuRay1Pgt3UH7qZRN1OKiDjikNGPQgWYla22m3C6fH+tLcUT31QRKkfJAE/WIEJlD077Ywa2nelh4UbxzdgTz7g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,8 +150,8 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 Hi Lorenzo,
 
-Thanks! I've tested this with the HMM selftests that split the fault
-folio, and it works well.
+Thanks! I've tested this along with 06/13 with the HMM selftests that
+split the fault folio, and it works well.
 
 Reviewed-by: Chris Down <chris@chrisdown.name>
 Tested-by: Chris Down <chris@chrisdown.name>
