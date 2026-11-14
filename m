@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A1D5606CDFB
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 13:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F17EF6075C54
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 13:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OPYvZMcK
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S1xIy3Kr
 Received: by kanga.kvack.org (Postfix)
-	id 4AB556B05E4; Sat, 14 Nov 2026 08:09:11 -0500 (EST)
+	id 261386B05E7; Sat, 14 Nov 2026 08:09:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 483086B05E5; Sat, 14 Nov 2026 08:09:11 -0500 (EST)
+	id 238A66B05E8; Sat, 14 Nov 2026 08:09:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 371E86B05E6; Sat, 14 Nov 2026 08:09:11 -0500 (EST)
+	id 127406B05E9; Sat, 14 Nov 2026 08:09:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 19F096B05E4
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 08:09:11 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AD2891403CB
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:09:10 +0000 (UTC)
-X-FDA: 85433755260.16.AD4B827
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id EFAE720007
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:09:08 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OPYvZMcK;
-	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E51AC6B05E7
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 08:09:17 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 87170403F9
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:09:17 +0000 (UTC)
+X-FDA: 85433755554.29.7959BE3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C2BCB4000B
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:09:15 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S1xIy3Kr;
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794661749;
+	s=arc-20220608; t=1794661755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=id4PRLDY8xxqmv09Cy60S/mO+ESr2mIJ65uM2WRQC7s=;
-	b=yvpyrb4vYZWvR7/3yU4kqgqJg52YIqn0Etr8cg19JyFVFTS98PCZPn8/LT3h6uB2qMAWFd
-	gdhkNt28a+K5IAqofLakEwCCcjHNS5RCa/SoDnpQDeukfouPnh49JHtuJricxle95ZRtyA
-	jKDICenurvTnpbF8WGGRVWjnPZ75XKU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794661749;
-	b=oG3ohGYy48dtFYERisgR7cZO703Utu36n7S9vRA/2sgJmzdUWjq12H/RZEODYb0KuKtCGH
-	GHfOF0Bt3NaCh7gS1ikBXtzM1BBO2jN6s9Ya3CDso8ne/ywKSTew8zuQ9TCGxDpE0MYi+z
-	JDXN0hBcm0eSF4r1xXTZBg1jSWGESqM=
+	bh=Wp6UiJ6JxspVcAI8vmdp5Pu91b6oGaOfKwkx6Df5sII=;
+	b=wb2RQbGXhWwLLmRh1tAHT6RawMCxrHcpTjToLo7dLOWekxjf/BcPwtQ25DLgCQd2YMumk4
+	VpUjZTiVc8SKbtz+PegiqEgsil2skD6LZjKCdR8yRuK6IRcHePU3DqqACOGBh/U7VNq7fG
+	OQ5S4Q4K4HNqmLrzH793PNjjTBc6oPs=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OPYvZMcK;
-	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S1xIy3Kr;
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794661755;
+	b=0USx5uLbraN59ZFA6TDRFEmMj8kOUR6QucM+pTLvnTjpRIsztTa1vtR/QCkKpevXRvP27X
+	RP+cE/Rsd+XTAfAN+8Mm5R8xoPU7Z7gWWIAec26gkttt2aqJi7ltO+rvKilMe8P1tZXdte
+	s5IjwgbrvZvE7J9/GryOC6Q9hI2M26Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7F3536254F;
+	by sea.source.kernel.org (Postfix) with ESMTP id 1150A44DE7;
+	Sat, 14 Nov 2026 13:09:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6EAE1F000C6;
 	Sat, 14 Nov 2026 13:09:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C84511F000C4;
-	Sat, 14 Nov 2026 13:09:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794661748;
-	bh=id4PRLDY8xxqmv09Cy60S/mO+ESr2mIJ65uM2WRQC7s=;
+	s=k20260515; t=1794661755;
+	bh=Wp6UiJ6JxspVcAI8vmdp5Pu91b6oGaOfKwkx6Df5sII=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=OPYvZMcKo2pLKQPLfKiB+xqQT7JtU6u/nMFLT+5hYzH3QWTCFPRoRS6r/Oow1VAkL
-	 3HYR/sSwpSruxS71lTMziygx7APu494xsLge+qXN+aS/Fp3Yr+SysKiJDxgm9fV8FL
-	 LLLNw7kLSad5h56STuFO2hVPqf8d8oG5y+9btaqGaQCPkoLOjBnZy2HRlufPRIqJR9
-	 JAGDmN3jPQZ4ZGCu2z1obHGmPT84ifLV2wmvOlYzT12//tpCLC91vE73DnFUFErjrE
-	 jtHCCp7HwPDe37nSYEBsn4aY5ZIWlVvyOmtxOFVyVhXkm5TyApjftkdHnhTF0e2OJb
-	 Th1bcZaPa1Qrw==
+	b=S1xIy3KriPdoEMTc9dfCxcd8nJZzA6/xLqEC9Ek691tlamme55qJphgP6kTqiLd8a
+	 gyYuU7lALuiqsRc4AVPgbXVJK+NhDA4+7zujFjgM6QpBfN5IckM0YEqdbXktr/nw+h
+	 Lnumd0/GdHt+C2cs+wHroPF9ZZbqkOvPvOycnwePXHaTKKv61dbwr0kOr8R12Yy/jy
+	 TYX37go2jAbTDcgIHhVHfyn/x159FhwjUbvk3VQiFEIoyIL4VPg8k6GDEkPS6GbBRx
+	 Ui3KnXYZa0I+MODr9/kXlFNPNu8LZjXuuuvEb5jTNLwqAqpbCB3xy60OP18fpqthQb
+	 IPWYjaZ1+0aPw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Sat, 14 Nov 2026 14:02:11 +0100
-Subject: [PATCH RFC v2 30/42] powerpc/spufs: use fc_init_pseudo()
+Date: Sat, 14 Nov 2026 14:02:12 +0100
+Subject: [PATCH RFC v2 31/42] usb: gadget: f_fs: use fc_init_pseudo()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261114-work-loop-pseudo-v2-30-98639a2286fb@kernel.org>
+Message-Id: <20261114-work-loop-pseudo-v2-31-98639a2286fb@kernel.org>
 References: <20261114-work-loop-pseudo-v2-0-98639a2286fb@kernel.org>
 In-Reply-To: <20261114-work-loop-pseudo-v2-0-98639a2286fb@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -89,26 +89,26 @@ Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>,
  linux-kselftest@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1161; i=brauner@kernel.org;
- h=from:subject:message-id; bh=IfUgpka9O6kutLnlSG4nrBix3fgpTd+0l8aZ7VY9Wl0=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9iOmwtup7dlAk4P1lb2Nu/V0Xay46TjCe9C/9OFdZk
- KnsNdfKjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIkw7GT4n/qCU/F0TKjhPQ87
- jwlLc8VsP+cYLxcU+LHbRm/KCV2pdEaGPWc5jk092LJ1wpFjdg3lNRW7ODKTlXubs7L6rYTlL85
- gAwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=957; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=FyQs9iBDL23rPU6G39Bge4Pz9tDFD7sQ36KmSfY2Fy4=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9iOks7Sk79l9iocNp1bT+iXKvo16xtz4Sff5U18j3x
+ bKqSoVtHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABNhm8PwT/HM2d+nJ4VPen1g
+ xROh7Qu3d08LePFy7v6VZ58HB2m7M05hZPgQxrBA0Vj22KJ71q0c77YLbm9fvFXYWin18eItfPY
+ MCcwA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: EFAE720007
+X-Stat-Signature: tyxwe8837dizzzbbobco4a9cebfxxtu3
+X-Rspamd-Server: rspam01
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: o8r5y9xbujdssxz5ohxp6gbgn1ipcdez
-X-Rspam-User: 
-X-HE-Tag: 1794661748-102343
-X-HE-Meta: U2FsdGVkX18igUpRzsxQAhXpdQRMycRAbOIvVVaiBOlCvbBWMp2AB8ABlll5rH1piPtEUgCBeBY0RzBPd26heYPr/3N6ZljKoMMQmrcGElLzAVFKlPU+7xRcEML3aWEwb3z0rg+8EqDHvtfmrg/O404iyYXtUf15KwBOh8OUzbIBqEY1VaCf1hcdwoOGaPyn/doX8DR8kI4xOEdK0mqO6GcyoVdiAr+054OQ1QAzwmZj8mxFXGv4RWW2keNHnfMc8JyE+k4mZmkHeKLa//z6EIYrVfyZb4eUKrfEsXgt1s2w23kEkbeJuz2J3oARq+eJvePjzvOqFqj2k9OZfmc00CSvTnKbv7XG6RHHDOXww5G1r4ETOu+VgEPvxINuDKcqqJ0oe62rsX94+/D3C9Ryhm0Rsbt/sCidNgqiCy/TW3tmQkjkpu72kAosfHxiuDq2DLcLranoVVCfAJmfgUa6hYMWux1H3VkxEqDGg+4B56JQrhaSFXYhsxam1z8Zn79dXe1kuyJNObFoWPq82xgHXqBvT45lFUkdTTV49k4/giO1M60yjCy43PR1+4Mp3fCOoUYN+G1LB7E/P75IIni7AXawyluSdWqFTL5c3zcdA+1GzG+wejkiVDV/NO3fP2s3KSh+nug8ZpPavt80cnVkBnE/P4AIGRcH8RpU19+OoYegEC98TVFYt2zdRyhY+M+K7Gw1XU2ohhKipI2T8ue4wN4mZqSqSewvM+V2h29BEa/caWqq7B6j1jcCW+KMoWcRmPGkbhxbWCBtY+WiVa96Msp2iyJTaq+ltpiH0hJ23HH0OzmzceF4Hqw7WCpJR0UiLtPFqZnyJQiIqEl6iqPdfrMx01JDILGsXlAijftM8LKzE9vEWG/pU//2E/KtdIgKbEujoeSwPyTxf4auBJbellzVjPnPF8n5vN8oYDVfM/d24ofCEA4Qz8roRU6Ai4IVafOk4ycit2Dml2EInSr
- bg2+uwdJ
- VciAvqBxvKyxacl5xsJrKCCn9gU2rY6vrfJ1MP/cGnN2TJl/57BXY7hl6WNiImW9PYouhxrC3hIg6pMFdSwIeNHZQeldKYVQvmCE57wbYCae6S9FjBX1rP9pV2JWvmXoq/frepi9IrxvHRnjW0F8EMtKUIjTUTa0Pc2gpGy9dEO2ZZGqCjR6xqjGQQ41TrORlkaONh8CtYHS1rShlINRnjjCtM8KCFFb9rDL8/wOEbkELtJaHpbv/bhjITZDDBqSSN/U3EszD19LT9oICGes0PQSbNz3Wxzc29blxD1GsnzC9a5MbedZh2Sz/ZvMTOCSTN3WpHDiV0SRN+HB4nN2KdD8fbLRwCDrfpRwXydzgfkyXs3lECLV1HP0g87sRb0DyiI/IJFUuq+GXt1AI3yilFKMkBuqA14d2rY4AwpoUGhwDVTmRPRoGU9n80u75vsnPhc9/
+X-Rspamd-Queue-Id: C2BCB4000B
+X-HE-Tag: 1794661755-975923
+X-HE-Meta: U2FsdGVkX1/8SX4FlG0CD0wpGoUxoLGyW8AnXpTF+OcjQyaaYfzVLM7XJf0raHijHYU9JfvRPmBZOHdYIjHJ9L40+ns4dEpFKkpxbf6Z2AgLYGtzd4npZhNPkJAG6xv3iFNcEuiZhybEhgaOeJlg9+CKhtBAgTAORkbLpP4z+QpDdf+6K4xlZfvOu1Nl1ad+5lZ3bW8fphaGSoGEhJ7Em5lSLhqsHELF7y2WlFQbxydG1oHkxUyhASW61dr2k7uIMFCCN6RTuQVi9eqV7WxmVkcmhdv/nWP74Br4Dka72i1YITHXKoaZIynij+qGlpDCGzarbtba+fgwKYLgdhaRj5ihal3yql6oflLJ5vTo5CF2ZEhqXWuOPKFbPYZ2apP4DebTGK8tvXhK9uP09/rHOgr4LWK3PobO3mWQRkRyEKzYoaytAMOJjuEigiMvLLSBNPMWtO+EZXi6r/n4tOAfIYcrvdT+5qxOMDjxfzi67HZ72XOT435B90SaiZotWuw65u9wpTPySWX2AwGI2bNYdoy/CjoP0bXvMNgYpkpjhfG+zPfTFHtxIZ+PcLFheaWOz6Cz4Ek7vaOZ0cmBuyQUbr7hXhciDOHrJ8zQYJ7bWq2meYzIF30zfaZSyjfW9K4D7Xy8Tsx+x6593pu9IhvdCl672zaxCVImjsXrK+z1nvMcPwIzasJypag5KCzTj35EKrlPN8U/TOOIzRRK+Y6rz7YtSxOx37PCet64Qu67UNGYfHvNbxkY73BUxQBcjoVM9DorYFGZCmspU85r17FIHF8P2/DY3cfcv7EhxyYZ9WvI45bI5BZKUmpogPx7t2K42o0Fuu1jTpTpEXQV1oOaLafY3YCLrGksNP4p3DScU5kSWCva6UbeKtAN/ru8coCSJ7YUxH6Duys1P1cJ1tg8n9z44byjz+xgNRvnSqoAztnHEvmeWXsPtMd3yU5btMSQlm/Ikhc6sR7QTvBFzqW
+ yw5e7naG
+ 690dxSmSMiPmIF8Z22fpkM+TkzIyvUKv8XrJQAVtpXFH1tBJfY/y9bI4I/zYtDm1sQ8iK475O+m/YaTom93hzbvgBfAh3EawBsvjf/qSkUsg8PV8LCSvRcLlS3Jz6FRWPH+T5OIlw2YwQKEzlwy/OsTbdJch1MIdzPy1nr17v+/MxWkveT2bM/HA/cbAl6+gPG/TeRb9sbU/VDNsHTztKDnoT8+GiWmV/Q2QE6nDikN/nvxzSbASwScnRhp736w3RlfG1yBMgDCFAs6zI9P/hm24lSA8/j8QC4CqDXZkCWIlS6eblJ0IGVymxlznxEWeInNEP1VuLZZetNUZgF/2FiVQFobhB7wqkBqB7iJqxg8z6bXzj3jDs7QbgvTE9ooAJc+b9n9ctRPOuoOGMhAvAUo1SEorr6A0YgEie26IsIXOGWExRQuMHJVOQoKACDzzF9VGZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,39 +117,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Initialize spufs as a pseudo filesystem. This raises SB_I_PSEUDO and
-also SB_I_NOEXEC and SB_I_NODEV. spufs never holds executables or
+Initialize functionfs as a pseudo filesystem. This raises SB_I_PSEUDO and
+also SB_I_NOEXEC and SB_I_NODEV. functionfs never holds executables or
 device nodes.
-
-SB_I_NOEXEC also refuses PROT_EXEC mappings. The spufs files that can
-be mapped expose local store and problem state areas of the SPU,
-nothing the PPU executes.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/powerpc/platforms/cell/spufs/inode.c | 2 ++
+ drivers/usb/gadget/function/f_fs.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
-index f066d9c7344d3..54b45932aecd2 100644
---- a/arch/powerpc/platforms/cell/spufs/inode.c
-+++ b/arch/powerpc/platforms/cell/spufs/inode.c
-@@ -11,6 +11,7 @@
- #include <linux/file.h>
- #include <linux/fs.h>
- #include <linux/fs_context.h>
+diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
+index c64a268e98a43..a6b3788399a56 100644
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -15,6 +15,7 @@
+ /* #define VERBOSE_DEBUG */
+ 
+ #include <linux/blkdev.h>
 +#include <linux/pseudo_fs.h>
- #include <linux/fs_parser.h>
- #include <linux/fsnotify.h>
- #include <linux/backing-dev.h>
-@@ -741,6 +742,7 @@ static int spufs_init_fs_context(struct fs_context *fc)
+ #include <linux/dma-buf.h>
+ #include <linux/dma-fence.h>
+ #include <linux/dma-resv.h>
+@@ -2166,6 +2167,7 @@ static int ffs_fs_init_fs_context(struct fs_context *fc)
+ 	ctx->no_disconnect = false;
  
  	fc->fs_private = ctx;
- 	fc->s_fs_info = sbi;
 +	fc_init_pseudo(fc);
- 	fc->ops = &spufs_context_ops;
+ 	fc->ops = &ffs_fs_context_ops;
  	return 0;
- 
+ }
 
 -- 
 2.53.0
