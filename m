@@ -1,110 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34FD1606A323
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 03:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D8A606A8B5
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 03:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=giD39Nh8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ckspue12
 Received: by kanga.kvack.org (Postfix)
-	id 45E6F6B05B3; Fri, 13 Nov 2026 22:19:54 -0500 (EST)
+	id D832D6B00EF; Fri, 13 Nov 2026 22:38:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 435146B05B4; Fri, 13 Nov 2026 22:19:54 -0500 (EST)
+	id D31A26B05B0; Fri, 13 Nov 2026 22:38:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34D5A6B05B5; Fri, 13 Nov 2026 22:19:54 -0500 (EST)
+	id C4A586B05B1; Fri, 13 Nov 2026 22:38:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F6FC6B05B3
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 22:19:54 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 839EF140359
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 03:19:53 +0000 (UTC)
-X-FDA: 85432270266.18.6104B4F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id F25DFA0003
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 03:19:51 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=giD39Nh8;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D4D46B00EF
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 22:38:30 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0B7AE160340
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 03:38:30 +0000 (UTC)
+X-FDA: 85432317180.14.D0B27F6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 715B840006
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 03:38:28 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ckspue12;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794627508;
+	b=gTax2In6s2SSEIOAEqY5LUZTF6SUcF6mg5gP5AWVmVLM9PNDC63wpCUZGMSPZFLjwCRYo9
+	G3VWt9ggm1laeVqdlGSzo9kFbs5EJfXYlU1SxWFh6UMGvs3lDf7ZliKeYILqrcjcCeub1W
+	fJeGACpZsrs6+LRNucAa+OyRCIDchDo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794626392;
+	s=arc-20220608; t=1794627508;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FHM/e5uf2eSVlQ7kyM2fyd4SNEwi6bNaKWU2kNh7FPA=;
-	b=lRxqsLscSK2ycluBGAaQw5UD9Rvh2HiHrZyjXqneSo2E+wezhkdO1eNiGy95PY+g39uZbA
-	qp5P8CHa2DmdhV29SWhUR6k9Bjy17e144GzUhDSAt7uWaZ9xtbQX5c+YGPWdEepNA0A1Ez
-	FZjzfbdtj2mnf+B1XJ8BhfRJsJpijB4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794626392;
-	b=fdHC5fxtRQTh51DjirJVuSYRCfTrgmyMeSCLsQAyV2tDvr1RY+C9YkYu7LXvTKNamlyvsQ
-	8XwEQKuum3627Pr8Vuxtm682494fy96+AIBWwjwrukgOXU9WmI3N1cs9TMChNEJCkT1G+o
-	4EahIrHCqFXZ6E8RfR6WYGCMhSaE69w=
+	bh=yU/5BPJ2TQOxgYVVI8HlorlFhoWXcWnPPL8fgZ8lABI=;
+	b=AEyGACh1eAnaGHcCtQBrNmhwu+2gdrOp3IfpBadWtI9lkhQ/uiDOQEC8ykSODatX43r9VS
+	vGNQjiYGRJV8FECKctkA7bwfHKdBXADUHpmkyMSBJIKC42GTnPqS0bNX+BNWHiGUtUa7lV
+	lAAUua2Pr1rBuAH0hYG5Uj9VhvLWdYs=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=giD39Nh8;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ckspue12;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 35EDC431D5;
-	Sat, 14 Nov 2026 03:19:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47EBE1F000C5;
-	Sat, 14 Nov 2026 03:19:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AC2D0609CE;
+	Sat, 14 Nov 2026 03:38:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95471F000CB;
+	Sat, 14 Nov 2026 03:38:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794626391;
-	bh=FHM/e5uf2eSVlQ7kyM2fyd4SNEwi6bNaKWU2kNh7FPA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=giD39Nh8WLWpBEfojs5C/SZCwFUs6PAMJqvIYhgfX7PMOL/oLbA/NKNtF+1A2K6O5
-	 zgRZViH6ye5VxOLTrMhI3+PaS8zZTrDVENTGLgmaFtVs4YjZXI4C9oWbolXgtCZZqW
-	 Kway5HHWhsVZCGXLhF1QeSkKdrfJaoZVnzC6S9mMGc+8sL1/9nn4jwPciqRflu6krw
-	 HJoNWlZoAxM3HZ9yhzL6C85eVDsc8LKL7RIKGWpq5hY40VlyQSqiLuNG/7gBPFq8NL
-	 WJcgXwMmwZoeCzqYX8vDwfFPU14jL5pIHlQq6vDxo4yC8jmw4HSolH0EX8B2vun5nq
-	 GFLTEW8qPOzsw==
-From: SJ Park <sj@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: SJ Park <sj@kernel.org>,
-	gregkh@linuxfoundation.org,
-	4ncienth@gmail.com,
-	akpm@linux-foundation.org,
-	azpijr@gmail.com,
-	corbet@lwn.net,
-	david@kernel.org,
-	jannh@google.com,
-	liam@infradead.org,
-	ljs@kernel.org,
-	mhocko@suse.com,
-	patches@lists.linux.dev,
-	pfalcato@suse.de,
-	rdunlap@infradead.org,
-	rppt@kernel.org,
-	sashal@kernel.org,
-	shakeel.butt@linux.dev,
-	stable@vger.kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org,
-	linux-mm@kvack.org,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH 7.3 463/507] mm/vma: avoid spurious write locks when mm->mm_lock_seq overflows
-Date: Fri, 13 Nov 2026 19:19:42 -0800
-Message-ID: <20261114031943.192867-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261114003912.82206-1-ojeda@kernel.org>
-References: 
+	s=k20260515; t=1794627507;
+	bh=yU/5BPJ2TQOxgYVVI8HlorlFhoWXcWnPPL8fgZ8lABI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Ckspue12vhtoodYEOl81nD3fwNQ/qoegECvhTq8vaJ+UbCR+wKH1UTuwbk7sAWGza
+	 VL0hUZB87GCd6EV5jOWkMr7zAClDVgNA/0g1t6fZQRLlktqV7qKUjC/rM3B8C51/dh
+	 fCL8Y21AYDytFPuxUczkPTHQ1RgrTBU0b6gdT5M9zKHFOdU6SNjoa7kP00JxBOYLH4
+	 FA2KtMqlzpQohSAowkmIHngmDEz0JmFi3pOLDVKgbLOdnnwY+Xag/Taqeat85bPRRl
+	 dRFSdPd7+2vogdN/w3sz1NZDXn7oIqDm7aIDZejDwgf3VCCheVfOdKSgyJoNSfx6MX
+	 IZP9e2DuBSv/g==
+Date: Sat, 14 Nov 2026 03:38:25 +0000
+From: Harry Yoo <harry@kernel.org>
+To: Felix Hoffmann <f3lix.dev@gmx.de>
+Cc: Jann Horn <jannh@google.com>, Matteo Rizzo <matteorizzo@google.com>, 
+	Tamas Koczka <poprdi@google.com>, Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org, 
+	Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/slub: Flush virtual-slab work before cache destruction
+Message-ID: <179462737686.1463521.17920259642574913474@kernel.org>
+References: <20261113221330.162567-1-f3lix.dev@gmx.de>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: totrdbc4u38mwgx6b37k5asi1o5sfwas
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261113221330.162567-1-f3lix.dev@gmx.de>
+X-Rspamd-Queue-Id: 715B840006
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 3aritm9cpwci434p1hmpz6d8euhdc4r6
+X-Rspam-User:
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: F25DFA0003
-X-Rspam-User: 
-X-HE-Tag: 1794626391-66437
-X-HE-Meta: U2FsdGVkX19eQLC5mZiKcOb21IAeSLvC0GrBF1atMfHyKd/n8FGerLWQGsUT+ndQLwMEeYwoCYf1ujEwhhFObxgyOZpdWyOA32JjNxACOAS64ia2MB9vGPzEULsffsZtV784ZUKQsT3nqfLu9uzcIDiKj9LfQ4OD/5JocepOaWUw6yKkOijnxbzVFuEtPyuW2I95oDOuWzb5CyHnjQKxHyjNesbJmQrAMOkK+I7Ayp5YWK4x4sNceNxdwWx8OEffz7G6ekv1+KYIHkIHejJB/Dq/oodd84j5nWLMz94AEH4bU1M+LqWhxTfwbdOom7xRxxc4bLiT0hxA2I6aTcT1agKLLfO/tm+gRSZ2YzZbjXtIgSKdpIh4G35tIx9IvrfqaYkz9TzMSIYG0IVIhLrCxXQcsUo25GnELJalt2EDLvh3UK3f1PxwCLvQDFsMHMi2jwApPP89ZkzJm1jzhzTQaiLSHfZ+WW4mWb1hecaGb9ACBTh3/WTBW1fPPRCkdFG2x58ELYTYHiRnLGnKLbyistjo6Laz0xNmqucgobsfsq+thWI+N4uKIbt6GdZa+btOqGJ8Jv3rtH1PxQUd56vX/tTZD4ylKizAYvyJChqGKg95JUfVB9J4ql8YgFswHKDFbPZ8NAh54+7QzhzMNTRe/XZJp5dPRjbIbwZuCJpCMU8WeueGAd5lX2zGa3XCOTeKt7+vmCiJABxcDPXXhsoLHfvdPqeKVCCzog7DX2/xg2JAAKskmduQyp4UQesfaou54W5sZXEoEnEpBAoKIN9VQqMjc0gkmSYLr3Z677o3+mJl+CV/aPQEltw2lf+fjX1XWL7SK95neKxiW3xF1Tzv9bmhOwSkr+M2+O73dovWYl6kLADsr3ePbuF8JLOvWyn2T6RTiO3urDSaoSvwmTxct4qW8s0yTXPdhiIG+q/aLXpzOSOp090NkaprsaDTKIHR9jn2gjbhJ+18jqx85Rw
- Bq7TFNVn
- wYWwb279FgTp4ArXFuWy82mgTB/iwWiNUdx9MUvaVnHDBIgjqKObEVYVbT210rIizlfoilOfSH6oJXJKHqAEi/unJTzKQ73awzhZnYHCnCTm87ZG/WSK94OPTTmfExO0H8KyrpYYCFv8DAWK121YzKNSO49mbyqk2ZO0ZuHKjJmJ/JkR1qvKHTQ1ZwpvCXX9I80EDwCjJ6CowkF8Um8ukdwF+ODDJS2qAbKA4dtxvLwmaO4x/mZVSdfLJzG+Y/VuksHeqk9t2Tf+4JyPydqwbEyeZzcYPladcXhXWrx+OwTtTfxxoNB6RUCLYEGX9kuZnoLv2CLDjMyK84u2TYAg2XQEx3Q==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794627508-336918
+X-HE-Meta: U2FsdGVkX18dbt9MYHudes2OvFV7Tlrf4WY7zPgDWb5tlSITjQiy4kMkXS7S3qE94kgeIhTmXQHbaQeA5fZ67YBkLEyN2TbaPPdzBD+c0ooe6GNhE0DfpshLSEVe7ybao9MNTwcipRLBVz4lkk7gwjLIrj04pgjH8Bnn2DxVwzLPkfM4sTYkQ4nb7FOpe+qzP4N9DJh6G5dCVKtoBm5ZYEw5wJJ9W8X9JSHPnuVJU4AsI6IPdUeeUPFyYED86FBYjLv3/HhSruJQxPr6BHh310Oz4Jui455jc7IlBdWsGratYd8c7jKv6D5ZF+sbaA5hjWLnAkNOm30ASchnit8X5oltB7ZWPau8WjxBXH80rcRakD8w96GSGOXOo3LLgCpX5gUCzhhPiWsj5ncQ85yuDeNjvidCTgYxyi5v0NMj1olAy/U4LrKegr2X9+1kIwcttBP/teuh/egjJ8XnO8hThd/yUse2/mG8uPP3ZhizhdPqH87OGCSwiGcjImWhROmEwIHX8O5bi09/R1g+e0gEa986HMSSjb04vDmqBTee1N1izrZwXn2dnflYFp1NAIcozE1UubGPh4Y0+7IjnljhbOMgkSl+ERtklK6QUvmjiU5DYUzDPEF+mBNQHK3IEImtt+Mk3W85I+s6OonaffCUpoH+4/tKnpXHDH9ODtMsV1DPyq6s3KYo58ojTkEhqZijZZYR15bY6l8lxKr9PNt15k1Cp4zS7/wFktp57h6GQFX8nJ38VQ0R6I9NzkoIHlFvANLO5D0oYq8VubQVL9DwLvKZvjbQ6Ly4eI9aw8B/zy9wII6r2zySL0aU+rJQQM9vuv4df7I2HeON0tPh5G7Ceo9Pn/C7YIJLjbeCYTn7rfiADL0ej4tQAswQRXdwCtnz7brYWySFZ2WoH6tH20cwpz2fMbKSqkOrMmbb2uBrNeI88M91AO50pjP4NArjv+PCK0mT0gBKEbaBVxkl2qR
+ PCAQAmFX
+ 9R8qh7/814kWyneC2Vq2eFtPkeLRhtYUYIlJj64HuJ/bzxc8UWC06fYkDhu9BeZIRjAmamsexuxYxlwsDB18weSdqLR+YsFB/VIh8fx0ACBtM+fRFeX754zjzmX5kQb5RKaeafJNeyXm+/Gqm8QYtf6R4YoKWDkTZGKXd9xNxzTosrsZuv4ESAxT/pNfm5jSAhkRKMxEeuthWKFd7piCpvLZ5YBCjT7ftsbpCCi+YtiBs7sz6oUSNlnIQmpzjKph/3W3rb4yfrxgWzoONlavGtmO3c7kS9ZJBOSJgKPdiEkGEojRDP6sHIF8OOrLYOe62wv50CP/yUjPikJftXm6M8bYLIY+GZbjvPvw6J9Z4eLTnPkYAzE1V1+YFnKmbtxew0f30ibGUEF3KmWlF0YJNps1Yfg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,50 +97,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, 14 Nov 2026 01:39:12 +0100 Miguel Ojeda <ojeda@kernel.org> wrote:
+Hi Felix,
 
-> On Fri, 13 Nov 2026 10:52:47 -0500 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> >
-> > @@ -589,6 +593,16 @@ static inline void vma_end_write_all(struct mm_struct *mm)
-> >  {
-> >  	mmap_assert_write_locked(mm);
-> >  	mm_lock_seqcount_end(mm);
-> > +
-> > +	/*
-> > +	 * VMA seqcounts are not updated on unlock, so once the mm seqcount has
-> > +	 * wrapped, any VMA still carrying a sequence number from before the
-> > +	 * wrap would satisfy __is_vma_write_locked() when that number comes
-> > +	 * round again, and readers would not be excluded. Reset every VMA's
-> > +	 * seqcount so that no stale value survives the wrap.
-> > +	 */
-> > +	if (unlikely(!mm->mm_lock_seq.sequence))
-> > +		__mm_reset_vma_seqcounts(mm);
-> >  }
-> 
-> In a UM ~defconfig build with LLVM:
-> 
->     In file included from arch/um/kernel/asm-offsets.c:8:
->     In file included from ./include/linux/audit.h:13:
->     In file included from ./include/linux/ptrace.h:10:
->     In file included from ./include/linux/pid_namespace.h:7:
->     In file included from ./include/linux/mm.h:18:
->     ./include/linux/mmap_lock.h:604:20: error: no member named 'mm_lock_seq' in 'struct mm_struct'
->       604 |         if (unlikely(!mm->mm_lock_seq.sequence))
->           |                       ~~  ^
->     ./include/linux/compiler.h:77:42: note: expanded from macro 'unlikely'
->        77 | # define unlikely(x)    __builtin_expect(!!(x), 0)
->           |
-> 
-> That exists only under `CONFIG_PER_VMA_LOCK` (commit 47e725702b0b ("mm:
-> make per-VMA locks available universally") from Dave's series was not
-> backported).
+CONFIG_SLAB_VIRTUAL is not in the upstream kernel.
+Maybe you sent a patch for a downstream tree to the upstream?
 
-I found same thing while running kunit.  I also confirmed both applying commit
-47e725702b0b from Dave and reverting this patch fix the problem on my setup.
-
-
-Thanks,
-SJ
-
-[...]
+On Fri, 13 Nov 2026 23:13:30 +0100, Felix Hoffmann wrote:
+> Under CONFIG_SLAB_VIRTUAL, freeing a slab queues it to
+> slub_tlbflush_work. The worker later follows slab->slab_cache to take the
+> cache's virtual-slab lock and update its lists.
+>
+> __kmem_cache_shutdown() can report success after the last slabs have been
+> removed from the cache's accounting but before that deferred work runs.
+> The cache can then be released while queued slabs still refer to it. When
+> the worker runs, it dereferences the freed kmem_cache and corrupts its
+> lists.
+>
+> Flush the virtual-slab worker after confirming that every cache node is
+> empty and before allowing cache destruction to proceed. This drains both
+> queued and running work that can still reference the cache.
+>
+> Fixes: 0d6f38b78adda ("mm/slub: allocate slabs from virtual memory")
+> Signed-off-by: Felix Hoffmann <f3lix.dev@gmx.de>
+> ---
+> Tested on x86-64 with KCSAN enabled:
+>
+>   - on the unmodified SLAB_VIRTUAL feature kernel, a stress module that
+>     repeatedly created, filled, emptied and destroyed a non-mergeable cache
+>     triggered list corruption in slub_tlbflush_worker() and panicked the
+>     kernel almost immediately
+>   - with this change, the identical module completed 10,000 cache
+>     create/destroy cycles (81.92 million allocation/free pairs) without a
+>     BUG, warning, KCSAN report or panic
+>   - the fixed KCSAN kernel and the external stress module build with W=1
+>
+> The reproducer and complete console logs are available privately on request.
+>  mm/slub.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/mm/slub.c b/mm/slub.c
+> index b4c64b2bbd334..dbfd42b31a0a2 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -8541,6 +8541,11 @@ int __kmem_cache_shutdown(struct kmem_cache *s)
+>  		if (n->nr_partial || node_nr_slabs(n))
+>  			return 1;
+>  	}
+> +
+> +#ifdef CONFIG_SLAB_VIRTUAL
+> +	/* The TLB flush worker still dereferences slab->slab_cache. */
+> +	kthread_flush_work(&slub_tlbflush_work);
+> +#endif
+>  	return 0;
+>  }
+>
+> --
+> 2.43.0
 
