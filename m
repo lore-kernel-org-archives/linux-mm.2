@@ -1,94 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1AFB606A327
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 00:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B569606A327
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 00:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=eoJ+YsJP
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=z+4P+Xcv
 Received: by kanga.kvack.org (Postfix)
-	id 033CE6B05B1; Fri, 13 Nov 2026 19:29:56 -0500 (EST)
+	id 453416B05B2; Fri, 13 Nov 2026 19:29:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F27EF6B05B2; Fri, 13 Nov 2026 19:29:55 -0500 (EST)
+	id 3E2F56B05B3; Fri, 13 Nov 2026 19:29:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E18F06B05B3; Fri, 13 Nov 2026 19:29:55 -0500 (EST)
+	id 2CB226B05B4; Fri, 13 Nov 2026 19:29:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B402F6B05B1
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:29:55 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 420B8140181
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 00:29:55 +0000 (UTC)
-X-FDA: 85431841950.24.5D84257
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 811A840004
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 00:29:53 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DF0E66B05B2
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:29:58 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 43067C0253
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 00:29:58 +0000 (UTC)
+X-FDA: 85431842076.05.B4C908D
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 7631840006
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 00:29:56 +0000 (UTC)
 Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=eoJ+YsJP;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of joannelkoong@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=z+4P+Xcv;
+	spf=pass (imf12.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794616196;
+	b=7FDA5LJ7cHwqkPGr4yN22+ExSap5H16osllkPeW0PeF1ERZ/E9Dr88jdOJoW7W+U1phywC
+	ODMRT9PLkcgruqoYqvbRabJ6JH9vBL+ebc0yH+Xqf8m6V5NAb7jMU88vEVM/GBmWY+n3Tu
+	MtKz8EZYHbBdARMx5JIo5LwGZMpXxC0=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=z+4P+Xcv;
+	spf=pass (imf12.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794616193;
+	s=arc-20220608; t=1794616196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Iq2xOf7brzRimqeh3kCSIQaM8aaawwKdufuiU04kk44=;
-	b=WVgjtr5t2+KYTCaFsnFkiK5+5UhG0oq9J21rwIjOAIpvZPq96UXwKcIqI34Jcu7gTv1+lW
-	fTmG6dCz11KgENRn1VQ3IEFSiinatJFJThnvdIJ6XUPlBzn7rwr+IbMPxZDaDSQPUZS/mk
-	bnlufkOEbyi080oIe6SEcWxSc5THwGE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794616193;
-	b=LbuYuIY9G4IfeY+U8Lt/6ffNjhxCG4vV2in6MT2QoCN9Dvkw9OxdYaj1BPYQZYrAHLOjFC
-	T65Eo5b4b59OXjKJgSdv3JkQsLAr6GmVf5ALKsYMX3Fu34hweJRfYt/szwYXWVIN7XCCMK
-	QuUwGTezjtU1URm7tRHE9YBVBMJp3TU=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=eoJ+YsJP;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of joannelkoong@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-67c6a0abc2eso1829823d50.0
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 16:29:53 -0800 (PST)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5FJmlfLnnVicFf7gaLIa4+dhDlQzv/f7mdEhi2RvUz0=;
+	b=FKFSNLsLtwuDZ0wV5yagXyw7Y/PXRgSLnoL8qPuW52ehGUpXWWzDyFxIX2d0plIK6GrN95
+	t5rw4fKf7pREmB4QJkZF1zjk+AgmhgiV7327Zo02ZxT2qDAxD4oxXFmJGh5SkEWIKQH3vR
+	t0MjeZcK9phXQEfE3Ryp3pf1b5OCUwI=
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-8b0dba37a7fso17369337b3.0
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 16:29:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794616192; x=1795220992; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Iq2xOf7brzRimqeh3kCSIQaM8aaawwKdufuiU04kk44=;
-        b=eoJ+YsJPlc+T4gRfIthrMZcKJSFjoa4fswkeRrOV2pmdZKDmCvmH+ykcA4pnwLUd7g
-         JOKV8htSko/JB/huzgnZCTG7mLkHa3rFH5wjblfdWRGCeAzaSPvf1mwYigGwSHm5y1aL
-         BkhrD0o+YpNCXyp7U0eQE6EWb7kRICDw7Hdo94reEZ5m2L0j+IWmI3nHpFYOZO3JWVNE
-         o+2+10DCNSGygv4TZmf27t0YeCu+2TENLpZ5EaLFknF3iWVNVzfBcnQ+cDKDrXAwtU2Y
-         ptinR1dd4xiFONExI0lOOowH8B4elrRnHM8KRwG1M7Geh8SNgp51w/V0DtIZmfbRQ3+J
-         TVjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794616192; x=1795220992;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1794616195; x=1795220995; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Iq2xOf7brzRimqeh3kCSIQaM8aaawwKdufuiU04kk44=;
-        b=syr8swQxPaTx3yyo/20Ws57vBhvGb+p8nCyoLWiOoiQSPXjJ+BmP/3YJs2aaWLhLe1
-         wdr5z8A2wt9qKfbFA27O4tlqmz4YHQ0yYfhXBp+rQptbmmmvYsR4uCSULqGcnVnFk/iH
-         ooH5UdotUNfBSDNFUIYeSGKWlWpwfi13T7yYLmoIgaRBkAc3UkbcsDom2q5eIR7EPYNV
-         QRw1P58DPOLKx8OwlF6enpw82VQPS5xPXhoInf+IpEtpiXA4ivPHlPR65ltiQEkkzLTZ
-         TWTJMbXPDgyFkhyE1dotQBCC3bv3tj60yeTkbiqqr68iQJborzy7W/92EpfkggvP5j/A
-         Kbxg==
-X-Forwarded-Encrypted: i=1; AL+hErEdxanD8+IlnrCUjD7iMmwcuHlSLzv5rbo/wrXVx8Iwy+PQOhKarPmmSCnTLswPO/bEnyE/iyfedA==@kvack.org
-X-Gm-Message-State: APuU4Z/BBnzlg0XAggAogyPP9Zl2Xy8shGfw1AecUwcS5s6j6uDS1bxP
-	3AvbqS8/BoyXB0GgrBgUoHQa5jOebA/p6Kldb4IAbbU2MDg6/5OKAeSR2SvxvQ==
-X-Gm-Gg: AYBFou0ed4YO22I7ZiF3BlzOvVsMM7BdaI+Qs4g9lGF7U3hdaeGRojekOXRzCZHCIgM
-	qQjE56q9ZXDa4Rl72HZmxMD5Wngq1F5VLqCRnddj7BRn3KyS2Hv28kfORjlB7uaGMAsMLcofW+H
-	zHZZG0QVFTn8wWzoj2aE4dsMgzXa3yrOziGCz7EiGMfIVw0YYDxsNbXhHvkzt682kwz27T8bXCe
-	gQeyqmYR745xz1HubGNQ5bBzTYLEpVE/NgYC8Z2rNALNBpwxw00g8I0mh35OliOcScFc6yN0Ifj
-	Qkj5/tSkEgiJkXYn4Vpa8IWf69FpxaX6vB7v8VTxDK0o5IfWNXfcW+3YTMBOrJ2xHZ32NH4dIXD
-	nBxSKHV9AC01aOYjW33AXg8/CSw7uAzZ6XE5gsG5I5+a3CPVy+Jidmgksz/IQMWdAnzpao9TkpJ
-	t0LvU9l8YTc1Wy/Zd8lWAQ8MSqlVCfBxicAkv7mN/GaORUC5CLu6RdXF7vV959CQeGH5xbSda65
-	AKJCaY4/izDsFUk+/l3a9f46/haadVe58IB8hv6Wl5N6CZ+w8iOaiXKUhyMaXQAAQUagTJOHXXq
-	wwAl9lSUBApxk/YmZ9lqXvnLht9/ppnUlBThVK4fA0Th/FLKRkFYqJYoD9HAHDwTn45mBOcJ/xf
-	v45ndh3p1WcxPj4ArP1bwr4gnffM=
-X-Received: by 2002:a05:690e:b83:b0:67d:9d2b:91b7 with SMTP id 956f58d0204a3-67d9d2beba2mr161001d50.93.1794616192402;
-        Fri, 13 Nov 2026 16:29:52 -0800 (PST)
-Received: from localhost ([2a03:2880:ff:59::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67d8a59f1afsm3447586d50.9.2026.11.13.16.29.51
+        bh=5FJmlfLnnVicFf7gaLIa4+dhDlQzv/f7mdEhi2RvUz0=;
+        b=z+4P+XcvAaELdJ/uW+m8li2C7p2GBYXGIVkRvjbjhIYdSNyMlGDL9mPWr9UEtjamSF
+         E4hSDFCp9AR0mgvmbYzyCeH3DHdv/PUytznsAhz8Byq2OGBPI/4PL2i/KpM8fYQZ0e4v
+         L55pOSKJbdzXrgu3S6eJ8E4xWZ/oZLgtCuYomjlslqY2MX5HKi7vbwfVU1J09jkwyQTk
+         h8INdnU7DNE3gSVkZ6BN2YznBMcetayO3ZacfeoOXoxxbtFU0w3GmcBxe/dUM27ojsW+
+         EL3HlSNFDOqUq8T3twYYFo/2nRHLpqfw4j7j/LzuY0J0IBpik25FYa0SrE2EminU3UDn
+         EaYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794616195; x=1795220995;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5FJmlfLnnVicFf7gaLIa4+dhDlQzv/f7mdEhi2RvUz0=;
+        b=roi8G+8sXNm3x1TBw/4nK+1YWu4KxjyAEqonL/0wKc9/0j7P4yHlemSUqeZWa09xFQ
+         rpZLHl4wT9qTuibFP/lO7b2G9wApOmLj0Lw7GvPB+YM0klfluK+FxTG/YzM6yIOTCe5b
+         BUNE/ZmFxlutJpWBtJu/BXO3D9By0w0D64qCoeiBdtbIz+wGduRj0ky9fQcPSa4uii84
+         7/l0SAooIz3LrCEN73DgolzT8/2MMK7qHy1nrGJPGDHaxJIqPPi9mQmAO+nJWksYG4sd
+         Mi8DeuuYc5PBqwDZXhYm/z5F249EhaLzrDOo+mzNCQR88oaAyBB4dNHrsCQiSDu1ax5v
+         sLEQ==
+X-Forwarded-Encrypted: i=1; AL+hErEeE3l0bglRJLCFgDciYGPUxswXXevvmahqkShVL8qnrlj5DSTS2F4zDmmdm1V6JOb3LFfjUdKswA==@kvack.org
+X-Gm-Message-State: APuU4Z/6hobw1VhzgZ3U3sqIXz2kBJ8M+4/xsfVkeWwBxUA3RNFJ75YP
+	otOA223pxDXvN7HZBXM2b1J7SaSuY7ty5cfOaHRbO4/ruA01zhydOwCO
+X-Gm-Gg: AYBFou0iiE+idRWH1mInau4raFxl/Ye5xYFj/Zt2YLhYRA7xY/MDVCUQsoKIHogVvRC
+	e7+oTE5fZzUSu0/o9t+6ARKwKgln6jOMJ2WqlllLGL2HWTpjqo/AigPqxFnCRwQVaPw7RQ724d8
+	b4IrWih2KMSxlPCpd5H7Z4GMCnHZ7I7/2P0kJWqGKlspMZKC44Pm3tqOqyj2AEeRDcjeH9MHPr8
+	YrMKwbuU5dq93lQWEAe7VV/IwTzzAHxAdTBh/QwDEil1dL7uFVB0OBgejUqJdMO9otGhzaitrEJ
+	YjFjmFcwPhfndJi31IWiSP93t5yala/9k9N72+E7DOl56QXJJEUoHys6Zq8UnvcpJcDcaMqx0LP
+	tDVUJuQyRE7bYbZvvx+0rj7IOFtb4wgh4IlIp3Yi6Cm2oXpk0x1N7Vnlj3QZoRpjEjZZZMxF38D
+	S/FpgSBnDwGS2uILK9lBxhTAM0frDjZXBnP59aeevLBIlxLF1bG6RsA/Lpa+Gn8pB+E4+5zwXq7
+	gqT1IzIJgJI0Ktxwsw1vH4XgZvfpDtvRtxTLcfQ4EHSJ1ptAjrd6ZuYcEyXCyob+xT9poACGchD
+	VdzGpVvtdfnf3TK3+X7vvUoJxHes1eFHphC7aVAlj28gglIhlHIrYqJ/hsremTCuCeeQXASz82c
+	p8HvVsw==
+X-Received: by 2002:a05:690c:3181:b0:8ae:1acc:ad33 with SMTP id 00721157ae682-8b4aa305fd1mr20901977b3.58.1794616195554;
+        Fri, 13 Nov 2026 16:29:55 -0800 (PST)
+Received: from localhost ([2a03:2880:ff:73::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b4aa958d0asm33763867b3.22.2026.11.13.16.29.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 16:29:51 -0800 (PST)
+        Fri, 13 Nov 2026 16:29:54 -0800 (PST)
 From: Joanne Koong <joannelkoong@gmail.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org
@@ -106,26 +107,28 @@ Cc: yosry@kernel.org,
 	linux-mm@kvack.org,
 	cgroups@vger.kernel.org,
 	damon@lists.linux.dev
-Subject: [PATCH v3 0/4] mm: read root memcg stats from global counters instead of flushing
-Date: Fri, 13 Nov 2026 16:28:18 -0800
-Message-ID: <20261114002822.1043378-1-joannelkoong@gmail.com>
+Subject: [PATCH v3 1/4] mm: zswap: fix shrinker count for the root memcg
+Date: Fri, 13 Nov 2026 16:28:19 -0800
+Message-ID: <20261114002822.1043378-2-joannelkoong@gmail.com>
 X-Mailer: git-send-email 2.52.1
+In-Reply-To: <20261114002822.1043378-1-joannelkoong@gmail.com>
+References: <20261114002822.1043378-1-joannelkoong@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ibn1hsstxidrj4em6qhejppg5da5ze65
+X-Stat-Signature: 1px91b5ud8rshkbe4a66bbwi4ph36gbs
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7631840006
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 811A840004
-X-HE-Tag: 1794616193-270292
-X-HE-Meta: U2FsdGVkX19oN0j06E4ip0kMefCr4j8zTG1fOYXJjgb0ALNr6jrFLB7NsqkYkIyrFeI1LbDDrSuh14HsM/JFSTxCz1vuk/IB3kvDOtBPuYtgoAkhedEpC02/f2OSIdH4cqGzBSy1gHDMM4nltMhgnOKbHuHff9DyOoCM2/C464Tqc9Oe3W+DT8weQQ360Hn6loUe5jzxFTQuu97QnxyQ9JPdgFWqjOmqZsRqlGHnyQa70bcRzZ5spMMbopINFxxUFY2UJjcJaynoMVj4+nN/M98smxU1aPv1tMNHuZoQhknhWPkmPPz/MQE2KQFpi9mKKtSBWhqPZ0/l1fpzXm2bofqi4T47h2WTsOMdw2h4DtkhHtYd5HiovpX035M9FUzX/zXj1G/Ve0otGMwipDHkZCf1duRqe0y0N+e7vJiBnBECyEY1AJaUmVPQw4sPJ1bLVt5qtDziri9WB3HkxYb40oVAULGk97oyl4cE1B+IKNfZlP/3O802q+d93cUHFLIOBKyn5cqUu+si+gy3X1NrTyARbtp4IQbiNL6HVtQXKHfnN+2PYglt1TRtJsWiepFePLpSHWtlROIgJPt302YLsXSUbdJrTh+ZWaHBiEjaOSE/SDDvmYXYMsiBcp1GPsUW8rHdw6l+35CLzPLWV/mcWDhPYxtUJaP1djO7WQQl/J0Hg39bO6GY42keJ0JulKm9W/nQok7Px3HYG9y6Fvdwjup8kEu/8jmnEBUwK5hBKYOeyuOyUSUun+tRNxhMXoXz/RfcX8L431O8dWaJp3hp3tNlaWdte5M5BZK4a6nb7J+km17zNNui9hxF+8uwQJk2V8YhFzYCji08JKMqRx1H0YKYJXAXALPudAZsRu3Azd5HqlHdHDYTj0x5HoQNoTtyHr4ldJxXxtvz+RraOKpNz1vD5dXRDDDZzhuLrWUJcTTz+FhUl4pmHJib9Z4RCaSTucDl25M2SpzRZC3KY+i
- MDz4rnno
- tjxsPTnPvK4wKFQCTFOyfODn8wusFidOgzteqbNXIr+dQ7xXf7E7A4/KUBV5JqcC5E1kgbhuzxWO+Xzgr0GrpKOnVRkL0uFKcW9kFvEpe8uiWyu1gw/WqroYgq4y55cpcx/RiTlmMNg/LMKrooUiPiOc7Y5FzCI0OzrYe8I4PPiEPIvWrsUU5Ofa2G2kmLGCXjFD0eTrPF5q/5Fu2gVGz+Tmw2g+hX/B4g6xS7slWIbZHFdDK/Y8nkP37vqOADVID9cdo74eSZPHXrswQpKXEkvmEylsKQe0U4OQn5aaDHJnhbcka4Ctwn/KoaRBVTGG5/e63+lyIiXygdkemRIGSvgQZ3mqdmyyoXs57MN+yhw3Fx/B7yE+qEq5QgOgZ+BDUglVAGNptlncUMAeqqY3EIri/2lgBJ4Dq4fwmwbavvw45pvFklhh2weD8j0i2jluNUtTS6FQZkLPChbc=
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794616196-454627
+X-HE-Meta: U2FsdGVkX19ETizOAnoYhnBYTBLiShcPB0g1b2n7inzbOieuKMP6qYp81ZuEBZ5WVi5Rz98v+AG6TR8QEK6RG5PZFj2TPUt0KVME/Ta/d+esVJqhmG/d5bbfWJMf/aOKdnPeG69U6hBpiEpO3Jyy2ax6Xu6xrjXdS98m5OowzVJ9ZUGJPYp51Tcn/WG9lPdZFww54rWoXopqVy75DUsNyY1qGexinUP9Xpoi+Ce8gxoT3cXQpBemTveGFFWwdIr2LFmnkSBwsP0EQKU68D4T4+BsArAkvV2kFJrxOLRQ4x6vJRVpf6VF2uIXLs16jsorxAQUGwI/nr2xJLrrD+0dCCp5mAz9DUox11MRCm99th+mcOs4pGNNi4PinaG1SXsUM/nrBGjDscgD6RatX6phG8TS0nIUps3ou82x17hIH8RhQKx4ycmHP+k+dIXXRuxgJmgXj42tO9BxoG1XLmn0ErTQkjlESQWmJmTkAP4jDE2zRFK6FZqNjlibG7hWJD+hFs601Xlp2anqxdiLQnM6WN6CxJ5G9OGLX4E+iy2AvtkeXAITeucXHb+c61cDen+kds4vN2Xj2yosmEZ7faIUg+fZKgmuJPr8iisMDju1Sj3BMLhx1xoFLLvrXOcuxlJx2X7tQGErLX1E+0PBmje4V4x0otaUtuZIT1W9gwgy/8No6M9Ma7tOSlSHZf/gYD54UzUdqd5KGfPoI43J1qz3NefkP2rroh26Q5udIC/9Xza3CsAFsfZ8TrmO9E7xfPnoUcMLtQxl1tJBnqp5aVKu+aeNb36ZbHD6wZK82nzVm5IHCjIb8feUATX62MMa6rUptIqdpe3piD67044he0OJdO1aU/paXAuiFWmHNEpHa6qkt9ZVeaMi4hYps7gxmqux7d52RQxFa6T/qb18isKr9sYRaDd5K7Ae6yA5lvgXErBnrYsbemWWdgc8CTH8wiFoAPmHCKf5PJhKP1JYdhs
+ Wg9x7rmW
+ crxD3Jmk4gqTAAby3lXQx0fOGEYE20IB7s0QlyLMaZBmVbZ5MCw2q5k3N7mC5+r0+qmG6ulOkc/wW2e3hwC27IrTLjx6MNiju636FKhqsa7OMW227hg5VwQotNK/GtWZ22oPsZM1QXdtwwVdQ3LK6RjBITv7AvoRU+fb0heYOrKGAa2e2a1QW8aRD0tmwJGNN2B7dVBZT6rvD+85dT50ewPFjhWjjB3YUZFS60OgcDeN0Dz+v6LF/XKltVxCaegcZc1TXQKpU2vsEiiQUIpntIKpmht6eziyiwalWVUlYUSNOB0jHf3hor0M4DyxDy4dbOAJ9a3Xc1Ae9JUAyb3Y5mBBoUOCmewox3BJeIFkRcelxLlCpRVNG2++FdhSpM5gMr1tKQhrac3BilJA1F2LHBgxV3ahIvCsu/u0OGukJzEkMmIp6jStHWqzxGWCYZssl8qN7yISXii8JKDYDKntAjjEepNgiDMQOUzi4r1mNnlza6BKfNiXqKZgq9/OrAUCF3gmhHyLF359gOgglPnEm/jqSuVIYBrnXgbId9zwwenCfDtU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,80 +137,62 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Reclaim, refault detection, the zswap shrinker, and DAMON quota goals all
-flush the memcg rstat stats before reading them. When the target is the
-root memcg (eg global reclaim), that flushes every cgroup in the system,
-which is expensive. Most of these flushes are ratelimited today, but the
-stats they read can be stale for seconds.
+zswap_shrinker_count() scales the number of freeable entries on a
+memcg's zswap LRU by the memcg's compression ratio. That compression
+ratio is computed from the memcg's MEMCG_ZSWAP_B and MEMCG_ZSWAPPED
+stats.
 
-For the root memcg, the call sites can read global counters directly
-instead of going through rstat. Global counters are always up to date
-and don't need flushing. For stats that only track memory charged to a
-memcg (eg LRU sizes, workingset, rotation, and reclaim writeback
-counts), the root memcg's hierarchical value equals the node counter.
+However, for the root memcg, the zswap entries owned by the root memcg
+itself are never accounted for in the stats (obj_cgroup_charge_zswap()
+skips the root objcg, and before the root memcg had an objcg, its
+entries weren't charged at all). The stats only reflect the entries
+owned by the root memcg's descendants. When the root memcg's descendants
+have no zswap entries (eg when the whole workload runs in the root
+cgroup), the shrinker reports nothing to reclaim for the root memcg, and
+its zswap entries are never written back by the shrinker. When its
+descendants do have entries, the root memcg's entries are scaled by the
+descendants' compression ratio instead of a ratio that includes them.
 
-Of the excluded stats, kernel stack, secondary page tables and
-WORKINGSET_NODERECLAIM only differ from the node counters because
-accounted kernel memory allocated by tasks in the root cgroup isn't
-charged to the root memcg. If the root memcg's stats should include that
-memory, then those could read the node counters as well. This is left
-for a separate subsequent patchset though since that changes what the
-root memcg reports and needs more upstream consensus.
+Fix this by using the zswap pool-wide counters for the root memcg
+instead. The zswap pool-wide counters cover every zswap entry, including
+those owned by the root memcg.
 
-Three root flushes remain. Reclaim also reads the stats of the child
-memcgs it scans, and count_shadow_nodes() and filemap_cachestat() need
-the root memcg's own (local) stats or the stats of arbitrary memcgs,
-which means global counters can't be used as a substitute there. This
-will be addressed in a subsequent patchset, as well as getting rid of
-ratelimiting for most call sites.
+This also gets rid of having to flush the root memcg's stats, which
+flushes every cgroup in the system.
 
-On an 80-CPU machine running proactive reclaim on the root cgroup, a
-root flush took 69us on average with little cgroup activity and ~0.9ms
-with 128 memcgs repeatedly allocating and freeing memory (wall time,
-including waiting for the rstat lock). Reading a node counter doesn't
-add any cost: it took the same amount of time as reading the rstat
-counter (~150ns, which includes bpftrace probe overhead).
+In a VM running a reclaim-heavy workload in the root cgroup with the
+zswap shrinker enabled, the shrinker wrote back no pages before this
+change (zswpwb stayed at 0) and 1016 pages with it.
 
-For more context on the background of this series, please see the
-discussion about memcg stats flushing in [1].
+Fixes: b5ba474f3f51 ("zswap: shrink zswap pool based on memory pressure")
+Acked-by: Yosry Ahmed <yosry@kernel.org>
+Reviewed-by: SJ Park <sj@kernel.org>
+Acked-by: Nhat Pham <nphamcs@gmail.com>
+Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+---
+ mm/zswap.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Changelog
----------
-Changes since v2 [3]:
-- Change from denylist (patch 2) to allowlist (Sashiko, me, Michal)
-- Add SJ's reviewed-by from v1 for the damon patch, which I forgot to add to
-  v2
-
-Changes since v1 [2]:
-- Read the node counters for the root memcg by default in
-  lruvec_page_state()/lruvec_page_state_monotonic(), with explicit
-  exclusions, instead of adding lruvec_lru_page_state() helpers that
-  callers opt in to (Yosry). As a result, the root memcg's memory.numa_stat
-  now also reports the node counters for the non-excluded stats
-- Split the workingset_test_recent() flush skip out into its own patch
-  (patch 3)
-- The DAMON patch (now patch 4) only skips the flush, as
-  lruvec_page_state() reads the node counters for the root memcg
-- Rebased onto current mm-new
-
-[1] https://lore.kernel.org/linux-fsdevel/CAJnrk1aHdBm4CofvKfx7B3H-uF2xRXZUQs47J_4xeRmRZ4hcZg@mail.gmail.com/
-[2] https://lore.kernel.org/linux-mm/20261102225030.2743129-1-joannelkoong@gmail.com/
-[3] https://lore.kernel.org/linux-mm/20261110015321.611093-1-joannelkoong@gmail.com/
-
-Joanne Koong (4):
-  mm: zswap: fix shrinker count for the root memcg
-  mm: memcg: read root lruvec stats from the node counters
-  mm: workingset: skip the root memcg flush in workingset_test_recent()
-  mm/damon/core: use node counters instead of flushing the root memcg
-
- mm/damon/core.c |  7 +++++-
- mm/memcontrol.c | 58 +++++++++++++++++++++++++++++++++++++++++++++++--
- mm/workingset.c |  5 ++++-
- mm/zswap.c      |  7 ++++--
- 4 files changed, 71 insertions(+), 6 deletions(-)
-
-
-base-commit: 31a696f9c37defab0f28f774e00ac7f135889ec3
+diff --git a/mm/zswap.c b/mm/zswap.c
+index a2e0314db1cf..6e1cd3e482f7 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1330,9 +1330,12 @@ static unsigned long zswap_shrinker_count(struct shrinker *shrinker,
+ 	 * runtime-disabled: we can get sc->memcg == NULL, which is ok
+ 	 * for the lruvec, but not for memcg_page_state().
+ 	 *
+-	 * Without memcg, use the zswap pool-wide metrics.
++	 * Without memcg, or for the root memcg, use the zswap pool-wide
++	 * metrics. The root memcg's stats don't count the entries it owns
++	 * itself (obj_cgroup_charge_zswap() skips the root objcg), whereas the
++	 * pool-wide metrics cover every entry and don't need a flush.
+ 	 */
+-	if (!mem_cgroup_disabled()) {
++	if (!mem_cgroup_disabled() && !mem_cgroup_is_root(memcg)) {
+ 		mem_cgroup_flush_stats_ratelimited(memcg);
+ 		nr_backing = memcg_page_state(memcg, MEMCG_ZSWAP_B) >> PAGE_SHIFT;
+ 		nr_stored = memcg_page_state(memcg, MEMCG_ZSWAPPED);
 -- 
 2.52.1
 
