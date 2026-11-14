@@ -1,92 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B542606A327
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 11:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B9A606A885
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 11:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SqVkgSqH
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=d0Ko838s
 Received: by kanga.kvack.org (Postfix)
-	id 6BD126B05B6; Sat, 14 Nov 2026 06:33:55 -0500 (EST)
+	id 0A36C6B00EF; Sat, 14 Nov 2026 06:55:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66E636B05B7; Sat, 14 Nov 2026 06:33:55 -0500 (EST)
+	id 054436B05B0; Sat, 14 Nov 2026 06:55:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 584506B05B8; Sat, 14 Nov 2026 06:33:55 -0500 (EST)
+	id E85A96B05B1; Sat, 14 Nov 2026 06:55:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 393816B05B6
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 06:33:55 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BC89340392
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 11:33:54 +0000 (UTC)
-X-FDA: 85433515188.23.F83CECE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 25F44180002
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 11:33:53 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SqVkgSqH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C0FD86B00EF
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 06:55:40 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 360F212035E
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 11:55:40 +0000 (UTC)
+X-FDA: 85433570040.28.2EBFFDF
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 5A800C0005
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 11:55:38 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=d0Ko838s;
+	spf=pass (imf22.hostedemail.com: domain of amir73il@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794657338;
+	b=LWiRa7kpeUa/TFouydo2fYrlAbTKfNyJE7KVQY0WJWfOTbVue1Ph/lQjgimj6D5+qgGDcF
+	mq0+k14tWd3t6jqCaEFWwvga2wrFhw0+zQ1KIaZaTZZYc4ZskxwWhgXaLGTAFZKS+V3p31
+	NzC+gKVatClemyXcU82kEnNgZbwY6f8=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=d0Ko838s;
+	spf=pass (imf22.hostedemail.com: domain of amir73il@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794656033;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1794657338;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JOohzSTuBgrSfk0jf37SnktRbQ4WRgnCUv6nrKxrSi4=;
-	b=iVuR8PvmoiGdzMWBScCLRHzErC8RUQELPCHytnlglbOgvqdBki0FqbQjlOUKsx83vlL7Yc
-	0wkEvB1dvdBy6F1izjDCwPjlgP2IgW79p8y3alHlwoSZRorKPUEDH9f19zKFx4rfbWnRDl
-	8Rx5wYMw7ufGEn7jeZ8q1ofEoNfDZKI=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SqVkgSqH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794656033;
-	b=7S/oqFm3xPWgIktKBXJsrnWvMoC8ihP5IslXpbvkaeOzl0j1+cCQADxcg1AE95D58Iw1Cm
-	bYnDvIfrQqZ3+OjaZciGrpJ+hY8xa9oqmIKKjSiKyQWY87Ls1/MvoXk2oKgtOfiFZ7h2Kn
-	xQSdlXaN1wofDYil98RTd+KMAXDheKs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AB03260E22;
-	Sat, 14 Nov 2026 11:33:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51111F000CF;
-	Sat, 14 Nov 2026 11:33:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794656032;
-	bh=JOohzSTuBgrSfk0jf37SnktRbQ4WRgnCUv6nrKxrSi4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=SqVkgSqHCr+86lKgqZHxDXqljji8NEnM9TBsv95upQudlE4cf/gCMtfwBdiQSe9lG
-	 GAaQgDdsrQjHcVQjQk57Z7CrTKCTI0m9y92zJMhiRkkpzKj8jzFIBdyYPbIIfQh06/
-	 Z4k7rpfD/0joKsbQgWG+88j+ydNSyEcu1NbGGg8mBdzYS5WJhu5e0KYkvjXhfqSoDS
-	 Z+cYoLk8jMH8nbD5QYmyo6d6i7WwGiZaEWuhtBc6k53EGcEn3it3yyHxPzu8i7dqBc
-	 oD0krgmQBSRNmM72Tne0gRBNi2K/gxAPlHQMPgB/NwmaTi6dw4BU30WIGVOreYxlAO
-	 z9cu0itUO3O9A==
-Message-ID: <sashiko-outbox-214406@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] x86/unaccepted_memory: Do not accept ranges that are
- no longer E820 RAM
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Pankaj Gupta" <pankaj.gupta@amd.com>, "Thomas Gleixner" <tglx@kernel.org>, "Ingo
- Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org
-Cc: "H . Peter Anvin" <hpa@zytor.com>, "Tom Lendacky" <thomas.lendacky@amd.com>, "Ard
- Biesheuvel" <ardb@kernel.org>, "Kiryl Shutsemau" <kas@kernel.org>, "Ilias
- Apalodimas" <ilias.apalodimas@linaro.org>, "Mike Rapoport" <rppt@kernel.org>, linux-mm@kvack.org, linux-efi@vger.kernel.org, Pankaj.gupta.linux@gmail.com
-In-Reply-To: <20261113105554.199912-1-pankaj.gupta@amd.com>
-References: <20261113105554.199912-1-pankaj.gupta@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 14 Nov 2026 11:33:51 +0000
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 25F44180002
-X-Stat-Signature: 9drm5w63mandhgx4w7yoaem1yssm49jt
+	bh=nJvs09p7QWIuuw8YOzj5TR133+2IJ5+yRajckn/hsO0=;
+	b=mKVM1QdEFeiBN7PNesehpbwpjIMnQz9sgr/9PtpNiB+VVen+95i5T5CNlNDYALnolWJKK2
+	Rst8F6Cn/y9h4VXLib0owvHP9uzR6UPu/M6w39dNpioeQ8l04h0GFUtQaaVYuVBEeZzIgc
+	IX2bKh8hdN9kvd+jXrMQ0Fh59zCznUc=
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c50604721c8so370135266b.3
+        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 03:55:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794657337; x=1795262137; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=nJvs09p7QWIuuw8YOzj5TR133+2IJ5+yRajckn/hsO0=;
+        b=d0Ko838s8X+0paKhHLoh8Z6DJO2CDMoITUZIcfJuDfyqnPO9BVOV53iQ2cvRyNCsH4
+         m4CLlAfSFIFMa85kJ9cbtRNY08bpDjJi9nyv2HGQGC6xlzEOPNmWAxxHl+L6rPI9OH7H
+         HiTpkhNLFewh6xpYMto4UJoFNnl6DwSqheDZbWvnUNlhZteIApNhFLoIURG47CAO1guV
+         LfkAiu4S1+krfmLrsZoRFIK861rb/UsZqHxs5p4owYQBNHXKt8XFnxtUGfw6Be7XlT5Q
+         tK72VN1+cP5t5umhhEDxC2GoQ3P7Y+cdTHax8OrAr9uWVdAOt6yYh3JpVj4BqyjOpV8y
+         ErZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794657337; x=1795262137;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=nJvs09p7QWIuuw8YOzj5TR133+2IJ5+yRajckn/hsO0=;
+        b=IrjvZuS59adSlLz/6hJGwJtCotz+o84Rffa/QOjoAD6bLuYvYBqXJAS1xVGgvd/lGQ
+         337thUVm/eModyvPVMOnk6FA5nSIjwke+vxnbg4aRcwF7cqFCV1wvfRAKtO6r0ezla9F
+         eepLEqGJ8VhF9ldxelkZKIl8ao2T+kBHFnv3Z83ElgCxJf/MuXpJ3tEOX5eCybFn9Ez3
+         sss/ngb72I9foSbzPrVJ4DlXgBMKJZRY7oAQ7IyhZYFJyuAwQzlEFklMWE+AbyD18bGP
+         ztUunjkxLqBCyGNWFqCZ+OSr15Z4lkdlIwOG2JkBw+ZPrsTKTvdUkAPC9RGYeaBUoVG2
+         eJEQ==
+X-Forwarded-Encrypted: i=1; AL+hErFP8UQrgcyZOf/8oHtx+9Bwa/06msZpd/mhIX2cIW2A21n/hhPrp9fLQNlwfxopEUgoI81xL2ZJ4g==@kvack.org
+X-Gm-Message-State: APuU4Z/PvL4HQ1m4dYmR2yoLTH6p/zo2ZZeo3h+OnanLici4RDKqNv0Z
+	au6Xfa9DXrhAZLjJSLhcR3Rbj5cQ6WJAm7ABn6bEn3mDlQ+i6E9NqceG
+X-Gm-Gg: AYBFou0gV9BtlnFq2O2w2+HB93e2t4FPPbbPfo4+avh/zAa9PjxH9X5JCVa6oV0PCKj
+	YhyApv1uwCDS6zUQpmTGIUWMabnW3WrAbzaUkHaQSIpxViEX4AGTMQp6Q765zF1URJ3skQ77MLT
+	xGs90mTKPf8n8LTnDR4yCVxLIqavubL9uuYscYtE5jQ/xpsgvQXZbHEXSjdnp95jjgzS+BsceM1
+	6WyQGxWF+5aU5mmcQq+nbbmPtvCvnwuVewM4VMYuhYUyXgTD5MApwE/2/9G4CpILVrSnQ/A2sbd
+	ZYMjqIfpdzaZO2CnVqF0HPhmiOQrhYRTjghqCPvyqi7cb3XheGHmXsnSWTmgv9IaDNnIIfglIML
+	j9ObZi0Fo+ODyjQw6viGrRmiOK7yYOw463jMmdndmqvQYdeJ2wUc4IcWqEb8Raj+Nqf+WYyvCJc
+	m9lgn8oP7jlGWnHl55xf12RfjDqa/p+3wSDtWBt0cMpAHSFH2O2NBSgdo3oUKCU2To53RkGKjm3
+	i6ri4+vDdplEJq32AMJERvKXVr5LZyWyiaRhwNy1AjmwhHaarvAru90bXuLzlERokVP9kRhgeyd
+	UiJfuET4Yr7hOCoP9+sM95Ef9tddKc5sXZ/loY+OhAwi+88pGzePOp/C2URjJYVWmFvFmipHaSa
+	SHjeD3tv1l6g=
+X-Received: by 2002:a17:907:3e10:b0:c40:231:6eab with SMTP id a640c23a62f3a-c5096370c31mr441592966b.16.1794657336589;
+        Sat, 14 Nov 2026 03:55:36 -0800 (PST)
+Received: from localhost (178-84-201-199.dynamic.upc.nl. [178.84.201.199])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c5095b41f44sm206223866b.31.2026.11.14.03.55.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Nov 2026 03:55:36 -0800 (PST)
+Date: Sat, 14 Nov 2026 12:55:35 +0100
+From: Amir Goldstein <amir73il@gmail.com>
+To: Alexander Mikhalitsyn <alex@amutable.com>
+Cc: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>,
+	linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>,
+	Chris Mason <mason@kernel.org>, Josef Bacik <josef@toxicpanda.com>,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-nvme@lists.infradead.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+	driver-core@lists.linux.dev, linux-mm@kvack.org,
+	bpf@vger.kernel.org, linux-security-module@vger.kernel.org,
+	selinux@vger.kernel.org, apparmor@lists.ubuntu.com,
+	linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
+	fuse-devel@lists.linux.dev, linux-efi@vger.kernel.org,
+	xen-devel@lists.xenproject.org, ocfs2-devel@lists.linux.dev,
+	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-usb@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH RFC 38/41] fuse: refuse files on pseudo filesystems as
+ passthrough backing files
+Message-ID: <avhMN39TECaur0sS@amir-ThinkPad-T480>
+References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
+ <20261110-work-loop-pseudo-v1-38-4c998976c6c7@kernel.org>
+ <20261111151202.GA11391@lst.de>
+ <fb1d72cf25d10a960da627f6d93a3e041820ed3a.camel@amutable.com>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <fb1d72cf25d10a960da627f6d93a3e041820ed3a.camel@amutable.com>
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5A800C0005
+X-Stat-Signature: 8t1j6hkgzb4htub9w95bh6yye8i7k356
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794656033-548593
-X-HE-Meta: U2FsdGVkX19TQBbihzQ8ON263N+dmg4F5tpvBuWNiMPG8DJWC0gZPHduB5tQu68YjazWfdhzezLa9Z2/pRFz9t+j6WKE4O4i9krMDqDi6z3NmAXLtPDNepJVq+phy4n9yIXPSbc0ZIYwY4tpSAR97qi+vcNOa48VogmKf7OGZS+gLFG5qkopVKWMmoxb8jgsaMKXWExz+eYMcbZDp2SBHxK2rEpXbBKidataIGXgLHQtxGaCUH/TvS7pDf3xlXSa05nNLfW1UeI5W8pdbQM6hY+X+1KWabqhsQStuiCoL2aPKObua/u9cMxWCQSOYCQhHaLvKdvcxiXOVZac0V4XP+DCMmPGjduZqlYEsR0obz2Wmia72mJUPSbPXJ+iIYP4Vt3uEvXCMMW3PAUubgazp9rKwa9jM014kKAtGHP5lG2nmth/BP6LnA82CqLCmbQf13CQXtUJF4BOmLvZrwqkAwfnBMvGX5wbTLq1f39RHy8rntFIKDzm4/imFhp7/DWfyhxSuAyl4WXu7S3nK5/QNLxG55TTAidr1R7SZuxX639qK9diWJut8MHECm8zqbdnud9z+FqlSASeeeYDaq/NB7p1kdXA2/F68sO0adfhoR7F/B9mtixu06hMp97Zc92c+iKNIHfRJtcxioyKMzp8FjCQLASa883MpTwMa9KuQiT7hCIyoi17vK3qQ0Xao7MFMdYU9CQ4V/fv8zidCAwqNolq6DBCtLBOQFUf+1SjOYcF2F8u97gKFKnz/7N7lvOAo3BS3OJKSAC7mQwy2HvO+rtV3s7qXY3fmmou2Kg72LRC/MNSVUhjQwriZ846yJ5o6M5E8Cpsy0G9ZaEcaNcYmmAJB/Trn/uIi8mwTf9d0iZty976V0ZmMQkYWXlvoBHawJCkHN7juKDfKh4mz/bPx9LGKWWQ2082N5XXUWmr3gzfNlA6pYTNMqT0FQzbbUV+kQICjfmz+/bfhCjjZpQ
- 6GgMi8u3
- E+eAHvoxrN7sMi/uUCrBlYwxJUiui+Oqpv5wMO+3crYZBjxnDubvj4S/v3E8mHgr02YmTR7B3QaiJsr7ZPcL1FoFHxNktEmAP5SNAjhQruOil6Bcd4obUKhN3N4oBRhW9pXvvXWlX9A3mO8Py4YCxkCsp+EG0GJv3qeJd8H7uiezxGFwPfW0lHbKHIh+DXb7iJnHYrD2gq07NmjR9QZiahJg7ZzfjeQLiCC2FA+Ou0dVu4NxIhp0kJCuYxFYkhRvACpB+9ehCFMpVjEM1kOCNgKz+qJglx11+GrTc7JvnMlTOykM5JDTBacqQNlbzmNrShpoiceta61TTkFgAGuFc21yw735XIqil1LCEHIS5diLDPEIHSKtXKLeSAbF/pDo+DMAdEVz/m2Y9nmbTfSrYVPOLI8lelVWAhTCG+2Bk/88hTV1bMEz9FqzSkiLZMI/ZAnnMLQCJo1XjGDvvXFPX1uZ8Mwg7powelA4QXR872aIU3DRO6bXJ+6qQQglOx3X1d+EI19XZqIESsJe667Uv0WOoBACi7NiUES0cn5e4M9rXvGQ4A2F8uNh9vgooWNTt67HVF3tjc1lTTkD+NSLiIx6Ne0nLvuTdukDtPhjU1bYWKttl5dWB5FiH7J1/y6yg7WprE9OzvVdVfrpP/K/JVZHUzSIaVhyD1bP/qjMABDd7safmKxnF5Lh598Q2H0dIZ11+Tk+cpx/tDYfvkhLwvjlB0U895vSxbc+/GxS28SGXCDihgVaHGPxliOyH6IA0lVKouebx3DK9ar0=
+X-HE-Tag: 1794657338-579983
+X-HE-Meta: U2FsdGVkX1/FTKJOD5HKAjv8wnRjPvViens77RWxU6TSwxwh59DVrPQZvQaRvmPyutcCFCfULJgZ5I3fvP7DKWB1Y+KPAdJCG8DNamfmbB6Vq14WEj1AvVud6pNnJwkyYXxZ57i4d7byxjq/jVMBeCb2H5a2+/VB5ZRFzQbvYKt7qlaYQO6uuk0qEmia6ZrVOhHJ1AXbvWlZVaAap0hcRcgdhgAHTYuDQTXmxrucOj873HJSHKLqlMWyFJhhnSzQGQwkEQiccpK36NeJWm/u9Ecv+WaUag1oh6mqHZbIJFXDavyqHXBXCt7/lmq7iBsumM01RhfQwfQXkTwwqUDgENm63fHfxle5eOBEFurgsRwgGM30hMUmE7BafBLaZSDo+6qluOZd8514ykWBNfP6wEfzhryvxuwg/inJnkTCowhg6cuwR4CfkRTf7nr7o3fZg90E/DIW01Rv8zGbymA2SQ+6A1J5zUNC7l/tj9ImRJwD1U+3b+RWpvMngTgehlOEfTl7m5I7FHD+x70kBVlPdROTLUufC3msgqik+xFzgnwUvJs12SeMZY5Z/AJVDUoB/lCnAlgiEMQCn4P+ippajdc3HOLgpt/6gDCYdj1WPL1SZKcnCRwZ0WQ551oXnX/2tqHXlTe7gtX0yqpwyTYW0b2WpQW3cvN/GCdFydhHLEs5NO8s5uA08zbBg4ASqdOZlUfGg7tN2MTi8i+W64gcPsqWxXNtSD0Qqfe+eFdB8uU93XNNRFWCyMaHO5836/I0Nswsjm9tqYpB/MlSfNInvy7l7KM8uOa4cAlDQdoUKCcLjT+XOXv0F0dsC2MwfM8yPfmLgtwz3NLXw07sJ42fvAY8/8FSeG2sNqf45vQE8Fg/0XmCqMThc/zR5JEmLo0pfc/JjrDJN5fOpgs4ZsfSUr9b6W4FOubIO6rywBLx2MIHwJ53BXJOLCds3pApDCVh+0P7d/M7F+kIXVnna0k
+ dp/aW5mC
+ LVFoKK5Bupxw2mMlsM9nxehyLKWX661DGap5220hK4wJsXQ9h6x/U+r9ew8g3gzA/Lsi8JrnUncGpZudZ15ZxVycXnZ8KYTBJsHixQJ5T9bIcEtPgH1ZnANIY2HU0fHFYtqU6T7ypHOrEuomAEqr+C/N9itd/5wSkz3BWNSijt2BWT6rpVzRGI1OlxKq6p9s8ZBf1jyjuWk8eDKMIMdxOkQc+cUNQeVgkHoXU23JK+x9qX4GA5ofCQjmnQewTtBNH0BecqadYXR9zL6Wjo7bk6tMpq96wAox114xX8lMPsnlI0JrOg72DZ6ICEP7lfeA6yaG3wdZ3c1otXzmPAMRodvmb9Wu3UDSzypSnaEM0l/ujp7SbNUuLBwE7E66IkOlEV7vHSiehEp+qu2Zj8IIz+jE4r3TB+rcra82tPIQyT7v9OrI5eDA5fd7W5N6PRGdqEoJKa3s3u5zQFGEbNeXB/xRRxS4pbGNYgtX3x4LsHO3iQIkGPMdjX0yvoWNuW1NHKA1tp0YJvniH9b0xtg3z1GpsmSGf87LHmEWCyfuXjfesYWUsRddhe4kuhxVpZPrIn5E9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,177 +143,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Medium] x86/unaccepted_memory: uncleared hole bits in
-  arch_clear_accepted()
-- [Medium] x86/unaccepted_memory: outward unit rounding in
-  arch_clear_accepted()
---
+On Fri, Nov 13, 2026 at 11:25:57AM +0100, Alexander Mikhalitsyn wrote:
+> Hi Christoph,
+> 
+> On Wed, 2026-11-11 at 16:12 +0100, Christoph Hellwig wrote:
+> > I've seen setups where people use fuse to mediate access to sysfs
+> > sysfs in odd ways.  No idea if that's still around, but if so, this
+> > patch will break it.
+> 
+> 
+> Oh, that's painful. Do they use backing files for that?
+> It's a relatively new feature in FUSE...
+> 
 
-commit ddcd20a91b6aa10c63b863069cf031e61f95c5fc
-Author: Pankaj Gupta <pankaj.gupta@amd.com>
+Very unlikely that they use FUSE passthrough and if they did
+very unlikely that it would break their filesystem.
 
-x86/unaccepted_memory: Do not accept ranges that are no longer E820 RAM
+The API for fuse passthrough is that the server requests to setup a
+backing file before open via ioctl and if ioctl fails (as this patch
+does) then server falls back to non-passthrough open.
 
-This commit restricts x86 memory acceptance to page-aligned E820_TYPE_RAM
-ranges and updates accept_memory() to clear bitmap bits via
-arch_clear_accepted() only for ranges that were accepted.
+The ioctl can already fail for many reasons such as MAX_STACK_DEPTH on
+procfs as the commit message says, so server needs to cope with the
+fall back.
 
-> diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/=
-asm/unaccepted_memory.h
-> index f5937e9866ac1..9e27a9953dd83 100644
-> --- a/arch/x86/include/asm/unaccepted_memory.h
-> +++ b/arch/x86/include/asm/unaccepted_memory.h
-> @@ -2,10 +2,11 @@
->  #define _ASM_X86_UNACCEPTED_MEMORY_H
-> =20
->  #include <linux/efi.h>
-> +#include <asm/e820/api.h>
->  #include <asm/tdx.h>
->  #include <asm/sev.h>
-> =20
-> -static inline void arch_accept_memory(phys_addr_t start, phys_addr_t end)
-> +static inline void __arch_accept_memory(phys_addr_t start, phys_addr_t e=
-nd)
->  {
->  	/* Platform-specific memory-acceptance call goes here */
->  	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
-> @@ -18,6 +19,47 @@ static inline void arch_accept_memory(phys_addr_t star=
-t, phys_addr_t end)
->  	}
->  }
-> =20
-> +static inline bool e820_ram_pages(struct e820_entry *entry, phys_addr_t =
-start,
-> +				  phys_addr_t end, phys_addr_t *s, phys_addr_t *e)
-> +{
-> +	if (entry->type !=3D E820_TYPE_RAM)
-> +		return false;
-> +
-> +	*s =3D PAGE_ALIGN(max_t(phys_addr_t, start, entry->addr));
-> +	*e =3D PAGE_ALIGN_DOWN(min_t(phys_addr_t, end, entry->addr + entry->siz=
-e));
-> +	return *s < *e;
-> +}
-> +
-> +static inline void arch_accept_memory(phys_addr_t start, phys_addr_t end)
-> +{
-> +	phys_addr_t s, e;
-> +	u32 i;
-> +
-> +	for (i =3D 0; i < e820_table->nr_entries; i++) {
-> +		if (e820_ram_pages(&e820_table->entries[i], start, end, &s, &e))
-> +			__arch_accept_memory(s, e);
-> +	}
-> +}
-> +
-> +static inline void arch_clear_accepted(unsigned long *bitmap, phys_addr_=
-t base,
-> +				       unsigned long unit_size,
-> +				       phys_addr_t start, phys_addr_t end)
-> +{
-> +	phys_addr_t s, e;
-> +	u32 i;
-> +
-> +	for (i =3D 0; i < e820_table->nr_entries; i++) {
-> +		unsigned long first, last;
-> +
-> +		if (!e820_ram_pages(&e820_table->entries[i], start, end, &s, &e))
-> +			continue;
-> +
-> +		first =3D (s - base) / unit_size;
-> +		last =3D DIV_ROUND_UP(e - base, unit_size);
-> +		bitmap_clear(bitmap, first, last - first);
-> +	}
-> +}
-
-[Severity: Medium]
-Does rounding first down and last up to unit_size boundaries clear the
-bitmap bit for an entire 2 MiB unit even when only part of that unit was
-accepted?
-
-When a memmap=3D reservation or mem=3D limit is smaller than unit_size (2 M=
-iB)
-or not aligned to it, arch_accept_memory() only accepts the [s, e)
-E820_TYPE_RAM sub-range within that unit and leaves the remaining pages of
-the unit unaccepted in hardware.  Because first is rounded down via
-(s - base) / unit_size and last is rounded up via
-DIV_ROUND_UP(e - base, unit_size), arch_clear_accepted() clears the unit's
-bit in unaccepted->bitmap anyway.  If a new kernel is later booted via
-kexec (which reuses the EFI unaccepted memory table alongside the
-pre-cmdline e820_table_kexec map), it sees the whole 2 MiB unit as
-E820_TYPE_RAM with its unaccepted bit already cleared and faults when
-accessing the unaccepted pages.
-
-[ ... ]
-
-> diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/=
-efi/unaccepted_memory.c
-> index 4a8ec8d6a571e..b8a0c0d1d2891 100644
-> --- a/drivers/firmware/efi/unaccepted_memory.c
-> +++ b/drivers/firmware/efi/unaccepted_memory.c
-> @@ -130,7 +130,6 @@ void accept_memory(phys_addr_t start, unsigned long s=
-ize)
->  	for_each_set_bitrange_from(range_start, range_end, unaccepted->bitmap,
->  				   range.end) {
->  		unsigned long phys_start, phys_end;
-> -		unsigned long len =3D range_end - range_start;
-> =20
->  		phys_start =3D range_start * unit_size + unaccepted->phys_base;
->  		phys_end =3D range_end * unit_size + unaccepted->phys_base;
-> @@ -150,7 +149,8 @@ void accept_memory(phys_addr_t start, unsigned long s=
-ize)
->  		arch_accept_memory(phys_start, phys_end);
-> =20
->  		spin_lock(&unaccepted_memory_lock);
-> -		bitmap_clear(unaccepted->bitmap, range_start, len);
-> +		arch_clear_accepted(unaccepted->bitmap, unaccepted->phys_base,
-> +				    unit_size, phys_start, phys_end);
->  	}
-
-[Severity: Medium]
-If a unit_size-aligned hole such as memmap=3D2M$0x1ffe00000 leaves its bit =
-set
-in unaccepted->bitmap, doesn't range_contains_unaccepted_memory() permanent=
-ly
-report the accepted RAM range immediately preceding the hole as unaccepted?
-
-Both accept_memory() and range_contains_unaccepted_memory() extend any
-unit_size-aligned end address by one extra unit_size to cover
-load_unaligned_zeropad() across the boundary:
-
-drivers/firmware/efi/unaccepted_memory.c:range_contains_unaccepted_memory()=
- {
-	...
-	if (!(end % unit_size))
-		end +=3D unit_size;
-	...
-	while (start < end) {
-		if (test_bit(start / unit_size, unaccepted->bitmap)) {
-			ret =3D true;
-			break;
-		}
-
-		start +=3D unit_size;
-	}
-}
-
-When the valid RAM before the hole is accepted, accept_memory() extends
-phys_end into the hole, but arch_clear_accepted() leaves the hole's bitmap
-bit set to 1 because it contains no E820_TYPE_RAM.  After that, calling
-pfn_is_unaccepted_memory() on the valid, already-accepted 4 KiB RAM page
-immediately below the hole (for example PFN 0x1ffdff before 0x1ffe00000)
-has end aligned to unit_size, so range_contains_unaccepted_memory() steps
-into the hole's unit, sees the set bit, and always returns true.  As a
-result, read_kcore_iter() zero-fills that valid RAM page in /proc/kcore,
-unaccepted_memory_vmcore_pfn_is_ram() omits it from /proc/vmcore, and page
-freeing paths repeatedly call accept_memory() on ranges ending at the hole
-boundary.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113105554.1999=
-12-1-pankaj.gupta@amd.com?part=3D1
+Thanks,
+Amir.
 
