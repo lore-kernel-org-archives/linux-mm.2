@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E87606A32D
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 18:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D80606A886
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 19:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g+siPjM4
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XMkwiY6D
 Received: by kanga.kvack.org (Postfix)
-	id B875D6B05B8; Sat, 14 Nov 2026 13:59:11 -0500 (EST)
+	id 5E2786B05BA; Sat, 14 Nov 2026 13:59:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5E6C6B05B9; Sat, 14 Nov 2026 13:59:11 -0500 (EST)
+	id 593236B05BB; Sat, 14 Nov 2026 13:59:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9C506B05BA; Sat, 14 Nov 2026 13:59:11 -0500 (EST)
+	id 4D0586B05BC; Sat, 14 Nov 2026 13:59:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 84B536B05B8
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:59:11 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0132880439
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 18:59:10 +0000 (UTC)
-X-FDA: 85434637302.09.0C529C0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6934A1C0002
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 18:59:09 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g+siPjM4;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 2EA3C6B05BA
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:59:59 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B365B8044A
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 18:59:58 +0000 (UTC)
+X-FDA: 85434639276.10.24F191B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 1E83F1C0002
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 18:59:56 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XMkwiY6D;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794682797;
+	b=mz/R8GMFanzYeCaV4o6Ubywnrk23wVmpXtX12iC/RKUHNHfFLgNyi1KV3e8ka9Qpf08j1O
+	FKYtbdWtO8NynSgHmCfbacLMecBKRVMCM/nwoqx75DxPg//hm69pd7ut2a9Hc4uOAaDQ3b
+	n0IzY26YW+ZutN728WIv3uaAjfiOLPc=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XMkwiY6D;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794682749;
+	s=arc-20220608; t=1794682797;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9RzpuEYsnkvuLxM7zo3RdF3Gc3FUtoCDNsh2Uv68tmA=;
-	b=YOU86tvUa2D0kax2T+KUmIio5lUOUoVtlbGmh9I/K+6EmnREaYt42vHgrj+D7O1JZhQBrs
-	Pgrp3lKEfZJfrUm9WBprFieLB1rxui9+x1nNJJ631GAcVUYfb4Tq+Oj0R2pvJC4+QaUcQp
-	TEYDUrfUSQu1Jcju1MMN80BTRU9lBeY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794682749;
-	b=EIj6ywR2I2R1b9KnsROSTV9MR/Co+JvjSnMr76Knkf4pwtfZDOdiPYHw3ZjcCBsIYvYoDH
-	1UdfbATdFiQHAJPUXlcVXFEJ/SFb8JAtPG147WUoNwzSc1zm0AR3lQNBlT4Ol/THNeH4jO
-	aBgDAaC6NUYsLLK+C5TWOoudCTEMedY=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g+siPjM4;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=aaNFykkpcP0cS9Qocp3fy2eSJ2KoYeW3YHSZ5vyz1zs=;
+	b=2WYj1/90SGTkh+rDDokAOcR97Hd9lEGVg6G+Lh0/giHMVGlW79/pmZu7rb3K9Gctra/WmW
+	Vro21JSJQzyq29XCckBruCzlFruqavzvD4tripEaa76RUkzSCXMzEef5XqdbB2DkzlYyb7
+	/IR7kuGbJa4YGL9U0ixtp5BKOPV5Dy4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EEC7660E15;
-	Sat, 14 Nov 2026 18:59:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54B311F000C4;
-	Sat, 14 Nov 2026 18:59:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 39F2943B15;
+	Sat, 14 Nov 2026 18:59:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D9E1F000C5;
+	Sat, 14 Nov 2026 18:59:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794682748;
-	bh=9RzpuEYsnkvuLxM7zo3RdF3Gc3FUtoCDNsh2Uv68tmA=;
+	s=k20260515; t=1794682796;
+	bh=aaNFykkpcP0cS9Qocp3fy2eSJ2KoYeW3YHSZ5vyz1zs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=g+siPjM4yAFSviPGPS/cwHbu8OZzs8PoMVBZNdEnXQLMBPyyPFkTXapgCKl/hjAae
-	 dCJNWlK/TEWojBDTpL/ghuz087T3k/gyiU1eB4mNldla+3S52rlDtKLQugauMusEqP
-	 6RRTxZxPcFw62PN+1KM6bBdAb6eh04dR903SHM9pa1o6uQw8B29gZKllO+p9VBvKP4
-	 AykfttBIFa99OrjXCIgHJOPgJL1GKmxAXilXFDc6jR9GA0S/RI7teedpBYOyDfm618
-	 MHfCc3/0hBDuNZP996VXFGHsvBIYJnGDN7X2XFBKb+zgXGpV+9xAoBHm8lRzgwoq1R
-	 tW/dULWGdjNCw==
-Date: Sat, 14 Nov 2026 18:58:59 +0000
+	b=XMkwiY6DpCIGsfriwGOqAWiPbK24F3D6OKfV/wHCov4+5BCJ1Wsj6VNzuk3cUkr4X
+	 zqFlsrkAIPyHinsg2xIoVAroHyZRHs/937xwsCZMYzDt0j3vdA/aNN6AL4a7Ar1UIm
+	 xWDZmQtLLMAX/3EzhkLpQva8U9TmOwg1uj+/DyTBWHgO4u2uypjXye5kITKh10eT4Q
+	 mXWVM0MJ0Gqja2R0B3NAtgAPW5LNXakn+kjO8cjKvWyMGjP2b69i85RrE6V0+H6sD4
+	 Vh4tyCRczjK0QAiDfPX9j729otk3VF/cGRqHlIYeL36JIC/Ihszo0adHvWQDm09JGM
+	 rwfddaTkgm1Sw==
+Date: Sat, 14 Nov 2026 18:59:46 +0000
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: "Liam R. Howlett" <liam@infradead.org>, 
@@ -76,29 +76,29 @@ Cc: "Liam R. Howlett" <liam@infradead.org>,
 	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, 
 	Rik van Riel <riel@redhat.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 3/5] drm/i915/selftests: request read access for mmap
- access tests
-Message-ID: <avivbKZSctYksFqd@gremlin>
+	dri-devel@lists.freedesktop.org, linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org
+Subject: Re: [PATCH 4/5] powerpc/spufs: consider vm_pgoff in
+ spufs_mem_mmap_access()
+Message-ID: <avivjtM2rxpUAXDB@gremlin>
 References: <20261112-access_shite-v1-0-988a5c470db2@kernel.org>
- <20261112-access_shite-v1-3-988a5c470db2@kernel.org>
+ <20261112-access_shite-v1-4-988a5c470db2@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261112-access_shite-v1-3-988a5c470db2@kernel.org>
-X-Stat-Signature: k7wrx1mn7b4osqth9f6tdyr5qi37oc5q
-X-Rspamd-Queue-Id: 6934A1C0002
+In-Reply-To: <20261112-access_shite-v1-4-988a5c470db2@kernel.org>
+X-Stat-Signature: 84pk5z5ywp7h4n9zazo1wg5otjd6hefm
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1E83F1C0002
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1794682749-815218
-X-HE-Meta: U2FsdGVkX1+wpMAmsjXnPqL8AAR8VVlcQWQ9lPDwW6IjUm0hBkTWgBUryOR0u+UDY9aSoNk9+x53KDYtzT8vkaw2pEOUE2fSRrKh+k7qNvosAbuAadnBPrf/bd02jO2KRxZNhoF8vlZ1TywYYLjBj31sER06w3yEcykcgL0236mQEa9zsUvr9cmwXo9AieOWgIvo02jpiiLu1xDf2LFxpzmwh0OHykxs9hXOgAkN/R0oILtoKwY+vXJQM+rpKPL1mEmEI6wN8YSa1RnocQBkhupl5fL9e98gXgkKcsOtrm1QQEc/+VEXIG6ZtmUYDdi5ADnofzB5I4ajp09AYiGPRoknU5brsbL/u5FWSbLOEDv2c9sjxiD1mCqiPCn1WNJffVC05W0hZwx34NjwH4QMwBXmuVlQZaL1f54HqkgGOAEjVrQxjIB3r58NJBDqCNu8noilOhbcZccZMLOGXG2nFeHCIBneQzISF66wih3lXU/mVOYuZlC1s90Ms2idwjFWqjUyK2syNHemBUq5lAQgxgfH93V/syNxjOrPTkmaclxdM+Ln1UQmFo7W0a5muQxqMwtixLUt9IuHtIS562NYcMP6YzHBvZewZNLE57h3vJ4R9nnQiH7IA5o4RGQVPNX/J5AT428+HpzRuECwqvRMURebCSGpjN0xRbPkOVW0JuU+6hC7RtMnO8Aswatg2a85GPzd+Hzw4v4FTW0r79AffZUi5Sst6R09XHD+HZvS9Kl5v0WI1nYdRQWjwCk7iQQYahM09syZgC7UNj4qvWOf0Jm98FPKlxUSBVfQknQFwuH2l7c7KCyYBCqsDcqgU00gaqBDipJjWFA+Bkf8mQFiBPeqPwRgPqEDAUZlEan6FuEIF5jB2f6WXjZ3O87odVaz2io9isGJDYPevm2D4NaprUlENmyT8mOU0lrfGHDGYEC6nvBdRrLC88TUmJZ3iW32rdiLDfUgeicigug5Fsj
- xbxQkAjb
- ctM+UnC4Zl4eXn4hM9b3wVOrYGNkDIM9HgzDn8KPamxIUyfGZl3oxfBQGB1vd6qBnu0pFxQDbJKIx/m2KFPaaZhfKRjMGbeEZXx6zEDNh8L7HE9AoWceu1+7mpRfOFV41V8DpK2HFYKFp4rVAuXxTvOIJRCf/FaIwCery8G2umXJZIvw763j2XlbNjXKtHDI6ii962FDU06frxs7PnblPSnDxVfjzHXcYlPp9ZTVIflH/BMoQszi2+4bzaph7j/WIFlpIpxCxvwfJbcU3ChAtIxYzcZV3Wv4Oe1fOHnjIf9L49BFRFS7kjc21mKOFaV5ZZo+d438ELwjrLG7COhtmL33BeS7kium9gYSx
+X-HE-Tag: 1794682796-973674
+X-HE-Meta: U2FsdGVkX1+uWJcXzwuzecklVNYTYl3zgltrDDcJaTHRSCIvk/Ok+ebmo6HJl/llfXFg84g31Sk3K559JeLCZcdCVYUtTnmkHo3dMa+rx/jfiKTO1bBh6eTqaZ0zlR9vbYfT3oHEmmIzZd/mLfwqoy8x3xgVkCi3u6UmMEIHb46v5+l8ZaBTCtzIYp3rLt31c7aWXf6meFsjVqibalVcCpAKgoBsZw/OT5Q+zSUHfSZhkuaaGPIPLdRMoT1XR0qjW49dNBGOsXMno0FcThCNjCxW0dB39cFNqbEnc2kHope+1hPIhLEL9fEfKg/FQ1ASW5r/ZRyrnrZDJkyPllBn3PlPx+uEsnKxnqU0tSsEcmAVFcKueOOi8mBnXCtMsYdDUNoRFcxA1yoHSwPQcWKz7SzXZgSfg6ZX3fE7R+VnoKTZn+ldfK7iYArvg4/dS/ar/djXfngAR+7wCHbcnBS35q4+kHgnTnhD14pSlSSIXPIlXxonil8prm1YmVZJabVR2+Mvl1khydpVupXNPQrcuaBd3oVS4ONWtMIYUCsnGzXGkq24LLBHPCo85Ix0vjRsMjKS8OMTDw804l51msGxEcU8r+DUd7OOr5R6SFXZcPyDplR3jo0hyqK/RA0Q9zp/FkdX5DsvkW260DFVXVXPHlOYK9cAjfoyypzTN6T1blhSMH2soTjxswcs3jKfK+eQZKHPSAhJ2cdSu6AXAgT1dhbmTOycwhS9ONhfA/Qmiw7bBiU/feTRj9d3IhwcA+hGTvWTgvmJOguH0+Ke+s98gDfgkwS23cEdcMow2QIIXJkgDJhAamnSAwQQHI5JazLEkYX/D49M3FutfiyWeWpVdWbKUf9uuOVTr4E4HP0UdGSI/awDoGkG1AobbhrOAX+Rl871cJbpIk+2LySLbcB6gZkCvFjoEPzqRn8u4m2dFsaOB/Fe+89jpVWtkkHLO0C99bPoZMQCnFuLXDVbgej
+ QCW8b7kL
+ PUxgmUGeWv5QkM054D0MOyFRNJFwP8goDk9EzkkuDePJVmCPmp5+EWhrpQ/tEZt6twe8AFqFjQblH+9cQCk37khnN7KE22ptvuLfMUo5bfmw8OBUr26TWdd0jrvHiYhJwbOSejlczYnv8P1dyKxBXCYZATjmePd0JIZ0y5PUBxepm42Vff4yL+xkh8SpFZN5dEryUPPHGQuQN3ZdD4kP00hWdzITnjJDVQhLezI6ZbBvnNiTOsXVSkGTgYqTHwMXQbUnoEnXG3LHBp1lxwJ5b6o8cooXt2jbmeshHjpIC9gUAvUgFXSvobG1Mc9BlKX1d5aMPDjF+MZIdsc34gga/up6FVe4PJfnmuA/P3MLiXPSDbume+VinmP4SIN16ADTXrLb9Bv0qNUOcQ1itbPan1daofw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,37 +107,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 11:08:59PM +0100, David Hildenbrand (Arm) wrote:
-> __igt_mmap_access() reads the buffer with access_process_vm() without
-> FOLL_FORCE, but creates the mapping with only PROT_WRITE. Request
-> PROT_READ as well so the test remains valid when we fix the ->access
-> fallback to properly check VMA access permissions.
+On Thu, Nov 12, 2026 at 11:09:00PM +0100, David Hildenbrand (Arm) wrote:
+> spufs_mem_mmap_access() calculates the local store offset relative to the
+> start of the VMA and ignores vm_pgoff. After VMA splits, debugger reads and
+> writes access the wrong part of the local store. Mappings created with a
+> nonzero file offset have the same problem.
 >
-> Fixes: 9f909e215fea ("drm/i915: Implement vm_ops->access for gdb access into mmaps")
+> Properly take the vm_pgoff into account, just like spufs_mem_mmap_fault()
+> already does.
+>
+> Fixes: a352894d0705 ("spufs: use new vm_ops->access to allow local state access from gdb")
+> Cc: stable@vger.kernel.org
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Seems sensible so:
+Seems sensible for similar reasoning for previous patch so:
 
 Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 > ---
->  drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c | 3 ++-
+>  arch/powerpc/platforms/cell/spufs/file.c | 3 ++-
 >  1 file changed, 2 insertions(+), 1 deletion(-)
 >
-> diff --git a/drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c b/drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c
-> index 303be698891fd..d9c828032a1aa 100644
-> --- a/drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c
-> +++ b/drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c
-> @@ -1460,7 +1460,8 @@ static int __igt_mmap_access(struct drm_i915_private *i915,
->  	if (err)
->  		return err;
+> diff --git a/arch/powerpc/platforms/cell/spufs/file.c b/arch/powerpc/platforms/cell/spufs/file.c
+> index 98c47bafaf678..0a46d6f7178ab 100644
+> --- a/arch/powerpc/platforms/cell/spufs/file.c
+> +++ b/arch/powerpc/platforms/cell/spufs/file.c
+> @@ -248,7 +248,8 @@ static int spufs_mem_mmap_access(struct vm_area_struct *vma,
+>  				void *buf, int len, int write)
+>  {
+>  	struct spu_context *ctx = vma->vm_file->private_data;
+> -	unsigned long offset = address - vma->vm_start;
+> +	unsigned long offset = address - vma->vm_start +
+> +			       (vma->vm_pgoff << PAGE_SHIFT);
+>  	char *local_store;
 >
-> -	addr = igt_mmap_offset(i915, offset, obj->base.size, PROT_WRITE, MAP_SHARED);
-> +	addr = igt_mmap_offset(i915, offset, obj->base.size,
-> +			       PROT_READ | PROT_WRITE, MAP_SHARED);
->  	if (IS_ERR_VALUE(addr))
->  		return addr;
->  	ptr = (unsigned long __user *)addr;
+>  	if (write && !(vma->vm_flags & VM_WRITE))
 >
 > --
 > 2.43.0
