@@ -1,129 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B36606A33E
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 07:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD85D606A331
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 07:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=cNB1q7VN
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YK09FWet
 Received: by kanga.kvack.org (Postfix)
-	id CAE1A6B05E1; Sat, 14 Nov 2026 02:25:29 -0500 (EST)
+	id D5AE76B05E8; Sat, 14 Nov 2026 02:34:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5F2E6B05E6; Sat, 14 Nov 2026 02:25:29 -0500 (EST)
+	id D32936B05E9; Sat, 14 Nov 2026 02:34:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B75456B05E7; Sat, 14 Nov 2026 02:25:29 -0500 (EST)
+	id C707A6B05EA; Sat, 14 Nov 2026 02:34:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 920056B05E1
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:25:29 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 21FD6160205
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:25:29 +0000 (UTC)
-X-FDA: 85432889178.06.B3719BF
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3D4B920002
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:25:27 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 958876B05E8
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:34:11 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0619712034B
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:34:11 +0000 (UTC)
+X-FDA: 85432911102.07.6EC03E9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6976F20002
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:34:09 +0000 (UTC)
 Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=cNB1q7VN;
-	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794641127;
-	b=aQeJ4HdthupZdbil14waGCaSYPjDXN/hnIuxJ4jQPby3su1AxJiGc94/YGYI1dBfOnzJY9
-	U0Add3e1aRzqQLrCdBYEIAHSw78ofqBkhuqCJZz48B6Le5urHSnXH+DCZ2cQVGJQYecgL9
-	5O5eAqm59JzsmbmKXIftYpDbgcCPYeM=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=cNB1q7VN;
-	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=YK09FWet;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794641127;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1794641649;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FOpOMGwOLM8SRhOfI4bc8Q6VvL2aj4ajoW8MlVZKv38=;
-	b=ZHpG+gaFRJNwIfDC38Pjytwr5qXKvgS69F9P+OavFZNAaWgCwQoCaMmlUsFtX79wOXlt32
-	JAAtSgQiQgKP1goXv19WOzwD5VhCkYMOwFPYKJ4Q9+WkCoqotVLZMKggRdUqXWSplPJNfV
-	G/fTDnF3n2+kG6ztuYc60y6RD5K+0Sg=
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-94960131b30so74568985a.0
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 23:25:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1794641126; x=1795245926; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=FOpOMGwOLM8SRhOfI4bc8Q6VvL2aj4ajoW8MlVZKv38=;
-        b=cNB1q7VNNDwaNhZB1EfPjib8kKGqoe81RskwYZspwfifyhzjNf937IABFP3+ibuz4q
-         +7uWSRMwZuFYv+Qvj/yhsnyGLR9uusQzvixPQ+9exzwpJ5lAUcVA4zyUdsPcJHTFoMcr
-         DqwYsipi6ngDl7yw5KxzjoqCBV5gxYGzAfHLdB+Om9fFkvG6gycBkhGLqXk/Ub5TjwAJ
-         2tbCohfJWoizvdISpzkcJbGQLZWarJfI6/9waMi4af1B4NlxAA3Bc1i6737fmyck67sn
-         cw3PkGp5VCt2IHKXJa3Z4buFteExXY2RY4ItJBLxBksONfYlquHMq44xehYxS1bhNuI6
-         g8Hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794641126; x=1795245926;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FOpOMGwOLM8SRhOfI4bc8Q6VvL2aj4ajoW8MlVZKv38=;
-        b=EsirM3nPy1YNt2vm/qV77t/00aIwY6k8VVVKjTugucHIDVpG4MBQHN5FF+ns4liLIu
-         HE4tHbZ3FDMw7qGtZa3g7LIeqSeFa7Gusnh0XfVRY65GiO2Gj9cUuRt08c5cAa5stk6e
-         YcWaNYAtwBQRJIJ2c0eDgoJdONAfSY+1Vq683DIFjipc9jVB7A35vp/Tw+tBX3E+JELy
-         E1f8lwYM7TyNTpV6JNwAg7oa/tCvuD2YFNLLwU0O8oml2ZvVruECxcqs3b4Adxrz43aC
-         HxecuMKpjLTWQiJaoRVEYMt9foK5KQuwAYs5RepbWGLFZ81AlWXet97eZh4cVsQTzKFd
-         zUmQ==
-X-Forwarded-Encrypted: i=1; AL+hErF6YootBSlOe2IZqNEWmvn+3Sdcl+GE2zHjbxzUZVDBZmSD4PKpK1s7HQTUxZkmZMg53NqRwG0ExQ==@kvack.org
-X-Gm-Message-State: APuU4Z/kUN9xZZ8O0qKq/Unu/AjpcXpkjIglNQchpcfTcLSusES/f5GN
-	v7pHWPienS5K64dWyp5oRMsYVepxzoXVYWxPbl24dY28XxKY15WAK8gfZJW/qQuTBzw=
-X-Gm-Gg: AYBFou0t1n3xxVrRdQQF5SVpuOTqBctbDkQSDvS+YunAw1+kwCICWSrSML5Kv7/ul4B
-	HBhgQJk/gmnf/j/x5y6BDLXZwJDvqJyVLvlnXkHaho7IEptoQGRZ0TtWF52mYeU2RbxGig1Ui9X
-	l1n69vvtKz4APHjK6wVVYYhyEywN7c+3PmlA002zI2S545OHVHD4+70UTBZ0gArYt3JcZOnSQyC
-	a8JN1DuY3jislGtst8A6sL6UzRtzEzL2THnUrPkwDuvEv6xrO1PxnSzB6Oh4wCMJU1bXbo9KEgv
-	yvmjNZHcFAc1rHTWNH2ealBugRfEGStjUEqt3TaaY8sRVYXLUNUqvqXqq5R4AzJyaIn98ik5kC+
-	Gsd14ks55k+BFspaflRImZhw759RC95BB+2GvKPNHLxbfhacDZwbt8z6wdNOH+yJWoJdrL7OF54
-	7rqlVeemhTyBcVWI4eKPXg64IK09U6r7AMjed8AeQmiC5K/FHyHATwIhVcLBljjl1WgnTAuep2F
-	1jVRa/857YLO30EC1cYfH/qQsb7hIuJH12ihAtKVQJKmwAKDIcYj/vyiobEwFFlaP+RxpWuz98c
-	z3Uw80wssYIeKt3oY001tYpb2Qem0nvtAvVwPGrW8tm6X2rfPWGR9eBLyhkYivDa/nUTzHjQ5mO
-	il5Fax38=
-X-Received: by 2002:a05:620a:2a06:b0:93e:b0c3:388d with SMTP id af79cd13be357-9494b9432demr830714785a.11.1794641126492;
-        Fri, 13 Nov 2026 23:25:26 -0800 (PST)
-Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9494c803abbsm351077885a.7.2026.11.13.23.25.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 23:25:26 -0800 (PST)
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] mm/hmm: reject shadow-stack mappings
-From: "Gregory Price (Meta)" <gourry@gourry.net>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, kernel-team@meta.com, leon@kernel.org, 
- akpm@linux-foundation.org, david@kernel.org, kas@kernel.org, 
- dave.hansen@linux.intel.com, bp@alien8.de, rppt@kernel.org, 
- stable@vger.kernel.org, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-In-Reply-To: <20261114002027.GE3706007@nvidia.com>
-References: <20261113195536.2660763-1-gourry@gourry.net>
- <20261113200303.GA395967@nvidia.com>
- <179460249376.482102.14669935557901467762.b4-reply@b4>
- <20261114002027.GE3706007@nvidia.com>
-Date: Sat, 14 Nov 2026 02:25:25 -0500
-Message-Id: <179464112539.482102.8723246686117488051.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Stat-Signature: ywj9ecusfx7q5gxforpfjy7jwywgntqb
-X-Rspamd-Queue-Id: 3D4B920002
+	bh=0KoqRgmGRc0qs2TY2et1mN3EuDIIdXOqtoPQ8Z8M8aU=;
+	b=h28Yh0McBngxlD2ADQrpvyljcG8hgZK4LBCaF/QV/UMB6LR+8DeHUzRJOX/uoMolw17Clh
+	SdpzaaB16F6LKetOvfi1qFD5ZYD2z1Mx1STk/1G16CwG4DwiKhKTtNZgrbLdoxJbmGM84+
+	46boIijp170SsUryZ7/ftQ0+ZIJGtm0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794641649;
+	b=dTZks/tFPZ4xtcBKM+e9C+Ltis05Jphlr62DF1RQYtZ9ckWJuZRZF35aPJw5/cfMoUxgaD
+	fR6B1buSGQ7sP3UMyXyxTEitjIQjZ7VBsgW8nc4l7FC2gFHE9XxmCk5I8pxrimPol6tXzv
+	l6Qvb5rtuFCscWMamOz2lKLgJb2MSho=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=YK09FWet;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 76B7546406;
+	Sat, 14 Nov 2026 07:34:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05241F000CB;
+	Sat, 14 Nov 2026 07:34:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794641648;
+	bh=0KoqRgmGRc0qs2TY2et1mN3EuDIIdXOqtoPQ8Z8M8aU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=YK09FWetI+P5+mHhL0XQXoF2JIcNoGHXGHFtzuFx2vZYChk4b90Y2+oDMXqxA6wUH
+	 bHKuL2jSUsxVX4RxjOBF5u8rjA4nDG8qldlzvqWTRSJLQLwBN6ynSTix7IXRf2Ji1z
+	 HMJjLl2soPKSYj7tFcyb5xNtqG0xQpSlpeeizZ8urc6FfUOpVIFdu9NxD+SeJgtGzS
+	 YNDxKYpwxrM+bh62Yj5ZFhltyppkBMxdPbybCEvox8UwtXJPKBt4a/XmqT1x7M9HGx
+	 ER4P6a/ysW1ITFZnM3UYQcHCdk4AFpFJZR2giet/lesrp5XXzSqTa4Ryc5VN7DqLcc
+	 rnDaiP3MbGl7A==
+Message-ID: <sashiko-outbox-214264@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 20/22] PM: hibernate: size the image from common memory
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?R3JlZ29yeSBQcmljZSAoTWV0YSk=?= <gourry@gourry.net>, linux-mm@kvack.org
+Cc: kernel-team@meta.com, linux-serial@vger.kernel.org, damon@lists.linux.dev, linux-cxl@vger.kernel.org, akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org, gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, johan@kernel.org, jirislaby@kernel.org, kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, yury.norov@gmail.com, linux@rasmusvillemoes.dk, pavel@kernel.org, lenb@kernel.org, hannes@cmpxchg.org, brendan.jackman@linux.dev, ziy@nvidia.com, sj@kernel.org, muchun.song@linux.dev, osalvador@suse.de, nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, usama.arif@linux.dev, kas@kernel.org, xu.xin@linux.dev, chengming.zhou@linux.dev, joshua
+ .hahnjy@
+ gmail.com, rakie.kim@sk.com, ying.huang@linux.alibaba.com, matthew.brost@intel.com, byungchul@sk.com, apopple@nvidia.com, rientjes@google.com
+In-Reply-To: <20261114070959.3490008-21-gourry@gourry.net>
+References: <20261114070959.3490008-1-gourry@gourry.net>
+ <20261114070959.3490008-21-gourry@gourry.net>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 14 Nov 2026 07:34:05 +0000
+X-Stat-Signature: 93ztfo8htyofnzq69qognm3i3rw6koot
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794641127-227497
-X-HE-Meta: U2FsdGVkX190jIFv+QplECNZXBPPFTJbkfrRNUCoMotuwLBP/SKxbfAybVGaa5BRv++k8wT96/dZ7NLXbKSb+WcpW6KOWtdGpe87TXH3SSMnPIksyMpVX1WrRw8GMH5qJwFw46HU8W4WE2+dtHdAZnSoqyfhd4oK63BGEB3EOZQAZqruqbw0OS0ewe5ICKBVtnOGaLkK4oKmiSzlbL0H7Ci5AE6jye88mPso/2c3+LryNHITi8XXlr+PQfv9b8MiHyMYJpAykPjDr0NaIMrgKemAJrzHFc7N1egwUa+ERTV5gou0+LTj+AHzFD34dNfQ6gSHNyCfP+DigFpzpGZ64CTZUeZMQfEJfh7UixbQbnqyf8YQWUb/2MUPTyAxODYqH5aMjWVcWv1c6WT0tkJsQktUnXO/+smRiFBof2HPWBCZ9Pzj3zoKKrGXqOPdwDQC/os1GmQAvsHSmOnPCliJw2NmcIC4KMnAImLPJ0LmXb5nCKVyYZSbeZmmJdKd+6UpTeYMNP/g/B/aofFDNMgAmMZMoa341z/hqcMr3czDDEeK2vrmWrFdgy/VNv9BTmGg3fNyulqCtjlZxWQWMXibxE7QTpUEcUfs/xOZ6eUxXrnk+cA9aRDc+JAQRkAYZBYCPRrUkpHi0bCUvseoJXTYEg4+ZqAC3hv+tzZZhApLTY0mRRz063Wg8YCHmwPz84LcGxsol8Ex+V6RRUt2BBUtD/EcJzzVY0a5oAbPp0pwU10gQRXEU2hAnc+ldPBUpuMHRZYEf4yaXwyPIca0GMFFPrAtoeye4cULpKqm3IT5nEDfrQQUBcg4tKItsGj+Ct9i1ny7bX72ale48ORgAAe9W5prA7JesFYsmB/eIee//Y3IKCR+2aN76lmFJaeX6sDgJ7DQtY2ViOXUiNYTi/MX3WitlUMpJ8ep92Q9hge2yIGTuPw4r6yvngfxaw97QQ5UTQSvs6QGViJcEy6NKl4
- Yw3YQ9bB
- I4rUqOJf4oPlDEqvbafvsvhC6/RK3ZZ/K1wupjmZEJTuv3jlU5TGf6PBamXqsCOBTgaDzav+5t8RTnXo9f1i0ERr9Is6KLnjf3Q0lwKedKsowOQ24kguiZKr4ZA41QX8HLhsBlpg49aODSH4EIAC0Iqu4v5WHUOJLpPXDDX6jCEWL/SiZ7Ql5Am7TT8/4H6OWs9XtDCzaSm6LAbrtjMU/1yn+fXWDAOzC4/BCt6PlWJSsoz2kx7QKkU8rHkYgcue9arktDT6O/yMHaLvdqhIvjx7nnQ==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6976F20002
+X-HE-Tag: 1794641649-350430
+X-HE-Meta: U2FsdGVkX188xh90IppbXoEVUX1pJbSQ6M1gg2CkiylX+oGwr38I+txVP3VaSkyPtTpQBTLFQK0wrMIt3OxXsxwPnHaE9UzSX+ohRY16RmpIMKjE2ybkeqJbPk5CWulXhfmLPoMfKTXEYhFrP0Uj6gW4CuLcVt5QQS7ZT8c7r0KHCpbiD72Q+xK0d862oqU9M2aWyt3Yo+WXIBjrE6J8paxz3QJTQFKqB6NLtJ8ANXcurbEqga1s7l90NvFCHKZW3XQJzLZlWh8AO20eMlZE83JWhmr636fVnqm4MM9mW9SE4A7dRp1wMlki9oLSeGCnsaYxQIYrR/c+ircDoIxcHe87RA5eJSNz92FfbK4xGkey8fUpNm0TMpMu7AIVExW5msPGmCxcpvP07SRmmUqHw3UbtdvyLHGFrpFUy8nRVS1dIZ6Ll8fiAT+fXQaqMb3GM8yUdlgIzsm2Wzq6mNw0UCBAgGyQ2B6/yDjOtiBPHo/cFxNbpQF1C5k8oljNSb3MkbaIn4XAD127JIIqt6ut1ELLG9lyztVU+a80t4JJDeq7BQqlngRjmXM5W2dLJMKda7cViSejJgTmCLH5YcHLsgNJ/tAroTzWkHtBCrGLyaBoIvW2rz3rn3ZOxCL1DOkhFwrPWJvR9XFbcqtHn7ZWZgDFLkHa1jI32T3NB30oSYsF31YrTUV/TBZ0OKbFSt2vBxn8OxrDSdXR7b63LMODkUgQrlNHVesD81Y1M/+43KKnwMvLy5w9Cchlls41sTnBSHYIevowaE5iJ5JOzittWzSIo5mLyzCcbOG3WQn70WD2r7KI4mFUpaW3VxCUyjhaWCUq6k2uxXrphaC03sDwh3itP5996kbSpX8UNfNCM4Adu5VA8+yL8ISF9303OKSDkbsRtIUMPO8b8+jCauMcZtwp0Citce0HUHqhkl0ovGbFHIlE2l0swBrz6AND92I2KPTNGAR2J7Ju/YYQ9H/
+ 6ADvT0Yz
+ 8qXKLH/HOLLzQmT2vwy7sjmMDfKL2m3fDKTR7N891U7s2mHbkJC6hp3jpu8PBzbLBxJU32aiYdDXTq4crXT/Onynr5a9XvmBkmeIINPsu9jkaK8jhlWmfBHdnppMDG2xVv6DIcUn8P+p75cOq9X3OZ6pGof5HNxN3JcMXAUk/Uskjgs+VdgQ7/iGKVS1preYS4hxmz8jA1JILCIjNiKlEWt7hYnefSSFjLWPEJnMUT2wnfmH6SazHE+kNMsbmn5gPoErVF6U8Rdu2U1hOc3D5gT0rdaTvj25tO89oZggTllYYq91R/QNpUTWF9bIjnyFys3VI6RJtOiOpzkbnr6hb13dEZddzQUfhxIhv5kdProP4nsbozF4oi4+6BmyvG538Kqk6pk+vZ66tDba7shw4SiMgvzf+Ac49l5me0BiU6DRYoLWQg3f4L5ukRtlqu0pYZTl5hbfHaNyA8hvFRzSKKakWv7l5lrwTYfcxmHHRrC1vyoC4L6tVBW5khqMttB29HqfPeAFbPzz4gf8BhcCZGdmOvmQnXMjNxSqvYMoVM7OifeciWt5wi6nNTg8UqsOOXOhv6Aa2oz68pE9s58s1s1ZDUT48zPYRiU/p0Eu0kfd/IwcMxB+xcIwLyGYe28dCKiyAmB0B8ka3Qm/W+fbhefToE3i4g4j9pQoOn+cxyWAiSm6xtJUrBNNXM4qKED8mWXyzc1ZsgQqa5xBUcvz+NiiUgg/PYtPlyZ17NlTHMu7mOKReFPOEvM4SZ8qpFOf6WXlqbAm0mFmnce+KHQPHkA695R181bwCvni7QTwXBeDhYRw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,57 +93,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 2026-11-13 20:20 -0400, Jason Gunthorpe wrote:
-> On Fri, Nov 13, 2026 at 03:41:33PM -0500, Gregory Price (Meta) wrote:
-> > On 2026-11-13 16:03 -0400, Jason Gunthorpe wrote:
-> > > On Fri, Nov 13, 2026 at 02:55:36PM -0500, Gregory Price (Meta) wrote:
-> > > > HMM can grant ordinary device write access to a userspace shadow stack.
-> > > > On x86, pte_write() is true for a shadow-stack PTE, so a populated page
-> > > > can be returned with HMM_PFN_WRITE without taking a CPU write fault.
-> > > 
-> > > I'm not sure I understand this? The pte is writable but you don't want
-> > > only DMA to write to it?
-> > >
-> > > Is there something special on x86 that makes the shadow stack pte
-> > > non-writable by the CPU?
-> > >
-> > 
-> > Some of the context is here:
-> > https://lore.kernel.org/all/20261111-mason-migrate-et-al-fixes-v1-10-3d2454362e8d@kernel.org/
-> > 
-> > We had a similar issue with migration, but this should handle the DMA
-> > case as well.
-> > 
-> > It's "technically writable" but the kernel is supposed to prevent that.
-> 
-> Bah, it's not writable at all. The CPU PTE has write disabled and
-> someone thought it was a good idea to make pte_write() return true
-> because the CPU allows writes through a special instruction on this
-> special PTE? So now all the places like this think its writable, when
-> it really isn't.
->
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] PM: hibernate: count_free_highmem_pages() ignores
+  N_MEMORY_COMMON
+--
 
-I completely missed this, that will teach me to trust pte_write() I
-guess... what a bizarre design choice.  I'm sure there's "reasons".
+commit 7cc6e673516327174024379e9585052d08c1578f
+Author: Gregory Price (Meta) <gourry@gourry.net>
 
-> You could also fix this by having something like pte_real_write() or
-> whatever that doesn't lie about the write bit in the PTE :|
-> 
+PM: hibernate: size the image from common memory
 
-or rename pte_write() to pte_fake_write() instead and restore
-pte_write() to its former truthful glory
+This commit restricts free page accounting in hibernate_preallocate_memory()
+and enough_free_mem() to zones on N_MEMORY_COMMON nodes while keeping the
+metadata estimate across all populated zones.
 
-:| indeed
+> diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
+> index d5dba0e50b2eb..8aeb086a3fd3d 100644
+> --- a/kernel/power/snapshot.c
+> +++ b/kernel/power/snapshot.c
 
-> The patch is still fine, in that it matches what everything else does,
-> but I'd include these details someplace..
-> 
+[ ... ]
 
-Thank you for taking a closer look, I think Andrew's changelog
-adjustment is an improvement if you're ok with it.
+> @@ -2011,9 +2013,10 @@ static int enough_free_mem(unsigned int nr_pages, =
+unsigned int nr_highmem)
+>  	struct zone *zone;
+>  	unsigned int free =3D alloc_normal;
+> =20
+> -	for_each_populated_zone(zone)
+> +	for_each_populated_zone_state(zone, N_MEMORY_COMMON) {
+>  		if (!is_highmem(zone))
+>  			free +=3D zone_page_state(zone, NR_FREE_PAGES);
+> +	}
+> =20
+>  	nr_pages +=3D count_pages_for_highmem(nr_highmem);
+>  	pr_debug("Normal pages needed: %u + %u, available pages: %u\n",
 
--- 
-~Gregory
+[Severity: Medium]
+Should count_free_highmem_pages() also iterate over N_MEMORY_COMMON zones?
 
+On CONFIG_HIGHMEM systems, enough_free_mem() calls count_pages_for_highmem(=
+),
+which calls count_free_highmem_pages():
+
+kernel/power/snapshot.c:count_free_highmem_pages() {
+	struct zone *zone;
+	unsigned int cnt =3D 0;
+
+	for_each_populated_zone(zone)
+		if (is_highmem(zone))
+			cnt +=3D zone_page_state(zone, NR_FREE_PAGES);
+
+	return cnt;
+}
+
+Because count_free_highmem_pages() still sums all populated zones,
+enough_free_mem() continues to count free highmem pages on non-common nodes=
+ as
+available room for the image, undercounting the normal pages needed to back
+highmem copies.
+
+In addition, alloc_highmem_pages() and prepare_highmem_image() use
+count_free_highmem_pages() to bound loops that call alloc_image_page() or
+alloc_page() with __GFP_HIGHMEM and pass the returned page directly to
+page_to_pfn() or swsusp_page_is_free() without a NULL check, which can
+dereference NULL when highmem on N_MEMORY_COMMON nodes is exhausted while
+non-common nodes still have free highmem pages.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261114070959.3490=
+008-1-gourry@gourry.net?part=3D20
 
