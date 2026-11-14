@@ -1,115 +1,118 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC124606F277
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 13:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E774606A332
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 13:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nuDa1vbB
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fJ8vpr+f
 Received: by kanga.kvack.org (Postfix)
-	id 1528A6B05FB; Sat, 14 Nov 2026 08:10:31 -0500 (EST)
+	id AE5C36B05B4; Sat, 14 Nov 2026 08:27:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 129E26B05FC; Sat, 14 Nov 2026 08:10:31 -0500 (EST)
+	id A96306B05B6; Sat, 14 Nov 2026 08:27:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 018B16B05FD; Sat, 14 Nov 2026 08:10:30 -0500 (EST)
+	id 985926B05CB; Sat, 14 Nov 2026 08:27:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CACBB6B05FB
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 08:10:30 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6256A403F9
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:10:30 +0000 (UTC)
-X-FDA: 85433758620.06.897DCFB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 8C3C718000A
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:10:28 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nuDa1vbB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794661828;
-	b=JI6SzCQHDE45AePyzjU9IDp8maVkHofuLioh6l0UnVCIX86n63OpEioyg4LtZFgjnxkCba
-	//VYdEDQwYZRHP/mf2nofm8uvZ7nhvZ1+b1MgNxF9rk7/TbfW0cDbV15pcXha7M/fFTj5e
-	e10bFt6lI2K8jfHBZ/fdu4lAcn8io64=
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 702FB6B05B4
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 08:27:09 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DFB19C0404
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:27:08 +0000 (UTC)
+X-FDA: 85433800536.15.90E5B41
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 379361C0008
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:27:07 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=fJ8vpr+f;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794661828;
+	s=arc-20220608; t=1794662827;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bZzPVCDR9p9yXfSnH8rVXpL5YD0HLVrk9YJZvkQ2Ids=;
-	b=Bulc1fS5lcdmpSN0nbUxs4EJPFTztVajpRU/gP6NDOoTS71YU6DH9d42Eeg9D3ICf57qSq
-	zqbvgEQwE82E7vUuamPcM6EzLzfKORzdhLeEnVs2bzgySPhqczenIIQdiZQ4Hu9hkf7jiZ
-	hm0X6T6GpR4ztbUN7vJUgpY2ea7LtmE=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=dgWMrdUfwgyu69vi+KlSZuYmoLLvzewc0VtmNAhXsrU=;
+	b=lXBWXAAaQy75UZyIDsDNWrtJohlHO1oJZcq6rAr99VeEdN1r5vMdyaFvmCDsQMB2kLH6hX
+	6UI/wbKqup21XfFhiDGQ5vmV6bST1U5K5dk7Bjm2Pn8j83XpBZHV/2r19QiTwlSowISaC/
+	6DPM85aiBlV0t+z3t9Ru/DGZR4fGvJ0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794662827;
+	b=uefl9W2bfFl7AiXdfmXjNJHy0RB+ehwV5vOlWclwJ3fwWzsNWkoN+/6/StzaHv+ji48mME
+	YLxOK5ebdFuDdj1PqOTd7yuyI9KIOMyWV9mYv6epsQ0DrDGgSnTtnTPcjTIP3x7tKcudFA
+	pDPQvdZP86/XiFtnas/gS5Jh+qRFS1E=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nuDa1vbB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E1786419D1;
-	Sat, 14 Nov 2026 13:10:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A491F000CB;
-	Sat, 14 Nov 2026 13:10:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794661827;
-	bh=bZzPVCDR9p9yXfSnH8rVXpL5YD0HLVrk9YJZvkQ2Ids=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=nuDa1vbBqzQf+qHxjxYPt/VGgYBRDVfq2mYUyhOQxQM1JW9VQXmgorz5WQ9BiZZa0
-	 NAieRdfSykihiTRnjS24aMufxFEv6Z0jfFn3W2QfNKWWnSmxY0Xt/IZMnqPHK4T4UG
-	 u1+tcNjpfukKnzrLWegECKatFSpLrKOJUDYuXxoB9Jefuuj1LdofHVO2ZA2bpGwuUh
-	 EXrkfDLZHhrOLKQrKk1BociqeOcWI7yG42mxCTqjv4xDnP2fig7mcWQzKnI2JA+iCC
-	 /mN7VyJPNMsU0lSeUTf0NLlZf3FNWIOGHBGaDjEI3RRwnB7s3vWd/kazpnqRSvX0n7
-	 M7oGs6uLQ9Ncg==
-From: Christian Brauner <brauner@kernel.org>
-Date: Sat, 14 Nov 2026 14:02:23 +0100
-Subject: [PATCH RFC v2 42/42] selftests/filesystems: add backing file tests
- for pseudo files
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=fJ8vpr+f;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1b3beeaf6f9so2131246c88.0
+        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 05:27:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794662826; x=1795267626; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dgWMrdUfwgyu69vi+KlSZuYmoLLvzewc0VtmNAhXsrU=;
+        b=fJ8vpr+fRBdVwmz7cl2zC7CAHLdBbwi1oejIMTxWB8iA4//EuuQ9sMjEJ4KQZ03UOo
+         sdIyeGRGQXllEPnkwzUhz3EHCG/2qEyIjEEWvi4DExFjzZlK4xl0tGG9OcIPzDCD6GQJ
+         uU3d9b9SpgvEqAVod6D6nO06nnN1BOM2lTFiu5zQxePANY0sh27V1aqjI8d1WhPLxoxF
+         RQm3h+UoDNBSJqWpB4HYlM+N6VxWsp2J58Dxt4RMdE+a6loifVHu76QJ3bU6S63SWbh2
+         zZe3KDvUgEhb9U8S7cT6EjkTOtA+2bIMzGal/Vz9JAu73+QvS3jOfFZrM4voZENWo+gP
+         Bp/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794662826; x=1795267626;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dgWMrdUfwgyu69vi+KlSZuYmoLLvzewc0VtmNAhXsrU=;
+        b=rrCqzy4F9Re+DoduV3U0t7DzjN/qhTdcqhJ3+psjhUhjBzWNjUTm6JE+wEseNwee0H
+         FAfHRBDEw9+twP8HO0nM7twLNReKuiyUTr8n0q3vF+iPjNhfwrA+8l32JLoVKmsSrZeW
+         j+PJ0JZ8NNWoLICsh3a0cDWrw+mCpqoT2hTW+Ou4brAgQRBx5HvgwaOoCC8LCQcbTttm
+         Dkdb70PdHlAXUhwPG35JlxgjtWVvM9svQJRNlVZQ18YCP2pq8sCGLJOUx0w8cWmOMfhc
+         GYy0VV7z0H8inDtusaJnpH6ffXeK4HIXtFKmiG3SsfrvVVCgJYyKJMfLH1WRW50v5IHX
+         ghCQ==
+X-Forwarded-Encrypted: i=1; AL+hErEv8/dffEHwQD7MU7vMklwe1DxGPcgQqPYUFHC6yTejZRD0zoLjnP9FgLXaPuQ3mjdOZj/qlu+79g==@kvack.org
+X-Gm-Message-State: APuU4Z+LwLEj918yvPKEyH+mOrZzu0/Oat7HgXtiAp9Wm4f97YK1NIje
+	73mySXHACdgIMwRhE3hf1VzDyeNo5hvMewuGjwnAc3LkeW+IhX9YHJiX
+X-Gm-Gg: AYBFou14QPltHo3ZJYxHnkKn/wI7Rx20ypHREI1v2EU3WbDLChg9b1Jlb47WIgvBCZc
+	lgkDML0l6sZdJ880mglflZQ5wUKh2GpAspSixNUNC669dBs1lX1iKoS6KWISG8J8TySSkqV2pFh
+	8U2SMTXMmT/BQhrDhLqORIyCgOUbRDAwc1xKjp4bofoajDGxJmllr2WFwwThVxPA/kul86WYf9F
+	TABUpHUt+q9DgwExIMoZEMbJHXulnQshd6Og6uE9IYbE+Se2q+FK4KjcshI87GoXLZ3/8moiYeB
+	P5ba4Bxl02O+UGBDHjZWN8eiQxZ6QD8Ryp1/tnD1fYoc7vB463miv/wvs0RuycbuU4/nCGOfayx
+	1o9/7Y08J4e1fEklH3ND8ok85DuOdvwSopkTh3ArcdPjR1hKi8AkUbHy9UD9OxAxAIbw0efunn/
+	pepgaBdVN2NT9+rWBm5zTerH3nz6n5N4sqB99wK6uu1oJAFJ9Zy83ib5qE6d6+bHzW8sngWDeDJ
+	niJG72vV8fparlphbb/l3krcND3zWFZT9JXsuQN4Z0oyB11ORS1EUuSO5h/XZlfwMvNf1SJYp9S
+	YSd4NYCRyHEaeHbcwN8kJMbTbYW0ygepd0+wHgT+F5MfLrIvcVDl
+X-Received: by 2002:a05:7022:170a:b0:1b2:366a:e7d1 with SMTP id a92af1059eb24-1b50312efa8mr4720603c88.32.1794662825563;
+        Sat, 14 Nov 2026 05:27:05 -0800 (PST)
+Received: from ubuntu ([110.9.142.4])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5031b98e5sm16965327c88.14.2026.11.14.05.27.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Nov 2026 05:27:04 -0800 (PST)
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>
+Cc: Bruno Faccini <bfaccini@nvidia.com>,
+	linux-mm@kvack.org
+Subject: [PATCH] arch_numa: fix broken NUMA emulation with dummy_numa_init()
+Date: Sat, 14 Nov 2026 22:26:24 +0900
+Message-ID: <20261114132625.1710476-1-ekffu200098@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261114-work-loop-pseudo-v2-42-98639a2286fb@kernel.org>
-References: <20261114-work-loop-pseudo-v2-0-98639a2286fb@kernel.org>
-In-Reply-To: <20261114-work-loop-pseudo-v2-0-98639a2286fb@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>, 
- Josef Bacik <josef@toxicpanda.com>, Christoph Hellwig <hch@lst.de>, 
- linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
- Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org, 
- target-devel@vger.kernel.org, driver-core@lists.linux.dev, 
- linux-mm@kvack.org, bpf@vger.kernel.org, 
- linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
- apparmor@lists.ubuntu.com, linux-nfs@vger.kernel.org, 
- netdev@vger.kernel.org, fuse-devel@lists.linux.dev, 
- linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org, 
- ocfs2-devel@lists.linux.dev, linux-s390@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, 
- Amir Goldstein <amir73il@gmail.com>, linux-erofs@lists.ozlabs.org, 
- linux-kselftest@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>
-X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=18601; i=brauner@kernel.org;
- h=from:subject:message-id; bh=3WWvVZ2yqqPmZE6xtEwdV3hj04ARSZC29hiCgaem9R4=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9iJmmn9279PvOSx9uLJoz4bh+3f91k71erslg2LZAO
- V/P/2Hv5o5SFgYxLgZZMUUWh3aTcLnlPBWbjTI1YOawMoEMYeDiFICJLNvJ8Id3que2ZS4H57Mu
- XbfyydulIUo6OYsNIs5I77wmWy15k3sGI8PPa1N2lTCsFY9QqmOb0KbA0yNml8a/MuiGrs7x+7/
- sKzgA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Queue-Id: 8C3C718000A
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ipqo8sxstzezfpr7ytxegdjh6a3ixcxw
-X-Rspam-User:
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794661828-248357
-X-HE-Meta: U2FsdGVkX1/xIi0fKn6vpyENJOvYN6A56WaPwuOpWeu78NgtjFgh82R0gJnq+Xzz1MGBM0SmjFr2QSjOOuJwBnnx+MmeyVU+inSDlq+Mo9jThmp+3p1zgJzUPj4UwugrA3j/vZ8tbqNW1vBOMhjSIK9n3fgZWeedFL8anQueCnvGjxNdHELG27b55H8b65pNYrR5uLjLfsXCZnx82ICfHm7l9UckIOjxLoOSunTnzdrgXPELVUgcPMfEOofoR0hwCJFIRNg29Hms+Ty1Yj9OT/UotcjSR8V3J0FjOVIy9VYrxrzEVNrMlzxC6Q4QOs0oC4nB6Usf8oB8/3I8+o/YM6xOdIKqPIRYCMPvIVjBXu7lvzm+gYpyFxp4uZXWJp1hLFTCFM07Wl4HHMHZhSNvuSHVsi2tlfDNYDLf55v09zLm+klYTwriLmBcvGhBec0S1rOYCGni99whZ0GJfZiIrsKJvp5FY5oMFH2w8KjxDyHiFsYT5fJoqrGUETYZpbFERJVgT9jyB6nrmR31ut2ws65Ivgu2Vw+VBiqzP6fXufZRhsWBIlTH+tyA27GhDNJ3bpDmPKLAW7AhNB/vXfgH91xZfIP+HK3RT1WWHIMFRh0EmXppexTgFO7xRVAaZY3Q5AXrwCqKv3Pnoe93Qy6XC5520cM3mBCE/CoyGYjWSKvQrLwpYCKUFFt4gd5EkVaXfQ6Z7UASrUye1hphppcye0v2SQaM2ShD9tUUGW/WLE6B9bvGvSLcTH4aTZlei1So2onspvICVyub/YcYWH00vwH92t5tkVkBXOXlyfwZPWTdZrnoQgC9ubz9S9t96kQ/lS7LuGNuJLBeEoqTwHvLqECFdSSBXkPmNFeIZOEQc+cijwUzKKSFdZekomQwk10u79Mx3l0qkoqM/wgBjs6/82AcbF/UQyaHPoosgCO8Zgrp0sIWBr3Io5SDHjJpM194nmJXgnCYR+lZ720i2c8
- affiyknC
- HCWh3+OT1u1lo3lV5DI3gWGy1OsP/oIO6rN6pk5egzufv6zliWOfWX8Ziq8nR8sLE1ilN/vu8hlspQ4TYRwrSWfhinDwnz2qZunrc2d2Jc443WR3EDGHS4vwnH+mv0uMrKH6j8pvHBSIJFmONK9p07W+veAya219s/Xof6OsQzWrUGOGwU68lCY9+tdXNO+RlyVKTtbMGUYncBRghV45DD4WTdvPmYSMwRmnboHvFKnA+mEb6z4LuAkxqaQYqtfGHGRjtuux5x4O9QPtQ1sh/i2l3uGxR0wvZyeV+2ytZHsyCLPX7e6mS/c9223LI667G72mbrZEBH1uTuo6QQefQt7soRDOSGiFo7Knm1lpBAHW8oNgBBSGbcj6U+ze2nFYiA7yK7tUmL0lmrjl1SLhIKPxH7ql6AtpfhCQ/IG0tLGybgFfW0S/Dzk+EWCepQHa0+1VCjjaP2dF4REnmGimbX+kOlI2y25HfN3wvuAK5jcq2d3k=
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 1wsbg58u9ehbgsheunc3wmp66w7fwu4d
+X-Rspam-User: 
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 379361C0008
+X-HE-Tag: 1794662827-579934
+X-HE-Meta: U2FsdGVkX19I504HvKPgMYflBdFkU18KyNc3lAPxzK/2HydF+qI9jwYBthSgm8gMSpXeItO8CiiNLGb1ZTwvuV5NS5l6Sgw1rrLESsI6vwQK3JVcjxsaWqQSal66btFO+u0nYYYfVxt0wyuuI2SvsStmPNFSpwx4GNiHCIhnZ46WDCmjmfTPIeeBTcHDTbRWBt0QaSPXaJknX5fd7Mr3d/cEoYGLJ4+Fn2TzUVBmMuS3unhOuc53Et6wCLCCbNJ6TebAwgjbEFbbArDrY+a4Jtbl1CMtSrcb6s1BZhEYFJ8nLjv1tUdfCebrIfUs2ahGgEfDTEp83WASaa0/aFy37tymPnvfYQ4v8vRk8+CmJwzcFcErkiCIZzfbEuAiT0r4LgKh7B47EPKImvwQOpzIiuKtOY5IUfzkI2pCHv3r2sZ/2UVp1rRoiA3j3etq719CT+VvVBabKFvSELmt4ejicptMuflpsR/NXi9hVmwUZLv1BrdvJtmFB6V57ja0fUaZvPkOUqJHORsoHBX+WGjKMt3gfXSmvqQGakwk5vFgag7ZExAQ+Ko8eN4xrhpBJDlCDZzTKE0ZR65bGobynRAxmFWXVsfFWvrlokT4YM6TK0BPC+s8jEP9p+LMP2G2rY/SlWecrHLq1SuSNLDGSLFgXGjmp2IH3bM0eUP7cSIsr/4WbZoFMmw/0FnqhCf2UpSngQ46/ovr3DxcoEI3s1IzNVuqi2WE3Dn6atNZdhDnJGIhA39pmb6so+XHgrq5ZNBr60wrWKEWYtTxWAyOAB2X+VWtDfC3JQ+003IxFPZhTbqgn0EIRthjkH9uA9U/kcfEcZRV72l+OMogI785cfE3KLg2VoXqkMKhgVLyTcoU+LIeOUhWgpSudCapIstkBFuV8hUztxh81Io8oyn1JvlpkA2oOR5mtlQLaEzOl0y8wsw7WndYVKv68HnKlzK+3c27SZpbs3HthVN7T6lsR0q
+ T7JdtfUv
+ D0vmrR0sBT/ApJktkQ5nv3v0bFMLLeW7YhM8hKNU3Rh+t37JfAt6XsNQS+NsfOgeveVF1XV455MAEijnLvOTiu/9OnhsfDaGVuu0hMf46+qcAnocCkVia51Vepou2dAAeN/1X4d77TYPFA3FH+7Y7mjQbfWM5fvFGhGRdOFrYwqdsm6l9eXslAg/4klgtpbiK7KG8QQRLtN8mF8NYdDdjfhWntDdacK4ej/wv9YyQKQ2egcms/3rvVcvXy+ud4qjfAdUv0AD3cFJUURP4z4ZCBAsAhoFumGyX34fXATMXzCrqReNjXuVcSDpkVjmO9mFWYCmcr4sahwcpN7gqfB8AjMpmMG4kcCQ1Pdy8+TbrWTAnKvoeDWu4uz04DDbVzf8lCsmNscs1PXF6kIEmYam2cKjQoDz02v3RVvoz/QaN6LdnDlhk1x4bj+4kDiLlMRVgLp/vfDX7PChIDMs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,662 +121,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add tests that files on pseudo filesystems can't be used as storage:
+If arch_numa_init() falls back to dummy_numa_init(), numa_off is set
+to true before numa_emulation() runs. Then numa_emulation() calls
+fix_pxm_node_maps(), which fails when CONFIG_ACPI_NUMA is enabled and
+numa_off is true, so numa=fake is ignored in that case.
 
-- a procfs file attached read-only to a loop device
-- sysfs files attached read-only and read-write to a loop device
-- a sysfs file behind a lower-only overlayfs attached to a loop device
-- a symlink and a magic link to a sysfs file attached to a loop device
-- a procfs file as the backing file of an nvme target namespace
-- a procfs file as the backing file and as the protection file of a
-  fileio device of the scsi target
-- a procfs file as a zloop zone file
-- a sysfs file as the backing file of a usb mass storage gadget LUN
-- a sysfs file as the source of a file-backed erofs mount
+So set numa_off in arch_numa_init() after numa_emulation() runs
+instead.
 
-Add tests that FIFOs and character devices can't be used as storage by
-loop, the nvme target, the fileio backend and zloop either.
-
-And make sure that a memfd and another loop device still work as loop
-backing files, that a regular file and a block device still work for
-the nvme target and the fileio backend and that loop refuses a backing
-file that isn't open for reading.
-
-The nvme target test uses buffered_io as asked for in [1]. Most pseudo
-files can't be opened with O_DIRECT and the test would pass without
-ever reaching the check.
-
-[1]: https://lore.kernel.org/r/71f76e5e-ce24-4a71-863a-169ad262c510@gmail.com
-
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Fixes: 63db8170bf34 ("mm/fake-numa: allow later numa node hotplug")
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 ---
- tools/testing/selftests/filesystems/.gitignore     |   1 +
- tools/testing/selftests/filesystems/Makefile       |   2 +-
- tools/testing/selftests/filesystems/config         |  14 +
- .../selftests/filesystems/pseudo_backing_test.c    | 570 +++++++++++++++++++++
- 4 files changed, 586 insertions(+), 1 deletion(-)
+ mm/arch_numa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/filesystems/.gitignore b/tools/testing/selftests/filesystems/.gitignore
-index cf79000e4092a..8df38eabb1252 100644
---- a/tools/testing/selftests/filesystems/.gitignore
-+++ b/tools/testing/selftests/filesystems/.gitignore
-@@ -7,3 +7,4 @@ kernfs_test
- idmapped_tmpfile
- ustat_test
- rw_hint_test
-+pseudo_backing_test
-diff --git a/tools/testing/selftests/filesystems/Makefile b/tools/testing/selftests/filesystems/Makefile
-index fbd5c27505ef5..0ebb9005bcd28 100644
---- a/tools/testing/selftests/filesystems/Makefile
-+++ b/tools/testing/selftests/filesystems/Makefile
-@@ -2,7 +2,7 @@
+diff --git a/mm/arch_numa.c b/mm/arch_numa.c
+index 940e6d5f0023..5742ca7d98be 100644
+--- a/mm/arch_numa.c
++++ b/mm/arch_numa.c
+@@ -265,7 +265,6 @@ static int __init dummy_numa_init(void)
+ 		return ret;
+ 	}
  
- CFLAGS += $(KHDR_INCLUDES)
- TEST_GEN_PROGS := devpts_pts anon_inode_test kernfs_test fclog ustat_test rw_hint_test
--TEST_GEN_PROGS += idmapped_tmpfile
-+TEST_GEN_PROGS += idmapped_tmpfile pseudo_backing_test
- TEST_GEN_PROGS_EXTENDED := dnotify_test
+-	numa_off = true;
+ 	return 0;
+ }
  
- include ../lib.mk
-diff --git a/tools/testing/selftests/filesystems/config b/tools/testing/selftests/filesystems/config
-index 9f45bc493a30a..9375164f46d70 100644
---- a/tools/testing/selftests/filesystems/config
-+++ b/tools/testing/selftests/filesystems/config
-@@ -6,3 +6,17 @@ CONFIG_NET=y
- CONFIG_NET_NS=y
- CONFIG_INET=y
- CONFIG_SYSFS=y
-+CONFIG_BLK_DEV_LOOP=y
-+CONFIG_OVERLAY_FS=y
-+CONFIG_TMPFS=y
-+CONFIG_CONFIGFS_FS=y
-+CONFIG_USB_GADGET=y
-+CONFIG_USB_CONFIGFS=y
-+CONFIG_USB_CONFIGFS_MASS_STORAGE=y
-+CONFIG_EROFS_FS=y
-+CONFIG_EROFS_FS_BACKED_BY_FILE=y
-+CONFIG_NVME_TARGET=y
-+CONFIG_TARGET_CORE=y
-+CONFIG_TCM_FILEIO=y
-+CONFIG_BLK_DEV_ZONED=y
-+CONFIG_BLK_DEV_ZONED_LOOP=y
-diff --git a/tools/testing/selftests/filesystems/pseudo_backing_test.c b/tools/testing/selftests/filesystems/pseudo_backing_test.c
-new file mode 100644
-index 0000000000000..04315655e0587
---- /dev/null
-+++ b/tools/testing/selftests/filesystems/pseudo_backing_test.c
-@@ -0,0 +1,570 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define _GNU_SOURCE
-+
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <sched.h>
-+#include <stdbool.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+#include <linux/loop.h>
-+#include <linux/magic.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <sys/mount.h>
-+#include <sys/stat.h>
-+#include <sys/vfs.h>
-+
-+#include "kselftest_harness.h"
-+#include "wrappers.h"
-+
-+/*
-+ * Put @fd behind a free loop device. The device is set up with
-+ * LO_FLAGS_AUTOCLEAR and goes away again when it is closed here.
-+ */
-+static int loop_attach(int fd, bool rw, char *dev, size_t len)
-+{
-+	struct loop_config cfg = {};
-+	int ctl, nr, lfd, ret = 0;
-+
-+	ctl = open("/dev/loop-control", O_RDWR | O_CLOEXEC);
-+	if (ctl < 0)
-+		return -errno;
-+	nr = ioctl(ctl, LOOP_CTL_GET_FREE);
-+	if (nr < 0)
-+		ret = -errno;
-+	close(ctl);
-+	if (ret)
-+		return ret;
-+
-+	snprintf(dev, len, "/dev/loop%d", nr);
-+	lfd = open(dev, (rw ? O_RDWR : O_RDONLY) | O_CLOEXEC);
-+	if (lfd < 0)
-+		return -errno;
-+
-+	cfg.fd = fd;
-+	cfg.info.lo_flags = LO_FLAGS_AUTOCLEAR;
-+	if (!rw)
-+		cfg.info.lo_flags |= LO_FLAGS_READ_ONLY;
-+	if (ioctl(lfd, LOOP_CONFIGURE, &cfg)) {
-+		ret = -errno;
-+		close(lfd);
-+	} else {
-+		ret = lfd;
-+	}
-+	return ret;
-+}
-+
-+static int attach_path(const char *path, bool rw)
-+{
-+	char dev[PATH_MAX];
-+	int fd, ret;
-+
-+	fd = open(path, (rw ? O_RDWR : O_RDONLY) | O_CLOEXEC);
-+	if (fd < 0)
-+		return -errno;
-+	ret = loop_attach(fd, rw, dev, sizeof(dev));
-+	close(fd);
-+	if (ret >= 0) {
-+		close(ret);
-+		ret = 0;
-+	}
-+	return ret;
-+}
-+
-+static bool can_use_loop(void)
-+{
-+	return geteuid() == 0 && access("/dev/loop-control", R_OK | W_OK) == 0;
-+}
-+
-+/* A pseudo file that can be opened for reading and writing. */
-+#define PSEUDO_FILE "/proc/sys/kernel/hostname"
-+
-+static int write_string(const char *path, const char *buf)
-+{
-+	int fd, ret = 0;
-+
-+	fd = open(path, O_WRONLY | O_CLOEXEC);
-+	if (fd < 0)
-+		return -errno;
-+	if (write(fd, buf, strlen(buf)) < 0)
-+		ret = -errno;
-+	close(fd);
-+	return ret;
-+}
-+
-+static int create_file(const char *path)
-+{
-+	int fd, ret = 0;
-+
-+	fd = open(path, O_RDWR | O_CREAT | O_CLOEXEC, 0600);
-+	if (fd < 0)
-+		return -errno;
-+	if (ftruncate(fd, 1 << 20))
-+		ret = -errno;
-+	close(fd);
-+	return ret;
-+}
-+
-+/* Loop device on top of a memfd. It goes away when the fd is closed. */
-+static int create_loop_device(char *dev, size_t len)
-+{
-+	int fd, lfd;
-+
-+	fd = memfd_create("pseudo_backing_test", MFD_CLOEXEC);
-+	if (fd < 0)
-+		return -errno;
-+	if (ftruncate(fd, 1 << 20)) {
-+		lfd = -errno;
-+		close(fd);
-+		return lfd;
-+	}
-+	lfd = loop_attach(fd, true, dev, len);
-+	close(fd);
-+	return lfd;
-+}
-+
-+/* Private tmpfs on /tmp for files, links and FIFOs. */
-+static int setup_tmp(void)
-+{
-+	if (unshare(CLONE_NEWNS))
-+		return -errno;
-+	if (mount(NULL, "/", NULL, MS_REC | MS_PRIVATE, NULL))
-+		return -errno;
-+	if (mount("tmpfs", "/tmp", "tmpfs", 0, NULL))
-+		return -errno;
-+	return 0;
-+}
-+
-+TEST(memfd_backing_file)
-+{
-+	char dev[PATH_MAX];
-+	int fd, lfd;
-+
-+	if (!can_use_loop())
-+		SKIP(return, "loop devices unavailable");
-+
-+	fd = memfd_create("pseudo_backing_test", MFD_CLOEXEC);
-+	ASSERT_GE(fd, 0);
-+	ASSERT_EQ(ftruncate(fd, 1 << 20), 0);
-+
-+	lfd = loop_attach(fd, true, dev, sizeof(dev));
-+	ASSERT_GE(lfd, 0);
-+	EXPECT_EQ(close(lfd), 0);
-+	EXPECT_EQ(close(fd), 0);
-+}
-+
-+TEST(loop_device_backing_file)
-+{
-+	char dev[PATH_MAX], dev2[PATH_MAX];
-+	int fd, lfd, bfd, lfd2;
-+
-+	if (!can_use_loop())
-+		SKIP(return, "loop devices unavailable");
-+
-+	fd = memfd_create("pseudo_backing_test", MFD_CLOEXEC);
-+	ASSERT_GE(fd, 0);
-+	ASSERT_EQ(ftruncate(fd, 1 << 20), 0);
-+	lfd = loop_attach(fd, true, dev, sizeof(dev));
-+	ASSERT_GE(lfd, 0);
-+
-+	/* A block device stays fine as a backing file. */
-+	bfd = open(dev, O_RDWR | O_CLOEXEC);
-+	ASSERT_GE(bfd, 0);
-+	lfd2 = loop_attach(bfd, true, dev2, sizeof(dev2));
-+	ASSERT_GE(lfd2, 0);
-+
-+	EXPECT_EQ(close(lfd2), 0);
-+	EXPECT_EQ(close(bfd), 0);
-+	EXPECT_EQ(close(lfd), 0);
-+	EXPECT_EQ(close(fd), 0);
-+}
-+
-+TEST(write_only_backing_file)
-+{
-+	char dev[PATH_MAX], path[PATH_MAX];
-+	int fd, wfd, lfd;
-+
-+	if (!can_use_loop())
-+		SKIP(return, "loop devices unavailable");
-+
-+	fd = memfd_create("pseudo_backing_test", MFD_CLOEXEC);
-+	ASSERT_GE(fd, 0);
-+	ASSERT_EQ(ftruncate(fd, 1 << 20), 0);
-+
-+	/* Loop reads from its backing file so it must be open for reading. */
-+	snprintf(path, sizeof(path), "/proc/self/fd/%d", fd);
-+	wfd = open(path, O_WRONLY | O_CLOEXEC);
-+	ASSERT_GE(wfd, 0);
-+
-+	lfd = loop_attach(wfd, true, dev, sizeof(dev));
-+	if (lfd >= 0)
-+		close(lfd);
-+	EXPECT_EQ(lfd, -EBADF);
-+	EXPECT_EQ(close(wfd), 0);
-+	EXPECT_EQ(close(fd), 0);
-+}
-+
-+TEST(procfs_backing_file)
-+{
-+	if (!can_use_loop())
-+		SKIP(return, "loop devices unavailable");
-+
-+	ASSERT_EQ(attach_path("/proc/cpuinfo", false), -EINVAL);
-+}
-+
-+TEST(sysfs_backing_file)
-+{
-+	if (!can_use_loop())
-+		SKIP(return, "loop devices unavailable");
-+
-+	ASSERT_EQ(attach_path("/sys/kernel/warn_count", false), -EINVAL);
-+
-+	if (access("/sys/kernel/reboot/mode", F_OK))
-+		SKIP(return, "no /sys/kernel/reboot/mode");
-+	ASSERT_EQ(attach_path("/sys/kernel/reboot/mode", true), -EINVAL);
-+}
-+
-+TEST(overlayfs_on_sysfs_backing_file)
-+{
-+	if (!can_use_loop())
-+		SKIP(return, "loop devices unavailable");
-+
-+	ASSERT_EQ(unshare(CLONE_NEWNS), 0);
-+	ASSERT_EQ(mount(NULL, "/", NULL, MS_REC | MS_PRIVATE, NULL), 0);
-+	ASSERT_EQ(mount("tmpfs", "/tmp", "tmpfs", 0, NULL), 0);
-+	ASSERT_EQ(mkdir("/tmp/empty", 0755), 0);
-+	ASSERT_EQ(mkdir("/tmp/merged", 0755), 0);
-+
-+	/* A lower-only overlayfs serves reads from sysfs. */
-+	if (mount("overlay", "/tmp/merged", "overlay", MS_RDONLY,
-+		  "lowerdir=/sys/kernel:/tmp/empty"))
-+		SKIP(return, "no overlayfs on top of sysfs: %s", strerror(errno));
-+
-+	ASSERT_EQ(attach_path("/tmp/merged/warn_count", false), -EINVAL);
-+}
-+
-+TEST(link_to_sysfs_backing_file)
-+{
-+	char path[PATH_MAX];
-+	int fd;
-+
-+	if (!can_use_loop())
-+		SKIP(return, "loop devices unavailable");
-+
-+	ASSERT_EQ(setup_tmp(), 0);
-+
-+	/* Links are followed before the file is checked. */
-+	ASSERT_EQ(symlink("/sys/kernel/warn_count", "/tmp/link"), 0);
-+	EXPECT_EQ(attach_path("/tmp/link", false), -EINVAL);
-+
-+	fd = open("/sys/kernel/warn_count", O_RDONLY | O_CLOEXEC);
-+	ASSERT_GE(fd, 0);
-+	snprintf(path, sizeof(path), "/proc/self/fd/%d", fd);
-+	EXPECT_EQ(attach_path(path, false), -EINVAL);
-+	EXPECT_EQ(close(fd), 0);
-+}
-+
-+TEST(special_file_backing_file)
-+{
-+	if (!can_use_loop())
-+		SKIP(return, "loop devices unavailable");
-+
-+	ASSERT_EQ(setup_tmp(), 0);
-+	ASSERT_EQ(mkfifo("/tmp/fifo", 0600), 0);
-+
-+	/* Only regular files and block devices are storage. */
-+	EXPECT_EQ(attach_path("/tmp/fifo", true), -EINVAL);
-+	EXPECT_EQ(attach_path("/dev/null", true), -EINVAL);
-+}
-+
-+#define CONFIGFS_DIR "/sys/kernel/config"
-+#define GADGET_DIR CONFIGFS_DIR "/usb_gadget/pseudo_backing_test"
-+#define MASS_STORAGE_DIR GADGET_DIR "/functions/mass_storage.0"
-+
-+TEST(usb_mass_storage_backing_file)
-+{
-+	const char *path = "/sys/kernel/warn_count";
-+	struct statfs sfs;
-+	ssize_t ret;
-+	int fd, err;
-+
-+	if (geteuid())
-+		SKIP(return, "needs root");
-+
-+	/* Mounting configfs on top of itself fails with EBUSY. */
-+	if (statfs(CONFIGFS_DIR, &sfs) || sfs.f_type != CONFIGFS_MAGIC) {
-+		ASSERT_EQ(unshare(CLONE_NEWNS), 0);
-+		ASSERT_EQ(mount(NULL, "/", NULL, MS_REC | MS_PRIVATE, NULL), 0);
-+		if (mount("configfs", CONFIGFS_DIR, "configfs", 0, NULL))
-+			SKIP(return, "no configfs: %s", strerror(errno));
-+	}
-+
-+	if (mkdir(GADGET_DIR, 0755))
-+		SKIP(return, "no usb gadget configfs: %s", strerror(errno));
-+	if (mkdir(MASS_STORAGE_DIR, 0755)) {
-+		err = errno;
-+		rmdir(GADGET_DIR);
-+		SKIP(return, "no usb mass storage function: %s", strerror(err));
-+	}
-+
-+	/* Writing the path opens the LUN's backing file right away. */
-+	fd = open(MASS_STORAGE_DIR "/lun.0/file", O_WRONLY | O_CLOEXEC);
-+	EXPECT_GE(fd, 0);
-+	if (fd >= 0) {
-+		ret = write(fd, path, strlen(path));
-+		err = errno;
-+		EXPECT_EQ(ret, -1);
-+		EXPECT_EQ(err, EINVAL);
-+		EXPECT_EQ(close(fd), 0);
-+	}
-+
-+	EXPECT_EQ(rmdir(MASS_STORAGE_DIR), 0);
-+	EXPECT_EQ(rmdir(GADGET_DIR), 0);
-+}
-+
-+/* Mounting configfs on top of itself fails with EBUSY. */
-+static int setup_configfs(void)
-+{
-+	struct statfs sfs;
-+
-+	if (!statfs(CONFIGFS_DIR, &sfs) && sfs.f_type == CONFIGFS_MAGIC)
-+		return 0;
-+	if (mount("configfs", CONFIGFS_DIR, "configfs", 0, NULL))
-+		return -errno;
-+	return 0;
-+}
-+
-+#define NVMET_SUBSYS_DIR CONFIGFS_DIR "/nvmet/subsystems/pseudo_backing_test"
-+#define NVMET_NS_DIR NVMET_SUBSYS_DIR "/namespaces/1"
-+
-+static int nvmet_enable(const char *path)
-+{
-+	int ret;
-+
-+	ret = write_string(NVMET_NS_DIR "/device_path", path);
-+	if (ret)
-+		return ret;
-+	ret = write_string(NVMET_NS_DIR "/enable", "1");
-+	if (!ret)
-+		ret = write_string(NVMET_NS_DIR "/enable", "0");
-+	return ret;
-+}
-+
-+TEST(nvmet_backing_file)
-+{
-+	char dev[PATH_MAX];
-+	int lfd;
-+
-+	if (!can_use_loop())
-+		SKIP(return, "loop devices unavailable");
-+
-+	ASSERT_EQ(setup_tmp(), 0);
-+	if (setup_configfs())
-+		SKIP(return, "no configfs");
-+	if (mkdir(NVMET_SUBSYS_DIR, 0755))
-+		SKIP(return, "no nvme target: %s", strerror(errno));
-+	EXPECT_EQ(mkdir(NVMET_NS_DIR, 0755), 0);
-+
-+	/* With direct I/O most pseudo files already fail to open. */
-+	EXPECT_EQ(write_string(NVMET_NS_DIR "/buffered_io", "1"), 0);
-+
-+	EXPECT_EQ(create_file("/tmp/file"), 0);
-+	EXPECT_EQ(mkfifo("/tmp/fifo", 0600), 0);
-+
-+	lfd = create_loop_device(dev, sizeof(dev));
-+	EXPECT_GE(lfd, 0);
-+
-+	/* With buffered_io the file backend handles block devices as well. */
-+	EXPECT_EQ(nvmet_enable("/tmp/file"), 0);
-+	if (lfd >= 0)
-+		EXPECT_EQ(nvmet_enable(dev), 0);
-+	EXPECT_EQ(nvmet_enable(PSEUDO_FILE), -EINVAL);
-+	EXPECT_EQ(nvmet_enable("/tmp/fifo"), -EINVAL);
-+	EXPECT_EQ(nvmet_enable("/dev/null"), -EINVAL);
-+
-+	if (lfd >= 0)
-+		EXPECT_EQ(close(lfd), 0);
-+	EXPECT_EQ(rmdir(NVMET_NS_DIR), 0);
-+	EXPECT_EQ(rmdir(NVMET_SUBSYS_DIR), 0);
-+}
-+
-+#define FILEIO_HBA_DIR CONFIGFS_DIR "/target/core/fileio_4711"
-+#define FILEIO_DEV_DIR FILEIO_HBA_DIR "/pseudo_backing_test"
-+#define FILEIO_PROT_TYPE FILEIO_DEV_DIR "/attrib/pi_prot_type"
-+
-+static int fileio_create(const char *path)
-+{
-+	char buf[PATH_MAX];
-+	int ret;
-+
-+	if (mkdir(FILEIO_DEV_DIR, 0755))
-+		return -errno;
-+	snprintf(buf, sizeof(buf), "fd_dev_name=%s,fd_dev_size=1048576", path);
-+	ret = write_string(FILEIO_DEV_DIR "/control", buf);
-+	if (!ret)
-+		ret = write_string(FILEIO_DEV_DIR "/enable", "1");
-+	if (ret)
-+		rmdir(FILEIO_DEV_DIR);
-+	return ret;
-+}
-+
-+static int fileio_enable(const char *path)
-+{
-+	int ret;
-+
-+	ret = fileio_create(path);
-+	if (!ret)
-+		rmdir(FILEIO_DEV_DIR);
-+	return ret;
-+}
-+
-+TEST(fileio_backing_file)
-+{
-+	char dev[PATH_MAX];
-+	int lfd;
-+
-+	if (!can_use_loop())
-+		SKIP(return, "loop devices unavailable");
-+
-+	ASSERT_EQ(setup_tmp(), 0);
-+	if (setup_configfs())
-+		SKIP(return, "no configfs");
-+	if (mkdir(FILEIO_HBA_DIR, 0755))
-+		SKIP(return, "no fileio backend: %s", strerror(errno));
-+
-+	EXPECT_EQ(create_file("/tmp/file"), 0);
-+	EXPECT_EQ(mkfifo("/tmp/fifo", 0600), 0);
-+
-+	lfd = create_loop_device(dev, sizeof(dev));
-+	EXPECT_GE(lfd, 0);
-+
-+	EXPECT_EQ(fileio_enable("/tmp/file"), 0);
-+	if (lfd >= 0)
-+		EXPECT_EQ(fileio_enable(dev), 0);
-+	EXPECT_EQ(fileio_enable(PSEUDO_FILE), -EINVAL);
-+	EXPECT_EQ(fileio_enable("/tmp/fifo"), -EINVAL);
-+	EXPECT_EQ(fileio_enable("/dev/null"), -EINVAL);
-+
-+	if (lfd >= 0)
-+		EXPECT_EQ(close(lfd), 0);
-+	EXPECT_EQ(rmdir(FILEIO_HBA_DIR), 0);
-+}
-+
-+TEST(fileio_protection_file)
-+{
-+	int ret;
-+
-+	if (geteuid())
-+		SKIP(return, "needs root");
-+
-+	ASSERT_EQ(setup_tmp(), 0);
-+	if (setup_configfs())
-+		SKIP(return, "no configfs");
-+	if (mkdir(FILEIO_HBA_DIR, 0755))
-+		SKIP(return, "no fileio backend: %s", strerror(errno));
-+
-+	EXPECT_EQ(create_file("/tmp/file"), 0);
-+	ret = fileio_create("/tmp/file");
-+	EXPECT_EQ(ret, 0);
-+	if (!ret) {
-+		/* Turning on DIF opens the protection file. */
-+		EXPECT_EQ(symlink(PSEUDO_FILE, "/tmp/file.protection"), 0);
-+		EXPECT_EQ(write_string(FILEIO_PROT_TYPE, "1"), -EINVAL);
-+		EXPECT_EQ(unlink("/tmp/file.protection"), 0);
-+
-+		EXPECT_EQ(mkfifo("/tmp/file.protection", 0600), 0);
-+		EXPECT_EQ(write_string(FILEIO_PROT_TYPE, "1"), -EINVAL);
-+		EXPECT_EQ(unlink("/tmp/file.protection"), 0);
-+
-+		EXPECT_EQ(write_string(FILEIO_PROT_TYPE, "1"), 0);
-+		EXPECT_EQ(write_string(FILEIO_PROT_TYPE, "0"), 0);
-+		EXPECT_EQ(rmdir(FILEIO_DEV_DIR), 0);
-+	}
-+
-+	EXPECT_EQ(rmdir(FILEIO_HBA_DIR), 0);
-+}
-+
-+#define ZLOOP_CTL "/dev/zloop-control"
-+
-+/* One conventional and two sequential zones in /tmp/@id. */
-+static int zloop_add(int id)
-+{
-+	char buf[128];
-+	int ret;
-+
-+	snprintf(buf, sizeof(buf),
-+		 "add id=%d,base_dir=/tmp,capacity_mb=12,zone_size_mb=4,conv_zones=1,buffered_io",
-+		 id);
-+	ret = write_string(ZLOOP_CTL, buf);
-+	if (!ret) {
-+		snprintf(buf, sizeof(buf), "remove id=%d", id);
-+		ret = write_string(ZLOOP_CTL, buf);
-+	}
-+	return ret;
-+}
-+
-+TEST(zloop_zone_file)
-+{
-+	if (geteuid())
-+		SKIP(return, "needs root");
-+	if (access(ZLOOP_CTL, W_OK))
-+		SKIP(return, "no zloop");
-+
-+	ASSERT_EQ(setup_tmp(), 0);
-+
-+	ASSERT_EQ(mkdir("/tmp/4711", 0755), 0);
-+	EXPECT_EQ(zloop_add(4711), 0);
-+
-+	/* Zone files that already exist are used as they are. */
-+	ASSERT_EQ(mkdir("/tmp/4712", 0755), 0);
-+	ASSERT_EQ(symlink(PSEUDO_FILE, "/tmp/4712/seq-000001"), 0);
-+	EXPECT_EQ(zloop_add(4712), -EINVAL);
-+
-+	ASSERT_EQ(mkdir("/tmp/4713", 0755), 0);
-+	ASSERT_EQ(mkfifo("/tmp/4713/seq-000001", 0600), 0);
-+	EXPECT_EQ(zloop_add(4713), -EINVAL);
-+}
-+
-+TEST(erofs_backing_file)
-+{
-+	bool refused = false;
-+	char buf[256];
-+	int fsfd, ret, err;
-+	ssize_t n;
-+
-+	if (geteuid())
-+		SKIP(return, "needs root");
-+
-+	fsfd = sys_fsopen("erofs", FSOPEN_CLOEXEC);
-+	if (fsfd < 0)
-+		SKIP(return, "no erofs: %s", strerror(errno));
-+
-+	ASSERT_EQ(sys_fsconfig(fsfd, FSCONFIG_SET_STRING, "source",
-+			       "/sys/kernel/warn_count", 0), 0);
-+	ret = sys_fsconfig(fsfd, FSCONFIG_CMD_CREATE, NULL, NULL, 0);
-+	err = errno;
-+	if (ret && err == ENOTBLK) {
-+		close(fsfd);
-+		SKIP(return, "no file-backed erofs mounts");
-+	}
-+	ASSERT_EQ(ret, -1);
-+	ASSERT_EQ(err, EINVAL);
-+
-+	/*
-+	 * Something that isn't an erofs image fails with EINVAL as well so
-+	 * check that the source itself was refused.
-+	 */
-+	while ((n = read(fsfd, buf, sizeof(buf) - 1)) > 0) {
-+		buf[n] = '\0';
-+		if (strstr(buf, "backing file"))
-+			refused = true;
-+	}
-+	EXPECT_TRUE(refused);
-+	EXPECT_EQ(close(fsfd), 0);
-+}
-+
-+TEST_HARNESS_MAIN
+@@ -305,6 +304,7 @@ void __init arch_numa_init(void)
+ 	}
+ 
+ 	numa_init(dummy_numa_init);
++	numa_off = true;
+ }
+ 
+ #ifdef CONFIG_NUMA_EMU
 
+base-commit: d9a27fa1050902a6e38bdb780b0277cbf1dfa5a5
 -- 
 2.53.0
 
