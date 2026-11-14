@@ -1,149 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6366C606A331
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 17:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79CB2606A323
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 17:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hdcH+wdd
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N8mR7pat
 Received: by kanga.kvack.org (Postfix)
-	id 5420A6B05B0; Sat, 14 Nov 2026 12:57:55 -0500 (EST)
+	id 78F886B00EF; Sat, 14 Nov 2026 12:58:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 519DE6B05B1; Sat, 14 Nov 2026 12:57:55 -0500 (EST)
+	id 73F326B05B1; Sat, 14 Nov 2026 12:58:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4308C6B05B2; Sat, 14 Nov 2026 12:57:55 -0500 (EST)
+	id 62EE96B05B2; Sat, 14 Nov 2026 12:58:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 162CF6B05B0
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:57:55 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6AF34C0447
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:57:54 +0000 (UTC)
-X-FDA: 85434482868.05.D8AAF77
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7E91040003
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:57:52 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=hdcH+wdd;
-	spf=pass (imf27.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794679072;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 454B16B00EF
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:58:53 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A6BFA1C22DA
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:58:52 +0000 (UTC)
+X-FDA: 85434485304.23.FA021FE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 08BA520006
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:58:50 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N8mR7pat;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794679131;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bylSQ/tfgEhydnCX+X6ude5kn1WgMfGriStlC3xv4iw=;
-	b=nnavMpydV5v4cg3OQkanL6KXuvrYvCirHQL9l1vW+izxAd8UzEZiBwKwreETONJH0XuCvb
-	0I6VQgDQ40kwsKRGm6TR66l+BRLGujRETGYJG2O4BnIozmZ37u3qHwRfYnQ5sI1Yi9Ah1z
-	TvbeAWtC8GK+TQ0Xmr8XF0kQx74iMH4=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794679072;
-	b=2Lj1zNKv7ohpKuIG92CIhqzllsVhdGrQ2l7a0LlgVHy2ENhyF56HC3my5BjbPTeCat2UsS
-	TSxxmm/RodRuL99EAYIQfFT5kzd+g0++qMELiMvnfRWf2dGOdRmSpDbokfO4neOOxtJZwT
-	CxA/Sj/j5HDv6TektWDq/dXp102Lt0Q=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=hdcH+wdd;
-	spf=pass (imf27.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c4d30639709so334484266b.0
-        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 09:57:52 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794679071; cv=none;
-        d=google.com; s=arc-20260327;
-        b=OGxvzVDSH4WkhLp1QNew1kGXgRHwLqlqLLj3IQ3xRHEzhklcEC9VXStH7CC9pFk0Ic
-         Yr8vYI3m3LlwB0ONdhC78vp9VLXK0n1BvbMSYJ6aP8Rtz38OaXqKYMsVO/HF2SIRhSuj
-         Q02FypNX3AWNxA46WNk7ArvAFvateGLOgOatbHUqhVB9jNjEsTCyKiLOAl0ZjArH5ePv
-         1TOIUUd+ENrailopcY+kTMRgtNy+ZupquGRWnPK6RWVUo8PTvVXXor2iT+bNoV8Ks9Pf
-         m9cIToXN3PvtxU1UbQOlQH0+doA5L7gz18Vu6+Bd256PlNt8GQGEdS5afcMvubGFgcE5
-         6FEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bylSQ/tfgEhydnCX+X6ude5kn1WgMfGriStlC3xv4iw=;
-        fh=onU6mbAyhhmKVzikP0m8uGrMzYLBG16JCOZsNmTopmo=;
-        b=ItqXcKaB23MZcUFmXIODoQv636XX34rjppTkbk3C8wp7mhq0pwZ8iIjYTz6xM2nfkd
-         5Z3gSFNIq9cMSLNA9CpiryiFIdAaUQRGlMJGyg7ggWQ7QBXxtd4mO5612/yBHBjrchWu
-         c+gg9lyA/DoSZ5q+Cv1GBg0jyDRmMoeriniplRaO7GF1uomFGVLluKTZFNkf7U5IQieD
-         IgXBmx22Bzx5jRpgUyVb/uSG9fvyfsroG15FMtGqUQ3nwbFR0eibOBQ59aI8vSmjhEjt
-         AVkfdUM9xDzTKGuqHimmZyfRQ52ifXJz76e5bZGXivux2M187ZJwHgBJBe5OOqsycMmr
-         Ualg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794679071; x=1795283871; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=bylSQ/tfgEhydnCX+X6ude5kn1WgMfGriStlC3xv4iw=;
-        b=hdcH+wddnew8sAeFvhqzWD+dtCHAF1ZofBvj8B72T3IE7yzMFCTnNYzXEwLof7ORv6
-         QZwixmDgqEq22KH+tiTv3f11TqV4i0iUbB3IzHNRNqkJ9wnNvwZ1MVQmlxvhP5mGjA2t
-         tJQ9gDjTvJxCRB9qtL5itvHwgKsVF8Wj6sajouxrVORgerKjRIx/jJrzuHGDNs+ImSFG
-         y6eOFsABgl/yWEfGQuaTWfrRrzoTCq7shuFSyNPHqwU96EidMBlU+auvexFxLZJGDp87
-         mAhykohtWyksrALP1yxN5ch8s5vP08AGRjohgfM1HRGNigjfLy3IJI8Gz8v+UhGHZnGY
-         c7xA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794679071; x=1795283871;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bylSQ/tfgEhydnCX+X6ude5kn1WgMfGriStlC3xv4iw=;
-        b=ZYjWkoB7U7OjHxToypaJI76yxg4j1zP3oElhTB44kwBOXkEDBE44jt8MkmY3u8bJEi
-         pgujFPz9iCoouNAPac1N6sxqMyBaKjaXd6Tpwen0xApyvAAPGMaZx2fmeXKKOE14XGQX
-         kdCMSrV8/SdzGHkJwq3+sxIfzTriaBjk57g5Tx5W+DI6fcmoiv9lBqBjzrxyc6UPwQdm
-         T7BCNvGYUnlc18QrgV0L7oxh+WlN59P13+DDW6/QgUpDXhKtFkpXG/Lm8lWI9C9E/eRz
-         jwkD+M4s351xMtujgBZDluS+QD2uYvBzG5f1KXCzUvYC5KQ5h1X9uA9yb5wfs/Uh9bb4
-         M7pA==
-X-Forwarded-Encrypted: i=1; AL+hErG4r1nowtvfJW+9Gme1RbAePwZO3mTs9BV56Cw/1e7XUTFZM3nn7OkW8HyJKyzyFCGLk8Y7LA95Aw==@kvack.org
-X-Gm-Message-State: APuU4Z8j4N7WzkPFksRANGtxrmxMrcTKjyl518t5vQOp95AFH6xScCpU
-	VY8s1XBBjC5yAk92V+grIkRk0xf6r4zCnYcwawyoQ5OG1ysURm+TcOQrue/WZhmVSUq/HOtNORJ
-	/0MG5dW+Gr2bnBIsp145qu77Chk9dGS0=
-X-Gm-Gg: AYBFou2CWpPZ1oqdpPAsZfq2SpruEnLaD5i4tuYu+euee65Zvzu43tMjuPsxtkFOLvb
-	19tCjx9D55XHAoT9qc/MqTiAKOeGUgLxpp84YdJlgVlN32OcmQik/zli0dhxqQMxW1S8wt2dxTI
-	oWoRStE8wlmQS2yxRUV0lLqcPVkAiVvPdEaiGzso5YUqMzA3rIg6AAkhI3bF0G3XcPSdCX15B97
-	JTKvMu+cERTYGb4D8SmLvxspruEHnQkdlG7DA6gJUBGgIaBMkeokoXgl6MYZInAWRRgdiAd1V3G
-	JeMIfPnPcnxec+PtoD8Ltv/3fm+Zuy5O4x7izs1vNshx2gXlXo5J6GuToree23oLznQCW6k7cOX
-	pu4hqv9Gq4Hdpqai9FFX4B/9e1v1cxwYAYZFg4++14fdBz1cGRf0zA5tefFcunwEy6QojxnQgTP
-	VG5j+/DqvUGoBkcdxd
-X-Received: by 2002:a17:907:d0a:b0:c2d:d408:5d9c with SMTP id
- a640c23a62f3a-c509684ba8emr445498366b.48.1794679070813; Sat, 14 Nov 2026
- 09:57:50 -0800 (PST)
+	bh=/HQvy3Bf+SmAOhrQqSVfFUq9G41+E/cdawcP+LkvJ7k=;
+	b=E5tMiFjRiI5XuC/IEk1oq9hbvqyPBerrb7KvFNqDn3SlG6AmDhclO71Zot2OPni2J+YDfk
+	nd2ZYmMh7RTqttZnTgxP01fH8dmBXojfM0pyXgpXhqy7dXYkk4yoeeI0778qUeKowTz7tP
+	NWNhAC/aAum8a4Unju1loziq+YxNTdc=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N8mR7pat;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794679131;
+	b=jfQ9n9GOYuq4Qc08ZoSUECED1wJ47eVh50lVctxeXjIweWh8lAoa+vBsOC7pMYf3Q70llN
+	vslOU/WQpWLMQz9YVieAjqgYACQs/x/2yMzxyen73GrySjVOpEJDivyY2d93IFITrLlMcK
+	Wtbrjl+VZ4WYP7wd8Gn+qMM1GQJ6oJQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6330560D70;
+	Sat, 14 Nov 2026 17:58:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C3851F000C4;
+	Sat, 14 Nov 2026 17:58:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794679130;
+	bh=/HQvy3Bf+SmAOhrQqSVfFUq9G41+E/cdawcP+LkvJ7k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=N8mR7pat/AgWFEZudjyHd7qJBB0qQTOZWAzhwI7OKAco/3FMbPxpm7r6J9z2NrL5K
+	 zZXPUFSkOwIalYeVT18FocvsBKg96UZd5zOLhGAflrdGsckEbf+bMqkdTquefCO1wP
+	 eSUTsPFlNyU/yvae/e7nKC/z5iHwTytOrnpqjJW9Nrh3KEwZiH8M/G2j3RGSZILKyi
+	 x0TDM8U7JFia1yyzVyYUvzq1uCt2k3vFI8O/t0subTSzLfoKO0LUQjthEzGudkGUNP
+	 qQcj6uLH38Z0cXP+LUByAoxmrAp62uB/S9dh9+AR0xOn7VtX0Rgf5A+K3ipjRgzwK0
+	 svq8hq1b/3v4w==
+Date: Sat, 14 Nov 2026 17:58:40 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm/userfaultfd: prevent poison marker loss
+Message-ID: <avihSinN3BWkw2sS@gremlin>
+References: <20261107-b4-uffd_marker_loss-v1-0-82926b22704c@kernel.org>
+ <20261107-b4-uffd_marker_loss-v1-1-82926b22704c@kernel.org>
+ <822c1c7e-bfdf-4570-bf30-08f187e7253d@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261113185541.70203-1-baohua@kernel.org> <20261113185541.70203-11-baohua@kernel.org>
-In-Reply-To: <20261113185541.70203-11-baohua@kernel.org>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Sun, 15 Nov 2026 01:57:12 +0800
-X-Gm-Features: AclHuK9E1krSsTGkkXWgcbJbCojCN75Kmg6w82e28JfpuFnCTTb1-n0fzU9ZEEM
-Message-ID: <CAMgjq7C1A2axrGiQzo2_9d6N9MQNP6Lg+ZqcHsac+qGvt8OL4A@mail.gmail.com>
-Subject: Re: [PATCH v8 10/16] mm/mglru: Run aging when pages are rare outside
- the youngest gen
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, axelrasmussen@google.com, 
-	baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, hannes@cmpxchg.org, 
-	hui.zhu@linux.dev, kunwu.chan@gmail.com, liam@infradead.org, 
-	lianux.mm@gmail.com, linux-kernel@vger.kernel.org, liuxiang.277@bytedance.com, 
-	lyugaofei@xiaomi.com, mhocko@kernel.org, mhocko@suse.com, qi.zheng@linux.dev, 
-	ridong.chen@linux.dev, rppt@kernel.org, shakeel.butt@linux.dev, 
-	surenb@google.com, wangzicheng@honor.com, weixugc@google.com, 
-	yuanchu@google.com, zhangbo56@xiaomi.com, zhuhui@kylinos.cn, 
-	sidchintamaneni@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 5iamfpr8c9t3zdhd9x1jxo8z6i59xx4j
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 7E91040003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <822c1c7e-bfdf-4570-bf30-08f187e7253d@kernel.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 08BA520006
+X-Stat-Signature: t59yxruz9476nuwc6zj9erjmuuaqz93b
 X-Rspam-User: 
-X-HE-Tag: 1794679072-246603
-X-HE-Meta: U2FsdGVkX1/fVP2AkXgqA+osEnsDlJZb6WHz8VUg/kNz/V/tgiHpJcso7pomRl63XJasqDRxGkec1n8bJBDR6ZDgeR2W5P1H/WyU87rwdumsia2gRgjd8DHJfUS6QF9izBi9hFmtY9uJEqTXEt/a9JuMoYZo5WvnQjHHljZcyzph+eP2fIU0t0zwr8Sb/Ez8dGzPe0i6/Xi86DHvvMyCgjesSjLN8rlf6b/DwhNdITFwuVGIx43fW4qd6q/ywRAua//tljeJYBXdoEkH/pzS2YM37CVofnu1SrNQz4y8EtGmneff6NutDxAqP3RPNVLHJce0JvsrSydguQptvTDehNXN8M2hyuEs19Xst6xgFAHfbJWZCaCLBcR6NOXuEgsc54j/J0fYiS+Ip5+mzHB2D8slVTex0vQgCq4mF87Fyf+1L/9TSY0IaImdnELdwaiv1SNBGsqTGZuP+fmIL5TnNsvaflA6YF2bd8XA3Fqte1MR1almHVqG6ODQG6C+hQKV3B89I3IY8VRrFPpXSGwdoVctpK5VUbFRIE3MVLg5DmTmhRSvNI/oMNT3DaefiMlBsqSXBC6K5UNMWo/cdoxOzg8UnyoOaXPKZnEexy+jpFwEca20Qpsa1fqvKBB8ot1bfmq03EnIcJp2ImE6UMZ81eOSQlnAgT/uv9tYgHo476M0PXcWeNVgaPnDKYf3Lt0Eee7NvJwcKpI/PpiGudnd7L8yWKeyGe6TCNpQp5WxZORuckKbeZZr4SSwTi+9M6he+Z3lKNhSs5okZwJSffav7yWhuONDvXbNKZY9JBva3fkLDvbZkak4+1qSONPjZ8pM3jcxuwz0xDDAUGE2nT3ZOVDdj7eean/Y+/0hGycjFyIkTzbDFgqIshLTjP/oOBQBuJ6xa08AP16WrXn1AiAKOEpS9VF+lEt1pkLiHUvI2Pu7+aS2xHfodfOhPNC632kNEGpqCFqYV54gn9W5eRa
- wJNSdk5j
- inD3mzbin4685EnDub4MIGTiZIDcsjrWV9b/yhfZAmXI3VPNOq1l5TQmrEpn9pnV/75woUE2yokl9yhpfoFVLMjBoddDk5YtcCQCbvkr/gVgsoGyp9m2duG3+zc+3x37yIsSHF+v0hFDzDu3fDNzqFX8DuT0zwjwVIO6q69rHeeSEXPOLy+GLf471l4nXx/ptCVVxKvgA5uH6mw7PGnOq1xj9ULpS1PgShTcNP9CDDTZG67Mg4tBr71Ho14fL/zY4Cgtu7QXdRJpk1eJFir51we/dEiFsx61y6kjRuwtdWN+FrdXYnqnrM/MUH44qjaOhKx//plA2wyjhIU2KxJY3+rgR+GZCEOkTm6ew7Bbq+bEfL7nAfI3VmbmEeD1mL1AiTSNUrYKzVBpycTT2g3ZTYl1+U/iqS1K+aKNJf8tbmEkYKLpEci5GMeW1armdiVpmZxekGOhhWp9WOiuTpfS2Y8UdVd06d51iSufKWouv4yfMAw90bX67wsboUEQNw4/xgrNucZTV1TbMEGPLY1th+lbwLQ==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794679130-173670
+X-HE-Meta: U2FsdGVkX18DCIpkJTmvy3vONxErYyw1DwzbVimD3cxcto6RecvIf9JHe8WduSTGN+Lu5HOv5HWOIK7NNeZ6Slb/IuCSLybwG7Ft2QRQU/4mOlS5EZ3d8WS9ZOBPQQ3mrb/1OUPLWr2AkKhoZdT/O3GyCeGf6dUZYBrrJvC4VS1/oSNyW+/eWQIlSde5dxZSJEcVmCxrioA4chBKVpERkO9d4cGHI01XKwe1/jT8MHXlZBMcPSZtktw44oQNeAxN5VHc+I3efIxgR5NenEnBu3EwvOoasEl0Ww+FTRuqZ0GLKp9DNakL5UepYLz021+456BAARAoDZL9tsxsBqqxgRLl7uZL3rCpauF+ULXopW7CqjJFPRBrut5Cg+EVXI3CiIwwxA9v1izkcWmOraYL3h2F8JUVTp7FM0pvWlE6z08PF6w8iEnDBRQOro9IESnf3QgZa0gZAJDpTii5Dg6OVmPt/teTDWO0y4BgZxguqoSIowrP92VmdB0NiVGLVX/vtbd5pHd9AkCwq9RnyttYXAyqoGMcw6kLH0dpapOU+M0WODwwk3n3uymbLyy0QbIeBotqWzYPvx9m1ZCqVb1yRkPEAwzQ7f35nje4P2Nbi3LThiQ3ZhbkohkK2YPH0ljT8h/YGsqOyyyvlYE8JDupLVwvBeBMrg01A6w5PQVBHxwf8IlB1KNyElQFqpqcGpZsUcxexoLCWYCoxb0jZA1STsWsn31Xlv7axplVTU8s603vl4bdy7HvQPJ6JBjjdOylW4ztHWqpI2c8hbuVAWp4juvusCW6z02Q+cLF29tnsY3KJc2twjjmyeVZFQn060tPooRQVoKcdOQfUxBhcqhP2pOX1rN3mxoUWxHCB3ga6kbzVFGX1aKmMV73qoRYrJJb65wgo3Nln6RLN4NwyE9Q++UVvSft1rryhs1TZiQvlhuvtFPVJUmF+XSl2Q1VHuCCDFM0NyfdQ2g3/xzsC7u
+ vDSp5Gzo
+ DCTKrKVFed2lRy0vF44oQd3aljcfZN3xzb6oENTW19XK4wLAnYK2yMw89hGTMB+gMAjUoEhwgDLOu/YcUkf8Mbvgv5qRgH+Is/fQSHPCLoHDzfJb3yXnLOtElQvBM+SkB69sbls9D6LOnZO6WWYuStURx78N+laJPaNNZ/zc6cy0QQ3DmsUG586ZT6MiidcOi1TMjnDrD5dqTMOLJg2DaDmOhos2pF6qSnub1DauZ11hqRUcM4Hk1dbpY1CB/DMonRO8maNY3/u2wMsdOZza15T+k+A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,105 +107,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Nov 14, 2026 at 2:56=E2=80=AFAM Barry Song (Xiaomi) <baohua@kernel.=
-org> wrote:
+On Sat, Nov 14, 2026 at 04:39:44PM +0100, David Hildenbrand (Arm) wrote:
+> On 11/7/26 00:51, David Hildenbrand (Arm) wrote:
+> > Unregistering userfaultfd leaves poison markers in the page tables.
+> > However, once unregistered, hugetlb PMD tables can be shared again.
+> >
+> > Further, shmem page-table retraction can discard poison markers even
+> > while registered in missing mode, and fork() can skip copying page
+> > tables containing poison markers.
+> >
+> > To fix it, add VM_MAYBE_UFFD_POISON and set it before installing poison
+> > markers. Preserve it across unregistration, splits, merges and fork(),
+> > just like we do with guard markers.
+> >
+> > Use the new atomic VMA flag to disable PMD sharing and page-table
+> > retraction, and to force page-table copying during fork().
+> >
+> > Move VM_UFFD_WP to bit 44 and make HAVE_ARCH_USERFAULTFD_WP depend on
+> > 64BIT, freeing bit 12 for the new flag on both 32-bit and 64-bit systems.
+> > Expose the flag as "up" in smaps.
+> >
+> > Losing poison markers, while unpleasant, is not really fatal, and the
+> > use case is rather a niche thing. In addition, we rely on the atomic
+> > VMA flags infrastructure ... so let's not CC stable.
+> >
+> > Fixes: fc71884a5f59 ("mm: userfaultfd: add new UFFDIO_POISON ioctl")
+> > Fixes: 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for hugetlbfs")
+> > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> > ---
 >
-> From: Gaofei Lyu <lyugaofei@xiaomi.com>
->
-> Run aging when the total number of pages outside the youngest
+> Ping on this one.
 
-Huge thanks for this!
-
-I really like the imbalance detection idea, as skewed distributions
-are very common in real workloads, and this significantly improves
-accuracy.
-
-A few trivial nits though:
+Ack, will have a look.
 
 >
-> +static bool lru_gen_imbalanced(struct lruvec *lruvec, struct scan_contro=
-l *sc,
-> +               int swappiness)
-> +{
-> +       unsigned long youngest[ANON_AND_FILE] =3D {0}, old[ANON_AND_FILE]=
- =3D {0};
-> +       struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
-> +       DEFINE_MAX_SEQ(lruvec);
-> +       DEFINE_MIN_SEQ(lruvec);
-> +       int type;
-> +
-> +       if (sc->priority > DEF_PRIORITY / 2)
-> +               return false;
+> --
+> Cheers,
+>
+> David
 
-We have been using "DEF_PRIORITY / 2" so many times in this series
-maybe we can introduce a macro like "AGING_PRIORITY" for this later?
-And is this condition too hard to trigger?
-
-> +
-> +       for_each_evictable_type(type, swappiness) {
-> +               unsigned long seq;
-> +
-> +               youngest[type] =3D lruvec_gen_size(lrugen, type, max_seq)=
-;
-> +               for (seq =3D min_seq[type]; seq < max_seq; seq++)
-> +                       old[type] +=3D lruvec_gen_size(lrugen, type, seq)=
-;
-> +       }
-> +
-> +       /* the vast majority of pages sit in the youngest gen */
-> +       if (youngest[LRU_GEN_ANON] + youngest[LRU_GEN_FILE] >
-> +           (old[LRU_GEN_ANON] + old[LRU_GEN_FILE]) * MAX_NR_GENS)
-> +               return true;
-
-We may increase MAX_NR_GENS aggressively in the future (e.g. 64 is
-what I have in mind), will MIN_NR_GENS work here? Like what we had
-before 798c0330c2ca.
-
-Also counting only the youngest will cause it to drop to 0 very
-frequently, as each aging starts with an empty youngest generation.
-Perhaps we should look at the yougest MIN_NR_GENS gens (still just
-like what we had in 798c0330c2ca).
-
-> +
-> +       /* Swappiness extremes: the corresponding type matters */
-> +       if (swappiness =3D=3D MIN_SWAPPINESS + 1)
-> +               return youngest[LRU_GEN_FILE] > old[LRU_GEN_FILE] * MAX_N=
-R_GENS;
-> +
-> +       if (swappiness =3D=3D MAX_SWAPPINESS)
-> +               return youngest[LRU_GEN_ANON] > old[LRU_GEN_ANON] * MAX_N=
-R_GENS;
-
-Maybe we can do a "round up / down" for swappiness so the two explicit
-check can be unified, by reading the right type in the for loop above
-directly?
-
-Like doing this before the for_each_evictable_type:
-
-    /* Round up or down corner swappiness, to balance the heavy biased
-type better */
-    if (swappiness =3D=3D MIN_SWAPPINESS + 1)
-        swappiness =3D MIN_SWAPPINESS;
-    else if (swappiness =3D=3D MAX_SWAPPINESS)
-        swappiness =3D MAX_SWAPPINESS + 1;
-
-> +
-> +       return false;
-> +}
-
-And BTW I tested this with FG on top of this using zipf and the result
-is even better than before:
-
-IOPS (zipf 1.1, 40G workingset, 16G memcg, mmap access, 3 test runs
-for each setup):
-mainline: 2,215,641 IOPS
-mainline with FG: 2,705,460 IOPS
-after this series: 2,182,625 IOPS
-after this series with FG: 2,772,968 IOPS
-
-One thing I observed before is that when testing FG, if the generation
-number is low, the accuracy drops by a lot since we are trying to
-distribute the folios among gens by the frequenecy, so we have a
-compressed frequency space. This patch addresses that well so the
-performance gain should be larger now.
+--
+Cheers, Lorenzo
 
