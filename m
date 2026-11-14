@@ -1,152 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB2DF606A884
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 23:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD64606A329
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 23:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=laT9YiOW
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fqorLJi2
 Received: by kanga.kvack.org (Postfix)
-	id EA5ED6B00EF; Sat, 14 Nov 2026 18:20:13 -0500 (EST)
+	id D10D86B05B1; Sat, 14 Nov 2026 18:54:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E56AC6B05B0; Sat, 14 Nov 2026 18:20:13 -0500 (EST)
+	id CC1BE6B05B2; Sat, 14 Nov 2026 18:54:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1F8A6B05B1; Sat, 14 Nov 2026 18:20:13 -0500 (EST)
+	id BD7C96B05B3; Sat, 14 Nov 2026 18:54:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B90F6B00EF
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 18:20:13 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D47891A04B5
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 23:20:12 +0000 (UTC)
-X-FDA: 85435295064.02.F8810A0
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	by imf29.hostedemail.com (Postfix) with ESMTP id D464312000A
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 23:20:10 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=laT9YiOW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf29.hostedemail.com: domain of amir73il@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=amir73il@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794698410;
+	by kanga.kvack.org (Postfix) with ESMTP id 8719E6B05B1
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 18:54:45 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E7A98404C9
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 23:54:44 +0000 (UTC)
+X-FDA: 85435382088.15.6817C2F
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1FFC540002
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 23:54:42 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=fqorLJi2;
+	spf=pass (imf01.hostedemail.com: domain of mohamedalibouhaouala@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=mohamedalibouhaouala@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794700483;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=98mXXJR5XCg4Z4S2yqrizowpYg4fQiN0pgPOU/BiUFY=;
-	b=HahTW6OTil4G+MtRBWa3MFMfnLeExqMFe+Maq4nJM3RX6BoM0247GRQbf4HDEFPfNBE/nq
-	hbvO7mdzA4ngdmpmWaSfK7AYRHxTF01ritUjZU2P9xqPGScLZXdnXCfSpdVPtRet28trBR
-	825bRtcRgjKfSkOzi1aLh8zp/IHIhUE=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=laT9YiOW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf29.hostedemail.com: domain of amir73il@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=amir73il@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794698410;
-	b=yordWUIezc8+o2FkyVNeSAQVEN1nRrJj3W0JORGbHtOHgx4FkTrkxuP2DJkWnT8lx/Eo8t
-	0ToxBSixZ3ONs7O+coMSsmn6AOif7n0JoG8sHmuv9mKk18EFUmNhSJ+cbAMp4CAh1W0WLo
-	ixlUVRLAFSUfvZEEHxLrld/r4yuHnXo=
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6b58cb69927so3771028a12.0
-        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 15:20:10 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794698409; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hLhwFk8WeVafC3btfumfXElRWH9EVGNPUdpYg3jwQh5KXmdC4NaLUxuPqasbVgtZ8/
-         F1AhDk38ZLYHSY4Xxs3tySvtReTJI+ybwH0bWrjN+Ga50XSfmYZ29oyk5ySXzx+YbJOX
-         AFVM9aQxQYIS5ysSWwPnP36FFfM94Qb1ez7FJR3RpRmesRj5yiF5jHI2sWjswROXMxV+
-         jtmcnm43pwz1FuzjmteI0npFtyRgnkb5D0zhGRR7dQESac03sDGoCty3g+kvcLxXtJp8
-         AG8g5MvjmlXH4F6kwiDUCw+uXtwVtyIf7v7mkO3GNy0L1n5k/8HI/SxfWrz2tOMF4b4v
-         OQ5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=98mXXJR5XCg4Z4S2yqrizowpYg4fQiN0pgPOU/BiUFY=;
-        fh=DBb17qeqUl/AmUVpVEewEPzMKkPUNco1BR+qP/m9otI=;
-        b=VQk5sbR4odPnD2WqXeh2kJNtpY6gbbGtTGpOpwwp5pjCw6A5UnoV7VTZk9g3/4bxyr
-         IsVPnTuCxk2B9BbZm/HXIvPSp1QnXzni0vtRivQ4GnEIX6k37UQKiuSsQjTEuQ4598Ps
-         OKlCh28lCzpE7ZoenM0cP5Zp2HBnUiH5wAnINiUqPeCyMi2Vc0+zztEHlRzLuefuXj59
-         MUH5uVu6Oi6hZyWH6YnT8xREjjQcW4oCIvItkE1zGn/aty0hER1RkD0Hw30mqPmh53Wl
-         BNCeigcN6EW+/tJLB1+sxvo0U5DL1qloIld8iNhxI8oV5heT7W1UgXCBVSDY37wDqbkv
-         MZ+A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=jvGNkEQXxpCGRnxugPg2OroUq4ixAzACPllCORFjj2w=;
+	b=HI7uMnWXvF6fzed1X+aXowdm9uKAt2SKfEbIy/WZ6NfU7R+3JSdCBgE7wxyEt/0swf5vOW
+	M6kWIdINB20U8AgvMFDo79caT9KSYfFOPcw4F5U3qvhSQV3qLTuqZw3DPIQprwrKtDgzrR
+	IoCMCCPaX8w7KjPI0Zc28hzh6U3xeUo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794700483;
+	b=KZdcHJeS4QlFVx0NyOKsjECRweaNFqAuaTB3QLDxLVhYr+788WFq6xZzSpnKZAdUUtqyBR
+	JQbwfvgL+fCOuoJ52mIwExCaXwC0fTH6Ycl2NEknyLUZpEF4SptU1OtmMM8Rw42G+Ai44p
+	fLdrEZPTxx9jiz2Wr9uW+VS0zztLyyI=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=fqorLJi2;
+	spf=pass (imf01.hostedemail.com: domain of mohamedalibouhaouala@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=mohamedalibouhaouala@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-491971ac844so2125430f8f.2
+        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 15:54:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794698409; x=1795303209; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=98mXXJR5XCg4Z4S2yqrizowpYg4fQiN0pgPOU/BiUFY=;
-        b=laT9YiOWVVNVrWLpt2qVlIevN1Dy62XPMIW2bNeOYqc9Ahb8GGyhuAHBhOkuxWFJIP
-         1XM+PUSqVsxW8knxldcD+gOHxJXLwF5i9ED6RcWJKjey45pqMSLFI0jsI/33y5J2tDA5
-         n1CmjBfEB1gessS6ngtoPE5Mr7vQblzR69mgc+HLA0PDM/4eULXKU05JdiEFYSCQB3zu
-         D6J5hT/v6nEDX5ke1jXZfSYorNMmu6Bdb737GjadTYTkmbiOGLRvxpvQegMZTvx+3oe4
-         ZIQCRt2hhDMqYinQnkyGDxOu6K/CDlG6eIW9omptXZm9rfzvv7S7aebSoRcUMt7CMTNE
-         4uJg==
+        d=gmail.com; s=20260707; t=1794700481; x=1795305281; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jvGNkEQXxpCGRnxugPg2OroUq4ixAzACPllCORFjj2w=;
+        b=fqorLJi2Tu1WSHmvLc03PWsmW+RT0V87S/RqoJD5jNn/opS0Vh83jaij2OHM/4nw7s
+         KhcFERaRZ2FNVJRqkYgrOhCh5gonNPby+5QhbPuLvuWBllmV0uxYGySdjqhFQbEaIy05
+         HEjH5nRjrnW132hvuXYPdr3mLVZg+l1TVXjZEmpLrdqot6IRttRWRD4Ahy97vtgz6xlz
+         Bd2e1SRSYBmyDmUKPP16+fpHGky0tjT+lTC6XAiSe4N9iCwJixY5vr2CHuwMgZvQ7Fvr
+         XK0D7MEsL7+EHRa88huuzLdPxdliv3+Jq0EcMIARyqETr73xreHxZCGu8PqS0ghZ06W2
+         ziiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794698409; x=1795303209;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=98mXXJR5XCg4Z4S2yqrizowpYg4fQiN0pgPOU/BiUFY=;
-        b=gDWTQcCRqDvccot64qZOMOYds+TmP7SFOIHUFORvPI9mcXJmlsoxb0SPOojQyO3QQU
-         Mj6Rau4wsD17/yQQjRD8gFmRTzKCnkWhuX6MDfNMlH0AjAId5OulGERe2pVzRl93ayTg
-         2UqvIVB0MTUbiUt7UsPm03InbevG7pDi8JZlboGoV1g9gtradQSTJXhBMD7JjYe8FfKl
-         d94kC8hqRi1d9T+PkcvlKLKUTzi4Xz4tD2bM+QMr6Y2WbOiRYqp0+FUeq1h5Ci0sXh9W
-         ejgolvzReM6/U1EvchzP2hKigv036vgvVgaAS4x1qEfTOJCqcctVpjlCTYcIceDM7BO5
-         97vg==
-X-Forwarded-Encrypted: i=1; AL+hErFtvtwF40Sep+7BoG3FtdNYcaABvOCjorv0IU3QBFNf+BGRcQPGhDzakaCLeOtCM+yeQyAH48YFMA==@kvack.org
-X-Gm-Message-State: APuU4Z9bo2D0l42fpxjdSAXZGOZ4/+HvRRGIOPcvEzziutCkVkDy8rUJ
-	gLjWg0Fe0pwrVOHAJYrCFsR1wP+zBTVx8lzmKdLK+lP2DF0vRxgmQCWBILHJAnXRWuj9p5HxaKM
-	V5m+x82CmhcwggD/pGy4uRKrGJL2/s/A=
-X-Gm-Gg: AYBFou02BK15rsyIkUliJlP82DD5V7OAQ41KA246gPqymo69uzlfci7lJOGMcvE/WOu
-	AM1KvG2SFtwDLTaEll+IGSp9luQITiRdn6MUOAz0vAtdE4dser/QIAr+/pDkKvMXiuhzbCr4sKw
-	vfPgTZgvplDQZ+kKjTy77SZhtpF2mS1NdhrAbpVvAGr6rR/7gCT3mE/1ksYO1up+3NjaHBjEObg
-	aboH74aPHRy5Fszkj7pM1+vtPXvmarUfeyuvOKcfCsP3hY74Sa+5Bj17eOeQYd6mMSVKkASGuJR
-	il6K+4WbA0tvx3EjzTAeRlYpzW4r72v+CdS9ULairxvN3eibQ6pM8FLX+errvj6vl6dF4lElocq
-	fx3FPpvJCaEzrqi+v5FVSaCbbkMSFihJvgk/ccdBkmkW5p2EzwuOWnOcGFZbQWFTE8TSIPw==
-X-Received: by 2002:a05:6402:e10:b0:6b7:f00e:5e56 with SMTP id
- 4fb4d7f45d1cf-6b7f00e5f37mr1542816a12.1.1794698409123; Sat, 14 Nov 2026
- 15:20:09 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794700481; x=1795305281;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jvGNkEQXxpCGRnxugPg2OroUq4ixAzACPllCORFjj2w=;
+        b=QYV5n3zWk/3HqHyHFmXo16vbVjmPFytFy+bwKgqZei9Zg6Flib+UO0GlMaxvvu3reH
+         q41QGA0ln7nnYpVIcgGSGEzFegIFYTDOzgrW8bmn34j949xBk/cxBo8i/fs7j8kIFli7
+         VXPrXNnPa6Nnzq/LWWVwEOLf/i9R7Z2bj3M45+/iyWepMmKiFNulv3PPbM7OdSYjYJ7E
+         cQr8pfR7YoyAAOxrUm4rSQzu1Me4yo81dcpkdWSqqbT0iDt8B/0r4QDUmUpkgKDHrlSe
+         +EKWInFfocVL8GEBmeQU5piO2mAbRj7GSBYvFKOeeR9olesYO9AlJ/1BRghoRuO1CudS
+         0pkw==
+X-Forwarded-Encrypted: i=1; AL+hErHS+y4rC0+jiENVfUOzSg6CHF2Ec74p6DDYLUd1TLJcsPPLjV7BxGVPBpVfkh2plqBJ6ms9pR7nMw==@kvack.org
+X-Gm-Message-State: APuU4Z9z82ehgO8RwMeR5kPNvR5VHw5+hOmUuOy7Ntpb3+itaS7a3TVq
+	sV7t9E8fgycE58bzv2+ND3tm4/TytixFi6gjwljqj/a8wXJFli2SrRv6
+X-Gm-Gg: AYBFou07lAj1Sd1GDAEr9V/oKL2izeJs/reClQ7skv5vUojQfLhsbI9CTrRx3P7gtgc
+	Egvunr+WSykmwnxuzWNVTbS9m0ULQgn74wkXwkvjmegtSbTMcFi0ChQMz0l5iozaDpuDK52Sz8l
+	UYNqTFisMnBew7E7DuCXZ5uFaC97WOFS+FM4veyzX5fIhsgzz4b0pZqVL3F+zdpbA77IWBmqgIf
+	hWHYZyPGDYjWSeL8sY1MxnKLLUTgcd38O2MtOGPKFInxkH7mAouywVRAP5wRCN60Tg0vcI4DzyD
+	ifri6re0AlIaQCG61WTDC5vKAsYh/VTLP0FDxBjBklVRFPdXO/MHFUQiAzY5XlJzEyyFaU29YOh
+	i3IO0DmEbS3tXqujb+xyQ5Tmlczp8jOUM/9B0tRF2s1DXGW1VfXWgJhWH87WjZj9RlFXl3CBLHO
+	rvsNmzdDh2HvNeJnvFuARGSwr4AmJn7EXQKjwATxm8YcR+zyOPMNqaYC89oGtUyMDSbeusLUZHu
+	Xpkl5y4RTQT7Y7uBDe+sCYKKfayj72BQ6tnK1UwAR9ZqkOqen3kptHbP2O0jB3oyPCxIsjinB1K
+	SpMoqCyihAGiPBMoO7hb/i2NhB6+wwWmsWlVgKGCtjGDmgyX15ouaOJXyNvLrUe83bebhS5AQ5u
+	YTw8U4q0P+SwzIjYF2mhxhfd6vz1uQgSY
+X-Received: by 2002:a05:6000:4201:b0:48e:870:7791 with SMTP id ffacd0b85a97d-49c71e3d623mr16407297f8f.26.1794700481355;
+        Sat, 14 Nov 2026 15:54:41 -0800 (PST)
+Received: from mohamedali-HP-EliteBook-840-G8-Notebook-PC.. ([197.18.115.238])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c608d10b2sm23069680f8f.44.2026.11.14.15.54.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Nov 2026 15:54:40 -0800 (PST)
+From: mohamedalibouhaouala@gmail.com
+To: willy@infradead.org,
+	jack@suse.cz,
+	corbet@lwn.net
+Cc: skhan@linuxfoundation.org,
+	rdunlap@infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	Mohamed Ali Bouhaouala <mohamedalibouhaouala@gmail.com>
+Subject: [PATCH v2] docs: filesystems: update VFS locking documentation
+Date: Sun, 15 Nov 2026 00:54:26 +0100
+Message-ID: <20261114235426.20408-1-mohamedalibouhaouala@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <3aaboixwh6lpo4s67dv7lssqj2vwlp4qp5cq2ysimqi36r3bm2@fb5lmoo33ktf>
+References: <3aaboixwh6lpo4s67dv7lssqj2vwlp4qp5cq2ysimqi36r3bm2@fb5lmoo33ktf>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261114-work-loop-pseudo-v2-0-98639a2286fb@kernel.org>
- <20261114-work-loop-pseudo-v2-33-98639a2286fb@kernel.org> <20261114120557.4bc1eb6e57218cdc@chrisdown.name>
-In-Reply-To: <20261114120557.4bc1eb6e57218cdc@chrisdown.name>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Sun, 15 Nov 2026 00:19:57 +0100
-X-Gm-Features: AclHuK_YVxhIpv6JLzeNAX5mX5IHGfu05WS6uQ-TCKewxE3JKeci2PyA-UDMCbo
-Message-ID: <CAOQ4uxhGxpBtMZ5kfuzR1tQAewiecoX7UjXQRo91QjJHH9T_Yw@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 33/42] fs: add file_check_backing()
-To: Chris Down <chris@chrisdown.name>
-Cc: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, 
-	Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>, Josef Bacik <josef@toxicpanda.com>, 
-	Christoph Hellwig <hch@lst.de>, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, 
-	driver-core@lists.linux.dev, linux-mm@kvack.org, bpf@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
-	apparmor@lists.ubuntu.com, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, 
-	fuse-devel@lists.linux.dev, linux-efi@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, ocfs2-devel@lists.linux.dev, 
-	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-usb@vger.kernel.org, linux-erofs@lists.ozlabs.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D464312000A
-X-Stat-Signature: 7t1pmema4f1u86n5xtpphbusp886nqzj
-X-Rspam-User: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1FFC540002
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794698410-531819
-X-HE-Meta: U2FsdGVkX189Vs/MJ5j8DlSDPx06eJaeoUr3OEV56b66bVUtPlDs5en5yXDMIL6JhnupdGN00VJjGJTZ255jDSDQ/R4aPgN213NqJNXa18f4pTvFGPYCxzPgK1Bungb/h0R8PZd3/aIIQNl01AugMmlqbFfrDqFQQp/yr4LhHo4syDXdmEa1t6/r5HAQ4Sd8a9rz7/Tkb4AQf3gftPBJJ+M5aCwttCsGBJobsg4cV9uPgVIUXu7L9ObYcc6P/qunaXwYYRaBnyo+deYvbzvU/XeM2GZeVNBKzczfSzTbDwwpgSHLUhXNNdCJOpgBq4xh4sEb/8T48fhwqdcBooFCBMuxnQr/1fScSNqcK8VHoKznDRjQXQfMSPABORoGILjV/OumLV4K68k1UOSbpOH+6nz679BWmQMK6WyOSeoSXsoae24iLTEhSW/bxsQGpZqoxEQWPmU+/ye5ifbBoP67n/IsO8pa/FPir47MLcr/FccPvu38gRVQthuglliNFUCmf0GOg8HP8zGKnEn2RwHcx/JpvNA8PqwY8duN0SyWVVme2y8IXAbAPKSPue9goZYUG1IOcqMqX1MEhpIoTVyqFCRm8qCgYFbWYqv3hipL/YUk4hmwe3yz1RB35wTBqNUcnVoH6q41MXiyFAAPE7IRYBn7I6ifYK9miMGIa/s0Apb30HVLjORj+3rxLxBHE0tEsbDJTcExN2lL6AggbDhHOUpdGjTUBCfoQZ9X9BqVv7uU1QZyn/9a0Ug3TlvBS+tXUTP/bkzvgO4Q9Ro8JqjthvU26vHHD0DwMxjD5WgkrAMPlpx1iJzaUANSPcJDG6iexcQ81EG9/ZcL9YKFljWjpkwzct34mt09+f3S/Nw23Xsru/BXLjyOh5UYe4t91+Q4x7zyF5XZqlOpdRHkuW/pkowQ/JaZ4pk81jYOR8qk8es9RdyulwLh905T34yisnQX/Z38GefUpoNX/EnQKfo
- U9nzWMqE
- OiKbzZI5odkrPqoDKD2TLMhSOLAigTzZzPhsTtyaYxDxFInh8Ly0YyE1F43aiGCVG4xPTulB0RT09/tcJYhDI6eeXntvzCAWTtMQJXTXE4XYw8cFxKOntAmip4PrqlnU3lDoKT3pct/fEPW2/2F3sLk4iWQktcFvZadcKwmgm5Kj2XbNF/O0Ozg1gKYFDZURwvw44DitIE6D6lhsiLKzPvZqb8tKH8lN4dKoaDoG8olA37CEj3bbMweWI0sLlCk4U0fMrMa+/tPDXJU2NpZeE/Z6eAWCkXRrfrZlxBwVbrCMz5Uu7Sx7nXgvmwXomgt7g8SAN8HVa84gB/t4hWvgATBdeAqlLYg91MVhIGROGWlJ1BM0GJ8Ca4TKHdKlg6KxPNCVSe3+inairvNjFmiodch0YaM65Lr0uKFA3gbN8lEs8AT2OKRLOVw/zbfoG5+dCEl7h
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: pyoaphwfs9tpd44u6xioxskizo93jxjn
+X-Rspam-User: 
+X-HE-Tag: 1794700482-239829
+X-HE-Meta: U2FsdGVkX18KrxtmSg1ZlpQLQVdfR2cF1rX9elWvi2MmFTlL18eCbNLkPdv8OkT+SiU2N7vHp2QHOdO44SNXUbSb2RqL3hg6htaNSXKw7Thn/eCKIAu5ZugP4TbShEV5RY+PgS625q08bltt0gCrFzdENQ3eWwYoAJVCTTyxC0138anyTDGEi7mRvJzzkmjMrijCOtO3QW06rf7fpL/9EW/HFmUas+l5vhVYta+lFP1RZysGd7G00IuI4ULVo5GjL4kQM+lkHGn0tUkwrDWPFoieRrwwqsDFzXXuxhDxlJqPziVEKABtZFrrYWCXO0Ttnsu+G36JeGWEZ0T0HwR8tawCz5Y3y+GaCvSJmJNHitw+B80EKuKBdlN68HxkYv5kA/uX5qox/M/XGe3KO24eSqsIfHIeQLKlHXi164vh/Z8jtH3FP3LkeWKy9A2mSfvgvCtnUwGqOYhg2sAUtoDUw7YftT20I6QVOaoNoL/sUKd0W3YZnKUFqH3y1miPN5wiLPCDre1STOnLRTWzw5iqwzBDRWr9PR/5uNsqy1GtqcOpQ8PbNOX2HUgEvKAnptWi6tSwuCol7N1B9LcNSNOo3S7i2yvGr4Q1TWNQF+gdcifGfaazkovWR4rywiF8wbIol0wbAjncdzqwZztPaaGvD008uLN9Q3jqrk64Gn3xuvEXMzdJi1dsrbhYRSYlJiX+DScGJQm5s8XcZkoyGKMDaWWH8Szjvz6apKKCKHC4k8+e0KnS57389Co5PI74bHGIuTbuoreJVThQr/p2qrhXQp+AZqyy0ysywas9M8WZIubyxeWOaWwcq9G5+eH4AblQWO/wXcRpGEKldMpAqX2JeROJHMcRetAq/cPFqtTGRjxBYDrUwDuWEOlsQdWlC3qYuLP1U83d4oJPU3B36w+PlBOeW4lcmSi9setTr/gixbmQ1jeWfEG/l0MJ3n3QZGNeVs0Eq9W38C+OWpOm1pW
+ UqM2DduD
+ bVvAcr6nYADnsAHZz6NBpvKnsRuJhyXs8qcgVXwTDGbliJU7efL3XXd4Xr8bZOUqQJUv7wFrUJrrMMhTdA09eCk3vaFFNp0lhsYc1Ah+dK6PgGjvbAImtnTiuSxWVFWinXRGxeZhyiPayyyguuZfXeLhTmyUdAmanaydIuRCcU3Piq1lfp8VWuZ3Z4TsT5SHXbxNsTEN0s177/WCojUrG+Vt/0KD0C7fYcjjOzMZCjxuqLqKVlnFdCvlofwIr8hDYTg1BQCTZC/unaRn9FfmxTPqafY30I5/F/RQWq0LlLDiAYh2LS5v7YQXf4TSR9VZBsaSnKqZ7V4xAoTl2TEwmAC9Rt+zLWKJ6KOH9vJ+yhf4RXBK1FLwdFUAA0XtFadqKl3B/R6A43UUz6Xa+DAZ+S7WyYk57u7I2YvTo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,62 +130,108 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Nov 14, 2026 at 9:06=E2=80=AFPM Chris Down <chris@chrisdown.name> w=
-rote:
->
-> Hi Christian,
->
-> Christian Brauner writes:
-> >+      /* Look through stacking filesystems at the inode with the data. =
-*/
-> >+      if (d_real_inode(file->f_path.dentry)->i_sb->s_iflags & SB_I_PSEU=
-DO)
-> >+              return -EINVAL;
->
-> This looks good in general, but what the bots said about O_PATH files
-> here is real. With FMODE_PATH this is reached for a file that was never
-> opened, so on overlayfs nothing has been through ovl_open() to look up
-> the lowerdata of a metacopy file yet. ovl_d_real() then does the lookup
-> itself, and when that fails it hits the WARN(1) at its end and returns
-> the overlayfs dentry, so the check passes as well.
->
-> Only fuse passes FMODE_PATH, so it takes CAP_SYS_ADMIN to get there, but
-> it's easy to trigger with that. From a quick test with a metacopy file
-> whose redirect into a data-only layer points at nothing, registering an
-> O_PATH fd of it with FUSE_DEV_IOC_BACKING_OPEN gives
->
->      ovl_d_real(/f, 0): real dentry not found
->      WARNING: fs/overlayfs/super.c:79 at ovl_d_real+0xc9/0x210
->      [...]
->       file_check_backing+0x308/0x5e0
->       fuse_backing_new+0x219/0x4a0
->       fuse_backing_open+0xe8/0x390
->       fuse_dev_ioctl+0x53a/0x7d0
->
-> and the ioctl still succeeds. A normal open of that file fails with
-> ENOENT, so nothing could have used it as a backing file anyway, but with
-> panic_on_warn this is now a panic.
->
-> Maybe ovl_d_real() should just stop warning when the lookup fails, now
-> that it has a caller that isn't trace_uprobe?
+From: Mohamed Ali Bouhaouala <mohamedalibouhaouala@gmail.com>
 
-Yeh I guess that this needs to be a Fixes for lazy data lookup.
+Update outdated VFS operation prototypes in locking.rst to
+match their current definitions.
 
-The correct fix would be to teach all the callers to deal with an error.
+Add the missing d_prune and sync_inode_metadata callbacks,
+and correct the signatures of existing operations.
 
-> The check would still pass
-> for an O_PATH file whose lowerdata couldn't be looked up at that point,
-> though.
+Update the locking table to include sync_inode_metadata.
 
-One observation relevant to this patch set is that a datadir layer has no
-business being a pseudo fs and that can and should be blocked explicitly
-at overlayfs mount time.
+Signed-off-by: Mohamed Ali Bouhaouala <mohamedalibouhaouala@gmail.com>
+---
+v2:
+- Use the contributor's full name in the author and sign-off fields.
+ Documentation/filesystems/locking.rst | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-The other observation is that fuse_passthrough_open() should probably
-check the backing_file that was opened for io in addition to checking
-in fuse_backing_open(), which could have different FMODE and specifically
-could be FMODE_PATH.
+diff --git a/Documentation/filesystems/locking.rst b/Documentation/filesystems/locking.rst
+index f7363ad770c7..a6a011858ada 100644
+--- a/Documentation/filesystems/locking.rst
++++ b/Documentation/filesystems/locking.rst
+@@ -26,6 +26,7 @@ prototypes::
+ 	int (*d_delete)(struct dentry *);
+ 	int (*d_init)(struct dentry *);
+ 	void (*d_release)(struct dentry *);
++	void (*d_prune)(struct dentry *);
+ 	void (*d_iput)(struct dentry *, struct inode *);
+ 	char *(*d_dname)(struct dentry *dentry, char *buffer, int buflen);
+ 	struct vfsmount *(*d_automount)(struct path *path);
+@@ -80,8 +81,8 @@ prototypes::
+ 	int (*getattr) (const struct mnt_idmap *, const struct path *, struct kstat *, u32, unsigned int);
+ 	ssize_t (*listxattr) (struct dentry *, char *, size_t);
+ 	int (*fiemap)(struct inode *, struct fiemap_extent_info *, u64 start, u64 len);
+-	void (*update_time)(struct inode *inode, enum fs_update_time type,
+-			    int flags);
++	int (*update_time)(struct inode *inode, enum fs_update_time type,
++			    unsigned int flags);
+ 	void (*sync_lazytime)(struct inode *inode);
+ 	int (*atomic_open)(struct inode *, struct dentry *,
+ 				struct file *, unsigned open_flag,
+@@ -173,6 +174,7 @@ prototypes::
+ 	void (*destroy_inode)(struct inode *);
+ 	void (*dirty_inode) (struct inode *, int flags);
+ 	int (*write_inode) (struct inode *, struct writeback_control *wbc);
++	int (*sync_inode_metadata)(struct inode *inode, struct writeback_control *wbc);
+ 	int (*drop_inode) (struct inode *);
+ 	void (*evict_inode) (struct inode *);
+ 	void (*put_super) (struct super_block *);
+@@ -196,6 +198,7 @@ free_inode:				called from RCU callback
+ destroy_inode:
+ dirty_inode:
+ write_inode:
++sync_inode_metadata:
+ drop_inode:				!!!inode->i_lock!!!
+ evict_inode:
+ put_super:		write
+@@ -255,7 +258,7 @@ prototypes::
+ 				loff_t pos, unsigned len, unsigned copied,
+ 				struct folio *folio, void *fsdata);
+ 	sector_t (*bmap)(struct address_space *, sector_t);
+-	void (*invalidate_folio) (struct folio *, size_t start, size_t len);
++	void (*invalidate_folio) (struct folio *, size_t offset, size_t len);
+ 	bool (*release_folio)(struct folio *, gfp_t);
+ 	void (*free_folio)(struct folio *);
+ 	int (*direct_IO)(struct kiocb *, struct iov_iter *iter);
+@@ -265,7 +268,7 @@ prototypes::
+ 	bool (*is_partially_uptodate)(struct folio *, size_t from, size_t count);
+ 	int (*error_remove_folio)(struct address_space *, struct folio *);
+ 	int (*swap_activate)(struct swap_info_struct *sis, struct file *f, sector_t *span)
+-	int (*swap_deactivate)(struct file *);
++	void (*swap_deactivate)(struct file *);
+ 
+ locking rules:
+ 	All except dirty_folio and free_folio may block
+@@ -455,14 +458,15 @@ prototypes::
+ 	ssize_t (*write) (struct file *, const char __user *, size_t, loff_t *);
+ 	ssize_t (*read_iter) (struct kiocb *, struct iov_iter *);
+ 	ssize_t (*write_iter) (struct kiocb *, struct iov_iter *);
+-	int (*iopoll) (struct kiocb *kiocb, bool spin);
++	int (*iopoll)(struct kiocb *kiocb, struct io_comp_batch *,
++			unsigned int flags);
+ 	int (*iterate_shared) (struct file *, struct dir_context *);
+ 	__poll_t (*poll) (struct file *, struct poll_table_struct *);
+ 	long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);
+ 	long (*compat_ioctl) (struct file *, unsigned int, unsigned long);
+ 	int (*mmap) (struct file *, struct vm_area_struct *);
+ 	int (*open) (struct inode *, struct file *);
+-	int (*flush) (struct file *);
++	int (*flush) (struct file *, fl_owner_t id);
+ 	int (*release) (struct inode *, struct file *);
+ 	int (*fsync) (struct file *, loff_t start, loff_t end, int datasync);
+ 	int (*fasync) (int, struct file *, int);
+@@ -475,7 +479,7 @@ prototypes::
+ 			size_t, unsigned int);
+ 	ssize_t (*splice_read)(struct file *, loff_t *, struct pipe_inode_info *,
+ 			size_t, unsigned int);
+-	int (*setlease)(struct file *, long, struct file_lock **, void **);
++	int (*setlease)(struct file *, int, struct file_lease **, void **);
+ 	long (*fallocate)(struct file *, int, loff_t, loff_t);
+ 	void (*show_fdinfo)(struct seq_file *m, struct file *f);
+ 	unsigned (*mmap_capabilities)(struct file *);
+-- 
+2.43.0
 
-Thanks,
-Amir.
 
