@@ -1,95 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B2860A5BDD
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 07:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D13960A6F4F
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 07:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=GNXv1/7b
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=SuN2p5S7
 Received: by kanga.kvack.org (Postfix)
-	id 20AAB6B05B5; Sat, 14 Nov 2026 02:10:17 -0500 (EST)
+	id BCF796B05B6; Sat, 14 Nov 2026 02:10:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E2976B05B6; Sat, 14 Nov 2026 02:10:17 -0500 (EST)
+	id B7FCC6B05B8; Sat, 14 Nov 2026 02:10:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00F3A6B05B8; Sat, 14 Nov 2026 02:10:16 -0500 (EST)
+	id 9FB126B05B9; Sat, 14 Nov 2026 02:10:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C1BFD6B05B5
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:10:16 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A9E2B12026B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CDC86B05B6
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:10:18 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C7510A7D5B
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:10:17 +0000 (UTC)
+X-FDA: 85432850874.18.BE8B72E
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 12717A000A
 	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:10:15 +0000 (UTC)
-X-FDA: 85432850790.29.8D88021
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CB433A0007
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:10:13 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="GNXv1/7b";
-	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=SuN2p5S7;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794640214;
+	s=arc-20220608; t=1794640216;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dol9r1sYlhR7CIgJNfl3WOVG5mT9B/6UaBUUhYtXcU8=;
-	b=PqOE0GXrCOG/bb1jUPfcmbDxMeOTfyy3IFAtacwttNMLOmDtbTz887ROSHKZO6XljZGTW9
-	SdPKGY01kAw6WbCf2k6u3O6DdpWZNdD6G/4XlSiSaQgsBLaer8S9+BPONKrl91abZsLd7Z
-	74071v8pCnCD+O+dyfTSGknvR4Djgko=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794640214;
-	b=vU9oINiLc8tR3XFol16SLBqendsKi1XC850pIUHgTN8UnWXSktZeU+hgR5g8zXCJ44XpG2
-	PVJfX0YWLaQX3tw0mEw7NMNHyHz1b1nGBIiyv8p27SCZWzAsjP5b4RZI16SLTS9YpjfaYn
-	/jCYvWmVDn8IGX1sxU//W80bq18Lv3Q=
+	bh=l21X+DxpKDHlSbVBLdY73zXQHc1CePcjyPM6zZHy190=;
+	b=Ff6uKaa9+XIGs9B+mxDdyKBYUtJirHZJnytGPfompQnFuwRakV0YOEhWaSh6xC33UTVFgU
+	oxYICsTNKRJnXvx5RMc2+KqSBBYuAdKi07DzzPEBJe4fvt1j1hDEEOLwaeBoNR0KzR+Qjf
+	yF8kJlUW1lZQ0H4EJi4NsSaZJNonm70=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="GNXv1/7b";
-	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-9495c633eb5so58041285a.1
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 23:10:13 -0800 (PST)
+	imf15.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=SuN2p5S7;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794640216;
+	b=dZSwAhzF288sbvgRlPfu2j9A8QV0mcbdqd+NhpAd+BPjZJXOfKHPO4OQlV/wrLiws54/qG
+	9p3Sr6Xw5QJGl7iX++O8aFsxN7xLZCyYr9ZvtiEH9uoPbWQWzYJnqsKymZBT2V1HDjFbv2
+	pASyNZAjLH6J76wnJrV1078hI051P+o=
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-91eb449364cso32556186d6.2
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 23:10:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1794640213; x=1795245013; darn=kvack.org;
+        d=gourry.net; s=google; t=1794640215; x=1795245015; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=dol9r1sYlhR7CIgJNfl3WOVG5mT9B/6UaBUUhYtXcU8=;
-        b=GNXv1/7bxk7Cf/rMztv69u6VsYlAQM+GoAikNzYkKhewjmpY56zeNpe/z9DrU3h7am
-         YMkaAgm1Lp+tTwPth6NYAQaMe0PwprMRJUBoQ5Gy8v7ARpy37famPFX1OVbHsejYJttJ
-         9rpA5bJbhN/tohuLQbRS+/1zpR69OLRV1Of2m1tfx2Anf6qM/y6xdKzheO6ZrM6EmyPq
-         zs2WBKeDaa5dcxEhjFjFJyCDXFjEixM/HpVpAhxKQxhkJgOudmDOlM4mlEHIjLFzSDIN
-         Izgo+RomB+UxCT5XwNiHQZ8+5ts31LOA9JH/AXn0PBH2EnsJks7GmEIuh5BY8mSNezz4
-         esoA==
+        bh=l21X+DxpKDHlSbVBLdY73zXQHc1CePcjyPM6zZHy190=;
+        b=SuN2p5S7D6SRmoCuQuxuhz+/pTPg4w1wj6hLUVsyOJL3IIx5TfDsyfgQaJzBrb/igo
+         DJvRNMIRgWwfev5Jp5yXvkzWYssKTDtH/Ppm/q14aoATY3SpKlezoTIUW9vfFAndDdte
+         NiSGPEbMuh7GptRSyrY7bi2W0BjBfz63Eo4dlW54jO3knmF9xqtDW6M6cH+V/p3AN9CU
+         /y+pwtFc7Rl9hUXjakOHD04t7Xb78uyYHCAJqSLFrXRVe+FBx3XD29jvEsXgihGg0oLh
+         R7hYold8N5V/rNT2tcWmhQRiTtQlc2aZ83V2wgcQVrIsbEt/18JA57Z4yJQ1FL2WtskT
+         TW4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794640213; x=1795245013;
+        d=1e100.net; s=20260707; t=1794640215; x=1795245015;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dol9r1sYlhR7CIgJNfl3WOVG5mT9B/6UaBUUhYtXcU8=;
-        b=xJlsDaPqZl9kqGHeuXBQ9Fr8C/5eg/QQox19TCZ7JaYzHVeuz9DolKkUihU8DCGrVN
-         8EV4mVMSJKxpcvC2euTIQ5wyFBDXZzu9isztG2hjGat3i4O/6CWKlCdGtsrBNmXxcuRL
-         IWoaZ4EikqSzKNd8FSugTLPy4SNEvIIi9Ma4st0LVHEXZ5gwgn/4gV+MNDY1Xro1Uefs
-         apg8sli5FrkbpAn7kCqvmnn1Q7fqFLRYeTZ/2in0v+eGkUP21i3Y0NODOOY+rkBma5my
-         zzlOCVD98mMGrHv+Y9iDoqwt8pSOKoThXeOUTk2zfPNyOsdET6PKXXmHpqYvnZyy7LWY
-         uIfQ==
-X-Gm-Message-State: APuU4Z8ROIxlR+ovls2HGSTUHkjVJhtL3+Sff5icdzD96C79n8kjmn7B
-	5z8JxagGGjXhLJ8tG6PpY+61AYREoE+AB3+6fSrdA+Y9zZPD5EI3AG3ZMdNEhy2AhDUbYo8m3SG
-	b2oM6
-X-Gm-Gg: AYBFou0+9bGPLGMd0JR9HQUHnhUbYrKDWpdqn2sjfS0LT7704vUfl5KC4FRVlU3jbdR
-	g9e/oA8d/5zHjDl3cSEOfotkkL9lb/JYu+bgEmeTAABThVeyJazpZLkxwKG5SL11uB1L99a5/c5
-	E5v2HYQi5oTSJ2oP0ZqIE5k1UQTit+uy8sNEtkB3rmzoUgFUKkbOlk5j6lGAQmgrNw9CF1mE/L2
-	7doTVyhS6eDAL/40GNRhV9yhogtG3ypgvCWpKnN/DAffH2/uI3vi5YUrwBeCb/mhJdvlrrzeqhQ
-	9sBeygCkXGYeMwwkSofXb4BRlvvdxCLm70gdx5uO08Od668IgPVKtYOSzFb7FpvkXa+wm1Mupf3
-	fv0rbtacUh2o2/MIbgNXoFqlpEs2gIZR8rE7W5aJSVLZFvSIZ+5sWvlUyTEh7DJ9UqT0hHGpYUl
-	35OO5LzzuNFxsUuv86KN4SZyav5A/SWGr4mTmScHvmQbs0JkibcPU9tbGKZW6Vg/55OEMnyiusg
-	48EAfXV22NXHWEip9QE+c8Lbz5Lf2/FPbKTQA7gqGNukQSVGgzONaqmkDYiJvK/gkSWS8jDRN0y
-	mR2EGraP2cIZrTLFl/bkB6HbcWS98CSZD5JnnvQ1ZNgCbqJCjWBLRY/2U8H5L4ldaHAZp30ew/y
-	0b4d52ukGlMMyMwM=
-X-Received: by 2002:a05:620a:7087:b0:949:402b:f18e with SMTP id af79cd13be357-9494bc7e777mr835710585a.66.1794640213010;
-        Fri, 13 Nov 2026 23:10:13 -0800 (PST)
+        bh=l21X+DxpKDHlSbVBLdY73zXQHc1CePcjyPM6zZHy190=;
+        b=JfiHWYyV3SSFL/qPdn7NSToxeOakfrmw6fk9qvl4GBZihJ7TqoGAUsRVmmUprA4jcD
+         DQC+LdqTPoFa3fSXHPZXmFTFFwfJ++yrTz8sM5iMGXL29RxPuMmpn7H+SfPCvRMX3WNi
+         zc8QCIsXY0qOMD3HE+O4zU9oN8+1zq7PO8bRTd+uOaFde5DQVCLz17bsQWk0M+Ioc60I
+         Nc9tn5TYjhehnPM1iXLwOzESr4TldWvaaBAdUVqdojWDpa6f63iQuugdQMn50y0Won0W
+         CcZrc5oIr0ioyIycwaxb6EHBwRcmkiHbfrd4uL/h1D/tptGfOtGylwWApsaIW+OobtfW
+         16wg==
+X-Gm-Message-State: APuU4Z+1NQtw7vfxve4l+HQZFd3Kug1H3zMJXPZ9ywuQKP8eHW6M7QpX
+	oWMQeyQup7R1vAd+hoPUx1gPml201YuXR+z1q1UTetsVUlkN4wWFlrxqiEbJHS8jqdlg2cbo9m2
+	enXxz
+X-Gm-Gg: AYBFou3yWg+HLhmu9qE/typ9vMOBazT3pHcIZb5sd4ExwQCTB1YyERb3kdpY4VGpiSP
+	LCSk2k5VjK74IAH1O1FkgFMKgBtdjb3vFJXBPZk9E9UColrimSsnQrIJmxZEA/f120qgZb1hOSJ
+	vdff8bsxEVLZhkigSRIL0yj3nRjnmt5HHoVKQ+nnBy1WTIHHjSYQTMdcbF7D6Oo6ZOpg7ZRKi8B
+	RAcZ0rRKJVuqiF829wJBM2FHwRVWqJrBJ0++fjjtrh04gH2Y6s0YWNjYXUFL4BmVlHjAmqDPk+J
+	1Dc9U/JYN2lUexFOUr/TRSmAEAruJ/SGbR9JvhSXQFU6ZgjCdk4KFZQGCmN3eMPbzvYeHdfUClo
+	Cx0BjMKK4KNTtT7NdPQKtaUcyRaY6Bkjm5R8kAJbv6LA2xa6mrCcBq1zosSfszMQyWhC0fIh1Oy
+	s6Zexo86kY3AdA/4VXBnbTWem8WxGrHwgJ4UlfKLHCcdLVmjFFY5e3MQtu1wSpiHpCUrafVqwVJ
+	6TWerW6iKaGOySlv1aV0uTQ4qtGcEQaYC7U4GTyQFlcHUkIXedyzfrEOMlFnUI8FoiOf27ZEML4
+	hMojIGt7A+A4ptTFT15oRdjpPbn6ajQo+dQuLydHMkhjAf2Eqk6Pp/QXQGIb1Cc6crvnSQs9sPp
+	8XiZCula94bkxo78=
+X-Received: by 2002:a05:6214:8581:20b0:91e:a16b:7f59 with SMTP id 6a1803df08f44-91f241f7044mr56496996d6.32.1794640215081;
+        Fri, 13 Nov 2026 23:10:15 -0800 (PST)
 Received: from gourry-fedora-PF4VCD3F (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23db3a99sm37730986d6.40.2026.11.13.23.10.11
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23db3a99sm37730986d6.40.2026.11.13.23.10.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 23:10:12 -0800 (PST)
+        Fri, 13 Nov 2026 23:10:14 -0800 (PST)
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -150,27 +150,27 @@ Cc: linux-kernel@vger.kernel.org,
 	byungchul@sk.com,
 	apopple@nvidia.com,
 	rientjes@google.com
-Subject: [PATCH 04/22] mm/page_alloc: build zonelists from common memory
-Date: Sat, 14 Nov 2026 02:09:41 -0500
-Message-ID: <20261114070959.3490008-5-gourry@gourry.net>
+Subject: [PATCH 05/22] mm/mempolicy: keep interleave and tmpfs mount policies on common memory
+Date: Sat, 14 Nov 2026 02:09:42 -0500
+Message-ID: <20261114070959.3490008-6-gourry@gourry.net>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261114070959.3490008-1-gourry@gourry.net>
 References: <20261114070959.3490008-1-gourry@gourry.net>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CB433A0007
+X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 12717A000A
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: zu6kmw91ojhjsgmp6ax9wtzgcqagoq7s
-X-Rspam-User: 
-X-HE-Tag: 1794640213-926374
-X-HE-Meta: U2FsdGVkX1/IR4mNKPJ85QiatM0sB68g6/bkbzYiZc5LLjOcV48hRDYR+waqR65HmbGpG/8DQdZYbMVcyi9oc3cuHST+xPzvl6CJCpIh123nm855gaDM42uEMkMitv7dvljdoQt7tnlPjqO1H+I9yAQIx1F/p2Cj9A9lm+5BM9C5+Ny5M0QLOGBwOmNlPrrAtTGFYnsICRTG0GbOZ7O5NgMbCBOUuUZOPF7B9nO34OcvpMV0kLp1XJztBFF26ksqTx5kI3t2f4JpIlHhd0tQPFxIlSrsvNG0zjxNf+z3/3eQLXX4jVDTCIi8LETfjUacml+0V8iQi9RuKB05s1BWSSo0VYm72zb4n8Fgw45HKlpBvUMgQGY/e35fauqBPx3NOC/sa1dEXuE5RrnJ30+U4GnGuoESGCtr7+PKo95cJbgQ0Iz2PT2tiXt5HqikKNbYgiluaNWloqE5H3ptU842S0Kol7qb363oPUMy+BGJF9gtNXPP1bRUjai46pGpDiVRxTkhUYD0Oo0n3OyTdBhATMQIpHAuSHdAEbJqXkSqeBS85411Dt3aH4TbFMpNVyVMV5BOv94QNpA1NGSl3UcX/IlgMZZxt1mjcIaN55KxtDqlYGkNACxkXuQPgcqHKxxpUBesY4s0OjW/9nUb46c3KiPu8oLkMruSMorUJPhoyi3KjqDHRq4kiMbYrEn/itznt7Yx0FstawSgWikVueWg7HnsHU9cmQ9wH25LP8EO/WE5FL3EYUYAzKIBS0X/9ci0Be8UkPik95y2IYJvubEEEdQYNu14K+ILt19Ny8diM2B2XS9gPso5KmKgwUJFzsUssfbThXI0+x7jbUu+bMwa4/oEzbCknAiD6x5hnyVnsveC2IiYZGf/UCMlAbVf6ti8DHDsS2yH/tNnYZkf9/cgV61B7JDoyeqv5ZlQGJD8XYLiKQphHC8mbmy9EzpuE0fe1EhGaGWNqXAMZIc+nsU
- 4DBR3H7g
- Fbs/Tc6diWJNizk6D7BjN9Lg5/UuToRCVBNx8nolVWgvhEzfaAE6b4j6nrBmje8XHorAVlpri7of4gKmR9L0ujkhqBIWwT9JUUqdZy7kRmUeEmrdg4JChT0o1VyrxjlSF9gtOWGCKbK1UFiSHbxXpK6tn9ruRQzas6j24XF5EgaYAKfYZUmPD7h/W1+46mBYKfeefw1z7TkzhuxyLiSzAATxboL5z8N7JFWrGmteNSGOGdjXlapJtvTrcaijzBxB2cp7ybAMegMv4BRc/usOEvzoFKIpkIIW8rV8CJbPAOtFcfvciLOEZOr/5Mga4WO87PKVACXivS60mzfwy0rujKGgYI1CCj0EUnjb5bHVq6T/gMkjGwV6LXt64cW3qChKnGp/TDiCV6wJBsT+S1ZN6Y4X4eUe6PsiCw5kzmcd7m7C9Jcg=
+X-Stat-Signature: coy4qi7ct9f1cgjdwc9dh6ogi7fpyzt9
+X-HE-Tag: 1794640215-829859
+X-HE-Meta: U2FsdGVkX1/ehs7Y+wl6ruaV7mqvSPWBSFS7Ux5HsVbU8JMvKIGnv4g3F6AJHwh7gYJDkf9QGkrmIOlh+aOOyROlxNDHjYXQGgLiwV78eC8xpjRoyS9dAoji9Q+mYmXxCG8i/y8MVIROEs9DdenRu98lYJLEIK5grvP6TR3HUSMGMXoBRcviLv8qNfFtGJsffLObICYrX8Er1taIQ/z5T6hyQLWbDDCxjlmhZCSjqlqV3y/fGcupluom6JRM86nztFen/UzG16nR9qEQBzDDZ9D1t1hjmvO+JEnUR+9x96aUf5lMn6mYnEesvMbAryF62Zo9e3fhjpTURYyZ520338V2MOr9+FSgZNz8A1RdYok9qPiSxEe7ZvPRW+XgQLEca6VDHDM5KbnpQtDmsTnJdbPmdg+XFsnyayGBaYW9bCd1MEOJS5v2fAhd65rYK8mXZhFnaNAg61awqI9dN5O7LrRY6O7UI9e7LDYZyLPZxYkN4k1+IV/uD58oYyY9jLIhXXq1RieV0I/4p5A5wsKWV36AuBSk9Sc6rnedx4NE5SLVore4iZjUH7JHWmraXs3XEjRY34GbZw4KH95nYNYV3qY7252VKjCIT5hkR6I4u4V30vU+HNRGk5d9i4ZhffAvGcUjVpM7UaccvWQFKU/nzrBaj2mTDP9TFoHdgOf0fgtC+HPyI3WbLpIWTMIH8Dn0ppJ1Nf2EcD1294RquwTkq1xs+9xO//9bCs41HIbnGlzUpBNvuX9fq/T6l6+yBK+nfBj1D9HJsx4f2P/g3fxjm9/H/ovBDFrOANo+Wln+SQWzN2vaeNKD1oWfSzrgWTsj0PWnbRrsL81MWqEJ2Ob7e2ghs8Krh2g8HcexEixjFOJv+OCav129AAVvr9/Ivu8Fe5V8wonffkItVE2E/DPjCOcOJ0j4KoqMnZ2ScI20M4lxI5t33SkhU097wXIOqpptQltXHA3zq8bHGUZju0h
+ bC4NbJLW
+ Kyiy+4bRBN2toKeNMftzue5WZXHtfNf1JScFN/fQ+LcKcFcG9u4MFhb7iHboIj+W9WlrkrKNPQgSahqzEgLExi/jLyQ/v3bgHAGLxmIz7Ayn52DZg6T3Vf58163klyerrGydyf50khajP6lm+ZekPw3o3TyphLCiQkxuIXZL+scgscBTklsjcPLoWVXaUNsmoJE490UB7llOluhKKH5IVG3cU9f6LObC6QdXAwgHU8nYzKSSsaz/sRud2HzAFcywCY7lp95q9TxiGm4gOwljSIwRJA1hYJt8ld35uSonCEzCTwA/LQchrxDfXV8yHNCMnWWgv5zU3hPoiZvIXb7hch/pAi4650GGUrzUF9LbjaHgWXImqrGyVx5wscKDElVtPo8xK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,70 +179,108 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Zonelists decide which nodes an allocation can reach.
+Use N_MEMORY_COMMON for boot mempolicy calculations and their per-node
+sysfs entries (weighted interleave weights). 
 
-The fallback lists hold every node in N_MEMORY, and a node's
-__GFP_THISNODE list holds its own zones whatever the node's state.
+Restrict the node set mpol_set_nodemask() applies to set_mempolicy()
+and mbind() masks to N_MEMORY_COMMON nodes.
 
-Ordinary allocations should reach only common (general purpose) memory.
+Later when an N_MEMORY node is omitted frmo the N_MEMORY_COMMON set,
+they will be stripped from mempolicy nodemasks as they're not eligible
+(similar to memoryless nodes today).
 
-Build the fallback zonelists from N_MEMORY_COMMON, and __GFP_THISNODE
-zonelists only for a common node.
-
-The build_local_zonelist() refactor lets use reuse the code to build
-a local-only zonelist for nodes outside the N_MEMORY_COMMON set later.
-
-Every node with memory is common, and a memoryless node has no zones to
-list, so the zonelists are unchanged.
+All memory is common at this point, no behavior change at this point.
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- mm/page_alloc.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ mm/mempolicy.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 6ffa972811462..580feeb608b7a 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -5906,17 +5906,14 @@ int find_next_best_node_in(int node, nodemask_t *used_node_mask,
- }
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index b10c098e9c2a3..662ab420fe03c 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -213,10 +213,10 @@ static void reduce_interleave_weights(unsigned int *bw, u8 *new_iw)
+ 	int nid;
  
+ 	/*
+-	 * N_MEMORY can change while wi_state_lock is held. Remember the
+-	 * nodes contributing to sum_bw so all passes use the same set.
++	 * N_MEMORY_COMMON can change while wi_state_lock is held. Remember
++	 * the nodes contributing to sum_bw so all passes use the same set.
+ 	 */
+-	for_each_node_state(nid, N_MEMORY) {
++	for_each_node_state(nid, N_MEMORY_COMMON) {
+ 		node_set(nid, nodes);
+ 		sum_bw += bw[nid];
+ 	}
+@@ -439,9 +439,9 @@ static int mpol_set_nodemask(struct mempolicy *pol,
+ 	if (!pol || pol->mode == MPOL_LOCAL)
+ 		return 0;
  
--/*
-- * Build __GFP_THISNODE zonelists
-- */
--static void build_thisnode_zonelists(pg_data_t *pgdat)
-+/* Build a local-only zonelist when this node is eligible. */
-+static void build_local_zonelist(pg_data_t *pgdat, int zlidx, bool eligible)
- {
--	struct zoneref *zonerefs;
--	int nr_zones;
-+	struct zoneref *zonerefs =
-+		pgdat->node_zonelists[zlidx]._zonerefs;
+-	/* Check N_MEMORY */
++	/* Check N_MEMORY_COMMON */
+ 	nodes_and(nsc->mask1,
+-		  cpuset_current_mems_allowed, node_states[N_MEMORY]);
++		  cpuset_current_mems_allowed, node_states[N_MEMORY_COMMON]);
  
--	zonerefs = pgdat->node_zonelists[ZONELIST_NOFALLBACK]._zonerefs;
--	nr_zones = build_zonerefs_node(pgdat, zonerefs);
--	zonerefs += nr_zones;
-+	if (eligible)
-+		zonerefs += build_zonerefs_node(pgdat, zonerefs);
- 	zonerefs->zone = NULL;
- 	zonerefs->zone_idx = 0;
- }
-@@ -5960,8 +5957,12 @@ static void build_node_zonelist(pg_data_t *pgdat, const nodemask_t *candidates,
+ 	VM_BUG_ON(!nodes);
  
- static void build_zonelists(pg_data_t *pgdat)
- {
--	build_node_zonelist(pgdat, &node_states[N_MEMORY], ZONELIST_FALLBACK);
--	build_thisnode_zonelists(pgdat);
-+	int nid = pgdat->node_id;
-+
-+	build_node_zonelist(pgdat, &node_states[N_MEMORY_COMMON],
-+			    ZONELIST_FALLBACK);
-+	build_local_zonelist(pgdat, ZONELIST_NOFALLBACK,
-+			     node_state(nid, N_MEMORY_COMMON));
- }
+@@ -3400,11 +3400,11 @@ void __init numa_policy_init(void)
  
- #ifdef CONFIG_HAVE_MEMORYLESS_NODES
+ 	/*
+ 	 * Set interleaving policy for system init. Interleaving is only
+-	 * enabled across suitably sized nodes (default is >= 16MB), or
+-	 * fall back to the largest node if they're all smaller.
++	 * enabled across suitably sized common memory nodes (default is
++	 * >= 16MB), or fall back to the largest node if they're all smaller.
+ 	 */
+ 	nodes_clear(interleave_nodes);
+-	for_each_node_state(nid, N_MEMORY) {
++	for_each_node_state(nid, N_MEMORY_COMMON) {
+ 		unsigned long total_pages = node_present_pages(nid);
+ 
+ 		/* Preserve the largest node */
+@@ -3476,7 +3476,7 @@ int mpol_parse_str(char *str, struct mempolicy **mpol)
+ 		*nodelist++ = '\0';
+ 		if (nodelist_parse(nodelist, nodes))
+ 			goto out;
+-		if (!nodes_subset(nodes, node_states[N_MEMORY]))
++		if (!nodes_subset(nodes, node_states[N_MEMORY_COMMON]))
+ 			goto out;
+ 	} else
+ 		nodes_clear(nodes);
+@@ -3508,7 +3508,7 @@ int mpol_parse_str(char *str, struct mempolicy **mpol)
+ 		 * Default to online nodes with memory if no nodelist
+ 		 */
+ 		if (!nodelist)
+-			nodes = node_states[N_MEMORY];
++			nodes = node_states[N_MEMORY_COMMON];
+ 		break;
+ 	case MPOL_LOCAL:
+ 		/*
+@@ -3903,6 +3903,9 @@ static int wi_node_notifier(struct notifier_block *nb,
+ 
+ 	switch (action) {
+ 	case NODE_ADDED_FIRST_MEMORY:
++		/* Weighted interleave spans only common memory. */
++		if (!node_state(nid, N_MEMORY_COMMON))
++			break;
+ 		err = sysfs_wi_node_add(nid);
+ 		if (err)
+ 			pr_err("failed to add sysfs for node%d during hotplug: %d\n",
+@@ -3934,10 +3937,7 @@ static int __init add_weighted_interleave_group(struct kobject *mempolicy_kobj)
+ 	if (err)
+ 		goto err_put_kobj;
+ 
+-	for_each_online_node(nid) {
+-		if (!node_state(nid, N_MEMORY))
+-			continue;
+-
++	for_each_node_state(nid, N_MEMORY_COMMON) {
+ 		err = sysfs_wi_node_add(nid);
+ 		if (err) {
+ 			pr_err("failed to add sysfs for node%d during init: %d\n",
 -- 
 2.53.1-Meta
 
