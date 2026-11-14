@@ -1,66 +1,67 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D80606A886
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 19:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE824606A32E
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 19:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XMkwiY6D
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QYNoTnXj
 Received: by kanga.kvack.org (Postfix)
-	id 5E2786B05BA; Sat, 14 Nov 2026 13:59:59 -0500 (EST)
+	id AACDA6B00EF; Sat, 14 Nov 2026 14:08:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 593236B05BB; Sat, 14 Nov 2026 13:59:59 -0500 (EST)
+	id A857E6B05B0; Sat, 14 Nov 2026 14:08:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D0586B05BC; Sat, 14 Nov 2026 13:59:59 -0500 (EST)
+	id 97DBB6B05B4; Sat, 14 Nov 2026 14:08:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EA3C6B05BA
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:59:59 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B365B8044A
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 18:59:58 +0000 (UTC)
-X-FDA: 85434639276.10.24F191B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 1E83F1C0002
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 18:59:56 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XMkwiY6D;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794682797;
-	b=mz/R8GMFanzYeCaV4o6Ubywnrk23wVmpXtX12iC/RKUHNHfFLgNyi1KV3e8ka9Qpf08j1O
-	FKYtbdWtO8NynSgHmCfbacLMecBKRVMCM/nwoqx75DxPg//hm69pd7ut2a9Hc4uOAaDQ3b
-	n0IzY26YW+ZutN728WIv3uaAjfiOLPc=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XMkwiY6D;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 665E56B00EF
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 14:08:16 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E4397A802F
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 19:08:15 +0000 (UTC)
+X-FDA: 85434660150.22.6A39A05
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5128B80004
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 19:08:14 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QYNoTnXj;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794682797;
+	s=arc-20220608; t=1794683294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aaNFykkpcP0cS9Qocp3fy2eSJ2KoYeW3YHSZ5vyz1zs=;
-	b=2WYj1/90SGTkh+rDDokAOcR97Hd9lEGVg6G+Lh0/giHMVGlW79/pmZu7rb3K9Gctra/WmW
-	Vro21JSJQzyq29XCckBruCzlFruqavzvD4tripEaa76RUkzSCXMzEef5XqdbB2DkzlYyb7
-	/IR7kuGbJa4YGL9U0ixtp5BKOPV5Dy4=
+	bh=jrpYg7S3w1u/s304fksd+9WkuwgFpjkNMJMjxnYOktE=;
+	b=TmCNtsbUP0PUgUlhTytedYBlZDfkmHGSjwDgoOeodbhXVoTZ/JmEpQEi/czQgwlpSsjp3y
+	MqWrXsokCZuttRqmhIha0kHvisYCI53p3LMuLliN9hnMtdI06Uz4GJ+UX4+4CU/de6u4G5
+	jXKdNA1AjnCHSB96HxrNzvTB0RWsPn0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794683294;
+	b=4e+/4tD+jflovAx1/sX6EF/9zUMKX4B08pWaH8J6qc0gkR5K6hTEr3ktRjbQDkwp+Vt2ss
+	RZuoWItxfyDXPIChG0s9eykUg1DXaMbguPNVyCagWZSdzo2CBccV2Zj/p+rrxB5/xxrC9L
+	oreLcMtiqB2kT/PyLbijAgmdEY2KhoQ=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QYNoTnXj;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 39F2943B15;
-	Sat, 14 Nov 2026 18:59:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D9E1F000C5;
-	Sat, 14 Nov 2026 18:59:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DFB1E60DE6;
+	Sat, 14 Nov 2026 19:08:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2531F000C4;
+	Sat, 14 Nov 2026 19:08:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794682796;
-	bh=aaNFykkpcP0cS9Qocp3fy2eSJ2KoYeW3YHSZ5vyz1zs=;
+	s=k20260515; t=1794683292;
+	bh=jrpYg7S3w1u/s304fksd+9WkuwgFpjkNMJMjxnYOktE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XMkwiY6DpCIGsfriwGOqAWiPbK24F3D6OKfV/wHCov4+5BCJ1Wsj6VNzuk3cUkr4X
-	 zqFlsrkAIPyHinsg2xIoVAroHyZRHs/937xwsCZMYzDt0j3vdA/aNN6AL4a7Ar1UIm
-	 xWDZmQtLLMAX/3EzhkLpQva8U9TmOwg1uj+/DyTBWHgO4u2uypjXye5kITKh10eT4Q
-	 mXWVM0MJ0Gqja2R0B3NAtgAPW5LNXakn+kjO8cjKvWyMGjP2b69i85RrE6V0+H6sD4
-	 Vh4tyCRczjK0QAiDfPX9j729otk3VF/cGRqHlIYeL36JIC/Ihszo0adHvWQDm09JGM
-	 rwfddaTkgm1Sw==
-Date: Sat, 14 Nov 2026 18:59:46 +0000
+	b=QYNoTnXjjZhBPnpa8pOfyk2yFfApF74bnIOvALp/oKYkwpyK77UolVRCAS9PWBwUT
+	 vTBNeJc2BT3hD65bSUXiJIzuZRodbsdX1fnL8/SMLFCYNn/+H570eO0UW2ZwVw9sWk
+	 GMxUycxR4kFYE/1x4BsPOWM6QfVcHWY7lAkRzLGYC2spj4KtaAwckhv3IaoPq1c+i0
+	 7WJXBqF1BvvLoxaDFl2abs10ZuIiJ39Ub7KZHMiai60iJ0e/m7v+0PTgqGv8kiifml
+	 yLA7l8Fl3UguxEqgTAbhHe6k1GakSXqMGY5FQ9ZyVqlS8LVqbDnHwiqz6bl9cWiY9E
+	 wqQgRo+ur+kWQ==
+Date: Sat, 14 Nov 2026 19:08:02 +0000
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: "Liam R. Howlett" <liam@infradead.org>, 
@@ -76,29 +77,32 @@ Cc: "Liam R. Howlett" <liam@infradead.org>,
 	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, 
 	Rik van Riel <riel@redhat.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org
-Subject: Re: [PATCH 4/5] powerpc/spufs: consider vm_pgoff in
- spufs_mem_mmap_access()
-Message-ID: <avivjtM2rxpUAXDB@gremlin>
+	dri-devel@lists.freedesktop.org, linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org, 
+	Felix Kuehling <Felix.Kuehling@amd.com>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
+	Chris Mason <mason@kernel.org>
+Subject: Re: [PATCH 5/5] mm: check permissions and bounds for vm_ops->access
+Message-ID: <aviwYZhpXFczMwRR@gremlin>
 References: <20261112-access_shite-v1-0-988a5c470db2@kernel.org>
- <20261112-access_shite-v1-4-988a5c470db2@kernel.org>
+ <20261112-access_shite-v1-5-988a5c470db2@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20261112-access_shite-v1-4-988a5c470db2@kernel.org>
-X-Stat-Signature: 84pk5z5ywp7h4n9zazo1wg5otjd6hefm
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261112-access_shite-v1-5-988a5c470db2@kernel.org>
+X-Stat-Signature: ykxdeggrrqciwujdbyjfe3em4si49ama
+X-Rspamd-Queue-Id: 5128B80004
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1E83F1C0002
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-20.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1794682796-973674
-X-HE-Meta: U2FsdGVkX1+uWJcXzwuzecklVNYTYl3zgltrDDcJaTHRSCIvk/Ok+ebmo6HJl/llfXFg84g31Sk3K559JeLCZcdCVYUtTnmkHo3dMa+rx/jfiKTO1bBh6eTqaZ0zlR9vbYfT3oHEmmIzZd/mLfwqoy8x3xgVkCi3u6UmMEIHb46v5+l8ZaBTCtzIYp3rLt31c7aWXf6meFsjVqibalVcCpAKgoBsZw/OT5Q+zSUHfSZhkuaaGPIPLdRMoT1XR0qjW49dNBGOsXMno0FcThCNjCxW0dB39cFNqbEnc2kHope+1hPIhLEL9fEfKg/FQ1ASW5r/ZRyrnrZDJkyPllBn3PlPx+uEsnKxnqU0tSsEcmAVFcKueOOi8mBnXCtMsYdDUNoRFcxA1yoHSwPQcWKz7SzXZgSfg6ZX3fE7R+VnoKTZn+ldfK7iYArvg4/dS/ar/djXfngAR+7wCHbcnBS35q4+kHgnTnhD14pSlSSIXPIlXxonil8prm1YmVZJabVR2+Mvl1khydpVupXNPQrcuaBd3oVS4ONWtMIYUCsnGzXGkq24LLBHPCo85Ix0vjRsMjKS8OMTDw804l51msGxEcU8r+DUd7OOr5R6SFXZcPyDplR3jo0hyqK/RA0Q9zp/FkdX5DsvkW260DFVXVXPHlOYK9cAjfoyypzTN6T1blhSMH2soTjxswcs3jKfK+eQZKHPSAhJ2cdSu6AXAgT1dhbmTOycwhS9ONhfA/Qmiw7bBiU/feTRj9d3IhwcA+hGTvWTgvmJOguH0+Ke+s98gDfgkwS23cEdcMow2QIIXJkgDJhAamnSAwQQHI5JazLEkYX/D49M3FutfiyWeWpVdWbKUf9uuOVTr4E4HP0UdGSI/awDoGkG1AobbhrOAX+Rl871cJbpIk+2LySLbcB6gZkCvFjoEPzqRn8u4m2dFsaOB/Fe+89jpVWtkkHLO0C99bPoZMQCnFuLXDVbgej
- QCW8b7kL
- PUxgmUGeWv5QkM054D0MOyFRNJFwP8goDk9EzkkuDePJVmCPmp5+EWhrpQ/tEZt6twe8AFqFjQblH+9cQCk37khnN7KE22ptvuLfMUo5bfmw8OBUr26TWdd0jrvHiYhJwbOSejlczYnv8P1dyKxBXCYZATjmePd0JIZ0y5PUBxepm42Vff4yL+xkh8SpFZN5dEryUPPHGQuQN3ZdD4kP00hWdzITnjJDVQhLezI6ZbBvnNiTOsXVSkGTgYqTHwMXQbUnoEnXG3LHBp1lxwJ5b6o8cooXt2jbmeshHjpIC9gUAvUgFXSvobG1Mc9BlKX1d5aMPDjF+MZIdsc34gga/up6FVe4PJfnmuA/P3MLiXPSDbume+VinmP4SIN16ADTXrLb9Bv0qNUOcQ1itbPan1daofw==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794683294-780973
+X-HE-Meta: U2FsdGVkX19kEDMEIlzn1M9N0ivYN+NW5sr9qekDSmxOdPPeIV4zKg3lhW7nYLD8YJlvLkPc0uXPLOzcKM4NhKrVk5W9ETI9/SN631nyivwe1mp87AOFVs2JT2t27N8ZHPHSSDyksdotwT/8oak56QshmRP+1RoxdbuaQHpSr9910dIXIiwKT+LmwwPj5psc9iW2iNRPtATngTSphnsfk8jX27D0xiZVXJSu6qN0avKrA77fCkVnijhn1WGChLjzM425l4/ctP+3qBmhSe3G01wQkNhQO8E081hxuHdw+sgzdMz+kqDgwKs12SFFNh8RbEot1x1xdMBGva4F8OjGH9T0bZPF+SWAppyrMVM84M99Mh2e9LGmtS4e+ZLCrOzl9sXP7gdLduDLS/Ww6/M9F314hHOu44UyCvnwl4tW609DwGCa+8vWU1nxc0lhM4rWshPE28MQwHFVrKYbVIYxahZJYG5//Rf4dItFK/o08CMbjhfxvT6neyxhNW0jJS3PSe3kA9HB1w9VzrNYNdnGGEszQlfCUcjGIPeAwkeG5PpCqhKOfZDrXiqmhtLpuUqVXM2In9x5K2qz2GXFavLU9lVOWlqjSuB2mgMLpBmKQ9odaRQcZZ8p1Ki/pCz6Y0DF+gFZIp1Mr25E4rUJd4e+DELdTQHKgyFk0xWXSmNnSKvOAEOvkUFRUXLMGG6TC82dfGgbvfh2pDyt1kghXpIh3SjZDuS9T3IMpmEDSUJlrO7Ufz0QCXVxPB3E9wIo3z+BSL3eMRLdf6lVqeIMemVQq6UaLKhS1Jo/zd0cWY07nMklC6eoTlzcPu5ztoIiLEOdBivCIljKDlnW8vZ3Qu19yKut7qL28SzNM+rEw2rgtzlD1qLVRUEHZpkEbqeoZHJWJEgDoHoDM2EevXkgt+AUEuUgb4TOhT73/fHqzs0YTUWJ2aemfg/jGfMmePdeurMiAFxuH9TFKR1Vwo9EHX4
+ JAPxKD2l
+ yrfkVGWKhDgJUdlCKw8sY1xjTMfSYMsltK6xc0zaDdGDmE+uimASR5S6rlHbOsGEmwzj68cgzbp+20uD2DYhUbhlBTYKCkLtwE4KDcFGGtczRPRUnIUHlwWAvXlYNAigwWFJCmyGxrNREiDXlU1Z69Gun4bMhZFJdRizmZmIBa8cCK+Ty1gffKRmvj5Q2MPYsyK1AtcejDYatra+GP5xvCDcSgfAw15JcLnPomFehNBOzlC35ntdoyldA9taMaEQeQ2euZ3773B0k1l65XJelFOKl98GxqbOYiEwb+RfcrlIRnQCNEM2N2aqy75fBK2fD1wqBZFxRgbb+6vNNUSLttHl8lkWpO6npP0vtM2Z/D4BJdFmw7M6bZEFcXizM7mgXOAzSHT0GdXGX0pAJl1rnGDJZ6OeLRQZ7RKClyPkYdqRJCyhYW8DW96nyXWM5Nj5+6edUk6xvcwJBjjlCu6khqfmR2Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,41 +111,97 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 11:09:00PM +0100, David Hildenbrand (Arm) wrote:
-> spufs_mem_mmap_access() calculates the local store offset relative to the
-> start of the VMA and ignores vm_pgoff. After VMA splits, debugger reads and
-> writes access the wrong part of the local store. Mappings created with a
-> nonzero file offset have the same problem.
+On Thu, Nov 12, 2026 at 11:09:01PM +0100, David Hildenbrand (Arm) wrote:
+> GUP rejects VM_IO and VM_PFNMAP mappings early. __access_remote_vm() then
+> falls back to vm_ops->access without checking VMA permissions and without
+> limiting the request to the VMA size.
 >
-> Properly take the vm_pgoff into account, just like spufs_mem_mmap_fault()
-> already does.
+> Consequently, /proc/<pid>/mem can bypass protections even without
+> FOLL_FORCE, or cross into another mapping without checking its
+> permissions.
 >
-> Fixes: a352894d0705 ("spufs: use new vm_ops->access to allow local state access from gdb")
+> Check VMA permissions before calling ->access and limit each request to
+> the current VMA. Implement similar access permission checks as GUP,
+> however:
+>  (1) Reject writes to CoW mappings because the callbacks access backing
+>      memory directly and cannot handle CoW.
+>  (2) Allow forced writes to non-CoW mappings with VM_MAYWRITE.
+>
+> This intentionally breaks forced writes through legacy amdgpu PROT_NONE,
+> MAP_PRIVATE debugger mappings. The workaround in commit fa5239f2af98
+> ("drm/amdgpu: workaround failed COW checks for Thunk VMAs") cleared
+> VM_MAYWRITE to avoid CoW, but debugger writes still succeeded by
+> exploiting the missing access-permission checks fixed here. Reads remain
+> supported. Userspace must use MAP_SHARED instead; ROCm 5.5.0, released
+> in May 2023, already does so.
+>
+> Link: https://github.com/ROCm/ROCT-Thunk-Interface/commit/fea44fab6e84eda52fcf6b419b35600c18f4c022
+> Fixes: 272ddc8b3735 ("proc: don't use FOLL_FORCE for reading cmdline and environment")
 > Cc: stable@vger.kernel.org
+> Cc: Felix Kuehling <Felix.Kuehling@amd.com>
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Reported-by: Chris Mason <mason@kernel.org>
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Seems sensible for similar reasoning for previous patch so:
+LGTM, yikes at this in general :)
 
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 > ---
->  arch/powerpc/platforms/cell/spufs/file.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  mm/memory.c | 25 +++++++++++++++++++++++--
+>  1 file changed, 23 insertions(+), 2 deletions(-)
 >
-> diff --git a/arch/powerpc/platforms/cell/spufs/file.c b/arch/powerpc/platforms/cell/spufs/file.c
-> index 98c47bafaf678..0a46d6f7178ab 100644
-> --- a/arch/powerpc/platforms/cell/spufs/file.c
-> +++ b/arch/powerpc/platforms/cell/spufs/file.c
-> @@ -248,7 +248,8 @@ static int spufs_mem_mmap_access(struct vm_area_struct *vma,
->  				void *buf, int len, int write)
+> diff --git a/mm/memory.c b/mm/memory.c
+> index d4370c1b331c9..9872f289c1e49 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -7362,6 +7362,7 @@ EXPORT_SYMBOL_GPL(generic_access_phys);
+>  static int __access_remote_vm(struct mm_struct *mm, unsigned long addr,
+>  			      void *buf, int len, unsigned int gup_flags)
 >  {
->  	struct spu_context *ctx = vma->vm_file->private_data;
-> -	unsigned long offset = address - vma->vm_start;
-> +	unsigned long offset = address - vma->vm_start +
-> +			       (vma->vm_pgoff << PAGE_SHIFT);
->  	char *local_store;
+> +	const bool force = gup_flags & FOLL_FORCE;
+>  	void *old_buf = buf;
+>  	int write = gup_flags & FOLL_WRITE;
 >
->  	if (write && !(vma->vm_flags & VM_WRITE))
+> @@ -7401,15 +7402,35 @@ static int __access_remote_vm(struct mm_struct *mm, unsigned long addr,
+>  			if (gup_flags & FOLL_ANON)
+>  				break;
+>
+> +			if (write) {
+> +				if (!vma_test(vma, VMA_MAYWRITE_BIT))
+> +					break;
+> +				if (!vma_test(vma, VMA_WRITE_BIT) && !force)
+> +					break;
+> +				/*
+> +				 * In contrast to GUP, we historically allowed
+> +				 * FOLL_FORCE write access to non-CoW mappings.
+> +				 * However, we must always reject CoW mappings
+> +				 * as we cannot CoW here.
+> +				 */
+> +				if (vma_is_cow_mapping(vma))
+> +					break;
+> +			} else if (!vma_test(vma, VMA_READ_BIT)) {
+> +				if (!force || !vma_test(vma, VMA_MAYREAD_BIT))
+> +					break;
+> +			}
+> +
+>  			/*
+>  			 * Check if this is a VM_IO | VM_PFNMAP VMA, which
+>  			 * we can access using slightly different code.
+>  			 */
+>  			bytes = 0;
+>  #ifdef CONFIG_HAVE_IOREMAP_PROT
+> -			if (vma->vm_ops && vma->vm_ops->access)
+> +			if (vma->vm_ops && vma->vm_ops->access) {
+> +				bytes = min_t(unsigned long, len, vma->vm_end - addr);
+>  				bytes = vma->vm_ops->access(vma, addr, buf,
+> -							    len, write);
+> +							    bytes, write);
+> +			}
+>  #endif
+>  			if (bytes <= 0)
+>  				break;
 >
 > --
 > 2.43.0
