@@ -1,95 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A2B606B41F
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 07:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F47160A3808
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 07:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=nEqb/IjR
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=An8XHT+K
 Received: by kanga.kvack.org (Postfix)
-	id 36A6A6B05C0; Sat, 14 Nov 2026 02:10:29 -0500 (EST)
+	id B598F6B05C1; Sat, 14 Nov 2026 02:10:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F5406B05C1; Sat, 14 Nov 2026 02:10:29 -0500 (EST)
+	id B119B6B05C2; Sat, 14 Nov 2026 02:10:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16F3B6B05C2; Sat, 14 Nov 2026 02:10:29 -0500 (EST)
+	id 95DC26B05C3; Sat, 14 Nov 2026 02:10:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D11F46B05C0
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:10:28 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 591451601B5
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FD5F6B05C1
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:10:30 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F26CEA0253
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:10:29 +0000 (UTC)
+X-FDA: 85432851420.09.FDCE57B
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 4519A180004
 	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:10:28 +0000 (UTC)
-X-FDA: 85432851336.20.5B375E4
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8B7EF40006
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:10:26 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="nEqb/IjR";
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.51 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=An8XHT+K;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.42 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794640226;
-	b=XwO5W7/nMv/CMkE5NbaH99I4JCiSwcsOZ12Z4UXXrKLGceu40y/OfxgEumORunJijQsTPO
-	kWWpdFvOJlgI1iL48aKhNjdFE04m3WheI0FrFJO/IcogS1jX1mt902KFQ1C0Pr7MQxtyYO
-	+mDLKNyh01pz/0W/t5kMSEgtDcoXU7o=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="nEqb/IjR";
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.51 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	t=1794640228;
+	b=vcO72NlWFLQgxux3lymvWezcdPXMp3oa7nkpGdnzGVm+nozL0tjzc4NK7WnmSSlKbjwL+X
+	l8nn4SwNxWcNKdot51USdnWYzi8P8SwkuB3O96MK5eR0odm/Vcq/fZQXhxresbIo4TFd2H
+	ia2BfUBYKvZTauQDbq4/sku7nPw9yA0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794640226;
+	s=arc-20220608; t=1794640228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tt496ll4IbdlqeCDi3ioSW9/vXDsw+lkgrGBEmtKDJU=;
-	b=DJz0lCkM8wiQ0uIDk3t0+ZR3YDW3UW0EFZeiVcZl1f0Vl8O4vT+XOQR/3hU54L4LaXDTbv
-	7fY+ZClkIcFZYxiDVY25Lki632oMBAjdWpDeLS3Od68lpmVGC9YsdwTplYWVHEk3amjhcH
-	/DcEiE6RFCYGPt8W41AY/OJLnhiJr6w=
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-91f11161831so11379746d6.1
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 23:10:26 -0800 (PST)
+	bh=ug/CLwAsG6XPyYIr9OCoTcVisBprjwnxP+sIccpst3I=;
+	b=q4pEql68tfHgIwTOmz/lM3qWBq+O4d2nGwne5ceB8s0n18mabSuwV4eTJn3lweSYtPOoys
+	Srm38fMCwaI9Mhdfbxw6/eAPYMXh5kc36E/zTbyNbTdWNxrkx1q08x5Mg9oiENFKAu+Tct
+	/P1VMCgHCZeGeCWOmE4yiQkWgrqUcxY=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=An8XHT+K;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.42 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-91f2b826fe9so19623076d6.1
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 23:10:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1794640226; x=1795245026; darn=kvack.org;
+        d=gourry.net; s=google; t=1794640227; x=1795245027; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Tt496ll4IbdlqeCDi3ioSW9/vXDsw+lkgrGBEmtKDJU=;
-        b=nEqb/IjRVoStW2/73GeiYVNV9kQqT8HDH3jGWTiB8McgxT6QJDOrI92cJTh9FEoHV9
-         J5e+DLJmKgnwL2wl+PKwYTRZJEVNyAuVt7eMDyg9H55RWaFMYtSgfK8KMwknEFHRZJho
-         2FyigJ5TRA5MH4Yg6NI/rfoZA6TFgSWlwjGC5lyQeNT0ZzrUyJXH5YLMll0ek/Raj+t/
-         zxXth77nSR/VC3CUGWKud/glh/i5t8hVFbAionR++42Y0FSSSX4GGd6wGLJVhkAQ0oYl
-         QLo6TJmi5uShCnWSivqqPN/rY0lho9psZ0mn7prsxnD1H4eEqLkvZwrRZ7A34rYIKh39
-         fpow==
+        bh=ug/CLwAsG6XPyYIr9OCoTcVisBprjwnxP+sIccpst3I=;
+        b=An8XHT+KKnmQ7URnEKI37NdDYi1Xy1Nbd2Cku7F3hCaLY2jr+B3rp+oeu8j4LWDmwk
+         0ckp62llGIcm6zzB95k72YKcAcfITWs/Fzw8lucd0/UZ9/WtMJ56rOSP9QDYh3/oC5nS
+         vXJjB+pBtUViKUTyGbtJ4vr9Yh5oCA7c0POxh3x50CNmlINdTws5OYx7PjGT4HE3VHog
+         0BiuKF4vDtt3c2S7xxngKP4l7Ju96TBMy1KJyZjoUvheDBOmZQm6pTt8hkaSrNlvxMLp
+         xOqqrDFIpJ4WAUs3+15pCGVffC9Z2wgwVaqBlAa25gEboqz8FjjGuIHDckFin0vogSgM
+         XGgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794640226; x=1795245026;
+        d=1e100.net; s=20260707; t=1794640227; x=1795245027;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Tt496ll4IbdlqeCDi3ioSW9/vXDsw+lkgrGBEmtKDJU=;
-        b=z2y+a7yQxXC0TH6OsDF1qYdD9SoB/cpEae1Z1owIfJA0qGyLJHiuUKO446yjJdA/9H
-         /WA85vOGCzCcNYhnORv26qydNBl79NAzchY7ZMxGzRr5GJ/tC+b8O6MNB95zcFcbH15y
-         Qv5BnebXX+dd2f3T05+HN8ddaPjQB4MGFmnEwsyDgNYXFqaugkW2Ro2asoAq4ba6kzac
-         bjHJGGlnrIfzHdI2UiSb8vTZIWlAf+XzVIk67Zy2yk0QL+Zr/ejNcJIve16LgcqjVSFv
-         4Idc4ULh19gJL6M56eFhM+UByIS6iYDDbf519G3e9FZOm1RTtY59gBrsqctJeoCeUpD3
-         xupA==
-X-Gm-Message-State: APuU4Z9Ps+c5w+3kuNXq/YHG9tJSmM5rqBg2Bk51U7OsLFkNcNMgUKq3
-	ujYu6xS2SS/Idm/29WfGNhJmuD5HPap3ri5y/lEzDyDRvr419v0kQ2BBipRxBY1hZsrrAFCtr0E
-	J8ujq
-X-Gm-Gg: AYBFou2zvIoaZV0xaxIWM8rs3pm/H7gQQc5Tp1AI5E4nu0li6jUDYr+2o4E1f4SdTtZ
-	GEP2n51+oIw37l0IFMyXIioPeNEofYQucCbOAllvEnMmoIL1llCwvn2gWdNkOFVg538S5UP/0F7
-	6icCtDjIGXUCs7vJtInqkk8I0uJis+Qss3aV+L6YSbQVEIRGE2eYKurzYPZPjHKcbUm2G7dP2Yk
-	IStcv/YtdnitjCz0J87JKQlH6kE/rMc5R2spmPIQZ5DUIDxp+dYckNqnMMYullvad8DS9eLtIco
-	a14Q08NKIyA8CayAs3gFtkV6B/xoKxkwfdLo+xxv6mic6mwux/F0U7MpfEobS5f2ZK6LsjzMaVC
-	8WJ24Edmic8ixWRI0b4pienhWKXi/7pLC2DjxZA5pCjYHpdYGM0u3M8OO5pp++zbw37BEIU0NeT
-	EL4L6BOqhk0VD3PiRL5ioVVpJJAbXfDlizvaCF3xRs8YItwnRI7XBn+jcw/sZ4pt3WW+vqtfEWT
-	FpXHx4/D1k3E4FlzfsL6qFsLzViIJM9rL9BY5JOkNF3G4I2MoaobHHVx2uDQEYEqhthECQLxGjv
-	XzqIAFsimbbry+Mko4fcsekX4OOPunQtnkeNzG0gHORe3Fv1TPKLLzoibHkJtDg21QkvezxcZd/
-	bchF6JjYVENS3Vko=
-X-Received: by 2002:a05:6214:e8a:b0:91e:7bb7:fd65 with SMTP id 6a1803df08f44-91f24292699mr81332616d6.56.1794640225203;
-        Fri, 13 Nov 2026 23:10:25 -0800 (PST)
+        bh=ug/CLwAsG6XPyYIr9OCoTcVisBprjwnxP+sIccpst3I=;
+        b=O94mwpWbqGJlSb+NWCWNmlDOeo+8g83kSSQvLwrNC0PtM/tLCRKzGaruSla02HlK/A
+         NT1H3nW4eEEvbCRQwSuLug+u2ofaeYCmPJzM7QnlJpiKXwhDbaJoOt5Nu3s/zGEgxJwo
+         oG7H1mWkijUYo+3YVflWlbQZhMD4PXKW9evFHxjDkf+Jg98N5/9mpG4A7qJj5/GpFxEs
+         2GL70D/r3iLy4IdxJSA8G58yVgx2pXjcimgYxjNOX2hvlnMKnyk3wjLrBnPKr7D4HZVt
+         TKcU5kUAqg0TGdn+dSAwhHOikYfbiJNCP1+OOhgZD1UWQVm4BxnNmQAqUAioxd3YH6Ui
+         OZRA==
+X-Gm-Message-State: APuU4Z9yx04yq53DKvn9axbrkVOyMA940DZERdNWQ8f3+Yk0TisTEI7B
+	g1f/SmckN+X3cwOZSnFNVeKTgMU9yBDFMcQOAA/rvjmnRKMmursAcBT0+2yryWw6zCJXKbg8cmW
+	BHosb
+X-Gm-Gg: AYBFou1P+YvEBBRkBGDHxiiqBRaRvbpXDSFjCShskJHNKNnWe02ILpVQ62kf+a/7Xsg
+	96w8hUq0xZVt4pC9wwIQlCoI/8HgEi1iQD0i9AHYCj9ZeL8Xd6WGP1cq9LER4Ofsw6Nkh3Ux36J
+	uLRQpCZlZG9MUgUknvgSiCe9kazPWoT0sImPQBNAeKf7C9V3tUTljs0AndzWpnV1+JYhXVmswDe
+	5WsuHV2tGdSjIToKsLzJlT/2kKpsdErNLQpBopRk6I9uWApQ11+TNwXQFPGVH5SNQYgHiJwojqS
+	AnkA+VYQ/wHEQSzKGGsVXCp7XYAFsU+nFG59aEI1H+uFRrN8PPwOEtCjZ2DVhHc7nzTaBrm1OTe
+	sN165RryRkl2B9QAZg00/VX5fisEIykmKcMajKW5klpNT3O4XxNF2uPPFB3qidFjVyOcI80N/Sk
+	hXDaRE4H6OuQPuz6zFgW6vWRRxH9Tl45ka4MyMwltrFLC8VEP3dSYiPojFENrotJFwk9310vN+H
+	OsYI0RozuH6SDSxeNbmk0yRJFd5eTO28Z/+j34s0efzq1UTkLBgt+WiSDtso+xESStiPrqlMcf0
+	mPVC9wwwzm68LysQqAZtbQbGD96AiLET9n73tz22uIyq6DFl6HU5DIyTBcDwGAnPqDkE67BEhvA
+	wPsgL0NwgkpT06Y8=
+X-Received: by 2002:a05:6214:dc1:b0:91f:1bc7:b779 with SMTP id 6a1803df08f44-91f24251f4dmr78714166d6.56.1794640227399;
+        Fri, 13 Nov 2026 23:10:27 -0800 (PST)
 Received: from gourry-fedora-PF4VCD3F (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23db3a99sm37730986d6.40.2026.11.13.23.10.23
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23db3a99sm37730986d6.40.2026.11.13.23.10.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 23:10:24 -0800 (PST)
+        Fri, 13 Nov 2026 23:10:27 -0800 (PST)
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -150,27 +150,27 @@ Cc: linux-kernel@vger.kernel.org,
 	byungchul@sk.com,
 	apopple@nvidia.com,
 	rientjes@google.com
-Subject: [PATCH 10/22] mm/khugepaged: restrict collapse to common memory
-Date: Sat, 14 Nov 2026 02:09:47 -0500
-Message-ID: <20261114070959.3490008-11-gourry@gourry.net>
+Subject: [PATCH 11/22] mm/mempolicy: don't NUMA-hint folios outside common memory
+Date: Sat, 14 Nov 2026 02:09:48 -0500
+Message-ID: <20261114070959.3490008-12-gourry@gourry.net>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261114070959.3490008-1-gourry@gourry.net>
 References: <20261114070959.3490008-1-gourry@gourry.net>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 66pz81hz5tsxdjufc6zbfzygn51kg5ru
-X-Rspamd-Queue-Id: 8B7EF40006
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4519A180004
+X-Rspamd-Server: rspam12
+X-Stat-Signature: n8t7ze1efa4xp7caum6phbpfeeyw4wa8
+X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794640226-769466
-X-HE-Meta: U2FsdGVkX19vf815jYnC04fKg0Er+qozEPfyYj1T7T3bYkl7MeJvegld5cWYg4wLlVX8rRBQLaNUxKwhjDFNmyKdE3Oh0j+8AtyUYzR57t//dr/++8eFlWpZ1sYz5TazRI3Yj/M84+aiTDNiSJpEX2aj+Z8qAy3hpR8xhlyOEHKmeZ8HecD4eg9URDCulFrb0XG47Rt62opCp+SftCM1j1xLySUFBc1TaifPNkIR+1iIhM6HhbjH9cWaj2G1O0mQHtmF9KSXozJ/gsuaZBJJT0BK/ayKt8U+c91zjxXBQYG/cXZ7Qj1R0UVdLPuOQFynMNmyxyHg8FgeJ9+HJqlWsbbii0lde6Qu/rxnVDqJOexMuY5D9CdDNFa/GcOZQfDX2hc1vUfpCGfqrv0WvelbWaYLkyRgp73MOnoHXIoVI0sxvesT8LS9FxWJQcaunKScO8xf00JRDNYhGy/SgW/bPgnsEU4V/j+zO0bSiFx/IYFWMZxOW2gYlzkjpTQ9HxkEaNw7w+gTMALkUwlwdK4IFIC5w5Qidwj6gz4EGSOLUv/1SYCaLMXMcqGZeR5kQ7w8wMFIEoExYawkVS3GRdhLXanzSvJQOtqst7Lkvon2jrjHLTFznzYOLxD8B+0feXnoiomuHpEBIVz+f60uHVDuwMUZmLk4ORqMgJsotjdOW0m1MB7JvcYWkBfOTqabIIKRmQPuNL2Ru9Z1HKqBdc0Jwua2kurTYpufpLyBdFyKQ2UX34jqebZJC3+Rn0w51jru7N/qOf8TcOjfpo/4AAcrEjtCxE7Bh9yQvPPGqAIWURbfZakuw4us+jag6Ld7Ao3QiaJJ3B3Sk1MlUW0RnwBVqiP3ldkkrXJT8+SwUzrXaPQRfr/KvMfP1cm3zM1NpDNhW0MO6tkkj74SbS6kJ58ZOcbje6XG/QgLdIsn/wAQxdkFFCH0t/epL6LJ5pwxpSsHCpk7kalAFcIJ3Qq5kHt
- 14sA3cqs
- pjixWXw6+dAb/yUrCRvfwi6gpQjwtLOfnpwcd4jEovSGDnN/4K8vmnZwDSO35yjskKEBABDeeieSHBTXnappVgwwWb/P/jOIMU4VluslqVZ2LXNZH60lyiZ1oplmSO7CfarzStiZvlozr0QhHL+MJkac40i8oYwt6mgkyOgwp0W5t0ISkBKtBNjchN6YqNzHCOR+4a75KjemU8fGuR+ify2/Bmo02WBmmbxUx8cj3I10YEYsSUOUWBF6NIMe6yYQEc1FjEOe93IABjBcjj/uh8pWOFY3IF+dydh2TSs6w3j0hryxyANpee1Vdp2NAEX5agIprL7DsMVqxBdKeKTX89qdJ1eJzbcxlopWPa82n2sB2EVPxkm777cLYOuHNx4W5Q+Rs
+X-HE-Tag: 1794640228-74237
+X-HE-Meta: U2FsdGVkX18RPXmJChPSZRqU5uT8TuVwWqF9R5RDz6OlAOkfDhnsaw3j0kWAp+1gqXQfrgdL4LRyB115Bt9cNVrGGk25Voplq+hwlS0qzpjYzJM/vLIzsa/84TBhr/vviB3vl4qwnw3Z9nmTv0Ow5036HwASnyEgPZahwIcjEKE/gIzWscFdZmZgjYtF5IMPPjb8WX2aJ6uVhD+BExVJuRL6PeKLA6+zurrQGInQfo1V3ofvB6k3+crWY++37h+IUHIz8mADhQIdWbXAi9Fj92BlcjlqZS/+fUKBzgJrZBkEC+n6fmA5nQYmXgQQZxmmZT1py2R2jgUdldmiDaDnzjkPnMpfpDXFh37ptMmGI2/Vu0YpRY3VOV5/3l2CEoPzbs/tK53M1Ihkq9FzPiO2nI4sal8vUTvaWgnhX8IVaM1cNP1mmZri3S5d7av0bj6afgUHJEsOZ2n/dQc1RrmU43uhzzdWB68ZzkSEjuqH6qCCB0jNRpN+s7eILIp7VuDYOl8wC3hahe4oLPj8OyHOTY+kHq7z6LZ5Dmt+4tdUn0BEtgqhmOb1M8Hjh22pgWxzb4jSTf1/ll8I0mDeubJGFlPFmNTEgMmXtVN0cKLPSEYHGBE5SVVA2UjiG6VjJqH34n3OlOPO773oXLo3lBozFpzSzDmSN9lklhHSfviyLzodUpDhqD8Z2v1vxB7iaUOjzFDEJBDaSxjN5Co1s/uG34qGw92elR33qg/t4RDHyU6aC7pyPDyCJc5TpN4pDmgnNNtSd0yPAPqnDsARfCCWop82ZlCeY6DMs2oOxBn/RBD8xQZbD8L3hbTxb5Oa8L2/Pyr4hSk1cQ+OKk6hUQoto8fGeCXQf61UoI0SQwDdFkuAaM3Hrw7H2EvnxZWTIY1VID3OfpX3ieAcgiea1Dyym6URHCzOmlMnIcoBIGuJGWVMKLSAagnmspN24FMH8NT87J76IMr0h4KvQw6KTnu
+ k67E7pz9
+ XrbYQiVhmfelqWSs2LYvSllrI6JF1QcLO1nLauT9SZ7qJYIDR6fklGZic1kJngIIVcTP2eVIOVSCsWBjOkVrTIfTLRKRrLTF0B1LYOoyXpYxT/WuBwSn9hmPEDEjGgFUOBgHPer52C1ycyOVr45BWxven3ccqeZFvWHQzfWO14SEY7SYh3j1eF6Zsl9lP2EbemTL75ReNlxrDYepIdZcfPKApaBCt+P4cjwPpd0qddlXG/dRMRAUzCOVLZVbeIsmqcfa87rUDK7uaNF0f5dFyWDQ5dS/VS8XmfmV9Z+7dQbWO8Bh6NrNZSUsIJq1OyUUE6JJsM+9K+iu4AbAGiFkZFWjshaylxw/jLFvFf5Qp2V32OP+lLsz+60ZEvsox6ObTXUCjD89G2ZyRykhHa0Z0UGsIkoWAl2eL/eMPXDKCXFEwy16MWGYsdDEiQqwMITixY1f0DGVwJRqoinRVKZafNKAfvikv/gDRMNOLXDS+G2oHcNs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,58 +179,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Collapse is an opportunistic MM service and should operate only on
-common memory. The anonymous scan and isolation paths already filter
-zone device for the same reason.
+The NUMA balancing scanner installs PROT_NONE only on folios that
+balancing may migrate.
 
-Replace the zone_device check with page_is_common_memory().
+folio_can_map_prot_numa() already skips ZONE_DEVICE folios. Skip folios
+outside the common memory pool (N_MEMORY_COMMON) as well. Do not inject
+hint faults on those folios or migrate them.
 
-collapse_scan_file() gains a folio_is_common_memory() check. Page-cache
-folios are never ZONE_DEVICE, so there it only filters memory outside
-N_MEMORY_COMMON.
+Convert the zone_device check to a common memory check (which includes
+the zone device check explicitly).
 
 All memory is common at this point, so behavior is unchanged.
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- mm/khugepaged.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ mm/mempolicy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 4bbe319ef86fa..b4bd29f25c145 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -628,7 +628,7 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
- 			goto out;
- 		}
- 		page = vm_normal_page(vma, addr, pteval);
--		if (unlikely(!page) || unlikely(is_zone_device_page(page))) {
-+		if (unlikely(!page) || unlikely(!page_is_common_memory(page))) {
- 			result = SCAN_PAGE_NULL;
- 			goto out;
- 		}
-@@ -1673,7 +1673,7 @@ static enum scan_result collapse_scan_anon(struct vm_area_struct *vma,
- 		}
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 662ab420fe03c..619970f0eb954 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -863,7 +863,7 @@ bool folio_can_map_prot_numa(struct folio *folio, struct vm_area_struct *vma,
+ {
+ 	int nid;
  
- 		page = vm_normal_page(vma, addr, pteval);
--		if (unlikely(!page) || unlikely(is_zone_device_page(page))) {
-+		if (unlikely(!page) || unlikely(!page_is_common_memory(page))) {
- 			result = SCAN_PAGE_NULL;
- 			goto out_unmap;
- 		}
-@@ -2741,6 +2741,12 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
- 			break;
- 		}
+-	if (!folio || folio_is_zone_device(folio) || folio_test_ksm(folio))
++	if (!folio || !folio_is_common_memory(folio) || folio_test_ksm(folio))
+ 		return false;
  
-+		if (unlikely(!folio_is_common_memory(folio))) {
-+			result = SCAN_PAGE_NULL;
-+			failed_pfn = folio_pfn(folio);
-+			folio_put(folio);
-+			break;
-+		}
- 		node = folio_nid(folio);
- 		if (collapse_scan_abort(node, cc)) {
- 			result = SCAN_SCAN_ABORT;
+ 	/* Also skip shared copy-on-write folios */
 -- 
 2.53.1-Meta
 
