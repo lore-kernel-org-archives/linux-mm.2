@@ -1,93 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DCF1606A337
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 02:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BBF4606A332
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 02:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cAfxhEwd
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=FZOy+twc
 Received: by kanga.kvack.org (Postfix)
-	id 552836B05B2; Fri, 13 Nov 2026 21:04:04 -0500 (EST)
+	id 2F5E26B00EF; Fri, 13 Nov 2026 21:10:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 503316B05B4; Fri, 13 Nov 2026 21:04:04 -0500 (EST)
+	id 279646B05B1; Fri, 13 Nov 2026 21:10:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 440896B05B5; Fri, 13 Nov 2026 21:04:04 -0500 (EST)
+	id 13ECC6B05B4; Fri, 13 Nov 2026 21:10:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 273D76B05B2
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:04:04 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A21831C332F
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:04:03 +0000 (UTC)
-X-FDA: 85432079166.18.2B2D8CD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 12FF640004
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:04:01 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cAfxhEwd;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id E365F6B00EF
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:10:29 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 73760160319
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:10:29 +0000 (UTC)
+X-FDA: 85432095378.04.938505F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8655140006
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:10:27 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FZOy+twc;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794621842;
+	s=arc-20220608; t=1794622227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cWS29mplmy+xwtYuaSXuypfaXRQfuscnjAulbCt2rLM=;
-	b=y3JG3EByF5Hy/fl/jjH6zAnwwBGG3rNjJan5bGrjeMURGktenaPNoTINhXTf23Ji7cUqxW
-	5xftGOuUoVsQX3burKwwfmnjblxvo+VP9ZXTcR/L6MCQvR1+lAjL00BKDd4L4PS7vpDs+s
-	aSzm8//Aa+ddOfPb2vvyFp2AUuU3POM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794621842;
-	b=AUw+VE8MVulJr/p+z9mi+hySpAoKlOvAcJhJJZfe9Tu4Sgu3Znx2hyUan9LFvS+NApJ2QT
-	UfYSQUihubutxWj9JgJYAkVdAtMkmMZBR35Pv4FKp0NJDjgIcJzZolrpER8He5xRKTgphv
-	cb7WcC7TJ1vBLHnjUM6iMoa6IQJq1As=
+	bh=HSXUmoTueZUEvp7VgPWfl7EqYA8mQIeXBc1RFV+0lh4=;
+	b=ewQ3hkmqKjAKRiIQhQSXg4tj/q/BDuozcl3hVN+JGm7TeO6oSPjDfjyMgb8rCOIZtuBZEq
+	bD3o4dUug9h+TkXvT9a4Bdg9CKU6l9+uCJDyMR+PIy4+5UwLRSIBDmQ77hZpPMkyxilzk6
+	xRjH22GJ3MEyoUF1BYfEJub/jKmNF/Q=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cAfxhEwd;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FZOy+twc;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794622227;
+	b=XSg126yuPZ/UPMfGpg0FePqWuLsOH18MNPgIkFRn4p4oAx28eltNaBicI27WAiFX9OMWUE
+	pauZhFMN443BDMELsXaCTRZOcV+LSQN6cLEem++BieXFMYttwCFOYVtrhcglSP5fUCw1Dg
+	N6SclghsJhy9h/UeUDJy9RkCGQIYWTA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3871542A19;
-	Sat, 14 Nov 2026 02:04:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05011F000C4;
-	Sat, 14 Nov 2026 02:04:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794621841;
-	bh=cWS29mplmy+xwtYuaSXuypfaXRQfuscnjAulbCt2rLM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cAfxhEwdXacgTI0o8IQnQE73sfLxkoYOEBJpp4AzoB43TXmvnCjGAi1ycPpFuShlP
-	 /AbicOWZqM1VCvQW4VBo9M2rOrJJKspMS1JMwkc6Ooas8FR6gQqbNrVvZoaZjxO+ub
-	 a1+z5dk5EXUzONn2RlMcv1wjuhUdEmn7qNYcCSl/bIcLWrO0AJB8liyAuWQ9nvxFND
-	 1fj5pLzjZmj4MWDpuN1/E7ppcKX8YV/eY+pNn8zFtIWQRBCPtE0iroDLdBKRxrfXp2
-	 /Ul3cOBul46Kk6vdK1I5SB0zfiv4SUiV93NggF9cohPIw/8R32hzfEuYUqj7vK68vX
-	 NBJ9PV72yWchQ==
-From: SJ Park <sj@kernel.org>
-To: Jason Angelov <jasonangelov@ucla.edu>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] mm/damon/tests/core-kunit: test DAMOS_FILTER_TYPE_AGE_MS in damos_filter_for_ops()
-Date: Fri, 13 Nov 2026 18:03:52 -0800
-Message-ID: <20261114020353.109736-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261113-test-age-ms-filter-v1-2-b99eab2f71bb@ucla.edu>
-References: 
+	by tor.source.kernel.org (Postfix) with ESMTP id E626F60E80;
+	Sat, 14 Nov 2026 02:10:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C761F000C4;
+	Sat, 14 Nov 2026 02:10:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1794622226;
+	bh=HSXUmoTueZUEvp7VgPWfl7EqYA8mQIeXBc1RFV+0lh4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=FZOy+twcnZdsp/2EYUVyITPvhBid7djzTEf6WgS5LYzQKEOteWGy4HePPqY1U7vKf
+	 5HZ3yUtdC8/0f+7WVBBTQ7muLcyCwFBlIhgCfyxNHz5nY402zWm/TJunHyONNDjanR
+	 KUed1YSuY1/MyfntRmJ5o+tzH0P3AZgDw89dT3dM=
+Date: Fri, 13 Nov 2026 18:10:25 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com, leon@kernel.org,
+ david@kernel.org, kas@kernel.org, dave.hansen@linux.intel.com,
+ bp@alien8.de, rppt@kernel.org, stable@vger.kernel.org,
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Subject: Re: [PATCH] mm/hmm: reject shadow-stack mappings
+Message-Id: <20261113181025.6e8b9475b29c13d29f59e02e@linux-foundation.org>
+In-Reply-To: <20261114002027.GE3706007@nvidia.com>
+References: <20261113195536.2660763-1-gourry@gourry.net>
+	<20261113200303.GA395967@nvidia.com>
+	<179460249376.482102.14669935557901467762.b4-reply@b4>
+	<20261114002027.GE3706007@nvidia.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 12FF640004
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: y7ag4x6h4xb9mptk576apskwkdh93zej
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 8655140006
+X-Stat-Signature: tzx5nnaodqzrrnjfmofny3k6bybfg6o9
 X-Rspam-User: 
-X-HE-Tag: 1794621841-403171
-X-HE-Meta: U2FsdGVkX19w6+GbNb5x1AMHb1P7ITWVrqd+pE+0IQVVan14fvg8NvhSZLvXZN0Dj/i3v6qN8Ab+XPEqNgrTOYzsbN5FOsGwiP2cvjUW+WE20MqSdtFjwEDpehUdo4UifvDRd7RdAVDuIGdcHzSpTtWRBi1uV2BR0roqf9Nnq/tkVo2/npxtUrLJBJaKOEdBLrXM2NagEHrSOPQ6AoR7hCPqNN+4BQOWnSBRBh5iX77udX+HKzz2efryx2IX2SegswDmJxZzmTBNkTVt+/rKeArBg58BMiqEOzveBI7sow3+3ybVZNn4Zh/bSODyvSjQMrIDAYO1CRi7wcD2+B8ZZCNPl79cvCRN3MUy5AVElXmSdEdJw+xwTh/B2pBP4lr2S4cAeGJFf5Pp2nI7S0hig/J1T9ct+wh6LbTPG7wV8yP6gH8cDjh++RpSMcFTKWY8Ss0HzOcur/N9yIZKfWkXKfZXGhrvAgL5TLLhvDGswQLCqYnph6T98gSYluyzkgfKo42xt9/q2Cf0Sg5oawpnD4SPgX23J3Oe3Qs7q37XvvIH36KZdwj3NMqnUZ/ZKQQ8tZCpS1mVvIEChLufh6pkhl0nkUQvFNL0T8+HNftsQB1X/6mmoREsqzzuim4k2wcOYWsE/UPtmlbSAUFtaiq9K3lANKnAhxQ+WNIfKogP0Pqz+LEA513qhsd+yleE4aDYXusdiB5l4k4QioLzCMLsk2twEQXJupFAtUmEYgsouZ00+EMpzOVm3o6PICYAb3Y9F8dDp9p1toaTBp0VoF1CGduGSv3dJt0WS7MMwK37p4vcqoYdbHYXZ4hdHaIruX8HM8xqjIaUu1PMTwUFe0hjjzTu4HKedoxZvj58idfUocl5IYiq92jsvkNjMKfUYw/VNavbmPz9zdduGMfu+D5SSJfjhVhpZAqXvZL08x5Mg8vOZmw57TO7iZ8tTg9D1bcrjb51wvXJK2FDx+pPFIN
- KvqLy9iG
- 5gVofFsII9XyOKaCbOFhy/+H4hfHRJAPk170mrLHN3IBRnuWS4cZ2cTwjtGO4F1PlDYKtiQ4To0p6ZneedoE0L/42AYUeoSJPxaWF995uEGlr6w+/EeBCmNogqEv1LQMauSsgIaRmxc+LJt5YdJgeUauKrCyHGselNCYnjQ3LSyLKxhV7xpr291cf86fTUOhGO20DDc2t4I+a2Pzf8iGUhZ0nVX+bpBtvpH3z19RVNRvp5HdyaRG1GHVEi/LJdWCVzlmWJ1GBAFuSGXfulvfB8ekg7A==
+X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794622227-909765
+X-HE-Meta: U2FsdGVkX184AJ149HM2cQjWtXcozxs6tfSluhZ5SRHkrcfLN9NHshy5W8pvapSVa9+vx1Oxph3vlGUA836lTFAb9m7siKuCuCrg5tOJC1oWg3FXVAp468WM8K8NMfha/fmyF0SpH0B1OgDO/5jZhejuP6l96nfoyhTvtnQbhgS4tIfWVbgK5bBjhGuIWpJ+5PL0ofSGpHFAlVZsoBfRZtIbhNoShMB2mS2OGu4APk6WW32dyOVVfOj7E9ePLiYTE87q/wrfIUXptXAVFdQRcimYhN+VI0bOSp108J6wEj3J/BddqsRf/tGCYSs7pC5LDVyo+gNzPa+P6pBpbRwwJKgCAdnKvrybni9JfaOTItIc+YBIIxYjmM2NRAvckF7wBsb/JpksHvUGv1UloH0cZKgYrIRdq7v7Yy7HIa2+N4iWFOdat+6UM0gd8Pa4tYhN9tUX1tkN5UFKXF8DOVVugvQpJUx6E1Vz+/0SssD26yjVdq4TmvJlRxZFcyIBj16iawF5kD/0FPgudQWxg0Y0pRxgXGUNJCK+7LkU/0ftDHg6oeCpBgREqobtG+YsABXy27yLg14LWngYo/Ok0nHPabNOCVZubnXUvn/T5n9ASX7BW5No65dgbZMdu79ZONXQTvUyTmRdJ2oWTyqZMYNfz+hbn5MpRsTsXGIUYwwlyUg+GyTe1mMRWYH/WiZQi82KORVAR0Kh5I0Ys5MM+cyWKtjznGkGTEkzXv+geftipBHaeEbD1+VCx9/KxT92FvCisvD1ggLdcNnhQ0E2P0hyH9uic+bpZfsYs//gEwEP1gGHcGzopY7nza3nFRKmbhZ/U7BNyURHvVOkEvnIKosIEjREx17L4zcNs3cvkChFn3TFcyy/UZcxF3ioFgEjthwuH4Q+iLBw3GARa+Z4OVVPpjdN0vz51wTGaOerQe24RfZx57PwLUgC+XcpJtbxUZ+GjqVZTSvnAZqdxlygDX7
+ YScz9n0n
+ jh9AMZ910TgM0yGv0kRyjtrwO3z9j2Z9Klkuc7hCKxv9eBOBfIP7m/wL4DGpfuKO6XSK/TUn0lKuYoRbslV/A42O9hbiaxGT6tUOs4Vq1zOfaWC3iZuNvenKsHW0VUXWqkB+zh68L8/9BHZ6MJ5eXP3+vAk+eNw7q3dEBdzNfADAoqtena0WytGZoMczcUHe0ngQ98uSqjUz5Fo7TFHmDpA6xJaIZppc3UsIgxbHuqwmIRSkBGma/R/SfjOpKmJeKYArlVms+l1kGAm/8vrXfJGZG5oKiHfgMDtcyKTAZJOPmi0U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,40 +98,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 13 Nov 2026 07:58:56 -0800 Jason Angelov <jasonangelov@ucla.edu> wrote:
+On Fri, 13 Nov 2026 20:20:27 -0400 Jason Gunthorpe <jgg@nvidia.com> wrote:
 
-> DAMOS_FILTER_TYPE_AGE_MS is core filter, not ops filter.
-> add kunit test covering this rejection.
-
-s/add/Add/ ?
-
+> On Fri, Nov 13, 2026 at 03:41:33PM -0500, Gregory Price (Meta) wrote:
+> > On 2026-11-13 16:03 -0400, Jason Gunthorpe wrote:
+> > > On Fri, Nov 13, 2026 at 02:55:36PM -0500, Gregory Price (Meta) wrote:
+> > > > HMM can grant ordinary device write access to a userspace shadow stack.
+> > > > On x86, pte_write() is true for a shadow-stack PTE, so a populated page
+> > > > can be returned with HMM_PFN_WRITE without taking a CPU write fault.
+> > > 
+> > > I'm not sure I understand this? The pte is writable but you don't want
+> > > only DMA to write to it?
+> > >
+> > > Is there something special on x86 that makes the shadow stack pte
+> > > non-writable by the CPU?
+> > >
+> > 
+> > Some of the context is here:
+> > https://lore.kernel.org/all/20261111-mason-migrate-et-al-fixes-v1-10-3d2454362e8d@kernel.org/
+> > 
+> > We had a similar issue with migration, but this should handle the DMA
+> > case as well.
+> > 
+> > It's "technically writable" but the kernel is supposed to prevent that.
 > 
-> Signed-off-by: Jason Angelov <jasonangelov@ucla.edu>
-> ---
->  mm/damon/tests/core-kunit.h | 6 ++++++
->  1 file changed, 6 insertions(+)
+> Bah, it's not writable at all. The CPU PTE has write disabled and
+> someone thought it was a good idea to make pte_write() return true
+> because the CPU allows writes through a special instruction on this
+> special PTE? So now all the places like this think its writable, when
+> it really isn't.
 > 
-> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-> index 0eb5dcdba0ae..fb84d30a712d 100644
-> --- a/mm/damon/tests/core-kunit.h
-> +++ b/mm/damon/tests/core-kunit.h
-> @@ -1832,6 +1832,11 @@ static void damon_test_valid_probe_params(struct kunit *test)
->  	damon_destroy_ctx(ctx);
->  }
->  
-> +static void damos_test_age_ms_filter_is_core(struct kunit *test)
-> +{
-> +	KUNIT_EXPECT_FALSE(test, damos_filter_for_ops(DAMOS_FILTER_TYPE_AGE_MS));
+> You could also fix this by having something like pte_real_write() or
+> whatever that doesn't lie about the write bit in the PTE :|
+> 
+> The patch is still fine, in that it matches what everything else does,
+> but I'd include these details someplace..
 
-Let's wrap the line for the 80 columns per line rule.
+How does this look for an altered changelog?
 
-Other than above two trivial things,
-
-Reviewed-by: SJ Park <sj@kernel.org>
-
-
-Thanks,
-SJ
-
-[...]
+: On x86, a shadow-stack PTE has its ordinary write bit clear.  The CPU
+: rejects ordinary stores to it, but pte_write() reports it writable because
+: shadow-stack instructions can write it.  HMM consequently sets
+: HMM_PFN_WRITE, which Nouveau turns into ordinary GPU write permission.  A
+: process with GPU access can then overwrite its own shadow stack,
+: potentially corrupting return addresses or bypassing that protection.
+: 
+: Reject shadow-stack VMAs in hmm_vma_walk_test(), including read access.  A
+: requested fault returns -EFAULT; a snapshot records HMM_PFN_ERROR.
 
