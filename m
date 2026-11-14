@@ -1,91 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0243606A329
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 07:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25DD8606A323
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 07:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QS0kLU7m
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fVSckOqK
 Received: by kanga.kvack.org (Postfix)
-	id DB8B76B05E2; Sat, 14 Nov 2026 02:21:46 -0500 (EST)
+	id 30F666B05B2; Sat, 14 Nov 2026 02:23:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D69B56B05E3; Sat, 14 Nov 2026 02:21:46 -0500 (EST)
+	id 2C05E6B05E4; Sat, 14 Nov 2026 02:23:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C58DA6B05E4; Sat, 14 Nov 2026 02:21:46 -0500 (EST)
+	id 1AEDE6B05E5; Sat, 14 Nov 2026 02:23:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A91946B05E2
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:21:46 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 36382160375
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:21:46 +0000 (UTC)
-X-FDA: 85432879812.13.C0AAA40
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 98897140005
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:21:44 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=QS0kLU7m;
-	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id ED8966B05B2
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:23:45 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6AA42C0282
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:23:45 +0000 (UTC)
+X-FDA: 85432884810.03.4C10C11
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id CB60AC0005
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:23:43 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fVSckOqK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794640904;
+	s=arc-20220608; t=1794641023;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SySnQWEZZt0ZJcY0gD5OVrDsND9/1T98niGZwR/wiT4=;
-	b=OlXo6raGZr1JiBuCf0Ji6l8FKhTIzWO+N0zex++lfME40Yrp4CLAkrrdRGJ+HK5sEH3bUy
-	Vtt4sgRgKBK20LfXiE21vc8MwdlK/IRgYEomzNRdDtiy9vBSTjjBaJEuQO2hU4wyzNVnXa
-	KQDjB3ELtoXvpLZ7aAwQ6KOUc0Vizwg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794640904;
-	b=XDLmiA8Swq25RIPjx952Bm7/wfm3v4QG3E8S3hpHnQRU3irm76o8fn20ib0xPeEsbZjEcJ
-	bHGLt9+M+o4fYwxji3onhaAEgA9dEt1YKLpKH9bhFDrd+wGEb9zCqkz7XdSgUTTfvluulp
-	NZrdRoSuScfywQDjZ02FpCwKthkDpLQ=
+	bh=RrG3cdqKscMUKJ7tc0sEjXro6AUhZoj7jdiCwgM6e34=;
+	b=oIAvSNEq2PNhEGmlmDtS3JJFog2tuvYU3HGDI1V8x+rbVW4lYGIIa3i28+NO73xVaAFj6u
+	Nlxm3Gg1f9vxLlNUD/PAGsxscqPD+0HBbhE0N2qcm19SSCoIQlWhvcPzdL6aSFV8Wz87Ta
+	s3FBpFWcmOgVVjUgOn2e0naQE3/JQUg=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=QS0kLU7m;
-	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fVSckOqK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794641023;
+	b=Bq2f5rbzBq0Wyx+6doGvn9B5r7xSgies5b1LmxF6gfqILDp52rrE2C47N0Wg0+ckix0XHH
+	Wxz8y+9QmcUTBuR3Pv7/ub12ZJDJyfRsIoamO5Yd/Ht0vzuIjejI1OB4Ir3kjuVUo36yTO
+	Wo1gp1Wx8loUq5bF4V8J9nHeMLM4hQ0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 11C6F60E01;
-	Sat, 14 Nov 2026 07:21:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3015F1F000C4;
-	Sat, 14 Nov 2026 07:21:41 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5636E434DE;
+	Sat, 14 Nov 2026 07:23:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B911F000C4;
+	Sat, 14 Nov 2026 07:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794640903;
-	bh=SySnQWEZZt0ZJcY0gD5OVrDsND9/1T98niGZwR/wiT4=;
+	s=k20260515; t=1794641022;
+	bh=RrG3cdqKscMUKJ7tc0sEjXro6AUhZoj7jdiCwgM6e34=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=QS0kLU7mA8nNQkh1mioJKyLHUOPwA4e3Jbn/FDXu8YM/vbOIvnClPO/kYBq3DaEPU
-	 To6lyW4Bodv/ef+5WC8o/CDKIJ3pHAvzh2zEBZlJZbChJGwAG/LgfxTjc8o935qFb2
-	 skhSmpPaYX1NTyHPmPhSEKm9WdyII5LpDWl7BbEcefknr+mzW3BkXbx4qdkmIitUMh
-	 +0U0WctafQuOZlgsj5kFtrcQCCNChTjBAC/V0Y/paSOCGm93hiUKwfj17txlZCiPS6
-	 cQyFBcxkfxHv5wEIYjr9wEGF/rxi/8LisMNs71oq6Wx2dGyriH/Tn0hEFRzJfxsgiw
-	 RgiKmZAVtUk6w==
-Message-ID: <sashiko-outbox-214261@kernel.org>
+	b=fVSckOqKurSf6J1Xo5Ec6DPeX6fg94eTu8pbhi3+8o5qBtsvp6j4P5V/iJrxCGc2f
+	 nLcpjKLKRxBnv1MooFfC5c5kRuS5xXtixcWtm9RW/Cm4smrTLqs1EY/wXrUvltiGsZ
+	 jkNkgWMT/CBqSjPxOHQKyj+yK8D+SEuoxujawrsiJLBm4GUXQYr9nZdkXMo7J3EvkS
+	 WsEFqpWubXGKzVPheBL9NF2KUkyl/TTP0HbDTWwCopOrgQpUYHvO6aWwavM7otRo4c
+	 7nN55V/Tc8hkgZZDVoE0QbLSV8xae6M2i58XVZgGuVBy+pZ0t8I/OsK2Se/Py6vjYC
+	 ZnCzONOQQzooA==
+Message-ID: <sashiko-outbox-214263@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 10/22] mm/khugepaged: restrict collapse to common memory
+Subject: Re: [PATCH] selftests/exec: check malloc() return in execveat
+ concat()
 Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?R3JlZ29yeSBQcmljZSAoTWV0YSk=?= <gourry@gourry.net>, linux-mm@kvack.org
-Cc: kernel-team@meta.com, linux-serial@vger.kernel.org, damon@lists.linux.dev, linux-cxl@vger.kernel.org, akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org, gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, johan@kernel.org, jirislaby@kernel.org, kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, yury.norov@gmail.com, linux@rasmusvillemoes.dk, pavel@kernel.org, lenb@kernel.org, hannes@cmpxchg.org, brendan.jackman@linux.dev, ziy@nvidia.com, sj@kernel.org, muchun.song@linux.dev, osalvador@suse.de, nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, usama.arif@linux.dev, kas@kernel.org, xu.xin@linux.dev, chengming.zhou@linux.dev, joshua
- .hahnjy@
- gmail.com, rakie.kim@sk.com, ying.huang@linux.alibaba.com, matthew.brost@intel.com, byungchul@sk.com, apopple@nvidia.com, rientjes@google.com
-In-Reply-To: <20261114070959.3490008-11-gourry@gourry.net>
-References: <20261114070959.3490008-1-gourry@gourry.net>
- <20261114070959.3490008-11-gourry@gourry.net>
+To: zhangchujun <zhangchujun@cmss.chinamobile.com>, kees@kernel.org, shuah@kernel.org
+Cc: akpm@linux-foundation.org, richard.weiyang@gmail.com, linux-mm@kvack.org
+In-Reply-To: <20261113072313.1723-1-zhangchujun@cmss.chinamobile.com>
+References: <20261113072313.1723-1-zhangchujun@cmss.chinamobile.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 14 Nov 2026 07:21:40 +0000
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 98897140005
-X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 7bc3u7ei4afqt1ngk1y675upftyo7bfy
+Date: Sat, 14 Nov 2026 07:23:41 +0000
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: CB60AC0005
+X-Stat-Signature: ggt1xbcfcyny4jzgd51fn6k1fsgjaoe3
 X-Rspam-User: 
-X-HE-Tag: 1794640904-295364
-X-HE-Meta: U2FsdGVkX1+CgIItX4lMM/I7/x+fejlnVBPsANoKz6KX8Rlx2thNND1bbJnmiLSpOQ/npVBSgYqOyt1YURCOUyMxXsBh1p3ct9O2fPxIlYE7umlbqAnB7tWBcXKFv3NGUbu3CoZ6XoIKAMlJ57Mp7kICAqhDg9d7j2Q9LVAgVRifqjri0ksLzzytZ7xx0jiN/PZ8fpWgINybyaAZh+EezJSA/zG5luqmQ/18q3tglkbu1QqG/KDqyLEx7BXmMP2LIIFO6KNVQSN/4dl1P2nNLuItVsZQ/eW/Qtv+eJzXQ9VErZmtUC25CTHf4HtFjh5MudYQiMDYasDS9bAlldobxojKdOy4WHJ9zvItbKgD5YJxUWzkojaOemhesZdcaHEeZwv3Zb4955nKIYKaoqy/j24ZU7KMXpoHm3y4Rv1g734KmaLQligsIicIhUrPkzS2bVaVSJA4DWTB9jX6ORSAKkGv7GYTSZcxZruDUTocz5QKvEQr4vXQEDj9XcByOyiQlSQ2CZvUthfPkRDm5Locj78Td7MxTxPPlD7OOAxeV3jX3WLN8vc9f2yrdmGJ4w8/o+54j5c+R2VgPtH2/l1s2KxgxB85EtF/cBVX7i2Tev+kbijJ7+GwQUtFkW3S1scyRHE2LNi5HmgL35sFOxjJnWOKUpzLumeswCUc8ReSp4CIbrD29ygc3ViwzZlf/yW7lnavgxYrxQ8J7JoS/unctYuqQfISVOSCtCsqmcWx2czUd/080DOGskhwrRqTrC+7nzWGCGOBR8QvUXE348HoLsNdpXr6rewpuI62r3tNridSj8sa2JXmwq1USZvgPp4bpry7OVd76SMWz8b3VWdNBUWQqi5k7l5wsN51il0/xiWSIGa9pwpAguDG4980e7hUemQYrHQZ6c/Hz+qYYsq/P5A//9rRJU68ieNtb5lGY77+MiU3f47gM5anYMgnisQUmc+pUnFyqnPOapUjMuQ
- zsuDpEbR
- 7woEqi5CR0I9DPMhhJp0IlCLCfsjPjGlcVBl9C5CnbSM+OIM41bNKEjD+0qJUjJImzraCjZaHcDjN/gnUDYTepcQXgbacbh921+PPv35vh2bP1cWpKZqCSi8LF976Uvz8JIu90EM7F1m+nc4i/Rm5QBzJAWVx5fRUkNakjabFrs6wCvIQ5smpcsX8m/QLtdaXS0AfSSUbFVhXfqpj4vkySHWIPgT/knL8Vha6NZjxoMmLPcqv98oV/EpVPua6KHmgc1ujjALc79r7U32PF8oFMRr0WrKIqmgatKY0V/7m7b09rKcTWQbMlUAFJqPGf281vu1VpOqBI6r0CmDHSoimXC1umt+9Nsa0jW9kWNwD8cZmrD7Gf96pGfFsaJnX1qN0A2RO5OQX0jlh53kJiVvwR2qmtJ/2wS1RO6DS+yIcIAqbdkTQ3PPAH10vkYBHO7q3taxI8cwWrhRX2MuC1r9GPxmytn+oPcs5vFRe//AdLfbuB0IOej6ZjSKQf6rb5Y7TLs3OTw+eqf/Q+/MZ2sYSKG/oW3uSmFGOY7gzoh046FWA36fYIry6Ky7y2fI2lcqs5qrBBKw/og20AnsR5/tCEZzh+dJiLhwueJrUaD1Z8sHhLvz3NVtX2V1iRbBAbIKZ2GD4chrm3nMw+U6j4zsjUc8P5MUNH7yX2s3mSvM/jeXX54ZSrD9/ukz2Lm4PSg6I4hkd0gfab+kU6v7i6LDrIQryjfk5umFQP53WBLCipwvDJ/5zGhVo9ZIb8UAGZ+LRLZgavOjsbLbFJvMlUkkxlkRFw/ezwQmQU2KT
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794641023-311641
+X-HE-Meta: U2FsdGVkX1+UBbRhBF7tXmfgsOnm3cyxSDBvIB3qddUJEJxEIYHbsupK+KUqf7FtwbqytVnX1fztsTZ9ouV0bMPPwveW37zlyHUucYDZX9ZuIpG1xOMTWEF+cMuNokCGG7YM0AjybNY+MQe8jO2+GwfuCbX7xPQWzLlDjV3yFues8zMs9hnGwm0lqgC1avqsUXzhxWZwBfLH3Oc4BLvdyy1RTUGwyKBAGym/v4gL28QIn7+Px7aXkrTmMqwjKVxwl8t8Csrw4Bs704ulWgVpFRjoeXjst3U2I6R7Je4jb4xvsCa2r30gteQosmft0mwES5O1K1LMy3zdfBs+5zPshSkEeH7v8L0D2bD6NF8rKO95RjKqcXdN9enat045RSPKfTMhVHIDxRIqORPdtwSfWacTZzT5xTrcdJMn/Owurw/TstVhiS9jb9JkV96VgtVIMC48UB8D1DMmoj+t2nJxDiPSLFVpZEi38YFddOS3T3M2k7HnOfCYCMaQzLj/N7fAhbGAhC36e2fjEo9uc4TRqSi/0ICdX0BzrD0iwrFK6bkhBcD02EQw9rb76wAvvh+3iBDKSEP3PM4Ldb6wRR8YWvJuHzCWyZ/EItuxyr8JNK3PXzu8DmN8w6fJerYTh+QQDkl6DgZjU9LF/Hnomf7fMjSVBodcsI1kP/IWmqmOsCiTA4g6sdFoMCjDrsbKudqVtNSB62N2z2qD/ifSkbN7SkmmbDiToOF8BHy+rdGiorBe9SEGHUjQnvnB4qbamI1i7luZ8Xt9Acx1swd28lkFUg++ZDsD1GVH8RorGEGG9kvw+SJmb+OtuseVu4N3fPHD1QTdZrTRvdDuGKhnJGH08srVgwiK1UbgSdxPFaIeuB3u/pzqr42mvgJuIZJUVwbdtAa0MbI2DwtZN7XYrhynSqjzENPMnv/D1PWfZwJlXkA8uX36XIy9CxYRqysRoyUaj9O7gdHC3zSapojfVCS
+ HjOHcDHs
+ k17BccI00/x6eXgJX+UBJYpyeDFZOJsD80GIbOwY75T67jVCY1zt9QyEgMW7OFjY+XEILo/5Kn9Tq+dFDFD6yUhb+e48KzG7gfnzqBUSsMaQJVqzhKzEkGvL5ACXsxAR7mJIuunfESI+pO0frgX0JV0IZIBHoeqs/CALD12aICTGS10ice7xPQVqdIebXQeJCEHh9VWX2Z+WOZbRxYo7G/RlqVdxMs8q4655zlPInYZkEvUTwBi6wW/zYNH7lH744rjLAFA+A3i0fk5wZOmJKjjUqCZh3rn6YcP4tf+JAzjNP7WaaeKkTtwkI3s+zONnpU45r78p5BE1VpfXdd4DfwTiI7avmRi7Vav8dCfLDYZEyKi4FL/Kd3rBkUGrGSAqdAXWVzoSLm4lnQdRS4wx1I2NjqgvUZAImuJ1LpL5YqaztZ9l6/nrwz9ZB8iJ2crmRIAp5fwzA5zwU3218/2RpqgeiiCy6G9MVO7rOEfCejDfLaeoABm5yM4a8t4DcAEom8Kd1fHSoAtRV6qmtrGwvCLeJIXr+ZU3oWLSw4Vavm0LwFFblM058DFQ9VCFVi2EGuLZSCkfrKlR4tVyWHtFe2Bf1RuSWuOjaHOATLmWzGE1ZsdbnZ/2yXcBvBU36LdJub/8Xzv8ic7n+k2NI9KlfTJGvyX4i6gbqOzCd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,56 +93,42 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] mm/khugepaged: missing folio_is_common_memory() check in
-  collapse_file()
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [High] selftests/exec: single-word username in Signed-off-by trailer
+- [Low] selftests/exec: missing Fixes trailer for unchecked malloc() in
+  concat()
 --
 
-commit 5cdd71b37e4c9e4d2c7bf61d7c51d7ba89a07fb5
-Author: Gregory Price (Meta) <gourry@gourry.net>
+commit 1c579e8be1fe05d3235ea43d298729637c25d600
+Author: zhangchujun <zhangchujun@cmss.chinamobile.com>
 
-mm/khugepaged: restrict collapse to common memory
+> selftests/exec: check malloc() return in execveat concat()
+>
+> concat() strcpy()s into the buffer returned by malloc() without
+> checking it for NULL.  If the allocation fails, the helper
+> dereferences NULL and crashes the test.
+>
+> Check the allocation and exit with a failure message via
+> ksft_exit_fail_msg(), which is how the file already reports
+> unrecoverable errors.
+>
+> Signed-off-by: zhangchujun <zhangchujun@cmss.chinamobile.com>
 
-This commit replaces the zone_device checks in anonymous THP scan and
-isolation paths with page_is_common_memory() and adds a
-folio_is_common_memory() check to collapse_scan_file().
+[Severity: High]
+The Signed-off-by trailer and Author header use a single-word username
+("zhangchujun") rather than a full real name.  Per
+Documentation/process/submitting-patches.rst, the Developer's Certificate
+of Origin requires a known real human name (given and family name) rather
+than a single-token handle.
 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 4bbe319ef86fa..b4bd29f25c145 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
+[Severity: Low]
+Since this fixes an unchecked malloc() in concat(), should the commit
+message include:
 
-[ ... ]
-
-> @@ -2741,6 +2741,12 @@ static enum scan_result collapse_scan_file(struct =
-mm_struct *mm,
->  			break;
->  		}
-> =20
-> +		if (unlikely(!folio_is_common_memory(folio))) {
-> +			result =3D SCAN_PAGE_NULL;
-> +			failed_pfn =3D folio_pfn(folio);
-> +			folio_put(folio);
-> +			break;
-> +		}
->  		node =3D folio_nid(folio);
->  		if (collapse_scan_abort(node, cc)) {
->  			result =3D SCAN_SCAN_ABORT;
-
-[Severity: Medium]
-Should collapse_file() also check folio_is_common_memory(folio) after
-locking each folio, matching __collapse_huge_page_isolate()?
-
-collapse_scan_file() drops its folio reference on each iteration and
-skips missing page-cache indices and swapped-out shmem entries, and
-collapse_single_pmd() drops mmap_read_lock() before calling
-collapse_pmd() -> collapse_file().  Folios that are faulted into holes,
-migrated, or instantiated by shmem_get_folio() or
-page_cache_sync_readahead() on a node outside N_MEMORY_COMMON after the
-pre-scan will still be isolated and collapsed by collapse_file().
+  Fixes: c9b26b81af9c ("syscalls: add selftest for execveat(2)")
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261114070959.3490=
-008-1-gourry@gourry.net?part=3D10
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113072313.1723=
+-1-zhangchujun@cmss.chinamobile.com?part=3D1
 
