@@ -1,158 +1,115 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4CA7606A32E
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 06:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0441606A884
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 06:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZtCC2qn/
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=RphnadHq
 Received: by kanga.kvack.org (Postfix)
-	id EFE336B00EF; Sat, 14 Nov 2026 01:46:07 -0500 (EST)
+	id 037EC6B05B1; Sat, 14 Nov 2026 01:46:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E880C6B05B0; Sat, 14 Nov 2026 01:46:07 -0500 (EST)
+	id EFD876B05B2; Sat, 14 Nov 2026 01:46:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3F5B6B05B1; Sat, 14 Nov 2026 01:46:07 -0500 (EST)
+	id DEC026B05B3; Sat, 14 Nov 2026 01:46:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AD6736B00EF
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 01:46:07 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7A45BC0374
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 06:46:06 +0000 (UTC)
-X-FDA: 85432789932.10.44F68A4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 13333C0006
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 06:46:03 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="ZtCC2qn/";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf28.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id A96026B05B1
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 01:46:15 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3C3E8C036D
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 06:46:15 +0000 (UTC)
+X-FDA: 85432790310.29.948D7BA
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1189220004
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 06:46:12 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=RphnadHq;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf03.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794638764;
+	s=arc-20220608; t=1794638773;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iHbcITGOkxyEh3nCOC1u0s4lDXjvYPiyn4teM7lM8pk=;
-	b=r8SDI/pFzkJv7mThRFAGCekGKQi9T0B6fCBQG+mZXH1F3NdUJQ3JBM73ENb1+0A+BvIFCk
-	kY1svSXHjEwXOJR6y955JGlM1OKBr1S2zkSDdDuwJydnOJG8RwYKrqaY8MWudmCyM/wJFJ
-	fcbi4MGtZDmiyrJC/uOWKSpvanWxwvw=
+	bh=H2sLgLOKrNeynVkasVZiOvcon7Y5kt9OU0MF0lujG9c=;
+	b=ANm/1UQvrwO27P1sYEBXPV6MgxB3bvvuIGbgCFAGqMlYDiglDqVBQY3hKk3wTj4on2B/Ru
+	/ZYM9MhSnTNikm/uVLAbOHIgTEm5c88qh32SWApOFdE4Wp783i4RVXvfZZAxA7b8cH1kce
+	jVp3mykShMKa0UlEFKvp+bBpaCINpgc=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="ZtCC2qn/";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf28.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
+	imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=RphnadHq;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf03.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794638764;
-	b=IkINhZ423fZdESlkmjEVtteg1D6c5Ec75aYb5uy8vPpB1LhxmemhTqQL/98CF9AN4m2kra
-	jGdZOZwu7KbMDGrJsfPFNnlUD5y9kC+6hBsd6s+P8blRMAPVD1iCtu74nC1yLMxad0tNz/
-	UgJzYLYuquK0G2jHKBb07oCXOUiR+zU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794638763;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iHbcITGOkxyEh3nCOC1u0s4lDXjvYPiyn4teM7lM8pk=;
-	b=ZtCC2qn/uyy2rAWRpJ1H61dvB9FmrX4WXCPpBxk1p0PJITykd+Vky3w2uAglfdYtx8JAEJ
-	AVOULBtXLigh147Tu2oe1Qp0byB1F2CyffNkRn3sTN6hZ4u6v6gxZinbOXkWp51OKqM0Gf
-	Zn8R3f52wLHUhaXi39kLi0WCTj2ETtQ=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-317-uA-OED5nMcOpA4cEuArsmQ-1; Sat, 14 Nov 2026 01:46:00 -0500
-X-MC-Unique: uA-OED5nMcOpA4cEuArsmQ-1
-X-Mimecast-MFC-AGG-ID: uA-OED5nMcOpA4cEuArsmQ_1794638758
-Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-5c1595d5031so1084294e87.2
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 22:45:59 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794638758; x=1795243558;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=iHbcITGOkxyEh3nCOC1u0s4lDXjvYPiyn4teM7lM8pk=;
-        b=Yrn7yIXAe4/8ecwptk7UsCrcTKvhiH6NDutGYOoizhwUhDI4wFBfnTozX+bfkkgjF5
-         TrjGsKp1S4Cpx8oQyAvFYJaYWWfww7FADy2U+q3YVoTl/ZEt6m+u7HHmaCS5Vd2Jknz5
-         Fa0aBn59aeFhdq6nubzkZ5+G3kZSiiykvQxu+3cCVNCQ5AReQpgg33VGHO7O40y17NYM
-         ac9r8eDKiqt5WJjPJyvKUKt/Ji7RguwZiAuX8994A+AjzD6oxSs/74IgjF48bUiD5PhC
-         fxf5T2Mmva/qpVRXcERi/qptBYUFSdQ0wJNguzvfN4GIx9EMpYVigtAsVddU37z3/9DB
-         CdYA==
-X-Forwarded-Encrypted: i=1; AL+hErF9Grj2+ahPYL0LU8ji0w+iyWc4xuP1oze5fBtyM3mjJTuuXCYfV4zFTfJ9GRU657astIEMxpQDJQ==@kvack.org
-X-Gm-Message-State: APuU4Z9G0s0sAJvq6GLkjXRLbIJKA3m2o2eh4Pr9WiaIBDGiCkpxnIc7
-	aRCYXuzGg+7yAA+uawJC1POskcGGNEHtDNyYjEdHQYHjXWo7DLVDxWb12ljt5P2J5debYgKq5HH
-	miJa07b0sIdosQiJaVoGcfDz3pmn3usG73DMAs14eEXOzFlIQQgQ=
-X-Gm-Gg: AYBFou0Pihbj3n9Dynv+VcwDGXQY5pLP7VaBTL4+680cEHMtTxlX5DYu72FegDo5Ap+
-	OzPk7ShVCc8Z3Q46PF4tfWiPDqiB7JTLMzcVhypiMxIH4zutoXnfDkQA7Y8UV31VKUqmdCHy2sk
-	9gYVLXHTMN5aS4gHYwHqowN+MAmHFHqNl2moHs7TpGA5UtzPDdfXs6NrpIZiHItzf5d5zXdA1Of
-	2pPIt4/Ib2p10EPaWyx8NrFGJL42UsJZgAuHi6JQmTtgiu3xn+pQ3KQZ3eMhs075/t4dWTq7HAa
-	dza0Euna0oi9bj8gB8oVMIOHK11UrNdYc0vztdBLaChwouP0UeD3i2aC/i0Pj4lSe9fZdq0QXXt
-	n/quedOD32E9f8yJ4EpQa/KZff93N/rom6sn+eae1XSGPm6DR0lPU7DUQIBnWgSOv84Q9HyZk9E
-	Mnu17Q
-X-Received: by 2002:ac2:4bc5:0:b0:5b6:4ae:5b83 with SMTP id 2adb3069b0e04-5c1709ca612mr1930569e87.33.1794638758309;
-        Fri, 13 Nov 2026 22:45:58 -0800 (PST)
-X-Received: by 2002:ac2:4bc5:0:b0:5b6:4ae:5b83 with SMTP id 2adb3069b0e04-5c1709ca612mr1930526e87.33.1794638757811;
-        Fri, 13 Nov 2026 22:45:57 -0800 (PST)
-Received: from [192.168.1.86] (89-27-86-246.bb.dnainternet.fi. [89.27.86.246])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5c17133e3acsm1466215e87.45.2026.11.13.22.45.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Nov 2026 22:45:56 -0800 (PST)
-Message-ID: <8c79ce88-7730-44c4-92a0-d760d6f8e9e1@redhat.com>
-Date: Sat, 14 Nov 2026 08:45:55 +0200
+	t=1794638773;
+	b=PcUZr70Mn43k0c93hkZloI1wBolii1cVHegmlx0grvQzNId5CktXLvD6OcZ5okIHVrkb9s
+	lFEaPaaEzkkA091X5ojyOut1j8EeHxFcYp91pYBUteKKnkJOhpTm791P6AlwzVCHJ7rn1w
+	rKk586Mvr5Ryre05tAPC7cYkwgACwQ0=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A83B91516;
+	Fri, 13 Nov 2026 22:46:08 -0800 (PST)
+Received: from [10.163.154.162] (unknown [10.163.154.162])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D712C3F632;
+	Fri, 13 Nov 2026 22:46:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794638771; bh=2p+aENh47akfGlWR6ZTS9pUD8OTqWk1g+6Ivv38eA3c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RphnadHqNUso6hl5YrI4sir0E4KMlPFHhwYLkDbzg1C7hBuo/Y00JyeydDKOVwaeg
+	 +cgLWiUAkBPnOEz57Pg399P2TnUHxCvpDmjWLtlV9VXwxsxpSCkL5cefwBFrFx4tB/
+	 1WZu/r7k9IKPEDUoM8qx6OZiBwKBDiQBLPPoV9Tk=
+Message-ID: <0b018af5-0a97-4e3c-9d28-5efca28f163a@arm.com>
+Date: Sat, 14 Nov 2026 12:15:58 +0530
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/13] mm/migrate_device: don't collect a range twice
-To: Balbir Singh <balbirs@nvidia.com>, "Lorenzo Stoakes (ARM)"
- <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Usama Arif <usama.arif@linux.dev>, Kairui Song <kasong@tencent.com>,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>,
- Chris Mason <mason@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- "Borislav Petkov (AMD)" <bp@alien8.de>, Mark Brown <broonie@kernel.org>,
- "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
-References: <20261113-mason-migrate-et-al-fixes-v2-0-50a2ed382b61@kernel.org>
- <20261113-mason-migrate-et-al-fixes-v2-5-50a2ed382b61@kernel.org>
- <avfrWjzLQdDcmXO6@parvat>
-From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
-In-Reply-To: <avfrWjzLQdDcmXO6@parvat>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 4obiKaBJFXnrbDdpA4KZVTdvemv1fyppPfBRhLjGQks_1794638758
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH v2 0/7] mm: batch rmap walks during large folio migration
+To: "Garg, Shivank" <shivankg@amd.com>,
+ "joannelkoong@gmail.com" <joannelkoong@gmail.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "kmanaouil.dev@gmail.com" <kmanaouil.dev@gmail.com>,
+ "rppt@kernel.org" <rppt@kernel.org>, "weixugc@google.com"
+ <weixugc@google.com>, "byungchul@sk.com" <byungchul@sk.com>,
+ "rakie.kim@sk.com" <rakie.kim@sk.com>, "vbabka@kernel.org"
+ <vbabka@kernel.org>, "harry@kernel.org" <harry@kernel.org>,
+ "ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
+ "riel@surriel.com" <riel@surriel.com>, "david@kernel.org"
+ <david@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "matthew.brost@intel.com" <matthew.brost@intel.com>,
+ "surenb@google.com" <surenb@google.com>,
+ "rientjes@google.com" <rientjes@google.com>,
+ "kinseyho@google.com" <kinseyho@google.com>,
+ "Rao, Bharata Bhasker" <bharata@amd.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "gourry@gourry.net" <gourry@gourry.net>, "ziy@nvidia.com" <ziy@nvidia.com>,
+ "usama.arif@linux.dev" <usama.arif@linux.dev>,
+ "jannh@google.com" <jannh@google.com>,
+ "liam@infradead.org" <liam@infradead.org>, "mhocko@suse.com"
+ <mhocko@suse.com>, "ljs@kernel.org" <ljs@kernel.org>,
+ "lance.yang@linux.dev" <lance.yang@linux.dev>,
+ "joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>,
+ "apopple@nvidia.com" <apopple@nvidia.com>, "fvdl@google.com"
+ <fvdl@google.com>
+References: <20260813-migrate-rmap-batch-v2-0-3c5424c555c7@amd.com>
+ <CAJnrk1ZkhvyGLUyZrf_gA3XBv1XTfHArGOMgqr=5XbSCBJHz4Q@mail.gmail.com>
+ <2ed65a57aaa676a59651abd671f18dc9b55f9195.camel@amd.com>
 Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <2ed65a57aaa676a59651abd671f18dc9b55f9195.camel@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 13333C0006
-X-Stat-Signature: j8msnjg11bpyrw558hokia5bgnp94he9
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794638763-147172
-X-HE-Meta: U2FsdGVkX19PX0b1+iI02I0G27TUmDD8yaO2NqxCiX0vFXze9BpsOUlo3TopoguJ7iorlcTOxpBGRlwSDoL77CYZC+ShUYkJINC0YwZkwmQvldvzh/cuAQVzdjWaisobhK7arC6k0hcon/wTGgsFRs8yFuimZe0kZHlone6vA774pXy9ftLODjOhxX0UtEvf2R8DNZcZ9X3yTvniEyKxdXCUYU4Qu6FMDUJ49ElGLprwAbi79LoTrJ6fwGjlYn62FEj8V1MNwAweVVDr6O/02E8CqchtjRJBr2zr4o08s//qvGARwyCm7QaTYveEDCCFWbD17dGPUpDNtsagTNI82Pqur17MiTZOZZz3vxSBLAuoVFxXjGh8Lw2unrpT0sZ09vuINwXLEqNFBeR5OjvtxmXtwmhoZFig56ghm7RG8Im3UrREhJPjG5X68osKYLv0Y6h6vzalVtOLdOwuKtw/ao3wsfZ4Ilt+bb/5h9SV5RFbNiXQoTUVeCVajrQMkBXgnkN8H5FmYsltI8by5nqwi+IXaIFeZeQvHHu0JQhnIOzFCue4FySCsADxPvuHCo5HkatBiPJiK19GZeNi+lkTUrdULWijD5HL71NhlLcA9LmUiVPvoLoWCJGdnX0VKp+45IGCt8Xa3D+DqREKVCrlPXlFiZjaKofNPUyBIRNng6IQyVglaGN5ysJdSPe0fdDbrvAA/r9EOOl1oen4PnDeACATSsEb1P4U1VqE2bYaak6Km5QyQVXdm9pio50H0YaRB/nq5e9PMpNo/t73/vD3TT8gQpDnwRYJOKLNDxOZ5aIDAgTx94cvIgn5mZzVpG+cfKFZBnf1fiPs1qV0toL8stMUDuEqZRzrAMN6Mh+MSZ2lrjLlgKP4Z18q2nUbKyLk/WslKxVYD6q/7jrS41NL2GoAhnDbfn2/j/vMUwQvIL3caK/D8WKqImsRXYMZGhHIStTe5xVjVWUBYM0x1Ta
- jrU2viF6
- rpubPnpTsuxhSHP36z13qQU78ZI63dngWN3n2FHA6hEDmh+RlY03ds/sF8HTag8w/RSWrxBkHfd88TqjWCJl4tmpJ9fqSe03B6oV10ai0L64sgeqbPHhAvQLKVCF78stSSWuKvaovgdIw1BT8QHB8Wo6tBi+lnK35LVclY3+X/lvSYux8AIbjZEizG7085mWw3VrKDx1fokfu5vKyFckMcxFSWi/mtdgzszbTmRJCy6DQw6GNTw/veaVSWzl5k8wZJ8IKZV4L9vYl358bMWCYgd87q6tGIcsbGYrl1O0jSRQhq2/W6wpMLIdJOX8FpBKZdWQsy+LvjmpUpK/y8nqnhgEd8yFhRvc0FF60Jgj0BLiPL20QQExYqiBRF81OxxXyyOQL+Rsjgk6mIF0whZbSUtz3r/iwcJBAolRwBSvuifeJMs+3LpsYKBLify/QlwZcdxcH9sYARtlGGCXkmGy1aj/0ynUywch1tB8J7HQVG5Z7ACaPq8T0GSzHe+4cBesmxySPvgR4CSSvRxNd956EhKaTC3SDxxuuhT4+vbA1N1Y2/Dzwn6ChK21Vys07M9hQUIQeWC/ShZOsS13vdAX0Mm3GvQdwy1AlyjPhr/qa2OD/AxgDz/NdYN1U3ozglSG/e+lnNqPUEtQ6EHNs56axkag3LQ==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1189220004
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: g7t19d8can6x7apzqserpon88btd46yo
+X-HE-Tag: 1794638772-853514
+X-HE-Meta: U2FsdGVkX1+sY2srUZhh8yZPyRDsig3FLmZmESj42Hc09rC7d0p021o332QPvD7XIviyDdKeqZ+SE45EycT5REIdM89uVBiBE16ZomDLHd+1FkFDpsYDGNFxMnCCIBRok/rtqfYhfhDMD3pM1goMLnNjAA+OIP9sjv7hswtoEYkK6jODBknMrQXMqm2NoX1IDwEqSxb1pvHUoOKykWjFf4zGWMyFTc1sRaApxcc3aP85haWnJPhgMGfZPkOcVwGgNdgchCmaASF1ioHbVUEEp7UX5vVMCGwwZJbBvazvfQ+zt2Dl+ecoymeP9KY0C+hLl9mvfjNsDeo5pbRweH1s0s8uDOO1iI1AGZco3Xl2op+pT+s2HvcT1xhptIz89uNUZ+7tnTWFhBgrTtWCyPKlDpajwx6tRLopz/tH6H6GaboCnkWB080tOnYsp829zBet1O9QxPTgJ/PXpg0pj8hycbkLSvOIJs/TRXbcm7Wx8YuCGibRft0nbwGz+hMopQRejFQnaoZltCeykN83pla/eIB8FcfDqobZyExHIx5+RQYQP/e5GHzkjkOy46OBK3R/3dYSqouCVXeY7FOtLGSRo65r3VhzMLvhnSWR/ZyOg1u5Gcflh0dNThmlHkd4JfRBSFM9HE+3MztOwCWl6W4xi6m9kVniu3z1bjZfTCIVI6NuW8mZUHPJk/9V8jjjpSqoxJesfMNAYdX5w28mKvdMEnoDk6npHObQUFrZR67sN7EQkXQ9TvkPZ/zpPbm1KMieAVi6gaspC0hf2z0oseykdHVvlmHYNsHoAUcrKNAW1Afg7XZF3oaDzW4xpBoIlJ+GMs2I68ERffqa4vM3ie/QHxPF4iNo3SckbvKvPhnUYmu8h/UFWAOYuaQERAgEXyd4kdXQyCMuuaQkTmbDC6lNCxOCTl+4WhKWwiQE+bMgfRfCNjwxj8ZnspxXEFqjcmDlLhGsT3y8OXROtZFgjtu
+ Qu2GvJ9x
+ mrpEsmIsTS4zxpqyNqpB4/h6XZIJMwa4pUSG14f1ywv89zAaBtjINgWYOq499hgRPS5ygxkmN0xGdWvn796FZ9qlZE2KcLiLwj/peo7DgiPXLUL1dsII4n6fHIDGikDWyKA0PKko5E5yVDQXhpKxFU/ctt322pvIvENy+xjcVgK7y9fMMd9w4m+N4hyO7O59HcBz0aqkrbvBp4Qbp5GGQwyOYpQ5yj1R/L27GTQ53NgQHizLqLpxhMzt93d461R0L5Tajk7opZW7nDJR3CuqkQADK77tjtr9RIOYpI9w1R7SQOPfCTJIK1H3Jgew2Ajh6nCV3RHs62OApQIpB1MS4A2t7Nkt3F2WhBCNtaiq5DexvlhPAqHfMzhyFj/BzCWt+M4j/FXdkLlaqJFD+e9CGa+c59xAWnk6o/ANtZ4EVjpFWoHQ6/8qqnzOBu9suV7ZWM3yRGEXjBFXX404HCoYuX+sdAq/m+NDPMstETbNXajHaiax+Gf3Hu3n4+g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,82 +119,91 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 
-On 11/14/26 07:09, Balbir Singh wrote:
-> On Fri, Nov 13, 2026 at 09:45:23PM +0000, Lorenzo Stoakes (ARM) wrote:
->> From: Josef Bacik <josef@toxicpanda.com>
->>
->> migrate_vma_collect_pmd() drops the page table lock to split a large folio
->> which it finds in the middle of a page table, and then starts over at the
->> "again" label. The entries for [start, addr) are in migrate->src[] and
->> migrate->dst[] by then.
->>
->> While the page table lock is dropped the page table can go away, in which
->> case the restarted walk invokes migrate_vma_collect_huge_pmd(). However
->> this is passed start rather than addr, so [start, addr) is collected a
->> second time.
->>
->> This can result in migrate->npages exceeding the number of pages the
->> caller asked for, and therefore in writes past the end of the
->> migrate->src[] and migrate->dst[] arrays.
->>
->> Fix this by only handing over what has not yet been collected,
->> page-by-page, and flush the TLB for those entries which have been
->> previously replaced, similar to the other returns in the function.
->>
->> Fixes: 022a12deda53 ("mm/migrate_device: handle partially mapped folios during collection")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
->> [ ljs: cleanup commit message ]
->> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
->> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
->> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->> ---
->>  mm/migrate_device.c | 8 ++++++--
->>  1 file changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
->> index 9e5dab8e1b77..28ed706109da 100644
->> --- a/mm/migrate_device.c
->> +++ b/mm/migrate_device.c
->> @@ -257,13 +257,17 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->>  	pte_t *ptep;
->>  
->>  again:
->> +	/* [start, addr) is collected if we get here after splitting a folio */
->>  	if (pmd_trans_huge(*pmdp) || !pmd_present(*pmdp)) {
->> -		int ret = migrate_vma_collect_huge_pmd(pmdp, start, end, walk, fault_folio);
->> +		int ret = migrate_vma_collect_huge_pmd(pmdp, addr, end, walk, fault_folio);
->>  
->>  		if (ret == -EAGAIN)
->>  			goto again;
->> -		if (ret == 0)
->> +		if (ret == 0) {
->> +			if (unmapped)
->> +				flush_tlb_range(walk->vma, start, end);
->>  			return 0;
->> +		}
->>  	}
->>  
->>  	ptep = pte_offset_map_lock(mm, pmdp, start, &ptl);
->>
-> Is the intended race a concurrent MADV_DONTNEED reclaiming the PTE table while
-> PTL is dropped for the split? That would leave pmd_none() true on retry, entering
-> migrate_vma_collect_huge_pmd() through !pmd_present() and taking its hole path.
 
-I think this is "ok" for the fix, the hole is collected from [addr, end). 
+On 12/11/26 1:07 am, Garg, Shivank wrote:
+> On Tue, 2026-11-10 at 16:08 -0800, Joanne Koong wrote:
+>> On Wed, Aug 12, 2026 at 9:24 PM Shivank Garg <shivankg@amd.com> wrote:
+>>>
+>>> Migrating a PTE-mapped large folio currently walks the folio's rmap
+>>> one page at a time. It does so twice per migration:
+>>> 1. try_to_migrate_one(): Replace present PTEs with migration entries
+>>> 2. remove_migration_pte(): Restore migration entries to working PTEs.
+>>>
+>>> For a folio with N contiguous PTEs, each walk repeats page_vma_mapped_walk()
+>>> and the associated operation per subpage of the folio. (256 iterations
+>>> for 1M folio).
+>>>
+>>> This series enables both walks to process a batch of consecutive PTEs
+>>> that map the same large folio and do some refactoring and clean up on
+>>> the way.
+>>>
+>>> Performance:
+>>>
+>>> AMD EPYC ZEN 3, 2-socket system (1 node per socket).
+>>> move_pages() migrating 1 GB from node 0 -> node 1, throughput
+>>> in GB/s:
+>>>                        batch-         batch-restore
+>>> folio     vanilla       restore-only   + unmap         restore%   restore+unmap%
+>>> 4K        2.96±0.15     3.02±0.14      2.99±0.17         +2.2%    +1.0%
+>>> 64K       5.99±0.10     6.12±0.08      7.65±0.16         +2.2%   +27.7%
+>>> 256K      6.48±0.09     6.67±0.08      9.23±0.14         +2.9%   +42.4%
+>>> 1M        6.76±0.10     6.98±0.10      9.74±0.19         +3.1%   +44.0%
+>>> 2M       10.50±0.20    10.44±0.16     10.67±0.21         -0.5%    +1.6%
+>>>
+>>> In plain migration, the folio copy itself dominates the cost, so these rmap walk
+>>> savings are only partly visible end-to-end.
+>>>
+>>> When the folio copy is batched-copy and offloaded to DMA engine [1], the copy is
+>>> no longer the bottleneck and rmap-walk batching translates into much larger gains:
+>>>
+>>> This series + [1], DMA Offload on PTDMA (DCBM), 16 channels:
+>>>
+>>>                     batch-copy                      dcbm+restore
+>>> folio    vanilla    -offload(dcbm)  dcbm+restore    +unmap          (rmap batch impact)
+>>> 4K       3.05±0.13   2.76±0.11       2.77±0.12        2.74±0.09
+>>> 64K      5.85±0.11  10.66±0.27      11.56±1.45       17.55±0.56
+>>> 256K     6.26±0.08  13.64±2.73      13.68±0.16       34.76±0.57       (2.54x)
+>>> 1M       6.58±0.08  14.25±0.07      15.27±0.77       44.28±0.27       (3.11x)
+>>> 2M      10.61±0.24  65.26±0.96      65.25±1.65       65.66±0.87
+>>>
+>>
+>> Hi Shivank,
+>>
+>> Are you planning to send a v3 of this series? My reason for asking is
+>> because batching the unmap also fixes an existing issue where when
+>> try_to_migrate_one() unmaps a PTE-mapped anon mTHP one PTE at a time,
+>> the folio looks partially mapped partway through and gets flagged for
+>> deferred split. My mTHP underused shrinker series [1] makes this more
+>> common since every underused mTHP split will now go through this path,
+>> which makes this bug a blocker for the series. More context can be
+>> found in [2], which was my attempt to fix this bug, but then David
+>> suggested we fix it in a better way by batching, and Zi pointed me to
+>> this series.
+>>
+>> Thanks,
+>> Joanne
+>>
+>> [1] https://lore.kernel.org/linux-mm/20261103212004.1356327-1-joannelkoong@gmail.com/
+>> [2] https://lore.kernel.org/linux-mm/20261109220958.2071687-1-joannelkoong@gmail.com/
+> 
+> 
+> Glad to hear this series helps your use case.
+> 
+> Yes, I'm working on v3. I slowed down on it because it depends on
+> Optimize anonymous large folio unmapping series [1], which hasn't been
+> merged yet.
 
-But couple of things follow. It can't be possibly collected as
-MIGRATE_PFN_COMPOUND entry, only small pages. And the collected entries
-in [start, addr) are wrong ones.  Finalize will recover, but the
-migration will fail for those. These all are handled in the HMM walk
-based migration series.
-
---Mika
+Hi, I was on vacation, I am going to send the next version of this soon.
 
 
->
+> 
+> If it helps, I can send v3 sooner, addressing the v2 comments, rebase
+> on the current tree, and split into unmap-side and restore-side series
+> for easier review.
+> 
+> [1] https://lore.kernel.org/linux-mm/20260924131106.1730494-1-dev.jain@arm.com/
+> 
 > Thanks,
-> Balbir
->
+> Shivank
 
 
