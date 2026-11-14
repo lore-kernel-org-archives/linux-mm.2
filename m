@@ -1,137 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE43606A323
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 12:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70EB606A327
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 13:03:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=FLD2lkG8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G8tM8tV3
 Received: by kanga.kvack.org (Postfix)
-	id 78F406B05B3; Sat, 14 Nov 2026 07:46:11 -0500 (EST)
+	id C8F406B00EF; Sat, 14 Nov 2026 08:03:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 718FC6B05B4; Sat, 14 Nov 2026 07:46:11 -0500 (EST)
+	id C19BF6B05B0; Sat, 14 Nov 2026 08:03:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E2AD6B05B5; Sat, 14 Nov 2026 07:46:11 -0500 (EST)
+	id AB9BC6B05B1; Sat, 14 Nov 2026 08:03:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 37F916B05B3
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:46:11 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BB31B14035C
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:46:10 +0000 (UTC)
-X-FDA: 85433697300.17.5C0AD85
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D445B40005
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:46:08 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=FLD2lkG8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 83FBC6B00EF
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 08:03:30 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EC0DCC03F7
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:03:29 +0000 (UTC)
+X-FDA: 85433740938.29.43DB515
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 559771C0010
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:03:28 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G8tM8tV3;
+	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794661408;
+	b=JrpJgaceMMUcRwVStCv4IM5O1TwpCSE/ZVX+XAijiooeFNL80amq8wjTZBCzrDl6+faXGH
+	vx6+PlcILbeQCGas7Mj8fbUARupSlsbnSCrfQql52GObSickU5srxrgGURq4x1nO3dZ5hM
+	dcY2IfNw4se0Ou+g1pKBpqb03TNCpp4=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G8tM8tV3;
+	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794660368;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1794661408;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ULKrDX82PMQTKcgYYqf1zY84iCTLqlXPJmOCgLPPGgw=;
-	b=7p9qBpypShYF0J1k0E6pqegwpG5e1bMmV2xbo42kbfTT8RaoXQF7rwH0oIoAp6GLNiEvar
-	sts/MKduIs4KWPVL0+McwYTdHtYUt9ProZMU9ZXQKTXZjbKMIU77iKPpDIT3Nua6bzFuDu
-	alCzYlUOXIhZJhEtXxhFsGiHBvl9IDM=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=FLD2lkG8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=azpijr@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794660368;
-	b=JPitCfLJ+iakL5/LCKLwNKQqeqXySj82tAwWZqogRk4mAn51gfLZB7Px/ChJ21rccHeh1C
-	Xmyp0UBZK8g9UiR5XHr//+1Nb3/sbA3oYUKXVxZarHp14FQkyHS1xgE+VVoNhPyEZtzlsp
-	EHs4qHufTRh3sz+tQ/seHNX+n+HRwI0=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4bb55cda775so8464245e9.0
-        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 04:46:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794660367; x=1795265167; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ULKrDX82PMQTKcgYYqf1zY84iCTLqlXPJmOCgLPPGgw=;
-        b=FLD2lkG8z9CkykJxzcOTd31UTSsEEPc4BY72mPEJgLW2nCcJsYNanTNN3ijJzqL3Qa
-         1eAVsog85UDbGpxG3OkRl6LMxi3kdD+2rTQ+ZgXn2yfgm4Hn03iQz8MsAPHmQ3GRZGAt
-         ggeaOkd67y5MtBHqHLvBXB8WB2wranHrJ2xq4X8ZfNAZ48h/LyIqJ3JMwKpaep4jFFuo
-         1PX5SlePKlyRu7O8l93Fuu/CWhE4zKFL7nhCapC2wY87RBjnTkd/BiP1ZbXV292axRvM
-         QpWodtsZYLjnTNRCe3ry4uzxmrqTME7ek2E4QvXpYU4gsDd2CqiF21vAG5QJgD1aPIkn
-         mmGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794660367; x=1795265167;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ULKrDX82PMQTKcgYYqf1zY84iCTLqlXPJmOCgLPPGgw=;
-        b=m8JtiiZdSEomf6ZdfIndhwPgR9Ylk7NREqKdiKORYAmLtXdiSB7msmZiEeSGMOLvhl
-         ZLhEmG0y98pNICzn88ZppRTInsItGxi0kE1CEkG4PTKu65PCJPNYMN8hcyb7qnIiZvvf
-         nmJFWojbAjxGa4f/6lqi15whDwKXlb6lbKT0tX23GavQ6Ix0hbCUuB7xy9hZwQRDV9Il
-         G9UFr0mxVQR6s97Y77hu48ggwyD8AZ+2P/eHaTj1YW1D9BcLWpxPDI2AZAmDEyFFJUJS
-         pBM3R/Xz2Rg8Qp/cyoKtyqo7QPyzw821+eliLUHbQljuyFlH1S+pNQu7jEmg5ylYBOMB
-         HRrw==
-X-Forwarded-Encrypted: i=1; AL+hErGaenDOXlvcBzlzARqxHvHxqPSkRaEvRbkpdhfbn95jcw5aoQ6Cm8piRGMQ9Cfhzf9b/LC59daQXA==@kvack.org
-X-Gm-Message-State: APuU4Z/+sVyImUr+OoifJHQCmdacgfsxPbjH5KmCWVS4HwQ+DjghvAf3
-	Db/RJM/vjS4FiFIRfsNiZuoUaxMg3eXkpC512GnbQ6Tw+rolS4kys66j
-X-Gm-Gg: AYBFou1By+V0xugQ9zEYivAvjoeKHj+3rbbzXNNhp46vTNeGQO7/3zi8y01IMIo3yDD
-	WWApDUCCfDGIBghjM+1+UIRDyaDO5GqgJkBX/gJC3bPY6VvbuqHriT2VM58DTWhSQ5C095zodPD
-	gb65yd62IrhZVVVHvpo2AaVP9PTSvpz6IzoHnj2mfkXIW//84NwAajGa9UPYjUfCbFTgC96enXI
-	2JC7ukZw9jhSkQfwUxQQClLNzzqcbY0hQExyBg9+u7OGQ3eMNgcSkCDb97QNbmlDjo3lVLzXXM8
-	0kJsmfngmB0Jk/IOs/e5YPZJH8DYhTLBSAya/FrIWppnegP4jHmT7AbwO2zqHrpNPGYydtj6S/q
-	YmsqI8ik4j1UTsaBdWlupW3QQiVYuwEZwSgqqMP6Gh7wFoMFlLc4p7nydJow/8EXjE4kcOGT0xx
-	O4LqLkqrmwzt6lDwfWp7IRvoDYkrqt2Mxm1EvrjNR2QJaNiPjLfuBYtAZCe2Ae9PdGC9IoEhkIW
-	D+gf6rU1w0SAozmi69szwwC+dV3zrHhNj0wDMbQs9xeXx0+/tTjsNVQcBdaHDPWyTroI/obfx6+
-	vXWnqKSVb3IUSAcO0OyTWizU
-X-Received: by 2002:a05:600c:4e44:b0:4a2:180a:3417 with SMTP id 5b1f17b1804b1-4bb55c5f5admr108580805e9.1.1794660367022;
-        Sat, 14 Nov 2026 04:46:07 -0800 (PST)
-Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb56f8d054sm89043665e9.3.2026.11.14.04.46.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 14 Nov 2026 04:46:06 -0800 (PST)
-Message-ID: <5ff13e10-d8a6-43ed-a718-8b34ee08d4e4@gmail.com>
-Date: Sat, 14 Nov 2026 13:46:05 +0100
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/2] mm/huge_memory: find partially mapped shared
- folios with NO_PAGE_MAPCOUNT
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Rik van Riel <riel@surriel.com>, Vlastimil Babka <vbabka@kernel.org>,
- Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Joanne Koong <joannelkoong@gmail.com>
-References: <20261111113535.330078-1-azpijr@gmail.com>
- <4411389c-2246-4af6-9b34-10d3f259aeb4@kernel.org>
- <e9033159-ffd5-4c84-b355-964687b75226@gmail.com>
- <3744f956-8179-45f3-9d87-c99c82b2f8db@kernel.org>
-Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <3744f956-8179-45f3-9d87-c99c82b2f8db@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+	bh=OhtDaBqfgfYPjb7TMNuqj+0oVMlkx3O+ARPkcmtesQY=;
+	b=nI3ficFczWnu0GOF+ZXs3RtHCFw/G/kWXECZvEaBOflVUA//HczBQGaSO1tO09w9WytyFy
+	Fd2bLZz8/QsB2u2OMauK1gxYL8fhfw8obEvzTtS3ZOYtbtomIPIFgNiGyj/pn8sjamiqo4
+	HBkyE1o3rSEBrhHF+5rCSD4sAMGvXbU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 82C4D60F01;
+	Sat, 14 Nov 2026 13:03:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD181F000C4;
+	Sat, 14 Nov 2026 13:03:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794661407;
+	bh=OhtDaBqfgfYPjb7TMNuqj+0oVMlkx3O+ARPkcmtesQY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=G8tM8tV35jFTCNUq28dlp45KybfJnGh2jJqB0QMLIquRn0vDcbY21QtoFdt1O3ehi
+	 Cg2cDeZ0cVugIZ600RpWcnEGx9Zu7oh9Mpt0IfsM4m+O3j9MAPzHnaQG06ae4aqQHD
+	 RWiP7aWTmbUhiZPxv72gnxcBXRz1VVcmQIBK+8Itof18um6imsRq40HEJGGaRIoJdE
+	 Ratyi8nW7b4yHC92n72x4GuPb5zaYWB/HLyUs22unOm+kA2jNm6m+BG2AK3hQjWegU
+	 QiWAYuYDtrE44wrxIyIFThHQ+wyHyxQg866PVB/D1Z6TJ3Fso5N4n3gSCCYOVhnjnJ
+	 BnfHSFljyUX6Q==
+Message-ID: <sashiko-outbox-214521@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] mm: kvmalloc: Bail if called with soft or hard IRQs
+ disabled
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Herbert Xu" <herbert@gondor.apana.org.au>, "Uladzislau Rezki" <urezki@gmail.com>
+Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, =?utf-8?b?TGlhbSBS?=
+ =?utf-8?b?LiBIb3dsZXR0IChHb29nbGUp?= <liam@infradead.org>, "Davidlohr Bueso" <dave@stgolabs.net>, "Michal
+ Hocko" <mhocko@suse.com>, "Baoquan He" <baoquan.he@linux.dev>, "Alexander
+ Potapenko" <glider@google.com>, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>, "Marco
+ Elver" <elver@google.com>, "Michal Hocko" <mhocko@kernel.org>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Thomas Graf" <tgraf@suug.ch>, linux-mm@kvack.org, "Lorenzo
+ Stoakes" <ljs@kernel.org>, "Chris Mason" <mason@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Andrew
+ Ballance" <andrewjballance@gmail.com>, =?utf-8?b?RGF2aWQgSGlsZGVuYnJh?=
+ =?utf-8?b?bmQgKEFybSk=?= <david@kernel.org>
+In-Reply-To: <avcKfEvln8_2a7fJ@gondor.apana.org.au>
+References: <xdzcyoou73blpfdlgy47i2ktrcsffnclerzojpgrxphid54gjc@nicdcvzqx447>
+ <auqtTjXhD8is-y9f@gondor.apana.org.au>
+ <CAHk-=wiE0KG+jkhmJWifXuAVivtB63WCWtdEpGAex7-T0SHd2g@mail.gmail.com>
+ <aurAxRpCwzeyXeVj@gondor.apana.org.au>
+ <CAHk-=wgPvbYRcKpQ8WTH-EYZRgMG0KSH+cZxY5-Hyf+X7JjWsw@mail.gmail.com>
+ <aurJZ81qnbiHH_P1@gondor.apana.org.au> <ausS3LQNkdc6lBy3@milan>
+ <auxDm_YO4oACA_d2@gondor.apana.org.au>
+ <CAHk-=whXvVO6a5AreZu3LPBj_wjpzUanwhvu8WqWP2q7g5S7Vw@mail.gmail.com>
+ <auy-7TvVzJ-VCrG4@milan> <avcKfEvln8_2a7fJ@gondor.apana.org.au>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 14 Nov 2026 13:03:25 +0000
+X-Stat-Signature: dn3ch95nbbxxixpf9kdxcok9whnr7hqt
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D445B40005
-X-Spam-Status: No, score=-4.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: aefsgaf1tx4mt6ag1bkxqhz3ykkh8jc9
-X-HE-Tag: 1794660368-362855
-X-HE-Meta: U2FsdGVkX18ZcBrxkhn8sQ74RnfDNPPg40N9skLNTi6udvhyQuOxvv/oY3R2JDP4+8XppUCuIwsnBC+akwiVOrl1srI3+Ou/KS2FifjPUWjwHsEbweVbh2Ykt1mtCTDHq1ywv/NlUQSkpdYrDPfyf+ajhY239QZP/uLMhFKr+d5bZAQQDjMqnR632pC3vrIoXxSQNmu1i4L+CaQZMmsTh9WfhrJv63GLIBBVmljIAR79KzFVUslyMJL53YlAFiKOZm4CsL56ArtQMEk8z3w32oR5qvdTxB5vDstY6P1QGVnvuSXq+XNsRNeC4H1xyML7fwpMeeEAweFugBD+Emj7oBxpYjiO3N0zXuuKncr2kVwAgz42Gy034hXORk+TcNuvEQ9MTGqJDcoUPJ4xdTX4mfL62Dlh2nGco+M7p/eG9UaibOeeLBh681RB8iHpnyF4G9aBLcECEXKtOQSstjR/CgKwRcvj0FDqG4QkD9mA/DXeRRazya+vSKIsq0kaIgUSxDNhKarUbR7mFYrenIy8wtD2Wd2Mav6sOHSP6DW1mSM4l8soj+bvBv3iK8prEnzfadAiImrqX7ANR+M49xPJKzpaIHlE7WiNWcjEmffk4R/oqvmLY5aLoUaJci9QZq0hVYA+x5EaI9/xTUuMb1eqGoQqYRQtYs5/L1H9O2/g4m6ApBn4egpZ/4QY+vKMpDDQqAM9JcgWkPO1tJIPWSvYFjrZLlsJNu0+ReN9fi24dgWq0B4yjuIDuN1McO25049uY8kVHeJAZl4D9z9ACTn8doLLr9aIsyrS4EQYw0vYsQXFtL+MOu8GkgbJapbrTSVEDr7TIsLxHlkBNYe0lwVYDodWnYlsOk0V5FRRdcCkncBeQiN61al2y6bgRtW6OpFDcEZW4JmCauVWEqwhvSZeJQyih0NDda0tVoSJLFQxBrC8tta2gNEFvFT0yOywRjuGsTTtwywgI3qg3fPV0O8
- 4kHBRpJp
- DDj3srld/rLL+k5spqEGJmfArtwn6DzMHL6VIf62+G3Fgr0qrVevxX8jyvXF9qqO6qQjHiM/jeRvL7E+/AWRDwAmea0oKyLbGBNZrGkMmPC5hmL13gIup6JwEI3axGr5BjKur52oPCD6HePGuMeQuqUIB4pYpnKergCWuVKYBTO8X/e8aYXbaYDeWkZQ1l9JL61enDQyBjPoM4uuc0jzrbg9N8ez2ctKcRt0nL66W9y1TvX2A2B3SoZQu72tDFBAetgdKjqylZbi+43wDRrXRMfPOygTSHezsdH97qPCllZsZTdzYIdm/kETvO4+awVI6122znVkKNjCKmIiRX4cv7zRHl2LQgETi7XbSGGe1suZ/LUfZESx5LFqGhkt4gL4oHOrPs1blIy7ttuHVr0dvz8U8IqVDW1aivIdmNS28FqJf7Bc692fRl25SgLGpE1HRVUGEEIzW30IbwqKJRTB+b3iGgLVI6FROnCg/fU2JuUrHwVQ=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 559771C0010
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794661408-436359
+X-HE-Meta: U2FsdGVkX1/e9UdsUrirNEQwO/9bn5RjQrapxEKJ2bal467SLU51RJ6AtFF39Zaf88oSATmAQGGA/MvchrkYu0IcfS8TPIVPOn1ZPIrNFCVJXHGVJHqpD0Q2XmB+gOxCr+vriXVCg5RhiZOXF2A3pHDBgrjagSNPqn3cBMSITSje0fjThNOYgVQp7ZbaIzZNX300s6rNK+rWK7roZHow1LTGxk/OsrEjEW/8aTqxgT+Hmi9ZmlhFPoqHYFOsP73MAMPyIXWuxl+vbKZ1lQHJsVvmeA481cehzhMiUrRwUVHaLAXLs4OpJkawinC8p45sIpiq4aaY7yfvb6Z/0mHV7OF0JgG2zug15oKb0PsQtuq8y9kmbxMNf/Mc6EwlXi3tyjdp0XmBCnD9Soovr/kWuzn05E5PQj6h4vI2EZcJcMhTuCh4AQvBNjgn2oKpXthLJm5nwHJy9CUs15U06BYoeVQvBIcAWAzi2UldFRbqSzTk40FqpPJohhgA9hshbhdfDJlyNK9lCj/7l/KDewzBNMFzd6tS/C+6tYNelsMCW8U11+jo6qGtFrn1sLqhogMnOhdjQqhL6f6ff84Y7DFGhAR1ePK9n6acm4xG//D3bEDK8fAptVh1tnH/MCyqGX5L4quILQ7mzNf+2tkGS2IWILRlvKKc0UjRIOOFvH3Ec3tTvWYDZGlTq9PJsvj332yWs+pZkv36yuyj0dK+9R/W+f4DMQAqxxRsbKgLL3aYYwL4ov/Kt8K3igrXUqSrtZc7Y5zCXw5Zwyw2YnVaaq905xKGkkBcg3mRz5Rpz6XGzuLuyMEtx7ddscDudO591TNgBq6OpiyC3WBIscumP+208I4jKn/dC68jnqc7yq4x7PNTGh8YcB+nY4hvYMZuVKmMsgf8RbIuYs3kgtkdzLkGNz6UepAJv7Drbmjd50LLpUv2onLDGDE9gbkk++5iDZsrDdjlZn8Cdkmzgka6J7x
+ G6zbNoqT
+ uF7DuM8au5ewEPRxgXOBLGyKpOCqs/nPcOdiUgRvIrG6EaOrBk37x6xrpgVU0gPhmqJsf6QjnRrJW8g1EieEg+h9ADBaoiAkpgbiwIIv5GID05f56QimSdoDjqc375+2GQMn0qZ3yeGp2p7JMDRRZnL8OQVeh0b0eX1HW4M03tLdQSJTibd32yn5Cp+NcFI2x1IE3alvBnps2zMSCj69a/BkFEkPzhkQxy9iNh8dJIusC67zGBgCe4lxtFjP2NFImRG6P2f92Z5L2LARgcCxfoUqAsPEMw9UjjBerrtSlrRfhaTo1ehdJHW3j1ql0TxIyFobBR/CeJwMBEpUtxDPJqaRkuUp+4wmNjdwQxLk0j1zgFpcKRq3U5650JfZ43w5jPanbzrDHH8YlgXuas7EO96CzUuCBwI6wSp9IP9r65gOmCPQFZrD2iBFMvz5p5Sx5YFDCo/FlofevlGYhtlq/5Q4c2Aztvex3CU+A6H36aNQa5ZAAKxgPJPHxwkvu85yCG8+EtxuImKJDfibtXUXtx1YrtjqMD9Ntmssnuzk9MYeXEQO3HRMKkR7riTDQsGjm3toEJ1xFeNza78R1JFLj+BvTteA5SBveMsiy2POwsRiZjo1H2Ad111OmiSaHdvwrBX0HANCoq4+REInrJjryQsy2TLco2s3KAXro67eSMSw2SdZQMDxTbjsUQpDhufFu3HIJgSIQjJwiMp9LrcrelhxYfchWUxz0B0nkRrP4qiVmfbXL3iiS7bTSQaOqzC+uW/cvmVRVAe9b6hQEhrOk8JbVrRw/miy682Ev9VGriEEpMoo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,60 +107,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 11/13/26 9:16 PM, David Hildenbrand (Arm) wrote:
->>> (b) What is the overhead from having way too many folios in the deferred split list.
->>>
->>
->> I don't know yet. I only measured the walk in a TCG guest, nothing on
->> how long the list gets
-> 
-> That would be really interesting. I assume there are some cases where a simple
-> fork+exec would already add pages to the deferred split list even thought they
-> are briefly after fully mapped by the parent.
-> 
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] mm: kvmalloc: commit message mismatch and deprecated
+  in_interrupt() use
+--
 
-I tested and, yes, it does. bash doing 200 fork+exec with 64K always
-queued 2 folios in total.
+commit bac4fc34f0010889bd9f7724714bf23ec9386ed9
+Author: Herbert Xu <herbert@gondor.apana.org.au>
 
-[snip]
+> mm: kvmalloc: Bail if called with soft or hard IRQs disabled
+>
+> On Thu, Nov 05, 2026 at 06:37:49PM +0100, Uladzislau Rezki wrote:
+> >
+> > Probably the simplest option is to return NULL for non-blocking vmalloc=
+()
+> > allocations when BH are disabled. That would address the reported
+> > rhashtable deadlock.
+>
+> OK let's try this patch:
+>
+> ---8<---
+> The function kvmalloc may call vmalloc under the hood even when
+> used with GFP_ATOMIC.  However, vmalloc uses naked spin locks so
+> it must not be called if the caller already holds spin locks that
+> can be used in hard or soft IRQ context.
+>
+> Use the heuristic irqs_disabled() || in_softirq() to detect such
+> callers and prevent them from using vmalloc.
+>
+> Reported-by: Liam R. Howlett (Google) <liam@infradead.org>
+> Fixes: c6307674ed82 ("mm: kvmalloc: add non-blocking support for vmalloc")
+> Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+>
+> diff --git a/mm/slub.c b/mm/slub.c
+> index a151268b97263..5965d69926154 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -7148,6 +7148,14 @@ void *__kvmalloc_node_noprof(DECL_KMALLOC_PARAMS(s=
+ize, b, token), unsigned long
+>  	if (ret || size <=3D PAGE_SIZE)
+>  		return ret;
+> =20
+> +	/*
+> +	 * vmalloc uses naked spin locks, so it must not be used if
+> +	 * the caller already holds a spin lock that can be used in
+> +	 * a soft or hard IRQ.  Use heuristics to detect this.
+> +	 */
+> +	if (irqs_disabled() || in_interrupt())
+> +		return NULL;
 
->>> Maybe one could track it a bit broader? "any page in this set of 16 pages is
->>> present". Reclaiming a single 4k page from a 2M folios is barely worth it.
->>>
->>
->> yes, that works. maybe with the group size scaled to the folio, so the
->> map is one long on the stack and 64K folio still gets one bit per page?
->>
-> 
-> As an alternative, could we also just look for the next page incrementally?
-> 
-> Like, start with offset 0. When we see that, move to offset 1, when we see that,
-> move to offset 2 ... and once we saw all pages that way, stop the walk.
-> 
-> I'd assume that, as long as VMAs don't get remapped, that should likely work in
-> most cases, right?
-> 
+[Severity: Low]
+The commit message says this uses irqs_disabled() || in_softirq(), whereas
+__kvmalloc_node_noprof() calls in_interrupt().  Note that both in_softirq()
+and in_interrupt() are marked deprecated in include/linux/preempt.h and
+documented as not to be used in new code.  Also, the commit message still
+contains the unstripped email reply preamble and "---8<---" scissors line.
 
-I tried it. if the parent keeps the second half and the child the first,
-a fully mapped folio looks partially mapped. maybe the one long map is
-better here?
-
->> however, maybe if I don't have real evidence, better drop it?
-> 
-> I'd be very interested in an efficient way to test if a folio is partially
-> mapped, and where the holes are.
-> 
-> Knowing about the holes could guide a targeted buddy-like folio split.
-> 
-> There was also the idea of letting folio_referenced() for that purpose, when we
-> area already doing an rmap walk.
-> 
-
-okay, I could try that. would you rather have it without the shrinker
-walk? with no swap, reclaim wouldn't check those folios.
-
--- 
-cheers,
-jose a. p-a
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/avcKfEvln8_2a7fJ@go=
+ndor.apana.org.au?part=3D1
 
