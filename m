@@ -1,107 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530E4606A329
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 05:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C90606A32E
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 06:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=lO44GlAL
 Received: by kanga.kvack.org (Postfix)
-	id 2C1436B00EF; Sat, 14 Nov 2026 00:55:17 -0500 (EST)
+	id B03256B05B1; Sat, 14 Nov 2026 01:02:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 269516B05B0; Sat, 14 Nov 2026 00:55:17 -0500 (EST)
+	id A8D696B05B2; Sat, 14 Nov 2026 01:02:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17FEE6B05B3; Sat, 14 Nov 2026 00:55:17 -0500 (EST)
+	id 9542A6B05B3; Sat, 14 Nov 2026 01:02:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EC1326B00EF
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 00:55:16 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C6F15C0368
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 05:55:14 +0000 (UTC)
-X-FDA: 85432661748.08.C87699C
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 03DD340004
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 05:55:11 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794635712;
-	b=2eszlz5P0PdF1EOwhl5AQJtHTNN2cBRk+jso4ZFqfVqyUQXSqht/A21aCFkWw/YTNNO3NU
-	yLBc11+uEv5bdTuALYVL31Mjyms41ylqaR8A1/iI9MLCiaFOAJlITS4Cz0N9r1jJEUxIqc
-	zEdRhmTy1/V0ZNzrBDnov43aZWy8VGQ=
+	by kanga.kvack.org (Postfix) with ESMTP id 6CD2A6B05B1
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 01:02:20 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D5FECC036F
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 06:02:19 +0000 (UTC)
+X-FDA: 85432679598.09.A8F95A9
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 7BB37C0005
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 06:02:17 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=lO44GlAL;
+	spf=pass (imf22.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794635712;
+	s=arc-20220608; t=1794636138;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=zGy1vdLayt8lRYKcl1ZixKiv5rYlTz4T8Pjmfj56gUQ=;
-	b=NqNkdoIdeIIYIWZjnOIJPlRCn9Nad4Pql1pQ4S4W6Lt5omzgMfRA02vsv3mdPu9an4Ucjw
-	leAkHhZcfEjpuYt0ni7cAM+nU2i1wVNyL/UAjxeGDsL4UNoEDPwT04kchPuwgbDkE+t5FH
-	39YmXc+XhcwqKXDo+XrOXsxMkDiN9iU=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cSnX/lDPO84uhZYL3He4tA7vIj3wFfw46jJJRk/azek=;
+	b=wZ/cS0TjOfYynwN0wvE+aeZuze7UylvR/KprNNUMCQw/AAy4WtB7A2mEBL9IZA215pGf2F
+	MRwGhodxQsH3h6Ya0+S6sn+iYfi/QM4/tUMjAsUHjzrbRJ/qR2HO3sTmCHvk69sp9/Q4DD
+	8N8NCvbQQEZRHdPTgtOAeiowDQM0vP4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794636138;
+	b=Sto/IGu1FhQg0dkYwgXBp2r/TJZyEn1zUKuQk/WoUDHp5DQos8/acNzpy9/9ehxxPVca2z
+	iQ1tsunpMC9C2tFzIb93f9Lgbj8qyXYhIwuidNUYd3KM2QpzhCzWScgbR19jrMfjn/69bj
+	8W4vO6zkB+HjQojXhwQKTKyp0pQ9Tcs=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
-X-UUID: eec1f348dfef11f19a56ed5b684f684d-20261114
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
-	IP_UNTRUSTED, SRC_UNTRUSTED, IP_LOWREP, SRC_LOWREP, SA_TRUSTED
-	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
-	DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
-	GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:3275e801-7e8f-49bc-b2a9-4c4c6dff9e31,IP:10,
-	URL:0,TC:0,Content:0,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:-10
-X-CID-INFO: VERSION:1.3.19,REQID:3275e801-7e8f-49bc-b2a9-4c4c6dff9e31,IP:10,UR
-	L:0,TC:0,Content:0,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:EDM_GE969F26,ACTIO
-	N:release,TS:-10
-X-CID-META: VersionHash:7db8b62,CLOUDID:c028a24d930a5a1200e4ebd263531e5a,BulkI
-	D:261114135506IBV1DO4P,BulkQuantity:0,SF:17|19|38|66|78|102|127|153|865|89
-	8,TC:nil,Content:0|15|50|99|100|101|118,EDM:1|-100,IP:-2,URL:0,File:nil,RT
-	:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP
-	:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_SNR,TF_CID_SPAM_AEC
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: eec1f348dfef11f19a56ed5b684f684d-20261114
-X-User: lienze@kylinos.cn
-Received: from ubuntu.. [(111.193.136.161)] by mailgw.kylinos.cn
-	(envelope-from <lienze@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 371179060; Sat, 14 Nov 2026 13:55:02 +0800
-From: Enze Li <lienze@kylinos.cn>
-To: sj@kernel.org,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	rdunlap@infradead.org
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	Enze Li <lienze@kylinos.cn>
-Subject: [PATCH] Docs/mm/damon/design: replace "same to" with "same as"
-Date: Sat, 14 Nov 2026 13:54:36 +0800
-Message-ID: <20261114055436.5546-1-lienze@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
+	imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=lO44GlAL;
+	spf=pass (imf22.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=cSnX/lDPO84uhZYL3He4tA7vIj3wFfw46jJJRk/azek=; b=lO44GlAL8BpSDnM8BNoovadxIu
+	kAYTKzZ2GcRv8ke2DTiZBmoU8qAc9Gmf/kd3E55EyYB2xCW6TtsbGISk42BrLz331ClG0UoQfZvn+
+	4auvUXT6EE2wAtpNt8mx6uL+OVlAFX+fTawjVAJZxyHVjUn9BzTjiIs1hm21tGhKnZj73IbrCX0G4
+	D28d6zQjJvDtpRQ0PjQfLELliQgEE2D7uVpZT/YOVjexkLTIa9KFmRP6K4sTw0f/E/CigGQbzAYxi
+	GlMfGlYzO1qGiM2mYHWhI/bySErpwvOu1vASJlj0GqJoA3qcaymyhMisJYSOPowGF5FVFyo9drTOM
+	43TEQRbg==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xS6q7-0000000FWJ8-3fe1;
+	Sat, 14 Nov 2026 06:02:15 +0000
+Message-ID: <aabdb561-881a-4824-9d85-860528a99099@infradead.org>
+Date: Fri, 13 Nov 2026 22:02:15 -0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 03DD340004
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 1t6jeczwtb36tbkjx9ecyjqbpbghzuma
-X-Rspam-User:
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794635711-998403
-X-HE-Meta: U2FsdGVkX18KThllVoAeUhzfPcovNbs2GVpX3LeDT+rGRbXQqDcnXn92rwgKh9LtxNtN2Axc44pAcxvepDax7uEL6kND0gPhfjHJR4YS/eTaBsSxoaNrU0ycSbAcS8ymUXGv0U2cTnxvlZXWCOTqZpASwPSFuwVsaFlmuySHNgCYOWNZIAaDhuNXArZX9cgrIqiJwEjkl2KG6rraz0l1+E0tvQpAVbBXbHkLC507BLwlyBbPO6+W7zS/M2bn3UUQkVVjGiIAZYCjiDKSl6j5pao+49q3lhPzqyBc4SdgxoZYeO+jjaPDxNgbfG8A691mzo0jZMnqsVa5x8fkED3rAr3Cf4Iy/Zyt3nBF5MfexZNzMB8g59VbS2d6LX+6UG6+hnGDmdkCgFdcEfbShtId1VS5HIrVG5KDssj/nWkCwU8Jg337U4B/oPtt5QzA5VNESTqVvid85sa8GUGS+sqAjN2iDmsXjK/RR9ZW+xrobwNLkuyrTf1X9J1Q9NRlpiuGlBvfe0YjHq0w3zQjiicHfC7IlzkeG4JpgsrkKivlvvcMYEzywM5buzPuh3RaD4Bu15lpuCQW46qwMeC+jbqlADUCG9kr8V51qn3GtTYxzqY3C7jJhg/EeyhFqHGhbdAyAocV5U8YaH442v/q6ftQzfFFQzon54OU0A3lWtSS+2xs949N+4+NRADKoKrOP9FuKEf4DdmSuk2sdTVUmWjOBwXoeW8BD1zSZAtr3821LyzJqGThvGCCOtw8UtN0ZpM/0Gc5mVlCdwmpeNvLefv2BSkeqpjQjHExPanGzb0aGC3GwW0Bj724Ks1ALoUSsxIfiJPxuo2XcFYl2SCPm3+4BsQ0z9xvHTsIItIdm1bZxxD4yrcsspytoJ8uFP9fEJpoX1rONd5/9dl/JIZ4kT7e9rYpVND0hS8dtx/uTmsOrYEWcX3WmgjdRypqZb7wGMOZZJ0aKT0kObKzZbTWdPX
- 5BTzZck2
- ojclWka29DHCznEBK/Fah/vDNkkO/WTqi+s0LYBlc1g0E6FDoF5n96wtfHYjSgnDioNIZjNurI35Xm0tNymYPk9ZmwM5wxHBjf0n7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Docs/mm/damon/design: replace "same to" with "same as"
+To: Enze Li <lienze@kylinos.cn>, sj@kernel.org, corbet@lwn.net,
+ skhan@linuxfoundation.org
+Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-doc@vger.kernel.org
+References: <20261114055436.5546-1-lienze@kylinos.cn>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20261114055436.5546-1-lienze@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ig77grjbq9rfcxassedenxm66q7ozbtt
+X-Rspamd-Queue-Id: 7BB37C0005
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-15.1 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794636137-448021
+X-HE-Meta: U2FsdGVkX1+/Pm5JhWG3HhzbzN54AZKU4Hdqx21AqluhpjhABo/svhW7eFf0zOyScdNTsOkmtjiyhON9C1FAPrAnknxo5KMELBMW/XwFNYDYqLoGUW3XUb4NA00eQFuVfvR3XNz66OCUQWpyqQbs4tXO+koINtRmD2w3BLQCvv097MusQgGTdn23GaaUJAdiMnM1mOZD4fIQcYm/CN0AOXQAZOtIp+WzV8j0Wsv7VT80ohX1jdkLf9UPDCyAe9XP5RHkSL0MqNjeFEmi6yOWxGoKA27m39vPWv2x0YXCtdgQx0UKUBzWH1UeMBPZIpyRQpqtJL9bOeHhe/Nqsfhu6EmkchW31wp4+e0x6g3lllFFzk1g5bvh6XxE6b3NotW5i1zPNRUhxAEq3bj0GapM6dbY31G0QyarE0Vwfkdc+li31/32BG2KP0LXI35XoSCwnVd86Vmxi9PyXiUL9d0DHsSwrZFiNuemNMKIN3a6HUL1ZKEoZlLjVURljuuTisvY1oyebyiK49IiA9jXlrgDEHdrMs6fzXE/PEBMIwqfDzsNyAyhl5ow0Yzi96OjcKIg3R01H3KDWC3u1GXzY+JoDH9MjVCn0QuGbhVI07P3ZgprjLSf6qfbYB9EWXrY08Lbd7RcdJJjaxJ7hkd8AqkyRBRP/T0HTgA0hqCtqp6RSj+S8fyvNILemsJ8qjZCG+UdKLpTuXF4PNxSMjc2a8KiWFFjtyoDkQ5NwPuVRacGeDjQhjoZ+zAlDpq86sM1BBDBJp5p4cSOXGBBBbtrz/Tpf1D774vZZ3RWtxCpE5BaBeC7zRFMzwMWK1b6d9vZ1UBtviF2GF3kFf9sPUMFwwPBxf85b9v7BmSfa5TfRwg/YttIIjeWjIJGnrMC7V8qp3mZhk6MGyDWS922ZBp3F87SIYMLk7w+QIhc8SushRBKtJvGRB3P17e0cqX0x768Xtt70M96T4ZtFJHR7V5JNj7
+ zDbjnlD6
+ tobPvlqgZmwHCJ+cVSU/QdGwY++5h3yg+82rCHFZHDhoVfiBUi47WCc/2bN6BNS/wxng3oF/iC2KPM66gKxo1b4EEPw77+4pR9yiFF0F/pwQUqjncjk9yNCcIDNafcoxGyeh2IMbqyjG31X4/ezr17SwY2XZwNHAn8WU23AHduc3PQEGbjvyqYVfPqMdIayYwDqRkotW7dQzDBcd0kmBJGDhz2YqLBaIFJZ6oc36AG2IRZqCjPaqpuQDK50SBIkpCjdT1+d4p1QPathpHLxaPx35auEgDNAXNm6FcW9ZgwgKlRLS6CZKceCUgpDYQKqcc2s90GcNVKkIDLLVPOapQ1of4/wuKvaGlIiRRxHP+pAcRlWQHK3DjWTciAQbslUtBp5r5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,60 +95,67 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-"same to" is not idiomatic; it should be "the same as" or "same as".
-This doc has six such usages.  Fix all of them at once for consistency.
 
-Signed-off-by: Enze Li <lienze@kylinos.cn>
----
- Documentation/mm/damon/design.rst | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index b676be697158..6284b9005443 100644
---- a/Documentation/mm/damon/design.rst
-+++ b/Documentation/mm/damon/design.rst
-@@ -292,17 +292,17 @@ DAMON :ref:`context <damon_design_execution_model_and_data_structures>`.  The
- registration is made by specifying a probe per attribute.  Each of the probes
- specifies a rule to determine if a given memory region has the related
- attribute.  The rule is constructed with multiple filters.  The filters work
--same to :ref:`DAMOS filters <damon_design_damos_filters>` except the supported
--filter types.  Currently below filter types are supported.
-+the same as :ref:`DAMOS filters <damon_design_damos_filters>` except the
-+supported filter types.  Currently below filter types are supported.
- 
--- ``anon``: Same to that for DAMOS filters.
--- ``memcg``: Same to that for DAMOS filters.
-+- ``anon``: Same as that for DAMOS filters.
-+- ``memcg``: Same as that for DAMOS filters.
- - ``pgidle_unset``: Matches if the page for the memory is marked as not
-   access-idle.
- - ``pgidle_set``: Matches if the page for the memory is marked as access-idle.
- - ``hugepage_size``: Matches if the page for the memory is a part of a hugepage
-   of a given size range.
--- ``active``: Same to that for DAMOS filters.
-+- ``active``: Same as that for DAMOS filters.
- 
- If such probes are registered, DAMON executes the probes for each region's
- sampling memory when it does the access :ref:`sampling
-@@ -706,7 +706,7 @@ There are two such tuning algorithms that users can select as they need.
- The goal can be specified with six parameters, namely ``target_metric``,
- ``complement``, ``target_value``, ``current_value``, ``nid`` and ``path``.  The
- auto-tuning mechanism tries to make ``current_value`` of ``complement``-ed
--``target_metric`` be same to ``target_value``.
-+``target_metric`` be the same as ``target_value``.
- 
- - ``user_input``: User-provided value.  Users could use any metric that they
-   have interest in for the value.  User space main workload's latency or
-@@ -736,7 +736,7 @@ auto-tuning mechanism tries to make ``current_value`` of ``complement``-ed
- 
- ``complement`` is a boolean parameter that determines whether to use
- complemented value of the target metric.  For example, if ``complement`` is set
--and target metric is ``active_mem_bp``, it is effectively same to
-+and target metric is ``active_mem_bp``, it is effectively the same as
- ``inactive_mem_bp``.  ``complement`` is no-op when the target metric type is
- ``user_input``.  For the metric type, the user should be able to emit
- complemented metric values on their own.
+On 11/13/26 9:54 PM, Enze Li wrote:
+> "same to" is not idiomatic; it should be "the same as" or "same as".
+> This doc has six such usages.  Fix all of them at once for consistency.
+> 
+> Signed-off-by: Enze Li <lienze@kylinos.cn>
+
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Thanks.
+
+> ---
+>  Documentation/mm/damon/design.rst | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+> index b676be697158..6284b9005443 100644
+> --- a/Documentation/mm/damon/design.rst
+> +++ b/Documentation/mm/damon/design.rst
+> @@ -292,17 +292,17 @@ DAMON :ref:`context <damon_design_execution_model_and_data_structures>`.  The
+>  registration is made by specifying a probe per attribute.  Each of the probes
+>  specifies a rule to determine if a given memory region has the related
+>  attribute.  The rule is constructed with multiple filters.  The filters work
+> -same to :ref:`DAMOS filters <damon_design_damos_filters>` except the supported
+> -filter types.  Currently below filter types are supported.
+> +the same as :ref:`DAMOS filters <damon_design_damos_filters>` except the
+> +supported filter types.  Currently below filter types are supported.
+>  
+> -- ``anon``: Same to that for DAMOS filters.
+> -- ``memcg``: Same to that for DAMOS filters.
+> +- ``anon``: Same as that for DAMOS filters.
+> +- ``memcg``: Same as that for DAMOS filters.
+>  - ``pgidle_unset``: Matches if the page for the memory is marked as not
+>    access-idle.
+>  - ``pgidle_set``: Matches if the page for the memory is marked as access-idle.
+>  - ``hugepage_size``: Matches if the page for the memory is a part of a hugepage
+>    of a given size range.
+> -- ``active``: Same to that for DAMOS filters.
+> +- ``active``: Same as that for DAMOS filters.
+>  
+>  If such probes are registered, DAMON executes the probes for each region's
+>  sampling memory when it does the access :ref:`sampling
+> @@ -706,7 +706,7 @@ There are two such tuning algorithms that users can select as they need.
+>  The goal can be specified with six parameters, namely ``target_metric``,
+>  ``complement``, ``target_value``, ``current_value``, ``nid`` and ``path``.  The
+>  auto-tuning mechanism tries to make ``current_value`` of ``complement``-ed
+> -``target_metric`` be same to ``target_value``.
+> +``target_metric`` be the same as ``target_value``.
+>  
+>  - ``user_input``: User-provided value.  Users could use any metric that they
+>    have interest in for the value.  User space main workload's latency or
+> @@ -736,7 +736,7 @@ auto-tuning mechanism tries to make ``current_value`` of ``complement``-ed
+>  
+>  ``complement`` is a boolean parameter that determines whether to use
+>  complemented value of the target metric.  For example, if ``complement`` is set
+> -and target metric is ``active_mem_bp``, it is effectively same to
+> +and target metric is ``active_mem_bp``, it is effectively the same as
+>  ``inactive_mem_bp``.  ``complement`` is no-op when the target metric type is
+>  ``user_input``.  For the metric type, the user should be able to emit
+>  complemented metric values on their own.
+
 -- 
-2.43.0
-
+~Randy
 
