@@ -1,106 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74F35606A33F
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 02:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E08606A323
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 02:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lYS9V1pB
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gCUUMM3B
 Received: by kanga.kvack.org (Postfix)
-	id 717F86B05B1; Fri, 13 Nov 2026 21:38:04 -0500 (EST)
+	id 7A9F26B00EF; Fri, 13 Nov 2026 21:53:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C8676B05B2; Fri, 13 Nov 2026 21:38:04 -0500 (EST)
+	id 75AAB6B05B0; Fri, 13 Nov 2026 21:53:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DEA66B05B3; Fri, 13 Nov 2026 21:38:04 -0500 (EST)
+	id 649536B05B1; Fri, 13 Nov 2026 21:53:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A0B96B05B1
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:38:04 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AB32C12030D
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:38:03 +0000 (UTC)
-X-FDA: 85432164846.13.8B9576E
-Received: from mta0.migadu.com (out-148.mta0.migadu.com [91.218.175.148])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 5E49080003
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:38:01 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lYS9V1pB;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.148 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 431766B00EF
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:53:38 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 657E540355
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:53:34 +0000 (UTC)
+X-FDA: 85432203948.04.DFBF6EE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C5FD2180003
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:53:32 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gCUUMM3B;
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794623882;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1794624812;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fr+/kMFmCLsGicg9T6i0NCPKmoj+tnWS7HQ+lz/d99c=;
-	b=oJdnQN4tbBx70aaYZHH5Xz388aaut6Z0oED2Jrr380NxzaiKB7moaOmoLZLhlJWgUd9B/G
-	8Y0k/gt4G1xr7KtZN+GEROBhzqgVExMuhGPhGWhdn72Fu06855B2MGyZxHLm99ZTW+eGoY
-	Q2q/cvvHqWNZalQofnTWEDNJwJyU8AQ=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lYS9V1pB;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.148 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	bh=aMeqqTu3FFrkLBazBXeFazk5yXuX836uqQbgKeaJdEM=;
+	b=Im+M7casZxeEtii2g4fZFYp5GrtFynOyy4Fg4hypNwmeq4rR8iWCKNuRopJD7qRHtOUdEE
+	ZoG4Xlpv17qniWurLd9mYYHElqZUFXlL6uYQf584+ocOa8dRFDfBIea0nTJ/qft64RMx8x
+	Sfyh3STJ4ulllGbOVWNj1eAsM1bN2uM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794623882;
-	b=KS0jFDp3RiD1V6ARJ+o3AD6jY8fS3D6hzKbDCW6BsX2JSZeTdk1RrE9IvGHsUfK/j4SAov
-	+eZmUaNMLkuAPFjId3/5xFOXy9PJ1nWvpulyx3E8yisAjnvhUzJfR5c7i8ILbw0uug/jHh
-	8iDxsvPD1AJEN96exvkyP2AMoHgzr1I=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=LhWKw0hIjCAzkLgAvL9lXHI28yxzDvFvC+TmaniYtwk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794623879; v=1; x=1795228679;
- b=lYS9V1pBgRBdEL86Jb0hDCWN+xlxZHDRoQM5lC/+u9DSSJLBi5tsKmfTT4GGn4kfenE0Pu/o
- avTDRINzxymWiJnK0a8CdG6rdPiVhy1/pHBnFo02P23dEaI8WchVhHH7zyY/pbTrhAS6OPJnZi6
- Ag35eZsQ0eJFQLFXOFnHQnUM=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 9baa0a0f2146f049;
-	Sat, 14 Nov 2026 02:37:59 +0000
-X-Mizu-Trace-ID: 9baa0a0f2146f049
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v2] powerpc/mm: fix uninitialized ZONE_DEVICE struct pages
- with PMDs
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261030115326.1005755-1-songmuchun@bytedance.com>
-Date: Sat, 14 Nov 2026 10:37:38 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Ritesh Harjani <ritesh.list@gmail.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Mike Rapoport <rppt@kernel.org>,
- David Hildenbrand <david@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>,
- Pavithra <pavrampu@linux.ibm.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
+	t=1794624812;
+	b=bc6CLlsrEtCh6VqpgpQyR+/9ifLBsd3E6O5qaO9RfYhEc0PSVLpNO4UHv27B5ID98kVkdq
+	5iH5B94XBud/xvu3lJPdtSDlAo6tdQwCmUyrTncj9ij91EtyXXE+5y3UY9EnLSB2VcFfmY
+	ILx8Y5lR4wJj0dkPavFPwMBWDb5VgcA=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gCUUMM3B;
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6DE4061126;
+	Sat, 14 Nov 2026 02:53:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B6C91F000C4;
+	Sat, 14 Nov 2026 02:53:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794624811;
+	bh=aMeqqTu3FFrkLBazBXeFazk5yXuX836uqQbgKeaJdEM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=gCUUMM3BE55e21K/M5raDSyCowvoIZGpPdq/OFmJpzK77BJoOkHKi01KQnTltn2qP
+	 WJ6s3Xiv2XZg2df7rnO2Gxpy5dHihONjDqMOC3k1DfufrOOs8s6MqtdatpeDWX/KoM
+	 FJzpEEXAZWGjbzocescNhk9yW4IeCbD0jeJsm8fE1IcXaWFLVpxuNvdmvfdYhYxvLY
+	 kAcNYLJUjJl6HbmWZbCW0k/B8midBs/vvZ8ZSxyKuS8nHSn64mwPFnAvML0kNkhuQa
+	 uR61i9FdXGH9Z72pXVDv8n/5JzCw8ltzxm5o2GHtoLkXgXK9Mm6DmCNXoa/G3v3ueR
+	 rJHOK7YyyG4mQ==
+Message-ID: <sashiko-outbox-214060@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] selftests/mm: mlock2-tests: fix fclose(NULL) in
+ is_vmflag_set()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Hongfu Li" <lihongfu@kylinos.cn>, "Andrew Morton" <akpm@linux-foundation.org>, "David
+ Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam
+ R. Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
+ Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
+ Hocko" <mhocko@suse.com>, "Shuah Khan" <shuah@kernel.org>
+Cc: hongfu.li@linux.dev, linux-mm@kvack.org
+In-Reply-To: <20261113-for-mlock2-v2-1-f62195fc8394@kylinos.cn>
+References: <20261113-for-mlock2-v2-1-f62195fc8394@kylinos.cn>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <DEAC0390-4347-401E-BB52-9D9BA3E93FDE@linux.dev>
-References: <20261030115326.1005755-1-songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5E49080003
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+Date: Sat, 14 Nov 2026 02:53:30 +0000
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C5FD2180003
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 7wkx4whoaqkba8tydfdqtoy8ab5h8iny
-X-HE-Tag: 1794623881-860810
-X-HE-Meta: U2FsdGVkX1+D/DTFjFDxXrJePCw5FXA1DZjdFfEbNWyhFEXZYOTQH/ctmeFoKesqFkh7XX9KEmH3w9yY7Ufa+R4fGEwBqwWyKuvk8wvMuW4+a8Tirrm9DG0n6u7TubxzCa/iCvOrJoZ1dE4djclILVZxsVfc1xwxpZzy8sd22SOGqfmsMA/hM1PDrbYVB/xTzHBl2cO+yjd78IBsEi8F++Tym3rSuPpMC1psf8q8lYvbPQKgdqHa7/1vJgACBp/e9wIsUd1s774XbNLRnE+yTPzHOeOSlM+4gkbIMzuLCI7hOk12ReeXgHz1f1NwskmOy4o+I1auzRcGMYs6rFaGrWYNCcRDLcByOHtKPftnxrRZ4zQNdhCdJOJaVdr7tZUZ9/s8pXPTCxPMXniawLonbBDwny7OKktVdwWLDQz0IP/zv/Y7VDxSYe+aDILS7hMBJOy/gP8fZi72FevH1Kpt4c75ZYKEFg8+fZfGAMLnVV4VLzSt0aWte6OEQJ0lxxvthBdJjjTFNrQ1cO44Ukb/NAidpGAh3vASSoKD1TEiv8HGbPshRtbf6pJ5EhEV4QTsnHJVIjdLYkdYj9YlljIdL6QTagsOC58yasRPpjXGauJdHaD7hnlw2S24LPJ96/KTKArjtvvxWLDK7v3/22wpTzWzZy6oYlTISNwIzswBF5dZm0YIyhJx2hnKwk62MXQhcWpNVFcbrr3RJUy2sHrYhHSKPR64ekwX1C7ZLWsxGwO1ZT8a1gN6MY8hYzQOxlfUmbEg16WK/VkVkxsrLLlM0qTd+xCuwElGDHmJVlt236Czxd6S+aU4HVYg6LCDwC9YDEfjxRY7x53c0hnveIQsdxRwZq73JFK8Q4PxLw5GiImzTkJruFx+yFXY5Jd8ne4PyeVvefcybUhKMn96xa/tjPMfMaS5zKLofKZ5z8RGQt2t/OWYrxmLdVuVh1d0DvWpZeViWm9Vrj4Kvw1jPuJ
- cYBx0sQm
- w4WUAlH3+/g0nsPEVywcp2l33lxDYTxEKfqM/SJPaMcj71LW07bfZvtPvxTv1CaNTaLRmB7PJ3T/WWSuodeT9w5u8DDYQF5Ynp4ZdY0cZqU9BIvfYzx8g2kngLdKHMBv7m0/B9sYD2JJcYvZM+YXzHp/sM+HxVxtFc/Hbehr/NC08YqwzdINYUVr/3gQwM2O2Tt6hNS/XE8wn303sDUdQtin1o4YrJ3n4ZSlS+4gaCTLxrobSamUb/gGVsz08BHSFr8BOCtDhFOTTykwy/0JWiZuLJPBgfx6iP9v4O2RVwFKXAt/6S+Y8coBnk2T34C5rOEbYXhx6xpK7n/yhCFb7+thNChKpJFk44gdN/vLH63cNz0MSAezbubyUG3FtHf2VI0Qeh6wmW9s8z8+nnuOH8AOXc72R7i6fbBiDUVC3DwzOGU38282UDekhOD2L4EKVNj8WaQaL/V1tUWm6KDnE8NtJVLuby0xZaHnw
+X-Stat-Signature: a34n6ctzyqp4yfs5hmhgmd7shn7azcq4
+X-Rspam-User: 
+X-HE-Tag: 1794624812-396226
+X-HE-Meta: U2FsdGVkX1/vjFIGuI7uOWe97ijj7pbx0Al0V0PyK91sUv/HkHAVDLKmXM86cs53ODoF4mC2dJeqVvnXY1gfpFxwNz0LSqZ1FiGIrEe5grplO3grMhFSW3G0dqOd4ejk/kEN9+MMFZVEBxFd4BnaIm0ybEjfnz97XruWV+fDclpitJFL46HL1WLGMG6/55bll/5N07jleJkCvlmyylWd7kxRa/YKrEJrHxBhpOu6cletIFEUUXNQ8QSQrj30bNQwGa3AR/W5rsM9Gprr9Ooc9QaNuBpTvGKR7FFyWeA2dO1e02diiypVLK2bZvOhZOEiUog+ejgzEjk+h48w6biEHhKNAnoNlQZzE3MS4nMP76FfAx5K2MiG6rtfs66d9ZEjgC+7IsPdHK8j/EBY8sRJW4G5pAL5iaiqoBuQqx832qfj6tlT74jI0kraccEf0utu5DEwmVZBVWB0NzhbVSas3aypZIiWq4sIy6bidEJiK4UKaPBcLLdqjYRY/NhD04l/Tzbx1vcjGNur4OHU0M1OABRFzpbUc5AUJylyVhrT50OHG+pmkWQotPp0vS4XLhdVAiQFgj6l6GJrGtQzf0624FH8xXqODdXHqScPPF9ngpAFGL8jz9Gdjzlmvj079yGtMDs/Mxp+aLJ7C6VFIB9FP7irT6A72e165/CjfS04WlcKxAfhbWQbxUoFoLHBN+EfeSAy8LCtickbOHkknvdUlFPBbTd7fbN4TUuNpG4XFWwhCE4W8wvjJXX+bmPpwgRFoKRaFwTZK2+JoEYc3FCzbP+sapmH5wi7KQd8ofTfiVYuCtZMxEQu2CmuFDpXTqfQaoxIXtO2UtpZz+VA8vCmO+HzYR+t2XpLvd/Qon7T7zCAPyqY3ppTgIf5AW/N5kCcZQdIJaLXimSVi7CAEPDjALOaDYEyFoZl0O8pdtGbeAAJxJO+IOV8bYz/7JWnQZEcJrP5+HjZ8pW6h6kKLiQ
+ /92h9Z2K
+ ca0/zfOvR7wZruCfiXSc/qQYYOBSHAhU8tHHMcDsLm39C+HPjSTx/RhDgF3APs3Ly+MlMxU9H03xLjKlDqaaQg/FMIMGiDzLLDaArg8Uf4f5BsIM19Ji8S6OH6oYm3dW8krXs1oWPFC0ij+xFfXcpo9riv4zDIWqVJwcmkHDiWAO4ECWw/d4DJmkK9lHuazJGyI29bT+HrQ13RyqllGr4fz6qPM6368glqaL6ZBQ8iN4uVc+a3977Fjc1+oqhW2AAIMH2lDc4nhO/1jS/9AuKZBSoL+PvEQ1Kg980zmjFDxkTek/F4BpxYWS6sjOGqLsKBtcBL+9Z9brqMVhV9PjvYDkHb0otIrOR+7fkgZV0aqhI5dwV5MdTMQ4lg75OLNMhfXSOmTkacqE8mkzVkIv3g9J8B+L2E1qckR8kvt6q3CGVx+yi3CTE+fXMT980SJbs0hloJJij3fG7Wf9BipjW6GJIXUM4sVrQ2+7W2IA/Lc371hLgq24uL4jw1e3XN0L+POExy92GeKL2dIpU7dwxcfhI3EP0a8ImLpezNiW970UszTHVm89W+Nsa+N/gsWlE1Fdp4fpwtSt9YrTUVSyf3+G/PYjiQVnpefOb0jHMFowTFiM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,71 +95,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] selftests/mm: missing Fixes trailer for fclose(NULL) fix in
+  is_vmflag_set()
+--
 
+commit 38a7fefcf9bd0b1ed77197eeaab78f5845d74dfd
+Author: Hongfu Li <lihongfu@kylinos.cn>
 
-> On Oct 30, 2026, at 19:53, Muchun Song <songmuchun@bytedance.com> =
-wrote:
->=20
-> PowerPC radix vmemmap population can reuse an existing PMD mapping for
-> a device DAX range marked HVO-enabled. The reused mapping is ordinary:
-> its tail struct pages are not remapped to the shared tail page.
->=20
-> Leaving the section marked HVO-enabled makes memmap_init_zone_device()
-> treat the range as optimized and skip initializing real tail struct =
-pages
-> that remain in use. This first triggers a zone mismatch warning, then
-> faults while initializing the pageblock flags:
->=20
->  WARNING: mm/mm_init.c:600 at __init_single_page+0xd0/0xf4
->  Call Trace:
->    memmap_init_zone_device+0x164/0x430
->    memremap_pages+0x43c/0x93c
->    devm_memremap_pages+0x3c/0xa4
->    dev_dax_probe+0x264/0x3d0
->    dax_bus_probe+0x140/0x1c8
->=20
->  BUG: Kernel NULL pointer dereference on read at 0x00001400
->    __set_pfnblock_flags_mask.constprop.0+0x34/0x160
->    memmap_init_zone_device+0x358/0x430
->=20
-> Without these diagnostics, the uninitialized metadata remains latent =
-until
-> userspace accesses the device DAX range and triggers a later panic.
->=20
-> Mark the section non-HVO when reusing a PMD mapping so its state =
-matches
-> the actual vmemmap layout and core ZONE_DEVICE code initializes all =
-real
-> struct pages.
->=20
-> The Fixes target predates the section-based vmemmap optimization
-> infrastructure, so this patch cannot be applied directly to some older
-> kernels. Older kernels instead need to pass the vmemmap bounds to a
-> range-aware vmemmap_can_optimize() and reject optimization on PowerPC =
-if
-> a PMD leaf overlaps the range. This reuses the existing mapping =
-normally
-> and makes core ZONE_DEVICE code initialize all real tail entries.
->=20
-> Fixes: f2b79c0d7968 ("powerpc/book3s64/radix: add support for vmemmap =
-optimization for radix")
-> Cc: <stable@vger.kernel.org> # see patch description, needs a =
-different fix for <=3D 7.3
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Reported-by: Pavithra <pavrampu@linux.ibm.com>
-> Closes: =
-https://lore.kernel.org/r/97f85592bb78a273be8519e6897e7f9b9bd31469.1793070=
-429.git.ritesh.list@gmail.com
-> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> Tested-by: Pavithra Prakash <pavrampu@linux.ibm.com>
+> selftests/mm: mlock2-tests: fix fclose(NULL) in is_vmflag_set()
+>
+> is_vmflag_set() jumps to the shared 'out' label when
+> seek_to_smaps_entry() fails. smaps is NULL on that path, and the
+> code at the 'out' label calls fclose(smaps) unconditionally.
+> fclose(NULL) is undefined behaviour, so the test crashes before
+> it can report a test result.
+>
+> Return early on that error path instead, so smaps is always valid
+> at the 'out' label.
+>
+> get_value_for_name() follows the same pattern. Return early on the
+> seek_to_smaps_entry() error path there as well, and drop the now
+> redundant 'if (smaps)' guard on the fclose().
+>
+> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
 
-Hi Andrew,
+[Severity: Low]
+Since this fixes the fclose(NULL) crash in is_vmflag_set(), should this
+include:
 
-Could you pick up this?
+  Fixes: b3b0d09c7a23 ("selftests: vm: add tests for lock on fault")
 
-Thanks,
-Muchun
-
-
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113-for-mlock2=
+-v2-1-f62195fc8394@kylinos.cn?part=3D1
 
