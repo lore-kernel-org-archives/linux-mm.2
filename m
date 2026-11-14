@@ -1,118 +1,134 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02BF606A88F
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 17:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCBA4606A88F
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 17:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=HdRpK4pm
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=aigG+GhV
 Received: by kanga.kvack.org (Postfix)
-	id ABCCC6B00EF; Sat, 14 Nov 2026 12:35:52 -0500 (EST)
+	id D5FE16B05B4; Sat, 14 Nov 2026 12:41:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6EE66B05B0; Sat, 14 Nov 2026 12:35:52 -0500 (EST)
+	id CEA526B05B5; Sat, 14 Nov 2026 12:41:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95CC96B05BE; Sat, 14 Nov 2026 12:35:52 -0500 (EST)
+	id BD88F6B05B6; Sat, 14 Nov 2026 12:41:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 61C136B00EF
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:35:52 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D4D4F1C3C10
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:35:51 +0000 (UTC)
-X-FDA: 85434427302.16.8EFDC7F
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com [209.85.218.72])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1E21940003
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:35:49 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=HdRpK4pm;
-	spf=pass (imf07.hostedemail.com: domain of 385v4agkKCGwdKbeXcKReQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--tarunsahu.bounces.google.com designates 209.85.218.72 as permitted sender) smtp.mailfrom=385v4agkKCGwdKbeXcKReQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794677750;
-	b=ZuuEpeL+Anw6jVOcBNVnUzh7xQ+h73xfzZI+p02smBeZBE4pKSbsfvflsqC0dHcD2x0QzQ
-	dKhE15jWMqwfKOQ4Wo214aff6Z+KW/G1mPX5b+lv0SOaJcg7RS+Wvp4Aw33u+CT7wW+d06
-	qIo3tQAwWBKVRay5uKUl8txuM7K8PIw=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=HdRpK4pm;
-	spf=pass (imf07.hostedemail.com: domain of 385v4agkKCGwdKbeXcKReQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--tarunsahu.bounces.google.com designates 209.85.218.72 as permitted sender) smtp.mailfrom=385v4agkKCGwdKbeXcKReQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 971DC6B05B4
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:41:25 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1F85BA0409
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:41:25 +0000 (UTC)
+X-FDA: 85434441330.14.EC3CBCF
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 313EE180007
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:41:23 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=aigG+GhV;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.181 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794677750;
+	s=arc-20220608; t=1794678083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JNaJcXdU6JL88Hplnr1u9aTEynknq2tK7kpa3hgYbA8=;
-	b=Uyd1Sa8McHLsRI7M6TK74mL2i3Mkk5aTc5SzsB7scQ5DpTLxb8Q9AzFWyriP75eT3nqRj9
-	KBqiKmEYV7+JuK8CRFUJBV3a38jl3iMLkOspG/jp18ZxczhUVD0Q2Bo6M8sLp1bYTR88k/
-	p0heKhOwiacbv85QNqNqj7Z2Cx5ybQM=
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c37b2763f1bso244877666b.1
-        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 09:35:49 -0800 (PST)
+	bh=Iwtan+mCqrD8UTQ6kqOmC1YvXcL9sNkfoLvCTyQCFDY=;
+	b=GyPY4HOD1LD6Q0tntuQKh2KxXmGHXVhJ2GG3gFU1Z0aOfO25FCvh6B3P1+eGNz0lFLtg/S
+	OGy7j4vyvcW48us6eXBPd8OSHpUvlIrhvPBWpFGcpB8uhSOpwUsQqA5XvPl/Sgt/yEqA+d
+	8z4E7HPKeJCv9dk/OMKKbH09ZxFNuJ0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794678083;
+	b=LMEy7jksvmjbHgQgw7302zdovd1GDEyWhlliYggfu0raziKHiyLigAzDOsLJBYVTP4JY3Y
+	+0hdi0G56baM63kOG/FB0C0Y5UHM79+V6+kSTF4HpJw/sq+7qaISve17Du91/YWR4esIbx
+	8vBo9fv1X8FRuV1MCY2ZRz7OLwJeCyg=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=aigG+GhV;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.181 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-55c4e670fc6so5446511cf.0
+        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 09:41:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794677748; x=1795282548; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JNaJcXdU6JL88Hplnr1u9aTEynknq2tK7kpa3hgYbA8=;
-        b=HdRpK4pmIhq9N5ktOqmrT8jgQJ3tlEQdYm7pAKYRht09u2wLLIAVUrlj1oFy/QSgmr
-         I7gmcrlS3DKQhZ+U5LOfC0FskReYJ1fGoGQC+I1Gumer/HeILGrrYmSY0h89r6R9dIqQ
-         C5jUADuxlqPQ40Qh29Awy3MkHVPSd17VBmnRuI1sDaGD8BdPG3kwV7Eio+somXK4LBT4
-         ctWPHNrBhCnd5DHbHy/VlKz5wHh2jysJ2HGHxPL6kKNK8W1EV65gXXXCIK6tCBIqs/LX
-         wI3eCabsePgFsmyMFNHjP1U2VlH9mRCnR8lMkObpr+9BIL1VTHOIekAQAQ2tAnlF9aa7
-         BQIQ==
+        d=gourry.net; s=google; t=1794678082; x=1795282882; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Iwtan+mCqrD8UTQ6kqOmC1YvXcL9sNkfoLvCTyQCFDY=;
+        b=aigG+GhVkNtUwbAwkePhiyfuwxkmd4LxS9g1WQdtc5A8O5uGQxvMXc3Zj0lEC+X8f5
+         nf9V0KkqdRfwK5oZ65zXz+I5DT7zpQX2+io7YV4kMMdkPRqrYg4XtHxmMrQcaa7TTT4y
+         dRWHpmEcX8wOKza2dZ9DiRB+lQikAUfDTFhNIMj0ydB/lhq4bHDndov37XeMztIQ4wE9
+         m6bOLTgPm//BwzMof7mUe/c7ojNEGlMN6uZ+8rJ//oGh4T1M4I7GIz3hVOaUh7P2gjvp
+         kxfHOPPC1QsmN4DWKBXtHrywF5cY7v8CaDjIiRU7pbWjk4o7kfCDL7dNb8pt+HoA2TtJ
+         0UJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794677748; x=1795282548;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JNaJcXdU6JL88Hplnr1u9aTEynknq2tK7kpa3hgYbA8=;
-        b=Y5S41ko2dhp3aHQzFUaA95/zZCmGKuM0WaYSbJimg+VmA+Z8AvTk2PgNPw7hq/UQrK
-         s7/P1Sl/L7NhfeP16kTxtgtPMCO3iR+SZrNvAPc/mESHFCryCna2J7CTeWF1y1GyItTj
-         5w4V89pYnesgdKkxom7Lw6LTktu2E2NX9NWWk1kgHwl0SWYDfVMmd+Jt5yRF25IOkBsM
-         fIP6C7St6WDk0EzhW5byMyx+eIIn04BJ7xvBFn8NfeBaq41t6O5c4dwhDIqd96qk2svm
-         K1vSYFkcuSheT1bIUEq6fZ9zexoi2a0JET2livvsOREB4ETC4EJE4RYPgLbORU63FYM7
-         Hezg==
-X-Forwarded-Encrypted: i=1; AL+hErE+gZWfjjtkyIoMQf9xzN0FyFbY4uc64Q4ipml/iymDY5LvMBM7/FXa1WeVSppsZhVwovbA6Ry46w==@kvack.org
-X-Gm-Message-State: APuU4Z//20IgWX4omrdnc2Z8AtNYL52opjZ+Ps2v563ZTRUoNxs6Gjq5
-	g4nWwSBdvkRQdB2hRJ40AGraT+lkrDiDTKSfRuanYTXuUKRydgizPw2rBjfFRER3K1fgMkI2w/W
-	TYe/ndeO6yHSA7ExHqA==
-X-Received: from ejfz7.prod.google.com ([2002:a17:906:ac7:b0:c2e:3202:ef75])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:868f:b0:c33:ae8b:817d with SMTP id a640c23a62f3a-c509654f9admr515384166b.46.1794677747981;
- Sat, 14 Nov 2026 09:35:47 -0800 (PST)
-Date: Sat, 14 Nov 2026 17:35:47 +0000
-In-Reply-To: <DMRO4QXXB8H4.127C1CPT3RZ18@google.com>
+        d=1e100.net; s=20260707; t=1794678082; x=1795282882;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Iwtan+mCqrD8UTQ6kqOmC1YvXcL9sNkfoLvCTyQCFDY=;
+        b=uW73c8OlGDf7F38jz8QI+krSRWrdsH6f1blngSkBS/5o+tHYqGhQzciYRGhhbd/zXs
+         yiHh8viVy5iI7Dt4ArDKthWeQUr01KAUaD/i8/FI0llhTGh3uZgaf4r1sXJmeDlaLir/
+         QtFO51arp0rC43tXkhH50y5ATTEb/0DZMDpzrfn11x7MopYkHDDaoSo/0rBJROtMsjWZ
+         U5dvsJZ0E6SoXbEmrkHfPZr/qnFPJg4RicbWKbabr6kvCy9FomWsdHA89XMiYn9ucOPs
+         9mX6rDlx0d9rtYJ8IC5iWjwoycs3O0crfLXgiJW5KeZyvpFztMo3AnHmn9fUtE+XIqPD
+         Zflw==
+X-Forwarded-Encrypted: i=1; AL+hErHSDlC3ilnD5a47igKE9ZMcog74Gf/TqL839BrSd23PQtnfZs3e2Nh8yOekbmcDimnVqA1OpMgNBg==@kvack.org
+X-Gm-Message-State: APuU4Z8f7SLlbgOVBIlosJacK9JYOE1DNbHXDdCf275Uyt4PLOCBeTRi
+	Ty/RgUkRwCxwuFg/6ZiedSs8GvrV2WgL2SWxLKUD4BQ4lJbWoeHSXTMDj02X3z9v/9w=
+X-Gm-Gg: AYBFou1NWJakGIfePlONPWjzEDRCuzViEo7lT54YOXuDs56Ut+R9umDlG6VTWS+gRxB
+	CPBB7GNtsDqyfWBLc/63kzGBwrPdTmtGDtnUpyITcWnmzhhTzG+A3OnsLatp/Qw6HkzLfUaHszI
+	pgFVJNFom9pluxUPnTUqscBMVzBrrRRKGjaHFzus5spw6pi71B+/bbBPz/+1pUwGlVEKu74/vm5
+	Th8fTXBg/CSablnnOnzHtMSX8Q/WSVO+gNE+MU+MQF4S3r6WstkGZS+EAx5xzkPgz3M1Bteti7W
+	gFsc5MAzQUQBSf6hHhIxI5tyjBfSdSGHuHejMCWZVylbWhGw143jAdcD3TRObsDyNEqW8sIP88p
+	gWTZ+Vc84Afd+AWZCB82xU7Rp+9xmC3jvkJ+OVOdPkire71oKWmIKkqpGDuJ5zM7qD40BMdqpt/
+	sjtkvTIupOzHMhClJGz6yagPPsgci4u9l8PV0yYBQpDz5sPwSv96gJ295cAxmEoq1LXDwrcFpjB
+	Y1/f470Wcp6Kz7+eM/t5/h9kcWezaTr/rIkioL+Dge4DI83c+Eou/GKwUWlbnuUPci68Q6o0ibY
+	Xq03aQQk18AnSgaNC1ouRDgsTP6tORhT6LDZKY8j5JyJbdgpLFVAybq8bGlOW42DKOnCfrtVPGS
+	eYlVs1zpZGHjc1EIxDRa9DmLg9L90ZA==
+X-Received: by 2002:a05:622a:1214:b0:535:a5fb:645d with SMTP id d75a77b69052e-55ac9088a47mr98240481cf.72.1794678082332;
+        Sat, 14 Nov 2026 09:41:22 -0800 (PST)
+Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55ad15eb7basm44690811cf.26.2026.11.14.09.41.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Nov 2026 09:41:21 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261110050202.529473-1-tarunsahu@google.com> <20261110050202.529473-17-tarunsahu@google.com>
- <DMRO4QXXB8H4.127C1CPT3RZ18@google.com>
-Message-ID: <9huzmrrbpb7w.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH v4 16/19] PCI: liveupdate: Add feature header to struct pci_dev_ser
-From: tarunsahu@google.com
-To: David Matlack <dmatlack@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, maz@kernel.org, will@kernel.org, 
-	Alexander Graf <graf@amazon.com>, seanjc@google.com, jgg@nvidia.com, loganodell@google.com, 
-	arnd@arndb.de, dwmw2@infradead.org, baolu.lu@linux.intel.com, 
-	Bjorn Helgaas <bhelgaas@google.com>, oupton@kernel.org, alex@shazbot.org, 
-	gle.com@google.com, pbonzini@redhat.com, 
-	Andrew Morton <akpm@linux-foundation.org>, kevin.tian@intel.com, joro@8bytes.org
-Cc: kvmarm@lists.linux.dev, linux-pci@vger.kernel.org, 
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, kvm@vger.kernel.org, 
-	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	skhawaja@google.com, sagis@google.com, linux-arch@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1E21940003
-X-Stat-Signature: o875xs75jiesrrsd6of3x7di46yfkq8a
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 2/2] mm/mempolicy: limit shared policy ranges per inode
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+In-Reply-To: <20261113-mempolicy_limit-v1-2-16688b2644dc@kernel.org>
+References: <20261113-mempolicy_limit-v1-0-16688b2644dc@kernel.org>
+ <20261113-mempolicy_limit-v1-2-16688b2644dc@kernel.org>
+Date: Sat, 14 Nov 2026 12:41:21 -0500
+Message-Id: <179467808112.482102.13365594235443107281.b4-reply@b4>
+X-Mailer: b4 0.17-dev
+X-Stat-Signature: qfztrm6sty8wqd8gqg6rsy9y6zzgm8f1
 X-Rspam-User: 
-X-HE-Tag: 1794677749-259907
-X-HE-Meta: U2FsdGVkX1/ppjeN+MX7L7koJUvI0t5scSrp+0x5D0nejDoV/BwEClqPZt0wznXt9UR66twCEicywFzi6veiifs5Mi1VMD1QdbJ3DY99dMWauBx/jvRAok0SxOJc/0lnwdJ+Wl1QKsMrEg9ROLPJJ69TN3jZrwllJrNMsJwmeraEgcujdSETwTORCgFrGsU6X9RuVVXervihATNatD+5hv1f0IWV10vm09EOOhBZX0ZyVDxFPG3Bob0plKjE4hsSlfBAQZoCbjApPYwv6BA6FlF2HDkOU+u6DOOgxfjRm2vst9v8rKHJ6h05GvDcqjvUIMtMNU4oZNIdsPZU6SMom+Qkk0FWEwdUHpAerI2RLH6nq2Ilcf73GdgC3l8qOBs5v+r1x0VxX8/vSaAxkXunqKlNbRNtJA49wPuEJkw/ABOU7rOotIJh4L7/BJS97VJjCA4gkbQkhEJmjMbFtDrSpNTIhR0+eTXYQBQzP60QhwuOLtvPe+hsty6o2d4p9mPJuskHnzxOzxTFYOx1F3jgjSdyKGjhoWkH2FdPfdRK7BfRYxleSVYoFspInycWX8lUlBPcp7dx3LFWwR6PFw5I9psTw9kcJVXfe2z4CUG1tFaIiS6untf8b82nwpAfWFebGaDwMs52/qNxJwkVJISkySoEUmihU3QRTF++KoAK8AhaTuv7z+SSEkeMDa3qaHtXwc0f4MhHVsxpypJ4btQcZ3WPtQQCWwVIdKwlGPY/GR6y1EviHbtqikS5Qtf3CFSpcBDqxFLvS3IiASHSPJ8092HbBRKVoPbtd+yXc7tufrDNGgdJwCRBmEjLo0cBniwUnS7DlOE0IYbHPeGH9mM7q7gGpvBY/G5SA46sbSrG+Saa2r+3GWTZqJUpXJY62qaNsDyhJiEWOAPZl+ZHbGNu99VbniA6HY8cKR++YFLSNRrQoltlKixJVAK+mXFMUCxj5abyHqAcQQ3Bo0Dkup1
- 1GPrHJuW
- cvCbqqglvZTMkQi/O5moXsrnq/x8OQcDf7lzF6RNAwrefx/rG6gFwDP4EUtih558wvcZh2XcBG6dykL0ZLjQ+mxQOYePLRgCBkGmMx4vAlxZMu4/TQigIar8UuEty1k/6Z5nAN/WN20ekoPf7ajSrE+Ryv+iEmbFmW7cDK6cwn+Liu0cJTH9twnRmsglUJvk13e7bn753yceC++rPIw+A79uTbD8wt/3fTm0dEsarNelLrUdFpp07fg3+Z//H/isTyDQPKyVNHiyyNxJ5YsTVPk0Wk8YvNTPtgCGmhAGsE+VQDrV8dCzVDVIGfKgww73g7J+D5He9Qjy8NGvgxsb6FRO1yvdQ8FoqlgYzjsveNjY2gZWW/+oeOx/LjDKhQIdPQt2e2Wtim5q8RStUO+Otyno9HuK/fc4n9CDfC8ogi8jmI0KGKRCSLImScFSClE7V9cujnGycwtDycUVi5QmJVIPbI0p4ve4fgRomimYlMsNrCHJIMKlTZ+596e7StDxXFh08XvryCuMPWIFgrR+8Dxq52sraWMu0wv3b0/SUULrlpQZGoDk5ryrewy01NJZ7V8Hs/QXolQdeZyC1/XFS9C6LIPdGBI3SErrUSBiZSs5tUrn82FlPbcf/JFcBHt81ShfA7xKT6d5/zXdbbwoHl2+V2wfx8IPIQysXfqXg0EVWEPRMd7AdgHwU6g==
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 313EE180007
+X-HE-Tag: 1794678083-549131
+X-HE-Meta: U2FsdGVkX19wEOkilLJbdAiQSO2cpBJ41BNIPJTURZUqbJjRpvaFwxG1ehY028j4pSQTsPGQKnDmKU/fWrYOXq+xwCrAvKnUuMlCm8fHbsFumMb0R1QDu/qzGbb2hmM5vUc3KtSbcyv8mce6J/qQ8bssca6vvn/B2FuUrQ4jcAj5YnS+xORL5cBt/Hfw/NRADQjLf2RNVqdfKeyB5fVLqo6jimGNWsVCrgOn6fLW8gtsNwxMPu4Ww96yKdSVRMPdqlWkbFyPpYU9sH3A4pQgO3UaLOE1APrdoGnBsx1CS1y2yOOQA4Ub8+F/IQdMzYoJGAW40V5LMR1k41/U3vspL21NPDftrYIMoTfmJk+7vi+GKVpWtgNfbjFhWIHSrSRkWxmHYR5tAtujEkmUj5q5iF2czAJgphDwKM4K6WTEkwGpJBhejuYWoXmQblHBchxZ6+89xhGhuUum8Ww1xONRelFtugAq4mYyqvRRTSEa+OeipZRDqDSt45vpTHvf2605ctNLKqPEaPytxdwLA61XrlRTmcYblRT+4LEwvTMKniaz7rxnLvN4TR7LtD+UViVq1oIfmEZ3GOwbnsvzDvwcsiFYbFMN3mUOLjBSo2d5Kk1khS833cxHxQhMcae8nKpMRykXwuPdWhNKsOFhkZ4xT1Wf7dW5yoE9dacox/ZycPxZ17TkJR0eR4J14Nn5IIZuQL6h0bv0Vcy7UbBT5iCPDqedXL2eyzWBSie3H6xDlLFdz97DA8zDdgpChpNqfOukdc6Ljm3oC0LdvUJ7rhW3KiZcmn03s0ohfuq69d5ZQQJg/3iuk6uBP4PLImCaTPqMC9tLNUTRV+Q7p3X9DaFZTgLZ+L7KeUPBq5/ve+AxXm0pFmdDoO2ZpdJJbfGTmeROusEJolcOy1wKfdQT5e+fl8IHyo9wmZF2+6FTMDwIzMOZiBZdr65DGrb4jipGzTUrHCvezjzTOj2EeKl9+ny
+ 2SKrp2/T
+ sROK9vtl6rySHIfhls0FTeYCHu/lA1vxhpWglweOC5SJf6jDF26gjKSR66izS0qfvRbXMBgvPdrMfkNReMl7NyJjB9HL/oB24UjtO8wgaYXuMuife0rj8fVzM/9KWYw6IDu5/qOSyFCjiRNunxsn9XCbVdAl5mnsOMmSPmErx/E2aBp11gRAVBPrJtJapBaj5um7HFZR/AT112aYDfbIHZFHW48BsS7B8wXSYJk1R3SyhVMPwfbv0C90mJEJNmM71RvR2wtY04MPbne8Py3KK7dlUeup0l3x6h9Xpbb+HTuq6tffMypRr2BWnp6ahkDHjGoH/aPJFzJ1HtCbpgvwtEdmjbqU6NYkDA3IB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,116 +137,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-"David Matlack" <dmatlack@google.com> writes:
-
-> On Tue Nov 10, 2026 at 5:01 AM UTC, Tarun Sahu wrote:
->> Precede each serialized PCI device entry in the PCI Live Update KHO block
->> set with struct kho_ser_hdr via DECLARE_KHO_SER so future per-device PCI
->> Live Update features can append fields to struct pci_dev_ser without
->> breaking compatibility between adjacent kernels.
->
-> Elements of a collection should not have their own feature headers. This
-> applies to patches 10, 12, 14, 16 and 18. I raised this during the v2
-> discussion [1][2], but I don't think it was addressed.
->
-
-As per [3], I tried to add feature header to all possible instances of
-ser structs. Maybe this is the right time to audit these structs and decide
-which one will never need feature header.
-
-[3]: https://lore.kernel.org/kexec/CA+CK2bB9xoAWP0kC+KtXeDTdwt0kWqb-PLHN=6DsA=mnRpMfxA@mail.gmail.com/
-
-> All entries in a KHO block set are written by the same kernel using the
-> same struct, and the block set has a single entry_size, so every entry
-> header is necessarily identical. They don't convey anything that the
-> header of the struct that owns the collection can't. In this case,
-> struct pci_ser's header can define features that describe fields in
-> struct pci_dev_ser, and the PCI core checks them once before iterating.
-> If a feature only applies to some devices, the field's value in each
-> entry says whether that device uses it.
->
-
-pci_dev_ser can be refrained from using kho_ser_hdr but not
-memfd_luo_folio_ser.
-
-The difference lies in their API usage. one use kho block and other one
-kho_vmalloc. With kho block, we carry entry_size, so the parent
-pci_ser's kho_ser_hdr can communicate about the new field/feature in the
-pci_dev_ser and entry_size will carry correct the size of pci_dev_ser
-for iterator on deserialization. But for memfd_luo_ser, kho_vmalloc does
-not carry such entry_size. So we can solve this by adding the
-folio_ser_size into memfd_luo_ser struct.
-
-Without entry_size, we can only add new changes to such structs by
-adding feature in parent struct with required = 1. That way rollback or
-upgrade will fail to the kernel which does not support this required
-feature. Incase, if we have entry_size (folio_ser_size in above
-example), it will help marking such feature to be optional also and
-deserialization can correctly parse with entry_size and can ignore those
-changes if the kernel wants to.
+On 2026-11-13 22:36 +0100, David Hildenbrand (Arm) wrote:
+> Shared NUMA policy ranges can accumulate on an inode after its mappings
+> are removed. Currently, these nodes are effectively unbounded (even though
+> the allcoations are charged).
+> 
+> An unbounded tree can cause long rwlock hold times when replacing or
+> freeing policies. Instead of trying to fix that, it sounds more like
+> having many nodes is actually only a scenario for processes trying to
+> cause trouble. Most use cases will probably only use a handful of them,
+> not millions.
+> 
+> Add vm.max_shared_policy_count (inspired by vm.max_map_count), defaulting
+> to 1024 ranges per inode. Reject updates with -ENOMEM if they would
+> increase the count beyond the limit, taking merging, splitting etc.
+> into account.
+> 
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
 
-> Per-entry headers also cost a lot for small entries. struct pci_dev_ser
-> goes from 8 to 16 bytes, and to 24 bytes once the first feature is
-> added. Patch 18 does the same for every preserved memfd folio, which for
-> a large guest backed by 4K pages adds gigabytes of preserved metadata.
->
+This arguably breaks userspace.
 
-Yeah, we are carrying 8/16 byte of extra memory where every entry share
-the same header. Which is a waste.
+A single mapper that tries to set >1024 ranges would start getting
+-ENOMEMs unexpectedly with this change.
 
-> They also add new ways to read out of bounds. kho_ser_payload() trusts
-> nr_required/nr_optional in each entry, and nothing checks that the entry
-> header plus payload fit within entry_size. In patches 14 and 18 the walk
-> uses each entry's fhdr->size to find the next entry, so one bad header
-> throws off every entry after it.
+Multi-task mappers were previously unlimited, but that seems like more
+of a nasty unintended corner case - not a real feature.
 
-Bad feature header is not the reasoning here we should back this
-requirement. A bad feature header already imply the deserialization is
-compromised and hence accessing anything further is undefined. This
-holds true for any struct with feature header.
+A single process is already limited on the number of vmas/policies based
+on `max_map_count`, so it seems natural to just use max_map_count
+directly, but I took a brief look at some distros and most seem to
+ship a raised `max_map_count` (>1 million) by default).
 
->
-> Instead I would keep struct pci_dev_ser as a plain struct, take the
-> entry size from the KHO block header (patch 2), and in pci_flb_retrieve()
-> check once that the entry size covers the base fields, plus the fields
-> of any features set in struct pci_ser's header, e.g.:
->
-> 	entry_size = kho_block_set_entry_size(&incoming->block_set);
-> 	if (entry_size < offsetofend(struct pci_dev_ser, refcount))
-> 		panic(...);
->
-> That also restores the minimum entry size check that the v10 PCI series
-> had with PCI_DEV_SER_MIN_SIZE, which this version drops.
+I tested that and even 1 million can cause a soft lockup.
 
-offsetofend() is a good idea to replace PCI_DEV_SER_MIN_SIZE.
+Not sure there's an easy solution here, we might have to rework the shm
+policy locks.
 
->
-> [...]
->
->> -	kho_block_set_init(&incoming->block_set, sizeof(struct pci_dev_ser));
->> +	kho_block_set_init(&incoming->block_set, kho_ser_size(pci_dev_ser));
->
-> This size is never used. kho_block_set_restore() overwrites it with the
-> entry size recorded by the previous kernel. Passing this kernel's size
-> here is misleading: pci_flb_retrieve() (and the LUO session/file restore
-> paths) read as if they iterate incoming entries with the outgoing entry
-> size, which would be a bug.
->
-> Incoming block sets should not take an entry size at all.
-> kho_block_set_restore() should initialize the block set itself from the
-> incoming block headers, and the incoming paths should drop the
-> kho_block_set_init() call.
+-- 
+~Gregory
 
-Yes, We can avoid this dual initialization. kho_block_set_restore can
-take care of it. Also once we will agree on having having
-kho_block_set_ser to have entry_size which will be part of only
-block[0], then we will not have to update the entry_size inside the loop
-again and again and count_per_block can also be calculated before the
-loop for block 0 and 1..N.
-
-~Tarun
->
-> [1] https://lore.kernel.org/kexec/atl6K2Juy6Bh29lh@google.com/
-> [2] https://lore.kernel.org/kexec/at-8vkVpN2SF3XgB@google.com/
 
