@@ -1,91 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E37606A880
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 12:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD908606A333
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 12:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d8ZTGEn0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O5b0v7Xr
 Received: by kanga.kvack.org (Postfix)
-	id CE7B36B05B2; Sat, 14 Nov 2026 07:03:28 -0500 (EST)
+	id 40D296B05B3; Sat, 14 Nov 2026 07:03:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C98DB6B05B3; Sat, 14 Nov 2026 07:03:28 -0500 (EST)
+	id 3972B6B05B4; Sat, 14 Nov 2026 07:03:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC3606B05B4; Sat, 14 Nov 2026 07:03:28 -0500 (EST)
+	id 2ACA56B05B5; Sat, 14 Nov 2026 07:03:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 845FD6B05B2
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:03:28 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E0E621203A6
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:03:27 +0000 (UTC)
-X-FDA: 85433589654.22.1C68FAD
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0463D6B05B3
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:03:31 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 807811A03B6
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:03:31 +0000 (UTC)
+X-FDA: 85433589822.29.1857C3B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 541F0140002
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:03:26 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d8ZTGEn0;
+	by imf27.hostedemail.com (Postfix) with ESMTP id D7E3340009
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 12:03:29 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O5b0v7Xr;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794657806;
-	b=lBDQ1a7bM7lq50UClhok4wHEXkQp55YyVE5FUrhIeD40tItR2Mq03JNX5C0U+N2/f6bq0l
-	xkJ4HPcSQDRcI/ylXi3x940C5A8SWBmQB5MuzWKHZuA9kT2Cjw29HEfdi9O4imCebqni0k
-	cBWL3RaG7c8njifvfZ6vYWbQZytZ3JA=
+	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794657806;
+	s=arc-20220608; t=1794657810;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ALzGtljZmngZ99TYML6vyT57I3K5d0MlyVrwhGLF07s=;
-	b=193YNrF2Svo/8Kd7Bp6WwIjM0DbPSibAqBtOWKLMh+A79jzXxCZvesoGWOv+zVNYNEFOpl
-	Nkm3fSjZ/UCKjsWHsu7aQtUm/xJ4OEuCZbnIXgMRXJYKcQuKNSv943Sa8ctfmegLzNyoX3
-	sK7z1Ia4QFOye4j4vpC9HZn6NY5fuvc=
+	bh=oge5gHl+Ji7nKy/eL+dZMpu8kpivAdHNITu7sKlcjQc=;
+	b=4udXFkhmHpulpT9j6BQosGU8QeNmXeReRZFsyw1GqurKMUx9iZgJ74/PS9ppBFeQwBZ+a+
+	ZonAkkr69ZNUrwcfpOr9DJ4ZHNIm4qUZjdnPdTVmw+kn25bAvzudbTueZ3GELvqJguGITL
+	7vOv08UzaPnzFpOckrvXO066MMThxNY=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d8ZTGEn0;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O5b0v7Xr;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794657810;
+	b=BKKnM7gCXt9b+/ujdkZgkoJSHrZAGh2StiwjhExDwuhRvx4glmPtATnltC6VeBIYOU3CvB
+	EzpCu8NK46ITVe9cj8GM2WwO2EYaNov126Zxr6KVVOszeHfO7fljUlxr1N7iQzNiCsRMaQ
+	HITR08xnjTTZakjNSvUC1r/h3KdZlqk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D7CEB6232A;
-	Sat, 14 Nov 2026 12:03:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89B21F000C4;
-	Sat, 14 Nov 2026 12:03:24 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6E997626C1;
+	Sat, 14 Nov 2026 12:03:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B2781F000C5;
+	Sat, 14 Nov 2026 12:03:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794657805;
-	bh=ALzGtljZmngZ99TYML6vyT57I3K5d0MlyVrwhGLF07s=;
+	s=k20260515; t=1794657809;
+	bh=oge5gHl+Ji7nKy/eL+dZMpu8kpivAdHNITu7sKlcjQc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=d8ZTGEn0qxni0o2KqxTpTR9WvaZxwMw6wYgcu+OafMRCtiRzDVAXMU7/wZ74rgbDB
-	 1LocND40CPQPdchDfZSgOlZusuV2b2Jm6PmSzxbXe+UtcgCZxhq7Cayx0Jg+WQs+5S
-	 Fgn0yDEfY6VuTU6Kbg6xIhCMSNZtGpQHRSHQT7Ov+hnlN+QHxRE11/pIkaAJwpMSC3
-	 85ZDbU7OiQ6CVDl/omSbOx09QyAE6AQk8ZxkNWDw19sm6FcfmyGeBCn4P7CMz0EUvA
-	 NEqvQjJ0iP60FlMW/wnjotiw8rWjZFrDQALOU/tpxLhx8piKaT0N8cCt57zYhs9fOY
-	 bSV/RrIKt+71g==
-Message-ID: <sashiko-outbox-214456@kernel.org>
+	b=O5b0v7XrzA1WELCmu12+3CEzgi7O2PA8wGWyXzNM6/DMm+jeSwo7oaNtTiwWqL9Sj
+	 3gPK042ci68YlqI+D+3g0OaUg+cutVM9FqYrbRFcuHLaesVhmnq25vU/sNxGRAhl04
+	 lHz0EGke2a+V5t/bAXS+qhZG7iJ4YwHUvUQpE9xRz7XS8V7QPJ0pGzJkjCB4lIFZsl
+	 eTaJfqrZs41T2hNOMdzBWNdHHvd2P8ZNfSec5Wn6PxaFZqKE069wvpqaCaAwQ7Zfef
+	 6SVzrh26YuobiR6IehubHAymqiV5REZJzZb4qBUlYCjtdsY7Rt+Ut+g8VLdhtdgAH+
+	 Ox8ubwhXVfuug==
+Message-ID: <sashiko-outbox-214460@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 05/33] fs: add a generic emergency read-only state
+Subject: Re: [PATCH v3 09/33] fat: don't set SB_RDONLY after filesystem
+ errors
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.com>
-Cc: "Al Viro" <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, "Jan
- Kara" <jack@suse.cz>, dsterba@suse.cz, tytso@mit.edu, "Mark Fasheh" <mark@fasheh.com>, "Joel
- Becker" <jlbec@evilplan.org>, "Joseph Qi" <joseph.qi@linux.alibaba.com>
-In-Reply-To: <20261113-work-fs-sb_rdonly-v3-5-0be92bb73709@kernel.org>
+Cc: "Al Viro" <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, linux-mtd@lists.infradead.org, dsterba@suse.cz, tytso@mit.edu, "Mark
+ Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>, "Joseph Qi" <joseph.qi@linux.alibaba.com>
+In-Reply-To: <20261113-work-fs-sb_rdonly-v3-9-0be92bb73709@kernel.org>
 References: <20261113-work-fs-sb_rdonly-v3-0-0be92bb73709@kernel.org>
- <20261113-work-fs-sb_rdonly-v3-5-0be92bb73709@kernel.org>
+ <20261113-work-fs-sb_rdonly-v3-9-0be92bb73709@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 14 Nov 2026 12:03:24 +0000
-X-Rspamd-Queue-Id: 541F0140002
-X-Rspamd-Server: rspam12
-X-Stat-Signature: fin5yokpapcik14tfsq5mdtda9fg84y8
-X-Rspam-User:
+Date: Sat, 14 Nov 2026 12:03:28 +0000
+X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D7E3340009
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794657806-257111
-X-HE-Meta: U2FsdGVkX1+wVdkjzxghKNSkjYGYdNC1WoiSc9H3pnnVrFJ6TG9C5wvSclUhTzL+ZUO949oGqfHXKV/RcgfOVpCcvix1jxXBsW0+gmfCAMSX2MrUoemD2QUDzJ9tVBRv610e++1qNUuoWSj1vbDBAzsOzFfOvQlusUd0YK8zRwtCeMfxVK6rTTYR2U0dQe5ywWpb5NpPgdiB9uDznaS7Ce/T/eLWTnpULTHNDhTzUUf+N63+KQRzHsWhzYlBOPcWa6OD6i5TzyLqFGMX3Jj9dKeemW0Zcu+orfITKyHGqSPz7BLN7JrIBuTtACGsKRjyBp9BY07DHiiYfBiaW4Id2LRwSPLfLB1CUFM2pkh0SlqW8zT3ZVTlwK1sgr6Re+M1VESk65KpPPgrmGspP/R0C9Niv5sAymx67PYn9yBAxhuvtQ4SdpE+9OiTBJcorblU+19E/djgXaAjLw1b9EE70remnbQl4jrMkccg1lSzpPFqq5lhQs0v/4SyIYcqVweMzaaBIIk6qRDZf0NKATsGAYPa8UTyPeFxePjPTOGqscY1gyt20Q00IP90enOkVl5hozFr1+FV02YrGT1bggyz8rumJabxF/IiGwtMlQxZt7E1qSp/MTqTo9Lm8Ol9GaeZpThLnG/DbgCLvUqN+tJzZHYLp8d6vcxIDHIWpT0VG2xXxEyx18uLe7t27q3mce5GmRy/N+EjuHqiK55bsS3v0DojQS16pal7U60swhaCJFm92B/Ezl1yK4uaS/0FzI4WXFbdfDmWZYoraASYmp2UABiR2qnOBn2On+2Bg0zPQDGXBF/PyC7yHvHOasXf+ra8MEqrUpQxBJ1JcEsYXnqZwKAV2JQDlWMR3tM+FZzzNzIHHKmLi8dz0Yr1nAONGVoYkZjtZGRGXrYxshbjaXZASr7rHgqda3/s6hANNtr4oG8+1dtjDoaYlclayYHlqjdpMMCK2Xy69pTj7lcld/W
- XZUaYsUC
- 3/yXGoePzHe/juxXTXWjwHajFt+8YXR5cSTWOTjp4BlBMr+4goOodOrTQ4A3hU35v/H6ahCMlUDxwi6G7AYUibzadLeaIJ5j9hfjjv+XRBg/APNgjzs2P0gtGgDD2dLQrpVSTJR0mdoG/E7E4tGEEYXCCMIej6E/+w0h+uKJ/HfMzcqy1CsQw19J+krja2rO/JT9k0Tb2mXtNw4NNhL5PImZ9twPNuOFxT5920S+WxxNg/6UmVFyX5/Gn4QLBMl3txdyjlwzbMB60cEiAJ9rudHlNKtHav5eueDW7UAtrly3kaWIqfgpI633pchXITYrVz5pH3z8VJUOOMkumenISm/4k1JzedI/R14gyX4BL5/+M5GNBmF8oGq2GFrp7xIY6VTHy5Op3SMeWSowcYoQ0bV7GpWwank5xpX4F8GRFf3D7VKiRF2vtCIvvsMw7opapyoTUxSjZgMdcQDJO/tJxpQYLjpv6VC8Z18ZoKRKUnahdjQWJOpr/TVdX5zJ0hPI7oRiBv8NFV6It3Awjj9Qibak9EzR3dI+ifXAk4C1SCMa0H0SDrRiAvmmAw5oUwRHJ2qslfYrJc+ovZ0vmyVVpEWxAf4aX7lE4ITkn0gGDslkjOXq5LFMzvmzU1P9U26pWdyg0h1+BK0bMuqHkd4CVAoIxBYGV+herdY1fkx+d7AIiggFk5YznlPIhh8FYhO15LhU2C9gJcgtO9b3MIU73pe2pjHDIXkNunC7SDgIBT7AOOJM=
+X-Stat-Signature: td5qaxhgmmb9x5bxrpmcp8o1c5rnqhwo
+X-HE-Tag: 1794657809-204447
+X-HE-Meta: U2FsdGVkX18ItHdZBjCnpoNG4N98JDIEXTxBnzN73DBfVmWWGgm3A0lBoTbwbV5EqO+e4ICmRaTR47bfjGE7GAXl4IAhC56rPAGx8PgJ40JSaa4GeFk+wXhB8WBGnze0HePnGosxLN9qQS+HQjiVadMgCrnj9bGfEuNRF6hSx4ZNyRCi9D+iNoOi+Dif4i56+2RBjaXsQlQiQ8tmpmmdFFasY4Cu3T3eT65fumpIxoIVfWV9GNOUe6UvzlyublRMClx4xAmM2fj8CWfxlIB+aHLWVmEaOxaCHidZ8QIOfHFZADBnJbHmYkcfjkwuUI29Fhwq5rwUzSgtwrMPJ1kRAwPr/oeW+ySw15cprZObuOu4oo7vaeiOUJCJf2rUlvmANJ9k6a3wzMmqoI/faN7s2J8ueFtCk5SkfIZMbO7aAE1gzIJXNpztlddT86uOtJZLXv0olk9GXVbVlM+jHtRGmkaBl9GmrJLi1YMMtPrUSEdXCkcElist1KDeNTz8iKXd5liIjHEsvI6QA0U3qKqbUwEDQuRgmdEcXfp7WuZAc7MjLT91Ws15DwZ6P4jnOYWrp6S2yqqNW+ndvH5V/Jpvio8gS1ClcI9hq0d98tI0BvJ2gmbomKLf3FeXRgMVmpNf6LUNJzysMcMeNSh4vvfikuRy8B7MFwU58bgtxoI5fXpOn7un45IS/pouK0PEQIbqddIdCqECbG3KBNd8SsX6K7liwHvzCaWj+Zjg7tEpGRPuhteDIkYLxp1SVEPEf5C7TCg7gvTkYN/2nWCTG2SlQp7tBVo7mhzgV6/kB1bdjo/zVB+CnctgqHUVymZH4PqG4eOkhwt1WyfIe8uVeb7c9x2LN5fieSqGmTHKV8VZnwfyc8BOKKo4nl6ReAUePNDDDppGWONOg1y12GUAangftBTKpIax4A+Yxvmvu9Cs+DdKc4+Ash1fivixOWQz5CNqOAfxMEaYb76aBsw9dP0
+ aeGpiPM0
+ olVEDpPLs1l6hLtc4fsf51+76NWhs+EcBojzvZLUWwpv/e8b74/Z7+vfuMu64SKwsiG71t2fBCN5d/SgAX1y0oAwmCp5KhUD262NbBujJP3MXWYdbICTerV+ExHrmoa44PyIoIzhDooDaRdDoWMVAMJnxU20jaiJBv/RHUxrfIlzdH/MhL2/xWw0vrtgpIYe5doYbM6zFIVHJUfPGyEXrmFQDHSAO+lAVoKoLprClMoHuZBUxyOGXEbXY2wP0MhFOIOV7D5kqGd0lt28OojdUD8E1E+y7Z2S14fURYGRhCHE9YHCsb0xyJ8uFfWXf6kJKYpcijKhWGt3mt8otjOP0lQDSCP+OzveTY5HbuMHXuLIawY5hDu6GZ7IvAmynqECmwL5hMYmPf746DFT/jt45WEMvTpdPWcvxiTIx7Eg09RLmGfRuJMfQ+gcu7ATBuYVrPkYq012aQBBznUoZZi0enBOGI4Glq9/4nRRE4gJDqdMcG9aCEf9IuR+DH2c+FYBUPq0PJPHfzPP6z8ECajugb2uciOjrBLKcTThPLaifW2uqE751vXQYnPdDbZ3OoKVk/Xjt0viMEY18VAOldE/h1b16haH7W+2vvMFKjZNW9pnFzCcHm110/PRT90hhJqgD+K/R
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,112 +97,109 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 2 potential
 issues to consider:
-- [Medium] vfs: change_mount_ro_state() skips mnt_make_readonly() on
-  sb_emergency_ro()
-- [Low] quota: do_quotactl() misses sb_emergency_ro() in Q_XQUOTASYNC
-  and Q_SYNC
+- [Medium] fat: fat_free() zeroes i_start on disk when
+  fat_free_clusters() returns -EROFS
+- [Medium] fat: directory modifications proceed after fat__get_entry()
+  sets emergency RO
 --
 
-commit aa167d356b416c1c40da72fb215b9d988cb411bc
+commit 7ce00aaef1e345a2ca01443ccff3c19884d9bcc3
 Author: Christian Brauner <brauner@kernel.org>
 
-fs: add a generic emergency read-only state
+fat: don't set SB_RDONLY after filesystem errors
 
-This commit adds an SB_STATE_EMERGENCY_RO superblock state flag and
-updates VFS paths to reject modifications with -EROFS when a filesystem
-switches to emergency read-only mode without setting SB_RDONLY.
+This commit switches __fat_fs_error() from setting SB_RDONLY on a mounted
+superblock to calling sb_set_emergency_ro(), and adds sb_emergency_ro()
+checks across FAT write, allocation, and state paths.
 
-> diff --git a/fs/namespace.c b/fs/namespace.c
-> index 9f6ec35c7b9cd..55fa09818ef90 100644
-> --- a/fs/namespace.c
-> +++ b/fs/namespace.c
-> @@ -396,7 +396,7 @@ static struct mount *alloc_vfsmnt(const char *name)
->   */
->  bool __mnt_is_readonly(const struct vfsmount *mnt)
->  {
-> -	return (mnt->mnt_flags & MNT_READONLY) || sb_rdonly(mnt->mnt_sb);
-> +	return (mnt->mnt_flags & MNT_READONLY) || sb_rdonly_any(mnt->mnt_sb);
->  }
->  EXPORT_SYMBOL_GPL(__mnt_is_readonly);
+> diff --git a/fs/fat/dir.c b/fs/fat/dir.c
+> index 35bdb62944a2e..553034bcbed40 100644
+> --- a/fs/fat/dir.c
+> +++ b/fs/fat/dir.c
+> @@ -1329,6 +1329,9 @@ int fat_add_entries(struct inode *dir, void *slots,=
+ int nr_slots,
+>  	loff_t pos;
+>  	bool saw_eod;
+> =20
+> +	if (unlikely(sb_emergency_ro(sb)))
+> +		return -EROFS;
+> +
+>  	sinfo->nr_slots =3D nr_slots;
+> =20
+>  	/* First stage: search free directory entries */
 
 [Severity: Medium]
-Does changing __mnt_is_readonly() to check sb_rdonly_any() cause
-change_mount_ro_state() to skip mnt_make_readonly() when sb_emergency_ro()
-is set?
+Can fat_add_entries() and fat_dir_empty() still modify directory buffers
+after a FAT error in fat__get_entry() sets SB_STATE_EMERGENCY_RO?
 
-fs/namespace.c:change_mount_ro_state() {
-	bool readonly_request =3D (mnt_flags & MNT_READONLY);
+In fat__get_entry(), a fat_bmap() error calls fat_fs_error(), sets
+sb_emergency_ro(sb), and returns -1 just like normal EOF.  In
+fat_add_entries(), if the fat_get_entry() loop hits a FAT error on a later
+cluster after collecting some free slots (0 < free_slots < nr_slots), it
+falls through to found:, writes the partial slots into bhs[], fails in
+fat_add_new_entries() -> fat_alloc_clusters() with -EROFS, and then
+overwrites the original slots (including 0x00 end-of-directory markers)
+with DELETED_FLAG in __fat_remove_entries().
 
-	if (readonly_request =3D=3D __mnt_is_readonly(&mnt->mnt))
-		return 0;
+Similarly, in fat_dir_empty(), a -1 return from fat_get_short_entry() after
+a FAT error makes a corrupted non-empty directory appear empty (return 0),
+and because neither fat_dir_empty() nor fat_remove_entries() checks
+sb_emergency_ro(sb), rmdir and rename proceed to delete the directory entry
+on disk after the filesystem has entered emergency read-only mode.
 
-	if (readonly_request)
-		return mnt_make_readonly(mnt);
-    ...
-}
-
-When a read-write mount has open writable files or active writers and the
-filesystem enters SB_STATE_EMERGENCY_RO, a mount(2) call with
-MS_REMOUNT | MS_BIND | MS_RDONLY (do_reconfigure_mnt()) sees
-__mnt_is_readonly() =3D=3D true, skips mnt_make_readonly(), and sets
-MNT_READONLY via set_mount_attributes() without calling
-mnt_hold_writers().  If reconfigure_super() is later called to remount the
-superblock read-only, sb_prepare_remount_readonly() skips mounts that
-already have MNT_READONLY set and transitions the superblock to SB_RDONLY
-while active writers remain on that mount.
+> diff --git a/fs/fat/fatent.c b/fs/fat/fatent.c
+> index 2d10a815a5797..9e4bb0140320f 100644
+> --- a/fs/fat/fatent.c
+> +++ b/fs/fat/fatent.c
 
 [ ... ]
 
-> diff --git a/fs/quota/quota.c b/fs/quota/quota.c
-> index 33bacd7075800..b488fb1f9cc44 100644
-> --- a/fs/quota/quota.c
-> +++ b/fs/quota/quota.c
-> @@ -783,6 +783,19 @@ static int do_quotactl(struct super_block *sb, int t=
-ype, int cmd, qid_t id,
->  	if (ret < 0)
->  		return ret;
+> @@ -620,6 +626,9 @@ int fat_free_clusters(struct inode *inode, int cluste=
+r)
+>  	int i, err, nr_bhs;
+>  	int first_cl =3D cluster, dirty_fsinfo =3D 0;
 > =20
-> +	/* An error made the filesystem read-only. */
-> +	if (sb_emergency_ro(sb)) {
-> +		switch (cmd) {
-> +		case Q_QUOTAON:
-> +		case Q_SETINFO:
-> +		case Q_SETQUOTA:
-> +		case Q_XQUOTAON:
-> +		case Q_XQUOTARM:
-> +		case Q_XSETQLIM:
-> +			return -EROFS;
-> +		}
-> +	}
+> +	if (unlikely(sb_emergency_ro(sb)))
+> +		return -EROFS;
 > +
->  	switch (cmd) {
->  	case Q_QUOTAON:
->  		return quota_quotaon(sb, type, id, path);
+>  	nr_bhs =3D 0;
+>  	fatent_init(&fatent);
+>  	lock_fat(sbi);
 
-[Severity: Low]
-Should Q_XQUOTASYNC and Q_SYNC also be rejected here when
-sb_emergency_ro(sb) is set (and quota_sync_one() guarded by
-!sb_rdonly_any(sb))?
+[Severity: Medium]
+Does returning -EROFS from fat_free_clusters() without guarding fat_free()
+cause fat_free() to zero i_start on disk while leaving the cluster chain
+allocated in the FAT?
 
-In do_quotactl(), Q_XQUOTASYNC still checks sb_rdonly(sb) instead of
-sb_rdonly_any(sb), returning 0 rather than -EROFS in emergency read-only
-mode:
+When cont_write_begin() fails due to a FAT error that sets
+sb_emergency_ro(sb) (for example on a 0-byte file with fallocated clusters,
+or after allocating the first cluster of a multi-cluster write),
+fat_write_begin() calls fat_write_failed() -> fat_truncate_blocks(inode, 0)
+-> fat_free(inode, 0):
 
-fs/quota/quota.c:do_quotactl() {
+fs/fat/file.c:fat_free() {
     ...
-	case Q_XQUOTASYNC:
-		if (sb_rdonly(sb))
-			return -EROFS;
-		/* XFS quotas are fully coherent now, making this call a noop */
-		return 0;
+	if (!skip) {
+		MSDOS_I(inode)->i_start =3D 0;
+		MSDOS_I(inode)->i_logstart =3D 0;
+	}
+	MSDOS_I(inode)->i_attrs |=3D ATTR_ARCH;
+	fat_truncate_time(inode, NULL, FAT_UPDATE_CMTIME);
+	mark_inode_dirty(inode);
     ...
+	inode->i_blocks =3D skip << (MSDOS_SB(sb)->cluster_bits - 9);
+
+	/* Freeing the remained cluster chain */
+	return fat_free_clusters(inode, free_start);
 }
 
-Q_SYNC and quota_sync_one() also call ->quota_sync() directly, relying on
-dquot_quota_sync() rather than do_quotactl() to reject emergency read-only
-superblocks.
+Because fat_free() clears i_start and marks the inode dirty before
+fat_free_clusters() returns -EROFS, and fat_write_inode() stays active in
+emergency read-only mode, writeback writes start =3D 0 to the directory ent=
+ry
+on disk and orphans the allocated clusters in the FAT.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113-work-fs-sb=
-_rdonly-v3-0-0be92bb73709@kernel.org?part=3D5
+_rdonly-v3-0-0be92bb73709@kernel.org?part=3D9
 
