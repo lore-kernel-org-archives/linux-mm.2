@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0D1606A330
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 01:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F73606A327
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 01:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m8pfWXH+
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=as+ZsFAa
 Received: by kanga.kvack.org (Postfix)
-	id B25546B00EF; Fri, 13 Nov 2026 20:45:54 -0500 (EST)
+	id 4EA286B05B0; Fri, 13 Nov 2026 20:49:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD5926B05B0; Fri, 13 Nov 2026 20:45:54 -0500 (EST)
+	id 4741F6B05B1; Fri, 13 Nov 2026 20:49:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EADC6B05B1; Fri, 13 Nov 2026 20:45:54 -0500 (EST)
+	id 33CCB6B05B2; Fri, 13 Nov 2026 20:49:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B1AC6B00EF
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 20:45:54 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EE1B81202AC
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 01:45:45 +0000 (UTC)
-X-FDA: 85432033050.03.9A7E33C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 02ED66B05B0
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 20:49:29 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D5CF71C35E6
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 01:49:27 +0000 (UTC)
+X-FDA: 85432042374.15.DA9B887
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5FB99140007
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 01:45:44 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m8pfWXH+;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 4A11280003
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 01:49:26 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=as+ZsFAa;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794620744;
+	s=arc-20220608; t=1794620966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nzPTEwjVAGuMkVeVrNJQmCZCNrgNkk2JW836iQoERSA=;
-	b=vdzYlMIzCjQExRg6yCouEW2MjwvFMlZNmxCuHHqAYjB6wLK8jyisc8miHVJjg+y4uI1JfV
-	O2+xAphd5kKM1/zmK3p7Vf8CC1H0pQuydcvojyTfbv8LO0iJYM3u1TQ9woKtmo1gouw4k8
-	8iCB1k/XO86Pea61l+0bhhmVh/ooXoo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794620744;
-	b=TPf3fMe6zfbkt5hcFwnnwzPCsQ1cmY8xVXmAexTxWFFTCT4sqLptBd8BwyV/hjMRu+cJAe
-	3yef3LiuZAzNgx7pL5BVwcFufymU9rDfc0SOp45ggTLzK97SzDIpai0Kc/DjXKoIHNAVK7
-	xTv9P442zOixKhrGWsNFTq7Ts2zOzJw=
+	bh=uEA/O3KkpMmiRM8JdXggkU7r8GbFSfOA2tjkwk4bvLw=;
+	b=MfAYrQoHrohYVfKx2tpMlpYlheb0HM/8XDkZeHdQRIlb1vGMiL7geDLt57yDMRWRrpR2nE
+	C4zXRYpgIwYphAY7vtx7SFFnGN/C5Xx2huvJRq1w8dp44m0NnaYc7oRyvN+0oTCBOU3n98
+	vRIhgXhsNaTY+RaSlin+nLIrHWF82pA=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m8pfWXH+;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=as+ZsFAa;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794620966;
+	b=nr+S5MmSFFiHUidFdwnj7O5OJyhoz8OGFrwl/6sGxwiMZ5j2pNzK0TrQB26PdvuTkLnPd+
+	FYvclW7WKaBfFJhkkClYBaRH1iGv64LG2ncJfieROFzC34U5027x3K8YTB9cVyxyjMrZVV
+	68C8/UKGeD+z3R3wt7Q9SFV17xotLLg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8DEA544D3C;
-	Sat, 14 Nov 2026 01:45:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA5771F000CB;
-	Sat, 14 Nov 2026 01:45:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8158F41ADE;
+	Sat, 14 Nov 2026 01:49:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E901F000C4;
+	Sat, 14 Nov 2026 01:49:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794620743;
-	bh=nzPTEwjVAGuMkVeVrNJQmCZCNrgNkk2JW836iQoERSA=;
+	s=k20260515; t=1794620965;
+	bh=uEA/O3KkpMmiRM8JdXggkU7r8GbFSfOA2tjkwk4bvLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=m8pfWXH+rSDRwQSOjLLF/Q6INjVXDQL5TEoFbCOqKpbQGW5ysfXQEW/nFkDp8febQ
-	 IHdRoij07Wk1WIqLcxgXUzLjma2NNY71GGr/fBxhOh0kwZJJmj2J1nCpfi6PVxu/bd
-	 eZAvtUAGJVVkLg6yKDCfHzQUkgG78h587qs6lxux0a0Hq358ztgqXuIQDPKPyyRara
-	 6xWVrRnaVeizg3nr5CeKVJB7oikQlKk45IoVmmrmie/gcrcUZqqELC1dVCuBEHIp9h
-	 fvxDCE0OTeOBBJQ5WyEMd150kaDCwOecpzwK/vysmFbrewyNiBbN00oaak5frHdFwY
-	 wC9dMf9xIgzIA==
+	b=as+ZsFAaAa6jPW5pWt3mK5WGXEWGFaBAOvrPpOK9I/LIIb0sJMx9zk0N22j+zXFVN
+	 aUK9GP8vlwBsQm/eb7zb9UTreprkDHszo8Mq5U2B+FX47k/g5Cv9kjCjRNLngR7sf0
+	 nLS6JdlSG7zZuzBFs5EzgdJgVfLRIfK5hHC3cwuAoW1rcU0So+ZRVOXqP+uR6Kt8TZ
+	 pMbVq43hZwg3UOZaz8JMtMAtZtt5vVdRKg3Vq3F7PR00triu8DudncS61QpUsGkWB+
+	 xaFG6s2ivdcbfdyWjdgsyj5KASNA1UUAOQsy8ISldgdnkDvIfwZ84+DcuAe4u/MgHL
+	 2nbvALK/Vr8lQ==
 From: SJ Park <sj@kernel.org>
 To: Joshua Hahn <joshua.hahnjy@gmail.com>
 Cc: SJ Park <sj@kernel.org>,
@@ -79,27 +79,27 @@ Cc: SJ Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com
-Subject: Re: [PATCH 2/3] mm/page_alloc: move the kswapd node skip check into a helper
-Date: Fri, 13 Nov 2026 17:45:29 -0800
-Message-ID: <20261114014530.86361-1-sj@kernel.org>
+Subject: Re: [PATCH 3/3] mm/vmscan: consolidate promo vs. high watermark checks
+Date: Fri, 13 Nov 2026 17:49:17 -0800
+Message-ID: <20261114014917.86531-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261113235238.3595412-3-joshua.hahnjy@gmail.com>
+In-Reply-To: <20261113235238.3595412-4-joshua.hahnjy@gmail.com>
 References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: qkq8r9r4y1nno8sjfbhpcik3y6zwjz6p
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 4A11280003
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5FB99140007
-X-HE-Tag: 1794620744-701836
-X-HE-Meta: U2FsdGVkX19ugGQEI/EJSdzflmYPpnYTZrUT5L1zINWBxbogImbh2H0JWixpJ5Xgzt/po8S5yDKqPdVpPG7kId0wy8v89fMW4G8L+xgEkVVwOiegJJASCL5RaCmGOVVuKH0/cHn13ddJc2opqW7yNA4XEk03+8kVhP5I/K1y7CMoI0Wkk6qCLSH+jGsYaBl+54mZncOZmQJVpFE63WUYyqv8+zR/jWQ7T1p/E4c7lgU6Pz2bcTmWGAj5D99dCBCflneZpyBe9iEzCQQk17uMcJdeJhpW+GF6jTqvnXTseK/42aBCkoexi23LnwPJQhT2FAJ+WTxE2ODeuIPDsz6Bdztaj4hH5w18wIXG21s7ee5CjpKNKG93xeYAySaL3qCNTd8d+NqajyRRLjyXo1M410s5EhXV7lk/cGXdzNU1p0S8k+t6e1Md2INVHm/B/IjlPsxlojGrjjrCmJOFq5Q1FxEv1hrGnY+PVvZxnJF0Havi9vZmbZaqnGUbJLCn/lK/4PqOCBRxhMNRGGJflNB1gjPj2+EZbqarQfMjsyeDUyOQDc18bdxpOtETeHwVzk16tGi3lTT3nBC8sFb2FMcfLgKKfr7AGXbzHH2CFtUlHw4lhw7OFpvIfXlvfyHZqOnPoltBkWRJaIIm4jiELMPhAkhJ6CURCrXy62H58012fK4u94N3RLDjCJjkenxQ7gc1wN82SFPTsanJwwuOXRSKPfCVchJSlHLgeeWXv+JyWymvOs9SBuIpphl3oMy/D7bEsFYEx6pQsgEpx6NFzBKYYLve49iJTKHgvY1Sbqx010hN7Juw1hvfow2u64B0lgHTwpSy4ANe0FMhDZUi31Vnidy6PUdvLIGJFN9gjOV/6MHoa+Gx7ViVI8/legFRPHCUbyiOQyobN4r0plHzRAyqxrJ5/C2zdAio42GwVpPNJdGIj5V0eZf8T05LkBcwhJPMzCYOgkLXfws9qtMT3bx
- 6mpjFi1P
- M6Szgw/+y3n61di+h55Ur/mLXRjASQf1mD4clKJMcxwAXzi+uak5LlW8DhKIbgdtBrMnpNZNAXmZWZGa3r7DjoOBKBoJQoQmRRSk0FhvtAxGWiutd/U52GoMnVg5dZkJxHcOHNiVvbTKtlFJ1oHmRSqoMNA6BDTlYORQwsbQ0xxi7/6uGrxkUo7UQ2Tf3z/khDDeh2iRSuMNOo8hIFdmeO9otRhMw8Q3LCYI0OCP/SwJYNBnF5TV40EPI+2XWOn1CM6CuOxDdE9P2H9clRNqejQpP1r/rbQqmR6MjQRcvCZV1twZwJ4ZOYOccgtpibUpuiwJe+qsWSqe2/LAIRWxLS6FMZhoVNea3WciaaMOhxyv9DE0U6TowplJtBuFivMzAAaHX
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: nx8csxup8kacjmsk9xakj1843mttkuko
+X-HE-Tag: 1794620966-423430
+X-HE-Meta: U2FsdGVkX19xQjJjKrb5+iZb/MSkA0IA6QTGKwNkCPEnMOKxeXLtZMhLSMQ5043fIEMCcrQXnMlwO4alZt5n9d/mixQWALSyRPSbG5Y2t9ZyAgYWYp6RMehY9wPTT0S90IbzTyS3SskMIzAggqsjKJB0O73PDsT6I/YQ5Qk1PtmHwpSS6IHjdZk/ODTdD5goBDBDHyeH1rOJ55m+7qVINlMrlmOCF8CeUvvt3RdHWCRt5dAc0ER9dd6JBz9feQiN8Hl/lYNrKQl0980fklMzwYthqyviAqa+qwIVgQMu91kfPl4jPBWO/dCNrF0D4hx45XqiP0qQtc1Y6LdtazEIxdIOk1OBgHD22t2HIY+IBeJJ7QbcfwU1UMRAuLmICuHu7FLAGgD4e7MoHyqCo9GeMJmA8Tb4AUcTo0PrM9NTMS7rTMhQuW7FfWYpnH4qoS0MoS1OZgVjPo5PVDY/6cUCbcEQoISSzcHJgtcE6Cyi5LahxPqq3NMu0+JrZV018vfaMNVJGOZ+BA53gNbHF4YknAsIfGHOI3FFUZtdm5TjUxr/jSdYb4wztbNmI+sI25ySk4WBhtonKpPbUm7y1o2UJS76+uD//CMrdzGkDmqDGo/4tFtSxW0oePA7ZzKFvql9v3JSVLR89ulbH7dYL6GPYRdmYlz/CMjx0GgKiRm8NkB4jFaCi1hAw5E7/5NI9GaTPFwvjPHYbiBJz+Iyq3ZMcNtqdfVCYlCFPXgM842X00Ea4oGA+5evASbcLICIZDamfK2WEBuAykG3gMs/c+7QiPnlyULOi6D+gPSjGXNngbgdlPrQSIpPo3A75X5ynD8+s6z/Cn2GT48n5sztEGiyDhlvhaKhYY+MiRrTf2PfzzN1UidYa64Q1eqnJlHTDJeYx+PQtYX15Rch4Ie4UwtWxoV32WHAKp03CdLyaDhOsZuWtGjTzhsvHw8Txhky60XQOi/SxZg8F24TN2nVd3C
+ fKlBL0QQ
+ b+P4WGn3R7tsi3cRp/0gMAyruoVExmj+CCwTC5yo7K/Bw3Zxi//f2/EQhZnlUZ1RlUEwdyQTHeJZ93+T3Hn1J3qOal+jw5cvB6G55O/dsiCQ0QaVGu0ksQoDIPzV0ZCyWVTeypb5WOMNvDlukCPvYR3Ii6XmhTXJlgiEILILXwNdoIyI5j9Qf7TUn7Jqb1cxuGeMMLYO92hgZDrki+OOLGiPra7aAR42fxkzvoFXT82ydwrqVwLfglPIBcM0WzFwWtO84XpM6soCpjQ0EzgruMeceHWZD/wmdlJaIxxV0OiO4sCE3sNFZLT2Vdxkd4xC0H1QdS8J7XW7yqo4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,55 +108,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 13 Nov 2026 15:52:35 -0800 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+On Fri, 13 Nov 2026 15:52:36 -0800 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
 
-> get_page_from_freelist() checks many conditions for each zone, often
-> with a big comment block explaining the conditions.
+> There are three sites which all check the watermark that kswapd reclaims
+> zones up to, which is the promo watermark when NUMA balancing memory
+> tiering is enabled, and the high watermark otherwise.
 > 
-> Move the kswapd check and its comment into should_skip_kswapd_zone() to
-> make the zone iteration cleaner to read.
-> 
-> While moving this, also resolve a checkpatch warning which complains of
-> a waitqueue_active() call with no corresponding comment explaining why
-> the lockless use is OK in this case.
-> 
-> No functional change intended.
+> Consolidate the patern into a helper function. While at it, remove the
 
-Looks correct to me.
+Nit of nit.  s/patern/pattern/ ?
+
+> include for <linux/sched/sysctl.h> in mm/page_alloc.c now that the
+> dependency on sysctl_numa_balancing_mode has been abstracted into
+> vmscan code.
+> 
+> No functional changes intended.
+
+Looks good to me.
 
 > 
 > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 
 Reviewed-by: SJ Park <sj@kernel.org>
-
-[...]
-> @@ -3865,22 +3885,10 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
->  			}
->  		}
->  
-> -		/*
-> -		 * If kswapd is already active on a node and the zone is below
-> -		 * its kswapd watermark for this request, keep looking for
-> -		 * other nodes that might be idle. This can happen if another
-> -		 * process has NUMA bindings and is causing kswapd wakeups on
-> -		 * only some nodes. Avoid accidental "node_reclaim_mode"-like
-> -		 * behavior in this case.
-> -		 */
->  		if (skip_kswapd_nodes &&
-> -		    !waitqueue_active(&zone->zone_pgdat->kswapd_wait)) {
-> -			mark = wmark_pages(zone, kswapd_watermark);
-> -			if (!zone_watermark_fast(zone, order, mark,
-> -					ac->highest_zoneidx, 0)) {
-> -				skipped_kswapd_nodes = true;
-> -				continue;
-> -			}
-> +		    should_skip_kswapd_zone(zone, order, ac)) {
-> +			skipped_kswapd_nodes = true;
-> +			continue;
-
-Just thinking loud.  While reviewing I realized this patch is not based on
-mm-new but apparently mm/page_alloc.git for-next.  I should also update some of
-my setups.
 
 
 Thanks,
