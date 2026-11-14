@@ -1,111 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C1D606A329
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 00:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44803606A32D
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 00:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.a=rsa-sha256 header.s=h01 header.b=kMqTfZNM
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eZXJ2vJR
 Received: by kanga.kvack.org (Postfix)
-	id 8A3776B00EF; Fri, 13 Nov 2026 19:36:03 -0500 (EST)
+	id 528616B05B1; Fri, 13 Nov 2026 19:39:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 853E66B05B0; Fri, 13 Nov 2026 19:36:03 -0500 (EST)
+	id 4D8056B05B2; Fri, 13 Nov 2026 19:39:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76A0E6B05BB; Fri, 13 Nov 2026 19:36:03 -0500 (EST)
+	id 3EE536B05B3; Fri, 13 Nov 2026 19:39:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 564FB6B00EF
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:36:03 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D735216030E
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 00:36:02 +0000 (UTC)
-X-FDA: 85431857364.18.B6BA8D4
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2A46D180005
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 00:35:59 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=kMqTfZNM;
-	spf=pass (imf06.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794616561;
-	b=wUD8utCdiCsDJr3b48HqFIGaxdCp3tTdfV1KoyI1K6+ruq1WpwpBKWQyOCzu1O2CiyALJm
-	azpV7eOXx13G1MVy6vPNJ6RktI9gFrU9qjGyg6XmIFWiZ1MvllBNRDRJKsdMMqBRnKeYQT
-	JQwZE7p6jY4N/QvGkPpgPoFVmXzzEZk=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=kMqTfZNM;
-	spf=pass (imf06.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DB0C6B05B1
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:39:27 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8F6278026E
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 00:39:26 +0000 (UTC)
+X-FDA: 85431865932.28.F87B564
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id F10B6C0005
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 00:39:24 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eZXJ2vJR;
+	spf=pass (imf10.hostedemail.com: domain of ojeda@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ojeda@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794616561;
+	s=arc-20220608; t=1794616765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KOIAIMFn214socxnffYVdJ7zS1ew3mG2V4IXKS4HuBA=;
-	b=FD7jNTfP3cW4xjUnYf/bTfLBaD6S3I9aBvV13FRt7aWcHjjZKDq1rLLUCQlLT9tAcIcYku
-	Zw1MenJnNBBJtOYZMjosWzJJIX3xNtWkobyBKkxh8Qn4wrQ4SS3PHQt0dxrx/SRPDXRazG
-	lESzOXrwzAVNfQIpw4aQq7aQIezfiUk=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=KOIAIMFn214socxnffYVdJ7zS1ew3mG2V4IXKS4HuBA=; 
-	b=kMqTfZNMYkY5uQSGht0xtivQyXS4QQYoNSceVBFK1CvvkabGipzhTwJsc6Rk6KweVag5r30lQLX
-	f5FqHMgKzTUXSXgu/URhmW4370HBoDNxwLyou0DSaM4yOBm6gmep8MsiiaQBJUJudY5zi4+0HBXDk
-	1Kx+5/4xRPi/PL6I2kp4CqizB86M1pDdYdSdaJU6vpQoMQGvlq+zebkCTsONBLZ5eGYN00EiH6m8j
-	Tj9CWZtvMpu8Dhb+FDbFaD3JkiV0SJFfIXB5dfbfDmVDpLE3l37MqwJ4dx7DwU9t1iUO7/rnB3uaA
-	wbe3ZMbrVghNJa+HHSiTV9WVD/pzWQk36a/Q==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
-	id 1xS1k6-0000000ExD5-0nuj;
-	Sat, 14 Nov 2026 08:35:43 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 14 Nov 2026 08:35:42 +0800
-Date: Sat, 14 Nov 2026 08:35:42 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Uladzislau Rezki <urezki@gmail.com>,
-	"Liam R. Howlett (Google)" <liam@infradead.org>,
-	Davidlohr Bueso <dave@stgolabs.net>, Michal Hocko <mhocko@suse.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Marco Elver <elver@google.com>, Michal Hocko <mhocko@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Thomas Graf <tgraf@suug.ch>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org,
-	Lorenzo Stoakes <ljs@kernel.org>, Chris Mason <mason@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andrew Ballance <andrewjballance@gmail.com>, stable@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>
-Subject: Re: [PATCH] mm: kvmalloc: Bail if called with soft or hard IRQs
- disabled
-Message-ID: <aves3p5vrqqAuHma@gondor.apana.org.au>
-References: <CAHk-=wiE0KG+jkhmJWifXuAVivtB63WCWtdEpGAex7-T0SHd2g@mail.gmail.com>
- <aurAxRpCwzeyXeVj@gondor.apana.org.au>
- <CAHk-=wgPvbYRcKpQ8WTH-EYZRgMG0KSH+cZxY5-Hyf+X7JjWsw@mail.gmail.com>
- <aurJZ81qnbiHH_P1@gondor.apana.org.au>
- <ausS3LQNkdc6lBy3@milan>
- <auxDm_YO4oACA_d2@gondor.apana.org.au>
- <CAHk-=whXvVO6a5AreZu3LPBj_wjpzUanwhvu8WqWP2q7g5S7Vw@mail.gmail.com>
- <auy-7TvVzJ-VCrG4@milan>
- <avcKfEvln8_2a7fJ@gondor.apana.org.au>
- <CAHk-=wg9baZ9EDhZr7ONxjuO65+vvWFo5E2hgxt+3rYo1vnhyA@mail.gmail.com>
+	bh=TR03HYANH3JxjEWewr/Ab8mbFLXagZ4CIuGxSt6TVjM=;
+	b=DrcVgQdRcTfl5fFtLi7/jF3iCjF1R0fHHRzD6CP3itOiXlwTgA/LcF9ylImzK0dR5U54f2
+	WWA2z++oSfU41m3memVwe1iHE0YN2BNfG6NUQxs8YErnq92dm84c2V8eOd1QqVg14b3LZv
+	Qwr1H45leCzMUSoOvMoeQkGJwCOq2BY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794616765;
+	b=bclf4Pe1M5/tQprU4qC+FDvyR/AXEStMcCgFeu5HZp+Wrc6McWH/92HzS8ojB8NueIPhP7
+	EJ7PRO9KS2NAFR2HzLn21nENQ1VDHK9mqJNGkrcN3uKrD4XVP8a/HKI3QuzJk6GHuZDzs6
+	b806PwW6/V+zfzSDSZXjBjE/Ycpv1dw=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eZXJ2vJR;
+	spf=pass (imf10.hostedemail.com: domain of ojeda@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ojeda@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 07EC9612C6;
+	Sat, 14 Nov 2026 00:39:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B0B51F000C4;
+	Sat, 14 Nov 2026 00:39:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794616763;
+	bh=TR03HYANH3JxjEWewr/Ab8mbFLXagZ4CIuGxSt6TVjM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=eZXJ2vJRLbnEG/8DsfpS1WuvlhpDqKP5Ad7yHWSwzESZK0n3LldVDoj2CztwVoCBh
+	 WTyP444vnzXJIHBKOWers+5ZvvFHF0FcSQqh1ztHVQEnRDIYzGQ7Fsld0tRoOkG+md
+	 qMjOIFLT9TK9QF3l3iksNJzcJp1Vcv7aCWz13sEtAz2rq6sqNqdCrHH4YAPoOQDDX/
+	 V/liyDsiVNmhpiNwMmSQjiHF+gNZ+/mPG2yZwcEyUbOYevaxMdRiUuSG15wINfKhFc
+	 KcK+hIAcFVniTfpSyuSxGJFzfwl9hM1tMKtU8cX6G7+1T7DKRhIXJEwi0gI0gCSYQN
+	 8uBXHdzKeJP3A==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: 4ncienth@gmail.com,
+	akpm@linux-foundation.org,
+	azpijr@gmail.com,
+	corbet@lwn.net,
+	david@kernel.org,
+	jannh@google.com,
+	liam@infradead.org,
+	ljs@kernel.org,
+	mhocko@suse.com,
+	patches@lists.linux.dev,
+	pfalcato@suse.de,
+	rdunlap@infradead.org,
+	rppt@kernel.org,
+	sashal@kernel.org,
+	shakeel.butt@linux.dev,
+	stable@vger.kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org,
+	linux-mm@kvack.org,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [PATCH 7.3 463/507] mm/vma: avoid spurious write locks when mm->mm_lock_seq overflows
+Date: Sat, 14 Nov 2026 01:39:12 +0100
+Message-ID: <20261114003912.82206-1-ojeda@kernel.org>
+In-Reply-To: <20261113153812.408825269@linuxfoundation.org>
+References: <20261113153812.408825269@linuxfoundation.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wg9baZ9EDhZr7ONxjuO65+vvWFo5E2hgxt+3rYo1vnhyA@mail.gmail.com>
-X-Stat-Signature: j8jtkn5q81pmx11ewsfziu415ctua6j9
-X-Rspamd-Queue-Id: 2A46D180005
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: F10B6C0005
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794616559-259297
-X-HE-Meta: U2FsdGVkX1+S1gn846LQn1FG4K2e++BzeXsPsgRKE8wROHqO3LlSdMJXyFztkwjfZTeFALUeVwbtiejFG2JoYNypd9jJwyD2KH4TrGUyc1N9aJH0ueep9LS/ircFKHcWJH+9iKh9CVRwM2TodIU9sPywCDzWgHSrJTynJcGFHv/ktvwcI9NFeEdRlnZ9NPNJlXY10VT9gz/gmBVEvXAdFvzAkTOq+SS/M+TTTM0i7h/VEY5Dywxz+VbcNLsyz2aJGsdnxPtv09xqgVxG61k/E4mvhaKnuqKWBYJh95Z0W7KSeg0X234liOKQ4TZqbUXZ10fg9dO01AskuhbR5ngcgwKD7BEjriimLHSjxM7UV51TA99z3Wwj88X677PML+avdzSq1o6q61eBxVrp+1fp4goxdDDay+MNCd+UODFTnEfcE9ITz0S9ZEiFZujzcbpiqdxeGtpd+iCDf/0o+Zr8LZUg78RzmYANketIeBeHVwufuuoZdmDMc0Fi37mmDCc1Xl+CihyhYlXG6obDqHUqeJDU/6fXNj5vALXJPEug3gjVBwsn6wtPmDe5yqKZYHWwIdGEUqyGkjDa64ekH5vyJdi3kHqH+brX9ax/l/soBUYUpYfv5FAVO+o7H/yAi90Ae90t7l5Od0+SDQ9pL9pT/vj2aLwMvgs9yF+dypwISRIwzoSRhaeFbqDARezaqmSm5lgVxV+0huu4cw9TEhplIGUL4F1Xge1cMscyEL5wnlsZslTYoQKCLlPmXn27EmMDXLiVkkZJkelb8KXjvhDg+woEm5JNN2Y0p8jmHqG2qCKg67rKL4ulakl99VGOtOLIwj3FmHzqsB+zDcpbrhW41FkJ/kc2pQlyEdtMSRBUFzSXRBhPNaELPzR3D4pMvr8mw1jeaKi3oukTQoc9PgcYi6MA+DGhH+2YVC4kjHK9d/yuYoyBInMean2Mqyub1IvPRTQouWPJwXZAgrf25au
- e9S6H6Ut
- e71u8qiZE9iYE340dCi12lk2XdfBdoRKF/qH+faAxSTWwuH0f62GyWvuKj6M8pjt7LJkO7EllkseqnxzGa+v1P4A0WI2QiOnXu973zjwGKxLKmrRVcip5GuufwMF8ntNhK/vSu24xvK/M1yO9C2ZKQTXvgf4G6qfreR1X3kOgK8FhImS/++umfRfHjR82kx2wtBerpmRX4BATXFoGWwRhoDlcKwSEKoKXvy2pI0qUo8LDhIxWGashgohz2VNoNpcqW5eVKeejgjxwQa9+7a3BJVXPOpF92w+cALNVofa1KBUMVYCHNFhzihtOOMGcjEBS8wSikBhY4xHtim7kZTpbISC74Qod5DpQviKy/DnZ+O52w85t56iVrkH315wSZwN/YquMMG0//jbjjJ0TocWOzD+0gEQf6xXlGHmx
+X-Stat-Signature: 8efztp6mwu15318redo55g1zf97oanc6
+X-Rspam-User: 
+X-HE-Tag: 1794616764-149950
+X-HE-Meta: U2FsdGVkX19iuWc0U1KYH54H93H6ZVv5G8KgoRm+OEoSN8S6h7ISypKc3XxPKqiEkEi1AWzdnq96JI3cmjbYUDNXx7LqXxHXTnD+WnypRI+pV5ZjUL8URfjADpesWLuUp1cO2sX3NgvqorPOhfpOTD2nzijnaUIi5dARwpGx9c0TOrNAfz0/NMGKyqrbyWdj/3UCrMOT7zVNLVIJc3dQT6Sq0R7VJGVgj/uS6rCuEkntuTI5aB+bkCU68Xy1DVOIru/yJsoixZeLE4JZ16EoyQIYbhn/j7d/03l5xrgd2wubkbPzql+GetPcTWwxHJFokUyCqcUTXdBk31haN93jzZD3O7S1O1KsoTNEWDxrYkjZ12bb6CRgkDmmGZNSjftTPnZHVBz5oAVyBm61BoOWOGymi1WZul+PlIkQNOWYFVbKQpA+ivoEg6SwQCDeHcPGlN39FZg8GqdiseBL2xUQuweMsDpWkjDwR+//wcJUQjOL/fY8+Lw+gSgd/r3vE6jERD3O5mEUirJGQ7VSei6wNnJf3dBotljF2KSAFWoiBncQIwNKn8TUoPvAdSNdiMz2PjqoU/wwbBE+nzQtNUQJCLZ3bz3st7J/gk3ndtJIStH1ykoOQh0dexd/WI2foIZc34hsGrhZecwW3GRLnGTg9T8Jnahi8bd2ePTv/X4s2WRjJEadQoAK61FCxSh081/JhRQQKPld4arCB6Ackm3N3bZLnlWjKsprfKYzDDDZp72MPUZosBmAGBz1PBxGLvpUekv25OSoZ8SRzpWckU/2Qn94PWOEr6FOxI2NChXactPdK3aq4fxGLCpgFvSmJrTaCYHd9V1s3shsLUJ2fwQ+5mGqxCRMBrXf0sR3rwo2SNXVpkKbpUxk2r+Fo5vx/ZtbKC86QkK2OdCVF+ex8Eqit9LmYMUK17Nl0ZwkuF290HsND+kv6pF5IaSoL5oR90nZS1u7MOVIlzcehqxGlrF
+ WJP4MnSe
+ VuUQZyhZQ2UkW7g/EC37cOJTqdE5iztyTZdIp/vCVfdfAXzTqho6e3EcVK4h+F6BWCy7WblCWaXU2y+qPx8fjv8ixaPehM8PHrwiBrtR5Kj7nFIOxX2k+0R1dmYz+4A8xOSDdGYqlpYDaR9hBfjD7qNOYtnPs35wVl5iQk/MI78SVwcfR0PF7eXOTVM+gCn8PK1cuNfLIlVPZD81Bn/xele7iGiapCiC1AtP/iQlHuskbsbwyrg+bQtLnGpzGsrgRwoM+wWNvybqXUYNa8yPBdt6QJM9k0kJJJ9oOv4ryXK9WjgWlsq6aBh0zuIbyXs93j6ahEaP+Sidikujz/WR1MrnA1KPRiyUvYvyP+a4abbcFSIUTua4z2cqHNjpx7665Pwho/iuDVoLoh2/qTl8COx2/2SVysyt3nu3I/i2lzLrrSup6vkr507zFL1qpz8HnLpqwTkNIpQsTUP/5NOQwZ10vysjVNnE2rb02s3ENqQTcmsOYku9+As0U6tmQ/QjbZ+/mAPoa0oldsSRtkpm24IWNDPXmd3aDfAg4BPFOCte65UIFKQE1E0ShkA1QoJFxydacNiUPjRjGH1dO8nvo2y0Lc/j8EFlxHlj5IlV0Z01TVqEj/3hpfA0wmw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,28 +110,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 13, 2026 at 09:47:13AM -0800, Linus Torvalds wrote:
-> 
-> I don't think this is wrong, but I do wonder if we should at least
-> have *some* way to detect these cases and report them.
+On Fri, 13 Nov 2026 10:52:47 -0500 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>
+> @@ -589,6 +593,16 @@ static inline void vma_end_write_all(struct mm_struct *mm)
+>  {
+>  	mmap_assert_write_locked(mm);
+>  	mm_lock_seqcount_end(mm);
+> +
+> +	/*
+> +	 * VMA seqcounts are not updated on unlock, so once the mm seqcount has
+> +	 * wrapped, any VMA still carrying a sequence number from before the
+> +	 * wrap would satisfy __is_vma_write_locked() when that number comes
+> +	 * round again, and readers would not be excluded. Reset every VMA's
+> +	 * seqcount so that no stale value survives the wrap.
+> +	 */
+> +	if (unlikely(!mm->mm_lock_seq.sequence))
+> +		__mm_reset_vma_seqcounts(mm);
+>  }
 
-That would make sense for direct vmalloc calls.  But this is
-kvmalloc, which is supposed to choose automatically between
-kmalloc and vmalloc.
+In a UM ~defconfig build with LLVM:
 
-It was you who suggested moving this check from the caller into
-kvmalloc (2018):
+    In file included from arch/um/kernel/asm-offsets.c:8:
+    In file included from ./include/linux/audit.h:13:
+    In file included from ./include/linux/ptrace.h:10:
+    In file included from ./include/linux/pid_namespace.h:7:
+    In file included from ./include/linux/mm.h:18:
+    ./include/linux/mmap_lock.h:604:20: error: no member named 'mm_lock_seq' in 'struct mm_struct'
+      604 |         if (unlikely(!mm->mm_lock_seq.sequence))
+          |                       ~~  ^
+    ./include/linux/compiler.h:77:42: note: expanded from macro 'unlikely'
+       77 | # define unlikely(x)    __builtin_expect(!!(x), 0)
+          |
 
-https://lore.kernel.org/all/CA+55aFxvNCEBQsxfr=yL3jgxiC8M8wY2MHwVBH+T8qSWyP-WPg@mail.gmail.com/
+That exists only under `CONFIG_PER_VMA_LOCK` (commit 47e725702b0b ("mm:
+make per-VMA locks available universally") from Dave's series was not
+backported).
 
-That worked perfectly until kvmalloc started allowing vmalloc for
-non-blocking callers (2025):
+I hope this helps!
 
-https://lore.kernel.org/all/20251007122035.56347-1-urezki@gmail.com/
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: linux-mm@kvack.org
 
-Thanks,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Cc: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: David Hildenbrand (Arm) <david@kernel.org>
+
+Cheers,
+Miguel
 
