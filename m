@@ -1,138 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A82D606A323
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 02:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 082EA606A327
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 02:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=DOH8cq/U
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AJOENWwj
 Received: by kanga.kvack.org (Postfix)
-	id 32C616B05B3; Fri, 13 Nov 2026 21:19:29 -0500 (EST)
+	id 0BC9A6B05B5; Fri, 13 Nov 2026 21:20:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D64C6B05B4; Fri, 13 Nov 2026 21:19:29 -0500 (EST)
+	id 066B26B05B6; Fri, 13 Nov 2026 21:20:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C6D16B05B5; Fri, 13 Nov 2026 21:19:29 -0500 (EST)
+	id EBEA86B05B7; Fri, 13 Nov 2026 21:20:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E7DC06B05B3
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:19:28 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DFA80A7D2A
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:19:27 +0000 (UTC)
-X-FDA: 85432117974.12.24C4407
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	by imf31.hostedemail.com (Postfix) with ESMTP id AB8F820002
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:19:25 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b="DOH8cq/U";
-	spf=pass (imf31.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.49 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B8EBB6B05B5
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:20:14 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3F98F1A0322
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:20:14 +0000 (UTC)
+X-FDA: 85432119948.23.014CF16
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 95E66140005
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:20:12 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AJOENWwj;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794622812;
+	b=n0o/CS77rNV0o28vWvDpMdtAUptOF6Uz6CVWh2D6ftl4d7ebsaipB52nXAO1yjDVE2f6s/
+	MrvqEkWNDKSDrhtbhzUg77kpOhYRvUic5/apH7e3pJT97qUOrJzPWpOzKp/V0cprpiPp5v
+	R9B/qaplvp4AzNpa7s2Fn+9R9Po63Lw=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AJOENWwj;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794622766;
+	s=arc-20220608; t=1794622812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xFEobrAf6WirewKCvSBOHq5k7Hbpzktec7ALKOJWs3s=;
-	b=vy4btT5c5miVYCSH6ExMWH7QXFqtd0Jwwiuo1rlQ8clvJGZYCrAGFL92p9pR7u2G9psD/N
-	/UyEQuRWTM+/mlfYu2CNvbfJ2in0iuLTFyfZwMail5YEzF31LOLyI4tKgPLKleKLrru3mB
-	7EwAToQUg8XpTppwxpSnBitz8wO/9Iw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794622766;
-	b=jH16Ms9jafqLiX+tOKw3YXW3Qu+IJTflV0PF+1G7iACzHhgthq3a4bPihp+Eh5hgSh2viO
-	LzT90cgL9Qt63Dw/zwiOmRxVMhaAgrKiylrX0ziqItu2o8B5y/mxelK3+epQkbynDeuvWj
-	lCLIIRQ5xrkVloBo7janb0Cn+UlBgxg=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b="DOH8cq/U";
-	spf=pass (imf31.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.49 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c50a4a2132cso212739866b.3
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:19:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1794622764; x=1795227564; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xFEobrAf6WirewKCvSBOHq5k7Hbpzktec7ALKOJWs3s=;
-        b=DOH8cq/UdG6lYohBo/30VYPSFcoYYnqFyHMmkw6O9TNTni2Bq7eVj+Sj6rg7+MgRyG
-         +NpFDfiC1foCNFHJdjua0hUP45qvhKAcwXkaBLzrAzt+46LvDUWqGERowo3OYeNmRA0I
-         vgqZMQb+pRTQh/4szmMhx1gxXbO4ydeljtcDA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794622764; x=1795227564;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=xFEobrAf6WirewKCvSBOHq5k7Hbpzktec7ALKOJWs3s=;
-        b=Do2RfFARY4TWXyAc6hXaaAYYOtXdNoXTBE1clA9DvhZpDcn3KCn3zZyePrr4XxFd0W
-         cmJzjxe0IvhzfR2mXIEEbnMR7AE/ErNyMfjiknluhX/d6YdqJlxQ8dh+OQr1F9T8kfkU
-         ulQaix97kZiCx2qJtgxwP7n3O+ANshexe8iNXQ/VvfkHmRUYEft+4rn4o3JYd7B4iwVB
-         W0/uLECCF9ByHLdyQYYp08U31cOUPptq55BpkcUtjT10EYt6jr9ngwlm8ToiWd6EYMB7
-         iPScrDlnUOoWdT/yNPApgdM6pHgztHhVt6iN1+ddcXJsDnG50V9OUTFqbDkLUbKpAyJJ
-         bCeA==
-X-Forwarded-Encrypted: i=1; AL+hErEPAfNyjFCJlBd3lLIQS2tW2qqQOkqsWMvnMCrj0ovIGCo2pSdpp60NRtzuTtGzm+Unshk9f+OVOQ==@kvack.org
-X-Gm-Message-State: APuU4Z/QDj293hOzkQKrbmFSUxSfpkrTRpJSVutP62ElDXcxt6CfWpec
-	QQagz1v4lLv/IFe7iC6V9v3AVVBLOStqUdiakMIfwsIGWvRSPE1ahcMTt0XZMWyAHBVkjdtBcdo
-	5G9d/ljuedA==
-X-Gm-Gg: AYBFou2QRJsgppcR9lKYqzUBXtLqWEWzIGc8p2BrMZ0aa5HnlxHpaTHqF03ZAq0W4SS
-	d46+kO31A4Ahh+F3no7YAnkvP7fL7H4Cc0E82s7VKkNLOG7EGI/Qk17zhf1Cu2aSL1brvKO1Pn3
-	29bo/GnA5Rg0ZOpCenUPTZmGyMAZiTGH96rxgNSf0n9FMopr3nDF2PzaAcmzJOxtbhfLtb7cFg9
-	RvqnyuJPqWN4mM9q8xQEYVxzgmozGBAK1OwGrLhxIckk+Bzo6qADzVzrRzUhTFBiRea5L12wRdi
-	C8meByrj0ihDgBlaNZKrgroOF19GAN7Fqp0FgXOjY7d+0tf3GSaQXOjXNI1UlZOa3r/AFqfLzvi
-	BSipirE07GrLLlXUdWCqK3Q0XSTdGsOzeslVed3O5eFA4lWY9iTkSjE2NUb+U7nKUsK2GsOhDDe
-	jrL7udCPzTOv2ZT52WTejO3KiF7dh3TBLWMngcxiGsFo4wcU35BVWyrgSRK1rzj+E9AK+HYkyoC
-	euEHNmPZVAZZE1IMkHyqMR9O6CaWPZoQhsBL2wg5FLpI/anFdDqOSK/tcrqv3HlogsAXlQUbCII
-	P+rrvl2kGAjA6KcXiIRbpAh3f2Y+QoNfnPM4GaAWUIcWDYlZPSZW1iXCkqX9sfRDBlVjYVwqxo+
-	W9pE=
-X-Received: by 2002:a17:907:a714:b0:c42:5363:38dc with SMTP id a640c23a62f3a-c509637e20cmr348567066b.25.1794622763975;
-        Fri, 13 Nov 2026 18:19:23 -0800 (PST)
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com. [209.85.208.42])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b7c25deb10sm1698520a12.30.2026.11.13.18.19.23
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Nov 2026 18:19:23 -0800 (PST)
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6b7bffb5b8fso2466220a12.3
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 18:19:23 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErHZGO0SqLEEdr41hRI4FfE0/cgY7xmuaSrFUk2NeIHqDfEdVB4sKP5RELAfKmvS4plBZn9VAl5o6A==@kvack.org
-X-Received: by 2002:a05:6402:2b87:b0:6b5:8695:f839 with SMTP id
- 4fb4d7f45d1cf-6b7c0d24fdfmr3606529a12.45.1794622762852; Fri, 13 Nov 2026
- 18:19:22 -0800 (PST)
+	bh=6bGsd12+MFPupXLn2HJlax53WlKnxsLm64VvDIFikGQ=;
+	b=4nZYALqAQBwKrtEv2yjJwIlefyjN9ObiQkVBj88n4t6xcYGFObk7pyvENMTFjcq74GIFcy
+	IvyyS/XBcfRAkx3hOtZw/S3cYsrkCkIxCEkBH+t2Z9AHMTbBXPQcEJMGperiJciaWKJhX7
+	PA28BqUMJCF3qKoAklUyY/lUf5Mc4ns=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 19D9C437BD;
+	Sat, 14 Nov 2026 02:20:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C451F000C4;
+	Sat, 14 Nov 2026 02:20:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794622811;
+	bh=6bGsd12+MFPupXLn2HJlax53WlKnxsLm64VvDIFikGQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=AJOENWwjAMpzrTNkqG3+m3Ig8inmXTzAD5uRAYyUl+LECaWsrGECMtNxx/luhMuFL
+	 m6IQtIL6qAO0wcEGSJhzoQN0cepbKlJcIWI0subP/xHH7WK4mAF915pvAq1YsPv7hk
+	 x5yERpWNMAu3akcd8VEiI8W4KkTPuAtJt1MeB+if3nv7d8exY/SC+dreyZVc4NE5hj
+	 4wEm38D8XbkFC9gHpx3fF0hok1BW4qnTpYxJpdFqdKQbQq9+4qlXy/e7Be0LoExMIG
+	 Is6mE382MiI6oIX1Sj+OfbiMcL6Irc4SswevnLCYw7zUpJ+RK/Bo5K6cdPcw1muliY
+	 6y/X4zzp8MQYg==
+From: SJ Park <sj@kernel.org>
+To: Jason Angelov <jasonangelov@ucla.edu>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/3] mm/damon/tests/core-kunit: test DAMOS_FILTER_TYPE_AGE_MS interval changes
+Date: Fri, 13 Nov 2026 18:20:03 -0800
+Message-ID: <20261114022004.110044-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261113-test-age-ms-filter-v1-3-b99eab2f71bb@ucla.edu>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <CAHk-=wiE0KG+jkhmJWifXuAVivtB63WCWtdEpGAex7-T0SHd2g@mail.gmail.com>
- <aurAxRpCwzeyXeVj@gondor.apana.org.au> <CAHk-=wgPvbYRcKpQ8WTH-EYZRgMG0KSH+cZxY5-Hyf+X7JjWsw@mail.gmail.com>
- <aurJZ81qnbiHH_P1@gondor.apana.org.au> <ausS3LQNkdc6lBy3@milan>
- <auxDm_YO4oACA_d2@gondor.apana.org.au> <CAHk-=whXvVO6a5AreZu3LPBj_wjpzUanwhvu8WqWP2q7g5S7Vw@mail.gmail.com>
- <auy-7TvVzJ-VCrG4@milan> <avcKfEvln8_2a7fJ@gondor.apana.org.au>
- <CAHk-=wg9baZ9EDhZr7ONxjuO65+vvWFo5E2hgxt+3rYo1vnhyA@mail.gmail.com> <aves3p5vrqqAuHma@gondor.apana.org.au>
-In-Reply-To: <aves3p5vrqqAuHma@gondor.apana.org.au>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Fri, 13 Nov 2026 18:19:06 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wjhtBnAz6YniHqcVJDCDvVVNp_UUL3QbiYyS6u+yKcNgQ@mail.gmail.com>
-X-Gm-Features: AclHuK9T8qB_5bmjhcK4UnFzb5yfP0GrEfjJOo4l7azLABG4Kermbip3IVeKi4Q
-Message-ID: <CAHk-=wjhtBnAz6YniHqcVJDCDvVVNp_UUL3QbiYyS6u+yKcNgQ@mail.gmail.com>
-Subject: Re: [PATCH] mm: kvmalloc: Bail if called with soft or hard IRQs disabled
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Uladzislau Rezki <urezki@gmail.com>, "Liam R. Howlett (Google)" <liam@infradead.org>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Michal Hocko <mhocko@suse.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Alexander Potapenko <glider@google.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	Marco Elver <elver@google.com>, Michal Hocko <mhocko@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Thomas Graf <tgraf@suug.ch>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org, 
-	Lorenzo Stoakes <ljs@kernel.org>, Chris Mason <mason@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Andrew Ballance <andrewjballance@gmail.com>, stable@vger.kernel.org, 
-	"David Hildenbrand (Arm)" <david@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AB8F820002
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: h4r4pf7njp3aboqnbr1b5jz33iqb46iu
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: hmgxzyj1andwoo8998jcpjwxd4yepj86
 X-Rspam-User: 
-X-HE-Tag: 1794622765-70710
-X-HE-Meta: U2FsdGVkX19LL78rCgBnLlPwpDJ+8ITFQUSIXiTYpyflfo+5L3R3Mx573LJOECBO/bGQkRxbagkt4qhYoEHcPxYBOJgXiwTbhVLPTnY79xoXOz03sPsuaqrWhaK5ssevx43/B1rFsXwhEMqiAoeYF3RJB/Y8Ci1j+hWKSQpcvPjJJY0BUd8xXih4+BIxci5rSVSrSx3rrbZVHU3tCMVPHNRdHovzEAwfMMyQ38asRu9YrmUQst7Mx6W0vjlFNFOhZV9RFzgVTMscHwqdVJRGJw7/ySbQgpFVI4vJXnJfPRYo+XUwu8Hi+XcNAB4KTQ1W3VIYihGdy0XGDrYJ9aAd1FHapSJm0+b2XvWvuH3hPPO+gqcEl1sDJX4Lf5/CkseNNKkjZJnHJ71hQFtRuJE0hqsqowQ5m8cQlL1K0ccX8/qrOo6UXk627VIUvLN63FOBv/E8w/u9EWiJBmVHzlnveA1bibyD8UPVxmrEAO6B1VBSMhc+qT9XDVEiuhMlqRxztOspCnZjx35+KA1Y/9RcqGyW5D08ZOR0AySVajTK/3wRjLeFuo/rxfXdmrfQigjBssTq9bq3h/eoMY5J29bodSbZ8FGcLmC7DgeGUKVgb0+GCKTNuZXDLhVfFD/T/nf94z/kKuKlA3qrIiLXJdF9MbEmecdoNuquBW9ejm4XQl0NLkfNeguG5AzKC2ga62oQZOOBgKSvQR+SZzARE6fF+K/0gZXXiOBlvP78I/uh1hmxPDqGUB9Zyo3o73Aw7BNQ/EVR/tabVZtlDtixuqPXDcpki75O5wI2J1oGJ2HzazgLqEjucSa4uIsW5BUAolrD8IfsWa8oHqwAFM+PRBokgPQRQEz1POWPXUOL85R6KO/likx1YybzY4/5bYU1riCoDlmLj8wgPtmIs6E6E2tEMftVBj/T4196a+peHftUkWZ3ajzZxewz4FgLhkPsrW3ZLNQ1RApoYR9O8DD1RTi
- Ps/sa0U3
- 3/Pn0usBtiUxj32uRd4a3Jx987oGsSfay9B0IJU2hKAjY4c8zImkOQyK0H5BEZNs2ZPqdmAzQyKtzmdKUFp4qxMLWbpAdb76eJlcn1VoCgYy9LTu0wr3smgAf9EGKitAWlXIEnFsm9EDRIxKRplVrP2oa6s4UdmgXCHu5z+1x1C2urogSKa8aQCq5Le1fbb7yoDCaAOQz4p0PKB71Qsnme3mTxnkhtVutzFXVn+rOOpO+lQMLW3jAv6rCHOmstdM1EAUO7XlFoJqA2o2xvdELiRZ2QCO052hv8xTD1m7AVHMxH8KAzP5dJrwHVXcttoeeOpUesDObPvgRT77s3myBTTzZJypb+tP9PtRtpl3TMn5gtEmTmPBFAyrX3j+TwjCu88ZelUDJKt5zTifCj4onH9M1j/WiOQU8PMRYxfICwbHJIeQt9fKE/l8xwGpdKd57QqR2OguP39Tp/pfdRgLxAK1k/3bNyuYigFQ8s9eHoqOHzL2Gp8sy2cprni5NUyWWZryNsUNrdBOL22hUaXKQTnUEGuFInL55wcf+q/ezfsNTVAas6aDqmDMpCXc/IGZu0plcXjOBA2J7CGZAvdy6Z+Pq//KekBTR9k7FCgK920s9HxCFvPrsjLdugoUuXJ3V8Reu/7UObcZfd/Q=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 95E66140005
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794622812-498180
+X-HE-Meta: U2FsdGVkX19xG6qjQrdolmP01HqcMcNyOn0yiDrhPY27bFRliTVqk24tKV3MrYjulE/rOgMiH8Goeq4W7j4i8I5zofUuTmL9njlUL0tpIAS+4uMCF4eGvNyizU4VvNykG2iYeeLahs3XQP4qP9B2EOeVWDM5vQDoud6BjHYlA06xjRI1b1cS/Y9H4i9FDFcBZ+vYruq37+uN5N0kBmaH1HfJgHYIFTRObqgECn2SwucITzsusA1eBLxRifarq9OKVWeABwMUvkID0ciZvzbympcNLng78O9bv05KWsZ/aHKrEaiZjkH886JRRfClAKvlFiTOlqJlY6Rr+3ou/aCLpApUVdqVctyhNBw15wpvjV6H2qPHJFRhJZ+d7TJos1+vKgZJPpxcP5TrUXbeGvfbNZFcESEI4Z34WAH3HBKfydcMKOC5cmikaSQeZu9yJXQL9gXC2EUmZ+Ybf6cQDm/skBZWPmgQfmSWtm/jaR3b3GeKJ4QlAffJ1vHTuWMvXoFxZeCYcfwkMA6Lxd+vpxVnv10DAsER0cnGaBtpHvPGmradpsId3R8TMNH87nel8dUx3yYqwGf7Gjj7uccV5eOpEddJs1Ka3i6y2lyZIuEMHZS2a7u8R1LwuRWNv1+eMa6tDx6j+yb835cKymck/K7W8PklOUWFx+HgqEaWCElJA4BprgCw9BTHhH7QCR+MLeV02RgG2B0OoefpVERy3yt0xMbozpZZCxXqCLzOXmDV3iDuyScE3QWLtvF4pqQDzludOLc5BoCa3l9/22q4AVaQp/Je8vGoMjbHdC9gxH0OyW4wDMu0tay1UHjcFCIJtPkVIMf1aXZ2HdZFpJmUaKFe0tncr6ntBgurOpRqcHgPEWxRlDxwrWQ+5u26HIg2yj7G+lWYtIDDNa04jkoZavKMHf+ySMEkHZxPsWQ+rEwEKY9uud+rikiyOXBOrzJsq6t/aZqnAefBsC4Wmr0slS+
+ 74tvwiIm
+ LnsjCno/EtEWyjSH4Bb9ldxbIibTKDlFbZ0dUbVdaCGTXznypXmc2/ECd7rx2mW14bB27YJ9jhOCTUkCFR+2fid44JXasD5znTupZQPTi3T9ZBlDUlG+edgLfAa+hwMBxBffekGMqX7oik5o0lYdP4xcv8b+uwJqpNHOa65LaIzS9P/7eYEs9tL8+gjrzjGlwl0uAyzh6jPPKBtUAJjnrjxZ1ZI/1ac7nqpqkH78S/y90aHzg5XhKHdlYSbBhbJ7jlJZp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,18 +96,160 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 13 Nov 2026 at 16:35, Herbert Xu <herbert@gondor.apana.org.au> wrote:
->
-> That would make sense for direct vmalloc calls.  But this is
-> kvmalloc, which is supposed to choose automatically between
-> kmalloc and vmalloc.
+On Fri, 13 Nov 2026 07:58:57 -0800 Jason Angelov <jasonangelov@ucla.edu> wrote:
 
-Yes. But that cl;early caused problems, and then people seemed to
-start thinking that it meant that the vmalloc side should also work
-with GFP_ATOMIC.
+> DAMOS_FILTER_TYPE_AGE_MS defines an inclusive range for age in
+> milliseconds to filter for target regions.
+> Aggregation interval can be changed by users or intervals
+> auto-tuning features.
 
-If you are in atomic context, then kvmalloc() makes no sense, since
-the vmalloc makes no sense. You should use kmalloc.
+Let's put the second sentence in the line of the end of the first sentence.  In
+the way, we can save one line.
 
-          Linus
+> 
+> Add a kunit test for each:
+> 
+> - convert region age to milliseconds, correct behavior at boundaries
+> for defined filter range
+
+Let's add two spaces indentation, to make the bullet point lists easier to
+read.
+
+> - DAMOS_FILTER_TYPE_AGE_MS filter keeps correct behavior even when
+> aggregation interval changes
+
+Ditto.
+
+> 
+> Signed-off-by: Jason Angelov <jasonangelov@ucla.edu>
+> ---
+>  mm/damon/tests/core-kunit.h | 81 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 81 insertions(+)
+> 
+> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+> index fb84d30a712d..6de7c2531702 100644
+> --- a/mm/damon/tests/core-kunit.h
+> +++ b/mm/damon/tests/core-kunit.h
+> @@ -1837,6 +1837,86 @@ static void damos_test_age_ms_filter_is_core(struct kunit *test)
+>  	KUNIT_EXPECT_FALSE(test, damos_filter_for_ops(DAMOS_FILTER_TYPE_AGE_MS));
+>  }
+>  
+> +static void damos_test_age_ms_filter_interval_changes(struct kunit *test)
+> +{
+> +	/* Filter window: 200-400 ms.  Start: 100 ms interval, age 0. */
+
+This looks like not a complete sentence for readers but a personal note.
+Please make the comment more human-readable or just drop.
+
+> +	struct damos_filter filter = {
+> +		.type = DAMOS_FILTER_TYPE_AGE_MS,
+> +		.matching = true,
+> +		.range_min = 200,
+> +		.range_max = 400,
+> +	};
+> +	struct damon_attrs attrs = {
+> +		.sample_interval = 5000,
+> +		.aggr_interval = 100000,
+> +		.min_nr_regions = 3,
+> +		.max_nr_regions = 3,
+> +	};
+> +	struct damon_ctx *ctx;
+> +	struct damon_target *t;
+> +	struct damon_region *r;
+> +	int err;
+> +
+> +	ctx = damon_new_ctx();
+> +	if (!ctx)
+> +		kunit_skip(test, "ctx alloc fail");
+> +	t = damon_new_target();
+> +	if (!t) {
+> +		damon_destroy_ctx(ctx);
+> +		kunit_skip(test, "target alloc fail");
+> +	}
+> +	damon_add_target(ctx, t);
+> +	r = damon_new_region(0, DAMON_MIN_REGION_SZ);
+> +	if (!r) {
+> +		damon_destroy_ctx(ctx);
+> +		kunit_skip(test, "region alloc fail");
+> +	}
+> +	damon_add_region(r, t);
+> +	KUNIT_EXPECT_EQ(test, damon_set_attrs(ctx, &attrs), 0);
+
+Why test damon_set_attrs() in this test?
+
+> +
+> +	/* below window: age 1 = 100 ms */
+
+What the "window" means?  Filter's range_{min,max}?  This again feels like a
+personal note rather than somewhat useful for other code readers.  Please make
+the comment more human readable or just drop.
+
+> +	r->age = 1;
+> +	KUNIT_EXPECT_FALSE(test, damos_filter_match(ctx, t, r, &filter,
+> +			ctx->min_region_sz, &err));
+> +
+> +	/* inside window: age 2 = 200 ms */
+
+Ditto.  Same for all comments in this function.
+
+> +	r->age = 2;
+> +	KUNIT_EXPECT_TRUE(test, damos_filter_match(ctx, t, r, &filter,
+> +			ctx->min_region_sz, &err));
+> +
+> +	/*
+> +	 * change aggregation interval 100 -> 200 ms:
+> +	 * inside window: age rescaled 2 -> 1, still 200 ms
+> +	 */
+> +	attrs.aggr_interval = 200000;
+> +	KUNIT_EXPECT_EQ(test, damon_set_attrs(ctx, &attrs), 0);
+
+Why test damon_set_attrs() in this test?
+
+> +	KUNIT_EXPECT_EQ(test, r->age, 1u);
+> +	KUNIT_EXPECT_TRUE(test, damos_filter_match(ctx, t, r, &filter,
+> +			ctx->min_region_sz, &err));
+> +
+> +	/* inside window: age 2 = 400 ms. */
+> +	r->age = 2;
+> +	KUNIT_EXPECT_TRUE(test, damos_filter_match(ctx, t, r, &filter,
+> +			ctx->min_region_sz, &err));
+> +
+> +	/*
+> +	 * change aggregation interval 200 -> 50 ms:
+> +	 * inside window: age rescaled 2 -> 8, still 400 ms.
+> +	 */
+> +	attrs.aggr_interval = 50000;
+> +	KUNIT_EXPECT_EQ(test, damon_set_attrs(ctx, &attrs), 0);
+> +	KUNIT_EXPECT_EQ(test, r->age, 8u);
+> +	KUNIT_EXPECT_TRUE(test, damos_filter_match(ctx, t, r, &filter,
+> +			ctx->min_region_sz, &err));
+> +
+> +	/* above window: age 9 = 450 ms. */
+> +	r->age = 9;
+> +	KUNIT_EXPECT_FALSE(test, damos_filter_match(ctx, t, r, &filter,
+> +			ctx->min_region_sz, &err));
+> +
+> +	damon_destroy_ctx(ctx);
+> +}
+> +
+>  static void damos_test_filter_out(struct kunit *test)
+>  {
+>  	struct damon_target *t;
+> @@ -2599,6 +2679,7 @@ static struct kunit_case damon_test_cases[] = {
+>  	KUNIT_CASE(damon_test_commit_ctx_keeps_quota),
+>  	KUNIT_CASE(damon_test_valid_probe_params),
+>  	KUNIT_CASE(damos_test_age_ms_filter_is_core),
+> +	KUNIT_CASE(damos_test_age_ms_filter_interval_changes),
+>  	KUNIT_CASE(damos_test_filter_out),
+>  	KUNIT_CASE(damos_test_apply_scheme_filtered_sz),
+>  	KUNIT_CASE(damos_test_apply_scheme_filter_sz_unchanged),
+> 
+> -- 
+> 2.53.0
+> 
+> 
+
+
+Thanks,
+SJ
 
