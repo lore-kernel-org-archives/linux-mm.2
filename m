@@ -1,93 +1,118 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F60606A323
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 08:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1695F606A33D
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 09:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T9kjE2z3
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Cc/Urxep
 Received: by kanga.kvack.org (Postfix)
-	id 8450D6B05B1; Sat, 14 Nov 2026 03:52:17 -0500 (EST)
+	id 1673E6B00EF; Sat, 14 Nov 2026 04:34:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F5F56B05B2; Sat, 14 Nov 2026 03:52:17 -0500 (EST)
+	id 0F19C6B05B0; Sat, 14 Nov 2026 04:34:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70CB26B05B3; Sat, 14 Nov 2026 03:52:17 -0500 (EST)
+	id EFAA76B05B1; Sat, 14 Nov 2026 04:34:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4ED986B05B1
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 03:52:17 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C717A6B00EF
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 04:34:48 -0500 (EST)
 Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 66D831A036D
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 08:52:15 +0000 (UTC)
-X-FDA: 85433107830.09.28A80E6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id CD84E140005
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 08:52:13 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T9kjE2z3;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794646333;
-	b=pHPrUK2cNdySYH46jzsFEDXo8LC/ZFM7VK2AwnMoAPBfvYXOZNH70lM8HguEweY0igMX93
-	12KqYpPqnFxwwJNye+JzTOnH68heSscPDgJIE7P45sg9XsyuS1nKGyIoWIzOXfOOjPO1WU
-	0jN/9cqyPU6XmOi8HURh/MX7YdOuEt0=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T9kjE2z3;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 20AA41C3A7A
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 09:34:47 +0000 (UTC)
+X-FDA: 85433215014.09.0DA996D
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 6520F80002
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 09:34:45 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b="Cc/Urxep";
+	spf=pass (imf30.hostedemail.com: domain of 3Myv4agkKCMg7o5816ov8u22uzs.q20zw18B-00y9oqy.25u@flex--tarunsahu.bounces.google.com designates 209.85.218.70 as permitted sender) smtp.mailfrom=3Myv4agkKCMg7o5816ov8u22uzs.q20zw18B-00y9oqy.25u@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794646333;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794648885;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n801CWK50YYUQgpOSBupYxzrf81B+wbefMwYPdevCSg=;
-	b=m0ey5pSyO9Uv8KRebgIqceVPmdThHqRz0xPmASfWjzn9co8A+dAOCCNusGWpx6vSEA3ik7
-	REJ7ltZk0daiaPdCk7vagrzQ9lHfN7tMtX7NMBFVZdrEEAq6dNLtbqlmVi/5/guDDl3AyW
-	p6v1pESOQVo1sCUC0tboD5jPmlVHxXA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AEB6360018;
-	Sat, 14 Nov 2026 08:52:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D751F000C4;
-	Sat, 14 Nov 2026 08:52:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794646332;
-	bh=n801CWK50YYUQgpOSBupYxzrf81B+wbefMwYPdevCSg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=T9kjE2z3T+hwGZ6az+GpRGeCt1mPkQ87WlPxm5X88RB2irZeGcshvb3BXsJU8kkTq
-	 UDefcpW3ZPrUkfq+kYo6f4rMWQqDtmDiYdijdJXtwo87M5JVcrAp0d1IXpYv43RWqf
-	 iUqvTvZaMpuyqYHaF1kwEscMxhPcN/kYOv02BG31miHlW89h6tP2rKIY9TnQa4txTv
-	 +6ltxO/XpaG+KyzIOLdFjO0oA4UY9Hkb+b5AM2i93B1kcQX5TasevvMNLAOZmlvA7P
-	 uyfastz3DypNZXSWlCdIKvJZGSYselarRu/pJ7ZCstKNTacLCV1XUH76IsGFsQlkMj
-	 sTnF6PUDSPCGw==
-Message-ID: <sashiko-outbox-214306@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 3/6] mm/slab: Support disabling SLAB_BUCKETS at boot
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Chris Down" <chris@chrisdown.name>, "Vlastimil Babka" <vbabka@kernel.org>, "Harry
- Yoo" <harry@kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>
-Cc: "Hao Li" <hao.li@linux.dev>, "Christoph Lameter" <cl@gentwo.org>, "David
- Rientjes" <rientjes@google.com>, "Roman Gushchin" <roman.gushchin@linux.dev>, "Kees
- Cook" <kees@kernel.org>, "Marco Elver" <elver@google.com>, "GONG Ruiqi" <gongruiqi@huaweicloud.com>, "Jonathan
- Corbet" <corbet@lwn.net>, linux-mm@kvack.org, kernel-team@meta.com
-In-Reply-To: <843f0f05bbe3ff36efd22d490e83b0260f8d2f81.1794506262.git.chris@chrisdown.name>
-References: <cover.1794506262.git.chris@chrisdown.name>
- <843f0f05bbe3ff36efd22d490e83b0260f8d2f81.1794506262.git.chris@chrisdown.name>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 14 Nov 2026 08:52:11 +0000
-X-Stat-Signature: f3ia3wrsthrrux8ipjduoq1nwc6g15w8
+	bh=cYfB8ZYjzkbZTu8PkWr5VdyVYonCx+ZsO65KHqfQojE=;
+	b=cA/isXwphQlLy3bjQMwTtHxnn9s9GnQ+jQ9OJnUdbN6np3dy4HAT/yppGUTedLTofEWFX5
+	Ka+7FZGmDILn/Ejob+v98p+Bsas+1xQhZqMqMQTRvRrsk29lwDZsAEEVgTUjqTglXUCYQF
+	32dU8Aq97BZ2N7eIqmxX7Xd26jTBt9o=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794648885;
+	b=brQOxHznwXCLKa/suESN4FRWbvKyN3hNdiFULvsxH6WJrecxUvU3WNkbG++C6hBHZJVRPp
+	Jf8hJqyyrt2bwT4RTzERgQFSybVydWpc/T0h+2cT/CT6pd7aikdVrnbrc5xM4PiJghHzzp
+	fTGY6zmmxySMSY+6XiT/NmGb42uVdrw=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b="Cc/Urxep";
+	spf=pass (imf30.hostedemail.com: domain of 3Myv4agkKCMg7o5816ov8u22uzs.q20zw18B-00y9oqy.25u@flex--tarunsahu.bounces.google.com designates 209.85.218.70 as permitted sender) smtp.mailfrom=3Myv4agkKCMg7o5816ov8u22uzs.q20zw18B-00y9oqy.25u@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c4d34d6082fso170335466b.0
+        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 01:34:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794648884; x=1795253684; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cYfB8ZYjzkbZTu8PkWr5VdyVYonCx+ZsO65KHqfQojE=;
+        b=Cc/UrxepoaZwbFsrFkYHW9ZZdbCY3iynOdq2onR4pOihOMiUdZ1XdgwDx5xc5j/5dH
+         EjWlgYAb8osS0TLno7rui3FNkiOek4/qwsXKMx/2JOurYn6/cOWt/7rn3RFUyumpfqQa
+         bHB0QPEh7RY43IigbCqRNuW9D1KLCu/YZILN9J0PYv6ReWWIu8vbymFEPwK0TfDyy9RC
+         ql9l7zyzEmVBnMHvSqmbJETulTH8xBzqC2xDjWlQ1LSneSAwJTuGjpRYwRBQaK2ZZKGP
+         S1W1dar8tF18DZ44JFxoYaAQquSR8yInh7y9yxLWXzYWVxZHzGfAHKINOUypG5SgcD2N
+         wCHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794648884; x=1795253684;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cYfB8ZYjzkbZTu8PkWr5VdyVYonCx+ZsO65KHqfQojE=;
+        b=RPrgWvGC+dkEYFVXwXrLx52cgL+ygvZqAGScw6xuN889laIyq/EyvStQ03bwfKiQnr
+         24I9Dzcy/FVPGXtmFFcItqGgO1rrxmMpYIZt67BetZhJsYMcLJMRxyqf2OsKVi+UbOF6
+         /25e5zEztuDkZTGLnI8v9qNdW+BhVKFYGiM/grQTqU5CTS4vVjBHBolAv3te+BFb83dF
+         6B8WOA/BNJToSmZHe9lWqeBc99C1r7QKvLH2xOGMdAinnHfzrtiw27SnW9HhxJ+oOjJf
+         prdSeCkPgjvf3pDPyZRrV77GIuzoUQQMTO+51G13c8K9apMXz+gSrxe9NyzVBN9CRx9X
+         JVMQ==
+X-Forwarded-Encrypted: i=1; AL+hErEwz4QAcZ8u9/10UlMyQSy/hdO9QWTMuR+pCqQylmSqdGKKlsmqtkgFmga2EkmHmRpd9Yx7qHHJcA==@kvack.org
+X-Gm-Message-State: APuU4Z824BwBLW4Wa/jDuNzopjgVfXaY8khSa0krZSoXUXlvv+06WsIz
+	zkK8cYN2fRREWwfecxbT08iIvcgUqUVCP8FXxMVwYE2dQSeM0hhmTBKPUbqbxUg74XzjsmWIY2Y
+	Ce7YpVau5ib8S/gPdWA==
+X-Received: from ejbgl17.prod.google.com ([2002:a17:906:e0d1:b0:c50:537a:6835])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:7b83:b0:c41:b4e4:7958 with SMTP id a640c23a62f3a-c5095dd7931mr418395066b.0.1794648883281;
+ Sat, 14 Nov 2026 01:34:43 -0800 (PST)
+Date: Sat, 14 Nov 2026 09:34:41 +0000
+In-Reply-To: <DMRP21FATCC0.ARAURXWV85JP@google.com>
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
+References: <20261110050202.529473-1-tarunsahu@google.com> <20261110050202.529473-9-tarunsahu@google.com>
+ <DMRP21FATCC0.ARAURXWV85JP@google.com>
+Message-ID: <9huzse13pxhq.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH v4 08/19] kho: block: Add the feature header to blocks
+From: tarunsahu@google.com
+To: David Matlack <dmatlack@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, maz@kernel.org, will@kernel.org, 
+	Alexander Graf <graf@amazon.com>, seanjc@google.com, jgg@nvidia.com, loganodell@google.com, 
+	arnd@arndb.de, dwmw2@infradead.org, baolu.lu@linux.intel.com, 
+	Bjorn Helgaas <bhelgaas@google.com>, oupton@kernel.org, alex@shazbot.org, 
+	gle.com@google.com, pbonzini@redhat.com, 
+	Andrew Morton <akpm@linux-foundation.org>, kevin.tian@intel.com, joro@8bytes.org
+Cc: kvmarm@lists.linux.dev, linux-pci@vger.kernel.org, 
+	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, kvm@vger.kernel.org, 
+	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	skhawaja@google.com, sagis@google.com, linux-arch@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: chq6gqaesjtqm65g9eoxmwioioy1p915
+X-Rspamd-Queue-Id: 6520F80002
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CD84E140005
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794646333-614401
-X-HE-Meta: U2FsdGVkX19WB3LS52xrAlVesd/l7u2Dau9qG+xk16i5hVcdFa2q10Seyo9XyW0gQ4PC6Ptdp/A3bhjctvi7dyP4ji5j9fJX0GRiMVtzrc6ZPe0MAp6Kv4VVbzqjQxlIKxagySGeNc3jze3dj1DLpy2NdkJBBw56OoGN2NxK7/0Ono7cZtMLT3QKmXF+2Tv8Iyl8YEltghtXEdA2TjZGhoXHCz8/1DekAE9rPmougD+yTw9GWkeMlz49ixfhJKE7B7LzwK0chaMNShtDZftHIyT4g+yvd5tt543PKcEFSB3gdAWh0amQcfDPX+LJdELhgraDHTvmhxcPlt6dOld1nxgIwtDPZVrYyttJqcjHOWwCK02gdV9dbVSlfvD82eNJS8r9Hqm6JJQ/5PTh1uL36MTZlothdIipcVWQGRgQRBGv08hF0qe2pDMEeAgigdsBynSW2pB7Zq5loGp60EsGf536UTb80pzl96iRhT/50G/IPaVYUJaQcf6KbRCYH9NGWJxQ9DgqAI+p/1J7mRJsAaD27mOZtjwcH2VcUOt1q2JFyf5V2wotgS9w1iBLtJJq79QZfb8dp85w7iCoflkm8HJQyN5mZflRiZspxY9mlZ8UDK3z4HG//+B4UlwO7FC8czG11AstBQST+TM37f/3g1Nfk9CBVVN7OtXSSEfcFkOHCk348gFYBX+cFclqBLF1DLMMGB93A7zARGt489rMXuZSWKmmSjX6JyJlPx6g8MGzP3h0/iwIAiRxkSK+z1QAuRVxEk5zPXKQXsvIM8BxgTlPZW0ysv6FUEyRYneC1eN4ozAxk6pjBHkkEoLF9rsBZWX80BC3YvKp4bwkjCaXEn249gQoCn/4zn8OI7aVjXgv5ajAxt4hQ/VI0UrubDNeAwT8M9uSyfEhbqL8xeO2ZS8kdxGbJKqZWaIsBhI+VDwjyD/XLeSdodLwZVHZRBMK5DErMinL9w4BLcP/rBI
- jjY+/jDT
- 6Vvp84omEwuGWLrOQuthHbG2I0tQKUwv2HYdtgB0nBwhV1YPBLpL0aMtvD0r9KjDwuUPax8pj0p0pZcGprcWjrpktVCpLlfaAm3lyB/JELZ/4QjfMKnO4NhrosihPueb8Et7sLYE1wULFKjvyiliuqw3Y+WCWmj+8K5VbNuEYX3AvqbdnoojeZVlDy5X63s+nBBpZX3fKaD6DMHu92tKoKz8qg8sYNQg5GjciJQ1CsfaXC6RBZrXBdYK6WZu2ZTvp2lW36pTaTzUsQxIMSVh8QaysaPUTuFgXXmMT/HWtamQa7epbwSk5LTluDroVU3mYvPIcxGYFpgR3OvY5utQnt5PT0hww5MxenJ0Ir03u8XLX9sEKCV2ak5q1wXOSLUpV1eX3ZVpDXwBLFfHuuBUiEgqAQTKfmB9tFNiLKQDNb/7sTYvcVAnEg40/gXjCsDspOxq07V3O/Vafrm/WZpZWkQCuOgdaXl5oICrz2MHtI1k+F7nkYhGteRdXvvEccHjfg0XSwQQwhvjMK1KCG9cUkRABpUA9UK80HpPh2XatFQvyS3uZI2AU/X3SK12g+kWX2TcKL4S4R69xENOCjF6ZYE28fq0Zz+BRZxNIQ4f/uAdu0R4b7Z3QR0Su3ZNQLXM/Kx4K
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794648885-216437
+X-HE-Meta: U2FsdGVkX1/5iT+yulF/K27lchH+0alSTFWDubskIjBFbitTy3Sluc7w+XAf+6iFv3E+OpTtElmyaz9NQordYn5xEuT+Y86dmbCmpqoJamBvBFY1laCpmwKOpnZ11964h3NCusQiaBGiX28oe8qHqq5nsKjetCVX7M+I242IRNe5N9juQHeuMzW9A6JmGMGQbR7BHGZ4EP1Xvow751/ISwoYZ9c8n8Xqe1p5XKRpLj+qYjW68NjB4VHc5jt8Z77axXMsYCZTb7CP8zSZecOzTbpxTA0PUSxvuPgjM2Ny5swJ3tkcwfk/ZWgejgFegNou7vvsy4Mlsl+KQAjIliGX1uYkteYTPeH4Rn8yt6HksSjm2PWGJk4AJ89ABAQojYlmfxws9hFk68eaLIIUqUy4g55YVRCq9zStQN+kCQYcSxhcrJ7RjAUIeAH7v7osiYCy21llWjWl4eRie0vBXksungI9p3Q407aAbCvByAkGgyj/MRAg4d/A3+TgnaFbePF/+RgScodkkjVaOcW4SFS+Jm+lX4LlszsnGbnxIGP+Qz+3Vm7Lu3eIs7CiTJx3QmrB+9F7x3iuGYGTQ5KNVitGh7uv7FqgJNGpzs4BIA0F/7oqQ53841sjUnj6vj88OKfbSdmdbcJsMAcdLILD6eFHnwGHgVHJb7eZUgFpKwkJBlBs/UPoF6gteCuU37o2+11gCXISfGl4AZfF7ZtHcP5hntjIGwdc/BrRm9gPVn565vkgqYxNxf41HxPxBACKgwJ4RwAmu3kFlDTWhlU0PYoFg2H/iaYJX7Kfo3oBBE5NTMauFP4BjHYzySA/ofDb4o6dZfarxJllYxJLhIT5VadoyNjYRwHm7w1jfOgjKr48Lr9lqzIpTz/xUbNtP/EoDHGEDkNQ12khQFXVk9uZzXEmQ/7Gu2A5bt73BMY/Pr/J606zrJPG9GL3wfx8aZv8guvqpRF99AYEzZMJ/t+sIwT
+ j7LOBAJw
+ 37bpKijdOVErVYE72PI+O5cziM5OQrTcJQ+Iom0hNGbyFlGO5nNMbcXxgEVmJY7wYvU6XKlig8/f7nHseix9+2ZR1CKq8RpDyKMjy/UUG9DXA0mf7LHJUJClk+fUJzKKoSpGuLwrV1Nd9Vh8xZUr5+viaM1CpwytceoosXt2juIDpV8Lq5OZOE+MqX5kpiBaLsSesRYotM0ZeP7agqW5NQew8605MjFg6d9YwjYKbQxPXrSes1XiLCWoyKAxSE9WkjAtrTIsQDNJFv+nCZoX1UBR6nmr57utlQLvDHGkI8MJQ55MsI9iVeN8S5la5MSZOpj9gDIMeBiCoZGYiTcIzAeiYD8VJjwvOAaV0Fo6A7Wsh0IVm2MyYKRAce4yHfkplUbcDe97MEKB9BkukczT1EuX9R25hGU0vGu+tJfh1QLkY77unzk7RX3VKLvQ65WpEy2rG46yJE1j0Berq9/1E/FJJKbflCHmSw7H2ehwlzyKo4ol5l+E+4W9kQWreEfAuKddc7gBMhRGUsdXWiiOVJ/bdu7TDclwfOc1qKCPg/122+EIk5Qn5h9L9raxcce+/wKQ/cQT111qRFH14VMg24ojE3A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,51 +120,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] mm/slab: setup_slab_buckets() adds per-feature knob instead of
-  slab_hardening
---
+"David Matlack" <dmatlack@google.com> writes:
 
-commit d1769f1af5f0bdc819b4474cbb49e0bbed23c8ff
-Author: Chris Down <chris@chrisdown.name>
+> On Tue Nov 10, 2026 at 5:01 AM UTC, Tarun Sahu wrote:
+>> Precede struct kho_block_header_ser with struct kho_ser_hdr using
+>> DECLARE_KHO_SER. Each block in a block set starts with struct
+>> kho_ser_hdr followed by struct kho_block_header_ser. Serialized entries
+>> start immediately after the header payload at offset fhdr->size.
+>
+> This adds a feature header to every block in the set, but the layout it
+> describes is a property of the whole set: all blocks are written by the
+> same kernel with the same header.
+>
+> Blocks are only ever added and removed at the tail, so the head block
+> is stable for the lifetime of the set. I'd put a single set-wide
+> header in the first block only, e.g. a struct kho_block_set_ser with
+> its own feature header, and keep the per-block header to next and
+> count.
+>
+> entry_size (added in patch 2) is another set-wide property that belongs
+> there. All blocks in a set have the same entry size, so recording it in
+> every block is redundant, and restore has to check that the copies
+> agree.
+>
 
-mm/slab: Support disabling SLAB_BUCKETS at boot
+Yes, adding a ser_hdr to each block_header is unnecessary and also cause
+8 bytes to get added to every block. This can be solved like you said by
+adding it only to the first block. But this will make number of entries
+in block[0] to be less than blocks 1..N. I am not sure if that is
+acceptable but if it can be then we can avoid adding ser_hdr to each
+block. Same for entry_size which can be moved to the first block only
+like you suggested part of struct kho_block_set_ser.
 
-This commit adds a slab_buckets=3D early boot parameter to allow disabling
-separate kmalloc buckets on kernels built with CONFIG_SLAB_BUCKETS=3Dy.
+> [...]
+>
+>>  		entry_size = ser->entry_size;
+>>  		bs->entry_size = entry_size;
+>> -		capacity = (KHO_BLOCK_SIZE - sizeof(*ser)) / bs->entry_size;
+>> +		capacity = (KHO_BLOCK_SIZE - fhdr->size) / bs->entry_size;
+>>  		bs->count_per_block = capacity;
+>
+> Nothing checks that the blocks agree. Each block's entries start at its
+> own fhdr->size, and count_per_block ends up being whatever the last
+> block implies. With a single set-wide header this can't happen.
 
-> diff --git a/mm/slab_common.c b/mm/slab_common.c
-> index 01c64ef661e7f..272d22f411c2c 100644
-> --- a/mm/slab_common.c
-> +++ b/mm/slab_common.c
-> @@ -410,6 +410,16 @@ EXPORT_SYMBOL(__kmem_cache_create_args);
-> =20
->  static struct kmem_cache *kmem_buckets_cache __ro_after_init;
-> =20
-> +static bool slab_buckets_enabled __ro_after_init =3D IS_ENABLED(CONFIG_S=
-LAB_BUCKETS);
-> +
-> +static int __init setup_slab_buckets(char *str)
-> +{
-> +	if (!IS_ENABLED(CONFIG_SLAB_BUCKETS))
-> +		return 0;
-> +	return kstrtobool(str, &slab_buckets_enabled);
-> +}
-> +early_param("slab_buckets", setup_slab_buckets);
+yes.
 
-[Severity: Low]
-As reported by Harry Yoo on v1 [1], should boot-time slab hardening controls
-use a single coarse-grained parameter such as slab_hardening=3D rather than
-introducing separate per-feature knobs like slab_buckets=3D here and
-kmalloc_partition=3D in commit "mm/slab: Support disabling
-KMALLOC_PARTITION_CACHES at boot"?
-
-[1] https://lore.kernel.org/r/auIN44CnAyzvR_Ll@thinkstation
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1794506262.gi=
-t.chris@chrisdown.name?part=3D3
+~Tarun
 
