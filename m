@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D23607709D
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 13:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018966078A15
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 13:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UAg3s/Vf
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hPdnrLSv
 Received: by kanga.kvack.org (Postfix)
-	id 7B98F6B05EB; Sat, 14 Nov 2026 08:09:31 -0500 (EST)
+	id 1505B6B05EC; Sat, 14 Nov 2026 08:09:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7902B6B05EC; Sat, 14 Nov 2026 08:09:31 -0500 (EST)
+	id 127A46B05EE; Sat, 14 Nov 2026 08:09:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67FCD6B05ED; Sat, 14 Nov 2026 08:09:31 -0500 (EST)
+	id 017206B05EF; Sat, 14 Nov 2026 08:09:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 385906B05EB
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 08:09:31 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BD4721C3B37
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:09:30 +0000 (UTC)
-X-FDA: 85433756100.18.4F228A0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 05F0510000C
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:09:28 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UAg3s/Vf";
-	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CE7BA6B05EC
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 08:09:37 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5CB2D1203BE
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:09:37 +0000 (UTC)
+X-FDA: 85433756394.25.1849E7A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 853A7120005
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:09:35 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hPdnrLSv;
+	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794661769;
+	s=arc-20220608; t=1794661775;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H3woHW5NuHalYxniipx06r8pldr4YceYTv1pn/rF5vE=;
-	b=x+hS39LDCz5CH0lm9muHjsVDnrQ4rOvb3msOLZCDZukwdhovLWhjm7GjAkCUom+YRZ2eTx
-	IW7llo7551lS9B4UrOK9TqLCRdYYKoILJI41r1TY+YgRbaxnCLpbds8QEMa4HjwM68L3NP
-	Otmh3+kh1YIG4Bp7Sz61k+UTEmkvZ3E=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UAg3s/Vf";
-	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=VQQiNDOpqfhw0WpEQK13PFU/iv1KFQKHHI1yG9J6CXI=;
+	b=wWKgVdRSoTOaOW3dIyEAvaXE8NVYEvzKuECWnZm2Q6suKiX0FRFIHq33IA1Dvp1xF8/Dzh
+	odAb/PD/4CiWth902Miy1UAxyDPtJnnqIdeUPE4YDQco8qUv9MThSZmYZ07fCcqrPtRp3U
+	Fup7plT/u3biLA8xJOg8fpKzSQ48PbE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794661769;
-	b=aRFAWMrmJ2Q0tlftRLaxI1dvx3Pl4gx1R6xvU0cxpO46CN3c36Lz2oTLNo0loTtn7Vfz7t
-	LpJ2z4NvFeBFMWBcm4BheEM/e7SsmomBy1Sh7o6GU92/WYBcuImFuThr4DGfso1rQBI89z
-	VUCzfhp7VPLO9w3HF8qv3Q8RLlX6YCI=
+	t=1794661775;
+	b=IsHuhXJIEwFLEPiGTjq3XL4ICOfoetx7GwsDaBXmhI/C42PAG0tuKWQ9pP4FLHe3/9Ui0p
+	hdaMCML86eoUk7vQvwm1aN0Bg70UpMzBbPr7aOxAL/dxqIeMHwZLfC35HfXFlj417GVXGB
+	mttj75NGT5YLzhJjPKCf4ZbLrgY0L10=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hPdnrLSv;
+	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 964E5627A0;
+	by sea.source.kernel.org (Postfix) with ESMTP id D5183465CE;
+	Sat, 14 Nov 2026 13:09:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6A41F000C4;
 	Sat, 14 Nov 2026 13:09:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 494421F000C4;
-	Sat, 14 Nov 2026 13:09:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794661768;
-	bh=H3woHW5NuHalYxniipx06r8pldr4YceYTv1pn/rF5vE=;
+	s=k20260515; t=1794661774;
+	bh=VQQiNDOpqfhw0WpEQK13PFU/iv1KFQKHHI1yG9J6CXI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=UAg3s/VfqaxFZr4H3x+hoBgaYeR58NCwZLQGG146Mb/pBhr/WcRGZ7xb7M/thEkMD
-	 PJlUKEdmCBwLw2fGmP07bSQQ9RnzN2mppJ3S4yzMBEInXYqU5b2zYclVyeVZXRYChW
-	 20DI30qNtO7uGRC+D7ic8YqQVEfQ5u4NJcR2KWnrkO709Biw9Lp8DNuSRq0pC5chiH
-	 vwleIe6pSr3ZgR0iu7ov+4jGyoHUhvjM9/10Nw7l/T9Aa7yHdKZtvBVuPQbCedcvZR
-	 Bf1414fQ9ZOmDwhWQAS1CmBYmYejnUXu0vjs2mMLEcO6qOYxSnm1AgvHWgMj+X5l1S
-	 AOnQHCwdL9VZA==
+	b=hPdnrLSvIijKxqVhgZncYFJ1riM4IpNWYY8zX0cDtr3bj2nUfd/HZPMoRPQxIsnfF
+	 DaMPjcjIj1YLJkAadaq+ac00V6lcALenldxa+ypuLeNF59j7yQq8JBxIVcGftAIK9J
+	 oJLvgeew639qhyHDyTQ8PUuTOHup6ZjpZwoQIqUDLRHfDG4LKQSixZvz3hgHPHSGR5
+	 dpwpfUmcZw7lZxrLuSwTR8JtVbvS7Bs/oHTFYy93RAxjeDeApGYYrfov3VLkt/xJWH
+	 wPPbq8rtHc0wKic1Ypk+fQn/9tJOpCxIbX37BMGRzUaq2yGGKQGoSfgDtV3IYLZlfp
+	 lF2hCNHNtssPw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Sat, 14 Nov 2026 14:02:14 +0100
-Subject: [PATCH RFC v2 33/42] fs: add file_check_backing()
+Date: Sat, 14 Nov 2026 14:02:15 +0100
+Subject: [PATCH RFC v2 34/42] loop: refuse files on pseudo filesystems as
+ backing files
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261114-work-loop-pseudo-v2-33-98639a2286fb@kernel.org>
+Message-Id: <20261114-work-loop-pseudo-v2-34-98639a2286fb@kernel.org>
 References: <20261114-work-loop-pseudo-v2-0-98639a2286fb@kernel.org>
 In-Reply-To: <20261114-work-loop-pseudo-v2-0-98639a2286fb@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -89,26 +90,26 @@ Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>,
  linux-kselftest@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5096; i=brauner@kernel.org;
- h=from:subject:message-id; bh=udmwrAi4jqUBDqxn9CQi3IZuwOmdQkanmcVhsi9fI/0=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9iOmZyCSi3Nt50cbl+WtTZr6+x/W2TjHVZT3Xbdyzc
- x+n863uKGVhEONikBVTZHFoNwmXW85TsdkoUwNmDisTyBAGLk4BmEjgC0aGT2rLm55oe20wSrmQ
- M4nXdurS2cK72+fXmy0t+NOrp6q2geGvmHTig8czFrfm67GlVHNkKdSzCE+IFlWzeTFnz5QEgQw
- OAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3745; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=uVejF7TG5lNB+KlVeH9oWZ72FFSLLOo68t1IwqUCfW8=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9iOndk8naYnP82AqB3h1Fkd9lpt7fmfPG6ENPQqbjn
+ V1vqjZu6yhlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjIr2hGhkXahobeJrW7761Z
+ /zvh90kpx6wb1uwvkt8V9fP/2Cg1PZGRYbmEVRl7+zPxbOvv/1bqvHQ4V9SW/+c46+dNT+7nXDu
+ nzA0A
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: mtnskjz1umgbojeqek96dqm7kwzjrpy7
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 853A7120005
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 05F0510000C
-X-HE-Tag: 1794661768-663612
-X-HE-Meta: U2FsdGVkX18CnHf6FRjMbKBsfF/iNe8qhnkhYBBQy5mT9l++1WaSfY3xFWcpP0WyCRDCPnBawECmAe5WrmNDBj6ZbQ1CDu/XbUbYTo9QbzCq2ep1E99+EYCNcDzYyB4mFs0fDgiXYzKQPdiDcLL/aZvN7PjVHDRTsA8rEUSjz0y21vScRg9oXR5DvZsU4zjwDGKWRRL7l64t3ySuxFDzA3H0MYYCv21xWh+rd2K+L+UB8/SAL83ooSnFevUbr9xr0wxEo7qPEdehjlAjgQj4k0Xrsvmy9OA3TS+ECFuXrAyIWzIEwvNZZ+g4eoPftXEr8ol5Lie76eTQwt0XRvrwxMxVb4HOJoFhZcFtlU2xWesPvwITFnjZBpEqhDMDgxdJNjUx5YH7zW/cbDHOsaq9mJrWolg3nzu8BwoqJ9FxlyHj6JmbvmdVoPZextVRFIn96V+7orMJT76XDvgDqAQF8AguhLz53tz5ALEgX0a2lpO/ypGkeWBxas9ONiBuw1Su0HVa9J7RupsgrLFVyWzRvjTaoKNxg3n96G5zf79EZAX9yQ+OMdeMesppr+Fz8+x/S/pjqTQVBGEhWShGB4F/9v+iOp8jh4ds7o5q4nTXbDEKCxQ+pdNTjATCu57z8icGAfBHIJZwqitk8GQascyqoVjg6BcNTouRrA5etHPyKsQG+29iMflVJ6iy1MacyEfqGrIdQ0QpWffp0mud3sQ8GJvaAYbvqFArfSKF5vF9tuVxS3I3jdmbgaIJd1pumZg+uKl+8WQoY/eWqPG0NmNYjrP5U1qaypwod+z5i4AsGe2KqjUf5/jqAbwh/qaThNdtdLIYzhSCCom2DP/++DS5FucFJM38CKgKiiPPfRdNY/aWxD+mEU2FTaROPPtF5q3Gqt2pLvMljXdCFAW/DXWZLmb8bg7vlq7G4JDqjXaysYo9vbPVdOmnXmzE6vg62P/pn7UhAM7cptDpXtN6COQ
- 5Svmklar
- /YsF8I2g2couNAyfotnzuxr8le+7ikGBzq7kL+ZdWlmEd/fMKqCwLlq0/6WSQCIAEHOdFOxrvWiF8jjV5FMgbegulgxnVvM8FaUlfEFQ/cbfWhf+jqLi3kA31Uo+RN0Os9fmZxvBaA5pBqr7RaNb+Gf8zqNE5BsvWfXaOYN3AemMHtaaFZX3VKVLsvNSHkU9fZwH1+N+UOWbv90+Kg49G6OOM37tprvYurcHNFzw+66dQ42QpwsPwJZXfZu2L6tVnCfg1RgXcPai73EyGW6oggYTfobxUceO19mRZ
+X-Stat-Signature: 1iossqhzj5kkdds5bn9qkhab93gk5wwd
+X-Rspam-User: 
+X-HE-Tag: 1794661775-387584
+X-HE-Meta: U2FsdGVkX19EQUBmTKlPlrqXHnTwPaZRRBwO47FIsXFf1RS150ZNy7Un5KSucS3Owx8vdJurFNyeu+hp16NbiRPFs3wMOQUfGu6ANqW+BsPbh7UzyLivb36PR5ER0gwbL0lGTRWrBEhvXPziYlJckCJf5LQq6gpsqvM+pittHxmqf5aXrCPH+96PPj2Qol7f9zp9ofvWs5DdtwKKgks+xKoFQp+gRL+RHyYmswsOak/kN9Y72MJSFG4EGCMswZ/PJfJRoPbaG/ocBrqEF3u2U0brKrOnxRT3uxktFQ/J1yHI7z7vx0xkWiKP3RuIIEGq9MUH1w+6x3oTt9NXmsw6toqhgxST0sYqZjN7O27hHKD3oyLw7V5YfWDVWzfQBAUPEZaskQ8nGTl1B1jWpZKeBDD1e1tu23ikmi6eF72AV6RlFlcyxPIC0BCJsBhmN8qIf9x3BAdm0HYcAetUVSFsL/7BSfixGLo0WhLcYLyI+Tcy7a0af3wjoyp3HXFR8Da8ILyA15RUhJVjyar/7yKC6AS+VPATv7nlUiCKEZJ5rGrLQaRJMemY7HSW0ZY9+wELxf9X7uoq5YXPb1IJ6tyQWsitoVVYvc5iSf/SNhW7HDA3o3Uhod8xeW5g3g3wVHmyLGdBtFjCijD1GV/LVO7qFpIV+NLrOMBAhm9ELiRSUji5ec5I/D/zTUdFiQPXtidWlkoBILBktyn9HOftFypvKPjga8VmFJ9mDV7Urouog+e3QMWJ850lQhDpz2H6b3oNx824eojjaItCnae1T87F2ylA6heHGT/FUm7+OmjaPGqOw8IlAirOg5kil8jLWmqFvTGKMjrAa7gBDxpPwaY3Z2JjE64SJ/0HClZkOANHbtGrqI3SECZuKtfabQIEcLTTaT2WPVwtPwiQ12WDwPVZtBvGKuGAe37Ega8H0M1CwJAlM+uOeFolw+i9RvIzm3Uw4c5D1CiZ+HaWEhkMyRL
+ qcylDWt2
+ Rr7emTSjY9JGjoKv0xiFG/OR+upa/HgARuwA8icDazSdPeV4UAURhjMjuKlWxjakRD2ZblxsWRpB8O2q0RlSOlD+0+MQNSMYYZ4pJZSW6VVFidi0WEuqOImXt2EIZL36r/ERA8HAAifmipqUcJe7VGAW38Oek6yjYGIiv/IausC9T5OfkGHrW5MjvvNK0h7+ppzSoqUUgIq8WmieeCXGDn0k8n8Dcw19F0PBpjt27kdYZDV20nOm3Ka6xEw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,126 +118,97 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Loop, zloop, the nvme target, the scsi target, fuse passthrough, the usb
-mass storage gadget, erofs and acct all take a file from userspace and
-use it as storage. Currently, each of them has its own idea of what to
-check before using a file like that:
+Currently loop accepts any regular file that implements ->read_iter() as
+a backing file and any that also implements ->write_iter() as a writable
+one. That includes files on procfs, sysfs and other pseudo filesystems.
+For example, /proc/kcore attaches read-only as a loop device the size of
+the kernel's virtual address space, 64 PiB with 5-level paging. sysfs
+attributes attach read-write as 4096 byte loop devices. Writing a block
+to the loop device of /sys/kernel/mm/transparent_hugepage/enabled
+changes the THP setting.
 
-- loop and the gadget check for a regular file or a block device, the
-  nvme target, the scsi target and zloop take any file type
-- loop checks the open mode, the gadget checks FMODE_CAN_READ, the nvme
-  target, the scsi target and zloop only check for ->read_iter() and
-  ->write_iter()
-- apart from acct which refuses procfs and sysfs files none of them
-  cares whether the file is a kernel interface
+That's not just nonsensical, it can be abused. Loop calls ->read_iter()
+and ->write_iter() of the backing file directly from its worker which
+runs with kernel credentials. But pseudo files enforce part of their
+access rules at read and write time against current. Dozens of sysfs
+->show() and ->store() methods call capable(). Behind a loop device all
+of these checks are done against the loop worker instead of the task
+that opened the file. And setting up a loop device requires no
+capabilities, only access to the device nodes. So on v7.4-rc1:
 
-Add a helper that does all of it in one place. It only accepts regular
-files and, if the caller passes S_IFBLK, block devices. It refuses files
-on pseudo filesystems. And it checks that the file is open for what the
-caller is going to do with it and implements ->read_iter() for reading
-and ->write_iter() for writing.
+- uid 0 without any capabilities can't write to /sys/kernel/reboot/mode
+  as mode_store() requires CAP_SYS_BOOT. Writing "warm" through a loop
+  device works.
 
-O_PATH files are refused unless the caller passes FMODE_PATH. That is
-for callers that only need the path of the file. fuse passthrough is
-one of them and has accepted O_PATH file descriptors since commit
-efad7153bf93 ("fuse: allow O_PATH fd for FUSE_DEV_IOC_BACKING_OPEN").
+- uid 0 without any capabilities can't read the files in
+  /sys/firmware/dmi/entries/*/ as dmi_sysfs_attr_show() requires
+  CAP_SYS_ADMIN. Reading them through a loop device works.
 
-Block devices are fine even though bdevfs is a pseudo filesystem. A
-block device that userspace hands in is a device node on devtmpfs or
-some other filesystem. Files on bdevfs only come from
-bdev_file_open_by_*() and never end up here.
+- An unprivileged container that was handed a loop device can't change
+  gro_flush_timeout of its own network devices as
+  gro_flush_timeout_store() requires CAP_NET_ADMIN in the initial user
+  namespace. Writing it through a loop device works.
 
-The pseudo filesystem check looks at the inode that actually provides
-the data via d_real_inode(). overlayfs accepts sysfs, cgroup2, debugfs,
-tracefs, configfs and securityfs as lower layers and reads of such an
-overlayfs file are served by the file on the pseudo filesystem. Checking
-the overlayfs inode would miss that.
+The same goes for hard_offline_page, the md and sd attributes, rfkill
+and others.
 
-Note that the file type is taken from the inode of the file and not from
-the host of ->f_mapping like loop and the gadget do it. A driver can
-point ->f_mapping somewhere else in ->open(). It makes no difference for
-block devices as both inodes are block devices.
+Refuse files on pseudo filesystems as loop backing files by switching to
+file_check_backing(). Note that it looks through overlayfs so stacking
+overlayfs on top of sysfs doesn't get around this.
 
-No functional changes. Nothing calls the helper yet.
+The helper also does the file type, open mode and method checks that
+loop did itself so far. The check for a regular file or a block device
+now happens before the loop device is locked and it looks at the inode
+of the file instead of the host of ->f_mapping. For regular files and
+block devices both have the same type.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/read_write.c    | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/fs.h |  2 ++
- 2 files changed, 50 insertions(+)
+ drivers/block/loop.c | 17 ++++-------------
+ 1 file changed, 4 insertions(+), 13 deletions(-)
 
-diff --git a/fs/read_write.c b/fs/read_write.c
-index 6767283108991..cedbe654add65 100644
---- a/fs/read_write.c
-+++ b/fs/read_write.c
-@@ -866,6 +866,54 @@ static ssize_t do_loop_readv_writev(struct file *filp, struct iov_iter *iter,
- 	return ret;
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index c96e35c3ef423..776bd063f900c 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -492,7 +492,6 @@ static inline int is_loop_device(struct file *file)
+ 
+ static int loop_validate_file(struct file *file, struct block_device *bdev)
+ {
+-	struct inode	*inode = file->f_mapping->host;
+ 	struct file	*f = file;
+ 
+ 	/* Avoid recursion */
+@@ -510,8 +509,6 @@ static int loop_validate_file(struct file *file, struct block_device *bdev)
+ 		rmb();
+ 		f = l->lo_backing_file;
+ 	}
+-	if (!S_ISREG(inode->i_mode) && !S_ISBLK(inode->i_mode))
+-		return -EINVAL;
+ 	return 0;
  }
  
-+/**
-+ * file_check_backing - check that the kernel can use a file as storage
-+ * @file: file that userspace handed in
-+ * @mode: FMODE_READ and/or FMODE_WRITE the kernel will do I/O with, or
-+ *        FMODE_PATH if only the path of @file is used
-+ * @type: S_IFBLK if a block device is fine as well, 0 otherwise
-+ *
-+ * Call this where a file from userspace is taken as a backing file. Only
-+ * regular files and, if @type is S_IFBLK, block devices are storage. Files
-+ * on pseudo filesystems are kernel interfaces and are refused. The file
-+ * must be open for @mode and implement ->read_iter() for reading and
-+ * ->write_iter() for writing. O_PATH files are only fine with FMODE_PATH.
-+ *
-+ * Return: 0 on success, -EBADF if @file isn't open for @mode, -EINVAL if it
-+ * can't be used as storage.
-+ */
-+int file_check_backing(const struct file *file, fmode_t mode, umode_t type)
-+{
-+	fmode_t io = mode & (FMODE_READ | FMODE_WRITE);
-+	/* Drivers may point ->f_mapping at something else. */
-+	umode_t fmt = file_inode(file)->i_mode & S_IFMT;
-+
-+	/* O_PATH files are only fine for callers that just use the path. */
-+	if ((file->f_mode & FMODE_PATH) && !(mode & FMODE_PATH))
-+		return -EBADF;
-+
-+	if ((file->f_mode & io) != io)
-+		return -EBADF;
-+
-+	if (fmt != S_IFREG && !(type == S_IFBLK && fmt == S_IFBLK))
-+		return -EINVAL;
-+
-+	/* Look through stacking filesystems at the inode with the data. */
-+	if (d_real_inode(file->f_path.dentry)->i_sb->s_iflags & SB_I_PSEUDO)
-+		return -EINVAL;
-+
-+	if ((mode & FMODE_READ) &&
-+	    (!(file->f_mode & FMODE_CAN_READ) || !file->f_op->read_iter))
-+		return -EINVAL;
-+
-+	if ((mode & FMODE_WRITE) &&
-+	    (!(file->f_mode & FMODE_CAN_WRITE) || !file->f_op->write_iter))
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(file_check_backing);
-+
- ssize_t vfs_iocb_iter_read(struct file *file, struct kiocb *iocb,
- 			   struct iov_iter *iter)
+@@ -528,16 +525,10 @@ static void loop_assign_backing_file(struct loop_device *lo, struct file *file)
+ 
+ static int loop_check_backing_file(struct file *file)
  {
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 99caef43ff3c4..b1c7ebafbadbe 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -2553,6 +2553,8 @@ static inline const struct inode *file_user_inode(const struct file *f)
- 	return file_inode(f);
+-	if (!(file->f_mode & FMODE_READ))
+-		return -EBADF;
+-
+-	if (!file->f_op->read_iter)
+-		return -EINVAL;
+-
+-	if ((file->f_mode & FMODE_WRITE) && !file->f_op->write_iter)
+-		return -EINVAL;
+-
+-	return 0;
++	/* A backing file that isn't open for writing gives a read-only device. */
++	return file_check_backing(file,
++				  FMODE_READ | (file->f_mode & FMODE_WRITE),
++				  S_IFBLK);
  }
  
-+int file_check_backing(const struct file *file, fmode_t mode, umode_t type);
-+
- static inline struct file *file_clone_open(struct file *file)
- {
- 	return dentry_open(&file->f_path, file->f_flags, file->f_cred);
+ /* loop sysfs attributes */
 
 -- 
 2.53.0
