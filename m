@@ -1,92 +1,158 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C90606A32E
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 06:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4CA7606A32E
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 06:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=lO44GlAL
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZtCC2qn/
 Received: by kanga.kvack.org (Postfix)
-	id B03256B05B1; Sat, 14 Nov 2026 01:02:20 -0500 (EST)
+	id EFE336B00EF; Sat, 14 Nov 2026 01:46:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8D696B05B2; Sat, 14 Nov 2026 01:02:20 -0500 (EST)
+	id E880C6B05B0; Sat, 14 Nov 2026 01:46:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9542A6B05B3; Sat, 14 Nov 2026 01:02:20 -0500 (EST)
+	id D3F5B6B05B1; Sat, 14 Nov 2026 01:46:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CD2A6B05B1
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 01:02:20 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D5FECC036F
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 06:02:19 +0000 (UTC)
-X-FDA: 85432679598.09.A8F95A9
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 7BB37C0005
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 06:02:17 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=lO44GlAL;
-	spf=pass (imf22.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id AD6736B00EF
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 01:46:07 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7A45BC0374
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 06:46:06 +0000 (UTC)
+X-FDA: 85432789932.10.44F68A4
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 13333C0006
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 06:46:03 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="ZtCC2qn/";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf28.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794636138;
+	s=arc-20220608; t=1794638764;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cSnX/lDPO84uhZYL3He4tA7vIj3wFfw46jJJRk/azek=;
-	b=wZ/cS0TjOfYynwN0wvE+aeZuze7UylvR/KprNNUMCQw/AAy4WtB7A2mEBL9IZA215pGf2F
-	MRwGhodxQsH3h6Ya0+S6sn+iYfi/QM4/tUMjAsUHjzrbRJ/qR2HO3sTmCHvk69sp9/Q4DD
-	8N8NCvbQQEZRHdPTgtOAeiowDQM0vP4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794636138;
-	b=Sto/IGu1FhQg0dkYwgXBp2r/TJZyEn1zUKuQk/WoUDHp5DQos8/acNzpy9/9ehxxPVca2z
-	iQ1tsunpMC9C2tFzIb93f9Lgbj8qyXYhIwuidNUYd3KM2QpzhCzWScgbR19jrMfjn/69bj
-	8W4vO6zkB+HjQojXhwQKTKyp0pQ9Tcs=
+	bh=iHbcITGOkxyEh3nCOC1u0s4lDXjvYPiyn4teM7lM8pk=;
+	b=r8SDI/pFzkJv7mThRFAGCekGKQi9T0B6fCBQG+mZXH1F3NdUJQ3JBM73ENb1+0A+BvIFCk
+	kY1svSXHjEwXOJR6y955JGlM1OKBr1S2zkSDdDuwJydnOJG8RwYKrqaY8MWudmCyM/wJFJ
+	fcbi4MGtZDmiyrJC/uOWKSpvanWxwvw=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=lO44GlAL;
-	spf=pass (imf22.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=cSnX/lDPO84uhZYL3He4tA7vIj3wFfw46jJJRk/azek=; b=lO44GlAL8BpSDnM8BNoovadxIu
-	kAYTKzZ2GcRv8ke2DTiZBmoU8qAc9Gmf/kd3E55EyYB2xCW6TtsbGISk42BrLz331ClG0UoQfZvn+
-	4auvUXT6EE2wAtpNt8mx6uL+OVlAFX+fTawjVAJZxyHVjUn9BzTjiIs1hm21tGhKnZj73IbrCX0G4
-	D28d6zQjJvDtpRQ0PjQfLELliQgEE2D7uVpZT/YOVjexkLTIa9KFmRP6K4sTw0f/E/CigGQbzAYxi
-	GlMfGlYzO1qGiM2mYHWhI/bySErpwvOu1vASJlj0GqJoA3qcaymyhMisJYSOPowGF5FVFyo9drTOM
-	43TEQRbg==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xS6q7-0000000FWJ8-3fe1;
-	Sat, 14 Nov 2026 06:02:15 +0000
-Message-ID: <aabdb561-881a-4824-9d85-860528a99099@infradead.org>
-Date: Fri, 13 Nov 2026 22:02:15 -0800
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="ZtCC2qn/";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf28.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794638764;
+	b=IkINhZ423fZdESlkmjEVtteg1D6c5Ec75aYb5uy8vPpB1LhxmemhTqQL/98CF9AN4m2kra
+	jGdZOZwu7KbMDGrJsfPFNnlUD5y9kC+6hBsd6s+P8blRMAPVD1iCtu74nC1yLMxad0tNz/
+	UgJzYLYuquK0G2jHKBb07oCXOUiR+zU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794638763;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iHbcITGOkxyEh3nCOC1u0s4lDXjvYPiyn4teM7lM8pk=;
+	b=ZtCC2qn/uyy2rAWRpJ1H61dvB9FmrX4WXCPpBxk1p0PJITykd+Vky3w2uAglfdYtx8JAEJ
+	AVOULBtXLigh147Tu2oe1Qp0byB1F2CyffNkRn3sTN6hZ4u6v6gxZinbOXkWp51OKqM0Gf
+	Zn8R3f52wLHUhaXi39kLi0WCTj2ETtQ=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-317-uA-OED5nMcOpA4cEuArsmQ-1; Sat, 14 Nov 2026 01:46:00 -0500
+X-MC-Unique: uA-OED5nMcOpA4cEuArsmQ-1
+X-Mimecast-MFC-AGG-ID: uA-OED5nMcOpA4cEuArsmQ_1794638758
+Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-5c1595d5031so1084294e87.2
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 22:45:59 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794638758; x=1795243558;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iHbcITGOkxyEh3nCOC1u0s4lDXjvYPiyn4teM7lM8pk=;
+        b=Yrn7yIXAe4/8ecwptk7UsCrcTKvhiH6NDutGYOoizhwUhDI4wFBfnTozX+bfkkgjF5
+         TrjGsKp1S4Cpx8oQyAvFYJaYWWfww7FADy2U+q3YVoTl/ZEt6m+u7HHmaCS5Vd2Jknz5
+         Fa0aBn59aeFhdq6nubzkZ5+G3kZSiiykvQxu+3cCVNCQ5AReQpgg33VGHO7O40y17NYM
+         ac9r8eDKiqt5WJjPJyvKUKt/Ji7RguwZiAuX8994A+AjzD6oxSs/74IgjF48bUiD5PhC
+         fxf5T2Mmva/qpVRXcERi/qptBYUFSdQ0wJNguzvfN4GIx9EMpYVigtAsVddU37z3/9DB
+         CdYA==
+X-Forwarded-Encrypted: i=1; AL+hErF9Grj2+ahPYL0LU8ji0w+iyWc4xuP1oze5fBtyM3mjJTuuXCYfV4zFTfJ9GRU657astIEMxpQDJQ==@kvack.org
+X-Gm-Message-State: APuU4Z9G0s0sAJvq6GLkjXRLbIJKA3m2o2eh4Pr9WiaIBDGiCkpxnIc7
+	aRCYXuzGg+7yAA+uawJC1POskcGGNEHtDNyYjEdHQYHjXWo7DLVDxWb12ljt5P2J5debYgKq5HH
+	miJa07b0sIdosQiJaVoGcfDz3pmn3usG73DMAs14eEXOzFlIQQgQ=
+X-Gm-Gg: AYBFou0Pihbj3n9Dynv+VcwDGXQY5pLP7VaBTL4+680cEHMtTxlX5DYu72FegDo5Ap+
+	OzPk7ShVCc8Z3Q46PF4tfWiPDqiB7JTLMzcVhypiMxIH4zutoXnfDkQA7Y8UV31VKUqmdCHy2sk
+	9gYVLXHTMN5aS4gHYwHqowN+MAmHFHqNl2moHs7TpGA5UtzPDdfXs6NrpIZiHItzf5d5zXdA1Of
+	2pPIt4/Ib2p10EPaWyx8NrFGJL42UsJZgAuHi6JQmTtgiu3xn+pQ3KQZ3eMhs075/t4dWTq7HAa
+	dza0Euna0oi9bj8gB8oVMIOHK11UrNdYc0vztdBLaChwouP0UeD3i2aC/i0Pj4lSe9fZdq0QXXt
+	n/quedOD32E9f8yJ4EpQa/KZff93N/rom6sn+eae1XSGPm6DR0lPU7DUQIBnWgSOv84Q9HyZk9E
+	Mnu17Q
+X-Received: by 2002:ac2:4bc5:0:b0:5b6:4ae:5b83 with SMTP id 2adb3069b0e04-5c1709ca612mr1930569e87.33.1794638758309;
+        Fri, 13 Nov 2026 22:45:58 -0800 (PST)
+X-Received: by 2002:ac2:4bc5:0:b0:5b6:4ae:5b83 with SMTP id 2adb3069b0e04-5c1709ca612mr1930526e87.33.1794638757811;
+        Fri, 13 Nov 2026 22:45:57 -0800 (PST)
+Received: from [192.168.1.86] (89-27-86-246.bb.dnainternet.fi. [89.27.86.246])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5c17133e3acsm1466215e87.45.2026.11.13.22.45.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Nov 2026 22:45:56 -0800 (PST)
+Message-ID: <8c79ce88-7730-44c4-92a0-d760d6f8e9e1@redhat.com>
+Date: Sat, 14 Nov 2026 08:45:55 +0200
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Docs/mm/damon/design: replace "same to" with "same as"
-To: Enze Li <lienze@kylinos.cn>, sj@kernel.org, corbet@lwn.net,
- skhan@linuxfoundation.org
-Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-doc@vger.kernel.org
-References: <20261114055436.5546-1-lienze@kylinos.cn>
+Subject: Re: [PATCH v2 05/13] mm/migrate_device: don't collect a range twice
+To: Balbir Singh <balbirs@nvidia.com>, "Lorenzo Stoakes (ARM)"
+ <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Usama Arif <usama.arif@linux.dev>, Kairui Song <kasong@tencent.com>,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Yu-cheng Yu <yu-cheng.yu@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>,
+ Chris Mason <mason@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, Mark Brown <broonie@kernel.org>,
+ "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
+References: <20261113-mason-migrate-et-al-fixes-v2-0-50a2ed382b61@kernel.org>
+ <20261113-mason-migrate-et-al-fixes-v2-5-50a2ed382b61@kernel.org>
+ <avfrWjzLQdDcmXO6@parvat>
+From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
+In-Reply-To: <avfrWjzLQdDcmXO6@parvat>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 4obiKaBJFXnrbDdpA4KZVTdvemv1fyppPfBRhLjGQks_1794638758
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20261114055436.5546-1-lienze@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ig77grjbq9rfcxassedenxm66q7ozbtt
-X-Rspamd-Queue-Id: 7BB37C0005
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 13333C0006
+X-Stat-Signature: j8msnjg11bpyrw558hokia5bgnp94he9
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-15.1 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794636137-448021
-X-HE-Meta: U2FsdGVkX1+/Pm5JhWG3HhzbzN54AZKU4Hdqx21AqluhpjhABo/svhW7eFf0zOyScdNTsOkmtjiyhON9C1FAPrAnknxo5KMELBMW/XwFNYDYqLoGUW3XUb4NA00eQFuVfvR3XNz66OCUQWpyqQbs4tXO+koINtRmD2w3BLQCvv097MusQgGTdn23GaaUJAdiMnM1mOZD4fIQcYm/CN0AOXQAZOtIp+WzV8j0Wsv7VT80ohX1jdkLf9UPDCyAe9XP5RHkSL0MqNjeFEmi6yOWxGoKA27m39vPWv2x0YXCtdgQx0UKUBzWH1UeMBPZIpyRQpqtJL9bOeHhe/Nqsfhu6EmkchW31wp4+e0x6g3lllFFzk1g5bvh6XxE6b3NotW5i1zPNRUhxAEq3bj0GapM6dbY31G0QyarE0Vwfkdc+li31/32BG2KP0LXI35XoSCwnVd86Vmxi9PyXiUL9d0DHsSwrZFiNuemNMKIN3a6HUL1ZKEoZlLjVURljuuTisvY1oyebyiK49IiA9jXlrgDEHdrMs6fzXE/PEBMIwqfDzsNyAyhl5ow0Yzi96OjcKIg3R01H3KDWC3u1GXzY+JoDH9MjVCn0QuGbhVI07P3ZgprjLSf6qfbYB9EWXrY08Lbd7RcdJJjaxJ7hkd8AqkyRBRP/T0HTgA0hqCtqp6RSj+S8fyvNILemsJ8qjZCG+UdKLpTuXF4PNxSMjc2a8KiWFFjtyoDkQ5NwPuVRacGeDjQhjoZ+zAlDpq86sM1BBDBJp5p4cSOXGBBBbtrz/Tpf1D774vZZ3RWtxCpE5BaBeC7zRFMzwMWK1b6d9vZ1UBtviF2GF3kFf9sPUMFwwPBxf85b9v7BmSfa5TfRwg/YttIIjeWjIJGnrMC7V8qp3mZhk6MGyDWS922ZBp3F87SIYMLk7w+QIhc8SushRBKtJvGRB3P17e0cqX0x768Xtt70M96T4ZtFJHR7V5JNj7
- zDbjnlD6
- tobPvlqgZmwHCJ+cVSU/QdGwY++5h3yg+82rCHFZHDhoVfiBUi47WCc/2bN6BNS/wxng3oF/iC2KPM66gKxo1b4EEPw77+4pR9yiFF0F/pwQUqjncjk9yNCcIDNafcoxGyeh2IMbqyjG31X4/ezr17SwY2XZwNHAn8WU23AHduc3PQEGbjvyqYVfPqMdIayYwDqRkotW7dQzDBcd0kmBJGDhz2YqLBaIFJZ6oc36AG2IRZqCjPaqpuQDK50SBIkpCjdT1+d4p1QPathpHLxaPx35auEgDNAXNm6FcW9ZgwgKlRLS6CZKceCUgpDYQKqcc2s90GcNVKkIDLLVPOapQ1of4/wuKvaGlIiRRxHP+pAcRlWQHK3DjWTciAQbslUtBp5r5
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794638763-147172
+X-HE-Meta: U2FsdGVkX19PX0b1+iI02I0G27TUmDD8yaO2NqxCiX0vFXze9BpsOUlo3TopoguJ7iorlcTOxpBGRlwSDoL77CYZC+ShUYkJINC0YwZkwmQvldvzh/cuAQVzdjWaisobhK7arC6k0hcon/wTGgsFRs8yFuimZe0kZHlone6vA774pXy9ftLODjOhxX0UtEvf2R8DNZcZ9X3yTvniEyKxdXCUYU4Qu6FMDUJ49ElGLprwAbi79LoTrJ6fwGjlYn62FEj8V1MNwAweVVDr6O/02E8CqchtjRJBr2zr4o08s//qvGARwyCm7QaTYveEDCCFWbD17dGPUpDNtsagTNI82Pqur17MiTZOZZz3vxSBLAuoVFxXjGh8Lw2unrpT0sZ09vuINwXLEqNFBeR5OjvtxmXtwmhoZFig56ghm7RG8Im3UrREhJPjG5X68osKYLv0Y6h6vzalVtOLdOwuKtw/ao3wsfZ4Ilt+bb/5h9SV5RFbNiXQoTUVeCVajrQMkBXgnkN8H5FmYsltI8by5nqwi+IXaIFeZeQvHHu0JQhnIOzFCue4FySCsADxPvuHCo5HkatBiPJiK19GZeNi+lkTUrdULWijD5HL71NhlLcA9LmUiVPvoLoWCJGdnX0VKp+45IGCt8Xa3D+DqREKVCrlPXlFiZjaKofNPUyBIRNng6IQyVglaGN5ysJdSPe0fdDbrvAA/r9EOOl1oen4PnDeACATSsEb1P4U1VqE2bYaak6Km5QyQVXdm9pio50H0YaRB/nq5e9PMpNo/t73/vD3TT8gQpDnwRYJOKLNDxOZ5aIDAgTx94cvIgn5mZzVpG+cfKFZBnf1fiPs1qV0toL8stMUDuEqZRzrAMN6Mh+MSZ2lrjLlgKP4Z18q2nUbKyLk/WslKxVYD6q/7jrS41NL2GoAhnDbfn2/j/vMUwQvIL3caK/D8WKqImsRXYMZGhHIStTe5xVjVWUBYM0x1Ta
+ jrU2viF6
+ rpubPnpTsuxhSHP36z13qQU78ZI63dngWN3n2FHA6hEDmh+RlY03ds/sF8HTag8w/RSWrxBkHfd88TqjWCJl4tmpJ9fqSe03B6oV10ai0L64sgeqbPHhAvQLKVCF78stSSWuKvaovgdIw1BT8QHB8Wo6tBi+lnK35LVclY3+X/lvSYux8AIbjZEizG7085mWw3VrKDx1fokfu5vKyFckMcxFSWi/mtdgzszbTmRJCy6DQw6GNTw/veaVSWzl5k8wZJ8IKZV4L9vYl358bMWCYgd87q6tGIcsbGYrl1O0jSRQhq2/W6wpMLIdJOX8FpBKZdWQsy+LvjmpUpK/y8nqnhgEd8yFhRvc0FF60Jgj0BLiPL20QQExYqiBRF81OxxXyyOQL+Rsjgk6mIF0whZbSUtz3r/iwcJBAolRwBSvuifeJMs+3LpsYKBLify/QlwZcdxcH9sYARtlGGCXkmGy1aj/0ynUywch1tB8J7HQVG5Z7ACaPq8T0GSzHe+4cBesmxySPvgR4CSSvRxNd956EhKaTC3SDxxuuhT4+vbA1N1Y2/Dzwn6ChK21Vys07M9hQUIQeWC/ShZOsS13vdAX0Mm3GvQdwy1AlyjPhr/qa2OD/AxgDz/NdYN1U3ozglSG/e+lnNqPUEtQ6EHNs56axkag3LQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,66 +162,82 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 
+On 11/14/26 07:09, Balbir Singh wrote:
+> On Fri, Nov 13, 2026 at 09:45:23PM +0000, Lorenzo Stoakes (ARM) wrote:
+>> From: Josef Bacik <josef@toxicpanda.com>
+>>
+>> migrate_vma_collect_pmd() drops the page table lock to split a large folio
+>> which it finds in the middle of a page table, and then starts over at the
+>> "again" label. The entries for [start, addr) are in migrate->src[] and
+>> migrate->dst[] by then.
+>>
+>> While the page table lock is dropped the page table can go away, in which
+>> case the restarted walk invokes migrate_vma_collect_huge_pmd(). However
+>> this is passed start rather than addr, so [start, addr) is collected a
+>> second time.
+>>
+>> This can result in migrate->npages exceeding the number of pages the
+>> caller asked for, and therefore in writes past the end of the
+>> migrate->src[] and migrate->dst[] arrays.
+>>
+>> Fix this by only handing over what has not yet been collected,
+>> page-by-page, and flush the TLB for those entries which have been
+>> previously replaced, similar to the other returns in the function.
+>>
+>> Fixes: 022a12deda53 ("mm/migrate_device: handle partially mapped folios during collection")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+>> [ ljs: cleanup commit message ]
+>> Tested-by: Gregory Price (Meta) <gourry@gourry.net>
+>> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+>> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>> ---
+>>  mm/migrate_device.c | 8 ++++++--
+>>  1 file changed, 6 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+>> index 9e5dab8e1b77..28ed706109da 100644
+>> --- a/mm/migrate_device.c
+>> +++ b/mm/migrate_device.c
+>> @@ -257,13 +257,17 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+>>  	pte_t *ptep;
+>>  
+>>  again:
+>> +	/* [start, addr) is collected if we get here after splitting a folio */
+>>  	if (pmd_trans_huge(*pmdp) || !pmd_present(*pmdp)) {
+>> -		int ret = migrate_vma_collect_huge_pmd(pmdp, start, end, walk, fault_folio);
+>> +		int ret = migrate_vma_collect_huge_pmd(pmdp, addr, end, walk, fault_folio);
+>>  
+>>  		if (ret == -EAGAIN)
+>>  			goto again;
+>> -		if (ret == 0)
+>> +		if (ret == 0) {
+>> +			if (unmapped)
+>> +				flush_tlb_range(walk->vma, start, end);
+>>  			return 0;
+>> +		}
+>>  	}
+>>  
+>>  	ptep = pte_offset_map_lock(mm, pmdp, start, &ptl);
+>>
+> Is the intended race a concurrent MADV_DONTNEED reclaiming the PTE table while
+> PTL is dropped for the split? That would leave pmd_none() true on retry, entering
+> migrate_vma_collect_huge_pmd() through !pmd_present() and taking its hole path.
 
-On 11/13/26 9:54 PM, Enze Li wrote:
-> "same to" is not idiomatic; it should be "the same as" or "same as".
-> This doc has six such usages.  Fix all of them at once for consistency.
-> 
-> Signed-off-by: Enze Li <lienze@kylinos.cn>
+I think this is "ok" for the fix, the hole is collected from [addr, end). 
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Thanks.
+But couple of things follow. It can't be possibly collected as
+MIGRATE_PFN_COMPOUND entry, only small pages. And the collected entries
+in [start, addr) are wrong ones.  Finalize will recover, but the
+migration will fail for those. These all are handled in the HMM walk
+based migration series.
 
-> ---
->  Documentation/mm/damon/design.rst | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-> index b676be697158..6284b9005443 100644
-> --- a/Documentation/mm/damon/design.rst
-> +++ b/Documentation/mm/damon/design.rst
-> @@ -292,17 +292,17 @@ DAMON :ref:`context <damon_design_execution_model_and_data_structures>`.  The
->  registration is made by specifying a probe per attribute.  Each of the probes
->  specifies a rule to determine if a given memory region has the related
->  attribute.  The rule is constructed with multiple filters.  The filters work
-> -same to :ref:`DAMOS filters <damon_design_damos_filters>` except the supported
-> -filter types.  Currently below filter types are supported.
-> +the same as :ref:`DAMOS filters <damon_design_damos_filters>` except the
-> +supported filter types.  Currently below filter types are supported.
->  
-> -- ``anon``: Same to that for DAMOS filters.
-> -- ``memcg``: Same to that for DAMOS filters.
-> +- ``anon``: Same as that for DAMOS filters.
-> +- ``memcg``: Same as that for DAMOS filters.
->  - ``pgidle_unset``: Matches if the page for the memory is marked as not
->    access-idle.
->  - ``pgidle_set``: Matches if the page for the memory is marked as access-idle.
->  - ``hugepage_size``: Matches if the page for the memory is a part of a hugepage
->    of a given size range.
-> -- ``active``: Same to that for DAMOS filters.
-> +- ``active``: Same as that for DAMOS filters.
->  
->  If such probes are registered, DAMON executes the probes for each region's
->  sampling memory when it does the access :ref:`sampling
-> @@ -706,7 +706,7 @@ There are two such tuning algorithms that users can select as they need.
->  The goal can be specified with six parameters, namely ``target_metric``,
->  ``complement``, ``target_value``, ``current_value``, ``nid`` and ``path``.  The
->  auto-tuning mechanism tries to make ``current_value`` of ``complement``-ed
-> -``target_metric`` be same to ``target_value``.
-> +``target_metric`` be the same as ``target_value``.
->  
->  - ``user_input``: User-provided value.  Users could use any metric that they
->    have interest in for the value.  User space main workload's latency or
-> @@ -736,7 +736,7 @@ auto-tuning mechanism tries to make ``current_value`` of ``complement``-ed
->  
->  ``complement`` is a boolean parameter that determines whether to use
->  complemented value of the target metric.  For example, if ``complement`` is set
-> -and target metric is ``active_mem_bp``, it is effectively same to
-> +and target metric is ``active_mem_bp``, it is effectively the same as
->  ``inactive_mem_bp``.  ``complement`` is no-op when the target metric type is
->  ``user_input``.  For the metric type, the user should be able to emit
->  complemented metric values on their own.
+--Mika
 
--- 
-~Randy
+
+>
+> Thanks,
+> Balbir
+>
+
 
