@@ -1,103 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D7C606A881
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 18:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A10B9606A329
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 18:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QrNKwZwA
+	dkim=pass (2048-bit key) header.d=zte.com.cn header.i=@zte.com.cn header.a=rsa-sha256 header.s=z202610 header.b=YFljydJT
 Received: by kanga.kvack.org (Postfix)
-	id 014A76B05B6; Sat, 14 Nov 2026 13:58:34 -0500 (EST)
+	id A4DD86B05B7; Sat, 14 Nov 2026 13:58:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2E306B05B7; Sat, 14 Nov 2026 13:58:33 -0500 (EST)
+	id A25456B05B8; Sat, 14 Nov 2026 13:58:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E44B16B05B8; Sat, 14 Nov 2026 13:58:33 -0500 (EST)
+	id 93BC06B05B9; Sat, 14 Nov 2026 13:58:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C6DFE6B05B6
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:58:33 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4F13AC0460
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 18:58:33 +0000 (UTC)
-X-FDA: 85434635706.04.7BF2BA0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B4897100007
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 18:58:31 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QrNKwZwA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EB856B05B7
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:58:47 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DEE8814044F
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 18:58:46 +0000 (UTC)
+X-FDA: 85434636252.24.E218DFF
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+	by imf22.hostedemail.com (Postfix) with ESMTP id F11AAC0005
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 18:58:43 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=zte.com.cn header.s=z202610 header.b=YFljydJT;
+	spf=pass (imf22.hostedemail.com: domain of shao.mingyin@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=shao.mingyin@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794682711;
+	s=arc-20220608; t=1794682725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fbMRE2X5e/AHLMS1eoGd56ly9fU3NIj/Z6Js5YflNNw=;
-	b=2pzgxPVLX/T+CaT/ZV2/ZiQS20vGhYVs+hevROeVlz8DoDsmde7JJn4fWrWxRG930mqaL4
-	cz/N1Y2PHV9ceeE+uRHanzZqvcM7XDsIuJmVMVpeQumFr76sNuyInQe2k3+3VRVQcoFByj
-	icd2u+vVsBAfdJhgP82TAOP0cm16nmE=
+	bh=fMcSbwNMVuFNWt2PwLWq1x2zQdIariZoeomQcnglzNI=;
+	b=vCzK2h6ZxwME0lzkGc/ZgFg2yJE/c+Mh1SSvRgjuF8aEmEwSQOgzTBaBoFoywntOCvE5A8
+	FQO4lk9MNdRlcY4a/ALxwJbgm1JDacBV2sfGlIx1PIv2LW9WoZrUg4oWqBV49f8fhGaUqZ
+	xlm+iB5vpJx3vDU3ftVLBnzivoh98io=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QrNKwZwA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=zte.com.cn header.s=z202610 header.b=YFljydJT;
+	spf=pass (imf22.hostedemail.com: domain of shao.mingyin@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=shao.mingyin@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794682711;
-	b=nsGrXKs8I1oivTmjgVnIpR+D0lXaiEUk3sfDpzAcmQxppbz6kEgt0t97hFkfHW/UNx3wnH
-	TVm5nFdbJ5FcrSm3sxhr3a9F/8uJ9wXJtVMADieatrA6UgXr3ut+uIUEBE6F4W1Eht+3Ur
-	L86mUwGxZu2jK2lX0TbazQluYBRRGJk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5E86760E15;
-	Sat, 14 Nov 2026 18:58:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 705CF1F000C4;
-	Sat, 14 Nov 2026 18:58:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794682711;
-	bh=fbMRE2X5e/AHLMS1eoGd56ly9fU3NIj/Z6Js5YflNNw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QrNKwZwAQuneaTtIjhUo4EUrUSYJ0Tgqq+BeI6i3EclcZg5Aj0cKdFRA2jWkaRwVM
-	 o89/ZYvAdf+R+m4hwUnNiti7YkwNBxWtmrgYa16vUWoUKDg2kwR8Pyn2ppXAWGc1rE
-	 Odhrb3oyldEOoXHE8VirjW40E7ouLZcuaBg2Uvct+GTJGPFpgY/zNGoh4D1P7J8bcn
-	 b2LWJ3PKD+DMr0cigxJqKKOi4hps0f2zLWEdtnX4RYGDbBO2mJSQHrkOmPTL9ujpE7
-	 VFFpA6W+fv+gE1ajgBImOn3GCzZXx606MCvodl4cErNAR6jXS0Okksz/7gb8sBZdSa
-	 6cOWGRzdkaSmg==
-Date: Sat, 14 Nov 2026 18:58:21 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Willy Tarreau <w@1wt.eu>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Chris Wilson <chris@chris-wilson.co.uk>, Matthew Auld <matthew.auld@intel.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, 
-	Rik van Riel <riel@redhat.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/5] drm/i915: consider vm_pgoff in vm_access()
-Message-ID: <avivB9Pw8I_oMbpk@gremlin>
-References: <20261112-access_shite-v1-0-988a5c470db2@kernel.org>
- <20261112-access_shite-v1-2-988a5c470db2@kernel.org>
+	t=1794682725;
+	b=FPBcmQlHlhmlKvpRKKFdPfD9SJ1gHMzvgny+t6zjQvtySMeaug4VXyTyNe9uWamkCmUcJ0
+	493IX31GXHPcWK3/F29JsVy7MRNzWyUgskX1yKgyAcLlmco1BjgJlH+j++KcEQVYWHmdrY
+	hk9pFXOkUmRE0qWjIMcD+fPtjsG7ro8=
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jRk1D1BM5z8Xrr9;
+	Sun, 15 Nov 2026 02:58:40 +0800 (CST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=zte.com.cn;
+	s=z202610; t=1794682720;
+	bh=e1/Ez/h43f4/Alk6q3O4DTkElJ6uxXkrIVkjdt3GNQA=;
+	h=In-Reply-To:References:Date:From:To:Cc:Subject;
+	b=YFljydJTBeiracuHceVruwh4WJ3hJmYCYp0riookSAefz2m8nIn3PV8l18y27Bqdi
+	 htdgCxQO0GD0o++9o/HN/vRau7vTEQrYj2vK0kXhDShXLb7hJ1sUljAa8F2UvuXpV2
+	 VqmqajpQ85MW7ONNFd2wXyo2rBHd/xktWNXJtqJG7o7H9xtCVg1ubvbSleEPDEMofo
+	 S01MOaaSUybdSr19D9bsLfbb++fUfR1nzYA9Ovt74eJVFB2a4U31Fl1uxA+Z1suplZ
+	 THNXRxm9Jw/htAFjHcZ70U+FSonJryZ3w/zOSPNBqgVtujwumFtUhUsjNSN9RKsXvH
+	 HR9oIotVX5DXA==
+Received: from xaxapp05.zte.com.cn ([10.99.98.109])
+	by mse-fl1.zte.com.cn with SMTP id 6AEIwTPw067780;
+	Sun, 15 Nov 2026 02:58:29 +0800 (+08)
+	(envelope-from shao.mingyin@zte.com.cn)
+Received: from mapi (xaxapp01[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Sun, 15 Nov 2026 02:58:32 +0800 (CST)
+X-Zmail-TransId: 2af96af8af58f20-86e9a
+X-Mailer: Zmail v1.0
+Message-ID: <20261115025832904-wsPy8LPoyIcDJ6FMU1_H@zte.com.cn>
+In-Reply-To: <aviVQ40at8rZEyjW@gremlin>
+References: 20261115004655564ix3vefI54RZ3HhYOmxuKX@zte.com.cn,aviVQ40at8rZEyjW@gremlin
+Date: Sun, 15 Nov 2026 02:58:32 +0800 (CST)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261112-access_shite-v1-2-988a5c470db2@kernel.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B4897100007
-X-Stat-Signature: yoigc158y76mo5o5yqa6t5o9tyfa5mxb
+Mime-Version: 1.0
+From: <shao.mingyin@zte.com.cn>
+To: <ljs@kernel.org>
+Cc: <akpm@linux-foundation.org>, <liam@infradead.org>, <linux-mm@kvack.org>,
+        <vbabka@kernel.org>, <jannh@google.com>, <pfalcato@suse.de>,
+        <linux-kernel@vger.kernel.org>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gbW0vdm1hOiByZXN0b3JlIFZNQSBpdGVyYXRvciBvbiBmdWxsLXJhbmdlIG1lcmdlIGZhaWx1cmU=?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 6AEIwTPw067780
+X-TLS: YES
+X-ENVELOPE-SENDER: shao.mingyin@zte.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Sun, 15 Nov 2026 02:58:40 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6AF8AF60.000/4jRk1D1BM5z8Xrr9
+X-Stat-Signature: wyeadxydkffdk1e9czc8mq68m1tig1mi
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794682711-128695
-X-HE-Meta: U2FsdGVkX1+3GsoaPM4uLUvemy+LB3qTn5vFp9EA29hwUD8Q5y0KIxMpOOSyKgLZ376Vc9cUZRuIyMvmTTKGQkPhGJ22S32WlkfYYQj6XYE0TF+MTZx4hNNwopTVO2E4GpnnXhHwtALzatJp64Yg5pnTpGsE7q1X0f7UNF7hXIQWp3KTqicAlgVR2023MfYL8U9AqKEcbOlL4ckfG3EkaoQXSHN/PqOLiObAwqcd2Cdd7VSCbQN9RFR160RMRuPgRA4lTw1lXKil0amPXUogUFvXy1zZoLVl0V4Jk2gLITuwtz8HMYPWthS7IfIQ11Xlx1p1c/MckWEMBQ27GEqKIbiv7PfPvVdTcR8SOKX9NmjPr0GQaEmrP4BR8JBiCQSIWvtFvNtTtzoWYnvp+eXCRI7P2t1C+MpazBqeUYouUxeTS9sATZekXAtmXbQ3yOlqC3YjWGx5SxT7Nd5Ft5bfPg+QRTSVKu3EjwEzQLhrxjBJB6wSpGen69awQSwlVVxvG/k5AL5e5XLHGE43rS8jp/Dnv5xAXUTWry8Y8t9Uekjg/VDnx+9+8xMg5QqJcUVcpD/DTaAZtEEbWjZGNKH0s5nmHVacvLUh1QhxRBKaLF/8nFg7FRoiT2LCZJTBddqkhGAuHqVKJSIXHOkvfm27YpcKo5IpfQraLEYbNu7wqalo6YjOjaWlzdZY0A0eGrBBdwCAnufoxebEa9ctAOHH6L4cuVRL5ftOY7KUEkP4vKmv5Nd2rRhFAg8/c8GtkALMe6zZ6kAV68mWZRbeqq+O04Bn5fk9zbIrNMz8ATmbLPozZUFqLndw22DNA/6BVr3y3yLzDYs7Z/J0JeRzw45h+rbOSQPWX87fer3xkINo0MdVWSfwFr5Jyi59OoJ9maS0GaYpbtplpMBsH5tmeng/a20ItWx9gxkBSdjmO19RiHlMf0fd7XOW1YQL53auyLT+DBIU3vIzlZFsmCSsuJZ
- qrOIVoVU
- cP3LVDNkTi/rwU9w+oLcgxC9rIIVqPrA//xNs5pZNOovunJl+kjc36/iC1sCLjLaQKmMhyaGZkjM/dKlY8j7PoU44ip7qCT0EahPBvmZrz/Ax5gpI9OJZL/9dAysHj13RhNvm7m3XplLK9XOkljUGXzkCPDFLbIlrh6xD7cP0SG7Mr0GRRVXD07D1dNDCxaYX4oEi0AG0KpYWwYt+JAKSwj+ehZbnyWsOI1mM43+YPkxViWBL0vfzbNiRnUzRd9oWXwpQrWkWW+OkIT98wjUFKv857SuzuMo9+aGvzbP8YTrJUo0QvPLfBFcU7NqSVQl00O1Ts1Ia5OlezGCHcPSuI/aP9aYofFJ15ak4UBn2j84Od7ylAq267vkiBAfNOTxy1OZ2sb1sGiX5+1epoXYbpVXL7A==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	UNPARSEABLE_RELAY autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: F11AAC0005
+X-HE-Tag: 1794682723-343533
+X-HE-Meta: U2FsdGVkX1//eqzrNjRDygeKpjHEynPyPIIHlXhVN0dly2tW/qVc8eofJxS4mNy7X0RQLyrPq3pxIYySodrl8jxnRlZ+e3ipYujEYDS+kUqPY76p+7u9WLfkXFOlz/feDe/TyMQzOpStxIJApvml9zmImrbA6BnXZgeI+q17HGH5d/fpLmAxymli/+CGr1AXr8ftY9oILRC7kyhIup2WnXNYEacjvD3Vzi6JJAsQoIV5eiSraVMR7CBMd4jbHvvXk5PC8gmzA13VG44fnwas8oiCQJbhdw+QqxKYgeV+5SoXIsQAVdQoxgYDuELZC2qIKGw/+k4RPgSH6AhDnfAsV3BYstuxWJ6kVkMQB5R+6HzNleruJUKiqZb1vBA16HMV/CJWJCjyiyCkeD9fB5WQmc7L9VncGipdvYjtk49Yn7MPnTsW7nWN2fgAnVbFk4oue9hsPPW5V/GSBpIu2if5HpnuhkOd91Jqx1Cv4rjtfOoEKIgJ2RhMXaywmhQ2yKx6ron2shI/wWAAax978MtDEbm6F/ZcfJRiaVX6rNjk8x+hdjW25ow7txKcf7YWhnL3wV6OoQCQpm9LaMSBfDQL+w82IfoyESS8n/iimcfbuaJO8MvzgsjBvmrOpdwt+9JYFotOAhdnnO1rY1Lqe3p+sjlme6utvHdQ4jF393Q9doUtMUfBzN5C6RjzlLv8Dw7LeL0NIiFtwqo1gD2mHH6zPj+61Etl5rDpYSzduzpYbqptdNUdoQtQXAilzyUJBi10bp0xIWiqYyi7Jt3e4Z1c/I4xqMd5vsnV0MWetkPIXMcP5rABszx8/cQXHGK2+yxiwDwJn/gir3rdtbsU9o3ehhh1qKc2XCLpTVDJB+39URFQ0Jf7CHhFFCJvxbXH8Z1E7Q4fdU54CaqYEuaVRLeg5Ru2IzfOqUklocXEBd/OLhsASfAQfj4OMpYOtTFGfBty1RMS9Vy9Zu7VZHu+YEc
+ v4CGP88S
+ 4eLHo+z49+qpbAh5tAO/mlQbUn19+mN5eCjbFAhWrO8ykKJ597EyVjgu7X4+7D2b9jYihG8O7DJq9tIu5VfHdCiTlYKQgooVBHlRjDR6w9CLAghmV5cLhqCM3eRXydEY6PGGZDbMqCrSfBaeF9RldN5dmqjl7CKWnHOnu6Hx3YY1g326OEZJpPZnj/FHSEtW+YxbalTQgkD3jR/13yjGQsxGtJpyIpAPitl0w3zJpLP0PMDuGzexWb86cQSYd3/WHJIslsVPVqsnmyPQH1y1xpKCBxQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,55 +111,59 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 12, 2026 at 11:08:58PM +0100, David Hildenbrand (Arm) wrote:
-> vm_access() treats the start of every VMA as the beginning of the GEM
-> object. After a VMA split, vm_pgoff identifies a later part of the
-> object. Debugger reads and writes through ptrace or /proc/<pid>/mem then
-> access the wrong bytes.
->
-> Properly consider vm_pgoff just like the fault handlers already do.
->
-> Fixes: 9f909e215fea ("drm/i915: Implement vm_ops->access for gdb access into mmaps")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Hi Lorenzo,
 
-And since this is an mmap-an-fd driver thing there's no need to worry about anon
-pgoff etc.
+Thank you for taking the time to review these patches. I am sorry for
+interrupting your work and for the unnecessary review effort caused by
+the iterator report.
 
-Looks sensible to me so:
+I checked the mprotect() caller again. You are right: when the VMA is
+revisited, its flags have already been updated and mprotect_fixup()
+returns without changing them again. My added assertion established an
+iterator position change, not a functional failure. I have withdrawn
+that patch.
 
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Since you also raised the breadth of my submissions in the related
+threads (https://lore.kernel.org/all/avibe0HG4ssUUuBX@gremlin/), I
+checked my submission records to provide some per-subsystem context.
+Below are selected subsystems with recorded Reviewed-by or Applied
+outcomes through 14 November (UTC+8). Patches first submitted on
+15 November are excluded. Each distinct patch is counted once, including
+fixes and cleanups; revisions, resends, cover letters and discussion
+replies are not counted again.
 
-> ---
->  drivers/gpu/drm/i915/gem/i915_gem_mman.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_mman.c b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-> index 6b337684dbfe8..e3b24dc8e94f5 100644
-> --- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-> +++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-> @@ -511,13 +511,15 @@ vm_access(struct vm_area_struct *area, unsigned long addr,
->  	struct i915_mmap_offset *mmo = area->vm_private_data;
->  	struct drm_i915_gem_object *obj = mmo->obj;
->  	struct i915_gem_ww_ctx ww;
-> +	unsigned long obj_offset;
->  	void *vaddr;
->  	int err = 0;
->
->  	if (i915_gem_object_is_readonly(obj) && write)
->  		return -EACCES;
->
-> -	addr -= area->vm_start;
-> +	obj_offset = area->vm_pgoff - drm_vma_node_start(&mmo->vma_node);
-> +	addr += (obj_offset << PAGE_SHIFT) - area->vm_start;
->  	if (range_overflows_t(u64, addr, len, obj->base.size))
->  		return -EINVAL;
->
->
-> --
-> 2.43.0
->
+Subsystem                 Sent  Reviewed-by  Applied  Withdrawn
+NVMe/nvmet                  19           11        7          0
+UBIFS                       12            6        0          0
+ATA                         18            5        7          1
+GPIO                         5            3        0          1
+target                       8            2        5          0
+SCSI                         9            2        3          1
+ublk                         5            2        0          0
+PCI                          5            1        1          0
+MFD                          7            1        0          0
+ALSA/ASoC                    5            0        5          0
+SPI                          5            0        5          0
 
---
-Cheers, Lorenzo
+"Reviewed-by" counts patches with that explicit review tag. "Applied"
+means merged or explicitly applied by a maintainer. A patch can appear
+in both columns. "Withdrawn" includes patches I withdrew after review.
+
+For two concrete examples of accepted work:
+
+https://git.kernel.org/linus/08a6572441a4e646c96c2b8d8ead9eea0e458332
+https://git.kernel.org/pub/scm/linux/kernel/git/mkp/scsi.git/commit/?id=fe5988e8708e1d42cb844bd9ac8f0a51388061fc
+
+The first fixes zone-append sector reporting in virtio-blk's polled
+completion path; the second fixes a NULL dereference in target ALUA.
+These independently reviewed or accepted fixes are why I believe
+AI-assisted work can make useful contributions. I remain responsible
+for understanding each report and for the correctness of each patch.
+
+I would like to learn from the technical feedback and improve the
+quality of my contributions. Thank you for any further guidance you
+are willing to offer, and again, sorry for the interruption.
+
+Thanks,
+Shao
 
