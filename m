@@ -1,105 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2FC8606A336
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 16:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655DD606A33B
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 16:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zte.com.cn header.i=@zte.com.cn header.a=rsa-sha256 header.s=z202610 header.b=jOWsaRw/
+	dkim=pass (2048-bit key) header.d=zte.com.cn header.i=@zte.com.cn header.a=rsa-sha256 header.s=z202610 header.b=vhq7gym0
 Received: by kanga.kvack.org (Postfix)
-	id 9EE336B00EF; Sat, 14 Nov 2026 11:47:11 -0500 (EST)
+	id CAD696B05B0; Sat, 14 Nov 2026 11:47:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99F2E6B05B0; Sat, 14 Nov 2026 11:47:11 -0500 (EST)
+	id C37336B05B1; Sat, 14 Nov 2026 11:47:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E3D06B05B2; Sat, 14 Nov 2026 11:47:11 -0500 (EST)
+	id B74586B05B2; Sat, 14 Nov 2026 11:47:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 634DB6B00EF
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 85F116B05B1
 	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 11:47:11 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C4F82140408
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 16:47:10 +0000 (UTC)
-X-FDA: 85434304620.29.D8C1104
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 28C8D160003
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0C177A03F7
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 16:47:11 +0000 (UTC)
+X-FDA: 85434304662.27.E3854C9
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 71A6820004
 	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 16:47:08 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=zte.com.cn header.s=z202610 header.b="jOWsaRw/";
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf08.hostedemail.com: domain of shao.mingyin@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=shao.mingyin@zte.com.cn
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=zte.com.cn header.s=z202610 header.b=vhq7gym0;
+	spf=pass (imf31.hostedemail.com: domain of shao.mingyin@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=shao.mingyin@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794674828;
-	b=wFJ4tbi6RoqHb3S+fi4mmQgZA4Nb1gFiisMFsDvb0C9hokBOkQCLvz5avLO9gXhPrnqt8R
-	Eej2N1/oJ3prbH4nAyn5LDuLExueeu33siVpF3YtX8JXFxiEswMj8T9O3st338lbEzMmNS
-	KKUhdjqsHVVhf3EaIAsHj0NtQVb7n28=
+	t=1794674829;
+	b=1jf5MIxb4BgN6CI5Yg2jCsDbMdfi95Q/kbkj1OgEbhc5Z12EFJj6MbcasaaJ4B4uDDEgvf
+	Z3/qVbnR5TRo9FA6zdKH8bqM6RYf8/K4TQoUQg2p99rvNbEZ8vI5mZo4GW8J2l0+Meb+sk
+	P8DS51YSSVqGZMlZF9pVIaWLvwBBbsU=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=zte.com.cn header.s=z202610 header.b=vhq7gym0;
+	spf=pass (imf31.hostedemail.com: domain of shao.mingyin@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=shao.mingyin@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794674828;
+	s=arc-20220608; t=1794674829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=XRgYV+Ks94EfuBXAohtceBa45x+x3HR336pqrCVLcA0=;
-	b=LmJJMnfEbcmretMxY/CPuoGamhwLG/Qr10ZfJIneoQrv98ChYZdtq72UQ6x+PlCjNmF1kl
-	eyzLUNImdsMKkbp3L+gb91WqwDKCvUtxiQihTwY7tBxsMFlz+fz/P6lMXKWLqyUZQehA7a
-	ZDZxy08GfEbzhhscC/FSIeiEzMr9Ips=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=zte.com.cn header.s=z202610 header.b="jOWsaRw/";
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf08.hostedemail.com: domain of shao.mingyin@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=shao.mingyin@zte.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	 references:dkim-signature; bh=f9lkg5AV718yKRuUDbng7AhiBPUBTF5d9AC5RxltnpU=;
+	b=op8eFHWnrV0kxdU98oCt2I1T31KmxJP61EpBaoDLhXHy1sZ13eNJHJfOug8MyKbjCaFCym
+	yWcp2TQ8BpTqhbU40/vDKYiTxYjw9L2QbBt9FevrTLbmcooFo918V3JQZlnwhN808zPnrF
+	JIK/djbACHEm7bMz36uhtTUh/1mRij8=
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jRg5P5TFgz8Xrrf;
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jRg5P6lqJz5BNRx;
 	Sun, 15 Nov 2026 00:47:05 +0800 (CST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=zte.com.cn;
 	s=z202610; t=1794674825;
-	bh=gydiiSAYZ04Px2gvqNM114JBE2j0C3oik9IAucsOCfc=;
+	bh=LS3poxthHIQDOPkfmHKkqMcC+PRkH+aQtxDBHIIAQ6s=;
 	h=Date:From:To:Cc:Subject;
-	b=jOWsaRw/iXRCCp7hoEAuBB6fxkc+WS+s3FVqyRylTo3uFSoJMivmogwPUQF9ar8s9
-	 WzxNdSwg+w+Aqcr10L8E09zqHLqzH+kvNGBMJUJDkYKya4b3fI7ev91URvq1tB9HI1
-	 e6GcyIOvCMQ9a8STZi5K9DqMXOWQbPk2C2FZ93gqzbj49Ln//t7bf9WCpVgac6I/F6
-	 eCiTsqHKztuFPD4pCwmWikuoY52ZyV0KC/tJAbzI+OPwZGfN/OaBISPDDQd11ajqMq
-	 FXCWCBRFiQJpQekSLTupAd2Znl2IiZUEYuH03U+avxotces8jh1EHxDvZW/zLBOG4f
-	 MI+hD2sNL4+bQ==
-Received: from xaxapp04.zte.com.cn ([10.99.98.157])
-	by mse-fl2.zte.com.cn with SMTP id 6AEGkuKx094406;
-	Sun, 15 Nov 2026 00:46:56 +0800 (+08)
+	b=vhq7gym0cPm10dacpHkPYLUq47YPLV6jbU27ba1Tv9OpdJBWu/NKpHQWenqVfjzci
+	 46lrYsFX9cQXrd1vEp2Whb4JGHW6uBbaR1VEdgAARVmsXIST/nYIQ+besmq5hUlIl0
+	 RrI48zBQLHVGgYluriY2SVd1aPjTMetgeeK6s7QsDPw5AmE7nttyHh05ddoT/h8+Ml
+	 3RWZL+WarbkOKURce0IAuBlMnv74Jgs3em+IUSyLWROFD0CY/KsQYOmVgapRpV+7cf
+	 79Rs4IbDYEGJ2poK2o+LZfvMll++1YE1bxS/JPgB7mcke0hbPncTTRGK1aaSSzzbZE
+	 mMYmf0w4i6iaw==
+Received: from xaxapp01.zte.com.cn ([10.88.99.176])
+	by mse-fl1.zte.com.cn with SMTP id 6AEGktnb089520;
+	Sun, 15 Nov 2026 00:46:55 +0800 (+08)
 	(envelope-from shao.mingyin@zte.com.cn)
-Received: from mapi (xaxapp05[null])
+Received: from mapi (xaxapp02[null])
 	by mapi (Zmail) with MAPI id mid32;
-	Sun, 15 Nov 2026 00:47:00 +0800 (CST)
-X-Zmail-TransId: 2afc6af890848a8-30878
+	Sun, 15 Nov 2026 00:46:57 +0800 (CST)
+X-Zmail-TransId: 2afa6af89081cd3-30ca3
 X-Mailer: Zmail v1.0
-Message-ID: <20261115004700194_SpQtdnE3JL6bzx51l-a5@zte.com.cn>
-Date: Sun, 15 Nov 2026 00:47:00 +0800 (CST)
+Message-ID: <20261115004657890Pz8ERDf5nCtE-B6M7KFzu@zte.com.cn>
+Date: Sun, 15 Nov 2026 00:46:57 +0800 (CST)
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 From: <shao.mingyin@zte.com.cn>
-To: <akpm@linux-foundation.org>, <liam@infradead.org>, <ljs@kernel.org>
-Cc: <linux-mm@kvack.org>, <vbabka@kernel.org>, <jannh@google.com>,
-        <pfalcato@suse.de>, <linux-kernel@vger.kernel.org>
-Subject: =?UTF-8?B?W1BBVENIXSBtbS9tcmVtYXA6IGVuZm9yY2UgdGhlIGRyaXZlcidzIHBhZ2Ugc2l6ZSBvbiByZXNpemUgYW5kIG1vdmU=?=
+To: <akpm@linux-foundation.org>, <david@kernel.org>
+Cc: <linux-mm@kvack.org>, <liam@infradead.org>, <vbabka@kernel.org>,
+        <rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
+        <linux-kernel@vger.kernel.org>
+Subject: =?UTF-8?B?W1BBVENIXSBtbS91dGlsOiBmaXggb2ZmLWJ5LW9uZSB3aGVuIGNoZWNraW5nIGZvbGlvIGluZGV4IGluIHNuYXBzaG90X3BhZ2UoKQ==?=
 Content-Type: text/plain;
 	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 6AEGkuKx094406
+X-MAIL:mse-fl1.zte.com.cn 6AEGktnb089520
 X-TLS: YES
 X-ENVELOPE-SENDER: shao.mingyin@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Sun, 15 Nov 2026 00:47:05 +0800
+X-SOURCE-IP: 10.5.228.132 unknown Sun, 15 Nov 2026 00:47:06 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6AF89089.001/4jRg5P5TFgz8Xrrf
-X-Rspamd-Queue-Id: 28C8D160003
-X-Rspamd-Server: rspam12
-X-Stat-Signature: qe1othczxzmq8cnux8hp85qwdzm64rsm
-X-Rspam-User:
+X-Fangmail-MID-QID: 6AF89089.002/4jRg5P6lqJz5BNRx
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1794674828-701380
-X-HE-Meta: U2FsdGVkX1+q2wcX7PP5lV014B2Nu1gfQLDBMI3u4Y37HzAIm0zB+n6RfG4j2wLPAwoLmWthL+WR7/sk5i37UabfuKCSLcIZ2z9TI1GLKM2I3joATD++w0zzuAs5U5wsfsULgPdr143lAjt18fgepESyOVw6WGNkDG1NYeF1LDHPRU+K27oXzyGtEIeZApsFX0P7yX+RidduoQ9a1FAqGX9buNAwa4wCq6VJsbFnGGXYM9MeRDAN6fGnJeiPAvpIfVhqqvUvPq3d6fxIJ/EUl8rDWnWC5EwrZmcP6jmGULMUbL4FSbnt/8rpvhbujXchvlS/fC9icBLrANgSv+IPMlJgSkqXdP8vmWh2bF7vA9UiKlPAeyCr0ZVns0rNjQZOIH8e5fKj4D6MnW/3H3uklsAlhZ4vAWPxZJz5SXKIz6vx0zRxKTOQ15DeGKbudTjR+LnHrkibUd8imto9LVE9DMs6t8ghmAW/6pPc4lAcn4tHfT0joQ44kkcxtYaOS3Q1AfSFCpB9kJMk5wUxSTVjbMz47N4qvBuzJXy1ajXTWOIJcZPvGhU8P/flpSR0enJg00uTzDaCy7YKWEX6VFUZigOXci2BrZpS9h+mD1/PV0HtP6tH3ZGP3ANPSPtuuUZHKd822UGxGTmVlgnnUMMkmPKqmym2s/8LJbc0rqDL7303EqsC5p3MuisgUIYgGQmGbZdu2oW2GCubZMabZ7cAflA4YzOEEDbHBP9MYfmDmWK9pts/h7Nk9hK/LHLdOwYxCBWnCc6lJNbS06X5YtO76XeBO59igwSkeHHrpi4GT7abm7Qn98ET1OXf+567HCxlee93eN9wTwaCEulJD6tmX2rwEWlM6S4deh6ldN6HC3nRjD41UNw5ZVG/Slp6yzn7mkX0aULcOMnsvONaY9L5NJURjdA5WOVlSBBEGLLzgEkqz8+0AN3M4SOy5gTZmWPwThZsq7yxpYG1eBuWt9J
- bNZWxTI6
- M2FKAX/IDgZRootqjyg9gh748+7YZZe3PR+KmjYh9/pQ9WaGIp8WsRnuGBqttz1tuvxy8q4PfT8NHzjBeuUo0puhxqzTrRlkJAD0ljLvuaruxGYGpPtq/8uJr0ADZAJUw4unQizArgP+Ps5IevdRiSLmoMBQIIxnsTLbF22fJ4aC8XPAUo48HloiLSWKqEowefcyq0B+cw5TFRtg4EuvG4pstyIH7gr5bZyRPGNhA21ba1q//dXJ2JZ7AyliK0J5bGYhTQWWS9Ar9x5+4fLNqCYOfFotz5+5vt1VPfERvKBeg/1X5DUKHIQLiOPt3SKtHoHElZjKLt7VYbmTrbR7Lb5e3RfWQT+6pHVNFxjeLEy/7P4Ps50M3AW+/nAQVDMl1GhpBJi1/inRYxBlKrFnSZ5qqGmGNRHGxuzEJYuCy6UVsIMDbqcYbtImZAkd/UZ1MmbxJ4QPLPWRfxfUkJnY8smu7xKyx+FMX850y
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 71A6820004
+X-Stat-Signature: 3hfzbt9gu5zbrewyfe96o4ksksgk5zxi
+X-Rspam-User: 
+X-HE-Tag: 1794674828-31475
+X-HE-Meta: U2FsdGVkX1+cAgThfnwwCkcb59SZYCIqbCgzyQwHLnDEb2lvQ54x17D6quAC6DJY0TP9rsmxrRhhyo18vT9Xz18MoA+GBlzmWfBFA1ZK52m4lshGSt70gA33cdt4ixkdM7mWbECUCQca5rL+xpLN/zy+NF8M6fcbn4wuYBYY9p107HOqDjJRnpix/pC9ELLlaFBu/5SyR7FeXBRjIlIPuzoJ4ESZxKLeqv1jgFIzsrVhCWrZZ70qPJmAWHpGZlKa/VOdMOBnbJhazbK0smiJSI4CHYjCWqImwL/PVnmsrqotzh3V09PcpRfxMMiJ9oXO1fxk/wy3uT64rvdtyggOQrAl+KL1Aiw711/60+6f7YFSPkJVcZ6NGzKfmRaZ6B97ElpIcye2CYx0mS3LYzrBijBxEFh6Oy4qPX6TfT0Bk4Oct+egn+kGlbKvYGjgjzb8fRqEVJ7XrMCVrVzkwkuvd6g4QHgoG/70WpCsqJMOKEjk5J1wrg+1Ez+KrC9eh0fXPPkY4i5dAuMxJBhTs2aWqRSqgXb+2WjG1Kf4dLSnPApCatIKrof5ET6mSPyVrEpeIjKlPEymvgY8oPTpzwklgtOQTPxPUjBp3XgypVBt/Th/kJ1tGLLzpLmc9QgUpEqRUOQlaKJm3zhyhC+zBEqWN9Qez1xhrpfLbWrC6id8o90UBSmGQDXBUBU8PqJU/dTbFQCnVcUiY4mDTqOdWEB3JoezOqthK9/AwgC2kfRKqey303C/B2DSpp1S+pn7Yylm8aa+EQnU0l9Q7IfiFayI3Ok5fZ4yh4eb/CQYTvDXC3FSnlQ41VCWsUnhweYiXiSDICZIxOQtLirX/QPaDW2AcJg6S6Alpr6hgHHDMSL+wjDc8dr97Yd32ws3vDDflHTB99dqFMoiuMsSo8eVenaks5OiQQSXKeZbmDRf4E029NhqO8zwzyViX3HpWgwBy1kL5LudGqtTkFi3XvE318f
+ mfzuhqVd
+ NWjidWLichhv5aX+9xbCmOn+WUK7NkMD9uxWUap9qvS+Bkf81mFCFmH7ehIsNSAHOdEBR5YgwiWr8hfQVvrNWTk1A+x7cJ97MuoGNL3LuuGvndaYCPOdekEZzhGZ1LvHIy+B0ss2vvwF09GLgydMEvWYxXAPMnAUbdW/A0kfJYYBjKqCDZWC7dHqP5dRqoKSA18Co/nctPNHc5cl6IZFojDkD56UVAXa1hnPtOHtOVXIdQPCgzYm8QWupLa8/z/bkGAttCRsCmpie/RcfYGfkC+NK15wOxKy1A/5B8RD8heNkiX+/+qfoJk2SpQOCZoKD9JgSemncqTcU9YWoqb4r+6p+fCvZSzVeq4oMgCl3ZxG5X6GP3KbMe6A4ig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,75 +111,40 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Shao Mingyin <shao.mingyin@zte.com.cn>
 
-mm/mremap: enforce the driver's page size on resize and move
+mm/util: fix off-by-one when checking folio index in snapshot_page()
 
-device-dax exposes its mapping granularity through vm_ops->pagesize()
-and requires both VMA boundaries to be aligned to it. mremap() checks
-may_split() when moving a subrange, but does not validate the new end of
-an in-place expansion or both boundaries of the destination VMA.
+snapshot_page() computes the page index before copying the folio state.
+If the folio changes between those reads, the index can equal the copied
+folio's page count. Valid indices are strictly less than that count,
+but the current check accepts equality and marks the snapshot faithful.
 
-An unaligned expansion or move can therefore succeed and leave a VMA
-that device-dax rejects at fault time with SIGBUS. Check the final
-new_addr and new_len before moving, and check vm_end + delta before
-expanding in place.
+Use >= so that this inconsistent snapshot is retried, or falls back to
+the unfaithful single-page representation. This also avoids reporting an
+out-of-range folio index without the corresponding dump_page() warning.
 
-Checking the actual boundaries preserves an expansion starting inside a
-VMA when its resulting end remains aligned. The move check also covers
-equal-length MREMAP_FIXED moves. Existing PAGE_SIZE mappings pass both
-checks, and the existing hugetlb restrictions remain in effect.
-
+Fixes: d863a12108f2 ("mm/util: introduce snapshot_page()")
 Signed-off-by: Shao Mingyin <shao.mingyin@zte.com.cn>
 ---
-Build-tested mm/mremap.o with W=1 on x86_64. Earlier QEMU testing used
-a synthetic VMA with 2 MiB pagesize and may_split callbacks to compare
-unaligned moves/expansions and valid aligned/interior expansions.
-No device-dax hardware was used. The synthetic tests do not establish
-a real device-dax workload report. No stable tag is included until the
-historical introduction and applicable backport baseline are established.
+Build-tested mm/util.o with W=1 on x86_64. The boundary check was
+reviewed statically; the folio-split race has not been reproduced.
 
 
- mm/mremap.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ mm/util.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/mremap.c b/mm/mremap.c
-index fff0465f5e061ff44ae4fd42bc037ce178517bda..8a0a406bd78d41df96f7ef41aeb6eae36c77c1a6 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -1406,6 +1406,17 @@ static unsigned long move_vma(struct vma_remap_struct *vrm)
- 	unsigned long hiwater_vm;
- 	int err;
+diff --git a/mm/util.c b/mm/util.c
+index a5140b3b70f3305cd78144a54d3b15a794da9609..6e6a8f8640a75ebb0f81f54c9a5085f698320714 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -1462,7 +1462,7 @@ void snapshot_page(struct page_snapshot *ps, const struct page *page)
+ 		set_ps_flags(ps, foliop, page);
+ 	}
  
-+	/*
-+	 * A driver can impose a page size larger than PAGE_SIZE through
-+	 * vm_ops->pagesize(); device-dax exposes dev_dax->align this way and
-+	 * rejects any VMA whose start or end is not a multiple of it.  The
-+	 * destination VMA spans [new_addr, new_addr + new_len), so do not
-+	 * create it with a boundary the driver would reject.
-+	 */
-+	if ((vrm->new_addr | vrm->new_len) &
-+	    (vma_kernel_pagesize(vrm->vma) - 1))
-+		return -EINVAL;
-+
- 	err = prep_move_vma(vrm);
- 	if (err)
- 		return err;
-@@ -1577,6 +1588,16 @@ static bool vrm_can_expand_in_place(struct vma_remap_struct *vrm)
- 	if (!vma_expandable(vrm->vma, vrm->delta))
- 		return false;
- 
-+	/*
-+	 * Growing in place only moves the end of the VMA.  A driver page
-+	 * size larger than PAGE_SIZE requires the new end to stay aligned;
-+	 * otherwise let the caller try a move, where move_vma() validates
-+	 * the destination instead.
-+	 */
-+	if ((vrm->vma->vm_end + vrm->delta) &
-+	    (vma_kernel_pagesize(vrm->vma) - 1))
-+		return false;
-+
- 	return true;
- }
- 
+-	if (ps->idx > nr_pages) {
++	if (ps->idx >= nr_pages) {
+ 		if (loops-- > 0)
+ 			goto again;
+ 		clear_compound_head(&ps->page_snapshot);
 
 base-commit: 84abb955b1015477aa11a96e2f3ac1b938b77f48
 -- 
