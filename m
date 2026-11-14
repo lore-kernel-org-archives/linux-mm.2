@@ -1,108 +1,173 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D15F606A323
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 06:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C593C606A894
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 07:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=f/TuyCvz
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=O5EbDOSV
 Received: by kanga.kvack.org (Postfix)
-	id 6CBC46B05B3; Sat, 14 Nov 2026 01:52:25 -0500 (EST)
+	id B39726B05B0; Sat, 14 Nov 2026 02:10:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67C786B05B4; Sat, 14 Nov 2026 01:52:25 -0500 (EST)
+	id ABCB96B05B1; Sat, 14 Nov 2026 02:10:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56BBC6B05B5; Sat, 14 Nov 2026 01:52:25 -0500 (EST)
+	id 95EF36B05B2; Sat, 14 Nov 2026 02:10:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 28B046B05B3
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 01:52:25 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8E9FE14037C
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 06:52:24 +0000 (UTC)
-X-FDA: 85432805808.25.0C833C6
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9BB14180002
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 06:52:22 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="f/TuyCvz";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf16.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 67EE76B05B0
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:10:07 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CE2A8160110
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:10:06 +0000 (UTC)
+X-FDA: 85432850412.27.503BFAC
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 17884140009
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:10:04 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=O5EbDOSV;
+	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794640205;
+	b=dp/X14llQRZDBgiohhYGWKBwla0BoruwFpXnVtGUzeFAdfXhRDLOUqPMbnExc7WWOAG0M0
+	tSSPLvYbXjI9/dgaxeskHfzUElHmQ4R8HhtqlOXtMcPu6R5eKhxYBkKhTtTS/LjDHeahJ4
+	B8uXDChfCOOAWXg02amcYahkIppiBjk=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=O5EbDOSV;
+	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794639142;
+	s=arc-20220608; t=1794640205;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kr6uumd8dZOWTXDkFndJlR1ttlboBxrC9NzsnPYAVyA=;
-	b=joM4io+dNOlhznDLDbgfqrQ6SeCcMH8PJEVd1+QTAgGyAu1aGwzHN0TfGO8BeoCHYFq1G1
-	Gp1/31p0jtg9t2c6sf3LA2WpzvD9WsOhjH3IauOAvdZhtkSRYWs8NI9K6EH4P20u64MVPM
-	pyAzvK/rQi9dFCCc90SoSEW+QYdRaQE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794639143;
-	b=R8ougoKupAEa5iCDdsRRPCX+6pyujlf8RJ9ed5oQLYB3mwdENpyEnohgTRbO0oU18TlQRH
-	SxLfDR7uXmi2B2bIurYOFYUsoIRjq+bTmcni8lbeOXGthoYAq7sXYhNCkgHFRcSV90X0us
-	sTHykaSsR/Ng0LX7wJYODbnWM6i4z/0=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="f/TuyCvz";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf16.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 81F191516;
-	Fri, 13 Nov 2026 22:52:18 -0800 (PST)
-Received: from [10.163.154.162] (unknown [10.163.154.162])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B5D393F632;
-	Fri, 13 Nov 2026 22:52:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794639141; bh=W8qZfT5oF3Z3OszzVIIAvjlZBFk4CgT7p0JvaMolklc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=f/TuyCvzT91xJJ3zuUEj6cboGIJ/7A2DW7rRLO6fBDEGcmUdfQ6632WQyzFMupBSa
-	 tezFVLM2HDABsgEG/fWc9VrLN4siR2Py8/m35sPeLrLSXjMQBYOWLnjeqJVTfpaWkD
-	 uRgIYWMaRoVJXir/ypqZkK8h6sjV1cGLApguMz2w=
-Message-ID: <91baeed5-c432-445b-a2db-7bc20c8921b0@arm.com>
-Date: Sat, 14 Nov 2026 12:22:11 +0530
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=oRfBKleHhU3BUp7ltu8uNKVynP2g/0Xp3jgnuf+J/Eo=;
+	b=hKKdpoPuE+PUWtTrANYirE42OOFZN1FXOtgb2tqzfbllJSBddObi4OYstDsuWef8GAbBG6
+	+i5zVFUXeiI8oRjZWIgjD69uBYGPFb3l8otLOz6n+WF/fMDVElSngSpUq20QKewIBeWScz
+	NB91AWz7brzSRFSSetL6LbLOTxNF3gs=
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-9495c633eb5so58036985a.1
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 23:10:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1794640204; x=1795245004; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oRfBKleHhU3BUp7ltu8uNKVynP2g/0Xp3jgnuf+J/Eo=;
+        b=O5EbDOSVLl1f6B+0VnuSbghYPE1vMK7QP9xpkhAPp9SQI1GqrTR6Cgwe9uqrXCAwMf
+         CFAWdbazInQcjGxEJyGXu2Lgarj7tEt9tuJG1ksXwU04FhepP6oyFC6l4WwssbEeb4qU
+         NGCe84bKTB5D6xI0IeM9T9y96eDhlz2xiWBowTt7sViamcG/f4/pEdFZfystgQh+hl5o
+         Hh4XcXlqRfsWlMnk7QNDkMo8GBp4jyc+tvc8hzpqIhODYrF2XHAmfcm12nxQoAcYycDV
+         EYlWTPCKyDBeqTN9d1eWppoj0+bHG3QkIZ5HKZfjhYcxRpRX5S87pu89YTCYNGqtxs/J
+         YbEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794640204; x=1795245004;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oRfBKleHhU3BUp7ltu8uNKVynP2g/0Xp3jgnuf+J/Eo=;
+        b=Mg6O9qmNzflp4rgDBqyuGtjDmPvIj+CxQHi+wUoaE14vjPzKwJl41qrTIiAuvi+fTX
+         f9k2GkHwaOOtFurYZoxLG6xanh+Eg6qWAwx8YKFHybH/wKlPJo6hz2YLiUx49ioIgPHp
+         HVI1/zJg3W5Dv/raq81NS6EJBiqS1f+VtyjKCuOBU+1f+OI2f1U955ut3UlXJEzFQwFs
+         mDa9AYvlFdSDg/cMios7ZVM5W0ccfuqTAMSu4tpPfIv+V+PhLh/8rmirBa0wnMwN2I02
+         FazsNjDqtDUyhiQVvdCk4g2sNfjeqFHIfE7vTDlYxWFiP85od1iQ/jaDWD1nVKijLJ8X
+         52Zw==
+X-Gm-Message-State: APuU4Z8TQsH8DTUUSeMBmDlDoozk/E0Ocpn5FemEiFM411WRaHAGhseI
+	U8epvZq0XGnHqk425d+v8DfekeJcODAz0L3a2oOljdRNMir6aANHRp7IWB6EcfkTqAjwI/LpUoZ
+	et/gN
+X-Gm-Gg: AYBFou1GFEapPRIkodauZhRaYD+5B4FHAi6SGiXUEawWfd7I3s56E5HlvEk+H5Fvzvk
+	J8SrrOp38Ds1Za8a6GtSpIWIx9ZdMu6C+4JvFqeNFBA2PigSBim2uuJqCQhKPwDV2iSZgEqRWDr
+	Aw+VUIYkl30yxMmHMPqVa5gfgZYKmqHwPaagfOYxxbROnnpWH/37bYU1lHG5kUAHLf2Cfa9oxhv
+	Im25+E2agLRGUABQF3O5xe0ot466JSVIGzfkef30Wbre0qi6k9SxFAytnMQ1MYvwXOEHNlAPO8o
+	j9rO/V7RIhMk8K8QotgX8ZTBQW6+Ghoig/7eGR4lujaWJZHIsrw2/D5n7hctsZYElTxwWLym350
+	7/O11nte9Qkav/1iaEzU3bzkr815zbOt+26r/fpz2v+HHlRY9UHdeY8ibyg+NxRGy4MNzjXDPQW
+	i1xU4ouguCvAJTFIPqoe6n3Ct0V1ejCnFeulIg4ODhDmoyrrVuy89t4Dmcv9cqwGRra0DR4zP3y
+	yOTIg080/i1rtzDDBFEp2dFjJjkBJZqFKWBE84RTxH8LTlo3NrwjI2iilYODmfPFSv1V1YoooQu
+	alC28/GErzjgAsHMukDGzqGGNrqL6sjjB/ZN3bPNY7NtwUqTgKzMKSyiUpeJ89kSyPYIOPS1xXH
+	TSFuZWARyUpA8c0KI
+X-Received: by 2002:a05:620a:8398:b0:93c:ba88:cd65 with SMTP id af79cd13be357-9494b9e13damr803141185a.7.1794640204107;
+        Fri, 13 Nov 2026 23:10:04 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23db3a99sm37730986d6.40.2026.11.13.23.10.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Nov 2026 23:10:03 -0800 (PST)
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	linux-doc@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	linux-serial@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	damon@lists.linux.dev,
+	linux-cxl@vger.kernel.org,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	rdunlap@infradead.org,
+	gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	dakr@kernel.org,
+	johan@kernel.org,
+	jirislaby@kernel.org,
+	kasong@tencent.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	baoquan.he@linux.dev,
+	baolin.wang@linux.alibaba.com,
+	yury.norov@gmail.com,
+	linux@rasmusvillemoes.dk,
+	pavel@kernel.org,
+	lenb@kernel.org,
+	hannes@cmpxchg.org,
+	brendan.jackman@linux.dev,
+	ziy@nvidia.com,
+	sj@kernel.org,
+	muchun.song@linux.dev,
+	osalvador@suse.de,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	xu.xin@linux.dev,
+	chengming.zhou@linux.dev,
+	gourry@gourry.net,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	ying.huang@linux.alibaba.com,
+	matthew.brost@intel.com,
+	byungchul@sk.com,
+	apopple@nvidia.com,
+	rientjes@google.com
+Subject: [PATCH 00/22] mm: introduce N_MEMORY_COMMON
+Date: Sat, 14 Nov 2026 02:09:37 -0500
+Message-ID: <20261114070959.3490008-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.56.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 03/10] mm/vmalloc: clamp an unaligned range in
- vunmap_pte_range()
-To: Hao Ge <hao.ge@linux.dev>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org,
- Sashiko <sashiko-bot@kernel.org>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, Andrew Morton
- <akpm@linux-foundation.org>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Uladzislau Rezki <urezki@gmail.com>, Suren Baghdasaryan <surenb@google.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-References: <20261026080329.140244-1-hao.ge@linux.dev>
- <20261026080329.140244-4-hao.ge@linux.dev>
- <99f529e8-06f7-4a20-a60b-0330c5d3d91c@arm.com>
- <5452d555-82f9-45a6-b443-ee732b1874ba@linux.dev>
- <e8a2a42d-e424-4366-8a68-e39167f62276@arm.com>
- <72d1b1d7-2fb6-402f-a557-0eaa767d6f86@linux.dev>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <72d1b1d7-2fb6-402f-a557-0eaa767d6f86@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: h3akxktrknzwh45ar54w8pm9ke7csipp
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: xotwqh9gweorku4h6pqrkkjg1935fw9y
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9BB14180002
-X-HE-Tag: 1794639142-742995
-X-HE-Meta: U2FsdGVkX1/xBPtAgm2moOfNm//4pQnJfqhCJS95p24QaHcr3Bob8EWFZWOiUblKdBCii5O1iufFrdhiZO1bdu2O7zqsIcjYGF+Y+L7iWJia+Dipi0u/vIuUJVfydZdZ1igzkKaaUh9KZYOMoKUVDiylU3FlfRFauJCf+lmld4sKOsuLv9v4Cf0kprYp/YNAyzRlLqE6WTC5RReoAITwAbaMxPgRsyJ/E8OYTMnnkQeAOKo4dnNds87fyzLUYsgQBQkxFlkDL7WxkwNYZor/8zZk/YypJNmqUAeRYQh4DqbL9oyKhAdWW4Fe2PPQQcv5HftWeLlGzJ42XRg6Oq+gGW7jqh1GGDlq7QZHdAqR8a+ehKds8mQZqaAxMJl0E4jjGmkHL/8dwBQqNSxjbsqSQQpUWWgz4mhYeUI4ov86A/h8rKT0ulo1YbUnXO9zQw3GkIovYY2txKKTwTncOmKSJ9iR+2DkBZnUtZVB3em2fYVQubpM33Lfn1PbSdz2srlDAe6VtT6h3dATX3gUlE5sOsffu40wjV/tfKZLHsgr7NbbQT3xtbr+iqrzeihSr1Ev2zJGCxMbQs0AmJrUA2EQ1Qd6C66hUrLc8WQ1e+HUO7qm6ePe/HlBXgIi2XbNQK7xDJ2QNiwMYxGP4CadH1OWnfdGPzr6khQXcNBI41OLarNnw5O+zQxqB7GRitYFxTXdWdpHsqLX90FqpTfiwgAODuD4Eua9Vhtg58sgMHibEGLNFueCWDtswBIRojI4e55fO30rmLdrRad7bTVfj3FsIwuvCPw/Sx4kStlVVn75moGijFPAbWiuz6CUs72jYWEVY5JtC/tY0pt+eZFSXaA37DT7YNa+v0fb0c48ksQZolpQrZ9gbx3eyWkCAUN8Ri1OME0IelzIip2YD1hOrFFLn9sLLX/xBGU5Sg9wSAmhaDheMI8W/rse+SPMUA3zNf3YFciWTlD6Z50COM9cyu6
- eaDDxs1G
- YcAzbs8FOVdjcT+6aBoFjHMGRIndBYT6ie/BWJ+2YYpo3qZCazm+aRCKEMZoPn7QFvnjOc+tTFLYxwlgAkNVOrk1uo5P0kfIHikCzrfGjfbSK6BMPzxJXvcmxIOnKlvfrT18cLjhaJmwiKk01HymL2XMGGFpxz1SqueohpPR9JE3lpQTt25rrIQvifjzfVFaTd0RHJKwepO47/F8oH6gpQ5KkKusIoAiVY3l9qoPaZpPRLeD3yKdkyON6K3mjJhBPc1eEzPiW5/qp3nDdv/sbJSANUFh4mS23VT5kqjhBLOPE1uHAYQHQluz61K7stW0oFs+ygDF44vLbpCY4V910ZLo1iTs7deT2fW+E0C4AA8D3+yYuwFnOy4Bq/LVylYqlQFtt
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 17884140009
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794640204-719745
+X-HE-Meta: U2FsdGVkX1+9LnWPtUE6MSiIAqUs8atPaSkZ3dIJbPx9pPGnPw7YkrgCyY13PhbxjQGwYr7tjvUYclyI/z32k/R9NCqaPTouVwHAMeS41kKZPSoDdx6dvqlDutGy59llq1m2Ewx8O1baYSUuzWBmlma4tb03eZApttKgdgYJO6SOnn0GGJdqqhHUmqQitYRILKWDAY1evxb5M4/ruOPkAfjoNpJqyJDXXtg+w8tqeaKSYXF/RFPWqhaNyvWgaYVg2uM8rGdLnQ/s/1Slkqhr5VWB0le+paueOxH1wpRLWw2aqUKmuktkdNrEFOFHn1hS1c7dP+7CfxclcasRaFzvSkl0U1M3NrOi7qzCHfK9K52PSRq71NLrFP+rQumiU5ccGH5F6nASq9Vb5mqdIc603KPOpitjRK/QN5dvyI7KCgiQGZKHLw4MUrNhrqJqpqy+929er1ZYzDXQ25bMKqUyMBr679Hzj1R7UKOhRNMwRGGBnO3kHgHkVoamop32adtuaF8xIOKlB5zSUf65KaLWd0SvxKG/PdKl1Dkq9KKn29X91C6DaRB3upnj9VmtzwIb2j+EvJS5U44yj+XSJAIK0ak/8pVaDQnXaC+/bjRn2elf6bnGCy09bdR+3MzjgWicg6cWruayMNisPJLn5SBFNa9Bc2BMzfJ9pOXlklCRI3kpQQNrVCnUGH/Em05tV1te1DW65NPcB+Ur1QoEhQMnOkVEss6R44tmdipdNlfBpjnGLeWkfOtpQ3G8M4aDptSxZHfidD43NTyxHAa6PnxxAUBNMpW+ZnBmDUNL3WC5kN0hfgo0aZNS9e0zCV/O5CkuvQtHvJsACifXIHFYuww+Z6scxy+POiVH+3mOpiDTBvgApT+9/GCfPNLRdqWg0hgL85h+cPAQROFvDCShQoabJn0SJK2G3V4P4kHIJ+lIW4hVHV6d0F5IQkvsBqioId0hXYv89N2AhXripwMIGG2
+ zPVejRcp
+ eGlejwU6S283rTyfgG7fe3Rpof40vGXGjnuHqfslMHRJhsHoaSx6No8B0UZcn2Vk7x56CE6W6v0csQCRY2C7BOiPDQO8IGIgUZYhCeSblBqR7efgRaJjjjv4obh7g+6SF/CXsvSMAW1c4yr/TYnC1cMeFNfUSbIRK8UY+3z1SwAzSQoDjnLL+Ld9by2OBeBVzE/iptt2neGhKehNYNbb9ixv2FL5wHCEsqkS3+mmALK96wa2WGmEbj+yrv4JTXIRQsU6NdovI2Gsrxb6uFrPAWfhec/FtRB5sqDtYpQB92ib6kA2J+ouXtIKsfJ7ffH5TYtqlmmHuw22P+wLukIHCZ4KCted2ymN2JWCv9V/yuzfPFhs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,143 +176,137 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+This is phase 1 of the Private NUMA node series.
+
+I will send v6 "Private Memory NUMA nodes" (phases 2 and 3) separately
+next week for further discussion - but I pulled this out ahead to make
+the core filtering mechanism easier to review.
+
+The series is now broken up like so:
+
+Phase 1: Introduce N_MEMORY_COMMON to define "general purpose" (common)
+         memory as a concept separate from a node having memory as a
+         topological feature (N_MEMORY).
+
+         This phase is a no-op for existing systems, but creates the
+         baseline for ensuring private node memory is default opted-out
+         of being touched by MM (much like ZONE_DEVICE).
 
 
-On 02/11/26 11:37 am, Hao Ge wrote:
-> 
-> 
-> On 2026/10/30 22:20, Dev Jain wrote:
->>
->>
->> On 30/10/26 2:00 pm, Hao Ge wrote:
->>> Hi Dev
->>>
->>> Thanks for your review.
->>>
->>> On 2026/10/30 15:14, Dev Jain wrote:
->>>>
->>>>
->>>> On 26/10/26 1:33 pm, Hao Ge wrote:
->>>>> commit a739e6b557af ("mm: vmalloc: WARN_ON if mapping size is not
->>>>> PAGE_SIZE aligned") made vmap_pte_range() warn and bail out when the
->>>>> size is not a multiple of PAGE_SIZE. That loop steps in page
->>>>
->>>> Why are we checking the alignment so late into vmap_pte_range? Why not
->>>> simply do
->>>>
->>>> if (!IS_ALIGNED(addr, PAGE_SIZE) || !IS_ALIGNED(end, PAGE_SIZE))
->>>> 	return; (or return -EINVAL);
->>>>
->>>> at the start of vmap_range_noflush and vunmap_range_noflush?
->>>
->>> I think adding that check at the entry of vunmap_range_noflush()
->>> goes against its design intent. Its job is to tear down the mappings
->>> of the given VA range, so even when the caller passes a size that is
->>> not page-aligned, we still have to unmap whatever is mapped within
->>> that range.
->>>
->>> So the patch clamps end down to the last full page and keeps
->>> clearing. A buggy caller still gets its mapping torn down as far as
->>> it goes, and nothing is left behind. The check here is just for
->>> protection. 
->>>
->>> This is just my preliminary understanding; I may be mistaken.
->>
->> Hmm I get you, but this is very ugly. We are trying to tolerate
->> a blatant bug in the caller with not-so-nice code. But see below.
->>>
->>> Thanks
->>> Best Regards
->>> Hao
->>>
->>>
->>> But that's just my understanding, happy to be corrected.
->>>
->>>
->>>>
->>>>
->>>>> multiples and stops only at addr == end; with an unaligned size addr
->>>>> never lands on end, so the loop cannot terminate and walks off the
->>>>> end of the page table.
->>>>>
->>>>> vunmap_pte_range() has the same loop without any guard, so an
->>>>> unaligned range would clear PTEs past end without ever stopping,
->>>>> walking off the end of the page table.
->>>>>
->>>>> Add the check there too. The range is clamped down to the last full
->>>>> page rather than dropped, and the loop is skipped when nothing is
->>>>> left, so a buggy caller still gets its PTEs cleared as far as they
->>>>> go.
->>>>>
->>>>> Reported-by: Sashiko <sashiko-bot@kernel.org>
->>>>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
->>>>> ---
->>>>>  mm/vmalloc.c | 5 +++++
->>>>>  1 file changed, 5 insertions(+)
->>>>>
->>>>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->>>>> index 44e0eb32708f..7131f60d1a8e 100644
->>>>> --- a/mm/vmalloc.c
->>>>> +++ b/mm/vmalloc.c
->>>>> @@ -393,6 +393,11 @@ static void vunmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
->>>>>  	pte_t ptent;
->>>>>  	unsigned long size = PAGE_SIZE;
->>>>>  
->>>>> +	if (WARN_ON_ONCE(!PAGE_ALIGNED(end - addr)))
->>>>> +		end = addr + PAGE_ALIGN_DOWN(end - addr);
->>
->> For simplicity assume PAGE_SIZE is 4, start is 3, end is 10.
->> With your code we will get
->>
->> addr = 3, end = 3 + ALIGN_DOWN(10 - 3) = 3 + 4 = 7.
->> So the range becomes [3, 7) clearing only two ptes, the one covering
->> [0, 3], the second covering [4, 7]. I feel we should rather make
->> the range from [3, 10] to [0, 11], clearing three ptes.
->>
-> 
-> Thanks for the example. Looks like I nearly introduced a new bug while
-> guarding against the old one, good thing you caught it.
-> 
->> So, at the start of vunmap_range_noflush we could basically
->> WARN_ON on non-alignment, and then clamp the start down, and clamp
->> the end up to PAGE_SIZE.
-> 
-> I'm wondering whether we should simply BUG_ON for non-aligned ranges here.
-> Because the unmap could silently clear mappings at adjacent addresses, which
-> may not even belong to the caller, and this kind of problem is really hard to
-> track down afterwards. Say [0, 3) is in use by someone else, with PAGE_SIZE=4
-> an unmap starting at 3 still begins with the pte covering [0, 4), since the loop
-> clears page by page, so that owner loses his mapping without doing anything wrong,
-> and only sees the damage much later when he touches it again.
-> 
-> WDYT?
-> 
->>
->> And with this also throw in a patch to bring the -EINVAL bailout
->> in vmap_pte_range to the top, in vmap_range_noflush and check
->> both start and end alignment.
-> 
-> For the vmap_range_noflush() check, fully agreed.  The current check
-> is indeed too late, the range is only found to be bad after part of
-> it has already been mapped. 
-> 
-> Looking forward to your valuable comments.
+Phase 2: Introduce N_MEMORY_PRIVATE to define memory not part of the
+         general purpose pool. With this we can introduce a minimum set
+         of KUnit tests for the page allocator to demonstrate the
+         isolation mechanism.
 
-I was on vacation, I'll review the next version soon.
+         At this point it will be possible for a driver to re-use the
+         buddy allocator to make uniform order-N allocations.
 
 
-> 
-> Thanks
-> Best Regards
-> Hao
->>
->>>>> +	if (end == addr)
->>>>> +		return;
->>>>> +
->>>>>  	pte = pte_offset_kernel(pmd, addr);
->>>>>  	lazy_mmu_mode_enable();
->>>>>  
->>>>
->>
+Phase 3: Introduce feature bits (COMPACTION, RECLAIM, MEMPOLICY) which
+         is the minimum viable set to allow userland to manage a private
+         memory node via mbind() and migrate_pages().  
+
+         This enables management of HBM and Coherent GPU memory via
+         userland tools (numactl, cpuset) while protecting them from
+         incidental allocation (no fallbacks, only explicit placement).
+
+         The memory could even be hotplugged in ZONE_NORMAL and pinned.
+
+Actual cover letter for this portion
+====================================
+
+N_MEMORY has two meanings today:
+  1) this node has memory
+  2) ordinary allocations and MM services can use this node's memory
+
+The two are the same today. They stop being the same once a NUMA node
+with memory isn't part of the general allocation pool.
+
+This series adds N_MEMORY_COMMON for the second meaning and converts
+the relevant N_MEMORY users accordingly. N_MEMORY continues reporting
+memory topology - and some users (cpusets) still utilize it.
+
+At the end of this series, N_MEMORY == N_MEMORY_COMMON, so the series
+changes no behavior for existing systems. A later series will add memory
+outside N_MEMORY_COMMON without having to audit every N_MEMORY user again.
+
+Rather than add new hooks for page-table and pfn walkers, we consolidate
+existing ZONE_DEVICE checks (page/folio_is_zone_device()) into a general
+`page/folio_is_common_memory()` check.
+
+The series is laid out as:
+
+  1-3   helper functions to check node states and a folio's
+        membership to a common memory node.  N_MEMORY_COMMON itself, and
+        the `has_common_memory` sysfs ABI.
+  4     zonelists: the fallback lists hold common nodes, and a node's
+        __GFP_THISNODE list is built only for a common node
+  5-21  N_MEMORY->N_MEMORY_COMMON and zone_device -> common_memory
+        conversions. One component per patch.
+  22    removal of first_memory_node/next_memory_node, which no longer
+        have users after this series.
+
+Each conversion restricts or adjusts:
+  - an MM service (reclaim, compaction, KSM, collapse, etc)
+  - an allocation target to common memory
+  - accounting meant for ordinary allocations from common memory only
+
+has_common_memory lists the same nodes as has_memory until memory
+outside N_MEMORY_COMMON exists. It is added now so that userspace, such
+as libnuma, can start choosing allocation targets from it, and so that
+the meaning is fixed before anything makes the two lists differ.
+
+first/next_memory_node() is replaced by first/next_node_state().
+
+Gregory Price (Meta) (22):
+  mm: add node-state-filtered zone and node iterators
+  mm: publish and clear node memory states via helpers
+  mm: introduce the common-memory node state
+  mm/page_alloc: build zonelists from common memory
+  mm/mempolicy: keep interleave and tmpfs mount policies on common memory
+  mm: base hash distribution on common memory nodes
+  mm/memory_hotplug: migrate offlined pages to common memory
+  mm/memory-tiers: restrict demotion topology to common memory
+  mm/ksm: restrict merging to common memory
+  mm/khugepaged: restrict collapse to common memory
+  mm/mempolicy: don't NUMA-hint folios outside common memory
+  mm/damon: restrict DAMON-native folio operations to common memory
+  mm/hugetlb: restrict pool growth to common memory
+  mm/page_alloc: count common memory nodes for kswapd recovery
+  mm/oom_kill: compare OOM constraints against common memory
+  tty/sysrq: use common memory for the manual OOM zonelist
+  mm/vmscan: restrict reclaim to common memory
+  mm/compaction: restrict compaction to common memory
+  mm/migrate: restrict move_pages() destinations to common memory
+  PM: hibernate: size the image from common memory
+  mm/khugepaged: base the recommended min_free_kbytes on common memory
+  nodemask: remove the now-unused first_memory_node/next_memory_node
+
+ Documentation/ABI/stable/sysfs-devices-node | 16 +++++++
+ Documentation/mm/physical_memory.rst        |  8 +++-
+ drivers/base/node.c                         |  2 +
+ drivers/tty/sysrq.c                         |  3 +-
+ include/linux/mmzone.h                      | 46 +++++++++++++++++++++
+ include/linux/nodemask.h                    | 38 +++++++++++++----
+ kernel/power/snapshot.c                     |  7 +++-
+ mm/compaction.c                             | 14 +++----
+ mm/damon/ops-common.c                       |  7 ++--
+ mm/damon/vaddr.c                            |  2 +-
+ mm/hugetlb.c                                | 44 +++++++++-----------
+ mm/internal.h                               | 18 ++++++++
+ mm/khugepaged.c                             | 12 ++++--
+ mm/ksm.c                                    |  8 ++--
+ mm/memory-tiers.c                           | 23 ++++++-----
+ mm/memory_hotplug.c                         | 25 ++++++-----
+ mm/mempolicy.c                              | 30 +++++++-------
+ mm/migrate.c                                |  2 +-
+ mm/mm_init.c                                | 16 ++++---
+ mm/oom_kill.c                               |  7 ++--
+ mm/page_alloc.c                             | 43 +++++++++++++------
+ mm/vmscan.c                                 | 26 ++++++------
+ 22 files changed, 266 insertions(+), 131 deletions(-)
+
+-- 
+2.53.1-Meta
 
 
