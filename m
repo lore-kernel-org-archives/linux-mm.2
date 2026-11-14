@@ -1,118 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E774606A332
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 13:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57BFD606A338
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 13:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fJ8vpr+f
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EtA9LyX1
 Received: by kanga.kvack.org (Postfix)
-	id AE5C36B05B4; Sat, 14 Nov 2026 08:27:09 -0500 (EST)
+	id 7F0396B00EF; Sat, 14 Nov 2026 08:40:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A96306B05B6; Sat, 14 Nov 2026 08:27:09 -0500 (EST)
+	id 7C9716B05B2; Sat, 14 Nov 2026 08:40:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 985926B05CB; Sat, 14 Nov 2026 08:27:09 -0500 (EST)
+	id 706306B05B3; Sat, 14 Nov 2026 08:40:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 702FB6B05B4
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 08:27:09 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DFB19C0404
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:27:08 +0000 (UTC)
-X-FDA: 85433800536.15.90E5B41
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 379361C0008
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:27:07 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=fJ8vpr+f;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 47D006B00EF
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 08:40:15 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BFC80A03E1
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:40:14 +0000 (UTC)
+X-FDA: 85433833548.08.3B8DEC2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 256E8180002
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:40:13 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EtA9LyX1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794662827;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=dgWMrdUfwgyu69vi+KlSZuYmoLLvzewc0VtmNAhXsrU=;
-	b=lXBWXAAaQy75UZyIDsDNWrtJohlHO1oJZcq6rAr99VeEdN1r5vMdyaFvmCDsQMB2kLH6hX
-	6UI/wbKqup21XfFhiDGQ5vmV6bST1U5K5dk7Bjm2Pn8j83XpBZHV/2r19QiTwlSowISaC/
-	6DPM85aiBlV0t+z3t9Ru/DGZR4fGvJ0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794662827;
-	b=uefl9W2bfFl7AiXdfmXjNJHy0RB+ehwV5vOlWclwJ3fwWzsNWkoN+/6/StzaHv+ji48mME
-	YLxOK5ebdFuDdj1PqOTd7yuyI9KIOMyWV9mYv6epsQ0DrDGgSnTtnTPcjTIP3x7tKcudFA
-	pDPQvdZP86/XiFtnas/gS5Jh+qRFS1E=
+	s=arc-20220608; t=1794663613;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DO/pcsGH2E70PyxeObnmbVUNA7RxRjcw0EQOKMlsdEM=;
+	b=cdFbBxrlbGID3vw1qnasCwZ8rfDwV9cavWW8J5sdScu5AgkJkkzqR3l7rR8MzRubJrlSOY
+	q0MIfYe7eAG7sSwzjsKkfNup5B/Arl7dlV0WF6oeM0LXZvgozny7z4oGRJ74dPjrAQrkAM
+	g00op6whlgQQqlDPERi/JLx9QFJ4zII=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=fJ8vpr+f;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1b3beeaf6f9so2131246c88.0
-        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 05:27:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794662826; x=1795267626; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dgWMrdUfwgyu69vi+KlSZuYmoLLvzewc0VtmNAhXsrU=;
-        b=fJ8vpr+fRBdVwmz7cl2zC7CAHLdBbwi1oejIMTxWB8iA4//EuuQ9sMjEJ4KQZ03UOo
-         sdIyeGRGQXllEPnkwzUhz3EHCG/2qEyIjEEWvi4DExFjzZlK4xl0tGG9OcIPzDCD6GQJ
-         uU3d9b9SpgvEqAVod6D6nO06nnN1BOM2lTFiu5zQxePANY0sh27V1aqjI8d1WhPLxoxF
-         RQm3h+UoDNBSJqWpB4HYlM+N6VxWsp2J58Dxt4RMdE+a6loifVHu76QJ3bU6S63SWbh2
-         zZe3KDvUgEhb9U8S7cT6EjkTOtA+2bIMzGal/Vz9JAu73+QvS3jOfFZrM4voZENWo+gP
-         Bp/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794662826; x=1795267626;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dgWMrdUfwgyu69vi+KlSZuYmoLLvzewc0VtmNAhXsrU=;
-        b=rrCqzy4F9Re+DoduV3U0t7DzjN/qhTdcqhJ3+psjhUhjBzWNjUTm6JE+wEseNwee0H
-         FAfHRBDEw9+twP8HO0nM7twLNReKuiyUTr8n0q3vF+iPjNhfwrA+8l32JLoVKmsSrZeW
-         j+PJ0JZ8NNWoLICsh3a0cDWrw+mCpqoT2hTW+Ou4brAgQRBx5HvgwaOoCC8LCQcbTttm
-         Dkdb70PdHlAXUhwPG35JlxgjtWVvM9svQJRNlVZQ18YCP2pq8sCGLJOUx0w8cWmOMfhc
-         GYy0VV7z0H8inDtusaJnpH6ffXeK4HIXtFKmiG3SsfrvVVCgJYyKJMfLH1WRW50v5IHX
-         ghCQ==
-X-Forwarded-Encrypted: i=1; AL+hErEv8/dffEHwQD7MU7vMklwe1DxGPcgQqPYUFHC6yTejZRD0zoLjnP9FgLXaPuQ3mjdOZj/qlu+79g==@kvack.org
-X-Gm-Message-State: APuU4Z+LwLEj918yvPKEyH+mOrZzu0/Oat7HgXtiAp9Wm4f97YK1NIje
-	73mySXHACdgIMwRhE3hf1VzDyeNo5hvMewuGjwnAc3LkeW+IhX9YHJiX
-X-Gm-Gg: AYBFou14QPltHo3ZJYxHnkKn/wI7Rx20ypHREI1v2EU3WbDLChg9b1Jlb47WIgvBCZc
-	lgkDML0l6sZdJ880mglflZQ5wUKh2GpAspSixNUNC669dBs1lX1iKoS6KWISG8J8TySSkqV2pFh
-	8U2SMTXMmT/BQhrDhLqORIyCgOUbRDAwc1xKjp4bofoajDGxJmllr2WFwwThVxPA/kul86WYf9F
-	TABUpHUt+q9DgwExIMoZEMbJHXulnQshd6Og6uE9IYbE+Se2q+FK4KjcshI87GoXLZ3/8moiYeB
-	P5ba4Bxl02O+UGBDHjZWN8eiQxZ6QD8Ryp1/tnD1fYoc7vB463miv/wvs0RuycbuU4/nCGOfayx
-	1o9/7Y08J4e1fEklH3ND8ok85DuOdvwSopkTh3ArcdPjR1hKi8AkUbHy9UD9OxAxAIbw0efunn/
-	pepgaBdVN2NT9+rWBm5zTerH3nz6n5N4sqB99wK6uu1oJAFJ9Zy83ib5qE6d6+bHzW8sngWDeDJ
-	niJG72vV8fparlphbb/l3krcND3zWFZT9JXsuQN4Z0oyB11ORS1EUuSO5h/XZlfwMvNf1SJYp9S
-	YSd4NYCRyHEaeHbcwN8kJMbTbYW0ygepd0+wHgT+F5MfLrIvcVDl
-X-Received: by 2002:a05:7022:170a:b0:1b2:366a:e7d1 with SMTP id a92af1059eb24-1b50312efa8mr4720603c88.32.1794662825563;
-        Sat, 14 Nov 2026 05:27:05 -0800 (PST)
-Received: from ubuntu ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5031b98e5sm16965327c88.14.2026.11.14.05.27.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Nov 2026 05:27:04 -0800 (PST)
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>
-Cc: Bruno Faccini <bfaccini@nvidia.com>,
-	linux-mm@kvack.org
-Subject: [PATCH] arch_numa: fix broken NUMA emulation with dummy_numa_init()
-Date: Sat, 14 Nov 2026 22:26:24 +0900
-Message-ID: <20261114132625.1710476-1-ekffu200098@gmail.com>
-X-Mailer: git-send-email 2.53.0
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1wsbg58u9ehbgsheunc3wmp66w7fwu4d
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EtA9LyX1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794663613;
+	b=4cChWRxEOuxa3QecbbmKYwiW2hX84TBwuLPLWtzcTgHSsv/sQNo3Ss2d1NfqHe3j3gc27u
+	USu6PkkfeZk7qXpILee567vyBYpnXJ9IRui6niI2Rjd9t3oBP1NaLVZqt4LyW15nUSW12O
+	Xi8rXG2rOKhHqz0LtInAuuf++IYfEeY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5DB6943AF7;
+	Sat, 14 Nov 2026 13:40:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EE71F000C4;
+	Sat, 14 Nov 2026 13:40:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794663612;
+	bh=DO/pcsGH2E70PyxeObnmbVUNA7RxRjcw0EQOKMlsdEM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=EtA9LyX1DQPmqIivWqEued4cucJAK1+nJOQ/GGvKipbsSCBQuo+oZ3kPO9RKq7oYC
+	 zIcaqW85WuT+78yc6J4OdCXsw3apCSEsQ7sYevNDP5gzBcxQY0m3Hv+1Ms0/aVZ7H8
+	 CDlb2C/w82i3kqyY8BfiXhGvlQIigUINjN/hsFCRLIaM2Ubpq32rCz1dM2EFAIdocF
+	 nG9Yz57EvfILKbQDtDytbmBzQCS6+NOxq3b2IHcbiz+ugsNkMobp3XIkLgDnxk7t1p
+	 F4jXXVsDKS5hVcmfN7uciWAYXm2W6m4JRPhYfmt9AfelqpBckVtT7QDcKzpdjQSs7B
+	 YV7fH2wGKn7Ug==
+Message-ID: <sashiko-outbox-214581@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RFC v2 33/42] fs: add file_check_backing()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Christian Brauner" <brauner@kernel.org>
+Cc: "Jann Horn" <jannh@google.com>, "Chris Mason" <mason@kernel.org>, "Josef
+ Bacik" <josef@toxicpanda.com>, "Christoph Hellwig" <hch@lst.de>, linux-nvme@lists.infradead.org, "Alexander
+ Viro" <viro@zeniv.linux.org.uk>, "Jan Kara" <jack@suse.cz>, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org, linux-security-module@vger.kernel.org, selinux@vger.kernel.org, apparmor@lists.ubuntu.com, linux-efi@vger.kernel.org, linux-s390@vger.kernel.org, linux-usb@vger.kernel.org, "Amir
+ Goldstein" <amir73il@gmail.com>, "Chuck Lever" <cel@kernel.org>, "Jeff
+ Layton" <jlayton@kernel.org>, "Anna Schumaker" <anna@kernel.org>, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>, "Mark
+ Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>, "Joseph Qi" <joseph.qi@linux.alibaba.com>
+In-Reply-To: <20261114-work-loop-pseudo-v2-33-98639a2286fb@kernel.org>
+References: <20261114-work-loop-pseudo-v2-0-98639a2286fb@kernel.org>
+ <20261114-work-loop-pseudo-v2-33-98639a2286fb@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 14 Nov 2026 13:40:10 +0000
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 379361C0008
-X-HE-Tag: 1794662827-579934
-X-HE-Meta: U2FsdGVkX19I504HvKPgMYflBdFkU18KyNc3lAPxzK/2HydF+qI9jwYBthSgm8gMSpXeItO8CiiNLGb1ZTwvuV5NS5l6Sgw1rrLESsI6vwQK3JVcjxsaWqQSal66btFO+u0nYYYfVxt0wyuuI2SvsStmPNFSpwx4GNiHCIhnZ46WDCmjmfTPIeeBTcHDTbRWBt0QaSPXaJknX5fd7Mr3d/cEoYGLJ4+Fn2TzUVBmMuS3unhOuc53Et6wCLCCbNJ6TebAwgjbEFbbArDrY+a4Jtbl1CMtSrcb6s1BZhEYFJ8nLjv1tUdfCebrIfUs2ahGgEfDTEp83WASaa0/aFy37tymPnvfYQ4v8vRk8+CmJwzcFcErkiCIZzfbEuAiT0r4LgKh7B47EPKImvwQOpzIiuKtOY5IUfzkI2pCHv3r2sZ/2UVp1rRoiA3j3etq719CT+VvVBabKFvSELmt4ejicptMuflpsR/NXi9hVmwUZLv1BrdvJtmFB6V57ja0fUaZvPkOUqJHORsoHBX+WGjKMt3gfXSmvqQGakwk5vFgag7ZExAQ+Ko8eN4xrhpBJDlCDZzTKE0ZR65bGobynRAxmFWXVsfFWvrlokT4YM6TK0BPC+s8jEP9p+LMP2G2rY/SlWecrHLq1SuSNLDGSLFgXGjmp2IH3bM0eUP7cSIsr/4WbZoFMmw/0FnqhCf2UpSngQ46/ovr3DxcoEI3s1IzNVuqi2WE3Dn6atNZdhDnJGIhA39pmb6so+XHgrq5ZNBr60wrWKEWYtTxWAyOAB2X+VWtDfC3JQ+003IxFPZhTbqgn0EIRthjkH9uA9U/kcfEcZRV72l+OMogI785cfE3KLg2VoXqkMKhgVLyTcoU+LIeOUhWgpSudCapIstkBFuV8hUztxh81Io8oyn1JvlpkA2oOR5mtlQLaEzOl0y8wsw7WndYVKv68HnKlzK+3c27SZpbs3HthVN7T6lsR0q
- T7JdtfUv
- D0vmrR0sBT/ApJktkQ5nv3v0bFMLLeW7YhM8hKNU3Rh+t37JfAt6XsNQS+NsfOgeveVF1XV455MAEijnLvOTiu/9OnhsfDaGVuu0hMf46+qcAnocCkVia51Vepou2dAAeN/1X4d77TYPFA3FH+7Y7mjQbfWM5fvFGhGRdOFrYwqdsm6l9eXslAg/4klgtpbiK7KG8QQRLtN8mF8NYdDdjfhWntDdacK4ej/wv9YyQKQ2egcms/3rvVcvXy+ud4qjfAdUv0AD3cFJUURP4z4ZCBAsAhoFumGyX34fXATMXzCrqReNjXuVcSDpkVjmO9mFWYCmcr4sahwcpN7gqfB8AjMpmMG4kcCQ1Pdy8+TbrWTAnKvoeDWu4uz04DDbVzf8lCsmNscs1PXF6kIEmYam2cKjQoDz02v3RVvoz/QaN6LdnDlhk1x4bj+4kDiLlMRVgLp/vfDX7PChIDMs=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 256E8180002
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-Stat-Signature: 8fzqkxw8ietxrzdmjtepct85usd85i7k
+X-HE-Tag: 1794663613-501598
+X-HE-Meta: U2FsdGVkX18lx887TPDotWpurAKGbtAvHTzCMM3/ODmTcegDsHjq2bjRm/NlJu2D2SVbIEe5uucZ6SNfE/kDzRvL6HYziFLn4JnGXxYsy9zkyYKP9qA1p8pNbANhvWbfrqli/VpApMx+59Gq+Qp7EXZ0PPiCjUwkf19L5T5X9ytqK0IhYKCfjVNQhC8CHTGul3SoBXV+90vABpYs9e/KoBKMHvuYKky97dZXPI19fh+1Nv8+hOX2lrsPf56lQDTAG5Pwc7Hkp2qL8OZl/qqxSMgb2TPZNToGpy0t1wESz+I703aaf/HwETdIy2eUoXCSdYcfQyR3jhY9o5NvkdbL2c4rOdBoXbAkrWXDKw0CTyPfqB7bBfk2w2JVobgTF+5CpRPPNdVojxTSSvdwrLP8CmkU3SFV1isgAS6XeZ3DWtfZ4UQMbKNC4oaDVQzY3g0T06pK0IkyD2djDqs/Fjn8J8h0D6PFOLjcGzHF85pm3cPz3yD79PIuR2nu4Wh7z7Q7be2a72tErmaLkAanxM7q9Nk7ROegfP2WaE2BbAkJGtEKFCUWxa99QhUkDyyTFDslAqALGCbJcgPv1rIVGeYzAv4+0GnlBw9s84fZDtstmJE2FyiDJ1WHFfbVW5ow5CsjPnAZ+174Lmd5lifXLwdAnWtWyaI2IXN+s84HDix4mnP2mgWSBw6tmjjI2ddCBY/QFWNxg2PlRJ8rPEXkPQBy2x1TPzKqsD7tApeTpW3aZOW88DlPnSvDp+sjAxVcvYv4QYCDJzyA89D4r6e+OD3YMC0RnYkTogDlXEAKvUw2V5TGnOWrXnTkMNu6HZgcQm0GjBUazPCF+YTDOId2ne5wylojnQt5N5CG2H8Aa/lR1hzrFMTKwA+VVRZGCB/LIdZ5UYD22uYSaRfs8cY/1RnpzwsiEY9yFQy7N15Qd5i5sMB7AnUmAMA/PAR06NOq8MALLpLDJVBQhAwOMiVieRF
+ iIIdS/en
+ Yp7O3J4uE6HaJNsDHR8nUNP6fjV0010JStn+vbe9KM6w1qTP2MeQxJqWug7B6ZC5kI7tg1MXLe3xuVGzWCTdGuRZNREPkgF/MpydM1RcxgVG+yTg2NNs2Yszm17Cu6s1Ln5uEAAuvNsTVvu8h+mVypF9u7il3QJ7DrpjTMmqGRJw0XGQCshWo5LJ/gBssvv+vGEmrAAT2Jrj1Xl2Xqu7V35jmb4CiTYz5QF80yvujwjf2lbvk7YVuW3RfHOiuklHxSkxoTkQ0tagW0k4HaMunV5bMBnS8JCooTc5aH4FdgZSyujEhwDZQaCYMbAo2IOOhFtymRBqRapD7dkAj1T3+fj1w6uXxmhlBdWrxCFBDRaBYa9gAVWUGWRk19zkQpc+G7xk/ArdVwg5pKJ1O9LitWl+BX+clPs0dsMCSsiJ4DY0u3YwsLPEvGGPHaW42V+frlRa5dBkWG7hprJNHprAUuSkhTqlVZkoUNZUUan7IMwlvNmoxePxkpcZf5nYBgADET/OeX4LnA1I4hTwxIt4S0RY1srZH+WaT7JUh2Lqx8J9f4EH6+kquQz+7lumFLFfhbaQrFP6qHOCIO9bU0dnvORgb25UjVcd9SzIzWGiwjHlQQm5S/rlkRHTZbklIG6vz3gzA5c6xhEw8EQw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,44 +98,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-If arch_numa_init() falls back to dummy_numa_init(), numa_off is set
-to true before numa_emulation() runs. Then numa_emulation() calls
-fix_pxm_node_maps(), which fails when CONFIG_ACPI_NUMA is enabled and
-numa_off is true, so numa=fake is ignored in that case.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] fs: unverified overlayfs O_PATH d_real_inode() call in
+  file_check_backing()
+--
 
-So set numa_off in arch_numa_init() after numa_emulation() runs
-instead.
+commit 12b4c886c3329cc29a995a96a698923b0df5e8e2
+Author: Christian Brauner <brauner@kernel.org>
 
-Fixes: 63db8170bf34 ("mm/fake-numa: allow later numa node hotplug")
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
----
- mm/arch_numa.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+fs: add file_check_backing()
 
-diff --git a/mm/arch_numa.c b/mm/arch_numa.c
-index 940e6d5f0023..5742ca7d98be 100644
---- a/mm/arch_numa.c
-+++ b/mm/arch_numa.c
-@@ -265,7 +265,6 @@ static int __init dummy_numa_init(void)
- 		return ret;
- 	}
- 
--	numa_off = true;
- 	return 0;
- }
- 
-@@ -305,6 +304,7 @@ void __init arch_numa_init(void)
- 	}
- 
- 	numa_init(dummy_numa_init);
-+	numa_off = true;
- }
- 
- #ifdef CONFIG_NUMA_EMU
+This commit adds file_check_backing() to validate whether a userspace
+file can be used as backing storage by checking its open mode, file type,
+pseudo-filesystem status, and read/write iterator operations.
 
-base-commit: d9a27fa1050902a6e38bdb780b0277cbf1dfa5a5
--- 
-2.53.0
+> diff --git a/fs/read_write.c b/fs/read_write.c
+> index 6767283108991..cedbe654add65 100644
+> --- a/fs/read_write.c
+> +++ b/fs/read_write.c
+> @@ -866,6 +866,54 @@ static ssize_t do_loop_readv_writev(struct file *fil=
+p, struct iov_iter *iter,
+>  	return ret;
+>  }
+> =20
+[ ... ]
+> +int file_check_backing(const struct file *file, fmode_t mode, umode_t ty=
+pe)
+> +{
+> +	fmode_t io =3D mode & (FMODE_READ | FMODE_WRITE);
+> +	/* Drivers may point ->f_mapping at something else. */
+> +	umode_t fmt =3D file_inode(file)->i_mode & S_IFMT;
+> +
+> +	/* O_PATH files are only fine for callers that just use the path. */
+> +	if ((file->f_mode & FMODE_PATH) && !(mode & FMODE_PATH))
+> +		return -EBADF;
+> +
+> +	if ((file->f_mode & io) !=3D io)
+> +		return -EBADF;
+> +
+> +	if (fmt !=3D S_IFREG && !(type =3D=3D S_IFBLK && fmt =3D=3D S_IFBLK))
+> +		return -EINVAL;
+> +
+> +	/* Look through stacking filesystems at the inode with the data. */
+> +	if (d_real_inode(file->f_path.dentry)->i_sb->s_iflags & SB_I_PSEUDO)
+> +		return -EINVAL;
 
+[Severity: Medium]
+Can calling d_real_inode() on an O_PATH overlayfs file trigger a WARN(1)
+in ovl_d_real() and bypass the SB_I_PSEUDO check?
+
+When a file is opened with O_PATH, do_dentry_open() returns before calling
+f->f_op->open(), so ovl_open() -> ovl_verify_lowerdata() has not run yet.
+When file_check_backing() is called with FMODE_PATH, d_real_inode()
+invokes ovl_d_real(dentry, D_REAL_DATA):
+
+fs/overlayfs/super.c:ovl_d_real() {
+    ...
+	err =3D ovl_verify_lowerdata(dentry);
+	if (err)
+		goto bug;
+	lower =3D ovl_dentry_lowerdata(dentry);
+	if (!lower)
+		goto bug;
+
+real_lower:
+	/* Handle recursion into stacked lower fs */
+	return d_real(lower, type);
+
+bug:
+	WARN(1, "%s(%pd4, %d): real dentry not found\n", __func__, dentry, type);
+	return dentry;
+}
+
+On an overlayfs mount using data-only lower layers or metacopy verity
+validation, ovl_verify_lowerdata() takes the inode lock interruptibly via
+ovl_inode_lock_interruptible() and performs lazy lowerdata lookup or
+verity checks.  If that fails (for instance with -EINTR from a pending
+signal, or -ENOENT / -EIO), ovl_d_real() fires WARN(1) and returns the
+overlayfs dentry itself.  Because the overlayfs superblock does not set
+SB_I_PSEUDO, the check here passes even if the underlying data layer is a
+pseudo filesystem.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261114-work-loop-=
+pseudo-v2-0-98639a2286fb@kernel.org?part=3D33
 
