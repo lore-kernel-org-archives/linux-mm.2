@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686F560A382F
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 13:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0538160A6F4F
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 13:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MpJVcMTY
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RD5VsZN4
 Received: by kanga.kvack.org (Postfix)
-	id 875006B05B6; Sat, 14 Nov 2026 08:06:02 -0500 (EST)
+	id 14A016B05B7; Sat, 14 Nov 2026 08:06:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8257B6B05B7; Sat, 14 Nov 2026 08:06:02 -0500 (EST)
+	id 0FA2B6B05B8; Sat, 14 Nov 2026 08:06:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6ED626B05B8; Sat, 14 Nov 2026 08:06:02 -0500 (EST)
+	id F05566B05B9; Sat, 14 Nov 2026 08:06:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DAD76B05B6
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 08:06:02 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 428E31C3B3D
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:06:00 +0000 (UTC)
-X-FDA: 85433747280.11.D63F3A4
+	by kanga.kvack.org (Postfix) with ESMTP id C71F56B05B7
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 08:06:07 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5516A1603D7
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:06:07 +0000 (UTC)
+X-FDA: 85433747574.15.7E53236
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6885E140006
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:05:58 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MpJVcMTY;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf20.hostedemail.com (Postfix) with ESMTP id 85F6D1C000E
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 13:06:05 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RD5VsZN4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794661558;
+	s=arc-20220608; t=1794661565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r6ZhD6v1VAC9LFMiPIrPjYVjUm9OFEumnB2zMtz0O/0=;
-	b=P0HtAmwLL2iK96CYcGEZKbA/QQYtnDDyQ/D1xgugTOQsCDeFsI1CUxIvlqytrezu/AGnZG
-	kZxfpAFyNhc9l8UFQXy5YhOuxjcJGjm1caPqdkB1lR3YCscZDCDHYVLAjZAMxmq4gPMUtx
-	gOLuFlGp2ArFkvtMxB8SimUvflE02qc=
+	bh=XBMFsDX8jPf40Ops7fmXNGVPlFkxVQgzGux0hDAKlKk=;
+	b=SceGy9BExWGvMUa4Amkljm5TAmb/imE273/+CZ6LM5bLBM5knXAM34xUVa9xhuNlGl7o68
+	6lQTIvYJ7DW/8FIPzpRaczi7z/0nqBtOtVXptptSGMKjMNOKSDND0vL5FMy7zBIH1MxVD4
+	jsUd3QndfUmtQAoeBCzqPHvBN+VXaBM=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MpJVcMTY;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RD5VsZN4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794661558;
-	b=xKdJEBCv7RHz1EGA4Oq0rBCgYVO69FG3eqR2WJ5WJy1rJ+sRh7kcCQmrZ+Krol1rVMww1A
-	ZZ0b4c/sAJWgBOeHQSjOiPfrf81N5fkRtQrqMv2aF8rfO4msVP8kg0amhdpt5eK/fWReg3
-	sZu80mSsxXjqtp+gSggs8ehlqLIOaWA=
+	t=1794661565;
+	b=p/+Ak+8+W8LPbCpGCVeWbhusiJ4v20wKI1hxLXkDcaRRUx+JqbIH+xKBuA8zrNkKowhJq2
+	HrHPQhJluKgRgQegwobQl5LJOfXNLonWbmh7/tOcelG9Bo1hrxgqDrPwH7kQ05Bm48Yvgz
+	vjVpOkanMAG3rndwMItxmzxxiyFULLk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BDA3240B44;
+	by sea.source.kernel.org (Postfix) with ESMTP id CC0DA45EC8;
+	Sat, 14 Nov 2026 13:06:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFEC1F000C6;
 	Sat, 14 Nov 2026 13:05:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E051F000C9;
-	Sat, 14 Nov 2026 13:05:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794661557;
-	bh=r6ZhD6v1VAC9LFMiPIrPjYVjUm9OFEumnB2zMtz0O/0=;
+	s=k20260515; t=1794661564;
+	bh=XBMFsDX8jPf40Ops7fmXNGVPlFkxVQgzGux0hDAKlKk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=MpJVcMTYApPZc7VozOSSmaXGxWwwgxOxiDGjTzhesY26ZSs/xNhwwdDIDL0zR46b0
-	 W24cPjHL9Gyz2tmsdI2SZ1yAOIBcFIhBnPjCrQg2xaMcZtEWnbfvhWfVUXxY1N/Y+1
-	 x7BIMwdp4kJhjoQq27aXY340AMvCIq9P2DrFIOyfPVCPJ5xs9RWXl9JHBQYKOWuud8
-	 wvITPU/pQjvqn+W9V89fmzuCuW4Cwhv2tpUp3HqbUNBmkJwQ0riUqK0zrXSlsQ65ZJ
-	 l3Cj8QQbq5mCnD/EO8LJr58gJzqPZx/uTT9g4OZqsMUvqRomSCrCoZjw8Em01eokpW
-	 /XnZdvsBfixeQ==
+	b=RD5VsZN4sq2RqmQsT5z5jrMvNyxT631psMzcncHkeuuOg4+buqvJIz9dkv3jYlcRR
+	 V2pZL3WoNUnQEP51tR/BZ3mcEYArPXsdK2URRwWSRFhtvKx/JSyOxbx/SSxSZ03vHz
+	 Lflt0K4kNkqkrNxJOQZaDKj0oL/iqRPc86/OPdzz5wXkK5HEebo/kdwARHBNP73YFr
+	 tAG70yUnJ+/yOTbVOqVG01afbjhJSRs4hdUGrwmkNVaypvzLQCLkzUB2I7in22IT4R
+	 nFR55mmB9LvTaJ1vKj64yR5+aC/v8xo6K6N+tsYNJVtxrK4ZLCG0N1UNDrdBjPf7bF
+	 R7x3k02G1lVuA==
 From: Christian Brauner <brauner@kernel.org>
-Date: Sat, 14 Nov 2026 14:01:44 +0100
-Subject: [PATCH RFC v2 03/42] target: fileio: check that the backing file
- supports ->{read,write}_iter
+Date: Sat, 14 Nov 2026 14:01:45 +0100
+Subject: [PATCH RFC v2 04/42] fs: add SB_I_PSEUDO
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261114-work-loop-pseudo-v2-3-98639a2286fb@kernel.org>
+Message-Id: <20261114-work-loop-pseudo-v2-4-98639a2286fb@kernel.org>
 References: <20261114-work-loop-pseudo-v2-0-98639a2286fb@kernel.org>
 In-Reply-To: <20261114-work-loop-pseudo-v2-0-98639a2286fb@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -88,28 +87,29 @@ Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>,
  linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, 
  Amir Goldstein <amir73il@gmail.com>, linux-erofs@lists.ozlabs.org, 
  linux-kselftest@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, 
+ Alexander Mikhalitsyn <alex@amutable.com>
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1460; i=brauner@kernel.org;
- h=from:subject:message-id; bh=+p5P27LAsW3o7uyqtxsmCGm9+GYqGVB9cSFLMBczGcU=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9iMncq/F3Gqdfy3ml2pz6Cf16VQLrWpz9Pe6Ltv6/x
- ysXsqqio5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCI7fzMyTDnBc2fvPj7dwBbt
- Y32T7r5v36qWePZ+2WHraW+0ZwvH32H4H/HwwN1Nz2oWldU/1cn9XNqxx+bkkusBpYfP2X5oK3x
- 8nh0A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3572; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=5JLKbJArUBEaIJcAIKA7+ivAi2N0PjM1HEiHb7NbADk=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT9iMlyW+O+wt51Bs/Rm+xntS/n7+nkLV168mrgXwOOm
+ nPMrH2bO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACby15qRYZ9AT0+/1KY3tab/
+ N6s6/rWxyZ1wxuPSVJclEfO1Kp4YczEyXJBmutLyZ+8jg2D9Y+vLQtfqn2zhyZmgPuld0JlpJ8J
+ lOAA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: 7tkrng8k1osctqr3tfhpms857jeademd
-X-Rspamd-Server: rspam01
 X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 85F6D1C000E
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 6885E140006
-X-HE-Tag: 1794661558-46748
-X-HE-Meta: U2FsdGVkX19Wu7O4I5LoumwSpFWg0516d5G2nTWiQHm+M76dm5AQdHyPFN4jTNfaOHrQYrdHt6IdEQ8vi1+MRk5jE3Iesb9PefLlCZTt+eeDOu9ZjQZxGzs+rFlMi0E8qndZw+5/p/b9YzBB7YgifEweTacaZJAkEzyaINAhlswuqicqukEd2DgpS3ltz5KvIARZiqQ0OXdSZ6TLg0vhDB3BUSiYE7j2QvNsaFtfC4BJSSyAl8yxhd99hAGD4xcq42ykOjPMGW7VYQBw38EKDHoVSY7XnKzaD6Xds8H7ozT+beIq3vrKLW8jVUGUTvVeSld0MwNnycnWDnLlFu7qK9mmko0oKCgI4M5zEW1YGjIfCXmD+NL2ludUL0TILY9Xldyscp6+Uwi+flVreMNlAgioCpyPGC0ixCOEEoF2IUDDJNyU5t43Sj5YivzKETW0tFIyE36WbRTy/THIMnvtnTI9aiuoyZ+IeXklt6P0wgpZmCjD3MNtO8QcjXaqVf5BVRrF13LNVTrVLFEleprkfr2S+YgAKP4Q/51QJSvqdGFVUo2iZofuPY1fXxGg81pi1JxeKRlzd6LLPTlB6CdL9Xw7sCHvbdhACVmb9n9hUnH4CjbNy6Oudad8YErWhHtcL4s3BZ2sKFMK46w5Vyf/BlhKB+2XzpQuYNkgg7zChCfjsxoqF1mekQdaG0UwI7j3+0kNSJ3fNuasPQco+0/5y5y/kZHCTkGg7wPM/Dk3vXsV0db0QvCsq8OgOhBuO2NP0dwIZvq0q3ymYvqljDWmIYvkrXQlMk8FwVqg8yXjnCIJ1pmRZTvXrZxXsEC+A429g/NLOVd3lXc8n49OrS3JHFXV3x8Rhe6fI+GX2tdRdtEGUaodOxXwWoQzJbQaozYkE0+uJI7Jngen1opU5739KVwaroovbuHcZWlG1gzIgmhka82Hdi1/6PyjnZnpdg3ADULfA8ul70Se7CAqseJ
- rUG8Dp+I
- d2pK9ug99/MSE+uAzi/Bj3F+2iwHBgIjHvcKQBOjVDKWVvApD+4y91d2YWg1N1iXeiHzXQEVMUgFNQSlbe0cPqhD7qEZA7FIszyLrrZSGtVz1gQ4AXMvq4coAICJrJZqcPzzgV2I4lysbE9Rihlmt5pYNOXtIiRyf7f2tt2cZgc3u7WXZHr2gKTN7KYjJJzvi2bR63jtTxW6e6ckeKDmXx2Mb9yI3theLLkvlFJM/GsYXHJ199gmGWLi5oh3qzUbY5x6MZxy5FSUpTrb2feF4Z38jIqzMq0A0uylHI0RoEtwnoxJv3k+G0OvOFy8DL9ykgUKuWzZLTfwWR/FvGNyflB6mCNxjqhtq8/kbaGqMOkp5Ma7IOuH7vZKFR155L9GNOUIYMeF0wDZOKKuWg/YuF5eyF3551+0kZ5PU
+X-Stat-Signature: uj9c3oa9hixzxmeiqnbnz8idgbkc4mte
+X-HE-Tag: 1794661565-762283
+X-HE-Meta: U2FsdGVkX19slOg2lC0f0a4s/hszThArQ7wKZKkS/1FGMnMAEp67JPbyziPVDWx8241A3JH7Tr396DAWxMJIcltv7hq3q5fffmdy6UdetiX/4aVz02KkUGcgH2GO9S5DDpky2dsf/O6m+ehImv8xTDChOx4kcGJ65rANp1PSvnpy3nzROBgQVb0W6QLsTqPXAqjwT9TqwWlSXqqOEZaNAIUyNS9Nfh/cIc6MAKLIbr5sI0djEwtFW9+z0kFce81X/gc3PTBUUzyCws1QSMIoDP+06aaeTxT46IWbyZahJbTAhW6h9YDsmcKSmjF+ocEBtkY+3anHQGJDjtGhHLqtEwHlrkl0dhZtDkW/UIngkCYZpauGAwxxfJqspbqnYPP7xnAjF756oYfoBXB/lqsztmuN7apwcbo52lTrr6+m1mOoO+NDGNxyXdC956V0kW8J+Kvx9NwZ7GZSp0uFqYVCBxaxR0ih3csEFsDoschlRPNTjCARYcszZ9PuTz0SFAxx6xJmnSVZDkaIr42zsGeofpYvWTb16JxTtGFhRi+6U7vVw/MWEBfs5qQBAYy3zlkgn3nJQZm6srbQr7IAhY1Tcj3SfDBgJfhkmTsoXHwhvXKaO2HODmu6Bho9ZLNP9e4JDW3wj3480eeDDiwM6KXBr+e1doDBULKalJKATczZubA19uN2a7CFmfLLwWJi6DprZ1FezslsPqP5xYahLTSxpcfxDPa9Od8XZE+D+afMj1HnflU8eYajkEUYRU46boInG04OWOvzz9AGNiRVv9IPRQCGYEYH8wqiQmm7efK7kIJgKqEOI4/mbNEZLUecrvjRXZBaHSDuKuW0yeaWNpEQQxeYOVOZ8BHjt/f9XDId59vldnfEvlNmaLYL5KCNIwYHWdYLp2Va76PqF481Dmz/FifcHwTGeS6DKXVLiWbYLBewnFfC4m/+35mDUl0gzMGgcFf/Y+Gh6XrfUpExn8O
+ K9d0aDBH
+ WgsjGS65GeYuZnMuy+lb17GhJkbDdXY8C/oLFIMhJOtuakBrp5L/XoYY8vSU/UKbnUFEBBXu6kvyuT2tBMIGppZ4xGtnc3X8QGrbD6iTXbrq2NqZi3aSFgtkcS/zMlXDkpSNYERSBsj9bUR+3tu9RxxTfjxFgWqMa5Opbv2bN1ZY4tNQCx9DmU6Pug8w+b5Han9kNh018xH63tRmCQo5Vq4NfCPktpdnph2Wvig83TPGJa6YBiG0NvjN1eFkQYUq8Q04u9KMbtC2tPK0E+WEfvSDgdoZt5tcFDtDCMOk+AKK4MvPnLPDmo5hH1uvT4HU7V2D79AoOdjRza50IPrznxr3escKatduj/h2G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,43 +118,91 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-With fd_async_io=1 the fileio backend calls ->read_iter() and
-->write_iter() of the backing file directly. The synchronous path goes
-through vfs_iter_read() and vfs_iter_write() which check for them but
-the aio path doesn't. So a backing file without them calls a NULL
-pointer on its first I/O.
+Currently, there's no way to tell whether the files of a filesystem
+store data or whether they are kernel interfaces. Files on pseudo
+filesystems such as procfs or sysfs generate their contents when they're
+read and writes to them are commands to the kernel.
 
-Refuse such files when configuring the device. On the synchronous path
-every read or write that needed the missing method failed with EINVAL
-anyway.
+But a few places in the kernel take an arbitrary file and use it as
+storage: loop, zloop, the nvme target's file backend, the scsi target's
+fileio backend, fuse passthrough, the usb mass storage gadget and erofs
+file-backed mounts. At most they check the file type and whether the
+file implements ->read_iter() and ->write_iter(). That's not enough.
+kernfs provides both for every sysfs attribute for example.
 
-Fixes: 769031c92c8b ("scsi: target: target/file: Add support of direct and async I/O")
+Add SB_I_PSEUDO so a filesystem can state that its regular files are
+kernel interfaces and must not be used as storage.
+
+Pseudo filesystems also never hold executables or device nodes. But
+currently each of them decides on its own whether to raise SB_I_NOEXEC
+and SB_I_NODEV. Some do, most don't. Add fc_init_pseudo() as the common
+initialization point for all pseudo filesystems that raises all three
+flags and switch init_pseudo() over to it. The following patches
+convert the mountable pseudo filesystems.
+
+Nothing checks SB_I_PSEUDO yet so no functional changes.
+
 Reviewed-by: Jan Kara <jack@suse.cz>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Alexander Mikhalitsyn <alex@amutable.com>
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/target/target_core_file.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/libfs.c                     |  2 +-
+ include/linux/fs/super_types.h |  1 +
+ include/linux/pseudo_fs.h      | 11 +++++++++++
+ 3 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/target/target_core_file.c b/drivers/target/target_core_file.c
-index ab9824a4852f1..a5391e57e9aa5 100644
---- a/drivers/target/target_core_file.c
-+++ b/drivers/target/target_core_file.c
-@@ -144,6 +144,14 @@ static int fd_configure_device(struct se_device *dev)
- 		goto fail;
+diff --git a/fs/libfs.c b/fs/libfs.c
+index 96a6e9b1535fb..8c8789489fdf9 100644
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -735,7 +735,7 @@ struct pseudo_fs_context *init_pseudo(struct fs_context *fc,
+ 		fc->fs_private = ctx;
+ 		fc->ops = &pseudo_fs_context_ops;
+ 		fc->sb_flags |= SB_NOUSER;
+-		fc->s_iflags |= SB_I_NOEXEC | SB_I_NODEV;
++		fc_init_pseudo(fc);
+ 		fc->global = true;
  	}
- 	fd_dev->fd_file = file;
+ 	return ctx;
+diff --git a/include/linux/fs/super_types.h b/include/linux/fs/super_types.h
+index 72f4288e16c52..472200bdf081a 100644
+--- a/include/linux/fs/super_types.h
++++ b/include/linux/fs/super_types.h
+@@ -359,5 +359,6 @@ struct super_block {
+ #define SB_I_NOIDMAP	0x00002000	/* No idmapped mounts on this superblock */
+ #define SB_I_ALLOW_HSM	0x00004000	/* Allow HSM events on this superblock */
+ #define SB_I_NO_DATA_INTEGRITY	0x00008000 /* fs cannot guarantee data persistence on sync */
++#define SB_I_PSEUDO	0x00010000	/* regular files are kernel interfaces, not storage */
+ 
+ #endif /* _LINUX_FS_SUPER_TYPES_H */
+diff --git a/include/linux/pseudo_fs.h b/include/linux/pseudo_fs.h
+index a651e60d94107..0ca408aa60aff 100644
+--- a/include/linux/pseudo_fs.h
++++ b/include/linux/pseudo_fs.h
+@@ -2,6 +2,7 @@
+ #define __LINUX_PSEUDO_FS__
+ 
+ #include <linux/fs_context.h>
++#include <linux/fs/super_types.h>
+ 
+ struct pseudo_fs_context {
+ 	const struct super_operations *ops;
+@@ -15,4 +16,14 @@ struct pseudo_fs_context {
+ struct pseudo_fs_context *init_pseudo(struct fs_context *fc,
+ 				      unsigned long magic);
+ 
++/*
++ * Common initialization for all pseudo filesystems, mountable or not. Their
++ * regular files are kernel interfaces. They don't store data and pseudo
++ * filesystems never hold executables or device nodes.
++ */
++static inline void fc_init_pseudo(struct fs_context *fc)
++{
++	fc->s_iflags |= SB_I_PSEUDO | SB_I_NOEXEC | SB_I_NODEV;
++}
 +
-+	if (!file->f_op->read_iter || !file->f_op->write_iter) {
-+		pr_err("FILEIO: %s lacks ->read_iter or ->write_iter\n",
-+		       fd_dev->fd_dev_name);
-+		ret = -EINVAL;
-+		goto fail;
-+	}
-+
- 	/*
- 	 * If using a block backend with this struct file, we extract
- 	 * fd_dev->fd_[block,dev]_size from struct block_device.
+ #endif
 
 -- 
 2.53.0
