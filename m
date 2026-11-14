@@ -1,90 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D916606A329
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 02:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F9F606A332
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 02:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kWBKmRxV
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n3CM7N1I
 Received: by kanga.kvack.org (Postfix)
-	id 10AAC6B05B3; Fri, 13 Nov 2026 21:02:23 -0500 (EST)
+	id 528AA6B05B0; Fri, 13 Nov 2026 21:02:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E2036B05B2; Fri, 13 Nov 2026 21:02:23 -0500 (EST)
+	id 4FDC96B05B2; Fri, 13 Nov 2026 21:02:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F13916B05B3; Fri, 13 Nov 2026 21:02:22 -0500 (EST)
+	id 3C8546B05B4; Fri, 13 Nov 2026 21:02:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BCE636B05B0
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:02:22 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2C5DA160158
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:02:22 +0000 (UTC)
-X-FDA: 85432074924.25.D50EAA6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 76F11140008
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:02:20 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kWBKmRxV;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F236B6B05B0
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 21:02:23 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5BEBE1402BA
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:02:23 +0000 (UTC)
+X-FDA: 85432074966.20.ACF4EAD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id BD7C01C000A
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:02:21 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n3CM7N1I;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794621740;
+	s=arc-20220608; t=1794621741;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=60PfPg0qGiMe46lw/reUvdmsR9KqupzcqB/275JhjJk=;
-	b=uIQbraMmahyYAynDzKAIR8G26fC+PuPeCiHz6XVNpHywUgGB95dfhmNykgVH4wGODt7/7j
-	NwojbXzMgRIfB0orZ2p+0nr20b9rqeLxqt92iQVs1R8/9KJ2XQPb5VYn3kAXy+KZ8rSasc
-	8xO4ITJ5ueOjBah2at30fGDfX3i0URY=
+	bh=IxIn41mSnTkR+VFIArN1eEKPRZUA9po2VD+NvxLbjx4=;
+	b=tU2kVdrkEFaQLfh77l0OKEgyJ28RnaOOOnYUAU4gxVhw0jfhF2cF2TolGDbicFAP/PkSPw
+	8Ebml4cNZnx0qHWyVv1kIOyVY95B7a3QrKvzNPlBOLhI4e/xFT2qiqrCPf/QwJAtwx2h+U
+	Wd6FsZzQ2ZE6oNZZb84lhboglDWMkX4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794621740;
-	b=UBze9Fk9pWoLb64Fj8REUP9PVF1kRlHaM7bKIeslHbgMUc/sCHpw0Hsg4eIRb6RCSYuO1z
-	UX8zLdaC/jN7SrH6S3ZKr4LRhmv3o8V7aevpKetEpd7FIjp6IZz0LOruUTNpxuPYfCBVeC
-	fPbfUnHLhwwrTDonb5L3WZFgCopTMC8=
+	t=1794621741;
+	b=6NULCgpWK7J9wgZ4oPLwcBSl+MjXBpppCT7741t7qNgX/7EQ6v7/diGeBkdIfcNwHZepJn
+	c0RG19mb/LYMtM4fFe0JFZ9oEnock2473wmTcU6q1prKwf1uuvoIRjG0ovGvuagxQxztTr
+	C/0ILhMBGtsdxkFkZ2BjDljyxtLGr58=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kWBKmRxV;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n3CM7N1I;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4992940D3C;
+	by tor.source.kernel.org (Postfix) with ESMTP id 4CF6C61EB1;
+	Sat, 14 Nov 2026 02:02:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A54471F000C4;
 	Sat, 14 Nov 2026 02:02:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED071F000C7;
-	Sat, 14 Nov 2026 02:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794621739;
-	bh=60PfPg0qGiMe46lw/reUvdmsR9KqupzcqB/275JhjJk=;
+	s=k20260515; t=1794621741;
+	bh=IxIn41mSnTkR+VFIArN1eEKPRZUA9po2VD+NvxLbjx4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kWBKmRxVIRCLL4Nlcygnnh0W6LA74vdgboqzcq18VmB4Nucr9t4iHkLvBWjt+Znj8
-	 VcUzQomVsLuUVFqoqH2RQkoNriw18nGsv99jthvBtVmLlOcnS2ZkChqDrIuYf4nFzB
-	 0mF5fpXK6PGIiAEwlgP/XB32CWrH8lEe6Rm+uBJiYOBugLdsC/7eC7X7GasFbeJwXq
-	 ZxN9K2Do0fijXE43qe0kII8PwoC7l1ajUmgS2rK9HSjR78ttGE/hHoNMxSdKqvKG6V
-	 SYczvzKWZA8rccp8RbTapDGsO4KfjLKUP1Dgs6cRSaTPQYG3FimYklRyf8pYW0koq+
-	 kBRLFsyJySlNg==
-Message-ID: <sashiko-outbox-214030@kernel.org>
+	b=n3CM7N1Ich9ZdQbXkboFuGluZFfVVDaysQybdLCnUx5dBMBxc8hSesYOnj3cPVbnQ
+	 UHPFAMf0haNzH5Gl9/I6jAXLhh+7N16GkZxcJjbMpmVSQ6nZEd+/LUioks12rcG3Kq
+	 e2SuXbS+xVrxcO3ivb2EhWX8JBiVqLqtbYpCYZCzqU3QGiw2Us/VOI/YVB1qE6Cvw9
+	 DLHn+1wQlYwifhmFr35LNRWNgf2GUWFMeeOcGkXpDNOTFHoGMMgfdALJYaKEIn1hQh
+	 51iXCFfCVwEcV2YhAIhRdCTix0X4KvfTRAeGOCQWz7/N9YrC9EplNNo5dQrK9Qt59J
+	 pbHX3Ct11YJYw==
+Message-ID: <sashiko-outbox-214031@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 11/16] mm/mglru: Run aging when one type has no
- populatable folios
+Subject: Re: [PATCH v8 12/16] mm/mglru: Restrict eviction accounting to
+ eligible zones
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?QmFycnkgU29uZyAoWGlhb21pKQ==?= <baohua@kernel.org>, akpm@linux-foundation.org, linux-mm@kvack.org
 Cc: axelrasmussen@google.com, baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, hannes@cmpxchg.org, hui.zhu@linux.dev, kasong@tencent.com, kunwu.chan@gmail.com, liam@infradead.org, lianux.mm@gmail.com, liuxiang.277@bytedance.com, lyugaofei@xiaomi.com, mhocko@kernel.org, mhocko@suse.com, qi.zheng@linux.dev, ridong.chen@linux.dev, rppt@kernel.org, ryncsn@gmail.com, shakeel.butt@linux.dev, surenb@google.com, wangzicheng@honor.com, weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com, zhuhui@kylinos.cn, sidchintamaneni@gmail.com
-In-Reply-To: <20261113185541.70203-12-baohua@kernel.org>
+In-Reply-To: <20261113185541.70203-13-baohua@kernel.org>
 References: <20261113185541.70203-1-baohua@kernel.org>
- <20261113185541.70203-12-baohua@kernel.org>
+ <20261113185541.70203-13-baohua@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 14 Nov 2026 02:02:17 +0000
-X-Stat-Signature: ojmh3msermj5um9za96djeeserrwgyhq
+Date: Sat, 14 Nov 2026 02:02:19 +0000
+X-Stat-Signature: geti484mk534w68pz6itashkazso17h7
 X-Rspam-User: 
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 76F11140008
-X-HE-Tag: 1794621740-667790
-X-HE-Meta: U2FsdGVkX19SC8VXtJ2/yFnhFrjByqL6WmP/KamXw/wt5ECE/mwzM2zAFe/UDAZ6ynmmIu+TReTDsVQRS+eSFvHwYevfbdgM9jgcDirOXxbu4wRgPRqsxGLFXWNwa+Y5M1w0C1bRh77uBqXDFCI2uvGRkk84OboppUg0A9VvYD0tt6GxwJ8pyS8m+X+n4nS9ceQqT7dLmNdOj8tdllHU9jrYqwKgIYzVUQo4C+JDLlEIulKRUMgevmgzy7jDoYGprIvIwSituNsaidGEHXEoAXVR4IosACHP7rsp7nFm8C+Fy63aWKhgWZ03yxyNmj4KO7vPRFtabrBa4W+VIv7trNx8jHodbnSPtImL1EefRQqm8sVh5NA0y9jwOhKNa2AR6jmv/lJi20OVkO7fdQz1QTdDfDiBbGK8iixJ+ZxWacz0Ie0LtEx7PzCwss3DKu6lyIF2trPH1sELQfMekYN2vfoHZ94GQu7uMQr5ugbBlUZZOma8jZFC+F9WPdsJFFhA3nq5+7almDpiBB9BDLxNI52xyXpCGJgNntQZrF1DLubx8356+rizrIfQgqh8y174qpusTK6p1uro0vJNF7hG6A0aqL9s0bnCnayvYfp8SA/IWTEGaqsRH1L8W8pJFsXrZ79ENLFykbUKdpNzsap/tCRsfUHe5Byr7iev5OKWR2Nox+ER462B9AIqtuxkLf4ZPYIyLATrsXxDrCErhlhjXeTqsI5+pLUCduEFYfnrxia18xS0qMV7yp9XjFs+6dmiV1XwnJOO09XXg+o6jdcUnSCaRxmz6F9e9Z3xuNvIeuGmIEfciWNbYEzegiTjic25bUTjvks598MrMO01VJ+ItuBGxHl5opfwpTkpeDEvm1O5xFtkgth0uRptVmWw/sGygXR4woB0XF/Egy3q4eiN/gHCCq2Y7rBrQaZGeJ3r4TJc6yFSCf6BmNdysrWHYQ/QycWwjPal5NfT5wsJWiM
- fbmNFBXZ
- zgLuArr3Br6T4r8MfL0+hTf2YGIcSZm5xl/yZzYcZPuLkvwCtqF+HicVDTtRJ/QFR9NNnAKJtlRDT2QFDOo2UQkFyQvEsU8HEWfESwcv/sPpmURSfUg0y5BGdQaVqpe23oiWAMAgLSCQFlAaN30vhgVcSH25bIUcpUbzr7DBGhqV7McT2xuPtHABd/JZosltZBJnbnTjMiDQJEgtcPYRZHqk8EItsY5z6XOAnAIlab41/RObUP5Vq13DxW9p2627dZDaQ7ST9kb07Q3Nsf/aBS7aCQmDOXncvaUCpInLgeYUaL9POrsbw0uURk2WpLMY5MnxzASXdry/bB3+o2xRFIvUtvPPhq82SgXncaqN90gpDpns+smrSJpiJWvbMqpsZPZby5GKKD6iV4G5+qfEpWxnl6erePiFc1kE+jQyDB8P1h135Y56VQlX6+iezTRcuTqq9vmpPbRhgukUdhhBGav1aoFjVcGlt45pKfQrisI5zRmwqeNzIwSnr84r4aBBDQrQlIgvA9Qio0fU4658UqgR/QHipC2Hlt1b5sKK3l+nB8kUvf22ZjerXwIoOoQKxtp2zSsbn26B/5D8Z7nrys6st0/fPtRQe9hsWCdSq15+gN8QXOeYfKDJ7J3+Udkon+meBwPnXHwQUH2WkSFkHAL3JZ0qVhn4m1LfSO5Am0rkm+pyRecTxe/Vq3tpOxcH6fGWluObWbQGnA6w=
+X-Rspamd-Queue-Id: BD7C01C000A
+X-HE-Tag: 1794621741-252183
+X-HE-Meta: U2FsdGVkX18XcTFQUUqxqGwuOk1M6KKmvMSkl8+Gf8UvAbEHqB/tfJLigdRjDjoLYGTYQos/nk+LuxGmKAVcnsucfiEZOhGCMv3trZ6JdThtz3xhvMII+11a6XL6KAErzVIFSVODArq2mxwrGFygZKA9/UAc0YGJigUTdPqhCdUdFzT1bayos8DaGmvWd/Liv036dDFuSyaJAgq22RD0Uzmny1dey3DENunSxUbLYhAVACJaDw9e+c9HYXS/1bBbnz0XKa4e6deijRDSZ5wqr+AECRsWDXS3jvUNPEk2YqpELOOCZXosUA4iFQVFwop197Pfx6JTKHuux3WBojyIHXm6smTsmiGSiNHaaTIqDHsK0pMwHimeNubYq+IOpVH0ZQNJMgFnfju7QpnrtIDxZbP1AmwYfA/V4QLwS5biJ6PnwvgnZMo2wISRDcu3R4xyrB+MJZaJpWJwIEzq6rC9KgO74iNY19xcOEQXOYOY1OIG7ftuBuoE53x/4KfVh8Rg1cHGHp/aj74ndkJZr3GLOzjLveOqXD7b2Z2Fn91D8Pba/nvk28ZYt/WcB/bQ/beAfEmX+lxPdCstkl67A8xtX2c8assrY7V4d3JneKZypH1HtqmOjR1lsl/uHir6aMNJG+gAK0ylq7TlhTjpvEKeH+iec6jW5btAHAHl7/LDTX1B3JXT6VASyfLZEjAb/L+siRnpps43L5+QPyE2Scvynz19TMnNuCtBIzlhwFo7Dvj2yLk9Lh4m9JrCcH84Wgy0Z/XmpHdu0MKa8JEYnfPb/wts1AWSB2S8vRBZFoJmyP8xcqy3TwsF9pkPohqCOfHDdmgcllFmon3IYn8sBQKPnzcyDkaP8tvGNThc8E/0Q46im6u+hNq1MdoRoA5dMMx9GbZNAfDGPUFA3/mCWcemr40JDIVHOciDJ7JEcz7ghf7AzhbU5vs1pa55YRMWeN2nEJgoC1ukyeujOpQ7sqH
+ zzbYcluz
+ go/pyGMI3LluGPZqhK9b2Q1rzRvbQTn1DvjK8R4tB8fuyFXG24zVshUacXr2cEH30Oa1Vta+I/M60U0RkN2KpZ0+Jz7x1P4JQ2thPv1f3oCUhS5j+9Efy8XuiorylvbyIowU2opBsGFPgh+jEBKXrFpsQIMg/kANgbUqKUTYF1fGnbuqU3CothKWZVxVDSiI3J7Gny8C1SV8TzNVEAbQXuj+2ixIOwh5rVJQmX11oMC70Jh8q4ygFLIF3TuRScQouu0zmf9PsugYeSE73BMJYcnD/ahM/G+9JnEfR10QmmPhkkYG+is8keQz7jupMrzg4pMF1mlL9+IELvR+uNO1Jah9YuP6SHJirYJIf2E10Pu6cdBlWYbKDrV6QLN2ZPpq2ncRUGcSOQlPJVEBJn5HiiRiFJc7AZ2P2j3dr8pSzatz1zxNyT+eTK1xYQ6vDtg+n6NmTpErE8EMT6VpeD5JVVBXgd68xyQst66+0H6GLLigQLVTYBdqbi0RSpkF3xxx9HEKHQgNMiaITagWmM/dYcjm76/c15nHytv1HHbNAbamFjug7tiRVPKnDhoBLW79rn/n0mpY4xUZJ+AhspMQqC86a8m+8UiSJ9dCpUIVAP4pkr5LjCs20dOHo7hB7vGeZSsigB6on5NEK9Pe3CyhYyko+Ndh94wPMCB072bKlM7kXoOWL2Bmb7AtSPG5D8hknBGbK9HX4CCEnuuc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,210 +94,122 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [High] mm/mglru: premature loop exit after aging in
-  try_to_shrink_lruvec()
-- [Medium] mm/mglru: late max_seq read in try_to_shrink_lruvec() causes
-  redundant aging
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [High] mm/mglru: broken min_ttl and low-zone OOM checks in
+  lruvec_is_reclaimable()
 --
 
-commit 9c58557be00bbe7f49dfd8383a560ebff484751b
+commit 4a520d7db30ed5c782371c3ef4bdf4fd79c1de3e
 Author: Barry Song (Xiaomi) <baohua@kernel.org>
 
-mm/mglru: Run aging when one type has no populatable folios
+mm/mglru: Restrict eviction accounting to eligible zones
 
-This commit moves the aging check in try_to_shrink_lruvec() after
-evict_folio_lists() and triggers aging once per invocation when a folio
-type has remaining scan budget but no populatable folios were scanned.
+This commit restricts lruvec_evictable_size() and lru_gen_imbalanced() to
+count only zones up to sc->reclaim_idx, and defers the lruvec_is_sizable()
+check in lruvec_is_reclaimable() to low priorities when sc->reclaim_idx is
+at least ZONE_NORMAL.
 
 > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 59957fab915b7..9071f8889b5c4 100644
+> index 9071f8889b5c4..6ed47089a3305 100644
 > --- a/mm/vmscan.c
 > +++ b/mm/vmscan.c
-> @@ -5109,7 +5109,8 @@ static bool lru_gen_imbalanced(struct lruvec *lruve=
-c, struct scan_control *sc,
+> @@ -4205,8 +4205,8 @@ static void set_initial_priority(struct pglist_data=
+ *pgdat, struct scan_control
+>  	sc->priority =3D clamp(priority, DEF_PRIORITY / 2, DEF_PRIORITY);
 >  }
 > =20
->  static bool should_run_aging(struct lruvec *lruvec, unsigned long max_se=
-q,
-> -			     struct scan_control *sc, int swappiness)
-> +			     struct scan_control *sc, int swappiness,
-> +			     bool no_populatable)
+> -static void lruvec_evictable_size(struct lruvec *lruvec, int swappiness,
+> -				  unsigned long nr[])
+> +static void lruvec_evictable_size(struct lruvec *lruvec, struct scan_con=
+trol *sc,
+> +				  int swappiness, unsigned long nr[])
 >  {
->  	DEFINE_MIN_SEQ(lruvec);
+>  	int type;
+>  	unsigned long seq;
+> @@ -4219,7 +4219,7 @@ static void lruvec_evictable_size(struct lruvec *lr=
+uvec, int swappiness,
 > =20
-> @@ -5121,6 +5122,13 @@ static bool should_run_aging(struct lruvec *lruvec=
-, unsigned long max_seq,
->  	if (sc->priority =3D=3D DEF_PRIORITY)
+>  	for_each_evictable_type(type, swappiness) {
+>  		for (seq =3D min_seq[type]; seq <=3D max_seq; seq++)
+> -			nr[type] +=3D lruvec_gen_size(lrugen, type, seq);
+> +			nr[type] +=3D lruvec_gen_size(lrugen, type, seq, sc->reclaim_idx + 1);
+>  	}
+>  }
+> =20
+> @@ -4228,7 +4228,7 @@ static bool lruvec_is_sizable(struct lruvec *lruvec=
+, struct scan_control *sc)
+>  	unsigned long total, sizes[ANON_AND_FILE];
+>  	int swappiness =3D get_swappiness(lruvec, sc);
+> =20
+> -	lruvec_evictable_size(lruvec, swappiness, sizes);
+> +	lruvec_evictable_size(lruvec, sc, swappiness, sizes);
+>  	total =3D sizes[LRU_GEN_ANON] + sizes[LRU_GEN_FILE];
+> =20
+>  	/* whether the size is big enough to be helpful */
+> @@ -4247,7 +4247,13 @@ static bool lruvec_is_reclaimable(struct lruvec *l=
+ruvec, struct scan_control *sc
+>  	if (mem_cgroup_below_min(NULL, memcg))
 >  		return false;
 > =20
+> -	if (!lruvec_is_sizable(lruvec, sc))
 > +	/*
-> +	 * Run aging if scan budget remains but no folios
-> +	 * in populatable generations are available to scan.
+> +	 * As in __alloc_pages_may_oom(), avoid triggering OOM for low-zone
+> +	 * allocations. Also, defer the LRU size check until reclaim reaches
+> +	 * a very low priority to avoid premature OOM.
 > +	 */
-> +	if (no_populatable)
-> +		return true;
-> +
->  	/* better to run aging even though eviction is still possible */
->  	if (evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS =3D=3D max_seq)
->  		return true;
-> @@ -5208,6 +5216,13 @@ static bool try_to_shrink_lruvec(struct lruvec *lr=
-uvec, struct scan_control *sc)
->  	bool need_rotate =3D false, should_age =3D false;
->  	int swappiness =3D get_swappiness(lruvec, sc);
->  	struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
-> +	/*
-> +	 * Avoid aging the lagging type under extreme swappiness,
-> +	 * as reclaim of the unpreferred type is disabled until
-> +	 * DEF_PRIORITY / 2.
-> +	 */
-> +	bool allow_no_populatable_age =3D (sc->priority <=3D DEF_PRIORITY / 2) =
-||
-> +		(swappiness > MIN_SWAPPINESS + 1 && swappiness < MAX_SWAPPINESS);
+> +	if (sc->priority <=3D 1 && sc->reclaim_idx >=3D ZONE_NORMAL &&
+> +	    !lruvec_is_sizable(lruvec, sc))
+>  		return false;
 > =20
->  	/*
->  	 * Proactive reclaim initiated by userspace for anonymous memory only.
-> @@ -5225,22 +5240,19 @@ static bool try_to_shrink_lruvec(struct lruvec *l=
-ruvec, struct scan_control *sc)
->  	lru_gen_prepare_scan(lruvec, sc, memcg, swappiness, nr);
-> =20
->  	while (nr[LRU_GEN_ANON] > 0 || nr[LRU_GEN_FILE] > 0) {
-> -		DEFINE_MAX_SEQ(lruvec);
-> +		unsigned long orig_file, orig_anon;
-> +		unsigned long max_seq;
-> +		bool no_populatable;
-> +		long scanned;
-> =20
->  		if (mem_cgroup_below_min(sc->target_mem_cgroup, memcg)) {
->  			need_rotate =3D true;
->  			break;
->  		}
-> =20
-> -		if (should_run_aging(lruvec, max_seq, sc, swappiness)) {
-> -			trace_mm_mglru_aging(lruvec, sc, swappiness);
-> -			if (try_to_inc_max_seq(lruvec, max_seq, swappiness, false))
-> -				need_rotate =3D true;
-> -			should_age =3D true;
-> -		}
-> -
-> -		if (!evict_folio_lists(nr, lruvec, sc, swappiness, MIN_LRU_BATCH))
-> -			break;
-> +		orig_anon =3D nr[LRU_GEN_ANON];
-> +		orig_file =3D nr[LRU_GEN_FILE];
-> +		scanned =3D evict_folio_lists(nr, lruvec, sc, swappiness, MIN_LRU_BATC=
-H);
-> =20
->  		if (should_abort_scan(lruvec, sc))
->  			break;
-> @@ -5252,6 +5264,21 @@ static bool try_to_shrink_lruvec(struct lruvec *lr=
-uvec, struct scan_control *sc)
->  		if (root_reclaim(sc) && should_age)
->  			break;
-> =20
-> +		/* Limit no_populatable aging to once per try_to_shrink_lruvec() */
-> +		no_populatable =3D allow_no_populatable_age &&
-> +			((nr[LRU_GEN_ANON] && nr[LRU_GEN_ANON] =3D=3D orig_anon) ||
-> +			(nr[LRU_GEN_FILE] && nr[LRU_GEN_FILE] =3D=3D orig_file));
-> +		allow_no_populatable_age &=3D !no_populatable;
-> +		max_seq =3D READ_ONCE((lruvec)->lrugen.max_seq);
-> +		if (should_run_aging(lruvec, max_seq, sc, swappiness, no_populatable))=
- {
-> +			trace_mm_mglru_aging(lruvec, sc, swappiness);
-> +			if (try_to_inc_max_seq(lruvec, max_seq, swappiness, false))
-> +				need_rotate =3D true;
-> +			should_age =3D true;
-> +		}
-
-[Severity: Medium]
-Can reading lruvec->lrugen.max_seq after evict_folio_lists() cause
-concurrent reclaimers to run redundant back-to-back aging passes on the
-same lruvec?
-
-try_to_inc_max_seq() relies on callers passing the max_seq value observed
-when the need for aging was detected, deduplicating concurrent callers via
-seq <=3D READ_ONCE(mm_state->seq).  Because max_seq is now read after
-evict_folio_lists(), two threads that both observe no_populatable while
-max_seq is S can age the lruvec twice:
-
-CPU0                                  CPU1
-try_to_shrink_lruvec()                try_to_shrink_lruvec()
-  evict_folio_lists()                   evict_folio_lists()
-    /* max_seq =3D=3D S:
-     * anon scans 0, file shrinks
-     */
-                                          /* max_seq =3D=3D S:
-                                           * anon scans 0, file shrinks
-                                           */
-  no_populatable =3D true;
-  max_seq =3D S;
-  try_to_inc_max_seq(..., S, ...)
-    /* advances max_seq to S + 1 */
-                                        no_populatable =3D true;
-                                        max_seq =3D READ_ONCE(lrugen.max_se=
-q);
-                                          /* reads S + 1 */
-                                        should_run_aging(..., no_populatabl=
-e)
-                                          /* returns true unconditionally */
-                                        try_to_inc_max_seq(..., S + 1, ...)
-                                          /* ages again to S + 2 */
-                                          <-- redundant aging
-
-This triggers unnecessary page-table walks across mm_list, prematurely
-advances min_seq once MAX_NR_GENS is reached, and decays PID controller
-refault averages in reset_ctrl_pos() on each extra pass.  Reading max_seq
-before calling evict_folio_lists() preserves the sequence number at which
-no_populatable was observed.
-
-> +		if (!scanned)
-> +			break;
+>  	gen =3D lru_gen_from_seq(evictable_min_seq(min_seq, swappiness));
 
 [Severity: High]
-Does checking !scanned after try_to_inc_max_seq() cause
-try_to_shrink_lruvec() to abort without reclaiming any folios right after
-aging succeeds?
+Does skipping lruvec_is_sizable() at sc->priority > 1 bypass min_ttl_ms
+working-set protection whenever any empty memcg exists?
 
-In scan_folios(), the oldest generation considered for scanning depends on
-reclaim priority:
+For a memcg with no evictable pages (such as root_mem_cgroup or non-leaf
+slice cgroups like system.slice under cgroup v2), lru_gen_prepare_scan()
+computes a zero scan budget, so try_to_shrink_lruvec() never ages it and
+lrugen.timestamps[0] remains at its creation time.  At priorities
+DEF_PRIORITY down to 2, lruvec_is_sizable() is no longer called to filter
+out empty memcgs, so any empty memcg older than min_ttl returns true from
+time_is_before_jiffies(birth + min_ttl) and sets reclaimable =3D true in
+lru_gen_age_node():
 
-mm/vmscan.c:scan_folios() {
-    ...
-	if (sc->priority =3D=3D DEF_PRIORITY)
-		seq =3D lrugen->max_seq - MIN_NR_GENS;
-	else if (sc->priority > DEF_PRIORITY / 2)
-		seq =3D lrugen->max_seq - 1;
-	else
-		seq =3D lrugen->max_seq;
+mm/vmscan.c:lru_gen_age_node() {
+	...
+		if (!reclaimable)
+			reclaimable =3D lruvec_is_reclaimable(lruvec, sc, min_ttl);
+	} while ((memcg =3D mem_cgroup_iter(NULL, memcg, NULL)));
 
-	seq =3D lruvec_populated_min_seq(lruvec, type, sc->reclaim_idx + 1, seq);
-    ...
+	if (!reclaimable && mutex_trylock(&oom_lock)) {
+		struct oom_control oc =3D {
+			.gfp_mask =3D sc->gfp_mask,
+		};
+
+		out_of_memory(&oc);
 }
 
-When sc->priority =3D=3D DEF_PRIORITY and an lruvec has only MIN_NR_GENS (2)
-generations (min_seq =3D=3D max_seq - 1), scan_folios() sets seq to
-max_seq - 2 (< min_seq) and evict_folio_lists() returns scanned =3D=3D 0.
-should_run_aging() and try_to_inc_max_seq() then advance max_seq to create
-a third generation and set need_rotate =3D true, but if (!scanned) break
-immediately exits the loop using the pre-aging scanned =3D=3D 0 result,
-rotating the memcg with zero folios reclaimed and escalating reclaim
-priority prematurely.
+kswapd_shrink_node() then runs and evicts folios from active memcgs even
+when all of their generations are younger than min_ttl, satisfying reclaim
+before sc.priority reaches 1.
 
-The same premature exit happens at DEF_PRIORITY > sc->priority >
-DEF_PRIORITY / 2 whenever the remaining type(s) with non-zero nr[] budget
-only have folios in max_seq: evict_folio_lists() returns 0, no_populatable
-triggers try_to_inc_max_seq() to move those folios into max_seq - 1, and
-if (!scanned) break aborts the loop before they can be scanned, undoing
-12316f7902f8 ("mm/mglru: don't abort scan immediately right after aging").
+In addition, checking sc->reclaim_idx >=3D ZONE_NORMAL only around
+!lruvec_is_sizable() does not prevent low-zone OOM kills: when
+sc->reclaim_idx < ZONE_NORMAL and all memcgs have timestamps younger than
+min_ttl, lruvec_is_reclaimable() still returns false and lru_gen_age_node()
+still calls out_of_memory().
 
-In addition, calling evict_folio_lists() and should_abort_scan() before
-should_run_aging() causes scan_folios() at sc->priority <=3D
-DEF_PRIORITY / 2 to evict directly from max_seq before
-lru_gen_imbalanced() can age page tables to separate hot folios from cold
-ones, and skips aging altogether when the first batch satisfies
-should_abort_scan().
+Finally, because lruvec_evictable_size() now sums only zones up to
+sc->reclaim_idx, if kswapd reclaims with sc.reclaim_idx =3D=3D ZONE_NORMAL =
+when
+user LRU folios sit in ZONE_MOVABLE or ZONE_HIGHMEM and ZONE_NORMAL has
+fewer than 2 evictable pages per memcg, sc.priority drops to 1 and
+lruvec_is_sizable() returns false for all memcgs, triggering a global OOM
+kill while higher zones have reclaimable memory older than min_ttl.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113185541.7020=
-3-1-baohua@kernel.org?part=3D11
+3-1-baohua@kernel.org?part=3D12
 
