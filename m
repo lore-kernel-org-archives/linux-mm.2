@@ -1,95 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F47160A3808
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 07:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B31606A896
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 07:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=An8XHT+K
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=PX1+CERr
 Received: by kanga.kvack.org (Postfix)
-	id B598F6B05C1; Sat, 14 Nov 2026 02:10:30 -0500 (EST)
+	id C91F96B05C2; Sat, 14 Nov 2026 02:10:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B119B6B05C2; Sat, 14 Nov 2026 02:10:30 -0500 (EST)
+	id BFC236B05C4; Sat, 14 Nov 2026 02:10:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95DC26B05C3; Sat, 14 Nov 2026 02:10:30 -0500 (EST)
+	id ABD1F6B05C5; Sat, 14 Nov 2026 02:10:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FD5F6B05C1
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:10:30 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C45C6B05C2
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 02:10:32 -0500 (EST)
 Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F26CEA0253
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:10:29 +0000 (UTC)
-X-FDA: 85432851420.09.FDCE57B
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 4519A180004
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:10:28 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=An8XHT+K;
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 13F251A02E2
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:10:32 +0000 (UTC)
+X-FDA: 85432851504.09.37B8166
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5653E40007
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 07:10:30 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=PX1+CERr;
 	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.42 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794640228;
-	b=vcO72NlWFLQgxux3lymvWezcdPXMp3oa7nkpGdnzGVm+nozL0tjzc4NK7WnmSSlKbjwL+X
-	l8nn4SwNxWcNKdot51USdnWYzi8P8SwkuB3O96MK5eR0odm/Vcq/fZQXhxresbIo4TFd2H
-	ia2BfUBYKvZTauQDbq4/sku7nPw9yA0=
+	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794640228;
+	s=arc-20220608; t=1794640230;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ug/CLwAsG6XPyYIr9OCoTcVisBprjwnxP+sIccpst3I=;
-	b=q4pEql68tfHgIwTOmz/lM3qWBq+O4d2nGwne5ceB8s0n18mabSuwV4eTJn3lweSYtPOoys
-	Srm38fMCwaI9Mhdfbxw6/eAPYMXh5kc36E/zTbyNbTdWNxrkx1q08x5Mg9oiENFKAu+Tct
-	/P1VMCgHCZeGeCWOmE4yiQkWgrqUcxY=
+	bh=WCui+DSNeboB03hP2f7maV0wOWIxjAUtx4hYmP2Ak68=;
+	b=IdxRLZ+U70kqMp0SmZE0Ldc3wOMaC8817tCAcAcW9QbTWp/iQtx6rnOOkKi9HVrhuIxqcT
+	61WH7jMpGgJvkbLJJxgb55NCspHjEZCJD6xuNz/RrG8EFYnx8j4f19EF6Qicy7GqzeQ2L4
+	RBTmnT9l/+7GLTwwfAXiuOUh7ha4fSA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794640230;
+	b=blFB4mXQ+T3ERM21istAiXAKXYxnowDSLbNTcYNfRt8/Z+zvHRHFb/QZIocEbphee5pi/6
+	1/fDUrZP7KVmP2adz1CNe/pNcAtuQ5RupQEl/Ii3Bn2WGkInX4LaGflTHxBfP7Z+NeMpyr
+	LOgF0JFtmOuCJ4lnvdNtg8PYuwZYit4=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=An8XHT+K;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=PX1+CERr;
 	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.42 as permitted sender) smtp.mailfrom=gourry@gourry.net
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-91f2b826fe9so19623076d6.1
-        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 23:10:28 -0800 (PST)
+	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-949657a20d7so26131185a.1
+        for <linux-mm@kvack.org>; Fri, 13 Nov 2026 23:10:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1794640227; x=1795245027; darn=kvack.org;
+        d=gourry.net; s=google; t=1794640229; x=1795245029; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ug/CLwAsG6XPyYIr9OCoTcVisBprjwnxP+sIccpst3I=;
-        b=An8XHT+KKnmQ7URnEKI37NdDYi1Xy1Nbd2Cku7F3hCaLY2jr+B3rp+oeu8j4LWDmwk
-         0ckp62llGIcm6zzB95k72YKcAcfITWs/Fzw8lucd0/UZ9/WtMJ56rOSP9QDYh3/oC5nS
-         vXJjB+pBtUViKUTyGbtJ4vr9Yh5oCA7c0POxh3x50CNmlINdTws5OYx7PjGT4HE3VHog
-         0BiuKF4vDtt3c2S7xxngKP4l7Ju96TBMy1KJyZjoUvheDBOmZQm6pTt8hkaSrNlvxMLp
-         xOqqrDFIpJ4WAUs3+15pCGVffC9Z2wgwVaqBlAa25gEboqz8FjjGuIHDckFin0vogSgM
-         XGgg==
+        bh=WCui+DSNeboB03hP2f7maV0wOWIxjAUtx4hYmP2Ak68=;
+        b=PX1+CERrLdbaEys3HaiJl/Nb/ysffNByayj0JJGIuFATgK7NWPy5aQTF+wCZOee/jl
+         I0tVTH9Y+0ulby02gINYmhxVrVQxNBL368BjGHYaqYlo4I3WdIDtYxwek3jp91vk8KQh
+         UPvePkgcMaDIwGyRiSKFWFOdjY3HkpGg2qQcyRRhBrAifQELqrwTB8YqAiDHF8OJQ6VV
+         SaP4PEBPnTVsfldXYGO5yf/HrPisQqSHBKEZygXoBbwQ8GULZ7slUQbe+2M7BnNu+mVd
+         AI/bwjXWQyTxfL5daD5WWKY9n3v6q3bDKreCJpoFKHhoH6gW9+IYJZytGN/6cYvMldnJ
+         lYFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794640227; x=1795245027;
+        d=1e100.net; s=20260707; t=1794640229; x=1795245029;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ug/CLwAsG6XPyYIr9OCoTcVisBprjwnxP+sIccpst3I=;
-        b=O94mwpWbqGJlSb+NWCWNmlDOeo+8g83kSSQvLwrNC0PtM/tLCRKzGaruSla02HlK/A
-         NT1H3nW4eEEvbCRQwSuLug+u2ofaeYCmPJzM7QnlJpiKXwhDbaJoOt5Nu3s/zGEgxJwo
-         oG7H1mWkijUYo+3YVflWlbQZhMD4PXKW9evFHxjDkf+Jg98N5/9mpG4A7qJj5/GpFxEs
-         2GL70D/r3iLy4IdxJSA8G58yVgx2pXjcimgYxjNOX2hvlnMKnyk3wjLrBnPKr7D4HZVt
-         TKcU5kUAqg0TGdn+dSAwhHOikYfbiJNCP1+OOhgZD1UWQVm4BxnNmQAqUAioxd3YH6Ui
-         OZRA==
-X-Gm-Message-State: APuU4Z9yx04yq53DKvn9axbrkVOyMA940DZERdNWQ8f3+Yk0TisTEI7B
-	g1f/SmckN+X3cwOZSnFNVeKTgMU9yBDFMcQOAA/rvjmnRKMmursAcBT0+2yryWw6zCJXKbg8cmW
-	BHosb
-X-Gm-Gg: AYBFou1P+YvEBBRkBGDHxiiqBRaRvbpXDSFjCShskJHNKNnWe02ILpVQ62kf+a/7Xsg
-	96w8hUq0xZVt4pC9wwIQlCoI/8HgEi1iQD0i9AHYCj9ZeL8Xd6WGP1cq9LER4Ofsw6Nkh3Ux36J
-	uLRQpCZlZG9MUgUknvgSiCe9kazPWoT0sImPQBNAeKf7C9V3tUTljs0AndzWpnV1+JYhXVmswDe
-	5WsuHV2tGdSjIToKsLzJlT/2kKpsdErNLQpBopRk6I9uWApQ11+TNwXQFPGVH5SNQYgHiJwojqS
-	AnkA+VYQ/wHEQSzKGGsVXCp7XYAFsU+nFG59aEI1H+uFRrN8PPwOEtCjZ2DVhHc7nzTaBrm1OTe
-	sN165RryRkl2B9QAZg00/VX5fisEIykmKcMajKW5klpNT3O4XxNF2uPPFB3qidFjVyOcI80N/Sk
-	hXDaRE4H6OuQPuz6zFgW6vWRRxH9Tl45ka4MyMwltrFLC8VEP3dSYiPojFENrotJFwk9310vN+H
-	OsYI0RozuH6SDSxeNbmk0yRJFd5eTO28Z/+j34s0efzq1UTkLBgt+WiSDtso+xESStiPrqlMcf0
-	mPVC9wwwzm68LysQqAZtbQbGD96AiLET9n73tz22uIyq6DFl6HU5DIyTBcDwGAnPqDkE67BEhvA
-	wPsgL0NwgkpT06Y8=
-X-Received: by 2002:a05:6214:dc1:b0:91f:1bc7:b779 with SMTP id 6a1803df08f44-91f24251f4dmr78714166d6.56.1794640227399;
-        Fri, 13 Nov 2026 23:10:27 -0800 (PST)
+        bh=WCui+DSNeboB03hP2f7maV0wOWIxjAUtx4hYmP2Ak68=;
+        b=Xd9a5+qd+fpysDn4dpMY4+a8HRc6oK15LEgyJAu/gnS4CBcHbDt0OlGn6avuoQit5F
+         eiSQfHzMHXrqWxUWt92yGEGvzphNAcvv7p9eUiYEKjgG6Sig5tcDnWMmbJxgLpfNu58n
+         TGXFIqNCK9hLE2v6Vupkw3MBApdhuqVKAbnASiL3m+JWRKPJtlLEq/+Eyn6nyMvKfuYA
+         o9oniJO4aNgyIz8pATLyXZpTpM2ED4a4KlitdnvARrtoRG2whoTzFTOU7OF/0+w0Ud4W
+         7PJGauQ1H5Ju7UO+oO398tlSPSZ2VHLe3aqoCUV8vahBxLjbVFlKl2f+n46/UQBxQySf
+         z1RA==
+X-Gm-Message-State: APuU4Z9WZlbCC4h0f9SQzKHWsBPNZJOKq5mqlFlLHJOIdt6KVLIilDLX
+	Ktwg/sSzzG800lmXy2Io3lr/jn6e54frwXNgRT5/p1oeRCRY8OtVfq8xOf2XQR1/dQKO6130b1R
+	SqQNe
+X-Gm-Gg: AYBFou1qbfNz4AYFO5XInQAWqw9HZtIoqjH973DVxPkIggOu+6Bhm/pHx4+ieDenmxX
+	87Y/5qu6+dSwBOltqqntlfCC6hbeBFi+IXnWgfCP/re7XHryOJ3+kCli/YfRi1Yl/SXCAA8Ga3/
+	mfNMLwUsOax/s8H9ndwPXdfeA0v4r2iYPDf3aTWYyEu+fH22WUuqUXuitDhDuJEITVZ77PDabc+
+	j+b7YoMLfeiBSBEhnlomVfAWAV5HKzIZFFk+8p3oEhhq1/z0k+NA41OPtkYqCycwXOOV0gj/EEE
+	G1zacRKas5YuH8jgNZLvZUGjPckNHJ/MVdz7k8BC+lahUdF76fa/jfRKIiBHcoMffYyqDpQHzkM
+	nM9sljM7Ho5k9Bm9gc9s9ck7SE4MItbQTnmbV1G25FOOhJMjGikQqVjYObZ4kdx1XBy2kj40DzR
+	HxUzc90t5mc5sm7724PODa6RgssQMuPQpGK/+HhMY8zv+h1gkwgUomlCzeNLh+x16rg6/yVNI3q
+	9uvzvJKZI51OgmmBRWkGkM0RckLHDaP/qMvi7PNRFmQoVvCeui+pEFnZPMyxnlG7U8JodxYGDqB
+	l+aUKyHQFXBojA7IV+Ly1/kBXCDuEe2LtvU5QY2eNuR1pT8QYcOo/Fpg/RxbfQFcbZ3ouxnau4H
+	g8PrXTSHF9bDReCs=
+X-Received: by 2002:a05:620a:4005:b0:940:e34a:aead with SMTP id af79cd13be357-9494b9488f8mr838653885a.5.1794640229507;
+        Fri, 13 Nov 2026 23:10:29 -0800 (PST)
 Received: from gourry-fedora-PF4VCD3F (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23db3a99sm37730986d6.40.2026.11.13.23.10.26
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23db3a99sm37730986d6.40.2026.11.13.23.10.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 23:10:27 -0800 (PST)
+        Fri, 13 Nov 2026 23:10:29 -0800 (PST)
 From: "Gregory Price (Meta)" <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -150,27 +150,27 @@ Cc: linux-kernel@vger.kernel.org,
 	byungchul@sk.com,
 	apopple@nvidia.com,
 	rientjes@google.com
-Subject: [PATCH 11/22] mm/mempolicy: don't NUMA-hint folios outside common memory
-Date: Sat, 14 Nov 2026 02:09:48 -0500
-Message-ID: <20261114070959.3490008-12-gourry@gourry.net>
+Subject: [PATCH 12/22] mm/damon: restrict DAMON-native folio operations to common memory
+Date: Sat, 14 Nov 2026 02:09:49 -0500
+Message-ID: <20261114070959.3490008-13-gourry@gourry.net>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261114070959.3490008-1-gourry@gourry.net>
 References: <20261114070959.3490008-1-gourry@gourry.net>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4519A180004
-X-Rspamd-Server: rspam12
-X-Stat-Signature: n8t7ze1efa4xp7caum6phbpfeeyw4wa8
-X-Rspam-User:
+X-Stat-Signature: dntejoedrod68jdx6iuic4x5qbu7e99d
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794640228-74237
-X-HE-Meta: U2FsdGVkX18RPXmJChPSZRqU5uT8TuVwWqF9R5RDz6OlAOkfDhnsaw3j0kWAp+1gqXQfrgdL4LRyB115Bt9cNVrGGk25Voplq+hwlS0qzpjYzJM/vLIzsa/84TBhr/vviB3vl4qwnw3Z9nmTv0Ow5036HwASnyEgPZahwIcjEKE/gIzWscFdZmZgjYtF5IMPPjb8WX2aJ6uVhD+BExVJuRL6PeKLA6+zurrQGInQfo1V3ofvB6k3+crWY++37h+IUHIz8mADhQIdWbXAi9Fj92BlcjlqZS/+fUKBzgJrZBkEC+n6fmA5nQYmXgQQZxmmZT1py2R2jgUdldmiDaDnzjkPnMpfpDXFh37ptMmGI2/Vu0YpRY3VOV5/3l2CEoPzbs/tK53M1Ihkq9FzPiO2nI4sal8vUTvaWgnhX8IVaM1cNP1mmZri3S5d7av0bj6afgUHJEsOZ2n/dQc1RrmU43uhzzdWB68ZzkSEjuqH6qCCB0jNRpN+s7eILIp7VuDYOl8wC3hahe4oLPj8OyHOTY+kHq7z6LZ5Dmt+4tdUn0BEtgqhmOb1M8Hjh22pgWxzb4jSTf1/ll8I0mDeubJGFlPFmNTEgMmXtVN0cKLPSEYHGBE5SVVA2UjiG6VjJqH34n3OlOPO773oXLo3lBozFpzSzDmSN9lklhHSfviyLzodUpDhqD8Z2v1vxB7iaUOjzFDEJBDaSxjN5Co1s/uG34qGw92elR33qg/t4RDHyU6aC7pyPDyCJc5TpN4pDmgnNNtSd0yPAPqnDsARfCCWop82ZlCeY6DMs2oOxBn/RBD8xQZbD8L3hbTxb5Oa8L2/Pyr4hSk1cQ+OKk6hUQoto8fGeCXQf61UoI0SQwDdFkuAaM3Hrw7H2EvnxZWTIY1VID3OfpX3ieAcgiea1Dyym6URHCzOmlMnIcoBIGuJGWVMKLSAagnmspN24FMH8NT87J76IMr0h4KvQw6KTnu
- k67E7pz9
- XrbYQiVhmfelqWSs2LYvSllrI6JF1QcLO1nLauT9SZ7qJYIDR6fklGZic1kJngIIVcTP2eVIOVSCsWBjOkVrTIfTLRKRrLTF0B1LYOoyXpYxT/WuBwSn9hmPEDEjGgFUOBgHPer52C1ycyOVr45BWxven3ccqeZFvWHQzfWO14SEY7SYh3j1eF6Zsl9lP2EbemTL75ReNlxrDYepIdZcfPKApaBCt+P4cjwPpd0qddlXG/dRMRAUzCOVLZVbeIsmqcfa87rUDK7uaNF0f5dFyWDQ5dS/VS8XmfmV9Z+7dQbWO8Bh6NrNZSUsIJq1OyUUE6JJsM+9K+iu4AbAGiFkZFWjshaylxw/jLFvFf5Qp2V32OP+lLsz+60ZEvsox6ObTXUCjD89G2ZyRykhHa0Z0UGsIkoWAl2eL/eMPXDKCXFEwy16MWGYsdDEiQqwMITixY1f0DGVwJRqoinRVKZafNKAfvikv/gDRMNOLXDS+G2oHcNs=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5653E40007
+X-HE-Tag: 1794640230-624629
+X-HE-Meta: U2FsdGVkX19zNKWXydsrw1r+fXY7EMtSbLms7G660VmfiOVlUkya9RF9XI9YnG1PmZKAkYAXSOt8WAIeQql4PmHovPy6T3zhawmOsPBFrfLNox7MlY/8eQa2dpepBuf0W/joCHvIQFotZVuDsQbz7xXwakckj05X8xSJyUjD4Y6mWWuXbsK0Cyiv40NPXPSELiuLZaF5qBLvl/kUl4Hbm8vfkQLqGHEyjMaCsAuyby/XVM5yNqeyeV72E/CGVPfWz3JA9QwgIo+eHGyaAqzJjTvEDlqsCwTl7v3Jd2Sj6+fPbJ1354HIYG8rsLXox2AW6YKqsH8tTTsdsgR1o0lDEWt0VVkK1tvRDCTegvOWrD2bvBEGcTJrI/p06k3e9chTgvXi9MxQm2DfV/OR8g5IMqujX/k7I1sjPAb3rQC437xyu0b7ZycjLyYUXbx0JA9/8eyX0FPZvGUvz6/OnWWXqDzf2FP7kjVJCKfoHXD7CcmF7DvzZTLKK/+zVMjC2aeAArTLYhav4yF5z56Xq4qUFSNVq+onsGf0zAlKrYXwoT4vc/3pbTKh6utch+2XJn9iXu0rmYAVX8VGOLGPeb+CB5X+9Xw7rVRXahW0DowuzrZ6bS1E9oBHvH2Rqhh3wFwuIOPW5XX9hk8/wkqYhzS9OQXHqKEx5JW+AMN34f2UVH7KhEfKKritimfr78sTY3bEkNU1/U77ttFNyKkTJ2VCZzsMDme2aZnVu5dKNwA2d9tUFTGm+HVMvsQdx3xy+B8ZMI6+aBoRKvBxJ7shayUrfKF7EheglpLKoKAaIk6/0JlPqTWAAj4Y8QT/3PQ79yFiOnBwqcUzd3nKY0z2s8xLKXlRQrLu/lJXpGzwV0dooYvPNsSqISGovZ6m3e7hOSmV9npozeE8uy5X/EUZvJdmcct5D2J+2x7C2jpYNyvYrIJVApR39d7qYQFRrWwq/qUzwjxH+dB1Hi9jyUQa2TP
+ 7zlOq9q4
+ m42dDx1PKv+A0YfHuMV505xxu68bek/LnVxKWMb+Gozz/1fTOBNUCt8fRvZQrFW0VMQZfGDZ0Zjw/jL5N+XOgnn/tnVtW0Yf6NrWXE6inRkOaFRNIw7j92aFxqzq93H5q/7rdeqGPVFq6wDv1WQ54COhyZE4iy2jySBjRZT57da+WUWrwMqfu0OPUhW/awl0pjmJRwOSqnW9WGYj1MsYLT2SUEIw1S/zYZfAdloLuJzoytDjOnaOn9XNgIo9r3WhXKwoQa+TTnlGH8RYU58sRImXTxKVwCWiGmIoTshTv2J+1AFXLy5Eam2wZQ5Jb4Hy8O4uMBJw5T0+gGvot2Ed4EcH/vG5+itS3wo0IulmBT0d3MUeW1dSFN7iYTHzgHvoryUZe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,36 +179,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The NUMA balancing scanner installs PROT_NONE only on folios that
-balancing may migrate.
+DAMON acquires folios to age them, check their accesses, and apply LRU
+operations and migration. Treat these as general-purpose MM services
+and restrict them to N_MEMORY_COMMON.
 
-folio_can_map_prot_numa() already skips ZONE_DEVICE folios. Skip folios
-outside the common memory pool (N_MEMORY_COMMON) as well. Do not inject
-hint faults on those folios or migrate them.
+Memory outside N_MEMORY_COMMON can still hold ordinary LRU folios, so
+it would pass the checks that keep ZONE_DEVICE memory out of these
+operations.
 
-Convert the zone_device check to a common memory check (which includes
-the zone device check explicitly).
+Treat these folios like ZONE_DEVICE memory.
+
+DAMON cannot acquire such a folio, so it never ages one and virtual
+address monitoring reports it as accessed, and DAMOS cannot isolate
+one for migration.
+
+Reject migration destinations outside N_MEMORY_COMMON.
 
 All memory is common at this point, so behavior is unchanged.
 
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- mm/mempolicy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/damon/ops-common.c | 7 ++++---
+ mm/damon/vaddr.c      | 2 +-
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 662ab420fe03c..619970f0eb954 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -863,7 +863,7 @@ bool folio_can_map_prot_numa(struct folio *folio, struct vm_area_struct *vma,
+diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+index b9571f53e538c..51b4b5d572e77 100644
+--- a/mm/damon/ops-common.c
++++ b/mm/damon/ops-common.c
+@@ -17,8 +17,9 @@
+ 
+ static bool damon_folio_acceptable(struct folio *folio, bool monitor)
  {
- 	int nid;
+-	return folio_test_lru(folio) ||
+-		(monitor && folio_test_hugetlb(folio));
++	return folio_is_common_memory(folio) &&
++		(folio_test_lru(folio) ||
++		 (monitor && folio_test_hugetlb(folio)));
+ }
  
--	if (!folio || folio_is_zone_device(folio) || folio_test_ksm(folio))
-+	if (!folio || !folio_is_common_memory(folio) || folio_test_ksm(folio))
- 		return false;
+ /*
+@@ -498,7 +499,7 @@ unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid)
+ 		return nr_migrated;
  
- 	/* Also skip shared copy-on-write folios */
+ 	if (target_nid < 0 || target_nid >= MAX_NUMNODES ||
+-			!node_state(target_nid, N_MEMORY)) {
++			!node_state(target_nid, N_MEMORY_COMMON)) {
+ 		damon_putback_folio_list(folio_list);
+ 		return nr_migrated;
+ 	}
+diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+index 1e65e7651cd98..338876559140b 100644
+--- a/mm/damon/vaddr.c
++++ b/mm/damon/vaddr.c
+@@ -830,7 +830,7 @@ static void damos_va_migrate_dests_add(struct folio *folio,
+ 	if (folio_nid(folio) == nid)
+ 		return;
+ 
+-	if (!folio_isolate_lru(folio))
++	if (!folio_is_common_memory(folio) || !folio_isolate_lru(folio))
+ 		return;
+ 	node_stat_add_folio(folio, NR_ISOLATED_ANON +
+ 			folio_is_file_lru(folio));
 -- 
 2.53.1-Meta
 
