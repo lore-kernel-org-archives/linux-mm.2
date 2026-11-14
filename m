@@ -1,135 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64FC4606A335
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 00:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEAD3606A337
+	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 00:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=WjUSNxfM
+	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=kuOZ6N65
 Received: by kanga.kvack.org (Postfix)
-	id 45CB86B05B6; Fri, 13 Nov 2026 19:44:16 -0500 (EST)
+	id D4BF66B05B3; Fri, 13 Nov 2026 19:47:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F60C6B05B8; Fri, 13 Nov 2026 19:44:16 -0500 (EST)
+	id CFC7A6B05B7; Fri, 13 Nov 2026 19:47:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 333156B05B9; Fri, 13 Nov 2026 19:44:16 -0500 (EST)
+	id BC4FE6B05B8; Fri, 13 Nov 2026 19:47:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 181906B05B6
-	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:44:16 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 990B7A031A
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 00:44:15 +0000 (UTC)
-X-FDA: 85431878070.05.71A0C6B
-Received: from mta0.migadu.com (out-243.mta0.migadu.com [91.218.175.243])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7E37880002
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 00:44:13 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WjUSNxfM;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.243 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 93A096B05B3
+	for <linux-mm@kvack.org>; Fri, 13 Nov 2026 19:47:02 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 08F2A40324
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 00:47:02 +0000 (UTC)
+X-FDA: 85431885084.19.D0C0B62
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9A7304000C
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 00:46:58 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=kuOZ6N65;
+	spf=pass (imf04.hostedemail.com: domain of yebin10@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=yebin10@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794617220;
+	b=mvQFly9f4gzY4hVzKpDl84s7FKI3FiGPY0C4AwrV44afZiFReD65nepMgN0VwcUHjT1cgh
+	5sIxX1a+VJxOLgLa6LuhjCE4DnSZL6ZYsWIT3+iL1czZetwljbCnqFOtcNiGG4bvm8eeYO
+	QyLv+Yz8B3eJPjTdgNVXXA7nHi7pQy0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=kuOZ6N65;
+	spf=pass (imf04.hostedemail.com: domain of yebin10@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=yebin10@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794617054;
+	s=arc-20220608; t=1794617220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0xtAECFW3pXMdSq0lQxsNOUtdAywWPfdRsyXX2fdCbI=;
-	b=AjESoOV7CEJjynAPz//PtXUpHLWpIq7ilXg9/Y6q0OeGfU+htya1TAKfNMgUQuTYvP1zWa
-	nJ9XLB08xQr92bDaQ94YpNUIFtXLvDZGtkOEZrU9T5Ex9lPurVcF7EhxdZzoIQ9rY9sdfE
-	NJZsRybUSlg6EJPPUqpM+bizVRscNEo=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WjUSNxfM;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.243 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794617054;
-	b=fYoIQafX+bS6YlcnQaVuTmU2u92OJ58PKUKZj7pgfMiM76N9uwMjOGcSA5WQ5yEuz/PQVX
-	jgOAD7oLeFk5xpj0tGmLOwfOxrrHCkYM8u6+FSLQBW5N2Bxt7l28maY26bT4VeE8J4t1DU
-	BkbfH+saQRqqt6eOEwpBtpcdGpzS6KU=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=0xtAECFW3pXMdSq0lQxsNOUtdAywWPfdRsyXX2fdCbI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794617049; v=1; x=1795221849;
- b=WjUSNxfMy0hDfRyJzKb819Vr/dago8ZhjlqIKxCsU5Eh/iEOn0k+mzOYY5mGr8iMuoO0hh+Z
- K6oMia537VmqhKgK7nb3poZfl/2UCcThfNEtH191QPCFb2+U6W2hubc0GOWNCIPNBpfdwHU3AG3
- l3v7d6oflc98U/ClmRZcbGjo=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 5500ac1b1da158ed;
-	Sat, 14 Nov 2026 00:44:07 +0000
-X-Mizu-Trace-ID: 5500ac1b1da158ed
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
+	bh=CgzgqbRM4PNYm0gqnmQQASlOWblqzL1nTVpc4p2TSDI=;
+	b=2/TtIk+yerGcsY/jQSr0/fgv1jz8vTO03dRomYOZTocgBPMAe3aLqK9vluWoxRtyaoV1wv
+	70yxvbvgVfrXDWBZoLUtytfMElxQpoQhaNScgELYK0VrYTF9X3j4WpeBFgzfTZ91QyaM/X
+	01lRNehDzvobbG+x3fZBWacneX2uJyg=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=CgzgqbRM4PNYm0gqnmQQASlOWblqzL1nTVpc4p2TSDI=;
+	b=kuOZ6N65TvoRPWnGK0dRuXKfCJ2y7Q+QcbSv6GZ1+itykpUfBQ+50YTxXP/fglbzTo1hgp4xi
+	6RxW31uhG7ZCYEKkzB8xlHVOi+6IVRcEyn3WpA/TQyxILS25SwUe8GAcnIYP82azR4e4QqB5fUL
+	IvwHGFBX+PzF8L46Am3T0ck=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4jRFnG405Rz1prKB;
+	Sat, 14 Nov 2026 08:46:42 +0800 (CST)
+Received: from kwepemk300010.china.huawei.com (unknown [7.202.195.128])
+	by mail.maildlp.com (Postfix) with ESMTPS id D8747203AB;
+	Sat, 14 Nov 2026 08:46:52 +0800 (CST)
+Received: from [10.174.178.185] (10.174.178.185) by
+ kwepemk300010.china.huawei.com (7.202.195.128) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Sat, 14 Nov 2026 08:46:52 +0800
+Subject: Re: [PATCH] mm: page_alloc: add nid to mm_page_alloc tracepoint
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Ye Bin
+	<yebin@huaweicloud.com>, <harry@kernel.org>, <hao.li@linux.dev>,
+	<cl@gentwo.org>, <rientjes@google.com>, <roman.gushchin@linux.dev>,
+	<linux-mm@kvack.org>
+References: <20261113062007.95040-1-yebin@huaweicloud.com>
+ <ab518ee3-ba4e-4c36-afeb-5943a3192ea7@kernel.org>
+From: "yebin (H)" <yebin10@huawei.com>
+Message-ID: <6AF7AF7B.8030407@huawei.com>
+Date: Sat, 14 Nov 2026 08:46:51 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.1.0
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH 00/15] mm/hugetlb: various fixes
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <835c18d0-bee3-41e8-aa46-05dc7c1ebc64@kernel.org>
-Date: Sat, 14 Nov 2026 08:43:44 +0800
-Cc: Oscar Salvador <osalvador@suse.de>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Mel Gorman <mgorman@suse.de>,
- Andy Whitcroft <apw@canonical.com>,
- Miaohe Lin <linmiaohe@huawei.com>,
- Michal Hocko <mhocko@suse.com>,
- Rik van Riel <riel@surriel.com>,
- Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>,
- Dave Airlie <airlied@redhat.com>,
- Jason Gunthorpe <jgg@ziepe.ca>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>,
- Peter Xu <peterx@redhat.com>,
- Breno Leitao <leitao@debian.org>,
- Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Nick Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- Arnd Bergmann <arnd@arndb.de>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- Gerd Hoffmann <kraxel@redhat.com>,
- linux-doc@vger.kernel.org,
- linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org,
- luojiajun <luojiajun3@huawei.com>,
- Josef Bacik <josef@toxicpanda.com>,
- stable@kernel.org,
- Chris Mason <mason@kernel.org>,
- Daehyeon Ko <4ncienth@gmail.com>,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6EDE76EC-0CD2-4C34-BD06-234E21C7BDEF@linux.dev>
-References: <20261028-fixes_hugetlb-v1-0-a0a033db180f@kernel.org>
- <835c18d0-bee3-41e8-aa46-05dc7c1ebc64@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
+MIME-Version: 1.0
+In-Reply-To: <ab518ee3-ba4e-4c36-afeb-5943a3192ea7@kernel.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemk300010.china.huawei.com (7.202.195.128)
+X-Stat-Signature: pmmpxu69act4ebo36werwz5a6tn5djtj
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7E37880002
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9A7304000C
+X-Spam-Status: No, score=-19.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: mpbmgwe7yftyadpzut36n17pjogghokw
-X-HE-Tag: 1794617053-242445
-X-HE-Meta: U2FsdGVkX1+f7gqcYQp3Zk0RrLNE339hBu7KGXe6pTtBk4JInFkul03IEE3/WoQzxBf7k424BngGvHVUvS0fa0pwiqNzh2IMLv5r/C0EtlwJaSstrX2eKhijFqqo3N+oJQsbBlLsMSLztLo0yLHmBPhv1635/SrJ18obS8HEkMlC3mJcrn/VqrxNOOsUon73YCG5wT1+x7MrZvfwo4CYhe2/C1Iz+cFbrM7N0Hy7YV0hUgmbkC9nGET+l/KAe7qrgCeSYACTH1Ly/cDbzRy7CWq/t9JwU260sCmI/OcVb8duIvSZXSfw/DnYeRmqX0/IEczAnhn2sXeox1frodEeKf/2hwYQk4KM0pirZpwx06ucNU2C9k4xxjuEiU3cIiKGfiPFrcO9LsZd1/YyvyUW8qxukfKtGrZjkXjPwwvwfWIB4nfew/zpcVvlc7lbZK2TYwn+cutiUsl8v4DeMo+YwwNLJlgVo5yZ0kmI7SfvhFEavtIKAOKu1LyVF2htLRmqri+lirm8OVUf12SVSO+NejI4BWU+B83TOSbXqWMghuPTPbinAFAvozse8XLvGPoMnmzj/KmfgzJ9tnewoq401gConTJFfVIXETHJWatdxnAfhSMfUZvkZmwONsL9TO07igdzsjG0T5QIgyXfhnTOtEzSc8/AXHhQ+yJiF+n+sI6RS6niuQx2H0KM9HoHOFXIudzHh5OWteaveHgTMU+CoZtYsyFJT+P0oep0MD9z1LDFZM0wfQ1wZ4oeeqVn/8xk475fK/11c3U16BQEWjoSFvSfbaOmhcIa8A9UfRe+5Ryn3w46K2SFlISsc1sPBpmKQff04nN+0UwJJKhmGT9+03We46Do48lrkCwM0WCCgC8xnyfWUKHF4+dj2RKDr54DG994wQ+0d/cMjQC/rX50Q6+71gjsqacunSrFzT2AfPDqyJ+25BKMujPmYraCbs6u9hInikL8HyfBjRCJ0NG
- gFEQmG41
- yBRxwcdr9MXrdCXD79xnTaUDP/mYlPyYUG6NzPbCL/WPjpOr3cwHSS75fM34PEFPozcjKW2VoEOmvbPDBx8A/0ZoGC5/wNeTkUDpyAwoPXIAdh9ftIgc6mKlQ3Ur9tlSf9SGb+SQ5CK8im1ddNsNAuZyaMYGqkt8SRH3AJleq8PwxfKNXY+pXtu95y63kCOElkpJMzleemed37scRA2tC9yjzhvUXTfkYeb6IsjH8mAgiVJmG86pS1Tj5arO2A2W/tMc+uiyVTTkuZHlRf6MzQ7ZRfFX5ZH65m1D8kOYygIt0N5nNfOUVmz9zxlYod4Qe7qqRMm6IqGkE7TS7jQAEN2dMXPSGid+ZurP2XURmyQ5QN04oZmvMF3vWF8xJkZxYRpiyvZats/cMJxs=
+X-HE-Tag: 1794617218-777498
+X-HE-Meta: U2FsdGVkX19bTuI/PpVPKSCXv0M7P34WXqfk7k/UUiq/FGZLDoxIolTCOZuhYsAZk580VsdvsIgssfkOIsqy1IuP3V6hlBXJUMSoB7SJlR3NWj9aW6NTg9ig5m5/RZAXiW6LTZB9O+WI+lTf4HAAUbNxsqI1l091WCqC6rFWDHHxDrJmV0EKcVjRMWVJs/tIVRSJpCbbiZg956h+woGsWh4vVsCi0TmpT+bJiCqIGTvhJoZOCllO2F8ubQSwdqcoeluua5rFFH0m/nguBJW568r4ly/Y17n9ktREQXaCee2rN82op5UhiBzFEh00ZU6r1fk2s2kRJpUrpgVKmuVBOSpH0/93s+x+Y0P/2qDkp1tWyS5kaXZBvZNBRQiGSDvim9SzflQpDZLWRc9XAkXD/kGbwRCo8aR3z6khGUZOFvgWCEBdHmmCXJ2xGxPKw3QmcUYxiN25+3PT5914nJMtS4dWyfL52QsZFLmZbHQQN5TgykvGaZFpTxVJhM9HobDjIkUyST8oxRtEPuSxPt+giemvavOB5afiiOW8RJhNJw0t9aq8YdI/kZku6Z+dBKxoMz9bPmkQynDIvG4JyDGrstA0sAA9nfBn8SjASCXMqXQQdaQhfZ7O36je3gDWxyHPZPVge13O6uoxxl4croeXC6i92f9Cru45qY+xx+pyj77HVnKam3OiOal3osDjErkEcwMrbJ6UyNyFLwzYn3KilTfaSJ9BNNm9idpHQrE3Ys4akPVbOEvonZoFePok1/90bTU/DxXEirwSNYOvk/MTEW++qQ+LAh8EjYlroK3NCY33gauSl/mXVIDSffNWuKGvZ/h3iLS4Tg2gE41gzqmj87xKACZo36uHuNGimTVQLUooFaKZcHTE439KBsI3KzghIUH2iPPHuCmHhkyaiqhc+1nq8mgY5VYKXrgrA+JhZ2ekVEZPiHiqG0usBOqZ1xcsUSIFr9YM32A+6BJL327
+ GF5bU/Zq
+ ZpP1y2L8yml4Q5Ji/KyvjSgzGb658N17PgNY9cmKdSyQZj/CDguGTtGuyjqC6rZ0Ow00RTeZ7hU9pGEceq9YTvQ5igcc0sqZ+dLVq01yvfdMGfauL/1p/EhIhhom4TfCqAM2noEMNKdBzPhwNFpgnGKQ3IYoPOCQKipu08Pk0fHHD2iCbFoNhBqc2hExA1JcDmlCQWngzihK5jAzCjjlL5AmtIs+jRZJgeJ6Bc545X6abSPyid30Grg4AktbmKfQjvujR13t4RoFCCY199HqkPgNhEOSjtvRBbzEci8eCxvlIgu6fykDw6pT8YwpWycXgfzIq7vkwbFolUs/Yo5vsWmpDpw2cmA5u7ofU7ZiGkNjilpvLD+4H5ji+hoyIHddhaq5nrUlCGRhjh2LFlSrogvKV9qBxE3AMcygC5i/YwRxY/S4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,23 +105,76 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-> On Nov 14, 2026, at 04:22, David Hildenbrand (Arm) <david@kernel.org> =
-wrote:
->=20
-> On 10/28/26 21:13, David Hildenbrand (Arm) wrote:
->> These fixes almost finished me.
->=20
-> Muchun, Oscar, should I respin with an un-rfc of patch #14?
+On 2026/11/13 16:48, Vlastimil Babka (SUSE) wrote:
+> On 11/13/26 07:20, Ye Bin wrote:
+>> From: Ye Bin <yebin10@huawei.com>
+>>
+>> Add the NUMA node id to the mm_page_alloc trace event so that page
+>> allocations can be attributed to a specific node directly from the
+>> trace, without having to look up the pfn separately.
+>
+> But is it the right tradeoff? Trace data should be as minimal as possible
+> for cpu and memory purposes. Anything extra that can be achieved by
+> postprocessing is better done that way. Matching pfn to node using
+> /proc/zoneinfo is simple.
+>
+Hi,
 
-Sure, please.
+I agree with the general principle that trace data should be kept minimal
+and that anything computable in post-processing is better done there. But
+I think the "matching pfn to node via /proc/zoneinfo is simple" part
+underestimates the actual work involved, and for this particular event
+the tradeoff is not as clear as it looks.Although AI can be used to analyze
+data now, not all data in every scenario can be exported for post-processing
+analysis. Online debugging requires speed.
+Trace is a debugging facility to begin with. Enabling it already has a
+performance cost by design; that's accepted when you turn it on. Adding one
+int to an event that already carries pfn, order, migratetype and gfp_flags
+is a marginal increase relative to that, while the benefit — direct,
+unambiguous node attribution — is immediate.
+So while the extra field does cost some ring buffer space and a small amount
+of work in TP_fast_assign(), I think adding nid here is the more practical
+tradeoff.
 
-Thanks,
-Muchun
-
->=20
-> --=20
-> Cheers,
->=20
-> David
-
+>> The nid is derived from the allocated page, or set to -1 when no page
+>> is available (e.g. failed allocations).
+>>
+>> Signed-off-by: Ye Bin <yebin10@huawei.com>
+>> ---
+>>   include/trace/events/kmem.h | 5 ++++-
+>>   1 file changed, 4 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/include/trace/events/kmem.h b/include/trace/events/kmem.h
+>> index cd7920c81f85..8bf4e992d8bb 100644
+>> --- a/include/trace/events/kmem.h
+>> +++ b/include/trace/events/kmem.h
+>> @@ -189,6 +189,7 @@ TRACE_EVENT(mm_page_alloc,
+>>   		__field(	unsigned int,	order		)
+>>   		__field(	unsigned long,	gfp_flags	)
+>>   		__field(	int,		migratetype	)
+>> +		__field(	int,		nid		)
+>>   	),
+>>
+>>   	TP_fast_assign(
+>> @@ -196,13 +197,15 @@ TRACE_EVENT(mm_page_alloc,
+>>   		__entry->order		= order;
+>>   		__entry->gfp_flags	= (__force unsigned long)gfp_flags;
+>>   		__entry->migratetype	= migratetype;
+>> +		__entry->nid		= page ? page_to_nid(page) : -1;
+>>   	),
+>>
+>> -	TP_printk("page=%p pfn=0x%lx order=%d migratetype=%d gfp_flags=%s",
+>> +	TP_printk("page=%p pfn=0x%lx order=%d migratetype=%d nid=%d gfp_flags=%s",
+>>   		__entry->pfn != -1UL ? pfn_to_page(__entry->pfn) : NULL,
+>>   		__entry->pfn != -1UL ? __entry->pfn : 0,
+>>   		__entry->order,
+>>   		__entry->migratetype,
+>> +		__entry->nid,
+>>   		show_gfp_flags(__entry->gfp_flags))
+>>   );
+>>
+>
+>
+> .
+>
 
