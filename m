@@ -1,90 +1,113 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0553606A886
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 19:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 388C5606A323
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 20:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=nKtVxroy
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=XvrNMgnd
 Received: by kanga.kvack.org (Postfix)
-	id A99C66B00EF; Sun, 15 Nov 2026 14:38:55 -0500 (EST)
+	id 3959A6B00EF; Sun, 15 Nov 2026 15:21:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A498E6B05B0; Sun, 15 Nov 2026 14:38:55 -0500 (EST)
+	id 31EE76B05B0; Sun, 15 Nov 2026 15:21:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9631F6B05B1; Sun, 15 Nov 2026 14:38:55 -0500 (EST)
+	id 1E6716B05B1; Sun, 15 Nov 2026 15:21:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6812D6B00EF
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:38:55 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D826C80826
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 19:38:54 +0000 (UTC)
-X-FDA: 85438366188.09.AB4E536
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 0A7491C0007
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 19:38:52 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nKtVxroy;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id E5EA56B00EF
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 15:21:45 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 670BE80825
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:21:45 +0000 (UTC)
+X-FDA: 85438474170.10.79934BD
+Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+	by imf23.hostedemail.com (Postfix) with ESMTP id E083D140002
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:21:42 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=oss.cyber.gouv.fr header.s=default header.b=XvrNMgnd;
+	spf=pass (imf23.hostedemail.com: domain of jeremy.jean@oss.cyber.gouv.fr designates 51.159.188.251 as permitted sender) smtp.mailfrom=jeremy.jean@oss.cyber.gouv.fr;
+	dmarc=pass (policy=none) header.from=oss.cyber.gouv.fr
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794774103;
+	b=O1oDUse5xvJQrK5UjUdf6u4FAgs4KQeuAD/ip9t6As19/hHrdm/oFRkjFFC/8xc+Lya19y
+	1qyMMDe/8kZU9QDnxvfe0JXeWf0CaVOKUxcShAh7NpC4hLzMxtemlVx9QOG6YgyhK7+l0X
+	cHgbTblcU5q2eGMef7fX+/08kTUERkI=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=oss.cyber.gouv.fr header.s=default header.b=XvrNMgnd;
+	spf=pass (imf23.hostedemail.com: domain of jeremy.jean@oss.cyber.gouv.fr designates 51.159.188.251 as permitted sender) smtp.mailfrom=jeremy.jean@oss.cyber.gouv.fr;
+	dmarc=pass (policy=none) header.from=oss.cyber.gouv.fr
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794771533;
+	s=arc-20220608; t=1794774103;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W36Zk6V6pAaUlJITDCE9REdXESHzooXLlN9B7+Qdiw4=;
-	b=yq3KI5aVGjHJ6ma3bNkCOYvRN4kTSCEUQLfJ14Gr2ycDvDOx7mlK3yR+zibTDVig6bFlRj
-	NUZqKXD6EFDhIdK4C3EGJyQg3a8v/lfsxgEVPlhdJMtoFRZvVK91rJ3iQ1P8inj1TBdPhh
-	Bv3qkc5jjGH35f1B3xaRO8M03IQiEV0=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nKtVxroy;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794771533;
-	b=lJKjRKUFXI8lcFgPQfoAWv1pVVOxL57leZix+/3YyPsdSeFLEMN1G9avqgHhnm4kQExVfB
-	mcW0ze5bc5S49z4WL/SsyKVMeKxwzNh40HElgxzsBmk8o9m1FAgkhERvhT9C5/+VTv8oO7
-	dHzbxY7vSBtj3NPGb+6x7bTAXNBXapg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C84E042B65;
-	Sun, 15 Nov 2026 19:38:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E43C1F000C4;
-	Sun, 15 Nov 2026 19:38:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1794771531;
-	bh=W36Zk6V6pAaUlJITDCE9REdXESHzooXLlN9B7+Qdiw4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=nKtVxroyvw83RNvEeLmQesgxPMXIfX/mzS63tWQ6G9DaHyV51t4WHnqpbLARg835O
-	 0ttalNP2e3QS1NMnBR3cvW+SSOaSUyXV8hbMclRlMZMP3g0R5am5n/UGlbzUFOOZA+
-	 +B0JDcOCXtGjJTp3iwO5QUe3nYSgXWAkyX2IgIsg=
-Date: Sun, 15 Nov 2026 11:38:51 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: mt4022@columbia.edu
-Cc: Mani Tofigh via B4 Relay <devnull+mt4022.columbia.edu@kernel.org>, Mike
- Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, tz2294@columbia.edu
-Subject: Re: [PATCH] mm: annotate lockless accesses to vm_committed_as_batch
-Message-Id: <20261115113851.f809d47b8356755c229278c2@linux-foundation.org>
-In-Reply-To: <20261027-kcsan-mm-v1-1-66757485b917@columbia.edu>
-References: <20261027-kcsan-mm-v1-1-66757485b917@columbia.edu>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	bh=u0PsfBl18AWyK4iQSGjFIhiNJ5cYD9CJo88yPJo17Sw=;
+	b=hntjQ3Kc8+5QeJ6KwdSjgikCY2HBG5+3AMzlqQ1sYGb5OL3nHWUKcbc+ayIu/UO8BumOHF
+	p4pr+vTuur1Hae3iMIgv37gxelCwaHebEb9GuKmN1VR/F8EehxRr3hXKQvs1FVpBe8yVHl
+	Sim2AxV/jseRhUe5GveHfRwUpG3fRJQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
+	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:
+	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=u0PsfBl18AWyK4iQSGjFIhiNJ5cYD9CJo88yPJo17Sw=; b=XvrNMgndHaNpZ6nydqFHt5ym3I
+	JoO6LfNPmqvNLCvCUtifefbs196ApVghVh+ssI8jAiqOxccoeJTLFfV7Eythu/RswNAKG3qs92MRZ
+	TqZh3qJ5g16usg7xcFH2pdIGn15MMB1kK2fGyE3Ik4Se/WXqpHCYfR65QrJmTCAhIDbj4dg9tDUM1
+	0Gu2sN9xI87vKJJVwCXn0K5OCJShN/bXqKgL3lF7xcijbGCDAbRvcO1nF57pzjSjQQZyD0Xdw0xvX
+	Zom1Ye3XPrS64aYtqiSq0py8QIMNrvXzV+usP4aBPkzll3p49qfPkBMXb0GV2kDxr86UHqUKXyBRR
+	XWxyxKog==;
+Received: from [::1] (port=43856 helo=pf-012.whm.fr-par.scw.cloud)
+	by pf-012.whm.fr-par.scw.cloud with esmtpa (Exim 4.100.1)
+	(envelope-from <jeremy.jean@oss.cyber.gouv.fr>)
+	id 1xSgjN-00000002LVQ-29rC;
+	Sun, 15 Nov 2026 21:21:41 +0100
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: pebsuizraxag1qz9x748qa9t3a8tu7ia
-X-Rspamd-Server: rspam01
+MIME-Version: 1.0
+Date: Sun, 15 Nov 2026 21:21:39 +0100
+From: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <jeremy.jean@oss.cyber.gouv.fr>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Pedro Falcato
+ <pfalcato@suse.de>, David Hildenbrand <david@kernel.org>, Zi Yan
+ <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>, Nico Pache
+ <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain
+ <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
+ <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau
+ <kas@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] mm/khugepaged: reject shmem collapse ranges beyond i_size
+In-Reply-To: <795b8d8a-4f6f-451f-9274-ccb8380e03dd@linux.alibaba.com>
+References: <20261112142335.2749597-2-Jeremy.Jean@oss.cyber.gouv.fr>
+ <avYBFPhB46XWAG4A@pedro-suse.tail5790ac.ts.net>
+ <20261112145036.97f74a828755d5b9178a3e3a@linux-foundation.org>
+ <795b8d8a-4f6f-451f-9274-ccb8380e03dd@linux.alibaba.com>
+User-Agent: Roundcube Webmail/1.6.20
+Message-ID: <824c33ead7a2baf08715fe01a4c88714@oss.cyber.gouv.fr>
+X-Sender: jeremy.jean@oss.cyber.gouv.fr
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
+X-AntiAbuse: Original Domain - kvack.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
+X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
+X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Stat-Signature: g3gdgyoez5itg1831d8h67qa9rnngsk9
 X-Rspam-User: 
-X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 0A7491C0007
-X-HE-Tag: 1794771532-625717
-X-HE-Meta: U2FsdGVkX1+2vjyEb5R74b83oZQtJ4TtQFMhRAt3H9O4KCujCw9lgVBC6AMCbtwAyPrCBICngGzWcBxpPSGa4H22Pk4fGw6gTYwdnb10UrepUb/mn3vAQ65ZYUF3Uw8evzARg9rKKRjtPgR4tI58GSbxdZydDpglHsj5fvXVO/L+B5ti2+ZG/QWqZUDJMcx8lGvuwOaexGZ5DDuHPiQPAp7Kj1b/C5xVWsK2/zylzYEJjGRUSivmS3nKU5fr1/8Iy4xKuWWKiPUdB/JW1A8mC51m6MTPUiXYnEpU9q++rxAs74QKlRsok92pQy2SrvPV1bGEv0ZwVdDGYbMy5Y0HMvv/MjF6OUe54gUkJKjGCdfISvBuXSljdxE/Qbb75rAESd2cIMlhW0/2HUqWhpR2LQXsEJ455KXaNPwBnIawqM30PoJ7iTIW1nUQU4dgodmEiJsfyQfu16ChyOPB9d4JWLrKYSCD/k2tec3IaOo5J2phsvOIVNhN6dXa8ylZkAfFQo7gxtvIIM9eIWySRB72ydXH+zuyPwPC2HiSWVMjSKT5YJuJGPUbbM20/DAWVvZpjvMsbu2rpx2vUM+FKYa9ApPQuSJBKxZbOdshfwfbrs4OWaU6OaoVwsEhSEXac8cYa9Tarrxi8Gfbw+mNxxUXphxi4tDwOZS6FWKpaPoRtakXVdUZhaymBdMWApy219fUTtdDXv0HoKpGAl11U4I1F1Th+YJZnQWy+fU8X4A10oW5wpenfVz6eoOJg1R6Ix3dvApnmaVv80c03heA19VtiLWsAFqCFXhgtCx3j1tKq2/GYXdPDA7FK5UpgJC4JndWvk0Oz6W381TJGFMFOCgUTSCNDn62D9Cc/JeMoro8O1wyO841btq/WsC4217a3A9LovQjr65RafkKv98tU55/qxZxIBn0Pi6S3rEtzbCmEbqMWQX07TML6+oAFG9aCXtNei2y5O26W4Fl3Kq1R43
- COs5it9g
- gpuJApXwO6bfZU/ISWuX3n2E1hW+SCPzOPrp13JOCdY2B9aoynPSu5qGV72+1PY+tN+JR5m+foTegxzpwJyJIsNH7aOig7L38yOOENyLURAvOGi0+XvC9H2pjmjaPdiPHVAKf9nL3hCVEjBw7qkwd9BZHz5wnve7RrI0OUGyjv3M4nhux0iwG5dU0UVgBJbP95CcaRTsOvThg4f52y+RNixpg/aZSAssZUA3uGJ1YNj48OiamMQj31srqA7BiQtg3+dUlhW1rSBOaOTFvu0b110VrWDjO1YCZlEN6IT2PM33CldxxAniHeV5F1P+sTMnvHX85FRzR/ZLeB9xqpGzoYO0011E0w3Yoi8abGM+atavDmhkB97Qt4NlM370BFG9oDTKZEzuJGtJ1mtYHcRKAbE4rZhBue6VpcU15F06ETz54y6/WNI1Q5QoL6B6yCAQUcGwS
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E083D140002
+X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794774102-962429
+X-HE-Meta: U2FsdGVkX19mD/oKCsM0QNCCj75igXfkJhqse9WA4HFVI1ZEDb2yEV6fEtLpaFTe+c0bj4z1tI9pCjVpJFbCZzdSq0GA2PGvdO4XEPkVaILzYdr3v/oMh+HFZTUruZqXhyv3DuJKqrSJtEJphRMfJyi8QDc6Cuc2sYHDKE3QsQR25gj0oGP68/cRC7bZxJ82BZtWC1qfTbrNlnMM33NodtZ4ve+W0Qpd4zCpH0l3wUxl1/3erdCyPFjCmhL+kp0+2vFt1TvG7oFPqm3qVS53vWqtsft0tBRN25jTIIIa0l9cIs06zXhcVd068GIngS4jTk1V0p1BvRmumXsCJTUrBStTayAMf17nAEydENCPFJoEKBVLYYT6dQv8sVDQs8w+moeNgdWMAim/mNZdZIJ0C2bn5T4nV/RvYT8Lh2EdyXlJUOO8sWinDVSq6Ful3ogGOGjzl0RxXdcKRFuSUp3wrrXyrpnV9HLgFb8ZEDlbaHmUnjnzo/jRg97dmenWuqkMo6LFNO3upoJPoorDz4SPI1pc1nrmfToWX2dUrnCqwD/+B4LD5pyjDFK+Lw5sw0O8Zi+vZZc33CslYgak4L+LOzwqIV8jakOZ1/cR+fhdoTGWCynkX9IF2Z8Qa9U3RHMgtjlA0xcjZeKv6CRBSeNGoEbO3T3dkKHG1adLoyIA4GTsZ1YIXmqXR4InRzUdZL3+wG+6EXG4Ys0H59U8/+LovjubTHHcjpCNTqKwfszj50zYYx3Pg5LF7NUqejz9yA2VZ6XWSPCaUZG9uMHTr7pJWRjeYYjr5d6xCzp9wsEDHIi6jpxmb0va2Cr824fv88oIG5lS1ZxqBuKaGiuXLHm9w+JtUK0+Wd0PTCRVG5wvSWmiQn8kt5kWh2enFBo9zQGttqoRNiUzT4JzZMogtyOpclQ/2Dsa+Vzmh17zmH38q/zUwybzvjVtO78NZZ0TXQimpkXh2OBHz+gqIx3i/X1
+ vbqZU/Qb
+ YzVmvNVc80wKW/rXP5HR6qh/hqcaodBt1zKtiLM+TIZPQsoTrUkVwH6KXw7ofTLW/omKeyN7MOgjEptTHX3WPm7Sk2AvbGNZz89BDTxAEf/1vGqoTQOIrqroGQ0si/yZd5iDAPA7AXH7QPnre6mDfVZCbYoV/TK5hHQgtXc0zSqjqg+GXZ4YPPG1OKD/5MYQvsOXTDM3uz1myBblMulM01paf0a6SKhzISKNcfLFPfKuQAnSQLnKTKOIhUtJYnH5/yXumQq7XangWuZzIDttyyX9OhcYoZbHQpuYYBSGA9eBjZVRrXbSkrT46HpV+W826tbr/gDnB+UulHZfxtf8BN2e+5cftT25oCk0CfgyBLRq22h+42+heUgf/cvIBWC7bytEJoF56OoDYB0Wxr47A0laEPtYw5Jbru7NcszpgOHZMaV6GOIvEoagnZRDjBArobBrg8BwOa+sXTDb7//oWgP84ei4LYNasPz7eJC7VJl/NDYrMbeLefcq5G0lyiixf4u3PGTciWvyNYQz3gqJzBjYQFpsJiTJWG0JM6s4v8FEmYqbjffgKzy0i5BL9aDZ9/nrwQFb+qCQNwEz4ZInpSrMtS9NoNLvuU1XTLcpdaeij7YhTzno9xH+Ah88hQ0476D2FsYCTkINxhw6jGf3+4fd4Syy8Z83tR1K9kULBtvFvsUoHO4RhOvrfrWdbpOPb4rxgj9WqwXy5V5/+N6xi2C3eEdmXvX42V1kI8FLGo6pzpj0sn5ZQE8vth5GnxEeqAsXY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,56 +116,73 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 27 Oct 2026 16:09:01 -0400 Mani Tofigh via B4 Relay <devnull+mt4022.columbia.edu@kernel.org> wrote:
+On 2026-11-13 03:42, Baolin Wang wrote:
+> On 11/13/26 6:50 AM, Andrew Morton wrote:
+>> On Thu, 12 Nov 2026 18:11:35 +0000 Pedro Falcato <pfalcato@suse.de> 
+>> wrote:
+>> 
+>>> On Thu, Nov 12, 2026 at 02:23:35PM +0000, Jérémy Jean wrote:
+>>>> MADV_COLLAPSE lets collapse_file() treat absent shmem pages as holes
+>>>> filled with zeros. It does not check i_size, which allows one 
+>>>> present
+>>>> page to become a huge mapping that covers the whole collapse range,
+>>>> including pages beyond EOF. This makes those pages writable. A later
+>>>> file extension can expose their contents after F_SEAL_WRITE.
+>>>> 
+>>>> Hold inode i_rwsem in read mode while collapsing shmem so i_size
+>>>> cannot change. Reject a collapse if its page range extends past
+>>>> i_size rounded up to PAGE_SIZE. Keep i_size_read() outside the
+>>>> page-cache XArray lock because its 32-bit SMP reader is not IRQ
+>>>> safe.
+>>> 
+>>> I don't think this is an issue. shmem/tmpfs purposefully maps with 
+>>> large pages
+>>> across i_size, and collapsing across i_size is a feature, not a bug.
+> 
+> Yes. finish_fault() even has comments explaining the special case for 
+> shmem/tmpfs.
+> 
+> 	/*
+> 	 * Do not allow to map with PTEs beyond i_size and with PMD
+> 	 * across i_size to preserve SIGBUS semantics.
+> 	 *
+> 	 * Make an exception for shmem/tmpfs that for long time
+> 	 * intentionally mapped with PMDs across i_size.
+> 	 */
+> 	needs_fallback = !shmem_mapping(mapping) &&
+> 		file_end < folio_next_index(folio);
+> 
+>> hoo boy, this again, See
+>> https://lore-kernel.gnuweeb.org/linux-mm/nwkpojnictbg6jicccpxyfi63ol4tmfajrlx24u5xxoxx7lv5f@jkw3o7j6tlfs/T/
+>> and enjoy.
+>> 
+>> It's not good that this sequence permits non-zero data to be exposed 
+>> in
+>> areas which ftruncate() created - the ftruncate() contract says it
+>> doesn't do that.
+> 
+> That's a valid concern and this is a known issue for shmem/tmpfs. Brian 
+> previously posted a patchset to fix it:
+> https://lore.kernel.org/all/20251112162522.412295-1-bfoster@redhat.com/
 
-> From: Mani Tofigh <mt4022@columbia.edu>
-> 
-> vm_committed_as_batch is read without a lock, and it's only a hint for
-> how often the per-CPU counts get folded, so racing with an update is
-> harmless.  Annotate the accesses.
-> 
->   [    0.953509] BUG: KCSAN: data-race in __vm_enough_memory / mm_compute_batch
-> 
->   [    0.953645] write to 0xffffffff825165d8 of 4 bytes by task 1 on cpu 0:
->   [    0.953692]  mm_compute_batch+0xc2/0x120
->   [    0.953781]  mm_compute_batch_init+0x1c/0x20
->   ...
-> 
->   [    0.954325] read to 0xffffffff825165d8 of 4 bytes by task 41 on cpu 1:
->   [    0.954373]  __vm_enough_memory+0x24/0x2b0
->   [    0.954444]  shmem_inode_acct_blocks+0x1b3/0x230
->   ...
-> 
->   [    0.955288] value changed: 0x00000020 -> 0x00005003
-> 
-> Found with KCSAN while fuzzing under a deterministic hypervisor that's
-> currently under development.
->
-> ...
->
-> --- a/include/linux/mman.h
-> +++ b/include/linux/mman.h
-> @@ -75,7 +75,8 @@ unsigned long vm_memory_committed(void);
->  
->  static inline void vm_acct_memory(long pages)
->  {
-> -	percpu_counter_add_batch(&vm_committed_as, pages, vm_committed_as_batch);
-> +	percpu_counter_add_batch(&vm_committed_as, pages,
-> +				 data_race(vm_committed_as_batch));
->  }
+Hello,
 
-ok, that'll squish the KCSAN report.  A reasonable change as long as
-we're sure this is not-a-bug.
+Thank you all for the quick feedbacks. I unfortunately did not find
+and read the links you shared nor the historical discussions before I
+prepared the patch. I'm sorry for reheating what it seems to me like
+a sensitive subject; it was definitely not my intention.
 
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -211,7 +211,7 @@ void mm_compute_batch(int overcommit_policy)
->  	else
->  		memsized_batch = min_t(u64, ram_pages/nr/4, INT_MAX);
->  
-> -	vm_committed_as_batch = max_t(s32, memsized_batch, batch);
-> +	WRITE_ONCE(vm_committed_as_batch, max_t(s32, memsized_batch, batch));
->  }
+> Jérémy , you haven't explained why this matters.  Is there some
+> userspace code which is encountering problems because of this?
+> Why did you propose cc:stable backporting?
 
-But why this change?
+My initial understanding was that there was a security boundary
+crossed, and that's why I submitted the patch and added stable in the
+exchange, so that it could get backported. While I'm now a bit
+confused about the situation, I have no problem in accepting that I
+was wrong and I'm totally fine with just dropping the patch if there
+was already a discussion and suggest patches.
+
+Regards,
+Jérémy
 
