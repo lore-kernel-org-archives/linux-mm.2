@@ -1,94 +1,82 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB65606A32C
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 03:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60390606A32D
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 03:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=Mko85Vxn
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=f0hDW6PV
 Received: by kanga.kvack.org (Postfix)
-	id D703B6B00EF; Sat, 14 Nov 2026 22:10:13 -0500 (EST)
+	id 3B8476B05B1; Sat, 14 Nov 2026 22:16:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF9496B05B0; Sat, 14 Nov 2026 22:10:13 -0500 (EST)
+	id 369586B05B2; Sat, 14 Nov 2026 22:16:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE8366B05B1; Sat, 14 Nov 2026 22:10:13 -0500 (EST)
+	id 27F0B6B05B3; Sat, 14 Nov 2026 22:16:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B64E6B00EF
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 22:10:13 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 619071604D8
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 03:10:12 +0000 (UTC)
-X-FDA: 85435874664.15.D2D0D74
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 060296B05B1
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 22:16:55 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7E3B0A7FB8
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 03:16:55 +0000 (UTC)
+X-FDA: 85435891590.09.D0FB94E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 94BE0A0003
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 03:10:10 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Mko85Vxn;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf15.hostedemail.com (Postfix) with ESMTP id 119F6A0005
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 03:16:53 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=f0hDW6PV;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794712210;
+	s=arc-20220608; t=1794712614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mjdrsIJyKFIFnzAMatvSFy1r3GvrnGD+/8dSv9ZNaA4=;
-	b=z9Tyg/sjOvtYVQc7bKL/lGJoJwLcX7YIQUOkzIMx/aGt8oBVfdzH2O2BJmQ3XT0i/ydAnS
-	SYAIZJyJlxiMlUtR/X+xLCv7GMJUBSj03gD/8HsHd1RjQt00nASo/FmT9hCtgDgA7dOFVF
-	lkYiK+VGiehZK+HzdEmAEoZ+ldU3eWU=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=TzufViWEiCtJUEBmIDg3DdTQTI4Adeb8R6m3s+kliHQ=;
+	b=vA7iGqYVKaOIq9GN6Lj7EIEgKCWCb+ohZSkUxnwyz4xya2eswtXyAy2OPO4AbcGFZXpqCr
+	IpDHfW68h/U2efZmoZH85MjXP/petfQht5c3olzftJ1ZSqYxnrrQXiHI+bxeAAwpjB8s39
+	UMYu3k7kctEiJDl4lcsls2mo+B42MoI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794712210;
-	b=Yp/wC3tV/fIhS0at1OPtRr5PyuSkYK7G+A36tO720RG6LuiFXp1jbvVo9+KvQCQz+1qzQf
-	GhRV0viDbatup7cj5fh5RNUeP4hWX9M6vHWDiglQ1vccjlsnsnu27XE9KIWCB6ZPvcbpE1
-	4kgOu7F3u2cD2tJwh9l66Q366bEpfak=
+	t=1794712614;
+	b=CwmZvBk07q20DpfdH3J2WSqb9APIn/WZu34U9uaWJnIXrCkbnoZow0UWkbVh/gRpOufX8R
+	g3nTScRaV/UfmqcTWH/RAmUYOS1xZWpRad77bqL6610kRA0Saj0WCuJ6fAF5EO7p4kTx3A
+	fHbJkzRfiM7MHXbWyrNW4RLC2bpFwFo=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Mko85Vxn;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=f0hDW6PV;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D965860202;
-	Sun, 15 Nov 2026 03:10:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435271F000C4;
-	Sun, 15 Nov 2026 03:10:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7D17D6060C;
+	Sun, 15 Nov 2026 03:16:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232851F000C4;
+	Sun, 15 Nov 2026 03:16:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1794712209;
-	bh=mjdrsIJyKFIFnzAMatvSFy1r3GvrnGD+/8dSv9ZNaA4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Mko85VxnD5M/cnGfWtpnKAiOaW810jRtHcqXz54OIn722p4lzVvDQ8LYBV0J/qJoQ
-	 xOXiZAPu64MmB9Gs4uYvUKNdfRpEWLURaQ+Cb3nma3rj/c/+742xKVrBbwaL1ibLK3
-	 w8hMLrIgz+hFZy2TEY0/pP/slQLx+ru+nfRcqGPU=
-Date: Sat, 14 Nov 2026 19:10:08 -0800
+	d=linux-foundation.org; s=korg; t=1794712613;
+	bh=TzufViWEiCtJUEBmIDg3DdTQTI4Adeb8R6m3s+kliHQ=;
+	h=Date:To:Cc:From:Subject;
+	b=f0hDW6PViaxHBwEUrsI1C0KD+B32h9lsvBR4/0H0B3vdgJ3F+0QFdyYh8syyqtX8E
+	 U9sAVTQb9hla/xBN2C/YaeGSRyCf944YhwhcP5De7zOUtG+CzVut5cMukl6XuMoU8z
+	 LhOJQp5jse/wTnAE9PEgv+Q82vy2EGI0QKhMJ8QY=
+Date: Sat, 14 Nov 2026 19:16:52 -0800
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ Shardul Bankar <shardul.b@mpiricsoftware.com>,
+ "David Hildenbrand (ARM)" <david@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ janak@mpiricsoftware.com, Jinjiang Tu <tujinjiang@huawei.com>
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Shardul B <shardul.b@mpiricsoftware.com>
-Cc: <willy@infradead.org>, <linux-mm@kvack.org>,
- <linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <dev.jain@arm.com>, <david@kernel.org>, <janak@mpiricsoftware.com>,
- <tujinjiang@huawei.com>, <shardulsb08@gmail.com>
-Subject: Re: [PATCH v4] lib: xarray: free unused spare node in
- xas_create_range()
-Message-Id: <20261114191008.c6a23905a52c6f4f918c0d33@linux-foundation.org>
-In-Reply-To: <19bf8d68cdb.ae2c0d37126486.8380742359510867201@mpiricsoftware.com>
-References: <20251204142625.1763372-1-shardul.b@mpiricsoftware.com>
-	<b2b99877afef36d9c79777846d19beeb14c81159.camel@mpiricsoftware.com>
-	<19bf8d68cdb.ae2c0d37126486.8380742359510867201@mpiricsoftware.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: pgkjf9jigx8dyebfxhhuxe6qm7c7pgi7
-X-Rspamd-Queue-Id: 94BE0A0003
+Message-Id: <2dfabfd9476542e39c7d5473a6597208.0@linux-foundation.org>
+Subject: [PATCH 0/2] xarray: free unused spare node after range creation
+X-Stat-Signature: cdhzh9tjkxbro8x8hqhwe7khiuwdj74d
 X-Rspam-User: 
-X-HE-Tag: 1794712210-968076
-X-HE-Meta: U2FsdGVkX18oadhsaATlBkv8Szp7q7BsSU6qwNlt7mQUgPne88QkIAoCUXr3h7uTDooc6MasD9mUHfGl0thQ5ARWkYJrZL6xIhfIzGI86osp3fLD8A2rvB2qn+eMzSzh1zlY/Zfv+GuhQKQknZLRFlVNkUdsPMkQMOFs+1clLpdw1uzFWqMnRdj252a/13jFJH1HMg8HcyK4Byxi+x+WV5r9dL8K5JWI9iHhD/O9EKW3bCEIKnIJEhJ1s7oNjJN1Jyj+VhgJQyrcHmzrCUBXQF1iv9nn3xHAnl/qRfjhito3xhHLJPJcsGz90OqRevyojDHEjKzVJRqwIX3UKT1kM5s4SJo0MTJ2Y+cI16hUBU83iB18ZNVzHsE0TYXjObCngh2zJXNmm3zHsvzyKXk74ONUVMXcYZSG1MEw5y2cDQwh+aUYGd+4j5CmtliZeIQ9LL3yShUAOaIyFjWIH+MkGlJ4qAt+t50QmpgX0MGtEC0G/PYlZlFTLws5RrHMHeh1jjIS3lfuCexGGTU9nVC9AJAaULRNfbayjH4wUgSzPUvBBO0/oz+Ssr0JFeRU7n6tbAlL3yHgHWvMwzRpXDeQ3IjRF9v5bmkD4MEy5vJPolAO69YCm3qUJEbVe5HObgZJaQv5pA3+heWCRx29aAhGp/vlzIE1vsU4mU03yjy+OnvmPlGlHtsejdzxwjEO/0nzQgyn0UA8ZC0gs12C5C4DHQ7G4XHlaGPWuWi4kj/jiLF2sL5oaye4mlvKBRftLSOkru8j5E+ueuBicTWlp+prtizZFVmN/rsV25mIoEfqBvGRBwqrtw9StdCGuXlg/CQ5RECPdS+Dsvh512ReZ6SGMWwQdunUU2dPHLFfoqwRn6+S76QggIZ3OUanvYnGL4PiWX/kW35pzbiB2IkfbGv+As8rJc1VaQFza6y/h2YBVhGr4UbZTpd7l0HX1d77ec4fGA/BeSk4+lywxjYJv3U
- WWgPs/Nf
- b+M2yjexVGBPcDLiSvMFO6YYiu78VPPt1vBaXWEh1nblR8k030R7+Ze20fVdn0xkEm/x8vZqaOCncJXlTsCC8oqEVkmPS4Bc6ymsHyzeqhT8bxuU4x7dlFQydovq8DBlJTEpyNP7MaiveDrDXO53GZOGKruZqYWNYbciAB3VarcnAounFuNVB6bYzxPIOEC4K8rAd72W9Q/WE76utsowQ9AzxvxldY/NfcQ2IDfaPFW5tSe/PjwgcQ4u829E81312aJ/ujwsnkHvrhkVJbhFfo23r0OHT0JNLY7WNACRZTGzZbx3G6xg2xxZUeNSKiEpqLaDn2G8MIO/rep6QIo6SKvL6CPJSco+/kVFj6bP6Tv5L1gPNwCMbpDjbEp5chAfFgEUBRxT/kmG1GgJqXpAEchz6cw==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 119F6A0005
+X-HE-Tag: 1794712613-180307
+X-HE-Meta: U2FsdGVkX19Vf0E/CLXfJxbnahAd7lkX+2CdbIeBnNiVl1T2vLvsXGwvC3YXC0WhBwz6knqzFOSopXHaMAgSIbWGmwXPsObZBSlX7ZGxcbaQLJ9YaPwLAK6aGQSDSPSAFsfbog4bwDi1ne0yT5Lp7nCr1GDzrBbu1bowL9PKcd4CifT3QnXGUjV6oLGHvyV8A3h1zClyhiLmD0TUDrXDnrZTDUKrD9WOcP0V4pUf8nh4R7TxiJ2gHvyFCWgCklMPSZnPujUhnZ5qvaoSE2julMjW9JEvz2g7a2jGUIgJLALHao21YiJr3q5BsyfovgXhzG7Q12xJg3mGDbnjHw0tDdJyx78UuOIGBPbC63FAx73c4LwsKzf3XlAdtdCJZU4RrFEYl1CN4Px/xupqLN3FXQ4xqEQUIDQDdmQgxw63QA0Evng7cKGRX77NhKzgOIrgOznlLCErfO/q4kOpTpTmp/gec1u4JIWI01Tb3373kDD3KiOUegSMGL+OhYJ1Lpk25Cv9COWrEjwswlVNS4O8P6F9ctuCYxAalxOCb/IX2A65w9EHorMe0i2N5nBmyr5WqVPpbqkz8BCFqqKn/EbOqSxYpaxdME2cKLvlQLKenII4vVkJkvVrum03vTzobXtebm7D8hp5mjDyTQWZIn24BjOzOLT81TADsZDJAjqnrVef+R5sGSwsGW+FrpsDF2bYG5OPjzH/yIotFkfbv4ERr2PMt92FLPsnIJHNLmpO2PV8wIZz1dKQSEajjTLfFiqqgNT7chcSmZlMAPmNm1QWHIkPtChQRkuL+fwYXQbsmKwS2KnouzISOANFIT+uNpMYRS0VGd92rRqpZIO0PcAhX/Cnl9DzJNRMBw7+iUlzeG2Z5U9RZhPvndhDhUBZy0KBJq6vSjBnQQngS3PCB2IYDByoC6AcJCDSD2Pso0VVBao9YNpnf24jjSTf15ZTqkrvIMjiNQii0TmoeJIhtB9
+ O9yJ8iuL
+ 6CKos94VapfCNBq7ksKD69DP7cBd6gmpXDmH6GCBf40vtVe79T7iDeMVrIAnUloKAylbZGiMlm0eWRFdA4M8nlkDm/MvbsavWHTqpdswxavKsZqbw9RNAhRj7d8rC/klDPVkn7Z7HDQ7EDuZbDLPcRJRJj8PseocmzJo6nL5hPAAzdTPW4TRkLxtH6rOoVOjPLXhTS+2hdJeRReK8NIonLTWER3Nd0qWxetbTdFAEBeStSi5S/lW1Qvlt8A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,24 +84,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Mon, 26 Jan 2026 11:16:08 +0530 Shardul B <shardul.b@mpiricsoftware.com> wrote:
+xas_nomem() can leave a spare xa_node in an XA state when another user
+populates the tree before xas_create_range() retries.  Free an unused
+spare at the end of range creation, and add a deterministic lib/test_xarray
+check for that path.  The fix is first and the test is second.
 
-> Hi Matthew, Andrew,
-> 
-> 
-> Gently pinging this patch. I’ve checked the latest linux-next (next-20260123) and the akpm-unstable branches, and it doesn't appear to have been picked up yet.
-> 
-> 
-> The patch has a Reviewed-by from David Hildenbrand and fixes a memory leak in the XArray library identified by syzbot.
-> 
-> 
-> If there are no further concerns, could you please let me know if this is queued for the next cycle?
+The test patch was held on both sides of a kernel A/B run while only the
+fix was removed and restored.  Without the fix, its spare-node assertion
+failed (158825705 of 158825706 checks passed).  With the fix, all
+158825706 checks passed.  Both runs used the same verified guest test
+script.
 
-I finally got onto this.  I prepared a test_array case to demonstrate
-the bug and confirmed that your patch made the test happy.
+Shardul Bankar (1):
+  lib: xarray: free unused spare node in xas_create_range()
 
-I'll send the 2-patch series separately.
+Andrew Morton (1):
+  lib/test_xarray: check unused spare node after range creation
 
-Thanks.
+ lib/test_xarray.c | 31 +++++++++++++++++++++++++++++++
+ lib/xarray.c      |  7 ++++++-
+ 2 files changed, 37 insertions(+), 1 deletion(-)
 
