@@ -1,115 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E30606A335
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 21:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F35606A882
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 21:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T2cip6gm
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fTFSmfz6
 Received: by kanga.kvack.org (Postfix)
-	id 236E56B05B8; Sun, 15 Nov 2026 16:00:09 -0500 (EST)
+	id 398516B05B0; Sun, 15 Nov 2026 16:00:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E7BD6B05B9; Sun, 15 Nov 2026 16:00:09 -0500 (EST)
+	id 36F516B05BA; Sun, 15 Nov 2026 16:00:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1249C6B05BA; Sun, 15 Nov 2026 16:00:09 -0500 (EST)
+	id 285ED6B05BB; Sun, 15 Nov 2026 16:00:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DBB126B05B8
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 16:00:08 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4E1004082B
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 21:00:08 +0000 (UTC)
-X-FDA: 85438570896.25.1022C55
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7B34912000D
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 21:00:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T2cip6gm;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794776406;
-	b=XYdD+DtAru+J3+LsxrzCsiYTuXI6oS1kbWPbqgQuEqTUKFtj6Rqf5saKdy6nhUtWrU3m0D
-	RaDahR4kJ1uQBZanDH/Y7AjhR+hEVXdWoqybyDDjFSPqA3lCqyUdU8yZjYz5ZW9kK6wOOI
-	wm8uo7/tSs5wJRYInpKeSiq33fTr89s=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T2cip6gm;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C1686B05B0
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 16:00:59 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 37C99120827
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 21:00:58 +0000 (UTC)
+X-FDA: 85438572996.02.97C55A1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 87C1FC0009
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 21:00:56 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fTFSmfz6;
+	spf=pass (imf28.hostedemail.com: domain of wufan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=wufan@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794776406;
+	s=arc-20220608; t=1794776456;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LeV6YEX2bH1ZNj9o0DW+0ahAYdvJN/jsXTtdRU8/9AI=;
-	b=Sj1IL4tgGl5GmqCYDTJ6uvhfVeCY9/abvD44fmlwWaKtKNYcoXVf0ikNoRxqRKygF96QJz
-	gxy95gIhmNgtUq4BE5FqesOgbRT+wbZihZ+E0ffEM9aomqh3U1T6pH6vh74gViAAMzY5jN
-	T4dh9ucJ0YfRR5HQJkG8cF6m/3gVlBc=
+	bh=lEm6igHXIFAAgEEuRJ/bqCUFcve2TkljyAexsixdkJo=;
+	b=VhnzU5cZPIghqyVIIcfrLn400O/b4gtfrVR78rLvl0nY8Oyca8DFaywoDtdORH06qgKnsX
+	LcG5kpHt0V6cjLXVkWh9yCps5fhYHlqXHo7Qxy3rsGNhWJkAFYEJ1Ti1p35CZj7pNuRY0Y
+	qU//xRzXHv3G4pyNxEDM3CbRWV55ZnY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794776456;
+	b=oKVontiVOBsS3m34TURNgOX8dbb/vMQIU6f9L2ks5hAwEYZfJWw1nkvST/SqpuW162qon/
+	IYTsoI8usOa9Ha6BrgaERtxHUM6wOqtzM1zaaPS4O/DOk8Sk1YWbdYHH9WQcyij0wF5c98
+	ag2Ukm6n0o7cmiC5So9M8Lowsyi7dJI=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fTFSmfz6;
+	spf=pass (imf28.hostedemail.com: domain of wufan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=wufan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C2FB444F11;
-	Sun, 15 Nov 2026 21:00:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B013D1F000C9;
-	Sun, 15 Nov 2026 21:00:00 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 233EB60F01;
+	Sun, 15 Nov 2026 21:00:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B04B61F000C8;
+	Sun, 15 Nov 2026 21:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794776405;
-	bh=LeV6YEX2bH1ZNj9o0DW+0ahAYdvJN/jsXTtdRU8/9AI=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=T2cip6gm8gB5h95y1ybRRsuA+GQPaDaTHCotw5DYJinkceb7agyh9YzpHtd/ZEFQb
-	 m2LT8aDhL4DfNsxEZNB9+VGr+mEgYXQdLRGIo8WCwWeZuj5gGy2RjGH9U6KEFJX417
-	 /JxhVXOHxbIt1IMPriPNrf0/4Qyw0v4mzLZ7z0Mg58Y2UCXk7U7pgSFCDgzsxQ9kTC
-	 U8m2Fdyz1h8vxmjkgh+hOD/1cK7MT52qmKyujfXFv+UDn/JVUOruPqpLYtU5MMCNGH
-	 CSMCTJEhIzT8RMee8Cuy8IF9YrQHecKhSHE0j3z4hBVvgBARrEygKu0+QcQKpInfF7
-	 Wa5ztp6frLqxg==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Sun, 15 Nov 2026 20:58:22 +0000
-Subject: [PATCH 3/3] mm/huge_memory: only compare PFNs of huge entries on
- huge fault insert
+	s=k20260515; t=1794776455;
+	bh=lEm6igHXIFAAgEEuRJ/bqCUFcve2TkljyAexsixdkJo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=fTFSmfz62R/xzgkMpYRbTZzSO1fAaOTf4jflJ+BI1Scxj9kPgQQRUJh5ePp5hBeOu
+	 +Bd9/jFgUX/Vr3SrSaL7NiWng2cleM7I5eVUET0CxCOxtD3z3JtobCtoEK1uZsrk9O
+	 iAGU9e2NNbHTnHUUm1WhpTgrGJI9DxfNtXj3ZbOqcBeV+X0YOubFg16rMVAG4n816S
+	 meAMgeXKPUTzQXxkWxbQZTL7zIU7+61yO8ddDum1vZdciy3700YyDsvoCC6X0U8Z75
+	 isgWalRVkoXJWNKjU4wQOTcFTO3/feMNx7FHCW3f8rR417/NwmEPrn+s1XJbm2eRIP
+	 zaZrd+FRk8kcA==
+Message-ID: <4e9a39ac-9ad5-49d8-b0c4-09e665504609@kernel.org>
+Date: Sun, 15 Nov 2026 13:00:55 -0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 08/13] ipe: handle errors from resolving the real inode
+To: Christian Brauner <brauner@kernel.org>,
+ Amir Goldstein <amir73il@gmail.com>, linux-fsdevel@vger.kernel.org
+Cc: Chris Down <chris@chrisdown.name>, Miklos Szeredi <mszeredi@redhat.com>,
+ linux-unionfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20261115-work-ovl-d_real-v1-0-ca155efbcb2e@kernel.org>
+ <20261115-work-ovl-d_real-v1-8-ca155efbcb2e@kernel.org>
+Content-Language: en-US
+From: Fan Wu <wufan@kernel.org>
+In-Reply-To: <20261115-work-ovl-d_real-v1-8-ca155efbcb2e@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261115-huge-pfnmap-fault-races-v1-3-537605643f6f@kernel.org>
-References: <20261115-huge-pfnmap-fault-races-v1-0-537605643f6f@kernel.org>
-In-Reply-To: <20261115-huge-pfnmap-fault-races-v1-0-537605643f6f@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Alex Williamson <alex@shazbot.org>, 
- Peter Xu <peterx@redhat.com>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
- Kiryl Shutsemau <kas@kernel.org>, Wei Liu <wei.liu@kernel.org>, 
- Roman Kisel <romank@linux.microsoft.com>, 
- Saurabh Sengar <ssengar@linux.microsoft.com>, 
- Naman Jain <namjain@linux.microsoft.com>, 
- Michael Kelley <mhklinux@outlook.com>
-Cc: ljs@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Eliav Farber <farbere@amazon.com>, stable@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2744; i=ljs@kernel.org;
- h=from:subject:message-id; bh=WviD5NyuI8opANfsL1TGM2rHrGogh6uBq1tLgREc0rU=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJ+yTrZHDqktpfZQmBWYV1LwAvx+w+yrrsrn5JO1fm76
- //3l7++dpSyMIhxMciKKbI8/yK+P0gkbF7nBX83mDmsTCBDGLg4BWAim6wZGdb/XdPJ9UmSpWa7
- UvJV+YwdybaGkhE9SxhW7+ZdZGaxU5iR4cner53/r/R9P5FSLKSasu3KK1HNtJWbjjuvnHTj3wG
- xrZwA
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Stat-Signature: yhcbnytokumnua387pygjqcw1brmmpo7
-X-Rspamd-Queue-Id: 7B34912000D
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794776406-647635
-X-HE-Meta: U2FsdGVkX1/KcJXPLgcN2ZoVT//1sXwLSvmHCSy/iOqyFrZNNl29o0ZvRzgc69VtUJfA0jDiWdj/hBxglklZqTnyMtP0La8cYML3Xe4S9AMFRqGtGYDzWqjkiLf4iufaaROy+qZP259qua1mSztUfVsOJAe8532ZlWqC2GbETz0QvD2pFhgg1RtjrsFSaSfBBd4LXVCsK2ti8fqlgHkgre+H/fXGVayeHrmJZftXqsvTryYPaHITa6PCn0TkF3heQhFe4wFHph5gNzw3a7ZHaE36Ld+UilD+dM13pYTmBxKwJ6c+UW5WwK1AO4y9AfXFimai4rMA4wlb/bgUndfk1f556l4j4jocr38iDF8KEAXLYgKwr7xRAL7onGnl0rM7YqewUqhwIfahIooaogh5aw2ZXq42AEUf3WLClH4vof94Pw6RDyVK4EZXJ90XTg7dAWwmlI/7+112aRmtBPSJwL0IoCbPjD7oigrvgvvZHgWgIn/QFHqEO7hbegTiPFEZs/O0Q5w0R9sn6Y8RCPxVzhYd99ULMaLayKZ8VyxFnKR09DDaYhZwLanq7gmj8XimaLg74lF6PqqQ/hpFA/zeJlJgaEwwBaYo96d6EjkURxl5l7tDonsmhEO1S5AWjLyLGpUJJNc7lfPPGyPVTkW3EV7Ab+O+lwH8+Sr4xH6HQ0V5RiSSoeC0KUeIHw1HWRgzzdIhtiQAe7VEV+oWJIM/6qHOGUU0pa4/YEwbYNISkb921B4Ei5mrthcFfbuR/DYLvf5C2TgUiFHA3silqVXv1V51B3HacHqSvElkFTLBvmPlUMicGePWhVBUUzod9dwj1xOTku3Jk9ViNgXrr7qCs0j5dCI/0qdD18yE3P4BQZIMgi2h0+9HGPf+3SR4IJiKnmFD6EDJvLz2WEOS/70MsCZJLjVQyaxmqzFpc5qiVT1XJ3Zt/z5R0V7nl9z999/CA8vmuD0ZsHijwoXuanL
- zBTZn1Bg
- 0bn5imeJp0JDh+IhfHSkFWJQic/AhwaJA87gVAa9eWVJ0c3ykCSt1COlJQvD/Yna1eiAyK+T87D/LyLIo2oxQt81fM/5cxiCWPTwRvkMKzceXd39Gw5KODzCVOwqQvfyduhlMDu72t1HhP2GiWuOaGO8jUgIwSdUrhIahltIfEm+kYiajI/tP5+BNHp0VjJrbuLSlfNJiJEJqFNOuDBrrptljNiW8DF2q/dliYHsJOAUrJ8kIek/gbBkrP/0IzQ7wilh811Sx+vmkTc7xpb+rKXwmJw01RI4UEhosbZf0IuODc+q2BG2CfJAq3ROJgSUpyzJE
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: ia38bp46wc7kehh1b4jtmumi6cdq1b89
+X-Rspamd-Queue-Id: 87C1FC0009
+X-Rspam-User: 
+X-HE-Tag: 1794776456-239737
+X-HE-Meta: U2FsdGVkX1/YWiMFl/YY7ljSoXoSWFFr+ItOF6g1xlVdGY6UXGU+685a92aaJCh0UoXM+Kt5OqA6FF+ki7fILCfBtLITC9Zo+8t2A/hs+nugKbH1MADq15/rLLM9Yi1GfwyzqwDN7K4kBVYVf3m7a5odK9vaSmIAuuMTsk9zYL8sYbbG1LfrnHvkgKgTfxb7T+SfTr/muytYgCfcSJrucYFyhkIr250OUinNscRP6EXNSLwRQlyaB1ENk74wvQg7vp3ezrwxHyviAZbcqbCrxc/CBkrycQBvmbG9Rv5vlEu3O8TaSUDsV2cNtaWfHxLOup37BZy3LECeO4SJf4Zod/01r6Q0K5gw6yCui8P/+dNL04zmT7IAN3Jh6SllCv4oqTAIGG/M9i0TpUgd6f/42u7WPxibRBOpHXJaoDhVuvfPkB+l0xSm6i1AdLMogdcozguxSox3pdv+40IaxTMMGRoYmB/pxLGo+okcrjkoQtfP+VIaETS4USJos6lyvXVnQdt/4HiNTz1T7jJrmYPipXCfkGtr3oBcQa7MBNtdyfuIyMQL1x1NI32Xi65+qXyCKYUzG25bs2K9+nB7ZN9lihyPdq+h9GtnUcvWE2hbFLde8Sv/yXpEJF64p1aAqK9RHYYKTmvjS9GPyzFo0J6RUSeZoLUGc8g0C56aJg13r5VfyZaa5vx1AloAAg1d1Xc2y7nV13amQFXud0gj0xzy1Ckvg60YOielewbHl1T792rRARU/A1wezIzbcZa3GuZe9Ahp2kSl5VUyKPLOeMBNkep74+F7n2atZBpg10sFPVsfwYCPz97Q6LS5MXuFm/97/lhBO31JhLRocpxADo02iANEKh4r5L9/r/D/P/PKLj4yGzRAcZ7eMkvY7U4bpojEOLFWjzeZvCVkA/DgMQApY3Im9CLd8Vd34dKVf2aIZBRCzSiwbRPIRZ6lzpodl43hRty650EsoaXAeIVd0XY
+ 7FWLXaOm
+ +qz0HhQa89ZsbZZsFsqoshTDN6SItTJXkwAkrsEiOfCzWebaG/hDW9kUfa2EFQPkPGvhJBXYUqlEx/3Y0rUH+MAtGSZd7nU7AltealVpPs1GiSS8GXjbRTb57P1813GzGz0IM55jnLukzyOLXzjVFEEZJJxXczMIor+R128N6HUNN5R37yiB+NN3VqsVc0vYkMjrzXWCaftznYDpVKqOhaTxGwLvbi3JNkOzyDpUHor4EaqODi6rhfS76mTBpEpDBdka1PMAc+jdpgOETdn9LwnbkgA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,76 +102,81 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A driver that implements both ->fault and ->huge_fault must anticipate
-concurrent use of both.
+On 11/15/2026 6:01 AM, Christian Brauner wrote:
 
-This can happen, for example, if a user calls prctl(PR_SET_THP_DISABLE)
-concurrent with faulting, as that only holds the mmap write lock and thus
-does not exclude faulting threads stabilised by VMA lock.
+...
 
-insert_pmd() and insert_pud() have issues with this as they both assume
-that, if the page table entry being populated is not empty, it must a
-present huge entry.
+> 
+> diff --git a/security/ipe/eval.c b/security/ipe/eval.c
+> index 4a7be96c84f03..3751963509df4 100644
+> --- a/security/ipe/eval.c
+> +++ b/security/ipe/eval.c
+> @@ -102,7 +102,11 @@ void ipe_build_eval_ctx(struct ipe_eval_ctx *ctx,
+>  
+>  	if (file) {
+>  		build_ipe_sb_ctx(ctx, file);
+> -		ino = d_real_inode(file->f_path.dentry);
+> +		ino = d_real_data_inode(file->f_path.dentry);
+> +		if (IS_ERR(ino)) {
+> +			ctx->file_err = PTR_ERR(ino);
+> +			return;
+> +		}
+>  		build_ipe_bdev_ctx(ctx, ino);
+>  		build_ipe_inode_ctx(ctx, ino);
 
-This is problematic as if it is a write fault, it compares its PFN against
-the one being inserted, warning if they differ, on the assumption that the
-entry is a huge leaf.
 
-Since the entry may be a page table, this is invalid and can result in
-spurious warnings.
+I think we only need to change this part like:
 
-Equally, the entry might be non-present. Nothing can install such an entry
-in the VMAs that reach this code today, but there is no reason to rely upon
-that.
+	/*
+	 * If the real data inode cannot be resolved, leave the bdev
+	 * and inode fields unset so the file is evaluated without
+	 * dm-verity/fs-verity state.
+	 */
+	ino = d_real_data_inode(file->f_path.dentry);
+	if (!IS_ERR(ino)) {
+		build_ipe_bdev_ctx(ctx, ino);
+		build_ipe_inode_ctx(ctx, ino);
+	}
 
-Therefore only examine the PFN if the entry is both present and huge, and
-otherwise simply return VM_FAULT_NOPAGE so the fault is retried and handled
-at the appropriate level.
 
-This is what already happens for a read fault, for which the existing entry
-is not examined at all.
+This also avoids the missing audit issue noted by the bpf bot, and we
+don't need to add file_err to struct ipe_eval_ctx.
 
-Target the commit which introduced the first driver which both mixes fault
-orders and passes the write flag for the fix (since this commit, both
-drm_gem_shmem and panthor are prey to this issue).
+With the above change, feel free to add:
 
-Reported-by: Eliav Farber <farbere@amazon.com>
-Closes: https://lore.kernel.org/all/20261112051440.16140-4-farbere@amazon.com/
-Fixes: 7bfe3b8ea6e3 ("Drivers: hv: Introduce mshv_vtl driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
- mm/huge_memory.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Acked-by: Fan Wu <wufan@kernel.org>
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 0d589be136d2..da632c3e834b 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1643,6 +1643,10 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
- 		const unsigned long pfn = fop.is_folio ? folio_pfn(fop.folio) :
- 					  fop.pfn;
- 
-+		/* We may have raced a fault which installed a page table. */
-+		if (!pmd_present(*pmd) || !pmd_trans_huge(*pmd))
-+			goto out_unlock;
-+
- 		if (write) {
- 			if (pmd_pfn(*pmd) != pfn) {
- 				WARN_ON_ONCE(!is_huge_zero_pmd(*pmd));
-@@ -1770,6 +1774,10 @@ static vm_fault_t insert_pud(struct vm_area_struct *vma, unsigned long addr,
- 		const unsigned long pfn = fop.is_folio ? folio_pfn(fop.folio) :
- 					  fop.pfn;
- 
-+		/* We may have raced a fault which installed a page table. */
-+		if (!pud_present(*pud) || !pud_trans_huge(*pud))
-+			goto out_unlock;
-+
- 		if (write) {
- 			if (WARN_ON_ONCE(pud_pfn(*pud) != pfn))
- 				goto out_unlock;
+Fan
 
--- 
-2.56.1
+>  	}
+> @@ -335,6 +339,15 @@ int ipe_evaluate_event(const struct ipe_eval_ctx *const ctx)
+>  		return 0;
+>  	}
+>  
+> +	/*
+> +	 * Without the inode hosting the data none of the properties of the
+> +	 * file can be evaluated. Refuse it unless IPE is permissive.
+> +	 */
+> +	if (ctx->file_err) {
+> +		rcu_read_unlock();
+> +		return READ_ONCE(enforce) ? -EACCES : 0;
+> +	}
+> +
+>  	if (ctx->op == IPE_OP_INVALID) {
+>  		if (pol->parsed->global_default_action == IPE_ACTION_INVALID) {
+>  			WARN(1, "no default rule set for unknown op, ALLOW it");
+> diff --git a/security/ipe/eval.h b/security/ipe/eval.h
+> index b26d1147d0708..58ca50987b2b5 100644
+> --- a/security/ipe/eval.h
+> +++ b/security/ipe/eval.h
+> @@ -42,6 +42,7 @@ struct ipe_eval_ctx {
+>  	enum ipe_hook_type hook;
+>  
+>  	const struct file *file;
+> +	int file_err;
+>  	bool initramfs;
+>  #ifdef CONFIG_IPE_PROP_DM_VERITY
+>  	const struct ipe_bdev *ipe_bdev;
+> 
 
 
