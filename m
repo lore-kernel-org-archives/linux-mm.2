@@ -1,78 +1,77 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB91606A323
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 20:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6B7606A32F
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 21:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=byhLqDIe
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FmoMRSyn
 Received: by kanga.kvack.org (Postfix)
-	id DA8996B05B1; Sun, 15 Nov 2026 15:59:54 -0500 (EST)
+	id 284916B05B2; Sun, 15 Nov 2026 15:59:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D58C76B05B2; Sun, 15 Nov 2026 15:59:54 -0500 (EST)
+	id 234BF6B05B6; Sun, 15 Nov 2026 15:59:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6F506B05B5; Sun, 15 Nov 2026 15:59:54 -0500 (EST)
+	id 0FD3A6B05B7; Sun, 15 Nov 2026 15:59:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 965266B05B1
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 15:59:54 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EDECE140811
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:59:53 +0000 (UTC)
-X-FDA: 85438570266.29.44B4F5F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DFC676B05B2
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 15:59:58 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 49AF91607F3
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:59:58 +0000 (UTC)
+X-FDA: 85438570476.27.14EEE26
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 24505C0006
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:59:51 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=byhLqDIe;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf27.hostedemail.com (Postfix) with ESMTP id 7863140009
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:59:56 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FmoMRSyn;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794776392;
+	s=arc-20220608; t=1794776396;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=VA2364/cpCnUggdKro+8A6hQCGEzXM/toJ6MBqEOOtA=;
-	b=1FqJCyViTqnnaZZc51YOFYQPa5qpLWVgdTaBP3Jhdu1LzjZnsaqCDs+aI45Y9d9mMj8Uh1
-	r7xgd+2mL3ZY/jqFtVuAjdCBb5SEJFpUm7tn/PNHcD/MGAgBofx0AMZzcPNh/sW/0pX0sE
-	8pOGedye/1NoRgz11tOk+yTFE9VfTkM=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2/WlrLv3rx637/xLB2mJR6zPnrKBFs2t8412/Tv2urE=;
+	b=T+o3LwKuYoxuSSUjpxiW48sbYROYUvhbpWDs40QhoFKvj29lVkhMRPXHtDkLnJYYlKScHN
+	XCc4Kv+0RZ530f4WbVK20KxEQtSsEHi4CM7bl9kv92bCwggsiohZ9LxMQn59MSUMvTuOq3
+	CmeMj+J+Lwoa/esM4RUKS0DG1Cdz1EI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794776392;
-	b=UbExWhsmkoDApHVcHRBWa03mSB6oAtjwYCewmDEYsxjAUBUecEMOp1nzlZ+TM/tQv9oER6
-	kga3qNnPH3+iND1EdUGSN5Zi5NQmndkYmpJsBNDaJOQ0cz41uq4S57XeZTHb1VfFe7vaWT
-	UhCJ6zvzCEvsxoTBGz2DHNvVsJd0XWY=
+	t=1794776396;
+	b=PjX9FNh//mMxexEV/A2wtJ7YbcouZZA5LPU3nPNuo3zgFnSoIO/URmRc/MArePNlBJEPmA
+	a2YL8+oGqnDijPCkaMO3nDRTe7KSnC936moqVoXM8d9VhhTSSSpbJuFXG7pGpqS2CT2QDg
+	T1B8s9FkxVdKWXp9wNT/9n8+Untbu10=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=byhLqDIe;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FmoMRSyn;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5067F406F2;
+	by sea.source.kernel.org (Postfix) with ESMTP id CA30A406F2;
+	Sun, 15 Nov 2026 20:59:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F7751F000CA;
 	Sun, 15 Nov 2026 20:59:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E74EB1F000C4;
-	Sun, 15 Nov 2026 20:59:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794776391;
-	bh=VA2364/cpCnUggdKro+8A6hQCGEzXM/toJ6MBqEOOtA=;
-	h=From:Subject:Date:To:Cc;
-	b=byhLqDIegiQVqxAucl9Glj1PrPu917T1FZTNs3DV7p9HnAejAgQAbynrsCmrw7/Mm
-	 JaTzPT1MXtu7jaYqDZ1s+W3fOGw3iixNVGPUZl9yHz6YHU164bYdk7NeETPpJHqUd+
-	 I9nfdjFneqbnxYmYlKRzO9ioGQ2GRNJw8Y1h2vI3eX8IkXNz7Y5u4OJzWzCcln5Qg+
-	 +tAMDmEkriNqw40FVMLziHs8KxCSDHLlzB79Jnv6vgPeDDxXkzlhcuJyRv6PwjQH2L
-	 DXLZdPxf68lxWwnHXLohGwnnPkSn/LQI8dPlgRuZNMFM+hO6PZf5a1oqJHflx9oLcW
-	 4UW+BE6Dle7uQ==
+	s=k20260515; t=1794776395;
+	bh=2/WlrLv3rx637/xLB2mJR6zPnrKBFs2t8412/Tv2urE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=FmoMRSyn036wQYRqY5I+q4VSwo4/lBASPt41y6c/GBJQUlqh07IoWYwCn9X4nxXI/
+	 qTaMQRml85ZoyJcTubYBZfcA0o6XZpkS+dhfd7n6xRfrTdT4C3b6n9PnJYiwpGg3ed
+	 gQIwHwnsR+eOlfKO6Isx/4vkrhVZBnwXLiVrttByb/bcev5Q6UewDo/FTJaS9JfoUd
+	 gjxC9yC/CUn209JAXsxVPBVb9Eg6mk0ZBptQbm2t8iG3/nPkyu/ThcM6lihl2kHYp4
+	 Y0b+1tr7u6WhWEQeedg+HoFehDV1uV7CqM/Ju1qk+q+sXkk9WpkQ8/dMdUAoOKZ4BE
+	 1WrBcEWXtH6bA==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Subject: [PATCH 0/3] mm: fix races between huge and non-huge faults in PFN
- mappings
-Date: Sun, 15 Nov 2026 20:58:19 +0000
-Message-Id: <20261115-huge-pfnmap-fault-races-v1-0-537605643f6f@kernel.org>
+Date: Sun, 15 Nov 2026 20:58:20 +0000
+Subject: [PATCH 1/3] mm/memory: remove racy huge PMD assertion from
+ walk_to_pmd()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAOsc+moC/yXMQQrCMBCF4auUWTtgosnCqxQX6XRiRzQNmaYUS
- u9u1OX34P07KBdhhVu3Q+FVVObUYE4d0BTSg1HGZrBn640xDqfathzTO2SMob4WLIFY0V2u7K0
- f2RFBe+fCUbZfub//rXV4Mi3fHBzHBzCyPk97AAAA
-X-Change-ID: 20261115-huge-pfnmap-fault-races-534e626de5cc
+Message-Id: <20261115-huge-pfnmap-fault-races-v1-1-537605643f6f@kernel.org>
+References: <20261115-huge-pfnmap-fault-races-v1-0-537605643f6f@kernel.org>
+In-Reply-To: <20261115-huge-pfnmap-fault-races-v1-0-537605643f6f@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
  David Hildenbrand <david@kernel.org>, 
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
@@ -89,29 +88,28 @@ To: Andrew Morton <akpm@linux-foundation.org>,
  Naman Jain <namjain@linux.microsoft.com>, 
  Michael Kelley <mhklinux@outlook.com>
 Cc: ljs@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Eliav Farber <farbere@amazon.com>, stable@vger.kernel.org, 
- "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+ Eliav Farber <farbere@amazon.com>, stable@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3985; i=ljs@kernel.org;
- h=from:subject:message-id; bh=xSqJJkNSDKsyFei27utb2c8SL/5Rn98AsgyN1JAUJu4=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJ+yTpFLf67/xKjee/RnzUbFI9ee7q1Xc1liUrb8eJ7q
- xl2KPuXdZSyMIhxMciKKbI8/yK+P0gkbF7nBX83mDmsTCBDGLg4BWAi+5cz/K98tov5J8OUtd5r
- xNJ1p/LeKVpV75Ux1y6/7ZDLO2PDyU6MDJ+rxPeGbtcxrnjlevhKpfP5mhPVYc8U5UJv7XIwn8v
- DxgMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1634; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=thuYM+ra89Xe+thgF7+RwlppoUyXwhIzMtQWcpO6kLg=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJ+yTqJv/r0hfu0/9+HsxgMt5kf+MRadqeo5bl7Ylamz
+ yO5JZ+5O0pZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCRLZMZGRrkfHaIz+9aJNFV
+ +O9cePA58WabQwH1Xb55J6Uv1l7K+M/I8MNu2xO9BQxCPzIXON19sDigaKbytjf/r+xeUT1ZKyr
+ jHQ8A
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Stat-Signature: qhdmmkcrhhgjruw8qinbkgq7317fa1yq
-X-Rspamd-Queue-Id: 24505C0006
+X-Stat-Signature: npqf8xg83f95oz7i5arx1ukcqcb417mb
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794776391-530035
-X-HE-Meta: U2FsdGVkX18gESCsTfvaV/KQf53mCoUS/JkzK7if67q+nSl7j0QhtuF2plQd4ySAW2rAycJOdPrQua70bUs6QcI3Qehdq7WaDWzeogacqOU8jvCvY7GQeNupmF5tHAcZuQRte0A7ivYEHNtkbPoDVQ8RlY1NgOldU0hkc8JVNNVmjl6BW2td+BrNKqYQE+dxJsvovLmgo+rFY+szIZBgaMnaaqyemujUC0RxpV9bwyFZYC2iC+TAmrY0S7Yrk9opNdXMxeonhRz2X20skq0ODWAut1jMxeT2VZrhq0QcVz6E8+Q1P9bX4IsnMnoVSWN5JGMcZkuHWj9kOyu9KMiQglRUBIelcyuwOnwvj2Ph3ne1GtST9wesDsanYTUdAtzC4ao4aUSVK6X2f4YhMd3/wpKw3Y5cye2L9uecKS4B+ruNO+B6mBOk/mRw1ayEN/kQZpQKanvXR7ogxbhkUch0WoFBmWstY6MVpdrdB2AXi7h3iO5bVU1G11iQWTiIIXXrPbX7SJ9xD86oXh9GDpchd2GCdWFEzIanaj+9Z3AyAHX4dB45M+7yd28nw3RiJSAulsODh2EFtYUCMU6ax8Q9fJm35naWxdFoXotJ+7j26g1aCkDD8gkuXxLxLr4cOkjvR82bM2QQ+3L4s+UmUwsk6GiDi9ZeZ+iHkfNlnk1deVWKooqbpZhGTyd1fINezgpNiQFtUvvGEv6zwME1DqRvuHyfuyoaKihSh17CgJjM8GlV5joRhoyZmhsami2Kac87H/QNxUjrvEtZi6U5Llb7T6qnUdHxCFouKtWX2yBBvrftNurVA1x/nyFnWHKVF6uu5t6tQHVNaJ+uU77IXlN+G4NSvTkkd6yhVKe54SnZly2oSXJETkKK+PXVzURW+tsBZe7XOS1Y7eHPHTXJ12zE1R9ei+6h18XA5ZI7ab1if8JFvCefWhn3lf9By5cljAV9HD+LxcyLUwQrF37Wwcz
- dxPrJ4ap
- Ou26AreKDzr2HAwA/NwXjwbz+/S1CJHuEn/ADF1OT/k78cUUBJwLRQvFJR3p3xg484DfavVwyx6qyf3lpfvhWlWntCmeXFyaW0oFkr5Ncx2dti5kSbe8urilrW1iZXmxqq88sJDbmQCI7QXgRlWKoTvFvK8xUy9d0H0LSzLv8zI/QfYgLppkGoksXWq8jNfnndYAM1N5PCbxxOoUfIuf3LGfi1S6UnKftIawWIbTaOxyCrdxSmtb7QZMl7zAC0UbDBAIqze5qgnidKyG+PA2Htngo77raVU+bmNzoQ02F8+1OMmhS6WbPKRdBpcTJ3J3XmJc7nUVvl1bsOlJn/8F1h5IyzkcgKE1bHWlYI96m/aEJg9jJ2bXQIn7ys1mJvsHJUavmnPjdma6zrXKUtfiFGFlVfzXBbIUm02YC58AiiPaykb0ECeK2o958bSl4eQkzbOfQGkeLpq5tPk084dLZUjz576xy+RtNAaCcOdT0VgXeXsZE/rgCghPA/nc72rp7cDRVpyXae8ZmLAEt9AJ6HrjekFyzPr212PQMgmUxRdBKzZjYhvfuft6oTOUEOugbLZ1gkI71zavWn0dg+LQBi1zTXyvu7iqMwK0dD9YfvMar2tA7wCrJaaBV5gilYAx/xuzgnTrWrqM1kCP5dYe18jptNvQWH0YjFsY7vHdymIi7mp5ObZI6o+46gP+LKxSC66MUQkbmggs2ipVo7T3Tb7JhWdpyBtJSKZXqqb5zjAowkSqzytVzCUVMO7qTbGhDUdV0
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7863140009
+X-HE-Tag: 1794776396-917432
+X-HE-Meta: U2FsdGVkX1/VJguTLJL9Ea0c3nLjFXgYE/PaS2Cf1QXCl1Tv48LLahS7bq5MTvu4gjzH4Jw/sXA0LWbQ2hf9Rr9G3vn9nQIHsefu6jZ/lycFEd8xYo59xmA6+zzkOHhYHImqt+pN3Z8Dq2EaAOLdmhUmNo1BBPloWbvEQNYC2T7poKjPjmhBCccIAqBI4Z/CjM91A5qjHv/Kz60LxkjXvYF08RRhnycr+bm8AwQsPx6c5sGNSkpoENf7HprrCHjJYUtBxDXgsOw4oY1BsNd0GZfwCg09dF88x8chULMrNfOUiWgWHNPcT/JPzGSlqqv4wi8Il6sEh0UGtYr7frHLyAAHBcsbN734b/NZpWxS6JBPsVWWRIFuTG9Cgu1+CcHuucAg3nYfd3suQAxCDMtOKx8BryVVeZ9DK6sAAT6sP9YdrMsj6F5sguePbCBrSJKh0pttKULqJmfByRM8dZIfnHhT9ikJRYz0/f+RkO/tz42v7BLF/rd3wN2WSxuASjqCqHZQtCTDTa5Cq2SRaiG+aCFYOvvoGRAzwwaXab8n5+ZfbZmuI4RNCu/u9oz3XHZZ3r6Dadu95vUKXbFiYhkXgLHmX+LtZ2GJJ4jZeCalwOwX0EJfel8zsJmq8DKdSSq2w8tdkes4DyPEBAwpDCKWpxFIarArRE1abUT1mo3icdGtLWUIgv01Gfy0/OauXQ/HH9uGunKJ6boaujH1b4kjUlgDYasN6a0BpWMUOPRRCCsEzw/9fUSi5Ik5FCRmKslvVsJxFQZfst7wz7VZp65UaiMeWIqCBPwG5bKVPfT3yCRzZ1biTmIZQccESvkpYxJOaudvyxA32DYaxiMrbGLU8mB+FdjtRq6vl6SZIVkNskviWekUirMr9hKSmc6qLKzNanNVAE9k7l1D1sytRXmsa/Xa4Ea1ykWvsUA79cef9nHle5p/hijSSUsTC/oFKEawC3SRMWRkbB08zeB+1ou
+ DE7gpEJU
+ afvpHH4JLbJRVG5/vLF5srEZ4DoxL6w5S+S4aPPC0i/5UR0B11iUpMrGy/OnECNUyV0gzdwmcCky58lwYegubKlZxLrLjWp2n/t3kiu7ENy/1+2lOvXSThjlY8MjCJ0wcl//YCIXZIBIsB2zHD/Mo+45MBMA2alKhutAjLqhaU8RaL5DxNHpkqAEFNHk1+w4lDmYXdBkR/61FbcGG44w3KIZWhZDa+7kJ21YwHPdJSCHYqbUuHX7P2bXb16e9psrzC/SCNy3EqAmb+AurugbkukHWkkmIRgaRoWkncfvcWip6qXckZy/dPxVxnKzyM2ub3Ycq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,101 +118,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A driver that implements both ->fault and ->huge_fault must anticipate
-concurrent use of both.
+From: Eliav Farber <farbere@amazon.com>
 
-This can happen, for example, if a user calls prctl(PR_SET_THP_DISABLE)
-concurrent with faulting, as that only holds the mmap write lock and thus
-does not exclude faulting threads stabilised by VMA lock.
+walk_to_pmd() asserts that the PMD entry it returns is not huge, but does
+so without holding the PMD lock, so the assertion is only valid if nothing
+can concurrently install a huge PMD entry in the range.
 
-A number of places in the code that implements huge PFN support fails to
-take this into account correctly, which this series aims to address.
+This is not the case for a VMA whose driver implements both ->fault and
+->huge_fault and which invokes vmf_insert_pfn() from the former.
 
-Generally the shape of the issue is that faulting the same empty page table
-entry can result in the ->fault and ->huge_fault handlers racing and the
-loser finding something they didn't expect.
+The existence of prctl(PR_SET_THP_DISABLE) is problematic here, as it only
+takes the mmap write lock and faults taken under the VMA lock are
+unaffected by this.
 
-The fault code must tolerate this, but fails to in 3 places:
+This can result in two concurrent threads faulting the same thing
+disagreeing as to whether to attempt a huge fault and thus ->fault and
+->huge_fault running at the same time and triggering this assertion.
 
-1. walk_to_pmd() asserts, without the PMD lock, that the PMD entry is not
-   huge, so a VM_BUG_ON() triggers. [ vfio-pci, nvgrace-gpu ]
+So just remove the assert.
 
-2. insert_pfn() treats a failure to map the PTE table as an allocation
-   failure and reports OOM, causing kernel accesses to the range to
-   spuriously fail with -EFAULT. [ vfio-pci, nvgrace-gpu ]
+Target the commit which introduced the first driver able to do this for the
+fix - vfio-pci. DAX also mixes fault orders within a VMA, but serialises
+them using its own mapping entry lock.
 
-3. insert_pmd() and insert_pud() assume a populated entry is huge and
-   compare its PFN on write fault, warning when that of a page table does
-   not match. [ mshv_vtl, drm_gem_syhmem, panthor ]
-
-This was originally reported and fixed by Eliav Farber in [0], this series
-reworks patches 1-3 of that one.
-
-Patch 4 of that series (x86 PAT encoding of huge PFN mappings) is dropped -
-it is unrelated to the above, no in-tree driver is affected by it, and it
-needs a different approach which is better pursued separately with the x86
-maintainers.
-
-All three issues were reproduced on x86-64 under QEMU using vfio-pci in
-no-IOMMU mode on an ivshmem BAR, with 6 threads faulting the same address
-in each PMD or PUD aligned range of the mapping while another toggles
-PR_SET_THP_DISABLE (note that vfio-pci had to be modified to pass the write
-flag to reproduce the third issue.)
-
-Without this series the BUG is hit immediately, with only patch 1 applied
-tens of thousands of -EFAULTs are observed within seconds, and with patches
-1 and 2 (and the vfio-pci modification) both warnings fire immediately.
-
-With the series applied 30 second runs at each of PMD and PUD size complete
-with none of the above, with or without the vfio-pci modification.
-
-[0]: https://lore.kernel.org/all/20261112051440.16140-1-farbere@amazon.com/
-
+Link: https://lore.kernel.org/all/20261112051440.16140-2-farbere@amazon.com/
+Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+[ ljs: rewrote commit message ]
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
-To: Andrew Morton <akpm@linux-foundation.org>
-To: David Hildenbrand <david@kernel.org>
-To: "Liam R. Howlett" <liam@infradead.org>
-To: Vlastimil Babka <vbabka@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-To: Michal Hocko <mhocko@suse.com>
-To: Alex Williamson <alex@shazbot.org>
-To: Peter Xu <peterx@redhat.com>
-To: Zi Yan <ziy@nvidia.com>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: Nico Pache <nico.pache@linux.dev>
-To: Ryan Roberts <ryan.roberts@arm.com>
-To: Dev Jain <dev.jain@arm.com>
-To: Barry Song <baohua@kernel.org>
-To: Lance Yang <lance.yang@linux.dev>
-To: Usama Arif <usama.arif@linux.dev>
-To: Kiryl Shutsemau <kas@kernel.org>
-To: Wei Liu <wei.liu@kernel.org>
-To: Roman Kisel <romank@linux.microsoft.com>
-To: Saurabh Sengar <ssengar@linux.microsoft.com>
-To: Naman Jain <namjain@linux.microsoft.com>
-To: Michael Kelley <mhklinux@outlook.com>
-Cc: ljs@kernel.org
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
+ mm/memory.c | 1 -
+ 1 file changed, 1 deletion(-)
 
----
-Eliav Farber (2):
-      mm/memory: remove racy huge PMD assertion from walk_to_pmd()
-      mm/memory: do not report OOM if insert_pfn() races a huge fault
+diff --git a/mm/memory.c b/mm/memory.c
+index 3a20d64fd276..e03110906aa8 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2384,7 +2384,6 @@ static pmd_t *walk_to_pmd(struct mm_struct *mm, unsigned long addr)
+ 	if (!pmd)
+ 		return NULL;
+ 
+-	VM_BUG_ON(pmd_trans_huge(*pmd));
+ 	return pmd;
+ }
+ 
 
-Lorenzo Stoakes (ARM) (1):
-      mm/huge_memory: only compare PFNs of huge entries on huge fault insert
-
- mm/huge_memory.c |  8 ++++++++
- mm/memory.c      | 12 +++++++++---
- 2 files changed, 17 insertions(+), 3 deletions(-)
----
-base-commit: 5b99c3309de70337f38bd6e6998ab8335c2758e4
-change-id: 20261115-huge-pfnmap-fault-races-534e626de5cc
-
-Cheers,
 -- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
+2.56.1
 
 
