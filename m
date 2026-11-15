@@ -1,113 +1,119 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 388C5606A323
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 20:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF70606A899
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 20:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=XvrNMgnd
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R9K+GxFc
 Received: by kanga.kvack.org (Postfix)
-	id 3959A6B00EF; Sun, 15 Nov 2026 15:21:46 -0500 (EST)
+	id D15966B00EF; Sun, 15 Nov 2026 15:27:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31EE76B05B0; Sun, 15 Nov 2026 15:21:46 -0500 (EST)
+	id CC67D6B05B0; Sun, 15 Nov 2026 15:27:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E6716B05B1; Sun, 15 Nov 2026 15:21:46 -0500 (EST)
+	id BB5FE6B05B1; Sun, 15 Nov 2026 15:27:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E5EA56B00EF
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 15:21:45 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 670BE80825
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:21:45 +0000 (UTC)
-X-FDA: 85438474170.10.79934BD
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E083D140002
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:21:42 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=oss.cyber.gouv.fr header.s=default header.b=XvrNMgnd;
-	spf=pass (imf23.hostedemail.com: domain of jeremy.jean@oss.cyber.gouv.fr designates 51.159.188.251 as permitted sender) smtp.mailfrom=jeremy.jean@oss.cyber.gouv.fr;
-	dmarc=pass (policy=none) header.from=oss.cyber.gouv.fr
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B4966B00EF
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 15:27:49 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7142A160711
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:27:46 +0000 (UTC)
+X-FDA: 85438489332.23.B60A277
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C5B8580002
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:27:44 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R9K+GxFc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794774103;
-	b=O1oDUse5xvJQrK5UjUdf6u4FAgs4KQeuAD/ip9t6As19/hHrdm/oFRkjFFC/8xc+Lya19y
-	1qyMMDe/8kZU9QDnxvfe0JXeWf0CaVOKUxcShAh7NpC4hLzMxtemlVx9QOG6YgyhK7+l0X
-	cHgbTblcU5q2eGMef7fX+/08kTUERkI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=oss.cyber.gouv.fr header.s=default header.b=XvrNMgnd;
-	spf=pass (imf23.hostedemail.com: domain of jeremy.jean@oss.cyber.gouv.fr designates 51.159.188.251 as permitted sender) smtp.mailfrom=jeremy.jean@oss.cyber.gouv.fr;
-	dmarc=pass (policy=none) header.from=oss.cyber.gouv.fr
+	t=1794774464;
+	b=JIMiGNv9Br2oGUaeIR/U3W5kArY04Hb/7Ji+kHQNt8lIYNzBMbZPpi+XZgWm+ImTdnyX5N
+	X9Rl8D3nTKgoFRQtF0UP/FYpPW9bz+VlPX+Xw5bLJuRw+JanJosC6nVjBK7kl/oHL96IB1
+	l/r8zNk7u13FsBiICRpOtMgafvLFcp4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794774103;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1794774464;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u0PsfBl18AWyK4iQSGjFIhiNJ5cYD9CJo88yPJo17Sw=;
-	b=hntjQ3Kc8+5QeJ6KwdSjgikCY2HBG5+3AMzlqQ1sYGb5OL3nHWUKcbc+ayIu/UO8BumOHF
-	p4pr+vTuur1Hae3iMIgv37gxelCwaHebEb9GuKmN1VR/F8EehxRr3hXKQvs1FVpBe8yVHl
-	Sim2AxV/jseRhUe5GveHfRwUpG3fRJQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:
-	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=u0PsfBl18AWyK4iQSGjFIhiNJ5cYD9CJo88yPJo17Sw=; b=XvrNMgndHaNpZ6nydqFHt5ym3I
-	JoO6LfNPmqvNLCvCUtifefbs196ApVghVh+ssI8jAiqOxccoeJTLFfV7Eythu/RswNAKG3qs92MRZ
-	TqZh3qJ5g16usg7xcFH2pdIGn15MMB1kK2fGyE3Ik4Se/WXqpHCYfR65QrJmTCAhIDbj4dg9tDUM1
-	0Gu2sN9xI87vKJJVwCXn0K5OCJShN/bXqKgL3lF7xcijbGCDAbRvcO1nF57pzjSjQQZyD0Xdw0xvX
-	Zom1Ye3XPrS64aYtqiSq0py8QIMNrvXzV+usP4aBPkzll3p49qfPkBMXb0GV2kDxr86UHqUKXyBRR
-	XWxyxKog==;
-Received: from [::1] (port=43856 helo=pf-012.whm.fr-par.scw.cloud)
-	by pf-012.whm.fr-par.scw.cloud with esmtpa (Exim 4.100.1)
-	(envelope-from <jeremy.jean@oss.cyber.gouv.fr>)
-	id 1xSgjN-00000002LVQ-29rC;
-	Sun, 15 Nov 2026 21:21:41 +0100
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Date: Sun, 15 Nov 2026 21:21:39 +0100
-From: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <jeremy.jean@oss.cyber.gouv.fr>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Pedro Falcato
- <pfalcato@suse.de>, David Hildenbrand <david@kernel.org>, Zi Yan
- <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>, Nico Pache
- <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain
- <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
- <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau
- <kas@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH] mm/khugepaged: reject shmem collapse ranges beyond i_size
-In-Reply-To: <795b8d8a-4f6f-451f-9274-ccb8380e03dd@linux.alibaba.com>
-References: <20261112142335.2749597-2-Jeremy.Jean@oss.cyber.gouv.fr>
- <avYBFPhB46XWAG4A@pedro-suse.tail5790ac.ts.net>
- <20261112145036.97f74a828755d5b9178a3e3a@linux-foundation.org>
- <795b8d8a-4f6f-451f-9274-ccb8380e03dd@linux.alibaba.com>
-User-Agent: Roundcube Webmail/1.6.20
-Message-ID: <824c33ead7a2baf08715fe01a4c88714@oss.cyber.gouv.fr>
-X-Sender: jeremy.jean@oss.cyber.gouv.fr
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - kvack.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Stat-Signature: g3gdgyoez5itg1831d8h67qa9rnngsk9
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E083D140002
-X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794774102-962429
-X-HE-Meta: U2FsdGVkX19mD/oKCsM0QNCCj75igXfkJhqse9WA4HFVI1ZEDb2yEV6fEtLpaFTe+c0bj4z1tI9pCjVpJFbCZzdSq0GA2PGvdO4XEPkVaILzYdr3v/oMh+HFZTUruZqXhyv3DuJKqrSJtEJphRMfJyi8QDc6Cuc2sYHDKE3QsQR25gj0oGP68/cRC7bZxJ82BZtWC1qfTbrNlnMM33NodtZ4ve+W0Qpd4zCpH0l3wUxl1/3erdCyPFjCmhL+kp0+2vFt1TvG7oFPqm3qVS53vWqtsft0tBRN25jTIIIa0l9cIs06zXhcVd068GIngS4jTk1V0p1BvRmumXsCJTUrBStTayAMf17nAEydENCPFJoEKBVLYYT6dQv8sVDQs8w+moeNgdWMAim/mNZdZIJ0C2bn5T4nV/RvYT8Lh2EdyXlJUOO8sWinDVSq6Ful3ogGOGjzl0RxXdcKRFuSUp3wrrXyrpnV9HLgFb8ZEDlbaHmUnjnzo/jRg97dmenWuqkMo6LFNO3upoJPoorDz4SPI1pc1nrmfToWX2dUrnCqwD/+B4LD5pyjDFK+Lw5sw0O8Zi+vZZc33CslYgak4L+LOzwqIV8jakOZ1/cR+fhdoTGWCynkX9IF2Z8Qa9U3RHMgtjlA0xcjZeKv6CRBSeNGoEbO3T3dkKHG1adLoyIA4GTsZ1YIXmqXR4InRzUdZL3+wG+6EXG4Ys0H59U8/+LovjubTHHcjpCNTqKwfszj50zYYx3Pg5LF7NUqejz9yA2VZ6XWSPCaUZG9uMHTr7pJWRjeYYjr5d6xCzp9wsEDHIi6jpxmb0va2Cr824fv88oIG5lS1ZxqBuKaGiuXLHm9w+JtUK0+Wd0PTCRVG5wvSWmiQn8kt5kWh2enFBo9zQGttqoRNiUzT4JzZMogtyOpclQ/2Dsa+Vzmh17zmH38q/zUwybzvjVtO78NZZ0TXQimpkXh2OBHz+gqIx3i/X1
- vbqZU/Qb
- YzVmvNVc80wKW/rXP5HR6qh/hqcaodBt1zKtiLM+TIZPQsoTrUkVwH6KXw7ofTLW/omKeyN7MOgjEptTHX3WPm7Sk2AvbGNZz89BDTxAEf/1vGqoTQOIrqroGQ0si/yZd5iDAPA7AXH7QPnre6mDfVZCbYoV/TK5hHQgtXc0zSqjqg+GXZ4YPPG1OKD/5MYQvsOXTDM3uz1myBblMulM01paf0a6SKhzISKNcfLFPfKuQAnSQLnKTKOIhUtJYnH5/yXumQq7XangWuZzIDttyyX9OhcYoZbHQpuYYBSGA9eBjZVRrXbSkrT46HpV+W826tbr/gDnB+UulHZfxtf8BN2e+5cftT25oCk0CfgyBLRq22h+42+heUgf/cvIBWC7bytEJoF56OoDYB0Wxr47A0laEPtYw5Jbru7NcszpgOHZMaV6GOIvEoagnZRDjBArobBrg8BwOa+sXTDb7//oWgP84ei4LYNasPz7eJC7VJl/NDYrMbeLefcq5G0lyiixf4u3PGTciWvyNYQz3gqJzBjYQFpsJiTJWG0JM6s4v8FEmYqbjffgKzy0i5BL9aDZ9/nrwQFb+qCQNwEz4ZInpSrMtS9NoNLvuU1XTLcpdaeij7YhTzno9xH+Ah88hQ0476D2FsYCTkINxhw6jGf3+4fd4Syy8Z83tR1K9kULBtvFvsUoHO4RhOvrfrWdbpOPb4rxgj9WqwXy5V5/+N6xi2C3eEdmXvX42V1kI8FLGo6pzpj0sn5ZQE8vth5GnxEeqAsXY
+	bh=22XwY66KnSOtO1/d/kMDoLBAuqZ542YRW7O2pDyTx1w=;
+	b=qSGnBV12is2BqnJgDaaFPw7gskEjkacO5Pac07mYFsc6hixVfsRseOicU9tod3oHB8YjxR
+	AvxdDzgxn5subRBm7l/ZkmSkRjQBJr4ys8pq8szgy+2AGOFA822J/nodTK+LYYM4IGRGa/
+	l2jSiELWBU/L6wrdRuai+aimsviFIqc=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R9K+GxFc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0E5C0624DD;
+	Sun, 15 Nov 2026 20:27:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A52E1F000C4;
+	Sun, 15 Nov 2026 20:27:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794774462;
+	bh=22XwY66KnSOtO1/d/kMDoLBAuqZ542YRW7O2pDyTx1w=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=R9K+GxFcxklLWxKNOJ5lRWC5zIQSWncnMMkh8TmdSlBzjVeCIYok3BI+LiZIT9Js/
+	 wuRlKxXZ9tfeGHjVjLVPj4KVIC2OmTkytp5uIluoKYZYWdSYEniQPIj5QQyxgVWJ8a
+	 /bOuIKw1JSpNOZ6GUsOkWzb/fPu5wkio1MAqhuM/AxZd79rmeJLPB6eZ+PNX5oxePa
+	 I4OAq3pr+5s5YjD2xmNd79jVJ5yHrBZtLZEQ00vdL+E1kl4UHJOq+coEs+/Uz0nYt6
+	 lORfbphZZ9QOpkOn8tneNfDGO1qbDVyF4Aocafhn88MzuNMXyI5Q4SQtGN+PraJ4cu
+	 KIB9IJPamEnFA==
+Message-ID: <sashiko-outbox-215802@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 02/12] docs: ioctl-number: update sound entries
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Randy Dunlap" <rdunlap@infradead.org>
+Cc: "Jonathan Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "David
+ Hildenbrand" <david@kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>, "Jason
+ Gunthorpe" <jgg@nvidia.com>, "Leon Romanovsky" <leonro@nvidia.com>, linux-mm@kvack.org, "Jaroslav
+ Kysela" <perex@perex.cz>, "Takashi Iwai" <tiwai@suse.com>, linux-sound@vger.kernel.org, "Jens
+ Axboe" <axboe@kernel.dk>, "Marcel Holtmann" <marcel@holtmann.org>, "Luiz
+ Augusto von Dentz" <luiz.dentz@gmail.com>, "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>, "Jason
+ Wang" <jasowangio@gmail.com>, "David Heidelberg" <david@ixit.cz>, "Chas
+ Williams" <3chas3@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, "Helge Deller" <deller@gmx.de>, dri-devel@lists.freedesktop.org, MPT-FusionLinux.pdl@broadcom.com, "James
+ E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, "Martin K.
+ Petersen" <mkp@kernel.org>, linux-scsi@vger.kernel.org, "Miquel Raynal" <miquel.raynal@bootlin.com>, "Richard
+ Weinberger" <richard@nod.at>, "Vignesh Raghavendra" <vigneshr@ti.com>, "Zhihao
+ Cheng" <chengzhihao1@huawei.com>, linux-mtd@lists.infradead.org, "Neill
+ Kapron" <nkapron@google.com>, "Andrey Konovalov" <andreyknvl@gmail.com>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, "Juergen
+ Gross" <jgross@suse.com>, "Stefano Stabellini" <sstabellini@kernel.org>, "Hans
+ de Goede" <hansg@kernel.org>, "Arnd Bergmann" <arnd@arndb.de>, "Michael S.
+ Tsirkin" <mst@redhat.com>, =?utf-8?b?RXVnZW5pbyBQw6lyZXo=?= <eperezma@redhat.com>, "Sean
+ Christopherson" <seanjc@google.com>, "Paolo Bonzini" <pbonzini@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, "Jan
+ Kara" <jack@suse.cz>, =?utf-8?b?VGhlb2RvcmUgVHMnbw==?= <tytso@mit.edu>, linux-ext4@vger.kernel.org, "Mike
+ Marshall" <hubcap@omnibond.com>, devel@lists.orangefs.org, "Paulo Alcantara" <pc@manguebit.org>, "Namjae
+ Jeon" <linkinjeon@kernel.org>, "Jaegeuk Kim" <jaegeuk@kernel.org>, "Chao Yu" <chao@kernel.org>, "Florian
+ Fainelli" <florian.fainelli@broadcom.com>, "Broadcom internal kernel review
+ list" <bcm-kernel-feedback-list@broadcom.com>, "Tzung-Bi Shih" <tzungbi@kernel.org>, "Benson
+ Leung" <bleung@chromium.org>, "David Airlie" <airlied@gmail.com>, "Simona
+ Vetter" <simona@ffwll.ch>, "Alex Deucher" <alexander.deucher@amd.com>,
+ =?utf-8?b?Q2hyaXN0aWFuIEvDtm5pZw==?= <christian.koenig@amd.com>, amd-gfx@lists.freedesktop.org, "Jani
+ Nikula" <jani.nikula@linux.intel.com>, "Joonas Lahtinen" <joonas.lahtinen@linux.intel.com>, "Rodrigo
+ Vivi" <rodrigo.vivi@intel.com>, "Tvrtko Ursulin" <tursulin@ursulin.net>, intel-gfx@lists.freedesktop.org, "Matthew
+ Brost" <matthew.brost@intel.com>, =?utf-8?b?VGhvbWFzIEhlbGxzdHLDtm0=?= <thomas.hellstrom@linux.intel.com>, intel-xe@lists.freedesktop.org
+In-Reply-To: <20261114202653.3113381-3-rdunlap@infradead.org>
+References: <20261114202653.3113381-1-rdunlap@infradead.org>
+ <20261114202653.3113381-3-rdunlap@infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 15 Nov 2026 20:27:39 +0000
+X-Rspamd-Queue-Id: C5B8580002
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ksydjdeah1dabycyuoi38hu5yiamzcpm
+X-Rspam-User:
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794774464-131523
+X-HE-Meta: U2FsdGVkX19aJH4q5BA9MbdKtmy1QJYX1KT+ALEbjPWXO8NshWMfIEF7jD7rd4qs2reJA5AzYa/y3Q5duWr030PkpWiMiaWujxbpZceeKhXnJIcB9Q1b9lmEOj57p4LVuDpgDFbDZP8wYQb4dSOUcRj9X29W2RA9517JV6Z3CiFoV1CEsjcD/nYEUYf1F/pmHGzvc1uLPFk7vnysiwLXI5A9KmfTAPPPEI+Ve2881qYvpHsvREbNh8A3wwu1b5M+SdO8QiZYOqW3Wd7aysx1WYHigDSbeNvdd6ByGr93XoLci/SUHFkJQ0ilta1SAYaYK8kM/tkzElmbRh1srvxtZJhNrabShaHpt0N/8fHT8d32jbZixfkBfvfvNuzANXvklQHcc2niEksJDY60RlHSlC5t7kaPiF7olHGDh/81t/uATemB8qjQe8W66x5/DOs0zXebd/PzTpCzFPHEMJPsINae/gv6Luztj+ox59vP3m6ZIngERsEanIz1q394oERZtEcPFllSxbWyjb/LLH9MB+vLVHTBbGvXqHPHWzkSYA1pT6udiWy4m2MnqgDD7c9pGo6LhbsviWjCQ5iY+8YMw5LFccgxkZUQUVCrxgVD9ThUVb7l0SzaiLilkUKhpwHZ0yoBDF0HLTU8rJRyI+Dq1qL+s+dQGc+1miDniR4EOA8oUAD294yvzAm3qJ1ms6BbTQhKAl41Kh26oAYcfQZce0Z+nuXqbWbPJqw9G/yCnTmv635Y3zMvs8OwiyviiuU4WRn2X6sLo/XRqh766s34lf5O1C05pJQZhxPrDPAjboBG2GXSjsqbz5ao+CFJFc2On1vP+rijwVdhyeCRqwvklOqdh3QhB/sJn+8SgMwrb5IQOy9YpRlDBWN2Ej5axw/VWjqJPMU/YT/9HtpC6+jcH6PjVOnJ3Bhym7a1xnxbAUrhm2Ibxo+wPiX3RUJwTnyO5RxtEcSzBjCAcMaKJW1
+ feTGUlAH
+ jR0+7EW4foGcutCrD0l1C/kQ7VtxN4LNDrit7jhPnKXa7ns33NBY6DVe7b36HF5hCmwcbdMeIazKcyqQOjgFs2E4kmXjhQPGk6AMuWBQaBLZ5iztNHa48iK9Dkfa19AdquhsMZi3gmnalOxk3uJZHVHeF9UK/BdT8XbSR3aq0Q16JBe15bcLV1fipBBc381XpSo+8mCUpRfDpAEcn7Aqa6KNVTRJ6rri5UHiK6aK3mT22UBZuHtQVnRaHhtyNSnncv2VBeNLEV5ZmVD+4LtPtT+q4i9x6uZj2ur20wd5rfltJYHk613jRD2lLUx4BITqNyhWMFKZcbEwnIfY/h0HE1HJcH3w3sFXZY5Zfv6+73cQokyMSIek9oJGgsOwXYhxae+xSc+qL5Y1a6c0Ga2q/KdAod8weIFu5w8M6V4n9wnC2CRAQOEPB542fsffAdt+ohyjEmh14KYZiLM9vAwe/D5YFrkv9x4ZyR7MiU53m4CobcSnLWlqxMhNuSMkjsTApR8Wvnlyo8rD2JuXy1LBfwyfT5bZ5jbv4IrSNtq+B+8WuUfsqUrYUvaBLqP9q4nC/I7d0rt7tNrtDoTknRHv3phspfwQ8diKT2Zc63IzJVoZaflGorEaNZixSpQSh1Cc3Qbvxsje5kbYmwuXLcZLyRe8LE0yxXRKexIihm2RCgFBcF+86Rvtj2GQYEpuqoi3YhWl0A7DkqR6jyHcd+Rk6WD4c2YFRI0zZgpVMB1LByOFE9bN5I05aftgKFyKkC81b0zOVYQ3GoO1xAz2gir+neG03XxtpHSaAkMgsydSOoUjQdYrPeGNHkGjIsfsfVzvnYMiB64t8piNoS5+7Sg62PaAUoYpzkGOiJv+s
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,74 +121,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 2026-11-13 03:42, Baolin Wang wrote:
-> On 11/13/26 6:50 AM, Andrew Morton wrote:
->> On Thu, 12 Nov 2026 18:11:35 +0000 Pedro Falcato <pfalcato@suse.de> 
->> wrote:
->> 
->>> On Thu, Nov 12, 2026 at 02:23:35PM +0000, Jérémy Jean wrote:
->>>> MADV_COLLAPSE lets collapse_file() treat absent shmem pages as holes
->>>> filled with zeros. It does not check i_size, which allows one 
->>>> present
->>>> page to become a huge mapping that covers the whole collapse range,
->>>> including pages beyond EOF. This makes those pages writable. A later
->>>> file extension can expose their contents after F_SEAL_WRITE.
->>>> 
->>>> Hold inode i_rwsem in read mode while collapsing shmem so i_size
->>>> cannot change. Reject a collapse if its page range extends past
->>>> i_size rounded up to PAGE_SIZE. Keep i_size_read() outside the
->>>> page-cache XArray lock because its 32-bit SMP reader is not IRQ
->>>> safe.
->>> 
->>> I don't think this is an issue. shmem/tmpfs purposefully maps with 
->>> large pages
->>> across i_size, and collapsing across i_size is a feature, not a bug.
-> 
-> Yes. finish_fault() even has comments explaining the special case for 
-> shmem/tmpfs.
-> 
-> 	/*
-> 	 * Do not allow to map with PTEs beyond i_size and with PMD
-> 	 * across i_size to preserve SIGBUS semantics.
-> 	 *
-> 	 * Make an exception for shmem/tmpfs that for long time
-> 	 * intentionally mapped with PMDs across i_size.
-> 	 */
-> 	needs_fallback = !shmem_mapping(mapping) &&
-> 		file_end < folio_next_index(folio);
-> 
->> hoo boy, this again, See
->> https://lore-kernel.gnuweeb.org/linux-mm/nwkpojnictbg6jicccpxyfi63ol4tmfajrlx24u5xxoxx7lv5f@jkw3o7j6tlfs/T/
->> and enjoy.
->> 
->> It's not good that this sequence permits non-zero data to be exposed 
->> in
->> areas which ftruncate() created - the ftruncate() contract says it
->> doesn't do that.
-> 
-> That's a valid concern and this is a known issue for shmem/tmpfs. Brian 
-> previously posted a patchset to fix it:
-> https://lore.kernel.org/all/20251112162522.412295-1-bfoster@redhat.com/
+Thank you for your contribution! Sashiko AI review found 5 potential
+issues to consider:
+- [Low] docs: ioctl-number: wrong code, range, and conflict marker for
+  scarlett2.h
+- [Low] docs: ioctl-number: incomplete sequence range for sound/pcm.h
+- [Low] docs: ioctl-number: incomplete range and tab char for
+  sound/core/pcm_compat.c
+- [Low] docs: ioctl-number: incomplete sequence range for
+  sound/core/seq/seq_compat.c
+- [Low] docs: ioctl-number: missing conflict! marker on switchtec.c
+  under code 'W'
+--
 
-Hello,
+commit 0316dc2cd0f479a35471758d208f4335b8fbc617
+Author: Randy Dunlap <rdunlap@infradead.org>
 
-Thank you all for the quick feedbacks. I unfortunately did not find
-and read the links you shared nor the historical discussions before I
-prepared the patch. I'm sorry for reheating what it seems to me like
-a sensitive subject; it was definitely not my intention.
+docs: ioctl-number: update sound entries
 
-> Jérémy , you haven't explained why this matters.  Is there some
-> userspace code which is encountering problems because of this?
-> Why did you propose cc:stable backporting?
+This commit updates the ioctl-number documentation table with additional
+sound header and compat files and adjusts sequence number ranges for sound
+ioctls.
 
-My initial understanding was that there was a security boundary
-crossed, and that's why I submitted the patch and added stable in the
-exchange, so that it could get backported. While I'm now a bit
-confused about the situation, I have no problem in accepting that I
-was wrong and I'm totally fine with just dropping the patch if there
-was already a discussion and suggest patches.
+> diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Documen=
+tation/userspace-api/ioctl/ioctl-number.rst
+> index e1d56d5cccd14..dac65f59d05e2 100644
+> --- a/Documentation/userspace-api/ioctl/ioctl-number.rst
+> +++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
+> @@ -122,11 +122,14 @@ Code  Seq#    Include File                         =
+                    Comments
+>  'A'   00-0F  linux/agpgart.h,                                          c=
+onflict!
+>               drivers/char/agp/compat_ioctl.h
+>  'A'   00-7F  sound/asound.h                                            c=
+onflict!
+> +'A'   20     sound/pcm.h                                               c=
+onflict!
 
-Regards,
-Jérémy
+[Severity: Low]
+Should the sequence range for sound/pcm.h be 20-24 instead of 20?  In
+include/sound/pcm.h, SNDRV_PCM_IOCTL_STATUS_EXT64 and
+SNDRV_PCM_IOCTL_STATUS_EXT32 also define ioctls using _IOWR('A', 0x24, ...).
+
+> +'A'   20-53  sound/core/pcm_compat.c	                               conf=
+lict!
+
+[Severity: Low]
+Should the sequence range for sound/core/pcm_compat.c start at 10 rather
+than 20?  The compat ioctl enum in sound/core/pcm_compat.c starts with
+SNDRV_PCM_IOCTL_HW_REFINE32 (_IOWR('A', 0x10, ...)),
+SNDRV_PCM_IOCTL_HW_PARAMS32 (0x11), and SNDRV_PCM_IOCTL_SW_PARAMS32 (0x13).
+Also, there is a literal tab character right after sound/core/pcm_compat.c
+instead of spaces.
+
+[ ... ]
+
+> @@ -160,7 +164,9 @@ Code  Seq#    Include File                           =
+                  Comments
+>  'H'   10-1F  sound/hda_hwdep.h                                         c=
+onflict!
+>  'H'   40-4F  sound/hdspm.h                                             c=
+onflict!
+>  'H'   40-4F  sound/hdsp.h                                              c=
+onflict!
+> +'H'   60-63  sound/scarlett2.h
+
+[Severity: Low]
+Should sound/scarlett2.h be listed under code 'S' with range 60-64 and a
+conflict! marker instead of 'H' 60-63?  In include/uapi/sound/scarlett2.h,
+all ioctls use code 'S' from SCARLETT2_IOCTL_PVERSION (_IOR('S', 0x60, int))
+through SCARLETT2_IOCTL_GET_ERASE_PROGRESS (_IOR('S', 0x64, ...)), which
+overlaps with linux/cdrom.h, sound/asequencer.h, and sound/fcp.h.
+
+[ ... ]
+
+> @@ -204,6 +210,8 @@ Code  Seq#    Include File                           =
+                  Comments
+>  'S'   80-81  scsi/scsi_ioctl.h                                         c=
+onflict!
+>  'S'   82-FF  scsi/scsi.h                                               c=
+onflict!
+>  'S'   00-7F  sound/asequencer.h                                        c=
+onflict!
+> +'S'   21-23  sound/core/seq/seq_compat.c                               c=
+onflict!
+
+[Severity: Low]
+Should the sequence range for sound/core/seq/seq_compat.c be 20-52 instead
+of 21-23?  That file also defines SNDRV_SEQ_IOCTL_CREATE_PORT32
+(_IOWR('S', 0x20, ...)) and SNDRV_SEQ_IOCTL_QUERY_NEXT_PORT32
+(_IOWR('S', 0x52, ...)).
+
+[ ... ]
+
+> @@ -219,7 +227,7 @@ Code  Seq#    Include File                           =
+                  Comments
+>  'V'   C0     media/si4713.h                                            c=
+onflict!
+>  'W'   00-1F  linux/watchdog.h                                          c=
+onflict!
+>  'W'   00-1F  linux/wanrouter.h                                         c=
+onflict! (pre 3.9)
+> -'W'   00-3F  sound/asound.h                                            c=
+onflict!
+> +'W'   00-41  sound/asound.h                                            c=
+onflict!
+>  'W'   40-5F  drivers/pci/switch/switchtec.c
+
+[Severity: Low]
+Does the drivers/pci/switch/switchtec.c entry now need a conflict! marker
+as well, since extending sound/asound.h to 00-41 causes the two ranges to
+overlap on 40-41?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261114202653.3113=
+381-1-rdunlap@infradead.org?part=3D2
 
