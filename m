@@ -1,91 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB32606A885
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 08:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF51606A32C
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 08:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZymTR8c6
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=g/dalwhO
 Received: by kanga.kvack.org (Postfix)
-	id CFD0D6B05B3; Sun, 15 Nov 2026 03:01:00 -0500 (EST)
+	id 6360A6B05B5; Sun, 15 Nov 2026 03:10:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CACF56B05B4; Sun, 15 Nov 2026 03:01:00 -0500 (EST)
+	id 60CB76B05B6; Sun, 15 Nov 2026 03:10:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEA406B05B5; Sun, 15 Nov 2026 03:01:00 -0500 (EST)
+	id 522506B05B7; Sun, 15 Nov 2026 03:10:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A2ABA6B05B3
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 03:01:00 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 266A51205F0
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 08:01:00 +0000 (UTC)
-X-FDA: 85436607480.26.BC9BDE5
-Received: from mta0.migadu.com (out-95.mta0.migadu.com [91.218.175.95])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 27EBE40006
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 08:00:57 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZymTR8c6;
-	spf=pass (imf17.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.95 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794729658;
-	b=u2efdwYKmzJwiV7d+pOLHVyHSSLkUBttMaJyx55u5mcjn4BU1eSTWA9LJeu8tpYxJ+Tuka
-	ujo9zC1To4LwAUKHTzYm4vMYw8dzhNQdPJSRay1Ey2QF29iecsBzsbmUe64So6irg9D56f
-	LffEbPuAxXc9d3RXSUTFyxz0M47s86Y=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZymTR8c6;
-	spf=pass (imf17.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.95 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 309326B05B5
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 03:10:23 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AC71140619
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 08:10:22 +0000 (UTC)
+X-FDA: 85436631084.25.65E61F3
+Received: from mta1.migadu.com (out-164.mta1.migadu.com [95.215.58.164])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 91DF8A0002
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 08:10:20 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="g/dalwhO";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.164 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794729658;
+	s=arc-20220608; t=1794730221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=60gsrEbAuJheAzPFFTSSLkUWfF1qdMXOYWZtQkOXi6g=;
-	b=PrpTMoEwERu/3iJWTYb8ltxprneAxQUyQ3Ria+xPhYu3RFTDeP5YnyO7xy9/0q5J3+S5HE
-	qAxOpp2gzY09+E3gAPHSLrAQAc9Aa/8mUdEwMMQwECkBgQyF9nPFem8NlR7BBLGlXIxXRs
-	Drlh43HOEruOOr8HRZn41pSNAPIQir8=
+	bh=eftIXPPf9pXf1ylbm90M+/I8H9a+zbncFEcPQIjwOfY=;
+	b=6689SSizs6s8QELj+QORC72LUHpXvxFyA45IqrNHjILutXybE+inj+bNCoH/64plRBJgYH
+	Ttl3selt2lcbYjCm4LGnu3reXGmyFUuAQM6xNvsJmTzvpD0dgzL7v1Qc8BcHQS2hxAtnC8
+	F75kVm7oRUd8PyUX5/6p4eorUbFZoc8=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="g/dalwhO";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.164 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794730221;
+	b=5+YeMd3Ri8nO7i3qImP3SVVxr5zZm76biyJryKcMlEJ4C0tClVBY451nJt2Z+PkYLFiXcu
+	4XUera09JnMvZQz7i1GZjhplyb2mzSK8PKlhwXzumFSxB1rpHczDfcwMWcq8IjwwtCnBjT
+	yCy2Y75yibidzB10hbkkJMEvO2BSHOA=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=LNnxampF1hSfK2nrRVdNwXWnI4MpuaWWr622AzfxeHY=;
+DKIM-Signature: a=rsa-sha256; bh=ks9Q0ch7RjWGng/htsAt9i5kDZUQ9GU4wWCt+aHsq8M=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794729656; v=1; x=1795334456;
- b=ZymTR8c684kM9FwzuUp5zPC5YO4vsYRMv/T6Au3x7vpVPdhuI4FKr9CRPjtUQ4QAGj2l3NFQ
- fULjfxof9/4bYc71ZgSp3MQCPkkth4yb/dnNqbjHDEnGTAGgPg6svqBVzmtq4zafU7uI8YcPN9y
- /VHh7yfsgB/e3UxWWJT/k3uY=
+ t=1794730219; v=1; x=1795335019;
+ b=g/dalwhOy65C6OKo1Qzc3JAqZ/xkb0dSx5SWlC0iP0jDb6JGbD3u72+R9EZrtCJ3kaJvx6MV
+ 5Dyo/bdBqWLpwek/yW8b0xZA8LBi5rKGg3j5dQPsk81HoGZjvJlvQG6L0vJ6H9w/RC4Tiwr2Y31
+ WF406BCUYMQQ8BG8mAL6TtaI=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 6126331626ea888a;
-	Sun, 15 Nov 2026 08:00:56 +0000
-X-Mizu-Trace-ID: 6126331626ea888a
+Received: by mta12.migadu.com with ESMTPS id 582e74fec350fdd3;
+	Sun, 15 Nov 2026 08:10:16 +0000
+X-Mizu-Trace-ID: 582e74fec350fdd3
 X-Migadu-Flow: FLOW_OUT
-From: "Xu Xin (vivo)" <xu.xin@linux.dev>
-To: xu.xin@linux.dev
-Cc: chengming.zhou@linux.dev,
-	david@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org
-Subject: [PATCH v2 2/2] mm/ksm: add initialization helpers for scan_get_next_rmap_item()
-Date: Sun, 15 Nov 2026 16:00:49 +0800
-Message-Id: <20261115080049.132515-1-xu.xin@linux.dev>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261115075832.132109-1-xu.xin@linux.dev>
-References: <20261115075832.132109-1-xu.xin@linux.dev>
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH 2/3] mm/page_ext: support early allocation for SPARSEMEM
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <179472790175.1870365.16622132821657916911.b4-review@b4>
+Date: Sun, 15 Nov 2026 16:09:55 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Alexander Potapenko <glider@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>,
+ David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Zi Yan <ziy@nvidia.com>,
+ Sang-Heon Jeon <ekffu200098@gmail.com>,
+ Mostafa Saleh <smostafa@google.com>,
+ Ketan <ketan.kishore@oss.qualcomm.com>,
+ Usama Arif <usama.arif@bytedance.com>,
+ kasan-dev@googlegroups.com,
+ linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <DBDBD5E7-2938-4534-BB3A-35848C4821F3@linux.dev>
+References: <20261114104150.58424-1-songmuchun@bytedance.com>
+ <20261114104150.58424-3-songmuchun@bytedance.com>
+ <179472790175.1870365.16622132821657916911.b4-review@b4>
+To: Mike Rapoport <rppt@kernel.org>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 91DF8A0002
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 27EBE40006
-X-Stat-Signature: okdway1xeztxjxqizftmbzsuwgd5nibe
-X-Rspam-User: 
-X-HE-Tag: 1794729657-258631
-X-HE-Meta: U2FsdGVkX1+PhhWz+BtU/xn8emBLcChvkXdI9NdysKIvlkkdacouG1YD4jRfZUZ+kYs3uKByr8cKmzBqItZhUhTaYLs/EA3X0FXb/Q4KGrn2Gda+siiW4oC0JaWrjafyIwcKEezmy/F+6l6K6CGHet0K2m5q8zFBz4m2mkIXUqBbUD3yyF/Ras+3nIB1MyaxpXRXKpmQZDxQAyWUdvnP6RNhvEERhAKhGaAc3FEXIWeQV/pMPC4vvSBKPtQOtU8dyczJBIvRSk6XBwWUX4CLw5fTH52PAznrKohBOx6qfL9Sg0UoLyScpAzBaaWOAkzNSmi/zNB/hqStOcuLyieKGnFh9tNhe5izFDOFmNHQkVoYX0IFBT/SV9evE7EWiVhiV35fm6j1w57USOSjm5k3lL+ZmEFOBVfI9x8E3RlQ5C75gYe/wcZSVa/CI4Ozi3H9mtOvRO+iWL5F9zu0xCze7D/GKyVjrYefDzYptk5RgIb6k8JlxU9X6shMG9GHtJpBIq/R1duWfBPySc8w/nw5gLhUn+PjA5+oQKsyp3DUxLCm59RTFQICjlzIYWRzMF1/ARHiXgLzNl8pXbb/j0EYZO62vq1ee7uwlKJzigWO6024L7b0GJwVqun8j1Ig65Yi45ftFCmHwODGa6AF5nkVD+DTRzyG0tKKNsyNEGCIuccUqkyoqRyfNfrG4z2ayd96De2nHiMTbE/B7fDJ9p5EPOohyEreojnIpg4HeIqVCOhu2zeHDm+VKBX9WXs8lwj88rF1uHObIVVzAsPkPB9YKHmV6daQPZfA4xENaJDT9ZQAJ7rTb/eEtaBbVyShdpg/zXtU8sfmQx+lhxVt4YQjMkCOKc3nNsZAn9a8zf0PxlBSPF0nyBJYja1qrNSkY0SYCIRyx3z6m1ckRyx+ity6erfdXfwHmPeoep8Hv3nGUkgwZ3X4wvBTxNszVKufSh3qmcamHs5s1Vl2rj56Sng
- 0g4FcXOI
- xgG7wgqqTr6XbkTV5ptX3qvSqhyv81rhezhhepb3n8WceH7fcjfpHxMymsL7Ur2+Yn4Ciaqg30S6HhhvzZHqyKGssfqgQZKFJpc46k6d1rgGoXndj/C044fSJIJL9S8PdBHgJQIqW7dT+2TjXqTsIOa62UBrZj7c4eik7uRLAdZCn1rLkCvk0/gbRophSiqjUZNBPjsm174Srzzb19hbHFmcG0pNZN06/t5px7E+E6H/Wl6IsEYUnVcPEhSlKSdzk8rY6M2LXJHVCGz1n2V56miHYmf8Re72YXHjpWZvZX5RDqyY=
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: tfnwijzujsq6snxqog7u8jreo7sqdp96
+X-HE-Tag: 1794730220-525365
+X-HE-Meta: U2FsdGVkX18nktNbAPcFgKpXZ87AFFbPCpf3UHv/I2MC+YS1aySzXl5af2Mk73S09grtZcQzbPmcq5ARJOPAuWBbGhnEIihEp5bIQJkJyZAzEDrVON9DvkCUkuMsryR5c+Mngknqh3oayDchjuiEbIxeSy1zFGu0WwgJapsyFc9qu37lnDKZ/JL3DNHMUapyxY1keUyN4O6MIkWJtFrUlyTBXCo6i2UeQih/mRKGhUz3zhxOCvM4Hgs6RsPYRu0hNeEKeD4NRVIEuuXdnp2VCUP6ltn1Mrh1LXH7NQc6Em739yP2YEXwcJwejVJ3P8zv7Fbhg1UjXQFVKVvEcVFZo+iNUNeiseyLn2HukDaWN06MgJl9uccLHlUm4UCw/tJZHhfu4f5+mrlHDHGIY/tyFSH7gqKsgsOoBw5NpyoC32CTNxQbFkTx6u3nHoMucBvxgsx5qCvoRBp76AVNklPnw06fJtJy94AvaFBWyo4cafe72GQIceXjB0AENfbEP1DCLOxxtZWo4K9Fmx2+pwcQr6hZoZGLAwdYJzubROo5E6JLQtaVYif63p2mLeVx5Kqe8xV7ciJC8IxrG/rQnh+9MIsBX2Q/iEYteg8AbyVO+Wez3wjWymMagWUFtU3FtRH8LPBmVJgfL/01JVLpe6HmsEQBJ6sk3vKcXUlzVN2kxRxYm7PPbCk7tffPgExpundh5QMRNy3QYq/hNBD2hqGcOFjFtEfr6ng0Snr+NSMJe0qYLhh1T61T9w6P3RRIUvE4NlQOs/p1hHMJKgN2p/W18M00sGFk3UiXRtr8dJa0YKmJMkEQo6aWw3ny5t/eBWd/wKd0GUKRhn9PnhKShapUmtxvNpkLAXaqGZXMjHle0syBRiuoKYE5e2sJC4L/vL/A5u5UzjsM19cgdpASGY6+kMHDS27U+6IZkHAM8qDUR7IAF4/pSEtGkQMFvXLWy4dOEnPWfT/iPIvItyt1Sp7
+ fEd/xQpB
+ 7hvkmsTbMZCLsHpWi1iVUZs6aCZWfltMm/Gp2V4XobvrDryjDya7tWXLU9WjAYjlqmRKLhkn4KmN3vY2PSwU4cQ2MK2VKTz+xmfEcZr07s9q1Jhf3OIQoZCzcErnx5fqMFZF5khaHDtFbacGEI38n2lOVK066khKEjnF7+Qwav2HAKu0QKIqs+igoxJYZLHh+UpFD+2wFnJCvUpkidwOpUVutYuAtDDrsa4ATLighXZ2YBj9sPtjNo8YuvrUYPuC0UiIPXpiM/lCHD6kKF8UjKU3lpyZjgVoVjc0wB1Y9XcaeORmnXVewrsi7bOOVCESEAZv+I/OYz2d3REoqDa6+07AKGCVOQSw+ZNsMgrHov8EfQis=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,100 +114,87 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Extract the new scan cycle check into scan_should_start_new_cycle()
-and add the helper scan_get_first_mm() that advances the scan
-cursor to the first mm_slot.
 
-This keeps the exact execution order intact while making
-scan_get_next_rmap_item() cleaner and easier to follow.
 
-No functional change intended.
+> On Nov 15, 2026, at 15:31, Mike Rapoport <rppt@kernel.org> wrote:
+>=20
+> Hi Muchun,
 
-Signed-off-by: Xu Xin (vivo) <xu.xin@linux.dev>
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
-Changes in v2:
-- Rename scan_begin_new_cycle() to scan_should_start_new_cycle() and keep
-  it simple (David).
-- Keep lru_add_drain_all() in scan_get_next_rmap_item() (David).
-- Use scoped_guard(spinlock, &ksm_mmlist_lock) in scan_get_first_mm()
-  (Lorenzo).
-- Keep Lorenzo's Reviewed-by tag as the changes are minor and follow the
-  suggested cleanups (please let me know if you prefer otherwise).
+Hi Mike,
 
- mm/ksm.c | 44 +++++++++++++++++++++++++++++++-------------
- 1 file changed, 31 insertions(+), 13 deletions(-)
+>=20
+>> Moving KMSAN's per-page metadata into page_ext requires page =
+extensions
+>> to be available when kmsan_init_shadow() runs, before memblock is =
+freed.
+>> FLATMEM page extensions are available by then, but SPARSEMEM normally
+>> allocates them later from the page or vmalloc allocators.
+>>=20
+>> Add need_early so clients can request SPARSEMEM section backing from
+>> memblock during page_ext_init_early().
+>=20
+> Can't we just always allocate page_ext for early sections from =
+memblock?
 
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 8db6743ece6d..337fcc9c6322 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -2638,6 +2638,34 @@ static void ksm_reset_unstable_trees(void)
- 		root_unstable_tree[nid] = RB_ROOT;
- }
- 
-+static bool scan_should_start_new_cycle(void)
-+{
-+	/* Check if the cursor points to the head. */
-+	return ksm_scan.mm_slot == &ksm_mm_head;
-+}
-+
-+static struct ksm_mm_slot *scan_get_first_mm(void)
-+{
-+	struct ksm_mm_slot *mm_slot = &ksm_mm_head;
-+	struct mm_slot *slot;
-+
-+	scoped_guard(spinlock, &ksm_mmlist_lock) {
-+		slot = list_entry(mm_slot->slot.mm_node.next,
-+				  struct mm_slot, mm_node);
-+		mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
-+		ksm_scan.mm_slot = mm_slot;
-+	}
-+
-+	/*
-+	 * Although we tested list_empty() above, a racing __ksm_exit
-+	 * of the last mm on the list may have removed it since then.
-+	 */
-+	if (mm_slot == &ksm_mm_head)
-+		return NULL;
-+
-+	return mm_slot;
-+}
-+
- static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
- {
- 	struct mm_struct *mm;
-@@ -2650,8 +2678,7 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
- 	if (list_empty(&ksm_mm_head.slot.mm_node))
- 		return NULL;
- 
--	mm_slot = ksm_scan.mm_slot;
--	if (mm_slot == &ksm_mm_head) {
-+	if (scan_should_start_new_cycle()) {
- 		advisor_start_scan();
- 		trace_ksm_start_scan(ksm_scan.seqnr, ksm_rmap_items);
- 
-@@ -2670,17 +2697,8 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
- 		ksm_prune_migrate_nodes();
- 		ksm_reset_unstable_trees();
- 
--		spin_lock(&ksm_mmlist_lock);
--		slot = list_entry(mm_slot->slot.mm_node.next,
--				  struct mm_slot, mm_node);
--		mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
--		ksm_scan.mm_slot = mm_slot;
--		spin_unlock(&ksm_mmlist_lock);
--		/*
--		 * Although we tested list_empty() above, a racing __ksm_exit
--		 * of the last mm on the list may have removed it since then.
--		 */
--		if (mm_slot == &ksm_mm_head)
-+		mm_slot = scan_get_first_mm();
-+		if (!mm_slot)
- 			return NULL;
- next_mm:
- 		ksm_scan.address = 0;
--- 
-2.34.1
+That would be simpler. I checked the page_ext history but could not find =
+a
+documented reason for treating boot-time SPARSEMEM sections differently =
+or
+for avoiding memblock allocation there.
+
+I agree with your suggestion. I will remove need_early and allocate
+page_ext from memblock for boot-time SPARSEMEM sections whenever any =
+client
+needs it.
+
+>=20
+>> Use page_ext_init() as the common late path for client callbacks.
+>> KMSAN starts requesting early page extensions in the following patch.
+>>=20
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> ---
+>> include/linux/page_ext.h | 26 +++--------
+>> mm/mm_init.c             | 11 +----
+>> mm/page_ext.c            | 99 =
+++++++++++++++++++++++++++++++----------
+>> 3 files changed, 82 insertions(+), 54 deletions(-)
+>>=20
+>> +static __ref void *alloc_page_ext(size_t size, int nid)
+>> {
+>> 	gfp_t flags =3D GFP_KERNEL | __GFP_ZERO | __GFP_NOWARN;
+>> 	void *addr =3D NULL;
+>>=20
+>> +	if (!slab_is_available()) {
+>> +	addr =3D memblock_alloc_try_nid(size, PAGE_SIZE, 0,
+>> +       			      MEMBLOCK_ALLOC_ACCESSIBLE, nid);
+>> +	if (addr)
+>> +		memmap_boot_pages_add(size / PAGE_SIZE);
+>> +		return addr;
+>> +	}
+>> +
+>> 	addr =3D alloc_pages_exact_nid(nid, size, flags);
+>=20
+> And unrelated to this patch, do we really need to try an allocation =
+from
+> buddy rather than always use vmalloc?
+>=20
+
+=46rom my perspective, I don't think it's necessary at all. The only =
+real
+benefit to allocating from the buddy might be better performance =
+compared
+to vmalloc, but do we actually care about performance here? It doesn't =
+look
+like this is on the hot path, so I don't think it's necessary. We can =
+remove
+it to simplify the code. I can make that a separate cleanup.
+
+Thanks,
+Muchun
+
+> --=20
+> Sincerely yours,
+> Mike.
+
 
 
