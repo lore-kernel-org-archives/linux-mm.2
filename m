@@ -1,89 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2998606A31F
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 14:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858C2606A31A
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 14:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UaihiTx9
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F/8qSbuo
 Received: by kanga.kvack.org (Postfix)
-	id DE1486B05B9; Sun, 15 Nov 2026 09:18:22 -0500 (EST)
+	id 8609B6B05B0; Sun, 15 Nov 2026 09:37:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D91E76B05BA; Sun, 15 Nov 2026 09:18:22 -0500 (EST)
+	id 811386B05B1; Sun, 15 Nov 2026 09:37:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CCF206B05BB; Sun, 15 Nov 2026 09:18:22 -0500 (EST)
+	id 728A26B05B2; Sun, 15 Nov 2026 09:37:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B08E36B05B9
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 09:18:22 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 243F2160752
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:18:22 +0000 (UTC)
-X-FDA: 85437558444.11.C1EA76A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 69F65140009
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:18:20 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UaihiTx9;
-	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794752300;
-	b=7lzcR1E24a3EoKa6DlcvcBon1RtBy0ab3vV6tqYx2/4gPbZB8GIdJEd+RNSlanl7W1bJxj
-	2WGBh1p1SJyZcHAX6+poudvzXPxM38YRgZ4xs/xqq/mANf2Dip3KZ/T95HYDi9dOWzQ2D9
-	WTX4V2l4nkJt/+zvPxWhRgv9KZ/9blU=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UaihiTx9;
-	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 53C886B05B0
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 09:37:51 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C8677C0783
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:37:50 +0000 (UTC)
+X-FDA: 85437607500.10.9D4F615
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2CCC51C0004
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:37:49 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="F/8qSbuo";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794752300;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794753469;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MSIEtI58igpSkC03ZSunkIyPCpxjJGmFBTOTFfPJaAY=;
-	b=WYKdQmW5zmAXh2iPJO0ZaFvyd89JUrAOvRIpm+iajWBSNSAGl/lULEbAsaC5vlJznJ0zYu
-	uMqlSXBOXeaxV6h45AOd9wLEsYxuPvFP926xc2641XR7WnDcxcR4IyP881weR3VRU5YrGP
-	gDGdSQ62VOROTOFqYREWbI8aJT0EtYE=
+	bh=2aQpD+5wOwFw2m2I7/vgi2Nycby2o3K9U9x+kyRBQZ4=;
+	b=kmA7xGLaMF44Vd4IR8y9s4+kPjxyvjYl7YFuKPk1jwfniZ9mr8akbdBH41haoCA+4Etbgc
+	Wq9Z/1JarCpslxZmKjkFFKsDiOzuZV6kzcecC4gOVZAwyLtQ/kqV2/VMHZ4RD6KyqaaKe7
+	g45srBICBX6+sccSooRsHj/ri5EFIz0=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="F/8qSbuo";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794753469;
+	b=fPcKvgPcZy9AmNzAmylkdJMfs8TCFoX6I1hOlvsH55YbyJCv8BUA16FuDru/ge2ucsIOHL
+	SjdpHZAzU7ugXUq3/wyjwJXodBUnOQHHfFNCFjY+++/VOKmKobpYJ9iOM9+Tjho/SOOdoW
+	f4ATwl8kBfnqcm4ck3Wr9I4F0snkieE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8DDC042A44;
-	Sun, 15 Nov 2026 14:18:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F3D1F000C4;
-	Sun, 15 Nov 2026 14:18:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 794576242E;
+	Sun, 15 Nov 2026 14:37:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A461F000C5;
+	Sun, 15 Nov 2026 14:37:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794752299;
-	bh=MSIEtI58igpSkC03ZSunkIyPCpxjJGmFBTOTFfPJaAY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UaihiTx9MzRiQl4ssjwIOWuOQnwxBHZWiEFSMT3+M8Jz80d6+8xpYG97TN/cTGs2G
-	 WYdm8pz7zAar41etMr+831psVY9i+HgE4mS2PEAk+IHgbMmvkMxPN4RH+uU5/IuQ2S
-	 XEbs+nvT7rwrdos5pyOiDoIfEf2D5tSLc0Nz5MxHuaTgfRTVsMw/KsI5H6+Jecp1dP
-	 RMDGzaNZsZA7xji8eXBBpMQblnEMso3385xY0XFNQzxGG+SC+9BVmUaJYPz0O6cZZW
-	 mNSJhbrLAt8QQDlU49fdieIvcteFG9royl2EDk+bVkmRTn+nqnHboYoAkpK2vEHZ3I
-	 sLd+x2p9XfNLA==
-Message-ID: <sashiko-outbox-215574@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 12/13] selftests/ftrace: add uprobe tests on overlayfs
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Christian Brauner" <brauner@kernel.org>, "Amir Goldstein" <amir73il@gmail.com>
-Cc: "Chris Down" <chris@chrisdown.name>, "Miklos Szeredi" <mszeredi@redhat.com>, bpf@vger.kernel.org, linux-trace-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261115-work-ovl-d_real-v1-12-ca155efbcb2e@kernel.org>
-References: <20261115-work-ovl-d_real-v1-0-ca155efbcb2e@kernel.org>
- <20261115-work-ovl-d_real-v1-12-ca155efbcb2e@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 15 Nov 2026 14:18:18 +0000
-X-Stat-Signature: ut9mses4mprjmmhkpo8z5xfm97k5nzdh
+	s=k20260515; t=1794753468;
+	bh=2aQpD+5wOwFw2m2I7/vgi2Nycby2o3K9U9x+kyRBQZ4=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=F/8qSbuoGQZGQtgBxIr6B2ueFpU95+7qJMwmm8INX1xDHRlTUaSD8BFdbq4CbOxrR
+	 ox1qNccLa8/HK300SOpQmBbk5Qvso5s0ej0nnLzfaw7woW9fsTRsB3fn8XKtg4GZi2
+	 mkIHuNrdV77fS3AS7HGyBsRW6r1I1TVsLts0dAY635e5VsCW997Apri30eUILQ8DE8
+	 6QT8gY4VS7IF4+z6kjL7VWLQ7z0W25C7ZhfXYsY6RHZAfw5JKq52esd/VilnzZerDm
+	 yfh9vV8t3VLyXsXWrgdekBNeTMfP6B4g7EKPziGoUoo9vqTOsFrf/z8rys1tdDFec/
+	 iXGUcM50BmJSQ==
+Content-Type: multipart/mixed; boundary="===============5766711597295612734=="
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Message-Id: <9bacf710b101058735f399d44953a18d1630aec3b6b176fe96215cdd2f0eb7ac@mail.kernel.org>
+In-Reply-To: <20261115-work-ovl-d_real-v1-8-ca155efbcb2e@kernel.org>
+References: <20261115-work-ovl-d_real-v1-8-ca155efbcb2e@kernel.org>
+Subject: Re: [PATCH 08/13] ipe: handle errors from resolving the real inode
+From: bot+bpf-ci@kernel.org
+To: brauner@kernel.org,amir73il@gmail.com,linux-fsdevel@vger.kernel.org
+Cc: chris@chrisdown.name,mszeredi@redhat.com,linux-unionfs@vger.kernel.org,linux-kernel@vger.kernel.org,bpf@vger.kernel.org,linux-trace-kernel@vger.kernel.org,linux-integrity@vger.kernel.org,linux-security-module@vger.kernel.org,linux-mm@kvack.org,brauner@kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Sun, 15 Nov 2026 14:37:46 +0000 (UTC)
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 69F65140009
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2CCC51C0004
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794752300-636485
-X-HE-Meta: U2FsdGVkX1/EzLjvEg2Gc0kYVt4IYtwhjqtGUTPUpeRjRjEs0JzKg+zYVtaUFPyRfrkIR7DLZ+PRalraHzEzAeAneyG7uQP+/tkId7Ut4r2KvgCO9l+R7VIDl0TRZadnKVDKB2vg5/GImUFO4iOgJDcQKx3hBEHGXFmzJPSC8kfmFgKyU4DkLnkLeTv1GSOO3UoYFq58TfkcV3EyQ9RZtwUJ3GSIbv3F/KxuCflWwMtgf4L+sjGHp3expG++EvRt2tupLHklddTNw8sGzYSMQfvQ5EoVdDUCPY3XEOgqv/bYSSua/a6M/Rlxl9pCeNkhW7msCg3fUetuGo/yRHAWPlRkh9fv/eqWM+iV6xFdVvGbk0pjKNotGdFM1Ko1ILqRA0kbIQ0h0bvV7gIdDJpjEzaLyQSFQYe2bD73631d9O7Rfpyyr0UkKuyve6ba1/tkzHufnHAxnY+FM2/p052nmy8UiNT6HfgrkM7jNPt72N9gZkrC9QgVw4isnHoOLKv5BypLu7VhqWCT9+UQ5eaicN/D6gtNzG0NVT6bzDfhDm030PIahrI0XpXciAdsztolnrP4OXOlF+AAUeV3XfO1MTXcvRYUU0/4xNQWAQReyJ6z1y59B3qwmoIfO3lpweYtmU7X3I4rgciXdvBnwt/zBVKIjgAprSb0VqjFqcnXFxn5NO3kSrQt0PSO1Yt8CW+zk6qjf1pbG8zKG2Z7EEOYTpLzjbPj1WXCdjZyRy9EnFrxBEnJyDHVugw3KgF+eSt0F4cB0QlE9vFGRyp6DkT4nXq8fgyj6O00fYczi/KjCPVKxYmW1YBOqT8DMH3ZT7MQq3s0Vs778ZwEQ58tSopYotUkbNEiyRoB2d9UFkP9QEV33hy45kphMZhqmCSzIeTxIaAfvwHbZIIq/6/m8D5yJ0gtjZftTfL+7/rnkANkdiQWklm0321z7KQdAiSrZZHiqJdnb/lVot2ngoZd43U
- arfG4g7X
- Ag9oSTE3TZjO1L+mwRLVuQgD265I1Ob/s1KmKF46lwHvSbD4hgOdC2IRlRRKiKYkLwoR9i5sGS+0wnEKrd3tBfBFYSrk3DWVjCwFTqrqM4fJCS9yzYCWIMD7Em2rclgVfc0wMx6gnzs+lV0AMDXHipT2XACiSmODed7XYq6CNzj11EjRqvBLGce/bSoefbooMKXtOPe5q7Dzy24UTzo2VGUHzKXcbYRqz5YLqhUQZpYs8XIfhDVR3sb46KwZoIffClwy7Wf7bHkv2DQvQAAuVKnpOmHSFxbnCtWlVrykfWRH+JhmoUjHK+AV8ry0nx51pbuUZyrMPJLv6m9LTsmmnSjNP1D3GulKQTOsv6hv+Do/pwDgL82B3T5nAbUr9RmkG83uWTXZkmkbqyf2rUSjotfe663BbZ3l66ghxqFAC6vmsAFam/3swVKEUDvRIi6iB/1ZJ5R4HN0rYg+LOYxf1Y2QkE9zI6AE7s9FCtUdiYiPdkznXkc6IMa7S1meJrQr8ONyTSSUsjJ0wgVRwunFTgmWtqJshWIX7ZINgdpx5eZPIASQpnGSiJsPGmQUTh1Jq2kaR7sEbSVEACXsJN3FpWqbgYg==
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: c5i876j8crwox4pofpdywcgrrai171up
+X-HE-Tag: 1794753469-128866
+X-HE-Meta: U2FsdGVkX18YOrOzi+i0XhtU/ZmQ2ukkGjOmm9hxyrUzWr8GHCmbmaUsPpo9elIQDqfp/wloAEiKmK4t+d5gTHBhV4uc+aKJcfjdo6LWMs4B2ONwEAbIuLXIdBoXaw3Knqph4i88oZ8Wt5/q/X8gaD+XE01HAIG8C6xA3XhB9ubQs1w2uRYGVvBA13ZDQ0DPQ3YlAIqowXXlQHmxRbFrRbkR7QlxpCDfGNBNzRQsOxVPrIfVW8c16RN4s70VFg5HnkEvbFoBFg6SN2PGaHAHevGMrcSW3TMe46rAcyRI0MNN/5qsEvlucR+hA8L2gjTczNWXWsr+dNUdYXxPQ/qbBUn9MdBufus5dNn8B2SQP6erLimSUKNPJvT9X6eJw3xzVY27OT+PNQ1AEdhOZYUBJQkjc20eeChJ437XV3kC7tQRxNK35Xy7XNk/LDuwXOj/3tt9QLzh9uQYPj35qHfRPS/S/PvDPR9ZmtuRDMkwUVMeJrYAR+XUksB1RAuqFBxZI8cKEo0Ss8Y0Hlsk+gDvuovJs05//AiCiAeYqm4tRxd2oC4xOPE95YQDtjcJ8U1vjt/wwKOCkcdV5cNuJCCbfeY0ybxO9zFYK1OQv7xd8JSTw3SfVYmSS4DHd5V30oHVx+0Swa/PlVwn23ktVr+HJBmm2LFnSILgcFdJHHT6HZSUKVPhSmf1Qh13MbQ72Lrw8XwO2jXkdT95BmngeZkyTwwOJF1/bWjGhe8pCtmTxk14798/QMFf0CjNCPD3Fu/xTssyWpTyyhMt9KMXjDJPyLCPNUAhpApKjrBT2DyoZEvsbdL1V8zEwpLNBcJVPqjjuKBqOH1lUWAV387l+NFz8fk6mboafYC7Zy/POL5pLGe+VMaCmO7V4hBwSLSiPtSZ9za6PhpJz7R/x0x9BVhvbg9Xk5F2ww1DJcfWQ3RZAf8O1NnS8Ignj3L0M67p6NmjQani6Z4D/gAChtaUGwr
+ l1qYG4oh
+ Dd46mDasqfTtgBGbNBwF68rd5mJXLpkvAjJ5nKD+Oqhjg0gNrKGWN/hiVbTjImRN8f0WYnezlBCKqKgmdEciIQOBMVzFlSgO3D9wEuTYbwWymBL2ks2axvgM0c2CYp0P+XF0Evod1NDfD240ol/OdREnSnmXApcXvauXOZE/N0SC9gugdDufv4KjdsR/U1bqEkEcZpEuEMDaCSZa+tAaruUeeIKO4KGuz6NQI990WscvP0EF6AjxNdCS2KW6g6DGVDBpYAd7F8+dcewsRYWLAQx2GsN0Nsrd/ymvckxjqg9BilrfzT0TQczPYJS1vZyca3SE3lZRTWGakkSv/9eqx3cTKgVn5mA/c59z9R04LvQibK5cRlmST7ysUz/S8v6d39XfLkSYoMBVJNBAyDKVUOaA3NqUbTmEOi0ULVcVAcIcGYMoamDNiYaUGyB5LXxzsEmaNJLQfGkyg8PQsIngvGZNHdXq7MDq/pPWsB6qOTtzI5wQc73vrDPgmsg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,80 +90,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Low] selftests/ftrace: cleanup() in uprobe overlayfs test fails if
-  event is enabled
-- [Low] selftests/ftrace: uprobe overlayfs test misses tmpfs xattr skip
-  and configs
---
+--===============5766711597295612734==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-commit cdef3f0121f6552797f32e8a89d02391a6081a77
-Author: Christian Brauner <brauner@kernel.org>
+> ipe: handle errors from resolving the real inode
 
-selftests/ftrace: add uprobe tests on overlayfs
+TL;DR: Behaviour question: the new ipe_evaluate_event() early return for an
+unresolvable real inode skips ipe_audit_match(), so enforce-mode -EACCES and
+permissive-mode allows may leave no IPE audit record. Should it audit?
 
-This commit adds an ftrace selftest that exercises creating and firing upro=
-be
-events on overlayfs metacopy files backed by a data-only layer.
+> diff --git a/security/ipe/eval.c b/security/ipe/eval.c
+> --- a/security/ipe/eval.c
+> +++ b/security/ipe/eval.c
 
-> diff --git a/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_up=
-robe_overlayfs.tc b/tools/testing/selftests/ftrace/test.d/dynevent/add_remo=
-ve_uprobe_overlayfs.tc
-> new file mode 100644
-> index 0000000000000..a4351e6a3b181
-> --- /dev/null
-> +++ b/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_uprobe_ov=
-erlayfs.tc
-> @@ -0,0 +1,92 @@
 [ ... ]
-> +cleanup() {
-> +  echo > uprobe_events
-> +  umount $OVL/merged 2> /dev/null || :
-> +  umount $OVL 2> /dev/null || :
-> +}
-> +trap cleanup EXIT
 
-[Severity: Low]
-Does cleanup() fail to remove myevent and unmount the filesystems if the te=
-st
-exits while myevent is enabled?
-
-ftracetest runs test scripts under set -e.  If executing $OVL/merged/sh fai=
-ls
-between enabling and disabling events/uprobes/myevent/enable, the EXIT trap
-runs while myevent is still enabled.  Truncating uprobe_events then returns
--EBUSY from trace_uprobe_is_busy() and aborts cleanup() under set -e before
-the umount commands run, leaving the uprobe registered and the overlayfs and
-tmpfs mounts leaked.  Writing 0 to events/enable at the start of cleanup()
-would avoid this.
-
+> @@ -335,6 +339,15 @@ int ipe_evaluate_event(const struct ipe_eval_ctx *const ctx)
+>  		return 0;
+>  	}
+>  
+> +	/*
+> +	 * Without the inode hosting the data none of the properties of the
+> +	 * file can be evaluated. Refuse it unless IPE is permissive.
+> +	 */
+> +	if (ctx->file_err) {
+> +		rcu_read_unlock();
+> +		return READ_ONCE(enforce) ? -EACCES : 0;
+> +	}
 > +
-> +mkdir $OVL/lower $OVL/data $OVL/merged
-> +
-> +# A metacopy file whose data lives in the data-only layer.
-> +REALBIN=3D`readlink -f /bin/sh`
-> +cp $REALBIN $OVL/data/sh
-> +truncate -s `stat -c %s $REALBIN` $OVL/lower/sh
-> +chmod 755 $OVL/lower/sh
-> +setfattr -n trusted.overlay.metacopy $OVL/lower/sh
-> +setfattr -n trusted.overlay.redirect -v /sh $OVL/lower/sh
 
-[Severity: Low]
-Will this test fail instead of skipping with exit_unsupported when
-CONFIG_TMPFS_XATTR is disabled?
+Should this path emit an AUDIT_IPE_ACCESS record?
 
-tmpfs only supports trusted.* xattrs when CONFIG_TMPFS_XATTR is enabled, wh=
-ich
-defaults to n and is not selected by CONFIG_OVERLAY_FS.  Without it, setfat=
-tr
-on $OVL/lower/sh fails with EOPNOTSUPP and aborts the script under set -e.
-Also, should CONFIG_OVERLAY_FS=3Dy and CONFIG_TMPFS_XATTR=3Dy be added to
-tools/testing/selftests/ftrace/config?
+This early return skips the eval: label, so ipe_audit_match() is never
+called.  Every other way ipe_evaluate_event() ends in a denial goes through:
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261115-work-ovl-d=
-_real-v1-0-ca155efbcb2e@kernel.org?part=3D12
+eval:
+	ipe_audit_match(ctx, match_type, action, rule);
+	rcu_read_unlock();
+
+	if (action == IPE_ACTION_DENY)
+		rc = -EACCES;
+
+	if (!READ_ONCE(enforce))
+		rc = 0;
+
+With this patch, in permissive mode a file whose data cannot be resolved
+returns 0 and leaves no record at all, even though
+Documentation/admin-guide/LSM/ipe.rst says that in permissive mode policy
+violations are logged.  In enforce mode the -EACCES has no IPE audit record
+to explain it.  The commit message says "Permissive mode allows it like any
+other denial", but other denials are audited and this one is not.
+
+This path can be reached for an already open file.  ovl_open() verifies
+lowerdata and sets OVL_VERIFIED_DIGEST, but a metacopy copy-up clears that
+flag (ovl_clear_flag(OVL_VERIFIED_DIGEST, inode) in fs/overlayfs/copy_up.c).
+A later mmap(PROT_EXEC) on the open fd then goes:
+
+vm_mmap_pgoff()
+  security_mmap_file()
+    ipe_mmap_file()
+      ipe_build_eval_ctx()
+        d_real_data_inode()
+          ovl_d_real()
+            ovl_verify_lowerdata()
+              ovl_maybe_validate_verity()
+
+which can fail with -EINTR from ovl_inode_lock_interruptible() or with an
+error from ovl_validate_verity(), setting ctx->file_err.  The IMA patch in
+this series (c9952f8fed84) describes the same scenario, and its error path
+in ima_collect_measurement() still calls integrity_audit_msg().
+
+Could this set action = IPE_ACTION_DENY with a suitable match type and jump
+to eval:, or use a dedicated audit helper that records the error, so that
+denials and permissive-mode would-be denials are still logged?  No later
+commit in the series touches security/ipe.
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/43723438893
+--===============5766711597295612734==--
 
