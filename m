@@ -1,112 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D927606A333
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 05:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D99606A32C
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 06:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LCGBC/PO
+	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=SkPDjZgg
 Received: by kanga.kvack.org (Postfix)
-	id 4C5096B00EF; Sun, 15 Nov 2026 00:42:56 -0500 (EST)
+	id 2532C6B00EF; Sun, 15 Nov 2026 01:05:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 476436B05B0; Sun, 15 Nov 2026 00:42:56 -0500 (EST)
+	id 204C46B05B0; Sun, 15 Nov 2026 01:05:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 364FC6B05B3; Sun, 15 Nov 2026 00:42:56 -0500 (EST)
+	id 0F3D16B05B1; Sun, 15 Nov 2026 01:05:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 101056B00EF
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 00:42:56 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 845231A0587
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 05:42:55 +0000 (UTC)
-X-FDA: 85436259510.25.031BD6B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id D91D140007
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 05:42:53 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LCGBC/PO";
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DE6086B00EF
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 01:05:33 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 349808058D
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 06:05:33 +0000 (UTC)
+X-FDA: 85436316546.16.3C818B0
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4E83F1C0004
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 06:05:31 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=SkPDjZgg;
+	spf=pass (imf18.hostedemail.com: domain of chris@chrisdown.name designates 74.125.82.180 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794721374;
+	s=arc-20220608; t=1794722731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nyBkJVwlUhwTxJyGO+bv5cKEFN7sPZnmNLTwTWcdOtQ=;
-	b=7z5Op46oEZWY3DFsHpQL5nrmJcW7wh0KiUpNzvMgk8vUaEHfCsXjXMwjmAhNpEYMXqvKV3
-	KoVPtUiUbWxKBFVb+lc3RGzLQegkyVOlqGyhyk0coQ2FIQt5OxcprCyrtTwciS3btxEctI
-	EmTBX4D5aanoxTjAPKn1ykz+X8KG1uU=
+	bh=68DxHpqqFot2faCcIPu2QwkdA4mxu3avVweYehLM7Ug=;
+	b=Fgm+IxxKKoHt51s+yA2OnsGMlS2WQCVfJk79rKLInKiMJEjSEHuHiwz/VNTH0DnjrSXVIy
+	N9kZt/+G+7BReUWK+tOyTKwvETUrcjtknFaApowOwD3WpGX6fZXv/GHL4mUT9iOts58z1s
+	nME0SP3M8zkkWO/17jA8ZOAXkQNcetc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794721374;
-	b=ot6S6yUSgNru7W91+eLN+re46YAPczC+VzWy245XZLw7qC+1CGM/L6VPcWa+ItQFOX1q8o
-	II+G7Pi9BkuAQx3whGdjKwjn8V55A5Kx+zaMGuRrIhyTNM20rbdYEkowvoiS+PdR094Sp2
-	7tWph7qjSv6Ne8ZmjT17Oq5qQnlY6G0=
+	t=1794722731;
+	b=uNEpNJ117eN8Dr3MLpma/+v5CtEC/SJaFH//7CGOy8JM7ji9MIFbF8ahFNQIN3MrlZRx+Y
+	EZxluBwsW8CprUatdeNeh1ijPrDEGIUBkt3RPjsWcqxMZ0wFY28woAU6POQUPxKDyuI0Ne
+	QytWYf04g27e8qNIFBkekz9IATLhN0w=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LCGBC/PO";
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0480C455A0;
-	Sun, 15 Nov 2026 05:42:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B9FE1F000C4;
-	Sun, 15 Nov 2026 05:42:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794721372;
-	bh=nyBkJVwlUhwTxJyGO+bv5cKEFN7sPZnmNLTwTWcdOtQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LCGBC/POf5Gn/rnspd1Eu2NhGBKKHCC5PeEenTKJRyjA1UBFCM1dny8zz0QppLOUM
-	 HUiWHTNDTXtwkwW1OQyWllS/gQ2v0jl/x5WpfwxLL+0Q1BzwRwMyIlkhwZlBlvE/Nd
-	 u783YyJBqEacJoSMuwJIlCy0bup1mHkGTtHTODpEBhAfROGZ8kPKWfgrFdV+YB5MFy
-	 QY5pke4h0wswcPg0lWCW9z7Rv2iPlZabnpStD0oVk2erJMzkbG57hrs/O/pJjgnnkB
-	 qIXZaGwq/OZ4+T05gvgbrOOtA288S3SeslMygDVYek2efEcTJVgcLvbLaxObJC7QL+
-	 TWu2cBtCMwfug==
-Date: Sun, 15 Nov 2026 07:42:40 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm/userfaultfd: prevent poison marker loss
-Message-ID: <avlGUD3Gl4UF0Upt@kernel.org>
-References: <20261107-b4-uffd_marker_loss-v1-0-82926b22704c@kernel.org>
- <20261107-b4-uffd_marker_loss-v1-1-82926b22704c@kernel.org>
+	imf18.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=SkPDjZgg;
+	spf=pass (imf18.hostedemail.com: domain of chris@chrisdown.name designates 74.125.82.180 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-37986eb6fa2so2420824eec.0
+        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 22:05:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chrisdown.name; s=google; t=1794722730; x=1795327530; darn=kvack.org;
+        h=user-agent:message-id:content-disposition:content-type:mime-version
+         :references:in-reply-to:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=68DxHpqqFot2faCcIPu2QwkdA4mxu3avVweYehLM7Ug=;
+        b=SkPDjZggGq8qrzGrEZN+IKA7JMtbSODye1wdUVlDD3JX2R/n3xKDxwYRasDDdd7PZt
+         JH8rUe3JWd8COYvxDBTu0KMIXYXJuzQlGF46Q8zuA35+GkS019Hc8vjeKPtLT/UzbuVX
+         cnaZLYAf/0XzuRtCwnbUk1fsA47ztZ6BAUjhA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794722730; x=1795327530;
+        h=user-agent:message-id:content-disposition:content-type:mime-version
+         :references:in-reply-to:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=68DxHpqqFot2faCcIPu2QwkdA4mxu3avVweYehLM7Ug=;
+        b=bir+vzLQJFHCiE8ft+1wL4F4bjLO9P+vr1dJ6bloN03PuO7/3uoOIB/1T1POjlBCC6
+         peqt+o717EO3E3MD6UaMHCvMIL14cGAq3Sxn9uHNVjeLWyqQEEFd+rNrlvnztZGbEfkE
+         wJB52zGpxW1gzJzl9WUO0ngnQhzpVJ2awgk9P+H1sPGy2aceC+qJuaLTFhBviCSQUaN0
+         7InU1eCOgpNcLQOAA64/X+H1iad6bNiOV+qnAkQq3nswHFUnJRFU4t+Y+wZZL2pwSGQE
+         P9hs/o3O09VTDbFpH5wtBE8MLDrfiqVY4B8jh+6r+TpWL2bl1ruN1uRe1WpWgSFncqDG
+         DgjA==
+X-Forwarded-Encrypted: i=1; AL+hErGEdZbh2WvtmVHQWP63GEzkGzZqsoANt5D2Unl/iM9i0ic1SnIMmaLV7R9X5WvL3BGdzA0eW6PWdw==@kvack.org
+X-Gm-Message-State: APuU4Z9WSlwNjHxdk8bd6UPV4gkpivaiwwflXUmS6huzjt13PABjC+he
+	1JP9T5Jb48zXQUbXhl4JhV1oa8QzjiRDoMKk7qMPmS4IspUZ2EHEAzj/5fbShj57SIU=
+X-Gm-Gg: AYBFou0QT/DESd7VaX4fDz+UHjIdSEH+/UBTC71HU+7meKPvmHV3rOohDC9tF1EriT9
+	A9gvy1h2oonhhoIYIP3ffVq6aqPP3/DBQWiC47etIxHD1okTz5gcFpL5SWSEO70NZZ7YoixdBx8
+	wuiN4MsLpjrkFLmOnjeOP6H4fWNetPaNxizJnVJj23Zu6HSdT8RO3yrGxITMjVmbvFC9LsnQPO2
+	RiVSOdaeCqJI64pNsx7MaQ2Gli6UMZQhqg2tCX6EAg9svnMnJnAKoRHJ7MGiMZFDnm7WYEwdf/N
+	jqAeWq8gqa6+aXMnqgBkZJ58FSIh/sAFuDVI93u8ztSr15upmWToya3NMIHVtOzjtmXJSvY5ahY
+	A+fHg7XVvYWbPYu1we+r+7d5hrRdxX8+Mzuh4cI6lH20DG+PKgWDgdqj5Z1Xui8g5v5nSXulpC9
+	k9egKVarKv991HMt5GAUVB9FLImrmyeXkJX7PXGpFHRmvgww8niTHZl2JLrMDVCS1XdcQbHgnSt
+	Jf4wcmlF0biZTrGna3hnp9DlpjzkzrGJm2vqkuFuhq9E0YAb7FLqrtSuNOuE+GYbg/36tTTm3DC
+	NJKadxoV3dKTFYykiOcvxi9Cx/TsG6glv3OlOyIgScRjQ5YwouQsSg1uGZ9z4vvH+7biJEsixLy
+	Zog5CbxOKAhl7n1xlT9lCpgOgwlaM28uB3jvXpWk6UWWhZa6g9dreeIEmNDL4aulRdt+wNfbKW7
+	/bLTGs28Jp+pLLiDVxgAGFni9jHM1iKacEK7eK9orVebLphD2xGC6v8+Aq7AUC7Gt+
+X-Received: by 2002:a05:693c:68ca:b0:369:f05d:6c5c with SMTP id 5a478bee46e88-37967410b8cmr6726925eec.28.1794722729913;
+        Sat, 14 Nov 2026 22:05:29 -0800 (PST)
+Received: from [172.18.0.2] ([172.56.232.151])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37955332a77sm19790083eec.4.2026.11.14.22.05.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Nov 2026 22:05:28 -0800 (PST)
+Date: Sat, 14 Nov 2026 22:05:25 -0800
+From: Chris Down <chris@chrisdown.name>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 1/2] liveupdate: luo_file: allow keeping private_data
+	from retrieve until finish
+In-Reply-To: <20261110175855.2437084-2-pratyush@kernel.org>
+References: <20261110175855.2437084-1-pratyush@kernel.org>
+	<20261110175855.2437084-2-pratyush@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20261107-b4-uffd_marker_loss-v1-1-82926b22704c@kernel.org>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D91D140007
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: fk6a5nmxxhg7j5ai7ub4m98y16yckkyq
+Message-ID: <20261114220525.cdf6ca6e7fc4cc0a@chrisdown.name>
+User-Agent: Mutt/2.4.3 (cc9e3943) (2026-10-09)
+X-Rspamd-Server: rspam06
+X-Stat-Signature: mnnc3hs4xmk9y815fu7eh7zrckwu6eae
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 4E83F1C0004
 X-Rspam-User: 
-X-HE-Tag: 1794721373-126561
-X-HE-Meta: U2FsdGVkX1/b3hn7JqNmSxU6OezHcfSZHMkLF2wcvYjaHXdymGFRqJikgeCqcMwy+0F5Xhk9s88DIiXSb0TBh2zGvQiZkx1bfTGvP9drLg1tdIycWhnZGH0vpB6c14QJVK+xqxiHiZzO0jwQM9GrzQYqCFcxG3ZGFzpzY1QHQ+K443TKxtMQ7uUSja44pxWX3pAYm4vEtDdAPJLlDf/WLWgHVbMoXnnBakIJ5ZvrLnD75nfYHV3pHo+xry037M9oQCARPIWqESgboizZW9Cj7j3Tcz5xmw6qEwMDwlXwUbFQduMxc7Wc/Ln+xQzvCd3l5KRtLH60JX6/8qznR0ZlX9DucYG4lQfJPhq3RWCDXg3ERIXxK/JfEss9996v5thwvvTv6cHFb2IPtQGCOSbXEORnqXiqujTte9n9Amz7Q+8OTuKvyufJGQDiW4a0hFH8o983eaaBAU+XozIf7MHcXvzLwnUSxWjKdWRUAYc9eN8GOHSv5nGDEpXdWy/JGVbdIR7h7T3LA4H5WViWJvNFsss727XF4/wcfXiUfsV6+DIhjtDZ6SGCKsjqa1OSC+GqeSLqzCTHlY2XMSc19IzsoiVa4JAHeVOsWciLa7NNwwSBKphvpiLh+Yt7FHLftne28IfNHMQACD/sINYalkuknOtyTsKlIv2esDjk7Feh2QcZYAnZ8WqD47iTtqiWcdruKhAAuAY8Et+e0A7dbQy59ia/ClbtN2QC95Va59IoJ92aIyCjshuP0n4DXd5UmDQ2iTyjHGHed84pBDmTzs9Cfom5MAznz6rTbNZyFgUqOymAvxMqu9j/6nhT6mpNmkhJZ6EOIfWAwjz0SgHtZJ36zx0TJz6XfyzPX3OLNTT++j0y6kQRKseOQBiroKS9MVQ8jnSeGUgFj/giHLqIAODkWcPHseGq46dNQzgL0dJVpSuruIPJttzZhGh6GBqrh+Ild+4mWC2T24RbkIuir0w
- vT+S53bV
- yDjWlidWkcI9DcKFe163IjGKMOYg14ujkJ6hClbqBlVOFsotlPZjwL5EVUwZHQkMkr1zvpoUAbqni6kUBeJJf6uL21+tZidbim16Pcpsg5iSkeBYJu6ex8OptGpheXhxv7joLjhZShz1J/agkQc120HoBpTCHybOwxD61KhtXzM/p37tll/UbLw/C7LpUlrLIXqC0woApmjrL/8FiNSxtv6AnaCK5+idny4/i5WG4quVUPl2cHG0yMaXWWLYe6bjCoEh501YjTr6jyxXjrSDM5gZvdg==
+X-HE-Tag: 1794722731-941146
+X-HE-Meta: U2FsdGVkX1/FRjocNI/tMiRDIRIl2QrRqGsVdhdavvmS4VMcorSFlN9Q+KMjzmRQFy06cSzcgBDZsyWaYlKiH9Dujnwg7w0x54FxepgKy4L/hNXhMioSf7B3o82gE8TcLjJZbSFVyyIOR8XpZCieDsV+Gn6S5qTjO6+EE0ZDnD8VgBGRHhpSz18CKZ+tpfsiSeRKe77T6r7T9K9EHRHZaEvjZ8AA/xR6fbuGKorYixF5smP1iAEeXxMggRMcE59dnvYwWIYOqqHBqQW1XJlkvmbm9GOknm3kWzbnCWScX2D4xUPG+VZy0aOyENzX96TtULtvgmZk3OwVFwLlPYVO3ayvRYysQdKrI/gedeSZHu6ykUV41jr03wEEhFsUUzaw9oTEHzNhoeOIErzXz9Jte9p8qHVaT/HIvK60WUZVqDI0ScFVBZd8xJY4HzLnUOovJ94+rDVtF7eoiOiRfczzQqBPZv9aYw1ZLoUOuodtI7GcM5w6SKysXDldOli+zC0Dl1oMzm4aPmWca7KNW0JS2Uw635EbU20PzMVjHP2W/4UYuJeDONaH1GcsLZbHhDeIBPD1Bfbs8TsfbMMjCTYyx4thhJumtcSJVFkjx/WeezBTPWI9+CXYQMmjqMmVcOZoFESyL1JYTf6SJCwQ5HHWkzRjwfOqfCIzYHr/ypKqnSZ565Qi/1c7oVwRtJLKSL8TMC7UliZ1/3Po4ofHr4mzrQL1lTaVmAyIk0FCiAOa7Gg/6du6g0fRG2xLfg3fGLrswffBg1wo/ae+A2DXDRUxduvo1q9IiL/BLn4wYt6f4mlufcclHhhoYTIIHCce1/z6I/s2oCjI1EdCoP8T54TkyIiqV83j0eFnXhGN39z8IZ3zFngKhV9fUEpL6xGZqM1qCePP0eVA2452S6B5x2Y4nBJPfpwDqRIJxTb5RMdkrYdmY1g9Yn9yv+6xx//RIggP00FAUJjI9/+MjOv1ufi
+ svF6GZ3R
+ 1AkGWQnOMFars7i4CUr6mDuAm8RKOxbSB9g2gT40ZZuxdr9sx+q7tg/MYSUZCHxVBGVz50780etAGOccDa/ji5tTrVh3npLeSsGHnQWo5gFrKrjTTodA9tzZgllfCk+ODLzlHu66+EZqOBZ1c+sXRRM/UNmYmGkvu0ZTsx1VIOTnHzAJ+BngEsP1GmKLBpwN+TXYTPPgiu64ae9kTiclomJ8/mp1Fn2XP7l0BwQ6b00XJgNaNMeWgolXvKx806nwcIGUi4S1HqJyZb3YDVcx9MJYM+H4QVdcbju+6OinQ5seE6fK5Za4RmRsQfbeuen2U6ev/xPN16kMSwynpMu22jxsY23NGoMCM4KgWFe1XkSGjYhrDtont2bJm2uAU85Ip9q/c0ux5wHNeK7KoPgZ0zGgC2YPKshKMYN4k8XIaYIouog3bhIfRP5SAY0t5yd25T+98rD0nxIxAor2iEgGODhLBN84LEgI1xFQSMefxJVAd11vRqhspINJbrQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,48 +127,14 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Nov 07, 2026 at 12:51:05AM +0100, David Hildenbrand (Arm) wrote:
-> Unregistering userfaultfd leaves poison markers in the page tables.
-> However, once unregistered, hugetlb PMD tables can be shared again.
-> 
-> Further, shmem page-table retraction can discard poison markers even
-> while registered in missing mode, and fork() can skip copying page
-> tables containing poison markers.
-> 
-> To fix it, add VM_MAYBE_UFFD_POISON and set it before installing poison
-> markers. Preserve it across unregistration, splits, merges and fork(),
-> just like we do with guard markers.
-> 
-> Use the new atomic VMA flag to disable PMD sharing and page-table
-> retraction, and to force page-table copying during fork().
-> 
-> Move VM_UFFD_WP to bit 44 and make HAVE_ARCH_USERFAULTFD_WP depend on
-> 64BIT, freeing bit 12 for the new flag on both 32-bit and 64-bit systems.
-> Expose the flag as "up" in smaps.
-> 
-> Losing poison markers, while unpleasant, is not really fatal, and the
-> use case is rather a niche thing. In addition, we rely on the atomic
-> VMA flags infrastructure ... so let's not CC stable.
-> 
-> Fixes: fc71884a5f59 ("mm: userfaultfd: add new UFFDIO_POISON ioctl")
-> Fixes: 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for hugetlbfs")
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Hi Pratyush,
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+I've tested this together with 2/2 across a kexec and it works well.
 
-> ---
->  Documentation/filesystems/proc.rst |  1 +
->  fs/proc/task_mmu.c                 |  3 +++
->  include/linux/mm.h                 | 45 ++++++++++++++++++++++++--------------
->  include/linux/userfaultfd_k.h      |  7 ++++--
->  include/trace/events/mmflags.h     |  9 +++++++-
->  mm/Kconfig                         |  1 +
->  mm/khugepaged.c                    |  9 ++++----
->  mm/userfaultfd.c                   |  3 +++
->  tools/testing/vma/include/dup.h    | 20 ++++++++++++-----
->  9 files changed, 70 insertions(+), 28 deletions(-)
+Reviewed-by: Chris Down <chris@chrisdown.name>
+Tested-by: Chris Down <chris@chrisdown.name>
 
--- 
-Sincerely yours,
-Mike.
+Thanks!
+
+Chris
 
