@@ -1,68 +1,68 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41655606A335
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 20:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 511EC606A333
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 20:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ImwEBJaq
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ETF5Z0WA
 Received: by kanga.kvack.org (Postfix)
-	id 241516B05B1; Sun, 15 Nov 2026 15:27:56 -0500 (EST)
+	id 37A516B05B4; Sun, 15 Nov 2026 15:28:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A1616B05B2; Sun, 15 Nov 2026 15:27:56 -0500 (EST)
+	id 32A1E6B05B5; Sun, 15 Nov 2026 15:28:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 045956B05B3; Sun, 15 Nov 2026 15:27:55 -0500 (EST)
+	id 219E66B05B6; Sun, 15 Nov 2026 15:28:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C18596B05B1
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 15:27:55 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 159831C41F0
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:27:55 +0000 (UTC)
-X-FDA: 85438489710.16.37E9843
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DEF526B05B4
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 15:28:07 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5D770A8146
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:28:07 +0000 (UTC)
+X-FDA: 85438490214.04.1485166
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6FC1A180003
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:27:53 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ImwEBJaq;
-	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794774473;
-	b=MqLLFGAZXm1elQ8IJMKQ45cNYwkuZsfjtUvhbF4domobL028S9fpPV4ZOhZ3o0GbhFmip1
-	IZAKBfPIsjk8+/cv8D/mldCNaojO9HNjDG6XRG3wPjbmfWF9WGcKiuj1tJk27MKbxy+PaG
-	46eO/WpE0eGa2DHcQDmZjkOYvMsDolc=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ImwEBJaq;
-	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id A99FDC0004
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:28:05 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ETF5Z0WA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794774473;
+	s=arc-20220608; t=1794774485;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VdczhNN3rVTkdzSKO/1FEF2ObIEkmXp6tYC01E0w0n0=;
-	b=GAPkvUzmbOL4v057ZX+i4nMbo6A91WqAaTkbdesss0jIb7rvoorUivib71N+/Bw42TiEnp
-	/E0skQGSBQ/KRzfPAfJlcQW4mZyWq0FpAR94oB2ugK9JpfHiQ3Tx9G/SYyxkfWnNwMaJGl
-	Zx+r/NfDsc9QY7dKQ/HozY+2YW/HcPE=
+	bh=iL9gs0hHi938yh2WI7Rig0yplwSjqvzkRGjQ5uPboKU=;
+	b=trEXl9eKE+UwvSvDxTDJ+uO76XipILyYI/fOYVRnv8VZeWu9yVaO4QfeHrfQcpWynz1PRX
+	1NmD5KXa4MihlYxEiJNV08l2zJ14Ux74zzBanpjUZeZX5QpvvaEkCcEnXIhRS/xJxL4vA7
+	/4PYmaeCyu04D9CVX+xKA3UBZkOOIBI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794774485;
+	b=UYn+IzpSzoTp3YdkKo19YCXegIj7WQmnCSscAF/fX6G9yTUHcu4ix1TsFbQl8ptcRcgi+m
+	fzCGrF8a8bJzQhASfiLWFK+UbMOVh4gj0TMlcLPSEUih9DKyr40WUVgFfTZXqDoAAvao+/
+	IVcZoFzlIB3i7CKT7mrrXv8L2Ae5vuY=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ETF5Z0WA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B313C41AB6;
-	Sun, 15 Nov 2026 20:27:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4081F000C6;
-	Sun, 15 Nov 2026 20:27:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 034B441AB6;
+	Sun, 15 Nov 2026 20:28:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3DCB1F000C4;
+	Sun, 15 Nov 2026 20:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794774472;
-	bh=VdczhNN3rVTkdzSKO/1FEF2ObIEkmXp6tYC01E0w0n0=;
+	s=k20260515; t=1794774484;
+	bh=iL9gs0hHi938yh2WI7Rig0yplwSjqvzkRGjQ5uPboKU=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ImwEBJaq0nehyC/JF9/iqbjz5qT+awTRS1rhu59kzLmGMo98Mvzh4P4MxHjn3QEhd
-	 LdruBaWqwycsIv9VzmTkygHkWfaHareFtghbZyuL728hNd+MhXMD1btY8h5c5JgNTA
-	 F3f+HW+jOq2DAS+9cBjKYIqx/caWoQhZgT3lwtzPSlDGSljTPoOw4VoK3PwtvM2sy0
-	 Jt/bs3s21iolxS8OtIFa1DXW89RWjNpR5VoGh40DxeLKfozQXUEhwhUhLyFiUHn9cQ
-	 4Nc4NypjRd3VCQqb43rzmgdLn24tDFN2pZW14vSWhtim/Oa3QBHVPBQA7hCv0vA5Xk
-	 RQuCq+oeh2NOw==
-Message-ID: <sashiko-outbox-215807@kernel.org>
+	b=ETF5Z0WAqh95BGpkVJKfpqGcs9JI8RAoRt4nI+73Jvpwec+3LLtpvx5oLIOpOfGsT
+	 GOEPDW9rPmVNyvWKj75N4qe/uuqYO9Ct+c+rkqTJy8JuSRXz8Cd8ame+5r1JLvG/3A
+	 reDElin5T7+X5Y7q3072wbnRv3MkRD1vWKJ66eWwdYKSqePxhpqdkT13QWNUnnpmGY
+	 uWWkItczjTLp6aObld3Ovht8ffOQ/ZvRuyPp7S9k0+Fw6T0VXIdNJKdR58ItUCYtae
+	 UkRrFmwjS4VMsil7spiRSB/64XxcHyS+/KBT36lH7fuE9R+NdOThy0hIAK8YBBEQQ1
+	 KRVyv4dQidmtA==
+Message-ID: <sashiko-outbox-215810@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 07/12] docs: ioctl-number: update MTD entries
+Subject: Re: [PATCH 10/12] docs: ioctl-number: update FS entries
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Randy Dunlap" <rdunlap@infradead.org>
 Cc: "Jonathan Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "David
@@ -96,24 +96,24 @@ Cc: "Jonathan Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>
  Nikula" <jani.nikula@linux.intel.com>, "Joonas Lahtinen" <joonas.lahtinen@linux.intel.com>, "Rodrigo
  Vivi" <rodrigo.vivi@intel.com>, "Tvrtko Ursulin" <tursulin@ursulin.net>, intel-gfx@lists.freedesktop.org, "Matthew
  Brost" <matthew.brost@intel.com>, =?utf-8?b?VGhvbWFzIEhlbGxzdHLDtm0=?= <thomas.hellstrom@linux.intel.com>, intel-xe@lists.freedesktop.org
-In-Reply-To: <20261114202653.3113381-8-rdunlap@infradead.org>
+In-Reply-To: <20261114202653.3113381-11-rdunlap@infradead.org>
 References: <20261114202653.3113381-1-rdunlap@infradead.org>
- <20261114202653.3113381-8-rdunlap@infradead.org>
+ <20261114202653.3113381-11-rdunlap@infradead.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 15 Nov 2026 20:27:49 +0000
-X-Stat-Signature: 5zz1ba6runbskrqoz3wqc5szougw66og
+Date: Sun, 15 Nov 2026 20:27:54 +0000
+X-Stat-Signature: oh8kzdt94kkmx4xrrtofjib7oxj36j9k
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6FC1A180003
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794774473-546092
-X-HE-Meta: U2FsdGVkX1+47xm0Tv+BvoCbPT8OmH2qZNwj8a8rZ6X4vO4/8ApNFCv/XsuiEtNYgVpsrkqpWL9VIO2Ke5YjgXjDZXIRanJ4JjiIy5PryXGZgmKwPHK0jGHadRytOT6PycViLuLtd12A2MHF6FcUwdHWsTyw5MiiekxRKFH7Y7lzKZ6LjCoAtHXgBEYLfAur01cW4EGD9lwTA3BW1PidwfszB8HVidfBjaDxgvYvWifhwD8a2YXjpCNIRzT0uJ/6JETFevoA063SkhQzu0Eb40z0irN7xh66nHy1EnCWtt+iKI59XxiHA9kOkiPKJIRLgMykO/efs7U0opDNoo/W30ioYKL/dXuiP+3CyC6Ii7Qp0W0Xs7zH726uF5LcbA9UJezzPjdZnaW3u+UMsMdsQDS8V08L4LOtPsH0WiueRorTAM/oiZO4QhtD67NcZQONa6u3fdvah+p8apFXWoWvlzisIKaPTq9aQ1Hn8bTAvr/HrBkSR7gYj5tOhRGEmhUVLs3enruyKnKI7iRM4tqV9jJJl7QaAzUY30vV1O8LG6K5xHOmr67lGzOIOFDxZWiHxgaOO5axV75zujicmgoDqAv7wemqJovIfrcIFHQrdX4l+jtbe70wBQNdVHgxokm69iiid8eh706fmsPV2GQbJ/6bXNayfJB2aXr5WUVELTjsPCcBlaA6uyXQPCCDfEo4Td86Ufe07Jxc2q+9Wla3EXWFmEc4rQpOKlhtlElANbUPbWKe5vKxJs9DSK2SJl12r0pIiBYGprpWfeBpcnnZ3HPscmlHynuPnrVVr2vssjFoHTzWDjb4XbCAY+cWRakPLqrW3xjCsUBzGvluMxYzHGThOVsy+lRKOaORRSle50HnBBCX8m1dctjmfx6yU5bEJ+Rmb/75JufC0fD3pUlMqDLW2CkH+88Yhq8gk4uP+mAsKEkpGrrP6+GmqfrXJ9SOEVDXrX0PxGOFRC0xghH
- sOWYEJje
- 9F1gjP/+ajQFUXOxd+rglgY2qvzYL0mOL/3INDS7ApN+V172qjahLoLjedicQq/fCHKbj/v9szMh15NokK/MaaNBU3QRpMssmjbcXDnnnUCCfzU0rfl6lrc15tF3uSgT8xwmRSxgSmxNazmzc6Uny89R/wxd2rGW8zOMM0eK4tx7gzcIzAUkWYa2VYQhjeCgs4k+XaOqIQq5nFlO5cQLMoN8H2Hp1LGPNkJoZfMuvIu040mz1nO4rDcNstX3sE4lGJCAKniU6LYXs5IeQsZrer/xe+p9VSo7GcPd9P+GFDoU/HuNnU9TOUD+USlnUs9oGjH5cARCiVqgpD/jcDnKN04EvLARVdeVdwCP6edYwSsMOzLubsCTrY2h/xiLZAwf8xhgZ8RAGRlpKhuEBwaVmnh9HnbZsVRFcFgTpeAD4T3Z1zZleovCQotbb1tI4YM54oV08vVFflE9F1etVOo2CpToq2kdoA/HqLS4rcnB8Qn8grrN024dyAVkAtX9Ujn09SZV5pbERBQ+Un6VJGDIEYz1LRXZ8pVTT7dfM91jirStiQPHTin752m+Fm25iBnVUoqSIt6rnjkAUe4cm0Q0uP1kzvIoKRhWgabWepMfujwyi/634nzEHy5A4i3fqvivJJ6xE3FtPlokxzj3poanYp4ZikvjFe00jZ7UMDlBWQh6MwdQFbinvexbeAXTIoZmFfzwb
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A99FDC0004
+X-HE-Tag: 1794774485-127772
+X-HE-Meta: U2FsdGVkX193v8vVdwliUzwz72aeSu5BR28g2pCp/0GA99wQPRDYUuox4UHKR4zKogXw8LzhWNKf4Ga7gh2A9HCmvJjO5Fej5iPxkPcGIlJX4rhnt37pW8u3r8wxaCzFuj3hREA/z/YMs+o0kcsZVEgyBo78vpoKIBsS8WPKe8iTLwHsKDDL9i6aQFX7N+ekzifN1trMzH0Qmt6oPOF9F+31YkKabo/60FRQuTr6bYeco8dL0kyZZK5f81/44xXaPNud8r1+oy/wiRQ2xCwo1FM2zACh9odP2SA606D7WuQNlZtSUblTUKG/8N1LP2WwBI28DsU+lrjxOYt7wPOhebdy4supYbWF+IUDYEcJe2UjxkZ/LIh5a1a2ZjwP+4DEpOR66MQKlfXcsqUZA0/AdySid9dR5TkYfFHfqH3yYlhaEJATC0nTitGAY18fzuF3yVIROKm0bwM3i3erq8BaJky/XuOUziZ65Ib55fiuVlrMzr2+HxTJ4dK2OQDeIwVAr+KNRaaNc9Z1IQ8yqfxDJa/NRPLarekvHb4Wxw6APu04XiFt2WM/A2y+y65FImka5sp6fAKKnrxtSAiF0y2w/5xOi+b0icFFtlU04L19yqXWkP/WIJub6tabMbmav4yHnUysGZzp46aqaFoXF9hCsNh0qz9tlK3pQjPFdmYIsBr5vY535PEW3Zr93H/+BC4Bra+avfDIPEp6FpCeXKC0qikbAS9kv6PF/KUtKmiB/L1Jy0q5nlhca2Z9UcY58HxQxdBVdB4zhho79oglxtbe6eeFMM/BqdnPNNV87GPjz2ouYOYyXO/rL6EWHqzv5O2MSwE+9rybzI8PdVV6EUwa2YcdU8b1vBGeA5JQjl3qeYrUKqC2lxa20iB6wiqseKmIEpcjYCFkU20wLL2/pYtUa+24TcpIINt8HC4kb5Ahk1ARjpXCZMAfpxSKGoE+Mg+4DlF5OsEnssuCqK+cdPo
+ gdF4RpnX
+ tqg109xccaQVFo+RyPT19GqY8+dQmgPDomFz7UNA7dar604lW5dutQ4opZhcQ1Tks9w88lY3FpSoDKxZVAOiWreuRgGTWo5p9T8dwXj8Z3EnwXV9qL4RJlkQmQQxjD/qbuTef0W5BrpFykhkoY0B37CrAtRghQRK5XMZzCVqVb5r4gX35r4+7E64oqyjUy7Z/JUMy9MusbRqc3mbKazC8XuQLJxRLZOWCxd9yxpWK/IyeyQ/NHgLAPo7yscpCPqw68kjd5YFcncJpizok9ek15Di7Y7WvjW6r6iutQlcRvJEOrPqkM7gHlCHUrkX2iYaAgbcKdtXvkEMnRKnUTOuDWsC3WHMWHcAII6HovuezL2AgB/4uSR6wlc294kEavS5EuZuYw7SwPhmiua0AOFo3uNkhcdtiEcaMyif6sc1BBY3vYXlT4TDcxBYEPIRe0tacdW5gAAmVnB9F43vz3DIGzG8pX4vEtWLX3nHvrPrZVg8gvqhokUno200ftvHKJpK+BShVMwWY+lqX1Ggq+0boKr9CZHs4g3csJgW2IorwQJzFx4akkKvH+VsQ98Qqj087UcitL38/tVco3ST+Cn44jPjWU3/5ox4/JkyRbx+fqReTg9diA2MpH8a4nnL396JTRVfdq2jlkq0lcBL+JPY1sr3UL99oujH06cI0/OARC73svLzewShtegLKltecB4X+qZd1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,45 +125,49 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Low] docs: ioctl-number: missing update of 'O' range for
-  mtd/ubi-user.h to 00-08
+- [Low] docs: ioctl-number: ext4 00-2F ioctl range points to
+  fs/ext4/ext4.h instead of uapi/linux/ext4.h
 --
 
-commit ccf1b77b46484d55fbc7ee02d93a71ebab16f010
+commit 9072a8199d2be085dc5ab2567392180faf810c6d
 Author: Randy Dunlap <rdunlap@infradead.org>
 
-docs: ioctl-number: update MTD entries
+docs: ioctl-number: update FS entries
 
-This commit updates the sequence number ranges and file entries for MTD
-and UBI ioctls in Documentation/userspace-api/ioctl/ioctl-number.rst.
+This commit updates the header file paths and sequence number ranges for
+filesystem ioctls in Documentation/userspace-api/ioctl/ioctl-number.rst.
 
 > diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Documen=
 tation/userspace-api/ioctl/ioctl-number.rst
-> index d47f817335666..1ff4fd4bf9b5c 100644
+> index 87e547be9e2ac..abc89b6288ba3 100644
 > --- a/Documentation/userspace-api/ioctl/ioctl-number.rst
 > +++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
 
 [ ... ]
 
-> @@ -306,7 +306,7 @@ Code  Seq#    Include File                           =
+> @@ -275,7 +276,7 @@ Code  Seq#    Include File                           =
                   Comments
->  'n'   E0-FF  linux/matroxfb.h                                          m=
-atroxfb
->  'n'   F8-FA  video/sisfb.h                                             s=
-isfb
->  'o'   00-1F  fs/ocfs2/ocfs2_fs.h                                       O=
-CFS2
-> -'o'   00-03  mtd/ubi-user.h                                            c=
-onflict! (OCFS2 and UBI overlaps)
-> +'o'   00-06  mtd/ubi-user.h                                            c=
-onflict! (OCFS2 and UBI overlap)
+>  'f'   00-1F  linux/ext2_fs.h                                           c=
+onflict!
+>  'f'   00-1F  linux/ext3_fs.h                                           c=
+onflict!
+>  'f'   00-0F  fs/jfs/jfs_dinode.h                                       c=
+onflict!
+> -'f'   00-0F  fs/ext4/ext4.h                                            c=
+onflict!
+> +'f'   00-2F  fs/ext4/ext4.h                                            c=
+onflict!
 
 [Severity: Low]
-Should the 'O' entry for mtd/ubi-user.h also be updated from 00-06 to
-00-08?  include/uapi/mtd/ubi-user.h defines UBI_VOL_IOC_MAGIC ('O')
-ioctls up to 8 (UBI_IOCVOLCRBLK at 7 and UBI_IOCVOLRMBLK at 8).
+Should this entry point to uapi/linux/ext4.h (or both headers) instead of
+only fs/ext4/ext4.h?
+
+Commit 519fe1bae7e2 ("ext4: Add a uapi header for ext4 userspace APIs")
+moved the EXT4_IOC_* definitions spanning 0x03 through 0x2E into
+include/uapi/linux/ext4.h, leaving only the compat EXT4_IOC32_* definitions
+(0x03 through 0x08) in fs/ext4/ext4.h.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261114202653.3113=
-381-1-rdunlap@infradead.org?part=3D7
+381-1-rdunlap@infradead.org?part=3D10
 
