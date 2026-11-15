@@ -1,100 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C419606A31D
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 19:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E67B606A329
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 19:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UQb71zmK
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Zlr8cphp
 Received: by kanga.kvack.org (Postfix)
-	id 75A9F6B00EF; Sun, 15 Nov 2026 14:12:03 -0500 (EST)
+	id ED89E6B05B1; Sun, 15 Nov 2026 14:14:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70AB36B05B0; Sun, 15 Nov 2026 14:12:03 -0500 (EST)
+	id E89CC6B05B2; Sun, 15 Nov 2026 14:14:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 621576B05B1; Sun, 15 Nov 2026 14:12:03 -0500 (EST)
+	id D784A6B05B3; Sun, 15 Nov 2026 14:14:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4214C6B00EF
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:12:03 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C95841405A8
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 19:12:02 +0000 (UTC)
-X-FDA: 85438298484.22.E521CC2
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B8E476B05B1
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:14:38 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2BBBF40802
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 19:14:38 +0000 (UTC)
+X-FDA: 85438305036.09.67B2C6A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 041B94000A
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 19:12:00 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UQb71zmK;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 887EAA000E
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 19:14:36 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zlr8cphp;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794769921;
+	s=arc-20220608; t=1794770076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZxIzf1rOBt5UVX6T+4jsFLqJIyKEfYJr89yjL6zf2/U=;
-	b=PF5oQQV2P4a8X3lh3vARcgMB8Y2eTyrUD0sN8oqDSslBSAXyHjz7o9hyUdaXMh63CdqEO4
-	rM0KwhLZHZyrul3FPL7+7zCkOIA0WPiH3yarqvWx+YDeRTAKPDSIeB3I+NIRN1+lCubAjQ
-	1v+Cr57dbURfLm7/1ejx6A7pdOj2xV4=
+	bh=bTYAm4EWSRHx/ZHXwlhFob7m+xxSKwh0NNHvPVL+4a0=;
+	b=pO6CEp+jDeZQN/O34K1Z6II16d6No8VkF3vssv/PmckAVsdnAawMnuILQWU3BAWoFsHw44
+	dpttdfN9HD82bPapFOKd/jClcm/rVxZjflJtAHewCjqW3bwli5eEhtIaucaUAM0/pxpitF
+	beBDtWWDCs9gDTKyJ7QxEmw4xS2w2Hk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794769921;
-	b=eZW9yY5yjfPOgNdKVq2Lr77xPcz+6xDz+LEUSp2zX8e+uI60saos6AT0pViyloKFTBpdZA
-	01c2vfVuwQxpgcXehGtpz2Bzgp6vbxLiqE/WzTSU8LV89LD6i0b05Zl5Pvx7yD8MfGWNTz
-	LH1p+TaxX0LsIvqkFbzt0XEKQzbY8HA=
+	t=1794770076;
+	b=BfyKOH9FCWfb20Kcdx/XKfqT2OANCKtZXzkCxavdIC24bgtbcw3FS/HoQOJrdur/7bMPkH
+	3HvyOjDs650Im4Ns97jwbyAgD/Tk7FmRACvWI7PCpk8d00yDBKBNjyOaTNV/58fHaqjCO7
+	UyQjoXP/duu9XPIABwXkHAP4zCUfwGA=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UQb71zmK;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zlr8cphp;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C182342A23;
-	Sun, 15 Nov 2026 19:11:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95BA51F000C4;
-	Sun, 15 Nov 2026 19:11:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B2ABF41664;
+	Sun, 15 Nov 2026 19:14:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2830B1F000C4;
+	Sun, 15 Nov 2026 19:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794769918;
-	bh=ZxIzf1rOBt5UVX6T+4jsFLqJIyKEfYJr89yjL6zf2/U=;
+	s=k20260515; t=1794770075;
+	bh=bTYAm4EWSRHx/ZHXwlhFob7m+xxSKwh0NNHvPVL+4a0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UQb71zmKT7FEnL7pd/rUA4mBP+ArRSohAYMmWp7K3aKZPN53O8r4cQUMdmW0cK6kO
-	 26rQC2rpgdE1JrBb2SO9nmpP8d3+zhlkOiAFAFNK21MAWV1lWq+uB9txYcdInHf02V
-	 HMVT12eD2GhINHfUUCEw4DOUxY2NGlqUR+RvqGk9UP5O/fVgmfmV4/8lQAwDQ1gtSw
-	 6BVYpuvBUcrF5MXElUHmD45Qkke4sZgKaWtfRD72YX0jPxRFztd6JHJs+7Zufj+bOz
-	 rWZ4jM3N2KCmsgYhyofDmNzbWszbLyBnzTMB/E6Ej3mvzqqRL9UiKWsdztLH/RDJNo
-	 QsdzUX890TszQ==
-Date: Sun, 15 Nov 2026 21:11:50 +0200
+	b=Zlr8cphpaQd3nqY4dD/M8LKmVfhEwBhg/RXnFS8Dbd42j21budIL80Fj83ujynYBi
+	 xrkpXbt/vgXXJ3zbCIgd0vytWH9UFZRo+kWYg6+zk3Dgh5sXkP6sxBNtPVRWMc7kgU
+	 7c0cXcpkCgnk34WxtxAQP15i7VF+f+o9Op3gqEYw8sVFIZUZZKKEE/DiCEBd5NJmBL
+	 eqWix0PI/yHN1v1kle17XH0UgF/k5g+OojdNRy9zlUqHohW/kmiciG1CH3WaxOOynl
+	 GtOjVUG+IaqnqKJMnuActvv+XKVHz8jIHWFruwvUHIhP9DWwGFEUc3P4bbqJVKIINp
+	 h+RZkJC+eVaDQ==
+Date: Sun, 15 Nov 2026 21:14:25 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: Chris Down <chris@chrisdown.name>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>, Baoquan He <baoquan.he@linux.dev>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH 2/9] kho: Make bootmem reservations visible to fleet
- monitoring
-Message-ID: <avoD9gIBLvMW4vPp@kernel.org>
-References: <cover.1794383544.git.chris@chrisdown.name>
- <c41c639fc5f453d60a265ba42a233f2ea5b48319.1794383544.git.chris@chrisdown.name>
- <179443886218.2329176.10742245280418377061.b4-review@b4>
- <20261113003059.056dd036a6546756@chrisdown.name>
+To: Vincent Donnefort <vdonnefort@google.com>
+Cc: catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org,
+	m.szyprowski@samsung.com, jenswi@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, mark.rutland@arm.com,
+	robin.murphy@arm.com, hch@lst.de, ryan.roberts@arm.com,
+	sumit.garg@kernel.org, sudeep.holla@kernel.org, ardb@kernel.org,
+	thierry.reding@kernel.org, david@kernel.org, danielmentz@google.com,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	iommu@lists.linux.dev, op-tee@lists.trustedfirmware.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/8] memblock: Introduce MEMBLOCK_PTEMAP
+Message-ID: <avoEkRRM3iH70_Am@kernel.org>
+References: <20261111110738.872947-1-vdonnefort@google.com>
+ <20261111110738.872947-2-vdonnefort@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261113003059.056dd036a6546756@chrisdown.name>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 041B94000A
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: m8a59fg7mg6y6zxmawae7sjtphkqn5m1
+In-Reply-To: <20261111110738.872947-2-vdonnefort@google.com>
+X-Stat-Signature: 4qmjw7ezro6eyztgmrg74ygp3e599xey
+X-Rspamd-Queue-Id: 887EAA000E
 X-Rspam-User: 
-X-HE-Tag: 1794769920-514930
-X-HE-Meta: U2FsdGVkX18k+5tUu/+s7TxM9n6MyTJZ7/LRtpngpZdoVeRiehurw56t0AsspEvMj0Fsi12o0GIqZqPAJ8b/VCwr0D9rYecUw8JnVx3BRKWJ0TiaFgeBWt+awroQOBpUo8iNj2sEI+bkYfG2+Nou5yErIIkjCz4f4SUcYpz4pU60g93CRqlowtSIubw0e0cxlMujipSfe7faE0UpSgz9zPyRgLCrqJwVxc58NTRoJz1ramAYiZnm8UBUDfWebWNQaw+FrFYfIYbzDq/4yT/40PkvxGsfD/3wr85zJrELs87IOEI9XtnuOHwNLHwPurOi9UVMZlyU43xjAQcXiaqUicieFnEo7O2R/4P5+GlwFl3JfbWHns6msxg1QuhAgeif+BzJVdOgVoU5k8cwYwPL6RPqUoPEKlN+LmPQ9hVmmL6oTx3zJp9vehrrAFhpeZqhaybhP0tl6HsByI+zBNQlcBZHT4LA0c7UK4mfPP09r2jeBuESqQPlohKiR4DUr+qZvVKKtTRi9Hwcm5yX8lFKZA/9sRAcXXY/Pu0anucgi+qXxs2ilan7ykL+QmdwvmfqWsHemfaaNtkv5TMqtFYrs09vRPU7TOA/hZna/tCdPeTzm7zboB3iQJhHf/ddG1TiMHatuQDTYuB3uihUVjOJkdP3ZVMypmj5YapIERCEhsDUU+eVOFgRih8t0bCy7deUV5oB5Js49aR+fU19ScR+tsQeNWJtxUzkI6z2QYtLsUMo5M0txRg+Fz4n3mPk8M996PdRRKRME061UOnM53HW6RcoIWB5onu2BuoldMjyYeLfYyEvJFh8B4Kn1me9E1sh1FGLHV8GD+wS6ONdWZQrsP/HgNZ2N5uJDCfc72QVrfkd51zIMNDcK/7lWxeEo8fM+hyEm/wfkwDS2Bj6wxQVxkTKBsktJq89U0sVRRNqqXlOvuRFHqGZ5cwG6X8Q0rE1qD9M8oTyh/qy7vMwkbu
- 2QxycS1T
- aPT2OMIyBTh+BrueO8W68tBcRo0xfOf6OWVXd4vvT7jr7lJ49yXG/RXLmnmuUbUv/3o9C1tfGJivm+GD8XU88yRC82N0v3FJ3B5+kLzRhApVk9Fbr5b21qOOJfLB9ahrBGa1IElP8i0O3Rc4o+f9PxLx9wtdxjhBtRlRFSaRfDWujdMuP4G1RoebtL+wVEeWKmFkHufGpvoJ9s1VSQKmxFJoT9YsNVXf3EwrzDat2mgq+L4wJ0gnBVFPHgugRdze6a9r4
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794770076-511221
+X-HE-Meta: U2FsdGVkX18MPpp29zmiMktwVaPrKpoiKCezaB28OJj5p2fND61L18OA1CNDuMJgRjf1QgTAcM0n30Kejz5nL1/FwtGSoDCgpyFg1ZTE0FOAuVWxv/cU8aWanuU05GDePoGoE0MAp0TDkdn73MEhp9O0ol1koCfYCQKiYhhQR29e/UazdGXyrh94f/NvMHN018V96YLYD8jviCYPrkD/UqPPFE6Lz8gv9Av0srfxWN4CAoTgc7fZPaXTT72AIMC21NE64LAoK8NeDw+aiyq/4uBCCQ+hxH4KsCI16Vx6ZMcon/ZG5V+MAeBN9BRRBtg3TH0ssjMXWs8lV3szyQUpT1Lo29GzM1Bqjp31IywAl0M/Zxpqt5HIWcIwOlHZOZ5aOq7o70s7O7+rUmzkqtSU6YvnrMEYwHZFGGlHIMOj22qUMpYZsmIJfyO2OAi3wLkbA29vO43tjF2BfpOD2wX8bnBWHKctAq7Hs7NVAaLmGhVT3IHOlZF27g5G8zao7y3MlM57e1SfdnWoC8rWXXgZ2dGmFpon9zG4uhKSlbmBpu9aLlyziIf+OxlIc7YShab75D385/IZqd+NEX/hCdESklDGz/XVhF3v9geJwu//ueLgO/vvYZiX5N+Wk6AW5TSM5FOIw2S4O1JOKGg9cII8ufQpg+lVY/g/M/q5cuseFf7Zj5DY6c+mXd0g3na6slSJ6SERCXiMPy1HRZWPVTfkIfgDjHc3fwcJ+QUOSvypXW09XrXVZqxt+CUwrgs3I0c98PofWUC3Z5cXYYJA7O44xHSIXSBX6CzDq8+5FDA8m+5TpBCrT4xct53YAoRK3PC8nnv1TfWNsknMJIbXXJNpur2ajRVXrqV7BYjU/GQvP9wrMfCRW55kCayFfuaaO8GR0RF48yLVXP9gGt/38H2WP56dMx4NoFZEvmSeVOApeWnWx4C19+ujXs+pSZWQtn8Ho+sa61tEpvdevz5QGU+
+ TifNPWkX
+ D4w+4pd32eV7aOSQXVJhmU4XQ0RAoS2iwgcS3KMRrNAdQngPARC//dkp2D+9qe2xdSA/CXlKwn9MszrtEv+5gP1CAEw0YuqTyWwUcpaVQ+sCmmMgM/qu7GK3+i1DDNjfvEIBqekDgsblG4CAlHTReJWA5EfYcnf5LrQeQAo4jW9Fd6RflCZRxSzWkpTRFQBmQx6PuZXd5G+KHvrQ/mHAm21PuejS1iH9qd8XKkMjXY0dAoNQqteLoJgdb/FlQgOy+OiEuKjzfr/nhR+odQTe0mbZnF8RtJ0Ih6SCpBpY5nc9/fRiDXi+IqTxFG2PB6128txH3FbgzU8/zITkUP+fYU7+C8Bc/PiY80NvUmrsGhLDC8r62zsc1BRSZixhDIVm5F09XEF2YNHEkhtfoFsa2UQRCGI9sBc7mgNZTIzqQJkZArNjIoBKUK6KydBOnvxOz/yrTlMMDa1btq7w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,81 +101,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Chris,
+On Wed, Nov 11, 2026 at 11:07:31AM +0000, Vincent Donnefort wrote:
+> Keeping PTE-level mappings is interesting for arm64 as it allows
+> mapping/unmapping pages from the kernel direct map without the risk of
+> splitting blocks which, under the break-before-make rule, may trigger
+> page-faults the kernel can't handle.
+> 
+> However, mapping the entire direct map at PTE-level is costly. So
+> instead, create a new memblock flag MEMBLOCK_PTEMAP to selectively apply
+> a PTE-level mapping.
+> 
+> Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
 
-On Fri, Nov 13, 2026 at 12:30:59AM -0800, Chris Down wrote:
-> Hi Pasha,
-> 
-> Pasha Tatashin writes:
-> > > The reservation varies with the kernel, memory size, NUMA layout and
-> > > command line. Our fleet collector needs the actual size from each host
-> > > so we can decide where to enable KHO and catch a kernel release that
-> > > takes those hosts over their bootmem budget.
-> > 
-> > HM, that works for cold boot not for live update :-)
-> 
-> Yeah, that's true :-) A kernel we live update into just inherits the areas, so
-> we'd only see a release change the size once hosts cold boot into it. I'll say
-> that in the changelog in v2.
-> 
-> > > Today the collector would have to sum kho/out/bootmem_len in debugfs,
-> > > which isn't a userspace ABI. In /proc/meminfo, free bootmem contributes
-> > > to CmaFree, but the reservation doesn't contribute to CmaTotal. The cma
-> > 
-> > Is this a different bug?
-> 
-> I think so, yes. Bootmem pageblocks are MIGRATE_CMA, so their free pages are
-> counted in NR_FREE_CMA_PAGES, but totalcma_pages only counts the areas that
-> mm/cma.c knows about.
-> 
-> zone->cma_pages is a separate problem. It only gets bootmem added by
-> init_cma_reserved_pageblock() in kho_init(), and on a KHO boot we return before
-> we get there.
-> 
-> I can send patches for those separately if you agree that bootmem should be
-> counted in both.
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Yes, please :)
-
-> It wouldn't give us the bootmem size though, because CmaTotal
-> would still include any other CMA areas.
-> 
-> > I have some concerns about exposing this as a stable API. What if we get
-> > rid of bootmem or make it resizable? We only recently renamed it from
-> > scratch to bootmem, and we have been exploring for way to optimize it.
-> > 
-> > I would keep this exposed under /sys/kernel/debug/kho/bootmem_size for
-> > now, and not worry about it being stable.
-> 
-> That's fair. I'll move it to /sys/kernel/debug/kho/bootmem_size in v2, and we
-> can look at sysfs again once bootmem has settled down.
-
-The sysfs vs debugfs argument applies to anything KHO/LUO right now.
-
-But we'll need sysfs at some point to lift the requirement for debugfs
-mount.
- 
-> > Keeping it together with the rest of KHO code would be better.
-> 
-> Will do, it'll go in kexec_handover_debugfs.c next to the other bootmem files.
-> 
-> The kho_incoming files in 6/9 are already in kexec_handover.c, but kexec_core.c
-> still adds the group to /sys/kernel/kexec. Is that ok, or would you rather KHO
-> set that up itself as well?
-
-We'll need sysfs at some point to lift the requirement for debugfs mount.
-And I think it can live in /sys/kernel/kho and there we can have incoming
-and outgoing and the implementation can be in kernel/liveupdate/kho-sysfs.[ch]
-
-BTW, kexec_handover_debugfs.c was initially given the "full" name because
-it lived along kexec_* in kernel. These days I believe we can make it
-kho-debugfs.c
-
-I promise to look at the rest of the series Really Soon :)
-
-> Thanks!
-> 
-> Chris
+> ---
+>  include/linux/memblock.h |  9 +++++++++
+>  mm/memblock.c            | 39 +++++++++++++++++++++++++++++++++++++--
+>  2 files changed, 46 insertions(+), 2 deletions(-)
 
 -- 
 Sincerely yours,
