@@ -1,100 +1,148 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DABDC606A330
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 22:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19302606A32C
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 22:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=2dU+DbgF
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=l0FofxsE;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=uC+Qn4yw;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=r8H5tXPE;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=XhxLpZB3
 Received: by kanga.kvack.org (Postfix)
-	id D62BF6B05B0; Sun, 15 Nov 2026 17:12:10 -0500 (EST)
+	id 0EDDE6B05B1; Sun, 15 Nov 2026 17:20:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3B136B05B3; Sun, 15 Nov 2026 17:12:10 -0500 (EST)
+	id 09E776B05B2; Sun, 15 Nov 2026 17:20:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C506F6B05BA; Sun, 15 Nov 2026 17:12:10 -0500 (EST)
+	id ED03D6B05B4; Sun, 15 Nov 2026 17:20:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F2066B05B0
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 17:12:10 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 126288086E
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 22:12:10 +0000 (UTC)
-X-FDA: 85438752420.07.973F3DF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 400311C0008
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 22:12:08 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2dU+DbgF;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C61D36B05B1
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 17:20:05 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 63B5840875
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 22:20:05 +0000 (UTC)
+X-FDA: 85438772370.27.ABD6A68
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2E8E11C0005
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 22:20:03 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=l0FofxsE;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=uC+Qn4yw;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=r8H5tXPE;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XhxLpZB3;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf20.hostedemail.com: domain of clopez@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=clopez@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794780728;
+	s=arc-20220608; t=1794781203;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q9s42YVPhc56VTV+G1TekC9EyggoNH/5JmNGm6Xx0OY=;
-	b=4nzP4bejRBHfWGTkPRpNs1HZjqXOUw9J7bvHjC43dYbO8PGA3D7o5lhQWMGSeXecqjCgBF
-	VVaNeq1wyrY1mLWs5ilUZPAKBemb2avASMVlRJVmEOarfz5bQ7TuXyTKVOyeqzogBG9vSB
-	2Ac3kaUfKeMpQd2WjlQSVK90idrGvE4=
+	bh=d3rAtedktrSwXVekAFGPioCnjnnEo6sIvs0uSQj8koE=;
+	b=4slKylomEV1AsNcS5FgiM3k2oTj9UlqJqYwtp1/7CgXI89P9tbv9Ug6xHPu5RegitRrkfR
+	kpPZBeNuXQ5MOOYO8yAYZ0eHB3i9rl+KNAknBFsJ9m9ts6EJQF6L/gdYS0ndlp9Vu51Z97
+	eInv3AXT5Tw93Q1Q1cvNz+pTd9Td33w=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2dU+DbgF;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=l0FofxsE;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=uC+Qn4yw;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=r8H5tXPE;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XhxLpZB3;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf20.hostedemail.com: domain of clopez@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=clopez@suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794780728;
-	b=5tjIAcNz3+4IG4350Ar3eWAVymk/oHUxh7LVj9j+WD1DM1/KPyaFO4MDHOy+MREQugXSxM
-	Yaw3ZkeWtLxeScu/xLvtR0yje3eQzOVrIGJO8vs/ceA0YBKQDXPDk/OTSnzPkMAZ0PMQlA
-	mzpz7UCXGCIEjmF9zPYXli0D/z0tS7g=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 71CEE4176B;
-	Sun, 15 Nov 2026 22:12:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D80C81F000C4;
-	Sun, 15 Nov 2026 22:12:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1794780727;
-	bh=q9s42YVPhc56VTV+G1TekC9EyggoNH/5JmNGm6Xx0OY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=2dU+DbgFDrqSj3PWmmULOFhMRJrMipQby1pDwXNQGxLi46AXNwWZX7utTYV4vHXMw
-	 OuPTqGy1iRd0KdBcAa+7e2q56eUOyyVc+qL8yfUS0ZDGXQiZX1nqa8ER3jfu0eQFvY
-	 gnkUjz6mfockveWho3dsBBhBNdBl3oqMsZUPEw20=
-Date: Sun, 15 Nov 2026 14:12:06 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Yingjie Wang <x-professor@outlook.com>
-Cc: Manfred Spraul <manfred@colorfullife.com>, Alexey Gladkov
- <legion@kernel.org>, "Eric W . Biederman" <ebiederm@xmission.com>, Vasily
- Averin <vasily.averin@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Michal =?ISO-8859-1?Q?Koutn=FD?=
- <mkoutny@suse.com>, Michal Hocko <mhocko@suse.com>, Alejandro Colomar
- <alx@kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "cgroups@vger.kernel.org" <cgroups@vger.kernel.org>,
- "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
- "linux-man@vger.kernel.org" <linux-man@vger.kernel.org>,
- "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
- Davidlohr Bueso <dave@stgolabs.net>
-Subject: Re: [PATCH v5 0/3] ipc/sem: account dynamic sops arrays and
- validate SEMOPM
-Message-Id: <20261115141206.920bdc8c5a84073712bb5c3b@linux-foundation.org>
-In-Reply-To: <cover.1793250194.git.x-professor@outlook.com>
-References: <cover.1793250194.git.x-professor@outlook.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	t=1794781203;
+	b=x4fIbFALNA0nYYWahfaMKewpAc6XA0zobk3Cb2LsaJU6Pewu53r95W5HCiTS6Yap9pWfld
+	t9rdUrf9XZvSG7ahcIyMT1AzAIUGeHuFslGfYNOO2fwsaD96EjW/vILVJhA0i3A4vdyFv/
+	zBIore4y8LhAalQUeXnMMHy4NQy15Bo=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 2320F1F453;
+	Sun, 15 Nov 2026 22:19:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1794781200; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d3rAtedktrSwXVekAFGPioCnjnnEo6sIvs0uSQj8koE=;
+	b=l0FofxsEj7ZfE5jdC8pSPGeEiJJBaKymA4HRl9c+CNaG70rfjcdrQH1+vKsjEukB6864z8
+	kCVVWURXjil96kZmgY4K4F6IhtBZELjq7qZ4NneOaNz/q1RDRhljcIy8XjPyecEnHduvYX
+	GtRqwwAvJpzaikJtjZNlcIC5jwdfsnw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1794781200;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d3rAtedktrSwXVekAFGPioCnjnnEo6sIvs0uSQj8koE=;
+	b=uC+Qn4ywawI31ggkR3nxBg4KdFBGSO6u95J0oXgJ42zKn2UElFjFNmgN41BHBkGdy7OZ7Z
+	rFtdTHKyzEB4ThAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1794781199; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d3rAtedktrSwXVekAFGPioCnjnnEo6sIvs0uSQj8koE=;
+	b=r8H5tXPEcYAOEhBl0gVbqRFO0u40h4FsQlxVnPfSqDvfh5vBc3KiQmfTQrCUgm8yOdiMxr
+	+RJUA+zY3qVDXarEuqD9hlGqn5v2EpZWlePta87ucCAzGVVTmABftMyln1tlanwZXcw48b
+	SYeey9qwqhzcjUds7EVfs/4QLgXplcw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1794781199;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d3rAtedktrSwXVekAFGPioCnjnnEo6sIvs0uSQj8koE=;
+	b=XhxLpZB3Izj3+Sqc1fD3IYSg8BD0r3TCwNIGyJxkHeFD6TeRbep+ifEc1VkZSK6j/fzFlq
+	nxF+ZPZgnRZ35VCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E34F5134F4;
+	Sun, 15 Nov 2026 22:19:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 83EDLA0w+mrmBAAAD6G6ig
+	(envelope-from <clopez@suse.de>); Sun, 15 Nov 2026 22:19:57 +0000
+Message-ID: <749a4a86-5b7e-47ff-a6d8-d885354dc68e@suse.de>
+Date: Sun, 15 Nov 2026 23:19:53 +0100
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/9] KVM: don't zap secondary MMU on permission upgrade
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-riscv@lists.infradead.org,
+ seanjc@google.com, pbonzini@redhat.com, akpm@linux-foundation.org,
+ david@kernel.org, peterx@redhat.com, imbrenda@linux.ibm.com,
+ borntraeger@linux.ibm.com, frankja@linux.ibm.com,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>
+References: <20261112142039.907090-2-clopez@suse.de>
+ <avd4MOhiTCw0I_e1@gremlin>
+From: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
+Content-Language: en-US
+In-Reply-To: <avd4MOhiTCw0I_e1@gremlin>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Spam-Score: -13.50
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 400311C0008
-X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: 2E8E11C0005
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,NICE_REPLY_A,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 4imxxwqhjwzwskbwss9w7gmjfnbc73it
-X-HE-Tag: 1794780728-921407
-X-HE-Meta: U2FsdGVkX19t+WAWmgRD0QWx6f3llubBHVih7BuxEefL+oxZb3uJl8x9sGYChciB2ReHH5u7i4DweAFSa/dpQWNUmWpigsh7QhATfEyn7Mz+mXKV8KzDbUvMWdgPof1qxTr1LeL7OXTrfyt9gsAHgN4zcPivZVLPT1mKZmWG9eWUOn4Fl9Y2gzr+HX52F1YmpCUvxpGBb2Xhf+d0DioedS0Y1sxFhKUvWRNkD9NJr99OoXdrHTxgOhQ48W6ZeI4xayMfc0zLu/QBOFpW0IfBmX9lqIv1nlQkaaN1VrWJobXLRc0Jcp4o2OwL31GF6gxbte7GqqXKef7yI8gLAFckHnbVs+bKB8xYP8zUHPvjb+focYA3Ik1bVGJwObuxBTjUjOCtQaCgoZGJhDaJqaJ9YtQvRd+ZSEWGnHP0vQTtp1QhOmJ0L4A7v3i69iVVBd0fiMvqXXJvGlT8/2bwEtzwPlhBlXVol00ddOyTn8X4tjisUC2oOQBP0Igj+950gjPC1r6y8UYjW1KPmdmZnC9ERFR6wp1sIVMJhRQ2u+BXpKRca/Z4PToImcbJeedshbpsb3dcawg6X1fKJD6JY1PyhmovF3pS1YrgnTA903eneBeTf4UPQg8tmfNnXu/d86ELKwPhJFKHZyc9UfEPkJ8G8/EcDLdzi4/nVIt9dhN5evipNW3rRr9DGzlh/jT+YMD3CEEINhGzCnIkfno9G/8t8gQ14A/26U7+VtTxmxGf+5WhvJ92H2POgFW4WQne3vGw36CO5Rhr8qfXzoo/pOGM+vcR3yLM8AXHBeysm7RCzTvMqmZs7nb+YQWoOUvZY1abeb7NWgSlYLkBHPLp4GqXn/c//GUuG3Thj8Yi6nsKfnc2DLjr1rP7UxUsurjX7UivUr3IWJiMueOT25kFH4XYJcCJzMWVFBD+5gxIZOKQQTnAkjJoszp947LjnsFtWjnOO9LkvrHgVt5dCk/k3kN
- 8EEmZOmw
- /LZ7ONKH+7YNihKwUaRp4pW8Kxw3l+1CfkvL6GSBtk21FpT5qR1dfjK/9ZNUah/ryKk3nchHBffcQ7qqCZwkmUVYKbf+ixLOOgkQKXbQKitu7TNFM1BfmDukHPGLqXsIBbqMcydpMhTxCnU9K8d6tGBaLRlvjw1Kbf+9EVrRvR2RLEjy17qwCSIfOc0VKvJkmSX/yuONtbmgsf5GacGeZqRniIa93TC+AMrLdoa5E2j1aCL8kSDv9LDHMxJyZl26TOPXz736uUQ1a9sgp94tF/ksQEMU4sqEWPeubXaB/4wT+qpXSpck74x0mkH8V4/2shsfXQXIoNuKre6Vd1YAA4j+48g==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: fe3ozb67hkw3kptjkg18zmryoyy4hxjf
+X-HE-Tag: 1794781203-195762
+X-HE-Meta: U2FsdGVkX18wOHQxGiHSMrDLv1oCXwgw6UzPoLsECyLT6ICI/mzJgigBPGNus6bVlbtWxJ2mGivXkOMaDrxhoY6EwTRb9bQlwpe1sVmv3RsUgF4MiFZ4q/XhEoKJY2c1F2F+I4LreFnUx4peTNx3yK3ueAa9u1ZpPWU1LCK6r8bS4YhGMykkJ2Nldp94SrrZa+bpt1OEWJ6rTbHWfEkcq33fuk1KUtWRz/qD0kx3GD9ldkdDy/47gYp3l9DZWKATf8tlUYCGe51p+kQrP2v7rYvUVFe3G33GlXmomLIhhZPJCXI1Fq2SR/UXal7LuzxtV6w+1F1NKwLlrXnLKUbrXzBqyEc186bFXDnkYE0yztwSuQ6QaQ3dpduVuq5yNQglp5A2gsuNgbfVQN+pyUhH6GAjbtQ25e0Bo1+nbJXBn2kvwfpknKJm6PJP/7eU8A2L2ksQayZii/AOXs522Qq/1x09DGWXnjPThW7787hvgYBVIimNVWQ4S15PwJqPrFaRitTwcpl77qoQyp64QhlP/XsYigRu/9anh+UgE1v4YAtujEwXUfbdCgUIgeQuRtzuQuRstpwPKReulu3J/btXHOOzr5oBCanNJaD29tPaMhaQ6mv9O8FPerCNXYfC9LGw6JkXUoTIkBF+9OJp2neR2pxlm8MsA+MCqU8paFUYr65XNr77rhVw7VTn/vN+sfLpdpMn9cFa90+ggK9ombeMyABHlOePzs8idzKxZCR3MmKsjIiO/kOPQKIf6NpVXhQUA0iir4GVUL6zaUSTBCzm53T4Bo+n13pPRmq7rf3iCGW8lg5VTk3nv3ELiJLS18l5mqvwmREQdvO+4yBdNWx6MZvLlKvoQNhTexFvaFRuO6ZvRmdtmYVQeisbYKDN5a32lR3YrRMA0Rq67H8YN6eiutUiI/JtocNEGWSJ3Xq6JMvfdv3V0h5iQWvZPGRI+spQ9dnqhvK0bVvGrhKx4oG
+ ciT0leqy
+ 8OuuG6DerzERvDTPr/wqdISmNGX//s4t0/nmzcrlMmEeS+4q/nDw7iIFPVvcDfm5mUr/B7j3C1DhzbvlvktBP+BeLHgPb719Gp5DAM5gwF3SleUqLeYfdG0Nmne/2o1ndCt5fj79jlaqPo5Dx4xO3e27MAcPy7E8dAjifSGm2OFVh+E8L6OIfbW0XkbWG3KHPUmTG0G4R7glxze2rWK0t9H90JfCck7F/WfaHVWhnCkKCjrmJAaiM9yykYXOCy2kd10CzReDry8PFuBN+x+lOyou7hkcjxHDzQwQrVSLHGhqo1ZLhCquVG+j2AFbuv1Zljol4Wuoq73E7o78=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,109 +151,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 29 Oct 2026 05:03:24 +0000 Yingjie Wang <x-professor@outlook.com> wrote:
+On 11/13/26 9:59 PM, Lorenzo Stoakes (ARM) wrote:
+> Sorry but as I said to David I really question what you're doing with this
+> series on the mm side, and I wonder whether we should even consider it for
+> this cycle, frankly, given [0].
 
-> Shakeel, thanks for the suggestion.
+I was not aware, sorry. Considering this, I am happy to wait until
+7.5-rc1 to send the next version.
 
-Thanks.  Shakeel, please review [1/3]?
-
-> Patch 1 now uses GFP_KERNEL_ACCOUNT for every dynamically allocated sops
-> array. The first 64 operations still use the existing stack buffer. The
-> fixed 1000-operation exemption and its conditional allocation flags have
-> been removed.
+> And, myself being the fool who is engaged in the Sisyphean task of
+> converting VMA flags everywhere, you can imagine my delight when I saw that
+> you (seemingly quite knowingly!) chose to abuse that API, writing code that
+> I'll personally have to rewrite later.
 > 
-> I compared this version with v4 in a 4-vCPU KVM guest. The benchmark process
-> was pinned to one vCPU. Each number is the median of 21 samples from three
-> fresh boots of each kernel. In a leaf memory cgroup, the changes were:
+> Don't do that please :)
+
+I was also not aware of the ongoing effort, I'll use the new API.
+
+> Please also do not keep respinning based on sashiko feedback. FIRST get a
+> clear understanding of what maintainers want.
 > 
->                                       65       500      1000
->   successful semop()                   +3.2%     +3.2%     +2.3%
->   allocation-focused invalid semid     +5.6%     +9.1%    +11.9%
+> Sashiko is a bug finder, not a reviewer.
 > 
-> The invalid-sem-id case allocates and copies the operation array before
-> returning EINVAL, so it emphasizes allocation overhead. The 64-operation
-> stack controls changed by 0.9% and 0.5%, respectively. The already-accounted
-> 1001-operation controls changed by 1.0% and -0.2%. Successful calls in the
-> root cgroup changed by at most 2.3%, including the controls.
+> And see [1]:
 > 
-> The sysctl handler parses writes into a temporary array while holding a
-> per-IPC-namespace mutex. The mutex covers the snapshot, validation, and
-> publication, so a failed write leaves the live settings unchanged and a
-> partial write cannot restore fields from an older snapshot. The snapshot and
-> publication use READ_ONCE() and WRITE_ONCE(), and reads continue through
-> proc_dointvec(). The unused sem_check_semmni() helper is also removed.
+> "Wait for a minimum of one week before resubmitting or pinging reviewers -
+> possibly longer during busy times like merge windows."
 > 
-> The UAPI warning about physical fragmentation is obsolete now that the
-> operation array uses kvmalloc(). The header describes SEMOPM as the
-> compiled-in default and retains the uniform <= INT_MAX range comment.
-> 
-> Patches 2 and 3 are unchanged from v4 and retain Manfred's Reviewed-by tags.
-> The series is based on 7be4bc52fd9e ("Merge tag 'driver-core-7.4-rc1' of
-> git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core").
+> Please only respin once a week at the minimum.
 
-Thing is, the above is largely about what-changed-since-last-time. 
-It's useful info, but it's short-term development-time stuff.  Most of
-this is inappropriate for the long-term kernel record.
-
-I had LLM suggest a replacement [0/N].  wdyt?
-
-: An IPC namespace owner can raise SEMOPM and make semop() allocate a large
-: operation array.  A blocked call retains the array.  These allocations are
-: currently uncharged to the caller's memory cgroup, so repeated calls can
-: consume host memory beyond a container's limit.  In one test, a call
-: retained 60,936,448 bytes while a 32 MiB cgroup recorded less than 1 MiB. 
-: Sixteen concurrent calls retained 100,860,416 bytes while the cgroup
-: recorded about 1.3 MiB.
-: 
-: The SEMOPM sysctl also accepts negative values.  Because the operation
-: count is unsigned, SEMOPM=-1 becomes an effective limit of UINT_MAX. 
-: Separately, a rejected kernel.sem write can leave earlier fields changed:
-: an invalid SEMMNI can return ERANGE after setting SEMOPM to zero, causing
-: subsequent nonempty semop() calls in that IPC namespace to fail with
-: E2BIG.
-: 
-: Patch 1 charges dynamically allocated operation arrays in the regular
-: semop() path to the caller's memory cgroup.  Patch 2 parses and validates
-: kernel.sem writes before publishing them and serializes writers within
-: each IPC namespace.  Patch 3 removes the obsolete warning that SEMOPM
-: above 1000 risks physical memory fragmentation; the operation array uses
-: kvmalloc().
-: 
-: Accounting contains the large-array case when the caller's memory cgroup
-: has an effective limit.  The series does not impose a maximum on positive
-: SEMOPM values, so a root or unlimited cgroup can still request large
-: allocations.
-: 
-: Validation included x86-64 and i386 builds, initial and user-owned IPC
-: namespace checks, concurrent sysctl writes, operation-count boundaries,
-: and allocation cleanup on success and error paths.  In a limited memory
-: cgroup, accounting increased median successful-call time by 2.3% to 3.2%
-: for 65, 500 and 1000 operations; the allocation-focused invalid semaphore
-: ID case increased by 5.6% to 11.9%.
-
-Also, [1/3] and [2/3] are cc:stable but include no clear description of
-why we're recommending backports.  Backportable patches should clearly
-state the userspace-visible runtime effects of the bug which is being
-fixed.  Our downstream people (-stable maintainers and further
-downstream) are swamped with bugfixes, so let's help them out!
-
-So for [1/3] I inserted this statement:
-
-: A caller can raise SEMOPM and keep large, uncharged operation arrays alive
-: in blocked semop() calls.  Repeating this from a memory-limited cgroup can
-: exhaust host memory outside that cgroup, causing reclaim, stalls, or OOM
-: kills of unrelated processes.  Charging the arrays lets an effective memcg
-: limit contain that memory use.
-
-and for [2/3] I inserted
-
-: A negative SEMOPM becomes a large unsigned limit in semop(), allowing
-: operation counts that the configured limit should reject.  Separately, a
-: kernel.sem write can return ERANGE for an invalid SEMMNI while leaving
-: earlier fields changed; if it leaves SEMOPM at zero, subsequent nonempty
-: semop() calls in that IPC namespace fail with E2BIG.  Validate the whole
-: write before changing the live settings.
-
-Please check these also.
-
+Understood. For what it's worth, each version went out about a week
+after the previous one, but fair enough, I should have waited for David
+and you to agree on direction.
 
