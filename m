@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F138606A330
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 14:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49C42606A31A
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 14:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=dnLp+SXf
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=UUCl9VrX
 Received: by kanga.kvack.org (Postfix)
-	id 298496B05B8; Sun, 15 Nov 2026 09:39:48 -0500 (EST)
+	id 5CDC56B05BB; Sun, 15 Nov 2026 09:39:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26FAD6B05BA; Sun, 15 Nov 2026 09:39:48 -0500 (EST)
+	id 57E5B6B05BC; Sun, 15 Nov 2026 09:39:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 186716B05BB; Sun, 15 Nov 2026 09:39:48 -0500 (EST)
+	id 494F16B05BD; Sun, 15 Nov 2026 09:39:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EBD456B05B8
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 09:39:47 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 790451C416C
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:39:47 +0000 (UTC)
-X-FDA: 85437612414.27.30AAB61
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DA856B05BB
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 09:39:56 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A0C1C4077D
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:39:55 +0000 (UTC)
+X-FDA: 85437612750.25.80A0EDC
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id B60161A0008
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:39:45 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=dnLp+SXf;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	by imf05.hostedemail.com (Postfix) with ESMTP id BADB910000A
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:39:53 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=UUCl9VrX;
+	spf=pass (imf05.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794753585;
+	s=arc-20220608; t=1794753594;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C36S7WPR2YYhjD8S8SUsmlfuQc7R28qqteWGQjqPDCE=;
-	b=ApnIDgzmCNWyPIMXf/rnzoFn3Ip3sYgDeKqO6zJx5b+2+/xlTGtt6ImPLQNEIU57Y1SXhn
-	Znob+XwkQHc8A32tTDM91/KgUX7D3FS46tyz7MrctcAylz4n8NgsM7sU2f4CXNI5ji2tqE
-	30KoMZ9kzKXLs3NwsOn1nzLX09zT7Gw=
+	bh=grK4LsBpOAkv1qWzWxfxiPWhEJ+EzJao8DJTbNNpt+k=;
+	b=nuADqHafwmvw424yKsUfdf8PwnQv3vBSvUaczftHLSsbl+g6bBnFFIZoqagDyHlPeobwBZ
+	66kuFYdhiv6fwm3NdvJlFcMzztSxlYQRTr7bTVqUpz9CljHuGzqDA8m+5FMRMX2KuV4Xhy
+	TjCzpHHv5kfXHF6WUt00VusicqWqxME=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=dnLp+SXf;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=UUCl9VrX;
+	spf=pass (imf05.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794753586;
-	b=kjJbIaert+4puFBKaUh4OCztpSnmYIrA/Gpl/TA77X2JoSpCIUsxPSd0sdUz6fzp3lehEf
-	HiPfReAcTd+ufx0DSEiULYWJEOPpP7XoWMF/SymcaUn/+4orDA494IQM2K2jZqxrKneaWz
-	JoUt0i977x30PLakeXv1dMH2dzmmOJM=
+	t=1794753594;
+	b=KQffCyzSxUnnD40pI5JVXmAXJHymk93LJLL6O+xyXMi4/iHh3BKWIHKG2YoLQfjUmUCWEt
+	LseoIGWruUKOqq+ArmLTvJsjxLpmr3ja1ybo1hwJPbHUktO56yPwgyQ1rj1ep5VVMRAfOg
+	2bv+0jwKDKbU5ZOQ3NxNCFDTzPif7jY=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8DFEC1516;
-	Sun, 15 Nov 2026 06:39:41 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E57FF1516;
+	Sun, 15 Nov 2026 06:39:49 -0800 (PST)
 Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.33])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id BAFDA3F85F;
-	Sun, 15 Nov 2026 06:39:36 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 1D29D3F85F;
+	Sun, 15 Nov 2026 06:39:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794753584; bh=JAPamEnS0a1chQgUFkxhCVz/QqaVzoGJWTMnsu0MSow=;
+	t=1794753592; bh=VUhc9pkYOrY2WKIFmAXqR2xKENpkrWiHDZ6moy3jlKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dnLp+SXfNe4kywfpAolf/jEON84hcyW8iFL+ACGxEpijlA0N0hB5cRN8/ArQfUW0Q
-	 RalspDqSzsvjkb77Pr9FPhItI4XX8gA7mpwpvLNnqCOrwbroFM/mNG2MiosTgd1tmr
-	 Bz03LvLUtHNkUsz0MTwEBeQvEbUI6lX/KgVT2tfA=
+	b=UUCl9VrXF/3pSiQcdOiLwRcj2glPTciruxq0WAPAQq820l5y7LsY1IGsnlL7bIXrL
+	 nLjmrGgzs0iIo0wvtTBTuXjcOi9IbHXIEqFBtWoYi4U1UHjA6LcFRrjex7wTMR0JVd
+	 UX0x3sXOqQRtmQ4b5NIgPqmoey+ELvB7Wfs/CyPU=
 From: Dev Jain <dev.jain@arm.com>
 To: david@kernel.org,
 	ljs@kernel.org,
@@ -89,27 +89,27 @@ Cc: Dev Jain <dev.jain@arm.com>,
 	geert@linux-m68k.org,
 	sparclinux@vger.kernel.org,
 	ryan.roberts@arm.com
-Subject: [PATCH v4 3/9] mm: move anon-exclusive batch helper to rmap.h
-Date: Sun, 15 Nov 2026 14:38:58 +0000
-Message-ID: <20261115143905.3045084-4-dev.jain@arm.com>
+Subject: [PATCH v4 4/9] mm/rmap: Add batched version of folio_try_share_anon_rmap_pte
+Date: Sun, 15 Nov 2026 14:38:59 +0000
+Message-ID: <20261115143905.3045084-5-dev.jain@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261115143905.3045084-1-dev.jain@arm.com>
 References: <20261115143905.3045084-1-dev.jain@arm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B60161A0008
-X-Stat-Signature: qi4ysiawapgumdwo4x5ui7n39jcimm9n
+X-Stat-Signature: hdkbbf71fuwb6wuy7q3croshmce6t4q9
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794753585-967064
-X-HE-Meta: U2FsdGVkX1/tE4NkMCrCD2B8JhtIKL6F4YFpmuv2iAFEmZLTWUqseMS+y33rPFcJL5bROUi4vKE3hRMt0OVXbXcZsbQYAxfnr4mjitcSp2BVF+ZeU7qoP9ROTkGIVrBFOnDDLTNaE+Go+/xDqvojJMjsRK0RiZPEojnDMrOeU+RMhvtaRbLWJGoCubGWNamSy0xHy36jUtcIxbijDnlxNot4bwdDiDixUNz+HZJHdW/Z8oSPlRZ+y0TS+ZbJOgfTMtP3dZK4q73HK/DgAAJFdzlJanX21ZqW/BiMGb0aoeeqMxF5gvDNE5bpHiu88ZwPPG7Mvg8I86t3KIZOz57sLoJJn1ezgazXiG5MZvQgwZLs7+1lXZ4I5ZKhsI2sScEJqwBmqZYA4bB8H8z/1DxNW8waUDhK6jRovrrdwqEJ+NpxD9mVIgzlOTxbuOYQyauU7ZQtsYV0aTap8aWis0U6DNvVrVrSjmbVMn0u90gp512eoPcbU91sNqDJntRCr3mguPD+/NKxWDoR4LPN1R3jRNHxJOXF6Tg7IFup7FcZm4yOorRUIXN55plmk+dCCeKDXrSahv3cqkCFuo1oWhDPsHcFVOgN85NWjyQbFfaaGqYsdYvYRDa1We0apBFdi03GJaf+xLLQWq24Xkgvz+E9d6LMBUe8hjVsfv1seBu7IkiTIY4m9Nbj1RU/dI2W4ws7cmXYFVKaetLibMYLa+/476frZ2zE3+Idszfie+vT/q4S2ckZBVXd/+73Q5Ky+8BRKnTN1+9fmXoC2seI/8VYa9MQmOXrm0teFSowbnfl8P+ypL4TDwZ2M7yUjIDo419hg1nlGnrJ5BFHO3kkeKyAXT67KAyJBF6tv58QDCeUCnD7ZueLky0otEhb0e+gogmBlnqoMoKg/IyXCs8nmh7bf/G71q+w98HfBy/Avwq5CKEu4ZCgldIQPGchrD2HHTEFy/4ZBG9/xHx5aXcoWcP
- /N/Wf5ZM
- utREIJZ0m5XWQCJS3rrXU1raHkRf3+xR4zJa3IRjrITQ0pJSig+uDkgsuk3gPLu78N0lfY+jHcpVWa7sesPjPMt8G/6vVyaUbvziWBaVDiihhHI0an6T03PNB7y6Uq6IjR+F/SofHXICGjgxyc9fOVfrJSrOMRcLncIOdnKkkrtzuBYdGwgzhX0MaQUlrhi3Chgv9XOK7pNTR4eHhppEOyXRZBEVFHU4IOe9RMeHSmOr/HONXdCVkxEGCtLesHCFPaLZqqyp8cR8gnpw=
+X-Rspamd-Queue-Id: BADB910000A
+X-HE-Tag: 1794753593-182406
+X-HE-Meta: U2FsdGVkX185sZ9jjzaQBWoa7vDomCv+8I+ugBo0TnXY4TLOTbL6ACoC92THKLvhM7zcPPc7exH0dnYye7Au9aG88gbyr3YYjeFZaKAVkad8QoDWSdWoaW1zl8tdqgbhDgZhehsP9bjrZC9oGPw5bqbJBQi0H3torTWu/3wqZMjMaBCL4Qc6BhvrwdmySTX2MFJxmMNJ5drHEW7SuZk3Y5EKhtSfWpokPBvBa3gvCEmcXRkUV7jL5e0ry+I5TXeQvN9gQSQI4z9lVAei6IfcRFVFXDBqMScPehFmYfzeAhHX5jBPiIeCp4G4S8xM7FPApVUlQd7HMZTl8YCL/BZK+JgrO3HvtVfCOFjYxLY2lczBxWkmXW8qd8jwnni5yGHtIJmamLrSB9lIZYHsExHTR2uqStISrP9Cw/9oA25V7HMXk5Yyv8UXaqLgU3zX+7JxuH2PCQW5HC/sDW7be6IOseZxpsOZF8aim4JKYS04B1izXu+CNCNa4oy+dAuxOUt5vMgAl74HzeKVYKK86s9qwKCfZU3Cq6nHCc9Wnz7unyEv2aqswuHpY6ZNyjZjd1lB4rjKT//mwV/vkYHpZO5vJsHYboc1HAVPlcwiuCdIDzTYonBmAfz4X9GnJBQYqHyY4Ih4g4a2TENAWNMbap/DlU5hoMMpuBjgJuOluLSQV8St2ztn7zSkD9FuFe/1xE1/0q/bUOYdsEjQZ7Md0Mgk/TKfNJoFik8KwnTE+BeKcy3bhK7lsj3Sn1Scw271B+JHWiM/ykX5AddjDxV9sQFCeT7aMkU25ens+H8Oo+PwIVtN3aij4nLCIHEEJ0o3uceOBAKagpCG9kRDl3coQMPKv2gHNnA+o23q8Qj53/WSLeVVs/LM7gm3Dx0OQsyl3esAq3k84YLHM3q2FihQX3upHI+28wlW5vIXeLceXvhO6OW38JuazocKwA2iMenKMVQsQqbiaYIMYqYuJSBkzPa
+ b6lpIhhA
+ TozNTeGfLXOSXLsb2uKkTqwmWDlVsrJhXdeQHloPXXqqWNgG28msm4xch2PfE2pIiCppH8q+pAb9NiHo1C5CuekIcMAvMIMGc6of0agBayw7lEfxVSuPaFWUvNXkYVlvrS2WKiA7jdiGQJDlzvOJDqWs4OORG9udz4e5PKqFfPcGynkDwpIV0KzG9RnLXwxiNDT2OmkZnIM+d/gh2B8ZJKL0EIzSl+zwWpiI8kQVzih4ZrpwbV0EvIQ1OfSExZTDTwfvA7ewddhHH+uwELUTCu5ASfvAovMCAU7YOpOpv2+Hl9eoumIeXUUi/y7LqWR2nSiUn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,110 +118,139 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-In preparation for optimizing large folio unmapping, we need to reuse
-the page_anon_exclusive_batch helper in rmap.c and rmap.h and obey the
-existing use in mprotect.c .
+To enable batched unmapping of anonymous folios, we need to handle the
+sharing of exclusive pages. Hence, a batched version of
+folio_try_share_anon_rmap_pte is required.
 
-Therefore, move it from mprotect.c to rmap.h.
+Currently, the sole purpose of nr_pages in __folio_try_share_anon_rmap is
+to do some rmap sanity checks. Now, clear the PageAnonExclusive bit on a
+batch of nr_pages. Refactor the function such that the clearing of the bit
+can be done at one place without duplication.
 
-While at it, change return type, start_idx and max_len to unsigned long
-type for future proofing against THP support at >= PUD level. Also
-make the helper return the anon-exclusivity state via a pointer parameter.
+Note that __folio_try_share_anon_rmap can receive nr_pages == HPAGE_PMD_NR
+from the PMD path, but currently we only clear the bit on the head page.
+Retain this behaviour by setting nr_pages = 1 in case the caller is
+folio_try_share_anon_rmap_pmd.
 
-Shorten 'expected_anon_exclusive' to exclusive for brevity.
+While at it, convert nr_pages to unsigned long to future-proof from
+overflow in case P4D-huge mappings etc get supported down the road.
+I haven't made such a change in each function receiving nr_pages in
+try_to_unmap_one - perhaps this can be done incrementally.
+
+Add two WARN's: check that the batch is entirely exclusive (for PMD
+callers, need to check only head page), and that there are only
+PTE/PMD paths converging into __folio_try_share_anon_rmap.
 
 Reviewed-by: Barry Song <baohua@kernel.org>
 Signed-off-by: Dev Jain <dev.jain@arm.com>
 ---
- include/linux/rmap.h | 18 ++++++++++++++++++
- mm/mprotect.c        | 25 ++++---------------------
- 2 files changed, 22 insertions(+), 21 deletions(-)
+ include/linux/rmap.h | 58 +++++++++++++++++++++++++++++++-------------
+ 1 file changed, 41 insertions(+), 17 deletions(-)
 
 diff --git a/include/linux/rmap.h b/include/linux/rmap.h
-index 74cca0e3c7264..43d6bbecd2fab 100644
+index 43d6bbecd2fab..f4ffbc60b3859 100644
 --- a/include/linux/rmap.h
 +++ b/include/linux/rmap.h
-@@ -106,6 +106,24 @@ enum ttu_flags {
- 
- #ifdef CONFIG_MMU
- 
-+/*
-+ * Get max length of consecutive PTEs pointing to PageAnonExclusive() pages or
-+ * !PageAnonExclusive() pages, starting from start_idx. Caller must enforce
-+ * that the PTEs point to consecutive pages of the same anon large folio.
-+ */
-+static __always_inline unsigned long page_anon_exclusive_batch(unsigned long start_idx,
-+		unsigned long max_len, struct page *first_page, bool *exclusive)
-+{
-+	unsigned long idx;
-+
-+	*exclusive = PageAnonExclusive(first_page + start_idx);
-+	for (idx = start_idx + 1; idx < start_idx + max_len; ++idx) {
-+		if (*exclusive != PageAnonExclusive(first_page + idx))
-+			break;
-+	}
-+	return idx - start_idx;
-+}
-+
- void anon_vma_init(void);	/* create anon_vma_cachep */
- 
- #ifdef CONFIG_MM_ID
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index ef4e7188e24da..0048a2406ed34 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -30,6 +30,7 @@
- #include <linux/mm_inline.h>
- #include <linux/pgtable.h>
- #include <linux/userfaultfd_k.h>
-+#include <linux/rmap.h>
- #include <uapi/linux/mman.h>
- #include <asm/cacheflush.h>
- #include <asm/mmu_context.h>
-@@ -138,23 +139,6 @@ static __always_inline void prot_commit_flush_ptes(struct vm_area_struct *vma,
- 		tlb_flush_pte_range(tlb, addr, nr_ptes * PAGE_SIZE);
+@@ -724,17 +724,25 @@ static inline int folio_try_dup_anon_rmap_pmd(struct folio *folio,
  }
  
--/*
-- * Get max length of consecutive ptes pointing to PageAnonExclusive() pages or
-- * !PageAnonExclusive() pages, starting from start_idx. Caller must enforce
-- * that the ptes point to consecutive pages of the same anon large folio.
-- */
--static __always_inline int page_anon_exclusive_batch(int start_idx, int max_len,
--		struct page *first_page, bool expected_anon_exclusive)
--{
--	int idx;
--
--	for (idx = start_idx + 1; idx < start_idx + max_len; ++idx) {
--		if (expected_anon_exclusive != PageAnonExclusive(first_page + idx))
--			break;
--	}
--	return idx - start_idx;
--}
--
- /*
-  * This function is a result of trying our very best to retain the
-  * "avoid the write-fault handler" optimization. In can_change_pte_writable(),
-@@ -173,16 +157,15 @@ static __always_inline void commit_anon_folio_batch(struct vm_area_struct *vma,
- 		struct folio *folio, struct page *first_page, unsigned long addr, pte_t *ptep,
- 		pte_t oldpte, pte_t ptent, int nr_ptes, struct mmu_gather *tlb)
+ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
+-		struct page *page, int nr_pages, enum pgtable_level level)
++		struct page *page, unsigned long nr_pages, enum pgtable_level level)
  {
--	bool expected_anon_exclusive;
-+	bool exclusive;
- 	int batch_idx = 0;
- 	int len;
++	/* device private folios cannot get pinned via GUP. */
++	const bool pinnable = !folio_is_device_private(folio);
++	bool exclusive __maybe_unused;
++
+ 	VM_WARN_ON_FOLIO(!folio_test_anon(folio), folio);
+ 	VM_WARN_ON_FOLIO(!PageAnonExclusive(page), folio);
++
+ 	__folio_rmap_sanity_checks(folio, page, nr_pages, level);
  
- 	while (nr_ptes) {
--		expected_anon_exclusive = PageAnonExclusive(first_page + batch_idx);
- 		len = page_anon_exclusive_batch(batch_idx, nr_ptes,
--					first_page, expected_anon_exclusive);
-+					first_page, &exclusive);
- 		prot_commit_flush_ptes(vma, addr, ptep, oldpte, ptent, len,
--				       batch_idx, expected_anon_exclusive, tlb);
-+				       batch_idx, exclusive, tlb);
- 		batch_idx += len;
- 		nr_ptes -= len;
- 	}
+-	/* device private folios cannot get pinned via GUP. */
+-	if (unlikely(folio_is_device_private(folio))) {
+-		ClearPageAnonExclusive(page);
+-		return 0;
+-	}
++	VM_WARN_ON_ONCE(level != PGTABLE_LEVEL_PTE && level != PGTABLE_LEVEL_PMD);
++
++	/* We only clear anon-exclusive from head page of PMD folio. */
++	if (level == PGTABLE_LEVEL_PMD)
++		nr_pages = 1;
++
++	VM_WARN_ON_FOLIO(page_anon_exclusive_batch(0, nr_pages, page,
++					       &exclusive) != nr_pages, folio);
+ 
+ 	/*
+ 	 * We have to make sure that when we clear PageAnonExclusive, that
+@@ -778,29 +786,38 @@ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
+ 	 * so we use explicit ones here.
+ 	 */
+ 
+-	/* Paired with the memory barrier in try_grab_folio(). */
+-	if (IS_ENABLED(CONFIG_HAVE_GUP_FAST))
+-		smp_mb();
++	if (likely(pinnable)) {
++		/* Paired with the memory barrier in try_grab_folio(). */
++		if (IS_ENABLED(CONFIG_HAVE_GUP_FAST))
++			smp_mb();
+ 
+-	if (unlikely(folio_maybe_dma_pinned(folio)))
+-		return -EBUSY;
+-	ClearPageAnonExclusive(page);
++		if (unlikely(folio_maybe_dma_pinned(folio)))
++			return -EBUSY;
++	}
++
++	for (;;) {
++		ClearPageAnonExclusive(page);
++		if (--nr_pages == 0)
++			break;
++		page++;
++	}
+ 
+ 	/*
+ 	 * This is conceptually a smp_wmb() paired with the smp_rmb() in
+ 	 * gup_must_unshare().
+ 	 */
+-	if (IS_ENABLED(CONFIG_HAVE_GUP_FAST))
++	if (likely(pinnable) && IS_ENABLED(CONFIG_HAVE_GUP_FAST))
+ 		smp_mb__after_atomic();
+ 	return 0;
+ }
+ 
+ /**
+- * folio_try_share_anon_rmap_pte - try marking an exclusive anonymous page
+- *				   mapped by a PTE possibly shared to prepare
++ * folio_try_share_anon_rmap_ptes - try marking exclusive anonymous pages
++ *				   mapped by PTEs possibly shared to prepare
+  *				   for KSM or temporary unmapping
+  * @folio:	The folio to share a mapping of
+- * @page:	The mapped exclusive page
++ * @page:	The first mapped exclusive page of the batch in the folio
++ * @nr_pages:	The number of pages to share in the folio (batch size)
+  *
+  * The caller needs to hold the page table lock and has to have the page table
+  * entries cleared/invalidated.
+@@ -816,10 +833,17 @@ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
+  * Returns 0 if marking the mapped page possibly shared succeeded. Returns
+  * -EBUSY otherwise.
+  */
++static inline int folio_try_share_anon_rmap_ptes(struct folio *folio,
++		struct page *page, unsigned long nr_pages)
++{
++	return __folio_try_share_anon_rmap(folio, page, nr_pages,
++					   PGTABLE_LEVEL_PTE);
++}
++
+ static inline int folio_try_share_anon_rmap_pte(struct folio *folio,
+ 		struct page *page)
+ {
+-	return __folio_try_share_anon_rmap(folio, page, 1, PGTABLE_LEVEL_PTE);
++	return folio_try_share_anon_rmap_ptes(folio, page, 1);
+ }
+ 
+ /**
 -- 
 2.43.0
 
