@@ -1,111 +1,87 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3B7606A31A
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 12:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F4E0606A31A
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 12:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kQUCoZgo
+	dkim=pass (2048-bit key, unprotected) header.d=feldt.systems header.i=@feldt.systems header.a=rsa-sha256 header.s=protonmail2 header.b=Z6rO7xwO
 Received: by kanga.kvack.org (Postfix)
-	id 5DCC56B05B1; Sun, 15 Nov 2026 07:43:51 -0500 (EST)
+	id A08256B05B1; Sun, 15 Nov 2026 07:50:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58DC76B05B2; Sun, 15 Nov 2026 07:43:51 -0500 (EST)
+	id 9B8FD6B05B2; Sun, 15 Nov 2026 07:50:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 47D066B05B3; Sun, 15 Nov 2026 07:43:51 -0500 (EST)
+	id 8CF336B05B3; Sun, 15 Nov 2026 07:50:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 267ED6B05B1
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 07:43:51 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 19691120542
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 12:43:49 +0000 (UTC)
-X-FDA: 85437320178.01.D530EA8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 75B8E180007
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 12:43:47 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kQUCoZgo;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6466C6B05B1
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 07:50:14 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E5FEF406F6
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 12:50:13 +0000 (UTC)
+X-FDA: 85437336306.28.6E1B399
+Received: from mail-4317.protonmail.ch (mail-4317.protonmail.ch [185.70.43.17])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 6C704140006
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 12:50:11 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=feldt.systems header.s=protonmail2 header.b=Z6rO7xwO;
+	spf=pass (imf09.hostedemail.com: domain of noah@feldt.systems designates 185.70.43.17 as permitted sender) smtp.mailfrom=noah@feldt.systems;
+	dmarc=pass (policy=quarantine) header.from=feldt.systems
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794746627;
+	s=arc-20220608; t=1794747012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ItLIVfR1UvySuEEyBIwhJcSgZBhLRZU0DncWL/OBsMk=;
-	b=abmo7SdwWMd0Az5pb4b8K0NOzvVQazkaPy727I1aywMGWh9A02zMqiOtl/0n+PF25F+Uus
-	bOthNn9rq7E5LMhvUQHB9PiZNRqd19nYDAokyvZjZ0bcfLfK1ak9zYbluRSJlvd5iyUFuY
-	cSY+MNqvcohP6orfGPMmIXVTghWRFJM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794746627;
-	b=wMARlJUzKNyPVofMr7mNUiPPxp3BQfNsh74b9JZLgwGnspoAbR+Ns9lntX0YO2N0GBqxhH
-	MFTIu8h/4bwjgtKcQzY05UmQlEFPf1xmCU0KGXaTzGOwtMMoT0Fn0T0P9HkB2DdCP4MxAJ
-	2jXxNA4MD4YkBDQNdeVNYlMyHxVZlgQ=
+	bh=mVNyqoZPmWVu3SKQuwZrHrfUspenGyNr7ONwhLH90yo=;
+	b=OoV6VKEAS+3H416LtXJxsiQfXbAO5NimQEcujSIi5xqsbe9nKYLb16l28hdkdtfIxDvmlN
+	wzBhFNAjttXlfkfsyHuHrZRUcjalusIufk5/jAYp6L7pAJuC32DAShhLZjgjwRVKpJHhsr
+	CwLZQJ74OPni20uFNG857P1xp1mWNA0=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kQUCoZgo;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 02EA960D9D;
-	Sun, 15 Nov 2026 12:43:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E391F000C4;
-	Sun, 15 Nov 2026 12:43:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794746626;
-	bh=ItLIVfR1UvySuEEyBIwhJcSgZBhLRZU0DncWL/OBsMk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kQUCoZgoZYY0fcgF/LYN5sg/FhigfV0RmeA/86U/4sCjPuPGBE7pd/oHPIVJVMHeI
-	 2IlWDFrE2uywqCCL3Jj4I0gGH96okLxf/UhYvS5kk81lBsUXiLT0XG4bnC3fmIIbQT
-	 FAXlrPGLPbzjzk/slqBIXIi2bdAAItZxNHxkbUNb2Djd2SOHBSqePSUK+11mTmke2o
-	 pFbiltFhIDDUt2GyBFurnDfb1H58W6ugxVtf1bPJT4VmYgHVtu2+LnWlCcDTfojdcw
-	 G5zEG77A/QC/3H4C0a3ofuIthVL6eskpAnW0W6WqaYJziKQzUOtpAXQO19MXd54q0C
-	 fv05uW8CCyplA==
-Date: Sun, 15 Nov 2026 12:43:34 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Chris Down <chris@chrisdown.name>
-Cc: David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Nhat Pham <nphamcs@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Usama Arif <usama.arif@linux.dev>, 
-	Kairui Song <kasong@tencent.com>, Balbir Singh <balbirs@nvidia.com>, 
-	=?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Yu-cheng Yu <yu-cheng.yu@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
-	Peng Fan <peng.fan@nxp.com>, Josef Bacik <jbacik@fb.com>, Chris Mason <mason@kernel.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	"Borislav Petkov (AMD)" <bp@alien8.de>, Mark Brown <broonie@kernel.org>, 
-	"Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 08/13] mm/migrate_device: fix ksmd oops on a migrated
- KSM page
-Message-ID: <avmojuNNO_ZRKL1P@gremlin>
-References: <20261113-mason-migrate-et-al-fixes-v2-0-50a2ed382b61@kernel.org>
- <20261113-mason-migrate-et-al-fixes-v2-8-50a2ed382b61@kernel.org>
- <20261114115657.f63de4714929f7af@chrisdown.name>
+	imf09.hostedemail.com;
+	dkim=pass header.d=feldt.systems header.s=protonmail2 header.b=Z6rO7xwO;
+	spf=pass (imf09.hostedemail.com: domain of noah@feldt.systems designates 185.70.43.17 as permitted sender) smtp.mailfrom=noah@feldt.systems;
+	dmarc=pass (policy=quarantine) header.from=feldt.systems
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794747012;
+	b=l6lWunbHxiHjmxo89nKquWZnZ3kaGh2FRgbC54jUOWhcP2/lnVUEk6D9Si5Xfnk/pdvf8/
+	lbEXvVfd8AJOKa0AHI9kwz5/uxCLgtCI5L6IhlZuhikvT4rXBMZD0VH9814pvBTtXZ1JVX
+	3stPHoPcB2jelyjXoTzltB9KjQ4Efa0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=feldt.systems;
+	s=protonmail2; t=1794747008; x=1795006208;
+	bh=mVNyqoZPmWVu3SKQuwZrHrfUspenGyNr7ONwhLH90yo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Z6rO7xwOeaCPF1nl2j/O0ICdnwWkRxg7BDBC24YB/dCJaOzTh7lN8mOIwUnFE7x0m
+	 QlmwWE8RMW+4XMGkXUXANKxIsMFkFZOE6UqZ/vJqNv1adRtH8U/m3LFOK2xzynVDwt
+	 4/44dv4E/awHfcgHCwWVdW5CF5bv4CPVpM1qcjOqe7iAyDJd5fAKK0GhyQ7glao2MZ
+	 Cg2D9U8fl6G3k7B5w6jZe9RIqkFJnc4LuaPjSptsiZiuHKVDfWZ2SgyxRnfXLCnN1x
+	 Oxv9yjTksvsdk3/wnpvaB1Sae4rIaBIXuvPihdeexW1SB/93gyXAXRAIUfGhW+4tAz
+	 A5y8IhP1V4ikg==
+Date: Sun, 15 Nov 2026 12:50:02 +0000
+To: Shakeel Butt <shakeel.butt@linux.dev>
+From: Noah Feldt <noah@feldt.systems>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm: mglru: splice all generations when reparenting a memcg
+Message-ID: <20261115124954.7146-1-noah@feldt.systems>
+In-Reply-To: <20261111000913.22943-1-shakeel.butt@linux.dev>
+References: <20261111000913.22943-1-shakeel.butt@linux.dev>
+Feedback-ID: 113045274:user:proton
+X-Pm-Message-ID: 7a8d2dffe38d7e29b15abfa03649c45efb904402
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261114115657.f63de4714929f7af@chrisdown.name>
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=pgp-sha256; boundary="------b27fb500e8faeb49fb14a6758c7ae9d2468896a3db128a3af62cfaa1f52b3fb9"; charset=utf-8
+X-Stat-Signature: cyxpdws7cm9rxpgaoj5ngc47j3h583qp
+X-Rspamd-Server: rspam01
+X-Rspam-User: 
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: hb41cxdtaeqfi1e7gjqx8x51sz9kfyea
-X-Rspamd-Queue-Id: 75B8E180007
-X-Rspam-User: 
-X-HE-Tag: 1794746627-553961
-X-HE-Meta: U2FsdGVkX18lkYq+5CAdXmux6JLIURjYcJNrQoi4ugLThebkbw74w2Hp+pJp+Ue03lRDG9aTmWQRRPcgDT2oEsRhJrZmBwMfvnmfO/wW7vd0N7Pi2XPW6MxfAqxm2A+zpeShewJTB4Rta4Fj9+Jj29/pEtI7TfkFe4RIXEm3zDXYpE+E5exMSL/zvYqlTGoOL3jLCk2/7I5+3DGEX0gYXKdKM/Ba70ZJnX2xdjjdwQXbuWBCxJCBrFlSugH1T0RPMZRNgk1jKGPQpTaGrBajAVUj886iTuLSV66nRuH5l8yIrEv3SHSwfRfk/s5Gy0hK+vXkTZBYeLdEiUt6hcOrQlwQVYQQ/+QwriPdclV35L8qdKOfkooazY5q40E+3W2Hv1cFcd+MDqc6IfxcF5TNrBDH5T0KGuQIpPxZUtFl995+e/6dygwIfvCqoJc2OkeUMcxd8BgFv8fd/MUP+hq7K/RlI2ENFnb6EwDWyvj0zVSLTyRneUBlaJXPaLMeHMPoMx4QQLcIJyFiKQM6Z1QH8qw8ziDICqA7HW7DAZ+bm/KAjYPCzPU0hD3SlAKm9V+G8NyeiXCxzYa9fpFEBhiKMtenxtF84fzfkoM+nv2QjJ5NJ5u0Z7xCIhxLoxN2UwEkBW4tM+F0aMcDWi9ATEPjC+7HPGAa/0MG2ofwgM4eu4jIr7i1dL6dQ+sUfMvRO6VGWSxdDy3g0THR8owiWCwHw9L7MPdmkrQimEJqo1Hn5dPKKHdwIT5kkwPaDzGdct7daL8M9LvMAk5k8dIQZcq6ksZNh956fJ25zUo/nu6gGS9gFTKduZaTkgLBPobZSql2DSRmhqZR+4jCCgdg7vgTPQ/tQ0WNg0zF/lba6tW8fm4OleOK6akCYii/YPg2DxqvRfXBJRmBc9C+Xh1m8xsIznogkDa9ZcIGmNG7U1G23EpUtdjecjx7akE4BW36aZgUdtMA3kNGyoFMmF9PUWW
- 8ZPXO1GL
- IyU+5ldwk7mteQ5KNXv5Z1HtYmRIUpCPuHiOwJax8tJzC3CF8UvePvrQWNhTmJ7RCQoBa95bcoa/rNnb/OUAV5gd5QIW+t5w5V4SodSMmq5JlSI2NCkMdYoaD2/MoF94yiBJLt+anSgCJwTW3gT+CttGhwMuizaW4TbYCcLZqKXKhbEtjlvnJpbKkIGNw2lLBvAvcLjOv4jmahf4AspssJi0iz8HsYDlNT9v1UISzA+A3O1nrgv+W6xa2740YxkjRBadMPpLfwpzmvwFlgDt3TwRw5XXrFzEcRcUzxtF62xINstlyPa89qMpmh4+mBYVWq1QY1PNd6ZiPdkf+l38XxBvkYFoAOAuvSY28soLYRB37r/2OH2RUg0tOPY3J674dKW5xKCuPb2B+2L0=
+X-Rspamd-Queue-Id: 6C704140006
+X-HE-Tag: 1794747011-723231
+X-HE-Meta: U2FsdGVkX1+1cYpJKsM80VYxiN/YwJ/Ga0AxXV6mGeXLB5fOz3GfXMu2oubzBvMB3JR9tUbuvJrxpSikWgfylBmlEzK5dg3mt1uTVWs3AdFmHGiE6ygjycUr4S8rXP0DfMVoxaXgR7JWc7OIP1snHYx7ZRZ+HtbcnFW2JV3x9d3C1EFlhYgcX0POv19gHySq1w5YI2QEA7pcd9b5TusY++wT51uFtAc3Qjl1aQH1q0rsCuab/U76u1eYZYCZnnFEoZRpklGxqbJMUU/hEbM9n7OohjmQ8pNvIvqxauQHSodRhE92lhBFf+7IA26eSczMll6QuvC/E3DpKtDdBTbBkyDc2f1dyhHxMBNOmtWfMKNnEoqx27ONSJADumzoYoqWb62hMr4IQ31rOOsia9N60wtnqfrvnhYP+0TfP7TQXMmKBNlJudxi7lFosvFyModginENOtKQfp92SpYYupk2zUSLyspyr+WmBZYaB9+Zp97WfBtTbnmG0KkBIPTHY1ZRjoP0K8h/Ycum2/9krZrY2UQ+kNuDHsJnWLBR+TWHwD67apKAu5EjM+qPfZJopQ0G6kShgRJJzEkNTYvwa6RN+1K9iyMzh4YOt1aedlkr6HCEvRHULsQ/GcVJaoej07BPy0Ubc3Zu424Pyy4vqpoPIHQo0YyZb0/RqdCmGB4tsmwGiSlJ2NrpuvVMusjy1Fv8nGxeH90nLo8r+Ti9WtzmOYZ7sUVaAWKytCTDvAZR0iVByAjbI70JQBcVzZaGHUZP+jWKNH8FYej4cSXzdCE88bdZeznNvhsUdkl6leDE3LCywcovUZwcN4XkgQ3iPEPq077RM7Kd5/bzOI1yCgm3+UfPmOMJDxj7klUpqHfUBp4/VyIxYrEDGEa7Kt5oRlVR4rMum3apHNux4B69L+nFtG27XIzpWpXYnhNQqRChaSJO0Peq+vcTh3I2Eq03Yo1BJh9puAopFKyezy5NBWZ
+ uSQxbdQX
+ VCnUEYJQY+mUTy+q8hRP4E7c/hBEA9vgG9Z2Dvpc/JjGkq0ehjMvcN/rYuS7kBrKjl8CM/ZqmfWxLJ+Kn42DzxuDTIMPwEojKgPf4ERHbyMlimbWjVDF3iLH/o6yFJbkZaR9XiguZtK6cIOAHTL4GApWt70Vqs5IogvTiZtYPkNSTUHO9flkhZL/ge5/yWrabD2hD8IqDkY8ZsiHdD5UJRancjLjs3yUHI6zd7kz7NhXjx4xlshicP1piNxr2QwZIcfA4bWSQ7oaIh89LRlrgwHMdWQJMB0XltsL421YC6w28oZcOuBSSBU9c/gxrzFL+YOFFSn+wyt0dK3nuBWD+EvV1lFTPjtBj5CsJbmlwlFh6x0w6Xwq4B8NykW+yDEaVb+pqrmmg0FXdFKzKZ2gPvclMvocuODn/WR5AiJL31riuFuiMLkInOzPco39qITGDKtqCIh73MZBFS+Xm5q0gpKWwVKdv3/0BhLjbTso0xRiWmezOdfI+I0QeCTNYOwONZdyGI3zGe4zQlvFlBRc8FVB2sOOtsAwuWIuP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,36 +90,83 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Nov 14, 2026 at 11:56:57AM -0800, Chris Down wrote:
-> Hi Lorenzo,
->
-> Lorenzo Stoakes (ARM) writes:
-> > [ ljs: tweak commit message, comment, also refuse device coherent ]
->
-> Alistair's Reviewed-by on v1 came with the argument that KSM pages should
-> still be able to go to device coherent memory [1], which is the opposite of
-> what this does now, so it's probably worth checking that he's happy for it
-> to be carried over. Going by what ksmd does with zone device pages, the
-> change itself looks right to me.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------b27fb500e8faeb49fb14a6758c7ae9d2468896a3db128a3af62cfaa1f52b3fb9
+Content-Type: multipart/mixed;
+ boundary=05e0afd5b3cdf604dd06ded9ef01d0c6e448bf611d31394ba37e012cc31c
+From: Noah Feldt <noah@feldt.systems>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Kairui Song <kasong@tencent.com>,
+	Barry Song <baohua@kernel.org>,
+	Meta kernel team <kernel-team@meta.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm: mglru: splice all generations when reparenting a memcg
+Date: Sun, 15 Nov 2026 13:49:53 +0100
+Message-ID: <20261115124954.7146-1-noah@feldt.systems>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20261111000913.22943-1-shakeel.butt@linux.dev>
+References: <20261111000913.22943-1-shakeel.butt@linux.dev>
+MIME-Version: 1.0
 
-Given the endless waves of AI fixes I think giving a little slack is fair
-on details :)
+--05e0afd5b3cdf604dd06ded9ef01d0c6e448bf611d31394ba37e012cc31c
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-But, yes, that was a mistake so - apologies Alistair, let me know if that's
-OK.
+On Wed, Nov 11, 2026, Shakeel Butt wrote:
+> Noah reported list_del corruption on single-node hosts running 7.2.11,
+> which already has commit bf4ade7dbd76 ("memcg: keep folio's objcg same
+> as its node"). The bad pointer is an MGLRU list head in a freed
+> mem_cgroup_per_node:
 
->
-> I've tested the device private case. Without this the process hangs the
-> next time it touches one of the pages, and with it the migration is
-> refused and the pages stay merged.
->
-> [1] https://lore.kernel.org/r/avTu3LmscsttRVRp@nvdebian.thelocal
->
-> Reviewed-by: Chris Down <chris@chrisdown.name>
-> Tested-by: Chris Down <chris@chrisdown.name>
+I have already rolled this patch out on our servers. Since then the
+panics and resulting restarts from my report have stopped, and we have
+not noticed any other unusual behaviour.
 
-Thanks!
+Tested-by: Noah Feldt <noah@feldt.systems>
 
---
-Cheers, Lorenzo
+--05e0afd5b3cdf604dd06ded9ef01d0c6e448bf611d31394ba37e012cc31c
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="publickey - noah@feldt.systems -
+ 0x9B02BBB4.asc"; name="publickey - noah@feldt.systems - 0x9B02BBB4.asc"
+Content-Type: application/pgp-keys; filename="publickey - noah@feldt.systems
+ - 0x9B02BBB4.asc"; name="publickey - noah@feldt.systems - 0x9B02BBB4.asc"
+
+LS0tLS1CRUdJTiBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tCkNvbW1lbnQ6IGh0dHBzOi8vZ29w
+ZW5wZ3Aub3JnClZlcnNpb246IEdvcGVuUEdQIDIuMTAuMAoKeGpNRVpuV2ZveFlKS3dZQkJBSGFS
+dzhCQVFkQWpjOWlieHJoOExkN2E3YjdBM1hXUnZSdGt6V2cwcEZUaUpDTgoza3J1ZnM3TkoyNXZZ
+V2hBWm1Wc1pIUXVjM2x6ZEdWdGN5QThibTloYUVCbVpXeGtkQzV6ZVhOMFpXMXpQc0tNCkJCQVdD
+Z0ErQllKbWRaK2pCQXNKQndnSmtFQlN1OWFxLzJDcUF4VUlDZ1FXQUFJQkFoa0JBcHNEQWg0QkZp
+RUUKbXdLN3RGM0s0QUt5ZXdZWVFGSzcxcXIvWUtvQUFFSjdBUURaRlZLOGpTa3FDSk9oS1NsTVp6
+T01Ibk4vQjhyYwpHZzlXei9UdW1lejVwQUQvV2l6V2xGem4xT3NibzBzV0U3L25FLzRMaXRKS2k0
+bjlObUVGczRob01BVE9PQVJtCmRaK2pFZ29yQmdFRUFaZFZBUVVCQVFkQTc4U0JLZkc1Ymd6SjQw
+bVZxTmNGUnhqc0lTT0ovVW4rZU1TaC83MkQKVUVJREFRZ0h3bmdFR0JZS0FDb0ZnbVoxbjZNSmtF
+QlN1OWFxLzJDcUFwc01GaUVFbXdLN3RGM0s0QUt5ZXdZWQpRRks3MXFyL1lLb0FBTWJHQVA0anZ3
+YlBacnFSY3dzRk5VdWI3aSthSFVTY2pwQTJIazFUdTBKTG5HWTlMQUVBCjRBOGQrWGNsdEVhUEtp
+Vi9sbzh2RFdPaFBBQVBhbTFuQi8wQWhlenh1UTA9Cj1jQkVoCi0tLS0tRU5EIFBHUCBQVUJMSUMg
+S0VZIEJMT0NLLS0tLS0=
+--05e0afd5b3cdf604dd06ded9ef01d0c6e448bf611d31394ba37e012cc31c--
+
+--------b27fb500e8faeb49fb14a6758c7ae9d2468896a3db128a3af62cfaa1f52b3fb9
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+wqsEARYIAF0Fgmr5qnoJEEBSu9aq/2CqNRQAAAAAABwAEHNhbHRAbm90YXRp
+b25zLm9wZW5wZ3Bqcy5vcmcJY1tpAvGYVk58XJVYWNHrFiEEmwK7tF3K4AKy
+ewYYQFK71qr/YKoAAElkAP9khqOtjveDcbwTuViuCxaBhfOSAVQoH+cQF9d0
+ekfMBwD/XqKUWZwBK1v+fl/e6jrZ0dwuxvsCOdhSvhM1UKKP4g0=
+=TNjw
+-----END PGP SIGNATURE-----
+
+
+--------b27fb500e8faeb49fb14a6758c7ae9d2468896a3db128a3af62cfaa1f52b3fb9--
+
 
