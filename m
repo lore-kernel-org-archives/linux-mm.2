@@ -1,94 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14D2606A31F
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 21:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9890F606A333
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 21:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DQtCWfou
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nBDHXN52
 Received: by kanga.kvack.org (Postfix)
-	id 0B5456B00EF; Sun, 15 Nov 2026 16:23:42 -0500 (EST)
+	id B69766B05B0; Sun, 15 Nov 2026 16:26:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 065D86B05B1; Sun, 15 Nov 2026 16:23:42 -0500 (EST)
+	id B1ACE6B05B2; Sun, 15 Nov 2026 16:26:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBD7C6B05B3; Sun, 15 Nov 2026 16:23:41 -0500 (EST)
+	id A09B36B05B3; Sun, 15 Nov 2026 16:26:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C87FB6B00EF
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 16:23:41 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 513F3C0609
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 21:23:41 +0000 (UTC)
-X-FDA: 85438630242.08.4AE2CA0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id A59511C0005
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 21:23:39 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DQtCWfou;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7815F6B05B0
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 16:26:59 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 22EEFA081C
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 21:26:59 +0000 (UTC)
+X-FDA: 85438638558.09.A3C575D
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 76A2A20002
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 21:26:57 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=nBDHXN52;
+	spf=pass (imf31.hostedemail.com: domain of 3nyP6agkKCC4dKbeXcKReQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--tarunsahu.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=3nyP6agkKCC4dKbeXcKReQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794777819;
+	s=arc-20220608; t=1794778017;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BIErJBE4pTmp+Ek6j7ApefZdRjObg4z6oE12g+W9FPo=;
-	b=1eDtnHTCx2FWJKDxZdu3vj1lk0SCu5ievEbQCMz9HkYmDo9lCWFKRLaA4DlpUl/e5RqRCr
-	mKPWPAFCQiN6kvsr7+z9PI8kKUtpt+veu3YgdVaXmm4xIVc2GIbkNxxGvnmsLaxB/6TUSz
-	gUlo0CSaFzeBBiXSyXFtgqAsUxiXnEc=
+	bh=Nwu6vL4nnJhyf28I3Hp9RT6yqlvZkPwzRk4lPxIAvmQ=;
+	b=KSNH4vrq2zIOy3c1+3Wrh9gvUoOZip9sTs4EnqVMnNYEOaBU2eq+uKgwZAtLz973pVDosL
+	lCbAaWGh8kpUxoyOg6jp8Oju5BY798p7UX6FLOQWAP496cQdMdzuRg81jXY26HbQbn6lrv
+	cw9Jwkn+KOlRQ3dROVDh8uT8y+ceuio=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794777819;
-	b=oDPfwchl7D9JZcJMiFHxoNStlrPWYqbxJuS4n6SLZbUz0iBBFQqPZEpEbmdKvqUjLqyc3c
-	9dgRovT9Jv2kCM1UifTRd3oxOtYgU5/S4QhRLrXFukCeYJKDgQdYg9g2kaES/FjAP4BIGV
-	LRSfzQI7HJRwbB34RtXhQ1+XYbGtWSI=
+	t=1794778017;
+	b=Fwlcm1vMWq5V9TQzfl+GA5EcLEDSAsewr5cIjrz4WKb5CMb2jgr9tpbqoEgfBDALlBs+eW
+	MFcmCNpMLIFG77ZkW3I7ofiWoIPo4l7BB3gRzBSbDIYJOxG0VsJ+iSvqT4my2oZF375btS
+	3+OyHgNphme261JnsGV58x/Xy/UWZzo=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DQtCWfou;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D754B42A46;
-	Sun, 15 Nov 2026 21:23:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F071F000C4;
-	Sun, 15 Nov 2026 21:23:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794777818;
-	bh=BIErJBE4pTmp+Ek6j7ApefZdRjObg4z6oE12g+W9FPo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DQtCWfou/P7cpdyZdSZ5+j9dv++E7R752cAV4QGLLHLvnvcVOOCzcC9EK+jeuX9Wj
-	 09qrsIpzpU9uPjlOg1ibGAPiypKvhqyzgcZXiPJdjxew6fvZ2LqJQiNXX8knTIoUI0
-	 sM51aTSEDevwGIVQQO7aKFH2w2FbnT32DZZ2tiP1rlbvj/2UpztJK2CrA+CIMODbap
-	 +lCJWMRT5JhU9CrJKsYin95sbtkG9Va4i/ibJX2NyPWT/DBpyr32sxOZ1k5BZUkg2R
-	 WWMDDwSs/+FWrl3Y8I+jvj/j3Z/y9h/wrBmq+tkwTl/iySQ1pSZWdNI87pEQiTtg9G
-	 f+FmyBN17auIQ==
-From: SJ Park <sj@kernel.org>
-To: sashiko-bot@kernel.org
-Cc: SJ Park <sj@kernel.org>,
-	"Andrew Morton" <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH 03/27] mm/damon/core: introduce damon_submit_report()
-Date: Sun, 15 Nov 2026 13:23:30 -0800
-Message-ID: <20261115212331.101376-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <sashiko-outbox-215851@kernel.org>
-References: 
+	imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=nBDHXN52;
+	spf=pass (imf31.hostedemail.com: domain of 3nyP6agkKCC4dKbeXcKReQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--tarunsahu.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=3nyP6agkKCC4dKbeXcKReQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c504bdea834so172509366b.1
+        for <linux-mm@kvack.org>; Sun, 15 Nov 2026 13:26:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794778016; x=1795382816; darn=kvack.org;
+        h=content-type:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Nwu6vL4nnJhyf28I3Hp9RT6yqlvZkPwzRk4lPxIAvmQ=;
+        b=nBDHXN526D21r5CAyFfqoK1l3nrl8J66ELTxppCy45s6z38GwUseEfPG3APqK7witH
+         x9CTfa7a/Di9Y5+Ap6hjZii5bUkD0OEgvZk+uso7DX6RTW0OF7MxDls6qDAM+rsbfs+y
+         OpC+hJ7IrKw/eA20StlkQPkpOrtTPpE4ntD9BEO5hgzSmi3li0ojyv2CHXHcjq6ndeaS
+         w5gBWSelkJFgVHtM+jwn4QBhwexKHCqB8gY24Wa1e2qgrCSf9J0ZEX0ELbv/S2xVkE1g
+         RoYahoWiu5caNfVqsIzvBs7OAmMIRmMtBMmIhqGEgUU8X/+tfYHjWbvGoPshkGGh+sEx
+         Qltg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794778016; x=1795382816;
+        h=content-type:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Nwu6vL4nnJhyf28I3Hp9RT6yqlvZkPwzRk4lPxIAvmQ=;
+        b=Qfw05cN8TFW8g/d6tQCIxgbnCHCGltIVBOtvqbYU+0knq7TOzab1P6WT3OXwlYa5i/
+         mF7zJFkb72sgsU8BQwHo7r/sF5HxJDTyvqhtWNsQXIw1zbBCa169tkKIdRNEOxvrsO0j
+         FMag6lUJhwWYd/jwEoBYqm7chXYkG82vKrOrZixOPmDVBZWCAFzItVC8SDUmF7Si+Lqr
+         1hOTtrFzXUA9+FAsQas79KZuHPo5O9Cotk4qbhUIpd3tjE2Z4mTphqMvhrcUCn9dv0fT
+         SMznYy0HTrPpFCDoBwfqbxs5bHigIVt79QU5hVBySEy9XNte8pjdRp81DlE6buwsn+9B
+         uWNw==
+X-Forwarded-Encrypted: i=1; AL+hErGPoQVI+hc295CxFYz0Ninsx3a/3Dipd9ZZftF9jyjV+E46yy0UPWVce82c2rY1GjDmUWHfxyFK0w==@kvack.org
+X-Gm-Message-State: APuU4Z8KraSqiOZbyMvNzefcr03VlsPCr3LahRGW3rFp+7+EsZcakYcg
+	5jQSrDhVMGESoEqpy7/0XPXw7sNzhs/4UQOUwAUJziGGEH1zZr9pMtsh+cZGCkRh3x3BjKJdZXq
+	4nSSIKEOlFRp0rj1FAw==
+X-Received: from ejgh12.prod.google.com ([2002:a17:906:3c0c:b0:c33:b3b5:5260])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:1b2a:b0:c41:285a:46a9 with SMTP id a640c23a62f3a-c5096847651mr661397666b.46.1794778015420;
+ Sun, 15 Nov 2026 13:26:55 -0800 (PST)
+Date: Sun, 15 Nov 2026 21:26:54 +0000
+In-Reply-To: <20261025174017.3870481-1-pasha.tatashin@soleen.com>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: wctug3r4t8i15xokyz1su949qga8ihhk
-X-Rspamd-Queue-Id: A59511C0005
+Mime-Version: 1.0
+References: <20261025174017.3870481-1-pasha.tatashin@soleen.com>
+Message-ID: <9huzzev9n5up.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH v2 0/9] kho: add read-only Kexec Handover mode
+From: tarunsahu@google.com
+To: Pasha Tatashin <pasha.tatashin@soleen.com>, linux-kselftest@vger.kernel.org, 
+	rppt@kernel.org, kuba@kernel.org, enelsonmoore@gmail.com, bp@alien8.de, 
+	shuah@kernel.org, david@kernel.org, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, ljs@kernel.org, mhocko@suse.com, 
+	skhan@linuxfoundation.org, linux-doc@vger.kernel.org, vbabka@kernel.org, 
+	dapeng1.mi@linux.intel.com, linux-kernel@vger.kernel.org, corbet@lwn.net, 
+	surenb@google.com, kexec@lists.infradead.org, pratyush@kernel.org, 
+	rdunlap@infradead.org, elver@google.com, graf@amazon.com, 
+	lirongqing@baidu.com, liam@infradead.org, jlayton@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: b1uh8fbmopuxk8wqaaat65fkyoub6ne5
+X-Rspamd-Queue-Id: 76A2A20002
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794777819-727724
-X-HE-Meta: U2FsdGVkX1/P9AJ5qG0XVihudyr850Xwd/D8itc9mnBg6iz0U86ICuWImjJWH9cqw8ztj7Kq1FUIHd82P9JEpfdXiFfQmC9cFOIPU6ylkgy4f9tviPBiWc4trugIvQcRRPUXP6KqczzHlcIrGjL9jJKyczmvhXWsqq2Yu84EeBKJiuYSqivxYA8cDbFrCHfpSF3kUDI3XHSuFWbOwBYXNCTRjlSA//ho600xZE9/KIFezYdUJbqnWPLuxYYAbv6LhdeoKR3nRA/O0g9pvb1bRdtjWOOedOatZpi9GhwL4CJQhqlZanaS+OIdcZZ9sBCvKxTss7iYuW125wI7HX1sRozoaiPSgGWKI7WUbaqUxLbL2QwgUDPioN1rW75kMPq/L9O2Kt/EapHLLwo6VY6ZPx7VJ24Mbx66WZcdoL8FlxlxEpFQ8GbKm0UaIWEVrusaEKY5x9lQTQXN+kF0+ubQWlDgQsKcvAaMvZeNgp70qXTh4/dXJ3uCVSagJ5nSTR6+j3nf3XiCdyan4x5Jl90iS1vtwinck9UKERhkSH+jGbkfKLxLirc8dxcp6DDZK4Md08vDebzIILCjtRVqRDRpoByyoHCRuu/0xlgG4ZV+i0jZ86BZ/Ot5SR+FKV8cJN38WxGMApQ8orCzbrWc/xPSRiQh5/z+jnK/VhjWWD7g3aAQNVi9ToirwI56S6Hpbv0nnMIqXGLE0PJxzA7lPSw9BodeR+efj4ixfjbdM0SrE91/axkl7rqwcyffAXEFSiay3hdEkhVmsQLUD7VY3jlKKS2HXOIFsvbkGNrP3EBjHDAB8Vi74qE8+UCHfisxB/bosdgH6rN5jjpl638iMyVpwFhnZzELDg2SnlyQuBq7FJvV0lovIQiCmQmCPCxdnFLo9AptLvd8AxBs1ybvNP2SSuRipxWUR7HfhvHwOLMbG81eK5r2IwPK4sBJky/5jUTdPFv+ujb68pRwlbs2q4O
- 4jyG7KHF
- 8tJlf7foxaulCqvXf1Y0D4Q6XppFV95eiAdaSxO93qSKuEbk0ialqCq3hVW0v4bfoYZcCrXw3PDdAwBEPsylP4eHuwE97Jp13gL9s3ysFxNgNL895yZScfsOCvLerjAL0s6gMEvY9cV+xbM8KGo8CulfYxCCikv9lzpfruJ+sQOK8rouKRUzhbpcKWfAtcQJRSv2+Trw9Sg99MtNjIELXldU4GWdIGmDHnsfR0mdsrYHHnDwM85aFh5Y2wYF6YKPXFMJxqNFfOCmE1UdrzJt50LeuCkYWsftkP2yM7AI3fFXDcNjZVnVbSSlijawByMwHdMNRAG6lA9dsxN8TvnRxvaWabitUFYSBmDWBMbYxqG/jgZfYSpfNpjPMsg==
+	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794778017-896457
+X-HE-Meta: U2FsdGVkX19ZtoMGBhHtTB+0LxUhdgh8Zmejv0puROHJVCbD5ChhjAPBYxjlxUoYxW8pEI/qkOJJVXmbXk/GHAUY9x1X0iJOAZtBNopqqwpnVLtlCO1B6/OoEyBHA8BuqE02wyQt4NWeYbn8+KlQutMArP1Ztu2N6Rn0DLWCOkF3g7H1He4r7yPt9NMbK2xha/Ww7DJz5j+Pi5Bk07BxJFnIRCe7HjTGVv8ISlXatehgtvGbptn+ymsUPxFfLZNDgyXZ3Pih41m8+IgpPXiveb3gRq1dRqlmnvE2Tvql6yBhVyQtbNKRphfrhbiwUnp2Ms4TY3rh4HJtVWL2JKcW8h2OgXz7Lj4YZwJGaWEJin/jAyeen8eLzYEIqvf22wRfLj+jZ8BIo15KywYF57UFNSOplVAgHWSQUIgwnnH8wt9FTbQ6uNiq66jXusWoGqDd0vaFGhH/QF4qX1AN6eutib/MkZo8ttZm990hxZ+oT5gsSXcoO0dKm6LlBKiGIMVIslnhs89r3IFtiBDNNbwzq8CDNtiys/tQtZqdeL6Cnrr0JZqL5qd4g3ASFb6PYpv8YAj4WYbZDoG5epKZa/NiXamtF/93i6syH34PleXBCXI+BTlqHLcY6cL8f/e/bVNGH+3830fV+vK+VaHKsQC9fNJnx8CGgoTJhnBWeb7P9DJas+6e85f0GTWNWVdT6WsYIH4WfOoBPp4M7aN8Fya2m0r+5LfWl4JzqXLfCWj+f5UAaG3ORhuXxRY03cI+l65GZ8vkAtpozNER+cWqWscTM8bc3X3e7eSouHi81+PffdB4AJwicYcpn6hGc+46j/U+Ak9c4YEh6mjC7rpKHvKedalZ0n7te8MQC5cno2nMzy/mFNVBDUJbQNrKo8e2Fer1qi4GbFNM6Lc05QJ1iIuDj17cq0Jvuo+Pf1rjUfCoQRSsIYDXPuk7uJk/KaFbo1ckzLXQkkvdHJTjWy6m9MP
+ BTKRAwJ6
+ 79T39CEM6bHuyD2uqS++qd4t9NuAhza4IeY3WTYUu1RDfLkvswQBfPTtKTWgnt5Ou7rxmb4t8Mb4Na+kCUg3fNhYLGL1cnb0ExTbmD/Z0sMVEtxAJWg8dr9hp5iGc7Od5V7SCGQIQ5xfoSi4cS8SBEUubBUK+g71XxOPeSU0hifL/9Yvn8+Vbr3u5Sl2+GRTuM6WGuV96CahJfEfhMRuaOxz98zUKITFwaN6U/u27eS3UQCaBb5v4wihe0daIGLuqPOWZDtQYW+0IaShGxpI9uqUWvj9dEc1p914e5+03+TNwkTxrbWMtkj89fp0yWuQuAgJkPGH91SvifAGg/8vRPvj2k39OEzgsY2uhW7lHgo7zfc4waZWM03DhNJleBjOi0ofCewP0d11ujx56/g/w6R8frusFcuEq9xYDyS/XZCq7OFAhsBjPaGP49pHWYM+s4mhZPY2Ua5DUgD8AO584uLG9ZndO47gxQgtjJwX+ROLtc5EIr9OikGQ8cvPwO9OtOsYvALRr84IvHAxGKdxSCZluW0q4NGEQO2tvYW5vjYW7MzTj5htLNI3RZPAmtzeM8R2DCXSPV5yqxs+23jJue30rR/1NMseeuAyBfAyH3N0ROXecBDnEG+fWdPCBRKxV6KhYqtJ0JSxvSB9F4IXpiITXYH1bnIZpwhOn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,83 +117,175 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, 15 Nov 2026 20:42:40 +0000 sashiko-bot@kernel.org wrote:
 
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issues to consider:
-> - [High] mm/damon/core: out-of-bounds write in damon_submit_report() on
->   queue wrap
-> - [Low] mm/damon/core: missing Return section in damon_submit_report()
->   kernel-doc
-> --
-> 
-> commit bcb278386fb51304d0c224892db9744bf9e27c8f
-> Author: SJ Park <sj@kernel.org>
-> 
-> mm/damon/core: introduce damon_submit_report()
-> 
-> This commit adds damon_submit_report() to enqueue a data attribute report
-> into the DAMON internal report queue using CAS-based try-locking.
-> 
-> > diff --git a/mm/damon/core.c b/mm/damon/core.c
-> > index 3f87a7eec442e..06b85d00e38d9 100644
-> > --- a/mm/damon/core.c
-> > +++ b/mm/damon/core.c
-> > @@ -2353,6 +2353,36 @@ struct damon_report_queue {
-> >  
-> >  struct damon_report_queue damon_report_queue;
-> >  
-> > +/**
-> > + * damon_submit_report() - Enqueue a given report to DAMON internal buffer.
-> > + * @report:	The report to enqueue.
-> > + *
-> > + * This function can be called from any context including the NMI context.
-> > + */
-> > +int damon_submit_report(struct damon_report *report)
-> 
-> [Severity: Low]
-> This isn't a bug, but the kernel-doc comment for damon_submit_report() is
-> missing a Return: section describing the 0 and -EBUSY return values, which
-> triggers a kernel-doc warning under W=2 builds.
+IIUC, this series will be pciked after the kho feature flags [1]
+Should it be rebased on top of [1]?
 
-Nice catch, I will add Return: comment.
+[1]: https://lore.kernel.org/all/20261110050202.529473-1-tarunsahu@google.com/
 
-> 
-> > +{
-> > +	struct damon_report_queue *queue;
-> > +	int lock_old_val;
-> > +	unsigned int tail;
-> > +
-> > +	queue = &damon_report_queue;
-> > +	report->jiffies = jiffies;
-> > +	lock_old_val = atomic_cmpxchg(&queue->lock, 0, 1);
-> > +	if (lock_old_val)
-> > +		return -EBUSY;
-> > +
-> > +	tail = queue->tail;
-> > +	if (tail == queue->size)
-> > +		tail = 0;
-> > +	queue->reports[tail] = *report;
-> > +	queue->tail++;
-> 
-> [Severity: High]
-> Does this write out of bounds of queue->reports[] after the queue wraps?
-> 
-> When queue->tail reaches queue->size, only the local variable tail is
-> reset to 0 while queue->tail++ increments queue->tail to queue->size + 1.
-> Every subsequent submission then bypasses the tail == queue->size check
-> and writes past the end of the queue->reports heap array, corrupting
-> adjacent slab memory.  Updating queue->tail = tail + 1 would wrap the
-> index properly.
+~Tarun
 
-Good catch.  I will remove tail local variable and just use queue->tail.
+Pasha Tatashin <pasha.tatashin@soleen.com> writes:
 
-> 
+> This series introduces a read-only Kexec Handover mode, enabled at boot
+> via 'kho_ro=<pa>' pointing to the physical address of the KHO FDT.
+>
+> In standard KHO, the outgoing kernel shuts down or serializes all
+> devices into LUO state, releases machine control, and passes the KHO
+> FDT physical address through the kexec_file_load() reboot path to the
+> next kernel, which becomes the sole "Machine Owner" (MO), initializes
+> struct pages for preserved folios during early boot, and reclaims KHO
+> metadata and preserved pages back into the page allocator as they are
+> restored.
+>
+> In the "Linux Caretaker" (LC) model (as well as inspection kernels or
+> firmware), a minimal LC kernel runs concurrently on dedicated CPUs
+> offlined from the MO scheduler while MO is still active or undergoing a
+> standard KHO-preserved kexec reboot (Live Update). LC is given
+> read-only access to KHO so a minimal VMM inside LC can keep VMs
+> responsive (<30ms VM blackout time) by servicing software-only, fully
+> virtualized devices (such as virtio-console, pvpanic, virtio-rng, etc.)
+> that do not require host hardware interrupts or global machine state,
+> while leaving the preserved KHO tree intact for the incoming MO kernel
+> to retrieve normally once it boots.
+>
+> LC is never MO: it has no PCI support, does not handle device
+> interrupts, and is booted inside a small LUO-preserved memfd region
+> (e.g., ~128MB of RAM on a host with terabytes of memory). Because LC's
+> direct map only covers its own small memory footprint (both for
+> isolation and to avoid struct page overhead for host memory), the KHO
+> FDT, radix tree, and preserved memory all reside outside of LC's direct
+> map. Furthermore, because LC is configured and launched from userspace
+> while MO is still running rather than through a kexec reboot handoff
+> from a shutting-down kernel, userspace reads the KHO FDT physical
+> address from /sys/kernel/debug/kho/out/fdt_phys and explicitly passes
+> 'kho_ro=<pa>' on LC's kernel command line.
+>
+> Both CONFIG_KEXEC_HANDOVER and CONFIG_KEXEC_HANDOVER_READONLY can be
+> compiled into the same kernel image, with the active mode selected at
+> boot via the kernel command line ('kho=on' vs 'kho_ro=<pa>'; passing
+> 'kho_ro=<pa>' disables regular KHO).
+>
+> Overview of the series:
+> - Patch 1 exposes the physical address of the outgoing KHO FDT via
+>   /sys/kernel/debug/kho/out/fdt_phys so userspace tooling can pass it
+>   to a 'kho_ro=<pa>' kernel.
+> - Patch 2 moves the shared radix-tree key encoding, indexing, leaf
+>   lookup (kho_radix_find_leaf()), FDT validation, and
+>   kho_retrieve_subtree() helpers into a shared
+>   kernel/liveupdate/kexec_handover_common.c compilation unit with
+>   declarations in kernel/liveupdate/kexec_handover_internal.h, while
+>   also checking that fdt_totalsize(fdt) does not exceed PAGE_SIZE in
+>   kho_check_fdt() and using get_unaligned() for 64-bit FDT property
+>   reads in kho_retrieve_subtree().
+> - Patch 3 hardens kho_restore_vmalloc() and factors out shared vmalloc
+>   helpers by introducing kho_vmalloc_validate() and kho_vmalloc_walk()
+>   in kernel/liveupdate/kexec_handover_common.c to validate the
+>   preservation metadata header and walk the chunk list.
+> - Patch 4 avoids modifying ser->next and bs->head_pa in kho_block_add()
+>   and kho_block_set_shrink_one() when operating on an incoming block
+>   set, as the chain is already linked and incoming blocks must not be
+>   modified in KHO read-only mode.
+> - Patch 5 adds CONFIG_KEXEC_HANDOVER_READONLY and
+>   kernel/liveupdate/kexec_handover_ro.c. When booted with
+>   'kho_ro=<pa>', the KHO FDT is mapped and validated once in an
+>   early_initcall, and radix-tree nodes, leaves, and folio/vmalloc
+>   mappings are cached on first visit in a unified RCU-protected hash
+>   table for the lifetime of the read-only KHO kernel, providing
+>   kho_is_ro(), kho_ro_lookup_folio_order(), kho_ro_map_folio(), and
+>   kho_ro_map_vmalloc().
+> - Patch 6 wires read-only KHO mode into KHO core (kho_populate(),
+>   kho_memory_init(), and kho_retrieve_subtree()).
+> - Patch 7 updates kho_block to map incoming serialized blocks read-only
+>   via kho_ro_map_folio() in read-only KHO mode.
+> - Patches 8 and 9 extend test_kho and tools/testing/selftests/kho/vmtest.sh
+>   to build a single kernel with both CONFIG_KEXEC_HANDOVER=y and
+>   CONFIG_KEXEC_HANDOVER_READONLY=y and test both standard KHO and
+>   read-only KHO handover when preserved memory lies outside the boot
+>   kernel's initial memory range on x86_64 and arm64.
+>
+> This series is based on liveupdate/next commit 27be83a12b24 ("Merge
+> branch 'lu-pci-preservation' into next").
+>
+> Changelog:
+> v2:
+> - Expand the cover letter with the LC architecture, explaining why
+>   'kho_ro=<pa>' takes the FDT physical address on the command line and
+>   describing the expected users of the read-only KHO APIs (Suggested by
+>   Mike Rapoport).
+> - Patch 2 (Suggested by Mike Rapoport):
+>   - Move the shared radix-tree, FDT, and subtree retrieval helpers into
+>     a dedicated kernel/liveupdate/kexec_handover_common.c file instead
+>     of static inline functions in
+>     kernel/liveupdate/kexec_handover_internal.h, and factor out
+>     kho_radix_find_leaf() for radix leaf lookup.
+>   - Check that fdt_totalsize(fdt) does not exceed PAGE_SIZE in
+>     kho_check_fdt(), drop the "setup: " log prefix from FDT validation
+>     warnings, and use get_unaligned() when reading 64-bit FDT properties
+>     in kho_retrieve_subtree().
+> - Patch 3:
+>   - Move kho_flags_to_vmalloc() to kexec_handover_common.c alongside
+>     kho_vmalloc_validate() and add a shared kho_vmalloc_walk() chunk
+>     walker used by both kho_restore_vmalloc() and kho_ro_map_vmalloc().
+> - Patches 5 and 6:
+>   - Allow CONFIG_KEXEC_HANDOVER and CONFIG_KEXEC_HANDOVER_READONLY to be
+>     compiled into the same kernel image and select the active mode via
+>     the kernel command line ('kho_ro=<pa>' forces regular KHO disabled).
+>   - Split the KHO core integration (kho_populate(), kho_memory_init(),
+>     and kho_retrieve_subtree()) into a separate patch (Patch 6) so
+>     Patch 5 only introduces the read-only KHO backend.
+>   - Map and validate the KHO FDT and preserved-memory-map root once in
+>     an early_initcall so kho_ro_get_fdt() and kho_retrieve_subtree() do
+>     not sleep or map lazily.
+>   - Replace kho_ro_restore_vmalloc() (which allocated RAM and copied
+>     pages) with kho_ro_map_vmalloc() to map preserved kho_vmalloc
+>     regions read-only in place using kho_vmalloc_walk().
+>   - Cache radix-tree node, leaf, folio, and vmalloc mappings in a
+>     unified RCU-protected hash table (kho_ro_map_ht) keyed by address,
+>     size, and protection for the lifetime of the read-only KHO kernel,
+>     and drop kho_ro_unmap().
+> - Patch 9:
+>   - Build the kernel and initrd only once in vmtest.sh with both
+>     CONFIG_KEXEC_HANDOVER=y and CONFIG_KEXEC_HANDOVER_READONLY=y
+>     enabled, running both the standard KHO test and the read-only KHO
+>     test on the same kernel image.
+> Link: https://lore.kernel.org/all/20261019021111.990394-1-pasha.tatashin@soleen.com/ # v1
+>
+> Pasha Tatashin (9):
+>   kho: expose physical address of outgoing FDT
+>   kho: move radix tree and FDT helpers to common file
+>   kho: validate preservation metadata in kho_restore_vmalloc()
+>   kho: do not modify incoming serialized blocks
+>   kho: add read-only Kexec Handover mode
+>   kho: support read-only KHO mode in KHO core
+>   kho: support read-only KHO mode in kho_block
+>   kho: test: support read-only KHO mode in test_kho
+>   selftests: kho: add read-only KHO test to vmtest.sh
+>
+>  .../admin-guide/kernel-parameters.txt         |   8 +
+>  Documentation/admin-guide/mm/kho.rst          |   3 +
+>  Documentation/core-api/kho/index.rst          |   6 +
+>  include/linux/kexec_handover.h                |  44 +-
+>  kernel/liveupdate/Kconfig                     |  10 +
+>  kernel/liveupdate/Makefile                    |   3 +-
+>  kernel/liveupdate/kexec_handover.c            | 284 +++---------
+>  kernel/liveupdate/kexec_handover_common.c     | 298 ++++++++++++
+>  kernel/liveupdate/kexec_handover_debugfs.c    |  22 +-
+>  kernel/liveupdate/kexec_handover_internal.h   |  47 +-
+>  kernel/liveupdate/kexec_handover_ro.c         | 429 ++++++++++++++++++
+>  kernel/liveupdate/kho_block.c                 |  78 +++-
+>  lib/Kconfig.debug                             |   2 +-
+>  lib/test_kho.c                                |  71 ++-
+>  tools/testing/selftests/kho/arm64.conf        |   1 +
+>  tools/testing/selftests/kho/init.c            |  38 +-
+>  tools/testing/selftests/kho/vmtest.sh         |  65 ++-
+>  tools/testing/selftests/kho/x86.conf          |   1 +
+>  18 files changed, 1121 insertions(+), 289 deletions(-)
+>  create mode 100644 kernel/liveupdate/kexec_handover_common.c
+>  create mode 100644 kernel/liveupdate/kexec_handover_ro.c
+>
+>
+> base-commit: 27be83a12b246b6b3783e7d3ac5c378ff7520f25
 > -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20261115202849.99134-1-sj@kernel.org?part=3
-> 
-
-
-Thanks,
-SJ
+> 2.56.0.307.g5fe7bd680c-goog
 
