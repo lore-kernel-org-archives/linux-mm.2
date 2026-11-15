@@ -1,94 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31BFF606A323
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 19:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB19606A33B
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 19:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TW8KkMVV
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XhLu85Ua
 Received: by kanga.kvack.org (Postfix)
-	id 3DE996B05B3; Sun, 15 Nov 2026 14:15:47 -0500 (EST)
+	id A9DDD6B05B0; Sun, 15 Nov 2026 14:20:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38F376B05B4; Sun, 15 Nov 2026 14:15:47 -0500 (EST)
+	id A4E676B05B5; Sun, 15 Nov 2026 14:20:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A5B66B05B5; Sun, 15 Nov 2026 14:15:47 -0500 (EST)
+	id 93DCA6B05B6; Sun, 15 Nov 2026 14:20:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ED4926B05B3
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:15:46 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7376EA07E3
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 19:15:46 +0000 (UTC)
-X-FDA: 85438307892.06.E0D41C3
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A7B36B05B0
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:20:30 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D671240807
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 19:20:29 +0000 (UTC)
+X-FDA: 85438319778.02.7057A75
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id C162BA0004
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 19:15:44 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TW8KkMVV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id 412DB2000A
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 19:20:28 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XhLu85Ua;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794770428;
+	b=Utg82MlRmozNPj6Wy5g/t6rKC80s1u14kIgtcuAvR6sbaZM+selTh3KfJG89+5qFeRoUSt
+	+6WUcmWG4Htg1KK8KCXBMcS7koVoxXVfDOjvVy7eIukBgk9t8Z5fLRLOAkcOg2Z2L4IXy3
+	sq4E+w2JEFKugptYmWDxL0Ce+RWt98U=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XhLu85Ua;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794770144;
+	s=arc-20220608; t=1794770428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=imsZLV1/j0+7+KQo/YR+v0zfeVAOnZjjS01+bde7pqM=;
-	b=Blmrcs2NRPw06YdFQeGAxbyETvnfCAqU3vGnVJSyyPwgHr6My1xAOud6k8/RKP37jJKgJ9
-	ywVwIcMEzsc4E0a68IsacnuFlZmQV8WQfX9qjOVM4Q1mT8czLu4i1+GIzNpWVHb/Vv+G5D
-	QUXjXNDDJZkX58hIEtnpi+gRlWXLNL4=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TW8KkMVV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794770144;
-	b=BqwERuDkjyoV/VUurOx4DMUFvjwDyP0itbJGbh9n0Fx4qyn3FZEJuoVpxAmhNKC8tiUsmY
-	StN3YO5jVNsGttPl7GLx1PbS0KmgexACyr7LdAP9C1YIE53lOiJIpHeyBVtFwM1XeMcorW
-	h6p9isQgcmwN0S5z7apWUi4jZmQXoxs=
+	bh=fLaQUPcYKxXkir2twg3fsW7g9Gg8lBOZ22Z32cylxH0=;
+	b=YP1/iG5LNch77r9WVUivAzeltLqsGgSTqh35kmNMcduuqvXsodd2OzK+9LHPEi87mTld1k
+	7T5iJr7bdGnMjfthto+Gf5o0fZcOtxw1NlizAD5V0IwqQpmxwgxji5QWsM+0jGKZC/g//G
+	eCF9bMcCBscpQMcwmR2d70kKLwUAsoQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 68F5161259;
-	Sun, 15 Nov 2026 19:15:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AAF31F000C4;
-	Sun, 15 Nov 2026 19:15:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AB737601CC;
+	Sun, 15 Nov 2026 19:20:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC921F000C4;
+	Sun, 15 Nov 2026 19:20:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794770143;
-	bh=imsZLV1/j0+7+KQo/YR+v0zfeVAOnZjjS01+bde7pqM=;
+	s=k20260515; t=1794770427;
+	bh=fLaQUPcYKxXkir2twg3fsW7g9Gg8lBOZ22Z32cylxH0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=TW8KkMVVMt9rUebi+zjgSZeFR8dzjW+WW8lkEDR9+0OyBBjcLrxgfV1QiP6Ga9xN1
-	 Mv2ZIus5IzsKI5EV6bDzJsyYouyrB9kWEnWor2Qa/iOR6bzYSEgfmpA76UCjizmSXM
-	 yk5kkX9u+biqZxjvSVR/Q1Csbdcf4Wpi2KB90Np48Yuk1nTBCzqem+AMYq7eT8FpTN
-	 1OlUKB3wbkBSzQKcJg+9YTd6mfDVyZOKyCgAVxefrcHegL8yZMhrCAUrrCjXGia4+O
-	 kC/q0TdFfjlcZBrpcXPGorhvztkXW6AARCi/vZgAisoAfDUP5lFYWL0CJGOhMVsw3f
-	 jxT9+WKeaN9Ng==
-Date: Sun, 15 Nov 2026 19:15:39 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: shao.mingyin@zte.com.cn, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/util: fix off-by-one when checking folio index in
- snapshot_page()
-Message-ID: <avn08-MVyt7wDfF1@lucifer>
-References: <20261115004657890Pz8ERDf5nCtE-B6M7KFzu@zte.com.cn>
- <avibe0HG4ssUUuBX@gremlin>
- <72dc7b45-ad20-450b-8ec7-3e86be8a41f8@kernel.org>
+	b=XhLu85Ua2c6WZLlLlAlu41R/VyenJMuIzs9+HeEnHjow/dZUNr5fsUxv33MVe0xR9
+	 NiqKgGZojOd6z653AmlAbwBWSNz0Y/J4dsO9oqMstKyh/UAzeOwqo1F24tatjYGczh
+	 Q0qBu2kvlSa0F8oIVuhxCAoOMhwI/hK6jFz/WnzR0a+3Y8LmbXpxRwMM+kxXmZY1iq
+	 25w3eguzUz3kcvSwQsQNl1CFRImzluQwZPqKEdduaE+/HXoeSbYwThL2YZMJLNU1I0
+	 E3zvrbGwhP652mJ1OL7CToELmOQZpBOaxBkQTr+i8KiSeA8Qj626ksqR9/Ha+aLwjb
+	 //TVlKyt3smmQ==
+Date: Sun, 15 Nov 2026 21:20:16 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Vincent Donnefort <vdonnefort@google.com>
+Cc: catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org,
+	m.szyprowski@samsung.com, jenswi@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, mark.rutland@arm.com,
+	robin.murphy@arm.com, hch@lst.de, ryan.roberts@arm.com,
+	sumit.garg@kernel.org, sudeep.holla@kernel.org, ardb@kernel.org,
+	thierry.reding@kernel.org, david@kernel.org, danielmentz@google.com,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	iommu@lists.linux.dev, op-tee@lists.trustedfirmware.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/8] arm64: Add support for MEMBLOCK_PTEMAP
+Message-ID: <avoF8IbOxVJ9Uh8Y@kernel.org>
+References: <20261111110738.872947-1-vdonnefort@google.com>
+ <20261111110738.872947-3-vdonnefort@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <72dc7b45-ad20-450b-8ec7-3e86be8a41f8@kernel.org>
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C162BA0004
+In-Reply-To: <20261111110738.872947-3-vdonnefort@google.com>
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: rotjekz7wb76o99dxhdau4zgmpm5wfoe
-X-HE-Tag: 1794770144-450497
-X-HE-Meta: U2FsdGVkX18CryOoNFoy/gaatMx/6qUlNfkS4zdwbCp1Tuu+0sTvpRgGszB0HZlMxWWrxITFRjq8xGIm5lZIiJvavndQs/cAa30akmX4vjNG3g5hjjSLJbFBuknfElI46jD2rS/cctAz9AJTJz5Mx/BP4tR/EhMJvlwDqexnVlGqsrDh/wR4wAyxxh6tzONgBQf+/TqUryrbrzpHEZEdVzerPS4CgWZ9xOMjQoG8kHqH0nvDSuX4zWdsVJhzI/rk3JGzIeG01MtYy+xeOgZ9UXlJZlWONffHi+staTy8i2P8X1H7TJ6LQnsh0T2C4hce2h58gmQoNH8+V0MiD79dScDNdz4DWk1U+FDC9WsdE+mAEMlvatEwtgPFVZM7z/2b6kz8FJvlVkElg96RJTsz4wOpZKKD3su8GPFrrQ09za7nKj7gAgJlzk95NXsGVTBKF2xUwgm5GvsMa0QAtrIqQU73lZF1ycDJdNPomrdElpnxoCGkD7jg7gRmJOPWvGok7x3hy8jOFvusDavrFIotWFXZ41rgi6qXjTcy1nucyYRBcNIVchVtxEtlP02VAcdQ/hU/sfXEfPI5u29ZxsKrQpKh+bP8OBYToDId0/B1DqqD7lfQYDSJBIS1xytaQcXgf225mi4gIs6PiU1aMN1kYNW4I+GzpMwu3wpxWuiMCvaehCWsMGbUZa9xDOwt/GxHXDSYThQmkzfBU2RhvaGaGwG0xvc57PqNLONS1+ahcLnwliLosBM9qJMpSi7pPdKryo+XQOYruNChRiYBjR9s4J5LIiTS9dbV7zcu/4hJV8PW0lqXnaLWWY4Ul2agTOJCeX3yV2rqN3uKtiYJ4NSDen5W8640qmKpK9Ii8Hxbi+Uwiqt64Xh3aRwrb7EAnFY9uK86aWPR44qyePQe7Pe0+ETbYfhB+maXN0Z1ICuxtJobvsAtcN1Dh04OMFzqSSMPNNpI6mR2uEAs+Qk3fDR
- 20yLO8Sa
- uQApue94pQofvcEhqV9muauiYIq54TQooNHxGtKMLQFyk1iIPKJbVYwJoETsR8a+APUhMG8j20eBRmPeJYWas2X0Qu8vh8WBsZXypo3BU+QPjZ8lE0LHaJ8g5bj/ZZrXnYUaK3DI6229cG7cr5ufSsFpKL68kjhdzwZrdxY+5DzLYSfkZONygqGimbTx4KpRxXJwNnac2/uhE64lXsttyKZje0llRtqvLVEW7+MU9XQ9WMpP5RS9qGQ6MegmzbknHHVFEZu3bUH+sAVRZyXsEjIKavLhXAgrghoauJXkToNwGGM1VMNJOKEKba8EA9f1v2GqoJ8NE71KwvAJa+48uigM5P3+qhyzLFCLLYMvEh/GZPDxE6rqbiT2P9oq5b/9rNFGv
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 412DB2000A
+X-Stat-Signature: 4qf5aeiqcbu4qegikmddimqa35wtthh7
+X-Rspam-User: 
+X-HE-Tag: 1794770428-533883
+X-HE-Meta: U2FsdGVkX1/Aga8IMUvySam0ltar54t7/VyzAPRJ105l1lwqSxYmUa/tCdY4DdVO8kGueOFMeWvOt+mI0YJ24vW04m7ehfwcTyHit9q1S8FVCYRMbOx8LbOXM6ddGjp4ZLNOddgh5A6VBulaw5fIR8masSKYQcKHBLWcHfjMfFEwE/kW5K2pLBxRMivzNBCA1KW35DaSQyYOZw5yEM8WjsGIjrh2Y0LUJDHOwr9NSKtpCWf8/jwDWBQr2Scdq6QjB/0BYPhLP9+08zZXDKgFXBMJx1Wmcn0AKCbBJD8xims67fNy9ln3zfVo5GkL9GgBJbojQhjU1F+BN/3tPs3a+CakbHLeQrGsxcGlgpcFm7R6thOTyxRL+ZOdv58tfkmX0IhoGEQKjzbKdMQ2UYf6MItSy9XKvxXh2ZvwuLgMe8q3xXHCUU2532In2/7JgxUQMhmlm1hZqQJdkxG1vVGP28OdU/Ad0cMDvQR/ylk0ZmczKO3e/EN10jm0LzQ49HmZhxKxsJqTyCFT+t18UAvHMGXqimchtrKi73WKTYQu5gXMuAQKCzXaQlVLgJ/ryjEGveBQPuMNiZbAHgi+tOxzwHPckxwfJugpe8zteJ3pQiCz57o4DE5F9kvR7MXysIeP4SAL/DCpHgx3fePgHib0NXWN8zxlcGM5Vbv5/XTsDQf18taOIVKfJK80SaEV6qT2kLy7GljvMyPagwr5qVJlLEriGJTYGKVm5TipDhqHnK6+szndTlG81fOUkYIV59BU6TRuaz1BIGDxdlyXH162n7zp3Vug+eWsQn88dkZ8i8PODucqEbFwQwnKN3Sq5K1GeQWqaX8yEISp9zBhG1bIgwh00iVNW5/IPEgTOlhDu5eeUY3LKTZZ2tmpZTbU6rZr2lwnJA6q7oJerHmzgJTj1alK+544s90c7IzNpNpRj/dJE1/y99ybQR3JA81mOTq82HsqkUB0PB4u+kJ4lBa
+ ohSRhft4
+ 9MuhxqwYZzzulmd7Lakjl81+mkytEVQWmxpG59HpBxTe0RC68qdoG225HOHyUu3i0ZmIZTM9D62a5rnpdiPHVciSj88SHPS2f2TFBxD4ea54A+jr9XV4zT4Et+64mbHG5eEYm9zK6WVXMBq736yfvjJ9wlUcxD5j+TJz0909fScso07TCX67wtOy+WMUBU5vkOn97ymHjOi2vlHaYkXBCkXTRVeJQU0JLe0+aCBfVwXn3/UqZAZ8ldUqnbMjrFfNiS+mUWpHx2THle//Rtt0LXY2mJ0G2+gu+rYRNC/q/jWO7LGvWwoZ2UEJE5yTkFIuvsg3XDv/KNVAHCL1mHybvZOOjBND9+WO86GECJzlrMTnwS18KRoPd65xRaq04e2wCCFoB+WcZCmCZcmiFYGxO4JeBBseBm8oJFsZcUSHlQLDUB/JN3iLEUllWVw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,120 +101,89 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 15, 2026 at 06:32:12PM +0100, David Hildenbrand (Arm) wrote:
-> On 11/14/26 18:33, Lorenzo Stoakes (ARM) wrote:
-> > On Sun, Nov 15, 2026 at 12:46:57AM +0800, shao.mingyin@zte.com.cn wrote:
-> >> From: Shao Mingyin <shao.mingyin@zte.com.cn>
-> >>
-> >> mm/util: fix off-by-one when checking folio index in snapshot_page()
-> >>
-> >> snapshot_page() computes the page index before copying the folio state.
-> >> If the folio changes between those reads, the index can equal the copied
-> >> folio's page count. Valid indices are strictly less than that count,
-> >> but the current check accepts equality and marks the snapshot faithful.
-> >>
-> >> Use >= so that this inconsistent snapshot is retried, or falls back to
-> >> the unfaithful single-page representation. This also avoids reporting an
-> >> out-of-range folio index without the corresponding dump_page() warning.
-> >>
-> >> Fixes: d863a12108f2 ("mm/util: introduce snapshot_page()")
-> >> Signed-off-by: Shao Mingyin <shao.mingyin@zte.com.cn>
-> >
-> > NAK.
->
-> Let's do the following:. Thoughts?
->
-> From c7d1a79926e3b3448bb5e84f901c185234f43b52 Mon Sep 17 00:00:00 2001
-> From: "David Hildenbrand (Arm)" <david@kernel.org>
-> Date: Sun, 15 Nov 2026 18:11:08 +0100
-> Subject: [PATCH] mm/util: fix retry detection and handling in snapshot_page()
->
-> snapshot_page() detects races with concurrent folio split+construction by
-> checking whether the given page still falls into the folio. Unfortunately,
-> we have an off-by-one error in there, and we should be checking for
-> "ps->idx >= nr_pages", because idx 0 is valid.
->
-> For example, we might currently report a tail page at idx 1 as faithful,
-> although the snapshotted folio is now a small folio.
->
-> However, there is one complication: As we don't hold a folio reference,
-> folio_nr_pages() can return 0 on races (or when called from page freeing
-> code). Handle that by just setting it to 1 in that case, so we don't
-> wrongly report a head page as "page does not match folio".
->
-> In addition, we should reset ps->flags when retrying, by just resetting
-> it to PAGE_SNAPSHOT_FAITHFUL. Otherwise, PAGE_SNAPSHOT_PG_BUDDY and
-> PAGE_SNAPSHOT_PG_IDLE from a failed attempt could stick around.
->
-> These races are fairly rare, so this is not really critical, we simply
-> report something slightly wrong. No need to CC stable.
->
-> Fixes: d863a12108f2 ("mm/util: introduce snapshot_page()")
-> Reported-by: Shao Mingyin <shao.mingyin@zte.com.cn>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+On Wed, Nov 11, 2026 at 11:07:32AM +0000, Vincent Donnefort wrote:
+> With the MEMBLOCK_PTEMAP flag, force a PTE-level mapping. This also
 
-Yeah this is reminisecent of other patches from the same batch I saw in
-that the original didn't quite fix the problem correctly :)
+I'd expand this to "Force a PTE-level mapping for memblock regions with
+MEMBLOCK_PTEMAP flag set".
 
-Thanks for this! One small nit below but otherwise:
+> disables contiguous PTEs to make sure any page from the memblock can be
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+                                     and memblock region here ^
 
+> safely unmapped from the linear map.
+> 
+> Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
 > ---
->  mm/util.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/util.c b/mm/util.c
-> index 80f6c714844f2..3b10d4c2a4fd9 100644
-> --- a/mm/util.c
-> +++ b/mm/util.c
-> @@ -1406,9 +1406,9 @@ void snapshot_page(struct page_snapshot *ps, const struct page *page)
->  	int loops = 5;
->
->  	ps->pfn = page_to_pfn(page);
-> -	ps->flags = PAGE_SNAPSHOT_FAITHFUL;
->
->  again:
-> +	ps->flags = PAGE_SNAPSHOT_FAITHFUL;
+>  arch/arm64/mm/mmu.c | 22 +++++++++++++++-------
+>  1 file changed, 15 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index 140520b351e2..a4cafafa1d82 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -1184,9 +1184,8 @@ static void __init map_mem(void)
+>  	phys_addr_t init_begin = __pa_symbol(__init_begin);
+>  	phys_addr_t init_end = __pa_symbol(__init_end);
+>  	phys_addr_t kernel_end = __pa_symbol(__bss_stop);
+> -	phys_addr_t start, end;
+>  	int flags = NO_EXEC_MAPPINGS;
+> -	u64 i;
+> +	struct memblock_region *r;
+>  
+>  	/*
+>  	 * Setting hierarchical PXNTable attributes on table entries covering
+> @@ -1226,9 +1225,14 @@ static void __init map_mem(void)
+>  		       flags);
+>  
+>  	/* map all the memory banks */
+> -	for_each_mem_range(i, &start, &end) {
+> +	for_each_mem_region(r) {
+> +		phys_addr_t start, end;
+> +		int rflags = flags;
+> +
+> +		if (memblock_is_nomap(r))
+> +			continue;
+>  		/*
+> -		 * for_each_mem_range may return sub-page-aligned boundaries
+> +		 * for_each_mem_region may return sub-page-aligned boundaries
+>  		 * after memblock_mark_nomap() splits regions at byte precision.
+>  		 * __create_pgd_mapping_locked aligns phys down to PAGE_MASK,
+>  		 * which could accidentally map no-map memory on the boundary.
+> @@ -1237,17 +1241,21 @@ static void __init map_mem(void)
+>  		 * regions. The cost is at most one page of unmapped gap at
+>  		 * each boundary.
+>  		 */
+> -		start = PAGE_ALIGN(start);
+> -		end = end & PAGE_MASK;
+> +		start = PAGE_ALIGN(r->base);
+> +		end = (r->base + r->size) & PAGE_MASK;
 
-set_ps_flgs() or's stuff in so it does need this it seems.
+Nit: as we anyway change the assignment to end, PAGE_ALIGN_DOWN() is
+slightly more explicit.
 
->  	memset(&ps->folio_snapshot, 0, sizeof(struct folio));
->  	memcpy(&ps->page_snapshot, page, sizeof(*page));
->  	info = ps->page_snapshot.compound_info;
-> @@ -1438,13 +1438,16 @@ void snapshot_page(struct page_snapshot *ps, const struct page *page)
->  	if (ps->idx < MAX_FOLIO_NR_PAGES) {
->  		memcpy(&ps->folio_snapshot, foliop, 2 * sizeof(struct page));
->  		nr_pages = folio_nr_pages(&ps->folio_snapshot);
-> +		/* On races, or when freeing pages, we can read 0. */
-> +		if (nr_pages == 0)
-> +			nr_pages = 1;
-
-Nit but could be:
-
-		/* On races, or when freeing pages, we can read 0. */
-  		nr_pages = folio_nr_pages(&ps->folio_snapshot) ?: 1;
-
->  		if (nr_pages > 2)
->  			memcpy(&ps->folio_snapshot.__page_2, &foliop->__page_2,
->  			       sizeof(struct page));
->  		set_ps_flags(ps, foliop, page);
+>  		if (start >= end)
+>  			continue;
+> +
+> +		if (memblock_is_ptemap(r))
+> +			rflags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
+> +
+>  		/*
+>  		 * The linear map must allow allocation tags reading/writing
+>  		 * if MTE is present. Otherwise, it has the same attributes as
+>  		 * PAGE_KERNEL.
+>  		 */
+>  		__map_memblock(start, end, pgprot_tagged(PAGE_KERNEL),
+> -			       flags);
+> +			       rflags);
 >  	}
->
-> -	if (ps->idx > nr_pages) {
-> +	if (ps->idx >= nr_pages) {
->  		if (loops-- > 0)
->  			goto again;
->  		clear_compound_head(&ps->page_snapshot);
-> --
-> 2.56.1
->
->
-> --
-> Cheers,
->
-> David
+>  }
+>  
+> -- 
+> 2.56.0.542.g3ef89b7020-goog
+> 
 
---
-Cheers, Lorenzo
+-- 
+Sincerely yours,
+Mike.
 
