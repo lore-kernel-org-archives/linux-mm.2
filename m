@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB745606A331
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 15:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861E9606A332
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 15:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oISKXA5E
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Pz3Mq/WN
 Received: by kanga.kvack.org (Postfix)
-	id E1CC96B05B3; Sun, 15 Nov 2026 10:10:22 -0500 (EST)
+	id 4592F6B05B4; Sun, 15 Nov 2026 10:10:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCD136B05B4; Sun, 15 Nov 2026 10:10:22 -0500 (EST)
+	id 430946B05B5; Sun, 15 Nov 2026 10:10:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBC556B05B5; Sun, 15 Nov 2026 10:10:22 -0500 (EST)
+	id 346616B05B6; Sun, 15 Nov 2026 10:10:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 93E776B05B3
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 10:10:22 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 18D8F1C40E7
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 15:10:22 +0000 (UTC)
-X-FDA: 85437689484.06.E04C4E4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 52FC618000A
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 15:10:20 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oISKXA5E;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 064B26B05B4
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 10:10:25 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 75C35120783
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 15:10:25 +0000 (UTC)
+X-FDA: 85437689610.19.E3F13C2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id CE3A2180007
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 15:10:23 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Pz3Mq/WN";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794755420;
+	s=arc-20220608; t=1794755423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LEpvJjswIVVnFhWoxB5UG1ML2CnsBWwLFbFU6DcBCqQ=;
-	b=mhHdjjz9W/u19hIUrepGDsELkSjPHceSxJtkNAA+pYMwZVObTzASN0PpedzvD9N6T33Vc7
-	TQ3TpZyh7Itx/ZXkC4mjnciVLlsiBn2a5+t6y9a4aaGEY3jfHF7oNGUOoA9bzPXTLtgUt7
-	49PeoKsqKUj2vrx08qn7EFYWddSEIVA=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oISKXA5E;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	bh=WO5dYOrdka6DIWC9KKEpVyr89KsTYkuKSnLMWU6DnVo=;
+	b=KiHL0I5Skh2FWRzohUUexucsreDctRoMqvvx5M5sBP0I9FMcSj73S4PCf1O3920y/vxTSB
+	A+6uB43WEEVHJ2to9rJoedUj3dhghdjGCXacwJiGY+YYYFCKOKl/I4nhavZ5xEojI/dxRw
+	SVKAXCtqiBKi3eO7DlfDVzjYsed7kr4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794755420;
-	b=eGUI/jvisCd9DdpSZyDyN5Bbiy0iO+SkzWcbl970vVgwKuuFkXEkQziR+WyizZpKvtv7MO
-	dcYZIMmegBuT5sucK4yKdtXYrFzYoYOxCbAW0cVJ9qXybTVdz9axPOyl1WEmYS+FLV5X5u
-	WZVk7gL+PRLTgWwvn4Lipviecn0CuuU=
+	t=1794755423;
+	b=Tqx9nUjSDPgkumAaDLnGMszPUgyf1GHEcXkYNM/SAWluyD8MAqq+JwfLGdn+PsCHo8pfC0
+	aPqM1CcfmaePFVCB9EtrWvjWkpiH5K81zpL170g32ai7v5X6UL0/L5IE6fmjsH8E+ei8Hi
+	0kHRpHX4XpJ9z8LO9OGmLFxAtsSGfdQ=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Pz3Mq/WN";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 943E643EC0;
+	by tor.source.kernel.org (Postfix) with ESMTP id 6732160D70;
+	Sun, 15 Nov 2026 15:10:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C461F000C4;
 	Sun, 15 Nov 2026 15:10:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D4C1F000C4;
-	Sun, 15 Nov 2026 15:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794755419;
-	bh=LEpvJjswIVVnFhWoxB5UG1ML2CnsBWwLFbFU6DcBCqQ=;
+	s=k20260515; t=1794755423;
+	bh=WO5dYOrdka6DIWC9KKEpVyr89KsTYkuKSnLMWU6DnVo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=oISKXA5E2zGjU7JwWeZoNC5HOL9bMy/MNsoDXDI0q4Qa7509anBWcQy2sRuTOcKiz
-	 QNKBCfG+ZHJEp/EjpaUQVdn8kaXnGax69xIJoVw9ZsPtmLypIJ4oLkhHh/paop12XR
-	 h+Fmp5QJQS8Jybk0yaEVVcmXg3105bAOqyKoc93lczQaSBqUYqHJJPDHWI1d7WJzgG
-	 0PQjEj8wZr5xfMBGKqoH14iLkiK/O5B5exn6l9gWC2dRfS+lBuqH5luUUaTVnxiBxe
-	 4MGN2bq8r2BkNr27QIAtQrcpe87N6m43xl0o3P0+sxAullm34CtsWo2/tOaCDin4c0
-	 pJ0AwTWrdR1/w==
+	b=Pz3Mq/WN7xLi7ysp9JmjujQrSrHmU9huH6HMZ5HpsrPJ46v6WQMa2uOL6QdV5ECHC
+	 CyHCqZXeRonR7n0k9jENAdyzQR18b57mFG8BjnVdVy27oiE+Lku0Zkldd1JPlY+JBS
+	 GsdAL9XB8VSsq+0s0pSQ9f2K+ZekR40FkTktiJ2FF4fy3hnddyyKhWzhW/r1RccfZe
+	 YG0WeT8EN3mhazdTKNVUV8hvD/KWfeLOYRNUmzxly8Tqc3VbdABmXQ3MJIW4009Rl4
+	 6YeYROCh9sLyOTo9JFJGf2LNZIYjnFsElRm3s6kMDYfzz9Qmq0abkdAL/gkzFsI6Dg
+	 YeE2duYy552xQ==
 From: "Harry Yoo (Meta)" <harry@kernel.org>
-Date: Sun, 15 Nov 2026 15:09:36 +0000
-Subject: [PATCH for-next v3 2/7] mm/slab: pass free_flags to
- slab_free_hook()
+Date: Sun, 15 Nov 2026 15:09:37 +0000
+Subject: [PATCH for-next v3 3/7] mm/slab: handle SLAB_FREE_NOLOCK in
+ slab_free_hook() instead of open coding
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261115-kmalloc-nolock-fixes-v3-2-9034dd4ecaab@kernel.org>
+Message-Id: <20261115-kmalloc-nolock-fixes-v3-3-9034dd4ecaab@kernel.org>
 References: <20261115-kmalloc-nolock-fixes-v3-0-9034dd4ecaab@kernel.org>
 In-Reply-To: <20261115-kmalloc-nolock-fixes-v3-0-9034dd4ecaab@kernel.org>
 To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
@@ -84,18 +84,18 @@ To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
 Cc: kernel-team@meta.com, cgroups@vger.kernel.org, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
 X-Mailer: b4 0.16.0
+X-Stat-Signature: n19nsitus87aois8kq871fecky9ax66u
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 52FC618000A
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: ihimj8czo75m4ic16sxiwtrd8a64cwci
-X-HE-Tag: 1794755420-603376
-X-HE-Meta: U2FsdGVkX1/2oTreQ6WJk7Rhz81cB08tqLu2iIFnVp9CPRp7C4HD3KR4TWarpTQURphcEk7BIts2hxNV0GBHAYK764R7q0L6Ofy5aeFofF1u6gFlwWK6S8jXI0oYD8b8DTGpFDKPvkINUlXiyxUuZKG+JGiV0ixY9bagEbnmP+/9dNIG1DI5WyOLEyj0CC4sDFCRBkAEbvH5wswfPLRPs0SXKVA/1mChDhp8EBeUrGUehiRCh0xKFhsEDo/0qS3xPFGys8qf4v+AnhU1um2Ab2W3kH8CNt0otdA/vWE0TOtupY6bnwTpV/+gAk2qGlAvl1Oy8BO2OlZ7zAfI7BZMaVOsyvdgPcYMBm3XOoDoVRs9uwD9XgXhytRRyvh1p/koi6BriFHAX0nXUnLTQSwUglNJKL/DlxsylVKIbZsSinQqfmViVZWImrN6RDU51jm0EO9+OTLvH70NvOqwrE/ivIvEBRg/3omHQxgsvfXjwk3zshxu4OGDudjZj7yH+UWnjh1F9//KHRpMb/mupntQxy4dbtvkRhJYlR61H0kXZXD0aMrPq0XAgU8J/t1o2cryAGi9t6UQ3z0DrFW59Apklgmk2CoS1tTjuyBnzokDqJAEYxbcj2gCDSv4kdyuWHhj8bQXUda3S3VgJjGoCtqRuGBSCE1sC2IjYXaTUa4Hm7FvaDdW7nQtaf+UvHknDXKuTaQZKYpBbSaRn3DDx5fLcfKEieb1egfbImyrlZeyTRjQCRhpJvisPSyJf3ZVrb14oaNp73LANl3ZKqmXQeht1sfpWQ3DauTiSdx6tXfUwj6BjzswIMyWK4gHV1jjQVrlz3U1xb6NYNmpm3PXKiyiU/44aUdugSE8CM/lns5VIv93LuGQ/NczmXRYwwbjkav8/9tA6G5aTV/W3qB/lWHM2u82rKxoSF18IMR1sQsTZb4B/RMFaIK9sq3VJIVmQSMPXR78WbA/gxeZtVh5OKC
- vSZHlmpI
- XmawYstWZPpMu5E156s3TU7oU+Pl8UEVDENamQDqGb+XBS6I+rJjNSgKvyF6mRnd5idWnTtQv94TY1rYcPm6OXtabmcv+4YZfTz1hRMgtpazM6kdAlH4nexcVml5R0MIEAG94AvFNcwLQwR7UgGj2sT12LSQUGxIMNV5HUZpWOt0vgdHd/bpCk+/+B9Wii+k8LthWfmjUZqoRjqHUVlEum0wfIlF68gngwc6wPM+V0bR3rH6RxpAPTaz2grNQqOoqp/AIeREtudxw7nPmmHaUW2j3xWyHqiC2SKD3N5njjvAGdb0=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CE3A2180007
+X-HE-Tag: 1794755423-713918
+X-HE-Meta: U2FsdGVkX19zibEIx78Ku14P1q4rTLuJIa5pYyoWzbvET8quNpTYlbNDI4AYuIyg8vuKZci6yi5i2Yorv5ve/QnNjMP7SXinyMyHbHPCu9QocdS2tT6aoE77BdqeyI/TIxdMWa1AMri3P4LVjqPmTBAisfG5QfL7y7mki4KarRhG2H0K/SaPsseGEcsUIXzyW2dKYBPvfgrRzpZwfu6Uoqz+YA/8034ZAlWmvd+P+9LOLizo8aWXWak6c/3jWXLjhLbGMqmiex6MlP6jUCkWyc5utKBB/eS18bbr+fYb/isI2ON7of3WLG9S2Jt0RdeqEcgRA5ztUPha4x40bQ7sO7h7GYBadkfSN9/tAKqdBlEs9a0VjBri8yAgmjOuZFsAdCHgnOBK88lPkTb7YGk0lnwqSYn1uEaiG/XbAeTJx9O4Yr8zv/4Idm7mRfWlxWiZKmBT7RyWlYZH+cEMZGfMfYZ7cby++sZZNtj1cG8feRleCmQN7JJE1raUWi2Ch39SHv04a66Y1IolMjiS/3IEZt8ENMMjFVeMcQf0Xto8Wwmmo+AuCSwOMjBd414TT7PwPxfx6Dt8beOMJLR159x8R/lSey3XlbnsF00smukYw6KhICeGFKx2/CTyBqMoIL0LFQ1i1qAZlgSlF4rdrHauQ/HxToFNq963zoA84aYKY0bOiqooCk04Ph2604zoHPvv/bF+m/D8Eph9bkFGsyAMY1HYasyBH5+NlGNEMRPrX1TZc8C8zQFVN3Mobz2Lo28dH448ITYs8IXAbbinzBqOLCyLZJJU45a9qz6bxwKwrczByVqUmgo0GV56xZ9a0hKGCgsSnGnRvxX/ZON/cdJac5J8uJh0KEjAJosyjM+XUpKPzvOJxFphXfO+aaufRWR7VYid6VkijleggC9pRaeUE6KuHn3W+Uh1TGOL8y3DQy3FaZH5fO44+0A6MK65iRfJILLs+EatOBXgOtEEsLx
+ 0QSb731K
+ OIy0Tt8Vp2omEoFotEueGY2YQnCgDaBtM7kiXbc25fdcpVK9nMr+bgAYs47tbrTwbhM1IwXtPkw66687DqewsjFMkb6tR+WatCFVXI20BSX55Dgp1umWhN6NoO2eVoxgO05xs+ToAArGRAnhsITdsqx88KpuAUQRVo5T4g3N38Jj5rFkZ4vkYKde8M7r6Kj62f88kNlLVZKYM4egpbpJrz3nzY3Vcrtq+L/Ra3wZyfVwfbqEStgOSiXPiDh63k5XIHL149LMPA7n7XbHQ7bdLKxfzpgiY339OEaIm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,189 +104,162 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-slab_free_hook() takes two bools, init and after_rcu_delay, and a later
-patch needs to tell it whether spinning is allowed.
+kfree_nolock() deliberately skips slab free hooks that should not be
+called in unknown context. However, there is one more place that
+needs the same thing: memcg_alloc_abort_single().
 
-Instead of adding a third bool, make it take free_flags. Add
-SLAB_FREE_INIT and SLAB_FREE_AFTER_RCU_DELAY, and convert the callers.
+Instead of open coding slab_free_hook(), let it handle
+SLAB_FREE_NOLOCK. This is required to correctly handle allocation
+failures due to memcg charging.
 
-No functional change intended.
+kfree_nolock() now respects init_on_free which has been ignored.
+Besides that, no functional change intended.
 
-Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Link: https://lore.kernel.org/f31885cd-57c2-428d-9760-a76a0137f989@kernel.org
+Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
 Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
 ---
- mm/slab.h |  6 ++++--
- mm/slub.c | 47 ++++++++++++++++++++++++++++++++++-------------
- 2 files changed, 38 insertions(+), 15 deletions(-)
+ mm/slub.c | 76 +++++++++++++++++++++++++++++++--------------------------------
+ 1 file changed, 37 insertions(+), 39 deletions(-)
 
-diff --git a/mm/slab.h b/mm/slab.h
-index e94ac63d10dc..15b0d98ae1d4 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -24,8 +24,10 @@
- #define SLAB_ALLOC_NO_RECURSE	0x04 /* prevent kmalloc() recursion */
- #define SLAB_ALLOC_NO_OBJ_EXT	0x08 /* prevent obj_exts array allocation */
- 
--#define SLAB_FREE_DEFAULT	0x00 /* no flags */
--#define SLAB_FREE_NOLOCK	0x01 /* spinning not allowed */
-+#define SLAB_FREE_DEFAULT		0x00 /* no flags */
-+#define SLAB_FREE_NOLOCK		0x01 /* spinning not allowed */
-+#define SLAB_FREE_INIT			0x02 /* zero the object on free */
-+#define SLAB_FREE_AFTER_RCU_DELAY	0x04 /* RCU grace period has elapsed */
- 
- static inline unsigned int to_alloc_flags(unsigned int free_flags)
- {
 diff --git a/mm/slub.c b/mm/slub.c
-index 86259c32cf59..761dc2affea2 100644
+index 761dc2affea2..7c0adc104988 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -2694,9 +2694,10 @@ struct rcu_delayed_free {
+@@ -2684,11 +2684,14 @@ struct rcu_delayed_free {
+  * - memcg_slab_post_alloc_hook()
+  * - alloc_tagging_slab_alloc_hook()
+  *
++ * slab_free_hook() assumes that memcg_slab_free_hook() and
++ * alloc_tagging_slab_free_hook() are already invoked.
++ *
+  * Free hooks that must handle missing corresponding alloc hooks:
+  * - kmemleak_free_recursive()
+  * - kfence_free()
+  *
+- * Free hooks that have no alloc hook counterpart, and thus safe to call:
++ * Free hooks that have no alloc hook counterpart:
+  * - debug_check_no_locks_freed()
+  * - debug_check_no_obj_freed()
   * - __kcsan_check_access()
-  */
- static __always_inline
--bool slab_free_hook(struct kmem_cache *s, void *x, bool init,
--		    bool after_rcu_delay)
-+bool slab_free_hook(struct kmem_cache *s, void *x, unsigned int free_flags)
+@@ -2698,28 +2701,39 @@ bool slab_free_hook(struct kmem_cache *s, void *x, unsigned int free_flags)
  {
-+	bool init = free_flags & SLAB_FREE_INIT;
-+	bool after_rcu_delay = free_flags & SLAB_FREE_AFTER_RCU_DELAY;
+ 	bool init = free_flags & SLAB_FREE_INIT;
+ 	bool after_rcu_delay = free_flags & SLAB_FREE_AFTER_RCU_DELAY;
++	bool allow_spin = free_flags_allow_spinning(free_flags);
  	/* Are the object contents still accessible? */
  	bool still_accessible = (s->flags & SLAB_TYPESAFE_BY_RCU) && !after_rcu_delay;
  
-@@ -2786,10 +2787,10 @@ bool slab_free_freelist_hook(struct kmem_cache *s, void **head, void **tail,
- 	void *object;
- 	void *next = *head;
- 	void *old_tail = *tail;
--	bool init;
-+	unsigned int free_flags = SLAB_FREE_DEFAULT;
+-	kmemleak_free_recursive(x, s->flags);
+ 	kmsan_slab_free(s, x);
  
- 	if (is_kfence_address(next)) {
--		slab_free_hook(s, next, false, false);
-+		slab_free_hook(s, next, free_flags);
- 		return false;
- 	}
+-	debug_check_no_locks_freed(x, s->object_size);
++	/* Hooks that acquire locks or kmalloc_nolock() skips alloc hook counterpart */
++	if (likely(allow_spin)) {
++		kmemleak_free_recursive(x, s->flags);
++		debug_check_no_locks_freed(x, s->object_size);
  
-@@ -2797,14 +2798,15 @@ bool slab_free_freelist_hook(struct kmem_cache *s, void **head, void **tail,
- 	*head = NULL;
- 	*tail = NULL;
+-	if (!(s->flags & SLAB_DEBUG_OBJECTS))
+-		debug_check_no_obj_freed(x, s->object_size);
++		if (!(s->flags & SLAB_DEBUG_OBJECTS))
++			debug_check_no_obj_freed(x, s->object_size);
  
--	init = slab_want_init_on_free(s);
-+	if (slab_want_init_on_free(s))
-+		free_flags |= SLAB_FREE_INIT;
+-	/* Use KCSAN to help debug racy use-after-free. */
+-	if (!still_accessible)
+-		__kcsan_check_access(x, s->object_size,
+-				     KCSAN_ACCESS_WRITE | KCSAN_ACCESS_ASSERT);
++		/* Use KCSAN to help debug racy use-after-free. */
++		if (!still_accessible)
++			__kcsan_check_access(x, s->object_size,
++					     KCSAN_ACCESS_WRITE | KCSAN_ACCESS_ASSERT);
  
- 	do {
- 		object = next;
- 		next = get_freepointer(s, object);
+-	if (kfence_free(x))
+-		return false;
++		if (kfence_free(x))
++			return false;
++	}
  
- 		/* If object's reuse doesn't have to be delayed */
--		if (likely(slab_free_hook(s, object, init, false))) {
-+		if (likely(slab_free_hook(s, object, free_flags))) {
- 			/* Move object to the new freelist */
- 			set_freepointer(s, object, *head);
- 			*head = object;
-@@ -3025,18 +3027,21 @@ static void sheaf_flush_unused(struct kmem_cache *s, struct slab_sheaf *sheaf)
- static bool __rcu_free_sheaf_prepare(struct kmem_cache *s,
- 				     struct slab_sheaf *sheaf)
- {
--	bool init = slab_want_init_on_free(s);
-+	unsigned int free_flags = SLAB_FREE_AFTER_RCU_DELAY;
- 	void **p = &sheaf->objects[0];
- 	unsigned int i = 0;
- 	bool pfmemalloc = false;
- 
-+	if (slab_want_init_on_free(s))
-+		free_flags |= SLAB_FREE_INIT;
-+
- 	while (i < sheaf->size) {
- 		struct slab *slab = virt_to_slab(p[i]);
- 
- 		memcg_slab_free_hook(s, slab, p + i, 1);
- 		alloc_tagging_slab_free_hook(s, slab, p + i, 1);
- 
--		if (unlikely(!slab_free_hook(s, p[i], init, true))) {
-+		if (unlikely(!slab_free_hook(s, p[i], free_flags))) {
- 			p[i] = p[--sheaf->size];
- 			continue;
- 		}
-@@ -6458,10 +6463,13 @@ static unsigned int __free_to_pcs_batch(struct kmem_cache *s, size_t size, void
-  */
- static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- {
--	bool init = slab_want_init_on_free(s);
-+	unsigned int free_flags = SLAB_FREE_DEFAULT;
- 	void **remote_objects = p;
- 	unsigned int remote_nr = 0;
- 
-+	if (slab_want_init_on_free(s))
-+		free_flags |= SLAB_FREE_INIT;
-+
  	/*
- 	 * Process the free hooks and separate out remote objects by
- 	 * partitioning the 'p' array in place:
-@@ -6476,7 +6484,7 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- 		memcg_slab_free_hook(s, slab, p + i, 1);
- 		alloc_tagging_slab_free_hook(s, slab, p + i, 1);
+ 	 * Give KASAN a chance to notice an invalid free operation before we
+ 	 * modify the object.
++	 *
++	 * If KASAN finds a bug it will do kasan_report_invalid_free() which
++	 * will call raw_spin_lock_irqsave() which is technically unsafe from
++	 * NMI, but take chance and report kernel bug. The sequence of
++	 * kasan_report_invalid_free() -> raw_spin_lock_irqsave() -> NMI
++	 * -> kfree_nolock() -> kasan_report_invalid_free() on the same CPU
++	 *  is double buggy and deserves to deadlock.
+ 	 */
+ 	if (kasan_slab_pre_free(s, x))
+ 		return false;
+@@ -2728,6 +2742,7 @@ bool slab_free_hook(struct kmem_cache *s, void *x, unsigned int free_flags)
+ 	if (still_accessible) {
+ 		struct rcu_delayed_free *delayed_free;
  
--		if (unlikely(!slab_free_hook(s, p[i], init, false))) {
-+		if (unlikely(!slab_free_hook(s, p[i], free_flags))) {
- 			p[i] = p[--size];
- 			continue;
- 		}
-@@ -6600,10 +6608,15 @@ static __fastpath_inline
- void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
- 	       unsigned long addr)
- {
-+	unsigned int free_flags = SLAB_FREE_DEFAULT;
-+
-+	if (slab_want_init_on_free(s))
-+		free_flags |= SLAB_FREE_INIT;
-+
- 	memcg_slab_free_hook(s, slab, &object, 1);
- 	alloc_tagging_slab_free_hook(s, slab, &object, 1);
++		VM_WARN_ON_ONCE(!allow_spin);
+ 		delayed_free = kmalloc_obj(*delayed_free, GFP_NOWAIT);
+ 		if (delayed_free) {
+ 			/*
+@@ -2775,8 +2790,11 @@ bool slab_free_hook(struct kmem_cache *s, void *x, unsigned int free_flags)
+ 		set_orig_size(s, x, orig_size);
  
--	if (unlikely(!slab_free_hook(s, object, slab_want_init_on_free(s), false)))
-+	if (unlikely(!slab_free_hook(s, object, free_flags)))
- 		return;
- 
- 	if (likely(can_free_to_pcs(slab)) && likely(free_to_pcs(s, object, true)))
-@@ -6619,10 +6632,14 @@ static noinline
- void memcg_alloc_abort_single(struct kmem_cache *s, void *object)
- {
- 	struct slab *slab = virt_to_slab(object);
-+	unsigned int free_flags = SLAB_FREE_DEFAULT;
-+
-+	if (slab_want_init_on_free(s))
-+		free_flags |= SLAB_FREE_INIT;
- 
- 	alloc_tagging_slab_free_hook(s, slab, &object, 1);
- 
--	if (likely(slab_free_hook(s, object, slab_want_init_on_free(s), false)))
-+	if (likely(slab_free_hook(s, object, free_flags)))
- 		__slab_free(s, slab, object, object, 1, _RET_IP_);
- }
- #endif
-@@ -6651,6 +6668,7 @@ static void slab_free_after_rcu_debug(struct rcu_head *rcu_head)
- 	void *object = delayed_free->object;
- 	struct slab *slab = virt_to_slab(object);
- 	struct kmem_cache *s;
-+	unsigned int free_flags = SLAB_FREE_AFTER_RCU_DELAY;
- 
- 	kfree(delayed_free);
- 
-@@ -6664,8 +6682,11 @@ static void slab_free_after_rcu_debug(struct rcu_head *rcu_head)
- 	if (WARN_ON(!(s->flags & SLAB_TYPESAFE_BY_RCU)))
- 		return;
- 
-+	if (slab_want_init_on_free(s))
-+		free_flags |= SLAB_FREE_INIT;
-+
- 	/* resume freeing */
--	if (slab_free_hook(s, object, slab_want_init_on_free(s), true)) {
-+	if (slab_free_hook(s, object, free_flags)) {
- 		__slab_free(s, slab, object, object, 1, _THIS_IP_);
- 		stat(s, FREE_SLOWPATH);
  	}
+-	/* KASAN might put x into memory quarantine, delaying its reuse. */
+-	return !kasan_slab_free(s, x, init, still_accessible, false);
++	/*
++	 * KASAN might put x into memory quarantine, delaying its reuse.
++	 * Skip quarantine when spinning is not allowed as it uses a spinlock.
++	 */
++	return !kasan_slab_free(s, x, init, still_accessible, !allow_spin);
+ }
+ 
+ static __fastpath_inline
+@@ -6935,6 +6953,7 @@ void kfree_nolock(const void *object)
+ 	struct slab *slab;
+ 	struct kmem_cache *s;
+ 	void *x = (void *)object;
++	unsigned int free_flags = SLAB_FREE_NOLOCK;
+ 
+ 	if (unlikely(ZERO_OR_NULL_PTR(object)))
+ 		return;
+@@ -6949,33 +6968,12 @@ void kfree_nolock(const void *object)
+ 
+ 	memcg_slab_free_hook(s, slab, &x, 1);
+ 	alloc_tagging_slab_free_hook(s, slab, &x, 1);
+-	/*
+-	 * Unlike slab_free() do NOT call the following:
+-	 * kmemleak_free_recursive(x, s->flags);
+-	 * debug_check_no_locks_freed(x, s->object_size);
+-	 * debug_check_no_obj_freed(x, s->object_size);
+-	 * __kcsan_check_access(x, s->object_size, ..);
+-	 * kfence_free(x);
+-	 * since they take spinlocks or not safe from any context.
+-	 */
+-	kmsan_slab_free(s, x);
+-	/*
+-	 * If KASAN finds a kernel bug it will do kasan_report_invalid_free()
+-	 * which will call raw_spin_lock_irqsave() which is technically
+-	 * unsafe from NMI, but take chance and report kernel bug.
+-	 * The sequence of
+-	 * kasan_report_invalid_free() -> raw_spin_lock_irqsave() -> NMI
+-	 *  -> kfree_nolock() -> kasan_report_invalid_free() on the same CPU
+-	 * is double buggy and deserves to deadlock.
+-	 */
+-	if (kasan_slab_pre_free(s, x))
++
++	if (slab_want_init_on_free(s))
++		free_flags |= SLAB_FREE_INIT;
++
++	if (unlikely(!slab_free_hook(s, x, free_flags)))
+ 		return;
+-	/*
+-	 * memcg, kasan_slab_pre_free are done for 'x'.
+-	 * The only thing left is kasan_poison without quarantine,
+-	 * since kasan quarantine takes locks and not supported from NMI.
+-	 */
+-	kasan_slab_free(s, x, false, false, /* skip quarantine */true);
+ 
+ 	if (likely(can_free_to_pcs(slab)) && likely(free_to_pcs(s, x, false)))
+ 		return;
 
 -- 
 2.54.0
