@@ -1,90 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F561606A31F
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 20:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4605C606A334
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 20:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eGCaiakI
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EwQHu0Ih
 Received: by kanga.kvack.org (Postfix)
-	id 395BB6B05B8; Sun, 15 Nov 2026 15:41:38 -0500 (EST)
+	id 4F74C6B05C1; Sun, 15 Nov 2026 15:42:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36D036B05B9; Sun, 15 Nov 2026 15:41:38 -0500 (EST)
+	id 4816F6B05C3; Sun, 15 Nov 2026 15:42:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AA7F6B05BB; Sun, 15 Nov 2026 15:41:38 -0500 (EST)
+	id 398C06B05C4; Sun, 15 Nov 2026 15:42:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AF486B05B8
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 15:41:38 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8A6A21205B2
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:41:37 +0000 (UTC)
-X-FDA: 85438524234.08.5C1AA27
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EBB06B05C1
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 15:42:44 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 87F1E4080A
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:42:43 +0000 (UTC)
+X-FDA: 85438527006.19.EE1FBCA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id DE57C140002
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:41:35 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eGCaiakI;
-	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794775296;
-	b=GJaZiZw31nWTfsMa7sdTJr8zQ0KBL4NQOiiV5kOD83fPGhN5yf75m2+DDs8IRHBNwvjU2O
-	1N6c2mlVfCUG5sFHbDv+9gWLrMzlzvXEotHTm1YPO/Qt/JLqwYM4APVrx30slWe390yiQe
-	1s6eRDYkTki8nWWe+x8O9Z0NfDTcTyM=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eGCaiakI;
-	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id E10211C0004
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 20:42:41 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EwQHu0Ih;
+	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794775296;
+	s=arc-20220608; t=1794775362;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q4vAPhP/V1Bp8qYGqnFchGNpQrdWi5lSaW3Lmn/+Q0E=;
-	b=k1W1UjzWFdH8nohcr2hS9sFkQvkeSfvGr9rsCMAexeqOChLoe5tNpbhzkgYbJxxhJUJSsG
-	9u++fqICJKKrhHmzR903na/SpFpCWsoAYpke3QAECjITBl3zT5p94lJdc/GTFSjv5iHfHA
-	t0s5htLT5ekfKUMz+IOZRpn94WbnGDw=
+	bh=J+fnsq6nNb+xpVBHQjdCD20xN1KOTbGtm9ZI5ilhmXQ=;
+	b=cFaXxlzgLFmkHn2Qlrne0uLKu9femxO3XpSSiBGl1rXXKbeVtUl6vDvp3oYu4FU0M66M6s
+	/wreaRUncralajmZO0IPTIkITDOcgV/ZK2H/hmbrLqYu3BxoGNz5qS1b8Twh2tz8Mc4v/r
+	4yjUkXoFamKfWwQhl7BN9Kv95ogSKYQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794775362;
+	b=tUqCaFmw5evWBNuXJIJoMA/8yB3FKUMylDdLj/bEQFttrjWrUr944nmMH134T18Rwb4RWz
+	vl0O5Xm/ajmUxpBlVUF4SXdzQut7amG6+KKYX/KHjlB2sEiQsdk3YCGMWqykwdUhsGvf3m
+	PEpbzGBF8oQNdPHx9sQCa8HYMaRgIFk=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EwQHu0Ih;
+	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 299D544831;
-	Sun, 15 Nov 2026 20:41:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE87D1F000C4;
-	Sun, 15 Nov 2026 20:41:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 13D4543E40;
+	Sun, 15 Nov 2026 20:42:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE9191F000C4;
+	Sun, 15 Nov 2026 20:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794775295;
-	bh=Q4vAPhP/V1Bp8qYGqnFchGNpQrdWi5lSaW3Lmn/+Q0E=;
+	s=k20260515; t=1794775361;
+	bh=J+fnsq6nNb+xpVBHQjdCD20xN1KOTbGtm9ZI5ilhmXQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eGCaiakIfl1kezaf+/ujmceYlD7vtcZ0Ev8DWvP5MSBcLVTnKerZQofuwmGY7/LLa
-	 2a0NuYDoXGKY72Uc+2yah1dVO5COdg6izZ5D2YrwEZwgtytMjy4cFYXjNdS/jx8zUp
-	 Axp11qCyNEX1is3jALAC5fo5xhtgMCT1l413hb+tqmR7LteRoVhvzKWCuFYfinj0JU
-	 +5PyZR1DHVG5vNz3bvhjZ52ZODUAgWO+GyaKh2uprvy9vk9/+dBBCS7JRFea8SXNC5
-	 hHzfvu1hb3HmEtr+LSuXuGVjCgqKSMHQduj6w7ksO544b9HdqOI4xWUWbuhHV0iUv3
-	 7Lt/WPL5eo5VA==
-Message-ID: <sashiko-outbox-215850@kernel.org>
+	b=EwQHu0Ihzk7asjxuCCKyAoub+Dl6eWnzX31BDUHVHZ/uc+OYXFXix3OqRDrJHVw4c
+	 BVdZ5ugXhFLRXY7BXa1mJHZbdadQZZYw6BJq/uyXkk7n78edKN5+RvU+01o7PBTZfk
+	 eJNcA4+dFSKSW7DyemrVUplsg+dlRIwbI3s3frM9XunF9DjPZvwT6b4BMvgbfHNghq
+	 EBJNva0C1AefbYTjROMQDhnTX7bX3bWwRrCKODeiyROj33Ys6x7Fokp6tfwVVkyXlL
+	 o2DIfBuuywkTxmfx4BbRUZBT+6zrTJlrLvcFxD0kw9TyHRS1+PgfyEd0YA425o56Mr
+	 Xs/YEEhJovOqw==
+Message-ID: <sashiko-outbox-215851@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 14/27] mm/damon/paddr: support REPORT_MADE type
- probe filter
+Subject: Re: [RFC PATCH 03/27] mm/damon/core: introduce
+ damon_submit_report()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "SJ Park" <sj@kernel.org>
 Cc: "Andrew Morton" <akpm@linux-foundation.org>, damon@lists.linux.dev, linux-mm@kvack.org
-In-Reply-To: <20261115202849.99134-15-sj@kernel.org>
+In-Reply-To: <20261115202849.99134-4-sj@kernel.org>
 References: <20261115202849.99134-1-sj@kernel.org>
- <20261115202849.99134-15-sj@kernel.org>
+ <20261115202849.99134-4-sj@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 15 Nov 2026 20:41:34 +0000
-X-Stat-Signature: yirjhxgrhih8ypey4c8549m9i3nsxssa
-X-Rspamd-Queue-Id: DE57C140002
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
+Date: Sun, 15 Nov 2026 20:42:40 +0000
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794775295-160415
-X-HE-Meta: U2FsdGVkX19ltmXX0GUCcEZb8WRhBKn2DP7QBxL9KZKw90Cu3iocUomo+QMj24TdWx2C0rQ4DYd6mM7CmywcuuXbNuTCPPXxfVdEsww1Msmi7aGBNcdOFcoAgQK4oLHR+bXI+9zjuHhdyRTOWOHUFZ26u47Pi7GcmhHfHOAMfvwQnRusby5fwndMzTC0s57chZChYBzq7QtpeCp7ndRBumrBZOp445A+PZhZN9fe9J1ZwH2nsy2umb9BEOa4foTbZFmYAc19a3VSzOK8kcmNvTl8PI/zhqgGT4wDmZ993XGnwz0CtvmmCGXAba3dEfUfuv5hZSTVNBrIDT1SLUXj3JG+xaHWRt15QAZ9kw99NIaOXythAPCSfmCrXIdZQ6DA9B17xzOO05RubQgur4BZsdQOO40n7NugUIhDJrWiFpbsVd9CwhWZhFbjP+HM4OS5sg4NvkBq+tLDeRn4aRcBV0o8/2MGTSphFY88Vd1gWWjg6otcqF4d7CyXsGOFDWjNuMmc+FJpxl/Ix8T8u0wLcMxZ1RDf23eQpgO28jXFcqYiAhaAJp68XbpEb4/H7OfQplHy3W0YKwhntweShg5LYuvdu5VT12QiZ/kXvzf9XfHPYYja3ZTlEHA2xt4Us0BceJO07BE3lZC6qCHPhlHuzMKN1Hh5Rbixw6Kk+1/DXET5JypYwipv9D+vqsk6Foj+KSM6o+OJ+n4YD4GRRrksTIb4EhMmgy8FJY/tHImypAhpRvQknokhpw3f10t5iYhKXWHRoFA9+w1liu3yLJO9stfST4w/FZ0AMMQXw1PBuLwGdnopm639BLQL4GMB2r2cXYu1dFPFZuqCltyVBAALdVV2xDdGfGGBDewN9WUAUotLMufBREFk3Itoi4a4KwQu9C+ZIDi1MpswLrC5Qq2CYc+xWWqNHR0Eg7fMcgxuWhEBxvEfHHFLb+kd4kdKiULeDDFG+PpLUQ7p2PUc+ey
- WwU4/U5E
- F5NoYq0QOgjiZX/YKx9CzYc4Fw+PqRdBpN4WNCY9CY6nDYJWXaE1hiuf1GhWIJH8AptRHEwi9YCdBC+6CZnZ5e6MRtuuhO1V5b20DY1AB5fcv9VQqqzWk86TNm5z4TI+FKD0SoifCP0HrkhJzWXN+5RtCjFirQa3SFcFMx9Mp7YxTzczi6/pZw0JEih22xnCmZKz0kExPAXKylGUJGJRl5SSSL0t72T+QvvkgnNlE4C+rSjX9hsi/WcQLwBvm7POWsGBfwNFOv7r0Sxfio6iAJS/Pl64+ztwtJCTkJV1TMsm8ZylaDAU/LQHR2e0F/FqkflDhMjqI2CgzxVyTxPPgrcI2RRFqKp81DD0uIDlehbnusQIZKbH0pYScD6g0rjJ2bJ7+hCagL9T+T3lx8QzaDc+W3D+Gp1bOiSs0QIybPVSO+/YZeA+SXgVQKd5UUw6OlIs6k4Sti/1viijqUMeWiEs09OnwqBwlWBRSYPdWcHTkMuqGUB3WCMd8/jlrQiXS85QJ7r4/+AY1YlxYL/339fgJ0GrSRk6uwzYdl6j9IpqsmkXPbjbsM0xMnhtsjtOQrvKlfKA8KGCdhNyyjwdHUM8dgAaPsIhP2k64UswOkJ6Nb5Fyk0mVn16ZR0EcMQOX/1I6
+X-Rspamd-Server: rspam09
+X-Stat-Signature: ccdg95yrcp3u8crb5ysxc8ubf8i3rk5s
+X-Rspamd-Queue-Id: E10211C0004
+X-Rspam-User: 
+X-HE-Tag: 1794775361-847427
+X-HE-Meta: U2FsdGVkX1+RydYYKIZeidNsoQBnHj1Zs3o8CRtI6JFzZ0FsU0+ZXO3vpBMbM+4eovaHSiNRntxJO5ecWyXvL0QNKr9gP064zZ8icexmS/uCXhD6ZAaTWJ6Fzs/ZbPrYrk2iP3KXclD9zfpgh/ACvAyJS6ZE4m5eNfv6mE6+Q3v1wY1s7sK+C4nRCrJOS3hP824YGCtO8l+JG/cF+hiTjBSth595XWAj2bJDNDxjvt3EMjC1Vbno5engeNKKe+fSdfvDmhqdHjIG6d9er0b4JZ3UJmWaDv8IusgTl8Qx0WvaJj0vrJfYNc1XlLSAHihI+HyMY2G+V2eCTa3QFrHyIHiGJqQCz6VSgSXaSL7FLUWCtHu2qy5hxfcC8Kw3+UCKB0QshDZIDs48rPxs0YOKfhqHoLUfQ9T/cc+A4Aed0eB90mYYfV1JvN0t1EUWOQyihnnvGCa0Ru0UwK+ry1TYeDaIPaMVuyovu63PHwTEqRC8pHsg4x6TWVK1NcnscZzc8cW2yY9Jh3e2tDFLdhr2DP8zW8iuAUqKWju8QZpOSL8qDkNZQhhM1b6wL2YbgHEBSI8VvW7GGwe2mkA1aoGUkofT5GdK3d9UUFcGagbJbEMNSHeFg9ftQqYYhmZux25Oaw4kLWdQkrGsc8TGY9BCUlykb59P6TyaxX+b6vwMs9nfHOgcabWALlcRIyFbwGQpyuHDrafITNiOu5/6b/Yu3f++s4JAxk4vu5+vsW+zX3rUikt4pHqMIMuPs5ZSi8M9iJJRp7d2xSItRRSlPqJnKU5ryZARNYmO7hoUgsAzZBEh5LSEXR/yfnNw1ExeZrWU7IEz5KNH7AQa4Xr4bT9uJ6FWb1eXfTHZg3rU9HQKHM+XyEmt7gWKCF3bMO9fRj7qHc8SJ7TqVQMnkSw9cLiGhOxtQDbKjyWqS/lchKr1hmG/0DP5q1TY5hl3AVO93tWnlrSXGme+oQUe6oEoPXZ
+ 9qxmMBjO
+ iHMzSJz/47HSJJ/VMMLxFCYDEogt0zH0TBrIa2PTMxutACep2hSpw/R/yrH7F2lSfVxfLttakXDzSUPtY1uQn6XDNnvgYPMqG9DqK2Uuzyv5aPZ2M51XHz1e1JgGNczrLUY90j69xJUEzWbIJ/tM7F9iwbB7wmePf01jQdDwTRmm9xXEcifH5nUv7TXJ2FxZ1FWyRf69K3kCFYSBL65IRi14zReyyCPFrdcfj9p3pm0/I+xvQ46hIau/YdnrUZUMWD8niZRlDIcoPaWAFzjyfL9vflL9btm311DTR0gG6Sy6chQ9NB7FHfQN1vGtTO3VOvhhBCL2FYAPFbbBGPkdSPzqPZd9c65ThQ7WNLWDO3JdRP/a9G3es1cy6f89DUsrfPLVlSSki8kBlLDotGXQujGpbGdssqQ++nET5oEZfJjBNxKkv3Co6M/TKqUCacsXswmh+JiZFbbQIYPP/4Mur2bJ2xDU2ThJo1nw9YNc2DGh90yasuMCipwE8Py/VSGNiKZqeQyMP8t6W/FvKoigkzsW2IutrCFaUXogTk4gDn2JcaYk9XgtWkubE1fA2OUPTLXId7QVAyW81cZVJwsKGgMovzJTW+u9RejZ5Pgi9Qo33585V/WUHzJeANBV0nlaicDz0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,141 +94,73 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issues to consider:
-- [High] mm/damon: out-of-bounds and uninitialized read in
-  damon_report_exist()
-- [Medium] mm/damon: phys_addr_t truncation and unit mismatch in
-  damon_pa_filter_match()
-- [Medium] mm/damon: uninitialized filter->report_type in
-  damon_pa_filter_match()
+- [High] mm/damon/core: out-of-bounds write in damon_submit_report() on
+  queue wrap
+- [Low] mm/damon/core: missing Return section in damon_submit_report()
+  kernel-doc
 --
 
-commit db7c0b8660ac4e99fdce33921b7535218eaa4dc6
+commit bcb278386fb51304d0c224892db9744bf9e27c8f
 Author: SJ Park <sj@kernel.org>
 
-mm/damon/paddr: support REPORT_MADE type probe filter
+mm/damon/core: introduce damon_submit_report()
 
-This commit adds support for the DAMON_FILTER_TYPE_REPORT_MADE probe
-filter in the physical address space operation set by querying
-damon_report_exist() over the last sampling interval.
+This commit adds damon_submit_report() to enqueue a data attribute report
+into the DAMON internal report queue using CAS-based try-locking.
 
-> diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-> index 5b773012a8764..04e95047f8cea 100644
-> --- a/mm/damon/paddr.c
-> +++ b/mm/damon/paddr.c
-> @@ -140,9 +140,10 @@ static void damon_pa_prep_probes(struct damon_ctx *c=
-tx, bool set_samples)
->  }
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 3f87a7eec442e..06b85d00e38d9 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -2353,6 +2353,36 @@ struct damon_report_queue {
 > =20
->  static bool damon_pa_filter_match(struct damon_filter *filter,
-> -		struct folio *folio)
-> +		struct folio *folio, phys_addr_t pa, struct damon_ctx *ctx)
->  {
->  	bool matched =3D false;
-> +	struct damon_addr_range addr_range;
+>  struct damon_report_queue damon_report_queue;
 > =20
->  	switch (filter->type) {
->  	case DAMON_FILTER_TYPE_PGIDLE_UNSET:
-> @@ -157,19 +158,27 @@ static bool damon_pa_filter_match(struct damon_filt=
-er *filter,
->  		else
->  			matched =3D damon_folio_young(folio) =3D=3D false;
->  		break;
-> +	case DAMON_FILTER_TYPE_REPORT_MADE:
-> +		addr_range.start =3D pa;
-> +		addr_range.end =3D pa + 1;
+> +/**
+> + * damon_submit_report() - Enqueue a given report to DAMON internal buff=
+er.
+> + * @report:	The report to enqueue.
+> + *
+> + * This function can be called from any context including the NMI contex=
+t.
+> + */
+> +int damon_submit_report(struct damon_report *report)
 
-[Severity: Medium]
-Can assigning pa and pa + 1 into addr_range truncate 64-bit physical
-addresses and miss reports when ctx->addr_unit > 1?
+[Severity: Low]
+This isn't a bug, but the kernel-doc comment for damon_submit_report() is
+missing a Return: section describing the 0 and -EBUSY return values, which
+triggers a kernel-doc warning under W=3D2 builds.
 
-struct damon_addr_range defines start and end as unsigned long, so on
-32-bit PAE/LPAE systems where phys_addr_t is 64-bit, physical addresses
-at or above 4 GiB lose their upper 32 bits (and pa + 1 wraps to 0 when
-the low 32 bits are 0xffffffff).  In addition, when ctx->addr_unit > 1,
-pa is aligned to ctx->addr_unit, so setting addr_range.end =3D pa + 1 only
-checks the first byte of the sampled unit instead of [pa, pa +
-ctx->addr_unit).
-
-> +		matched =3D damon_report_exist(filter->report_type, &addr_range,
-> +				jiffies -
-> +				usecs_to_jiffies(ctx->attrs.sample_interval));
-> +		break;
+> +{
+> +	struct damon_report_queue *queue;
+> +	int lock_old_val;
+> +	unsigned int tail;
+> +
+> +	queue =3D &damon_report_queue;
+> +	report->jiffies =3D jiffies;
+> +	lock_old_val =3D atomic_cmpxchg(&queue->lock, 0, 1);
+> +	if (lock_old_val)
+> +		return -EBUSY;
+> +
+> +	tail =3D queue->tail;
+> +	if (tail =3D=3D queue->size)
+> +		tail =3D 0;
+> +	queue->reports[tail] =3D *report;
+> +	queue->tail++;
 
 [Severity: High]
-Does calling damon_report_exist() read uninitialized or out-of-bounds
-elements from damon_report_queue.reports?
+Does this write out of bounds of queue->reports[] after the queue wraps?
 
-In damon_submit_report(), the report is written at queue->reports[tail]
-and queue->tail is then incremented, so queue->tail points to the next
-slot to be written and is never wrapped when it reaches queue->size:
-
-mm/damon/core.c:damon_submit_report() {
-    ...
-	tail =3D queue->tail;
-	if (tail =3D=3D queue->size)
-		tail =3D 0;
-	queue->reports[tail] =3D *report;
-	queue->tail++;
-    ...
-}
-
-mm/damon/core.c:damon_report_exist() {
-    ...
-	idx =3D queue->tail;
-	for (nr_read =3D 0; nr_read < queue->nr_reports; nr_read++) {
-		report =3D &queue->reports[idx];
-		if (idx)
-			idx--;
-		else
-			idx =3D queue->size - 1;
-    ...
-}
-
-Because damon_report_exist() indexes queue->reports[idx] at queue->tail
-before decrementing idx, it reads uninitialized heap memory on the first
-iteration while 1 <=3D nr_reports < queue->size (and never inspects index
-0), and reads out of bounds at queue->reports[queue->size] and beyond once
-queue->size reports have been submitted.
-
-[Severity: Medium]
-Can filter->report_type be uninitialized here when a new
-DAMON_FILTER_TYPE_REPORT_MADE filter is added via damon_commit_ctx()?
-
-damon_new_filter() allocates struct damon_filter with kmalloc_obj()
-without zeroing the union, and when damon_commit_filters() creates a new
-filter it only copies union members for DAMON_FILTER_TYPE_MEMCG and
-DAMON_FILTER_TYPE_HUGEPAGE_SIZE:
-
-mm/damon/core.c:damon_commit_filters() {
-    ...
-		new_filter =3D damon_new_filter(src_filter->type,
-				src_filter->matching, src_filter->allow);
-		if (!new_filter)
-			return -ENOMEM;
-		switch (src_filter->type) {
-		case DAMON_FILTER_TYPE_MEMCG:
-			new_filter->memcg_id =3D src_filter->memcg_id;
-			break;
-		case DAMON_FILTER_TYPE_HUGEPAGE_SIZE:
-			if (src_filter->range_max < src_filter->range_min) {
-				damon_destroy_filter(new_filter);
-				return -EINVAL;
-			}
-			new_filter->range_min =3D src_filter->range_min;
-			new_filter->range_max =3D src_filter->range_max;
-			break;
-		default:
-			break;
-		}
-    ...
-}
-
-As a result, new_filter->report_type retains uninitialized slab bytes
-when damon_pa_filter_match() passes it to damon_report_exist().
+When queue->tail reaches queue->size, only the local variable tail is
+reset to 0 while queue->tail++ increments queue->tail to queue->size + 1.
+Every subsequent submission then bypasses the tail =3D=3D queue->size check
+and writes past the end of the queue->reports heap array, corrupting
+adjacent slab memory.  Updating queue->tail =3D tail + 1 would wrap the
+index properly.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261115202849.9913=
-4-1-sj@kernel.org?part=3D14
+4-1-sj@kernel.org?part=3D3
 
