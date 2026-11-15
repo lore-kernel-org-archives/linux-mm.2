@@ -1,95 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A6F606A32E
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 18:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E19DF606A329
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 18:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ua++PlLt
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=gq6koHUB
 Received: by kanga.kvack.org (Postfix)
-	id 8C3836B05B2; Sun, 15 Nov 2026 13:35:46 -0500 (EST)
+	id 0161C6B00EF; Sun, 15 Nov 2026 13:59:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84D406B05B3; Sun, 15 Nov 2026 13:35:46 -0500 (EST)
+	id EE1206B05B0; Sun, 15 Nov 2026 13:58:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 762F06B05B4; Sun, 15 Nov 2026 13:35:46 -0500 (EST)
+	id DAA0C6B05B1; Sun, 15 Nov 2026 13:58:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 57E836B05B2
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 13:35:46 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C3B3B12045F
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 18:35:45 +0000 (UTC)
-X-FDA: 85438207050.25.A19593D
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AF3806B00EF
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 13:58:59 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 36AA7C078A
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 18:58:59 +0000 (UTC)
+X-FDA: 85438265598.05.DF1F35E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id F362640004
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 18:35:43 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ua++PlLt;
-	spf=pass (imf07.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794767744;
-	b=SEISymS9o2gX9VdwUFnRkaOM6dIAW8KNSBgWP0dkmQqzHNarR9pjLJsdMvT5pXM+nOG6RK
-	Htv+oocyF3c7Ms0dZ3VGGShwNnVPX2RVrwl05XwAFScAeFbdH+mAG7nU5P507EYtlWg4Br
-	3z5OG06VG9c4Uu5FXEJfEAS09cDKoZc=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ua++PlLt;
-	spf=pass (imf07.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id 683AD80005
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 18:58:57 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gq6koHUB;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794767744;
+	s=arc-20220608; t=1794769137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=BQvSITIRJIq/LrCuYDWL3zvl98iDwr6EHjhrxtx22pw=;
-	b=epieNz2I5VdYhJJeYRJuokDdQe6P8tbsVwsZWhsDyX38EUwrJD8Ij2TzcBubpbCuaAvdAZ
-	t+8aYMBrLiQTvN7BPRfjgFvPiSbCmWw01o3W9kFGk/vXBPb6dlNsxkY6OG4m1ipi8Q2t5i
-	Ks6C8WAKNt11HYRRBDLzLhj8R3RbOgc=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=wUK9ySDibXwePzBB19zRNnvpbyBOvugzqKcXHyk3Hmo=;
+	b=72WOWiyY0X++ztUoHUR7FXV2lyfw81xMseTPiLSih8codZtjvyIxHgUlmv5neWKWWIKe8p
+	gLg1z0u+qfRvjWNOcBBQz39sy1Ypg0vDgFuTojOfnTqC8/Zd9rZGdKISRFwlGDypDyhAYz
+	sb60HPxEYqtnoFU+FVkd0ZbCjiZrldk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794769137;
+	b=VAsUfyUa5yE3xOluIvg7glqgoiujOg+tHYR7/LCKu8BVzzRmsjviRaQ5oWAgWXeO39PtBW
+	lldcJy5W0+21ub8t9xvMGWs2JcYqxLbLlNzgmzNkCPFT5HO6xdNic6STnLkKdQ2x6JDVri
+	sefalzwrwf/e6XtILesL5vAoNh9qH5s=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gq6koHUB;
+	dmarc=none;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8EE5060DB0;
-	Sun, 15 Nov 2026 18:35:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452A71F000C4;
-	Sun, 15 Nov 2026 18:35:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794767743;
-	bh=BQvSITIRJIq/LrCuYDWL3zvl98iDwr6EHjhrxtx22pw=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc;
-	b=Ua++PlLtLWLZp1cN9wx76saG2RJjl0oPwiOJJj65PqGTgHhAYxz1lfxb4fLbzCxwC
-	 ZNk6HTvSU60a8fxZp/F/4BxgrNhNiLCT9HUpVGQXL98h/g86twvKIE/t8z4823WWwE
-	 M5y5cJg7cZngWUUunoolUKaatPUBelwpRgOdgKfucyR6s58DnFkZgxYYOw5xWwd+sX
-	 VWlvcYigvzcPS6jI9re1Ar1xtDV/jq/qk8y/VIBtI76jSYiwd+4dej6h17e9VvA/5t
-	 CazCqm0UD9/+zFBsZ2H1MCn2G7n7w3pIITYfkGdsy7Tda8e4x/K5Xntipbz7a2Fc8a
-	 Gsg2F0NPK+ruA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A225380822F;
-	Sun, 15 Nov 2026 18:35:43 +0000 (UTC)
-Subject: Re: [GIT PULL] liveupdate: fixes for 7.4-rc3
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20261115050300.1847760-1-rppt@kernel.org>
-References: <20261115050300.1847760-1-rppt@kernel.org>
-X-PR-Tracked-List-Id: <linux-mm.kvack.org>
-X-PR-Tracked-Message-Id: <20261115050300.1847760-1-rppt@kernel.org>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git tags/fixes-2026-11-15
-X-PR-Tracked-Commit-Id: 58c5852ca96c58cdfdb9646870b217fc54d06a97
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 04da1a14b9eae1dbc2ccc007b54f46771f9cb529
-Message-Id: <179476774173.2691368.12556780418749677537.pr-tracker-bot@kernel.org>
-Date: Sun, 15 Nov 2026 18:35:41 +0000
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-X-Stat-Signature: 8c5rhhjzwdouu64yrowwewca6aexat8g
+	by tor.source.kernel.org (Postfix) with ESMTP id EC9AF60AA6;
+	Sun, 15 Nov 2026 18:58:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CFF71F000C5;
+	Sun, 15 Nov 2026 18:58:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1794769136;
+	bh=wUK9ySDibXwePzBB19zRNnvpbyBOvugzqKcXHyk3Hmo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=gq6koHUB3IjLxGRlZBiG/fn6vGTyAfGjFy8aawtV89CsSJr8XYsAigtbd8yNxIVhS
+	 nk60mmIbdkSQGeqmhNAUM2ZzphtZX7spfvPQxZsnWW/YpSnV68Hxl+ZuV23+IKnDcF
+	 d+oTZTkTbb9K4bHq6Bj1TrXN9Pjv9+NJwXpxovq8=
+Date: Sun, 15 Nov 2026 10:58:55 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, Frank van der Linden
+ <fvdl@google.com>, Ivy Lopez <skunkolee@gmail.com>, Lorenzo Stoakes
+ <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Oscar Salvador <osalvador@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] mm/cma: simplify cma_declare_contiguous_multi()
+Message-Id: <20261115105855.551620784977f951f37e729f@linux-foundation.org>
+In-Reply-To: <20261115-cma-multi-v4-1-d159631171d5@kernel.org>
+References: <20261115-cma-multi-v4-1-d159631171d5@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: kcsbm5rh35px9mfzme136ng1ym1cc59j
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: F362640004
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794767743-226236
-X-HE-Meta: U2FsdGVkX19v9OgpumNB7njxDbRLvBjeGPBK2bIYqsQ2rstZEFS7TOtv6d43QmJXjO+6vVDKbOUgxLRgZvOgTW35aixGFn5AJdVucJOGHLzszfuSYorTFydmPAWyxzVl2jQo7dkEXoZjw3wZ2THy8fls+HrCQlJCRgUsEjzTyqDyu+GcQL2GIHDuPVa9ATasp00OZiueX86q41but2L+YSsy66NgixfyegjIcvw3zBcqeZhxN9N5uxpQC698CBQ8Be7Uf8z/tuT4X6LLlYry2XWPj5OWlIvJ/iyalDfpn97oxr8ypnWm6UhgfnsIeLUCB62NOmyhigHUr0P/P/gbmvM3aoXrMxZ4mMuR8gRzJ+1ddHSMPg5XlDXFHeSphwwMcnCPO1m6xc/2X62MRgZy9QYlFZItvPkzqPbsFT4xPataryXqsC6IeU6HDNIQa/J0QD+D+IfOqioZH3SAxk2GTWwub3ISd/CWSpNQEr/MpUo4JT4GSFI1YUdj/v2rY/Kfm7BrvoptWhujPe6f7Jv/61fUd2/f9PcsFIX0Rrmffub4uAfCnX2tqmEybR6LEFeGhzYF8DZ/RkysfKENPOA5D94tOdjDeL+7gcqSWAss64//m0k5ICN3TUTbzHrmEo9EAw3wlWZdBqC54aA/fOkCl7hPDVsTQc3pq1F292HMXxjk39bpLF4OmDp8YMgqAQMklded/VRpeLz1MGDU5gnG15uc7bWeXCk4A5Q+mx33s/ZyQydmSFyfHF0B591ikPJgCMpJod52ETxkhwqbeNHMREzPo4xaTmDqHx9iau8ddQZnrRirtKiB3iPXKp+xGYkQlSI8XV3o3D/EWIjNkP2zSN3JEYXB4ciSMZlQ6YmeKuqs915zw5zbBxvV0k4TMWhUG9GdqJHbQOUMsyWtnMCexyaN7bEkRtvd3ez1JWJfpq5Nkwmp/R0tz64tn1frjXsCpl8hvI9icGQVb/jh56m
- z3hwRCha
- s4VrxsUvEMZadN0rZU7VxoU2Mx2C679xA495UclQjGIbyoV/CHUyJmZmnRA356fEEHFbBma355S47au//xPxCLpw3I4iftN/pziEhpFUo/XDFDn1kSrWOSAFBNNlXUA4X1sC6pZvIu/vHpRhnuvg21lZTuXkpA2ljfsVQS5LaXkmXZZuueagtHE3c30sVE+BOKJ92W3cZkyn8IBl6MyCEqGnIFh3ZFYwyFN7ASLuncUl7St8Fl+HlyjgJ85IuZR4lIROparrDpv2HL4VIqRta1eCb/dMZSpObYM2buY7w41ZkdLZ6X9F8vZQFKiNBogg4qjJikeekTfMvv1/6lJi/c1maof4GdY0ATO3XHyDpMEZjU+Jr7WhDt/MEUt7Ep3CkoFXaYzO7COsGUgwiHfZe8WJ9kzdeKN0WIqeGWAx9h2D8HzmhEkqJJw+3kQ==
+X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 683AD80005
+X-HE-Tag: 1794769137-332550
+X-HE-Meta: U2FsdGVkX1/Cjc8Ih4JzjxQ7xnjFp3RLpmO2OYBrNDZsGQf3Ac+wUgMwYGuM1A37TlRyu39QW+dY4NQ0kKr0OoyMNw1mZstOx/Ynlh0krql72T3xynA5VTwcDe9IAXK35WMdeQvrYmT/cPgoFPEDOIay8ODoep6ymKftjHbaS+3TjNWcJSfKRWlLIqXI02ty6/z75uVdgu4ywS20RnUzsIZAlpXeSYbGXcnlxRpUm20uxKEboTclm2CP8LJDeGA64L5BdCNmLO89XZO0TOTycAo9TaFPC0yUbTOBcRzmttXfZ9SvMGi2UA3zdBPGFFfDpvc8nX5K0GAKKi3VuME0ZRPnLill4jqr08w59KmlO+7tTW08ljbtvr8xDman4QY/AhwVZPcGWt99K0KrP4B696WcokdGtdoDvINsFIp7Ih4r+MjoWN4A0V1Uyb5MUxXAFgNn6nVleF1WEAt26UmNndab0cbIzxkFTOsUXMkYfllXypNXZuk+uS3T1ny3QgUwjmctD8pdrGq/Vso8ffB7CIepLbiYyxVOrna/e5v0vMmJtFHQ+KdRSjOTuroY3baTXBlohKzwXQNWiiHNaJAtzJiNsDD14L8svebtmP9PSKb9YuCVEk3+sn9iszAWoaDHaKiCAz1nuWGvrVZT6BHkIukcjj+qroD3LJVgPaPqMeY9QE8VweSFRKfmlp5gPAFojMu4XPfqueq1sX60OmyKiYyAszPR9aH+l6l9hL42CvbyxXgEfhUwju84hWrq/4v1iugiK6BKEJFDDnHaHmspBYBItv0XkOc5nM8cLB070gxXdawH340j6e1brwpfiKCctuSm7JXGheBSNitj2qzLOBfPoF1WkKwtNDI/Wvzy78C1QFcjLU08/syuNbzMf8zfNAecXivTtoXUTELELa/S5+wKmFuYkihy6F/NY/xddT1k59DUIHf/2lRRC1V/N41+2h+4YBA1Gyhn+Pe4nIQ
+ Rn6xI5q/
+ DkkIIMBbHqNeN8fd+WlajV8CyxKVLU/2w1pnGMWgMj9MZ5bqenLi7V0dF15vY70QpBXHdXtxFBGFBh1wI/na5yn8Uf5+VYB9q1wWRbCXqXvmaxSuR8WVoChhhXiWaNdiQF+jmNaxapvqT5KVTFM/a8u7IjGhyeDgSI45Q//TXfh7f87IXulqtSTfhfwQG7XnLJ/UBSataBbwwyBVNbWD40Cb5rc58QJSI2iIvsVm7V8D681h2YGw5HoicGEqxamDILmbFnZDitHLbCMzwIriuGLS9RguUVtCN0R7A0kW5ukjZsTSsglZDXIdVAGIVb8+wNNqm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,18 +95,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-The pull request you sent on Sun, 15 Nov 2026 07:02:58 +0200:
+On Sun, 15 Nov 2026 08:27:03 +0200 "Mike Rapoport (Microsoft)" <rppt@kernel.org> wrote:
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git tags/fixes-2026-11-15
+> When cma_declare_contiguous_multi() cannot allocate a CMA area as a
+> single range, it falls back to collecting a list of up to CMA_MAX_RANGES
+> largest free ranges above 4G, reserves them in memblock and adds them to
+> cma->ranges.
+> 
+> The list and subsequently cma->ranges are supposed to be sorted in the
+> order of base addresses of the "allocated" ranges.
+> 
+> This implementation has two bugs:
+> 
+> * The allocation may fail even when there is enough free memory because
+>   list_insert_sorted() sorts the list in the wrong order.
+> 
+>   When the list is full, the largest range is evicted rather than the
+>   smallest, the final list is not sorted by address, and the smallest
+>   ranges are used first.
+> 
+> * the function may report success while it reserved less memory than
+>   requested because sizesum accounts for ranges that were skipped.
+> 
+> And overall it is a lot of list management and open coded range
+> selection for no real gain.
+> 
+> Replace the current code with a loop that finds the largest free range
+> above 4G, reserves as much of it as needed and repeats until the entire
+> area is reserved or CMA_MAX_RANGES ranges are used.
+> 
+> After successful alocation sort the cma->ranges by their base address.
+> 
+> The new code scans free memory once for every range rather than once
+> for all ranges, so it is slightly slower, but it is way simpler and more
+> robust.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/04da1a14b9eae1dbc2ccc007b54f46771f9cb529
+Updated, thanks.
 
-Thank you!
+> - silence smatch warning about SZ_4G on 32 bits
+> - fix a type in a comment
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+delta:
+
+--- a/mm/cma.c~mm-cma-simplify-cma_declare_contiguous_multi-v4
++++ a/mm/cma.c
+@@ -485,12 +485,12 @@ static phys_addr_t __init cma_find_free_
+ 	phys_addr_t max = 0;
+ 	u64 i;
+ 
+-	/* no point searching if the system can't addres above 4G */
++	/* no point searching if the system can't address above 4G */
+ 	if (!IS_ENABLED(CONFIG_PHYS_ADDR_T_64BIT))
+ 		return 0;
+ 
+ 	for_each_free_mem_range(i, nid, MEMBLOCK_NONE, &start, &end, NULL) {
+-		if (start < SZ_4G)
++		if (!upper_32_bits(start))
+ 			continue;
+ 
+ 		start = ALIGN(start, align);
+_
+
 
