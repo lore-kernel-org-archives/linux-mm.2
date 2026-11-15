@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ABF4606A333
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 14:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE215606A32C
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 14:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=HvBscOVE
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=DMEVOckw
 Received: by kanga.kvack.org (Postfix)
-	id 83F8E6B05C2; Sun, 15 Nov 2026 09:40:29 -0500 (EST)
+	id D96AB6B05C5; Sun, 15 Nov 2026 09:40:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 817046B05C3; Sun, 15 Nov 2026 09:40:29 -0500 (EST)
+	id D6E316B05C6; Sun, 15 Nov 2026 09:40:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 753CB6B05C4; Sun, 15 Nov 2026 09:40:29 -0500 (EST)
+	id C84A36B05C7; Sun, 15 Nov 2026 09:40:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 570356B05C2
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 09:40:29 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E1E2F1A0769
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:40:28 +0000 (UTC)
-X-FDA: 85437614136.08.0B4EA7A
+	by kanga.kvack.org (Postfix) with ESMTP id 978406B05C5
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 09:40:37 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 22BF54077C
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:40:37 +0000 (UTC)
+X-FDA: 85437614514.20.3945766
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 38D8E140009
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:40:27 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=HvBscOVE;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5CAB940006
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:40:35 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=DMEVOckw;
+	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794753627;
+	s=arc-20220608; t=1794753635;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hx44ZHmrhNF96yWNr3bPcGAUNP+WpBOTwlC2lOoq7IE=;
-	b=NasYBCxFzGqBkbevG78ZDzabQHL1ZM2ih7GQbIMZZ2IjHZa9Q4hHRvHMDsm+beWgklClgL
-	DF4jAvxkjt3XM9BcgxcrRR+GbvUygS2XC8qnTXFAO8kvEyfPYoSr+PzHCSMVs5oShEa6/6
-	dzzRCmLWzW81hrwqCTBpN6dKOxi6gms=
+	bh=FI3asJNj7qOQlV/TGWUmB60338C7WC/uFNSW9D9/jCI=;
+	b=VGUHAEjRWbJ0/Z0oFZ+w6vuiCgYziobgTd8rSTxAJZ87BtKi/yjC8bQB/NDR1PTTbKkuTg
+	9qodtnM/fD/v8wmaO67ysokyRQT4NbFfAP866pNPfkByHE1/E6y7H+oSx2SegsOEKdCtmy
+	EU9p5ExmgPn7LPNGnC7XBNrwbdzZpkU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794753627;
-	b=UBcvG7+yUITFM+sTKS3E0CRofVCBKfGv58uf3RJg0r6whfZCFfIIKMa7+qlkO9TSsammHZ
-	PkunN5K9sVqQDVM78HFBx9/eeh9G1Bx4NU73nYL+C4Rs1hdE/h/ICEm6GnsGMeq1qMbt47
-	iYrK5u40AuRERqnM0YS91gTg0HnzbTA=
+	t=1794753635;
+	b=w+ciwBKZZX+LQIIsXLWYJIqxaxc7pTmmBSYcxNev3y4msQyxnSPFuftlddLmyECk1R+XCO
+	OHth3fdP9fpK824E5QmVD+MMUZ//RswLnmskfslf2gjeCHjMqIedYdY3VSraM2lRvJ+JbX
+	vBGSY66ahJMi3PcsbxLhdmWdOkTTFqM=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=HvBscOVE;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	imf27.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=DMEVOckw;
+	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5DCD51476;
-	Sun, 15 Nov 2026 06:40:23 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B0AE41575;
+	Sun, 15 Nov 2026 06:40:31 -0800 (PST)
 Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.33])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 886413F85F;
-	Sun, 15 Nov 2026 06:40:18 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id DDDDA3F85F;
+	Sun, 15 Nov 2026 06:40:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794753626; bh=pEGYl0oKaox0/tIpp+Mu8b4JwZHSKDn4/w2uu0eAooI=;
+	t=1794753634; bh=IOwZLzBTzh9eQvjrTuwoQ1OhI4taf+RWz3s7nNKkGsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HvBscOVE7Wh1gfLKHZocrujZENq+hZ9WcOEpASJ9TMhQ9BHC2UC6hGPPD+GaX+LUG
-	 LUwZQQ7tLQxIJBHyBvChZrz1uf+WPpIxWDYsyXIUimzOey1qyRzDPoCawxEhMKDKjS
-	 euu+KycvP/FHpezXUAho7MZITo7YDwKcAHCflI8c=
+	b=DMEVOckw1bncfikR/EnGed2E3Z2HQv6tBEHDD6DNwp5YW2PUslaR2AIXb5/Gq6tCp
+	 8+NsqxFXbKEp9lKCyxiV/D3wB/+ZsWC4gyT8qCCKDGygsZ0gggx8gEsNMAXNSaBPix
+	 efHhX4QG2x37fNTYQWwMb+8DBFYlDIhWS1gCWEg4=
 From: Dev Jain <dev.jain@arm.com>
 To: david@kernel.org,
 	ljs@kernel.org,
@@ -89,27 +89,27 @@ Cc: Dev Jain <dev.jain@arm.com>,
 	geert@linux-m68k.org,
 	sparclinux@vger.kernel.org,
 	ryan.roberts@arm.com
-Subject: [PATCH v4 8/9] mm/rmap: batch unmap anonymous swap-backed large folios
-Date: Sun, 15 Nov 2026 14:39:03 +0000
-Message-ID: <20261115143905.3045084-9-dev.jain@arm.com>
+Subject: [PATCH v4 9/9] mm, sparc: batch arch_unmap_one()
+Date: Sun, 15 Nov 2026 14:39:04 +0000
+Message-ID: <20261115143905.3045084-10-dev.jain@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261115143905.3045084-1-dev.jain@arm.com>
 References: <20261115143905.3045084-1-dev.jain@arm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5CAB940006
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: ejier9xd6pgjg455kk8pkr9aobhpzr88
-X-Rspamd-Queue-Id: 38D8E140009
+X-Stat-Signature: b17jf5ty69mn4efzbjf9ppoa9hyzpkax
 X-Rspam-User: 
-X-HE-Tag: 1794753627-381268
-X-HE-Meta: U2FsdGVkX18CaQoOgTVSKEBZ90beKaa55RC2eIPyF5GcDfhk9qiWRGo6/0SFAYD7Jn8RVAYoSayVufy29h47QZ2U3bWr8tpH/feIvB6dl0ubgNSqKzEWEMxoVIo7lc35Nynd2U29uQ2DQXWv3HouSD1CiYwqhv1ll3Q0s8LmX7Q7LmZDv28MWDfe0Q2f2y6obiuUKNf3rlc1x8TXG1R2TbqmiWk4v4MEPybu7p8QXADBJ4E71vs9GIsrrbGkDIToG6SsOWM2rX/MQxZ5fv4sYLPchpKYAg6cCgHr3w4FkNnhm2eHyJGVfXPErhS2d7mgZ4O1gkTrbBHUYl4XeYfRR7/BLXrSjr0WQd3Ab6k26P55/aWpRP7aDvZ0hfySlXavqkk4sPbJdxFNCxoWVj+KseMO3fxSzJDwW3IVl3PyWLXsi8qRn8MLlF00qEfRtSdEuaneGN9z762Um9mR5gyBst2OpOJ2lcjMrqqh04KLQXoyzoFbCKv4dBWuJTTl1DV/7S32TteYuDFIVygtL+felZTClQiyuACNwn365CPTGMNSFbSO+sIkujUtjI/BY1qV8VbpMM4j7Xs3w+fyQim1w8ehQxntAlrn+NYJCXDhSy+jTTT/cnuhiwO0MqHoVaCbX8PmUwfVx2MFLx0+38of4JASCP3AQ1/EsvaIySiP8aJKtqNpzv2PXjmMTA5giKle24p2wLc7DYLynQyuoEFOtcBF4MJ3KC3UrnXiwrKuq9H0qZdFc0uPffG3zWm+jzRlfUVc+2TrgZTdfKz46ZRM7toev8RcAUvl3FQK23RxoX272wXqU3alBC05vf6ewSD0HWRdGFmrD9dVVutzXUyHFSjM2mtpHu95YxchYADxV7o2BI6AyZV/PfkCBfQywELWA6ySruyMFcy9AhQHpO2SS5HemlORbEiexjVWibsAnpkGQYexAn7Xtalh80aX4oBWcEEotr7T0xLWualtdZH
- y3dzJOb/
- JCtd1QnLWqdbvL5W/w3gv5Vv2hzxFs6/hDxYA9iHejE34OypspzLjlqwPook37gBwIyb9BiBSb561tIFjMv9eW7USomc1lb+6MP/NJ9OtMAPoxUhJVj7QJDzL0iS7cvpiIPfwUvQ4uLXwbVGxqtZsVszOdjsZSrO0kJ2sKKzjA5luds7tYPbZBIP9BmOGuIX0Oz6Q+VefXo6Kh3n92uEnJCDsUdFuvkn4+q0SqLRGRr0BENyEHNEqlonK4A==
+X-HE-Tag: 1794753635-418969
+X-HE-Meta: U2FsdGVkX1/X1aV/9gzR+DZqhfQ5Akra+H3hplH9iqgFg9Bw/tBtwfhU32GkFhjsVUa7bkqP08lWdjirWdXILnA8oz1IFerbxwzrSjCR8bbcK4AzGkvHT2UN7oDV9vK0rgX7f7aDk60SpCA/H270Y0pwkdoQezUq4f8by4ukX4CH8qLNPzb3gEG0fPo3e1qcSnvZTMHRsxsYkPGndACB9X4DACwJLnQUgTiogL3URsA0FvbKvEhzYhwXq3Nge4AFaqXGU5vM8JMN8Hssl+H4+x9VtsrdgLjDYDrmCFIvWwEz2vnchvIjCyDON7J416Z4j29w0d+VQsqyOn8Hj6v/bHJ6N1iFMjLlV6fII9wH8egB53jCMjCi3jPknxw9vbch/u9n+N49+mDknUCLp7FioqQoJJSTIAnKLIAZW8ZLDfKql5wEielJD62r0FhWWGO1BBHE4Hx7LSKJvnz++9h5pu5TfDOs2z19zKHDigqbXdRTL1/wphf+gBeK/XrlgOa9qeNtGIvzWxR9cL0UpK+Rfd3s2P9MDVWf1C/18B/eEFPY4aJ7W/TDjnzoGvtT0TFNmz/plLXEx+qJQuWSHYnJpsUdt37Oj9Ax0Z+1W5OjwT/azkK16arSR2X/4H7tg15mPSnVlfqR2flnLxReyUc8nRdGkQRJkuTV8XLJ9C/hJ62wWKuB5kzsSSjV/7Jo92llWCx3Tty4BQPMrSnVlnc+rZl+bGTRVtgYLM6fc/X4hI5iruEt1fbNCP2Yh88lceq8lyDfP7BaGDQW3grTzU/eXPyAYHPc7BMCMv/yuXYwQDmKZ8HDhLvmI9sJcXYP5oQrXBLzZklBi8zvwdg1q6xqK+L365oVdPGG8nvY9Oefb6a+pwyH14wddzyNdI6fRqEOq16dFYrkRJtRjoLAiNTHdOwv3v9RtAwm1bbmFpQCoR2F+yqTQzJO9Yf8NKjYQGo8PcG7h6wfKjQAG/gYsbR
+ TCzghcSE
+ YiVvZCGAIfg2LLaJJfc+Z8Gta1vndhvCm9FN9LWsB7/+oNDsP26lKia1prMlflp5vxlJQ9psOCXyYBfvHMXUwx5a0hJwVUrE58EWmbTUmFZq4cWXOyDoZMA1Sp1zO7asvLGzhFgCMab5mqIJVmSvwJkQi9a8QZ+OBXUP5jP09VYtJTHqmDEdFZlV04wwc/l7hcH3Yey8IbJ8b019G8xWW6wkHmg14CIedSu9jc7J7n2xIM6cQwy7e3P7wYZ1bgMy5f2OgR8oGpBAh/37Hl1E5Ly2Ql2yLuD936aq69VG4qyFyRrQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,232 +118,155 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Enable batch clearing of PTEs and batch swap setting of PTEs for anon
-swap-backed folio unmapping.
+The anonymous large-folio unmap batching path can clear and replace
+multiple PTEs at once, but architectures like sparc need arch_unmap_one()
+to preserve per-page metadata before swap entries are installed.
+sparc uses this hook to save ADI tags.
 
-Processing all PTEs of a large folio in one go helps us batch across
-atomics (add_mm_counter() etc), barriers in __folio_try_share_anon_rmap(),
-and repeated calls to page_vma_mapped_walk(). In general, batching helps
-execute similar code together, making the path more memory and CPU
-friendly.
+Extend arch_unmap_one() to operate on a pte range.
 
-On arm64-contpte, batching also helps avoid redundant ptep_get() calls
-and TLB flushes while breaking the contpte mapping.
-
-The handling of anon-exclusivity is very similar to commit cac1db8c3aad
-("mm: optimize mprotect() by PTE batching"). Since
-folio_unmap_pte_batch() does not look at the bits of the underlying page,
-process sub-batches of PTEs pointing to pages with the same exclusivity
-state, and batch set only those PTEs to swap PTEs in one go.
-
-Disable batching for sparc (because of arch_unmap_one), we will batch this
-later.
-
-Rmap accounting and reference accounting must happen when anon folio unmap
-succeeds. If a large folio is only partially batched or a later sub-batch
-fails, account only the pages that were actually unmapped.
-
-If the batch length is less than the number of pages in the folio, skip
-over this batch. page_vma_mapped_walk() handles this: check_pte() returns
-true only if any of [pvmw->pfn, pvmw->pfn + nr_pages) is mapped by the
-PTE. Swap PTEs have no underlying PFN, so check_pte() returns false until
-the walk reaches the next present PTE to unmap.
-
-Remove the finish_unmap label since no goto callers are left now.
+sparc uses the count to walk the PTE range and save ADI tags for entries
+carrying _PAGE_MCD_4V. There is no reverse operation for a partially
+saved range: saving ADI tags only records a copy for later restore, so
+if a later entry fails and the core keeps the original PTEs, there is
+no architectural state to unsave.
 
 Signed-off-by: Dev Jain <dev.jain@arm.com>
 ---
- mm/rmap.c | 118 +++++++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 86 insertions(+), 32 deletions(-)
+ arch/sparc/include/asm/pgtable_64.h | 10 +++++++---
+ arch/sparc/kernel/adi_64.c          | 21 +++++++++++++++++++++
+ include/linux/pgtable.h             |  6 +++---
+ mm/rmap.c                           | 11 +++--------
+ 4 files changed, 34 insertions(+), 14 deletions(-)
 
+diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+index 44d1333065a6a..f7dd1872884e4 100644
+--- a/arch/sparc/include/asm/pgtable_64.h
++++ b/arch/sparc/include/asm/pgtable_64.h
+@@ -1037,6 +1037,9 @@ void adi_restore_tags(struct mm_struct *mm, struct vm_area_struct *vma,
+ int adi_save_tags(struct mm_struct *mm, struct vm_area_struct *vma,
+ 		  unsigned long addr, pte_t oldpte);
+ 
++int adi_save_tags_range(struct mm_struct *mm, struct vm_area_struct *vma,
++			unsigned long addr, pte_t oldpte, unsigned long nr);
++
+ #define __HAVE_ARCH_DO_SWAP_PAGE
+ static inline void arch_do_swap_page(struct mm_struct *mm,
+ 				     struct vm_area_struct *vma,
+@@ -1057,10 +1060,11 @@ static inline void arch_do_swap_page(struct mm_struct *mm,
+ #define __HAVE_ARCH_UNMAP_ONE
+ static inline int arch_unmap_one(struct mm_struct *mm,
+ 				 struct vm_area_struct *vma,
+-				 unsigned long addr, pte_t oldpte)
++				 unsigned long addr, pte_t oldpte,
++				 unsigned long nr)
+ {
+-	if (adi_state.enabled && (pte_val(oldpte) & _PAGE_MCD_4V))
+-		return adi_save_tags(mm, vma, addr, oldpte);
++	if (adi_state.enabled)
++		return adi_save_tags_range(mm, vma, addr, oldpte, nr);
+ 	return 0;
+ }
+ 
+diff --git a/arch/sparc/kernel/adi_64.c b/arch/sparc/kernel/adi_64.c
+index 18036a43cf568..ffa378accefe3 100644
+--- a/arch/sparc/kernel/adi_64.c
++++ b/arch/sparc/kernel/adi_64.c
+@@ -9,6 +9,7 @@
+ #include <linux/init.h>
+ #include <linux/slab.h>
+ #include <linux/mm_types.h>
++#include <linux/pgtable.h>
+ #include <asm/mdesc.h>
+ #include <asm/adi_64.h>
+ #include <asm/mmu_64.h>
+@@ -394,3 +395,23 @@ int adi_save_tags(struct mm_struct *mm, struct vm_area_struct *vma,
+ 
+ 	return 0;
+ }
++
++int adi_save_tags_range(struct mm_struct *mm, struct vm_area_struct *vma,
++			unsigned long addr, pte_t oldpte, unsigned long nr)
++{
++	unsigned long i;
++
++	for (i = 0; i < nr; i++, addr += PAGE_SIZE,
++	     oldpte = pte_next_pfn(oldpte)) {
++		int ret;
++
++		if (!(pte_val(oldpte) & _PAGE_MCD_4V))
++			continue;
++
++		ret = adi_save_tags(mm, vma, addr, oldpte);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 7e62479db5df7..71fa47b60e50c 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1431,12 +1431,12 @@ static inline void arch_do_swap_page_nr(struct mm_struct *mm,
+  * restored when the page is swapped back in. SPARC M7 and newer
+  * processors support an ADI (Application Data Integrity) tag for the
+  * page as metadata for the page. arch_unmap_one() can save this
+- * metadata on a swap-out of a page.
++ * metadata on swap-out of one or more pages.
+  */
+ static inline int arch_unmap_one(struct mm_struct *mm,
+ 				  struct vm_area_struct *vma,
+-				  unsigned long addr,
+-				  pte_t orig_pte)
++				  unsigned long addr, pte_t orig_pte,
++				  unsigned long nr)
+ {
+ 	return 0;
+ }
 diff --git a/mm/rmap.c b/mm/rmap.c
-index 6a6fb9b56f2cd..a2481323b778a 100644
+index a2481323b778a..89dd71f84ff74 100644
 --- a/mm/rmap.c
 +++ b/mm/rmap.c
-@@ -1981,12 +1981,13 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
- 	end_addr = pmd_addr_end(addr, vma->vm_end);
- 	max_nr = (end_addr - addr) >> PAGE_SHIFT;
+@@ -1974,6 +1974,7 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
  
--	/* We only support lazyfree or file folios batching for now ... */
+ 	if (flags & TTU_HWPOISON)
+ 		return 1;
++
+ 	if (!folio_test_large(folio))
+ 		return 1;
+ 
+@@ -1984,11 +1985,6 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+ 	if (pte_unused(pte))
+ 		return 1;
+ 
+-#ifdef __HAVE_ARCH_UNMAP_ONE
 -	if (folio_test_anon(folio) && folio_test_swapbacked(folio))
-+	if (pte_unused(pte))
- 		return 1;
- 
--	if (pte_unused(pte))
-+#ifdef __HAVE_ARCH_UNMAP_ONE
-+	if (folio_test_anon(folio) && folio_test_swapbacked(folio))
- 		return 1;
-+#endif
- 
+-		return 1;
+-#endif
+-
  	/*
  	 * If unmap fails, we need to restore the ptes. To avoid accidentally
-@@ -2156,16 +2157,25 @@ static pte_t swp_pte_prepare(swp_entry_t entry, pte_t old_pte,
- 	return swp_pte;
- }
- 
--static bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
-+static void finish_folio_unmap_batch(struct vm_area_struct *vma,
-+		struct folio *folio, struct page *page, unsigned long nr_pages)
-+{
-+	folio_remove_rmap_ptes(folio, page, nr_pages, vma);
-+	if (vma_test_any_mask(vma, VMA_LOCKED_MASK))
-+		mlock_drain_local();
-+	folio_put_refs(folio, nr_pages);
-+}
-+
-+static bool __ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
- 		struct folio *folio, struct page *page, unsigned long address,
--		pte_t *ptep, pte_t pteval)
-+		pte_t *ptep, pte_t pteval, unsigned long nr_pages,
-+		bool anon_exclusive)
- {
--	const bool anon_exclusive = folio_test_anon(folio) &&
--				    PageAnonExclusive(page);
- 	swp_entry_t entry = folio_page_swap_entry(folio, page);
- 	struct mm_struct *mm = vma->vm_mm;
-+	pte_t swp_pte;
- 
--	if (folio_dup_swap_pages(folio, page, 1) < 0)
-+	if (folio_dup_swap_pages(folio, page, nr_pages) < 0)
- 		return false;
- 
- 	/*
-@@ -2174,25 +2184,61 @@ static bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
+ 	 * upgrading write permissions for ptes that were not originally
+@@ -2183,8 +2179,7 @@ static bool __ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
+ 	 * architectures where we could have PFN swap PTEs,
  	 * so we'll not check/care.
  	 */
- 	if (arch_unmap_one(mm, vma, address, pteval) < 0) {
--		folio_put_swap_pages(folio, page, 1);
-+		VM_WARN_ON(nr_pages != 1);
-+		folio_put_swap_pages(folio, page, nr_pages);
+-	if (arch_unmap_one(mm, vma, address, pteval) < 0) {
+-		VM_WARN_ON(nr_pages != 1);
++	if (arch_unmap_one(mm, vma, address, pteval, nr_pages) < 0) {
+ 		folio_put_swap_pages(folio, page, nr_pages);
  		return false;
  	}
- 
- 	/* See folio_try_share_anon_rmap(): clear PTE first. */
--	if (anon_exclusive && folio_try_share_anon_rmap_pte(folio, page)) {
--		folio_put_swap_pages(folio, page, 1);
-+	if (anon_exclusive &&
-+	    folio_try_share_anon_rmap_ptes(folio, page, nr_pages)) {
-+		folio_put_swap_pages(folio, page, nr_pages);
- 		return false;
- 	}
- 
- 	mm_prepare_for_swap_entries(mm);
--	dec_mm_counter(mm, MM_ANONPAGES);
--	inc_mm_counter(mm, MM_SWAPENTS);
--	set_pte_at(mm, address, ptep,
--		   swp_pte_prepare(entry, pteval, anon_exclusive));
-+	add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
-+	add_mm_counter(mm, MM_SWAPENTS, nr_pages);
-+	swp_pte = swp_pte_prepare(entry, pteval, anon_exclusive);
-+	set_softleaf_ptes(mm, address, ptep, swp_pte, nr_pages);
- 	return true;
- }
- 
--static bool ttu_anon_folio(struct vm_area_struct *vma, struct folio *folio,
-+static unsigned long ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
-+		struct folio *folio, struct page *first_page,
-+		unsigned long address, pte_t *ptep, pte_t pteval,
-+		unsigned long nr_pages)
-+{
-+	unsigned long batch_idx = 0;
-+	unsigned long nr_to_unmap = nr_pages;
-+
-+	while (nr_pages) {
-+		bool exclusive;
-+		unsigned long len = page_anon_exclusive_batch(batch_idx,
-+				nr_pages, first_page, &exclusive);
-+
-+		if (!__ttu_anon_swapbacked_folio(vma, folio,
-+				first_page + batch_idx, address, ptep, pteval,
-+				len, exclusive)) {
-+			/* Restore the remaining PTEs that were cleared. */
-+			set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
-+			return nr_to_unmap - nr_pages;
-+		}
-+
-+		nr_pages -= len;
-+		if (!nr_pages)
-+			break;
-+
-+		pteval = pte_advance_pfn(pteval, len);
-+		address += len * PAGE_SIZE;
-+		batch_idx += len;
-+		ptep += len;
-+	}
-+
-+	return nr_to_unmap;
-+}
-+
-+static unsigned long ttu_anon_folio(struct vm_area_struct *vma, struct folio *folio,
- 		struct page *page, unsigned long address, pte_t *ptep,
- 		pte_t pteval, unsigned long nr_pages)
- {
-@@ -2201,15 +2247,21 @@ static bool ttu_anon_folio(struct vm_area_struct *vma, struct folio *folio,
- 	 * See handle_pte_fault() ...
- 	 */
- 	if (WARN_ON_ONCE(folio_test_swapbacked(folio) !=
--			 folio_test_swapcache(folio)))
--		return false;
-+			 folio_test_swapcache(folio))) {
-+		set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
-+		return 0;
-+	}
- 
--	if (!folio_test_swapbacked(folio))
--		return ttu_anon_lazyfree_folio(vma, folio, nr_pages);
-+	if (!folio_test_swapbacked(folio)) {
-+		if (!ttu_anon_lazyfree_folio(vma, folio, nr_pages)) {
-+			set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
-+			return 0;
-+		}
-+		return nr_pages;
-+	}
- 
--	/* nr_pages > 1 not supported yet */
- 	return ttu_anon_swapbacked_folio(vma, folio, page, address, ptep,
--					 pteval);
-+					 pteval, nr_pages);
- }
- 
- /*
-@@ -2378,13 +2430,18 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+@@ -2753,7 +2748,7 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+ 			 * architectures where we could have PFN swap PTEs,
+ 			 * so we'll not check/care.
  			 */
- 			dec_mm_counter(mm, mm_counter(folio));
- 		} else if (folio_test_anon(folio)) {
--			if (!ttu_anon_folio(vma, folio, page, address,
--					    pvmw.pte, pteval, nr_pages)) {
--				set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
-+			unsigned long nr_unmapped = ttu_anon_folio(vma, folio,
-+						    page, address, pvmw.pte,
-+						    pteval, nr_pages);
-+
-+			if (!nr_unmapped)
- 				goto walk_abort;
--			}
- 
--			goto finish_unmap;
-+			/* partial success: finish for nr_unmapped and abort. */
-+			if (nr_unmapped < nr_pages) {
-+				finish_folio_unmap_batch(vma, folio, page, nr_unmapped);
-+				goto walk_abort;
-+			}
- 		} else {
- 			/*
- 			 * This is a locked file-backed folio,
-@@ -2399,11 +2456,8 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 			 */
- 			add_mm_counter(mm, mm_counter_file(folio), -nr_pages);
- 		}
--finish_unmap:
--		folio_remove_rmap_ptes(folio, page, nr_pages, vma);
--		if (vma_test_any_mask(vma, VMA_LOCKED_MASK))
--			mlock_drain_local();
--		folio_put_refs(folio, nr_pages);
-+
-+		finish_folio_unmap_batch(vma, folio, page, nr_pages);
- 
- 		/*
- 		 * If we are sure that we batched the entire folio and cleared
+-			if (arch_unmap_one(mm, vma, address, pteval) < 0) {
++			if (arch_unmap_one(mm, vma, address, pteval, 1) < 0) {
+ 				if (folio_test_hugetlb(folio))
+ 					set_huge_pte_at(mm, address, pvmw.pte,
+ 							pteval, hsz);
 -- 
 2.43.0
 
