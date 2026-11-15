@@ -1,93 +1,112 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA12B606A323
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 05:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D927606A333
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 05:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kQrW1hFA
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LCGBC/PO
 Received: by kanga.kvack.org (Postfix)
-	id C1B746B05B1; Sun, 15 Nov 2026 00:03:08 -0500 (EST)
+	id 4C5096B00EF; Sun, 15 Nov 2026 00:42:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF35A6B05B2; Sun, 15 Nov 2026 00:03:08 -0500 (EST)
+	id 476436B05B0; Sun, 15 Nov 2026 00:42:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B32A56B05B3; Sun, 15 Nov 2026 00:03:08 -0500 (EST)
+	id 364FC6B05B3; Sun, 15 Nov 2026 00:42:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E7056B05B1
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 00:03:08 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EEE3E40542
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 05:03:07 +0000 (UTC)
-X-FDA: 85436159214.14.EFBF3B2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7D505120006
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 05:03:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kQrW1hFA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 101056B00EF
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 00:42:56 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 845231A0587
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 05:42:55 +0000 (UTC)
+X-FDA: 85436259510.25.031BD6B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id D91D140007
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 05:42:53 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LCGBC/PO";
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794718986;
+	s=arc-20220608; t=1794721374;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=azq6hlaktEMUDgLyNyRfk0hKL7yGmOVuQpf+tMmLcs8=;
-	b=Z4p/veKRhXXNaq+5f49oeJ2aoI+hKQ0r99x/KKK/XdxDYYFR4u5ZtBr6nb1Ysc+LuEcWsU
-	bledG7zga13U4EtUHMhFOK+k5zxKjNbq26lAXy/DpkwIejKYVq0qrVTVlFavHy4EARl9y/
-	WlgtEYqiglmUM9KyVQ2GSD/kFoNizkg=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kQrW1hFA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nyBkJVwlUhwTxJyGO+bv5cKEFN7sPZnmNLTwTWcdOtQ=;
+	b=7z5Op46oEZWY3DFsHpQL5nrmJcW7wh0KiUpNzvMgk8vUaEHfCsXjXMwjmAhNpEYMXqvKV3
+	KoVPtUiUbWxKBFVb+lc3RGzLQegkyVOlqGyhyk0coQ2FIQt5OxcprCyrtTwciS3btxEctI
+	EmTBX4D5aanoxTjAPKn1ykz+X8KG1uU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794718986;
-	b=Rhc79cpWKNFXxvjWmdtH214P+zuCKW79GZhXkyWcFytA1oRyFIoPmOBIMKGd2a5yrl50OS
-	MK6nc7YhDUd0q0Jv6XwjAaODRn3x4r4fPamSFRY4dRqPebiK2Ozvt/Km69x8Kg0CNbBgR2
-	qFcbFKY0f2aZzrHuYi7ZXeV/LiTQZLo=
+	t=1794721374;
+	b=ot6S6yUSgNru7W91+eLN+re46YAPczC+VzWy245XZLw7qC+1CGM/L6VPcWa+ItQFOX1q8o
+	II+G7Pi9BkuAQx3whGdjKwjn8V55A5Kx+zaMGuRrIhyTNM20rbdYEkowvoiS+PdR094Sp2
+	7tWph7qjSv6Ne8ZmjT17Oq5qQnlY6G0=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LCGBC/PO";
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2042D60D36;
-	Sun, 15 Nov 2026 05:03:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 098C31F000C4;
-	Sun, 15 Nov 2026 05:03:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0480C455A0;
+	Sun, 15 Nov 2026 05:42:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B9FE1F000C4;
+	Sun, 15 Nov 2026 05:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794718984;
-	bh=azq6hlaktEMUDgLyNyRfk0hKL7yGmOVuQpf+tMmLcs8=;
-	h=From:To:Cc:Subject:Date;
-	b=kQrW1hFA9eLROj+8e9HgGk1bBbcWq7RXQkuKPs9FiAK/S3BOBKoe776SyNhHchMa3
-	 Sc57o9flKR5qM7CJFj5NoIM6e4nwb6krOaxMUGtTrFL6Pg9f3xAZ3HM+rs9nGYcoTZ
-	 gRcGCAYfU+1NY99N6C7eoFjeaXymFovRdrhEoG5WX+DXlYPdQ801Fp/1UZJNQZ9p0n
-	 o54/BgyH/7moBX2pEhuVL7ExS4gvOuyWguy6X96/BRARkEqooe/Hd13sU4UkQUfH6g
-	 5/ZX/MDGeKzHeKspVqQe0jCODYSTB01Dzt/wNfeTS/WiNlr/lPWpkDqLxxGVLjG0UR
-	 I+mqd2/+5wj0g==
+	s=k20260515; t=1794721372;
+	bh=nyBkJVwlUhwTxJyGO+bv5cKEFN7sPZnmNLTwTWcdOtQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=LCGBC/POf5Gn/rnspd1Eu2NhGBKKHCC5PeEenTKJRyjA1UBFCM1dny8zz0QppLOUM
+	 HUiWHTNDTXtwkwW1OQyWllS/gQ2v0jl/x5WpfwxLL+0Q1BzwRwMyIlkhwZlBlvE/Nd
+	 u783YyJBqEacJoSMuwJIlCy0bup1mHkGTtHTODpEBhAfROGZ8kPKWfgrFdV+YB5MFy
+	 QY5pke4h0wswcPg0lWCW9z7Rv2iPlZabnpStD0oVk2erJMzkbG57hrs/O/pJjgnnkB
+	 qIXZaGwq/OZ4+T05gvgbrOOtA288S3SeslMygDVYek2efEcTJVgcLvbLaxObJC7QL+
+	 TWu2cBtCMwfug==
+Date: Sun, 15 Nov 2026 07:42:40 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] liveupdate: fixes for 7.4-rc3
-Date: Sun, 15 Nov 2026 07:02:58 +0200
-Message-ID: <20261115050300.1847760-1-rppt@kernel.org>
-X-Mailer: git-send-email 2.53.0
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm/userfaultfd: prevent poison marker loss
+Message-ID: <avlGUD3Gl4UF0Upt@kernel.org>
+References: <20261107-b4-uffd_marker_loss-v1-0-82926b22704c@kernel.org>
+ <20261107-b4-uffd_marker_loss-v1-1-82926b22704c@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7D505120006
-X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261107-b4-uffd_marker_loss-v1-1-82926b22704c@kernel.org>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D91D140007
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,INCLUDES_PULL_REQUEST,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Stat-Signature: cmsnzdomauqzjd8ee7ns4ye16yji8tk4
-X-HE-Tag: 1794718986-533379
-X-HE-Meta: U2FsdGVkX1/7EQlBARu0yq8dpOw2Uf2AhnSQJ6izlpMHrvngTopge9lwkOAr3riYbEOLo0TuMpzTOeJhOl81M6Aoz69E4Cqt+FyDhroI9UA9efnEkXKpMp1FWKrrhQ00M5czUTk/2TeLShGgmypbMOO04MOQzZc4sPnfNzuhl8nlZaW17SOWpS6wM2WTKhD81za37IwqbZlL0iaFSISaZYZsPCRHahcaNiPprInk7pxKQ9+gzA6Ox+QqRvS85IwFiuBD9TjiqUxGGnsxaykEpOgqg4Kqu/wg3LbHbZ8GjmVVHvQk1NbyLBs0+qGQrSUwaxbY6iBc0DRR24c8Ks0e0O7Kex6Y7xRq5WxhKwYsCJkF82TM7hdmY84q3sjuToJ4GsIe+Isg/iFQeUsd7GR1FGir0aikLZnXBnybmUL5g5lkJM5bPSdsy/85iCFpZkxAYWj86kOa/SClX3AdK1qmRQ776UcKUQjWizKLwmx8SEhp4UqVQNJj/iw4nEqc3yEL4nWXRcQGK5KdQvnVZy9FsjSVdlUZgCDhRAscnB3PdPr74gg2bILfO8Sm+wnLgeI52QZZIxyDj61ZvMl4DM79ccNnj7r9T+agoxXofoMtkmrqJ/gM/p7hE+X2BgkuCv+mqkQzM5NEd9ALnMq6dc5glHGcBZr99GQ3Tia/QaeyR6G4reyCbQDo/KfGD2nkBS3p0abJ9sVXSMuCBxaIgGtbilankGDaZ+W1PNdpwelBJKqXXDqfiFx3bd73rnwZm51GGm/X51rbLvjTEfCXfydnRI9joWAzPyYiTRwnULgTIkKPy+Vb4oEVH0BhHBVMZaDbrpWIAypKXSAptJkl/y9TQKqSLMFDLVQPA6oznMROSgtB6capQX32/URBVSAkoe6iNCenSsMAaO0Ba4YTshgFq2jNUUmaxrFWsXskDuG6EY1iLsGmT9YkAPidZKjjvI0NeeCdzbLKEXyiKCPufCH
- mDbhRTYA
- 9M5dISfehADsyDcX3+N3G4u6RyH3AOvYcSH8BQFB/uN1kwEjRl6wNeJfIGtVe09k+AvEA1JDnrstLtxYVwesbgGM9YqUxLzvp/IYZl3gEMr1Heo2To4TPDGF3Z16zHAzr9qENaIjIvhQoRPlOjmBDvc+tIXOAk8+rX4huzJF2C72TmVWp8uhnhyCSgzFiIjgQvDr15m2k7Nh68WfA89YS23JwW+U2lS5BXHHeh8b8hflL0BA=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: fk6a5nmxxhg7j5ai7ub4m98y16yckkyq
+X-Rspam-User: 
+X-HE-Tag: 1794721373-126561
+X-HE-Meta: U2FsdGVkX1/b3hn7JqNmSxU6OezHcfSZHMkLF2wcvYjaHXdymGFRqJikgeCqcMwy+0F5Xhk9s88DIiXSb0TBh2zGvQiZkx1bfTGvP9drLg1tdIycWhnZGH0vpB6c14QJVK+xqxiHiZzO0jwQM9GrzQYqCFcxG3ZGFzpzY1QHQ+K443TKxtMQ7uUSja44pxWX3pAYm4vEtDdAPJLlDf/WLWgHVbMoXnnBakIJ5ZvrLnD75nfYHV3pHo+xry037M9oQCARPIWqESgboizZW9Cj7j3Tcz5xmw6qEwMDwlXwUbFQduMxc7Wc/Ln+xQzvCd3l5KRtLH60JX6/8qznR0ZlX9DucYG4lQfJPhq3RWCDXg3ERIXxK/JfEss9996v5thwvvTv6cHFb2IPtQGCOSbXEORnqXiqujTte9n9Amz7Q+8OTuKvyufJGQDiW4a0hFH8o983eaaBAU+XozIf7MHcXvzLwnUSxWjKdWRUAYc9eN8GOHSv5nGDEpXdWy/JGVbdIR7h7T3LA4H5WViWJvNFsss727XF4/wcfXiUfsV6+DIhjtDZ6SGCKsjqa1OSC+GqeSLqzCTHlY2XMSc19IzsoiVa4JAHeVOsWciLa7NNwwSBKphvpiLh+Yt7FHLftne28IfNHMQACD/sINYalkuknOtyTsKlIv2esDjk7Feh2QcZYAnZ8WqD47iTtqiWcdruKhAAuAY8Et+e0A7dbQy59ia/ClbtN2QC95Va59IoJ92aIyCjshuP0n4DXd5UmDQ2iTyjHGHed84pBDmTzs9Cfom5MAznz6rTbNZyFgUqOymAvxMqu9j/6nhT6mpNmkhJZ6EOIfWAwjz0SgHtZJ36zx0TJz6XfyzPX3OLNTT++j0y6kQRKseOQBiroKS9MVQ8jnSeGUgFj/giHLqIAODkWcPHseGq46dNQzgL0dJVpSuruIPJttzZhGh6GBqrh+Ild+4mWC2T24RbkIuir0w
+ vT+S53bV
+ yDjWlidWkcI9DcKFe163IjGKMOYg14ujkJ6hClbqBlVOFsotlPZjwL5EVUwZHQkMkr1zvpoUAbqni6kUBeJJf6uL21+tZidbim16Pcpsg5iSkeBYJu6ex8OptGpheXhxv7joLjhZShz1J/agkQc120HoBpTCHybOwxD61KhtXzM/p37tll/UbLw/C7LpUlrLIXqC0woApmjrL/8FiNSxtv6AnaCK5+idny4/i5WG4quVUPl2cHG0yMaXWWLYe6bjCoEh501YjTr6jyxXjrSDM5gZvdg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,35 +115,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The following changes since commit 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4:
+On Sat, Nov 07, 2026 at 12:51:05AM +0100, David Hildenbrand (Arm) wrote:
+> Unregistering userfaultfd leaves poison markers in the page tables.
+> However, once unregistered, hugetlb PMD tables can be shared again.
+> 
+> Further, shmem page-table retraction can discard poison markers even
+> while registered in missing mode, and fork() can skip copying page
+> tables containing poison markers.
+> 
+> To fix it, add VM_MAYBE_UFFD_POISON and set it before installing poison
+> markers. Preserve it across unregistration, splits, merges and fork(),
+> just like we do with guard markers.
+> 
+> Use the new atomic VMA flag to disable PMD sharing and page-table
+> retraction, and to force page-table copying during fork().
+> 
+> Move VM_UFFD_WP to bit 44 and make HAVE_ARCH_USERFAULTFD_WP depend on
+> 64BIT, freeing bit 12 for the new flag on both 32-bit and 64-bit systems.
+> Expose the flag as "up" in smaps.
+> 
+> Losing poison markers, while unpleasant, is not really fatal, and the
+> use case is rather a niche thing. In addition, we rely on the atomic
+> VMA flags infrastructure ... so let's not CC stable.
+> 
+> Fixes: fc71884a5f59 ("mm: userfaultfd: add new UFFDIO_POISON ioctl")
+> Fixes: 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for hugetlbfs")
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-  Linux 7.4-rc1 (2026-11-01 13:26:31 -0800)
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-are available in the Git repository at:
+> ---
+>  Documentation/filesystems/proc.rst |  1 +
+>  fs/proc/task_mmu.c                 |  3 +++
+>  include/linux/mm.h                 | 45 ++++++++++++++++++++++++--------------
+>  include/linux/userfaultfd_k.h      |  7 ++++--
+>  include/trace/events/mmflags.h     |  9 +++++++-
+>  mm/Kconfig                         |  1 +
+>  mm/khugepaged.c                    |  9 ++++----
+>  mm/userfaultfd.c                   |  3 +++
+>  tools/testing/vma/include/dup.h    | 20 ++++++++++++-----
+>  9 files changed, 70 insertions(+), 28 deletions(-)
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git tags/fixes-2026-11-15
-
-for you to fetch changes up to 58c5852ca96c58cdfdb9646870b217fc54d06a97:
-
-  kho: check fdt_phys in is_kho_boot() (2026-11-08 11:20:19 -0500)
-
-----------------------------------------------------------------
-liveupdate: fixes for 7.4-rc3
-
-* avoid address translation in is_kho_boot() before the linear map is
-  initialized, fixing early boot BUG_ONs on arm64
-* check for duplicate session names before growing the sessions
-  preservations block set to avoid preserving an empty block that causes
-  restoration to panic()
-
-----------------------------------------------------------------
-Christian Aurich Zanettini Martins (1):
-      liveupdate: check for duplicate session before growing block set
-
-Greg Thelen (1):
-      kho: check fdt_phys in is_kho_boot()
-
- kernel/liveupdate/kexec_handover.c |  2 +-
- kernel/liveupdate/luo_session.c    | 21 +++++++++++----------
- 2 files changed, 12 insertions(+), 11 deletions(-)
+-- 
+Sincerely yours,
+Mike.
 
