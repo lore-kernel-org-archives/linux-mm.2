@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB27D606A31D
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 17:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF02606A33D
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 18:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b3Kdmzc6
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=o2aAKF9+
 Received: by kanga.kvack.org (Postfix)
-	id 9465E6B05B1; Sun, 15 Nov 2026 12:39:27 -0500 (EST)
+	id 30A4F6B00EF; Sun, 15 Nov 2026 13:01:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91D7D6B05B4; Sun, 15 Nov 2026 12:39:27 -0500 (EST)
+	id 2BA606B05B0; Sun, 15 Nov 2026 13:01:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85AC76B05B5; Sun, 15 Nov 2026 12:39:27 -0500 (EST)
+	id 1CFDC6B05B1; Sun, 15 Nov 2026 13:01:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 60D056B05B1
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 12:39:27 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E9AF21C3BAF
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 17:39:26 +0000 (UTC)
-X-FDA: 85438065132.26.1972301
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 5B22418000A
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 17:39:25 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b3Kdmzc6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 007A06B00EF
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 13:01:54 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5A026C0824
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 18:01:54 +0000 (UTC)
+X-FDA: 85438121748.18.5F4CF44
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id AB79C1C0009
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 18:01:52 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o2aAKF9+;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794764365;
+	s=arc-20220608; t=1794765712;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LuvMmI09I/yZkcgOAhuxB6XI4+QcFoSXXJuVeZFzzgs=;
-	b=05ivYhR8WtOa+PCewxGF7Xgj5JUhJQqV+ZCvCrlZLHiyLK8f1uqoz2w+3A6o4HS1HpVOkW
-	q7K/UXl899jngLV2BOVA9WIhIOYMT49OIp4IaDI0QTImJK6DW2BlJiyKLwrUXUOj93QFpl
-	J8/MKHD9UnNgk+dv9n8S9dLJq05uqsE=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b3Kdmzc6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	bh=E5e8BJEiuZ4whbgu1Hr+6JPc8nqHGgyY0u0a+RokHVQ=;
+	b=dZKDsRyb0sZaAxvZJOYd4f7r3E13Dpvrj7zTaAleo0zmHlLtBBygxtEl321H7FtCKuzNh3
+	Hlf6x3EVGLbhf/Wi3tvqQde6xODYyGGGjsU+EDIy6QOSQf2AhuB8OS7ePtkeI7sRZYsSkY
+	vb2L6t5yVgRvhixG59g3jeJ+f7A5leI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794764365;
-	b=awN372QLZGMfHuE+DqCPtP53NKX5EWvqZtuE+4nLhs27ZPfJcW01Gm7u25lawmHXYQXbxN
-	fyCH6BpluubJX+50FakgNOZB3VpzmyDBNH5FmD4SqsnFk3tIBCyNRAo22z9iSynoe34roV
-	fQcoT/iypZOXuPYjvyp1HfQfy+vOkno=
+	t=1794765712;
+	b=pnP2UDxwAn0M17aQd3EIAS480MI7q/zjbA1QgRqM6UG6NHVuaenroABn/eysmjUIgopmlG
+	kUkFwwUeKH5RZDVCtbTH05tfClGMuaimzw4jGV5KU0shridAIMvon1NIwpyWSJD8LNwSzU
+	kvAC0TgfbmszLuw2yDhbjBornX7e47k=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o2aAKF9+;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DA2626117D;
-	Sun, 15 Nov 2026 17:39:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A394A1F000C4;
-	Sun, 15 Nov 2026 17:39:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7C45C43DA4;
+	Sun, 15 Nov 2026 18:01:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24FBC1F000C4;
+	Sun, 15 Nov 2026 18:01:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794764364;
-	bh=LuvMmI09I/yZkcgOAhuxB6XI4+QcFoSXXJuVeZFzzgs=;
+	s=k20260515; t=1794765711;
+	bh=E5e8BJEiuZ4whbgu1Hr+6JPc8nqHGgyY0u0a+RokHVQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=b3Kdmzc6zR6q5nTMEJclWpKxjsTP9FwKcjQ6sFBtEe5xoLu9qJ3i50GmOc5B1CkvX
-	 c1kMrJw4q0qcpsIl0N/hXXvW+2McnXnOTPE8+W6jQxVPNrGJuONKHN93QErv5/3CJV
-	 vISHCxyh/xuGazEgvKNhjg0MST+QnVNVfdZ57rqZAly759IX/47XSXDxl3ylzs023E
-	 L8muKtVeMxSKoK5CtHTU2DkEqG6x+hf9wYETsjoxfFCWCcBB4J47qvljIHE+NNoyPq
-	 uLcmqgjdOgghfHC5P+qQ4Ye3O2579I1aexcft9YfG4EwaYJPWkQ+rpvDGV1WnYXDhn
-	 J35YsOgs06Vgg==
-Date: Sun, 15 Nov 2026 19:39:11 +0200
+	b=o2aAKF9+YecDzzGk4bV1bgV0jRjVUpJLhAYO7F+KOkCHqua5bwkkqaIW2TcKzIbVH
+	 8RrypZah37W8SoLFH+cHTWDJSt7g97GkpFDUJwpOa8fXEP+C7Fk6eZGhN5bZ5QIWGv
+	 rNolRUfDXYPxamX3x3K99oNFg+prs8oECrVd82aJgQ4n1vZ2k1l/hIbRyzuBfF8uiT
+	 SP3N1MJ5SlYTbuy72JItmaVx0qM0W054SYKcPl3aN0rEaY1nttQPHOG1KwcWmsiT9y
+	 t6SsJiUY3zhw8E+wDnL4kBJBk7lTf7M92W7m9dew6fxdbCTR+FrT6wxWeM+LVgDM2r
+	 6NmZ515+KqNWw==
+Date: Sun, 15 Nov 2026 20:01:37 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Tarun Sahu <tarunsahu@google.com>
 Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, robin.murphy@arm.com,
@@ -77,28 +77,28 @@ Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, robin.murphy@arm.com,
 	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	skhawaja@google.com, sagis@google.com, linux-arch@vger.kernel.org,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 02/19] kho: block: Record the entry size in the block
- header
-Message-ID: <avnuP7SWE2BdBFBL@kernel.org>
+Subject: Re: [PATCH v4 05/19] kho: Add feature header for fine-grained ABI
+ compatibility
+Message-ID: <avnzgVJic77yKMoh@kernel.org>
 References: <20261110050202.529473-1-tarunsahu@google.com>
- <20261110050202.529473-3-tarunsahu@google.com>
+ <20261110050202.529473-6-tarunsahu@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261110050202.529473-3-tarunsahu@google.com>
+In-Reply-To: <20261110050202.529473-6-tarunsahu@google.com>
+X-Stat-Signature: hcdrsx9ion3hkc4uaa8d8wif38pe6nnj
+X-Rspamd-Queue-Id: AB79C1C0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5B22418000A
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-Stat-Signature: hhximy4igi9ca3g795djw9u1tsw11pre
-X-HE-Tag: 1794764365-877186
-X-HE-Meta: U2FsdGVkX19QjkANYtX5LaV9wCFtRmclNK/Ipw6GftnbepXi4+E+qIImnBbZAOl8lzb7J98XrNBiyn6hjqacnH2ZbANTehmn8prjr3dGkZMb8ZicA9D839BRE2yEAWkP5SkidC+LMbIR+0ee0XkjNi1QloxRaMoSzhOynvjiIQTQ8YenjNfPPoDgQfoBOmPGu3O/sJhEAclrF+21LF86Sa6EmZH7ejri3M6tWyfmPrJiNlr5OG/ka6jqbjT1W6uk/SWNxG+F56TeTlXtnutqpoQjO89KbfB3ILiKVYgCkozDF3rXU2pLG1nZEN6rUGnAKUfIdPtk3pL/EW5s5vu+id5McdvV1aHGJD6BjHvNQBxBzD3VEfM4KJ+iBLzk3l9f3YQHk/aGEPxMyuy5Rkjh57bIdEK/MtHbTKpzdoVLDnDrFHu3JzZjAiDJBHW1Ds5ZUUgNpqbvIiF2ZM/+ll5aLO7U/Zr6+nfxKCZigBD0VRYzdhlYP1RDKD4BrFywkuyTjpvIkbTJ9IQC9JjuqBUs8rJyi4Jk3/ih41A/5eOnv6lpGIBuvLfEtQ5Au3+wBC0BaWMcw+VIy6trtL+h/3RrTcjdTKc5mbaoZiyr2iFP7wVfpgzFu1lF+5aJIWIl0LRhcm1hVAx79TAGuaef5xwiIEImufFRYPytjhHJinwk35VtHlSnGb0eSbRTrvim60WXZz0aEoXVGnY5ph+o74uR6zG2UH04tL8/r6FzM06cVwLz6UpwSWo7q6qFF8TSHkzEIrhyd1D4RrrJYvyi/txI0NBq0Fu/F4LNfqeTtnk5i1xkJsaPQmaxY/d1jig7fRha24TFUiOzwSFfrUREuBqqzbOB3T2nrnGCOuVflzAszOEY2nA7+IvgCvN/jWhJgT0tKoWc5baarQ2bkpBuOSALQQsFcMSa0pCJSS72cN5vxDFPOOGfjPnUtri6xN2RdzWsOEIOK2fPgKywNHl7Wfo
- CYRtDhmV
- TX07raoO2i1AZiUlLuMdBbqpXNt3VuRJs776NMdq5iqK56Qgyl94f63vI4rmJEw6J/o4P77gOcSkVJzrx7EgzHlwy3iyE1RFXi3t865RJVbVxjQZJVMbVoG9jhwbM1LlE8vyKo2AKnizgaNwsm7QsxRUw/wxLFtiMvoWlCzGrI3tUqLE4tkm6AJztSUqiZdq/r98u/N4rC74JBZEORS6r7BZ8EI08fTaxl5rdIBAJGHdpkNeOvM0QcTCTZ6cUmc6CLYAq3Q7P6Vzs9wcC5R1zwlbAn0viyMmkv4l3dS+Fn0Hz3pc=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794765712-679143
+X-HE-Meta: U2FsdGVkX1+p5i4niEi1S0kGEEicwH7DwDv9WtUcgbsyD3+80y7+69XMAjI4XhNT+7gs89858FA0ssYsAmJjvkp0nPaS+UgYvVt64kW+2d6g4qf2DCIheQajuympAbwGRVk1iiPPenGaogPlJH1tCE4VImW6NcDM2oFrNutUCTDs/qbhodGmKu36rAiC9w+ZqpZdxMOMxDzLZLX1iRDDlyLHLxGa5dhXGtGnJmQGUC+AeQIIBtFOPfq5QDILhEGdi2GJpNpKVamqMI6DNIlqRqylGt5ZVMxszV20/2PUps0q2UKCVuxPgiMmvHs/LJyIcLTdAU6XTRMqdsjV4HnnDSjXSROQscKX2Am8ZvBs0MyEWM59XCqC9mEyCHjoDU9KfFLttY9gJRmQ2v+oh4hCN8Mx9v/t1IU4ZUhZ2i32nY7jiZOt2pZB9/+i0xS9O0jyXwEYJuvCY8VFlHaDcIgceRimuxi3nPWFnRxWbAwkrifU+NjeJNGCeXKdL+el6ym8I1AWpyIzeZGGqcusUNJ2dcYqJ9NJdKY1b/y1QJRSvNT9VdRw7aBC+4up98YeSvDP8RyVzY6MjTf6E3EjqFsuaK6tOMs64NuRDtqsaLgdb3IuE1hHp+HmAyh0hKE1X4h+zVUjr4F78QblET9G8q+biQR/NxX7GdXuccES8RiYOHdKfV7BGLJ7gY8VVpoLdICXb34cUa6lC6PrT6cko8GHknC5ssJgjL+u4DYoS25pRgVUsyD9kVNTzlFED1zjt5uljpIO4SQvd4zjvpW6ZYnZKdlRqv7NMfJVQslC9hPUQkkaOWWoCE6fdhOxq0AU45yTX938h7KmTsKCQWDdNQihMo+hwrgtGRAyvj9cHjkNcWOtivrBGUsW19TunotLBuS61rE+lkFNhmi3G6wl1L7RLOk7bybW8GVSb1XglrcyZv7TLyoBVIQc6LhMi+qW9RcPdB/oavDJ9KsuSG2lJ5T
+ Kt4tQFiT
+ YU3Q2i3a3zKwM+KoXFyOBLLz2lqvXlYi0rLzeeLdeO1dQFm44+XntG5bH9K0SqnfWfj2U0WfOedF4pZJAErh9M/fG7N4e15h8QBpbcpiffMLHe5sXEuBVGS/ZHzibXSLc2AWHMQM+iDOjDM4dseGZi6Zah5HZbU7+qY0oxe3UB6zNBOrrXmQ+cmcaiaCJYcYCrgVwLJcYfHPq1Xl3dwP6RCN4GArZAmwxbQ4JF9ry1wlD9XfRr7wxqA7ElaJEJIO7L+9O
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,68 +107,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 10, 2026 at 05:01:45AM +0000, Tarun Sahu wrote:
-> Subsystems using the KHO Serialization Blocks framework currently do
-> not record the serialized entry size in the block header. The entry size
-> is only known to individual callers, which must track and store it in an
-> owning serialized data structure. If a newer source kernel adds fields
-> to an entry, the changed entry size breaks the stride when an older
-> target kernel iterates over blocks.
+On Tue, Nov 10, 2026 at 05:01:48AM +0000, Tarun Sahu wrote:
+>
+> Each subsystem registers its serialized structure with:
 > 
-> Add an entry_size field to struct kho_block_header_ser. On the outgoing
-> side, record bs->entry_size into every block header during allocation.
-> During restoration, derive the entry stride directly from the block
-> header instead of relying on caller-supplied dimensions. The
-> kho_block_set_init() interface remains unchanged. A zero entry size,
-> or one that differs between blocks of a set, is rejected during
-> restoration.
+>         DECLARE_KHO_SER(name, payload_size, nr_required, nr_optional)
 > 
-> This change modifies the serialized layout of struct kho_block_header_ser
-
-Imperative voice please.
-
-> and shifts the offset of serialized entries within preserved blocks.
-> Bump KHO_FDT_COMPATIBLE from kho-v4 to kho-v5 so that pre-v5 and post-v5
-> kernels cleanly reject mismatched handover state during boot. Also
-> update the stale compatible string example in the documentation.
+> This establishes compile-time assertions and provides type-checked
+> helpers: kho_ser_size() for total allocation size, kho_ser_init() to
+> initialize the header, kho_ser_payload() to access the typed payload at
+> its dynamic offset, and kho_ser_validate() to validate required features
+> during restoration. DECLARE_KHO_SER_HDR(name, *fhdr) declares a struct
+> kho_ser_hdr pointer while verifying at compile time that name was
+> registered with DECLARE_KHO_SER(), allowing callers to document which
+> structure a feature header pointer represents.
 > 
-> Suggested-by: Pratyush Yadav <pratyush@kernel.org>
-> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
-> ---
->  include/linux/kho/abi/block.h          | 10 ++++----
->  include/linux/kho/abi/kexec_handover.h |  6 ++---
->  kernel/liveupdate/kho_block.c          | 32 +++++++++++++++++++++++---
->  3 files changed, 38 insertions(+), 10 deletions(-)
+> An example demonstrating how a hypothetical structure defines its
+> features:
 > 
-> @@ -264,8 +274,21 @@ int kho_block_set_restore(struct kho_block_set *bs, u64 head_pa)
->  	}
->  
->  	while (next_pa) {
-> +		u64 capacity;
-> +
->  		ser = phys_to_virt(next_pa);
-> -		if (!ser->count || ser->count > bs->count_per_block) {
-> +		if (!ser->entry_size || (entry_size && ser->entry_size != entry_size)) {
-> +			pr_warn("Block contains invalid entry size: %llu\n",
-> +				ser->entry_size);
-> +			err = -EINVAL;
-> +			goto err_destroy;
-> +		}
-> +		entry_size = ser->entry_size;
-> +		bs->entry_size = entry_size;
-> +		capacity = (KHO_BLOCK_SIZE - sizeof(*ser)) / bs->entry_size;
-> +		bs->count_per_block = capacity;
+>   enum foo_ser_required {
+>           FOO_SER_REQ_BAR,
+>           __FOO_SER_NR_REQUIRED,
+>   };
+> 
+>   enum foo_ser_optional {
+>           FOO_SER_OPT_BAZ,
+>           __FOO_SER_NR_OPTIONAL,
+>   };
+> 
+>   struct foo_ser {
+>           __u64 base;     /* base fields, always present */
+>           __u64 bar;      /* FOO_SER_REQ_BAR */
+>           __u64 baz;      /* FOO_SER_OPT_BAZ */
+>   };
+> 
+>   DECLARE_KHO_SER(foo_ser, 24,
 
-Nit: can't we just initialize bs->count_per_block directly and drop
-'capacity' and the change of the following line?
+The example should have included 7 fields total to make it 42 ;-)
 
-We are not very strict with 80-chars limit in kho/luo anyway.
+Seriously, this magic number show must stop.
 
-> +
-> +		if (!ser->count || ser->count > capacity) {
->  			pr_warn("Block contains invalid entry count: %llu\n",
->  				ser->count);
->  			err = -EINVAL;
+>                   __FOO_SER_NR_REQUIRED, __FOO_SER_NR_OPTIONAL);
+> 
 
 -- 
 Sincerely yours,
