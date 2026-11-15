@@ -1,88 +1,113 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858C2606A31A
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 14:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3890606A31F
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 14:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F/8qSbuo
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Y7Vd6qgN
 Received: by kanga.kvack.org (Postfix)
-	id 8609B6B05B0; Sun, 15 Nov 2026 09:37:51 -0500 (EST)
+	id CAB766B05B2; Sun, 15 Nov 2026 09:39:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 811386B05B1; Sun, 15 Nov 2026 09:37:51 -0500 (EST)
+	id C82E36B05B3; Sun, 15 Nov 2026 09:39:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 728A26B05B2; Sun, 15 Nov 2026 09:37:51 -0500 (EST)
+	id BBFF96B05B4; Sun, 15 Nov 2026 09:39:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 53C886B05B0
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 09:37:51 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C8677C0783
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:37:50 +0000 (UTC)
-X-FDA: 85437607500.10.9D4F615
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2CCC51C0004
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:37:49 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="F/8qSbuo";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A22F6B05B2
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 09:39:24 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7B658160775
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:39:22 +0000 (UTC)
+X-FDA: 85437611364.30.AD78F8E
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9FDB080005
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:39:20 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Y7Vd6qgN;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf30.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794753469;
+	s=arc-20220608; t=1794753561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2aQpD+5wOwFw2m2I7/vgi2Nycby2o3K9U9x+kyRBQZ4=;
-	b=kmA7xGLaMF44Vd4IR8y9s4+kPjxyvjYl7YFuKPk1jwfniZ9mr8akbdBH41haoCA+4Etbgc
-	Wq9Z/1JarCpslxZmKjkFFKsDiOzuZV6kzcecC4gOVZAwyLtQ/kqV2/VMHZ4RD6KyqaaKe7
-	g45srBICBX6+sccSooRsHj/ri5EFIz0=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ZaejXHaBUpAvEwKuL1oBVBhqrVdgMX2jfRxMaYZY1C0=;
+	b=B99GBqwKoOJA4At6Si39+iwx16nAXIFxXeBGgQZZ3KMhxNiYAuPRqk++/R3nSVxPlFS5qK
+	o0PMRdHsCGPKTpnMgOHjy6y589JMVBNcTQt7+XRR8QO1hNkqd0eXqVwNp9wHl8tRkZbhFJ
+	S1Alp5AhyQ47ICce+jrM+8k0xtrY91w=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="F/8qSbuo";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Y7Vd6qgN;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf30.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794753469;
-	b=fPcKvgPcZy9AmNzAmylkdJMfs8TCFoX6I1hOlvsH55YbyJCv8BUA16FuDru/ge2ucsIOHL
-	SjdpHZAzU7ugXUq3/wyjwJXodBUnOQHHfFNCFjY+++/VOKmKobpYJ9iOM9+Tjho/SOOdoW
-	f4ATwl8kBfnqcm4ck3Wr9I4F0snkieE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 794576242E;
-	Sun, 15 Nov 2026 14:37:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A461F000C5;
-	Sun, 15 Nov 2026 14:37:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794753468;
-	bh=2aQpD+5wOwFw2m2I7/vgi2Nycby2o3K9U9x+kyRBQZ4=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=F/8qSbuoGQZGQtgBxIr6B2ueFpU95+7qJMwmm8INX1xDHRlTUaSD8BFdbq4CbOxrR
-	 ox1qNccLa8/HK300SOpQmBbk5Qvso5s0ej0nnLzfaw7woW9fsTRsB3fn8XKtg4GZi2
-	 mkIHuNrdV77fS3AS7HGyBsRW6r1I1TVsLts0dAY635e5VsCW997Apri30eUILQ8DE8
-	 6QT8gY4VS7IF4+z6kjL7VWLQ7z0W25C7ZhfXYsY6RHZAfw5JKq52esd/VilnzZerDm
-	 yfh9vV8t3VLyXsXWrgdekBNeTMfP6B4g7EKPziGoUoo9vqTOsFrf/z8rys1tdDFec/
-	 iXGUcM50BmJSQ==
-Content-Type: multipart/mixed; boundary="===============5766711597295612734=="
+	t=1794753561;
+	b=e4hpB8XqJGbjj8Ys4l428FMY1aUehlweGhnUVhorRyfAQXe6fadRtA8U+T/0ousUdPhEAs
+	B61wgsOLqEYPs7mBmn0Aaf2tP1mm6Un/Rm0kW15hBbnnXy0iLdkx98S2aK34AMERWGDvJ3
+	mSUd8fPY1rARCa/xOli6UlYs+esI++8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 84E751476;
+	Sun, 15 Nov 2026 06:39:16 -0800 (PST)
+Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.33])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id ACC043F85F;
+	Sun, 15 Nov 2026 06:39:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794753559; bh=jI0WbTDOJd6J5+na5JHcdV0AETzFP4/ftE8ndjLZuMw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Y7Vd6qgN125q8hK35gQR0raUdxPiX5gSqSFy44kpN+z29FlGNNe97oyKtLMGxDtlE
+	 Z/Y0dYXpMbLieTfKz8aDW2YRqEltVKVwNb+kxYClYQWm/5ZbkGfdaEkJ5vK6fiVuNF
+	 RTmXNEProFAb29tj75RfnqnFRB6o6JsA/6UCCFok=
+From: Dev Jain <dev.jain@arm.com>
+To: david@kernel.org,
+	ljs@kernel.org,
+	akpm@linux-foundation.org,
+	hughd@google.com,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	davem@davemloft.net,
+	andreas@gaisler.com
+Cc: Dev Jain <dev.jain@arm.com>,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	baolin.wang@linux.alibaba.com,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	baoquan.he@linux.dev,
+	baohua@kernel.org,
+	youngjun.park@lge.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	pfalcato@suse.de,
+	anshuman.khandual@arm.com,
+	geert@linux-m68k.org,
+	sparclinux@vger.kernel.org,
+	ryan.roberts@arm.com
+Subject: [PATCH v4 0/9] Optimize anonymous swapbacked large folio unmapping
+Date: Sun, 15 Nov 2026 14:38:55 +0000
+Message-ID: <20261115143905.3045084-1-dev.jain@arm.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Message-Id: <9bacf710b101058735f399d44953a18d1630aec3b6b176fe96215cdd2f0eb7ac@mail.kernel.org>
-In-Reply-To: <20261115-work-ovl-d_real-v1-8-ca155efbcb2e@kernel.org>
-References: <20261115-work-ovl-d_real-v1-8-ca155efbcb2e@kernel.org>
-Subject: Re: [PATCH 08/13] ipe: handle errors from resolving the real inode
-From: bot+bpf-ci@kernel.org
-To: brauner@kernel.org,amir73il@gmail.com,linux-fsdevel@vger.kernel.org
-Cc: chris@chrisdown.name,mszeredi@redhat.com,linux-unionfs@vger.kernel.org,linux-kernel@vger.kernel.org,bpf@vger.kernel.org,linux-trace-kernel@vger.kernel.org,linux-integrity@vger.kernel.org,linux-security-module@vger.kernel.org,linux-mm@kvack.org,brauner@kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Sun, 15 Nov 2026 14:37:46 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 9FDB080005
+X-Stat-Signature: zei8f4rb9xesf8awh8nn1e1kaai5sdzs
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2CCC51C0004
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: c5i876j8crwox4pofpdywcgrrai171up
-X-HE-Tag: 1794753469-128866
-X-HE-Meta: U2FsdGVkX18YOrOzi+i0XhtU/ZmQ2ukkGjOmm9hxyrUzWr8GHCmbmaUsPpo9elIQDqfp/wloAEiKmK4t+d5gTHBhV4uc+aKJcfjdo6LWMs4B2ONwEAbIuLXIdBoXaw3Knqph4i88oZ8Wt5/q/X8gaD+XE01HAIG8C6xA3XhB9ubQs1w2uRYGVvBA13ZDQ0DPQ3YlAIqowXXlQHmxRbFrRbkR7QlxpCDfGNBNzRQsOxVPrIfVW8c16RN4s70VFg5HnkEvbFoBFg6SN2PGaHAHevGMrcSW3TMe46rAcyRI0MNN/5qsEvlucR+hA8L2gjTczNWXWsr+dNUdYXxPQ/qbBUn9MdBufus5dNn8B2SQP6erLimSUKNPJvT9X6eJw3xzVY27OT+PNQ1AEdhOZYUBJQkjc20eeChJ437XV3kC7tQRxNK35Xy7XNk/LDuwXOj/3tt9QLzh9uQYPj35qHfRPS/S/PvDPR9ZmtuRDMkwUVMeJrYAR+XUksB1RAuqFBxZI8cKEo0Ss8Y0Hlsk+gDvuovJs05//AiCiAeYqm4tRxd2oC4xOPE95YQDtjcJ8U1vjt/wwKOCkcdV5cNuJCCbfeY0ybxO9zFYK1OQv7xd8JSTw3SfVYmSS4DHd5V30oHVx+0Swa/PlVwn23ktVr+HJBmm2LFnSILgcFdJHHT6HZSUKVPhSmf1Qh13MbQ72Lrw8XwO2jXkdT95BmngeZkyTwwOJF1/bWjGhe8pCtmTxk14798/QMFf0CjNCPD3Fu/xTssyWpTyyhMt9KMXjDJPyLCPNUAhpApKjrBT2DyoZEvsbdL1V8zEwpLNBcJVPqjjuKBqOH1lUWAV387l+NFz8fk6mboafYC7Zy/POL5pLGe+VMaCmO7V4hBwSLSiPtSZ9za6PhpJz7R/x0x9BVhvbg9Xk5F2ww1DJcfWQ3RZAf8O1NnS8Ignj3L0M67p6NmjQani6Z4D/gAChtaUGwr
- l1qYG4oh
- Dd46mDasqfTtgBGbNBwF68rd5mJXLpkvAjJ5nKD+Oqhjg0gNrKGWN/hiVbTjImRN8f0WYnezlBCKqKgmdEciIQOBMVzFlSgO3D9wEuTYbwWymBL2ks2axvgM0c2CYp0P+XF0Evod1NDfD240ol/OdREnSnmXApcXvauXOZE/N0SC9gugdDufv4KjdsR/U1bqEkEcZpEuEMDaCSZa+tAaruUeeIKO4KGuz6NQI990WscvP0EF6AjxNdCS2KW6g6DGVDBpYAd7F8+dcewsRYWLAQx2GsN0Nsrd/ymvckxjqg9BilrfzT0TQczPYJS1vZyca3SE3lZRTWGakkSv/9eqx3cTKgVn5mA/c59z9R04LvQibK5cRlmST7ysUz/S8v6d39XfLkSYoMBVJNBAyDKVUOaA3NqUbTmEOi0ULVcVAcIcGYMoamDNiYaUGyB5LXxzsEmaNJLQfGkyg8PQsIngvGZNHdXq7MDq/pPWsB6qOTtzI5wQc73vrDPgmsg==
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794753560-99430
+X-HE-Meta: U2FsdGVkX1+846Z9XwLJ/X7xXeCDAf2wQglSCvDg4Mf/IyzkzxJ6Rc8H+9vqaH7G5ZNuVbML1z6ULLMKaXKIK2dY5LDQ/ri4y3B73R7IkhU5YbeGeVrPoybB4FQ6H83TYI9ZWAWam417fi/fDdFjlqnvTWjthyxYQzhD7YD/gyHzEltZdOvZjPC2t0iVVttpzOnD/8Y/BoGbZJIEP2HCgxQoSabM4WaUTkFF7z5HOBXsC2S+O6v+FJpX+vieHfLK3FxHwZZDR+Q15f8IgxwcQsILhKM5qSMN7Pd9OY6XZvFOA84vCM3qYY7O6DT/WagpI5TCZBEMD/NsRbrqjbH+KBfv4LWHjpzoorhM/8t0rMFEaDIY6SfuxiL07OKfT8Ks1VVSeatNIrSk8gO2o5wLMzI4GPUHihU+YPGX4Use6IRCMaN0fkO3HXg0PIMgv5b+AVcRDzpEGQLRViGrElCk7IZLSxhuxgtQLLVInnMrgOZgfovbsuzyzkwDZ1cLS3p7ggFHnAf4iKZzrQqM6JOa7BvdYe3JgKTzpN6S/jHIa5b+DoETkNRUB3E0b/auq6HinGREi91Ux7DzX3p6Z8eSRLFX7XoXixp8C+JPWCY22dDTZFdpHuj2bTCr8x1VpT8+ifJbvJXYLY/MAaeLGc0uqiMjwZFBL33gimAS9l/cFR+9GZDKHyTls9yihVQGUWwWfj+pM+AZsjp068A5HEV3tNxbfM+LPGvqLWHDn5DQ6Sr7qWLWt23o0VS720/FcPUXjFP62EafVApMs+1WSzELGDSzZTbI7aZjlTU0IDR8URvGo7pCyrXaN7U4YCWSf1+6zs/f3+D+TKYdJUzyszTT4zbwHrz+La/2IN0a3hTxocJsDad4Nwg9YMQXxFlUaIHvHkariKpZ+6hk6/z1/kXhBtKkR6doRva/t0X8vYaTeWXsSA5o/AFnKBYbBb6jLhVPJJho/+16Rr1v7OH9K+G
+ vzazroYC
+ 8nCttigk+ZXcRDBb3wW33zdC73752QzXvD9c2ag5xYjUSz2su5+K6YBvt9MpCx1gbHrwzk2VKXwDPE3H8LYOl5IuYgKc7kIOKDCYUnWJWgwqK4Dmaka/fS333Dom2ES3quowsrsmMymnj0aeQm2gTm64jPqymiRP45v6KYgZ7Djs1myjjPm/ziJapiiUnYp5vo0tytZ76IL0bBGXL+EYbNDWWVVTHDBJDoHYCSns7+/VWYF4H3xgJe3FIGd04+0QKr47AYirmwBXP6D4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,88 +116,129 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============5766711597295612734==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Speed up unmapping of anonymous swapbacked large folios by clearing
+the ptes, and setting swap ptes, in one go.
 
-> ipe: handle errors from resolving the real inode
+The following benchmark (stolen from Barry) is used to measure the
+time taken to swapout 256M worth of memory backed by 64K large folios:
 
-TL;DR: Behaviour question: the new ipe_evaluate_event() early return for an
-unresolvable real inode skips ipe_audit_match(), so enforce-mode -EACCES and
-permissive-mode allows may leave no IPE audit record. Should it audit?
+ #define _GNU_SOURCE
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <sys/mman.h>
+ #include <string.h>
+ #include <time.h>
+ #include <unistd.h>
+ #include <errno.h>
 
-> diff --git a/security/ipe/eval.c b/security/ipe/eval.c
-> --- a/security/ipe/eval.c
-> +++ b/security/ipe/eval.c
+ #define SIZE_MB 256
+ #define SIZE_BYTES (SIZE_MB * 1024 * 1024)
 
-[ ... ]
+ int main() {
+     void *addr = mmap(NULL, SIZE_BYTES, PROT_READ | PROT_WRITE,
+                       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+     if (addr == MAP_FAILED) {
+         perror("mmap failed");
+         return 1;
+     }
 
-> @@ -335,6 +339,15 @@ int ipe_evaluate_event(const struct ipe_eval_ctx *const ctx)
->  		return 0;
->  	}
->  
-> +	/*
-> +	 * Without the inode hosting the data none of the properties of the
-> +	 * file can be evaluated. Refuse it unless IPE is permissive.
-> +	 */
-> +	if (ctx->file_err) {
-> +		rcu_read_unlock();
-> +		return READ_ONCE(enforce) ? -EACCES : 0;
-> +	}
-> +
+     memset(addr, 0, SIZE_BYTES);
 
-Should this path emit an AUDIT_IPE_ACCESS record?
+     struct timespec start, end;
+     clock_gettime(CLOCK_MONOTONIC, &start);
 
-This early return skips the eval: label, so ipe_audit_match() is never
-called.  Every other way ipe_evaluate_event() ends in a denial goes through:
+     if (madvise(addr, SIZE_BYTES, MADV_PAGEOUT) != 0) {
+         perror("madvise(MADV_PAGEOUT) failed");
+         munmap(addr, SIZE_BYTES);
+         return 1;
+     }
 
-eval:
-	ipe_audit_match(ctx, match_type, action, rule);
-	rcu_read_unlock();
+     clock_gettime(CLOCK_MONOTONIC, &end);
 
-	if (action == IPE_ACTION_DENY)
-		rc = -EACCES;
+     long duration_ns = (end.tv_sec - start.tv_sec) * 1e9 +
+                        (end.tv_nsec - start.tv_nsec);
+     printf("madvise(MADV_PAGEOUT) took %ld ns (%.3f ms)\n",
+            duration_ns, duration_ns / 1e6);
 
-	if (!READ_ONCE(enforce))
-		rc = 0;
+     munmap(addr, SIZE_BYTES);
+     return 0;
+ }
 
-With this patch, in permissive mode a file whose data cannot be resolved
-returns 0 and leaves no record at all, even though
-Documentation/admin-guide/LSM/ipe.rst says that in permissive mode policy
-violations are logged.  In enforce mode the -EACCES has no IPE audit record
-to explain it.  The commit message says "Permissive mode allows it like any
-other denial", but other denials are audited and this one is not.
+Performance as measured on a Linux VM on Apple M3 (arm64):
 
-This path can be reached for an already open file.  ovl_open() verifies
-lowerdata and sets OVL_VERIFIED_DIGEST, but a metacopy copy-up clears that
-flag (ovl_clear_flag(OVL_VERIFIED_DIGEST, inode) in fs/overlayfs/copy_up.c).
-A later mmap(PROT_EXEC) on the open fd then goes:
+Vanilla - Mean: 37401913 ns, std dev: 12%
+Patched - Mean: 17420282 ns, std dev: 11%
 
-vm_mmap_pgoff()
-  security_mmap_file()
-    ipe_mmap_file()
-      ipe_build_eval_ctx()
-        d_real_data_inode()
-          ovl_d_real()
-            ovl_verify_lowerdata()
-              ovl_maybe_validate_verity()
+resulting in more than 2x speedup.
 
-which can fail with -EINTR from ovl_inode_lock_interruptible() or with an
-error from ovl_validate_verity(), setting ctx->file_err.  The IMA patch in
-this series (c9952f8fed84) describes the same scenario, and its error path
-in ima_collect_measurement() still calls integrity_audit_msg().
+No regression observed on 4K folios.
 
-Could this set action = IPE_ACTION_DENY with a suitable match type and jump
-to eval:, or use a dedicated audit helper that records the error, so that
-denials and permissive-mode would-be denials are still logged?  No later
-commit in the series touches security/ipe.
+Performance as measured on bare metal x86:
 
+Vanilla - mean: 54986286 ns, std dev: 1.5%
+Patched - mean: 51930795 ns, std dev: 3%
+
+I tried magnifying the difference on x86 by using 1M large folios, but
+can't spot an obvious improvement (looks like my system is too fast to
+benefit from batched atomic operations!), hinting that the benefit lies
+mainly in the reduction of ptep_get() calls and the reduction of TLB
+flushes during contpte-unfolding, on arm64.
+
+No regression is observed on 4K folios on x86 too.
 
 ---
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+Applies on mm-unstable (24231596edf2).
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/43723438893
---===============5766711597295612734==--
+mm-selftests pass.
+
+This breakout patchset is the final completion of
+https://lore.kernel.org/all/20260526063635.61721-1-dev.jain@arm.com/
+
+The extra addition is the generic set_softleaf_ptes() helper.
+
+v3->v4:
+ - Make page_anon_exclusive_batch return the exclusivity instead of
+   computing that in the caller
+ - Make ttu_anon_folio() return the number of unmapped pages, to simplify
+   the code
+
+v2->v3:
+ - page_anon_exclusive_batch returns unsigned long, shift to rmap.h
+ - Drop a para in description of patch 5, use softleaf_is_swap to gate
+   pte_swp_exclusive
+ - finish_folio_unmap -> finish_folio_unmap_batch
+ - Add patch 9 to do batching for sparc
+   
+v1->v2:
+ - Add WARNs for folio span in folio_*_swap_pages
+ - Trivial changes to page_anon_exclusive_batch
+ - Add two sanity checks in patch 4
+
+Dev Jain (9):
+  mm/swapfile: add batched version of folio_dup_swap
+  mm/swapfile: add batched version of folio_put_swap
+  mm: move anon-exclusive batch helper to rmap.h
+  mm/rmap: Add batched version of folio_try_share_anon_rmap_pte
+  mm/internal: rename swap offset helpers to softleaf offset
+  mm/internal: add set_softleaf_ptes
+  mm/memory: use set_softleaf_ptes for uffd-wp markers
+  mm/rmap: batch unmap anonymous swap-backed large folios
+  mm, sparc: batch arch_unmap_one()
+
+ arch/sparc/include/asm/pgtable_64.h |  10 ++-
+ arch/sparc/kernel/adi_64.c          |  21 +++++
+ include/linux/pgtable.h             |   6 +-
+ include/linux/rmap.h                |  76 ++++++++++++++----
+ mm/internal.h                       |  64 +++++++++++----
+ mm/memory.c                         |  23 +++---
+ mm/mprotect.c                       |  25 +-----
+ mm/rmap.c                           | 119 ++++++++++++++++++++--------
+ mm/shmem.c                          |   8 +-
+ mm/swap.h                           |  35 +++++++-
+ mm/swapfile.c                       |  39 +++++----
+ 11 files changed, 289 insertions(+), 137 deletions(-)
+
+-- 
+2.43.0
+
 
