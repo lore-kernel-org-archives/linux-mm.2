@@ -1,88 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07932606A31A
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 16:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31FF7606A32E
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 16:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Udmu4xv5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GoWFHZsl
 Received: by kanga.kvack.org (Postfix)
-	id 0D8456B00EF; Sun, 15 Nov 2026 11:55:12 -0500 (EST)
+	id 4AFEE6B05B0; Sun, 15 Nov 2026 11:59:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0898F6B05B0; Sun, 15 Nov 2026 11:55:12 -0500 (EST)
+	id 4616B6B05B1; Sun, 15 Nov 2026 11:59:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBB0E6B05B1; Sun, 15 Nov 2026 11:55:11 -0500 (EST)
+	id 328886B05B2; Sun, 15 Nov 2026 11:59:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AFBB36B00EF
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 11:55:11 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AB456A8221
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 16:55:08 +0000 (UTC)
-X-FDA: 85437953496.02.AC071B1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id F05F31C0005
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 16:55:06 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Udmu4xv5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 0C8766B05B0
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 11:59:01 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9A80FA8531
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 16:59:00 +0000 (UTC)
+X-FDA: 85437963240.21.3563F0E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C4461C0004
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 16:58:58 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GoWFHZsl;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794761707;
+	s=arc-20220608; t=1794761939;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m20EIIwxT41T/fFa6Vq/LrIlpT9IXPr5QJgmc+YKdJI=;
-	b=zokJstp9rnW7iO6PEbqM/JkVJuPMPDlGvYx/Q8CJHwJCDor3ikWXYPDbf7q3nkzOyNDaRu
-	gGvoFcpGxMZCXUE5h4R9uSJtjXE/HGvXPTlpM/8gyt+IPW3rv3icYciGCoOuRLEeG0eGCz
-	Bl0dH9RznjrM7ihDnmtkKEbMsp3l8tQ=
+	bh=7icfoIT+Mng+FLAG3S5PMcuwQv7cbo7W5CDYKdjKwU4=;
+	b=K41gEYv/VKHxSlSWk3g7tlm4FtxuS1KZGNi3QnWroZgOZ+VZafkV2RVHBJpHwe2YQWZ6ia
+	b7l2Gd89j4NCVOaUNicxXwdEKqMwr/XM7tRK9zbliU1vDuAgxEesPyuw/XQk1ZHtlSpn+d
+	QTRiRMev32gMoljxE4Prt4RYAqsSO68=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Udmu4xv5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GoWFHZsl;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794761707;
-	b=i4eXiVEhF1Z2lqdGmgbT7fbFu5+0OdEXMuceeiwmOx/924BcmsQXB3zJ4wt8J1AX8708mb
-	rVIjmOfyrlefsYphnk/Zgzj8DI1MQba7pYPY8wzn8tq0kf+dDdTs3QPHs/do9F+dQ/KolD
-	hXX0t/9gva+CXInAZBRw5HnFnMzwXBc=
+	t=1794761939;
+	b=czcg6XssupsEInbkD/4TerbH++gvLvn2HMDonRICagRO0SvXyEclJAymi6jAe94a1jXgdC
+	0KrUYVMIY5RvU6RxYduO2kE4McEnakLix7ALilH5F45EiwzdH9pw+zjGSgdGRW9V+apF3p
+	OR2uqp3f0aYzhFv9iCmzVcWYfH5rAOg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1F02560051;
-	Sun, 15 Nov 2026 16:55:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428CC1F000C4;
-	Sun, 15 Nov 2026 16:55:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AD40542351;
+	Sun, 15 Nov 2026 16:58:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC631F000C4;
+	Sun, 15 Nov 2026 16:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794761705;
-	bh=m20EIIwxT41T/fFa6Vq/LrIlpT9IXPr5QJgmc+YKdJI=;
+	s=k20260515; t=1794761937;
+	bh=7icfoIT+Mng+FLAG3S5PMcuwQv7cbo7W5CDYKdjKwU4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Udmu4xv51KQf6LUkw+fPEBbDQqPjjdSC25iF11u6fG8HwmqO91dFbCQ8dRo6f87NJ
-	 KsjMcPUBY1qPtnTu5+HEO7hRzOJfcIBcNIFVdreqfRSLFtqB1iIi0811YVR3zeiaRe
-	 JiZc2vou7QFILany/TI7zxc8OeyY5aK6C9mour+lDn5ACPgCPENe71N+mBZiBjo+0U
-	 +3CenoOy8LDVamRnnqCwI0fDQw9tPxAQmaqYS5u5fedlN38uLqt7TB57RuEOCLLZIt
-	 FmQjQ70PY0vSwK7GOevb5VHYnGqGEaA5wwBFFu7vKhwdg97EPniUyymiOeDHmEpOFa
-	 WN4J++/7qBFYg==
-Message-ID: <042795ab-e8af-443f-b34c-72c674c0ea32@kernel.org>
-Date: Sun, 15 Nov 2026 17:54:54 +0100
+	b=GoWFHZslNnHYuGjrh/bx7l/8F07iyWDyej/GltR19PHb0krwpgQZnzQ/w29MU9yvY
+	 9N/ydZSw/qY2tK5FaOYCK1ORBjMwxhvWBnuouItS4XKDkbn9gWaeGjF+XgXMKjfDRb
+	 yRjP08VgPpWhb821Sp+uoP9Td3foxZ3vOKkFT2wkHSIOuMW3DhfBOncL7YGvQAJ7mS
+	 moyJ26SpKW7UvwaxAzqtXI2cUraP21SQ9Ax6dJRbxzUvfCguVEowEmmIQeonLglFpU
+	 MQxnJgWY8X4ntDgBifkx9ExXqmq/oX+Iv0Gpat2G+lyO4H7GjhcZ2VGKcIIaDnB2Ev
+	 itbJF0Q8f6G0Q==
+Message-ID: <f37ccd71-8e1d-4dd4-b11a-e22b9e617dea@kernel.org>
+Date: Sun, 15 Nov 2026 17:58:23 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] mm: add vmf_insert_pfn_order() and vmf_pfn_order_ok()
- helpers
-To: "Farber, Eliav" <farbere@amazon.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20261111113045.35368-1-farbere@amazon.com>
- <20261111113045.35368-3-farbere@amazon.com>
- <a242ede8-71c2-4f75-b5e5-dcfa98ab25d3@kernel.org>
- <BY3PR18MB47227EB15146F8F16E1C005BC6702@BY3PR18MB4722.namprd18.prod.outlook.com>
- <29bf5516-36bf-490e-ac35-d89893fa61b3@kernel.org>
- <BY3PR18MB4722713137ADE7A59A1EB81BC67D2@BY3PR18MB4722.namprd18.prod.outlook.com>
+Subject: Re: [PATCH 01/12] docs: ioctl-number: update MM entries
+To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ linux-doc@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Jason Gunthorpe <jgg@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>,
+ linux-mm@kvack.org, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>, linux-sound@vger.kernel.org,
+ Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+ Marcel Holtmann <marcel@holtmann.org>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ linux-bluetooth@vger.kernel.org,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Jason Wang <jasowangio@gmail.com>, David Heidelberg <david@ixit.cz>,
+ oe-linux-nfc@lists.linux.dev, Chas Williams <3chas3@gmail.com>,
+ linux-atm-general@lists.sourceforge.net,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, Helge Deller <deller@gmx.de>,
+ linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ MPT-FusionLinux.pdl@broadcom.com,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K. Petersen" <mkp@kernel.org>, linux-scsi@vger.kernel.org,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
+ Zhihao Cheng <chengzhihao1@huawei.com>, linux-mtd@lists.infradead.org,
+ Neill Kapron <nkapron@google.com>, Andrey Konovalov <andreyknvl@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ Juergen Gross <jgross@suse.com>, Stefano Stabellini
+ <sstabellini@kernel.org>, xen-devel@lists.xenproject.org,
+ Hans de Goede <hansg@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ "Michael S. Tsirkin" <mst@redhat.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+ virtualization@lists.linux.dev, Jan Kara <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
+ linux-ext4@vger.kernel.org, Mike Marshall <hubcap@omnibond.com>,
+ devel@lists.orangefs.org, Paulo Alcantara <pc@manguebit.org>,
+ Namjae Jeon <linkinjeon@kernel.org>, linux-cifs@vger.kernel.org,
+ Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
+ linux-f2fs-devel@lists.sourceforge.net,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ Tzung-Bi Shih <tzungbi@kernel.org>, Benson Leung <bleung@chromium.org>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ amd-gfx@lists.freedesktop.org, Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, intel-gfx@lists.freedesktop.org,
+ Matthew Brost <matthew.brost@intel.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-xe@lists.freedesktop.org
+References: <20261114202653.3113381-1-rdunlap@infradead.org>
+ <20261114202653.3113381-2-rdunlap@infradead.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,21 +169,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <BY3PR18MB4722713137ADE7A59A1EB81BC67D2@BY3PR18MB4722.namprd18.prod.outlook.com>
+In-Reply-To: <20261114202653.3113381-2-rdunlap@infradead.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: jktdjddybftpnzkru46w8xxc58if5q3j
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F05F31C0005
 X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: bc1oqzrxu6m19xc5o5qpp9pdxkrn74cb
-X-HE-Tag: 1794761706-732780
-X-HE-Meta: U2FsdGVkX1/XbKkfFhwAw77ruRnJ6lApmwVs3ZPPIM5nGS1R+fCVytCjSm0njxVmEORaE8BPUtMRRfiAiyd9a9MKf/wnMu6X+xRha02SJSjWSDrlloNhUuaGD8It2Mq+YGTi8DzQjinqBg8Yw8JuZmEDYan8oo64m2K1JHGC5w6yjZnMUUcRE/x+A+Xpi92KbRhNq7daZbSzDaxxHeb//+DiU33jxuJ/BjAYZQp+53YfqrXTEzObq3GyH1P1sb4d6fwaImf65orSKOLH3e+S5MeJ3Y7X/NlxL0qkM52EKMoKtFuMevC2BSJc0IDxTXKJxxg6QKG617LLAfIVBL4NIRBylIhbw4B8mN4uITmaScy347yU1j2VvExrhxfciSvuHBrB3aYG+7opthnC7v29cFK/zEfyJ2qTK9/rAm1Tsz/2qDMVrHM2e8FmwfuF/a2PYDvqghrhz5ECgMCHDQsxLIDYH/6NC6eu/xryOM9eXYkHBcHMIqL0IdCqPRLpqcDlhX+9oFHnODiNkiYH+qd+BGXKcJQMn3HTSiG6/3pKwtrYD7EfaakQxDWCnceuzGLZEbd2eGffm9oK/KGi2SHL7oS0H3zKUSdXKfQETdfzhg0SkyTBZFY3YXvum5MvhR8zc7plbHlHnh2W1P9FuX9QK5vG07EIMowQN2Z6yHQ3OBS6BA+PmiFg5WD86LjnGlPVE3hUvbDAdmEMJG2YzLP9Wssj4+fwUTrE9hlPzbIgi/kQVzugm7pL8axK+rtoa8PBWa5d21oWk5B5NYhp9gAlAOCukm+udGQufaXjsP1aQlGA2UZRAD6TZhPfagO8cYQtGJM50Wr+//FijSBXZo6j15h4Hig3ARXsy2EtQ0pEMeo6+r3Ip2hNlfIKNwdOHMR/MJu2iVd1daYcnWTr16gj+Zuxvs18qTQX7zEJoJBB9gjScTwgZAKNhZR5sPZzquVPjTb6FDQwr5oZr+A+isY
- 5Qks4SUF
- XHijwzKQgadN2klvVTUllVeQxhsfZN+PIZgTHiOq8Jgx+O06wqFKoKrE6vr2ukw9psp8W3og39fceofCN2h7urY15fD3infoRSqnscrkuOLSRSa+gpQIzyd6+Y3ZNqFeLts+7lCQFuCD5jQ8E4Zevj4Mox3HBYWkT+QjQLLJXmrrAHsvoPQzfFDnylEgZ+naROZTSWEr7LMSK5C3rGklGRN6zhV1/XGD9daO1mKhaV48S3aG7NIQ4ENdI4W56YnsXn1kZ8/Ih4E3+rXzr78NwwEo7Q/HJtzpgdyb2kUHOadKbu9oUUMDNWsu3P7qbmR+mdG+OHdi+9wtSiQXhh6nszLOKJX7nLJQK6khu
+X-Rspamd-Queue-Id: C4461C0004
+X-HE-Tag: 1794761938-459568
+X-HE-Meta: U2FsdGVkX190y6tTK7vFsEoxSAubQ/n46XpwAp58mX195lzXDLJGGheY7yuxKyBcTsiB5V2mI7BVmoke7QVwbGBoeDgD92C+mXha1pqOC7XVSEw4KBVxKClt6PdtUDSrln1gkDwMW46jUAtvqoigIefenK9bSpF9UD5f90faprAMIEbBNnHzd6ajN4QAsKxljbSqZ5ahRnxfRhPVikSoPJlx84djAypeLTJ9YOZNY+WRvbl1iP6wBqsQc7bdcvN8HQLzZHBdylS0L5fjbo/GwV9zn9NZR3ju5d+d/ZOuzdJhGLlIE5nB4vp7WZHBtYKZCT6ilmcXf8mN0GfZe8gZv6fT20xwmOr1DTpVlpciU/hiv3xSDbqjLXQeai+N9zKu+0OeI415uIzWLSUX3QbKBIFSZpYe1AXO1HhxbJpI5yw+b+6SpyS6y/To5m9PExHc28Dj7M7pXljcuufN3L2Yo4a03ac/Ft+lA/kQhxUNbthQ87WbjD4RRidylsNHDqukCQfotcFHXJ2863c7bDtJH9+hSklH6KXXhfZgRxJMF7MNGOnGymA/sUIfmJ2nXtL/EHwVmqAlb2chJDiref9UCxP+xUKMLtJyeTfraIPuZMcQ5aqBcKUIUAHyrY/vuiSWBH8ZLyiT6ngstgBzzsTL+28D1ZbXmptnnf8ALHgGaEpVb7fVjc2wWYJp+Ba9kiSX9HtF4WZcIfeLLuUhVLZoDKoISGHI0Qb9qXJRa+uKdcOwotnem0r4nzYm9BQP/ORrN0jnfX+RxYeH63GZsFzZgJQFKDeSt5UW9AqyBd0rWiEAUWWe046YwMPFWDhF897+/f39s/BAdZRMdRYh2hbn7eNpveERZEWvvR0/jC082Se7s+y+zx6nt945eFLXbEhfmeG9l1Gt8Q+ejVnqg4/qqagXzeiA5J6mMxg0gDeYAH8qsgRs3zI9C1yeIKvAPkuoQg+FB/s/xUpsfvVpgiq
+ Dbjh/M4U
+ wm4NPvDIPUrJiQNRDARgSyryXZlYwDhozrkMp+9di0E9VOwV2ZLM51wJNlYtUAuejcA68QvDLDrSLOShHD+hCHlm6Zy3/zhp1g1CeiI27Ydl8nbXSZ1Y5H3EYnOYAdLKqlCbVXseg6sl5EWbyLmxWm7crla/VLqPTznA2pMq3avzqNDy01/VMaV//NLG25qvnJavEqOfYF2GIgNJ8HCcXAefAmFOQU41645jo5b+B+/T8LSzsORF8+hZuuufSTg63IY6vRIamTIVPVACeTiW7IdqPYpsvfFwIadhQZJ8ifluiIprqJIEYkmORLKeWMeHJLf+e9Dsb+lGjJxU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,40 +192,12 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/15/26 07:44, Farber, Eliav wrote:
-> On 11/13/26 11:39, David Hildenbrand (Arm) wrote:
->> On 11/12/26 16:55, Farber, Eliav wrote:
->>> We crossed in flight: v2 went out about six minutes before your mail, so
->>> you were reading v1. I posted it to address sashiko-bot's review of v1,
->>
->> First, wait for human review. Always.
->>
->> Second, read Documentation/process/submitting-patches.rst
->>
->> "Wait for a minimum of one week before resubmitting or pinging reviewers
->> - possibly longer during busy times like merge windows."
->>
->> Because we have much other priorities right now :)
-> 
-> Understood, sorry about that. I won't post a new version before I get
-> human review, and not before a week has passed.
-> 
->> Before I reply to anything in here: did an LLM compose most of these walls of
->> text? :)
-> 
-> Yes, partly. I used an LLM while working on this series, to help with
-> the code and to find bugs, mostly for testing. I also used it to write
-> the text, and that is why my replies came out so long. I should have
-> kept them short, sorry.
+On 11/14/26 21:26, Randy Dunlap wrote:
+> Add ioctl number entries for test_hmm_uapi and gup_test.
 
-I don't want to be angry on a Sunday (I'm not the type of poison), but this
-grinds my gears. Your commit description is schloppy, your code is schloppy, and
--- even worse -- your replies are schloppy.
-
-I'm not interested in getting work-schlopped by people that believe their time
-is more valuable than mine by feeding me AI schlop on the mailing list.
-
-Please rewrite your answer in a way that doesn't make me hate kernel development.
+Just curious, why do we care about uapi for test interfaces that never see the
+light of day in production kernels and their sole purpose is to go a long a
+dedicated selftest?
 
 -- 
 Cheers,
