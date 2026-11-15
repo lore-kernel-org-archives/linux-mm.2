@@ -1,96 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A90606A31A
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 12:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 452E2606A31F
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 12:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k8A4nVmI
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lg2tJ8Zf
 Received: by kanga.kvack.org (Postfix)
-	id 03AA06B05B0; Sun, 15 Nov 2026 07:24:05 -0500 (EST)
+	id 682896B05B3; Sun, 15 Nov 2026 07:27:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2CEA6B05B1; Sun, 15 Nov 2026 07:24:04 -0500 (EST)
+	id 65A2B6B05B4; Sun, 15 Nov 2026 07:27:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E43B46B05B2; Sun, 15 Nov 2026 07:24:04 -0500 (EST)
+	id 597A76B05B5; Sun, 15 Nov 2026 07:27:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BC0BB6B05B0
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 07:24:04 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 24EE21606DA
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 12:24:04 +0000 (UTC)
-X-FDA: 85437270408.17.3D9E9DC
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 35F986B05B3
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 07:27:51 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 38B68806F8
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 12:27:49 +0000 (UTC)
+X-FDA: 85437279858.05.BBD30C5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7DA5B20002
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 12:24:02 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k8A4nVmI;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf05.hostedemail.com (Postfix) with ESMTP id 9382A100005
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 12:27:47 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lg2tJ8Zf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794745442;
+	s=arc-20220608; t=1794745667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NJ71py6i4waAq8tFr24Jq5kGVUA8O+SGz5SBTC+E7w8=;
-	b=lgpWyasZy1SVoMkWznyDcuIzcq0lxQUJChKLIGZF0/l4IuSAsERBSiqPjD1a4VfrW7p3BE
-	pMk7sCx9vU9gpKFtXEe+LixIEIgV/WZraNQ/tEkb8xnYRdOy9fcXAIT2OKezSm2FMQ7RMq
-	bMtUwL4iFByDpVdEyUUWEN+WWatGdRc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794745442;
-	b=gzVd3MCVxNm0cCIXK+t4GD5I5YLCyz/pRRn6p8FAK/H1hGb9lMVbODFJxlTX2Zq2HWj/zS
-	ho0JYhjCqmB0CATwrGbfEW5Y1mQdn2+wjEhpFsgM4tnWoxHdhVQVrbq/iV4uyXeHWdzY+w
-	4prOZOcxa0efSTa5gMEQKTVxMd+JtH4=
+	bh=UAPUreepg71t27uA19huNdBMN8SZC5pl+gBBNOjrEpE=;
+	b=OER8ZCu4/gzM+Zq7HyMSjWarGc2GFLPHRcAI2DWr6oqQVWinEsGACHUIFQpOBjZLPBeRJf
+	X/Vqfe4NwME4NX+hmSijWQktfH0aaduxS4znz7pjSxUOROYjWvXCk+Ff/kXy+HGjcot+64
+	ttgAvIWPwkJ8jtA6xZ9TmUsu8lovHRE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k8A4nVmI;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lg2tJ8Zf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794745667;
+	b=Ubfj+gU8meADsxaHkBck3//y7Oa5TySgiYUBctPc3jQsuJ0JAiSz+vXmfKVo8bftbCnqZR
+	8RAbdnGDpD4RRHHr51wFndUdR5xDUEaR9FOM7zMiWnnWjg6a3YqwfdBAOyFynztGVM5HnH
+	2i2+kqk7DaqgaDe+KEzdTeJmF2GIOrk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 431A7605E7;
-	Sun, 15 Nov 2026 12:24:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDA941F000C4;
-	Sun, 15 Nov 2026 12:23:58 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1488D60D9D;
+	Sun, 15 Nov 2026 12:27:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E8E1F000C4;
+	Sun, 15 Nov 2026 12:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794745441;
-	bh=NJ71py6i4waAq8tFr24Jq5kGVUA8O+SGz5SBTC+E7w8=;
+	s=k20260515; t=1794745666;
+	bh=UAPUreepg71t27uA19huNdBMN8SZC5pl+gBBNOjrEpE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=k8A4nVmIqoi/NWmPd2U6byTM0cbL4NjprWGfkLWfObyXrqMlOPrnyd9MN2qnIZi7T
-	 +UR+9z4YpesMhoi76B4Yr2u5UZqePcDOgCCU2BFXmYWmQ4Zr4fZk2b1UqzAv03KgTE
-	 sdM/rAAym81NYGbfIqts+y85jlUJyAXXE+CNNPkEEpPP8MzmNkKLY+5+SZzyzJfo/B
-	 DPndMAI9VsTgO7l1SRzjp7m0mf/BFQvpmD6dKoELyl5iIxQFdycv5GYGeMLjWISK6S
-	 V/n7GouF6Y2sotIGr62b9yJ73VWHApvR5rL/Bfuv4G1ut+M8y3uo3zi/dspZTlUrLu
-	 e58HmdJdqOPjQ==
-Date: Sun, 15 Nov 2026 12:23:56 +0000
+	b=lg2tJ8ZfrKmdiIKH0xpR57qGsXXfv2F5ghS97GTxNPBYY8aqMOGx2U30AnaIf0OtU
+	 BwGhDNlCMBUsrfabSbufGfLT3OaR1RYjS9nwKVDAWL8J6AdVpnXLSgwdCGgl2bKeHP
+	 VgjCDvrJZoBkLyNSrBbJDQlRKdaGGexyelqo55KgE7EzB9xk4jwa8rwl79TQccZyvz
+	 RmmlZGwya6TYgMfbALzKyzOkSeGtq+99zbwJcdGmtM/laJI+bxnQD+irqZdTHdrtQ3
+	 0/6lM2cuN6kAuj4g3ho77thhIa6vswDZPy9tONnIb9v3gpmpvoP3zqyMcal8rxA3qM
+	 R3BmAszLUtkkg==
+Date: Sun, 15 Nov 2026 12:27:42 +0000
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: sashiko-reviews@lists.linux.dev
+To: Ivan Ezequiel Rodriguez <ivanrwcm25@gmail.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, David Hildenbrand <david@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-mm@kvack.org, Tal Zussman <tz2294@columbia.edu>
-Subject: Re: [PATCH v2] mm/madvise: zap markers from guard regions
-Message-ID: <avmkGrQbxiu2_XYm@lucifer>
-References: <20261113-disallow-uffd-guard-install-v2-1-9d0063c70542@kernel.org>
- <sashiko-outbox-215027@kernel.org>
+	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm: use PFN_PHYS() in phys_mem_access_prot()
+Message-ID: <avmlN3K0CYl2yDP-@lucifer>
+References: <20261113193812.1239880-1-ivanrwcm25@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <sashiko-outbox-215027@kernel.org>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 5pypwp8atf1un3onb37irwewatuek31y
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 7DA5B20002
+In-Reply-To: <20261113193812.1239880-1-ivanrwcm25@gmail.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 9382A100005
+X-Stat-Signature: bt1mscwgdowupea497z1xy8ajff6coue
 X-Rspam-User: 
-X-HE-Tag: 1794745442-374234
-X-HE-Meta: U2FsdGVkX1+i8krNomOwpRr8DURioL1Nu2rku+BTMiMM66qztciDMMvQfqWURGUL6HlZTls+KFHaUPYCn+85j0w7tMJalcNa5Pjhcm2AcMXUy6ugkbhZ1R5xq6WqWhGPwtr5o2JMe2UOC+Xg+jktAn1ZS8IVU74pI+lQHg7bX1UL2FL/znNWIhswqfBFAQlO1xgwJQXmc6nq6ycDcgS+ltx0V5nG0DaJQSHC/tVW/nc3v5+gc/P8a6EUFsQ0osQOy4V/sN/twQs1i/S1gJ/07gGFVRt73LA/vVLHrmtthV0A816TDvA6a8XCeh/NH9b47uEu+mA4RJkCysG167Ny9opYymTwDgwDOp/Mnp3AOKOIjZFV58fh9nEAcHKBB6PVUuL6cZTDujqRFQ8yQcryxBSgDKw+CyOfqQNH8a6elD/QcalG1Y/fNMobJOb6nCuYN/scNTg725sqsxTp6b6Cwzpb9UaVErSoGi5n9W9LcBHtMa8BRWSVxSak2UpQRdAtmb92liQBJ2iuf+/IeuHelhlAqWIIz+rYekFZ9YissbwKIKORNNVHs90D19iIZrG7iNcykdvPMoK0F6AG6lOmLVTouQWI12/Utqlu/XpXwCpz4FJsFzZzAZ2jEkMily0Hjla+wlPIU8XXAdSHKOiDl8s2eLkWsZcIalxZySZ26Sg4/mr16HQLWjkDHs17mfv9gZ7TFQh9ZizBilrmQPEqQ1/DG4WLEzj+XdJw4w3Esmjkx6czDo0Z4dyuA/bdaDuZvzLfP9zKOSX+cHEqeeqnw9tGRbkUVw30VDFbB/AxBhQXzCGOAEVSw1dBM2Kw+C8v1KfTjTjw256Aw4A2IBdLBjUcXpTgfV6iriU+EdQzB4OJH+k+m/EUNQuHRyTvTX8A6PE4lt3xMgHcVpEdUFbt0ECGrSgP09fPwlw3YKFNDyA5jVu45n1ZlXwBbEog4cadpn7nfp7v5MH+XjehDvE
- Jy/69N6w
- 4pInYzvQahHDqnMtQ837+XffzA3JU1ev/0arRZxx7QE/2rRp1tJHmDBWHcd7dOwDJDDoJZ/GD/kAbofEZEGvDuTqOuMbrjrniRKEUDv8rMkaltD2J6rSHgLiZOw7r40ZqvOX4OInMzLfEwp6t2flZ8qbb4sQsiiuNJYXHcyHQ3uAQVFW6631gv3grXWBD3zzLLTVKRp04y3U7MhNmBWVsjjPbmxX2YQb2gDTdVZY3UXyHSEFv+n8RSxOx22xvMQ5W3IS6gg6cmiEvGXFp1tuHM/4+WoSaAWCo2RO47f6g6+E7iNsBTx2PQ+BewqNDcp2Alwe3SbUcLdqtIW0GgBjbTO8AHpBMfUT9ErrK8WtMZaG5Kz4=
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794745667-948251
+X-HE-Meta: U2FsdGVkX19L9BFXTf5jBpCVY7F0E3+ofci9rjginN+OLPFaL9sUqHs3Dcb4ZVLKloIhjipF07+x8khyCGWyPdhI8bdxCC+wl7Hj2Lgr5fsgTBIX+sh8i9Rzjqa87eetn7yHpZhEZB7OXGDSmDO4alwWgH2DR1e+dgPpwJaRVyX3tR0fysu0bURtjUbCG5c1Bss6/4xB0raeIvsVXK/4NirK3MzbchYLmNDDeIMDQA4QOG8gcW9A0/BIQJXxT2qnrcy8qrA7q4iVq7vIeYPx2uwLFNy0ZjAHOSkpOSFLfvZONliMZZNEPiIbrzq2eFislXFFAXYupTN51zV256mChB7Tfwe6D/sNHKEj/h2eV8im+ZStyCQOSrIeCcD7heis9WKk1yQtSX/xMK15C2GcenHWr+tjePY+Z+wJYR1q4/uDtI/Mb20rquvFk+BSbuxffhCXf69nJ5anmaG5pQUvJdQtm/pmnZnZSNVflIEO2CMstphu+RjP2skWnKo16KSkTjdB2l1UrNXOpzzz7kTuF4MyIloWwHDBLsOUHweb7zNh4ZJSYEGj6/wIye2B7J6lBxift2GOh/PTEyfPUPy3ysvplXYzdCom2PmyeZ/PEkKjSuGevemwjGpXBczWzRxqHM/geEEGBwGdgSGJKefpUEOHR6nCji/PeWWk2IMP24SnYI1kd8AvM4jCEq/DICyMJcIxPiwg7a1+VO4x3lO+z+no9aw1CYaFyhrmHhfQIXSCbSNncqJ0cCpol61cPqgDGzNIcjF4ztXqL5FXIUQhlH+ksv2GS03MTrpgb9rxFgUsebMJHPKLTmIwaios9J9JS7i5fIa2AbBJV9rUST0bxMGjwqIC2pqZKk8wFrlk5rc6QXPMVtpM/PiZ9y/VGD4N/O2Hymw5AXVCIeNTg5HZPHmzHT7BA7uGWb8sYVW3i9J5FqKrPrn49fDEHehSlcYWIx0NDbhDWL4t8IlXzhf
+ nAEsH8ty
+ ryG9/qt8N0Ro4OnAsFPzZe5oMqDlXohocg9j7JYEKuYAWvtM4UFRe2Ji8UGUBTD0cIDIrRxvz8Vj9oNIUT1pEIuO7tpacm4qk6VEBY58E4nYBSgB8vM6u6ACgkWo/Et+rc1VTw4UR+c+K6vYuqTgbLLleeBI1Y/7iTdYWZEKuNmqy2gg4VDR7vfvPcbJKCaBYjSW0j+O+ocWSc2lp+8qxKBoGGTSifbGGKfGUtMxS/LGl9NA7daLDbSmp2QHb2kYE/576fvE6TXzuhlsFKKu234r5GT5r9T4S2q1I/4oj3NXOyFM9ho4oKp2o7SuPsLWkYNVMtgGHSBTbO6mczQQTjxK8wmt7oUCpTnYmJHrbb7UiAsV/UmmkUMM0qw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,84 +99,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat, Nov 14, 2026 at 09:05:04PM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [Medium] mm/madvise: zap_range() reclaims PTE tables needed by
->   madvise_guard_install()
+On Fri, Nov 13, 2026 at 04:38:12PM -0300, Ivan Ezequiel Rodriguez wrote:
+> From: Iván Ezequiel Rodriguez <ivanrwcm25@gmail.com>
+>
+> phys_mem_access_prot() stores "pfn << PAGE_SHIFT" in a phys_addr_t.
+> The shift is evaluated as unsigned long, so on a 32-bit kernel with
+> CONFIG_PHYS_ADDR_T_64BIT an address above 4 GiB is truncated before
+> uncached_access() compares it with __pa(high_memory).
+>
+> mmap_mem_prepare() already shifts in phys_addr_t, so the mapping is
+> accepted and then left cacheable. PFN_PHYS() casts before the shift.
+>
+> On a MIPS32 XPA Malta guest, mmap of /dev/mem at 0xf00000000 without
+> O_DSYNC used the boot CCA. The same mapping with O_DSYNC was uncached.
+> With PFN_PHYS() both are uncached.
+>
+> Fixes: 7e6735c3578e ("/dev/mem: use phys_addr_t for physical addresses")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Iván Ezequiel Rodriguez <ivanrwcm25@gmail.com>
+
+LGTM so:
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+> ---
+>  mm/char-mem.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/mm/char-mem.c b/mm/char-mem.c
+> index c5761ddedbd7..53ce0034a4c1 100644
+> --- a/mm/char-mem.c
+> +++ b/mm/char-mem.c
+> @@ -272,7 +272,7 @@ static pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
+>  				     unsigned long size, pgprot_t vma_prot)
+>  {
+>  #ifdef pgprot_noncached
+> -	phys_addr_t offset = pfn << PAGE_SHIFT;
+> +	phys_addr_t offset = PFN_PHYS(pfn);
+>
+>  	if (uncached_access(file, offset))
+>  		return pgprot_noncached(vma_prot);
 > --
+> 2.43.0
 >
-> commit b93124c4df6f4f255fb9c4d2510c6ff4b474ec35
-> Author: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->
-> mm/madvise: zap markers from guard regions
->
-> This commit introduces a zap_range() helper and uses it in
-> madvise_guard_install() with ZAP_FLAG_DROP_MARKER so that existing PTE
-> markers are dropped when zapping a range prior to installing guard markers.
->
-> > diff --git a/mm/madvise.c b/mm/madvise.c
-> > index 0214efd2a014f..4f77285832079 100644
-> > --- a/mm/madvise.c
-> > +++ b/mm/madvise.c
-> > @@ -850,6 +850,19 @@ static int madvise_free_single_vma(struct madvise_behavior *madv_behavior)
-> >  	return 0;
-> >  }
-> >
-> > +static void zap_range(struct madvise_behavior *madv_behavior,
-> > +		      zap_flags_t flags)
-> > +{
-> > +	const struct madvise_behavior_range *range = &madv_behavior->range;
-> > +	struct zap_details details = {
-> > +		.reclaim_pt = true,
-> > +		.zap_flags = flags,
-> > +	};
-> > +
-> > +	zap_vma_range_batched(madv_behavior->tlb, madv_behavior->vma,
-> > +			      range->start, range->end - range->start, &details);
-> > +}
->
-> [ ... ]
->
-> > @@ -1217,9 +1224,11 @@ static long madvise_guard_install(struct madvise_behavior *madv_behavior)
-> >
-> >  		/*
-> >  		 * OK some of the range have non-guard pages mapped, zap
-> > -		 * them. This leaves existing guard pages in place.
-> > +		 * them. This also drops any PTE markers in the range,
-> > +		 * including existing guard markers, which we reinstall on
-> > +		 * the next attempt.
-> >  		 */
-> > -		zap_vma_range(vma, range->start, range->end - range->start);
-> > +		zap_range(madv_behavior, ZAP_FLAG_DROP_MARKER);
-> >  	}
->
-> [Severity: Medium]
-> Should zap_range() avoid setting details.reclaim_pt = true when called from
-> madvise_guard_install()?
->
-> When a guard installation range spans at least a full PMD and contains any
-> mapped page, swap entry, or non-guard marker, zap_range() with
-> ZAP_FLAG_DROP_MARKER clears every PTE in the PMD and reclaims the empty PTE
-> page table via pte_free_tlb().  On the very next iteration of the loop,
-> madvise_guard_install() walks the same range to install PTE_MARKER_GUARD
-> entries and walk_pmd_range() has to allocate a replacement PTE page table via
-> __pte_alloc() while the old table is still queued in madv_behavior->tlb.
->
-> Besides the unnecessary page table teardown and reallocation, __pte_alloc()
-> on the retry pass can fail with -ENOMEM under tight memory or memcg limits
-> even when the PTE page tables were already allocated before the zap, leaving
-> any pre-existing guard markers in the zapped range removed.
-
-This is an edge case and doesn't matter. And fine, reallocate the PTE :) It
-allows sensible sharing with the MADV_DONTNEED bits.
-
-The ENOMEM stuff is silly, if you're going to fail there you need unreal memory
-pressure + fatal signal, so failing early is right.
-
->
-> --
-> Sashiko AI review · https://sashiko.dev/#/patchset/20261113-disallow-uffd-guard-install-v2-1-9d0063c70542@kernel.org?part=1
 
 --
 Cheers, Lorenzo
