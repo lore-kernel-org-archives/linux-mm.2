@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFF4606A330
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 14:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E59606A8B1
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 14:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mVDBwAAm
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hol6NkIG
 Received: by kanga.kvack.org (Postfix)
-	id 55F306B05B5; Sun, 15 Nov 2026 09:02:31 -0500 (EST)
+	id 6BECC6B05B8; Sun, 15 Nov 2026 09:02:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50FE56B05B6; Sun, 15 Nov 2026 09:02:31 -0500 (EST)
+	id 66EF16B05B9; Sun, 15 Nov 2026 09:02:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B0B96B05B7; Sun, 15 Nov 2026 09:02:31 -0500 (EST)
+	id 55EB96B05BA; Sun, 15 Nov 2026 09:02:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 16A8D6B05B5
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 09:02:31 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9EF6140750
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:02:30 +0000 (UTC)
-X-FDA: 85437518460.08.F8E92B1
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C3676B05B8
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 09:02:34 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B0341C073D
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:02:33 +0000 (UTC)
+X-FDA: 85437518586.23.82B4EB8
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D61EC80012
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:02:28 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mVDBwAAm;
+	by imf31.hostedemail.com (Postfix) with ESMTP id E92F82000E
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 14:02:31 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hol6NkIG;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794751352;
+	b=khaDQ+1VRQqwnyvFOtk7gya+DeeWMPCuK7C2yVLROBnMm3lYPrqUG/sWH/dPo7AYnSrjBY
+	uf60WgjKmMz8TrDZW2X53aQSo2Z97ufevhsBb0s0HRIA9Vu5ZwcYdLNhTGJN4jTpi/Bq3p
+	WWOJeWNM9ywEj7zuBD3y3m5wWWdp7NY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794751348;
+	s=arc-20220608; t=1794751352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=exSQh+ckYaGqDXTdGKRk/DINSz+CEfauTHf2mGVm1qs=;
-	b=VFBMaBGvulRsEOUjw5hXvr0dKivJvJXgbnFgXIKIGWr2amFmV4s2F4aHk1JYQXUEI4SpfF
-	Z4EhHU4nPp6pk6cyUH0rSXZXTmbbPPxF0UXI66RJ5A2/cX/6j/KDsgNVoR6OkawZ88E8jy
-	9H7tlLAYkmm/ch4zKRZCV+e/WZJkIC0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794751348;
-	b=j+guZjcOwduu+JNS5l1OHPN77uj26iNzyxb5d03W1BuiJ7JFoMi4qIocKHfjJmaQq3jhqM
-	dW1hXNjvmISlamMVNAdARjYsmbAwUBqhLc9dfdJUrDDH9nmKwmBQHFvgHSSQtweR6EKIvO
-	wChm9ytkQO0bNtC47AbVDoIKTa6ch0o=
+	bh=5WQF/2nGODv0RRGHLUgReoktqpsZiCbfLp8w8v9L+bo=;
+	b=g4voKZ+RdOpLG/e7I/hvUr6xbQX6WGcIoPCPe2toJjDUFgQk9uuLQ3u+7qNTUyHnHFEVkM
+	q++PJ/mMFjOOC0hDzM9V6/CsScw+7JrFQ/Vb6s91mIdUuuJjxWbb9pDGnAzsqLrl3atP26
+	twqQ3dETRZosHGmoDoVzlm/8RraPAho=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mVDBwAAm;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hol6NkIG;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7E12C623AF;
+	by tor.source.kernel.org (Postfix) with ESMTP id 811F3623CD;
+	Sun, 15 Nov 2026 14:02:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A78C41F000C4;
 	Sun, 15 Nov 2026 14:02:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB31C1F000C5;
-	Sun, 15 Nov 2026 14:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794751348;
-	bh=exSQh+ckYaGqDXTdGKRk/DINSz+CEfauTHf2mGVm1qs=;
+	s=k20260515; t=1794751351;
+	bh=5WQF/2nGODv0RRGHLUgReoktqpsZiCbfLp8w8v9L+bo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=mVDBwAAmMMfoI07kdlegIgj6TgxNBrmadzij2h6L+/SAceIm4g1BJTXFeH0ULv6Ii
-	 MPoimMgdje5DxfoVdFo/7BqRAQGTsQhv7It1+6irZXYWHEXZ/IzNq4GP/O0V9HGLtg
-	 6rQFM0ffCCWzBpHlPrBmQN9XBNtRjC4D+i+pFgXM44MQRmgC05j/CSzPHmoN4wJnfl
-	 R9SepAKc2/vo6FRAm246FMyCPUTXU7d9DXT4Ql136WAN1hFOWQQcczRtkn9BTJcjYs
-	 uy1P6CM3r9DEp47qWwldVtxy/IzyZElL1ervdfnyBqFpt5CZ/2GmyBJR3A92OdCw4R
-	 /TqtG5CUfs3Xw==
+	b=hol6NkIGw2hStecb3jR/CYWDaHiuLyonnC5QyeK1BKr7BDtmGoCvOZWVe1mUQ0pr/
+	 w+vmvc+N7GFJLvOuyd/o/GnizaPE0ixqvHIXsR34CcOS12K5a1uReO8YBaD75TAB29
+	 9ucMO9LoX9sko338XJpILft7notYLzVAmq0pg9xPkl8VAGse7QuZQ8SIArbFvM0tx1
+	 XFg5vO8wltX+jj3ZDGEo1CovJW3hcCVK3jF15wG3BAIABar+t/yqy7AlPs1nWxk4Jy
+	 xKidxCQdmQ1NxHks6VqoVIF2erFk17YD3xpLs/iEdryQ7f+dQwt8TpngLZVwAUL5lQ
+	 GXyWw/U501fIg==
 From: Christian Brauner <brauner@kernel.org>
-Date: Sun, 15 Nov 2026 15:01:35 +0100
-Subject: [PATCH 05/13] selftests/bpf: handle d_real_data_inode() errors in
- bpf_testmod
+Date: Sun, 15 Nov 2026 15:01:36 +0100
+Subject: [PATCH 06/13] ima: handle errors from resolving the real inode
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261115-work-ovl-d_real-v1-5-ca155efbcb2e@kernel.org>
+Message-Id: <20261115-work-ovl-d_real-v1-6-ca155efbcb2e@kernel.org>
 References: <20261115-work-ovl-d_real-v1-0-ca155efbcb2e@kernel.org>
 In-Reply-To: <20261115-work-ovl-d_real-v1-0-ca155efbcb2e@kernel.org>
 To: Amir Goldstein <amir73il@gmail.com>, linux-fsdevel@vger.kernel.org
@@ -79,26 +78,26 @@ Cc: Chris Down <chris@chrisdown.name>, Miklos Szeredi <mszeredi@redhat.com>,
  linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org, 
  linux-mm@kvack.org, "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1590; i=brauner@kernel.org;
- h=from:subject:message-id; bh=8ojyWSbSgAy9/5Lt4D7/0d3uAgnyMk/lTnwvRHMWeIQ=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT93B3q9z78x+8L37QlfDfd/xpzriLxjHO/uMxytjg93
- U+L72xW6ShlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZhI+ROG/84TY99yZnBb1Hzf
- rbrBVdn1Q2DcbIv7EvejegKfntz2Pprhn9prvXMcX0qPHJebwriM0ev68+tK155UXfQNusKZnbM
- rkgEA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4587; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=LT4oKx89iCAnb882W//c+yjvL+VroCgoISJRbee7R7o=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT93B2msc5j4fbvKx24LBh5Qm49aN/zT115eVX3unZxA
+ emnPGwNHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABNZX8HIsDB8xzTjadKlIZnf
+ 9OJ+lC6xWqGX93q9zeFpb0P0W34vPcjwP8Pe9luBxq93b5W2rj+5yTfFarb04+tBh5SK2JXWPsu
+ vZwQA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: 4mcumt5793aim7oh6snqkhtjnkesxza7
-X-Rspam-User: 
+X-Rspamd-Queue-Id: E92F82000E
+X-Rspamd-Server: rspam12
+X-Stat-Signature: wky6fxph5pd5597cjkom1aarpqt78hun
+X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D61EC80012
-X-HE-Tag: 1794751348-606021
-X-HE-Meta: U2FsdGVkX18T6zC4qngirIbyDZu8A8dcpM2o98x9shqSeDVrSzCsCW5D5Cd/Sv/k8Z9Is8gew4zxmhRA7a1Zf2+0808qOIVLjTElRKJYqvyT61z1e6w7z5DSKuEw7EPaIqZCma5dKrCJ2fW4I/2IkdMeFPJRBCOYRPjhISvWrkJ4If+QUarE4qizV5cdwct+yiD/fS7O5bZ0OvOESljZqUooGERmBSsIIE/2spCV2nt1p1u3I9UjZW5W1KTnmswkdW3oKhol34jK0ISEDsQoFpv4JZrmRTBXsJCm3VEsTTeS2vntmNHpkm72KImp+Xs1wd+qBQFClhcGZv0nmf201pZo7SLc4vX9kr/bDuaFNbNaOjo2bEhHfRBBDmgtjM7oDNXSrMbWvQK4UCXBiI6/sND+vyrOH6HibK3KMcIhkzNIJOQsHV1H1dA4Ao2uYQoo8+yGSEXMWiF1NkJ936THPBFOkeL4ulUNa2XJrXbGcuvhNI8F6Dxo2fPjkRlrQmUIzVJfvk7ICR5tBEMST6pF6EcWyaJEw2EsfjfPvCirFlwio+d5XnLjn9VyWE7bSNvI7iMjTgQz2OQgrR2eTD3ZJke8ymaG/1gqSb2spPblivDyZlKcQZ6jrdH19r4joy3yjIvCti8/dC1HgnHBKjTpNjFKxfvo6RigBL3TLyY/kE38+hpdQjxpgvcmBfhuKS3zY3DfD7rwowAukvsOJWo98D6yNfGbmH9kpB4EzRYUK1y94o9F/kxV080icFsHRGymb6vd3K4+A6/OW7OE8ItAA13fCsb0hAp/B91DGaAcT6coiE25ggij1h2BfUKjG+8JJVgNi4LaZl/9RstkR8WLqk7hPGHarFt0Ni8bWWX9F2FqPq8MCXIov3+VsA5OtYtFllzPPgPUCMo7g5CpE/EltAd3ePNgv9TonF4xtTaa69X2y+cUPsIWVeIWT2T0bJffofIRmFGxhKK+fX4sYOj
- Ts+0L/r6
- +rlBRpn5pMQtIsr9War+v8I0OgdMf504UF9Ync9LvTcWFx3sNylQsVqBG1SbYsMXDTRajX0m6z5hMMpBHNlrNx/5ZXV3P747gXU8E+sisXgoKwtKOR2v1OAGYOvGOlxQMS97v9yspMlUr8WzzLzEfg7lQYAcgPAUEJMf/OODvTYAmsOrus9t2n5a6eVg5RvY5HpkrHwBsLNY9EUrk59tQvSvwiiL6rrlQ45rMZaY9rJkigqla8TOlVinS3M7RIK2xFERvGn11vo7afcTRKvyuNLWyw5jgcwxAS4V5
+X-HE-Tag: 1794751351-563730
+X-HE-Meta: U2FsdGVkX18SzCa1tgwnA2tVtzc6K5EPSA8RsoaifSMH4MDnkLBUZvFeM8ZF+nG2ZwuAccNnsEWvPqhGoR26LW2Ny3fhIhXLLnrRb/niiZwA51EnIkWPZmfRYSxBHMaM7u1ws72GsywVAks8uEAJSpmOHkgtslOffrq5GVkYuewR2l7LJ0P9xE3/+EiiodxQrAxcEx5g2jwGpz6rbdaLR65VmBSL0+MQo1dz9gdVFDS9FdKqy0ARv417rYORCSl/FFTvmQ/FqdjxxKuzsFVEbZOkRUTIYFnc2cD33v4tIoDQbFcTujwUFIjGc/JbdgkBX3C1BfyYluW4K88Hu7BNDbyfVudHugbRXxT/d9sHTisL+33My10VWtWhVpY1EuwVnU9WCMoXLvgPHLxfnc18zj4ri/KYFIFuMxDLQkFXLxydzAkDtGk177Uo1ly+3dLPhtAbMXqIU2dFT0c2s3om3xu7CNMN0uy/1a2+8ewiDq9syoYVZKbqHdmUM0Q9DSG5ivoj49dyBxh4rEmxZbWp3dpPF8N1CCiY/OEiP9nVglzX74CATNu19xJFy0upjQwMDR/Bett1b7AwYWT4+PAPampRO1NG9DyJ/RK/xfh4F4aKA71zAvbG3BNLgpflmcaYZrmAatdGgJGIEmshG/ouv8WnJJc3nkGyoum8oNxFsnz3ak2ItpESJXf2xetzbohwQMDPC7h1JuNOSZNw4NMqopPaeaYkwOzb/+mZZt5vYr2dm8wU50G7X2xWJHXdtxO0XIyAxmrl9uLP3ZQbJfldNZUsakwLfmhSjyvBSJvwIMJ4VxGsvHb0c0XRJliWHgmOXx9e5nxhUS4ikLb+Z9pfLq4hyXsG3/+RSNaxNMmYgkl4RhDg/L4IYyj2Gt76oCvELUDEyQEgcfCLXhPFqe3b6uFBmBF+IxVPco4kbzRTqEYP9JPpGEe8Lv0Zo1e7VRRQhjupfXyRuiKUWSW/O1u
+ w4otctvD
+ rkcFOGZyoREP16LIEmXSwLXL4dUJE2TxDEXMo6LVVDWv5PEwLqTTp6r5+q7sXavVwb+hnaDV6yapH1SVpiYUArq5kPhsm5iEqrtS+Jr1H6IzM2UroNJfdt2tWPjA+KiBjRQKoc79s5/zudXeOz4TMsl6d8BJCNi0wNAZLNj91I0SNGCKs+gNTvIHMP4OXMBOTnNUYewJBFA1QiNpu9zSzkSuiNfj38SOUT3elxHAVEMcHKAEfZHpOnHaEHjtMLCoyZKnuMHqfRanB79INBPzZGCaFsr3m3e4nndyON+Z5f0OaGtUEk/RnYZv+kOQn8q+i8PsU97xr4MfC6lO3Q222nMYSzRJZKkohJYjUCH1wJV0qbDFCwpjnbXZAV7rZKKxW0SSnnH7DgqVRTZg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,48 +106,109 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-d_real() is about to be able to fail for D_REAL_DATA. So switch
-testmod_register_uprobe() from d_real_inode() to d_real_data_inode()
-and drop the path again if the data of /proc/self/exe can't be
-resolved.
+d_real() is about to be able to fail for D_REAL_DATA. So switch IMA
+from d_real_inode() to d_real_data_inode() and deal with the error.
 
-That's hard to hit in practice because exec opened the file already but
-it is the only modular user and d_real_inode() is going away.
+Currently, if overlayfs fails to resolve the data of a file it hands
+back the overlayfs inode. process_measurement() then sees
+real_inode == inode, skips the detection of changes in the backing file
+and returns the cached verdict. That's the wrong default. With
+metacopy and verity this isn't limited to files nobody opened yet
+either. A metadata-only copy-up of an open file makes overlayfs validate
+the verity digest of the data again on the next D_REAL_DATA lookup and
+that can fail.
+
+So if the inode hosting the data can't be resolved in
+process_measurement() we can't tell whether the data changed. Treat it
+like a change and clear IMA_DONE_MASK and measured_pcrs so the file is
+evaluated again. The metadata check for EVM stays independent of that.
+
+This is a no-op until d_real() can actually fail.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- tools/testing/selftests/bpf/test_kmods/bpf_testmod.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ security/integrity/ima/ima_api.c  | 17 +++++++++++++----
+ security/integrity/ima/ima_main.c |  8 +++++---
+ 2 files changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/test_kmods/bpf_testmod.c b/tools/testing/selftests/bpf/test_kmods/bpf_testmod.c
-index 76fbe64755ef9..9d065a800f655 100644
---- a/tools/testing/selftests/bpf/test_kmods/bpf_testmod.c
-+++ b/tools/testing/selftests/bpf/test_kmods/bpf_testmod.c
-@@ -948,6 +948,7 @@ static struct testmod_uprobe uprobe = {
- 
- static __always_inline int testmod_register_uprobe(loff_t offset)
+diff --git a/security/integrity/ima/ima_api.c b/security/integrity/ima/ima_api.c
+index 45701f04ba62f..f8c3437559943 100644
+--- a/security/integrity/ima/ima_api.c
++++ b/security/integrity/ima/ima_api.c
+@@ -246,7 +246,7 @@ int ima_collect_measurement(struct ima_iint_cache *iint, struct file *file,
  {
-+	struct inode *inode;
- 	int err = -EBUSY;
- 
- 	if (uprobe.uprobe)
-@@ -962,8 +963,14 @@ static __always_inline int testmod_register_uprobe(loff_t offset)
- 	if (err)
+ 	const char *audit_cause = "failed";
+ 	struct inode *inode = file_inode(file);
+-	struct inode *real_inode = d_real_inode(file_dentry(file));
++	struct inode *real_inode;
+ 	struct ima_max_digest_data hash;
+ 	struct ima_digest_data *hash_hdr = container_of(&hash.hdr,
+ 						struct ima_digest_data, hdr);
+@@ -268,6 +268,13 @@ int ima_collect_measurement(struct ima_iint_cache *iint, struct file *file,
+ 	if (iint->flags & IMA_COLLECTED)
  		goto out;
  
--	uprobe.uprobe = uprobe_register(d_real_inode(uprobe.path.dentry),
--					offset, 0, &uprobe.consumer);
-+	inode = d_real_data_inode(uprobe.path.dentry);
-+	if (IS_ERR(inode)) {
-+		err = PTR_ERR(inode);
-+		path_put(&uprobe.path);
-+		goto out;
-+	}
++	/*
++	 * On stacked filesystems the inode hosting the data may have to be
++	 * looked up and that can fail. Treat it like failing to calculate
++	 * the hash.
++	 */
++	real_inode = d_real_data_inode(file_dentry(file));
 +
-+	uprobe.uprobe = uprobe_register(inode, offset, 0, &uprobe.consumer);
- 	if (IS_ERR(uprobe.uprobe)) {
- 		err = PTR_ERR(uprobe.uprobe);
- 		path_put(&uprobe.path);
+ 	/*
+ 	 * Detect file change based on STATX_CHANGE_COOKIE, when supported,
+ 	 * and fallback to detecting file change based on i_version.
+@@ -280,7 +287,7 @@ int ima_collect_measurement(struct ima_iint_cache *iint, struct file *file,
+ 				   AT_STATX_SYNC_AS_STAT);
+ 	if (!result && (stat.result_mask & STATX_CHANGE_COOKIE))
+ 		i_version = stat.change_cookie;
+-	else if (IS_I_VERSION(real_inode))
++	else if (!IS_ERR(real_inode) && IS_I_VERSION(real_inode))
+ 		i_version = inode_peek_iversion(real_inode);
+ 
+ 	hash.hdr.algo = algo;
+@@ -289,7 +296,9 @@ int ima_collect_measurement(struct ima_iint_cache *iint, struct file *file,
+ 	/* Initialize hash digest to 0's in case of failure */
+ 	memset(&hash.digest, 0, sizeof(hash.digest));
+ 
+-	if (iint->flags & IMA_VERITY_REQUIRED) {
++	if (IS_ERR(real_inode)) {
++		result = PTR_ERR(real_inode);
++	} else if (iint->flags & IMA_VERITY_REQUIRED) {
+ 		if (!ima_get_verity_digest(iint, inode, &hash)) {
+ 			audit_cause = "no-verity-digest";
+ 			result = -ENODATA;
+@@ -314,7 +323,7 @@ int ima_collect_measurement(struct ima_iint_cache *iint, struct file *file,
+ 	memcpy(iint->ima_hash, &hash, length);
+ 	if (real_inode == inode)
+ 		iint->real_inode.version = i_version;
+-	else
++	else if (!IS_ERR(real_inode))
+ 		integrity_inode_attrs_store(&iint->real_inode, i_version,
+ 					    real_inode);
+ 
+diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
+index fed80da3ee096..e463cfc1e3f43 100644
+--- a/security/integrity/ima/ima_main.c
++++ b/security/integrity/ima/ima_main.c
+@@ -342,12 +342,14 @@ static int process_measurement(struct file *file, const struct cred *cred,
+ 
+ 	/*
+ 	 * On stacked filesystems, detect and re-evaluate file data and
+-	 * metadata changes.
++	 * metadata changes. If the inode hosting the data can't be resolved
++	 * we can't tell whether the data changed. Re-evaluate the file then
++	 * and let ima_collect_measurement() fail.
+ 	 */
+-	real_inode = d_real_inode(file_dentry(file));
++	real_inode = d_real_data_inode(file_dentry(file));
+ 	if (real_inode != inode &&
+ 	    (action & IMA_DO_MASK) && (iint->flags & IMA_DONE_MASK)) {
+-		if (!IS_I_VERSION(real_inode) ||
++		if (IS_ERR(real_inode) || !IS_I_VERSION(real_inode) ||
+ 		    integrity_inode_attrs_changed(&iint->real_inode,
+ 						  real_inode)) {
+ 			iint->flags &= ~IMA_DONE_MASK;
 
 -- 
 2.53.0
