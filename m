@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E86E606A337
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 05:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA12B606A323
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 05:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=izOZUxYS
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kQrW1hFA
 Received: by kanga.kvack.org (Postfix)
-	id 49EA36B00EF; Sun, 15 Nov 2026 00:02:10 -0500 (EST)
+	id C1B746B05B1; Sun, 15 Nov 2026 00:03:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44F466B05B0; Sun, 15 Nov 2026 00:02:10 -0500 (EST)
+	id BF35A6B05B2; Sun, 15 Nov 2026 00:03:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 366156B05B1; Sun, 15 Nov 2026 00:02:10 -0500 (EST)
+	id B32A56B05B3; Sun, 15 Nov 2026 00:03:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 147776B00EF
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 00:02:10 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 80AB480547
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 05:02:09 +0000 (UTC)
-X-FDA: 85436156778.12.41BBFBC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 022B5180005
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 05:02:07 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=izOZUxYS;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E7056B05B1
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 00:03:08 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EEE3E40542
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 05:03:07 +0000 (UTC)
+X-FDA: 85436159214.14.EFBF3B2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 7D505120006
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 05:03:06 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kQrW1hFA;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794718928;
+	s=arc-20220608; t=1794718986;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=RvmTX8t5j5/IoltMXAdXZ4t6ouHAYznQwasZalqaL6s=;
-	b=ZGX8/70BEyUb4MaH1W9CGWIQXtnmjMLU96Mr6KVNwoWwA7ts7Kqxh+zTZXa9WeaYeHxOuE
-	e/r65W/uM5E/s2Ezth/qcOWIuiIEsmwBaYCsTmBjD8/hjUBvURcdkP8POTKcxLzbROSb41
-	vHKW2TlupzY77vt1TU6R2S1is0MTs5Q=
+	bh=azq6hlaktEMUDgLyNyRfk0hKL7yGmOVuQpf+tMmLcs8=;
+	b=Z4p/veKRhXXNaq+5f49oeJ2aoI+hKQ0r99x/KKK/XdxDYYFR4u5ZtBr6nb1Ysc+LuEcWsU
+	bledG7zga13U4EtUHMhFOK+k5zxKjNbq26lAXy/DpkwIejKYVq0qrVTVlFavHy4EARl9y/
+	WlgtEYqiglmUM9KyVQ2GSD/kFoNizkg=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=izOZUxYS;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kQrW1hFA;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794718928;
-	b=Kjja7AhPTEendL4EJ5WEOgvYTjmTvkuq+BSN66pIOAGEg3P5ePVLTkW/yU2av2Zh+qZpVg
-	dNRGfUpTVrWWcrlf/cLmef+Wkk7J1PgmO//0Nt7Q8+xS3aa+hKdT1HMA6M4hIVZb1AfP6L
-	po6IvOH0lOh2FQgm7Ok7J+zFQr0CREo=
+	t=1794718986;
+	b=Rhc79cpWKNFXxvjWmdtH214P+zuCKW79GZhXkyWcFytA1oRyFIoPmOBIMKGd2a5yrl50OS
+	MK6nc7YhDUd0q0Jv6XwjAaODRn3x4r4fPamSFRY4dRqPebiK2Ozvt/Km69x8Kg0CNbBgR2
+	qFcbFKY0f2aZzrHuYi7ZXeV/LiTQZLo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F052B4372B;
-	Sun, 15 Nov 2026 05:02:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59CA1F000C4;
-	Sun, 15 Nov 2026 05:02:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2042D60D36;
+	Sun, 15 Nov 2026 05:03:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 098C31F000C4;
+	Sun, 15 Nov 2026 05:03:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794718926;
-	bh=RvmTX8t5j5/IoltMXAdXZ4t6ouHAYznQwasZalqaL6s=;
+	s=k20260515; t=1794718984;
+	bh=azq6hlaktEMUDgLyNyRfk0hKL7yGmOVuQpf+tMmLcs8=;
 	h=From:To:Cc:Subject:Date;
-	b=izOZUxYS8HzrKJi/UTtmkSX1XsfKOfNT/yiOgTXLdnD2mb1BL2X5Y0LGXWS1HHELm
-	 u5zNT/MvMnyq5cDMbRI+VExbc48PKodmpXx+pcb7xSEg3xoWvRxJtt4dGYjLL6O9s7
-	 YM5O0UmhtfXCvw4ZKHKaesI0+OPAda34j10NsiEiSBP1cua2JuJGQAUXekQkSYyEMG
-	 3n+6t+xGDvI6xfCthg7ELLZaNoJPC4i9v72Ttw6PT3H3cVrCAFWqcsgP2C7G4tEooH
-	 52EdZ/htiGD5VY4UChDHYXH7saYSG/+F/XE0EgCNTNMZvxZugmg2YahDHt2zasdGpC
-	 2UHhDR1omBYWg==
+	b=kQrW1hFA9eLROj+8e9HgGk1bBbcWq7RXQkuKPs9FiAK/S3BOBKoe776SyNhHchMa3
+	 Sc57o9flKR5qM7CJFj5NoIM6e4nwb6krOaxMUGtTrFL6Pg9f3xAZ3HM+rs9nGYcoTZ
+	 gRcGCAYfU+1NY99N6C7eoFjeaXymFovRdrhEoG5WX+DXlYPdQ801Fp/1UZJNQZ9p0n
+	 o54/BgyH/7moBX2pEhuVL7ExS4gvOuyWguy6X96/BRARkEqooe/Hd13sU4UkQUfH6g
+	 5/ZX/MDGeKzHeKspVqQe0jCODYSTB01Dzt/wNfeTS/WiNlr/lPWpkDqLxxGVLjG0UR
+	 I+mqd2/+5wj0g==
 From: Mike Rapoport <rppt@kernel.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Mike Rapoport <rppt@kernel.org>,
@@ -68,26 +68,26 @@ Cc: Mike Rapoport <rppt@kernel.org>,
 	kexec@lists.infradead.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] kexec: MAINTAINERS update
-Date: Sun, 15 Nov 2026 07:01:59 +0200
-Message-ID: <20261115050200.1847508-1-rppt@kernel.org>
+Subject: [GIT PULL] liveupdate: fixes for 7.4-rc3
+Date: Sun, 15 Nov 2026 07:02:58 +0200
+Message-ID: <20261115050300.1847760-1-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 022B5180005
+X-Rspamd-Queue-Id: 7D505120006
 X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,INCLUDES_PULL_REQUEST,MAILING_LIST_MULTI,
 	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: u9d3iwbxi9s817fmxzxug3oxbprz1p96
-X-HE-Tag: 1794718927-608846
-X-HE-Meta: U2FsdGVkX1/k6EWMePuhg6FNAYlaFqf4FgxVbwd6/aP+S7V8ATT3MBFPZACaf9lOK5FM7aTLe4vSZEWy+JJ2DLDgxdzpuzHyUJ5ukbLSqn6+V9cVfgZBdqjWSdHqyS/ctavexyP+rUzKlB2PXyLb3Zqx4rhQNbXCX1K7bYwY89Am8USsI4N1resgcEo+gvNewkM/6+eUh9VSiU8rlfVwiIOItR1zhP3GhVVuDY3zc1kGV9sZ8ocvOO9vOolNk9wrV1CLpdl8qtCwcfjrbwzEEJREozMz0MRgA3JEbqQYs1ZPpOoGiV/GiJ3H4keCuUfA8Oh8NcwUypvfjhWy45l9G9kaf3BRgzawBAbNK7Fd+ftS0K2nZSS9njXRBG8VpDuU1bhEbdFnWm3ECsk2eTCemB+uPPsT0OLr/2GfZXWq5Er2caR3qWU6G6iKUPS06C4tCKeBoDqspzD5j6kCsfAWaIU6W/ZlbneDzG7VdF74xPLHn2zYzBS3Z4Iyo0B6pk7fwUw/lnwHqxpcnWOKPtqSyejZhMQLIwCcNBpvmurIZj6aZ1QCRnbgea/QPvnke9zBISW58n/d7QuaoS6akZdO7RUcx8X1qzx4rCUgxYOFHH2i1tNVluvt2QEOkPtZCgZCYRw0hfRUE8AvuJo7lChUnhTt44EbtQvUl5ERrxD7QMkJK/udFpCzJgpNMNyRhWzgvk6stzBabrkkMriFleJqC1zoDTjJ94vUK3HfI11g10V0blQa9RHwVyfITiy+NEWgIFrp988UAUlcQugmqiRI2YbXGQNCXs9NFI9aR2wumFRA0msZhw48W0YAX2JZjDT3gLuKHmpaD2sRC+wDXzwqx0cqFnnkIbvXpwgZdJHA5OU+zJFxpw+qgEn28bpF1tnTUmqbpTQ1yPCQUer14T1mta3FcQWL3381wKUS/ElZhswi9PFZi3idoIuljhydauqBSqwJWe7PmxTAn2DaAUA
- jbIf3FC5
- 2iS9n5/0kaLyBvFfys8rtlLlcAHi2Z3MrejjXUXfq6caDl2UhWfoCOww1rIHmz8O+PT8nPIvQLvcThq93Feycdq92UxDxBtGJqezzbB6GSFyukCjNYACiKAboQ9HEmiPVMbEoEAfS6/5Q4N04B60uw37Ujg4kV7ZXULBh/j4ymKOjOfeeIzIvGCLJ9piA+Bzt/gZfOHYih2VD1q07VX1rgkahKLK2W4AthUfszRB5oIVZ4Hw=
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-Stat-Signature: cmsnzdomauqzjd8ee7ns4ye16yji8tk4
+X-HE-Tag: 1794718986-533379
+X-HE-Meta: U2FsdGVkX1/7EQlBARu0yq8dpOw2Uf2AhnSQJ6izlpMHrvngTopge9lwkOAr3riYbEOLo0TuMpzTOeJhOl81M6Aoz69E4Cqt+FyDhroI9UA9efnEkXKpMp1FWKrrhQ00M5czUTk/2TeLShGgmypbMOO04MOQzZc4sPnfNzuhl8nlZaW17SOWpS6wM2WTKhD81za37IwqbZlL0iaFSISaZYZsPCRHahcaNiPprInk7pxKQ9+gzA6Ox+QqRvS85IwFiuBD9TjiqUxGGnsxaykEpOgqg4Kqu/wg3LbHbZ8GjmVVHvQk1NbyLBs0+qGQrSUwaxbY6iBc0DRR24c8Ks0e0O7Kex6Y7xRq5WxhKwYsCJkF82TM7hdmY84q3sjuToJ4GsIe+Isg/iFQeUsd7GR1FGir0aikLZnXBnybmUL5g5lkJM5bPSdsy/85iCFpZkxAYWj86kOa/SClX3AdK1qmRQ776UcKUQjWizKLwmx8SEhp4UqVQNJj/iw4nEqc3yEL4nWXRcQGK5KdQvnVZy9FsjSVdlUZgCDhRAscnB3PdPr74gg2bILfO8Sm+wnLgeI52QZZIxyDj61ZvMl4DM79ccNnj7r9T+agoxXofoMtkmrqJ/gM/p7hE+X2BgkuCv+mqkQzM5NEd9ALnMq6dc5glHGcBZr99GQ3Tia/QaeyR6G4reyCbQDo/KfGD2nkBS3p0abJ9sVXSMuCBxaIgGtbilankGDaZ+W1PNdpwelBJKqXXDqfiFx3bd73rnwZm51GGm/X51rbLvjTEfCXfydnRI9joWAzPyYiTRwnULgTIkKPy+Vb4oEVH0BhHBVMZaDbrpWIAypKXSAptJkl/y9TQKqSLMFDLVQPA6oznMROSgtB6capQX32/URBVSAkoe6iNCenSsMAaO0Ba4YTshgFq2jNUUmaxrFWsXskDuG6EY1iLsGmT9YkAPidZKjjvI0NeeCdzbLKEXyiKCPufCH
+ mDbhRTYA
+ 9M5dISfehADsyDcX3+N3G4u6RyH3AOvYcSH8BQFB/uN1kwEjRl6wNeJfIGtVe09k+AvEA1JDnrstLtxYVwesbgGM9YqUxLzvp/IYZl3gEMr1Heo2To4TPDGF3Z16zHAzr9qENaIjIvhQoRPlOjmBDvc+tIXOAk8+rX4huzJF2C72TmVWp8uhnhyCSgzFiIjgQvDr15m2k7Nh68WfA89YS23JwW+U2lS5BXHHeh8b8hflL0BA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,21 +102,29 @@ The following changes since commit 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4:
 
 are available in the Git repository at:
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git tags/kexec-fixes-2026-11-15
+  https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git tags/fixes-2026-11-15
 
-for you to fetch changes up to ab75132e99eb0b7dcd3a1882e35519f8229a669e:
+for you to fetch changes up to 58c5852ca96c58cdfdb9646870b217fc54d06a97:
 
-  Remove myself as a kdump reviewer (2026-11-11 00:37:37 +0200)
-
-----------------------------------------------------------------
-kexec: MAINTAINERS update
-
-Remove Dave Young as kdump reviewer
+  kho: check fdt_phys in is_kho_boot() (2026-11-08 11:20:19 -0500)
 
 ----------------------------------------------------------------
-Dave Young (1):
-      Remove myself as a kdump reviewer
+liveupdate: fixes for 7.4-rc3
 
- MAINTAINERS | 1 -
- 1 file changed, 1 deletion(-)
+* avoid address translation in is_kho_boot() before the linear map is
+  initialized, fixing early boot BUG_ONs on arm64
+* check for duplicate session names before growing the sessions
+  preservations block set to avoid preserving an empty block that causes
+  restoration to panic()
+
+----------------------------------------------------------------
+Christian Aurich Zanettini Martins (1):
+      liveupdate: check for duplicate session before growing block set
+
+Greg Thelen (1):
+      kho: check fdt_phys in is_kho_boot()
+
+ kernel/liveupdate/kexec_handover.c |  2 +-
+ kernel/liveupdate/luo_session.c    | 21 +++++++++++----------
+ 2 files changed, 12 insertions(+), 11 deletions(-)
 
