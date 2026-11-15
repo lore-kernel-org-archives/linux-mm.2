@@ -1,273 +1,115 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700F2606A8AC
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 01:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB8E606A327
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 02:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.a=rsa-sha256 header.s=fm3 header.b=pjuVmr/L;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=syy3aDEc
+	dkim=pass (1024-bit key, unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=LsYG0WcT
 Received: by kanga.kvack.org (Postfix)
-	id 96D456B05B0; Sat, 14 Nov 2026 20:20:13 -0500 (EST)
+	id BE5366B00EF; Sat, 14 Nov 2026 21:46:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 944E96B05B2; Sat, 14 Nov 2026 20:20:13 -0500 (EST)
+	id BBB606B05B2; Sat, 14 Nov 2026 21:46:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80CAA6B05B3; Sat, 14 Nov 2026 20:20:13 -0500 (EST)
+	id AD8B46B00EF; Sat, 14 Nov 2026 21:46:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C7F66B05B0
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 20:20:13 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 85D1214049D
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 01:20:12 +0000 (UTC)
-X-FDA: 85435597464.20.6CA7959
-Received: from flow-a8-smtp.messagingengine.com (flow-a8-smtp.messagingengine.com [103.168.172.143])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2A4D01C0004
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 01:20:10 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=sakamocchi.jp header.s=fm3 header.b="p juVmr/";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=syy3aDEc;
-	dmarc=pass (policy=none) header.from=sakamocchi.jp;
-	spf=pass (imf20.hostedemail.com: domain of o-takashi@sakamocchi.jp designates 103.168.172.143 as permitted sender) smtp.mailfrom=o-takashi@sakamocchi.jp
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7744A6B00EF
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 21:46:19 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4DE561A04DA
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 02:46:17 +0000 (UTC)
+X-FDA: 85435814394.06.03D2585
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.8])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 58E70C0005
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 02:46:12 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=126.com header.s=s110527 header.b=LsYG0WcT;
+	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=xiaomi.com (policy=quarantine);
+	spf=pass (imf28.hostedemail.com: domain of nzzhao@126.com designates 117.135.210.8 as permitted sender) smtp.mailfrom=nzzhao@126.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794705610;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1794710775;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QIES4zNTDxRjCnYHiHcWq6p6uX7fK/EWYh7I/zXroHQ=;
-	b=Y5fMOpIThhkJyCbpIATpVYKc4Hn/Pk0KocXUhJ4eSloze79LbVpFlFJg410x8RskAr+RHP
-	a7N553+e644hmCRxvpCp3W/EMVL5JOFgvI05mh6Ut4tbrhY9Q/bNAvk9eEQD/f/GQFXg2b
-	v+pnOKsWTTybkj9S56XkqwbWmM8mbag=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=sakamocchi.jp header.s=fm3 header.b="p juVmr/";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=syy3aDEc;
-	dmarc=pass (policy=none) header.from=sakamocchi.jp;
-	spf=pass (imf20.hostedemail.com: domain of o-takashi@sakamocchi.jp designates 103.168.172.143 as permitted sender) smtp.mailfrom=o-takashi@sakamocchi.jp
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=xOzrbckJJcWh/pB8wxs7WLkmsYb8n7B8H0ZwNaayh7s=;
+	b=aosRP4yfkn2CLEoIES4w+4ZNekGU0MfQgWHPyVkMIvvd+KINE/vpQOFi8KzzX5UPQ8W8dx
+	30AH1qj3oMeTEzxhA1vRciSMKwkrTbmqC2SwmhdsSQKFhU0u+EMB3Un+VBRS0gzCTBPdSC
+	Fxkk/IpNWTc4dnKgoeiOq56ZtvW/+Uk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794705610;
-	b=oGnRI/fkXDd9nCYvVpqe+xNQDAY6cnSyZhMPKY6BB5dsv/hQ6SE65lUQk37ZHqwgY8tfV4
-	q2WPWJmFfF4ytjmpu7apKAdlbgBbGf4zMVi2GyBgxdM41Kwh/Zu9pvws+Vr+cLO1M3ORn/
-	cH909v5Jtu+22unSPJJu3q8iM5B6XgI=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.phl.internal (Postfix) with ESMTP id 7F53D1381CA1
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 20:20:09 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Sat, 14 Nov 2026 20:20:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sakamocchi.jp;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1794705609; x=
-	1794712809; bh=QIES4zNTDxRjCnYHiHcWq6p6uX7fK/EWYh7I/zXroHQ=; b=p
-	juVmr/LC7nCJ0SQ2rWUhRQGDMnlVGg/71zflyfizaeCefqOj8Wyp1bv5cUdTgRb8
-	7XUxKSQFA4h5chwE1lADu0vrwg8OhHP6GoQHRhO7+gqlPzaI30gfxszAJ8iBZnAq
-	w6LhtavpJKSJHCgIMJ9jaiAQhtgloSfAXiebl32YH12R4n49k4Dhf+Y8W3pLV4v+
-	Lk6DFTk8SpQ9jSXzpScexBSvyhdEJDbrQwMC0927YExgznJjfLZe0flh8fHQL7IO
-	vj78LH6slSiU2T+/dLzxP/iDcsVNxx1fb6S0NI/BKneEKfRIjGfp58LmRDVhLSom
-	qjpjx4Q11TfgHJQJAHUUA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1794705609; x=1794712809; bh=QIES4zNTDxRjCnYHiHcWq6p6uX7fK/EWYh7
-	I/zXroHQ=; b=syy3aDEccFqwMWi7OqQgN+5WtM3ZAfMLRFvK6Ty6zA65HPirgvN
-	ilcYb0Q1wBWUsxvkCfegkY1pzVtpHUOC6WAP6pTtbZPWcSU2JRmZq5bj3XtaI5mJ
-	5KZK4MCZjfikGyCw8udPD79DzKX657SNeo8VKm+NBs1zDN72HR3ZemlLBm38jus1
-	WDdVI20E7k3nTziG5v/jPkof/xTKUHTBh7LLvCto0jlE2c4pmQs/fxRRAq0SyBeZ
-	lruY2Ddh8f3CbRk7/EsENeVrGkeN2qYTfTHHssLqQwRRARUN/edAoqWV9ygwuEYm
-	jIS3U35+DcIoM5H/MAq31DLvDAGEUQlNvVA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=sakamocchi.jp a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794705609; d=sakamocchi.jp;
-	mf=PG8tdGFrYXNoaUBzYWthbW9jY2hpLmpwPg==;
-	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm3:rsa-sha256:EZrJtf/Ie40YNq0/mqyUGO77kFVKjRD4U5qxKYfxJ98pxVf
-	kBOFq5ZC5Cy8aiULu6+JFFiWZ4CpZm8Dtm49ThxXYblKhPwh1NbwTFhBdVu+ltIy
-	KvN0kkTgnUHLMRGMQ5+tLhmolspjWz4BaVm+0l9Ti1EhuFK6Kmn3tLFeDSwFl/Ez
-	UEdx1no4EeCUgu6gz8Qbdvx6ndyJ5xe8wv8+zROB637FCw3lYFCfXyWnOCLQI3BD
-	J6d7Z2QDYwxLHNtYU5b1+hQV42CN3FGo64NnqghSraMTo2FJzHssMksQq/FzpF85
-	WU9G5CKuHLmVcTn+x+qVU1rVNGJi/YBQ+RoE3Zg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=13;
-	hn=cc,content-disposition,content-type,date,feedback-id,from,
-	in-reply-to,mail-followup-to,message-id,mime-version,references,
-	subject,to;
-Message-Instance: m=1; h=sha256:ntV32t7KOIfGMot6swX3CNi9IkfeqivW9U6qBDwCqc8=:4RP5xhIBVdE4nHZvdVXdOxDGDwEwdGMsIHWUj8/gqfI=;
-X-ME-Sender: <xms:xQj5aiop4gg9dsJ6_Vn6u45zXMYueatHm6sTqNkrPjF6p_uliIn0fA>
-    <xme:xQj5ao-c0CruU-TGxTE7NFYZSaEuQncLSSmM997vVUnXnDFfvxt3Mt5vMRNmSfmhf
-    34fKN--fbmH87piFvayMBFAxnjq6WHAkHe46t3SFxeylFtFg6aPnx9A>
-X-ME-Received: <xmr:xQj5atXGMWjP8faJlCtXj9RrVZeBW-gqDucCpC0ZXa191cT5jnWReGYw_Z8rYiOMsAtlcaNqIM8bDcRsKH9aHiPzWCfQ_w>
-X-ME-Proxy-Cause: dmFkZTGQstm6GOmXFdPQXDqZqAYG7aQouPeZUHJ4IBXrRYWFH6lFNnMWIuGsSOCFSsBuXW
-    LbDJxfVrfV3cl+wc1JM2qA4EvGILGxXqZILW7GfZPYDe6vWDeehuWas6PsFLq2rp3ZCMLK
-    vb2ZkQs61G65smsTsr3W8fx/U8N5II0Wva1plTCgHg5UpMnhi5PWu1EQKVr47yDlfh1UvS
-    LYKjU/U9x7MTbsMHbdhB5rWUTX8pbvj9eAIRg5DGXYvFzZokg4/nvH5yq0IUoDc8xEYNrb
-    hSXdXqov4GW1obuCd3P9CA8Y5vszeSouSKwogVvelkFQGttmZKq/NF5ipA4vDPXyrU1Xrm
-    Zrz3WElYlhVCDcPNRnAGrD/gNAj1b7M9bHXUiJrCqgmTebsAx0cfPWnZGZ3/j9Ea2UWcPj
-    qqJZ67js4v5NriJFPwSb5fBisbBQrZL2hM4YjWQCJ9uoloExIgLFI0L7sZA853RBWP4ncp
-    DBuj0o8Fkgdi7cJEPrTBBMdPRnMErqVngCb+aWeUA0zKt+uaR6UB1bg9ZicNV0ayYa37yt
-    I8T18lqRGBzHHbPK9Mrtu/1JSrYmpYKqgKJaY1owBZ4nprZ++3QPl5fwcLNIPsiGvSmzop
-    Zbr1xrRPLyP5mMh+v5LgBzIwywaOGj2L4LIDZM+0lWqxfhjtWj2WgxvXglrg
-X-ME-Proxy: <xmx:xQj5avAwgflb4ksIG5XRwHT6xxt96MMxRO3omUvuEt-3k_ppqJzgYw>
-    <xmx:xQj5aka9rFrx7_oeihBM0qdilVdSsLFNvKaV60FpVwOaq7EoVM3bNQ>
-    <xmx:xQj5ak3AzNFqwOx2mTfPhYibu1bQ_UDkW9NgFtUhfBWBcyXvs0uL4A>
-    <xmx:xQj5aoGo_8KYcqvEjpNAxM_sotiXZsyQPcuJ_BoRuwGjdfls4pLNfg>
-    <xmx:yQj5amBDENmX5NhRabHbZy5mqP0Iv6_jzPBpOZyadDNP-V1uD_qCKZw->
-Feedback-ID: ie8e14432:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 14 Nov 2026 20:19:47 -0500 (EST)
-Date: Sun, 15 Nov 2026 10:19:45 +0900
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org,
+	t=1794710775;
+	b=ai8W/wDV9jSq5sFTNCB3XVCZmyDSM2r3uP2Boamnu4+Zg70FXGhcFo0zDSxuDxrk5whLPQ
+	1wtJwprkLwQMmGTvTCkJOLynrWIh6qH7n1KdZ/zMJ8XcSwsQd3ZoTEdEm5kfummjk3E5i6
+	DGiQ8E5psKE5blUXI5c4eUk1agvhdQk=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=126.com header.s=s110527 header.b=LsYG0WcT;
+	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=xiaomi.com (policy=quarantine);
+	spf=pass (imf28.hostedemail.com: domain of nzzhao@126.com designates 117.135.210.8 as permitted sender) smtp.mailfrom=nzzhao@126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=xO
+	zrbckJJcWh/pB8wxs7WLkmsYb8n7B8H0ZwNaayh7s=; b=LsYG0WcTGpFFEaj51w
+	hx5+0yDbIhj1b9nLpCnXMGUFydIl67wncWDCWhaAWnYq4lkb5ZUKoQ6NEND2Khvt
+	9frOsPnsa3M+Lk/1a5DTXZ0N2jwuhaZdLYeH9QUDnlp6qpAh5TSHCiOtQq20YpUK
+	EmWzwXJcFREKNJeGC7/qp1BoU=
+Received: from nzzhao-ThinkCentre-M760t.mioffice.cn (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PikvCgD3H_OtHPlq+ob+DQ--.31738S2;
+	Sun, 15 Nov 2026 10:45:03 +0800 (CST)
+From: Nanzhe Zhao <zhaonanzhe@xiaomi.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Nanzhe Zhao <zhaonanzhe@xiaomi.com>,
+	linux-mm@kvack.org,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jens Axboe <axboe@kernel.dk>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Usama Arif <usama.arif@linux.dev>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Chris Li <chrisl@kernel.org>,
 	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-mm@kvack.org,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-	linux-block@vger.kernel.org, Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	linux-bluetooth@vger.kernel.org,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>, David Heidelberg <david@ixit.cz>,
-	oe-linux-nfc@lists.linux.dev, Chas Williams <3chas3@gmail.com>,
-	linux-atm-general@lists.sourceforge.net,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, Helge Deller <deller@gmx.de>,
-	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	MPT-FusionLinux.pdl@broadcom.com,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <mkp@kernel.org>, linux-scsi@vger.kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	linux-mtd@lists.infradead.org, Neill Kapron <nkapron@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org, Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	xen-devel@lists.xenproject.org, Hans de Goede <hansg@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
-	linux-ext4@vger.kernel.org, Mike Marshall <hubcap@omnibond.com>,
-	devel@lists.orangefs.org, Paulo Alcantara <pc@manguebit.org>,
-	Namjae Jeon <linkinjeon@kernel.org>, linux-cifs@vger.kernel.org,
-	Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
-	linux-f2fs-devel@lists.sourceforge.net,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Benson Leung <bleung@chromium.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	intel-gfx@lists.freedesktop.org,
-	Matthew Brost <matthew.brost@intel.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	intel-xe@lists.freedesktop.org
-Subject: Re: [PATCH 02/12] docs: ioctl-number: update sound entries
-Message-ID: <20261115011945.GA238787@sakamocchi.jp>
-Mail-Followup-To: Randy Dunlap <rdunlap@infradead.org>,
-	linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-mm@kvack.org,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-	linux-block@vger.kernel.org, Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	linux-bluetooth@vger.kernel.org,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>, David Heidelberg <david@ixit.cz>,
-	oe-linux-nfc@lists.linux.dev, Chas Williams <3chas3@gmail.com>,
-	linux-atm-general@lists.sourceforge.net,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, Helge Deller <deller@gmx.de>,
-	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	MPT-FusionLinux.pdl@broadcom.com,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <mkp@kernel.org>, linux-scsi@vger.kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	linux-mtd@lists.infradead.org, Neill Kapron <nkapron@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org, Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	xen-devel@lists.xenproject.org, Hans de Goede <hansg@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
-	linux-ext4@vger.kernel.org, Mike Marshall <hubcap@omnibond.com>,
-	devel@lists.orangefs.org, Paulo Alcantara <pc@manguebit.org>,
-	Namjae Jeon <linkinjeon@kernel.org>, linux-cifs@vger.kernel.org,
-	Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
-	linux-f2fs-devel@lists.sourceforge.net,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Benson Leung <bleung@chromium.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	intel-gfx@lists.freedesktop.org,
-	Matthew Brost <matthew.brost@intel.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	intel-xe@lists.freedesktop.org
-References: <20261114202653.3113381-1-rdunlap@infradead.org>
- <20261114202653.3113381-3-rdunlap@infradead.org>
+	Ying Huang <ying.huang@intel.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Kanchana P Sridhar <kanchana.p.sridhar@intel.com>,
+	Wajdi K Feghali <wajdi.k.feghali@intel.com>,
+	Bala Seshasayee <bala.seshasayee@linux.intel.com>,
+	Nick Terrell <terrelln@fb.com>,
+	Barry Song <baohua@kernel.org>,
+	Tangquan Zheng <zhengtangquan@oppo.com>,
+	Bo Zhang <zhangbo56@xiaomi.com>
+Subject: [RFC PATCH v4 0/4] mTHP-friendly compression in zsmalloc and zram based on multi-pages
+Date: Sun, 15 Nov 2026 10:44:47 +0800
+Message-ID: <20261115024455.1465726-1-zhaonanzhe@xiaomi.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261114202653.3113381-3-rdunlap@infradead.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2A4D01C0004
-X-Stat-Signature: ibcb8kx1qweu3hz8r7uw4an7ckcyb35s
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PikvCgD3H_OtHPlq+ob+DQ--.31738S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3WF1xGrW8Zr13GF15ur17ZFb_yoW3trW3pa
+	yag3sxCF18ZFW7Arn7Cws2kryfG3yxXrW5Ga4Sgr10kFy5JF1IvF4DKF98XayUurs3WF47
+	Zr45Gr1ruF1jvaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jIZXOUUUUU=
+X-CM-SenderInfo: xq22xtbr6rjloofrz/xtbBsQ9LG2r5HK8qAAAA3k
+X-Stat-Signature: m8yyhe1gpp6zq4my7iipxoya3kiaxkx8
+X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794705610-433965
-X-HE-Meta: U2FsdGVkX1+8O5veWag9oXM1uk3gyYt9SEGKLsB+05UsSZoU95103s1PbTHpnZt7imcddjAfvgzdBojku/Kt983GW6f+0cqy5V0hXyLx7TGLkRZSyi5KiZ7pfVTbCi0rfGfcbVzbu1z9YjL5aVohjoKygSrWuGjFDZvpCfnMsqDyrcsOAYnM9h3ymPMdvWFRof/TaYVEnTjbf008R56GwbLguIIsJRqSObRXjOHezndHnWqkOu7guysikoE00wcPpj2lGywvUq9gWHDMgQ7PLLUbAEaEsSPNil9ma4sXlSNS28OmhixKUmIwb7BWzHW/EaVLv4Yc40qnLomMJPcF1W2w67InOBhCHNQhhqE7NkgkapzGv4p9CqIZTewXbtVZa3N/nm/T2XX6srFXNrwmQHfbtzpsOmVZVhwnmLxAk6GOrxvN50NvrbOp24lTluuCOC6u1MuCbe9KhQuzlVk0Swnj8cE1AEb6obX1CBRYufkrSCA9/y3SZ/Eo0nj3e6QtecdemsN4nlU34IcJ7Vu6geMGxtR95iNzS/j/u+d+4tsCy6Wpz0Ap9lnoeilfioCMn4aYR03+7veeL/o8jdPDXiKu/FCwyYhOk3gJTzvklprbAneUwPKR4HUIIHE37ERjTBC/ZR7H9x9UsGt2fS5bHP5PTK84jMZF8l9MwRmvSan+tzz7MHRtEIS9memUnUJAd+GxD++BxoaoWhjeBDwMBhBJnuaWqp0Fw/oz2KDVmjzT9EGuuyJErPJwVKjg5iCwSIuxsQ40CVBXsp+up0l7NiW7RLew8f5Kptwi72qAEjTgYmd1QsGiyBm79EYtT/kh+xg6aXq+ib2WTX16xKa8yIYywna2+uI85jvknk4P6yxm1SITZzqpxgiVblP9vi/65gw0/5D7uCbrGuKwjUrDVHfAUCTmGQHdp0fXHff+VIob176+3/ZgoDRBFRfdPreNgCGA3wJ7Cc0WqI+2pJs
- WKH8JWtl
- bVrujrHGcLSD6nSr/3FdoPLreTXQXrbz7r5iUMinDC35+w73nUQxitRzoLY995i6RmWQrATpQABHLH9nNX04tZqIKObXSr/+si8WFMW7nHByUFCh0CWlHUPoOikemIXwTKnB8kCEtUsiRLUXStIcV6HtCo7aP4uFOqPxZs+MIzFC8BiqtpYCl9pt7oletBskCY+3XpaNq5DZbeJVqDf+eSwI4B6vUxKaJ6y+qV1rM1QFPMTdGlTBMePlrQsgjebD9xhWVl4sV1xuerqGn6KeiVWqQR2jSvTa4ZlR51DjrYRKmyhoIu1vxv+8mbRlF/ND/s79iDIZ3GSIJ0QyawJ7tDKzqFMJRhqbR0vLfReJUKtGFyVPX32Ir92KCWSHY61NmvyIB4jmCO0+jvUK1ZvrhaewWYLSOMDcJrCquXtcSvyz9ig/AeyUYgOP0BJrcXwyhQV+Lm3ovWsdrV5Yv+TXXPOGur1Y7AhWD5QywYY1BETh1xuOgImKvlj5fe1bmiiYL3Mhw1yUbwBHYLjkAj+Rog3prcq7E2tAo0uTl14VWBnqpxGswsQo9kPNoOm8BhPY3Sgs3rqJm1RdWb0Rb9HGuI97WglUZV0PIpZFBY1MBU2bjdJUDO81XQ1mqZ7ZV3ilSHEW3PbXayw4oJr5xOZ9VqLTR4xOugJQCRh+iXyaOPLQKBOGlh9kjkMXkLYZK9oUiFhyqz/UJ/+/NzGqINU5YP7dewgUMJq8xzys6aChUGhS3pFuhszVfjs28lQcl3eQonX7xTyVAmiyaxwUO35ZUwuVchavJnvsBzkBT
+X-Rspamd-Pre-Result: action=add header;
+	module=dmarc;
+	Action set by DMARC
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 58E70C0005
+X-Rspam: Yes
+X-HE-Tag: 1794710772-857473
+X-HE-Meta: U2FsdGVkX18GEPXxrvqSHJGw7HbBBxylb/sovhYVrMmhsphXr949wzA1dKm/+I3A0n7ghJmrqZV0TMgAgyLiThge92RhShnDr1rMCvhSjJwhn4j89eNImiePE217d+FxE8Tjzo6SnrO5J+L5DA0FHYa13JeqrTA13jbdBxjfnJeLZBs49rJawZI4Dk8SBbftCyp5PTKBIzQmdsWvlt4y+Z1+2aSggJx/7B1koE0yyF6SHR66sa+S7ARWsXU887LBzJwbgLSvpIFme0s+7I3Te8p8iPNkDMtYgc9CYYQFv01lrY6KwLzcVk9sbG0dbEGKbtNXpKYn80zPNrkBKISsOya4azoIs0VGjF/REJarGBPvp8wlZxwbsiZaAm9qyBBnP6y11qmrhmj7yqOgNstl9wjSrm1jBlT6AwPFARhXUOuXiJqREncZu4YFUYQ89KR3N/GH31aZAoeMq5dPqintZci2fiXZscMT97nLD2wfVaVEy0/fF3fE4SUJ08ypWVIk3JksGBVUWX9XD7uUE/Uqjwj6Lub2cqDb71gJlrqCcmM3WJWIRGqsRluxRVV+6RJLODYDW0kYAgLkuxepotbbtv+15SbBdmoggGBMn7wO4GrsYD+85Nu4S6dyiPPNMzbAap8JnqLRm6EOX8htj5VVIKdanCd2nTUYnsaFJSsRb4fJyM0fovf5szOmlyq5HiRNde36xM5UBYp+Th6fs5mysUqrm+vadtGqm9XjCNKcjIaXPBqMdyQJzyiY0jJjrJvRNY6fv5PHGn8U8IdBonaohRWW8nYNYgCJUx2afdx07AmLv+deeFbTr65B+Ka94Mkrj81w+zzFAJ9pBgjb9YnHvnYF19rKQV6cjwcrxc9/3OtGnqEhGTuap3r8bvjnvQT2RdYtuhBXP5RE71cPfGhPEUCwLHC08TF3CrHpx8JofI9rnpuhmUWMeXq207Wt+V2QNuySID3lALZisZR8fQQ
+ ZklFF0cj
+ 99DOcyda950qOv2uLKmBQkV523x65trAjt3nXqEicgpTBSHopamEiXEvdIKFWei2V5RwIvgv7D0g9pspS8IrCPGHs14dBinOyu6mVGxgG+NAJ1rw1dS/lh9UXo6iw+dtlRUGHBZ91Ebytwe3AvK+K5O0g+MzlzG2ifaRU+x6iVF6C1qnKedyQ+nbvUo1FwG4Fqn/wMOCE4B+05/RCiEdCySfXohJDpY7zcNs/XjTerJPVdocmZTiIT7KRb55rEDQrrfcZCGkCqLEOe+MEYz30WKxgkEoLMJ3GrTCLvD/72L2vROry1t50iIAx5LJiSP8RGY71FdfCFTPG6d4ANgzgB8yWzx5ZBTNxC5p3rwDFOfq8t8fBQnaPbUxTMW7gnZFLa7CYmUedTss1Ykuu1C4z60RJT6fCjPDAfKO3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -276,52 +118,233 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi,
+When large folios are compressed at a larger granularity, we observe
+a notable reduction in CPU usage and a significant improvement in
+compression ratios.
 
-On Sat, Nov 14, 2026 at 12:26:40PM -0800, Randy Dunlap wrote:
-> Update the list of files where sound ioctls are defined and update
-> the ranges of function numbers that are used.
-> 
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> ---
-> [Since having multiple maintainers trying to merge these would
-> cause some conflicts, it would be more manageable for Jon to
-> take all of these through the docs-next tree.]
-> 
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Shuah Khan <skhan@linuxfoundation.org>
-> Cc: linux-doc@vger.kernel.org
-> Cc: Jaroslav Kysela <perex@perex.cz>
-> Cc: Takashi Iwai <tiwai@suse.com>
-> Cc: linux-sound@vger.kernel.org
-> 
->  Documentation/userspace-api/ioctl/ioctl-number.rst |   12 +++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
-> 
-> --- linux-next-20261111.orig/Documentation/userspace-api/ioctl/ioctl-number.rst
-> +++ linux-next-20261111/Documentation/userspace-api/ioctl/ioctl-number.rst
-> ...(snip)...
-> @@ -168,7 +174,7 @@ Code  Seq#    Include File
->  'H'   C0-DF  net/bluetooth/cmtp/cmtp.h                                 conflict!
->  'H'   C0-DF  net/bluetooth/bnep/bnep.h                                 conflict!
->  'H'   F1     linux/hid-roccat.h                                        <mailto:erazor_de@users.sourceforge.net>
-> -'H'   F8-FA  sound/firewire.h
-> +'H'   F8-FE  sound/firewire.h                                          conflict!
-> ...(snip)...
+mTHP's ability to be swapped out without splitting and swapped back in
+as a whole allows compression and decompression at larger granularities.
 
-I overlooked this entry when inserting the additional ioctl commands in
-the following commits:
+This patchset enhances zsmalloc and zram by adding support for dividing
+large folios into multi-page blocks, typically configured with a
+2-order granularity. Without this patchset, a large folio is always
+divided into nr_pages 4KiB blocks.
 
-* 90e8ac5c9d446 ("ALSA: firewire-tascam: add new hwdep ioctl command to get state image")
-* 58b62ab702591 ("ALSA: firewire-motu: add ioctl command to read cached hardware meter")
-* ca15a09ccc5bd ("ALSA: firewire-motu: add ioctl command to read cached parameters in register DSP model")
+The granularity can be set using the ZSMALLOC_MULTI_PAGES_ORDER
+setting, where the default of 2 allows all anonymous THP to benefit.
 
-Thank you for catching and correcting this.
+Examples include:
+* A 16KiB large folio will be compressed and stored as a single 16KiB
+  block.
+* A 64KiB large folio will be compressed and stored as four 16KiB
+  blocks.
 
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+We captured anonymous pages from four Android applications on a Pixel 6.
+To evaluate throughput, we allocate a buffer via mmap(MAP_PRIVATE |
+MAP_ANONYMOUS), populate it with the captured pages, and invoke
+madvise(MADV_PAGEOUT) to swap the buffer out to zram, measuring the
+pageout duration. We then sequentially touch every 4 KiB page to fault
+them back in from zram, measuring the swapin duration.
 
+For example, testing the 143 MiB WeChat corpus (times in seconds;
+w/o: without the patch, w/: with the patch):
 
-Thanks
+Algorithm  pageout w/o (s)  pageout w/            swapin w/o (s)  swapin w/
+lz4        0.247            0.210 (-14.8%)        0.137           0.113 (-17.6%)
+lzo-rle    0.240            0.207 (-13.7%)        0.149           0.123 (-17.5%)
+zstd       0.567            0.452 (-20.4%)        0.258           0.192 (-25.6%)
 
-Takashi Sakamoto
+v3 left two issues to discuss:
+
+The first issue is internal fragmentation. A compressed 16 KiB block
+is rounded up to the next size-class boundary. If it lands in a class
+with a large gap, the gap becomes per-object padding.
+
+On all four applications, unused pages in partially filled zspages
+increase by ~1.8 to 2.4 MiB, and the per-object class gap is wider.
+However, because the number of allocated objects drops by ~74% (from
+four 4 KiB objects to one 16 KiB object), total rounding waste
+actually falls by 13% to 31%. Combined with 5% to 15% better
+compression ratios from multi-page compression, total zsmalloc memory
+occupancy (mem_used_total) is reduced across all applications.
+
+For example, below is the memory breakdown under lz4 for our four apps
+(lzo-rle and zstd show the same trend, saving 3.8% to 9.3% total memory):
+
+App          objects (w/o -> w/)        rounding waste (MiB)    unused pages (MiB)      mem_used_total (MiB)
+WPS          27,530 ->  7,285 (-73.5%)  0.80 -> 0.56 (-29.8%)   1.07 -> 3.35 (+214.0%)   36.4 ->  34.9 (-4.0%)
+WeChat       32,460 ->  8,450 (-74.0%)  0.89 -> 0.62 (-30.6%)   1.35 -> 3.32 (+145.8%)   42.8 ->  40.0 (-6.7%)
+Douyin lite  62,668 -> 16,218 (-74.1%)  2.07 -> 1.61 (-22.3%)   1.37 -> 3.78 (+176.0%)  100.8 ->  93.6 (-7.1%)
+JK chess     71,950 -> 18,584 (-74.2%)  1.75 -> 1.52 (-13.0%)   1.43 -> 3.28 (+129.7%)  117.0 -> 112.7 (-3.6%)
+
+Here, objects is obj_allocated, rounding waste is total class padding
+across all objects, unused pages is memory left in partially filled
+zspages, and mem_used_total is the total memory allocated by zsmalloc
+(including fragmentation and metadata).
+
+We also built a 256 MiB lz4 synthetic extreme case: 16 KiB blocks with
+the first K bytes random and the rest zero, with K tuned so the object
+lands one byte above the previous class. Below is the code to generate
+this pattern:
+
+#define BLOCK 16384
+
+static void make_block(unsigned char *buf, size_t k)
+{
+	size_t i;
+
+	for (i = 0; i < k; i++)
+		buf[i] = rand();
+	memset(buf + k, 0, BLOCK - k);
+}
+
+static void write_corpus(int fd, size_t k, size_t nblocks)
+{
+	unsigned char *buf = malloc(BLOCK);
+	size_t i;
+
+	make_block(buf, k);
+	for (i = 0; i < nblocks; i++)
+		write(fd, buf, BLOCK);
+}
+
+With the default CONFIG_ZSMALLOC_CHAIN_SIZE=8, the largest non-huge
+class gap is 576 bytes. Setting K to 10,781 bytes lands the object in
+class 11,456 with a 575 B/object padding, increasing total memory by
+5.0% over the baseline without the patch (179.3 MiB vs 170.7 MiB).
+
+With CONFIG_ZSMALLOC_CHAIN_SIZE=10, the classes are denser and the
+largest gap drops to 448 bytes. At K=10,781 bytes, the memory overhead
+falls to 3.9% (177.3 MiB vs 170.7 MiB).
+
+A potential future optimization is during size-class merging: we can
+avoid merging classes if the resulting gap exceeds a threshold (e.g.
+ZS_MAX_MERGE_GAP = 256 bytes), for example:
+
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ can_merge() @@
++#define ZS_MAX_MERGE_GAP	256
++
++	if (prev->size - size > ZS_MAX_MERGE_GAP)
++		return false;
++
+ 	if (prev->zpdescs_per_zspage == zpdescs_per_zspage &&
+ 		prev->objs_per_zspage == objs_per_zspage)
+ 		return true;
+
+The second issue is partial read. If the order-2 allocation for the
+swapped-in folio fails and falls back to order-0, we must decompress
+the entire 16 KiB block just for a 4 KiB swapin.
+
+v3's 4/4 ("mm: fall back to four small folios if mTHP allocation
+fails") handled this by building four small folios. Usama asked whether
+defrag=always could replace this patch. But we only need direct reclaim
+for the do_swap_page order-2 allocation; otherwise all anonymous mTHP
+allocations would enter direct reclaim. So the new 4/4 adds
+__GFP_RECLAIM to the order-2 swapin allocation in do_swap_page().
+
+We measured the cost of entering direct reclaim in the swapin path on
+an i7-14700HX with no_turbo=1: a 1 GiB memcg, zram (zstd), 16 KiB mTHP,
+and an arm64 defconfig vmlinux build with -j20 in the background. The
+bench was pinned to one CPU and the build to the rest. We compared
+forcing direct reclaim with the existing behavior, 10 totals per case,
+each total 30 rounds of 100 MiB anonymous pageout/swapin.
+
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/mman.h>
+#include <time.h>
+
+static double now(void)
+{
+	struct timespec ts;
+
+	clock_gettime(CLOCK_MONOTONIC, &ts);
+	return ts.tv_sec + ts.tv_nsec / 1e9;
+}
+
+int main(void)
+{
+	const size_t size = 100UL << 20;
+	unsigned long *p, sum = 0;
+	size_t i, off;
+	double t0, t1;
+
+	p = mmap(NULL, size, PROT_READ | PROT_WRITE,
+		 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+	if (p == MAP_FAILED) {
+		perror("mmap");
+		return 1;
+	}
+
+	for (i = 0; i < size / sizeof(*p); i++)
+		p[i] = i & 0xfff;
+
+	t0 = now();
+	if (madvise(p, size, MADV_PAGEOUT)) {
+		perror("madvise(MADV_PAGEOUT)");
+		return 1;
+	}
+	t1 = now();
+	printf("pageout %.6f\n", t1 - t0);
+
+	t0 = now();
+	for (off = 0; off < size; off += 4096)
+		sum += *(volatile unsigned long *)((char *)p + off);
+	t1 = now();
+	printf("swapin %.6f sum %lu\n", t1 - t0, sum);
+
+	return 0;
+}
+
+                         w/o DR          DR
+partial reads            235,832         218
+swapin total (s)         24.85 +/- 0.56    22.80 +/- 0.73
+pswpout (pages)          11.4M           11.3M
+
+Here, partial reads is the zram_bio_read_multi_pages_partial counter.
+The direct-reclaim case did not show a measurable cost. Almost all
+partial decompressions were eliminated, making swapin 8.3% faster.
+
+-v4:
+ * Rebased onto latest akpm mm-new.
+ * Patch 1: Fixed multi-page page accounting (NR_ZSPAGES, zs_compact,
+   and debugfs) to use physical pages via class_pages_per_zspage().
+ * Patch 2: Adapted to upstream's new zcomp read/write stream separation;
+   added a preallocated decomp_buf in zcomp_dstrm for partial reads to
+   avoid memory allocation in the swapin path.
+ * Patch 3: Updated zstd backend to pass ZCOMP_MULTI_PAGES_SIZE to
+   zstd_setup_params().
+ * Patch 4: Dropped v3's 4/4 fallback and added a new patch to allow
+   direct reclaim for synchronous multi-page swapin.
+
+[1] v3: https://lore.kernel.org/all/20241121222521.83458-1-21cnbao@gmail.com/
+
+Barry Song (1):
+  zram: backend_zstd: use multi-page size for zstd parameter setup
+
+Nanzhe Zhao (1):
+  mm: swap: allow direct reclaim for synchronous multi-page swapin
+
+Tangquan Zheng (2):
+  mm: zsmalloc: support objects compressed based on multiple pages
+  zram: support compression at the granularity of multi-pages
+
+ drivers/block/zram/Kconfig        |   9 +
+ drivers/block/zram/backend_zstd.c |   4 +-
+ drivers/block/zram/zcomp.c        |  31 +-
+ drivers/block/zram/zcomp.h        |  19 +-
+ drivers/block/zram/zram_drv.c     | 499 +++++++++++++++++++++++++++---
+ drivers/block/zram/zram_drv.h     |  43 +++
+ include/linux/zsmalloc.h          |  10 +-
+ mm/Kconfig                        |  29 +-
+ mm/swap_state.c                   |   7 +
+ mm/zsmalloc.c                     | 242 ++++++++++-----
+ 10 files changed, 757 insertions(+), 136 deletions(-)
+
+-- 
+2.43.0
+
 
