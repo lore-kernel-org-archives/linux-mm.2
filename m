@@ -1,89 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E4E606A31D
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 15:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B9D606A31F
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 15:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fAQB6H3O
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DazgYGOP
 Received: by kanga.kvack.org (Postfix)
-	id 116626B05B1; Sun, 15 Nov 2026 10:23:32 -0500 (EST)
+	id C942C6B05B1; Sun, 15 Nov 2026 10:29:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EE696B05B2; Sun, 15 Nov 2026 10:23:32 -0500 (EST)
+	id C44116B05B3; Sun, 15 Nov 2026 10:29:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02B696B05B3; Sun, 15 Nov 2026 10:23:31 -0500 (EST)
+	id B34386B05B5; Sun, 15 Nov 2026 10:29:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CE7366B05B1
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 10:23:31 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5075A407A4
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 15:23:31 +0000 (UTC)
-X-FDA: 85437722622.06.703CAF6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 88061A000E
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 15:23:29 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fAQB6H3O;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E1706B05B1
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 10:29:30 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F40061207A6
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 15:29:29 +0000 (UTC)
+X-FDA: 85437737700.16.2AA2BAF
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 18E3B140003
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 15:29:26 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=DazgYGOP;
+	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794756209;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794756568;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v8TIMiq73Mw5ReQUdV1tXDz4+sKry0oZWtUShE+0QUw=;
-	b=7NEmMAe1bFk2F6VOlGISaaX0CH3fF66YOdB9rpEAPl3benQF2utc3NteRj/yi9Vo3Lm2T/
-	UBNxL2Dg8pEAtmN/xTk4Z4UsjzTrCGOFczW9GYsQPIor4BLdkL1AgpK7r27E3qYO+jFeH4
-	/TEJJOlV4HqjlrOu2CE5LxhYvWiuz6s=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fAQB6H3O;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	bh=Yb/rW1NOmAiEOX8njX27I+yC9sCUQ2ioynhsTqMUeEU=;
+	b=A37Bpe/6p8V4xkg5dc4+HXIiOQiBvnBlFYKbN9cPbQ2dlpDNXdi4GDWiGV0FhZShYmbaxb
+	1xkegvOMwAaVTsD1KRkjDXCs+dFBjHXFeMr5wZXJ7f2WI13aiu5zwVMhjP+ziPBrordpff
+	CSQWRVmSWCek7Q75kyGHDh4lCLPiaDQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794756209;
-	b=cHcpRHhD7n43w4i62kmLyLmPlXclapu+iBOb2oevjmS6kYlYvv3S2UPxg0GF5g4wmXDKuI
-	aH8nsBUg5C9w0YCvQ2GCXMKfI8ESrc+OiOe8+6ldIHXQWvGhGVqFvChU8OImZ7S7LcKSVr
-	Y10+g7jpZP/GsLh8A8yQhw6smg4FnGo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7992E43506;
-	Sun, 15 Nov 2026 15:23:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2AEA1F000C4;
-	Sun, 15 Nov 2026 15:23:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794756208;
-	bh=v8TIMiq73Mw5ReQUdV1tXDz4+sKry0oZWtUShE+0QUw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=fAQB6H3OHz6MhUX4o14L06zIdHxek5EYYUSe8L67TknIoIgOFFrvSKoXE8PkUoHAG
-	 SNzqFF/b+7omJmf9eZNnEkrun6GzBdMgPXVdD+3YqUcPbwET/vKWMev2PSKPQa/iZK
-	 EM5DW0eWMo+59T/M0uhbOGP/S8glmJyWXzOc0w9salYEV4jkvtPOdRdkjeVoNo9pBT
-	 Q1ssqgET+egcv4GrSvaPrYDchm6tVUGoBvkFvBjjQn6ieMhns/YaKmy9akI8TvV7yZ
-	 sDGRmuGwPVOkuh39SzzWXz+LqrU26yAHUX3d0Ka+7CC2AHNLBjX7VX5DFCF5fUAzOo
-	 /y0qLa0tKDaCQ==
-Message-ID: <sashiko-outbox-215629@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 9/9] mm, sparc: batch arch_unmap_one()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Dev Jain" <dev.jain@arm.com>, david@kernel.org, ljs@kernel.org, akpm@linux-foundation.org, hughd@google.com, chrisl@kernel.org, kasong@tencent.com, davem@davemloft.net, andreas@gaisler.com
-Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com, lance.yang@linux.dev, baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, baohua@kernel.org, youngjun.park@lge.com, linux-mm@kvack.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, pfalcato@suse.de, anshuman.khandual@arm.com, geert@linux-m68k.org, sparclinux@vger.kernel.org, ryan.roberts@arm.com
-In-Reply-To: <20261115143905.3045084-10-dev.jain@arm.com>
-References: <20261115143905.3045084-1-dev.jain@arm.com>
- <20261115143905.3045084-10-dev.jain@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 15 Nov 2026 15:23:26 +0000
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 88061A000E
+	t=1794756568;
+	b=z+r/7asuDpSsXmeSVuQf3Rvs39/CLCinjyxMaa3nlwXraJRXXjDUE8vvFwx6Y3AYWD2o0Q
+	AqUex+RThlRT6ODv/DJ9QmqxcoQvVFRKMM8fe2RdQnLP3qonvqNBdLlNonAA98TgirWEVQ
+	n6hxPRoL5cQbIlUDRCC84VoTnJUCZGg=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=DazgYGOP;
+	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794756567; x=1826292567;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=z+Gdrxc3ydTyR+6uvWLKyFCQ1TI3j9Fxfs4TZg3tGNY=;
+  b=DazgYGOPmM4iltUWLaVzOB0m5LDngSmY55OV9FvEJQl8kUvUxSDctvDr
+   WNM7o/K+6voe3sWb1vRSm4VrrpwhdzWkbbGkNAYDoff6lReXuvn7LTbz9
+   lpPIOA6cRA5q9ZE6exxLjEEmtaVczd0A0mO1iKTkezBsklVA4SKjg1nOS
+   WmMeWlpbFpMAvQOizjczCRzCs6SR9Cbf45ULxaIW+7ys4UHqncRu/j+Jd
+   rEuxETkTXFuk+roj6KJNCdrzp2UICW5oW18EvYFxx6Rxy2MdUfGMBHrxf
+   2RC5wbzWCpMDoyKv3L1H32GhBk9x0L8z++zjIRL1ZTPCIvqxuvUeHbtfJ
+   w==;
+X-CSE-ConnectionGUID: M1s0AQ2fRsy1y2BA6FLP8g==
+X-CSE-MsgGUID: 3ThjZMLTQ+S6mIM21HOX+g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11967"; a="3579335"
+X-IronPort-AV: E=Sophos;i="6.27,215,1787036400"; 
+   d="scan'208";a="3579335"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2026 07:29:25 -0800
+X-CSE-ConnectionGUID: uHGKMeRrTCafyscBwkhRzQ==
+X-CSE-MsgGUID: 71k7X6P9QdSw6nMHEdQ/kQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,215,1787036400"; 
+   d="scan'208";a="9597153"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 15 Nov 2026 07:29:23 -0800
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xScAS-000000016zE-3MLt;
+	Sun, 15 Nov 2026 15:29:20 +0000
+Date: Sun, 15 Nov 2026 23:28:28 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Xu Xin (vivo)" <xu.xin@linux.dev>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	chengming.zhou@linux.dev, david@kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org
+Subject: Re: [PATCH v2 2/2] mm/ksm: add initialization helpers for
+ scan_get_next_rmap_item()
+Message-ID: <202611152302.OUfZlgfW-lkp@intel.com>
+References: <20261115080049.132515-1-xu.xin@linux.dev>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261115080049.132515-1-xu.xin@linux.dev>
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: ydwz14rd7wsn5bzs8a3sjk85ku93c3jx
-X-HE-Tag: 1794756209-198992
-X-HE-Meta: U2FsdGVkX1+Qpl2UisRkihmisrutuXMJmOens3KbBxQ28mBpFFBUM1OrclzSeYmBd7s2hfpbTfpR7vimnvVbHUkcI3MsHzekuotC7XWpppTFqXoAhyQCRLDdWibvNLb+2WNDwTihQkLbDUvrQqtFa9YucdLSSZHdl7vpJViPn5jSrKuZa2iA8Bv+T9wuq3UgLo/xWQbHxYLObjXe00r7u+yNMccQowt73tpZCTdOjqVUxaKRl1qSVRLSfhzdZHwsmH7MaYlh80JGZn3SqNSp6rT4vzwqCi5fhpU2mIQ+pKZ+72qRH6Aq+baSOtYP1i1Be3KRWqZ9GYNxoIRA4+OYu6pwhbvvG676vPLxddaQQeVpXmyeQuNPkOlqy3kv22AXJQgBAzG+OUNyYMKpKWdKOeoisuoyu/IkdynClXwH7Lco6U3wICrMvUX/Ad31pG/1NCaRGp7PagMw3l67H1i2MACNPvaNFVtwp/PmHHrcToBw0glhz7oDK0+zWjNx7zcjxaOauNoAb1ZIhYOKyvdyBFtEOAzQE5MP7Nd63F8yG0fdh9gHYtoeWr501p53B+JRFGG2YaepAlYXxHgVwR9OhxOgWkOLKXbPhbEM/Nt2CJTEdsN1PNAYvZkHefsbGOt/PZ4Jkk+S7XPipgUSCm7VOcM79CrLA/P88TDAlUiNvtfPXd+FzkNZMNbKVHq+10v1nOxqrp/Zc+uOdoiKVk0yMjXdgcUSkamWXwtXs8/cxDtOgrP+llb94k/vAEsdkXqNQnX1DvhyZKk34r/cwZFwoCtRHWZs/J6rYkY6dp3ZbkVHuHn6Ww1mtp0oZLluuo6IEXNcDH4b8Fq0lN2Vu8nmb/kI0ZyYok80gEE7pDXvDHGs50e4CF2lpApHyop5+Iydn89yseFGVmRdwhKpCGj49OjC9gxJ0g9sGT9fLClOs7TSE6WPc4LDHD2CWnBVHmXigfAwdnH/YUE5xRrg4dz
- kHuElTUh
- XE1bxURplILLrnw1WMuou+Z9mi4bWH3GEeqrKb4ykxm+pOw5cIc1B/gryPK9BW9cj4UUydwcEZFONtnGeT7cFb56MeXukov+TltUYVe8rXAHlMmmbQxGyzrQvc19Vxyb6bzXx5LqFCODkNperfDAvCwBdYifI32QGLgiB1WZRNkdbJsKqd9df37E2hvNfX7dcAnXLiq1ibcso86NVKwDsBnlpKIuqir5EGGvh6F9SG1tMnyBSEN1D5z1G06P7EfSBnN3XDpPOTZ2qaI/JEAQ01UIZAnCtN8fi1GBgztqRw/bmiVuAdUBI+VsQufE9NKXHbvHDP1vc/1hSKMetNny+/WTPAQiS6vf8klZUHdw7kqz9PQCyJYQsHwSNxdzgakNZACIakl6YYr8pawOkkTi7cpuzjIJITg9ZzwToDmefdIne6njqUxEkOkieV3upy8cpvymZdNyRp5/5kaUhkL5mkwe81XSAzyY0s+UmBAHdDs4680j2YR0kJbMscRZsvfYtGnIP/mau1nIDSLqrG3GsXuUwvpsBuO91CPuej2QpdippS/LVeMjkpd4ytPYvSrQe5L4XB7X0XP6wcTYPcYwWjTTKZXcLlZhwYGwyBwnTB/uzn9zExJ7rlSQbiqdpbX6cemV8/Kwk1UF8Jnyvhs1A8qD78NfpSxD5bUqiYS6cUXKwyOM=
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: fu6uwgtegqe5naepok85jafhkz81mf66
+X-Rspamd-Queue-Id: 18E3B140003
+X-Rspam-User: 
+X-HE-Tag: 1794756566-730507
+X-HE-Meta: U2FsdGVkX19gygUIM65hV1T4U85ESYJzYHyIQv7VWntZTh2V7c03ucfq60p+2oxHT2wBzUXChgsBDhFA+sbjRTuHm8Q+RwE09WuXGrPcJF6lrjZohbhWrnqnodOeBuxlrmMk2AJkIKtk18GShg6ey2iFZyCUe41HOHDtZUafzAcEtBu4QlGOwap+qOFW2vOiSnYKcngO5a8k1xrJxYNo+kT6/R7Tk4pxMAnfmHo2/xevLY+adIfo1BbN4h29neVwXXXlsE/dnd9LOHCKnvH6HDkrecCB9RkKGGwBcXHnUGl9PhNYcWWGzx2VG41iCkXjFphCaf5uJ+CGJeguA1vnncnnFXSFiYVro27HM+SnI0tIBI0vZZP0J5YK/KmmoT5thDCM1ItgcsN3jp+MIdEvQ+v/N+u0WHtm/JgBfeI08HMby6I/qYIdDMsf2JqfWIuES6DYkfcUEeo+nDwus04Dn6fODc4CGJxqYF+KNXqbxfYmbTOgZoM/HJtNGNwU0I6s36lrD1zRIPpg23oj/AseoOeSZmV0o9LwxgP0aCObIFg7PM7omCJRTEBdsFR+/KfR21saz21H73WjgT1TwZdbnsJxjul7yakSYuyNYoSo6lzfSDX6pbSMYJ/EjEN2cp3+J8n0x3+nSF4jjL9GecI2/3RLkPlw5kTZS560rI8fNVIYO8hSZsJLTubgQGMGaNlNYpMaImzYZW/jbwz4rmYSP7ez9vFC19tbMNoKVlQ4UhFJmr4zyRSBTYZY+mXBETbk1yw35bYWX60cv9CIWxOIDeekS3kS6cccWpa2+YASkvFLXGyOllpPsgzC3I4bAw0HPQF0yDnK8QWVh9gxj/ezW4JKk84WXNYOxCwOYSj/roU1nL2RHqRA+g/n0NS4bP2hAm7jJorm7o29z+A74llORDIKUWmJYkd/AOvsCPVu3JBmGDgSdC/f6Gp78AfEo5rtVu/1lntMHl2dp2UECgw
+ xnotfjIc
+ YuiJOXD73CaN4vII6EsfbOK3JanHRw0ArtNpctta5NdJSYVZ7NdbTjb285v6zY+6EBj4Dbb7drFFDYkpd4c6B16hidQ1ZyCpA5pyEfjDqa3b1yyVnCOTTGs4rwCe0l+nultich9rntwgiI5AyBESgUBRxTvuIgz6+hiAHrgh3aSW0Xouzu20atWia4bk5XKgvECF1x2gX6AcCjhSGnBeWorirzNQq8iFl0sN8uvw4yhiQ8YGIAVDCgm4fUyjJh+pIACWtSM7lKRqYZuHer9XmAVwfuuZDSS57D2yMg5Rgm+XKaLjZNAqua0dOuDcRX1+x/HtEymFFVaqLEMfZV8+HOSlDFTjONmn2+DoWKrqMD3pZhrKJGO/4zyxEKQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,82 +110,219 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] sparc: leak of ADI tag_users and tag storage in
-  adi_save_tags_range()
+Hi Xu,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on akpm-mm/mm-everything]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Xu-Xin-vivo/mm-ksm-extract-helper-functions-for-scan-cycle-cleanup/20261115-160032
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20261115080049.132515-1-xu.xin%40linux.dev
+patch subject: [PATCH v2 2/2] mm/ksm: add initialization helpers for scan_get_next_rmap_item()
+config: loongarch-defconfig (https://download.01.org/0day-ci/archive/20261115/202611152302.OUfZlgfW-lkp@intel.com/config)
+compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project ca14e3d05c4e63d6e8103945c86b958ed2f55d5f)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261115/202611152302.OUfZlgfW-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202611152302.OUfZlgfW-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> mm/ksm.c:2693:6: warning: variable 'mm_slot' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+    2693 |         if (scan_should_start_new_cycle()) {
+         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   mm/ksm.c:2720:10: note: uninitialized use occurs here
+    2720 |         slot = &mm_slot->slot;
+         |                 ^~~~~~~
+   mm/ksm.c:2693:2: note: remove the 'if' if its condition is always true
+    2693 |         if (scan_should_start_new_cycle()) {
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   mm/ksm.c:2684:29: note: initialize the variable 'mm_slot' to silence this warning
+    2684 |         struct ksm_mm_slot *mm_slot;
+         |                                    ^
+         |                                     = NULL
+   1 warning generated.
+
+
+vim +2693 mm/ksm.c
+
+  2680	
+  2681	static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+  2682	{
+  2683		struct mm_struct *mm;
+  2684		struct ksm_mm_slot *mm_slot;
+  2685		struct mm_slot *slot;
+  2686		struct vm_area_struct *vma;
+  2687		struct ksm_rmap_item *rmap_item;
+  2688		struct vma_iterator vmi;
+  2689	
+  2690		if (list_empty(&ksm_mm_head.slot.mm_node))
+  2691			return NULL;
+  2692	
+> 2693		if (scan_should_start_new_cycle()) {
+  2694			advisor_start_scan();
+  2695			trace_ksm_start_scan(ksm_scan.seqnr, ksm_rmap_items);
+  2696	
+  2697			/*
+  2698			 * A number of pages can hang around indefinitely in per-cpu
+  2699			 * LRU cache, raised page count preventing write_protect_page
+  2700			 * from merging them.  Though it doesn't really matter much,
+  2701			 * it is puzzling to see some stuck in pages_volatile until
+  2702			 * other activity jostles them out, and they also prevented
+  2703			 * LTP's KSM test from succeeding deterministically; so drain
+  2704			 * them here (here rather than on entry to ksm_do_scan(),
+  2705			 * so we don't IPI too often when pages_to_scan is set low).
+  2706			 */
+  2707			lru_add_drain_all();
+  2708	
+  2709			ksm_prune_migrate_nodes();
+  2710			ksm_reset_unstable_trees();
+  2711	
+  2712			mm_slot = scan_get_first_mm();
+  2713			if (!mm_slot)
+  2714				return NULL;
+  2715	next_mm:
+  2716			ksm_scan.address = 0;
+  2717			ksm_scan.rmap_list = &mm_slot->rmap_list;
+  2718		}
+  2719	
+  2720		slot = &mm_slot->slot;
+  2721		mm = slot->mm;
+  2722		vma_iter_init(&vmi, mm, ksm_scan.address);
+  2723	
+  2724		mmap_read_lock(mm);
+  2725		if (ksm_test_exit(mm))
+  2726			goto no_vmas;
+  2727	
+  2728		for_each_vma(vmi, vma) {
+  2729			if (!(vma->vm_flags & VM_MERGEABLE))
+  2730				continue;
+  2731			if (ksm_scan.address < vma->vm_start)
+  2732				ksm_scan.address = vma->vm_start;
+  2733			if (!vma_has_anon_rmap(vma))
+  2734				ksm_scan.address = vma->vm_end;
+  2735	
+  2736			while (ksm_scan.address < vma->vm_end) {
+  2737				struct ksm_next_page_arg ksm_next_page_arg;
+  2738				struct page *tmp_page = NULL;
+  2739				struct folio *folio;
+  2740	
+  2741				if (ksm_test_exit(mm))
+  2742					goto no_vmas;
+  2743	
+  2744				int found;
+  2745	
+  2746				found = walk_page_range_vma(vma, ksm_scan.address,
+  2747							    vma->vm_end,
+  2748							    &ksm_next_page_ops,
+  2749							    &ksm_next_page_arg);
+  2750	
+  2751				if (found > 0) {
+  2752					folio = ksm_next_page_arg.folio;
+  2753					tmp_page = ksm_next_page_arg.page;
+  2754					ksm_scan.address = ksm_next_page_arg.addr;
+  2755				} else {
+  2756					VM_WARN_ON_ONCE(found < 0);
+  2757					ksm_scan.address = vma->vm_end - PAGE_SIZE;
+  2758				}
+  2759	
+  2760				if (tmp_page) {
+  2761					flush_anon_page(vma, tmp_page, ksm_scan.address);
+  2762					flush_dcache_page(tmp_page);
+  2763					rmap_item = get_next_rmap_item(mm_slot,
+  2764						ksm_scan.rmap_list, ksm_scan.address);
+  2765					if (rmap_item) {
+  2766						ksm_scan.rmap_list =
+  2767								&rmap_item->rmap_list;
+  2768	
+  2769						if (should_skip_rmap_item(folio, rmap_item)) {
+  2770							folio_put(folio);
+  2771							goto next_page;
+  2772						}
+  2773	
+  2774						ksm_scan.address += PAGE_SIZE;
+  2775						*page = tmp_page;
+  2776					} else {
+  2777						folio_put(folio);
+  2778					}
+  2779					mmap_read_unlock(mm);
+  2780					return rmap_item;
+  2781				}
+  2782	next_page:
+  2783				ksm_scan.address += PAGE_SIZE;
+  2784				cond_resched();
+  2785			}
+  2786		}
+  2787	
+  2788		if (ksm_test_exit(mm)) {
+  2789	no_vmas:
+  2790			ksm_scan.address = 0;
+  2791			ksm_scan.rmap_list = &mm_slot->rmap_list;
+  2792		}
+  2793		/*
+  2794		 * Nuke all the rmap_items that are above this current rmap:
+  2795		 * because there were no VM_MERGEABLE vmas with such addresses.
+  2796		 */
+  2797		remove_trailing_rmap_items(ksm_scan.rmap_list);
+  2798	
+  2799		spin_lock(&ksm_mmlist_lock);
+  2800		slot = list_entry(mm_slot->slot.mm_node.next,
+  2801				  struct mm_slot, mm_node);
+  2802		ksm_scan.mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
+  2803		if (ksm_scan.address == 0) {
+  2804			/*
+  2805			 * We've completed a full scan of all vmas, holding mmap_lock
+  2806			 * throughout, and found no VM_MERGEABLE: so do the same as
+  2807			 * __ksm_exit does to remove this mm from all our lists now.
+  2808			 * This applies either when cleaning up after __ksm_exit
+  2809			 * (but beware: we can reach here even before __ksm_exit),
+  2810			 * or when all VM_MERGEABLE areas have been unmapped (and
+  2811			 * mmap_lock then protects against race with MADV_MERGEABLE).
+  2812			 */
+  2813			mm_slot_remove(&mm_slot->slot);
+  2814			spin_unlock(&ksm_mmlist_lock);
+  2815	
+  2816			mm_slot_free(mm_slot_cache, mm_slot);
+  2817			/*
+  2818			 * Only clear MMF_VM_MERGEABLE. We must not clear
+  2819			 * MMF_VM_MERGE_ANY, because for those MMF_VM_MERGE_ANY process,
+  2820			 * perhaps their mm_struct has just been added to ksm_mm_slot
+  2821			 * list, and its process has not yet officially started running
+  2822			 * or has not yet performed mmap/brk to allocate anonymous VMAS.
+  2823			 */
+  2824			mm_flags_clear(MMF_VM_MERGEABLE, mm);
+  2825			mmap_read_unlock(mm);
+  2826			mmdrop(mm);
+  2827		} else {
+  2828			mmap_read_unlock(mm);
+  2829			/*
+  2830			 * mmap_read_unlock(mm) first because after
+  2831			 * spin_unlock(&ksm_mmlist_lock) run, the "mm" may
+  2832			 * already have been freed under us by __ksm_exit()
+  2833			 * because the "mm_slot" is still hashed and
+  2834			 * ksm_scan.mm_slot doesn't point to it anymore.
+  2835			 */
+  2836			spin_unlock(&ksm_mmlist_lock);
+  2837		}
+  2838	
+  2839		/* Repeat until we've completed scanning the whole list */
+  2840		mm_slot = ksm_scan.mm_slot;
+  2841		if (mm_slot != &ksm_mm_head)
+  2842			goto next_mm;
+  2843	
+  2844		advisor_stop_scan();
+  2845	
+  2846		trace_ksm_stop_scan(ksm_scan.seqnr, ksm_rmap_items);
+  2847		ksm_scan.seqnr++;
+  2848		return NULL;
+  2849	}
+  2850	
+
 --
-
-commit ccbef0704b88d6e8aff2c2f0c82f32d9131dcc3f
-Author: Dev Jain <dev.jain@arm.com>
-
-mm, sparc: batch arch_unmap_one()
-
-This commit extends arch_unmap_one() to accept a page count so SPARC can
-save ADI tags across a PTE batch during anonymous large-folio unmapping.
-
-> diff --git a/arch/sparc/kernel/adi_64.c b/arch/sparc/kernel/adi_64.c
-> index 18036a43cf568..ffa378accefe3 100644
-> --- a/arch/sparc/kernel/adi_64.c
-> +++ b/arch/sparc/kernel/adi_64.c
-[ ... ]
-> @@ -394,3 +395,23 @@ int adi_save_tags(struct mm_struct *mm, struct vm_ar=
-ea_struct *vma,
-> =20
->  	return 0;
->  }
-> +
-> +int adi_save_tags_range(struct mm_struct *mm, struct vm_area_struct *vma,
-> +			unsigned long addr, pte_t oldpte, unsigned long nr)
-> +{
-> +	unsigned long i;
-> +
-> +	for (i =3D 0; i < nr; i++, addr +=3D PAGE_SIZE,
-> +	     oldpte =3D pte_next_pfn(oldpte)) {
-> +		int ret;
-> +
-> +		if (!(pte_val(oldpte) & _PAGE_MCD_4V))
-> +			continue;
-> +
-> +		ret =3D adi_save_tags(mm, vma, addr, oldpte);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-
-[Severity: Medium]
-Does this leak tag_desc->tag_users references and tag storage when
-adi_save_tags() fails partway through a batch?
-
-Each successful adi_save_tags() call invokes alloc_tag_store(), which
-allocates a tag_storage_desc_t slot (and its tag_desc->tags buffer) or
-increments tag_desc->tag_users on an existing descriptor:
-
-arch/sparc/kernel/adi_64.c:alloc_tag_store() {
-    ...
-				if ((addr >=3D tag_desc->start) &&
-				    (tag_desc->end >=3D (addr + PAGE_SIZE - 1))) {
-					tag_desc->tag_users++;
-					goto out;
-				}
-    ...
-}
-
-If a batch crosses tag_desc->end at page i > 0 and alloc_tag_store() fails
-its GFP_NOWAIT allocation for the new range, adi_save_tags_range() returns
-an error without unwinding the first i pages.  In mm/rmap.c,
-__ttu_anon_swapbacked_folio() then fails and ttu_anon_swapbacked_folio()
-restores the present PTEs for the entire sub-batch via set_ptes().  Because
-those first i pages are not swapped out, adi_restore_tags() ->
-del_tag_store() never runs for them, leaking their tag_users references and
-preventing del_tag_store() from freeing tag_desc->tags or releasing the
-descriptor slot until process exit.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261115143905.3045=
-084-1-dev.jain@arm.com?part=3D9
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
