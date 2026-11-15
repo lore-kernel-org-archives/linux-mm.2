@@ -1,113 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA65606A327
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 08:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B67606A31F
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 09:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=wa8zah/B
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mvO+EHx+
 Received: by kanga.kvack.org (Postfix)
-	id 4AF846B00EF; Sun, 15 Nov 2026 03:56:40 -0500 (EST)
+	id 8F8A06B00EF; Sun, 15 Nov 2026 04:20:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4875E6B05B0; Sun, 15 Nov 2026 03:56:40 -0500 (EST)
+	id 8A9886B05B0; Sun, 15 Nov 2026 04:20:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39DC56B05B1; Sun, 15 Nov 2026 03:56:40 -0500 (EST)
+	id 7C00A6B05B1; Sun, 15 Nov 2026 04:20:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 122326B00EF
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 03:56:40 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5315A6B00EF
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 04:20:13 -0500 (EST)
 Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 95DD5A8201
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 08:56:39 +0000 (UTC)
-X-FDA: 85436747718.08.10376B5
-Received: from mta0.migadu.com (out-117.mta0.migadu.com [91.218.175.117])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6F0081A0002
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 08:56:37 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="wa8zah/B";
-	spf=pass (imf19.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.117 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794732997;
-	b=6aTM2QhQUcy2R3hh9VLtmXlGvVl+biJIxlckahCT9zoxdRhHMH1Dv3ZXyUPSeNpJGzVdpV
-	G1faKWN1iTaHMMfirj0cbc/ocxpRq1Cgv9djs1ODwbg9J7m+v9bFEuyUDrbvMsN8Oxjdsm
-	MfeYBzkuNJjc0KQ+vvVFRFx2POLo4+I=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="wa8zah/B";
-	spf=pass (imf19.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.117 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B4F5D160641
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 09:20:12 +0000 (UTC)
+X-FDA: 85436807064.08.BAC6A72
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 115A8C0004
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 09:20:10 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mvO+EHx+;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794732997;
+	s=arc-20220608; t=1794734411;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EIEaJi7O1+E/vAyp7gWUtcsPh4fKYZk8jULGdKld6LY=;
-	b=nyFXTC16P2gKMbMgD3fZjdoWtif9iblQY9aHBOdTGaEj6uQFjf/Ab1Br+JrDLFim3IHglR
-	aH/udcKeyf6Pmnulubf5CjvWRbkanVIAlPLlJMVRefZ6plCzddIWET2Q6XVnY+4RTx24i3
-	9kuVLk04rhaDVySxVqRzuLGa+6BPH7U=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=21+fkMMqv9ioo8p23KKS2p4sNO5hkMmWorH5aoezr/Y=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794732996; v=1; x=1795337796;
- b=wa8zah/BvLG8PwnznUaZxBsB6POh0xzqGrQVJUxEEZQFG0J5CgoaFppz8s0epEVzYm4m3CI7
- wVsc0XBQ2p++BTMG+lMNR+KriQlkAFiVFIqXW7nwRkqgLTunzi3+eHMzMaWhbQbbXTVLzPw908k
- MNT1pzo1lLMJuMDLgRvBdC/E=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 55d94d9b38c6f810;
-	Sun, 15 Nov 2026 08:56:35 +0000
-X-Mizu-Trace-ID: 55d94d9b38c6f810
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
+	bh=ISHXbdncGdAEHxOHpmuqEiN2RbSSTwBk5vjVfgEgHGo=;
+	b=UNJ9JKKKO8Ta+8UXbjdGlM/9zSzXaSFfgiKPQiGSicz52nIkeJ3gXbBDalxfNInybr+ReL
+	XAIiVoJMstrUoPKa4BAwqsx+X+Uq1QjiV8HYhN4FZVjJ8xjKNhyvnKXpaRJMRcf2wlvUSG
+	BIGU1vg8vMFtKoQTaafm5s5fRKkaz5c=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794734411;
+	b=7TD3sa4ckP9vCMBf3jLRupwrNwCxSkK5MJNcpcbfGlsmyTuUIcsbd3QROMwn5A7HChuz/f
+	OKf5SvhCS2hmlDgUcbTZXBXnAJqvJ8FcbRuD6AL7ZrPKM/b72Lgvht/UsWR3sBFtUlmLjj
+	/HYj/CC2lKKOyo50USNIS3sA+vwm7v8=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mvO+EHx+;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E8C20456E1;
+	Sun, 15 Nov 2026 09:20:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150851F000C4;
+	Sun, 15 Nov 2026 09:20:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794734409;
+	bh=ISHXbdncGdAEHxOHpmuqEiN2RbSSTwBk5vjVfgEgHGo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mvO+EHx+rCi9DzTNLXh7+1mktt3J7djeXO7FbkITEbbfxl1iOmT2FB0418jF0/0wf
+	 UomovW0IpoQ8kid36TrTAc8Koq+DcrnumFutM+I4CqmypdxSGdOAt8eaR+wR0PvbRp
+	 LG0q4OSY8Mlhw3Zkco3bu7nqd4ykRAaAHmwFDB3kT1R3MxIp3h0/jmW38jrSEnBVMD
+	 XwzOU5GOdnhjGFkEK1bgm7o4K6t5T34FHcWmJe+ss2W8ujyxOnpcDRClFpBffs/ySh
+	 onr8SjTwqurbwnH2Mlj3UB5oA3olzct6XlgHChNX/F67yvtzzFux9tPUyAj/FQEUNv
+	 Banf2CkHyeaqQ==
+Date: Sun, 15 Nov 2026 11:20:02 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Mukesh Pilaniya <mpilaniy@redhat.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chen Pei <cp0613@linux.alibaba.com>,
+	George Guo <guodongtai@kylinos.cn>, Kexin Liu <liukexin@kylinos.cn>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>, kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 1/3] kho: walk bootmem areas in address order
+Message-ID: <avl5QjUdYWcCP8Yo@kernel.org>
+References: <20261104-kho-bootmem-sizing-v2-0-b0d1a834780f@kernel.org>
+ <20261104-kho-bootmem-sizing-v2-1-b0d1a834780f@kernel.org>
+ <990cc079-70ab-4fcf-9974-679aaf07849e@redhat.com>
+ <avV9qoaPMBLCNOXD@kernel.org>
+ <7d5f300f-ab18-4086-8a61-c3347168067a@redhat.com>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH 2/3] mm/page_ext: support early allocation for SPARSEMEM
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <90DD8319-BE49-4355-8CFF-36B7AA9BA4EA@linux.dev>
-Date: Sun, 15 Nov 2026 16:56:08 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Alexander Potapenko <glider@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>,
- David Hildenbrand <david@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Zi Yan <ziy@nvidia.com>,
- Sang-Heon Jeon <ekffu200098@gmail.com>,
- Mostafa Saleh <smostafa@google.com>,
- Ketan <ketan.kishore@oss.qualcomm.com>,
- Usama Arif <usama.arif@bytedance.com>,
- kasan-dev@googlegroups.com,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <76423A5A-0658-44B1-912F-EA3AFE54FE77@linux.dev>
-References: <20261114104150.58424-1-songmuchun@bytedance.com>
- <20261114104150.58424-3-songmuchun@bytedance.com>
- <20261114222344.e65dbc73bf2c9276@chrisdown.name>
- <90DD8319-BE49-4355-8CFF-36B7AA9BA4EA@linux.dev>
-To: Chris Down <chris@chrisdown.name>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Stat-Signature: 8sr84n88hpj6btx5g4p9eqjyu5uene8m
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7d5f300f-ab18-4086-8a61-c3347168067a@redhat.com>
+X-Stat-Signature: rgjjpntahfpj3kmbprxza6qr65o1t8um
+X-Rspamd-Queue-Id: 115A8C0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6F0081A0002
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794732997-892518
-X-HE-Meta: U2FsdGVkX1/V4xCYYeQjHZEWRtldk3s+SbtB5oWUnq9GsEyktLdZJh7uomusfQvHAUIMYe6aln41ZMsLjANXtU9cWwx+xLWgJQ5B7CR2Pf6bnOciKxBHXySxE7RFcG+0Dp1laoOCoSepidYYsl8olUpcndjMuAOOar1eMR16zjIxD0rA5mNiGcC6fb/BI0PDfS/PlgvPdgyu9cj3BGTzCj0HNFLUIJ77QwkjZFpQSE0vwW5bQ//AuFjs6zfqU6G3DejgmLh2IRkBSx/91vTT2DIMf3CIMSfvgaUg1/IYZWcvabqmft2vclQqxuQPo4JeWGcVG0FNUUGEr+4cdahNBZE+rCGUn+n2K8vOW/hArx7dhl/qVBvSIqi4j3QEz52edbQNswmwrq1Hub5A47Fi9Jr5WrkPfRSgXH1X8Z6eIJuozDW28ZuoZyVYz/KjE25a8qvxqDgjaZUabBpIEU1e7mNXaz4bq39y2U59USoew+W8EgT9Ph9QZ8UfIfx5AN8UzMZtFqctFDV5QyacbS1i20N+FaYSpKskKGWXaCHrwEljiM/yRCuw8hCba6RNCau8spZFEt5/rdiUbnyMUCDjX2kl8zr2pKDNAyCWxBjKeKwJiozpb6srGvAjUMQK9+Pco52mzLRed3/csHeIMBLNiuUIbm8tE+oRKo8lkKAbLWhUvNf7zsnljoo4Mi5LKRM7sp3QGjp0kc4QGBIFDzAVKySWZnWGtOPlR9R3+Lo9nO5a22C6lAzz9ad4rhGgeqGlbgl+CDL2RQQuJnb4GjKdIWUsXo94EGqRvTN3xSSDzTgrF1gbvHhrtfebdvIbvHFpYlQNfP5ql19XFCYFyYagdAQZmeepYQ3Q6Bg8pTwIJob1BzLBGf/NCjhMXN+h/utkhrva8uE/jC5OBhd/GXgFAj2aMXew1Nk+hJf+/ejXD/TJJqjspKd0j6HnbYH2ESdi0Gp1jvu0CBRBfH0Lpk9
- OUv+zqKl
- Mfha7s9in5pPBZx65q6B/vSG8tW2fQl4Fo3z65XqjNSEdm+sMcSsoXvG2/ahROUwLP/2T/2VtDIseGEHAsN2VGGNaehC6ThhZ5OkkxdzbL4hes9BHPjRd3XIZ9uE57FbvsCYkoNBH59TLeCKDnZ/hgno+Xg1t1d8gypZtdwfMdAKpJwAWVaJHJCGNAfSEo4JT/pFF/DE7myRaLVil2qWz6yPS2gyPJXuA8x4Y7HN9O79P4oT1TgJtm0eUXVclyqxsbnE0/ouwnovrh9tk5gAI7ttXjS8CXTaC7ZBsmKBzQp+e5wOkLqgbNjCCVw==
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
+X-HE-Tag: 1794734410-123728
+X-HE-Meta: U2FsdGVkX19fVj2u1tu6f94Xjd7BcPJr+zwzgXBEKgNwwiKFQaQRYKR2wxw14zA9aFCbYv0zg0CTbBf4PQkuY4Tke8NPdiOfdHDLFf1q6Mfh7myjUiTzLyGxiadckVwetTZs17dTMqB1CU+ZyDKFk/asu5LHUWIzxae+6yEIfAbNW6JPVVlUkZ3BNme4EaU7WojLqPZFuN8Wj2ybHKuAZmouNlGY0V3+ydSmEbQI046NNMqDaWhbN6aObTzxoj3EULD3kcKgDYaa72UhMb4njq47DTq1Guj5gEfYbuuIWtLlJrSXSt2DxHKgfZPsL1Nku/pKG3Q4vhtgh0X48zoQC0cPvCmFcCP94lhH6wz2Smor5TSkF6peQmRMhwuV1Dt7MdtNOP80pzehRQz1n2uGFb/4vQkIrhs8Fg7004dERQCZXP7pSZ3UjXWTh6b1gtxTIzq349LZ5ia7TSzUo54hVEWYx8MPFCGZMZxnu6uc2xwHGkRMGIEp3Mcx8jV89a/0//1UgQSxVgLqLOhi4M2Wa5NyoUKW7hM5wVgf4ZGpejxhv7HRvaJUbso2pFq2ScJyYIRyxdKiCBSMIQag+4fa+Y2xp7e4By4kC3yF+ALV53btMeGGNtxHKl6nkclmEhMYU19qMi+HIIDLkiXhJPladdpZr6hCcbBIBysoBnabCx/IfN8kGwXUgk5pBGsLPM89BbKRDchFKsJQts1lpJY+PfBrn7PHaskvD2v6IFEl0WweUy6rFWXhhA9/dJ7/TxmBWDrlvsVTo7/fJdToSaZct99L9fJJkBORwb3F2a8UFXkfbDJmfxn5lDXUQPm3J7M8XfmOYSj6xEc0WvIBrhzIt5YvB3W/QmImJbUtNxh+viMEY/TiKx6ibqvH9TVRc4LNnxc851sg5vaT4AcpkhbgOvapYXV4bYaWtmUO1zrPYeOC6QfjkzI8UW5lZ3/f2nJf7keXE4xhyUhC9Lypoy1
+ /Fbf6Pv4
+ mrWC84+QF0uETptMF+rIDN4+kt1KTP7MNVn4fYss6Ab1TMJYHpzIacOy6xzmJeRlyaoPvby9ggbXIUYcqJmooqjH51eG4+jxAjjBK6NHCZd3fbVsT+bUWC6n4RjB7DhaxI/H7uo8sfs8HuXSC4ZcdoIv2vhT/19qEDFKE+J7fL5RN7115UOPxCVDHrB1IzFlm8NoxOH7n7maXVA9fiYVAMQyB6hMXPmaxrH1CDVxSjpFsinYDgfrPuwPUFp+K6ZXjAjiwB7o2LW1Vaem2aRhwSiR7fwUD82t++YDn8Y7HtbnFap8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,126 +103,189 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Fri, Nov 13, 2026 at 10:34:06PM +0530, Mukesh Pilaniya wrote:
+> Hi Mike,
+> 
+> Thanks for the quick check. I apologies in advance if I am missing
+> something obvious.
+> 
+> On 12/11/26 2:19 pm, Mike Rapoport wrote:
+> > On Thu, Nov 12, 2026 at 12:02:05PM +0530, Mukesh Pilaniya wrote:
+> >> Hi Mike,
+> >>
+> >> On 04/11/26 10:20 pm, Mike Rapoport (Microsoft) wrote:
+> >>> kexec_add_buffer() users may depend on the order in which memory holes are
+> >>> searched. For instance, arm64 places the kernel bottom-up and then
+> >>> requires the DTB to be above the kernel.
+> >>>
+> >>> kho_walk_bootmem() walks the bootmem areas in the order they were
+> >>> reserved, so if the kernel lands in a small area at the top of the memory
+> >>> there is no room left for the DTB and kexec fails. For example, on an
+> >>> arm64 VM with 2G of RAM and kho_bootmem=8M,64M,64M, the lowmem area is
+> >>> reserved first at the top of the memory, the kernel image takes most of
+> >>> it and kexec fails with
+> >>>
+> >>>   kexec_file(Image): Could not find any suitable kernel location!
+> >>>
+> >>> Sort the bootmem areas by address and walk them in ascending order, or in
+> >>> descending order for top-down searches, like kexec_walk_resources() does.
+> >>>
+> >>> Fixes: 3bdecc3c93f9 ("kexec: add KHO support to kexec file loads")
+> >>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> >>> ---
+> >>>  kernel/liveupdate/kexec_handover.c | 57 ++++++++++++++++++++++++++++++--------
+> >>>  1 file changed, 46 insertions(+), 11 deletions(-)
+> >>>
+> >>> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> >>> index 6f1f55fe31819..2ac5d94f33fd4 100644
+> >>> --- a/kernel/liveupdate/kexec_handover.c
+> >>> +++ b/kernel/liveupdate/kexec_handover.c
+> >>> @@ -26,6 +26,7 @@
+> >>>  #include <linux/list.h>
+> >>>  #include <linux/memblock.h>
+> >>>  #include <linux/page-isolation.h>
+> >>> +#include <linux/sort.h>
+> >>>  #include <linux/unaligned.h>
+> >>>  #include <linux/vmalloc.h>
+> >>>  
+> >>> @@ -820,6 +821,14 @@ bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
+> >>>  	return false;
+> >>>  }
+> >>>  
+> >>> +static int __init kho_bootmem_cmp(const void *_a, const void *_b)
+> >>> +{
+> >>> +	const struct kho_bootmem *a = _a;
+> >>> +	const struct kho_bootmem *b = _b;
+> >>> +
+> >>> +	return cmp_int(a->addr, b->addr);
+> >>> +}
+> >>> +
+> >>>  /**
+> >>>   * kho_reserve_bootmem - Reserve a contiguous chunk of memory for kexec
+> >>>   *
+> >>> @@ -904,6 +913,9 @@ static void __init kho_reserve_bootmem(void)
+> >>>  	 */
+> >>>  	kho_bootmem_cnt = i;
+> >>>  
+> >>> +	sort(kho_bootmem, kho_bootmem_cnt, sizeof(*kho_bootmem),
+> >>> +	     kho_bootmem_cmp, NULL);
+> >> This only covers the case where this kernel allocated the areas itself.
+> >> On a KHO boot the array comes from the previous kernel. A kernel with
+> >> this series that is handed over from one without it therefore keeps
+> >> walking the areas in reservation order for every following
+> >> kexec_file_load, and the arm64 failure you describe comes back until the
+> >> next cold boot and vise versa because the ABI string is still
+> >> "kho-v4".
+> > 
+> > If we were able to kexec from a kernel with no reservation ordering, the
+> > issue is not there, isn't it?
+> IMHO that holds for the image that was just handed over, but maybe not
+> for the next one. The producer's last kexec_file_load did place that
+> exact Image, DTB and command line through the areas in that order, so I
+> agree that reloading the same image from the consumer will find the same
+> spot. The order is still arbitrary though, and whether it works seems to
+> depend on the size of the image being loaded.
+> 
+> To give you the case I was looking at: on a QEMU arm64 guest with 4K
+> pages, 2 GiB of RAM and kho_bootmem=44M,64M,64M, the 44 MiB lowmem area
+> is reserved first, at the top of RAM (0xb8800000). The Image is about
+> 38 MiB, and the DTB has to go above it on a 2 MiB boundary, which lands
+> exactly on 0xbb400000, the end of that area. The load then fails with
+> "kexec_file_load failed: Cannot assign requested address", and the next
+> area is never tried, because the walk stops at the first area that
+> cannot take the buffer. With the areas walked in address order the same
+> image is placed in a lower, larger area and boots. So the first area
+> decides, and a few MiB of growth in the Image or a larger DTB is enough
+> to flip the result -- which is the part that makes me a bit nervous
+> about the first kexec after a handover.
 
+There's always a risk that KHO will run out of bootmem, even presuming we
+fixed all our bugs :)
 
-> On Nov 15, 2026, at 14:44, Muchun Song <muchun.song@linux.dev> wrote:
->=20
->=20
->=20
->> On Nov 15, 2026, at 14:23, Chris Down <chris@chrisdown.name> wrote:
->>=20
->> Hi Muchun,
->=20
-> Hi,
->=20
->>=20
->> This looks good to me in general, I only have a few small things.
->=20
-> Thanks for taking a look.
->=20
->>=20
->> Muchun Song writes:
->>> -	/*
->>> -	 * page_owner must be initialized after buddy is ready, and also =
-after
->>> -	 * slab is ready so that stack_depot_init() works properly
->>> -	 */
->>> -	page_ext_init_flatmem_late();
->>=20
->> Not a big deal, but this means that on FLATMEM the init callbacks now =
-run
->> after vmalloc_init() rather than straight after kmem_cache_init(). I =
-can't
->> see anything that depends on the old place, but FLATMEM isn't what =
-the
->> patch is about, so it'd be good to say in the changelog that this =
-moves.
->=20
-> Sure. The new behavior is aligned with the non-FLATMEM case. It should =
-be fine.
->=20
->>=20
->>> +	if (!slab_is_available()) {
->>> +	addr =3D memblock_alloc_try_nid(size, PAGE_SIZE, 0,
->>> +				      MEMBLOCK_ALLOC_ACCESSIBLE, nid);
->>=20
->> Maybe this should pass __pa(MAX_DMA_ADDRESS) as min_addr, like
->> alloc_node_page_ext() does, so that the tables stay out of ZONE_DMA =
-when
->> there's room elsewhere?
->=20
-> Make sense.
->=20
->>=20
->>> +	page =3D virt_to_page(addr);
->>> +	if (PageReserved(page)) {
->>> +		memmap_boot_pages_add(-nr_pages);
->>> +		kmemleak_free_part_phys(__pa(addr), table_size);
->>> +		free_reserved_area(addr, addr + table_size, -1, =
-"page_ext");
->>> +	return;
->>=20
->> free_reserved_area() prints "Freeing page_ext memory" when it's given =
-a
->> name, and this runs once for every section, so offlining a few =
-gigabytes
->> would put dozens of those in the log. I think it should pass NULL =
-instead.
->=20
-> Good point. I'll pass NULL in v2.
->=20
->>=20
->> Did you manage to get this branch to run, by the way? KMSAN is the =
-only
->=20
-> No. I only verified that the KMSCN kernel boots successfully.
->=20
->> user of need_early, and from a quick check offlining a memory block =
-on a
->> KMSAN kernel fails with EBUSY, presumably because the metadata pages =
-can't
->> be migrated, so I couldn't exercise it myself.
->=20
-> I'll exercise this code on this path and report back.
+In your example it happens sooner then it should because there's still
+free memory that kexec won't use, but it's still the same - we've run out
+of bootmem.
 
-I exercised this branch with a non-KMSAN kernel by temporarily setting
-page_owner_ops.need_early =3D true. Offlining a boot memory block =
-succeeded,
-nr_memmap_boot_pages decreased by 576 pages, and the kernel logged:
+I prefer to keep the sorting in the cold boot going forward to save a few
+cycles at kexec time, so I'd rather not add sorting to the kexec'ed boot.
 
-    Freeing page_ext memory: 2304K
+So the kernel from 7.5 will have it right and if there's a case when we use
+an older stable kernel for the cold boot, and we see that we *really* need
+sorting after kexec there we can just add such sort as a fix for stable.
 
-A subsequent kmemleak scan completed without reports or kernel warnings.
+BTW, in your case it's enough to switch lowmem and global sizes to gain a
+few megs for future image growth, isn't it?
+ 
+> It also does not settle down the chain, as far as I can tell. A kernel
+> booted by KHO never reserves, so it never sorts: B inherits A's order,
+> C inherits B's order, and only a cold boot sorts. That makes the same
+> binary behave differently depending on how it was started. Sorting in
+> kho_mem_retrieve as well would cover it.
+> > 
+> > And after a cycle of KHO boots to newer kernels we anyway can get to the
+> > point when bootmem is not large enough.
+> That is the same argument, and it is probably why I am not fully
+> convinced that the previous successful kexec covers the ordering case
+> either. The inherited state was adequate for the load that produced the
+> running kernel, not necessarily for the load it is about to perform.
+> 
+> >  
+> >>> +static int kho_bootmem_walk_top_down(struct kexec_buf *kbuf,
+> >>> +				     int (*func)(struct resource *, void *))
+> >>>  {
+> >>>  	int ret = 0;
+> >>> -	int i;
+> >>>  
+> >>> -	for (i = 0; i < kho_bootmem_cnt; i++) {
+> >>> -		struct resource res = {
+> >>> -			.start = kho_bootmem[i].addr,
+> >>> -			.end = kho_bootmem[i].addr + kho_bootmem[i].size - 1,
+> >>> -		};
+> >>> +	for (int i = kho_bootmem_cnt - 1; i >= 0; i--) {
+> >>
+> >> kho_bootmem_cnt is unsigned, but the reverse loops in
+> >> kho_reserve_bootmem() and kho_bootmem_walk_top_down() start an int
+> >> counter at kho_bootmem_cnt - 1, which for a zero count is UINT_MAX
+> >> converted to int.  That conversion is implementation-defined; with the
+> >> current compilers it yields -1 and the loop body is skipped.
+> > 
+> > We never get here with kho_bootmem_cnt == 0.
+> Unless I am misreading it, we do, via kho_bootmem=0%. The parser accepts
+> it and stores the scale without a zero check, then bootmem_size_update()
+> takes the explicit-size branch and assigns the zero-initialised
+> bootmem_size_pernode to every node. kho_reserve_bootmem_area() returns
+> early for a zero size without recording the area, so kho_bootmem_cnt
+> stays 0 and kho_enable is left alone and only the error path clears it.
+> 
+> kho_locate_mem_hole() is guarded by kho_enable only, so with cnt == 0
+> both walks return 0 and the caller turns that into -EADDRNOTAVAIL: KHO
+> is enabled with no regions and every kexec_file_load fails with "Cannot
+> assign requested address".
+> 
+> FWIW this became possible with 214f9649 commit, before it the
+> zero-sized areas were recorded, so cnt was never 0. The zero-scale patch
+> you posted in the v4 series [v3 1/5]thread closes this one.
+> 
+> >  
+> >> How about using this one.
+> >> 	for (unsigned int i = kho_bootmem_cnt; i-- > 0;)
+> >>
+> >> Reviewed-by: Mukesh Pilaniya <mpilaniy@redhat.com>
+> > 
+> > Thanks!
+> >  
+> >> -- 
+> >> Regards,
+> >> Mukesh Pilaniya
+> >>
+> > 
+> 
+> -- 
+> Regards,
+> Mukesh Pilaniya
+> 
 
-I could not exercise the branch with KMSAN enabled. During the
-memblock-to-buddy handoff, kmsan_memblock_free_pages() retains the first
-two of every three same-order blocks as shadow and origin backing, and
-only releases the third block to the buddy allocator. The retained =
-metadata
-pages are not migratable. On this x86 setup, every ordinary boot memory
-block therefore contains KMSAN metadata pages, and memory offlining =
-fails
-with -EBUSY before the MEM_OFFLINE notification is sent. Consequently,
-page_ext_callback() never reaches this branch.
-
-Thanks,
-Muchun
-
->=20
->>=20
->> Once the changelog and the log message are fixed, please feel free to =
-add:
->>=20
->> Reviewed-by: Chris Down <chris@chrisdown.name>
->=20
-> Thanks for your review.
->=20
-> Muchun
->=20
->>=20
->> Thanks!
->>=20
->> Chris
-
-
+-- 
+Sincerely yours,
+Mike.
 
