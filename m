@@ -1,109 +1,273 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463F8606A323
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 01:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700F2606A8AC
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 01:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UFbhdwE7
+	dkim=pass (2048-bit key, unprotected) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.a=rsa-sha256 header.s=fm3 header.b=pjuVmr/L;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=syy3aDEc
 Received: by kanga.kvack.org (Postfix)
-	id 6278A6B05B1; Sat, 14 Nov 2026 20:10:28 -0500 (EST)
+	id 96D456B05B0; Sat, 14 Nov 2026 20:20:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FFB76B05B2; Sat, 14 Nov 2026 20:10:28 -0500 (EST)
+	id 944E96B05B2; Sat, 14 Nov 2026 20:20:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 514B46B05B3; Sat, 14 Nov 2026 20:10:28 -0500 (EST)
+	id 80CAA6B05B3; Sat, 14 Nov 2026 20:20:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 25F866B05B1
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 20:10:28 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A89101604C9
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 01:10:27 +0000 (UTC)
-X-FDA: 85435572894.19.3D8AFD7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C7B89100002
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 01:10:25 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UFbhdwE7;
-	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794705026;
-	b=gOYLLrxbctGHeEFXXU/j/hwbllQXPOily5e/PN4e5l+tLDUCmhOTwtEXcyt0OX64dsjHYu
-	96uErQ7GJ/oPNEnb9d2m1eQl1nAYkG3z3pl0Ad3JzRaKewZ/GsNlqPZ1GtvKeMr2BZC3Sa
-	dWssJrZWjPJI7hNRQOvFgBuRnQRNGDc=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UFbhdwE7;
-	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C7F66B05B0
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 20:20:13 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 85D1214049D
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 01:20:12 +0000 (UTC)
+X-FDA: 85435597464.20.6CA7959
+Received: from flow-a8-smtp.messagingengine.com (flow-a8-smtp.messagingengine.com [103.168.172.143])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2A4D01C0004
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 01:20:10 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=sakamocchi.jp header.s=fm3 header.b="p juVmr/";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=syy3aDEc;
+	dmarc=pass (policy=none) header.from=sakamocchi.jp;
+	spf=pass (imf20.hostedemail.com: domain of o-takashi@sakamocchi.jp designates 103.168.172.143 as permitted sender) smtp.mailfrom=o-takashi@sakamocchi.jp
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794705026;
+	s=arc-20220608; t=1794705610;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AelhBmrJLWe4zD6L7dcIJH7/5wFn4seF5lv4zQ+trgw=;
-	b=6NOWt+PW3Sz0r1FNkfRFlFVprgTLTyFd4j5RatpvBBQvhDhWt7UE25Kuo4y5V4juvRz5KT
-	4vQTg35ohOPEe+J/RmgyJxDYheSXgwLvpNTZqjndsBs7+j2eyh2qfmkHVCMBis9/Zy18Kp
-	EF4xtllBa7JE6JsIU0Ak7w9eh+G8cCE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E4F2046040
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 01:10:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0451F000C8
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 01:10:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794705024;
-	bh=AelhBmrJLWe4zD6L7dcIJH7/5wFn4seF5lv4zQ+trgw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=UFbhdwE7eijvMM0FuCK1sV1GnOf2X46h0M2xQq/13vl8fV0W3CHHYVR/nkegaybQ+
-	 3aFyen39iK9K2FmHYMKmOCQYeshSCBFlpV/TalqhwKqkPlEGf0t/x4tiVNBZPWiYXr
-	 pMa5/S+Vz5FJBK+zGPlsP4HVxNvRw/M012qarg7HJbvcS/GR+2fYf0M6kK1ZHVLqTZ
-	 Hy8pw689O+kI3mgZxwlv42Au3iBwbUpg5sSzzeG6cKk7RbMLvTlr33wdaQgVex/mfS
-	 WB4ZB5TpiJBcd71kt9B1Ph2MuMOcxUNiTocfgmHd6zuQNNaNN36vJEm2Yc593JZJlw
-	 mWxehKyLLnRgA==
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-9496577d4c4so96627985a.1
-        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 17:10:24 -0800 (PST)
-X-Gm-Message-State: APuU4Z9Z8Hbp81UNnMZOyVlODVL+Bf58iAYoRt4yxm1gA+bDUh0g0VTJ
-	/adkUdgANPqltx+lDGFt3nqBgdbf4vRzfKrODfllI+jRYHyYeWUCom1s+TsLBQPYCEOaQUaqz9w
-	2ihM9VT0vLOnsgsW0UJo/HR7N0vfTrNw=
-X-Received: by 2002:a05:620a:6c8e:b0:93f:2b65:593b with SMTP id
- af79cd13be357-9493314c330mr1571588285a.38.1794705023885; Sat, 14 Nov 2026
- 17:10:23 -0800 (PST)
+	bh=QIES4zNTDxRjCnYHiHcWq6p6uX7fK/EWYh7I/zXroHQ=;
+	b=Y5fMOpIThhkJyCbpIATpVYKc4Hn/Pk0KocXUhJ4eSloze79LbVpFlFJg410x8RskAr+RHP
+	a7N553+e644hmCRxvpCp3W/EMVL5JOFgvI05mh6Ut4tbrhY9Q/bNAvk9eEQD/f/GQFXg2b
+	v+pnOKsWTTybkj9S56XkqwbWmM8mbag=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=sakamocchi.jp header.s=fm3 header.b="p juVmr/";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=syy3aDEc;
+	dmarc=pass (policy=none) header.from=sakamocchi.jp;
+	spf=pass (imf20.hostedemail.com: domain of o-takashi@sakamocchi.jp designates 103.168.172.143 as permitted sender) smtp.mailfrom=o-takashi@sakamocchi.jp
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794705610;
+	b=oGnRI/fkXDd9nCYvVpqe+xNQDAY6cnSyZhMPKY6BB5dsv/hQ6SE65lUQk37ZHqwgY8tfV4
+	q2WPWJmFfF4ytjmpu7apKAdlbgBbGf4zMVi2GyBgxdM41Kwh/Zu9pvws+Vr+cLO1M3ORn/
+	cH909v5Jtu+22unSPJJu3q8iM5B6XgI=
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailflow.phl.internal (Postfix) with ESMTP id 7F53D1381CA1
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 20:20:09 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Sat, 14 Nov 2026 20:20:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sakamocchi.jp;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1794705609; x=
+	1794712809; bh=QIES4zNTDxRjCnYHiHcWq6p6uX7fK/EWYh7I/zXroHQ=; b=p
+	juVmr/LC7nCJ0SQ2rWUhRQGDMnlVGg/71zflyfizaeCefqOj8Wyp1bv5cUdTgRb8
+	7XUxKSQFA4h5chwE1lADu0vrwg8OhHP6GoQHRhO7+gqlPzaI30gfxszAJ8iBZnAq
+	w6LhtavpJKSJHCgIMJ9jaiAQhtgloSfAXiebl32YH12R4n49k4Dhf+Y8W3pLV4v+
+	Lk6DFTk8SpQ9jSXzpScexBSvyhdEJDbrQwMC0927YExgznJjfLZe0flh8fHQL7IO
+	vj78LH6slSiU2T+/dLzxP/iDcsVNxx1fb6S0NI/BKneEKfRIjGfp58LmRDVhLSom
+	qjpjx4Q11TfgHJQJAHUUA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1794705609; x=1794712809; bh=QIES4zNTDxRjCnYHiHcWq6p6uX7fK/EWYh7
+	I/zXroHQ=; b=syy3aDEccFqwMWi7OqQgN+5WtM3ZAfMLRFvK6Ty6zA65HPirgvN
+	ilcYb0Q1wBWUsxvkCfegkY1pzVtpHUOC6WAP6pTtbZPWcSU2JRmZq5bj3XtaI5mJ
+	5KZK4MCZjfikGyCw8udPD79DzKX657SNeo8VKm+NBs1zDN72HR3ZemlLBm38jus1
+	WDdVI20E7k3nTziG5v/jPkof/xTKUHTBh7LLvCto0jlE2c4pmQs/fxRRAq0SyBeZ
+	lruY2Ddh8f3CbRk7/EsENeVrGkeN2qYTfTHHssLqQwRRARUN/edAoqWV9ygwuEYm
+	jIS3U35+DcIoM5H/MAq31DLvDAGEUQlNvVA==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=sakamocchi.jp a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1794705609; d=sakamocchi.jp;
+	mf=PG8tdGFrYXNoaUBzYWthbW9jY2hpLmpwPg==;
+	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm3:rsa-sha256:EZrJtf/Ie40YNq0/mqyUGO77kFVKjRD4U5qxKYfxJ98pxVf
+	kBOFq5ZC5Cy8aiULu6+JFFiWZ4CpZm8Dtm49ThxXYblKhPwh1NbwTFhBdVu+ltIy
+	KvN0kkTgnUHLMRGMQ5+tLhmolspjWz4BaVm+0l9Ti1EhuFK6Kmn3tLFeDSwFl/Ez
+	UEdx1no4EeCUgu6gz8Qbdvx6ndyJ5xe8wv8+zROB637FCw3lYFCfXyWnOCLQI3BD
+	J6d7Z2QDYwxLHNtYU5b1+hQV42CN3FGo64NnqghSraMTo2FJzHssMksQq/FzpF85
+	WU9G5CKuHLmVcTn+x+qVU1rVNGJi/YBQ+RoE3Zg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=13;
+	hn=cc,content-disposition,content-type,date,feedback-id,from,
+	in-reply-to,mail-followup-to,message-id,mime-version,references,
+	subject,to;
+Message-Instance: m=1; h=sha256:ntV32t7KOIfGMot6swX3CNi9IkfeqivW9U6qBDwCqc8=:4RP5xhIBVdE4nHZvdVXdOxDGDwEwdGMsIHWUj8/gqfI=;
+X-ME-Sender: <xms:xQj5aiop4gg9dsJ6_Vn6u45zXMYueatHm6sTqNkrPjF6p_uliIn0fA>
+    <xme:xQj5ao-c0CruU-TGxTE7NFYZSaEuQncLSSmM997vVUnXnDFfvxt3Mt5vMRNmSfmhf
+    34fKN--fbmH87piFvayMBFAxnjq6WHAkHe46t3SFxeylFtFg6aPnx9A>
+X-ME-Received: <xmr:xQj5atXGMWjP8faJlCtXj9RrVZeBW-gqDucCpC0ZXa191cT5jnWReGYw_Z8rYiOMsAtlcaNqIM8bDcRsKH9aHiPzWCfQ_w>
+X-ME-Proxy-Cause: dmFkZTGQstm6GOmXFdPQXDqZqAYG7aQouPeZUHJ4IBXrRYWFH6lFNnMWIuGsSOCFSsBuXW
+    LbDJxfVrfV3cl+wc1JM2qA4EvGILGxXqZILW7GfZPYDe6vWDeehuWas6PsFLq2rp3ZCMLK
+    vb2ZkQs61G65smsTsr3W8fx/U8N5II0Wva1plTCgHg5UpMnhi5PWu1EQKVr47yDlfh1UvS
+    LYKjU/U9x7MTbsMHbdhB5rWUTX8pbvj9eAIRg5DGXYvFzZokg4/nvH5yq0IUoDc8xEYNrb
+    hSXdXqov4GW1obuCd3P9CA8Y5vszeSouSKwogVvelkFQGttmZKq/NF5ipA4vDPXyrU1Xrm
+    Zrz3WElYlhVCDcPNRnAGrD/gNAj1b7M9bHXUiJrCqgmTebsAx0cfPWnZGZ3/j9Ea2UWcPj
+    qqJZ67js4v5NriJFPwSb5fBisbBQrZL2hM4YjWQCJ9uoloExIgLFI0L7sZA853RBWP4ncp
+    DBuj0o8Fkgdi7cJEPrTBBMdPRnMErqVngCb+aWeUA0zKt+uaR6UB1bg9ZicNV0ayYa37yt
+    I8T18lqRGBzHHbPK9Mrtu/1JSrYmpYKqgKJaY1owBZ4nprZ++3QPl5fwcLNIPsiGvSmzop
+    Zbr1xrRPLyP5mMh+v5LgBzIwywaOGj2L4LIDZM+0lWqxfhjtWj2WgxvXglrg
+X-ME-Proxy: <xmx:xQj5avAwgflb4ksIG5XRwHT6xxt96MMxRO3omUvuEt-3k_ppqJzgYw>
+    <xmx:xQj5aka9rFrx7_oeihBM0qdilVdSsLFNvKaV60FpVwOaq7EoVM3bNQ>
+    <xmx:xQj5ak3AzNFqwOx2mTfPhYibu1bQ_UDkW9NgFtUhfBWBcyXvs0uL4A>
+    <xmx:xQj5aoGo_8KYcqvEjpNAxM_sotiXZsyQPcuJ_BoRuwGjdfls4pLNfg>
+    <xmx:yQj5amBDENmX5NhRabHbZy5mqP0Iv6_jzPBpOZyadDNP-V1uD_qCKZw->
+Feedback-ID: ie8e14432:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 14 Nov 2026 20:19:47 -0500 (EST)
+Date: Sun, 15 Nov 2026 10:19:45 +0900
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>, linux-mm@kvack.org,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	linux-sound@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+	linux-block@vger.kernel.org, Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	linux-bluetooth@vger.kernel.org,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>, David Heidelberg <david@ixit.cz>,
+	oe-linux-nfc@lists.linux.dev, Chas Williams <3chas3@gmail.com>,
+	linux-atm-general@lists.sourceforge.net,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, Helge Deller <deller@gmx.de>,
+	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	MPT-FusionLinux.pdl@broadcom.com,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <mkp@kernel.org>, linux-scsi@vger.kernel.org,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	linux-mtd@lists.infradead.org, Neill Kapron <nkapron@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org, Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	xen-devel@lists.xenproject.org, Hans de Goede <hansg@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
+	linux-ext4@vger.kernel.org, Mike Marshall <hubcap@omnibond.com>,
+	devel@lists.orangefs.org, Paulo Alcantara <pc@manguebit.org>,
+	Namjae Jeon <linkinjeon@kernel.org>, linux-cifs@vger.kernel.org,
+	Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
+	linux-f2fs-devel@lists.sourceforge.net,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Benson Leung <bleung@chromium.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	intel-gfx@lists.freedesktop.org,
+	Matthew Brost <matthew.brost@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	intel-xe@lists.freedesktop.org
+Subject: Re: [PATCH 02/12] docs: ioctl-number: update sound entries
+Message-ID: <20261115011945.GA238787@sakamocchi.jp>
+Mail-Followup-To: Randy Dunlap <rdunlap@infradead.org>,
+	linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>, linux-mm@kvack.org,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	linux-sound@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+	linux-block@vger.kernel.org, Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	linux-bluetooth@vger.kernel.org,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>, David Heidelberg <david@ixit.cz>,
+	oe-linux-nfc@lists.linux.dev, Chas Williams <3chas3@gmail.com>,
+	linux-atm-general@lists.sourceforge.net,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, Helge Deller <deller@gmx.de>,
+	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	MPT-FusionLinux.pdl@broadcom.com,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <mkp@kernel.org>, linux-scsi@vger.kernel.org,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	linux-mtd@lists.infradead.org, Neill Kapron <nkapron@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org, Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	xen-devel@lists.xenproject.org, Hans de Goede <hansg@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
+	linux-ext4@vger.kernel.org, Mike Marshall <hubcap@omnibond.com>,
+	devel@lists.orangefs.org, Paulo Alcantara <pc@manguebit.org>,
+	Namjae Jeon <linkinjeon@kernel.org>, linux-cifs@vger.kernel.org,
+	Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
+	linux-f2fs-devel@lists.sourceforge.net,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Benson Leung <bleung@chromium.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	intel-gfx@lists.freedesktop.org,
+	Matthew Brost <matthew.brost@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	intel-xe@lists.freedesktop.org
+References: <20261114202653.3113381-1-rdunlap@infradead.org>
+ <20261114202653.3113381-3-rdunlap@infradead.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261114200803.23129-1-baohua@kernel.org> <20261114140949.c47f9cf9c1ea22315092d880@linux-foundation.org>
-In-Reply-To: <20261114140949.c47f9cf9c1ea22315092d880@linux-foundation.org>
-From: Barry Song <baohua@kernel.org>
-Date: Sun, 15 Nov 2026 14:10:12 +1300
-X-Gmail-Original-Message-ID: <CAGsJ_4wcufsYeDqEL2p+w-Dgfmd5jQcDG-OQ+WwK8kHFOYemuA@mail.gmail.com>
-X-Gm-Features: AclHuK8bQQFBy0B7A7iwuDGInhNSf4l7oNrwYCEXahF71s6_QAeF3ChK4dYohsc
-Message-ID: <CAGsJ_4wcufsYeDqEL2p+w-Dgfmd5jQcDG-OQ+WwK8kHFOYemuA@mail.gmail.com>
-Subject: Re: [PATCH v9 00/16] mm: mglru: fix swappiness behavior
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux-MM <linux-mm@kvack.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Hui Zhu <hui.zhu@linux.dev>, Kairui Song <kasong@tencent.com>, 
-	Kunwu Chan <kunwu.chan@gmail.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	wang lian <lianux.mm@gmail.com>, LKML <linux-kernel@vger.kernel.org>, 
-	Xiang Liu <liuxiang.277@bytedance.com>, lyugaofei@xiaomi.com, 
-	Michal Hocko <mhocko@kernel.org>, Michal Hocko <mhocko@suse.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Ridong Chen <ridong.chen@linux.dev>, Mike Rapoport <rppt@kernel.org>, Kairui Song <ryncsn@gmail.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Suren Baghdasaryan <surenb@google.com>, 
-	Zicheng Wang <wangzicheng@honor.com>, Wei Xu <weixugc@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, =?UTF-8?B?5byg5Y2a?= <zhangbo56@xiaomi.com>, 
-	Hui Zhu <zhuhui@kylinos.cn>, Siddharth Chintamaneni <sidchintamaneni@gmail.com>
-Content-Type: multipart/alternative; boundary="0000000000006ce8b40660465384"
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	HTML_MESSAGE,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C7B89100002
-X-Stat-Signature: uzq7cs4ip3kqbbk3h6tznxtd5oafd1yo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261114202653.3113381-3-rdunlap@infradead.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2A4D01C0004
+X-Stat-Signature: ibcb8kx1qweu3hz8r7uw4an7ckcyb35s
 X-Rspam-User: 
-X-HE-Tag: 1794705025-481152
-X-HE-Meta: U2FsdGVkX18EV7D5SwrU/368KlazJEfKREo+mO/kcvMnC3OeIvD/tG3f1FV9CtNJmC44l3lsYjMgAcbeZ6dDKS4tg2pjm0k28usVycFBd/UWZ5Bu0+IxE2+4oWMKAu0/2DrQaAXLJhsWtbwFYj/mFaniI72rBJycouq/XXwGhYhH+8I0ssbBvKinpmUeS4N9lXRVPA/niYtBOGHFwL9WR7vM0sVXmZGdCi5r0jZjV6/luyjmR1bIlrpfSsq1rBxqkNiale1ePIPwke8/rIh+8gLO2ibDWckoQhWd2ZxWjXa1emZKv7n6y8c60WqN7fVZTDyfGt5TqX57ADEiIL7TxpVG+YdOf1NKR6bKpuLfvsF5UEHg9UDmD4DAAVdZQEcX84n0VRIdHdXIzCw0MEvnG+Svhiy5YZObPMGoz4mzUW22lfwqflDrSu6aG+nYepRgfMAhnED2oEFQk5TYrR2AYILeDc/YEdKtEBZCNpJ33oXned7BcEbGsI0yByfW35if8W6JUBhdrvsHHH7/bNmFc30r187V2yEpxtzh3lJVIA4BUvEtVne4ReihrVWuNkBWgcb8p3/3esQZcdNs/LxolS+9T5wSqsbMBdDcb0NFBWyu32xabMOHvoGYk7D6cQQn5/ByWMxAaNW6TlRIiwtDgMh/hQMxU+AllVWV0WADc0ANrG40dyTYM6RXUp3mn3QEivyM1R1aYxrySX+5l5RnuIekr85sXT1YaSxk/oBUoK5MNGdTxoEIn9TlMbHy+B0zTce1rZTZPhtAmaultGpn0AJmAS0Hny0Uym2yU0ZnJWjOTw+SqhFq5Q66okxEnw0OQEQQBo908aaHva0OsmS1Hrl7NL7ZSD59xbPBkx9Q12jzySxK8sNy9iYJJ6lSU3PCINq9oiBdSi5kOYIVfzA54MBiRy3aJh+yCSYpMSwQ+LtuYyXNyyheCTIxNReBjPpna/aFPjc4W9zrZC270Td
- qdbT5l12
- QYx4nMBSb8Ldf8GVpPPkxZXIE8+3rwFkGdTBKUsS8yBmbxesz8rRagqS8EYKw0VDwVDsAIIKBAPpJAoIv+4J50DC6Hc+gw5byuzKPs8m68s4hPAwKk4Th7APaahuTjOpyAHa3HKigbwiRJKlNXFGQJPMmNkqQHF3ahG74FA3/wMI2yIN0NMr8dd3SmCSx94gnzYkhPIqg/Tws/kVpTG92EHjhvAWq/b5QQvIfsbi3W6zu74DeMdVWKO9XBvJd2qndQoMtPJVcfXSneXHyFHbwxGapsJqkUvENYpfO+/a10ADZ+Dfl2k5FZKN42+BC6q0CW8xduijL05fPP7gRm6MZzMec2VBjSka0NO36WAil8EX5nXHC1hNkhnF6aBp4TadfoCBrEPAvIbMPCDsY9FFBSoAmFOmVDo9+LzQdS+POnx144VrNZxnbiTGGqHo601tdPsOA6H4MY77givKc1vtO2j1SmrVpg2aCCb+8wMiWvDhJtI4lUykVeV9cadxOBzEw1Ig+UzOBarY2Mplo8CMrmvGZ5uwLkvb2WS/w
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794705610-433965
+X-HE-Meta: U2FsdGVkX1+8O5veWag9oXM1uk3gyYt9SEGKLsB+05UsSZoU95103s1PbTHpnZt7imcddjAfvgzdBojku/Kt983GW6f+0cqy5V0hXyLx7TGLkRZSyi5KiZ7pfVTbCi0rfGfcbVzbu1z9YjL5aVohjoKygSrWuGjFDZvpCfnMsqDyrcsOAYnM9h3ymPMdvWFRof/TaYVEnTjbf008R56GwbLguIIsJRqSObRXjOHezndHnWqkOu7guysikoE00wcPpj2lGywvUq9gWHDMgQ7PLLUbAEaEsSPNil9ma4sXlSNS28OmhixKUmIwb7BWzHW/EaVLv4Yc40qnLomMJPcF1W2w67InOBhCHNQhhqE7NkgkapzGv4p9CqIZTewXbtVZa3N/nm/T2XX6srFXNrwmQHfbtzpsOmVZVhwnmLxAk6GOrxvN50NvrbOp24lTluuCOC6u1MuCbe9KhQuzlVk0Swnj8cE1AEb6obX1CBRYufkrSCA9/y3SZ/Eo0nj3e6QtecdemsN4nlU34IcJ7Vu6geMGxtR95iNzS/j/u+d+4tsCy6Wpz0Ap9lnoeilfioCMn4aYR03+7veeL/o8jdPDXiKu/FCwyYhOk3gJTzvklprbAneUwPKR4HUIIHE37ERjTBC/ZR7H9x9UsGt2fS5bHP5PTK84jMZF8l9MwRmvSan+tzz7MHRtEIS9memUnUJAd+GxD++BxoaoWhjeBDwMBhBJnuaWqp0Fw/oz2KDVmjzT9EGuuyJErPJwVKjg5iCwSIuxsQ40CVBXsp+up0l7NiW7RLew8f5Kptwi72qAEjTgYmd1QsGiyBm79EYtT/kh+xg6aXq+ib2WTX16xKa8yIYywna2+uI85jvknk4P6yxm1SITZzqpxgiVblP9vi/65gw0/5D7uCbrGuKwjUrDVHfAUCTmGQHdp0fXHff+VIob176+3/ZgoDRBFRfdPreNgCGA3wJ7Cc0WqI+2pJs
+ WKH8JWtl
+ bVrujrHGcLSD6nSr/3FdoPLreTXQXrbz7r5iUMinDC35+w73nUQxitRzoLY995i6RmWQrATpQABHLH9nNX04tZqIKObXSr/+si8WFMW7nHByUFCh0CWlHUPoOikemIXwTKnB8kCEtUsiRLUXStIcV6HtCo7aP4uFOqPxZs+MIzFC8BiqtpYCl9pt7oletBskCY+3XpaNq5DZbeJVqDf+eSwI4B6vUxKaJ6y+qV1rM1QFPMTdGlTBMePlrQsgjebD9xhWVl4sV1xuerqGn6KeiVWqQR2jSvTa4ZlR51DjrYRKmyhoIu1vxv+8mbRlF/ND/s79iDIZ3GSIJ0QyawJ7tDKzqFMJRhqbR0vLfReJUKtGFyVPX32Ir92KCWSHY61NmvyIB4jmCO0+jvUK1ZvrhaewWYLSOMDcJrCquXtcSvyz9ig/AeyUYgOP0BJrcXwyhQV+Lm3ovWsdrV5Yv+TXXPOGur1Y7AhWD5QywYY1BETh1xuOgImKvlj5fe1bmiiYL3Mhw1yUbwBHYLjkAj+Rog3prcq7E2tAo0uTl14VWBnqpxGswsQo9kPNoOm8BhPY3Sgs3rqJm1RdWb0Rb9HGuI97WglUZV0PIpZFBY1MBU2bjdJUDO81XQ1mqZ7ZV3ilSHEW3PbXayw4oJr5xOZ9VqLTR4xOugJQCRh+iXyaOPLQKBOGlh9kjkMXkLYZK9oUiFhyqz/UJ/+/NzGqINU5YP7dewgUMJq8xzys6aChUGhS3pFuhszVfjs28lQcl3eQonX7xTyVAmiyaxwUO35ZUwuVchavJnvsBzkBT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,116 +276,52 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---0000000000006ce8b40660465384
-Content-Type: text/plain; charset="UTF-8"
+Hi,
 
-On Sun, Nov 15, 2026, 11:09 Andrew Morton <akpm@linux-foundation.org> wrote:
->
-> On Sun, 15 Nov 2026 04:07:47 +0800 "Barry Song (Xiaomi)" <
-baohua@kernel.org> wrote:
->
-> > Classic LRU respects swappiness, while MGLRU only weakly
-> > honors it when selecting the scan type. The fallback logic
-> > can easily override the bias established by
-> > get_type_to_scan(). As a result, swappiness has a much
-> > smaller overall impact when changing from 1 to 200, as
-> > shown by the data presented later in this cover letter.
-> >
-> > In this patchset, patches 1-8 from Kairui introduce a model that uses
-> > refaults to determine nr_to_scan[] for both file and anon in MGLRU.
-> >
-> > ...
-> >
->
-> Thanks, I updated mm.git to this version.  I included that Sashiko
-> fixup.
->
-> The patchset does seem to be changing pretty quickly so I'll continue
-> to hold it in the mm-new branch until things have settled down
+On Sat, Nov 14, 2026 at 12:26:40PM -0800, Randy Dunlap wrote:
+> Update the list of files where sound ioctls are defined and update
+> the ranges of function numbers that are used.
+> 
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> ---
+> [Since having multiple maintainers trying to merge these would
+> cause some conflicts, it would be more manageable for Jon to
+> take all of these through the docs-next tree.]
+> 
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Shuah Khan <skhan@linuxfoundation.org>
+> Cc: linux-doc@vger.kernel.org
+> Cc: Jaroslav Kysela <perex@perex.cz>
+> Cc: Takashi Iwai <tiwai@suse.com>
+> Cc: linux-sound@vger.kernel.org
+> 
+>  Documentation/userspace-api/ioctl/ioctl-number.rst |   12 +++++++++--
+>  1 file changed, 10 insertions(+), 2 deletions(-)
+> 
+> --- linux-next-20261111.orig/Documentation/userspace-api/ioctl/ioctl-number.rst
+> +++ linux-next-20261111/Documentation/userspace-api/ioctl/ioctl-number.rst
+> ...(snip)...
+> @@ -168,7 +174,7 @@ Code  Seq#    Include File
+>  'H'   C0-DF  net/bluetooth/cmtp/cmtp.h                                 conflict!
+>  'H'   C0-DF  net/bluetooth/bnep/bnep.h                                 conflict!
+>  'H'   F1     linux/hid-roccat.h                                        <mailto:erazor_de@users.sourceforge.net>
+> -'H'   F8-FA  sound/firewire.h
+> +'H'   F8-FE  sound/firewire.h                                          conflict!
+> ...(snip)...
 
-Thanks very much, Andrew!
+I overlooked this entry when inserting the additional ioctl commands in
+the following commits:
 
-I'll be traveling soon, so I've been working day and night to try to get
-this settled before I leave.
+* 90e8ac5c9d446 ("ALSA: firewire-tascam: add new hwdep ioctl command to get state image")
+* 58b62ab702591 ("ALSA: firewire-motu: add ioctl command to read cached hardware meter")
+* ca15a09ccc5bd ("ALSA: firewire-motu: add ioctl command to read cached parameters in register DSP model")
 
-Sashiko flagged some nasty corner cases, and Kairui also provided some
-helpful suggestions. So I've made a few additional changes in v9 to address
-these.
+Thank you for catching and correcting this.
 
-I expect the series to be much more stable from v9 onward.
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 
->
-> > v9:
-> > * reduce one iteration for lruvec_populated_min_seq();
-> > * let lruvec_is_reclaimable() count all zones, for min_ttl;
-> > * refine lru_gen_imbalanced(), AGING_PRIORITY macro, roundup/down
-swappiness;
-> >   per Kairui;
-> > * let evict_folio_lists() return "drained" per Kairui, thanks!
-> > * one bounded retry for scanned=0 and reduce concurrent aging
-> >
 
-Thanks,
-Barry
+Thanks
 
---0000000000006ce8b40660465384
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><br>
-<br>
-On Sun, Nov 15, 2026, 11:09 Andrew Morton &lt;<a href=3D"mailto:akpm@linux-=
-foundation.org" rel=3D"noreferrer noreferrer noreferrer" target=3D"_blank">=
-akpm@linux-foundation.org</a>&gt; wrote:<br>
-&gt;<br>
-&gt; On Sun, 15 Nov 2026 04:07:47 +0800 &quot;Barry Song (Xiaomi)&quot; &lt=
-;<a href=3D"mailto:baohua@kernel.org" rel=3D"noreferrer noreferrer noreferr=
-er" target=3D"_blank">baohua@kernel.org</a>&gt; wrote:<br>
-&gt;<br>
-&gt; &gt; Classic LRU respects swappiness, while MGLRU only weakly<br>
-&gt; &gt; honors it when selecting the scan type. The fallback logic<br>
-&gt; &gt; can easily override the bias established by<br>
-&gt; &gt; get_type_to_scan(). As a result, swappiness has a much<br>
-&gt; &gt; smaller overall impact when changing from 1 to 200, as<br>
-&gt; &gt; shown by the data presented later in this cover letter.<br>
-&gt; &gt;<br>
-&gt; &gt; In this patchset, patches 1-8 from Kairui introduce a model that =
-uses<br>
-&gt; &gt; refaults to determine nr_to_scan[] for both file and anon in MGLR=
-U.<br>
-&gt; &gt;<br>
-&gt; &gt; ...<br>
-&gt; &gt;<br>
-&gt;<br>
-&gt; Thanks, I updated mm.git to this version.=C2=A0 I included that Sashik=
-o<br>
-&gt; fixup.<br>
-&gt;<br>
-&gt; The patchset does seem to be changing pretty quickly so I&#39;ll conti=
-nue<br>
-&gt; to hold it in the mm-new branch until things have settled down<div dir=
-=3D"auto"><br></div><div dir=3D"auto"><p>Thanks very much, Andrew!</p>
-<p>I&#39;ll be traveling soon, so I&#39;ve been working day and night to tr=
-y to get this settled before I leave.</p>
-<p>Sashiko flagged some nasty corner cases, and Kairui also provided some h=
-elpful suggestions. So I&#39;ve made a few additional changes in v9 to addr=
-ess these.</p>
-<p>I expect the series to be much more stable from v9 onward.</p><div dir=
-=3D"auto">
-<br>
-&gt;<br>
-&gt; &gt; v9:<br>
-&gt; &gt; * reduce one iteration for lruvec_populated_min_seq();<br>
-&gt; &gt; * let lruvec_is_reclaimable() count all zones, for min_ttl;<br>
-&gt; &gt; * refine lru_gen_imbalanced(), AGING_PRIORITY macro, roundup/down=
- swappiness;<br>
-&gt; &gt;=C2=A0 =C2=A0per Kairui;<br>
-&gt; &gt; * let evict_folio_lists() return &quot;drained&quot; per Kairui, =
-thanks!<br>
-&gt; &gt; * one bounded retry for scanned=3D0 and reduce concurrent aging<b=
-r>
-&gt; &gt;<br></div><div dir=3D"auto"><br></div><div dir=3D"auto">Thanks,</d=
-iv><div dir=3D"auto">Barry</div></div></div>
-
---0000000000006ce8b40660465384--
+Takashi Sakamoto
 
