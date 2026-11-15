@@ -1,104 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81E2606A331
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 22:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7DDF606A31F
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 22:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OMj0f5j6
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bISE3zh6
 Received: by kanga.kvack.org (Postfix)
-	id 85C4D6B05B3; Sun, 15 Nov 2026 17:34:49 -0500 (EST)
+	id C2D706B05B2; Sun, 15 Nov 2026 17:34:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E60B6B05B4; Sun, 15 Nov 2026 17:34:49 -0500 (EST)
+	id C04706B05B6; Sun, 15 Nov 2026 17:34:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 665246B05B5; Sun, 15 Nov 2026 17:34:49 -0500 (EST)
+	id ACC6F6B05B5; Sun, 15 Nov 2026 17:34:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D9936B05B4
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 721A56B05B2
 	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 17:34:49 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A730AC0535
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DF50AA0509
 	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 22:34:48 +0000 (UTC)
-X-FDA: 85438809456.17.9F72CA1
+X-FDA: 85438809456.23.05C047E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8B2BA40007
+	by imf23.hostedemail.com (Postfix) with ESMTP id D0FC7140002
 	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 22:34:46 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OMj0f5j6;
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bISE3zh6;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf27.hostedemail.com: domain of devnull+alireza.asgari.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+alireza.asgari.net@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of devnull+alireza.asgari.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+alireza.asgari.net@kernel.org
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794782086;
+	s=arc-20220608; t=1794782087;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hud+RIfTS9CpkWiwaPEwnFeGlAZ3JFT2QGoyFQEOPuE=;
-	b=7WufzqJXqEd+52HvmIzBh/jdtApL3am2zRiwLYK6N7nKCBJLqv6JSfS4kmaDPH50bihUVz
-	X0ZAg6IgDlvtuwYbPIuqciNFE6+ywFRcWQfqBF2PoVeaEa1vmQJoB3rYe3OkFTBPUT4eQ6
-	j6ZpSjgHHhQukjDloMr40KIiNDcba2k=
+	bh=FaLPHI6QmzOizX2R7WI+RZFG5s4TESyYrXh8VTsFQ1M=;
+	b=q4D/xW1Uja4HeBf588ouximcNbVoRSFBE+S1OMFNYgIp6RvmXrLLwsPsfO8GkHssoZ2DkK
+	4Sv2tA2eFHsPXKQTOOAOA5qDLU4m3EuingEfku4NvLCr5c9mB7HDiqEM1bFmFduJ2+06Rx
+	UarNDSG6eFP1YR5CCuqYtEm636+QKzI=
 ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OMj0f5j6;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bISE3zh6;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf27.hostedemail.com: domain of devnull+alireza.asgari.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+alireza.asgari.net@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of devnull+alireza.asgari.net@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+alireza.asgari.net@kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794782086;
-	b=iU6PYeDrFp8LX+0uIvCUfWim9LbIb8JLv0OHU4zcNvMCgmJqKIXXrNzweljCzS3l++z+Uy
-	e1iU6AYHU9vI48iyio7tTSFEWOAd7pfOnQN/lK8aN8ALqLmrMp18779jU/IZjBeWZzBoec
-	kgVmYJGh7JYRFe6s3vXf6OwUt5xXEAE=
+	t=1794782087;
+	b=RdeLNVeltbEYcHxUPZ12XWthy2v4D6BPUB1jYgS/uTWH1Ro4qyCONsdFCtycintmmDfJHc
+	tINHd/52Bj7uBKhRTeRZXmqpPgi7yMWvBKTWGkj4eeFXd5q+J567LO0AAP/FB4cztRdFNt
+	mtwvBhaUcC8wY0ho0OQeAgd8OecMtEw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D155045A45;
-	Sun, 15 Nov 2026 22:34:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1B9B345A53;
+	Sun, 15 Nov 2026 22:34:46 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794782085;
-	b=G7EP00s5imND4pnQ8Nf+jzO6iAm3wuhWwFMCG1C9UveXUtQt1mHxw9C5LLy0+Mr9U7RZ
-	 xdwDzDotL8LFY37Ant7sjJZ04+671hgKZW+/7MH627EJ9GI8zeub3XFOSWrdJu+N4ES/y
-	 3GaIhr1pCwwgag/CJ7bmIM76PkwJ2Li0nme+0aYt9Y6giXdB8HQ0a5TQ3e2Ufx7w0xBij
-	 XFJAOQedptCNGqMQtkkjlte3MarH66xjUpUtJiHZlHYpG7CGSNVX5ahGOIbUE1wMG2ScQ
-	 t0WgOTh1y/a5VEIFL3iOMoK5YGYxJAqh+/fTEtdxiScmgKqOyWyYqbp9oEeeyd4QznA==
+	t=1794782086;
+	b=Q4wbpYZFEgbru3vNPbFyCmn5+2zBhgwhkBgFwo0r9huEevalZtx20v1KJMSjVVDE3nTM
+	 PEM9LzdN/qglBnQcmVYstIO4NNK6Xnn2/niG1TO7Sx7gl3Vm7lrTAz3Q0GHeDhPcURmOU
+	 1HmMWGwZSi1kpAXIieTJD5FKYyWbH24iEnt4l+DfkcTVsIu2ZvoBzs235z/kSxN3fsURw
+	 JFBTT44ze3fzeIkM60VACfrH4fwbpt4KkmghwZukOLylCKPKs4ZGGzCSKWeY8WdC0eCbl
+	 n2z9ZruAIkYxNGsnRvI6MC2O8dCip+HAAPPYE6cXlDNq52kgzREUwBn/vCebhCF0JXQ==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794782085;
+	c=relaxed/relaxed; t=1794782086;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=hud+RIfTS9CpkWiwaPEwnFeGlAZ3JFT2QGoyFQEOPuE=;
-	b=pbd+N0uPqGoTosVv896AUj2OUiU7QJ5k0gwvQulg1sHCIufsqMQMuPpTdUctvYvPGGDC
-	 ZTrW8uD1Soo9GQ3oRSCQPP9CYrNN/6tGtgl+u4Dr73ZlTedaCi6aJ6uLX4gUpHw0zcC9I
-	 MasNDry49sV9+omWPnB3+jKOHlRVsu4PRvQcJ6MOk9pWJVzNC8U5Y0+497aFtb5oGegNP
-	 EpUt9sZeh2oAQ+VuVLAGogpCOJoFrIyCJMD14RTMeARFqIFWdSS5SnkPMzlvWQ9JUu5Cs
-	 XQCv53fPcTKZPF9tIEVPlHQGMb6T2M75w5kXrLm4AYtmMhhhp2BopW3/DFLvocaOCeA==
+	bh=FaLPHI6QmzOizX2R7WI+RZFG5s4TESyYrXh8VTsFQ1M=;
+	b=NBbyvf40Niz5t2LYt6+77wFo9lBLjD50UIdGNNBKdUocNgdZq5enYKFF9zKhSd450vPD
+	 deCrPDLVmh7Lin2KrwbT58uGYAS+R9fyS8C9mvdbgUeP1dvNTHJ4VuCuIHWtq0GEvO7Pt
+	 GnPmm+jBQTUeGmYVwftw48RplrqSsej8kfbh4sXu6t7yw+csp+xubN4mPqNHedDmw3cYS
+	 Ax2NMVo0GP5kWeLYnVdYDLi2bHhtX3giWY4FzezoT++9T7OoPCW5aFsqWHz80Zkhea78W
+	 m/HmYmS+D/f3Rfa1Z4blSKQ4taZVoT+L4i1jkQ+/928LIXeAOQdbq2SHcHgnNXHSh2A==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 102C21F000C8;
-	Sun, 15 Nov 2026 22:34:44 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id D24141F000C6;
+	Sun, 15 Nov 2026 22:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1794782085;
-	bh=hud+RIfTS9CpkWiwaPEwnFeGlAZ3JFT2QGoyFQEOPuE=;
+	bh=FaLPHI6QmzOizX2R7WI+RZFG5s4TESyYrXh8VTsFQ1M=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=OMj0f5j6moJEglet3V/a6Yjpd+AFj5UoWpsRNHaUDM6BqSQkoV4yqTmDdCOrSA8/y
-	 NVMBo26rjhrgqYB+uT+M7qRdqbMyFiSBDQ5rkm5bqx0Cuv51Sws6/9grBO4cpnbBOg
-	 VTcWRlqC5fL52CEA1WoYLiwv1uvqU65XCtlpjUbwpSnwJhCJgETLGFHsYjTagkWkjp
-	 OfNlGTkkAgWB3/Is0i3zewFjrunQ6zfln5An+2jw8cyqGdwRXDZXyW+FR+q24nT/S2
-	 716AufO/jlIuNok5scOmfhXI9xcK3hLt4Ai9ZPAzqW08uj3DFohzED9+jRrw+uUOAx
-	 5IhaNh2O5Dpqg==
+	b=bISE3zh6v5YoUqO4iihTt3xCNizWtnZRLXYlw0YZm5SUXQw2PVXC1o36NG0jXqJwB
+	 zD5cbZD/Y+x2YVb1bvi0Ra6bTAOXHii1td465oztARAiXqnquIkVwy4eiAg709Bgjc
+	 nRSq4fN0jZOB1n5N5MKjIqFRPngwFk6QUgW60dGrH1MpYaNpgeDZgdhVCmooZz5NvM
+	 QuJQjBOw0UbY4w+KKDoWnBffMnZwU7kBc3W2M2RItnpKa01ws1ohNqjvH8cKOzc8de
+	 niLttdE2eJFFmyWcqagC8zBNE1EWMoXGSNYOdX1m1mBAVPigRK0WliGnI9ghW7DZVc
+	 h9g6iKv0ioWmw==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 8F9AF4A24D;
+	by lkml.kernel.org (Postfix) with ESMTP id 629BF4A245;
 	Sun, 15 Nov 2026 22:34:43 +0000 (UTC)
 From: Alireza Asgari via B4 Relay <devnull+alireza.asgari.net@kernel.org>
-Date: Sun, 15 Nov 2026 22:34:44 +0000
-Subject: [PATCH RFC nf-next 4/9] memcg: add an owner-bound capacity
- reservation interface
+Date: Sun, 15 Nov 2026 22:34:42 +0000
+Subject: [PATCH RFC nf-next 2/9] memcg: bound memory.high delay arithmetic
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261115-b4-nfqueue-memory-accounting-v1-4-b9cc30819997@asgari.net>
+Message-Id: <20261115-b4-nfqueue-memory-accounting-v1-2-b9cc30819997@asgari.net>
 References: <20261115-b4-nfqueue-memory-accounting-v1-0-b9cc30819997@asgari.net>
 In-Reply-To: <20261115-b4-nfqueue-memory-accounting-v1-0-b9cc30819997@asgari.net>
 To: netfilter-devel@vger.kernel.org, linux-mm@kvack.org
@@ -115,11 +114,11 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
  cgroups@vger.kernel.org, netdev@vger.kernel.org, 
  linux-kselftest@vger.kernel.org, Alireza Asgari <alireza@asgari.net>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794782082; l=8813;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794782082; l=5496;
  i=alireza@asgari.net; s=alireza-kernel; h=from:subject:message-id;
- bh=OjXsitYCWUxf4IwkzECeKMGMptD9gN0LJJoCyFoRNDQ=;
- b=r5MEYESz730o0FSe8B903OqNKPvShnAbK/J8l27OnJ9FgvqTtZJiUPTAdv1q73mK5aj/nuPYF
- eKEMrgniRjxB7w7fHMNW3L9WLb2htm2L730Uzmr7XCjL+aUnSCKjT/Q
+ bh=w3ayk+U8FCJ6lXFONsO42X2e0VbfkJT2uJZSfO6L6nE=;
+ b=7Z0tS5xgqA3bYLUfmPyREPp431QgCdAYI5U0LRMjsIixhzk90bkt7WUmUx5FBL8IKOplA3krb
+ fdElWo/CNpRAFHKXE8tJFC0elxZLFFJXqMoF+ZXM1deKDCqsTXQLByw
 X-Developer-Key: i=alireza@asgari.net; a=ed25519;
  pk=wuQ0/M69FqoVnrCMUJ13EQCwrCwVjCrtz75k15vW8tw=
 X-Endpoint-Received: by B4 Relay for alireza@asgari.net/alireza-kernel with
@@ -127,18 +126,18 @@ X-Endpoint-Received: by B4 Relay for alireza@asgari.net/alireza-kernel with
 X-Original-From: Alireza Asgari <alireza@asgari.net>
 Reply-To: alireza@asgari.net
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D0FC7140002
+X-Stat-Signature: ijz6d8cf3mz8oze7n7yijugu8cxhpsxw
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8B2BA40007
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 38h4wsrxpsn5wk5w4h3n7d3k4w7mja44
-X-HE-Tag: 1794782086-282470
-X-HE-Meta: U2FsdGVkX19l7gzoE+qy9nrAm1Rt50pbBApS+plmiJiQqOtqoCm3LsdTgUxR4OB4vSs45KJj0mRmRGSSl2XPLreHpqSTshAqwZG5W9M3rZD3ficcygP4vzGNwYFH7jWggtiPGuggCi8nX7yhRjFhNbpWFpoBol+zaFqlz7NDFc1xjmaMGoPsYg3jQuy4CIDP1tOMUFEMTCL5nDLEtAJGufVAmed5FCLNY/BAdiYuFcCWNOmuuUVqE1SGJlw1GOi+aG23TFs5CP7UXNPfUlKtnZFgR1+S2B6SPK/mmhwhv2uhWFB0b1JmBMYIq3pgP2NNq78BA3K4+uVY8BfE0NkNiZVFNcaLqL4RT0H2UOUpvBznuJWpxriTR9KkoiuDORpu6ZBFkyDZDT4snlbUCmq26dRlRPcdlrsnHckutU5RWSpVua3f92prcjHZaP5oZ/HqQ4hO8XTtwwhhH2TQ6yMO8DuSqHqJUuBULCm5ZjZbh4sWEcUvXCAjWxu6tpM1MhxBjNZ02sbw+mT+Q3bXWXId5AtO8BiwYkSSgn3PNKni9dXfchyH8uMHdeEBZhP4SejvlGFVc/wNEde4mzxbFmWG6VLoK8+LjrUMUFQ77K5imVb2LyV7jh4h8E9BdoZu+pYCwRfcd5qwUEEpExV14qlB/8aW0iDuqN99QL/nRQSyug91XTC4tvLuRsPkV/Tzhjm0T2GZJFmBf1XhvVi9F/mx2Pps/q5MSVIBsez4IpZZge5PLFakxSR16133TKW0gKHC6LL1XYIqPq9SE13uPcp0ll5fZv5IcFArKogzGjyOVXO7ItH6OOieXvG2ic/5ZlRW77hiBibUFXkAP+tyE161MjjxoVMy64TK2LEj7OIUWTeauDd//nLBLL08PjKCKBw+nypS4NtWzZoj1H2Vd+hcnvRyLP9Ya6KOgngnE6HdSdyy8scB6o1nmEgDgUJrn3NWoE01zRgEODLpqxBFD98
- QuR8l1Xa
- aeAQBfd2BSTMaYt9xCi5EUK+TFGmsCjJ8mYdJivboZt9a7KoAjhNSSDLBizdnXi3B4IuezxwRVIKRjCRlXxU9rJPb2+yLdgLULV5qCQYSRvWu8XF33JJv+egTSVD6sE3rRNcRIvVPQQbeZDDCV4Q5YQeY7dCYsngP77yRnAddH0SzxYlGJHqdKnyhsJH01rB8irHabZsCnSCmDJ7yjePsblDT+xK0j6a5MAINys2Td1cwMKC/0Du5gf9LpBJqTrsSYnlztSeHJUxvxMuJ1e0KUsIcoSsWxbnhFByO7YcP7OT1rFf7UO3aEiI0XfFuil+5o2/3b7CbB6ZUUB3E6NH7Z5YSMclEAKoFu8lBGSBor5Zlc28LA22f/ASQRKi41Ifyg9eE9mNGtuTUmOjt0x2Cz6KDtphp7kdYQgeLPJ9KcIp0ETuSBHWl9w+oz67FKdnpybWItaWf0q7zcuKijqSsFFVdmV1coXdQ3oEzzw3+LnTCCJ73U30dQSCb69X65fVwVo76WENP7QbwIsRZVEcQO86os3/O5EG5E2RVjWX3rUKbYEA=
+X-HE-Tag: 1794782086-909257
+X-HE-Meta: U2FsdGVkX184+FbMfulee0BYtSFaLfPhB8GojZ62KSPRwPn8M4RBz6dOuVv/V7olVLfr3Rfahk8QYj0iBZx9S5E9W1eIOoKcodu0LGPQQAAA9nT4uBnefR95TBjAzB63OZyHPTFOhGuCA5hkIgQ5dBqYgWtCeManMPyEX239EQLGfq/qko6tTcEIvqtckznTL7Nmhgc9/Efq698M57ThlrALisCHIQeLNSxHuFuyU5QulQY/4MeNIcP4azc5zUTPHJ0kWT2j8sRxfq5gO6uDfSj2PD37jFY/Lht3HCmm4XaxnkVMbr0SeZHonZW/CmjsFjIPMcD/6/W0UFHgtkDgDMwn0+O4dvq6TmONGkjc7Ray78NGN1hSpDrFU6DHnaKjruHIYW6d/0hA/huvR4mKqYW91Qc1fmTix1+0j2DFf9X0oHL4aJwlmSr77HXeXNQ3mklICsCc2k/2cDsFjfNwKNzqdi1Xh+OWR8D3OJPy/SaOsbJbotJ4TIRDFiBs2Y2Z+/cZp0x3qfEpxQ9LUg3RbwhC54BqdzHnlpkD8MLnI1yZdkLUHLe1JqfYZf1rGPdT2H7t3TlOqczrOoNn0vObDquLAZRkEt57R69du+rf0n5+XjAz7wqc/6O/R/a7tvRPvwbuVdWJRjI/yTf2A+0fCUOF0bKSi+Hphj9pT9w7BFLmuMAHaEGqpohsn1wbHZHkT2gMRHCs9ZlSPS0l1sVFGyIoD/a1AA9zSFljmQGQUWmWF2xjDw6b4UvGS6Zbhjoda86YVgQU8VhTyc0Tf0GVU3RE235rOgfJnPSpc605yBQ9kYttgH5SvTzwrBwTCC3e32wzwfLk8UNclaxqz8Nde5hmOj3zvmlP8b0O7QShkR/kj2qAouxJTqe+zcLEyxgerFV15f53HQjBGYTPGxRaO8f4mV59v0BfvFzFWX+7lHjHCS78N5ZbZmOu62ZkVUcAeFxQd2/QZq/iAs6MxO+
+ vY/MYLuD
+ QEW2HpCMH8idNGmPN0i3DXWjJ8Rr8BK42J0MakhC2+f98CWg1xI1NeVT1gNtmiIuoukBeUvCFQg0zeKBJ2CxZf4ug6IRrMdefdifWUQ8jLldZovjA7Ub+iAaMK8oViaLFNJd1oxE8INY3vhsTgGxAyKZ0h1HbTlyYMz+i4XxosdDvfYZu9o8QHobOTOXHx8lu9BPoiGHtCQKDenxUH1HTp1EFTSghkjllqBNAuMGI0VlnctVf1IP+dPWsAdH7W9PfGa0bB7kXG4as7Kab+E6LIOHeSXXKA/nVmcvLuxyzVVS2xc2gdZbgh5emzY0j9+iExsmsVDIWj/fYHWkVsUW4tPRUY1ny6mgHy+4ZbpwUMjaapXY0Pg432VWHp9KYd5QyRmVolCe0HohUFGquecaJ8tJaFBtjQsdcTDKsK7txnGKU3LMiwkhdEbYbTe6SumHRN8ffkrBI6CPp8MF1dvuW/MvrWi94NxeLzdE/nU7BC5x8f6jdlaz+HP7dFRaYC6DRj0YXOPHXEACJvn7cjJgI+WcEfyaVq54gKdM1QtcTDQUrviJgdODU8vcfxFtqqgrZyFcAkExwAOc37NpNUqa6ePFa0dJpaOG5oZEJmNitP8LzIZM259X5Z5milnmOWAzR0wi0ObmgzcfsmYyX0qQHTUavWq+NoG9H6/jG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,258 +148,125 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Alireza Asgari <alireza@asgari.net>
 
-NFQUEUE capacity accounting needs to charge budget in configuration
-context while preserving the owner selected when the queue was bound.
-Add a proposed bulk page-reservation interface backed by a referenced
-objcg. This reserves accounting budget; it does not allocate physical
-pages or replace the charges for real allocations.
+The memory.high penalty can overflow while scaling the usage ratio,
+squaring the scaled ratio, or multiplying by the task's deferred page
+debt. An overflow can turn a large intended penalty into a small or zero
+one. On 32-bit kernels the unsigned-long intermediate is also truncated
+before two right shifts totaling 34 bits, making the delay zero.
 
-Track logical reserved pages separately from pages actually charged.
-The distinction permits uncharged growth after reparenting to root while
-still refunding inherited charges. Apply actual recorded refunds to the
-page counters even when the current owner is root.
+Keep the intermediates in u64 and bound the relative excess at twice the
+high limit. At that bound even one page of debt exceeds the existing
+two-second final cap. A bound of one times the high limit would change
+valid one-page results. Below the bound, use wide multiplication and
+division so a large numerator with a modest ratio remains accurate.
 
-Use bounded GFP_NOWAIT charge batches. Failed growth rolls back its new
-charges and leaves the old reservation intact. Reject PF_MEMALLOC growth
-rather than allowing forced charges. Callers serialize operations in
-sleepable context; ordinary memory.high handling can remain deferred.
-On this base, deferred handling can target the current task's cgroup
-instead of a saved owner after task migration.
+Preserve the fixed-point rounding order. Bound each memory or swap
+component before converting to unsigned long, then retain the existing
+cap on their sum. With HZ below 12288, the bounded square times HZ fits
+below 2^56, and the later product with UINT_MAX pages fits below 2^54.
 
-Positive growth with a captured owner requires a 64-bit kernel. Virtual
-reservations can otherwise bring shared 32-bit page counters near their
-signed range without allocating matching physical memory. No-owner
-reservations, shrinking, and destruction remain supported on 32-bit.
+This work was examined during AI-assisted source review of virtual
+capacity accounting. Song Hu previously reported the square overflow;
+Zhang Jiao proposed a fix for that overflow and the 32-bit intermediate.
+Johannes Weiner and Bingfang Guo also discussed multiplication and return
+width. This implementation addresses those problems and the numerator
+and debt-scaling boundaries. It is an alternative for discussion, not a
+claim of a newly discovered problem or a revision of Zhang's submission.
 
-The API, use of ordinary memcg usage for empty capacity, and architecture
-restriction are RFC policy choices requiring MM review.
+The accompanying KUnit cases call the arithmetic helpers directly on
+32-bit and 64-bit kernels. They cover zero and sub-batch debt, ordinary
+rounding, large numerators, the cap boundary, and the prior zero-delay
+example. This isolates the arithmetic; it does not reproduce end-to-end
+reclaim or throttling with large physical allocations.
 
+Both arithmetic cases passed on 64-bit and 32-bit x86 KUnit kernels built
+from this series. They exercise the production arithmetic helpers without
+requiring large allocations or claiming an end-to-end throttling result.
+
+Fixes: 0e4b01df8659 ("mm, memcg: throttle allocators when failing reclaim over memory.high")
+Link: https://lore.kernel.org/20260818012115.65838-1-husong@kylinos.cn/
+Link: https://lkml.rescloud.iu.edu/hypermail/linux/kernel/2610.3/11270.html
+Link: https://lkml.rescloud.iu.edu/2610.3/12576.html
+Link: https://lkml.rescloud.iu.edu/hypermail/linux/kernel/2610.3/11904.html
 Signed-off-by: Alireza Asgari <alireza@asgari.net>
 ---
- include/linux/memcontrol.h |  35 ++++++++++
- mm/memcontrol.c            | 163 +++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 198 insertions(+)
+ mm/memcontrol.c | 27 ++++++++++++++++++++++-----
+ 1 file changed, 22 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 69e1bcc67c58..d25ff10976ec 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -32,6 +32,41 @@ struct mm_struct;
- struct kmem_cache;
- struct swap_cluster_info;
- 
-+/* Capacity accounting without allocating the reserved pages. */
-+struct mem_cgroup_reservation {
-+	struct obj_cgroup *objcg;
-+	u64 pages;
-+	u64 charged_pages; /* excludes growth after reparenting to root */
-+};
-+
-+#ifdef CONFIG_MEMCG
-+void mem_cgroup_reservation_init(struct mem_cgroup_reservation *res);
-+int mem_cgroup_reservation_resize(struct mem_cgroup_reservation *res,
-+				  u64 pages);
-+void mem_cgroup_reservation_destroy(struct mem_cgroup_reservation *res);
-+#else
-+static inline void
-+mem_cgroup_reservation_init(struct mem_cgroup_reservation *res)
-+{
-+	res->objcg = NULL;
-+	res->pages = 0;
-+	res->charged_pages = 0;
-+}
-+
-+static inline int
-+mem_cgroup_reservation_resize(struct mem_cgroup_reservation *res, u64 pages)
-+{
-+	res->pages = pages;
-+	return 0;
-+}
-+
-+static inline void
-+mem_cgroup_reservation_destroy(struct mem_cgroup_reservation *res)
-+{
-+	mem_cgroup_reservation_init(res);
-+}
-+#endif
-+
- /* Cgroup-specific page state, on top of universal node page state */
- enum memcg_stat_item {
- 	MEMCG_SWAP = NR_VM_NODE_STAT_ITEMS,
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 446b60ca6aef..0227d9b411f5 100644
+index 1980fb7431a8..665ce8dfb9ec 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -3255,6 +3255,169 @@ static int obj_cgroup_charge_pages(struct obj_cgroup *objcg, gfp_t gfp,
- 	return ret;
+@@ -2521,6 +2521,15 @@ static void high_irq_work_func(struct irq_work *work)
+  #define MEMCG_DELAY_PRECISION_SHIFT 20
+  #define MEMCG_DELAY_SCALING_SHIFT 14
+ 
++/*
++ * An overage of twice the high limit gives a nominal delay of 256 * HZ.
++ * Even one page of debt then exceeds the two-second cap. Bounding the
++ * overage here keeps the delay products in u64: with HZ < 12288, the
++ * square times HZ is below 2^56, and after scaling the product with
++ * UINT_MAX pages of debt is below 2^54.
++ */
++#define MEMCG_MAX_HIGH_OVERAGE (2ULL << MEMCG_DELAY_PRECISION_SHIFT)
++
+ static u64 calculate_overage(unsigned long usage, unsigned long high)
+ {
+ 	u64 overage;
+@@ -2535,8 +2544,12 @@ static u64 calculate_overage(unsigned long usage, unsigned long high)
+ 	high = max(high, 1UL);
+ 
+ 	overage = usage - high;
+-	overage <<= MEMCG_DELAY_PRECISION_SHIFT;
+-	return div64_u64(overage, high);
++	if (overage >= high && overage - high >= high)
++		return MEMCG_MAX_HIGH_OVERAGE;
++
++	/* The scaled numerator may overflow u64 even for a small ratio. */
++	return mul_u64_u64_div_u64(overage, 1ULL << MEMCG_DELAY_PRECISION_SHIFT,
++				   high);
  }
  
-+/* Keep both the page count and the signed kmem statistics deltas in range. */
-+#define MEMCG_RESERVATION_BATCH (SZ_1G >> PAGE_SHIFT)
-+
-+static int mem_cgroup_reservation_charge(struct obj_cgroup *objcg,
-+					 unsigned int pages, bool *charged)
-+{
-+	struct mem_cgroup *memcg;
-+	int ret = 0;
-+
-+	memcg = get_mem_cgroup_from_objcg(objcg);
-+	*charged = false;
-+	/* Reparenting to root removes the limit, not previously held charges. */
-+	if (!mem_cgroup_is_root(memcg)) {
-+		/* Do not reclaim repeatedly while the caller serializes configuration. */
-+		ret = try_charge(memcg, GFP_NOWAIT, pages);
-+		if (!ret) {
-+			account_kmem_nmi_safe(memcg, pages);
-+			memcg1_account_kmem(memcg, pages);
-+			*charged = true;
-+		}
-+	}
-+	css_put(&memcg->css);
-+	return ret;
-+}
-+
-+static void mem_cgroup_reservation_uncharge_batch(struct mem_cgroup *memcg,
-+						  unsigned int pages)
-+{
-+	account_kmem_nmi_safe(memcg, -pages);
-+	memcg1_account_kmem(memcg, -pages);
-+	/* These pages were charged, even if their owner is now root. */
-+	memcg_uncharge(memcg, pages);
-+}
-+
-+static void mem_cgroup_reservation_uncharge(struct obj_cgroup *objcg, u64 pages)
-+{
-+	while (pages) {
-+		unsigned int batch = min_t(u64, pages, MEMCG_RESERVATION_BATCH);
-+		struct mem_cgroup *memcg;
-+
-+		memcg = get_mem_cgroup_from_objcg(objcg);
-+		mem_cgroup_reservation_uncharge_batch(memcg, batch);
-+		css_put(&memcg->css);
-+		pages -= batch;
-+		cond_resched();
-+	}
-+}
-+
-+/**
-+ * mem_cgroup_reservation_init - capture the current kernel memory owner
-+ * @res: uninitialized reservation
-+ *
-+ * The owner is referenced until destruction and follows objcg reparenting.
-+ * Root ownership or disabled kmem accounting leaves an uncharged reservation.
-+ * The caller must serialize operations and use sleepable task context.
-+ */
-+void mem_cgroup_reservation_init(struct mem_cgroup_reservation *res)
-+{
-+	*res = (struct mem_cgroup_reservation){};
-+	if (!mem_cgroup_disabled() && !mem_cgroup_kmem_disabled()) {
-+		res->objcg = get_obj_cgroup_from_current();
-+		if (res->objcg && obj_cgroup_is_root(res->objcg)) {
-+			obj_cgroup_put(res->objcg);
-+			res->objcg = NULL;
-+		}
-+	}
-+}
-+EXPORT_SYMBOL_GPL(mem_cgroup_reservation_init);
-+
-+/**
-+ * mem_cgroup_reservation_resize - change a capacity charge in pages
-+ * @res: initialized, externally serialized reservation
-+ * @pages: new total reservation, in pages
-+ *
-+ * Growth does not reclaim, invoke the memcg OOM killer, or force-charge a
-+ * failing reservation. It may therefore fail despite reclaimable memory.
-+ * A failed growth leaves the old charge intact. This reserves budget, not
-+ * physical pages, and does not replace charges for actual allocations.
-+ * Growth with a captured owner requires a 64-bit kernel: virtual reservations
-+ * must not bring 32-bit page counters close to their signed arithmetic limit.
-+ * Unsupported growth returns -EOPNOTSUPP without changing the reservation.
-+ * Reservations initialized without an owner, shrinking, and destruction
-+ * remain supported.
-+ *
-+ * Successful growth may schedule deferred memory.high handling for current.
-+ * That handler uses current's mm owner, which can differ from the reservation
-+ * owner after task migration or cgroup reparenting. It does not guarantee
-+ * reclaim or throttling for the charged owner. memory.max checks still use
-+ * the reservation owner and its ancestors.
-+ *
-+ * Return: zero on success, or a negative error code.
-+ */
-+int mem_cgroup_reservation_resize(struct mem_cgroup_reservation *res, u64 pages)
-+{
-+	u64 charged = 0, remaining;
-+	int ret;
-+
-+	BUILD_BUG_ON(!MEMCG_RESERVATION_BATCH);
-+	BUILD_BUG_ON(MEMCG_RESERVATION_BATCH > INT_MAX);
-+
-+	if (!res->objcg)
-+		goto commit;
-+	if (pages > PAGE_COUNTER_MAX)
-+		return -E2BIG;
-+	if (pages <= res->pages) {
-+		u64 retained = min(pages, res->charged_pages);
-+
-+		mem_cgroup_reservation_uncharge(res->objcg,
-+						res->charged_pages - retained);
-+		res->charged_pages = retained;
-+		goto commit;
-+	}
-+	if (!IS_ENABLED(CONFIG_64BIT))
-+		return -EOPNOTSUPP;
-+	/* try_charge_memcg() otherwise allows reclaim contexts to overcharge. */
-+	if (current->flags & PF_MEMALLOC)
-+		return -ENOMEM;
-+
-+	remaining = pages - res->pages;
-+	while (remaining) {
-+		unsigned int batch =
-+			min_t(u64, remaining, MEMCG_RESERVATION_BATCH);
-+		bool accounted;
-+
-+		if (fatal_signal_pending(current)) {
-+			ret = -EINTR;
-+			goto rollback;
-+		}
-+		ret = mem_cgroup_reservation_charge(res->objcg, batch,
-+						    &accounted);
-+		if (ret)
-+			goto rollback;
-+		if (accounted)
-+			charged += batch;
-+		remaining -= batch;
-+		cond_resched();
-+	}
-+	res->charged_pages += charged;
-+commit:
-+	res->pages = pages;
-+	return 0;
-+rollback:
-+	mem_cgroup_reservation_uncharge(res->objcg, charged);
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(mem_cgroup_reservation_resize);
-+
-+/**
-+ * mem_cgroup_reservation_destroy - release capacity and its owner reference
-+ * @res: reservation with no remaining concurrent users
-+ */
-+void mem_cgroup_reservation_destroy(struct mem_cgroup_reservation *res)
-+{
-+	if (res->objcg) {
-+		mem_cgroup_reservation_uncharge(res->objcg, res->charged_pages);
-+		obj_cgroup_put(res->objcg);
-+	}
-+	res->objcg = NULL;
-+	res->pages = 0;
-+	res->charged_pages = 0;
-+}
-+EXPORT_SYMBOL_GPL(mem_cgroup_reservation_destroy);
-+
- static struct obj_cgroup *page_objcg(const struct page *page)
+ static u64 mem_find_max_overage(struct mem_cgroup *memcg)
+@@ -2576,9 +2589,9 @@ static u64 swap_find_max_overage(struct mem_cgroup *memcg)
+ static unsigned long calculate_high_delay(unsigned int nr_pages,
+ 					  u64 max_overage)
  {
- 	unsigned long memcg_data = page->memcg_data;
+-	unsigned long penalty_jiffies;
++	u64 penalty_jiffies;
+ 
+-	if (!max_overage)
++	if (!nr_pages || !max_overage)
+ 		return 0;
+ 
+ 	/*
+@@ -2589,6 +2602,7 @@ static unsigned long calculate_high_delay(unsigned int nr_pages,
+ 	 * its crazy behaviour, so we exponentially increase the delay based on
+ 	 * overage amount.
+ 	 */
++	max_overage = min(max_overage, MEMCG_MAX_HIGH_OVERAGE);
+ 	penalty_jiffies = max_overage * max_overage * HZ;
+ 	penalty_jiffies >>= MEMCG_DELAY_PRECISION_SHIFT;
+ 	penalty_jiffies >>= MEMCG_DELAY_SCALING_SHIFT;
+@@ -2601,7 +2615,9 @@ static unsigned long calculate_high_delay(unsigned int nr_pages,
+ 	 * MEMCG_CHARGE_BATCH pages is nominal, so work out how much smaller or
+ 	 * larger the current charge patch is than that.
+ 	 */
+-	return penalty_jiffies * nr_pages / MEMCG_CHARGE_BATCH;
++	penalty_jiffies =
++		div_u64(penalty_jiffies * nr_pages, MEMCG_CHARGE_BATCH);
++	return min_t(u64, penalty_jiffies, MEMCG_MAX_HIGH_DELAY_JIFFIES);
+ }
+ 
+ /*
+@@ -2654,6 +2670,7 @@ void __mem_cgroup_handle_over_high(gfp_t gfp_mask)
+ 	penalty_jiffies = calculate_high_delay(nr_pages,
+ 					       mem_find_max_overage(memcg));
+ 
++	/* Each component is capped, so their sum also fits unsigned long. */
+ 	penalty_jiffies += calculate_high_delay(nr_pages,
+ 						swap_find_max_overage(memcg));
+ 
 
 -- 
 2.34.1
