@@ -1,127 +1,164 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD64606A329
-	for <linux-mm@archiver.kernel.org>; Sat, 14 Nov 2026 23:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC78606A335
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 00:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fqorLJi2
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=LCAIASZQ
 Received: by kanga.kvack.org (Postfix)
-	id D10D86B05B1; Sat, 14 Nov 2026 18:54:45 -0500 (EST)
+	id 7283D6B00EF; Sat, 14 Nov 2026 19:00:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC1BE6B05B2; Sat, 14 Nov 2026 18:54:45 -0500 (EST)
+	id 6D9006B05B0; Sat, 14 Nov 2026 19:00:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD7C96B05B3; Sat, 14 Nov 2026 18:54:45 -0500 (EST)
+	id 579A26B05B3; Sat, 14 Nov 2026 19:00:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8719E6B05B1
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 18:54:45 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E7A98404C9
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 23:54:44 +0000 (UTC)
-X-FDA: 85435382088.15.6817C2F
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1FFC540002
-	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 23:54:42 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=fqorLJi2;
-	spf=pass (imf01.hostedemail.com: domain of mohamedalibouhaouala@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=mohamedalibouhaouala@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794700483;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2463C6B00EF
+	for <linux-mm@kvack.org>; Sat, 14 Nov 2026 19:00:26 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 97644A0473
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 00:00:25 +0000 (UTC)
+X-FDA: 85435396410.09.52D025B
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013069.outbound.protection.outlook.com [40.93.201.69])
+	by imf06.hostedemail.com (Postfix) with ESMTP id A6D5D180008
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 00:00:22 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=LCAIASZQ;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf06.hostedemail.com: domain of jgg@nvidia.com designates 40.93.201.69 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794700823;
+	b=OV/sxuxac4i11k8AIx6O+3DoOGYzQDpV/CNDbZIqFeJPqTGozaSVjlfPU0Ght8T2zpMkHl
+	xDxsjRmzss+Xj9jTKny2cNqWixb5sc3VY3bZAjRVkNch06d6E2uFmWP+aB/Xvvjfbt3hh3
+	ZkF0qaQEAikymo+aRHAr46/aL55BIXE=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794700823;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jvGNkEQXxpCGRnxugPg2OroUq4ixAzACPllCORFjj2w=;
-	b=HI7uMnWXvF6fzed1X+aXowdm9uKAt2SKfEbIy/WZ6NfU7R+3JSdCBgE7wxyEt/0swf5vOW
-	M6kWIdINB20U8AgvMFDo79caT9KSYfFOPcw4F5U3qvhSQV3qLTuqZw3DPIQprwrKtDgzrR
-	IoCMCCPaX8w7KjPI0Zc28hzh6U3xeUo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794700483;
-	b=KZdcHJeS4QlFVx0NyOKsjECRweaNFqAuaTB3QLDxLVhYr+788WFq6xZzSpnKZAdUUtqyBR
-	JQbwfvgL+fCOuoJ52mIwExCaXwC0fTH6Ycl2NEknyLUZpEF4SptU1OtmMM8Rw42G+Ai44p
-	fLdrEZPTxx9jiz2Wr9uW+VS0zztLyyI=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=fqorLJi2;
-	spf=pass (imf01.hostedemail.com: domain of mohamedalibouhaouala@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=mohamedalibouhaouala@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-491971ac844so2125430f8f.2
-        for <linux-mm@kvack.org>; Sat, 14 Nov 2026 15:54:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794700481; x=1795305281; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jvGNkEQXxpCGRnxugPg2OroUq4ixAzACPllCORFjj2w=;
-        b=fqorLJi2Tu1WSHmvLc03PWsmW+RT0V87S/RqoJD5jNn/opS0Vh83jaij2OHM/4nw7s
-         KhcFERaRZ2FNVJRqkYgrOhCh5gonNPby+5QhbPuLvuWBllmV0uxYGySdjqhFQbEaIy05
-         HEjH5nRjrnW132hvuXYPdr3mLVZg+l1TVXjZEmpLrdqot6IRttRWRD4Ahy97vtgz6xlz
-         Bd2e1SRSYBmyDmUKPP16+fpHGky0tjT+lTC6XAiSe4N9iCwJixY5vr2CHuwMgZvQ7Fvr
-         XK0D7MEsL7+EHRa88huuzLdPxdliv3+Jq0EcMIARyqETr73xreHxZCGu8PqS0ghZ06W2
-         ziiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794700481; x=1795305281;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jvGNkEQXxpCGRnxugPg2OroUq4ixAzACPllCORFjj2w=;
-        b=QYV5n3zWk/3HqHyHFmXo16vbVjmPFytFy+bwKgqZei9Zg6Flib+UO0GlMaxvvu3reH
-         q41QGA0ln7nnYpVIcgGSGEzFegIFYTDOzgrW8bmn34j949xBk/cxBo8i/fs7j8kIFli7
-         VXPrXNnPa6Nnzq/LWWVwEOLf/i9R7Z2bj3M45+/iyWepMmKiFNulv3PPbM7OdSYjYJ7E
-         cQr8pfR7YoyAAOxrUm4rSQzu1Me4yo81dcpkdWSqqbT0iDt8B/0r4QDUmUpkgKDHrlSe
-         +EKWInFfocVL8GEBmeQU5piO2mAbRj7GSBYvFKOeeR9olesYO9AlJ/1BRghoRuO1CudS
-         0pkw==
-X-Forwarded-Encrypted: i=1; AL+hErHS+y4rC0+jiENVfUOzSg6CHF2Ec74p6DDYLUd1TLJcsPPLjV7BxGVPBpVfkh2plqBJ6ms9pR7nMw==@kvack.org
-X-Gm-Message-State: APuU4Z9z82ehgO8RwMeR5kPNvR5VHw5+hOmUuOy7Ntpb3+itaS7a3TVq
-	sV7t9E8fgycE58bzv2+ND3tm4/TytixFi6gjwljqj/a8wXJFli2SrRv6
-X-Gm-Gg: AYBFou07lAj1Sd1GDAEr9V/oKL2izeJs/reClQ7skv5vUojQfLhsbI9CTrRx3P7gtgc
-	Egvunr+WSykmwnxuzWNVTbS9m0ULQgn74wkXwkvjmegtSbTMcFi0ChQMz0l5iozaDpuDK52Sz8l
-	UYNqTFisMnBew7E7DuCXZ5uFaC97WOFS+FM4veyzX5fIhsgzz4b0pZqVL3F+zdpbA77IWBmqgIf
-	hWHYZyPGDYjWSeL8sY1MxnKLLUTgcd38O2MtOGPKFInxkH7mAouywVRAP5wRCN60Tg0vcI4DzyD
-	ifri6re0AlIaQCG61WTDC5vKAsYh/VTLP0FDxBjBklVRFPdXO/MHFUQiAzY5XlJzEyyFaU29YOh
-	i3IO0DmEbS3tXqujb+xyQ5Tmlczp8jOUM/9B0tRF2s1DXGW1VfXWgJhWH87WjZj9RlFXl3CBLHO
-	rvsNmzdDh2HvNeJnvFuARGSwr4AmJn7EXQKjwATxm8YcR+zyOPMNqaYC89oGtUyMDSbeusLUZHu
-	Xpkl5y4RTQT7Y7uBDe+sCYKKfayj72BQ6tnK1UwAR9ZqkOqen3kptHbP2O0jB3oyPCxIsjinB1K
-	SpMoqCyihAGiPBMoO7hb/i2NhB6+wwWmsWlVgKGCtjGDmgyX15ouaOJXyNvLrUe83bebhS5AQ5u
-	YTw8U4q0P+SwzIjYF2mhxhfd6vz1uQgSY
-X-Received: by 2002:a05:6000:4201:b0:48e:870:7791 with SMTP id ffacd0b85a97d-49c71e3d623mr16407297f8f.26.1794700481355;
-        Sat, 14 Nov 2026 15:54:41 -0800 (PST)
-Received: from mohamedali-HP-EliteBook-840-G8-Notebook-PC.. ([197.18.115.238])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c608d10b2sm23069680f8f.44.2026.11.14.15.54.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Nov 2026 15:54:40 -0800 (PST)
-From: mohamedalibouhaouala@gmail.com
-To: willy@infradead.org,
-	jack@suse.cz,
-	corbet@lwn.net
-Cc: skhan@linuxfoundation.org,
-	rdunlap@infradead.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	Mohamed Ali Bouhaouala <mohamedalibouhaouala@gmail.com>
-Subject: [PATCH v2] docs: filesystems: update VFS locking documentation
-Date: Sun, 15 Nov 2026 00:54:26 +0100
-Message-ID: <20261114235426.20408-1-mohamedalibouhaouala@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <3aaboixwh6lpo4s67dv7lssqj2vwlp4qp5cq2ysimqi36r3bm2@fb5lmoo33ktf>
-References: <3aaboixwh6lpo4s67dv7lssqj2vwlp4qp5cq2ysimqi36r3bm2@fb5lmoo33ktf>
+	bh=A4p/ZrzWv+7I/PwL/AzZiq9a/zXoUz1s7R6mVyTlBt4=;
+	b=MALamtEREiE933IIuJsfU+B8BCPmPR4DVwqpsYF8WEqH65daMAV1qbP6cNmWTPxD0v1/O+
+	asRkb8uvbBpssmAZCQ2dSjOVYCdL0LeC4Y4Gp+ei7kI2DIg/x1Gmwu5IzEfW7TSzXmdg3/
+	V6+WXQGZUwqH9hewAkreTXYv0JwlyNo=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=LCAIASZQ;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf06.hostedemail.com: domain of jgg@nvidia.com designates 40.93.201.69 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Av8KJUKCtHc+zGzV0/6gyeXqm5JvGt5sOfPV47WecDB9A5EW73VzxJ1c8ZUGQSVUXKjaELRHEpnRj3HvqGzMwUjivjkyKXD5OhqjfY8zUxmUQKgaDWFQjbPIipq/qn+m14N4j8ASNRiThZ78wGHbMG/ELHapShq4nhaALDubx0qKqcyuRuRn+WCWXvqKZJFIsd6TAczQDvp9IBfaTANegJ47md1BG/z/nUw3RoFzSey242VExk5afW44uQowVrO34U9+Fgbrorp579Ya/GoLYhyFOhmSBduDePwtf/dUM3i5yXw71VrINkK3WXnLThr1veIMaSw1d8xSlMW6XftzTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=A4p/ZrzWv+7I/PwL/AzZiq9a/zXoUz1s7R6mVyTlBt4=;
+ b=lW3qT71LPgWjZplWWvwG2UlHOw8IYvnTV8PtORhmq97FfXwUeGtYDVo3PSyoYINER6ShMD3HmioSi4j7dzbnWJbxuHU2DZm6TCPCubMtX3E1g2IVFeSrY7f0RFgRmrMGjH7VHi58l/CPqlRPafCkswihXX+fwhyDOL9QSFv0qH9cVtKTADR6ipahBty+eXu2y1w2zWWYjFDnmVwE1bnVb6+LjjYBqt/fQ2vFVjsqIL5evKIA/JDI/u9o2Qefglhc0Yv7FZyMvaBmPu4o7//R4H7z0HZhinpHe96HNOfYtaj7zgcRj25cL/0UIC+5IRx7+XrxH+uB25ob6jfmX2Gp/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=A4p/ZrzWv+7I/PwL/AzZiq9a/zXoUz1s7R6mVyTlBt4=;
+ b=LCAIASZQc8OliH+5bGA8Em6OKSfO4VcMJpY5T3Q8DX0+KYRfp3sN0FflPtoMSqREEITVCZtFxS0153Xt+l3jEka7myIXpxIXWUCKWeY5D2glV3ON+psJQEUQ4xq7HQbySlDnFXipNcEwLNgz+fFZSx5CgvZlT0DRNvDXFx/FOtLZ/3tW/pf7dYBF6vpSf9XtoxQ6lomBKpw9/BHhbvTx33yLlT+Itok2C5U0rFKk0saIrSDxYwXMM38TbVIWRoTejT75hoWPxxy6kyOjv6maHVJ/+nSR7XkkNttWO8mnP9uCC0+4LFjYpqxYj/RePkD6TKcLR/gAyfIdXuA6Mrp8Gg==
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12) by LV2PR12MB966079.namprd12.prod.outlook.com
+ (2603:10b6:408:3a9::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.13; Sun, 15 Nov
+ 2026 00:00:06 +0000
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0615.012; Sun, 15 Nov 2026
+ 00:00:06 +0000
+Date: Sat, 14 Nov 2026 20:00:05 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Gregory Price (Meta)" <gourry@gourry.net>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com, leon@kernel.org,
+	david@kernel.org, kas@kernel.org, dave.hansen@linux.intel.com,
+	bp@alien8.de, rppt@kernel.org, stable@vger.kernel.org,
+	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Subject: Re: [PATCH] mm/hmm: reject shadow-stack mappings
+Message-ID: <20261115000005.GG3706007@nvidia.com>
+References: <20261113195536.2660763-1-gourry@gourry.net>
+ <20261113200303.GA395967@nvidia.com>
+ <179460249376.482102.14669935557901467762.b4-reply@b4>
+ <20261114002027.GE3706007@nvidia.com>
+ <20261113181025.6e8b9475b29c13d29f59e02e@linux-foundation.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261113181025.6e8b9475b29c13d29f59e02e@linux-foundation.org>
+X-ClientProxiedBy: YT4PR01CA0199.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:ad::23) To CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1FFC540002
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|LV2PR12MB966079:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4c60e239-9d11-4286-bbe8-08df42ab6843
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|10067099003|4143699003|11063799006|56012099006|261026121527099003|261022075727099003|261021121427099003|261102123227099003|18002099003|22082099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	++dRsn/B61Dvn3ujJnYcGqK+7QjOqdpcdKuC1NnguvPrGLS4tSAgVFjAP0yzVjzmcnEfffznd/ez128DKdPbEST2lFg4RolNHo+21rndJ1gl0lx4zRIKFDb4hHka+BsSBw8/y7NVF6PZqW9JpXTAPBgOOvn4k9wwYIhpJ3/PQyZ3ciJiYNN4irh/Tf7uRrZQc/OOPjvw1VmL/6ir3Io2PUX5AzTut+VvAvfIcMS3aHZZb3apGPca0nEliLheyYr1YUq4w+GB3K1yqW+2xkcwnEe9lYPJ6tiZhpExeNBbNYKxgwjTi/gG02mz5+0AwXwZyuiDcr7KziwJoIU2V8Vc+xpD95qklRfwOV3r3h5DX01hqDK8TQbsQ0STK3OoOU3Wirs0SANpaLJ6v2Sfv2wz6aJEWuwZVD4pzqyzbS0rTLLqbJAnppVZcigP+TgkD02u7VZqr1ra4gisaDR6Zc2Ex3UjCDp9S3o1Rzk5MhVAG/dmGjWT3JsLBV04kNhplGFuH/uc5JiBjlHjfXM3nUpqs6+FnWJOIKEUK14JqzZPbcMfxEPfeZeUDmbsku1xNFgDKsf0vBF3CzIMkzOUsnHAal2O1kgOocAqFCTUf/Jrqwct8OikFahW3QPmOFEukZHQMwRQ7D0g9ER+znuYQZydaA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(10067099003)(4143699003)(11063799006)(56012099006)(261026121527099003)(261022075727099003)(261021121427099003)(261102123227099003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?WSmFnDPMJjDXYgIDWj+HdFw8bpDC8+/z7kWy9iEcRf/FbaOly3plJi1NlqUj?=
+ =?us-ascii?Q?xgvYZ/4uG7t4dtnGZU7d8smJDt+cuApWYFfodauSzJeppPMg76p5Fiqa5Ncw?=
+ =?us-ascii?Q?pqvljfcii2+6w2QVq+QwWE7VwVgO8pRLods3vH6TJJfK5y7mES4Nj+NTRhKu?=
+ =?us-ascii?Q?dGdORrFaEoq52dMwtI/Lo+ScJxNuoncHfWMQUrtbHHHk7DbYvTPorsIyTiwc?=
+ =?us-ascii?Q?ybEBj7FVRVuQrzbgy8zTzr5Rv/SK1ZNmgMHCuVrul7taORPDj5KD3eY/jGxb?=
+ =?us-ascii?Q?fshJpYHRbLwnKpbQufaeXZhhLTpiqlD/GnSBBeTB0hCStcGn2E6lcGxsJ/p8?=
+ =?us-ascii?Q?PGu6rtNJvyB4iDM9kOi5+Ys3ZXnWSlG72C8l3wxWUIX9tGFlOizaBZgWDgbI?=
+ =?us-ascii?Q?gkaxUOPgB9gtenout5btR15+RASjMgaqV7jPEszJ0iv7DzHg7V5XFu2SBxgL?=
+ =?us-ascii?Q?tUw2By0LFK9/dLTGFd9GYpPloDUcS1JLLPCTFmHWx6h9g3uslcFfGKJKWLxV?=
+ =?us-ascii?Q?GNurYEbTRSdqolGxv/ucJjXFsV2T4J/vX8PhlszGHavrcWgTaM8qqlvMgNa6?=
+ =?us-ascii?Q?0LCpmkkZrnHQ02IVwkPwRb+rXahiKzj7K/bqL7tCsi1KrpKgAwwxP4e7oQ0F?=
+ =?us-ascii?Q?l6G+VXaAgC0w5mB5fj6Pv4Gbkq0JXgIthBPKBoQg0iZYmh7kGkoMZI8sYfbz?=
+ =?us-ascii?Q?ZhZk15EfB/GLRah2azOMbA/XhvEViJN4tZmgqwU1FnYD3e1tXxbILKHaO/BE?=
+ =?us-ascii?Q?x401KHxqHxJLZOKeh4Utq7CVYgJAy6AuzWwq4ibxWM5bD8bzaKCysEESsh3V?=
+ =?us-ascii?Q?mjrY/HwEQgQLqy02GGS+I3zO2tdMRv6FRASXkRbJsyLVmLnNriw5zivR/VEK?=
+ =?us-ascii?Q?oD/tQ4FXnQiLAHbtG7ab1CpAppWWthiL1FYYPHfZzPLHddhzYGTW8zy2uchu?=
+ =?us-ascii?Q?zVWF45vPc/25BtgXCMdum4UWQHtQ01ErGrH9Sdze+IDZ87L3QW1oL1OpFKDC?=
+ =?us-ascii?Q?pzgo3DFEaAxO0w6ajPM9XMiXdHdGFPycRpwMDWmVBqLIq+Yh1eDs63El2SWb?=
+ =?us-ascii?Q?x60QacfEQPYNv+9T7n6h2vPKnWj1hLIjtii7mZq4Bg1jr74Wew0ZLAu7w/wr?=
+ =?us-ascii?Q?jVEq3kZgkBXnvdV8++Zf6bXY6GulH+D6oU5ikZ14cvbgORQKjL8JbLSULYXr?=
+ =?us-ascii?Q?KGz0jhGncKzd57mg2wjdH3WyoahzyunjKPhk3Z+0geAz12D8DLgpg06N3dHx?=
+ =?us-ascii?Q?16RZq79E534OskJ9Eynbkq6j9cjLbzwIx0UfaWsE9Q+Vv1uJy6TjpWdLwg2f?=
+ =?us-ascii?Q?pSs3iT+rnQ2AKlwEbBR/ZtDQnM7aFCMdSarCIpQrhnkM2J+G7N4GikKWL5Sj?=
+ =?us-ascii?Q?sb239cCONid08cjXLiLpvbjRurP3tZ7GuSg59xCAvrwZTCfsV+gJlL24D7K6?=
+ =?us-ascii?Q?WS5EgqO7b0JOPO6LrgUT11MX25omDlNqE5xM99D2DWQWgVoY2MvbO4zCGaz8?=
+ =?us-ascii?Q?WGWln5CB+79QgdLJk3UyJuNlbFdrcZHZaLwdGHl7ZMBiqaM3iAuapx5b7o7Q?=
+ =?us-ascii?Q?8q04rDvy7+DpPLQoTKlmYe1rQnstom9FTwVK7AjdGYjfGh+hFwCemmUXk312?=
+ =?us-ascii?Q?Dr+ywzdWqUqk9yGSzALDCxzqqnfLlPpaWdgRCLcoeafgUDh7esTjkX22aLQA?=
+ =?us-ascii?Q?0t+HVbzSJ9ou6gm4hG1I2LmKO+09qUspuvKBdkY6A0MvAVuo?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4c60e239-9d11-4286-bbe8-08df42ab6843
+X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2026 00:00:06.6799
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vS0zo+EzwEMgz3cpqUfKsYONpdgupQ6RWa2PqCP0s0SbuX66w9De7JPYNuFf6zUR
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB966079
+X-Rspamd-Queue-Id: A6D5D180008
+X-Rspamd-Server: rspam12
+X-Stat-Signature: b111at9ay4xiurgfndjw7pyhq41zqh1k
+X-Rspam-User:
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: pyoaphwfs9tpd44u6xioxskizo93jxjn
-X-Rspam-User: 
-X-HE-Tag: 1794700482-239829
-X-HE-Meta: U2FsdGVkX18KrxtmSg1ZlpQLQVdfR2cF1rX9elWvi2MmFTlL18eCbNLkPdv8OkT+SiU2N7vHp2QHOdO44SNXUbSb2RqL3hg6htaNSXKw7Thn/eCKIAu5ZugP4TbShEV5RY+PgS625q08bltt0gCrFzdENQ3eWwYoAJVCTTyxC0138anyTDGEi7mRvJzzkmjMrijCOtO3QW06rf7fpL/9EW/HFmUas+l5vhVYta+lFP1RZysGd7G00IuI4ULVo5GjL4kQM+lkHGn0tUkwrDWPFoieRrwwqsDFzXXuxhDxlJqPziVEKABtZFrrYWCXO0Ttnsu+G36JeGWEZ0T0HwR8tawCz5Y3y+GaCvSJmJNHitw+B80EKuKBdlN68HxkYv5kA/uX5qox/M/XGe3KO24eSqsIfHIeQLKlHXi164vh/Z8jtH3FP3LkeWKy9A2mSfvgvCtnUwGqOYhg2sAUtoDUw7YftT20I6QVOaoNoL/sUKd0W3YZnKUFqH3y1miPN5wiLPCDre1STOnLRTWzw5iqwzBDRWr9PR/5uNsqy1GtqcOpQ8PbNOX2HUgEvKAnptWi6tSwuCol7N1B9LcNSNOo3S7i2yvGr4Q1TWNQF+gdcifGfaazkovWR4rywiF8wbIol0wbAjncdzqwZztPaaGvD008uLN9Q3jqrk64Gn3xuvEXMzdJi1dsrbhYRSYlJiX+DScGJQm5s8XcZkoyGKMDaWWH8Szjvz6apKKCKHC4k8+e0KnS57389Co5PI74bHGIuTbuoreJVThQr/p2qrhXQp+AZqyy0ysywas9M8WZIubyxeWOaWwcq9G5+eH4AblQWO/wXcRpGEKldMpAqX2JeROJHMcRetAq/cPFqtTGRjxBYDrUwDuWEOlsQdWlC3qYuLP1U83d4oJPU3B36w+PlBOeW4lcmSi9setTr/gixbmQ1jeWfEG/l0MJ3n3QZGNeVs0Eq9W38C+OWpOm1pW
- UqM2DduD
- bVvAcr6nYADnsAHZz6NBpvKnsRuJhyXs8qcgVXwTDGbliJU7efL3XXd4Xr8bZOUqQJUv7wFrUJrrMMhTdA09eCk3vaFFNp0lhsYc1Ah+dK6PgGjvbAImtnTiuSxWVFWinXRGxeZhyiPayyyguuZfXeLhTmyUdAmanaydIuRCcU3Piq1lfp8VWuZ3Z4TsT5SHXbxNsTEN0s177/WCojUrG+Vt/0KD0C7fYcjjOzMZCjxuqLqKVlnFdCvlofwIr8hDYTg1BQCTZC/unaRn9FfmxTPqafY30I5/F/RQWq0LlLDiAYh2LS5v7YQXf4TSR9VZBsaSnKqZ7V4xAoTl2TEwmAC9Rt+zLWKJ6KOH9vJ+yhf4RXBK1FLwdFUAA0XtFadqKl3B/R6A43UUz6Xa+DAZ+S7WyYk57u7I2YvTo
+X-HE-Tag: 1794700822-329761
+X-HE-Meta: U2FsdGVkX18nRFEov74wJ9DKWBK65Us6hZkg5+2D8Dytxro2jrduisvK09NSXAXdXcmiw1gwJHg6WFTuM9G1BPL3JncpM2aBUvs06tXe0rGerv4Hr8oiFvOc7SA1mtECNNw752k+18wcqmlExRfjdtkOn1bMShVxvfYtvzzZ2BGgGPH/uB6wKWbb9ZE514JnBqCYkxFQPNfkOcrELCaSSnS747TX3DXdhidEXjtL6ktHdzJbSgPWzJtCZgUfQ4g85q5/qiT8KpiduQ06yVaKzg5JpTpvcQoWUPK5iqklFbDXFrjmcLKtRTSY8oNLI7uT1WbxSjNx14sNXAdG+7EFWQBYJ6xRr99CPyBLYEZHSAF2VOvTpTB9mYDPu7j515FEiS5YEDkWzrxRgCPgM9tSqXDLdOVdMR1p2q7P6tOMOrdB5OQ4CcMoekPwOZueGSpetcLstPMX3VfbUgtma5RRPY4tpgVDLCkGHCqgNM8m26r8vqUxAPHo5R+B4zGKGGYOy2bp20f/xyiNv+eihm0Aw23F45/LkRgBOSiUVpWygZdOaq3JGSgGDB9DJpZNh2JsLg4WmfJeBvTQ3AJwUAoTgS0lwm5JXPzqFDjZpsM3fa3rR9K1OQh/DzvEXdCfBARkvuCPlUhmFxIW60jcqzeZpgqa8dCAcBvbyhboVLiOlqtGRFuOmOs/+JQ7w5+cranrKlETBPA4RQ5+eRchUtxFrQ5+quX16uFzDr8EYjFOi3dfReznKKKi/kM9ZVfG7CCXzHTgUo4AuI6pk92Vw6dJ5Sn6KKfXPIE5wQTGsGLW4XyToonXtiiDmbUclEeJVfTJ8cjRS1ev4JJwNp/2jBmO2TuMJ/fFhm80NJoPgzklzji44+B9hAWNvJ+L8gwuz0jHFJDrpailRoruEGU9eum6IuWYEoe4RzkMPr84HxlTyBKlZDMGnVe2IV2polYVYj+OFALF8+U/I7IS5vNAkqz
+ 8LeJe+55
+ IU2tcDpB6k4rXJug0P/BGbefnSm/ob1OAjNqXwds/cu0LCqwcUtR0OrlYQ0fXQ6LzCAYw322f25w6p2ietJODzlz3p0T4taufBDXJV3XWhv++LRl31v8IbkWehOM15nPrD4PazApGXDQNcXA/dRYrHHi10jTZBf+OU2czv4b+/KUba7h5t4zKaU1KMGHStB/ilSIPPTVXyH4hL0HzWqgHymSj64VsVb9/H6lAb8385dT/WDepdV4saz6OkGwaCp0FCgcHG8m/CiB0ceGUO7wFWTXRuP7EMA9PO3icfvl7Zyq/jxBxIeYV2CX3ne0VV7j+a5LdA5CkGs/PKdDHuzrQ6CxRUyO9SCH9J6DjQmNpoxJUz/mKOaTUURLaadrWvEkc/FPbAQYy2/ZwLjjQV94HMQgUvThjde3WRSpiL7ihKfefT6RDDshlI2Mr5cji6QYFbZDJirA0rIVnYLAGNnf2Ki3UOlXGVBnqIHJ9oMcNa0xHWhfUxmx+TF5iT4aWji37KDRAn55oQmdlgeZ0pXbeFDOGIxyFWq3RtBIem4fHFjKi05BCIDubcGWe+t3xz2lZ+qJ/AUgVneYldMiNJdH3w5GzpNvqUSfDXm10ymWVXQSD1+L19Q7BqEHoitazVkoPJdnaUplSVdG7G3r8BJg9Ugse9sE4WIk1kawfLpFogmrRoisuHXJgKTWi9A/v8HUoIH3EBR09qHaNA7s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,108 +167,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Mohamed Ali Bouhaouala <mohamedalibouhaouala@gmail.com>
+On Fri, Nov 13, 2026 at 06:10:25PM -0800, Andrew Morton wrote:
 
-Update outdated VFS operation prototypes in locking.rst to
-match their current definitions.
+> How does this look for an altered changelog?
+> 
+> : On x86, a shadow-stack PTE has its ordinary write bit clear.  The CPU
+> : rejects ordinary stores to it, but pte_write() reports it writable because
+> : shadow-stack instructions can write it.  HMM consequently sets
+> : HMM_PFN_WRITE, which Nouveau turns into ordinary GPU write permission.  A
+> : process with GPU access can then overwrite its own shadow stack,
+> : potentially corrupting return addresses or bypassing that protection.
+> : 
+> : Reject shadow-stack VMAs in hmm_vma_walk_test(), including read access.  A
+> : requested fault returns -EFAULT; a snapshot records HMM_PFN_ERROR.
 
-Add the missing d_prune and sync_inode_metadata callbacks,
-and correct the signatures of existing operations.
+Yes, but it is not just nouveau, RDMA user can do this too and
+that is far more common..
 
-Update the locking table to include sync_inode_metadata.
-
-Signed-off-by: Mohamed Ali Bouhaouala <mohamedalibouhaouala@gmail.com>
----
-v2:
-- Use the contributor's full name in the author and sign-off fields.
- Documentation/filesystems/locking.rst | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
-
-diff --git a/Documentation/filesystems/locking.rst b/Documentation/filesystems/locking.rst
-index f7363ad770c7..a6a011858ada 100644
---- a/Documentation/filesystems/locking.rst
-+++ b/Documentation/filesystems/locking.rst
-@@ -26,6 +26,7 @@ prototypes::
- 	int (*d_delete)(struct dentry *);
- 	int (*d_init)(struct dentry *);
- 	void (*d_release)(struct dentry *);
-+	void (*d_prune)(struct dentry *);
- 	void (*d_iput)(struct dentry *, struct inode *);
- 	char *(*d_dname)(struct dentry *dentry, char *buffer, int buflen);
- 	struct vfsmount *(*d_automount)(struct path *path);
-@@ -80,8 +81,8 @@ prototypes::
- 	int (*getattr) (const struct mnt_idmap *, const struct path *, struct kstat *, u32, unsigned int);
- 	ssize_t (*listxattr) (struct dentry *, char *, size_t);
- 	int (*fiemap)(struct inode *, struct fiemap_extent_info *, u64 start, u64 len);
--	void (*update_time)(struct inode *inode, enum fs_update_time type,
--			    int flags);
-+	int (*update_time)(struct inode *inode, enum fs_update_time type,
-+			    unsigned int flags);
- 	void (*sync_lazytime)(struct inode *inode);
- 	int (*atomic_open)(struct inode *, struct dentry *,
- 				struct file *, unsigned open_flag,
-@@ -173,6 +174,7 @@ prototypes::
- 	void (*destroy_inode)(struct inode *);
- 	void (*dirty_inode) (struct inode *, int flags);
- 	int (*write_inode) (struct inode *, struct writeback_control *wbc);
-+	int (*sync_inode_metadata)(struct inode *inode, struct writeback_control *wbc);
- 	int (*drop_inode) (struct inode *);
- 	void (*evict_inode) (struct inode *);
- 	void (*put_super) (struct super_block *);
-@@ -196,6 +198,7 @@ free_inode:				called from RCU callback
- destroy_inode:
- dirty_inode:
- write_inode:
-+sync_inode_metadata:
- drop_inode:				!!!inode->i_lock!!!
- evict_inode:
- put_super:		write
-@@ -255,7 +258,7 @@ prototypes::
- 				loff_t pos, unsigned len, unsigned copied,
- 				struct folio *folio, void *fsdata);
- 	sector_t (*bmap)(struct address_space *, sector_t);
--	void (*invalidate_folio) (struct folio *, size_t start, size_t len);
-+	void (*invalidate_folio) (struct folio *, size_t offset, size_t len);
- 	bool (*release_folio)(struct folio *, gfp_t);
- 	void (*free_folio)(struct folio *);
- 	int (*direct_IO)(struct kiocb *, struct iov_iter *iter);
-@@ -265,7 +268,7 @@ prototypes::
- 	bool (*is_partially_uptodate)(struct folio *, size_t from, size_t count);
- 	int (*error_remove_folio)(struct address_space *, struct folio *);
- 	int (*swap_activate)(struct swap_info_struct *sis, struct file *f, sector_t *span)
--	int (*swap_deactivate)(struct file *);
-+	void (*swap_deactivate)(struct file *);
- 
- locking rules:
- 	All except dirty_folio and free_folio may block
-@@ -455,14 +458,15 @@ prototypes::
- 	ssize_t (*write) (struct file *, const char __user *, size_t, loff_t *);
- 	ssize_t (*read_iter) (struct kiocb *, struct iov_iter *);
- 	ssize_t (*write_iter) (struct kiocb *, struct iov_iter *);
--	int (*iopoll) (struct kiocb *kiocb, bool spin);
-+	int (*iopoll)(struct kiocb *kiocb, struct io_comp_batch *,
-+			unsigned int flags);
- 	int (*iterate_shared) (struct file *, struct dir_context *);
- 	__poll_t (*poll) (struct file *, struct poll_table_struct *);
- 	long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);
- 	long (*compat_ioctl) (struct file *, unsigned int, unsigned long);
- 	int (*mmap) (struct file *, struct vm_area_struct *);
- 	int (*open) (struct inode *, struct file *);
--	int (*flush) (struct file *);
-+	int (*flush) (struct file *, fl_owner_t id);
- 	int (*release) (struct inode *, struct file *);
- 	int (*fsync) (struct file *, loff_t start, loff_t end, int datasync);
- 	int (*fasync) (int, struct file *, int);
-@@ -475,7 +479,7 @@ prototypes::
- 			size_t, unsigned int);
- 	ssize_t (*splice_read)(struct file *, loff_t *, struct pipe_inode_info *,
- 			size_t, unsigned int);
--	int (*setlease)(struct file *, long, struct file_lock **, void **);
-+	int (*setlease)(struct file *, int, struct file_lease **, void **);
- 	long (*fallocate)(struct file *, int, loff_t, loff_t);
- 	void (*show_fdinfo)(struct seq_file *m, struct file *f);
- 	unsigned (*mmap_capabilities)(struct file *);
--- 
-2.43.0
-
+Thanks,
+Jason
 
