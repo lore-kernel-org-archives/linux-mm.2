@@ -1,119 +1,119 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150A4606A329
-	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 22:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95E81606A884
+	for <linux-mm@archiver.kernel.org>; Sun, 15 Nov 2026 22:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=VtC39wDA;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=FSD3EA54;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=VtC39wDA;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=FSD3EA54
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=qwaE8OCh;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=4+zODNCs;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=UL2AJR1B;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8xD41Gpx
 Received: by kanga.kvack.org (Postfix)
-	id 00B866B05B4; Sun, 15 Nov 2026 17:00:48 -0500 (EST)
+	id 9817E6B05B6; Sun, 15 Nov 2026 17:01:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFDF56B05B5; Sun, 15 Nov 2026 17:00:47 -0500 (EST)
+	id 959A36B05B7; Sun, 15 Nov 2026 17:01:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E13DA6B05B6; Sun, 15 Nov 2026 17:00:47 -0500 (EST)
+	id 86ED56B05B8; Sun, 15 Nov 2026 17:01:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A3CC66B05B4
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 17:00:47 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1510814081D
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 22:00:47 +0000 (UTC)
-X-FDA: 85438723734.22.297E34F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5607D6B05B6
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 17:01:00 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BC0C6160838
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 22:00:59 +0000 (UTC)
+X-FDA: 85438724238.23.7369D33
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf01.hostedemail.com (Postfix) with ESMTP id EC2EC4000A
-	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 22:00:44 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=VtC39wDA;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FSD3EA54;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=VtC39wDA;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FSD3EA54;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf01.hostedemail.com: domain of clopez@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=clopez@suse.de
+	by imf31.hostedemail.com (Postfix) with ESMTP id 7CAA120006
+	for <linux-mm@kvack.org>; Sun, 15 Nov 2026 22:00:57 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qwaE8OCh;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4+zODNCs;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=UL2AJR1B;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8xD41Gpx;
+	spf=pass (imf31.hostedemail.com: domain of clopez@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=clopez@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794780057;
+	b=TZ1VkTe8QbXHzoKEWTd0RFOYa2F+OfW+umWDnH/vymEuFpSKDpsSHOFrIDhuXzU24WuZGU
+	SEIMSOztDPTTZvkXl6WnOILux2Xdjz0uLix6dtWmLhCECPHVZSHGk4b7HuUBxJDRBzck8l
+	20PoQaSQ1DZOfaqtc57HfWguDhQlb2g=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qwaE8OCh;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4+zODNCs;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=UL2AJR1B;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8xD41Gpx;
+	spf=pass (imf31.hostedemail.com: domain of clopez@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=clopez@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794780045;
+	s=arc-20220608; t=1794780057;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u1q2m7iCmRu8/0QbFElHLPq1Wp6Csg/qGVcaQCf3LJU=;
-	b=FWYt8KeYyLAI8gPEM4t0V8GPk/yZTteygM9OMWnUnglIjM/DJ5/RDXe/Qz+x583L1bSx54
-	5ZQeGnNVaqDaTm/Np8+x6qG+KWQ8sHW6QRquzsD9ye826CepzWUEW9Q3gcx9bSpEimwoYQ
-	z7IBsJVP9f7tQHjjY/ocQaid87LMQnE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794780045;
-	b=1G1JnS63Ey8/HJC94Q9bHsO5+NBw0QxP9kU5rDHCB/K/IrJKtIZ9nV/xusi+CuXNZJr/1v
-	S2e/C57Ao4KGmU3rnAmG+JHV/5Uok68UzThm30+9H6zbF2TLT5BUIvADoTJLiiHBJb8pKC
-	nIZo7LQkoL6Fpyq8eHccEyZrtMVvEFI=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=VtC39wDA;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FSD3EA54;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=VtC39wDA;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FSD3EA54;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf01.hostedemail.com: domain of clopez@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=clopez@suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	bh=7FlApLM+6NHXeyNHrZs7qFAb7ZQYfBd5O8QQnbg+ljM=;
+	b=8hLkgnzD/6MSYa/Q5gMpHcv1vHkAw5gjSQFT7KVekGAl607tzV+J9Q755s8kxk3HS3Hr18
+	zBIR5ZR6I7/Eu1uN7MUuaItIbGJ3NJg5xm311oocAJGD+u1uwMZagGruU217Pr5vd5l7JG
+	cUWMIXK+e1N5xY5KVyGZuw22LG+D004=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 8882F1F449;
-	Sun, 15 Nov 2026 22:00:43 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 220F51F453;
+	Sun, 15 Nov 2026 22:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794780043; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1794780056; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=u1q2m7iCmRu8/0QbFElHLPq1Wp6Csg/qGVcaQCf3LJU=;
-	b=VtC39wDA1GWTGm0xox6CVDf2jVHsVvaOgt8LdKsluJlNGWsTnvwnbRNo+nszbXNH/ZPn6y
-	mdlew/Jpo8f7BwJUW4HaSquuZ8yOPAoLg69ziQTIda6nEc5Eni7s2jrotzE7DBLQUWLjFQ
-	AmQHK4DwrDTT5G6BDD9HFxk+aM4yeTA=
+	bh=7FlApLM+6NHXeyNHrZs7qFAb7ZQYfBd5O8QQnbg+ljM=;
+	b=qwaE8OCh9q7DPjRCRWrDN3gSH+C/rRxOO4tjyMLG9u1935rUbhmfAqEsM8HKtkWWRu9Zwg
+	Edk21Rf9o6W4cR/K8rlzm3w3VQgzTPqYi4XjKDo5va8dWtQTK9ZcUoAoaK0qag7ugYH9WW
+	lJyY1EnCiHEFQrN5YOkYwKlBRizhvdc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794780043;
+	s=susede2_ed25519; t=1794780056;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=u1q2m7iCmRu8/0QbFElHLPq1Wp6Csg/qGVcaQCf3LJU=;
-	b=FSD3EA54NpSYVbs7Zde8pdPXSOSxZXRemtfdLIRL9+aSukEH1zgttElCb9EI88/JkNI5gh
-	sHc8q8hKGbej2QAA==
+	bh=7FlApLM+6NHXeyNHrZs7qFAb7ZQYfBd5O8QQnbg+ljM=;
+	b=4+zODNCsDGJ5IVOEpCHjeUo1EVO9r5zTadv/CLmLmfPhVg+HsnElN6wR+yHo9EWPWXC3cw
+	l/ef6th5jEOjNdCA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794780043; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1794780055; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=u1q2m7iCmRu8/0QbFElHLPq1Wp6Csg/qGVcaQCf3LJU=;
-	b=VtC39wDA1GWTGm0xox6CVDf2jVHsVvaOgt8LdKsluJlNGWsTnvwnbRNo+nszbXNH/ZPn6y
-	mdlew/Jpo8f7BwJUW4HaSquuZ8yOPAoLg69ziQTIda6nEc5Eni7s2jrotzE7DBLQUWLjFQ
-	AmQHK4DwrDTT5G6BDD9HFxk+aM4yeTA=
+	bh=7FlApLM+6NHXeyNHrZs7qFAb7ZQYfBd5O8QQnbg+ljM=;
+	b=UL2AJR1BrjXZmm+GGh4UMq32pWsgoSMmhN+u1mUj191Yfs5b2UovWRoPPLgbaxf4LoQxHe
+	wCkxg0dVMwml21R9t1wsR4ic7Og+VfwWcbt6UfUHcYLsnTPWJqR53SFSh/uwgiQIBxfef2
+	wFXlaHNqK/MHeQ+sqT4+M+Bw5A8iVJg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794780043;
+	s=susede2_ed25519; t=1794780055;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=u1q2m7iCmRu8/0QbFElHLPq1Wp6Csg/qGVcaQCf3LJU=;
-	b=FSD3EA54NpSYVbs7Zde8pdPXSOSxZXRemtfdLIRL9+aSukEH1zgttElCb9EI88/JkNI5gh
-	sHc8q8hKGbej2QAA==
+	bh=7FlApLM+6NHXeyNHrZs7qFAb7ZQYfBd5O8QQnbg+ljM=;
+	b=8xD41GpxBN+xCOa43OZxnWJbsv0+D7lCV3ihsL9anYIBLNyrixPBhfRBT9DyCinpAMuTWb
+	81hngw5kGsBimuBg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E9EFE134F4;
-	Sun, 15 Nov 2026 22:00:41 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0D712134F4;
+	Sun, 15 Nov 2026 22:00:54 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id KoiGLokr+mqVcAAAD6G6ig
-	(envelope-from <clopez@suse.de>); Sun, 15 Nov 2026 22:00:41 +0000
-Message-ID: <1cc05b4d-e713-49e8-9bac-444259bf12f3@suse.de>
-Date: Sun, 15 Nov 2026 23:00:41 +0100
+	id 9PgqNJUr+moqcQAAD6G6ig
+	(envelope-from <clopez@suse.de>); Sun, 15 Nov 2026 22:00:54 +0000
+Message-ID: <f0a6bfcf-b131-419a-8b7d-ce10e0c507d8@suse.de>
+Date: Sun, 15 Nov 2026 23:00:53 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/9] mm/huge_memory: honor MM_CP_TRY_CHANGE_WRITABLE in
- change_huge_pud()
+Subject: Re: [PATCH v3 1/9] mm: fix eager write-bit restore for write-notified
+ shared mappings
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-s390@vger.kernel.org, linux-riscv@lists.infradead.org,
@@ -121,34 +121,30 @@ Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  david@kernel.org, peterx@redhat.com, imbrenda@linux.ibm.com,
  borntraeger@linux.ibm.com, frankja@linux.ibm.com,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Peter Feiner <pfeiner@google.com>
 References: <20261112142039.907090-2-clopez@suse.de>
- <20261112142039.907090-5-clopez@suse.de> <avd0Cexmmu7kCN45@gremlin>
+ <20261112142039.907090-3-clopez@suse.de> <avd12eMWaTl87uL0@gremlin>
 From: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
 Content-Language: en-US
-In-Reply-To: <avd0Cexmmu7kCN45@gremlin>
+In-Reply-To: <avd12eMWaTl87uL0@gremlin>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -13.29
+Content-Transfer-Encoding: 7bit
 X-Spam-Level: 
-X-Stat-Signature: 5hr9obh4cjme9bxauubighjmx8e5g4t6
+X-Rspamd-Action: no action
+X-Spam-Score: -13.50
+X-Stat-Signature: e4sei7kwx3mppn487yz6gajawdnauqn5
 X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7CAA120006
 X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: EC2EC4000A
-X-HE-Tag: 1794780044-744907
-X-HE-Meta: U2FsdGVkX18L//aj4SE2r95/G9HXluSasclU1MtfSE9h3kC8mOdwETLGlHaOSQuiH8WYspp+BzwC4EHfLXEJMUThaU23dhOD6rWaaJ5jumHDO690wTgS0+w5kxmv/USBhK2IxQC/huSt2heD5ByXg/zG3B1+jGve+K+jstnYeKoJdzD4f6INIhiPBnEmXG0nQHXsGmXn292QnnyAFxzj7EuSceNMIJrE1Whuenp6ExAMe6Fy2vf7f6L26ze93/TOF0vnbRlLgHt0XzfRTj+A580bfbbisUPs4CT+T8qIcYUxv/v0uBSUzqgjY3KGOtgdHaC8PqoAA8BTvIOHY9gBiOk/aa/SIaHb65nFeT2EHZUHxtxfyttjPX3xArdrQL0NJx9VZZWx1ver9If6JycgClMvc9yVpurv/sB+49XAYEliT69sfs7U2YzC6UxRauNORfubffutYYwisL8SEVSkfIBoCX8MKC7fABTcVS8b8VPq4IPAUVx3tq1JEuoxRNcUBNVp9eRzTXoDpAu1sHNq5B5C0SgWbGsL1B8AU74lejnd3P8oPH0yG3oyYktqjDwChSKXS1qc1ipOpEjgUs82WaYozNLORgnWL5xigyafIdgewO4WvPf614eR/YzpLsk0EjxSA6frrioR+Bv5lKE5g3ZU+Q+RV5AOtFRKSet3T0rmA9gVgppHfq+iSF9ITwq2msQXubJodfwTgZLfqusfU+31KVlxR0sNvlMmklkgMfaI/1Gns2/OII69ufRIxj8Q/+aPsxTSQ2h0+Hb391YlST7GRL2BW2HBN7U54sAmHsXFDKwz9CjrR9peyWaURlHN5TstJEjJ+oR5AdpjZ0YVsz/mwiH7nKoQx/PDhFDhxv1J09UaRBE5GIN52JGtKU/3x3sAd8inR3OhhaRozGY/e6sEwI2cBCGb3ioir9dL/LSYk8ZI/SsLVWX6z8qxGI0XoyZ2R7EK3TCCe9AtidL
- H0jHQdMC
- VhLowPho8kanZ7UcqXqbI4QBL4wTMdq/vX4LEN3+yeb9BYmCdxfcWCmxZEH4IhFqavhcUTTdr1YOI4oNghmNaL0uNbTdAWi67apjjQgXnQlNFgiNqzMdumHLT/0zQM5rQBKXI5Lv1nutxdOOKKTdFmre33zop+hv9xc7kNBT+vBUHLYntAmjg2tod8cQML2kbhsFQ3bGXyfKl0YwxlPJaBcsMmg6H2xXB2fT2w/Q9qaLNpuU+8ji/MK3rtF2MngcyL+8j5O8Nu0kP1h8w8l150M/y8gi9IIWD5r/u99EoAXcAtpLQCDPL0tiFDvuQE2nZcHfY1oEm++t3J7Ol7HxNkBKMKYMfBznuBBa9BA2jTCQkALIuehNArAsZ72RKXiSkE3njuuTavCcQj29dRJDfcz4Nww==
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794780057-820019
+X-HE-Meta: U2FsdGVkX1/F2dWpW1UShVrl868o0EKyrfCQm7tvvljrlN6ZocV7TAl68ceQdXe1fR/UZDCYKo8gvnwIoWMJMACZkSiyptAj+hURO782l238W0+i1PQnFkxyswZ26JsyQkO0hN+YTfMEMDjdnQGhyq/42rYSteXMGds5kZjDwD22F0cy7S+pS+Y8ak13enaagJnADGoFw8DUJfQE45GjMHhnOJL4PDnMeZwfL+LzbxGxNn7hh9adO7tvnK7NSxx0ShLMglMY1C2+Mg1D1YZtM5tBA+Jgxl9ggxMAJKPyl/MvtJnHS4aJo8NpcsiEYeG1u8DCdWWAIupU8VVl3qdNl2n8M3PacAj/ihxTTse+3nKQZYjnnTA/8ehKATkXuhkxmYp1FFyErDGb2eYJKgHM07iGQw6FEzNECqAyvZ+3C0j02KvGbYafutcfC5DTtv4eKABhDXq6M+HOfwiRmwSD0SyVksJWzTPF5dMC0dsn0m+EOR+cQRTpQ6KiuqY4bVUtYgKUkwCukp1sH8GEu2mApgAgXqfqqjXGoSKC1RMFX2gYsP8Yyor5tl8TdTIFUQQhUj/nV/V+EaTwuzwnFeNlcwA+MgXpGIILt7N8ne1571Qfzvzp+y3EXsiT4tp5GO5jDM19mIcNczCf7lvWse3wL6ZXPGp81vfsTKlYESGETU7txYPnwnBvEKU4m0fK96BeVCn49N71flNeHVa8Qoir+aTWTWjUNhxyapdDinnJM95qxPfbs7H8N+G44e3JL4icEmAxijKBbl1B7wxufvNyL3Q13zYrnAevtoVL+8+qWfWhpKvdyKLVWEYOFG2dE1hlij9sYCiuy8QlUwDSaapwJOxzAPfC5qR7aPYn9VJpq7kHD2SRJdLl1s/zjk7sbXzIQ2z0q30wvjfgPDBWT0Mx5Nlq0NBk62GMOGFjfXIIdMi5oBrA5Noe/cfzYcG81OxOaYQsf7xxuUPmBDAYqJf
+ 3RPbOiFU
+ FrPa93zRybgpPjc/axBnP7o2RF1kGwoQnK80MLadGk4az6UchlMqRwhO9/kt94K0BvZIsElPLSwMCJJUJo4SCzLNU4xPF36GIiDWZzr6V7uBeCFIPrhsPgrIDifPoz+9Pmv/XuzAMjiYX3SI6i++gWakrbSxupDHqtU8sWr4LvvBnxRwa2LCH0EDCKRLTt4SermzY1pNz6IVoTYNox6Yset3GfUGllaXC7T4Rx3OJAVluhntss7Vye7tz5eJ0XvUsV7+hxGeqe8i7z6sn/6kx5kQB5X7OqvRWXmyM7SgI2kCcTZS4BJKQkpkaUqx8WQb91cppmvDiZuwWFW8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,48 +153,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/13/26 9:48 PM, Lorenzo Stoakes (ARM) wrote:
-> On Thu, Nov 12, 2026 at 03:20:32PM +0100, Carlos López wrote:
->> change_protection() applies vma->vm_page_prot, which lacks the write bit
->> for CoW and write-notified mappings. MM_CP_TRY_CHANGE_WRITABLE makes
->> entries writable again if a write fault would only set the write bit.
->>
->> However, change_huge_pud() ignores the flag. For example, device DAX
->> mappings are write-notified once soft-dirty tracking is armed through
->> /proc/pid/clear_refs, and a protection change then leaves dirty PUDs
->> read-only, so the next write to each of them faults.
->>
->> Fix this by adding can_change_pud_writable(), based on
->> can_change_pmd_writable(). It omits the NUMA and uffd-wp checks, as
->> change_huge_pud() bails out on those changes.
->>
->> Signed-off-by: Carlos López <clopez@suse.de>
+On 11/13/26 9:47 PM, Lorenzo Stoakes (ARM) wrote:
+>>  static inline bool vma_wants_manual_pte_write_upgrade(struct vm_area_struct *vma)
+>>  {
+>>  	/*
+>> @@ -596,19 +604,16 @@ static inline bool vma_wants_manual_pte_write_upgrade(struct vm_area_struct *vma
+>>  	 * if we can't do that automatically for all PTEs in a mapping. For
+>>  	 * private mappings, that's always the case when we have write
+>>  	 * permissions as we properly have to handle COW.
+>> +	 *
+>> +	 * vma->vm_page_prot lacks the write bit if writenotify is already
+>> +	 * enabled, so pass it with the bits restored, as vma_set_page_prot()
+>> +	 * does.
 > 
-> Is this a real problem that actual people have had?
+> We don't write code in comments.
+
+I'll drop it.
+
+>>  	 */
+>>  	if (vma->vm_flags & VM_SHARED)
+>> -		return vma_wants_writenotify(vma, vma->vm_page_prot);
+>> +		return vma_wants_writenotify(vma,
+>> +		       vma_pgprot_modify(vma->vm_page_prot, vma->flags));
 > 
-> The why of all this is still eluding me, especially for THP PUD...
-
-Nobody reported it, but the new flag depends on it, see my reply to
-David for this same patch.
-
->> [...]
->> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
->> +static inline bool can_change_pud_writable(struct vm_area_struct *vma,
->> +					   unsigned long addr, pud_t pud)
->> +{
->> +	struct page *page;
->> +
->> +	if (WARN_ON_ONCE(!(vma->vm_flags & VM_WRITE)))
->> +		return false;
->> +
->> +	/* Do we need write faults for softdirty tracking? */
->> +	if (vma_soft_dirty_enabled(vma) && !pud_soft_dirty(pud))
->> +		return false;
->> +
->> +	if (!(vma->vm_flags & VM_SHARED)) {
+> You mention vma_set_page_prot() but then implement it differently from there and
+> make no effort to abstract it?
 > 
-> This is getting annoying now, you're seemingly _knowingly_ writing deprecated
-> VMA flag API code on purpose.
+> And so both callers now do the same thing, and both open code it... you should
+> abstract that.
 
-Sorry, I based it on can_change_pmd_writable(), I'll use vma_test() instead.
+Okay, I'll add a helper for both.
 
